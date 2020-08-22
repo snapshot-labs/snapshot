@@ -338,7 +338,7 @@ const actions = {
     }
   },
   multicall: async ({ commit }, { name, calls, options }) => {
-    const multi = new Contract(config.multicall, abi['Multicall'], web3);
+    const multi = new Contract(config.multicall, abi['Multicall'], wsProvider);
     const itf = new Interface(abi[name]);
     calls = calls.map(call => {
       call[1] = itf.encodeFunctionData(call[1], call[2]);

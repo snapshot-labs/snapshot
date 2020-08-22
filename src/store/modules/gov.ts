@@ -90,22 +90,23 @@ const actions = {
     commit('GET_PROPOSALS_REQUEST');
     try {
       let proposals: any = await client.request(`${payload}/proposals`);
-      if (!proposals) return {};
-      let balances = await dispatch('multicall', {
-        name: 'TestToken',
-        calls: Object.values(proposals).map((proposal: any) => {
-          return [proposal.msg.token, 'balanceOf', [proposal.address]];
-        })
-      });
-      balances = balances.map(balance =>
-        parseFloat(formatUnits(balance.toString(), 24))
-      );
-      proposals = Object.fromEntries(
-        Object.entries(proposals).map((proposal: any, i) => {
-          proposal[1].balance = balances[i];
-          return [proposal[0], proposal[1]];
-        })
-      );
+      if (proposals) {
+        let balances = await dispatch('multicall', {
+          name: 'TestToken',
+          calls: Object.values(proposals).map((proposal: any) => {
+            return [proposal.msg.token, 'balanceOf', [proposal.address]];
+          })
+        });
+        balances = balances.map(balance =>
+          parseFloat(formatUnits(balance.toString(), 24))
+        );
+        proposals = Object.fromEntries(
+          Object.entries(proposals).map((proposal: any, i) => {
+            proposal[1].balance = balances[i];
+            return [proposal[0], proposal[1]];
+          })
+        );
+      }
       commit('GET_PROPOSALS_SUCCESS');
       return formatProposals(proposals);
     } catch (e) {
