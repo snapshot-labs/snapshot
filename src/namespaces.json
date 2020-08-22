@@ -4,6 +4,7 @@
     "symbol": "YAM",
     "name": "Yam Finance",
     "token": "0xAba8cAc6866B83Ae4eec97DD07ED254282f6aD8A",
+    "decimals": 24,
     "image": "0x0e2298E3B3390e3b945a5456fBf59eCc3f55DA16"
   }
 }

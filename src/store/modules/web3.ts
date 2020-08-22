@@ -2,7 +2,7 @@ import Vue from 'vue';
 import { Web3Provider } from '@ethersproject/providers';
 import { Contract } from '@ethersproject/contracts';
 import { getAddress } from '@ethersproject/address';
-import { formatEther } from '@ethersproject/units';
+import { formatUnits } from '@ethersproject/units';
 import { Interface } from '@ethersproject/abi';
 import store from '@/store';
 import abi from '@/helpers/abi';
@@ -328,7 +328,7 @@ const actions = {
     ];
     try {
       const [, response] = await multi.aggregate(calls, { blockTag });
-      const balance = parseFloat(formatEther(response[0].toString()));
+      const balance = parseFloat(formatUnits(response[0].toString(), 24));
       commit('GET_BALANCE_SUCCESS');
       return balance;
     } catch (e) {

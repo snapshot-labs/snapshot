@@ -1,6 +1,6 @@
 import { Contract } from '@ethersproject/contracts';
 import { Interface } from '@ethersproject/abi';
-import { formatEther } from '@ethersproject/units';
+import { formatUnits } from '@ethersproject/units';
 import client from '@/helpers/client';
 import ipfs from '@/helpers/ipfs';
 import config from '@/helpers/config';
@@ -187,7 +187,7 @@ const actions = {
     try {
       const [, response] = await multi.aggregate(calls, { blockTag });
       response.forEach((value, i) => {
-        balances[addresses[i]] = parseFloat(formatEther(value.toString()));
+        balances[addresses[i]] = parseFloat(formatUnits(value.toString(), 24));
       });
       commit('GET_VOTERS_BALANCES_SUCCESS');
       return balances;
