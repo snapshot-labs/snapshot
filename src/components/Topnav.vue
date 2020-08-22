@@ -9,7 +9,11 @@
               class="d-inline-block d-flex flex-items-center"
               style="font-size: 24px; padding-top: 4px;"
             >
-              snapshot
+              <span
+                :class="namespace && 'hide-sm'"
+                class="mr-1"
+                v-text="'snapshot'"
+              />
               <template v-if="namespace">
                 <span class="pl-1 pr-2 text-gray" v-text="'/'" />
                 <Token :address="namespace.image" size="28" />
