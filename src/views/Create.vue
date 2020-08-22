@@ -1,7 +1,10 @@
 <template>
   <Container :slim="true">
     <div class="px-4 px-md-0 mb-3">
-      <router-link :to="{ name: 'home' }" class="text-gray">
+      <router-link
+        :to="{ name: 'proposals', params: { key } }"
+        class="text-gray"
+      >
         <Icon name="back" size="22" class="v-align-middle" />
         {{ namespace.name || _shorten(namespace.token) }}
       </router-link>
@@ -23,7 +26,7 @@
               class="input mb-6"
               placeholder="What is your proposal?"
             />
-            <div>
+            <div v-if="form.body">
               <h4 class="mb-4">Preview</h4>
               <UiMarkdown :body="form.body" />
             </div>

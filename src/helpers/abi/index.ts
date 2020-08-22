@@ -1,9 +1,10 @@
-import { abi as TestToken } from '@/helpers/abi/TestToken.json';
-import { abi as Weth } from '@/helpers/abi/Weth.json';
-import { abi as Multicall } from '@/helpers/abi/Multicall.json';
+const requireFile = require.context('./', true, /[\w-]+\.json$/);
 
-export default {
-  TestToken,
-  Weth,
-  Multicall
-};
+export default Object.fromEntries(
+  requireFile
+    .keys()
+    .map(fileName => [
+      fileName.replace('./', '').replace('.json', ''),
+      requireFile(fileName).abi
+    ])
+);

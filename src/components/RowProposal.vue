@@ -9,7 +9,8 @@
     </div>
     <div>
       <span v-text="`#${i.slice(0, 7)}`" />
-      By {{ _shorten(proposal.address) }}
+      By {{ _shorten(proposal.address) }} {{ _numeral(proposal.balance) }}
+      {{ namespace.symbol }}
       <Icon v-if="isVerified" name="check" title="Verified" />
       start
       <span v-text="$d(proposal.msg.payload.start * 1e3)" />
@@ -22,6 +23,7 @@
 <script>
 export default {
   props: {
+    namespace: Object,
     token: String,
     proposal: Object,
     verified: Array,

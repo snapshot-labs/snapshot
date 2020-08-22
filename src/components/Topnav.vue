@@ -6,10 +6,15 @@
           <div class="flex-auto d-flex flex-items-center">
             <router-link
               :to="{ name: 'home' }"
-              class="d-inline-block d-flex"
+              class="d-inline-block d-flex flex-items-center"
               style="font-size: 24px; padding-top: 4px;"
             >
               snapshot
+              <template v-if="namespace">
+                <span class="pl-1 pr-2 text-gray" v-text="'/'" />
+                <Token :address="namespace.image" size="28" />
+                <span class="ml-2" v-text="namespace.symbol" />
+              </template>
             </router-link>
           </div>
           <div :key="web3.account">
@@ -56,6 +61,7 @@
 
 <script>
 import { mapActions } from 'vuex';
+import namespaces from '@/namespaces.json';
 
 export default {
   data() {
@@ -74,6 +80,13 @@ export default {
         (!this.web3.account && !this.web3.injectedLoaded) ||
         (!this.web3.account && !this.wrongNetwork)
       );
+    },
+    namespace() {
+      try {
+        return namespaces[this.$route.params.key];
+      } catch (e) {
+        return {};
+      }
     }
   },
   methods: {

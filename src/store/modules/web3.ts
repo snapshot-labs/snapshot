@@ -146,6 +146,9 @@ const mutations = {
   },
   GET_BALANCE_FAILURE(_state, payload) {
     console.debug('GET_BALANCE_FAILURE', payload);
+  },
+  MULTICALL_SUCCESS() {
+    console.debug('MULTICALL_SUCCESS');
   }
 };
 
@@ -318,21 +321,35 @@ const actions = {
       return Promise.reject();
     }
   },
-  getBalance: async ({ commit }, { blockTag, token }) => {
+  getBalance: async ({ commit, dispatch }, { blockTag, token }) => {
     commit('GET_BALANCE_REQUEST');
-    const address = state.account;
-    const multi = new Contract(config.multicall, abi['Multicall'], web3);
-    const testToken = new Interface(abi.TestToken);
-    const calls = [
-      [token, testToken.encodeFunctionData('balanceOf', [address])]
-    ];
     try {
-      const [, response] = await multi.aggregate(calls, { blockTag });
+      const response = await dispatch('multicall', {
+        name: 'TestToken',
+        calls: [[token, 'balanceOf', [state.account]]],
+        options: { blockTag }
+      });
       const balance = parseFloat(formatUnits(response[0].toString(), 24));
       commit('GET_BALANCE_SUCCESS');
       return balance;
     } catch (e) {
       commit('GET_BALANCE_FAILURE', e);
+      return Promise.reject();
+    }
+  },
+  multicall: async ({ commit }, { name, calls, options }) => {
+    const multi = new Contract(config.multicall, abi['Multicall'], web3);
+    const itf = new Interface(abi[name]);
+    calls = calls.map(call => {
+      call[1] = itf.encodeFunctionData(call[1], call[2]);
+      delete call[2];
+      return call;
+    });
+    try {
+      const [, response] = await multi.aggregate(calls, options || {});
+      commit('MULTICALL_SUCCESS');
+      return response;
+    } catch (e) {
       return Promise.reject();
     }
   }

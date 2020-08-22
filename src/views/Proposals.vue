@@ -43,6 +43,7 @@
             v-for="(proposal, i) in proposalsWithFilter"
             :key="i"
             :proposal="proposal"
+            :namespace="namespace"
             :token="key"
             :verified="namespace.verified"
             :i="i"
@@ -90,6 +91,7 @@ export default {
       return Object.fromEntries(
         Object.entries(this.proposals)
           .filter(proposal => {
+            if (proposal[1].balance < this.namespace.min) return false;
             if (this.selectedState === 'All') return true;
             if (
               this.selectedState === 'Active' &&
