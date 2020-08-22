@@ -1,0 +1,114 @@
+{
+  "id": "1946815",
+  "name": "gang",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "11399282",
+      "name": "signature",
+      "font_class": "signature",
+      "unicode": "e600",
+      "unicode_decimal": 58880
+    },
+    {
+      "icon_id": "15617545",
+      "name": "receipt-outlined",
+      "font_class": "receipt-outlined",
+      "unicode": "e8eb",
+      "unicode_decimal": 59627
+    },
+    {
+      "icon_id": "10561798",
+      "name": "Check, label",
+      "font_class": "check",
+      "unicode": "e679",
+      "unicode_decimal": 59001
+    },
+    {
+      "icon_id": "59347",
+      "name": "warning",
+      "font_class": "warning",
+      "unicode": "e62c",
+      "unicode_decimal": 58924
+    },
+    {
+      "icon_id": "1262104",
+      "name": "search",
+      "font_class": "search",
+      "unicode": "e6f2",
+      "unicode_decimal": 59122
+    },
+    {
+      "icon_id": "1336076",
+      "name": "Menu",
+      "font_class": "menu",
+      "unicode": "e609",
+      "unicode_decimal": 58889
+    },
+    {
+      "icon_id": "2518398",
+      "name": "close",
+      "font_class": "close",
+      "unicode": "e63e",
+      "unicode_decimal": 58942
+    },
+    {
+      "icon_id": "5679219",
+      "name": "mark-github",
+      "font_class": "github",
+      "unicode": "e667",
+      "unicode_decimal": 58983
+    },
+    {
+      "icon_id": "5679273",
+      "name": "plus-small",
+      "font_class": "plus-small",
+      "unicode": "e69d",
+      "unicode_decimal": 59037
+    },
+    {
+      "icon_id": "7141712",
+      "name": "external-link",
+      "font_class": "external-link",
+      "unicode": "e636",
+      "unicode_decimal": 58934
+    },
+    {
+      "icon_id": "11262646",
+      "name": "go",
+      "font_class": "go",
+      "unicode": "e6cb",
+      "unicode_decimal": 59083
+    },
+    {
+      "icon_id": "11262647",
+      "name": "back",
+      "font_class": "back",
+      "unicode": "e6cc",
+      "unicode_decimal": 59084
+    },
+    {
+      "icon_id": "13519508",
+      "name": "user-solid",
+      "font_class": "user",
+      "unicode": "e66f",
+      "unicode_decimal": 58991
+    },
+    {
+      "icon_id": "13895880",
+      "name": "arrow-up",
+      "font_class": "arrow-up",
+      "unicode": "e75c",
+      "unicode_decimal": 59228
+    },
+    {
+      "icon_id": "14232782",
+      "name": "arrow-up",
+      "font_class": "arrow-down",
+      "unicode": "e75d",
+      "unicode_decimal": 59229
+    }
+  ]
+}

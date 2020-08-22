@@ -1,0 +1,21 @@
+@import './assets/fonts/iconfont.css';
+
+@font-face {
+  font-family: 'Calibre-Medium';
+  src: url('./assets/fonts/Calibre-Medium.eot');
+  src: url('./assets/fonts/Calibre-Medium.eot?#iefix') format('embedded-opentype'),
+  url('./assets/fonts/Calibre-Medium.woff') format('woff'),
+  url('./assets/fonts/Calibre-Medium.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Calibre-Semibold';
+  src: url('./assets/fonts/Calibre-Semibold.eot');
+  src: url('./assets/fonts/Calibre-Semibold.eot?#iefix') format('embedded-opentype'),
+  url('./assets/fonts/Calibre-Semibold.woff') format('woff'),
+  url('./assets/fonts/Calibre-Semibold.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}

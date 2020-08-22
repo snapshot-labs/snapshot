@@ -1,0 +1,99 @@
+@import './fonts';
+@import './vars';
+@import "~@primer/css/index.scss";
+
+html, body, #app {
+  background-color: $black;
+  color: $gray;
+  font-family: $font-weight-normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  outline: none !important;
+}
+
+h1, h2, h3, h4 {
+  color: $white;
+  font-family: $font-weight-bold;
+}
+
+b {
+  font-family: $font-weight-bold;
+}
+
+p {
+  font-size: 22px;
+}
+
+#app {
+  min-height: 100vh;
+}
+
+a {
+  color: $white;
+
+  &:hover {
+    color: $white !important;
+    cursor: pointer;
+    text-decoration: none !important;
+  }
+}
+
+::placeholder {
+  color: $gray;
+}
+
+.input {
+  outline: none;
+  color: $white;
+  background-color: transparent;
+  border: none;
+}
+
+textarea {
+  font-size: 20px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: $border-color;
+  background-clip: padding-box;
+  border: 0;
+  border-radius: 0;
+
+  &:hover {
+    background-color: $border-color;
+  }
+}
+
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 16px;
+}
+
+.column {
+  width: 160px;
+}
+
+.anim-fade-in {
+  animation-duration: 0.6s !important;
+}
+
+.line-height-0 {
+  line-height: 0;
+}
+
+.bg-black {
+  background-color: $black;
+}
+
+.State {
+  font-size: 16px;
+  line-height: 30px;
+  height: 28px;
+  vertical-align: middle;
+  padding: 0 12px;
+  border-radius: 14px;
+}

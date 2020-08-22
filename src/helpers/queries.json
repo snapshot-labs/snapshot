@@ -1,0 +1,25 @@
+{
+  "getVotingPowers": {
+    "poolShares": {
+      "__args": {
+        "first": 1000,
+        "orderBy": "balance",
+        "orderDirection": "desc",
+        "where": {
+          "balance_gt": 0
+        }
+      },
+      "userAddress": {
+        "id": true
+      },
+      "balance": true,
+      "poolId": {
+        "totalShares": true,
+        "tokens": {
+          "id": true,
+          "balance": true
+        }
+      }
+    }
+  }
+}

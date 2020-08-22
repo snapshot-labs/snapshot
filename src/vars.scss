@@ -1,0 +1,30 @@
+@import '~primer-support';
+
+$border-radius: 4px;
+$black: #0f1011;
+
+$border-color: #353d45;
+$border: 1px solid $border-color;
+
+$blue: #384AFF;
+$green: #21b66f;
+$red: #ff3856;
+$bg-blue: $blue;
+$bg-green: $green;
+$bg-red: $red;
+$text-blue: $blue;
+$text-green: $green;
+$text-red: $red;
+$bg-gray-dark: lighten($black, 2);
+
+$body-font-size: 18px;
+$body-line-height: 1.4;
+$h1-size: 36px;
+$h2-size: 28px;
+$h3-size: 24px;
+$h4-size: 20px;
+
+$font-weight-normal: 'Calibre-Medium', -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;
+$font-weight-bold: 'Calibre-Semibold', -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;
+$body-font: $font-weight-normal;
+$font-mktg: $font-weight-bold;

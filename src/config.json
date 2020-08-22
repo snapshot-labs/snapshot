@@ -1,0 +1,86 @@
+{
+  "master": {
+    "network": "homestead",
+    "chainId": 1,
+    "subgraphUrl": "https://api.thegraph.com/subgraphs/name/balancer-labs/balancer",
+    "hubUrl": "https://vote.balancer.finance",
+    "multicall": "0xeefBa1e63905eF1D7ACbA5a8513c70307C1cE441",
+    "connectors": {
+      "injected": {
+        "id": "injected",
+        "name": "MetaMask"
+      },
+      "portis": {
+        "id": "portis",
+        "name": "Portis",
+        "options": {
+          "dappId": "3f1c3cfc-7dd5-4e8a-aa03-71ff7396d9fe",
+          "network": "mainnet"
+        }
+      },
+      "fortmatic": {
+        "id": "fortmatic",
+        "name": "Fortmatic",
+        "options": {
+          "apiKey": "pk_live_9CE8FD92E54684ED"
+        }
+      }
+    }
+  },
+  "develop": {
+    "network": "homestead",
+    "chainId": 1,
+    "subgraphUrl": "https://api.thegraph.com/subgraphs/name/balancer-labs/balancer",
+    "hubUrl": "https://beta.vote.balancer.finance",
+    "multicall": "0xeefBa1e63905eF1D7ACbA5a8513c70307C1cE441",
+    "connectors": {
+      "injected": {
+        "id": "injected",
+        "name": "MetaMask"
+      },
+      "portis": {
+        "id": "portis",
+        "name": "Portis",
+        "options": {
+          "dappId": "3f1c3cfc-7dd5-4e8a-aa03-71ff7396d9fe",
+          "network": "mainnet"
+        }
+      },
+      "fortmatic": {
+        "id": "fortmatic",
+        "name": "Fortmatic",
+        "options": {
+          "apiKey": "pk_live_9CE8FD92E54684ED"
+        }
+      }
+    }
+  },
+  "local": {
+    "network": "homestead",
+    "chainId": 1,
+    "subgraphUrl": "https://api.thegraph.com/subgraphs/name/balancer-labs/balancer",
+    "hubUrl": "http://localhost:3000",
+    "multicall": "0xeefBa1e63905eF1D7ACbA5a8513c70307C1cE441",
+    "connectors": {
+      "injected": {
+        "id": "injected",
+        "name": "MetaMask"
+      },
+      "portis": {
+        "id": "portis",
+        "name": "Portis",
+        "options": {
+          "dappId": "3f1c3cfc-7dd5-4e8a-aa03-71ff7396d9fe",
+          "network": "mainnet"
+        }
+      },
+      "magic": {
+        "id": "magic",
+        "name": "Magic",
+        "options": {
+          "apiKey": "pk_live_9CE8FD92E54684ED"
+        }
+      }
+    }
+  }
+}
