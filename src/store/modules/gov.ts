@@ -108,7 +108,7 @@ const actions = {
         );
       }
       commit('GET_PROPOSALS_SUCCESS');
-      return formatProposals(proposals);
+      return formatProposals(proposals || {});
     } catch (e) {
       commit('GET_PROPOSALS_FAILURE', e);
     }
