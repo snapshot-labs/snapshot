@@ -22,4 +22,4 @@ npm run lint
 
 ## License
 
-[WTFPL-2](LICENSE).
+[MIT](LICENSE).
