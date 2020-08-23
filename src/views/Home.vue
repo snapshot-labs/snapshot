@@ -31,6 +31,15 @@ export default {
     return {
       namespaces
     };
+  },
+  created() {
+    if (Object.keys(this.namespaces).length === 1)
+      this.$router.push({
+        name: 'proposals',
+        params: {
+          key: Object.keys(this.namespaces)[0]
+        }
+      });
   }
 };
 </script>
