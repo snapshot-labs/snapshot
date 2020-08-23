@@ -11,4 +11,13 @@ $bg-blue: $blue;
 
 .State, .Counter, .button--submit {
   color: $black !important;
+
+  &:disabled {
+    border: 1px solid $border-color !important;
+    background-color: $border-color !important;
+  }
+}
+
+.bg-gray-9 {
+  background-color: $border-color !important;
 }
