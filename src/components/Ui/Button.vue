@@ -50,6 +50,10 @@ export default {
     }
   }
 
+  &.button--active {
+    border-color: $white !important;
+  }
+
   &:hover {
     color: $white;
     border-color: $white;

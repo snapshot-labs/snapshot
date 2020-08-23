@@ -46,7 +46,7 @@
     height: 20px;
 
     path {
-      fill: white;
+      fill: $white;
     }
   }
 

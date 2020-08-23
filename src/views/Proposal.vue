@@ -29,7 +29,7 @@
                 v-text="choice"
                 @click="selectedChoice = i + 1"
                 class="d-block width-full mb-2"
-                :style="selectedChoice === i + 1 && 'border-color: white;'"
+                :class="selectedChoice === i + 1 && 'button--active'"
               />
             </div>
             <UiButton
