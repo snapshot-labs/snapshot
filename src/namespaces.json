@@ -6,6 +6,9 @@
     "address": "0xAba8cAc6866B83Ae4eec97DD07ED254282f6aD8A",
     "token": "0xAba8cAc6866B83Ae4eec97DD07ED254282f6aD8A",
     "image": "0x0e2298E3B3390e3b945a5456fBf59eCc3f55DA16",
+    "coreDevs": [
+      "0x683A78bA1f6b25E29fbBC9Cd1BFA29A51520De84"
+    ],
     "min": 100
   },
   "balancer": {
@@ -15,6 +18,8 @@
     "address": "0xba100000625a3754423978a60c9317c58a424e3D",
     "token": "0xba100000625a3754423978a60c9317c58a424e3D",
     "image": "0xba100000625a3754423978a60c9317c58a424e3D",
+    "coreDevs": [
+    ],
     "min": 10
   }
 }
