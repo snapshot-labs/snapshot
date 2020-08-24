@@ -101,7 +101,7 @@ export default {
               return true;
             }
             if (
-              this.selectedState === 'Core Devs' &&
+              this.selectedState === 'Core devs' &&
               proposal[1].address.includes(this.namespace.coreDevs)
             ) {
               return true;
