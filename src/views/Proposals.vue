@@ -113,7 +113,7 @@ export default {
               return true;
             }
           })
-          .sort((a, b) => b[1].msg.payload.end - a[1].msg.payload.end, 0)
+          .sort((a, b) => b[1].msg.payload.end - a[1].msg.payload.end && b[1].balance - a[1].balance, 0)
       );
     }
   },
