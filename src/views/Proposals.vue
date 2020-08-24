@@ -5,7 +5,7 @@
         <div class="flex-auto">
           <div>
             <a
-              :href="_etherscanLink(namespace.token)"
+              :href="_etherscanLink(namespace.address)"
               target="_blank"
               class="text-gray"
             >
@@ -122,7 +122,7 @@ export default {
   },
   async created() {
     this.loading = true;
-    this.proposals = await this.getProposals(this.namespace.token);
+    this.proposals = await this.getProposals(this.namespace.address);
     this.loading = false;
     this.loaded = true;
   }

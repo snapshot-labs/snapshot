@@ -4,7 +4,7 @@
       <div class="px-4 px-md-0 mb-3">
         <router-link :to="{ name: 'proposals' }" class="text-gray">
           <Icon name="back" size="22" class="v-align-middle" />
-          {{ namespace.name || _shorten(namespace.token) }}
+          {{ namespace.name || _shorten(namespace.address) }}
         </router-link>
       </div>
       <div>
@@ -166,7 +166,7 @@ export default {
     ...mapActions(['getProposal', 'getPower']),
     async loadProposal() {
       const proposalObj = await this.getProposal({
-        token: this.namespace.token,
+        token: this.namespace.address,
         id: this.id
       });
       this.proposal = proposalObj.proposal;
@@ -176,7 +176,7 @@ export default {
     async loadPower() {
       if (!this.web3.account) return;
       this.power = await this.getPower({
-        token: this.namespace.token,
+        token: this.namespace.address,
         address: this.web3.account,
         snapshot: this.payload.snapshot
       });

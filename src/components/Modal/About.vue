@@ -3,6 +3,18 @@
     <h3 class="m-4 mb-0 text-center">About</h3>
     <div class="m-4 mb-0 p-4 border rounded-2 text-white">
       <div class="d-flex">
+        <span v-text="'Twitter'" class="flex-auto text-gray mr-1" />
+        <a href="https://twitter.com/SnapshotLabs" target="_blank">
+          @SnapshotLabs
+        </a>
+      </div>
+      <div class="d-flex">
+        <span v-text="'Discord'" class="flex-auto text-gray mr-1" />
+        <a href="https://discord.snapshot.page" target="_blank">
+          Join Discord
+        </a>
+      </div>
+      <div class="d-flex">
         <span v-text="'Version'" class="flex-auto text-gray mr-1" />
         {{ pkg.version }}
       </div>

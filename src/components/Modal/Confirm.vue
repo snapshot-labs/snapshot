@@ -71,7 +71,7 @@ export default {
   },
   computed: {
     symbol() {
-      return this.namespace.symbol || this._shorten(this.namespace.token);
+      return this.namespace.symbol || this._shorten(this.namespace.address);
     }
   },
   methods: {
@@ -79,7 +79,7 @@ export default {
     async handleSubmit() {
       this.loading = true;
       await this.send({
-        token: this.namespace.token,
+        token: this.namespace.address,
         type: 'vote',
         payload: {
           proposal: this.id,

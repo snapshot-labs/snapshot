@@ -6,7 +6,7 @@
         class="text-gray"
       >
         <Icon name="back" size="22" class="v-align-middle" />
-        {{ namespace.name || _shorten(namespace.token) }}
+        {{ namespace.name || _shorten(namespace.address) }}
       </router-link>
     </div>
     <div>
@@ -164,7 +164,7 @@ export default {
       this.loading = true;
       try {
         const { ipfsHash } = await this.send({
-          token: this.namespace.token,
+          token: this.namespace.address,
           type: 'proposal',
           payload: this.form
         });

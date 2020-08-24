@@ -19,12 +19,11 @@ const mutations = {
 const actions = {
   init: async ({ commit, dispatch }) => {
     commit('SET', { loading: true });
-    await dispatch('getBlockNumber');
+    await Promise.all([dispatch('getBlockNumber'), dispatch('metadata')]);
     const connector = lsGet('connector');
     if (Object.keys(config.connectors).includes(connector)) {
       const lockConnector = lock.getConnector(connector);
-      const isLoggedIn = await lockConnector.isLoggedIn();
-      if (isLoggedIn) await dispatch('login', connector);
+      if (await lockConnector.isLoggedIn()) await dispatch('login', connector);
     }
     commit('SET', { loading: false, init: true });
   },

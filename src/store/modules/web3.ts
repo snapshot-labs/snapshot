@@ -10,6 +10,7 @@ import config from '@/helpers/config';
 import lock from '@/helpers/lock';
 import wsProvider from '@/helpers/ws';
 import { lsSet, lsGet, lsRemove } from '@/helpers/utils';
+import namespaces from '@/namespaces.json';
 
 let provider;
 let web3;
@@ -25,7 +26,8 @@ const state = {
   name: null,
   active: false,
   balances: {},
-  blockNumber: 0
+  blockNumber: 0,
+  namespaces: {}
 };
 
 const mutations = {
@@ -149,6 +151,10 @@ const mutations = {
   },
   MULTICALL_SUCCESS() {
     console.debug('MULTICALL_SUCCESS');
+  },
+  METADATA_SUCCESS(_state, payload) {
+    Vue.set(_state, 'namespaces', payload);
+    console.debug('METADATA_SUCCESS');
   }
 };
 
@@ -322,6 +328,7 @@ const actions = {
     }
   },
   getBalance: async ({ commit, dispatch }, { blockTag, token }) => {
+    const { decimals } = state.namespaces[token];
     commit('GET_BALANCE_REQUEST');
     try {
       const response = await dispatch('multicall', {
@@ -329,7 +336,7 @@ const actions = {
         calls: [[token, 'balanceOf', [state.account]]],
         options: { blockTag }
       });
-      const balance = parseFloat(formatUnits(response[0].toString(), 24));
+      const balance = parseFloat(formatUnits(response[0].toString(), decimals));
       commit('GET_BALANCE_SUCCESS');
       return balance;
     } catch (e) {
@@ -340,15 +347,42 @@ const actions = {
   multicall: async ({ commit }, { name, calls, options }) => {
     const multi = new Contract(config.multicall, abi['Multicall'], wsProvider);
     const itf = new Interface(abi[name]);
-    calls = calls.map(call => {
-      call[1] = itf.encodeFunctionData(call[1], call[2]);
-      delete call[2];
-      return call;
-    });
     try {
-      const [, response] = await multi.aggregate(calls, options || {});
+      let [, response] = await multi.aggregate(
+        calls.map(call => [
+          call[0].toLowerCase(),
+          itf.encodeFunctionData(call[1], call[2])
+        ]),
+        options || {}
+      );
+      response = response.map((call, i) =>
+        itf.decodeFunctionResult(calls[i][1], call)
+      );
       commit('MULTICALL_SUCCESS');
       return response;
+    } catch (e) {
+      return Promise.reject();
+    }
+  },
+  metadata: async ({ commit, dispatch }) => {
+    try {
+      const response = await dispatch('multicall', {
+        name: 'TestToken',
+        calls: Object.values(namespaces).map((namespace: any) => [
+          namespace.address,
+          'decimals',
+          []
+        ])
+      });
+      const payload = Object.fromEntries(
+        response.map((item, i) => [
+          // @ts-ignore
+          Object.values(namespaces)[i].address,
+          { decimals: response[i][0] }
+        ])
+      );
+      commit('METADATA_SUCCESS', payload);
+      return payload;
     } catch (e) {
       return Promise.reject();
     }

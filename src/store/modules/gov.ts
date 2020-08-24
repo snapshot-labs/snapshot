@@ -86,7 +86,8 @@ const actions = {
       return;
     }
   },
-  getProposals: async ({ commit, dispatch }, payload) => {
+  getProposals: async ({ commit, dispatch, rootState }, payload) => {
+    const { decimals } = rootState.web3.namespaces[payload];
     commit('GET_PROPOSALS_REQUEST');
     try {
       let proposals: any = await client.request(`${payload}/proposals`);
@@ -98,7 +99,7 @@ const actions = {
           })
         });
         balances = balances.map(balance =>
-          parseFloat(formatUnits(balance.toString(), 24))
+          parseFloat(formatUnits(balance.toString(), decimals))
         );
         proposals = Object.fromEntries(
           Object.entries(proposals).map((proposal: any, i) => {
@@ -191,7 +192,10 @@ const actions = {
       commit('GET_PROPOSAL_FAILURE', e);
     }
   },
-  getVotersBalances: async ({ commit }, { token, addresses, blockTag }) => {
+  getVotersBalances: async (
+    { commit, rootState },
+    { token, addresses, blockTag }
+  ) => {
     commit('GET_VOTERS_BALANCES_REQUEST');
     const multi = new Contract(config.multicall, abi['Multicall'], wsProvider);
     const calls = [];
@@ -202,9 +206,12 @@ const actions = {
     });
     const balances: any = {};
     try {
+      const { decimals } = rootState.web3.namespaces[token];
       const [, response] = await multi.aggregate(calls, { blockTag });
       response.forEach((value, i) => {
-        balances[addresses[i]] = parseFloat(formatUnits(value.toString(), 24));
+        balances[addresses[i]] = parseFloat(
+          formatUnits(value.toString(), decimals)
+        );
       });
       commit('GET_VOTERS_BALANCES_SUCCESS');
       return balances;

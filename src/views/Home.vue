@@ -6,7 +6,7 @@
     <Container :slim="true">
       <router-link
         v-for="namespace in namespaces"
-        :key="namespace.token"
+        :key="namespace.address"
         :to="{ name: 'proposals', params: { key: namespace.key } }"
       >
         <Block class="text-center">
@@ -33,13 +33,13 @@ export default {
     };
   },
   created() {
-    if (Object.keys(this.namespaces).length === 1)
-      this.$router.push({
-        name: 'proposals',
-        params: {
-          key: Object.keys(this.namespaces)[0]
-        }
-      });
+    // if (Object.keys(this.namespaces).length === 1)
+    this.$router.push({
+      name: 'proposals',
+      params: {
+        key: Object.keys(this.namespaces)[0]
+      }
+    });
   }
 };
 </script>
