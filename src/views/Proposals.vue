@@ -29,7 +29,7 @@
       <Block :slim="true">
         <div class="px-4 py-3 bg-gray-dark">
           <a
-            v-for="state in ['All', 'Core Devs', 'Community', 'Active', 'Pending', 'Closed']"
+            v-for="state in ['All', 'Core devs', 'Community', 'Active', 'Pending', 'Closed']"
             :key="state"
             v-text="state"
             @click="selectedState = state"
