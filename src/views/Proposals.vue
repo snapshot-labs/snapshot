@@ -102,13 +102,13 @@ export default {
             if (proposal[1].balance < this.namespace.min) return false;
             if (
               this.selectedState !== 'Noncompliant' &&
-              proposal[1].authorIpfsHash.includes(this.namespace.noncompliant)
+              this.namespace.noncompliant.includes(proposal[1].authorIpfsHash)
             ) {
               return false;
             }
             if (
               this.selectedState === 'Noncompliant' &&
-              proposal[1].authorIpfsHash.includes(this.namespace.noncompliant)
+              this.namespace.noncompliant.includes(proposal[1].authorIpfsHash)
             ) {
               return true;
             }
