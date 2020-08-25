@@ -1,9 +1,9 @@
 {
   "master": {
+    "env": "master",
     "network": "homestead",
     "chainId": 1,
     "subgraphUrl": "https://api.thegraph.com/subgraphs/name/balancer-labs/balancer",
-    "hubUrl": "https://vote.balancer.finance",
     "multicall": "0xeefBa1e63905eF1D7ACbA5a8513c70307C1cE441",
     "connectors": {
       "injected": {
@@ -28,10 +28,10 @@
     }
   },
   "develop": {
+    "env": "develop",
     "network": "homestead",
     "chainId": 1,
     "subgraphUrl": "https://api.thegraph.com/subgraphs/name/balancer-labs/balancer",
-    "hubUrl": "https://beta.vote.balancer.finance",
     "multicall": "0xeefBa1e63905eF1D7ACbA5a8513c70307C1cE441",
     "connectors": {
       "injected": {
@@ -56,10 +56,10 @@
     }
   },
   "local": {
+    "env": "local",
     "network": "homestead",
     "chainId": 1,
     "subgraphUrl": "https://api.thegraph.com/subgraphs/name/balancer-labs/balancer",
-    "hubUrl": "http://localhost:3000",
     "multicall": "0xeefBa1e63905eF1D7ACbA5a8513c70307C1cE441",
     "connectors": {
       "injected": {
@@ -74,9 +74,9 @@
           "network": "mainnet"
         }
       },
-      "magic": {
-        "id": "magic",
-        "name": "Magic",
+      "fortmatic": {
+        "id": "fortmatic",
+        "name": "Fortmatic",
         "options": {
           "apiKey": "pk_live_9CE8FD92E54684ED"
         }
