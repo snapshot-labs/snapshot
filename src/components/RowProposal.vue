@@ -16,16 +16,30 @@
       <span v-text="$d(proposal.msg.payload.start * 1e3)" />
       end
       <span v-text="$d(proposal.msg.payload.end * 1e3)" />
+      <span v-if="wallets">
+        -
+        For
+        <span v-text="forPerc" />%
+        Against
+        <span v-text="againstPerc" />%
+      </span>
     </div>
   </router-link>
 </template>
 
 <script>
 export default {
+  data() {
+    return {
+      forPerc: 0,
+      againstPerc: 0
+    };
+  },
   props: {
     namespace: Object,
     token: String,
     proposal: Object,
+    wallets: Array,
     verified: Array,
     i: String
   },
@@ -37,6 +51,13 @@ export default {
         this.verified.includes(this.proposal.address)
       );
     }
+  },
+  async created() {
+    if (!this.proposal) {
+      return;
+    }
+    this.forPerc = (this.wallets[0] / this.proposal.balance) * 100;
+    this.againstPerc = (this.wallets[1] / this.proposal.balance) * 100;
   }
 };
 </script>

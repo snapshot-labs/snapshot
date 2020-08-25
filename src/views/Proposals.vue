@@ -43,6 +43,7 @@
             v-for="(proposal, i) in proposalsWithFilter"
             :key="i"
             :proposal="proposal"
+            :wallets="proposal.totalWalletBalances"
             :namespace="namespace"
             :token="key"
             :verified="namespace.verified"
@@ -83,7 +84,11 @@ export default {
         : { token: this.key, verified: [] };
     },
     totalProposals() {
-      return Object.keys(this.proposals).length;
+      if (!this.proposals) {
+        return 0;
+      } else {
+        return Object.keys(this.proposals).length;
+      }
     },
     proposalsWithFilter() {
       const ts = (Date.now() / 1e3).toFixed();
@@ -91,6 +96,8 @@ export default {
       return Object.fromEntries(
         Object.entries(this.proposals)
           .filter(proposal => {
+            proposal[1].balanceWeight = 0;
+            proposal[1].balanceWeight = Number(proposal[1].totalWalletBalances[0]) + Number(proposal[1].totalWalletBalances[1]);
             if (proposal[1].balance < this.namespace.min) return false;
             if (this.selectedState === 'All') return true;
             if (
@@ -113,7 +120,7 @@ export default {
               return true;
             }
           })
-          .sort((a, b) => b[1].msg.payload.end - a[1].msg.payload.end && b[1].balance - a[1].balance, 0)
+          .sort((a, b) =>b[1].msg.payload.end - a[1].msg.payload.end &&b[1].balanceWeight - a[1].balanceWeight,0)
       );
     }
   },

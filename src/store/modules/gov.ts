@@ -101,11 +101,20 @@ const actions = {
         balances = balances.map(balance =>
           parseFloat(formatUnits(balance.toString(), decimals))
         );
+        Object.fromEntries(
+            Object.entries(proposals).map(async (proposal: any, i) => {
+                const proposalObj = await dispatch('getProposal', {
+                    token: proposal[1].msg.token,
+                    id: proposal[1].authorIpfsHash
+                });
+                proposal[1].totalWalletBalances = proposalObj.results.totalWalletBalances;
+            }) as any
+        );
         proposals = Object.fromEntries(
           Object.entries(proposals).map((proposal: any, i) => {
             proposal[1].balance = balances[i];
             return [proposal[0], proposal[1]];
-          })
+          }) as any
         );
       }
       commit('GET_PROPOSALS_SUCCESS');
