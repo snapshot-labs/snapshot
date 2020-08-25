@@ -97,3 +97,12 @@ textarea {
   padding: 0 12px;
   border-radius: 14px;
 }
+
+.menu-tabs {
+    overflow: auto;
+    white-space: nowrap;
+}
+
+.tab {
+    display: inline-block;
+}

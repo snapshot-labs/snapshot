@@ -27,14 +27,21 @@
     </Container>
     <Container :slim="true">
       <Block :slim="true">
-        <div class="px-4 py-3 bg-gray-dark">
+        <div class="px-4 py-3 bg-gray-dark menu-tabs">
           <a
-            v-for="state in ['All', 'Active', 'Pending', 'Closed']"
+            v-for="state in [
+              'All',
+              'Core devs',
+              'Community',
+              'Active',
+              'Pending',
+              'Closed'
+            ]"
             :key="state"
             v-text="state"
             @click="selectedState = state"
             :class="selectedState !== state && 'text-gray'"
-            class="mr-3"
+            class="mr-3 tab"
           />
         </div>
         <RowLoading v-if="loading" />
@@ -108,6 +115,18 @@ export default {
               return true;
             }
             if (
+              this.selectedState === 'Core devs' &&
+              proposal[1].address.includes(this.namespace.coreDevs)
+            ) {
+              return true;
+            }
+            if (
+              this.selectedState === 'Community' &&
+              !proposal[1].address.includes(this.namespace.coreDevs)
+            ) {
+              return true;
+            }
+            if (
               this.selectedState === 'Closed' &&
               proposal[1].msg.payload.end <= ts
             ) {
@@ -120,7 +139,7 @@ export default {
               return true;
             }
           })
-          .sort((a, b) =>b[1].msg.payload.end - a[1].msg.payload.end &&b[1].balanceWeight - a[1].balanceWeight,0)
+          .sort((a, b) => b[1].msg.payload.end - a[1].msg.payload.end &&b[1].balanceWeight - a[1].balanceWeight,0)
       );
     }
   },
