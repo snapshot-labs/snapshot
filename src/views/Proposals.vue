@@ -33,6 +33,7 @@
               'All',
               'Core devs',
               'Community',
+              'Noncompliant',
               'Active',
               'Pending',
               'Closed'
@@ -99,6 +100,18 @@ export default {
         Object.entries(this.proposals)
           .filter(proposal => {
             if (proposal[1].balance < this.namespace.min) return false;
+            if (
+              this.selectedState !== 'Noncompliant' &&
+              this.namespace.noncompliant.includes(proposal[1].authorIpfsHash)
+            ) {
+              return false;
+            }
+            if (
+              this.selectedState === 'Noncompliant' &&
+              this.namespace.noncompliant.includes(proposal[1].authorIpfsHash)
+            ) {
+              return true;
+            }
             if (this.selectedState === 'All') return true;
             if (
               this.selectedState === 'Active' &&
