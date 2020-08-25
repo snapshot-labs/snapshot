@@ -20,12 +20,10 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import '../../vars';
-
 .button {
-  border: 1px solid $border-color;
+  border: 1px solid var(--border-color);
   background-color: transparent;
-  color: $white;
+  color: var(--link-color);
   border-radius: 23px;
   padding: 0 24px;
   outline: none;
@@ -34,33 +32,34 @@ export default {
   font-size: 18px;
 
   &.button--submit {
-    background-color: $bg-blue;
-    border: 1px solid $bg-blue;
+    color: white;
+    background-color: var(--primary-color);
+    border: 1px solid var(--primary-color);
 
     &:hover {
-      color: $white;
-      background-color: $bg-blue;
-      border: 1px solid $bg-blue;
+      color: white;
+      background-color: var(--primary-color);
+      border: 1px solid var(--primary-color);
     }
 
     &:disabled {
-      color: $white !important;
-      border: 1px solid $text-gray;
-      background-color: $text-gray;
+      color: var(--link-color) !important;
+      border: 1px solid var(--border-color);
+      background-color: var(--border-color);
     }
   }
 
   &.button--active {
-    border-color: $white !important;
+    border-color: var(--link-color) !important;
   }
 
   &:hover {
-    color: $white;
-    border-color: $white;
+    color: var(--link-color);
+    border-color: var(--link-color);
   }
 
   &:disabled {
-    color: $text-gray !important;
+    color: var(--border-color) !important;
     cursor: not-allowed;
   }
 }

@@ -108,14 +108,12 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import '../../vars';
-
 .calendar {
   width: 309px;
   margin: 0 auto;
 
   .day {
-    color: $text-gray;
+    color: var(--text-color);
     text-decoration: none;
     font-size: 17px !important;
     float: left;
@@ -125,18 +123,18 @@ export default {
     height: 44px;
 
     &.selectable {
-      color: white;
+      color: var(--link-color);
       background-color: transparent;
 
       &:hover {
-        background-color: $white !important;
-        color: $black !important;
+        background-color: var(--link-color) !important;
+        color: var(--bg-color) !important;
       }
     }
 
     &.selected {
-      background-color: $white !important;
-      color: $black !important;
+      background-color: var(--link-color) !important;
+      color: var(--bg-color) !important;
     }
   }
 }

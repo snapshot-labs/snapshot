@@ -11,17 +11,15 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import '../../vars';
-
 .Counter {
   display: inline-block;
   font-weight: 500;
   line-height: 18px;
   height: 20px;
   width: 20px;
-  color: $white;
+  color: white;
   text-align: center;
-  background-color: $gray;
+  background-color: var(--text-color);
   border-radius: 10px;
   vertical-align: middle;
 }

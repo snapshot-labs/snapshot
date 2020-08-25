@@ -24,15 +24,13 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import '../../vars';
-
 .Progress {
-  background-color: $bg-gray-dark;
+  background-color: var(--border-color);
   height: 8px;
   border-radius: 4px;
 
   span:last-child {
-    background-color: transparentize($blue, 0.4) !important;
+    background-color: var(--primary-color) !important;
     border-top-right-radius: 4px;
     border-bottom-right-radius: 4px;
   }
