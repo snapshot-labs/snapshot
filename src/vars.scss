@@ -1,8 +1,5 @@
 @import '~primer-support';
 
-// Default skin
-$black: #0f1011;
-$border-color: #353d45;
 $blue: #384AFF;
 $green: #21b66f;
 $red: #ff3856;
@@ -12,11 +9,6 @@ $bg-red: $red;
 $text-blue: $blue;
 $text-green: $green;
 $text-red: $red;
-$bg-gray-dark: lighten($black, 2);
-
-@import './yam';
-
-$border: 1px solid $border-color;
 $border-radius: 4px;
 $body-font-size: 18px;
 $body-line-height: 1.4;

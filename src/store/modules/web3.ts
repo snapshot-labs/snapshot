@@ -201,7 +201,7 @@ const actions = {
   loadProvider: async ({ commit, dispatch }) => {
     commit('LOAD_PROVIDER_REQUEST');
     try {
-      provider.removeAllListeners();
+      if (provider.removeAllListeners) provider.removeAllListeners();
       if (provider.on) {
         provider.on('chainChanged', async () => {
           commit('HANDLE_CHAIN_CHANGED');

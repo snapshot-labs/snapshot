@@ -25,8 +25,6 @@
 </template>
 
 <style lang="scss">
-@import '../../vars';
-
 .loading {
   span {
     width: 100%;
@@ -46,7 +44,7 @@
     height: 20px;
 
     path {
-      fill: $white;
+      fill: var(--link-color);
     }
   }
 
