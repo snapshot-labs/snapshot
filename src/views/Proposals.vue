@@ -29,7 +29,7 @@
       <Block :slim="true">
         <div class="px-4 py-3 bg-gray-dark">
           <a
-            v-for="state in ['All', 'Core devs', 'Community', 'Active', 'Pending', 'Closed']"
+            v-for="state in ['All', 'Core devs', 'Community', 'Noncompliant', 'Active', 'Pending', 'Closed']"
             :key="state"
             v-text="state"
             @click="selectedState = state"
@@ -92,6 +92,18 @@ export default {
         Object.entries(this.proposals)
           .filter(proposal => {
             if (proposal[1].balance < this.namespace.min) return false;
+            if (
+              this.selectedState !== 'Noncompliant' &&
+              proposal[1].authorIpfsHash.includes(this.namespace.noncompliant)
+            ) {
+              return false;
+            }
+            if (
+              this.selectedState === 'Noncompliant' &&
+              proposal[1].authorIpfsHash.includes(this.namespace.noncompliant)
+            ) {
+              return true;
+            }
             if (this.selectedState === 'All') return true;
             if (
               this.selectedState === 'Active' &&
