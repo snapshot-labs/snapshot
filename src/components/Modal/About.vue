@@ -43,7 +43,7 @@
       </div>
       <div class="d-flex">
         <span v-text="'Hub'" class="flex-auto text-gray mr-1" />
-        {{ config.hubUrl }}
+        {{ hubUrl }}
       </div>
     </div>
     <div class="m-4">
@@ -70,6 +70,7 @@ export default {
   data() {
     return {
       pkg,
+      hubUrl: process.env.VUE_APP_HUB_URL,
       ipfsNode: process.env.VUE_APP_IPFS_NODE
     };
   }

@@ -22,8 +22,6 @@ export default {
 </script>
 
 <style lang="scss">
-@import '../../vars';
-
 .modal {
   position: fixed;
   display: flex;
@@ -46,8 +44,8 @@ export default {
   }
 
   .shell {
-    border: $border;
-    background-color: $black;
+    border: 1px solid var(--border-color);
+    background-color: var(--bg-color);
     padding-left: 0 !important;
     padding-right: 0 !important;
     max-width: 440px;

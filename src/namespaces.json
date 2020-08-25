@@ -9,7 +9,19 @@
     "coreDevs": [
       "0x683A78bA1f6b25E29fbBC9Cd1BFA29A51520De84"
     ],
-    "min": 100
+    "min": 100,
+    "visible": true
+  },
+  "yearn": {
+    "key": "yearn",
+    "symbol": "YFI",
+    "name": "yearn.finance",
+    "address": "0x0bc529c00C6401aEF6D220BE8C6Ea1667F6Ad93e",
+    "token": "0x0bc529c00C6401aEF6D220BE8C6Ea1667F6Ad93e",
+    "image": "0x0bc529c00C6401aEF6D220BE8C6Ea1667F6Ad93e",
+    "coreDevs": [],
+    "min": 0,
+    "visible": true
   },
   "balancer": {
     "key": "balancer",
@@ -19,7 +31,15 @@
     "token": "0xba100000625a3754423978a60c9317c58a424e3D",
     "image": "0xba100000625a3754423978a60c9317c58a424e3D",
     "coreDevs": [
+      "0x24A12Fa313F57aF541d447c594072A992c605DCf",
+      "0x8BBE4Ac64246d600BC2889ef5d83809D138F03DF",
+      "0xeF8305E140ac520225DAf050e2f71d5fBcC543e7",
+      "0x107174D70b33523E83711EA4C3F4229cdB8A7Cb1",
+      "0x0b21Dbc34A953a35dFA629ad31e1cEE3dE0433Fb",
+      "0x40FDAa1bff3BB87bC70955Be6657edBFdBeb122e",
+      "0xcc6A949DB9b26a7173648d50Cf7C55e800E6585B"
     ],
-    "min": 10
+    "min": 0,
+    "visible": false
   }
 }
