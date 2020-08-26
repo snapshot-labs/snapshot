@@ -28,8 +28,13 @@
     <Container :slim="true">
       <Block :slim="true">
         <div class="px-4 py-3 bg-gray-dark overflow-auto menu-tabs">
-          <a
-            v-for="state in [
+          <div class="col-12 col-md-5 float-md-left">
+            <input class="form-control input-block" v-model="search" type="text" placeholder="Search" aria-label="Search" />
+          </div>
+          <div class="col-12 col-md-7 float-md-right pt-2">
+
+            <a
+                v-for="state in [
               'All',
               'Core devs',
               'Community',
@@ -79,6 +84,8 @@ export default {
       loaded: false,
       proposals: {},
       selectedState: 'All'
+      selectedState: 'All',
+      search:''
     };
   },
   computed: {
@@ -99,6 +106,11 @@ export default {
       return Object.fromEntries(
         Object.entries(this.proposals)
           .filter(proposal => {
+
+            if( !proposal[1].msg.payload.name.includes(this.search) &&
+                !proposal[1].address.includes(this.search) ){
+              return false;
+            }
             if (proposal[1].balance < this.namespace.min) return false;
             if (
               this.selectedState !== 'Noncompliant' &&
