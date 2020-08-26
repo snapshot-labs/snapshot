@@ -29,20 +29,29 @@
       <Block :slim="true">
         <div class="px-4 py-3 bg-gray-dark overflow-auto menu-tabs">
           <a
+            :key="'Core'"
+            :href="'#/'+key+'/#Core'"
+            v-text="'Core'"
+            @click="selectedState = 'Core'"
+            :class="selectedState == 'Core' && 'tab-active'"
+            class="mr-3 tab"
+          />
+          <div class="mr-3 separator">-</div>
+          <a
             v-for="state in [
-              'All',
-              'Core',
               'Community',
-              'Invalid',
+              'All',
               'Active',
               'Pending',
+              'Invalid',
               'Closed'
             ]"
             :key="state"
+            :href="'#/'+key+'/#'+state"
             v-text="state"
             @click="selectedState = state"
-            :class="selectedState !== state && 'text-gray'"
-            class="mr-3"
+            :class="selectedState == state && 'tab-active'"
+            class="mr-3 tab"
           />
         </div>
         <RowLoading v-if="loading" />
@@ -150,10 +159,40 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['getProposals'])
+    ...mapActions(['getProposals']),
+    checkState() {
+      const located = location.hash.replace(/(^#\/yam\/#)/, "");
+      switch (located) {
+        case 'Core':
+          this.selectedState = 'Core';
+          break;
+        case 'Community':
+          this.selectedState = 'Community';
+          break;
+        case 'All':
+          this.selectedState = 'All';
+          break;
+        case 'Active':
+          this.selectedState = 'Active';
+          break;
+        case 'Pending':
+          this.selectedState = 'Pending';
+          break;
+        case 'Invalid':
+          this.selectedState = 'Invalid';
+          break;
+        case 'Closed':
+          this.selectedState = 'Closed';
+          break;
+        default:
+          this.selectedState = 'Core';
+          break;
+      }
+    },
   },
   async created() {
     this.loading = true;
+    this.checkState();
     this.proposals = await this.getProposals(this.namespace.address);
     this.loading = false;
     this.loaded = true;
