@@ -6,11 +6,11 @@
     "address": "0xAba8cAc6866B83Ae4eec97DD07ED254282f6aD8A",
     "token": "0xAba8cAc6866B83Ae4eec97DD07ED254282f6aD8A",
     "image": "0x0e2298E3B3390e3b945a5456fBf59eCc3f55DA16",
-    "coreDevs": [
+    "core": [
       "0x683A78bA1f6b25E29fbBC9Cd1BFA29A51520De84"
     ],
     "min": 100,
-    "noncompliant": [
+    "invalid": [
       "QmUbV7sQYep7yZnB3iNZ9ykArsEdBjG1zjXdrYvNkrDSaz",
       "QmaZV3xnYuHqyi3oXFfBdV8F4CN7SPUpXUaKVctb22Qee3",
       "QmVPZc6Q1HFqiYcMJs8kcsHjNKQarppDjAMozPfsonQ1XE",
@@ -43,9 +43,9 @@
     "address": "0x0bc529c00C6401aEF6D220BE8C6Ea1667F6Ad93e",
     "token": "0x0bc529c00C6401aEF6D220BE8C6Ea1667F6Ad93e",
     "image": "0x0bc529c00C6401aEF6D220BE8C6Ea1667F6Ad93e",
-    "coreDevs": [],
+    "core": [],
     "min": 0,
-    "noncompliant": [],
+    "invalid": [],
     "visible": true
   },
   "balancer": {
@@ -55,7 +55,7 @@
     "address": "0xba100000625a3754423978a60c9317c58a424e3D",
     "token": "0xba100000625a3754423978a60c9317c58a424e3D",
     "image": "0xba100000625a3754423978a60c9317c58a424e3D",
-    "coreDevs": [
+    "core": [
       "0x24A12Fa313F57aF541d447c594072A992c605DCf",
       "0x8BBE4Ac64246d600BC2889ef5d83809D138F03DF",
       "0xeF8305E140ac520225DAf050e2f71d5fBcC543e7",
@@ -65,7 +65,43 @@
       "0xcc6A949DB9b26a7173648d50Cf7C55e800E6585B"
     ],
     "min": 0,
-    "noncompliant": [],
+    "invalid": [],
+    "visible": false
+  },
+  "maker": {
+    "key": "maker",
+    "symbol": "MKR",
+    "name": "MakerDAO",
+    "address": "0x9f8F72aA9304c8B593d555F12eF6589cC3A579A2",
+    "token": "0x9f8F72aA9304c8B593d555F12eF6589cC3A579A2",
+    "image": "0x9f8F72aA9304c8B593d555F12eF6589cC3A579A2",
+    "core": [],
+    "min": 0,
+    "invalid": [],
+    "visible": false
+  },
+  "curve": {
+    "key": "curve",
+    "symbol": "CRV",
+    "name": "Curve",
+    "address": "0xD533a949740bb3306d119CC777fa900bA034cd52",
+    "token": "0xD533a949740bb3306d119CC777fa900bA034cd52",
+    "image": "0xD533a949740bb3306d119CC777fa900bA034cd52",
+    "core": [],
+    "min": 0,
+    "invalid": [],
+    "visible": false
+  },
+  "rarible": {
+    "key": "rarible",
+    "symbol": "RARI",
+    "name": "Rarible",
+    "address": "0xFca59Cd816aB1eaD66534D82bc21E7515cE441CF",
+    "token": "0xFca59Cd816aB1eaD66534D82bc21E7515cE441CF",
+    "image": "0xFca59Cd816aB1eaD66534D82bc21E7515cE441CF",
+    "core": [],
+    "min": 0,
+    "invalid": [],
     "visible": false
   }
 }

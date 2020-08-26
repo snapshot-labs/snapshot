@@ -31,9 +31,9 @@
           <a
             v-for="state in [
               'All',
-              'Core devs',
+              'Core',
               'Community',
-              'Noncompliant',
+              'Invalid',
               'Active',
               'Pending',
               'Closed'
@@ -101,14 +101,14 @@ export default {
           .filter(proposal => {
             if (proposal[1].balance < this.namespace.min) return false;
             if (
-              this.selectedState !== 'Noncompliant' &&
-              this.namespace.noncompliant.includes(proposal[1].authorIpfsHash)
+              this.selectedState !== 'Invalid' &&
+              this.namespace.invalid.includes(proposal[1].authorIpfsHash)
             ) {
               return false;
             }
             if (
-              this.selectedState === 'Noncompliant' &&
-              this.namespace.noncompliant.includes(proposal[1].authorIpfsHash)
+              this.selectedState === 'Invalid' &&
+              this.namespace.invalid.includes(proposal[1].authorIpfsHash)
             ) {
               return true;
             }
@@ -122,13 +122,13 @@ export default {
             }
             if (
               this.selectedState === 'Core devs' &&
-              proposal[1].address.includes(this.namespace.coreDevs)
+              proposal[1].address.includes(this.namespace.core)
             ) {
               return true;
             }
             if (
               this.selectedState === 'Community' &&
-              !proposal[1].address.includes(this.namespace.coreDevs)
+              !proposal[1].address.includes(this.namespace.core)
             ) {
               return true;
             }
