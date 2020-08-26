@@ -23,7 +23,7 @@
             style="width: 96px; height: 96px; color: white; font-size: 76px; padding-top: 6px;"
             class="bg-gray-3 circle mx-auto mb-4"
           />
-          <h2 v-text="'Create space'"/>
+          <h2 v-text="'Create space'" />
         </Block>
       </a>
     </Container>
