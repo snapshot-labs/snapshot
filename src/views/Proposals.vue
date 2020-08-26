@@ -36,7 +36,7 @@
             :class="selectedState == 'Core' && 'tab-active'"
             class="mr-3 tab"
           />
-          <div class="mr-3 separator">-</div>
+          <div class="mr-3 d-inline-block">-</div>
           <a
             v-for="state in [
               'Community',
@@ -161,32 +161,11 @@ export default {
   methods: {
     ...mapActions(['getProposals']),
     checkState() {
-      const located = location.hash.replace(/(^#\/yam\/#)/, "");
-      switch (located) {
-        case 'Core':
-          this.selectedState = 'Core';
-          break;
-        case 'Community':
-          this.selectedState = 'Community';
-          break;
-        case 'All':
-          this.selectedState = 'All';
-          break;
-        case 'Active':
-          this.selectedState = 'Active';
-          break;
-        case 'Pending':
-          this.selectedState = 'Pending';
-          break;
-        case 'Invalid':
-          this.selectedState = 'Invalid';
-          break;
-        case 'Closed':
-          this.selectedState = 'Closed';
-          break;
-        default:
-          this.selectedState = 'Core';
-          break;
+      const located = location.hash.replace(/^([^#]*#[^#]*#)|$/gim, "");
+      if (located && located !== location.hash) {
+        this.selectedState = located;
+      } else {
+        this.selectedState = this.namespace.defaultView;
       }
     },
   },
