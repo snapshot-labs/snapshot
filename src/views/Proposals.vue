@@ -107,8 +107,8 @@ export default {
         Object.entries(this.proposals)
           .filter(proposal => {
 
-            if( !proposal[1].msg.payload.name.includes(this.search) &&
-                !proposal[1].address.includes(this.search) ){
+            if( !proposal[1].msg.payload.name.toLowerCase().includes(this.search.toLowerCase()) &&
+                !proposal[1].address.toLowerCase().includes(this.search.toLowerCase()) ){
               return false;
             }
             if (proposal[1].balance < this.namespace.min) return false;
