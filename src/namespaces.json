@@ -48,6 +48,18 @@
     "noncompliant": [],
     "visible": true
   },
+  "grap": {
+    "key": "grap",
+    "symbol": "GRAP",
+    "name": "grap.finance",
+    "address": "0xC8D2AB2a6FdEbC25432E54941cb85b55b9f152dB",
+    "token": "0xC8D2AB2a6FdEbC25432E54941cb85b55b9f152dB",
+    "image": "0xC8D2AB2a6FdEbC25432E54941cb85b55b9f152dB",
+    "coreDevs": [],
+    "min": 0,
+    "noncompliant": [],
+    "visible": false
+  },
   "balancer": {
     "key": "balancer",
     "symbol": "BAL",
