@@ -129,3 +129,11 @@ textarea {
 .bg-blue {
   background-color: var(--primary-color) !important;
 }
+
+.menu-tabs {    
+    white-space: nowrap;
+}
+
+.menu-tabs::-webkit-scrollbar {
+    display:none;
+}

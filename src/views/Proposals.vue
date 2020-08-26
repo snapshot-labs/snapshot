@@ -27,7 +27,7 @@
     </Container>
     <Container :slim="true">
       <Block :slim="true">
-        <div class="px-4 py-3 bg-gray-dark">
+        <div class="px-4 py-3 bg-gray-dark overflow-auto menu-tabs">
           <a
             v-for="state in [
               'All',
