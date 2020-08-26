@@ -47,8 +47,9 @@
             v-text="state"
             @click="selectedState = state"
             :class="selectedState !== state && 'text-gray'"
-            class="mr-3"
-          />
+            class="ml-3"
+            />
+          </div>
         </div>
         <RowLoading v-if="loading" />
         <div v-if="loaded">
@@ -83,7 +84,6 @@ export default {
       loading: false,
       loaded: false,
       proposals: {},
-      selectedState: 'All'
       selectedState: 'All',
       search:''
     };
