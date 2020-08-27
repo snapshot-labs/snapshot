@@ -158,14 +158,10 @@ export default {
   },
   methods: {
     ...mapActions(['getProposals']),
-    selectTabState(tab) {
-      const tabSelected = tab ? tab : this.$route.params.tab;
-      this.selectedState = tabSelected || this.namespace.defaultView;
-    },
   },
   async created() {
     this.loading = true;
-    this.selectTabState();
+    this.selectedState = this.$route.params.tab || this.namespace.defaultView;
     this.proposals = await this.getProposals(this.namespace.address);
     this.loading = false;
     this.loaded = true;
