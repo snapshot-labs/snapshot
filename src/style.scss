@@ -45,7 +45,7 @@ a {
     cursor: pointer;
     text-decoration: none !important;
   }
-  
+
   &.tab:hover {
     color: var(--primary-color) !important;
     text-decoration: underline !important;
@@ -137,14 +137,21 @@ textarea {
   background-color: var(--primary-color) !important;
 }
 
+.tab {
+  display: inline-block;
+  &:first-letter {
+    text-transform: capitalize;
+  }
+}
+
 .tab-active {
-    color: var(--primary-color) !important;
+  color: var(--primary-color) !important;
 }
 
 .menu-tabs {
-    white-space: nowrap;
+  white-space: nowrap;
 }
 
 .menu-tabs::-webkit-scrollbar {
-    display:none;
+  display: none;
 }

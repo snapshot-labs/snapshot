@@ -28,28 +28,26 @@
     <Container :slim="true">
       <Block :slim="true">
         <div class="px-4 py-3 bg-gray-dark overflow-auto menu-tabs">
-          <a
-            :key="'Core'"
-            :href="'#/'+key+'/#Core'"
-            v-text="'Core'"
-            @click="selectedState = 'Core'"
-            :class="selectedState == 'Core' && 'tab-active'"
+          <router-link
+            :key="'core'"
+            v-text="'core'"
+            :to="'/'+key+'/core'"
+            :class="selectedState == 'core' && 'tab-active'"
             class="mr-3 tab"
           />
           <div class="mr-3 d-inline-block">-</div>
-          <a
+          <router-link
             v-for="state in [
-              'Community',
-              'All',
-              'Active',
-              'Pending',
-              'Invalid',
-              'Closed'
+              'community',
+              'all',
+              'active',
+              'pending',
+              'invalid',
+              'closed'
             ]"
             :key="state"
-            :href="'#/'+key+'/#'+state"
             v-text="state"
-            @click="selectedState = state"
+            :to="'/'+key+'/'+state"
             :class="selectedState == state && 'tab-active'"
             class="mr-3 tab"
           />
@@ -110,45 +108,45 @@ export default {
           .filter(proposal => {
             if (proposal[1].balance < this.namespace.min) return false;
             if (
-              this.selectedState !== 'Invalid' &&
+              this.selectedState !== 'invalid' &&
               this.namespace.invalid.includes(proposal[1].authorIpfsHash)
             ) {
               return false;
             }
             if (
-              this.selectedState === 'Invalid' &&
+              this.selectedState === 'invalid' &&
               this.namespace.invalid.includes(proposal[1].authorIpfsHash)
             ) {
               return true;
             }
-            if (this.selectedState === 'All') return true;
+            if (this.selectedState === 'all') return true;
             if (
-              this.selectedState === 'Active' &&
+              this.selectedState === 'active' &&
               proposal[1].msg.payload.start <= ts &&
               proposal[1].msg.payload.end > ts
             ) {
               return true;
             }
             if (
-              this.selectedState === 'Core' &&
+              this.selectedState === 'core' &&
               proposal[1].address.includes(this.namespace.core)
             ) {
               return true;
             }
             if (
-              this.selectedState === 'Community' &&
+              this.selectedState === 'community' &&
               !proposal[1].address.includes(this.namespace.core)
             ) {
               return true;
             }
             if (
-              this.selectedState === 'Closed' &&
+              this.selectedState === 'closed' &&
               proposal[1].msg.payload.end <= ts
             ) {
               return true;
             }
             if (
-              this.selectedState === 'Pending' &&
+              this.selectedState === 'pending' &&
               proposal[1].msg.payload.start > ts
             ) {
               return true;
@@ -160,10 +158,10 @@ export default {
   },
   methods: {
     ...mapActions(['getProposals']),
-    checkState() {
-      const located = location.hash.replace(/^([^#]*#[^#]*#)|$/gim, "");
-      if (located && located !== location.hash) {
-        this.selectedState = located;
+    selectTabState(tab) {
+      const tabSelected = tab ? tab : this.$route.params.tab;
+      if (tabSelected) {
+        this.selectedState = tabSelected;
       } else {
         this.selectedState = this.namespace.defaultView;
       }
@@ -171,7 +169,7 @@ export default {
   },
   async created() {
     this.loading = true;
-    this.checkState();
+    this.selectTabState();
     this.proposals = await this.getProposals(this.namespace.address);
     this.loading = false;
     this.loaded = true;
