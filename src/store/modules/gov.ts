@@ -197,6 +197,7 @@ const actions = {
     { token, addresses, blockTag }
   ) => {
     commit('GET_VOTERS_BALANCES_REQUEST');
+    if (addresses.length === 0) return {};
     const multi = new Contract(config.multicall, abi['Multicall'], wsProvider);
     const calls = [];
     const testToken = new Interface(abi.TestToken);
