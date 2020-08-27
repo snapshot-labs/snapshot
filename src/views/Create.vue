@@ -152,8 +152,10 @@ export default {
         // this.form.start >= ts &&
         this.form.end &&
         this.form.end > this.form.start &&
-        this.form.choices.length >= 2 &&
-        this.form.choices.reduce((a, b) => (!a ? false : b), true)
+        this.choices.length >= 2 &&
+        !this.choices.some(a => {
+          return a.text === '';
+        })
       );
     }
   },
