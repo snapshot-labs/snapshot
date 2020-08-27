@@ -7,7 +7,7 @@
         :to="{ name: 'proposals', params: { key: namespace.key } }"
       >
         <Block class="text-center">
-          <Token :address="namespace.image" size="96" class="mb-4" />
+          <Token :namespace="namespace.key" size="96" class="mb-4" />
           <div>
             <h2>
               {{ namespace.name }}
