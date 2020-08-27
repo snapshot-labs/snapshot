@@ -23,7 +23,7 @@
               />
               <template v-if="namespace">
                 <span class="pl-1 pr-2 text-gray" v-text="'/'" />
-                <Token :address="namespace.image" size="28" />
+                <Token :namespace="namespace.key" size="28" />
                 <span class="ml-2" v-text="namespace.symbol" />
               </template>
             </router-link>

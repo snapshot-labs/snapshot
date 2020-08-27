@@ -5,7 +5,6 @@
     "name": "Yam Finance",
     "address": "0xAba8cAc6866B83Ae4eec97DD07ED254282f6aD8A",
     "token": "0xAba8cAc6866B83Ae4eec97DD07ED254282f6aD8A",
-    "image": "0x0e2298E3B3390e3b945a5456fBf59eCc3f55DA16",
     "core": [
       "0x683A78bA1f6b25E29fbBC9Cd1BFA29A51520De84"
     ],
@@ -53,7 +52,6 @@
     "name": "yearn.finance",
     "address": "0x0bc529c00C6401aEF6D220BE8C6Ea1667F6Ad93e",
     "token": "0x0bc529c00C6401aEF6D220BE8C6Ea1667F6Ad93e",
-    "image": "0x0bc529c00C6401aEF6D220BE8C6Ea1667F6Ad93e",
     "core": [],
     "min": 0,
     "invalid": [],
@@ -65,7 +63,6 @@
     "name": "Balancer",
     "address": "0xba100000625a3754423978a60c9317c58a424e3D",
     "token": "0xba100000625a3754423978a60c9317c58a424e3D",
-    "image": "0xba100000625a3754423978a60c9317c58a424e3D",
     "core": [
       "0x24A12Fa313F57aF541d447c594072A992c605DCf",
       "0x8BBE4Ac64246d600BC2889ef5d83809D138F03DF",
@@ -85,7 +82,6 @@
     "name": "MakerDAO",
     "address": "0x9f8F72aA9304c8B593d555F12eF6589cC3A579A2",
     "token": "0x9f8F72aA9304c8B593d555F12eF6589cC3A579A2",
-    "image": "0x9f8F72aA9304c8B593d555F12eF6589cC3A579A2",
     "core": [],
     "min": 0,
     "invalid": [],
@@ -97,7 +93,6 @@
     "name": "Curve",
     "address": "0xD533a949740bb3306d119CC777fa900bA034cd52",
     "token": "0xD533a949740bb3306d119CC777fa900bA034cd52",
-    "image": "0xD533a949740bb3306d119CC777fa900bA034cd52",
     "core": [],
     "min": 0,
     "invalid": [],
@@ -109,7 +104,17 @@
     "name": "Rarible",
     "address": "0xFca59Cd816aB1eaD66534D82bc21E7515cE441CF",
     "token": "0xFca59Cd816aB1eaD66534D82bc21E7515cE441CF",
-    "image": "0xFca59Cd816aB1eaD66534D82bc21E7515cE441CF",
+    "core": [],
+    "min": 0,
+    "invalid": [],
+    "visible": false
+  },
+  "spaghetti": {
+    "key": "spaghetti",
+    "symbol": "PASTA",
+    "name": "Spaghetti.Money",
+    "address": "0xE54f9E6Ab80ebc28515aF8b8233c1aeE6506a15E",
+    "token": "0xE54f9E6Ab80ebc28515aF8b8233c1aeE6506a15E",
     "core": [],
     "min": 0,
     "invalid": [],
