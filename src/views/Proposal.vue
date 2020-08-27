@@ -52,7 +52,7 @@
             <div class="mb-1">
               <b>Token</b>
               <span class="float-right text-white">
-                <Token :address="namespace.image" class="mr-1" />
+                <Token :namespace="namespace.key" class="mr-1" />
                 {{ namespace.symbol }}
               </span>
             </div>

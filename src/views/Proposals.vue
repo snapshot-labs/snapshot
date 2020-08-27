@@ -30,20 +30,20 @@
         <div class="px-4 py-3 bg-gray-dark overflow-auto menu-tabs">
           <div class="col-12 col-lg-7 pt-2 float-md-left">
             <a
-              v-for="state in [
-                'All',
-                'Core devs',
-                'Community',
-                'Noncompliant',
-                'Active',
-                'Pending',
-                'Closed'
-              ]"
-              :key="state"
-              v-text="state"
-              @click="selectedState = state"
-              :class="selectedState !== state && 'text-gray'"
-              class="mr-3"
+                v-for="state in [
+              'All',
+              'Core',
+              'Community',
+              'Invalid',
+              'Active',
+              'Pending',
+              'Closed'
+            ]"
+                :key="state"
+                v-text="state"
+                @click="selectedState = state"
+                :class="selectedState !== state && 'text-gray'"
+                class="mr-3"
             />
           </div>
           <div class="col-12 col-lg-5 float-md-right">
@@ -55,6 +55,7 @@
               aria-label="Search"
             />
           </div>
+
         </div>
         <RowLoading v-if="loading" />
         <div v-if="loaded">
@@ -123,14 +124,14 @@ export default {
             }
             if (proposal[1].balance < this.namespace.min) return false;
             if (
-              this.selectedState !== 'Noncompliant' &&
-              this.namespace.noncompliant.includes(proposal[1].authorIpfsHash)
+              this.selectedState !== 'Invalid' &&
+              this.namespace.invalid.includes(proposal[1].authorIpfsHash)
             ) {
               return false;
             }
             if (
-              this.selectedState === 'Noncompliant' &&
-              this.namespace.noncompliant.includes(proposal[1].authorIpfsHash)
+              this.selectedState === 'Invalid' &&
+              this.namespace.invalid.includes(proposal[1].authorIpfsHash)
             ) {
               return true;
             }
@@ -143,14 +144,14 @@ export default {
               return true;
             }
             if (
-              this.selectedState === 'Core devs' &&
-              proposal[1].address.includes(this.namespace.coreDevs)
+              this.selectedState === 'Core' &&
+              proposal[1].address.includes(this.namespace.core)
             ) {
               return true;
             }
             if (
               this.selectedState === 'Community' &&
-              !proposal[1].address.includes(this.namespace.coreDevs)
+              !proposal[1].address.includes(this.namespace.core)
             ) {
               return true;
             }
