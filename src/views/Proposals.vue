@@ -28,27 +28,34 @@
     <Container :slim="true">
       <Block :slim="true">
         <div class="px-4 py-3 bg-gray-dark overflow-auto menu-tabs">
-          <div class="col-12 col-md-5 float-md-left">
-            <input class="form-control input-block" v-model="search" type="text" placeholder="Search" aria-label="Search" />
-          </div>
-          <div class="col-12 col-md-7 float-md-right pt-2">
-
-            <a
+          <div class="row">
+            <div class="col-12 col-lg-7 pt-2 float-md-left">
+              <a
                 v-for="state in [
-              'All',
-              'Core devs',
-              'Community',
-              'Noncompliant',
-              'Active',
-              'Pending',
-              'Closed'
-            ]"
-            :key="state"
-            v-text="state"
-            @click="selectedState = state"
-            :class="selectedState !== state && 'text-gray'"
-            class="ml-3"
-            />
+                  'All',
+                  'Core devs',
+                  'Community',
+                  'Noncompliant',
+                  'Active',
+                  'Pending',
+                  'Closed'
+                ]"
+                :key="state"
+                v-text="state"
+                @click="selectedState = state"
+                :class="selectedState !== state && 'text-gray'"
+                class="mr-3"
+              />
+            </div>
+            <div class="col-12 col-lg-5 float-md-right">
+              <input
+                class="form-control height-full input-block ml-lg-2 "
+                v-model="search"
+                type="text"
+                placeholder="Search"
+                aria-label="Search"
+              />
+            </div>
           </div>
         </div>
         <RowLoading v-if="loading" />
@@ -85,7 +92,7 @@ export default {
       loaded: false,
       proposals: {},
       selectedState: 'All',
-      search:''
+      search: ''
     };
   },
   computed: {
@@ -106,9 +113,14 @@ export default {
       return Object.fromEntries(
         Object.entries(this.proposals)
           .filter(proposal => {
-
-            if( !proposal[1].msg.payload.name.toLowerCase().includes(this.search.toLowerCase()) &&
-                !proposal[1].address.toLowerCase().includes(this.search.toLowerCase()) ){
+            if (
+              !proposal[1].msg.payload.name
+                .toLowerCase()
+                .includes(this.search.toLowerCase()) &&
+              !proposal[1].address
+                .toLowerCase()
+                .includes(this.search.toLowerCase())
+            ) {
               return false;
             }
             if (proposal[1].balance < this.namespace.min) return false;

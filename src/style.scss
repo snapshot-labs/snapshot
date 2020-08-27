@@ -137,3 +137,11 @@ textarea {
 .menu-tabs::-webkit-scrollbar {
     display:none;
 }
+
+.form-control{
+  color: var(--link-color);
+  background-color: transparent;
+  border-radius:20px;
+  padding: 10px 0 6px 18px;
+  border: 1px solid var(--border-color);
+}
