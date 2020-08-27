@@ -30,20 +30,20 @@
         <div class="px-4 py-3 bg-gray-dark overflow-auto menu-tabs">
           <div class="col-12 col-lg-7 pt-2 float-md-left">
             <a
-                v-for="state in [
-              'All',
-              'Core',
-              'Community',
-              'Invalid',
-              'Active',
-              'Pending',
-              'Closed'
-            ]"
-                :key="state"
-                v-text="state"
-                @click="selectedState = state"
-                :class="selectedState !== state && 'text-gray'"
-                class="mr-3"
+              v-for="state in [
+                'All',
+                'Core',
+                'Community',
+                'Invalid',
+                'Active',
+                'Pending',
+                'Closed'
+              ]"
+              :key="state"
+              v-text="state"
+              @click="selectedState = state"
+              :class="selectedState !== state && 'text-gray'"
+              class="mr-3"
             />
           </div>
           <div class="col-12 col-lg-5 float-md-right">
@@ -55,7 +55,6 @@
               aria-label="Search"
             />
           </div>
-
         </div>
         <RowLoading v-if="loading" />
         <div v-if="loaded">
