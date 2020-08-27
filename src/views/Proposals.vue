@@ -31,7 +31,7 @@
           <router-link
             :key="'core'"
             v-text="'core'"
-            :to="'/'+key+'/core'"
+            :to="`/${key}/core`"
             :class="selectedState == 'core' && 'tab-active'"
             class="mr-3 tab"
           />
@@ -47,7 +47,7 @@
             ]"
             :key="state"
             v-text="state"
-            :to="'/'+key+'/'+state"
+            :to="`/${key}/${state}`"
             :class="selectedState == state && 'tab-active'"
             class="mr-3 tab"
           />
@@ -160,11 +160,7 @@ export default {
     ...mapActions(['getProposals']),
     selectTabState(tab) {
       const tabSelected = tab ? tab : this.$route.params.tab;
-      if (tabSelected) {
-        this.selectedState = tabSelected;
-      } else {
-        this.selectedState = this.namespace.defaultView;
-      }
+      this.selectedState = tabSelected || this.namespace.defaultView;
     },
   },
   async created() {
