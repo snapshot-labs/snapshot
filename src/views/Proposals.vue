@@ -28,34 +28,32 @@
     <Container :slim="true">
       <Block :slim="true">
         <div class="px-4 py-3 bg-gray-dark overflow-auto menu-tabs">
-          <div class="row">
-            <div class="col-12 col-lg-7 pt-2 float-md-left">
-              <a
-                v-for="state in [
-                  'All',
-                  'Core devs',
-                  'Community',
-                  'Noncompliant',
-                  'Active',
-                  'Pending',
-                  'Closed'
-                ]"
-                :key="state"
-                v-text="state"
-                @click="selectedState = state"
-                :class="selectedState !== state && 'text-gray'"
-                class="mr-3"
-              />
-            </div>
-            <div class="col-12 col-lg-5 float-md-right">
-              <input
-                class="form-control height-full input-block ml-lg-2 "
-                v-model="search"
-                type="text"
-                placeholder="Search"
-                aria-label="Search"
-              />
-            </div>
+          <div class="col-12 col-lg-7 pt-2 float-md-left">
+            <a
+              v-for="state in [
+                'All',
+                'Core devs',
+                'Community',
+                'Noncompliant',
+                'Active',
+                'Pending',
+                'Closed'
+              ]"
+              :key="state"
+              v-text="state"
+              @click="selectedState = state"
+              :class="selectedState !== state && 'text-gray'"
+              class="mr-3"
+            />
+          </div>
+          <div class="col-12 col-lg-5 float-md-right">
+            <input
+              class="form-control height-full input-block ml-lg-2 "
+              v-model="search"
+              type="text"
+              placeholder="Search"
+              aria-label="Search"
+            />
           </div>
         </div>
         <RowLoading v-if="loading" />
