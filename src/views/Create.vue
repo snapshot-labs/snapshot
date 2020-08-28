@@ -153,9 +153,7 @@ export default {
         this.form.end &&
         this.form.end > this.form.start &&
         this.choices.length >= 2 &&
-        !this.choices.some(a => {
-          return a.text === '';
-        })
+        !this.choices.some(a => a.text === '')
       );
     }
   },
@@ -180,10 +178,7 @@ export default {
     },
     async handleSubmit() {
       this.loading = true;
-      this.form.choices = this.choices.map(function(choice) {
-        return choice.text;
-      });
-
+      this.form.choices = this.choices.map(choice => choice.text);
       try {
         const { ipfsHash } = await this.send({
           token: this.namespace.address,
