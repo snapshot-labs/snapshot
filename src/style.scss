@@ -46,11 +46,6 @@ a {
     cursor: pointer;
     text-decoration: none !important;
   }
-
-  &.tab:hover {
-    color: var(--primary-color) !important;
-    text-decoration: underline !important;
-  }
 }
 
 ::placeholder {
@@ -143,10 +138,6 @@ textarea {
   &:first-letter {
     text-transform: capitalize;
   }
-}
-
-.tab-active {
-  color: var(--primary-color) !important;
 }
 
 .menu-tabs {
