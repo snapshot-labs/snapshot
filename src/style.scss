@@ -175,6 +175,9 @@ textarea {
   right:        10px;
   position:   fixed;
   .floating-nav{
+    &:first-letter {
+      text-transform: capitalize;
+    }
     display: block;
     background-color: var(--text-color);
     transition: all .2s ease-in-out;
