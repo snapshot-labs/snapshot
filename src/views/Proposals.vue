@@ -29,15 +29,8 @@
       <Block :slim="true">
         <div class="px-4 py-3 bg-gray-dark overflow-auto menu-tabs">
           <router-link
-            :key="'core'"
-            v-text="'core'"
-            :to="`/${key}/core`"
-            :class="selectedState == 'core' && 'tab-active'"
-            class="mr-3 tab"
-          />
-          <div class="mr-3 d-inline-block">-</div>
-          <router-link
             v-for="state in [
+              'core',
               'community',
               'all',
               'active',
@@ -48,8 +41,8 @@
             :key="state"
             v-text="state"
             :to="`/${key}/${state}`"
-            :class="selectedState == state && 'tab-active'"
-            class="mr-3 tab"
+            :class="selectedState === state && 'text-white'"
+            class="mr-3 text-gray tab"
           />
         </div>
         <RowLoading v-if="loading" />
@@ -157,7 +150,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['getProposals']),
+    ...mapActions(['getProposals'])
   },
   async created() {
     this.loading = true;
