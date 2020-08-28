@@ -63,7 +63,7 @@
     "key": "balancer",
     "symbol": "BAL",
     "name": "Balancer",
-    "defaultView": "all",
+    "defaultView": "core",
     "address": "0xba100000625a3754423978a60c9317c58a424e3D",
     "token": "0xba100000625a3754423978a60c9317c58a424e3D",
     "core": [
@@ -77,7 +77,7 @@
     ],
     "min": 0,
     "invalid": [],
-    "visible": false
+    "visible": true
   },
   "maker": {
     "key": "maker",

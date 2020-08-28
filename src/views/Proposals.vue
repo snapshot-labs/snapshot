@@ -122,13 +122,13 @@ export default {
             }
             if (
               this.selectedState === 'core' &&
-              proposal[1].address.includes(this.namespace.core)
+              this.namespace.core.includes(proposal[1].address)
             ) {
               return true;
             }
             if (
               this.selectedState === 'community' &&
-              !proposal[1].address.includes(this.namespace.core)
+              !this.namespace.core.includes(proposal[1].address)
             ) {
               return true;
             }
