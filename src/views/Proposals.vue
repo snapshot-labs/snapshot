@@ -43,7 +43,7 @@
               v-text="state"
               @click="selectedState = state"
               :class="selectedState !== state && 'text-gray'"
-              class="mr-3"
+              class="mr-3 hide-sm hide-md"
             />
           </div>
           <div class="col-12 col-lg-5 float-md-right">
@@ -76,12 +76,62 @@
         </p>
       </Block>
     </Container>
+    <transition name="sliding">
+      <div class="floating-filters" v-show="showMobileFilter">
+        <a
+          v-for="state in [
+            'All',
+            'Core',
+            'Community',
+            'Invalid',
+            'Active',
+            'Pending',
+            'Closed'
+          ]"
+          :key="state"
+          v-text="state"
+          @click="selectedState = state"
+          :class="{ active: selectedState == state }"
+          class="floating-nav text-center mt-3 d-md-none"
+        />
+      </div>
+    </transition>
+
+    <button
+      class="floater-btn d-md-none"
+      @click="showMobileFilter = !showMobileFilter"
+    >
+      <svg
+        v-if="!showMobileFilter"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 18"
+        width="36"
+        height="36"
+      >
+        <path
+          d="M2.75 6a.75.75 0 000 1.5h18.5a.75.75 0 000-1.5H2.75zM6 11.75a.75.75 0 01.75-.75h10.5a.75.75 0 010 1.5H6.75a.75.75 0 01-.75-.75zm4 4.938a.75.75 0 01.75-.75h2.5a.75.75 0 010 1.5h-2.5a.75.75 0 01-.75-.75z"
+        ></path>
+      </svg>
+      <svg
+        v-else
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 18"
+        width="36"
+        height="36"
+      >
+        <path
+          fill-rule="evenodd"
+          d="M5.72 5.72a.75.75 0 011.06 0L12 10.94l5.22-5.22a.75.75 0 111.06 1.06L13.06 12l5.22 5.22a.75.75 0 11-1.06 1.06L12 13.06l-5.22 5.22a.75.75 0 01-1.06-1.06L10.94 12 5.72 6.78a.75.75 0 010-1.06z"
+        ></path>
+      </svg>
+    </button>
   </div>
 </template>
 
 <script>
 import { mapActions } from 'vuex';
 import namespaces from '@/namespaces.json';
+import '@primer/octicons/build/build.css';
 
 export default {
   data() {
@@ -90,7 +140,8 @@ export default {
       loaded: false,
       proposals: {},
       selectedState: 'All',
-      search: ''
+      search: '',
+      showMobileFilter: false
     };
   },
   computed: {
@@ -182,3 +233,15 @@ export default {
   }
 };
 </script>
+<style>
+.sliding-enter-active,
+.sliding-leave-active {
+  transition: all 0.2s;
+}
+
+.sliding-enter,
+.sliding-leave-to {
+  opacity: 0;
+  transform: translateY(70px);
+}
+</style>

@@ -147,4 +147,68 @@ textarea {
   border-radius:20px;
   padding: 10px 0 6px 18px;
   border: 1px solid var(--border-color);
+  &:focus{
+    border: 1px solid var(--border-color);
+    box-shadow: none;
+
+  }
+}
+
+.floating-filters{
+  bottom:      120px;
+  right:        10px;
+  position:   fixed;
+  .floating-nav{
+    display: block;
+    background-color: var(--text-color);
+    transition: all .2s ease-in-out;
+    border-radius: 20px;
+    color: var(--bg-color);
+    padding: 6px 12px;
+    font-size: 18px;
+    line-height: 20px;
+    white-space: nowrap;
+    vertical-align: middle;
+    cursor: pointer;
+    -webkit-box-shadow: 10px 10px 5px -9px rgba(46,45,46,1);
+    -moz-box-shadow: 10px 10px 5px -9px rgba(46,45,46,1);
+    box-shadow: 10px 10px 5px -9px rgba(46,45,46,1);
+    border: 1px solid var(--border-color);
+
+    &.active{
+      background-color: var(--bg-color);
+      color: var(--text-color);
+
+    }
+    &:hover {
+      transform: scale(1.2);
+
+    }
+  }
+}
+
+.floater-btn{
+  bottom:      30px;
+  right:       30px;
+  position:   fixed;
+  background-color: var(--text-color);
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  transition: all .2s ease-in-out;
+  -webkit-box-shadow: 10px 10px 5px -9px rgba(46,45,46,1);
+  -moz-box-shadow: 10px 10px 5px -9px rgba(46,45,46,1);
+  box-shadow: 10px 10px 5px -9px rgba(46,45,46,1);
+  border: 1px solid var(--border-color);
+  svg{
+    fill:white;
+  }
+  &:hover {
+    transform: scale(1.2);
+    background-color: var(--link-color);
+    svg{
+      fill:var(--text-color);
+
+    }
+  }
 }
