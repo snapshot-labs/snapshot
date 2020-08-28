@@ -28,22 +28,29 @@
     <Container :slim="true">
       <Block :slim="true">
         <div class="px-4 py-3 bg-gray-dark overflow-auto menu-tabs">
-          <div class="col-12 col-lg-7 pt-2 float-md-left">
-            <a
+          <div class="col-12 col-lg-7 pt-2 float-md-left hide-sm hide-md">
+            <router-link
+              :key="'core'"
+              v-text="'core'"
+              :to="`/${key}/core`"
+              :class="selectedState == 'core' && 'tab-active'"
+              class="mr-3 tab"
+            />
+            <div class="mr-3 d-inline-block">-</div>
+            <router-link
               v-for="state in [
-                'All',
-                'Core',
-                'Community',
-                'Invalid',
-                'Active',
-                'Pending',
-                'Closed'
+                'community',
+                'all',
+                'active',
+                'pending',
+                'invalid',
+                'closed'
               ]"
               :key="state"
               v-text="state"
-              @click="selectedState = state"
-              :class="selectedState !== state && 'text-gray'"
-              class="mr-3 hide-sm hide-md"
+              :to="`/${key}/${state}`"
+              :class="selectedState == state && 'tab-active'"
+              class="mr-3 tab"
             />
           </div>
           <div class="col-12 col-lg-5 float-md-right">
@@ -78,19 +85,26 @@
     </Container>
     <transition name="sliding">
       <div class="floating-filters" v-show="showMobileFilter">
-        <a
+        <router-link
+          :key="'core'"
+          v-text="'core'"
+          :to="`/${key}/core`"
+          :class="{ active: selectedState == state }"
+          class="floating-nav text-center mt-3 d-md-none"
+        />
+
+        <router-link
           v-for="state in [
-            'All',
-            'Core',
-            'Community',
-            'Invalid',
-            'Active',
-            'Pending',
-            'Closed'
+            'community',
+            'all',
+            'active',
+            'pending',
+            'invalid',
+            'closed'
           ]"
           :key="state"
           v-text="state"
-          @click="selectedState = state"
+          :to="`/${key}/${state}`"
           :class="{ active: selectedState == state }"
           class="floating-nav text-center mt-3 d-md-none"
         />
@@ -174,45 +188,45 @@ export default {
             }
             if (proposal[1].balance < this.namespace.min) return false;
             if (
-              this.selectedState !== 'Invalid' &&
+              this.selectedState !== 'invalid' &&
               this.namespace.invalid.includes(proposal[1].authorIpfsHash)
             ) {
               return false;
             }
             if (
-              this.selectedState === 'Invalid' &&
+              this.selectedState === 'invalid' &&
               this.namespace.invalid.includes(proposal[1].authorIpfsHash)
             ) {
               return true;
             }
-            if (this.selectedState === 'All') return true;
+            if (this.selectedState === 'all') return true;
             if (
-              this.selectedState === 'Active' &&
+              this.selectedState === 'active' &&
               proposal[1].msg.payload.start <= ts &&
               proposal[1].msg.payload.end > ts
             ) {
               return true;
             }
             if (
-              this.selectedState === 'Core' &&
+              this.selectedState === 'core' &&
               proposal[1].address.includes(this.namespace.core)
             ) {
               return true;
             }
             if (
-              this.selectedState === 'Community' &&
+              this.selectedState === 'community' &&
               !proposal[1].address.includes(this.namespace.core)
             ) {
               return true;
             }
             if (
-              this.selectedState === 'Closed' &&
+              this.selectedState === 'closed' &&
               proposal[1].msg.payload.end <= ts
             ) {
               return true;
             }
             if (
-              this.selectedState === 'Pending' &&
+              this.selectedState === 'pending' &&
               proposal[1].msg.payload.start > ts
             ) {
               return true;
@@ -227,6 +241,7 @@ export default {
   },
   async created() {
     this.loading = true;
+    this.selectedState = this.$route.params.tab || this.namespace.defaultView;
     this.proposals = await this.getProposals(this.namespace.address);
     this.loading = false;
     this.loaded = true;
