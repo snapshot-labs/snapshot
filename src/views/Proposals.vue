@@ -20,7 +20,7 @@
             </h2>
           </div>
         </div>
-        <router-link v-if="web3.account" :to="{ name: 'create' }">
+        <router-link v-if="$auth.isAuthenticated" :to="{ name: 'create' }">
           <UiButton>New proposal</UiButton>
         </router-link>
       </div>
