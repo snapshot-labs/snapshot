@@ -22,7 +22,7 @@ export default {
     },
     _shorten(str: string, key: string): string {
       if (key === 'name')
-        return str.length > 80 ? `${str.slice(0, 80).trim()}...` : str;
+        return str.length > 64 ? `${str.slice(0, 64).trim()}...` : str;
       return shorten(str);
     },
     _ipfsUrl(ipfsHash: string): string {
