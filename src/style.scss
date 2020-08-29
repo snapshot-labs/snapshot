@@ -1,12 +1,6 @@
 @import './vars';
-@import "~@primer/css/index.scss";
-@import './assets/skins/default.scss';
-@import './assets/skins/yam.scss';
-@import './assets/skins/yearn.scss';
-@import './assets/skins/balancer.scss';
-@import './assets/skins/curve.scss';
-@import './assets/skins/maker.scss';
-@import './assets/skins/spaghetti.scss';
+@import "~@primer/css";
+@import './assets/skins';
 @import './assets/fonts/iconfont.css';
 
 @font-face {

@@ -95,14 +95,16 @@
             <div class="mb-1">
               <b>Start date</b>
               <span
-                v-text="$d(payload.start * 1e3, 'long')"
+                :title="_ms(payload.start)"
+                v-text="$d(payload.start * 1e3, 'short')"
                 class="float-right text-white"
               />
             </div>
             <div class="mb-1">
               <b>End date</b>
               <span
-                v-text="$d(payload.end * 1e3, 'long')"
+                :title="_ms(payload.end)"
+                v-text="$d(payload.end * 1e3, 'short')"
                 class="float-right text-white"
               />
             </div>

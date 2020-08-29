@@ -138,5 +138,17 @@
     "min": 0,
     "invalid": [],
     "visible": false
+  },
+  "aave": {
+    "key": "aave",
+    "symbol": "LEND",
+    "name": "Aave",
+    "defaultView": "all",
+    "address": "0x80fB784B7eD66730e8b1DBd9820aFD29931aab03",
+    "token": "0x80fB784B7eD66730e8b1DBd9820aFD29931aab03",
+    "core": [],
+    "min": 0,
+    "invalid": [],
+    "visible": false
   }
 }
