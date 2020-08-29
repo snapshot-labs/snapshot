@@ -5,7 +5,10 @@
   >
     <div>
       <State :proposal="proposal" class="d-inline-block mr-2 mb-2" />
-      <h3 v-text="proposal.msg.payload.name" class="d-inline-block mb-1" />
+      <h3
+        v-text="_shorten(proposal.msg.payload.name, 'name')"
+        class="d-inline-block mb-1"
+      />
     </div>
     <div>
       <span v-text="`#${i.slice(0, 7)}`" />
