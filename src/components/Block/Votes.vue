@@ -63,9 +63,9 @@ export default {
   },
   computed: {
     visibleVotes() {
-      return Object.fromEntries(
-        Object.entries(this.votes).slice(0, this.showAllVotes ? -1 : 10)
-      );
+      return this.showAllVotes
+        ? this.votes
+        : Object.fromEntries(Object.entries(this.votes).slice(0, 10));
     }
   },
   methods: {

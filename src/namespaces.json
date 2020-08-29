@@ -63,7 +63,7 @@
     "key": "balancer",
     "symbol": "BAL",
     "name": "Balancer",
-    "defaultView": "all",
+    "defaultView": "core",
     "address": "0xba100000625a3754423978a60c9317c58a424e3D",
     "token": "0xba100000625a3754423978a60c9317c58a424e3D",
     "core": [
@@ -77,7 +77,7 @@
     ],
     "min": 0,
     "invalid": [],
-    "visible": false
+    "visible": true
   },
   "maker": {
     "key": "maker",
@@ -122,6 +122,18 @@
     "defaultView": "all",
     "address": "0xE54f9E6Ab80ebc28515aF8b8233c1aeE6506a15E",
     "token": "0xE54f9E6Ab80ebc28515aF8b8233c1aeE6506a15E",
+    "core": [],
+    "min": 0,
+    "invalid": [],
+    "visible": false
+  },
+  "dai": {
+    "key": "dai",
+    "symbol": "DAI",
+    "name": "Dai",
+    "defaultView": "all",
+    "address": "0x6B175474E89094C44Da98b954EedeAC495271d0F",
+    "token": "0x6B175474E89094C44Da98b954EedeAC495271d0F",
     "core": [],
     "min": 0,
     "invalid": [],

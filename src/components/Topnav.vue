@@ -21,11 +21,16 @@
                 class="mr-1"
                 v-text="'snapshot'"
               />
-              <template v-if="namespace">
-                <span class="pl-1 pr-2 text-gray" v-text="'/'" />
-                <Token :namespace="namespace.key" size="28" />
-                <span class="ml-2" v-text="namespace.symbol" />
-              </template>
+            </router-link>
+            <router-link
+              v-if="namespace"
+              :to="{ name: 'proposals' }"
+              class="d-inline-block d-flex flex-items-center"
+              style="font-size: 24px; padding-top: 4px;"
+            >
+              <span class="pl-1 pr-2 text-gray" v-text="'/'" />
+              <Token :namespace="namespace.key" size="28" />
+              <span class="ml-2" v-text="namespace.symbol" />
             </router-link>
           </div>
           <div :key="web3.account">

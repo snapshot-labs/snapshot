@@ -30,15 +30,8 @@
         <div class="px-4 py-3 bg-gray-dark overflow-auto menu-tabs">
           <div class="col-12 col-lg-7 pt-2 float-md-left hide-sm hide-md">
             <router-link
-              :key="'core'"
-              v-text="'core'"
-              :to="`/${key}/core`"
-              :class="selectedState == 'core' && 'tab-active'"
-              class="mr-3 tab"
-            />
-            <div class="mr-3 d-inline-block">-</div>
-            <router-link
               v-for="state in [
+                'core',
                 'community',
                 'all',
                 'active',
@@ -49,8 +42,8 @@
               :key="state"
               v-text="state"
               :to="`/${key}/${state}`"
-              :class="selectedState == state && 'tab-active'"
-              class="mr-3 tab"
+              :class="selectedState === state && 'text-white'"
+              class="mr-3 text-gray tab"
             />
           </div>
           <div class="col-12 col-lg-5 float-md-right">
@@ -86,15 +79,8 @@
     <transition name="sliding">
       <div class="floating-filters" v-show="showMobileFilter">
         <router-link
-          :key="'core'"
-          v-text="'core'"
-          :to="`/${key}/core`"
-          :class="{ active: selectedState == state }"
-          class="floating-nav text-center mt-3 d-md-none"
-        />
-
-        <router-link
           v-for="state in [
+            'core',
             'community',
             'all',
             'active',
@@ -209,13 +195,13 @@ export default {
             }
             if (
               this.selectedState === 'core' &&
-              proposal[1].address.includes(this.namespace.core)
+              this.namespace.core.includes(proposal[1].address)
             ) {
               return true;
             }
             if (
               this.selectedState === 'community' &&
-              !proposal[1].address.includes(this.namespace.core)
+              !this.namespace.core.includes(proposal[1].address)
             ) {
               return true;
             }
