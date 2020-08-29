@@ -1,7 +1,7 @@
 <template>
   <span>
     <a @click="modalOpen = true" target="_blank">
-      <Avatar v-if="!light" :address="address" size="16" class="mr-1" />
+      <Avatar :address="address" size="16" class="mr-1" />
       {{ name }}
       <Badges :address="address" :namespace="namespace" />
     </a>

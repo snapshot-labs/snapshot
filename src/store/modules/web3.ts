@@ -9,6 +9,7 @@ import abi from '@/helpers/abi';
 import config from '@/helpers/config';
 import lock from '@/helpers/lock';
 import wsProvider from '@/helpers/ws';
+import rpcProvider from '@/helpers/rpc';
 import { lsSet, lsGet, lsRemove } from '@/helpers/utils';
 import namespaces from '@/namespaces.json';
 
@@ -244,8 +245,8 @@ const actions = {
   },
   loadBackupProvider: async ({ commit }) => {
     try {
-      web3 = wsProvider;
-      const network = await wsProvider.getNetwork();
+      web3 = rpcProvider;
+      const network = await rpcProvider.getNetwork();
       commit('LOAD_BACKUP_PROVIDER_SUCCESS', {
         injectedActive: false,
         backUpLoaded: true,
@@ -319,7 +320,7 @@ const actions = {
   getBlockNumber: async ({ commit }) => {
     commit('GET_BLOCK_REQUEST');
     try {
-      const blockNumber: any = await wsProvider.getBlockNumber();
+      const blockNumber: any = await rpcProvider.getBlockNumber();
       commit('GET_BLOCK_SUCCESS', parseInt(blockNumber));
       return blockNumber;
     } catch (e) {
@@ -345,7 +346,7 @@ const actions = {
     }
   },
   multicall: async ({ commit }, { name, calls, options }) => {
-    const multi = new Contract(config.multicall, abi['Multicall'], wsProvider);
+    const multi = new Contract(config.multicall, abi['Multicall'], rpcProvider);
     const itf = new Interface(abi[name]);
     try {
       let [, response] = await multi.aggregate(
