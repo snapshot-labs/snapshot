@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import { getInstance } from '@bonustrack/lock/plugins/vue';
 import { Web3Provider } from '@ethersproject/providers';
 import { Contract } from '@ethersproject/contracts';
 import { getAddress } from '@ethersproject/address';
@@ -7,12 +8,11 @@ import { Interface } from '@ethersproject/abi';
 import store from '@/store';
 import abi from '@/helpers/abi';
 import config from '@/helpers/config';
-import lock from '@/helpers/lock';
 import wsProvider from '@/helpers/ws';
-import { lsSet, lsGet, lsRemove } from '@/helpers/utils';
+import rpcProvider from '@/helpers/rpc';
 import namespaces from '@/namespaces.json';
 
-let provider;
+let auth;
 let web3;
 
 wsProvider.on('block', blockNumber => {
@@ -160,21 +160,15 @@ const mutations = {
 
 const actions = {
   login: async ({ dispatch }, connector = 'injected') => {
-    const lockConnector = lock.getConnector(connector);
-    provider = await lockConnector.connect();
-    if (provider) {
-      web3 = new Web3Provider(provider);
+    auth = getInstance();
+    await auth.login(connector);
+    if (auth.provider) {
+      web3 = new Web3Provider(auth.provider);
       await dispatch('loadWeb3');
-      if (state.account) lsSet('connector', connector);
     }
   },
   logout: async ({ commit }) => {
-    const connector = lsGet('connector');
-    if (connector) {
-      const lockConnector = lock.getConnector(connector);
-      await lockConnector.logout();
-      lsRemove('connector');
-    }
+    Vue.prototype.$auth.logout();
     commit('LOGOUT');
   },
   loadWeb3: async ({ commit, dispatch }) => {
@@ -201,15 +195,15 @@ const actions = {
   loadProvider: async ({ commit, dispatch }) => {
     commit('LOAD_PROVIDER_REQUEST');
     try {
-      if (provider.removeAllListeners) provider.removeAllListeners();
-      if (provider.on) {
-        provider.on('chainChanged', async () => {
+      if (auth.provider.removeAllListeners) auth.provider.removeAllListeners();
+      if (auth.provider.on) {
+        auth.provider.on('chainChanged', async () => {
           commit('HANDLE_CHAIN_CHANGED');
           if (state.active) {
             await dispatch('loadWeb3');
           }
         });
-        provider.on('accountsChanged', async accounts => {
+        auth.provider.on('accountsChanged', async accounts => {
           if (accounts.length === 0) {
             if (state.active) await dispatch('loadWeb3');
           } else {
@@ -217,11 +211,11 @@ const actions = {
             await dispatch('loadWeb3');
           }
         });
-        provider.on('close', async () => {
+        auth.provider.on('close', async () => {
           commit('HANDLE_CLOSE');
           if (state.active) await dispatch('loadWeb3');
         });
-        provider.on('networkChanged', async () => {
+        auth.provider.on('networkChanged', async () => {
           commit('HANDLE_NETWORK_CHANGED');
           if (state.active) {
             await dispatch('loadWeb3');
@@ -244,8 +238,8 @@ const actions = {
   },
   loadBackupProvider: async ({ commit }) => {
     try {
-      web3 = wsProvider;
-      const network = await wsProvider.getNetwork();
+      web3 = rpcProvider;
+      const network = await rpcProvider.getNetwork();
       commit('LOAD_BACKUP_PROVIDER_SUCCESS', {
         injectedActive: false,
         backUpLoaded: true,
@@ -319,7 +313,7 @@ const actions = {
   getBlockNumber: async ({ commit }) => {
     commit('GET_BLOCK_REQUEST');
     try {
-      const blockNumber: any = await wsProvider.getBlockNumber();
+      const blockNumber: any = await rpcProvider.getBlockNumber();
       commit('GET_BLOCK_SUCCESS', parseInt(blockNumber));
       return blockNumber;
     } catch (e) {
@@ -345,7 +339,7 @@ const actions = {
     }
   },
   multicall: async ({ commit }, { name, calls, options }) => {
-    const multi = new Contract(config.multicall, abi['Multicall'], wsProvider);
+    const multi = new Contract(config.multicall, abi['Multicall'], rpcProvider);
     const itf = new Interface(abi[name]);
     try {
       let [, response] = await multi.aggregate(

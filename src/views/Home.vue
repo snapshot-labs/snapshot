@@ -7,7 +7,7 @@
         :to="{ name: 'proposals', params: { key: namespace.key } }"
       >
         <Block class="text-center">
-          <Token :namespace="namespace.key" size="96" class="mb-4" />
+          <Token :namespace="namespace.key" size="88" class="mb-3" />
           <div>
             <h2>
               {{ namespace.name }}
@@ -20,8 +20,8 @@
         <Block class="text-center">
           <div
             v-text="'+'"
-            style="width: 96px; height: 96px; color: white; font-size: 76px; padding-top: 6px;"
-            class="bg-gray-3 circle mx-auto mb-4"
+            style="width: 88px; height: 88px; color: white; font-size: 76px; padding-top: 6px;"
+            class="bg-gray-3 circle mx-auto mb-3"
           />
           <h2 v-text="'Create space'" />
         </Block>

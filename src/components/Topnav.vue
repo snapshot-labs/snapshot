@@ -34,7 +34,7 @@
             </router-link>
           </div>
           <div :key="web3.account">
-            <template v-if="web3.account && !wrongNetwork">
+            <template v-if="$auth.isAuthenticated && !wrongNetwork">
               <UiButton
                 @click="modalOpen = true"
                 class="button-outline"
@@ -93,8 +93,8 @@ export default {
     },
     showLogin() {
       return (
-        (!this.web3.account && !this.web3.injectedLoaded) ||
-        (!this.web3.account && !this.wrongNetwork)
+        (!this.$auth.isAuthenticated && !this.web3.injectedLoaded) ||
+        (!this.$auth.isAuthenticated && !this.wrongNetwork)
       );
     },
     namespace() {
