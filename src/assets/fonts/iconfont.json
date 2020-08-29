@@ -1,10 +1,143 @@
 {
   "id": "1946815",
-  "name": "gang",
+  "name": "snapshot",
   "font_family": "iconfont",
   "css_prefix_text": "icon",
   "description": "",
   "glyphs": [
+    {
+      "icon_id": "248947",
+      "name": "Vignetting",
+      "font_class": "byteball",
+      "unicode": "e6bc",
+      "unicode_decimal": 59068
+    },
+    {
+      "icon_id": "261002",
+      "name": "android",
+      "font_class": "android",
+      "unicode": "e601",
+      "unicode_decimal": 58881
+    },
+    {
+      "icon_id": "348956",
+      "name": "twitter",
+      "font_class": "twitter",
+      "unicode": "ec9c",
+      "unicode_decimal": 60572
+    },
+    {
+      "icon_id": "703493",
+      "name": "reddit",
+      "font_class": "reddit",
+      "unicode": "ea3c",
+      "unicode_decimal": 59964
+    },
+    {
+      "icon_id": "836629",
+      "name": "google",
+      "font_class": "google",
+      "unicode": "e723",
+      "unicode_decimal": 59171
+    },
+    {
+      "icon_id": "929164",
+      "name": "chrome",
+      "font_class": "chrome",
+      "unicode": "e6c2",
+      "unicode_decimal": 59074
+    },
+    {
+      "icon_id": "944996",
+      "name": "mac",
+      "font_class": "apple",
+      "unicode": "e6bd",
+      "unicode_decimal": 59069
+    },
+    {
+      "icon_id": "1192366",
+      "name": "facebook",
+      "font_class": "facebook",
+      "unicode": "e6be",
+      "unicode_decimal": 59070
+    },
+    {
+      "icon_id": "1275498",
+      "name": "windows",
+      "font_class": "windows",
+      "unicode": "e649",
+      "unicode_decimal": 58953
+    },
+    {
+      "icon_id": "1444399",
+      "name": "discord",
+      "font_class": "discord",
+      "unicode": "e6fe",
+      "unicode_decimal": 59134
+    },
+    {
+      "icon_id": "1899068",
+      "name": "telegram",
+      "font_class": "telegram",
+      "unicode": "e731",
+      "unicode_decimal": 59185
+    },
+    {
+      "icon_id": "2612016",
+      "name": "mac os的icon",
+      "font_class": "macos",
+      "unicode": "e6ba",
+      "unicode_decimal": 59066
+    },
+    {
+      "icon_id": "3876347",
+      "name": "line",
+      "font_class": "line",
+      "unicode": "e6c0",
+      "unicode_decimal": 59072
+    },
+    {
+      "icon_id": "11262564",
+      "name": "menu",
+      "font_class": "menu1",
+      "unicode": "e6c8",
+      "unicode_decimal": 59080
+    },
+    {
+      "icon_id": "11262644",
+      "name": "close",
+      "font_class": "close1",
+      "unicode": "e6c9",
+      "unicode_decimal": 59081
+    },
+    {
+      "icon_id": "11262645",
+      "name": "gear",
+      "font_class": "gear",
+      "unicode": "e6ca",
+      "unicode_decimal": 59082
+    },
+    {
+      "icon_id": "6145465",
+      "name": "bullet",
+      "font_class": "bullet",
+      "unicode": "e619",
+      "unicode_decimal": 58905
+    },
+    {
+      "icon_id": "1176968",
+      "name": "plus",
+      "font_class": "plus",
+      "unicode": "e727",
+      "unicode_decimal": 59175
+    },
+    {
+      "icon_id": "924591",
+      "name": "wallet",
+      "font_class": "wallet",
+      "unicode": "e97c",
+      "unicode_decimal": 59772
+    },
     {
       "icon_id": "11399282",
       "name": "signature",
@@ -60,13 +193,6 @@
       "font_class": "github",
       "unicode": "e667",
       "unicode_decimal": 58983
-    },
-    {
-      "icon_id": "5679273",
-      "name": "plus-small",
-      "font_class": "plus-small",
-      "unicode": "e69d",
-      "unicode_decimal": 59037
     },
     {
       "icon_id": "7141712",

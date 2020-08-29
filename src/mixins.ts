@@ -20,7 +20,9 @@ export default {
     _numeral(number, format = '(0.[00]a)') {
       return numeral(number).format(format);
     },
-    _shorten(str: string): string {
+    _shorten(str: string, key: string): string {
+      if (key === 'name')
+        return str.length > 64 ? `${str.slice(0, 64).trim()}...` : str;
       return shorten(str);
     },
     _ipfsUrl(ipfsHash: string): string {

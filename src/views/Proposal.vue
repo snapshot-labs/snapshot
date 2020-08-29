@@ -1,131 +1,144 @@
 <template>
   <Container :slim="true">
-    <template v-if="loaded">
-      <div class="px-4 px-md-0 mb-3">
-        <router-link :to="{ name: 'proposals' }" class="text-gray">
-          <Icon name="back" size="22" class="v-align-middle" />
-          {{ namespace.name || _shorten(namespace.address) }}
-        </router-link>
-      </div>
-      <div>
-        <div class="col-12 col-lg-8 float-left pr-0 pr-lg-5">
-          <div class="px-4 px-md-0">
+    <div class="px-4 px-md-0 mb-3">
+      <router-link :to="{ name: 'proposals' }" class="text-gray">
+        <Icon name="back" size="22" class="v-align-middle" />
+        {{ namespace.name || _shorten(namespace.address) }}
+      </router-link>
+    </div>
+    <div>
+      <div class="col-12 col-lg-8 float-left pr-0 pr-lg-5">
+        <div class="px-4 px-md-0">
+          <template v-if="loaded">
             <h1 class="mb-2">
               {{ payload.name }}
               <span v-text="`#${id.slice(0, 7)}`" class="text-gray" />
             </h1>
             <State :proposal="proposal" class="mb-4" />
             <UiMarkdown :body="payload.body" class="mb-6" />
-          </div>
-          <Block
-            v-if="ts >= payload.start && ts < payload.end"
-            class="mb-4"
-            title="Cast your vote"
-          >
-            <div class="mb-3">
-              <UiButton
-                v-for="(choice, i) in payload.choices"
-                :key="i"
-                v-text="choice"
-                @click="selectedChoice = i + 1"
-                class="d-block width-full mb-2"
-                :class="selectedChoice === i + 1 && 'button--active'"
-              />
-            </div>
-            <UiButton
-              :disabled="voteLoading || !selectedChoice || !web3.account"
-              :loading="voteLoading"
-              @click="modalOpen = true"
-              class="d-block width-full button--submit"
-            >
-              Vote
-            </UiButton>
-          </Block>
-          <BlockVotes
-            :namespace="namespace"
-            :proposal="proposal"
-            :votes="votes"
-          />
+          </template>
+          <template v-else>
+            <div
+              class="bg-gray-9 rounded-1 anim-pulse mb-3"
+              style="width: 100%; height: 34px;"
+            />
+            <div
+              class="bg-gray-9 rounded-1 anim-pulse mb-3"
+              style="width: 40%; height: 34px;"
+            />
+            <div
+              class="bg-gray-9 rounded-1 anim-pulse mb-4"
+              style="width: 65px; height: 28px;"
+            />
+          </template>
         </div>
-        <div class="col-12 col-lg-4 float-left">
-          <Block title="Informations">
+        <Block
+          v-if="loaded && ts >= payload.start && ts < payload.end"
+          class="mb-4"
+          title="Cast your vote"
+        >
+          <div class="mb-3">
+            <UiButton
+              v-for="(choice, i) in payload.choices"
+              :key="i"
+              v-text="choice"
+              @click="selectedChoice = i + 1"
+              class="d-block width-full mb-2"
+              :class="selectedChoice === i + 1 && 'button--active'"
+            />
+          </div>
+          <UiButton
+            :disabled="voteLoading || !selectedChoice || !web3.account"
+            :loading="voteLoading"
+            @click="modalOpen = true"
+            class="d-block width-full button--submit"
+          >
+            Vote
+          </UiButton>
+        </Block>
+        <BlockVotes
+          v-if="loaded"
+          :namespace="namespace"
+          :proposal="proposal"
+          :votes="votes"
+        />
+      </div>
+      <div v-if="loaded" class="col-12 col-lg-4 float-left">
+        <Block title="Informations">
+          <div class="mb-1">
+            <b>Token</b>
+            <span class="float-right text-white">
+              <Token :namespace="namespace.key" class="mr-1" />
+              {{ namespace.symbol }}
+            </span>
+          </div>
+          <div class="mb-1">
+            <b>Author</b>
+            <User
+              :address="proposal.address"
+              :namespace="namespace"
+              class="float-right"
+            />
+          </div>
+          <div class="mb-1">
+            <b>IPFS</b>
+            <a
+              :href="_ipfsUrl(proposal.ipfsHash)"
+              target="_blank"
+              class="float-right"
+            >
+              #{{ proposal.ipfsHash.slice(0, 7) }}
+              <Icon name="external-link" class="ml-1" />
+            </a>
+          </div>
+          <div>
             <div class="mb-1">
-              <b>Token</b>
-              <span class="float-right text-white">
-                <Token :namespace="namespace.key" class="mr-1" />
-                {{ namespace.symbol }}
-              </span>
-            </div>
-            <div class="mb-1">
-              <b>Author</b>
-              <User
-                :address="proposal.address"
-                :verified="namespace.verified"
-                class="float-right"
+              <b>Start date</b>
+              <span
+                v-text="$d(payload.start * 1e3, 'long')"
+                class="float-right text-white"
               />
             </div>
             <div class="mb-1">
-              <b>IPFS</b>
+              <b>End date</b>
+              <span
+                v-text="$d(payload.end * 1e3, 'long')"
+                class="float-right text-white"
+              />
+            </div>
+            <div class="mb-1">
+              <b>Snapshot</b>
               <a
-                :href="_ipfsUrl(proposal.ipfsHash)"
+                :href="_etherscanLink(payload.snapshot, 'block')"
                 target="_blank"
                 class="float-right"
               >
-                #{{ proposal.ipfsHash.slice(0, 7) }}
+                {{ $n(payload.snapshot) }}
                 <Icon name="external-link" class="ml-1" />
               </a>
             </div>
-            <div>
-              <div class="mb-1">
-                <b>Start date</b>
-                <span
-                  v-text="$d(payload.start * 1e3, 'long')"
-                  class="float-right text-white"
-                />
-              </div>
-              <div class="mb-1">
-                <b>End date</b>
-                <span
-                  v-text="$d(payload.end * 1e3, 'long')"
-                  class="float-right text-white"
-                />
-              </div>
-              <div class="mb-1">
-                <b>Snapshot</b>
-                <a
-                  :href="_etherscanLink(payload.snapshot, 'block')"
-                  target="_blank"
-                  class="float-right"
-                >
-                  {{ $n(payload.snapshot) }}
-                  <Icon name="external-link" class="ml-1" />
-                </a>
-              </div>
-            </div>
-          </Block>
-          <BlockResults
-            :namespace="namespace"
-            :payload="payload"
-            :results="results"
-            :votes="votes"
-          />
-        </div>
+          </div>
+        </Block>
+        <BlockResults
+          :namespace="namespace"
+          :payload="payload"
+          :results="results"
+          :votes="votes"
+        />
       </div>
-      <ModalConfirm
-        :open="modalOpen"
-        @close="modalOpen = false"
-        @reload="loadProposal"
-        :namespace="namespace"
-        :proposal="proposal"
-        :id="id"
-        :selectedChoice="selectedChoice"
-        :power="power"
-        :snapshot="payload.snapshot"
-      />
-    </template>
-    <div v-else class="text-center">
-      <UiLoading class="big" />
     </div>
+    <ModalConfirm
+      v-if="loaded"
+      :open="modalOpen"
+      @close="modalOpen = false"
+      @reload="loadProposal"
+      :namespace="namespace"
+      :proposal="proposal"
+      :id="id"
+      :selectedChoice="selectedChoice"
+      :power="power"
+      :snapshot="payload.snapshot"
+    />
   </Container>
 </template>
 
