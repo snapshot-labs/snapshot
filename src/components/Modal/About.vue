@@ -1,19 +1,21 @@
 <template>
   <UiModal :open="open" @close="$emit('close')">
-    <h3 class="m-4 mb-0 text-center">About</h3>
-    <div class="m-4 mb-0 p-4 border rounded-2 text-white">
-      <div class="d-flex">
-        <span v-text="'Twitter'" class="flex-auto text-gray mr-1" />
-        <a href="https://twitter.com/SnapshotLabs" target="_blank">
-          @SnapshotLabs
-        </a>
-      </div>
-      <div class="d-flex">
-        <span v-text="'Discord'" class="flex-auto text-gray mr-1" />
-        <a href="https://discord.snapshot.page" target="_blank">
-          Join Discord
-        </a>
-      </div>
+    <h3 class="m-4 text-center">About</h3>
+    <div class="text-center">
+      <a href="https://twitter.com/SnapshotLabs" target="_blank">
+        <Icon size="32" name="twitter" class="mr-1 mx-2" />
+      </a>
+      <a href="https://discord.snapshot.page" target="_blank">
+        <Icon size="32" name="discord" class="mr-1 mx-2" />
+      </a>
+      <a href="https://t.me/snapshotlabs" target="_blank">
+        <Icon size="32" name="telegram" class="mr-1 mx-2" />
+      </a>
+      <a :href="`https://github.com/${pkg.repository}`" target="_blank">
+        <Icon size="32" name="github" class="mr-1 mx-2" />
+      </a>
+    </div>
+    <div class="m-4 p-4 border rounded-2 text-white">
       <div class="d-flex">
         <span v-text="'Version'" class="flex-auto text-gray mr-1" />
         {{ pkg.version }}
@@ -45,19 +47,6 @@
         <span v-text="'Hub'" class="flex-auto text-gray mr-1" />
         {{ hubUrl }}
       </div>
-    </div>
-    <div class="m-4">
-      <a
-        :href="`https://github.com/${pkg.repository}`"
-        target="_blank"
-        class="mb-2 d-block"
-      >
-        <UiButton class="button-outline width-full">
-          <Icon name="github" class="mr-1" />
-          github.com/{{ pkg.repository }}
-          <Icon name="external-link" class="ml-1" />
-        </UiButton>
-      </a>
     </div>
   </UiModal>
 </template>
