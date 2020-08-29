@@ -9,7 +9,13 @@
     </div>
     <div>
       <span v-text="`#${i.slice(0, 7)}`" />
-      By {{ _shorten(proposal.address) }} {{ _numeral(proposal.balance) }}
+      By {{ _shorten(proposal.address) }}
+      <Badges
+        :address="proposal.address"
+        :namespace="namespace"
+        class="ml-n1"
+      />
+      {{ _numeral(proposal.balance) }}
       {{ namespace.symbol }}
       <Icon v-if="isVerified" name="check" title="Verified" />
       start
