@@ -360,20 +360,22 @@ const actions = {
   },
   metadata: async ({ commit, dispatch }) => {
     try {
+      const noDecimals = ['yearn'];
       const response = await dispatch('multicall', {
         name: 'TestToken',
         calls: Object.values(namespaces)
-          .filter(space => !['yearn', 'synthetix'].includes(space.key))
+          .filter(space => !noDecimals.includes(space.key))
           .map((space: any) => [space.address, 'decimals', []])
       });
       const payload = Object.fromEntries(
         response.map((item, i) => [
           // @ts-ignore
-          Object.values(namespaces)[i].address,
+          Object.values(namespaces).filter(
+            space => !noDecimals.includes(space.key)
+          )[i].address,
           { decimals: response[i][0] }
         ])
       );
-      payload['0xC011a73ee8576Fb46F5E1c5751cA3B9Fe0af2a6F'] = { decimals: 18 };
       payload['0xBa37B002AbaFDd8E89a1995dA52740bbC013D992'] = { decimals: 18 };
       commit('METADATA_SUCCESS', payload);
       return payload;
