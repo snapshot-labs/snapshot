@@ -211,7 +211,7 @@ const actions = {
             await dispatch('loadWeb3');
           }
         });
-        auth.provider.on('close', async () => {
+        auth.provider.on('disconnect', async () => {
           commit('HANDLE_CLOSE');
           if (state.active) await dispatch('loadWeb3');
         });
@@ -362,11 +362,9 @@ const actions = {
     try {
       const response = await dispatch('multicall', {
         name: 'TestToken',
-        calls: Object.values(namespaces).map((namespace: any) => [
-          namespace.address,
-          'decimals',
-          []
-        ])
+        calls: Object.values(namespaces)
+          .filter(space => space.key !== 'yearn')
+          .map((space: any) => [space.address, 'decimals', []])
       });
       const payload = Object.fromEntries(
         response.map((item, i) => [
@@ -375,6 +373,7 @@ const actions = {
           { decimals: response[i][0] }
         ])
       );
+      payload.yearn = { decimals: 18 };
       commit('METADATA_SUCCESS', payload);
       return payload;
     } catch (e) {
