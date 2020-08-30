@@ -54,7 +54,13 @@
     "defaultView": "all",
     "address": "0xBa37B002AbaFDd8E89a1995dA52740bbC013D992",
     "token": "0xBa37B002AbaFDd8E89a1995dA52740bbC013D992",
-    "core": [],
+    "core": [
+      "0x24A12Fa313F57aF541d447c594072A992c605DCf",
+      "0x8BBE4Ac64246d600BC2889ef5d83809D138F03DF",
+      "0xeF8305E140ac520225DAf050e2f71d5fBcC543e7",
+      "0x107174D70b33523E83711EA4C3F4229cdB8A7Cb1",
+      "0x0b21Dbc34A953a35dFA629ad31e1cEE3dE0433Fb"
+    ],
     "min": 0,
     "invalid": [],
     "visible": true
@@ -115,7 +121,7 @@
     ],
     "min": 1,
     "invalid": [],
-    "visible": false
+    "visible": true
   },
   "rarible": {
     "key": "rarible",
