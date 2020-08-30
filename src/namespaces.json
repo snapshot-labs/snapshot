@@ -174,7 +174,9 @@
     "token": "0x598eb12A541AbbdB315045a4eDE8d277f18B8be9",
     "core": ["0xF942Dba4159CB61F8AD88ca4A83f5204e8F4A6bd"],
     "min": 0,
-    "invalid": [],
+    "invalid": [
+      "QmZieYbP3Chs1T4hzmZerBXJ9t7P3bJDj3hJDoaPaGrqjL"
+    ],
     "visible": true
   },
   "synthetix": {
