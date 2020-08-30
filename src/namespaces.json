@@ -162,5 +162,17 @@
     "min": 0,
     "invalid": [],
     "visible": true
+  },
+  "synthetix": {
+    "key": "synthetix",
+    "symbol": "SNX",
+    "name": "Synthetix",
+    "defaultView": "all",
+    "address": "0xC011a73ee8576Fb46F5E1c5751cA3B9Fe0af2a6F",
+    "token": "0xC011a73ee8576Fb46F5E1c5751cA3B9Fe0af2a6F",
+    "core": [],
+    "min": 0,
+    "invalid": [],
+    "visible": false
   }
 }
