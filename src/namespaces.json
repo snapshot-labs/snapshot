@@ -150,5 +150,17 @@
     "min": 0,
     "invalid": [],
     "visible": false
+  },
+  "sushi": {
+    "key": "sushi",
+    "symbol": "SUSHI",
+    "name": "Sushi",
+    "defaultView": "all",
+    "address": "0x6B3595068778DD592e39A122f4f5a5cF09C90fE2",
+    "token": "0x6B3595068778DD592e39A122f4f5a5cF09C90fE2",
+    "core": [],
+    "min": 0,
+    "invalid": [],
+    "visible": false
   }
 }
