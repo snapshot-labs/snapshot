@@ -32,6 +32,7 @@
 
 <script>
 import namespaces from '@/namespaces.json';
+import domains from '@/domains.json';
 
 export default {
   data() {
@@ -42,11 +43,12 @@ export default {
     };
   },
   created() {
-    if (Object.keys(this.namespaces).length === 1)
+    const domainName = window.location.hostname;
+    if (domains[domainName])
       this.$router.push({
         name: 'proposals',
         params: {
-          key: Object.keys(this.namespaces)[0]
+          key: domains[domainName]
         }
       });
   }
