@@ -26,6 +26,8 @@ export default {
       return numeral(number).format(format);
     },
     _shorten(str: string, key: string): string {
+      if (key === 'symbol')
+        return str.length > 7 ? `${str.slice(0, 7).trim()}...` : str;
       if (key === 'name')
         return str.length > 64 ? `${str.slice(0, 64).trim()}...` : str;
       return shorten(str);

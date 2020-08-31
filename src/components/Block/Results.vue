@@ -5,7 +5,7 @@
         <span v-text="choice" class="mr-1" />
         <span v-if="results.totalBalances[i]" class="mr-1">
           {{ _numeral(results.totalBalances[i]) }}
-          {{ namespace.symbol || _shorten(namespace.token) }}
+          {{ _shorten(namespace.symbol, 'symbol') }}
         </span>
         <span
           class="float-right"

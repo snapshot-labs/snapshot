@@ -19,15 +19,14 @@
       <div class="column text-right">
         <span
           v-text="
-            `${_numeral(vote.balance)} ${namespace.symbol ||
-              _shorten(namespace.token)}`
+            `${_numeral(vote.balance)} ${_shorten(namespace.symbol, 'symbol')}`
           "
           class="text-white"
         />
         <a
           @click="openReceiptModal(vote)"
           target="_blank"
-          class="ml-3 text-gray"
+          class="ml-2 text-gray"
           title="Receipt"
         >
           <Icon name="signature" />

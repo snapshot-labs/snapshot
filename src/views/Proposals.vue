@@ -3,16 +3,7 @@
     <Container>
       <div class="mb-3 d-flex">
         <div class="flex-auto">
-          <div>
-            <a
-              :href="_etherscanLink(namespace.address)"
-              target="_blank"
-              class="text-gray"
-            >
-              {{ namespace.name || _shorten(key) }}
-              <Icon name="external-link" class="ml-1" />
-            </a>
-          </div>
+          <div v-text="namespace.name" />
           <div class="d-flex flex-items-center flex-auto">
             <h2 class="mr-2">
               Proposals
