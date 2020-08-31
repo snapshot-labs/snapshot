@@ -1,10 +1,59 @@
 <template>
   <div class="markdown-body break-word" v-html="markdown" />
 </template>
-<script>
+<script lang="ts">
 import { Remarkable } from 'remarkable';
 import { linkify } from 'remarkable/linkify';
-// import sanitizeHtml from 'sanitize-html';
+import sanitizeHtml from 'sanitize-html';
+
+const sanitizerOptions = {
+  allowedTags: [
+    'a',
+    'abbr',
+    'b',
+    'blockquote',
+    'br',
+    'caption',
+    'code',
+    'em',
+    'h1',
+    'h2',
+    'h3',
+    'h4',
+    'h5',
+    'h6',
+    'hr',
+    'i',
+    // images disabled until they can be safely proxied or filtered to load only from ipfs
+    // 'img',
+    'li',
+    'nl',
+    'ol',
+    'p',
+    'pre',
+    'strike',
+    'strong',
+    'table',
+    'tbody',
+    'td',
+    'th',
+    'thead',
+    'tr',
+    'ul'
+  ],
+  disallowedTagsMode: 'discard',
+  transformTags: {
+    a: function(tagName, attribs) {
+      // open external links in new window/tab
+      const isAnchor = (attribs.href || '')[0] === '#';
+      if (!isAnchor) {
+        attribs.target = '_blank';
+        attribs.rel = 'noopener';
+      }
+      return { tagName, attribs };
+    }
+  }
+};
 
 const remarkable = new Remarkable({
   html: false,
@@ -15,11 +64,9 @@ const remarkable = new Remarkable({
 export default {
   props: ['body'],
   computed: {
-    markdown() {
-      let body = this.body;
-      body = remarkable.render(body);
-      // body = sanitizeHtml(body);
-      return body;
+    markdown(this: any) {
+      const unsafeHtml = remarkable.render(this.body);
+      return sanitizeHtml(unsafeHtml, sanitizerOptions);
     }
   }
 };
