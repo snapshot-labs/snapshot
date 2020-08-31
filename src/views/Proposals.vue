@@ -136,7 +136,32 @@ export default {
               return true;
             }
           })
-          .sort((a, b) => b[1].msg.payload.end - a[1].msg.payload.end, 0)
+          .sort((a, b) => {
+            const ts = (Date.now() / 1e3).toFixed();
+            // both ended
+            if (ts > b[1].msg.payload.end  && ts > a[1].msg.payload.end) {
+              // first passed
+              if (this.namespace.passed.includes(a[1].authorIpfsHash)) {
+                if (this.namespace.passed.includes(b[1].authorIpfsHash)) {
+                  //second passed
+                  return 0;
+                } else {
+                  // second failed
+                  return -1;
+                }
+              } else {
+                // first failed or closed
+                if (this.namespace.passed.includes(b[1].authorIpfsHash)) {
+                  // second passed
+                  return 1;
+                } else {
+                  // both closed or failed
+                  return 0;
+                }
+              }
+            }
+            return b[1].msg.payload.end - a[1].msg.payload.end
+          })
       );
     }
   },
