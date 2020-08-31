@@ -45,6 +45,40 @@
       "QmQ1FmUbTVpFDrbw9aymVvjDocvggeDkDaej1Lios2fxqg",
       "QmXxeHtsquFDpWGUYGnbCrn6H6xo1m8RsLWmssg9azp1bn"
     ],
+    "passed":[
+      "QmRMxkq98LJhFqJAC5GNCHrCwe3FFzxveb7MPzLYDCKT49",
+      "Qmc1GpiLaPXRLsXw31R1RznKrMTnzmonbSn2kCXVwxUWTV",
+      "QmVuJ2gDgKBje3MsMeR4M2TYdavQy8P5kqaa7HYFt3tpYN",
+      "QmVuJ2gDgKBje3MsMeR4M2TYdavQy8P5kqaa7HYFt3tpYN",
+      "QmcHG5AFKrSXJ7bnww8rJfTSUPYtK3tbVXBVr4oxzKoEqY",
+      "QmVP5f5BWuxhRtKBUrUifjQrPYRM5YHngQYdK62UuSRt6p",
+      "QmSwFus2RLkoNJRSm2VTrAxjdRQc23RrWY7W6s675CXnzi",
+      "QmQhFu6miTLtmNyRtCGFXvoFw54VmtkX2chDeUdfFXAtx9",
+      "QmTCXW2bhETiwHoDqeyxoDA4CwjURyfc6T4fAJLGz3yKj9",
+      "QmUntcMz42wQeeSr1DiYcc6j1iukn6ua2TPtyv4h8TZRZE",
+      "QmctSLYFvLhPoePehigZMwoLhdgyrMxjnrroFyPdmCVJoc",
+      "QmXAZP8tYwX2zZz5EzfxLZUYJt6TM9EmxY1L4qodhZ5zcZ",
+      "QmShrmWxTZdLfrF926wqmY7RLsNMGoWRwfLyvbd96YZjin",
+      "QmSUbZ7zMs2nJ8iemVpDDEtpUWqpGuu3zE7zdozAxCvzjF"
+    ],
+    "failed":[
+      "Qmcp3eQetob3Moov4EHJHG7zuihJrAkfFb1wdcUusQ17jX",
+      "Qma5N6xV4nkzBALgGZMSD8L7A7mrsrRMntXpx2xT1MGPbu",
+      "QmQdWLr2WPi9TQzgfKfjbzt8YT7ngbx9DSUepPJ2CrvmAi",
+      "QmaYYv1Q28FhjC3hpgwyAv8p7M7F2WxBwM7YVmDrQo933M",
+      "QmPa67zgRNHVmWzkskRgGPv2nXUgETaJHp11JGcJG5Jxsj",
+      "QmP5iH2TnN2UKTjsNpT1QSHETAqysQFmUtFdJdRgfQS3z5",
+      "QmVZSLF5ZmFaqBqJv1z5jQB1D16qt56xVko4QZ3WiPCm49",
+      "QmRta9zsdthavsM3MxMqKsY9SPNHQSzKkJF7izn5iX3fkX",
+      "QmRvEonYebgtZ38PsAovbgm2y7gtaRTVPz3NmaZjPsW39g",
+      "QmbnbNdF2UtM1AE226Ujht91TpEt5i89Grww9rz1TxmHfp",
+      "QmadvwZAU89wVLNd4KCVvq6iNmtZgECd3qBQbao1FB5whp",
+      "Qmc9fAMNHkGoDMw7ujMC5xrV8k92PiA7QuezPNhmdQFDeW",
+      "QmdSZjHDZL1nGHRKq6G9wVwtxfHtBEu9HMgbK46bvhXZyX",
+      "QmW9RavjUbQ6mFzRL94TPYSgrTmiALtLqvNV2FRAndrqpy",
+      "QmVG4r8Qm1A1no6VQPrxrQGNQ5c7T4x63ELLNXCRWupihm",
+      "QmVUYcqtdVJPT5Nvja9kQED7d4C921XNmXFbqCNNyzLNQg"
+    ],
     "visible": true
   },
   "yearn": {
@@ -63,6 +97,8 @@
     ],
     "min": 0,
     "invalid": [],
+    "passed":[],
+    "failed":[],
     "visible": true
   },
   "balancer": {
@@ -83,6 +119,8 @@
     ],
     "min": 0,
     "invalid": [],
+    "passed":[],
+    "failed":[],
     "visible": true
   },
   "maker": {
@@ -121,6 +159,8 @@
     ],
     "min": 1,
     "invalid": [],
+    "passed":[],
+    "failed":[],
     "visible": false
   },
   "rarible": {
@@ -133,6 +173,8 @@
     "core": [],
     "min": 0,
     "invalid": [],
+    "passed":[],
+    "failed":[],
     "visible": false
   },
   "spaghetti": {
@@ -145,6 +187,8 @@
     "core": [],
     "min": 0,
     "invalid": [],
+    "passed":[],
+    "failed":[],
     "visible": false
   },
   "dai": {
@@ -157,6 +201,8 @@
     "core": [],
     "min": 0,
     "invalid": [],
+    "passed":[],
+    "failed":[],
     "visible": false
   },
   "aave": {
@@ -169,6 +215,8 @@
     "core": [],
     "min": 0,
     "invalid": [],
+    "passed":[],
+    "failed":[],
     "visible": false
   },
   "sushi": {
@@ -185,6 +233,8 @@
       "QmZyafpihwgPnhFKj2YNBncCtk6x5rr5zxHdY9cnGGL6EM",
       "Qme74uoqAsHU3YSFvAsyCRnMK3VfGnFu7m4VHKXsbKPKtr"
     ],
+    "passed":[],
+    "failed":[],
     "visible": true
   },
   "synthetix": {
@@ -197,6 +247,8 @@
     "core": [],
     "min": 0,
     "invalid": [],
+    "passed":[],
+    "failed":[],
     "visible": false
   }
 }
