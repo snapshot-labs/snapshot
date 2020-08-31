@@ -190,5 +190,24 @@
     "min": 0,
     "invalid": [],
     "visible": false
+  },
+  "unidao": {
+    "key": "unidao",
+    "symbol": "MRQ",
+    "name": "UniDAO",
+    "defaultView": "all",
+    "address": "0x47be00042AF431016fB5561b6B47d457eBAfCb6e",
+    "token": "0x47be00042AF431016fB5561b6B47d457eBAfCb6e",
+    "core": [
+      "0x945294C67752BD0A453975c04e3078c487a858df",
+      "0x01e7f16e17c50d070eb66787f25ce3be405d6038",
+      "0xe5818d70a9b5aed2bfde4e41fbcb07dd80f8fc84",
+      "0xd33e60342df0b792f56a8e630989f6bffccd707c",
+      "0x94aff6c2c005567aa0e2a27f77701bb1b6679b6b",
+      "0xf854049d55535391aa4eaad47350ef7524990427"
+    ],
+    "min": 0,
+    "invalid": [],
+    "visible": true
   }
 }
