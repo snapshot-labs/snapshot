@@ -6,7 +6,7 @@
         class="text-gray"
       >
         <Icon name="back" size="22" class="v-align-middle" />
-        {{ namespace.name || _shorten(namespace.address) }}
+        {{ namespace.name }}
       </router-link>
     </div>
     <div>

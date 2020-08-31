@@ -211,7 +211,7 @@ const actions = {
             await dispatch('loadWeb3');
           }
         });
-        auth.provider.on('close', async () => {
+        auth.provider.on('disconnect', async () => {
           commit('HANDLE_CLOSE');
           if (state.active) await dispatch('loadWeb3');
         });
@@ -360,21 +360,23 @@ const actions = {
   },
   metadata: async ({ commit, dispatch }) => {
     try {
+      const noDecimals = ['yearn'];
       const response = await dispatch('multicall', {
         name: 'TestToken',
-        calls: Object.values(namespaces).map((namespace: any) => [
-          namespace.address,
-          'decimals',
-          []
-        ])
+        calls: Object.values(namespaces)
+          .filter(space => !noDecimals.includes(space.key))
+          .map((space: any) => [space.address, 'decimals', []])
       });
       const payload = Object.fromEntries(
         response.map((item, i) => [
           // @ts-ignore
-          Object.values(namespaces)[i].address,
+          Object.values(namespaces).filter(
+            space => !noDecimals.includes(space.key)
+          )[i].address,
           { decimals: response[i][0] }
         ])
       );
+      payload['0xBa37B002AbaFDd8E89a1995dA52740bbC013D992'] = { decimals: 18 };
       commit('METADATA_SUCCESS', payload);
       return payload;
     } catch (e) {
