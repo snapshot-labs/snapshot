@@ -121,7 +121,7 @@
     ],
     "min": 1,
     "invalid": [],
-    "visible": true
+    "visible": false
   },
   "rarible": {
     "key": "rarible",
