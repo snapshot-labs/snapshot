@@ -181,7 +181,8 @@
     "core": ["0xF942Dba4159CB61F8AD88ca4A83f5204e8F4A6bd"],
     "min": 0,
     "invalid": [
-      "QmZieYbP3Chs1T4hzmZerBXJ9t7P3bJDj3hJDoaPaGrqjL"
+      "QmZieYbP3Chs1T4hzmZerBXJ9t7P3bJDj3hJDoaPaGrqjL",
+      "QmZyafpihwgPnhFKj2YNBncCtk6x5rr5zxHdY9cnGGL6EM"
     ],
     "visible": true
   },
