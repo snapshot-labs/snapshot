@@ -201,11 +201,11 @@
   },
   "unidao": {
     "key": "unidao",
-    "symbol": "MRQ",
+    "symbol": "MRR",
     "name": "UniDAO",
     "defaultView": "all",
-    "address": "0xc1d204fc521f9e125a55dd8b2152d7344766cc21",
-    "token": "0xc1d204fc521f9e125a55dd8b2152d7344766cc21",
+    "address": "0xC1d204fC521F9e125a55dd8b2152d7344766cC21",
+    "token": "0xC1d204fC521F9e125a55dd8b2152d7344766cC21",
     "core": [
       "0xe5818d70a9b5aed2bfde4e41fbcb07dd80f8fc84",
       "0x01e7f16e17c50d070eb66787f25ce3be405d6038",
