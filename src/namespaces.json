@@ -231,5 +231,17 @@
     "min": 0,
     "invalid": [],
     "visible": false
-  }
+  },
+  "kimchi": {
+    "key": "kimchi",
+    "symbol": "KIMCHI",
+    "name": "KIMCHI.finance",
+    "defaultView": "all",
+    "address": "0x1E18821E69B9FAA8e6e75DFFe54E7E25754beDa0",
+    "token": "0x1E18821E69B9FAA8e6e75DFFe54E7E25754beDa0",
+    "core": ["0x1E18821E69B9FAA8e6e75DFFe54E7E25754beDa0"],
+    "min": 0,
+    "invalid": [],
+    "visible": false
+  },
 }
