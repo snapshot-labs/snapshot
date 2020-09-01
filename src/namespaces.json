@@ -243,5 +243,29 @@
     "min": 1,
     "invalid": [],
     "visible": false
+  },
+  "lexdao": {
+    "key": "lexdao",
+    "symbol": "MYSTIC",
+    "name": "LexDAO",
+    "defaultView": "all",
+    "address": "0x057e820D740D5AAaFfa3c6De08C5c98d990dB00d",
+    "token": "0x057e820D740D5AAaFfa3c6De08C5c98d990dB00d",
+    "core": [],
+    "min": 1000,
+    "invalid": [],
+    "visible": false
+  },
+  "anjmol": {
+    "key": "anjmol",
+    "symbol": "ANJMOL",
+    "name": "Aragon Network Moloch DAO",
+    "defaultView": "all",
+    "address": "0xBa1A22228B091D2bC6E111df61Ae6f7e5102Da1a",
+    "token": "0xBa1A22228B091D2bC6E111df61Ae6f7e5102Da1a",
+    "core": [],
+    "min": 1,
+    "invalid": [],
+    "visible": false
   }
 }
