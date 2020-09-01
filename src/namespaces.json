@@ -232,6 +232,20 @@
     "invalid": [],
     "visible": false
   },
+  "pillar": {
+    "key": "pillar",
+    "symbol": "PLR",
+    "name": "Pillar",
+    "defaultView": "all",
+    "address": "0xe3818504c1b32bf1557b16c238b2e01fd3149c17",
+    "token": "0xe3818504c1b32bf1557b16c238b2e01fd3149c17",
+    "core": [
+      "0x2Abdb157b2603e17d531d4fc51a4fc6174c3dAEA"
+    ],
+    "min": 0,
+    "invalid": [],
+    "visible": false
+  },
   "lao": {
     "key": "lao",
     "symbol": "LAO",
