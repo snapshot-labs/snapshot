@@ -231,5 +231,17 @@
     "min": 0,
     "invalid": [],
     "visible": false
+  },
+  "lao": {
+    "key": "lao",
+    "symbol": "LAO",
+    "name": "The LAO",
+    "defaultView": "all",
+    "address": "0x8Ffb89D50eB0b9788f40123Cb3B8b8a84Edb4202",
+    "token": "0x8Ffb89D50eB0b9788f40123Cb3B8b8a84Edb4202",
+    "core": [],
+    "min": 1,
+    "invalid": [],
+    "visible": false
   }
 }
