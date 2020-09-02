@@ -232,8 +232,8 @@
     "invalid": [],
     "visible": false
   },
-  "shill": {
-    "key": "shill",
+  "shillDAO": {
+    "key": "shillDAO",
     "symbol": "SHILL",
     "name": "Shill DAO",
     "defaultView": "all",
