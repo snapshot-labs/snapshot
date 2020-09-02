@@ -218,7 +218,47 @@
     "invalid": [],
     "visible": false
   },
-    "toast": {
+  "shrimp": {
+    "key": "shrimp",
+    "symbol": "SHRIMP",
+    "name": "SHRIMP.FINANCE",
+    "defaultView": "all",
+    "address": "0x38c4102D11893351cED7eF187fCF43D33eb1aBE6",
+    "token": "0x38c4102D11893351cED7eF187fCF43D33eb1aBE6",
+    "core": [
+      "0xF5bC663Bca33af81E2fb8f72D24Cad0D14665871"
+    ],
+    "min": 0,
+    "invalid": [],
+    "visible": false
+  },
+  "pillar": {
+    "key": "pillar",
+    "symbol": "PLR",
+    "name": "Pillar",
+    "defaultView": "all",
+    "address": "0xe3818504c1b32bf1557b16c238b2e01fd3149c17",
+    "token": "0xe3818504c1b32bf1557b16c238b2e01fd3149c17",
+    "core": [
+      "0x2Abdb157b2603e17d531d4fc51a4fc6174c3dAEA"
+    ],
+    "min": 0,
+    "invalid": [],
+    "visible": false
+  },
+  "lao": {
+    "key": "lao",
+    "symbol": "LAO",
+    "name": "LAO Community",
+    "defaultView": "all",
+    "address": "0x8Ffb89D50eB0b9788f40123Cb3B8b8a84Edb4202",
+    "token": "0x8Ffb89D50eB0b9788f40123Cb3B8b8a84Edb4202",
+    "core": [],
+    "min": 1,
+    "invalid": [],
+    "visible": false
+  },
+  "toast": {
     "key": "toast",
     "symbol": "HOUSE",
     "name": "Toast.finance",
@@ -229,5 +269,4 @@
     "min": 0,
     "invalid": [],
     "visible": false
-  }
 }
