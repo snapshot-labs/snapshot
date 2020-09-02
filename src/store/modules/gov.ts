@@ -1,9 +1,7 @@
-import { Contract } from '@ethersproject/contracts';
-import { Interface } from '@ethersproject/abi';
 import { formatUnits } from '@ethersproject/units';
+import { multicall } from '@/_snapshot/utils';
 import client from '@/helpers/client';
 import ipfs from '@/helpers/ipfs';
-import config from '@/helpers/config';
 import abi from '@/helpers/abi';
 import rpcProvider from '@/helpers/rpc';
 import { formatProposal, formatProposals } from '@/helpers/utils';
@@ -86,18 +84,21 @@ const actions = {
       return;
     }
   },
-  getProposals: async ({ commit, dispatch, rootState }, payload) => {
+  getProposals: async ({ commit, rootState }, payload) => {
     const { decimals } = rootState.web3.spaces[payload];
     commit('GET_PROPOSALS_REQUEST');
     try {
       let proposals: any = await client.request(`${payload}/proposals`);
       if (proposals) {
-        let balances = await dispatch('multicall', {
-          name: 'TestToken',
-          calls: Object.values(proposals).map((proposal: any) => {
-            return [proposal.msg.token, 'balanceOf', [proposal.address]];
-          })
-        });
+        let balances = await multicall(
+          rpcProvider,
+          abi['TestToken'],
+          Object.values(proposals).map((proposal: any) => [
+            proposal.msg.token,
+            'balanceOf',
+            [proposal.address]
+          ])
+        );
         balances = balances.map(balance =>
           parseFloat(formatUnits(balance.toString(), decimals))
         );
@@ -198,17 +199,15 @@ const actions = {
   ) => {
     commit('GET_VOTERS_BALANCES_REQUEST');
     if (addresses.length === 0) return {};
-    const multi = new Contract(config.multicall, abi['Multicall'], rpcProvider);
-    const calls = [];
-    const testToken = new Interface(abi.TestToken);
-    addresses.forEach(address => {
-      // @ts-ignore
-      calls.push([token, testToken.encodeFunctionData('balanceOf', [address])]);
-    });
     const balances: any = {};
     try {
       const { decimals } = rootState.web3.spaces[token];
-      const [, response] = await multi.aggregate(calls, { blockTag });
+      const response = await multicall(
+        rpcProvider,
+        abi['TestToken'],
+        addresses.map((address: any) => [token, 'balanceOf', [address]]),
+        { blockTag }
+      );
       response.forEach((value, i) => {
         balances[addresses[i]] = parseFloat(
           formatUnits(value.toString(), decimals)
