@@ -25,7 +25,7 @@
         </div>
         <div class="d-flex">
           <span v-text="'Voting power'" class="flex-auto text-gray mr-1" />
-          <span v-text="`${_numeral(power.total)} ${namespace.symbol}`" />
+          <span v-text="`${_numeral(power.total)} ${space.symbol}`" />
         </div>
       </div>
       <div class="p-4 overflow-hidden text-center border-top">
@@ -51,12 +51,12 @@
 
 <script>
 import { mapActions } from 'vuex';
-import namespaces from '@/namespaces.json';
+import spaces from '@/../spaces';
 
 export default {
   props: [
     'open',
-    'namespace',
+    'space',
     'proposal',
     'id',
     'selectedChoice',
@@ -66,12 +66,12 @@ export default {
   data() {
     return {
       loading: false,
-      namespaces
+      spaces
     };
   },
   computed: {
     symbol() {
-      return this.namespace.symbol || this._shorten(this.namespace.address);
+      return this.space.symbol || this._shorten(this.space.address);
     }
   },
   methods: {
@@ -79,7 +79,7 @@ export default {
     async handleSubmit() {
       this.loading = true;
       await this.send({
-        token: this.namespace.address,
+        token: this.space.address,
         type: 'vote',
         payload: {
           proposal: this.id,

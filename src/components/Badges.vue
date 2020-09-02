@@ -7,11 +7,11 @@
 
 <script>
 export default {
-  props: ['address', 'namespace'],
+  props: ['address', 'space'],
   computed: {
     isCore() {
-      return this.namespace && this.namespace.core
-        ? this.namespace.core.includes(this.address)
+      return this.space && this.space.core
+        ? this.space.core.includes(this.address)
         : false;
     },
     isVerified() {

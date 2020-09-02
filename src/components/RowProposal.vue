@@ -13,13 +13,9 @@
     <div>
       <span v-text="`#${i.slice(0, 7)}`" />
       By {{ _shorten(proposal.address) }}
-      <Badges
-        :address="proposal.address"
-        :namespace="namespace"
-        class="ml-n1"
-      />
+      <Badges :address="proposal.address" :space="space" class="ml-n1" />
       {{ _numeral(proposal.balance) }}
-      {{ namespace.symbol }}
+      {{ space.symbol }}
       <Icon v-if="isVerified" name="check" title="Verified" />
       start
       <span v-text="$d(proposal.msg.payload.start * 1e3)" />
@@ -32,7 +28,7 @@
 <script>
 export default {
   props: {
-    namespace: Object,
+    space: Object,
     token: String,
     proposal: Object,
     verified: Array,

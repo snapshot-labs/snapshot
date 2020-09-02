@@ -6,7 +6,7 @@
         class="text-gray"
       >
         <Icon name="back" size="22" class="v-align-middle" />
-        {{ namespace.name }}
+        {{ space.name }}
       </router-link>
     </div>
     <div>
@@ -109,8 +109,8 @@
 
 <script>
 import { mapActions } from 'vuex';
-import namespaces from '@/namespaces.json';
 import draggable from 'vuedraggable';
+import spaces from '@/../spaces';
 
 export default {
   components: {
@@ -135,9 +135,9 @@ export default {
     };
   },
   computed: {
-    namespace() {
-      return namespaces[this.key]
-        ? namespaces[this.key]
+    space() {
+      return spaces[this.key]
+        ? spaces[this.key]
         : { token: this.key, verified: [] };
     },
     isValid() {
@@ -181,7 +181,7 @@ export default {
       this.form.choices = this.choices.map(choice => choice.text);
       try {
         const { ipfsHash } = await this.send({
-          token: this.namespace.address,
+          token: this.space.address,
           type: 'proposal',
           payload: this.form
         });

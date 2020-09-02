@@ -5,7 +5,7 @@
         <span v-text="choice" class="mr-1" />
         <span v-if="results.totalBalances[i]" class="mr-1">
           {{ _numeral(results.totalBalances[i]) }}
-          {{ _shorten(namespace.symbol, 'symbol') }}
+          {{ _shorten(space.symbol, 'symbol') }}
         </span>
         <span
           class="float-right"
@@ -42,7 +42,7 @@ import * as jsonexport from 'jsonexport/dist';
 import pkg from '@/../package.json';
 
 export default {
-  props: ['namespace', 'payload', 'results', 'votes'],
+  props: ['space', 'payload', 'results', 'votes'],
   computed: {
     ts() {
       return (Date.now() / 1e3).toFixed();

@@ -1,5 +1,5 @@
 <template>
-  <div :class="namespace ? namespace.key : ''" id="app" class="overflow-hidden">
+  <div :class="space ? space.key : ''" id="app" class="overflow-hidden">
     <UiLoading v-if="ui.loading || !ui.init" class="overlay big" />
     <div v-else>
       <Topnav />
@@ -13,7 +13,7 @@
 
 <script>
 import { mapActions } from 'vuex';
-import namespaces from '@/namespaces.json';
+import spaces from '@/../spaces';
 
 export default {
   methods: {
@@ -32,9 +32,9 @@ export default {
         (!this.web3.account && !this.wrongNetwork)
       );
     },
-    namespace() {
+    space() {
       try {
-        return namespaces[this.$route.params.key];
+        return spaces[this.$route.params.key];
       } catch (e) {
         return {};
       }

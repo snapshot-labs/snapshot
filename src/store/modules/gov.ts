@@ -87,7 +87,7 @@ const actions = {
     }
   },
   getProposals: async ({ commit, dispatch, rootState }, payload) => {
-    const { decimals } = rootState.web3.namespaces[payload];
+    const { decimals } = rootState.web3.spaces[payload];
     commit('GET_PROPOSALS_REQUEST');
     try {
       let proposals: any = await client.request(`${payload}/proposals`);
@@ -207,7 +207,7 @@ const actions = {
     });
     const balances: any = {};
     try {
-      const { decimals } = rootState.web3.namespaces[token];
+      const { decimals } = rootState.web3.spaces[token];
       const [, response] = await multi.aggregate(calls, { blockTag });
       response.forEach((value, i) => {
         balances[addresses[i]] = parseFloat(
