@@ -10,7 +10,7 @@ import abi from '@/helpers/abi';
 import config from '@/helpers/config';
 import wsProvider from '@/helpers/ws';
 import rpcProvider from '@/helpers/rpc';
-import namespaces from '@/namespaces.json';
+import spaces from '@/../spaces';
 
 let auth;
 let web3;
@@ -27,7 +27,7 @@ const state = {
   active: false,
   balances: {},
   blockNumber: 0,
-  namespaces: {}
+  spaces: {}
 };
 
 const mutations = {
@@ -153,7 +153,7 @@ const mutations = {
     console.debug('MULTICALL_SUCCESS');
   },
   METADATA_SUCCESS(_state, payload) {
-    Vue.set(_state, 'namespaces', payload);
+    Vue.set(_state, 'spaces', payload);
     console.debug('METADATA_SUCCESS');
   }
 };
@@ -322,7 +322,7 @@ const actions = {
     }
   },
   getBalance: async ({ commit, dispatch }, { blockTag, token }) => {
-    const { decimals } = state.namespaces[token];
+    const { decimals } = state.spaces[token];
     commit('GET_BALANCE_REQUEST');
     try {
       const response = await dispatch('multicall', {
@@ -363,15 +363,15 @@ const actions = {
       const noDecimals = ['yearn'];
       const response = await dispatch('multicall', {
         name: 'TestToken',
-        calls: Object.values(namespaces)
-          .filter(space => !noDecimals.includes(space.key))
+        calls: Object.values(spaces)
+          .filter((space: any) => !noDecimals.includes(space.key))
           .map((space: any) => [space.address, 'decimals', []])
       });
       const payload = Object.fromEntries(
         response.map((item, i) => [
           // @ts-ignore
-          Object.values(namespaces).filter(
-            space => !noDecimals.includes(space.key)
+          Object.values(spaces).filter(
+            (space: any) => !noDecimals.includes(space.key)
           )[i].address,
           { decimals: response[i][0] }
         ])

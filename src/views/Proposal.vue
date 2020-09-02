@@ -3,7 +3,7 @@
     <div class="px-4 px-md-0 mb-3">
       <router-link :to="{ name: 'proposals' }" class="text-gray">
         <Icon name="back" size="22" class="v-align-middle" />
-        {{ namespace.name }}
+        {{ space.name }}
       </router-link>
     </div>
     <div>
@@ -58,7 +58,7 @@
         </Block>
         <BlockVotes
           v-if="loaded"
-          :namespace="namespace"
+          :space="space"
           :proposal="proposal"
           :votes="votes"
         />
@@ -68,15 +68,15 @@
           <div class="mb-1">
             <b>Token</b>
             <span class="float-right text-white">
-              <Token :namespace="namespace.key" class="mr-1" />
-              {{ namespace.symbol }}
+              <Token :space="space.key" class="mr-1" />
+              {{ space.symbol }}
             </span>
           </div>
           <div class="mb-1">
             <b>Author</b>
             <User
               :address="proposal.address"
-              :namespace="namespace"
+              :space="space"
               class="float-right"
             />
           </div>
@@ -122,7 +122,7 @@
           </div>
         </Block>
         <BlockResults
-          :namespace="namespace"
+          :space="space"
           :payload="payload"
           :results="results"
           :votes="votes"
@@ -134,7 +134,7 @@
       :open="modalOpen"
       @close="modalOpen = false"
       @reload="loadProposal"
-      :namespace="namespace"
+      :space="space"
       :proposal="proposal"
       :id="id"
       :selectedChoice="selectedChoice"
@@ -146,7 +146,7 @@
 
 <script>
 import { mapActions } from 'vuex';
-import namespaces from '@/namespaces.json';
+import spaces from '@/../spaces';
 
 export default {
   data() {
@@ -165,9 +165,9 @@ export default {
     };
   },
   computed: {
-    namespace() {
-      return namespaces[this.key]
-        ? namespaces[this.key]
+    space() {
+      return spaces[this.key]
+        ? spaces[this.key]
         : { token: this.key, verified: [] };
     },
     payload() {
@@ -181,7 +181,7 @@ export default {
     ...mapActions(['getProposal', 'getPower']),
     async loadProposal() {
       const proposalObj = await this.getProposal({
-        token: this.namespace.address,
+        token: this.space.address,
         id: this.id
       });
       this.proposal = proposalObj.proposal;
@@ -191,7 +191,7 @@ export default {
     async loadPower() {
       if (!this.web3.account) return;
       this.power = await this.getPower({
-        token: this.namespace.address,
+        token: this.space.address,
         address: this.web3.account,
         snapshot: this.payload.snapshot
       });

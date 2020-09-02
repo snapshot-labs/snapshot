@@ -1,7 +1,7 @@
 <template>
   <img
     :src="
-      `https://raw.githubusercontent.com/balancer-labs/snapshot/develop/src/assets/${namespace}.png`
+      `https://raw.githubusercontent.com/balancer-labs/snapshot/develop/spaces/${space}/logo.png`
     "
     class="d-inline-block bg-gray-9 v-align-middle line-height-0 circle border"
     :style="{
@@ -13,6 +13,6 @@
 
 <script>
 export default {
-  props: ['namespace', 'size']
+  props: ['space', 'size']
 };
 </script>

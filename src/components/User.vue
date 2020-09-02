@@ -3,7 +3,7 @@
     <a @click="modalOpen = true" target="_blank" class="no-wrap">
       <Avatar :address="address" size="16" class="mr-1" />
       {{ name }}
-      <Badges :address="address" :namespace="namespace" />
+      <Badges :address="address" :space="space" />
     </a>
     <ModalUser
       :open="modalOpen"
@@ -15,7 +15,7 @@
 
 <script>
 export default {
-  props: ['address', 'namespace'],
+  props: ['address', 'space'],
   data() {
     return {
       modalOpen: false

@@ -2,16 +2,16 @@
   <div>
     <Container :slim="true">
       <router-link
-        v-for="namespace in namespaces"
-        :key="namespace.address"
-        :to="{ name: 'proposals', params: { key: namespace.key } }"
+        v-for="namespace in homepage"
+        :key="spaces[namespace].address"
+        :to="{ name: 'proposals', params: { key: namespace } }"
       >
         <Block class="text-center">
-          <Token :namespace="namespace.key" size="88" class="mb-3" />
+          <Token :space="namespace" size="88" class="mb-3" />
           <div>
             <h2>
-              {{ namespace.name }}
-              <span class="text-gray">{{ namespace.symbol }}</span>
+              {{ spaces[namespace].name }}
+              <span class="text-gray">{{ spaces[namespace].symbol }}</span>
             </h2>
           </div>
         </Block>
@@ -20,7 +20,7 @@
         <Block class="text-center">
           <div
             v-text="'+'"
-            style="width: 88px; height: 88px; color: white; font-size: 76px; padding-top: 6px;"
+            style="width: 88px; height: 88px; color: white; font-size: 76px; padding-top: 2px;"
             class="bg-gray-3 circle mx-auto mb-3"
           />
           <h2 v-text="'Create space'" />
@@ -31,15 +31,16 @@
 </template>
 
 <script>
-import namespaces from '@/namespaces.json';
-import domains from '@/domains.json';
+import spaces from '@/../spaces';
+import homepage from '@/../spaces/homepage.json';
+import domains from '@/../spaces/domains.json';
 
 export default {
   data() {
     return {
-      namespaces: Object.fromEntries(
-        Object.entries(namespaces).filter(namespace => namespace[1].visible)
-      )
+      spaces,
+      homepage,
+      domains
     };
   },
   created() {

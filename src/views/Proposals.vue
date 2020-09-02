@@ -3,7 +3,7 @@
     <Container>
       <div class="mb-3 d-flex">
         <div class="flex-auto">
-          <div v-text="namespace.name" />
+          <div v-text="space.name" />
           <div class="d-flex flex-items-center flex-auto">
             <h2 class="mr-2">
               Proposals
@@ -42,9 +42,9 @@
             v-for="(proposal, i) in proposalsWithFilter"
             :key="i"
             :proposal="proposal"
-            :namespace="namespace"
+            :space="space"
             :token="key"
-            :verified="namespace.verified"
+            :verified="space.verified"
             :i="i"
           />
         </div>
@@ -61,7 +61,7 @@
 
 <script>
 import { mapActions } from 'vuex';
-import namespaces from '@/namespaces.json';
+import spaces from '@/../spaces';
 
 export default {
   data() {
@@ -76,9 +76,9 @@ export default {
     key() {
       return this.$route.params.key;
     },
-    namespace() {
-      return namespaces[this.key]
-        ? namespaces[this.key]
+    space() {
+      return spaces[this.key]
+        ? spaces[this.key]
         : { token: this.key, verified: [] };
     },
     totalProposals() {
@@ -90,16 +90,16 @@ export default {
       return Object.fromEntries(
         Object.entries(this.proposals)
           .filter(proposal => {
-            if (proposal[1].balance < this.namespace.min) return false;
+            if (proposal[1].balance < this.space.min) return false;
             if (
               this.selectedState !== 'invalid' &&
-              this.namespace.invalid.includes(proposal[1].authorIpfsHash)
+              this.space.invalid.includes(proposal[1].authorIpfsHash)
             ) {
               return false;
             }
             if (
               this.selectedState === 'invalid' &&
-              this.namespace.invalid.includes(proposal[1].authorIpfsHash)
+              this.space.invalid.includes(proposal[1].authorIpfsHash)
             ) {
               return true;
             }
@@ -113,13 +113,13 @@ export default {
             }
             if (
               this.selectedState === 'core' &&
-              this.namespace.core.includes(proposal[1].address)
+              this.space.core.includes(proposal[1].address)
             ) {
               return true;
             }
             if (
               this.selectedState === 'community' &&
-              !this.namespace.core.includes(proposal[1].address)
+              !this.space.core.includes(proposal[1].address)
             ) {
               return true;
             }
@@ -145,8 +145,8 @@ export default {
   },
   async created() {
     this.loading = true;
-    this.selectedState = this.$route.params.tab || this.namespace.defaultView;
-    this.proposals = await this.getProposals(this.namespace.address);
+    this.selectedState = this.$route.params.tab || this.space.defaultView;
+    this.proposals = await this.getProposals(this.space.address);
     this.loading = false;
     this.loaded = true;
   }
