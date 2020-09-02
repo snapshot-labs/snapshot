@@ -1,0 +1,19 @@
+{
+  "key": "balancer",
+  "symbol": "BAL",
+  "name": "Balancer",
+  "defaultView": "core",
+  "address": "0xba100000625a3754423978a60c9317c58a424e3D",
+  "token": "0xba100000625a3754423978a60c9317c58a424e3D",
+  "core": [
+    "0x24A12Fa313F57aF541d447c594072A992c605DCf",
+    "0x8BBE4Ac64246d600BC2889ef5d83809D138F03DF",
+    "0xeF8305E140ac520225DAf050e2f71d5fBcC543e7",
+    "0x107174D70b33523E83711EA4C3F4229cdB8A7Cb1",
+    "0x0b21Dbc34A953a35dFA629ad31e1cEE3dE0433Fb",
+    "0x40FDAa1bff3BB87bC70955Be6657edBFdBeb122e",
+    "0xcc6A949DB9b26a7173648d50Cf7C55e800E6585B"
+  ],
+  "min": 0,
+  "invalid": []
+}

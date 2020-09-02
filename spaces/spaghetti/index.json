@@ -1,0 +1,11 @@
+{
+  "key": "spaghetti",
+  "symbol": "PASTA",
+  "name": "Spaghetti.Money",
+  "defaultView": "all",
+  "address": "0xE54f9E6Ab80ebc28515aF8b8233c1aeE6506a15E",
+  "token": "0xE54f9E6Ab80ebc28515aF8b8233c1aeE6506a15E",
+  "core": [],
+  "min": 0,
+  "invalid": []
+}
