@@ -30,6 +30,7 @@ export default {
   border-radius: 4px;
 
   span:last-child {
+    opacity: 0.6;
     background-color: var(--primary-color) !important;
     border-top-right-radius: 4px;
     border-bottom-right-radius: 4px;

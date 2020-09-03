@@ -172,7 +172,7 @@ const actions = {
     commit('LOAD_WEB3_REQUEST');
     try {
       await dispatch('loadProvider');
-      await dispatch('loadAccount');
+      await dispatch('lookupAddress');
       commit('LOAD_WEB3_SUCCESS');
       if (!state.injectedLoaded || state.injectedChainId !== config.chainId) {
         await dispatch('loadBackupProvider');
@@ -303,9 +303,6 @@ const actions = {
       commit('SIGN_MESSAGE_FAILURE', e);
       return Promise.reject(e);
     }
-  },
-  loadAccount: async ({ dispatch }) => {
-    await dispatch('lookupAddress');
   },
   getBlockNumber: async ({ commit }) => {
     commit('GET_BLOCK_REQUEST');

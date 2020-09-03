@@ -1,5 +1,6 @@
 import { formatUnits } from '@ethersproject/units';
 import { multicall } from '@/_snapshot/utils';
+import strategies from '@/_snapshot/strategies';
 import client from '@/helpers/client';
 import ipfs from '@/helpers/ipfs';
 import abi from '@/helpers/abi';
@@ -115,7 +116,7 @@ const actions = {
       commit('GET_PROPOSALS_FAILURE', e);
     }
   },
-  getProposal: async ({ commit, dispatch, rootState }, payload) => {
+  getProposal: async ({ commit, rootState }, payload) => {
     commit('GET_PROPOSAL_REQUEST');
     try {
       const result: any = {};
@@ -126,29 +127,35 @@ const actions = {
       result.proposal = formatProposal(proposal);
       result.proposal.ipfsHash = payload.id;
       result.votes = votes;
-      const bptDisabled = !!result.proposal.bpt_voting_disabled;
       const { snapshot } = result.proposal.msg.payload;
       const blockTag =
         snapshot > rootState.web3.blockNumber ? 'latest' : parseInt(snapshot);
-      const votersBalances = await dispatch('getVotersBalances', {
-        token: payload.token,
-        addresses: Object.values(result.votes).map((vote: any) => vote.address),
+
+      // Score with ERC20 balanceOf strategy
+      const options = {
+        address: payload.token,
+        decimals: rootState.web3.spaces[payload.token].decimals
+      };
+      const votersBalances = await strategies.erc20BalanceOf(
+        rpcProvider,
+        Object.values(result.votes).map((vote: any) => vote.address),
+        options,
         blockTag
-      });
-      // @ts-ignore
-      const addresses = Object.keys(votes);
-      let votingPowers = {};
-      if (!bptDisabled) {
-        votingPowers = await dispatch('getVotingPowers', {
-          token: result.proposal.msg.token,
-          blockTag,
-          addresses
-        });
-      }
+      );
+
+      // Score with Balancer strategy
+      const votingPowers = await strategies.balancer(
+        rpcProvider,
+        // @ts-ignore
+        Object.keys(votes),
+        options,
+        blockTag
+      );
+
       result.votes = Object.fromEntries(
         Object.entries(result.votes)
           .map((vote: any) => {
-            const bptBalance = bptDisabled ? 0 : votingPowers[vote[1].address];
+            const bptBalance = votingPowers[vote[1].address] || 0;
             vote[1].balance = votersBalances[vote[1].address] + bptBalance;
             vote[1].bptBalance = bptBalance;
             vote[1].walletBalance = votersBalances[vote[1].address];
@@ -157,6 +164,7 @@ const actions = {
           .sort((a, b) => b[1].balance - a[1].balance)
           .filter(vote => vote[1].balance > 0)
       );
+
       result.results = {
         totalVotes: result.proposal.msg.payload.choices.map(
           (choice, i) =>
@@ -169,13 +177,11 @@ const actions = {
             .filter((vote: any) => vote.msg.payload.choice === i + 1)
             .reduce((a, b: any) => a + b.balance, 0)
         ),
-        totalBptBalances: bptDisabled
-          ? 0
-          : result.proposal.msg.payload.choices.map((choice, i) =>
-              Object.values(result.votes)
-                .filter((vote: any) => vote.msg.payload.choice === i + 1)
-                .reduce((a, b: any) => a + b.bptBalance, 0)
-            ),
+        totalBptBalances: result.proposal.msg.payload.choices.map((choice, i) =>
+          Object.values(result.votes)
+            .filter((vote: any) => vote.msg.payload.choice === i + 1)
+            .reduce((a, b: any) => a + b.bptBalance, 0)
+        ),
         totalWalletBalances: result.proposal.msg.payload.choices.map(
           (choice, i) =>
             Object.values(result.votes)
@@ -187,37 +193,11 @@ const actions = {
           0
         )
       };
+
       commit('GET_PROPOSAL_SUCCESS');
       return result;
     } catch (e) {
       commit('GET_PROPOSAL_FAILURE', e);
-    }
-  },
-  getVotersBalances: async (
-    { commit, rootState },
-    { token, addresses, blockTag }
-  ) => {
-    commit('GET_VOTERS_BALANCES_REQUEST');
-    if (addresses.length === 0) return {};
-    const balances: any = {};
-    try {
-      const { decimals } = rootState.web3.spaces[token];
-      const response = await multicall(
-        rpcProvider,
-        abi['TestToken'],
-        addresses.map((address: any) => [token, 'balanceOf', [address]]),
-        { blockTag }
-      );
-      response.forEach((value, i) => {
-        balances[addresses[i]] = parseFloat(
-          formatUnits(value.toString(), decimals)
-        );
-      });
-      commit('GET_VOTERS_BALANCES_SUCCESS');
-      return balances;
-    } catch (e) {
-      commit('GET_VOTERS_BALANCES_FAILURE', e);
-      return Promise.reject();
     }
   },
   getPower: async (
@@ -228,15 +208,13 @@ const actions = {
     const blockTag =
       snapshot > rootState.web3.blockNumber ? 'latest' : parseInt(snapshot);
     try {
-      const bpts = await dispatch('getVotingPowersByPools', {
-        blockTag,
-        token,
-        addresses: [address]
-      });
-      const bpt = Object.values(bpts[address]).reduce(
-        (a: any, b: any) => a + b,
-        0
+      const score = await strategies.balancer(
+        rpcProvider,
+        [address],
+        { address: token },
+        blockTag
       );
+      const bpt = score[address] ? score[address] : 0;
       const base = await dispatch('getBalance', { blockTag, token });
       commit('GET_POWER_SUCCESS');
       return { base, bpt, total: base + bpt };
