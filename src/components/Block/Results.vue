@@ -22,7 +22,7 @@
         />
       </div>
       <UiProgress
-        :value="[results.totalWalletBalances[i], results.totalBptBalances[i]]"
+        :value="results.totalScores[i]"
         :max="results.totalVotesBalances"
         class="mb-3"
       />

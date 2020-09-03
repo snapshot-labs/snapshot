@@ -27,7 +27,7 @@ export default {
     },
     _shorten(str: string, key: string): string {
       let limit;
-      if (key === 'symbol') limit = 7;
+      if (key === 'symbol') limit = 6;
       if (key === 'name') limit = 64;
       if (key === 'choice') limit = 12;
       if (limit)

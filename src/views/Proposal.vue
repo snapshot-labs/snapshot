@@ -181,7 +181,7 @@ export default {
     ...mapActions(['getProposal', 'getPower']),
     async loadProposal() {
       const proposalObj = await this.getProposal({
-        token: this.space.address,
+        space: this.space,
         id: this.id
       });
       this.proposal = proposalObj.proposal;
