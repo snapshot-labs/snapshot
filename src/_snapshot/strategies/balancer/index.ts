@@ -5,11 +5,9 @@ const BALANCER_SUBGRAPH_URL =
   'https://api.thegraph.com/subgraphs/name/balancer-labs/balancer';
 
 export async function strategy(provider, addresses, options, snapshot) {
-  const block = snapshot === 'latest' ? undefined : { number: snapshot };
-  const result = await subgraphRequest(BALANCER_SUBGRAPH_URL, {
+  const params = {
     poolShares: {
       __args: {
-        block,
         where: {
           userAddress_in: addresses.map(address => address.toLowerCase()),
           balance_gt: 0
@@ -30,7 +28,10 @@ export async function strategy(provider, addresses, options, snapshot) {
         }
       }
     }
-  });
+  };
+  // @ts-ignore
+  if (snapshot !== 'latest') params.poolShares.__args.block = snapshot;
+  const result = await subgraphRequest(BALANCER_SUBGRAPH_URL, params);
   const score = {};
   if (result && result.poolShares) {
     result.poolShares.forEach(poolShare =>
