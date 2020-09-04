@@ -189,25 +189,25 @@ const actions = {
       commit('GET_PROPOSAL_FAILURE', e);
     }
   },
-  /** TODO: Refactor with strategies */
-  getPower: async (
-    { commit, dispatch, rootState },
-    { token, address, snapshot }
-  ) => {
+  getPower: async ({ commit, rootState }, { space, address, snapshot }) => {
     commit('GET_POWER_REQUEST');
-    const blockTag =
-      snapshot > rootState.web3.blockNumber ? 'latest' : parseInt(snapshot);
     try {
-      const score = await strategies.balancer(
-        rpcProvider,
-        [address],
-        { address: token },
-        blockTag
+      const blockTag =
+        snapshot > rootState.web3.blockNumber ? 'latest' : parseInt(snapshot);
+      const { decimals } = rootState.web3.spaces[space.address];
+      const defaultStrategies = [
+        ['erc20BalanceOf', { address: space.address, decimals }]
+      ];
+      const spaceStrategies = spaces[space.key].strategies || defaultStrategies;
+      const scores: any = await Promise.all(
+        spaceStrategies.map((strategy: any) =>
+          strategies[strategy[0]](rpcProvider, [address], strategy[1], blockTag)
+        )
       );
-      const bpt = score[address] ? score[address] : 0;
-      const base = await dispatch('getBalance', { blockTag, token });
       commit('GET_POWER_SUCCESS');
-      return { base, bpt, total: base + bpt };
+      return scores
+        .map(score => Object.values(score).reduce((a, b: any) => a + b, 0))
+        .reduce((a, b: any) => a + b, 0);
     } catch (e) {
       commit('GET_POWER_FAILURE', e);
     }

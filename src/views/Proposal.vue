@@ -138,7 +138,7 @@
       :proposal="proposal"
       :id="id"
       :selectedChoice="selectedChoice"
-      :power="power"
+      :totalScore="totalScore"
       :snapshot="payload.snapshot"
     />
   </Container>
@@ -161,7 +161,7 @@ export default {
       results: [],
       modalOpen: false,
       selectedChoice: 0,
-      power: 0
+      totalScore: 0
     };
   },
   computed: {
@@ -190,8 +190,8 @@ export default {
     },
     async loadPower() {
       if (!this.web3.account) return;
-      this.power = await this.getPower({
-        token: this.space.address,
+      this.totalScore = await this.getPower({
+        space: this.space,
         address: this.web3.account,
         snapshot: this.payload.snapshot
       });
