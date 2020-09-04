@@ -1,0 +1,14 @@
+{
+  "key": "bella",
+  "symbol": "BEL",
+  "name": "Bella",
+  "defaultView": "core",
+  "address": "0xa91ac63d040deb1b7a5e4d4134ad23eb0ba07e14",
+  "token": "0xa91ac63d040deb1b7a5e4d4134ad23eb0ba07e14",
+  "core": [
+    "0xDC1926b681838A684277767eE8b7597a3d29439b",
+    "0x7924A26d7E7088Bc6921CEb614E0f3b7D7a1ebee"
+  ],
+  "min": 0,
+  "invalid": []
+}
