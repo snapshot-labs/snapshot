@@ -1,0 +1,11 @@
+{
+  "key": "status",
+  "symbol": "SNT",
+  "name": "Status.im",
+  "defaultView": "all",
+  "address": "0x744d70FDBE2Ba4CF95131626614a1763DF805B9E",
+  "token": "0x744d70FDBE2Ba4CF95131626614a1763DF805B9E",
+  "core": [],
+  "min": 0,
+  "invalid": []
+}
