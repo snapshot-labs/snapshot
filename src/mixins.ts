@@ -1,5 +1,6 @@
 import { mapState } from 'vuex';
 import numeral from 'numeral';
+import prettyMs from 'pretty-ms';
 import store from '@/store';
 import config from '@/helpers/config';
 import { shorten, etherscanLink } from '@/helpers/utils';
@@ -17,10 +18,18 @@ export default {
     ...mapState(modules)
   },
   methods: {
+    _ms(number) {
+      const diff = number * 1e3 - new Date().getTime();
+      return prettyMs(diff);
+    },
     _numeral(number, format = '(0.[00]a)') {
       return numeral(number).format(format);
     },
-    _shorten(str: string): string {
+    _shorten(str: string, key: string): string {
+      if (key === 'symbol')
+        return str.length > 7 ? `${str.slice(0, 7).trim()}...` : str;
+      if (key === 'name')
+        return str.length > 64 ? `${str.slice(0, 64).trim()}...` : str;
       return shorten(str);
     },
     _ipfsUrl(ipfsHash: string): string {

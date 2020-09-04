@@ -3,16 +3,7 @@
     <Container>
       <div class="mb-3 d-flex">
         <div class="flex-auto">
-          <div>
-            <a
-              :href="_etherscanLink(namespace.address)"
-              target="_blank"
-              class="text-gray"
-            >
-              {{ namespace.name || _shorten(key) }}
-              <Icon name="external-link" class="ml-1" />
-            </a>
-          </div>
+          <div v-text="space.name" />
           <div class="d-flex flex-items-center flex-auto">
             <h2 class="mr-2">
               Proposals
@@ -20,7 +11,7 @@
             </h2>
           </div>
         </div>
-        <router-link v-if="web3.account" :to="{ name: 'create' }">
+        <router-link v-if="$auth.isAuthenticated" :to="{ name: 'create' }">
           <UiButton>New proposal</UiButton>
         </router-link>
       </div>
@@ -28,21 +19,21 @@
     <Container :slim="true">
       <Block :slim="true">
         <div class="px-4 py-3 bg-gray-dark overflow-auto menu-tabs">
-          <a
+          <router-link
             v-for="state in [
-              'All',
-              'Core devs',
-              'Community',
-              'Noncompliant',
-              'Active',
-              'Pending',
-              'Closed'
+              'core',
+              'community',
+              'all',
+              'active',
+              'pending',
+              'invalid',
+              'closed'
             ]"
             :key="state"
             v-text="state"
-            @click="selectedState = state"
-            :class="selectedState !== state && 'text-gray'"
-            class="mr-3"
+            :to="`/${key}/${state}`"
+            :class="selectedState === state && 'text-white'"
+            class="mr-3 text-gray tab"
           />
         </div>
         <RowLoading v-if="loading" />
@@ -51,9 +42,9 @@
             v-for="(proposal, i) in proposalsWithFilter"
             :key="i"
             :proposal="proposal"
-            :namespace="namespace"
+            :space="space"
             :token="key"
-            :verified="namespace.verified"
+            :verified="space.verified"
             :i="i"
           />
         </div>
@@ -70,7 +61,7 @@
 
 <script>
 import { mapActions } from 'vuex';
-import namespaces from '@/namespaces.json';
+import spaces from '@/../spaces';
 
 export default {
   data() {
@@ -85,9 +76,9 @@ export default {
     key() {
       return this.$route.params.key;
     },
-    namespace() {
-      return namespaces[this.key]
-        ? namespaces[this.key]
+    space() {
+      return spaces[this.key]
+        ? spaces[this.key]
         : { token: this.key, verified: [] };
     },
     totalProposals() {
@@ -99,47 +90,47 @@ export default {
       return Object.fromEntries(
         Object.entries(this.proposals)
           .filter(proposal => {
-            if (proposal[1].balance < this.namespace.min) return false;
+            if (proposal[1].balance < this.space.min) return false;
             if (
-              this.selectedState !== 'Noncompliant' &&
-              this.namespace.noncompliant.includes(proposal[1].authorIpfsHash)
+              this.selectedState !== 'invalid' &&
+              this.space.invalid.includes(proposal[1].authorIpfsHash)
             ) {
               return false;
             }
             if (
-              this.selectedState === 'Noncompliant' &&
-              this.namespace.noncompliant.includes(proposal[1].authorIpfsHash)
+              this.selectedState === 'invalid' &&
+              this.space.invalid.includes(proposal[1].authorIpfsHash)
             ) {
               return true;
             }
-            if (this.selectedState === 'All') return true;
+            if (this.selectedState === 'all') return true;
             if (
-              this.selectedState === 'Active' &&
+              this.selectedState === 'active' &&
               proposal[1].msg.payload.start <= ts &&
               proposal[1].msg.payload.end > ts
             ) {
               return true;
             }
             if (
-              this.selectedState === 'Core devs' &&
-              proposal[1].address.includes(this.namespace.coreDevs)
+              this.selectedState === 'core' &&
+              this.space.core.includes(proposal[1].address)
             ) {
               return true;
             }
             if (
-              this.selectedState === 'Community' &&
-              !proposal[1].address.includes(this.namespace.coreDevs)
+              this.selectedState === 'community' &&
+              !this.space.core.includes(proposal[1].address)
             ) {
               return true;
             }
             if (
-              this.selectedState === 'Closed' &&
+              this.selectedState === 'closed' &&
               proposal[1].msg.payload.end <= ts
             ) {
               return true;
             }
             if (
-              this.selectedState === 'Pending' &&
+              this.selectedState === 'pending' &&
               proposal[1].msg.payload.start > ts
             ) {
               return true;
@@ -154,7 +145,8 @@ export default {
   },
   async created() {
     this.loading = true;
-    this.proposals = await this.getProposals(this.namespace.address);
+    this.selectedState = this.$route.params.tab || this.space.defaultView;
+    this.proposals = await this.getProposals(this.space.address);
     this.loading = false;
     this.loaded = true;
   }

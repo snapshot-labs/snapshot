@@ -17,19 +17,24 @@
               style="font-size: 24px; padding-top: 4px;"
             >
               <span
-                :class="namespace && 'hide-sm'"
+                :class="space && 'hide-sm'"
                 class="mr-1"
                 v-text="'snapshot'"
               />
-              <template v-if="namespace">
-                <span class="pl-1 pr-2 text-gray" v-text="'/'" />
-                <Token :address="namespace.image" size="28" />
-                <span class="ml-2" v-text="namespace.symbol" />
-              </template>
+            </router-link>
+            <router-link
+              v-if="space"
+              :to="{ name: 'proposals' }"
+              class="d-inline-block d-flex flex-items-center"
+              style="font-size: 24px; padding-top: 4px;"
+            >
+              <span class="pl-1 pr-2 text-gray" v-text="'/'" />
+              <Token :space="space.key" size="28" />
+              <span class="ml-2" v-text="space.symbol" />
             </router-link>
           </div>
           <div :key="web3.account">
-            <template v-if="web3.account && !wrongNetwork">
+            <template v-if="$auth.isAuthenticated && !wrongNetwork">
               <UiButton
                 @click="modalOpen = true"
                 class="button-outline"
@@ -72,7 +77,7 @@
 
 <script>
 import { mapActions } from 'vuex';
-import namespaces from '@/namespaces.json';
+import spaces from '@/../spaces';
 
 export default {
   data() {
@@ -88,13 +93,13 @@ export default {
     },
     showLogin() {
       return (
-        (!this.web3.account && !this.web3.injectedLoaded) ||
-        (!this.web3.account && !this.wrongNetwork)
+        (!this.$auth.isAuthenticated && !this.web3.injectedLoaded) ||
+        (!this.$auth.isAuthenticated && !this.wrongNetwork)
       );
     },
-    namespace() {
+    space() {
       try {
-        return namespaces[this.$route.params.key];
+        return spaces[this.$route.params.key];
       } catch (e) {
         return {};
       }

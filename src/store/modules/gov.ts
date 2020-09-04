@@ -5,7 +5,7 @@ import client from '@/helpers/client';
 import ipfs from '@/helpers/ipfs';
 import config from '@/helpers/config';
 import abi from '@/helpers/abi';
-import wsProvider from '@/helpers/ws';
+import rpcProvider from '@/helpers/rpc';
 import { formatProposal, formatProposals } from '@/helpers/utils';
 import { version } from '@/../package.json';
 
@@ -87,7 +87,7 @@ const actions = {
     }
   },
   getProposals: async ({ commit, dispatch, rootState }, payload) => {
-    const { decimals } = rootState.web3.namespaces[payload];
+    const { decimals } = rootState.web3.spaces[payload];
     commit('GET_PROPOSALS_REQUEST');
     try {
       let proposals: any = await client.request(`${payload}/proposals`);
@@ -197,7 +197,8 @@ const actions = {
     { token, addresses, blockTag }
   ) => {
     commit('GET_VOTERS_BALANCES_REQUEST');
-    const multi = new Contract(config.multicall, abi['Multicall'], wsProvider);
+    if (addresses.length === 0) return {};
+    const multi = new Contract(config.multicall, abi['Multicall'], rpcProvider);
     const calls = [];
     const testToken = new Interface(abi.TestToken);
     addresses.forEach(address => {
@@ -206,7 +207,7 @@ const actions = {
     });
     const balances: any = {};
     try {
-      const { decimals } = rootState.web3.namespaces[token];
+      const { decimals } = rootState.web3.spaces[token];
       const [, response] = await multi.aggregate(calls, { blockTag });
       response.forEach((value, i) => {
         balances[addresses[i]] = parseFloat(

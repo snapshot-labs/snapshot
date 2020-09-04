@@ -1,10 +1,36 @@
-@import './fonts';
 @import './vars';
-@import './assets/default.scss';
-@import './assets/yam.scss';
-@import './assets/yearn.scss';
-@import './assets/balancer.scss';
-@import "~@primer/css/index.scss";
+@import "~@primer/css";
+@import './assets/fonts/iconfont.css';
+
+:root {
+  --primary-color: #384aff;
+  --bg-color: white;
+  --text-color: #586069;
+  --link-color: #111111;
+  --heading-color: #111111;
+  --border-color: #d1d5da;
+  --header-bg: #f6f8fa;
+}
+
+@font-face {
+  font-family: 'Calibre-Medium';
+  src: url('./assets/fonts/Calibre-Medium.eot');
+  src: url('./assets/fonts/Calibre-Medium.eot?#iefix') format('embedded-opentype'),
+  url('./assets/fonts/Calibre-Medium.woff') format('woff'),
+  url('./assets/fonts/Calibre-Medium.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Calibre-Semibold';
+  src: url('./assets/fonts/Calibre-Semibold.eot');
+  src: url('./assets/fonts/Calibre-Semibold.eot?#iefix') format('embedded-opentype'),
+  url('./assets/fonts/Calibre-Semibold.woff') format('woff'),
+  url('./assets/fonts/Calibre-Semibold.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
 
 html, body, #app {
   background-color: var(--bg-color);
@@ -130,10 +156,17 @@ textarea {
   background-color: var(--primary-color) !important;
 }
 
-.menu-tabs {    
-    white-space: nowrap;
+.tab {
+  display: inline-block;
+  &:first-letter {
+    text-transform: capitalize;
+  }
+}
+
+.menu-tabs {
+  white-space: nowrap;
 }
 
 .menu-tabs::-webkit-scrollbar {
-    display:none;
+  display: none;
 }

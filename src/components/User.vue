@@ -1,9 +1,9 @@
 <template>
   <span>
-    <a @click="modalOpen = true" target="_blank">
+    <a @click="modalOpen = true" target="_blank" class="no-wrap">
       <Avatar :address="address" size="16" class="mr-1" />
       {{ name }}
-      <Icon v-if="isVerified" name="check" class="ml-1" title="Verified" />
+      <Badges :address="address" :space="space" />
     </a>
     <ModalUser
       :open="modalOpen"
@@ -15,10 +15,7 @@
 
 <script>
 export default {
-  props: {
-    address: String,
-    verified: Array
-  },
+  props: ['address', 'space'],
   data() {
     return {
       modalOpen: false
@@ -30,13 +27,6 @@ export default {
         this.address.toLowerCase() === this.web3.account.toLowerCase()
         ? 'You'
         : this._shorten(this.address);
-    },
-    isVerified() {
-      return (
-        Array.isArray(this.verified) &&
-        this.verified.length > 0 &&
-        this.verified.includes(this.address)
-      );
     }
   }
 };

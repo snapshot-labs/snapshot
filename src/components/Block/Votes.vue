@@ -11,7 +11,7 @@
       :style="i === 0 && 'border: 0 !important;'"
       class="px-4 py-3 border-top d-flex"
     >
-      <User :address="address" :verified="namespace.verified" class="column" />
+      <User :address="address" :space="space" class="column" />
       <div
         v-text="proposal.msg.payload.choices[vote.msg.payload.choice - 1]"
         class="flex-auto text-center text-white"
@@ -19,15 +19,14 @@
       <div class="column text-right">
         <span
           v-text="
-            `${_numeral(vote.balance)} ${namespace.symbol ||
-              _shorten(namespace.token)}`
+            `${_numeral(vote.balance)} ${_shorten(space.symbol, 'symbol')}`
           "
           class="text-white"
         />
         <a
           @click="openReceiptModal(vote)"
           target="_blank"
-          class="ml-3 text-gray"
+          class="ml-2 text-gray"
           title="Receipt"
         >
           <Icon name="signature" />
@@ -52,7 +51,7 @@
 
 <script>
 export default {
-  props: ['namespace', 'proposal', 'votes'],
+  props: ['space', 'proposal', 'votes'],
   data() {
     return {
       showAllVotes: false,
@@ -63,9 +62,9 @@ export default {
   },
   computed: {
     visibleVotes() {
-      return Object.fromEntries(
-        Object.entries(this.votes).slice(0, this.showAllVotes ? -1 : 10)
-      );
+      return this.showAllVotes
+        ? this.votes
+        : Object.fromEntries(Object.entries(this.votes).slice(0, 10));
     }
   },
   methods: {

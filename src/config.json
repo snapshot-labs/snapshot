@@ -1,85 +1,46 @@
 {
-  "master": {
-    "env": "master",
-    "network": "homestead",
-    "chainId": 1,
-    "subgraphUrl": "https://api.thegraph.com/subgraphs/name/balancer-labs/balancer",
-    "multicall": "0xeefBa1e63905eF1D7ACbA5a8513c70307C1cE441",
-    "connectors": {
-      "injected": {
-        "id": "injected",
-        "name": "MetaMask"
-      },
-      "portis": {
-        "id": "portis",
-        "name": "Portis",
-        "options": {
-          "dappId": "3f1c3cfc-7dd5-4e8a-aa03-71ff7396d9fe",
-          "network": "mainnet"
-        }
-      },
-      "fortmatic": {
-        "id": "fortmatic",
-        "name": "Fortmatic",
-        "options": {
-          "apiKey": "pk_live_9CE8FD92E54684ED"
+  "env": "master",
+  "network": "homestead",
+  "chainId": 1,
+  "subgraphUrl": "https://api.thegraph.com/subgraphs/name/balancer-labs/balancer",
+  "multicall": "0xeefBa1e63905eF1D7ACbA5a8513c70307C1cE441",
+  "connectors": {
+    "injected": {
+      "id": "injected",
+      "name": "MetaMask"
+    },
+    "fortmatic": {
+      "id": "fortmatic",
+      "name": "Fortmatic",
+      "options": {
+        "apiKey": "pk_live_9CE8FD92E54684ED"
+      }
+    },
+    "portis": {
+      "id": "portis",
+      "name": "Portis",
+      "options": {
+        "dappId": "3f1c3cfc-7dd5-4e8a-aa03-71ff7396d9fe",
+        "network": "mainnet"
+      }
+    },
+    "walletconnect": {
+      "id": "walletconnect",
+      "name": "WalletConnect",
+      "options": {
+        "rpc": {
+          "1": "https://eth-mainnet.alchemyapi.io/v2/rXKbp7PTFm6hcrxU8NL-JGp5RMfRHDwg"
         }
       }
-    }
-  },
-  "develop": {
-    "env": "develop",
-    "network": "homestead",
-    "chainId": 1,
-    "subgraphUrl": "https://api.thegraph.com/subgraphs/name/balancer-labs/balancer",
-    "multicall": "0xeefBa1e63905eF1D7ACbA5a8513c70307C1cE441",
-    "connectors": {
-      "injected": {
-        "id": "injected",
-        "name": "MetaMask"
-      },
-      "portis": {
-        "id": "portis",
-        "name": "Portis",
-        "options": {
-          "dappId": "3f1c3cfc-7dd5-4e8a-aa03-71ff7396d9fe",
-          "network": "mainnet"
-        }
-      },
-      "fortmatic": {
-        "id": "fortmatic",
-        "name": "Fortmatic",
-        "options": {
-          "apiKey": "pk_live_9CE8FD92E54684ED"
-        }
-      }
-    }
-  },
-  "local": {
-    "env": "local",
-    "network": "homestead",
-    "chainId": 1,
-    "subgraphUrl": "https://api.thegraph.com/subgraphs/name/balancer-labs/balancer",
-    "multicall": "0xeefBa1e63905eF1D7ACbA5a8513c70307C1cE441",
-    "connectors": {
-      "injected": {
-        "id": "injected",
-        "name": "MetaMask"
-      },
-      "portis": {
-        "id": "portis",
-        "name": "Portis",
-        "options": {
-          "dappId": "3f1c3cfc-7dd5-4e8a-aa03-71ff7396d9fe",
-          "network": "mainnet"
-        }
-      },
-      "fortmatic": {
-        "id": "fortmatic",
-        "name": "Fortmatic",
-        "options": {
-          "apiKey": "pk_live_9CE8FD92E54684ED"
-        }
+    },
+    "walletlink": {
+      "id": "walletlink",
+      "name": "Coinbase",
+      "options": {
+        "appName": "Snapshot",
+        "darkMode": false,
+        "chainId": 1,
+        "ethJsonrpcUrl": "https://eth-mainnet.alchemyapi.io/v2/rXKbp7PTFm6hcrxU8NL-JGp5RMfRHDwg"
       }
     }
   }

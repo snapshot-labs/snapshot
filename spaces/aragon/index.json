@@ -1,0 +1,11 @@
+{
+  "key": "aragon",
+  "symbol": "ANT",
+  "name": "Aragon",
+  "defaultView": "all",
+  "address": "0x960b236A07cf122663c4303350609A66A7B288C0",
+  "token": "0x960b236A07cf122663c4303350609A66A7B288C0",
+  "core": [],
+  "min": 0,
+  "invalid": []
+}
