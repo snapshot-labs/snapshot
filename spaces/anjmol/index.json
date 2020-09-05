@@ -1,0 +1,11 @@
+{
+  "key": "anjmol",
+  "symbol": "ANJMOL",
+  "name": "Aragon Network Moloch DAO",
+  "defaultView": "all",
+  "address": "0xBa1A22228B091D2bC6E111df61Ae6f7e5102Da1a",
+  "token": "0xBa1A22228B091D2bC6E111df61Ae6f7e5102Da1a",
+  "core": [],
+  "min": 1,
+  "invalid": []
+}
