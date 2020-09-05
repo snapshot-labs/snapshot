@@ -3,7 +3,6 @@ import { getInstance } from '@bonustrack/lock/plugins/vue';
 import { Web3Provider } from '@ethersproject/providers';
 import { Contract } from '@ethersproject/contracts';
 import { getAddress } from '@ethersproject/address';
-import { formatUnits } from '@ethersproject/units';
 import { multicall } from '@/_snapshot/utils';
 import store from '@/store';
 import abi from '@/helpers/abi';
@@ -139,15 +138,6 @@ const mutations = {
   },
   GET_BLOCK_FAILURE(_state, payload) {
     console.debug('GET_BLOCK_FAILURE', payload);
-  },
-  GET_BALANCE_REQUEST() {
-    console.debug('GET_BALANCE_REQUEST');
-  },
-  GET_BALANCE_SUCCESS() {
-    console.debug('GET_BALANCE_SUCCESS');
-  },
-  GET_BALANCE_FAILURE(_state, payload) {
-    console.debug('GET_BALANCE_FAILURE', payload);
   },
   METADATA_SUCCESS(_state, payload) {
     Vue.set(_state, 'spaces', payload);
@@ -312,24 +302,6 @@ const actions = {
       return blockNumber;
     } catch (e) {
       commit('GET_BLOCK_FAILURE', e);
-      return Promise.reject();
-    }
-  },
-  getBalance: async ({ commit }, { blockTag, token }) => {
-    const { decimals } = state.spaces[token];
-    commit('GET_BALANCE_REQUEST');
-    try {
-      const response = await multicall(
-        rpcProvider,
-        abi['TestToken'],
-        [[token, 'balanceOf', [state.account]]],
-        { blockTag }
-      );
-      const balance = parseFloat(formatUnits(response[0].toString(), decimals));
-      commit('GET_BALANCE_SUCCESS');
-      return balance;
-    } catch (e) {
-      commit('GET_BALANCE_FAILURE', e);
       return Promise.reject();
     }
   },
