@@ -33,7 +33,7 @@
 }
 
 html, body, #app {
-  background-color: var(--bg-color);
+  background: var(--bg-color);
   color: var(--text-color);
   font-family: $font-weight-normal;
   -webkit-font-smoothing: antialiased;
