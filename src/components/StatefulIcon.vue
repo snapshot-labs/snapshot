@@ -1,10 +1,15 @@
 <template>
-  <a
-    :class="{ 'extra-icon': true, 'extra-icon-off': !this.on }"
+  <button
+    :class="{
+      'extra-icon': true,
+      'extra-icon-off': !this.on,
+      'text-primary': this.on,
+      'text-gray': !this.on
+    }"
     @click="handleClick($event)"
   >
     <Icon :name="name" size="20" />
-  </a>
+  </button>
 </template>
 
 <script>
@@ -36,5 +41,7 @@ export default {
   right: 12px;
   padding: 8px;
   line-height: 16px;
+  border: none;
+  background-color: transparent;
 }
 </style>
