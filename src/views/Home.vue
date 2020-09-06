@@ -6,8 +6,11 @@
         :key="spaces[namespace].address"
         :to="{ name: 'proposals', params: { key: namespace } }"
       >
-        <Block class="text-center">
+        <Block class="text-center relative">
           <Token :space="namespace" size="88" class="mb-3" />
+          <ExtraIcon @click="toggleFavorite(namespace)">{{
+            favoriteSpaces[namespace] ? 'Remove' : 'Add'
+          }}</ExtraIcon>
           <div>
             <h2>
               {{ spaces[namespace].name }}
@@ -31,6 +34,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 import spaces from '@/../spaces';
 import homepage from '@/../spaces/homepage.json';
 import domains from '@/../spaces/domains.json';
@@ -43,15 +47,33 @@ export default {
       domains
     };
   },
+  computed: {
+    favoriteSpaces() {
+      return this.$store.state.favoriteSpaces.favorites;
+    }
+  },
+  methods: {
+    ...mapActions([
+      'loadFavoriteSpaces',
+      'addFavoriteSpace',
+      'removeFavoriteSpace'
+    ]),
+    toggleFavorite(spaceId) {
+      if (this.favoriteSpaces[spaceId]) this.removeFavoriteSpace(spaceId);
+      else this.addFavoriteSpace(spaceId);
+    }
+  },
   created() {
     const domainName = window.location.hostname;
     if (domains[domainName])
-      this.$router.push({
+      return this.$router.push({
         name: 'proposals',
         params: {
           key: domains[domainName]
         }
       });
+
+    this.loadFavoriteSpaces();
   }
 };
 </script>
