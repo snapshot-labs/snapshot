@@ -29,8 +29,10 @@ export async function strategy(provider, addresses, options, snapshot) {
       }
     }
   };
-  // @ts-ignore
-  if (snapshot !== 'latest') params.poolShares.__args.block = snapshot;
+  if (snapshot !== 'latest') {
+    // @ts-ignore
+    params.poolShares.__args.block = { number: snapshot };
+  }
   const result = await subgraphRequest(BALANCER_SUBGRAPH_URL, params);
   const score = {};
   if (result && result.poolShares) {
