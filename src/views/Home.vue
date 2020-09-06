@@ -8,9 +8,12 @@
       >
         <Block class="text-center extra-icon-container">
           <Token :space="space.key" size="88" class="mb-3" />
-          <ExtraIcon :on="space.favorite" @click="toggleFavorite(space.key)">
-            {{ space.favorite ? 'Remove' : 'Add' }}
-          </ExtraIcon>
+          <StatefulIcon
+            :on="space.favorite"
+            onName="star"
+            offName="star1"
+            @click="toggleFavorite(space.key)"
+          />
           <div>
             <h2>
               {{ space.name }}
