@@ -1,0 +1,13 @@
+{
+  "key": "dollarProtocol",
+  "symbol": "SHARE",
+  "name": "Dollar Protocol",
+  "defaultView": "core",
+  "address": "0x6b583cf4aba7bf9d6f8a51b3f1f7c7b2ce59bf15",
+  "token": "0x6b583cf4aba7bf9d6f8a51b3f1f7c7b2ce59bf15",
+  "core": [
+    "0x89a359A3D37C3A857E62cDE9715900441b47acEC"
+  ],
+  "min": 0,
+  "invalid": []
+}
