@@ -2,7 +2,7 @@
   <Block :title="ts >= payload.end ? 'Results' : 'Current results'">
     <div v-for="(choice, i) in payload.choices" :key="i">
       <div class="text-white mb-1">
-        <span v-text="choice" class="mr-1" />
+        <span v-text="_shorten(choice, 'choice')" class="mr-1" />
         <span v-if="results.totalBalances[i]" class="mr-1">
           {{ _numeral(results.totalBalances[i]) }}
           {{ _shorten(space.symbol, 'symbol') }}
@@ -22,7 +22,7 @@
         />
       </div>
       <UiProgress
-        :value="[results.totalWalletBalances[i], results.totalBptBalances[i]]"
+        :value="results.totalScores[i]"
         :max="results.totalVotesBalances"
         class="mb-3"
       />

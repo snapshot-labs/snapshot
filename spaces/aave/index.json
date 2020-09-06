@@ -7,5 +7,15 @@
   "token": "0x80fB784B7eD66730e8b1DBd9820aFD29931aab03",
   "core": [],
   "min": 0,
-  "invalid": []
+  "invalid": [],
+  "strategies": [
+    ["erc20BalanceOf", {
+      "address": "0x80fB784B7eD66730e8b1DBd9820aFD29931aab03",
+      "decimals": 18
+    }],
+    ["erc20BalanceOf", {
+      "address": "0x7D2D3688Df45Ce7C552E19c27e007673da9204B8",
+      "decimals": 18
+    }]
+  ]
 }
