@@ -1,0 +1,11 @@
+{
+  "key": "ulu",
+  "symbol": "ULU",
+  "name": "Ulu",
+  "defaultView": "core",
+  "address": "0x035bfe6057e15ea692c0dfdcab3bb41a64dd2ad4",
+  "token": "0x035bfe6057e15ea692c0dfdcab3bb41a64dd2ad4",
+  "core": [],
+  "min": 0,
+  "invalid": []
+}
