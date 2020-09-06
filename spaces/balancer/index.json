@@ -15,5 +15,14 @@
     "0xcc6A949DB9b26a7173648d50Cf7C55e800E6585B"
   ],
   "min": 0,
-  "invalid": []
+  "invalid": [],
+  "strategies": [
+    ["erc20BalanceOf", {
+      "address": "0xba100000625a3754423978a60c9317c58a424e3D",
+      "decimals": 18
+    }],
+    ["balancer", {
+      "address": "0xba100000625a3754423978a60c9317c58a424e3D"
+    }]
+  ]
 }
