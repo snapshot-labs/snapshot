@@ -6,11 +6,11 @@
         :key="space.address"
         :to="{ name: 'proposals', params: { key: space.key } }"
       >
-        <Block class="text-center relative">
+        <Block class="text-center extra-icon-container">
           <Token :space="space.key" size="88" class="mb-3" />
-          <ExtraIcon @click="toggleFavorite(space.key)">{{
-            space.favorite ? 'Remove' : 'Add'
-          }}</ExtraIcon>
+          <ExtraIcon :on="space.favorite" @click="toggleFavorite(space.key)">
+            {{ space.favorite ? 'Remove' : 'Add' }}
+          </ExtraIcon>
           <div>
             <h2>
               {{ space.name }}

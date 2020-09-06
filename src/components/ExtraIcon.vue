@@ -1,9 +1,17 @@
 <template>
-  <a class="extra-icon" @click="handleClick($event)"><slot /></a>
+  <a
+    :class="{ 'extra-icon': true, 'extra-icon-off': !this.on }"
+    @click="handleClick($event)"
+  >
+    <slot />
+  </a>
 </template>
 
 <script>
 export default {
+  props: {
+    on: { type: Boolean, default: true }
+  },
   methods: {
     handleClick(e) {
       e.preventDefault();
