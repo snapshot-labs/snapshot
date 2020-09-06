@@ -2,8 +2,6 @@
   "env": "master",
   "network": "homestead",
   "chainId": 1,
-  "subgraphUrl": "https://api.thegraph.com/subgraphs/name/balancer-labs/balancer",
-  "multicall": "0xeefBa1e63905eF1D7ACbA5a8513c70307C1cE441",
   "connectors": {
     "injected": {
       "id": "injected",
