@@ -40,15 +40,15 @@ export default {
   }
 
   span:nth-child(2) {
-    opacity: 0.8;
+    opacity: 0.75;
   }
 
   span:nth-child(3) {
-    opacity: 0.6;
+    opacity: 0.5;
   }
 
   span:nth-child(4) {
-    opacity: 0.4;
+    opacity: 0.25;
   }
 
   span:last-child {
