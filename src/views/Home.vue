@@ -50,13 +50,10 @@ export default {
     };
   },
   computed: {
-    favoriteSpaces() {
-      return this.$store.state.favoriteSpaces.favorites;
-    },
     spaces() {
       const list = homepage.map(namespace => ({
         ...spaces[namespace],
-        favorite: !!this.favoriteSpaces[namespace]
+        favorite: !!this.favoriteSpaces.favorites[namespace]
       }));
 
       return orderBy(list, ['favorite'], ['desc']);
@@ -69,8 +66,11 @@ export default {
       'removeFavoriteSpace'
     ]),
     toggleFavorite(spaceId) {
-      if (this.favoriteSpaces[spaceId]) this.removeFavoriteSpace(spaceId);
-      else this.addFavoriteSpace(spaceId);
+      if (this.favoriteSpaces.favorites[spaceId]) {
+        this.removeFavoriteSpace(spaceId);
+      } else {
+        this.addFavoriteSpace(spaceId);
+      }
     }
   },
   created() {
