@@ -144,6 +144,10 @@ textarea {
   background-color: var(--text-color) !important;
 }
 
+.text-primary {
+  color: var(--primary-color) !important;
+}
+
 .text-gray {
   color: var(--text-color) !important;
 }
@@ -169,4 +173,16 @@ textarea {
 
 .menu-tabs::-webkit-scrollbar {
   display: none;
+}
+
+.extra-icon-container {
+  position: relative;
+
+  .extra-icon-off {
+    display: none;
+  }
+
+  &:hover .extra-icon-off {
+    display: inline;
+  }
 }

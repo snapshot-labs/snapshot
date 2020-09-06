@@ -6,6 +6,27 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "577487",
+      "name": "star",
+      "font_class": "star",
+      "unicode": "e666",
+      "unicode_decimal": 58982
+    },
+    {
+      "icon_id": "6346000",
+      "name": "star",
+      "font_class": "star1",
+      "unicode": "e615",
+      "unicode_decimal": 58901
+    },
+    {
+      "icon_id": "562650",
+      "name": "love it",
+      "font_class": "loveit",
+      "unicode": "e60a",
+      "unicode_decimal": 58890
+    },
+    {
       "icon_id": "248947",
       "name": "Vignetting",
       "font_class": "byteball",
