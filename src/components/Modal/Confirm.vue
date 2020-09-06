@@ -25,7 +25,7 @@
         </div>
         <div class="d-flex">
           <span v-text="'Voting power'" class="flex-auto text-gray mr-1" />
-          <span v-text="`${_numeral(power.total)} ${space.symbol}`" />
+          <span v-text="`${_numeral(totalScore)} ${space.symbol}`" />
         </div>
       </div>
       <div class="p-4 overflow-hidden text-center border-top">
@@ -61,7 +61,7 @@ export default {
     'id',
     'selectedChoice',
     'snapshot',
-    'power'
+    'totalScore'
   ],
   data() {
     return {

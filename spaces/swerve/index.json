@@ -1,0 +1,11 @@
+{
+  "key": "swerve",
+  "symbol": "SWRV",
+  "name": "Swerve Finance",
+  "defaultView": "all",
+  "address": "0xB8BAa0e4287890a5F79863aB62b7F175ceCbD433",
+  "token": "0xB8BAa0e4287890a5F79863aB62b7F175ceCbD433",
+  "core": [],
+  "min": 0,
+  "invalid": []
+}
