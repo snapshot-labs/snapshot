@@ -24,6 +24,7 @@
       <UiProgress
         :value="results.totalScores[i]"
         :max="results.totalVotesBalances"
+        :titles="titles"
         class="mb-3"
       />
     </div>
@@ -46,6 +47,10 @@ export default {
   computed: {
     ts() {
       return (Date.now() / 1e3).toFixed();
+    },
+    titles() {
+      if (!this.space.strategies) return [this.space.symbol];
+      return this.space.strategies.map(strategy => strategy[1].symbol);
     }
   },
   methods: {
