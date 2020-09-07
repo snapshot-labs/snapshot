@@ -14,44 +14,29 @@
       <User :address="address" :space="space" class="column" />
       <div
         v-text="proposal.msg.payload.choices[vote.msg.payload.choice - 1]"
-        class="flex-1 text-center text-white"
+        class="flex-auto text-center text-white"
       />
-      <div class="flex-auto text-right">
+      <div class="column text-right text-white">
         <!-- If one token, load space symbol -->
         <span
-          v-if="titles.length === 1"
-          v-text="
-            `${_numeral(vote.balance)} ${_shorten(space.symbol, 'symbol')}`
+          class="tooltipped tooltipped-n tooltipped-no-delay"
+          :aria-label="
+            vote.scores
+              .map((score, index) => `${_numeral(score)} ${titles[index]}`)
+              .join(' + ')
           "
-          class="text-white"
-        />
-        <!-- Else If more tokens, load strategy symbols -->
-        <template v-if="titles.length > 1">
-          <span
-            class="mr-1 token-results"
-            v-for="(tokenScore, tokenIndex) of vote.scores"
-            :key="titles[tokenIndex]"
-          >
-            {{ _numeral(tokenScore) }}
-            <Token
-              :space="space.key"
-              :symbol="titles[tokenIndex]"
-              class="mx-1"
-            />
-            <span v-show="tokenIndex !== vote.scores.length - 1">
-              +
-            </span>
-          </span>
-        </template>
-        <a
-          @click="openReceiptModal(vote)"
-          target="_blank"
-          class="ml-2 text-gray"
-          title="Receipt"
         >
-          <Icon name="signature" />
-        </a>
+          {{ `${_numeral(vote.balance)} ${_shorten(space.symbol, 'symbol')}` }}
+        </span>
       </div>
+      <a
+        @click="openReceiptModal(vote)"
+        target="_blank"
+        class="ml-2 text-gray"
+        title="Receipt"
+      >
+        <Icon name="signature" />
+      </a>
     </div>
     <a
       v-if="!showAllVotes && Object.keys(votes).length > 10"
