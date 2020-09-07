@@ -8,7 +8,6 @@
   "core": [],
   "min": 0,
   "invalid": [],
-  "showTokenList": true,
   "strategies": [
     [
       "erc20BalanceOf",
