@@ -28,13 +28,14 @@
         class="mb-3"
       />
     </div>
-    <UiButton
-      @click="downloadReport"
-      v-if="ts >= payload.end"
-      class="width-full mt-2"
-    >
-      Download report
-    </UiButton>
+    <div v-if="ts >= payload.end">
+      <UiButton @click="downloadReport" class="width-full mt-2">
+        Download report
+      </UiButton>
+      <UiButton @click="downloadReport" class="width-full mt-2 button--submit">
+        Submit
+      </UiButton>
+    </div>
   </Block>
 </template>
 
