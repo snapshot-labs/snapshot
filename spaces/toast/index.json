@@ -1,0 +1,13 @@
+{
+  "key": "toast",
+  "symbol": "HOUSE",
+  "name": "Toast.finance",
+  "defaultView": "all",
+  "address": "0xDD0c21B935038ae5904487F843D1498A09C91854",
+  "token": "0xDD0c21B935038ae5904487F843D1498A09C91854",
+  "core": [
+    "0x6cef9EcD79e87F8a88143eE9b464119bB296dA8b"
+  ],
+  "min": 0,
+  "invalid": ["QmdZmo5G1fE6aS6fMbn5aKoooBRuGxm3wCPkCp5wBvMhG3"]
+}

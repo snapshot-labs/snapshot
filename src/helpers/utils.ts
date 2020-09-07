@@ -50,7 +50,7 @@ export function formatProposal(proposal) {
   }
 
   if (proposal.msg.payload.snapshot < 10000000)
-    proposal.msg.payload.snapshot = 10000000;
+    proposal.msg.payload.snapshot = 20000000;
 
   return proposal;
 }
