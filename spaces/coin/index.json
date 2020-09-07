@@ -1,0 +1,15 @@
+{
+  "key": "coin",
+  "symbol": "COIN",
+  "name": "Coin Artist",
+  "defaultView": "core",
+  "address": "0x87b008e57f640d94ee44fd893f0323af933f9195",
+  "token": "0x87b008e57f640d94ee44fd893f0323af933f9195",
+  "core": [
+    "0x148e2ED011A9EAAa200795F62889D68153EEacdE",
+    "0x9eE5E3Ff06425CF972E77c195F70Ecb18aC23d7f",
+    "0x5B93FF82faaF241c15997ea3975419DDDd8362c5"
+  ],
+  "min": 0,
+  "invalid": []
+}
