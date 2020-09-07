@@ -25,6 +25,7 @@
             <Token
               :space="space.key"
               :symbol="symbol"
+              :symbol-index="symbolIndex"
               :show-symbol="true"
               class="mx-1"
             />

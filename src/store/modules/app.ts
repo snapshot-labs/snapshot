@@ -147,6 +147,7 @@ const actions = {
           )
         )
       );
+      console.log('Scores', scores);
       result.votes = Object.fromEntries(
         Object.entries(result.votes)
           .map((vote: any) => {

@@ -8,7 +8,6 @@
         width: `${size || 22}px`,
         height: `${size || 22}px`
       }"
-      :onerror="onError()"
     />
     <span v-if="showSymbol || loadError">{{ symbol }}</span>
   </span>
@@ -16,20 +15,11 @@
 
 <script>
 export default {
-  props: ['space', 'symbol', 'size', 'showSymbol'],
-  data: () => ({
-    loadError: false
-  }),
-  methods: {
-    onError: function() {
-      this.$data.loadError = true;
-    }
-  },
+  props: ['space', 'symbol', 'size', 'showSymbol', 'symbolIndex'],
   computed: {
     symbolUrl() {
-      return this.symbol
-        ? `https://raw.githubusercontent.com/balancer-labs/snapshot/develop/spaces/${this.space}/symbols/${this.symbol}.png`
-        : `https://raw.githubusercontent.com/balancer-labs/snapshot/develop/spaces/${this.space}/logo.png`;
+      const id = this.symbolIndex ? this.symbolIndex : '';
+      return `https://raw.githubusercontent.com/balancer-labs/snapshot/develop/spaces/${this.space}/logo${id}.png`;
     }
   }
 };

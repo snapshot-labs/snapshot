@@ -77,7 +77,7 @@
                   :space="space.key"
                   :symbol="symbol"
                   :show-symbol="true"
-                  class="mx-1"
+                  :symbol-index="symbolIndex"
                 />
                 <span v-show="symbolIndex !== symbols.length - 1">
                   +
