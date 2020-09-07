@@ -1,5 +1,5 @@
 @import './vars';
-@import "~@primer/css";
+@import '~@primer/css';
 @import './assets/fonts/iconfont.css';
 
 :root {
@@ -15,9 +15,10 @@
 @font-face {
   font-family: 'Calibre-Medium';
   src: url('./assets/fonts/Calibre-Medium.eot');
-  src: url('./assets/fonts/Calibre-Medium.eot?#iefix') format('embedded-opentype'),
-  url('./assets/fonts/Calibre-Medium.woff') format('woff'),
-  url('./assets/fonts/Calibre-Medium.ttf') format('truetype');
+  src: url('./assets/fonts/Calibre-Medium.eot?#iefix')
+      format('embedded-opentype'),
+    url('./assets/fonts/Calibre-Medium.woff') format('woff'),
+    url('./assets/fonts/Calibre-Medium.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
@@ -25,14 +26,17 @@
 @font-face {
   font-family: 'Calibre-Semibold';
   src: url('./assets/fonts/Calibre-Semibold.eot');
-  src: url('./assets/fonts/Calibre-Semibold.eot?#iefix') format('embedded-opentype'),
-  url('./assets/fonts/Calibre-Semibold.woff') format('woff'),
-  url('./assets/fonts/Calibre-Semibold.ttf') format('truetype');
+  src: url('./assets/fonts/Calibre-Semibold.eot?#iefix')
+      format('embedded-opentype'),
+    url('./assets/fonts/Calibre-Semibold.woff') format('woff'),
+    url('./assets/fonts/Calibre-Semibold.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
 
-html, body, #app {
+html,
+body,
+#app {
   background: var(--bg-color);
   color: var(--text-color);
   font-family: $font-weight-normal;
@@ -44,7 +48,10 @@ html, body, #app {
   outline: none !important;
 }
 
-h1, h2, h3, h4 {
+h1,
+h2,
+h3,
+h4 {
   color: var(--heading-color);
   font-family: $font-weight-bold;
 }
@@ -132,7 +139,11 @@ textarea {
   color: white !important;
 }
 
-.border, .border-md, .border-lg, .border-bottom, .border-top {
+.border,
+.border-md,
+.border-lg,
+.border-bottom,
+.border-top {
   border-color: var(--border-color) !important;
 }
 

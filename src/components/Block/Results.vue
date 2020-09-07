@@ -3,10 +3,34 @@
     <div v-for="(choice, i) in payload.choices" :key="i">
       <div class="text-white mb-1">
         <span v-text="_shorten(choice, 'choice')" class="mr-1" />
-        <span v-if="results.totalBalances[i]" class="mr-1">
+        <!-- If one token, load space symbol -->
+        <span
+          v-if="results.totalBalances[i] && results.totalScores[i].length === 1"
+          class="mr-1"
+        >
           {{ _numeral(results.totalBalances[i]) }}
           {{ _shorten(space.symbol, 'symbol') }}
         </span>
+        <!-- Else If more tokens, load strategy symbols -->
+        <template
+          v-if="results.totalBalances[i] && results.totalScores[i].length > 1"
+        >
+          <span
+            class="mr-1 token-results"
+            v-for="(tokenScore, tokenIndex) of results.totalScores[i]"
+            :key="titles[tokenIndex]"
+          >
+            {{ _numeral(tokenScore) }}
+            <Token
+              :space="space.key"
+              :symbol="titles[tokenIndex]"
+              class="mx-1"
+            />
+            <span v-show="tokenIndex !== results.totalScores[i].length - 1">
+              +
+            </span>
+          </span>
+        </template>
         <span
           class="float-right"
           v-text="

@@ -14,15 +14,35 @@
       <User :address="address" :space="space" class="column" />
       <div
         v-text="proposal.msg.payload.choices[vote.msg.payload.choice - 1]"
-        class="flex-auto text-center text-white"
+        class="flex-1 text-center text-white"
       />
-      <div class="column text-right">
+      <div class="flex-auto text-right">
+        <!-- If one token, load space symbol -->
         <span
+          v-if="titles.length === 1"
           v-text="
             `${_numeral(vote.balance)} ${_shorten(space.symbol, 'symbol')}`
           "
           class="text-white"
         />
+        <!-- Else If more tokens, load strategy symbols -->
+        <template v-if="titles.length > 1">
+          <span
+            class="mr-1 token-results"
+            v-for="(tokenScore, tokenIndex) of vote.scores"
+            :key="titles[tokenIndex]"
+          >
+            {{ _numeral(tokenScore) }}
+            <Token
+              :space="space.key"
+              :symbol="titles[tokenIndex]"
+              class="mx-1"
+            />
+            <span v-show="tokenIndex !== vote.scores.length - 1">
+              +
+            </span>
+          </span>
+        </template>
         <a
           @click="openReceiptModal(vote)"
           target="_blank"
@@ -65,6 +85,10 @@ export default {
       return this.showAllVotes
         ? this.votes
         : Object.fromEntries(Object.entries(this.votes).slice(0, 10));
+    },
+    titles() {
+      if (!this.space.strategies) return [this.space.symbol];
+      return this.space.strategies.map(strategy => strategy[1].symbol);
     }
   },
   methods: {
