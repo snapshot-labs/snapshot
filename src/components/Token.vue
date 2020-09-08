@@ -14,8 +14,12 @@ export default {
   props: ['space', 'size', 'symbolIndex'],
   computed: {
     url() {
-      const id = this.symbolIndex ? this.symbolIndex : '';
-      return `https://raw.githubusercontent.com/balancer-labs/snapshot/develop/spaces/${this.space}/logo${id}.png`;
+      const file = this.symbolIndex
+        ? this.symbolIndex === 'space'
+          ? 'space'
+          : `logo${this.symbolIndex}`
+        : 'logo';
+      return `https://raw.githubusercontent.com/balancer-labs/snapshot/develop/spaces/${this.space}/${file}.png`;
     }
   }
 };
