@@ -1,0 +1,13 @@
+{
+  "key": "vodka",
+  "symbol": "VODKA",
+  "name": "Vodka.Finance",
+  "defaultView": "core",
+  "address": "0xc2EdaD668740f1aA35E4D8f227fB8E17dcA888Cd",
+  "token": "0xc2EdaD668740f1aA35E4D8f227fB8E17dcA888Cd",
+  "core": [
+    "0xeF8305E140ac520225DAf050e2f71d5fBcC543e7"
+  ],
+  "min": 0,
+  "invalid": []
+}
