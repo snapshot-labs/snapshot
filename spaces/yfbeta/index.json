@@ -3,11 +3,9 @@
   "symbol": "YFBETA",
   "name": "yfBeta",
   "defaultView": "all",
-  "address": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
-  "token": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
-  "core": [
-    "0xeF8305E140ac520225DAf050e2f71d5fBcC543e7"
-  ],
+  "address": "0x89ee58af4871b474c30001982c3d7439c933c838",
+  "token": "0x89ee58af4871b474c30001982c3d7439c933c838",
+  "core": [],
   "min": 0,
   "invalid": []
 }
