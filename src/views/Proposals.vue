@@ -18,7 +18,9 @@
     </Container>
     <Container :slim="true">
       <Block :slim="true">
-        <div class="px-4 py-3 bg-gray-dark overflow-auto menu-tabs">
+        <div
+          class="px-4 py-3 bg-gray-dark overflow-auto menu-tabs rounded-top-0 rounded-md-top-2"
+        >
           <router-link
             v-for="state in [
               'all',
@@ -51,7 +53,7 @@
           v-if="loaded && Object.keys(proposalsWithFilter).length === 0"
           class="p-4 m-0 border-top d-block"
         >
-          There isn't any proposal here yet!
+          There aren't any proposals here yet!
         </p>
       </Block>
     </Container>

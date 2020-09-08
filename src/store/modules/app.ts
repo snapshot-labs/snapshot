@@ -200,15 +200,25 @@ const actions = {
         ['erc20BalanceOf', { address: space.address, decimals }]
       ];
       const spaceStrategies = spaces[space.key].strategies || defaultStrategies;
-      const scores: any = await Promise.all(
-        spaceStrategies.map((strategy: any) =>
-          strategies[strategy[0]](rpcProvider, [address], strategy[1], blockTag)
+      const scores: any = (
+        await Promise.all(
+          spaceStrategies.map((strategy: any) =>
+            strategies[strategy[0]](
+              rpcProvider,
+              [address],
+              strategy[1],
+              blockTag
+            )
+          )
         )
+      ).map((score: any) =>
+        Object.values(score).reduce((a, b: any) => a + b, 0)
       );
       commit('GET_POWER_SUCCESS');
-      return scores
-        .map(score => Object.values(score).reduce((a, b: any) => a + b, 0))
-        .reduce((a, b: any) => a + b, 0);
+      return {
+        scores,
+        totalScore: scores.reduce((a, b: any) => a + b, 0)
+      };
     } catch (e) {
       commit('GET_POWER_FAILURE', e);
     }
