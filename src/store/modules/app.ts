@@ -1,13 +1,13 @@
 import { formatUnits } from '@ethersproject/units';
 import { multicall } from '@/_snapshot/utils';
 import strategies from '@/_snapshot/strategies';
+import spaces from '@/spaces';
 import client from '@/helpers/client';
 import ipfs from '@/helpers/ipfs';
 import abi from '@/helpers/abi';
 import rpcProvider from '@/helpers/rpc';
 import { formatProposal, formatProposals } from '@/helpers/utils';
 import { version } from '@/../package.json';
-import spaces from '@/../spaces';
 
 const mutations = {
   SEND_REQUEST() {
