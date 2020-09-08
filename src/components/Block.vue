@@ -1,5 +1,7 @@
 <template>
-  <div class="border-top border-bottom border-md rounded-0 rounded-md-2 mb-4">
+  <div
+    class="border-top border-bottom border-md rounded-0 rounded-md-2 mb-4 block-bg"
+  >
     <h4
       v-if="title"
       class="px-4 py-3 border-bottom d-block bg-gray-dark rounded-top-0 rounded-md-top-2"
