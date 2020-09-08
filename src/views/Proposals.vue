@@ -18,7 +18,9 @@
     </Container>
     <Container :slim="true">
       <Block :slim="true">
-        <div class="px-4 py-3 bg-gray-dark overflow-auto menu-tabs">
+        <div
+          class="px-4 py-3 bg-gray-dark overflow-auto menu-tabs rounded-top-0 rounded-md-top-2"
+        >
           <router-link
             v-for="state in [
               'all',
