@@ -65,11 +65,18 @@
       </div>
       <div v-if="loaded" class="col-12 col-lg-4 float-left">
         <Block title="Informations">
-          <div class="mb-1">
-            <b>Token</b>
+          <div class="mb-1 overflow-hidden">
+            <b>Token(s)</b>
             <span class="float-right text-white">
-              <Token :space="space.key" class="mr-1" />
-              {{ space.symbol }}
+              <span v-for="(symbol, symbolIndex) of symbols" :key="symbol">
+                <Token :space="space.key" :symbolIndex="symbolIndex" />
+                {{ symbol }}
+                <span
+                  v-show="symbolIndex !== symbols.length - 1"
+                  v-text="'+'"
+                  class="mr-1"
+                />
+              </span>
             </span>
           </div>
           <div class="mb-1">
@@ -139,6 +146,7 @@
       :id="id"
       :selectedChoice="selectedChoice"
       :totalScore="totalScore"
+      :scores="scores"
       :snapshot="payload.snapshot"
     />
   </Container>
@@ -161,7 +169,8 @@ export default {
       results: [],
       modalOpen: false,
       selectedChoice: 0,
-      totalScore: 0
+      totalScore: 0,
+      scores: []
     };
   },
   computed: {
@@ -175,6 +184,10 @@ export default {
     },
     ts() {
       return (Date.now() / 1e3).toFixed();
+    },
+    symbols() {
+      if (!this.space.strategies) return [this.space.symbol];
+      return this.space.strategies.map(strategy => strategy[1].symbol);
     }
   },
   methods: {
@@ -190,11 +203,13 @@ export default {
     },
     async loadPower() {
       if (!this.web3.account) return;
-      this.totalScore = await this.getPower({
+      const { scores, totalScore } = await this.getPower({
         space: this.space,
         address: this.web3.account,
         snapshot: this.payload.snapshot
       });
+      this.totalScore = totalScore;
+      this.scores = scores;
     }
   },
   async created() {
