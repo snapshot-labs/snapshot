@@ -4,7 +4,7 @@
       <div class="text-white mb-1">
         <span v-text="_shorten(choice, 'choice')" class="mr-1" />
         <span
-          class="mr-1 tooltipped tooltipped-n tooltipped-no-delay"
+          class="mr-1 tooltipped tooltipped-n"
           :aria-label="
             results.totalScores[i]
               .map((score, index) => `${_numeral(score)} ${titles[index]}`)

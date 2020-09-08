@@ -7,35 +7,6 @@
           proposal.msg.payload.choices[selectedChoice - 1]
         }}"? <br />This action <b>cannot</b> be undone.
       </h4>
-      <h4 class="mt-4 text-center">
-        Your voting power
-      </h4>
-      <div class="m-4 p-4 border rounded-2 text-center">
-        <span
-          v-if="symbols.length === 1"
-          v-text="`${_numeral(totalScore)} ${symbols[0]}`"
-        />
-        <template v-else>
-          <span
-            v-for="(symbol, symbolIndex) of symbols"
-            :key="symbol"
-            class="ml-1"
-          >
-            {{ _numeral(scores[symbolIndex]) }}
-            <Token
-              :space="space.key"
-              :symbol="symbol"
-              :symbol-index="symbolIndex"
-              :show-symbol="true"
-              class="mx-1"
-            />
-            <span v-show="symbolIndex !== symbols.length - 1">
-              +
-            </span>
-          </span>
-        </template>
-      </div>
-      <h4 class="text-center">Details</h4>
       <div class="m-4 p-4 border rounded-2 text-white">
         <div class="d-flex">
           <span v-text="'Option'" class="flex-auto text-gray mr-1" />
@@ -52,8 +23,15 @@
             <Icon name="external-link" class="ml-1" />
           </a>
         </div>
+        <div class="d-flex">
+          <span v-text="'Your voting power'" class="flex-auto text-gray mr-1" />
+          <span v-for="(symbol, i) of symbols" :key="symbol">
+            {{ _numeral(scores[i]) }}
+            {{ symbol }}
+            <span v-show="i !== symbols.length - 1" v-text="'+'" class="mr-1" />
+          </span>
+        </div>
       </div>
-
       <div class="p-4 overflow-hidden text-center border-top">
         <div class="col-6 float-left pr-2">
           <UiButton @click="$emit('close')" type="button" class="width-full">

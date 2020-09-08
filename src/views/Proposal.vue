@@ -65,23 +65,17 @@
       </div>
       <div v-if="loaded" class="col-12 col-lg-4 float-left">
         <Block title="Informations">
-          <div class="mb-1">
-            <b>Token</b>
+          <div class="mb-1 overflow-hidden">
+            <b>Token(s)</b>
             <span class="float-right text-white">
-              <span
-                v-for="(symbol, symbolIndex) of symbols"
-                :key="symbol"
-                class="token-title"
-              >
-                <Token
-                  :space="space.key"
-                  :symbol="symbol"
-                  :show-symbol="true"
-                  :symbol-index="symbolIndex"
+              <span v-for="(symbol, symbolIndex) of symbols" :key="symbol">
+                <Token :space="space.key" :symbolIndex="symbolIndex" />
+                {{ symbol }}
+                <span
+                  v-show="symbolIndex !== symbols.length - 1"
+                  v-text="'+'"
+                  class="mr-1"
                 />
-                <span v-show="symbolIndex !== symbols.length - 1">
-                  +
-                </span>
               </span>
             </span>
           </div>

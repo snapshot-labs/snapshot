@@ -197,3 +197,20 @@ textarea {
     display: inline;
   }
 }
+
+.tooltipped {
+  &::before {
+    border-top-color: var(--text-color) !important;
+    margin-bottom: 14px;
+    top: -14px !important;
+  }
+
+  &::after {
+    margin-bottom: 14px;
+    border-radius: 20px;
+    padding: 6px 16px 2px;
+    font-size: 16px;
+    background-color: var(--text-color);
+    color: var(--header-bg);
+  }
+}
