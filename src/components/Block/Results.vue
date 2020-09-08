@@ -3,10 +3,18 @@
     <div v-for="(choice, i) in payload.choices" :key="i">
       <div class="text-white mb-1">
         <span v-text="_shorten(choice, 'choice')" class="mr-1" />
-        <span v-if="results.totalBalances[i]" class="mr-1">
+        <span
+          class="mr-1 tooltipped tooltipped-n tooltipped-no-delay"
+          :aria-label="
+            results.totalScores[i]
+              .map((score, index) => `${_numeral(score)} ${titles[index]}`)
+              .join(' + ')
+          "
+        >
           {{ _numeral(results.totalBalances[i]) }}
           {{ _shorten(space.symbol, 'symbol') }}
         </span>
+
         <span
           class="float-right"
           v-text="

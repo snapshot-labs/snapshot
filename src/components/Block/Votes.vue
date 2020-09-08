@@ -16,22 +16,27 @@
         v-text="proposal.msg.payload.choices[vote.msg.payload.choice - 1]"
         class="flex-auto text-center text-white"
       />
-      <div class="column text-right">
+      <div class="column text-right text-white">
+        <!-- If one token, load space symbol -->
         <span
-          v-text="
-            `${_numeral(vote.balance)} ${_shorten(space.symbol, 'symbol')}`
+          class="tooltipped tooltipped-n tooltipped-no-delay"
+          :aria-label="
+            vote.scores
+              .map((score, index) => `${_numeral(score)} ${titles[index]}`)
+              .join(' + ')
           "
-          class="text-white"
-        />
-        <a
-          @click="openReceiptModal(vote)"
-          target="_blank"
-          class="ml-2 text-gray"
-          title="Receipt"
         >
-          <Icon name="signature" />
-        </a>
+          {{ `${_numeral(vote.balance)} ${_shorten(space.symbol, 'symbol')}` }}
+        </span>
       </div>
+      <a
+        @click="openReceiptModal(vote)"
+        target="_blank"
+        class="ml-2 text-gray"
+        title="Receipt"
+      >
+        <Icon name="signature" />
+      </a>
     </div>
     <a
       v-if="!showAllVotes && Object.keys(votes).length > 10"
@@ -65,6 +70,10 @@ export default {
       return this.showAllVotes
         ? this.votes
         : Object.fromEntries(Object.entries(this.votes).slice(0, 10));
+    },
+    titles() {
+      if (!this.space.strategies) return [this.space.symbol];
+      return this.space.strategies.map(strategy => strategy[1].symbol);
     }
   },
   methods: {

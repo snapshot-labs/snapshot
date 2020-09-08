@@ -68,8 +68,21 @@
           <div class="mb-1">
             <b>Token</b>
             <span class="float-right text-white">
-              <Token :space="space.key" class="mr-1" />
-              {{ space.symbol }}
+              <span
+                v-for="(symbol, symbolIndex) of symbols"
+                :key="symbol"
+                class="token-title"
+              >
+                <Token
+                  :space="space.key"
+                  :symbol="symbol"
+                  :show-symbol="true"
+                  :symbol-index="symbolIndex"
+                />
+                <span v-show="symbolIndex !== symbols.length - 1">
+                  +
+                </span>
+              </span>
             </span>
           </div>
           <div class="mb-1">
@@ -139,6 +152,7 @@
       :id="id"
       :selectedChoice="selectedChoice"
       :totalScore="totalScore"
+      :scores="scores"
       :snapshot="payload.snapshot"
     />
   </Container>
@@ -161,7 +175,8 @@ export default {
       results: [],
       modalOpen: false,
       selectedChoice: 0,
-      totalScore: 0
+      totalScore: 0,
+      scores: []
     };
   },
   computed: {
@@ -175,6 +190,10 @@ export default {
     },
     ts() {
       return (Date.now() / 1e3).toFixed();
+    },
+    symbols() {
+      if (!this.space.strategies) return [this.space.symbol];
+      return this.space.strategies.map(strategy => strategy[1].symbol);
     }
   },
   methods: {
@@ -190,11 +209,13 @@ export default {
     },
     async loadPower() {
       if (!this.web3.account) return;
-      this.totalScore = await this.getPower({
+      const { scores, totalScore } = await this.getPower({
         space: this.space,
         address: this.web3.account,
         snapshot: this.payload.snapshot
       });
+      this.totalScore = totalScore;
+      this.scores = scores;
     }
   },
   async created() {
