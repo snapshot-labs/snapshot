@@ -3,10 +3,9 @@
   "symbol": "GAMEDAO",
   "name": "GameDAO",
   "defaultView": "all",
-  "address": "0x5ae30612FC6CDA7190a5195cdA95107605450dF4",
-  "token": "0x5ae30612FC6CDA7190a5195cdA95107605450dF4",
+  "address": "0x8Bc8531878D86492c2fec90902c004b20Cb22ed6",
+  "token": "0x8Bc8531878D86492c2fec90902c004b20Cb22ed6",
   "core": [
-    "0xeF8305E140ac520225DAf050e2f71d5fBcC543e7"
   ],
   "min": 0,
   "invalid": []
