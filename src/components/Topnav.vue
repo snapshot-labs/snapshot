@@ -29,8 +29,8 @@
               style="font-size: 24px; padding-top: 4px;"
             >
               <span class="pl-1 pr-2 text-gray" v-text="'/'" />
-              <Token :space="space.key" size="28" />
-              <span class="ml-2" v-text="space.symbol" />
+              <Token :space="space.key" symbolIndex="space" size="28" />
+              <span class="ml-2" v-text="space.name" />
             </router-link>
           </div>
           <div :key="web3.account">

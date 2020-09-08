@@ -9,7 +9,8 @@
   --link-color: #111111;
   --heading-color: #111111;
   --border-color: #d1d5da;
-  --header-bg: #f6f8fa;
+  --header-bg: white;
+  --block-bg: transparent;
 }
 
 @font-face {
@@ -165,6 +166,10 @@ textarea {
 
 .text-white {
   color: var(--link-color) !important;
+}
+
+.block-bg {
+  background-color: var(--block-bg) !important;
 }
 
 .bg-blue {

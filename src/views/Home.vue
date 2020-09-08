@@ -7,7 +7,12 @@
         :to="{ name: 'proposals', params: { key: space.key } }"
       >
         <Block class="text-center extra-icon-container">
-          <Token :space="space.key" size="88" class="mb-3" />
+          <Token
+            :space="space.key"
+            symbolIndex="space"
+            size="88"
+            class="mb-3"
+          />
           <StatefulIcon
             :on="space.favorite"
             onName="star"
