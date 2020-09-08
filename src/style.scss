@@ -197,3 +197,7 @@ textarea {
     display: inline;
   }
 }
+
+.tooltipped::after {
+  font-size: 16px;
+}

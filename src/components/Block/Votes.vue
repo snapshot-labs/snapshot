@@ -19,7 +19,7 @@
       <div class="column text-right text-white">
         <!-- If one token, load space symbol -->
         <span
-          class="tooltipped tooltipped-n tooltipped-no-delay"
+          class="tooltipped tooltipped-n"
           :aria-label="
             vote.scores
               .map((score, index) => `${_numeral(score)} ${titles[index]}`)

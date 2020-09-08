@@ -66,22 +66,19 @@
       <div v-if="loaded" class="col-12 col-lg-4 float-left">
         <Block title="Informations">
           <div class="mb-1">
-            <b>Token</b>
+            <b>Token(s)</b>
             <span class="float-right text-white">
-              <span
-                v-for="(symbol, symbolIndex) of symbols"
-                :key="symbol"
-                class="token-title"
-              >
+              <span v-for="(symbol, symbolIndex) of symbols" :key="symbol">
                 <Token
                   :space="space.key"
                   :symbol="symbol"
-                  :show-symbol="true"
-                  :symbol-index="symbolIndex"
+                  :symbolIndex="symbolIndex"
                 />
-                <span v-show="symbolIndex !== symbols.length - 1">
-                  +
-                </span>
+                <span
+                  v-show="symbolIndex !== symbols.length - 1"
+                  v-text="'+'"
+                  class="mx-1"
+                />
               </span>
             </span>
           </div>
