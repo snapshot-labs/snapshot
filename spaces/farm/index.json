@@ -1,0 +1,13 @@
+{
+  "key": "farm",
+  "symbol": "FARM",
+  "name": "Harvest finance",
+  "defaultView": "core",
+  "address": "0xa0246c9032bC3A600820415aE600c6388619A14D",
+  "token": "0xa0246c9032bC3A600820415aE600c6388619A14D",
+  "core": [
+    "0x843002b1D545ef7abB71C716e6179570582faA40"
+  ],
+  "min": 0,
+  "invalid": []
+}
