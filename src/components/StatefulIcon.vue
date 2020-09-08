@@ -8,7 +8,7 @@
     }"
     @click="handleClick($event)"
   >
-    <Icon :name="name" size="20" />
+    <Icon :name="name" size="22" />
   </button>
 </template>
 
@@ -21,7 +21,7 @@ export default {
   },
   computed: {
     name() {
-      return this.on ? 'star' : 'star1';
+      return this.on ? 'favorite-on' : 'favorite-off';
     }
   },
   methods: {

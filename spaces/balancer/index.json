@@ -14,7 +14,7 @@
     "0x40FDAa1bff3BB87bC70955Be6657edBFdBeb122e",
     "0xcc6A949DB9b26a7173648d50Cf7C55e800E6585B"
   ],
-  "min": 0,
+  "min": 1,
   "invalid": [],
   "strategies": [
     ["erc20BalanceOf", {
