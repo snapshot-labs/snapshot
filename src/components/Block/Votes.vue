@@ -17,7 +17,6 @@
         class="flex-auto text-center text-white"
       />
       <div class="column text-right text-white">
-        <!-- If one token, load space symbol -->
         <span
           class="tooltipped tooltipped-n"
           :aria-label="
@@ -28,15 +27,15 @@
         >
           {{ `${_numeral(vote.balance)} ${_shorten(space.symbol, 'symbol')}` }}
         </span>
+        <a
+          @click="openReceiptModal(vote)"
+          target="_blank"
+          class="ml-2 text-gray"
+          title="Receipt"
+        >
+          <Icon name="signature" />
+        </a>
       </div>
-      <a
-        @click="openReceiptModal(vote)"
-        target="_blank"
-        class="ml-2 text-gray"
-        title="Receipt"
-      >
-        <Icon name="signature" />
-      </a>
     </div>
     <a
       v-if="!showAllVotes && Object.keys(votes).length > 10"

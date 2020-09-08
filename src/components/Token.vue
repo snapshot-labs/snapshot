@@ -1,20 +1,17 @@
 <template>
-  <span>
-    <img
-      :src="url"
-      class="d-inline-block bg-gray-9 v-align-middle line-height-0 circle border"
-      :style="{
-        width: `${size || 22}px`,
-        height: `${size || 22}px`
-      }"
-    />
-    <span v-if="symbol" v-text="symbol" class="ml-1" />
-  </span>
+  <img
+    :src="url"
+    class="d-inline-block bg-gray-9 v-align-middle line-height-0 circle border"
+    :style="{
+      width: `${size || 22}px`,
+      height: `${size || 22}px`
+    }"
+  />
 </template>
 
 <script>
 export default {
-  props: ['space', 'symbol', 'size', 'symbolIndex'],
+  props: ['space', 'size', 'symbolIndex'],
   computed: {
     url() {
       const id = this.symbolIndex ? this.symbolIndex : '';
