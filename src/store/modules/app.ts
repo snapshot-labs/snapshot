@@ -1,6 +1,6 @@
 import { formatUnits } from '@ethersproject/units';
-import { multicall } from '@/_snapshot/utils';
-import strategies from '@/_snapshot/strategies';
+import { multicall } from '@bonustrack/snapshot.js/src/utils';
+import strategies from '@bonustrack/snapshot.js/src/strategies';
 import spaces from '@/spaces';
 import client from '@/helpers/client';
 import ipfs from '@/helpers/ipfs';

@@ -11,6 +11,7 @@
   "dependencies": {
     "@bonustrack/lock": "github:bonustrack/lock#e1437a340b578a1e5a48f37f935578ecdb8b51c8",
     "@bonustrack/snapshot-spaces": "github:bonustrack/snapshot-spaces#master",
+    "@bonustrack/snapshot.js": "github:bonustrack/snapshot.js#master",
     "@ethersproject/abi": "^5.0.1",
     "@ethersproject/address": "^5.0.1",
     "@ethersproject/constants": "^5.0.1",
