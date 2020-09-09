@@ -7,7 +7,12 @@
         :to="{ name: 'proposals', params: { key: space.key } }"
       >
         <Block class="text-center extra-icon-container">
-          <Token :space="space.key" size="88" class="mb-3" />
+          <Token
+            :space="space.key"
+            symbolIndex="space"
+            size="88"
+            class="mb-3"
+          />
           <StatefulIcon
             :on="space.favorite"
             onName="star"
@@ -39,9 +44,9 @@
 <script>
 import { mapActions } from 'vuex';
 import orderBy from 'lodash/orderBy';
-import spaces from '@/../spaces';
-import homepage from '@/../spaces/homepage.json';
-import domains from '@/../spaces/domains.json';
+import homepage from '@bonustrack/snapshot-spaces/spaces/homepage.json';
+import domains from '@bonustrack/snapshot-spaces/spaces/domains.json';
+import spaces from '@/spaces';
 
 export default {
   data() {
