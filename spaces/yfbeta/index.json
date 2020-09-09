@@ -2,10 +2,10 @@
   "key": "yfbeta",
   "symbol": "YFBETA",
   "name": "yfBeta",
-  "defaultView": "all",
+  "defaultView": "core",
   "address": "0x89ee58af4871b474c30001982c3d7439c933c838",
   "token": "0x89ee58af4871b474c30001982c3d7439c933c838",
-  "core": [],
+  "core": ["0xbBa1b7890D6FAf87Db273544fd4CeFBe448285dD"],
   "min": 0,
   "invalid": []
 }
