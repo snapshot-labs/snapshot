@@ -2,8 +2,9 @@
   <span class="Progress Progress--small overflow-hidden anim-scale-in">
     <span
       v-for="(bar, i) in bars"
+      :title="`${_numeral(value[i])} ${titles[i]}`"
       :key="i"
-      :style="`width: ${parseInt((100 / max) * bar)}%;`"
+      :style="`width: ${parseFloat((100 / max) * bar).toFixed(3)}%;`"
       class="bg-blue"
     />
   </span>
@@ -11,7 +12,7 @@
 
 <script>
 export default {
-  props: ['value', 'max'],
+  props: ['value', 'max', 'titles'],
   computed: {
     bars() {
       return Array.isArray(this.value) ? this.value : [this.value];
