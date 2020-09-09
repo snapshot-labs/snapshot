@@ -22,14 +22,7 @@
           class="px-4 py-3 bg-gray-dark overflow-auto menu-tabs rounded-top-0 rounded-md-top-2"
         >
           <router-link
-            v-for="state in [
-              'all',
-              'core',
-              'community',
-              'active',
-              'pending',
-              'closed'
-            ]"
+            v-for="state in states"
             :key="state"
             v-text="state"
             :to="`/${key}/${state}`"
@@ -82,6 +75,19 @@ export default {
         ? spaces[this.key]
         : { token: this.key, verified: [] };
     },
+    states() {
+      const states = [
+        'all',
+        'core',
+        'community',
+        'active',
+        'pending',
+        'closed'
+      ];
+      return this.space.showOnlyCore
+        ? states.filter(state => !['core', 'community'].includes(state))
+        : states;
+    },
     totalProposals() {
       return Object.keys(this.proposals).length;
     },
@@ -91,6 +97,12 @@ export default {
       return Object.fromEntries(
         Object.entries(this.proposals)
           .filter(proposal => {
+            if (
+              this.space.showOnlyCore &&
+              !this.space.core.includes(proposal[1].address)
+            )
+              return false;
+
             if (
               ['core', 'all'].includes(this.selectedState) &&
               this.space.core.includes(proposal[1].address)
