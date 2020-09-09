@@ -77,7 +77,7 @@
 
 <script>
 import { mapActions } from 'vuex';
-import spaces from '@/../spaces';
+import spaces from '@/spaces';
 
 export default {
   data() {
