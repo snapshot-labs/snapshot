@@ -110,7 +110,7 @@
 <script>
 import { mapActions } from 'vuex';
 import draggable from 'vuedraggable';
-import spaces from '@/../spaces';
+import spaces from '@/spaces';
 
 export default {
   components: {
