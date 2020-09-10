@@ -49,8 +49,10 @@ export function formatProposal(proposal) {
     proposal.bpt_voting_disabled = '1';
   }
 
+  /*
   if (proposal.msg.payload.snapshot < 10000000)
     proposal.msg.payload.snapshot = 20000000;
+  */
 
   return proposal;
 }

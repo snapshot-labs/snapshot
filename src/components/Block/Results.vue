@@ -40,10 +40,10 @@
       <UiButton @click="downloadReport" class="width-full mt-2">
         Download report
       </UiButton>
-      <UiButton @click="downloadReport" class="width-full mt-2 button--submit">
-        Submit
-      </UiButton>
     </div>
+    <UiButton class="width-full mt-2 button--submit">
+      Submit on-chain
+    </UiButton>
   </Block>
 </template>
 
