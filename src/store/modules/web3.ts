@@ -3,13 +3,13 @@ import { getInstance } from '@bonustrack/lock/plugins/vue';
 import { Web3Provider } from '@ethersproject/providers';
 import { Contract } from '@ethersproject/contracts';
 import { getAddress } from '@ethersproject/address';
-import { multicall } from '@/_snapshot/utils';
+import { multicall } from '@bonustrack/snapshot.js/src/utils';
+import spaces from '@/spaces';
 import store from '@/store';
 import abi from '@/helpers/abi';
 import config from '@/helpers/config';
 import wsProvider from '@/helpers/ws';
 import rpcProvider from '@/helpers/rpc';
-import spaces from '@/../spaces';
 
 let auth;
 let web3;
