@@ -328,6 +328,7 @@ const actions = {
       commit('METADATA_SUCCESS', payload);
       return payload;
     } catch (e) {
+      console.log(e);
       return Promise.reject();
     }
   }
