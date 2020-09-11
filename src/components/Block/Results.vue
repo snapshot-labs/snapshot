@@ -46,11 +46,11 @@
         class="width-full mt-2 button--submit"
       >
         <img
-          class="mr-1 circle border v-align-middle"
+          class="mr-1 circle v-align-middle"
           src="https://raw.githubusercontent.com/balancer-labs/snapshot/develop/src/assets/aragon.svg"
-          width="28"
-          height="28"
-          style="margin-top: -3px;"
+          width="26"
+          height="26"
+          style="margin-top: -4px;"
         />
         Submit on-chain
       </UiButton>
