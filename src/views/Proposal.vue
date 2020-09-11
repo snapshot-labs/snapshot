@@ -129,6 +129,7 @@
           </div>
         </Block>
         <BlockResults
+          :id="id"
           :space="space"
           :payload="payload"
           :results="results"

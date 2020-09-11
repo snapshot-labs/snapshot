@@ -37,13 +37,17 @@
       />
     </div>
     <div v-if="ts >= payload.end">
-      <UiButton @click="downloadReport" class="width-full mt-2">
+      <UiButton v-if="1 === 2" @click="downloadReport" class="width-full mt-2">
         Download report
       </UiButton>
+      <UiButton
+        @click="submitOnChain"
+        :loading="loading"
+        class="width-full mt-2 button--submit"
+      >
+        Submit on-chain
+      </UiButton>
     </div>
-    <UiButton @click="submitOnChain" class="width-full mt-2 button--submit">
-      Submit on-chain
-    </UiButton>
   </Block>
 </template>
 
@@ -55,7 +59,12 @@ import pkg from '@/../package.json';
 const MINT_CALLSCRIPT = `0x00000001ecabf2e41aef8b6bb2c636c0e5fe12d6c15c27e30000004440c10f190000000000000000000000005790db5e4d9e868bb86f5280926b9838758234dd0000000000000000000000000000000000000000000000000de0b6b3a7640000`;
 
 export default {
-  props: ['space', 'payload', 'results', 'votes'],
+  props: ['id', 'space', 'payload', 'results', 'votes'],
+  data() {
+    return {
+      loading: false
+    };
+  },
   computed: {
     ts() {
       return (Date.now() / 1e3).toFixed();
@@ -66,7 +75,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['sendTransaction']),
+    ...mapActions(['sendTransaction', 'notify']),
     async downloadReport() {
       const obj = Object.entries(this.votes)
         .map(vote => {
@@ -95,12 +104,16 @@ export default {
       }
     },
     async submitOnChain() {
-      this.sendTransaction([
+      this.loading = true;
+      const tx = await this.sendTransaction([
         'DisputableDelay',
         '0xe6a62bb1a242254ab55ebf3e173c4f3b214ab32c',
         'delayExecution',
-        [MINT_CALLSCRIPT, '0xbeef']
+        [MINT_CALLSCRIPT, this.id]
       ]);
+      console.log(tx);
+      this.notify(['green', `The settlement is on-chain, congrats!`]);
+      this.loading = false;
     }
   }
 };
