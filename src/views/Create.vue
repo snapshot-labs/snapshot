@@ -142,7 +142,6 @@ export default {
     },
     isValid() {
       // const ts = (Date.now() / 1e3).toFixed();
-
       return (
         !this.loading &&
         this.web3.account &&
