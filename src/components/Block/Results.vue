@@ -45,6 +45,13 @@
         :loading="loading"
         class="width-full mt-2 button--submit"
       >
+        <img
+          class="mr-1 circle border v-align-middle"
+          src="https://raw.githubusercontent.com/balancer-labs/snapshot/develop/src/assets/aragon.svg"
+          width="28"
+          height="28"
+          style="margin-top: -3px;"
+        />
         Submit on-chain
       </UiButton>
     </div>
@@ -109,7 +116,7 @@ export default {
         'DisputableDelay',
         '0xe6a62bb1a242254ab55ebf3e173c4f3b214ab32c',
         'delayExecution',
-        [MINT_CALLSCRIPT, this.id]
+        [MINT_CALLSCRIPT, '0xbeef']
       ]);
       console.log(tx);
       this.notify(['green', `The settlement is on-chain, congrats!`]);
