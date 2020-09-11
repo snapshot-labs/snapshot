@@ -37,9 +37,13 @@
       />
     </div>
     <div v-if="ts >= payload.end">
-      <UiButton @click="downloadReport" class="width-full mt-2">Download report</UiButton>
+      <UiButton @click="downloadReport" class="width-full mt-2">
+        Download report
+      </UiButton>
     </div>
-    <UiButton @click="submitOnChain" class="width-full mt-2 button--submit">Submit on-chain</UiButton>
+    <UiButton @click="submitOnChain" class="width-full mt-2 button--submit">
+      Submit on-chain
+    </UiButton>
   </Block>
 </template>
 
