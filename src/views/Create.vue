@@ -127,7 +127,8 @@ export default {
         choices: [],
         start: '',
         end: '',
-        snapshot: ''
+        snapshot: '',
+        metadata: {}
       },
       modalOpen: false,
       selectedDate: '',
@@ -142,7 +143,6 @@ export default {
     },
     isValid() {
       // const ts = (Date.now() / 1e3).toFixed();
-
       return (
         !this.loading &&
         this.web3.account &&
