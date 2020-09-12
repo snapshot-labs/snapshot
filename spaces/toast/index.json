@@ -8,6 +8,11 @@
   "core": [
     "0x6cef9EcD79e87F8a88143eE9b464119bB296dA8b"
   ],
-  "min": 0,
-  "invalid": ["QmdZmo5G1fE6aS6fMbn5aKoooBRuGxm3wCPkCp5wBvMhG3"]
+  "min": 1,
+  "invalid": [
+    "QmdZmo5G1fE6aS6fMbn5aKoooBRuGxm3wCPkCp5wBvMhG3",
+    "QmWXZAyuwzk5KyLmrfmSUF674wWkeqTFjG1qEyT5XTi5no",
+    "QmXjNuSA7W4LqbwDm3RmcoxXwasYtk2twDuJFhvzSWB29b",
+    "QmUkAhizp3V9whfQB1SkEgmxBdNzzzApwyZgSagdUuR717"
+  ]
 }
