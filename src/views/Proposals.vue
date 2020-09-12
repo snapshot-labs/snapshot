@@ -18,17 +18,11 @@
     </Container>
     <Container :slim="true">
       <Block :slim="true">
-        <div class="px-4 py-3 bg-gray-dark overflow-auto menu-tabs">
+        <div
+          class="px-4 py-3 bg-gray-dark overflow-auto menu-tabs rounded-top-0 rounded-md-top-2"
+        >
           <router-link
-            v-for="state in [
-              'core',
-              'community',
-              'all',
-              'active',
-              'pending',
-              'invalid',
-              'closed'
-            ]"
+            v-for="state in states"
             :key="state"
             v-text="state"
             :to="`/${key}/${state}`"
@@ -52,7 +46,7 @@
           v-if="loaded && Object.keys(proposalsWithFilter).length === 0"
           class="p-4 m-0 border-top d-block"
         >
-          There isn't any proposal here yet!
+          There aren't any proposals here yet!
         </p>
       </Block>
     </Container>
@@ -61,7 +55,7 @@
 
 <script>
 import { mapActions } from 'vuex';
-import spaces from '@/../spaces';
+import spaces from '@/spaces';
 
 export default {
   data() {
@@ -69,7 +63,7 @@ export default {
       loading: false,
       loaded: false,
       proposals: {},
-      selectedState: 'All'
+      selectedState: 'all'
     };
   },
   computed: {
@@ -81,6 +75,19 @@ export default {
         ? spaces[this.key]
         : { token: this.key, verified: [] };
     },
+    states() {
+      const states = [
+        'all',
+        'core',
+        'community',
+        'active',
+        'pending',
+        'closed'
+      ];
+      return this.space.showOnlyCore
+        ? states.filter(state => !['core', 'community'].includes(state))
+        : states;
+    },
     totalProposals() {
       return Object.keys(this.proposals).length;
     },
@@ -90,51 +97,56 @@ export default {
       return Object.fromEntries(
         Object.entries(this.proposals)
           .filter(proposal => {
-            if (proposal[1].balance < this.space.min) return false;
             if (
-              this.selectedState !== 'invalid' &&
-              this.space.invalid.includes(proposal[1].authorIpfsHash)
-            ) {
+              this.space.showOnlyCore &&
+              !this.space.core.includes(proposal[1].address)
+            )
               return false;
-            }
+
+            if (
+              ['core', 'all'].includes(this.selectedState) &&
+              this.space.core.includes(proposal[1].address)
+            )
+              return true;
+
+            if (
+              proposal[1].balance < this.space.min ||
+              this.space.invalid.includes(proposal[1].authorIpfsHash)
+            )
+              return false;
+
             if (
               this.selectedState === 'invalid' &&
               this.space.invalid.includes(proposal[1].authorIpfsHash)
-            ) {
+            )
               return true;
-            }
+
             if (this.selectedState === 'all') return true;
+
             if (
               this.selectedState === 'active' &&
               proposal[1].msg.payload.start <= ts &&
               proposal[1].msg.payload.end > ts
-            ) {
+            )
               return true;
-            }
-            if (
-              this.selectedState === 'core' &&
-              this.space.core.includes(proposal[1].address)
-            ) {
-              return true;
-            }
+
             if (
               this.selectedState === 'community' &&
               !this.space.core.includes(proposal[1].address)
-            ) {
+            )
               return true;
-            }
+
             if (
               this.selectedState === 'closed' &&
               proposal[1].msg.payload.end <= ts
-            ) {
+            )
               return true;
-            }
+
             if (
               this.selectedState === 'pending' &&
               proposal[1].msg.payload.start > ts
-            ) {
+            )
               return true;
-            }
           })
           .sort((a, b) => b[1].msg.payload.end - a[1].msg.payload.end, 0)
       );

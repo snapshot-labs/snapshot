@@ -24,8 +24,12 @@
           </a>
         </div>
         <div class="d-flex">
-          <span v-text="'Voting power'" class="flex-auto text-gray mr-1" />
-          <span v-text="`${_numeral(power.total)} ${space.symbol}`" />
+          <span v-text="'Your voting power'" class="flex-auto text-gray mr-1" />
+          <span v-for="(symbol, i) of symbols" :key="symbol">
+            {{ _numeral(scores[i]) }}
+            {{ symbol }}
+            <span v-show="i !== symbols.length - 1" v-text="'+'" class="mr-1" />
+          </span>
         </div>
       </div>
       <div class="p-4 overflow-hidden text-center border-top">
@@ -51,7 +55,7 @@
 
 <script>
 import { mapActions } from 'vuex';
-import spaces from '@/../spaces';
+import spaces from '@/spaces';
 
 export default {
   props: [
@@ -61,7 +65,8 @@ export default {
     'id',
     'selectedChoice',
     'snapshot',
-    'power'
+    'totalScore',
+    'scores'
   ],
   data() {
     return {
@@ -70,8 +75,9 @@ export default {
     };
   },
   computed: {
-    symbol() {
-      return this.space.symbol || this._shorten(this.space.address);
+    symbols() {
+      if (!this.space.strategies) return [this.space.symbol];
+      return this.space.strategies.map(strategy => strategy[1].symbol);
     }
   },
   methods: {
@@ -83,7 +89,8 @@ export default {
         type: 'vote',
         payload: {
           proposal: this.id,
-          choice: this.selectedChoice
+          choice: this.selectedChoice,
+          metadata: {}
         }
       });
       this.$emit('reload');

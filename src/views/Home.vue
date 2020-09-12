@@ -2,16 +2,27 @@
   <div>
     <Container :slim="true">
       <router-link
-        v-for="namespace in homepage"
-        :key="spaces[namespace].address"
-        :to="{ name: 'proposals', params: { key: namespace } }"
+        v-for="space in spaces"
+        :key="space.address"
+        :to="{ name: 'proposals', params: { key: space.key } }"
       >
-        <Block class="text-center">
-          <Token :space="namespace" size="88" class="mb-3" />
+        <Block class="text-center extra-icon-container">
+          <Token
+            :space="space.key"
+            symbolIndex="space"
+            size="88"
+            class="mb-3"
+          />
+          <StatefulIcon
+            :on="space.favorite"
+            onName="star"
+            offName="star1"
+            @click="toggleFavorite(space.key)"
+          />
           <div>
             <h2>
-              {{ spaces[namespace].name }}
-              <span class="text-gray">{{ spaces[namespace].symbol }}</span>
+              {{ space.name }}
+              <span class="text-gray">{{ space.symbol }}</span>
             </h2>
           </div>
         </Block>
@@ -31,27 +42,53 @@
 </template>
 
 <script>
-import spaces from '@/../spaces';
-import homepage from '@/../spaces/homepage.json';
-import domains from '@/../spaces/domains.json';
+import { mapActions } from 'vuex';
+import orderBy from 'lodash/orderBy';
+import homepage from '@bonustrack/snapshot-spaces/spaces/homepage.json';
+import domains from '@bonustrack/snapshot-spaces/spaces/domains.json';
+import spaces from '@/spaces';
 
 export default {
   data() {
     return {
-      spaces,
-      homepage,
       domains
     };
+  },
+  computed: {
+    spaces() {
+      const list = homepage.map(namespace => ({
+        ...spaces[namespace],
+        favorite: !!this.favoriteSpaces.favorites[namespace]
+      }));
+
+      return orderBy(list, ['favorite'], ['desc']);
+    }
+  },
+  methods: {
+    ...mapActions([
+      'loadFavoriteSpaces',
+      'addFavoriteSpace',
+      'removeFavoriteSpace'
+    ]),
+    toggleFavorite(spaceId) {
+      if (this.favoriteSpaces.favorites[spaceId]) {
+        this.removeFavoriteSpace(spaceId);
+      } else {
+        this.addFavoriteSpace(spaceId);
+      }
+    }
   },
   created() {
     const domainName = window.location.hostname;
     if (domains[domainName])
-      this.$router.push({
+      return this.$router.push({
         name: 'proposals',
         params: {
           key: domains[domainName]
         }
       });
+
+    this.loadFavoriteSpaces();
   }
 };
 </script>

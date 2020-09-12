@@ -26,10 +26,12 @@ export default {
       return numeral(number).format(format);
     },
     _shorten(str: string, key: string): string {
-      if (key === 'symbol')
-        return str.length > 7 ? `${str.slice(0, 7).trim()}...` : str;
-      if (key === 'name')
-        return str.length > 64 ? `${str.slice(0, 64).trim()}...` : str;
+      let limit;
+      if (key === 'symbol') limit = 6;
+      if (key === 'name') limit = 64;
+      if (key === 'choice') limit = 12;
+      if (limit)
+        return str.length > limit ? `${str.slice(0, limit).trim()}...` : str;
       return shorten(str);
     },
     _ipfsUrl(ipfsHash: string): string {
