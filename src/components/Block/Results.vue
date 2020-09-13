@@ -61,9 +61,8 @@
 <script>
 import { mapActions } from 'vuex';
 import * as jsonexport from 'jsonexport/dist';
+import plugins from '@/helpers/plugins';
 import pkg from '@/../package.json';
-
-const MINT_CALLSCRIPT = `0x00000001ecabf2e41aef8b6bb2c636c0e5fe12d6c15c27e30000004440c10f190000000000000000000000005790db5e4d9e868bb86f5280926b9838758234dd0000000000000000000000000000000000000000000000000de0b6b3a7640000`;
 
 export default {
   props: ['id', 'space', 'payload', 'results', 'votes'],
@@ -112,11 +111,16 @@ export default {
     },
     async submitOnChain() {
       this.loading = true;
+      const aragon = new plugins.Aragon();
+      const callsScript = aragon.execute(
+        this.payload.metadata.plugins.aragon.choice1
+      );
+      console.log('Callsscript', callsScript);
       const tx = await this.sendTransaction([
         'DisputableDelay',
         '0xe6a62bb1a242254ab55ebf3e173c4f3b214ab32c',
         'delayExecution',
-        [MINT_CALLSCRIPT, '0xbeef']
+        [callsScript, '0xbeef']
       ]);
       console.log(tx);
       this.notify(['green', `The settlement is on-chain, congrats!`]);

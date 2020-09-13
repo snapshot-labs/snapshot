@@ -8,6 +8,13 @@
     >
       {{ title }}
       <UiCounter v-if="counter" :counter="counter" class="ml-1" />
+      <a
+        v-if="icon"
+        @click="$emit('submit')"
+        class="float-right mt-1 text-gray"
+      >
+        <Icon :name="icon" size="22" />
+      </a>
     </h4>
     <div :class="!slim && 'p-4'">
       <slot />
@@ -17,6 +24,6 @@
 
 <script>
 export default {
-  props: ['title', 'counter', 'slim']
+  props: ['title', 'counter', 'slim', 'icon']
 };
 </script>
