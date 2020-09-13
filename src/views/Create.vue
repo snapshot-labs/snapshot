@@ -184,9 +184,6 @@ export default {
         this.form[this.selectedDate] = ts;
       }
     },
-    updatePlugins(value) {
-      this.form.metadata.plugins = value;
-    },
     async handleSubmit() {
       this.loading = true;
       this.form.choices = this.choices.map(choice => choice.text);
