@@ -54,8 +54,20 @@ export default {
     };
   },
   computed: {
+    spacesWithBalance() {
+      return Object.entries(this.web3.balances).reduce(
+        (acc, [space, balance]) => {
+          if (balance.isZero()) return acc;
+          return acc.concat(space);
+        },
+        []
+      );
+    },
     spaces() {
-      const list = homepage.map(key => ({
+      const activeSpaces =
+        this.spacesWithBalance.length !== 0 ? this.spacesWithBalance : homepage;
+
+      const list = activeSpaces.map(key => ({
         ...this.web3.spaces[key],
         favorite: !!this.favoriteSpaces.favorites[key]
       }));
