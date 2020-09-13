@@ -21,27 +21,31 @@
             <Icon name="external-link" />
           </a>
         </div>
-        <div>
-          <UiButton @click="selected = i">Activate</UiButton>
-        </div>
+        <UiButton @click="selected = i">
+          {{ !form[i] ? 'Add' : 'Edit' }}
+        </UiButton>
       </div>
-      <div v-else>
-        <div class="mb-3 text-center">
-          <h4 class="mb-3">Choice 1</h4>
-          <UiButton class="width-full mb-3">
-            <input class="input width-full text-center" placeholder="To" />
-          </UiButton>
-          <div class="mb-2">
-            <UiButton class="width-full mb-2">
-              <input class="input width-full text-center" placeholder="Data" />
-            </UiButton>
-          </div>
-          <UiButton class="width-full">
-            Add data
-          </UiButton>
-        </div>
-        <UiButton class="button--submit width-full">
-          Next
+      <PluginAragon
+        :value="form[i]"
+        :proposal="proposal"
+        v-model="form[i]"
+        @close="selected = false"
+        v-else
+      />
+    </div>
+    <div v-if="!selected" class="p-4 overflow-hidden text-center border-top">
+      <div class="col-6 float-left pr-2">
+        <UiButton @click="$emit('close')" type="button" class="width-full">
+          Cancel
+        </UiButton>
+      </div>
+      <div class="col-6 float-left pl-2">
+        <UiButton
+          @click="[$emit('input', form), $emit('close')]"
+          type="submit"
+          class="width-full button--submit"
+        >
+          Save
         </UiButton>
       </div>
     </div>
@@ -50,17 +54,30 @@
 
 <script>
 import plugins from '@/helpers/plugins';
+import { clone } from '@/helpers/utils';
 
 export default {
-  props: ['open'],
+  props: ['open', 'value', 'proposal'],
   data() {
     return {
       plugins: [],
-      selected: false
+      selected: false,
+      form: {}
     };
   },
+  watch: {
+    open() {
+      if (this.value && this.open) this.form = clone(this.value);
+      this.selected = false;
+    }
+  },
   created() {
-    this.plugins = Object.values(plugins).map(plugin => new plugin());
+    this.plugins = Object.fromEntries(
+      Object.entries(plugins).map(plugin => {
+        const instance = new plugin[1]();
+        return [instance.key, instance];
+      })
+    );
   }
 };
 </script>

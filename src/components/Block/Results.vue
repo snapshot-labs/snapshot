@@ -14,7 +14,6 @@
           {{ _numeral(results.totalBalances[i]) }}
           {{ _shorten(space.symbol, 'symbol') }}
         </span>
-
         <span
           class="float-right"
           v-text="
@@ -41,6 +40,11 @@
         Download report
       </UiButton>
       <UiButton
+        v-if="
+          payload.metadata &&
+            payload.metadata.plugins &&
+            payload.metadata.plugins.aragon
+        "
         @click="submitOnChain"
         :loading="loading"
         class="width-full mt-2 button--submit"
@@ -78,6 +82,17 @@ export default {
     titles() {
       if (!this.space.strategies) return [this.space.symbol];
       return this.space.strategies.map(strategy => strategy[1].symbol);
+    },
+    winningChoice() {
+      let winningChoice = 0;
+      let winningScore = 0;
+      this.results.totalScores.forEach((score, i) => {
+        if (score[0] > winningScore) {
+          winningChoice = i + 1;
+          winningScore = score[0];
+        }
+      });
+      return winningChoice;
     }
   },
   methods: {
@@ -113,9 +128,14 @@ export default {
       this.loading = true;
       const aragon = new plugins.Aragon();
       const callsScript = aragon.execute(
-        this.payload.metadata.plugins.aragon.choice1
+        this.payload.metadata.plugins.aragon[`choice${this.winningChoice}`]
       );
-      console.log('Callsscript', callsScript);
+      console.log(
+        `Submit on-chain
+Proposal #${this.id} on-chain
+Option: ${this.winningChoice}
+Callsscript: ${callsScript}`
+      );
       const tx = await this.sendTransaction([
         'DisputableDelay',
         '0xe6a62bb1a242254ab55ebf3e173c4f3b214ab32c',

@@ -15,6 +15,7 @@ function encodeCallsScript(actions) {
 }
 
 export default class Plugin {
+  public key = 'aragon';
   public name = 'Aragon Agreement';
   public website = 'https://aragon.org/agreements';
   public image =

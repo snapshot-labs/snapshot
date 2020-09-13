@@ -59,29 +59,6 @@ export function formatProposal(proposal) {
     proposal.msg.payload.snapshot = 20000000;
   */
 
-  proposal.msg.payload.metadata = {
-    plugins: {
-      aragon: {
-        choice1: {
-          actions: [
-            {
-              to: '0xe6a62bb1a242254ab55ebf3e173c4f3b214ab32c',
-              data: [(1e18).toString(), (2e18).toString()]
-            }
-          ]
-        },
-        choice2: {
-          actions: [
-            {
-              to: '0xe6a62bb1a242254ab55ebf3e173c4f3b214ab32c',
-              data: [(3e18).toString(), (4e18).toString()]
-            }
-          ]
-        }
-      }
-    }
-  };
-
   return proposal;
 }
 

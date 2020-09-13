@@ -104,7 +104,13 @@
       @close="modalOpen = false"
       @input="setDate"
     />
-    <ModalPlugins :open="modalPluginsOpen" @close="modalPluginsOpen = false" />
+    <ModalPlugins
+      :proposal="{ ...form, choices }"
+      :value="form.metadata.plugins"
+      v-model="form.metadata.plugins"
+      :open="modalPluginsOpen"
+      @close="modalPluginsOpen = false"
+    />
   </Container>
 </template>
 
@@ -177,6 +183,9 @@ export default {
       if (this.selectedDate) {
         this.form[this.selectedDate] = ts;
       }
+    },
+    updatePlugins(value) {
+      this.form.metadata.plugins = value;
     },
     async handleSubmit() {
       this.loading = true;
