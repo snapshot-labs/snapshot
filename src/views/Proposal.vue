@@ -37,6 +37,13 @@
           class="mb-4"
           title="Cast your vote"
         >
+          <div class="votetype">
+            <label>Vote type:</label>
+            <input type="radio" value="one2one" v-model="voteType" />
+            <label for="one2one">1:1</label>
+            <input type="radio" value="quadratic" v-model="voteType" />
+            <label for="quadratic">Quadratic</label>
+          </div>
           <div class="mb-3">
             <UiButton
               v-for="(choice, i) in payload.choices"
@@ -143,6 +150,7 @@
       @reload="loadProposal"
       :space="space"
       :proposal="proposal"
+      :voteType="voteType"
       :id="id"
       :selectedChoice="selectedChoice"
       :totalScore="totalScore"
@@ -165,6 +173,7 @@ export default {
       loaded: false,
       voteLoading: false,
       proposal: {},
+      voteType: 'quadratic',
       votes: {},
       results: [],
       modalOpen: false,

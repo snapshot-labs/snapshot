@@ -13,6 +13,10 @@
           {{ proposal.msg.payload.choices[selectedChoice - 1] }}
         </div>
         <div class="d-flex">
+          <span v-text="'Vote type'" class="flex-auto text-gray mr-1" />
+          {{ this.voteType }}
+        </div>
+        <div class="d-flex">
           <span v-text="'Snapshot'" class="flex-auto text-gray mr-1" />
           <a
             :href="_etherscanLink(proposal.msg.payload.snapshot, 'block')"
@@ -62,6 +66,7 @@ export default {
     'open',
     'space',
     'proposal',
+    'voteType',
     'id',
     'selectedChoice',
     'snapshot',
@@ -90,6 +95,7 @@ export default {
         payload: {
           proposal: this.id,
           choice: this.selectedChoice,
+          voteType: this.voteType,
           metadata: {}
         }
       });
