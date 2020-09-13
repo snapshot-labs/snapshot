@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import { getInstance } from '@bonustrack/lock/plugins/vue';
+import { multicall } from '@bonustrack/snapshot.js/src/utils';
 import { Web3Provider } from '@ethersproject/providers';
 import { Contract } from '@ethersproject/contracts';
 import { getAddress } from '@ethersproject/address';
@@ -92,6 +93,9 @@ const mutations = {
   SIGN_MESSAGE_FAILURE(_state, payload) {
     console.debug('SIGN_MESSAGE_FAILURE', payload);
   },
+  GET_BALANCES_SUCCESS(_state, payload) {
+    Vue.set(_state, 'balances', payload);
+  },
   GET_BLOCK_REQUEST() {
     console.debug('GET_BLOCK_REQUEST');
   },
@@ -112,6 +116,8 @@ const actions = {
       web3 = new Web3Provider(auth.provider);
       await dispatch('loadProvider');
     }
+
+    await dispatch('getBalances');
   },
   logout: async ({ commit }) => {
     Vue.prototype.$auth.logout();
@@ -175,6 +181,30 @@ const actions = {
     } catch (e) {
       return Promise.reject();
     }
+  },
+  getBalances: async ({ commit, state }) => {
+    if (!state.account) return;
+
+    const spacesList = Object.values(spaces[state.network.chainId]);
+    const balances = await multicall(
+      state.network.chainId,
+      rpcProvider,
+      abi['TestToken'],
+      spacesList.map((space: any) => [
+        space.token,
+        'balanceOf',
+        [state.account]
+      ])
+    );
+
+    const balancesMap = spacesList.reduce((acc: any, space: any, i) => {
+      return {
+        ...acc,
+        [space.key]: balances[i][0]
+      };
+    }, {});
+
+    commit('GET_BALANCES_SUCCESS', balancesMap);
   },
   sendTransaction: async (
     { commit },
