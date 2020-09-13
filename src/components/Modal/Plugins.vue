@@ -6,7 +6,7 @@
       :key="i"
       class="m-4 mt-0 p-4 border rounded-2 text-white"
     >
-      <div class="text-center">
+      <div v-if="selected === false" class="text-center">
         <img
           class="circle"
           :src="plugin.image"
@@ -22,8 +22,27 @@
           </a>
         </div>
         <div>
-          <UiButton>Activate</UiButton>
+          <UiButton @click="selected = i">Activate</UiButton>
         </div>
+      </div>
+      <div v-else>
+        <div class="mb-3 text-center">
+          <h4 class="mb-3">Choice 1</h4>
+          <UiButton class="width-full mb-3">
+            <input class="input width-full text-center" placeholder="To" />
+          </UiButton>
+          <div class="mb-2">
+            <UiButton class="width-full mb-2">
+              <input class="input width-full text-center" placeholder="Data" />
+            </UiButton>
+          </div>
+          <UiButton class="width-full">
+            Add data
+          </UiButton>
+        </div>
+        <UiButton class="button--submit width-full">
+          Next
+        </UiButton>
       </div>
     </div>
   </UiModal>
@@ -36,7 +55,8 @@ export default {
   props: ['open'],
   data() {
     return {
-      plugins: []
+      plugins: [],
+      selected: false
     };
   },
   created() {
