@@ -63,13 +63,11 @@ const actions = {
     try {
       const msg: any = {
         address: rootState.web3.account,
-        msg: JSON.stringify({
-          version,
-          timestamp: (Date.now() / 1e3).toFixed(),
+        message: {
           token,
           type,
           payload
-        })
+        }
       };
       msg.sig = await dispatch('signMessage', msg.msg);
       const result = await client.request('message', msg);

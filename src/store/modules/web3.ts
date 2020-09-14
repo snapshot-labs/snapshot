@@ -10,6 +10,7 @@ import abi from '@/helpers/abi';
 import config from '@/helpers/config';
 import wsProvider from '@/helpers/ws';
 import rpcProvider from '@/helpers/rpc';
+import { signMessage } from '@/sign';
 
 let auth;
 let web3;
@@ -282,11 +283,10 @@ const actions = {
       return Promise.reject();
     }
   },
-  signMessage: async ({ commit }, message) => {
+  signMessage: async ({ commit }, data) => {
     commit('SIGN_MESSAGE_REQUEST');
     try {
-      const signer = web3.getSigner();
-      const sig = await signer.signMessage(message);
+      const sig = await signMessage(web3, data.address, data.message);
       commit('SIGN_MESSAGE_SUCCESS');
       return sig;
     } catch (e) {

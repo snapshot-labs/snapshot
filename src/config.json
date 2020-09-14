@@ -2,6 +2,7 @@
   "env": "master",
   "network": "homestead",
   "chainId": 1,
+  "verifyingContract": "0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC",
   "connectors": {
     "injected": {
       "id": "injected",
