@@ -307,7 +307,7 @@ const actions = {
   },
   metadata: async ({ commit }) => {
     try {
-      const noDecimals = ['yearn'];
+      const noDecimals = ['yearn', 'mybit'];
       const response = await multicall(
         rpcProvider,
         abi['TestToken'],
