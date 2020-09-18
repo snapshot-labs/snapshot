@@ -5,9 +5,10 @@
     <h4
       v-if="title"
       class="px-4 py-3 border-bottom d-block bg-gray-dark rounded-top-0 rounded-md-top-2"
+      style="line-height: 16px"
     >
       {{ title }}
-      <UiCounter v-if="counter" :counter="counter" class="ml-1" />
+      <UiCounter :counter="counter" class="ml-1" :override="override" />
     </h4>
     <div :class="!slim && 'p-4'">
       <slot />
@@ -17,6 +18,6 @@
 
 <script>
 export default {
-  props: ['title', 'counter', 'slim']
+  props: ['title', 'counter', 'slim', 'override']
 };
 </script>

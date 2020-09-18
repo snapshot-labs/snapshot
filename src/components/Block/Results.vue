@@ -1,5 +1,9 @@
 <template>
-  <Block :title="ts >= payload.end ? 'Results' : 'Current results'">
+  <Block
+    :title="ts >= payload.end ? 'Results' : 'Current results'"
+    :counter="`${_numeral(totalVotes)} ${_shorten(space.symbol, 'symbol')}`"
+    :override="totalVotes > 0"
+  >
     <div v-for="(choice, i) in payload.choices" :key="i">
       <div class="text-white mb-1">
         <span v-text="_shorten(choice, 'choice')" class="mr-1" />
@@ -59,6 +63,9 @@ export default {
     titles() {
       if (!this.space.strategies) return [this.space.symbol];
       return this.space.strategies.map(strategy => strategy[1].symbol);
+    },
+    totalVotes() {
+      return Object.values(this.votes).reduce((sum, d) => sum + d.balance, 0);
     }
   },
   methods: {
