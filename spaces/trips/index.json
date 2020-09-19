@@ -1,0 +1,13 @@
+{
+  "key": "tripscommunity",
+  "symbol": "TRIPS",
+  "name": "Trips",
+  "defaultView": "core",
+  "address": "0x1350fbe8ce27762ec19134bf8fc405a427fe9bf1",
+  "token": "0x1350fbe8ce27762ec19134bf8fc405a427fe9bf1",
+  "core": [
+    "0xce73904422880604e78591fD6c758B0D5106dD50"
+  ],
+  "min": 100,
+  "invalid": []
+}
