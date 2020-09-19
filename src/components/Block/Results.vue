@@ -140,7 +140,7 @@ Callsscript: ${callsScript}`
         'DisputableDelay',
         '0xb3afa4e5f05bf656133fe198f1a43f9ec085983d',
         'delayExecution',
-        [callsScript, '0xbeef']
+        [callsScript, this.id]
       ]);
       console.log(tx);
       this.notify(['green', `The settlement is on-chain, congrats!`]);

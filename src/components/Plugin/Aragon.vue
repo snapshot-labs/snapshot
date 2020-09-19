@@ -1,33 +1,20 @@
 <template>
   <div v-if="input">
-    <div class="mb-3 text-center">
+    <div class="mb-2 text-center">
       <h4 v-text="`Choice ${choice}`" class="mb-3" />
-      <UiButton class="width-full mb-3">
+      <UiButton class="width-full mb-2">
         <input
-          v-model="input[`choice${choice}`].actions[0].to"
+          v-model="input[`choice${choice}`].actions[0].targetAddress"
           class="input width-full text-center"
-          placeholder="To"
+          placeholder="Target address"
         />
       </UiButton>
-      <div class="mb-2">
-        <UiButton
-          v-for="(data, i) in input[`choice${choice}`].actions[0].data"
-          :key="i"
-          class="d-flex width-full mb-2"
-        >
-          <span class="mr-4">{{ i + 1 }}</span>
-          <input
-            v-model="input[`choice${choice}`].actions[0].data[i]"
-            class="input width-full text-center"
-            placeholder="Data"
-          />
-          <span class="ml-4">
-            <Icon name="close" size="12" />
-          </span>
-        </UiButton>
-      </div>
-      <UiButton @click="addData" class="width-full">
-        Add data
+      <UiButton class="width-full mb-2">
+        <input
+          v-model="input[`choice${choice}`].actions[0].calldata"
+          class="input width-full text-center"
+          placeholder="Call data"
+        />
       </UiButton>
     </div>
     <UiButton @click="handleSubmit" class="button--submit width-full">
@@ -53,8 +40,8 @@ export default {
         {
           actions: [
             {
-              to: '',
-              data: ['']
+              targetAddress: '',
+              calldata: ''
             }
           ]
         }
