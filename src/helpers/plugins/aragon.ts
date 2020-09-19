@@ -13,8 +13,10 @@ const AGENT_ADDRESS = '0x1faab98418763b7b6a6634e8e3865bfdd15bd8ce';
 
 function encodeCallsScript(actions) {
   return actions.reduce((script, { to, data }) => {
+    // @ts-ignore
     const address = abi.encodeParameter('address', to);
     const dataLength = abi
+      // @ts-ignore
       .encodeParameter('uint256', (data.length - 2) / 2)
       .toString('hex');
     return script + address.slice(26) + dataLength.slice(58) + data.slice(2);
@@ -32,6 +34,7 @@ function encodeCallsScript(actions) {
  */
 function encodeAgentExecute(targetAddress, calldata) {
   const agentABI = agent.abi.filter(item => item.name === 'execute')[0];
+  // @ts-ignore
   const agentAction = abi.encodeFunctionCall(agentABI, [
     targetAddress,
     EMPTY_HEX,
