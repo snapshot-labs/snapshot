@@ -28,7 +28,9 @@ const state = {
   active: false,
   balances: {},
   blockNumber: 0,
-  spaces: {}
+  spaces: spaces['1'],
+  metadata: {},
+  network: config.networks['1']
 };
 
 const mutations = {
@@ -142,7 +144,7 @@ const mutations = {
     console.debug('GET_BLOCK_FAILURE', payload);
   },
   METADATA_SUCCESS(_state, payload) {
-    Vue.set(_state, 'spaces', payload);
+    Vue.set(_state, 'metadata', payload);
     console.debug('METADATA_SUCCESS');
   }
 };
@@ -311,16 +313,17 @@ const actions = {
     try {
       const noDecimals = ['yearn', 'mybit'];
       const response = await multicall(
+        state.network.chainId,
         rpcProvider,
         abi['TestToken'],
-        Object.values(spaces)
+        Object.values(state.spaces)
           .filter((space: any) => !noDecimals.includes(space.key))
           .map((space: any) => [space.address, 'decimals', []])
       );
       const payload = Object.fromEntries(
         response.map((item, i) => [
           // @ts-ignore
-          Object.values(spaces).filter(
+          Object.values(state.spaces).filter(
             (space: any) => !noDecimals.includes(space.key)
           )[i].address,
           { decimals: response[i][0] }
@@ -331,7 +334,7 @@ const actions = {
       commit('METADATA_SUCCESS', payload);
       return payload;
     } catch (e) {
-      console.log(e);
+      console.error(e);
       return Promise.reject();
     }
   }

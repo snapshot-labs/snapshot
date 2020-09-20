@@ -1,7 +1,6 @@
 import { formatUnits } from '@ethersproject/units';
 import { multicall } from '@bonustrack/snapshot.js/src/utils';
 import strategies from '@bonustrack/snapshot.js/src/strategies';
-import spaces from '@/spaces';
 import client from '@/helpers/client';
 import ipfs from '@/helpers/ipfs';
 import abi from '@/helpers/abi';
@@ -87,12 +86,13 @@ const actions = {
     }
   },
   getProposals: async ({ commit, rootState }, payload) => {
-    const { decimals } = rootState.web3.spaces[payload];
+    const { decimals } = rootState.web3.metadata[payload];
     commit('GET_PROPOSALS_REQUEST');
     try {
       let proposals: any = await client.request(`${payload}/proposals`);
       if (proposals) {
         let balances = await multicall(
+          rootState.web3.network.chainId,
           rpcProvider,
           abi['TestToken'],
           Object.values(proposals).map((proposal: any) => [
@@ -131,15 +131,17 @@ const actions = {
       const { snapshot } = result.proposal.msg.payload;
       const blockTag =
         snapshot > rootState.web3.blockNumber ? 'latest' : parseInt(snapshot);
-      const { decimals } = rootState.web3.spaces[payload.space.address];
+      const { decimals } = rootState.web3.metadata[payload.space.address];
       const defaultStrategies = [
-        ['erc20BalanceOf', { address: payload.space.address, decimals }]
+        ['erc20-balance-of', { address: payload.space.address, decimals }]
       ];
       const spaceStrategies =
-        spaces[payload.space.key].strategies || defaultStrategies;
+        rootState.web3.spaces[payload.space.key].strategies ||
+        defaultStrategies;
       const scores: any = await Promise.all(
         spaceStrategies.map((strategy: any) =>
           strategies[strategy[0]](
+            rootState.web3.network.chainId,
             rpcProvider,
             Object.keys(result.votes),
             strategy[1],
@@ -195,15 +197,17 @@ const actions = {
     try {
       const blockTag =
         snapshot > rootState.web3.blockNumber ? 'latest' : parseInt(snapshot);
-      const { decimals } = rootState.web3.spaces[space.address];
+      const { decimals } = rootState.web3.metadata[space.address];
       const defaultStrategies = [
-        ['erc20BalanceOf', { address: space.address, decimals }]
+        ['erc20-balance-of', { address: space.address, decimals }]
       ];
-      const spaceStrategies = spaces[space.key].strategies || defaultStrategies;
+      const spaceStrategies =
+        rootState.web3.spaces[space.key].strategies || defaultStrategies;
       const scores: any = (
         await Promise.all(
           spaceStrategies.map((strategy: any) =>
             strategies[strategy[0]](
+              rootState.web3.network.chainId,
               rpcProvider,
               [address],
               strategy[1],
