@@ -190,6 +190,11 @@ export default {
       return this.space.strategies.map(strategy => strategy[1].symbol);
     }
   },
+  watch: {
+    'web3.account': async function(val, prev) {
+      if (val && val.toLowerCase() !== prev) await this.loadPower();
+    }
+  },
   methods: {
     ...mapActions(['getProposal', 'getPower']),
     async loadProposal() {
