@@ -46,7 +46,6 @@ import { mapActions } from 'vuex';
 import orderBy from 'lodash/orderBy';
 import homepage from '@bonustrack/snapshot-spaces/spaces/homepage.json';
 import domains from '@bonustrack/snapshot-spaces/spaces/domains.json';
-import spaces from '@/spaces';
 
 export default {
   data() {
@@ -56,11 +55,10 @@ export default {
   },
   computed: {
     spaces() {
-      const list = homepage.map(namespace => ({
-        ...spaces[namespace],
-        favorite: !!this.favoriteSpaces.favorites[namespace]
+      const list = homepage.map(key => ({
+        ...this.web3.spaces[key],
+        favorite: !!this.favoriteSpaces.favorites[key]
       }));
-
       return orderBy(list, ['favorite'], ['desc']);
     }
   },
@@ -87,7 +85,6 @@ export default {
           key: domains[domainName]
         }
       });
-
     this.loadFavoriteSpaces();
   }
 };

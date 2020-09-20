@@ -41,5 +41,24 @@
         "ethJsonrpcUrl": "https://eth-mainnet.alchemyapi.io/v2/rXKbp7PTFm6hcrxU8NL-JGp5RMfRHDwg"
       }
     }
+  },
+  "networks": {
+    "1": {
+      "name": "homestead",
+      "chainId": 1,
+      "rpc_url": "https://eth-mainnet.alchemyapi.io/v2/rXKbp7PTFm6hcrxU8NL-JGp5RMfRHDwg",
+      "ws_url": "wss://eth-mainnet.ws.alchemyapi.io/v2/rXKbp7PTFm6hcrxU8NL-JGp5RMfRHDwg"
+    },
+    "4": {
+      "name": "rinkeby",
+      "chainId": 4,
+      "rpc_url": "https://eth-rinkeby.alchemyapi.io/v2/twReQE9Px03E-E_N_Fbb3OVF7YgHxoGq",
+      "ws_url": ",wss://eth-rinkeby.ws.alchemyapi.io/v2/twReQE9Px03E-E_N_Fbb3OVF7YgHxoGq"
+    },
+    "56": {
+      "name": "mainnet",
+      "chainId": 56,
+      "rpc_url": "https://bsc-dataseed1.binance.org"
+    }
   }
 }

@@ -46,14 +46,14 @@
               </UiButton>
             </template>
             <UiButton
-              v-if="web3.injectedLoaded && wrongNetwork"
+              v-else-if="web3.injectedLoaded && wrongNetwork"
               class="text-red"
             >
               <Icon name="warning" class="ml-n1 mr-1 v-align-middle" />
               Wrong network
             </UiButton>
             <UiButton
-              v-if="showLogin"
+              v-else
               @click="modalOpen = true"
               :loading="loading"
             >
@@ -77,7 +77,6 @@
 
 <script>
 import { mapActions } from 'vuex';
-import spaces from '@/spaces';
 
 export default {
   data() {
@@ -99,7 +98,7 @@ export default {
     },
     space() {
       try {
-        return spaces[this.$route.params.key];
+        return this.web3.spaces[this.$route.params.key];
       } catch (e) {
         return {};
       }
