@@ -68,27 +68,11 @@ const mutations = {
   HANDLE_CLOSE_CHANGED() {
     console.debug('HANDLE_CLOSE_CHANGED');
   },
-  HANDLE_NETWORK_CHANGED() {
-    console.debug('HANDLE_NETWORK_CHANGED');
-  },
-  LOOKUP_ADDRESS_REQUEST() {
-    console.debug('LOOKUP_ADDRESS_REQUEST');
-  },
-  LOOKUP_ADDRESS_SUCCESS(_state, payload) {
-    Vue.set(_state, 'name', payload);
+  LOOKUP_ADDRESS_SUCCESS() {
     console.debug('LOOKUP_ADDRESS_SUCCESS');
-  },
-  LOOKUP_ADDRESS_FAILURE(_state, payload) {
-    console.debug('LOOKUP_ADDRESS_FAILURE', payload);
-  },
-  RESOLVE_NAME_REQUEST() {
-    console.debug('RESOLVE_NAME_REQUEST');
   },
   RESOLVE_NAME_SUCCESS() {
     console.debug('RESOLVE_NAME_SUCCESS');
-  },
-  RESOLVE_NAME_FAILURE(_state, payload) {
-    console.debug('RESOLVE_NAME_FAILURE', payload);
   },
   SEND_TRANSACTION_REQUEST() {
     console.debug('SEND_TRANSACTION_REQUEST');
@@ -139,7 +123,7 @@ const actions = {
       if (auth.provider.removeAllListeners) auth.provider.removeAllListeners();
       if (auth.provider.on) {
         auth.provider.on('chainChanged', async chainId => {
-          commit('HANDLE_NETWORK_CHANGED', chainId);
+          commit('HANDLE_CHAIN_CHANGED', chainId);
           if (state.active) await dispatch('loadProvider');
         });
         auth.provider.on('accountsChanged', async accounts => {
@@ -175,7 +159,7 @@ const actions = {
   lookupAddress: async ({ commit }, address) => {
     if (state.network.chainId !== 1) return;
     try {
-      const name = await web3.lookupAddress(address);
+      const name = await rpcProvider.lookupAddress(address);
       commit('LOOKUP_ADDRESS_SUCCESS', name);
       return name;
     } catch (e) {
@@ -185,7 +169,7 @@ const actions = {
   resolveName: async ({ commit }, name) => {
     if (state.network.chainId !== 1) return;
     try {
-      const address = await web3.resolveName(name);
+      const address = await rpcProvider.resolveName(name);
       commit('RESOLVE_NAME_SUCCESS', address);
       return address;
     } catch (e) {
