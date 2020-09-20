@@ -136,9 +136,7 @@ const actions = {
           { address: payload.space.address, decimals: payload.space.decimals }
         ]
       ];
-      const spaceStrategies =
-        rootState.web3.spaces[payload.space.key].strategies ||
-        defaultStrategies;
+      const spaceStrategies = payload.space.strategies || defaultStrategies;
       const scores: any = await Promise.all(
         spaceStrategies.map((strategy: any) =>
           strategies[strategy[0]](
@@ -204,8 +202,7 @@ const actions = {
           { address: space.address, decimals: space.decimals }
         ]
       ];
-      const spaceStrategies =
-        rootState.web3.spaces[space.key].strategies || defaultStrategies;
+      const spaceStrategies = space.strategies || defaultStrategies;
       const scores: any = (
         await Promise.all(
           spaceStrategies.map((strategy: any) =>
