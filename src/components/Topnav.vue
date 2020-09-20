@@ -52,11 +52,7 @@
               <Icon name="warning" class="ml-n1 mr-1 v-align-middle" />
               Wrong network
             </UiButton>
-            <UiButton
-              v-else
-              @click="modalOpen = true"
-              :loading="loading"
-            >
+            <UiButton v-else @click="modalOpen = true" :loading="loading">
               Connect wallet
             </UiButton>
             <UiButton @click="modalAboutOpen = true" class="ml-2">
