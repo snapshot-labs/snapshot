@@ -14,9 +14,11 @@ import rpcProvider from '@/helpers/rpc';
 let auth;
 let web3;
 
-wsProvider.on('block', blockNumber => {
-  store.commit('GET_BLOCK_SUCCESS', blockNumber);
-});
+if (wsProvider) {
+  wsProvider.on('block', blockNumber => {
+    store.commit('GET_BLOCK_SUCCESS', blockNumber);
+  });
+}
 
 const state = {
   injectedLoaded: false,

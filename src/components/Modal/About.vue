@@ -29,7 +29,7 @@
       </div>
       <div class="d-flex">
         <span v-text="'Network'" class="flex-auto text-gray mr-1" />
-        {{ config.network === 'homestead' ? 'mainnet' : config.network }}
+        {{ config.network }}
       </div>
       <div class="d-flex">
         <span v-text="'Block number'" class="flex-auto text-gray mr-1" />
