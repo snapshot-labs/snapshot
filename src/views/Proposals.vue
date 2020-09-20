@@ -155,7 +155,7 @@ export default {
   async created() {
     this.loading = true;
     this.selectedState = this.$route.params.tab || this.space.defaultView;
-    this.proposals = await this.getProposals(this.space.address);
+    this.proposals = await this.getProposals(this.space);
     this.loading = false;
     this.loaded = true;
   }

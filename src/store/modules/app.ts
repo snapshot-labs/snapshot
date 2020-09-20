@@ -85,11 +85,10 @@ const actions = {
       return;
     }
   },
-  getProposals: async ({ commit, rootState }, payload) => {
-    const { decimals } = rootState.web3.metadata[payload];
+  getProposals: async ({ commit, rootState }, space) => {
     commit('GET_PROPOSALS_REQUEST');
     try {
-      let proposals: any = await client.request(`${payload}/proposals`);
+      let proposals: any = await client.request(`${space.address}/proposals`);
       if (proposals) {
         let balances = await multicall(
           rootState.web3.network.chainId,
@@ -102,7 +101,7 @@ const actions = {
           ])
         );
         balances = balances.map(balance =>
-          parseFloat(formatUnits(balance.toString(), decimals))
+          parseFloat(formatUnits(balance.toString(), space.decimals))
         );
         proposals = Object.fromEntries(
           Object.entries(proposals).map((proposal: any, i) => {
@@ -131,9 +130,11 @@ const actions = {
       const { snapshot } = result.proposal.msg.payload;
       const blockTag =
         snapshot > rootState.web3.blockNumber ? 'latest' : parseInt(snapshot);
-      const { decimals } = rootState.web3.metadata[payload.space.address];
       const defaultStrategies = [
-        ['erc20-balance-of', { address: payload.space.address, decimals }]
+        [
+          'erc20-balance-of',
+          { address: payload.space.address, decimals: payload.space.decimals }
+        ]
       ];
       const spaceStrategies =
         rootState.web3.spaces[payload.space.key].strategies ||
@@ -197,9 +198,11 @@ const actions = {
     try {
       const blockTag =
         snapshot > rootState.web3.blockNumber ? 'latest' : parseInt(snapshot);
-      const { decimals } = rootState.web3.metadata[space.address];
       const defaultStrategies = [
-        ['erc20-balance-of', { address: space.address, decimals }]
+        [
+          'erc20-balance-of',
+          { address: space.address, decimals: space.decimals }
+        ]
       ];
       const spaceStrategies =
         rootState.web3.spaces[space.key].strategies || defaultStrategies;

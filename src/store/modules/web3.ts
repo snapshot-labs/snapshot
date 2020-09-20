@@ -3,7 +3,6 @@ import { getInstance } from '@bonustrack/lock/plugins/vue';
 import { Web3Provider } from '@ethersproject/providers';
 import { Contract } from '@ethersproject/contracts';
 import { getAddress } from '@ethersproject/address';
-import { multicall } from '@bonustrack/snapshot.js/src/utils';
 import spaces from '@/spaces';
 import store from '@/store';
 import abi from '@/helpers/abi';
@@ -29,7 +28,6 @@ const state = {
   balances: {},
   blockNumber: 0,
   spaces: spaces['1'],
-  metadata: {},
   network: config.networks['1']
 };
 
@@ -142,10 +140,6 @@ const mutations = {
   },
   GET_BLOCK_FAILURE(_state, payload) {
     console.debug('GET_BLOCK_FAILURE', payload);
-  },
-  METADATA_SUCCESS(_state, payload) {
-    Vue.set(_state, 'metadata', payload);
-    console.debug('METADATA_SUCCESS');
   }
 };
 
@@ -155,67 +149,41 @@ const actions = {
     await auth.login(connector);
     if (auth.provider) {
       web3 = new Web3Provider(auth.provider);
-      await dispatch('loadWeb3');
+      await dispatch('loadProvider');
     }
   },
   logout: async ({ commit }) => {
     Vue.prototype.$auth.logout();
     commit('LOGOUT');
   },
-  loadWeb3: async ({ commit, dispatch }) => {
-    commit('LOAD_WEB3_REQUEST');
-    try {
-      await dispatch('loadProvider');
-      await dispatch('lookupAddress');
-      commit('LOAD_WEB3_SUCCESS');
-      if (!state.injectedLoaded || state.injectedChainId !== config.chainId) {
-        await dispatch('loadBackupProvider');
-      } else {
-        /**
-        this.providerStatus.activeChainId = this.providerStatus.injectedChainId;
-        this.providerStatus.injectedActive = true;
-        if (this.providerStatus.account)
-          this.fetchUserBlockchainData(this.providerStatus.account);
-        */
-      }
-    } catch (e) {
-      commit('LOAD_WEB3_FAILURE', e);
-      return Promise.reject();
-    }
-  },
   loadProvider: async ({ commit, dispatch }) => {
     commit('LOAD_PROVIDER_REQUEST');
     try {
       if (auth.provider.removeAllListeners) auth.provider.removeAllListeners();
       if (auth.provider.on) {
-        auth.provider.on('chainChanged', async () => {
-          commit('HANDLE_CHAIN_CHANGED');
-          if (state.active) {
-            await dispatch('loadWeb3');
-          }
+        auth.provider.on('chainChanged', async chainId => {
+          commit('HANDLE_NETWORK_CHANGED', chainId);
+          if (state.active) await dispatch('loadProvider');
         });
         auth.provider.on('accountsChanged', async accounts => {
           if (accounts.length === 0) {
-            if (state.active) await dispatch('loadWeb3');
+            if (state.active) await dispatch('loadProvider');
           } else {
             commit('HANDLE_ACCOUNTS_CHANGED', accounts[0]);
-            await dispatch('loadWeb3');
+            await dispatch('loadProvider');
           }
         });
         auth.provider.on('disconnect', async () => {
           commit('HANDLE_CLOSE');
-          if (state.active) await dispatch('loadWeb3');
-        });
-        auth.provider.on('networkChanged', async () => {
-          commit('HANDLE_NETWORK_CHANGED');
-          if (state.active) {
-            await dispatch('loadWeb3');
-          }
+          if (state.active) await dispatch('loadProvider');
         });
       }
-      const network = await web3.getNetwork();
-      const accounts = await web3.listAccounts();
+      const [network, accounts] = await Promise.all([
+        web3.getNetwork(),
+        web3.listAccounts()
+      ]);
       const account = accounts.length > 0 ? accounts[0] : null;
+      const name = await dispatch('lookupAddress', account);
       commit('LOAD_PROVIDER_SUCCESS', {
         injectedLoaded: true,
         injectedChainId: network.chainId,
@@ -227,40 +195,23 @@ const actions = {
       return Promise.reject();
     }
   },
-  loadBackupProvider: async ({ commit }) => {
+  lookupAddress: async ({ commit }, address) => {
+    if (state.network.chainId !== 1) return;
     try {
-      web3 = rpcProvider;
-      const network = await rpcProvider.getNetwork();
-      commit('LOAD_BACKUP_PROVIDER_SUCCESS', {
-        injectedActive: false,
-        backUpLoaded: true,
-        account: null,
-        activeChainId: network.chainId
-        // backUpWeb3: web3,
-      });
-    } catch (e) {
-      commit('LOAD_BACKUP_PROVIDER_FAILURE', e);
-      return Promise.reject();
-    }
-  },
-  lookupAddress: async ({ commit }) => {
-    commit('LOOKUP_ADDRESS_REQUEST');
-    try {
-      const name = await web3.lookupAddress(state.account);
+      const name = await web3.lookupAddress(address);
       commit('LOOKUP_ADDRESS_SUCCESS', name);
       return name;
     } catch (e) {
-      commit('LOOKUP_ADDRESS_FAILURE', e);
+      return Promise.reject();
     }
   },
-  resolveName: async ({ commit }, payload) => {
-    commit('RESOLVE_NAME_REQUEST');
+  resolveName: async ({ commit }, name) => {
+    if (state.network.chainId !== 1) return;
     try {
-      const address = await web3.resolveName(payload);
-      commit('RESOLVE_NAME_SUCCESS');
+      const address = await web3.resolveName(name);
+      commit('RESOLVE_NAME_SUCCESS', address);
       return address;
     } catch (e) {
-      commit('RESOLVE_NAME_FAILURE', e);
       return Promise.reject();
     }
   },
@@ -306,35 +257,6 @@ const actions = {
       return blockNumber;
     } catch (e) {
       commit('GET_BLOCK_FAILURE', e);
-      return Promise.reject();
-    }
-  },
-  metadata: async ({ commit }) => {
-    try {
-      const noDecimals = ['yearn', 'mybit'];
-      const response = await multicall(
-        state.network.chainId,
-        rpcProvider,
-        abi['TestToken'],
-        Object.values(state.spaces)
-          .filter((space: any) => !noDecimals.includes(space.key))
-          .map((space: any) => [space.address, 'decimals', []])
-      );
-      const payload = Object.fromEntries(
-        response.map((item, i) => [
-          // @ts-ignore
-          Object.values(state.spaces).filter(
-            (space: any) => !noDecimals.includes(space.key)
-          )[i].address,
-          { decimals: response[i][0] }
-        ])
-      );
-      payload['0xBa37B002AbaFDd8E89a1995dA52740bbC013D992'] = { decimals: 18 };
-      payload['0x5d60d8d7ef6d37e16ebabc324de3be57f135e0bc'] = { decimals: 18 };
-      commit('METADATA_SUCCESS', payload);
-      return payload;
-    } catch (e) {
-      console.error(e);
       return Promise.reject();
     }
   }
