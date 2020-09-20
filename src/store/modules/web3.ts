@@ -41,15 +41,6 @@ const mutations = {
     Vue.set(_state, 'balances', {});
     console.debug('LOGOUT');
   },
-  LOAD_WEB3_REQUEST() {
-    console.debug('LOAD_WEB3_REQUEST');
-  },
-  LOAD_WEB3_SUCCESS() {
-    console.debug('LOAD_WEB3_SUCCESS');
-  },
-  LOAD_WEB3_FAILURE(_state, payload) {
-    console.debug('LOAD_WEB3_FAILURE', payload);
-  },
   LOAD_PROVIDER_REQUEST() {
     console.debug('LOAD_PROVIDER_REQUEST');
   },
@@ -66,20 +57,6 @@ const mutations = {
     Vue.set(_state, 'account', null);
     Vue.set(_state, 'active', false);
     console.debug('LOAD_PROVIDER_FAILURE', payload);
-  },
-  LOAD_BACKUP_PROVIDER_REQUEST() {
-    console.debug('LOAD_BACKUP_PROVIDER_REQUEST');
-  },
-  LOAD_BACKUP_PROVIDER_SUCCESS(_state, payload) {
-    console.debug('LOAD_BACKUP_PROVIDER_SUCCESS', payload);
-  },
-  LOAD_BACKUP_PROVIDER_FAILURE(_state, payload) {
-    Vue.set(_state, 'injectedLoaded', false);
-    Vue.set(_state, 'backUpLoaded', false);
-    Vue.set(_state, 'account', null);
-    Vue.set(_state, 'activeChainId', null);
-    Vue.set(_state, 'active', false);
-    console.debug('LOAD_BACKUP_PROVIDER_FAILURE', payload);
   },
   HANDLE_CHAIN_CHANGED() {
     console.debug('HANDLE_CHAIN_CHANGED');
