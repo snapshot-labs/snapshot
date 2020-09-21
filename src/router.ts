@@ -9,7 +9,11 @@ Vue.use(VueRouter);
 
 const routes: Array<RouteConfig> = [
   { path: '/:key/proposal/:id', name: 'proposal', component: Proposal },
-  { path: '/:key/create', name: 'create', component: Create },
+  {
+    path: '/:key/create',
+    name: 'create',
+    component: Create as any // workaround for vue type definitions not allowing string watch handlers
+  },
   { path: '/:key', name: 'proposals', component: Proposals },
   { path: '/:key/:tab', name: 'proposals-tab', component: Proposals },
   { path: '/', name: 'home', component: Home },

@@ -111,27 +111,63 @@
 import { mapActions } from 'vuex';
 import draggable from 'vuedraggable';
 
+function draftKey(key) {
+  return `snapshot-draft-${key}`;
+}
+
+function loadDraft(key) {
+  try {
+    const storageItem = localStorage.getItem(draftKey(key));
+    if (storageItem) {
+      return JSON.parse(storageItem);
+    }
+  } catch (error) {
+    console.warn('Unable to load draft', error);
+  }
+  return {
+    name: '',
+    body: '',
+    choices: [],
+    start: '',
+    end: '',
+    snapshot: '',
+    metadata: {}
+  };
+}
+
+function saveDraft(key, data) {
+  try {
+    localStorage.setItem(draftKey(key), JSON.stringify(data));
+  } catch (error) {
+    console.warn('Unable to save draft', error);
+  }
+}
+
+function clearDraft(key) {
+  try {
+    localStorage.removeItem(draftKey(key));
+  } catch (error) {
+    console.warn('Unable to clear draft', error);
+  }
+}
+
 export default {
   components: {
     draggable
   },
   data() {
+    const key = this.$route.params.key;
+    const form = loadDraft(key);
+    let counter = 0;
+    const choices = form.choices.map(text => ({ text, key: ++counter }));
     return {
-      key: this.$route.params.key,
+      key,
       loading: false,
-      choices: [],
-      form: {
-        name: '',
-        body: '',
-        choices: [],
-        start: '',
-        end: '',
-        snapshot: '',
-        metadata: {}
-      },
+      choices,
+      form,
       modalOpen: false,
       selectedDate: '',
-      counter: 0
+      counter
     };
   },
   computed: {
@@ -154,8 +190,20 @@ export default {
       );
     }
   },
+  watch: {
+    form: {
+      handler: 'saveDraft',
+      deep: true
+    },
+    choices: {
+      handler: 'saveDraft',
+      deep: true
+    }
+  },
   mounted() {
-    this.addChoice(2);
+    if (this.choices.length === 0) {
+      this.addChoice(2);
+    }
   },
   methods: {
     ...mapActions(['send']),
@@ -182,6 +230,7 @@ export default {
           type: 'proposal',
           payload: this.form
         });
+        clearDraft(this.key);
         this.$router.push({
           name: 'proposal',
           params: {
@@ -193,6 +242,17 @@ export default {
         console.error(e);
         this.loading = false;
       }
+    },
+    saveDraft() {
+      if (this._draftTimer) {
+        clearTimeout(this._draftTimer);
+      }
+      this._draftTimer = setTimeout(() => {
+        saveDraft(this.key, {
+          ...this.form,
+          choices: this.choices.map(choice => choice.text)
+        });
+      }, 1000);
     }
   }
 };
