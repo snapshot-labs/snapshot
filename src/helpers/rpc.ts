@@ -1,6 +1,8 @@
 import { JsonRpcProvider } from '@ethersproject/providers';
+import config from '@/helpers/config';
 
-const url: any = process.env.VUE_APP_RPC_URL;
+const chainId = process.env.VUE_APP_CHAIN_ID || '1';
+const url: any = config.networks[chainId].rpc_url;
 const provider = new JsonRpcProvider(url);
 
 export default provider;
