@@ -40,9 +40,13 @@
                 class="button-outline"
                 :loading="loading"
               >
-                <Avatar :address="web3.account" size="16" class="mr-2 ml-n1" />
-                <span v-if="web3.name" v-text="web3.name" />
-                <span v-else v-text="_shorten(web3.account)" />
+                <Avatar
+                  :address="web3.account"
+                  size="16"
+                  class="mr-0 mr-sm-2 mr-md-2 mr-lg-2 mr-xl-2 ml-n1"
+                />
+                <span v-if="web3.name" v-text="web3.name" class="hide-sm" />
+                <span v-else v-text="_shorten(web3.account)" class="hide-sm" />
               </UiButton>
             </template>
             <UiButton
@@ -53,7 +57,7 @@
               Wrong network
             </UiButton>
             <UiButton v-else @click="modalOpen = true" :loading="loading">
-              Connect wallet
+              Connect<span class="hide-sm" v-text="' wallet'" />
             </UiButton>
             <UiButton @click="modalAboutOpen = true" class="ml-2">
               <span v-text="'?'" class="ml-n1 mr-n1" />
@@ -84,7 +88,8 @@ export default {
   },
   computed: {
     wrongNetwork() {
-      return this.config.chainId !== this.web3.injectedChainId;
+      const chainId = process.env.VUE_APP_CHAIN_ID || 1;
+      return parseInt(chainId) !== this.web3.network.chainId;
     },
     showLogin() {
       return (

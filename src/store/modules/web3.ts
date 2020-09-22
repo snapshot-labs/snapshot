@@ -12,6 +12,7 @@ import rpcProvider from '@/helpers/rpc';
 
 let auth;
 let web3;
+const chainId = process.env.VUE_APP_CHAIN_ID || '1';
 
 if (wsProvider) {
   wsProvider.on('block', blockNumber => {
@@ -27,8 +28,8 @@ const state = {
   active: false,
   balances: {},
   blockNumber: 0,
-  spaces: spaces['1'],
-  network: config.networks['1']
+  spaces: spaces[chainId],
+  network: config.networks[chainId]
 };
 
 const mutations = {

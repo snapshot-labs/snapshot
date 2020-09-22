@@ -53,7 +53,7 @@
       "name": "rinkeby",
       "chainId": 4,
       "rpc_url": "https://eth-rinkeby.alchemyapi.io/v2/twReQE9Px03E-E_N_Fbb3OVF7YgHxoGq",
-      "ws_url": ",wss://eth-rinkeby.ws.alchemyapi.io/v2/twReQE9Px03E-E_N_Fbb3OVF7YgHxoGq"
+      "ws_url": "wss://eth-rinkeby.ws.alchemyapi.io/v2/twReQE9Px03E-E_N_Fbb3OVF7YgHxoGq"
     },
     "56": {
       "name": "mainnet",

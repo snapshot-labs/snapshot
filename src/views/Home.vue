@@ -55,7 +55,11 @@ export default {
   },
   computed: {
     spaces() {
-      const list = homepage.map(key => ({
+      const spaces =
+        this.web3.network.chainId === 1
+          ? homepage
+          : Object.keys(this.web3.spaces);
+      const list = spaces.map(key => ({
         ...this.web3.spaces[key],
         favorite: !!this.favoriteSpaces.favorites[key]
       }));
