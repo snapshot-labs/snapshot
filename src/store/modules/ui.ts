@@ -16,9 +16,9 @@ const mutations = {
 const actions = {
   init: async ({ commit, dispatch }) => {
     commit('SET', { loading: true });
-    await Promise.all([dispatch('getBlockNumber'), dispatch('metadata')]);
     const connector = await Vue.prototype.$auth.getConnector();
     if (connector) await dispatch('login', connector);
+    await dispatch('getBlockNumber');
     commit('SET', { loading: false, init: true });
   },
   loading: ({ commit }, payload) => {
