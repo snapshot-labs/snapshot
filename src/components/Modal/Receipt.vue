@@ -18,11 +18,7 @@
       </div>
     </div>
     <div class="m-4">
-      <a
-        href="https://mycrypto.com/sign-and-verify-message/verify"
-        target="_blank"
-        class="mb-2 d-block"
-      >
+      <a :href="verifyUrl" target="_blank" class="mb-2 d-block">
         <UiButton class="button-outline width-full">
           Verify receipt on MyCrypto
           <Icon name="external-link" class="ml-1" />
@@ -34,6 +30,19 @@
 
 <script>
 export default {
-  props: ['open', 'authorIpfsHash', 'relayerIpfsHash']
+  props: ['open', 'authorIpfsHash', 'relayerIpfsHash'],
+  data() {
+    return {
+      verifyUrl: 'https://app.mycrypto.com/verify-message'
+    };
+  },
+  watch: {
+    authorIpfsHash: function() {
+      this.$http.get(this._ipfsUrl(this.authorIpfsHash)).then(response => {
+        const { address, msg, sig } = response.data;
+        this.verifyUrl = `https://app.mycrypto.com/verify-message?address=${address}&message=${msg}&signature=${sig}`;
+      });
+    }
+  }
 };
 </script>
