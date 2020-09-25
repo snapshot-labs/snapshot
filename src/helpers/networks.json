@@ -48,8 +48,8 @@
     "name": "xDAI Chain",
     "chainId": 100,
     "network": "mainnet",
-    "rpcUrl": "https://rpc.xdaichain.com",
-    "wsUrl": "ws://xdai.poanetwork.dev:8546"
+    "rpcUrl": "https://xdai-archive.blockscout.com",
+    "wsUrl": "wss://rpc.xdaichain.com/wss"
   },
   "137": {
     "name": "Matic Mainnet",
