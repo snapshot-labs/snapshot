@@ -3,7 +3,7 @@ import config from '@/helpers/config';
 
 let provider;
 const chainId = process.env.VUE_APP_CHAIN_ID || '1';
-const url: any = config.networks[chainId].ws_url;
+const url: any = config.networks[chainId].wsUrl;
 if (url) provider = new WebSocketProvider(url);
 
 export default provider;
