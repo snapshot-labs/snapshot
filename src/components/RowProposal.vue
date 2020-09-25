@@ -16,7 +16,7 @@
       <Badges :address="proposal.address" :space="space" class="ml-n1" />
       <span
         class="ml-1"
-        v-text="`${_numeral(proposal.balance)} ${space.symbol}`"
+        v-text="`${_numeral(proposal.score)} ${space.symbol}`"
       />
       <Icon v-if="isVerified" name="check" title="Verified" />
       start

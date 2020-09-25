@@ -107,7 +107,7 @@ export default {
               return true;
 
             if (
-              proposal[1].balance < this.space.min ||
+              proposal[1].score < this.space.min ||
               this.space.invalid.includes(proposal[1].authorIpfsHash)
             )
               return false;

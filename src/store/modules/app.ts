@@ -1,9 +1,6 @@
-import { formatUnits } from '@ethersproject/units';
-import { multicall } from '@bonustrack/snapshot.js/src/utils';
 import strategies from '@bonustrack/snapshot.js/src/strategies';
 import client from '@/helpers/client';
 import ipfs from '@/helpers/ipfs';
-import abi from '@/helpers/abi';
 import rpcProvider from '@/helpers/rpc';
 import { formatProposal, formatProposals } from '@/helpers/utils';
 import { version } from '@/../package.json';
@@ -90,22 +87,30 @@ const actions = {
     try {
       let proposals: any = await client.request(`${space.address}/proposals`);
       if (proposals) {
-        let balances = await multicall(
-          rootState.web3.network.chainId,
-          rpcProvider,
-          abi['TestToken'],
-          Object.values(proposals).map((proposal: any) => [
-            proposal.msg.token,
-            'balanceOf',
-            [proposal.address]
-          ])
-        );
-        balances = balances.map(balance =>
-          parseFloat(formatUnits(balance.toString(), space.decimals))
+        const defaultStrategies = [
+          [
+            'erc20-balance-of',
+            { address: space.address, decimals: space.decimals }
+          ]
+        ];
+        const spaceStrategies = space.strategies || defaultStrategies;
+        const scores: any = await Promise.all(
+          spaceStrategies.map((strategy: any) =>
+            strategies[strategy[0]](
+              rootState.web3.network.chainId,
+              rpcProvider,
+              Object.values(proposals).map((proposal: any) => proposal.address),
+              strategy[1],
+              'latest'
+            )
+          )
         );
         proposals = Object.fromEntries(
-          Object.entries(proposals).map((proposal: any, i) => {
-            proposal[1].balance = balances[i];
+          Object.entries(proposals).map((proposal: any) => {
+            proposal[1].score = scores.reduce(
+              (a, b) => a + b[proposal[1].address],
+              0
+            );
             return [proposal[0], proposal[1]];
           })
         );

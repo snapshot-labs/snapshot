@@ -29,7 +29,7 @@
       </div>
       <div class="d-flex">
         <span v-text="'Network'" class="flex-auto text-gray mr-1" />
-        {{ web3.network.name }}
+        {{ web3.network.network }}
       </div>
       <div class="d-flex">
         <span v-text="'Block number'" class="flex-auto text-gray mr-1" />
