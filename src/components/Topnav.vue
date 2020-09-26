@@ -21,6 +21,7 @@
                 class="mr-1"
                 v-text="'snapshot'"
               />
+              <span v-if="space" class="pl-1 pr-2 text-gray" v-text="'/'" />
             </router-link>
             <router-link
               v-if="space"
@@ -28,13 +29,12 @@
               class="d-inline-block d-flex flex-items-center"
               style="font-size: 24px; padding-top: 4px;"
             >
-              <span class="pl-1 pr-2 text-gray" v-text="'/'" />
               <Token :space="space.key" symbolIndex="space" size="28" />
               <span class="ml-2" v-text="space.name" />
             </router-link>
           </div>
           <div :key="web3.account">
-            <template v-if="$auth.isAuthenticated && !wrongNetwork">
+            <template v-if="$auth.isAuthenticated">
               <UiButton
                 @click="modalOpen = true"
                 class="button-outline"
@@ -50,13 +50,10 @@
               </UiButton>
             </template>
             <UiButton
-              v-else-if="web3.injectedLoaded && wrongNetwork"
-              class="text-red"
+              v-if="!$auth.isAuthenticated"
+              @click="modalOpen = true"
+              :loading="loading"
             >
-              <Icon name="warning" class="ml-n1 mr-1 v-align-middle" />
-              Wrong network
-            </UiButton>
-            <UiButton v-else @click="modalOpen = true" :loading="loading">
               Connect<span class="hide-sm" v-text="' wallet'" />
             </UiButton>
             <UiButton @click="modalAboutOpen = true" class="ml-2">
@@ -87,21 +84,11 @@ export default {
     };
   },
   computed: {
-    wrongNetwork() {
-      const chainId = process.env.VUE_APP_CHAIN_ID || 1;
-      return parseInt(chainId) !== this.web3.network.chainId;
-    },
-    showLogin() {
-      return (
-        (!this.$auth.isAuthenticated && !this.web3.injectedLoaded) ||
-        (!this.$auth.isAuthenticated && !this.wrongNetwork)
-      );
-    },
     space() {
       try {
         return this.web3.spaces[this.$route.params.key];
       } catch (e) {
-        return {};
+        return false;
       }
     }
   },

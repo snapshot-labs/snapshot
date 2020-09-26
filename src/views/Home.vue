@@ -55,6 +55,7 @@ export default {
   },
   computed: {
     spaces() {
+      if (!this.web3.spaces) return {};
       const spaces =
         this.web3.network.chainId === 1
           ? homepage

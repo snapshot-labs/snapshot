@@ -1,7 +1,7 @@
 import { getScores } from '@bonustrack/snapshot.js/src/utils';
 import client from '@/helpers/client';
 import ipfs from '@/helpers/ipfs';
-import rpcProvider from '@/helpers/rpc';
+import providers from '@/helpers/providers';
 import { formatProposal, formatProposals } from '@/helpers/utils';
 import { version } from '@/../package.json';
 
@@ -87,7 +87,7 @@ const actions = {
         const scores: any = await getScores(
           space.strategies || defaultStrategies,
           rootState.web3.network.chainId,
-          rpcProvider,
+          providers.rpc,
           Object.values(proposals).map((proposal: any) => proposal.address)
         );
         proposals = Object.fromEntries(
@@ -130,7 +130,7 @@ const actions = {
       const scores: any = await getScores(
         spaceStrategies,
         rootState.web3.network.chainId,
-        rpcProvider,
+        providers.rpc,
         Object.keys(result.votes),
         // @ts-ignore
         blockTag
@@ -192,7 +192,7 @@ const actions = {
       let scores: any = await getScores(
         space.strategies || defaultStrategies,
         rootState.web3.network.chainId,
-        rpcProvider,
+        providers.rpc,
         [address],
         // @ts-ignore
         blockTag

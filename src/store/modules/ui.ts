@@ -17,7 +17,11 @@ const actions = {
   init: async ({ commit, dispatch }) => {
     commit('SET', { loading: true });
     const connector = await Vue.prototype.$auth.getConnector();
-    if (connector) await dispatch('login', connector);
+    if (connector) {
+      await dispatch('login', connector);
+    } else {
+      commit('HANDLE_CHAIN_CHANGED', 1);
+    }
     await dispatch('getBlockNumber');
     commit('SET', { loading: false, init: true });
   },
