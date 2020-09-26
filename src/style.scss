@@ -1,16 +1,44 @@
-@import './fonts';
 @import './vars';
-@import './assets/default.scss';
-@import './assets/yam.scss';
-@import './assets/yearn.scss';
-@import './assets/balancer.scss';
-@import './assets/curve.scss';
-@import './assets/maker.scss';
-@import './assets/spaghetti.scss';
-@import "~@primer/css/index.scss";
+@import '~@primer/css';
+@import './assets/fonts/iconfont.css';
 
-html, body, #app {
-  background-color: var(--bg-color);
+:root {
+  --primary-color: #384aff;
+  --bg-color: white;
+  --text-color: #586069;
+  --link-color: #111111;
+  --heading-color: #111111;
+  --border-color: #d1d5da;
+  --header-bg: white;
+  --block-bg: transparent;
+}
+
+@font-face {
+  font-family: 'Calibre-Medium';
+  src: url('./assets/fonts/Calibre-Medium.eot');
+  src: url('./assets/fonts/Calibre-Medium.eot?#iefix')
+      format('embedded-opentype'),
+    url('./assets/fonts/Calibre-Medium.woff') format('woff'),
+    url('./assets/fonts/Calibre-Medium.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Calibre-Semibold';
+  src: url('./assets/fonts/Calibre-Semibold.eot');
+  src: url('./assets/fonts/Calibre-Semibold.eot?#iefix')
+      format('embedded-opentype'),
+    url('./assets/fonts/Calibre-Semibold.woff') format('woff'),
+    url('./assets/fonts/Calibre-Semibold.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+html,
+body,
+#app {
+  background: var(--bg-color);
   color: var(--text-color);
   font-family: $font-weight-normal;
   -webkit-font-smoothing: antialiased;
@@ -21,7 +49,10 @@ html, body, #app {
   outline: none !important;
 }
 
-h1, h2, h3, h4 {
+h1,
+h2,
+h3,
+h4 {
   color: var(--heading-color);
   font-family: $font-weight-bold;
 }
@@ -109,7 +140,11 @@ textarea {
   color: white !important;
 }
 
-.border, .border-md, .border-lg, .border-bottom, .border-top {
+.border,
+.border-md,
+.border-lg,
+.border-bottom,
+.border-top {
   border-color: var(--border-color) !important;
 }
 
@@ -121,12 +156,20 @@ textarea {
   background-color: var(--text-color) !important;
 }
 
+.text-primary {
+  color: var(--primary-color) !important;
+}
+
 .text-gray {
   color: var(--text-color) !important;
 }
 
 .text-white {
   color: var(--link-color) !important;
+}
+
+.block-bg {
+  background-color: var(--block-bg) !important;
 }
 
 .bg-blue {
@@ -146,6 +189,35 @@ textarea {
 
 .menu-tabs::-webkit-scrollbar {
   display: none;
+}
+
+.extra-icon-container {
+  position: relative;
+
+  .extra-icon-off {
+    display: none;
+  }
+
+  &:hover .extra-icon-off {
+    display: inline;
+  }
+}
+
+.tooltipped {
+  &::before {
+    border-top-color: var(--text-color) !important;
+    margin-bottom: 14px;
+    top: -14px !important;
+  }
+
+  &::after {
+    margin-bottom: 14px;
+    border-radius: 20px;
+    padding: 6px 16px 2px;
+    font-size: 16px;
+    background-color: var(--text-color);
+    color: var(--header-bg);
+  }
 }
 
 .form-control{

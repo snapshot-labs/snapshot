@@ -2,16 +2,27 @@
   <div>
     <Container :slim="true">
       <router-link
-        v-for="namespace in namespaces"
-        :key="namespace.address"
-        :to="{ name: 'proposals', params: { key: namespace.key } }"
+        v-for="space in spaces"
+        :key="space.address"
+        :to="{ name: 'proposals', params: { key: space.key } }"
       >
-        <Block class="text-center">
-          <Token :namespace="namespace.key" size="96" class="mb-4" />
+        <Block class="text-center extra-icon-container">
+          <Token
+            :space="space.key"
+            symbolIndex="space"
+            size="88"
+            class="mb-3"
+          />
+          <StatefulIcon
+            :on="space.favorite"
+            onName="star"
+            offName="star1"
+            @click="toggleFavorite(space.key)"
+          />
           <div>
             <h2>
-              {{ namespace.name }}
-              <span class="text-gray">{{ namespace.symbol }}</span>
+              {{ space.name }}
+              <span class="text-gray">{{ space.symbol }}</span>
             </h2>
           </div>
         </Block>
@@ -20,8 +31,8 @@
         <Block class="text-center">
           <div
             v-text="'+'"
-            style="width: 96px; height: 96px; color: white; font-size: 76px; padding-top: 6px;"
-            class="bg-gray-3 circle mx-auto mb-4"
+            style="width: 88px; height: 88px; color: white; font-size: 76px; padding-top: 2px;"
+            class="bg-gray-3 circle mx-auto mb-3"
           />
           <h2 v-text="'Create space'" />
         </Block>
@@ -31,24 +42,55 @@
 </template>
 
 <script>
-import namespaces from '@/namespaces.json';
+import { mapActions } from 'vuex';
+import orderBy from 'lodash/orderBy';
+import homepage from '@bonustrack/snapshot-spaces/spaces/homepage.json';
+import domains from '@bonustrack/snapshot-spaces/spaces/domains.json';
 
 export default {
   data() {
     return {
-      namespaces: Object.fromEntries(
-        Object.entries(namespaces).filter(namespace => namespace[1].visible)
-      )
+      domains
     };
   },
+  computed: {
+    spaces() {
+      if (!this.web3.spaces) return {};
+      const spaces =
+        this.web3.network.chainId === 1
+          ? homepage
+          : Object.keys(this.web3.spaces);
+      const list = spaces.map(key => ({
+        ...this.web3.spaces[key],
+        favorite: !!this.favoriteSpaces.favorites[key]
+      }));
+      return orderBy(list, ['favorite'], ['desc']);
+    }
+  },
+  methods: {
+    ...mapActions([
+      'loadFavoriteSpaces',
+      'addFavoriteSpace',
+      'removeFavoriteSpace'
+    ]),
+    toggleFavorite(spaceId) {
+      if (this.favoriteSpaces.favorites[spaceId]) {
+        this.removeFavoriteSpace(spaceId);
+      } else {
+        this.addFavoriteSpace(spaceId);
+      }
+    }
+  },
   created() {
-    if (Object.keys(this.namespaces).length === 1)
-      this.$router.push({
+    const domainName = window.location.hostname;
+    if (domains[domainName])
+      return this.$router.push({
         name: 'proposals',
         params: {
-          key: Object.keys(this.namespaces)[0]
+          key: domains[domainName]
         }
       });
+    this.loadFavoriteSpaces();
   }
 };
 </script>

@@ -5,12 +5,19 @@
   >
     <div>
       <State :proposal="proposal" class="d-inline-block mr-2 mb-2" />
-      <h3 v-text="proposal.msg.payload.name" class="d-inline-block mb-1" />
+      <h3
+        v-text="_shorten(proposal.msg.payload.name, 'name')"
+        class="d-inline-block mb-1"
+      />
     </div>
     <div>
       <span v-text="`#${i.slice(0, 7)}`" />
-      By {{ _shorten(proposal.address) }} {{ _numeral(proposal.balance) }}
-      {{ namespace.symbol }}
+      By {{ _shorten(proposal.address) }}
+      <Badges :address="proposal.address" :space="space" class="ml-n1" />
+      <span
+        class="ml-1"
+        v-text="`${_numeral(proposal.score)} ${space.symbol}`"
+      />
       <Icon v-if="isVerified" name="check" title="Verified" />
       start
       <span v-text="$d(proposal.msg.payload.start * 1e3)" />
@@ -23,7 +30,7 @@
 <script>
 export default {
   props: {
-    namespace: Object,
+    space: Object,
     token: String,
     proposal: Object,
     verified: Array,

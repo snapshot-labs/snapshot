@@ -16,7 +16,7 @@ export default {
   font-weight: 500;
   line-height: 18px;
   height: 20px;
-  width: 20px;
+  min-width: 20px;
   color: white;
   text-align: center;
   background-color: var(--text-color);

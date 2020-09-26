@@ -5,13 +5,15 @@
 </template>
 
 <style scoped lang="scss">
-@import '../../vars';
-
-.label,
 .Label {
-  border-radius: 2em;
-  color: $white;
+  display: inline-block;
   padding: 0 7px;
-  line-height: 18px;
+  font-size: 14px;
+  font-weight: 500;
+  height: 22px;
+  line-height: 23px;
+  border-radius: 2em;
+  box-shadow: none;
+  color: var(--text-color);
 }
 </style>

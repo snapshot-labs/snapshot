@@ -3,16 +3,7 @@
     <Container>
       <div class="mb-3 d-flex">
         <div class="flex-auto">
-          <div>
-            <a
-              :href="_etherscanLink(namespace.address)"
-              target="_blank"
-              class="text-gray"
-            >
-              {{ namespace.name || _shorten(key) }}
-              <Icon name="external-link" class="ml-1" />
-            </a>
-          </div>
+          <div v-text="space.name" />
           <div class="d-flex flex-items-center flex-auto">
             <h2 class="mr-2">
               Proposals
@@ -20,51 +11,41 @@
             </h2>
           </div>
         </div>
-        <router-link v-if="web3.account" :to="{ name: 'create' }">
+        <router-link v-if="$auth.isAuthenticated" :to="{ name: 'create' }">
           <UiButton>New proposal</UiButton>
         </router-link>
       </div>
     </Container>
     <Container :slim="true">
       <Block :slim="true">
-        <div class="px-4 py-3 bg-gray-dark overflow-auto menu-tabs">
-          <div class="col-12 col-lg-7 pt-2 float-md-left hide-sm hide-md">
-            <router-link
-              v-for="state in [
-                'core',
-                'community',
-                'all',
-                'active',
-                'pending',
-                'invalid',
-                'closed'
-              ]"
-              :key="state"
-              v-text="state"
-              :to="`/${key}/${state}`"
-              :class="selectedState === state && 'text-white'"
-              class="mr-3 text-gray tab"
-            />
-          </div>
-          <div class="col-12 col-lg-5 float-md-right">
-            <input
+        <div
+          class="px-4 py-3 bg-gray-dark overflow-auto menu-tabs rounded-top-0 rounded-md-top-2"
+        >
+          <router-link
+            v-for="state in states"
+            :key="state"
+            v-text="state"
+            :to="`/${key}/${state}`"
+            :class="selectedState === state && 'text-white'"
+            class="mr-3 text-gray tab"
+          />
+        </div>
+          <input
               class="form-control height-full input-block ml-lg-2 "
               v-model="search"
               type="text"
               placeholder="Search"
               aria-label="Search"
-            />
-          </div>
-        </div>
+          />
         <RowLoading v-if="loading" />
         <div v-if="loaded">
           <RowProposal
             v-for="(proposal, i) in proposalsWithFilter"
             :key="i"
             :proposal="proposal"
-            :namespace="namespace"
+            :space="space"
             :token="key"
-            :verified="namespace.verified"
+            :verified="space.verified"
             :i="i"
           />
         </div>
@@ -72,7 +53,7 @@
           v-if="loaded && Object.keys(proposalsWithFilter).length === 0"
           class="p-4 m-0 border-top d-block"
         >
-          There isn't any proposal here yet!
+          There aren't any proposals here yet!
         </p>
       </Block>
     </Container>
@@ -130,7 +111,6 @@
 
 <script>
 import { mapActions } from 'vuex';
-import namespaces from '@/namespaces.json';
 import '@primer/octicons/build/build.css';
 
 export default {
@@ -139,7 +119,6 @@ export default {
       loading: false,
       loaded: false,
       proposals: {},
-      selectedState: 'All',
       search: '',
       showMobileFilter: false
     };
@@ -148,10 +127,21 @@ export default {
     key() {
       return this.$route.params.key;
     },
-    namespace() {
-      return namespaces[this.key]
-        ? namespaces[this.key]
-        : { token: this.key, verified: [] };
+    space() {
+      return this.web3.spaces[this.key];
+    },
+    states() {
+      const states = [
+        'all',
+        'core',
+        'community',
+        'active',
+        'pending',
+        'closed'
+      ];
+      return this.space.showOnlyCore
+        ? states.filter(state => !['core', 'community'].includes(state))
+        : states;
     },
     totalProposals() {
       return Object.keys(this.proposals).length;
@@ -173,50 +163,57 @@ export default {
               return false;
             }
             if (proposal[1].balance < this.namespace.min) return false;
+
             if (
-              this.selectedState !== 'invalid' &&
-              this.namespace.invalid.includes(proposal[1].authorIpfsHash)
-            ) {
+              this.space.showOnlyCore &&
+              !this.space.core.includes(proposal[1].address)
+            )
               return false;
-            }
+
+            if (
+              ['core', 'all'].includes(this.selectedState) &&
+              this.space.core.includes(proposal[1].address)
+            )
+              return true;
+
+            if (
+              proposal[1].score < this.space.min ||
+              this.space.invalid.includes(proposal[1].authorIpfsHash)
+            )
+              return false;
+
             if (
               this.selectedState === 'invalid' &&
-              this.namespace.invalid.includes(proposal[1].authorIpfsHash)
-            ) {
+              this.space.invalid.includes(proposal[1].authorIpfsHash)
+            )
               return true;
-            }
+
             if (this.selectedState === 'all') return true;
+
             if (
               this.selectedState === 'active' &&
               proposal[1].msg.payload.start <= ts &&
               proposal[1].msg.payload.end > ts
-            ) {
+            )
               return true;
-            }
-            if (
-              this.selectedState === 'core' &&
-              this.namespace.core.includes(proposal[1].address)
-            ) {
-              return true;
-            }
+
             if (
               this.selectedState === 'community' &&
-              !this.namespace.core.includes(proposal[1].address)
-            ) {
+              !this.space.core.includes(proposal[1].address)
+            )
               return true;
-            }
+
             if (
               this.selectedState === 'closed' &&
               proposal[1].msg.payload.end <= ts
-            ) {
+            )
               return true;
-            }
+
             if (
               this.selectedState === 'pending' &&
               proposal[1].msg.payload.start > ts
-            ) {
+            )
               return true;
-            }
           })
           .sort((a, b) => b[1].msg.payload.end - a[1].msg.payload.end, 0)
       );
@@ -227,8 +224,8 @@ export default {
   },
   async created() {
     this.loading = true;
-    this.selectedState = this.$route.params.tab || this.namespace.defaultView;
-    this.proposals = await this.getProposals(this.namespace.address);
+    this.selectedState = this.$route.params.tab || this.space.defaultView;
+    this.proposals = await this.getProposals(this.space);
     this.loading = false;
     this.loaded = true;
   }

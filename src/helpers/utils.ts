@@ -1,4 +1,3 @@
-import config from '@/helpers/config';
 import pkg from '@/../package.json';
 
 export function shorten(str = '') {
@@ -21,8 +20,7 @@ export function clone(item) {
 }
 
 export function etherscanLink(str: string, type = 'address'): string {
-  const network = config.network === 'homestead' ? '' : `${config.network}.`;
-  return `https://${network}etherscan.io/${type}/${str}`;
+  return `https://etherscan.io/${type}/${str}`;
 }
 
 export function lsSet(key: string, value: any) {
@@ -49,8 +47,13 @@ export function formatProposal(proposal) {
     proposal.bpt_voting_disabled = '1';
   }
 
+  // v0.1.1
+  if (proposal.msg.version === '0.1.0' || proposal.msg.version === '0.1.1') {
+    proposal.msg.payload.metadata = {};
+  }
+
   if (proposal.msg.payload.snapshot < 10000000)
-    proposal.msg.payload.snapshot = 10000000;
+    proposal.msg.payload.snapshot = 20000000;
 
   return proposal;
 }
