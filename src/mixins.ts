@@ -26,6 +26,7 @@ export default {
       return numeral(number).format(format);
     },
     _shorten(str: string, key: string): string {
+      if (!str) return str;
       let limit;
       if (key === 'symbol') limit = 6;
       if (key === 'name') limit = 64;

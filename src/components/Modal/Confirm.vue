@@ -55,7 +55,6 @@
 
 <script>
 import { mapActions } from 'vuex';
-import spaces from '@/spaces';
 
 export default {
   props: [
@@ -70,8 +69,7 @@ export default {
   ],
   data() {
     return {
-      loading: false,
-      spaces
+      loading: false
     };
   },
   computed: {

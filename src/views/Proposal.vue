@@ -155,7 +155,6 @@
 
 <script>
 import { mapActions } from 'vuex';
-import spaces from '@/spaces';
 
 export default {
   data() {
@@ -176,9 +175,7 @@ export default {
   },
   computed: {
     space() {
-      return spaces[this.key]
-        ? spaces[this.key]
-        : { token: this.key, verified: [] };
+      return this.web3.spaces[this.key];
     },
     payload() {
       return this.proposal.msg.payload;
@@ -189,6 +186,11 @@ export default {
     symbols() {
       if (!this.space.strategies) return [this.space.symbol];
       return this.space.strategies.map(strategy => strategy[1].symbol);
+    }
+  },
+  watch: {
+    'web3.account': async function(val, prev) {
+      if (val && val.toLowerCase() !== prev) await this.loadPower();
     }
   },
   methods: {
