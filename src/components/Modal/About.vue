@@ -34,7 +34,7 @@
       <div class="d-flex">
         <span v-text="'Block number'" class="flex-auto text-gray mr-1" />
         <a
-          :href="_etherscanLink(web3.blockNumber, 'block')"
+          :href="_explorer(web3.blockNumber, 'block')"
           target="_blank"
           class="float-right"
         >
