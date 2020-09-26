@@ -233,49 +233,14 @@ textarea {
   }
 }
 
-.floating-filters{
-  bottom:      120px;
-  right:        10px;
-  position:   fixed;
-  .floating-nav{
-    &:first-letter {
-      text-transform: capitalize;
-    }
-    display: block;
-    background-color: var(--text-color);
-    transition: all .2s ease-in-out;
-    border-radius: 20px;
-    color: var(--bg-color);
-    padding: 6px 12px;
-    font-size: 18px;
-    line-height: 20px;
-    white-space: nowrap;
-    vertical-align: middle;
-    cursor: pointer;
-    -webkit-box-shadow: 10px 10px 5px -9px rgba(46,45,46,1);
-    -moz-box-shadow: 10px 10px 5px -9px rgba(46,45,46,1);
-    box-shadow: 10px 10px 5px -9px rgba(46,45,46,1);
-    border: 1px solid var(--border-color);
-
-    &.active{
-      background-color: var(--bg-color);
-      color: var(--text-color);
-
-    }
-    &:hover {
-      transform: scale(1.2);
-
-    }
-  }
-}
 
 .floater-btn{
   bottom:      30px;
   right:       30px;
   position:   fixed;
   background-color: var(--text-color);
-  width: 70px;
-  height: 70px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   transition: all .2s ease-in-out;
   -webkit-box-shadow: 10px 10px 5px -9px rgba(46,45,46,1);
@@ -292,5 +257,23 @@ textarea {
       fill:var(--text-color);
 
     }
+  }
+}
+
+.bounce-enter-active {
+  animation: bounce-in .3s;
+}
+.bounce-leave-active {
+  animation: bounce-in .3s reverse;
+}
+@keyframes bounce-in {
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
   }
 }

@@ -21,22 +21,44 @@
         <div
           class="px-4 py-3 bg-gray-dark overflow-auto menu-tabs rounded-top-0 rounded-md-top-2"
         >
-          <router-link
-            v-for="state in states"
-            :key="state"
-            v-text="state"
-            :to="`/${key}/${state}`"
-            :class="selectedState === state && 'text-white'"
-            class="mr-3 text-gray tab"
-          />
+          <div class="col-12 col-md-7 float-md-left">
+            <router-link
+              v-for="state in states"
+              :key="state"
+              v-text="state"
+              :to="`/${key}/${state}`"
+              :class="selectedState === state && 'text-white'"
+              class="mr-3 text-gray tab"
+            />
+          </div>
+          <transition name="bounce">
+            <div
+                v-if="showMobileFilter"
+                class="col-12 hide-lg hide-xl pt-2 "
+            >
+              <input
+                  class="form-control height-full input-block ml-lg-2 "
+                  v-model="search"
+                  type="text"
+                  placeholder="Search"
+                  aria-label="Search"
+              />
+            </div>
+          </transition>
+
+          <div
+              class="col-5 float-right hide-sm hide-md "
+            >
+              <input
+                class="form-control height-full input-block ml-lg-2 "
+                v-model="search"
+                type="text"
+                placeholder="Search"
+                aria-label="Search"
+              />
+            </div>
         </div>
-          <input
-              class="form-control height-full input-block ml-lg-2 "
-              v-model="search"
-              type="text"
-              placeholder="Search"
-              aria-label="Search"
-          />
+
         <RowLoading v-if="loading" />
         <div v-if="loaded">
           <RowProposal
@@ -57,54 +79,25 @@
         </p>
       </Block>
     </Container>
-    <transition name="sliding">
-      <div class="floating-filters" v-show="showMobileFilter">
-        <router-link
-          v-for="state in [
-            'core',
-            'community',
-            'all',
-            'active',
-            'pending',
-            'invalid',
-            'closed'
-          ]"
-          :key="state"
-          v-text="state"
-          :to="`/${key}/${state}`"
-          :class="{ active: selectedState == state }"
-          class="floating-nav text-center mt-3 d-md-none"
-        />
-      </div>
-    </transition>
 
     <button
       class="floater-btn d-md-none"
       @click="showMobileFilter = !showMobileFilter"
     >
-      <svg
-        v-if="!showMobileFilter"
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 24 18"
-        width="36"
-        height="36"
-      >
-        <path
-          d="M2.75 6a.75.75 0 000 1.5h18.5a.75.75 0 000-1.5H2.75zM6 11.75a.75.75 0 01.75-.75h10.5a.75.75 0 010 1.5H6.75a.75.75 0 01-.75-.75zm4 4.938a.75.75 0 01.75-.75h2.5a.75.75 0 010 1.5h-2.5a.75.75 0 01-.75-.75z"
-        ></path>
-      </svg>
-      <svg
-        v-else
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 24 18"
-        width="36"
-        height="36"
-      >
-        <path
-          fill-rule="evenodd"
-          d="M5.72 5.72a.75.75 0 011.06 0L12 10.94l5.22-5.22a.75.75 0 111.06 1.06L13.06 12l5.22 5.22a.75.75 0 11-1.06 1.06L12 13.06l-5.22 5.22a.75.75 0 01-1.06-1.06L10.94 12 5.72 6.78a.75.75 0 010-1.06z"
-        ></path>
-      </svg>
+      <transition name="bounce">
+        <svg v-if="showMobileFilter" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 14" width="24" height="24"><path fill-rule="evenodd" d="M14.53 15.59a8.25 8.25 0 111.06-1.06l5.69 5.69a.75.75 0 11-1.06 1.06l-5.69-5.69zM2.5 9.25a6.75 6.75 0 1111.74 4.547.746.746 0 00-.443.442A6.75 6.75 0 012.5 9.25z"></path></svg>        <svg
+          v-else
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 14"
+          width="24"
+          height="24"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M5.72 5.72a.75.75 0 011.06 0L12 10.94l5.22-5.22a.75.75 0 111.06 1.06L13.06 12l5.22 5.22a.75.75 0 11-1.06 1.06L12 13.06l-5.22 5.22a.75.75 0 01-1.06-1.06L10.94 12 5.72 6.78a.75.75 0 010-1.06z"
+          ></path>
+        </svg>
+      </transition>
     </button>
   </div>
 </template>
@@ -162,7 +155,6 @@ export default {
             ) {
               return false;
             }
-            if (proposal[1].balance < this.namespace.min) return false;
 
             if (
               this.space.showOnlyCore &&
