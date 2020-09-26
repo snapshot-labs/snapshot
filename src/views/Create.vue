@@ -61,7 +61,11 @@
         </Block>
       </div>
       <div class="col-12 col-lg-4 float-left">
-        <Block title="Actions">
+        <Block
+          title="Actions"
+          :icon="web3.network.chainId === 4 ? 'stars' : undefined"
+          @submit="modalPluginsOpen = true"
+        >
           <div class="mb-2">
             <UiButton
               @click="[(modalOpen = true), (selectedDate = 'start')]"
@@ -104,6 +108,13 @@
       @close="modalOpen = false"
       @input="setDate"
     />
+    <ModalPlugins
+      :proposal="{ ...form, choices }"
+      :value="form.metadata.plugins"
+      v-model="form.metadata.plugins"
+      :open="modalPluginsOpen"
+      @close="modalPluginsOpen = false"
+    />
   </Container>
 </template>
 
@@ -130,6 +141,7 @@ export default {
         metadata: {}
       },
       modalOpen: false,
+      modalPluginsOpen: false,
       selectedDate: '',
       counter: 0
     };
