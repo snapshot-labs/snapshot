@@ -118,7 +118,7 @@
             <div class="mb-1">
               <b>Snapshot</b>
               <a
-                :href="_etherscanLink(payload.snapshot, 'block')"
+                :href="_explorer(payload.snapshot, 'block')"
                 target="_blank"
                 class="float-right"
               >

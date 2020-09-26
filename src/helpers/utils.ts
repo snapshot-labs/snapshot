@@ -19,10 +19,6 @@ export function clone(item) {
   return JSON.parse(JSON.stringify(item));
 }
 
-export function etherscanLink(str: string, type = 'address'): string {
-  return `https://etherscan.io/${type}/${str}`;
-}
-
 export function lsSet(key: string, value: any) {
   return localStorage.setItem(`${pkg.name}.${key}`, JSON.stringify(value));
 }
