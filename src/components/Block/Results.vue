@@ -36,15 +36,8 @@
       />
     </div>
     <div v-if="ts >= payload.end">
-      <UiButton v-if="1 === 2" @click="downloadReport" class="width-full mt-2">
-        Download report
-      </UiButton>
       <UiButton
-        v-if="
-          payload.metadata &&
-            payload.metadata.plugins &&
-            payload.metadata.plugins.aragon
-        "
+        v-if="payload.metadata.plugins && payload.metadata.plugins.aragon"
         @click="submitOnChain"
         :loading="loading"
         class="width-full mt-2 button--submit"
@@ -57,6 +50,9 @@
           style="margin-top: -4px;"
         />
         Submit on-chain
+      </UiButton>
+      <UiButton v-else @click="downloadReport" class="width-full mt-2">
+        Download report
       </UiButton>
     </div>
   </Block>

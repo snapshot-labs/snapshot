@@ -61,7 +61,11 @@
         </Block>
       </div>
       <div class="col-12 col-lg-4 float-left">
-        <Block title="Actions" icon="stars" @submit="modalPluginsOpen = true">
+        <Block
+          title="Actions"
+          :icon="web3.network.chainId === 4 ? 'stars' : undefined"
+          @submit="modalPluginsOpen = true"
+        >
           <div class="mb-2">
             <UiButton
               @click="[(modalOpen = true), (selectedDate = 'start')]"
