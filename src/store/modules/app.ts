@@ -1,4 +1,4 @@
-import strategies from '@bonustrack/snapshot.js/src/strategies';
+import { getScores } from '@bonustrack/snapshot.js/src/utils';
 import client from '@/helpers/client';
 import ipfs from '@/helpers/ipfs';
 import rpcProvider from '@/helpers/rpc';
@@ -32,15 +32,6 @@ const mutations = {
   },
   GET_PROPOSAL_FAILURE(_state, payload) {
     console.debug('GET_PROPOSAL_FAILURE', payload);
-  },
-  GET_VOTERS_BALANCES_REQUEST() {
-    console.debug('GET_VOTERS_BALANCES_REQUEST');
-  },
-  GET_VOTERS_BALANCES_SUCCESS() {
-    console.debug('GET_VOTERS_BALANCES_SUCCESS');
-  },
-  GET_VOTERS_BALANCES_FAILURE(_state, payload) {
-    console.debug('GET_VOTERS_BALANCES_FAILURE', payload);
   },
   GET_POWER_REQUEST() {
     console.debug('GET_POWER_REQUEST');
@@ -93,17 +84,11 @@ const actions = {
             { address: space.address, decimals: space.decimals }
           ]
         ];
-        const spaceStrategies = space.strategies || defaultStrategies;
-        const scores: any = await Promise.all(
-          spaceStrategies.map((strategy: any) =>
-            strategies[strategy[0]](
-              rootState.web3.network.chainId,
-              rpcProvider,
-              Object.values(proposals).map((proposal: any) => proposal.address),
-              strategy[1],
-              'latest'
-            )
-          )
+        const scores: any = await getScores(
+          space.strategies || defaultStrategies,
+          rootState.web3.network.chainId,
+          rpcProvider,
+          Object.values(proposals).map((proposal: any) => proposal.address)
         );
         proposals = Object.fromEntries(
           Object.entries(proposals).map((proposal: any) => {
@@ -142,16 +127,13 @@ const actions = {
         ]
       ];
       const spaceStrategies = payload.space.strategies || defaultStrategies;
-      const scores: any = await Promise.all(
-        spaceStrategies.map((strategy: any) =>
-          strategies[strategy[0]](
-            rootState.web3.network.chainId,
-            rpcProvider,
-            Object.keys(result.votes),
-            strategy[1],
-            blockTag
-          )
-        )
+      const scores: any = await getScores(
+        spaceStrategies,
+        rootState.web3.network.chainId,
+        rpcProvider,
+        Object.keys(result.votes),
+        // @ts-ignore
+        blockTag
       );
       console.log('Scores', scores);
       result.votes = Object.fromEntries(
@@ -207,20 +189,15 @@ const actions = {
           { address: space.address, decimals: space.decimals }
         ]
       ];
-      const spaceStrategies = space.strategies || defaultStrategies;
-      const scores: any = (
-        await Promise.all(
-          spaceStrategies.map((strategy: any) =>
-            strategies[strategy[0]](
-              rootState.web3.network.chainId,
-              rpcProvider,
-              [address],
-              strategy[1],
-              blockTag
-            )
-          )
-        )
-      ).map((score: any) =>
+      let scores: any = await getScores(
+        space.strategies || defaultStrategies,
+        rootState.web3.network.chainId,
+        rpcProvider,
+        [address],
+        // @ts-ignore
+        blockTag
+      );
+      scores = scores.map((score: any) =>
         Object.values(score).reduce((a, b: any) => a + b, 0)
       );
       commit('GET_POWER_SUCCESS');
