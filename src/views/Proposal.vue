@@ -102,17 +102,17 @@
             <div class="mb-1">
               <b>Start date</b>
               <span
-                :title="_ms(payload.start)"
+                :aria-label="_ms(payload.start)"
                 v-text="$d(payload.start * 1e3, 'short')"
-                class="float-right text-white"
+                class="float-right text-white tooltipped tooltipped-n"
               />
             </div>
             <div class="mb-1">
               <b>End date</b>
               <span
-                :title="_ms(payload.end)"
+                :aria-label="_ms(payload.end)"
                 v-text="$d(payload.end * 1e3, 'short')"
-                class="float-right text-white"
+                class="float-right text-white tooltipped tooltipped-n"
               />
             </div>
             <div class="mb-1">

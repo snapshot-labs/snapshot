@@ -161,6 +161,7 @@ export default {
         // this.form.start >= ts &&
         this.form.end &&
         this.form.end > this.form.start &&
+        this.form.snapshot &&
         this.choices.length >= 2 &&
         !this.choices.some(a => a.text === '')
       );
