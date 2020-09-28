@@ -56,10 +56,11 @@ export default {
   computed: {
     spaces() {
       if (!this.web3.spaces) return {};
+      const spacesCurrentNetwork = Object.entries(this.web3.spaces)
+        .filter(space => space[1].chainId === this.web3.network.chainId)
+        .map(space => space[0]);
       const spaces =
-        this.web3.network.chainId === 1
-          ? homepage
-          : Object.keys(this.web3.spaces);
+        this.web3.network.chainId === 1 ? homepage : spacesCurrentNetwork;
       const list = spaces.map(key => ({
         ...this.web3.spaces[key],
         favorite: !!this.favoriteSpaces.favorites[key]

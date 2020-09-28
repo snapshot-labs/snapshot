@@ -25,7 +25,7 @@ const state = {
   name: null,
   balances: {},
   blockNumber: 0,
-  spaces: {},
+  spaces,
   network: config.networks['1']
 };
 
@@ -51,7 +51,6 @@ const mutations = {
   HANDLE_CHAIN_CHANGED(_state, chainId) {
     providers.setNetwork(chainId);
     Vue.set(_state, 'network', config.networks[chainId]);
-    Vue.set(_state, 'spaces', spaces[chainId]);
     console.debug('HANDLE_CHAIN_CHANGED', chainId);
   },
   HANDLE_ACCOUNTS_CHANGED(_state, payload) {
