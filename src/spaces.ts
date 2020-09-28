@@ -11,7 +11,7 @@ const requireSkin = require.context(
 
 requireSkin.keys().map(file => requireSkin(file));
 
-const spaces = Object.fromEntries(
+export default Object.fromEntries(
   requireSpace
     .keys()
     .filter(
@@ -25,12 +25,3 @@ const spaces = Object.fromEntries(
       return [space.key, space];
     })
 );
-
-const spacesByChainId = {};
-Object.entries(spaces).forEach((space: any) => {
-  if (!spacesByChainId[space[1].chainId])
-    spacesByChainId[space[1].chainId] = {};
-  spacesByChainId[space[1].chainId][space[0]] = space[1];
-});
-
-export default spacesByChainId;
