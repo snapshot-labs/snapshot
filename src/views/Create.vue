@@ -63,7 +63,7 @@
       <div class="col-12 col-lg-4 float-left">
         <Block
           title="Actions"
-          :icon="web3.network.chainId === 4 ? 'stars' : undefined"
+          :icon="space.chainId === 4 ? 'stars' : undefined"
           @submit="modalPluginsOpen = true"
         >
           <div class="mb-2">

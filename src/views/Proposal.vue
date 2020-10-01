@@ -41,11 +41,28 @@
             <UiButton
               v-for="(choice, i) in payload.choices"
               :key="i"
-              v-text="choice"
               @click="selectedChoice = i + 1"
               class="d-block width-full mb-2"
               :class="selectedChoice === i + 1 && 'button--active'"
-            />
+            >
+              {{ choice }}
+              <a
+                v-if="_get(payload, `metadata.plugins.aragon.choice${i + 1}`)"
+                @click="modalOpen = true"
+                :aria-label="
+                  `Target address: ${
+                    payload.metadata.plugins.aragon[`choice${i + 1}`].actions[0]
+                      .targetAddress
+                  }\nCalldata: ${
+                    payload.metadata.plugins.aragon[`choice${i + 1}`].actions[0]
+                      .calldata
+                  }`
+                "
+                class="tooltipped tooltipped-n break-word"
+              >
+                <Icon name="warning" class="v-align-middle ml-1" />
+              </a>
+            </UiButton>
           </div>
           <UiButton
             :disabled="voteLoading || !selectedChoice || !web3.account"
