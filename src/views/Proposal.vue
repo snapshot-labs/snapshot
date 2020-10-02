@@ -64,7 +64,7 @@
         />
       </div>
       <div v-if="loaded" class="col-12 col-lg-4 float-left">
-        <Block title="Informations">
+        <Block title="Information">
           <div class="mb-1 overflow-hidden">
             <b>Token(s)</b>
             <span class="float-right text-white">
@@ -102,23 +102,23 @@
             <div class="mb-1">
               <b>Start date</b>
               <span
-                :title="_ms(payload.start)"
+                :aria-label="_ms(payload.start)"
                 v-text="$d(payload.start * 1e3, 'short')"
-                class="float-right text-white"
+                class="float-right text-white tooltipped tooltipped-n"
               />
             </div>
             <div class="mb-1">
               <b>End date</b>
               <span
-                :title="_ms(payload.end)"
+                :aria-label="_ms(payload.end)"
                 v-text="$d(payload.end * 1e3, 'short')"
-                class="float-right text-white"
+                class="float-right text-white tooltipped tooltipped-n"
               />
             </div>
             <div class="mb-1">
               <b>Snapshot</b>
               <a
-                :href="_etherscanLink(payload.snapshot, 'block')"
+                :href="_explorer(payload.snapshot, 'block')"
                 target="_blank"
                 class="float-right"
               >
@@ -129,6 +129,7 @@
           </div>
         </Block>
         <BlockResults
+          :id="id"
           :space="space"
           :payload="payload"
           :results="results"
