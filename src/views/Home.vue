@@ -2,15 +2,17 @@
   <div>
     <div class="text-center mb-4 mx-auto">
       <Container class="d-flex flex-items-center">
-        <UiButton>
-          <Search v-model="q" placeholder="Search" />
-        </UiButton>
-        <div class="flex-auto text-right">
+        <div class="flex-auto text-left">
+          <UiButton class="pl-3 col-12 col-lg-4">
+            <Search v-model="q" placeholder="Search" />
+          </UiButton>
+        </div>
+        <div class="ml-3 text-right hide-sm">
           <span class="mr-3">{{ _numeral(spaces.length) }} space(s)</span>
           <a
             href="https://discord.snapshot.page"
             target="_blank"
-            class="hide-sm"
+            class="hide-md"
           >
             <UiButton>Create space</UiButton>
           </a>
