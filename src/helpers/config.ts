@@ -13,6 +13,8 @@ if (domainName === 'demo.snapshot.page' || domainName === 'beta.snapshot.page')
   config.env = 'develop';
 if (domainName === 'snapshot.page') {
   // @ts-ignore
+  delete config.connectors.torus;
+  // @ts-ignore
   delete config.connectors.walletconnect;
   // @ts-ignore
   delete config.connectors.walletlink;

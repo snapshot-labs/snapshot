@@ -18,6 +18,10 @@
       "network": "mainnet"
     }
   },
+  "torus": {
+    "id": "torus",
+    "name": "Torus"
+  },
   "walletconnect": {
     "id": "walletconnect",
     "name": "WalletConnect",

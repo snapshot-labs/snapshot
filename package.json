@@ -21,6 +21,7 @@
     "@ethersproject/wallet": "^5.0.1",
     "@portis/web3": "2.0.0-beta.49",
     "@primer/css": "^14.4.0",
+    "@toruslabs/torus-embed": "^1.8.5",
     "@vue/cli-plugin-babel": "^4.4.0",
     "@vue/cli-plugin-eslint": "^4.4.0",
     "@vue/cli-plugin-typescript": "^4.4.0",
