@@ -40,7 +40,7 @@
     <a
       v-if="!showAllVotes && Object.keys(votes).length > 10"
       @click="showAllVotes = true"
-      class="px-4 py-3 border-top text-center d-block bg-gray-dark"
+      class="px-4 py-3 border-top text-center d-block bg-gray-dark rounded-bottom-0 rounded-md-bottom-2"
     >
       See more
     </a>
