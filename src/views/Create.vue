@@ -121,6 +121,7 @@
 <script>
 import { mapActions } from 'vuex';
 import draggable from 'vuedraggable';
+import spaces from '@/spaces';
 
 export default {
   components: {
@@ -148,7 +149,7 @@ export default {
   },
   computed: {
     space() {
-      return this.web3.spaces[this.key];
+      return spaces[this.key];
     },
     isValid() {
       // const ts = (Date.now() / 1e3).toFixed();

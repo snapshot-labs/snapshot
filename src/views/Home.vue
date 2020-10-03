@@ -1,42 +1,58 @@
 <template>
   <div>
+    <div class="text-center mb-4 mx-auto">
+      <Container class="d-flex flex-items-center">
+        <UiButton>
+          <Search v-model="q" placeholder="Search" />
+        </UiButton>
+        <div class="flex-auto text-right">
+          <span class="mr-3">{{ _numeral(spaces.length) }} space(s)</span>
+          <a
+            href="https://discord.snapshot.page"
+            target="_blank"
+            class="hide-sm"
+          >
+            <UiButton>Create space</UiButton>
+          </a>
+        </div>
+      </Container>
+    </div>
     <Container :slim="true">
-      <router-link
-        v-for="space in spaces"
-        :key="space.address"
-        :to="{ name: 'proposals', params: { key: space.key } }"
+      <div
+        v-infinite-scroll="loadMore"
+        infinite-scroll-distance="0"
+        class="overflow-hidden mr-n4"
       >
-        <Block class="text-center extra-icon-container">
-          <Token
-            :space="space.key"
-            symbolIndex="space"
-            size="88"
-            class="mb-3"
-          />
-          <StatefulIcon
-            :on="space.favorite"
-            onName="star"
-            offName="star1"
-            @click="toggleFavorite(space.key)"
-          />
-          <div>
-            <h2>
-              {{ space.name }}
-              <span class="text-gray">{{ space.symbol }}</span>
-            </h2>
+        <router-link
+          v-for="space in spaces.slice(0, limit)"
+          :key="space.key"
+          :to="{ name: 'proposals', params: { key: space.key } }"
+        >
+          <div class="col-12 col-lg-3 pr-4 float-left">
+            <Block
+              class="text-center extra-icon-container"
+              style="height: 250px; margin-bottom: 24px !important;"
+            >
+              <Token
+                :space="space.key"
+                symbolIndex="space"
+                size="98"
+                class="my-3"
+              />
+              <StatefulIcon
+                :on="space.favorite"
+                onName="star"
+                offName="star1"
+                @click="toggleFavorite(space.key)"
+              />
+              <div class="">
+                <h3 v-text="space.name" />
+                <div class="text-gray">{{ space.symbol }}</div>
+              </div>
+            </Block>
           </div>
-        </Block>
-      </router-link>
-      <a href="https://discord.snapshot.page" target="_blank">
-        <Block class="text-center">
-          <div
-            v-text="'+'"
-            style="width: 88px; height: 88px; color: white; font-size: 76px; padding-top: 2px;"
-            class="bg-gray-3 circle mx-auto mb-3"
-          />
-          <h2 v-text="'Create space'" />
-        </Block>
-      </a>
+        </router-link>
+      </div>
     </Container>
   </div>
 </template>
@@ -44,28 +60,34 @@
 <script>
 import { mapActions } from 'vuex';
 import orderBy from 'lodash/orderBy';
-import homepage from '@bonustrack/snapshot-spaces/spaces/homepage.json';
+import spotlight from '@bonustrack/snapshot-spaces/spaces/spotlight.json';
 import domains from '@bonustrack/snapshot-spaces/spaces/domains.json';
+import spaces from '@/spaces';
 
 export default {
   data() {
     return {
+      q: '',
+      limit: 16,
       domains
     };
   },
   computed: {
     spaces() {
-      if (!this.web3.spaces) return {};
-      const spacesCurrentNetwork = Object.entries(this.web3.spaces)
-        .filter(space => space[1].chainId === this.web3.network.chainId)
-        .map(space => space[0]);
-      const spaces =
-        this.web3.network.chainId === 1 ? homepage : spacesCurrentNetwork;
-      const list = spaces.map(key => ({
-        ...this.web3.spaces[key],
-        favorite: !!this.favoriteSpaces.favorites[key]
-      }));
-      return orderBy(list, ['favorite'], ['desc']);
+      const list = Object.keys(spaces).map(key => {
+        const spotlightIndex = spotlight.indexOf(key);
+        return {
+          ...spaces[key],
+          favorite: !!this.favoriteSpaces.favorites[key],
+          spotlight: spotlightIndex === -1 ? 1e3 : spotlightIndex
+        };
+      });
+      return orderBy(list, ['favorite', 'spotlight'], ['desc', 'asc']).filter(
+        space =>
+          JSON.stringify(space)
+            .toLowerCase()
+            .includes(this.q.toLowerCase())
+      );
     }
   },
   methods: {
@@ -80,6 +102,9 @@ export default {
       } else {
         this.addFavoriteSpace(spaceId);
       }
+    },
+    loadMore() {
+      this.limit += 16;
     }
   },
   created() {

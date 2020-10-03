@@ -13,6 +13,7 @@
 
 <script>
 import { mapActions } from 'vuex';
+import spaces from '@/spaces';
 
 export default {
   methods: {
@@ -24,7 +25,7 @@ export default {
   computed: {
     space() {
       try {
-        return this.web3.spaces[this.$route.params.key];
+        return spaces[this.$route.params.key];
       } catch (e) {
         return {};
       }
