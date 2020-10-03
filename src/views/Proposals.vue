@@ -103,7 +103,8 @@ export default {
 
             if (
               ['core', 'all'].includes(this.selectedState) &&
-              this.space.core.includes(proposal[1].address)
+              this.space.core.includes(proposal[1].address) &&
+              !this.space.invalid.includes(proposal[1].authorIpfsHash)
             )
               return true;
 
