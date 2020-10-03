@@ -3,7 +3,6 @@ import { getInstance } from '@bonustrack/lock/plugins/vue';
 import { Web3Provider } from '@ethersproject/providers';
 import { Contract } from '@ethersproject/contracts';
 import { getAddress } from '@ethersproject/address';
-import spaces from '@/spaces';
 import store from '@/store';
 import abi from '@/helpers/abi';
 import config from '@/helpers/config';
@@ -25,7 +24,6 @@ const state = {
   name: null,
   balances: {},
   blockNumber: 0,
-  spaces,
   network: config.networks['1']
 };
 
