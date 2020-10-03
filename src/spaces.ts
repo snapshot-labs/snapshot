@@ -16,9 +16,12 @@ export default Object.fromEntries(
     .keys()
     .filter(
       file =>
-        !['./domains.json', './homepage.json', './example/index.json'].includes(
-          file
-        )
+        ![
+          './domains.json',
+          './homepage.json',
+          './spotlight.json',
+          './example/index.json'
+        ].includes(file)
     )
     .map(file => {
       const space = requireSpace(file);
