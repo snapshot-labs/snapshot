@@ -3,7 +3,7 @@
     "name": "Ethereum Mainnet",
     "chainId": 1,
     "network": "homestead",
-    "rpcUrl": "https://eth-mainnet.alchemyapi.io/v2/rXKbp7PTFm6hcrxU8NL-JGp5RMfRHDwg",
+    "rpcUrl": "https://eth-archival.gateway.pokt.network/v1/5f76124fb90218002e9ce985",
     "wsUrl": "wss://eth-mainnet.ws.alchemyapi.io/v2/rXKbp7PTFm6hcrxU8NL-JGp5RMfRHDwg",
     "explorer": "https://etherscan.io"
   },
@@ -11,7 +11,7 @@
     "name": "Ethereum Testnet Rinkeby",
     "chainId": 4,
     "network": "rinkeby",
-    "rpcUrl": "https://eth-rinkeby.alchemyapi.io/v2/twReQE9Px03E-E_N_Fbb3OVF7YgHxoGq",
+    "rpcUrl": "https://eth-rinkeby.gateway.pokt.network/v1/5f76124fb90218002e9ce985",
     "wsUrl": "wss://eth-rinkeby.ws.alchemyapi.io/v2/twReQE9Px03E-E_N_Fbb3OVF7YgHxoGq",
     "explorer": "https://rinkeby.etherscan.io"
   },
@@ -26,7 +26,7 @@
     "name": "Ethereum Testnet Kovan",
     "chainId": 42,
     "network": "kovan",
-    "rpcUrl": "https://kovan.poa.network",
+    "rpcUrl": "https://poa-kovan.gateway.pokt.network/v1/5f76124fb90218002e9ce985",
     "wsUrl": "ws://kovan.poa.network:8546",
     "explorer": "https://kovan.etherscan.io"
   },
@@ -55,7 +55,7 @@
     "name": "xDAI Chain",
     "chainId": 100,
     "network": "mainnet",
-    "rpcUrl": "https://xdai-archive.blockscout.com",
+    "rpcUrl": "https://poa-xdai.gateway.pokt.network/v1/5f76124fb90218002e9ce985",
     "wsUrl": "wss://rpc.xdaichain.com/wss",
     "explorer": "https://blockscout.com/poa/xdai"
   },
