@@ -6,7 +6,7 @@ import { getAddress } from '@ethersproject/address';
 import store from '@/store';
 import abi from '@/helpers/abi';
 import config from '@/helpers/config';
-import providers from '@/helpers/providers';
+import getProvider from '@/helpers/provider';
 import { formatUnits } from '@ethersproject/units';
 
 let wsProvider;
@@ -47,7 +47,6 @@ const mutations = {
     console.debug('LOAD_PROVIDER_FAILURE', payload);
   },
   HANDLE_CHAIN_CHANGED(_state, chainId) {
-    providers.setNetwork(chainId);
     Vue.set(_state, 'network', config.networks[chainId]);
     console.debug('HANDLE_CHAIN_CHANGED', chainId);
   },
@@ -147,7 +146,7 @@ const actions = {
     if (state.network.chainId !== 1) return;
     try {
       // @ts-ignore
-      const name = await providers.rpc.lookupAddress(address);
+      const name = await getProvider(1).lookupAddress(address);
       commit('LOOKUP_ADDRESS_SUCCESS', name);
       return name;
     } catch (e) {
@@ -158,7 +157,7 @@ const actions = {
     if (state.network.chainId !== 1) return;
     try {
       // @ts-ignore
-      const address = await providers.rpc.resolveName(name);
+      const address = await getProvider(1).resolveName(name);
       commit('RESOLVE_NAME_SUCCESS', address);
       return address;
     } catch (e) {
@@ -204,8 +203,9 @@ const actions = {
   getBlockNumber: async ({ commit }) => {
     commit('GET_BLOCK_REQUEST');
     try {
-      // @ts-ignore
-      const blockNumber: any = await providers.rpc.getBlockNumber();
+      const blockNumber: any = await getProvider(
+        state.network.chainId
+      ).getBlockNumber();
       commit('GET_BLOCK_SUCCESS', parseInt(blockNumber));
       return blockNumber;
     } catch (e) {

@@ -1,7 +1,7 @@
 import { getScores } from '@bonustrack/snapshot.js/src/utils';
 import client from '@/helpers/client';
 import ipfs from '@/helpers/ipfs';
-import providers from '@/helpers/providers';
+import getProvider from '@/helpers/provider';
 import { formatProposal, formatProposals } from '@/helpers/utils';
 import { version } from '@/../package.json';
 
@@ -73,7 +73,7 @@ const actions = {
       return;
     }
   },
-  getProposals: async ({ commit, rootState }, space) => {
+  getProposals: async ({ commit }, space) => {
     commit('GET_PROPOSALS_REQUEST');
     try {
       let proposals: any = await client.request(`${space.address}/proposals`);
@@ -86,8 +86,8 @@ const actions = {
         ];
         const scores: any = await getScores(
           space.strategies || defaultStrategies,
-          rootState.web3.network.chainId,
-          providers.rpc,
+          space.chainId,
+          getProvider(space.chainId),
           Object.values(proposals).map((proposal: any) => proposal.address)
         );
         proposals = Object.fromEntries(
@@ -129,8 +129,8 @@ const actions = {
       const spaceStrategies = payload.space.strategies || defaultStrategies;
       const scores: any = await getScores(
         spaceStrategies,
-        rootState.web3.network.chainId,
-        providers.rpc,
+        payload.space.chainId,
+        getProvider(payload.space.chainId),
         Object.keys(result.votes),
         // @ts-ignore
         blockTag
@@ -191,8 +191,8 @@ const actions = {
       ];
       let scores: any = await getScores(
         space.strategies || defaultStrategies,
-        rootState.web3.network.chainId,
-        providers.rpc,
+        space.chainId,
+        getProvider(space.chainId),
         [address],
         // @ts-ignore
         blockTag
