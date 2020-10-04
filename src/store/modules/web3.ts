@@ -200,11 +200,11 @@ const actions = {
       return Promise.reject(e);
     }
   },
-  getBlockNumber: async ({ commit, rootState }) => {
+  getBlockNumber: async ({ commit }) => {
     commit('GET_BLOCK_REQUEST');
     try {
       const blockNumber: any = await getProvider(
-        rootState.web3.network.chainId
+        state.network.chainId
       ).getBlockNumber();
       commit('GET_BLOCK_SUCCESS', parseInt(blockNumber));
       return blockNumber;
