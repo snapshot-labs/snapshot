@@ -1,10 +1,20 @@
 <template>
   <div
-    class="border-top border-bottom border-md rounded-0 rounded-md-2 mb-4 overflow-hidden"
+    class="border-top border-bottom border-md rounded-0 rounded-md-2 mb-4 block-bg"
   >
-    <h4 v-if="title" class="px-4 py-3 border-bottom d-block bg-gray-dark">
+    <h4
+      v-if="title"
+      class="px-4 py-3 border-bottom d-block bg-gray-dark rounded-top-0 rounded-md-top-2"
+    >
       {{ title }}
       <UiCounter v-if="counter" :counter="counter" class="ml-1" />
+      <a
+        v-if="icon"
+        @click="$emit('submit')"
+        class="float-right mt-1 text-gray"
+      >
+        <Icon :name="icon" size="22" />
+      </a>
     </h4>
     <div :class="!slim && 'p-4'">
       <slot />
@@ -14,6 +24,6 @@
 
 <script>
 export default {
-  props: ['title', 'counter', 'slim']
+  props: ['title', 'counter', 'slim', 'icon']
 };
 </script>

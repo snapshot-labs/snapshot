@@ -1,6 +1,6 @@
 {
   "name": "snapshot",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "repository": "balancer-labs/snapshot",
   "license": "MIT",
   "scripts": {
@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "@bonustrack/lock": "github:bonustrack/lock#e1437a340b578a1e5a48f37f935578ecdb8b51c8",
+    "@bonustrack/snapshot-spaces": "github:bonustrack/snapshot-spaces#master",
+    "@bonustrack/snapshot.js": "github:bonustrack/snapshot.js#master",
     "@ethersproject/abi": "^5.0.1",
     "@ethersproject/address": "^5.0.1",
     "@ethersproject/constants": "^5.0.1",
@@ -53,7 +55,8 @@
     "vue-textarea-autosize": "^1.1.1",
     "vuedraggable": "^2.24.1",
     "vuex": "^3.4.0",
-    "walletlink": "^2.0.2"
+    "walletlink": "^2.0.2",
+    "web3-eth-abi": "^1.3.0"
   },
   "devDependencies": {
     "@types/node": "^14.0.13",

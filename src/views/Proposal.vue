@@ -64,12 +64,19 @@
         />
       </div>
       <div v-if="loaded" class="col-12 col-lg-4 float-left">
-        <Block title="Informations">
-          <div class="mb-1">
-            <b>Token</b>
+        <Block title="Information">
+          <div class="mb-1 overflow-hidden">
+            <b>Token(s)</b>
             <span class="float-right text-white">
-              <Token :space="space.key" class="mr-1" />
-              {{ space.symbol }}
+              <span v-for="(symbol, symbolIndex) of symbols" :key="symbol">
+                <Token :space="space.key" :symbolIndex="symbolIndex" />
+                {{ symbol }}
+                <span
+                  v-show="symbolIndex !== symbols.length - 1"
+                  v-text="'+'"
+                  class="mr-1"
+                />
+              </span>
             </span>
           </div>
           <div class="mb-1">
@@ -95,23 +102,23 @@
             <div class="mb-1">
               <b>Start date</b>
               <span
-                :title="_ms(payload.start)"
+                :aria-label="_ms(payload.start)"
                 v-text="$d(payload.start * 1e3, 'short')"
-                class="float-right text-white"
+                class="float-right text-white tooltipped tooltipped-n"
               />
             </div>
             <div class="mb-1">
               <b>End date</b>
               <span
-                :title="_ms(payload.end)"
+                :aria-label="_ms(payload.end)"
                 v-text="$d(payload.end * 1e3, 'short')"
-                class="float-right text-white"
+                class="float-right text-white tooltipped tooltipped-n"
               />
             </div>
             <div class="mb-1">
               <b>Snapshot</b>
               <a
-                :href="_etherscanLink(payload.snapshot, 'block')"
+                :href="_explorer(payload.snapshot, 'block')"
                 target="_blank"
                 class="float-right"
               >
@@ -122,6 +129,7 @@
           </div>
         </Block>
         <BlockResults
+          :id="id"
           :space="space"
           :payload="payload"
           :results="results"
@@ -138,7 +146,8 @@
       :proposal="proposal"
       :id="id"
       :selectedChoice="selectedChoice"
-      :power="power"
+      :totalScore="totalScore"
+      :scores="scores"
       :snapshot="payload.snapshot"
     />
   </Container>
@@ -146,7 +155,7 @@
 
 <script>
 import { mapActions } from 'vuex';
-import spaces from '@/../spaces';
+import spaces from '@/spaces';
 
 export default {
   data() {
@@ -161,27 +170,35 @@ export default {
       results: [],
       modalOpen: false,
       selectedChoice: 0,
-      power: 0
+      totalScore: 0,
+      scores: []
     };
   },
   computed: {
     space() {
-      return spaces[this.key]
-        ? spaces[this.key]
-        : { token: this.key, verified: [] };
+      return spaces[this.key];
     },
     payload() {
       return this.proposal.msg.payload;
     },
     ts() {
       return (Date.now() / 1e3).toFixed();
+    },
+    symbols() {
+      if (!this.space.strategies) return [this.space.symbol];
+      return this.space.strategies.map(strategy => strategy[1].symbol);
+    }
+  },
+  watch: {
+    'web3.account': async function(val, prev) {
+      if (val && val.toLowerCase() !== prev) await this.loadPower();
     }
   },
   methods: {
     ...mapActions(['getProposal', 'getPower']),
     async loadProposal() {
       const proposalObj = await this.getProposal({
-        token: this.space.address,
+        space: this.space,
         id: this.id
       });
       this.proposal = proposalObj.proposal;
@@ -190,11 +207,13 @@ export default {
     },
     async loadPower() {
       if (!this.web3.account) return;
-      this.power = await this.getPower({
-        token: this.space.address,
+      const { scores, totalScore } = await this.getPower({
+        space: this.space,
         address: this.web3.account,
         snapshot: this.payload.snapshot
       });
+      this.totalScore = totalScore;
+      this.scores = scores;
     }
   },
   async created() {

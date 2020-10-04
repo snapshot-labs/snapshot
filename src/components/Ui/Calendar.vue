@@ -86,7 +86,7 @@ export default {
   },
   methods: {
     formatDate(year, month, day) {
-      return new Date(year, month, day).toISOString().split('T')[0];
+      return new Date(year, month, day + 1).toISOString().split('T')[0];
     },
     toggleDay(year, month, day) {
       this.input = this.formatDate(year, month, day);

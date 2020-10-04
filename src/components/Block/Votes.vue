@@ -16,13 +16,17 @@
         v-text="proposal.msg.payload.choices[vote.msg.payload.choice - 1]"
         class="flex-auto text-center text-white"
       />
-      <div class="column text-right">
+      <div class="column text-right text-white">
         <span
-          v-text="
-            `${_numeral(vote.balance)} ${_shorten(space.symbol, 'symbol')}`
+          class="tooltipped tooltipped-n"
+          :aria-label="
+            vote.scores
+              .map((score, index) => `${_numeral(score)} ${titles[index]}`)
+              .join(' + ')
           "
-          class="text-white"
-        />
+        >
+          {{ `${_numeral(vote.balance)} ${_shorten(space.symbol, 'symbol')}` }}
+        </span>
         <a
           @click="openReceiptModal(vote)"
           target="_blank"
@@ -36,7 +40,7 @@
     <a
       v-if="!showAllVotes && Object.keys(votes).length > 10"
       @click="showAllVotes = true"
-      class="px-4 py-3 border-top text-center d-block bg-gray-dark"
+      class="px-4 py-3 border-top text-center d-block bg-gray-dark rounded-bottom-0 rounded-md-bottom-2"
     >
       See more
     </a>
@@ -65,6 +69,10 @@ export default {
       return this.showAllVotes
         ? this.votes
         : Object.fromEntries(Object.entries(this.votes).slice(0, 10));
+    },
+    titles() {
+      if (!this.space.strategies) return [this.space.symbol];
+      return this.space.strategies.map(strategy => strategy[1].symbol);
     }
   },
   methods: {

@@ -61,7 +61,11 @@
         </Block>
       </div>
       <div class="col-12 col-lg-4 float-left">
-        <Block title="Actions">
+        <Block
+          title="Actions"
+          :icon="web3.network.chainId === 4 ? 'stars' : undefined"
+          @submit="modalPluginsOpen = true"
+        >
           <div class="mb-2">
             <UiButton
               @click="[(modalOpen = true), (selectedDate = 'start')]"
@@ -104,13 +108,20 @@
       @close="modalOpen = false"
       @input="setDate"
     />
+    <ModalPlugins
+      :proposal="{ ...form, choices }"
+      :value="form.metadata.plugins"
+      v-model="form.metadata.plugins"
+      :open="modalPluginsOpen"
+      @close="modalPluginsOpen = false"
+    />
   </Container>
 </template>
 
 <script>
 import { mapActions } from 'vuex';
 import draggable from 'vuedraggable';
-import spaces from '@/../spaces';
+import spaces from '@/spaces';
 
 export default {
   components: {
@@ -127,22 +138,21 @@ export default {
         choices: [],
         start: '',
         end: '',
-        snapshot: ''
+        snapshot: '',
+        metadata: {}
       },
       modalOpen: false,
+      modalPluginsOpen: false,
       selectedDate: '',
       counter: 0
     };
   },
   computed: {
     space() {
-      return spaces[this.key]
-        ? spaces[this.key]
-        : { token: this.key, verified: [] };
+      return spaces[this.key];
     },
     isValid() {
       // const ts = (Date.now() / 1e3).toFixed();
-
       return (
         !this.loading &&
         this.web3.account &&
@@ -152,6 +162,7 @@ export default {
         // this.form.start >= ts &&
         this.form.end &&
         this.form.end > this.form.start &&
+        this.form.snapshot &&
         this.choices.length >= 2 &&
         !this.choices.some(a => a.text === '')
       );
