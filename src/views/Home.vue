@@ -8,11 +8,11 @@
           </UiButton>
         </div>
         <div class="ml-3 text-right hide-sm">
-          <span class="mr-3">{{ _numeral(spaces.length) }} space(s)</span>
+          {{ _numeral(spaces.length) }} space(s)
           <a
             href="https://discord.snapshot.page"
             target="_blank"
-            class="hide-md"
+            class="hide-md ml-3"
           >
             <UiButton>Create space</UiButton>
           </a>
