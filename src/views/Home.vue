@@ -16,7 +16,7 @@
           <a
             href="https://discord.snapshot.page"
             target="_blank"
-            class="hide-md"
+            class="hide-md ml-3"
           >
             <UiButton>Create space</UiButton>
           </a>
