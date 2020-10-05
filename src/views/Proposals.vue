@@ -98,16 +98,17 @@ export default {
       return Object.fromEntries(
         Object.entries(this.proposals)
           .filter(proposal => {
+            const core = this.space.core.map(address => address.toLowerCase());
+            const author = proposal[1].address.toLowerCase();
             if (
-              (this.space.showOnlyCore &&
-                !this.space.core.includes(proposal[1].address)) ||
+              (this.space.showOnlyCore && !core.includes(author)) ||
               this.space.invalid.includes(proposal[1].authorIpfsHash)
             )
               return false;
 
             if (
               ['core', 'all'].includes(this.selectedState) &&
-              this.space.core.includes(proposal[1].address) &&
+              core.includes(author) &&
               !this.space.invalid.includes(proposal[1].authorIpfsHash)
             )
               return true;
@@ -119,8 +120,7 @@ export default {
               (this.selectedState === 'active' &&
                 proposal[1].msg.payload.start <= ts &&
                 proposal[1].msg.payload.end > ts) ||
-              (this.selectedState === 'community' &&
-                !this.space.core.includes(proposal[1].address)) ||
+              (this.selectedState === 'community' && !core.includes(author)) ||
               (this.selectedState === 'closed' &&
                 proposal[1].msg.payload.end <= ts) ||
               (this.selectedState === 'pending' &&
