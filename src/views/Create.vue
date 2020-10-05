@@ -72,14 +72,14 @@
               class="width-full mb-2"
             >
               <span v-if="!form.start">Select start date</span>
-              <span v-else v-text="$d(form.start * 1e3, 'long')" />
+              <span v-else v-text="$d(form.start * 1e3, 'short')" />
             </UiButton>
             <UiButton
               @click="[(modalOpen = true), (selectedDate = 'end')]"
               class="width-full mb-2"
             >
               <span v-if="!form.end">Select end date</span>
-              <span v-else v-text="$d(form.end * 1e3, 'long')" />
+              <span v-else v-text="$d(form.end * 1e3, 'short')" />
             </UiButton>
             <UiButton class="width-full mb-2">
               <input
