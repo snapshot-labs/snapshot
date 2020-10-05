@@ -8,7 +8,11 @@
           </UiButton>
         </div>
         <div class="ml-3 text-right hide-sm">
-          <span class="mr-3">{{ _numeral(spaces.length) }} space(s)</span>
+          <span class="mr-3"
+            >{{ _numeral(spaces.length) }} space{{
+              spaces.length === 1 ? '' : 's'
+            }}</span
+          >
           <a
             href="https://discord.snapshot.page"
             target="_blank"
@@ -31,10 +35,7 @@
           :to="{ name: 'proposals', params: { key: space.key } }"
         >
           <div class="col-12 col-lg-3 pr-4 float-left">
-            <Block
-              class="text-center extra-icon-container"
-              style="height: 250px; margin-bottom: 24px !important;"
-            >
+            <Block class="text-center extra-icon-container block-container">
               <Token
                 :space="space.key"
                 symbolIndex="space"
@@ -47,13 +48,21 @@
                 offName="star1"
                 @click="toggleFavorite(space.key)"
               />
-              <div class="">
+              <div>
                 <h3 v-text="space.name" />
                 <div class="text-gray">{{ space.symbol }}</div>
               </div>
             </Block>
           </div>
         </router-link>
+
+        <div
+          v-if="spaces.length === 0"
+          class="text-gray mr-4 rounded-md-2 border-top border-bottom border-md no-space"
+        >
+          No spaces found with the search:
+          <span class="text-primary no-space-color">{{ q }}</span>
+        </div>
       </div>
     </Container>
   </div>

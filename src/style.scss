@@ -219,3 +219,18 @@ textarea {
     color: var(--header-bg);
   }
 }
+
+.block-container {
+  height: 250px;
+  margin-bottom: 24px !important;
+}
+
+.no-space {
+  text-align: center;
+  line-height: 100px;
+  height: 100px;
+}
+
+.no-space-color {
+  opacity: 0.7;
+}
