@@ -90,7 +90,10 @@ export default {
         : states;
     },
     totalProposals() {
-      return Object.keys(this.proposals).length;
+      if(this.proposals){
+        return Object.keys(this.proposals).length;
+      }
+      return 0;
     },
     proposalsWithFilter() {
       const ts = (Date.now() / 1e3).toFixed();
