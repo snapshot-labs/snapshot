@@ -78,14 +78,8 @@ const actions = {
     try {
       let proposals: any = await client.request(`${space.address}/proposals`);
       if (proposals) {
-        const defaultStrategies = [
-          [
-            'erc20-balance-of',
-            { address: space.address, decimals: space.decimals }
-          ]
-        ];
         const scores: any = await getScores(
-          space.strategies || defaultStrategies,
+          space.strategies,
           space.chainId,
           getProvider(space.chainId),
           Object.values(proposals).map((proposal: any) => proposal.address)
@@ -120,15 +114,8 @@ const actions = {
       const { snapshot } = result.proposal.msg.payload;
       const blockTag =
         snapshot > rootState.web3.blockNumber ? 'latest' : parseInt(snapshot);
-      const defaultStrategies = [
-        [
-          'erc20-balance-of',
-          { address: payload.space.address, decimals: payload.space.decimals }
-        ]
-      ];
-      const spaceStrategies = payload.space.strategies || defaultStrategies;
       const scores: any = await getScores(
-        spaceStrategies,
+        payload.space.strategies,
         payload.space.chainId,
         getProvider(payload.space.chainId),
         Object.keys(result.votes),
@@ -139,7 +126,7 @@ const actions = {
       result.votes = Object.fromEntries(
         Object.entries(result.votes)
           .map((vote: any) => {
-            vote[1].scores = spaceStrategies.map(
+            vote[1].scores = payload.space.strategies.map(
               (strategy, i) => scores[i][vote[1].address] || 0
             );
             vote[1].balance = vote[1].scores.reduce((a, b: any) => a + b, 0);
@@ -161,7 +148,7 @@ const actions = {
             .reduce((a, b: any) => a + b.balance, 0)
         ),
         totalScores: result.proposal.msg.payload.choices.map((choice, i) =>
-          spaceStrategies.map((strategy, sI) =>
+          payload.space.strategies.map((strategy, sI) =>
             Object.values(result.votes)
               .filter((vote: any) => vote.msg.payload.choice === i + 1)
               .reduce((a, b: any) => a + b.scores[sI], 0)
@@ -183,14 +170,8 @@ const actions = {
     try {
       const blockTag =
         snapshot > rootState.web3.blockNumber ? 'latest' : parseInt(snapshot);
-      const defaultStrategies = [
-        [
-          'erc20-balance-of',
-          { address: space.address, decimals: space.decimals }
-        ]
-      ];
       let scores: any = await getScores(
-        space.strategies || defaultStrategies,
+        space.strategies,
         space.chainId,
         getProvider(space.chainId),
         [address],
