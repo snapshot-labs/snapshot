@@ -18,7 +18,10 @@ const routes: Array<RouteConfig> = [
 
 const router = new VueRouter({
   mode: 'hash',
-  routes
+  routes,
+  scrollBehavior() {
+    return { x: 0, y: 0 };
+  }
 });
 
 export default router;
