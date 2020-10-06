@@ -2,7 +2,7 @@
   <div class="d-flex flex-items-center">
     <Icon name="search" size="22" class="mb-1 mr-2 text-gray" />
     <input
-      :value="searchValue"
+      :value="value"
       :placeholder="placeholder"
       @input="handleInput"
       type="search"
@@ -10,25 +10,21 @@
       autocapitalize="none"
       class="border-0 input flex-auto width-full"
     />
-    <Icon
-      v-if="searchValue"
-      name="close"
-      size="16"
-      class="mb-1 text-gray button-close"
-      @click="clearInput"
-    />
+    <a href="#" @click="clearInput">
+      <Icon v-if="value" name="close" size="16" class="mb-1 text-gray button-close" />
+    </a>
   </div>
 </template>
 
 <script>
 export default {
-  props: ['searchValue', 'placeholder'],
+  props: ['value', 'placeholder'],
   methods: {
     handleInput(e) {
-      this.$emit('update:searchValue', e.target.value);
+      this.$emit('update:value', e.target.value);
     },
     clearInput() {
-      this.$emit('update:searchValue', '');
+      this.$emit('update:value', '');
     }
   }
 };

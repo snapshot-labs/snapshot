@@ -4,7 +4,7 @@
       <Container class="d-flex flex-items-center">
         <div class="flex-auto text-left">
           <UiButton class="pl-3 col-12 col-lg-4">
-            <Search :searchValue.sync="q" placeholder="Search" />
+            <Search :value.sync="q" placeholder="Search" />
           </UiButton>
         </div>
         <div class="ml-3 text-right hide-sm">
