@@ -3,6 +3,7 @@
     class="iconfont"
     :class="`icon${name}`"
     :style="size ? `font-size: ${size}px; line-height: ${size}px;` : ''"
+    @click="$emit('click')"
   />
 </template>
 
