@@ -11,7 +11,7 @@
       class="border-0 input flex-auto width-full"
     />
     <a href="#" @click="clearInput">
-      <Icon v-if="value" name="close" size="16" class="mb-1 text-gray button-close" />
+      <Icon v-if="value" name="close" size="12" class="mb-1" />
     </a>
   </div>
 </template>
@@ -29,12 +29,3 @@ export default {
   }
 };
 </script>
-
-<style scoped lang="scss">
-.button-close {
-  opacity: 0.6;
-}
-.button-close:hover {
-  opacity: 1;
-}
-</style>
