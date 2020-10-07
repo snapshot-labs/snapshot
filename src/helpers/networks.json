@@ -20,7 +20,8 @@
     "chainId": 7,
     "network": "mainnet",
     "rpcUrl": "https://rpc.dome.cloud",
-    "explorer": ""
+    "wsUrl": "wss://ws.dome.cloud",
+    "explorer": "https://exp.tch.in.th"
   },
   "42": {
     "name": "Ethereum Testnet Kovan",
