@@ -21,7 +21,7 @@
     "network": "mainnet",
     "rpcUrl": "https://rpc.dome.cloud",
     "wsUrl": "wss://ws.dome.cloud",
-    "explorer": "http://exp.tch.in.th"
+    "explorer": "https://exp.tch.in.th"
   },
   "42": {
     "name": "Ethereum Testnet Kovan",
