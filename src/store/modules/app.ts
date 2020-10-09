@@ -1,3 +1,4 @@
+import Vue from 'vue';
 import { getScores } from '@bonustrack/snapshot.js/src/utils';
 import client from '@/helpers/client';
 import ipfs from '@/helpers/ipfs';
@@ -5,7 +6,18 @@ import getProvider from '@/helpers/provider';
 import { formatProposal, formatProposals } from '@/helpers/utils';
 import { version } from '@/../package.json';
 
+const state = {
+  init: false,
+  loading: false,
+  spaces: {}
+};
+
 const mutations = {
+  SET(_state, payload) {
+    Object.keys(payload).forEach(key => {
+      Vue.set(_state, key, payload[key]);
+    });
+  },
   SEND_REQUEST() {
     console.debug('SEND_REQUEST');
   },
@@ -45,6 +57,25 @@ const mutations = {
 };
 
 const actions = {
+  init: async ({ commit, dispatch }) => {
+    commit('SET', { loading: true });
+    const connector = await Vue.prototype.$auth.getConnector();
+    if (connector) {
+      await dispatch('login', connector);
+    } else {
+      commit('HANDLE_CHAIN_CHANGED', 1);
+    }
+    await Promise.all([dispatch('getSpaces'), dispatch('getBlockNumber')]);
+    commit('SET', { loading: false, init: true });
+  },
+  loading: ({ commit }, payload) => {
+    commit('SET', { loading: payload });
+  },
+  getSpaces: async ({ commit }) => {
+    const spaces = await client.request('spaces');
+    commit('SET', { spaces });
+    return spaces;
+  },
   send: async ({ commit, dispatch, rootState }, { token, type, payload }) => {
     commit('SEND_REQUEST');
     try {
@@ -193,6 +224,7 @@ const actions = {
 };
 
 export default {
+  state,
   mutations,
   actions
 };

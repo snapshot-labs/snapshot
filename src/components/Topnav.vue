@@ -74,7 +74,6 @@
 
 <script>
 import { mapActions } from 'vuex';
-import spaces from '@/spaces';
 
 export default {
   data() {
@@ -86,7 +85,9 @@ export default {
   },
   computed: {
     space() {
-      return this.$route.params.key ? spaces[this.$route.params.key] : false;
+      return this.$route.params.key
+        ? this.app.spaces[this.$route.params.key]
+        : false;
     }
   },
   methods: {

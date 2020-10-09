@@ -64,7 +64,6 @@ import { mapActions } from 'vuex';
 import orderBy from 'lodash/orderBy';
 import spotlight from '@bonustrack/snapshot-spaces/spaces/spotlight.json';
 import domains from '@bonustrack/snapshot-spaces/spaces/domains.json';
-import spaces from '@/spaces';
 
 export default {
   data() {
@@ -76,10 +75,10 @@ export default {
   },
   computed: {
     spaces() {
-      const list = Object.keys(spaces).map(key => {
+      const list = Object.keys(this.app.spaces).map(key => {
         const spotlightIndex = spotlight.indexOf(key);
         return {
-          ...spaces[key],
+          ...this.app.spaces[key],
           favorite: !!this.favoriteSpaces.favorites[key],
           spotlight: spotlightIndex === -1 ? 1e3 : spotlightIndex
         };

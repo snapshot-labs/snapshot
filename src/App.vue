@@ -1,6 +1,6 @@
 <template>
   <div :class="space ? space.key : ''" id="app" class="overflow-hidden">
-    <UiLoading v-if="ui.loading || !ui.init" class="overlay big" />
+    <UiLoading v-if="app.loading || !app.init" class="overlay big" />
     <div v-else>
       <Topnav />
       <div class="pb-6 overflow-hidden">
@@ -13,7 +13,6 @@
 
 <script>
 import { mapActions } from 'vuex';
-import spaces from '@/spaces';
 
 export default {
   methods: {
@@ -25,7 +24,7 @@ export default {
   computed: {
     space() {
       try {
-        return spaces[this.$route.params.key];
+        return this.app.spaces[this.$route.params.key];
       } catch (e) {
         return {};
       }
