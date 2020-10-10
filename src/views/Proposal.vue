@@ -192,7 +192,7 @@ export default {
   },
   computed: {
     space() {
-      return this.web3.spaces[this.key];
+      return this.app.spaces[this.key];
     },
     payload() {
       return this.proposal.msg.payload;

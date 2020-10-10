@@ -7,7 +7,10 @@
           <div class="d-flex flex-items-center flex-auto">
             <h2 class="mr-2">
               Proposals
-              <UiCounter :counter="totalProposals" class="ml-1" />
+              <UiCounter
+                :counter="Object.keys(proposalsWithFilter).length"
+                class="ml-1"
+              />
             </h2>
           </div>
         </div>
@@ -70,7 +73,7 @@ export default {
       return this.$route.params.key;
     },
     space() {
-      return this.web3.spaces[this.key];
+      return this.app.spaces[this.key];
     },
     states() {
       const states = [
@@ -94,54 +97,33 @@ export default {
       return Object.fromEntries(
         Object.entries(this.proposals)
           .filter(proposal => {
+            const core = this.space.core.map(address => address.toLowerCase());
+            const author = proposal[1].address.toLowerCase();
             if (
-              this.space.showOnlyCore &&
-              !this.space.core.includes(proposal[1].address)
+              (this.space.showOnlyCore && !core.includes(author)) ||
+              this.space.invalid.includes(proposal[1].authorIpfsHash)
             )
               return false;
 
             if (
               ['core', 'all'].includes(this.selectedState) &&
-              this.space.core.includes(proposal[1].address)
+              core.includes(author) &&
+              !this.space.invalid.includes(proposal[1].authorIpfsHash)
             )
               return true;
 
-            if (
-              proposal[1].score < this.space.min ||
-              this.space.invalid.includes(proposal[1].authorIpfsHash)
-            )
-              return false;
+            if (proposal[1].score < this.space.min) return false;
 
             if (
-              this.selectedState === 'invalid' &&
-              this.space.invalid.includes(proposal[1].authorIpfsHash)
-            )
-              return true;
-
-            if (this.selectedState === 'all') return true;
-
-            if (
-              this.selectedState === 'active' &&
-              proposal[1].msg.payload.start <= ts &&
-              proposal[1].msg.payload.end > ts
-            )
-              return true;
-
-            if (
-              this.selectedState === 'community' &&
-              !this.space.core.includes(proposal[1].address)
-            )
-              return true;
-
-            if (
-              this.selectedState === 'closed' &&
-              proposal[1].msg.payload.end <= ts
-            )
-              return true;
-
-            if (
-              this.selectedState === 'pending' &&
-              proposal[1].msg.payload.start > ts
+              this.selectedState === 'all' ||
+              (this.selectedState === 'active' &&
+                proposal[1].msg.payload.start <= ts &&
+                proposal[1].msg.payload.end > ts) ||
+              (this.selectedState === 'community' && !core.includes(author)) ||
+              (this.selectedState === 'closed' &&
+                proposal[1].msg.payload.end <= ts) ||
+              (this.selectedState === 'pending' &&
+                proposal[1].msg.payload.start > ts)
             )
               return true;
           })

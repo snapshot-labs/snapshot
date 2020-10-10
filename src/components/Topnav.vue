@@ -85,11 +85,9 @@ export default {
   },
   computed: {
     space() {
-      try {
-        return this.web3.spaces[this.$route.params.key];
-      } catch (e) {
-        return false;
-      }
+      return this.$route.params.key
+        ? this.app.spaces[this.$route.params.key]
+        : false;
     }
   },
   methods: {

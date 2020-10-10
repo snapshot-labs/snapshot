@@ -3,8 +3,8 @@
     "name": "Ethereum Mainnet",
     "chainId": 1,
     "network": "homestead",
-    "rpcUrl": "https://eth-mainnet.alchemyapi.io/v2/rXKbp7PTFm6hcrxU8NL-JGp5RMfRHDwg",
-    "wsUrl": "wss://eth-mainnet.ws.alchemyapi.io/v2/rXKbp7PTFm6hcrxU8NL-JGp5RMfRHDwg",
+    "rpcUrl": "https://eth-mainnet.alchemyapi.io/v2/4bdDVB5QAaorY2UE-GBUbM2yQB3QJqzv",
+    "wsUrl": "wss://eth-mainnet.ws.alchemyapi.io/v2/4bdDVB5QAaorY2UE-GBUbM2yQB3QJqzv",
     "explorer": "https://etherscan.io"
   },
   "4": {
@@ -20,7 +20,8 @@
     "chainId": 7,
     "network": "mainnet",
     "rpcUrl": "https://rpc.dome.cloud",
-    "explorer": ""
+    "wsUrl": "wss://ws.dome.cloud",
+    "explorer": "https://exp.tch.in.th"
   },
   "42": {
     "name": "Ethereum Testnet Kovan",
