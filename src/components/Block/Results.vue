@@ -62,6 +62,7 @@
 import { mapActions } from 'vuex';
 import * as jsonexport from 'jsonexport/dist';
 import plugins from '@/helpers/plugins';
+import { sendTransaction } from '@/helpers/web3';
 import pkg from '@/../package.json';
 
 export default {
@@ -92,7 +93,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['sendTransaction', 'notify']),
+    ...mapActions(['notify']),
     async downloadReport() {
       const obj = Object.entries(this.votes)
         .map(vote => {
@@ -132,13 +133,17 @@ Proposal #${this.id} on-chain
 Option: ${this.winningChoice}
 Callsscript: ${callsScript}`
       );
-      const tx = await this.sendTransaction([
-        'DisputableDelay',
-        '0xb3afa4e5f05bf656133fe198f1a43f9ec085983d',
-        'delayExecution',
-        [callsScript, '0xbeef']
-      ]);
-      console.log(tx);
+      try {
+        const tx = await sendTransaction(this.$auth.web3, [
+          'DisputableDelay',
+          '0xb3afa4e5f05bf656133fe198f1a43f9ec085983d',
+          'delayExecution',
+          [callsScript, '0xbeef']
+        ]);
+        console.log(tx);
+      } catch (e) {
+        console.error(e);
+      }
       this.notify(['green', `The settlement is on-chain, congrats!`]);
       this.loading = false;
     }
