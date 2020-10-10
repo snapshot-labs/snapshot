@@ -4,10 +4,12 @@ import Home from '@/views/Home.vue';
 import Proposals from '@/views/Proposals.vue';
 import Proposal from '@/views/Proposal.vue';
 import Create from '@/views/Create.vue';
+import Strategies from '@/views/Strategies.vue';
 
 Vue.use(VueRouter);
 
 const routes: Array<RouteConfig> = [
+  { path: '/strategies', name: 'strategies', component: Strategies },
   { path: '/:key/proposal/:id', name: 'proposal', component: Proposal },
   { path: '/:key/create', name: 'create', component: Create },
   { path: '/:key', name: 'proposals', component: Proposals },

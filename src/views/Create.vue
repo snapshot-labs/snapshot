@@ -63,7 +63,7 @@
       <div class="col-12 col-lg-4 float-left">
         <Block
           title="Actions"
-          :icon="web3.network.chainId === 4 ? 'stars' : undefined"
+          :icon="space.chainId === 4 ? 'stars' : undefined"
           @submit="modalPluginsOpen = true"
         >
           <div class="mb-2">
@@ -121,7 +121,6 @@
 <script>
 import { mapActions } from 'vuex';
 import draggable from 'vuedraggable';
-import spaces from '@/spaces';
 
 export default {
   components: {
@@ -149,7 +148,7 @@ export default {
   },
   computed: {
     space() {
-      return spaces[this.key];
+      return this.app.spaces[this.key];
     },
     isValid() {
       // const ts = (Date.now() / 1e3).toFixed();

@@ -1,10 +1,5 @@
 <template>
-  <span
-    v-if="web3.blockNumber"
-    class="State"
-    :class="state.class"
-    v-text="state.name"
-  />
+  <span class="State" :class="state.class" v-text="state.name" />
 </template>
 
 <script>

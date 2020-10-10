@@ -155,7 +155,6 @@
 
 <script>
 import { mapActions } from 'vuex';
-import spaces from '@/spaces';
 
 export default {
   data() {
@@ -176,7 +175,7 @@ export default {
   },
   computed: {
     space() {
-      return spaces[this.key];
+      return this.app.spaces[this.key];
     },
     payload() {
       return this.proposal.msg.payload;
