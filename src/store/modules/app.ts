@@ -8,6 +8,7 @@ import { formatProposal, formatProposals } from '@/helpers/utils';
 import { getBlockNumber, resolveContent, signMessage } from '@/helpers/web3';
 import registry from '@/helpers/registry.json';
 import { version } from '@/../package.json';
+import config from '@/helpers/config';
 
 const state = {
   init: false,
@@ -79,19 +80,23 @@ const actions = {
     commit('SET', { loading: payload });
   },
   getSpaces: async ({ commit }) => {
-    const namespace = registry[0];
-    let space: any = {};
-    try {
-      const content = await resolveContent(getProvider(1), namespace);
-      space = await fetch(
-        `https://ipfs.fleek.co/ipns/${content.decoded}`
-      ).then(res => res.json());
-      space.key = namespace;
-    } catch (e) {
-      console.log(e);
-    }
     const spaces: any = await client.request('spaces');
-    spaces[namespace] = space;
+    if (config.env !== 'master') {
+      try {
+        const namespace = registry[0];
+        const content = await resolveContent(getProvider(1), namespace);
+        const space = await fetch(
+          `https://ipfs.fleek.co/ipns/${content.decoded}`
+        ).then(res => res.json());
+        console.log('Space', space);
+        space.key = namespace;
+        space.token = namespace;
+        space.address = namespace;
+        spaces[namespace] = space;
+      } catch (e) {
+        console.log(e);
+      }
+    }
     commit('SET', { spaces });
     return spaces;
   },
