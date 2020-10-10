@@ -1,4 +1,6 @@
 import Vue from 'vue';
+import base58 from 'base58-encode';
+import resolveENSContentHash from "@/helpers/resolveENSContentHash";
 import { getInstance } from '@bonustrack/lock/plugins/vue';
 import { Web3Provider } from '@ethersproject/providers';
 import { Contract } from '@ethersproject/contracts';
@@ -6,6 +8,8 @@ import { getAddress } from '@ethersproject/address';
 import store from '@/store';
 import abi from '@/helpers/abi';
 import config from '@/helpers/config';
+import contentHash from 'content-hash';
+import contenthashToUri from '@/helpers/contenthashToUri';
 import getProvider from '@/helpers/provider';
 import { formatUnits } from '@ethersproject/units';
 
@@ -154,7 +158,6 @@ const actions = {
     }
   },
   resolveName: async ({ commit }, name) => {
-    if (state.network.chainId !== 1) return;
     try {
       // @ts-ignore
       const address = await getProvider(1).resolveName(name);
@@ -163,6 +166,19 @@ const actions = {
     } catch (e) {
       return Promise.reject();
     }
+  },
+  resolveContent: async ({ commit }, name) => {
+    const key = 'bonustrack-team-bucket.storage.fleek.co/snapshot/spaces/0xeF8305E140ac520225DAf050e2f71d5fBcC543e7.json';
+    console.log(base58(key));
+    const hash = contentHash.encode('ipns-ns', base58('QmPMBQdWvPyJV3WsGhQePvS6Ux5fd32nP9vKzdZQtqtwF1'));
+    console.log(hash);
+
+    const x = await resolveENSContentHash('uniswap.eth', getProvider(1));
+    const uri = contenthashToUri(x);
+    console.log(uri);
+    commit('RESOLVE_CONTENT_SUCCESS', x);
+    console.log(x);
+    return x;
   },
   sendTransaction: async (
     { commit },
