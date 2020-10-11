@@ -19,7 +19,14 @@
             <span v-text="_shorten(option)" />
             <Icon name="external-link" class="ml-1" />
           </a>
-          <span v-else v-text="option" />
+          <span
+            v-else
+            v-text="
+              ['string', 'number', 'boolean'].includes(typeof option)
+                ? option
+                : typeof option
+            "
+          />
         </div>
       </div>
     </div>
