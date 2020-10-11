@@ -67,7 +67,10 @@
         <Block title="Information">
           <div class="mb-1 overflow-hidden">
             <b>Token(s)</b>
-            <span class="float-right text-white">
+            <a
+              @click="modalStrategiesOpen = true"
+              class="float-right text-white"
+            >
               <span v-for="(symbol, symbolIndex) of symbols" :key="symbol">
                 <Token :space="space.key" :symbolIndex="symbolIndex" />
                 {{ symbol }}
@@ -77,7 +80,7 @@
                   class="mr-1"
                 />
               </span>
-            </span>
+            </a>
           </div>
           <div class="mb-1">
             <b>Author</b>
@@ -150,6 +153,11 @@
       :scores="scores"
       :snapshot="payload.snapshot"
     />
+    <ModalStrategies
+      :open="modalStrategiesOpen"
+      @close="modalStrategiesOpen = false"
+      :strategies="space.strategies"
+    />
   </Container>
 </template>
 
@@ -168,6 +176,7 @@ export default {
       votes: {},
       results: [],
       modalOpen: false,
+      modalStrategiesOpen: false,
       selectedChoice: 0,
       totalScore: 0,
       scores: []
