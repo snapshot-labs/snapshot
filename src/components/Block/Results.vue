@@ -37,7 +37,10 @@
     </div>
     <div v-if="ts >= payload.end">
       <UiButton
-        v-if="payload.metadata.plugins && payload.metadata.plugins.aragon"
+        v-if="
+          _get(payload, 'metadata.plugins.aragon') &&
+            _get(space, 'plugins.aragon')
+        "
         @click="submitOnChain"
         :loading="loading"
         class="width-full mt-2 button--submit"
@@ -122,9 +125,11 @@ export default {
       }
     },
     async submitOnChain() {
+      if (!this.space.plugins || !this.space.plugins.aragon) return;
       this.loading = true;
       const aragon = new plugins.Aragon();
       const callsScript = aragon.execute(
+        this.space.plugins.aragon,
         this.payload.metadata.plugins.aragon[`choice${this.winningChoice}`]
       );
       console.log(
@@ -136,9 +141,9 @@ Callsscript: ${callsScript}`
       try {
         const tx = await sendTransaction(this.$auth.web3, [
           'DisputableDelay',
-          '0xb3afa4e5f05bf656133fe198f1a43f9ec085983d',
+          this.space.plugins.aragon.disputableDelayAddress,
           'delayExecution',
-          [callsScript, '0xbeef']
+          [callsScript, this.id]
         ]);
         console.log(tx);
       } catch (e) {
