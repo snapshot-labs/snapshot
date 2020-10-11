@@ -1,10 +1,14 @@
 import Vue from 'vue';
+import { getInstance } from '@bonustrack/lock/plugins/vue';
 import { getScores } from '@bonustrack/snapshot.js/src/utils';
 import client from '@/helpers/client';
 import ipfs from '@/helpers/ipfs';
 import getProvider from '@/helpers/provider';
 import { formatProposal, formatProposals } from '@/helpers/utils';
+import { getBlockNumber, resolveContent, signMessage } from '@/helpers/web3';
+import registry from '@/helpers/registry.json';
 import { version } from '@/../package.json';
+import config from '@/helpers/config';
 
 const state = {
   init: false,
@@ -57,7 +61,7 @@ const mutations = {
 };
 
 const actions = {
-  init: async ({ commit, dispatch }) => {
+  init: async ({ commit, dispatch, rootState }) => {
     commit('SET', { loading: true });
     const connector = await Vue.prototype.$auth.getConnector();
     if (connector) {
@@ -65,18 +69,39 @@ const actions = {
     } else {
       commit('HANDLE_CHAIN_CHANGED', 1);
     }
-    await Promise.all([dispatch('getSpaces'), dispatch('getBlockNumber')]);
+    const init = await Promise.all([
+      dispatch('getSpaces'),
+      getBlockNumber(getProvider(rootState.web3.network.chainId))
+    ]);
+    commit('GET_BLOCK_SUCCESS', init[1]);
     commit('SET', { loading: false, init: true });
   },
   loading: ({ commit }, payload) => {
     commit('SET', { loading: payload });
   },
   getSpaces: async ({ commit }) => {
-    const spaces = await client.request('spaces');
+    const spaces: any = await client.request('spaces');
+    if (config.env !== 'master') {
+      try {
+        const namespace = registry[0];
+        const content = await resolveContent(getProvider(1), namespace);
+        const space = await fetch(
+          `https://ipfs.fleek.co/ipns/${content.decoded}`
+        ).then(res => res.json());
+        console.log('Space', space);
+        space.key = namespace;
+        space.token = namespace;
+        space.address = namespace;
+        spaces[namespace] = space;
+      } catch (e) {
+        console.log(e);
+      }
+    }
     commit('SET', { spaces });
     return spaces;
   },
   send: async ({ commit, dispatch, rootState }, { token, type, payload }) => {
+    const auth = getInstance();
     commit('SEND_REQUEST');
     try {
       const msg: any = {
@@ -89,7 +114,7 @@ const actions = {
           payload
         })
       };
-      msg.sig = await dispatch('signMessage', msg.msg);
+      msg.sig = await signMessage(auth.web3, msg.msg);
       const result = await client.request('message', msg);
       commit('SEND_SUCCESS');
       dispatch('notify', ['green', `Your ${type} is in!`]);

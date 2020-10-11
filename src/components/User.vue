@@ -1,6 +1,6 @@
 <template>
   <span>
-    <a @click="modalOpen = true" target="_blank" class="no-wrap">
+    <a @click="modalOpen = true" class="no-wrap">
       <Avatar :address="address" size="16" class="mr-1" />
       {{ name }}
       <Badges :address="address" :space="space" />
