@@ -1,0 +1,15 @@
+{
+  "key": "bzx",
+  "name": "bZx",
+  "chainId": 1,
+  "decimals": 18,
+  "symbol": "BZRX",
+  "defaultView": "core",
+  "address": "0x56d811088235F11C8920698a204A5010a788f4b3",
+  "token": "0x56d811088235F11C8920698a204A5010a788f4b3",
+  "core": [
+    "0xB7F72028D9b502Dc871C444363a7aC5A52546608"
+  ],
+  "min": 100,
+  "invalid": []
+}

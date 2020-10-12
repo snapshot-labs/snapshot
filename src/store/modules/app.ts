@@ -9,6 +9,23 @@ import { getBlockNumber, resolveContent, signMessage } from '@/helpers/web3';
 import registry from '@/helpers/registry.json';
 import { version } from '@/../package.json';
 import config from '@/helpers/config';
+import testSpace from '@/spaces/bzx/index.json';
+
+// @ts-ignore
+testSpace.strategies = testSpace.strategies
+  // @ts-ignore
+  ? testSpace.strategies
+  : [
+      [
+        'erc20-balance-of',
+        {
+          address: testSpace.address,
+          decimals: testSpace.decimals,
+          symbol: testSpace.symbol
+        }
+      ]
+    ];
+testSpace.key = 'bzx';
 
 const state = {
   init: false,
@@ -97,6 +114,7 @@ const actions = {
         console.log(e);
       }
     }
+    spaces[testSpace.key] = testSpace;
     commit('SET', { spaces });
     return spaces;
   },
