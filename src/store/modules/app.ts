@@ -114,7 +114,7 @@ const actions = {
           payload
         })
       };
-      msg.sig = await signMessage(auth.web3, msg.msg);
+      msg.sig = await signMessage(auth.web3, msg.msg, rootState.web3.account);
       const result = await client.request('message', msg);
       commit('SEND_SUCCESS');
       dispatch('notify', ['green', `Your ${type} is in!`]);
