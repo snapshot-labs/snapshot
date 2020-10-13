@@ -2,7 +2,7 @@
   <Container :slim="true">
     <div class="px-4 px-md-0 mb-3">
       <router-link
-        :to="{ name: 'proposals', params: { key } }"
+        :to="{ name: domain ? 'home' : 'proposals' }"
         class="text-gray"
       >
         <Icon name="back" size="22" class="v-align-middle" />

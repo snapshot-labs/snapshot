@@ -2,12 +2,14 @@ import { mapState } from 'vuex';
 import numeral from 'numeral';
 import get from 'lodash/get';
 import prettyMs from 'pretty-ms';
+import domains from '@bonustrack/snapshot-spaces/spaces/domains.json';
 import store from '@/store';
 import config from '@/helpers/config';
 import { shorten } from '@/helpers/utils';
 
 // @ts-ignore
 const modules = Object.entries(store.state).map(module => module[0]);
+const domainName = window.location.hostname;
 
 export default {
   data() {
@@ -16,7 +18,10 @@ export default {
     };
   },
   computed: {
-    ...mapState(modules)
+    ...mapState(modules),
+    domain() {
+      return domains[domainName];
+    }
   },
   methods: {
     _get(object, path, fb) {
