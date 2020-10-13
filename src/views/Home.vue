@@ -63,14 +63,12 @@
 import { mapActions } from 'vuex';
 import orderBy from 'lodash/orderBy';
 import spotlight from '@bonustrack/snapshot-spaces/spaces/spotlight.json';
-import domains from '@bonustrack/snapshot-spaces/spaces/domains.json';
 
 export default {
   data() {
     return {
       q: '',
-      limit: 16,
-      domains
+      limit: 16
     };
   },
   computed: {
@@ -109,14 +107,6 @@ export default {
     }
   },
   created() {
-    const domainName = window.location.hostname;
-    if (domains[domainName])
-      return this.$router.push({
-        name: 'proposals',
-        params: {
-          key: domains[domainName]
-        }
-      });
     this.loadFavoriteSpaces();
   }
 };
