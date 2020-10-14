@@ -49,7 +49,7 @@ export default {
     padding-left: 0 !important;
     padding-right: 0 !important;
     max-width: 440px;
-
+    overflow-y: auto !important;
     max-height: calc(100vh - 80px);
     display: flex;
     flex-direction: column;

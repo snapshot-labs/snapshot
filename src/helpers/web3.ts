@@ -9,9 +9,8 @@ export async function resolveContent(provider, name) {
   return decodeContenthash(contentHash);
 }
 
-export async function signMessage(web3, message) {
-  const signer = web3.getSigner();
-  return await signer.signMessage(message);
+export async function signMessage(web3, msg, address) {
+  return await web3.send('personal_sign', [msg, address]);
 }
 
 export async function getBlockNumber(provider) {

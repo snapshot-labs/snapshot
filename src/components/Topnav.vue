@@ -85,9 +85,8 @@ export default {
   },
   computed: {
     space() {
-      return this.$route.params.key
-        ? this.app.spaces[this.$route.params.key]
-        : false;
+      const key = this.domain || this.$route.params.key;
+      return this.app.spaces[key] ? this.app.spaces[key] : false;
     }
   },
   methods: {

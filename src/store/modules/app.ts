@@ -91,7 +91,6 @@ const actions = {
         console.log('Space', space);
         space.key = namespace;
         space.token = namespace;
-        space.address = namespace;
         spaces[namespace] = space;
       } catch (e) {
         console.log(e);
@@ -114,7 +113,7 @@ const actions = {
           payload
         })
       };
-      msg.sig = await signMessage(auth.web3, msg.msg);
+      msg.sig = await signMessage(auth.web3, msg.msg, rootState.web3.account);
       const result = await client.request('message', msg);
       commit('SEND_SUCCESS');
       dispatch('notify', ['green', `Your ${type} is in!`]);
@@ -132,7 +131,7 @@ const actions = {
   getProposals: async ({ commit }, space) => {
     commit('GET_PROPOSALS_REQUEST');
     try {
-      let proposals: any = await client.request(`${space.address}/proposals`);
+      let proposals: any = await client.request(`${space.token}/proposals`);
       if (proposals) {
         const scores: any = await getScores(
           space.strategies,
@@ -162,7 +161,7 @@ const actions = {
       const result: any = {};
       const [proposal, votes] = await Promise.all([
         ipfs.get(payload.id),
-        client.request(`${payload.space.address}/proposal/${payload.id}`)
+        client.request(`${payload.space.token}/proposal/${payload.id}`)
       ]);
       result.proposal = formatProposal(proposal);
       result.proposal.ipfsHash = payload.id;

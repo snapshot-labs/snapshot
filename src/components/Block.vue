@@ -4,14 +4,16 @@
   >
     <h4
       v-if="title"
-      class="px-4 py-3 border-bottom d-block bg-gray-dark rounded-top-0 rounded-md-top-2"
+      class="px-4 pt-3 border-bottom d-block bg-gray-dark rounded-top-0 rounded-md-top-2"
+      style="padding-bottom: 12px;"
     >
       {{ title }}
       <UiCounter v-if="counter" :counter="counter" class="ml-1" />
       <a
         v-if="icon"
         @click="$emit('submit')"
-        class="float-right mt-1 text-gray"
+        class="float-right text-gray"
+        style="padding-top: 2px;"
       >
         <Icon :name="icon" size="22" />
       </a>
