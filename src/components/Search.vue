@@ -5,7 +5,7 @@
       :value="value"
       :placeholder="placeholder"
       @input="handleInput"
-      type="search"
+      type="text"
       autocorrect="off"
       autocapitalize="none"
       class="border-0 input flex-auto width-full"
@@ -21,10 +21,10 @@ export default {
   props: ['value', 'placeholder'],
   methods: {
     handleInput(e) {
-      this.$emit('update:value', e.target.value);
+      this.$emit('input', e.target.value);
     },
     clearInput() {
-      this.$emit('update:value', '');
+      this.$emit('input', '');
     }
   }
 };
