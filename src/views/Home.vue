@@ -8,27 +8,17 @@
           </UiButton>
         </div>
         <div class="ml-3 text-right hide-sm">
-          <span class="mr-3"
-            >{{ _numeral(spaces.length) }} space{{
-              spaces.length === 1 ? '' : 's'
-            }}</span
-          >
-          <a
-            href="https://discord.snapshot.page"
-            target="_blank"
-            class="hide-md ml-3"
-          >
+          <span class="mr-3">
+            {{ _numeral(spaces.length) }} space{{ spaces.length === 1 ? '' : 's' }}
+          </span>
+          <a href="https://discord.snapshot.page" target="_blank" class="hide-md ml-3">
             <UiButton>Create space</UiButton>
           </a>
         </div>
       </Container>
     </div>
     <Container :slim="true">
-      <div
-        v-infinite-scroll="loadMore"
-        infinite-scroll-distance="0"
-        class="overflow-hidden mr-n4"
-      >
+      <div v-infinite-scroll="loadMore" infinite-scroll-distance="0" class="overflow-hidden mr-n4">
         <router-link
           v-for="space in spaces.slice(0, limit)"
           :key="space.key"
@@ -36,12 +26,7 @@
         >
           <div class="col-12 col-lg-3 pr-4 float-left">
             <Block class="text-center extra-icon-container block-container">
-              <Token
-                :space="space.key"
-                symbolIndex="space"
-                size="98"
-                class="my-3"
-              />
+              <Token :space="space.key" symbolIndex="space" size="98" class="my-3" />
               <StatefulIcon
                 :on="space.favorite"
                 onName="star"
