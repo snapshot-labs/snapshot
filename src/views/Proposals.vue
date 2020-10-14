@@ -14,7 +14,10 @@
             </h2>
           </div>
         </div>
-        <router-link v-if="$auth.isAuthenticated" :to="{ name: 'create' }">
+        <router-link
+          v-if="$auth.isAuthenticated"
+          :to="{ name: 'create', params: { key } }"
+        >
           <UiButton>New proposal</UiButton>
         </router-link>
       </div>
@@ -58,7 +61,6 @@
 
 <script>
 import { mapActions } from 'vuex';
-import spaces from '@/spaces';
 
 export default {
   data() {
@@ -71,10 +73,10 @@ export default {
   },
   computed: {
     key() {
-      return this.$route.params.key;
+      return this.domain || this.$route.params.key;
     },
     space() {
-      return spaces[this.key];
+      return this.app.spaces[this.key];
     },
     states() {
       const states = [
