@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import VueRouter, { RouteConfig } from 'vue-router';
-import domains from '@bonustrack/snapshot-spaces/spaces/domains.json';
+import domains from '@snapshot-labs/snapshot-spaces/spaces/domains.json';
 import Home from '@/views/Home.vue';
 import Proposals from '@/views/Proposals.vue';
 import Proposal from '@/views/Proposal.vue';
