@@ -121,6 +121,8 @@
 <script>
 import { mapActions } from 'vuex';
 import draggable from 'vuedraggable';
+import { getBlockNumber } from '@/helpers/web3';
+import getProvider from '@/helpers/provider';
 
 export default {
   components: {
@@ -131,6 +133,7 @@ export default {
       key: this.$route.params.key,
       loading: false,
       choices: [],
+      blockNumber: -1,
       form: {
         name: '',
         body: '',
@@ -162,13 +165,16 @@ export default {
         this.form.end &&
         this.form.end > this.form.start &&
         this.form.snapshot &&
+        this.form.snapshot > this.blockNumber / 2 &&
         this.choices.length >= 2 &&
         !this.choices.some(a => a.text === '')
       );
     }
   },
-  mounted() {
+  async mounted() {
     this.addChoice(2);
+    this.blockNumber = await getBlockNumber(getProvider(this.space.chainId));
+    this.form.snapshot = this.blockNumber;
   },
   methods: {
     ...mapActions(['send']),

@@ -61,19 +61,11 @@ const mutations = {
 };
 
 const actions = {
-  init: async ({ commit, dispatch, rootState }) => {
+  init: async ({ commit, dispatch }) => {
     commit('SET', { loading: true });
     const connector = await Vue.prototype.$auth.getConnector();
-    if (connector) {
-      await dispatch('login', connector);
-    } else {
-      commit('HANDLE_CHAIN_CHANGED', 1);
-    }
-    const init = await Promise.all([
-      dispatch('getSpaces'),
-      getBlockNumber(getProvider(rootState.web3.network.chainId))
-    ]);
-    commit('GET_BLOCK_SUCCESS', init[1]);
+    if (connector) await dispatch('login', connector);
+    await dispatch('getSpaces');
     commit('SET', { loading: false, init: true });
   },
   loading: ({ commit }, payload) => {
@@ -155,9 +147,12 @@ const actions = {
       commit('GET_PROPOSALS_FAILURE', e);
     }
   },
-  getProposal: async ({ commit, rootState }, payload) => {
+  getProposal: async ({ commit }, payload) => {
     commit('GET_PROPOSAL_REQUEST');
     try {
+      const blockNumber = await getBlockNumber(
+        getProvider(payload.space.chainId)
+      );
       const result: any = {};
       const [proposal, votes] = await Promise.all([
         ipfs.get(payload.id),
@@ -167,8 +162,7 @@ const actions = {
       result.proposal.ipfsHash = payload.id;
       result.votes = votes;
       const { snapshot } = result.proposal.msg.payload;
-      const blockTag =
-        snapshot > rootState.web3.blockNumber ? 'latest' : parseInt(snapshot);
+      const blockTag = snapshot > blockNumber ? 'latest' : parseInt(snapshot);
       const scores: any = await getScores(
         payload.space.strategies,
         payload.space.chainId,
@@ -220,11 +214,11 @@ const actions = {
       commit('GET_PROPOSAL_FAILURE', e);
     }
   },
-  getPower: async ({ commit, rootState }, { space, address, snapshot }) => {
+  getPower: async ({ commit }, { space, address, snapshot }) => {
     commit('GET_POWER_REQUEST');
     try {
-      const blockTag =
-        snapshot > rootState.web3.blockNumber ? 'latest' : parseInt(snapshot);
+      const blockNumber = await getBlockNumber(getProvider(space.chainId));
+      const blockTag = snapshot > blockNumber ? 'latest' : parseInt(snapshot);
       let scores: any = await getScores(
         space.strategies,
         space.chainId,

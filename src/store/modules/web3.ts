@@ -18,7 +18,6 @@ if (wsProvider) {
 const state = {
   account: null,
   name: null,
-  blockNumber: 0,
   network: config.networks['1']
 };
 
@@ -47,22 +46,16 @@ const mutations = {
   HANDLE_ACCOUNTS_CHANGED(_state, payload) {
     Vue.set(_state, 'account', payload);
     console.debug('HANDLE_ACCOUNTS_CHANGED', payload);
-  },
-  GET_BLOCK_SUCCESS(_state, payload) {
-    Vue.set(_state, 'blockNumber', payload);
-    console.debug('GET_BLOCK_SUCCESS', payload);
   }
 };
 
 const actions = {
-  login: async ({ commit, dispatch }, connector = 'injected') => {
+  login: async ({ dispatch }, connector = 'injected') => {
     auth = getInstance();
     await auth.login(connector);
     if (auth.provider) {
       auth.web3 = new Web3Provider(auth.provider);
       await dispatch('loadProvider');
-    } else {
-      commit('HANDLE_CHAIN_CHANGED', 1);
     }
   },
   logout: async ({ commit }) => {
