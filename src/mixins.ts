@@ -2,7 +2,7 @@ import { mapState } from 'vuex';
 import numeral from 'numeral';
 import get from 'lodash/get';
 import prettyMs from 'pretty-ms';
-import domains from '@bonustrack/snapshot-spaces/spaces/domains.json';
+import domains from '@snapshot-labs/snapshot-spaces/spaces/domains.json';
 import store from '@/store';
 import config from '@/helpers/config';
 import { shorten } from '@/helpers/utils';

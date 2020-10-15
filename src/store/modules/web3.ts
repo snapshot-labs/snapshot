@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import { getInstance } from '@bonustrack/lock/plugins/vue';
+import { getInstance } from '@snapshot-labs/lock/plugins/vue';
 import { Web3Provider } from '@ethersproject/providers';
 import store from '@/store';
 import config from '@/helpers/config';
