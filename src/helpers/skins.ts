@@ -1,5 +1,5 @@
 const requireFile = require.context(
-  '@bonustrack/snapshot-spaces/skins/',
+  '@snapshot-labs/snapshot-spaces/skins/',
   true,
   /[\w-]+\.scss$/
 );

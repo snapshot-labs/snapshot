@@ -13,6 +13,7 @@
   "portis": {
     "id": "portis",
     "name": "Portis",
+    "chainId": 1,
     "options": {
       "dappId": "3eb93706-c71d-456b-b4eb-322ea27f7d48",
       "network": "mainnet"
@@ -21,20 +22,22 @@
   "walletconnect": {
     "id": "walletconnect",
     "name": "WalletConnect",
+    "chainId": 1,
     "options": {
       "rpc": {
-        "1": "https://eth-mainnet.alchemyapi.io/v2/rXKbp7PTFm6hcrxU8NL-JGp5RMfRHDwg"
+        "1": "https://eth-mainnet.alchemyapi.io/v2/4bdDVB5QAaorY2UE-GBUbM2yQB3QJqzv"
       }
     }
   },
   "walletlink": {
     "id": "walletlink",
     "name": "Coinbase",
+    "chainId": 1,
     "options": {
       "appName": "Snapshot",
       "darkMode": false,
       "chainId": 1,
-      "ethJsonrpcUrl": "https://eth-mainnet.alchemyapi.io/v2/rXKbp7PTFm6hcrxU8NL-JGp5RMfRHDwg"
+      "ethJsonrpcUrl": "https://eth-mainnet.alchemyapi.io/v2/4bdDVB5QAaorY2UE-GBUbM2yQB3QJqzv"
     }
   }
 }

@@ -35,7 +35,7 @@
               <a
                 v-text="strategy.key"
                 :href="
-                  `https://github.com/bonustrack/snapshot.js/tree/master/src/strategies/${strategy.key}`
+                  `https://github.com/snapshot-labs/snapshot.js/tree/master/src/strategies/${strategy.key}`
                 "
                 target="_blank"
               />
