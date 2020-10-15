@@ -1,6 +1,6 @@
 import Vue from 'vue';
-import { getInstance } from '@bonustrack/lock/plugins/vue';
-import { getScores } from '@bonustrack/snapshot.js/src/utils';
+import { getInstance } from '@snapshot-labs/lock/plugins/vue';
+import { getScores } from '@snapshot-labs/snapshot.js/src/utils';
 import client from '@/helpers/client';
 import ipfs from '@/helpers/ipfs';
 import getProvider from '@/helpers/provider';
