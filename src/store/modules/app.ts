@@ -1,11 +1,27 @@
-import { getScores } from '@bonustrack/snapshot.js/src/utils';
+import Vue from 'vue';
+import { getInstance } from '@snapshot-labs/lock/plugins/vue';
+import { getScores } from '@snapshot-labs/snapshot.js/src/utils';
 import client from '@/helpers/client';
 import ipfs from '@/helpers/ipfs';
 import getProvider from '@/helpers/provider';
 import { formatProposal, formatProposals } from '@/helpers/utils';
+import { getBlockNumber, resolveContent, signMessage } from '@/helpers/web3';
+import registry from '@/helpers/registry.json';
 import { version } from '@/../package.json';
+import config from '@/helpers/config';
+
+const state = {
+  init: false,
+  loading: false,
+  spaces: {}
+};
 
 const mutations = {
+  SET(_state, payload) {
+    Object.keys(payload).forEach(key => {
+      Vue.set(_state, key, payload[key]);
+    });
+  },
   SEND_REQUEST() {
     console.debug('SEND_REQUEST');
   },
@@ -45,7 +61,38 @@ const mutations = {
 };
 
 const actions = {
+  init: async ({ commit, dispatch }) => {
+    commit('SET', { loading: true });
+    const connector = await Vue.prototype.$auth.getConnector();
+    if (connector) await dispatch('login', connector);
+    await dispatch('getSpaces');
+    commit('SET', { loading: false, init: true });
+  },
+  loading: ({ commit }, payload) => {
+    commit('SET', { loading: payload });
+  },
+  getSpaces: async ({ commit }) => {
+    const spaces: any = await client.request('spaces');
+    if (config.env !== 'master') {
+      try {
+        const namespace = registry[0];
+        const content = await resolveContent(getProvider(1), namespace);
+        const space = await fetch(
+          `https://ipfs.fleek.co/ipns/${content.decoded}`
+        ).then(res => res.json());
+        console.log('Space', space);
+        space.key = namespace;
+        space.token = namespace;
+        spaces[namespace] = space;
+      } catch (e) {
+        console.log(e);
+      }
+    }
+    commit('SET', { spaces });
+    return spaces;
+  },
   send: async ({ commit, dispatch, rootState }, { token, type, payload }) => {
+    const auth = getInstance();
     commit('SEND_REQUEST');
     try {
       const msg: any = {
@@ -58,7 +105,7 @@ const actions = {
           payload
         })
       };
-      msg.sig = await dispatch('signMessage', msg.msg);
+      msg.sig = await signMessage(auth.web3, msg.msg, rootState.web3.account);
       const result = await client.request('message', msg);
       commit('SEND_SUCCESS');
       dispatch('notify', ['green', `Your ${type} is in!`]);
@@ -76,7 +123,7 @@ const actions = {
   getProposals: async ({ commit }, space) => {
     commit('GET_PROPOSALS_REQUEST');
     try {
-      let proposals: any = await client.request(`${space.address}/proposals`);
+      let proposals: any = await client.request(`${space.token}/proposals`);
       if (proposals) {
         const scores: any = await getScores(
           space.strategies,
@@ -100,20 +147,22 @@ const actions = {
       commit('GET_PROPOSALS_FAILURE', e);
     }
   },
-  getProposal: async ({ commit, rootState }, payload) => {
+  getProposal: async ({ commit }, payload) => {
     commit('GET_PROPOSAL_REQUEST');
     try {
+      const blockNumber = await getBlockNumber(
+        getProvider(payload.space.chainId)
+      );
       const result: any = {};
       const [proposal, votes] = await Promise.all([
         ipfs.get(payload.id),
-        client.request(`${payload.space.address}/proposal/${payload.id}`)
+        client.request(`${payload.space.token}/proposal/${payload.id}`)
       ]);
       result.proposal = formatProposal(proposal);
       result.proposal.ipfsHash = payload.id;
       result.votes = votes;
       const { snapshot } = result.proposal.msg.payload;
-      const blockTag =
-        snapshot > rootState.web3.blockNumber ? 'latest' : parseInt(snapshot);
+      const blockTag = snapshot > blockNumber ? 'latest' : parseInt(snapshot);
       const scores: any = await getScores(
         payload.space.strategies,
         payload.space.chainId,
@@ -165,11 +214,11 @@ const actions = {
       commit('GET_PROPOSAL_FAILURE', e);
     }
   },
-  getPower: async ({ commit, rootState }, { space, address, snapshot }) => {
+  getPower: async ({ commit }, { space, address, snapshot }) => {
     commit('GET_POWER_REQUEST');
     try {
-      const blockTag =
-        snapshot > rootState.web3.blockNumber ? 'latest' : parseInt(snapshot);
+      const blockNumber = await getBlockNumber(getProvider(space.chainId));
+      const blockTag = snapshot > blockNumber ? 'latest' : parseInt(snapshot);
       let scores: any = await getScores(
         space.strategies,
         space.chainId,
@@ -193,6 +242,7 @@ const actions = {
 };
 
 export default {
+  state,
   mutations,
   actions
 };

@@ -13,7 +13,7 @@
           <UiButton class="button-outline width-full v-align-middle">
             <img
               :src="
-                `https://raw.githubusercontent.com/bonustrack/lock/master/connectors/assets/${connector.id}.png`
+                `https://raw.githubusercontent.com/snapshot-labs/lock/master/connectors/assets/${connector.id}.png`
               "
               height="28"
               width="28"

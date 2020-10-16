@@ -2,7 +2,7 @@
   <Container :slim="true">
     <div class="px-4 px-md-0 mb-3">
       <router-link
-        :to="{ name: 'proposals', params: { key } }"
+        :to="{ name: domain ? 'home' : 'proposals' }"
         class="text-gray"
       >
         <Icon name="back" size="22" class="v-align-middle" />
@@ -63,7 +63,7 @@
       <div class="col-12 col-lg-4 float-left">
         <Block
           title="Actions"
-          :icon="web3.network.chainId === 4 ? 'stars' : undefined"
+          :icon="space.chainId === 4 ? 'stars' : undefined"
           @submit="modalPluginsOpen = true"
         >
           <div class="mb-2">
@@ -121,7 +121,8 @@
 <script>
 import { mapActions } from 'vuex';
 import draggable from 'vuedraggable';
-import spaces from '@/spaces';
+import { getBlockNumber } from '@/helpers/web3';
+import getProvider from '@/helpers/provider';
 
 export default {
   components: {
@@ -132,6 +133,7 @@ export default {
       key: this.$route.params.key,
       loading: false,
       choices: [],
+      blockNumber: -1,
       form: {
         name: '',
         body: '',
@@ -149,7 +151,7 @@ export default {
   },
   computed: {
     space() {
-      return spaces[this.key];
+      return this.app.spaces[this.key];
     },
     isValid() {
       // const ts = (Date.now() / 1e3).toFixed();
@@ -163,13 +165,16 @@ export default {
         this.form.end &&
         this.form.end > this.form.start &&
         this.form.snapshot &&
+        this.form.snapshot > this.blockNumber / 2 &&
         this.choices.length >= 2 &&
         !this.choices.some(a => a.text === '')
       );
     }
   },
-  mounted() {
+  async mounted() {
     this.addChoice(2);
+    this.blockNumber = await getBlockNumber(getProvider(this.space.chainId));
+    this.form.snapshot = this.blockNumber;
   },
   methods: {
     ...mapActions(['send']),
@@ -192,7 +197,7 @@ export default {
       this.form.choices = this.choices.map(choice => choice.text);
       try {
         const { ipfsHash } = await this.send({
-          token: this.space.address,
+          token: this.space.token,
           type: 'proposal',
           payload: this.form
         });

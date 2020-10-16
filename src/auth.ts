@@ -1,10 +1,10 @@
 import Vue from 'vue';
-import { LockPlugin } from '@bonustrack/lock/plugins/vue';
-import injected from '@bonustrack/lock/connectors/injected';
-import fortmatic from '@bonustrack/lock/connectors/fortmatic';
-import portis from '@bonustrack/lock/connectors/portis';
-import walletconnect from '@bonustrack/lock/connectors/walletconnect';
-import walletlink from '@bonustrack/lock/connectors/walletlink';
+import { LockPlugin } from '@snapshot-labs/lock/plugins/vue';
+import injected from '@snapshot-labs/lock/connectors/injected';
+import fortmatic from '@snapshot-labs/lock/connectors/fortmatic';
+import portis from '@snapshot-labs/lock/connectors/portis';
+import walletconnect from '@snapshot-labs/lock/connectors/walletconnect';
+import walletlink from '@snapshot-labs/lock/connectors/walletlink';
 import config from '@/helpers/config';
 
 const options: any = { connectors: [] };
