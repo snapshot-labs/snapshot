@@ -24,7 +24,8 @@ export default {
   computed: {
     space() {
       try {
-        return this.app.spaces[this.$route.params.key];
+        const key = this.domain || this.$route.params.key;
+        return this.app.spaces[key];
       } catch (e) {
         return {};
       }

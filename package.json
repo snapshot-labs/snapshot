@@ -9,9 +9,9 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "@bonustrack/lock": "github:bonustrack/lock#e1437a340b578a1e5a48f37f935578ecdb8b51c8",
-    "@bonustrack/snapshot-spaces": "github:bonustrack/snapshot-spaces#master",
-    "@bonustrack/snapshot.js": "github:bonustrack/snapshot.js#master",
+    "@snapshot-labs/lock": "github:snapshot-labs/lock#5b9f0592731c0105bb47f8b7bf78b4f164e27c3e",
+    "@snapshot-labs/snapshot-spaces": "github:snapshot-labs/snapshot-spaces#master",
+    "@snapshot-labs/snapshot.js": "github:snapshot-labs/snapshot.js#master",
     "@ensdomains/content-hash": "^2.5.3",
     "@ethersproject/abi": "^5.0.1",
     "@ethersproject/address": "^5.0.1",

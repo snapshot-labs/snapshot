@@ -27,8 +27,8 @@
     "name": "Ethereum Testnet Kovan",
     "chainId": 42,
     "network": "kovan",
-    "rpcUrl": "https://kovan.poa.network",
-    "wsUrl": "ws://kovan.poa.network:8546",
+    "rpcUrl": "https://eth-kovan.alchemyapi.io/v2/QCsM2iU0bQ49eGDmZ7-Y--Wpu0lVWXSO",
+    "wsUrl": "wss://eth-kovan.ws.alchemyapi.io/v2/QCsM2iU0bQ49eGDmZ7-Y--Wpu0lVWXSO",
     "explorer": "https://kovan.etherscan.io"
   },
   "56": {
@@ -43,7 +43,7 @@
     "chainId": 61,
     "network": "mainnet",
     "rpcUrl": "https://ethereumclassic.network",
-    "explorer": ""
+    "explorer": "https://blockscout.com/etc/mainnet"
   },
   "97": {
     "name": "Binance Smart Chain Testnet",

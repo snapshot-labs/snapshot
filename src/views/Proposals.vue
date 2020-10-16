@@ -14,7 +14,10 @@
             </h2>
           </div>
         </div>
-        <router-link v-if="$auth.isAuthenticated" :to="{ name: 'create' }">
+        <router-link
+          v-if="$auth.isAuthenticated"
+          :to="{ name: 'create', params: { key } }"
+        >
           <UiButton>New proposal</UiButton>
         </router-link>
       </div>
@@ -70,7 +73,7 @@ export default {
   },
   computed: {
     key() {
-      return this.$route.params.key;
+      return this.domain || this.$route.params.key;
     },
     space() {
       return this.app.spaces[this.key];

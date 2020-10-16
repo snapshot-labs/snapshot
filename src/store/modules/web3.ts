@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import { getInstance } from '@bonustrack/lock/plugins/vue';
+import { getInstance } from '@snapshot-labs/lock/plugins/vue';
 import { Web3Provider } from '@ethersproject/providers';
 import store from '@/store';
 import config from '@/helpers/config';
@@ -18,7 +18,6 @@ if (wsProvider) {
 const state = {
   account: null,
   name: null,
-  blockNumber: 0,
   network: config.networks['1']
 };
 
@@ -41,28 +40,30 @@ const mutations = {
     console.debug('LOAD_PROVIDER_FAILURE', payload);
   },
   HANDLE_CHAIN_CHANGED(_state, chainId) {
+    if (!config.networks[chainId]) {
+      config.networks[chainId] = {
+        ...config.networks['1'],
+        chainId,
+        name: 'Unknown',
+        network: 'unknown'
+      };
+    }
     Vue.set(_state, 'network', config.networks[chainId]);
     console.debug('HANDLE_CHAIN_CHANGED', chainId);
   },
   HANDLE_ACCOUNTS_CHANGED(_state, payload) {
     Vue.set(_state, 'account', payload);
     console.debug('HANDLE_ACCOUNTS_CHANGED', payload);
-  },
-  GET_BLOCK_SUCCESS(_state, payload) {
-    Vue.set(_state, 'blockNumber', payload);
-    console.debug('GET_BLOCK_SUCCESS', payload);
   }
 };
 
 const actions = {
-  login: async ({ commit, dispatch }, connector = 'injected') => {
+  login: async ({ dispatch }, connector = 'injected') => {
     auth = getInstance();
     await auth.login(connector);
     if (auth.provider) {
       auth.web3 = new Web3Provider(auth.provider);
       await dispatch('loadProvider');
-    } else {
-      commit('HANDLE_CHAIN_CHANGED', 1);
     }
   },
   logout: async ({ commit }) => {

@@ -31,6 +31,7 @@
         <span v-text="'Network'" class="flex-auto text-gray mr-1" />
         {{ web3.network.network }} ({{ web3.network.chainId }})
       </div>
+      <!--
       <div class="d-flex">
         <span v-text="'Block number'" class="flex-auto text-gray mr-1" />
         <a
@@ -42,6 +43,7 @@
           <Icon name="external-link" class="ml-1" />
         </a>
       </div>
+      -->
       <div class="d-flex">
         <span v-text="'IPFS server'" class="flex-auto text-gray mr-1" />
         {{ ipfsNode }}
