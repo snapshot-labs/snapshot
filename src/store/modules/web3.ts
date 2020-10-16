@@ -40,6 +40,14 @@ const mutations = {
     console.debug('LOAD_PROVIDER_FAILURE', payload);
   },
   HANDLE_CHAIN_CHANGED(_state, chainId) {
+    if (!config.networks[chainId]) {
+      config.networks[chainId] = {
+        ...config.networks['1'],
+        chainId,
+        name: 'Unknown',
+        network: 'unknown'
+      };
+    }
     Vue.set(_state, 'network', config.networks[chainId]);
     console.debug('HANDLE_CHAIN_CHANGED', chainId);
   },
