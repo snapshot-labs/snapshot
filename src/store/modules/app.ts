@@ -123,7 +123,7 @@ const actions = {
   getProposals: async ({ commit }, space) => {
     commit('GET_PROPOSALS_REQUEST');
     try {
-      let proposals: any = await client.request(`${space.token}/proposals`);
+      let proposals: any = await client.request(`${space.key}/proposals`);
       if (proposals) {
         const scores: any = await getScores(
           space.strategies,
@@ -156,7 +156,7 @@ const actions = {
       const result: any = {};
       const [proposal, votes] = await Promise.all([
         ipfs.get(payload.id),
-        client.request(`${payload.space.token}/proposal/${payload.id}`)
+        client.request(`${payload.space.key}/proposal/${payload.id}`)
       ]);
       result.proposal = formatProposal(proposal);
       result.proposal.ipfsHash = payload.id;
