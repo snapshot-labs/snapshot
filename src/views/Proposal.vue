@@ -141,7 +141,7 @@
             <div class="mb-1">
               <b>Snapshot</b>
               <a
-                :href="_explorer(payload.snapshot, 'block')"
+                :href="_explorer(space.chainId, payload.snapshot, 'block')"
                 target="_blank"
                 class="float-right"
               >
@@ -176,6 +176,7 @@
     <ModalStrategies
       :open="modalStrategiesOpen"
       @close="modalStrategiesOpen = false"
+      :space="space"
       :strategies="space.strategies"
     />
   </Container>
