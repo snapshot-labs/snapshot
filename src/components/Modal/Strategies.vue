@@ -12,7 +12,7 @@
           <span v-text="key" class="flex-auto text-gray mr-1" />
           <a
             v-if="key === 'address'"
-            :href="_explorer(option)"
+            :href="_explorer(space.chainId, option)"
             target="_blank"
             class="d-block"
           >
@@ -35,6 +35,6 @@
 
 <script>
 export default {
-  props: ['open', 'strategies']
+  props: ['open', 'strategies', 'space']
 };
 </script>

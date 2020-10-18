@@ -5,3 +5,7 @@ const requireFile = require.context(
 );
 
 requireFile.keys().map(file => requireFile(file));
+
+export default requireFile
+  .keys()
+  .map(file => file.replace('./', '').replace('.scss', ''));

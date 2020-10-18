@@ -8,6 +8,7 @@
     <ModalUser
       :open="modalOpen"
       @close="modalOpen = false"
+      :space="space"
       :address="address"
     />
   </span>

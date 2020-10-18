@@ -50,7 +50,7 @@ export default {
     padding-right: 0 !important;
     max-width: 440px;
     overflow-y: auto !important;
-    max-height: calc(100vh - 80px);
+    max-height: calc(100vh - 120px);
     display: flex;
     flex-direction: column;
     z-index: 999;
