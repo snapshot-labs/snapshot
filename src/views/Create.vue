@@ -23,7 +23,7 @@
             <textarea-autosize
               v-model="form.body"
               maxlength="10240"
-              class="input mb-6"
+              class="input pt-1 mb-6"
               placeholder="What is your proposal?"
             />
             <div v-if="form.body">

@@ -25,23 +25,12 @@
         infinite-scroll-distance="0"
         class="overflow-hidden"
       >
-        <Block
+        <BlockNetwork
           v-for="network in networks.slice(0, limit)"
           :key="network.key"
+          :network="network"
           class="mb-3"
-        >
-          <div class="d-flex flex-items-baseline">
-            <h3>
-              <a
-                v-text="network.name"
-                :href="network.explorer"
-                target="_blank"
-              />
-            </h3>
-            <div v-text="network.chainId" class="ml-1" />
-          </div>
-          <div>In {{ _numeral(network.spaces.length) }} space(s)</div>
-        </Block>
+        />
       </div>
     </Container>
   </div>
@@ -49,6 +38,7 @@
 
 <script>
 import networks from '@/helpers/networks.json';
+import { filterNetworks } from '@/helpers/utils';
 
 export default {
   data() {
@@ -59,19 +49,7 @@ export default {
   },
   computed: {
     networks() {
-      return Object.values(networks)
-        .map(network => {
-          network.spaces = Object.entries(this.app.spaces)
-            .filter(space => space[1].chainId === network.chainId)
-            .map(space => space[0]);
-          return network;
-        })
-        .filter(network =>
-          JSON.stringify(network)
-            .toLowerCase()
-            .includes(this.q.toLowerCase())
-        )
-        .sort((a, b) => b.spaces.length - a.spaces.length);
+      return filterNetworks(networks, this.app.spaces, this.q);
     }
   },
   methods: {

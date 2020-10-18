@@ -64,3 +64,19 @@ export function formatProposals(proposals) {
     ])
   );
 }
+
+export function filterNetworks(networks, spaces, q) {
+  return Object.values(networks)
+    .map((network: any) => {
+      network.spaces = Object.entries(spaces)
+        .filter((space: any) => space[1].chainId === network.chainId)
+        .map(space => space[0]);
+      return network;
+    })
+    .filter(network =>
+      JSON.stringify(network)
+        .toLowerCase()
+        .includes(q.toLowerCase())
+    )
+    .sort((a, b) => b.spaces.length - a.spaces.length);
+}

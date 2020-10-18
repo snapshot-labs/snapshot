@@ -10,13 +10,3 @@
     />
   </div>
 </template>
-
-<script>
-export default {
-  props: {
-    token: String,
-    proposal: Object,
-    i: Number
-  }
-};
-</script>

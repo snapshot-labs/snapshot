@@ -5,10 +5,8 @@ import client from '@/helpers/client';
 import ipfs from '@/helpers/ipfs';
 import getProvider from '@/helpers/provider';
 import { formatProposal, formatProposals } from '@/helpers/utils';
-import { getBlockNumber, resolveContent, signMessage } from '@/helpers/web3';
-import registry from '@/helpers/registry.json';
+import { getBlockNumber, signMessage } from '@/helpers/web3';
 import { version } from '@/../package.json';
-import config from '@/helpers/config';
 
 const state = {
   init: false,
@@ -73,21 +71,6 @@ const actions = {
   },
   getSpaces: async ({ commit }) => {
     const spaces: any = await client.request('spaces');
-    if (config.env !== 'master') {
-      try {
-        const namespace = registry[0];
-        const content = await resolveContent(getProvider(1), namespace);
-        const space = await fetch(
-          `https://ipfs.fleek.co/ipns/${content.decoded}`
-        ).then(res => res.json());
-        console.log('Space', space);
-        space.key = namespace;
-        space.token = namespace;
-        spaces[namespace] = space;
-      } catch (e) {
-        console.log(e);
-      }
-    }
     commit('SET', { spaces });
     return spaces;
   },
