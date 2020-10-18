@@ -6,6 +6,7 @@ import domains from '@snapshot-labs/snapshot-spaces/spaces/domains.json';
 import store from '@/store';
 import config from '@/helpers/config';
 import { shorten } from '@/helpers/utils';
+import networks from '@/helpers/networks.json';
 
 // @ts-ignore
 const modules = Object.entries(store.state).map(module => module[0]);
@@ -47,9 +48,8 @@ export default {
     _ipfsUrl(ipfsHash: string): string {
       return `https://${process.env.VUE_APP_IPFS_NODE}/ipfs/${ipfsHash}`;
     },
-    _explorer(str: string, type = 'address'): string {
-      // @ts-ignore
-      return `${this.web3.network.explorer}/${type}/${str}`;
+    _explorer(network, str: string, type = 'address'): string {
+      return `${networks[network].explorer}/${type}/${str}`;
     }
   }
 };

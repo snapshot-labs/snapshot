@@ -2,6 +2,7 @@ import Vue from 'vue';
 import autofocus from 'vue-autofocus-directive';
 import infiniteScroll from 'vue-infinite-scroll';
 import TextareaAutosize from 'vue-textarea-autosize';
+import VueClipboard from 'vue-clipboard2';
 import Jazzicon from 'vue-jazzicon';
 import upperFirst from 'lodash/upperFirst';
 import camelCase from 'lodash/camelCase';
@@ -14,6 +15,7 @@ import '@/auth';
 import '@/helpers/skins';
 import '@/style.scss';
 
+Vue.use(VueClipboard);
 Vue.use(infiniteScroll);
 Vue.use(TextareaAutosize);
 

@@ -1,6 +1,6 @@
 class Client {
-  get(ipfsHash) {
-    const url = `https://${process.env.VUE_APP_IPFS_NODE}/ipfs/${ipfsHash}`;
+  get(ipfsHash, protocolType = 'ipfs') {
+    const url = `https://${process.env.VUE_APP_IPFS_NODE}/${protocolType}/${ipfsHash}`;
     return fetch(url).then(res => res.json());
   }
 }
