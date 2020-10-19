@@ -69,7 +69,7 @@ export function filterNetworks(networks, spaces, q) {
   return Object.values(networks)
     .map((network: any) => {
       network.spaces = Object.entries(spaces)
-        .filter((space: any) => space[1].chainId === network.chainId)
+        .filter((space: any) => space[1].network === network.chainId)
         .map(space => space[0]);
       return network;
     })
@@ -79,4 +79,16 @@ export function filterNetworks(networks, spaces, q) {
         .includes(q.toLowerCase())
     )
     .sort((a, b) => b.spaces.length - a.spaces.length);
+}
+
+export function formatSpace(key, space) {
+  space = {
+    key,
+    ...space,
+    members: space.members || [],
+    filters: space.filters || {}
+  };
+  if (!space.filters.invalids) space.filters.invalids = [];
+  if (!space.filters.minScore) space.filters.minScore = 0;
+  return space;
 }

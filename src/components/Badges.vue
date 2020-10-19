@@ -10,8 +10,8 @@ export default {
   props: ['address', 'space'],
   computed: {
     isCore() {
-      return this.space && this.space.core
-        ? this.space.core.includes(this.address)
+      return this.space && this.space.members
+        ? this.space.members.includes(this.address)
         : false;
     },
     isVerified() {

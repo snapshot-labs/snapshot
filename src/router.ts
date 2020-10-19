@@ -13,7 +13,7 @@ Vue.use(VueRouter);
 const domainName = window.location.hostname;
 
 const routes: Array<RouteConfig> = [
-  { path: '/:key/settings', name: 'settings', component: Settings },
+  { path: '/:key/settings/:from?', name: 'settings', component: Settings },
   { path: '/networks', name: 'networks', component: Networks },
   { path: '/strategies', name: 'strategies', component: Strategies },
   { path: '/:key/proposal/:id', name: 'proposal', component: Proposal },
