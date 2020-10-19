@@ -178,6 +178,7 @@ export default {
   data() {
     return {
       key: this.$route.params.key,
+      from: this.$route.params.from,
       space: {},
       currentContenthash: '',
       modalNetworksOpen: false,
@@ -219,6 +220,7 @@ export default {
     } catch (e) {
       console.log(e);
     }
+    if (this.from) this.form = this.app.spaces[this.from];
     this.loaded = true;
   },
   methods: {

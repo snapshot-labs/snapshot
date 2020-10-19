@@ -6,7 +6,7 @@
     </div>
     <div class="m-4">
       <a
-        :href="_explorer(space.chainId, address)"
+        :href="_explorer(space.network, address)"
         target="_blank"
         class="mb-2 d-block"
       >

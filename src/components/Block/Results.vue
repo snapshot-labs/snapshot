@@ -80,8 +80,7 @@ export default {
       return (Date.now() / 1e3).toFixed();
     },
     titles() {
-      if (!this.space.strategies) return [this.space.symbol];
-      return this.space.strategies.map(strategy => strategy[1].symbol);
+      return this.space.strategies.map(strategy => strategy.params.symbol);
     },
     winningChoice() {
       let winningChoice = 0;

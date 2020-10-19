@@ -80,7 +80,7 @@ export default {
               space =>
                 space[1].strategies &&
                 space[1].strategies
-                  .map(strategy => strategy[0])
+                  .map(strategy => strategy.name)
                   .includes(strategy.key)
             )
             .map(space => space[0]);
