@@ -8,10 +8,11 @@
     </div>
     <div>
       <div class="col-12 col-lg-8 float-left pr-0 pr-lg-5">
+        <div class="px-4 px-md-0">
+          <h1 v-if="loaded" v-text="'Settings'" class="mb-4" />
+          <PageLoading v-else />
+        </div>
         <template v-if="loaded">
-          <div class="px-4 px-md-0">
-            <h1 v-text="'Settings'" class="mb-4" />
-          </div>
           <Block title="ENS">
             <UiButton class="d-flex width-full mb-2">
               <input
@@ -83,9 +84,13 @@
             </div>
           </Block>
           <Block title="Strategies">
-            <Block v-for="(strategy, i) in form.strategies" :key="i">
+            <div
+              v-for="(strategy, i) in form.strategies"
+              :key="i"
+              class="p-4 border rounded-2 mb-3"
+            >
               <h4 v-text="strategy.name" />
-            </Block>
+            </div>
             <UiButton class="d-block width-full">
               Add strategy
             </UiButton>
@@ -137,7 +142,6 @@
             </div>
           </Block>
         </template>
-        <PageLoading v-else />
       </div>
       <div v-if="loaded" class="col-12 col-lg-4 float-left">
         <Block title="Actions">
