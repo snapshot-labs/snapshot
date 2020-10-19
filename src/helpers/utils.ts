@@ -66,12 +66,12 @@ export function formatProposals(proposals) {
 }
 
 export function filterNetworks(networks, spaces, q) {
-  return Object.values(networks)
+  return Object.entries(networks)
     .map((network: any) => {
-      network.spaces = Object.entries(spaces)
-        .filter((space: any) => space[1].network === network.chainId)
+      network[1].spaces = Object.entries(spaces)
+        .filter((space: any) => space[1].network === network[0])
         .map(space => space[0]);
-      return network;
+      return network[1];
     })
     .filter(network =>
       JSON.stringify(network)
