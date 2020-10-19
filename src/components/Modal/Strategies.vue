@@ -6,9 +6,9 @@
       :key="i"
       class="m-4 mt-0 p-4 border rounded-2 text-white"
     >
-      <h3 v-text="strategy[0]" />
+      <h3 v-text="strategy.name" />
       <div>
-        <div v-for="(option, key) in strategy[1]" :key="key" class="d-flex">
+        <div v-for="(option, key) in strategy.params" :key="key" class="d-flex">
           <span v-text="key" class="flex-auto text-gray mr-1" />
           <a
             v-if="key === 'address'"
