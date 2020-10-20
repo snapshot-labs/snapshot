@@ -59,6 +59,7 @@
     "vuedraggable": "^2.24.1",
     "vuex": "^3.4.0",
     "walletlink": "^2.0.2",
+    "web3": "^1.3.0",
     "web3-eth-abi": "^1.3.0"
   },
   "devDependencies": {
