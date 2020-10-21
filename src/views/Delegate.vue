@@ -35,7 +35,7 @@
         <Block title="Actions">
           <UiButton
             @click="handleSubmit"
-            :disabled="!isValid"
+            :disabled="!isValid || !$auth.isAuthenticated"
             :loading="loading"
             class="d-block width-full button--submit"
           >
@@ -51,7 +51,13 @@
 import { isAddress } from '@ethersproject/address';
 import { keccak256 } from '@ethersproject/keccak256';
 import { toUtf8Bytes } from '@ethersproject/strings';
+import { multicall } from '@snapshot-labs/snapshot.js/src/utils';
 import { sendTransaction } from '@/helpers/web3';
+import getProvider from '@/helpers/provider';
+import abi from '@/helpers/abi';
+import {mapActions} from "vuex";
+
+const contractAddress = '0x469788fE6E9E9681C6ebF3bF78e7Fd26Fc015446';
 
 export default {
   data() {
@@ -59,30 +65,49 @@ export default {
       loaded: false,
       loading: false,
       form: {
-        address: '0x0000000000000000000000000000000000baDDAd',
-        id: 'test_1_project'
+        // address: '0x0000000000000000000000000000000000baDDAd',
+        // id: 'test_1_project'
       }
     };
   },
   async created() {
+    const [delegation] = await multicall(
+      this.web3.network.chainId,
+      getProvider(this.web3.network.chainId),
+      abi['DelegateRegistry'],
+      [
+        [
+          contractAddress,
+          'delegation',
+          [this.web3.account, keccak256(toUtf8Bytes('test'))]
+        ]
+      ],
+      { blockTag: 'latest' }
+    );
+    console.log('Delegation to id "test"', delegation);
     this.loaded = true;
   },
   computed: {
     isValid() {
-      return isAddress(this.form.address);
+      return (
+        isAddress(this.form.address) &&
+        this.form.address.toLowerCase() !== this.web3.account
+      );
     }
   },
   methods: {
+    ...mapActions(['notify']),
     async handleSubmit() {
       this.loading = true;
       try {
         const tx = await sendTransaction(this.$auth.web3, [
           'DelegateRegistry',
-          '0x469788fE6E9E9681C6ebF3bF78e7Fd26Fc015446',
+          contractAddress,
           'setDelegate',
-          [[keccak256(toUtf8Bytes(this.form.id)), this.form.address]]
+          [keccak256(toUtf8Bytes(this.form.id)), this.form.address]
         ]);
         console.log(tx);
+        this.notify('You did it!');
       } catch (e) {
         console.log(e);
       }
