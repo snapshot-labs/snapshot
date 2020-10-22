@@ -8,14 +8,16 @@ import Create from '@/views/Create.vue';
 import Settings from '@/views/Settings.vue';
 import Networks from '@/views/Networks.vue';
 import Strategies from '@/views/Strategies.vue';
+import Delegate from '@/views/Delegate.vue';
 
 Vue.use(VueRouter);
 const domainName = window.location.hostname;
 
 const routes: Array<RouteConfig> = [
-  { path: '/:key/settings', name: 'settings', component: Settings },
+  { path: '/:key/settings/:from?', name: 'settings', component: Settings },
   { path: '/networks', name: 'networks', component: Networks },
   { path: '/strategies', name: 'strategies', component: Strategies },
+  { path: '/delegate', name: 'delegate', component: Delegate },
   { path: '/:key/proposal/:id', name: 'proposal', component: Proposal },
   { path: '/:key/create', name: 'create', component: Create },
   { path: '/:key', name: 'proposals', component: Proposals },

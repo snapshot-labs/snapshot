@@ -71,8 +71,7 @@ export default {
         : Object.fromEntries(Object.entries(this.votes).slice(0, 10));
     },
     titles() {
-      if (!this.space.strategies) return [this.space.symbol];
-      return this.space.strategies.map(strategy => strategy[1].symbol);
+      return this.space.strategies.map(strategy => strategy.params.symbol);
     }
   },
   methods: {
