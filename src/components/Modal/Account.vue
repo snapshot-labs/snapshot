@@ -10,16 +10,29 @@
           target="_blank"
           class="mb-2 d-block"
         >
-          <UiButton class="button-outline width-full v-align-middle">
+          <UiButton
+            v-if="id !== 'injected'"
+            class="button-outline width-full v-align-middle"
+          >
             <img
-              :src="
-                `https://raw.githubusercontent.com/snapshot-labs/lock/master/connectors/assets/${connector.id}.png`
-              "
+              :src="`${path}/${connector.id}.png`"
               height="28"
               width="28"
               class="mr-1 v-align-middle"
             />
             {{ connector.name }}
+          </UiButton>
+          <UiButton
+            v-else-if="injected"
+            class="button-outline width-full v-align-middle"
+          >
+            <img
+              :src="`${path}/${injected.id}.png`"
+              height="28"
+              width="28"
+              class="mr-1 v-align-middle"
+            />
+            {{ injected.name }}
           </UiButton>
         </a>
       </div>
@@ -58,17 +71,25 @@
 
 <script>
 import { mapActions } from 'vuex';
+import { getInjected } from '@/helpers/utils';
 
 export default {
   props: ['open'],
   data() {
     return {
-      step: null
+      step: null,
+      path:
+        'https://raw.githubusercontent.com/snapshot-labs/lock/master/connectors/assets'
     };
   },
   watch: {
     open() {
       this.step = null;
+    }
+  },
+  computed: {
+    injected() {
+      return getInjected();
     }
   },
   methods: {
