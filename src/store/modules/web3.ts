@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import { getInstance } from '@snapshot-labs/lock/plugins/vue';
+import { getInstance } from '@/helpers/plugins/LockPlugin';
 import { Web3Provider } from '@ethersproject/providers';
 import store from '@/store';
 import config from '@/helpers/config';
@@ -61,8 +61,9 @@ const actions = {
   login: async ({ dispatch }, connector = 'injected') => {
     auth = getInstance();
     await auth.login(connector);
+
     if (auth.provider) {
-      auth.web3 = new Web3Provider(auth.provider);
+      auth.web3 = auth.provider;
       await dispatch('loadProvider');
     }
   },

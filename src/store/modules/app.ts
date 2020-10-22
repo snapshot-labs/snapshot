@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import { getInstance } from '@snapshot-labs/lock/plugins/vue';
+import { getInstance } from '@/helpers/plugins/LockPlugin';
 import { getScores } from '@snapshot-labs/snapshot.js/src/utils';
 import client from '@/helpers/client';
 import ipfs from '@/helpers/ipfs';
@@ -62,7 +62,9 @@ const actions = {
   init: async ({ commit, dispatch }) => {
     commit('SET', { loading: true });
     const connector = await Vue.prototype.$auth.getConnector();
+
     if (connector) await dispatch('login', connector);
+
     await dispatch('getSpaces');
     commit('SET', { loading: false, init: true });
   },
