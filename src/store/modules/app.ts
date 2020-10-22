@@ -96,7 +96,7 @@ const actions = {
           payload
         })
       };
-      msg.sig = await signMessage(auth.web3, msg.msg, rootState.web3.account);
+      msg.sig = await signMessage(auth.web3, msg.msg);
       const result = await client.request('message', msg);
       commit('SEND_SUCCESS');
       dispatch('notify', ['green', `Your ${type} is in!`]);
@@ -111,7 +111,7 @@ const actions = {
       return;
     }
   },
-  getProposals: async ({ commit }, space) => {
+  getProposals: async ({ commit, state }, space) => {
     commit('GET_PROPOSALS_REQUEST');
     try {
       let proposals: any = await client.request(`${space.key}/proposals`);
@@ -132,6 +132,7 @@ const actions = {
           })
         );
       }
+
       commit('GET_PROPOSALS_SUCCESS');
       return formatProposals(proposals);
     } catch (e) {

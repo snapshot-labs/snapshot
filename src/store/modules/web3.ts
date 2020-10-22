@@ -15,7 +15,7 @@ if (wsProvider) {
 const state = {
   account: null,
   name: null,
-  network: config.networks['1']
+  network: config.networks['mainnet']
 };
 
 const mutations = {

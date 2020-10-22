@@ -26,7 +26,9 @@
       <h3 class="m-4 mb-0 text-center">Account</h3>
       <div v-if="$auth.isAuthenticated" class="m-4">
         <a
-          :href="_explorer(web3.network.name, web3.account)"
+          :href="
+            web3.wallet.defaultAccount.bech32(web3.network.name, web3.account)
+          "
           target="_blank"
           class="mb-2 d-block"
         >
