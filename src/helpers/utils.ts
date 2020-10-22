@@ -48,11 +48,6 @@ export function formatProposal(proposal) {
     proposal.msg.payload.metadata = {};
   }
 
-  /*
-  if (proposal.msg.payload.snapshot < 10000000)
-    proposal.msg.payload.snapshot = 20000000;
-  */
-
   return proposal;
 }
 
@@ -91,4 +86,15 @@ export function formatSpace(key, space) {
   if (!space.filters.invalids) space.filters.invalids = [];
   if (!space.filters.minScore) space.filters.minScore = 0;
   return space;
+}
+
+export function getInjected() {
+  const web3: any = window['ethereum'];
+  if (!web3) return;
+  let injected = { name: 'Injected', id: 'web3' };
+  if (web3.isMetaMask) injected = { name: 'MetaMask', id: 'metamask' };
+  if (web3.isTrust) injected = { name: 'TrustWallet', id: 'trustwallet' };
+  if (web3.isStatus) injected = { name: 'Status', id: 'status' };
+  if (web3.isFrame) injected = { name: 'Frame', id: 'frame' };
+  return injected;
 }
