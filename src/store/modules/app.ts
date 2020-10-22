@@ -4,7 +4,7 @@ import { getScores } from '@snapshot-labs/snapshot.js/src/utils';
 import client from '@/helpers/client';
 import ipfs from '@/helpers/ipfs';
 import getProvider from '@/helpers/provider';
-import { formatProposal, formatProposals } from '@/helpers/utils';
+import { formatProposal, formatProposals, formatSpace } from '@/helpers/utils';
 import { getBlockNumber, signMessage } from '@/helpers/web3';
 import { version } from '@/../package.json';
 
@@ -70,7 +70,13 @@ const actions = {
     commit('SET', { loading: payload });
   },
   getSpaces: async ({ commit }) => {
-    const spaces: any = await client.request('spaces');
+    let spaces: any = await client.request('spaces');
+    spaces = Object.fromEntries(
+      Object.entries(spaces).map(space => [
+        space[0],
+        formatSpace(space[0], space[1])
+      ])
+    );
     commit('SET', { spaces });
     return spaces;
   },
@@ -110,8 +116,8 @@ const actions = {
       if (proposals) {
         const scores: any = await getScores(
           space.strategies,
-          space.chainId,
-          getProvider(space.chainId),
+          space.network,
+          getProvider(space.network),
           Object.values(proposals).map((proposal: any) => proposal.address)
         );
         proposals = Object.fromEntries(
@@ -134,7 +140,7 @@ const actions = {
     commit('GET_PROPOSAL_REQUEST');
     try {
       const blockNumber = await getBlockNumber(
-        getProvider(payload.space.chainId)
+        getProvider(payload.space.network)
       );
       const result: any = {};
       const [proposal, votes] = await Promise.all([
@@ -148,8 +154,8 @@ const actions = {
       const blockTag = snapshot > blockNumber ? 'latest' : parseInt(snapshot);
       const scores: any = await getScores(
         payload.space.strategies,
-        payload.space.chainId,
-        getProvider(payload.space.chainId),
+        payload.space.network,
+        getProvider(payload.space.network),
         Object.keys(result.votes),
         // @ts-ignore
         blockTag
@@ -200,12 +206,12 @@ const actions = {
   getPower: async ({ commit }, { space, address, snapshot }) => {
     commit('GET_POWER_REQUEST');
     try {
-      const blockNumber = await getBlockNumber(getProvider(space.chainId));
+      const blockNumber = await getBlockNumber(getProvider(space.network));
       const blockTag = snapshot > blockNumber ? 'latest' : parseInt(snapshot);
       let scores: any = await getScores(
         space.strategies,
-        space.chainId,
-        getProvider(space.chainId),
+        space.network,
+        getProvider(space.network),
         [address],
         // @ts-ignore
         blockTag

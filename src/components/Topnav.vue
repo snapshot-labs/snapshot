@@ -54,7 +54,12 @@
               @click="modalOpen = true"
               :loading="loading"
             >
-              Connect<span class="hide-sm" v-text="' wallet'" />
+              <span class="hide-sm" v-text="'Connect wallet'" />
+              <Icon
+                name="login"
+                size="20"
+                class="hide-md hide-lg hide-xl ml-n2 mr-n2 v-align-text-bottom"
+              />
             </UiButton>
             <UiButton @click="modalAboutOpen = true" class="ml-2">
               <span v-text="'?'" class="ml-n1 mr-n1" />
