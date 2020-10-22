@@ -21,7 +21,7 @@
     <div class="m-4 p-4 border rounded-2 text-white">
       <div class="d-flex">
         <span v-text="'Version'" class="flex-auto text-gray mr-1" />
-        {{ pkg.version }}
+        {{ pkg.version }}#{{ hash.slice(0, 7) }}
       </div>
       <div class="d-flex">
         <span v-text="'License'" class="flex-auto text-gray mr-1" />
@@ -51,6 +51,7 @@ export default {
   data() {
     return {
       pkg,
+      hash: __webpack_hash__,
       hubUrl: process.env.VUE_APP_HUB_URL,
       ipfsNode: process.env.VUE_APP_IPFS_NODE
     };
