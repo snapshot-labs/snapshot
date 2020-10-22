@@ -31,6 +31,7 @@ const mutations = {
     console.debug('LOAD_PROVIDER_REQUEST');
   },
   LOAD_PROVIDER_SUCCESS(_state, payload) {
+    console.log('LOAD_PROVIDER_SUCCESS', payload);
     Vue.set(_state, 'account', payload.account);
     Vue.set(_state, 'name', payload.name);
     console.debug('LOAD_PROVIDER_SUCCESS');
@@ -74,28 +75,33 @@ const actions = {
   loadProvider: async ({ commit, dispatch }) => {
     commit('LOAD_PROVIDER_REQUEST');
     try {
-      if (auth.provider.removeAllListeners) auth.provider.removeAllListeners();
-      if (auth.provider.on) {
-        auth.provider.on('chainChanged', async chainId => {
-          commit('HANDLE_CHAIN_CHANGED', parseInt(formatUnits(chainId, 0)));
-        });
-        auth.provider.on('accountsChanged', async accounts => {
-          if (accounts.length !== 0) {
-            commit('HANDLE_ACCOUNTS_CHANGED', accounts[0]);
+      if (auth.provider) {
+        auth.provider.wallet
+          .observableAccount()
+          .subscribe(async (account: any) => {
+            commit('HANDLE_ACCOUNTS_CHANGED', account.bech32);
             await dispatch('loadProvider');
+          });
+        auth.provider.wallet.observableNetwork().subscribe((net: string) => {
+          switch (net) {
+            case 'mainnet':
+              commit('HANDLE_CHAIN_CHANGED', 0);
+              break;
+            case 'testnet':
+              commit('HANDLE_CHAIN_CHANGED', 1);
+              break;
+            case 'private':
+              commit('HANDLE_CHAIN_CHANGED', 2);
+              break;
+            default:
+              break;
           }
         });
-        auth.provider.on('disconnect', async () => {
-          commit('HANDLE_CLOSE');
-        });
       }
-      const [network, accounts] = await Promise.all([
-        auth.web3.getNetwork(),
-        auth.web3.listAccounts()
-      ]);
-      commit('HANDLE_CHAIN_CHANGED', network.chainId);
-      const account = accounts.length > 0 ? accounts[0] : null;
-      const name = await getProvider(1).lookupAddress(account);
+      // const net = auth.provider.wallet.net;
+      commit('HANDLE_CHAIN_CHANGED', 0);
+      const account = auth.provider.wallet.defaultAccount.bech32;
+      const name = auth.provider.wallet.defaultAccount.bech32;
       commit('LOAD_PROVIDER_SUCCESS', {
         account,
         name

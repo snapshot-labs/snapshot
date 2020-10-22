@@ -9,14 +9,15 @@ export async function resolveContent(provider, name) {
   return decodeContenthash(contentHash);
 }
 
-export async function signMessage(web3, msg, address) {
-  return await web3.send('personal_sign', [msg, address]);
+export async function signMessage(web3, msg) {
+  return await web3.wallet.sign(msg);
 }
 
 export async function getBlockNumber(provider) {
   try {
-    const blockNumber: any = await provider.getBlockNumber();
-    return parseInt(blockNumber);
+    const chainInfo: any = await provider.blockchain.getBlockChainInfo();
+
+    return parseInt(chainInfo.result.NumTxBlocks);
   } catch (e) {
     return Promise.reject();
   }
