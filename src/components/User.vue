@@ -24,8 +24,8 @@ export default {
   },
   computed: {
     name() {
-      return this.web3.account &&
-        this.address.toLowerCase() === this.web3.account.toLowerCase()
+      return this.web3.account.base16 &&
+        this.address.toLowerCase() === this.web3.account.base16.toLowerCase()
         ? 'You'
         : this._shorten(this.address);
     }

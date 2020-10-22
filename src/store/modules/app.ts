@@ -87,7 +87,7 @@ const actions = {
     commit('SEND_REQUEST');
     try {
       const msg: any = {
-        address: rootState.web3.account,
+        address: rootState.web3.account.base16,
         msg: JSON.stringify({
           version,
           timestamp: (Date.now() / 1e3).toFixed(),
@@ -111,7 +111,7 @@ const actions = {
       return;
     }
   },
-  getProposals: async ({ commit, state }, space) => {
+  getProposals: async ({ commit }, space) => {
     commit('GET_PROPOSALS_REQUEST');
     try {
       let proposals: any = await client.request(`${space.key}/proposals`);

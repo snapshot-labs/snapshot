@@ -5,7 +5,7 @@
     "network": "homestead",
     "rpcUrl": "https://api.zilliqa.com",
     "wsUrl": "wss://api-ws.zilliqa.com",
-    "explorer": "https://viewblock.io/zilliqa?network=mainnet"
+    "explorer": "https://viewblock.io/zilliqa"
   },
   "testnet": {
     "name": "Zilliqa Testnet",
@@ -13,6 +13,6 @@
     "network": "homestead",
     "rpcUrl": "https://dev-api.zilliqa.com",
     "wsUrl": "wss://dev-ws.zilliqa.com",
-    "explorer": "https://viewblock.io/zilliqa?network=testnet"
+    "explorer": "https://viewblock.io/zilliqa"
   }
 }

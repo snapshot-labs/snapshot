@@ -55,7 +55,7 @@
             </UiButton>
           </div>
           <UiButton
-            :disabled="voteLoading || !selectedChoice || !web3.account"
+            :disabled="voteLoading || !selectedChoice || !web3.account.bech32"
             :loading="voteLoading"
             @click="modalOpen = true"
             class="d-block width-full button--submit"
@@ -205,7 +205,7 @@ export default {
     }
   },
   watch: {
-    'web3.account': async function(val, prev) {
+    'web3.account.bech32': async function(val, prev) {
       if (val && val.toLowerCase() !== prev) await this.loadPower();
     }
   },
@@ -221,10 +221,10 @@ export default {
       this.results = proposalObj.results;
     },
     async loadPower() {
-      if (!this.web3.account) return;
+      if (!this.web3.account.bech32) return;
       const { scores, totalScore } = await this.getPower({
         space: this.space,
-        address: this.web3.account,
+        address: this.web3.account.bech32,
         snapshot: this.payload.snapshot
       });
       this.totalScore = totalScore;

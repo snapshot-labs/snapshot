@@ -192,11 +192,11 @@ export default {
   },
   computed: {
     isValid() {
-      return !this.loading && this.web3.account;
+      return !this.loading && this.web3.account.bech32;
     },
     contenthash() {
-      const address = this.web3.account
-        ? getAddress(this.web3.account)
+      const address = this.web3.account.bech32
+        ? getAddress(this.web3.account.bech32)
         : 'YOUR_ADDRESS';
       return `ipns://storage.snapshot.page/registry/${address}/${this.key}`;
     }

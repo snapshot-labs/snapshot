@@ -13,7 +13,10 @@ if (wsProvider) {
 }
 
 const state = {
-  account: null,
+  account: {
+    base16: '',
+    bech32: ''
+  },
   name: null,
   network: config.networks['mainnet']
 };
@@ -86,7 +89,7 @@ const actions = {
       }
       const net = auth.provider.wallet.net;
       commit('HANDLE_CHAIN_CHANGED', net);
-      const account = auth.provider.wallet.defaultAccount.bech32;
+      const account = auth.provider.wallet.defaultAccount;
       const name = auth.provider.wallet.defaultAccount.bech32;
       commit('LOAD_PROVIDER_SUCCESS', {
         account,

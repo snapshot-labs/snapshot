@@ -5,7 +5,6 @@ import prettyMs from 'pretty-ms';
 import domains from '@snapshot-labs/snapshot-spaces/spaces/domains.json';
 import store from '@/store';
 import config from '@/helpers/config';
-import { shorten } from '@/helpers/utils';
 import networks from '@/helpers/networks.json';
 
 // @ts-ignore
@@ -35,21 +34,21 @@ export default {
     _numeral(number, format = '(0.[00]a)') {
       return numeral(number).format(format);
     },
-    _shorten(str: string, key: string): string {
-      if (!str) return str;
-      // let limit;
-      // if (key === 'symbol') limit = 6;
-      // if (key === 'name') limit = 64;
-      // if (key === 'choice') limit = 12;
-      // if (limit)
-      //   return str.length > limit ? `${str.slice(0, limit).trim()}...` : str;
-      return shorten(str);
+    _shorten(str: string, length = 6): string {
+      if (!str) {
+        return '';
+      }
+
+      const part0 = str.substr(0, length);
+      const part1 = str.substr(length * -1);
+
+      return `${part0}...${part1}`;
     },
     _ipfsUrl(ipfsHash: string): string {
       return `https://${process.env.VUE_APP_IPFS_NODE}/ipfs/${ipfsHash}`;
     },
     _explorer(network, str: string, type = 'address'): string {
-      return `${networks[network].explorer}/${type}/${str}`;
+      return `${networks[network].explorer}/${type}/${str}?network=${network}`;
     }
   }
 };

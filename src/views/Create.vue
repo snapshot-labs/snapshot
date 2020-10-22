@@ -157,7 +157,7 @@ export default {
       // const ts = (Date.now() / 1e3).toFixed();
       return (
         !this.loading &&
-        this.web3.account &&
+        this.web3.account.base16 &&
         this.form.name &&
         this.form.body &&
         this.form.start &&

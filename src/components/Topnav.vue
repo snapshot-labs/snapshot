@@ -33,7 +33,7 @@
               <span class="ml-2" v-text="space.name" />
             </router-link>
           </div>
-          <div :key="web3.account">
+          <div :key="web3.account.base16">
             <template v-if="$auth.isAuthenticated">
               <UiButton
                 @click="modalOpen = true"
@@ -41,12 +41,20 @@
                 :loading="loading"
               >
                 <Avatar
-                  :address="web3.account"
+                  :address="web3.account.base16"
                   size="16"
                   class="mr-0 mr-sm-2 mr-md-2 mr-lg-2 mr-xl-2 ml-n1"
                 />
-                <span v-if="web3.name" v-text="web3.name" class="hide-sm" />
-                <span v-else v-text="_shorten(web3.account)" class="hide-sm" />
+                <span
+                  v-if="web3.name"
+                  v-text="_shorten(web3.name)"
+                  class="hide-sm"
+                />
+                <span
+                  v-else
+                  v-text="_shorten(web3.account.bech32)"
+                  class="hide-sm"
+                />
               </UiButton>
             </template>
             <UiButton

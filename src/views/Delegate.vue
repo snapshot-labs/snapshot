@@ -71,7 +71,7 @@ export default {
     };
   },
   async created() {
-    if (this.web3.account) {
+    if (this.web3.account.bech32) {
       const [delegation] = await multicall(
         this.web3.network.chainId,
         getProvider(this.web3.network.chainId),
@@ -80,7 +80,7 @@ export default {
           [
             contractAddress,
             'delegation',
-            [this.web3.account, keccak256(toUtf8Bytes('test'))]
+            [this.web3.account.bech32, keccak256(toUtf8Bytes('test'))]
           ]
         ],
         { blockTag: 'latest' }
@@ -93,7 +93,7 @@ export default {
     isValid() {
       return (
         isAddress(this.form.address) &&
-        this.form.address.toLowerCase() !== this.web3.account
+        this.form.address.toLowerCase() !== this.web3.account.bech32
       );
     }
   },

@@ -1,6 +1,6 @@
 <template>
   <UiModal :open="open" @close="$emit('close')">
-    <div v-if="!web3.account || step === 'connect'">
+    <div v-if="!web3.account.base16 || step === 'connect'">
       <h3 class="m-4 mb-0 text-center">Connect wallet</h3>
       <div class="m-4 mb-5">
         <a
@@ -25,17 +25,15 @@
     <div v-else>
       <h3 class="m-4 mb-0 text-center">Account</h3>
       <div v-if="$auth.isAuthenticated" class="m-4">
-        <a
-          :href="
-            web3.wallet.defaultAccount.bech32(web3.network.name, web3.account)
-          "
-          target="_blank"
-          class="mb-2 d-block"
-        >
+        <a :href="web3.account.bech32" target="_blank" class="mb-2 d-block">
           <UiButton class="button-outline width-full">
-            <Avatar :address="web3.account" size="16" class="mr-2 ml-n1" />
+            <Avatar
+              :address="web3.account.bech32"
+              size="16"
+              class="mr-2 ml-n1"
+            />
             <span v-if="web3.name" v-text="web3.name" />
-            <span v-else v-text="_shorten(web3.account)" />
+            <span v-else v-text="_shorten(web3.account.bech32)" />
             <Icon name="external-link" class="ml-1" />
           </UiButton>
         </a>
