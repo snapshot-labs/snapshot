@@ -8,8 +8,11 @@
       type="text"
       autocorrect="off"
       autocapitalize="none"
-      class="border-0 input flex-auto"
+      class="border-0 input flex-auto width-full"
     />
+    <a @click="clearInput">
+      <Icon v-if="value" name="close" size="12" class="mb-1" />
+    </a>
   </div>
 </template>
 
@@ -19,6 +22,9 @@ export default {
   methods: {
     handleInput(e) {
       this.$emit('input', e.target.value);
+    },
+    clearInput() {
+      this.$emit('input', '');
     }
   }
 };
