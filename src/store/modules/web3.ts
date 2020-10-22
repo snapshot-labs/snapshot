@@ -1,10 +1,7 @@
 import Vue from 'vue';
 import { getInstance } from '@/helpers/plugins/LockPlugin';
-import { Web3Provider } from '@ethersproject/providers';
 import store from '@/store';
 import config from '@/helpers/config';
-import getProvider from '@/helpers/provider';
-import { formatUnits } from '@ethersproject/units';
 
 let wsProvider;
 let auth;
@@ -40,17 +37,18 @@ const mutations = {
     Vue.set(_state, 'account', null);
     console.debug('LOAD_PROVIDER_FAILURE', payload);
   },
-  HANDLE_CHAIN_CHANGED(_state, chainId) {
-    if (!config.networks[chainId]) {
-      config.networks[chainId] = {
-        ...config.networks['1'],
-        chainId,
-        name: 'Unknown',
-        network: 'unknown'
+  HANDLE_CHAIN_CHANGED(_state, net) {
+    if (net) {
+      config.networks[net] = {
+        ...config.networks[net],
+        net,
+        chainId: 0,
+        name: net,
+        network: net
       };
     }
-    Vue.set(_state, 'network', config.networks[chainId]);
-    console.debug('HANDLE_CHAIN_CHANGED', chainId);
+    Vue.set(_state, 'network', config.networks[net]);
+    console.debug('HANDLE_CHAIN_CHANGED', net);
   },
   HANDLE_ACCOUNTS_CHANGED(_state, payload) {
     Vue.set(_state, 'account', payload);
@@ -83,23 +81,11 @@ const actions = {
             await dispatch('loadProvider');
           });
         auth.provider.wallet.observableNetwork().subscribe((net: string) => {
-          switch (net) {
-            case 'mainnet':
-              commit('HANDLE_CHAIN_CHANGED', 0);
-              break;
-            case 'testnet':
-              commit('HANDLE_CHAIN_CHANGED', 1);
-              break;
-            case 'private':
-              commit('HANDLE_CHAIN_CHANGED', 2);
-              break;
-            default:
-              break;
-          }
+          commit('HANDLE_CHAIN_CHANGED', net);
         });
       }
-      // const net = auth.provider.wallet.net;
-      commit('HANDLE_CHAIN_CHANGED', 0);
+      const net = auth.provider.wallet.net;
+      commit('HANDLE_CHAIN_CHANGED', net);
       const account = auth.provider.wallet.defaultAccount.bech32;
       const name = auth.provider.wallet.defaultAccount.bech32;
       commit('LOAD_PROVIDER_SUCCESS', {
