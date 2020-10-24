@@ -1,14 +1,12 @@
 import Vue from 'vue';
-import { getInstance } from '@bonustrack/lock/plugins/vue';
-import { getScores } from '@bonustrack/snapshot.js/src/utils';
+import { getInstance } from '@snapshot-labs/lock/plugins/vue';
+import { getScores } from '@snapshot-labs/snapshot.js/src/utils';
 import client from '@/helpers/client';
 import ipfs from '@/helpers/ipfs';
 import getProvider from '@/helpers/provider';
-import { formatProposal, formatProposals } from '@/helpers/utils';
-import { getBlockNumber, resolveContent, signMessage } from '@/helpers/web3';
-import registry from '@/helpers/registry.json';
+import { formatProposal, formatProposals, formatSpace } from '@/helpers/utils';
+import { getBlockNumber, signMessage } from '@/helpers/web3';
 import { version } from '@/../package.json';
-import config from '@/helpers/config';
 
 const state = {
   init: false,
@@ -61,41 +59,24 @@ const mutations = {
 };
 
 const actions = {
-  init: async ({ commit, dispatch, rootState }) => {
+  init: async ({ commit, dispatch }) => {
     commit('SET', { loading: true });
     const connector = await Vue.prototype.$auth.getConnector();
-    if (connector) {
-      await dispatch('login', connector);
-    } else {
-      commit('HANDLE_CHAIN_CHANGED', 1);
-    }
-    const init = await Promise.all([
-      dispatch('getSpaces'),
-      getBlockNumber(getProvider(rootState.web3.network.chainId))
-    ]);
-    commit('GET_BLOCK_SUCCESS', init[1]);
+    if (connector) await dispatch('login', connector);
+    await dispatch('getSpaces');
     commit('SET', { loading: false, init: true });
   },
   loading: ({ commit }, payload) => {
     commit('SET', { loading: payload });
   },
   getSpaces: async ({ commit }) => {
-    const spaces: any = await client.request('spaces');
-    if (config.env !== 'master') {
-      try {
-        const namespace = registry[0];
-        const content = await resolveContent(getProvider(1), namespace);
-        const space = await fetch(
-          `https://ipfs.fleek.co/ipns/${content.decoded}`
-        ).then(res => res.json());
-        console.log('Space', space);
-        space.key = namespace;
-        space.token = namespace;
-        spaces[namespace] = space;
-      } catch (e) {
-        console.log(e);
-      }
-    }
+    let spaces: any = await client.request('spaces');
+    spaces = Object.fromEntries(
+      Object.entries(spaces).map(space => [
+        space[0],
+        formatSpace(space[0], space[1])
+      ])
+    );
     commit('SET', { spaces });
     return spaces;
   },
@@ -131,12 +112,12 @@ const actions = {
   getProposals: async ({ commit }, space) => {
     commit('GET_PROPOSALS_REQUEST');
     try {
-      let proposals: any = await client.request(`${space.token}/proposals`);
+      let proposals: any = await client.request(`${space.key}/proposals`);
       if (proposals) {
         const scores: any = await getScores(
           space.strategies,
-          space.chainId,
-          getProvider(space.chainId),
+          space.network,
+          getProvider(space.network),
           Object.values(proposals).map((proposal: any) => proposal.address)
         );
         proposals = Object.fromEntries(
@@ -155,24 +136,26 @@ const actions = {
       commit('GET_PROPOSALS_FAILURE', e);
     }
   },
-  getProposal: async ({ commit, rootState }, payload) => {
+  getProposal: async ({ commit }, payload) => {
     commit('GET_PROPOSAL_REQUEST');
     try {
+      const blockNumber = await getBlockNumber(
+        getProvider(payload.space.network)
+      );
       const result: any = {};
       const [proposal, votes] = await Promise.all([
         ipfs.get(payload.id),
-        client.request(`${payload.space.token}/proposal/${payload.id}`)
+        client.request(`${payload.space.key}/proposal/${payload.id}`)
       ]);
       result.proposal = formatProposal(proposal);
       result.proposal.ipfsHash = payload.id;
       result.votes = votes;
       const { snapshot } = result.proposal.msg.payload;
-      const blockTag =
-        snapshot > rootState.web3.blockNumber ? 'latest' : parseInt(snapshot);
+      const blockTag = snapshot > blockNumber ? 'latest' : parseInt(snapshot);
       const scores: any = await getScores(
         payload.space.strategies,
-        payload.space.chainId,
-        getProvider(payload.space.chainId),
+        payload.space.network,
+        getProvider(payload.space.network),
         Object.keys(result.votes),
         // @ts-ignore
         blockTag
@@ -220,15 +203,15 @@ const actions = {
       commit('GET_PROPOSAL_FAILURE', e);
     }
   },
-  getPower: async ({ commit, rootState }, { space, address, snapshot }) => {
+  getPower: async ({ commit }, { space, address, snapshot }) => {
     commit('GET_POWER_REQUEST');
     try {
-      const blockTag =
-        snapshot > rootState.web3.blockNumber ? 'latest' : parseInt(snapshot);
+      const blockNumber = await getBlockNumber(getProvider(space.network));
+      const blockTag = snapshot > blockNumber ? 'latest' : parseInt(snapshot);
       let scores: any = await getScores(
         space.strategies,
-        space.chainId,
-        getProvider(space.chainId),
+        space.network,
+        getProvider(space.network),
         [address],
         // @ts-ignore
         blockTag

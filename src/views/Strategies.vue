@@ -35,7 +35,7 @@
               <a
                 v-text="strategy.key"
                 :href="
-                  `https://github.com/bonustrack/snapshot.js/tree/master/src/strategies/${strategy.key}`
+                  `https://github.com/snapshot-labs/snapshot.js/tree/master/src/strategies/${strategy.key}`
                 "
                 target="_blank"
               />
@@ -80,7 +80,7 @@ export default {
               space =>
                 space[1].strategies &&
                 space[1].strategies
-                  .map(strategy => strategy[0])
+                  .map(strategy => strategy.name)
                   .includes(strategy.key)
             )
             .map(space => space[0]);

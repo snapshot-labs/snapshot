@@ -48,11 +48,6 @@ export function formatProposal(proposal) {
     proposal.msg.payload.metadata = {};
   }
 
-  /*
-  if (proposal.msg.payload.snapshot < 10000000)
-    proposal.msg.payload.snapshot = 20000000;
-  */
-
   return proposal;
 }
 
@@ -63,4 +58,43 @@ export function formatProposals(proposals) {
       formatProposal(proposal[1])
     ])
   );
+}
+
+export function filterNetworks(networks, spaces, q) {
+  return Object.entries(networks)
+    .map((network: any) => {
+      network[1].spaces = Object.entries(spaces)
+        .filter((space: any) => space[1].network === network[0])
+        .map(space => space[0]);
+      return network[1];
+    })
+    .filter(network =>
+      JSON.stringify(network)
+        .toLowerCase()
+        .includes(q.toLowerCase())
+    )
+    .sort((a, b) => b.spaces.length - a.spaces.length);
+}
+
+export function formatSpace(key, space) {
+  space = {
+    key,
+    ...space,
+    members: space.members || [],
+    filters: space.filters || {}
+  };
+  if (!space.filters.invalids) space.filters.invalids = [];
+  if (!space.filters.minScore) space.filters.minScore = 0;
+  return space;
+}
+
+export function getInjected() {
+  const web3: any = window['ethereum'];
+  if (!web3) return;
+  let injected = { name: 'Injected', id: 'web3' };
+  if (web3.isMetaMask) injected = { name: 'MetaMask', id: 'metamask' };
+  if (web3.isTrust) injected = { name: 'Trust Wallet', id: 'trustwallet' };
+  if (web3.isStatus) injected = { name: 'Status', id: 'status' };
+  if (web3.isFrame) injected = { name: 'Frame', id: 'frame' };
+  return injected;
 }
