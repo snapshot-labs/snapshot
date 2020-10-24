@@ -64,7 +64,7 @@
 <script>
 import { mapActions } from 'vuex';
 import * as jsonexport from 'jsonexport/dist';
-import plugins from '@/helpers/plugins';
+import plugins from '@snapshot-labs/snapshot.js/src/plugins';
 import { sendTransaction } from '@/helpers/web3';
 import pkg from '@/../package.json';
 
@@ -80,8 +80,7 @@ export default {
       return (Date.now() / 1e3).toFixed();
     },
     titles() {
-      if (!this.space.strategies) return [this.space.symbol];
-      return this.space.strategies.map(strategy => strategy[1].symbol);
+      return this.space.strategies.map(strategy => strategy.params.symbol);
     },
     winningChoice() {
       let winningChoice = 0;
@@ -127,7 +126,7 @@ export default {
     async submitOnChain() {
       if (!this.space.plugins || !this.space.plugins.aragon) return;
       this.loading = true;
-      const aragon = new plugins.Aragon();
+      const aragon = new plugins['aragon']();
       const callsScript = aragon.execute(
         this.space.plugins.aragon,
         this.payload.metadata.plugins.aragon[`choice${this.winningChoice}`]

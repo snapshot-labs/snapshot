@@ -53,7 +53,7 @@
 </template>
 
 <script>
-import plugins from '@/helpers/plugins';
+import plugins from '@snapshot-labs/snapshot.js/src/plugins';
 import { clone } from '@/helpers/utils';
 
 export default {
@@ -75,7 +75,7 @@ export default {
     this.plugins = Object.fromEntries(
       Object.entries(plugins).map(plugin => {
         const instance = new plugin[1]();
-        return [instance.key, instance];
+        return [plugin[0], instance];
       })
     );
   }

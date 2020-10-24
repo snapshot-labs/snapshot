@@ -23,7 +23,7 @@
             <textarea-autosize
               v-model="form.body"
               maxlength="10240"
-              class="input mb-6"
+              class="input pt-1 mb-6"
               placeholder="What is your proposal?"
             />
             <div v-if="form.body">
@@ -63,7 +63,7 @@
       <div class="col-12 col-lg-4 float-left">
         <Block
           title="Actions"
-          :icon="space.chainId === 4 ? 'stars' : undefined"
+          :icon="space.network === '4' ? 'stars' : undefined"
           @submit="modalPluginsOpen = true"
         >
           <div class="mb-2">
@@ -173,7 +173,7 @@ export default {
   },
   async mounted() {
     this.addChoice(2);
-    this.blockNumber = await getBlockNumber(getProvider(this.space.chainId));
+    this.blockNumber = await getBlockNumber(getProvider(this.space.network));
     this.form.snapshot = this.blockNumber;
   },
   methods: {

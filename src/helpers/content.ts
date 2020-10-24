@@ -1,6 +1,6 @@
 // https://github.com/ensdomains/ui/blob/master/src/utils/contents.js
 import contentHash from '@ensdomains/content-hash';
-import { utils } from 'ethers';
+import { isHexString } from '@ethersproject/bytes';
 import bs58 from 'bs58';
 const supportedCodecs = ['ipns-ns', 'ipfs-ns', 'swarm-ns', 'onion', 'onion3'];
 
@@ -51,7 +51,7 @@ export function validateContent(encoded) {
 export function isValidContenthash(encoded) {
   try {
     const codec = contentHash.getCodec(encoded);
-    return utils.isHexString(encoded) && supportedCodecs.includes(codec);
+    return isHexString(encoded) && supportedCodecs.includes(codec);
   } catch (e) {
     console.log(e);
   }

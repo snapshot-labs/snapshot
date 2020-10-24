@@ -15,7 +15,9 @@
         <div class="d-flex">
           <span v-text="'Snapshot'" class="flex-auto text-gray mr-1" />
           <a
-            :href="_explorer(proposal.msg.payload.snapshot, 'block')"
+            :href="
+              _explorer(space.network, proposal.msg.payload.snapshot, 'block')
+            "
             target="_blank"
             class="float-right"
           >
@@ -74,8 +76,7 @@ export default {
   },
   computed: {
     symbols() {
-      if (!this.space.strategies) return [this.space.symbol];
-      return this.space.strategies.map(strategy => strategy[1].symbol);
+      return this.space.strategies.map(strategy => strategy.params.symbol);
     }
   },
   methods: {
