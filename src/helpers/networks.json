@@ -74,6 +74,14 @@
     "network": "mainnet",
     "explorer": ""
   },
+  "32659": {
+    "name": "Fusion Mainnet",
+    "chainId": 32659,
+    "network": "mainnet",
+    "rpcUrl": "https://vote.anyswap.exchange/mainnet",
+    "wsUrl": "wss://mainnetpublicgateway1.fusionnetwork.io:10001",
+    "explorer": "https://fsnex.com"
+  },
   "80001": {
     "name": "Matic Mumbai",
     "chainId": 80001,
