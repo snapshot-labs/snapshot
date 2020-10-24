@@ -41,12 +41,12 @@
           </div>
         </router-link>
 
-        <div
+        <h3
           v-if="spaces.length === 0"
           class="text-gray mr-4 rounded-md-2 border-top border-bottom border-md p-6 text-center"
         >
-          No results found with: "{{ q }}"
-        </div>
+          No results
+        </h3>
       </div>
     </Container>
   </div>
