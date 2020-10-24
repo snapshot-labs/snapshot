@@ -94,6 +94,11 @@ export default {
       return this.app.spaces[key] ? this.app.spaces[key] : false;
     }
   },
+  watch: {
+    space() {
+      document.title = this.space.name ? this.space.name : 'Snapshot';
+    }
+  },
   methods: {
     ...mapActions(['login']),
     async handleLogin(connector) {

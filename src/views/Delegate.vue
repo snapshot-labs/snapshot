@@ -52,7 +52,7 @@ import { mapActions } from 'vuex';
 import { isAddress } from '@ethersproject/address';
 import { keccak256 } from '@ethersproject/keccak256';
 import { toUtf8Bytes } from '@ethersproject/strings';
-import { multicall } from '@snapshot-labs/snapshot.js/src/utils';
+import { call } from '@snapshot-labs/snapshot.js/src/utils';
 import { sendTransaction } from '@/helpers/web3';
 import getProvider from '@/helpers/provider';
 import abi from '@/helpers/abi';
@@ -72,18 +72,14 @@ export default {
   },
   async created() {
     if (this.web3.account) {
-      const [delegation] = await multicall(
-        this.web3.network.chainId,
+      const delegation = await call(
         getProvider(this.web3.network.chainId),
         abi['DelegateRegistry'],
         [
-          [
-            contractAddress,
-            'delegation',
-            [this.web3.account, keccak256(toUtf8Bytes('test'))]
-          ]
-        ],
-        { blockTag: 'latest' }
+          contractAddress,
+          'delegation',
+          [this.web3.account, keccak256(toUtf8Bytes('test'))]
+        ]
       );
       console.log('Delegation to id "test"', delegation);
     }
