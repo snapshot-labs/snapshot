@@ -94,8 +94,19 @@ export default {
       return this.app.spaces[key] ? this.app.spaces[key] : false;
     }
   },
+  created() {
+    this.setTitle();
+  },
+  watch: {
+    space() {
+      this.setTitle();
+    }
+  },
   methods: {
     ...mapActions(['login']),
+    setTitle() {
+      document.title = this.space.name ? this.space.name : 'Snapshot';
+    },
     async handleLogin(connector) {
       this.modalOpen = false;
       this.loading = true;
