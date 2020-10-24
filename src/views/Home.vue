@@ -43,10 +43,9 @@
 
         <div
           v-if="spaces.length === 0"
-          class="text-gray mr-4 rounded-md-2 border-top border-bottom border-md no-space"
+          class="text-gray mr-4 rounded-md-2 border-top border-bottom border-md p-6 text-center"
         >
-          No spaces found with the search:
-          <span class="text-primary no-space-color">{{ q }}</span>
+          No results found with: "{{ q }}"
         </div>
       </div>
     </Container>
