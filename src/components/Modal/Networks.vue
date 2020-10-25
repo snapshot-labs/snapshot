@@ -2,11 +2,13 @@
   <UiModal :open="open" @close="$emit('close')">
     <h3 class="m-4 text-center">Networks</h3>
     <div class="mx-0 mx-md-4">
-      <BlockNetwork
+      <a
         v-for="network in networks"
         :key="network.key"
-        :network="network"
-      />
+        @click="select(network.key)"
+      >
+        <BlockNetwork :network="network" />
+      </a>
     </div>
   </UiModal>
 </template>
@@ -16,15 +18,16 @@ import networks from '@/helpers/networks.json';
 import { filterNetworks } from '@/helpers/utils';
 
 export default {
-  props: ['open', 'strategies', 'space'],
-  data() {
-    return {
-      q: ''
-    };
-  },
+  props: ['open'],
   computed: {
     networks() {
-      return filterNetworks(networks, this.app.spaces, this.q);
+      return filterNetworks(networks, this.app.spaces, '');
+    }
+  },
+  methods: {
+    select(key) {
+      this.$emit('input', key);
+      this.$emit('close');
     }
   }
 };

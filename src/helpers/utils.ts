@@ -63,6 +63,7 @@ export function formatProposals(proposals) {
 export function filterNetworks(networks, spaces, q) {
   return Object.entries(networks)
     .map((network: any) => {
+      network[1].key = network[0];
       network[1].spaces = Object.entries(spaces)
         .filter((space: any) => space[1].network === network[0])
         .map(space => space[0]);
