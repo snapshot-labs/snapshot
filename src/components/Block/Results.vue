@@ -41,17 +41,10 @@
           _get(payload, 'metadata.plugins.aragon') &&
             _get(space, 'plugins.aragon')
         "
-        @click="submitOnChain"
+        @click="executePlugin('aragon')"
         :loading="loading"
         class="width-full mt-2 button--submit"
       >
-        <img
-          class="mr-1 circle v-align-middle"
-          src="https://raw.githubusercontent.com/balancer-labs/snapshot/develop/src/assets/aragon.svg"
-          width="26"
-          height="26"
-          style="margin-top: -4px;"
-        />
         Submit on-chain
       </UiButton>
       <UiButton v-else @click="downloadReport" class="width-full mt-2">
@@ -65,7 +58,6 @@
 import { mapActions } from 'vuex';
 import * as jsonexport from 'jsonexport/dist';
 import plugins from '@snapshot-labs/snapshot.js/src/plugins';
-import { sendTransaction } from '@/helpers/web3';
 import pkg from '@/../package.json';
 
 export default {
@@ -123,32 +115,23 @@ export default {
         console.error(e);
       }
     },
-    async submitOnChain() {
-      if (!this.space.plugins || !this.space.plugins.aragon) return;
+    async executePlugin(plugin) {
+      if (!this.space.plugins || !this.space.plugins[plugin]) return;
       this.loading = true;
-      const aragon = new plugins['aragon']();
-      const callsScript = aragon.execute(
-        this.space.plugins.aragon,
-        this.payload.metadata.plugins.aragon[`choice${this.winningChoice}`]
-      );
-      console.log(
-        `Submit on-chain
-Proposal #${this.id} on-chain
-Option: ${this.winningChoice}
-Callsscript: ${callsScript}`
-      );
+      const aragon = new plugins[plugin]();
       try {
-        const tx = await sendTransaction(this.$auth.web3, [
-          'DisputableDelay',
-          this.space.plugins.aragon.disputableDelayAddress,
-          'delayExecution',
-          [callsScript, this.id]
-        ]);
-        console.log(tx);
+        const result = await aragon.execute(
+          this.$auth.web3,
+          this.space.plugins[plugin],
+          this.payload.metadata.plugins[plugin],
+          this.id,
+          this.winningChoice
+        );
+        console.log('Result', result);
+        this.notify(['green', `The settlement is on-chain, congrats!`]);
       } catch (e) {
         console.error(e);
       }
-      this.notify(['green', `The settlement is on-chain, congrats!`]);
       this.loading = false;
     }
   }
