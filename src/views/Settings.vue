@@ -167,8 +167,13 @@
     <ModalNetworks
       :open="modalNetworksOpen"
       @close="modalNetworksOpen = false"
+      v-model="form.network"
     />
-    <ModalSkins :open="modalSkinsOpen" @close="modalSkinsOpen = false" />
+    <ModalSkins
+      :open="modalSkinsOpen"
+      @close="modalSkinsOpen = false"
+      v-model="form.skin"
+    />
   </Container>
 </template>
 

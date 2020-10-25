@@ -2,7 +2,9 @@
   <UiModal :open="open" @close="$emit('close')">
     <h3 class="m-4 text-center">Skins</h3>
     <div class="mx-0 mx-md-4">
-      <BlockSkin v-for="skin in skins" :key="skin.key" :skin="skin" />
+      <a v-for="skin in skins" :key="skin.key" @click="select(skin.key)">
+        <BlockSkin :skin="skin" />
+      </a>
     </div>
   </UiModal>
 </template>
@@ -16,6 +18,12 @@ export default {
   computed: {
     skins() {
       return filterSkins(skins, this.app.spaces, '');
+    }
+  },
+  methods: {
+    select(key) {
+      this.$emit('input', key);
+      this.$emit('close');
     }
   }
 };

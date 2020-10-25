@@ -1,12 +1,12 @@
 <template>
   <Block>
     <div class="d-flex flex-items-baseline">
-      <h3>
-        <a v-text="network.name" :href="network.explorer" target="_blank" />
-      </h3>
-      <div v-text="network.chainId" class="ml-1" />
+      <h3 v-text="network.name" />
+      <div v-text="network.chainId" class="ml-1 text-gray" />
     </div>
-    <div>In {{ _numeral(network.spaces.length) }} space(s)</div>
+    <div class="text-gray">
+      In {{ _numeral(network.spaces.length) }} space(s)
+    </div>
   </Block>
 </template>
 

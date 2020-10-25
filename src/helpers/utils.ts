@@ -63,6 +63,7 @@ export function formatProposals(proposals) {
 export function filterNetworks(networks, spaces, q) {
   return Object.entries(networks)
     .map((network: any) => {
+      network[1].key = network[0];
       network[1].spaces = Object.entries(spaces)
         .filter((space: any) => space[1].network === network[0])
         .map(space => space[0]);
@@ -85,6 +86,28 @@ export function filterSkins(skins, spaces, q) {
         .map(space => space[0])
     }))
     .filter(skin => skin.key.toLowerCase().includes(q.toLowerCase()))
+    .sort((a, b) => b.spaces.length - a.spaces.length);
+}
+
+export function filterStrategies(strategies, spaces, q) {
+  return Object.values(strategies)
+    .map((strategy: any) => {
+      strategy.spaces = Object.entries(spaces)
+        .filter(
+          (space: any) =>
+            space[1].strategies &&
+            space[1].strategies
+              .map(strategy => strategy.name)
+              .includes(strategy.key)
+        )
+        .map(space => space[0]);
+      return strategy;
+    })
+    .filter(strategy =>
+      JSON.stringify(strategy)
+        .toLowerCase()
+        .includes(q.toLowerCase())
+    )
     .sort((a, b) => b.spaces.length - a.spaces.length);
 }
 
