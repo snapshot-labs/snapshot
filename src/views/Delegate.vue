@@ -52,8 +52,7 @@ import { mapActions } from 'vuex';
 import { isAddress } from '@ethersproject/address';
 import { keccak256 } from '@ethersproject/keccak256';
 import { toUtf8Bytes } from '@ethersproject/strings';
-import { call } from '@snapshot-labs/snapshot.js/src/utils';
-import { sendTransaction } from '@/helpers/web3';
+import { call, sendTransaction } from '@snapshot-labs/snapshot.js/src/utils';
 import getProvider from '@/helpers/provider';
 import abi from '@/helpers/abi';
 
@@ -66,7 +65,7 @@ export default {
       loading: false,
       form: {
         // address: '0x0000000000000000000000000000000000baDDAd',
-        // id: 'test_1_project'
+        // id: 'test'
       }
     };
   },
@@ -98,13 +97,15 @@ export default {
     async handleSubmit() {
       this.loading = true;
       try {
-        const tx = await sendTransaction(this.$auth.web3, [
-          'DelegateRegistry',
+        const tx = await sendTransaction(
+          this.$auth.web3,
           contractAddress,
+          abi['DelegateRegistry'],
           'setDelegate',
           [keccak256(toUtf8Bytes(this.form.id)), this.form.address]
-        ]);
-        console.log(tx);
+        );
+        const receipt = await tx.wait();
+        console.log('Receipt', receipt);
         this.notify('You did it!');
       } catch (e) {
         console.log(e);

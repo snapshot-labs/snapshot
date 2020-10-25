@@ -76,6 +76,18 @@ export function filterNetworks(networks, spaces, q) {
     .sort((a, b) => b.spaces.length - a.spaces.length);
 }
 
+export function filterSkins(skins, spaces, q) {
+  return skins
+    .map(skin => ({
+      key: skin,
+      spaces: Object.entries(spaces)
+        .filter((space: any) => space[1].skin === skin)
+        .map(space => space[0])
+    }))
+    .filter(skin => skin.key.toLowerCase().includes(q.toLowerCase()))
+    .sort((a, b) => b.spaces.length - a.spaces.length);
+}
+
 export function formatSpace(key, space) {
   space = {
     key,
