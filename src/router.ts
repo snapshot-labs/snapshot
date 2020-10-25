@@ -8,6 +8,7 @@ import Create from '@/views/Create.vue';
 import Settings from '@/views/Settings.vue';
 import Networks from '@/views/Networks.vue';
 import Strategies from '@/views/Strategies.vue';
+import Skins from '@/views/Skins.vue';
 import Delegate from '@/views/Delegate.vue';
 
 Vue.use(VueRouter);
@@ -17,6 +18,7 @@ const routes: Array<RouteConfig> = [
   { path: '/:key/settings/:from?', name: 'settings', component: Settings },
   { path: '/networks', name: 'networks', component: Networks },
   { path: '/strategies', name: 'strategies', component: Strategies },
+  { path: '/skins', name: 'skins', component: Skins },
   { path: '/delegate', name: 'delegate', component: Delegate },
   { path: '/:key/proposal/:id', name: 'proposal', component: Proposal },
   { path: '/:key/create', name: 'create', component: Create },
