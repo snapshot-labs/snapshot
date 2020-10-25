@@ -161,6 +161,7 @@
             Save
           </UiButton>
         </Block>
+        <pre>{{ JSON.stringify(form, null, 2) }}</pre>
       </div>
     </div>
     <ModalNetworks
