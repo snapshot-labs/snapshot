@@ -204,7 +204,7 @@ export default {
   async created() {
     try {
       const { protocolType, decoded } = await resolveContent(
-        getProvider(1),
+        this.$auth.web3,
         this.key
       );
       this.currentContenthash = `${protocolType}://${decoded}`;

@@ -119,10 +119,9 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
+import { mapActions } from 'vuex';
 import draggable from 'vuedraggable';
 import { getBlockNumber } from '@/helpers/web3';
-import getProvider from '@/helpers/provider';
 
 export default {
   components: {

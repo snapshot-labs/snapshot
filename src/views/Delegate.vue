@@ -74,7 +74,7 @@ export default {
     if (this.web3.account.bech32) {
       const [delegation] = await multicall(
         this.web3.network.chainId,
-        getProvider(this.web3.network.chainId),
+        this.$auth.web3,
         abi['DelegateRegistry'],
         [
           [
