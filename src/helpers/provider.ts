@@ -5,6 +5,8 @@ const providers = {};
 
 export default function getProvider(chainId: number) {
   // console.log('Get provider', chainId);
+
+  console.log(chainId, networks);
   const rpcUrl: string = networks[chainId].rpcUrl;
   if (!providers[chainId]) providers[chainId] = new JsonRpcProvider(rpcUrl);
   return providers[chainId];

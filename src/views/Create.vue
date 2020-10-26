@@ -119,7 +119,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 import draggable from 'vuedraggable';
 import { getBlockNumber } from '@/helpers/web3';
 import getProvider from '@/helpers/provider';
@@ -173,7 +173,8 @@ export default {
   },
   async mounted() {
     this.addChoice(2);
-    this.blockNumber = await getBlockNumber(getProvider(this.space.network));
+
+    this.blockNumber = await getBlockNumber(this.$auth.web3);
     this.form.snapshot = this.blockNumber;
   },
   methods: {

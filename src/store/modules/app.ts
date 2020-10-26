@@ -111,7 +111,7 @@ const actions = {
       return;
     }
   },
-  getProposals: async ({ commit }, space) => {
+  getProposals: async ({ commit, rootState }, space) => {
     commit('GET_PROPOSALS_REQUEST');
     try {
       let proposals: any = await client.request(`${space.key}/proposals`);
@@ -119,7 +119,7 @@ const actions = {
         const scores: any = await getScores(
           space.strategies,
           space.network,
-          getProvider(space.network),
+          getProvider(rootState.web3.wallet.net),
           Object.values(proposals).map((proposal: any) => proposal.address)
         );
         proposals = Object.fromEntries(
@@ -139,12 +139,10 @@ const actions = {
       commit('GET_PROPOSALS_FAILURE', e);
     }
   },
-  getProposal: async ({ commit }, payload) => {
+  getProposal: async ({ commit, rootState }, payload) => {
     commit('GET_PROPOSAL_REQUEST');
     try {
-      const blockNumber = await getBlockNumber(
-        getProvider(payload.space.network)
-      );
+      const blockNumber = await getBlockNumber(rootState.web3);
       const result: any = {};
       const [proposal, votes] = await Promise.all([
         ipfs.get(payload.id),
@@ -158,7 +156,7 @@ const actions = {
       const scores: any = await getScores(
         payload.space.strategies,
         payload.space.network,
-        getProvider(payload.space.network),
+        getProvider(rootState.web3.wallet.net),
         Object.keys(result.votes),
         // @ts-ignore
         blockTag
@@ -206,15 +204,15 @@ const actions = {
       commit('GET_PROPOSAL_FAILURE', e);
     }
   },
-  getPower: async ({ commit }, { space, address, snapshot }) => {
+  getPower: async ({ commit, rootState }, { space, address, snapshot }) => {
     commit('GET_POWER_REQUEST');
     try {
-      const blockNumber = await getBlockNumber(getProvider(space.network));
+      const blockNumber = await getBlockNumber(rootState.web3);
       const blockTag = snapshot > blockNumber ? 'latest' : parseInt(snapshot);
       let scores: any = await getScores(
         space.strategies,
         space.network,
-        getProvider(space.network),
+        getProvider(rootState.web3.wallet.net),
         [address],
         // @ts-ignore
         blockTag
