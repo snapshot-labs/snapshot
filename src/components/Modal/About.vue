@@ -21,7 +21,8 @@
     <div class="m-4 p-4 border rounded-2 text-white">
       <div class="d-flex">
         <span v-text="'Version'" class="flex-auto text-gray mr-1" />
-        {{ pkg.version }}
+        {{ pkg.version
+        }}<span v-if="commitSha" v-text="`#${commitSha.slice(0, 7)}`" />
       </div>
       <div class="d-flex">
         <span v-text="'License'" class="flex-auto text-gray mr-1" />
@@ -51,6 +52,7 @@ export default {
   data() {
     return {
       pkg,
+      commitSha: process.env.VUE_APP_COMMIT_SHA,
       hubUrl: process.env.VUE_APP_HUB_URL,
       ipfsNode: process.env.VUE_APP_IPFS_NODE
     };
