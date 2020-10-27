@@ -7,13 +7,7 @@
       class="m-4 mt-0 p-4 border rounded-2 text-white"
     >
       <div v-if="selected === false" class="text-center">
-        <img
-          class="circle"
-          :src="plugin.image"
-          style="background-color: #6a6de4;"
-          width="64"
-          height="64"
-        />
+        <img class="circle" :src="getLogoUrl(i)" width="64" height="64" />
         <h3 v-text="plugin.name" />
         <div class="mb-2">
           <a :href="plugin.website" target="_blank" class="text-white">
@@ -53,7 +47,7 @@
 </template>
 
 <script>
-import plugins from '@/helpers/plugins';
+import plugins from '@snapshot-labs/snapshot.js/src/plugins';
 import { clone } from '@/helpers/utils';
 
 export default {
@@ -75,9 +69,14 @@ export default {
     this.plugins = Object.fromEntries(
       Object.entries(plugins).map(plugin => {
         const instance = new plugin[1]();
-        return [instance.key, instance];
+        return [plugin[0], instance];
       })
     );
+  },
+  methods: {
+    getLogoUrl(plugin) {
+      return `https://raw.githubusercontent.com/snapshot-labs/snapshot.js/master/src/plugins/${plugin}/logo.png`;
+    }
   }
 };
 </script>

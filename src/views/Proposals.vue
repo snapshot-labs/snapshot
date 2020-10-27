@@ -7,11 +7,17 @@
           <div class="d-flex flex-items-center flex-auto">
             <h2 class="mr-2">
               Proposals
-              <UiCounter :counter="totalProposals" class="ml-1" />
+              <UiCounter
+                :counter="Object.keys(proposalsWithFilter).length"
+                class="ml-1"
+              />
             </h2>
           </div>
         </div>
-        <router-link v-if="$auth.isAuthenticated" :to="{ name: 'create' }">
+        <router-link
+          v-if="$auth.isAuthenticated"
+          :to="{ name: 'create', params: { key } }"
+        >
           <UiButton>New proposal</UiButton>
         </router-link>
       </div>
@@ -67,10 +73,10 @@ export default {
   },
   computed: {
     key() {
-      return this.$route.params.key;
+      return this.domain || this.$route.params.key;
     },
     space() {
-      return this.web3.spaces[this.key];
+      return this.app.spaces[this.key];
     },
     states() {
       const states = [
@@ -81,7 +87,7 @@ export default {
         'pending',
         'closed'
       ];
-      return this.space.showOnlyCore
+      return this.space.filters.onlyMembers
         ? states.filter(state => !['core', 'community'].includes(state))
         : states;
     },
@@ -94,54 +100,35 @@ export default {
       return Object.fromEntries(
         Object.entries(this.proposals)
           .filter(proposal => {
+            const core = this.space.members.map(address =>
+              address.toLowerCase()
+            );
+            const author = proposal[1].address.toLowerCase();
             if (
-              this.space.showOnlyCore &&
-              !this.space.core.includes(proposal[1].address)
+              (this.space.filters.onlyMembers && !core.includes(author)) ||
+              this.space.filters.invalids.includes(proposal[1].authorIpfsHash)
             )
               return false;
 
             if (
               ['core', 'all'].includes(this.selectedState) &&
-              this.space.core.includes(proposal[1].address)
+              core.includes(author) &&
+              !this.space.filters.invalids.includes(proposal[1].authorIpfsHash)
             )
               return true;
 
-            if (
-              proposal[1].score < this.space.min ||
-              this.space.invalid.includes(proposal[1].authorIpfsHash)
-            )
-              return false;
+            if (proposal[1].score < this.space.filters.minScore) return false;
 
             if (
-              this.selectedState === 'invalid' &&
-              this.space.invalid.includes(proposal[1].authorIpfsHash)
-            )
-              return true;
-
-            if (this.selectedState === 'all') return true;
-
-            if (
-              this.selectedState === 'active' &&
-              proposal[1].msg.payload.start <= ts &&
-              proposal[1].msg.payload.end > ts
-            )
-              return true;
-
-            if (
-              this.selectedState === 'community' &&
-              !this.space.core.includes(proposal[1].address)
-            )
-              return true;
-
-            if (
-              this.selectedState === 'closed' &&
-              proposal[1].msg.payload.end <= ts
-            )
-              return true;
-
-            if (
-              this.selectedState === 'pending' &&
-              proposal[1].msg.payload.start > ts
+              this.selectedState === 'all' ||
+              (this.selectedState === 'active' &&
+                proposal[1].msg.payload.start <= ts &&
+                proposal[1].msg.payload.end > ts) ||
+              (this.selectedState === 'community' && !core.includes(author)) ||
+              (this.selectedState === 'closed' &&
+                proposal[1].msg.payload.end <= ts) ||
+              (this.selectedState === 'pending' &&
+                proposal[1].msg.payload.start > ts)
             )
               return true;
           })
@@ -154,7 +141,8 @@ export default {
   },
   async created() {
     this.loading = true;
-    this.selectedState = this.$route.params.tab || this.space.defaultView;
+    this.selectedState =
+      this.$route.params.tab || this.space.filters.defaultTab;
     this.proposals = await this.getProposals(this.space);
     this.loading = false;
     this.loaded = true;

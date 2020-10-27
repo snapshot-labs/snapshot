@@ -37,18 +37,14 @@
     </div>
     <div v-if="ts >= payload.end">
       <UiButton
-        v-if="payload.metadata.plugins && payload.metadata.plugins.aragon"
-        @click="submitOnChain"
+        v-if="
+          _get(payload, 'metadata.plugins.aragon') &&
+            _get(space, 'plugins.aragon')
+        "
+        @click="executePlugin('aragon')"
         :loading="loading"
         class="width-full mt-2 button--submit"
       >
-        <img
-          class="mr-1 circle v-align-middle"
-          src="https://raw.githubusercontent.com/balancer-labs/snapshot/develop/src/assets/aragon.svg"
-          width="26"
-          height="26"
-          style="margin-top: -4px;"
-        />
         Submit on-chain
       </UiButton>
       <UiButton v-else @click="downloadReport" class="width-full mt-2">
@@ -61,7 +57,7 @@
 <script>
 import { mapActions } from 'vuex';
 import * as jsonexport from 'jsonexport/dist';
-import plugins from '@/helpers/plugins';
+import plugins from '@snapshot-labs/snapshot.js/src/plugins';
 import pkg from '@/../package.json';
 
 export default {
@@ -76,8 +72,7 @@ export default {
       return (Date.now() / 1e3).toFixed();
     },
     titles() {
-      if (!this.space.strategies) return [this.space.symbol];
-      return this.space.strategies.map(strategy => strategy[1].symbol);
+      return this.space.strategies.map(strategy => strategy.params.symbol);
     },
     winningChoice() {
       let winningChoice = 0;
@@ -92,7 +87,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['sendTransaction', 'notify']),
+    ...mapActions(['notify']),
     async downloadReport() {
       const obj = Object.entries(this.votes)
         .map(vote => {
@@ -120,26 +115,23 @@ export default {
         console.error(e);
       }
     },
-    async submitOnChain() {
+    async executePlugin(plugin) {
+      if (!this.space.plugins || !this.space.plugins[plugin]) return;
       this.loading = true;
-      const aragon = new plugins.Aragon();
-      const callsScript = aragon.execute(
-        this.payload.metadata.plugins.aragon[`choice${this.winningChoice}`]
-      );
-      console.log(
-        `Submit on-chain
-Proposal #${this.id} on-chain
-Option: ${this.winningChoice}
-Callsscript: ${callsScript}`
-      );
-      const tx = await this.sendTransaction([
-        'DisputableDelay',
-        '0xb3afa4e5f05bf656133fe198f1a43f9ec085983d',
-        'delayExecution',
-        [callsScript, '0xbeef']
-      ]);
-      console.log(tx);
-      this.notify(['green', `The settlement is on-chain, congrats!`]);
+      const aragon = new plugins[plugin]();
+      try {
+        const result = await aragon.execute(
+          this.$auth.web3,
+          this.space.plugins[plugin],
+          this.payload.metadata.plugins[plugin],
+          this.id,
+          this.winningChoice
+        );
+        console.log('Result', result);
+        this.notify(['green', `The settlement is on-chain, congrats!`]);
+      } catch (e) {
+        console.error(e);
+      }
       this.loading = false;
     }
   }

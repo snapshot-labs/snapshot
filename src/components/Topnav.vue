@@ -54,7 +54,12 @@
               @click="modalOpen = true"
               :loading="loading"
             >
-              Connect<span class="hide-sm" v-text="' wallet'" />
+              <span class="hide-sm" v-text="'Connect wallet'" />
+              <Icon
+                name="login"
+                size="20"
+                class="hide-md hide-lg hide-xl ml-n2 mr-n2 v-align-text-bottom"
+              />
             </UiButton>
             <UiButton @click="modalAboutOpen = true" class="ml-2">
               <span v-text="'?'" class="ml-n1 mr-n1" />
@@ -85,15 +90,23 @@ export default {
   },
   computed: {
     space() {
-      try {
-        return this.web3.spaces[this.$route.params.key];
-      } catch (e) {
-        return false;
-      }
+      const key = this.domain || this.$route.params.key;
+      return this.app.spaces[key] ? this.app.spaces[key] : false;
+    }
+  },
+  created() {
+    this.setTitle();
+  },
+  watch: {
+    space() {
+      this.setTitle();
     }
   },
   methods: {
     ...mapActions(['login']),
+    setTitle() {
+      document.title = this.space.name ? this.space.name : 'Snapshot';
+    },
     async handleLogin(connector) {
       this.modalOpen = false;
       this.loading = true;

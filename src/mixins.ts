@@ -1,12 +1,16 @@
 import { mapState } from 'vuex';
 import numeral from 'numeral';
+import get from 'lodash/get';
 import prettyMs from 'pretty-ms';
+import domains from '@snapshot-labs/snapshot-spaces/spaces/domains.json';
 import store from '@/store';
 import config from '@/helpers/config';
 import { shorten } from '@/helpers/utils';
+import networks from '@/helpers/networks.json';
 
 // @ts-ignore
 const modules = Object.entries(store.state).map(module => module[0]);
+const domainName = window.location.hostname;
 
 export default {
   data() {
@@ -15,9 +19,15 @@ export default {
     };
   },
   computed: {
-    ...mapState(modules)
+    ...mapState(modules),
+    domain() {
+      return domains[domainName];
+    }
   },
   methods: {
+    _get(object, path, fb) {
+      return get(object, path, fb);
+    },
     _ms(number) {
       const diff = number * 1e3 - new Date().getTime();
       return prettyMs(diff);
@@ -38,9 +48,8 @@ export default {
     _ipfsUrl(ipfsHash: string): string {
       return `https://${process.env.VUE_APP_IPFS_NODE}/ipfs/${ipfsHash}`;
     },
-    _explorer(str: string, type = 'address'): string {
-      // @ts-ignore
-      return `${this.web3.network.explorer}/${type}/${str}`;
+    _explorer(network, str: string, type = 'address'): string {
+      return `${networks[network].explorer}/${type}/${str}`;
     }
   }
 };

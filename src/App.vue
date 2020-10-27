@@ -1,6 +1,6 @@
 <template>
-  <div :class="space ? space.key : ''" id="app" class="overflow-hidden">
-    <UiLoading v-if="ui.loading || !ui.init" class="overlay big" />
+  <div :class="space && space.skin" id="app" class="overflow-hidden">
+    <UiLoading v-if="app.loading || !app.init" class="overlay big" />
     <div v-else>
       <Topnav />
       <div class="pb-6 overflow-hidden">
@@ -24,7 +24,8 @@ export default {
   computed: {
     space() {
       try {
-        return this.web3.spaces[this.$route.params.key];
+        const key = this.domain || this.$route.params.key;
+        return this.app.spaces[key];
       } catch (e) {
         return {};
       }

@@ -40,7 +40,7 @@
     <a
       v-if="!showAllVotes && Object.keys(votes).length > 10"
       @click="showAllVotes = true"
-      class="px-4 py-3 border-top text-center d-block bg-gray-dark"
+      class="px-4 py-3 border-top text-center d-block bg-gray-dark rounded-bottom-0 rounded-md-bottom-2"
     >
       See more
     </a>
@@ -71,8 +71,7 @@ export default {
         : Object.fromEntries(Object.entries(this.votes).slice(0, 10));
     },
     titles() {
-      if (!this.space.strategies) return [this.space.symbol];
-      return this.space.strategies.map(strategy => strategy[1].symbol);
+      return this.space.strategies.map(strategy => strategy.params.symbol);
     }
   },
   methods: {
