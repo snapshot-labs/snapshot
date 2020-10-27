@@ -92,6 +92,7 @@ export default {
         : states;
     },
     totalProposals() {
+      console.log(this.proposals);
       return Object.keys(this.proposals).length;
     },
     proposalsWithFilter() {

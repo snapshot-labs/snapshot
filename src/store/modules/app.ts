@@ -116,18 +116,18 @@ const actions = {
     try {
       let proposals: any = await client.request(`${space.key}/proposals`);
       if (proposals) {
-        const scores: any = await getScores(
-          space.strategies,
-          space.network,
-          getProvider(rootState.web3.wallet.net),
-          Object.values(proposals).map((proposal: any) => proposal.address)
-        );
+        // const scores: any = await getScores(
+        //   space.strategies,
+        //   space.network,
+        //   rootState.web3.wallet.net,
+        //   Object.values(proposals).map((proposal: any) => proposal.address)
+        // );
         proposals = Object.fromEntries(
           Object.entries(proposals).map((proposal: any) => {
-            proposal[1].score = scores.reduce(
-              (a, b) => a + b[proposal[1].address],
-              0
-            );
+            // proposal[1].score = scores.reduce(
+            //   (a, b) => a + b[proposal[1].address],
+            //   0
+            // );
             return [proposal[0], proposal[1]];
           })
         );
