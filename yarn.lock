@@ -881,7 +881,7 @@
     "@ethersproject/properties" ">=5.0.0-beta.131"
     "@ethersproject/strings" ">=5.0.0-beta.130"
 
-"@ethersproject/abi@^5.0.1", "@ethersproject/abi@^5.0.5":
+"@ethersproject/abi@^5.0.1", "@ethersproject/abi@^5.0.4", "@ethersproject/abi@^5.0.5":
   version "5.0.7"
   resolved "https://registry.yarnpkg.com/@ethersproject/abi/-/abi-5.0.7.tgz#79e52452bd3ca2956d0e1c964207a58ad1a0ee7b"
   integrity sha512-Cqktk+hSIckwP/W8O47Eef60VwmoSC/L3lY0+dIBhQPCNn9E4V7rwmm2aFrNRRDJfFlGuZ1khkQUOc3oBX+niw==
@@ -970,7 +970,7 @@
   dependencies:
     "@ethersproject/bignumber" "^5.0.7"
 
-"@ethersproject/contracts@^5.0.1":
+"@ethersproject/contracts@^5.0.1", "@ethersproject/contracts@^5.0.3":
   version "5.0.5"
   resolved "https://registry.yarnpkg.com/@ethersproject/contracts/-/contracts-5.0.5.tgz#64831a341ec8ca225e83ff3e9437c26b970fd5d7"
   integrity sha512-tFI255lFbmbqMkgnuyhDWHl3yWqttPlReplYuVvDCT/SuvBjLR4ad2uipBlh1fh5X1ipK9ettAoV4S0HKim4Kw==
@@ -1155,7 +1155,7 @@
     "@ethersproject/rlp" "^5.0.3"
     "@ethersproject/signing-key" "^5.0.4"
 
-"@ethersproject/units@^5.0.1":
+"@ethersproject/units@^5.0.1", "@ethersproject/units@^5.0.3":
   version "5.0.6"
   resolved "https://registry.yarnpkg.com/@ethersproject/units/-/units-5.0.6.tgz#e1169ecffb7e8d5eab84e1481a4e35df19045708"
   integrity sha512-tsJuy4mipppdmooukRfhXt8fGx9nxvfvG6Xdy0RDm7LzHsjghjwQ69m2bCpId6SDSR1Uq1cQ9irPiUBSyWolUA==
@@ -1313,9 +1313,23 @@
   dependencies:
     object-assign "^4.1.1"
 
-"@snapshot-labs/snapshot-spaces@github:zilpay/snapshot-spaces#master", "@snapshot-labs/snapshot.js@github:zilpay/snapshot-spaces#master":
+"@snapshot-labs/lock@github:snapshot-labs/lock#5b9f0592731c0105bb47f8b7bf78b4f164e27c3e":
+  version "0.1.0-beta.1"
+  resolved "https://codeload.github.com/snapshot-labs/lock/tar.gz/5b9f0592731c0105bb47f8b7bf78b4f164e27c3e"
+
+"@snapshot-labs/snapshot-spaces@github:zilpay/snapshot-spaces#master":
   version "0.1.0"
   resolved "https://codeload.github.com/zilpay/snapshot-spaces/tar.gz/8842c276472e535d8d2808799d99a95a728b1556"
+
+"@snapshot-labs/snapshot.js@github:snapshot-labs/snapshot.js#master":
+  version "0.1.0"
+  resolved "https://codeload.github.com/snapshot-labs/snapshot.js/tar.gz/12441768e8b65290812f7aefe9d2de6c62993a28"
+  dependencies:
+    "@ethersproject/abi" "^5.0.4"
+    "@ethersproject/address" "^5.0.4"
+    "@ethersproject/contracts" "^5.0.3"
+    "@ethersproject/units" "^5.0.3"
+    json-to-graphql-query "^2.0.0"
 
 "@soda/friendly-errors-webpack-plugin@^1.7.1":
   version "1.7.1"
@@ -7366,6 +7380,11 @@ json-stringify-safe@~5.0.1:
   version "5.0.1"
   resolved "https://registry.yarnpkg.com/json-stringify-safe/-/json-stringify-safe-5.0.1.tgz#1296a2d58fd45f19a0f6ce01d65701e2c735b6eb"
   integrity sha1-Epai1Y/UXxmg9s4B1lcB4sc1tus=
+
+json-to-graphql-query@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/json-to-graphql-query/-/json-to-graphql-query-2.0.0.tgz#2b0364a1be891ee530947db3cfbcae0ce583976e"
+  integrity sha512-+oFKHOVymP+jDETuLCl+ich+F7b8ym0vdczmOs8aJbtRd61+YGugVrtrI4xh5zfY1ZAVFG+zTAAsfDS1t5+17g==
 
 json3@^3.3.2:
   version "3.3.3"
