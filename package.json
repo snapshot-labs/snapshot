@@ -22,7 +22,7 @@
     "@ethersproject/wallet": "^5.0.1",
     "@portis/web3": "2.0.0-beta.49",
     "@primer/css": "^14.4.0",
-    "@snapshot-labs/lock": "github:snapshot-labs/lock#5b9f0592731c0105bb47f8b7bf78b4f164e27c3e",
+    "@snapshot-labs/lock": "github:snapshot-labs/lock#c938fc06389cd7948870c87c7c19b338774a64ea",
     "@snapshot-labs/snapshot-spaces": "github:snapshot-labs/snapshot-spaces#master",
     "@snapshot-labs/snapshot.js": "github:snapshot-labs/snapshot.js#master",
     "@vue/cli-plugin-babel": "^4.4.0",
