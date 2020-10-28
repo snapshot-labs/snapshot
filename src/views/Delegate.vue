@@ -50,8 +50,7 @@
 <script>
 import { mapActions } from 'vuex';
 import { isAddress } from '@ethersproject/address';
-import { keccak256 } from '@ethersproject/keccak256';
-import { toUtf8Bytes } from '@ethersproject/strings';
+import { formatBytes32String } from '@ethersproject/strings';
 import { call, sendTransaction } from '@snapshot-labs/snapshot.js/src/utils';
 import getProvider from '@/helpers/provider';
 import abi from '@/helpers/abi';
@@ -77,7 +76,7 @@ export default {
         [
           contractAddress,
           'delegation',
-          [this.web3.account, keccak256(toUtf8Bytes('test'))]
+          [this.web3.account, formatBytes32String('test')]
         ]
       );
       console.log('Delegation to id "test"', delegation);
@@ -102,7 +101,7 @@ export default {
           contractAddress,
           abi['DelegateRegistry'],
           'setDelegate',
-          [keccak256(toUtf8Bytes(this.form.id)), this.form.address]
+          [formatBytes32String(this.form.id), this.form.address]
         );
         const receipt = await tx.wait();
         console.log('Receipt', receipt);
