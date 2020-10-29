@@ -92,19 +92,23 @@ export default {
         : states;
     },
     totalProposals() {
-      console.log(this.proposals);
       return Object.keys(this.proposals).length;
     },
     proposalsWithFilter() {
       const ts = (Date.now() / 1e3).toFixed();
+
       if (this.totalProposals === 0) return {};
+
       return Object.fromEntries(
         Object.entries(this.proposals)
           .filter(proposal => {
             const core = this.space.members.map(address =>
-              address.toLowerCase()
+              String(
+                window['zilPay'].crypto.fromBech32Address(address)
+              ).toLowerCase()
             );
-            const author = proposal[1].address.toLowerCase();
+            const author = String(proposal[1].address).toLowerCase();
+
             if (
               (this.space.filters.onlyMembers && !core.includes(author)) ||
               this.space.filters.invalids.includes(proposal[1].authorIpfsHash)
@@ -123,13 +127,13 @@ export default {
             if (
               this.selectedState === 'all' ||
               (this.selectedState === 'active' &&
-                proposal[1].msg.payload.start <= ts &&
-                proposal[1].msg.payload.end > ts) ||
+                proposal[1].msg.payload.start <= Number(ts) &&
+                proposal[1].msg.payload.end > Number(ts)) ||
               (this.selectedState === 'community' && !core.includes(author)) ||
               (this.selectedState === 'closed' &&
-                proposal[1].msg.payload.end <= ts) ||
+                proposal[1].msg.payload.end <= Number(ts)) ||
               (this.selectedState === 'pending' &&
-                proposal[1].msg.payload.start > ts)
+                proposal[1].msg.payload.start > Number(ts))
             )
               return true;
           })

@@ -1,11 +1,12 @@
 import Vue from 'vue';
 import { getInstance } from '@/helpers/plugins/LockPlugin';
-import { getScores } from '@snapshot-labs/snapshot.js/src/utils';
+import { getScores } from '@/helpers/get-scores';
 import client from '@/helpers/client';
 import ipfs from '@/helpers/ipfs';
 import getProvider from '@/helpers/provider';
 import { formatProposal, formatProposals, formatSpace } from '@/helpers/utils';
 import { getBlockNumber, signMessage } from '@/helpers/web3';
+import { waitZilPay } from '@/helpers/wait-zipay';
 import { version } from '@/../package.json';
 
 const state = {
@@ -111,21 +112,21 @@ const actions = {
       return;
     }
   },
-  getProposals: async ({ commit, rootState }, space) => {
+  getProposals: async ({ commit }, space) => {
     commit('GET_PROPOSALS_REQUEST');
     try {
       let proposals: any = await client.request(`${space.key}/proposals`);
       if (proposals) {
-        const scores: any = await getScores(
+        const zilPay = await waitZilPay();
+        const scores = await getScores(
           space.strategies,
-          space.network,
-          rootState.web3.wallet.net,
+          zilPay,
           Object.values(proposals).map((proposal: any) => proposal.address)
         );
         proposals = Object.fromEntries(
           Object.entries(proposals).map((proposal: any) => {
             proposal[1].score = scores.reduce(
-              (a, b) => a + b[proposal[1].address],
+              (a, b) => a + Number(b[proposal[1].address]),
               0
             );
             return [proposal[0], proposal[1]];
@@ -139,10 +140,11 @@ const actions = {
       commit('GET_PROPOSALS_FAILURE', e);
     }
   },
-  getProposal: async ({ commit, rootState }, payload) => {
+  getProposal: async ({ commit }, payload) => {
     commit('GET_PROPOSAL_REQUEST');
     try {
-      const blockNumber = await getBlockNumber(rootState.web3);
+      const zilPay = await waitZilPay();
+      const blockNumber = await getBlockNumber(zilPay);
       const result: any = {};
       const [proposal, votes] = await Promise.all([
         ipfs.get(payload.id),
@@ -151,17 +153,16 @@ const actions = {
       result.proposal = formatProposal(proposal);
       result.proposal.ipfsHash = payload.id;
       result.votes = votes;
+
       const { snapshot } = result.proposal.msg.payload;
       const blockTag = snapshot > blockNumber ? 'latest' : parseInt(snapshot);
       const scores: any = await getScores(
         payload.space.strategies,
-        payload.space.network,
-        getProvider(rootState.web3.wallet.net),
+        zilPay,
         Object.keys(result.votes),
         // @ts-ignore
         blockTag
       );
-      console.log('Scores', scores);
       result.votes = Object.fromEntries(
         Object.entries(result.votes)
           .map((vote: any) => {
