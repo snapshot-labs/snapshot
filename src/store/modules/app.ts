@@ -3,7 +3,6 @@ import { getInstance } from '@/helpers/plugins/LockPlugin';
 import { getScores } from '@/helpers/get-scores';
 import client from '@/helpers/client';
 import ipfs from '@/helpers/ipfs';
-import getProvider from '@/helpers/provider';
 import { formatProposal, formatProposals, formatSpace } from '@/helpers/utils';
 import { getBlockNumber, signMessage } from '@/helpers/web3';
 import { waitZilPay } from '@/helpers/wait-zipay';
@@ -208,12 +207,12 @@ const actions = {
   getPower: async ({ commit, rootState }, { space, address, snapshot }) => {
     commit('GET_POWER_REQUEST');
     try {
-      const blockNumber = await getBlockNumber(rootState.web3);
+      const zilPay = await waitZilPay();
+      const blockNumber = await getBlockNumber(zilPay);
       const blockTag = snapshot > blockNumber ? 'latest' : parseInt(snapshot);
       let scores: any = await getScores(
         space.strategies,
-        space.network,
-        getProvider(rootState.web3.wallet.net),
+        zilPay,
         [address],
         // @ts-ignore
         blockTag

@@ -222,6 +222,7 @@ export default {
     },
     async loadPower() {
       if (!this.web3.account.bech32) return;
+
       const { scores, totalScore } = await this.getPower({
         space: this.space,
         address: this.web3.account.bech32,

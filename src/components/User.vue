@@ -24,10 +24,12 @@ export default {
   },
   computed: {
     name() {
+      const { toBech32Address } = window['zilPay'].crypto;
+
       return this.web3.account.base16 &&
         this.address.toLowerCase() === this.web3.account.base16.toLowerCase()
         ? 'You'
-        : this._shorten(this.address);
+        : this._shorten(toBech32Address(this.address));
     }
   }
 };

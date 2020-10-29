@@ -6,13 +6,16 @@ export function waitZilPay(): Promise<any> {
   }
 
   return new Promise((resolve, reject) => {
-    setInterval(() => {
+    const interval = setInterval(() => {
       if (k > 100) {
+        clearInterval(interval);
+
         return reject('timeout');
       }
 
       if (window['zilPay']) {
-        resolve(window['zilPay']);
+        clearInterval(interval);
+        return resolve(window['zilPay']);
       }
 
       k++;

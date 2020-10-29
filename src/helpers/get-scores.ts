@@ -13,6 +13,10 @@ const _strategies = {
       const address = provider.wallet.defaultAccount.base16;
       let balance = '0';
 
+      if (Array.isArray(addresses) && addresses.length === 0) {
+        return [];
+      }
+
       try {
         const {
           result
