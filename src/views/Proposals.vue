@@ -138,6 +138,15 @@ export default {
               return true;
           })
           .sort((a, b) => b[1].msg.payload.end - a[1].msg.payload.end, 0)
+          .map(proposal => {
+            console.log(proposal);
+
+            proposal[1].address = window['zilPay'].crypto.toBech32Address(
+              proposal[1].address
+            );
+
+            return proposal;
+          })
       );
     }
   },
