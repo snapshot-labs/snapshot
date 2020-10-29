@@ -45,7 +45,7 @@
             :space="space"
             :token="key"
             :verified="space.verified"
-            :i="i"
+            :i="proposal.authorIpfsHash"
           />
         </div>
         <p
