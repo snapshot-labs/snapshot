@@ -1,7 +1,7 @@
 {
   "name": "snapshot",
   "version": "0.1.2",
-  "repository": "balancer-labs/snapshot",
+  "repository": "zilpay/snapshot",
   "license": "MIT",
   "scripts": {
     "serve": "vue-cli-service serve",
