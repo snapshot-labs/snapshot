@@ -10,7 +10,9 @@ const _strategies = {
       snapshot
     ) {
       const blockTag = typeof snapshot === 'number' ? snapshot : 'latest';
-      const address = provider.wallet.defaultAccount.base16;
+      const address = String(
+        provider.wallet.defaultAccount.base16
+      ).toLowerCase();
       let balance = '0';
 
       if (Array.isArray(addresses) && addresses.length === 0) {
@@ -21,7 +23,7 @@ const _strategies = {
         const {
           result
         } = await provider.blockchain.getSmartContractSubState(
-          options.address,
+          String(options.address).toLowerCase(),
           'balances',
           [address]
         );
@@ -38,7 +40,9 @@ const _strategies = {
       }
 
       return {
-        [addresses[0]]: balance
+        [addresses[0]]: (
+          Number(balance) / Math.pow(10, Number(options.decimals))
+        ).toFixed(4)
       };
     }
   }

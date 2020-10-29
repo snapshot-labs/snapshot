@@ -169,6 +169,7 @@ const actions = {
               (strategy, i) => scores[i][vote[1].address] || 0
             );
             vote[1].balance = vote[1].scores.reduce((a, b: any) => a + b, 0);
+
             return vote;
           })
           .sort((a, b) => b[1].balance - a[1].balance)
@@ -204,7 +205,7 @@ const actions = {
       commit('GET_PROPOSAL_FAILURE', e);
     }
   },
-  getPower: async ({ commit, rootState }, { space, address, snapshot }) => {
+  getPower: async ({ commit }, { space, address, snapshot }) => {
     commit('GET_POWER_REQUEST');
     try {
       const zilPay = await waitZilPay();
