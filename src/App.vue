@@ -1,5 +1,5 @@
 <template>
-  <div :class="space && space.skin" id="app" class="overflow-hidden">
+  <div :class="space" id="app" class="overflow-hidden">
     <UiLoading v-if="app.loading || !app.init" class="overlay big" />
     <div v-else>
       <Topnav />
@@ -25,7 +25,9 @@ export default {
     space() {
       try {
         const key = this.domain || this.$route.params.key;
-        return this.app.spaces[key];
+
+        return key;
+        // return this.app.spaces[key];
       } catch (e) {
         return {};
       }

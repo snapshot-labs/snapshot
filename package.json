@@ -41,6 +41,7 @@
     "pretty-ms": "^7.0.0",
     "primer-support": "^5.0.0",
     "remarkable": "^2.0.1",
+    "require-context": "^1.1.0",
     "sanitize-html": "^1.27.1",
     "serve-static": "^1.14.1",
     "stylus": "^0.54.8",
