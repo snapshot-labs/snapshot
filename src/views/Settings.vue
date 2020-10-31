@@ -222,7 +222,6 @@ export default {
       this.currentContenthash = `${protocolType}://${decoded}`;
       this.space = await ipfs.get(decoded, protocolType);
       this.space.key = this.key;
-      this.space.token = this.key;
       this.space.filters = this.space.filters || {};
       this.form = this.space;
     } catch (e) {

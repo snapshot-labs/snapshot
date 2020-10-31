@@ -43,7 +43,6 @@
             :key="i"
             :proposal="proposal"
             :space="space"
-            :token="key"
             :verified="space.verified"
             :i="i"
           />

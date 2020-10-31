@@ -80,7 +80,7 @@ const actions = {
     commit('SET', { spaces });
     return spaces;
   },
-  send: async ({ commit, dispatch, rootState }, { token, type, payload }) => {
+  send: async ({ commit, dispatch, rootState }, { space, type, payload }) => {
     const auth = getInstance();
     commit('SEND_REQUEST');
     try {
@@ -89,7 +89,7 @@ const actions = {
         msg: JSON.stringify({
           version,
           timestamp: (Date.now() / 1e3).toFixed(),
-          token,
+          space,
           type,
           payload
         })
