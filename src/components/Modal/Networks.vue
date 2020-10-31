@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import networks from '@/helpers/networks.json';
+import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { filterNetworks } from '@/helpers/utils';
 
 export default {

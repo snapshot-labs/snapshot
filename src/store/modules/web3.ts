@@ -1,8 +1,8 @@
 import Vue from 'vue';
-import { getInstance } from '@snapshot-labs/lock/plugins/vue';
 import { Web3Provider } from '@ethersproject/providers';
+import { getInstance } from '@snapshot-labs/lock/plugins/vue';
+import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import store from '@/store';
-import config from '@/helpers/config';
 import getProvider from '@/helpers/provider';
 import { formatUnits } from '@ethersproject/units';
 
@@ -18,7 +18,7 @@ if (wsProvider) {
 const state = {
   account: null,
   name: null,
-  network: config.networks['1']
+  network: networks['1']
 };
 
 const mutations = {
@@ -40,15 +40,15 @@ const mutations = {
     console.debug('LOAD_PROVIDER_FAILURE', payload);
   },
   HANDLE_CHAIN_CHANGED(_state, chainId) {
-    if (!config.networks[chainId]) {
-      config.networks[chainId] = {
-        ...config.networks['1'],
+    if (!networks[chainId]) {
+      networks[chainId] = {
+        ...networks['1'],
         chainId,
         name: 'Unknown',
         network: 'unknown'
       };
     }
-    Vue.set(_state, 'network', config.networks[chainId]);
+    Vue.set(_state, 'network', networks[chainId]);
     console.debug('HANDLE_CHAIN_CHANGED', chainId);
   },
   HANDLE_ACCOUNTS_CHANGED(_state, payload) {

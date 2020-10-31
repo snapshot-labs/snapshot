@@ -179,11 +179,11 @@
 <script>
 import { mapActions } from 'vuex';
 import { getAddress } from '@ethersproject/address';
+import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { resolveContent } from '@/helpers/web3';
 import getProvider from '@/helpers/provider';
 import ipfs from '@/helpers/ipfs';
 import { clone } from '@/helpers/utils';
-import networks from '@/helpers/networks.json';
 
 export default {
   data() {
