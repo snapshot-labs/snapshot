@@ -72,22 +72,22 @@
       </div>
       <div v-if="loaded" class="col-12 col-lg-4 float-left">
         <Block title="Information">
-          <div class="mb-1 overflow-hidden">
-            <b>Token(s)</b>
-            <a
+          <div class="mb-1">
+            <b>Strategie(s)</b>
+            <span
               @click="modalStrategiesOpen = true"
-              class="float-right text-white"
+              class="float-right text-white a"
             >
               <span v-for="(symbol, symbolIndex) of symbols" :key="symbol">
-                <Token :space="space.key" :symbolIndex="symbolIndex" />
-                {{ symbol }}
+                <span :aria-label="symbol" class="tooltipped tooltipped-n">
+                  <Token :space="space.key" :symbolIndex="symbolIndex" />
+                </span>
                 <span
                   v-show="symbolIndex !== symbols.length - 1"
-                  v-text="'+'"
-                  class="mr-1"
+                  class="ml-1"
                 />
               </span>
-            </a>
+            </span>
           </div>
           <div class="mb-1">
             <b>Author</b>
