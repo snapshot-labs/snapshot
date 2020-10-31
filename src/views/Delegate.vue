@@ -51,8 +51,7 @@
 import { mapActions } from 'vuex';
 import { isAddress } from '@ethersproject/address';
 import { formatBytes32String } from '@ethersproject/strings';
-import { call, sendTransaction } from '@snapshot-labs/snapshot.js/src/utils';
-import getProvider from '@/helpers/provider';
+import { sendTransaction } from '@snapshot-labs/snapshot.js/src/utils';
 import abi from '@/helpers/abi';
 
 const contractAddress = '0x469788fE6E9E9681C6ebF3bF78e7Fd26Fc015446';
@@ -63,24 +62,13 @@ export default {
       loaded: false,
       loading: false,
       form: {
-        // address: '0x0000000000000000000000000000000000baDDAd',
-        // id: 'test'
+        address: '',
+        id: ''
       }
     };
   },
   async created() {
-    if (this.web3.account) {
-      const delegation = await call(
-        getProvider(this.web3.network.chainId),
-        abi['DelegateRegistry'],
-        [
-          contractAddress,
-          'delegation',
-          [this.web3.account, formatBytes32String('test')]
-        ]
-      );
-      console.log('Delegation to id "test"', delegation);
-    }
+    // if (this.web3.account)
     this.loaded = true;
   },
   computed: {

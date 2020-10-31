@@ -41,7 +41,7 @@
       <h3 class="m-4 mb-0 text-center">Account</h3>
       <div v-if="$auth.isAuthenticated" class="m-4">
         <a
-          :href="_explorer(web3.network.chainId, web3.account)"
+          :href="_explorer(web3.network.key, web3.account)"
           target="_blank"
           class="mb-2 d-block"
         >

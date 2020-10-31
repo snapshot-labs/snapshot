@@ -96,7 +96,7 @@ const actions = {
       const account = accounts.length > 0 ? accounts[0] : null;
       let name;
       try {
-        name = await getProvider(1).lookupAddress(account);
+        name = await getProvider('1').lookupAddress(account);
       } catch (e) {
         console.error(e);
       }
