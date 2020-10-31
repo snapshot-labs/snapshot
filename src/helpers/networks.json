@@ -89,5 +89,13 @@
     "rpcUrl": "https://rpc-mumbai.matic.today",
     "wsUrl": "wss://ws-mumbai.matic.today",
     "explorer": ""
+  },
+  "wanchain": {
+    "name": "Wanchain",
+    "chainId": 1,
+    "network": "mainnet",
+    "rpcUrl": "https://gwan-ssl.wandevs.org:56891",
+    "wsUrl": "wss://api.wanchain.org:8443/ws/v3/ddd16770c68f30350a21114802d5418eafe039b722de52b488e7eee1ee2cd73f",
+    "explorer": "https://www.wanscan.org"
   }
 }
