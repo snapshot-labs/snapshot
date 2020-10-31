@@ -197,7 +197,7 @@ export default {
       this.form.choices = this.choices.map(choice => choice.text);
       try {
         const { ipfsHash } = await this.send({
-          token: this.space.token,
+          space: this.space.key,
           type: 'proposal',
           payload: this.form
         });

@@ -1,7 +1,7 @@
 <template>
   <router-link
     class="px-4 py-3 border-top d-block text-gray"
-    :to="{ name: 'proposal', params: { key: token, id: i } }"
+    :to="{ name: 'proposal', params: { key: space.key, id: i } }"
   >
     <div>
       <State :proposal="proposal" class="d-inline-block mr-2 mb-2" />
@@ -31,7 +31,6 @@
 export default {
   props: {
     space: Object,
-    token: String,
     proposal: Object,
     verified: Array,
     i: String
