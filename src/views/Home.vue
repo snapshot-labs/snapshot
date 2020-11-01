@@ -35,12 +35,19 @@
               class="text-center extra-icon-container"
               style="height: 250px; margin-bottom: 24px !important;"
             >
-              <Token
-                :space="space.key"
-                symbolIndex="space"
-                size="98"
-                class="my-3"
-              />
+              <span class="position-relative d-inline-block">
+                <UiCounter
+                  v-if="space._activeProposals"
+                  :counter="space._activeProposals"
+                  class="position-absolute top-4 right-0 bg-green"
+                />
+                <Token
+                  :space="space.key"
+                  symbolIndex="space"
+                  size="98"
+                  class="my-3"
+                />
+              </span>
               <StatefulIcon
                 :on="space.favorite"
                 onName="star"
