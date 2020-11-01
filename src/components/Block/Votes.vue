@@ -44,12 +44,14 @@
     >
       See more
     </a>
-    <ModalReceipt
-      :open="modalReceiptOpen"
-      @close="modalReceiptOpen = false"
-      :authorIpfsHash="authorIpfsHash"
-      :relayerIpfsHash="relayerIpfsHash"
-    />
+    <portal to="modal">
+      <ModalReceipt
+        :open="modalReceiptOpen"
+        @close="modalReceiptOpen = false"
+        :authorIpfsHash="authorIpfsHash"
+        :relayerIpfsHash="relayerIpfsHash"
+      />
+    </portal>
   </Block>
 </template>
 

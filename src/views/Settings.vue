@@ -163,16 +163,18 @@
         </Block>
       </div>
     </div>
-    <ModalNetworks
-      :open="modalNetworksOpen"
-      @close="modalNetworksOpen = false"
-      v-model="form.network"
-    />
-    <ModalSkins
-      :open="modalSkinsOpen"
-      @close="modalSkinsOpen = false"
-      v-model="form.skin"
-    />
+    <portal to="modal">
+      <ModalNetworks
+        :open="modalNetworksOpen"
+        @close="modalNetworksOpen = false"
+        v-model="form.network"
+      />
+      <ModalSkins
+        :open="modalSkinsOpen"
+        @close="modalSkinsOpen = false"
+        v-model="form.skin"
+      />
+    </portal>
   </Container>
 </template>
 

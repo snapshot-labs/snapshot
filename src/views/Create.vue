@@ -101,20 +101,22 @@
         </Block>
       </div>
     </div>
-    <ModalSelectDate
-      :value="form[selectedDate]"
-      :selectedDate="selectedDate"
-      :open="modalOpen"
-      @close="modalOpen = false"
-      @input="setDate"
-    />
-    <ModalPlugins
-      :proposal="{ ...form, choices }"
-      :value="form.metadata.plugins"
-      v-model="form.metadata.plugins"
-      :open="modalPluginsOpen"
-      @close="modalPluginsOpen = false"
-    />
+    <portal to="modal">
+      <ModalSelectDate
+        :value="form[selectedDate]"
+        :selectedDate="selectedDate"
+        :open="modalOpen"
+        @close="modalOpen = false"
+        @input="setDate"
+      />
+      <ModalPlugins
+        :proposal="{ ...form, choices }"
+        :value="form.metadata.plugins"
+        v-model="form.metadata.plugins"
+        :open="modalPluginsOpen"
+        @close="modalPluginsOpen = false"
+      />
+    </portal>
   </Container>
 </template>
 
