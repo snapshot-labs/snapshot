@@ -74,7 +74,7 @@ import spotlight from '@snapshot-labs/snapshot-spaces/spaces/spotlight.json';
 export default {
   data() {
     return {
-      q: '',
+      q: this.$route.query.q || '',
       limit: 16
     };
   },

@@ -64,7 +64,7 @@ import { filterStrategies, filterSkins, filterNetworks } from '@/helpers/utils';
 export default {
   data() {
     return {
-      q: '',
+      q: this.$route.query.q || '',
       limit: 8
     };
   },

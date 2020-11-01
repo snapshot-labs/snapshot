@@ -21,9 +21,12 @@ export default {
   props: ['value', 'placeholder'],
   methods: {
     handleInput(e) {
-      this.$emit('input', e.target.value);
+      const input = e.target.value;
+      this.$router.push({ query: input ? { q: input } : {} });
+      this.$emit('input', input);
     },
     clearInput() {
+      this.$router.push({});
       this.$emit('input', '');
     }
   }
