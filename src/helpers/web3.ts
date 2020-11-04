@@ -1,4 +1,4 @@
-import ethUtil from 'ethereumjs-util';
+import { bufferToHex } from 'ethereumjs-util';
 import resolveENSContentHash from '@/helpers/resolveENSContentHash';
 import { decodeContenthash } from '@/helpers/content';
 
@@ -8,7 +8,7 @@ export async function resolveContent(provider, name) {
 }
 
 export async function signMessage(web3, msg, address) {
-  msg = ethUtil.bufferToHex(new Buffer(msg, 'utf8'));
+  msg = bufferToHex(new Buffer(msg, 'utf8'));
   return await web3.send('personal_sign', [msg, address]);
 }
 
