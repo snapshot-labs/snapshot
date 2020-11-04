@@ -1,5 +1,5 @@
 <template>
-  <div :class="slim ? 'px-0 px-md-4' : 'px-4'" class="container-lg mx-auto">
+  <div :class="slim ? 'px-0 px-md-4' : 'px-2 px-sm-4'" class="container-lg mx-auto">
     <slot />
   </div>
 </template>
