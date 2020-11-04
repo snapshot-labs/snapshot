@@ -26,14 +26,14 @@
             <router-link
               v-if="space"
               :to="{ name: 'proposals' }"
-              class="d-inline-block d-flex flex-items-center"
+              class="d-flex flex-items-center"
               style="font-size: 24px; padding-top: 4px;"
             >
               <Token :space="space.key" symbolIndex="space" size="28" />
               <span class="ml-2" v-text="space.name" />
             </router-link>
           </div>
-          <div :key="web3.account">
+          <div :key="web3.account" class="d-flex">
             <template v-if="$auth.isAuthenticated">
               <UiButton
                 @click="modalOpen = true"
