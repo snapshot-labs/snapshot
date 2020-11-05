@@ -145,6 +145,12 @@
           :results="results"
           :votes="votes"
         />
+        <BlockActions
+          :id="id"
+          :space="space"
+          :payload="payload"
+          :results="results"
+        />
       </div>
     </div>
     <ModalConfirm
