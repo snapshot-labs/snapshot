@@ -36,18 +36,7 @@
       />
     </div>
     <div v-if="ts >= payload.end">
-      <UiButton
-        v-if="
-          _get(payload, 'metadata.plugins.aragon') &&
-            _get(space, 'plugins.aragon')
-        "
-        @click="executePlugin('aragon')"
-        :loading="loading"
-        class="width-full mt-2 button--submit"
-      >
-        Submit on-chain
-      </UiButton>
-      <UiButton v-else @click="downloadReport" class="width-full mt-2">
+      <UiButton @click="downloadReport" class="width-full mt-2">
         Download report
       </UiButton>
     </div>
@@ -55,39 +44,20 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
 import * as jsonexport from 'jsonexport/dist';
-import plugins from '@snapshot-labs/snapshot.js/src/plugins';
 import pkg from '@/../package.json';
 
 export default {
   props: ['id', 'space', 'payload', 'results', 'votes'],
-  data() {
-    return {
-      loading: false
-    };
-  },
   computed: {
     ts() {
       return (Date.now() / 1e3).toFixed();
     },
     titles() {
       return this.space.strategies.map(strategy => strategy.params.symbol);
-    },
-    winningChoice() {
-      let winningChoice = 0;
-      let winningScore = 0;
-      this.results.totalScores.forEach((score, i) => {
-        if (score[0] > winningScore) {
-          winningChoice = i + 1;
-          winningScore = score[0];
-        }
-      });
-      return winningChoice;
     }
   },
   methods: {
-    ...mapActions(['notify']),
     async downloadReport() {
       const obj = Object.entries(this.votes)
         .map(vote => {
@@ -114,25 +84,6 @@ export default {
       } catch (e) {
         console.error(e);
       }
-    },
-    async executePlugin(plugin) {
-      if (!this.space.plugins || !this.space.plugins[plugin]) return;
-      this.loading = true;
-      const aragon = new plugins[plugin]();
-      try {
-        const result = await aragon.execute(
-          this.$auth.web3,
-          this.space.plugins[plugin],
-          this.payload.metadata.plugins[plugin],
-          this.id,
-          this.winningChoice
-        );
-        console.log('Result', result);
-        this.notify(['green', `The settlement is on-chain, congrats!`]);
-      } catch (e) {
-        console.error(e);
-      }
-      this.loading = false;
     }
   }
 };
