@@ -5,12 +5,14 @@
       {{ name }}
       <Badges :address="address" :space="space" />
     </a>
-    <ModalUser
-      :open="modalOpen"
-      @close="modalOpen = false"
-      :space="space"
-      :address="address"
-    />
+    <portal to="modal">
+      <ModalUser
+        :open="modalOpen"
+        @close="modalOpen = false"
+        :space="space"
+        :address="address"
+      />
+    </portal>
   </span>
 </template>
 

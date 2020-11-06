@@ -42,6 +42,7 @@
     "jsonexport": "^3.0.1",
     "lodash": "^4.17.15",
     "numeral": "^2.0.4",
+    "portal-vue": "^2.1.7",
     "pretty-ms": "^7.0.0",
     "primer-support": "^5.0.0",
     "remarkable": "^2.0.1",

@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import PortalVue from 'portal-vue';
 import autofocus from 'vue-autofocus-directive';
 import infiniteScroll from 'vue-infinite-scroll';
 import TextareaAutosize from 'vue-textarea-autosize';
@@ -15,6 +16,7 @@ import '@/auth';
 import '@/helpers/skins';
 import '@/style.scss';
 
+Vue.use(PortalVue);
 Vue.use(VueClipboard);
 Vue.use(infiniteScroll);
 Vue.use(TextareaAutosize);

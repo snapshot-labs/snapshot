@@ -156,25 +156,27 @@
         />
       </div>
     </div>
-    <ModalConfirm
-      v-if="loaded"
-      :open="modalOpen"
-      @close="modalOpen = false"
-      @reload="loadProposal"
-      :space="space"
-      :proposal="proposal"
-      :id="id"
-      :selectedChoice="selectedChoice"
-      :totalScore="totalScore"
-      :scores="scores"
-      :snapshot="payload.snapshot"
-    />
-    <ModalStrategies
-      :open="modalStrategiesOpen"
-      @close="modalStrategiesOpen = false"
-      :space="space"
-      :strategies="space.strategies"
-    />
+    <portal to="modal">
+      <ModalConfirm
+        v-if="loaded"
+        :open="modalOpen"
+        @close="modalOpen = false"
+        @reload="loadProposal"
+        :space="space"
+        :proposal="proposal"
+        :id="id"
+        :selectedChoice="selectedChoice"
+        :totalScore="totalScore"
+        :scores="scores"
+        :snapshot="payload.snapshot"
+      />
+      <ModalStrategies
+        :open="modalStrategiesOpen"
+        @close="modalStrategiesOpen = false"
+        :space="space"
+        :strategies="space.strategies"
+      />
+    </portal>
   </Container>
 </template>
 

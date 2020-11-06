@@ -66,14 +66,16 @@
             </UiButton>
           </div>
         </div>
-        <ModalAccount
-          :open="modalOpen"
-          @close="modalOpen = false"
-          @login="handleLogin"
-        />
-        <ModalAbout :open="modalAboutOpen" @close="modalAboutOpen = false" />
       </Container>
     </nav>
+    <portal to="modal">
+      <ModalAccount
+        :open="modalOpen"
+        @close="modalOpen = false"
+        @login="handleLogin"
+      />
+      <ModalAbout :open="modalAboutOpen" @close="modalAboutOpen = false" />
+    </portal>
   </Sticky>
 </template>
 

@@ -11,6 +11,7 @@ import { version } from '@/../package.json';
 const state = {
   init: false,
   loading: false,
+  modalOpen: false,
   spaces: {}
 };
 
@@ -68,6 +69,9 @@ const actions = {
   },
   loading: ({ commit }, payload) => {
     commit('SET', { loading: payload });
+  },
+  toggleModal: ({ commit }) => {
+    commit('SET', { modalOpen: !state.modalOpen });
   },
   getSpaces: async ({ commit }) => {
     let spaces: any = await client.request('spaces');

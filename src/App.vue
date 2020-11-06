@@ -7,6 +7,7 @@
         <router-view :key="$route.path" class="flex-auto" />
       </div>
     </div>
+    <portal-target name="modal" multiple />
     <Notifications />
   </div>
 </template>
@@ -15,8 +16,11 @@
 import { mapActions } from 'vuex';
 
 export default {
-  methods: {
-    ...mapActions(['init'])
+  watch: {
+    'app.modalOpen': function(val) {
+      const el = document.body;
+      el.classList[val ? 'add' : 'remove']('overflow-hidden');
+    }
   },
   mounted() {
     this.init();
@@ -30,6 +34,9 @@ export default {
         return {};
       }
     }
+  },
+  methods: {
+    ...mapActions(['init'])
   }
 };
 </script>
