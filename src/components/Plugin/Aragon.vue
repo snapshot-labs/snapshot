@@ -13,7 +13,7 @@
       <div v-else>
         <UiButton class="width-full mb-2">
           <input
-            v-model="input[`choice${choice}`].actions[0].targetAddress"
+            v-model="input[`choice${choice}`].actions[0].to"
             class="input width-full text-center"
             placeholder="Target address"
             required
@@ -21,9 +21,17 @@
         </UiButton>
         <UiButton class="width-full mb-2">
           <input
-            v-model="input[`choice${choice}`].actions[0].calldata"
+            v-model="input[`choice${choice}`].actions[0].value"
             class="input width-full text-center"
-            placeholder="Call data"
+            placeholder="Value"
+            required
+          />
+        </UiButton>
+        <UiButton class="width-full mb-2">
+          <input
+            v-model="input[`choice${choice}`].actions[0].data"
+            class="input width-full text-center"
+            placeholder="Data"
             required
           />
         </UiButton>
@@ -67,8 +75,9 @@ export default {
       this.input[`choice${this.choice}`] = {
         actions: [
           {
-            targetAddress: '',
-            calldata: ''
+            to: '',
+            value: '',
+            data: ''
           }
         ]
       };

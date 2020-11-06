@@ -42,10 +42,13 @@
                 :aria-label="
                   `Target address: ${
                     payload.metadata.plugins.aragon[`choice${i + 1}`].actions[0]
-                      .targetAddress
-                  }\nCalldata: ${
+                      .to
+                  }\nValue: ${
                     payload.metadata.plugins.aragon[`choice${i + 1}`].actions[0]
-                      .calldata
+                      .value
+                  }\nData: ${
+                    payload.metadata.plugins.aragon[`choice${i + 1}`].actions[0]
+                      .data
                   }`
                 "
                 class="tooltipped tooltipped-n break-word"

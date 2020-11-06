@@ -57,15 +57,17 @@ export default {
       this.loading = true;
       const action = new plugins[plugin]();
       try {
-        const result = await action.action(
+        const tx = await action.action(
+          this.web3.network.key,
           this.$auth.web3,
           this.space.plugins[plugin],
           this.payload.metadata.plugins[plugin],
           this.id,
           this.winningChoice
         );
-        console.log('Result', result);
-        this.notify(['green', `The settlement is on-chain, congrats!`]);
+        const receipt = await tx.wait();
+        console.log('Receipt', receipt);
+        this.notify(['green', `You did it, congrats!`]);
       } catch (e) {
         console.error(e);
       }
