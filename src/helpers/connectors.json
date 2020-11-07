@@ -25,7 +25,7 @@
     "network": "1",
     "options": {
       "rpc": {
-        "1": "https://eth-mainnet.alchemyapi.io/v2/4bdDVB5QAaorY2UE-GBUbM2yQB3QJqzv"
+        "1": "https://cloudflare-eth.com"
       }
     }
   },
@@ -37,7 +37,7 @@
       "appName": "Snapshot",
       "darkMode": false,
       "chainId": 1,
-      "ethJsonrpcUrl": "https://eth-mainnet.alchemyapi.io/v2/4bdDVB5QAaorY2UE-GBUbM2yQB3QJqzv"
+      "ethJsonrpcUrl": "https://cloudflare-eth.com"
     }
   }
 }
