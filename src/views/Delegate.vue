@@ -18,7 +18,7 @@
               <input
                 v-model.trim="form.address"
                 class="input width-full"
-                placeholder="Delegate address"
+                placeholder="Delegate address or ENS name"
               />
             </UiButton>
             <UiButton class="width-full mb-2">
@@ -96,6 +96,7 @@ import { formatBytes32String } from '@ethersproject/strings';
 import { sendTransaction } from '@snapshot-labs/snapshot.js/src/utils';
 import abi from '@/helpers/abi';
 import { getDelegates, getDelegators } from '@/helpers/delegation';
+import getProvider from '@/helpers/provider';
 
 const contractAddress = '0x469788fE6E9E9681C6ebF3bF78e7Fd26Fc015446';
 
@@ -127,7 +128,7 @@ export default {
   computed: {
     isValid() {
       return (
-        isAddress(this.form.address) &&
+        (this.form.address.includes('.eth') || isAddress(this.form.address)) &&
         this.form.address.toLowerCase() !== this.web3.account.toLowerCase()
       );
     }
@@ -147,12 +148,15 @@ export default {
     async handleSubmit() {
       this.loading = true;
       try {
+        let address = this.form.address;
+        if (address.includes('.eth'))
+          address = await getProvider('1').resolveName(address);
         const tx = await sendTransaction(
           this.$auth.web3,
           contractAddress,
           abi['DelegateRegistry'],
           'setDelegate',
-          [formatBytes32String(this.form.id), this.form.address]
+          [formatBytes32String(this.form.id), address]
         );
         const receipt = await tx.wait();
         console.log('Receipt', receipt);
