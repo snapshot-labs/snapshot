@@ -127,9 +127,12 @@ export default {
   },
   computed: {
     isValid() {
+      const address = this.form.address;
       return (
-        (this.form.address.includes('.eth') || isAddress(this.form.address)) &&
-        this.form.address.toLowerCase() !== this.web3.account.toLowerCase()
+        this.$auth.isAuthenticated &&
+        (address.includes('.eth') || isAddress(address)) &&
+        address.toLowerCase() !== this.web3.account.toLowerCase() &&
+        (this.form.id === '' || this.app.spaces[this.form.id])
       );
     }
   },
