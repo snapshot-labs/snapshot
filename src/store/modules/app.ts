@@ -1,12 +1,13 @@
 import Vue from 'vue';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue';
-import { getScores } from '@snapshot-labs/snapshot.js/src/utils';
+import { ipfsGet, getScores } from '@snapshot-labs/snapshot.js/src/utils';
 import client from '@/helpers/client';
-import ipfs from '@/helpers/ipfs';
 import getProvider from '@/helpers/provider';
 import { formatProposal, formatProposals, formatSpace } from '@/helpers/utils';
 import { getBlockNumber, signMessage } from '@/helpers/web3';
 import { version } from '@/../package.json';
+
+const ipfsNode = process.env.VUE_APP_IPFS_NODE || 'ipfs.io';
 
 const state = {
   init: false,
@@ -147,7 +148,7 @@ const actions = {
       const blockNumber = await getBlockNumber(getProvider(space.network));
       const result: any = {};
       const [proposal, votes] = await Promise.all([
-        ipfs.get(id),
+        ipfsGet(ipfsNode, id),
         client.request(`${space.key}/proposal/${id}`)
       ]);
       result.proposal = formatProposal(proposal);
