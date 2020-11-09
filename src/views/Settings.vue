@@ -181,11 +181,13 @@
 <script>
 import { mapActions } from 'vuex';
 import { getAddress } from '@ethersproject/address';
+import { ipfsGet } from '@snapshot-labs/snapshot.js/src/utils';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { resolveContent } from '@/helpers/web3';
 import getProvider from '@/helpers/provider';
-import ipfs from '@/helpers/ipfs';
 import { clone } from '@/helpers/utils';
+
+const ipfsNode = process.env.VUE_APP_IPFS_NODE || 'ipfs.io';
 
 export default {
   data() {
@@ -222,7 +224,7 @@ export default {
         this.key
       );
       this.currentContenthash = `${protocolType}://${decoded}`;
-      this.space = await ipfs.get(decoded, protocolType);
+      this.space = await ipfsGet(ipfsNode, decoded, protocolType);
       this.space.key = this.key;
       this.space.filters = this.space.filters || {};
       this.form = this.space;
