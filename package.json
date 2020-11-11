@@ -20,7 +20,7 @@
     "@portis/web3": "2.0.0-beta.49",
     "@primer/css": "^14.4.0",
     "@snapshot-labs/lock": "github:snapshot-labs/lock#5b9f0592731c0105bb47f8b7bf78b4f164e27c3e",
-    "@snapshot-labs/snapshot-spaces": "github:zilpay/snapshot-spaces#master",
+    "@snapshot-labs/snapshot-spaces": "github:Zilliqa/snapshot-spaces#master",
     "@snapshot-labs/snapshot.js": "github:snapshot-labs/snapshot.js#master",
     "@vue/cli-plugin-babel": "^4.4.0",
     "@vue/cli-plugin-eslint": "^4.4.0",

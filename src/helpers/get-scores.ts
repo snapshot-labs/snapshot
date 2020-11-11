@@ -1,4 +1,4 @@
-const _strategies = {
+export const _strategies = {
   'zrc2-balance-of': {
     author: 'zilpay',
     key: 'zrc2-balance-of',

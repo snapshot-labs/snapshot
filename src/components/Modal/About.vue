@@ -51,8 +51,8 @@ export default {
   data() {
     return {
       pkg,
-      hubUrl: process.env.VUE_APP_HUB_URL,
-      ipfsNode: process.env.VUE_APP_IPFS_NODE
+      hubUrl: window['VUE_APP_HUB_URL'],
+      ipfsNode: window['VUE_APP_IPFS_NODE']
     };
   }
 };
