@@ -129,7 +129,7 @@ const actions = {
         proposals = Object.fromEntries(
           Object.entries(proposals).map((proposal: any) => {
             proposal[1].score = scores.reduce(
-              (a, b) => a + b[proposal[1].address],
+              (a, b) => a + b[proposal[1].address] || 0,
               0
             );
             return [proposal[0], proposal[1]];
