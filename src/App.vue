@@ -1,6 +1,6 @@
 <template>
-  <div id="app" class="overflow-hidden">
-    <UiLoading v-if="ui.loading || !ui.init" class="overlay big" />
+  <div :class="space" id="app" class="overflow-hidden">
+    <UiLoading v-if="app.loading || !app.init" class="overlay big" />
     <div v-else>
       <Topnav />
       <div class="pb-6 overflow-hidden">
@@ -20,6 +20,18 @@ export default {
   },
   mounted() {
     this.init();
+  },
+  computed: {
+    space() {
+      try {
+        const key = this.domain || this.$route.params.key;
+
+        return key;
+        // return this.app.spaces[key];
+      } catch (e) {
+        return {};
+      }
+    }
   }
 };
 </script>

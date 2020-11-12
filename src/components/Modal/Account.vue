@@ -1,6 +1,6 @@
 <template>
   <UiModal :open="open" @close="$emit('close')">
-    <div v-if="!web3.account || step === 'connect'">
+    <div v-if="!web3.account.bech32 || step === 'connect'">
       <h3 class="m-4 mb-0 text-center">Connect wallet</h3>
       <div class="m-4 mb-5">
         <a
@@ -12,9 +12,7 @@
         >
           <UiButton class="button-outline width-full v-align-middle">
             <img
-              :src="
-                `https://raw.githubusercontent.com/bonustrack/lock/master/connectors/assets/${connector.id}.png`
-              "
+              :src="`https://zilpay.xyz/icons/${connector.id}.png`"
               height="28"
               width="28"
               class="mr-1 v-align-middle"
@@ -26,16 +24,20 @@
     </div>
     <div v-else>
       <h3 class="m-4 mb-0 text-center">Account</h3>
-      <div v-if="web3.account" class="m-4">
+      <div v-if="$auth.isAuthenticated" class="m-4">
         <a
-          :href="_etherscanLink(web3.account)"
+          :href="_explorer(web3.network.name, web3.account.bech32)"
           target="_blank"
           class="mb-2 d-block"
         >
           <UiButton class="button-outline width-full">
-            <Avatar :address="web3.account" size="16" class="mr-2 ml-n1" />
-            <span v-if="web3.name" v-text="web3.name" />
-            <span v-else v-text="_shorten(web3.account)" />
+            <Avatar
+              :address="web3.account.base16"
+              size="16"
+              class="mr-2 ml-n1"
+            />
+            <span v-if="web3.name" v-text="_shorten(web3.name)" />
+            <span v-else v-text="_shorten(web3.account.bech32)" />
             <Icon name="external-link" class="ml-1" />
           </UiButton>
         </a>

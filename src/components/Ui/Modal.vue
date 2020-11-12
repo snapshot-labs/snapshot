@@ -22,8 +22,6 @@ export default {
 </script>
 
 <style lang="scss">
-@import '../../vars';
-
 .modal {
   position: fixed;
   display: flex;
@@ -46,13 +44,13 @@ export default {
   }
 
   .shell {
-    border: $border;
-    background-color: $black;
+    border: 1px solid var(--border-color);
+    background-color: var(--bg-color);
     padding-left: 0 !important;
     padding-right: 0 !important;
     max-width: 440px;
-
-    max-height: calc(100vh - 80px);
+    overflow-y: auto !important;
+    max-height: calc(100vh - 120px);
     display: flex;
     flex-direction: column;
     z-index: 999;

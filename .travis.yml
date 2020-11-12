@@ -1,0 +1,40 @@
+  
+language: generic
+sudo: required
+services:
+  - docker
+
+matrix:
+  include:
+    - os: linux
+      dist: xenial
+
+addons:
+  apt:
+    update: true
+    package:
+    - build-essential
+    - git
+    - curl
+    - zip
+    - unzip
+
+before_cache:
+  - docker save -o docker_images/images.tar $(docker images -aq)
+
+cache:
+  directories:
+  - docker_images
+
+before_deploy:
+  - pip install --user awscli
+  - export PATH=$PATH:$HOME/.local/bin
+  - docker load -i docker_images/images.tar || true
+
+deploy:
+  provider: script
+  skip_cleanup: true
+  script:
+    - ./scripts/ci_build.sh
+  on:
+    branch: master

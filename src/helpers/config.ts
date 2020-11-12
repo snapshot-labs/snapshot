@@ -1,8 +1,19 @@
-import config from '@/config.json';
+import connectors from '@/helpers/connectors.json';
+import networks from '@/helpers/networks.json';
 
-let id = 'master';
+const config = {
+  env: 'master',
+  connectors,
+  networks
+};
+
 const domainName = window.location.hostname;
-if (domainName.includes('localhost:')) id = 'local';
-if (domainName === 'beta.vote.balancer.finance') id = 'develop';
+if (domainName.includes('localhost')) config.env = 'local';
+if (domainName === 'demo.snapshot.page' || domainName === 'beta.snapshot.page')
+  config.env = 'develop';
+if (domainName === 'snapshot.page') {
+  // @ts-ignore
+  delete config.connectors.portis;
+}
 
-export default config[id];
+export default config;

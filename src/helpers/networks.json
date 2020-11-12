@@ -1,0 +1,18 @@
+{
+  "mainnet": {
+    "name": "Zilliqa Mainnet",
+    "chainId": 1,
+    "network": "homestead",
+    "rpcUrl": "https://api.zilliqa.com",
+    "wsUrl": "wss://api-ws.zilliqa.com",
+    "explorer": "https://viewblock.io/zilliqa"
+  },
+  "testnet": {
+    "name": "Zilliqa Testnet",
+    "chainId": 2,
+    "network": "homestead",
+    "rpcUrl": "https://dev-api.zilliqa.com",
+    "wsUrl": "wss://dev-ws.zilliqa.com",
+    "explorer": "https://viewblock.io/zilliqa"
+  }
+}
