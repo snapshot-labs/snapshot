@@ -1,6 +1,6 @@
 class Client {
   request(command, body?) {
-    const url = `${process.env.VUE_APP_HUB_URL}/api/${command}`;
+    const url = `${window['VUE_APP_HUB_URL']}/api/${command}`;
     let init;
     if (body) {
       init = {
