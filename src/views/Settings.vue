@@ -187,7 +187,7 @@ import { resolveContent } from '@/helpers/web3';
 import getProvider from '@/helpers/provider';
 import { clone } from '@/helpers/utils';
 
-const ipfsNode = process.env.VUE_APP_IPFS_NODE || 'ipfs.io';
+const gateway = process.env.VUE_APP_IPFS_NODE || 'ipfs.io';
 
 export default {
   data() {
@@ -224,7 +224,7 @@ export default {
         this.key
       );
       this.currentContenthash = `${protocolType}://${decoded}`;
-      this.space = await ipfsGet(ipfsNode, decoded, protocolType);
+      this.space = await ipfsGet(gateway, decoded, protocolType);
       this.space.key = this.key;
       this.space.filters = this.space.filters || {};
       this.form = this.space;

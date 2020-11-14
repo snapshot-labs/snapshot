@@ -123,8 +123,11 @@
 <script>
 import { mapActions } from 'vuex';
 import draggable from 'vuedraggable';
+import { ipfsGet } from '@snapshot-labs/snapshot.js/src/utils';
 import { getBlockNumber } from '@/helpers/web3';
 import getProvider from '@/helpers/provider';
+
+const gateway = process.env.VUE_APP_IPFS_NODE || 'ipfs.io';
 
 export default {
   components: {
@@ -133,6 +136,7 @@ export default {
   data() {
     return {
       key: this.$route.params.key,
+      from: this.$route.params.from,
       loading: false,
       choices: [],
       blockNumber: -1,
@@ -177,6 +181,16 @@ export default {
     this.addChoice(2);
     this.blockNumber = await getBlockNumber(getProvider(this.space.network));
     this.form.snapshot = this.blockNumber;
+    if (this.from) {
+      try {
+        const proposal = await ipfsGet(gateway, this.from);
+        const msg = JSON.parse(proposal.msg);
+        this.form = msg.payload;
+        this.choices = msg.payload.choices.map((text, key) => ({ key, text }));
+      } catch (e) {
+        console.log(e);
+      }
+    }
   },
   methods: {
     ...mapActions(['send']),
