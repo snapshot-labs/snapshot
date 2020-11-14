@@ -74,7 +74,7 @@
                 @click="modalSkinsOpen = true"
                 class="text-left width-full mb-2"
               >
-                {{ form.skin ? form.skin : 'Select skin' }}
+                {{ form.skin ? form.skin : 'Default skin' }}
               </UiButton>
               <UiButton class="width-full mb-2">
                 <input
@@ -89,11 +89,22 @@
             <div
               v-for="(strategy, i) in form.strategies"
               :key="i"
-              class="p-4 border rounded-2 mb-3"
+              class="mb-3 position-relative"
             >
-              <h4 v-text="strategy.name" />
+              <a
+                @click="handleRemoveStrategy(i)"
+                class="position-absolute p-4 right-0"
+              >
+                <Icon name="close" size="12" />
+              </a>
+              <a
+                @click="handleEditStrategy(i)"
+                class="p-4 d-block border rounded-2"
+              >
+                <h4 v-text="strategy.name" />
+              </a>
             </div>
-            <UiButton class="d-block width-full">
+            <UiButton @click="handleAddStrategy" class="d-block width-full">
               Add strategy
             </UiButton>
           </Block>
@@ -126,9 +137,9 @@
                 />
               </UiButton>
               <UiButton class="width-full mb-2">
-                <input
+                <Checkbox
+                  :value="form.filters.onlyMembers"
                   v-model="form.filters.onlyMembers"
-                  type="number"
                   class="input width-full"
                   placeholder="Only members proposals"
                 />
@@ -174,6 +185,13 @@
         @close="modalSkinsOpen = false"
         v-model="form.skin"
       />
+      <ModalStrategy
+        :open="modalStrategyOpen"
+        @close="modalStrategyOpen = false"
+        @add="handleSubmitAddStrategy"
+        :strategy="currentStrategy"
+        :strategyIndex="currentStrategyIndex"
+      />
     </portal>
   </Container>
 </template>
@@ -182,6 +200,8 @@
 import { mapActions } from 'vuex';
 import { getAddress } from '@ethersproject/address';
 import { ipfsGet } from '@snapshot-labs/snapshot.js/src/utils';
+import { validateSchema } from '@snapshot-labs/snapshot.js/src/utils';
+import schemas from '@snapshot-labs/snapshot.js/src/schemas';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { resolveContent } from '@/helpers/web3';
 import getProvider from '@/helpers/provider';
@@ -196,8 +216,11 @@ export default {
       from: this.$route.params.from,
       space: {},
       currentContenthash: '',
+      currentStrategy: {},
+      currentStrategyIndex: false,
       modalNetworksOpen: false,
       modalSkinsOpen: false,
+      modalStrategyOpen: false,
       loaded: false,
       loading: false,
       form: {
@@ -207,8 +230,11 @@ export default {
     };
   },
   computed: {
+    validate() {
+      return validateSchema(schemas.space, this.form);
+    },
     isValid() {
-      return !this.loading && this.web3.account;
+      return !this.loading && this.web3.account && this.validate === true;
     },
     contenthash() {
       const address = this.web3.account
@@ -220,12 +246,12 @@ export default {
   async created() {
     try {
       const { protocolType, decoded } = await resolveContent(
-        getProvider(1),
+        getProvider('1'),
         this.key
       );
       this.currentContenthash = `${protocolType}://${decoded}`;
-      this.space = await ipfsGet(gateway, decoded, protocolType);
-      this.space.key = this.key;
+      const ts = (Date.now() / 1e3).toFixed();
+      this.space = await ipfsGet(gateway, `${decoded}?cb=${ts}`, protocolType);
       this.space.filters = this.space.filters || {};
       this.form = this.space;
     } catch (e) {
@@ -235,13 +261,44 @@ export default {
     this.loaded = true;
   },
   methods: {
-    ...mapActions(['notify']),
+    ...mapActions(['notify', 'send']),
     async handleSubmit() {
       this.loading = true;
+      try {
+        await this.send({
+          space: this.key,
+          type: 'settings',
+          payload: this.form
+        });
+      } catch (e) {
+        console.log(e);
+      }
       this.loading = false;
     },
     handleCopy() {
       this.notify('Copied!');
+    },
+    handleEditStrategy(i) {
+      this.currentStrategyIndex = i;
+      this.currentStrategy = clone(this.form.strategies[i]);
+      this.modalStrategyOpen = true;
+    },
+    handleRemoveStrategy(i) {
+      this.form.strategies = this.form.strategies.filter(
+        (strategy, index) => index !== i
+      );
+    },
+    handleAddStrategy() {
+      this.currentStrategyIndex = false;
+      this.currentStrategy = {};
+      this.modalStrategyOpen = true;
+    },
+    handleSubmitAddStrategy(strategy) {
+      if (this.currentStrategyIndex !== false) {
+        this.form.strategies[this.currentStrategyIndex] = strategy;
+      } else {
+        this.form.strategies = this.form.strategies.concat(strategy);
+      }
     }
   }
 };

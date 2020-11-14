@@ -15,6 +15,12 @@ export function jsonParse(input, fallback?) {
   }
 }
 
+export async function sleep(time) {
+  return new Promise(resolve => {
+    setTimeout(resolve, time);
+  });
+}
+
 export function clone(item) {
   return JSON.parse(JSON.stringify(item));
 }
@@ -89,7 +95,7 @@ export function filterSkins(skins, spaces, q) {
     .sort((a, b) => b.spaces.length - a.spaces.length);
 }
 
-export function filterStrategies(strategies, spaces, q) {
+export function filterStrategies(strategies, spaces, q = '') {
   return Object.values(strategies)
     .map((strategy: any) => {
       strategy.spaces = Object.entries(spaces)
