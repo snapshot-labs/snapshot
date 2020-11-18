@@ -24,7 +24,14 @@
         :proposal="proposal"
         v-model="form[i]"
         @close="selected = false"
-        v-else
+        v-else-if="i === 'aragon'"
+      />
+      <PluginOmen
+        :value="form[i]"
+        :proposal="proposal"
+        v-model="form[i]"
+        @close="selected = false"
+        v-else-if="i === 'omen'"
       />
     </div>
     <div v-if="!selected" class="p-4 overflow-hidden text-center border-top">
@@ -75,7 +82,7 @@ export default {
   },
   methods: {
     getLogoUrl(plugin) {
-      return `https://raw.githubusercontent.com/snapshot-labs/snapshot.js/master/src/plugins/${plugin}/logo.png`;
+      return `https://raw.githubusercontent.com/davidalbela/snapshot.js/feature/add-pregov-omen-plugin/src/plugins/${plugin}/logo.png`;
     }
   }
 };
