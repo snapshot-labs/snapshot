@@ -26,12 +26,12 @@
         @close="selected = false"
         v-else-if="i === 'aragon'"
       />
-      <PluginOmen
+      <PluginGnosis
         :value="form[i]"
         :proposal="proposal"
         v-model="form[i]"
         @close="selected = false"
-        v-else-if="i === 'omen'"
+        v-else-if="i === 'gnosis'"
       />
     </div>
     <div v-if="!selected" class="p-4 overflow-hidden text-center border-top">

@@ -9,7 +9,7 @@
         v-if="!input"
         class="width-full mb-2"
       >
-        Add market
+        Add Market
       </UiButton>
       <div v-else>
         <UiButton class="width-full mb-2">
@@ -69,8 +69,8 @@ export default {
   },
   methods: {
     getLogoUrl() {
-      return `https://raw.githubusercontent.com/davidalbela/snapshot.js/feature/add-pregov-omen-plugin/src/plugins/omen/logo.png`;
-    },    
+      return `https://raw.githubusercontent.com/davidalbela/snapshot.js/feature/add-pregov-omen-plugin/src/plugins/gnosis/logo.png`;
+    },
     addAction() {
       if (!this.input) this.input = {};
       this.input = {
