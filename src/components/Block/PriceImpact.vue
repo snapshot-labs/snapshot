@@ -9,8 +9,8 @@
         target="_blank"
         class="float-right"
       >
-        <span :aria-label="symbol" class="tooltipped tooltipped-n">
-          <Token :space="space.key" :symbolIndex="symbolIndex" />
+        <span :aria-label="space.name" class="tooltipped tooltipped-n">
+          <img class="d-inline-block v-align-middle line-height-0 circle border" :src="getLogoUrl()" width="22" height="22"/>
         </span>
         51%
       </a>
@@ -53,21 +53,36 @@
 </template>
 
 <script>
+import gnosisPlugin from '@snapshot-labs/snapshot.js/src/plugins/gnosis';
 
 export default {
   props: ['id', 'space', 'payload', 'results', 'votes'],
-  computed: {
-    ts() {
-      return (Date.now() / 1e3).toFixed();
-    },
-    titles() {
-      return this.space.strategies.map(strategy => strategy.params.symbol);
-    }
+  data() {
+    return {
+      plugin: new gnosisPlugin(),
+      baseToken: {},
+      quoteToken: {},
+      fixedProductMarketMaker: {}
+    };
+  },
+  created() {
+    this.plugin = new gnosisPlugin();
   },
   methods: {
-    async downloadReport() {
-      console.log("hello");
-    }
+    getLogoUrl() {
+      return `https://raw.githubusercontent.com/davidalbela/snapshot.js/feature/add-pregov-omen-plugin/src/plugins/gnosis/logo.png`;
+    },
+  },
+  async mounted () {
+      if (this.payload.metadata.plugins.gnosis) {
+        if (this.web3) {
+          this.baseToken = await this.plugin.getTokenInfo(this.web3, this.payload.metadata.plugins.gnosis.baseTokenAddress);
+          this.quoteToken = await this.plugin.getTokenInfo(this.web3, this.payload.metadata.plugins.gnosis.quoteCurrencyAddress);
+          if (this.web3.network) {
+            this.fixedProductMarketMaker = await this.plugin.getSubgrapInfo(this.web3.network.key, this.payload.metadata.plugins.gnosis.conditionId);
+          }
+        }
+      }
   }
 };
 </script>
