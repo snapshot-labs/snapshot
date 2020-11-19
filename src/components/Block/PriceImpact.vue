@@ -1,8 +1,8 @@
 <template>
-  <Block title="Omen Impact Prediction">
+  <Block title="Gnosis Impact">
     <div class="mb-1">
       <b>
-        Predicted Price Impact
+        Predicted Impact
       </b>
       <a
         :href="_explorer(space.network, payload.snapshot, 'block')"
