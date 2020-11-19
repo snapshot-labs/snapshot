@@ -148,6 +148,14 @@
           :results="results"
           :votes="votes"
         />
+        <BlockPriceImpact
+          v-if="proposal.msg.space === 'dai-rinkeby'"
+          :id="id"
+          :space="space"
+          :payload="payload"
+          :results="results"
+          :votes="votes"
+        />
         <BlockActions
           :id="id"
           :space="space"
