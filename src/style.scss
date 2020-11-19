@@ -224,3 +224,9 @@ textarea {
     color: var(--header-bg);
   }
 }
+
+.markdown-body blockquote {
+  padding: 0 1em;
+  color: var(--text-color);
+  border-left: .25em solid var(--text-color);
+}
