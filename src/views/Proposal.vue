@@ -149,7 +149,7 @@
           :votes="votes"
         />
         <BlockPriceImpact
-          v-if="proposal.msg.space === 'dai-rinkeby'"
+          v-if="proposal.msg.payload.metadata.plugins && proposal.msg.payload.metadata.plugins.gnosis"
           :id="id"
           :space="space"
           :payload="payload"
