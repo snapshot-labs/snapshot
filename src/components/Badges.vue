@@ -10,9 +10,9 @@ export default {
   props: ['address', 'space'],
   computed: {
     isCore() {
-      return this.space && this.space.members
-        ? this.space.members.includes(this.address)
-        : false;
+      if (!this.space.members) return false;
+      const members = this.space.members.map(address => address.toLowerCase());
+      return members.includes(this.address.toLowerCase());
     },
     isVerified() {
       return false;
