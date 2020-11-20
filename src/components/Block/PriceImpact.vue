@@ -4,16 +4,12 @@
       <b>
         Predicted Impact
       </b>
-      <a
-        :href="_explorer(space.network, payload.snapshot, 'block')"
-        target="_blank"
-        class="float-right"
-      >
-        <span :aria-label="space.name" class="tooltipped tooltipped-n">
-          <img class="d-inline-block v-align-middle line-height-0 circle border" :src="getLogoUrl()" width="22" height="22"/>
+      <div class="float-right">
+        <span :aria-label="this.baseToken.name" class="tooltipped tooltipped-n">
+          <img class="d-inline-block v-align-middle line-height-0 circle border" :src="this.baseTokenUrl" width="22" height="22"/>
         </span>
         {{ this.predictPriceImpact.toFixed(2) }}%
-      </a>
+      </div>
     </div>
     <div class="mb-1">
       <b>Option 1: </b>
@@ -30,7 +26,7 @@
     <div class="mb-1" style="padding-top: 12px;">
       <b>{{ this.baseToken.symbol }} Market</b>
       <a
-        :href="_ipfsUrl(id)"
+        :href="getMarketUrl(this.baseProductMarketMaker)"
         target="_blank"
         class="float-right"
       >
@@ -41,7 +37,7 @@
       <div class="mb-1">
         <b>{{ this.quoteToken.symbol }} Market</b>
         <a
-          :href="_ipfsUrl(id)"
+          :href="getMarketUrl(this.quoteProductMarketMaker)"
           target="_blank"
           class="float-right"
         >
@@ -61,40 +57,42 @@ export default {
     return {
       plugin: new gnosisPlugin(),
       baseToken: {},
+      baseTokenUrl: '',
       quoteToken: {},
-      pricesRate: [], 
-      fixedProductMarketMakers: {},
+      baseProductMarketMaker: {},
+      quoteProductMarketMaker: {},
       priceFirstOption: 0.00,
       priceSecondOption: 0.00,
       predictPriceImpact: 0.00,
-
-
     };
   },
   async created () {
     this.baseToken = await this.plugin.getTokenInfo(this.$auth.web3, this.payload.metadata.plugins.gnosis.baseTokenAddress);
+    this.baseTokenUrl = this.getLogoUrl(this.baseToken.checksumAddress);
     this.quoteToken = await this.plugin.getTokenInfo(this.$auth.web3, this.payload.metadata.plugins.gnosis.quoteCurrencyAddress);
-    this.pricesRate = await this.plugin.getTokenPrices([this.baseToken.address, this.quoteToken.address]);
-    const conditionQuery = await this.plugin.getSubgrapInfo(this.web3.network.key, this.payload.metadata.plugins.gnosis.conditionId);
-    this.fixedProductMarketMakers = conditionQuery.condition.fixedProductMarketMakers;
-    if (this.fixedProductMarketMakers.length < 2) {
-      throw new Error(`The conditon id ${conditionId} has not two Product Market Makers.`);
-    }
-    this.priceFirstOption = this.getBinaryPredictTokenPrice(0);
-    this.priceSecondOption = this.getBinaryPredictTokenPrice(1);
-    this.predictPriceImpact = (this.priceFirstOption - this.priceSecondOption) / this.priceSecondOption;
+
+    const conditionQuery = await this.plugin.getSubgrapInfo(this.web3.network.key,
+      this.payload.metadata.plugins.gnosis.conditionId);
+    this.baseProductMarketMaker = conditionQuery.condition.fixedProductMarketMakers
+      .find(market => market.collateralToken === this.baseToken.address);
+    this.quoteProductMarketMaker = conditionQuery.condition.fixedProductMarketMakers
+      .find(market => market.collateralToken === this.quoteToken.address);
+
+    this.priceFirstOption = this.getTokenPrice(0);
+    this.priceSecondOption = this.getTokenPrice(1);
+    this.predictPriceImpact = ((this.priceFirstOption - this.priceSecondOption) / this.priceSecondOption) * 100;
   },
   methods: {
-    getLogoUrl() {
-      return `https://raw.githubusercontent.com/davidalbela/snapshot.js/feature/add-pregov-omen-plugin/src/plugins/gnosis/logo.png`;
+    getLogoUrl(checksumAddress) {
+      return `https://gnosis-safe-token-logos.s3.amazonaws.com/${checksumAddress}.png`
     },
-      getBinaryPredictTokenPrice(index) {
-      return parseFloat(this.pricesRate[this.baseToken.address]) * (
-        parseFloat(this.fixedProductMarketMakers[0].outcomeTokenMarginalPrices[index]) /
-        parseFloat(this.fixedProductMarketMakers[1].outcomeTokenMarginalPrices[index])
-      );
-
+    getMarketUrl(marketIndex) {
+      return `https://omen.eth.link/#/${marketIndex.id}`;
     },
-  },  
+    getTokenPrice(outcomeIndex) {
+      return parseFloat(this.baseProductMarketMaker.outcomeTokenMarginalPrices[outcomeIndex]) /
+        parseFloat(this.quoteProductMarketMaker.outcomeTokenMarginalPrices[outcomeIndex]);
+    }
+  },
 };
 </script>
