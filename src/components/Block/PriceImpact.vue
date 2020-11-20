@@ -18,13 +18,13 @@
     <div class="mb-1">
       <b>Option 1: </b>
       <span class="float-right">
-        1 GNO = 70 Dai
+        1 GNO = 1.15 Dai
       </span>
     </div>
     <div class="mb-1 border-bottom bg-gray-dark rounded-top-0 rounded-md-top-2" style="padding-bottom: 12px;">
       <b>Option 2: </b>
       <span class="float-right">
-        1 GNO = 54 Dai
+        1 GNO = 2.26 Dai
       </span>
     </div>
     <div class="mb-1" style="padding-top: 12px;">
@@ -62,27 +62,40 @@ export default {
       plugin: new gnosisPlugin(),
       baseToken: {},
       quoteToken: {},
-      fixedProductMarketMaker: {}
+      pricesRate: [], 
+      fixedProductMarketMakers: {},
     };
-  },
-  created() {
+  },  
+  beforeCreate() {
     this.plugin = new gnosisPlugin();
+  },
+  async created () {
+    this.baseToken = await this.plugin.getTokenInfo(this.$auth.web3, this.payload.metadata.plugins.gnosis.baseTokenAddress);
+    this.quoteToken = await this.plugin.getTokenInfo(this.$auth.web3, this.payload.metadata.plugins.gnosis.quoteCurrencyAddress);
+    this.pricesRate = await this.plugin.getTokenPrices([this.baseToken.address, this.quoteToken.address]);
+    const conditionQuery = await this.plugin.getSubgrapInfo(this.web3.network.key, this.payload.metadata.plugins.gnosis.conditionId);
+    this.fixedProductMarketMakers = conditionQuery.condition.fixedProductMarketMakers;
+    if (this.fixedProductMarketMakers.length < 2) {
+      throw new Error(`The conditon id ${conditionId} has not two Product Market Makers.`);
+    }
+    const priceFirstOption = this.getBinaryPredictTokenPrice(0);
+    const priceSecondOption = this.getBinaryPredictTokenPrice(1);
+    const predictPriceImpact = (priceFirstOption - priceSecondOption) / priceSecondOption;
+    console.log(priceFirstOption);
+    console.log(priceSecondOption);
+    console.log(predictPriceImpact);
   },
   methods: {
     getLogoUrl() {
       return `https://raw.githubusercontent.com/davidalbela/snapshot.js/feature/add-pregov-omen-plugin/src/plugins/gnosis/logo.png`;
     },
-  },
-  async mounted () {
-      if (this.payload.metadata.plugins.gnosis) {
-        if (this.web3) {
-          this.baseToken = await this.plugin.getTokenInfo(this.web3, this.payload.metadata.plugins.gnosis.baseTokenAddress);
-          this.quoteToken = await this.plugin.getTokenInfo(this.web3, this.payload.metadata.plugins.gnosis.quoteCurrencyAddress);
-          if (this.web3.network) {
-            this.fixedProductMarketMaker = await this.plugin.getSubgrapInfo(this.web3.network.key, this.payload.metadata.plugins.gnosis.conditionId);
-          }
-        }
-      }
-  }
+    getBinaryPredictTokenPrice(index) {
+      return parseFloat(this.pricesRate[this.baseToken.address]) * (
+        parseFloat(this.fixedProductMarketMakers[0].outcomeTokenMarginalPrices[index]) /
+        parseFloat(this.fixedProductMarketMakers[1].outcomeTokenMarginalPrices[index])
+      );
+
+    },
+  },  
 };
 </script>

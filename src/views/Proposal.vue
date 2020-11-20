@@ -149,7 +149,7 @@
           :votes="votes"
         />
         <BlockPriceImpact
-          v-if="proposal.msg.payload.metadata.plugins && proposal.msg.payload.metadata.plugins.gnosis"
+          v-if="this.$auth.web3 && proposal.msg.payload.metadata.plugins && proposal.msg.payload.metadata.plugins.gnosis"
           :id="id"
           :space="space"
           :payload="payload"
