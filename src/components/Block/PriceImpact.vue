@@ -12,23 +12,23 @@
         <span :aria-label="space.name" class="tooltipped tooltipped-n">
           <img class="d-inline-block v-align-middle line-height-0 circle border" :src="getLogoUrl()" width="22" height="22"/>
         </span>
-        51%
+        {{ this.predictPriceImpact.toFixed(2) }}%
       </a>
     </div>
     <div class="mb-1">
       <b>Option 1: </b>
       <span class="float-right">
-        1 GNO = 1.15 Dai
+        1 {{ this.baseToken.symbol }} = {{ this.priceFirstOption.toFixed(2) }} {{ this.quoteToken.symbol }}
       </span>
     </div>
     <div class="mb-1 border-bottom bg-gray-dark rounded-top-0 rounded-md-top-2" style="padding-bottom: 12px;">
       <b>Option 2: </b>
       <span class="float-right">
-        1 GNO = 2.26 Dai
+        1 {{ this.baseToken.symbol }} = {{ this.priceSecondOption.toFixed(2) }} {{ this.quoteToken.symbol }}
       </span>
     </div>
     <div class="mb-1" style="padding-top: 12px;">
-      <b>GNO Market</b>
+      <b>{{ this.baseToken.symbol }} Market</b>
       <a
         :href="_ipfsUrl(id)"
         target="_blank"
@@ -39,7 +39,7 @@
     </div>
     <div>
       <div class="mb-1">
-        <b>Dai Market</b>
+        <b>{{ this.quoteToken.symbol }} Market</b>
         <a
           :href="_ipfsUrl(id)"
           target="_blank"
@@ -64,10 +64,12 @@ export default {
       quoteToken: {},
       pricesRate: [], 
       fixedProductMarketMakers: {},
+      priceFirstOption: 0.00,
+      priceSecondOption: 0.00,
+      predictPriceImpact: 0.00,
+
+
     };
-  },  
-  beforeCreate() {
-    this.plugin = new gnosisPlugin();
   },
   async created () {
     this.baseToken = await this.plugin.getTokenInfo(this.$auth.web3, this.payload.metadata.plugins.gnosis.baseTokenAddress);
@@ -78,18 +80,15 @@ export default {
     if (this.fixedProductMarketMakers.length < 2) {
       throw new Error(`The conditon id ${conditionId} has not two Product Market Makers.`);
     }
-    const priceFirstOption = this.getBinaryPredictTokenPrice(0);
-    const priceSecondOption = this.getBinaryPredictTokenPrice(1);
-    const predictPriceImpact = (priceFirstOption - priceSecondOption) / priceSecondOption;
-    console.log(priceFirstOption);
-    console.log(priceSecondOption);
-    console.log(predictPriceImpact);
+    this.priceFirstOption = this.getBinaryPredictTokenPrice(0);
+    this.priceSecondOption = this.getBinaryPredictTokenPrice(1);
+    this.predictPriceImpact = (this.priceFirstOption - this.priceSecondOption) / this.priceSecondOption;
   },
   methods: {
     getLogoUrl() {
       return `https://raw.githubusercontent.com/davidalbela/snapshot.js/feature/add-pregov-omen-plugin/src/plugins/gnosis/logo.png`;
     },
-    getBinaryPredictTokenPrice(index) {
+      getBinaryPredictTokenPrice(index) {
       return parseFloat(this.pricesRate[this.baseToken.address]) * (
         parseFloat(this.fixedProductMarketMakers[0].outcomeTokenMarginalPrices[index]) /
         parseFloat(this.fixedProductMarketMakers[1].outcomeTokenMarginalPrices[index])
