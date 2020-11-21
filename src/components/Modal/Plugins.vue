@@ -82,7 +82,7 @@ export default {
   },
   methods: {
     getLogoUrl(plugin) {
-      return `https://raw.githubusercontent.com/davidalbela/snapshot.js/feature/add-pregov-omen-plugin/src/plugins/${plugin}/logo.png`;
+      return `https://raw.githubusercontent.com/snapshot-labs/snapshot.js/master/src/plugins/${plugin}/logo.png`;
     }
   }
 };
