@@ -251,8 +251,8 @@ export default {
         this.key
       );
       this.currentContenthash = `${protocolType}://${decoded}`;
-      const ts = (Date.now() / 1e3).toFixed();
-      this.space = await ipfsGet(gateway, `${decoded}?cb=${ts}`, protocolType);
+      // const ts = (Date.now() / 1e3).toFixed();
+      this.space = await ipfsGet(gateway, decoded, protocolType);
       this.space.filters = this.space.filters || {};
       this.form = this.space;
     } catch (e) {
