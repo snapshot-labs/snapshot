@@ -20,6 +20,15 @@
         >
           <UiButton>New proposal</UiButton>
         </router-link>
+        <router-link
+          v-if="isMember && isEns"
+          :to="{ name: 'settings', params: { key } }"
+          class="ml-2"
+        >
+          <UiButton>
+            <Icon size="24" name="gear" class="mr-n4 ml-n4 mt-n1 d-block" />
+          </UiButton>
+        </router-link>
       </div>
     </Container>
     <Container :slim="true">
@@ -101,6 +110,16 @@ export default {
           .filter(proposal => filterProposals(this.space, proposal, this.tab))
           .sort((a, b) => b[1].msg.payload.end - a[1].msg.payload.end, 0)
       );
+    },
+    isMember() {
+      const members = this.space.members.map(address => address.toLowerCase());
+      return (
+        this.$auth.isAuthenticated &&
+        members.includes(this.web3.account.toLowerCase())
+      );
+    },
+    isEns() {
+      return this.key.includes('.eth');
     }
   },
   methods: {
