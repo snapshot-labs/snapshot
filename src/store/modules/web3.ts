@@ -1,9 +1,9 @@
 import Vue from 'vue';
 import { Web3Provider } from '@ethersproject/providers';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue';
+import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import store from '@/store';
-import getProvider from '@/helpers/provider';
 import { formatUnits } from '@ethersproject/units';
 
 let wsProvider;

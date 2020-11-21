@@ -202,9 +202,9 @@ import { getAddress } from '@ethersproject/address';
 import { ipfsGet } from '@snapshot-labs/snapshot.js/src/utils';
 import { validateSchema } from '@snapshot-labs/snapshot.js/src/utils';
 import schemas from '@snapshot-labs/snapshot.js/src/schemas';
+import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { resolveContent } from '@/helpers/web3';
-import getProvider from '@/helpers/provider';
 import { clone } from '@/helpers/utils';
 
 const gateway = process.env.VUE_APP_IPFS_NODE || 'ipfs.io';

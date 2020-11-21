@@ -94,9 +94,9 @@ import { mapActions } from 'vuex';
 import { isAddress } from '@ethersproject/address';
 import { formatBytes32String } from '@ethersproject/strings';
 import { sendTransaction } from '@snapshot-labs/snapshot.js/src/utils';
+import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import abi from '@/helpers/abi';
 import { getDelegates, getDelegators } from '@/helpers/delegation';
-import getProvider from '@/helpers/provider';
 
 const contractAddress = '0x469788fE6E9E9681C6ebF3bF78e7Fd26Fc015446';
 
