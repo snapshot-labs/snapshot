@@ -20,6 +20,15 @@
         >
           <UiButton>New proposal</UiButton>
         </router-link>
+        <router-link
+          v-if="isMember && isEns"
+          :to="{ name: 'settings', params: { key } }"
+          class="ml-2"
+        >
+          <UiButton>
+            <Icon size="24" name="gear" class="mr-n4 ml-n4 mt-n1 d-block" />
+          </UiButton>
+        </router-link>
       </div>
     </Container>
     <Container :slim="true">
@@ -32,7 +41,7 @@
             :key="state"
             v-text="state"
             :to="`/${key}/${state}`"
-            :class="selectedState === state && 'text-white'"
+            :class="tab === state && 'text-white'"
             class="mr-3 text-gray tab"
           />
         </div>
@@ -60,6 +69,7 @@
 
 <script>
 import { mapActions } from 'vuex';
+import { filterProposals } from '@/helpers/utils';
 
 export default {
   data() {
@@ -67,7 +77,7 @@ export default {
       loading: false,
       loaded: false,
       proposals: {},
-      selectedState: 'all'
+      tab: 'all'
     };
   },
   computed: {
@@ -94,45 +104,22 @@ export default {
       return Object.keys(this.proposals).length;
     },
     proposalsWithFilter() {
-      const ts = (Date.now() / 1e3).toFixed();
       if (this.totalProposals === 0) return {};
       return Object.fromEntries(
         Object.entries(this.proposals)
-          .filter(proposal => {
-            const core = this.space.members.map(address =>
-              address.toLowerCase()
-            );
-            const author = proposal[1].address.toLowerCase();
-            if (
-              (this.space.filters.onlyMembers && !core.includes(author)) ||
-              this.space.filters.invalids.includes(proposal[1].authorIpfsHash)
-            )
-              return false;
-
-            if (
-              ['core', 'all'].includes(this.selectedState) &&
-              core.includes(author) &&
-              !this.space.filters.invalids.includes(proposal[1].authorIpfsHash)
-            )
-              return true;
-
-            if (proposal[1].score < this.space.filters.minScore) return false;
-
-            if (
-              this.selectedState === 'all' ||
-              (this.selectedState === 'active' &&
-                proposal[1].msg.payload.start <= ts &&
-                proposal[1].msg.payload.end > ts) ||
-              (this.selectedState === 'community' && !core.includes(author)) ||
-              (this.selectedState === 'closed' &&
-                proposal[1].msg.payload.end <= ts) ||
-              (this.selectedState === 'pending' &&
-                proposal[1].msg.payload.start > ts)
-            )
-              return true;
-          })
+          .filter(proposal => filterProposals(this.space, proposal, this.tab))
           .sort((a, b) => b[1].msg.payload.end - a[1].msg.payload.end, 0)
       );
+    },
+    isMember() {
+      const members = this.space.members.map(address => address.toLowerCase());
+      return (
+        this.$auth.isAuthenticated &&
+        members.includes(this.web3.account.toLowerCase())
+      );
+    },
+    isEns() {
+      return this.key.includes('.eth');
     }
   },
   methods: {
@@ -140,10 +127,8 @@ export default {
   },
   async created() {
     this.loading = true;
-    this.selectedState =
-      this.$route.params.tab ||
-      this.space.filters.defaultTab ||
-      this.selectedState;
+    this.tab =
+      this.$route.params.tab || this.space.filters.defaultTab || this.tab;
     this.proposals = await this.getProposals(this.space);
     this.loading = false;
     this.loaded = true;

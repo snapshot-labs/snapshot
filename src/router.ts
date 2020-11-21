@@ -19,7 +19,7 @@ const routes: Array<RouteConfig> = [
   { path: '/skins', name: 'skins', component: Explore },
   { path: '/delegate', name: 'delegate', component: Delegate },
   { path: '/:key/proposal/:id', name: 'proposal', component: Proposal },
-  { path: '/:key/create', name: 'create', component: Create },
+  { path: '/:key/create/:from?', name: 'create', component: Create },
   { path: '/:key', name: 'proposals', component: Proposals },
   { path: '/:key/:tab', name: 'proposals-tab', component: Proposals },
   {

@@ -1,6 +1,8 @@
 import { bufferToHex } from 'ethereumjs-util';
-import resolveENSContentHash from '@/helpers/resolveENSContentHash';
-import { decodeContenthash } from '@/helpers/content';
+import {
+  resolveENSContentHash,
+  decodeContenthash
+} from '@snapshot-labs/snapshot.js/src/utils/contentHash';
 
 export async function resolveContent(provider, name) {
   const contentHash = await resolveENSContentHash(name, provider);
