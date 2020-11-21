@@ -224,6 +224,7 @@ export default {
       loaded: false,
       loading: false,
       form: {
+        strategies: [],
         filters: {}
       },
       networks
