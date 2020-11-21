@@ -52,7 +52,7 @@
 import gnosisPlugin from '@snapshot-labs/snapshot.js/src/plugins/gnosis';
 
 export default {
-  props: ['id', 'space', 'payload', 'results', 'votes'],
+  props: ['conditionId', 'baseTokenAddress', 'quoteCurrencyAddress'],
   data() {
     return {
       plugin: new gnosisPlugin(),
@@ -67,14 +67,13 @@ export default {
     };
   },
   async created () {
-    this.baseToken = await this.plugin.getTokenInfo(this.$auth.web3, this.payload.metadata.plugins.gnosis.baseTokenAddress);
+    this.baseToken = await this.plugin.getTokenInfo(this.$auth.web3, this.baseTokenAddress);
     this.baseTokenUrl = this.getLogoUrl(this.baseToken.checksumAddress);
-    this.quoteToken = await this.plugin.getTokenInfo(this.$auth.web3, this.payload.metadata.plugins.gnosis.quoteCurrencyAddress);
-
+    this.quoteToken = await this.plugin.getTokenInfo(this.$auth.web3, this.quoteCurrencyAddress);
     const conditionQuery = await this.plugin.getSubgrapInfo(this.web3.network.key,
-      this.payload.metadata.plugins.gnosis.conditionId);
+      this.conditionId);
     this.baseProductMarketMaker = conditionQuery.condition.fixedProductMarketMakers
-      .find(market => market.collateralToken === this.baseToken.address);
+      .find(market => market.collateralToken === this.baseTokenAddress);
     this.quoteProductMarketMaker = conditionQuery.condition.fixedProductMarketMakers
       .find(market => market.collateralToken === this.quoteToken.address);
 
