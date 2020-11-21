@@ -36,20 +36,33 @@
             required
           />
         </UiButton>
-        <UiButton v-show="input.conditionId && input.baseTokenAddress && input.quoteCurrencyAddress"  @click="removeAction" class="width-full mb-2">
+        <UiButton
+          v-if="
+            input.conditionId &&
+              input.baseTokenAddress &&
+              input.quoteCurrencyAddress
+          "
+          @click="removeAction"
+          class="width-full mb-2"
+        >
           Remove action
         </UiButton>
       </div>
     </div>
     <div v-if="this.preview">
       <BlockPriceImpact
-        v-if="this.$auth.web3 && input.conditionId && input.baseTokenAddress && input.quoteCurrencyAddress"
+        v-if="
+          this.$auth.web3 &&
+            input.conditionId &&
+            input.baseTokenAddress &&
+            input.quoteCurrencyAddress
+        "
         :conditionId="input.conditionId"
         :baseTokenAddress="input.baseTokenAddress"
         :quoteCurrencyAddress="input.quoteCurrencyAddress"
       />
       <UiButton @click="backAction" class="width-full mb-2">
-          Back
+        Back
       </UiButton>
     </div>
     <UiButton @click="handleSubmit" class="button--submit width-full">
@@ -64,7 +77,7 @@ export default {
   data() {
     return {
       input: false,
-      preview: false,
+      preview: false
     };
   },
   computed: {
@@ -82,9 +95,9 @@ export default {
     addAction() {
       if (!this.input) this.input = {};
       this.input = {
-          conditionId: '',
-          baseTokenAddress: '',
-          quoteCurrencyAddress: ''
+        conditionId: '',
+        baseTokenAddress: '',
+        quoteCurrencyAddress: ''
       };
     },
     removeAction() {
