@@ -11,7 +11,7 @@
       >
         Add Market
       </UiButton>
-      <div v-else>
+      <div v-else-if="!this.preview">
         <UiButton class="width-full mb-2">
           <input
             v-model="input.conditionId"
@@ -36,13 +36,24 @@
             required
           />
         </UiButton>
-        <UiButton @click="removeAction" class="width-full mb-2">
+        <UiButton v-show="input.conditionId && input.baseTokenAddress && input.quoteCurrencyAddress"  @click="removeAction" class="width-full mb-2">
           Remove action
         </UiButton>
       </div>
     </div>
+    <div v-if="this.preview">
+      <BlockPriceImpact
+        v-if="this.$auth.web3 && input.conditionId && input.baseTokenAddress && input.quoteCurrencyAddress"
+        :conditionId="input.conditionId"
+        :baseTokenAddress="input.baseTokenAddress"
+        :quoteCurrencyAddress="input.quoteCurrencyAddress"
+      />
+      <UiButton @click="backAction" class="width-full mb-2">
+          Back
+      </UiButton>
+    </div>
     <UiButton @click="handleSubmit" class="button--submit width-full">
-      {{ choice === proposal.choices.length ? 'Confirm' : 'Preview' }}
+      {{ preview ? 'Confirm' : 'Preview' }}
     </UiButton>
   </form>
 </template>
@@ -53,7 +64,7 @@ export default {
   data() {
     return {
       input: false,
-      choice: 1
+      preview: false,
     };
   },
   computed: {
@@ -63,9 +74,6 @@ export default {
   },
   mounted() {
     if (this.value) return (this.input = this.value);
-    this.input = Object.fromEntries(
-      this.proposal.choices.map((choice, i) => [`choice${i + 1}`, false])
-    );
   },
   methods: {
     getLogoUrl() {
@@ -82,13 +90,16 @@ export default {
     removeAction() {
       this.input = false;
     },
+    backAction() {
+      this.preview = false;
+    },
     handleSubmit() {
-      if (this.choice === this.proposal.choices.length) {
+      if (this.preview) {
         this.$emit('input', this.input);
         this.$emit('close');
-        this.choice = 1;
+        this.preview = false;
       } else {
-        this.choice++;
+        this.preview = true;
       }
     }
   }
