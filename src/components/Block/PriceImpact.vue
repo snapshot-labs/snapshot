@@ -6,7 +6,12 @@
       </b>
       <div class="float-right">
         <span :aria-label="this.baseToken.name" class="tooltipped tooltipped-n">
-          <img class="d-inline-block v-align-middle line-height-0 circle border" :src="this.baseTokenUrl" width="22" height="22"/>
+          <img
+            class="d-inline-block v-align-middle line-height-0 circle border"
+            :src="this.baseTokenUrl"
+            width="22"
+            height="22"
+          />
         </span>
         {{ this.predictPriceImpact.toFixed(2) }}%
       </div>
@@ -14,13 +19,24 @@
     <div class="mb-1">
       <b>Option 1: </b>
       <span class="float-right">
-        1 {{ this.baseToken.symbol }} = {{ this.priceFirstOption.toFixed(2) }} {{ this.quoteToken.symbol }}
+        1
+        {{ this.baseToken.symbol }}
+        =
+        {{ this.priceFirstOption.toFixed(2) }}
+        {{ this.quoteToken.symbol }}
       </span>
     </div>
-    <div class="mb-1 border-bottom bg-gray-dark rounded-top-0 rounded-md-top-2" style="padding-bottom: 12px;">
+    <div
+      class="mb-1 border-bottom bg-gray-dark rounded-top-0 rounded-md-top-2"
+      style="padding-bottom: 12px;"
+    >
       <b>Option 2: </b>
       <span class="float-right">
-        1 {{ this.baseToken.symbol }} = {{ this.priceSecondOption.toFixed(2) }} {{ this.quoteToken.symbol }}
+        1
+        {{ this.baseToken.symbol }}
+        =
+        {{ this.priceSecondOption.toFixed(2) }}
+        {{ this.quoteToken.symbol }}
       </span>
     </div>
     <div class="mb-1" style="padding-top: 12px;">
@@ -61,37 +77,68 @@ export default {
       quoteToken: {},
       baseProductMarketMaker: {},
       quoteProductMarketMaker: {},
-      priceFirstOption: 0.00,
-      priceSecondOption: 0.00,
-      predictPriceImpact: 0.00,
+      quoteCurrencyPrice: 0.0,
+      priceFirstOption: 0.0,
+      priceSecondOption: 0.0,
+      predictPriceImpact: 0.0
     };
   },
-  async created () {
-    this.baseToken = await this.plugin.getTokenInfo(this.$auth.web3, this.baseTokenAddress);
+  async created() {
+    this.baseToken = await this.plugin.getTokenInfo(
+      this.$auth.web3,
+      this.baseTokenAddress
+    );
     this.baseTokenUrl = this.getLogoUrl(this.baseToken.checksumAddress);
-    this.quoteToken = await this.plugin.getTokenInfo(this.$auth.web3, this.quoteCurrencyAddress);
-    const conditionQuery = await this.plugin.getSubgrapInfo(this.web3.network.key,
-      this.conditionId);
-    this.baseProductMarketMaker = conditionQuery.condition.fixedProductMarketMakers
-      .find(market => market.collateralToken === this.baseTokenAddress);
-    this.quoteProductMarketMaker = conditionQuery.condition.fixedProductMarketMakers
-      .find(market => market.collateralToken === this.quoteToken.address);
+    this.quoteToken = await this.plugin.getTokenInfo(
+      this.$auth.web3,
+      this.quoteCurrencyAddress
+    );
+    const conditionQuery = await this.plugin.getOmenCondition(
+      this.web3.network.key,
+      this.conditionId
+    );
+    this.baseProductMarketMaker = conditionQuery.condition.fixedProductMarketMakers.find(
+      market => market.collateralToken === this.baseTokenAddress
+    );
+    this.quoteProductMarketMaker = conditionQuery.condition.fixedProductMarketMakers.find(
+      market => market.collateralToken === this.quoteToken.address
+    );
 
+    const tokenPairQuery = await this.plugin.getUniswapPair(
+      this.web3.network.key,
+      this.quoteCurrencyAddress,
+      this.baseTokenAddress
+    );
+    if (tokenPairQuery.pairs.length > 0) {
+      this.quoteCurrencyPrice = parseFloat(tokenPairQuery.pairs[0].token0Price);
+    }
     this.priceFirstOption = this.getTokenPrice(0);
     this.priceSecondOption = this.getTokenPrice(1);
-    this.predictPriceImpact = ((this.priceFirstOption - this.priceSecondOption) / this.priceSecondOption) * 100;
+    this.predictPriceImpact =
+      ((this.priceFirstOption - this.priceSecondOption) /
+        this.priceSecondOption) *
+      100;
   },
   methods: {
     getLogoUrl(checksumAddress) {
-      return `https://gnosis-safe-token-logos.s3.amazonaws.com/${checksumAddress}.png`
+      return `https://gnosis-safe-token-logos.s3.amazonaws.com/${checksumAddress}.png`;
     },
     getMarketUrl(marketIndex) {
       return `https://omen.eth.link/#/${marketIndex.id}`;
     },
     getTokenPrice(outcomeIndex) {
-      return parseFloat(this.baseProductMarketMaker.outcomeTokenMarginalPrices[outcomeIndex]) /
-        parseFloat(this.quoteProductMarketMaker.outcomeTokenMarginalPrices[outcomeIndex]);
+      return (
+        this.quoteCurrencyPrice *
+        (parseFloat(
+          this.baseProductMarketMaker.outcomeTokenMarginalPrices[outcomeIndex]
+        ) /
+          parseFloat(
+            this.quoteProductMarketMaker.outcomeTokenMarginalPrices[
+              outcomeIndex
+            ]
+          ))
+      );
     }
-  },
+  }
 };
 </script>
