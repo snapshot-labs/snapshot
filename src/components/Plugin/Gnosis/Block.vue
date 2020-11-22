@@ -69,7 +69,7 @@ import Plugin from '@snapshot-labs/snapshot.js/src/plugins/gnosis';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 
 export default {
-  props: ['conditionId', 'baseTokenAddress', 'quoteCurrencyAddress'],
+  props: ['proposalConfig'],
   data() {
     return {
       plugin: new Plugin(),
@@ -87,19 +87,19 @@ export default {
   async created() {
     this.baseToken = await this.plugin.getTokenInfo(
       getProvider(this.web3.network.key),
-      this.baseTokenAddress
+      this.proposalConfig.baseTokenAddress
     );
     this.baseTokenUrl = this.getLogoUrl(this.baseToken.checksumAddress);
     this.quoteToken = await this.plugin.getTokenInfo(
       getProvider(this.web3.network.key),
-      this.quoteCurrencyAddress
+      this.proposalConfig.quoteCurrencyAddress
     );
     const conditionQuery = await this.plugin.getOmenCondition(
       this.web3.network.key,
-      this.conditionId
+      this.proposalConfig.conditionId
     );
     this.baseProductMarketMaker = conditionQuery.condition.fixedProductMarketMakers.find(
-      market => market.collateralToken === this.baseTokenAddress
+      market => market.collateralToken === this.proposalConfig.baseTokenAddress
     );
     this.quoteProductMarketMaker = conditionQuery.condition.fixedProductMarketMakers.find(
       market => market.collateralToken === this.quoteToken.address
@@ -107,8 +107,8 @@ export default {
 
     const tokenPairQuery = await this.plugin.getUniswapPair(
       this.web3.network.key,
-      this.quoteCurrencyAddress,
-      this.baseTokenAddress
+      this.proposalConfig.quoteCurrencyAddress,
+      this.proposalConfig.baseTokenAddress
     );
     if (tokenPairQuery.pairs.length > 0) {
       this.quoteCurrencyPrice = parseFloat(tokenPairQuery.pairs[0].token0Price);

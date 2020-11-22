@@ -36,11 +36,7 @@
       </div>
     </div>
     <div v-if="this.preview">
-      <PluginGnosisBlock
-        :conditionId="input.conditionId"
-        :baseTokenAddress="input.baseTokenAddress"
-        :quoteCurrencyAddress="input.quoteCurrencyAddress"
-      />
+      <PluginGnosisBlock :proposalConfig="input" />
     </div>
     <UiButton
       v-if="!preview && input"

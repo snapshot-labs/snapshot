@@ -148,27 +148,15 @@
           :results="results"
           :votes="votes"
         />
-        <PluginGnosisBlock
-          v-if="
-            this.$auth.web3 &&
-              proposal.msg.payload.metadata.plugins &&
-              proposal.msg.payload.metadata.plugins.gnosis
-          "
-          :conditionId="
-            proposal.msg.payload.metadata.plugins.gnosis.conditionId
-          "
-          :baseTokenAddress="
-            proposal.msg.payload.metadata.plugins.gnosis.baseTokenAddress
-          "
-          :quoteCurrencyAddress="
-            proposal.msg.payload.metadata.plugins.gnosis.quoteCurrencyAddress
-          "
-        />
         <BlockActions
           :id="id"
           :space="space"
           :payload="payload"
           :results="results"
+        />
+        <PluginGnosisBlock
+          v-if="_get(payload, 'metadata.plugins.gnosis.baseTokenAddress')"
+          :proposalConfig="payload.metadata.plugins.gnosis"
         />
       </div>
     </div>
