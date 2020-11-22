@@ -3,6 +3,8 @@ import {
   subgraphRequest
 } from '@snapshot-labs/snapshot.js/src/utils';
 
+export const contractAddress = '0x469788fE6E9E9681C6ebF3bF78e7Fd26Fc015446';
+
 export async function getDelegates(network, address, snapshot = 'latest') {
   const params = {
     delegations: {

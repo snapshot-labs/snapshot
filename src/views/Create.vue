@@ -22,10 +22,14 @@
             />
             <textarea-autosize
               v-model="form.body"
-              maxlength="10240"
-              class="input pt-1 mb-6"
+              class="input pt-1"
               placeholder="What is your proposal?"
             />
+            <div class="mb-6">
+              <p v-if="form.body.length > bodyLimit" class="text-red mt-4">
+                -{{ _numeral(-(bodyLimit - form.body.length)) }}
+              </p>
+            </div>
             <div v-if="form.body">
               <h4 class="mb-4">Preview</h4>
               <UiMarkdown :body="form.body" />
@@ -63,7 +67,11 @@
       <div class="col-12 col-lg-4 float-left">
         <Block
           title="Actions"
-          :icon="space.network === '4' ? 'stars' : undefined"
+          :icon="
+            space.plugins && Object.keys(space.plugins).length > 0
+              ? 'stars'
+              : undefined
+          "
           @submit="modalPluginsOpen = true"
         >
           <div class="mb-2">
@@ -110,6 +118,7 @@
         @input="setDate"
       />
       <ModalPlugins
+        :space="space"
         :proposal="{ ...form, choices }"
         :value="form.metadata.plugins"
         v-model="form.metadata.plugins"
@@ -140,6 +149,7 @@ export default {
       loading: false,
       choices: [],
       blockNumber: -1,
+      bodyLimit: 1e4,
       form: {
         name: '',
         body: '',
@@ -166,6 +176,7 @@ export default {
         this.web3.account &&
         this.form.name &&
         this.form.body &&
+        this.form.body.length <= this.bodyLimit &&
         this.form.start &&
         // this.form.start >= ts &&
         this.form.end &&

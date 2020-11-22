@@ -48,6 +48,12 @@
                 v-text="_shorten(delegate.space || '-', 'choice')"
                 class="flex-auto text-right text-white"
               />
+              <a
+                @click="clearDelegate(delegate.space, delegate.delegate)"
+                class="px-2 mr-n2 ml-2"
+              >
+                <Icon name="close" size="12" class="mb-1" />
+              </a>
             </div>
           </Block>
           <Block
@@ -86,6 +92,16 @@
         </Block>
       </div>
     </div>
+    <portal to="modal">
+      <ModalClearDelegate
+        v-if="loaded"
+        :open="modalOpen"
+        @close="modalOpen = false"
+        @reload="load"
+        :id="currentId"
+        :delegate="currentDelegate"
+      />
+    </portal>
   </Container>
 </template>
 
@@ -96,13 +112,19 @@ import { formatBytes32String } from '@ethersproject/strings';
 import { sendTransaction } from '@snapshot-labs/snapshot.js/src/utils';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import abi from '@/helpers/abi';
-import { getDelegates, getDelegators } from '@/helpers/delegation';
-
-const contractAddress = '0x469788fE6E9E9681C6ebF3bF78e7Fd26Fc015446';
+import {
+  getDelegates,
+  getDelegators,
+  contractAddress
+} from '@/helpers/delegation';
+import { sleep } from '@/helpers/utils';
 
 export default {
   data() {
     return {
+      modalOpen: false,
+      currentId: '',
+      currentDelegate: '',
       loaded: false,
       loading: false,
       delegates: [],
@@ -163,12 +185,18 @@ export default {
         );
         const receipt = await tx.wait();
         console.log('Receipt', receipt);
+        await sleep(3e3);
         this.notify('You did it!');
         await this.load();
       } catch (e) {
         console.log(e);
       }
       this.loading = false;
+    },
+    clearDelegate(id, delegate) {
+      this.currentId = id;
+      this.currentDelegate = delegate;
+      this.modalOpen = true;
     }
   }
 };

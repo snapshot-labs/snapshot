@@ -1,15 +1,17 @@
 <template>
-  <img
-    :src="
-      error ? _ipfsUrl('QmYFGoXPKJGaewqBj6J8rHdd9YUCiaRMeC7S8WvqBgkpFU') : url
-    "
-    class="d-inline-block v-align-middle line-height-0 circle border"
-    :style="{
-      width: `${size || 22}px`,
-      height: `${size || 22}px`
-    }"
-    @error="error = true"
-  />
+  <span class="d-inline-block v-align-middle line-height-0">
+    <img
+      v-if="!error"
+      :src="url"
+      :style="{
+        width: `${size || 22}px`,
+        height: `${size || 22}px`
+      }"
+      @error="error = true"
+      class="circle border line-height-0"
+    />
+    <Avatar v-else :address="space" :size="size" />
+  </span>
 </template>
 
 <script>
