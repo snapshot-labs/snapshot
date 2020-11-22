@@ -154,6 +154,10 @@
           :payload="payload"
           :results="results"
         />
+        <PluginGnosisBlock
+          v-if="_get(payload, 'metadata.plugins.gnosis.baseTokenAddress')"
+          :proposalConfig="payload.metadata.plugins.gnosis"
+        />
       </div>
     </div>
     <portal to="modal">
