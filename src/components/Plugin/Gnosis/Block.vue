@@ -2,7 +2,7 @@
   <Block title="Gnosis Impact">
     <div class="mb-1">
       <b>
-        Predicted Impact
+        Predicted impact
       </b>
       <div class="float-right">
         <span :aria-label="this.baseToken.name" class="tooltipped tooltipped-n">
@@ -17,7 +17,7 @@
       </div>
     </div>
     <div class="mb-1">
-      <b>Option 1: </b>
+      <b>Option 1</b>
       <span class="float-right">
         1
         {{ this.baseToken.symbol }}
@@ -30,7 +30,7 @@
       class="mb-1 border-bottom bg-gray-dark rounded-top-0 rounded-md-top-2"
       style="padding-bottom: 12px;"
     >
-      <b>Option 2: </b>
+      <b>Option 2</b>
       <span class="float-right">
         1
         {{ this.baseToken.symbol }}
@@ -40,7 +40,7 @@
       </span>
     </div>
     <div class="mb-1" style="padding-top: 12px;">
-      <b>{{ this.baseToken.symbol }} Market</b>
+      <b>{{ this.baseToken.symbol }} market</b>
       <a
         :href="getMarketUrl(this.baseProductMarketMaker)"
         target="_blank"
@@ -51,7 +51,7 @@
     </div>
     <div>
       <div class="mb-1">
-        <b>{{ this.quoteToken.symbol }} Market</b>
+        <b>{{ this.quoteToken.symbol }} market</b>
         <a
           :href="getMarketUrl(this.quoteProductMarketMaker)"
           target="_blank"
@@ -65,13 +65,14 @@
 </template>
 
 <script>
-import gnosisPlugin from '@snapshot-labs/snapshot.js/src/plugins/gnosis';
+import Plugin from '@snapshot-labs/snapshot.js/src/plugins/gnosis';
+import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 
 export default {
   props: ['conditionId', 'baseTokenAddress', 'quoteCurrencyAddress'],
   data() {
     return {
-      plugin: new gnosisPlugin(),
+      plugin: new Plugin(),
       baseToken: {},
       baseTokenUrl: '',
       quoteToken: {},
@@ -85,12 +86,12 @@ export default {
   },
   async created() {
     this.baseToken = await this.plugin.getTokenInfo(
-      this.$auth.web3,
+      getProvider(this.web3.network.key),
       this.baseTokenAddress
     );
     this.baseTokenUrl = this.getLogoUrl(this.baseToken.checksumAddress);
     this.quoteToken = await this.plugin.getTokenInfo(
-      this.$auth.web3,
+      getProvider(this.web3.network.key),
       this.quoteCurrencyAddress
     );
     const conditionQuery = await this.plugin.getOmenCondition(

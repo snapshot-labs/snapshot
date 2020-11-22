@@ -67,7 +67,11 @@
       <div class="col-12 col-lg-4 float-left">
         <Block
           title="Actions"
-          :icon="space.network === '4' ? 'stars' : undefined"
+          :icon="
+            space.plugins && Object.keys(space.plugins).length > 0
+              ? 'stars'
+              : undefined
+          "
           @submit="modalPluginsOpen = true"
         >
           <div class="mb-2">
@@ -114,6 +118,7 @@
         @input="setDate"
       />
       <ModalPlugins
+        :space="space"
         :proposal="{ ...form, choices }"
         :value="form.metadata.plugins"
         v-model="form.metadata.plugins"

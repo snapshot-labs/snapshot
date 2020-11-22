@@ -1,15 +1,9 @@
 <template>
   <form @submit.prevent="handleSubmit">
     <div class="mb-2 text-center">
-      <img class="circle" :src="getLogoUrl()" width="64" height="64" />
-      <h4 class="mb-3">Market Details</h4>
-      <UiButton
-        @click="addAction"
-        :disabled="!canAddAction"
-        v-if="!input"
-        class="width-full mb-2"
-      >
-        Add Market
+      <h4 class="mb-3">Market details</h4>
+      <UiButton @click="addAction" v-if="!input" class="width-full mb-2">
+        Add market
       </UiButton>
       <div v-else-if="!this.preview">
         <UiButton class="width-full mb-2">
@@ -36,37 +30,35 @@
             required
           />
         </UiButton>
-        <UiButton
-          v-if="
-            input.conditionId &&
-              input.baseTokenAddress &&
-              input.quoteCurrencyAddress
-          "
-          @click="removeAction"
-          class="width-full mb-2"
-        >
-          Remove action
+        <UiButton v-if="input" @click="removeAction" class="width-full mb-2">
+          Remove market
         </UiButton>
       </div>
     </div>
     <div v-if="this.preview">
-      <BlockPriceImpact
-        v-if="
-          this.$auth.web3 &&
-            input.conditionId &&
-            input.baseTokenAddress &&
-            input.quoteCurrencyAddress
-        "
+      <PluginGnosisBlock
         :conditionId="input.conditionId"
         :baseTokenAddress="input.baseTokenAddress"
         :quoteCurrencyAddress="input.quoteCurrencyAddress"
       />
-      <UiButton @click="backAction" class="width-full mb-2">
-        Back
-      </UiButton>
     </div>
-    <UiButton @click="handleSubmit" class="button--submit width-full">
-      {{ preview ? 'Confirm' : 'Preview' }}
+    <UiButton
+      v-if="!preview && input"
+      :disabled="!isValid && input !== false"
+      @click="preview = true"
+      class="width-full mb-2"
+    >
+      Preview
+    </UiButton>
+    <UiButton v-if="preview" @click="preview = false" class="width-full mb-2">
+      Back
+    </UiButton>
+    <UiButton
+      :disabled="!isValid"
+      @click="handleSubmit"
+      class="button--submit width-full"
+    >
+      Confirm
     </UiButton>
   </form>
 </template>
@@ -81,8 +73,13 @@ export default {
     };
   },
   computed: {
-    canAddAction() {
-      return !this.input.conditionId;
+    isValid() {
+      return (
+        (this.input.conditionId &&
+          this.input.baseTokenAddress &&
+          this.input.quoteCurrencyAddress) ||
+        this.input === false
+      );
     }
   },
   mounted() {
@@ -103,17 +100,9 @@ export default {
     removeAction() {
       this.input = false;
     },
-    backAction() {
-      this.preview = false;
-    },
     handleSubmit() {
-      if (this.preview) {
-        this.$emit('input', this.input);
-        this.$emit('close');
-        this.preview = false;
-      } else {
-        this.preview = true;
-      }
+      this.$emit('input', this.input);
+      this.$emit('close');
     }
   }
 };

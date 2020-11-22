@@ -148,11 +148,21 @@
           :results="results"
           :votes="votes"
         />
-        <BlockPriceImpact
-          v-if="this.$auth.web3 && proposal.msg.payload.metadata.plugins && proposal.msg.payload.metadata.plugins.gnosis"
-          :conditionId="proposal.msg.payload.metadata.plugins.gnosis.conditionId"
-          :baseTokenAddress="proposal.msg.payload.metadata.plugins.gnosis.baseTokenAddress"
-          :quoteCurrencyAddress="proposal.msg.payload.metadata.plugins.gnosis.quoteCurrencyAddress"
+        <PluginGnosisBlock
+          v-if="
+            this.$auth.web3 &&
+              proposal.msg.payload.metadata.plugins &&
+              proposal.msg.payload.metadata.plugins.gnosis
+          "
+          :conditionId="
+            proposal.msg.payload.metadata.plugins.gnosis.conditionId
+          "
+          :baseTokenAddress="
+            proposal.msg.payload.metadata.plugins.gnosis.baseTokenAddress
+          "
+          :quoteCurrencyAddress="
+            proposal.msg.payload.metadata.plugins.gnosis.quoteCurrencyAddress
+          "
         />
         <BlockActions
           :id="id"
