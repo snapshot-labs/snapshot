@@ -1,5 +1,5 @@
 <template>
-  <span>
+  <span v-if="space">
     <UiLabel v-if="isCore" class="ml-1">Core</UiLabel>
     <Icon v-if="isVerified" name="check" class="ml-1" title="Verified" />
   </span>
@@ -10,7 +10,7 @@ export default {
   props: ['address', 'space'],
   computed: {
     isCore() {
-      if (!this.space.members) return false;
+      if (!this.space || !this.space.members) return false;
       const members = this.space.members.map(address => address.toLowerCase());
       return members.includes(this.address.toLowerCase());
     },
