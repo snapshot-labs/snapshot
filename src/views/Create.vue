@@ -22,10 +22,14 @@
             />
             <textarea-autosize
               v-model="form.body"
-              maxlength="10240"
-              class="input pt-1 mb-6"
+              class="input pt-1"
               placeholder="What is your proposal?"
             />
+            <div class="mb-6">
+              <p v-if="form.body.length > bodyLimit" class="text-red mt-4">
+                -{{ _numeral(-(bodyLimit - form.body.length)) }}
+              </p>
+            </div>
             <div v-if="form.body">
               <h4 class="mb-4">Preview</h4>
               <UiMarkdown :body="form.body" />
@@ -140,6 +144,7 @@ export default {
       loading: false,
       choices: [],
       blockNumber: -1,
+      bodyLimit: 1e4,
       form: {
         name: '',
         body: '',
@@ -166,6 +171,7 @@ export default {
         this.web3.account &&
         this.form.name &&
         this.form.body &&
+        this.form.body.length <= this.bodyLimit &&
         this.form.start &&
         // this.form.start >= ts &&
         this.form.end &&
