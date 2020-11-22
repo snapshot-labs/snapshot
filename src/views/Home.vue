@@ -9,13 +9,9 @@
         </div>
         <div class="ml-3 text-right hide-sm">
           {{ _numeral(spaces.length) }} space(s)
-          <a
-            href="https://discord.snapshot.page"
-            target="_blank"
-            class="hide-md ml-3"
-          >
+          <router-link :to="{ name: 'setup' }" class="hide-md ml-3">
             <UiButton>Create space</UiButton>
-          </a>
+          </router-link>
         </div>
       </Container>
     </div>
