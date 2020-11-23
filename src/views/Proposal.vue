@@ -157,6 +157,7 @@
         <PluginGnosisBlock
           v-if="_get(payload, 'metadata.plugins.gnosis.baseTokenAddress')"
           :proposalConfig="payload.metadata.plugins.gnosis"
+          :choices="payload.choices"
         />
       </div>
     </div>

@@ -16,8 +16,8 @@
         {{ this.predictPriceImpact.toFixed(2) }}%
       </div>
     </div>
-    <div class="mb-1">
-      <b>Option 1</b>
+    <div class="mb-1" :title="this.choices[0]">
+      <b>{{ _shorten(this.choices[0], 'name') }}</b>
       <span class="float-right">
         1
         {{ this.baseToken.symbol }}
@@ -27,10 +27,11 @@
       </span>
     </div>
     <div
+      :title="this.choices[1]"
       class="mb-1 border-bottom bg-gray-dark rounded-top-0 rounded-md-top-2"
       style="padding-bottom: 12px;"
     >
-      <b>Option 2</b>
+      <b>{{ _shorten(this.choices[1], 'name') }}</b>
       <span class="float-right">
         1
         {{ this.baseToken.symbol }}
@@ -69,7 +70,7 @@ import Plugin from '@snapshot-labs/snapshot.js/src/plugins/gnosis';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 
 export default {
-  props: ['proposalConfig'],
+  props: ['proposalConfig', 'choices'],
   data() {
     return {
       plugin: new Plugin(),
