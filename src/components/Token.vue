@@ -10,11 +10,13 @@
       @error="error = true"
       class="circle border line-height-0"
     />
-    <Avatar v-else :address="space" :size="size" />
+    <Avatar v-else :address="spaceAddress" :size="size" />
   </span>
 </template>
 
 <script>
+import { formatBytes32String } from '@ethersproject/strings';
+
 export default {
   props: ['space', 'size', 'symbolIndex'],
   data() {
@@ -30,6 +32,10 @@ export default {
           : `logo${this.symbolIndex}`
         : 'logo';
       return `https://raw.githubusercontent.com/snapshot-labs/snapshot-spaces/master/spaces/${this.space}/${file}.png`;
+    },
+    spaceAddress() {
+      if (this.space) return formatBytes32String(this.space);
+      return '';
     }
   }
 };
