@@ -132,7 +132,8 @@
                   />
                 </UiButton>
                 <UiButton class="width-full mb-2">
-                  <input
+                  <InputNumber
+                    :value="form.filters.minScore"
                     v-model="form.filters.minScore"
                     class="input width-full"
                     placeholder="Minimum score"
