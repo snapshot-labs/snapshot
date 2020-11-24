@@ -36,7 +36,7 @@
       </div>
     </div>
     <div v-if="this.preview">
-      <PluginGnosisBlock :proposalConfig="input" />
+      <PluginGnosisBlock :proposalConfig="input" :choices="this.getChoices()" />
     </div>
     <UiButton
       v-if="!preview && input"
@@ -99,6 +99,9 @@ export default {
     handleSubmit() {
       this.$emit('input', this.input);
       this.$emit('close');
+    },
+    getChoices() {
+      return this.proposal.choices.map(choice => choice.text);
     }
   }
 };

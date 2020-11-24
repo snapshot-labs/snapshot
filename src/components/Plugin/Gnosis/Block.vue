@@ -1,5 +1,5 @@
 <template>
-  <Block title="Gnosis Impact">
+  <Block title="Gnosis Impact" v-if="choices.length > 1">
     <div class="mb-1">
       <b>
         Predicted impact
@@ -61,6 +61,11 @@
           <Icon name="external-link" class="ml-1" />
         </a>
       </div>
+    </div>
+  </Block>
+  <Block title="Gnosis Impact" v-else>
+    <div>
+      Two choices are required for this plugin.
     </div>
   </Block>
 </template>
