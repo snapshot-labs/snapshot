@@ -46,6 +46,17 @@
           <div v-if="isReady">
             <Block title="Profile">
               <div class="mb-2">
+                <a
+                  :href="
+                    `https://github.com/snapshot-labs/snapshot-spaces/upload/master/spaces/${key}`
+                  "
+                  target="_blank"
+                >
+                  <UiButton class="width-full mb-2">
+                    Change avatar
+                    <Icon name="external-link" class="ml-1" />
+                  </UiButton>
+                </a>
                 <UiButton class="width-full mb-2">
                   <input
                     v-model="form.name"
