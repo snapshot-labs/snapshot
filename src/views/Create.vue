@@ -132,9 +132,9 @@
 <script>
 import { mapActions } from 'vuex';
 import draggable from 'vuedraggable';
-import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import { ipfsGet } from '@snapshot-labs/snapshot.js/src/utils';
-import { getBlockNumber } from '@/helpers/web3';
+import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
+import { getBlockNumber } from '@snapshot-labs/snapshot.js/src/utils/web3';
 
 const gateway = process.env.VUE_APP_IPFS_NODE || 'ipfs.io';
 

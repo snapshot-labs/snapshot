@@ -1,7 +1,9 @@
 <template>
   <UiModal :open="open" v-if="open" @close="$emit('close')" class="d-flex">
+    <template slot="header">
+      <h3>Remove delegation</h3>
+    </template>
     <form @submit.prevent="handleSubmit" class="d-flex flex-column flex-auto">
-      <h3 class="m-4 mb-0 text-center">Remove delegation</h3>
       <h4 class="m-4 text-center">
         Are you sure you want to remove your delegation to
         <User :address="delegate" class="ml-1" />

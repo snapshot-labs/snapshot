@@ -1,7 +1,10 @@
 <template>
   <UiModal :open="open" @close="$emit('close')">
+    <template slot="header">
+      <h3 v-if="!web3.account || step === 'connect'">Connect wallet</h3>
+      <h3 v-else>Account</h3>
+    </template>
     <div v-if="!web3.account || step === 'connect'">
-      <h3 class="m-4 mb-0 text-center">Connect wallet</h3>
       <div class="m-4 mb-5">
         <a
           v-for="(connector, id, i) in config.connectors"
@@ -38,7 +41,6 @@
       </div>
     </div>
     <div v-else>
-      <h3 class="m-4 mb-0 text-center">Account</h3>
       <div v-if="$auth.isAuthenticated" class="m-4">
         <a
           :href="_explorer(web3.network.key, web3.account)"

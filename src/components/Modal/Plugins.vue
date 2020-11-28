@@ -1,11 +1,13 @@
 <template>
   <UiModal :open="open" @close="$emit('close')">
-    <h3 class="m-4 text-center">Plugins</h3>
-    <div v-if="selected === false">
+    <template slot="header">
+      <h3>Plugins</h3>
+    </template>
+    <div class="m-4 mt-4" v-if="selected === false">
       <div
         v-for="(plugin, i) in plugins"
         :key="i"
-        class="m-4 mt-0 p-4 border rounded-2 text-white text-center"
+        class="mb-3 p-4 border rounded-2 text-white text-center"
       >
         <img
           class="circle border"
@@ -24,24 +26,24 @@
           {{ !form[i] ? 'Add' : 'Edit' }}
         </UiButton>
       </div>
-      <div class="p-4 overflow-hidden text-center border-top">
-        <div class="col-6 float-left pr-2">
-          <UiButton @click="$emit('close')" type="button" class="width-full">
-            Cancel
-          </UiButton>
-        </div>
-        <div class="col-6 float-left pl-2">
-          <UiButton
-            @click="[$emit('input', form), $emit('close')]"
-            type="submit"
-            class="width-full button--submit"
-          >
-            Save
-          </UiButton>
-        </div>
-      </div>
     </div>
-    <div v-else class="m-4 mt-0 p-4 border rounded-2 text-white">
+    <template v-if="selected === false" slot="footer">
+      <div class="col-6 float-left pr-2">
+        <UiButton @click="$emit('close')" type="button" class="width-full">
+          Cancel
+        </UiButton>
+      </div>
+      <div class="col-6 float-left pl-2">
+        <UiButton
+          @click="[$emit('input', form), $emit('close')]"
+          type="submit"
+          class="width-full button--submit"
+        >
+          Save
+        </UiButton>
+      </div>
+    </template>
+    <div v-else class="m-4 p-4 border rounded-2 text-white">
       <PluginAragonConfig
         :value="form.aragon"
         :proposal="proposal"

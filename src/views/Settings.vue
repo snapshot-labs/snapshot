@@ -78,12 +78,19 @@
                 >
                   {{ form.skin ? form.skin : 'Default skin' }}
                 </UiButton>
-                <UiButton class="width-full mb-2">
+                <UiButton class="d-flex width-full mb-2">
                   <input
                     v-model="form.domain"
-                    class="input width-full"
+                    class="input flex-auto"
                     placeholder="Domain name"
                   />
+                  <a
+                    class="d-block py-1 mr-n3"
+                    target="_blank"
+                    href="https://docs.snapshot.page/guides/custom-domain"
+                  >
+                    <Icon name="info" size="24" class="text-gray p-2" />
+                  </a>
                 </UiButton>
               </div>
             </Block>
@@ -152,11 +159,21 @@
                     :value="form.filters.invalids"
                     v-model="form.filters.invalids"
                     :placeholder="
-                      `Qmc4VSHwY3SVmo4oofhL2qDPaYcGaQqndM4oqdQQe2aZHQ\nQmTMAgnPy2q6LRMNwvj27PHvWEgZ3bw7yTtNNEucBZCWhZ`
+                      `Invalids proposals\nQmc4VSHwY3SVmo4oofhL2qDPaYcGaQqndM4oqdQQe2aZHQ\nQmTMAgnPy2q6LRMNwvj27PHvWEgZ3bw7yTtNNEucBZCWhZ`
                     "
                     class="input width-full text-left"
                   />
                 </UiButton>
+              </div>
+            </Block>
+            <Block
+              v-if="form.plugins && Object.keys(form.plugins)"
+              title="Plugins"
+            >
+              <div v-for="(plugin, i) in form.plugins" :key="i" class="mb-2">
+                <div class="p-4 d-block border rounded-2">
+                  <h4 v-text="i" />
+                </div>
               </div>
             </Block>
           </div>
@@ -207,8 +224,8 @@ import { ipfsGet } from '@snapshot-labs/snapshot.js/src/utils';
 import { validateSchema } from '@snapshot-labs/snapshot.js/src/utils';
 import schemas from '@snapshot-labs/snapshot.js/src/schemas';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
+import { resolveContent } from '@snapshot-labs/snapshot.js/src/utils/contentHash';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
-import { resolveContent } from '@/helpers/web3';
 import { clone } from '@/helpers/utils';
 
 const gateway = process.env.VUE_APP_IPFS_NODE || 'ipfs.io';
@@ -239,12 +256,13 @@ export default {
       return validateSchema(schemas.space, this.form);
     },
     isValid() {
+      if (this.validate !== true) console.log(this.validate);
       return !this.loading && this.web3.account && this.validate === true;
     },
     contenthash() {
       const address = this.web3.account
         ? getAddress(this.web3.account)
-        : 'YOUR_ADDRESS';
+        : '<your-address>';
       return `ipns://storage.snapshot.page/registry/${address}/${this.key}`;
     },
     isReady() {
@@ -266,7 +284,12 @@ export default {
     } catch (e) {
       console.log(e);
     }
-    if (this.from) this.form = clone(this.app.spaces[this.from]);
+    if (this.from) {
+      const from = clone(this.app.spaces[this.from]);
+      delete from.key;
+      delete from._activeProposals;
+      this.form = from;
+    }
     this.loaded = true;
   },
   methods: {

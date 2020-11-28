@@ -1,7 +1,9 @@
 <template>
   <UiModal :open="open" @close="$emit('close')">
-    <h3 class="m-4 text-center">Networks</h3>
-    <div class="mx-0 mx-md-4">
+    <template slot="header">
+      <h3>Networks</h3>
+    </template>
+    <div class="mt-4 mx-0 mx-md-4">
       <a
         v-for="network in networks"
         :key="network.key"

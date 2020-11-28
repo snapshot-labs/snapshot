@@ -1,10 +1,13 @@
 import Vue from 'vue';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue';
 import { ipfsGet, getScores } from '@snapshot-labs/snapshot.js/src/utils';
+import {
+  getBlockNumber,
+  signMessage
+} from '@snapshot-labs/snapshot.js/src/utils/web3';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import client from '@/helpers/client';
 import { formatProposal, formatProposals, formatSpace } from '@/helpers/utils';
-import { getBlockNumber, signMessage } from '@/helpers/web3';
 import { version } from '@/../package.json';
 
 const ipfsNode = process.env.VUE_APP_IPFS_NODE || 'ipfs.io';
@@ -63,9 +66,11 @@ const mutations = {
 const actions = {
   init: async ({ commit, dispatch }) => {
     commit('SET', { loading: true });
-    const connector = await Vue.prototype.$auth.getConnector();
+    const [connector] = await Promise.all([
+      Vue.prototype.$auth.getConnector(),
+      dispatch('getSpaces')
+    ]);
     if (connector) await dispatch('login', connector);
-    await dispatch('getSpaces');
     commit('SET', { loading: false, init: true });
   },
   loading: ({ commit }, payload) => {

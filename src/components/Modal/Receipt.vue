@@ -1,6 +1,8 @@
 <template>
   <UiModal :open="open" @close="$emit('close')">
-    <h3 class="m-4 mb-0 text-center">Receipt</h3>
+    <template slot="header">
+      <h3>Receipt</h3>
+    </template>
     <div class="m-4 mb-0 p-4 border rounded-2 text-white">
       <div class="d-flex">
         <span v-text="'Author'" class="flex-auto text-gray mr-1" />

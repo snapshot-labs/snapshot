@@ -1,9 +1,9 @@
 <template>
   <UiModal :open="open" @close="$emit('close')">
-    <h3 class="m-4 text-center">
-      {{ strategy.name ? 'Edit' : 'Add' }} strategy
-    </h3>
-    <div class="mx-0 mx-md-4">
+    <template slot="header">
+      <h3>{{ strategy.name ? 'Edit' : 'Add' }} strategy</h3>
+    </template>
+    <div class="mt-4 mx-0 mx-md-4">
       <div v-if="input.name" class="p-4 mb-4 border rounded-2 text-white">
         <h4 v-text="input.name" class="mb-3 text-center" />
         <UiButton
