@@ -50,6 +50,14 @@
             class="mb-3"
           />
         </template>
+        <template v-if="route === 'plugins'">
+          <BlockPlugin
+            v-for="item in items.slice(0, limit)"
+            :key="item.key"
+            :plugin="item"
+            class="mb-3"
+          />
+        </template>
       </div>
     </Container>
   </div>
@@ -57,9 +65,15 @@
 
 <script>
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
+import plugins from '@snapshot-labs/snapshot.js/src/plugins';
 import strategies from '@/helpers/strategies';
 import skins from '@/helpers/skins';
-import { filterStrategies, filterSkins, filterNetworks } from '@/helpers/utils';
+import {
+  filterStrategies,
+  filterSkins,
+  filterNetworks,
+  filterPlugins
+} from '@/helpers/utils';
 
 export default {
   data() {
@@ -76,12 +90,14 @@ export default {
       if (this.route === 'strategies') return 'Create strategy';
       if (this.route === 'skins') return 'Create skin';
       if (this.route === 'networks') return 'Add network';
+      if (this.route === 'plugins') return 'Create plugin';
       return '';
     },
     resultsStr() {
       if (this.route === 'strategies') return 'strategie(s)';
       if (this.route === 'skins') return 'skin(s)';
       if (this.route === 'networks') return 'network(s)';
+      if (this.route === 'plugins') return 'plugin(s)';
       return 'result(s)';
     },
     items() {
@@ -91,6 +107,8 @@ export default {
         return filterSkins(skins, this.app.spaces, this.q);
       if (this.route === 'networks')
         return filterNetworks(networks, this.app.spaces, this.q);
+      if (this.route === 'plugins')
+        return filterPlugins(plugins, this.app.spaces, this.q);
       return [];
     }
   },

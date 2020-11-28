@@ -18,6 +18,7 @@ const routes: Array<RouteConfig> = [
   { path: '/:key/settings/:from?', name: 'settings', component: Settings },
   { path: '/networks', name: 'networks', component: Explore },
   { path: '/strategies', name: 'strategies', component: Explore },
+  { path: '/plugins', name: 'plugins', component: Explore },
   { path: '/skins', name: 'skins', component: Explore },
   { path: '/delegate', name: 'delegate', component: Delegate },
   { path: '/:key/proposal/:id', name: 'proposal', component: Proposal },

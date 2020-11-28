@@ -117,6 +117,28 @@ export function filterStrategies(strategies, spaces, q = '') {
     .sort((a, b) => b.spaces.length - a.spaces.length);
 }
 
+export function filterPlugins(plugins, spaces, q = '') {
+  return Object.entries(plugins)
+    .map(([key, pluginClass]: any) => {
+      const plugin = new pluginClass();
+      plugin.key = key;
+      plugin.spaces = Object.entries(spaces)
+        .filter(
+          (space: any) =>
+            space[1].plugins &&
+            Object.keys(space[1].plugins).includes(plugin.key)
+        )
+        .map(space => space[0]);
+      return plugin;
+    })
+    .filter(plugin =>
+      JSON.stringify(plugin)
+        .toLowerCase()
+        .includes(q.toLowerCase())
+    )
+    .sort((a, b) => b.spaces.length - a.spaces.length);
+}
+
 export function formatSpace(key, space) {
   space = {
     key,
