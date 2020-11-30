@@ -40,14 +40,8 @@ export default {
       return winningChoice;
     },
     plugins() {
-      if (this.space && this.space.plugins)
-        return Object.keys(this.space.plugins).filter(
-          plugin =>
-            this.payload &&
-            this.payload.metadata &&
-            this.payload.metadata.plugins &&
-            this.payload.metadata.plugins[plugin]
-        );
+      if (this.space && this.space.plugins && this.space.plugins['aragon'])
+        return ['aragon'];
       return [];
     }
   },
