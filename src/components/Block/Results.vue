@@ -1,17 +1,17 @@
 <template>
   <Block :title="ts >= payload.end ? 'Results' : 'Current results'">
-    <div v-for="(choice, i) in payload.choices" :key="i">
+    <div v-for="choice in choices" :key="choice.i">
       <div class="text-white mb-1">
-        <span v-text="_shorten(choice, 'choice')" class="mr-1" />
+        <span v-text="_shorten(choice.choice, 'choice')" class="mr-1" />
         <span
           class="mr-1 tooltipped tooltipped-n"
           :aria-label="
-            results.totalScores[i]
+            results.totalScores[choice.i]
               .map((score, index) => `${_numeral(score)} ${titles[index]}`)
               .join(' + ')
           "
         >
-          {{ _numeral(results.totalBalances[i]) }}
+          {{ _numeral(results.totalBalances[choice.i]) }}
           {{ _shorten(space.symbol, 'symbol') }}
         </span>
         <span
@@ -21,7 +21,7 @@
               !results.totalVotesBalances
                 ? 0
                 : ((100 / results.totalVotesBalances) *
-                    results.totalBalances[i]) /
+                    results.totalBalances[choice.i]) /
                     1e2,
               'percent'
             )
@@ -29,7 +29,7 @@
         />
       </div>
       <UiProgress
-        :value="results.totalScores[i]"
+        :value="results.totalScores[choice.i]"
         :max="results.totalVotesBalances"
         :titles="titles"
         class="mb-3"
@@ -55,6 +55,14 @@ export default {
     },
     titles() {
       return this.space.strategies.map(strategy => strategy.params.symbol);
+    },
+    choices() {
+      return this.payload.choices
+        .map((choice, i) => ({ i, choice }))
+        .sort(
+          (a, b) =>
+            this.results.totalBalances[b.i] - this.results.totalBalances[a.i]
+        );
     }
   },
   methods: {

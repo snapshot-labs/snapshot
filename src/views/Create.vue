@@ -135,8 +135,9 @@ import draggable from 'vuedraggable';
 import { ipfsGet } from '@snapshot-labs/snapshot.js/src/utils';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import { getBlockNumber } from '@snapshot-labs/snapshot.js/src/utils/web3';
+import gateways from '@snapshot-labs/snapshot.js/src/gateways.json';
 
-const gateway = process.env.VUE_APP_IPFS_NODE || 'ipfs.io';
+const gateway = process.env.VUE_APP_IPFS_GATEWAY || gateways[0];
 
 export default {
   components: {

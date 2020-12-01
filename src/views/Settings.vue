@@ -237,9 +237,10 @@ import schemas from '@snapshot-labs/snapshot.js/src/schemas';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import { resolveContent } from '@snapshot-labs/snapshot.js/src/utils/contentHash';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
+import gateways from '@snapshot-labs/snapshot.js/src/gateways.json';
 import { clone } from '@/helpers/utils';
 
-const gateway = process.env.VUE_APP_IPFS_NODE || 'ipfs.io';
+const gateway = process.env.VUE_APP_IPFS_GATEWAY || gateways[0];
 
 export default {
   data() {
