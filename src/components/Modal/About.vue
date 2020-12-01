@@ -44,7 +44,7 @@
       </div>
       <div class="d-flex">
         <span v-text="'IPFS server'" class="flex-auto text-gray mr-1" />
-        {{ ipfsNode }}
+        {{ gateway }}
       </div>
       <div class="d-flex">
         <span v-text="'Hub'" class="flex-auto text-gray mr-1" />
@@ -56,6 +56,9 @@
 
 <script>
 import pkg from '@/../package.json';
+import gateways from '@snapshot-labs/snapshot.js/src/gateways.json';
+
+const gateway = process.env.VUE_APP_IPFS_GATEWAY || gateways[0];
 
 export default {
   props: ['open'],
@@ -64,7 +67,7 @@ export default {
       pkg,
       commitSha: process.env.VUE_APP_COMMIT_SHA,
       hubUrl: process.env.VUE_APP_HUB_URL,
-      ipfsNode: process.env.VUE_APP_IPFS_NODE
+      gateway
     };
   }
 };
