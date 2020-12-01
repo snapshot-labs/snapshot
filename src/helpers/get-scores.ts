@@ -9,41 +9,35 @@ export const _strategies = {
       options: any,
       snapshot
     ) {
-      const blockTag = typeof snapshot === 'number' ? snapshot : 'latest';
-      const address = String(
-        provider.wallet.defaultAccount.base16
-      ).toLowerCase();
-      let balance = '0';
-
       if (Array.isArray(addresses) && addresses.length === 0) {
         return [];
       }
 
-      try {
-        const {
-          result
-        } = await provider.blockchain.getSmartContractSubState(
-          String(options.address).toLowerCase(),
-          'balances',
-          [address]
-        );
+      const balances = await Promise.all(
+        addresses.map(async address => {
+          address = String(address).toLowerCase();
 
-        if (result && result.balances && result.balances[address]) {
-          balance = result.balances[address];
-        }
-      } catch (err) {
-        console.error(err);
-      }
+          const {
+            result
+          } = await provider.blockchain.getSmartContractSubState(
+            options.address,
+            'balances',
+            [address]
+          );
 
-      if (!addresses[0]) {
-        throw new Error('address is null');
-      }
+          if (result && result.balances && result.balances[address]) {
+            const amount = result.balances[address];
+            return [
+              address,
+              Number(amount) / Math.pow(10, Number(options.decimals))
+            ];
+          }
 
-      return {
-        [addresses[0]]: (
-          Number(balance) / Math.pow(10, Number(options.decimals))
-        ).toFixed(4)
-      };
+          return [address, '0'];
+        })
+      );
+
+      return Object.fromEntries(balances);
     }
   }
 };

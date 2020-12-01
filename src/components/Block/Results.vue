@@ -91,6 +91,7 @@ export default {
           winningScore = score[0];
         }
       });
+
       return winningChoice;
     }
   },

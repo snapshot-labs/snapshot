@@ -165,15 +165,15 @@ const actions = {
       result.votes = Object.fromEntries(
         Object.entries(result.votes)
           .map((vote: any) => {
-            vote[1].scores = payload.space.strategies.map(
-              (strategy, i) => scores[i][vote[1].address] || 0
-            );
+            vote[1].scores = payload.space.strategies.map((strategy, i) => {
+              return scores[i][String(vote[1].address).toLowerCase()] || 0;
+            });
             vote[1].balance = vote[1].scores.reduce((a, b: any) => a + b, 0);
 
             return vote;
           })
           .sort((a, b) => b[1].balance - a[1].balance)
-          .filter(vote => vote[1].balance > 0)
+          .filter(vote => Number(vote[1].balance) > 0)
       );
       result.results = {
         totalVotes: result.proposal.msg.payload.choices.map(
@@ -195,7 +195,7 @@ const actions = {
           )
         ),
         totalVotesBalances: Object.values(result.votes).reduce(
-          (a, b: any) => a + b.balance,
+          (a, b: any) => Number(a) + Number(b.balance),
           0
         )
       };
