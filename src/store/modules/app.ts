@@ -6,11 +6,12 @@ import {
   signMessage
 } from '@snapshot-labs/snapshot.js/src/utils/web3';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
+import gateways from '@snapshot-labs/snapshot.js/src/gateways.json';
 import client from '@/helpers/client';
 import { formatProposal, formatProposals, formatSpace } from '@/helpers/utils';
 import { version } from '@/../package.json';
 
-const ipfsNode = process.env.VUE_APP_IPFS_NODE || 'ipfs.io';
+const gateway = process.env.VUE_APP_IPFS_GATEWAY || gateways[0];
 
 const state = {
   init: false,
@@ -154,7 +155,7 @@ const actions = {
       const blockNumber = await getBlockNumber(getProvider(space.network));
       const result: any = {};
       const [proposal, votes] = await Promise.all([
-        ipfsGet(ipfsNode, id),
+        ipfsGet(gateway, id),
         client.request(`${space.key}/proposal/${id}`)
       ]);
       result.proposal = formatProposal(proposal);
