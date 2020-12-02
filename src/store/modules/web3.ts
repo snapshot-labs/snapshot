@@ -96,13 +96,15 @@ const actions = {
       ]);
       commit('HANDLE_CHAIN_CHANGED', network.chainId);
       const account = accounts.length > 0 ? accounts[0] : null;
-      let name;
+      let name, profile;
       try {
-        name = await getProvider('1').lookupAddress(account);
+        [name, profile] = await Promise.all([
+          getProvider('1').lookupAddress(account),
+          Box.getProfile(account)
+        ]);
       } catch (e) {
         console.error(e);
       }
-      const profile = await Box.getProfile(account);
       commit('LOAD_PROVIDER_SUCCESS', {
         account,
         name,

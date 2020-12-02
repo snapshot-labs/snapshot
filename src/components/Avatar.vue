@@ -3,11 +3,11 @@
     <img
       v-if="profile && profile.image"
       :src="
-        `https://ipfs.io/ipfs/${
+        _ipfsUrl(
           typeof profile.image === 'string'
             ? profile.image
             : profile.image[0].contentUrl['/']
-        }`
+        )
       "
       :style="{
         width: `${parseInt(size) || 22}px`,
