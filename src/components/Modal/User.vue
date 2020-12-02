@@ -3,7 +3,7 @@
     <div class="m-4 mb-0 text-center">
       <Avatar :profile="profile" :address="address" size="64" class="mb-4" />
       <h3 v-if="profile && profile.name" class="mt-3" v-text="profile.name" />
-      <h3 v-else v-text="_shorten(address)" />
+      <h3 v-else v-text="_shorten(address)" class="mt-3" />
     </div>
     <div class="m-4">
       <a
