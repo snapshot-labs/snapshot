@@ -75,7 +75,7 @@ import Plugin from '@snapshot-labs/snapshot.js/src/plugins/gnosis';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 
 export default {
-  props: ['proposalConfig', 'choices'],
+  props: ['proposalConfig', 'choices', 'network'],
   data() {
     return {
       plugin: new Plugin(),
@@ -92,16 +92,16 @@ export default {
   },
   async created() {
     this.baseToken = await this.plugin.getTokenInfo(
-      getProvider(this.web3.network.key),
+      getProvider(this.network),
       this.proposalConfig.baseTokenAddress
     );
     this.baseTokenUrl = this.getLogoUrl(this.baseToken.checksumAddress);
     this.quoteToken = await this.plugin.getTokenInfo(
-      getProvider(this.web3.network.key),
+      getProvider(this.network),
       this.proposalConfig.quoteCurrencyAddress
     );
     const conditionQuery = await this.plugin.getOmenCondition(
-      this.web3.network.key,
+      this.network,
       this.proposalConfig.conditionId
     );
     this.baseProductMarketMaker = conditionQuery.condition.fixedProductMarketMakers.find(
@@ -112,7 +112,7 @@ export default {
     );
 
     const tokenPairQuery = await this.plugin.getUniswapPair(
-      this.web3.network.key,
+      this.network,
       this.proposalConfig.quoteCurrencyAddress,
       this.proposalConfig.baseTokenAddress
     );
