@@ -3,12 +3,7 @@ export const _strategies = {
     author: 'zilpay',
     key: 'zrc2-balance-of',
     version: '0.0.1',
-    strategy: async function(
-      provider: any,
-      addresses: string[],
-      options: any,
-      snapshot
-    ) {
+    strategy: async function(provider: any, addresses: string[], options: any) {
       if (Array.isArray(addresses) && addresses.length === 0) {
         return [];
       }
@@ -16,6 +11,23 @@ export const _strategies = {
       const balances = await Promise.all(
         addresses.map(async address => {
           address = String(address).toLowerCase();
+
+          try {
+            const proposal = window['proposal'];
+
+            if (proposal && proposal['balances']) {
+              const addr = window['zilPay'].crypto.fromBech32Address(address);
+              const base16 = String(addr).toLowerCase();
+              const amount = proposal['balances'][base16];
+
+              return [
+                base16,
+                Number(amount) / Math.pow(10, Number(options.decimals))
+              ];
+            }
+          } catch (err) {
+            //
+          }
 
           const {
             result
@@ -45,16 +57,14 @@ export const _strategies = {
 export async function getScores(
   strategies: any[],
   provider: any,
-  addresses: string[],
-  snapshot = 'latest'
+  addresses: string[]
 ) {
   return await Promise.all(
     strategies.map(strategy => {
       return _strategies[strategy.name].strategy(
         provider,
         addresses,
-        strategy.params,
-        snapshot
+        strategy.params
       );
     })
   );

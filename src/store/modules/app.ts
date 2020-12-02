@@ -143,7 +143,6 @@ const actions = {
     commit('GET_PROPOSAL_REQUEST');
     try {
       const zilPay = await waitZilPay();
-      const blockNumber = await getBlockNumber(zilPay);
       const result: any = {};
       const [proposal, votes] = await Promise.all([
         ipfs.get(payload.id),
@@ -153,14 +152,12 @@ const actions = {
       result.proposal.ipfsHash = payload.id;
       result.votes = votes;
 
-      const { snapshot } = result.proposal.msg.payload;
-      const blockTag = snapshot > blockNumber ? 'latest' : parseInt(snapshot);
+      window['proposal'] = proposal;
+
       const scores: any = await getScores(
         payload.space.strategies,
         zilPay,
-        Object.keys(result.votes),
-        // @ts-ignore
-        blockTag
+        Object.keys(result.votes)
       );
       result.votes = Object.fromEntries(
         Object.entries(result.votes)
