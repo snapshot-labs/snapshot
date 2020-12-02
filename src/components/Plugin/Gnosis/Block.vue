@@ -116,7 +116,10 @@ export default {
       this.proposalConfig.quoteCurrencyAddress,
       this.proposalConfig.baseTokenAddress
     );
-    if (tokenPairQuery !== undefined) {
+    if (
+      tokenPairQuery !== undefined &&
+      tokenPairQuery.token0Price !== undefined
+    ) {
       this.quoteCurrencyPrice = parseFloat(tokenPairQuery.token0Price);
     }
     this.priceFirstOption = this.getTokenPrice(0);
