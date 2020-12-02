@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue';
+import Box from '3box';
 import { ipfsGet, getScores } from '@snapshot-labs/snapshot.js/src/utils';
 import {
   getBlockNumber,
@@ -154,12 +155,29 @@ const actions = {
     try {
       const blockNumber = await getBlockNumber(getProvider(space.network));
       const result: any = {};
-      const [proposal, votes] = await Promise.all([
+      const [proposal, votes]: [any, any] = await Promise.all([
         ipfsGet(gateway, id),
         client.request(`${space.key}/proposal/${id}`)
       ]);
+      const profile = await Box.getProfile(proposal.address)
+      // TODO: Replace this with getProfiles once https://github.com/3box/3box-js/issues/649 is fixed
+      const voteAddresses = (Object as any).keys(votes)
+      const profiles = await Box.profileGraphQL(`
+        query profiles { 
+          profiles (ids: ${JSON.stringify(voteAddresses)}) {
+            name, 
+            eth_address
+            image
+          }
+        }
+      `)
+      profiles.profiles.forEach(profile => {
+        votes[Object.keys(votes).find(key => key.toLowerCase() === profile.eth_address.toLowerCase())!].profile = profile
+      });
+
       result.proposal = formatProposal(proposal);
       result.proposal.ipfsHash = id;
+      result.proposal.profile = profile
       result.votes = votes;
       const { snapshot } = result.proposal.msg.payload;
       const blockTag = snapshot > blockNumber ? 'latest' : parseInt(snapshot);

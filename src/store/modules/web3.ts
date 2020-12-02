@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import Box from '3box';
 import { Web3Provider } from '@ethersproject/providers';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
@@ -33,6 +34,7 @@ const mutations = {
   LOAD_PROVIDER_SUCCESS(_state, payload) {
     Vue.set(_state, 'account', payload.account);
     Vue.set(_state, 'name', payload.name);
+    Vue.set(_state, 'profile', payload.profile);
     console.debug('LOAD_PROVIDER_SUCCESS');
   },
   LOAD_PROVIDER_FAILURE(_state, payload) {
@@ -100,9 +102,11 @@ const actions = {
       } catch (e) {
         console.error(e);
       }
+      const profile = await Box.getProfile(account);
       commit('LOAD_PROVIDER_SUCCESS', {
         account,
-        name
+        name,
+        profile
       });
     } catch (e) {
       commit('LOAD_PROVIDER_FAILURE', e);

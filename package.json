@@ -9,6 +9,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "3box": "^1.22.2",
     "@ensdomains/content-hash": "^2.5.3",
     "@ethersproject/abi": "^5.0.1",
     "@ethersproject/address": "^5.0.1",
