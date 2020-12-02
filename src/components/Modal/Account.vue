@@ -67,7 +67,7 @@
           class="mb-2 d-block"
         >
           <UiButton class="button-outline width-full">
-            Edit Profile on 3Box
+            Edit profile on 3Box
             <Icon name="external-link" class="ml-1" />
           </UiButton>
         </a>
