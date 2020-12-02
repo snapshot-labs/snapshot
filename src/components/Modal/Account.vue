@@ -78,7 +78,7 @@
           class="mb-2 d-block"
         >
           <UiButton class="button-outline width-full">
-            Connect Profile on 3Box
+            Create profile on 3Box
             <Icon name="external-link" class="ml-1" />
           </UiButton>
         </a>
