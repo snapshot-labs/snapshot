@@ -2,13 +2,7 @@
   <span>
     <img
       v-if="profile && profile.image"
-      :src="
-        _ipfsUrl(
-          typeof profile.image === 'string'
-            ? profile.image
-            : profile.image[0].contentUrl['/']
-        )
-      "
+      :src="_ipfsUrl(profile.image)"
       :style="{
         width: `${parseInt(size) || 22}px`,
         height: `${parseInt(size) || 22}px`,
