@@ -1,5 +1,8 @@
 <template>
   <Block title="Gnosis Impact" v-if="choices.length > 1">
+    <div v-if="loading" class="loading">
+      Loading...
+    </div>
     <div class="mb-1">
       <b>
         Predicted impact
@@ -78,6 +81,7 @@ export default {
   props: ['proposalConfig', 'choices', 'network'],
   data() {
     return {
+      loading: false,
       plugin: new Plugin(),
       baseToken: {},
       baseTokenUrl: '',
@@ -91,6 +95,7 @@ export default {
     };
   },
   async created() {
+    this.loading = true;
     this.baseToken = await this.plugin.getTokenInfo(
       getProvider(this.network),
       this.proposalConfig.baseTokenAddress
@@ -128,6 +133,7 @@ export default {
       ((this.priceFirstOption - this.priceSecondOption) /
         this.priceSecondOption) *
       100;
+    this.loading = false;
   },
   methods: {
     getLogoUrl(checksumAddress) {
