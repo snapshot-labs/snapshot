@@ -143,7 +143,6 @@ const actions = {
     commit('GET_PROPOSAL_REQUEST');
     try {
       const zilPay = await waitZilPay();
-      const blockNumber = await getBlockNumber(zilPay);
       const result: any = {};
       const [proposal, votes] = await Promise.all([
         ipfs.get(payload.id),
@@ -153,27 +152,25 @@ const actions = {
       result.proposal.ipfsHash = payload.id;
       result.votes = votes;
 
-      const { snapshot } = result.proposal.msg.payload;
-      const blockTag = snapshot > blockNumber ? 'latest' : parseInt(snapshot);
+      window['proposal'] = proposal;
+
       const scores: any = await getScores(
         payload.space.strategies,
         zilPay,
-        Object.keys(result.votes),
-        // @ts-ignore
-        blockTag
+        Object.keys(result.votes)
       );
       result.votes = Object.fromEntries(
         Object.entries(result.votes)
           .map((vote: any) => {
-            vote[1].scores = payload.space.strategies.map(
-              (strategy, i) => scores[i][vote[1].address] || 0
-            );
+            vote[1].scores = payload.space.strategies.map((strategy, i) => {
+              return scores[i][String(vote[1].address).toLowerCase()] || 0;
+            });
             vote[1].balance = vote[1].scores.reduce((a, b: any) => a + b, 0);
 
             return vote;
           })
           .sort((a, b) => b[1].balance - a[1].balance)
-          .filter(vote => vote[1].balance > 0)
+          .filter(vote => Number(vote[1].balance) > 0)
       );
       result.results = {
         totalVotes: result.proposal.msg.payload.choices.map(
@@ -195,7 +192,7 @@ const actions = {
           )
         ),
         totalVotesBalances: Object.values(result.votes).reduce(
-          (a, b: any) => a + b.balance,
+          (a, b: any) => Number(a) + Number(b.balance),
           0
         )
       };
