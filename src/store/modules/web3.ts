@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import Box from '3box';
+import {profileGraphQL} from '3box/lib/api';
 import { Web3Provider } from '@ethersproject/providers';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
@@ -98,9 +98,17 @@ const actions = {
       const account = accounts.length > 0 ? accounts[0] : null;
       let name, profile;
       try {
-        [name, profile] = await Promise.all([
+        [name, {profile}] = await Promise.all([
           getProvider('1').lookupAddress(account),
-          Box.getProfile(account)
+          profileGraphQL(`
+            query getProfile { 
+              profile (id: "${account}") {
+                name, 
+                eth_address
+                image
+              }
+            }
+          `)
         ]);
       } catch (e) {
         console.error(e);
@@ -108,7 +116,7 @@ const actions = {
       commit('LOAD_PROVIDER_SUCCESS', {
         account,
         name,
-        profile
+        profile: profile ? profile: {}
       });
     } catch (e) {
       commit('LOAD_PROVIDER_FAILURE', e);

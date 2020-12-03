@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue';
-import Box from '3box';
+import {profileGraphQL} from '3box/lib/api';
 import { ipfsGet, getScores } from '@snapshot-labs/snapshot.js/src/utils';
 import {
   getBlockNumber,
@@ -8,6 +8,7 @@ import {
 } from '@snapshot-labs/snapshot.js/src/utils/web3';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import gateways from '@snapshot-labs/snapshot.js/src/gateways.json';
+import _has from 'lodash/has'
 import client from '@/helpers/client';
 import { formatProposal, formatProposals, formatSpace } from '@/helpers/utils';
 import { version } from '@/../package.json';
@@ -159,25 +160,40 @@ const actions = {
         ipfsGet(gateway, id),
         client.request(`${space.key}/proposal/${id}`)
       ]);
-      const profile = await Box.getProfile(proposal.address)
-      // TODO: Replace this with getProfiles once https://github.com/3box/3box-js/issues/649 is fixed
-      const voteAddresses = (Object as any).keys(votes)
-      const profiles = await Box.profileGraphQL(`
-        query profiles { 
-          profiles (ids: ${JSON.stringify(voteAddresses)}) {
-            name, 
-            eth_address
-            image
+
+      const voterAddresses = (Object as any).keys(votes)
+      let profiles:any = {};
+      try {
+        profiles = await profileGraphQL(`
+          query getAllprofiles { 
+            voterProfiles: profiles (ids: ${JSON.stringify(voterAddresses)}) {
+              name, 
+              eth_address
+              image
+            }
+            authorProfile: profile (id: "${proposal.address}") {
+              name, 
+              eth_address
+              image
+            }
           }
+        `)
+      } catch (e) {
+        if(_has(e, 'response.data.authorProfile') && e.response.data.authorProfile){
+          profiles.authorProfile = e.response.data.authorProfile
         }
-      `)
-      profiles.profiles.forEach(profile => {
-        votes[Object.keys(votes).find(key => key.toLowerCase() === profile.eth_address.toLowerCase())!].profile = profile
+        if(_has(e, 'response.data.voterProfiles') && e.response.data.voterProfiles){
+          profiles.voterProfiles = e.response.data.voterProfiles
+        }
+        console.error(e);
+      }
+      profiles.voterProfiles && profiles.voterProfiles.forEach(profile => {
+        votes[Object.keys(votes).find(key => key.toLowerCase() === profile.eth_address.toLowerCase())!].profile = profile;
       });
 
       result.proposal = formatProposal(proposal);
       result.proposal.ipfsHash = id;
-      result.proposal.profile = profile
+      result.proposal.profile = profiles.authorProfile ? profiles.authorProfile : {};
       result.votes = votes;
       const { snapshot } = result.proposal.msg.payload;
       const blockTag = snapshot > blockNumber ? 'latest' : parseInt(snapshot);
