@@ -132,7 +132,7 @@
 <script>
 import { mapActions } from 'vuex';
 import draggable from 'vuedraggable';
-import { getBlockNumber } from '@/helpers/web3';
+import { getBlockNumber, getTotalSupply } from '@/helpers/web3';
 
 export default {
   components: {
@@ -151,6 +151,7 @@ export default {
         start: '',
         end: '',
         snapshot: 0,
+        totalSupply: '0',
         quorum: 20,
         metadata: {}
       },
@@ -188,6 +189,7 @@ export default {
     this.addChoice(2);
 
     this.blockNumber = await getBlockNumber(this.$auth.web3);
+    this.totalSupply = await getTotalSupply(this.$auth.web3, this.space.token);
     this.form.snapshot = this.blockNumber;
   },
   methods: {

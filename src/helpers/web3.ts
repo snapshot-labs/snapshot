@@ -23,6 +23,20 @@ export async function getBlockNumber(provider) {
   }
 }
 
+export async function getTotalSupply(provider, address: string) {
+  const field = 'total_supply';
+  const res: any = await provider.blockchain.getSmartContractSubState(
+    address,
+    field
+  );
+
+  if (res && res['result'] && res['result']['total_supply']) {
+    return res['result']['total_supply'];
+  }
+
+  return '0';
+}
+
 export async function sendTransaction(
   web3,
   [contractType, contractAddress, action, params]
