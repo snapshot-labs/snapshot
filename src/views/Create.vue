@@ -90,6 +90,14 @@
                 placeholder="Snapshot block number"
               />
             </UiButton>
+            <UiButton class="width-full mb-2">
+              <input
+                v-model="form.quorum"
+                type="number"
+                class="input width-full text-center"
+                placeholder="Snapshot quorum"
+              />
+            </UiButton>
           </div>
           <UiButton
             @click="handleSubmit"
@@ -141,6 +149,7 @@ export default {
         start: '',
         end: '',
         snapshot: '',
+        quorum: 20,
         metadata: {}
       },
       modalOpen: false,
