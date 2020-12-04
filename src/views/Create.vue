@@ -85,6 +85,7 @@
               <input
                 v-model="form.snapshot"
                 type="number"
+                disabled
                 class="input width-full text-center"
                 placeholder="Snapshot block number"
               />

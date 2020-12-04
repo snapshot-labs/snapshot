@@ -81,7 +81,6 @@ const actions = {
           .observableAccount()
           .subscribe(async (account: any) => {
             commit('HANDLE_ACCOUNTS_CHANGED', account.bech32);
-            await dispatch('loadProvider');
           });
         auth.provider.wallet.observableNetwork().subscribe((net: string) => {
           commit('HANDLE_CHAIN_CHANGED', net);

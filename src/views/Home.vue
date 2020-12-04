@@ -10,7 +10,7 @@
         <div class="ml-3 text-right hide-sm">
           {{ _numeral(spaces.length) }} space(s)
           <a
-            href="https://discord.snapshot.page"
+            href="https://github.com/Zilliqa/snapshot-spaces"
             target="_blank"
             class="hide-md ml-3"
           >
