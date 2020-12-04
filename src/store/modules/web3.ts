@@ -73,7 +73,7 @@ const actions = {
     Vue.prototype.$auth.logout();
     commit('LOGOUT');
   },
-  loadProvider: async ({ commit, dispatch }) => {
+  loadProvider: async ({ commit }) => {
     commit('LOAD_PROVIDER_REQUEST');
     try {
       if (auth.provider) {

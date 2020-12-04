@@ -136,6 +136,12 @@
                 <Icon name="external-link" class="ml-1" />
               </a>
             </div>
+            <div class="mb-1">
+              <b>Quorum</b>
+              <span target="_blank" class="float-right">
+                {{ $n(payload.quorum) }}%
+              </span>
+            </div>
           </div>
         </Block>
         <BlockResults
