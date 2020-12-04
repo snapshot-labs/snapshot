@@ -35,7 +35,7 @@
               class="d-block width-full mb-2"
               :class="selectedChoice === i + 1 && 'button--active'"
             >
-              {{ choice }}
+              {{ _shorten(choice, 32) }}
               <a
                 v-if="_get(payload, `metadata.plugins.aragon.choice${i + 1}`)"
                 @click="modalOpen = true"
