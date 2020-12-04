@@ -80,7 +80,7 @@ const actions = {
         auth.provider.wallet
           .observableAccount()
           .subscribe(async (account: any) => {
-            commit('HANDLE_ACCOUNTS_CHANGED', account.bech32);
+            commit('HANDLE_ACCOUNTS_CHANGED', account);
           });
         auth.provider.wallet.observableNetwork().subscribe((net: string) => {
           commit('HANDLE_CHAIN_CHANGED', net);

@@ -93,6 +93,8 @@
             <UiButton class="width-full mb-2">
               <input
                 v-model="form.quorum"
+                min="1"
+                max="100"
                 type="number"
                 class="input width-full text-center"
                 placeholder="Snapshot quorum"
@@ -148,7 +150,7 @@ export default {
         choices: [],
         start: '',
         end: '',
-        snapshot: '',
+        snapshot: 0,
         quorum: 20,
         metadata: {}
       },
@@ -170,11 +172,13 @@ export default {
         this.form.name &&
         this.form.body &&
         this.form.start &&
+        Number(this.form.quorum) > 0 &&
+        Number(this.form.quorum) <= 100 &&
         // this.form.start >= ts &&
         this.form.end &&
         this.form.end > this.form.start &&
-        this.form.snapshot &&
-        this.form.snapshot > this.blockNumber / 2 &&
+        // this.form.snapshot &&
+        // this.form.snapshot > this.blockNumber / 2 &&
         this.choices.length >= 2 &&
         !this.choices.some(a => a.text === '')
       );
