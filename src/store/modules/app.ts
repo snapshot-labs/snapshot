@@ -1,6 +1,6 @@
+import { getProfiles } from '@/helpers/3box';
 import Vue from 'vue';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue';
-import {profileGraphQL} from '3box/lib/api';
 import { ipfsGet, getScores } from '@snapshot-labs/snapshot.js/src/utils';
 import {
   getBlockNumber,
@@ -8,7 +8,6 @@ import {
 } from '@snapshot-labs/snapshot.js/src/utils/web3';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import gateways from '@snapshot-labs/snapshot.js/src/gateways.json';
-import _has from 'lodash/has'
 import client from '@/helpers/client';
 import { formatProposal, formatProposals, formatSpace } from '@/helpers/utils';
 import { version } from '@/../package.json';
@@ -161,39 +160,34 @@ const actions = {
         client.request(`${space.key}/proposal/${id}`)
       ]);
 
-      const voterAddresses = (Object as any).keys(votes)
-      let profiles:any = {};
+      const voterAddresses = (Object as any).keys(votes);
+      let profilesData: any = [];
+      let authorProfile = null;
       try {
-        profiles = await profileGraphQL(`
-          query getAllprofiles { 
-            voterProfiles: profiles (ids: ${JSON.stringify(voterAddresses)}) {
-              name, 
-              eth_address
-              image
-            }
-            authorProfile: profile (id: "${proposal.address}") {
-              name, 
-              eth_address
-              image
-            }
-          }
-        `)
+        profilesData = await getProfiles([proposal.address, ...voterAddresses]);
       } catch (e) {
-        if(_has(e, 'response.data.authorProfile') && e.response.data.authorProfile){
-          profiles.authorProfile = e.response.data.authorProfile
-        }
-        if(_has(e, 'response.data.voterProfiles') && e.response.data.voterProfiles){
-          profiles.voterProfiles = e.response.data.voterProfiles
-        }
         console.error(e);
       }
-      profiles.voterProfiles && profiles.voterProfiles.forEach(profile => {
-        votes[Object.keys(votes).find(key => key.toLowerCase() === profile.eth_address.toLowerCase())!].profile = profile;
+
+      profilesData.profiles.forEach(profile => {
+        if (
+          !authorProfile &&
+          profile.eth_address &&
+          proposal.address.toLowerCase() === profile.eth_address.toLowerCase()
+        ) {
+          authorProfile = profile;
+        }
+        const voteWithMatchingAddress = Object.keys(votes).find(
+          key => key.toLowerCase() === profile.eth_address.toLowerCase()
+        );
+        if (voteWithMatchingAddress) {
+          votes[voteWithMatchingAddress].profile = profile;
+        }
       });
 
       result.proposal = formatProposal(proposal);
       result.proposal.ipfsHash = id;
-      result.proposal.profile = profiles.authorProfile ? profiles.authorProfile : {};
+      result.proposal.profile = authorProfile ? authorProfile : {};
       result.votes = votes;
       const { snapshot } = result.proposal.msg.payload;
       const blockTag = snapshot > blockNumber ? 'latest' : parseInt(snapshot);

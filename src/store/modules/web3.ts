@@ -1,11 +1,11 @@
 import Vue from 'vue';
-import {profileGraphQL} from '3box/lib/api';
 import { Web3Provider } from '@ethersproject/providers';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import store from '@/store';
 import { formatUnits } from '@ethersproject/units';
+import { getProfiles } from '@/helpers/3box';
 
 let wsProvider;
 let auth;
@@ -82,24 +82,20 @@ const actions = {
       commit('HANDLE_CHAIN_CHANGED', network.chainId);
       const account = accounts.length > 0 ? accounts[0] : null;
       let name = '';
-      let profile = '';
+      let profiles: any = [];
       try {
-        [name, {profile}] = await Promise.all([
+        [name, { profiles }] = await Promise.all([
           getProvider('1').lookupAddress(account),
-          profileGraphQL(`
-            query getProfile { 
-              profile (id: "${account}") {
-                name, 
-                eth_address
-                image
-              }
-            }
-          `)
+          getProfiles([account])
         ]);
       } catch (e) {
         console.error(e);
       }
-      commit('WEB3_SET', { account, name, profile: profile ? profile: {}});
+      commit('WEB3_SET', {
+        account,
+        name,
+        profile: profiles && profiles.length > 0 ? profiles[0] : {}
+      });
     } catch (e) {
       commit('WEB3_SET', { account: null, name: null, profile: null });
       return Promise.reject(e);
