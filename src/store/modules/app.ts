@@ -16,6 +16,7 @@ const gateway = process.env.VUE_APP_IPFS_GATEWAY || gateways[0];
 const state = {
   init: false,
   loading: false,
+  authLoading: false,
   modalOpen: false,
   spaces: {}
 };
@@ -67,11 +68,10 @@ const mutations = {
 const actions = {
   init: async ({ commit, dispatch }) => {
     commit('SET', { loading: true });
-    const [connector] = await Promise.all([
-      Vue.prototype.$auth.getConnector(),
-      dispatch('getSpaces')
-    ]);
-    if (connector) await dispatch('login', connector);
+    await dispatch('getSpaces');
+    Vue.prototype.$auth.getConnector().then(connector => {
+      if (connector) dispatch('login', connector);
+    });
     commit('SET', { loading: false, init: true });
   },
   loading: ({ commit }, payload) => {

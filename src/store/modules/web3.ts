@@ -8,6 +8,8 @@ import { formatUnits } from '@ethersproject/units';
 
 let wsProvider;
 let auth;
+const defaultNetwork =
+  process.env.VUE_APP_DEFAULT_NETWORK || Object.keys(networks)[0];
 
 if (wsProvider) {
   wsProvider.on('block', blockNumber => {
@@ -18,60 +20,46 @@ if (wsProvider) {
 const state = {
   account: null,
   name: null,
-  network: networks['1']
+  network: networks[defaultNetwork]
 };
 
 const mutations = {
-  LOGOUT(_state) {
-    Vue.set(_state, 'account', null);
-    Vue.set(_state, 'name', null);
-    console.debug('LOGOUT');
-  },
-  LOAD_PROVIDER_REQUEST() {
-    console.debug('LOAD_PROVIDER_REQUEST');
-  },
-  LOAD_PROVIDER_SUCCESS(_state, payload) {
-    Vue.set(_state, 'account', payload.account);
-    Vue.set(_state, 'name', payload.name);
-    console.debug('LOAD_PROVIDER_SUCCESS');
-  },
-  LOAD_PROVIDER_FAILURE(_state, payload) {
-    Vue.set(_state, 'account', null);
-    console.debug('LOAD_PROVIDER_FAILURE', payload);
-  },
   HANDLE_CHAIN_CHANGED(_state, chainId) {
     if (!networks[chainId]) {
       networks[chainId] = {
-        ...networks['1'],
+        ...networks[defaultNetwork],
         chainId,
         name: 'Unknown',
-        network: 'unknown'
+        network: 'unknown',
+        unknown: true
       };
     }
     Vue.set(_state, 'network', networks[chainId]);
     console.debug('HANDLE_CHAIN_CHANGED', chainId);
   },
-  HANDLE_ACCOUNTS_CHANGED(_state, payload) {
-    Vue.set(_state, 'account', payload);
-    console.debug('HANDLE_ACCOUNTS_CHANGED', payload);
+  WEB3_SET(_state, payload) {
+    Object.keys(payload).forEach(key => {
+      Vue.set(_state, key, payload[key]);
+    });
   }
 };
 
 const actions = {
-  login: async ({ dispatch }, connector = 'injected') => {
+  login: async ({ dispatch, commit }, connector = 'injected') => {
     auth = getInstance();
+    commit('SET', { authLoading: true });
     await auth.login(connector);
     if (auth.provider) {
       auth.web3 = new Web3Provider(auth.provider);
       await dispatch('loadProvider');
     }
+    commit('SET', { authLoading: false });
   },
   logout: async ({ commit }) => {
     Vue.prototype.$auth.logout();
-    commit('LOGOUT');
+    commit('WEB3_SET', { account: null, name: null });
   },
   loadProvider: async ({ commit, dispatch }) => {
-    commit('LOAD_PROVIDER_REQUEST');
     try {
       if (auth.provider.removeAllListeners) auth.provider.removeAllListeners();
       if (auth.provider.on) {
@@ -80,13 +68,11 @@ const actions = {
         });
         auth.provider.on('accountsChanged', async accounts => {
           if (accounts.length !== 0) {
-            commit('HANDLE_ACCOUNTS_CHANGED', accounts[0]);
+            commit('WEB3_SET', { account: accounts[0] });
             await dispatch('loadProvider');
           }
         });
-        auth.provider.on('disconnect', async () => {
-          commit('HANDLE_CLOSE');
-        });
+        // auth.provider.on('disconnect', async () => {});
       }
       const [network, accounts] = await Promise.all([
         auth.web3.getNetwork(),
@@ -94,19 +80,16 @@ const actions = {
       ]);
       commit('HANDLE_CHAIN_CHANGED', network.chainId);
       const account = accounts.length > 0 ? accounts[0] : null;
-      let name;
+      let name = '';
       try {
         name = await getProvider('1').lookupAddress(account);
       } catch (e) {
         console.error(e);
       }
-      commit('LOAD_PROVIDER_SUCCESS', {
-        account,
-        name
-      });
+      commit('WEB3_SET', { account, name });
     } catch (e) {
-      commit('LOAD_PROVIDER_FAILURE', e);
-      return Promise.reject();
+      commit('WEB3_SET', { account: null, name: null });
+      return Promise.reject(e);
     }
   }
 };

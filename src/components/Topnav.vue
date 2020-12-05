@@ -38,7 +38,7 @@
               <UiButton
                 @click="modalOpen = true"
                 class="button-outline"
-                :loading="loading"
+                :loading="app.authLoading"
               >
                 <Avatar
                   :address="web3.account"
