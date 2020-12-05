@@ -18,7 +18,12 @@
         class="column"
       />
       <div
-        v-text="proposal.msg.payload.choices[vote.msg.payload.choice - 1]"
+        v-text="
+          _shorten(
+            proposal.msg.payload.choices[vote.msg.payload.choice - 1],
+            'choice'
+          )
+        "
         class="flex-auto text-center text-white"
       />
       <div class="column text-right text-white">
