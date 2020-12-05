@@ -115,6 +115,7 @@ export default {
       const members = this.space.members.map(address => address.toLowerCase());
       return (
         this.$auth.isAuthenticated &&
+        this.web3.account &&
         members.includes(this.web3.account.toLowerCase())
       );
     },
