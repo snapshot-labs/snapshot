@@ -1,7 +1,7 @@
 import { profileGraphQL } from '3box/lib/api';
 
 export async function getProfiles(addresses) {
-  return await profileGraphQL(`
+  return profileGraphQL(`
     query getProfiles { 
       profiles (ids: ${JSON.stringify(addresses)}) {
         name, 
