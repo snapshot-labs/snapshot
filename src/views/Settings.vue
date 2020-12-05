@@ -171,7 +171,6 @@
 import { mapActions } from 'vuex';
 import { getAddress } from '@ethersproject/address';
 import { resolveContent } from '@/helpers/web3';
-import getProvider from '@/helpers/provider';
 import ipfs from '@/helpers/ipfs';
 
 export default {

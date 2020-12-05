@@ -73,15 +73,14 @@ const actions = {
     Vue.prototype.$auth.logout();
     commit('LOGOUT');
   },
-  loadProvider: async ({ commit, dispatch }) => {
+  loadProvider: async ({ commit }) => {
     commit('LOAD_PROVIDER_REQUEST');
     try {
       if (auth.provider) {
         auth.provider.wallet
           .observableAccount()
           .subscribe(async (account: any) => {
-            commit('HANDLE_ACCOUNTS_CHANGED', account.bech32);
-            await dispatch('loadProvider');
+            commit('HANDLE_ACCOUNTS_CHANGED', account);
           });
         auth.provider.wallet.observableNetwork().subscribe((net: string) => {
           commit('HANDLE_CHAIN_CHANGED', net);
