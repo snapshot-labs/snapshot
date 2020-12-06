@@ -151,6 +151,13 @@
           :results="results"
           :votes="votes"
         />
+        <Quorum
+          :proposal="proposal"
+          :space="space"
+          :payload="payload"
+          :results="results"
+          :votes="votes"
+        />
       </div>
     </div>
     <ModalConfirm
@@ -177,8 +184,12 @@
 
 <script>
 import { mapActions } from 'vuex';
+import Quorum from '@/components/Block/Quorum';
 
 export default {
+  components: {
+    Quorum
+  },
   data() {
     return {
       key: this.$route.params.key,
