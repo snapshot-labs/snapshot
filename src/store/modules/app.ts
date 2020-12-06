@@ -1,3 +1,4 @@
+import { getProfiles } from '@/helpers/3box';
 import Vue from 'vue';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue';
 import { ipfsGet, getScores } from '@snapshot-labs/snapshot.js/src/utils';
@@ -154,12 +155,39 @@ const actions = {
     try {
       const blockNumber = await getBlockNumber(getProvider(space.network));
       const result: any = {};
-      const [proposal, votes] = await Promise.all([
+      const [proposal, votes]: [any, any] = await Promise.all([
         ipfsGet(gateway, id),
         client.request(`${space.key}/proposal/${id}`)
       ]);
+
+      const voterAddresses = (Object as any).keys(votes);
+      let profilesData: any = [];
+      let authorProfile = null;
+      try {
+        profilesData = await getProfiles([proposal.address, ...voterAddresses]);
+      } catch (e) {
+        console.error(e);
+      }
+
+      profilesData.profiles.forEach(profile => {
+        if (
+          !authorProfile &&
+          profile.eth_address &&
+          proposal.address.toLowerCase() === profile.eth_address.toLowerCase()
+        ) {
+          authorProfile = profile;
+        }
+        const voteWithMatchingAddress = Object.keys(votes).find(
+          key => key.toLowerCase() === profile.eth_address.toLowerCase()
+        );
+        if (voteWithMatchingAddress) {
+          votes[voteWithMatchingAddress].profile = profile;
+        }
+      });
+
       result.proposal = formatProposal(proposal);
       result.proposal.ipfsHash = id;
+      result.proposal.profile = authorProfile ? authorProfile : {};
       result.votes = votes;
       const { snapshot } = result.proposal.msg.payload;
       const blockTag = snapshot > blockNumber ? 'latest' : parseInt(snapshot);

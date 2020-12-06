@@ -96,6 +96,7 @@
             <b>Author</b>
             <User
               :address="proposal.address"
+              :profile="proposal.profile"
               :space="space"
               class="float-right"
             />

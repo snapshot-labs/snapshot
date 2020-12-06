@@ -48,9 +48,37 @@
           class="mb-2 d-block"
         >
           <UiButton class="button-outline width-full">
-            <Avatar :address="web3.account" size="16" class="mr-2 ml-n1" />
-            <span v-if="web3.name" v-text="web3.name" />
+            <Avatar
+              :profile="web3.profile"
+              :address="web3.account"
+              size="16"
+              class="mr-2 ml-n1"
+            />
+            <span v-if="web3.profile.name" v-text="web3.profile.name" />
+            <span v-else-if="web3.name" v-text="web3.name" />
             <span v-else v-text="_shorten(web3.account)" />
+            <Icon name="external-link" class="ml-1" />
+          </UiButton>
+        </a>
+        <a
+          v-if="web3.profile.name"
+          :href="`https://3box.io/${web3.account}/edit`"
+          target="_blank"
+          class="mb-2 d-block"
+        >
+          <UiButton class="button-outline width-full">
+            Edit profile on 3Box
+            <Icon name="external-link" class="ml-1" />
+          </UiButton>
+        </a>
+        <a
+          v-else
+          href="https://3box.io/hub"
+          target="_blank"
+          class="mb-2 d-block"
+        >
+          <UiButton class="button-outline width-full">
+            Create profile on 3Box
             <Icon name="external-link" class="ml-1" />
           </UiButton>
         </a>

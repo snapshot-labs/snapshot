@@ -11,7 +11,12 @@
       :style="i === 0 && 'border: 0 !important;'"
       class="px-4 py-3 border-top d-flex"
     >
-      <User :address="address" :space="space" class="column" />
+      <User
+        :profile="vote.profile"
+        :address="address"
+        :space="space"
+        class="column"
+      />
       <div
         v-text="
           _shorten(

@@ -1,12 +1,13 @@
 <template>
   <span>
     <a @click="modalOpen = true" class="no-wrap">
-      <Avatar :address="address" size="16" class="mr-1" />
+      <Avatar :profile="profile" :address="address" size="16" class="mr-1" />
       {{ name }}
       <Badges :address="address" :space="space" />
     </a>
     <portal to="modal">
       <ModalUser
+        :profile="profile"
         :open="modalOpen"
         @close="modalOpen = false"
         :space="space"
@@ -18,7 +19,7 @@
 
 <script>
 export default {
-  props: ['address', 'space'],
+  props: ['address', 'space', 'profile'],
   data() {
     return {
       modalOpen: false
@@ -26,6 +27,9 @@ export default {
   },
   computed: {
     name() {
+      if (this.profile && this.profile.name) {
+        return this.profile.name;
+      }
       return this.web3.account &&
         this.address.toLowerCase() === this.web3.account.toLowerCase()
         ? 'You'

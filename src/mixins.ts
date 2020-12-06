@@ -47,7 +47,7 @@ export default {
       return shorten(str);
     },
     _ipfsUrl(ipfsHash: string): string {
-      return `https://${process.env.VUE_APP_IPFS_NODE}/ipfs/${ipfsHash}`;
+      return `https://${process.env.VUE_APP_IPFS_GATEWAY}/ipfs/${ipfsHash}`;
     },
     _explorer(network, str: string, type = 'address'): string {
       return `${networks[network].explorer}/${type}/${str}`;
