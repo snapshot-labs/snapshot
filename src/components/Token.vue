@@ -34,7 +34,7 @@ export default {
       return `https://raw.githubusercontent.com/snapshot-labs/snapshot-spaces/master/spaces/${this.space}/${file}.png`;
     },
     spaceAddress() {
-      if (this.space) return formatBytes32String(this.space);
+      if (this.space) return formatBytes32String(this.space.slice(0, 24));
       return '';
     }
   }
