@@ -62,7 +62,7 @@
             <UiButton
               v-if="!$auth.isAuthenticated"
               @click="modalOpen = true"
-              :loading="loading"
+              :loading="loading || app.authLoading"
             >
               <span class="hide-sm" v-text="'Connect wallet'" />
               <Icon

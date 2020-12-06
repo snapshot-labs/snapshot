@@ -1,13 +1,14 @@
-import { profileGraphQL } from '3box/lib/api';
+import { subgraphRequest } from '@snapshot-labs/snapshot.js/src/utils';
 
 export async function getProfiles(addresses) {
-  return profileGraphQL(`
-    query getProfiles { 
-      profiles (ids: ${JSON.stringify(addresses)}) {
-        name, 
-        eth_address
-        image
-      }
+  return subgraphRequest('https://api.3box.io/graph', {
+    profiles: {
+      __args: {
+        ids: addresses
+      },
+      name: true,
+      eth_address: true,
+      image: true
     }
-  `);
+  });
 }
