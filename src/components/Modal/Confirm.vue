@@ -1,7 +1,9 @@
 <template>
   <UiModal :open="open" v-if="open" @close="$emit('close')" class="d-flex">
-    <form @submit.prevent="handleSubmit" class="d-flex flex-column flex-auto">
-      <h3 class="m-4 mb-0 text-center">Confirm vote</h3>
+    <template slot="header">
+      <h3>Confirm vote</h3>
+    </template>
+    <div class="d-flex flex-column flex-auto">
       <h4 class="m-4 mb-0 text-center">
         Are you sure you want to vote "{{
           proposal.msg.payload.choices[selectedChoice - 1]
@@ -27,31 +29,38 @@
         </div>
         <div class="d-flex">
           <span v-text="'Your voting power'" class="flex-auto text-gray mr-1" />
-          <span v-for="(symbol, i) of symbols" :key="symbol">
-            {{ _numeral(scores[i]) }}
-            {{ symbol }}
-            <span v-show="i !== symbols.length - 1" v-text="'+'" class="mr-1" />
+          <span
+            class="tooltipped tooltipped-nw"
+            :aria-label="
+              scores
+                .map((score, index) => `${_numeral(score)} ${symbols[index]}`)
+                .join(' + ')
+            "
+          >
+            {{ _numeral(scores.reduce((a, b) => a + b, 0)) }}
+            {{ _shorten(space.symbol, 'symbol') }}
           </span>
         </div>
       </div>
-      <div class="p-4 overflow-hidden text-center border-top">
-        <div class="col-6 float-left pr-2">
-          <UiButton @click="$emit('close')" type="button" class="width-full">
-            Cancel
-          </UiButton>
-        </div>
-        <div class="col-6 float-left pl-2">
-          <UiButton
-            :disabled="loading"
-            :loading="loading"
-            type="submit"
-            class="width-full button--submit"
-          >
-            Vote
-          </UiButton>
-        </div>
+    </div>
+    <template slot="footer">
+      <div class="col-6 float-left pr-2">
+        <UiButton @click="$emit('close')" type="button" class="width-full">
+          Cancel
+        </UiButton>
       </div>
-    </form>
+      <div class="col-6 float-left pl-2">
+        <UiButton
+          :disabled="loading"
+          :loading="loading"
+          @click="handleSubmit"
+          type="submit"
+          class="width-full button--submit"
+        >
+          Vote
+        </UiButton>
+      </div>
+    </template>
   </UiModal>
 </template>
 
@@ -84,7 +93,7 @@ export default {
     async handleSubmit() {
       this.loading = true;
       await this.send({
-        token: this.space.token,
+        space: this.space.key,
         type: 'vote',
         payload: {
           proposal: this.id,

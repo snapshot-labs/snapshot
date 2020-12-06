@@ -2,11 +2,11 @@ import { mapState } from 'vuex';
 import numeral from 'numeral';
 import get from 'lodash/get';
 import prettyMs from 'pretty-ms';
+import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import domains from '@snapshot-labs/snapshot-spaces/spaces/domains.json';
 import store from '@/store';
 import config from '@/helpers/config';
 import { shorten } from '@/helpers/utils';
-import networks from '@/helpers/networks.json';
 
 // @ts-ignore
 const modules = Object.entries(store.state).map(module => module[0]);
@@ -35,9 +35,10 @@ export default {
     _numeral(number, format = '(0.[00]a)') {
       return numeral(number).format(format);
     },
-    _shorten(str: string, key: string): string {
+    _shorten(str: string, key: any): string {
       if (!str) return str;
       let limit;
+      if (typeof key === 'number') limit = key;
       if (key === 'symbol') limit = 6;
       if (key === 'name') limit = 64;
       if (key === 'choice') limit = 12;

@@ -35,17 +35,20 @@
               class="d-block width-full mb-2"
               :class="selectedChoice === i + 1 && 'button--active'"
             >
-              {{ choice }}
+              {{ _shorten(choice, 32) }}
               <a
                 v-if="_get(payload, `metadata.plugins.aragon.choice${i + 1}`)"
                 @click="modalOpen = true"
                 :aria-label="
                   `Target address: ${
                     payload.metadata.plugins.aragon[`choice${i + 1}`].actions[0]
-                      .targetAddress
-                  }\nCalldata: ${
+                      .to
+                  }\nValue: ${
                     payload.metadata.plugins.aragon[`choice${i + 1}`].actions[0]
-                      .calldata
+                      .value
+                  }\nData: ${
+                    payload.metadata.plugins.aragon[`choice${i + 1}`].actions[0]
+                      .data
                   }`
                 "
                 class="tooltipped tooltipped-n break-word"
@@ -72,22 +75,22 @@
       </div>
       <div v-if="loaded" class="col-12 col-lg-4 float-left">
         <Block title="Information">
-          <div class="mb-1 overflow-hidden">
-            <b>Token(s)</b>
-            <a
+          <div class="mb-1">
+            <b>Strategie(s)</b>
+            <span
               @click="modalStrategiesOpen = true"
-              class="float-right text-white"
+              class="float-right text-white a"
             >
               <span v-for="(symbol, symbolIndex) of symbols" :key="symbol">
-                <Token :space="space.key" :symbolIndex="symbolIndex" />
-                {{ symbol }}
+                <span :aria-label="symbol" class="tooltipped tooltipped-n">
+                  <Token :space="space.key" :symbolIndex="symbolIndex" />
+                </span>
                 <span
                   v-show="symbolIndex !== symbols.length - 1"
-                  v-text="'+'"
-                  class="mr-1"
+                  class="ml-1"
                 />
               </span>
-            </a>
+            </span>
           </div>
           <div class="mb-1">
             <b>Author</b>
@@ -145,27 +148,40 @@
           :results="results"
           :votes="votes"
         />
+        <BlockActions
+          :id="id"
+          :space="space"
+          :payload="payload"
+          :results="results"
+        />
+        <PluginGnosisBlock
+          v-if="_get(payload, 'metadata.plugins.gnosis.baseTokenAddress')"
+          :proposalConfig="payload.metadata.plugins.gnosis"
+          :choices="payload.choices"
+        />
       </div>
     </div>
-    <ModalConfirm
-      v-if="loaded"
-      :open="modalOpen"
-      @close="modalOpen = false"
-      @reload="loadProposal"
-      :space="space"
-      :proposal="proposal"
-      :id="id"
-      :selectedChoice="selectedChoice"
-      :totalScore="totalScore"
-      :scores="scores"
-      :snapshot="payload.snapshot"
-    />
-    <ModalStrategies
-      :open="modalStrategiesOpen"
-      @close="modalStrategiesOpen = false"
-      :space="space"
-      :strategies="space.strategies"
-    />
+    <portal to="modal">
+      <ModalConfirm
+        v-if="loaded"
+        :open="modalOpen"
+        @close="modalOpen = false"
+        @reload="loadProposal"
+        :space="space"
+        :proposal="proposal"
+        :id="id"
+        :selectedChoice="selectedChoice"
+        :totalScore="totalScore"
+        :scores="scores"
+        :snapshot="payload.snapshot"
+      />
+      <ModalStrategies
+        :open="modalStrategiesOpen"
+        @close="modalStrategiesOpen = false"
+        :space="space"
+        :strategies="space.strategies"
+      />
+    </portal>
   </Container>
 </template>
 

@@ -1,13 +1,20 @@
 <template>
   <UiModal :open="open" @close="$emit('close')">
-    <h3 class="m-4 text-center">Plugins</h3>
-    <div
-      v-for="(plugin, i) in plugins"
-      :key="i"
-      class="m-4 mt-0 p-4 border rounded-2 text-white"
-    >
-      <div v-if="selected === false" class="text-center">
-        <img class="circle" :src="getLogoUrl(i)" width="64" height="64" />
+    <template slot="header">
+      <h3>Plugins</h3>
+    </template>
+    <div class="m-4 mt-4" v-if="selected === false">
+      <div
+        v-for="(plugin, i) in plugins"
+        :key="i"
+        class="mb-3 p-4 border rounded-2 text-white text-center"
+      >
+        <img
+          class="circle border"
+          :src="getLogoUrl(i)"
+          width="64"
+          height="64"
+        />
         <h3 v-text="plugin.name" />
         <div class="mb-2">
           <a :href="plugin.website" target="_blank" class="text-white">
@@ -19,15 +26,8 @@
           {{ !form[i] ? 'Add' : 'Edit' }}
         </UiButton>
       </div>
-      <PluginAragon
-        :value="form[i]"
-        :proposal="proposal"
-        v-model="form[i]"
-        @close="selected = false"
-        v-else
-      />
     </div>
-    <div v-if="!selected" class="p-4 overflow-hidden text-center border-top">
+    <template v-if="selected === false" slot="footer">
       <div class="col-6 float-left pr-2">
         <UiButton @click="$emit('close')" type="button" class="width-full">
           Cancel
@@ -42,6 +42,22 @@
           Save
         </UiButton>
       </div>
+    </template>
+    <div v-else class="m-4 p-4 border rounded-2 text-white">
+      <PluginAragonConfig
+        :value="form.aragon"
+        :proposal="proposal"
+        v-model="form.aragon"
+        @close="selected = false"
+        v-if="selected === 'aragon'"
+      />
+      <PluginGnosisConfig
+        :value="form.gnosis"
+        :proposal="proposal"
+        v-model="form.gnosis"
+        @close="selected = false"
+        v-if="selected === 'gnosis'"
+      />
     </div>
   </UiModal>
 </template>
@@ -51,7 +67,7 @@ import plugins from '@snapshot-labs/snapshot.js/src/plugins';
 import { clone } from '@/helpers/utils';
 
 export default {
-  props: ['open', 'value', 'proposal'],
+  props: ['open', 'value', 'space', 'proposal'],
   data() {
     return {
       plugins: [],
@@ -66,10 +82,11 @@ export default {
     }
   },
   created() {
+    if (!this.space.plugins) return;
     this.plugins = Object.fromEntries(
-      Object.entries(plugins).map(plugin => {
-        const instance = new plugin[1]();
-        return [plugin[0], instance];
+      Object.keys(this.space.plugins).map(plugin => {
+        const instance = new plugins[plugin]();
+        return [plugin, instance];
       })
     );
   },

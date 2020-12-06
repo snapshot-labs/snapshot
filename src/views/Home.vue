@@ -9,13 +9,9 @@
         </div>
         <div class="ml-3 text-right hide-sm">
           {{ _numeral(spaces.length) }} space(s)
-          <a
-            href="https://discord.snapshot.page"
-            target="_blank"
-            class="hide-md ml-3"
-          >
+          <router-link :to="{ name: 'setup' }" class="hide-md ml-3">
             <UiButton>Create space</UiButton>
-          </a>
+          </router-link>
         </div>
       </Container>
     </div>
@@ -35,12 +31,19 @@
               class="text-center extra-icon-container"
               style="height: 250px; margin-bottom: 24px !important;"
             >
-              <Token
-                :space="space.key"
-                symbolIndex="space"
-                size="98"
-                class="my-3"
-              />
+              <span class="position-relative d-inline-block">
+                <UiCounter
+                  v-if="space._activeProposals"
+                  :counter="space._activeProposals"
+                  class="position-absolute top-4 right-0 bg-green"
+                />
+                <Token
+                  :space="space.key"
+                  symbolIndex="space"
+                  size="98"
+                  class="my-3"
+                />
+              </span>
               <StatefulIcon
                 :on="space.favorite"
                 onName="star"
@@ -67,7 +70,7 @@ import spotlight from '@snapshot-labs/snapshot-spaces/spaces/spotlight.json';
 export default {
   data() {
     return {
-      q: '',
+      q: this.$route.query.q || '',
       limit: 16
     };
   },

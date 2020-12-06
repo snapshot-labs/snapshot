@@ -22,10 +22,14 @@
             />
             <textarea-autosize
               v-model="form.body"
-              maxlength="10240"
-              class="input pt-1 mb-6"
+              class="input pt-1"
               placeholder="What is your proposal?"
             />
+            <div class="mb-6">
+              <p v-if="form.body.length > bodyLimit" class="text-red mt-4">
+                -{{ _numeral(-(bodyLimit - form.body.length)) }}
+              </p>
+            </div>
             <div v-if="form.body">
               <h4 class="mb-4">Preview</h4>
               <UiMarkdown :body="form.body" />
@@ -63,7 +67,11 @@
       <div class="col-12 col-lg-4 float-left">
         <Block
           title="Actions"
-          :icon="space.network === '4' ? 'stars' : undefined"
+          :icon="
+            space.plugins && Object.keys(space.plugins).length > 0
+              ? 'stars'
+              : undefined
+          "
           @submit="modalPluginsOpen = true"
         >
           <div class="mb-2">
@@ -101,28 +109,35 @@
         </Block>
       </div>
     </div>
-    <ModalSelectDate
-      :value="form[selectedDate]"
-      :selectedDate="selectedDate"
-      :open="modalOpen"
-      @close="modalOpen = false"
-      @input="setDate"
-    />
-    <ModalPlugins
-      :proposal="{ ...form, choices }"
-      :value="form.metadata.plugins"
-      v-model="form.metadata.plugins"
-      :open="modalPluginsOpen"
-      @close="modalPluginsOpen = false"
-    />
+    <portal to="modal">
+      <ModalSelectDate
+        :value="form[selectedDate]"
+        :selectedDate="selectedDate"
+        :open="modalOpen"
+        @close="modalOpen = false"
+        @input="setDate"
+      />
+      <ModalPlugins
+        :space="space"
+        :proposal="{ ...form, choices }"
+        :value="form.metadata.plugins"
+        v-model="form.metadata.plugins"
+        :open="modalPluginsOpen"
+        @close="modalPluginsOpen = false"
+      />
+    </portal>
   </Container>
 </template>
 
 <script>
 import { mapActions } from 'vuex';
 import draggable from 'vuedraggable';
-import { getBlockNumber } from '@/helpers/web3';
-import getProvider from '@/helpers/provider';
+import { ipfsGet } from '@snapshot-labs/snapshot.js/src/utils';
+import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
+import { getBlockNumber } from '@snapshot-labs/snapshot.js/src/utils/web3';
+import gateways from '@snapshot-labs/snapshot.js/src/gateways.json';
+
+const gateway = process.env.VUE_APP_IPFS_GATEWAY || gateways[0];
 
 export default {
   components: {
@@ -131,9 +146,11 @@ export default {
   data() {
     return {
       key: this.$route.params.key,
+      from: this.$route.params.from,
       loading: false,
       choices: [],
       blockNumber: -1,
+      bodyLimit: 1e4,
       form: {
         name: '',
         body: '',
@@ -160,6 +177,7 @@ export default {
         this.web3.account &&
         this.form.name &&
         this.form.body &&
+        this.form.body.length <= this.bodyLimit &&
         this.form.start &&
         // this.form.start >= ts &&
         this.form.end &&
@@ -175,6 +193,16 @@ export default {
     this.addChoice(2);
     this.blockNumber = await getBlockNumber(getProvider(this.space.network));
     this.form.snapshot = this.blockNumber;
+    if (this.from) {
+      try {
+        const proposal = await ipfsGet(gateway, this.from);
+        const msg = JSON.parse(proposal.msg);
+        this.form = msg.payload;
+        this.choices = msg.payload.choices.map((text, key) => ({ key, text }));
+      } catch (e) {
+        console.log(e);
+      }
+    }
   },
   methods: {
     ...mapActions(['send']),
@@ -197,7 +225,7 @@ export default {
       this.form.choices = this.choices.map(choice => choice.text);
       try {
         const { ipfsHash } = await this.send({
-          token: this.space.token,
+          space: this.space.key,
           type: 'proposal',
           payload: this.form
         });

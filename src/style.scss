@@ -69,7 +69,7 @@ p {
   min-height: 100vh;
 }
 
-a {
+a, .a {
   color: var(--link-color);
 
   &:hover {
@@ -223,4 +223,9 @@ textarea {
     background-color: var(--text-color);
     color: var(--header-bg);
   }
+}
+
+.markdown-body blockquote {
+  color: var(--text-color);
+  border-left-color: var(--text-color);
 }

@@ -1,10 +1,8 @@
 import connectors from '@/helpers/connectors.json';
-import networks from '@/helpers/networks.json';
 
 const config = {
   env: 'master',
-  connectors,
-  networks
+  connectors
 };
 
 const domainName = window.location.hostname;
