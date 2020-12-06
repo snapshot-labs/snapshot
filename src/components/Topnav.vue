@@ -47,7 +47,7 @@
                   class="mr-0 mr-sm-2 mr-md-2 mr-lg-2 mr-xl-2 ml-n1"
                 />
                 <span
-                  v-if="web3.profile.name"
+                  v-if="web3.profile && web3.profile.name"
                   v-text="web3.profile.name"
                   class="hide-sm"
                 />
