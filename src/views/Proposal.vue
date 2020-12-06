@@ -152,7 +152,7 @@
           :votes="votes"
         />
         <Quorum
-          :id="id"
+          :proposal="proposal"
           :space="space"
           :payload="payload"
           :results="results"
