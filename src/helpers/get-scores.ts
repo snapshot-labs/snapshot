@@ -10,23 +10,26 @@ export const _strategies = {
 
       const balances = await Promise.all(
         addresses.map(async address => {
+          address = provider.crypto.normaliseAddress(address);
           address = String(address).toLowerCase();
 
           try {
             const proposal = window['proposal'];
 
             if (proposal && proposal['balances']) {
-              const addr = window['zilPay'].crypto.fromBech32Address(address);
-              const base16 = String(addr).toLowerCase();
-              const amount = proposal['balances'][base16];
+              const amount = proposal['balances'][address];
+
+              if (!amount) {
+                return [address, '0'];
+              }
 
               return [
-                base16,
+                address,
                 Number(amount) / Math.pow(10, Number(options.decimals))
               ];
             }
           } catch (err) {
-            //
+            return [address, '0'];
           }
 
           const {

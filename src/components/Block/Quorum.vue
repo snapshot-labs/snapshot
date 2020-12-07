@@ -7,7 +7,7 @@
         </span>
         <span class="float-right" v-text="$n(this.percents, 'percent')" />
       </div>
-      <UiProgress :value="values" :max="100" class="mb-3" />
+      <UiProgress :value="values" :max="maxValues" class="mb-3" />
     </div>
   </Block>
 </template>
@@ -42,15 +42,18 @@ export default {
         this.results.totalVotesBalances / ((this.quorum / 100) * totalSupply)
       );
     },
+    maxValues() {
+      const { decimals } = this.space.strategies[0].params;
+      const totalSupply = Number(this.totalSupply) / decimals;
+
+      return (this.quorum / 100) * totalSupply;
+    },
     values() {
-      return this.percents * 100;
+      return this.results.totalVotesBalances;
     }
   },
   methods: {
     ...mapActions(['notify'])
-  },
-  mounted() {
-    console.log(this.percents)
   }
 };
 </script>
