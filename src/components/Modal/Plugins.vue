@@ -54,6 +54,7 @@
       <PluginGnosisConfig
         :value="form.gnosis"
         :proposal="proposal"
+        :network="space.network"
         v-model="form.gnosis"
         @close="selected = false"
         v-if="selected === 'gnosis'"

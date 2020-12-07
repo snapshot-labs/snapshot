@@ -36,7 +36,11 @@
       </div>
     </div>
     <div v-if="this.preview">
-      <PluginGnosisBlock :proposalConfig="input" :choices="this.getChoices()" />
+      <PluginGnosisBlock
+        :proposalConfig="input"
+        :choices="this.getChoices()"
+        :network="this.network"
+      />
     </div>
     <UiButton
       v-if="!preview && input"
@@ -61,7 +65,7 @@
 
 <script>
 export default {
-  props: ['value', 'proposal'],
+  props: ['value', 'proposal', 'network'],
   data() {
     return {
       input: false,

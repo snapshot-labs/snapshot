@@ -159,6 +159,7 @@
           v-if="_get(payload, 'metadata.plugins.gnosis.baseTokenAddress')"
           :proposalConfig="payload.metadata.plugins.gnosis"
           :choices="payload.choices"
+          :network="space.network"
         />
       </div>
     </div>
