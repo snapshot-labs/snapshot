@@ -82,9 +82,9 @@ const actions = {
       commit('HANDLE_CHAIN_CHANGED', network.chainId);
       const account = accounts.length > 0 ? accounts[0] : null;
       let name = '';
-      let profiles: any = [];
+      let profilesData: any = {};
       try {
-        [name, { profiles }] = await Promise.all([
+        [name, profilesData] = await Promise.all([
           getProvider('1').lookupAddress(account),
           getProfiles([account])
         ]);
@@ -94,7 +94,7 @@ const actions = {
       commit('WEB3_SET', {
         account,
         name,
-        profile: profiles && profiles.length > 0 ? profiles[0] : {}
+        profile: profilesData[account]
       });
     } catch (e) {
       commit('WEB3_SET', { account: null, name: null, profile: null });

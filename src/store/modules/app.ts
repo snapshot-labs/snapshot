@@ -161,29 +161,32 @@ const actions = {
       ]);
 
       const voterAddresses = (Object as any).keys(votes);
-      let profilesData: any = [];
-      let authorProfile = null;
+      let profilesData: any = {};
       try {
         profilesData = await getProfiles([proposal.address, ...voterAddresses]);
       } catch (e) {
         console.error(e);
       }
 
-      profilesData.profiles.forEach(profile => {
-        if (
-          !authorProfile &&
-          profile.eth_address &&
-          proposal.address.toLowerCase() === profile.eth_address.toLowerCase()
-        ) {
-          authorProfile = profile;
-        }
-        const voteWithMatchingAddress = Object.keys(votes).find(
-          key => key.toLowerCase() === profile.eth_address.toLowerCase()
-        );
-        if (voteWithMatchingAddress) {
-          votes[voteWithMatchingAddress].profile = profile;
-        }
+      const authorProfile = profilesData[proposal.address];
+      (Object as any).keys(votes).forEach(voteAddress => {
+        votes[voteAddress].profile = profilesData[voteAddress];
       });
+      // profilesData.forEach(profile => {
+      //   if (
+      //     !authorProfile &&
+      //     profile.eth_address &&
+      //     proposal.address.toLowerCase() === profile.eth_address.toLowerCase()
+      //   ) {
+      //     authorProfile = profile;
+      //   }
+      //   const voteWithMatchingAddress = Object.keys(votes).find(
+      //     key => key.toLowerCase() === profile.eth_address.toLowerCase()
+      //   );
+      //   if (voteWithMatchingAddress) {
+      //     votes[voteWithMatchingAddress].profile = profile;
+      //   }
+      // });
 
       result.proposal = formatProposal(proposal);
       result.proposal.ipfsHash = id;

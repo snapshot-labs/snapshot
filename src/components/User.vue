@@ -29,6 +29,8 @@ export default {
     name() {
       if (this.profile && this.profile.name) {
         return this.profile.name;
+      } else if (this.profile && this.profile.ens) {
+        return this.profile.ens;
       }
       return this.web3.account &&
         this.address.toLowerCase() === this.web3.account.toLowerCase()

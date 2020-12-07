@@ -1,7 +1,7 @@
 import { subgraphRequest } from '@snapshot-labs/snapshot.js/src/utils';
 
 export async function getProfiles(addresses) {
-  const profiles = await subgraphRequest('https://api.3box.io/graph', {
+  const threeBoxProfiles = await subgraphRequest('https://api.3box.io/graph', {
     profiles: {
       __args: {
         ids: addresses
@@ -33,23 +33,31 @@ export async function getProfiles(addresses) {
     }
   );
 
-  ensProfiles.accounts.forEach(account => {
-    if (account.domains && account.domains.length > 0 && account.id) {
-      const profileFoundIndex = profiles.profiles.findIndex(
-        profile =>
-          profile.eth_address.toLowerCase() === account.id.toLowerCase()
-      );
-      if (profileFoundIndex > -1) {
-        if (!profiles.profiles[profileFoundIndex].name) {
-          profiles.profiles[profileFoundIndex].name = account.domains[0].name;
-        }
-      } else {
-        profiles.profiles.push({
-          name: account.domains[0].name,
-          eth_address: account.id,
-          ens: true
-        });
+  const profiles = {};
+  addresses.forEach(address => {
+    profiles[address] = {};
+    const profileFoundIndex = threeBoxProfiles.profiles.findIndex(
+      profile => profile.eth_address.toLowerCase() === address.toLowerCase()
+    );
+    if (profileFoundIndex > -1) {
+      const { name, image } = threeBoxProfiles.profiles[profileFoundIndex];
+      if (name) {
+        profiles[address].name = name;
       }
+      if (image) {
+        profiles[address].image = image;
+      }
+    }
+    const ensProfileFoundIndex = ensProfiles.accounts.findIndex(
+      profile => profile.id.toLowerCase() === address.toLowerCase()
+    );
+    if (
+      ensProfileFoundIndex > -1 &&
+      ensProfiles.accounts[ensProfileFoundIndex].domains &&
+      ensProfiles.accounts[ensProfileFoundIndex].domains.length > 0
+    ) {
+      const { name } = ensProfiles.accounts[ensProfileFoundIndex].domains[0];
+      profiles[address].ens = name;
     }
   });
 

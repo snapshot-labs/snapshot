@@ -52,6 +52,11 @@
                   class="hide-sm"
                 />
                 <span
+                  v-else-if="web3.profile && web3.profile.ens"
+                  v-text="web3.profile.ens"
+                  class="hide-sm"
+                />
+                <span
                   v-else-if="web3.name"
                   v-text="web3.name"
                   class="hide-sm"
