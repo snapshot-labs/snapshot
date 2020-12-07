@@ -61,7 +61,7 @@
           </UiButton>
         </a>
         <a
-          v-if="web3.profile.name"
+          v-if="web3.profile && !web3.profile.ens"
           :href="`https://3box.io/${web3.account}/edit`"
           target="_blank"
           class="mb-2 d-block"

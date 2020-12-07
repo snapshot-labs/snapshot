@@ -17,7 +17,7 @@
         </UiButton>
       </a>
       <a
-        v-if="profile && profile.name"
+        v-if="profile && profile.name && !profile.ens"
         :href="`https://3box.io/${address}`"
         target="_blank"
         class="mb-2 d-block"
