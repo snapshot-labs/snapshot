@@ -236,6 +236,8 @@ export default {
       this.proposal = proposalObj.proposal;
       this.votes = proposalObj.votes;
       this.results = proposalObj.results;
+
+      console.log(this.proposalObj);
     },
     async loadPower() {
       if (!this.web3.account.bech32) return;
