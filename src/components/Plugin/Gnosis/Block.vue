@@ -1,5 +1,8 @@
 <template>
   <Block title="Gnosis Impact" v-if="choices.length > 1">
+    <div v-if="loading" class="loading">
+      Loading...
+    </div>
     <div class="mb-1">
       <b>
         Predicted impact
@@ -75,9 +78,10 @@ import Plugin from '@snapshot-labs/snapshot.js/src/plugins/gnosis';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 
 export default {
-  props: ['proposalConfig', 'choices'],
+  props: ['proposalConfig', 'choices', 'network'],
   data() {
     return {
+      loading: false,
       plugin: new Plugin(),
       baseToken: {},
       baseTokenUrl: '',
@@ -91,17 +95,18 @@ export default {
     };
   },
   async created() {
+    this.loading = true;
     this.baseToken = await this.plugin.getTokenInfo(
-      getProvider(this.web3.network.key),
+      getProvider(this.network),
       this.proposalConfig.baseTokenAddress
     );
     this.baseTokenUrl = this.getLogoUrl(this.baseToken.checksumAddress);
     this.quoteToken = await this.plugin.getTokenInfo(
-      getProvider(this.web3.network.key),
+      getProvider(this.network),
       this.proposalConfig.quoteCurrencyAddress
     );
     const conditionQuery = await this.plugin.getOmenCondition(
-      this.web3.network.key,
+      this.network,
       this.proposalConfig.conditionId
     );
     this.baseProductMarketMaker = conditionQuery.condition.fixedProductMarketMakers.find(
@@ -112,12 +117,15 @@ export default {
     );
 
     const tokenPairQuery = await this.plugin.getUniswapPair(
-      this.web3.network.key,
+      this.network,
       this.proposalConfig.quoteCurrencyAddress,
       this.proposalConfig.baseTokenAddress
     );
-    if (tokenPairQuery.pairs.length > 0) {
-      this.quoteCurrencyPrice = parseFloat(tokenPairQuery.pairs[0].token0Price);
+    if (
+      tokenPairQuery !== undefined &&
+      tokenPairQuery.token0Price !== undefined
+    ) {
+      this.quoteCurrencyPrice = parseFloat(tokenPairQuery.token0Price);
     }
     this.priceFirstOption = this.getTokenPrice(0);
     this.priceSecondOption = this.getTokenPrice(1);
@@ -125,6 +133,7 @@ export default {
       ((this.priceFirstOption - this.priceSecondOption) /
         this.priceSecondOption) *
       100;
+    this.loading = false;
   },
   methods: {
     getLogoUrl(checksumAddress) {
