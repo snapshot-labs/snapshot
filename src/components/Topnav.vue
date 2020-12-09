@@ -56,11 +56,6 @@
                   v-text="web3.profile.ens"
                   class="hide-sm"
                 />
-                <span
-                  v-else-if="web3.name"
-                  v-text="web3.name"
-                  class="hide-sm"
-                />
                 <span v-else v-text="_shorten(web3.account)" class="hide-sm" />
               </UiButton>
             </template>

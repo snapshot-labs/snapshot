@@ -1,63 +1,57 @@
 import { subgraphRequest } from '@snapshot-labs/snapshot.js/src/utils';
 
-export async function getProfiles(addresses) {
-  const [ensProfiles, threeBoxProfiles] = await Promise.all([
-    subgraphRequest('https://api.thegraph.com/subgraphs/name/ensdomains/ens', {
-      accounts: {
-        __args: {
-          first: 1000,
-          where: {
-            id_in: addresses.map(address => address.toLowerCase())
-          }
-        },
-        id: true,
-        domains: {
-          __args: {
-            first: 1
-          },
-          name: true
+function get3BoxProfiles(addresses) {
+  return subgraphRequest('https://api.3box.io/graph', {
+    profiles: {
+      __args: {
+        ids: addresses
+      },
+      name: true,
+      eth_address: true,
+      image: true
+    }
+  })
+}
+
+function lookupAddresses(addresses) {
+  return subgraphRequest('https://api.thegraph.com/subgraphs/name/ensdomains/ens', {
+    accounts: {
+      __args: {
+        first: 1000,
+        where: {
+          id_in: addresses.map(addresses => addresses.toLowerCase())
         }
-      }
-    }),
-    subgraphRequest('https://api.3box.io/graph', {
-      profiles: {
+      },
+      id: true,
+      domains: {
         __args: {
-          ids: addresses
+          first: 1
         },
-        name: true,
-        eth_address: true,
-        image: true
-      }
-    })
-  ]);
-
-  const profiles = {};
-  addresses.forEach(address => {
-    profiles[address] = {};
-    const profileFoundIndex = threeBoxProfiles.profiles.findIndex(
-      profile => profile.eth_address.toLowerCase() === address.toLowerCase()
-    );
-    if (profileFoundIndex > -1) {
-      const { name, image } = threeBoxProfiles.profiles[profileFoundIndex];
-      if (name) {
-        profiles[address].name = name;
-      }
-      if (image) {
-        profiles[address].image = image;
+        name: true
       }
     }
-    const ensProfileFoundIndex = ensProfiles.accounts.findIndex(
-      profile => profile.id.toLowerCase() === address.toLowerCase()
-    );
-    if (
-      ensProfileFoundIndex > -1 &&
-      ensProfiles.accounts[ensProfileFoundIndex].domains &&
-      ensProfiles.accounts[ensProfileFoundIndex].domains.length > 0
-    ) {
-      const { name } = ensProfiles.accounts[ensProfileFoundIndex].domains[0];
-      profiles[address].ens = name;
-    }
-  });
+  })
+}
 
-  return profiles;
+export async function getProfiles(addresses) {
+  let ensNames: any = {accounts: []}
+  let _3BoxProfiles: any = {profiles: []}
+  try {
+    [ensNames, _3BoxProfiles] = await Promise.all([
+      lookupAddresses(addresses),
+      get3BoxProfiles(addresses)
+    ])
+  } catch (e) {
+    console.log(e);
+  }
+
+  console.log(ensNames, _3BoxProfiles)
+  const profiles = Object.fromEntries(addresses.map(address => [address, {}]));
+  return Object.fromEntries(Object.entries(profiles).map(([address, profile]) => {
+    profile = _3BoxProfiles.profiles.find(profile => profile.eth_address === address.toLowerCase()) || {};
+    const ensAccount = ensNames.accounts.find(profile => profile.id === address.toLowerCase());
+    profile.ens = (ensAccount && ensAccount.domains && ensAccount.domains.length > 0) && ensAccount.domains[0].name || "";
+    return [address, profile];
+  }));
+  return profiles
 }

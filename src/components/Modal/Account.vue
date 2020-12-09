@@ -56,7 +56,6 @@
             />
             <span v-if="web3.profile.name" v-text="web3.profile.name" />
             <span v-else-if="web3.profile.ens" v-text="web3.profile.ens" />
-            <span v-else-if="web3.name" v-text="web3.name" />
             <span v-else v-text="_shorten(web3.account)" />
             <Icon name="external-link" class="ml-1" />
           </UiButton>
