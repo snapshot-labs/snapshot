@@ -81,7 +81,26 @@
               <span v-if="!form.end">Select end date</span>
               <span v-else v-text="$d(form.end * 1e3, 'short')" />
             </UiButton>
-            <UiButton class="width-full mb-2">
+            <div class="advanced-wrapper">
+              <div class="advanced" @click="showAdvaced = !showAdvaced">
+                Advanced
+              </div>
+              <svg
+                width="13"
+                height="8"
+                viewBox="0 0 13 8"
+                fill="none"
+                :class="{ arrow: true, enabled: showAdvaced }"
+              >
+                <path
+                  d="M12 7L6.5 1L1 7"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </div>
+            <UiButton v-show="showAdvaced" class="width-full mb-2">
               <input
                 v-model="form.snapshot"
                 type="number"
@@ -90,7 +109,7 @@
                 placeholder="Snapshot block number"
               />
             </UiButton>
-            <UiButton class="width-full mb-2">
+            <UiButton v-show="showAdvaced" class="width-full mb-2">
               <input
                 v-model="form.quorum"
                 min="1"
@@ -142,6 +161,7 @@ export default {
     return {
       key: this.$route.params.key,
       loading: false,
+      showAdvaced: false,
       choices: [],
       blockNumber: -1,
       form: {
@@ -244,5 +264,23 @@ export default {
 .list-enter,
 .list-leave-to {
   opacity: 0;
+}
+.advanced {
+  user-select: none;
+  cursor: pointer;
+  text-align: right;
+  color: var(--heading-color);
+}
+.advanced-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+.arrow > path {
+  stroke: var(--heading-color);
+  margin-bottom: 5px;
+}
+.enabled {
+  transform: rotate(180deg);
 }
 </style>
