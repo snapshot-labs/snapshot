@@ -276,9 +276,12 @@ export default {
   align-items: center;
   justify-content: flex-end;
 }
+.arrow {
+  margin-bottom: 7px;
+  margin-right: 2px;
+}
 .arrow > path {
   stroke: var(--heading-color);
-  margin-bottom: 5px;
 }
 .enabled {
   transform: rotate(180deg);
