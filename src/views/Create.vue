@@ -279,11 +279,12 @@ export default {
 .arrow {
   margin-bottom: 7px;
   margin-right: 2px;
+  transform: rotate(180deg);
 }
 .arrow > path {
   stroke: var(--heading-color);
 }
 .enabled {
-  transform: rotate(180deg);
+  transform: rotate(0);
 }
 </style>
