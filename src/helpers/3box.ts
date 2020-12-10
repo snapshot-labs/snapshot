@@ -29,7 +29,8 @@ function lookupAddresses(addresses) {
           __args: {
             first: 1
           },
-          name: true
+          name: true,
+          labelName:true,
         }
       }
     }
@@ -48,7 +49,6 @@ export async function getProfiles(addresses) {
     console.log(e);
   }
 
-  console.log(ensNames, _3BoxProfiles);
   const profiles = Object.fromEntries(addresses.map(address => [address, {}]));
   return Object.fromEntries(
     Object.entries(profiles).map(([address, profile]) => {
@@ -63,6 +63,7 @@ export async function getProfiles(addresses) {
         (ensAccount &&
           ensAccount.domains &&
           ensAccount.domains.length > 0 &&
+          ensAccount.domains[0].labelName &&
           ensAccount.domains[0].name) ||
         '';
       return [address, profile];
