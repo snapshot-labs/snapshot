@@ -94,7 +94,7 @@ const actions = {
       commit('WEB3_SET', {
         account,
         name,
-        profile: profiles && profiles.length > 0 ? profiles[0] : {}
+        profile: profiles?.length > 0 ? profiles[0] : {}
       });
     } catch (e) {
       commit('WEB3_SET', { account: null, name: null, profile: null });

@@ -224,7 +224,7 @@ export default {
   },
   watch: {
     'web3.account': async function(val, prev) {
-      if (val && val.toLowerCase() !== prev) await this.loadPower();
+      if (val?.toLowerCase() !== prev) await this.loadPower();
     }
   },
   methods: {

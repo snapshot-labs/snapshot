@@ -40,8 +40,7 @@ export default {
       return winningChoice;
     },
     plugins() {
-      if (this.space && this.space.plugins && this.space.plugins['aragon'])
-        return ['aragon'];
+      if (this.space?.plugins?.['aragon']) return ['aragon'];
       return [];
     }
   },

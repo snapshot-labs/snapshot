@@ -27,7 +27,7 @@ export default {
   },
   computed: {
     name() {
-      if (this.profile && this.profile.name) {
+      if (this.profile?.name) {
         return this.profile.name;
       }
       return this.web3.account &&
