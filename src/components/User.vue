@@ -27,7 +27,7 @@ export default {
   },
   computed: {
     name() {
-      if (this.profile && this.profile.name) {
+      if (this.profile?.name) {
         return this.profile.name;
       } else if (this.profile && this.profile.ens) {
         return this.profile.ens;
