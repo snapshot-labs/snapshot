@@ -5,7 +5,7 @@
         <span class="mr-1 tooltipped tooltipped-n">
           Quorum result
         </span>
-        <span class="float-right" v-text="$n(this.percents, 'percent')" />
+        <span class="float-right" v-text="Math.round(this.percents) + '%'" />
       </div>
       <UiProgress :value="values" :max="maxValues" class="mb-3" />
     </div>
@@ -14,6 +14,9 @@
 
 <script>
 import { mapActions } from 'vuex';
+import Big from 'big.js';
+
+Big.PE = 99;
 
 export default {
   name: 'Quorum',
@@ -32,15 +35,20 @@ export default {
     },
     percents() {
       const { decimals } = this.space.strategies[0].params;
-      const totalSupply = Number(this.totalSupply) / decimals;
+      const _amounts = Big(this.results.totalVotesBalances);
+      const _totalSupply = Big(this.totalSupply)
+        .div(Big(decimals))
+        .round();
 
-      if (totalSupply === 0) {
+      if (Number(_totalSupply) === 0) {
         return 0;
       }
 
-      return (
-        this.results.totalVotesBalances / ((this.quorum / 100) * totalSupply)
-      );
+      const _quorum = Big(this.quorum / 100);
+      const _b = _totalSupply.mul(_quorum);
+      const _result = _amounts.div(_b);
+
+      return _result.round().toString();
     },
     maxValues() {
       const { decimals } = this.space.strategies[0].params;
