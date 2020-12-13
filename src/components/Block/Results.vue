@@ -2,7 +2,12 @@
   <Block :title="ts >= payload.end ? 'Results' : 'Current results'">
     <div v-for="choice in choices" :key="choice.i">
       <div class="text-white mb-1">
-        <span v-text="_shorten(choice.choice, 'choice')" class="mr-1" />
+        <span
+          :class="choice.choice.length > 12 && 'tooltipped tooltipped-n'"
+          :aria-label="choice.choice.length > 12 && choice.choice"
+          v-text="_shorten(choice.choice, 'choice')"
+          class="mr-1"
+        />
         <span
           class="mr-1 tooltipped tooltipped-n"
           :aria-label="

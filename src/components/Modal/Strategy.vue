@@ -59,7 +59,7 @@ export default {
   },
   watch: {
     open() {
-      if (this.strategy && this.strategy.name) {
+      if (this.strategy?.name) {
         const strategy = this.strategy;
         strategy.params = JSON.stringify(strategy.params, null, 2);
         this.input = this.strategy;

@@ -120,7 +120,7 @@ export default {
       );
     },
     isEns() {
-      return this.key.includes('.eth');
+      return this.key.includes('.eth') || this.key.includes('.xyz');
     }
   },
   methods: {

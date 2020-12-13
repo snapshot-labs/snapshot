@@ -50,6 +50,7 @@
                     <input
                       v-model="choices[i].text"
                       class="input height-full flex-auto text-center"
+                      maxlength="32"
                     />
                     <span @click="removeChoice(i)" class="ml-4">
                       <Icon name="close" size="12" />
@@ -223,6 +224,7 @@ export default {
     async handleSubmit() {
       this.loading = true;
       this.form.choices = this.choices.map(choice => choice.text);
+      this.form.metadata.strategies = this.space.strategies;
       try {
         const { ipfsHash } = await this.send({
           space: this.space.key,
