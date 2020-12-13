@@ -224,6 +224,7 @@ export default {
     async handleSubmit() {
       this.loading = true;
       this.form.choices = this.choices.map(choice => choice.text);
+      this.form.metadata.strategies = this.space.strategies;
       try {
         const { ipfsHash } = await this.send({
           space: this.space.key,

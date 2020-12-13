@@ -23,7 +23,7 @@
             />
           </UiButton>
           <UiButton
-            :disabled="!id.includes('.eth')"
+            :disabled="!id.includes('.eth') && !id.includes('.xyz')"
             @click="handleSubmit"
             class="button--submit width-full"
           >
