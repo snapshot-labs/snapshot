@@ -37,7 +37,7 @@ export default {
       const { decimals } = this.space.strategies[0].params;
       const _amounts = Big(this.results.totalVotesBalances);
       const _totalSupply = Big(this.totalSupply)
-        .div(Big(decimals))
+        .div(Big(10 ** decimals))
         .round();
 
       if (Number(_totalSupply) === 0) {
@@ -45,11 +45,11 @@ export default {
       }
 
       const _100 = Big(100);
-      const _quorum = Big(this.quorum * 100);
-      const _b = _totalSupply.div(_quorum);
+      const _quorum = Big(this.quorum / 100);
+      const _b = _totalSupply.mul(_quorum);
       const _result = _amounts.div(_b).mul(_100);
 
-      return _result.round().toString();
+      return _result.toString();
     },
     maxValues() {
       const { decimals } = this.space.strategies[0].params;
