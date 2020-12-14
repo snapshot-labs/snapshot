@@ -45,8 +45,8 @@ export default {
       }
 
       const _100 = Big(100);
-      const _quorum = Big(this.quorum / 100);
-      const _b = _totalSupply.mul(_quorum);
+      const _quorum = Big(this.quorum * 100);
+      const _b = _totalSupply.div(_quorum);
       const _result = _amounts.div(_b).mul(_100);
 
       return _result.round().toString();
