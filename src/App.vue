@@ -22,9 +22,6 @@ export default {
       el.classList[val ? 'add' : 'remove']('overflow-hidden');
     }
   },
-  mounted() {
-    this.init();
-  },
   computed: {
     space() {
       try {
@@ -34,6 +31,9 @@ export default {
         return {};
       }
     }
+  },
+  mounted() {
+    this.init();
   },
   methods: {
     ...mapActions(['init'])
