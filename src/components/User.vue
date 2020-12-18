@@ -29,7 +29,7 @@ export default {
     name() {
       if (this.profile?.name) {
         return this.profile.name;
-      } else if (this.profile && this.profile.ens) {
+      } else if (this.profile?.ens) {
         return this.profile.ens;
       }
       return this.web3.account &&
