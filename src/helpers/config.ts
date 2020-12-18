@@ -12,6 +12,8 @@ if (domainName === 'demo.snapshot.page' || domainName === 'beta.snapshot.page')
 if (domainName === 'snapshot.page') {
   // @ts-ignore
   delete config.connectors.portis;
+  // @ts-ignore
+  delete config.connectors.torus;
 }
 
 export default config;

@@ -75,10 +75,18 @@ const actions = {
         });
         // auth.provider.on('disconnect', async () => {});
       }
-      const [network, accounts] = await Promise.all([
-        auth.web3.getNetwork(),
-        auth.web3.listAccounts()
-      ]);
+      console.log('Provider', auth.provider);
+      let network, accounts;
+      try {
+        [network, accounts] = await Promise.all([
+          auth.web3.getNetwork(),
+          auth.web3.listAccounts()
+        ]);
+      } catch (e) {
+        console.log(e);
+      }
+      console.log('Network', network);
+      console.log('Accounts', accounts);
       commit('HANDLE_CHAIN_CHANGED', network.chainId);
       const account = accounts.length > 0 ? accounts[0] : null;
       let name = '';
