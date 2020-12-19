@@ -41,5 +41,9 @@
       "chainId": 1,
       "ethJsonrpcUrl": "https://cloudflare-eth.com"
     }
+  },
+  "torus": {
+    "id": "torus",
+    "name": "Torus"
   }
 }
