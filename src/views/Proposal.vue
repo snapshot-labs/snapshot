@@ -239,7 +239,7 @@ export default {
       this.results = proposalObj.results;
     },
     async loadPower() {
-      if (!this.web3.account) return;
+      if (!this.web3.account || !this.proposal.address) return;
       const { scores, totalScore } = await this.getPower({
         space: this.space,
         address: this.web3.account,

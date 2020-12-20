@@ -153,36 +153,47 @@ const actions = {
   getProposal: async ({ commit }, { space, id }) => {
     commit('GET_PROPOSAL_REQUEST');
     try {
-      const blockNumber = await getBlockNumber(getProvider(space.network));
-      const result: any = {};
-      const [proposal, votes]: [any, any] = await Promise.all([
+      const provider = getProvider(space.network);
+      console.time('getProposal.data');
+      const response = await Promise.all([
         ipfsGet(gateway, id),
-        client.request(`${space.key}/proposal/${id}`)
+        client.request(`${space.key}/proposal/${id}`),
+        getBlockNumber(provider)
       ]);
-      const voterAddresses = (Object as any).keys(votes);
-      const profiles = await getProfiles([proposal.address, ...voterAddresses]);
-      const authorProfile = profiles[proposal.address];
-      (Object as any).keys(votes).forEach(voteAddress => {
-        votes[voteAddress].profile = profiles[voteAddress];
-      });
-      result.proposal = formatProposal(proposal);
-      result.proposal.ipfsHash = id;
-      result.proposal.profile = authorProfile;
-      result.votes = votes;
-      const { snapshot } = result.proposal.msg.payload;
+      console.timeEnd('getProposal.data');
+      const [, , blockNumber] = response;
+      let [proposal, votes]: any = response;
+      proposal = formatProposal(proposal);
+      proposal.ipfsHash = id;
+      const voters = Object.keys(votes);
+      const { snapshot } = proposal.msg.payload;
       const blockTag = snapshot > blockNumber ? 'latest' : parseInt(snapshot);
-      const scores: any = await getScores(
-        space.key,
-        space.strategies,
-        space.network,
-        getProvider(space.network),
-        Object.keys(result.votes),
-        // @ts-ignore
-        blockTag
-      );
+
+      /* Get scores */
+      console.time('getProposal.scores');
+      const [scores, profiles]: any = await Promise.all([
+        getScores(
+          space.key,
+          space.strategies,
+          space.network,
+          provider,
+          voters,
+          // @ts-ignore
+          blockTag
+        ),
+        getProfiles([proposal.address, ...voters])
+      ]);
+      console.timeEnd('getProposal.scores');
       console.log('Scores', scores);
-      result.votes = Object.fromEntries(
-        Object.entries(result.votes)
+
+      const authorProfile = profiles[proposal.address];
+      voters.forEach(address => {
+        votes[address].profile = profiles[address];
+      });
+      proposal.profile = authorProfile;
+
+      votes = Object.fromEntries(
+        Object.entries(votes)
           .map((vote: any) => {
             vote[1].scores = space.strategies.map(
               (strategy, i) => scores[i][vote[1].address] || 0
@@ -193,32 +204,35 @@ const actions = {
           .sort((a, b) => b[1].balance - a[1].balance)
           .filter(vote => vote[1].balance > 0)
       );
-      result.results = {
-        totalVotes: result.proposal.msg.payload.choices.map(
+
+      /* Get results */
+      const results = {
+        totalVotes: proposal.msg.payload.choices.map(
           (choice, i) =>
-            Object.values(result.votes).filter(
+            Object.values(votes).filter(
               (vote: any) => vote.msg.payload.choice === i + 1
             ).length
         ),
-        totalBalances: result.proposal.msg.payload.choices.map((choice, i) =>
-          Object.values(result.votes)
+        totalBalances: proposal.msg.payload.choices.map((choice, i) =>
+          Object.values(votes)
             .filter((vote: any) => vote.msg.payload.choice === i + 1)
             .reduce((a, b: any) => a + b.balance, 0)
         ),
-        totalScores: result.proposal.msg.payload.choices.map((choice, i) =>
+        totalScores: proposal.msg.payload.choices.map((choice, i) =>
           space.strategies.map((strategy, sI) =>
-            Object.values(result.votes)
+            Object.values(votes)
               .filter((vote: any) => vote.msg.payload.choice === i + 1)
               .reduce((a, b: any) => a + b.scores[sI], 0)
           )
         ),
-        totalVotesBalances: Object.values(result.votes).reduce(
+        totalVotesBalances: Object.values(votes).reduce(
           (a, b: any) => a + b.balance,
           0
         )
       };
+
       commit('GET_PROPOSAL_SUCCESS');
-      return result;
+      return { proposal, votes, results };
     } catch (e) {
       commit('GET_PROPOSAL_FAILURE', e);
     }
