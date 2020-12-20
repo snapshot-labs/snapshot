@@ -22,7 +22,7 @@
     "@ethersproject/wallet": "^5.0.1",
     "@portis/web3": "2.0.0-beta.49",
     "@primer/css": "^14.4.0",
-    "@snapshot-labs/lock": "github:snapshot-labs/lock#acaa95c6a610e2c01d2ca5e232b8fd5174643199",
+    "@snapshot-labs/lock": "github:snapshot-labs/lock#master",
     "@snapshot-labs/snapshot-spaces": "github:snapshot-labs/snapshot-spaces#master",
     "@snapshot-labs/snapshot.js": "github:snapshot-labs/snapshot.js#master",
     "@toruslabs/torus-embed": "^1.9.2",

@@ -101,7 +101,7 @@
 
 <script>
 import { mapActions } from 'vuex';
-import { getInjected } from '@/helpers/utils';
+import { getInjected } from '@snapshot-labs/lock/src/utils';
 
 export default {
   props: ['open'],

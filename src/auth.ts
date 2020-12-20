@@ -9,7 +9,14 @@ import torus from '@snapshot-labs/lock/connectors/torus';
 import config from '@/helpers/config';
 
 const options: any = { connectors: [] };
-const connectors = { injected, fortmatic, portis, walletconnect, walletlink, torus };
+const connectors = {
+  injected,
+  fortmatic,
+  portis,
+  walletconnect,
+  walletlink,
+  torus
+};
 
 Object.entries(config.connectors).forEach((connector: any) => {
   options.connectors.push({
