@@ -55,13 +55,13 @@
               class="mr-2 ml-n1"
             />
             <span v-if="web3.profile.name" v-text="web3.profile.name" />
-            <span v-else-if="web3.name" v-text="web3.name" />
+            <span v-else-if="web3.profile.ens" v-text="web3.profile.ens" />
             <span v-else v-text="_shorten(web3.account)" />
             <Icon name="external-link" class="ml-1" />
           </UiButton>
         </a>
         <a
-          v-if="web3.profile.name"
+          v-if="web3.profile && (web3.profile.name || web3.profile.image)"
           :href="`https://3box.io/${web3.account}/edit`"
           target="_blank"
           class="mb-2 d-block"

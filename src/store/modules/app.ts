@@ -159,35 +159,15 @@ const actions = {
         ipfsGet(gateway, id),
         client.request(`${space.key}/proposal/${id}`)
       ]);
-
       const voterAddresses = (Object as any).keys(votes);
-      let profilesData: any = [];
-      let authorProfile = null;
-      try {
-        profilesData = await getProfiles([proposal.address, ...voterAddresses]);
-      } catch (e) {
-        console.error(e);
-      }
-
-      profilesData.profiles.forEach(profile => {
-        if (
-          !authorProfile &&
-          profile.eth_address &&
-          proposal.address.toLowerCase() === profile.eth_address.toLowerCase()
-        ) {
-          authorProfile = profile;
-        }
-        const voteWithMatchingAddress = Object.keys(votes).find(
-          key => key.toLowerCase() === profile.eth_address.toLowerCase()
-        );
-        if (voteWithMatchingAddress) {
-          votes[voteWithMatchingAddress].profile = profile;
-        }
+      const profiles = await getProfiles([proposal.address, ...voterAddresses]);
+      const authorProfile = profiles[proposal.address];
+      (Object as any).keys(votes).forEach(voteAddress => {
+        votes[voteAddress].profile = profiles[voteAddress];
       });
-
       result.proposal = formatProposal(proposal);
       result.proposal.ipfsHash = id;
-      result.proposal.profile = authorProfile ? authorProfile : {};
+      result.proposal.profile = authorProfile;
       result.votes = votes;
       const { snapshot } = result.proposal.msg.payload;
       const blockTag = snapshot > blockNumber ? 'latest' : parseInt(snapshot);

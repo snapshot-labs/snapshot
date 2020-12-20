@@ -27,13 +27,18 @@ export default {
   },
   computed: {
     name() {
+      if (
+        this.web3.account &&
+        this.address.toLowerCase() === this.web3.account.toLowerCase()
+      ) {
+        return 'You';
+      }
       if (this.profile?.name) {
         return this.profile.name;
+      } else if (this.profile?.ens) {
+        return this.profile.ens;
       }
-      return this.web3.account &&
-        this.address.toLowerCase() === this.web3.account.toLowerCase()
-        ? 'You'
-        : this._shorten(this.address);
+      return this._shorten(this.address);
     }
   }
 };

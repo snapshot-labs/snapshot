@@ -1,7 +1,6 @@
 import Vue from 'vue';
 import { Web3Provider } from '@ethersproject/providers';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue';
-import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import store from '@/store';
 import { formatUnits } from '@ethersproject/units';
@@ -58,7 +57,7 @@ const actions = {
   },
   logout: async ({ commit }) => {
     Vue.prototype.$auth.logout();
-    commit('WEB3_SET', { account: null, name: null, profile: null });
+    commit('WEB3_SET', { account: null, profile: null });
   },
   loadProvider: async ({ commit, dispatch }) => {
     try {
@@ -89,23 +88,13 @@ const actions = {
       console.log('Accounts', accounts);
       commit('HANDLE_CHAIN_CHANGED', network.chainId);
       const account = accounts.length > 0 ? accounts[0] : null;
-      let name = '';
-      let profiles: any = [];
-      try {
-        [name, { profiles }] = await Promise.all([
-          getProvider('1').lookupAddress(account),
-          getProfiles([account])
-        ]);
-      } catch (e) {
-        console.error(e);
-      }
+      const profiles = await getProfiles([account]);
       commit('WEB3_SET', {
         account,
-        name,
-        profile: profiles?.length > 0 ? profiles[0] : {}
+        profile: profiles[account]
       });
     } catch (e) {
-      commit('WEB3_SET', { account: null, name: null, profile: null });
+      commit('WEB3_SET', { account: null, profile: null });
       return Promise.reject(e);
     }
   }
