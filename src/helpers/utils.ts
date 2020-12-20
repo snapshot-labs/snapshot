@@ -151,17 +151,6 @@ export function formatSpace(key, space) {
   return space;
 }
 
-export function getInjected() {
-  const web3: any = window['ethereum'];
-  if (!web3) return;
-  let injected = { name: 'Injected', id: 'web3' };
-  if (web3.isMetaMask) injected = { name: 'MetaMask', id: 'metamask' };
-  if (web3.isTrust) injected = { name: 'Trust Wallet', id: 'trustwallet' };
-  if (web3.isStatus) injected = { name: 'Status', id: 'status' };
-  if (web3.isFrame) injected = { name: 'Frame', id: 'frame' };
-  return injected;
-}
-
 export function filterProposals(space, proposal, tab) {
   const ts = (Date.now() / 1e3).toFixed();
   const members = space.members.map(address => address.toLowerCase());
