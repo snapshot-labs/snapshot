@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import VueRouter, { RouteConfig } from 'vue-router';
 import domains from '@snapshot-labs/snapshot-spaces/spaces/domains.json';
+import aliases from '@snapshot-labs/snapshot-spaces/spaces/aliases.json';
 import Home from '@/views/Home.vue';
 import Proposals from '@/views/Proposals.vue';
 import Proposal from '@/views/Proposal.vue';
@@ -13,6 +14,14 @@ import Delegate from '@/views/Delegate.vue';
 Vue.use(VueRouter);
 const domainName = window.location.hostname;
 
+const beforeEnter = (to: any, from, next) => {
+  if (aliases?.[to?.params?.key]) {
+    to.params.key = aliases[to.params.key];
+    return next(to);
+  }
+  next();
+};
+
 const routes: Array<RouteConfig> = [
   { path: '/setup', name: 'setup', component: Setup },
   { path: '/:key/settings/:from?', name: 'settings', component: Settings },
@@ -21,10 +30,30 @@ const routes: Array<RouteConfig> = [
   { path: '/plugins', name: 'plugins', component: Explore },
   { path: '/skins', name: 'skins', component: Explore },
   { path: '/delegate', name: 'delegate', component: Delegate },
-  { path: '/:key/proposal/:id', name: 'proposal', component: Proposal },
-  { path: '/:key/create/:from?', name: 'create', component: Create },
-  { path: '/:key', name: 'proposals', component: Proposals },
-  { path: '/:key/:tab', name: 'proposals-tab', component: Proposals },
+  {
+    path: '/:key/proposal/:id',
+    name: 'proposal',
+    component: Proposal,
+    beforeEnter
+  },
+  {
+    path: '/:key/create/:from?',
+    name: 'create',
+    component: Create,
+    beforeEnter
+  },
+  {
+    path: '/:key',
+    name: 'proposals',
+    component: Proposals,
+    beforeEnter
+  },
+  {
+    path: '/:key/:tab',
+    name: 'proposals-tab',
+    component: Proposals,
+    beforeEnter
+  },
   {
     path: '/',
     name: 'home',
