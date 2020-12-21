@@ -5,7 +5,7 @@
         class="col-3 iconfont iconback text-left h3 text-gray"
         @click="month--"
       />
-      <h4 class="mb-3 flex-auto text-center">{{ monthName }} {{ year }}</h4>
+      <h4 class="mb-3 flex-auto text-center">{{ monthName }} {{ fullYear }}</h4>
       <a
         class="col-3 iconfont icongo text-right h3 text-gray"
         @click="month++"
@@ -76,6 +76,9 @@ export default {
         }
       );
       return `${name.charAt(0).toUpperCase()}${name.slice(1)}`;
+    },
+    fullYear() {
+      return new Date(this.year, this.month).getFullYear();
     },
     days() {
       return new Date(this.year, this.month + 1, 0).getDate();
