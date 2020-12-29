@@ -95,11 +95,14 @@ export default {
       this.modalReceiptOpen = true;
     },
     sortVotesUserFirst() {
-      const { [[this.web3.account]]: firstKeyValue, ...rest } = this.votes;
-      return {
-        [[this.web3.account]]: firstKeyValue,
-        ...rest
-      };
+      if (Object.keys(this.votes).includes(this.web3.account)) {
+        const { [[this.web3.account]]: firstKeyValue, ...rest } = this.votes;
+        return {
+          [[this.web3.account]]: firstKeyValue,
+          ...rest
+        };
+      }
+      return this.votes;
     }
   }
 };
