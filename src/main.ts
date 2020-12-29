@@ -15,6 +15,9 @@ import i18n from '@/i18n';
 import '@/auth';
 import '@/helpers/skins';
 import '@/style.scss';
+import snapshot from '@snapshot-labs/snapshot.js';
+
+console.log('Snapshot.js', snapshot);
 
 Vue.use(PortalVue);
 Vue.use(VueClipboard);
