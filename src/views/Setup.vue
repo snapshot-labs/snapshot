@@ -15,12 +15,19 @@
           <div class="mb-3">
             Use an existing ENS name to create your space on.
           </div>
-          <UiButton class="d-flex width-full mb-3">
+          <UiButton class="text-left width-full mb-3 d-flex px-3">
             <input
               v-model="id"
-              class="input width-full"
-              placeholder="ENS name"
+              class="input flex-auto"
+              placeholder="e.g. yam.eth"
             />
+            <a
+              class="d-block py-1 mr-n2"
+              target="_blank"
+              href="https://docs.snapshot.page/guides/create-a-space"
+            >
+              <Icon name="info" size="24" class="text-gray p-1" />
+            </a>
           </UiButton>
           <UiButton
             :disabled="!id.includes('.eth') && !id.includes('.xyz')"
