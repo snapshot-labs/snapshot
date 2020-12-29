@@ -15,7 +15,7 @@
           <div class="mb-3">
             Use an existing ENS name to create your space on.
           </div>
-          <UiButton class="d-flex width-full mb-2">
+          <UiButton class="d-flex width-full mb-3">
             <input
               v-model="id"
               class="input width-full"
