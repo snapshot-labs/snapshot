@@ -79,8 +79,10 @@ export default {
   computed: {
     visibleVotes() {
       return this.showAllVotes
-        ? this.votes
-        : Object.fromEntries(Object.entries(this.votes).slice(0, 10));
+        ? this.sortVotesUserFirst()
+        : Object.fromEntries(
+            Object.entries(this.sortVotesUserFirst()).slice(0, 10)
+          );
     },
     titles() {
       return this.space.strategies.map(strategy => strategy.params.symbol);
@@ -91,6 +93,16 @@ export default {
       this.authorIpfsHash = vote.authorIpfsHash;
       this.relayerIpfsHash = vote.relayerIpfsHash;
       this.modalReceiptOpen = true;
+    },
+    sortVotesUserFirst() {
+      if (Object.keys(this.votes).includes(this.web3.account)) {
+        const { [[this.web3.account]]: firstKeyValue, ...rest } = this.votes;
+        return {
+          [[this.web3.account]]: firstKeyValue,
+          ...rest
+        };
+      }
+      return this.votes;
     }
   }
 };
