@@ -81,14 +81,18 @@ export default {
         return {
           ...this.app.spaces[key],
           favorite: !!this.favoriteSpaces.favorites[key],
+          isActive: !!this.app.spaces[key]._activeProposals,
           spotlight: spotlightIndex === -1 ? 1e3 : spotlightIndex
         };
       });
-      return orderBy(list, ['favorite', 'spotlight'], ['desc', 'asc']).filter(
-        space =>
-          JSON.stringify(space)
-            .toLowerCase()
-            .includes(this.q.toLowerCase())
+      return orderBy(
+        list,
+        ['favorite', 'isActive', 'spotlight'],
+        ['desc', 'desc', 'asc']
+      ).filter(space =>
+        JSON.stringify(space)
+          .toLowerCase()
+          .includes(this.q.toLowerCase())
       );
     }
   },

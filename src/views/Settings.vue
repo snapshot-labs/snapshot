@@ -57,50 +57,49 @@
                     <Icon name="external-link" class="ml-1" />
                   </UiButton>
                 </a>
-                <UiButton class="width-full mb-2">
-                  <input
-                    v-model="form.name"
-                    class="input width-full"
-                    placeholder="Name"
-                    required
-                  />
+                <UiButton class="text-left width-full mb-2 d-flex px-3">
+                  <div class="text-gray mr-2">Name</div>
+                  <input v-model="form.name" class="input flex-auto" required />
                 </UiButton>
                 <UiButton
                   @click="modalNetworksOpen = true"
-                  class="text-left width-full mb-2"
+                  class="text-left width-full mb-2 d-flex px-3"
                 >
-                  {{
-                    form.network
-                      ? networks[form.network].name
-                      : 'Select network'
-                  }}
+                  <div class="text-gray mr-2">Network</div>
+                  <div class="flex-auto">
+                    {{
+                      form.network
+                        ? networks[form.network].name
+                        : 'Select network'
+                    }}
+                  </div>
                 </UiButton>
-                <UiButton class="width-full mb-2">
+                <UiButton class="text-left width-full mb-2 d-flex px-3">
+                  <div class="text-gray mr-2">Symbol</div>
                   <input
                     v-model="form.symbol"
-                    class="input width-full"
-                    placeholder="Symbol"
+                    class="input flex-auto"
                     required
                   />
                 </UiButton>
                 <UiButton
                   @click="modalSkinsOpen = true"
-                  class="text-left width-full mb-2"
+                  class="text-left width-full mb-2 d-flex px-3"
                 >
-                  {{ form.skin ? form.skin : 'Default skin' }}
+                  <div class="text-gray mr-2">Skin</div>
+                  <div class="flex-auto">
+                    {{ form.skin ? form.skin : 'Default skin' }}
+                  </div>
                 </UiButton>
-                <UiButton class="d-flex width-full mb-2">
-                  <input
-                    v-model="form.domain"
-                    class="input flex-auto"
-                    placeholder="Domain name"
-                  />
+                <UiButton class="text-left width-full mb-2 d-flex px-3">
+                  <div class="text-gray mr-2">Domain name</div>
+                  <input v-model="form.domain" class="input flex-auto" />
                   <a
-                    class="d-block py-1 mr-n3"
+                    class="d-block py-1 mr-n2"
                     target="_blank"
                     href="https://docs.snapshot.page/guides/custom-domain"
                   >
-                    <Icon name="info" size="24" class="text-gray p-2" />
+                    <Icon name="info" size="24" class="text-gray p-1" />
                   </a>
                 </UiButton>
               </div>
@@ -129,7 +128,7 @@
               </UiButton>
             </Block>
             <Block title="Members">
-              <UiButton class="d-block width-full" style="height: auto;">
+              <UiButton class="d-block width-full px-3" style="height: auto;">
                 <TextareaArray
                   :value="form.members"
                   v-model="form.members"
@@ -137,35 +136,39 @@
                     `0x8C28Cf33d9Fd3D0293f963b1cd27e3FF422B425c\n0xeF8305E140ac520225DAf050e2f71d5fBcC543e7`
                   "
                   class="input width-full text-left"
+                  style="font-size: 18px;"
                 />
               </UiButton>
             </Block>
             <Block title="Filters">
               <div class="mb-2">
-                <UiButton class="width-full mb-2">
+                <UiButton class="text-left width-full mb-2 d-flex px-3">
+                  <div class="text-gray mr-2">Default tab</div>
                   <input
                     v-model="form.filters.defaultTab"
-                    class="input width-full"
-                    placeholder="Default tab"
+                    class="input flex-auto"
                   />
                 </UiButton>
-                <UiButton class="width-full mb-2">
-                  <InputNumber
-                    :value="form.filters.minScore"
-                    v-model="form.filters.minScore"
-                    class="input width-full"
-                    placeholder="Minimum score"
-                  />
+                <UiButton class="text-left width-full mb-2 d-flex px-3">
+                  <div class="text-gray mr-2">Min. score</div>
+                  <div class="flex-auto">
+                    <InputNumber
+                      :value="form.filters.minScore"
+                      v-model="form.filters.minScore"
+                      class="input"
+                    />
+                  </div>
                 </UiButton>
-                <UiButton class="width-full mb-2">
+                <UiButton class="text-left width-full mb-2 d-flex px-3">
+                  <div class="text-gray mr-2">Only members</div>
                   <Checkbox
                     :value="form.filters.onlyMembers"
                     v-model="form.filters.onlyMembers"
-                    class="input width-full"
-                    placeholder="Only members proposals"
+                    class="input flex-auto"
+                    :placeholder="`&quot;yes&quot; or &quot;no&quot;`"
                   />
                 </UiButton>
-                <UiButton class="d-block width-full" style="height: auto;">
+                <UiButton class="d-block width-full px-3" style="height: auto;">
                   <TextareaArray
                     :value="form.filters.invalids"
                     v-model="form.filters.invalids"
@@ -173,6 +176,7 @@
                       `Invalids proposals\nQmc4VSHwY3SVmo4oofhL2qDPaYcGaQqndM4oqdQQe2aZHQ\nQmTMAgnPy2q6LRMNwvj27PHvWEgZ3bw7yTtNNEucBZCWhZ`
                     "
                     class="input width-full text-left"
+                    style="font-size: 18px;"
                   />
                 </UiButton>
               </div>
