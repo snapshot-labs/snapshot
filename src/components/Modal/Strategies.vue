@@ -1,6 +1,6 @@
 <template>
   <UiModal :open="open" @close="$emit('close')">
-    <template slot="header">
+    <template v-slot:header>
       <h3>Strategies</h3>
     </template>
     <div class="m-4">

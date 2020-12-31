@@ -1,4 +1,4 @@
-import Vue from 'vue';
+import Vue, { createApp, h } from 'vue';
 import PortalVue from 'portal-vue';
 import autofocus from 'vue-autofocus-directive';
 import infiniteScroll from 'vue-infinite-scroll';
@@ -34,11 +34,10 @@ Vue.component('jazzicon', Jazzicon);
 Vue.mixin(mixins);
 Vue.directive('autofocus', autofocus);
 
-Vue.config.productionTip = false;
-
-new Vue({
+createApp({
   i18n,
-  router,
-  store,
-  render: h => h(App)
-}).$mount('#app');
+  render: () => h(App)
+})
+  .use(router)
+  .use(store)
+  .mount('#app');

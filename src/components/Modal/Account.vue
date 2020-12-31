@@ -1,6 +1,6 @@
 <template>
   <UiModal :open="open" @close="$emit('close')">
-    <template slot="header">
+    <template v-slot:header>
       <h3 v-if="!web3.account || step === 'connect'">Connect wallet</h3>
       <h3 v-else>Account</h3>
     </template>

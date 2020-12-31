@@ -1,5 +1,4 @@
-import Vue from 'vue';
-import VueRouter, { RouteConfig } from 'vue-router';
+import { RouteConfig, createRouter, createWebHashHistory } from 'vue-router';
 import domains from '@snapshot-labs/snapshot-spaces/spaces/domains.json';
 import aliases from '@snapshot-labs/snapshot-spaces/spaces/aliases.json';
 import Home from '@/views/Home.vue';
@@ -11,7 +10,6 @@ import Settings from '@/views/Settings.vue';
 import Explore from '@/views/Explore.vue';
 import Delegate from '@/views/Delegate.vue';
 
-Vue.use(VueRouter);
 const domainName = window.location.hostname;
 
 const beforeEnter = (to: any, from, next) => {
@@ -62,8 +60,8 @@ const routes: Array<RouteConfig> = [
   { path: '/*', name: 'error-404', beforeEnter: (to, from, next) => next('/') }
 ];
 
-const router = new VueRouter({
-  mode: 'hash',
+const router = createRouter({
+  history: createWebHashHistory(),
   routes,
   scrollBehavior() {
     return { x: 0, y: 0 };

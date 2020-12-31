@@ -1,6 +1,6 @@
 <template>
   <UiModal :open="open" v-if="open" @close="$emit('close')" class="d-flex">
-    <template slot="header">
+    <template v-slot:header>
       <h3>Confirm vote</h3>
     </template>
     <div class="d-flex flex-column flex-auto">
@@ -43,7 +43,7 @@
         </div>
       </div>
     </div>
-    <template slot="footer">
+    <template v-slot:footer>
       <div class="col-6 float-left pr-2">
         <UiButton @click="$emit('close')" type="button" class="width-full">
           Cancel

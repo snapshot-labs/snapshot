@@ -1,6 +1,6 @@
 <template>
   <UiModal :open="open" @close="$emit('close')">
-    <template slot="header">
+    <template v-slot:header>
       <h3>Plugins</h3>
     </template>
     <div class="m-4 mt-4" v-if="selected === false">
@@ -27,7 +27,7 @@
         </UiButton>
       </div>
     </div>
-    <template v-if="selected === false" slot="footer">
+    <template v-if="selected === false" v-slot:footer>
       <div class="col-6 float-left pr-2">
         <UiButton @click="$emit('close')" type="button" class="width-full">
           Cancel

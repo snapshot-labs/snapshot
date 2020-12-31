@@ -1,6 +1,6 @@
 <template>
   <UiModal :open="open" @close="$emit('close')">
-    <template slot="header">
+    <template v-slot:header>
       <h3>{{ strategy.name ? 'Edit' : 'Add' }} strategy</h3>
     </template>
     <div class="mt-4 mx-0 mx-md-4">
