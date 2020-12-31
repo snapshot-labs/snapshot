@@ -1,4 +1,3 @@
-import Vue from 'vue';
 import omit from 'lodash/omit';
 import { lsGet, lsSet } from '@/helpers/utils';
 
@@ -10,6 +9,7 @@ const state = {
 
 const mutations = {
   setFavorites(_state, favorites: Record<string, boolean>) {
+    // @ts-ignore
     Vue.set(_state, 'favorites', favorites);
   }
 };

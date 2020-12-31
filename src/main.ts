@@ -1,9 +1,8 @@
-import Vue, { createApp, h } from 'vue';
-import PortalVue from 'portal-vue';
+import { createApp, h } from 'vue';
 import autofocus from 'vue-autofocus-directive';
 import infiniteScroll from 'vue-infinite-scroll';
 import TextareaAutosize from 'vue-textarea-autosize';
-import VueClipboard from 'vue-clipboard2';
+import VueClipboard from 'vue3-clipboard';
 import Jazzicon from 'vue-jazzicon';
 import upperFirst from 'lodash/upperFirst';
 import camelCase from 'lodash/camelCase';
@@ -16,10 +15,14 @@ import '@/auth';
 import '@/helpers/skins';
 import '@/style.scss';
 
-Vue.use(PortalVue);
-Vue.use(VueClipboard);
-Vue.use(infiniteScroll);
-Vue.use(TextareaAutosize);
+const app = createApp(App)
+  .use(i18n)
+  .use(router)
+  .use(store);
+
+app.use(VueClipboard);
+app.use(infiniteScroll);
+app.use(TextareaAutosize);
 
 const requireComponent = require.context('@/components', true, /[\w-]+\.vue$/);
 requireComponent.keys().forEach(fileName => {
@@ -27,17 +30,11 @@ requireComponent.keys().forEach(fileName => {
   const componentName = upperFirst(
     camelCase(fileName.replace(/^\.\//, '').replace(/\.\w+$/, ''))
   );
-  Vue.component(componentName, componentConfig.default || componentConfig);
+  app.component(componentName, componentConfig.default || componentConfig);
 });
 
-Vue.component('jazzicon', Jazzicon);
-Vue.mixin(mixins);
-Vue.directive('autofocus', autofocus);
+app.component('jazzicon', Jazzicon);
+app.mixin(mixins);
+app.directive('autofocus', autofocus);
 
-createApp({
-  i18n,
-  render: () => h(App)
-})
-  .use(router)
-  .use(store)
-  .mount('#app');
+app.mount('#app');

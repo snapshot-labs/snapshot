@@ -1,4 +1,3 @@
-import Vue from 'vue';
 import { Web3Provider } from '@ethersproject/providers';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
@@ -34,11 +33,13 @@ const mutations = {
         unknown: true
       };
     }
+    // @ts-ignore
     Vue.set(_state, 'network', networks[chainId]);
     console.debug('HANDLE_CHAIN_CHANGED', chainId);
   },
   WEB3_SET(_state, payload) {
     Object.keys(payload).forEach(key => {
+      // @ts-ignore
       Vue.set(_state, key, payload[key]);
     });
   }
@@ -56,7 +57,7 @@ const actions = {
     commit('SET', { authLoading: false });
   },
   logout: async ({ commit }) => {
-    Vue.prototype.$auth.logout();
+    auth.logout();
     commit('WEB3_SET', { account: null, profile: null });
   },
   loadProvider: async ({ commit, dispatch }) => {

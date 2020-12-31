@@ -1,5 +1,4 @@
 import { getProfiles } from '@/helpers/3box';
-import Vue from 'vue';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue';
 import { ipfsGet, getScores } from '@snapshot-labs/snapshot.js/src/utils';
 import {
@@ -11,6 +10,9 @@ import gateways from '@snapshot-labs/snapshot.js/src/gateways.json';
 import client from '@/helpers/client';
 import { formatProposal, formatProposals, formatSpace } from '@/helpers/utils';
 import { version } from '@/../package.json';
+import { createApp } from 'vue';
+
+const app = createApp({});
 
 const gateway = process.env.VUE_APP_IPFS_GATEWAY || gateways[0];
 
@@ -23,11 +25,6 @@ const state = {
 };
 
 const mutations = {
-  SET(_state, payload) {
-    Object.keys(payload).forEach(key => {
-      Vue.set(_state, key, payload[key]);
-    });
-  },
   SEND_REQUEST() {
     console.debug('SEND_REQUEST');
   },
@@ -67,21 +64,22 @@ const mutations = {
 };
 
 const actions = {
-  init: async ({ commit, dispatch }) => {
-    commit('SET', { loading: true });
+  init: async ({ dispatch }) => {
+    state.loading = true;
     await dispatch('getSpaces');
-    Vue.prototype.$auth.getConnector().then(connector => {
+    app.config.globalProperties.$auth.getConnector().then(connector => {
       if (connector) dispatch('login', connector);
     });
-    commit('SET', { loading: false, init: true });
+    state.loading = false;
+    state.init = true;
   },
-  loading: ({ commit }, payload) => {
-    commit('SET', { loading: payload });
+  loading: payload => {
+    state.loading = payload;
   },
-  toggleModal: ({ commit }) => {
-    commit('SET', { modalOpen: !state.modalOpen });
+  toggleModal: () => {
+    state.modalOpen = !state.modalOpen;
   },
-  getSpaces: async ({ commit }) => {
+  getSpaces: async () => {
     let spaces: any = await client.request('spaces');
     spaces = Object.fromEntries(
       Object.entries(spaces).map(space => [
@@ -89,7 +87,7 @@ const actions = {
         formatSpace(space[0], space[1])
       ])
     );
-    commit('SET', { spaces });
+    state.spaces = spaces;
     return spaces;
   },
   send: async ({ commit, dispatch, rootState }, { space, type, payload }) => {

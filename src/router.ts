@@ -1,4 +1,4 @@
-import { RouteConfig, createRouter, createWebHashHistory } from 'vue-router';
+import { createRouter, createWebHashHistory } from 'vue-router';
 import domains from '@snapshot-labs/snapshot-spaces/spaces/domains.json';
 import aliases from '@snapshot-labs/snapshot-spaces/spaces/aliases.json';
 import Home from '@/views/Home.vue';
@@ -20,7 +20,7 @@ const beforeEnter = (to: any, from, next) => {
   next();
 };
 
-const routes: Array<RouteConfig> = [
+const routes: any[] = [
   { path: '/setup', name: 'setup', component: Setup },
   { path: '/:key/settings/:from?', name: 'settings', component: Settings },
   { path: '/networks', name: 'networks', component: Explore },
@@ -63,7 +63,7 @@ const routes: Array<RouteConfig> = [
 const router = createRouter({
   history: createWebHashHistory(),
   routes,
-  scrollBehavior() {
+  scrollBehavior(): {} {
     return { x: 0, y: 0 };
   }
 });

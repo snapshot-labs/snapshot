@@ -7,7 +7,6 @@
         <router-view :key="$route.path" class="flex-auto" />
       </div>
     </div>
-    <portal-target name="modal" multiple />
     <Notifications />
   </div>
 </template>

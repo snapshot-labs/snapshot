@@ -43,7 +43,7 @@
         </UiButton>
       </div>
     </template>
-    <div v-else class="m-4 p-4 border rounded-2 text-white">
+    <div v-if="selected !== false" class="m-4 p-4 border rounded-2 text-white">
       <PluginAragonConfig
         :value="form.aragon"
         :proposal="proposal"

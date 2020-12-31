@@ -1,7 +1,9 @@
-import Vuex from 'vuex';
+import { createStore } from 'vuex';
 import modules from '@/store/modules';
 
-const store = Vuex.createStore({
+// TODO: fix this typing error
+// @ts-ignore
+const store = createStore({
   modules,
   strict: process.env.NODE_ENV !== 'production'
 });
