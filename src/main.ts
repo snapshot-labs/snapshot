@@ -1,4 +1,4 @@
-import { createApp, h } from 'vue';
+import { createApp } from 'vue';
 import autofocus from 'vue-autofocus-directive';
 import infiniteScroll from 'vue-infinite-scroll';
 import TextareaAutosize from 'vue-textarea-autosize';

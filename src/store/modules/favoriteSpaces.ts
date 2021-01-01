@@ -9,8 +9,7 @@ const state = {
 
 const mutations = {
   setFavorites(_state, favorites: Record<string, boolean>) {
-    // @ts-ignore
-    Vue.set(_state, 'favorites', favorites);
+    _state.favorites = favorites;
   }
 };
 

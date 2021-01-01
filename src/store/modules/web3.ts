@@ -33,14 +33,12 @@ const mutations = {
         unknown: true
       };
     }
-    // @ts-ignore
-    Vue.set(_state, 'network', networks[chainId]);
+    _state.network = networks[chainId];
     console.debug('HANDLE_CHAIN_CHANGED', chainId);
   },
   WEB3_SET(_state, payload) {
     Object.keys(payload).forEach(key => {
-      // @ts-ignore
-      Vue.set(_state, key, payload[key]);
+      _state[key] = payload[key];
     });
   }
 };
@@ -63,11 +61,11 @@ const actions = {
   loadProvider: async ({ commit, dispatch }) => {
     try {
       if (auth.web3.removeAllListeners) auth.web3.removeAllListeners();
-      if (auth.web3.on) {
-        auth.web3.on('chainChanged', async chainId => {
+      if (auth.provider.on) {
+        auth.provider.on('chainChanged', async chainId => {
           commit('HANDLE_CHAIN_CHANGED', parseInt(formatUnits(chainId, 0)));
         });
-        auth.web3.on('accountsChanged', async accounts => {
+        auth.provider.on('accountsChanged', async accounts => {
           if (accounts.length !== 0) {
             commit('WEB3_SET', { account: accounts[0] });
             await dispatch('loadProvider');

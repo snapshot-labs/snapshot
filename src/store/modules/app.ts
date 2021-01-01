@@ -25,6 +25,11 @@ const state = {
 };
 
 const mutations = {
+  SET(_state, payload) {
+    Object.keys(payload).forEach(key => {
+      _state[key] = payload[key];
+    });
+  },
   SEND_REQUEST() {
     console.debug('SEND_REQUEST');
   },
@@ -64,22 +69,21 @@ const mutations = {
 };
 
 const actions = {
-  init: async ({ dispatch }) => {
-    state.loading = true;
+  init: async ({ commit, dispatch }) => {
+    commit('SET', { loading: true });
     await dispatch('getSpaces');
     app.config.globalProperties.$auth.getConnector().then(connector => {
       if (connector) dispatch('login', connector);
     });
-    state.loading = false;
-    state.init = true;
+    commit('SET', { loading: false, init: true });
   },
-  loading: payload => {
-    state.loading = payload;
+  loading: ({ commit }, payload) => {
+    commit('SET', { loading: payload });
   },
-  toggleModal: () => {
-    state.modalOpen = !state.modalOpen;
+  toggleModal: ({ commit }) => {
+    commit('SET', { modalOpen: !state.modalOpen });
   },
-  getSpaces: async () => {
+  getSpaces: async ({ commit }) => {
     let spaces: any = await client.request('spaces');
     spaces = Object.fromEntries(
       Object.entries(spaces).map(space => [
@@ -87,7 +91,7 @@ const actions = {
         formatSpace(space[0], space[1])
       ])
     );
-    state.spaces = spaces;
+    commit('SET', { spaces });
     return spaces;
   },
   send: async ({ commit, dispatch, rootState }, { space, type, payload }) => {
