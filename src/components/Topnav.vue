@@ -73,14 +73,14 @@
         </div>
       </Container>
     </nav>
-    <portal to="modal">
+    <teleport to="#modal">
       <ModalAccount
         :open="modalOpen"
         @close="modalOpen = false"
         @login="handleLogin"
       />
       <ModalAbout :open="modalAboutOpen" @close="modalAboutOpen = false" />
-    </portal>
+    </teleport>
   </Sticky>
 </template>
 

@@ -210,7 +210,7 @@
         </Block>
       </div>
     </div>
-    <portal to="modal">
+    <teleport to="#modal">
       <ModalNetworks
         :open="modalNetworksOpen"
         @close="modalNetworksOpen = false"
@@ -228,7 +228,7 @@
         :strategy="currentStrategy"
         :strategyIndex="currentStrategyIndex"
       />
-    </portal>
+    </teleport>
   </Container>
 </template>
 

@@ -25,8 +25,10 @@ export default {
     if (this.isSticky === false) return;
     window.addEventListener('scroll', this.onScroll);
     const el = document.getElementById('sticky');
-    this.offsetTop = el.offsetTop;
-    this.offsetHeight = el.offsetHeight;
+    if (el) {
+      this.offsetTop = el.offsetTop;
+      this.offsetHeight = el.offsetHeight;
+    }
   },
   beforeUnmount() {
     if (this.isSticky === false) return;

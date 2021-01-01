@@ -7,6 +7,7 @@
         <router-view :key="$route.path" class="flex-auto" />
       </div>
     </div>
+    <div id="modal"></div>
     <Notifications />
   </div>
 </template>

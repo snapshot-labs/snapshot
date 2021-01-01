@@ -92,7 +92,7 @@
         </Block>
       </div>
     </div>
-    <portal to="modal">
+    <teleport to="#modal">
       <ModalClearDelegate
         v-if="loaded"
         :open="modalOpen"
@@ -101,7 +101,7 @@
         :id="currentId"
         :delegate="currentDelegate"
       />
-    </portal>
+    </teleport>
   </Container>
 </template>
 

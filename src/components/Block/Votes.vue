@@ -54,14 +54,14 @@
     >
       See more
     </a>
-    <portal to="modal">
+    <teleport to="#modal">
       <ModalReceipt
         :open="modalReceiptOpen"
         @close="modalReceiptOpen = false"
         :authorIpfsHash="authorIpfsHash"
         :relayerIpfsHash="relayerIpfsHash"
       />
-    </portal>
+    </teleport>
   </Block>
 </template>
 

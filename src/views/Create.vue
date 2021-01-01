@@ -110,7 +110,7 @@
         </Block>
       </div>
     </div>
-    <portal to="modal">
+    <teleport to="#modal">
       <ModalSelectDate
         :value="form[selectedDate]"
         :selectedDate="selectedDate"
@@ -126,7 +126,7 @@
         :open="modalPluginsOpen"
         @close="modalPluginsOpen = false"
       />
-    </portal>
+    </teleport>
   </Container>
 </template>
 
