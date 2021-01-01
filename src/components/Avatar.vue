@@ -11,12 +11,13 @@
       @error="error = true"
       class="circle border line-height-0"
     />
-    <jazzicon
+    <!-- TODO: work on vue-jazzicon for vue3 version -->
+    <!-- <jazzicon
       v-else
       :address="address"
       :diameter="parseInt(size) || 22"
       class="d-inline-block v-align-middle line-height-0"
-    />
+    /> -->
   </span>
 </template>
 
