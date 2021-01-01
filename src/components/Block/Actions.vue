@@ -5,7 +5,7 @@
       :key="plugin"
       @click="execute(plugin)"
       :loading="loading"
-      :disabled="!$auth.isAuthenticated"
+      :disabled="!$auth.isAuthenticated.value"
       class="width-full button--submit"
     >
       Submit on-chain

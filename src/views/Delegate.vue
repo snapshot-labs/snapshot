@@ -83,7 +83,7 @@
         <Block title="Actions">
           <UiButton
             @click="handleSubmit"
-            :disabled="!isValid || !$auth.isAuthenticated"
+            :disabled="!isValid || !$auth.isAuthenticated.value"
             :loading="loading"
             class="d-block width-full button--submit"
           >

@@ -6,7 +6,7 @@ import { formatUnits } from '@ethersproject/units';
 import { getProfiles } from '@/helpers/3box';
 
 let wsProvider;
-let web3Provider;
+let auth;
 const defaultNetwork =
   process.env.VUE_APP_DEFAULT_NETWORK || Object.keys(networks)[0];
 
@@ -45,11 +45,11 @@ const mutations = {
 
 const actions = {
   login: async ({ dispatch, commit }, connector = 'injected') => {
-    const auth = getInstance();
+    auth = getInstance();
     commit('SET', { authLoading: true });
     await auth.login(connector);
     if (auth.provider.value) {
-      web3Provider = new Web3Provider(auth.provider.value);
+      auth.web3 = new Web3Provider(auth.provider.value);
       await dispatch('loadProvider');
     }
     commit('SET', { authLoading: false });
@@ -62,7 +62,7 @@ const actions = {
   loadProvider: async ({ commit, dispatch }) => {
     const auth = getInstance();
     try {
-      if (web3Provider.removeAllListeners) web3Provider.removeAllListeners();
+      if (auth.web3.removeAllListeners) auth.web3.removeAllListeners();
       if (auth.provider.value.on) {
         auth.provider.value.on('chainChanged', async chainId => {
           commit('HANDLE_CHAIN_CHANGED', parseInt(formatUnits(chainId, 0)));
@@ -75,12 +75,12 @@ const actions = {
         });
         // auth.provider.on('disconnect', async () => {});
       }
-      console.log('Provider', web3Provider);
+      console.log('Provider', auth.web3);
       let network, accounts;
       try {
         [network, accounts] = await Promise.all([
-          web3Provider.getNetwork(),
-          web3Provider.listAccounts()
+          auth.web3.getNetwork(),
+          auth.web3.listAccounts()
         ]);
       } catch (e) {
         console.log(e);

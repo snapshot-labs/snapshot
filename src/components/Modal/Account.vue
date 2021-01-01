@@ -41,7 +41,7 @@
       </div>
     </div>
     <div v-else>
-      <div v-if="$auth.isAuthenticated" class="m-4">
+      <div v-if="$auth.isAuthenticated.value" class="m-4">
         <a
           :href="_explorer(web3.network.key, web3.account)"
           target="_blank"
