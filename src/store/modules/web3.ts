@@ -6,7 +6,7 @@ import { formatUnits } from '@ethersproject/units';
 import { getProfiles } from '@/helpers/3box';
 
 let wsProvider;
-let auth;
+let web3Provider;
 const defaultNetwork =
   process.env.VUE_APP_DEFAULT_NETWORK || Object.keys(networks)[0];
 
@@ -45,27 +45,29 @@ const mutations = {
 
 const actions = {
   login: async ({ dispatch, commit }, connector = 'injected') => {
-    auth = getInstance();
+    const auth = getInstance();
     commit('SET', { authLoading: true });
     await auth.login(connector);
-    if (auth.provider) {
-      auth.web3 = new Web3Provider(auth.provider);
+    if (auth.provider.value) {
+      web3Provider = new Web3Provider(auth.provider.value);
       await dispatch('loadProvider');
     }
     commit('SET', { authLoading: false });
   },
   logout: async ({ commit }) => {
+    const auth = getInstance();
     auth.logout();
     commit('WEB3_SET', { account: null, profile: null });
   },
   loadProvider: async ({ commit, dispatch }) => {
+    const auth = getInstance();
     try {
-      if (auth.web3.removeAllListeners) auth.web3.removeAllListeners();
-      if (auth.provider.on) {
-        auth.provider.on('chainChanged', async chainId => {
+      if (web3Provider.removeAllListeners) web3Provider.removeAllListeners();
+      if (auth.provider.value.on) {
+        auth.provider.value.on('chainChanged', async chainId => {
           commit('HANDLE_CHAIN_CHANGED', parseInt(formatUnits(chainId, 0)));
         });
-        auth.provider.on('accountsChanged', async accounts => {
+        auth.provider.value.on('accountsChanged', async accounts => {
           if (accounts.length !== 0) {
             commit('WEB3_SET', { account: accounts[0] });
             await dispatch('loadProvider');
@@ -73,12 +75,12 @@ const actions = {
         });
         // auth.provider.on('disconnect', async () => {});
       }
-      console.log('Provider', auth.web3);
+      console.log('Provider', web3Provider);
       let network, accounts;
       try {
         [network, accounts] = await Promise.all([
-          auth.web3.getNetwork(),
-          auth.web3.listAccounts()
+          web3Provider.getNetwork(),
+          web3Provider.listAccounts()
         ]);
       } catch (e) {
         console.log(e);

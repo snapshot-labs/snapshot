@@ -1,4 +1,6 @@
 import { createApp } from 'vue';
+import { LockPlugin } from '@snapshot-labs/lock/plugins/vue';
+import options from '@/auth';
 import autofocus from 'vue-autofocus-directive';
 import infiniteScroll from 'vue-infinite-scroll';
 import TextareaAutosize from 'vue-textarea-autosize';
@@ -18,11 +20,16 @@ import '@/style.scss';
 const app = createApp(App)
   .use(i18n)
   .use(router)
-  .use(store);
+  .use(store)
 
-app.use(VueClipboard);
-app.use(infiniteScroll);
-app.use(TextareaAutosize);
+  .use(VueClipboard)
+  .use(infiniteScroll)
+  .use(TextareaAutosize)
+  .use(LockPlugin, options)
+
+  .component('jazzicon', Jazzicon)
+  .mixin(mixins)
+  .directive('autofocus', autofocus);
 
 const requireComponent = require.context('@/components', true, /[\w-]+\.vue$/);
 requireComponent.keys().forEach(fileName => {
@@ -33,8 +40,6 @@ requireComponent.keys().forEach(fileName => {
   app.component(componentName, componentConfig.default || componentConfig);
 });
 
-app.component('jazzicon', Jazzicon);
-app.mixin(mixins);
-app.directive('autofocus', autofocus);
-
 app.mount('#app');
+
+export default app;

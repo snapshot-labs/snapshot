@@ -1,5 +1,3 @@
-import { createApp } from 'vue';
-import { LockPlugin } from '@snapshot-labs/lock/plugins/vue';
 import injected from '@snapshot-labs/lock/connectors/injected';
 import fortmatic from '@snapshot-labs/lock/connectors/fortmatic';
 import portis from '@snapshot-labs/lock/connectors/portis';
@@ -7,8 +5,6 @@ import walletconnect from '@snapshot-labs/lock/connectors/walletconnect';
 import walletlink from '@snapshot-labs/lock/connectors/walletlink';
 import torus from '@snapshot-labs/lock/connectors/torus';
 import config from '@/helpers/config';
-
-const app = createApp({});
 
 const options: any = { connectors: [] };
 const connectors = {
@@ -28,4 +24,4 @@ Object.entries(config.connectors).forEach((connector: any) => {
   });
 });
 
-app.use(LockPlugin, options);
+export default options;

@@ -10,9 +10,6 @@ import gateways from '@snapshot-labs/snapshot.js/src/gateways.json';
 import client from '@/helpers/client';
 import { formatProposal, formatProposals, formatSpace } from '@/helpers/utils';
 import { version } from '@/../package.json';
-import { createApp } from 'vue';
-
-const app = createApp({});
 
 const gateway = process.env.VUE_APP_IPFS_GATEWAY || gateways[0];
 
@@ -70,9 +67,10 @@ const mutations = {
 
 const actions = {
   init: async ({ commit, dispatch }) => {
+    const auth = getInstance();
     commit('SET', { loading: true });
     await dispatch('getSpaces');
-    app.config.globalProperties.$auth.getConnector().then(connector => {
+    auth.getConnector().then(connector => {
       if (connector) dispatch('login', connector);
     });
     commit('SET', { loading: false, init: true });
