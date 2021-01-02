@@ -4,7 +4,11 @@
     <div v-else>
       <Topnav />
       <div class="pb-6 overflow-hidden">
-        <router-view :key="$route.path" class="flex-auto" />
+        <router-view
+          key="domain-home"
+          :name="$route.path === '/' && domain ? 'proposals' : undefined"
+          class="flex-auto"
+        />
       </div>
     </div>
     <portal-target name="modal" multiple />

@@ -1,6 +1,5 @@
 import Vue from 'vue';
 import VueRouter, { RouteConfig } from 'vue-router';
-import domains from '@snapshot-labs/snapshot-spaces/spaces/domains.json';
 import aliases from '@snapshot-labs/snapshot-spaces/spaces/aliases.json';
 import Home from '@/views/Home.vue';
 import Proposals from '@/views/Proposals.vue';
@@ -57,7 +56,10 @@ const routes: Array<RouteConfig> = [
   {
     path: '/',
     name: 'home',
-    component: domains[domainName] ? Proposals : Home
+    components: {
+      default: Home,
+      proposals: Proposals
+    }
   },
   { path: '/*', name: 'error-404', beforeEnter: (to, from, next) => next('/') }
 ];

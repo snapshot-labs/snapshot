@@ -3,7 +3,6 @@ import numeral from 'numeral';
 import get from 'lodash/get';
 import prettyMs from 'pretty-ms';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
-import domains from '@snapshot-labs/snapshot-spaces/spaces/domains.json';
 import store from '@/store';
 import config from '@/helpers/config';
 import { shorten } from '@/helpers/utils';
@@ -21,6 +20,9 @@ export default {
   computed: {
     ...mapState(modules),
     domain() {
+      const domains = Object.fromEntries(
+        Object.entries(get(store.state, 'app.spaces')).map(space => [get(space[1], 'domain'), space[0]]).filter(a => a[0])
+      );
       return domains[domainName];
     }
   },
