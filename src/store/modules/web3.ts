@@ -1,3 +1,4 @@
+import { unref } from 'vue';
 import { Web3Provider } from '@ethersproject/providers';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
@@ -7,6 +8,7 @@ import { getProfiles } from '@/helpers/3box';
 
 let wsProvider;
 let auth;
+let provider;
 const defaultNetwork =
   process.env.VUE_APP_DEFAULT_NETWORK || Object.keys(networks)[0];
 
@@ -48,8 +50,9 @@ const actions = {
     auth = getInstance();
     commit('SET', { authLoading: true });
     await auth.login(connector);
-    if (auth.provider.value) {
-      auth.web3 = new Web3Provider(auth.provider.value);
+    provider = unref(auth.provider);
+    if (provider) {
+      auth.web3 = new Web3Provider(provider);
       await dispatch('loadProvider');
     }
     commit('SET', { authLoading: false });
@@ -63,11 +66,11 @@ const actions = {
     const auth = getInstance();
     try {
       if (auth.web3.removeAllListeners) auth.web3.removeAllListeners();
-      if (auth.provider.value.on) {
-        auth.provider.value.on('chainChanged', async chainId => {
+      if (provider.on) {
+        provider.on('chainChanged', async chainId => {
           commit('HANDLE_CHAIN_CHANGED', parseInt(formatUnits(chainId, 0)));
         });
-        auth.provider.value.on('accountsChanged', async accounts => {
+        provider.on('accountsChanged', async accounts => {
           if (accounts.length !== 0) {
             commit('WEB3_SET', { account: accounts[0] });
             await dispatch('loadProvider');
