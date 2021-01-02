@@ -151,7 +151,7 @@ export default {
     isValid() {
       const address = this.form.address;
       return (
-        this.$auth.isAuthenticated &&
+        this.$auth.isAuthenticated.value &&
         (address.includes('.eth') || isAddress(address)) &&
         address.toLowerCase() !== this.web3.account.toLowerCase() &&
         (this.form.id === '' || this.app.spaces[this.form.id])
