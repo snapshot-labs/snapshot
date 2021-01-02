@@ -1,11 +1,11 @@
 import { createApp } from 'vue';
-import { LockPlugin } from '@snapshot-labs/lock/plugins/vue';
+import { LockPlugin } from '@snapshot-labs/lock/plugins/vue3';
 import options from '@/auth';
 import autofocus from 'vue-autofocus-directive';
 import infiniteScroll from 'vue-infinite-scroll';
 import TextareaAutosize from 'vue-textarea-autosize';
 import VueClipboard from 'vue3-clipboard';
-import Jazzicon from 'vue-jazzicon';
+import Jazzicon from 'vue3-jazzicon/src/components';
 import upperFirst from 'lodash/upperFirst';
 import camelCase from 'lodash/camelCase';
 import App from '@/App.vue';

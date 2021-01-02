@@ -1,5 +1,5 @@
 import { getProfiles } from '@/helpers/3box';
-import { getInstance } from '@snapshot-labs/lock/plugins/vue';
+import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { ipfsGet, getScores } from '@snapshot-labs/snapshot.js/src/utils';
 import {
   getBlockNumber,

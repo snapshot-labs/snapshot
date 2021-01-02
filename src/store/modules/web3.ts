@@ -1,5 +1,5 @@
 import { Web3Provider } from '@ethersproject/providers';
-import { getInstance } from '@snapshot-labs/lock/plugins/vue';
+import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import store from '@/store';
 import { formatUnits } from '@ethersproject/units';
