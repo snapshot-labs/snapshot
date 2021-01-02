@@ -21,7 +21,9 @@ export default {
     ...mapState(modules),
     domain() {
       const domains = Object.fromEntries(
-        Object.entries(get(store.state, 'app.spaces')).map(space => [get(space[1], 'domain'), space[0]]).filter(a => a[0])
+        Object.entries(get(store.state, 'app.spaces'))
+          .map(space => [get(space[1], 'domain'), space[0]])
+          .filter(a => a[0])
       );
       return domains[domainName];
     }

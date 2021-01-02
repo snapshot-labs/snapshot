@@ -11,7 +11,6 @@ import Explore from '@/views/Explore.vue';
 import Delegate from '@/views/Delegate.vue';
 
 Vue.use(VueRouter);
-const domainName = window.location.hostname;
 
 const beforeEnter = (to: any, from, next) => {
   if (aliases?.[to?.params?.key]) {
