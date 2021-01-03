@@ -10,7 +10,7 @@
       </div>
       <h3 v-text="_shorten(proposal.msg.payload.name, 52)" />
       <div class="mb-1">
-        By {{ _shorten(proposal.address) }}
+        Proposal by {{ _shorten(proposal.address) }}
         <Badges :address="proposal.address" :space="space" />
         end
         <span v-text="$d(proposal.msg.payload.end * 1e3)" />
