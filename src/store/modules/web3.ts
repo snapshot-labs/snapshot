@@ -75,7 +75,7 @@ const actions = {
         });
         // auth.provider.on('disconnect', async () => {});
       }
-      console.log('Provider', auth.web3);
+      console.log('Provider', auth.provider.value);
       let network, accounts;
       try {
         [network, accounts] = await Promise.all([
