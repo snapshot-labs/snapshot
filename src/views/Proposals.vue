@@ -45,7 +45,7 @@
             class="mr-3 text-gray tab"
           />
         </div>
-        <RowLoading v-if="loading" />
+        <RowLoading v-if="loading" class="border-top" />
         <div v-if="loaded">
           <RowProposal
             v-for="(proposal, i) in proposalsWithFilter"
@@ -54,6 +54,7 @@
             :space="space"
             :verified="space.verified"
             :i="i"
+            class="border-top"
           />
         </div>
         <p

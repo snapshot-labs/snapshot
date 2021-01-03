@@ -10,6 +10,7 @@ import Setup from '@/views/Setup.vue';
 import Settings from '@/views/Settings.vue';
 import Explore from '@/views/Explore.vue';
 import Delegate from '@/views/Delegate.vue';
+import Timeline from '@/views/Timeline.vue';
 
 Vue.use(VueRouter);
 const domainName = window.location.hostname;
@@ -30,6 +31,7 @@ const routes: Array<RouteConfig> = [
   { path: '/plugins', name: 'plugins', component: Explore },
   { path: '/skins', name: 'skins', component: Explore },
   { path: '/delegate', name: 'delegate', component: Delegate },
+  { path: '/timeline', name: 'timeline', component: Timeline },
   {
     path: '/:key/proposal/:id',
     name: 'proposal',
