@@ -1,6 +1,7 @@
 const path = require('path');
 
 module.exports = {
+  publicPath: './',
   pluginOptions: {
     webpackBundleAnalyzer: {
       openAnalyzer: false
