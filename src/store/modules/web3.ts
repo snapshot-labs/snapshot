@@ -62,9 +62,9 @@ const actions = {
   loadProvider: async ({ commit, dispatch }) => {
     const auth = getInstance();
     try {
-      if (auth.web3.removeAllListeners) auth.web3.removeAllListeners();
-      if (auth.provider.value.on) {
-        auth.provider.value.on('chainChanged', async chainId => {
+      if (auth.provider.removeAllListeners) auth.provider.removeAllListeners();
+      if (auth.provider.on) {
+        auth.provider.on('chainChanged', async chainId => {
           commit('HANDLE_CHAIN_CHANGED', parseInt(formatUnits(chainId, 0)));
         });
         auth.provider.value.on('accountsChanged', async accounts => {
