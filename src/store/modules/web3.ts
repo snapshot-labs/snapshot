@@ -61,7 +61,8 @@ const actions = {
   },
   loadProvider: async ({ commit, dispatch }) => {
     try {
-      if (auth.web3.removeAllListeners) auth.web3.removeAllListeners();
+      if (auth.provider.removeAllListeners && !auth.provider.isTorus)
+        auth.provider.removeAllListeners();
       if (auth.provider.on) {
         auth.provider.on('chainChanged', async chainId => {
           commit('HANDLE_CHAIN_CHANGED', parseInt(formatUnits(chainId, 0)));
