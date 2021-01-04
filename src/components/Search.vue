@@ -11,7 +11,7 @@
       class="border-0 input flex-auto width-full"
     />
     <a @click="clearInput">
-      <Icon v-if="value" name="close" size="12" class="mb-1" />
+      <Icon v-if="modelValue" name="close" size="12" class="mb-1" />
     </a>
   </div>
 </template>
