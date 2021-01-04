@@ -60,7 +60,7 @@ import { getStrategy } from '@/helpers/utils';
 export default {
   data() {
     return {
-      name: this.$route.params.name,
+      name: this.$route.params.name
     };
   },
   computed: {

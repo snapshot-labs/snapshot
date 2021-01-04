@@ -13,9 +13,11 @@ export default Object.fromEntries(
       const strategy = requireFile(fileName);
       strategy.key = key;
       try {
-        strategy.description = requireFile(fileName.replace('index.ts', 'README.md')).default;
+        strategy.description = requireFile(
+          fileName.replace('index.ts', 'README.md')
+        ).default;
       } catch (error) {
-        strategy.description = ""
+        strategy.description = '';
       }
       return [key, strategy];
     })

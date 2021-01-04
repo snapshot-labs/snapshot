@@ -96,8 +96,9 @@ export function filterSkins(skins, spaces, q) {
 }
 
 export function getStrategy(strategies, spaces, id) {
-  const strategy = strategies[id]
-  strategy.spaces = Object.entries(spaces).filter(
+  const strategy = strategies[id];
+  strategy.spaces = Object.entries(spaces)
+    .filter(
       (space: any) =>
         space[1].strategies &&
         space[1].strategies
