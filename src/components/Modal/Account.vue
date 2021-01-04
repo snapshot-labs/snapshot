@@ -42,16 +42,11 @@
           </UiButton>
         </a>
         <UiButton
+          v-show="!web3"
           @click="step = 'connect'"
           class="button-outline width-full mb-2"
         >
           Connect wallet
-        </UiButton>
-        <UiButton
-          @click="handleLogout"
-          class="button-outline width-full text-red mb-2"
-        >
-          Log out
         </UiButton>
       </div>
     </div>
