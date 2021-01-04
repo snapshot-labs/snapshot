@@ -2,7 +2,7 @@
   <div class="d-flex flex-items-center">
     <Icon name="search" size="22" class="mb-1 mr-2 text-gray" />
     <input
-      :value="value"
+      :value="modelValue"
       :placeholder="placeholder"
       @input="handleInput"
       type="text"
@@ -18,16 +18,16 @@
 
 <script>
 export default {
-  props: ['value', 'placeholder'],
+  props: ['modelValue', 'placeholder'],
   methods: {
     handleInput(e) {
       const input = e.target.value;
       this.$router.push({ query: input ? { q: input } : {} });
-      this.$emit('input', input);
+      this.$emit('update:modelValue', input);
     },
     clearInput() {
       this.$router.push({});
-      this.$emit('input', '');
+      this.$emit('update:modelValue', '');
     }
   }
 };
