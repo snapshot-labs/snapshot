@@ -2,13 +2,9 @@
   <Block>
     <div class="d-flex flex-items-baseline">
       <h3>
-        <a
-          v-text="strategy.key"
-          :href="
-            `https://github.com/snapshot-labs/snapshot.js/tree/master/src/strategies/${strategy.key}`
-          "
-          target="_blank"
-        />
+        <router-link :to="{ path: 'strategy/' + strategy.key }">
+          {{ strategy.key }}
+        </router-link>
       </h3>
       <div class="ml-1">v{{ strategy.version }}</div>
     </div>
