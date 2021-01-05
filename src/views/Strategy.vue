@@ -15,7 +15,7 @@
             v-text="`In ${strategy.spaces.length} space(s)`"
             class="text-gray"
           />
-          <UiMarkdown :body="strategy.description" class="mb-6 mt-4" />
+          <UiMarkdown :body="strategy.about" class="mb-6 mt-4" />
         </div>
       </div>
     </div>
@@ -65,7 +65,7 @@ export default {
   },
   computed: {
     strategy() {
-      return getStrategy(strategies, this.app.spaces, this.$route.params.name);
+      return getStrategy(strategies[this.$route.params.name], this.app.spaces);
     }
   }
 };
