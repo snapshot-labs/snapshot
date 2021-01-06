@@ -7,6 +7,7 @@ export default {
   props: {
     value: Boolean
   },
+  emits: ['input'],
   data() {
     return {
       input: ''

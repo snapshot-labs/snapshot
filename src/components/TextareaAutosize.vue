@@ -29,6 +29,7 @@ export default {
       default: false
     }
   },
+  emits: ['input'],
   data() {
     return {
       // data property for v-model binding with real textarea tag

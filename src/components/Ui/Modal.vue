@@ -30,6 +30,7 @@ export default {
   props: {
     open: Boolean
   },
+  emits: ['close'],
   watch: {
     open(val, prev) {
       if (val !== prev) this.toggleModal();

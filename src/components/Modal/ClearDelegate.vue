@@ -40,6 +40,7 @@ import { sleep } from '@/helpers/utils';
 
 export default {
   props: ['open', 'id', 'delegate'],
+  emits: ['close', 'reload'],
   data() {
     return {
       loading: false

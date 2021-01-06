@@ -78,6 +78,7 @@ export default {
     'totalScore',
     'scores'
   ],
+  emits: ['reload', 'close'],
   data() {
     return {
       loading: false

@@ -17,6 +17,7 @@ import { filterSkins } from '@/helpers/utils';
 
 export default {
   props: ['open'],
+  emits: ['input', 'close'],
   computed: {
     skins() {
       return filterSkins(skins, this.app.spaces, '');

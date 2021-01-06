@@ -39,6 +39,7 @@
 <script>
 export default {
   props: ['open', 'value', 'selectedDate'],
+  emits: ['input', 'close'],
   data() {
     return {
       input: '',

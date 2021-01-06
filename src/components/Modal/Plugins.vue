@@ -69,6 +69,7 @@ import { clone } from '@/helpers/utils';
 
 export default {
   props: ['open', 'value', 'space', 'proposal'],
+  emits: ['close'],
   data() {
     return {
       plugins: [],

@@ -7,6 +7,7 @@ export default {
   props: {
     value: Array
   },
+  emits: ['input'],
   data() {
     return {
       input: ''

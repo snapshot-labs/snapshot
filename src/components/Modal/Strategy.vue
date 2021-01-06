@@ -49,6 +49,7 @@ const defaultParams = {
 
 export default {
   props: ['open', 'strategy'],
+  emits: ['add', 'close'],
   data() {
     return {
       input: {

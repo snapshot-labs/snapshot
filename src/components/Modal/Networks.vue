@@ -21,6 +21,7 @@ import { filterNetworks } from '@/helpers/utils';
 
 export default {
   props: ['open'],
+  emits: ['input', 'close'],
   computed: {
     networks() {
       return filterNetworks(networks, this.app.spaces, '');

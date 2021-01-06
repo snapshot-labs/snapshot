@@ -105,6 +105,7 @@ import { getInjected } from '@snapshot-labs/lock/src/utils';
 
 export default {
   props: ['open'],
+  emits: ['login', 'close'],
   data() {
     return {
       step: null,
