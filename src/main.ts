@@ -1,11 +1,10 @@
 import { createApp } from 'vue';
 import { LockPlugin } from '@snapshot-labs/lock/plugins/vue3';
 import options from '@/auth';
-import autofocus from 'vue-autofocus-directive';
-import infiniteScroll from 'vue-infinite-scroll';
-import TextareaAutosize from 'vue-textarea-autosize';
 import VueClipboard from 'vue3-clipboard';
 import Jazzicon from 'vue3-jazzicon/src/components';
+// TODO: work on infinite scroll package
+import InfiniteScrollInstall from 'vue3-infinite-scroll';
 import upperFirst from 'lodash/upperFirst';
 import camelCase from 'lodash/camelCase';
 import App from '@/App.vue';
@@ -23,13 +22,11 @@ const app = createApp(App)
   .use(store)
 
   .use(VueClipboard)
-  .use(infiniteScroll)
-  .use(TextareaAutosize)
+  .use(InfiniteScrollInstall)
   .use(LockPlugin, options)
 
   .component('jazzicon', Jazzicon)
-  .mixin(mixins)
-  .directive('autofocus', autofocus);
+  .mixin(mixins);
 
 const requireComponent = require.context('@/components', true, /[\w-]+\.vue$/);
 requireComponent.keys().forEach(fileName => {
