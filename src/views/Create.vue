@@ -14,13 +14,13 @@
         <div class="px-4 px-md-0">
           <div class="d-flex flex-column mb-6">
             <input
-              v-autofocus
               v-model="form.name"
               maxlength="128"
               class="h1 mb-2 input"
               placeholder="Question"
+              ref="nameForm"
             />
-            <textarea-autosize
+            <TextareaAutosize
               v-model="form.body"
               class="input pt-1"
               placeholder="What is your proposal?"
@@ -38,26 +38,27 @@
         </div>
         <Block title="Choices">
           <div v-if="choices.length > 0" class="overflow-hidden mb-2">
-            <draggable v-model="choices">
-              <transition-group name="list">
-                <div
-                  v-for="(choice, i) in choices"
-                  :key="choice.key"
-                  class="d-flex mb-2"
-                >
+            <draggable
+              v-model="choices"
+              tag="transition-group"
+              :component-data="{ name: 'list' }"
+              item-key="id"
+            >
+              <template #item="{element, index}">
+                <div class="d-flex mb-2">
                   <UiButton class="d-flex width-full">
-                    <span class="mr-4">{{ i + 1 }}</span>
+                    <span class="mr-4">{{ index + 1 }}</span>
                     <input
-                      v-model="choices[i].text"
+                      v-model="element.text"
                       class="input height-full flex-auto text-center"
                       maxlength="32"
                     />
-                    <span @click="removeChoice(i)" class="ml-4">
+                    <span @click="removeChoice(index)" class="ml-4">
                       <Icon name="close" size="12" />
                     </span>
                   </UiButton>
                 </div>
-              </transition-group>
+              </template>
             </draggable>
           </div>
           <UiButton @click="addChoice(1)" class="d-block width-full">
@@ -191,6 +192,7 @@ export default {
     }
   },
   async mounted() {
+    this.$refs.nameForm.focus();
     this.addChoice(2);
     this.blockNumber = await getBlockNumber(getProvider(this.space.network));
     this.form.snapshot = this.blockNumber;
