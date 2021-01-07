@@ -1,5 +1,5 @@
 <template>
-  <textarea-autosize @input="handleInput" v-model="input" />
+  <TextareaAutosize @input="handleInput" v-model="input" />
 </template>
 
 <script>
