@@ -4,7 +4,7 @@ import options from '@/auth';
 import VueClipboard from 'vue3-clipboard';
 import Jazzicon from 'vue3-jazzicon/src/components';
 // TODO: work on infinite scroll package
-import InfiniteScrollInstall from 'vue3-infinite-scroll';
+import InfiniteScroll from 'vue3-infinite-scroll';
 import upperFirst from 'lodash/upperFirst';
 import camelCase from 'lodash/camelCase';
 import App from '@/App.vue';
@@ -21,8 +21,10 @@ const app = createApp(App)
   .use(router)
   .use(store)
 
-  .use(VueClipboard)
-  .use(InfiniteScrollInstall)
+  .use(VueClipboard, {
+    autoSetContainer: true
+  })
+  .use(InfiniteScroll)
   .use(LockPlugin, options)
 
   .component('jazzicon', Jazzicon)
