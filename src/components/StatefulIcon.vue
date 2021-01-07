@@ -11,6 +11,7 @@ export default {
     offName: { type: String },
     on: { type: Boolean, default: true }
   },
+  emits: ['favorite'],
   computed: {
     name() {
       return this.on ? 'favorite-on' : 'favorite-off';

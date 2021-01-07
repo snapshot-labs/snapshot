@@ -62,6 +62,7 @@ const gateway = process.env.VUE_APP_IPFS_GATEWAY || gateways[0];
 
 export default {
   props: ['open'],
+  emits: ['close'],
   data() {
     return {
       pkg,

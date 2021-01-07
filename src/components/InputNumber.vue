@@ -12,6 +12,7 @@ export default {
   props: {
     value: Number
   },
+  emits: ['input'],
   data() {
     return {
       input: ''

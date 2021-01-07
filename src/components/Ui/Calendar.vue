@@ -43,6 +43,7 @@
 <script>
 export default {
   props: ['value'],
+  emits: ['input'],
   data() {
     return {
       input: '',

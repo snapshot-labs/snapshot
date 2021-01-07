@@ -19,6 +19,7 @@
 <script>
 export default {
   props: ['modelValue', 'placeholder'],
+  emits: ['update:modelValue'],
   methods: {
     handleInput(e) {
       const input = e.target.value;

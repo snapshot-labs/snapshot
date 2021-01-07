@@ -66,6 +66,7 @@
 <script>
 export default {
   props: ['value', 'proposal', 'network'],
+  emits: ['input', 'close'],
   data() {
     return {
       input: false,

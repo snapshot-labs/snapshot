@@ -49,6 +49,7 @@
 <script>
 export default {
   props: ['value', 'proposal'],
+  emits: ['input', 'close'],
   data() {
     return {
       input: false,

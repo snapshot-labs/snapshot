@@ -43,6 +43,7 @@
 
 <script>
 export default {
-  props: ['open', 'strategies', 'space']
+  props: ['open', 'strategies', 'space'],
+  emits: ['close']
 };
 </script>
