@@ -320,6 +320,7 @@ export default {
       this.loading = false;
     },
     handleReset() {
+      if (this.from) return (this.form = clone(this.app.spaces[this.from]));
       if (this.currentSettings) return (this.form = this.currentSettings);
       this.form = {
         strategies: [],
