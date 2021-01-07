@@ -42,8 +42,8 @@
 
 <script>
 export default {
-  props: ['value'],
-  emits: ['input'],
+  props: ['modelValue'],
+  emits: ['update:modelValue'],
   data() {
     return {
       input: '',
@@ -94,7 +94,7 @@ export default {
     },
     toggleDay(year, month, day) {
       this.input = this.formatDate(year, month, day);
-      this.$emit('input', this.input);
+      this.$emit('update:modelValue', this.input);
     },
     isSelectable() {
       return true;

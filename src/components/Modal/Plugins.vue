@@ -35,7 +35,7 @@
       </div>
       <div class="col-6 float-left pl-2">
         <UiButton
-          @click="[$emit('input', form), $emit('close')]"
+          @click="[$emit('update:modelValue', form), $emit('close')]"
           type="submit"
           class="width-full button--submit"
         >
@@ -45,14 +45,12 @@
     </template>
     <div v-if="selected !== false" class="m-4 p-4 border rounded-2 text-white">
       <PluginAragonConfig
-        :value="form.aragon"
         :proposal="proposal"
         v-model="form.aragon"
         @close="selected = false"
         v-if="selected === 'aragon'"
       />
       <PluginGnosisConfig
-        :value="form.gnosis"
         :proposal="proposal"
         :network="space.network"
         v-model="form.gnosis"
@@ -68,8 +66,8 @@ import plugins from '@snapshot-labs/snapshot.js/src/plugins';
 import { clone } from '@/helpers/utils';
 
 export default {
-  props: ['open', 'value', 'space', 'proposal'],
-  emits: ['close'],
+  props: ['open', 'modelValue', 'space', 'proposal'],
+  emits: ['close', 'update:modelValue'],
   data() {
     return {
       plugins: [],
@@ -79,7 +77,7 @@ export default {
   },
   watch: {
     open() {
-      if (this.value && this.open) this.form = clone(this.value);
+      if (this.modelValue && this.open) this.form = clone(this.modelValue);
       this.selected = false;
     }
   },

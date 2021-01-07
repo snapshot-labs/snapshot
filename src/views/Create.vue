@@ -122,7 +122,6 @@
       <ModalPlugins
         :space="space"
         :proposal="{ ...form, choices }"
-        :value="form.metadata.plugins"
         v-model="form.metadata.plugins"
         :open="modalPluginsOpen"
         @close="modalPluginsOpen = false"

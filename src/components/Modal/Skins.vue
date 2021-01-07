@@ -17,7 +17,7 @@ import { filterSkins } from '@/helpers/utils';
 
 export default {
   props: ['open'],
-  emits: ['input', 'close'],
+  emits: ['update:modelValue', 'close'],
   computed: {
     skins() {
       return filterSkins(skins, this.app.spaces, '');
@@ -25,7 +25,7 @@ export default {
   },
   methods: {
     select(key) {
-      this.$emit('input', key);
+      this.$emit('update:modelValue', key);
       this.$emit('close');
     }
   }

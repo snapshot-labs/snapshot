@@ -5,7 +5,7 @@
 export default {
   name: 'TextareaAutosize',
   props: {
-    value: {
+    modelValue: {
       type: [String, Number],
       default: ''
     },
@@ -29,7 +29,7 @@ export default {
       default: false
     }
   },
-  emits: ['input'],
+  emits: ['update:modelValue'],
   data() {
     return {
       // data property for v-model binding with real textarea tag
@@ -66,12 +66,12 @@ export default {
     }
   },
   watch: {
-    value(val) {
+    modelValue(val) {
       this.val = val;
     },
     val(val) {
       this.$nextTick(this.resize);
-      this.$emit('input', val);
+      this.$emit('update:modelValue', val);
     },
     minHeight() {
       this.$nextTick(this.resize);
@@ -108,7 +108,7 @@ export default {
     }
   },
   created() {
-    this.val = this.value;
+    this.val = this.modelValue;
   },
   mounted() {
     this.resize();
