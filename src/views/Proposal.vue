@@ -136,7 +136,7 @@
                 target="_blank"
                 class="float-right"
               >
-                {{ $n(payload.snapshot) }}
+                {{ payload.snapshot }}
                 <Icon name="external-link" class="ml-1" />
               </a>
             </div>
