@@ -16,11 +16,7 @@
       </Container>
     </div>
     <Container :slim="true">
-      <div
-        v-infinite-scroll="loadMore"
-        infinite-scroll-distance="0"
-        class="overflow-hidden mr-n4"
-      >
+      <div class="overflow-hidden mr-n4">
         <router-link
           v-for="space in spaces.slice(0, limit)"
           :key="space.key"
@@ -106,12 +102,23 @@ export default {
         this.addFavoriteSpace(spaceId);
       }
     },
-    loadMore() {
-      this.limit += 16;
+    scroll() {
+      window.onscroll = () => {
+        const bottomOfWindow =
+          document.documentElement.scrollTop + window.innerHeight ===
+          document.documentElement.offsetHeight;
+
+        if (bottomOfWindow) {
+          this.limit += 16;
+        }
+      };
     }
   },
   created() {
     this.loadFavoriteSpaces();
+  },
+  mounted() {
+    this.scroll();
   }
 };
 </script>
