@@ -1,6 +1,6 @@
 <template>
   <router-link
-    class="px-4 py-3 border-top d-block text-gray"
+    class="px-4 py-3 d-block text-gray"
     :to="{ name: 'proposal', params: { key: space.key, id: i } }"
   >
     <div>
