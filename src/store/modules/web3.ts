@@ -6,6 +6,7 @@ import { formatUnits } from '@ethersproject/units';
 import { getProfiles } from '@/helpers/3box';
 
 let wsProvider;
+let auth;
 const defaultNetwork =
   process.env.VUE_APP_DEFAULT_NETWORK || Object.keys(networks)[0];
 
@@ -44,7 +45,7 @@ const mutations = {
 
 const actions = {
   login: async ({ dispatch, commit }, connector = 'injected') => {
-    const auth = getInstance();
+    auth = getInstance();
     commit('SET', { authLoading: true });
     await auth.login(connector);
     if (auth.provider.value) {
@@ -54,17 +55,16 @@ const actions = {
     commit('SET', { authLoading: false });
   },
   logout: async ({ commit }) => {
-    const auth = getInstance();
+    auth = getInstance();
     auth.logout();
     commit('WEB3_SET', { account: null, profile: null });
   },
   loadProvider: async ({ commit, dispatch }) => {
-    const auth = getInstance();
     try {
       if (auth.provider.value.removeAllListeners)
         auth.provider.value.removeAllListeners();
-      if (auth.provider.on) {
-        auth.provider.on('chainChanged', async chainId => {
+      if (auth.provider.value.on) {
+        auth.provider.value.on('chainChanged', async chainId => {
           commit('HANDLE_CHAIN_CHANGED', parseInt(formatUnits(chainId, 0)));
         });
         auth.provider.value.on('accountsChanged', async accounts => {
