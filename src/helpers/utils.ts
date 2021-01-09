@@ -180,6 +180,7 @@ export function infiniteScroll() {
       document.documentElement.offsetHeight;
 
     if (bottomOfWindow) {
+      // @ts-ignore
       this.limit += 16;
     }
   };
