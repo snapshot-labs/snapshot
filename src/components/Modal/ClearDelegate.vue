@@ -1,6 +1,6 @@
 <template>
   <UiModal :open="open" v-if="open" @close="$emit('close')" class="d-flex">
-    <template slot="header">
+    <template v-slot:header>
       <h3>Remove delegation</h3>
     </template>
     <form @submit.prevent="handleSubmit" class="d-flex flex-column flex-auto">
@@ -40,6 +40,7 @@ import { sleep } from '@/helpers/utils';
 
 export default {
   props: ['open', 'id', 'delegate'],
+  emits: ['close', 'reload'],
   data() {
     return {
       loading: false

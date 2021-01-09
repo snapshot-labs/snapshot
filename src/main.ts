@@ -1,10 +1,8 @@
-import Vue from 'vue';
-import PortalVue from 'portal-vue';
-import autofocus from 'vue-autofocus-directive';
-import infiniteScroll from 'vue-infinite-scroll';
-import TextareaAutosize from 'vue-textarea-autosize';
-import VueClipboard from 'vue-clipboard2';
-import Jazzicon from 'vue-jazzicon';
+import { createApp } from 'vue';
+import { LockPlugin } from '@snapshot-labs/lock/plugins/vue3';
+import options from '@/auth';
+import VueClipboard from 'vue3-clipboard';
+import Jazzicon from 'vue3-jazzicon/src/components';
 import upperFirst from 'lodash/upperFirst';
 import camelCase from 'lodash/camelCase';
 import App from '@/App.vue';
@@ -16,10 +14,18 @@ import '@/auth';
 import '@/helpers/skins';
 import '@/style.scss';
 
-Vue.use(PortalVue);
-Vue.use(VueClipboard);
-Vue.use(infiniteScroll);
-Vue.use(TextareaAutosize);
+const app = createApp(App)
+  .use(i18n)
+  .use(router)
+  .use(store)
+
+  .use(VueClipboard, {
+    autoSetContainer: true
+  })
+  .use(LockPlugin, options)
+
+  .component('jazzicon', Jazzicon)
+  .mixin(mixins);
 
 const requireComponent = require.context('@/components', true, /[\w-]+\.vue$/);
 requireComponent.keys().forEach(fileName => {
@@ -27,18 +33,9 @@ requireComponent.keys().forEach(fileName => {
   const componentName = upperFirst(
     camelCase(fileName.replace(/^\.\//, '').replace(/\.\w+$/, ''))
   );
-  Vue.component(componentName, componentConfig.default || componentConfig);
+  app.component(componentName, componentConfig.default || componentConfig);
 });
 
-Vue.component('jazzicon', Jazzicon);
-Vue.mixin(mixins);
-Vue.directive('autofocus', autofocus);
+app.mount('#app');
 
-Vue.config.productionTip = false;
-
-new Vue({
-  i18n,
-  router,
-  store,
-  render: h => h(App)
-}).$mount('#app');
+export default app;

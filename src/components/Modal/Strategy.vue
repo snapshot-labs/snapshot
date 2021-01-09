@@ -1,6 +1,6 @@
 <template>
   <UiModal :open="open" @close="$emit('close')">
-    <template slot="header">
+    <template v-slot:header>
       <h3>{{ strategy.name ? 'Edit' : 'Add' }} strategy</h3>
     </template>
     <div class="mt-4 mx-0 mx-md-4">
@@ -10,7 +10,7 @@
           class="d-block width-full mb-3 overflow-x-auto"
           style="height: auto;"
         >
-          <textarea-autosize
+          <TextareaAutosize
             v-model="input.params"
             placeholder="Strategy parameters"
             class="input text-left"
@@ -49,6 +49,7 @@ const defaultParams = {
 
 export default {
   props: ['open', 'strategy'],
+  emits: ['add', 'close'],
   data() {
     return {
       input: {

@@ -5,7 +5,7 @@
       {{ name }}
       <Badges :address="address" :space="space" />
     </a>
-    <portal to="modal">
+    <teleport to="#modal">
       <ModalUser
         :profile="profile"
         :open="modalOpen"
@@ -13,7 +13,7 @@
         :space="space"
         :address="address"
       />
-    </portal>
+    </teleport>
   </span>
 </template>
 

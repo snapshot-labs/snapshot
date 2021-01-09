@@ -172,3 +172,16 @@ export function filterProposals(space, proposal, tab) {
 
   return false;
 }
+
+export function infiniteScroll() {
+  window.onscroll = () => {
+    const bottomOfWindow =
+      document.documentElement.scrollTop + window.innerHeight ===
+      document.documentElement.offsetHeight;
+
+    if (bottomOfWindow) {
+      // @ts-ignore
+      this.limit += 16;
+    }
+  };
+}

@@ -1,6 +1,6 @@
 <template>
   <UiModal :open="open" @close="$emit('close')">
-    <template slot="header">
+    <template v-slot:header>
       <h3 v-if="step === 0">Select {{ selectedDate }} date</h3>
       <h3 v-else>Select {{ selectedDate }} time</h3>
     </template>
@@ -16,7 +16,7 @@
         <input v-model="form.m" max="60" class="input text-center col-5" />
       </UiButton>
     </div>
-    <template slot="footer">
+    <template v-slot:footer>
       <div class="col-6 float-left pr-2">
         <UiButton @click="$emit('close')" type="button" class="width-full">
           Cancel
@@ -39,6 +39,7 @@
 <script>
 export default {
   props: ['open', 'value', 'selectedDate'],
+  emits: ['input', 'close'],
   data() {
     return {
       input: '',

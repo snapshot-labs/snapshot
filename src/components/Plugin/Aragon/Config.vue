@@ -48,7 +48,8 @@
 
 <script>
 export default {
-  props: ['value', 'proposal'],
+  props: ['modelValue', 'proposal'],
+  emits: ['update:modelValue', 'close'],
   data() {
     return {
       input: false,
@@ -64,7 +65,7 @@ export default {
     }
   },
   mounted() {
-    if (this.value) return (this.input = this.value);
+    if (this.modelValue) return (this.input = this.modelValue);
     this.input = Object.fromEntries(
       this.proposal.choices.map((choice, i) => [`choice${i + 1}`, false])
     );
@@ -87,7 +88,7 @@ export default {
     },
     handleSubmit() {
       if (this.choice === this.proposal.choices.length) {
-        this.$emit('input', this.input);
+        this.$emit('update:modelValue', this.input);
         this.$emit('close');
         this.choice = 1;
       } else {

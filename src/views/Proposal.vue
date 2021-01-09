@@ -136,7 +136,7 @@
                 target="_blank"
                 class="float-right"
               >
-                {{ $n(payload.snapshot) }}
+                {{ payload.snapshot }}
                 <Icon name="external-link" class="ml-1" />
               </a>
             </div>
@@ -163,7 +163,7 @@
         />
       </div>
     </div>
-    <portal to="modal">
+    <teleport to="#modal">
       <ModalConfirm
         v-if="loaded"
         :open="modalOpen"
@@ -183,7 +183,7 @@
         :space="space"
         :strategies="space.strategies"
       />
-    </portal>
+    </teleport>
   </Container>
 </template>
 

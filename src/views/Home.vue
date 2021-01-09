@@ -16,11 +16,7 @@
       </Container>
     </div>
     <Container :slim="true">
-      <div
-        v-infinite-scroll="loadMore"
-        infinite-scroll-distance="0"
-        class="overflow-hidden mr-n4"
-      >
+      <div class="overflow-hidden mr-n4">
         <router-link
           v-for="space in spaces.slice(0, limit)"
           :key="space.key"
@@ -66,6 +62,7 @@
 import { mapActions } from 'vuex';
 import orderBy from 'lodash/orderBy';
 import spotlight from '@snapshot-labs/snapshot-spaces/spaces/spotlight.json';
+import { infiniteScroll } from '@/helpers/utils';
 
 export default {
   data() {
@@ -106,12 +103,13 @@ export default {
         this.addFavoriteSpace(spaceId);
       }
     },
-    loadMore() {
-      this.limit += 16;
-    }
+    scroll: infiniteScroll
   },
   created() {
     this.loadFavoriteSpaces();
+  },
+  mounted() {
+    this.scroll();
   }
 };
 </script>

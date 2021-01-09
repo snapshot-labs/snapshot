@@ -34,7 +34,7 @@
             </router-link>
           </div>
           <div :key="web3.account">
-            <template v-if="$auth.isAuthenticated">
+            <template v-if="$auth.isAuthenticated.value">
               <UiButton
                 @click="modalOpen = true"
                 class="button-outline"
@@ -55,7 +55,7 @@
               </UiButton>
             </template>
             <UiButton
-              v-if="!$auth.isAuthenticated"
+              v-if="!$auth.isAuthenticated.value"
               @click="modalOpen = true"
               :loading="loading || app.authLoading"
             >
@@ -73,14 +73,14 @@
         </div>
       </Container>
     </nav>
-    <portal to="modal">
+    <teleport to="#modal">
       <ModalAccount
         :open="modalOpen"
         @close="modalOpen = false"
         @login="handleLogin"
       />
       <ModalAbout :open="modalAboutOpen" @close="modalAboutOpen = false" />
-    </portal>
+    </teleport>
   </Sticky>
 </template>
 
