@@ -68,7 +68,8 @@ import {
   filterStrategies,
   filterSkins,
   filterNetworks,
-  filterPlugins
+  filterPlugins,
+  infiniteScroll
 } from '@/helpers/utils';
 
 export default {
@@ -109,17 +110,7 @@ export default {
     }
   },
   methods: {
-    scroll() {
-      window.onscroll = () => {
-        const bottomOfWindow =
-          document.documentElement.scrollTop + window.innerHeight ===
-          document.documentElement.offsetHeight;
-
-        if (bottomOfWindow) {
-          this.limit += 8;
-        }
-      };
-    }
+    scroll: infiniteScroll
   },
   mounted() {
     this.scroll();

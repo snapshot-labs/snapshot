@@ -62,6 +62,7 @@
 import { mapActions } from 'vuex';
 import orderBy from 'lodash/orderBy';
 import spotlight from '@snapshot-labs/snapshot-spaces/spaces/spotlight.json';
+import { infiniteScroll } from '@/helpers/utils';
 
 export default {
   data() {
@@ -102,17 +103,7 @@ export default {
         this.addFavoriteSpace(spaceId);
       }
     },
-    scroll() {
-      window.onscroll = () => {
-        const bottomOfWindow =
-          document.documentElement.scrollTop + window.innerHeight ===
-          document.documentElement.offsetHeight;
-
-        if (bottomOfWindow) {
-          this.limit += 16;
-        }
-      };
-    }
+    scroll: infiniteScroll
   },
   created() {
     this.loadFavoriteSpaces();
