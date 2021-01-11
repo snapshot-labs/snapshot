@@ -1,5 +1,5 @@
 <template>
-  <TextareaAutosize @update:modelValue="handleInput" v-model="input" />
+  <TextareaAutosize v-model="input" />
 </template>
 
 <script>
@@ -26,6 +26,11 @@ export default {
         .map(item => item.trim())
         .filter(item => !!item);
       this.$emit('update:modelValue', input);
+    }
+  },
+  watch: {
+    input() {
+      this.handleInput();
     }
   }
 };
