@@ -19,12 +19,12 @@
     </div>
     <div class="m-4">
       <a
-        href="https://mycrypto.com/sign-and-verify-message/verify"
+        href="https://zilpay.xyz/Verification/"
         target="_blank"
         class="mb-2 d-block"
       >
         <UiButton class="button-outline width-full">
-          Verify receipt on MyCrypto
+          Verify receipt on ZilPay.xyz
           <Icon name="external-link" class="ml-1" />
         </UiButton>
       </a>
