@@ -1,8 +1,8 @@
 # Snapshot
 
-Snapshot is an off-chain gasless multi-governance client with easy to verify and hard to contest results. 
+Snapshot is an off-chain gasless multi-governance client with easy to verify and hard to contest results for Zilliqa ecosystem. 
 
-**[Documentation](https://docs.snapshot.page)**
+This project is a fork of https://github.com/balancer-labs/snapshot. Do support the Snapshot team @ https://gitcoin.co/grants/1093/snapshot
 
 ## Project setup
 ```
