@@ -1,6 +1,6 @@
 <template>
   <UiModal :open="open" @close="$emit('close')">
-    <template slot="header">
+    <template v-slot:header>
       <h3>About</h3>
     </template>
     <div class="text-center mt-4">
@@ -62,6 +62,7 @@ const gateway = process.env.VUE_APP_IPFS_GATEWAY || gateways[0];
 
 export default {
   props: ['open'],
+  emits: ['close'],
   data() {
     return {
       pkg,

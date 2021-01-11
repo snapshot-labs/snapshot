@@ -5,22 +5,23 @@
 <script>
 export default {
   props: {
-    value: Boolean
+    modelValue: Boolean
   },
+  emits: ['update:modelValue'],
   data() {
     return {
       input: ''
     };
   },
   created() {
-    if (this.value) this.input = this.value.toString();
+    if (this.modelValue) this.input = this.modelValue.toString();
   },
   methods: {
     handleInput() {
       const value = ['1', 'yes', 'ok', 'true'].includes(
         this.input.trim().toLowerCase()
       );
-      this.$emit('input', value);
+      this.$emit('update:modelValue', value);
     }
   }
 };

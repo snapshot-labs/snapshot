@@ -21,11 +21,7 @@
       </Container>
     </div>
     <Container :slim="true">
-      <div
-        v-infinite-scroll="loadMore"
-        infinite-scroll-distance="0"
-        class="overflow-hidden"
-      >
+      <div class="overflow-hidden">
         <template v-if="route === 'strategies'">
           <BlockStrategy
             v-for="item in items.slice(0, limit)"
@@ -72,7 +68,8 @@ import {
   filterStrategies,
   filterSkins,
   filterNetworks,
-  filterPlugins
+  filterPlugins,
+  infiniteScroll
 } from '@/helpers/utils';
 
 export default {
@@ -113,9 +110,10 @@ export default {
     }
   },
   methods: {
-    loadMore() {
-      this.limit += 8;
-    }
+    scroll: infiniteScroll
+  },
+  mounted() {
+    this.scroll();
   }
 };
 </script>

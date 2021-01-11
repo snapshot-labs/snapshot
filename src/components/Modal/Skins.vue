@@ -1,6 +1,6 @@
 <template>
   <UiModal :open="open" @close="$emit('close')">
-    <template slot="header">
+    <template v-slot:header>
       <h3>Skins</h3>
     </template>
     <div class="mt-4 mx-0 mx-md-4">
@@ -17,6 +17,7 @@ import { filterSkins } from '@/helpers/utils';
 
 export default {
   props: ['open'],
+  emits: ['update:modelValue', 'close'],
   computed: {
     skins() {
       return filterSkins(skins, this.app.spaces, '');
@@ -24,7 +25,7 @@ export default {
   },
   methods: {
     select(key) {
-      this.$emit('input', key);
+      this.$emit('update:modelValue', key);
       this.$emit('close');
     }
   }

@@ -1,6 +1,5 @@
 import { getProfiles } from '@/helpers/3box';
-import Vue from 'vue';
-import { getInstance } from '@snapshot-labs/lock/plugins/vue';
+import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { ipfsGet, getScores } from '@snapshot-labs/snapshot.js/src/utils';
 import {
   getBlockNumber,
@@ -25,7 +24,7 @@ const state = {
 const mutations = {
   SET(_state, payload) {
     Object.keys(payload).forEach(key => {
-      Vue.set(_state, key, payload[key]);
+      _state[key] = payload[key];
     });
   },
   SEND_REQUEST() {
@@ -68,9 +67,10 @@ const mutations = {
 
 const actions = {
   init: async ({ commit, dispatch }) => {
+    const auth = getInstance();
     commit('SET', { loading: true });
     await dispatch('getSpaces');
-    Vue.prototype.$auth.getConnector().then(connector => {
+    auth.getConnector().then(connector => {
       if (connector) dispatch('login', connector);
     });
     commit('SET', { loading: false, init: true });
