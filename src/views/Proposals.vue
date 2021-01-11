@@ -15,7 +15,7 @@
           </div>
         </div>
         <router-link
-          v-if="$auth.isAuthenticated"
+          v-if="$auth.isAuthenticated.value"
           :to="{ name: 'create', params: { key } }"
         >
           <UiButton>New proposal</UiButton>
@@ -115,7 +115,7 @@ export default {
     isMember() {
       const members = this.space.members.map(address => address.toLowerCase());
       return (
-        this.$auth.isAuthenticated &&
+        this.$auth.isAuthenticated.value &&
         this.web3.account &&
         members.includes(this.web3.account.toLowerCase())
       );

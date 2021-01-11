@@ -83,7 +83,7 @@
         <Block title="Actions">
           <UiButton
             @click="handleSubmit"
-            :disabled="!isValid || !$auth.isAuthenticated"
+            :disabled="!isValid || !$auth.isAuthenticated.value"
             :loading="loading"
             class="d-block width-full button--submit"
           >
@@ -92,7 +92,7 @@
         </Block>
       </div>
     </div>
-    <portal to="modal">
+    <teleport to="#modal">
       <ModalClearDelegate
         v-if="loaded"
         :open="modalOpen"
@@ -101,7 +101,7 @@
         :id="currentId"
         :delegate="currentDelegate"
       />
-    </portal>
+    </teleport>
   </Container>
 </template>
 
@@ -151,7 +151,7 @@ export default {
     isValid() {
       const address = this.form.address;
       return (
-        this.$auth.isAuthenticated &&
+        this.$auth.isAuthenticated.value &&
         (address.includes('.eth') || isAddress(address)) &&
         address.toLowerCase() !== this.web3.account.toLowerCase() &&
         (this.form.id === '' || this.app.spaces[this.form.id])

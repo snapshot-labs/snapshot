@@ -1,5 +1,3 @@
-import Vue from 'vue';
-import { LockPlugin } from '@snapshot-labs/lock/plugins/vue';
 import injected from '@snapshot-labs/lock/connectors/injected';
 import fortmatic from '@snapshot-labs/lock/connectors/fortmatic';
 import portis from '@snapshot-labs/lock/connectors/portis';
@@ -26,4 +24,4 @@ Object.entries(config.connectors).forEach((connector: any) => {
   });
 });
 
-Vue.use(LockPlugin, options);
+export default options;

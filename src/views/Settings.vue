@@ -130,7 +130,6 @@
             <Block title="Members">
               <UiButton class="d-block width-full px-3" style="height: auto;">
                 <TextareaArray
-                  :value="form.members"
                   v-model="form.members"
                   :placeholder="
                     `0x8C28Cf33d9Fd3D0293f963b1cd27e3FF422B425c\n0xeF8305E140ac520225DAf050e2f71d5fBcC543e7`
@@ -153,7 +152,6 @@
                   <div class="text-gray mr-2">Min. score</div>
                   <div class="flex-auto">
                     <InputNumber
-                      :value="form.filters.minScore"
                       v-model="form.filters.minScore"
                       class="input"
                     />
@@ -162,7 +160,6 @@
                 <UiButton class="text-left width-full mb-2 d-flex px-3">
                   <div class="text-gray mr-2">Only members</div>
                   <Checkbox
-                    :value="form.filters.onlyMembers"
                     v-model="form.filters.onlyMembers"
                     class="input flex-auto"
                     :placeholder="`&quot;yes&quot; or &quot;no&quot;`"
@@ -170,7 +167,6 @@
                 </UiButton>
                 <UiButton class="d-block width-full px-3" style="height: auto;">
                   <TextareaArray
-                    :value="form.filters.invalids"
                     v-model="form.filters.invalids"
                     :placeholder="
                       `Invalids proposals\nQmc4VSHwY3SVmo4oofhL2qDPaYcGaQqndM4oqdQQe2aZHQ\nQmTMAgnPy2q6LRMNwvj27PHvWEgZ3bw7yTtNNEucBZCWhZ`
@@ -210,7 +206,7 @@
         </Block>
       </div>
     </div>
-    <portal to="modal">
+    <teleport to="#modal">
       <ModalNetworks
         :open="modalNetworksOpen"
         @close="modalNetworksOpen = false"
@@ -228,7 +224,7 @@
         :strategy="currentStrategy"
         :strategyIndex="currentStrategyIndex"
       />
-    </portal>
+    </teleport>
   </Container>
 </template>
 

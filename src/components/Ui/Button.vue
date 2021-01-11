@@ -15,7 +15,8 @@ export default {
   props: {
     loading: Boolean,
     type: String
-  }
+  },
+  emits: ['click']
 };
 </script>
 

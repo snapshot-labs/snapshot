@@ -34,6 +34,7 @@
 
 <script>
 export default {
-  props: ['open', 'address', 'space', 'profile']
+  props: ['open', 'address', 'space', 'profile'],
+  emits: ['close']
 };
 </script>

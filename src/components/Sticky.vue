@@ -25,10 +25,12 @@ export default {
     if (this.isSticky === false) return;
     window.addEventListener('scroll', this.onScroll);
     const el = document.getElementById('sticky');
-    this.offsetTop = el.offsetTop;
-    this.offsetHeight = el.offsetHeight;
+    if (el) {
+      this.offsetTop = el.offsetTop;
+      this.offsetHeight = el.offsetHeight;
+    }
   },
-  beforeDestroy() {
+  beforeUnmount() {
     if (this.isSticky === false) return;
     window.removeEventListener('scroll', this.onScroll);
   },

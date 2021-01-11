@@ -65,7 +65,8 @@
 
 <script>
 export default {
-  props: ['value', 'proposal', 'network'],
+  props: ['modelValue', 'proposal', 'network'],
+  emits: ['update:modelValue', 'close'],
   data() {
     return {
       input: false,
@@ -83,7 +84,7 @@ export default {
     }
   },
   mounted() {
-    if (this.value) return (this.input = this.value);
+    if (this.modelValue) return (this.input = this.modelValue);
   },
   methods: {
     getLogoUrl() {
@@ -101,7 +102,7 @@ export default {
       this.input = false;
     },
     handleSubmit() {
-      this.$emit('input', this.input);
+      this.$emit('update:modelValue', this.input);
       this.$emit('close');
     },
     getChoices() {

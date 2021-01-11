@@ -1,13 +1,5 @@
 <template>
-  <button
-    :class="{
-      'extra-icon': true,
-      'extra-icon-off': !this.on,
-      'text-primary': this.on,
-      'text-gray': !this.on
-    }"
-    @click="handleClick($event)"
-  >
+  <button :class="buttonClasses" @click="handleClick($event)">
     <Icon :name="name" size="22" />
   </button>
 </template>
@@ -19,16 +11,24 @@ export default {
     offName: { type: String },
     on: { type: Boolean, default: true }
   },
+  emits: ['favorite'],
   computed: {
     name() {
       return this.on ? 'favorite-on' : 'favorite-off';
+    },
+    buttonClasses() {
+      return {
+        'extra-icon': true,
+        'extra-icon-off': !this.on,
+        'text-primary': this.on,
+        'text-gray': !this.on
+      };
     }
   },
   methods: {
     handleClick(e) {
       e.preventDefault();
-
-      this.$emit('click');
+      this.$emit('favorite');
     }
   }
 };
