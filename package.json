@@ -74,8 +74,7 @@
     "eslint-plugin-vue": "^7.0.0-alpha.0",
     "prettier": "^1.19.1",
     "sass": "^1.29.0",
-    "sass-loader": "^8.0.2",
-    "vue-cli-plugin-vue-next": "~0.1.4"
+    "sass-loader": "^8.0.2"
   },
   "license": "MIT",
   "repository": "balancer-labs/snapshot"
