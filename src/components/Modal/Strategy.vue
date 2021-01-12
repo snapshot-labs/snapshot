@@ -31,7 +31,7 @@
         :key="strategy.key"
         @click="select(strategy.key)"
       >
-        <BlockStrategy :strategy="strategy" />
+        <BlockStrategy :strategy="strategy" fromModal="true" />
       </a>
     </div>
   </UiModal>

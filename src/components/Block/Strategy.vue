@@ -2,7 +2,10 @@
   <Block>
     <div class="d-flex flex-items-baseline">
       <h3>
-        <router-link :to="{ path: 'strategy/' + strategy.key }">
+        <router-link
+          :to="`/strategy/${strategy.key}`"
+          :target="fromModal ? '_blank' : '_self'"
+        >
           {{ strategy.key }}
         </router-link>
       </h3>
@@ -26,6 +29,6 @@
 
 <script>
 export default {
-  props: ['strategy']
+  props: ['strategy', 'fromModal']
 };
 </script>
