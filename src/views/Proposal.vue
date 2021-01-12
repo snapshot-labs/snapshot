@@ -17,7 +17,13 @@
               {{ payload.name }}
               <span v-text="`#${id.slice(0, 7)}`" class="text-gray" />
             </h1>
-            <State :proposal="proposal" class="mb-4" />
+            <div class="mb-4">
+              <State :proposal="proposal" />
+              <DropdownProposal
+                v-if="proposal.address === this.web3.account"
+                class="float-right"
+              />
+            </div>
             <UiMarkdown :body="payload.body" class="mb-6" />
           </template>
           <PageLoading v-else />
