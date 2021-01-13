@@ -19,9 +19,10 @@
             </h1>
             <div class="mb-4">
               <State :proposal="proposal" />
-              <DropdownProposal
-                v-if="proposal.address === this.web3.account"
+              <UiDropdown
                 class="float-right"
+                v-if="proposal.address === this.web3.account"
+                :items="[{ text: 'Delete proposal', action: 'delete' }]"
               />
             </div>
             <UiMarkdown :body="payload.body" class="mb-6" />
