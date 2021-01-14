@@ -1,0 +1,103 @@
+<template>
+  <div class="position-relative">
+    <button @click="open = !open" class="button mr-1">
+      <slot></slot>
+    </button>
+    <div class="sub-menu-wrapper anim-scale-in" :class="{ hidden: !open }">
+      <ul class="sub-menu my-2">
+        <li v-for="item in items" :key="item" @click="handleClick(item.action)">
+          {{ item.text }}
+        </li>
+      </ul>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  props: ['items'],
+  data() {
+    return {
+      open: false
+    };
+  },
+
+  methods: {
+    handleClick(action) {
+      this.$emit(action);
+      this.open = false;
+    },
+    close(e) {
+      if (!this.$el.contains(e.target)) {
+        this.open = false;
+      }
+    }
+  },
+
+  created() {
+    window.addEventListener('click', this.close);
+  },
+
+  beforeUnmount() {
+    window.removeEventListener('click', this.close);
+  }
+};
+</script>
+
+<style scoped lang="scss">
+.button {
+  border: none;
+  background-color: transparent;
+  color: var(--text-color);
+  padding: 0 8px;
+  line-height: 24px;
+  height: 28px;
+  font-size: 18px;
+  &:hover {
+    color: var(--link-color);
+  }
+}
+li {
+  list-style: none;
+  display: block;
+  white-space: nowrap;
+  padding-left: 24px;
+  padding-top: 4px;
+  cursor: pointer;
+}
+li.disabled {
+  cursor: not-allowed;
+}
+li:hover {
+  background-color: var(--border-color);
+  color: var(--link-color);
+}
+.sub-menu-wrapper {
+  position: absolute;
+  right: 0;
+  top: 1.8rem;
+  width: 180px;
+  background-color: var(--header-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  box-shadow: 0 0 20px -6px var(--border-color);
+}
+.sub-menu-wrapper.hidden {
+  display: none;
+}
+.sub-menu::before {
+  content: '';
+  position: absolute;
+  top: -0.45rem;
+  right: 1.1rem;
+  height: 0.75rem;
+  width: 0.75rem;
+  background-color: var(--header-bg);
+  border-top: 1px solid var(--border-color);
+  border-left: 1px solid var(--border-color);
+  transform: rotate(45deg);
+  z-index: 10;
+  opacity: 1;
+  transition-delay: 0.3s;
+}
+</style>
