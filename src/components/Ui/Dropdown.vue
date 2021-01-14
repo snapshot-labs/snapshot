@@ -5,13 +5,7 @@
     </button>
     <div class="sub-menu-wrapper anim-scale-in" :class="{ hidden: !open }">
       <ul class="sub-menu my-2">
-        <!-- TODO: remove "disabled" class when feature is released -->
-        <li
-          v-for="item in items"
-          :key="item"
-          class="disabled"
-          @click="emitItemAction(item.action)"
-        >
+        <li v-for="item in items" :key="item" @click="handleClick(item.action)">
           {{ item.text }}
         </li>
       </ul>
@@ -29,7 +23,7 @@ export default {
   },
 
   methods: {
-    emitItemAction(action) {
+    handleClick(action) {
       this.$emit(action);
       this.open = false;
     },
