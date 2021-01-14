@@ -1,7 +1,7 @@
 <template>
   <div class="position-relative">
     <button @click="open = !open" class="button mr-1">
-      <Icon name="threedots" size="25" class="v-align-text-bottom" />
+      <slot></slot>
     </button>
     <div class="sub-menu-wrapper anim-scale-in" :class="{ hidden: !open }">
       <ul class="sub-menu my-2">

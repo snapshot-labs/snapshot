@@ -23,7 +23,9 @@
                 class="float-right"
                 v-if="proposal.address === this.web3.account"
                 :items="[{ text: 'Delete proposal', action: 'delete' }]"
-              />
+              >
+                <Icon name="threedots" size="25" class="v-align-text-bottom" />
+              </UiDropdown>
             </div>
             <UiMarkdown :body="payload.body" class="mb-6" />
           </template>
