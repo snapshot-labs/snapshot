@@ -17,7 +17,17 @@
               {{ payload.name }}
               <span v-text="`#${id.slice(0, 7)}`" class="text-gray" />
             </h1>
-            <State :proposal="proposal" class="mb-4" />
+            <div class="mb-4">
+              <State :proposal="proposal" />
+              <UiDropdown
+                class="float-right"
+                v-if="space.key === 'dai' && proposal.address === this.web3.account"
+                @delete="deleteProposal"
+                :items="[{ text: 'Delete proposal', action: 'delete' }]"
+              >
+                <Icon name="threedots" size="25" class="v-align-text-bottom" />
+              </UiDropdown>
+            </div>
             <UiMarkdown :body="payload.body" class="mb-6" />
           </template>
           <PageLoading v-else />
@@ -228,7 +238,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['getProposal', 'getPower']),
+    ...mapActions(['getProposal', 'getPower', 'send']),
     async loadProposal() {
       const proposalObj = await this.getProposal({
         space: this.space,
@@ -247,6 +257,16 @@ export default {
       });
       this.totalScore = totalScore;
       this.scores = scores;
+    },
+    async deleteProposal() {
+      console.log(this.id, this.space.key);
+      await this.send({
+        space: this.space.key,
+        type: 'delete-proposal',
+        payload: {
+          proposal: this.id
+        }
+      });
     }
   },
   async created() {
