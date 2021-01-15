@@ -17,6 +17,7 @@ import { mapActions } from 'vuex';
 import Big from 'big.js';
 
 Big.PE = 99;
+const _100 = Big(100);
 
 export default {
   name: 'Quorum',
@@ -44,7 +45,6 @@ export default {
         return 0;
       }
 
-      const _100 = Big(100);
       const _quorum = Big(this.quorum / 100);
       const _b = _totalSupply.mul(_quorum);
       const _result = _amounts.div(_b).mul(_100);
@@ -53,9 +53,12 @@ export default {
     },
     maxValues() {
       const { decimals } = this.space.strategies[0].params;
-      const totalSupply = Number(this.totalSupply) / decimals;
+      const _decimals = Big(10 ** decimals);
+      const _totalSupply = Big(this.totalSupply).div(_decimals);
+      const _quorum = Big(this.quorum).div(_100);
+      const _value = _quorum.mul(_totalSupply);
 
-      return (this.quorum / 100) * totalSupply;
+      return Number(_value.round());
     },
     values() {
       return this.results.totalVotesBalances;
