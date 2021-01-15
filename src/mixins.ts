@@ -25,9 +25,6 @@ export default {
     }
   },
   methods: {
-    _get(object, path, fb) {
-      return get(object, path, fb);
-    },
     _ms(number) {
       const diff = number * 1e3 - new Date().getTime();
       return prettyMs(diff);
