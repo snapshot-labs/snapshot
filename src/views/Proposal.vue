@@ -21,7 +21,9 @@
               <State :proposal="proposal" />
               <UiDropdown
                 class="float-right"
-                v-if="space.key === 'dai' && proposal.address === this.web3.account"
+                v-if="
+                  space.key === 'dai' && proposal.address === this.web3.account
+                "
                 @delete="deleteProposal"
                 :items="[{ text: 'Delete proposal', action: 'delete' }]"
               >
@@ -165,7 +167,7 @@
           :payload="payload"
           :results="results"
         />
-        <PluginGnosisBlock
+        <PluginGnosisCustomBlock
           v-if="_get(payload, 'metadata.plugins.gnosis.baseTokenAddress')"
           :proposalConfig="payload.metadata.plugins.gnosis"
           :choices="payload.choices"
