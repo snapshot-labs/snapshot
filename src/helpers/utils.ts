@@ -175,7 +175,6 @@ export function filterProposals(space, proposal, tab) {
 
 export function infiniteScroll() {
   window.onscroll = () => {
-    console.log(window.screen.height);
     const bottomOfWindow =
       document.documentElement.scrollTop + window.innerHeight >=
       document.documentElement.offsetHeight - 100;
