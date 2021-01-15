@@ -3,7 +3,7 @@
     <div>
       <div class="text-white mb-1">
         <span class="mr-1 tooltipped tooltipped-n">
-          Quorum result
+          Quorum progress
         </span>
         <span class="float-right" v-text="Math.round(this.percents) + '%'" />
       </div>
