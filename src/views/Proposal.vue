@@ -168,7 +168,7 @@
           :results="results"
         />
         <PluginGnosisCustomBlock
-          v-if="payload.metadata.plugins?.gnosis.baseTokenAddress"
+          v-if="payload.metadata.plugins?.gnosis?.baseTokenAddress"
           :proposalConfig="payload.metadata.plugins.gnosis"
           :choices="payload.choices"
           :network="space.network"
