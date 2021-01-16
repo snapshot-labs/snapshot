@@ -1,6 +1,5 @@
 import { mapState } from 'vuex';
 import numeral from 'numeral';
-import get from 'lodash/get';
 import prettyMs from 'pretty-ms';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import domains from '@snapshot-labs/snapshot-spaces/spaces/domains.json';
