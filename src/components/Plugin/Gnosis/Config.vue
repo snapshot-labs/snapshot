@@ -5,7 +5,7 @@
       <UiButton @click="addAction" v-if="!input" class="width-full mb-2">
         Add market
       </UiButton>
-      <div v-else-if="!this.preview">
+      <div v-else-if="!preview">
         <UiButton class="width-full mb-2">
           <input
             v-model="input.conditionId"
@@ -35,11 +35,11 @@
         </UiButton>
       </div>
     </div>
-    <div v-if="this.preview">
-      <PluginGnosisBlock
+    <div v-if="preview">
+      <PluginGnosisCustomBlock
         :proposalConfig="input"
-        :choices="this.getChoices()"
-        :network="this.network"
+        :choices="getChoices()"
+        :network="network"
       />
     </div>
     <UiButton

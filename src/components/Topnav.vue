@@ -25,7 +25,7 @@
             </router-link>
             <router-link
               v-if="space"
-              :to="{ name: 'proposals' }"
+              :to="{ name: domain ? 'home' : 'proposals' }"
               class="d-inline-block d-flex flex-items-center"
               style="font-size: 24px; padding-top: 4px;"
             >
