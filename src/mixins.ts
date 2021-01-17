@@ -1,6 +1,5 @@
 import { mapState } from 'vuex';
 import numeral from 'numeral';
-import get from 'lodash/get';
 import prettyMs from 'pretty-ms';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import domains from '@snapshot-labs/snapshot-spaces/spaces/domains.json';
@@ -25,9 +24,6 @@ export default {
     }
   },
   methods: {
-    _get(object, path, fb) {
-      return get(object, path, fb);
-    },
     _ms(number) {
       const diff = number * 1e3 - new Date().getTime();
       return prettyMs(diff);
