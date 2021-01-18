@@ -20,8 +20,10 @@ rm -rf "$application"-artifact
 mkdir -p "$application"-artifact/build/
 
 docker build --build-arg REACT_APP_DEPLOY_ENV="stg" -t "tempimagebuild:$commit" .
-echo "Docker build status: $?"
-
+if [ $? -eq 1 ]
+then
+   exit 1
+fi
 docker create --name extractbuild "tempimagebuild:$commit"
 docker cp extractbuild:/usr/share/nginx/html/. $(pwd)/"$application"-artifact/build/
 docker rm extractbuild
