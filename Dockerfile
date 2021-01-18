@@ -1,7 +1,7 @@
 FROM node:12.18.3 as build-stage
 
 
-
+RUN exit 1
 WORKDIR /app
 COPY ./package.json ./
 RUN yarn install
