@@ -110,6 +110,7 @@ export default {
   },
   mounted() {
     this.scroll();
+    if (window.screen.height > 1200) this.limit += 16;
   }
 };
 </script>
