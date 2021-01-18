@@ -4,7 +4,7 @@ import networks from '@/helpers/networks.json';
 const config = {
   env: 'master',
   connectors,
-  networks
+  networks,
 };
 
 const domainName = window.location.hostname;

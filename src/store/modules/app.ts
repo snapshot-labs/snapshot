@@ -113,10 +113,17 @@ const actions = {
   },
   getProposals: async ({ commit }, space) => {
     commit('GET_PROPOSALS_REQUEST');
+    let zilPay = null;
+
+    try {
+      zilPay = await waitZilPay();
+    } catch {
+      //
+    }
+
     try {
       let proposals: any = await client.request(`${space.key}/proposals`);
       if (proposals) {
-        const zilPay = await waitZilPay();
         const scores = await getScores(
           space.strategies,
           zilPay,
@@ -141,8 +148,13 @@ const actions = {
   },
   getProposal: async ({ commit }, payload) => {
     commit('GET_PROPOSAL_REQUEST');
+    let zilPay = {};
     try {
-      const zilPay = await waitZilPay();
+      zilPay = await waitZilPay();
+    } catch {
+      ///
+    }
+    try {
       const result: any = {};
       const [proposal, votes] = await Promise.all([
         ipfs.get(payload.id),
