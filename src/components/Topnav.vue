@@ -25,7 +25,7 @@
             </router-link>
             <router-link
               v-if="space"
-              :to="{ name: 'proposals' }"
+              :to="{ name: domain ? 'home' : 'proposals' }"
               class="d-inline-block d-flex flex-items-center"
               style="font-size: 24px; padding-top: 4px;"
             >
@@ -34,25 +34,30 @@
             </router-link>
           </div>
           <div :key="web3.account">
-            <template v-if="$auth.isAuthenticated">
+            <template v-if="$auth.isAuthenticated.value">
               <UiButton
                 @click="modalOpen = true"
                 class="button-outline"
-                :loading="loading"
+                :loading="app.authLoading"
               >
                 <Avatar
+                  :profile="web3.profile"
                   :address="web3.account"
                   size="16"
                   class="mr-0 mr-sm-2 mr-md-2 mr-lg-2 mr-xl-2 ml-n1"
                 />
-                <span v-if="web3.name" v-text="web3.name" class="hide-sm" />
+                <span
+                  v-if="web3.profile?.name || web3.profile?.ens"
+                  v-text="web3.profile.name || web3.profile.ens"
+                  class="hide-sm"
+                />
                 <span v-else v-text="_shorten(web3.account)" class="hide-sm" />
               </UiButton>
             </template>
             <UiButton
-              v-if="!$auth.isAuthenticated"
+              v-if="!$auth.isAuthenticated.value"
               @click="modalOpen = true"
-              :loading="loading"
+              :loading="loading || app.authLoading"
             >
               <span class="hide-sm" v-text="'Connect wallet'" />
               <Icon
@@ -66,14 +71,16 @@
             </UiButton>
           </div>
         </div>
-        <ModalAccount
-          :open="modalOpen"
-          @close="modalOpen = false"
-          @login="handleLogin"
-        />
-        <ModalAbout :open="modalAboutOpen" @close="modalAboutOpen = false" />
       </Container>
     </nav>
+    <teleport to="#modal">
+      <ModalAccount
+        :open="modalOpen"
+        @close="modalOpen = false"
+        @login="handleLogin"
+      />
+      <ModalAbout :open="modalAboutOpen" @close="modalAboutOpen = false" />
+    </teleport>
   </Sticky>
 </template>
 

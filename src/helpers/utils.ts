@@ -15,6 +15,12 @@ export function jsonParse(input, fallback?) {
   }
 }
 
+export async function sleep(time) {
+  return new Promise(resolve => {
+    setTimeout(resolve, time);
+  });
+}
+
 export function clone(item) {
   return JSON.parse(JSON.stringify(item));
 }
@@ -63,6 +69,7 @@ export function formatProposals(proposals) {
 export function filterNetworks(networks, spaces, q) {
   return Object.entries(networks)
     .map((network: any) => {
+      network[1].key = network[0];
       network[1].spaces = Object.entries(spaces)
         .filter((space: any) => space[1].network === network[0])
         .map(space => space[0]);
@@ -70,6 +77,64 @@ export function filterNetworks(networks, spaces, q) {
     })
     .filter(network =>
       JSON.stringify(network)
+        .toLowerCase()
+        .includes(q.toLowerCase())
+    )
+    .sort((a, b) => b.spaces.length - a.spaces.length);
+}
+
+export function filterSkins(skins, spaces, q) {
+  return skins
+    .map(skin => ({
+      key: skin,
+      spaces: Object.entries(spaces)
+        .filter((space: any) => space[1].skin === skin)
+        .map(space => space[0])
+    }))
+    .filter(skin => skin.key.toLowerCase().includes(q.toLowerCase()))
+    .sort((a, b) => b.spaces.length - a.spaces.length);
+}
+
+export function getStrategy(strategy, spaces) {
+  strategy.spaces = Object.entries(spaces)
+    .filter(
+      (space: any) =>
+        space[1].strategies &&
+        space[1].strategies
+          .map(strategy => strategy.name)
+          .includes(strategy.key)
+    )
+    .map(space => space[0]);
+  return strategy;
+}
+
+export function filterStrategies(strategies, spaces, q = '') {
+  return Object.values(strategies)
+    .map((strategy: any) => getStrategy(strategy, spaces))
+    .filter(strategy =>
+      JSON.stringify(strategy)
+        .toLowerCase()
+        .includes(q.toLowerCase())
+    )
+    .sort((a, b) => b.spaces.length - a.spaces.length);
+}
+
+export function filterPlugins(plugins, spaces, q = '') {
+  return Object.entries(plugins)
+    .map(([key, pluginClass]: any) => {
+      const plugin = new pluginClass();
+      plugin.key = key;
+      plugin.spaces = Object.entries(spaces)
+        .filter(
+          (space: any) =>
+            space[1].plugins &&
+            Object.keys(space[1].plugins).includes(plugin.key)
+        )
+        .map(space => space[0]);
+      return plugin;
+    })
+    .filter(plugin =>
+      JSON.stringify(plugin)
         .toLowerCase()
         .includes(q.toLowerCase())
     )
@@ -88,13 +153,37 @@ export function formatSpace(key, space) {
   return space;
 }
 
-export function getInjected() {
-  const web3: any = window['ethereum'];
-  if (!web3) return;
-  let injected = { name: 'Injected', id: 'web3' };
-  if (web3.isMetaMask) injected = { name: 'MetaMask', id: 'metamask' };
-  if (web3.isTrust) injected = { name: 'Trust Wallet', id: 'trustwallet' };
-  if (web3.isStatus) injected = { name: 'Status', id: 'status' };
-  if (web3.isFrame) injected = { name: 'Frame', id: 'frame' };
-  return injected;
+export function filterProposals(space, proposal, tab) {
+  const ts = (Date.now() / 1e3).toFixed();
+  const members = space.members.map(address => address.toLowerCase());
+  const author = proposal[1].address.toLowerCase();
+  const isMember = members.includes(author);
+  const start = proposal[1].msg.payload.start;
+  const end = proposal[1].msg.payload.end;
+
+  if (!isMember && proposal[1].score < space.filters.minScore) return false;
+  if (space.filters.onlyMembers && !isMember) return false;
+  if (space.filters.invalids.includes(proposal[1].authorIpfsHash)) return false;
+
+  if (tab === 'all') return true;
+  if (tab === 'active' && start <= ts && end > ts) return true;
+  if (tab === 'core' && isMember) return true;
+  if (tab === 'community' && !isMember) return true;
+  if (tab === 'closed' && end <= ts) return true;
+  if (tab === 'pending' && start > ts) return true;
+
+  return false;
+}
+
+export function infiniteScroll() {
+  window.onscroll = () => {
+    const bottomOfWindow =
+      document.documentElement.scrollTop + window.innerHeight >=
+      document.documentElement.offsetHeight - 100;
+
+    if (bottomOfWindow) {
+      // @ts-ignore
+      this.limit += 16;
+    }
+  };
 }

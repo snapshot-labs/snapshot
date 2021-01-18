@@ -1,30 +1,36 @@
 <template>
   <UiModal :open="open" @close="$emit('close')">
-    <h3 class="m-4 text-center">Networks</h3>
-    <div class="px-4">
-      <BlockNetwork
+    <template v-slot:header>
+      <h3>Networks</h3>
+    </template>
+    <div class="mt-4 mx-0 mx-md-4">
+      <a
         v-for="network in networks"
         :key="network.key"
-        :network="network"
-      />
+        @click="select(network.key)"
+      >
+        <BlockNetwork :network="network" />
+      </a>
     </div>
   </UiModal>
 </template>
 
 <script>
-import networks from '@/helpers/networks.json';
+import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { filterNetworks } from '@/helpers/utils';
 
 export default {
-  props: ['open', 'strategies', 'space'],
-  data() {
-    return {
-      q: ''
-    };
-  },
+  props: ['open'],
+  emits: ['update:modelValue', 'close'],
   computed: {
     networks() {
-      return filterNetworks(networks, this.app.spaces, this.q);
+      return filterNetworks(networks, this.app.spaces, '');
+    }
+  },
+  methods: {
+    select(key) {
+      this.$emit('update:modelValue', key);
+      this.$emit('close');
     }
   }
 };

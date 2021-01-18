@@ -1,23 +1,30 @@
-import Vue from 'vue';
-import { getInstance } from '@snapshot-labs/lock/plugins/vue';
-import { getScores } from '@snapshot-labs/snapshot.js/src/utils';
+import { getProfiles } from '@/helpers/3box';
+import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
+import { ipfsGet, getScores } from '@snapshot-labs/snapshot.js/src/utils';
+import {
+  getBlockNumber,
+  signMessage
+} from '@snapshot-labs/snapshot.js/src/utils/web3';
+import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
+import gateways from '@snapshot-labs/snapshot.js/src/gateways.json';
 import client from '@/helpers/client';
-import ipfs from '@/helpers/ipfs';
-import getProvider from '@/helpers/provider';
 import { formatProposal, formatProposals, formatSpace } from '@/helpers/utils';
-import { getBlockNumber, signMessage } from '@/helpers/web3';
 import { version } from '@/../package.json';
+
+const gateway = process.env.VUE_APP_IPFS_GATEWAY || gateways[0];
 
 const state = {
   init: false,
   loading: false,
+  authLoading: false,
+  modalOpen: false,
   spaces: {}
 };
 
 const mutations = {
   SET(_state, payload) {
     Object.keys(payload).forEach(key => {
-      Vue.set(_state, key, payload[key]);
+      _state[key] = payload[key];
     });
   },
   SEND_REQUEST() {
@@ -60,14 +67,19 @@ const mutations = {
 
 const actions = {
   init: async ({ commit, dispatch }) => {
+    const auth = getInstance();
     commit('SET', { loading: true });
-    const connector = await Vue.prototype.$auth.getConnector();
-    if (connector) await dispatch('login', connector);
     await dispatch('getSpaces');
+    auth.getConnector().then(connector => {
+      if (connector) dispatch('login', connector);
+    });
     commit('SET', { loading: false, init: true });
   },
   loading: ({ commit }, payload) => {
     commit('SET', { loading: payload });
+  },
+  toggleModal: ({ commit }) => {
+    commit('SET', { modalOpen: !state.modalOpen });
   },
   getSpaces: async ({ commit }) => {
     let spaces: any = await client.request('spaces');
@@ -80,7 +92,7 @@ const actions = {
     commit('SET', { spaces });
     return spaces;
   },
-  send: async ({ commit, dispatch, rootState }, { token, type, payload }) => {
+  send: async ({ commit, dispatch, rootState }, { space, type, payload }) => {
     const auth = getInstance();
     commit('SEND_REQUEST');
     try {
@@ -89,7 +101,7 @@ const actions = {
         msg: JSON.stringify({
           version,
           timestamp: (Date.now() / 1e3).toFixed(),
-          token,
+          space,
           type,
           payload
         })
@@ -115,15 +127,17 @@ const actions = {
       let proposals: any = await client.request(`${space.key}/proposals`);
       if (proposals) {
         const scores: any = await getScores(
+          space.key,
           space.strategies,
           space.network,
           getProvider(space.network),
           Object.values(proposals).map((proposal: any) => proposal.address)
         );
+        console.log('Scores', scores);
         proposals = Object.fromEntries(
           Object.entries(proposals).map((proposal: any) => {
             proposal[1].score = scores.reduce(
-              (a, b) => a + b[proposal[1].address],
+              (a, b) => a + (b[proposal[1].address] || 0),
               0
             );
             return [proposal[0], proposal[1]];
@@ -136,35 +150,52 @@ const actions = {
       commit('GET_PROPOSALS_FAILURE', e);
     }
   },
-  getProposal: async ({ commit }, payload) => {
+  getProposal: async ({ commit }, { space, id }) => {
     commit('GET_PROPOSAL_REQUEST');
     try {
-      const blockNumber = await getBlockNumber(
-        getProvider(payload.space.network)
-      );
-      const result: any = {};
-      const [proposal, votes] = await Promise.all([
-        ipfs.get(payload.id),
-        client.request(`${payload.space.key}/proposal/${payload.id}`)
+      const provider = getProvider(space.network);
+      console.time('getProposal.data');
+      const response = await Promise.all([
+        ipfsGet(gateway, id),
+        client.request(`${space.key}/proposal/${id}`),
+        getBlockNumber(provider)
       ]);
-      result.proposal = formatProposal(proposal);
-      result.proposal.ipfsHash = payload.id;
-      result.votes = votes;
-      const { snapshot } = result.proposal.msg.payload;
+      console.timeEnd('getProposal.data');
+      const [, , blockNumber] = response;
+      let [proposal, votes]: any = response;
+      proposal = formatProposal(proposal);
+      proposal.ipfsHash = id;
+      const voters = Object.keys(votes);
+      const { snapshot } = proposal.msg.payload;
       const blockTag = snapshot > blockNumber ? 'latest' : parseInt(snapshot);
-      const scores: any = await getScores(
-        payload.space.strategies,
-        payload.space.network,
-        getProvider(payload.space.network),
-        Object.keys(result.votes),
-        // @ts-ignore
-        blockTag
-      );
+
+      /* Get scores */
+      console.time('getProposal.scores');
+      const [scores, profiles]: any = await Promise.all([
+        getScores(
+          space.key,
+          space.strategies,
+          space.network,
+          provider,
+          voters,
+          // @ts-ignore
+          blockTag
+        ),
+        getProfiles([proposal.address, ...voters])
+      ]);
+      console.timeEnd('getProposal.scores');
       console.log('Scores', scores);
-      result.votes = Object.fromEntries(
-        Object.entries(result.votes)
+
+      const authorProfile = profiles[proposal.address];
+      voters.forEach(address => {
+        votes[address].profile = profiles[address];
+      });
+      proposal.profile = authorProfile;
+
+      votes = Object.fromEntries(
+        Object.entries(votes)
           .map((vote: any) => {
-            vote[1].scores = payload.space.strategies.map(
+            vote[1].scores = space.strategies.map(
               (strategy, i) => scores[i][vote[1].address] || 0
             );
             vote[1].balance = vote[1].scores.reduce((a, b: any) => a + b, 0);
@@ -173,32 +204,35 @@ const actions = {
           .sort((a, b) => b[1].balance - a[1].balance)
           .filter(vote => vote[1].balance > 0)
       );
-      result.results = {
-        totalVotes: result.proposal.msg.payload.choices.map(
+
+      /* Get results */
+      const results = {
+        totalVotes: proposal.msg.payload.choices.map(
           (choice, i) =>
-            Object.values(result.votes).filter(
+            Object.values(votes).filter(
               (vote: any) => vote.msg.payload.choice === i + 1
             ).length
         ),
-        totalBalances: result.proposal.msg.payload.choices.map((choice, i) =>
-          Object.values(result.votes)
+        totalBalances: proposal.msg.payload.choices.map((choice, i) =>
+          Object.values(votes)
             .filter((vote: any) => vote.msg.payload.choice === i + 1)
             .reduce((a, b: any) => a + b.balance, 0)
         ),
-        totalScores: result.proposal.msg.payload.choices.map((choice, i) =>
-          payload.space.strategies.map((strategy, sI) =>
-            Object.values(result.votes)
+        totalScores: proposal.msg.payload.choices.map((choice, i) =>
+          space.strategies.map((strategy, sI) =>
+            Object.values(votes)
               .filter((vote: any) => vote.msg.payload.choice === i + 1)
               .reduce((a, b: any) => a + b.scores[sI], 0)
           )
         ),
-        totalVotesBalances: Object.values(result.votes).reduce(
+        totalVotesBalances: Object.values(votes).reduce(
           (a, b: any) => a + b.balance,
           0
         )
       };
+
       commit('GET_PROPOSAL_SUCCESS');
-      return result;
+      return { proposal, votes, results };
     } catch (e) {
       commit('GET_PROPOSAL_FAILURE', e);
     }
@@ -209,6 +243,7 @@ const actions = {
       const blockNumber = await getBlockNumber(getProvider(space.network));
       const blockTag = snapshot > blockNumber ? 'latest' : parseInt(snapshot);
       let scores: any = await getScores(
+        space.key,
         space.strategies,
         space.network,
         getProvider(space.network),

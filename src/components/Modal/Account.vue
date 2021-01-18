@@ -1,7 +1,10 @@
 <template>
   <UiModal :open="open" @close="$emit('close')">
+    <template v-slot:header>
+      <h3 v-if="!web3.account || step === 'connect'">Connect wallet</h3>
+      <h3 v-else>Account</h3>
+    </template>
     <div v-if="!web3.account || step === 'connect'">
-      <h3 class="m-4 mb-0 text-center">Connect wallet</h3>
       <div class="m-4 mb-5">
         <a
           v-for="(connector, id, i) in config.connectors"
@@ -38,17 +41,44 @@
       </div>
     </div>
     <div v-else>
-      <h3 class="m-4 mb-0 text-center">Account</h3>
-      <div v-if="$auth.isAuthenticated" class="m-4">
+      <div v-if="$auth.isAuthenticated.value" class="m-4">
         <a
-          :href="_explorer(web3.network.chainId, web3.account)"
+          :href="_explorer(web3.network.key, web3.account)"
           target="_blank"
           class="mb-2 d-block"
         >
           <UiButton class="button-outline width-full">
-            <Avatar :address="web3.account" size="16" class="mr-2 ml-n1" />
-            <span v-if="web3.name" v-text="web3.name" />
+            <Avatar
+              :profile="web3.profile"
+              :address="web3.account"
+              size="16"
+              class="mr-2 ml-n1"
+            />
+            <span v-if="web3.profile.name" v-text="web3.profile.name" />
+            <span v-else-if="web3.profile.ens" v-text="web3.profile.ens" />
             <span v-else v-text="_shorten(web3.account)" />
+            <Icon name="external-link" class="ml-1" />
+          </UiButton>
+        </a>
+        <a
+          v-if="web3.profile?.name || web3.profile?.image"
+          :href="`https://3box.io/${web3.account}/edit`"
+          target="_blank"
+          class="mb-2 d-block"
+        >
+          <UiButton class="button-outline width-full">
+            Edit profile on 3Box
+            <Icon name="external-link" class="ml-1" />
+          </UiButton>
+        </a>
+        <a
+          v-else
+          href="https://3box.io/hub"
+          target="_blank"
+          class="mb-2 d-block"
+        >
+          <UiButton class="button-outline width-full">
+            Create profile on 3Box
             <Icon name="external-link" class="ml-1" />
           </UiButton>
         </a>
@@ -71,10 +101,11 @@
 
 <script>
 import { mapActions } from 'vuex';
-import { getInjected } from '@/helpers/utils';
+import { getInjected } from '@snapshot-labs/lock/src/utils';
 
 export default {
   props: ['open'],
+  emits: ['login', 'close'],
   data() {
     return {
       step: null,

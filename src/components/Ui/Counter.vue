@@ -13,7 +13,6 @@ export default {
 <style scoped lang="scss">
 .Counter {
   display: inline-block;
-  font-weight: 500;
   line-height: 18px;
   height: 20px;
   min-width: 20px;

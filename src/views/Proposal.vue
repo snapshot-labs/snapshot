@@ -17,7 +17,19 @@
               {{ payload.name }}
               <span v-text="`#${id.slice(0, 7)}`" class="text-gray" />
             </h1>
-            <State :proposal="proposal" class="mb-4" />
+            <div class="mb-4">
+              <State :proposal="proposal" />
+              <UiDropdown
+                class="float-right"
+                v-if="
+                  space.key === 'dai' && proposal.address === this.web3.account
+                "
+                @delete="deleteProposal"
+                :items="[{ text: 'Delete proposal', action: 'delete' }]"
+              >
+                <Icon name="threedots" size="25" class="v-align-text-bottom" />
+              </UiDropdown>
+            </div>
             <UiMarkdown :body="payload.body" class="mb-6" />
           </template>
           <PageLoading v-else />
@@ -35,17 +47,20 @@
               class="d-block width-full mb-2"
               :class="selectedChoice === i + 1 && 'button--active'"
             >
-              {{ choice }}
+              {{ _shorten(choice, 32) }}
               <a
-                v-if="_get(payload, `metadata.plugins.aragon.choice${i + 1}`)"
+                v-if="payload.metadata.plugins?.aragon?.choice?.[i + 1]"
                 @click="modalOpen = true"
                 :aria-label="
                   `Target address: ${
                     payload.metadata.plugins.aragon[`choice${i + 1}`].actions[0]
-                      .targetAddress
-                  }\nCalldata: ${
+                      .to
+                  }\nValue: ${
                     payload.metadata.plugins.aragon[`choice${i + 1}`].actions[0]
-                      .calldata
+                      .value
+                  }\nData: ${
+                    payload.metadata.plugins.aragon[`choice${i + 1}`].actions[0]
+                      .data
                   }`
                 "
                 class="tooltipped tooltipped-n break-word"
@@ -72,27 +87,28 @@
       </div>
       <div v-if="loaded" class="col-12 col-lg-4 float-left">
         <Block title="Information">
-          <div class="mb-1 overflow-hidden">
-            <b>Token(s)</b>
-            <a
+          <div class="mb-1">
+            <b>Strategie(s)</b>
+            <span
               @click="modalStrategiesOpen = true"
-              class="float-right text-white"
+              class="float-right text-white a"
             >
               <span v-for="(symbol, symbolIndex) of symbols" :key="symbol">
-                <Token :space="space.key" :symbolIndex="symbolIndex" />
-                {{ symbol }}
+                <span :aria-label="symbol" class="tooltipped tooltipped-n">
+                  <Token :space="space.key" :symbolIndex="symbolIndex" />
+                </span>
                 <span
                   v-show="symbolIndex !== symbols.length - 1"
-                  v-text="'+'"
-                  class="mr-1"
+                  class="ml-1"
                 />
               </span>
-            </a>
+            </span>
           </div>
           <div class="mb-1">
             <b>Author</b>
             <User
               :address="proposal.address"
+              :profile="proposal.profile"
               :space="space"
               class="float-right"
             />
@@ -132,7 +148,7 @@
                 target="_blank"
                 class="float-right"
               >
-                {{ $n(payload.snapshot) }}
+                {{ payload.snapshot }}
                 <Icon name="external-link" class="ml-1" />
               </a>
             </div>
@@ -145,27 +161,41 @@
           :results="results"
           :votes="votes"
         />
+        <BlockActions
+          :id="id"
+          :space="space"
+          :payload="payload"
+          :results="results"
+        />
+        <PluginGnosisCustomBlock
+          v-if="payload.metadata.plugins?.gnosis?.baseTokenAddress"
+          :proposalConfig="payload.metadata.plugins.gnosis"
+          :choices="payload.choices"
+          :network="space.network"
+        />
       </div>
     </div>
-    <ModalConfirm
-      v-if="loaded"
-      :open="modalOpen"
-      @close="modalOpen = false"
-      @reload="loadProposal"
-      :space="space"
-      :proposal="proposal"
-      :id="id"
-      :selectedChoice="selectedChoice"
-      :totalScore="totalScore"
-      :scores="scores"
-      :snapshot="payload.snapshot"
-    />
-    <ModalStrategies
-      :open="modalStrategiesOpen"
-      @close="modalStrategiesOpen = false"
-      :space="space"
-      :strategies="space.strategies"
-    />
+    <teleport to="#modal">
+      <ModalConfirm
+        v-if="loaded"
+        :open="modalOpen"
+        @close="modalOpen = false"
+        @reload="loadProposal"
+        :space="space"
+        :proposal="proposal"
+        :id="id"
+        :selectedChoice="selectedChoice"
+        :totalScore="totalScore"
+        :scores="scores"
+        :snapshot="payload.snapshot"
+      />
+      <ModalStrategies
+        :open="modalStrategiesOpen"
+        @close="modalStrategiesOpen = false"
+        :space="space"
+        :strategies="space.strategies"
+      />
+    </teleport>
   </Container>
 </template>
 
@@ -206,11 +236,11 @@ export default {
   },
   watch: {
     'web3.account': async function(val, prev) {
-      if (val && val.toLowerCase() !== prev) await this.loadPower();
+      if (val?.toLowerCase() !== prev) await this.loadPower();
     }
   },
   methods: {
-    ...mapActions(['getProposal', 'getPower']),
+    ...mapActions(['getProposal', 'getPower', 'send']),
     async loadProposal() {
       const proposalObj = await this.getProposal({
         space: this.space,
@@ -221,7 +251,7 @@ export default {
       this.results = proposalObj.results;
     },
     async loadPower() {
-      if (!this.web3.account) return;
+      if (!this.web3.account || !this.proposal.address) return;
       const { scores, totalScore } = await this.getPower({
         space: this.space,
         address: this.web3.account,
@@ -229,6 +259,16 @@ export default {
       });
       this.totalScore = totalScore;
       this.scores = scores;
+    },
+    async deleteProposal() {
+      console.log(this.id, this.space.key);
+      await this.send({
+        space: this.space.key,
+        type: 'delete-proposal',
+        payload: {
+          proposal: this.id
+        }
+      });
     }
   },
   async created() {

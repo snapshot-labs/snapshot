@@ -8,25 +8,38 @@
           </UiButton>
         </div>
         <div class="ml-3 text-right hide-sm">
-          <span class="mr-3">
-            {{ _numeral(spaces.length) }} space{{ spaces.length === 1 ? '' : 's' }}
-          </span>
-          <a href="https://discord.snapshot.page" target="_blank" class="hide-md ml-3">
+          {{ _numeral(spaces.length) }} space{{ spaces.length === 1 ? '' : 's' }}
+          <router-link :to="{ name: 'setup' }" class="hide-md ml-3">
             <UiButton>Create space</UiButton>
-          </a>
+          </router-link>
         </div>
       </Container>
     </div>
     <Container :slim="true">
-      <div v-infinite-scroll="loadMore" infinite-scroll-distance="0" class="overflow-hidden mr-n4">
+      <div class="overflow-hidden mr-n4">
         <router-link
           v-for="space in spaces.slice(0, limit)"
           :key="space.key"
           :to="{ name: 'proposals', params: { key: space.key } }"
         >
           <div class="col-12 col-lg-3 pr-4 float-left">
-            <Block class="text-center extra-icon-container block-container">
-              <Token :space="space.key" symbolIndex="space" size="98" class="my-3" />
+            <Block
+              class="text-center extra-icon-container"
+              style="height: 250px; margin-bottom: 24px !important;"
+            >
+              <span class="position-relative d-inline-block">
+                <UiCounter
+                  v-if="space._activeProposals"
+                  :counter="space._activeProposals"
+                  class="position-absolute top-4 right-0 bg-green"
+                />
+                <Token
+                  :space="space.key"
+                  symbolIndex="space"
+                  size="98"
+                  class="my-3"
+                />
+              </span>
               <StatefulIcon
                 :on="space.favorite"
                 onName="star"
@@ -56,11 +69,12 @@
 import { mapActions } from 'vuex';
 import orderBy from 'lodash/orderBy';
 import spotlight from '@snapshot-labs/snapshot-spaces/spaces/spotlight.json';
+import { infiniteScroll } from '@/helpers/utils';
 
 export default {
   data() {
     return {
-      q: '',
+      q: this.$route.query.q || '',
       limit: 16
     };
   },
@@ -71,6 +85,7 @@ export default {
         return {
           ...this.app.spaces[key],
           favorite: !!this.favoriteSpaces.favorites[key],
+          isActive: !!this.app.spaces[key]._activeProposals,
           spotlight: spotlightIndex === -1 ? 1e3 : spotlightIndex
         };
       });
@@ -95,12 +110,14 @@ export default {
         this.addFavoriteSpace(spaceId);
       }
     },
-    loadMore() {
-      this.limit += 16;
-    }
+    scroll: infiniteScroll
   },
   created() {
     this.loadFavoriteSpaces();
+  },
+  mounted() {
+    this.scroll();
+    if (window.screen.height > 1200) this.limit += 16;
   }
 };
 </script>

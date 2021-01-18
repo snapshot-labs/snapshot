@@ -1,5 +1,5 @@
 <template>
-  <span class="State" :class="state.class" v-text="state.name" />
+  <span :class="state.class" v-text="state.name" class="State text-normal" />
 </template>
 
 <script>

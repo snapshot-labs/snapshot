@@ -26,6 +26,7 @@
 
 <script>
 export default {
-  props: ['title', 'counter', 'slim', 'icon']
+  props: ['title', 'counter', 'slim', 'icon'],
+  emits: ['submit']
 };
 </script>
