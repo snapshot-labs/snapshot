@@ -23,12 +23,11 @@
     <Container :slim="true">
       <div class="overflow-hidden">
         <template v-if="route === 'strategies'">
-          <BlockStrategy
-            v-for="item in items.slice(0, limit)"
-            :key="item.key"
-            :strategy="item"
-            class="mb-3"
-          />
+          <template v-for="item in items.slice(0, limit)" :key="item.key">
+            <router-link :to="`/strategy/${item.key}`">
+              <BlockStrategy :strategy="item" class="mb-3" />
+            </router-link>
+          </template>
         </template>
         <template v-if="route === 'skins'">
           <BlockSkin

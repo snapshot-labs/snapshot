@@ -58,11 +58,6 @@ import strategies from '@/helpers/strategies';
 import { getStrategy } from '@/helpers/utils';
 
 export default {
-  data() {
-    return {
-      name: this.$route.params.name
-    };
-  },
   computed: {
     strategy() {
       return getStrategy(strategies[this.$route.params.name], this.app.spaces);
