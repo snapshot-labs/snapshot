@@ -10,6 +10,13 @@ export const _strategies = {
 
       const balances = await Promise.all(
         addresses.map(async address => {
+          if (!provider) {
+            return [
+              address,
+              Number(0)
+            ];
+          }
+
           address = provider.crypto.normaliseAddress(address);
           address = String(address).toLowerCase();
 

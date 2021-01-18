@@ -99,14 +99,18 @@ export default {
 
       if (this.totalProposals === 0) return {};
 
-      return Object.fromEntries(
+      const proposals = Object.fromEntries(
         Object.entries(this.proposals)
           .filter(proposal => {
-            const core = this.space.members.map(address =>
-              String(
-                window['zilPay'].crypto.fromBech32Address(address)
-              ).toLowerCase()
-            );
+            const core = this.space.members.map(address => {
+              try {
+                return String(
+                  window['zilPay'].crypto.fromBech32Address(address)
+                ).toLowerCase()
+              } catch {
+                return address;
+              }
+            });
             const author = String(proposal[1].address).toLowerCase();
 
             if (
@@ -139,13 +143,18 @@ export default {
           })
           .sort((a, b) => b[1].msg.payload.end - a[1].msg.payload.end, 0)
           .map(proposal => {
-            proposal[1].address = window['zilPay'].crypto.toBech32Address(
-              proposal[1].address
-            );
+            try {
+              proposal[1].address = window['zilPay'].crypto.toBech32Address(
+                proposal[1].address
+              );
+            } catch {
+              //
+            }
 
             return proposal;
           })
       );
+      return proposals;
     }
   },
   methods: {
