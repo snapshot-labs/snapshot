@@ -10,11 +10,15 @@ export default {
   props: ['address', 'space'],
   computed: {
     isCore() {
-      const { toBech32Address } = window.zilPay.crypto;
+      try {
+        const { toBech32Address } = window.zilPay.crypto;
 
-      return this.space && this.space.members
-        ? this.space.members.includes(toBech32Address(this.address))
-        : false;
+        return this.space && this.space.members
+          ? this.space.members.includes(toBech32Address(this.address))
+          : false;
+      } catch {
+        return false;
+      }
     },
     isVerified() {
       return false;

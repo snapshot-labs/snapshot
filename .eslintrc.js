@@ -14,13 +14,12 @@ module.exports = {
     ecmaVersion: 2020
   },
   rules: {
-    'no-console': 'off',
-    'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
-    '@typescript-eslint/no-explicit-any': 'off',
-    '@typescript-eslint/ban-ts-ignore': 'off',
-    '@typescript-eslint/camelcase': 'off',
-    '@typescript-eslint/no-undef': 'off',
-    '@typescript-eslint/no-var-requires': 'off',
-    "@typescript-eslint/ban-ts-ignore": "on"
+    'no-console': 0,
+    'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0,
+    '@typescript-eslint/no-explicit-any': 0,
+    '@typescript-eslint/camelcase': 0,
+    '@typescript-eslint/no-undef': 0,
+    '@typescript-eslint/no-var-requires': 0,
+    '@typescript-eslint/ban-ts-ignore': 1,
   }
 };
