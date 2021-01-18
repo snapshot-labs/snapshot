@@ -49,7 +49,7 @@
             >
               {{ _shorten(choice, 32) }}
               <a
-                v-if="_get(payload, `metadata.plugins.aragon.choice${i + 1}`)"
+                v-if="payload.metadata.plugins?.aragon?.choice?.[i + 1]"
                 @click="modalOpen = true"
                 :aria-label="
                   `Target address: ${
@@ -168,7 +168,7 @@
           :results="results"
         />
         <PluginGnosisCustomBlock
-          v-if="_get(payload, 'metadata.plugins.gnosis.baseTokenAddress')"
+          v-if="payload.metadata.plugins?.gnosis?.baseTokenAddress"
           :proposalConfig="payload.metadata.plugins.gnosis"
           :choices="payload.choices"
           :network="space.network"

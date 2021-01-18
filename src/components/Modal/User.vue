@@ -2,7 +2,7 @@
   <UiModal :open="open" @close="$emit('close')">
     <div class="m-4 mb-0 text-center">
       <Avatar :profile="profile" :address="address" size="64" class="mb-4" />
-      <h3 v-if="profile && profile.name" class="mt-3" v-text="profile.name" />
+      <h3 v-if="profile?.name" class="mt-3" v-text="profile.name" />
       <h3 v-else-if="profile.ens" v-text="profile.ens" class="mt-3" />
       <h3 v-else v-text="_shorten(address)" class="mt-3" />
     </div>
@@ -18,7 +18,7 @@
         </UiButton>
       </a>
       <a
-        v-if="profile && (profile.name || profile.image)"
+        v-if="profile?.name || profile?.image"
         :href="`https://3box.io/${address}`"
         target="_blank"
         class="mb-2 d-block"

@@ -8,6 +8,7 @@ import Create from '@/views/Create.vue';
 import Setup from '@/views/Setup.vue';
 import Settings from '@/views/Settings.vue';
 import Explore from '@/views/Explore.vue';
+import Strategy from '@/views/Strategy.vue';
 import Delegate from '@/views/Delegate.vue';
 import Timeline from '@/views/Timeline.vue';
 
@@ -30,6 +31,11 @@ const routes: any[] = [
   { path: '/skins', name: 'skins', component: Explore },
   { path: '/delegate', name: 'delegate', component: Delegate },
   { path: '/timeline', name: 'timeline', component: Timeline },
+  {
+    path: '/strategy/:name',
+    name: 'strategy',
+    component: Strategy
+  },
   {
     path: '/:key/proposal/:id',
     name: 'proposal',

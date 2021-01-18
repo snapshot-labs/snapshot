@@ -95,20 +95,22 @@ export function filterSkins(skins, spaces, q) {
     .sort((a, b) => b.spaces.length - a.spaces.length);
 }
 
+export function getStrategy(strategy, spaces) {
+  strategy.spaces = Object.entries(spaces)
+    .filter(
+      (space: any) =>
+        space[1].strategies &&
+        space[1].strategies
+          .map(strategy => strategy.name)
+          .includes(strategy.key)
+    )
+    .map(space => space[0]);
+  return strategy;
+}
+
 export function filterStrategies(strategies, spaces, q = '') {
   return Object.values(strategies)
-    .map((strategy: any) => {
-      strategy.spaces = Object.entries(spaces)
-        .filter(
-          (space: any) =>
-            space[1].strategies &&
-            space[1].strategies
-              .map(strategy => strategy.name)
-              .includes(strategy.key)
-        )
-        .map(space => space[0]);
-      return strategy;
-    })
+    .map((strategy: any) => getStrategy(strategy, spaces))
     .filter(strategy =>
       JSON.stringify(strategy)
         .toLowerCase()
