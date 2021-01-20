@@ -30,7 +30,7 @@
             </Block>
           </div>
         </div>
-        <StickySidebar floatSide="right">
+        <StickySidebar>
           <Block title="Menu" />
         </StickySidebar>
       </div>
