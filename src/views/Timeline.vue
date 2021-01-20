@@ -2,10 +2,7 @@
   <div>
     <Container :slim="true">
       <div>
-        <StickySidebar>
-          <Block title="Menu" />
-        </StickySidebar>
-        <div class="col-12 col-lg-9 float-left pl-0 pl-lg-5">
+        <div class="col-12 col-lg-9 float-left pl-0 pr-lg-5">
           <div class="px-4 px-md-0 mb-3 d-flex">
             <div class="flex-auto">
               <router-link :to="{ name: 'home' }" class="text-gray">
@@ -33,6 +30,9 @@
             </Block>
           </div>
         </div>
+        <StickySidebar floatSide="right">
+          <Block title="Menu" />
+        </StickySidebar>
       </div>
     </Container>
   </div>
