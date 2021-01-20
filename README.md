@@ -24,6 +24,9 @@ npm run build
 npm run lint
 ```
 
+## Snapshot Spaces Commit
+https://github.com/Zilliqa/snapshot-spaces/commit/238e87aad231351a51727b06208ab407f0de1dcc
+
 ## License
 
 [MIT](LICENSE).
