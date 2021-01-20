@@ -2,9 +2,9 @@
   <div>
     <Container :slim="true">
       <div>
-        <div class="col-12 col-lg-3 float-left hide-sm hide-md hide-lg">
+        <StickySidebar>
           <Block title="Menu" />
-        </div>
+        </StickySidebar>
         <div class="col-12 col-lg-9 float-left pl-0 pl-lg-5">
           <div class="px-4 px-md-0 mb-3 d-flex">
             <div class="flex-auto">
