@@ -13,12 +13,12 @@
     <div>
       <span v-text="`#${i.slice(0, 7)}`" />
       By {{ _shorten(proposal.address) }}
-      <Badges :address="proposal.address" :space="space" class="ml-n1" />
+      <Badges :address="proposal.address" :space="space" />
       <span
-        class="ml-1"
+        v-if="proposal.score"
         v-text="`${_numeral(proposal.score)} ${space.symbol}`"
+        class="ml-1"
       />
-      <Icon v-if="isVerified" name="check" title="Verified" />
       start
       <span v-text="$d(proposal.msg.payload.start * 1e3)" />
       end

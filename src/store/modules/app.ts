@@ -125,7 +125,7 @@ const actions = {
     commit('GET_PROPOSALS_REQUEST');
     try {
       let proposals: any = await client.request(`${space.key}/proposals`);
-      if (proposals) {
+      if (proposals && !space.filters?.onlyMembers) {
         const scores: any = await getScores(
           space.key,
           space.strategies,
