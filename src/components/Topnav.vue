@@ -1,5 +1,5 @@
 <template>
-  <Sticky class="mb-4">
+  <Sticky name="topnav" class="mb-4">
     <div
       v-if="config.env === 'develop'"
       class="p-3 text-center bg-blue"

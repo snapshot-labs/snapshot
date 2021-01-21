@@ -1,44 +1,39 @@
 <template>
-  <div>
-    <div v-if="isFixed" :style="`height: ${offsetHeight}px;`" />
+  <div :id="`${name}outer`" :style="{ height: style.height + 'px' }">
     <div
-      style="z-index: 20;"
-      id="sticky"
-      :class="{ 'position-fixed width-full top-0': isFixed }"
+      :id="`${name}inner`"
+      :style="{ width: style.width + 'px' }"
+      class="position-fixed"
     >
-      <slot />
+      <slot></slot>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  props: ['isSticky'],
+  props: ['name'],
   data() {
     return {
-      isFixed: false,
-      offsetTop: -1,
-      offsetHeight: 0
+      style: {
+        width: '',
+        height: '',
+        'z-index': 20
+      }
     };
   },
-  mounted() {
-    if (this.isSticky === false) return;
-    window.addEventListener('scroll', this.onScroll);
-    const el = document.getElementById('sticky');
-    if (el) {
-      this.offsetTop = el.offsetTop;
-      this.offsetHeight = el.offsetHeight;
-    }
+  created() {
+    window.addEventListener('resize', this.getDimensions);
   },
-  beforeUnmount() {
-    if (this.isSticky === false) return;
-    window.removeEventListener('scroll', this.onScroll);
+  mounted() {
+    this.getDimensions();
   },
   methods: {
-    onScroll(e) {
-      if (this.isSticky === false) return;
-      const windowTop = e.target.documentElement.scrollTop;
-      this.isFixed = windowTop >= this.offsetTop;
+    getDimensions() {
+      const elOuter = document.getElementById(`${this.name}outer`);
+      this.style.width = elOuter.clientWidth;
+      const elInner = document.getElementById(`${this.name}inner`);
+      this.style.height = elInner.clientHeight - 1;
     }
   }
 };

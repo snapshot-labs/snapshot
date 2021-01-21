@@ -32,19 +32,22 @@
       </div>
     </Container>
     <Container :slim="true">
-      <Block :slim="true">
-        <div
-          class="px-4 py-3 bg-gray-dark overflow-auto menu-tabs rounded-top-0 rounded-md-top-2"
-        >
-          <router-link
-            v-for="state in states"
-            :key="state"
-            v-text="state"
-            :to="`/${key}/${state}`"
-            :class="tab === state && 'text-white'"
-            class="mr-3 text-gray tab"
-          />
-        </div>
+      <Block :slim="true" style="max-height: 68vh; overflow: scroll">
+        <Sticky name="proposal">
+          <div
+            class="px-4 py-3 bg-gray-dark overflow-auto menu-tabs rounded-top-0 rounded-md-top-2 border-bottom"
+          >
+            <router-link
+              v-for="state in states"
+              :key="state"
+              v-text="state"
+              :to="`/${key}/${state}`"
+              :class="tab === state && 'text-white'"
+              class="mr-3 text-gray tab"
+            />
+          </div>
+        </Sticky>
+
         <RowLoading v-if="loading" class="border-top" />
         <div v-if="loaded">
           <RowProposal
