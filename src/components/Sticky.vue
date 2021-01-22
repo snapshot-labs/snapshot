@@ -2,8 +2,8 @@
   <div :id="`${name}outer`" :style="{ height: style.height + 'px' }">
     <div
       :id="`${name}inner`"
-      :style="{ width: style.width + 'px' }"
-      class="position-fixed"
+      :style="{ width: style.width + 'px', 'z-index': 20 }"
+      :class="classInner"
     >
       <slot></slot>
     </div>
@@ -12,13 +12,12 @@
 
 <script>
 export default {
-  props: ['name'],
+  props: ['name', 'isFixed'],
   data() {
     return {
       style: {
         width: '',
-        height: '',
-        'z-index': 20
+        height: ''
       }
     };
   },
@@ -27,6 +26,14 @@ export default {
   },
   mounted() {
     this.getDimensions();
+  },
+  computed: {
+    classInner() {
+      return {
+        'position-absolute': !this.isFixed,
+        'position-fixed': this.isFixed
+      };
+    }
   },
   methods: {
     getDimensions() {

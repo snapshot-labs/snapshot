@@ -3,19 +3,8 @@
     <Container :slim="true">
       <div>
         <div class="col-lg-3 float-left hide-sm hide-md hide-lg">
-          <Sticky name="sidebar">
+          <Sticky name="sidebar" :isFixed="true">
             <Block title="Menu" style="max-height: 84vh; overflow: scroll;">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
-              Blanditiis iusto, distinctio nulla, repellendus ut neque aperiam
-              debitis tempora pariatur at inventore, atque non eius? Odio ad
-              repellat tenetur aliquam atque? Lorem ipsum dolor sit, amet
-              consectetur adipisicing elit. Dolorum laborum sequi dicta, nam in
-              sed possimus sapiente impedit pariatur doloribus aliquam, velit,
-              veniam iure corporis facere? Debitis repellat molestiae
-              laudantium? Lorem ipsum dolor sit amet consectetur adipisicing
-              elit. Saepe animi corporis corrupti amet vel reprehenderit fuga,
-              quaerat quos at dolore ut dolores? Porro necessitatibus fugiat
-              ipsa perferendis, sequi atque esse!
             </Block>
           </Sticky>
         </div>
