@@ -1,15 +1,15 @@
 <template>
   <Layout>
-    <div class="px-4 px-md-0 mb-3">
-      <router-link
-        :to="{ name: domain ? 'home' : 'proposals' }"
-        class="text-gray"
-      >
-        <Icon name="back" size="22" class="v-align-middle" />
-        {{ space.name }}
-      </router-link>
-    </div>
     <template #content-left>
+      <div class="px-4 px-md-0 mb-3">
+        <router-link
+          :to="{ name: domain ? 'home' : 'proposals' }"
+          class="text-gray"
+        >
+          <Icon name="back" size="22" class="v-align-middle" />
+          {{ space.name }}
+        </router-link>
+      </div>
       <div class="px-4 px-md-0">
         <div class="d-flex flex-column mb-6">
           <input

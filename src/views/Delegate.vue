@@ -1,12 +1,12 @@
 <template>
   <Layout>
-    <div class="px-4 px-md-0 mb-3">
-      <router-link :to="{ name: 'home' }" class="text-gray">
-        <Icon name="back" size="22" class="v-align-middle" />
-        Home
-      </router-link>
-    </div>
     <template #content-left>
+      <div class="px-4 px-md-0 mb-3">
+        <router-link :to="{ name: 'home' }" class="text-gray">
+          <Icon name="back" size="22" class="v-align-middle" />
+          Home
+        </router-link>
+      </div>
       <div class="px-4 px-md-0">
         <h1 v-if="loaded" v-text="'Delegate'" class="mb-4" />
         <PageLoading v-else />
