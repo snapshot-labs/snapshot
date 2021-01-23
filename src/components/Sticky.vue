@@ -40,7 +40,7 @@ export default {
       const elOuter = document.getElementById(`${this.name}outer`);
       this.style.width = elOuter.clientWidth;
       const elInner = document.getElementById(`${this.name}inner`);
-      this.style.height = elInner.clientHeight - 1;
+      this.style.height = elInner.clientHeight;
     }
   }
 };
