@@ -4,7 +4,7 @@
       <div>
         <div class="col-lg-3 float-left hide-sm hide-md hide-lg">
           <Sticky name="sidebar" :isFixed="true">
-            <Block title="Menu" style="max-height: 84vh; overflow: scroll;">
+            <Block title="Menu" style="max-height: 80vh; overflow-y: auto;">
             </Block>
           </Sticky>
         </div>

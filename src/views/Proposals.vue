@@ -32,7 +32,7 @@
       </div>
     </Container>
     <Container :slim="true">
-      <Block :slim="true" style="max-height: 70vh; overflow: scroll">
+      <Block :slim="true" style="max-height: 65vh; overflow-y: auto">
         <Sticky name="proposal">
           <div
             class="px-4 py-3 bg-gray-dark overflow-auto menu-tabs rounded-top-0 rounded-md-top-2 border-bottom"
