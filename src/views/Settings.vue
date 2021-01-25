@@ -198,7 +198,6 @@
       </Block>
     </template>
   </Layout>
-
   <teleport to="#modal">
     <ModalNetworks
       :open="modalNetworksOpen"
