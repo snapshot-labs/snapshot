@@ -109,24 +109,23 @@
         </UiButton>
       </Block>
     </template>
-
-    <teleport to="#modal">
-      <ModalSelectDate
-        :value="form[selectedDate]"
-        :selectedDate="selectedDate"
-        :open="modalOpen"
-        @close="modalOpen = false"
-        @input="setDate"
-      />
-      <ModalPlugins
-        :space="space"
-        :proposal="{ ...form, choices }"
-        v-model="form.metadata.plugins"
-        :open="modalPluginsOpen"
-        @close="modalPluginsOpen = false"
-      />
-    </teleport>
   </Layout>
+  <teleport to="#modal">
+    <ModalSelectDate
+      :value="form[selectedDate]"
+      :selectedDate="selectedDate"
+      :open="modalOpen"
+      @close="modalOpen = false"
+      @input="setDate"
+    />
+    <ModalPlugins
+      :space="space"
+      :proposal="{ ...form, choices }"
+      v-model="form.metadata.plugins"
+      :open="modalPluginsOpen"
+      @close="modalPluginsOpen = false"
+    />
+  </teleport>
 </template>
 
 <script>

@@ -197,27 +197,26 @@
         </UiButton>
       </Block>
     </template>
-
-    <teleport to="#modal">
-      <ModalNetworks
-        :open="modalNetworksOpen"
-        @close="modalNetworksOpen = false"
-        v-model="form.network"
-      />
-      <ModalSkins
-        :open="modalSkinsOpen"
-        @close="modalSkinsOpen = false"
-        v-model="form.skin"
-      />
-      <ModalStrategy
-        :open="modalStrategyOpen"
-        @close="modalStrategyOpen = false"
-        @add="handleSubmitAddStrategy"
-        :strategy="currentStrategy"
-        :strategyIndex="currentStrategyIndex"
-      />
-    </teleport>
   </Layout>
+  <teleport to="#modal">
+    <ModalNetworks
+      :open="modalNetworksOpen"
+      @close="modalNetworksOpen = false"
+      v-model="form.network"
+    />
+    <ModalSkins
+      :open="modalSkinsOpen"
+      @close="modalSkinsOpen = false"
+      v-model="form.skin"
+    />
+    <ModalStrategy
+      :open="modalStrategyOpen"
+      @close="modalStrategyOpen = false"
+      @add="handleSubmitAddStrategy"
+      :strategy="currentStrategy"
+      :strategyIndex="currentStrategyIndex"
+    />
+  </teleport>
 </template>
 
 <script>
