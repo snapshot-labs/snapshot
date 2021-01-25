@@ -1,180 +1,176 @@
 <template>
-  <Container :slim="true">
-    <div class="px-4 px-md-0 mb-3">
-      <router-link
-        :to="{ name: domain ? 'home' : 'proposals' }"
-        class="text-gray"
-      >
-        <Icon name="back" size="22" class="v-align-middle" />
-        {{ space.name }}
-      </router-link>
-    </div>
-    <div>
-      <div class="col-12 col-lg-8 float-left pr-0 pr-lg-5">
-        <div class="px-4 px-md-0">
-          <template v-if="loaded">
-            <h1 class="mb-2">
-              {{ payload.name }}
-              <span v-text="`#${id.slice(0, 7)}`" class="text-gray" />
-            </h1>
-            <div class="mb-4">
-              <State :proposal="proposal" />
-              <UiDropdown
-                class="float-right"
-                v-if="
-                  space.key === 'dai' && proposal.address === this.web3.account
-                "
-                @delete="deleteProposal"
-                :items="[{ text: 'Delete proposal', action: 'delete' }]"
-              >
-                <Icon name="threedots" size="25" class="v-align-text-bottom" />
-              </UiDropdown>
-            </div>
-            <UiMarkdown :body="payload.body" class="mb-6" />
-          </template>
-          <PageLoading v-else />
-        </div>
-        <Block
-          v-if="loaded && ts >= payload.start && ts < payload.end"
-          class="mb-4"
-          title="Cast your vote"
+  <Layout>
+    <template #content-left>
+      <div class="px-4 px-md-0 mb-3">
+        <router-link
+          :to="{ name: domain ? 'home' : 'proposals' }"
+          class="text-gray"
         >
-          <div class="mb-3">
-            <UiButton
-              v-for="(choice, i) in payload.choices"
-              :key="i"
-              @click="selectedChoice = i + 1"
-              class="d-block width-full mb-2"
-              :class="selectedChoice === i + 1 && 'button--active'"
-            >
-              {{ _shorten(choice, 32) }}
-              <a
-                v-if="payload.metadata.plugins?.aragon?.choice?.[i + 1]"
-                @click="modalOpen = true"
-                :aria-label="
-                  `Target address: ${
-                    payload.metadata.plugins.aragon[`choice${i + 1}`].actions[0]
-                      .to
-                  }\nValue: ${
-                    payload.metadata.plugins.aragon[`choice${i + 1}`].actions[0]
-                      .value
-                  }\nData: ${
-                    payload.metadata.plugins.aragon[`choice${i + 1}`].actions[0]
-                      .data
-                  }`
-                "
-                class="tooltipped tooltipped-n break-word"
-              >
-                <Icon name="warning" class="v-align-middle ml-1" />
-              </a>
-            </UiButton>
-          </div>
-          <UiButton
-            :disabled="voteLoading || !selectedChoice || !web3.account"
-            :loading="voteLoading"
-            @click="modalOpen = true"
-            class="d-block width-full button--submit"
-          >
-            Vote
-          </UiButton>
-        </Block>
-        <BlockVotes
-          v-if="loaded"
-          :space="space"
-          :proposal="proposal"
-          :votes="votes"
-        />
+          <Icon name="back" size="22" class="v-align-middle" />
+          {{ space.name }}
+        </router-link>
       </div>
-      <div v-if="loaded" class="col-12 col-lg-4 float-left">
-        <Block title="Information">
-          <div class="mb-1">
-            <b>Strategie(s)</b>
-            <span
-              @click="modalStrategiesOpen = true"
-              class="float-right text-white a"
-            >
-              <span v-for="(symbol, symbolIndex) of symbols" :key="symbol">
-                <span :aria-label="symbol" class="tooltipped tooltipped-n">
-                  <Token :space="space.key" :symbolIndex="symbolIndex" />
-                </span>
-                <span
-                  v-show="symbolIndex !== symbols.length - 1"
-                  class="ml-1"
-                />
-              </span>
-            </span>
-          </div>
-          <div class="mb-1">
-            <b>Author</b>
-            <User
-              :address="proposal.address"
-              :profile="proposal.profile"
-              :space="space"
+      <div class="px-4 px-md-0">
+        <template v-if="loaded">
+          <h1 class="mb-2">
+            {{ payload.name }}
+            <span v-text="`#${id.slice(0, 7)}`" class="text-gray" />
+          </h1>
+          <div class="mb-4">
+            <State :proposal="proposal" />
+            <UiDropdown
               class="float-right"
+              v-if="
+                space.key === 'dai' && proposal.address === this.web3.account
+              "
+              @delete="deleteProposal"
+              :items="[{ text: 'Delete proposal', action: 'delete' }]"
+            >
+              <Icon name="threedots" size="25" class="v-align-text-bottom" />
+            </UiDropdown>
+          </div>
+          <UiMarkdown :body="payload.body" class="mb-6" />
+        </template>
+        <PageLoading v-else />
+      </div>
+      <Block
+        v-if="loaded && ts >= payload.start && ts < payload.end"
+        class="mb-4"
+        title="Cast your vote"
+      >
+        <div class="mb-3">
+          <UiButton
+            v-for="(choice, i) in payload.choices"
+            :key="i"
+            @click="selectedChoice = i + 1"
+            class="d-block width-full mb-2"
+            :class="selectedChoice === i + 1 && 'button--active'"
+          >
+            {{ _shorten(choice, 32) }}
+            <a
+              v-if="payload.metadata.plugins?.aragon?.choice?.[i + 1]"
+              @click="modalOpen = true"
+              :aria-label="
+                `Target address: ${
+                  payload.metadata.plugins.aragon[`choice${i + 1}`].actions[0]
+                    .to
+                }\nValue: ${
+                  payload.metadata.plugins.aragon[`choice${i + 1}`].actions[0]
+                    .value
+                }\nData: ${
+                  payload.metadata.plugins.aragon[`choice${i + 1}`].actions[0]
+                    .data
+                }`
+              "
+              class="tooltipped tooltipped-n break-word"
+            >
+              <Icon name="warning" class="v-align-middle ml-1" />
+            </a>
+          </UiButton>
+        </div>
+        <UiButton
+          :disabled="voteLoading || !selectedChoice || !web3.account"
+          :loading="voteLoading"
+          @click="modalOpen = true"
+          class="d-block width-full button--submit"
+        >
+          Vote
+        </UiButton>
+      </Block>
+      <BlockVotes
+        v-if="loaded"
+        :space="space"
+        :proposal="proposal"
+        :votes="votes"
+      />
+    </template>
+    <template #sidebar-right v-if="loaded">
+      <Block title="Information">
+        <div class="mb-1">
+          <b>Strategie(s)</b>
+          <span
+            @click="modalStrategiesOpen = true"
+            class="float-right text-white a"
+          >
+            <span v-for="(symbol, symbolIndex) of symbols" :key="symbol">
+              <span :aria-label="symbol" class="tooltipped tooltipped-n">
+                <Token :space="space.key" :symbolIndex="symbolIndex" />
+              </span>
+              <span v-show="symbolIndex !== symbols.length - 1" class="ml-1" />
+            </span>
+          </span>
+        </div>
+        <div class="mb-1">
+          <b>Author</b>
+          <User
+            :address="proposal.address"
+            :profile="proposal.profile"
+            :space="space"
+            class="float-right"
+          />
+        </div>
+        <div class="mb-1">
+          <b>IPFS</b>
+          <a
+            :href="_ipfsUrl(proposal.ipfsHash)"
+            target="_blank"
+            class="float-right"
+          >
+            #{{ proposal.ipfsHash.slice(0, 7) }}
+            <Icon name="external-link" class="ml-1" />
+          </a>
+        </div>
+        <div>
+          <div class="mb-1">
+            <b>Start date</b>
+            <span
+              :aria-label="_ms(payload.start)"
+              v-text="$d(payload.start * 1e3, 'short')"
+              class="float-right text-white tooltipped tooltipped-n"
             />
           </div>
           <div class="mb-1">
-            <b>IPFS</b>
+            <b>End date</b>
+            <span
+              :aria-label="_ms(payload.end)"
+              v-text="$d(payload.end * 1e3, 'short')"
+              class="float-right text-white tooltipped tooltipped-n"
+            />
+          </div>
+          <div class="mb-1">
+            <b>Snapshot</b>
             <a
-              :href="_ipfsUrl(proposal.ipfsHash)"
+              :href="_explorer(space.network, payload.snapshot, 'block')"
               target="_blank"
               class="float-right"
             >
-              #{{ proposal.ipfsHash.slice(0, 7) }}
+              {{ payload.snapshot }}
               <Icon name="external-link" class="ml-1" />
             </a>
           </div>
-          <div>
-            <div class="mb-1">
-              <b>Start date</b>
-              <span
-                :aria-label="_ms(payload.start)"
-                v-text="$d(payload.start * 1e3, 'short')"
-                class="float-right text-white tooltipped tooltipped-n"
-              />
-            </div>
-            <div class="mb-1">
-              <b>End date</b>
-              <span
-                :aria-label="_ms(payload.end)"
-                v-text="$d(payload.end * 1e3, 'short')"
-                class="float-right text-white tooltipped tooltipped-n"
-              />
-            </div>
-            <div class="mb-1">
-              <b>Snapshot</b>
-              <a
-                :href="_explorer(space.network, payload.snapshot, 'block')"
-                target="_blank"
-                class="float-right"
-              >
-                {{ payload.snapshot }}
-                <Icon name="external-link" class="ml-1" />
-              </a>
-            </div>
-          </div>
-        </Block>
-        <BlockResults
-          :id="id"
-          :space="space"
-          :payload="payload"
-          :results="results"
-          :votes="votes"
-        />
-        <BlockActions
-          :id="id"
-          :space="space"
-          :payload="payload"
-          :results="results"
-        />
-        <PluginGnosisCustomBlock
-          v-if="payload.metadata.plugins?.gnosis?.baseTokenAddress"
-          :proposalConfig="payload.metadata.plugins.gnosis"
-          :choices="payload.choices"
-          :network="space.network"
-        />
-      </div>
-    </div>
+        </div>
+      </Block>
+      <BlockResults
+        :id="id"
+        :space="space"
+        :payload="payload"
+        :results="results"
+        :votes="votes"
+      />
+      <BlockActions
+        :id="id"
+        :space="space"
+        :payload="payload"
+        :results="results"
+      />
+      <PluginGnosisCustomBlock
+        v-if="payload.metadata.plugins?.gnosis?.baseTokenAddress"
+        :proposalConfig="payload.metadata.plugins.gnosis"
+        :choices="payload.choices"
+        :network="space.network"
+      />
+    </template>
+
     <teleport to="#modal">
       <ModalConfirm
         v-if="loaded"
@@ -196,7 +192,7 @@
         :strategies="space.strategies"
       />
     </teleport>
-  </Container>
+  </Layout>
 </template>
 
 <script>

@@ -1,116 +1,115 @@
 <template>
-  <Container :slim="true">
-    <div class="px-4 px-md-0 mb-3">
-      <router-link
-        :to="{ name: domain ? 'home' : 'proposals' }"
-        class="text-gray"
-      >
-        <Icon name="back" size="22" class="v-align-middle" />
-        {{ space.name }}
-      </router-link>
-    </div>
-    <div>
-      <div class="col-12 col-lg-8 float-left pr-0 pr-lg-5">
-        <div class="px-4 px-md-0">
-          <div class="d-flex flex-column mb-6">
-            <input
-              v-model="form.name"
-              maxlength="128"
-              class="h1 mb-2 input"
-              placeholder="Question"
-              ref="nameForm"
-            />
-            <TextareaAutosize
-              v-model="form.body"
-              class="input pt-1"
-              placeholder="What is your proposal?"
-            />
-            <div class="mb-6">
-              <p v-if="form.body.length > bodyLimit" class="text-red mt-4">
-                -{{ _numeral(-(bodyLimit - form.body.length)) }}
-              </p>
-            </div>
-            <div v-if="form.body">
-              <h4 class="mb-4">Preview</h4>
-              <UiMarkdown :body="form.body" />
-            </div>
+  <Layout>
+    <template #content-left>
+      <div class="px-4 px-md-0 mb-3">
+        <router-link
+          :to="{ name: domain ? 'home' : 'proposals' }"
+          class="text-gray"
+        >
+          <Icon name="back" size="22" class="v-align-middle" />
+          {{ space.name }}
+        </router-link>
+      </div>
+      <div class="px-4 px-md-0">
+        <div class="d-flex flex-column mb-6">
+          <input
+            v-model="form.name"
+            maxlength="128"
+            class="h1 mb-2 input"
+            placeholder="Question"
+            ref="nameForm"
+          />
+          <TextareaAutosize
+            v-model="form.body"
+            class="input pt-1"
+            placeholder="What is your proposal?"
+          />
+          <div class="mb-6">
+            <p v-if="form.body.length > bodyLimit" class="text-red mt-4">
+              -{{ _numeral(-(bodyLimit - form.body.length)) }}
+            </p>
+          </div>
+          <div v-if="form.body">
+            <h4 class="mb-4">Preview</h4>
+            <UiMarkdown :body="form.body" />
           </div>
         </div>
-        <Block title="Choices">
-          <div v-if="choices.length > 0" class="overflow-hidden mb-2">
-            <draggable
-              v-model="choices"
-              tag="transition-group"
-              :component-data="{ name: 'list' }"
-              item-key="id"
-            >
-              <template #item="{element, index}">
-                <div class="d-flex mb-2">
-                  <UiButton class="d-flex width-full">
-                    <span class="mr-4">{{ index + 1 }}</span>
-                    <input
-                      v-model="element.text"
-                      class="input height-full flex-auto text-center"
-                      maxlength="32"
-                    />
-                    <span @click="removeChoice(index)" class="ml-4">
-                      <Icon name="close" size="12" />
-                    </span>
-                  </UiButton>
-                </div>
-              </template>
-            </draggable>
-          </div>
-          <UiButton @click="addChoice(1)" class="d-block width-full">
-            Add choice
-          </UiButton>
-        </Block>
       </div>
-      <div class="col-12 col-lg-4 float-left">
-        <Block
-          title="Actions"
-          :icon="
-            space.plugins && Object.keys(space.plugins).length > 0
-              ? 'stars'
-              : undefined
-          "
-          @submit="modalPluginsOpen = true"
-        >
-          <div class="mb-2">
-            <UiButton
-              @click="[(modalOpen = true), (selectedDate = 'start')]"
-              class="width-full mb-2"
-            >
-              <span v-if="!form.start">Select start date</span>
-              <span v-else v-text="$d(form.start * 1e3, 'short')" />
-            </UiButton>
-            <UiButton
-              @click="[(modalOpen = true), (selectedDate = 'end')]"
-              class="width-full mb-2"
-            >
-              <span v-if="!form.end">Select end date</span>
-              <span v-else v-text="$d(form.end * 1e3, 'short')" />
-            </UiButton>
-            <UiButton class="width-full mb-2">
-              <input
-                v-model="form.snapshot"
-                type="number"
-                class="input width-full text-center"
-                placeholder="Snapshot block number"
-              />
-            </UiButton>
-          </div>
-          <UiButton
-            @click="handleSubmit"
-            :disabled="!isValid"
-            :loading="loading"
-            class="d-block width-full button--submit"
+      <Block title="Choices">
+        <div v-if="choices.length > 0" class="overflow-hidden mb-2">
+          <draggable
+            v-model="choices"
+            tag="transition-group"
+            :component-data="{ name: 'list' }"
+            item-key="id"
           >
-            Publish
+            <template #item="{element, index}">
+              <div class="d-flex mb-2">
+                <UiButton class="d-flex width-full">
+                  <span class="mr-4">{{ index + 1 }}</span>
+                  <input
+                    v-model="element.text"
+                    class="input height-full flex-auto text-center"
+                    maxlength="32"
+                  />
+                  <span @click="removeChoice(index)" class="ml-4">
+                    <Icon name="close" size="12" />
+                  </span>
+                </UiButton>
+              </div>
+            </template>
+          </draggable>
+        </div>
+        <UiButton @click="addChoice(1)" class="d-block width-full">
+          Add choice
+        </UiButton>
+      </Block>
+    </template>
+    <template #sidebar-right>
+      <Block
+        title="Actions"
+        :icon="
+          space.plugins && Object.keys(space.plugins).length > 0
+            ? 'stars'
+            : undefined
+        "
+        @submit="modalPluginsOpen = true"
+      >
+        <div class="mb-2">
+          <UiButton
+            @click="[(modalOpen = true), (selectedDate = 'start')]"
+            class="width-full mb-2"
+          >
+            <span v-if="!form.start">Select start date</span>
+            <span v-else v-text="$d(form.start * 1e3, 'short')" />
           </UiButton>
-        </Block>
-      </div>
-    </div>
+          <UiButton
+            @click="[(modalOpen = true), (selectedDate = 'end')]"
+            class="width-full mb-2"
+          >
+            <span v-if="!form.end">Select end date</span>
+            <span v-else v-text="$d(form.end * 1e3, 'short')" />
+          </UiButton>
+          <UiButton class="width-full mb-2">
+            <input
+              v-model="form.snapshot"
+              type="number"
+              class="input width-full text-center"
+              placeholder="Snapshot block number"
+            />
+          </UiButton>
+        </div>
+        <UiButton
+          @click="handleSubmit"
+          :disabled="!isValid"
+          :loading="loading"
+          class="d-block width-full button--submit"
+        >
+          Publish
+        </UiButton>
+      </Block>
+    </template>
+
     <teleport to="#modal">
       <ModalSelectDate
         :value="form[selectedDate]"
@@ -127,7 +126,7 @@
         @close="modalPluginsOpen = false"
       />
     </teleport>
-  </Container>
+  </Layout>
 </template>
 
 <script>
