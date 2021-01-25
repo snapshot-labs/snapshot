@@ -90,18 +90,17 @@
         </UiButton>
       </Block>
     </template>
-
-    <teleport to="#modal">
-      <ModalClearDelegate
-        v-if="loaded"
-        :open="modalOpen"
-        @close="modalOpen = false"
-        @reload="load"
-        :id="currentId"
-        :delegate="currentDelegate"
-      />
-    </teleport>
   </Layout>
+  <teleport to="#modal">
+    <ModalClearDelegate
+      v-if="loaded"
+      :open="modalOpen"
+      @close="modalOpen = false"
+      @reload="load"
+      :id="currentId"
+      :delegate="currentDelegate"
+    />
+  </teleport>
 </template>
 
 <script>
