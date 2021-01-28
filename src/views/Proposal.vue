@@ -256,14 +256,20 @@ export default {
       this.scores = scores;
     },
     async deleteProposal() {
-      console.log(this.id, this.space.key);
-      await this.send({
-        space: this.space.key,
-        type: 'delete-proposal',
-        payload: {
-          proposal: this.id
-        }
-      });
+      try {
+        await this.send({
+          space: this.space.key,
+          type: 'delete-proposal',
+          payload: {
+            proposal: this.id
+          }
+        });
+        this.$router.push({
+          name: 'proposals'
+        });
+      } catch (e) {
+        console.error(e);
+      }
     }
   },
   async created() {
