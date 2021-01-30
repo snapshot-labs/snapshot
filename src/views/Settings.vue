@@ -296,7 +296,7 @@ export default {
     this.loaded = true;
   },
   methods: {
-    ...mapActions(['notify', 'send']),
+    ...mapActions(['notify', 'send', 'getSpaces']),
     async handleSubmit() {
       this.loading = true;
       try {
@@ -308,6 +308,7 @@ export default {
       } catch (e) {
         console.log(e);
       }
+      await this.getSpaces();
       this.loading = false;
     },
     handleReset() {
