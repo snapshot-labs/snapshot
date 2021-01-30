@@ -8,7 +8,7 @@
           </UiButton>
         </div>
         <div class="ml-3 text-right hide-sm">
-          {{ _numeral(spaces.length) }} space(s)
+          {{ _n(spaces.length) }} space(s)
           <router-link :to="{ name: 'setup' }" class="hide-md ml-3">
             <UiButton>Create space</UiButton>
           </router-link>
