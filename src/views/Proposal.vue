@@ -257,16 +257,18 @@ export default {
     },
     async deleteProposal() {
       try {
-        await this.send({
-          space: this.space.key,
-          type: 'delete-proposal',
-          payload: {
-            proposal: this.id
-          }
-        });
-        this.$router.push({
-          name: 'proposals'
-        });
+        if (
+          await this.send({
+            space: this.space.key,
+            type: 'delete-proposal',
+            payload: {
+              proposal: this.id
+            }
+          })
+        )
+          this.$router.push({
+            name: 'proposals'
+          });
       } catch (e) {
         console.error(e);
       }
