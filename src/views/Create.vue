@@ -108,6 +108,10 @@
           {{ $t('create.publish') }}
         </UiButton>
       </Block>
+      <PluginDaoModuleCustomBlock
+        v-if="form.metadata.plugins?.daoModule?.txs"
+        :proposalConfig="form.metadata.plugins.daoModule"
+      />
     </template>
   </Layout>
   <teleport to="#modal">
