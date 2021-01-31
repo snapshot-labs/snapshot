@@ -70,7 +70,7 @@
         </div>
         <UiButton
           :disabled="voteLoading || !selectedChoice || !web3.account"
-          :loading="voteLoading"
+          :loading="voteLoading || !loadedResults"
           @click="modalOpen = true"
           class="d-block width-full button--submit"
         >
@@ -279,10 +279,10 @@ export default {
   async created() {
     this.loading = true;
     await this.loadProposal();
-    await this.loadPower();
     this.loading = false;
     this.loaded = true;
     await this.loadResults();
+    await this.loadPower();
     this.loadedResults = true;
   }
 };
