@@ -79,6 +79,7 @@
       </Block>
       <BlockVotes
         v-if="loaded"
+        :loaded="loadedResults"
         :space="space"
         :proposal="proposal"
         :votes="votes"
@@ -151,6 +152,7 @@
         </div>
       </Block>
       <BlockResults
+        :loaded="loadedResults"
         :id="id"
         :space="space"
         :payload="payload"
@@ -158,6 +160,7 @@
         :votes="votes"
       />
       <BlockActions
+        :loaded="loadedResults"
         :id="id"
         :space="space"
         :payload="payload"
@@ -204,6 +207,7 @@ export default {
       id: this.$route.params.id,
       loading: false,
       loaded: false,
+      loadedResults: false,
       voteLoading: false,
       proposal: {},
       votes: {},
@@ -235,13 +239,19 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['getProposal', 'getPower', 'send']),
+    ...mapActions(['getProposal', 'getResults', 'getPower', 'send']),
     async loadProposal() {
       const proposalObj = await this.getProposal({
         space: this.space,
         id: this.id
       });
       this.proposal = proposalObj.proposal;
+    },
+    async loadResults() {
+      const proposalObj = await this.getResults({
+        space: this.space,
+        id: this.id
+      });
       this.votes = proposalObj.votes;
       this.results = proposalObj.results;
     },
@@ -272,6 +282,8 @@ export default {
     await this.loadPower();
     this.loading = false;
     this.loaded = true;
+    await this.loadResults();
+    this.loadedResults = true;
   }
 };
 </script>

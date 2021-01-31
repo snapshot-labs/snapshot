@@ -1,50 +1,54 @@
 <template>
   <Block :title="ts >= payload.end ? 'Results' : 'Current results'">
-    <div v-for="choice in choices" :key="choice.i">
-      <div class="text-white mb-1">
-        <span
-          :class="choice.choice.length > 12 && 'tooltipped tooltipped-n'"
-          :aria-label="choice.choice.length > 12 && choice.choice"
-          v-text="_shorten(choice.choice, 'choice')"
-          class="mr-1"
-        />
-        <span
-          class="mr-1 tooltipped tooltipped-n"
-          :aria-label="
-            results.totalScores[choice.i]
-              .map((score, index) => `${_n(score)} ${titles[index]}`)
-              .join(' + ')
-          "
-        >
-          {{ _n(results.totalBalances[choice.i]) }}
-          {{ _shorten(space.symbol, 'symbol') }}
-        </span>
-        <span
-          class="float-right"
-          v-text="
-            $n(
-              !results.totalVotesBalances
-                ? 0
-                : ((100 / results.totalVotesBalances) *
-                    results.totalBalances[choice.i]) /
-                    1e2,
-              'percent'
-            )
-          "
+    <div v-if="loaded">
+      <div v-for="choice in choices" :key="choice.i">
+        <div class="text-white mb-1">
+          <span
+            :class="choice.choice.length > 12 && 'tooltipped tooltipped-n'"
+            :aria-label="choice.choice.length > 12 && choice.choice"
+            v-text="_shorten(choice.choice, 'choice')"
+            class="mr-1"
+          />
+          <span
+            class="mr-1 tooltipped tooltipped-n"
+            :aria-label="
+              results.totalScores[choice.i]
+                .map((score, index) => `${_n(score)} ${titles[index]}`)
+                .join(' + ')
+            "
+          >
+            {{ _n(results.totalBalances[choice.i]) }}
+            {{ _shorten(space.symbol, 'symbol') }}
+          </span>
+          <span
+            class="float-right"
+            v-text="
+              $n(
+                !results.totalVotesBalances
+                  ? 0
+                  : ((100 / results.totalVotesBalances) *
+                      results.totalBalances[choice.i]) /
+                      1e2,
+                'percent'
+              )
+            "
+          />
+        </div>
+        <UiProgress
+          :value="results.totalScores[choice.i]"
+          :max="results.totalVotesBalances"
+          :titles="titles"
+          class="mb-3"
         />
       </div>
-      <UiProgress
-        :value="results.totalScores[choice.i]"
-        :max="results.totalVotesBalances"
-        :titles="titles"
-        class="mb-3"
-      />
+      <div v-if="ts >= payload.end">
+        <UiButton @click="downloadReport" class="width-full mt-2">
+          Download report
+        </UiButton>
+      </div>
     </div>
-    <div v-if="ts >= payload.end">
-      <UiButton @click="downloadReport" class="width-full mt-2">
-        Download report
-      </UiButton>
-    </div>
+
+    <BlockLoading v-else type="results" />
   </Block>
 </template>
 
@@ -53,7 +57,7 @@ import * as jsonexport from 'jsonexport/dist';
 import pkg from '@/../package.json';
 
 export default {
-  props: ['id', 'space', 'payload', 'results', 'votes'],
+  props: ['id', 'space', 'payload', 'results', 'votes', 'loaded'],
   computed: {
     ts() {
       return (Date.now() / 1e3).toFixed();

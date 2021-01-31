@@ -1,15 +1,17 @@
 <template>
   <Block v-if="plugins.length > 0 && ts >= payload.end" :title="'Actions'">
-    <UiButton
-      v-for="plugin in plugins"
-      :key="plugin"
-      @click="execute(plugin)"
-      :loading="loading"
-      :disabled="!$auth.isAuthenticated.value"
-      class="width-full button--submit"
-    >
-      Submit on-chain
-    </UiButton>
+    <div v-if="loaded">
+      <UiButton
+        v-for="plugin in plugins"
+        :key="plugin"
+        @click="execute(plugin)"
+        :loading="loading"
+        :disabled="!$auth.isAuthenticated.value"
+        class="width-full button--submit"
+      >
+        Submit on-chain
+      </UiButton>
+    </div>
   </Block>
 </template>
 
@@ -18,7 +20,7 @@ import { mapActions } from 'vuex';
 import plugins from '@snapshot-labs/snapshot.js/src/plugins';
 
 export default {
-  props: ['id', 'space', 'payload', 'results'],
+  props: ['id', 'space', 'payload', 'results', 'loaded'],
   data() {
     return {
       loading: false

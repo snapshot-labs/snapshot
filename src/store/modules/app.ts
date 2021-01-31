@@ -54,6 +54,15 @@ const mutations = {
   GET_PROPOSAL_FAILURE(_state, payload) {
     console.debug('GET_PROPOSAL_FAILURE', payload);
   },
+  GET_RESULTS_REQUEST() {
+    console.debug('GET_PROPOSAL_REQUEST');
+  },
+  GET_RESULTS_SUCCESS() {
+    console.debug('GET_PROPOSAL_SUCCESS');
+  },
+  GET_RESULTS_FAILURE(_state, payload) {
+    console.debug('GET_PROPOSAL_FAILURE', payload);
+  },
   GET_POWER_REQUEST() {
     console.debug('GET_POWER_REQUEST');
   },
@@ -153,14 +162,31 @@ const actions = {
   getProposal: async ({ commit }, { space, id }) => {
     commit('GET_PROPOSAL_REQUEST');
     try {
-      const provider = getProvider(space.network);
       console.time('getProposal.data');
+      const response = await Promise.all([ipfsGet(gateway, id)]);
+      console.timeEnd('getProposal.data');
+      let [proposal]: any = response;
+      proposal = formatProposal(proposal);
+      proposal.ipfsHash = id;
+
+      commit('GET_PROPOSAL_SUCCESS');
+      return { proposal };
+    } catch (e) {
+      commit('GET_PROPOSAL_FAILURE', e);
+    }
+  },
+
+  getResults: async ({ commit }, { space, id }) => {
+    commit('GET_RESULTS_REQUEST');
+    try {
+      const provider = getProvider(space.network);
+      console.time('getProposal.results');
       const response = await Promise.all([
         ipfsGet(gateway, id),
         client.request(`${space.key}/proposal/${id}`),
         getBlockNumber(provider)
       ]);
-      console.timeEnd('getProposal.data');
+      console.timeEnd('getProposal.results');
       const [, , blockNumber] = response;
       let [proposal, votes]: any = response;
       proposal = formatProposal(proposal);
@@ -230,13 +256,13 @@ const actions = {
           0
         )
       };
-
-      commit('GET_PROPOSAL_SUCCESS');
-      return { proposal, votes, results };
+      commit('GET_RESULTS_SUCCESS');
+      return { votes, results };
     } catch (e) {
-      commit('GET_PROPOSAL_FAILURE', e);
+      commit('GET_RESULTS_FAILURE', e);
     }
   },
+
   getPower: async ({ commit }, { space, address, snapshot }) => {
     commit('GET_POWER_REQUEST');
     try {
