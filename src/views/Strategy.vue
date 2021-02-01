@@ -1,26 +1,23 @@
 <template>
-  <Container :slim="true">
-    <div class="px-4 px-md-0 mb-3">
-      <router-link :to="{ path: '/strategies' }" class="text-gray">
-        <Icon name="back" size="22" class="v-align-middle" /> Strategies
-      </router-link>
-    </div>
-    <div>
-      <div class="col-12 col-lg-8 float-left pr-0 pr-lg-5">
-        <div class="px-4 px-md-0">
-          <h1 class="mb-2">
-            {{ strategy.key }}
-          </h1>
-          <span
-            v-text="`In ${strategy.spaces.length} space(s)`"
-            class="text-gray"
-          />
-          <UiMarkdown :body="strategy.about" class="mb-6 mt-4" />
-        </div>
+  <Layout>
+    <template #content-left>
+      <div class="px-4 px-md-0 mb-3">
+        <router-link :to="{ path: '/strategies' }" class="text-gray">
+          <Icon name="back" size="22" class="v-align-middle" /> Strategies
+        </router-link>
       </div>
-    </div>
-
-    <div class="col-12 col-lg-4 float-left">
+      <div class="px-4 px-md-0">
+        <h1 class="mb-2">
+          {{ strategy.key }}
+        </h1>
+        <span
+          v-text="`In ${strategy.spaces.length} space(s)`"
+          class="text-gray"
+        />
+        <UiMarkdown :body="strategy.about" class="mb-6 mt-4" />
+      </div>
+    </template>
+    <template #sidebar-right>
       <Block title="Information">
         <div class="mb-1">
           <b>Author</b>
@@ -49,8 +46,8 @@
           </div>
         </div>
       </Block>
-    </div>
-  </Container>
+    </template>
+  </Layout>
 </template>
 
 <script>

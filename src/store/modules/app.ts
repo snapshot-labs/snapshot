@@ -1,4 +1,4 @@
-import { getProfiles } from '@/helpers/3box';
+import { getProfiles } from '@/helpers/profile';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { ipfsGet, getScores } from '@snapshot-labs/snapshot.js/src/utils';
 import {
@@ -125,7 +125,7 @@ const actions = {
     commit('GET_PROPOSALS_REQUEST');
     try {
       let proposals: any = await client.request(`${space.key}/proposals`);
-      if (proposals) {
+      if (proposals && !space.filters?.onlyMembers) {
         const scores: any = await getScores(
           space.key,
           space.strategies,

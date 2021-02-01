@@ -31,11 +31,11 @@
           class="tooltipped tooltipped-n"
           :aria-label="
             vote.scores
-              .map((score, index) => `${_numeral(score)} ${titles[index]}`)
+              .map((score, index) => `${_n(score)} ${titles[index]}`)
               .join(' + ')
           "
         >
-          {{ `${_numeral(vote.balance)} ${_shorten(space.symbol, 'symbol')}` }}
+          {{ `${_n(vote.balance)} ${_shorten(space.symbol, 'symbol')}` }}
         </span>
         <a
           @click="openReceiptModal(vote)"

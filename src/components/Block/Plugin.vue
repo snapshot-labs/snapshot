@@ -29,7 +29,7 @@
           {{ plugin.author }}
         </a>
       </div>
-      In {{ _numeral(plugin.spaces.length) }} space(s)
+      In {{ _n(plugin.spaces.length) }} space(s)
     </div>
   </Block>
 </template>

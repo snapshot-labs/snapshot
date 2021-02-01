@@ -10,7 +10,7 @@
       <Icon name="github" class="mr-1" />
       {{ strategy.author }}
     </div>
-    <div>In {{ _numeral(strategy.spaces.length) }} space(s)</div>
+    <div>In {{ _n(strategy.spaces.length) }} space(s)</div>
   </Block>
 </template>
 

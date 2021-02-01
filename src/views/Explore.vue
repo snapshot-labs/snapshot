@@ -8,7 +8,7 @@
           </UiButton>
         </div>
         <div class="ml-3 text-right hide-sm">
-          {{ _numeral(items.length) }} {{ resultsStr }}
+          {{ _n(items.length) }} {{ resultsStr }}
           <a
             v-if="buttonStr"
             href="https://discord.snapshot.page"
