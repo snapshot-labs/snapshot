@@ -199,6 +199,7 @@
 
 <script>
 import { mapActions } from 'vuex';
+import { getProposal, getResults, getPower } from '@/helpers/snapshot';
 
 export default {
   data() {
@@ -239,29 +240,25 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['getProposal', 'getResults', 'getPower', 'send']),
+    ...mapActions(['send']),
     async loadProposal() {
-      const proposalObj = await this.getProposal({
-        space: this.space,
-        id: this.id
-      });
+      const proposalObj = await getProposal(this.id);
       this.proposal = proposalObj.proposal;
+      this.loaded = true;
     },
     async loadResults() {
-      const proposalObj = await this.getResults({
-        space: this.space,
-        id: this.id
-      });
+      const proposalObj = await getResults(this.space, this.id);
       this.votes = proposalObj.votes;
       this.results = proposalObj.results;
+      this.loadedResults = true;
     },
     async loadPower() {
       if (!this.web3.account || !this.proposal.address) return;
-      const { scores, totalScore } = await this.getPower({
-        space: this.space,
-        address: this.web3.account,
-        snapshot: this.payload.snapshot
-      });
+      const { scores, totalScore } = await getPower(
+        this.space,
+        this.web3.account,
+        this.payload.snapshot
+      );
       this.totalScore = totalScore;
       this.scores = scores;
     },
@@ -278,12 +275,12 @@ export default {
   },
   async created() {
     this.loading = true;
-    await this.loadProposal();
+    await Promise.all([
+      this.loadProposal(),
+      this.loadResults(),
+      this.loadPower()
+    ]);
     this.loading = false;
-    this.loaded = true;
-    await this.loadResults();
-    await this.loadPower();
-    this.loadedResults = true;
   }
 };
 </script>
