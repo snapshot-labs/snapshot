@@ -1,6 +1,6 @@
 import { getBlockNumber } from '@snapshot-labs/snapshot.js/src/utils/web3';
 import { ipfsGet, getScores } from '@snapshot-labs/snapshot.js/src/utils';
-import { formatProposal } from '@/helpers/utils';
+import { formatProposal, formatProposals } from '@/helpers/utils';
 import { getProfiles } from '@/helpers/profile';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import gateways from '@snapshot-labs/snapshot.js/src/gateways.json';
@@ -132,6 +132,35 @@ export async function getPower(space, address, snapshot) {
       scores,
       totalScore: scores.reduce((a, b: any) => a + b, 0)
     };
+  } catch (e) {
+    console.log(e);
+    return e;
+  }
+}
+
+export async function getProposals(space) {
+  try {
+    let proposals: any = await client.request(`${space.key}/proposals`);
+    if (proposals && !space.filters?.onlyMembers) {
+      const scores: any = await getScores(
+        space.key,
+        space.strategies,
+        space.network,
+        getProvider(space.network),
+        Object.values(proposals).map((proposal: any) => proposal.address)
+      );
+      console.log('Scores', scores);
+      proposals = Object.fromEntries(
+        Object.entries(proposals).map((proposal: any) => {
+          proposal[1].score = scores.reduce(
+            (a, b) => a + (b[proposal[1].address] || 0),
+            0
+          );
+          return [proposal[0], proposal[1]];
+        })
+      );
+    }
+    return formatProposals(proposals);
   } catch (e) {
     console.log(e);
     return e;

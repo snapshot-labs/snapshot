@@ -1,9 +1,7 @@
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
-import { getScores } from '@snapshot-labs/snapshot.js/src/utils';
 import { signMessage } from '@snapshot-labs/snapshot.js/src/utils/web3';
-import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import client from '@/helpers/client';
-import { formatProposals, formatSpace } from '@/helpers/utils';
+import { formatSpace } from '@/helpers/utils';
 import { version } from '@/../package.json';
 
 const state = {
@@ -28,42 +26,6 @@ const mutations = {
   },
   SEND_FAILURE(_state, payload) {
     console.debug('SEND_FAILURE', payload);
-  },
-  GET_PROPOSALS_REQUEST() {
-    console.debug('GET_PROPOSALS_REQUEST');
-  },
-  GET_PROPOSALS_SUCCESS() {
-    console.debug('GET_PROPOSALS_SUCCESS');
-  },
-  GET_PROPOSALS_FAILURE(_state, payload) {
-    console.debug('GET_PROPOSALS_FAILURE', payload);
-  },
-  GET_PROPOSAL_REQUEST() {
-    console.debug('GET_PROPOSAL_REQUEST');
-  },
-  GET_PROPOSAL_SUCCESS() {
-    console.debug('GET_PROPOSAL_SUCCESS');
-  },
-  GET_PROPOSAL_FAILURE(_state, payload) {
-    console.debug('GET_PROPOSAL_FAILURE', payload);
-  },
-  GET_RESULTS_REQUEST() {
-    console.debug('GET_PROPOSAL_REQUEST');
-  },
-  GET_RESULTS_SUCCESS() {
-    console.debug('GET_PROPOSAL_SUCCESS');
-  },
-  GET_RESULTS_FAILURE(_state, payload) {
-    console.debug('GET_PROPOSAL_FAILURE', payload);
-  },
-  GET_POWER_REQUEST() {
-    console.debug('GET_POWER_REQUEST');
-  },
-  GET_POWER_SUCCESS() {
-    console.debug('GET_POWER_SUCCESS');
-  },
-  GET_POWER_FAILURE(_state, payload) {
-    console.debug('GET_POWER_FAILURE', payload);
   }
 };
 
@@ -121,35 +83,6 @@ const actions = {
           : 'Oops, something went wrong!';
       dispatch('notify', ['red', errorMessage]);
       return;
-    }
-  },
-  getProposals: async ({ commit }, space) => {
-    commit('GET_PROPOSALS_REQUEST');
-    try {
-      let proposals: any = await client.request(`${space.key}/proposals`);
-      if (proposals && !space.filters?.onlyMembers) {
-        const scores: any = await getScores(
-          space.key,
-          space.strategies,
-          space.network,
-          getProvider(space.network),
-          Object.values(proposals).map((proposal: any) => proposal.address)
-        );
-        console.log('Scores', scores);
-        proposals = Object.fromEntries(
-          Object.entries(proposals).map((proposal: any) => {
-            proposal[1].score = scores.reduce(
-              (a, b) => a + (b[proposal[1].address] || 0),
-              0
-            );
-            return [proposal[0], proposal[1]];
-          })
-        );
-      }
-      commit('GET_PROPOSALS_SUCCESS');
-      return formatProposals(proposals);
-    } catch (e) {
-      commit('GET_PROPOSALS_FAILURE', e);
     }
   }
 };
