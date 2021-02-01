@@ -3,6 +3,7 @@
     <template v-slot:header>
       <h3>{{ strategy.name ? 'Edit' : 'Add' }} strategy</h3>
     </template>
+    <ModalSearch v-if="!strategy.name" v-model="searchInput" />
     <div class="mt-4 mx-0 mx-md-4">
       <div v-if="input.name" class="p-4 mb-4 border rounded-2 text-white">
         <h4 v-text="input.name" class="mb-3 text-center" />
@@ -55,7 +56,8 @@ export default {
       input: {
         name: '',
         params: JSON.stringify(defaultParams, null, 2)
-      }
+      },
+      searchInput: ''
     };
   },
   watch: {
@@ -74,7 +76,7 @@ export default {
   },
   computed: {
     strategies() {
-      return filterStrategies(strategies, this.app.spaces);
+      return filterStrategies(strategies, this.app.spaces, this.searchInput);
     },
     isValid() {
       try {

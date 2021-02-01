@@ -3,6 +3,7 @@
     <template v-slot:header>
       <h3>Networks</h3>
     </template>
+    <ModalSearch v-model="searchInput" />
     <div class="mt-4 mx-0 mx-md-4">
       <a
         v-for="network in networks"
@@ -22,9 +23,14 @@ import { filterNetworks } from '@/helpers/utils';
 export default {
   props: ['open'],
   emits: ['update:modelValue', 'close'],
+  data() {
+    return {
+      searchInput: ''
+    };
+  },
   computed: {
     networks() {
-      return filterNetworks(networks, this.app.spaces, '');
+      return filterNetworks(networks, this.app.spaces, this.searchInput);
     }
   },
   methods: {
