@@ -3,7 +3,7 @@
     <template v-slot:header>
       <h3>{{ strategy.name ? 'Edit' : 'Add' }} strategy</h3>
     </template>
-    <ModalSearch v-if="!strategy.name" v-model="searchInput" />
+    <ModalSearch v-if="!strategy.name && !input.name" v-model="searchInput" />
     <div class="mt-4 mx-0 mx-md-4">
       <div v-if="input.name" class="p-4 mb-4 border rounded-2 text-white">
         <h4 v-text="input.name" class="mb-3 text-center" />
