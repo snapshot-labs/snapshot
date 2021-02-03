@@ -12,11 +12,11 @@
           class="mr-1 tooltipped tooltipped-n"
           :aria-label="
             results.totalScores[choice.i]
-              .map((score, index) => `${_numeral(score)} ${titles[index]}`)
+              .map((score, index) => `${_n(score)} ${titles[index]}`)
               .join(' + ')
           "
         >
-          {{ _numeral(results.totalBalances[choice.i]) }}
+          {{ _n(results.totalBalances[choice.i]) }}
           {{ _shorten(space.symbol, 'symbol') }}
         </span>
         <span

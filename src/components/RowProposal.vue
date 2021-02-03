@@ -16,7 +16,7 @@
       <Badges :address="proposal.address" :space="space" />
       <span
         v-if="proposal.score"
-        v-text="`${_numeral(proposal.score)} ${space.symbol}`"
+        v-text="`${_n(proposal.score)} ${space.symbol}`"
         class="ml-1"
       />
       start

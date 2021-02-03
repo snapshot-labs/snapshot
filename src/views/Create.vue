@@ -26,7 +26,7 @@
           />
           <div class="mb-6">
             <p v-if="form.body.length > bodyLimit" class="text-red mt-4">
-              -{{ _numeral(-(bodyLimit - form.body.length)) }}
+              -{{ _n(-(bodyLimit - form.body.length)) }}
             </p>
           </div>
           <div v-if="form.body">

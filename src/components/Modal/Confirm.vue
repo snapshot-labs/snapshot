@@ -33,11 +33,11 @@
             class="tooltipped tooltipped-nw"
             :aria-label="
               scores
-                .map((score, index) => `${_numeral(score)} ${symbols[index]}`)
+                .map((score, index) => `${_n(score)} ${symbols[index]}`)
                 .join(' + ')
             "
           >
-            {{ _numeral(scores.reduce((a, b) => a + b, 0)) }}
+            {{ _n(scores.reduce((a, b) => a + b, 0)) }}
             {{ _shorten(space.symbol, 'symbol') }}
           </span>
         </div>

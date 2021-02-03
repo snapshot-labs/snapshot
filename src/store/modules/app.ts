@@ -1,4 +1,4 @@
-import { getProfiles } from '@/helpers/3box';
+import { getProfiles } from '@/helpers/profile';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { ipfsGet, getScores } from '@snapshot-labs/snapshot.js/src/utils';
 import {

@@ -5,7 +5,7 @@
       <div v-text="network.key" class="ml-1 text-gray" />
     </div>
     <div class="text-gray">
-      In {{ _numeral(network.spaces.length) }} space(s)
+      In {{ _n(network.spaces.length) }} space(s)
     </div>
   </Block>
 </template>

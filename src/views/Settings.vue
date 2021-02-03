@@ -92,7 +92,7 @@
                 <a
                   class="d-block py-1 mr-n2"
                   target="_blank"
-                  href="https://docs.snapshot.page/guides/add-a-custom-domain"
+                  href="https://docs.snapshot.page/spaces/add-custom-domain"
                 >
                   <Icon name="info" size="24" class="text-gray p-1" />
                 </a>
@@ -296,7 +296,7 @@ export default {
     this.loaded = true;
   },
   methods: {
-    ...mapActions(['notify', 'send']),
+    ...mapActions(['notify', 'send', 'getSpaces']),
     async handleSubmit() {
       this.loading = true;
       try {
@@ -308,6 +308,7 @@ export default {
       } catch (e) {
         console.log(e);
       }
+      await this.getSpaces();
       this.loading = false;
     },
     handleReset() {

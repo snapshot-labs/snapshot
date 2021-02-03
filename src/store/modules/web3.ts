@@ -3,7 +3,7 @@ import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import store from '@/store';
 import { formatUnits } from '@ethersproject/units';
-import { getProfiles } from '@/helpers/3box';
+import { getProfiles } from '@/helpers/profile';
 
 let wsProvider;
 let auth;
