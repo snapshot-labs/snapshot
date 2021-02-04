@@ -26,7 +26,13 @@
               @delete="deleteProposal"
               :items="[{ text: 'Delete proposal', action: 'delete' }]"
             >
-              <Icon name="threedots" size="25" class="v-align-text-bottom" />
+              <UiLoading v-if="deleteLoading" />
+              <Icon
+                v-else
+                name="threedots"
+                size="25"
+                class="v-align-text-bottom"
+              />
             </UiDropdown>
           </div>
           <UiMarkdown :body="payload.body" class="mb-6" />
@@ -210,6 +216,7 @@ export default {
       loaded: false,
       loadedResults: false,
       voteLoading: false,
+      deleteLoading: false,
       proposal: {},
       votes: {},
       results: [],
@@ -263,14 +270,26 @@ export default {
       this.scores = scores;
     },
     async deleteProposal() {
-      console.log(this.id, this.space.key);
-      await this.send({
-        space: this.space.key,
-        type: 'delete-proposal',
-        payload: {
-          proposal: this.id
+      this.deleteLoading = true;
+      try {
+        if (
+          await this.send({
+            space: this.space.key,
+            type: 'delete-proposal',
+            payload: {
+              proposal: this.id
+            }
+          })
+        ) {
+          this.deleteLoading = false;
+          this.$router.push({
+            name: 'proposals'
+          });
         }
-      });
+      } catch (e) {
+        console.error(e);
+      }
+      this.deleteLoading = false;
     }
   },
   async created() {
