@@ -1,5 +1,5 @@
 <template>
-  <div style="height:60px" class="search-container py-3 px-3 px-md-4">
+  <div style="height:60px" class="search-container py-3 px-4">
     <div class="d-flex flex-items-center">
       <Icon name="search" size="22" class="mb-1 mr-2 text-gray" />
       <input
