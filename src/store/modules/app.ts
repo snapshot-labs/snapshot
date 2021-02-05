@@ -109,7 +109,10 @@ const actions = {
       msg.sig = await signMessage(auth.web3, msg.msg, rootState.web3.account);
       const result = await client.request('message', msg);
       commit('SEND_SUCCESS');
-      dispatch('notify', ['green', `Your ${type} is in!`]);
+      dispatch('notify', [
+        'green',
+        type === 'delete-proposal' ? `Proposal deleted` : `Your ${type} is in!`
+      ]);
       return result;
     } catch (e) {
       commit('SEND_FAILURE', e);
