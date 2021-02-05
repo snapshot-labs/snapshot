@@ -3,7 +3,12 @@
     <template v-slot:header>
       <h3>{{ strategy.name ? 'Edit' : 'Add' }} strategy</h3>
     </template>
-    <ModalSearch v-if="!strategy.name && !input.name" v-model="searchInput" />
+    <Search
+      v-if="!strategy.name && !input.name"
+      v-model="searchInput"
+      placeholder="Search"
+      :modal="true"
+    />
     <div class="mt-4 mx-0 mx-md-4">
       <div v-if="input.name" class="p-4 mb-4 border rounded-2 text-white">
         <h4 v-text="input.name" class="mb-3 text-center" />
@@ -27,13 +32,13 @@
         </UiButton>
       </div>
       <a
-        v-else
         v-for="strategy in strategies"
         :key="strategy.key"
         @click="select(strategy.key)"
       >
         <BlockStrategy :strategy="strategy" />
       </a>
+      <NoResults :results="strategies" />
     </div>
   </UiModal>
 </template>

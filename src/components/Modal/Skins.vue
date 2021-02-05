@@ -3,11 +3,12 @@
     <template v-slot:header>
       <h3>Skins</h3>
     </template>
-    <ModalSearch v-model="searchInput" />
+    <Search v-model="searchInput" placeholder="Search" :modal="true" />
     <div class="mt-4 mx-0 mx-md-4">
       <a v-for="skin in skins" :key="skin.key" @click="select(skin.key)">
         <BlockSkin :skin="skin" />
       </a>
+      <NoResults :results="skins" />
     </div>
   </UiModal>
 </template>

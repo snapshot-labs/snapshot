@@ -53,6 +53,8 @@
             </Block>
           </div>
         </router-link>
+        <!-- TODO: Add to all the other searches -->
+        <NoResults :results="spaces" />
       </div>
     </Container>
   </div>

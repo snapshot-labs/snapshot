@@ -3,7 +3,7 @@
     <template v-slot:header>
       <h3>Networks</h3>
     </template>
-    <ModalSearch v-model="searchInput" />
+    <Search v-model="searchInput" placeholder="Search" :modal="true" />
     <div class="mt-4 mx-0 mx-md-4">
       <a
         v-for="network in networks"
@@ -12,6 +12,7 @@
       >
         <BlockNetwork :network="network" />
       </a>
+      <NoResults :results="networks" />
     </div>
   </UiModal>
 </template>
