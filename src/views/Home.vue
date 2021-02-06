@@ -53,8 +53,7 @@
             </Block>
           </div>
         </router-link>
-        <!-- TODO: Add to all the other searches -->
-        <NoResults :results="spaces" />
+        <NoResults :block="true" :results="spaces" class="pr-md-4" />
       </div>
     </Container>
   </div>

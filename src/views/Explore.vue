@@ -53,6 +53,7 @@
             class="mb-3"
           />
         </template>
+        <NoResults :block="true" :results="items" />
       </div>
     </Container>
   </div>
