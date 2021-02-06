@@ -31,14 +31,16 @@
           {{ strategy.name ? 'Save' : 'Add' }}
         </UiButton>
       </div>
-      <a
-        v-for="strategy in strategies"
-        :key="strategy.key"
-        @click="select(strategy.key)"
-      >
-        <BlockStrategy :strategy="strategy" />
-      </a>
-      <NoResults :results="strategies" />
+      <div v-if="!input.name">
+        <a
+          v-for="strategy in strategies"
+          :key="strategy.key"
+          @click="select(strategy.key)"
+        >
+          <BlockStrategy :strategy="strategy" />
+        </a>
+        <NoResults :results="strategies" />
+      </div>
     </div>
   </UiModal>
 </template>
