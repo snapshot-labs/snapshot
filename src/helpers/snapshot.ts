@@ -8,38 +8,30 @@ import client from '@/helpers/client';
 
 const gateway = process.env.VUE_APP_IPFS_GATEWAY || gateways[0];
 
-let proposalRes;
-
-export async function getProposal(id) {
+export async function getProposal(space, id) {
   try {
     console.time('getProposal.data');
-    proposalRes = await Promise.all([ipfsGet(gateway, id)]);
+    const provider = getProvider(space.network);
+    const response = await Promise.all([
+      ipfsGet(gateway, id),
+      client.request(`${space.key}/proposal/${id}`),
+      getBlockNumber(provider)
+    ]);
     console.timeEnd('getProposal.data');
-    let [proposal]: any = proposalRes;
+    const [, votes, blockNumber] = response;
+    let [proposal]: any = response;
     proposal = formatProposal(proposal);
     proposal.ipfsHash = id;
-
-    return { proposal };
+    return { proposal, votes, blockNumber };
   } catch (e) {
     console.log(e);
     return e;
   }
 }
 
-export async function getResults(space, id) {
+export async function getResults(space, proposal, votes, blockNumber) {
   try {
     const provider = getProvider(space.network);
-    console.time('getProposal.results');
-    const response = await Promise.all([
-      client.request(`${space.key}/proposal/${id}`),
-      getBlockNumber(provider)
-    ]);
-    console.timeEnd('getProposal.results');
-    const [, blockNumber] = response;
-    let [votes]: any = response;
-    let [proposal]: any = proposalRes;
-    proposal = formatProposal(proposal);
-    proposal.ipfsHash = id;
     const voters = Object.keys(votes);
     const { snapshot } = proposal.msg.payload;
     const blockTag = snapshot > blockNumber ? 'latest' : parseInt(snapshot);

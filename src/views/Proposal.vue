@@ -244,14 +244,18 @@ export default {
   methods: {
     ...mapActions(['send']),
     async loadProposal() {
-      const proposalObj = await getProposal(this.id);
-      this.proposal = proposalObj.proposal;
+      const proposalObj = await getProposal(this.space, this.id);
+      const { proposal, votes, blockNumber } = proposalObj;
+      this.proposal = proposal;
       this.loaded = true;
-    },
-    async loadResults() {
-      const proposalObj = await getResults(this.space, this.id);
-      this.votes = proposalObj.votes;
-      this.results = proposalObj.results;
+      const resultsObj = await getResults(
+        this.space,
+        proposal,
+        votes,
+        blockNumber
+      );
+      this.votes = resultsObj.votes;
+      this.results = resultsObj.results;
       this.loadedResults = true;
     },
     async loadPower() {
@@ -277,11 +281,7 @@ export default {
   },
   async created() {
     this.loading = true;
-    await Promise.all([
-      this.loadProposal(),
-      this.loadResults(),
-      this.loadPower()
-    ]);
+    await Promise.all([this.loadProposal(), this.loadPower()]);
     this.loading = false;
   }
 };
