@@ -69,8 +69,10 @@
           </UiButton>
         </div>
         <UiButton
-          :disabled="voteLoading || !selectedChoice || !web3.account"
-          :loading="voteLoading || !loadedResults"
+          :disabled="
+            voteLoading || !selectedChoice || !web3.account || !loadedResults
+          "
+          :loading="voteLoading"
           @click="modalOpen = true"
           class="d-block width-full button--submit"
         >
