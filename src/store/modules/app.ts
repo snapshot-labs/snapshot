@@ -1,6 +1,6 @@
-import { getProfiles } from '@/helpers/profile';
+import { getProfiles } from '@/helpers/3box';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
-import { ipfsGet, getScores } from '@snapshot-labs/snapshot.js/src/utils';
+import { ipfsGet } from '@snapshot-labs/snapshot.js/src/utils';
 import {
   getBlockNumber,
   signMessage
@@ -8,17 +8,47 @@ import {
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import gateways from '@snapshot-labs/snapshot.js/src/gateways.json';
 import client from '@/helpers/client';
-import { formatProposal, formatProposals, formatSpace } from '@/helpers/utils';
+import {
+  formatProposal,
+  formatProposals,
+  formatSpace,
+  isAddressEqual,
+  ones
+} from '@/helpers/utils';
 import { version } from '@/../package.json';
 
+import { Harmony } from '@harmony-js/core';
+import {
+  HarmonyAddress,
+  keccak256,
+  recoverPublicKey as hmyRecoverPublicKey,
+  getAddressFromPublicKey
+} from '@harmony-js/crypto';
+import { ChainType, ChainID } from '@harmony-js/utils';
+import { bufferToHex } from 'ethereumjs-util';
+import { getScores } from '../helpers/getScores';
+
 const gateway = process.env.VUE_APP_IPFS_GATEWAY || gateways[0];
+
+export interface Validator {
+  active: boolean;
+  address: string;
+  apr: number;
+  hasLogo: boolean;
+  identity: string; // "Moonstake"
+  name: string; // "Moonstake"
+  rate: string; // "0.100000000000000000"
+  total_stake: string; // "8466571117002000000000000"
+  uptime_percentage: number; // 0.9994578043619792
+}
 
 const state = {
   init: false,
   loading: false,
   authLoading: false,
   modalOpen: false,
-  spaces: {}
+  spaces: {},
+  validators: [] as Validator[]
 };
 
 const mutations = {
@@ -68,8 +98,10 @@ const mutations = {
 const actions = {
   init: async ({ commit, dispatch }) => {
     const auth = getInstance();
+
     commit('SET', { loading: true });
     await dispatch('getSpaces');
+    await dispatch('getValidators');
     auth.getConnector().then(connector => {
       if (connector) dispatch('login', connector);
     });
@@ -83,21 +115,49 @@ const actions = {
   },
   getSpaces: async ({ commit }) => {
     let spaces: any = await client.request('spaces');
+
     spaces = Object.fromEntries(
       Object.entries(spaces).map(space => [
         space[0],
         formatSpace(space[0], space[1])
       ])
     );
+
     commit('SET', { spaces });
     return spaces;
+  },
+  getValidators: async ({ commit }) => {
+    const res: any = await client.getByUrl(
+      'https://api.stake.hmny.io/networks/testnet/validators'
+    );
+
+    const validators = res.validators;
+
+    // const validators: any = [
+    //   {
+    //     address: 'one1y9g54dnh8yj3yt3cnl3xsj56jwqy8ar4xyu508',
+    //     total_stake: 70 * 1e18
+    //   },
+    //   {
+    //     address: 'one1437j7lqq54v9ng7qqs0x7cf42tqkcz4thckwua',
+    //     total_stake: 30 * 1e18
+    //   }
+    // ].concat(res.validators.filter(v => !!v.active));
+
+    commit('SET', { validators });
+
+    return validators;
   },
   send: async ({ commit, dispatch, rootState }, { space, type, payload }) => {
     const auth = getInstance();
     commit('SEND_REQUEST');
     try {
+      // @ts-ignore
+      let { address } = await window.onewallet.getAccount();
+      address = new HarmonyAddress(address).checksum;
+
       const msg: any = {
-        address: rootState.web3.account,
+        address,
         msg: JSON.stringify({
           version,
           timestamp: (Date.now() / 1e3).toFixed(),
@@ -106,13 +166,68 @@ const actions = {
           payload
         })
       };
-      msg.sig = await signMessage(auth.web3, msg.msg, rootState.web3.account);
+
+      const harmony = await new Harmony('https://api.s0.t.hmny.io', {
+        chainType: ChainType.Harmony,
+        chainId: ChainID.HmyMainnet
+      });
+
+      const txn = harmony.transactions.newTx({
+        from: address,
+        // to: new HarmonyAddress(address).checksum,
+        value: 0,
+        shardID: 0,
+        toShardID: 0,
+        gasLimit: 0,
+        gasPrice: 0,
+        data: bufferToHex(new Buffer(msg.msg, 'utf8'))
+      });
+
+      let signedTx;
+
+      try {
+        // @ts-ignore
+        signedTx = await window.onewallet.signTransaction(txn, false);
+      } catch (e) {
+        console.error(e);
+        return;
+      }
+
+      // msg.sig = await signMessage(auth.web3, msg.msg, rootState.web3.account);
+      msg.sig = signedTx.signature;
+
+      const txn2 = harmony.transactions.newTx({
+        from: address,
+        // to: new HarmonyAddress(address).checksum,
+        value: 0,
+        shardID: 0,
+        toShardID: 0,
+        gasLimit: 0,
+        gasPrice: 0,
+        data: bufferToHex(new Buffer(msg.msg, 'utf8'))
+      });
+
+      let [unsignedRawTransaction, raw] = txn2.getRLPUnsigned();
+      // console.log(1111, keccak256(unsignedRawTransaction));
+      let publicKey = await hmyRecoverPublicKey(
+        keccak256(unsignedRawTransaction),
+        signedTx.signature
+      );
+      console.log(2222, getAddressFromPublicKey(publicKey), address);
+
+      [unsignedRawTransaction, raw] = txn.getRLPUnsigned();
+      // console.log(1111, keccak256(unsignedRawTransaction));
+      publicKey = await hmyRecoverPublicKey(
+        keccak256(unsignedRawTransaction),
+        signedTx.signature
+      );
+      console.log(3333, getAddressFromPublicKey(publicKey), address);
+
+      console.log(txn, txn2);
+
       const result = await client.request('message', msg);
       commit('SEND_SUCCESS');
-      dispatch('notify', [
-        'green',
-        type === 'delete-proposal' ? `Proposal deleted` : `Your ${type} is in!`
-      ]);
+      dispatch('notify', ['green', `Your ${type} is in!`]);
       return result;
     } catch (e) {
       commit('SEND_FAILURE', e);
@@ -128,14 +243,29 @@ const actions = {
     commit('GET_PROPOSALS_REQUEST');
     try {
       let proposals: any = await client.request(`${space.key}/proposals`);
-      if (proposals && !space.filters?.onlyMembers) {
-        const scores: any = await getScores(
-          space.key,
-          space.strategies,
-          space.network,
-          getProvider(space.network),
-          Object.values(proposals).map((proposal: any) => proposal.address)
-        );
+      if (proposals) {
+        const scores: any = [
+          Object.values(proposals).reduce((acc: any, proposal: any) => {
+            const validator = state.validators.find(v =>
+              isAddressEqual(v.address, proposal.address)
+            );
+
+            return {
+              ...acc,
+              [proposal.address]: validator
+                ? Number(ones(validator.total_stake))
+                : 0
+            };
+          }, {})
+        ];
+
+        // await getScores(
+        //   space.key,
+        //   space.strategies,
+        //   space.network,
+        //   getProvider(space.network),
+        //   Object.values(proposals).map((proposal: any) => proposal.address)
+        // );
         console.log('Scores', scores);
         proposals = Object.fromEntries(
           Object.entries(proposals).map((proposal: any) => {
@@ -173,19 +303,55 @@ const actions = {
       const blockTag = snapshot > blockNumber ? 'latest' : parseInt(snapshot);
 
       /* Get scores */
+      // console.log(provider, provider);
+
+      // console.log(
+      //   99999,
+      //   await getScores(
+      //     space.key,
+      //     space.strategies,
+      //     space.network,
+      //     provider,
+      //     voters,
+      //     // @ts-ignore
+      //     blockTag
+      //   ),
+      //   voters.map(addr => {
+      //     const validator = state.validators.find(v =>
+      //       isAddressEqual(addr, addr)
+      //     );
+      //
+      //     return { [addr]: validator ? validator.total_stake : 0 };
+      //   })
+      // ),
       console.time('getProposal.scores');
       const [scores, profiles]: any = await Promise.all([
-        getScores(
-          space.key,
-          space.strategies,
-          space.network,
-          provider,
-          voters,
-          // @ts-ignore
-          blockTag
-        ),
+        Promise.resolve([
+          voters.reduce((acc, addr) => {
+            const validator = state.validators.find(v =>
+              isAddressEqual(v.address, addr)
+            );
+
+            return {
+              ...acc,
+              [addr]: validator ? Number(ones(validator.total_stake)) : 0
+            };
+          }, {})
+        ]),
+        // getScores(
+        //   space.key,
+        //   space.strategies,
+        //   space.network,
+        //   provider,
+        //   voters,
+        //   // @ts-ignore
+        //   blockTag
+        // ),
         getProfiles([proposal.address, ...voters])
       ]);
+
+      // console.log(3333, scores, profiles);
+
       console.timeEnd('getProposal.scores');
       console.log('Scores', scores);
 
@@ -195,9 +361,13 @@ const actions = {
       });
       proposal.profile = authorProfile;
 
+      console.log('space.strategies', space.strategies);
+
       votes = Object.fromEntries(
         Object.entries(votes)
           .map((vote: any) => {
+            console.log('vote: ', vote);
+
             vote[1].scores = space.strategies.map(
               (strategy, i) => scores[i][vote[1].address] || 0
             );
@@ -243,7 +413,11 @@ const actions = {
   getPower: async ({ commit }, { space, address, snapshot }) => {
     commit('GET_POWER_REQUEST');
     try {
+      /*
       const blockNumber = await getBlockNumber(getProvider(space.network));
+
+      console.log(blockNumber, space.network, getProvider(space.network));
+
       const blockTag = snapshot > blockNumber ? 'latest' : parseInt(snapshot);
       let scores: any = await getScores(
         space.key,
@@ -254,9 +428,19 @@ const actions = {
         // @ts-ignore
         blockTag
       );
+
       scores = scores.map((score: any) =>
         Object.values(score).reduce((a, b: any) => a + b, 0)
       );
+      */
+      const validator = state.validators.find(
+        v =>
+          new HarmonyAddress(v.address).checksum ===
+          new HarmonyAddress(address).checksum
+      );
+
+      const scores = [validator ? ones(validator.total_stake) : 0];
+
       commit('GET_POWER_SUCCESS');
       return {
         scores,

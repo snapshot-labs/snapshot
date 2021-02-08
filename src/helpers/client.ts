@@ -21,6 +21,27 @@ class Client {
         .catch(e => e.json().then(json => reject(json)));
     });
   }
+  getByUrl(url, body?) {
+    let init;
+    if (body) {
+      init = {
+        method: 'GET',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(body)
+      };
+    }
+    return new Promise((resolve, reject) => {
+      fetch(url, init)
+        .then(res => {
+          if (res.ok) return resolve(res.json());
+          throw res;
+        })
+        .catch(e => e.json().then(json => reject(json)));
+    });
+  }
 }
 
 const client = new Client();

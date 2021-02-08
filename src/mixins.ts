@@ -1,7 +1,7 @@
 import { mapState } from 'vuex';
 import numeral from 'numeral';
 import prettyMs from 'pretty-ms';
-import networks from '@snapshot-labs/snapshot.js/src/networks.json';
+import networks from '@/helpers/networks.json';
 import domains from '@snapshot-labs/snapshot-spaces/spaces/domains.json';
 import store from '@/store';
 import config from '@/helpers/config';
@@ -28,7 +28,7 @@ export default {
       const diff = number * 1e3 - new Date().getTime();
       return prettyMs(diff);
     },
-    _n(number, format = '(0.[00]a)') {
+    _numeral(number, format = '(0,0.00)') {
       return numeral(number).format(format);
     },
     _shorten(str: string, key: any): string {

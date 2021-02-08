@@ -72,7 +72,7 @@ const router = createRouter({
   history: createWebHashHistory(),
   routes,
   scrollBehavior(): {} {
-    return { top: 0 };
+    return { x: 0, y: 0 };
   }
 });
 

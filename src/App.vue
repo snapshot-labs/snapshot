@@ -34,8 +34,10 @@ export default {
   },
   mounted() {
     this.init();
+    this.initSession();
   },
   methods: {
+    ...mapActions(['initSession']),
     ...mapActions(['init'])
   }
 };

@@ -15,7 +15,7 @@
           </div>
         </div>
         <router-link
-          v-if="$auth.isAuthenticated.value"
+          v-if="$auth.isAuthenticated.value && isValidator"
           :to="{ name: 'create', params: { key } }"
         >
           <UiButton>New proposal</UiButton>
@@ -69,8 +69,10 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 import { filterProposals } from '@/helpers/utils';
+import { HarmonyAddress } from '@harmony-js/crypto';
+import { isAddressEqual } from '../helpers/utils';
 
 export default {
   data() {
@@ -82,6 +84,16 @@ export default {
     };
   },
   computed: {
+    ...mapState(['app', 'web3']),
+    isValidator() {
+      if (!this.web3.account) {
+        return false;
+      }
+
+      return !!this.app.validators.find(v =>
+        isAddressEqual(v.address, this.web3.account)
+      );
+    },
     key() {
       return this.domain || this.$route.params.key;
     },

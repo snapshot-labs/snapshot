@@ -30,9 +30,12 @@
             class="button-outline width-full v-align-middle"
           >
             <img
-              :src="`${path}/${injected.id}.png`"
+              :src="
+                'https://avatars.githubusercontent.com/u/39147399?s=400&v=4'
+              "
               height="28"
               width="28"
+              style="margin-bottom: 3px;"
               class="mr-1 v-align-middle"
             />
             {{ injected.name }}
@@ -101,7 +104,7 @@
 
 <script>
 import { mapActions } from 'vuex';
-import { getInjected } from '@snapshot-labs/lock/src/utils';
+// import { getInjected } from '@snapshot-labs/lock/src/utils';
 
 export default {
   props: ['open'],
@@ -120,7 +123,8 @@ export default {
   },
   computed: {
     injected() {
-      return getInjected();
+      // return getInjected();
+      return { name: 'One Wallet', id: 'harmony' };
     }
   },
   methods: {
@@ -129,6 +133,9 @@ export default {
       await this.logout();
       this.$emit('close');
     }
+  },
+  mounted() {
+    console.log(this);
   }
 };
 </script>

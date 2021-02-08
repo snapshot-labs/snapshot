@@ -8,7 +8,7 @@
           </UiButton>
         </div>
         <div class="ml-3 text-right hide-sm">
-          {{ _n(items.length) }} {{ resultsStr }}
+          {{ _numeral(items.length) }} {{ resultsStr }}
           <a
             v-if="buttonStr"
             href="https://discord.snapshot.page"
@@ -59,7 +59,7 @@
 </template>
 
 <script>
-import networks from '@snapshot-labs/snapshot.js/src/networks.json';
+  import networks from '@/helpers/networks.json';
 import plugins from '@snapshot-labs/snapshot.js/src/plugins';
 import strategies from '@/helpers/strategies';
 import skins from '@/helpers/skins';

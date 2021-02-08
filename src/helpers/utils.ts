@@ -1,4 +1,6 @@
 import pkg from '@/../package.json';
+import BigNumber from 'bignumber.js';
+import { HarmonyAddress } from '@harmony-js/crypto';
 
 export function shorten(str = '') {
   return `${str.slice(0, 6)}...${str.slice(str.length - 4)}`;
@@ -150,6 +152,8 @@ export function formatSpace(key, space) {
   };
   if (!space.filters.invalids) space.filters.invalids = [];
   if (!space.filters.minScore) space.filters.minScore = 0;
+  space.filters.defaultTab = 'all';
+
   return space;
 }
 
@@ -173,6 +177,17 @@ export function filterProposals(space, proposal, tab) {
   if (tab === 'pending' && start > ts) return true;
 
   return false;
+}
+
+export function ones(number) {
+  return new BigNumber(number || 0).div(1e18).toNumber();
+}
+
+export function isAddressEqual(a, b) {
+  return (
+    new HarmonyAddress(a).checksum.toLowerCase() ===
+    new HarmonyAddress(b).checksum.toLowerCase()
+  );
 }
 
 export function infiniteScroll() {

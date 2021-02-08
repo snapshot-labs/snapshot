@@ -9,7 +9,7 @@
     </div>
     <nav id="topnav" class="border-bottom width-full bg-black">
       <Container>
-        <div class="d-flex flex-items-center" style="height: 78px;">
+        <div class="d-flex flex-items-center" style="height: 56px;">
           <div class="flex-auto d-flex flex-items-center">
             <router-link
               :to="{ name: 'home' }"
@@ -36,6 +36,7 @@
           <div :key="web3.account">
             <template v-if="$auth.isAuthenticated.value">
               <UiButton
+                style="padding: 0px 20px; height: 40px; line-height: 42px;"
                 @click="modalOpen = true"
                 class="button-outline"
                 :loading="app.authLoading"
@@ -55,6 +56,7 @@
               </UiButton>
             </template>
             <UiButton
+              style="padding: 0px 20px; height: 40px; line-height: 42px"
               v-if="!$auth.isAuthenticated.value"
               @click="modalOpen = true"
               :loading="loading || app.authLoading"
@@ -66,7 +68,11 @@
                 class="hide-md hide-lg hide-xl ml-n2 mr-n2 v-align-text-bottom"
               />
             </UiButton>
-            <UiButton @click="modalAboutOpen = true" class="ml-2">
+            <UiButton
+              @click="modalAboutOpen = true"
+              class="ml-2"
+              style="padding: 0px 20px; height: 40px; line-height: 42px"
+            >
               <span v-text="'?'" class="ml-n1 mr-n1" />
             </UiButton>
           </div>

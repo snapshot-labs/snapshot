@@ -18,6 +18,8 @@
 </template>
 
 <script>
+import { HarmonyAddress } from '@harmony-js/crypto';
+
 export default {
   props: ['address', 'space', 'profile'],
   data() {
@@ -29,7 +31,8 @@ export default {
     name() {
       if (
         this.web3.account &&
-        this.address.toLowerCase() === this.web3.account.toLowerCase()
+        new HarmonyAddress(this.address).checksum ===
+          new HarmonyAddress(this.web3.account).checksum
       ) {
         return 'You';
       }
@@ -38,7 +41,7 @@ export default {
       } else if (this.profile?.ens) {
         return this.profile.ens;
       }
-      return this._shorten(this.address);
+      return this._shorten(new HarmonyAddress(this.address).bech32);
     }
   }
 };

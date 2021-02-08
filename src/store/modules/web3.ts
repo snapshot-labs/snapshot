@@ -1,9 +1,7 @@
-import { Web3Provider } from '@ethersproject/providers';
-import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
-import networks from '@snapshot-labs/snapshot.js/src/networks.json';
+import networks from '@/helpers/networks.json';
 import store from '@/store';
-import { formatUnits } from '@ethersproject/units';
-import { getProfiles } from '@/helpers/profile';
+import { getProfiles } from '@/helpers/3box';
+import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 
 let wsProvider;
 let auth;
@@ -19,7 +17,8 @@ if (wsProvider) {
 const state = {
   account: null,
   name: null,
-  network: networks[defaultNetwork]
+  network: networks[defaultNetwork],
+  profile: ''
 };
 
 const mutations = {
@@ -44,60 +43,116 @@ const mutations = {
 };
 
 const actions = {
-  login: async ({ dispatch, commit }, connector = 'injected') => {
-    auth = getInstance();
+  initSession: async ({ dispatch, commit }) => {
     commit('SET', { authLoading: true });
-    await auth.login(connector);
-    if (auth.provider.value) {
-      auth.web3 = new Web3Provider(auth.provider.value);
-      await dispatch('loadProvider');
+
+    try {
+      const session: any = localStorage.getItem('harmony_session');
+
+      const sessionObj = JSON.parse(session);
+
+      if (sessionObj && sessionObj.account) {
+        await dispatch('loadProvider', {
+          address: sessionObj.account,
+          name: sessionObj.name
+        });
+
+        auth = getInstance();
+        auth.isAuthenticated.value = true;
+      }
+    } catch (e) {
+      console.error(e);
+    }
+
+    commit('SET', { authLoading: false });
+  },
+
+  syncLocalStorage: () => {
+    return localStorage.setItem(
+      'harmony_session',
+      JSON.stringify({
+        account: state.account,
+        name: state.name,
+        network: state.network,
+        profile: state.profile
+      })
+    );
+  },
+
+  login: async ({ dispatch, commit }, connector = 'injected') => {
+    commit('SET', { authLoading: true });
+    try {
+      // @ts-ignore
+      // auth = window.onewallet;
+      // await auth.login(connector);
+      // if (auth.provider.value) {
+      //   auth.web3 = new Web3Provider(auth.provider.value);
+      //   await dispatch('loadProvider');
+      // }
+      // @ts-ignore
+      const account = await window.onewallet.getAccount();
+      if (account && account.address) {
+        await dispatch('loadProvider', account);
+        await dispatch('syncLocalStorage');
+        auth = getInstance();
+        auth.isAuthenticated.value = true;
+      }
+    } catch (e) {
+      console.error(e);
     }
     commit('SET', { authLoading: false });
   },
-  logout: async ({ commit }) => {
+  logout: async ({ commit, dispatch }) => {
+    // @ts-ignore
+    window.onewallet.forgetIdentity();
     auth = getInstance();
     auth.logout();
+    auth.isAuthenticated.value = false;
     commit('WEB3_SET', { account: null, profile: null });
+    await dispatch('syncLocalStorage');
   },
-  loadProvider: async ({ commit, dispatch }) => {
+  loadProvider: async ({ commit, dispatch }, accountBase) => {
     try {
-      if (
-        auth.provider.value.removeAllListeners &&
-        !auth.provider.value.isTorus
-      )
-        auth.provider.value.removeAllListeners();
-      if (auth.provider.value.on) {
-        auth.provider.value.on('chainChanged', async chainId => {
-          commit('HANDLE_CHAIN_CHANGED', parseInt(formatUnits(chainId, 0)));
-        });
-        auth.provider.value.on('accountsChanged', async accounts => {
-          if (accounts.length !== 0) {
-            commit('WEB3_SET', { account: accounts[0] });
-            await dispatch('loadProvider');
-          }
-        });
-        // auth.provider.on('disconnect', async () => {});
-      }
-      console.log('Provider', auth.provider.value);
-      let network, accounts;
-      try {
-        [network, accounts] = await Promise.all([
-          auth.web3.getNetwork(),
-          auth.web3.listAccounts()
-        ]);
-      } catch (e) {
-        console.log(e);
-      }
-      console.log('Network', network);
-      console.log('Accounts', accounts);
-      commit('HANDLE_CHAIN_CHANGED', network.chainId);
-      const account = accounts.length > 0 ? accounts[0] : null;
+      // if (
+      //   auth.provider.value.removeAllListeners &&
+      //   !auth.provider.value.isTorus
+      // )
+      //   auth.provider.value.removeAllListeners();
+      // if (auth.provider.value.on) {
+      //   auth.provider.value.on('chainChanged', async chainId => {
+      //     commit('HANDLE_CHAIN_CHANGED', parseInt(formatUnits(chainId, 0)));
+      //   });
+      //   auth.provider.value.on('accountsChanged', async accounts => {
+      //     if (accounts.length !== 0) {
+      //       commit('WEB3_SET', { account: accounts[0] });
+      //       await dispatch('loadProvider');
+      //     }
+      //   });
+      //   // auth.provider.on('disconnect', async () => {});
+      // }
+      // console.log('Provider', auth.provider.value);
+      // let network, accounts;
+      // try {
+      //   [network, accounts] = await Promise.all([
+      //     auth.web3.getNetwork(),
+      //     auth.web3.listAccounts()
+      //   ]);
+      // } catch (e) {
+      //   console.log(e);
+      // }
+      // console.log('Network', network);
+      // console.log('Accounts', accounts);
+      commit('HANDLE_CHAIN_CHANGED', 0);
+      // const account = 'one1c4w9danpa5v9zqurnl07lkqdcwyn3yfm86anqu';
+      const account = accountBase.address;
       const profiles = await getProfiles([account]);
       commit('WEB3_SET', {
         account,
+        name: accountBase.name,
         profile: profiles[account]
       });
     } catch (e) {
+      console.error(e);
       commit('WEB3_SET', { account: null, profile: null });
       return Promise.reject(e);
     }
