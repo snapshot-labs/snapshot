@@ -3,17 +3,20 @@
     <div v-for="n in 2" :key="n" class="mb-4 d-block">
       <div class="d-flex flex-justify-between mb-2">
         <div
-          class="bg-gray-4 rounded-1 anim-pulse"
+          :class="shadesOfGray(n)"
+          class="rounded-1 anim-pulse"
           style="width: 30%; height: 12px;"
         />
         <div
-          class="bg-gray-4 rounded-1 anim-pulse"
+          :class="shadesOfGray(n)"
+          class="rounded-1 anim-pulse"
           style="width: 15%; height: 12px;"
         />
       </div>
 
       <div
-        class="bg-gray-4 rounded-1 anim-pulse"
+        :class="shadesOfGray(n)"
+        class="rounded-1 anim-pulse"
         style="widht: 100%; height: 7px;"
       />
     </div>
@@ -22,15 +25,18 @@
     <div v-for="n in 3" :key="n" class="mb-4 d-block">
       <div class="d-flex flex-justify-between">
         <div
-          class="bg-gray-4 rounded-1 anim-pulse"
+          :class="shadesOfGray(n)"
+          class="rounded-1 anim-pulse"
           style="width: 20%; height: 12px;"
         />
         <div
-          class="bg-gray-4 rounded-1 anim-pulse"
+          :class="shadesOfGray(n)"
+          class="rounded-1 anim-pulse"
           style="width: 20%; height: 12px;"
         />
         <div
-          class="bg-gray-4 rounded-1 anim-pulse"
+          :class="shadesOfGray(n)"
+          class="rounded-1 anim-pulse"
           style="width: 20%; height: 12px;"
         />
       </div>
@@ -40,6 +46,15 @@
 
 <script>
 export default {
-  props: ['type']
+  props: ['type'],
+  methods: {
+    shadesOfGray(n) {
+      return {
+        'bg-gray-4': n === 1,
+        'bg-gray-3': n === 2,
+        'bg-gray-2': n === 3
+      };
+    }
+  }
 };
 </script>
