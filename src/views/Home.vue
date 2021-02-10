@@ -25,7 +25,7 @@
           <div class="col-12 col-lg-3 pr-4 float-left">
             <Block
               class="text-center extra-icon-container"
-              style="height: 250px; margin-bottom: 24px !important;"
+              style="margin-bottom: 24px !important;"
             >
               <span class="position-relative d-inline-block">
                 <UiCounter

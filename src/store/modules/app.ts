@@ -15,20 +15,32 @@ import {
   isAddressEqual,
   ones
 } from '@/helpers/utils';
+
 import { version } from '@/../package.json';
 
-import { Harmony } from '@harmony-js/core';
-import {
-  HarmonyAddress,
-  keccak256,
-  recoverPublicKey as hmyRecoverPublicKey,
-  getAddressFromPublicKey
-} from '@harmony-js/crypto';
-import { ChainType, ChainID } from '@harmony-js/utils';
-import { bufferToHex } from 'ethereumjs-util';
-import { getScores } from '../helpers/getScores';
+import { HarmonyAddress } from '@harmony-js/crypto';
+import * as ethUtil from 'ethereumjs-util';
 
 const gateway = process.env.VUE_APP_IPFS_GATEWAY || gateways[0];
+
+const backendEmulation = (msg, signatureRPC) => {
+  const data = Buffer.from(msg, 'utf8');
+  const msgHash = ethUtil.hashPersonalMessage(data);
+
+  const params = ethUtil.fromRpcSig(signatureRPC);
+
+  const rr = ethUtil.ecrecover(
+    ethUtil.toBuffer(msgHash),
+    params.v,
+    params.r,
+    params.s
+  );
+
+  const addressHex = ethUtil.bufferToHex(ethUtil.publicToAddress(rr));
+
+  console.log(`Address: ${addressHex}`);
+  console.log(`Address: ${new HarmonyAddress(addressHex).bech32}`);
+};
 
 export interface Validator {
   active: boolean;
@@ -102,9 +114,6 @@ const actions = {
     commit('SET', { loading: true });
     await dispatch('getSpaces');
     await dispatch('getValidators');
-    auth.getConnector().then(connector => {
-      if (connector) dispatch('login', connector);
-    });
     commit('SET', { loading: false, init: true });
   },
   loading: ({ commit }, payload) => {
@@ -128,7 +137,7 @@ const actions = {
   },
   getValidators: async ({ commit }) => {
     const res: any = await client.getByUrl(
-      'https://api.stake.hmny.io/networks/testnet/validators'
+      'https://api.stake.hmny.io/networks/mainnet/validators'
     );
 
     const validators = res.validators;
@@ -150,12 +159,23 @@ const actions = {
   },
   send: async ({ commit, dispatch, rootState }, { space, type, payload }) => {
     const auth = getInstance();
-    commit('SEND_REQUEST');
-    try {
-      // @ts-ignore
-      let { address } = await window.onewallet.getAccount();
-      address = new HarmonyAddress(address).checksum;
 
+    commit('SEND_REQUEST');
+
+    let address;
+
+    if (rootState.web3.connectorId === 'harmony') {
+      // @ts-ignore
+      const account = await window.onewallet.getAccount();
+      address = account.address;
+    }
+
+    address =
+      rootState.web3.connectorId === 'harmony'
+        ? new HarmonyAddress(address).checksum
+        : rootState.web3.account;
+
+    try {
       const msg: any = {
         address,
         msg: JSON.stringify({
@@ -167,67 +187,21 @@ const actions = {
         })
       };
 
-      const harmony = await new Harmony('https://api.s0.t.hmny.io', {
-        chainType: ChainType.Harmony,
-        chainId: ChainID.HmyMainnet
-      });
-
-      const txn = harmony.transactions.newTx({
-        from: address,
-        // to: new HarmonyAddress(address).checksum,
-        value: 0,
-        shardID: 0,
-        toShardID: 0,
-        gasLimit: 0,
-        gasPrice: 0,
-        data: bufferToHex(new Buffer(msg.msg, 'utf8'))
-      });
-
-      let signedTx;
-
-      try {
+      if (rootState.web3.connectorId === 'harmony') {
         // @ts-ignore
-        signedTx = await window.onewallet.signTransaction(txn, false);
-      } catch (e) {
-        console.error(e);
-        return;
+        msg.sig = await window.onewallet.sign(msg.msg);
+      } else {
+        msg.sig = await signMessage(auth.web3, msg.msg, rootState.web3.account);
       }
 
-      // msg.sig = await signMessage(auth.web3, msg.msg, rootState.web3.account);
-      msg.sig = signedTx.signature;
-
-      const txn2 = harmony.transactions.newTx({
-        from: address,
-        // to: new HarmonyAddress(address).checksum,
-        value: 0,
-        shardID: 0,
-        toShardID: 0,
-        gasLimit: 0,
-        gasPrice: 0,
-        data: bufferToHex(new Buffer(msg.msg, 'utf8'))
-      });
-
-      let [unsignedRawTransaction, raw] = txn2.getRLPUnsigned();
-      // console.log(1111, keccak256(unsignedRawTransaction));
-      let publicKey = await hmyRecoverPublicKey(
-        keccak256(unsignedRawTransaction),
-        signedTx.signature
-      );
-      console.log(2222, getAddressFromPublicKey(publicKey), address);
-
-      [unsignedRawTransaction, raw] = txn.getRLPUnsigned();
-      // console.log(1111, keccak256(unsignedRawTransaction));
-      publicKey = await hmyRecoverPublicKey(
-        keccak256(unsignedRawTransaction),
-        signedTx.signature
-      );
-      console.log(3333, getAddressFromPublicKey(publicKey), address);
-
-      console.log(txn, txn2);
+      backendEmulation(msg.msg, msg.sig);
 
       const result = await client.request('message', msg);
       commit('SEND_SUCCESS');
-      dispatch('notify', ['green', `Your ${type} is in!`]);
+      dispatch('notify', [
+        'green',
+        type === 'delete-proposal' ? `Proposal deleted` : `Your ${type} is in!`
+      ]);
       return result;
     } catch (e) {
       commit('SEND_FAILURE', e);
@@ -254,7 +228,7 @@ const actions = {
               ...acc,
               [proposal.address]: validator
                 ? Number(ones(validator.total_stake))
-                : 0
+                : Number(ones(1000 * 1e18)) // TODO: test only
             };
           }, {})
         ];
@@ -334,7 +308,7 @@ const actions = {
 
             return {
               ...acc,
-              [addr]: validator ? Number(ones(validator.total_stake)) : 0
+              [addr]: validator ? Number(ones(validator.total_stake)) : Number(ones(1000 * 1e18))// TODO: test only
             };
           }, {})
         ]),
@@ -439,7 +413,7 @@ const actions = {
           new HarmonyAddress(address).checksum
       );
 
-      const scores = [validator ? ones(validator.total_stake) : 0];
+      const scores = [validator ? ones(validator.total_stake) : ones(1000 * 1e18)]; // TODO: test only
 
       commit('GET_POWER_SUCCESS');
       return {

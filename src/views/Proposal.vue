@@ -241,7 +241,9 @@ export default {
       //   iAmValidator &&
       //   !isAddressEqual(this.proposal.address, this.web3.account)
 
-      return iAmValidator;
+      return true; // TODO: test only
+
+      // return iAmValidator;
     },
     space() {
       return this.app.spaces[this.key];

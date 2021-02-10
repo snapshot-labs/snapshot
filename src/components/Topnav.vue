@@ -123,6 +123,7 @@ export default {
     async handleLogin(connector) {
       this.modalOpen = false;
       this.loading = true;
+
       await this.login(connector);
       this.loading = false;
     }

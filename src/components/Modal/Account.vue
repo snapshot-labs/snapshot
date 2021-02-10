@@ -7,7 +7,7 @@
     <div v-if="!web3.account || step === 'connect'">
       <div class="m-4 mb-5">
         <a
-          v-for="(connector, id, i) in config.connectors"
+          v-for="(connector, id, i) in connectors"
           :key="i"
           @click="$emit('login', connector.id)"
           target="_blank"
@@ -18,7 +18,7 @@
             class="button-outline width-full v-align-middle"
           >
             <img
-              :src="`${path}/${connector.id}.png`"
+              :src="connector.img || `${path}/${connector.id}.png`"
               height="28"
               width="28"
               class="mr-1 v-align-middle"
@@ -113,7 +113,18 @@ export default {
     return {
       step: null,
       path:
-        'https://raw.githubusercontent.com/snapshot-labs/lock/master/connectors/assets'
+        'https://raw.githubusercontent.com/snapshot-labs/lock/master/connectors/assets',
+      connectors: [
+        {
+          name: 'MetaMask',
+          id: 'metamask'
+        },
+        {
+          name: 'One Wallet',
+          id: 'harmony',
+          img: 'https://avatars.githubusercontent.com/u/39147399?s=400&v=4'
+        }
+      ]
     };
   },
   watch: {
