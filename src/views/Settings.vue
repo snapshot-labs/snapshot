@@ -234,7 +234,7 @@ import { getAddress } from '@ethersproject/address';
 import { ipfsGet } from '@snapshot-labs/snapshot.js/src/utils';
 import { validateSchema } from '@snapshot-labs/snapshot.js/src/utils';
 import schemas from '@snapshot-labs/snapshot.js/src/schemas';
-import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
+import getProvider from '@/helpers/provider';
 import { resolveContent } from '@snapshot-labs/snapshot.js/src/utils/contentHash';
 import networks from '@/helpers/networks.json';
 import gateways from '@snapshot-labs/snapshot.js/src/gateways.json';

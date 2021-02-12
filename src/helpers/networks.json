@@ -5,221 +5,30 @@
     "chainId": 1,
     "network": "homestead",
     "rpc": [
+      "https://api.s0.t.hmny.io",
       {
-        "url": "https://api-geth-archive.ankr.com",
+        "url": "https://api.s0.t.hmny.io",
         "user": "balancer_user",
         "password": "balancerAnkr20201015"
       },
-      "https://eth-archival.gateway.pokt.network/v1/5f76124fb90218002e9ce985",
-      "https://eth-mainnet.alchemyapi.io/v2/4bdDVB5QAaorY2UE-GBUbM2yQB3QJqzv",
-      "https://cloudflare-eth.com"
-    ],
-    "ws": [
-      "wss://eth-mainnet.ws.alchemyapi.io/v2/4bdDVB5QAaorY2UE-GBUbM2yQB3QJqzv"
+      "https://api.s0.t.hmny.io"
     ],
     "explorer": "https://explorer.harmony.one/#"
   },
-  "4": {
-    "key": "4",
-    "name": "Ethereum Testnet Rinkeby",
-    "shortName": "Rinkeby",
-    "chainId": 4,
-    "network": "rinkeby",
+  "2": {
+    "key": "2",
+    "name": "Harmony Testnet",
+    "chainId": 2,
+    "network": "homestead",
     "rpc": [
-      "https://eth-rinkeby.alchemyapi.io/v2/twReQE9Px03E-E_N_Fbb3OVF7YgHxoGq",
-      "https://eth-rinkeby.gateway.pokt.network/v1/5f76124fb90218002e9ce985"
+      "https://api.s0.t.hmny.io",
+      {
+        "url": "https://api.s0.b.hmny.io",
+        "user": "balancer_user",
+        "password": "balancerAnkr20201015"
+      },
+      "https://api.s0.b.hmny.io"
     ],
-    "ws": [
-      "wss://eth-rinkeby.ws.alchemyapi.io/v2/twReQE9Px03E-E_N_Fbb3OVF7YgHxoGq"
-    ],
-    "explorer": "https://rinkeby.etherscan.io"
-  },
-  "7": {
-    "key": "7",
-    "name": "ThaiChain",
-    "chainId": 7,
-    "network": "mainnet",
-    "rpc": ["https://rpc.dome.cloud"],
-    "ws": ["wss://ws.dome.cloud"],
-    "explorer": "https://exp.tch.in.th"
-  },
-  "42": {
-    "key": "42",
-    "name": "Ethereum Testnet Kovan",
-    "shortName": "Kovan",
-    "chainId": 42,
-    "network": "kovan",
-    "rpc": [
-      "https://eth-kovan.alchemyapi.io/v2/QCsM2iU0bQ49eGDmZ7-Y--Wpu0lVWXSO",
-      "https://poa-kovan.gateway.pokt.network/v1/5f76124fb90218002e9ce985"
-    ],
-    "ws": [
-      "wss://eth-kovan.ws.alchemyapi.io/v2/QCsM2iU0bQ49eGDmZ7-Y--Wpu0lVWXSO"
-    ],
-    "explorer": "https://kovan.etherscan.io"
-  },
-  "50": {
-    "key": "50",
-    "name": "XinFin MainNet",
-    "shortName": "XDC",
-    "chainId": 50,
-    "network": "mainnet",
-    "rpc": [
-      "https://rpc.xinfin.network"
-    ],
-    "ws": ["wss://ws.xinfin.network"],
-    "explorer": "http://explorer.xinfin.network/"
-  },
-  "56": {
-    "key": "56",
-    "name": "Binance Smart Chain Mainnet",
-    "shortName": "BSC",
-    "chainId": 56,
-    "network": "mainnet",
-    "rpc": [
-      "https://bsc-dataseed1.binance.org",
-      "https://bsc-dataseed2.binance.org",
-      "https://bsc-dataseed3.binance.org"
-    ],
-    "explorer": "https://bscscan.com"
-  },
-  "61": {
-    "key": "61",
-    "name": "Ethereum Classic Mainnet",
-    "shortName": "Ethereum Classic",
-    "chainId": 61,
-    "network": "mainnet",
-    "rpc": ["https://ethereumclassic.network"],
-    "explorer": "https://blockscout.com/etc/mainnet"
-  },
-  "99": {
-    "key": "99",
-    "name": "POA Core",
-    "shortName": "POA",
-    "chainId": 99,
-    "network": "mainnet",
-    "rpc": ["https://core.poa.network"],
-    "explorer": "https://blockscout.com/poa/core/"
-  },
-  "82": {
-    "key": "82",
-    "name": "Meter Mainnet",
-    "shortName": "Meter",
-    "chainId": 82,
-    "network": "mainnet",
-    "rpc": ["https://rpc.meter.io"],
-    "explorer": "https://scan.meter.io"
-  },
-  "97": {
-    "key": "97",
-    "name": "Binance Smart Chain Testnet",
-    "shortName": "BSC Testnet",
-    "chainId": 97,
-    "network": "testnet",
-    "rpc": ["https://data-seed-prebsc-1-s1.binance.org:8545"],
-    "explorer": "https://testnet.bscscan.com"
-  },
-  "100": {
-    "key": "100",
-    "name": "xDAI Chain",
-    "shortName": "xDAI",
-    "chainId": 100,
-    "network": "mainnet",
-    "rpc": [
-      "https://xdai-archive.blockscout.com",
-      "https://poa-xdai.gateway.pokt.network/v1/5f76124fb90218002e9ce985"
-    ],
-    "ws": ["wss://rpc.xdaichain.com/wss"],
-    "explorer": "https://blockscout.com/poa/xdai"
-  },
-  "137": {
-    "key": "137",
-    "name": "Matic Mainnet",
-    "shortName": "Matic",
-    "chainId": 137,
-    "network": "mainnet",
-    "rpc": ["https://rpc-mainnet.matic.network"],
-    "ws": ["wss://ws-mainnet.matic.network"],
-    "explorer": ""
-  },
-  "420": {
-    "key": "420",
-    "name": "Optimistic Ethereum",
-    "chainId": 420,
-    "network": "mainnet",
-    "explorer": ""
-  },
-  "32659": {
-    "key": "32659",
-    "name": "Fusion Mainnet",
-    "chainId": 32659,
-    "network": "mainnet",
-    "rpc": ["https://vote.anyswap.exchange/mainnet"],
-    "ws": ["wss://mainnetpublicgateway1.fusionnetwork.io:10001"],
-    "explorer": "https://fsnex.com"
-  },
-  "80001": {
-    "key": "80001",
-    "name": "Matic Mumbai",
-    "chainId": 80001,
-    "network": "testnet",
-    "rpc": ["https://rpc-mumbai.matic.today"],
-    "ws": ["wss://ws-mumbai.matic.today"],
-    "explorer": ""
-  },
-  "wanchain": {
-    "key": "wanchain",
-    "name": "Wanchain",
-    "chainId": 1,
-    "network": "mainnet",
-    "rpc": ["https://gwan-ssl.wandevs.org:56891"],
-    "ws": [
-      "wss://api.wanchain.org:8443/ws/v3/ddd16770c68f30350a21114802d5418eafe039b722de52b488e7eee1ee2cd73f"
-    ],
-    "explorer": "https://www.wanscan.org"
-  },
-  "1337": {
-    "key": "1337",
-    "name": "Localhost 8545",
-    "shortName": "localhost",
-    "chainId": 1337,
-    "network": "localhost",
-    "rpc": ["http://localhost:8545"]
-  },
-  "17": {
-    "key": "17",
-    "name": "Docker localhost 8545",
-    "shortName": "dockerLocalhost",
-    "chainId": 17,
-    "network": "docker localhost",
-    "rpc": ["http://localhost:8545"]
-  },
-  "108": {
-    "key": "108",
-    "name": "Thundercore Mainnet",
-    "chainId": 108,
-    "network": "mainnet",
-    "rpc": ["https://mainnet-rpc.thundercore.com"],
-    "explorer": "https://scan.thundercore.com"
-  },
-  "256": {
-    "key": "256",
-    "name": "Huobi Eco Chain Testnet",
-    "shortName": "heco",
-    "chainId": 256,
-    "network": "testnet",
-    "rpc": ["https://http-testnet.hecochain.com"],
-    "ws": ["wss://ws-testnet.hecochain.com"],
-    "explorer": "https://scan-testnet.hecochain.com"
-  },
-  "128": {
-    "key": "128",
-    "name": "Huobi Eco Chain Mainnet",
-    "shortName": "heco",
-    "chainId": 128,
-    "network": "Mainnet",
-    "rpc": ["https://http-mainnet.hecochain.com"],
-    "ws": ["wss://ws-mainnet.hecochain.com"],
-    "explorer": "https://scan.hecochain.com"
+    "explorer": "https://explorer.pops.one/#"
   }
 }

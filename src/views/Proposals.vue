@@ -90,11 +90,11 @@ export default {
         return false;
       }
 
-      return true; // TODO: test only
+      // return true; // TODO: test only
 
-      // return !!this.app.validators.find(v =>
-      //   isAddressEqual(v.address, this.web3.account)
-      // );
+      return !!this.app.validators.find(v =>
+        isAddressEqual(v.address, this.web3.account)
+      );
     },
     key() {
       return this.domain || this.$route.params.key;

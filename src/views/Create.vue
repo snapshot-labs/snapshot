@@ -134,7 +134,7 @@
 import { mapActions } from 'vuex';
 import draggable from 'vuedraggable';
 import { ipfsGet } from '@snapshot-labs/snapshot.js/src/utils';
-import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
+import getProvider from '@/helpers/provider';
 import { getBlockNumber } from '@snapshot-labs/snapshot.js/src/utils/web3';
 import gateways from '@snapshot-labs/snapshot.js/src/gateways.json';
 
@@ -193,7 +193,9 @@ export default {
   async mounted() {
     this.$refs.nameForm.focus();
     this.addChoice(2);
+
     this.blockNumber = await getBlockNumber(getProvider(this.space.network));
+
     this.form.snapshot = this.blockNumber;
     if (this.from) {
       try {

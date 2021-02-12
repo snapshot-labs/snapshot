@@ -5,7 +5,7 @@ import {
   getBlockNumber,
   signMessage
 } from '@snapshot-labs/snapshot.js/src/utils/web3';
-import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
+import getProvider from '@/helpers/provider';
 import gateways from '@snapshot-labs/snapshot.js/src/gateways.json';
 import client from '@/helpers/client';
 import {
@@ -113,7 +113,6 @@ const actions = {
 
     commit('SET', { loading: true });
     await dispatch('getSpaces');
-    await dispatch('getValidators');
     commit('SET', { loading: false, init: true });
   },
   loading: ({ commit }, payload) => {
@@ -135,9 +134,11 @@ const actions = {
     commit('SET', { spaces });
     return spaces;
   },
-  getValidators: async ({ commit }) => {
+  getValidators: async ({ commit }, spaceKey) => {
+    const network = spaceKey === 'staking-mainnet' ? 'mainnet' : 'testnet';
+
     const res: any = await client.getByUrl(
-      'https://api.stake.hmny.io/networks/mainnet/validators'
+      `https://api.stake.hmny.io/networks/${network}/validators`
     );
 
     const validators = res.validators;
@@ -213,8 +214,11 @@ const actions = {
       return;
     }
   },
-  getProposals: async ({ commit }, space) => {
+  getProposals: async ({ commit, dispatch }, space) => {
     commit('GET_PROPOSALS_REQUEST');
+
+    await dispatch('getValidators', space.key);
+
     try {
       let proposals: any = await client.request(`${space.key}/proposals`);
       if (proposals) {
@@ -228,7 +232,7 @@ const actions = {
               ...acc,
               [proposal.address]: validator
                 ? Number(ones(validator.total_stake))
-                : Number(ones(1000 * 1e18)) // TODO: test only
+                : Number(ones(0)) // TODO: test only
             };
           }, {})
         ];
@@ -308,7 +312,9 @@ const actions = {
 
             return {
               ...acc,
-              [addr]: validator ? Number(ones(validator.total_stake)) : Number(ones(1000 * 1e18))// TODO: test only
+              [addr]: validator
+                ? Number(ones(validator.total_stake))
+                : Number(ones(0)) // TODO: test only
             };
           }, {})
         ]),
@@ -413,7 +419,7 @@ const actions = {
           new HarmonyAddress(address).checksum
       );
 
-      const scores = [validator ? ones(validator.total_stake) : ones(1000 * 1e18)]; // TODO: test only
+      const scores = [validator ? ones(validator.total_stake) : ones(0)]; // TODO: test only
 
       commit('GET_POWER_SUCCESS');
       return {

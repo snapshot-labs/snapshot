@@ -75,7 +75,7 @@
 
 <script>
 import Plugin from '@snapshot-labs/snapshot.js/src/plugins/gnosis';
-import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
+import getProvider from '@/helpers/provider';
 
 export default {
   props: ['proposalConfig', 'choices', 'network'],

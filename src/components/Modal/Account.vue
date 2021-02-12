@@ -64,7 +64,7 @@
           </UiButton>
         </a>
         <a
-          v-if="web3.profile?.name || web3.profile?.image"
+          v-if="false && web3.profile?.name || web3.profile?.image"
           :href="`https://3box.io/${web3.account}/edit`"
           target="_blank"
           class="mb-2 d-block"
@@ -75,7 +75,7 @@
           </UiButton>
         </a>
         <a
-          v-else
+          v-else-if="false"
           href="https://3box.io/hub"
           target="_blank"
           class="mb-2 d-block"
@@ -89,7 +89,7 @@
           @click="step = 'connect'"
           class="button-outline width-full mb-2"
         >
-          Connect wallet
+          Change wallet
         </UiButton>
         <UiButton
           @click="handleLogout"
