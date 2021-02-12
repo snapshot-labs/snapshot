@@ -36,21 +36,22 @@ function lookupAddresses(addresses) {
           }
         },
         id: true,
-        domains: {
+        registrations: {
           __args: {
+            orderBy: 'registrationDate',
             first: 1
           },
-          name: true,
-          labelName: true
+          domain: {
+            name: true
+          }
         }
       }
     })
       .then(({ accounts }) => {
         const ensNames = {};
         accounts.forEach(profile => {
-          ensNames[profile.id.toLowerCase()] = profile?.domains?.[0]?.labelName
-            ? profile.domains[0].name
-            : '';
+          ensNames[profile.id.toLowerCase()] =
+            profile?.registrations?.[0]?.domain?.name || '';
         });
         resolove(ensNames);
       })
