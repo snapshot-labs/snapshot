@@ -26,7 +26,13 @@
               @delete="deleteProposal"
               :items="[{ text: 'Delete proposal', action: 'delete' }]"
             >
-              <Icon name="threedots" size="25" class="v-align-text-bottom" />
+              <UiLoading v-if="deleteLoading" />
+              <Icon
+                v-else
+                name="threedots"
+                size="25"
+                class="v-align-text-bottom"
+              />
             </UiDropdown>
           </div>
           <UiMarkdown :body="payload.body" class="mb-6" />
@@ -48,7 +54,7 @@
           >
             {{ _shorten(choice, 32) }}
             <a
-              v-if="payload.metadata.plugins?.aragon?.choice?.[i + 1]"
+              v-if="payload.metadata.plugins?.aragon?.[`choice${[i + 1]}`]"
               @click="modalOpen = true"
               :aria-label="
                 `Target address: ${
@@ -205,6 +211,7 @@ export default {
       loading: false,
       loaded: false,
       voteLoading: false,
+      deleteLoading: false,
       proposal: {},
       votes: {},
       results: [],
@@ -256,14 +263,26 @@ export default {
       this.scores = scores;
     },
     async deleteProposal() {
-      console.log(this.id, this.space.key);
-      await this.send({
-        space: this.space.key,
-        type: 'delete-proposal',
-        payload: {
-          proposal: this.id
+      this.deleteLoading = true;
+      try {
+        if (
+          await this.send({
+            space: this.space.key,
+            type: 'delete-proposal',
+            payload: {
+              proposal: this.id
+            }
+          })
+        ) {
+          this.deleteLoading = false;
+          this.$router.push({
+            name: 'proposals'
+          });
         }
-      });
+      } catch (e) {
+        console.error(e);
+      }
+      this.deleteLoading = false;
     }
   },
   async created() {
