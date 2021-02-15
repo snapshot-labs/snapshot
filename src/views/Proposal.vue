@@ -54,7 +54,7 @@
           >
             {{ _shorten(choice, 32) }}
             <a
-              v-if="payload.metadata.plugins?.aragon?.choice?.[i + 1]"
+              v-if="payload.metadata.plugins?.aragon?.[`choice${[i + 1]}`]"
               @click="modalOpen = true"
               :aria-label="
                 `Target address: ${
