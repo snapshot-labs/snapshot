@@ -141,7 +141,7 @@ const actions = {
       `https://api.stake.hmny.io/networks/${network}/validators`
     );
 
-    const validators = res.validators;
+    const validators = res.validators.filter(v => !!v.active);
 
     // const validators: any = [
     //   {
