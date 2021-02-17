@@ -96,13 +96,14 @@ export default {
   },
   async created() {
     this.loading = true;
+    const provider = getProvider(this.proposalConfig.network);
     this.baseToken = await this.plugin.getTokenInfo(
-      getProvider(this.proposalConfig.network),
+      provider,
       this.proposalConfig.baseTokenAddress
     );
     this.baseTokenUrl = this.getLogoUrl(this.baseToken.checksumAddress);
     this.quoteToken = await this.plugin.getTokenInfo(
-      getProvider(this.proposalConfig.network),
+      provider,
       this.proposalConfig.quoteCurrencyAddress
     );
     const conditionQuery = await this.plugin.getOmenCondition(

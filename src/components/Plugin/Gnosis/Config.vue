@@ -13,7 +13,7 @@
             placeholder="Select network"
             required
           >
-            <option value="1" selected="selected">Mainnet</option>
+            <option value="1" selected>Mainnet</option>
             <option value="100">xDai</option>
           </select>
         </UiButton>
@@ -103,6 +103,7 @@ export default {
     addAction() {
       if (!this.input) this.input = {};
       this.input = {
+        network: '1',
         conditionId: '',
         baseTokenAddress: '',
         quoteCurrencyAddress: ''
