@@ -96,6 +96,9 @@ export default {
   },
   async created() {
     this.loading = true;
+    if (this.proposalConfig.network === undefined) {
+      this.proposalConfig.network = '1';
+    }
     const provider = getProvider(this.proposalConfig.network);
     this.baseToken = await this.plugin.getTokenInfo(
       provider,
