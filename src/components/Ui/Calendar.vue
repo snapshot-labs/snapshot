@@ -90,7 +90,9 @@ export default {
   },
   methods: {
     formatDate(year, month, day) {
-      return new Date(year, month, day + 1).toISOString().split('T')[0];
+      const formattedDate = new Date(year, month, day);
+      formattedDate.setUTCHours(0,0,0,0);
+      return formattedDate.toISOString().split('T')[0];
     },
     toggleDay(year, month, day) {
       this.input = this.formatDate(year, month, day);
