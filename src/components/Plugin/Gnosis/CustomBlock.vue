@@ -96,7 +96,8 @@ export default {
   },
   async created() {
     this.loading = true;
-    const provider = getProvider(this.proposalConfig.network);
+    const network = this.proposalConfig.network || '1';
+    const provider = getProvider(network);
     this.baseToken = await this.plugin.getTokenInfo(
       provider,
       this.proposalConfig.baseTokenAddress
@@ -107,7 +108,7 @@ export default {
       this.proposalConfig.quoteCurrencyAddress
     );
     const conditionQuery = await this.plugin.getOmenCondition(
-      this.proposalConfig.network,
+      network,
       this.proposalConfig.conditionId
     );
     this.baseProductMarketMaker = conditionQuery.condition.fixedProductMarketMakers.find(
@@ -118,7 +119,7 @@ export default {
     );
 
     const tokenPairQuery = await this.plugin.getUniswapPair(
-      this.proposalConfig.network,
+      network,
       this.proposalConfig.quoteCurrencyAddress,
       this.proposalConfig.baseTokenAddress
     );
@@ -141,7 +142,8 @@ export default {
       return `https://gnosis-safe-token-logos.s3.amazonaws.com/${checksumAddress}.png`;
     },
     getMarketUrl(marketIndex) {
-      if (this.proposalConfig.network === "100") {
+      const network = this.proposalConfig.network || '1';
+      if (network === "100") {
         return `https://xdai.omen.eth.link/#/${marketIndex.id}`;
       }
       return `https://omen.eth.link/#/${marketIndex.id}`;
