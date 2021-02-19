@@ -18,7 +18,7 @@
     "@ethersproject/strings": "^5.0.5",
     "@ethersproject/units": "^5.0.1",
     "@ethersproject/wallet": "^5.0.1",
-    "@portis/web3": "2.0.0-beta.49",
+    "@portis/web3": "^3.0.8",
     "@primer/css": "^14.4.0",
     "@snapshot-labs/lock": "github:snapshot-labs/lock#master",
     "@snapshot-labs/snapshot-spaces": "github:snapshot-labs/snapshot-spaces#master",
