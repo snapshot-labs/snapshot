@@ -78,7 +78,7 @@ import Plugin from '@snapshot-labs/snapshot.js/src/plugins/gnosis';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 
 export default {
-  props: ['proposalConfig', 'choices', 'network'],
+  props: ['proposalConfig', 'choices'],
   data() {
     return {
       loading: false,
@@ -96,17 +96,19 @@ export default {
   },
   async created() {
     this.loading = true;
+    const network = this.proposalConfig.network || '1';
+    const provider = getProvider(network);
     this.baseToken = await this.plugin.getTokenInfo(
-      getProvider(this.network),
+      provider,
       this.proposalConfig.baseTokenAddress
     );
     this.baseTokenUrl = this.getLogoUrl(this.baseToken.checksumAddress);
     this.quoteToken = await this.plugin.getTokenInfo(
-      getProvider(this.network),
+      provider,
       this.proposalConfig.quoteCurrencyAddress
     );
     const conditionQuery = await this.plugin.getOmenCondition(
-      this.network,
+      network,
       this.proposalConfig.conditionId
     );
     this.baseProductMarketMaker = conditionQuery.condition.fixedProductMarketMakers.find(
@@ -117,7 +119,7 @@ export default {
     );
 
     const tokenPairQuery = await this.plugin.getUniswapPair(
-      this.network,
+      network,
       this.proposalConfig.quoteCurrencyAddress,
       this.proposalConfig.baseTokenAddress
     );
@@ -140,6 +142,10 @@ export default {
       return `https://gnosis-safe-token-logos.s3.amazonaws.com/${checksumAddress}.png`;
     },
     getMarketUrl(marketIndex) {
+      const network = this.proposalConfig.network || '1';
+      if (network === "100") {
+        return `https://xdai.omen.eth.link/#/${marketIndex.id}`;
+      }
       return `https://omen.eth.link/#/${marketIndex.id}`;
     },
     getTokenPrice(outcomeIndex) {
