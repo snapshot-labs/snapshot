@@ -143,7 +143,7 @@ export default {
     },
     getMarketUrl(marketIndex) {
       const network = this.proposalConfig.network || '1';
-      if (network === "100") {
+      if (network === '100') {
         return `https://xdai.omen.eth.link/#/${marketIndex.id}`;
       }
       return `https://omen.eth.link/#/${marketIndex.id}`;

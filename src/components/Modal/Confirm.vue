@@ -23,7 +23,7 @@
             target="_blank"
             class="float-right"
           >
-            {{ proposal.msg.payload.snapshot }}
+            {{ _n(proposal.msg.payload.snapshot, '0,0') }}
             <Icon name="external-link" class="ml-1" />
           </a>
         </div>

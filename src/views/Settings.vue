@@ -222,14 +222,12 @@
 <script>
 import { mapActions } from 'vuex';
 import { getAddress } from '@ethersproject/address';
-import { ipfsGet } from '@snapshot-labs/snapshot.js/src/utils';
 import { validateSchema } from '@snapshot-labs/snapshot.js/src/utils';
 import schemas from '@snapshot-labs/snapshot.js/src/schemas';
-import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
-import { resolveContent } from '@snapshot-labs/snapshot.js/src/utils/contentHash';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import gateways from '@snapshot-labs/snapshot.js/src/gateways.json';
 import { clone } from '@/helpers/utils';
+import { getSpaceUri, uriGet } from '@/helpers/ens';
 
 const gateway = process.env.VUE_APP_IPFS_GATEWAY || gateways[0];
 
@@ -274,12 +272,13 @@ export default {
   },
   async created() {
     try {
-      const { protocolType, decoded } = await resolveContent(
-        getProvider('1'),
-        this.key
-      );
-      this.currentContenthash = `${protocolType}://${decoded}`;
-      const space = await ipfsGet(gateway, decoded, protocolType);
+      const uri = await getSpaceUri(this.key);
+      this.currentContenthash = uri;
+      const [protocolType, decoded] = uri.split('://');
+      let space = clone(this.app.spaces?.[this.key]);
+      if (!space) space = await uriGet(gateway, decoded, protocolType);
+      delete space.key;
+      delete space._activeProposals;
       space.filters = space.filters || {};
       space.strategies = space.strategies || [];
       this.currentSettings = clone(space);
