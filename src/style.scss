@@ -229,3 +229,12 @@ textarea {
   color: var(--text-color);
   border-left-color: var(--text-color);
 }
+
+.last-child-border-0:last-child {
+  border: 0 !important;
+}
+
+.sliding {
+  overflow: auto;
+  white-space: nowrap;
+}
