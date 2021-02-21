@@ -49,7 +49,10 @@ export default {
   },
   methods: {
     handleSubmit() {
-      this.$router.push({ name: 'settings', params: { key: this.id } });
+      this.$router.push({
+        name: 'settings',
+        params: { key: this.id.toLowerCase() }
+      });
     }
   }
 };
