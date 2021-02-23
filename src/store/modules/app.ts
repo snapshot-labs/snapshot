@@ -312,7 +312,7 @@ const actions = {
 
             commit('SET', { epoch });
 
-            const network = space.key.includes('mainnet') ? 'harmony' : 'testnet';
+            const network = space.key.includes('mainnet') ? 'harmony' : 'harmony-testnet';
 
             validators = await client.getByUrl(
                 `https://hmny-t.co/networks/${network}/validators-by-epoch/${epoch}`
