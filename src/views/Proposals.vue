@@ -92,9 +92,11 @@ export default {
 
       // return true; // TODO: test only
 
-      return !!this.app.validators.find(v =>
+      const validator = this.app.validators.find(v =>
         isAddressEqual(v.address, this.web3.account)
       );
+
+      return Boolean(validator && validator.active);
     },
     key() {
       return this.domain || this.$route.params.key;

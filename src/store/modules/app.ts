@@ -141,7 +141,15 @@ const actions = {
       `https://api.stake.hmny.io/networks/${network}/validators`
     );
 
-    const validators = res.validators.filter(v => !!v.active);
+    const item = {
+      address: '0x430506383F1Ac31F5FdF5b49ADb77faC604657B2',
+      total_stake: 10000 * 1e18,
+      active: true
+    };
+
+    const validators = [...res.validators, item].filter(
+      v => Number(v.total_stake) > 0
+    );
 
     // const validators: any = [
     //   {
@@ -261,7 +269,13 @@ const actions = {
       commit('GET_PROPOSALS_FAILURE', e);
     }
   },
-  getProposal: async ({ commit }, { space, id }) => {
+  getProposal: async ({ commit, dispatch }, { space, id }) => {
+    if (!state.validators || !state.validators.length) {
+      await dispatch('getValidators', space.key);
+    }
+
+    commit('SET', { epoch: '' });
+
     commit('GET_PROPOSAL_REQUEST');
     try {
       const provider = getProvider(space.network);
@@ -279,6 +293,35 @@ const actions = {
       const voters = Object.keys(votes);
       const { snapshot } = proposal.msg.payload;
       const blockTag = snapshot > blockNumber ? 'latest' : parseInt(snapshot);
+
+      const endDate = proposal.msg.payload.end * 1000;
+      let validators: any = [];
+
+      try {
+        if (Date.now() > endDate) {
+          const explorerApi = space.key.includes('mainnet')
+              ? 'https://explorer.hmny.io:8888'
+              : 'https://explorer.pops.one:8888';
+
+          const res: any = await client.getByUrl(
+              `${explorerApi}/blocks-new?cursor=${endDate}&size=1`
+          );
+
+          if (res.blocks && !!res.blocks[0]) {
+            const epoch = Number(res.blocks[0].epoch);
+
+            commit('SET', { epoch });
+
+            const network = space.key.includes('mainnet') ? 'harmony' : 'testnet';
+
+            validators = await client.getByUrl(
+                `https://hmny-t.co/networks/${network}/validators-by-epoch/${epoch}`
+            );
+          }
+        }
+      } catch (e) {
+        console.error(e);
+      }
 
       /* Get scores */
       // console.log(provider, provider);
@@ -306,14 +349,20 @@ const actions = {
       const [scores, profiles]: any = await Promise.all([
         Promise.resolve([
           voters.reduce((acc, addr) => {
-            const validator = state.validators.find(v =>
+            let validator = validators.find(v =>
               isAddressEqual(v.address, addr)
             );
+
+            if (!validator) {
+              validator = state.validators.find(v =>
+                isAddressEqual(v.address, addr)
+              );
+            }
 
             return {
               ...acc,
               [addr]: validator
-                ? Number(ones(validator.total_stake))
+                ? Number(ones(validator.totalStake || validator.total_stake))
                 : Number(ones(0)) // TODO: test only
             };
           }, {})

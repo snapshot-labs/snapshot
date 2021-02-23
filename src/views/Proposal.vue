@@ -157,6 +157,16 @@
                 <Icon name="external-link" class="ml-1" />
               </a>
             </div>
+
+            <div class="mb-1" v-if="epoch.length">
+              <b>Closed on epoch</b>
+              <span
+                :aria-label="epoch"
+                :v-text="epoch"
+                class="float-right text-white tooltipped tooltipped-n"
+                >{{ epoch }}</span
+              >
+            </div>
           </div>
         </Block>
         <BlockResults
@@ -228,6 +238,9 @@ export default {
   },
   computed: {
     ...mapState(['app', 'web3']),
+    epoch() {
+      return String(this.app.epoch);
+    },
     isOtherValidator() {
       if (!this.web3.account) {
         return false;
@@ -273,7 +286,6 @@ export default {
       this.proposal = proposalObj.proposal;
       this.votes = proposalObj.votes;
       this.results = proposalObj.results;
-
 
       console.log(123, this.votes);
     },
