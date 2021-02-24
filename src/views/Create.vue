@@ -77,20 +77,37 @@
           @submit="modalPluginsOpen = true"
         >
           <div class="mb-2">
-            <UiButton
-              @click="[(modalOpen = true), (selectedDate = 'start')]"
-              class="width-full mb-2"
-            >
-              <span v-if="!form.start">Select start date</span>
-              <span v-else v-text="$d(form.start * 1e3, 'short')" />
-            </UiButton>
-            <UiButton
-              @click="[(modalOpen = true), (selectedDate = 'end')]"
-              class="width-full mb-2"
-            >
-              <span v-if="!form.end">Select end date</span>
-              <span v-else v-text="$d(form.end * 1e3, 'short')" />
-            </UiButton>
+            <div class="mb-1">
+              <b>Start date</b>
+              <span
+                :aria-label="_ms(form.start)"
+                v-text="$d(form.start * 1e3, 'short')"
+                class="float-right text-white tooltipped tooltipped-n"
+              />
+            </div>
+            <div class="mb-1">
+              <b>End date</b>
+              <span
+                :aria-label="_ms(form.end)"
+                v-text="$d(form.end * 1e3, 'short')"
+                class="float-right text-white tooltipped tooltipped-n"
+              />
+            </div>
+            <br />
+            <!--            <UiButton-->
+            <!--              @click="[(modalOpen = true), (selectedDate = 'start')]"-->
+            <!--              class="width-full mb-2"-->
+            <!--            >-->
+            <!--              <span v-if="!form.start">Select start date</span>-->
+            <!--              <span v-else v-text="$d(form.start * 1e3, 'short')" />-->
+            <!--            </UiButton>-->
+            <!--            <UiButton-->
+            <!--              @click="[(modalOpen = true), (selectedDate = 'end')]"-->
+            <!--              class="width-full mb-2"-->
+            <!--            >-->
+            <!--              <span v-if="!form.end">Select end date</span>-->
+            <!--              <span v-else v-text="$d(form.end * 1e3, 'short')" />-->
+            <!--            </UiButton>-->
             <UiButton class="width-full mb-2">
               <input
                 v-model="form.snapshot"
@@ -145,6 +162,8 @@ export default {
     draggable
   },
   data() {
+    const day = 1000 * 60 * 60 * 24;
+
     return {
       key: this.$route.params.key,
       from: this.$route.params.from,
@@ -156,8 +175,8 @@ export default {
         name: '',
         body: '',
         choices: [],
-        start: '',
-        end: '',
+        start: (Date.now() + day * 7) / 1000,
+        end: (Date.now() + day * 21) / 1000,
         snapshot: '',
         metadata: {}
       },

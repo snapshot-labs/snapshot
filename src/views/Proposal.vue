@@ -250,13 +250,17 @@ export default {
         isAddressEqual(v.address, this.web3.account)
       );
 
+      const isUserVoted = Object.keys(this.votes || {}).some(address =>
+        isAddressEqual(address, this.web3.account)
+      );
+
       // return (
       //   iAmValidator &&
       //   !isAddressEqual(this.proposal.address, this.web3.account)
 
       // return true; // TODO: test only
 
-      return iAmValidator;
+      return iAmValidator && !isUserVoted;
     },
     space() {
       return this.app.spaces[this.key];
