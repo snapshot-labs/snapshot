@@ -296,11 +296,7 @@ const actions = {
 
       const endDate = proposal.msg.payload.end * 1000;
       let validators: any = [];
-      let totalStaked = state.validators
-        .filter(v => !v.active)
-        .reduce((acc, v) => Number(v.total_stake) + acc, 0);
-
-      console.log('totalStaked', totalStaked)
+      let totalStaked = 0;
 
       const network = space.key.includes('mainnet')
         ? 'harmony'
@@ -329,20 +325,32 @@ const actions = {
               `https://hmny-t.co/networks/${network}/network-info-by-epoch/${epoch}`
             );
 
-            totalStaked += Number(resp['total-staking']);
+            totalStaked = Number(resp['total-staking']);
           }
         } else {
           const resp: any = await client.getByUrl(
             `https://hmny-t.co/networks/${network}/network-info-by-epoch/latest`
           );
 
-          totalStaked += Number(resp['total-staking']);
+          totalStaked = Number(resp['total-staking']);
         }
       } catch (e) {
         console.error(e);
       }
 
-      console.log('-----totalStaked', totalStaked);
+      // console.log('-----totalStaked', totalStaked);
+
+      const totalStakedUnelected = state.validators
+        .filter(v => {
+          const validatorInHistory = validators.find(v =>
+            isAddressEqual(v.address, v.address)
+          );
+
+          return !v.active && !validatorInHistory;
+        })
+        .reduce((acc, v) => Number(v.total_stake) + acc, 0);
+
+      totalStaked = totalStaked + totalStakedUnelected;
 
       /* Get scores */
       // console.log(provider, provider);
