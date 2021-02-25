@@ -167,6 +167,17 @@
                 >{{ epoch }}</span
               >
             </div>
+
+            <div class="mb-1" v-if="epoch.length">
+              <b>Total votes</b>
+              <span
+                :aria-label="totalVotesOne + ' / ' + results.totalStaked"
+                :v-text="totalVotesOne + ' / ' + results.totalStaked"
+                class="float-right text-white tooltipped tooltipped-n"
+              >
+                {{ Number(totalVotesPercent) > 0.01 ? totalVotesPercent.toFixed(2) : totalVotesPercent.toFixed(4) }} %
+              </span>
+            </div>
           </div>
         </Block>
         <BlockResults
@@ -240,6 +251,16 @@ export default {
     ...mapState(['app', 'web3']),
     epoch() {
       return String(this.app.epoch);
+    },
+    totalVotesOne() {
+      return this.results
+        ? this.results.totalBalances.reduce((acc, it) => acc + it, 0)
+        : 0;
+    },
+    totalVotesPercent() {
+      return this.totalVotesOne
+        ? (this.totalVotesOne / this.results.totalStaked) * 100
+        : 0;
     },
     isOtherValidator() {
       if (!this.web3.account) {

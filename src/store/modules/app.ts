@@ -296,15 +296,20 @@ const actions = {
 
       const endDate = proposal.msg.payload.end * 1000;
       let validators: any = [];
+      let totalStaked = 0;
+
+      const network = space.key.includes('mainnet')
+          ? 'harmony'
+          : 'harmony-testnet';
 
       try {
         if (Date.now() > endDate) {
           const explorerApi = space.key.includes('mainnet')
-              ? 'https://explorer.hmny.io:8888'
-              : 'https://explorer.pops.one:8888';
+            ? 'https://explorer.hmny.io:8888'
+            : 'https://explorer.pops.one:8888';
 
           const res: any = await client.getByUrl(
-              `${explorerApi}/blocks-new?cursor=${endDate}&size=1`
+            `${explorerApi}/blocks-new?cursor=${endDate}&size=1`
           );
 
           if (res.blocks && !!res.blocks[0]) {
@@ -312,16 +317,28 @@ const actions = {
 
             commit('SET', { epoch });
 
-            const network = space.key.includes('mainnet') ? 'harmony' : 'harmony-testnet';
-
             validators = await client.getByUrl(
-                `https://hmny-t.co/networks/${network}/validators-by-epoch/${epoch}`
+              `https://hmny-t.co/networks/${network}/validators-by-epoch/${epoch}`
             );
+
+            const resp: any = await client.getByUrl(
+                `https://hmny-t.co/networks/${network}/network-info-by-epoch/${epoch}`
+            );
+
+            totalStaked = resp['total-staking'];
           }
+        } else {
+          const resp: any = await client.getByUrl(
+              `https://hmny-t.co/networks/${network}/network-info-by-epoch/latest`
+          );
+
+          totalStaked = resp['total-staking'];
         }
       } catch (e) {
         console.error(e);
       }
+
+      console.log('-----totalStaked', totalStaked);
 
       /* Get scores */
       // console.log(provider, provider);
@@ -409,6 +426,7 @@ const actions = {
 
       /* Get results */
       const results = {
+        totalStaked: ones(totalStaked).toFixed(0),
         totalVotes: proposal.msg.payload.choices.map(
           (choice, i) =>
             Object.values(votes).filter(
