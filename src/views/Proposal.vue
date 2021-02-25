@@ -168,7 +168,7 @@
               >
             </div>
 
-            <div class="mb-1" v-if="epoch.length">
+            <div class="mb-1">
               <b>Total votes</b>
               <span
                 :aria-label="totalVotesOne + ' / ' + results.totalStaked"
