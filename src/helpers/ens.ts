@@ -49,8 +49,8 @@ export async function getSpaceUriFromTextRecord(id) {
 }
 
 export async function getSpaceUri(id) {
-  let uri = await getSpaceUriFromContentHash(id);
-  if (!uri) uri = await getSpaceUriFromTextRecord(id);
+  let uri = await getSpaceUriFromTextRecord(id);
+  if (!uri) uri = await getSpaceUriFromContentHash(id);
   return uri;
 }
 
