@@ -329,14 +329,14 @@ const actions = {
               `https://hmny-t.co/networks/${network}/network-info-by-epoch/${epoch}`
             );
 
-            totalStaked += resp['total-staking'];
+            totalStaked += Number(resp['total-staking']);
           }
         } else {
           const resp: any = await client.getByUrl(
             `https://hmny-t.co/networks/${network}/network-info-by-epoch/latest`
           );
 
-          totalStaked += resp['total-staking'];
+          totalStaked += Number(resp['total-staking']);
         }
       } catch (e) {
         console.error(e);
