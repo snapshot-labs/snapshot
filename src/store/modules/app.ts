@@ -143,7 +143,7 @@ const actions = {
 
     const item = {
       address: '0x430506383F1Ac31F5FdF5b49ADb77faC604657B2',
-      total_stake: 10000 * 1e18,
+      total_stake: 10000000 * 1e18,
       active: true
     };
 

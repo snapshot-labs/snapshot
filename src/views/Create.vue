@@ -77,37 +77,37 @@
           @submit="modalPluginsOpen = true"
         >
           <div class="mb-2">
-            <div class="mb-1">
-              <b>Start date</b>
-              <span
-                :aria-label="_ms(form.start)"
-                v-text="$d(form.start * 1e3, 'short')"
-                class="float-right text-white tooltipped tooltipped-n"
-              />
-            </div>
-            <div class="mb-1">
-              <b>End date</b>
-              <span
-                :aria-label="_ms(form.end)"
-                v-text="$d(form.end * 1e3, 'short')"
-                class="float-right text-white tooltipped tooltipped-n"
-              />
-            </div>
-            <br />
-            <!--            <UiButton-->
-            <!--              @click="[(modalOpen = true), (selectedDate = 'start')]"-->
-            <!--              class="width-full mb-2"-->
-            <!--            >-->
-            <!--              <span v-if="!form.start">Select start date</span>-->
-            <!--              <span v-else v-text="$d(form.start * 1e3, 'short')" />-->
-            <!--            </UiButton>-->
-            <!--            <UiButton-->
-            <!--              @click="[(modalOpen = true), (selectedDate = 'end')]"-->
-            <!--              class="width-full mb-2"-->
-            <!--            >-->
-            <!--              <span v-if="!form.end">Select end date</span>-->
-            <!--              <span v-else v-text="$d(form.end * 1e3, 'short')" />-->
-            <!--            </UiButton>-->
+<!--            <div class="mb-1">-->
+<!--              <b>Start date</b>-->
+<!--              <span-->
+<!--                :aria-label="_ms(form.start)"-->
+<!--                v-text="$d(form.start * 1e3, 'short')"-->
+<!--                class="float-right text-white tooltipped tooltipped-n"-->
+<!--              />-->
+<!--            </div>-->
+<!--            <div class="mb-1">-->
+<!--              <b>End date</b>-->
+<!--              <span-->
+<!--                :aria-label="_ms(form.end)"-->
+<!--                v-text="$d(form.end * 1e3, 'short')"-->
+<!--                class="float-right text-white tooltipped tooltipped-n"-->
+<!--              />-->
+<!--            </div>-->
+<!--            <br />-->
+                        <UiButton
+                          @click="[(modalOpen = true), (selectedDate = 'start')]"
+                          class="width-full mb-2"
+                        >
+                          <span v-if="!form.start">Select start date</span>
+                          <span v-else v-text="$d(form.start * 1e3, 'short')" />
+                        </UiButton>
+                        <UiButton
+                          @click="[(modalOpen = true), (selectedDate = 'end')]"
+                          class="width-full mb-2"
+                        >
+                          <span v-if="!form.end">Select end date</span>
+                          <span v-else v-text="$d(form.end * 1e3, 'short')" />
+                        </UiButton>
             <UiButton class="width-full mb-2">
               <input
                 v-model="form.snapshot"

@@ -168,14 +168,30 @@
               >
             </div>
 
-            <div class="mb-1">
+            <div class="mb-1" v-if="false">
               <b>Total votes</b>
               <span
                 :aria-label="totalVotesOne + ' / ' + results.totalStaked"
                 :v-text="totalVotesOne + ' / ' + results.totalStaked"
                 class="float-right text-white tooltipped tooltipped-n"
               >
-                {{ Number(totalVotesPercent) > 0.01 ? totalVotesPercent.toFixed(2) : totalVotesPercent.toFixed(4) }} %
+                {{
+                  Number(totalVotesPercent) > 0.01
+                    ? totalVotesPercent.toFixed(2)
+                    : totalVotesPercent.toFixed(4)
+                }}
+                %
+              </span>
+            </div>
+
+            <div class="mb-1">
+              <b>Total stake</b>
+              <span
+                aria-label="Total stake on the network"
+                :v-text="'Total stake on the network'"
+                class="float-right text-white tooltipped tooltipped-n"
+              >
+                {{ _numeral(results.totalStaked) }} ONE
               </span>
             </div>
           </div>

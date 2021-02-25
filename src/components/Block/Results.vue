@@ -25,7 +25,7 @@
             $n(
               !results.totalVotesBalances
                 ? 0
-                : ((100 / results.totalVotesBalances) *
+                : ((100 / results.totalStaked) *
                     results.totalBalances[choice.i]) /
                     1e2,
               'percent'
@@ -35,7 +35,7 @@
       </div>
       <UiProgress
         :value="results.totalScores[choice.i]"
-        :max="results.totalVotesBalances"
+        :max="results.totalStaked"
         :titles="titles"
         class="mb-3"
       />
