@@ -97,6 +97,10 @@
                   <Icon name="info" size="24" class="text-gray p-1" />
                 </a>
               </UiButton>
+              <div class="mb-2 d-flex flex-items-center px-2">
+                <Checkbox v-model="form.private" class="mr-2 mt-1" />
+                Hide space from homepage
+              </div>
             </div>
           </Block>
           <Block title="Strategies">
@@ -149,14 +153,13 @@
                   <InputNumber v-model="form.filters.minScore" class="input" />
                 </div>
               </UiButton>
-              <UiButton class="text-left width-full mb-2 d-flex px-3">
-                <div class="text-gray mr-2">Only members</div>
+              <div class="mb-2 d-flex flex-items-center px-2">
                 <Checkbox
                   v-model="form.filters.onlyMembers"
-                  class="input flex-auto"
-                  :placeholder="`&quot;yes&quot; or &quot;no&quot;`"
+                  class="mr-2 mt-1"
                 />
-              </UiButton>
+                Show only members proposals
+              </div>
               <UiButton class="d-block width-full px-3" style="height: auto;">
                 <TextareaArray
                   v-model="form.filters.invalids"

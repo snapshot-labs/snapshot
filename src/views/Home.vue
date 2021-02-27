@@ -73,15 +73,17 @@ export default {
   },
   computed: {
     spaces() {
-      const list = Object.keys(this.app.spaces).map(key => {
-        const spotlightIndex = spotlight.indexOf(key);
-        return {
-          ...this.app.spaces[key],
-          favorite: !!this.favoriteSpaces.favorites[key],
-          isActive: !!this.app.spaces[key]._activeProposals,
-          spotlight: spotlightIndex === -1 ? 1e3 : spotlightIndex
-        };
-      });
+      const list = Object.keys(this.app.spaces)
+        .map(key => {
+          const spotlightIndex = spotlight.indexOf(key);
+          return {
+            ...this.app.spaces[key],
+            favorite: !!this.favoriteSpaces.favorites[key],
+            isActive: !!this.app.spaces[key]._activeProposals,
+            spotlight: spotlightIndex === -1 ? 1e3 : spotlightIndex
+          };
+        })
+        .filter(space => !space.private);
       return orderBy(list, ['favorite', 'spotlight'], ['desc', 'asc']).filter(
         space =>
           JSON.stringify(space)
