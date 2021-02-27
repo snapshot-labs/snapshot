@@ -46,9 +46,7 @@
           <Block title="Profile">
             <div class="mb-2">
               <a
-                :href="
-                  `https://github.com/snapshot-labs/snapshot-spaces/upload/master/spaces/${key}`
-                "
+                href="https://docs.snapshot.page/spaces/add-avatar"
                 target="_blank"
               >
                 <UiButton class="width-full mb-2">
@@ -97,7 +95,7 @@
                   <Icon name="info" size="24" class="text-gray p-1" />
                 </a>
               </UiButton>
-              <div class="mb-2 d-flex flex-items-center px-2">
+              <div class="d-flex flex-items-center px-2">
                 <Checkbox v-model="form.private" class="mr-2 mt-1" />
                 Hide space from homepage
               </div>
