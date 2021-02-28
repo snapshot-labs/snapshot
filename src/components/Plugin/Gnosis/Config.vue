@@ -7,6 +7,17 @@
       </UiButton>
       <div v-else-if="!preview">
         <UiButton class="width-full mb-2">
+          <select
+            v-model="input.network"
+            class="input width-full text-center"
+            placeholder="Select network"
+            required
+          >
+            <option value="1" selected>Mainnet</option>
+            <option value="100">xDai</option>
+          </select>
+        </UiButton>
+        <UiButton class="width-full mb-2">
           <input
             v-model="input.conditionId"
             class="input width-full text-center"
@@ -39,7 +50,6 @@
       <PluginGnosisCustomBlock
         :proposalConfig="input"
         :choices="getChoices()"
-        :network="network"
       />
     </div>
     <UiButton
@@ -93,6 +103,7 @@ export default {
     addAction() {
       if (!this.input) this.input = {};
       this.input = {
+        network: '1',
         conditionId: '',
         baseTokenAddress: '',
         quoteCurrencyAddress: ''
