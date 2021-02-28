@@ -42,7 +42,8 @@ function lookupAddresses(addresses) {
             first: 1
           },
           domain: {
-            name: true
+            name: true,
+            labelName: true
           }
         }
       }
@@ -51,7 +52,9 @@ function lookupAddresses(addresses) {
         const ensNames = {};
         accounts.forEach(profile => {
           ensNames[profile.id.toLowerCase()] =
-            profile?.registrations?.[0]?.domain?.name || '';
+            (profile?.registrations?.[0]?.domain?.labelName &&
+              profile?.registrations?.[0]?.domain?.name) ||
+            '';
         });
         resolove(ensNames);
       })

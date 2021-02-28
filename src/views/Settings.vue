@@ -46,9 +46,7 @@
           <Block title="Profile">
             <div class="mb-2">
               <a
-                :href="
-                  `https://github.com/snapshot-labs/snapshot-spaces/upload/master/spaces/${key}`
-                "
+                href="https://docs.snapshot.page/spaces/add-avatar"
                 target="_blank"
               >
                 <UiButton class="width-full mb-2">
@@ -97,6 +95,10 @@
                   <Icon name="info" size="24" class="text-gray p-1" />
                 </a>
               </UiButton>
+              <div class="d-flex flex-items-center px-2">
+                <Checkbox v-model="form.private" class="mr-2 mt-1" />
+                Hide space from homepage
+              </div>
             </div>
           </Block>
           <Block title="Strategies">
@@ -149,14 +151,13 @@
                   <InputNumber v-model="form.filters.minScore" class="input" />
                 </div>
               </UiButton>
-              <UiButton class="text-left width-full mb-2 d-flex px-3">
-                <div class="text-gray mr-2">Only members</div>
+              <div class="mb-2 d-flex flex-items-center px-2">
                 <Checkbox
                   v-model="form.filters.onlyMembers"
-                  class="input flex-auto"
-                  :placeholder="`&quot;yes&quot; or &quot;no&quot;`"
+                  class="mr-2 mt-1"
                 />
-              </UiButton>
+                Show only members proposals
+              </div>
               <UiButton class="d-block width-full px-3" style="height: auto;">
                 <TextareaArray
                   v-model="form.filters.invalids"
@@ -222,14 +223,12 @@
 <script>
 import { mapActions } from 'vuex';
 import { getAddress } from '@ethersproject/address';
-import { ipfsGet } from '@snapshot-labs/snapshot.js/src/utils';
 import { validateSchema } from '@snapshot-labs/snapshot.js/src/utils';
 import schemas from '@snapshot-labs/snapshot.js/src/schemas';
-import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
-import { resolveContent } from '@snapshot-labs/snapshot.js/src/utils/contentHash';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import gateways from '@snapshot-labs/snapshot.js/src/gateways.json';
 import { clone } from '@/helpers/utils';
+import { getSpaceUri, uriGet } from '@/helpers/ens';
 
 const gateway = process.env.VUE_APP_IPFS_GATEWAY || gateways[0];
 
@@ -274,12 +273,13 @@ export default {
   },
   async created() {
     try {
-      const { protocolType, decoded } = await resolveContent(
-        getProvider('1'),
-        this.key
-      );
-      this.currentContenthash = `${protocolType}://${decoded}`;
-      const space = await ipfsGet(gateway, decoded, protocolType);
+      const uri = await getSpaceUri(this.key);
+      this.currentContenthash = uri;
+      const [protocolType, decoded] = uri.split('://');
+      let space = clone(this.app.spaces?.[this.key]);
+      if (!space) space = await uriGet(gateway, decoded, protocolType);
+      delete space.key;
+      delete space._activeProposals;
       space.filters = space.filters || {};
       space.strategies = space.strategies || [];
       this.currentSettings = clone(space);

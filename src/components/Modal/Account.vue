@@ -7,7 +7,7 @@
     <div v-if="!web3.account || step === 'connect'">
       <div class="m-4 mb-5">
         <a
-          v-for="(connector, id, i) in config.connectors"
+          v-for="(connector, id, i) in connectors"
           :key="i"
           @click="$emit('login', connector.id)"
           target="_blank"
@@ -102,12 +102,14 @@
 <script>
 import { mapActions } from 'vuex';
 import { getInjected } from '@snapshot-labs/lock/src/utils';
+import connectors from '@/helpers/connectors.json';
 
 export default {
   props: ['open'],
   emits: ['login', 'close'],
   data() {
     return {
+      connectors,
       step: null,
       path:
         'https://raw.githubusercontent.com/snapshot-labs/lock/master/connectors/assets'
