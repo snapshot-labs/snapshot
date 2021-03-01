@@ -1,12 +1,9 @@
 import { createI18n } from 'vue-i18n';
+import messages from '@/locales';
 
-const messages = {
-  en: {
-    message: {
-      EMPTY_STATE: 'No results found'
-    }
-  }
-};
+messages['en-US'] = messages.default;
+delete messages.default;
+
 const numberFormats = {
   en: {
     currency: {
