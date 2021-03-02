@@ -21,7 +21,9 @@
               <State :proposal="proposal" />
               <UiDropdown
                 class="float-right"
-                v-if="space.key === 'dai' && proposal.address === this.web3.account"
+                v-if="
+                  space.key === 'dai' && proposal.address === this.web3.account
+                "
                 @delete="deleteProposal"
                 :items="[{ text: 'Delete proposal', action: 'delete' }]"
               >

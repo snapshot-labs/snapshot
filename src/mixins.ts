@@ -1,5 +1,5 @@
 import { mapState } from 'vuex';
-import numeral from 'numeral';
+import numbro from 'numbro';
 import get from 'lodash/get';
 import prettyMs from 'pretty-ms';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
@@ -33,7 +33,7 @@ export default {
       return prettyMs(diff);
     },
     _numeral(number, format = '(0.[00]a)') {
-      return numeral(number).format(format);
+      return numbro(number).format(format);
     },
     _shorten(str: string, key: any): string {
       if (!str) return str;
