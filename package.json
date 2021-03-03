@@ -79,5 +79,5 @@
     "sass-loader": "^8.0.2"
   },
   "license": "MIT",
-  "repository": "balancer-labs/snapshot"
+  "repository": "snapshot-labs/snapshot"
 }
