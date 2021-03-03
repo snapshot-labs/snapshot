@@ -23,7 +23,7 @@
             target="_blank"
             class="float-right"
           >
-            {{ proposal.msg.payload.snapshot }}
+            {{ _n(proposal.msg.payload.snapshot, '0,0') }}
             <Icon name="external-link" class="ml-1" />
           </a>
         </div>
@@ -37,7 +37,7 @@
                 .join(' + ')
             "
           >
-            {{ _n(scores.reduce((a, b) => a + b, 0)) }}
+            {{ _n(totalScore) }}
             {{ _shorten(space.symbol, 'symbol') }}
           </span>
         </div>
@@ -51,7 +51,7 @@
       </div>
       <div class="col-6 float-left pl-2">
         <UiButton
-          :disabled="loading"
+          :disabled="totalScore === 0 || loading"
           :loading="loading"
           @click="handleSubmit"
           type="submit"

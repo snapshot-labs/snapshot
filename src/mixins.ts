@@ -4,17 +4,22 @@ import prettyMs from 'pretty-ms';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import domains from '@snapshot-labs/snapshot-spaces/spaces/domains.json';
 import store from '@/store';
-import config from '@/helpers/config';
 import { shorten } from '@/helpers/utils';
+
+const domainName = window.location.hostname;
+
+let env = 'master';
+if (domainName.includes('localhost')) env = 'local';
+if (domainName === 'demo.snapshot.page' || domainName === 'demo.snapshot.vote')
+  env = 'develop';
 
 // @ts-ignore
 const modules = Object.entries(store.state).map(module => module[0]);
-const domainName = window.location.hostname;
 
 export default {
   data() {
     return {
-      config
+      env
     };
   },
   computed: {

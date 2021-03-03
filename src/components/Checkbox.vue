@@ -1,5 +1,11 @@
 <template>
-  <input v-model="input" @input="handleInput" />
+  <a @click="handleToggle">
+    <Icon
+      :name="input ? 'toggle-on' : 'toggle_off'"
+      :class="input ? 'text-green' : 'border-color'"
+      size="32"
+    />
+  </a>
 </template>
 
 <script>
@@ -10,18 +16,16 @@ export default {
   emits: ['update:modelValue'],
   data() {
     return {
-      input: ''
+      input: false
     };
   },
   created() {
     if (this.modelValue) this.input = this.modelValue.toString();
   },
   methods: {
-    handleInput() {
-      const value = ['1', 'yes', 'ok', 'true'].includes(
-        this.input.trim().toLowerCase()
-      );
-      this.$emit('update:modelValue', value);
+    handleToggle() {
+      this.input = !this.input;
+      this.$emit('update:modelValue', this.input);
     }
   }
 };
