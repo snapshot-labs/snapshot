@@ -36,7 +36,9 @@ export default {
       number,
       format = {
         average: true,
-        totalLength: 3
+        totalLength: 3,
+        trimMantissa: true,
+        mantissa: 1
       }
     ) {
       return numbro(number).format(format);
