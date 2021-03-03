@@ -1,7 +1,7 @@
 <template>
   <div
     class="d-flex flex-items-center"
-    :class="{ 'modal-class py-3 px-4': modal }"
+    :class="{ 'bg-color border-bottom py-3 px-4': modal }"
   >
     <Icon name="search" size="22" class="mb-1 mr-2 text-gray" />
     <input
@@ -36,10 +36,3 @@ export default {
   }
 };
 </script>
-
-<style lang="scss" scoped>
-.modal-class {
-  background-color: var(--bg-color);
-  border-bottom: 1px solid var(--border-color);
-}
-</style>
