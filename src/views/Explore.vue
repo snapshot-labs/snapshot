@@ -53,7 +53,7 @@
             class="mb-3"
           />
         </template>
-        <NoResults :block="true" :results="items" />
+        <NoResults :block="true" :length="Object.keys(items).length" />
       </div>
     </Container>
   </div>

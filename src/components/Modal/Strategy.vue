@@ -39,7 +39,7 @@
         >
           <BlockStrategy :strategy="strategy" />
         </a>
-        <NoResults :results="strategies" />
+        <NoResults :length="Object.keys(strategies).length" />
       </div>
     </div>
   </UiModal>

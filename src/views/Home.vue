@@ -53,7 +53,11 @@
             </Block>
           </div>
         </router-link>
-        <NoResults :block="true" :results="spaces" class="pr-md-4" />
+        <NoResults
+          :block="true"
+          :length="Object.keys(spaces).length"
+          class="pr-md-4"
+        />
       </div>
     </Container>
   </div>

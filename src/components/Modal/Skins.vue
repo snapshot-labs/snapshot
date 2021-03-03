@@ -8,7 +8,7 @@
       <a v-for="skin in skins" :key="skin.key" @click="select(skin.key)">
         <BlockSkin :skin="skin" />
       </a>
-      <NoResults :results="skins" />
+      <NoResults :length="Object.keys(skins).length" />
     </div>
   </UiModal>
 </template>

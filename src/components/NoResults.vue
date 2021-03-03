@@ -1,5 +1,5 @@
 <template>
-  <div v-if="results.length < 1" class="mb-3 text-center">
+  <div v-if="length < 1" class="mb-3 text-center">
     <Block v-if="block" class="pt-1">
       {{ text }}
     </Block>
@@ -9,7 +9,7 @@
 
 <script>
 export default {
-  props: ['results', 'block'],
+  props: ['length', 'block'],
   data() {
     return {
       text: "Oops, we can't find any results"

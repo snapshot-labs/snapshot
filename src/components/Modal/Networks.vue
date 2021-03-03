@@ -12,7 +12,7 @@
       >
         <BlockNetwork :network="network" />
       </a>
-      <NoResults :results="networks" />
+      <NoResults :length="Object.keys(networks).length" />
     </div>
   </UiModal>
 </template>
