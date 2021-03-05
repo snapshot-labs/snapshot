@@ -6,7 +6,7 @@
     <Search
       v-if="!strategy.name && !input.name"
       v-model="searchInput"
-      placeholder="Search"
+      :placeholder="$t('searchPlaceholder')"
       :modal="true"
     />
     <div class="mt-4 mx-0 mx-md-4">

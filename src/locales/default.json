@@ -1,3 +1,70 @@
 {
-  "createSpace": "Create space"
+  "searchPlaceholder": "Search",
+  "spaces": "space(s)",
+  "createSpace": "Create space",
+  "backToHome": "Home",
+  "actions": "Actions",
+  "reset": "Reset",
+  "save": "Save",
+  "confirm": "Confirm",
+  "snapshot": "Snapshot",
+  "strategies": "Strategie(s)",
+  "create": {
+    "question": "Question",
+    "content": "What is your proposal?",
+    "preview": "Preview",
+    "choices": "Choices",
+    "addChoice": "Add choice",
+    "startDate": "Select start date",
+    "endDate": "Select end date",
+    "publish": "Publish"
+  },
+  "delegate": {
+    "header": "Delegate",
+    "selectAddress": "Select address",
+    "addressPlaceholder": "Delegate address or ENS name",
+    "spacePlaceholder": "Space (optional)",
+    "delegations": "Your delegation(s)",
+    "delegated": "Delegated to you"
+  },
+  "proposal": {
+    "castVote": "Cast your vote",
+    "vote": "Vote",
+    "information": "Information",
+    "author": "Author",
+    "startDate": "Start date",
+    "endDate": "End date"
+  },
+  "proposals": {
+    "header": "Proposals",
+    "new": "New proposal",
+    "noProposals": "There aren't any proposals here yet!",
+    "states": {
+      "all": "All",
+      "core": "Core",
+      "community": "Community",
+      "active": "Active",
+      "pending": "Pending",
+      "closed": "Closed"
+    }
+  },
+  "settings": {
+    "header": "Settings",
+    "seeENS": "See on ENS",
+    "setENS": "Set record on ENS",
+    "profile": "Profile",
+    "changeAvatar": "Change avatar",
+    "name": "Name",
+    "network": "Network",
+    "symbol": "Symbol",
+    "skin": "Skin",
+    "domain": "Domain name",
+    "hideSpace": "Hide space from homepage",
+    "addStrategy": "Add strategy",
+    "members": "Members",
+    "filters": "Filters",
+    "defaultTab": "Default tab",
+    "minScore": "Min. score",
+    "showOnly": "Show only members proposals"
+  }
 }

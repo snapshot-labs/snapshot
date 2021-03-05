@@ -3,7 +3,11 @@
     <template v-slot:header>
       <h3>Networks</h3>
     </template>
-    <Search v-model="searchInput" placeholder="Search" :modal="true" />
+    <Search
+      v-model="searchInput"
+      :placeholder="$t('searchPlaceholder')"
+      :modal="true"
+    />
     <div class="mt-4 mx-0 mx-md-4">
       <a
         v-for="network in networks"
