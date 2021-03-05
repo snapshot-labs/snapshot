@@ -36,7 +36,8 @@
       <div class="d-flex">
         <span v-text="'Network'" class="flex-auto text-gray mr-1" />
         <a :href="web3.network.explorer" target="_blank">
-          {{ web3.network.network }} ({{ web3.network.key }})
+<!--          {{ web3.network.network }} ({{ web3.network.key }})-->
+          Harmony
         </a>
       </div>
       <div class="d-flex">
