@@ -1,3 +1,6 @@
 {
-  "createSpace": "Create space"
+  "createSpace": "Create space",
+  "foo": {
+    "bar": "Hello world"
+  }
 }
