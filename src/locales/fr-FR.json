@@ -1,3 +1,7 @@
 {
-  "createSpace": "Créer un espace"
+  "createSpace": "Créer un espace",
+  "hello": "Salut",
+  "foo": {
+    "bar": "Bonjour"
+  }
 }
