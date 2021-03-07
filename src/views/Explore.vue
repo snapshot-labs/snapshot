@@ -11,7 +11,7 @@
           {{ _n(items.length) }} {{ resultsStr }}
           <a
             v-if="buttonStr"
-            href="https://discord.snapshot.page"
+            href="https://discord.snapshot.org"
             target="_blank"
             class="hide-md ml-3"
           >

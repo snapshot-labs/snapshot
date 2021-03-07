@@ -7,7 +7,7 @@
       <a href="https://twitter.com/SnapshotLabs" target="_blank">
         <Icon size="32" name="twitter" class="mr-1 mx-2" />
       </a>
-      <a href="https://discord.snapshot.page" target="_blank">
+      <a href="https://discord.snapshot.org" target="_blank">
         <Icon size="32" name="discord" class="mr-1 mx-2" />
       </a>
       <a href="https://t.me/snapshotlabs" target="_blank">
