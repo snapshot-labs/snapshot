@@ -1,21 +1,23 @@
 <template>
   <UiModal :open="open" v-if="open" @close="$emit('close')" class="d-flex">
     <template v-slot:header>
-      <h3>Confirm vote</h3>
+      <h3>{{ $t('confirmVote') }}</h3>
     </template>
     <div class="d-flex flex-column flex-auto">
       <h4 class="m-4 mb-0 text-center">
-        Are you sure you want to vote "{{
-          proposal.msg.payload.choices[selectedChoice - 1]
-        }}"? <br />This action <b>cannot</b> be undone.
+        {{
+          $tc('sureToVote', [proposal.msg.payload.choices[selectedChoice - 1]])
+        }}
+        <br />
+        {{ $t('cannotBeUndone') }}
       </h4>
       <div class="m-4 p-4 border rounded-2 text-white">
         <div class="d-flex">
-          <span v-text="'Option'" class="flex-auto text-gray mr-1" />
+          <span v-text="$t('option')" class="flex-auto text-gray mr-1" />
           {{ proposal.msg.payload.choices[selectedChoice - 1] }}
         </div>
         <div class="d-flex">
-          <span v-text="'Snapshot'" class="flex-auto text-gray mr-1" />
+          <span v-text="$t('snapshot')" class="flex-auto text-gray mr-1" />
           <a
             :href="
               _explorer(space.network, proposal.msg.payload.snapshot, 'block')
@@ -28,7 +30,7 @@
           </a>
         </div>
         <div class="d-flex">
-          <span v-text="'Your voting power'" class="flex-auto text-gray mr-1" />
+          <span v-text="$t('votingPower')" class="flex-auto text-gray mr-1" />
           <span
             class="tooltipped tooltipped-nw"
             :aria-label="
@@ -46,7 +48,7 @@
     <template v-slot:footer>
       <div class="col-6 float-left pr-2">
         <UiButton @click="$emit('close')" type="button" class="width-full">
-          Cancel
+          {{ $t('cancel') }}
         </UiButton>
       </div>
       <div class="col-6 float-left pl-2">
@@ -57,7 +59,7 @@
           type="submit"
           class="width-full button--submit"
         >
-          Vote
+          {{ $t('proposal.vote') }}
         </UiButton>
       </div>
     </template>

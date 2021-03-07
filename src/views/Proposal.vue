@@ -22,7 +22,7 @@
               class="float-right"
               v-if="proposal.address === this.web3.account"
               @delete="deleteProposal"
-              :items="[{ text: 'Delete proposal', action: 'delete' }]"
+              :items="[{ text: $t('deleteProposal'), action: 'delete' }]"
             >
               <UiLoading v-if="deleteLoading" />
               <Icon

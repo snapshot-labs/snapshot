@@ -62,7 +62,7 @@
                 @click="modalNetworksOpen = true"
                 class="text-left width-full mb-2 d-flex px-3"
               >
-                <div class="text-gray mr-2">{{ $t('settings.network') }}</div>
+                <div class="text-gray mr-2">{{ $t('network') }}</div>
                 <div class="flex-auto">
                   {{
                     form.network
