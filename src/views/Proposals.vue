@@ -6,7 +6,7 @@
           <div v-text="space.name" />
           <div class="d-flex flex-items-center flex-auto">
             <h2 class="mr-2">
-              Proposals
+              {{ $t('proposals.header') }}
               <UiCounter
                 :counter="Object.keys(proposalsWithFilter).length"
                 class="ml-1"
@@ -18,7 +18,7 @@
           v-if="$auth.isAuthenticated.value"
           :to="{ name: 'create', params: { key } }"
         >
-          <UiButton>New proposal</UiButton>
+          <UiButton>{{ $t('proposals.new') }}</UiButton>
         </router-link>
         <router-link
           v-if="isMember && isEns"
@@ -39,7 +39,7 @@
           <router-link
             v-for="state in states"
             :key="state"
-            v-text="state"
+            v-text="$t(`proposals.states.${state}`)"
             :to="`/${key}/${state}`"
             :class="tab === state && 'text-white'"
             class="mr-3 text-gray tab"
@@ -61,7 +61,7 @@
           v-if="loaded && Object.keys(proposalsWithFilter).length === 0"
           class="p-4 m-0 border-top d-block"
         >
-          There aren't any proposals here yet!
+          {{ $t('proposals.noProposals') }}
         </p>
       </Block>
     </Container>

@@ -4,21 +4,21 @@
       <div class="px-4 px-md-0 mb-3">
         <router-link :to="{ name: 'home' }" class="text-gray">
           <Icon name="back" size="22" class="v-align-middle" />
-          Home
+          {{ $t('backToHome') }}
         </router-link>
       </div>
       <div class="px-4 px-md-0">
-        <h1 v-text="'Create a space'" class="mb-4" />
+        <h1 v-text="$t('setup.createASpace')" class="mb-4" />
       </div>
       <Block>
         <div class="mb-3">
-          Use an existing ENS name to create your space on.
+          {{ $t('setup.useExistingEns') }}
         </div>
         <UiButton class="text-left width-full mb-3 d-flex px-3">
           <input
             v-model="id"
             class="input flex-auto"
-            placeholder="e.g. yam.eth"
+            :placeholder="$t('setup.example')"
           />
           <a
             class="d-block py-1 mr-n2"
@@ -33,7 +33,7 @@
           @click="handleSubmit"
           class="button--submit width-full"
         >
-          Next
+          {{ $t('next') }}
         </UiButton>
       </Block>
     </template>

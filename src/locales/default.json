@@ -1,14 +1,36 @@
 {
   "searchPlaceholder": "Search",
-  "spaces": "space(s)",
+  "spaceCount": "{0} space(s)",
   "createSpace": "Create space",
   "backToHome": "Home",
   "actions": "Actions",
+  "results": "Results",
+  "currentResults": "Current results",
   "reset": "Reset",
   "save": "Save",
+  "author": "Author",
+  "next": "Next",
+  "plugins": "Plugins",
+  "information": "Information",
   "confirm": "Confirm",
   "snapshot": "Snapshot",
   "strategies": "Strategie(s)",
+  "strategiesPage": "Strategies",
+  "version": "Version",
+  "timeline": "Timeline",
+  "submitOnchain": "Submit on-chain",
+  "inSpaces": "In {0} space(s)",
+  "downloadReport": "Download report",
+  "votes": "Votes",
+  "seeMore": "See more",
+  "networks": "Networks",
+  "skins": "Skins",
+  "editStrategy": "Edit strategy",
+  "invalidProposals": "Invalid proposals",
+  "account": "Account",
+  "create3box": "Create profile on 3Box",
+  "connectWallet": "Connect wallet",
+
   "create": {
     "question": "Question",
     "content": "What is your proposal?",
@@ -30,8 +52,6 @@
   "proposal": {
     "castVote": "Cast your vote",
     "vote": "Vote",
-    "information": "Information",
-    "author": "Author",
     "startDate": "Start date",
     "endDate": "End date"
   },
@@ -66,5 +86,10 @@
     "defaultTab": "Default tab",
     "minScore": "Min. score",
     "showOnly": "Show only members proposals"
+  },
+  "setup": {
+    "example": "e.g. yam.eth",
+    "useExistingEns": "Use an existing ENS name to create your space with.",
+    "createASpace": "Create a space"
   }
 }

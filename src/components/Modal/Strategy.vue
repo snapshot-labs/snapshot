@@ -1,12 +1,14 @@
 <template>
   <UiModal :open="open" @close="$emit('close')">
     <template v-slot:header>
-      <h3>{{ strategy.name ? 'Edit' : 'Add' }} strategy</h3>
+      <h3>
+        {{ strategy.name ? $t('editStrategy') : $t('settings.addStrategy') }}
+      </h3>
     </template>
     <Search
       v-if="!strategy.name && !input.name"
       v-model="searchInput"
-      placeholder="Search"
+      :placeholder="$t('searchPlaceholder')"
       :modal="true"
     />
     <div class="mt-4 mx-0 mx-md-4">

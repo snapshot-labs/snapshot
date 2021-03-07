@@ -59,7 +59,7 @@
               @click="modalOpen = true"
               :loading="loading || app.authLoading"
             >
-              <span class="hide-sm" v-text="'Connect wallet'" />
+              <span class="hide-sm" v-text="$t('connectWallet')" />
               <Icon
                 name="login"
                 size="20"

@@ -29,7 +29,7 @@
           {{ plugin.author }}
         </a>
       </div>
-      In {{ _n(plugin.spaces.length) }} space(s)
+      {{ $tc('inSpaces', [_n(plugin.spaces.length)]) }}
     </div>
   </Block>
 </template>

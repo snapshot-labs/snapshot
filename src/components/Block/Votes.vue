@@ -1,7 +1,7 @@
 <template>
   <Block
     v-if="Object.keys(votes).length > 0"
-    title="Votes"
+    :title="$t('votes')"
     :counter="Object.keys(votes).length"
     :slim="true"
   >
@@ -52,7 +52,7 @@
       @click="showAllVotes = true"
       class="px-4 py-3 border-top text-center d-block bg-gray-dark rounded-bottom-0 rounded-md-bottom-2"
     >
-      See more
+      {{ $t('seeMore') }}
     </a>
     <teleport to="#modal">
       <ModalReceipt

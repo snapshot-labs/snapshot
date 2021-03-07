@@ -10,7 +10,7 @@
       <Icon name="github" class="mr-1" />
       {{ strategy.author }}
     </div>
-    <div>In {{ _n(strategy.spaces.length) }} space(s)</div>
+    <div>{{ $tc('inSpaces', [_n(strategy.spaces.length)]) }}</div>
   </Block>
 </template>
 
