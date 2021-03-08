@@ -42,7 +42,7 @@
   "deleteProposal": "Vorschlag löschen",
   "demoSite": "Dies ist eine Demo-Seite, probiere es aus!",
   "removeDelegation": "Delegation entfernen",
-  "confirmRemove": "Are you sure you want to remove your delegation to",
+  "confirmRemove": "Sind Sie sicher, dass Sie Ihre Delegation entfernen möchten zu",
   "removeSpace": "für den Bereich {0}",
   "confirmVote": "Abstimmung bestätigen",
   "sureToVote": "Bist du sicher, dass du \"{0}\" abstimmen möchtest?",
@@ -70,7 +70,7 @@
   "selectNetwork": "Netzwerk auswählen",
   "conditionId": "Bedingungs-ID",
   "basetokenAddress": "Basis-Token-Adresse",
-  "quoteAddress": "Quote currency address",
+  "quoteAddress": "Adresse der Angebotswährung",
   "removeMarket": "Markt entfernen",
   "back": "Zurück",
   "loading": "Lädt...",
@@ -101,7 +101,7 @@
   "delegate": {
     "header": "Delegieren",
     "selectAddress": "Adresse auswählen",
-    "addressPlaceholder": "Delegate address or ENS name",
+    "addressPlaceholder": "Delegierte Adresse oder ENS-Name",
     "spacePlaceholder": "Bereich (optional)",
     "delegations": "Ihre Delegation(en)",
     "delegated": "An dich delegiert"
