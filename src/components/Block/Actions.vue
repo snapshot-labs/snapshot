@@ -1,5 +1,5 @@
 <template>
-  <Block v-if="plugins.length > 0 && ts >= payload.end" :title="'Actions'">
+  <Block v-if="plugins.length > 0 && ts >= payload.end" :title="$t('actions')">
     <UiButton
       v-for="plugin in plugins"
       :key="plugin"
@@ -8,7 +8,7 @@
       :disabled="!$auth.isAuthenticated.value"
       class="width-full button--submit"
     >
-      Submit on-chain
+      {{ $t('submitOnchain') }}
     </UiButton>
   </Block>
 </template>
@@ -60,7 +60,7 @@ export default {
         );
         const receipt = await tx.wait();
         console.log('Receipt', receipt);
-        this.notify(['green', `You did it, congrats!`]);
+        this.notify(['green', this.$t('youDidIt')]);
       } catch (e) {
         console.error(e);
       }

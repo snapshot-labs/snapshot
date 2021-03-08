@@ -1,8 +1,20 @@
 <template>
   <UiModal :open="open" @close="$emit('close')">
     <template v-slot:header>
-      <h3 v-if="step === 0">Select {{ selectedDate }} date</h3>
-      <h3 v-else>Select {{ selectedDate }} time</h3>
+      <h3 v-if="step === 0">
+        {{
+          selectedDate === 'start'
+            ? $t('create.startDate')
+            : $t('create.endDate')
+        }}
+      </h3>
+      <h3 v-else>
+        {{
+          selectedDate === 'start'
+            ? $t('create.startTime')
+            : $t('create.endTime')
+        }}
+      </h3>
     </template>
     <div v-if="step === 0">
       <div class="m-4">
@@ -19,7 +31,7 @@
     <template v-slot:footer>
       <div class="col-6 float-left pr-2">
         <UiButton @click="$emit('close')" type="button" class="width-full">
-          Cancel
+          {{ $t('cancel') }}
         </UiButton>
       </div>
       <div class="col-6 float-left pl-2">
@@ -28,8 +40,8 @@
           type="submit"
           class="width-full button--submit"
         >
-          <span v-if="step === 0">Next</span>
-          <span v-else>Select</span>
+          <span v-if="step === 0">{{ $t('next') }}</span>
+          <span v-else>{{ $t('select') }}</span>
         </UiButton>
       </div>
     </template>

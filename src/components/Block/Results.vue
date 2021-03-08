@@ -1,5 +1,5 @@
 <template>
-  <Block :title="ts >= payload.end ? 'Results' : 'Current results'">
+  <Block :title="ts >= payload.end ? $t('results') : $t('currentResults')">
     <div v-for="choice in choices" :key="choice.i">
       <div class="text-white mb-1">
         <span
@@ -42,7 +42,7 @@
     </div>
     <div v-if="ts >= payload.end">
       <UiButton @click="downloadReport" class="width-full mt-2">
-        Download report
+        {{ $t('downloadReport') }}
       </UiButton>
     </div>
   </Block>

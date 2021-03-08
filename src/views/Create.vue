@@ -16,13 +16,13 @@
             v-model="form.name"
             maxlength="128"
             class="h1 mb-2 input"
-            placeholder="Question"
+            :placeholder="$t('create.question')"
             ref="nameForm"
           />
           <TextareaAutosize
             v-model="form.body"
             class="input pt-1"
-            placeholder="What is your proposal?"
+            :placeholder="$t('create.content')"
           />
           <div class="mb-6">
             <p v-if="form.body.length > bodyLimit" class="text-red mt-4">
@@ -30,12 +30,12 @@
             </p>
           </div>
           <div v-if="form.body">
-            <h4 class="mb-4">Preview</h4>
+            <h4 class="mb-4">{{ $t('create.preview') }}</h4>
             <UiMarkdown :body="form.body" />
           </div>
         </div>
       </div>
-      <Block title="Choices">
+      <Block :title="$t('create.choices')">
         <div v-if="choices.length > 0" class="overflow-hidden mb-2">
           <draggable
             v-model="choices"
@@ -61,13 +61,13 @@
           </draggable>
         </div>
         <UiButton @click="addChoice(1)" class="d-block width-full">
-          Add choice
+          {{ $t('create.addChoice') }}
         </UiButton>
       </Block>
     </template>
     <template #sidebar-right>
       <Block
-        title="Actions"
+        :title="$t('actions')"
         :icon="
           space.plugins && Object.keys(space.plugins).length > 0
             ? 'stars'
@@ -80,14 +80,14 @@
             @click="[(modalOpen = true), (selectedDate = 'start')]"
             class="width-full mb-2"
           >
-            <span v-if="!form.start">Select start date</span>
+            <span v-if="!form.start">{{ $t('create.startDate') }}</span>
             <span v-else v-text="$d(form.start * 1e3, 'short')" />
           </UiButton>
           <UiButton
             @click="[(modalOpen = true), (selectedDate = 'end')]"
             class="width-full mb-2"
           >
-            <span v-if="!form.end">Select end date</span>
+            <span v-if="!form.end">{{ $t('create.endDate') }}</span>
             <span v-else v-text="$d(form.end * 1e3, 'short')" />
           </UiButton>
           <UiButton class="width-full mb-2">
@@ -95,7 +95,7 @@
               v-model="form.snapshot"
               type="number"
               class="input width-full text-center"
-              placeholder="Snapshot block number"
+              :placeholder="$t('snapshotBlock')"
             />
           </UiButton>
         </div>
@@ -105,7 +105,7 @@
           :loading="loading"
           class="d-block width-full button--submit"
         >
-          Publish
+          {{ $t('create.publish') }}
         </UiButton>
       </Block>
     </template>

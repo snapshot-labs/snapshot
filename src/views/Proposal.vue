@@ -22,7 +22,7 @@
               class="float-right"
               v-if="proposal.address === this.web3.account"
               @delete="deleteProposal"
-              :items="[{ text: 'Delete proposal', action: 'delete' }]"
+              :items="[{ text: $t('deleteProposal'), action: 'delete' }]"
             >
               <UiLoading v-if="deleteLoading" />
               <Icon
@@ -40,7 +40,7 @@
       <Block
         v-if="loaded && ts >= payload.start && ts < payload.end"
         class="mb-4"
-        title="Cast your vote"
+        :title="$t('proposal.castVote')"
       >
         <div class="mb-3">
           <UiButton
@@ -78,7 +78,7 @@
           @click="modalOpen = true"
           class="d-block width-full button--submit"
         >
-          Vote
+          {{ $t('proposal.vote') }}
         </UiButton>
       </Block>
       <BlockVotes
@@ -89,9 +89,9 @@
       />
     </template>
     <template #sidebar-right v-if="loaded">
-      <Block title="Information">
+      <Block :title="$t('information')">
         <div class="mb-1">
-          <b>Strategie(s)</b>
+          <b>{{ $t('strategies') }}</b>
           <span
             @click="modalStrategiesOpen = true"
             class="float-right text-white a"
@@ -105,7 +105,7 @@
           </span>
         </div>
         <div class="mb-1">
-          <b>Author</b>
+          <b>{{ $t('author') }}</b>
           <User
             :address="proposal.address"
             :profile="proposal.profile"
@@ -126,7 +126,7 @@
         </div>
         <div>
           <div class="mb-1">
-            <b>Start date</b>
+            <b>{{ $t('proposal.startDate') }}</b>
             <span
               :aria-label="_ms(payload.start)"
               v-text="$d(payload.start * 1e3, 'short')"
@@ -134,7 +134,7 @@
             />
           </div>
           <div class="mb-1">
-            <b>End date</b>
+            <b>{{ $t('proposal.endDate') }}</b>
             <span
               :aria-label="_ms(payload.end)"
               v-text="$d(payload.end * 1e3, 'short')"
@@ -142,7 +142,7 @@
             />
           </div>
           <div class="mb-1">
-            <b>Snapshot</b>
+            <b>{{ $t('snapshot') }}</b>
             <a
               :href="_explorer(space.network, payload.snapshot, 'block')"
               target="_blank"

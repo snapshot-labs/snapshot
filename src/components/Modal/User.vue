@@ -13,7 +13,7 @@
         class="mb-2 d-block"
       >
         <UiButton class="button-outline width-full">
-          See on explorer
+          {{ $t('seeInExplorer') }}
           <Icon name="external-link" class="ml-1" />
         </UiButton>
       </a>
@@ -24,7 +24,7 @@
         class="mb-2 d-block"
       >
         <UiButton class="button-outline width-full">
-          View profile on 3Box
+          {{ $t('view3box') }}
           <Icon name="external-link" class="ml-1" />
         </UiButton>
       </a>

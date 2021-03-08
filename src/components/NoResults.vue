@@ -10,10 +10,10 @@
 <script>
 export default {
   props: ['length', 'block'],
-  data() {
-    return {
-      text: "Oops, we can't find any results"
-    };
+  computed: {
+    text() {
+      return this.$t('noResultsFound');
+    }
   }
 };
 </script>

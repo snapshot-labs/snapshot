@@ -1,18 +1,19 @@
 <template>
   <UiModal :open="open" v-if="open" @close="$emit('close')" class="d-flex">
     <template v-slot:header>
-      <h3>Remove delegation</h3>
+      <h3>{{ $t('removeDelegation') }}</h3>
     </template>
     <form @submit.prevent="handleSubmit" class="d-flex flex-column flex-auto">
       <h4 class="m-4 text-center">
-        Are you sure you want to remove your delegation to
+        {{ $t('confirmRemove') }}
         <User :address="delegate" class="ml-1" />
-        <template v-if="id">for the space "{{ id }}"</template>?
+        <template v-if="id">{{ $tc('removeSpace', [id]) }}</template
+        >?
       </h4>
       <div class="p-4 overflow-hidden text-center border-top">
         <div class="col-6 float-left pr-2">
           <UiButton @click="$emit('close')" type="button" class="width-full">
-            Cancel
+            {{ $t('cancel') }}
           </UiButton>
         </div>
         <div class="col-6 float-left pl-2">
@@ -22,7 +23,7 @@
             type="submit"
             class="width-full button--submit"
           >
-            Confirm
+            {{ $t('confirm') }}
           </UiButton>
         </div>
       </div>
@@ -61,7 +62,7 @@ export default {
         const receipt = await tx.wait();
         console.log('Receipt', receipt);
         await sleep(3e3);
-        this.notify('You did it!');
+        this.notify(this.$t('youDidIt'));
         this.$emit('reload');
         this.$emit('close');
       } catch (e) {

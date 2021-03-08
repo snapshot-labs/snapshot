@@ -4,34 +4,34 @@
       <div class="px-4 px-md-0 mb-3">
         <router-link :to="{ name: 'home' }" class="text-gray">
           <Icon name="back" size="22" class="v-align-middle" />
-          Home
+          {{ $t('backToHome') }}
         </router-link>
       </div>
       <div class="px-4 px-md-0">
-        <h1 v-if="loaded" v-text="'Delegate'" class="mb-4" />
+        <h1 v-if="loaded" v-text="$t('delegate.header')" class="mb-4" />
         <PageLoading v-else />
       </div>
       <template v-if="loaded">
-        <Block title="Select address">
+        <Block :itle="$t('delegate.selectAddress')">
           <UiButton class="width-full mb-2">
             <input
               v-model.trim="form.address"
               class="input width-full"
-              placeholder="Delegate address or ENS name"
+              :placeholder="$t('delegate.addressPlaceholder')"
             />
           </UiButton>
           <UiButton class="width-full mb-2">
             <input
               v-model.trim="form.id"
               class="input width-full"
-              placeholder="Space (optional)"
+              :placeholder="$t('delegate.spacePlaceholder')"
             />
           </UiButton>
         </Block>
         <Block
           v-if="delegates.length > 0"
           :slim="true"
-          title="Your delegation(s)"
+          :title="$t('delegate.delegations')"
         >
           <div
             v-for="(delegate, i) in delegates"
@@ -58,7 +58,7 @@
         <Block
           v-if="delegators.length > 0"
           :slim="true"
-          title="Delegated to you"
+          :title="$t('delegate.delegated')"
         >
           <div
             v-for="(delegator, i) in delegators"
@@ -79,14 +79,14 @@
       </template>
     </template>
     <template #sidebar-right>
-      <Block title="Actions">
+      <Block :title="$t('actions')">
         <UiButton
           @click="handleSubmit"
           :disabled="!isValid || !$auth.isAuthenticated.value"
           :loading="loading"
           class="d-block width-full button--submit"
         >
-          Confirm
+          {{ $t('confirm') }}
         </UiButton>
       </Block>
     </template>
@@ -184,7 +184,7 @@ export default {
         const receipt = await tx.wait();
         console.log('Receipt', receipt);
         await sleep(3e3);
-        this.notify('You did it!');
+        this.notify(this.$t('youDidIt'));
         await this.load();
       } catch (e) {
         console.log(e);

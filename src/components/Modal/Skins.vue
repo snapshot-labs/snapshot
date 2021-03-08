@@ -1,9 +1,13 @@
 <template>
   <UiModal :open="open" @close="$emit('close')">
     <template v-slot:header>
-      <h3>Skins</h3>
+      <h3>{{ $t('skins') }}</h3>
     </template>
-    <Search v-model="searchInput" placeholder="Search" :modal="true" />
+    <Search
+      v-model="searchInput"
+      :placeholder="$t('searchPlaceholder')"
+      :modal="true"
+    />
     <div class="mt-4 mx-0 mx-md-4">
       <a v-for="skin in skins" :key="skin.key" @click="select(skin.key)">
         <BlockSkin :skin="skin" />
