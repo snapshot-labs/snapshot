@@ -95,7 +95,7 @@
               v-model="form.snapshot"
               type="number"
               class="input width-full text-center"
-              placeholder="Snapshot block number"
+              :placeholder="$t('snapshotBlock')"
             />
           </UiButton>
         </div>

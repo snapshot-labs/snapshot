@@ -20,7 +20,7 @@
         >
           <TextareaAutosize
             v-model="input.params"
-            placeholder="Strategy parameters"
+            :placeholder="$t('strategyParameters')"
             class="input text-left"
             style="width: 560px;"
           />
@@ -30,7 +30,7 @@
           :disabled="!isValid"
           class="button--submit width-full"
         >
-          {{ strategy.name ? 'Save' : 'Add' }}
+          {{ strategy.name ? $t('save') : $t('add') }}
         </UiButton>
       </div>
       <div v-if="!input.name">

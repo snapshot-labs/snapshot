@@ -60,7 +60,7 @@ export default {
         );
         const receipt = await tx.wait();
         console.log('Receipt', receipt);
-        this.notify(['green', `You did it, congrats!`]);
+        this.notify(['green', this.$t('youDidIt')]);
       } catch (e) {
         console.error(e);
       }

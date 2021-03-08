@@ -32,6 +32,7 @@
   "account": "Account",
   "create3box": "Create profile on 3Box",
   "view3box": "View profile on 3Box",
+  "edit3box": "Edit profile on 3Box",
   "connectWallet": "Connect wallet",
   "about": "About",
   "license": "License",
@@ -54,6 +55,36 @@
   "isCore": "Core",
   "seeInExplorer": "See on explorer",
   "learnMore": "Learn more",
+  "logout": "Log out",
+  "add": "Add",
+  "edit": "Edit",
+  "strategyParameters": "Strategy parameters",
+  "addAction": "Add action",
+  "removeAction": "Remove action",
+  "yourChoice": "Choice {0}",
+  "targetAddress": "Target address",
+  "value": "Value",
+  "date": "Data",
+  "marketDetails": "Market details",
+  "addMarket": "Add market",
+  "selectNetwork": "Select network",
+  "conditionId": "Condition ID",
+  "basetokenAddress": "Base token address",
+  "quoteAddress": "Quote currency address",
+  "removeMarket": "Remove market",
+  "back": "Back",
+  "loading": "Loading...",
+  "predictedImpact": "Predicted impact",
+  "marketSymbol": "{0} market",
+  "twoChoicesRequired": "Two choices are required for this plugin.",
+  "noResultsFound": "Oops, we can't find any results",
+  "createdBy": "By {0}",
+  "startToEnd": "start {0} end {1}",
+  "proposalBy": "Proposal by {0}",
+  "endDate": "end {0}",
+  "contectHash": "Content hash",
+  "defaultSkin": "Default skin",
+
   "create": {
     "question": "Question",
     "content": "What is your proposal?",
@@ -64,7 +95,8 @@
     "endDate": "Select end date",
     "startTime": "Select start time",
     "endTime": "Select end time",
-    "publish": "Publish"
+    "publish": "Publish",
+    "snapshotBlock": "Snapshot block number"
   },
   "delegate": {
     "header": "Delegate",
@@ -115,5 +147,12 @@
     "example": "e.g. yam.eth",
     "useExistingEns": "Use an existing ENS name to create your space with.",
     "createASpace": "Create a space"
+  },
+  "notify": {
+    "youDidIt": "You did it!",
+    "copied": "Copied!",
+    "proposalDeleted": "Proposal deleted",
+    "yourIsIn": "Your {0} is in!",
+    "somethingWentWrong": "Oops, something went wrong!"
   }
 }

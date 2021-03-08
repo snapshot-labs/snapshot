@@ -69,7 +69,7 @@
           class="mb-2 d-block"
         >
           <UiButton class="button-outline width-full">
-            Edit profile on 3Box
+            {{ $t('edit3box') }}
             <Icon name="external-link" class="ml-1" />
           </UiButton>
         </a>
@@ -94,7 +94,7 @@
           @click="handleLogout"
           class="button-outline width-full text-red mb-2"
         >
-          Log out
+          {{ $t('logout') }}
         </UiButton>
       </div>
     </div>

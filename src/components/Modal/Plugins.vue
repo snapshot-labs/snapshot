@@ -23,7 +23,7 @@
           </a>
         </div>
         <UiButton @click="selected = i">
-          {{ !form[i] ? 'Add' : 'Edit' }}
+          {{ !form[i] ? $t('add') : $t('edit') }}
         </UiButton>
       </div>
     </div>

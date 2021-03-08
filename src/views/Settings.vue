@@ -18,7 +18,7 @@
               readonly
               v-model="contenthash"
               class="input width-full"
-              placeholder="Content hash"
+              :placeholder="$t('contectHash')"
             />
             <Icon
               v-clipboard:copy="contenthash"
@@ -67,7 +67,7 @@
                   {{
                     form.network
                       ? networks[form.network].name
-                      : 'Select network'
+                      : $t('selectNetwork')
                   }}
                 </div>
               </UiButton>
@@ -81,7 +81,7 @@
               >
                 <div class="text-gray mr-2">{{ $t('settings.skin') }}</div>
                 <div class="flex-auto">
-                  {{ form.skin ? form.skin : 'Default skin' }}
+                  {{ form.skin ? form.skin : $t('defaultSkin') }}
                 </div>
               </UiButton>
               <UiButton class="text-left width-full mb-2 d-flex px-3">
@@ -324,7 +324,7 @@ export default {
       };
     },
     handleCopy() {
-      this.notify('Copied!');
+      this.notify(this.$t('copied'));
     },
     handleEditStrategy(i) {
       this.currentStrategyIndex = i;
