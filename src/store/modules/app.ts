@@ -10,7 +10,7 @@ import gateways from '@snapshot-labs/snapshot.js/src/gateways.json';
 import client from '@/helpers/client';
 import { formatProposal, formatProposals, formatSpace } from '@/helpers/utils';
 import { version } from '@/../package.json';
-import { i18n } from '@/i18n';
+import i18n from '@/i18n';
 
 const gateway = process.env.VUE_APP_IPFS_GATEWAY || gateways[0];
 
@@ -113,8 +113,11 @@ const actions = {
       dispatch('notify', [
         'green',
         type === 'delete-proposal'
-          ? i18n.$t('proposalDeleted')
-          : i18n.$t('yourIsIn', [type])
+          ? // @ts-ignore
+            i18n.$t('proposalDeleted')
+          : // @ts-ignore
+
+            i18n.$t('yourIsIn', [type])
       ]);
       return result;
     } catch (e) {
@@ -122,7 +125,8 @@ const actions = {
       const errorMessage =
         e && e.error_description
           ? `Oops, ${e.error_description}`
-          : i18n.$t('somethingWentWrong');
+          : // @ts-ignore
+            i18n.$t('somethingWentWrong');
       dispatch('notify', ['red', errorMessage]);
       return;
     }
