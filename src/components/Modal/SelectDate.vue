@@ -41,7 +41,7 @@
           class="width-full button--submit"
         >
           <span v-if="step === 0">{{ $t('next') }}</span>
-          <span v-else>{{ $t('submit') }}</span>
+          <span v-else>{{ $t('select') }}</span>
         </UiButton>
       </div>
     </template>

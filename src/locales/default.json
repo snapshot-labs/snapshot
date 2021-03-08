@@ -84,7 +84,7 @@
   "endDate": "end {0}",
   "contectHash": "Content hash",
   "defaultSkin": "Default skin",
-
+  "select": "Select",
   "create": {
     "question": "Question",
     "content": "What is your proposal?",
