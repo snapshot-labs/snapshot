@@ -324,7 +324,7 @@ export default {
       };
     },
     handleCopy() {
-      this.notify(this.$t('copied'));
+      this.notify(this.$t('notify.copied'));
     },
     handleEditStrategy(i) {
       this.currentStrategyIndex = i;

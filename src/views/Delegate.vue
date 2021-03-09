@@ -184,7 +184,7 @@ export default {
         const receipt = await tx.wait();
         console.log('Receipt', receipt);
         await sleep(3e3);
-        this.notify(this.$t('youDidIt'));
+        this.notify(this.$t('notify.youDidIt'));
         await this.load();
       } catch (e) {
         console.log(e);
