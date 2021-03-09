@@ -121,7 +121,7 @@ const actions = {
       commit('SEND_FAILURE', e);
       const errorMessage =
         e && e.error_description
-          ? `Oops1, ${e.error_description}`
+          ? `Oops, ${e.error_description}`
           : i18n.global.t('notify.somethingWentWrong');
       dispatch('notify', ['red', errorMessage]);
       return;
