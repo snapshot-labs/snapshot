@@ -1,21 +1,21 @@
 <template>
   <form @submit.prevent="handleSubmit">
     <div class="mb-2 text-center">
-      <h4 v-text="`Choice ${choice}`" class="mb-3" />
+      <h4 v-text="$tc('yourChoice', [choice])" class="mb-3" />
       <UiButton
         @click="addAction"
         :disabled="!canAddAction"
         v-if="!input || !input[`choice${choice}`]"
         class="width-full mb-2"
       >
-        Add action
+        {{ $t('addAction') }}
       </UiButton>
       <div v-else>
         <UiButton class="width-full mb-2">
           <input
             v-model="input[`choice${choice}`].actions[0].to"
             class="input width-full text-center"
-            placeholder="Target address"
+            :placeholder="$t('targetAddress')"
             required
           />
         </UiButton>
@@ -23,7 +23,7 @@
           <input
             v-model="input[`choice${choice}`].actions[0].value"
             class="input width-full text-center"
-            placeholder="Value"
+            :placeholder="$t('value')"
             required
           />
         </UiButton>
@@ -31,17 +31,17 @@
           <input
             v-model="input[`choice${choice}`].actions[0].data"
             class="input width-full text-center"
-            placeholder="Data"
+            :placeholder="$t('data')"
             required
           />
         </UiButton>
         <UiButton @click="removeAction" class="width-full mb-2">
-          Remove action
+          {{ $t('removeAction') }}
         </UiButton>
       </div>
     </div>
     <UiButton @click="handleSubmit" class="button--submit width-full">
-      {{ choice === proposal.choices.length ? 'Confirm' : 'Next' }}
+      {{ choice === proposal.choices.length ? $t('confirm') : $t('next') }}
     </UiButton>
   </form>
 </template>

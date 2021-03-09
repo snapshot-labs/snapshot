@@ -12,17 +12,19 @@
     </div>
     <div>
       <span v-text="`#${i.slice(0, 7)}`" />
-      By {{ _shorten(proposal.address) }}
+      {{ $tc('createdBy', [_shorten(proposal.address)]) }}
       <Badges :address="proposal.address" :space="space" />
       <span
         v-if="proposal.score"
         v-text="`${_n(proposal.score)} ${space.symbol}`"
         class="ml-1"
       />
-      start
-      <span v-text="$d(proposal.msg.payload.start * 1e3)" />
-      end
-      <span v-text="$d(proposal.msg.payload.end * 1e3)" />
+      {{
+        $tc('startToEnd', [
+          $d(proposal.msg.payload.start * 1e3),
+          $d(proposal.msg.payload.end * 1e3)
+        ])
+      }}
     </div>
   </router-link>
 </template>

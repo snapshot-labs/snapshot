@@ -5,7 +5,7 @@
       class="p-3 text-center bg-blue"
       style="color: white; font-size: 20px;"
     >
-      This is the demo site, give it a try!
+      {{ $t('demoSite') }}
     </div>
     <nav id="topnav" class="border-bottom width-full bg-black">
       <Container>
@@ -59,7 +59,7 @@
               @click="modalOpen = true"
               :loading="loading || app.authLoading"
             >
-              <span class="hide-sm" v-text="'Connect wallet'" />
+              <span class="hide-sm" v-text="$t('connectWallet')" />
               <Icon
                 name="login"
                 size="20"

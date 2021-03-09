@@ -10,7 +10,7 @@ const domainName = window.location.hostname;
 
 let env = 'master';
 if (domainName.includes('localhost')) env = 'local';
-if (domainName === 'demo.snapshot.page' || domainName === 'demo.snapshot.vote')
+if (domainName === 'demo.snapshot.org' || domainName === 'demo.snapshot.page')
   env = 'develop';
 
 // @ts-ignore

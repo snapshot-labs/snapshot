@@ -38,7 +38,7 @@ const datetimeFormats = {
 };
 
 const i18n = createI18n({
-  locale: 'en',
+  locale: 'en-US',
   datetimeFormats,
   numberFormats,
   messages

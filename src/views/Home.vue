@@ -4,13 +4,13 @@
       <Container class="d-flex flex-items-center">
         <div class="flex-auto text-left">
           <UiButton class="pl-3 col-12 col-lg-4">
-            <Search v-model="q" placeholder="Search" />
+            <Search v-model="q" :placeholder="$t('searchPlaceholder')" />
           </UiButton>
         </div>
         <div class="ml-3 text-right hide-sm">
-          {{ _n(spaces.length) }} space(s)
+          {{ $tc('spaceCount', [_n(spaces.length)]) }}
           <router-link :to="{ name: 'setup' }" class="hide-md ml-3">
-            <UiButton>Create space</UiButton>
+            <UiButton>{{ $t('createSpace') }}</UiButton>
           </router-link>
         </div>
       </Container>
@@ -53,6 +53,11 @@
             </Block>
           </div>
         </router-link>
+        <NoResults
+          :block="true"
+          :length="Object.keys(spaces).length"
+          class="pr-md-4"
+        />
       </div>
     </Container>
   </div>

@@ -1,7 +1,7 @@
 <template>
   <UiModal :open="open" @close="$emit('close')">
     <template v-slot:header>
-      <h3>Plugins</h3>
+      <h3>{{ $t('plugins') }}</h3>
     </template>
     <div class="m-4 mt-4" v-if="selected === false">
       <div
@@ -18,19 +18,19 @@
         <h3 v-text="plugin.name" />
         <div class="mb-2">
           <a :href="plugin.website" target="_blank" class="text-white">
-            Learn more
+            {{ $t('learnMore') }}
             <Icon name="external-link" />
           </a>
         </div>
         <UiButton @click="selected = i">
-          {{ !form[i] ? 'Add' : 'Edit' }}
+          {{ !form[i] ? $t('add') : $t('edit') }}
         </UiButton>
       </div>
     </div>
     <template v-if="selected === false" v-slot:footer>
       <div class="col-6 float-left pr-2">
         <UiButton @click="$emit('close')" type="button" class="width-full">
-          Cancel
+          {{ $t('cancel') }}
         </UiButton>
       </div>
       <div class="col-6 float-left pl-2">
@@ -39,7 +39,7 @@
           type="submit"
           class="width-full button--submit"
         >
-          Save
+          {{ $t('save') }}
         </UiButton>
       </div>
     </template>

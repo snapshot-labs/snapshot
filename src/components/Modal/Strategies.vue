@@ -1,7 +1,7 @@
 <template>
   <UiModal :open="open" @close="$emit('close')">
     <template v-slot:header>
-      <h3>Strategies</h3>
+      <h3>{{ $t('strategiesPage') }}</h3>
     </template>
     <div class="m-4">
       <div

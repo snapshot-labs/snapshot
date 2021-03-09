@@ -10,10 +10,9 @@
       </div>
       <h3 v-text="_shorten(proposal.msg.payload.name, 52)" />
       <div class="mb-1">
-        Proposal by {{ _shorten(proposal.address) }}
+        {{ $tc('proposalBy', [_shorten(proposal.address)]) }}
         <Badges :address="proposal.address" :space="space" />
-        end
-        <span v-text="$d(proposal.msg.payload.end * 1e3)" />
+        {{ $tc('endDate', [$d(proposal.msg.payload.end * 1e3)]) }}
       </div>
       <State :proposal="proposal" class="mb-2" />
     </div>

@@ -2,7 +2,9 @@
   <div :class="skin.key" class="bg-black rounded-0 rounded-md-2">
     <Block>
       <UiButton class="button--submit mb-2">{{ skin.key }}</UiButton>
-      <div class="text-gray">In {{ _n(skin.spaces.length) }} space(s)</div>
+      <div class="text-gray">
+        {{ $tc('inSpaces', [_n(skin.spaces.length)]) }}
+      </div>
     </Block>
   </div>
 </template>

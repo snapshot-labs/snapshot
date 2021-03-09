@@ -3,7 +3,8 @@
     <template #content-left>
       <div class="px-4 px-md-0 mb-3">
         <router-link :to="{ path: '/strategies' }" class="text-gray">
-          <Icon name="back" size="22" class="v-align-middle" /> Strategies
+          <Icon name="back" size="22" class="v-align-middle" />
+          {{ $t('strategiesPage') }}
         </router-link>
       </div>
       <div class="px-4 px-md-0">
@@ -18,9 +19,9 @@
       </div>
     </template>
     <template #sidebar-right>
-      <Block title="Information">
+      <Block :title="$t('information')">
         <div class="mb-1">
-          <b>Author</b>
+          <b>{{ $t('author') }}</b>
           <a
             target="_blank"
             class="float-right"
@@ -32,7 +33,7 @@
         </div>
         <div>
           <div class="mb-1">
-            <b>Version</b>
+            <b>{{ $t('version') }}</b>
             <a
               target="_blank"
               class="float-right"

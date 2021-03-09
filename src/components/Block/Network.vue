@@ -4,7 +4,9 @@
       <h3 v-text="network.name" />
       <div v-text="network.key" class="ml-1 text-gray" />
     </div>
-    <div class="text-gray">In {{ _n(network.spaces.length) }} space(s)</div>
+    <div class="text-gray">
+      {{ $tc('inSpaces', [_n(network.spaces.length)]) }}
+    </div>
   </Block>
 </template>
 
