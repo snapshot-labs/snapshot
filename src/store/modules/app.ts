@@ -66,6 +66,20 @@ const mutations = {
   }
 };
 
+const isAllocation = (
+  payloadChoice: any
+): payloadChoice is Record<number, number> => {
+  return typeof payloadChoice !== 'number';
+};
+
+const didVoteFor = (vote: any, choice: number) => {
+  const payloadChoice = vote.msg.payload.choice;
+  if (isAllocation(payloadChoice)) {
+    return payloadChoice[choice] && payloadChoice[choice] > 0;
+  }
+  return payloadChoice == choice;
+};
+
 const actions = {
   init: async ({ commit, dispatch }) => {
     const auth = getInstance();
@@ -198,6 +212,10 @@ const actions = {
       });
       proposal.profile = authorProfile;
 
+      console.log('Voters:', voters);
+
+      console.log('Votes:', votes);
+
       votes = Object.fromEntries(
         Object.entries(votes)
           .map((vote: any) => {
@@ -205,30 +223,63 @@ const actions = {
               (strategy, i) => scores[i][vote[1].address] || 0
             );
             vote[1].balance = vote[1].scores.reduce((a, b: any) => a + b, 0);
+
+            const payloadChoice = vote[1].msg.payload.choice;
+            if (isAllocation(payloadChoice)) {
+              const choiceAllocation = Object.values(
+                vote[1].msg.payload.choice
+              ) as number[];
+
+              vote[1].totalAllocation = choiceAllocation.reduce(
+                (acc, allocation) => acc + allocation,
+                0
+              );
+
+              console.log('totalAllocation: ', vote[1].totalAllocation);
+              return vote;
+            }
+
+            vote[1].totalAllocation = 1;
             return vote;
           })
           .sort((a, b) => b[1].balance - a[1].balance)
           .filter(vote => vote[1].balance > 0)
       );
 
+      console.log('Votes: ', votes);
+
       /* Get results */
       const results = {
-        totalVotes: proposal.msg.payload.choices.map(
-          (choice, i) =>
-            Object.values(votes).filter(
-              (vote: any) => vote.msg.payload.choice === i + 1
-            ).length
-        ),
-        totalBalances: proposal.msg.payload.choices.map((choice, i) =>
+        totalVotes: proposal.msg.payload.choices.map((_, i) => {
+          console.log(Object.values(votes).filter(v => didVoteFor(v, i + 1)));
+          return Object.values(votes).filter((vote: any) =>
+            didVoteFor(vote, i + 1)
+          ).length;
+        }),
+        totalBalances: proposal.msg.payload.choices.map((_, i) =>
           Object.values(votes)
-            .filter((vote: any) => vote.msg.payload.choice === i + 1)
-            .reduce((a, b: any) => a + b.balance, 0)
+            .filter((vote: any) => didVoteFor(vote, i + 1))
+            .reduce((a: any, b: any) => {
+              const allocationWeight = isAllocation(b.msg.payload.choice)
+                ? b.msg.payload.choice[i + 1]
+                : 1;
+              const weightedBalance =
+                (b.balance * allocationWeight) / b.totalAllocation;
+              return a + weightedBalance;
+            }, 0)
         ),
         totalScores: proposal.msg.payload.choices.map((choice, i) =>
           space.strategies.map((strategy, sI) =>
             Object.values(votes)
-              .filter((vote: any) => vote.msg.payload.choice === i + 1)
-              .reduce((a, b: any) => a + b.scores[sI], 0)
+              .filter((vote: any) => didVoteFor(vote, i + 1))
+              .reduce((a: any, b: any) => {
+                const allocationWeight = isAllocation(b.msg.payload.choice)
+                  ? b.msg.payload.choice[i + 1]
+                  : 1;
+                const weightedScore =
+                  (b.scores[sI] * allocationWeight) / b.totalAllocation;
+                return a + weightedScore;
+              }, 0)
           )
         ),
         totalVotesBalances: Object.values(votes).reduce(
@@ -236,6 +287,8 @@ const actions = {
           0
         )
       };
+
+      console.log(results);
 
       commit('GET_PROPOSAL_SUCCESS');
       return { proposal, votes, results };

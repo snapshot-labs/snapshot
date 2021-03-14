@@ -5,16 +5,14 @@
     </template>
     <div class="d-flex flex-column flex-auto">
       <h4 class="m-4 mb-0 text-center">
-        {{
-          $tc('sureToVote', [proposal.msg.payload.choices[selectedChoice - 1]])
-        }}
+        {{ $tc('sureToVote', [options]) }}
         <br />
         {{ $t('cannotBeUndone') }}
       </h4>
       <div class="m-4 p-4 border rounded-2 text-white">
         <div class="d-flex">
           <span v-text="$t('option')" class="flex-auto text-gray mr-1" />
-          {{ proposal.msg.payload.choices[selectedChoice - 1] }}
+          {{ options }}
         </div>
         <div class="d-flex">
           <span v-text="$t('snapshot')" class="flex-auto text-gray mr-1" />
@@ -76,6 +74,7 @@ export default {
     'proposal',
     'id',
     'selectedChoice',
+    'allocations',
     'snapshot',
     'totalScore',
     'scores'
@@ -89,6 +88,12 @@ export default {
   computed: {
     symbols() {
       return this.space.strategies.map(strategy => strategy.params.symbol);
+    },
+    options() {
+      return Object.entries(this.allocations)
+        .sort(([, a], [, b]) => b - a)
+        .map(([choice]) => this.proposal.msg.payload.choices[choice - 1])
+        .join(' > ');
     }
   },
   methods: {
@@ -100,7 +105,7 @@ export default {
         type: 'vote',
         payload: {
           proposal: this.id,
-          choice: this.selectedChoice,
+          choice: this.allocations,
           metadata: {}
         }
       });
