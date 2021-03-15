@@ -115,6 +115,8 @@ textarea {
 
 .column {
   width: 160px;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 
 .anim-fade-in {
