@@ -68,15 +68,26 @@
 
 <script>
 import Plugin from '@snapshot-labs/snapshot.js/src/plugins/daoModule';
+import { parseEther } from '@ethersproject/units';
 const defaultEntry = () => {
   return {
     operation: '0'
   };
 };
+const parseValueInput = input => {
+  try {
+    return parseEther(input).toString();
+  } catch (e) {
+    return input;
+  }
+};
 const toModuleTransaction = (tx, nonce) => {
   return {
     nonce,
-    ...tx
+    to: tx.to,
+    value: parseValueInput(tx.value),
+    data: tx.data,
+    operation: tx.operation
   };
 };
 export default {
