@@ -172,6 +172,12 @@
         :proposalConfig="payload.metadata.plugins.gnosis"
         :choices="payload.choices"
       />
+      <PluginQuorumCustomBlock
+        v-if="payload.metadata.plugins?.quorum"
+        :space="space"
+        :payload="payload"
+        :results="results"
+      />
     </template>
   </Layout>
   <teleport to="#modal">
