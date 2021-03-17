@@ -172,6 +172,14 @@
         :proposalConfig="payload.metadata.plugins.gnosis"
         :choices="payload.choices"
       />
+      <PluginDaoModuleCustomBlock
+        v-if="payload.metadata.plugins?.daoModule?.txs"
+        :proposalConfig="payload.metadata.plugins.daoModule"
+        :proposalEnd="payload.end"
+        :porposalId="id"
+        :moduleAddress="space.plugins?.daoModule?.address"
+        :network="space.network"
+      />
       <PluginQuorumCustomBlock
         v-if="payload.metadata.plugins?.quorum"
         :space="space"
