@@ -124,6 +124,31 @@
               {{ $t('settings.addStrategy') }}
             </UiButton>
           </Block>
+          <Block :title="$t('plugins')">
+            <div v-if="form.plugins">
+              <div
+                v-for="(plugin, name, index) in form.plugins"
+                :key="index"
+                class="mb-3 position-relative"
+              >
+                <a
+                  @click="handleRemovePlugin(name)"
+                  class="position-absolute p-4 right-0"
+                >
+                  <Icon name="close" size="12" />
+                </a>
+                <a
+                  @click="handleEditPlugin(name)"
+                  class="p-4 d-block border rounded-2"
+                >
+                  <h4 v-text="name" />
+                </a>
+              </div>
+            </div>
+            <UiButton @click="handleAddPlugin" class="d-block width-full">
+              {{ $t('settings.addPlugin') }}
+            </UiButton>
+          </Block>
           <Block :title="$t('settings.members')">
             <UiButton class="d-block width-full px-3" style="height: auto;">
               <TextareaArray
@@ -174,16 +199,6 @@
               </UiButton>
             </div>
           </Block>
-          <Block
-            v-if="form.plugins && Object.keys(form.plugins)"
-            :title="$t('plugins')"
-          >
-            <div v-for="(plugin, i) in form.plugins" :key="i" class="mb-2">
-              <div class="p-4 d-block border rounded-2">
-                <h4 v-text="i" />
-              </div>
-            </div>
-          </Block>
         </div>
       </template>
     </template>
@@ -219,7 +234,12 @@
       @close="modalStrategyOpen = false"
       @add="handleSubmitAddStrategy"
       :strategy="currentStrategy"
-      :strategyIndex="currentStrategyIndex"
+    />
+    <ModalPlugin
+      :open="modalPluginOpen"
+      @close="modalPluginOpen = false"
+      @add="handleSubmitAddPlugin"
+      :plugin="currentPlugin"
     />
   </teleport>
 </template>
@@ -244,14 +264,17 @@ export default {
       currentSettings: {},
       currentContenthash: '',
       currentStrategy: {},
+      currentPlugin: {},
       currentStrategyIndex: false,
       modalNetworksOpen: false,
       modalSkinsOpen: false,
       modalStrategyOpen: false,
+      modalPluginOpen: false,
       loaded: false,
       loading: false,
       form: {
         strategies: [],
+        plugins: {},
         filters: {}
       },
       networks
@@ -284,8 +307,9 @@ export default {
       if (!space) space = await uriGet(gateway, decoded, protocolType);
       delete space.key;
       delete space._activeProposals;
-      space.filters = space.filters || {};
       space.strategies = space.strategies || [];
+      space.plugins = space.plugins || {};
+      space.filters = space.filters || {};
       this.currentSettings = clone(space);
       this.form = space;
     } catch (e) {
@@ -320,12 +344,14 @@ export default {
       if (this.currentSettings) return (this.form = this.currentSettings);
       this.form = {
         strategies: [],
+        plugins: {},
         filters: {}
       };
     },
     handleCopy() {
       this.notify(this.$t('notify.copied'));
     },
+
     handleEditStrategy(i) {
       this.currentStrategyIndex = i;
       this.currentStrategy = clone(this.form.strategies[i]);
@@ -347,6 +373,21 @@ export default {
       } else {
         this.form.strategies = this.form.strategies.concat(strategy);
       }
+    },
+
+    handleEditPlugin(name) {
+      this.currentPlugin = clone(this.form.plugins[name]);
+      this.modalPluginOpen = true;
+    },
+    handleRemovePlugin(plugin) {
+      delete this.form.plugins[plugin];
+    },
+    handleAddPlugin() {
+      this.currentPlugin = {};
+      this.modalPluginOpen = true;
+    },
+    handleSubmitAddPlugin(plugin) {
+      this.form.plugins[plugin.name] = plugin;
     }
   }
 };
