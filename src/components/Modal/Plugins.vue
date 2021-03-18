@@ -57,6 +57,13 @@
         @close="selected = false"
         v-if="selected === 'gnosis'"
       />
+      <PluginDaoModuleConfig
+        :proposal="proposal"
+        :network="space.network"
+        v-model="form.daoModule"
+        @close="selected = false"
+        v-if="selected === 'daoModule'"
+      />
     </div>
   </UiModal>
 </template>
