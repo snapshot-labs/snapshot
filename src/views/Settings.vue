@@ -176,24 +176,26 @@
             </div>
           </Block>
           <Block :title="$t('plugins')">
-            <div v-if="form.plugins">
+            <div v-if="form?.plugins">
               <div
                 v-for="(plugin, name, index) in form.plugins"
                 :key="index"
                 class="mb-3 position-relative"
               >
-                <a
-                  @click="handleRemovePlugins(name)"
-                  class="position-absolute p-4 right-0"
-                >
-                  <Icon name="close" size="12" />
-                </a>
-                <a
-                  @click="handleEditPlugins(name)"
-                  class="p-4 d-block border rounded-2"
-                >
-                  <h4 v-text="name" />
-                </a>
+                <div v-if="pluginName(name)">
+                  <a
+                    @click="handleRemovePlugins(name)"
+                    class="position-absolute p-4 right-0"
+                  >
+                    <Icon name="close" size="12" />
+                  </a>
+                  <a
+                    @click="handleEditPlugins(name)"
+                    class="p-4 d-block border rounded-2"
+                  >
+                    <h4 v-text="pluginName(name)" />
+                  </a>
+                </div>
               </div>
             </div>
             <UiButton @click="handleAddPlugins" class="d-block width-full">
@@ -240,7 +242,7 @@
       :open="modalPluginsOpen"
       @close="modalPluginsOpen = false"
       @add="handleSubmitAddPlugins"
-      :plugin="currentPlugins"
+      :plugin="currentPlugin"
     />
   </teleport>
 </template>
@@ -252,7 +254,8 @@ import { validateSchema } from '@snapshot-labs/snapshot.js/src/utils';
 import schemas from '@snapshot-labs/snapshot.js/src/schemas';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import gateways from '@snapshot-labs/snapshot.js/src/gateways.json';
-import { clone } from '@/helpers/utils';
+import { clone, filterPlugins } from '@/helpers/utils';
+import plugins from '@snapshot-labs/snapshot.js/src/plugins';
 import { getSpaceUri, uriGet } from '@/helpers/ens';
 
 const gateway = process.env.VUE_APP_IPFS_GATEWAY || gateways[0];
@@ -265,7 +268,7 @@ export default {
       currentSettings: {},
       currentContenthash: '',
       currentStrategy: {},
-      currentPlugins: {},
+      currentPlugin: {},
       currentStrategyIndex: false,
       modalNetworksOpen: false,
       modalSkinsOpen: false,
@@ -297,6 +300,9 @@ export default {
     },
     isReady() {
       return this.currentContenthash === this.contenthash;
+    },
+    plugins() {
+      return filterPlugins(plugins, this.app.spaces, '');
     }
   },
   async created() {
@@ -377,18 +383,25 @@ export default {
     },
 
     handleEditPlugins(name) {
-      this.currentPlugins = clone(this.form.plugins[name]);
+      this.currentPlugin = {};
+      this.currentPlugin[name] = clone(this.form.plugins[name]);
       this.modalPluginsOpen = true;
     },
     handleRemovePlugins(plugin) {
       delete this.form.plugins[plugin];
     },
     handleAddPlugins() {
-      this.currentPlugins = {};
+      this.currentPlugin = {};
       this.modalPluginsOpen = true;
     },
-    handleSubmitAddPlugins(plugin) {
-      this.form.plugins[plugin.name] = plugin;
+    handleSubmitAddPlugins(payload) {
+      this.form.plugins[payload.key] = payload.input;
+    },
+    pluginName(key) {
+      const plugin = this.plugins.find(obj => {
+        return obj.key === key;
+      });
+      return plugin.name;
     }
   }
 };
