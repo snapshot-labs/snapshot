@@ -87,7 +87,7 @@ export default {
       return filterPlugins(plugins, this.app.spaces, this.searchInput);
     },
     plugins() {
-      return filterPlugins(plugins, this.app.spaces, this.searchInput);
+      return filterPlugins(plugins, this.app.spaces, '');
     },
     isValid() {
       try {
