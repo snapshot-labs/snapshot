@@ -124,31 +124,7 @@
               {{ $t('settings.addStrategy') }}
             </UiButton>
           </Block>
-          <Block :title="$t('plugins')">
-            <div v-if="form.plugins">
-              <div
-                v-for="(plugin, name, index) in form.plugins"
-                :key="index"
-                class="mb-3 position-relative"
-              >
-                <a
-                  @click="handleRemovePlugin(name)"
-                  class="position-absolute p-4 right-0"
-                >
-                  <Icon name="close" size="12" />
-                </a>
-                <a
-                  @click="handleEditPlugin(name)"
-                  class="p-4 d-block border rounded-2"
-                >
-                  <h4 v-text="name" />
-                </a>
-              </div>
-            </div>
-            <UiButton @click="handleAddPlugin" class="d-block width-full">
-              {{ $t('settings.addPlugin') }}
-            </UiButton>
-          </Block>
+
           <Block :title="$t('settings.members')">
             <UiButton class="d-block width-full px-3" style="height: auto;">
               <TextareaArray
@@ -199,6 +175,31 @@
               </UiButton>
             </div>
           </Block>
+          <Block :title="$t('plugins')">
+            <div v-if="form.plugins">
+              <div
+                v-for="(plugin, name, index) in form.plugins"
+                :key="index"
+                class="mb-3 position-relative"
+              >
+                <a
+                  @click="handleRemovePlugins(name)"
+                  class="position-absolute p-4 right-0"
+                >
+                  <Icon name="close" size="12" />
+                </a>
+                <a
+                  @click="handleEditPlugins(name)"
+                  class="p-4 d-block border rounded-2"
+                >
+                  <h4 v-text="name" />
+                </a>
+              </div>
+            </div>
+            <UiButton @click="handleAddPlugins" class="d-block width-full">
+              {{ $t('settings.addPlugin') }}
+            </UiButton>
+          </Block>
         </div>
       </template>
     </template>
@@ -235,11 +236,11 @@
       @add="handleSubmitAddStrategy"
       :strategy="currentStrategy"
     />
-    <ModalPlugin
-      :open="modalPluginOpen"
-      @close="modalPluginOpen = false"
-      @add="handleSubmitAddPlugin"
-      :plugin="currentPlugin"
+    <ModalPlugins
+      :open="modalPluginsOpen"
+      @close="modalPluginsOpen = false"
+      @add="handleSubmitAddPlugins"
+      :plugin="currentPlugins"
     />
   </teleport>
 </template>
@@ -264,12 +265,12 @@ export default {
       currentSettings: {},
       currentContenthash: '',
       currentStrategy: {},
-      currentPlugin: {},
+      currentPlugins: {},
       currentStrategyIndex: false,
       modalNetworksOpen: false,
       modalSkinsOpen: false,
       modalStrategyOpen: false,
-      modalPluginOpen: false,
+      modalPluginsOpen: false,
       loaded: false,
       loading: false,
       form: {
@@ -375,18 +376,18 @@ export default {
       }
     },
 
-    handleEditPlugin(name) {
-      this.currentPlugin = clone(this.form.plugins[name]);
-      this.modalPluginOpen = true;
+    handleEditPlugins(name) {
+      this.currentPlugins = clone(this.form.plugins[name]);
+      this.modalPluginsOpen = true;
     },
-    handleRemovePlugin(plugin) {
+    handleRemovePlugins(plugin) {
       delete this.form.plugins[plugin];
     },
-    handleAddPlugin() {
-      this.currentPlugin = {};
-      this.modalPluginOpen = true;
+    handleAddPlugins() {
+      this.currentPlugins = {};
+      this.modalPluginsOpen = true;
     },
-    handleSubmitAddPlugin(plugin) {
+    handleSubmitAddPlugins(plugin) {
       this.form.plugins[plugin.name] = plugin;
     }
   }

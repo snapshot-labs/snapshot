@@ -73,7 +73,7 @@
             ? 'stars'
             : undefined
         "
-        @submit="modalPluginsOpen = true"
+        @submit="modalProposalPluginsOpen = true"
       >
         <div class="mb-2">
           <UiButton
@@ -118,12 +118,12 @@
       @close="modalOpen = false"
       @input="setDate"
     />
-    <ModalPlugins
+    <ModalProposalPlugins
       :space="space"
       :proposal="{ ...form, choices }"
       v-model="form.metadata.plugins"
-      :open="modalPluginsOpen"
-      @close="modalPluginsOpen = false"
+      :open="modalProposalPluginsOpen"
+      @close="modalProposalPluginsOpen = false"
     />
   </teleport>
 </template>
@@ -160,7 +160,7 @@ export default {
         metadata: {}
       },
       modalOpen: false,
-      modalPluginsOpen: false,
+      modalProposalPluginsOpen: false,
       selectedDate: '',
       counter: 0
     };
