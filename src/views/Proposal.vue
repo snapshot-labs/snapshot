@@ -180,6 +180,12 @@
         :moduleAddress="space.plugins?.daoModule?.address"
         :network="space.network"
       />
+      <PluginQuorumCustomBlock
+        v-if="payload.metadata.plugins?.quorum"
+        :space="space"
+        :payload="payload"
+        :results="results"
+      />
     </template>
   </Layout>
   <teleport to="#modal">
