@@ -29,7 +29,7 @@ export default {
       return this.space.strategies.map(strategy => strategy.params.symbol);
     },
     totalScore() {
-      return this.results.totalScores.reduce((res, score) => res + score[0], 0);
+      return this.results.totalBalances.reduce((a, b) => a + b, 0);
     }
   },
 
