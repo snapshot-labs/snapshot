@@ -12,6 +12,7 @@
 </template>
 
 <script>
+import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import Plugin from '@snapshot-labs/snapshot.js/src/plugins/quorum';
 
 export default {
@@ -36,7 +37,7 @@ export default {
     this.loading = true;
 
     this.totalVotingPower = await this.plugin.getTotalVotingPower(
-      this.$auth.web3,
+      getProvider(this.space.network),
       this.space.plugins.quorum,
       this.payload.snapshot
     );
