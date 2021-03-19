@@ -141,7 +141,10 @@
     "filters": "ఫిల్టర్లు",
     "defaultTab": "డిఫాల్ట్ టాబ్",
     "minScore": "కనిష్ట స్కోరు",
-    "showOnly": "సభ్యుల ప్రతిపాదనలను మాత్రమే చూపించు"
+    "showOnly": "సభ్యుల ప్రతిపాదనలను మాత్రమే చూపించు",
+    "editPlugin": "Edit plugin",
+    "addPlugin": "Add plugin",
+    "pluginParameters": "Plugin parameters"
   },
   "setup": {
     "example": "ఉదాహరణ. yarn.eth",

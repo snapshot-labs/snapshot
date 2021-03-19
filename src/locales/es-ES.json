@@ -141,7 +141,10 @@
     "filters": "Filtros",
     "defaultTab": "Pestaña por defecto",
     "minScore": "Puntuación mínima",
-    "showOnly": "Mostrar solo propuestas de miembros"
+    "showOnly": "Mostrar solo propuestas de miembros",
+    "editPlugin": "Edit plugin",
+    "addPlugin": "Add plugin",
+    "pluginParameters": "Plugin parameters"
   },
   "setup": {
     "example": "ej. yam.eth",

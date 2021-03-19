@@ -124,6 +124,7 @@
               {{ $t('settings.addStrategy') }}
             </UiButton>
           </Block>
+
           <Block :title="$t('settings.members')">
             <UiButton class="d-block width-full px-3" style="height: auto;">
               <TextareaArray
@@ -174,15 +175,32 @@
               </UiButton>
             </div>
           </Block>
-          <Block
-            v-if="form.plugins && Object.keys(form.plugins)"
-            :title="$t('plugins')"
-          >
-            <div v-for="(plugin, i) in form.plugins" :key="i" class="mb-2">
-              <div class="p-4 d-block border rounded-2">
-                <h4 v-text="i" />
+          <Block :title="$t('plugins')">
+            <div v-if="form?.plugins">
+              <div
+                v-for="(plugin, name, index) in form.plugins"
+                :key="index"
+                class="mb-3 position-relative"
+              >
+                <div v-if="pluginName(name)">
+                  <a
+                    @click="handleRemovePlugins(name)"
+                    class="position-absolute p-4 right-0"
+                  >
+                    <Icon name="close" size="12" />
+                  </a>
+                  <a
+                    @click="handleEditPlugins(name)"
+                    class="p-4 d-block border rounded-2"
+                  >
+                    <h4 v-text="pluginName(name)" />
+                  </a>
+                </div>
               </div>
             </div>
+            <UiButton @click="handleAddPlugins" class="d-block width-full">
+              {{ $t('settings.addPlugin') }}
+            </UiButton>
           </Block>
         </div>
       </template>
@@ -219,7 +237,12 @@
       @close="modalStrategyOpen = false"
       @add="handleSubmitAddStrategy"
       :strategy="currentStrategy"
-      :strategyIndex="currentStrategyIndex"
+    />
+    <ModalPlugins
+      :open="modalPluginsOpen"
+      @close="modalPluginsOpen = false"
+      @add="handleSubmitAddPlugins"
+      :plugin="currentPlugin"
     />
   </teleport>
 </template>
@@ -231,7 +254,8 @@ import { validateSchema } from '@snapshot-labs/snapshot.js/src/utils';
 import schemas from '@snapshot-labs/snapshot.js/src/schemas';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import gateways from '@snapshot-labs/snapshot.js/src/gateways.json';
-import { clone } from '@/helpers/utils';
+import { clone, filterPlugins } from '@/helpers/utils';
+import plugins from '@snapshot-labs/snapshot.js/src/plugins';
 import { getSpaceUri, uriGet } from '@/helpers/ens';
 
 const gateway = process.env.VUE_APP_IPFS_GATEWAY || gateways[0];
@@ -244,14 +268,17 @@ export default {
       currentSettings: {},
       currentContenthash: '',
       currentStrategy: {},
+      currentPlugin: {},
       currentStrategyIndex: false,
       modalNetworksOpen: false,
       modalSkinsOpen: false,
       modalStrategyOpen: false,
+      modalPluginsOpen: false,
       loaded: false,
       loading: false,
       form: {
         strategies: [],
+        plugins: {},
         filters: {}
       },
       networks
@@ -273,6 +300,9 @@ export default {
     },
     isReady() {
       return this.currentContenthash === this.contenthash;
+    },
+    plugins() {
+      return filterPlugins(plugins, this.app.spaces, '');
     }
   },
   async created() {
@@ -284,8 +314,9 @@ export default {
       if (!space) space = await uriGet(gateway, decoded, protocolType);
       delete space.key;
       delete space._activeProposals;
-      space.filters = space.filters || {};
       space.strategies = space.strategies || [];
+      space.plugins = space.plugins || {};
+      space.filters = space.filters || {};
       this.currentSettings = clone(space);
       this.form = space;
     } catch (e) {
@@ -320,12 +351,14 @@ export default {
       if (this.currentSettings) return (this.form = this.currentSettings);
       this.form = {
         strategies: [],
+        plugins: {},
         filters: {}
       };
     },
     handleCopy() {
       this.notify(this.$t('notify.copied'));
     },
+
     handleEditStrategy(i) {
       this.currentStrategyIndex = i;
       this.currentStrategy = clone(this.form.strategies[i]);
@@ -347,6 +380,28 @@ export default {
       } else {
         this.form.strategies = this.form.strategies.concat(strategy);
       }
+    },
+
+    handleEditPlugins(name) {
+      this.currentPlugin = {};
+      this.currentPlugin[name] = clone(this.form.plugins[name]);
+      this.modalPluginsOpen = true;
+    },
+    handleRemovePlugins(plugin) {
+      delete this.form.plugins[plugin];
+    },
+    handleAddPlugins() {
+      this.currentPlugin = {};
+      this.modalPluginsOpen = true;
+    },
+    handleSubmitAddPlugins(payload) {
+      this.form.plugins[payload.key] = payload.input;
+    },
+    pluginName(key) {
+      const plugin = this.plugins.find(obj => {
+        return obj.key === key;
+      });
+      return plugin.name;
     }
   }
 };
