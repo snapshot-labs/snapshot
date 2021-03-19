@@ -181,7 +181,7 @@
         :network="space.network"
       />
       <PluginQuorumCustomBlock
-        v-if="payload.metadata.plugins?.quorum"
+        v-if="space.plugins?.quorum"
         :space="space"
         :payload="payload"
         :results="results"
