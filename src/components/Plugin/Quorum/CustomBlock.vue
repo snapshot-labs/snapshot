@@ -21,7 +21,8 @@ export default {
     return {
       loading: false,
       plugin: new Plugin(),
-      quorum: 0.0
+      quorum: 0,
+      totalVotingPower: 0
     };
   },
   computed: {
