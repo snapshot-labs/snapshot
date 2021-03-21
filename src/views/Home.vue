@@ -3,7 +3,7 @@
     <div class="text-center mb-4 mx-auto">
       <Container class="d-flex flex-items-center">
         <div class="flex-auto text-left">
-          <UiButton class="pl-3 col-12 col-lg-4">
+          <UiButton class="pl-3 col-12 col-lg-6">
             <Search v-model="q" :placeholder="$t('searchPlaceholder')" />
           </UiButton>
         </div>

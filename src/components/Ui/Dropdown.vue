@@ -5,7 +5,11 @@
     </button>
     <div class="sub-menu-wrapper anim-scale-in" :class="{ hidden: !open }">
       <ul class="sub-menu my-2">
-        <li v-for="item in items" :key="item" @click="handleClick(item.action)">
+        <li
+          v-for="item in items"
+          :key="item"
+          @click="handleClick(item.action, item.options)"
+        >
           {{ item.text }}
         </li>
       </ul>
@@ -23,8 +27,8 @@ export default {
   },
 
   methods: {
-    handleClick(action) {
-      this.$emit(action);
+    handleClick(action, options = null) {
+      this.$emit(action, options);
       this.open = false;
     },
     close(e) {
@@ -99,5 +103,19 @@ li:hover {
   z-index: 10;
   opacity: 1;
   transition-delay: 0.3s;
+}
+.search-dropdown {
+  top: -2.5px;
+  right: -25px;
+  z-index: 1;
+  text-align: left;
+  border-left: 1px solid var(--border-color);
+  padding: 0 5px 0 10px;
+  &:hover {
+    border-color: var(--link-color);
+  }
+  .button {
+    height: 45px;
+  }
 }
 </style>
