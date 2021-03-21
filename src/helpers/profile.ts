@@ -1,8 +1,5 @@
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
-import {
-  subgraphRequest,
-  multicall
-} from '@snapshot-labs/snapshot.js/src/utils';
+import { subgraphRequest, call } from '@snapshot-labs/snapshot.js/src/utils';
 import namehash from 'eth-ens-namehash';
 
 function get3BoxProfiles(addresses) {
@@ -35,11 +32,6 @@ async function lookupAddresses(addresses) {
   const provider = getProvider(network);
   const abi = [
     {
-      inputs: [{ internalType: 'contract ENS', name: '_ens', type: 'address' }],
-      stateMutability: 'nonpayable',
-      type: 'constructor'
-    },
-    {
       inputs: [
         { internalType: 'address[]', name: 'addresses', type: 'address[]' }
       ],
@@ -50,15 +42,14 @@ async function lookupAddresses(addresses) {
     }
   ];
   return new Promise((resolove, reject) => {
-    multicall(
-      network,
+    call(
       provider,
       abi,
-      [['0x3671aE578E63FdF66ad4F3E12CC0c0d71Ac7510C', 'getNames', [addresses]]],
+      ['0x3671aE578E63FdF66ad4F3E12CC0c0d71Ac7510C', 'getNames', [addresses]],
       { blockTag: 'latest' }
     )
       .then(response => {
-        const validNames = response[0].r.map(n =>
+        const validNames = response.map(n =>
           namehash.normalize(n) === n ? n : ''
         );
         const ensNames = Object.fromEntries(
