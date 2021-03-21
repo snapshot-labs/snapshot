@@ -36,7 +36,7 @@ export default {
       if (this.profile?.name) {
         return this.profile.name;
       } else if (this.profile?.ens) {
-        return this.profile.ens;
+        return this._shorten(this.profile.ens, 20);
       }
       return this._shorten(this.address);
     }
