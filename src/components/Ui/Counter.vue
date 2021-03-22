@@ -16,9 +16,9 @@ export default {
   line-height: 18px;
   height: 20px;
   min-width: 20px;
-  color: white;
+  color: var(--text-color);
   text-align: center;
-  background-color: var(--text-color);
+  background-color: var(--header-bg);
   border-radius: 10px;
   vertical-align: middle;
 }
