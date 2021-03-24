@@ -16,6 +16,9 @@
       <a :href="`https://github.com/${pkg.repository}`" target="_blank">
         <Icon size="32" name="github" class="mr-1 mx-2" />
       </a>
+      <a href="https://docs.snapshot.org/" target="_blank">
+        <Icon size="32" name="gitbook" class="mr-1 mx-2" />
+      </a>
       <a href="https://gitcoin.co/grants/1093/snapshot" target="_blank">
         <Icon size="32" name="loveit" class="mr-1 mx-2" />
       </a>
