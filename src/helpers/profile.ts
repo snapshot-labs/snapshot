@@ -27,7 +27,7 @@ function get3BoxProfiles(addresses) {
   });
 }
 
-async function lookupAddresses(addresses) {
+function ensReverseRecordRequest(addresses) {
   const network = '1';
   const provider = getProvider(network);
   const abi = [
@@ -41,56 +41,72 @@ async function lookupAddresses(addresses) {
       type: 'function'
     }
   ];
-  return new Promise((resolove, reject) => {
-    Promise.all([
-      call(
-        provider,
-        abi,
-        ['0x3671aE578E63FdF66ad4F3E12CC0c0d71Ac7510C', 'getNames', [addresses]],
-        { blockTag: 'latest' }
-      ),
-      subgraphRequest('https://api.thegraph.com/subgraphs/name/ensdomains/ens', {
-        accounts: {
+  return call(
+    provider,
+    abi,
+    ['0x3671aE578E63FdF66ad4F3E12CC0c0d71Ac7510C', 'getNames', [addresses]],
+    { blockTag: 'latest' }
+  );
+}
+
+function ensSubGraphRequest(addresses) {
+  return subgraphRequest(
+    'https://api.thegraph.com/subgraphs/name/ensdomains/ens',
+    {
+      accounts: {
+        __args: {
+          first: 1000,
+          where: {
+            id_in: addresses.map(addresses => addresses.toLowerCase())
+          }
+        },
+        id: true,
+        registrations: {
           __args: {
-            first: 1000,
-            where: {
-              id_in: addresses.map(addresses => addresses.toLowerCase())
-            }
+            orderBy: 'registrationDate',
+            first: 1
           },
-          id: true,
-          registrations: {
-            __args: {
-              orderBy: 'registrationDate',
-              first: 1
-            },
-            domain: {
-              name: true,
-              labelName: true
-            }
+          domain: {
+            name: true,
+            labelName: true
           }
         }
-      })
-    ]).then(([reverseRecords, { accounts }]) => {
-      const validNames = reverseRecords.map(n =>
-        namehash.normalize(n) === n ? n : ''
-      );
-      // reverse record will be given preference
-      const ensNames = Object.fromEntries(
-        addresses.map((address, index) => {
-          const account = accounts.find(account => account.id.toLowerCase() === address.toLowerCase())
-          return [
-            address.toLowerCase(),
-            validNames[index] || ((account?.registrations?.[0]?.domain?.labelName &&
-              account?.registrations?.[0]?.domain?.name) || '')
-          ]
-        })
-      );
+      }
+    }
+  );
+}
 
-      resolove(ensNames);
-    }).catch(error => {
-      reject(error);
-    });
-    
+function lookupAddresses(addresses) {
+  return new Promise((resolove, reject) => {
+    Promise.all([
+      ensReverseRecordRequest(addresses),
+      ensSubGraphRequest(addresses)
+    ])
+      .then(([reverseRecords, { accounts }]) => {
+        const validNames = reverseRecords.map(n =>
+          namehash.normalize(n) === n ? n : ''
+        );
+        // reverse record will be given preference
+        const ensNames = Object.fromEntries(
+          addresses.map((address, index) => {
+            const account = accounts.find(
+              account => account.id.toLowerCase() === address.toLowerCase()
+            );
+            return [
+              address.toLowerCase(),
+              validNames[index] ||
+                (account?.registrations?.[0]?.domain?.labelName &&
+                  account?.registrations?.[0]?.domain?.name) ||
+                ''
+            ];
+          })
+        );
+
+        resolove(ensNames);
+      })
+      .catch(error => {
+        reject(error);
+      });
   });
 }
 
