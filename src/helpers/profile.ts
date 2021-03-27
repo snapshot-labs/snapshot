@@ -42,27 +42,55 @@ async function lookupAddresses(addresses) {
     }
   ];
   return new Promise((resolove, reject) => {
-    call(
-      provider,
-      abi,
-      ['0x3671aE578E63FdF66ad4F3E12CC0c0d71Ac7510C', 'getNames', [addresses]],
-      { blockTag: 'latest' }
-    )
-      .then(response => {
-        const validNames = response.map(n =>
-          namehash.normalize(n) === n ? n : ''
-        );
-        const ensNames = Object.fromEntries(
-          addresses.map((address, index) => [
-            address.toLowerCase(),
-            validNames[index] || ''
-          ])
-        );
-        resolove(ensNames);
+    Promise.all([
+      call(
+        provider,
+        abi,
+        ['0x3671aE578E63FdF66ad4F3E12CC0c0d71Ac7510C', 'getNames', [addresses]],
+        { blockTag: 'latest' }
+      ),
+      subgraphRequest('https://api.thegraph.com/subgraphs/name/ensdomains/ens', {
+        accounts: {
+          __args: {
+            first: 1000,
+            where: {
+              id_in: addresses.map(addresses => addresses.toLowerCase())
+            }
+          },
+          id: true,
+          registrations: {
+            __args: {
+              orderBy: 'registrationDate',
+              first: 1
+            },
+            domain: {
+              name: true,
+              labelName: true
+            }
+          }
+        }
       })
-      .catch(error => {
-        reject(error);
-      });
+    ]).then(([reverseRecords, { accounts }]) => {
+      const validNames = reverseRecords.map(n =>
+        namehash.normalize(n) === n ? n : ''
+      );
+      // reverse record will be given preference
+      const ensNames = Object.fromEntries(
+        addresses.map((address, index) => {
+          const account = accounts.find(account => account.id.toLowerCase() === address.toLowerCase())
+          return [
+            address.toLowerCase(),
+            validNames[index] || ((account?.registrations?.[0]?.domain?.labelName &&
+              account?.registrations?.[0]?.domain?.name) || '')
+          ]
+        })
+      );
+
+      resolove(ensNames);
+    }).catch(error => {
+      reject(error);
+    });
+    
   });
 }
 
