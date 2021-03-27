@@ -21,7 +21,7 @@ export default {
   emits: ['close'],
   data() {
     return {
-      langs: ['en-US', 'es-ES', 'fr-FR', 'te-IN']
+      langs: ['en-US', 'fr-FR', 'de-DE', 'es-ES', 'te-IN']
     };
   }
 };
