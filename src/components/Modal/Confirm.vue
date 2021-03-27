@@ -42,6 +42,14 @@
             {{ _n(totalScore) }}
             {{ _shorten(space.symbol, 'symbol') }}
           </span>
+          <a
+            v-if="totalScore === 0"
+            target="_blank"
+            href="https://docs.snapshot.org/faq#why-i-cant-vote"
+            class="d-inline-block mt-n1 ml-1"
+          >
+            <Icon name="info" size="24" class="text-gray" />
+          </a>
         </div>
       </div>
     </div>
