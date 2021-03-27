@@ -77,7 +77,7 @@
           @submit="modalPluginsOpen = true"
         >
           <div class="mb-2">
-            <div v-if="key !== 'staking-testnet'">
+            <div v-if="key === 'staking-mainnet'">
               <div class="mb-1">
                 <b>Start date</b>
                 <span

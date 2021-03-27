@@ -39,7 +39,7 @@
             loaded &&
               ts >= payload.start &&
               ts < payload.end &&
-              isOtherValidator
+              canVoteProposal
           "
           class="mb-4"
           title="Cast your vote"
@@ -157,43 +157,43 @@
                 <Icon name="external-link" class="ml-1" />
               </a>
             </div>
+            <template v-if="isHarmonySpace">
+              <div class="mb-1" v-if="epoch.length">
+                <b>Closed on epoch</b>
+                <span
+                  :aria-label="epoch"
+                  :v-text="epoch"
+                  class="float-right text-white tooltipped tooltipped-n"
+                >{{ epoch }}</span>
+              </div>
 
-            <div class="mb-1" v-if="epoch.length">
-              <b>Closed on epoch</b>
-              <span
-                :aria-label="epoch"
-                :v-text="epoch"
-                class="float-right text-white tooltipped tooltipped-n"
-                >{{ epoch }}</span
-              >
-            </div>
-
-            <div class="mb-1" v-if="false">
-              <b>Total votes</b>
-              <span
-                :aria-label="totalVotesOne + ' / ' + results.totalStaked"
-                :v-text="totalVotesOne + ' / ' + results.totalStaked"
-                class="float-right text-white tooltipped tooltipped-n"
-              >
+              <div class="mb-1" v-if="false">
+                <b>Total votes</b>
+                <span
+                  :aria-label="totalVotesOne + ' / ' + results.totalStaked"
+                  :v-text="totalVotesOne + ' / ' + results.totalStaked"
+                  class="float-right text-white tooltipped tooltipped-n"
+                >
                 {{
-                  Number(totalVotesPercent) > 0.01
-                    ? totalVotesPercent.toFixed(2)
-                    : totalVotesPercent.toFixed(4)
-                }}
+                    Number(totalVotesPercent) > 0.01
+                      ? totalVotesPercent.toFixed(2)
+                      : totalVotesPercent.toFixed(4)
+                  }}
                 %
               </span>
-            </div>
+              </div>
 
-            <div class="mb-1">
-              <b>Total stake</b>
-              <span
-                aria-label="Total stake on the network"
-                :v-text="'Total stake on the network'"
-                class="float-right text-white tooltipped tooltipped-n"
-              >
+              <div class="mb-1">
+                <b>Total stake</b>
+                <span
+                  aria-label="Total stake on the network"
+                  :v-text="'Total stake on the network'"
+                  class="float-right text-white tooltipped tooltipped-n"
+                >
                 {{ _numeral(results.totalStaked) }} ONE
               </span>
-            </div>
+              </div>
+            </template>
           </div>
         </Block>
         <BlockResults
@@ -268,6 +268,9 @@ export default {
     epoch() {
       return String(this.app.epoch);
     },
+    isHarmonySpace() {
+      return ['staking-mainnet', 'staking-testnet'].indexOf(this.key) > -1;
+    },
     totalVotesOne() {
       return this.results
         ? this.results.totalBalances.reduce((acc, it) => acc + it, 0)
@@ -278,26 +281,24 @@ export default {
         ? (this.totalVotesOne / this.results.totalStaked) * 100
         : 0;
     },
-    isOtherValidator() {
+    canVoteProposal() {
       if (!this.web3.account) {
         return false;
       }
-
-      const iAmValidator = !!this.app.validators.find(v =>
-        isAddressEqual(v.address, this.web3.account)
-      );
 
       const isUserVoted = Object.keys(this.votes || {}).some(address =>
         isAddressEqual(address, this.web3.account)
       );
 
-      // return (
-      //   iAmValidator &&
-      //   !isAddressEqual(this.proposal.address, this.web3.account)
+      if (this.isHarmonySpace) {
+        const iAmValidator = !!this.app.validators.find(v =>
+          isAddressEqual(v.address, this.web3.account)
+        );
 
-      // return true; // TODO: test only
-
-      return iAmValidator && !isUserVoted;
+        return iAmValidator && !isUserVoted;
+      } else {
+        return !isUserVoted;
+      }
     },
     space() {
       return this.app.spaces[this.key];
@@ -327,8 +328,6 @@ export default {
       this.proposal = proposalObj.proposal;
       this.votes = proposalObj.votes;
       this.results = proposalObj.results;
-
-      console.log(123, this.votes);
     },
     async loadPower() {
       if (!this.web3.account || !this.proposal.address) return;
@@ -337,7 +336,6 @@ export default {
         address: this.web3.account,
         snapshot: this.payload.snapshot
       });
-
       this.totalScore = totalScore;
       this.scores = scores;
     },

@@ -19,7 +19,7 @@
         </a>
       </div>
     </div>
-    <div class="m-4">
+    <div class="m-4" v-if="false">
       <a
         href="https://mycrypto.com/sign-and-verify-message/verify"
         target="_blank"

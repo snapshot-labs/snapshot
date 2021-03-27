@@ -1,6 +1,6 @@
 import { getProfiles } from '@/helpers/3box';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
-import { ipfsGet } from '@snapshot-labs/snapshot.js/src/utils';
+import { ipfsGet, getScores } from '@snapshot-labs/snapshot.js/src/utils';
 import {
   getBlockNumber,
   signMessage
@@ -230,29 +230,34 @@ const actions = {
     try {
       let proposals: any = await client.request(`${space.key}/proposals`);
       if (proposals) {
-        const scores: any = [
-          Object.values(proposals).reduce((acc: any, proposal: any) => {
-            const validator = state.validators.find(v =>
-              isAddressEqual(v.address, proposal.address)
-            );
+        let scores: any;
+        if (['staking-mainnet', 'staking-testnet'].indexOf(space.key) > -1) {
+          scores = [
+            Object.values(proposals).reduce((acc: any, proposal: any) => {
+              const validator = state.validators.find(v =>
+                isAddressEqual(v.address, proposal.address)
+              );
 
-            return {
-              ...acc,
-              [proposal.address]: validator
-                ? Number(ones(validator.total_stake))
-                : Number(ones(0)) // TODO: test only
-            };
-          }, {})
-        ];
+              return {
+                ...acc,
+                [proposal.address]: validator
+                  ? Number(ones(validator.total_stake))
+                  : Number(ones(0)) // TODO: test only
+              };
+            }, {})
+          ];
+          console.log('harmony scores: ', scores);
+        } else {
+          scores = await getScores(
+            space.key,
+            space.strategies,
+            space.network,
+            getProvider(space.network),
+            Object.values(proposals).map((proposal: any) => proposal.address)
+          );
+          console.log('hrc20 scores: ', scores);
+        }
 
-        // await getScores(
-        //   space.key,
-        //   space.strategies,
-        //   space.network,
-        //   getProvider(space.network),
-        //   Object.values(proposals).map((proposal: any) => proposal.address)
-        // );
-        console.log('Scores', scores);
         proposals = Object.fromEntries(
           Object.entries(proposals).map((proposal: any) => {
             proposal[1].score = scores.reduce(
@@ -270,15 +275,10 @@ const actions = {
     }
   },
   getProposal: async ({ commit, dispatch }, { space, id }) => {
-    if (!state.validators || !state.validators.length) {
-      await dispatch('getValidators', space.key);
-    }
-
-    commit('SET', { epoch: '' });
-
     commit('GET_PROPOSAL_REQUEST');
     try {
       const provider = getProvider(space.network);
+      // get proposal content
       console.time('getProposal.data');
       const response = await Promise.all([
         ipfsGet(gateway, id),
@@ -286,6 +286,7 @@ const actions = {
         getBlockNumber(provider)
       ]);
       console.timeEnd('getProposal.data');
+
       const [, , blockNumber] = response;
       let [proposal, votes]: any = response;
       proposal = formatProposal(proposal);
@@ -293,132 +294,124 @@ const actions = {
       const voters = Object.keys(votes);
       const { snapshot } = proposal.msg.payload;
       const blockTag = snapshot > blockNumber ? 'latest' : parseInt(snapshot);
-
-      const endDate = proposal.msg.payload.end * 1000;
-      let validators: any = [];
+      let scores: any;
+      let profiles: any;
       let totalStaked = 0;
 
-      const network = space.key.includes('mainnet')
-        ? 'harmony'
-        : 'harmony-testnet';
+      if (['staking-mainnet', 'staking-testnet'].indexOf(space.key) > -1) {
+        if (!state.validators || !state.validators.length) {
+          await dispatch('getValidators', space.key);
+        }
+        commit('SET', { epoch: '' });
 
-      try {
-        if (Date.now() > endDate) {
-          const explorerApi = space.key.includes('mainnet')
-            ? 'https://explorer.hmny.io:8888'
-            : 'https://explorer.pops.one:8888';
+        const endDate = proposal.msg.payload.end * 1000;
+        let validators: any = [];
 
-          const res: any = await client.getByUrl(
-            `${explorerApi}/blocks-new?cursor=${endDate}&size=1`
-          );
+        const network = space.key.includes('mainnet')
+          ? 'harmony'
+          : 'harmony-testnet';
 
-          if (res.blocks && !!res.blocks[0]) {
-            const epoch = Number(res.blocks[0].epoch);
+        try {
+          if (Date.now() > endDate) {
+            const explorerApi = space.key.includes('mainnet')
+              ? 'https://explorer.hmny.io:8888'
+              : 'https://explorer.pops.one:8888';
 
-            commit('SET', { epoch });
-
-            validators = await client.getByUrl(
-              `https://hmny-t.co/networks/${network}/validators-by-epoch/${epoch}`
+            const res: any = await client.getByUrl(
+              `${explorerApi}/blocks-new?cursor=${endDate}&size=1`
             );
 
+            if (res.blocks && !!res.blocks[0]) {
+              const epoch = Number(res.blocks[0].epoch);
+
+              commit('SET', { epoch });
+
+              validators = await client.getByUrl(
+                `https://hmny-t.co/networks/${network}/validators-by-epoch/${epoch}`
+              );
+
+              const resp: any = await client.getByUrl(
+                `https://hmny-t.co/networks/${network}/network-info-by-epoch/${epoch}`
+              );
+
+              totalStaked = Number(resp['total-staking']);
+            }
+          } else {
             const resp: any = await client.getByUrl(
-              `https://hmny-t.co/networks/${network}/network-info-by-epoch/${epoch}`
+              `https://hmny-t.co/networks/${network}/network-info-by-epoch/latest`
             );
 
             totalStaked = Number(resp['total-staking']);
           }
-        } else {
-          const resp: any = await client.getByUrl(
-            `https://hmny-t.co/networks/${network}/network-info-by-epoch/latest`
-          );
-
-          totalStaked = Number(resp['total-staking']);
+        } catch (e) {
+          console.error(e);
         }
-      } catch (e) {
-        console.error(e);
-      }
 
-      // console.log('-----totalStaked', totalStaked);
-
-      const totalStakedUnelected = state.validators
-        .filter(v => {
-          const validatorInHistory = validators.find(v =>
-            isAddressEqual(v.address, v.address)
-          );
-
-          return !v.active && !validatorInHistory;
-        })
-        .reduce((acc, v) => Number(v.total_stake) + acc, 0);
-
-      totalStaked = totalStaked + totalStakedUnelected;
-
-      /* Get scores */
-      // console.log(provider, provider);
-
-      // console.log(
-      //   99999,
-      //   await getScores(
-      //     space.key,
-      //     space.strategies,
-      //     space.network,
-      //     provider,
-      //     voters,
-      //     // @ts-ignore
-      //     blockTag
-      //   ),
-      //   voters.map(addr => {
-      //     const validator = state.validators.find(v =>
-      //       isAddressEqual(addr, addr)
-      //     );
-      //
-      //     return { [addr]: validator ? validator.total_stake : 0 };
-      //   })
-      // ),
-      console.time('getProposal.scores');
-      const [scores, profiles]: any = await Promise.all([
-        Promise.resolve([
-          voters.reduce((acc, addr) => {
-            let validator = validators.find(v =>
-              isAddressEqual(v.address, addr)
+        const totalStakedUnelected = state.validators
+          .filter(v => {
+            const validatorInHistory = validators.find(v =>
+              isAddressEqual(v.address, v.address)
             );
 
-            if (!validator) {
-              validator = state.validators.find(v =>
+            return !v.active && !validatorInHistory;
+          })
+          .reduce((acc, v) => Number(v.total_stake) + acc, 0);
+
+        totalStaked = totalStaked + totalStakedUnelected;
+
+        console.log('totalStaked: ', totalStaked);
+
+        console.time('getHarmonyProposal.scores');
+        [scores, profiles] = await Promise.all([
+          Promise.resolve([
+            voters.reduce((acc, addr) => {
+              let validator = validators.find(v =>
                 isAddressEqual(v.address, addr)
               );
-            }
 
-            return {
-              ...acc,
-              [addr]: validator
-                ? Number(ones(validator.totalStake || validator.total_stake))
-                : Number(ones(0)) // TODO: test only
-            };
-          }, {})
-        ]),
-        // getScores(
-        //   space.key,
-        //   space.strategies,
-        //   space.network,
-        //   provider,
-        //   voters,
-        //   // @ts-ignore
-        //   blockTag
-        // ),
-        getProfiles([proposal.address, ...voters])
-      ]);
+              if (!validator) {
+                validator = state.validators.find(v =>
+                  isAddressEqual(v.address, addr)
+                );
+              }
 
-      // console.log(3333, scores, profiles);
+              return {
+                ...acc,
+                [addr]: validator
+                  ? Number(ones(validator.totalStake || validator.total_stake))
+                  : Number(ones(0)) // TODO: test only
+              };
+            }, {})
+          ]),
+          getProfiles([proposal.address, ...voters])
+        ]);
+        console.timeEnd('getHarmonyProposal.scores');
 
-      console.timeEnd('getProposal.scores');
-      console.log('Scores', scores);
+        console.log('harmony scores: ', scores);
+      } else {
+        console.time('getHRC20Proposal.scores');
+        [scores, profiles] = await Promise.all([
+          getScores(
+            space.key,
+            space.strategies,
+            space.network,
+            provider,
+            voters,
+            // @ts-ignore
+            blockTag
+          ),
+          getProfiles([proposal.address, ...voters])
+        ]);
+        console.timeEnd('getHRC20Proposal.scores');
+
+        console.log('HRC20 scores: ', scores);
+      }
 
       const authorProfile = profiles[proposal.address];
       voters.forEach(address => {
         votes[address].profile = profiles[address];
       });
       proposal.profile = authorProfile;
-
       console.log('space.strategies', space.strategies);
 
       votes = Object.fromEntries(
@@ -472,33 +465,34 @@ const actions = {
   getPower: async ({ commit }, { space, address, snapshot }) => {
     commit('GET_POWER_REQUEST');
     try {
-      /*
-      const blockNumber = await getBlockNumber(getProvider(space.network));
+      let scores: any;
+      if (['staking-mainnet', 'staking-testnet'].indexOf(space.key) > -1) {
+        const validator = state.validators.find(
+          v =>
+            new HarmonyAddress(v.address).checksum ===
+            new HarmonyAddress(address).checksum
+        );
 
-      console.log(blockNumber, space.network, getProvider(space.network));
+        scores = [validator ? ones(validator.total_stake) : ones(0)]; // TODO: test only
+      } else {
+        const blockNumber = await getBlockNumber(getProvider(space.network));
+        const addressHex = new HarmonyAddress(address).checksum;
+        const blockTag = snapshot > blockNumber ? 'latest' : parseInt(snapshot);
+        console.log('blockTag: ', blockTag);
+        scores = await getScores(
+          space.key,
+          space.strategies,
+          space.network,
+          getProvider(space.network),
+          [addressHex],
+          // @ts-ignore
+          blockTag
+        );
 
-      const blockTag = snapshot > blockNumber ? 'latest' : parseInt(snapshot);
-      let scores: any = await getScores(
-        space.key,
-        space.strategies,
-        space.network,
-        getProvider(space.network),
-        [address],
-        // @ts-ignore
-        blockTag
-      );
-
-      scores = scores.map((score: any) =>
-        Object.values(score).reduce((a, b: any) => a + b, 0)
-      );
-      */
-      const validator = state.validators.find(
-        v =>
-          new HarmonyAddress(v.address).checksum ===
-          new HarmonyAddress(address).checksum
-      );
-
-      const scores = [validator ? ones(validator.total_stake) : ones(0)]; // TODO: test only
+        scores = scores.map((score: any) =>
+          Object.values(score).reduce((a, b: any) => a + b, 0)
+        );
+      }
 
       commit('GET_POWER_SUCCESS');
       return {
