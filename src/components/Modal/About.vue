@@ -25,6 +25,10 @@
     </div>
     <div class="m-4 p-4 mt-3 border rounded-2 text-white">
       <div class="d-flex">
+        <span v-text="$t('language')" class="flex-auto text-gray mr-1" />
+        <a @click="changeLang()">{{ $t(`nativeLocales.${$i18n.locale}`) }}</a>
+      </div>
+      <div class="d-flex">
         <span v-text="$t('version')" class="flex-auto text-gray mr-1" />
         <a
           v-if="commitSha"
@@ -65,7 +69,7 @@ const gateway = process.env.VUE_APP_IPFS_GATEWAY || gateways[0];
 
 export default {
   props: ['open'],
-  emits: ['close'],
+  emits: ['close', 'openLang'],
   data() {
     return {
       pkg,
@@ -73,6 +77,12 @@ export default {
       hubUrl: process.env.VUE_APP_HUB_URL,
       gateway
     };
+  },
+  methods: {
+    changeLang() {
+      this.$emit('openLang');
+      this.$emit('close');
+    }
   }
 };
 </script>
