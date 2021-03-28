@@ -10,7 +10,7 @@ import gateways from '@snapshot-labs/snapshot.js/src/gateways.json';
 import client from '@/helpers/client';
 import { formatProposal, formatProposals, formatSpace } from '@/helpers/utils';
 import { version } from '@/../package.json';
-import i18n from '@/i18n';
+import i18n, { defaultLocale } from '@/i18n';
 import { lsGet, lsSet } from '@/helpers/utils';
 
 const gateway = process.env.VUE_APP_IPFS_GATEWAY || gateways[0];
@@ -21,7 +21,7 @@ const state = {
   authLoading: false,
   modalOpen: false,
   spaces: {},
-  locale: lsGet('locale')
+  locale: lsGet('locale', defaultLocale)
 };
 
 const mutations = {
