@@ -25,6 +25,10 @@
     </div>
     <div class="m-4 p-4 mt-3 border rounded-2 text-white">
       <div class="d-flex">
+        <span v-text="$t('language')" class="flex-auto text-gray mr-1" />
+        <a @click="changeLang()">{{ languages[$i18n.locale] }}</a>
+      </div>
+      <div class="d-flex">
         <span v-text="$t('version')" class="flex-auto text-gray mr-1" />
         <a
           v-if="commitSha"
@@ -59,20 +63,28 @@
 
 <script>
 import pkg from '@/../package.json';
+import languages from '@/locales/languages.json';
 import gateways from '@snapshot-labs/snapshot.js/src/gateways.json';
 
 const gateway = process.env.VUE_APP_IPFS_GATEWAY || gateways[0];
 
 export default {
   props: ['open'],
-  emits: ['close'],
+  emits: ['close', 'openLang'],
   data() {
     return {
       pkg,
       commitSha: process.env.VUE_APP_COMMIT_SHA,
       hubUrl: process.env.VUE_APP_HUB_URL,
-      gateway
+      gateway,
+      languages: languages
     };
+  },
+  methods: {
+    changeLang() {
+      this.$emit('openLang');
+      this.$emit('close');
+    }
   }
 };
 </script>
