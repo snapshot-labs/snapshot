@@ -79,7 +79,15 @@
         @close="modalOpen = false"
         @login="handleLogin"
       />
-      <ModalAbout :open="modalAboutOpen" @close="modalAboutOpen = false" />
+      <ModalAbout
+        :open="modalAboutOpen"
+        @close="modalAboutOpen = false"
+        @openLang="modalLangOpen = true"
+      />
+      <ModalSelectLanguage
+        :open="modalLangOpen"
+        @close="modalLangOpen = false"
+      />
     </teleport>
   </Sticky>
 </template>
@@ -92,7 +100,8 @@ export default {
     return {
       loading: false,
       modalOpen: false,
-      modalAboutOpen: false
+      modalAboutOpen: false,
+      modalLangOpen: false
     };
   },
   computed: {

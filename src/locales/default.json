@@ -85,6 +85,7 @@
   "contectHash": "Content hash",
   "defaultSkin": "Default skin",
   "select": "Select",
+  "language": "Language",
   "create": {
     "question": "Question",
     "content": "What is your proposal?",
