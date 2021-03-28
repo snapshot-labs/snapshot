@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
+import { mapActions } from 'vuex';
 
 export default {
   watch: {
@@ -23,9 +23,6 @@ export default {
     }
   },
   computed: {
-    ...mapState({
-      locale: state => state.app.locale
-    }),
     space() {
       try {
         const key = this.domain || this.$route.params.key;
@@ -37,7 +34,6 @@ export default {
   },
   mounted() {
     this.init();
-    if (typeof this.locale === 'string') this.$i18n.locale = this.locale;
   },
   methods: {
     ...mapActions(['init'])

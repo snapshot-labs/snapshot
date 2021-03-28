@@ -24,7 +24,7 @@ export default {
   emits: ['close'],
   data() {
     return {
-      languages: languages
+      languages
     };
   },
   computed: {

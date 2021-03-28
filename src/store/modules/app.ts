@@ -70,6 +70,7 @@ const mutations = {
 
 const actions = {
   init: async ({ commit, dispatch }) => {
+    i18n.global.locale = state.locale;
     const auth = getInstance();
     commit('SET', { loading: true });
     await dispatch('getSpaces');

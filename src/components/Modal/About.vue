@@ -77,7 +77,7 @@ export default {
       commitSha: process.env.VUE_APP_COMMIT_SHA,
       hubUrl: process.env.VUE_APP_HUB_URL,
       gateway,
-      languages: languages
+      languages
     };
   },
   methods: {
