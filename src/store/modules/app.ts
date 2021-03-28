@@ -11,6 +11,7 @@ import client from '@/helpers/client';
 import { formatProposal, formatProposals, formatSpace } from '@/helpers/utils';
 import { version } from '@/../package.json';
 import i18n from '@/i18n';
+import { lsGet, lsSet } from '@/helpers/utils';
 
 const gateway = process.env.VUE_APP_IPFS_GATEWAY || gateways[0];
 
@@ -19,7 +20,8 @@ const state = {
   loading: false,
   authLoading: false,
   modalOpen: false,
-  spaces: {}
+  spaces: {},
+  locale: lsGet('locale')
 };
 
 const mutations = {
@@ -268,6 +270,11 @@ const actions = {
     } catch (e) {
       commit('GET_POWER_FAILURE', e);
     }
+  },
+  setLocale(state, locale) {
+    state.locale = locale;
+    lsSet('locale', locale);
+    i18n.global.locale = locale;
   }
 };
 

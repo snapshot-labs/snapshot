@@ -5,24 +5,39 @@
     </template>
     <div class="text-center mt-4 mb-3 px-4 width-full">
       <UiButton
-        v-for="lang in langs"
-        :key="lang"
-        @click="($i18n.locale = lang), $emit('close')"
+        v-for="locale in locales"
+        :key="locale"
+        @click="selectLang(locale)"
         class="width-full mb-2"
       >
-        {{ $t(`nativeLocales.${lang}`) }}
+        {{ languages[locale] }}
       </UiButton>
     </div>
   </UiModal>
 </template>
 
 <script>
+import languages from '@/locales/languages.json';
+import { mapActions } from 'vuex';
+
 export default {
   emits: ['close'],
   data() {
     return {
-      langs: ['en-US', 'fr-FR', 'de-DE', 'es-ES', 'te-IN']
+      languages: languages
     };
+  },
+  computed: {
+    locales() {
+      return Object.keys(languages);
+    }
+  },
+  methods: {
+    ...mapActions(['setLocale']),
+    selectLang(locale) {
+      this.setLocale(locale);
+      this.$emit('close');
+    }
   }
 };
 </script>

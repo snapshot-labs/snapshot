@@ -86,15 +86,6 @@
   "defaultSkin": "Default skin",
   "select": "Select",
   "language": "Language",
-  "nativeLocales": {
-    "en-US": "English",
-    "fr-FR": "Français",
-    "de-DE": "Deutsch",
-    "es-ES": "Español",
-    "ru-RU": "Pусский",
-    "te-IN": "తెలుగు",
-    "zh-CN": "中国人"
-  },
   "create": {
     "question": "Question",
     "content": "What is your proposal?",
