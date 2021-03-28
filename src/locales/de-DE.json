@@ -142,9 +142,9 @@
     "defaultTab": "Standard-Tab",
     "minScore": "Min. Punktzahl",
     "showOnly": "Nur Mitgliedervorschläge anzeigen",
-    "editPlugin": "Edit plugin",
-    "addPlugin": "Add plugin",
-    "pluginParameters": "Plugin parameters"
+    "editPlugin": "Plugin bearbeiten",
+    "addPlugin": "Plugin hinzufügen",
+    "pluginParameters": "Plugin Parameter"
   },
   "setup": {
     "example": "z.B. yam.eth",
