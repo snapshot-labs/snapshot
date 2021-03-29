@@ -129,7 +129,7 @@
             <b>{{ $t('proposal.startDate') }}</b>
             <span
               :aria-label="_ms(payload.start)"
-              v-text="$d(payload.start * 1e3, 'short')"
+              v-text="$d(payload.start * 1e3, 'short', 'en-US')"
               class="float-right text-white tooltipped tooltipped-n"
             />
           </div>
@@ -137,7 +137,7 @@
             <b>{{ $t('proposal.endDate') }}</b>
             <span
               :aria-label="_ms(payload.end)"
-              v-text="$d(payload.end * 1e3, 'short')"
+              v-text="$d(payload.end * 1e3, 'short', 'en-US')"
               class="float-right text-white tooltipped tooltipped-n"
             />
           </div>
