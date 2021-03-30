@@ -18,7 +18,7 @@
           >
             <span v-text="key" class="flex-auto text-gray mr-1" />
             <a
-              v-if="key === 'address'"
+              v-if="key === 'address' || option.length === 42"
               :href="_explorer(space.network, option)"
               target="_blank"
               class="d-block"
@@ -44,6 +44,9 @@
 <script>
 export default {
   props: ['open', 'strategies', 'space'],
-  emits: ['close']
+  emits: ['close'],
+  mounted() {
+    console.log(this.strategies);
+  }
 };
 </script>
