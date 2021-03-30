@@ -2,6 +2,12 @@
 
 Snapshot is an off-chain gasless multi-governance client with easy to verify and hard to contest results. 
 
+## Links
+
+
+**[Feature requests](https://features.snapshot.org/feature-requests)**
+
+
 **[Documentation](https://docs.snapshot.org)**
 
 ## Project setup
