@@ -18,7 +18,7 @@
           >
             <span v-text="key" class="flex-auto text-gray mr-1" />
             <a
-              v-if="key === 'address' || option.length === 42"
+              v-if="key === 'address' || isAddress(option)"
               :href="_explorer(space.network, option)"
               target="_blank"
               class="d-block"
@@ -42,11 +42,13 @@
 </template>
 
 <script>
+import { isAddress } from '@ethersproject/address';
+
 export default {
   props: ['open', 'strategies', 'space'],
   emits: ['close'],
-  mounted() {
-    console.log(this.strategies);
+  methods: {
+    isAddress: isAddress
   }
 };
 </script>
