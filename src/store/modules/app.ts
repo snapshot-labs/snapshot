@@ -318,18 +318,18 @@ const actions = {
             commit('SET', { epoch });
 
             validators = await client.getByUrl(
-              `https://hmny-t.co/networks/${network}/validators-by-epoch/${epoch}`
+              `https://api.stake.hmny.io/networks/${network}/validators-by-epoch/${epoch}`
             );
 
             const resp: any = await client.getByUrl(
-              `https://hmny-t.co/networks/${network}/network-info-by-epoch/${epoch}`
+              `https://api.stake.hmny.io/networks/${network}/network-info-by-epoch/${epoch}`
             );
 
             totalStaked = Number(resp['total-staking']);
           }
         } else {
           const resp: any = await client.getByUrl(
-            `https://hmny-t.co/networks/${network}/network-info-by-epoch/latest`
+            `https://api.stake.hmny.io/networks/${network}/network-info-by-epoch/latest`
           );
 
           totalStaked = Number(resp['total-staking']);
