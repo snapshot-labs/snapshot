@@ -32,6 +32,9 @@
       </div>
     </Container>
     <Container :slim="true">
+      <Block v-if="space.about" class="mb-2">
+        <UiText :text="space.about"/>
+      </Block>
       <Block :slim="true">
         <div
           class="px-4 py-3 bg-gray-dark overflow-auto menu-tabs rounded-top-0 rounded-md-top-2"
