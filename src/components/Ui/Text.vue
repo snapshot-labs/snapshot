@@ -1,5 +1,5 @@
 <template>
-  <span v-html="textWithLinks"/>
+  <span v-html="textWithLinks" />
 </template>
 
 <script>

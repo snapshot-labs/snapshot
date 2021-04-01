@@ -33,7 +33,7 @@
     </Container>
     <Container :slim="true">
       <Block v-if="space.about" class="mb-2">
-        <UiText :text="space.about"/>
+        <UiText :text="space.about" />
       </Block>
       <Block :slim="true">
         <div
