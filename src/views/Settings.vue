@@ -58,6 +58,10 @@
                 <div class="text-gray mr-2">{{ $t('settings.name') }}</div>
                 <input v-model="form.name" class="input flex-auto" required />
               </UiButton>
+              <UiButton class="text-left width-full mb-2 d-flex px-3">
+                <div class="text-gray mr-2">{{ $t('settings.about') }}</div>
+                <input v-model="form.about" class="input flex-auto" />
+              </UiButton>
               <UiButton
                 @click="modalNetworksOpen = true"
                 class="text-left width-full mb-2 d-flex px-3"
@@ -83,6 +87,18 @@
                 <div class="flex-auto">
                   {{ form.skin ? form.skin : $t('defaultSkin') }}
                 </div>
+              </UiButton>
+              <UiButton class="text-left width-full mb-2 d-flex px-3">
+                <div class="text-gray mr-2">
+                  <Icon name="twitter" class="mr-1" />
+                </div>
+                <input v-model="form.twitter" class="input flex-auto" />
+              </UiButton>
+              <UiButton class="text-left width-full mb-2 d-flex px-3">
+                <div class="text-gray mr-2">
+                  <Icon name="github" class="mr-1" />
+                </div>
+                <input v-model="form.github" class="input flex-auto" />
               </UiButton>
               <UiButton class="text-left width-full mb-2 d-flex px-3">
                 <div class="text-gray mr-2">{{ $t('settings.domain') }}</div>
