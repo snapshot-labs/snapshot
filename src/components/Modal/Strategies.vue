@@ -48,7 +48,7 @@ export default {
   props: ['open', 'strategies', 'space'],
   emits: ['close'],
   methods: {
-    isAddress: isAddress
+    isAddress
   }
 };
 </script>
