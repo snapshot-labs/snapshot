@@ -29,9 +29,9 @@ export function lsSet(key: string, value: any) {
   return localStorage.setItem(`${pkg.name}.${key}`, JSON.stringify(value));
 }
 
-export function lsGet(key: string) {
+export function lsGet(key: string, fallback?: any) {
   const item = localStorage.getItem(`${pkg.name}.${key}`);
-  return jsonParse(item, '');
+  return jsonParse(item, fallback);
 }
 
 export function lsRemove(key: string) {

@@ -81,14 +81,14 @@
             class="width-full mb-2"
           >
             <span v-if="!form.start">{{ $t('create.startDate') }}</span>
-            <span v-else v-text="$d(form.start * 1e3, 'short')" />
+            <span v-else v-text="$d(form.start * 1e3, 'short', 'en-US')" />
           </UiButton>
           <UiButton
             @click="[(modalOpen = true), (selectedDate = 'end')]"
             class="width-full mb-2"
           >
             <span v-if="!form.end">{{ $t('create.endDate') }}</span>
-            <span v-else v-text="$d(form.end * 1e3, 'short')" />
+            <span v-else v-text="$d(form.end * 1e3, 'short', 'en-US')" />
           </UiButton>
           <UiButton class="width-full mb-2">
             <input

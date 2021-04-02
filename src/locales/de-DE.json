@@ -85,6 +85,7 @@
   "contectHash": "Hash des Inhalts",
   "defaultSkin": "Standard-Skin",
   "select": "Auswählen",
+  "language": "Language",
   "create": {
     "question": "Frage",
     "content": "Was ist Ihr Vorschlag?",
@@ -132,6 +133,7 @@
     "profile": "Profil",
     "changeAvatar": "Avatar ändern",
     "name": "Name",
+    "about": "About",
     "symbol": "Symbol",
     "skin": "Skin",
     "domain": "Domain-Name",
@@ -142,9 +144,9 @@
     "defaultTab": "Standard-Tab",
     "minScore": "Min. Punktzahl",
     "showOnly": "Nur Mitgliedervorschläge anzeigen",
-    "editPlugin": "Edit plugin",
-    "addPlugin": "Add plugin",
-    "pluginParameters": "Plugin parameters"
+    "editPlugin": "Plugin bearbeiten",
+    "addPlugin": "Plugin hinzufügen",
+    "pluginParameters": "Plugin Parameter"
   },
   "setup": {
     "example": "z.B. yam.eth",

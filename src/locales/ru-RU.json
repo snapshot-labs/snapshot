@@ -86,6 +86,7 @@
   "contectHash": "Content hash",
   "defaultSkin": "Default skin",
   "select": "Select",
+  "language": "Language",
   "create": {
     "question": "Question",
     "content": "What is your proposal?",
@@ -133,6 +134,7 @@
     "profile": "Profile",
     "changeAvatar": "Change avatar",
     "name": "Name",
+    "about": "About",
     "symbol": "Symbol",
     "skin": "Skin",
     "domain": "Domain name",
