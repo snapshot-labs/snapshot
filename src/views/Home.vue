@@ -2,12 +2,12 @@
   <div>
     <div class="text-center mb-4 mx-auto">
       <Container class="d-flex flex-items-center">
-        <div class="flex-auto text-left">
+        <div class="flex-auto text-left col-lg-8">
           <UiButton class="pl-3 col-12 col-lg-6">
-            <Search v-model="q" :placeholder="$t('searchPlaceholder')" />
+            <SearchWithFilters v-model="q" />
           </UiButton>
         </div>
-        <div class="ml-3 text-right hide-sm">
+        <div class="ml-3 text-right hide-sm col-lg-4">
           {{ $tc('spaceCount', [_n(spaces.length)]) }}
           <router-link :to="{ name: 'setup' }" class="hide-md ml-3">
             <UiButton>{{ $t('createSpace') }}</UiButton>

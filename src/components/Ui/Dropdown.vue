@@ -79,7 +79,7 @@ li:hover {
 .sub-menu-wrapper {
   position: absolute;
   right: 0;
-  top: 1.8rem;
+  top: 2.3rem;
   width: 180px;
   background-color: var(--header-bg);
   border: 1px solid var(--border-color);
@@ -103,19 +103,5 @@ li:hover {
   z-index: 10;
   opacity: 1;
   transition-delay: 0.3s;
-}
-.search-dropdown {
-  top: -2.5px;
-  right: -25px;
-  z-index: 1;
-  text-align: left;
-  border-left: 1px solid var(--border-color);
-  padding: 0 5px 0 10px;
-  &:hover {
-    border-color: var(--link-color);
-  }
-  .button {
-    height: 45px;
-  }
 }
 </style>

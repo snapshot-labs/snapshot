@@ -69,6 +69,10 @@ p {
   min-height: 100vh;
 }
 
+#content {
+  min-height: calc(100vh - 103px)
+}
+
 a, .a {
   color: var(--link-color);
 

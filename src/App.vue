@@ -3,7 +3,7 @@
     <UiLoading v-if="app.loading || !app.init" class="overlay big" />
     <div v-else>
       <Topnav />
-      <div class="pb-6 overflow-hidden" style="min-height: 420px;">
+      <div id="content" class="pb-6 overflow-hidden">
         <router-view :key="$route.path" class="flex-auto" />
       </div>
     </div>
