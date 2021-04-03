@@ -7,7 +7,7 @@
             <SearchWithFilters v-model="q" />
           </UiButton>
         </div>
-        <div class="ml-3 text-right col-lg-4">
+        <div class="ml-3 text-right hide-sm col-lg-4">
           {{ _n(items.length) }} {{ resultsStr }}
           <a
             v-if="buttonStr"
