@@ -5,7 +5,7 @@
         class="col-3 iconfont iconback text-left h3 text-gray"
         @click="month--"
       />
-      <h4 class="mb-3 flex-auto text-center">{{ monthName }} {{ year }}</h4>
+      <h4 class="mb-3 flex-auto text-center">{{ monthName }} {{ fullYear }}</h4>
       <a
         class="col-3 iconfont icongo text-right h3 text-gray"
         @click="month++"
@@ -42,7 +42,8 @@
 
 <script>
 export default {
-  props: ['value'],
+  props: ['modelValue'],
+  emits: ['update:modelValue'],
   data() {
     return {
       input: '',
@@ -77,6 +78,9 @@ export default {
       );
       return `${name.charAt(0).toUpperCase()}${name.slice(1)}`;
     },
+    fullYear() {
+      return new Date(this.year, this.month).getFullYear();
+    },
     days() {
       return new Date(this.year, this.month + 1, 0).getDate();
     },
@@ -86,11 +90,14 @@ export default {
   },
   methods: {
     formatDate(year, month, day) {
-      return new Date(year, month, day).toISOString().split('T')[0];
+      let data = new Date(year, month, day);
+      const offset = data.getTimezoneOffset();
+      data = new Date(data.getTime() - offset * 60 * 1000);
+      return data.toISOString().split('T')[0];
     },
     toggleDay(year, month, day) {
       this.input = this.formatDate(year, month, day);
-      this.$emit('input', this.input);
+      this.$emit('update:modelValue', this.input);
     },
     isSelectable() {
       return true;

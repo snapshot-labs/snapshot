@@ -14,24 +14,24 @@
 }
 
 @font-face {
-  font-family: 'Calibre-Medium';
+  font-family: 'Calibre';
   src: url('./assets/fonts/Calibre-Medium.eot');
   src: url('./assets/fonts/Calibre-Medium.eot?#iefix')
       format('embedded-opentype'),
     url('./assets/fonts/Calibre-Medium.woff') format('woff'),
     url('./assets/fonts/Calibre-Medium.ttf') format('truetype');
-  font-weight: normal;
+  font-weight: 500;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'Calibre-Semibold';
+  font-family: 'Calibre';
   src: url('./assets/fonts/Calibre-Semibold.eot');
   src: url('./assets/fonts/Calibre-Semibold.eot?#iefix')
       format('embedded-opentype'),
     url('./assets/fonts/Calibre-Semibold.woff') format('woff'),
     url('./assets/fonts/Calibre-Semibold.ttf') format('truetype');
-  font-weight: normal;
+  font-weight: 600;
   font-style: normal;
 }
 
@@ -40,7 +40,7 @@ body,
 #app {
   background: var(--bg-color);
   color: var(--text-color);
-  font-family: $font-weight-normal;
+  font-family: $body-font;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -54,11 +54,11 @@ h2,
 h3,
 h4 {
   color: var(--heading-color);
-  font-family: $font-weight-bold;
+  font-weight: $font-weight-bold;
 }
 
 b {
-  font-family: $font-weight-bold;
+  font-weight: $font-weight-bold;
 }
 
 p {
@@ -69,7 +69,7 @@ p {
   min-height: 100vh;
 }
 
-a {
+a, .a {
   color: var(--link-color);
 
   &:hover {
@@ -91,7 +91,9 @@ a {
 }
 
 textarea {
+  padding-top: 16px;
   font-size: 20px;
+  line-height: 1.4em;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -211,6 +213,9 @@ textarea {
   }
 
   &::after {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 320px;
     margin-bottom: 14px;
     border-radius: 20px;
     padding: 6px 16px 2px;
@@ -218,4 +223,22 @@ textarea {
     background-color: var(--text-color);
     color: var(--header-bg);
   }
+}
+
+.markdown-body blockquote {
+  color: var(--text-color);
+  border-left-color: var(--text-color);
+}
+
+.last-child-border-0:last-child {
+  border: 0 !important;
+}
+
+.sliding {
+  overflow: auto;
+  white-space: nowrap;
+}
+
+.border-color {
+  color: var(--border-color);
 }

@@ -2,7 +2,6 @@
   <span class="Progress Progress--small overflow-hidden anim-scale-in">
     <span
       v-for="(bar, i) in bars"
-      :title="`${_numeral(value[i])} ${titles[i]}`"
       :key="i"
       :style="`width: ${parseFloat((100 / max) * bar).toFixed(3)}%;`"
       class="bg-blue"

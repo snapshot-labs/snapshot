@@ -1,141 +1,194 @@
 <template>
-  <Container :slim="true">
-    <div class="px-4 px-md-0 mb-3">
-      <router-link :to="{ name: 'proposals' }" class="text-gray">
-        <Icon name="back" size="22" class="v-align-middle" />
-        {{ space.name }}
-      </router-link>
-    </div>
-    <div>
-      <div class="col-12 col-lg-8 float-left pr-0 pr-lg-5">
-        <div class="px-4 px-md-0">
-          <template v-if="loaded">
-            <h1 class="mb-2">
-              {{ payload.name }}
-              <span v-text="`#${id.slice(0, 7)}`" class="text-gray" />
-            </h1>
-            <State :proposal="proposal" class="mb-4" />
-            <UiMarkdown :body="payload.body" class="mb-6" />
-          </template>
-          <template v-else>
-            <div
-              class="bg-gray-9 rounded-1 anim-pulse mb-3"
-              style="width: 100%; height: 34px;"
-            />
-            <div
-              class="bg-gray-9 rounded-1 anim-pulse mb-3"
-              style="width: 40%; height: 34px;"
-            />
-            <div
-              class="bg-gray-9 rounded-1 anim-pulse mb-4"
-              style="width: 65px; height: 28px;"
-            />
-          </template>
-        </div>
-        <Block
-          v-if="loaded && ts >= payload.start && ts < payload.end"
-          class="mb-4"
-          title="Cast your vote"
+  <Layout>
+    <template #content-left>
+      <div class="px-4 px-md-0 mb-3">
+        <router-link
+          :to="{ name: domain ? 'home' : 'proposals' }"
+          class="text-gray"
         >
-          <div class="mb-3">
-            <UiButton
-              v-for="(choice, i) in payload.choices"
-              :key="i"
-              v-text="choice"
-              @click="selectedChoice = i + 1"
-              class="d-block width-full mb-2"
-              :class="selectedChoice === i + 1 && 'button--active'"
-            />
-          </div>
-          <UiButton
-            :disabled="voteLoading || !selectedChoice || !web3.account"
-            :loading="voteLoading"
-            @click="modalOpen = true"
-            class="d-block width-full button--submit"
-          >
-            Vote
-          </UiButton>
-        </Block>
-        <BlockVotes
-          v-if="loaded"
-          :space="space"
-          :proposal="proposal"
-          :votes="votes"
-        />
+          <Icon name="back" size="22" class="v-align-middle" />
+          {{ space.name }}
+        </router-link>
       </div>
-      <div v-if="loaded" class="col-12 col-lg-4 float-left">
-        <Block title="Informations">
-          <div class="mb-1 overflow-hidden">
-            <b>Token(s)</b>
-            <span class="float-right text-white">
-              <span v-for="(symbol, symbolIndex) of symbols" :key="symbol">
-                <Token :space="space.key" :symbolIndex="symbolIndex" />
-                {{ symbol }}
-                <span
-                  v-show="symbolIndex !== symbols.length - 1"
-                  v-text="'+'"
-                  class="mr-1"
-                />
-              </span>
-            </span>
-          </div>
-          <div class="mb-1">
-            <b>Author</b>
-            <User
-              :address="proposal.address"
-              :space="space"
+      <div class="px-4 px-md-0">
+        <template v-if="loaded">
+          <h1 class="mb-2">
+            {{ payload.name }}
+            <span v-text="`#${id.slice(0, 7)}`" class="text-gray" />
+          </h1>
+          <div class="mb-4">
+            <State :proposal="proposal" />
+            <UiDropdown
               class="float-right"
+              v-if="proposal.address === this.web3.account"
+              @delete="deleteProposal"
+              :items="[{ text: $t('deleteProposal'), action: 'delete' }]"
+            >
+              <UiLoading v-if="deleteLoading" />
+              <Icon
+                v-else
+                name="threedots"
+                size="25"
+                class="v-align-text-bottom"
+              />
+            </UiDropdown>
+          </div>
+          <UiMarkdown :body="payload.body" class="mb-6" />
+        </template>
+        <PageLoading v-else />
+      </div>
+      <Block
+        v-if="loaded && ts >= payload.start && ts < payload.end"
+        class="mb-4"
+        :title="$t('proposal.castVote')"
+      >
+        <div class="mb-3">
+          <UiButton
+            v-for="(choice, i) in payload.choices"
+            :key="i"
+            @click="selectedChoice = i + 1"
+            class="d-block width-full mb-2"
+            :class="selectedChoice === i + 1 && 'button--active'"
+          >
+            {{ _shorten(choice, 32) }}
+            <a
+              v-if="payload.metadata.plugins?.aragon?.[`choice${[i + 1]}`]"
+              @click="modalOpen = true"
+              :aria-label="
+                `Target address: ${
+                  payload.metadata.plugins.aragon[`choice${i + 1}`].actions[0]
+                    .to
+                }\nValue: ${
+                  payload.metadata.plugins.aragon[`choice${i + 1}`].actions[0]
+                    .value
+                }\nData: ${
+                  payload.metadata.plugins.aragon[`choice${i + 1}`].actions[0]
+                    .data
+                }`
+              "
+              class="tooltipped tooltipped-n break-word"
+            >
+              <Icon name="warning" class="v-align-middle ml-1" />
+            </a>
+          </UiButton>
+        </div>
+        <UiButton
+          :disabled="voteLoading || !selectedChoice || !web3.account"
+          :loading="voteLoading"
+          @click="modalOpen = true"
+          class="d-block width-full button--submit"
+        >
+          {{ $t('proposal.vote') }}
+        </UiButton>
+      </Block>
+      <BlockVotes
+        v-if="loaded"
+        :space="space"
+        :proposal="proposal"
+        :votes="votes"
+      />
+    </template>
+    <template #sidebar-right v-if="loaded">
+      <Block :title="$t('information')">
+        <div class="mb-1">
+          <b>{{ $t('strategies') }}</b>
+          <span
+            @click="modalStrategiesOpen = true"
+            class="float-right text-white a"
+          >
+            <span v-for="(symbol, symbolIndex) of symbols" :key="symbol">
+              <span :aria-label="symbol" class="tooltipped tooltipped-n">
+                <Token :space="space.key" :symbolIndex="symbolIndex" />
+              </span>
+              <span v-show="symbolIndex !== symbols.length - 1" class="ml-1" />
+            </span>
+          </span>
+        </div>
+        <div class="mb-1">
+          <b>{{ $t('author') }}</b>
+          <User
+            :address="proposal.address"
+            :profile="proposal.profile"
+            :space="space"
+            class="float-right"
+          />
+        </div>
+        <div class="mb-1">
+          <b>IPFS</b>
+          <a
+            :href="_ipfsUrl(proposal.ipfsHash)"
+            target="_blank"
+            class="float-right"
+          >
+            #{{ proposal.ipfsHash.slice(0, 7) }}
+            <Icon name="external-link" class="ml-1" />
+          </a>
+        </div>
+        <div>
+          <div class="mb-1">
+            <b>{{ $t('proposal.startDate') }}</b>
+            <span
+              :aria-label="_ms(payload.start)"
+              v-text="$d(payload.start * 1e3, 'short', 'en-US')"
+              class="float-right text-white tooltipped tooltipped-n"
             />
           </div>
           <div class="mb-1">
-            <b>IPFS</b>
+            <b>{{ $t('proposal.endDate') }}</b>
+            <span
+              :aria-label="_ms(payload.end)"
+              v-text="$d(payload.end * 1e3, 'short', 'en-US')"
+              class="float-right text-white tooltipped tooltipped-n"
+            />
+          </div>
+          <div class="mb-1">
+            <b>{{ $t('snapshot') }}</b>
             <a
-              :href="_ipfsUrl(proposal.ipfsHash)"
+              :href="_explorer(space.network, payload.snapshot, 'block')"
               target="_blank"
               class="float-right"
             >
-              #{{ proposal.ipfsHash.slice(0, 7) }}
+              {{ _n(payload.snapshot, '0,0') }}
               <Icon name="external-link" class="ml-1" />
             </a>
           </div>
-          <div>
-            <div class="mb-1">
-              <b>Start date</b>
-              <span
-                :title="_ms(payload.start)"
-                v-text="$d(payload.start * 1e3, 'short')"
-                class="float-right text-white"
-              />
-            </div>
-            <div class="mb-1">
-              <b>End date</b>
-              <span
-                :title="_ms(payload.end)"
-                v-text="$d(payload.end * 1e3, 'short')"
-                class="float-right text-white"
-              />
-            </div>
-            <div class="mb-1">
-              <b>Snapshot</b>
-              <a
-                :href="_etherscanLink(payload.snapshot, 'block')"
-                target="_blank"
-                class="float-right"
-              >
-                {{ $n(payload.snapshot) }}
-                <Icon name="external-link" class="ml-1" />
-              </a>
-            </div>
-          </div>
-        </Block>
-        <BlockResults
-          :space="space"
-          :payload="payload"
-          :results="results"
-          :votes="votes"
-        />
-      </div>
-    </div>
+        </div>
+      </Block>
+      <BlockResults
+        :id="id"
+        :space="space"
+        :payload="payload"
+        :results="results"
+        :votes="votes"
+      />
+      <BlockActions
+        :id="id"
+        :space="space"
+        :payload="payload"
+        :results="results"
+      />
+      <PluginGnosisCustomBlock
+        v-if="payload.metadata.plugins?.gnosis?.baseTokenAddress"
+        :proposalConfig="payload.metadata.plugins.gnosis"
+        :choices="payload.choices"
+      />
+      <PluginDaoModuleCustomBlock
+        v-if="payload.metadata.plugins?.daoModule?.txs"
+        :proposalConfig="payload.metadata.plugins.daoModule"
+        :proposalEnd="payload.end"
+        :porposalId="id"
+        :moduleAddress="space.plugins?.daoModule?.address"
+        :network="space.network"
+      />
+      <PluginQuorumCustomBlock
+        v-if="space.plugins?.quorum"
+        :space="space"
+        :payload="payload"
+        :results="results"
+      />
+    </template>
+  </Layout>
+  <teleport to="#modal">
     <ModalConfirm
       v-if="loaded"
       :open="modalOpen"
@@ -149,12 +202,17 @@
       :scores="scores"
       :snapshot="payload.snapshot"
     />
-  </Container>
+    <ModalStrategies
+      :open="modalStrategiesOpen"
+      @close="modalStrategiesOpen = false"
+      :space="space"
+      :strategies="space.strategies"
+    />
+  </teleport>
 </template>
 
 <script>
 import { mapActions } from 'vuex';
-import spaces from '@/spaces';
 
 export default {
   data() {
@@ -164,10 +222,12 @@ export default {
       loading: false,
       loaded: false,
       voteLoading: false,
+      deleteLoading: false,
       proposal: {},
       votes: {},
       results: [],
       modalOpen: false,
+      modalStrategiesOpen: false,
       selectedChoice: 0,
       totalScore: 0,
       scores: []
@@ -175,9 +235,7 @@ export default {
   },
   computed: {
     space() {
-      return spaces[this.key]
-        ? spaces[this.key]
-        : { token: this.key, verified: [] };
+      return this.app.spaces[this.key];
     },
     payload() {
       return this.proposal.msg.payload;
@@ -186,12 +244,16 @@ export default {
       return (Date.now() / 1e3).toFixed();
     },
     symbols() {
-      if (!this.space.strategies) return [this.space.symbol];
-      return this.space.strategies.map(strategy => strategy[1].symbol);
+      return this.space.strategies.map(strategy => strategy.params.symbol);
+    }
+  },
+  watch: {
+    'web3.account': async function(val, prev) {
+      if (val?.toLowerCase() !== prev) await this.loadPower();
     }
   },
   methods: {
-    ...mapActions(['getProposal', 'getPower']),
+    ...mapActions(['getProposal', 'getPower', 'send']),
     async loadProposal() {
       const proposalObj = await this.getProposal({
         space: this.space,
@@ -202,7 +264,7 @@ export default {
       this.results = proposalObj.results;
     },
     async loadPower() {
-      if (!this.web3.account) return;
+      if (!this.web3.account || !this.proposal.address) return;
       const { scores, totalScore } = await this.getPower({
         space: this.space,
         address: this.web3.account,
@@ -210,6 +272,28 @@ export default {
       });
       this.totalScore = totalScore;
       this.scores = scores;
+    },
+    async deleteProposal() {
+      this.deleteLoading = true;
+      try {
+        if (
+          await this.send({
+            space: this.space.key,
+            type: 'delete-proposal',
+            payload: {
+              proposal: this.id
+            }
+          })
+        ) {
+          this.deleteLoading = false;
+          this.$router.push({
+            name: 'proposals'
+          });
+        }
+      } catch (e) {
+        console.error(e);
+      }
+      this.deleteLoading = false;
     }
   },
   async created() {

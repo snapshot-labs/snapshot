@@ -1,7 +1,7 @@
 <template>
   <Block
     v-if="Object.keys(votes).length > 0"
-    title="Votes"
+    :title="$t('votes')"
     :counter="Object.keys(votes).length"
     :slim="true"
   >
@@ -11,9 +11,19 @@
       :style="i === 0 && 'border: 0 !important;'"
       class="px-4 py-3 border-top d-flex"
     >
-      <User :address="address" :space="space" class="column" />
+      <User
+        :profile="vote.profile"
+        :address="address"
+        :space="space"
+        class="column"
+      />
       <div
-        v-text="proposal.msg.payload.choices[vote.msg.payload.choice - 1]"
+        v-text="
+          _shorten(
+            proposal.msg.payload.choices[vote.msg.payload.choice - 1],
+            'choice'
+          )
+        "
         class="flex-auto text-center text-white"
       />
       <div class="column text-right text-white">
@@ -21,11 +31,11 @@
           class="tooltipped tooltipped-n"
           :aria-label="
             vote.scores
-              .map((score, index) => `${_numeral(score)} ${titles[index]}`)
+              .map((score, index) => `${_n(score)} ${titles[index]}`)
               .join(' + ')
           "
         >
-          {{ `${_numeral(vote.balance)} ${_shorten(space.symbol, 'symbol')}` }}
+          {{ `${_n(vote.balance)} ${_shorten(space.symbol, 'symbol')}` }}
         </span>
         <a
           @click="openReceiptModal(vote)"
@@ -40,16 +50,18 @@
     <a
       v-if="!showAllVotes && Object.keys(votes).length > 10"
       @click="showAllVotes = true"
-      class="px-4 py-3 border-top text-center d-block bg-gray-dark"
+      class="px-4 py-3 border-top text-center d-block bg-gray-dark rounded-bottom-0 rounded-md-bottom-2"
     >
-      See more
+      {{ $t('seeMore') }}
     </a>
-    <ModalReceipt
-      :open="modalReceiptOpen"
-      @close="modalReceiptOpen = false"
-      :authorIpfsHash="authorIpfsHash"
-      :relayerIpfsHash="relayerIpfsHash"
-    />
+    <teleport to="#modal">
+      <ModalReceipt
+        :open="modalReceiptOpen"
+        @close="modalReceiptOpen = false"
+        :authorIpfsHash="authorIpfsHash"
+        :relayerIpfsHash="relayerIpfsHash"
+      />
+    </teleport>
   </Block>
 </template>
 
@@ -67,12 +79,13 @@ export default {
   computed: {
     visibleVotes() {
       return this.showAllVotes
-        ? this.votes
-        : Object.fromEntries(Object.entries(this.votes).slice(0, 10));
+        ? this.sortVotesUserFirst()
+        : Object.fromEntries(
+            Object.entries(this.sortVotesUserFirst()).slice(0, 10)
+          );
     },
     titles() {
-      if (!this.space.strategies) return [this.space.symbol];
-      return this.space.strategies.map(strategy => strategy[1].symbol);
+      return this.space.strategies.map(strategy => strategy.params.symbol);
     }
   },
   methods: {
@@ -80,6 +93,16 @@ export default {
       this.authorIpfsHash = vote.authorIpfsHash;
       this.relayerIpfsHash = vote.relayerIpfsHash;
       this.modalReceiptOpen = true;
+    },
+    sortVotesUserFirst() {
+      if (Object.keys(this.votes).includes(this.web3.account)) {
+        const { [[this.web3.account]]: firstKeyValue, ...rest } = this.votes;
+        return {
+          [[this.web3.account]]: firstKeyValue,
+          ...rest
+        };
+      }
+      return this.votes;
     }
   }
 };

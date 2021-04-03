@@ -1,48 +1,50 @@
 <template>
-  <Block :title="ts >= payload.end ? 'Results' : 'Current results'">
-    <div v-for="(choice, i) in payload.choices" :key="i">
+  <Block :title="ts >= payload.end ? $t('results') : $t('currentResults')">
+    <div v-for="choice in choices" :key="choice.i">
       <div class="text-white mb-1">
-        <span v-text="_shorten(choice, 'choice')" class="mr-1" />
+        <span
+          :class="choice.choice.length > 12 && 'tooltipped tooltipped-n'"
+          :aria-label="choice.choice.length > 12 && choice.choice"
+          v-text="_shorten(choice.choice, 'choice')"
+          class="mr-1"
+        />
         <span
           class="mr-1 tooltipped tooltipped-n"
           :aria-label="
-            results.totalScores[i]
-              .map((score, index) => `${_numeral(score)} ${titles[index]}`)
+            results.totalScores[choice.i]
+              .map((score, index) => `${_n(score)} ${titles[index]}`)
               .join(' + ')
           "
         >
-          {{ _numeral(results.totalBalances[i]) }}
+          {{ _n(results.totalBalances[choice.i]) }}
           {{ _shorten(space.symbol, 'symbol') }}
         </span>
-
         <span
           class="float-right"
           v-text="
-            $n(
+            _n(
               !results.totalVotesBalances
                 ? 0
                 : ((100 / results.totalVotesBalances) *
-                    results.totalBalances[i]) /
+                    results.totalBalances[choice.i]) /
                     1e2,
-              'percent'
+              '0.[00]%'
             )
           "
         />
       </div>
       <UiProgress
-        :value="results.totalScores[i]"
+        :value="results.totalScores[choice.i]"
         :max="results.totalVotesBalances"
         :titles="titles"
         class="mb-3"
       />
     </div>
-    <UiButton
-      @click="downloadReport"
-      v-if="ts >= payload.end"
-      class="width-full mt-2"
-    >
-      Download report
-    </UiButton>
+    <div v-if="ts >= payload.end">
+      <UiButton @click="downloadReport" class="width-full mt-2">
+        {{ $t('downloadReport') }}
+      </UiButton>
+    </div>
   </Block>
 </template>
 
@@ -51,14 +53,21 @@ import * as jsonexport from 'jsonexport/dist';
 import pkg from '@/../package.json';
 
 export default {
-  props: ['space', 'payload', 'results', 'votes'],
+  props: ['id', 'space', 'payload', 'results', 'votes'],
   computed: {
     ts() {
       return (Date.now() / 1e3).toFixed();
     },
     titles() {
-      if (!this.space.strategies) return [this.space.symbol];
-      return this.space.strategies.map(strategy => strategy[1].symbol);
+      return this.space.strategies.map(strategy => strategy.params.symbol);
+    },
+    choices() {
+      return this.payload.choices
+        .map((choice, i) => ({ i, choice }))
+        .sort(
+          (a, b) =>
+            this.results.totalBalances[b.i] - this.results.totalBalances[a.i]
+        );
     }
   },
   methods: {

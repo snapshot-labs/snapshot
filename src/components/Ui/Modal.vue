@@ -4,7 +4,15 @@
     <div
       class="shell overflow-hidden anim-scale-in position-relative rounded-0 rounded-md-2"
     >
-      <slot />
+      <div v-if="$slots.header" class="border-bottom pt-4 pb-3 text-center">
+        <slot name="header" />
+      </div>
+      <div class="modal-body">
+        <slot />
+      </div>
+      <div v-if="$slots.footer" class="border-top p-4 text-center">
+        <slot name="footer" />
+      </div>
       <a
         @click="$emit('close')"
         class="position-absolute right-0 top-1 p-4 text-gray"
@@ -16,8 +24,21 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
+
 export default {
-  props: ['open']
+  props: {
+    open: Boolean
+  },
+  emits: ['close'],
+  watch: {
+    open(val, prev) {
+      if (val !== prev) this.toggleModal();
+    }
+  },
+  methods: {
+    ...mapActions(['toggleModal'])
+  }
 };
 </script>
 
@@ -49,8 +70,8 @@ export default {
     padding-left: 0 !important;
     padding-right: 0 !important;
     max-width: 440px;
-
-    max-height: calc(100vh - 80px);
+    overflow-y: auto !important;
+    max-height: calc(100vh - 120px);
     display: flex;
     flex-direction: column;
     z-index: 999;
@@ -64,9 +85,14 @@ export default {
       max-height: 100% !important;
       min-height: 100% !important;
       margin-bottom: 0 !important;
+
+      .modal-body {
+        max-height: 100% !important;
+      }
     }
 
     .modal-body {
+      max-height: 420px;
       flex: auto;
       text-align: initial;
       overflow-y: auto;

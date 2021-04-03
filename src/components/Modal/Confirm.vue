@@ -1,61 +1,81 @@
 <template>
   <UiModal :open="open" v-if="open" @close="$emit('close')" class="d-flex">
-    <form @submit.prevent="handleSubmit" class="d-flex flex-column flex-auto">
-      <h3 class="m-4 mb-0 text-center">Confirm vote</h3>
+    <template v-slot:header>
+      <h3>{{ $t('confirmVote') }}</h3>
+    </template>
+    <div class="d-flex flex-column flex-auto">
       <h4 class="m-4 mb-0 text-center">
-        Are you sure you want to vote "{{
-          proposal.msg.payload.choices[selectedChoice - 1]
-        }}"? <br />This action <b>cannot</b> be undone.
+        {{
+          $tc('sureToVote', [proposal.msg.payload.choices[selectedChoice - 1]])
+        }}
+        <br />
+        {{ $t('cannotBeUndone') }}
       </h4>
       <div class="m-4 p-4 border rounded-2 text-white">
         <div class="d-flex">
-          <span v-text="'Option'" class="flex-auto text-gray mr-1" />
+          <span v-text="$t('option')" class="flex-auto text-gray mr-1" />
           {{ proposal.msg.payload.choices[selectedChoice - 1] }}
         </div>
         <div class="d-flex">
-          <span v-text="'Snapshot'" class="flex-auto text-gray mr-1" />
+          <span v-text="$t('snapshot')" class="flex-auto text-gray mr-1" />
           <a
-            :href="_etherscanLink(proposal.msg.payload.snapshot, 'block')"
+            :href="
+              _explorer(space.network, proposal.msg.payload.snapshot, 'block')
+            "
             target="_blank"
             class="float-right"
           >
-            {{ $n(proposal.msg.payload.snapshot) }}
+            {{ _n(proposal.msg.payload.snapshot, '0,0') }}
             <Icon name="external-link" class="ml-1" />
           </a>
         </div>
         <div class="d-flex">
-          <span v-text="'Your voting power'" class="flex-auto text-gray mr-1" />
-          <span v-for="(symbol, i) of symbols" :key="symbol">
-            {{ _numeral(scores[i]) }}
-            {{ symbol }}
-            <span v-show="i !== symbols.length - 1" v-text="'+'" class="mr-1" />
-          </span>
-        </div>
-      </div>
-      <div class="p-4 overflow-hidden text-center border-top">
-        <div class="col-6 float-left pr-2">
-          <UiButton @click="$emit('close')" type="button" class="width-full">
-            Cancel
-          </UiButton>
-        </div>
-        <div class="col-6 float-left pl-2">
-          <UiButton
-            :disabled="loading"
-            :loading="loading"
-            type="submit"
-            class="width-full button--submit"
+          <span v-text="$t('votingPower')" class="flex-auto text-gray mr-1" />
+          <span
+            class="tooltipped tooltipped-nw"
+            :aria-label="
+              scores
+                .map((score, index) => `${_n(score)} ${symbols[index]}`)
+                .join(' + ')
+            "
           >
-            Vote
-          </UiButton>
+            {{ _n(totalScore) }}
+            {{ _shorten(space.symbol, 'symbol') }}
+          </span>
+          <a
+            v-if="totalScore === 0"
+            target="_blank"
+            href="https://docs.snapshot.org/faq#why-i-cant-vote"
+            class="d-inline-block mt-n1 ml-1"
+          >
+            <Icon name="info" size="24" class="text-gray" />
+          </a>
         </div>
       </div>
-    </form>
+    </div>
+    <template v-slot:footer>
+      <div class="col-6 float-left pr-2">
+        <UiButton @click="$emit('close')" type="button" class="width-full">
+          {{ $t('cancel') }}
+        </UiButton>
+      </div>
+      <div class="col-6 float-left pl-2">
+        <UiButton
+          :disabled="totalScore === 0 || loading"
+          :loading="loading"
+          @click="handleSubmit"
+          type="submit"
+          class="width-full button--submit"
+        >
+          {{ $t('proposal.vote') }}
+        </UiButton>
+      </div>
+    </template>
   </UiModal>
 </template>
 
 <script>
 import { mapActions } from 'vuex';
-import spaces from '@/spaces';
 
 export default {
   props: [
@@ -68,16 +88,15 @@ export default {
     'totalScore',
     'scores'
   ],
+  emits: ['reload', 'close'],
   data() {
     return {
-      loading: false,
-      spaces
+      loading: false
     };
   },
   computed: {
     symbols() {
-      if (!this.space.strategies) return [this.space.symbol];
-      return this.space.strategies.map(strategy => strategy[1].symbol);
+      return this.space.strategies.map(strategy => strategy.params.symbol);
     }
   },
   methods: {
@@ -85,7 +104,7 @@ export default {
     async handleSubmit() {
       this.loading = true;
       await this.send({
-        token: this.space.address,
+        space: this.space.key,
         type: 'vote',
         payload: {
           proposal: this.id,

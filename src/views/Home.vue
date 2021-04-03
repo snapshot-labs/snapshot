@@ -1,42 +1,64 @@
 <template>
   <div>
+    <div class="text-center mb-4 mx-auto">
+      <Container class="d-flex flex-items-center">
+        <div class="flex-auto text-left">
+          <UiButton class="pl-3 col-12 col-lg-4">
+            <Search v-model="q" :placeholder="$t('searchPlaceholder')" />
+          </UiButton>
+        </div>
+        <div class="ml-3 text-right hide-sm">
+          {{ $tc('spaceCount', [_n(spaces.length)]) }}
+          <router-link :to="{ name: 'setup' }" class="hide-md ml-3">
+            <UiButton>{{ $t('createSpace') }}</UiButton>
+          </router-link>
+        </div>
+      </Container>
+    </div>
     <Container :slim="true">
-      <router-link
-        v-for="space in spaces"
-        :key="space.address"
-        :to="{ name: 'proposals', params: { key: space.key } }"
-      >
-        <Block class="text-center extra-icon-container">
-          <Token
-            :space="space.key"
-            symbolIndex="space"
-            size="88"
-            class="mb-3"
-          />
-          <StatefulIcon
-            :on="space.favorite"
-            onName="star"
-            offName="star1"
-            @click="toggleFavorite(space.key)"
-          />
-          <div>
-            <h2>
-              {{ space.name }}
-              <span class="text-gray">{{ space.symbol }}</span>
-            </h2>
+      <div class="overflow-hidden mr-n4">
+        <router-link
+          v-for="space in spaces.slice(0, limit)"
+          :key="space.key"
+          :to="{ name: 'proposals', params: { key: space.key } }"
+        >
+          <div class="col-12 col-lg-3 pr-4 float-left">
+            <Block
+              class="text-center extra-icon-container"
+              style="height: 250px; margin-bottom: 24px !important;"
+            >
+              <span class="position-relative d-inline-block">
+                <UiCounter
+                  v-if="space._activeProposals"
+                  :counter="space._activeProposals"
+                  class="position-absolute top-4 right-0 bg-green"
+                />
+                <Token
+                  :space="space.key"
+                  symbolIndex="space"
+                  size="98"
+                  class="my-3"
+                />
+              </span>
+              <StatefulIcon
+                :on="space.favorite"
+                onName="star"
+                offName="star1"
+                @click="toggleFavorite(space.key)"
+              />
+              <div class="">
+                <h3 v-text="space.name" />
+                <div class="text-gray">{{ space.symbol }}</div>
+              </div>
+            </Block>
           </div>
-        </Block>
-      </router-link>
-      <a href="https://discord.snapshot.page" target="_blank">
-        <Block class="text-center">
-          <div
-            v-text="'+'"
-            style="width: 88px; height: 88px; color: white; font-size: 76px; padding-top: 2px;"
-            class="bg-gray-3 circle mx-auto mb-3"
-          />
-          <h2 v-text="'Create space'" />
-        </Block>
-      </a>
+        </router-link>
+        <NoResults
+          :block="true"
+          :length="Object.keys(spaces).length"
+          class="pr-md-4"
+        />
+      </div>
     </Container>
   </div>
 </template>
@@ -44,24 +66,35 @@
 <script>
 import { mapActions } from 'vuex';
 import orderBy from 'lodash/orderBy';
-import homepage from '@bonustrack/snapshot-spaces/spaces/homepage.json';
-import domains from '@bonustrack/snapshot-spaces/spaces/domains.json';
-import spaces from '@/spaces';
+import spotlight from '@snapshot-labs/snapshot-spaces/spaces/spotlight.json';
+import { infiniteScroll } from '@/helpers/utils';
 
 export default {
   data() {
     return {
-      domains
+      q: this.$route.query.q || '',
+      limit: 16
     };
   },
   computed: {
     spaces() {
-      const list = homepage.map(namespace => ({
-        ...spaces[namespace],
-        favorite: !!this.favoriteSpaces.favorites[namespace]
-      }));
-
-      return orderBy(list, ['favorite'], ['desc']);
+      const list = Object.keys(this.app.spaces)
+        .map(key => {
+          const spotlightIndex = spotlight.indexOf(key);
+          return {
+            ...this.app.spaces[key],
+            favorite: !!this.favoriteSpaces.favorites[key],
+            isActive: !!this.app.spaces[key]._activeProposals,
+            spotlight: spotlightIndex === -1 ? 1e3 : spotlightIndex
+          };
+        })
+        .filter(space => !space.private);
+      return orderBy(list, ['favorite', 'spotlight'], ['desc', 'asc']).filter(
+        space =>
+          JSON.stringify(space)
+            .toLowerCase()
+            .includes(this.q.toLowerCase())
+      );
     }
   },
   methods: {
@@ -76,19 +109,15 @@ export default {
       } else {
         this.addFavoriteSpace(spaceId);
       }
-    }
+    },
+    scroll: infiniteScroll
   },
   created() {
-    const domainName = window.location.hostname;
-    if (domains[domainName])
-      return this.$router.push({
-        name: 'proposals',
-        params: {
-          key: domains[domainName]
-        }
-      });
-
     this.loadFavoriteSpaces();
+  },
+  mounted() {
+    this.scroll();
+    if (window.screen.height > 1200) this.limit += 16;
   }
 };
 </script>

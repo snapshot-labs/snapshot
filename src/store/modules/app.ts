@@ -1,15 +1,35 @@
-import { formatUnits } from '@ethersproject/units';
-import { multicall } from '@bonustrack/snapshot.js/src/utils';
-import strategies from '@bonustrack/snapshot.js/src/strategies';
-import spaces from '@/spaces';
+import { getProfiles } from '@/helpers/profile';
+import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
+import { ipfsGet, getScores } from '@snapshot-labs/snapshot.js/src/utils';
+import {
+  getBlockNumber,
+  signMessage
+} from '@snapshot-labs/snapshot.js/src/utils/web3';
+import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
+import gateways from '@snapshot-labs/snapshot.js/src/gateways.json';
 import client from '@/helpers/client';
-import ipfs from '@/helpers/ipfs';
-import abi from '@/helpers/abi';
-import rpcProvider from '@/helpers/rpc';
-import { formatProposal, formatProposals } from '@/helpers/utils';
+import { formatProposal, formatProposals, formatSpace } from '@/helpers/utils';
 import { version } from '@/../package.json';
+import i18n, { defaultLocale } from '@/i18n';
+import { lsGet, lsSet } from '@/helpers/utils';
+
+const gateway = process.env.VUE_APP_IPFS_GATEWAY || gateways[0];
+
+const state = {
+  init: false,
+  loading: false,
+  authLoading: false,
+  modalOpen: false,
+  spaces: {},
+  locale: lsGet('locale', defaultLocale)
+};
 
 const mutations = {
+  SET(_state, payload) {
+    Object.keys(payload).forEach(key => {
+      _state[key] = payload[key];
+    });
+  },
   SEND_REQUEST() {
     console.debug('SEND_REQUEST');
   },
@@ -37,15 +57,6 @@ const mutations = {
   GET_PROPOSAL_FAILURE(_state, payload) {
     console.debug('GET_PROPOSAL_FAILURE', payload);
   },
-  GET_VOTERS_BALANCES_REQUEST() {
-    console.debug('GET_VOTERS_BALANCES_REQUEST');
-  },
-  GET_VOTERS_BALANCES_SUCCESS() {
-    console.debug('GET_VOTERS_BALANCES_SUCCESS');
-  },
-  GET_VOTERS_BALANCES_FAILURE(_state, payload) {
-    console.debug('GET_VOTERS_BALANCES_FAILURE', payload);
-  },
   GET_POWER_REQUEST() {
     console.debug('GET_POWER_REQUEST');
   },
@@ -58,53 +69,86 @@ const mutations = {
 };
 
 const actions = {
-  send: async ({ commit, dispatch, rootState }, { token, type, payload }) => {
+  init: async ({ commit, dispatch }) => {
+    i18n.global.locale = state.locale;
+    const auth = getInstance();
+    commit('SET', { loading: true });
+    await dispatch('getSpaces');
+    auth.getConnector().then(connector => {
+      if (connector) dispatch('login', connector);
+    });
+    commit('SET', { loading: false, init: true });
+  },
+  loading: ({ commit }, payload) => {
+    commit('SET', { loading: payload });
+  },
+  toggleModal: ({ commit }) => {
+    commit('SET', { modalOpen: !state.modalOpen });
+  },
+  getSpaces: async ({ commit }) => {
+    let spaces: any = await client.request('spaces');
+    spaces = Object.fromEntries(
+      Object.entries(spaces).map(space => [
+        space[0],
+        formatSpace(space[0], space[1])
+      ])
+    );
+    commit('SET', { spaces });
+    return spaces;
+  },
+  send: async ({ commit, dispatch, rootState }, { space, type, payload }) => {
+    const auth = getInstance();
     commit('SEND_REQUEST');
     try {
       const msg: any = {
         address: rootState.web3.account,
-        message: {
-          token,
+        msg: JSON.stringify({
+          version,
+          timestamp: (Date.now() / 1e3).toFixed(),
+          space,
           type,
           payload
-        }
+        })
       };
-      msg.sig = await dispatch('signMessage', msg.msg);
+      msg.sig = await signMessage(auth.web3, msg.msg, rootState.web3.account);
       const result = await client.request('message', msg);
       commit('SEND_SUCCESS');
-      dispatch('notify', ['green', `Your ${type} is in!`]);
+      dispatch('notify', [
+        'green',
+        type === 'delete-proposal'
+          ? i18n.global.t('notify.proposalDeleted')
+          : i18n.global.t('notify.yourIsIn', [type])
+      ]);
       return result;
     } catch (e) {
       commit('SEND_FAILURE', e);
       const errorMessage =
         e && e.error_description
           ? `Oops, ${e.error_description}`
-          : 'Oops, something went wrong!';
+          : i18n.global.t('notify.somethingWentWrong');
       dispatch('notify', ['red', errorMessage]);
       return;
     }
   },
-  getProposals: async ({ commit, rootState }, payload) => {
-    const { decimals } = rootState.web3.spaces[payload];
+  getProposals: async ({ commit }, space) => {
     commit('GET_PROPOSALS_REQUEST');
     try {
-      let proposals: any = await client.request(`${payload}/proposals`);
-      if (proposals) {
-        let balances = await multicall(
-          rpcProvider,
-          abi['TestToken'],
-          Object.values(proposals).map((proposal: any) => [
-            proposal.msg.token,
-            'balanceOf',
-            [proposal.address]
-          ])
+      let proposals: any = await client.request(`${space.key}/proposals`);
+      if (proposals && !space.filters?.onlyMembers) {
+        const scores: any = await getScores(
+          space.key,
+          space.strategies,
+          space.network,
+          getProvider(space.network),
+          Object.values(proposals).map((proposal: any) => proposal.address)
         );
-        balances = balances.map(balance =>
-          parseFloat(formatUnits(balance.toString(), decimals))
-        );
+        console.log('Scores', scores);
         proposals = Object.fromEntries(
-          Object.entries(proposals).map((proposal: any, i) => {
-            proposal[1].balance = balances[i];
+          Object.entries(proposals).map((proposal: any) => {
+            proposal[1].score = scores.reduce(
+              (a, b) => a + (b[proposal[1].address] || 0),
+              0
+            );
             return [proposal[0], proposal[1]];
           })
         );
@@ -115,41 +159,52 @@ const actions = {
       commit('GET_PROPOSALS_FAILURE', e);
     }
   },
-  getProposal: async ({ commit, rootState }, payload) => {
+  getProposal: async ({ commit }, { space, id }) => {
     commit('GET_PROPOSAL_REQUEST');
     try {
-      const result: any = {};
-      const [proposal, votes] = await Promise.all([
-        ipfs.get(payload.id),
-        client.request(`${payload.space.address}/proposal/${payload.id}`)
+      const provider = getProvider(space.network);
+      console.time('getProposal.data');
+      const response = await Promise.all([
+        ipfsGet(gateway, id),
+        client.request(`${space.key}/proposal/${id}`),
+        getBlockNumber(provider)
       ]);
-      result.proposal = formatProposal(proposal);
-      result.proposal.ipfsHash = payload.id;
-      result.votes = votes;
-      const { snapshot } = result.proposal.msg.payload;
-      const blockTag =
-        snapshot > rootState.web3.blockNumber ? 'latest' : parseInt(snapshot);
-      const { decimals } = rootState.web3.spaces[payload.space.address];
-      const defaultStrategies = [
-        ['erc20BalanceOf', { address: payload.space.address, decimals }]
-      ];
-      const spaceStrategies =
-        spaces[payload.space.key].strategies || defaultStrategies;
-      const scores: any = await Promise.all(
-        spaceStrategies.map((strategy: any) =>
-          strategies[strategy[0]](
-            rpcProvider,
-            Object.keys(result.votes),
-            strategy[1],
-            blockTag
-          )
-        )
-      );
+      console.timeEnd('getProposal.data');
+      const [, , blockNumber] = response;
+      let [proposal, votes]: any = response;
+      proposal = formatProposal(proposal);
+      proposal.ipfsHash = id;
+      const voters = Object.keys(votes);
+      const { snapshot } = proposal.msg.payload;
+      const blockTag = snapshot > blockNumber ? 'latest' : parseInt(snapshot);
+
+      /* Get scores */
+      console.time('getProposal.scores');
+      const [scores, profiles]: any = await Promise.all([
+        getScores(
+          space.key,
+          space.strategies,
+          space.network,
+          provider,
+          voters,
+          // @ts-ignore
+          blockTag
+        ),
+        getProfiles([proposal.address, ...voters])
+      ]);
+      console.timeEnd('getProposal.scores');
       console.log('Scores', scores);
-      result.votes = Object.fromEntries(
-        Object.entries(result.votes)
+
+      const authorProfile = profiles[proposal.address];
+      voters.forEach(address => {
+        votes[address].profile = profiles[address];
+      });
+      proposal.profile = authorProfile;
+
+      votes = Object.fromEntries(
+        Object.entries(votes)
           .map((vote: any) => {
-            vote[1].scores = spaceStrategies.map(
+            vote[1].scores = space.strategies.map(
               (strategy, i) => scores[i][vote[1].address] || 0
             );
             vote[1].balance = vote[1].scores.reduce((a, b: any) => a + b, 0);
@@ -158,58 +213,54 @@ const actions = {
           .sort((a, b) => b[1].balance - a[1].balance)
           .filter(vote => vote[1].balance > 0)
       );
-      result.results = {
-        totalVotes: result.proposal.msg.payload.choices.map(
+
+      /* Get results */
+      const results = {
+        totalVotes: proposal.msg.payload.choices.map(
           (choice, i) =>
-            Object.values(result.votes).filter(
+            Object.values(votes).filter(
               (vote: any) => vote.msg.payload.choice === i + 1
             ).length
         ),
-        totalBalances: result.proposal.msg.payload.choices.map((choice, i) =>
-          Object.values(result.votes)
+        totalBalances: proposal.msg.payload.choices.map((choice, i) =>
+          Object.values(votes)
             .filter((vote: any) => vote.msg.payload.choice === i + 1)
             .reduce((a, b: any) => a + b.balance, 0)
         ),
-        totalScores: result.proposal.msg.payload.choices.map((choice, i) =>
-          spaceStrategies.map((strategy, sI) =>
-            Object.values(result.votes)
+        totalScores: proposal.msg.payload.choices.map((choice, i) =>
+          space.strategies.map((strategy, sI) =>
+            Object.values(votes)
               .filter((vote: any) => vote.msg.payload.choice === i + 1)
               .reduce((a, b: any) => a + b.scores[sI], 0)
           )
         ),
-        totalVotesBalances: Object.values(result.votes).reduce(
+        totalVotesBalances: Object.values(votes).reduce(
           (a, b: any) => a + b.balance,
           0
         )
       };
+
       commit('GET_PROPOSAL_SUCCESS');
-      return result;
+      return { proposal, votes, results };
     } catch (e) {
       commit('GET_PROPOSAL_FAILURE', e);
     }
   },
-  getPower: async ({ commit, rootState }, { space, address, snapshot }) => {
+  getPower: async ({ commit }, { space, address, snapshot }) => {
     commit('GET_POWER_REQUEST');
     try {
-      const blockTag =
-        snapshot > rootState.web3.blockNumber ? 'latest' : parseInt(snapshot);
-      const { decimals } = rootState.web3.spaces[space.address];
-      const defaultStrategies = [
-        ['erc20BalanceOf', { address: space.address, decimals }]
-      ];
-      const spaceStrategies = spaces[space.key].strategies || defaultStrategies;
-      const scores: any = (
-        await Promise.all(
-          spaceStrategies.map((strategy: any) =>
-            strategies[strategy[0]](
-              rpcProvider,
-              [address],
-              strategy[1],
-              blockTag
-            )
-          )
-        )
-      ).map((score: any) =>
+      const blockNumber = await getBlockNumber(getProvider(space.network));
+      const blockTag = snapshot > blockNumber ? 'latest' : parseInt(snapshot);
+      let scores: any = await getScores(
+        space.key,
+        space.strategies,
+        space.network,
+        getProvider(space.network),
+        [address],
+        // @ts-ignore
+        blockTag
+      );
+      scores = scores.map((score: any) =>
         Object.values(score).reduce((a, b: any) => a + b, 0)
       );
       commit('GET_POWER_SUCCESS');
@@ -220,10 +271,16 @@ const actions = {
     } catch (e) {
       commit('GET_POWER_FAILURE', e);
     }
+  },
+  setLocale(state, locale) {
+    state.locale = locale;
+    lsSet('locale', locale);
+    i18n.global.locale = locale;
   }
 };
 
 export default {
+  state,
   mutations,
   actions
 };

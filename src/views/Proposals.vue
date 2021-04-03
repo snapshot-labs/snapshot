@@ -6,17 +6,35 @@
           <div v-text="space.name" />
           <div class="d-flex flex-items-center flex-auto">
             <h2 class="mr-2">
-              Proposals
-              <UiCounter :counter="totalProposals" class="ml-1" />
+              {{ $t('proposals.header') }}
+              <UiCounter
+                :counter="Object.keys(proposalsWithFilter).length"
+                class="ml-1"
+              />
             </h2>
           </div>
         </div>
-        <router-link v-if="$auth.isAuthenticated" :to="{ name: 'create' }">
-          <UiButton>New proposal</UiButton>
+        <router-link
+          v-if="$auth.isAuthenticated.value"
+          :to="{ name: 'create', params: { key } }"
+        >
+          <UiButton>{{ $t('proposals.new') }}</UiButton>
+        </router-link>
+        <router-link
+          v-if="isMember && isEns"
+          :to="{ name: 'settings', params: { key } }"
+          class="ml-2"
+        >
+          <UiButton>
+            <Icon size="24" name="gear" class="mr-n4 ml-n4 mt-n1 d-block" />
+          </UiButton>
         </router-link>
       </div>
     </Container>
     <Container :slim="true">
+      <Block v-if="space.about" class="mb-2">
+        <UiText :text="space.about" />
+      </Block>
       <Block :slim="true">
         <div
           class="px-4 py-3 bg-gray-dark overflow-auto menu-tabs rounded-top-0 rounded-md-top-2"
@@ -24,29 +42,29 @@
           <router-link
             v-for="state in states"
             :key="state"
-            v-text="state"
+            v-text="$t(`proposals.states.${state}`)"
             :to="`/${key}/${state}`"
-            :class="selectedState === state && 'text-white'"
+            :class="tab === state && 'text-white'"
             class="mr-3 text-gray tab"
           />
         </div>
-        <RowLoading v-if="loading" />
+        <RowLoading v-if="loading" class="border-top" />
         <div v-if="loaded">
           <RowProposal
             v-for="(proposal, i) in proposalsWithFilter"
             :key="i"
             :proposal="proposal"
             :space="space"
-            :token="key"
             :verified="space.verified"
             :i="i"
+            class="border-top"
           />
         </div>
         <p
           v-if="loaded && Object.keys(proposalsWithFilter).length === 0"
           class="p-4 m-0 border-top d-block"
         >
-          There aren't any proposals here yet!
+          {{ $t('proposals.noProposals') }}
         </p>
       </Block>
     </Container>
@@ -55,7 +73,7 @@
 
 <script>
 import { mapActions } from 'vuex';
-import spaces from '@/spaces';
+import { filterProposals } from '@/helpers/utils';
 
 export default {
   data() {
@@ -63,17 +81,15 @@ export default {
       loading: false,
       loaded: false,
       proposals: {},
-      selectedState: 'all'
+      tab: 'all'
     };
   },
   computed: {
     key() {
-      return this.$route.params.key;
+      return this.domain || this.$route.params.key;
     },
     space() {
-      return spaces[this.key]
-        ? spaces[this.key]
-        : { token: this.key, verified: [] };
+      return this.app.spaces[this.key];
     },
     states() {
       const states = [
@@ -84,7 +100,7 @@ export default {
         'pending',
         'closed'
       ];
-      return this.space.showOnlyCore
+      return this.space.filters.onlyMembers
         ? states.filter(state => !['core', 'community'].includes(state))
         : states;
     },
@@ -92,64 +108,23 @@ export default {
       return Object.keys(this.proposals).length;
     },
     proposalsWithFilter() {
-      const ts = (Date.now() / 1e3).toFixed();
       if (this.totalProposals === 0) return {};
       return Object.fromEntries(
         Object.entries(this.proposals)
-          .filter(proposal => {
-            if (
-              this.space.showOnlyCore &&
-              !this.space.core.includes(proposal[1].address)
-            )
-              return false;
-
-            if (
-              ['core', 'all'].includes(this.selectedState) &&
-              this.space.core.includes(proposal[1].address)
-            )
-              return true;
-
-            if (
-              proposal[1].balance < this.space.min ||
-              this.space.invalid.includes(proposal[1].authorIpfsHash)
-            )
-              return false;
-
-            if (
-              this.selectedState === 'invalid' &&
-              this.space.invalid.includes(proposal[1].authorIpfsHash)
-            )
-              return true;
-
-            if (this.selectedState === 'all') return true;
-
-            if (
-              this.selectedState === 'active' &&
-              proposal[1].msg.payload.start <= ts &&
-              proposal[1].msg.payload.end > ts
-            )
-              return true;
-
-            if (
-              this.selectedState === 'community' &&
-              !this.space.core.includes(proposal[1].address)
-            )
-              return true;
-
-            if (
-              this.selectedState === 'closed' &&
-              proposal[1].msg.payload.end <= ts
-            )
-              return true;
-
-            if (
-              this.selectedState === 'pending' &&
-              proposal[1].msg.payload.start > ts
-            )
-              return true;
-          })
+          .filter(proposal => filterProposals(this.space, proposal, this.tab))
           .sort((a, b) => b[1].msg.payload.end - a[1].msg.payload.end, 0)
       );
+    },
+    isMember() {
+      const members = this.space.members.map(address => address.toLowerCase());
+      return (
+        this.$auth.isAuthenticated.value &&
+        this.web3.account &&
+        members.includes(this.web3.account.toLowerCase())
+      );
+    },
+    isEns() {
+      return this.key.includes('.eth') || this.key.includes('.xyz');
     }
   },
   methods: {
@@ -157,8 +132,9 @@ export default {
   },
   async created() {
     this.loading = true;
-    this.selectedState = this.$route.params.tab || this.space.defaultView;
-    this.proposals = await this.getProposals(this.space.address);
+    this.tab =
+      this.$route.params.tab || this.space.filters.defaultTab || this.tab;
+    this.proposals = await this.getProposals(this.space);
     this.loading = false;
     this.loaded = true;
   }

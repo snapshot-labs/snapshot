@@ -1,41 +1,86 @@
 <template>
   <UiModal :open="open" @close="$emit('close')">
+    <template v-slot:header>
+      <h3 v-if="!web3.account || step === 'connect'">
+        {{ $t('connectWallet') }}
+      </h3>
+      <h3 v-else>{{ $t('account') }}</h3>
+    </template>
     <div v-if="!web3.account || step === 'connect'">
-      <h3 class="m-4 mb-0 text-center">Connect wallet</h3>
       <div class="m-4 mb-5">
         <a
-          v-for="(connector, id, i) in config.connectors"
+          v-for="(connector, id, i) in connectors"
           :key="i"
           @click="$emit('login', connector.id)"
           target="_blank"
           class="mb-2 d-block"
         >
-          <UiButton class="button-outline width-full v-align-middle">
+          <UiButton
+            v-if="id !== 'injected'"
+            class="button-outline width-full v-align-middle"
+          >
             <img
-              :src="
-                `https://raw.githubusercontent.com/bonustrack/lock/master/connectors/assets/${connector.id}.png`
-              "
+              :src="`${path}/${connector.id}.png`"
               height="28"
               width="28"
               class="mr-1 v-align-middle"
             />
             {{ connector.name }}
           </UiButton>
+          <UiButton
+            v-else-if="injected"
+            class="button-outline width-full v-align-middle"
+          >
+            <img
+              :src="`${path}/${injected.id}.png`"
+              height="28"
+              width="28"
+              class="mr-1 v-align-middle"
+            />
+            {{ injected.name }}
+          </UiButton>
         </a>
       </div>
     </div>
     <div v-else>
-      <h3 class="m-4 mb-0 text-center">Account</h3>
-      <div v-if="$auth.isAuthenticated" class="m-4">
+      <div v-if="$auth.isAuthenticated.value" class="m-4">
         <a
-          :href="_etherscanLink(web3.account)"
+          :href="_explorer(web3.network.key, web3.account)"
           target="_blank"
           class="mb-2 d-block"
         >
           <UiButton class="button-outline width-full">
-            <Avatar :address="web3.account" size="16" class="mr-2 ml-n1" />
-            <span v-if="web3.name" v-text="web3.name" />
+            <Avatar
+              :profile="web3.profile"
+              :address="web3.account"
+              size="16"
+              class="mr-2 ml-n1"
+            />
+            <span v-if="web3.profile.name" v-text="web3.profile.name" />
+            <span v-else-if="web3.profile.ens" v-text="web3.profile.ens" />
             <span v-else v-text="_shorten(web3.account)" />
+            <Icon name="external-link" class="ml-1" />
+          </UiButton>
+        </a>
+        <a
+          v-if="web3.profile?.name || web3.profile?.image"
+          :href="`https://3box.io/${web3.account}/edit`"
+          target="_blank"
+          class="mb-2 d-block"
+        >
+          <UiButton class="button-outline width-full">
+            {{ $t('edit3box') }}
+            <Icon name="external-link" class="ml-1" />
+          </UiButton>
+        </a>
+        <a
+          v-else
+          href="https://3box.io/hub"
+          target="_blank"
+          class="mb-2 d-block"
+        >
+          <UiButton class="button-outline width-full">
+            {{ $t('create3box') }}
             <Icon name="external-link" class="ml-1" />
           </UiButton>
         </a>
@@ -43,13 +88,13 @@
           @click="step = 'connect'"
           class="button-outline width-full mb-2"
         >
-          Connect wallet
+          {{ $t('connectWallet') }}
         </UiButton>
         <UiButton
           @click="handleLogout"
           class="button-outline width-full text-red mb-2"
         >
-          Log out
+          {{ $t('logout') }}
         </UiButton>
       </div>
     </div>
@@ -58,17 +103,28 @@
 
 <script>
 import { mapActions } from 'vuex';
+import { getInjected } from '@snapshot-labs/lock/src/utils';
+import connectors from '@/helpers/connectors.json';
 
 export default {
   props: ['open'],
+  emits: ['login', 'close'],
   data() {
     return {
-      step: null
+      connectors,
+      step: null,
+      path:
+        'https://raw.githubusercontent.com/snapshot-labs/lock/master/connectors/assets'
     };
   },
   watch: {
     open() {
       this.step = null;
+    }
+  },
+  computed: {
+    injected() {
+      return getInjected();
     }
   },
   methods: {

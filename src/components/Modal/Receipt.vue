@@ -1,16 +1,18 @@
 <template>
   <UiModal :open="open" @close="$emit('close')">
-    <h3 class="m-4 mb-0 text-center">Receipt</h3>
+    <template v-slot:header>
+      <h3>{{ $t('receipt') }}</h3>
+    </template>
     <div class="m-4 mb-0 p-4 border rounded-2 text-white">
       <div class="d-flex">
-        <span v-text="'Author'" class="flex-auto text-gray mr-1" />
+        <span v-text="$t('author')" class="flex-auto text-gray mr-1" />
         <a :href="_ipfsUrl(authorIpfsHash)" target="_blank" class="text-white">
           #{{ authorIpfsHash.slice(0, 7) }}
           <Icon name="external-link" class="ml-1" />
         </a>
       </div>
       <div v-if="relayerIpfsHash" class="d-flex">
-        <span v-text="'Relayer'" class="flex-auto text-gray mr-1" />
+        <span v-text="$t('relayer')" class="flex-auto text-gray mr-1" />
         <a :href="_ipfsUrl(relayerIpfsHash)" target="_blank" class="text-white">
           #{{ relayerIpfsHash.slice(0, 7) }}
           <Icon name="external-link" class="ml-1" />
@@ -24,7 +26,7 @@
         class="mb-2 d-block"
       >
         <UiButton class="button-outline width-full">
-          Verify receipt on MyCrypto
+          {{ $t('verifyOnMycrypto') }}
           <Icon name="external-link" class="ml-1" />
         </UiButton>
       </a>
@@ -34,6 +36,7 @@
 
 <script>
 export default {
-  props: ['open', 'authorIpfsHash', 'relayerIpfsHash']
+  props: ['open', 'authorIpfsHash', 'relayerIpfsHash'],
+  emits: ['close']
 };
 </script>

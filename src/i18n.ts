@@ -1,55 +1,43 @@
-import Vue from 'vue';
-import VueI18n from 'vue-i18n';
+import { createI18n } from 'vue-i18n';
+import messages from '@/locales';
 
-Vue.use(VueI18n);
+messages['en-US'] = messages.default;
+delete messages.default;
 
-const locale = 'en-US';
+export function getBrowserLocale() {
+  if (typeof navigator !== 'undefined') {
+    return (
+      navigator['userLanguage'] ||
+      navigator['language'] ||
+      (navigator.languages?.[0] ? navigator.languages[0] : undefined)
+    );
+  }
+  return undefined;
+}
 
-export default new VueI18n({
-  locale,
-  messages: {
-    en: {
-      messages: {
-        EMPTY_STATE: 'No results found'
-      }
-    }
-  },
-  numberFormats: {
-    en: {
-      currency: {
-        style: 'currency',
-        currency: 'USD',
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 0
-      },
-      price: {
-        style: 'currency',
-        currency: 'USD',
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 6
-      },
-      percent: {
-        style: 'percent',
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 2
-      }
-    }
-  },
-  dateTimeFormats: {
-    'en-US': {
-      short: {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric',
-        hour: 'numeric'
-      },
-      long: {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-        hour: 'numeric',
-        minute: 'numeric'
-      }
+export let defaultLocale = 'en-US';
+
+const browserLocale = getBrowserLocale();
+Object.keys(messages).forEach(locale => {
+  if (locale.slice(0, 2) === browserLocale.slice(0, 2)) defaultLocale = locale;
+});
+
+const datetimeFormats = {
+  en: {
+    short: {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric'
     }
   }
+};
+
+const i18n = createI18n({
+  locale: defaultLocale,
+  datetimeFormats,
+  messages
 });
+
+export default i18n;
