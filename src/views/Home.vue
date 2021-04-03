@@ -3,7 +3,7 @@
     <div class="text-center mb-4 mx-auto">
       <Container class="d-flex flex-items-center">
         <div class="flex-auto text-left col-lg-8">
-          <UiButton class="pl-3 col-12 col-lg-6">
+          <UiButton class="pl-3 col-12 col-lg-7">
             <SearchWithFilters v-model="q" />
           </UiButton>
         </div>
