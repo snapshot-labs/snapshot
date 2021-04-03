@@ -1,6 +1,6 @@
 <template>
-  <div class="position-relative">
-    <button @click="open = !open" class="button mr-1">
+  <div class="position-relative" @click="open = !open">
+    <button class="button mr-1">
       <slot></slot>
     </button>
     <div class="sub-menu-wrapper anim-scale-in" :class="{ hidden: !open }">
