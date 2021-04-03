@@ -25,7 +25,7 @@
           <div class="col-12 col-lg-3 pr-4 float-left">
             <Block
               class="text-center extra-icon-container"
-              style="height: 250px; margin-bottom: 24px !important;"
+              style="height: 250px; margin-bottom: 24px !important"
             >
               <span class="position-relative d-inline-block">
                 <UiCounter
@@ -89,11 +89,12 @@ export default {
           };
         })
         .filter(space => !space.private);
-      return orderBy(list, ['favorite', 'spotlight'], ['desc', 'asc']).filter(
-        space =>
-          JSON.stringify(space)
-            .toLowerCase()
-            .includes(this.q.toLowerCase())
+      return orderBy(
+        list,
+        ['favorite', 'spotlight'],
+        ['desc', 'asc']
+      ).filter(space =>
+        JSON.stringify(space).toLowerCase().includes(this.q.toLowerCase())
       );
     }
   },
