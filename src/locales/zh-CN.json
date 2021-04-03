@@ -97,7 +97,8 @@
     "startTime": "Select start time",
     "endTime": "Select end time",
     "publish": "Publish",
-    "snapshotBlock": "Snapshot block number"
+    "snapshotBlock": "Snapshot block number",
+    "onlyMembersWarning": "You need to be a member of the space in order to submit a proposal."
   },
   "delegate": {
     "header": "Delegate",
