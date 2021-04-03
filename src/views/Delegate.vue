@@ -134,10 +134,10 @@ export default {
     };
   },
   watch: {
-    'web3.account': async function(val, prev) {
+    'web3.account': async function (val, prev) {
       if (val?.toLowerCase() !== prev) await this.load();
     },
-    'web3.network.key': async function(val, prev) {
+    'web3.network.key': async function (val, prev) {
       if (val !== prev) await this.load();
     }
   },

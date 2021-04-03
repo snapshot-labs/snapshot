@@ -37,9 +37,7 @@
             <option v-bind:value="'1'">Delegatecall</option>
           </select>
         </UiButton>
-        <UiButton @click="adding = false" class="mb-2">
-          Back
-        </UiButton>
+        <UiButton @click="adding = false" class="mb-2">Back</UiButton>
         <UiButton :disabled="!isValid" @click="addTx" class="button--submit">
           Add
         </UiButton>

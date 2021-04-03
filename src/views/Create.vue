@@ -43,7 +43,7 @@
             :component-data="{ name: 'list' }"
             item-key="id"
           >
-            <template #item="{element, index}">
+            <template #item="{ element, index }">
               <div class="d-flex mb-2">
                 <UiButton class="d-flex width-full">
                   <span class="mr-4">{{ index + 1 }}</span>
