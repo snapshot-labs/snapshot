@@ -1,72 +1,60 @@
-import config from '@/helpers/config';
-import type { Web3Provider } from '@ethersproject/providers';
+import * as sigUtil from 'eth-sig-util';
+import { Web3Provider } from '@ethersproject/providers';
+import { name, version } from '@/../package.json';
 
-// eip712 domain for snapshot
 const domain = {
-  name: 'Snapshot',
-  version: '1',
-  chainId: config.chainId,
-  verifyingContract: config.verifyingContract
+  name,
+  version
 };
 
 const types = {
   EIP712Domain: [
     { name: 'name', type: 'string' },
-    { name: 'version', type: 'string' },
-    { name: 'chainId', type: 'uint256' },
-    { name: 'verifyingContract', type: 'address' }
+    { name: 'version', type: 'string' }
   ],
-  Action: [
-    { name: 'token', type: 'address' }, // the token the action is concerning
-    { name: 'type', type: 'string' }, // action type, e.g. "vote"
-    { name: 'payload', type: 'string' }, // the JSON-encoded action data
-    { name: 'timestamp', type: 'uint64' } // date in seconds since epoch
+  Unit: [
+    { name: 'space', type: 'string' },
+    { name: 'type', type: 'string' },
+    // { name: 'timestamp', type: 'uint64' },
+    { name: 'payload', type: 'string' }
   ]
 };
 
-const primaryType = 'Message'
+const primaryType = 'Unit';
 
-interface Message {
-  token: string;
+interface Unit {
+  space: string;
   type: string;
-  payload: any;
-  timestamp?: number;
+  // timestamp?: number;
+  payload: string;
 }
 
 export async function signMessage(
-  provider: Web3Provider,
+  web3: Web3Provider,
   address: string,
-  message: Message
+  message: Unit
 ) {
-  let { timestamp, payload } = message;
-  // assign timestamp to current time if omitted
-  if (typeof timestamp !== 'number') {
-    timestamp = Math.floor(Date.now() / 1e3);
-  }
-  // stringify json payload if needed
-  if (typeof payload !== 'string') {
-    payload = JSON.stringify(payload);
-  }
-
-  const data = {
+  const data: any = {
     types,
     domain,
     primaryType,
-    message: {
-      ...message,
-      payload,
-      timestamp
-    }
+    message
   };
 
-  if (!provider.provider.request) {
-    throw new Error('Web3Providier missing request method');
-  }
+  if (!web3.provider.request)
+    throw new Error('Web3Provider missing request method');
 
-  const result = await provider.provider.request({
+  const sig = await web3.provider.request({
     method: 'eth_signTypedData_v4',
-    params: [address, data],
+    params: [address, JSON.stringify(data)]
   });
+  console.log('Sig', sig);
 
-  return result
+  const hash = '0x' + sigUtil.TypedDataUtils.sign(data).toString('hex');
+  console.log('Hash', hash);
+
+  const recoverAddress = sigUtil.recoverTypedSignature_v4({ data, sig });
+  console.log('Recover address', recoverAddress);
+
+  return sig;
 }

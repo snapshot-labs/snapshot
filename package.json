@@ -38,6 +38,7 @@
     "core-js": "^3.6.5",
     "cors": "^2.8.5",
     "eslint": "^6.7.2",
+    "eth-sig-util": "^3.0.1",
     "ethereumjs-util": "^7.0.7",
     "fortmatic": "^2.0.6",
     "jsonexport": "^3.0.1",

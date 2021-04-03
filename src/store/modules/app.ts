@@ -1,17 +1,14 @@
 import { getProfiles } from '@/helpers/profile';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { ipfsGet, getScores } from '@snapshot-labs/snapshot.js/src/utils';
-import {
-  getBlockNumber,
-  signMessage
-} from '@snapshot-labs/snapshot.js/src/utils/web3';
+import { getBlockNumber } from '@snapshot-labs/snapshot.js/src/utils/web3';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import gateways from '@snapshot-labs/snapshot.js/src/gateways.json';
 import client from '@/helpers/client';
 import { formatProposal, formatProposals, formatSpace } from '@/helpers/utils';
-import { version } from '@/../package.json';
 import i18n, { defaultLocale } from '@/i18n';
 import { lsGet, lsSet } from '@/helpers/utils';
+import { signMessage } from '@/sign';
 
 const gateway = process.env.VUE_APP_IPFS_GATEWAY || gateways[0];
 
@@ -102,15 +99,14 @@ const actions = {
     try {
       const msg: any = {
         address: rootState.web3.account,
-        msg: JSON.stringify({
-          version,
-          timestamp: (Date.now() / 1e3).toFixed(),
+        msg: {
           space,
           type,
-          payload
-        })
+          // timestamp: (Date.now() / 1e3).toFixed(),
+          payload: JSON.stringify(payload)
+        }
       };
-      msg.sig = await signMessage(auth.web3, msg.msg, rootState.web3.account);
+      msg.sig = await signMessage(auth.web3, rootState.web3.account, msg.msg);
       const result = await client.request('message', msg);
       commit('SEND_SUCCESS');
       dispatch('notify', [
