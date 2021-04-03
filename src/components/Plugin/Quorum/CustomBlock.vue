@@ -5,7 +5,7 @@
         {{ _n(totalScore) }} / {{ _n(totalVotingPower) }}
         {{ _shorten(space.symbol, 'symbol') }}
       </span>
-      <span class="float-right" v-text="$n(quorum, 'percent')" />
+      <span class="float-right" v-text="_n(quorum, '0.[00]%')" />
     </div>
     <UiProgress :value="quorum" :max="1" class="mb-3" />
   </Block>
