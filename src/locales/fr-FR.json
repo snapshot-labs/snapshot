@@ -97,7 +97,8 @@
     "startTime": "Date de début",
     "endTime": "Select end time",
     "publish": "Publier",
-    "snapshotBlock": "Numéro du bloc"
+    "snapshotBlock": "Numéro du bloc",
+    "onlyMembersWarning": "You need to be a member of the space in order to submit a proposal."
   },
   "delegate": {
     "header": "Déléguer",
