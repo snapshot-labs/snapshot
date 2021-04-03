@@ -22,13 +22,13 @@
         <span
           class="float-right"
           v-text="
-            $n(
+            _n(
               !results.totalVotesBalances
                 ? 0
                 : ((100 / results.totalVotesBalances) *
                     results.totalBalances[choice.i]) /
                     1e2,
-              'percent'
+              '0.[00]%'
             )
           "
         />

@@ -22,28 +22,6 @@ Object.keys(messages).forEach(locale => {
   if (locale.slice(0, 2) === browserLocale.slice(0, 2)) defaultLocale = locale;
 });
 
-const numberFormats = {
-  en: {
-    currency: {
-      style: 'currency',
-      currency: 'USD',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0
-    },
-    price: {
-      style: 'currency',
-      currency: 'USD',
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 6
-    },
-    percent: {
-      style: 'percent',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 2
-    }
-  }
-};
-
 const datetimeFormats = {
   en: {
     short: {
@@ -59,7 +37,6 @@ const datetimeFormats = {
 const i18n = createI18n({
   locale: defaultLocale,
   datetimeFormats,
-  numberFormats,
   messages
 });
 
