@@ -10,12 +10,12 @@
           {{ space.name }}
         </router-link>
       </div>
+      <Block v-if="space.filters?.onlyMembers && !isMember">
+        <Icon name="warning" class="mr-1"/>
+        {{ $t('create.onlyMembersWarning') }}
+      </Block>
       <div class="px-4 px-md-0">
         <div class="d-flex flex-column mb-6">
-          <Block v-if="space.filters?.onlyMembers && !isMember">
-            <Icon name="warning" class="mr-1"/>
-            {{ $t('create.onlyMembersWarning') }}
-          </Block>
           <input
             v-model="form.name"
             maxlength="128"
