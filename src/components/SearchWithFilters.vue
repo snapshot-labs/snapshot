@@ -22,9 +22,25 @@
 <script>
 export default {
   props: ['modelValue'],
-  data() {
-    return {
-      searchOptions: [
+  methods: {
+    redirectSearch(e) {
+      console.log(e);
+      this.$router.push({
+        name: e.route,
+        query: this.modelValue ? { q: this.modelValue } : {}
+      });
+    }
+  },
+  computed: {
+    searchSelectedOption() {
+      return (
+        this.searchOptions.find(
+          option => option.options.route === this.$route.name
+        )?.text || 'home'
+      );
+    },
+    searchOptions() {
+      return [
         {
           text: this.$t('spaces'),
           action: 'redirect',
@@ -50,25 +66,7 @@ export default {
           action: 'redirect',
           options: { route: 'plugins' }
         }
-      ]
-    };
-  },
-  methods: {
-    redirectSearch(e) {
-      console.log(e);
-      this.$router.push({
-        name: e.route,
-        query: this.modelValue ? { q: this.modelValue } : {}
-      });
-    }
-  },
-  computed: {
-    searchSelectedOption() {
-      return (
-        this.searchOptions.find(
-          option => option.options.route === this.$route.name
-        )?.text || 'home'
-      );
+      ];
     }
   }
 };
