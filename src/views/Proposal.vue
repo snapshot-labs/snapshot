@@ -54,18 +54,15 @@
             <a
               v-if="payload.metadata.plugins?.aragon?.[`choice${[i + 1]}`]"
               @click="modalOpen = true"
-              :aria-label="
-                `Target address: ${
-                  payload.metadata.plugins.aragon[`choice${i + 1}`].actions[0]
-                    .to
-                }\nValue: ${
-                  payload.metadata.plugins.aragon[`choice${i + 1}`].actions[0]
-                    .value
-                }\nData: ${
-                  payload.metadata.plugins.aragon[`choice${i + 1}`].actions[0]
-                    .data
-                }`
-              "
+              :aria-label="`Target address: ${
+                payload.metadata.plugins.aragon[`choice${i + 1}`].actions[0].to
+              }\nValue: ${
+                payload.metadata.plugins.aragon[`choice${i + 1}`].actions[0]
+                  .value
+              }\nData: ${
+                payload.metadata.plugins.aragon[`choice${i + 1}`].actions[0]
+                  .data
+              }`"
               class="tooltipped tooltipped-n break-word"
             >
               <Icon name="warning" class="v-align-middle ml-1" />
@@ -248,7 +245,7 @@ export default {
     }
   },
   watch: {
-    'web3.account': async function(val, prev) {
+    'web3.account': async function (val, prev) {
       if (val?.toLowerCase() !== prev) await this.loadPower();
     }
   },

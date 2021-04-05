@@ -142,14 +142,12 @@
           </Block>
 
           <Block :title="$t('settings.members')">
-            <UiButton class="d-block width-full px-3" style="height: auto;">
+            <UiButton class="d-block width-full px-3" style="height: auto">
               <TextareaArray
                 v-model="form.members"
-                :placeholder="
-                  `0x8C28Cf33d9Fd3D0293f963b1cd27e3FF422B425c\n0xeF8305E140ac520225DAf050e2f71d5fBcC543e7`
-                "
+                :placeholder="`0x8C28Cf33d9Fd3D0293f963b1cd27e3FF422B425c\n0xeF8305E140ac520225DAf050e2f71d5fBcC543e7`"
                 class="input width-full text-left"
-                style="font-size: 18px;"
+                style="font-size: 18px"
               />
             </UiButton>
           </Block>
@@ -177,16 +175,14 @@
                 />
                 {{ $t('settings.showOnly') }}
               </div>
-              <UiButton class="d-block width-full px-3" style="height: auto;">
+              <UiButton class="d-block width-full px-3" style="height: auto">
                 <TextareaArray
                   v-model="form.filters.invalids"
-                  :placeholder="
-                    `${$t(
-                      'invalidProposals'
-                    )}\nQmc4VSHwY3SVmo4oofhL2qDPaYcGaQqndM4oqdQQe2aZHQ\nQmTMAgnPy2q6LRMNwvj27PHvWEgZ3bw7yTtNNEucBZCWhZ`
-                  "
+                  :placeholder="`${$t(
+                    'invalidProposals'
+                  )}\nQmc4VSHwY3SVmo4oofhL2qDPaYcGaQqndM4oqdQQe2aZHQ\nQmTMAgnPy2q6LRMNwvj27PHvWEgZ3bw7yTtNNEucBZCWhZ`"
                   class="input width-full text-left"
-                  style="font-size: 18px;"
+                  style="font-size: 18px"
                 />
               </UiButton>
             </div>

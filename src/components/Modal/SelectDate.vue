@@ -21,7 +21,7 @@
         <UiCalendar v-model="input" class="mx-auto mb-2" />
       </div>
     </div>
-    <div v-else class="d-flex m-4 mx-auto" style="max-width: 160px;">
+    <div v-else class="d-flex m-4 mx-auto" style="max-width: 160px">
       <UiButton class="px-0 width-fit">
         <input v-model="form.h" max="24" class="input text-center col-5" />
         <span class="col-2">:</span>
