@@ -45,15 +45,14 @@ export function setI18nLanguage(i18n, locale) {
   document.querySelector('html').setAttribute('lang', locale);
 }
 
-export function setupI18n(
-  options = { locale: defaultLocale, datetimeFormats }
-) {
+export function setupI18n(options = { locale: defaultLocale }) {
   const i18n = createI18n(options);
   setI18nLanguage(i18n, options.locale);
   return i18n;
 }
 
 export async function loadLocaleMessages(i18n, locale) {
+  if (locale === 'en-US') locale = 'default';
   // load locale messages with dynamic import
   const messages = await import(
     /* webpackChunkName: "locale-[request]" */ `./locales/${locale}.json`
@@ -64,3 +63,13 @@ export async function loadLocaleMessages(i18n, locale) {
 
   return nextTick();
 }
+
+const i18n = setupI18n({
+  locale: defaultLocale,
+  // @ts-ignore
+  datetimeFormats,
+  messages: { 'en-US': messages['en-US'] },
+  fallbackLocale: 'en-US'
+});
+
+export default i18n;
