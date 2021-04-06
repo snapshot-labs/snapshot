@@ -105,60 +105,60 @@
     "selectAddress": "Выбрать адрес",
     "addressPlaceholder": "Делегировать адрес или домен ENS",
     "spacePlaceholder": "Раздел (опционально)",
-    "delegations": "Your delegation(s)",
-    "delegated": "Delegated to you"
+    "delegations": "Вы делегировали",
+    "delegated": "Вам делегировали"
   },
   "proposal": {
-    "castVote": "Cast your vote",
-    "vote": "Vote",
-    "startDate": "Start date",
-    "endDate": "End date"
+    "castVote": "Опубликовать бюллетень",
+    "vote": "Бюллетень",
+    "startDate": "Дата начала",
+    "endDate": "Дата окончания"
   },
   "proposals": {
-    "header": "Proposals",
-    "new": "New proposal",
-    "noProposals": "There aren't any proposals here yet!",
+    "header": "Опросы",
+    "new": "Новый опрос",
+    "noProposals": "Здесь пока нет никаких опросов!",
     "states": {
-      "all": "All",
-      "core": "Core",
-      "community": "Community",
-      "active": "Active",
-      "pending": "Pending",
-      "closed": "Closed"
+      "all": "Все",
+      "core": "Основные",
+      "community": "Сообщество",
+      "active": "Активные",
+      "pending": "В процессе",
+      "closed": "Закрытые"
     }
   },
   "settings": {
-    "header": "Settings",
-    "seeENS": "See on ENS",
-    "setENS": "Set record on ENS",
-    "profile": "Profile",
-    "changeAvatar": "Change avatar",
-    "name": "Name",
-    "about": "About",
-    "symbol": "Symbol",
-    "skin": "Skin",
-    "domain": "Domain name",
-    "hideSpace": "Hide space from homepage",
-    "addStrategy": "Add strategy",
-    "members": "Members",
-    "filters": "Filters",
-    "defaultTab": "Default tab",
-    "minScore": "Min. score",
-    "showOnly": "Show only members proposals",
-    "editPlugin": "Edit plugin",
-    "addPlugin": "Add plugin",
-    "pluginParameters": "Plugin parameters"
+    "header": "Настройки",
+    "seeENS": "Смотреть в ENS",
+    "setENS": "Установить запись в ENS",
+    "profile": "Профиль",
+    "changeAvatar": "Сменить аватар",
+    "name": "Название",
+    "about": "О проекте",
+    "symbol": "Символ",
+    "skin": "Тема",
+    "domain": "Доменное имя",
+    "hideSpace": "Скрыть раздел на главной страницы",
+    "addStrategy": "Добавить стратегию",
+    "members": "Члены сообщества",
+    "filters": "Фильтры",
+    "defaultTab": "Вкладка по умолчанию",
+    "minScore": "Мин. счёт",
+    "showOnly": "Показать только опросы участников",
+    "editPlugin": "Редактировать плагин",
+    "addPlugin": "Добавить плагин",
+    "pluginParameters": "Настройки плагина"
   },
   "setup": {
-    "example": "e.g. yam.eth",
-    "useExistingEns": "Use an existing ENS name to create your space with.",
-    "createASpace": "Create a space"
+    "example": "например, yam.eth",
+    "useExistingEns": "Используйте существующий домен ENS для создания раздела.",
+    "createASpace": "Создать раздел"
   },
   "notify": {
-    "youDidIt": "You did it!",
-    "copied": "Copied!",
-    "proposalDeleted": "Proposal deleted",
-    "yourIsIn": "Your {0} is in!",
-    "somethingWentWrong": "Oops, something went wrong!"
+    "youDidIt": "У вас получилось!",
+    "copied": "Скопировано!",
+    "proposalDeleted": "Опрос удалён",
+    "yourIsIn": "Ваш {0} сохранен!",
+    "somethingWentWrong": "Ой, что-то пошло не так!"
   }
 }
