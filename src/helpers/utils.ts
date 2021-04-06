@@ -76,9 +76,7 @@ export function filterNetworks(networks, spaces, q) {
       return network[1];
     })
     .filter(network =>
-      JSON.stringify(network)
-        .toLowerCase()
-        .includes(q.toLowerCase())
+      JSON.stringify(network).toLowerCase().includes(q.toLowerCase())
     )
     .sort((a, b) => b.spaces.length - a.spaces.length);
 }
@@ -112,9 +110,7 @@ export function filterStrategies(strategies, spaces, q = '') {
   return Object.values(strategies)
     .map((strategy: any) => getStrategy(strategy, spaces))
     .filter(strategy =>
-      JSON.stringify(strategy)
-        .toLowerCase()
-        .includes(q.toLowerCase())
+      JSON.stringify(strategy).toLowerCase().includes(q.toLowerCase())
     )
     .sort((a, b) => b.spaces.length - a.spaces.length);
 }
@@ -134,9 +130,7 @@ export function filterPlugins(plugins, spaces, q = '') {
       return plugin;
     })
     .filter(plugin =>
-      JSON.stringify(plugin)
-        .toLowerCase()
-        .includes(q.toLowerCase())
+      JSON.stringify(plugin).toLowerCase().includes(q.toLowerCase())
     )
     .sort((a, b) => b.spaces.length - a.spaces.length);
 }

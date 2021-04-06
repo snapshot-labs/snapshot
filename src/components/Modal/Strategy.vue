@@ -16,13 +16,13 @@
         <h4 v-text="input.name" class="mb-3 text-center" />
         <UiButton
           class="d-block width-full mb-3 overflow-x-auto"
-          style="height: auto;"
+          style="height: auto"
         >
           <TextareaAutosize
             v-model="input.params"
             :placeholder="$t('strategyParameters')"
             class="input text-left"
-            style="width: 560px;"
+            style="width: 560px"
           />
         </UiButton>
         <UiButton
