@@ -45,7 +45,7 @@
   "confirmRemove": "Êtes-vous sûr de vouloir supprimer votre délégation à",
   "removeSpace": "pour l'espace {0}",
   "confirmVote": "Confirmez votre vote",
-  "sureToVote": "Êtes-vous sûr de vouloir voter \"{0} \" ?",
+  "sureToVote": "Êtes-vous sûr de vouloir voter \"{0}\" ?",
   "cannotBeUndone": "Cette action est irréversible.",
   "option": "Option",
   "votingPower": "Votre pouvoir de vote",
@@ -84,7 +84,7 @@
   "endDate": "fin {0}",
   "contectHash": "Hash du contenu",
   "defaultSkin": "Thème par défaut",
-  "select": "Select",
+  "select": "Sélectionnez",
   "language": "Langage",
   "create": {
     "question": "Question",
@@ -95,15 +95,15 @@
     "startDate": "Date de début",
     "endDate": "Date de fin",
     "startTime": "Date de début",
-    "endTime": "Select end time",
+    "endTime": "Sélectionnez la date de fin",
     "publish": "Publier",
     "snapshotBlock": "Numéro du bloc",
-    "onlyMembersWarning": "You need to be a member of the space in order to submit a proposal."
+    "onlyMembersWarning": "Vous devez être un membre de l'espace pour pouvoir soumettre une proposition."
   },
   "delegate": {
     "header": "Déléguer",
-    "selectAddress": "Select address",
-    "addressPlaceholder": "Delegate address or ENS name",
+    "selectAddress": "Sélectionnez une adresse",
+    "addressPlaceholder": "Adresse ou ENS du délégué",
     "spacePlaceholder": "Espace (facultatif)",
     "delegations": "Vos délégation(s)",
     "delegated": "Delegated to you"
@@ -120,7 +120,7 @@
     "noProposals": "Il n'y a pas encore de propositions ici !",
     "states": {
       "all": "Tous",
-      "core": "Core",
+      "core": "Principal",
       "community": "Communauté",
       "active": "Actif",
       "pending": "En attente",
@@ -130,11 +130,11 @@
   "settings": {
     "header": "Réglages",
     "seeENS": "Voir sur l'ENS",
-    "setENS": "Set record on ENS",
+    "setENS": "Définir l'url sur l'enregistrement ENS",
     "profile": "Profil",
     "changeAvatar": "Modifier l'avatar",
     "name": "Nom",
-    "about": "About",
+    "about": "À propos",
     "symbol": "Symbole",
     "skin": "Thème",
     "domain": "Nom de domaine",
@@ -145,12 +145,12 @@
     "defaultTab": "Onglet par défaut",
     "minScore": "Score min.",
     "showOnly": "Afficher uniquement les propositions des membres",
-    "editPlugin": "Edit plugin",
+    "editPlugin": "Modifier le module",
     "addPlugin": "Ajouter un plugin",
     "pluginParameters": "Paramètres du plugin"
   },
   "setup": {
-    "example": "e.g. yam.eth",
+    "example": "ex : yam.eth",
     "useExistingEns": "Utilisez un nom ENS existant pour créer votre espace.",
     "createASpace": "Créer un espace"
   },
