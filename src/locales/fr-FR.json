@@ -120,7 +120,7 @@
     "noProposals": "Il n'y a pas encore de propositions ici !",
     "states": {
       "all": "Tous",
-      "core": "Principal",
+      "core": "Officiel",
       "community": "Communauté",
       "active": "Actif",
       "pending": "En attente",
@@ -130,7 +130,7 @@
   "settings": {
     "header": "Réglages",
     "seeENS": "Voir sur l'ENS",
-    "setENS": "Définir l'url sur l'enregistrement ENS",
+    "setENS": "Définir l'url sur ENS",
     "profile": "Profil",
     "changeAvatar": "Modifier l'avatar",
     "name": "Nom",
