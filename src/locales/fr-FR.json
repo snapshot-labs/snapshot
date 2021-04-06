@@ -106,7 +106,7 @@
     "addressPlaceholder": "Adresse ou ENS du délégué",
     "spacePlaceholder": "Espace (facultatif)",
     "delegations": "Vos délégation(s)",
-    "delegated": "Delegated to you"
+    "delegated": "Vous délègue"
   },
   "proposal": {
     "castVote": "Votez",
@@ -158,7 +158,7 @@
     "youDidIt": "Tout est bon !",
     "copied": "Copié !",
     "proposalDeleted": "Proposition supprimée",
-    "yourIsIn": "Your {0} is in!",
+    "yourIsIn": "Votre {0} est enregistré !",
     "somethingWentWrong": "Oups, une erreur s'est produite!"
   }
 }
