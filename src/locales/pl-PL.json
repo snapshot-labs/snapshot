@@ -1,7 +1,7 @@
 {
   "searchPlaceholder": "Szukaj",
-  "spaceCount": "{0} miejsca (-c)",
-  "createSpace": "Utwórz miejsce",
+  "spaceCount": "{0} sekcja (-cji)",
+  "createSpace": "Utwórz sekcję",
   "backToHome": "Strona główna",
   "actions": "Akcje",
   "results": "Wyniki",
@@ -20,7 +20,7 @@
   "version": "Wersja",
   "timeline": "Oś czasu",
   "submitOnchain": "Wyślij na blockchain",
-  "inSpaces": "W {0} miejscach",
+  "inSpaces": "W {0} sekcji (-cjach)",
   "downloadReport": "Pobierz raport",
   "votes": "Głosy",
   "seeMore": "Pokaż więcej",
@@ -43,7 +43,7 @@
   "demoSite": "To jest strona demonstracyjna, wypróbuj ją!",
   "removeDelegation": "Usuń przekazanie",
   "confirmRemove": "Czy na pewno chcesz usunąć przekazanie do",
-  "removeSpace": "za miejsce {0}",
+  "removeSpace": "za sekcje {0}",
   "confirmVote": "Potwierdź głos",
   "sureToVote": "Czy na pewno chcesz zagłosować \"{0}\"?",
   "cannotBeUndone": "Ta operacja nie może być cofnięta.",
@@ -98,13 +98,13 @@
     "endTime": "Ustaw godzinę zakończenia",
     "publish": "Opublikuj",
     "snapshotBlock": "Numer bloku Snapshot",
-    "onlyMembersWarning": "Musisz być członkiem miejsca, aby złożyć propozycję."
+    "onlyMembersWarning": "Musisz być członkiem sekcji, aby złożyć propozycję."
   },
   "delegate": {
     "header": "Przekaż",
     "selectAddress": "Wybierz adres",
     "addressPlaceholder": "Przekaż adres lub numer ENS",
-    "spacePlaceholder": "Miejsce (opcjonalnie)",
+    "spacePlaceholder": "Sekcja (opcjonalnie)",
     "delegations": "Oddelegowano",
     "delegated": "Zdelegowano dla Ciebie"
   },
@@ -138,7 +138,7 @@
     "symbol": "Symbol",
     "skin": "Motyw",
     "domain": "Nazwa domeny",
-    "hideSpace": "Ukryj miejsce na stronie głównej",
+    "hideSpace": "Ukryj sekcje na stronie głównej",
     "addStrategy": "Dodaj strategię",
     "members": "Użytkownicy",
     "filters": "Filtry",
@@ -151,8 +151,8 @@
   },
   "setup": {
     "example": "np. yam.eth",
-    "useExistingEns": "Użyj istniejącej nazwy ENS, aby utworzyć swoją przestrzeń.",
-    "createASpace": "Utwórz przestrzeń"
+    "useExistingEns": "Użyj istniejącej nazwy ENS, aby utworzyć swoją sekcję.",
+    "createASpace": "Utwórz sekcję"
   },
   "notify": {
     "youDidIt": "Udało ci się!",
