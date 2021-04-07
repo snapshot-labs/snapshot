@@ -38,7 +38,7 @@
   "license": "License",
   "ipfsServer": "IPFS server",
   "hub": "Hub",
-  "cancel": "Cancel",
+  "cancel": "रद्द करें",
   "deleteProposal": "Delete proposal",
   "demoSite": "This is the demo site, give it a try!",
   "removeDelegation": "Remove delegation",
