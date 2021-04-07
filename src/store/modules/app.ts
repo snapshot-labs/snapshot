@@ -10,7 +10,12 @@ import gateways from '@snapshot-labs/snapshot.js/src/gateways.json';
 import client from '@/helpers/client';
 import { formatProposal, formatProposals, formatSpace } from '@/helpers/utils';
 import { version } from '@/../package.json';
-import i18n, { defaultLocale } from '@/i18n';
+import i18n, {
+  defaultLocale,
+  setI18nLanguage,
+  loadLocaleMessages
+} from '@/i18n';
+
 import { lsGet, lsSet } from '@/helpers/utils';
 
 const gateway = process.env.VUE_APP_IPFS_GATEWAY || gateways[0];
@@ -70,7 +75,8 @@ const mutations = {
 
 const actions = {
   init: async ({ commit, dispatch }) => {
-    i18n.global.locale = state.locale;
+    await loadLocaleMessages(i18n, state.locale);
+    setI18nLanguage(i18n, state.locale);
     const auth = getInstance();
     commit('SET', { loading: true });
     await dispatch('getSpaces');
@@ -272,10 +278,11 @@ const actions = {
       commit('GET_POWER_FAILURE', e);
     }
   },
-  setLocale(state, locale) {
+  async setLocale(state, locale) {
     state.locale = locale;
     lsSet('locale', locale);
-    i18n.global.locale = locale;
+    await loadLocaleMessages(i18n, locale);
+    setI18nLanguage(i18n, locale);
   }
 };
 
