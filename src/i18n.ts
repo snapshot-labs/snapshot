@@ -1,9 +1,7 @@
 import { createI18n } from 'vue-i18n';
 import { nextTick } from 'vue';
-import messages from '@/locales';
-
-messages['en-US'] = messages.default;
-delete messages.default;
+import en from '@/locales/default.json';
+import languages from '@/locales/languages.json';
 
 export let defaultLocale = 'en-US';
 
@@ -19,7 +17,7 @@ export function getBrowserLocale() {
 }
 
 const browserLocale = getBrowserLocale();
-Object.keys(messages).forEach(locale => {
+Object.keys(languages).forEach(locale => {
   if (locale.slice(0, 2) === browserLocale.slice(0, 2)) defaultLocale = locale;
 });
 
@@ -68,7 +66,7 @@ const i18n = setupI18n({
   locale: defaultLocale,
   // @ts-ignore
   datetimeFormats,
-  messages: { 'en-US': messages['en-US'] },
+  messages: { 'en-US': en },
   fallbackLocale: 'en-US'
 });
 
