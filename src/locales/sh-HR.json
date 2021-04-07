@@ -11,7 +11,7 @@
   "author": "Autor",
   "next": "Sledeći",
   "submit": "Podnesi",
-  "plugins": "Plugin-ovi",
+  "plugins": "Pluginovi",
   "information": "Informacije",
   "confirm": "Potvrdi",
   "snapshot": "Snimak",
@@ -145,7 +145,7 @@
     "defaultTab": "Podrazumevana kartica",
     "minScore": "Minimalni rezultat",
     "showOnly": "Prikaži samo predloge od članova",
-    "editPlugin": "Uredi plugin",
+    "editPlugin": "Uredi plagin",
     "addPlugin": "Dodaj plugin",
     "pluginParameters": "Plugin parametri"
   },
