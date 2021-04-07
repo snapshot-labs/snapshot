@@ -85,7 +85,7 @@
   "contectHash": "Hash des Inhalts",
   "defaultSkin": "Standard-Skin",
   "select": "Auswählen",
-  "language": "Language",
+  "language": "Sprache",
   "create": {
     "question": "Frage",
     "content": "Was ist Ihr Vorschlag?",
@@ -98,7 +98,7 @@
     "endTime": "Endzeit auswählen",
     "publish": "Veröffentlichen",
     "snapshotBlock": "Momentaufnahme Blocknummer",
-    "onlyMembersWarning": "You need to be a member of the space in order to submit a proposal."
+    "onlyMembersWarning": "Sie müssen Mitglied des Bereichs sein, um einen Vorschlag einzureichen."
   },
   "delegate": {
     "header": "Delegieren",
@@ -134,7 +134,7 @@
     "profile": "Profil",
     "changeAvatar": "Avatar ändern",
     "name": "Name",
-    "about": "About",
+    "about": "Über uns",
     "symbol": "Symbol",
     "skin": "Skin",
     "domain": "Domain-Name",
