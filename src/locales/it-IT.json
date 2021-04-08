@@ -98,7 +98,8 @@
     "endTime": "Selezionare un orario di conclusione",
     "publish": "Pubblica",
     "snapshotBlock": "Numero blocco istantanea",
-    "onlyMembersWarning": "You need to be a member of the space in order to submit a proposal."
+    "onlyMembersWarning": "You need to be a member of the space in order to submit a proposal",
+    "minScoreWarning": "You need to have a minimum of {0} {1} in order to submit a proposal"
   },
   "delegate": {
     "header": "Delega",
