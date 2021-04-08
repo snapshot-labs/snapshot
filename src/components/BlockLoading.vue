@@ -3,41 +3,35 @@
     <div v-for="n in 2" :key="n" class="mb-4 d-block">
       <div class="d-flex flex-justify-between mb-2">
         <div
-          :class="shades(n)"
-          class="rounded-1 anim-pulse"
-          style="width: 30%; height: 12px"
+          class="rounded-1 anim-pulse bg-gray-9"
+          style="width: 30%; height: 14px"
         />
         <div
-          :class="shades(n)"
-          class="rounded-1 anim-pulse"
-          style="width: 15%; height: 12px"
+          class="rounded-1 anim-pulse bg-gray-9"
+          style="width: 15%; height: 14px"
         />
       </div>
 
       <div
-        :class="shades(n)"
-        class="rounded-1 anim-pulse"
-        style="widht: 100%; height: 7px"
+        class="rounded-1 anim-pulse bg-gray-9"
+        style="widht: 100%; height: 9px"
       />
     </div>
   </div>
   <div v-if="type === 'votes'" class="px-4 pt-4">
-    <div v-for="n in 3" :key="n" class="mb-4 d-block">
+    <div v-for="n in 3" :key="n" class="mb-5 d-block">
       <div class="d-flex flex-justify-between">
         <div
-          :class="shades(n)"
-          class="rounded-1 anim-pulse"
-          style="width: 20%; height: 12px"
+          class="rounded-1 anim-pulse bg-gray-9"
+          style="width: 20%; height: 14px"
         />
         <div
-          :class="shades(n)"
-          class="rounded-1 anim-pulse"
-          style="width: 20%; height: 12px"
+          class="rounded-1 anim-pulse bg-gray-9"
+          style="width: 20%; height: 14px"
         />
         <div
-          :class="shades(n)"
-          class="rounded-1 anim-pulse"
-          style="width: 20%; height: 12px"
+          class="rounded-1 anim-pulse bg-gray-9"
+          style="width: 20%; height: 14px"
         />
       </div>
     </div>
@@ -46,15 +40,6 @@
 
 <script>
 export default {
-  props: ['type'],
-  methods: {
-    shades(n) {
-      return {
-        'bg-gray-4': n === 1,
-        'bg-gray-3': n === 2,
-        'bg-gray-2': n === 3
-      };
-    }
-  }
+  props: ['type']
 };
 </script>
