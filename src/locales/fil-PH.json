@@ -152,7 +152,7 @@
   "setup": {
     "example": "e.g. yam.eth",
     "useExistingEns": "Gumamit ng kasalukuyang ENS name para gumawa ng espasyo kasama ng.",
-    "createASpace": "Gumawa ng espasyo"
+    "createASpace": "Create a space"
   },
   "notify": {
     "youDidIt": "You did it!",
