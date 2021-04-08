@@ -1,6 +1,6 @@
 <template>
   <Block
-    v-if="hideIfZero()"
+    v-if="isZero()"
     :title="$t('votes')"
     :counter="Object.keys(votes).length"
     :slim="true"
@@ -93,7 +93,7 @@ export default {
   },
   methods: {
     // Hide only after loading if zero voters
-    hideIfZero() {
+    isZero() {
       if (!this.loaded) return true;
       if (Object.keys(this.votes).length > 0) return true;
     },
