@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "@ensdomains/content-hash": "^2.5.3",
-    "@ensdomains/ensjs": "^2.0.0",
+    "@ensdomains/ensjs": "^2.0.1",
     "@ethersproject/abi": "^5.0.1",
     "@ethersproject/address": "^5.0.1",
     "@ethersproject/bytes": "^5.0.5",
