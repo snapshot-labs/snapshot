@@ -11,8 +11,17 @@
         </router-link>
       </div>
       <Block v-if="space.filters?.onlyMembers && !isMember">
-        <Icon name="warning" class="mr-1"/>
+        <Icon name="warning" class="mr-1" />
         {{ $t('create.onlyMembersWarning') }}
+      </Block>
+      <Block v-else-if="showScoreWarning">
+        <Icon name="warning" class="mr-1" />
+        {{
+          $t('create.minScoreWarning', [
+            _n(space.filters.minScore),
+            space.strategies[0].params.symbol
+          ])
+        }}
       </Block>
       <div class="px-4 px-md-0">
         <div class="d-flex flex-column mb-6">
@@ -139,7 +148,7 @@
 <script>
 import { mapActions } from 'vuex';
 import draggable from 'vuedraggable';
-import { ipfsGet } from '@snapshot-labs/snapshot.js/src/utils';
+import { ipfsGet, getScores } from '@snapshot-labs/snapshot.js/src/utils';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import { getBlockNumber } from '@snapshot-labs/snapshot.js/src/utils/web3';
 import gateways from '@snapshot-labs/snapshot.js/src/gateways.json';
@@ -170,8 +179,16 @@ export default {
       modalOpen: false,
       modalProposalPluginsOpen: false,
       selectedDate: '',
-      counter: 0
+      counter: 0,
+      userScore: null
     };
+  },
+  watch: {
+    'web3.account': function () {
+      if (this.space.filters?.minScore > 0 && !this.isMember)
+        this.getUserScore();
+      else this.userScore = 0;
+    }
   },
   computed: {
     space() {
@@ -184,6 +201,17 @@ export default {
         this.web3.account &&
         members.includes(this.web3.account.toLowerCase())
       );
+    },
+    showScoreWarning() {
+      return (
+        this.space.filters?.minScore > 0 &&
+        !this.hasMinScore &&
+        !this.isMember &&
+        this.userScore !== null
+      );
+    },
+    hasMinScore() {
+      return this.userScore >= this.space.filters.minScore;
     },
     isValid() {
       // const ts = (Date.now() / 1e3).toFixed();
@@ -202,7 +230,10 @@ export default {
         this.choices.length >= 2 &&
         !this.choices.some(a => a.text === '') &&
         (!this.space.filters?.onlyMembers ||
-          (this.space.filters?.onlyMembers && this.isMember))
+          (this.space.filters?.onlyMembers && this.isMember)) &&
+        (this.space.filters?.minScore === 0 ||
+          (this.space.filters?.minScore > 0 && this.hasMinScore) ||
+          this.isMember)
       );
     }
   },
@@ -211,6 +242,8 @@ export default {
     this.addChoice(2);
     this.blockNumber = await getBlockNumber(getProvider(this.space.network));
     this.form.snapshot = this.blockNumber;
+    if (this.web3.account && this.space.filters?.minScore > 0 && !this.isMember)
+      this.getUserScore();
     if (this.from) {
       try {
         const proposal = await ipfsGet(gateway, this.from);
@@ -259,6 +292,19 @@ export default {
         console.error(e);
         this.loading = false;
       }
+    },
+    async getUserScore() {
+      let scores = await getScores(
+        this.space.key,
+        this.space.strategies,
+        this.space.network,
+        getProvider(this.space.network),
+        [this.web3.account]
+      );
+      scores = scores
+        .map(score => Object.values(score).reduce((a, b) => a + b, 0))
+        .reduce((a, b) => a + b, 0);
+      this.userScore = scores;
     }
   }
 };
