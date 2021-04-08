@@ -192,7 +192,8 @@ export default {
   },
   watch: {
     'web3.account': function () {
-      if (this.space.filters?.minScore > 0) this.getUserScore();
+      if (this.space.filters?.minScore > 0 && !this.isMember)
+        this.getUserScore();
       else this.userScore = 0;
     }
   },
@@ -230,7 +231,8 @@ export default {
         (!this.space.filters?.onlyMembers ||
           (this.space.filters?.onlyMembers && this.isMember)) &&
         (this.space.filters?.minScore === 0 ||
-          (this.space.filters?.minScore > 0 && this.hasMinScore))
+          (this.space.filters?.minScore > 0 && this.hasMinScore) ||
+          this.isMember)
       );
     }
   },
