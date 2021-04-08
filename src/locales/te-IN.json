@@ -97,7 +97,8 @@
     "startTime": "ప్రారంభ సమయాన్ని ఎంచుకోండి",
     "endTime": "ముగింపు సమయాన్ని ఎంచుకోండి",
     "publish": "ప్రచురించండి",
-    "snapshotBlock": "స్నాప్‌షాట్ బ్లాక్ సంఖ్య"
+    "snapshotBlock": "స్నాప్‌షాట్ బ్లాక్ సంఖ్య",
+    "onlyMembersWarning": "You need to be a member of the space in order to submit a proposal."
   },
   "delegate": {
     "header": "ప్రతినిధి",
