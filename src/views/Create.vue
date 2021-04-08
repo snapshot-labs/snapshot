@@ -19,7 +19,7 @@
         {{
           $t('create.minScoreWarning', [
             _n(space.filters.minScore),
-            space.strategies[0].params.symbol
+            space.symbol
           ])
         }}
       </Block>
