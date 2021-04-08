@@ -294,14 +294,17 @@ export default {
       }
     },
     async getUserScore() {
-      const score = await getScores(
+      let scores = await getScores(
         this.space.key,
         this.space.strategies,
         this.space.network,
         getProvider(this.space.network),
         [this.web3.account]
       );
-      this.userScore = score[0][Object.keys(score[0])[0]];
+      scores = scores
+        .map(score => Object.values(score).reduce((a, b) => a + b, 0))
+        .reduce((a, b) => a + b, 0);
+      this.userScore = scores;
     }
   }
 };
