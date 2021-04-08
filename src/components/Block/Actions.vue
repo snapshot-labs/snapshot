@@ -9,7 +9,7 @@
         :disabled="!$auth.isAuthenticated.value"
         class="width-full button--submit"
       >
-        Submit on-chain
+        {{ $t('submitOnchain') }}
       </UiButton>
     </div>
   </Block>
@@ -62,7 +62,7 @@ export default {
         );
         const receipt = await tx.wait();
         console.log('Receipt', receipt);
-        this.notify(['green', `You did it, congrats!`]);
+        this.notify(['green', this.$t('notify.youDidIt')]);
       } catch (e) {
         console.error(e);
       }

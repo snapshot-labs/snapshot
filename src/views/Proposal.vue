@@ -22,7 +22,7 @@
               class="float-right"
               v-if="proposal.address === this.web3.account"
               @delete="deleteProposal"
-              :items="[{ text: 'Delete proposal', action: 'delete' }]"
+              :items="[{ text: $t('deleteProposal'), action: 'delete' }]"
             >
               <UiLoading v-if="deleteLoading" />
               <Icon
@@ -40,7 +40,7 @@
       <Block
         v-if="loaded && ts >= payload.start && ts < payload.end"
         class="mb-4"
-        title="Cast your vote"
+        :title="$t('proposal.castVote')"
       >
         <div class="mb-3">
           <UiButton
@@ -54,18 +54,15 @@
             <a
               v-if="payload.metadata.plugins?.aragon?.[`choice${[i + 1]}`]"
               @click="modalOpen = true"
-              :aria-label="
-                `Target address: ${
-                  payload.metadata.plugins.aragon[`choice${i + 1}`].actions[0]
-                    .to
-                }\nValue: ${
-                  payload.metadata.plugins.aragon[`choice${i + 1}`].actions[0]
-                    .value
-                }\nData: ${
-                  payload.metadata.plugins.aragon[`choice${i + 1}`].actions[0]
-                    .data
-                }`
-              "
+              :aria-label="`Target address: ${
+                payload.metadata.plugins.aragon[`choice${i + 1}`].actions[0].to
+              }\nValue: ${
+                payload.metadata.plugins.aragon[`choice${i + 1}`].actions[0]
+                  .value
+              }\nData: ${
+                payload.metadata.plugins.aragon[`choice${i + 1}`].actions[0]
+                  .data
+              }`"
               class="tooltipped tooltipped-n break-word"
             >
               <Icon name="warning" class="v-align-middle ml-1" />
@@ -80,7 +77,7 @@
           @click="modalOpen = true"
           class="d-block width-full button--submit"
         >
-          Vote
+          {{ $t('proposal.vote') }}
         </UiButton>
       </Block>
       <BlockVotes
@@ -92,9 +89,9 @@
       />
     </template>
     <template #sidebar-right v-if="loaded">
-      <Block title="Information">
+      <Block :title="$t('information')">
         <div class="mb-1">
-          <b>Strategie(s)</b>
+          <b>{{ $t('strategies') }}</b>
           <span
             @click="modalStrategiesOpen = true"
             class="float-right text-white a"
@@ -108,7 +105,7 @@
           </span>
         </div>
         <div class="mb-1">
-          <b>Author</b>
+          <b>{{ $t('author') }}</b>
           <User
             :address="proposal.address"
             :profile="proposal.profile"
@@ -129,23 +126,23 @@
         </div>
         <div>
           <div class="mb-1">
-            <b>Start date</b>
+            <b>{{ $t('proposal.startDate') }}</b>
             <span
               :aria-label="_ms(payload.start)"
-              v-text="$d(payload.start * 1e3, 'short')"
+              v-text="$d(payload.start * 1e3, 'short', 'en-US')"
               class="float-right text-white tooltipped tooltipped-n"
             />
           </div>
           <div class="mb-1">
-            <b>End date</b>
+            <b>{{ $t('proposal.endDate') }}</b>
             <span
               :aria-label="_ms(payload.end)"
-              v-text="$d(payload.end * 1e3, 'short')"
+              v-text="$d(payload.end * 1e3, 'short', 'en-US')"
               class="float-right text-white tooltipped tooltipped-n"
             />
           </div>
           <div class="mb-1">
-            <b>Snapshot</b>
+            <b>{{ $t('snapshot') }}</b>
             <a
               :href="_explorer(space.network, payload.snapshot, 'block')"
               target="_blank"
@@ -176,6 +173,20 @@
         v-if="payload.metadata.plugins?.gnosis?.baseTokenAddress"
         :proposalConfig="payload.metadata.plugins.gnosis"
         :choices="payload.choices"
+      />
+      <PluginDaoModuleCustomBlock
+        v-if="payload.metadata.plugins?.daoModule?.txs"
+        :proposalConfig="payload.metadata.plugins.daoModule"
+        :proposalEnd="payload.end"
+        :porposalId="id"
+        :moduleAddress="space.plugins?.daoModule?.address"
+        :network="space.network"
+      />
+      <PluginQuorumCustomBlock
+        v-if="space.plugins?.quorum"
+        :space="space"
+        :payload="payload"
+        :results="results"
       />
     </template>
   </Layout>
@@ -241,7 +252,7 @@ export default {
     }
   },
   watch: {
-    'web3.account': async function(val, prev) {
+    'web3.account': async function (val, prev) {
       if (val?.toLowerCase() !== prev) await this.loadPower();
     }
   },

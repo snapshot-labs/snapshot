@@ -1,7 +1,7 @@
 <template>
   <UiModal :open="open" @close="$emit('close')">
     <template v-slot:header>
-      <h3>Strategies</h3>
+      <h3>{{ $t('strategiesPage') }}</h3>
     </template>
     <div class="m-4">
       <div
@@ -18,7 +18,7 @@
           >
             <span v-text="key" class="flex-auto text-gray mr-1" />
             <a
-              v-if="key === 'address'"
+              v-if="key === 'address' || isAddress(option)"
               :href="_explorer(space.network, option)"
               target="_blank"
               class="d-block"
@@ -42,8 +42,13 @@
 </template>
 
 <script>
+import { isAddress } from '@ethersproject/address';
+
 export default {
   props: ['open', 'strategies', 'space'],
-  emits: ['close']
+  emits: ['close'],
+  methods: {
+    isAddress
+  }
 };
 </script>

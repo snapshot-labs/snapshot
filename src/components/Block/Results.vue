@@ -43,7 +43,7 @@
       </div>
       <div v-if="ts >= payload.end">
         <UiButton @click="downloadReport" class="width-full mt-2">
-          Download report
+          {{ $t('downloadReport') }}
         </UiButton>
       </div>
     </div>

@@ -3,13 +3,16 @@ import { signMessage } from '@snapshot-labs/snapshot.js/src/utils/web3';
 import client from '@/helpers/client';
 import { formatSpace } from '@/helpers/utils';
 import { version } from '@/../package.json';
+import i18n, { defaultLocale } from '@/i18n';
+import { lsGet, lsSet } from '@/helpers/utils';
 
 const state = {
   init: false,
   loading: false,
   authLoading: false,
   modalOpen: false,
-  spaces: {}
+  spaces: {},
+  locale: lsGet('locale', defaultLocale)
 };
 
 const mutations = {
@@ -31,6 +34,7 @@ const mutations = {
 
 const actions = {
   init: async ({ commit, dispatch }) => {
+    i18n.global.locale = state.locale;
     const auth = getInstance();
     commit('SET', { loading: true });
     await dispatch('getSpaces');
@@ -75,7 +79,9 @@ const actions = {
       commit('SEND_SUCCESS');
       dispatch('notify', [
         'green',
-        type === 'delete-proposal' ? `Proposal deleted` : `Your ${type} is in!`
+        type === 'delete-proposal'
+          ? i18n.global.t('notify.proposalDeleted')
+          : i18n.global.t('notify.yourIsIn', [type])
       ]);
       return result;
     } catch (e) {
@@ -83,7 +89,7 @@ const actions = {
       const errorMessage =
         e && e.error_description
           ? `Oops, ${e.error_description}`
-          : 'Oops, something went wrong!';
+          : i18n.global.t('notify.somethingWentWrong');
       dispatch('notify', ['red', errorMessage]);
       return;
     }

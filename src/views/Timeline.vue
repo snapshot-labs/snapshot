@@ -8,10 +8,10 @@
         <div class="flex-auto">
           <router-link :to="{ name: 'home' }" class="text-gray">
             <Icon name="back" size="22" class="v-align-middle" />
-            Home
+            {{ $t('backToHome') }}
           </router-link>
           <div class="d-flex flex-items-center flex-auto">
-            <h2>Timeline</h2>
+            <h2>{{ $t('timeline') }}</h2>
           </div>
         </div>
         <UiButton>

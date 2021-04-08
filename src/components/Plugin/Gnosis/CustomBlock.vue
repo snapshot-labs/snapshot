@@ -2,11 +2,11 @@
   <Block title="Gnosis Impact">
     <div v-if="choices.length > 1">
       <div v-if="loading" class="loading">
-        Loading...
+        {{ $t('loading') }}
       </div>
       <div class="mb-1">
         <b>
-          Predicted impact
+          {{ $t('predictedImpact') }}
         </b>
         <div class="float-right">
           <span :aria-label="baseToken.name" class="tooltipped tooltipped-n">
@@ -33,7 +33,7 @@
       <div
         :title="choices[1]"
         class="mb-1 border-bottom bg-gray-dark rounded-top-0 rounded-md-top-2"
-        style="padding-bottom: 12px;"
+        style="padding-bottom: 12px"
       >
         <b>{{ _shorten(choices[1], 'name') }}</b>
         <span class="float-right">
@@ -44,8 +44,8 @@
           {{ quoteToken.symbol }}
         </span>
       </div>
-      <div class="mb-1" style="padding-top: 12px;">
-        <b>{{ baseToken.symbol }} market</b>
+      <div class="mb-1" style="padding-top: 12px">
+        <b>{{ $tc('marketSymbol', [baseToken.symbol]) }}</b>
         <a
           :href="getMarketUrl(baseProductMarketMaker)"
           target="_blank"
@@ -56,7 +56,7 @@
       </div>
       <div>
         <div class="mb-1">
-          <b>{{ quoteToken.symbol }} market</b>
+          <b>{{ $tc('marketSymbol', [baseToken.symbol]) }}</b>
           <a
             :href="getMarketUrl(quoteProductMarketMaker)"
             target="_blank"
@@ -68,7 +68,7 @@
       </div>
     </div>
     <div v-else>
-      Two choices are required for this plugin.
+      {{ $t('twoChoicesRequired') }}
     </div>
   </Block>
 </template>

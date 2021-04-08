@@ -4,14 +4,14 @@
       <Container class="d-flex flex-items-center">
         <div class="flex-auto text-left">
           <UiButton class="pl-3 col-12 col-lg-4">
-            <Search v-model="q" placeholder="Search" />
+            <Search v-model="q" :placeholder="$t('searchPlaceholder')" />
           </UiButton>
         </div>
         <div class="ml-3 text-right hide-sm">
           {{ _n(items.length) }} {{ resultsStr }}
           <a
             v-if="buttonStr"
-            href="https://discord.snapshot.page"
+            href="https://discord.snapshot.org"
             target="_blank"
             class="hide-md ml-3"
           >
@@ -53,6 +53,7 @@
             class="mb-3"
           />
         </template>
+        <NoResults :block="true" :length="Object.keys(items).length" />
       </div>
     </Container>
   </div>

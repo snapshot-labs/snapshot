@@ -1,33 +1,27 @@
 import { createI18n } from 'vue-i18n';
+import messages from '@/locales';
 
-const messages = {
-  en: {
-    message: {
-      EMPTY_STATE: 'No results found'
-    }
+messages['en-US'] = messages.default;
+delete messages.default;
+
+export function getBrowserLocale() {
+  if (typeof navigator !== 'undefined') {
+    return (
+      navigator['userLanguage'] ||
+      navigator['language'] ||
+      (navigator.languages?.[0] ? navigator.languages[0] : undefined)
+    );
   }
-};
-const numberFormats = {
-  en: {
-    currency: {
-      style: 'currency',
-      currency: 'USD',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0
-    },
-    price: {
-      style: 'currency',
-      currency: 'USD',
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 6
-    },
-    percent: {
-      style: 'percent',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 2
-    }
-  }
-};
+  return undefined;
+}
+
+export let defaultLocale = 'en-US';
+
+const browserLocale = getBrowserLocale();
+Object.keys(messages).forEach(locale => {
+  if (locale.slice(0, 2) === browserLocale.slice(0, 2)) defaultLocale = locale;
+});
+
 const datetimeFormats = {
   en: {
     short: {
@@ -41,9 +35,8 @@ const datetimeFormats = {
 };
 
 const i18n = createI18n({
-  locale: 'en',
+  locale: defaultLocale,
   datetimeFormats,
-  numberFormats,
   messages
 });
 

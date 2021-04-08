@@ -2,9 +2,7 @@
   <Block>
     <div class="d-flex flex-items-center mb-1">
       <a
-        :href="
-          `https://github.com/snapshot-labs/snapshot.js/tree/master/src/plugins/${plugin.key}`
-        "
+        :href="`https://github.com/snapshot-labs/snapshot.js/tree/master/src/plugins/${plugin.key}`"
         target="_blank"
         class="d-flex"
       >
@@ -29,7 +27,7 @@
           {{ plugin.author }}
         </a>
       </div>
-      In {{ _n(plugin.spaces.length) }} space(s)
+      {{ $tc('inSpaces', [_n(plugin.spaces.length)]) }}
     </div>
   </Block>
 </template>

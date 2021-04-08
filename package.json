@@ -3,7 +3,7 @@
   "version": "0.1.3",
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "build": "vue-cli-service build --modern",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
@@ -31,6 +31,7 @@
     "@vue/cli-service": "^4.4.0",
     "@walletconnect/web3-provider": "^1.3.2",
     "ajv": "^7.0.0-beta.2",
+    "autolinker": "^3.14.3",
     "bluebird": "^3.7.2",
     "body-parser": "^1.19.0",
     "bs58": "^4.0.1",
@@ -74,10 +75,10 @@
     "@vue/eslint-config-typescript": "^5.0.2",
     "eslint-plugin-prettier": "^3.1.3",
     "eslint-plugin-vue": "^7.0.0-alpha.0",
-    "prettier": "^1.19.1",
+    "prettier": "^2.2.1",
     "sass": "^1.29.0",
     "sass-loader": "^8.0.2"
   },
   "license": "MIT",
-  "repository": "balancer-labs/snapshot"
+  "repository": "snapshot-labs/snapshot"
 }
