@@ -18,7 +18,7 @@
         <Icon name="warning" class="mr-1" />
         {{
           $t('create.minScoreWarning', [
-            space.filters.minScore,
+            _n(space.filters.minScore),
             space.strategies[0].params.symbol
           ])
         }}
