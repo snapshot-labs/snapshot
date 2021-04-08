@@ -98,7 +98,8 @@
     "endTime": "Seleccionar hora de finalización",
     "publish": "Publicar",
     "snapshotBlock": "Número de bloque Snapshot",
-    "onlyMembersWarning": "You need to be a member of the space in order to submit a proposal."
+    "onlyMembersWarning": "You need to be a member of the space in order to submit a proposal",
+    "minScoreWarning": "You need to have a minimum of {0} {1} in order to submit a proposal"
   },
   "delegate": {
     "header": "Delegar",
