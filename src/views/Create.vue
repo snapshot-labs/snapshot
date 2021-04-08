@@ -15,7 +15,7 @@
         {{ $t('create.onlyMembersWarning') }}
       </Block>
       <Block
-        v-else-if="space.filters?.minScore > 0 && hasMinScore && !isMember"
+        v-else-if="space.filters?.minScore > 0 && !hasMinScore && !isMember"
       >
         <Icon name="warning" class="mr-1" />
         {{
@@ -185,6 +185,11 @@ export default {
       userScore: 0
     };
   },
+  watch: {
+    'web3.account': function () {
+      if (this.space.filters?.minScore > 0) this.getUserScore();
+    }
+  },
   computed: {
     space() {
       return this.app.spaces[this.key];
@@ -228,7 +233,6 @@ export default {
     this.addChoice(2);
     this.blockNumber = await getBlockNumber(getProvider(this.space.network));
     this.form.snapshot = this.blockNumber;
-    if (this.space.filters?.minScore > 0) this.getUserScore();
     if (this.from) {
       try {
         const proposal = await ipfsGet(gateway, this.from);
