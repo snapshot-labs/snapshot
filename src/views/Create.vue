@@ -15,7 +15,12 @@
         {{ $t('create.onlyMembersWarning') }}
       </Block>
       <Block
-        v-else-if="space.filters?.minScore > 0 && !hasMinScore && !isMember"
+        v-else-if="
+          space.filters?.minScore > 0 &&
+          !hasMinScore &&
+          !isMember &&
+          userScore !== null
+        "
       >
         <Icon name="warning" class="mr-1" />
         {{
@@ -182,12 +187,13 @@ export default {
       modalProposalPluginsOpen: false,
       selectedDate: '',
       counter: 0,
-      userScore: 0
+      userScore: null
     };
   },
   watch: {
     'web3.account': function () {
       if (this.space.filters?.minScore > 0) this.getUserScore();
+      else this.userScore = 0;
     }
   },
   computed: {
