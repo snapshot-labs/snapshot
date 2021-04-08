@@ -4,7 +4,7 @@ import client from '@/helpers/client';
 import { formatSpace } from '@/helpers/utils';
 import { version } from '@/../package.json';
 import i18n, { defaultLocale } from '@/i18n';
-import { lsGet, lsSet } from '@/helpers/utils';
+import { lsGet } from '@/helpers/utils';
 
 const state = {
   init: false,

@@ -11,7 +11,7 @@
         </router-link>
       </div>
       <Block v-if="space.filters?.onlyMembers && !isMember">
-        <Icon name="warning" class="mr-1"/>
+        <Icon name="warning" class="mr-1" />
         {{ $t('create.onlyMembersWarning') }}
       </Block>
       <div class="px-4 px-md-0">
