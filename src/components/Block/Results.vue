@@ -1,54 +1,53 @@
 <template>
-  <Block :title="ts >= payload.end ? 'Results' : 'Current results'">
-    <div v-if="loaded">
-      <div v-for="choice in choices" :key="choice.i">
-        <div class="text-white mb-1">
-          <span
-            :class="choice.choice.length > 12 && 'tooltipped tooltipped-n'"
-            :aria-label="choice.choice.length > 12 && choice.choice"
-            v-text="_shorten(choice.choice, 'choice')"
-            class="mr-1"
-          />
-          <span
-            class="mr-1 tooltipped tooltipped-n"
-            :aria-label="
-              results.totalScores[choice.i]
-                .map((score, index) => `${_n(score)} ${titles[index]}`)
-                .join(' + ')
-            "
-          >
-            {{ _n(results.totalBalances[choice.i]) }}
-            {{ _shorten(space.symbol, 'symbol') }}
-          </span>
-          <span
-            class="float-right"
-            v-text="
-              $n(
-                !results.totalVotesBalances
-                  ? 0
-                  : ((100 / results.totalVotesBalances) *
-                      results.totalBalances[choice.i]) /
-                      1e2,
-                'percent'
-              )
-            "
-          />
-        </div>
-        <UiProgress
-          :value="results.totalScores[choice.i]"
-          :max="results.totalVotesBalances"
-          :titles="titles"
-          class="mb-3"
+  <Block
+    :loading="!loaded"
+    :title="ts >= payload.end ? 'Results' : 'Current results'"
+  >
+    <div v-for="choice in choices" :key="choice.i">
+      <div class="text-white mb-1">
+        <span
+          :class="choice.choice.length > 12 && 'tooltipped tooltipped-n'"
+          :aria-label="choice.choice.length > 12 && choice.choice"
+          v-text="_shorten(choice.choice, 'choice')"
+          class="mr-1"
+        />
+        <span
+          class="mr-1 tooltipped tooltipped-n"
+          :aria-label="
+            results.totalScores[choice.i]
+              .map((score, index) => `${_n(score)} ${titles[index]}`)
+              .join(' + ')
+          "
+        >
+          {{ _n(results.totalBalances[choice.i]) }}
+          {{ _shorten(space.symbol, 'symbol') }}
+        </span>
+        <span
+          class="float-right"
+          v-text="
+            $n(
+              !results.totalVotesBalances
+                ? 0
+                : ((100 / results.totalVotesBalances) *
+                    results.totalBalances[choice.i]) /
+                    1e2,
+              'percent'
+            )
+          "
         />
       </div>
-      <div v-if="ts >= payload.end">
-        <UiButton @click="downloadReport" class="width-full mt-2">
-          {{ $t('downloadReport') }}
-        </UiButton>
-      </div>
+      <UiProgress
+        :value="results.totalScores[choice.i]"
+        :max="results.totalVotesBalances"
+        :titles="titles"
+        class="mb-3"
+      />
     </div>
-
-    <BlockLoading v-else type="results" />
+    <div v-if="ts >= payload.end">
+      <UiButton @click="downloadReport" class="width-full mt-2">
+        {{ $t('downloadReport') }}
+      </UiButton>
+    </div>
   </Block>
 </template>
 

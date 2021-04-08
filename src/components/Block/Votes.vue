@@ -4,52 +4,50 @@
     :title="$t('votes')"
     :counter="Object.keys(votes).length"
     :slim="true"
+    :loading="!loaded"
   >
-    <div v-if="loaded">
+    <div
+      v-for="(vote, address, i) in visibleVotes"
+      :key="i"
+      :style="i === 0 && 'border: 0 !important;'"
+      class="px-4 py-3 border-top d-flex"
+    >
+      <User
+        :profile="vote.profile"
+        :address="address"
+        :space="space"
+        class="column"
+      />
       <div
-        v-for="(vote, address, i) in visibleVotes"
-        :key="i"
-        :style="i === 0 && 'border: 0 !important;'"
-        class="px-4 py-3 border-top d-flex"
-      >
-        <User
-          :profile="vote.profile"
-          :address="address"
-          :space="space"
-          class="column"
-        />
-        <div
-          v-text="
-            _shorten(
-              proposal.msg.payload.choices[vote.msg.payload.choice - 1],
-              'choice'
-            )
+        v-text="
+          _shorten(
+            proposal.msg.payload.choices[vote.msg.payload.choice - 1],
+            'choice'
+          )
+        "
+        class="flex-auto text-center text-white"
+      />
+      <div class="column text-right text-white">
+        <span
+          class="tooltipped tooltipped-n"
+          :aria-label="
+            vote.scores
+              .map((score, index) => `${_n(score)} ${titles[index]}`)
+              .join(' + ')
           "
-          class="flex-auto text-center text-white"
-        />
-        <div class="column text-right text-white">
-          <span
-            class="tooltipped tooltipped-n"
-            :aria-label="
-              vote.scores
-                .map((score, index) => `${_n(score)} ${titles[index]}`)
-                .join(' + ')
-            "
-          >
-            {{ `${_n(vote.balance)} ${_shorten(space.symbol, 'symbol')}` }}
-          </span>
-          <a
-            @click="openReceiptModal(vote)"
-            target="_blank"
-            class="ml-2 text-gray"
-            title="Receipt"
-          >
-            <Icon name="signature" />
-          </a>
-        </div>
+        >
+          {{ `${_n(vote.balance)} ${_shorten(space.symbol, 'symbol')}` }}
+        </span>
+        <a
+          @click="openReceiptModal(vote)"
+          target="_blank"
+          class="ml-2 text-gray"
+          title="Receipt"
+        >
+          <Icon name="signature" />
+        </a>
       </div>
     </div>
-    <BlockLoading v-else type="votes" />
     <a
       v-if="!showAllVotes && Object.keys(votes).length > 10"
       @click="showAllVotes = true"
