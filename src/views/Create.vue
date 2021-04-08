@@ -14,14 +14,7 @@
         <Icon name="warning" class="mr-1" />
         {{ $t('create.onlyMembersWarning') }}
       </Block>
-      <Block
-        v-else-if="
-          space.filters?.minScore > 0 &&
-          !hasMinScore &&
-          !isMember &&
-          userScore !== null
-        "
-      >
+      <Block v-else-if="showScoreWarning">
         <Icon name="warning" class="mr-1" />
         {{
           $t('create.minScoreWarning', [
@@ -207,6 +200,14 @@ export default {
         this.$auth.isAuthenticated.value &&
         this.web3.account &&
         members.includes(this.web3.account.toLowerCase())
+      );
+    },
+    showScoreWarning() {
+      return (
+        this.space.filters?.minScore > 0 &&
+        !this.hasMinScore &&
+        !this.isMember &&
+        this.userScore !== null
       );
     },
     hasMinScore() {
