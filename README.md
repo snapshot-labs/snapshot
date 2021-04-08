@@ -15,6 +15,7 @@ Snapshot is an off-chain gasless multi-governance client with easy to verify and
 **[Telegram](https://telegram.snapshot.org)**
 
 ## Project setup
+
 ```
 npm install
 ```

@@ -97,7 +97,8 @@
     "startTime": "Selecciona una hora de inicio",
     "endTime": "Seleccionar hora de finalización",
     "publish": "Publicar",
-    "snapshotBlock": "Número de bloque Snapshot"
+    "snapshotBlock": "Número de bloque Snapshot",
+    "onlyMembersWarning": "You need to be a member of the space in order to submit a proposal."
   },
   "delegate": {
     "header": "Delegar",
