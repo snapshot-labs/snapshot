@@ -241,6 +241,7 @@ export default {
     this.addChoice(2);
     this.blockNumber = await getBlockNumber(getProvider(this.space.network));
     this.form.snapshot = this.blockNumber;
+    if (this.web3.account) this.getUserScore();
     if (this.from) {
       try {
         const proposal = await ipfsGet(gateway, this.from);
