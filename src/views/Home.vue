@@ -4,13 +4,13 @@
       <Container class="d-flex flex-items-center">
         <div class="flex-auto text-left">
           <UiButton class="pl-3 col-12 col-lg-4">
-            <Search v-model="q" placeholder="Search" />
+            <Search v-model="q" :placeholder="$t('searchPlaceholder')" />
           </UiButton>
         </div>
         <div class="ml-3 text-right hide-sm">
-          {{ _numeral(spaces.length) }} space(s)
+          {{ $tc('spaceCount', [_n(spaces.length)]) }}
           <router-link :to="{ name: 'setup' }" class="hide-md ml-3">
-            <UiButton>Create space</UiButton>
+            <UiButton>{{ $t('createSpace') }}</UiButton>
           </router-link>
         </div>
       </Container>
@@ -25,7 +25,7 @@
           <div class="col-12 col-lg-3 pr-4 float-left">
             <Block
               class="text-center extra-icon-container"
-              style="height: 250px; margin-bottom: 24px !important;"
+              style="height: 250px; margin-bottom: 24px !important"
             >
               <span class="position-relative d-inline-block">
                 <UiCounter
@@ -53,6 +53,11 @@
             </Block>
           </div>
         </router-link>
+        <NoResults
+          :block="true"
+          :length="Object.keys(spaces).length"
+          class="pr-md-4"
+        />
       </div>
     </Container>
   </div>
@@ -73,20 +78,23 @@ export default {
   },
   computed: {
     spaces() {
-      const list = Object.keys(this.app.spaces).map(key => {
-        const spotlightIndex = spotlight.indexOf(key);
-        return {
-          ...this.app.spaces[key],
-          favorite: !!this.favoriteSpaces.favorites[key],
-          isActive: !!this.app.spaces[key]._activeProposals,
-          spotlight: spotlightIndex === -1 ? 1e3 : spotlightIndex
-        };
-      });
-      return orderBy(list, ['favorite', 'spotlight'], ['desc', 'asc']).filter(
-        space =>
-          JSON.stringify(space)
-            .toLowerCase()
-            .includes(this.q.toLowerCase())
+      const list = Object.keys(this.app.spaces)
+        .map(key => {
+          const spotlightIndex = spotlight.indexOf(key);
+          return {
+            ...this.app.spaces[key],
+            favorite: !!this.favoriteSpaces.favorites[key],
+            isActive: !!this.app.spaces[key]._activeProposals,
+            spotlight: spotlightIndex === -1 ? 1e3 : spotlightIndex
+          };
+        })
+        .filter(space => !space.private);
+      return orderBy(
+        list,
+        ['favorite', 'spotlight'],
+        ['desc', 'asc']
+      ).filter(space =>
+        JSON.stringify(space).toLowerCase().includes(this.q.toLowerCase())
       );
     }
   },
@@ -110,6 +118,7 @@ export default {
   },
   mounted() {
     this.scroll();
+    if (window.screen.height > 1200) this.limit += 16;
   }
 };
 </script>

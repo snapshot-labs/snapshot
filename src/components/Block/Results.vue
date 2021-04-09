@@ -1,5 +1,5 @@
 <template>
-  <Block :title="ts >= payload.end ? 'Results' : 'Current results'">
+  <Block :title="ts >= payload.end ? $t('results') : $t('currentResults')">
     <div v-for="choice in choices" :key="choice.i">
       <div class="text-white mb-1">
         <span
@@ -12,23 +12,23 @@
           class="mr-1 tooltipped tooltipped-n"
           :aria-label="
             results.totalScores[choice.i]
-              .map((score, index) => `${_numeral(score)} ${titles[index]}`)
+              .map((score, index) => `${_n(score)} ${titles[index]}`)
               .join(' + ')
           "
         >
-          {{ _numeral(results.totalBalances[choice.i]) }}
+          {{ _n(results.totalBalances[choice.i]) }}
           {{ _shorten(space.symbol, 'symbol') }}
         </span>
         <span
           class="float-right"
           v-text="
-            $n(
+            _n(
               !results.totalVotesBalances
                 ? 0
                 : ((100 / results.totalVotesBalances) *
                     results.totalBalances[choice.i]) /
                     1e2,
-              'percent'
+              '0.[00]%'
             )
           "
         />
@@ -42,7 +42,7 @@
     </div>
     <div v-if="ts >= payload.end">
       <UiButton @click="downloadReport" class="width-full mt-2">
-        Download report
+        {{ $t('downloadReport') }}
       </UiButton>
     </div>
   </Block>

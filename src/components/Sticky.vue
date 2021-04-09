@@ -2,7 +2,7 @@
   <div>
     <div v-if="isFixed" :style="`height: ${offsetHeight}px;`" />
     <div
-      style="z-index: 20;"
+      style="z-index: 20"
       id="sticky"
       :class="{ 'position-fixed width-full top-0': isFixed }"
     >

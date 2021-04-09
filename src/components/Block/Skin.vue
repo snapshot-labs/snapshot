@@ -3,7 +3,7 @@
     <Block>
       <UiButton class="button--submit mb-2">{{ skin.key }}</UiButton>
       <div class="text-gray">
-        In {{ _numeral(skin.spaces.length) }} space(s)
+        {{ $tc('inSpaces', [_n(skin.spaces.length)]) }}
       </div>
     </Block>
   </div>

@@ -4,14 +4,14 @@
       <Container class="d-flex flex-items-center">
         <div class="flex-auto text-left">
           <UiButton class="pl-3 col-12 col-lg-4">
-            <Search v-model="q" placeholder="Search" />
+            <Search v-model="q" :placeholder="$t('searchPlaceholder')" />
           </UiButton>
         </div>
         <div class="ml-3 text-right hide-sm">
-          {{ _numeral(items.length) }} {{ resultsStr }}
+          {{ _n(items.length) }} {{ resultsStr }}
           <a
             v-if="buttonStr"
-            href="https://discord.snapshot.page"
+            href="https://discord.snapshot.org"
             target="_blank"
             class="hide-md ml-3"
           >
@@ -23,12 +23,11 @@
     <Container :slim="true">
       <div class="overflow-hidden">
         <template v-if="route === 'strategies'">
-          <BlockStrategy
-            v-for="item in items.slice(0, limit)"
-            :key="item.key"
-            :strategy="item"
-            class="mb-3"
-          />
+          <template v-for="item in items.slice(0, limit)" :key="item.key">
+            <router-link :to="`/strategy/${item.key}`">
+              <BlockStrategy :strategy="item" class="mb-3" />
+            </router-link>
+          </template>
         </template>
         <template v-if="route === 'skins'">
           <BlockSkin
@@ -54,6 +53,7 @@
             class="mb-3"
           />
         </template>
+        <NoResults :block="true" :length="Object.keys(items).length" />
       </div>
     </Container>
   </div>

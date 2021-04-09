@@ -1,4 +1,4 @@
-import { getProfiles } from '@/helpers/3box';
+import { getProfiles } from '@/helpers/profile';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { ipfsGet, getScores } from '@snapshot-labs/snapshot.js/src/utils';
 import {
@@ -10,6 +10,13 @@ import gateways from '@snapshot-labs/snapshot.js/src/gateways.json';
 import client from '@/helpers/client';
 import { formatProposal, formatProposals, formatSpace } from '@/helpers/utils';
 import { version } from '@/../package.json';
+import i18n, {
+  defaultLocale,
+  setI18nLanguage,
+  loadLocaleMessages
+} from '@/i18n';
+
+import { lsGet, lsSet } from '@/helpers/utils';
 
 const gateway = process.env.VUE_APP_IPFS_GATEWAY || gateways[0];
 
@@ -18,7 +25,8 @@ const state = {
   loading: false,
   authLoading: false,
   modalOpen: false,
-  spaces: {}
+  spaces: {},
+  locale: lsGet('locale', defaultLocale)
 };
 
 const mutations = {
@@ -67,6 +75,8 @@ const mutations = {
 
 const actions = {
   init: async ({ commit, dispatch }) => {
+    await loadLocaleMessages(i18n, state.locale);
+    setI18nLanguage(i18n, state.locale);
     const auth = getInstance();
     commit('SET', { loading: true });
     await dispatch('getSpaces');
@@ -109,14 +119,19 @@ const actions = {
       msg.sig = await signMessage(auth.web3, msg.msg, rootState.web3.account);
       const result = await client.request('message', msg);
       commit('SEND_SUCCESS');
-      dispatch('notify', ['green', `Your ${type} is in!`]);
+      dispatch('notify', [
+        'green',
+        type === 'delete-proposal'
+          ? i18n.global.t('notify.proposalDeleted')
+          : i18n.global.t('notify.yourIsIn', [type])
+      ]);
       return result;
     } catch (e) {
       commit('SEND_FAILURE', e);
       const errorMessage =
         e && e.error_description
           ? `Oops, ${e.error_description}`
-          : 'Oops, something went wrong!';
+          : i18n.global.t('notify.somethingWentWrong');
       dispatch('notify', ['red', errorMessage]);
       return;
     }
@@ -125,7 +140,7 @@ const actions = {
     commit('GET_PROPOSALS_REQUEST');
     try {
       let proposals: any = await client.request(`${space.key}/proposals`);
-      if (proposals) {
+      if (proposals && !space.filters?.onlyMembers) {
         const scores: any = await getScores(
           space.key,
           space.strategies,
@@ -262,6 +277,12 @@ const actions = {
     } catch (e) {
       commit('GET_POWER_FAILURE', e);
     }
+  },
+  async setLocale(state, locale) {
+    state.locale = locale;
+    lsSet('locale', locale);
+    await loadLocaleMessages(i18n, locale);
+    setI18nLanguage(i18n, locale);
   }
 };
 

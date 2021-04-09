@@ -1,7 +1,7 @@
 <template>
   <div
     class="position-fixed left-0 right-0 bottom-0 text-center"
-    style="z-index: 99999;"
+    style="z-index: 99999"
   >
     <div class="mb-4">
       <div v-for="(item, key) in items" :key="key" class="mb-2">

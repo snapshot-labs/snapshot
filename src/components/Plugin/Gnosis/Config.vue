@@ -1,16 +1,27 @@
 <template>
   <form @submit.prevent="handleSubmit">
     <div class="mb-2 text-center">
-      <h4 class="mb-3">Market details</h4>
+      <h4 class="mb-3">{{ $t('marketDetails') }}</h4>
       <UiButton @click="addAction" v-if="!input" class="width-full mb-2">
-        Add market
+        {{ $t('addMarket') }}
       </UiButton>
-      <div v-else-if="!this.preview">
+      <div v-else-if="!preview">
+        <UiButton class="width-full mb-2">
+          <select
+            v-model="input.network"
+            class="input width-full text-center"
+            :placeholder="$t('selectNetwork')"
+            required
+          >
+            <option value="1" selected>Mainnet</option>
+            <option value="100">xDai</option>
+          </select>
+        </UiButton>
         <UiButton class="width-full mb-2">
           <input
             v-model="input.conditionId"
             class="input width-full text-center"
-            placeholder="Condition ID"
+            :placeholder="$t('conditionId')"
             required
           />
         </UiButton>
@@ -18,7 +29,7 @@
           <input
             v-model="input.baseTokenAddress"
             class="input width-full text-center"
-            placeholder="Base token address"
+            :placeholder="$t('basetokenAddress')"
             required
           />
         </UiButton>
@@ -26,20 +37,19 @@
           <input
             v-model="input.quoteCurrencyAddress"
             class="input width-full text-center"
-            placeholder="Quote currency address"
+            :placeholder="$t('quoteAddress')"
             required
           />
         </UiButton>
         <UiButton v-if="input" @click="removeAction" class="width-full mb-2">
-          Remove market
+          {{ $t('removeMarket') }}
         </UiButton>
       </div>
     </div>
-    <div v-if="this.preview">
-      <PluginGnosisBlock
+    <div v-if="preview">
+      <PluginGnosisCustomBlock
         :proposalConfig="input"
-        :choices="this.getChoices()"
-        :network="this.network"
+        :choices="getChoices()"
       />
     </div>
     <UiButton
@@ -48,17 +58,17 @@
       @click="preview = true"
       class="width-full mb-2"
     >
-      Preview
+      {{ $t('create.preview') }}
     </UiButton>
     <UiButton v-if="preview" @click="preview = false" class="width-full mb-2">
-      Back
+      {{ $t('back') }}
     </UiButton>
     <UiButton
       :disabled="!isValid"
       @click="handleSubmit"
       class="button--submit width-full"
     >
-      Confirm
+      {{ $t('confirm') }}
     </UiButton>
   </form>
 </template>
@@ -93,6 +103,7 @@ export default {
     addAction() {
       if (!this.input) this.input = {};
       this.input = {
+        network: '1',
         conditionId: '',
         baseTokenAddress: '',
         quoteCurrencyAddress: ''
