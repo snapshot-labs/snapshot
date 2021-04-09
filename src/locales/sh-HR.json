@@ -98,8 +98,8 @@
     "endTime": "Izaberi vreme kraja",
     "publish": "Objavi",
     "snapshotBlock": "Broj bloka snimka",
-    "onlyMembersWarning": "You need to be a member of the space in order to submit a proposal",
-    "minScoreWarning": "You need to have a minimum of {0} {1} in order to submit a proposal"
+    "onlyMembersWarning": "Morate biti član prostora da biste podneli predlog",
+    "minScoreWarning": "Morate imati najmanje {0} {1} da biste podneli predlog"
   },
   "delegate": {
     "header": "Delegirati",
