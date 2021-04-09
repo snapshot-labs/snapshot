@@ -19,12 +19,12 @@
     </div>
     <div class="m-4">
       <a
-        href="https://zilpay.xyz/Verification/"
+        href="https://zilpay-b255e.web.app/Verification/"
         target="_blank"
         class="mb-2 d-block"
       >
         <UiButton class="button-outline width-full">
-          Verify receipt on ZilPay.xyz
+          Verify receipt on ZilPay
           <Icon name="external-link" class="ml-1" />
         </UiButton>
       </a>
