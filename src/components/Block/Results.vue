@@ -31,7 +31,7 @@
                 : ((100 / results.totalVotesBalances) *
                     results.totalBalances[choice.i]) /
                     1e2,
-             '0.[00]%'
+              '0.[00]%'
             )
           "
         />
