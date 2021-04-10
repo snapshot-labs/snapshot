@@ -1,7 +1,7 @@
 <template>
   <Block
     :loading="!loaded"
-    :title="ts >= payload.end ? 'Results' : 'Current results'"
+    :title="ts >= payload.end ? $t('results') : $t('currentResults')"
   >
     <div v-for="choice in choices" :key="choice.i">
       <div class="text-white mb-1">
