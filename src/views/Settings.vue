@@ -13,7 +13,7 @@
       </div>
 
       <template v-if="loaded">
-        <Block v-if="errors.length > 0">
+        <Block bcolor="red" v-if="errors.length > 0">
           <div class="d-flex">
             <Icon name="warning" class="mr-1" />
             <div class="ml-2" v-for="error in errors" :key="error">
@@ -75,7 +75,7 @@
                 @click="modalNetworksOpen = true"
                 class="text-left width-full mb-2 d-flex px-3"
               >
-                <div class="text-gray mr-2">{{ $t('network') }}</div>
+                <div class="text-gray mr-2">{{ $t('settings.network') }}</div>
                 <div class="flex-auto">
                   {{
                     form.network
@@ -126,7 +126,7 @@
               </div>
             </div>
           </Block>
-          <Block :title="$t('strategies')">
+          <Block :title="$t('settings.strategies')">
             <div
               v-for="(strategy, i) in form.strategies"
               :key="i"
@@ -373,16 +373,11 @@ export default {
     showError() {
       this.errors = [];
       const error = this.validate[0];
-      if (error.keyword === 'minLength') {
-        if (error.dataPath === '/name')
-          this.errors.push(this.$t('settings.nameRequired'));
-        if (error.dataPath === '/symbol')
-          this.errors.push(this.$t('settings.symbolRequired'));
-        if (error.dataPath === '/network')
-          this.errors.push(this.$t('settings.networkRequired'));
-      } else if (error.keyword === 'minItems') {
-        if (error.dataPath === '/strategies')
-          this.errors.push(this.$t('settings.strategyRequired'));
+      const fieldName = this.$t(`settings.${error.dataPath.substring(1)}`);
+      if (error.keyword === 'minLength' || error.keyword === 'minItems') {
+        this.errors.push(
+          this.$tc('settings.fieldRequired', [`"${fieldName}"`])
+        );
       } else {
         this.errors.push(this.validate);
       }

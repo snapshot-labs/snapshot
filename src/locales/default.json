@@ -136,9 +136,11 @@
     "changeAvatar": "Change avatar",
     "name": "Name",
     "about": "About",
+    "network": "Network",
     "symbol": "Symbol",
     "skin": "Skin",
     "domain": "Domain name",
+    "strategies": "Strategie(s)",
     "hideSpace": "Hide space from homepage",
     "addStrategy": "Add strategy",
     "members": "Members",
@@ -149,10 +151,7 @@
     "editPlugin": "Edit plugin",
     "addPlugin": "Add plugin",
     "pluginParameters": "Plugin parameters",
-    "nameRequired": "A name is required",
-    "symbolRequired": "A symbol is required",
-    "networkRequired": "A network is required",
-    "strategyRequired": "A strategie is required"
+    "fieldRequired": "The {0} field is required"
   },
   "setup": {
     "example": "e.g. yam.eth",
