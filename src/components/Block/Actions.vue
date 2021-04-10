@@ -1,5 +1,5 @@
 <template>
-  <Block v-if="plugins.length > 0 && ts >= payload.end" :title="'Actions'">
+  <Block v-if="plugins.length > 0 && ts >= payload.end" :title="$t('actions')">
     <div v-if="loaded">
       <UiButton
         v-for="plugin in plugins"
