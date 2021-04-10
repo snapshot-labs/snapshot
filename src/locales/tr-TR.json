@@ -17,7 +17,6 @@
   "snapshot": "Snapshot",
   "strategies": "Strategie(s)",
   "strategiesPage": "Strategies",
-  "spaces": "Spaces",
   "version": "Version",
   "timeline": "Timeline",
   "submitOnchain": "Submit on-chain",
@@ -98,9 +97,7 @@
     "startTime": "Select start time",
     "endTime": "Select end time",
     "publish": "Publish",
-    "snapshotBlock": "Snapshot block number",
-    "onlyMembersWarning": "You need to be a member of the space in order to submit a proposal",
-    "minScoreWarning": "You need to have a minimum of {0} {1} in order to submit a proposal"
+    "snapshotBlock": "Snapshot block number"
   },
   "delegate": {
     "header": "Delegate",
