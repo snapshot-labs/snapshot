@@ -25,7 +25,7 @@
         <span
           class="float-right"
           v-text="
-            $n(
+            _n(
               !results.totalVotesBalances
                 ? 0
                 : ((100 / results.totalVotesBalances) *
