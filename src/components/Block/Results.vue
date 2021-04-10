@@ -1,7 +1,7 @@
 <template>
   <Block
     :loading="!loaded"
-    :title="ts >= payload.end ? 'Results' : 'Current results'"
+    :title="ts >= payload.end ? $t('results') : $t('currentResults')"
   >
     <div v-for="choice in choices" :key="choice.i">
       <div class="text-white mb-1">
@@ -25,13 +25,13 @@
         <span
           class="float-right"
           v-text="
-            $n(
+            _n(
               !results.totalVotesBalances
                 ? 0
                 : ((100 / results.totalVotesBalances) *
                     results.totalBalances[choice.i]) /
                     1e2,
-              'percent'
+              '0.[00]%'
             )
           "
         />
