@@ -11,7 +11,16 @@
         <h1 v-if="loaded" v-text="$t('settings.header')" class="mb-4" />
         <PageLoading v-else />
       </div>
+
       <template v-if="loaded">
+        <Block v-if="errors.length > 0">
+          <div class="d-flex">
+            <Icon name="warning" class="mr-1" />
+            <div class="ml-2" v-for="error in errors" :key="error">
+              {{ error }}
+            </div>
+          </div>
+        </Block>
         <Block title="ENS">
           <UiButton class="d-flex width-full mb-2">
             <input
@@ -224,7 +233,6 @@
         </UiButton>
         <UiButton
           @click="handleSubmit"
-          :disabled="!isValid"
           :loading="loading"
           class="d-block width-full button--submit"
         >
@@ -293,7 +301,8 @@ export default {
         plugins: {},
         filters: {}
       },
-      networks
+      networks,
+      errors: []
     };
   },
   computed: {
@@ -301,7 +310,6 @@ export default {
       return validateSchema(schemas.space, this.form);
     },
     isValid() {
-      if (this.validate !== true) console.log(this.validate);
       return !this.loading && this.web3.account && this.validate === true;
     },
     contenthash() {
@@ -345,18 +353,39 @@ export default {
   methods: {
     ...mapActions(['notify', 'send', 'getSpaces']),
     async handleSubmit() {
-      this.loading = true;
-      try {
-        await this.send({
-          space: this.key,
-          type: 'settings',
-          payload: this.form
-        });
-      } catch (e) {
-        console.log(e);
+      if (this.isValid) {
+        this.loading = true;
+        try {
+          await this.send({
+            space: this.key,
+            type: 'settings',
+            payload: this.form
+          });
+        } catch (e) {
+          console.log(e);
+        }
+        await this.getSpaces();
+        this.loading = false;
+      } else {
+        this.showError();
       }
-      await this.getSpaces();
-      this.loading = false;
+    },
+    showError() {
+      this.errors = [];
+      const error = this.validate[0];
+      if (error.keyword === 'minLength') {
+        if (error.dataPath === '/name')
+          this.errors.push(this.$t('settings.nameRequired'));
+        if (error.dataPath === '/symbol')
+          this.errors.push(this.$t('settings.symbolRequired'));
+        if (error.dataPath === '/network')
+          this.errors.push(this.$t('settings.networkRequired'));
+      } else if (error.keyword === 'minItems') {
+        if (error.dataPath === '/strategies')
+          this.errors.push(this.$t('settings.strategyRequired'));
+      } else {
+        this.errors.push(this.validate);
+      }
     },
     handleReset() {
       if (this.from) return (this.form = clone(this.app.spaces[this.from]));

@@ -148,7 +148,11 @@
     "showOnly": "Show only members proposals",
     "editPlugin": "Edit plugin",
     "addPlugin": "Add plugin",
-    "pluginParameters": "Plugin parameters"
+    "pluginParameters": "Plugin parameters",
+    "nameRequired": "A name is required",
+    "symbolRequired": "A symbol is required",
+    "networkRequired": "A network is required",
+    "strategyRequired": "A strategie is required"
   },
   "setup": {
     "example": "e.g. yam.eth",
