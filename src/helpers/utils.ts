@@ -115,6 +115,12 @@ export function filterStrategies(strategies, spaces, q = '') {
     .sort((a, b) => b.spaces.length - a.spaces.length);
 }
 
+export function strategiesScope(space, proposal) {
+  const timeNow = Date.now();
+  if (timeNow > 1617958750115) return proposal;
+  else return space;
+}
+
 export function filterPlugins(plugins, spaces, q = '') {
   return Object.entries(plugins)
     .map(([key, pluginClass]: any) => {

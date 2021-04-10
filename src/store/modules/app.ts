@@ -8,7 +8,12 @@ import {
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import gateways from '@snapshot-labs/snapshot.js/src/gateways.json';
 import client from '@/helpers/client';
-import { formatProposal, formatProposals, formatSpace } from '@/helpers/utils';
+import {
+  formatProposal,
+  formatProposals,
+  formatSpace,
+  strategiesScope
+} from '@/helpers/utils';
 import { version } from '@/../package.json';
 import i18n, {
   defaultLocale,
@@ -140,6 +145,8 @@ const actions = {
     commit('GET_PROPOSALS_REQUEST');
     try {
       let proposals: any = await client.request(`${space.key}/proposals`);
+      console.log(proposals);
+
       if (proposals && !space.filters?.onlyMembers) {
         const scores: any = await getScores(
           space.key,
@@ -147,6 +154,11 @@ const actions = {
           space.network,
           getProvider(space.network),
           Object.values(proposals).map((proposal: any) => proposal.address)
+        );
+        console.log(
+          Object.values(proposals).map(
+            (proposal: any) => proposal.msg.payload.metadata.strategies
+          )
         );
         console.log('Scores', scores);
         proposals = Object.fromEntries(
@@ -158,6 +170,7 @@ const actions = {
             return [proposal[0], proposal[1]];
           })
         );
+        console.log(proposals);
       }
       commit('GET_PROPOSALS_SUCCESS');
       return formatProposals(proposals);
@@ -183,13 +196,20 @@ const actions = {
       const voters = Object.keys(votes);
       const { snapshot } = proposal.msg.payload;
       const blockTag = snapshot > blockNumber ? 'latest' : parseInt(snapshot);
+      console.log(proposal);
 
       /* Get scores */
       console.time('getProposal.scores');
+
+      const strategies = strategiesScope(
+        space.strategies,
+        proposal.msg.payload.metadata.strategies
+      );
+
       const [scores, profiles]: any = await Promise.all([
         getScores(
           space.key,
-          space.strategies,
+          strategies,
           space.network,
           provider,
           voters,
@@ -199,7 +219,7 @@ const actions = {
         getProfiles([proposal.address, ...voters])
       ]);
       console.timeEnd('getProposal.scores');
-      console.log('Scores', scores);
+      console.log('Scores', scores, strategies);
 
       const authorProfile = profiles[proposal.address];
       voters.forEach(address => {
@@ -210,7 +230,7 @@ const actions = {
       votes = Object.fromEntries(
         Object.entries(votes)
           .map((vote: any) => {
-            vote[1].scores = space.strategies.map(
+            vote[1].scores = strategies.map(
               (strategy, i) => scores[i][vote[1].address] || 0
             );
             vote[1].balance = vote[1].scores.reduce((a, b: any) => a + b, 0);
@@ -234,7 +254,7 @@ const actions = {
             .reduce((a, b: any) => a + b.balance, 0)
         ),
         totalScores: proposal.msg.payload.choices.map((choice, i) =>
-          space.strategies.map((strategy, sI) =>
+          strategies.map((strategy, sI) =>
             Object.values(votes)
               .filter((vote: any) => vote.msg.payload.choice === i + 1)
               .reduce((a, b: any) => a + b.scores[sI], 0)
