@@ -263,7 +263,6 @@ export default {
       const proposalObj = await getProposal(this.space, this.id);
       const { proposal, votes, blockNumber } = proposalObj;
       this.proposal = proposal;
-      await this.loadPower();
       this.loaded = true;
       const resultsObj = await getResults(
         this.space,
@@ -271,7 +270,6 @@ export default {
         votes,
         blockNumber
       );
-
       this.votes = resultsObj.votes;
       this.results = resultsObj.results;
       this.loadedResults = true;
@@ -313,6 +311,7 @@ export default {
     this.loading = true;
     await this.loadProposal();
     this.loading = false;
+    await this.loadPower();
   }
 };
 </script>
