@@ -70,9 +70,7 @@
           </UiButton>
         </div>
         <UiButton
-          :disabled="
-            voteLoading || !selectedChoice || !web3.account || !loadedResults
-          "
+          :disabled="voteLoading || !selectedChoice || !web3.account"
           :loading="voteLoading"
           @click="modalOpen = true"
           class="d-block width-full button--submit"
@@ -263,6 +261,7 @@ export default {
       const proposalObj = await getProposal(this.space, this.id);
       const { proposal, votes, blockNumber } = proposalObj;
       this.proposal = proposal;
+      await this.loadPower();
       this.loaded = true;
       const resultsObj = await getResults(
         this.space,
@@ -270,6 +269,7 @@ export default {
         votes,
         blockNumber
       );
+
       this.votes = resultsObj.votes;
       this.results = resultsObj.results;
       this.loadedResults = true;
@@ -309,7 +309,7 @@ export default {
   },
   async created() {
     this.loading = true;
-    await Promise.all([this.loadProposal(), this.loadPower()]);
+    await this.loadProposal();
     this.loading = false;
   }
 };
