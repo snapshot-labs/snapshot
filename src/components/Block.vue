@@ -1,7 +1,6 @@
 <template>
   <div
     class="border-top border-bottom border-md rounded-0 rounded-md-2 mb-4 block-bg"
-    :style="`border-color: ${bcolor} !important`"
   >
     <h4
       v-if="title"
@@ -27,7 +26,7 @@
 
 <script>
 export default {
-  props: ['title', 'counter', 'slim', 'icon', 'bcolor'],
+  props: ['title', 'counter', 'slim', 'icon'],
   emits: ['submit']
 };
 </script>

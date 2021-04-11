@@ -13,11 +13,15 @@
       </div>
 
       <template v-if="loaded">
-        <Block bcolor="red" v-if="errors.length > 0">
+        <Block v-if="errors.length > 0">
           <div class="d-flex">
             <Icon name="warning" class="mr-1" />
             <div class="ml-2" v-for="error in errors" :key="error">
-              {{ error }}
+              {{
+                typeof this.errors[0] === 'object'
+                  ? error
+                  : this.$tc('settings.fieldRequired', [`"${error}"`])
+              }}
             </div>
           </div>
         </Block>
@@ -63,40 +67,44 @@
                   <Icon name="external-link" class="ml-1" />
                 </UiButton>
               </a>
-              <UiButton class="text-left width-full mb-2 d-flex px-3">
-                <div class="text-gray mr-2">{{ $t('settings.name') }}</div>
-                <input v-model="form.name" class="input flex-auto" required />
-              </UiButton>
-              <UiButton class="text-left width-full mb-2 d-flex px-3">
-                <div class="text-gray mr-2">{{ $t('settings.about') }}</div>
-                <input v-model="form.about" class="input flex-auto" />
-              </UiButton>
-              <UiButton
+              <UiInput
+                v-model="form.name"
+                name="name"
+                :warning="errors.includes('Name')"
+              >
+              </UiInput>
+              <UiInput
+                v-model="form.about"
+                name="about"
+                :warning="errors.includes('About')"
+              >
+              </UiInput>
+              <UiInput
                 @click="modalNetworksOpen = true"
-                class="text-left width-full mb-2 d-flex px-3"
+                name="network"
+                :button="true"
+                :warning="errors.includes('Network')"
               >
-                <div class="text-gray mr-2">{{ $t('settings.network') }}</div>
-                <div class="flex-auto">
-                  {{
-                    form.network
-                      ? networks[form.network].name
-                      : $t('selectNetwork')
-                  }}
-                </div>
-              </UiButton>
-              <UiButton class="text-left width-full mb-2 d-flex px-3">
-                <div class="text-gray mr-2">{{ $t('settings.symbol') }}</div>
-                <input v-model="form.symbol" class="input flex-auto" required />
-              </UiButton>
-              <UiButton
+                {{
+                  form.network
+                    ? networks[form.network].name
+                    : $t('selectNetwork')
+                }}
+              </UiInput>
+              <UiInput
+                v-model="form.symbol"
+                name="symbol"
+                :warning="errors.includes('Symbol')"
+              >
+              </UiInput>
+              <UiInput
                 @click="modalSkinsOpen = true"
-                class="text-left width-full mb-2 d-flex px-3"
+                name="skin"
+                :button="true"
+                :warning="errors.includes('Skin')"
               >
-                <div class="text-gray mr-2">{{ $t('settings.skin') }}</div>
-                <div class="flex-auto">
-                  {{ form.skin ? form.skin : $t('defaultSkin') }}
-                </div>
-              </UiButton>
+                {{ form.skin ? form.skin : $t('defaultSkin') }}
+              </UiInput>
               <UiButton class="text-left width-full mb-2 d-flex px-3">
                 <div class="text-gray mr-2">
                   <Icon name="twitter" class="mr-1" />
@@ -353,6 +361,7 @@ export default {
   methods: {
     ...mapActions(['notify', 'send', 'getSpaces']),
     async handleSubmit() {
+      this.errors = [];
       if (this.isValid) {
         this.loading = true;
         try {
@@ -375,9 +384,7 @@ export default {
       const error = this.validate[0];
       const fieldName = this.$t(`settings.${error.dataPath.substring(1)}`);
       if (error.keyword === 'minLength' || error.keyword === 'minItems') {
-        this.errors.push(
-          this.$tc('settings.fieldRequired', [`"${fieldName}"`])
-        );
+        this.errors.push(fieldName);
       } else {
         this.errors.push(this.validate);
       }
