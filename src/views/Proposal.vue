@@ -80,6 +80,7 @@
       </Block>
       <BlockVotes
         v-if="loaded"
+        :loaded="loadedResults"
         :space="space"
         :proposal="proposal"
         :votes="votes"
@@ -152,37 +153,42 @@
         </div>
       </Block>
       <BlockResults
+        :loaded="loadedResults"
         :id="id"
         :space="space"
         :payload="payload"
         :results="results"
         :votes="votes"
       />
-      <BlockActions
-        :id="id"
-        :space="space"
-        :payload="payload"
-        :results="results"
-      />
-      <PluginGnosisCustomBlock
-        v-if="payload.metadata.plugins?.gnosis?.baseTokenAddress"
-        :proposalConfig="payload.metadata.plugins.gnosis"
-        :choices="payload.choices"
-      />
-      <PluginDaoModuleCustomBlock
-        v-if="payload.metadata.plugins?.daoModule?.txs"
-        :proposalConfig="payload.metadata.plugins.daoModule"
-        :proposalEnd="payload.end"
-        :porposalId="id"
-        :moduleAddress="space.plugins?.daoModule?.address"
-        :network="space.network"
-      />
-      <PluginQuorumCustomBlock
-        v-if="space.plugins?.quorum"
-        :space="space"
-        :payload="payload"
-        :results="results"
-      />
+      <div v-if="loadedResults">
+        <PluginAragonCustomBlock
+          :loaded="loadedResults"
+          :id="id"
+          :space="space"
+          :payload="payload"
+          :results="results"
+        />
+        <PluginGnosisCustomBlock
+          v-if="payload.metadata.plugins?.gnosis?.baseTokenAddress"
+          :proposalConfig="payload.metadata.plugins.gnosis"
+          :choices="payload.choices"
+        />
+        <PluginDaoModuleCustomBlock
+          v-if="payload.metadata.plugins?.daoModule?.txs"
+          :proposalConfig="payload.metadata.plugins.daoModule"
+          :proposalEnd="payload.end"
+          :porposalId="id"
+          :moduleAddress="space.plugins?.daoModule?.address"
+          :network="space.network"
+        />
+        <PluginQuorumCustomBlock
+          :loaded="loadedResults"
+          v-if="space.plugins?.quorum"
+          :space="space"
+          :payload="payload"
+          :results="results"
+        />
+      </div>
     </template>
   </Layout>
   <teleport to="#modal">
@@ -210,6 +216,7 @@
 
 <script>
 import { mapActions } from 'vuex';
+import { getProposal, getResults, getPower } from '@/helpers/snapshot';
 
 export default {
   data() {
@@ -218,6 +225,7 @@ export default {
       id: this.$route.params.id,
       loading: false,
       loaded: false,
+      loadedResults: false,
       voteLoading: false,
       deleteLoading: false,
       proposal: {},
@@ -250,23 +258,31 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['getProposal', 'getPower', 'send']),
+    ...mapActions(['send']),
     async loadProposal() {
-      const proposalObj = await this.getProposal({
-        space: this.space,
-        id: this.id
-      });
-      this.proposal = proposalObj.proposal;
-      this.votes = proposalObj.votes;
-      this.results = proposalObj.results;
+      const proposalObj = await getProposal(this.space, this.id);
+      const { proposal, votes, blockNumber } = proposalObj;
+      this.proposal = proposal;
+      await this.loadPower();
+      this.loaded = true;
+      const resultsObj = await getResults(
+        this.space,
+        proposal,
+        votes,
+        blockNumber
+      );
+
+      this.votes = resultsObj.votes;
+      this.results = resultsObj.results;
+      this.loadedResults = true;
     },
     async loadPower() {
       if (!this.web3.account || !this.proposal.address) return;
-      const { scores, totalScore } = await this.getPower({
-        space: this.space,
-        address: this.web3.account,
-        snapshot: this.payload.snapshot
-      });
+      const { scores, totalScore } = await getPower(
+        this.space,
+        this.web3.account,
+        this.payload.snapshot
+      );
       this.totalScore = totalScore;
       this.scores = scores;
     },
@@ -296,9 +312,7 @@ export default {
   async created() {
     this.loading = true;
     await this.loadProposal();
-    await this.loadPower();
     this.loading = false;
-    this.loaded = true;
   }
 };
 </script>
