@@ -183,6 +183,7 @@
         :network="space.network"
       />
       <PluginQuorumCustomBlock
+        :loaded="loadedResults"
         v-if="space.plugins?.quorum"
         :space="space"
         :payload="payload"
