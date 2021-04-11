@@ -1,9 +1,10 @@
 <template>
   <Block
-    v-if="Object.keys(votes).length > 0"
+    v-if="isZero()"
     :title="$t('votes')"
     :counter="Object.keys(votes).length"
     :slim="true"
+    :loading="!loaded"
   >
     <div
       v-for="(vote, address, i) in visibleVotes"
@@ -67,7 +68,7 @@
 
 <script>
 export default {
-  props: ['space', 'proposal', 'votes'],
+  props: ['space', 'proposal', 'votes', 'loaded'],
   data() {
     return {
       showAllVotes: false,
@@ -89,6 +90,11 @@ export default {
     }
   },
   methods: {
+    // Hide only after loading if zero voters
+    isZero() {
+      if (!this.loaded) return true;
+      if (Object.keys(this.votes).length > 0) return true;
+    },
     openReceiptModal(vote) {
       this.authorIpfsHash = vote.authorIpfsHash;
       this.relayerIpfsHash = vote.relayerIpfsHash;

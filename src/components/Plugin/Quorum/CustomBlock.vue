@@ -1,5 +1,5 @@
 <template>
-  <Block title="Quorum">
+  <Block title="Quorum" :loading="!loaded">
     <div class="text-white mb-1">
       <span class="mr-1">
         {{ _n(totalScore) }} / {{ _n(totalVotingPower) }}
@@ -16,7 +16,7 @@ import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import Plugin from '@snapshot-labs/snapshot.js/src/plugins/quorum';
 
 export default {
-  props: ['space', 'payload', 'results'],
+  props: ['space', 'payload', 'results', 'loaded'],
   data() {
     return {
       loading: false,

@@ -1,5 +1,8 @@
 <template>
-  <Block :title="ts >= payload.end ? $t('results') : $t('currentResults')">
+  <Block
+    :loading="!loaded"
+    :title="ts >= payload.end ? $t('results') : $t('currentResults')"
+  >
     <div v-for="choice in choices" :key="choice.i">
       <div class="text-white mb-1">
         <span
@@ -53,7 +56,7 @@ import * as jsonexport from 'jsonexport/dist';
 import pkg from '@/../package.json';
 
 export default {
-  props: ['id', 'space', 'payload', 'results', 'votes'],
+  props: ['id', 'space', 'payload', 'results', 'votes', 'loaded'],
   computed: {
     ts() {
       return (Date.now() / 1e3).toFixed();
