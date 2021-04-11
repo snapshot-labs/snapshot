@@ -111,7 +111,7 @@ function lookupAddresses(addresses) {
 }
 
 export async function getProfiles(addresses) {
-  addresses = addresses.slice(0, 2000);
+  addresses = addresses.slice(0, 1000);
   let ensNames: any = {};
   let _3BoxProfiles: any = {};
   try {
