@@ -162,33 +162,35 @@
         :results="results"
         :votes="votes"
       />
-      <BlockActions
-        :loaded="loadedResults"
-        :id="id"
-        :space="space"
-        :payload="payload"
-        :results="results"
-      />
-      <PluginGnosisCustomBlock
-        v-if="payload.metadata.plugins?.gnosis?.baseTokenAddress"
-        :proposalConfig="payload.metadata.plugins.gnosis"
-        :choices="payload.choices"
-      />
-      <PluginDaoModuleCustomBlock
-        v-if="payload.metadata.plugins?.daoModule?.txs"
-        :proposalConfig="payload.metadata.plugins.daoModule"
-        :proposalEnd="payload.end"
-        :porposalId="id"
-        :moduleAddress="space.plugins?.daoModule?.address"
-        :network="space.network"
-      />
-      <PluginQuorumCustomBlock
-        :loaded="loadedResults"
-        v-if="space.plugins?.quorum"
-        :space="space"
-        :payload="payload"
-        :results="results"
-      />
+      <div v-if="loadedResults">
+        <PluginAragonCustomBlock
+          :loaded="loadedResults"
+          :id="id"
+          :space="space"
+          :payload="payload"
+          :results="results"
+        />
+        <PluginGnosisCustomBlock
+          v-if="payload.metadata.plugins?.gnosis?.baseTokenAddress"
+          :proposalConfig="payload.metadata.plugins.gnosis"
+          :choices="payload.choices"
+        />
+        <PluginDaoModuleCustomBlock
+          v-if="payload.metadata.plugins?.daoModule?.txs"
+          :proposalConfig="payload.metadata.plugins.daoModule"
+          :proposalEnd="payload.end"
+          :porposalId="id"
+          :moduleAddress="space.plugins?.daoModule?.address"
+          :network="space.network"
+        />
+        <PluginQuorumCustomBlock
+          :loaded="loadedResults"
+          v-if="space.plugins?.quorum"
+          :space="space"
+          :payload="payload"
+          :results="results"
+        />
+      </div>
     </template>
   </Layout>
   <teleport to="#modal">
