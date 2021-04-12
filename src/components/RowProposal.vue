@@ -14,11 +14,6 @@
       <span v-text="`#${i.slice(0, 7)}`" />
       {{ $tc('createdBy', [_shorten(proposal.address)]) }}
       <Badges :address="proposal.address" :space="space" />
-      <span
-        v-if="proposal.score"
-        v-text="`${_n(proposal.score)} ${space.symbol}`"
-        class="ml-1"
-      />
       {{
         $tc('startToEnd', [
           $d(proposal.msg.payload.start * 1e3),

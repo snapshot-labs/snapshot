@@ -281,7 +281,7 @@ export default {
       const { scores, totalScore } = await getPower(
         this.space,
         this.web3.account,
-        this.payload.snapshot
+        this.payload
       );
       this.totalScore = totalScore;
       this.scores = scores;

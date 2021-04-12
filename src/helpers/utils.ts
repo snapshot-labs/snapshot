@@ -115,7 +115,7 @@ export function filterStrategies(strategies, spaces, q = '') {
     .sort((a, b) => b.spaces.length - a.spaces.length);
 }
 
-export function strategiesScope(space, proposal) {
+export function switchStrategyAt(space, proposal) {
   const timeNow = Date.now();
   if (timeNow > 1617958750115) return proposal;
   else return space;

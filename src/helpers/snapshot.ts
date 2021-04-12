@@ -1,6 +1,10 @@
 import { getBlockNumber } from '@snapshot-labs/snapshot.js/src/utils/web3';
 import { ipfsGet, getScores } from '@snapshot-labs/snapshot.js/src/utils';
-import { formatProposal, formatProposals } from '@/helpers/utils';
+import {
+  formatProposal,
+  formatProposals,
+  switchStrategyAt
+} from '@/helpers/utils';
 import { getProfiles } from '@/helpers/profile';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import gateways from '@snapshot-labs/snapshot.js/src/gateways.json';
@@ -35,13 +39,16 @@ export async function getResults(space, proposal, votes, blockNumber) {
     const voters = Object.keys(votes);
     const { snapshot } = proposal.msg.payload;
     const blockTag = snapshot > blockNumber ? 'latest' : parseInt(snapshot);
-
+    const strategies = switchStrategyAt(
+      space.strategies,
+      proposal.msg.payload.metadata.strategies
+    );
     /* Get scores */
     console.time('getProposal.scores');
     const [scores, profiles]: any = await Promise.all([
       getScores(
         space.key,
-        space.strategies,
+        strategies,
         space.network,
         provider,
         voters,
@@ -62,7 +69,7 @@ export async function getResults(space, proposal, votes, blockNumber) {
     votes = Object.fromEntries(
       Object.entries(votes)
         .map((vote: any) => {
-          vote[1].scores = space.strategies.map(
+          vote[1].scores = strategies.map(
             (strategy, i) => scores[i][vote[1].address] || 0
           );
           vote[1].balance = vote[1].scores.reduce((a, b: any) => a + b, 0);
@@ -86,7 +93,7 @@ export async function getResults(space, proposal, votes, blockNumber) {
           .reduce((a, b: any) => a + b.balance, 0)
       ),
       totalScores: proposal.msg.payload.choices.map((choice, i) =>
-        space.strategies.map((strategy, sI) =>
+        strategies.map((strategy, sI) =>
           Object.values(votes)
             .filter((vote: any) => vote.msg.payload.choice === i + 1)
             .reduce((a, b: any) => a + b.scores[sI], 0)
@@ -104,13 +111,18 @@ export async function getResults(space, proposal, votes, blockNumber) {
   }
 }
 
-export async function getPower(space, address, snapshot) {
+export async function getPower(space, address, payload) {
   try {
     const blockNumber = await getBlockNumber(getProvider(space.network));
-    const blockTag = snapshot > blockNumber ? 'latest' : parseInt(snapshot);
+    const blockTag =
+      payload.snapshot > blockNumber ? 'latest' : parseInt(payload.snapshot);
+    const strategies = switchStrategyAt(
+      space.strategies,
+      payload.metadata.strategies
+    );
     let scores: any = await getScores(
       space.key,
-      space.strategies,
+      strategies,
       space.network,
       getProvider(space.network),
       [address],
