@@ -98,7 +98,8 @@
     "endTime": "Выбрать время окончания",
     "publish": "Опубликовать",
     "snapshotBlock": "Номер блока среза",
-    "onlyMembersWarning": "Вы должны быть членом сообщества раздела для того, чтобы создать опрос."
+    "onlyMembersWarning": "You need to be a member of the space in order to submit a proposal",
+    "minScoreWarning": "You need to have a minimum of {0} {1} in order to submit a proposal"
   },
   "delegate": {
     "header": "Делегировать право голоса",
