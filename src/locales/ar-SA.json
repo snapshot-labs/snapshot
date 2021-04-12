@@ -98,7 +98,8 @@
     "endTime": "حدد موعد الانتهاء",
     "publish": "نشر",
     "snapshotBlock": "رقم القطعة (البلوك) في لمحة سلسلة البلوكشين",
-    "onlyMembersWarning": "يجب أن تكون عضوا في المساحة لتقديم اقتراح."
+    "onlyMembersWarning": "You need to be a member of the space in order to submit a proposal",
+    "minScoreWarning": "You need to have a minimum of {0} {1} in order to submit a proposal"
   },
   "delegate": {
     "header": "تفويض",
