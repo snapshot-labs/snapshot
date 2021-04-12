@@ -98,7 +98,8 @@
     "endTime": "Ustaw godzinę zakończenia",
     "publish": "Opublikuj",
     "snapshotBlock": "Numer bloku Snapshot",
-    "onlyMembersWarning": "Musisz być członkiem sekcji, aby złożyć propozycję."
+    "onlyMembersWarning": "You need to be a member of the space in order to submit a proposal",
+    "minScoreWarning": "You need to have a minimum of {0} {1} in order to submit a proposal"
   },
   "delegate": {
     "header": "Przekaż",
