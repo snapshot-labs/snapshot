@@ -63,39 +63,6 @@ const actions = {
         formatSpace(space[0], space[1])
       ])
     );
-
-    spaces['fei.eth'].strategies = [
-      {
-        name: 'pagination',
-        params: {
-          symbol: 'FEI-TRIBE Staked LP',
-          strategy: {
-            name: 'staked-uniswap',
-            params: {
-              tokenAddress: '0xc7283b66Eb1EB5FB86327f08e1B5816b0720212B',
-              uniswapAddress: '0x9928e4046d7c6513326cCeA028cD3e7a91c7590A',
-              stakingAddress: '0x18305DaAe09Ea2F4D51fAa33318be5978D251aBd',
-              decimals: 18
-            }
-          }
-        }
-      },
-      {
-        name: 'pagination',
-        params: {
-          symbol: 'TRIBE',
-          strategy: {
-            name: 'erc20-balance-of',
-            params: {
-              symbol: 'TRIBE',
-              address: '0x1165a505e8c4e82b7b98e77374c789dbd7b53f9a',
-              decimals: 18
-            }
-          }
-        }
-      }
-    ];
-
     commit('SET', { spaces });
     return spaces;
   },
