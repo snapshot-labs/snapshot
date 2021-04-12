@@ -1,6 +1,6 @@
 {
   "searchPlaceholder": "Magsaliksik",
-  "spaceCount": "mga puwang",
+  "spaceCount": "{0} space(s)",
   "createSpace": "Lumikha ng puwang",
   "backToHome": "Home",
   "actions": "Mga aksyon",
@@ -20,7 +20,7 @@
   "version": "Bersyon",
   "timeline": "Timeline",
   "submitOnchain": "Submit on-chain",
-  "inSpaces": "Nasa {0} mga puwang",
+  "inSpaces": "In {0} space(s)",
   "downloadReport": "Download report",
   "votes": "Mga boto",
   "seeMore": "Tumingin pa",
@@ -98,7 +98,8 @@
     "endTime": "Pumili ng oras ng pagtatapos",
     "publish": "Ilathala",
     "snapshotBlock": "Snapshot block number",
-    "onlyMembersWarning": "Kailangan mo maging miyembro ng ispasyo para makapag sumite ng proposal."
+    "onlyMembersWarning": "You need to be a member of the space in order to submit a proposal",
+    "minScoreWarning": "You need to have a minimum of {0} {1} in order to submit a proposal"
   },
   "delegate": {
     "header": "Delegasyon",
@@ -152,7 +153,7 @@
   "setup": {
     "example": "e.g. yam.eth",
     "useExistingEns": "Gumamit ng kasalukuyang ENS name para gumawa ng espasyo kasama ng.",
-    "createASpace": "Gumawa ng espasyo"
+    "createASpace": "Create a space"
   },
   "notify": {
     "youDidIt": "You did it!",
