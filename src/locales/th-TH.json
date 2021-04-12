@@ -1,15 +1,15 @@
 {
-  "searchPlaceholder": "Search",
-  "spaceCount": "{0} space(s)",
-  "createSpace": "Create space",
-  "backToHome": "Home",
-  "actions": "Actions",
-  "results": "Results",
-  "currentResults": "Current results",
-  "reset": "Reset",
-  "save": "Save",
-  "author": "Author",
-  "next": "Next",
+  "searchPlaceholder": "ค้นหา",
+  "spaceCount": "{0} พื้นที่(s)",
+  "createSpace": "สร้างพื้นที่",
+  "backToHome": "หน้าแรก",
+  "actions": "การดำเนินการ",
+  "results": "ผลที่ได้",
+  "currentResults": "ผลลัพธ์ ณ ปัจจุบัน",
+  "reset": "การตั้งค่าใหม่",
+  "save": "บันทึกเรียบร้อย",
+  "author": "ผู้จัดทำ",
+  "next": "ถัดไป",
   "submit": "Submit",
   "plugins": "Plugins",
   "information": "Information",
@@ -46,8 +46,8 @@
   "removeSpace": "for the space {0}",
   "confirmVote": "Confirm vote",
   "sureToVote": "Are you sure you want to vote \"{0}\"?",
-  "cannotBeUndone": "This action cannot be undone.",
-  "option": "Option",
+  "cannotBeUndone": "ไม่สามารถยกเลิกการดำเนินการนี้ได้",
+  "option": "ตัวเลือก",
   "votingPower": "Your voting power",
   "receipt": "Receipt",
   "relayer": "Relayer",
@@ -92,31 +92,32 @@
     "preview": "Preview",
     "choices": "Choices",
     "addChoice": "Add choice",
-    "startDate": "Select start date",
-    "endDate": "Select end date",
-    "startTime": "Select start time",
-    "endTime": "Select end time",
-    "publish": "Publish",
+    "startDate": "เลือกวันเริ่มต้น",
+    "endDate": "เลือกวันสิ้นสุด",
+    "startTime": "เลือกเวลาเริ่มต้น",
+    "endTime": "เลือกเวลาสิ้นสุด",
+    "publish": "ต้องการเผยแพร่",
     "snapshotBlock": "Snapshot block number",
-    "onlyMembersWarning": "You need to be a member of the space in order to submit a proposal."
+    "onlyMembersWarning": "You need to be a member of the space in order to submit a proposal",
+    "minScoreWarning": "You need to have a minimum of {0} {1} in order to submit a proposal"
   },
   "delegate": {
     "header": "Delegate",
     "selectAddress": "Select address",
-    "addressPlaceholder": "Delegate address or ENS name",
+    "addressPlaceholder": "ที่อยู่ของผู้รับมอบสิทธิ์หรือชื่อ ENS",
     "spacePlaceholder": "Space (optional)",
     "delegations": "Your delegation(s)",
     "delegated": "Delegated to you"
   },
   "proposal": {
     "castVote": "Cast your vote",
-    "vote": "Vote",
-    "startDate": "Start date",
-    "endDate": "End date"
+    "vote": "ลงคะแนนโหวต",
+    "startDate": "วันที่เริ่มต้น",
+    "endDate": "วันสิ้นสุด"
   },
   "proposals": {
     "header": "Proposals",
-    "new": "New proposal",
+    "new": "ข้อเสนอใหม่",
     "noProposals": "There aren't any proposals here yet!",
     "states": {
       "all": "All",
@@ -138,7 +139,7 @@
     "symbol": "Symbol",
     "skin": "Skin",
     "domain": "Domain name",
-    "hideSpace": "Hide space from homepage",
+    "hideSpace": "ซ่อนจากหน้าหลัก",
     "addStrategy": "Add strategy",
     "members": "Members",
     "filters": "Filters",
@@ -152,13 +153,13 @@
   "setup": {
     "example": "e.g. yam.eth",
     "useExistingEns": "Use an existing ENS name to create your space with.",
-    "createASpace": "Create a space"
+    "createASpace": "ดำเนินการสร้างพื้นที่ใช้งาน"
   },
   "notify": {
     "youDidIt": "You did it!",
-    "copied": "Copied!",
-    "proposalDeleted": "Proposal deleted",
+    "copied": "ดำเนินการคัดลอกเรียบร้อย!",
+    "proposalDeleted": "ดำเนินการลบข้อเสนอเรียบร้อย",
     "yourIsIn": "Your {0} is in!",
-    "somethingWentWrong": "Oops, something went wrong!"
+    "somethingWentWrong": "ขออภัย! มีความผิดพลาดบางอย่างเกิดขึ้น"
   }
 }
