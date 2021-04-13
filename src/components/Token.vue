@@ -5,7 +5,7 @@
       :src="url"
       :style="{
         width: `${size || 22}px`,
-        height: `${size || 22}px`,
+        height: `${size || 22}px`
       }"
       @error="error = true"
       class="circle border line-height-0"
@@ -31,9 +31,7 @@ export default {
           ? 'space'
           : `logo${this.symbolIndex}`
         : 'logo';
-      // return 'https://bridge.harmony.one/one.svg';
-      return 'https://avatars.githubusercontent.com/u/39147399?s=400&v=4';
-      // return `https://raw.githubusercontent.com/snapshot-labs/snapshot-spaces/master/spaces/${this.space}/${file}.png`;
+      return `https://raw.githubusercontent.com/harmony-one/snapshot-spaces/master/spaces/${this.space}/${file}.png`;
     },
     spaceAddress() {
       if (this.space) return formatBytes32String(this.space.slice(0, 24));

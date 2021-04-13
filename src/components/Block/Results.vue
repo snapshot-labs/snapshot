@@ -25,7 +25,7 @@
             $n(
               !results.totalVotesBalances
                 ? 0
-                : ((100 / results.totalStaked) *
+                : ((100 / totalBase) *
                     results.totalBalances[choice.i]) /
                     1e2,
               'percent'
@@ -35,7 +35,7 @@
       </div>
       <UiProgress
         :value="results.totalScores[choice.i]"
-        :max="results.totalStaked"
+        :max="totalBase"
         :titles="titles"
         class="mb-3"
       />
@@ -68,6 +68,13 @@ export default {
           (a, b) =>
             this.results.totalBalances[b.i] - this.results.totalBalances[a.i]
         );
+    },
+    totalBase() {
+      if (['staking-mainnet', 'staking-testnet'].indexOf(this.space.key) > -1) {
+        return this.results.totalStaked;
+      } else {
+        return this.results.totalVotesBalances;
+      }
     }
   },
   methods: {

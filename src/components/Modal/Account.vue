@@ -86,7 +86,7 @@
           </UiButton>
         </a>
         <UiButton
-          @click="step = 'connect'"
+          @click="handleChangeWallet"
           class="button-outline width-full mb-2"
         >
           Change wallet
@@ -143,6 +143,10 @@ export default {
     async handleLogout() {
       await this.logout();
       this.$emit('close');
+    },
+    async handleChangeWallet() {
+      await this.logout();
+      this.step = 'connect';
     }
   },
   mounted() {
