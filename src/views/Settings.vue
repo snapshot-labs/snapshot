@@ -69,7 +69,6 @@
               </UiInput>
               <UiInput
                 @click="modalNetworksOpen = true"
-                :button="true"
                 :warning="inputErrors.includes('network')"
               >
                 <template v-slot:selected>
@@ -93,7 +92,6 @@
               </UiInput>
               <UiInput
                 @click="modalSkinsOpen = true"
-                :button="true"
                 :warning="inputErrors.includes('skin')"
               >
                 <template v-slot:selected>

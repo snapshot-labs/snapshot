@@ -3,7 +3,7 @@
     <div class="text-gray mr-3">
       <slot name="label" />
     </div>
-    <div v-if="button" class="flex-auto"><slot name="selected" /></div>
+    <div v-if="$slots.selected" class="flex-auto"><slot name="selected" /></div>
     <input
       v-else
       :value="modelValue"
@@ -26,7 +26,6 @@
 export default {
   props: {
     warning: Boolean,
-    button: Boolean,
     modelValue: String || Number
   },
   emits: ['update:modelValue'],
