@@ -1,7 +1,7 @@
 <template>
   <i
     class="iconfont"
-    :class="`icon${name} ${color === 'red' ? 'icon--red' : ''}`"
+    :class="`icon${name} icon--${color}`"
     :style="size ? `font-size: ${size}px; line-height: ${size}px;` : ''"
   />
 </template>
