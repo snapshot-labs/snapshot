@@ -8,6 +8,7 @@
       v-else
       :value="modelValue"
       @input="handleInput"
+      :placeholder="placeholder"
       class="input flex-auto"
       required
     />
@@ -26,7 +27,8 @@
 export default {
   props: {
     warning: Boolean,
-    modelValue: String || Number
+    modelValue: String || Number,
+    placeholder: String
   },
   emits: ['update:modelValue'],
   methods: {

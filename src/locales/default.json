@@ -151,7 +151,7 @@
     "editPlugin": "Edit plugin",
     "addPlugin": "Add plugin",
     "pluginParameters": "Plugin parameters",
-    "fieldRequired": "The {0} field is required"
+    "strategyRequired": "At least one strategy is required."
   },
   "setup": {
     "example": "e.g. yam.eth",

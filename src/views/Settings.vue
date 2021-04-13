@@ -84,6 +84,7 @@
               </UiInput>
               <UiInput
                 v-model="form.symbol"
+                placeholder="e.g. BAL"
                 :warning="inputErrors.includes('symbol')"
               >
                 <template v-slot:label>
@@ -103,6 +104,7 @@
               </UiInput>
               <UiInput
                 v-model="form.twitter"
+                placeholder="e.g. elonmusk"
                 :warning="inputErrors.includes('twitter')"
               >
                 <template v-slot:label>
@@ -111,6 +113,7 @@
               </UiInput>
               <UiInput
                 v-model="form.github"
+                placeholder="e.g. vbuterin"
                 :warning="inputErrors.includes('github')"
               >
                 <template v-slot:label>
@@ -119,6 +122,7 @@
               </UiInput>
               <UiInput
                 v-model="form.domain"
+                placeholder="e.g. vote.balancer.finance"
                 :warning="inputErrors.includes('domain')"
               >
                 <template v-slot:label>
@@ -159,6 +163,27 @@
                 <h4 v-text="strategy.name" />
               </a>
             </div>
+            <Block
+              v-if="inputErrors.includes('strategies')"
+              style="border-color: red !important"
+            >
+              <span class="text-red">
+                {{ $t('settings.strategyRequired') }} &nbsp;
+              </span>
+
+              <a
+                href="https://docs.snapshot.org/spaces/create#strategies"
+                target="_blank"
+                rel="noopener noreferrer"
+                >{{ $t('learnMore') }}</a
+              >
+              <Icon
+                name="warning"
+                color="red"
+                size="18"
+                class="text-gray p-1 float-right mr-n1"
+              />
+            </Block>
             <UiButton @click="handleAddStrategy" class="d-block width-full">
               {{ $t('settings.addStrategy') }}
             </UiButton>
