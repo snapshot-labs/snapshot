@@ -1,7 +1,9 @@
 <template>
   <UiButton :warning="warning" class="text-left width-full mb-2 d-flex px-3">
-    <div class="text-gray mr-2">{{ $t(`settings.${name}`) }}</div>
-    <div v-if="button" class="flex-auto"><slot /></div>
+    <div class="text-gray mr-3">
+      <slot name="label" />
+    </div>
+    <div v-if="button" class="flex-auto"><slot name="selected" /></div>
     <input
       v-else
       :value="modelValue"
@@ -9,6 +11,7 @@
       class="input flex-auto"
       required
     />
+    <slot name="info" />
     <Icon
       v-if="warning"
       name="warning"
@@ -23,7 +26,6 @@
 export default {
   props: {
     warning: Boolean,
-    name: String,
     button: Boolean,
     modelValue: String || Number
   },

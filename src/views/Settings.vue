@@ -13,18 +13,6 @@
       </div>
 
       <template v-if="loaded">
-        <Block v-if="errors.length > 0">
-          <div class="d-flex">
-            <Icon name="warning" class="mr-1" />
-            <div class="ml-2" v-for="error in errors" :key="error">
-              {{
-                typeof this.errors[0] === 'object'
-                  ? error
-                  : this.$tc('settings.fieldRequired', [`"${error}"`])
-              }}
-            </div>
-          </div>
-        </Block>
         <Block title="ENS">
           <UiButton class="d-flex width-full mb-2">
             <input
@@ -69,65 +57,85 @@
               </a>
               <UiInput
                 v-model="form.name"
-                name="name"
-                :warning="errors.includes('Name')"
+                :warning="inputErrors.includes('name')"
               >
+                <template v-slot:label> {{ $t(`settings.name`) }} * </template>
               </UiInput>
               <UiInput
                 v-model="form.about"
-                name="about"
-                :warning="errors.includes('About')"
+                :warning="inputErrors.includes('about')"
               >
+                <template v-slot:label> {{ $t(`settings.about`) }} </template>
               </UiInput>
               <UiInput
                 @click="modalNetworksOpen = true"
-                name="network"
                 :button="true"
-                :warning="errors.includes('Network')"
+                :warning="inputErrors.includes('network')"
               >
-                {{
-                  form.network
-                    ? networks[form.network].name
-                    : $t('selectNetwork')
-                }}
+                <template v-slot:selected>
+                  {{
+                    form.network
+                      ? networks[form.network].name
+                      : $t('selectNetwork')
+                  }}
+                </template>
+                <template v-slot:label>
+                  {{ $t(`settings.network`) }} *
+                </template>
               </UiInput>
               <UiInput
                 v-model="form.symbol"
-                name="symbol"
-                :warning="errors.includes('Symbol')"
+                :warning="inputErrors.includes('symbol')"
               >
+                <template v-slot:label>
+                  {{ $t(`settings.symbol`) }} *
+                </template>
               </UiInput>
               <UiInput
                 @click="modalSkinsOpen = true"
-                name="skin"
                 :button="true"
-                :warning="errors.includes('Skin')"
+                :warning="inputErrors.includes('skin')"
               >
-                {{ form.skin ? form.skin : $t('defaultSkin') }}
+                <template v-slot:selected>
+                  {{ form.skin ? form.skin : $t('defaultSkin') }}
+                </template>
+                <template v-slot:label>
+                  {{ $t(`settings.skin`) }}
+                </template>
               </UiInput>
-              <UiButton class="text-left width-full mb-2 d-flex px-3">
-                <div class="text-gray mr-2">
-                  <Icon name="twitter" class="mr-1" />
-                </div>
-                <input v-model="form.twitter" class="input flex-auto" />
-              </UiButton>
-              <UiButton class="text-left width-full mb-2 d-flex px-3">
-                <div class="text-gray mr-2">
-                  <Icon name="github" class="mr-1" />
-                </div>
-                <input v-model="form.github" class="input flex-auto" />
-              </UiButton>
-              <UiButton class="text-left width-full mb-2 d-flex px-3">
-                <div class="text-gray mr-2">{{ $t('settings.domain') }}</div>
-                <input v-model="form.domain" class="input flex-auto" />
-                <a
-                  class="d-block py-1 mr-n2"
-                  target="_blank"
-                  href="https://docs.snapshot.org/spaces/add-custom-domain"
-                >
-                  <Icon name="info" size="24" class="text-gray p-1" />
-                </a>
-              </UiButton>
+              <UiInput
+                v-model="form.twitter"
+                :warning="inputErrors.includes('twitter')"
+              >
+                <template v-slot:label>
+                  <Icon name="twitter" />
+                </template>
+              </UiInput>
+              <UiInput
+                v-model="form.github"
+                :warning="inputErrors.includes('github')"
+              >
+                <template v-slot:label>
+                  <Icon name="github" />
+                </template>
+              </UiInput>
+              <UiInput
+                v-model="form.domain"
+                :warning="inputErrors.includes('domain')"
+              >
+                <template v-slot:label>
+                  {{ $t('settings.domain') }}
+                </template>
+                <template v-slot:info>
+                  <a
+                    class="d-block py-1 mr-n2"
+                    target="_blank"
+                    href="https://docs.snapshot.org/spaces/add-custom-domain"
+                  >
+                    <Icon name="info" size="24" class="text-gray p-1" />
+                  </a>
+                </template>
+              </UiInput>
               <div class="d-flex flex-items-center px-2">
                 <Checkbox v-model="form.private" class="mr-2 mt-1" />
                 {{ $t('settings.hideSpace') }}
@@ -240,6 +248,7 @@
           {{ $t('reset') }}
         </UiButton>
         <UiButton
+          :disabled="!isValid"
           @click="handleSubmit"
           :loading="loading"
           class="d-block width-full button--submit"
@@ -309,8 +318,7 @@ export default {
         plugins: {},
         filters: {}
       },
-      networks,
-      errors: []
+      networks
     };
   },
   computed: {
@@ -331,6 +339,14 @@ export default {
     },
     plugins() {
       return filterPlugins(plugins, this.app.spaces, '');
+    },
+    inputErrors() {
+      const errors = [];
+      if (!this.isValid)
+        this.validate.forEach(error => {
+          errors.push(error.dataPath.substring(1));
+        });
+      return errors;
     }
   },
   async created() {
@@ -375,18 +391,6 @@ export default {
         }
         await this.getSpaces();
         this.loading = false;
-      } else {
-        this.showError();
-      }
-    },
-    showError() {
-      this.errors = [];
-      const error = this.validate[0];
-      const fieldName = this.$t(`settings.${error.dataPath.substring(1)}`);
-      if (error.keyword === 'minLength' || error.keyword === 'minItems') {
-        this.errors.push(fieldName);
-      } else {
-        this.errors.push(this.validate);
       }
     },
     handleReset() {
