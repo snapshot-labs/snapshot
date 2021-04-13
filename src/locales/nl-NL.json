@@ -98,7 +98,8 @@
     "endTime": "Kies eindtijd",
     "publish": "Publiceren",
     "snapshotBlock": "Snapshot bloknummer",
-    "onlyMembersWarning": "U moet lid zijn van de ruimte om een voorstel te kunnen indienen."
+    "onlyMembersWarning": "You need to be a member of the space in order to submit a proposal",
+    "minScoreWarning": "You need to have a minimum of {0} {1} in order to submit a proposal"
   },
   "delegate": {
     "header": "Delegeren",
