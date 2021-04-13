@@ -365,10 +365,12 @@ export default {
     },
     inputErrors() {
       const errors = [];
-      if (!this.isValid)
+
+      if (!this.isValid && !this.loading)
         this.validate.forEach(error => {
           errors.push(error.dataPath.substring(1));
         });
+
       return errors;
     }
   },
