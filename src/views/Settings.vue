@@ -59,7 +59,7 @@
                 v-model="form.name"
                 :warning="inputErrors.includes('name')"
               >
-                <template v-slot:label> {{ $t(`settings.name`) }} * </template>
+                <template v-slot:label>{{ $t(`settings.name`) }}*</template>
               </UiInput>
               <UiInput
                 v-model="form.about"
