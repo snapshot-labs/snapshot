@@ -175,6 +175,7 @@
                 href="https://docs.snapshot.org/spaces/create#strategies"
                 target="_blank"
                 rel="noopener noreferrer"
+                class="text-red"
                 >{{ $t('learnMore') }}</a
               >
               <Icon

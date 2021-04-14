@@ -1,6 +1,6 @@
 <template>
   <UiButton :warning="warning" class="text-left width-full mb-2 d-flex px-3">
-    <div class="text-gray mr-3">
+    <div class="text-gray mr-2">
       <slot name="label" />
     </div>
     <div v-if="$slots.selected" class="flex-auto"><slot name="selected" /></div>
