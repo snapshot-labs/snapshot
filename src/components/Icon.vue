@@ -1,14 +1,14 @@
 <template>
   <i
     class="iconfont"
-    :class="`icon${name} text-${color}`"
+    :class="`icon${name}`"
     :style="size ? `font-size: ${size}px; line-height: ${size}px;` : ''"
   />
 </template>
 
 <script>
 export default {
-  props: ['name', 'size', 'color']
+  props: ['name', 'size']
 };
 </script>
 

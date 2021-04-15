@@ -180,9 +180,8 @@
               >
               <Icon
                 name="warning"
-                color="red"
                 size="18"
-                class="p-1 float-right mr-n1"
+                class="text-red p-1 float-right mr-n1"
               />
             </Block>
             <UiButton @click="handleAddStrategy" class="d-block width-full">
