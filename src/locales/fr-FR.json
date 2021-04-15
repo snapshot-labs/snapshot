@@ -98,8 +98,8 @@
     "endTime": "Sélectionnez la date de fin",
     "publish": "Publier",
     "snapshotBlock": "Numéro du bloc",
-    "onlyMembersWarning": "You need to be a member of the space in order to submit a proposal",
-    "minScoreWarning": "You need to have a minimum of {0} {1} in order to submit a proposal"
+    "onlyMembersWarning": "Vous devez être un membre de l'espace pour pouvoir soumettre une proposition",
+    "minScoreWarning": "Vous devez avoir un minimum de {0} {1} pour soumettre une proposition"
   },
   "delegate": {
     "header": "Déléguer",
