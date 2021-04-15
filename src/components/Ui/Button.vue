@@ -3,7 +3,7 @@
     :type="type || 'button'"
     @click="$emit('click')"
     class="button"
-    :class="{ 'input--warning': warning }"
+    :class="{ 'border-red': warning }"
     :disabled="loading"
   >
     <UiLoading v-if="loading" />
@@ -54,10 +54,6 @@ export default {
 
   &.button--active {
     border-color: var(--link-color) !important;
-  }
-
-  &.input--warning {
-    border-color: red !important;
   }
 
   &:hover {

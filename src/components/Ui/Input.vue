@@ -18,7 +18,7 @@
       name="warning"
       color="red"
       size="18"
-      class="text-gray p-1 d-block pt-2 mt-1 mr-n1"
+      class="p-1 d-block pt-2 mt-1 mr-n1"
     />
   </UiButton>
 </template>
