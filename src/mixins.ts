@@ -1,6 +1,6 @@
 import { mapState } from 'vuex';
 import numeral from 'numeral';
-import prettyMs from 'pretty-ms';
+import { format } from 'timeago.js';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import domains from '@snapshot-labs/snapshot-spaces/spaces/domains.json';
 import store from '@/store';
@@ -29,8 +29,7 @@ export default {
   },
   methods: {
     _ms(number) {
-      const diff = number * 1e3 - new Date().getTime();
-      return prettyMs(diff);
+      return format(number * 1e3);
     },
     _n(number, format = '(0.[00]a)') {
       return numeral(number).format(format);
