@@ -433,7 +433,7 @@ export default {
             error.keyword === 'maxLength' && error.dataPath.includes(field)
         );
         if (maxLength)
-          return this.$tc('errors.minLength', [maxLength.params.limit]);
+          return this.$tc('errors.maxLength', [maxLength.params.limit]);
 
         const pattern = this.validate.find(
           error => error.keyword === 'pattern' && error.dataPath.includes(field)
