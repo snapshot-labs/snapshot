@@ -1,15 +1,53 @@
 {
-  "en-US": "English",
-  "de-DE": "Deutsch",
-  "es-ES": "Español",
-  "fil-PH": "Filipino",
-  "fr-FR": "Français",
-  "it-IT": "Italiano",
-  "nl-NL": "Nederlands",
-  "pl-PL": "Polski",
-  "zh-CN": "简体中文",
-  "sh-HR": "Српски",
-  "ar-SA": "العربية",
-  "ru-RU": "Русский",
-  "te-IN": "తెలుగు"
+  "en-US": {
+    "name": "English"
+  },
+  "de-DE": {
+    "name": "German",
+    "nativeName": "Deutsch"
+  },
+  "es-ES": {
+    "name": "Spanish",
+    "nativeName": "Español"
+  },
+  "fil-PH": {
+    "name": "Filipino",
+    "nativeName": "Filipino"
+  },
+  "fr-FR": {
+    "name": "French",
+    "nativeName": "Français"
+  },
+  "it-IT": {
+    "name": "Italian",
+    "nativeName": "Italiano"
+  },
+  "nl-NL": {
+    "name": "Nederlands",
+    "nativeName": "Nederlands"
+  },
+  "pl-PL": {
+    "name": "Polish",
+    "nativeName": "Polski"
+  },
+  "zh-CN": {
+    "name": "Chinese simplified",
+    "nativeName": "简体中文"
+  },
+  "zh-HR": {
+    "name": "Serbian",
+    "nativeName": "Српски"
+  },
+  "ar-SA": {
+    "name": "Arabic",
+    "nativeName": "العربية"
+  },
+  "ru-RU": {
+    "name": "Russian",
+    "nativeName": "Русский"
+  },
+  "te-IN": {
+    "name": "Telugu",
+    "nativeName": "తెలుగు"
+  }
 }
