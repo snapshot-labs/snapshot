@@ -12,7 +12,12 @@
       <div class="mb-1">
         {{ $tc('proposalBy', [_shorten(proposal.address)]) }}
         <Badges :address="proposal.address" :space="space" />
-        {{ $tc('endDate', [$d(proposal.msg.payload.end * 1e3)]) }}
+        {{
+          $tc(period, [
+            _ms(proposal.msg.payload.start),
+            _ms(proposal.msg.payload.end)
+          ])
+        }}
       </div>
       <State :proposal="proposal" class="mb-2" />
     </div>
@@ -25,6 +30,15 @@ export default {
     space: Object,
     proposal: Object,
     i: String
+  },
+  computed: {
+    period() {
+      const ts = (Date.now() / 1e3).toFixed();
+      const { start, end } = this.proposal.msg.payload;
+      if (ts > end) return 'endedAgo';
+      if (ts > start) return 'endIn';
+      return 'startIn';
+    }
   }
 };
 </script>
