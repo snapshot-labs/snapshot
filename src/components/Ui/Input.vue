@@ -1,5 +1,9 @@
 <template>
-  <UiButton :warning="warning" class="text-left width-full mb-2 d-flex px-3">
+  <UiButton
+    :warning="warning"
+    class="text-left width-full mb-2 d-flex px-3"
+    :class="{ 'border-red': warning }"
+  >
     <div class="text-gray mr-2">
       <slot name="label" />
     </div>

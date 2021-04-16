@@ -3,7 +3,6 @@
     :type="type || 'button'"
     @click="$emit('click')"
     class="button"
-    :class="{ 'border-red': warning }"
     :disabled="loading"
   >
     <UiLoading v-if="loading" />
@@ -15,8 +14,7 @@
 export default {
   props: {
     loading: Boolean,
-    type: String,
-    warning: Boolean
+    type: String
   },
   emits: ['click']
 };
