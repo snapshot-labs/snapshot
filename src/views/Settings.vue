@@ -79,7 +79,7 @@
                   }}
                 </template>
                 <template v-slot:label>
-                  {{ $t(`settings.network`) }} *
+                  {{ $t(`settings.network`) }}*
                 </template>
               </UiInput>
               <UiInput
@@ -87,9 +87,7 @@
                 placeholder="e.g. BAL"
                 :warning="inputErrors.includes('symbol')"
               >
-                <template v-slot:label>
-                  {{ $t(`settings.symbol`) }} *
-                </template>
+                <template v-slot:label> {{ $t(`settings.symbol`) }}* </template>
               </UiInput>
               <UiInput
                 @click="modalSkinsOpen = true"
