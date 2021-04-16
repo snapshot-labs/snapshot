@@ -30,7 +30,7 @@
         </UiButton>
       </div>
       <Block v-if="loading" :slim="true">
-        <RowLoading />
+        <RowLoading class="my-2" />
       </Block>
       <div v-if="loaded">
         <Block :slim="true" v-for="(proposal, i) in proposals" :key="i">
@@ -59,8 +59,9 @@ export default {
   },
   async created() {
     this.loading = true;
+    const spaces = Object.keys(this.favoriteSpaces.favorites);
     try {
-      const proposals = await client.getTimeline();
+      const proposals = await client.getTimeline(spaces);
       this.proposals = formatProposals(proposals);
     } catch (e) {
       console.log(e);

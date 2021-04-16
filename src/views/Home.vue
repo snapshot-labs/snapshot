@@ -100,7 +100,6 @@ export default {
   },
   methods: {
     ...mapActions([
-      'loadFavoriteSpaces',
       'addFavoriteSpace',
       'removeFavoriteSpace'
     ]),
@@ -112,9 +111,6 @@ export default {
       }
     },
     scroll: infiniteScroll
-  },
-  created() {
-    this.loadFavoriteSpaces();
   },
   mounted() {
     this.scroll();
