@@ -55,21 +55,15 @@
                   <Icon name="external-link" class="ml-1" />
                 </UiButton>
               </a>
-              <UiInput
-                v-model="form.name"
-                :warning="inputErrors.includes('name')"
-              >
+              <UiInput v-model="form.name" :error="inputError('name')">
                 <template v-slot:label>{{ $t(`settings.name`) }}*</template>
               </UiInput>
-              <UiInput
-                v-model="form.about"
-                :warning="inputErrors.includes('about')"
-              >
+              <UiInput v-model="form.about" :error="inputError('about')">
                 <template v-slot:label> {{ $t(`settings.about`) }} </template>
               </UiInput>
               <UiInput
                 @click="modalNetworksOpen = true"
-                :warning="inputErrors.includes('network')"
+                :error="inputError('network')"
               >
                 <template v-slot:selected>
                   {{
@@ -85,13 +79,13 @@
               <UiInput
                 v-model="form.symbol"
                 placeholder="e.g. BAL"
-                :warning="inputErrors.includes('symbol')"
+                :error="inputError('symbol')"
               >
                 <template v-slot:label> {{ $t(`settings.symbol`) }}* </template>
               </UiInput>
               <UiInput
                 @click="modalSkinsOpen = true"
-                :warning="inputErrors.includes('skin')"
+                :error="inputError('skin')"
               >
                 <template v-slot:selected>
                   {{ form.skin ? form.skin : $t('defaultSkin') }}
@@ -103,7 +97,7 @@
               <UiInput
                 v-model="form.twitter"
                 placeholder="e.g. elonmusk"
-                :warning="inputErrors.includes('twitter')"
+                :error="inputError('twitter')"
               >
                 <template v-slot:label>
                   <Icon name="twitter" />
@@ -112,7 +106,7 @@
               <UiInput
                 v-model="form.github"
                 placeholder="e.g. vbuterin"
-                :warning="inputErrors.includes('github')"
+                :error="inputError('github')"
               >
                 <template v-slot:label>
                   <Icon name="github" />
@@ -121,7 +115,7 @@
               <UiInput
                 v-model="form.domain"
                 placeholder="e.g. vote.balancer.finance"
-                :warning="inputErrors.includes('domain')"
+                :error="inputError('domain')"
               >
                 <template v-slot:label>
                   {{ $t('settings.domain') }}
@@ -142,7 +136,7 @@
               </div>
             </div>
           </Block>
-          <Block :title="$t('settings.strategies')">
+          <Block :title="$t('settings.strategies') + '*'">
             <div
               v-for="(strategy, i) in form.strategies"
               :key="i"
@@ -162,25 +156,20 @@
               </a>
             </div>
             <Block
-              v-if="inputErrors.includes('strategies')"
-              style="border-color: red !important"
+              :style="`border-color: red !important`"
+              v-if="inputError('strategies')"
             >
+              <Icon name="warning" class="mr-2 text-red" />
               <span class="text-red">
-                {{ $t('settings.strategyRequired') }} &nbsp;
-              </span>
-
+                {{ inputError('strategies') }}&nbsp;</span
+              >
               <a
                 href="https://docs.snapshot.org/spaces/create#strategies"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="text-red"
-                >{{ $t('learnMore') }}</a
-              >
-              <Icon
-                name="warning"
-                size="18"
-                class="text-red p-1 float-right mr-n1"
-              />
+                >{{ $t('learnMore') }}
+                <Icon name="external-link" />
+              </a>
             </Block>
             <UiButton @click="handleAddStrategy" class="d-block width-full">
               {{ $t('settings.addStrategy') }}
@@ -188,6 +177,13 @@
           </Block>
 
           <Block :title="$t('settings.members')">
+            <Block
+              :style="`border-color: red !important`"
+              v-if="inputError('members')"
+            >
+              <Icon name="warning" class="mr-2 text-red" />
+              <span class="text-red"> {{ inputError('members') }}&nbsp;</span>
+            </Block>
             <UiButton class="d-block width-full px-3" style="height: auto">
               <TextareaArray
                 v-model="form.members"
@@ -199,21 +195,21 @@
           </Block>
           <Block :title="$t('settings.filters')">
             <div class="mb-2">
-              <UiButton class="text-left width-full mb-2 d-flex px-3">
-                <div class="text-gray mr-2">
-                  {{ $t('settings.defaultTab') }}
-                </div>
-                <input
-                  v-model="form.filters.defaultTab"
-                  class="input flex-auto"
-                />
-              </UiButton>
-              <UiButton class="text-left width-full mb-2 d-flex px-3">
-                <div class="text-gray mr-2">{{ $t('settings.minScore') }}</div>
-                <div class="flex-auto">
-                  <InputNumber v-model="form.filters.minScore" class="input" />
-                </div>
-              </UiButton>
+              <UiInput
+                v-model="form.filters.defaultTab"
+                :error="inputError('defaultTab')"
+              >
+                <template v-slot:label>{{
+                  $t('settings.defaultTab')
+                }}</template>
+              </UiInput>
+              <UiInput
+                v-model="form.filters.minScore"
+                :error="inputError('minScore')"
+                :number="true"
+              >
+                <template v-slot:label>{{ $t('settings.minScore') }}</template>
+              </UiInput>
               <div class="mb-2 d-flex flex-items-center px-2">
                 <Checkbox
                   v-model="form.filters.onlyMembers"
@@ -221,6 +217,15 @@
                 />
                 {{ $t('settings.showOnly') }}
               </div>
+              <Block
+                :style="`border-color: red !important`"
+                v-if="inputError('filters/invalids')"
+              >
+                <Icon name="warning" class="mr-2 text-red" />
+                <span class="text-red">
+                  {{ inputError('filters/invalids') }}&nbsp;</span
+                >
+              </Block>
               <UiButton class="d-block width-full px-3" style="height: auto">
                 <TextareaArray
                   v-model="form.filters.invalids"
@@ -269,7 +274,6 @@
           {{ $t('reset') }}
         </UiButton>
         <UiButton
-          :disabled="!isValid"
           @click="handleSubmit"
           :loading="loading"
           class="d-block width-full button--submit"
@@ -334,6 +338,7 @@ export default {
       modalPluginsOpen: false,
       loaded: false,
       loading: false,
+      showErrors: false,
       form: {
         strategies: [],
         plugins: {},
@@ -360,16 +365,6 @@ export default {
     },
     plugins() {
       return filterPlugins(plugins, this.app.spaces, '');
-    },
-    inputErrors() {
-      const errors = [];
-
-      if (!this.isValid && !this.loading)
-        this.validate.forEach(error => {
-          errors.push(error.dataPath.substring(1));
-        });
-
-      return errors;
     }
   },
   async created() {
@@ -400,7 +395,6 @@ export default {
   methods: {
     ...mapActions(['notify', 'send', 'getSpaces']),
     async handleSubmit() {
-      this.errors = [];
       if (this.isValid) {
         this.loading = true;
         try {
@@ -414,6 +408,46 @@ export default {
         }
         await this.getSpaces();
         this.loading = false;
+      } else {
+        this.showErrors = true;
+      }
+    },
+    inputError(field) {
+      if (!this.isValid && !this.loading && this.showErrors) {
+        const required = this.validate.find(
+          error =>
+            error.keyword === 'required' &&
+            error.params.missingProperty === field
+        );
+        if (required) return this.$t('errors.fieldRequired');
+
+        const minLength = this.validate.find(
+          error =>
+            error.keyword === 'minLength' && error.dataPath.includes(field)
+        );
+        if (minLength)
+          return this.$tc('errors.minLength', [minLength.params.limit]);
+
+        const maxLength = this.validate.find(
+          error =>
+            error.keyword === 'maxLength' && error.dataPath.includes(field)
+        );
+        if (maxLength)
+          return this.$tc('errors.minLength', [maxLength.params.limit]);
+
+        const pattern = this.validate.find(
+          error => error.keyword === 'pattern' && error.dataPath.includes(field)
+        );
+        if (pattern) return this.$t('errors.invalidChar');
+
+        const minItems = this.validate.find(
+          error =>
+            error.keyword === 'minItems' && error.dataPath.includes(field)
+        );
+        if (minItems && minItems.dataPath.includes('strategies'))
+          return this.$t('errors.minStrategy');
+        else if (minItems)
+          return this.$tc('errors.minItems', [minItems.params.limit]);
       }
     },
     handleReset() {

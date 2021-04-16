@@ -1,8 +1,7 @@
 <template>
   <UiButton
-    :warning="warning"
     class="text-left width-full mb-2 d-flex px-3"
-    :class="{ 'border-red': warning }"
+    :class="{ 'border-red': error }"
   >
     <div class="text-gray mr-2">
       <slot name="label" />
@@ -13,25 +12,27 @@
       :value="modelValue"
       @input="handleInput"
       :placeholder="placeholder"
+      :type="number ? 'number' : 'text'"
       class="input flex-auto"
       required
     />
     <slot name="info" />
-    <Icon
-      v-if="warning"
-      name="warning"
-      size="18"
-      class="text-red p-1 d-block pt-2 mt-1 mr-n1"
-    />
+    <span
+      v-if="error"
+      :aria-label="error"
+      class="float-right text-white tooltipped tooltipped-n"
+      ><Icon name="warning" class="text-red p-1 d-block pt-2 mt-1 mr-n1"
+    /></span>
   </UiButton>
 </template>
 
 <script>
 export default {
   props: {
-    warning: Boolean,
     modelValue: String || Number,
-    placeholder: String
+    placeholder: String,
+    error: String,
+    number: Boolean
   },
   emits: ['update:modelValue'],
   methods: {
