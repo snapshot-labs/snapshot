@@ -8,7 +8,7 @@
         <Token :space="space.key" symbolIndex="space" size="28" />
         <span class="ml-2" v-text="space.name" />
       </div>
-      <h3 v-text="_shorten(proposal.msg.payload.name, 52)" />
+      <h3 v-text="_shorten(proposal.msg.payload.name, 124)" />
       <div class="mb-1">
         {{ $tc('proposalBy', [_shorten(proposal.address)]) }}
         <Badges :address="proposal.address" :space="space" />

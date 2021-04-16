@@ -1,7 +1,17 @@
 <template>
   <Layout>
     <template #sidebar-left>
-      <Block title="Menu" />
+      <Block :slim="true" title="Filters" class="overflow-hidden">
+        <div class="py-3">
+          <a
+            class="d-block px-4 py-2 border-left"
+            style="border-width: 3px !important; padding-left: 21px !important"
+          >
+            Favorites
+          </a>
+          <a class="d-block px-4 py-2">All spaces</a>
+        </div>
+      </Block>
     </template>
     <template #content-right>
       <div class="px-4 px-md-0 mb-3 d-flex">
@@ -14,8 +24,9 @@
             <h2>{{ $t('timeline') }}</h2>
           </div>
         </div>
-        <UiButton>
-          <Icon size="24" name="gear" class="mr-n4 ml-n4 mt-n1 d-block" />
+        <UiButton class="pr-3">
+          All
+          <Icon size="14" name="arrow-down" class="mt-1 mr-1" />
         </UiButton>
       </div>
       <Block v-if="loading" :slim="true">
@@ -49,7 +60,7 @@ export default {
   async created() {
     this.loading = true;
     try {
-      const proposals = await client.request('timeline');
+      const proposals = await client.getTimeline();
       this.proposals = formatProposals(proposals);
     } catch (e) {
       console.log(e);
