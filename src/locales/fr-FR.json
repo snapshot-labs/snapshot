@@ -98,7 +98,8 @@
     "endTime": "Sélectionnez la date de fin",
     "publish": "Publier",
     "snapshotBlock": "Numéro du bloc",
-    "onlyMembersWarning": "Vous devez être un membre de l'espace pour pouvoir soumettre une proposition."
+    "onlyMembersWarning": "Vous devez être un membre de l'espace pour pouvoir soumettre une proposition",
+    "minScoreWarning": "Vous devez avoir un minimum de {0} {1} pour soumettre une proposition"
   },
   "delegate": {
     "header": "Déléguer",
