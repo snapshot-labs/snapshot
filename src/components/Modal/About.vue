@@ -26,7 +26,7 @@
     <div class="m-4 p-4 mt-3 border rounded-2 text-white">
       <div class="d-flex">
         <span v-text="$t('language')" class="flex-auto text-gray mr-1" />
-        <a @click="changeLang()">{{ languages[$i18n.locale] }}</a>
+        <a @click="changeLang()">{{ languages[$i18n.locale].name }}</a>
       </div>
       <div class="d-flex">
         <span v-text="$t('version')" class="flex-auto text-gray mr-1" />
