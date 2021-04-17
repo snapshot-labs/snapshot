@@ -6,6 +6,7 @@
           <router-link
             :to="{ name: 'timeline' }"
             v-text="$t('favorites')"
+            :class="!scope && 'router-link-exact-active'"
             class="d-block px-4 py-2 sidenav-item"
           />
           <router-link
@@ -57,14 +58,14 @@ export default {
     return {
       loading: false,
       loaded: false,
-      proposals: {}
+      proposals: {},
+      scope: this.$route.params.scope
     };
   },
   async created() {
     this.loading = true;
-    const scope = this.$route.params.scope;
     const spaces =
-      scope === 'all' ? [] : Object.keys(this.favoriteSpaces.favorites);
+      this.scope === 'all' ? [] : Object.keys(this.favoriteSpaces.favorites);
     try {
       const proposals = await client.getTimeline(spaces);
       this.proposals = formatProposals(proposals);
