@@ -2,6 +2,7 @@ import { createI18n } from 'vue-i18n';
 import { nextTick } from 'vue';
 import en from '@/locales/default.json';
 import languages from '@/locales/languages.json';
+import { lsRemove } from '@/helpers/utils';
 
 export let defaultLocale = 'en-US';
 
@@ -51,6 +52,10 @@ export function setupI18n(options = { locale: defaultLocale }) {
 
 export async function loadLocaleMessages(i18n, locale) {
   if (locale === 'en-US') locale = 'default';
+  if (locale === 'zh-HR') {
+    lsRemove('locale');
+    locale = 'zh-CN';
+  }
   // load locale messages with dynamic import
   const messages = await import(
     /* webpackChunkName: "locale-[request]" */ `./locales/${locale}.json`
