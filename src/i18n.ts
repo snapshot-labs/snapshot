@@ -57,12 +57,16 @@ export async function loadLocaleMessages(i18n, locale) {
     locale = 'zh-CN';
   }
   // load locale messages with dynamic import
-  const messages = await import(
-    /* webpackChunkName: "locale-[request]" */ `./locales/${locale}.json`
-  );
+  try {
+    const messages = await import(
+      /* webpackChunkName: "locale-[request]" */ `./locales/${locale}.json`
+    );
+    i18n.global.setLocaleMessage(locale, messages.default);
+  } catch (e) {
+    console.log(e);
+  }
 
   // set locale and locale message
-  i18n.global.setLocaleMessage(locale, messages.default);
 
   return nextTick();
 }
