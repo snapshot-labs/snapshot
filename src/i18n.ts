@@ -51,18 +51,23 @@ export function setupI18n(options = { locale: defaultLocale }) {
 }
 
 export async function loadLocaleMessages(i18n, locale) {
-  if (locale === 'en-US') locale = 'default';
-  if (locale === 'zh-HR') {
+  if (!Object.keys(languages).includes(locale)) {
     lsRemove('locale');
-    locale = 'zh-CN';
+    locale = 'default';
   }
-  // load locale messages with dynamic import
-  const messages = await import(
-    /* webpackChunkName: "locale-[request]" */ `./locales/${locale}.json`
-  );
+  if (locale === 'en-US') locale = 'default';
 
-  // set locale and locale message
-  i18n.global.setLocaleMessage(locale, messages.default);
+  try {
+    // load locale messages with dynamic import
+    const messages = await import(
+      /* webpackChunkName: "locale-[request]" */ `./locales/${locale}.json`
+    );
+
+    // set locale and locale message
+    i18n.global.setLocaleMessage(locale, messages.default);
+  } catch (e) {
+    console.log(e);
+  }
 
   return nextTick();
 }
