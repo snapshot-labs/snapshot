@@ -27,7 +27,7 @@
       <div class="d-flex">
         <span v-text="$t('language')" class="flex-auto text-gray mr-1" />
         <a @click="changeLang()">{{
-          languages[$i18n.locale]?.name || $t('selectLanguage')
+          languages[$i18n.locale]?.name || $i18n.locale
         }}</a>
       </div>
       <div class="d-flex">
