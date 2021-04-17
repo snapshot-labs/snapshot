@@ -38,11 +38,7 @@
       </Block>
       <div v-if="loaded">
         <Block :slim="true" v-for="(proposal, i) in proposals" :key="i">
-          <TimelineProposal
-            :proposal="proposal"
-            :space="app.spaces[proposal.msg.space]"
-            :i="i"
-          />
+          <TimelineProposal :proposal="proposal" :i="i" />
         </Block>
       </div>
     </template>
@@ -50,8 +46,7 @@
 </template>
 
 <script>
-import client from '@/helpers/client';
-import { formatProposals } from '@/helpers/utils';
+import { subgraphRequest } from '@snapshot-labs/snapshot.js/src/utils';
 
 export default {
   data() {
@@ -67,8 +62,28 @@ export default {
     const spaces =
       this.scope === 'all' ? [] : Object.keys(this.favoriteSpaces.favorites);
     try {
-      const proposals = await client.getTimeline(spaces);
-      this.proposals = formatProposals(proposals);
+      const proposals = await subgraphRequest(
+        `${process.env.VUE_APP_HUB_URL}/graphql`,
+        {
+          timeline: {
+            __args: {
+              spaces
+            },
+            id: true,
+            author: true,
+            name: true,
+            start: true,
+            end: true,
+            state: true,
+            space: {
+              id: true,
+              name: true,
+              members: true
+            }
+          }
+        }
+      );
+      this.proposals = proposals.timeline;
     } catch (e) {
       console.log(e);
     }
