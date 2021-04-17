@@ -99,10 +99,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions([
-      'addFavoriteSpace',
-      'removeFavoriteSpace'
-    ]),
+    ...mapActions(['addFavoriteSpace', 'removeFavoriteSpace']),
     toggleFavorite(spaceId) {
       if (this.favoriteSpaces.favorites[spaceId]) {
         this.removeFavoriteSpace(spaceId);

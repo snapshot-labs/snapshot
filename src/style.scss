@@ -242,3 +242,10 @@ textarea {
 .border-color {
   color: var(--border-color);
 }
+
+.sidenav-item {
+  &.router-link-exact-active {
+    border-left: 3px solid;
+    padding-left: 21px !important
+  }
+}
