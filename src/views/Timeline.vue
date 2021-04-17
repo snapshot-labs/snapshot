@@ -1,15 +1,18 @@
 <template>
   <Layout>
     <template #sidebar-left>
-      <Block :slim="true" title="Filters" class="overflow-hidden">
+      <Block :slim="true" :title="$t('filters')" class="overflow-hidden">
         <div class="py-3">
-          <a
-            class="d-block px-4 py-2 border-left"
-            style="border-width: 3px !important; padding-left: 21px !important"
-          >
-            Favorites
-          </a>
-          <a class="d-block px-4 py-2">All spaces</a>
+          <router-link
+            :to="{ name: 'timeline' }"
+            v-text="$t('favorites')"
+            class="d-block px-4 py-2 sidenav-item"
+          />
+          <router-link
+            :to="{ name: 'timeline', params: { scope: 'all' } }"
+            v-text="$t('allSpaces')"
+            class="d-block px-4 py-2 sidenav-item"
+          />
         </div>
       </Block>
     </template>
@@ -25,7 +28,7 @@
           </div>
         </div>
         <UiButton class="pr-3">
-          All
+          {{ $t('proposals.states.all') }}
           <Icon size="14" name="arrow-down" class="mt-1 mr-1" />
         </UiButton>
       </div>
@@ -59,7 +62,9 @@ export default {
   },
   async created() {
     this.loading = true;
-    const spaces = Object.keys(this.favoriteSpaces.favorites);
+    const scope = this.$route.params.scope;
+    const spaces =
+      scope === 'all' ? [] : Object.keys(this.favoriteSpaces.favorites);
     try {
       const proposals = await client.getTimeline(spaces);
       this.proposals = formatProposals(proposals);
