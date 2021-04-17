@@ -51,11 +51,11 @@ export function setupI18n(options = { locale: defaultLocale }) {
 }
 
 export async function loadLocaleMessages(i18n, locale) {
-  if (locale === 'en-US') locale = 'default';
-  if (locale === 'zh-HR') {
+  if (!Object.keys(languages).includes(locale)) {
     lsRemove('locale');
-    locale = 'zh-CN';
+    locale = 'default';
   }
+  if (locale === 'en-US') locale = 'default';
 
   try {
     // load locale messages with dynamic import
