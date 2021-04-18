@@ -10,7 +10,8 @@
         @click="selectLang(locale)"
         class="width-full mb-2"
       >
-        {{ languages[locale] }}
+        {{ locale === 'en-US' ? '' : languages[locale].nativeName + ' - ' }}
+        {{ languages[locale].name }}
       </UiButton>
     </div>
   </UiModal>

@@ -14,7 +14,7 @@ export async function getProposal(space, id) {
     const provider = getProvider(space.network);
     const response = await Promise.all([
       ipfsGet(gateway, id),
-      client.request(`${space.key}/proposal/${id}`),
+      client.getVotes(space.key, id),
       getBlockNumber(provider)
     ]);
     console.timeEnd('getProposal.data');
@@ -132,7 +132,7 @@ export async function getPower(space, address, snapshot) {
 
 export async function getProposals(space) {
   try {
-    let proposals: any = await client.request(`${space.key}/proposals`);
+    let proposals: any = await client.getProposals(space.key);
     if (proposals && !space.filters?.onlyMembers) {
       const scores: any = await getScores(
         space.key,

@@ -56,7 +56,7 @@ const actions = {
     commit('SET', { modalOpen: !state.modalOpen });
   },
   getSpaces: async ({ commit }) => {
-    let spaces: any = await client.request('spaces');
+    let spaces: any = await client.getSpaces();
     spaces = Object.fromEntries(
       Object.entries(spaces).map(space => [
         space[0],
@@ -81,7 +81,7 @@ const actions = {
         })
       };
       msg.sig = await signMessage(auth.web3, msg.msg, rootState.web3.account);
-      const result = await client.request('message', msg);
+      const result = await client.send(msg);
       commit('SEND_SUCCESS');
       dispatch('notify', [
         'green',
