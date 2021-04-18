@@ -70,11 +70,15 @@ export default {
               spaces
             },
             id: true,
-            author: true,
             name: true,
             start: true,
             end: true,
             state: true,
+            author: {
+              address: true,
+              name: true,
+              ens: true
+            },
             space: {
               id: true,
               name: true,
