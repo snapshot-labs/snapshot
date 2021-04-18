@@ -99,11 +99,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions([
-      'loadFavoriteSpaces',
-      'addFavoriteSpace',
-      'removeFavoriteSpace'
-    ]),
+    ...mapActions(['addFavoriteSpace', 'removeFavoriteSpace']),
     toggleFavorite(spaceId) {
       if (this.favoriteSpaces.favorites[spaceId]) {
         this.removeFavoriteSpace(spaceId);
@@ -112,9 +108,6 @@ export default {
       }
     },
     scroll: infiniteScroll
-  },
-  created() {
-    this.loadFavoriteSpaces();
   },
   mounted() {
     this.scroll();
