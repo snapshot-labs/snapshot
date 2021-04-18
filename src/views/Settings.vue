@@ -319,6 +319,7 @@ import gateways from '@snapshot-labs/snapshot.js/src/gateways.json';
 import { clone, filterPlugins } from '@/helpers/utils';
 import plugins from '@snapshot-labs/snapshot.js/src/plugins';
 import { getSpaceUri, uriGet } from '@/helpers/ens';
+import defaults from '@/locales/default';
 
 const gateway = process.env.VUE_APP_IPFS_GATEWAY || gateways[0];
 
@@ -414,40 +415,19 @@ export default {
     },
     inputError(field) {
       if (!this.isValid && !this.loading && this.showErrors) {
-        const required = this.validate.find(
+        const errors = Object.keys(defaults.errors);
+        const errorFound = this.validate.find(
           error =>
-            error.keyword === 'required' &&
-            error.params.missingProperty === field
+            (errors.includes(error.keyword) &&
+              error.params.missingProperty === field) ||
+            (errors.includes(error.keyword) && error.dataPath.includes(field))
         );
-        if (required) return this.$t('errors.fieldRequired');
-
-        const minLength = this.validate.find(
-          error =>
-            error.keyword === 'minLength' && error.dataPath.includes(field)
-        );
-        if (minLength)
-          return this.$tc('errors.minLength', [minLength.params.limit]);
-
-        const maxLength = this.validate.find(
-          error =>
-            error.keyword === 'maxLength' && error.dataPath.includes(field)
-        );
-        if (maxLength)
-          return this.$tc('errors.maxLength', [maxLength.params.limit]);
-
-        const pattern = this.validate.find(
-          error => error.keyword === 'pattern' && error.dataPath.includes(field)
-        );
-        if (pattern) return this.$t('errors.invalidChar');
-
-        const minItems = this.validate.find(
-          error =>
-            error.keyword === 'minItems' && error.dataPath.includes(field)
-        );
-        if (minItems && minItems.dataPath.includes('strategies'))
+        if (errorFound?.dataPath.includes('strategies'))
           return this.$t('errors.minStrategy');
-        else if (minItems)
-          return this.$tc('errors.minItems', [minItems.params.limit]);
+        else if (errorFound)
+          return this.$tc(`errors.${errorFound.keyword}`, [
+            errorFound?.params.limit
+          ]);
       }
     },
     handleReset() {

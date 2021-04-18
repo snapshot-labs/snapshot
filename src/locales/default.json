@@ -93,10 +93,10 @@
   "select": "Select",
   "language": "Language",
   "errors": {
-    "fieldRequired": "Field is required",
+    "required": "Field is required",
     "minLength": "Minimum length is {0}",
     "maxLength": "Maximum length is {0}",
-    "invalidChar": "Invalid character",
+    "pattern": "Invalid character",
     "minItems": "Minimum {0} item(s) required",
     "minStrategy": "At least one strategy is required."
   },
