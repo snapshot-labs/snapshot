@@ -75,7 +75,7 @@
   "basetokenAddress": "Base token address",
   "quoteAddress": "Quote currency address",
   "removeMarket": "Remove market",
-  "back": "Back",
+  "back": "Anterior",
   "loading": "Loading...",
   "predictedImpact": "Predicted impact",
   "marketSymbol": "{0} mercado",
@@ -95,7 +95,7 @@
   "create": {
     "question": "Question",
     "content": "What is your proposal?",
-    "preview": "Preview",
+    "preview": "Pré-visualizar",
     "choices": "Opções",
     "addChoice": "Adicionar opção",
     "startDate": "Seleciona uma data de início",
@@ -126,12 +126,12 @@
     "new": "Nova proposta",
     "noProposals": "Ainda não há nenhuma proposta aqui!",
     "states": {
-      "all": "All",
+      "all": "Todas",
       "core": "Core",
       "community": "Comunidade",
-      "active": "Active",
+      "active": "Ativas",
       "pending": "Pendente",
-      "closed": "Closed"
+      "closed": "Encerradas"
     }
   },
   "settings": {
@@ -142,7 +142,7 @@
     "changeAvatar": "Change avatar",
     "name": "Nome",
     "about": "Sobre nós",
-    "symbol": "Symbol",
+    "symbol": "Símbolo",
     "skin": "Skin",
     "domain": "Nome do domínio",
     "hideSpace": "Hide space from homepage",
@@ -152,19 +152,19 @@
     "defaultTab": "Default tab",
     "minScore": "Min. score",
     "showOnly": "Show only members proposals",
-    "editPlugin": "Edit plugin",
+    "editPlugin": "Editar plugin",
     "addPlugin": "Adicionar plugin",
-    "pluginParameters": "Plugin parameters"
+    "pluginParameters": "Parâmetros do plugin"
   },
   "setup": {
-    "example": "e.g. yam.eth",
+    "example": "p. ex. yam.eth",
     "useExistingEns": "Use an existing ENS name to create your space with.",
-    "createASpace": "Create a space"
+    "createASpace": "Criar comunidade"
   },
   "notify": {
     "youDidIt": "You did it!",
     "copied": "Copiado!",
-    "proposalDeleted": "Proposal deleted",
+    "proposalDeleted": "Proposta excluída",
     "yourIsIn": "Your {0} is in!",
     "somethingWentWrong": "Oops, something went wrong!"
   }
