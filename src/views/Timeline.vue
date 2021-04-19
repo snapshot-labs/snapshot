@@ -48,7 +48,7 @@
       <Block v-if="loading" :slim="true">
         <RowLoading class="my-2" />
       </Block>
-      <div v-if="loaded">
+      <div v-if="!loading">
         <Block :slim="true" v-for="(proposal, i) in proposals" :key="i">
           <TimelineProposal :proposal="proposal" :i="i" />
         </Block>
@@ -64,7 +64,6 @@ export default {
   data() {
     return {
       loading: false,
-      loaded: false,
       proposals: {},
       scope: this.$route.params.scope,
       state: 'all'
@@ -80,6 +79,7 @@ export default {
       this.state = e;
     },
     async loadProposals() {
+      this.loading = true;
       const spaces =
         this.scope === 'all' ? [] : Object.keys(this.favoriteSpaces.favorites);
       try {
@@ -113,13 +113,11 @@ export default {
       } catch (e) {
         console.log(e);
       }
+      this.loading = false;
     }
   },
   async created() {
-    this.loading = true;
     await this.loadProposals();
-    this.loading = false;
-    this.loaded = true;
   }
 };
 </script>
