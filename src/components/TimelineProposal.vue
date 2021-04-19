@@ -13,8 +13,17 @@
       </div>
       <h3 v-text="_shorten(proposal.name, 124)" />
       <div class="mb-1">
-        {{ $tc('proposalBy', [_shorten(proposal.author)]) }}
-        <Badges :address="proposal.author" :members="proposal.space.members" />
+        {{
+          $tc('proposalBy', [
+            proposal.author.name ||
+              proposal.author.ens ||
+              _shorten(proposal.author.address)
+          ])
+        }}
+        <Badges
+          :address="proposal.author.address"
+          :members="proposal.space.members"
+        />
         {{ $tc(period, [_ms(proposal.start), _ms(proposal.end)]) }}
       </div>
       <UiState :state="proposal.state" class="mb-2" />
