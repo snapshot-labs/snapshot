@@ -29,7 +29,7 @@
           </div>
         </div>
         <UiDropdown
-          top="2.5rem"
+          top="3.5rem"
           right="1.25rem"
           @select="selectState"
           :items="[
