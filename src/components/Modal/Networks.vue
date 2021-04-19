@@ -16,7 +16,7 @@
       >
         <BlockNetwork :network="network" />
       </a>
-      <NoResults :length="Object.keys(networks).length" />
+      <NoResults v-if="Object.keys(networks).length < 1" />
     </div>
   </UiModal>
 </template>

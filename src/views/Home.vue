@@ -55,7 +55,7 @@
         </router-link>
         <NoResults
           :block="true"
-          :length="Object.keys(spaces).length"
+          v-if="Object.keys(spaces).length < 1"
           class="pr-md-4"
         />
       </div>
