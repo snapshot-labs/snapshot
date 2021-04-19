@@ -305,10 +305,11 @@ export default {
       return !this.loading && this.web3.account && this.validate === true;
     },
     contenthash() {
+      const key = encodeURIComponent(this.key);
       const address = this.web3.account
         ? getAddress(this.web3.account)
         : '<your-address>';
-      return `ipns://storage.snapshot.page/registry/${address}/${this.key}`;
+      return `ipns://storage.snapshot.page/registry/${address}/${key}`;
     },
     isReady() {
       return this.currentContenthash === this.contenthash;

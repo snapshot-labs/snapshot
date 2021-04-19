@@ -19,6 +19,9 @@
   "strategiesPage": "Strategie",
   "version": "Versione",
   "timeline": "Cronologia",
+  "filters": "Filters",
+  "favorites": "Favorites",
+  "allSpaces": "All spaces",
   "submitOnchain": "Invia on-chain",
   "inSpaces": "In {0} spazio(i)",
   "downloadReport": "Scarica il report",
@@ -80,6 +83,9 @@
   "noResultsFound": "Oops, non riusciamo a trovare alcun risultato",
   "createdBy": "Da {0}",
   "startToEnd": "inizia {0} fine {1}",
+  "startIn": "start {0}",
+  "endIn": "end {1}",
+  "endedAgo": "ended {1}",
   "proposalBy": "Proposta da {0}",
   "endDate": "termina {0}",
   "contectHash": "Hash del contenuto",
@@ -99,7 +105,7 @@
     "publish": "Pubblica",
     "snapshotBlock": "Numero blocco istantanea",
     "onlyMembersWarning": "Devi essere un utente attivo per poter inviare una proposta",
-    "minScoreWarning": "Devi possedere almeno {0} {1} per poter inviare una proposta"
+    "minScoreWarning": "Morate imati najmanje {0} {1} da biste podneli predlog"
   },
   "delegate": {
     "header": "Delega",
