@@ -36,11 +36,22 @@
       <Block v-if="loading" :slim="true">
         <RowLoading class="my-2" />
       </Block>
-      <div v-if="loaded">
+      <div
+        v-else-if="
+          loaded && Object.keys(proposals).length > 0 && spaces.length > 0
+        "
+      >
         <Block :slim="true" v-for="(proposal, i) in proposals" :key="i">
           <TimelineProposal :proposal="proposal" :i="i" />
         </Block>
       </div>
+      <Block v-else-if="spaces.length < 1" class="text-center">
+        <!-- {{ this.$t('noResultsFound') }} -->
+        <div class="mb-3">Oops, you don't have any favorites yet</div>
+        <router-link :to="{ name: 'home' }">
+          <UiButton> Add favorites </UiButton>
+        </router-link>
+      </Block>
     </template>
   </Layout>
 </template>
@@ -54,12 +65,13 @@ export default {
       loading: false,
       loaded: false,
       proposals: {},
-      scope: this.$route.params.scope
+      scope: this.$route.params.scope,
+      spaces: []
     };
   },
   async created() {
     this.loading = true;
-    const spaces =
+    this.spaces =
       this.scope === 'all' ? [] : Object.keys(this.favoriteSpaces.favorites);
     try {
       const proposals = await subgraphRequest(
@@ -67,7 +79,7 @@ export default {
         {
           timeline: {
             __args: {
-              spaces
+              spaces: this.spaces
             },
             id: true,
             name: true,
