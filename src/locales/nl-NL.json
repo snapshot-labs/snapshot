@@ -81,6 +81,8 @@
   "marketSymbol": "{0} markt",
   "twoChoicesRequired": "Twee keuzes zijn nodig voor deze plugin.",
   "noResultsFound": "Oeps, we kunnen geen resultaten vinden",
+  "noFavorites": "Oops, you don't have any favorites yet",
+  "addFavorites": "Add favorites",
   "createdBy": "Door {0}",
   "startToEnd": "begin {0} einde {1}",
   "startIn": "start {0}",
@@ -92,6 +94,14 @@
   "defaultSkin": "Standaard skin",
   "select": "Kies",
   "language": "Taal",
+  "errors": {
+    "required": "Field is required",
+    "minLength": "Minimum length is {0}",
+    "maxLength": "Maximum length is {0}",
+    "pattern": "Invalid character",
+    "minItems": "Minimum {0} item(s) required",
+    "minStrategy": "At least one strategy is required."
+  },
   "create": {
     "question": "Vraag",
     "content": "Wat is je voorstel?",
@@ -142,9 +152,11 @@
     "changeAvatar": "Verander avatar",
     "name": "Naam",
     "about": "Over ons",
+    "network": "Network",
     "symbol": "Symbool",
     "skin": "Skin",
     "domain": "Domeinnaam",
+    "strategies": "Strategie(s)",
     "hideSpace": "Verberg ruimte van homepage",
     "addStrategy": "Strategie toevoegen",
     "members": "Leden",
@@ -154,7 +166,8 @@
     "showOnly": "Toon alleen voorstellen van leden",
     "editPlugin": "Bewerk plugin",
     "addPlugin": "Plugin toevoegen",
-    "pluginParameters": "Plugin parameters"
+    "pluginParameters": "Plugin parameters",
+    "strategyRequired": "At least one strategy is required."
   },
   "setup": {
     "example": "b.v. yam.eth",
