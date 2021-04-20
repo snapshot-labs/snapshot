@@ -81,6 +81,8 @@
   "marketSymbol": "{0} మార్కెట్‌",
   "twoChoicesRequired": "ఈ ప్లగ్ఇన్ కోసం రెండు ఎంపికలు అవసరం.",
   "noResultsFound": "అయ్యో, మేము ఏ ఫలితాలను కనుగొనలేకపోయాము",
+  "noFavorites": "Oops, you don't have any favorites yet",
+  "addFavorites": "Add favorites",
   "createdBy": "{0} ద్వారా",
   "startToEnd": "ప్రారంభం {0} ముగింపు {1}",
   "startIn": "start {0}",
@@ -92,6 +94,14 @@
   "defaultSkin": "డిఫాల్ట్ స్కిన్స్",
   "select": "ఎంచుకోండి",
   "language": "Language",
+  "errors": {
+    "required": "Field is required",
+    "minLength": "Minimum length is {0}",
+    "maxLength": "Maximum length is {0}",
+    "pattern": "Invalid character",
+    "minItems": "Minimum {0} item(s) required",
+    "minStrategy": "At least one strategy is required."
+  },
   "create": {
     "question": "ప్రశ్న",
     "content": "మీ ప్రతిపాదన ఏమిటి?",
@@ -142,9 +152,11 @@
     "changeAvatar": "అవతార్ మార్చండి",
     "name": "పేరు",
     "about": "About",
+    "network": "Network",
     "symbol": "చిహ్నం",
     "skin": "స్కిన్స",
     "domain": "డొమైన్ పేరు",
+    "strategies": "Strategie(s)",
     "hideSpace": "హోమ్‌పేజీ నుండి స్పేస్ దాచండి",
     "addStrategy": "వ్యూహాన్ని జోడించండి",
     "members": "సభ్యులు",
@@ -154,7 +166,8 @@
     "showOnly": "సభ్యుల ప్రతిపాదనలను మాత్రమే చూపించు",
     "editPlugin": "Edit plugin",
     "addPlugin": "Add plugin",
-    "pluginParameters": "Plugin parameters"
+    "pluginParameters": "Plugin parameters",
+    "strategyRequired": "At least one strategy is required."
   },
   "setup": {
     "example": "ఉదాహరణ. yarn.eth",
