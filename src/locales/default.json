@@ -81,6 +81,8 @@
   "marketSymbol": "{0} market",
   "twoChoicesRequired": "Two choices are required for this plugin.",
   "noResultsFound": "Oops, we can't find any results",
+  "noFavorites": "Oops, you don't have any favorites yet",
+  "addFavorites": "Add favorites",
   "createdBy": "By {0}",
   "startToEnd": "start {0} end {1}",
   "startIn": "start {0}",

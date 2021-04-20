@@ -48,18 +48,23 @@
       <Block v-if="loading" :slim="true">
         <RowLoading class="my-2" />
       </Block>
-      <div v-if="!loading">
+      <Block v-else-if="spaces.length < 1 && !scope" class="text-center">
+        <div class="mb-3">{{ $t('noFavorites') }}</div>
+        <router-link :to="{ name: 'home' }">
+          <UiButton>{{ $t('addFavorites') }}</UiButton>
+        </router-link>
+      </Block>
+      <Block
+        v-else-if="Object.keys(this.proposals).length < 1"
+        class="text-center"
+      >
+        <div>{{ $t('noResultsFound') }}</div>
+      </Block>
+      <div v-else>
         <Block :slim="true" v-for="(proposal, i) in proposals" :key="i">
           <TimelineProposal :proposal="proposal" :i="i" />
         </Block>
       </div>
-      <Block v-else-if="spaces.length < 1" class="text-center">
-        <!-- {{ this.$t('noResultsFound') }} -->
-        <div class="mb-3">Oops, you don't have any favorites yet</div>
-        <router-link :to="{ name: 'home' }">
-          <UiButton> Add favorites </UiButton>
-        </router-link>
-      </Block>
     </template>
   </Layout>
 </template>
@@ -73,7 +78,8 @@ export default {
       loading: false,
       proposals: {},
       scope: this.$route.params.scope,
-      state: 'all'
+      state: 'all',
+      spaces: []
     };
   },
   watch: {
@@ -87,7 +93,7 @@ export default {
     },
     async loadProposals() {
       this.loading = true;
-      const spaces =
+      this.spaces =
         this.scope === 'all' ? [] : Object.keys(this.favoriteSpaces.favorites);
       try {
         const proposals = await subgraphRequest(
@@ -95,7 +101,7 @@ export default {
           {
             timeline: {
               __args: {
-                spaces,
+                spaces: this.spaces,
                 state: this.state
               },
               id: true,
