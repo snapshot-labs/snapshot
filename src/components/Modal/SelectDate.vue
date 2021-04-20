@@ -38,6 +38,7 @@
         <UiButton
           @click="handleSubmit"
           type="submit"
+          :disabled="!input"
           class="width-full button--submit"
         >
           <span v-if="step === 0">{{ $t('next') }}</span>
@@ -64,12 +65,24 @@ export default {
   },
   watch: {
     open() {
+      const { dateString, h, m } = this.formatDate(this.value);
       this.step = 0;
-      this.form = { h: '12', m: '00' };
-      this.input = this.value;
+      this.form = { h, m };
+      this.input = dateString;
     }
   },
   methods: {
+    formatDate(date) {
+      const output = { h: '12', m: '00', dateString: '' };
+      if (!date) return output;
+      const dateObject = new Date(date * 1000);
+      const offset = dateObject.getTimezoneOffset();
+      const data = new Date(dateObject.getTime() - offset * 60 * 1000);
+      output.dateString = data.toISOString().split('T')[0];
+      output.h = ('0' + dateObject.getHours().toString()).slice(-2);
+      output.m = ('0' + dateObject.getMinutes().toString()).slice(-2);
+      return output;
+    },
     handleSubmit() {
       if (this.step === 0) return (this.step = 1);
       const [year, month, day] = this.input.split('-');
