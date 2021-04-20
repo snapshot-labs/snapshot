@@ -45,15 +45,16 @@
           </UiButton>
         </UiDropdown>
       </div>
-      <Block v-if="loading" :slim="true">
-        <RowLoading class="my-2" />
-      </Block>
-      <Block v-else-if="spaces.length < 1 && !scope" class="text-center">
+      <Block v-if="spaces.length < 1 && !scope" class="text-center">
         <div class="mb-3">{{ $t('noFavorites') }}</div>
         <router-link :to="{ name: 'home' }">
           <UiButton>{{ $t('addFavorites') }}</UiButton>
         </router-link>
       </Block>
+      <Block v-else-if="loading" :slim="true">
+        <RowLoading class="my-2" />
+      </Block>
+
       <NoResults
         :block="true"
         v-else-if="Object.keys(this.proposals).length < 1"
