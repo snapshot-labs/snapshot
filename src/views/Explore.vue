@@ -56,6 +56,7 @@
         <NoResults :block="true" v-if="Object.keys(items).length < 1" />
       </div>
     </Container>
+    <div id="scrollsensor"></div>
   </div>
 </template>
 
@@ -68,9 +69,9 @@ import {
   filterStrategies,
   filterSkins,
   filterNetworks,
-  filterPlugins,
-  infiniteScroll
+  filterPlugins
 } from '@/helpers/utils';
+import scrollMonitor from 'scrollmonitor';
 
 export default {
   data() {
@@ -109,11 +110,14 @@ export default {
       return [];
     }
   },
-  methods: {
-    scroll: infiniteScroll
-  },
   mounted() {
-    this.scroll();
+    const el = document.getElementById('scrollsensor');
+    const elementWatcher = scrollMonitor.create(el);
+    elementWatcher.enterViewport(async () => {
+      if (this.items) {
+        this.limit += 8;
+      }
+    });
   }
 };
 </script>
