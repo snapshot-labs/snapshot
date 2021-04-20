@@ -54,12 +54,10 @@
           <UiButton>{{ $t('addFavorites') }}</UiButton>
         </router-link>
       </Block>
-      <Block
+      <NoResults
+        :block="true"
         v-else-if="Object.keys(this.proposals).length < 1"
-        class="text-center"
-      >
-        <div>{{ $t('noResultsFound') }}</div>
-      </Block>
+      />
       <div v-else>
         <Block :slim="true" v-for="(proposal, i) in proposals" :key="i">
           <TimelineProposal :proposal="proposal" :i="i" />
