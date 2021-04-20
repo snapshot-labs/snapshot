@@ -92,6 +92,14 @@
   "defaultSkin": "Default skin",
   "select": "Select",
   "language": "Language",
+  "errors": {
+    "required": "Field is required",
+    "minLength": "Minimum length is {0}",
+    "maxLength": "Maximum length is {0}",
+    "pattern": "Invalid character",
+    "minItems": "Minimum {0} item(s) required",
+    "minStrategy": "At least one strategy is required."
+  },
   "create": {
     "question": "Question",
     "content": "What is your proposal?",
@@ -142,9 +150,11 @@
     "changeAvatar": "Change avatar",
     "name": "Name",
     "about": "About",
+    "network": "Network",
     "symbol": "Symbol",
     "skin": "Skin",
     "domain": "Domain name",
+    "strategies": "Strategie(s)",
     "hideSpace": "Hide space from homepage",
     "addStrategy": "Add strategy",
     "members": "Members",
@@ -154,7 +164,8 @@
     "showOnly": "Show only members proposals",
     "editPlugin": "Edit plugin",
     "addPlugin": "Add plugin",
-    "pluginParameters": "Plugin parameters"
+    "pluginParameters": "Plugin parameters",
+    "strategyRequired": "At least one strategy is required."
   },
   "setup": {
     "example": "e.g. yam.eth",
