@@ -53,7 +53,7 @@
             class="mb-3"
           />
         </template>
-        <NoResults :block="true" :length="Object.keys(items).length" />
+        <NoResults :block="true" v-if="Object.keys(items).length < 1" />
       </div>
     </Container>
   </div>
