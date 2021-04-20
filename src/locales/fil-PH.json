@@ -81,6 +81,8 @@
   "marketSymbol": "{0} market",
   "twoChoicesRequired": "Dalawang choice ang kailangan para sa plugin na ito.",
   "noResultsFound": "Oops, wala kaming makitang mga resulta",
+  "noFavorites": "Oops, you don't have any favorites yet",
+  "addFavorites": "Add favorites",
   "createdBy": "By {0}",
   "startToEnd": "start {0} end {1}",
   "startIn": "start {0}",
@@ -92,6 +94,14 @@
   "defaultSkin": "Default skin",
   "select": "Piliin",
   "language": "Lingwahe",
+  "errors": {
+    "required": "Field is required",
+    "minLength": "Minimum length is {0}",
+    "maxLength": "Maximum length is {0}",
+    "pattern": "Invalid character",
+    "minItems": "Minimum {0} item(s) required",
+    "minStrategy": "At least one strategy is required."
+  },
   "create": {
     "question": "Tanong",
     "content": "Ano ang iyong proposal?",
@@ -142,9 +152,11 @@
     "changeAvatar": "Ibahin ang avatar",
     "name": "Pangalan",
     "about": "Tungkol Dito",
+    "network": "Network",
     "symbol": "Sagisag",
     "skin": "Skin",
     "domain": "Domain name",
+    "strategies": "Strategie(s)",
     "hideSpace": "Itago ang espasyo sa homepage",
     "addStrategy": "Add strategy",
     "members": "Mga miyembro",
@@ -154,7 +166,8 @@
     "showOnly": "Ipakita lamang ang members proposals",
     "editPlugin": "I-edit ang plugin",
     "addPlugin": "Magdagdag ng Plugin",
-    "pluginParameters": "Plugin parameters"
+    "pluginParameters": "Plugin parameters",
+    "strategyRequired": "At least one strategy is required."
   },
   "setup": {
     "example": "e.g. yam.eth",
