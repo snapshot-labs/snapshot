@@ -81,6 +81,8 @@
   "marketSymbol": "{0} 市场",
   "twoChoicesRequired": "此插件需要两个选项。",
   "noResultsFound": "哎呀，我们找不到任何结果",
+  "noFavorites": "Oops, you don't have any favorites yet",
+  "addFavorites": "Add favorites",
   "createdBy": "由 {0}",
   "startToEnd": "开始 {0} 结束 {1}",
   "startIn": "start {0}",
@@ -92,6 +94,14 @@
   "defaultSkin": "默认皮肤",
   "select": "选择",
   "language": "语言",
+  "errors": {
+    "required": "Field is required",
+    "minLength": "Minimum length is {0}",
+    "maxLength": "Maximum length is {0}",
+    "pattern": "Invalid character",
+    "minItems": "Minimum {0} item(s) required",
+    "minStrategy": "At least one strategy is required."
+  },
   "create": {
     "question": "问题",
     "content": "您的建议是什么？",
@@ -142,9 +152,11 @@
     "changeAvatar": "修改头像",
     "name": "名称",
     "about": "关于",
+    "network": "Network",
     "symbol": "符号",
     "skin": "皮肤",
     "domain": "域名",
+    "strategies": "Strategie(s)",
     "hideSpace": "从主页隐藏空间",
     "addStrategy": "添加策略",
     "members": "成员",
@@ -154,7 +166,8 @@
     "showOnly": "仅显示会员提议",
     "editPlugin": "编辑插件",
     "addPlugin": "添加插件",
-    "pluginParameters": "插件参数"
+    "pluginParameters": "插件参数",
+    "strategyRequired": "At least one strategy is required."
   },
   "setup": {
     "example": "例如 yam.eth",
