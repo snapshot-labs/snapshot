@@ -3,7 +3,7 @@
     <a @click="modalOpen = true" class="no-wrap">
       <Avatar :profile="profile" :address="address" size="16" class="mr-1" />
       {{ name }}
-      <Badges :address="address" :space="space" />
+      <Badges :address="address" :members="space.members" />
     </a>
     <teleport to="#modal">
       <ModalUser

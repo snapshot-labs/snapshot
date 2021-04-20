@@ -41,7 +41,7 @@
         >
           <BlockStrategy :strategy="strategy" />
         </a>
-        <NoResults :length="Object.keys(strategies).length" />
+        <NoResults v-if="Object.keys(strategies).length < 1" />
       </div>
     </div>
   </UiModal>

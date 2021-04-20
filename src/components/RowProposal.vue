@@ -13,7 +13,7 @@
     <div>
       <span v-text="`#${i.slice(0, 7)}`" />
       {{ $tc('createdBy', [_shorten(proposal.address)]) }}
-      <Badges :address="proposal.address" :space="space" />
+      <Badges :address="proposal.address" :members="space.members" />
       <span
         v-if="proposal.score"
         v-text="`${_n(proposal.score)} ${space.symbol}`"

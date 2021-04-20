@@ -1,9 +1,13 @@
 <template>
-  <div class="position-relative">
-    <button @click="open = !open" class="button mr-1">
-      <slot></slot>
-    </button>
-    <div class="sub-menu-wrapper anim-scale-in" :class="{ hidden: !open }">
+  <div @click.capture="open = !open" class="position-relative">
+    <div class="button">
+      <slot />
+    </div>
+    <div
+      class="sub-menu-wrapper anim-scale-in"
+      :class="{ hidden: !open }"
+      :style="cssVars"
+    >
       <ul class="sub-menu my-2">
         <li v-for="item in items" :key="item" @click="handleClick(item.action)">
           {{ item.text }}
@@ -15,16 +19,27 @@
 
 <script>
 export default {
-  props: ['items'],
+  emits: ['select'],
+  props: {
+    items: Array,
+    top: String,
+    right: String
+  },
   data() {
     return {
       open: false
     };
   },
 
+  computed: {
+    cssVars() {
+      return { '--top': this.top, '--right': this.right };
+    }
+  },
+
   methods: {
     handleClick(action) {
-      this.$emit(action);
+      this.$emit('select', action);
       this.open = false;
     },
     close(e) {
@@ -46,13 +61,8 @@ export default {
 
 <style scoped lang="scss">
 .button {
-  border: none;
-  background-color: transparent;
+  cursor: pointer;
   color: var(--text-color);
-  padding: 0 8px;
-  line-height: 24px;
-  height: 28px;
-  font-size: 18px;
   &:hover {
     color: var(--link-color);
   }
@@ -62,6 +72,7 @@ li {
   display: block;
   white-space: nowrap;
   padding-left: 24px;
+  padding-right: 24px;
   padding-top: 4px;
   cursor: pointer;
 }
@@ -75,8 +86,8 @@ li:hover {
 .sub-menu-wrapper {
   position: absolute;
   right: 0;
-  top: 1.8rem;
-  width: 180px;
+  top: var(--top);
+  width: auto;
   background-color: var(--header-bg);
   border: 1px solid var(--border-color);
   border-radius: 8px;
@@ -89,7 +100,7 @@ li:hover {
   content: '';
   position: absolute;
   top: -0.45rem;
-  right: 1.1rem;
+  right: var(--right);
   height: 0.75rem;
   width: 0.75rem;
   background-color: var(--header-bg);

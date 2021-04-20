@@ -19,6 +19,9 @@
   "strategiesPage": "Стратегии",
   "version": "Версия",
   "timeline": "Хронология",
+  "filters": "Фильтр",
+  "favorites": "Как это работает",
+  "allSpaces": "All spaces",
   "submitOnchain": "Отправить в блокчейн",
   "inSpaces": "В {0} раздел(ах)",
   "downloadReport": "Скачать отчет",
@@ -80,6 +83,9 @@
   "noResultsFound": "Упс, мы не можем найти результаты",
   "createdBy": "От: {0}",
   "startToEnd": "с {0} по {1}",
+  "startIn": "начался {0}",
+  "endIn": "по {1}",
+  "endedAgo": "по {1}",
   "proposalBy": "Предложение от {0}",
   "endDate": "по {0}",
   "contectHash": "Хэш содержимого",
@@ -98,7 +104,7 @@
     "endTime": "Выбрать время окончания",
     "publish": "Опубликовать",
     "snapshotBlock": "Номер блока среза",
-    "onlyMembersWarning": "You need to be a member of the space in order to submit a proposal",
+    "onlyMembersWarning": "您需要成为空间的成员才能提交提案",
     "minScoreWarning": "You need to have a minimum of {0} {1} in order to submit a proposal"
   },
   "delegate": {
