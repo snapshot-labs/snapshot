@@ -45,53 +45,60 @@
           </UiButton>
         </UiDropdown>
       </div>
+
       <Block v-if="spaces.length < 1 && !scope" class="text-center">
         <div class="mb-3">{{ $t('noFavorites') }}</div>
         <router-link :to="{ name: 'home' }">
           <UiButton>{{ $t('addFavorites') }}</UiButton>
         </router-link>
       </Block>
+
       <Block v-else-if="loading" :slim="true">
         <RowLoading class="my-2" />
       </Block>
 
-      <NoResults
-        :block="true"
-        v-else-if="Object.keys(this.proposals).length < 1"
-      />
+      <NoResults :block="true" v-else-if="this.proposals.length < 1" />
       <div v-else>
         <Block :slim="true" v-for="(proposal, i) in proposals" :key="i">
           <TimelineProposal :proposal="proposal" :i="i" />
         </Block>
       </div>
+      <div id="scrollsensor"></div>
+      <Block v-if="loadingMore && !loading" :slim="true">
+        <RowLoading class="my-2" />
+      </Block>
     </template>
   </Layout>
 </template>
 
 <script>
 import { subgraphRequest } from '@snapshot-labs/snapshot.js/src/utils';
+import scrollMonitor from 'scrollmonitor';
 
 export default {
   data() {
     return {
       loading: false,
-      proposals: {},
+      loadingMore: false,
+      proposals: [],
       scope: this.$route.params.scope,
       state: 'all',
       spaces: []
     };
   },
   watch: {
-    state() {
-      this.loadProposals();
+    async state() {
+      this.proposals = [];
+      this.loading = true;
+      await this.loadProposals();
+      this.loading = false;
     }
   },
   methods: {
     selectState(e) {
       this.state = e;
     },
-    async loadProposals() {
-      this.loading = true;
+    async loadProposals(skip = 0) {
       this.spaces =
         this.scope === 'all' ? [] : Object.keys(this.favoriteSpaces.favorites);
       try {
@@ -100,6 +107,8 @@ export default {
           {
             timeline: {
               __args: {
+                first: 15,
+                skip,
                 spaces: this.spaces,
                 state: this.state
               },
@@ -121,15 +130,29 @@ export default {
             }
           }
         );
-        this.proposals = proposals.timeline;
+        this.proposals = this.proposals.concat(proposals.timeline);
       } catch (e) {
         console.log(e);
       }
-      this.loading = false;
     }
   },
   async created() {
+    this.loading = true;
     await this.loadProposals();
+    this.loading = false;
+  },
+  mounted() {
+    const el = document.getElementById('scrollsensor');
+    const elementWatcher = scrollMonitor.create(el);
+    elementWatcher.enterViewport(async () => {
+      let limit = 15;
+      if (this.proposals.length >= limit) {
+        this.loadingMore = true;
+        await this.loadProposals(15);
+        limit += 15;
+        this.loadingMore = false;
+      }
+    });
   }
 };
 </script>
