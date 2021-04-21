@@ -81,6 +81,8 @@
   "marketSymbol": "{0} pasar",
   "twoChoicesRequired": "Dua pilihan diperlukan untuk plugin ini.",
   "noResultsFound": "Amboy, kami tidak dapat menemukan hasil apapun",
+  "noFavorites": "Oops, you don't have any favorites yet",
+  "addFavorites": "Add favorites",
   "createdBy": "Dengan {0}",
   "startToEnd": "mulai {0} akhir {1}",
   "startIn": "mulai {0}",
@@ -92,6 +94,14 @@
   "defaultSkin": "Skin bawaan",
   "select": "Pilih",
   "language": "Bahasa",
+  "errors": {
+    "required": "Field is required",
+    "minLength": "Minimum length is {0}",
+    "maxLength": "Maximum length is {0}",
+    "pattern": "Invalid character",
+    "minItems": "Minimum {0} item(s) required",
+    "minStrategy": "At least one strategy is required."
+  },
   "create": {
     "question": "Pertanyaan",
     "content": "Apa proposal Anda?",
@@ -142,9 +152,11 @@
     "changeAvatar": "Ganti avatar",
     "name": "Nama",
     "about": "Tentang",
+    "network": "Network",
     "symbol": "Simbol",
     "skin": "Skin",
     "domain": "Nama domain",
+    "strategies": "Strategie(s)",
     "hideSpace": "Sembunyikan ruang dari halaman beranda",
     "addStrategy": "Tambahkan strategi",
     "members": "Anggota",
@@ -154,7 +166,8 @@
     "showOnly": "Tampilkan hanya proposal anggota",
     "editPlugin": "Edit plugin",
     "addPlugin": "Tambahkan plugin",
-    "pluginParameters": "Parameter plugin"
+    "pluginParameters": "Parameter plugin",
+    "strategyRequired": "At least one strategy is required."
   },
   "setup": {
     "example": "mis. yam.eth",
