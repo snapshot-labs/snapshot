@@ -15,9 +15,7 @@
 
 @font-face {
   font-family: 'Calibre';
-  src: url('./assets/fonts/Calibre-Medium.eot');
-  src: url('./assets/fonts/Calibre-Medium.eot?#iefix')
-      format('embedded-opentype'),
+  src: url('./assets/fonts/Calibre-Medium.woff2') format('woff2'),
     url('./assets/fonts/Calibre-Medium.woff') format('woff'),
     url('./assets/fonts/Calibre-Medium.ttf') format('truetype');
   font-weight: 500;
@@ -26,9 +24,7 @@
 
 @font-face {
   font-family: 'Calibre';
-  src: url('./assets/fonts/Calibre-Semibold.eot');
-  src: url('./assets/fonts/Calibre-Semibold.eot?#iefix')
-      format('embedded-opentype'),
+  src: url('./assets/fonts/Calibre-Semibold.woff2') format('woff2'),
     url('./assets/fonts/Calibre-Semibold.woff') format('woff'),
     url('./assets/fonts/Calibre-Semibold.ttf') format('truetype');
   font-weight: 600;

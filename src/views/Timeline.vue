@@ -28,15 +28,38 @@
             <h2>{{ $t('timeline') }}</h2>
           </div>
         </div>
-        <UiButton class="pr-3">
-          {{ $t('proposals.states.all') }}
-          <Icon size="14" name="arrow-down" class="mt-1 mr-1" />
-        </UiButton>
+        <UiDropdown
+          top="3.5rem"
+          right="1.25rem"
+          @select="selectState"
+          :items="[
+            { text: $t('proposals.states.all'), action: 'all' },
+            { text: $t('proposals.states.active'), action: 'active' },
+            { text: $t('proposals.states.pending'), action: 'pending' },
+            { text: $t('proposals.states.closed'), action: 'closed' }
+          ]"
+        >
+          <UiButton class="pr-3">
+            {{ $t(`proposals.states.${state}`) }}
+            <Icon size="14" name="arrow-down" class="mt-1 mr-1" />
+          </UiButton>
+        </UiDropdown>
       </div>
-      <Block v-if="loading" :slim="true">
+      <Block v-if="spaces.length < 1 && !scope" class="text-center">
+        <div class="mb-3">{{ $t('noFavorites') }}</div>
+        <router-link :to="{ name: 'home' }">
+          <UiButton>{{ $t('addFavorites') }}</UiButton>
+        </router-link>
+      </Block>
+      <Block v-else-if="loading" :slim="true">
         <RowLoading class="my-2" />
       </Block>
-      <div v-if="loaded">
+
+      <NoResults
+        :block="true"
+        v-else-if="Object.keys(this.proposals).length < 1"
+      />
+      <div v-else>
         <Block :slim="true" v-for="(proposal, i) in proposals" :key="i">
           <TimelineProposal :proposal="proposal" :i="i" />
         </Block>
@@ -52,47 +75,61 @@ export default {
   data() {
     return {
       loading: false,
-      loaded: false,
       proposals: {},
-      scope: this.$route.params.scope
+      scope: this.$route.params.scope,
+      state: 'all',
+      spaces: []
     };
   },
-  async created() {
-    this.loading = true;
-    const spaces =
-      this.scope === 'all' ? [] : Object.keys(this.favoriteSpaces.favorites);
-    try {
-      const proposals = await subgraphRequest(
-        `${process.env.VUE_APP_HUB_URL}/graphql`,
-        {
-          timeline: {
-            __args: {
-              spaces
-            },
-            id: true,
-            name: true,
-            start: true,
-            end: true,
-            state: true,
-            author: {
-              address: true,
-              name: true,
-              ens: true
-            },
-            space: {
+  watch: {
+    state() {
+      this.loadProposals();
+    }
+  },
+  methods: {
+    selectState(e) {
+      this.state = e;
+    },
+    async loadProposals() {
+      this.loading = true;
+      this.spaces =
+        this.scope === 'all' ? [] : Object.keys(this.favoriteSpaces.favorites);
+      try {
+        const proposals = await subgraphRequest(
+          `${process.env.VUE_APP_HUB_URL}/graphql`,
+          {
+            timeline: {
+              __args: {
+                spaces: this.spaces,
+                state: this.state
+              },
               id: true,
               name: true,
-              members: true
+              start: true,
+              end: true,
+              state: true,
+              author: {
+                address: true,
+                name: true,
+                ens: true
+              },
+              space: {
+                id: true,
+                name: true,
+                members: true
+              }
             }
           }
-        }
-      );
-      this.proposals = proposals.timeline;
-    } catch (e) {
-      console.log(e);
+        );
+        this.proposals = proposals.timeline;
+      } catch (e) {
+        console.log(e);
+      }
+      this.loading = false;
     }
-    this.loading = false;
-    this.loaded = true;
+  },
+  async created() {
+    await this.loadProposals();
   }
 };
 </script>

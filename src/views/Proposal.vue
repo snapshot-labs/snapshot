@@ -19,18 +19,22 @@
           <div class="mb-4">
             <State :proposal="proposal" />
             <UiDropdown
+              top="2.2rem"
+              right="1.3rem"
               class="float-right"
               v-if="proposal.address === this.web3.account"
-              @delete="deleteProposal"
+              @select="selectFromDropdown"
               :items="[{ text: $t('deleteProposal'), action: 'delete' }]"
             >
-              <UiLoading v-if="deleteLoading" />
-              <Icon
-                v-else
-                name="threedots"
-                size="25"
-                class="v-align-text-bottom"
-              />
+              <div class="pr-3">
+                <UiLoading v-if="deleteLoading" />
+                <Icon
+                  v-else
+                  name="threedots"
+                  size="25"
+                  class="v-align-text-bottom"
+                />
+              </div>
             </UiDropdown>
           </div>
           <UiMarkdown :body="payload.body" class="mb-6" />
@@ -305,6 +309,9 @@ export default {
         console.error(e);
       }
       this.deleteLoading = false;
+    },
+    selectFromDropdown(e) {
+      if (e === 'delete') this.deleteProposal();
     }
   },
   async created() {
