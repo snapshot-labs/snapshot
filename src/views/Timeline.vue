@@ -45,53 +45,65 @@
           </UiButton>
         </UiDropdown>
       </div>
+
       <Block v-if="spaces.length < 1 && !scope" class="text-center">
         <div class="mb-3">{{ $t('noFavorites') }}</div>
         <router-link :to="{ name: 'home' }">
           <UiButton>{{ $t('addFavorites') }}</UiButton>
         </router-link>
       </Block>
+
       <Block v-else-if="loading" :slim="true">
         <RowLoading class="my-2" />
       </Block>
 
-      <NoResults
-        :block="true"
-        v-else-if="Object.keys(this.proposals).length < 1"
-      />
+      <NoResults :block="true" v-else-if="this.proposals.length < 1" />
       <div v-else>
         <Block :slim="true" v-for="(proposal, i) in proposals" :key="i">
           <TimelineProposal :proposal="proposal" :i="i" />
         </Block>
       </div>
+      <div id="endsensor"></div>
+      <Block v-if="loadingMore && !loading" :slim="true">
+        <RowLoading class="my-2" />
+      </Block>
     </template>
   </Layout>
 </template>
 
 <script>
 import { subgraphRequest } from '@snapshot-labs/snapshot.js/src/utils';
+import scrollMonitor from 'scrollmonitor';
+
+const loadBy = 15;
 
 export default {
   data() {
     return {
       loading: false,
-      proposals: {},
+      loadingMore: false,
+      stopLoadingMore: false,
+      proposals: [],
       scope: this.$route.params.scope,
       state: 'all',
-      spaces: []
+      spaces: [],
+      limit: loadBy
     };
   },
   watch: {
-    state() {
-      this.loadProposals();
+    async state() {
+      this.proposals = [];
+      this.limit = loadBy;
+      this.loading = true;
+      await this.loadProposals();
+      this.loading = false;
     }
   },
   methods: {
     selectState(e) {
       this.state = e;
     },
-    async loadProposals() {
-      this.loading = true;
+    async loadProposals(skip = 0) {
       this.spaces =
         this.scope === 'all' ? [] : Object.keys(this.favoriteSpaces.favorites);
       try {
@@ -100,6 +112,8 @@ export default {
           {
             timeline: {
               __args: {
+                first: loadBy,
+                skip,
                 spaces: this.spaces,
                 state: this.state
               },
@@ -121,15 +135,32 @@ export default {
             }
           }
         );
-        this.proposals = proposals.timeline;
+        this.stopLoadingMore = proposals.timeline.length < loadBy;
+        this.proposals = this.proposals.concat(proposals.timeline);
       } catch (e) {
         console.log(e);
       }
-      this.loading = false;
+    },
+    async loadMoreProposals() {
+      if (!this.stopLoadingMore && this.proposals[0]) {
+        this.loadingMore = true;
+        await this.loadProposals(this.limit);
+        this.limit += loadBy;
+        this.loadingMore = false;
+      }
     }
   },
   async created() {
+    this.loading = true;
     await this.loadProposals();
+    this.loading = false;
+  },
+  mounted() {
+    const el = document.getElementById('endsensor');
+    const elementWatcher = scrollMonitor.create(el);
+    elementWatcher.enterViewport(() => {
+      this.loadMoreProposals();
+    });
   }
 };
 </script>

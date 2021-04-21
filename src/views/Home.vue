@@ -53,6 +53,7 @@
             </Block>
           </div>
         </router-link>
+
         <NoResults
           :block="true"
           v-if="Object.keys(spaces).length < 1"
@@ -60,6 +61,7 @@
         />
       </div>
     </Container>
+    <div id="endsensor"></div>
   </div>
 </template>
 
@@ -67,7 +69,7 @@
 import { mapActions } from 'vuex';
 import orderBy from 'lodash/orderBy';
 import spotlight from '@snapshot-labs/snapshot-spaces/spaces/spotlight.json';
-import { infiniteScroll } from '@/helpers/utils';
+import scrollMonitor from 'scrollmonitor';
 
 export default {
   data() {
@@ -106,12 +108,16 @@ export default {
       } else {
         this.addFavoriteSpace(spaceId);
       }
-    },
-    scroll: infiniteScroll
+    }
   },
   mounted() {
-    this.scroll();
-    if (window.screen.height > 1200) this.limit += 16;
+    const el = document.getElementById('endsensor');
+    const elementWatcher = scrollMonitor.create(el);
+    elementWatcher.enterViewport(() => {
+      if (this.spaces) {
+        this.limit += 16;
+      }
+    });
   }
 };
 </script>
