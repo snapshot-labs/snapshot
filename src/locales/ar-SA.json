@@ -81,6 +81,8 @@
   "marketSymbol": "سوق {0}",
   "twoChoicesRequired": "هناك خياران مطلوبان لهذه الإضافة.",
   "noResultsFound": "عفواً، لا يمكننا العثور على أي نتائج",
+  "noFavorites": "Oops, you don't have any favorites yet",
+  "addFavorites": "Add favorites",
   "createdBy": "بواسطة: {0}",
   "startToEnd": "بدء {0} نهاية {1}",
   "startIn": "start {0}",
@@ -92,6 +94,14 @@
   "defaultSkin": "المضهر الافتراضي",
   "select": "حدد",
   "language": "اللغة",
+  "errors": {
+    "required": "Field is required",
+    "minLength": "Minimum length is {0}",
+    "maxLength": "Maximum length is {0}",
+    "pattern": "Invalid character",
+    "minItems": "Minimum {0} item(s) required",
+    "minStrategy": "At least one strategy is required."
+  },
   "create": {
     "question": "سؤال",
     "content": "ما هو اقتراحك؟",
@@ -142,9 +152,11 @@
     "changeAvatar": "تغيير صورة الحساب",
     "name": "الاسم",
     "about": "عن البرنامج",
+    "network": "Network",
     "symbol": "الرمز",
     "skin": "المظهر",
     "domain": "إسم النطاق",
+    "strategies": "Strategie(s)",
     "hideSpace": "إخفاء المساحة من الصفحة الرئيسية",
     "addStrategy": "إضافة استراتيجية",
     "members": "الأعضاء",
@@ -154,7 +166,8 @@
     "showOnly": "إظهار اقتراحات الأعضاء فقط",
     "editPlugin": "تعديل إضافة",
     "addPlugin": "أضف إضافة",
-    "pluginParameters": "إعدادات الإضافة"
+    "pluginParameters": "إعدادات الإضافة",
+    "strategyRequired": "At least one strategy is required."
   },
   "setup": {
     "example": "مثال yam.eth",

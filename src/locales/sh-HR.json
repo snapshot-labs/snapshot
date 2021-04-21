@@ -81,6 +81,8 @@
   "marketSymbol": "{0} tržište",
   "twoChoicesRequired": "Dva izbora su obavezna za ovaj plugin.",
   "noResultsFound": "Ups, ne možemo pronaći rezultate",
+  "noFavorites": "Oops, you don't have any favorites yet",
+  "addFavorites": "Add favorites",
   "createdBy": "Od {0}",
   "startToEnd": "početak {0} kraj {1}",
   "startIn": "start {0}",
@@ -92,6 +94,14 @@
   "defaultSkin": "Podrazumevana tema",
   "select": "Izaberi",
   "language": "Jezik",
+  "errors": {
+    "required": "Field is required",
+    "minLength": "Minimum length is {0}",
+    "maxLength": "Maximum length is {0}",
+    "pattern": "Invalid character",
+    "minItems": "Minimum {0} item(s) required",
+    "minStrategy": "At least one strategy is required."
+  },
   "create": {
     "question": "Pitanje",
     "content": "Šta je vaš predlog?",
@@ -142,9 +152,11 @@
     "changeAvatar": "Promenite avatar",
     "name": "Ime",
     "about": "O nama",
+    "network": "Network",
     "symbol": "Simbol",
     "skin": "Tema",
     "domain": "Naziv domena",
+    "strategies": "Strategie(s)",
     "hideSpace": "Sakrij prostor sa početne stranice",
     "addStrategy": "Dodaj strategiju",
     "members": "Članovi",
@@ -154,7 +166,8 @@
     "showOnly": "Prikaži samo predloge od članova",
     "editPlugin": "Uredi plagin",
     "addPlugin": "Dodaj plugin",
-    "pluginParameters": "Plugin parametri"
+    "pluginParameters": "Plugin parametri",
+    "strategyRequired": "At least one strategy is required."
   },
   "setup": {
     "example": "npr. yam.eth",
