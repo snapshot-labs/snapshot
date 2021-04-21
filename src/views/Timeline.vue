@@ -75,20 +75,25 @@
 import { subgraphRequest } from '@snapshot-labs/snapshot.js/src/utils';
 import scrollMonitor from 'scrollmonitor';
 
+const loadBy = 15;
+
 export default {
   data() {
     return {
       loading: false,
       loadingMore: false,
+      stopLoadingMore: false,
       proposals: [],
       scope: this.$route.params.scope,
       state: 'all',
-      spaces: []
+      spaces: [],
+      limit: loadBy
     };
   },
   watch: {
     async state() {
       this.proposals = [];
+      this.limit = loadBy;
       this.loading = true;
       await this.loadProposals();
       this.loading = false;
@@ -107,7 +112,7 @@ export default {
           {
             timeline: {
               __args: {
-                first: 15,
+                first: loadBy,
                 skip,
                 spaces: this.spaces,
                 state: this.state
@@ -130,10 +135,17 @@ export default {
             }
           }
         );
+        this.stopLoadingMore = proposals.timeline.length < loadBy;
         this.proposals = this.proposals.concat(proposals.timeline);
       } catch (e) {
         console.log(e);
       }
+    },
+    async loadMoreProposals() {
+      this.loadingMore = true;
+      await this.loadProposals(this.limit);
+      this.limit += loadBy;
+      this.loadingMore = false;
     }
   },
   async created() {
@@ -145,12 +157,8 @@ export default {
     const el = document.getElementById('scrollsensor');
     const elementWatcher = scrollMonitor.create(el);
     elementWatcher.enterViewport(async () => {
-      let limit = 15;
-      if (this.proposals.length >= limit) {
-        this.loadingMore = true;
-        await this.loadProposals(15);
-        limit += 15;
-        this.loadingMore = false;
+      if (!this.stopLoadingMore && this.proposals[0]) {
+        this.loadMoreProposals();
       }
     });
   }
