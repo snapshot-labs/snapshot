@@ -13,7 +13,8 @@
       },
       "https://api.s0.t.hmny.io"
     ],
-    "explorer": "https://explorer.harmony.one/#"
+    "explorer": "https://explorer.harmony.one/#",
+    "staking": "https://staking.harmony.one/validators/mainnet"
   },
   "2": {
     "key": "2",
@@ -29,7 +30,8 @@
       },
       "https://api.s0.b.hmny.io"
     ],
-    "explorer": "https://explorer.pops.one/#"
+    "explorer": "https://explorer.pops.one/#",
+    "staking": "https://staking.harmony.one/validators/testnet"
   },
   "1666600000": {
     "key": "1666600000",
@@ -39,7 +41,8 @@
     "network": "mainnet",
     "rpc": ["https://api.s0.t.hmny.io"],
     "ws": ["wss://ws.s0.t.hmny.io"],
-    "explorer": "https://explorer.harmony.one"
+    "explorer": "https://explorer.harmony.one/#",
+    "staking": "https://staking.harmony.one/validators/mainnet"
   },
   "1666700000": {
     "key": "1666700000",
@@ -49,6 +52,7 @@
     "network": "testnet",
     "rpc": ["https://api.s0.b.hmny.io"],
     "ws": ["wss://ws.s0.b.hmny.io"],
-    "explorer": "https://explorer.pops.one"
+    "explorer": "https://explorer.pops.one/#",
+    "staking": "https://staking.harmony.one/validators/testnet"
   }
 }
