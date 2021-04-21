@@ -81,6 +81,8 @@
   "marketSymbol": "{0} mercado",
   "twoChoicesRequired": "Duas opções são necessárias para este plugin.",
   "noResultsFound": "Ops, não encontramos nenhum resultado",
+  "noFavorites": "Oops, you don't have any favorites yet",
+  "addFavorites": "Add favorites",
   "createdBy": "Por {0}",
   "startToEnd": "iniciar {0} fim {1}",
   "startIn": "iniciar: {0}",
@@ -92,6 +94,14 @@
   "defaultSkin": "Skin padrão",
   "select": "Selecionar",
   "language": "Idioma",
+  "errors": {
+    "required": "Field is required",
+    "minLength": "Minimum length is {0}",
+    "maxLength": "Maximum length is {0}",
+    "pattern": "Invalid character",
+    "minItems": "Minimum {0} item(s) required",
+    "minStrategy": "At least one strategy is required."
+  },
   "create": {
     "question": "Pergunta",
     "content": "Qual é a sua proposta?",
@@ -142,9 +152,11 @@
     "changeAvatar": "Alterar foto de perfil",
     "name": "Nome",
     "about": "Sobre nós",
+    "network": "Network",
     "symbol": "Símbolo",
     "skin": "Skin",
     "domain": "Nome do domínio",
+    "strategies": "Strategie(s)",
     "hideSpace": "Ocultar comunidade da página inicial",
     "addStrategy": "Adicionar estratégia",
     "members": "Membros",
@@ -154,7 +166,8 @@
     "showOnly": "Mostrar apenas propostas dos membros",
     "editPlugin": "Editar plugin",
     "addPlugin": "Adicionar plugin",
-    "pluginParameters": "Parâmetros do plugin"
+    "pluginParameters": "Parâmetros do plugin",
+    "strategyRequired": "At least one strategy is required."
   },
   "setup": {
     "example": "p. ex. yam.eth",
