@@ -81,6 +81,8 @@
   "marketSymbol": "Рынок {0}",
   "twoChoicesRequired": "Для этого плагина необходимо выбрать два варианта.",
   "noResultsFound": "Упс, мы не можем найти результаты",
+  "noFavorites": "Oops, you don't have any favorites yet",
+  "addFavorites": "Add favorites",
   "createdBy": "От: {0}",
   "startToEnd": "с {0} по {1}",
   "startIn": "начался {0}",
@@ -92,6 +94,14 @@
   "defaultSkin": "Тема по умолчанию",
   "select": "Выбрать",
   "language": "Язык",
+  "errors": {
+    "required": "Field is required",
+    "minLength": "Minimum length is {0}",
+    "maxLength": "Maximum length is {0}",
+    "pattern": "Invalid character",
+    "minItems": "Minimum {0} item(s) required",
+    "minStrategy": "At least one strategy is required."
+  },
   "create": {
     "question": "Вопрос",
     "content": "Что вы предлагаете?",
@@ -142,9 +152,11 @@
     "changeAvatar": "Сменить аватар",
     "name": "Название",
     "about": "О проекте",
+    "network": "Network",
     "symbol": "Символ",
     "skin": "Тема",
     "domain": "Доменное имя",
+    "strategies": "Strategie(s)",
     "hideSpace": "Скрыть раздел на главной страницы",
     "addStrategy": "Добавить стратегию",
     "members": "Члены сообщества",
@@ -154,7 +166,8 @@
     "showOnly": "Показать только опросы участников",
     "editPlugin": "Редактировать плагин",
     "addPlugin": "Добавить плагин",
-    "pluginParameters": "Настройки плагина"
+    "pluginParameters": "Настройки плагина",
+    "strategyRequired": "At least one strategy is required."
   },
   "setup": {
     "example": "например, yam.eth",

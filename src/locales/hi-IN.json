@@ -81,6 +81,8 @@
   "marketSymbol": "{0} market",
   "twoChoicesRequired": "Two choices are required for this plugin.",
   "noResultsFound": "Oops, we can't find any results",
+  "noFavorites": "Oops, you don't have any favorites yet",
+  "addFavorites": "Add favorites",
   "createdBy": "By {0}",
   "startToEnd": "start {0} end {1}",
   "startIn": "start {0}",
@@ -92,6 +94,14 @@
   "defaultSkin": "Default skin",
   "select": "Select",
   "language": "Language",
+  "errors": {
+    "required": "Field is required",
+    "minLength": "Minimum length is {0}",
+    "maxLength": "Maximum length is {0}",
+    "pattern": "Invalid character",
+    "minItems": "Minimum {0} item(s) required",
+    "minStrategy": "At least one strategy is required."
+  },
   "create": {
     "question": "Question",
     "content": "What is your proposal?",
@@ -142,9 +152,11 @@
     "changeAvatar": "Change avatar",
     "name": "Name",
     "about": "About",
+    "network": "Network",
     "symbol": "Symbol",
     "skin": "Skin",
     "domain": "Domain name",
+    "strategies": "Strategie(s)",
     "hideSpace": "Hide space from homepage",
     "addStrategy": "Add strategy",
     "members": "Members",
@@ -154,7 +166,8 @@
     "showOnly": "Show only members proposals",
     "editPlugin": "Edit plugin",
     "addPlugin": "Add plugin",
-    "pluginParameters": "Plugin parameters"
+    "pluginParameters": "Plugin parameters",
+    "strategyRequired": "At least one strategy is required."
   },
   "setup": {
     "example": "e.g. yam.eth",

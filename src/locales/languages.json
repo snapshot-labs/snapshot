@@ -18,6 +18,10 @@
     "name": "French",
     "nativeName": "Français"
   },
+  "id-ID": {
+    "name": "Indonesian",
+    "nativeName": "Behasa Indonesia"
+  },
   "it-IT": {
     "name": "Italian",
     "nativeName": "Italiano"
@@ -29,6 +33,10 @@
   "pl-PL": {
     "name": "Polish",
     "nativeName": "Polski"
+  },
+  "pt-PT": {
+    "name": "Portuguese",
+    "nativeName": "Português"
   },
   "zh-CN": {
     "name": "Chinese",

@@ -19,7 +19,7 @@
   "strategiesPage": "Stratégies",
   "version": "Version",
   "timeline": "Timeline",
-  "filters": "Filters",
+  "filters": "Filtres",
   "favorites": "Favorites",
   "allSpaces": "All spaces",
   "submitOnchain": "Envoyer sur la chaîne",
@@ -81,6 +81,8 @@
   "marketSymbol": "{0} marché",
   "twoChoicesRequired": "Deux choix sont requis pour ce plugin.",
   "noResultsFound": "Oups, nous n'avons trouvé aucun résultat",
+  "noFavorites": "Oops, you don't have any favorites yet",
+  "addFavorites": "Add favorites",
   "createdBy": "Par {0}",
   "startToEnd": "début {0} fin {1}",
   "startIn": "start {0}",
@@ -92,6 +94,14 @@
   "defaultSkin": "Thème par défaut",
   "select": "Sélectionnez",
   "language": "Langage",
+  "errors": {
+    "required": "Field is required",
+    "minLength": "Minimum length is {0}",
+    "maxLength": "Maximum length is {0}",
+    "pattern": "Invalid character",
+    "minItems": "Minimum {0} item(s) required",
+    "minStrategy": "At least one strategy is required."
+  },
   "create": {
     "question": "Question",
     "content": "Quelle est votre proposition ?",
@@ -142,9 +152,11 @@
     "changeAvatar": "Modifier l'avatar",
     "name": "Nom",
     "about": "À propos",
+    "network": "Network",
     "symbol": "Symbole",
     "skin": "Thème",
     "domain": "Nom de domaine",
+    "strategies": "Strategie(s)",
     "hideSpace": "Cacher l'espace de la page d'accueil",
     "addStrategy": "Ajouter une stratégie",
     "members": "Membres",
@@ -154,7 +166,8 @@
     "showOnly": "Afficher uniquement les propositions des membres",
     "editPlugin": "Modifier le module",
     "addPlugin": "Ajouter un plugin",
-    "pluginParameters": "Paramètres du plugin"
+    "pluginParameters": "Paramètres du plugin",
+    "strategyRequired": "At least one strategy is required."
   },
   "setup": {
     "example": "ex : yam.eth",
