@@ -63,7 +63,7 @@
           <TimelineProposal :proposal="proposal" :i="i" />
         </Block>
       </div>
-      <div id="scrollsensor"></div>
+      <div id="endsensor"></div>
       <Block v-if="loadingMore && !loading" :slim="true">
         <RowLoading class="my-2" />
       </Block>
@@ -142,10 +142,12 @@ export default {
       }
     },
     async loadMoreProposals() {
-      this.loadingMore = true;
-      await this.loadProposals(this.limit);
-      this.limit += loadBy;
-      this.loadingMore = false;
+      if (!this.stopLoadingMore && this.proposals[0]) {
+        this.loadingMore = true;
+        await this.loadProposals(this.limit);
+        this.limit += loadBy;
+        this.loadingMore = false;
+      }
     }
   },
   async created() {
@@ -154,12 +156,10 @@ export default {
     this.loading = false;
   },
   mounted() {
-    const el = document.getElementById('scrollsensor');
+    const el = document.getElementById('endsensor');
     const elementWatcher = scrollMonitor.create(el);
     elementWatcher.enterViewport(async () => {
-      if (!this.stopLoadingMore && this.proposals[0]) {
-        this.loadMoreProposals();
-      }
+      this.loadMoreProposals();
     });
   }
 };

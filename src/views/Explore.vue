@@ -56,7 +56,7 @@
         <NoResults :block="true" v-if="Object.keys(items).length < 1" />
       </div>
     </Container>
-    <div id="scrollsensor"></div>
+    <div id="endsensor"></div>
   </div>
 </template>
 
@@ -111,7 +111,7 @@ export default {
     }
   },
   mounted() {
-    const el = document.getElementById('scrollsensor');
+    const el = document.getElementById('endsensor');
     const elementWatcher = scrollMonitor.create(el);
     elementWatcher.enterViewport(async () => {
       if (this.items) {
