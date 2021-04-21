@@ -12,6 +12,7 @@
         @close="modalOpen = false"
         :space="space"
         :address="address"
+        :vname="vname"
       />
     </teleport>
   </span>
@@ -21,7 +22,7 @@
 import { HarmonyAddress } from '@harmony-js/crypto';
 
 export default {
-  props: ['address', 'space', 'profile'],
+  props: ['address', 'space', 'profile', 'vname'],
   data() {
     return {
       modalOpen: false
@@ -36,7 +37,9 @@ export default {
       ) {
         return 'You';
       }
-      if (this.profile?.name) {
+      if (this.vname) {
+        return this._shorten(this.vname, 22);
+      } else if (this.profile?.name) {
         return this.profile.name;
       } else if (this.profile?.ens) {
         return this.profile.ens;

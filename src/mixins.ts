@@ -6,6 +6,7 @@ import domains from '@snapshot-labs/snapshot-spaces/spaces/domains.json';
 import store from '@/store';
 import config from '@/helpers/config';
 import { shorten } from '@/helpers/utils';
+import { HarmonyAddress } from '@harmony-js/crypto';
 
 // @ts-ignore
 const modules = Object.entries(store.state).map(module => module[0]);
@@ -31,7 +32,7 @@ export default {
     _numeral(number, format = '(0,0.00)') {
       return numeral(number).format(format);
     },
-    _shorten(str: string, key: any): string {
+    _shorten(str: string, key: any = ''): string {
       if (!str) return str;
       let limit;
       if (typeof key === 'number') limit = key;
@@ -46,7 +47,11 @@ export default {
       return `https://${process.env.VUE_APP_IPFS_GATEWAY}/ipfs/${ipfsHash}`;
     },
     _explorer(network, str: string, type = 'address'): string {
-      return `${networks[network].explorer}/#/${type}/${str}`;
+      return `${networks[network].explorer}/${type}/${str}`;
+    },
+    _staking(network, address: string): string {
+      const addressOne = new HarmonyAddress(address).bech32;
+      return `${networks[network].staking}/${addressOne}`;
     }
   }
 };

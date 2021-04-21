@@ -88,6 +88,7 @@
           :space="space"
           :proposal="proposal"
           :votes="votes"
+          :validatorNames="validatorNames"
         />
       </div>
       <div v-if="loaded" class="col-12 col-lg-4 float-left">
@@ -115,6 +116,11 @@
               :address="proposal.address"
               :profile="proposal.profile"
               :space="space"
+              :vname="
+                validatorNames[proposal.address.toLowerCase()]
+                  ? validatorNames[proposal.address.toLowerCase()]
+                  : ''
+              "
               class="float-right"
             />
           </div>
@@ -243,7 +249,8 @@
 
 <script>
 import { mapActions, mapState } from 'vuex';
-import { isAddressEqual } from '../helpers/utils';
+import { isAddressEqual } from '@/helpers/utils';
+import { HarmonyAddress } from '@harmony-js/crypto';
 
 export default {
   data() {
@@ -260,7 +267,8 @@ export default {
       modalStrategiesOpen: false,
       selectedChoice: 0,
       totalScore: 0,
-      scores: []
+      scores: [],
+      validatorNames: {}
     };
   },
   computed: {
@@ -348,12 +356,21 @@ export default {
           proposal: this.id
         }
       });
+    },
+    initValidatorName() {
+      if (this.isHarmonySpace) {
+        this.app.validators.forEach(item => {
+          this.validatorNames[new HarmonyAddress(item.address).bech32] = item.name;
+          this.validatorNames[(new HarmonyAddress(item.address).checksum).toLowerCase()] = item.name;
+        });
+      }
     }
   },
   async created() {
     this.loading = true;
     await this.loadProposal();
     await this.loadPower();
+    this.initValidatorName()
     this.loading = false;
     this.loaded = true;
   }

@@ -15,6 +15,11 @@
         :profile="vote.profile"
         :address="address"
         :space="space"
+        :vname="
+          validatorNames[address.toLowerCase()]
+            ? validatorNames[address.toLowerCase()]
+            : ''
+        "
         class="column"
       />
       <div
@@ -67,7 +72,7 @@
 
 <script>
 export default {
-  props: ['space', 'proposal', 'votes'],
+  props: ['space', 'proposal', 'votes', 'validatorNames'],
   data() {
     return {
       showAllVotes: false,
