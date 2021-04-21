@@ -113,7 +113,7 @@ export default {
   mounted() {
     const el = document.getElementById('endsensor');
     const elementWatcher = scrollMonitor.create(el);
-    elementWatcher.enterViewport(async () => {
+    elementWatcher.enterViewport(() => {
       if (this.items) {
         this.limit += 8;
       }
