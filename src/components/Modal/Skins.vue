@@ -12,7 +12,7 @@
       <a v-for="skin in skins" :key="skin.key" @click="select(skin.key)">
         <BlockSkin :skin="skin" />
       </a>
-      <NoResults :length="Object.keys(skins).length" />
+      <NoResults v-if="Object.keys(skins).length < 1" />
     </div>
   </UiModal>
 </template>

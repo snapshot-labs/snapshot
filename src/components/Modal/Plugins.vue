@@ -48,7 +48,7 @@
         >
           <BlockPlugin :plugin="plugin" />
         </a>
-        <NoResults :length="Object.keys(filteredPlugins).length" />
+        <NoResults v-if="Object.keys(filteredPlugins).length < 1" />
       </div>
     </div>
   </UiModal>
