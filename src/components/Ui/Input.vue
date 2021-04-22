@@ -38,6 +38,12 @@ export default {
   methods: {
     handleInput(e) {
       const input = e.target.value;
+      if (this.number) {
+        return this.$emit(
+          'update:modelValue',
+          !input ? undefined : parseFloat(input)
+        );
+      }
       this.$emit('update:modelValue', input);
     }
   }
