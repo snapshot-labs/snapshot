@@ -2,7 +2,10 @@
   <div>
     <div class="text-center mb-4 mx-auto">
       <Container class="d-flex flex-items-center">
-        <div class="flex-auto text-left">
+        <div class="flex-auto text-left d-flex">
+          <router-link :to="{ name: 'timeline' }">
+            <UiButton class="mr-2">Timeline</UiButton>
+          </router-link>
           <UiButton class="pl-3 col-12 col-lg-4">
             <Search v-model="q" :placeholder="$t('searchPlaceholder')" />
           </UiButton>
