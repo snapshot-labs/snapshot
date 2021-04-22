@@ -117,9 +117,7 @@ export default {
               end: true,
               state: true,
               author: {
-                address: true,
-                name: true,
-                ens: true
+                address: true
               },
               space: {
                 id: true,
