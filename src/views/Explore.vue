@@ -56,7 +56,7 @@
         <NoResults :block="true" v-if="Object.keys(items).length < 1" />
       </div>
     </Container>
-    <div id="endsensor"></div>
+    <div id="endsensor"/>
   </div>
 </template>
 
