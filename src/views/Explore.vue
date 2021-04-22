@@ -93,19 +93,19 @@ export default {
     const limit = ref(loadBy);
 
     const buttonStr = computed(() => {
-      if (routeName.value === 'strategies') return 'Create strategy';
-      if (routeName.value === 'skins') return 'Create skin';
-      if (routeName.value === 'networks') return 'Add network';
-      if (routeName.value === 'plugins') return 'Create plugin';
+      if (routeName.value === 'strategies') return t('explore.createStrategy');
+      if (routeName.value === 'skins') return t('explore.createSkin');
+      if (routeName.value === 'networks') return t('explore.addNetwork');
+      if (routeName.value === 'plugins') return t('explore.createPlugin');
       return '';
     });
 
     const resultsStr = computed(() => {
-      if (routeName.value === 'strategies') return 'strategie(s)';
-      if (routeName.value === 'skins') return 'skin(s)';
-      if (routeName.value === 'networks') return 'network(s)';
-      if (routeName.value === 'plugins') return 'plugin(s)';
-      return 'result(s)';
+      if (routeName.value === 'strategies') return t('explore.strategies');
+      if (routeName.value === 'skins') return t('explore.skins');
+      if (routeName.value === 'networks') return t('explore.networks');
+      if (routeName.value === 'plugins') return t('explore.plugins');
+      return t('explore.results');
     });
 
     const items = computed(() => {
@@ -119,10 +119,6 @@ export default {
         return filterPlugins(plugins, spacesState.value, q.value);
       return [];
     });
-
-    console.log(items.value);
-
-    const msg = computed(() => t('about'));
 
     function loadMore() {
       limit.value += loadBy;
