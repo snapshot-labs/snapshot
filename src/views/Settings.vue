@@ -443,7 +443,6 @@ export default {
     handleCopy() {
       this.notify(this.$t('notify.copied'));
     },
-
     handleEditStrategy(i) {
       this.currentStrategyIndex = i;
       this.currentStrategy = clone(this.form.strategies[i]);
@@ -466,7 +465,6 @@ export default {
         this.form.strategies = this.form.strategies.concat(strategy);
       }
     },
-
     handleEditPlugins(name) {
       this.currentPlugin = {};
       this.currentPlugin[name] = clone(this.form.plugins[name]);
