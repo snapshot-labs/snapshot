@@ -69,7 +69,8 @@ import {
   filterStrategies,
   filterSkins,
   filterNetworks,
-  filterPlugins
+  filterPlugins,
+  getStrategy
 } from '@/helpers/utils';
 import { monitorScroll } from '@/composables/monitor-scroll';
 
@@ -108,11 +109,26 @@ export default {
       return t('explore.results');
     });
 
+    const minifiedSpaces = computed(() => {
+      return skins.map(skin => ({
+        key: skin,
+        spaces: Object.entries(spacesState.value)
+          .filter(space => space[1].skin === skin)
+          .map(space => space[0])
+      }));
+    });
+
+    const minifiedStrategies = computed(() => {
+      return Object.values(strategies).map(strategy =>
+        getStrategy(strategy, spacesState.value)
+      );
+    });
+
     const items = computed(() => {
       if (routeName.value === 'strategies')
-        return filterStrategies(strategies, spacesState.value, q.value);
+        return filterStrategies(minifiedStrategies.value, q.value);
       if (routeName.value === 'skins')
-        return filterSkins(skins, spacesState.value, q.value);
+        return filterSkins(minifiedSpaces.value, q.value);
       if (routeName.value === 'networks')
         return filterNetworks(networks, spacesState.value, q.value);
       if (routeName.value === 'plugins')
@@ -127,6 +143,8 @@ export default {
     onMounted(async () => {
       monitorScroll(() => loadMore());
     });
+
+    console.log('asdf', strategies, items.value);
 
     return { buttonStr, resultsStr, items, q, limit, routeName };
   }
