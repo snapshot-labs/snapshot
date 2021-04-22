@@ -4,7 +4,7 @@
       <Container class="d-flex flex-items-center">
         <div class="flex-auto text-left">
           <UiButton class="pl-3 col-12 col-lg-4">
-            <Search v-model="q" :placeholder="$t('searchPlaceholder')" />
+            <Search v-model="state.q" :placeholder="$t('searchPlaceholder')" />
           </UiButton>
         </div>
         <div class="ml-3 text-right hide-sm">
@@ -18,7 +18,7 @@
     <Container :slim="true">
       <div class="overflow-hidden mr-n4">
         <router-link
-          v-for="space in spaces.slice(0, limit)"
+          v-for="space in spaces.slice(0, state.limit)"
           :key="space.key"
           :to="{ name: 'proposals', params: { key: space.key } }"
         >
@@ -61,32 +61,41 @@
         />
       </div>
     </Container>
-    <div id="endsensor"></div>
+    <div id="endpage"></div>
   </div>
 </template>
 
 <script>
-import { mapActions } from 'vuex';
 import orderBy from 'lodash/orderBy';
 import spotlight from '@snapshot-labs/snapshot-spaces/spaces/spotlight.json';
-import scrollMonitor from 'scrollmonitor';
+import { monitorScroll } from '@/composables/monitor-scroll';
+
+import { onMounted, reactive, computed } from 'vue';
+import { useRoute } from 'vue-router';
+import { useStore } from 'vuex';
 
 export default {
-  data() {
-    return {
-      q: this.$route.query.q || '',
-      limit: 16
-    };
-  },
-  computed: {
-    spaces() {
-      const list = Object.keys(this.app.spaces)
+  setup() {
+    const route = useRoute();
+    const store = useStore();
+
+    const loadBy = 16;
+    const favorites = computed(() => store.state.favoriteSpaces.favorites);
+    const spacesState = computed(() => store.state.app.spaces);
+
+    const state = reactive({
+      q: computed(() => route.query.q || ''),
+      limit: loadBy
+    });
+
+    const spaces = computed(() => {
+      const list = Object.keys(spacesState.value)
         .map(key => {
           const spotlightIndex = spotlight.indexOf(key);
           return {
-            ...this.app.spaces[key],
-            favorite: !!this.favoriteSpaces.favorites[key],
-            isActive: !!this.app.spaces[key]._activeProposals,
+            ...spacesState.value[key],
+            favorite: !!favorites.value[key],
+            isActive: !!spacesState.value[key]._activeProposals,
             spotlight: spotlightIndex === -1 ? 1e3 : spotlightIndex
           };
         })
@@ -96,28 +105,32 @@ export default {
         ['favorite', 'spotlight'],
         ['desc', 'asc']
       ).filter(space =>
-        JSON.stringify(space).toLowerCase().includes(this.q.toLowerCase())
+        JSON.stringify(space).toLowerCase().includes(state.q.toLowerCase())
       );
-    }
-  },
-  methods: {
-    ...mapActions(['addFavoriteSpace', 'removeFavoriteSpace']),
-    toggleFavorite(spaceId) {
-      if (this.favoriteSpaces.favorites[spaceId]) {
-        this.removeFavoriteSpace(spaceId);
-      } else {
-        this.addFavoriteSpace(spaceId);
-      }
-    }
-  },
-  mounted() {
-    const el = document.getElementById('endsensor');
-    const elementWatcher = scrollMonitor.create(el);
-    elementWatcher.enterViewport(() => {
-      if (this.spaces) {
-        this.limit += 16;
-      }
     });
+
+    const addFavoriteSpace = spaceId =>
+      store.dispatch('addFavoriteSpace', spaceId);
+    const removeFavoriteSpace = spaceId =>
+      store.dispatch('removeFavoriteSpace', spaceId);
+
+    function toggleFavorite(spaceId) {
+      if (favorites.value[spaceId]) {
+        removeFavoriteSpace(spaceId);
+      } else {
+        addFavoriteSpace(spaceId);
+      }
+    }
+
+    function loadMoreSpaces() {
+      state.limit += 16;
+    }
+
+    onMounted(async () => {
+      monitorScroll(() => loadMoreSpaces());
+    });
+
+    return { state, spaces, toggleFavorite };
   }
 };
 </script>
