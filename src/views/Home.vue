@@ -61,7 +61,7 @@
         />
       </div>
     </Container>
-    <div id="endpage"></div>
+    <div id="endpage" />
   </div>
 </template>
 

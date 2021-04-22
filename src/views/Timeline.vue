@@ -63,7 +63,7 @@
           <TimelineProposal :proposal="proposal" :i="i" />
         </Block>
       </div>
-      <div id="endpage"></div>
+      <div id="endpage" />
       <Block v-if="state.loadingMore && !state.loading" :slim="true">
         <RowLoading class="my-2" />
       </Block>
