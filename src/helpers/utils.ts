@@ -81,9 +81,14 @@ export function filterNetworks(networks, spaces, q) {
     .sort((a, b) => b.spaces.length - a.spaces.length);
 }
 
-export function filterSkins(skins, q) {
-  console.log(skins);
+export function filterSkins(skins, spaces, q) {
   return skins
+    .map(skin => ({
+      key: skin,
+      spaces: Object.entries(spaces)
+        .filter((space: any) => space[1].skin === skin)
+        .map(space => space[0])
+    }))
     .filter(skin => skin.key.toLowerCase().includes(q.toLowerCase()))
     .sort((a, b) => b.spaces.length - a.spaces.length);
 }
@@ -101,8 +106,9 @@ export function getStrategy(strategy, spaces) {
   return strategy;
 }
 
-export function filterStrategies(strategies, q = '') {
-  return strategies
+export function filterStrategies(strategies, spaces, q = '') {
+  return Object.values(strategies)
+    .map((strategy: any) => getStrategy(strategy, spaces))
     .filter(strategy =>
       JSON.stringify(strategy).toLowerCase().includes(q.toLowerCase())
     )
