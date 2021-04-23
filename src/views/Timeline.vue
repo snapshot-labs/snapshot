@@ -57,14 +57,14 @@
         <RowLoading class="my-2" />
       </Block>
 
-      <NoResults :block="true" v-else-if="state.proposals.length < 1" />
+      <NoResults :block="true" v-else-if="loadedItems.length < 1" />
       <div v-else>
-        <Block :slim="true" v-for="(proposal, i) in state.proposals" :key="i">
+        <Block :slim="true" v-for="(proposal, i) in loadedItems" :key="i">
           <TimelineProposal :proposal="proposal" :i="i" />
         </Block>
       </div>
       <div id="endpage" />
-      <Block v-if="state.loadingMore && !state.loading" :slim="true">
+      <Block v-if="loadingMore && !state.loading" :slim="true">
         <RowLoading class="my-2" />
       </Block>
     </template>
@@ -73,29 +73,39 @@
 
 <script>
 import { subgraphRequest } from '@snapshot-labs/snapshot.js/src/utils';
+import { useInfiniteLoader } from '@/composables/useInifiniteLoader';
 import { useScrollMonitor } from '@/composables/useScrollMonitor';
 
 import { onMounted, reactive, computed } from 'vue';
-import { useRoute } from 'vue-router';
 import { useStore } from 'vuex';
+import { routeState } from '@/composables/useRoute';
 
 export default {
   setup() {
-    const store = useStore();
-    const route = useRoute();
+    // Infinite scroll
+    const {
+      loadBy,
+      limit,
+      loadingMore,
+      loadedItems,
+      stopLoadingMore,
+      loadMore
+    } = useInfiniteLoader();
 
-    const loadBy = 15;
+    onMounted(() => {
+      useScrollMonitor(() => loadMore(() => loadProposals()));
+    });
+
+    // Proposals query
+    const store = useStore();
     const favorites = computed(() => store.state.favoriteSpaces.favorites);
+    const { routeParams } = routeState();
 
     const state = reactive({
       loading: false,
-      loadingMore: false,
-      stopLoadingMore: false,
-      proposals: [],
       spaces: [],
       state: 'all',
-      limit: loadBy,
-      scope: computed(() => route.params.scope)
+      scope: routeParams.value.scope
     });
 
     async function loadProposals(skip = 0) {
@@ -127,40 +137,31 @@ export default {
             }
           }
         );
-        state.stopLoadingMore = response.timeline.length < loadBy;
-        state.proposals = state.proposals.concat(response.timeline);
+        stopLoadingMore.value = response.timeline?.length < loadBy;
+        loadedItems.value = loadedItems.value.concat(response.timeline);
       } catch (e) {
         console.log(e);
       }
     }
 
-    async function selectState(e) {
+    // Initialize
+    onMounted(load());
+
+    async function load() {
+      state.loading = true;
+      await loadProposals();
+      state.loading = false;
+    }
+
+    // Change filter
+    function selectState(e) {
       state.state = e;
-      state.proposals = [];
-      state.limit = loadBy;
-      state.loading = true;
-      await loadProposals();
-      state.loading = false;
+      loadedItems.value = [];
+      limit.value = loadBy;
+      load();
     }
 
-    async function loadMoreProposals() {
-      if (!state.stopLoadingMore && state.proposals[0]) {
-        console.log('now', state.loadingMore);
-        state.loadingMore = true;
-        await loadProposals(state.limit);
-        state.limit += loadBy;
-        state.loadingMore = false;
-      }
-    }
-
-    onMounted(async () => {
-      useScrollMonitor(() => loadMoreProposals());
-      state.loading = true;
-      await loadProposals();
-      state.loading = false;
-    });
-
-    return { state, selectState };
+    return { state, selectState, loadingMore, loadedItems };
   }
 };
 </script>

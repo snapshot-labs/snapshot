@@ -80,7 +80,6 @@ export default {
     const { t } = useI18n({});
     const store = useStore();
     const spaces = computed(() => store.state.app.spaces);
-
     const { routeName, routeQuery } = routeState();
 
     const q = ref(routeQuery.value.q || '');

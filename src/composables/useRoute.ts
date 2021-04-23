@@ -7,6 +7,7 @@ export function routeState() {
 
   const routeName = computed(() => route.name);
   const routeQuery = computed(() => route.query);
+  const routeParams = computed(() => route.params);
 
-  return { routeQuery, routeName };
+  return { routeQuery, routeName, routeParams };
 }

@@ -4,7 +4,7 @@
       <Container class="d-flex flex-items-center">
         <div class="flex-auto text-left">
           <UiButton class="pl-3 col-12 col-lg-4">
-            <Search v-model="state.q" :placeholder="$t('searchPlaceholder')" />
+            <Search v-model="q" :placeholder="$t('searchPlaceholder')" />
           </UiButton>
         </div>
         <div class="ml-3 text-right hide-sm">
@@ -18,7 +18,7 @@
     <Container :slim="true">
       <div class="overflow-hidden mr-n4">
         <router-link
-          v-for="space in spaces.slice(0, state.limit)"
+          v-for="space in spaces.slice(0, limit)"
           :key="space.key"
           :to="{ name: 'proposals', params: { key: space.key } }"
         >
@@ -69,33 +69,28 @@
 import orderBy from 'lodash/orderBy';
 import spotlight from '@snapshot-labs/snapshot-spaces/spaces/spotlight.json';
 import { useScrollMonitor } from '@/composables/useScrollMonitor';
+import { routeState } from '@/composables/useRoute';
 
-import { onMounted, reactive, computed } from 'vue';
-import { useRoute } from 'vue-router';
+import { onMounted, ref, computed } from 'vue';
 import { useStore } from 'vuex';
 
 export default {
   setup() {
-    const route = useRoute();
     const store = useStore();
-
-    const loadBy = 16;
+    const { routeQuery } = routeState();
     const favorites = computed(() => store.state.favoriteSpaces.favorites);
-    const spacesState = computed(() => store.state.app.spaces);
+    const stateSpaces = computed(() => store.state.app.spaces);
 
-    const state = reactive({
-      q: computed(() => route.query.q || ''),
-      limit: loadBy
-    });
+    const q = ref(routeQuery.value.q || '');
 
     const spaces = computed(() => {
-      const list = Object.keys(spacesState.value)
+      const list = Object.keys(stateSpaces.value)
         .map(key => {
           const spotlightIndex = spotlight.indexOf(key);
           return {
-            ...spacesState.value[key],
+            ...stateSpaces.value[key],
             favorite: !!favorites.value[key],
-            isActive: !!spacesState.value[key]._activeProposals,
+            isActive: !!stateSpaces.value[key]._activeProposals,
             spotlight: spotlightIndex === -1 ? 1e3 : spotlightIndex
           };
         })
@@ -105,10 +100,11 @@ export default {
         ['favorite', 'spotlight'],
         ['desc', 'asc']
       ).filter(space =>
-        JSON.stringify(space).toLowerCase().includes(state.q.toLowerCase())
+        JSON.stringify(space).toLowerCase().includes(q.value.toLowerCase())
       );
     });
 
+    // Favorites
     const addFavoriteSpace = spaceId =>
       store.dispatch('addFavoriteSpace', spaceId);
     const removeFavoriteSpace = spaceId =>
@@ -122,15 +118,15 @@ export default {
       }
     }
 
-    function loadMoreSpaces() {
-      state.limit += 16;
-    }
+    // Scroll pagination
+    const loadBy = 16;
+    const limit = ref(loadBy);
 
     onMounted(() => {
-      useScrollMonitor(() => loadMoreSpaces());
+      useScrollMonitor(() => (limit.value += loadBy));
     });
 
-    return { state, spaces, toggleFavorite };
+    return { q, limit, spaces, toggleFavorite };
   }
 };
 </script>
