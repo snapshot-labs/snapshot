@@ -8,7 +8,7 @@ import { getStrategy } from '@/helpers/utils';
 import { computed } from 'vue';
 
 export function useSkinsFilter(spaces) {
-  const minifiedSkinsObject = computed(() => {
+  const minifiedSkinsArray = computed(() => {
     return skins.map(skin => ({
       key: skin,
       spaces: Object.entries(spaces)
@@ -18,32 +18,32 @@ export function useSkinsFilter(spaces) {
   });
 
   const filteredSkins = q => {
-    return minifiedSkinsObject.value
+    return minifiedSkinsArray.value
       .filter(skin => skin.key.toLowerCase().includes(q.toLowerCase()))
       .sort((a, b) => b.spaces.length - a.spaces.length);
   };
 
-  return { filteredSkins, minifiedSkinsObject };
+  return { filteredSkins, minifiedSkinsArray };
 }
 
 export function useStrategyFilter(spaces) {
-  const minifiedStrategiesObject = computed(() => {
+  const minifiedStrategiesArray = computed(() => {
     return Object.values(strategies).map(strategy =>
       getStrategy(strategy, spaces)
     );
   });
 
   const filteredStrategies = q => {
-    return minifiedStrategiesObject.value
+    return minifiedStrategiesArray.value
       .filter(skin => skin.key.toLowerCase().includes(q.toLowerCase()))
       .sort((a, b) => b.spaces.length - a.spaces.length);
   };
 
-  return { filteredStrategies, minifiedStrategiesObject };
+  return { filteredStrategies, minifiedStrategiesArray };
 }
 
 export function useNetworkFilter(spaces) {
-  const minifiedNetworksObject = computed(() => {
+  const minifiedNetworksArray = computed(() => {
     return Object.entries(networks).map((network: any) => {
       network[1].key = network[0];
       network[1].spaces = Object.entries(spaces)
@@ -54,18 +54,18 @@ export function useNetworkFilter(spaces) {
   });
 
   const filteredNetworks = q => {
-    return minifiedNetworksObject.value
+    return minifiedNetworksArray.value
       .filter(network =>
         JSON.stringify(network).toLowerCase().includes(q.toLowerCase())
       )
       .sort((a, b) => b.spaces.length - a.spaces.length);
   };
 
-  return { filteredNetworks, minifiedNetworksObject };
+  return { filteredNetworks, minifiedNetworksArray };
 }
 
 export function usePluginFilter(spaces) {
-  const minifiedPluginsObject = computed(() => {
+  const minifiedPluginsArray = computed(() => {
     return Object.entries(snapshot.plugins).map(([key, pluginClass]: any) => {
       const plugin = new pluginClass();
       plugin.key = key;
@@ -81,12 +81,12 @@ export function usePluginFilter(spaces) {
   });
 
   const filteredPlugins = q => {
-    return minifiedPluginsObject.value
+    return minifiedPluginsArray.value
       .filter(plugin =>
         JSON.stringify(plugin).toLowerCase().includes(q.toLowerCase())
       )
       .sort((a, b) => b.spaces.length - a.spaces.length);
   };
 
-  return { filteredPlugins, minifiedPluginsObject };
+  return { filteredPlugins, minifiedPluginsArray };
 }
