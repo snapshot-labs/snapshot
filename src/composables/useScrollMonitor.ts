@@ -1,6 +1,6 @@
 import scrollMonitor from 'scrollmonitor';
 
-export function monitorScroll(fn) {
+export function useScrollMonitor(fn) {
   let canRunAgain = true;
 
   const el = document.getElementById('endpage');

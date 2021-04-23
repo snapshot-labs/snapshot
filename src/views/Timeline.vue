@@ -73,7 +73,7 @@
 
 <script>
 import { subgraphRequest } from '@snapshot-labs/snapshot.js/src/utils';
-import { monitorScroll } from '@/composables/monitor-scroll';
+import { useScrollMonitor } from '@/composables/useScrollMonitor';
 
 import { onMounted, reactive, computed } from 'vue';
 import { useRoute } from 'vue-router';
@@ -154,7 +154,7 @@ export default {
     }
 
     onMounted(async () => {
-      monitorScroll(() => loadMoreProposals());
+      useScrollMonitor(() => loadMoreProposals());
       state.loading = true;
       await loadProposals();
       state.loading = false;
