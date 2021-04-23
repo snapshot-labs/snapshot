@@ -1,7 +1,7 @@
 import skins from '@/helpers/skins';
 import strategies from '@/helpers/strategies';
-import plugins from '@snapshot-labs/snapshot.js/src/plugins';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
+import snapshot from '@snapshot-labs/snapshot.js';
 
 import { getStrategy } from '@/helpers/utils';
 
@@ -66,7 +66,7 @@ export function useNetworkFilter(spaces) {
 
 export function usePluginFilter(spaces) {
   const minifiedPluginsObject = computed(() => {
-    return Object.entries(plugins).map(([key, pluginClass]: any) => {
+    return Object.entries(snapshot.plugins).map(([key, pluginClass]: any) => {
       const plugin = new pluginClass();
       plugin.key = key;
       plugin.spaces = Object.entries(spaces)
