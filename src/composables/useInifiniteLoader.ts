@@ -4,11 +4,10 @@ export function useInfiniteLoader() {
   const loadBy = 15;
   const limit = ref(loadBy);
   const loadingMore = ref(false);
-  const loadedItems = ref([]);
   const stopLoadingMore = ref(false);
 
-  async function loadMore(loadFn) {
-    if (!stopLoadingMore.value && loadedItems.value[0]) {
+  async function loadMore(loadFn, loading) {
+    if (!stopLoadingMore.value && !loading) {
       loadingMore.value = true;
       await loadFn(limit.value);
       limit.value += loadBy;
@@ -16,5 +15,5 @@ export function useInfiniteLoader() {
     }
   }
 
-  return { loadBy, limit, loadingMore, loadedItems, stopLoadingMore, loadMore };
+  return { loadBy, limit, loadingMore, stopLoadingMore, loadMore };
 }

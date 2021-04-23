@@ -57,9 +57,9 @@
         <RowLoading class="my-2" />
       </Block>
 
-      <NoResults :block="true" v-else-if="loadedItems.length < 1" />
+      <NoResults :block="true" v-else-if="state.proposals.length < 1" />
       <div v-else>
-        <Block :slim="true" v-for="(proposal, i) in loadedItems" :key="i">
+        <Block :slim="true" v-for="(proposal, i) in state.proposals" :key="i">
           <TimelineProposal :proposal="proposal" :i="i" />
         </Block>
       </div>
@@ -82,21 +82,6 @@ import { routeState } from '@/composables/useRoute';
 
 export default {
   setup() {
-    // Infinite scroll
-    const {
-      loadBy,
-      limit,
-      loadingMore,
-      loadedItems,
-      stopLoadingMore,
-      loadMore
-    } = useInfiniteLoader();
-
-    onMounted(() => {
-      useScrollMonitor(() => loadMore(() => loadProposals()));
-    });
-
-    // Proposals query
     const store = useStore();
     const favorites = computed(() => store.state.favoriteSpaces.favorites);
     const { routeParams } = routeState();
@@ -104,9 +89,25 @@ export default {
     const state = reactive({
       loading: false,
       spaces: [],
+      proposals: [],
       state: 'all',
       scope: routeParams.value.scope
     });
+
+    // Infinite scroll
+    const {
+      loadBy,
+      limit,
+      loadingMore,
+      stopLoadingMore,
+      loadMore
+    } = useInfiniteLoader();
+
+    onMounted(() => {
+      useScrollMonitor(() => loadMore(() => loadProposals(), state.loading));
+    });
+
+    // Proposals query
 
     async function loadProposals(skip = 0) {
       state.spaces = state.scope === 'all' ? [] : Object.keys(favorites.value);
@@ -138,7 +139,7 @@ export default {
           }
         );
         stopLoadingMore.value = response.timeline?.length < loadBy;
-        loadedItems.value = loadedItems.value.concat(response.timeline);
+        state.proposals = state.proposals.concat(response.timeline);
       } catch (e) {
         console.log(e);
       }
@@ -156,12 +157,12 @@ export default {
     // Change filter
     function selectState(e) {
       state.state = e;
-      loadedItems.value = [];
+      state.proposals = [];
       limit.value = loadBy;
       load();
     }
 
-    return { state, selectState, loadingMore, loadedItems };
+    return { state, selectState, loadingMore };
   }
 };
 </script>
