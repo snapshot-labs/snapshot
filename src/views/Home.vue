@@ -68,7 +68,7 @@
 <script>
 import orderBy from 'lodash/orderBy';
 import spotlight from '@snapshot-labs/snapshot-spaces/spaces/spotlight.json';
-import { monitorScroll } from '@/composables/monitor-scroll';
+import { useScrollMonitor } from '@/composables/useScrollMonitor';
 
 import { onMounted, reactive, computed } from 'vue';
 import { useRoute } from 'vue-router';
@@ -126,8 +126,8 @@ export default {
       state.limit += 16;
     }
 
-    onMounted(async () => {
-      monitorScroll(() => loadMoreSpaces());
+    onMounted(() => {
+      useScrollMonitor(() => loadMoreSpaces());
     });
 
     return { state, spaces, toggleFavorite };
