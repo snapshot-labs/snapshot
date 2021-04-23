@@ -1,7 +1,6 @@
 import { ref } from 'vue';
 
-export function useInfiniteLoader() {
-  const loadBy = 15;
+export function useInfiniteLoader(loadBy) {
   const limit = ref(loadBy);
   const loadingMore = ref(false);
   const stopLoadingMore = ref(false);

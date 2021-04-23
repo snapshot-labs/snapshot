@@ -101,7 +101,7 @@ export default {
       loadingMore,
       stopLoadingMore,
       loadMore
-    } = useInfiniteLoader();
+    } = useInfiniteLoader(15);
 
     onMounted(() => {
       useScrollMonitor(() => loadMore(() => loadProposals(), state.loading));
