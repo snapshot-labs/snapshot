@@ -108,7 +108,6 @@ export default {
     });
 
     // Proposals query
-
     async function loadProposals(skip = 0) {
       state.spaces = state.scope === 'all' ? [] : Object.keys(favorites.value);
       try {

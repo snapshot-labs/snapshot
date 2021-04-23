@@ -1,7 +1,7 @@
 import skins from '@/helpers/skins';
 import strategies from '@/helpers/strategies';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
-import snapshot from '@snapshot-labs/snapshot.js';
+// import plugins from '@snapshot-labs/snapshot.js/src/plugins';
 
 import { getStrategy } from '@/helpers/utils';
 
@@ -64,29 +64,29 @@ export function useNetworkFilter(spaces) {
   return { filteredNetworks, minifiedNetworksArray };
 }
 
-export function usePluginFilter(spaces) {
-  const minifiedPluginsArray = computed(() => {
-    return Object.entries(snapshot.plugins).map(([key, pluginClass]: any) => {
-      const plugin = new pluginClass();
-      plugin.key = key;
-      plugin.spaces = Object.entries(spaces)
-        .filter(
-          (space: any) =>
-            space[1].plugins &&
-            Object.keys(space[1].plugins).includes(plugin.key)
-        )
-        .map(space => space[0]);
-      return plugin;
-    });
-  });
+// export function usePluginFilter(spaces) {
+//   const minifiedPluginsArray = computed(() => {
+//     return Object.entries(plugins).map(([key, pluginClass]: any) => {
+//       const plugin = new pluginClass();
+//       plugin.key = key;
+//       plugin.spaces = Object.entries(spaces)
+//         .filter(
+//           (space: any) =>
+//             space[1].plugins &&
+//             Object.keys(space[1].plugins).includes(plugin.key)
+//         )
+//         .map(space => space[0]);
+//       return plugin;
+//     });
+//   });
 
-  const filteredPlugins = q => {
-    return minifiedPluginsArray.value
-      .filter(plugin =>
-        JSON.stringify(plugin).toLowerCase().includes(q.toLowerCase())
-      )
-      .sort((a, b) => b.spaces.length - a.spaces.length);
-  };
+//   const filteredPlugins = q => {
+//     return minifiedPluginsArray.value
+//       .filter(plugin =>
+//         JSON.stringify(plugin).toLowerCase().includes(q.toLowerCase())
+//       )
+//       .sort((a, b) => b.spaces.length - a.spaces.length);
+//   };
 
-  return { filteredPlugins, minifiedPluginsArray };
-}
+//   return { filteredPlugins, minifiedPluginsArray };
+// }

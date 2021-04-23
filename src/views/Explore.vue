@@ -65,8 +65,7 @@ import { useScrollMonitor } from '@/composables/useScrollMonitor';
 import {
   useSkinsFilter,
   useStrategyFilter,
-  useNetworkFilter,
-  usePluginFilter
+  useNetworkFilter
 } from '@/composables/useSearchFilters';
 import { routeState } from '@/composables/useRoute';
 
@@ -103,13 +102,13 @@ export default {
     const { filteredSkins } = useSkinsFilter(spaces.value);
     const { filteredStrategies } = useStrategyFilter(spaces.value);
     const { filteredNetworks } = useNetworkFilter(spaces.value);
-    const { filteredPlugins } = usePluginFilter(spaces.value);
+    // const { filteredPlugins } = usePluginFilter(spaces.value);
 
     const items = computed(() => {
       if (routeName.value === 'strategies') return filteredStrategies(q.value);
       if (routeName.value === 'skins') return filteredSkins(q.value);
       if (routeName.value === 'networks') return filteredNetworks(q.value);
-      if (routeName.value === 'plugins') return filteredPlugins(q.value);
+      // if (routeName.value === 'plugins') return filteredPlugins(q.value);
       return [];
     });
 
