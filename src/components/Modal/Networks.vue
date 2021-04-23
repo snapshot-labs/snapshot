@@ -22,27 +22,28 @@
 </template>
 
 <script>
-import networks from '@snapshot-labs/snapshot.js/src/networks.json';
-import { filterNetworks } from '@/helpers/utils';
+import { computed, ref, toRefs } from 'vue';
+import { useStore } from 'vuex';
+
+import { useNetworkFilter } from '@/composables/useSearchFilters';
 
 export default {
-  props: ['open'],
-  emits: ['update:modelValue', 'close'],
-  data() {
-    return {
-      searchInput: ''
-    };
-  },
-  computed: {
-    networks() {
-      return filterNetworks(networks, this.app.spaces, this.searchInput);
+  setup(props, { emit }) {
+    const { open } = toRefs(props);
+    const store = useStore();
+
+    const spaces = computed(() => store.state.app.spaces);
+    const { filteredNetworks } = useNetworkFilter(spaces.value);
+
+    const searchInput = ref('');
+    const networks = computed(() => filteredNetworks(searchInput.value));
+
+    function select(key) {
+      emit('update:modelValue', key);
+      emit('close');
     }
-  },
-  methods: {
-    select(key) {
-      this.$emit('update:modelValue', key);
-      this.$emit('close');
-    }
+
+    return { networks, searchInput, select, open };
   }
 };
 </script>

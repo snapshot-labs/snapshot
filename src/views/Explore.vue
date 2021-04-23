@@ -61,37 +61,29 @@
 </template>
 
 <script>
-import networks from '@snapshot-labs/snapshot.js/src/networks.json';
-import plugins from '@snapshot-labs/snapshot.js/src/plugins';
-import strategies from '@/helpers/strategies';
-import skins from '@/helpers/skins';
+import { useScrollMonitor } from '@/composables/useScrollMonitor';
 import {
-  filterStrategies,
-  filterSkins,
-  filterNetworks,
-  filterPlugins,
-  getStrategy
-} from '@/helpers/utils';
-import { monitorScroll } from '@/composables/monitor-scroll';
+  useSkinsFilter,
+  useStrategyFilter,
+  useNetworkFilter,
+  usePluginFilter
+} from '@/composables/useSearchFilters';
+import { routeState } from '@/composables/useRoute';
 
 import { useI18n } from 'vue-i18n';
-import { useRoute } from 'vue-router';
 import { useStore } from 'vuex';
-
 import { computed, ref, onMounted } from 'vue';
 
 export default {
   setup() {
+    // Explore
     const { t } = useI18n({});
-    const route = useRoute();
     const store = useStore();
+    const spaces = computed(() => store.state.app.spaces);
 
-    const routeName = computed(() => route.name);
-    const spacesState = computed(() => store.state.app.spaces);
-    const loadBy = 8;
+    const { routeName, routeQuery } = routeState();
 
-    const q = ref(computed(() => route.query.q || ''));
-    const limit = ref(loadBy);
+    const q = ref(routeQuery.value.q || '');
 
     const buttonStr = computed(() => {
       if (routeName.value === 'strategies') return t('explore.createStrategy');
@@ -109,42 +101,26 @@ export default {
       return t('explore.results');
     });
 
-    const minifiedSpaces = computed(() => {
-      return skins.map(skin => ({
-        key: skin,
-        spaces: Object.entries(spacesState.value)
-          .filter(space => space[1].skin === skin)
-          .map(space => space[0])
-      }));
-    });
-
-    const minifiedStrategies = computed(() => {
-      return Object.values(strategies).map(strategy =>
-        getStrategy(strategy, spacesState.value)
-      );
-    });
+    const { filteredSkins } = useSkinsFilter(spaces.value);
+    const { filteredStrategies } = useStrategyFilter(spaces.value);
+    const { filteredNetworks } = useNetworkFilter(spaces.value);
+    const { filteredPlugins } = usePluginFilter(spaces.value);
 
     const items = computed(() => {
-      if (routeName.value === 'strategies')
-        return filterStrategies(minifiedStrategies.value, q.value);
-      if (routeName.value === 'skins')
-        return filterSkins(minifiedSpaces.value, q.value);
-      if (routeName.value === 'networks')
-        return filterNetworks(networks, spacesState.value, q.value);
-      if (routeName.value === 'plugins')
-        return filterPlugins(plugins, spacesState.value, q.value);
+      if (routeName.value === 'strategies') return filteredStrategies(q.value);
+      if (routeName.value === 'skins') return filteredSkins(q.value);
+      if (routeName.value === 'networks') return filteredNetworks(q.value);
+      if (routeName.value === 'plugins') return filteredPlugins(q.value);
       return [];
     });
 
-    function loadMore() {
-      limit.value += loadBy;
-    }
+    // Scroll pagination
+    const loadBy = 8;
+    const limit = ref(loadBy);
 
-    onMounted(async () => {
-      monitorScroll(() => loadMore());
+    onMounted(() => {
+      useScrollMonitor(() => (limit.value += loadBy));
     });
-
-    console.log('asdf', strategies, items.value);
 
     return { buttonStr, resultsStr, items, q, limit, routeName };
   }
