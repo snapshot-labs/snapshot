@@ -61,12 +61,11 @@
 </template>
 
 <script>
+import { computed, ref, onMounted } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { scrollEndMonitor } from '@/helpers/utils';
 import { useSearchFilters } from '@/composables/useSearchFilters';
 import { routeState } from '@/composables/useRouter';
-
-import { computed, ref, onMounted } from 'vue';
-import { useI18n } from 'vue-i18n';
 export default {
   setup() {
     // Explore

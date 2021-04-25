@@ -1,12 +1,10 @@
+import { computed } from 'vue';
+import { useStore } from 'vuex';
 import skins from '@/helpers/skins';
 import strategies from '@/helpers/strategies';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import plugins from '@snapshot-labs/snapshot.js/src/plugins';
-
 import { getStrategy } from '@/helpers/utils';
-
-import { computed } from 'vue';
-import { useStore } from 'vuex';
 
 export function useSearchFilters() {
   const store = useStore();

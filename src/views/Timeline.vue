@@ -72,12 +72,11 @@
 </template>
 
 <script>
-import { subgraphRequest } from '@snapshot-labs/snapshot.js/src/utils';
-import { useInfiniteLoader } from '@/composables/useInfiniteLoader';
-import { scrollEndMonitor } from '@/helpers/utils';
-
 import { onMounted, reactive, computed } from 'vue';
 import { useStore } from 'vuex';
+import { scrollEndMonitor } from '@/helpers/utils';
+import { useInfiniteLoader } from '@/composables/useInfiniteLoader';
+import { subgraphRequest } from '@snapshot-labs/snapshot.js/src/utils';
 import { routeState } from '@/composables/useRouter';
 
 export default {
@@ -101,7 +100,7 @@ export default {
       loadingMore,
       stopLoadingMore,
       loadMore
-    } = useInfiniteLoader(15);
+    } = useInfiniteLoader(20);
 
     onMounted(() => {
       scrollEndMonitor(() => loadMore(() => loadProposals(), state.loading));

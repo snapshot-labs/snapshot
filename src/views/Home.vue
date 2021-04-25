@@ -66,14 +66,12 @@
 </template>
 
 <script>
+import { onMounted, ref, computed } from 'vue';
+import { useStore } from 'vuex';
 import orderBy from 'lodash/orderBy';
 import spotlight from '@snapshot-labs/snapshot-spaces/spaces/spotlight.json';
 import { scrollEndMonitor } from '@/helpers/utils';
 import { routeState } from '@/composables/useRouter';
-
-import { onMounted, ref, computed } from 'vue';
-import { useStore } from 'vuex';
-
 export default {
   setup() {
     const store = useStore();
