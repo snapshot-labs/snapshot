@@ -48,8 +48,8 @@
 </template>
 
 <script>
-import { clone, filterStrategies } from '@/helpers/utils';
-import strategies from '@/helpers/strategies';
+import { clone } from '@/helpers/utils';
+import { useStrategyFilter } from '@/composables/useSearchFilters';
 
 const defaultParams = {
   symbol: 'DAI',
@@ -57,55 +57,69 @@ const defaultParams = {
   decimals: 18
 };
 
+import { ref, toRefs, computed, watch } from 'vue';
 export default {
-  props: ['open', 'strategy'],
-  emits: ['add', 'close'],
-  data() {
-    return {
-      input: {
-        name: '',
-        params: JSON.stringify(defaultParams, null, 2)
-      },
-      searchInput: ''
-    };
+  props: {
+    open: {
+      type: Boolean,
+      required: true
+    },
+    strategy: {
+      type: Object,
+      required: true
+    }
   },
-  watch: {
-    open() {
-      if (this.strategy?.name) {
-        const strategy = this.strategy;
-        strategy.params = JSON.stringify(strategy.params, null, 2);
-        this.input = this.strategy;
+  setup(props, { emit }) {
+    const searchInput = ref('');
+    const input = ref({
+      name: '',
+      params: JSON.stringify(defaultParams, null, 2)
+    });
+    const { open, strategy } = toRefs(props);
+
+    const { filteredStrategies } = useStrategyFilter();
+    const strategies = computed(() => filteredStrategies(searchInput.value));
+
+    watch(open, () => {
+      if (strategy.value?.name) {
+        strategy.value.params = JSON.stringify(strategy.value.params, null, 2);
+        input.value = strategy.value;
       } else {
-        this.input = {
+        input.value = {
           name: '',
           params: JSON.stringify(defaultParams, null, 2)
         };
       }
-    }
-  },
-  computed: {
-    strategies() {
-      return filterStrategies(strategies, this.app.spaces, this.searchInput);
-    },
-    isValid() {
+    });
+
+    const isValid = computed(() => {
       try {
-        const params = JSON.parse(this.input.params);
+        const params = JSON.parse(input.value.params);
         return !!params.symbol;
       } catch (e) {
         return false;
       }
+    });
+
+    function select(strategy) {
+      input.value.name = strategy;
     }
-  },
-  methods: {
-    select(strategy) {
-      this.input.name = strategy;
-    },
-    handleSubmit() {
-      const strategy = clone(this.input);
+
+    function handleSubmit() {
+      const strategy = clone(input.value);
       strategy.params = JSON.parse(strategy.params);
-      this.$emit('add', strategy);
-      this.$emit('close');
+      emit('add', strategy);
+      emit('close');
     }
+
+    return {
+      strategies,
+      searchInput,
+      select,
+      input,
+      isValid,
+      handleSubmit
+    };
   }
 };
 </script>

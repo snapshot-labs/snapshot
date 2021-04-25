@@ -41,74 +41,83 @@
         </UiButton>
       </div>
       <div v-if="!selectedPlugin?.key">
-        <a
-          v-for="(plugin, i) in filteredPlugins"
-          :key="i"
-          @click="select(plugin)"
-        >
+        <a v-for="(plugin, i) in plugins" :key="i" @click="select(plugin)">
           <BlockPlugin :plugin="plugin" />
         </a>
-        <NoResults v-if="Object.keys(filteredPlugins).length < 1" />
+        <NoResults v-if="Object.keys(plugins).length < 1" />
       </div>
     </div>
   </UiModal>
 </template>
 
 <script>
-import { clone, filterPlugins } from '@/helpers/utils';
-import plugins from '@snapshot-labs/snapshot.js/src/plugins';
+import { clone } from '@/helpers/utils';
+import { usePluginFilter } from '@/composables/useSearchFilters';
 
+import { toRefs, computed, ref, watch } from 'vue';
 export default {
-  props: ['open', 'plugin'],
-  emits: ['add', 'close'],
-  data() {
-    return {
-      input: '',
-      selectedPlugin: {},
-      searchInput: ''
-    };
+  props: {
+    open: {
+      type: Boolean,
+      required: true
+    },
+    plugin: {
+      type: Object,
+      required: true
+    }
   },
-  watch: {
-    open() {
-      if (Object.keys(this.plugin).length > 0) {
-        const key = Object.keys(this.plugin)[0];
-        this.input = JSON.stringify(this.plugin[key], null, 2);
-        this.selectedPlugin = this.plugins.find(obj => {
+  setup(props, { emit }) {
+    const { open, plugin } = toRefs(props);
+    const selectedPlugin = ref({});
+    const input = ref('');
+    const searchInput = ref('');
+
+    const { filteredPlugins } = usePluginFilter();
+    const plugins = computed(() => filteredPlugins(searchInput.value));
+    const allPlugins = computed(() => filteredPlugins());
+
+    watch(open, () => {
+      if (Object.keys(plugin.value).length > 0) {
+        const key = Object.keys(plugin.value)[0];
+        input.value = JSON.stringify(plugin.value[key], null, 2);
+        selectedPlugin.value = allPlugins.value.find(obj => {
           return obj.key === key;
         });
       } else {
-        this.input = JSON.stringify({}, null, 2);
-        this.selectedPlugin = {};
+        input.value = JSON.stringify({}, null, 2);
+        selectedPlugin.value = {};
       }
-    }
-  },
-  computed: {
-    filteredPlugins() {
-      return filterPlugins(plugins, this.app.spaces, this.searchInput);
-    },
-    plugins() {
-      return filterPlugins(plugins, this.app.spaces, '');
-    },
-    isValid() {
+    });
+
+    const isValid = computed(() => {
       try {
-        const params = JSON.parse(this.input);
+        const params = JSON.parse(input.value);
         return !!params;
       } catch (e) {
         return false;
       }
+    });
+
+    function select(plugin) {
+      selectedPlugin.value = plugin;
     }
-  },
-  methods: {
-    select(plugin) {
-      this.selectedPlugin = plugin;
-    },
-    handleSubmit() {
-      let input = clone(this.input);
-      input = JSON.parse(input);
-      const key = this.selectedPlugin.key;
-      this.$emit('add', { input, key });
-      this.$emit('close');
+    function handleSubmit() {
+      let inputClone = clone(input.value);
+      inputClone = JSON.parse(inputClone);
+      const key = selectedPlugin.value.key;
+      emit('add', { inputClone, key });
+      emit('close');
     }
+
+    return {
+      selectedPlugin,
+      input,
+      searchInput,
+      plugins,
+      isValid,
+      select,
+      handleSubmit
+    };
   }
 };
 </script>

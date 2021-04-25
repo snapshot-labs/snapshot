@@ -69,7 +69,7 @@
 import orderBy from 'lodash/orderBy';
 import spotlight from '@snapshot-labs/snapshot-spaces/spaces/spotlight.json';
 import { useScrollMonitor } from '@/composables/useScrollMonitor';
-import { routeState } from '@/composables/useRoute';
+import { routeState } from '@/composables/useRouter';
 
 import { onMounted, ref, computed } from 'vue';
 import { useStore } from 'vuex';

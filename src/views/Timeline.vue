@@ -78,7 +78,7 @@ import { useScrollMonitor } from '@/composables/useScrollMonitor';
 
 import { onMounted, reactive, computed } from 'vue';
 import { useStore } from 'vuex';
-import { routeState } from '@/composables/useRoute';
+import { routeState } from '@/composables/useRouter';
 
 export default {
   setup() {
