@@ -24,7 +24,7 @@
   "allSpaces": "全てのスペース",
   "submitOnchain": "パブリックチェーンへ書き込む",
   "inSpaces": "スペースに {0} 個あります",
-  "downloadReport": "レポートをダウンロードする",
+  "downloadReport": "レポートをダウンロード",
   "votes": "投票数",
   "seeMore": "もっと見る",
   "network": "ネットワーク",
@@ -39,7 +39,7 @@
   "connectWallet": "ウォレットを接続する",
   "about": "About",
   "license": "ライセンス",
-  "ipfsServer": "IPFS server",
+  "ipfsServer": "IPFS サーバ",
   "hub": "Hub",
   "cancel": "Cancel",
   "deleteProposal": "Delete proposal",
@@ -93,7 +93,7 @@
   "contectHash": "Content hash",
   "defaultSkin": "Default skin",
   "select": "Select",
-  "language": "Language",
+  "language": "言語",
   "errors": {
     "required": "Field is required",
     "minLength": "Minimum length is {0}",
@@ -103,18 +103,18 @@
     "minStrategy": "At least one strategy is required."
   },
   "create": {
-    "question": "Question",
-    "content": "What is your proposal?",
+    "question": "質問",
+    "content": "提案はなんですか?",
     "preview": "Preview",
-    "choices": "Choices",
-    "addChoice": "Add choice",
-    "startDate": "Select start date",
-    "endDate": "Select end date",
+    "choices": "選択肢",
+    "addChoice": "選択肢を追加する",
+    "startDate": "開始日を選択する",
+    "endDate": "終了日を選択する",
     "startTime": "Select start time",
     "endTime": "Select end time",
-    "publish": "Publish",
+    "publish": "公開",
     "snapshotBlock": "Snapshot block number",
-    "onlyMembersWarning": "You need to be a member of the space in order to submit a proposal",
+    "onlyMembersWarning": "提案を送信するため、スペースのメンバーである必要がある。",
     "minScoreWarning": "You need to have a minimum of {0} {1} in order to submit a proposal"
   },
   "delegate": {
@@ -128,26 +128,26 @@
   "proposal": {
     "castVote": "Cast your vote",
     "vote": "Vote",
-    "startDate": "Start date",
-    "endDate": "End date"
+    "startDate": "開始日",
+    "endDate": "終了日"
   },
   "proposals": {
-    "header": "Proposals",
-    "new": "New proposal",
+    "header": "提案",
+    "new": "新しい提案",
     "noProposals": "There aren't any proposals here yet!",
     "states": {
-      "all": "All",
-      "core": "Core",
-      "community": "Community",
+      "all": "すべて",
+      "core": "コア",
+      "community": "コミュニティ",
       "active": "Active",
       "pending": "Pending",
       "closed": "Closed"
     }
   },
   "settings": {
-    "header": "Settings",
+    "header": "設定",
     "seeENS": "See on ENS",
-    "setENS": "Set record on ENS",
+    "setENS": "ENSへ記録する",
     "profile": "Profile",
     "changeAvatar": "Change avatar",
     "name": "Name",
@@ -170,9 +170,9 @@
     "strategyRequired": "At least one strategy is required."
   },
   "setup": {
-    "example": "e.g. yam.eth",
-    "useExistingEns": "Use an existing ENS name to create your space with.",
-    "createASpace": "Create a space"
+    "example": "例 yam.eth",
+    "useExistingEns": "スペースを作成するため、存在するENS名を使ってください。",
+    "createASpace": "スペースを作成する"
   },
   "notify": {
     "youDidIt": "You did it!",

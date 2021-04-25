@@ -57,5 +57,9 @@
   "te-IN": {
     "name": "Telugu",
     "nativeName": "తెలుగు"
+  },
+  "ja-JP": {
+    "name": "Japanese",
+    "nativeName": "日本語"
   }
 }
