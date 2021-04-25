@@ -8,8 +8,7 @@ export function useInfiniteLoader(loadBy) {
   async function loadMore(loadFn, loading) {
     if (!stopLoadingMore.value && !loading) {
       loadingMore.value = true;
-      console.log('fire');
-      await loadFn(limit.value);
+      await loadFn();
       limit.value += loadBy;
       loadingMore.value = false;
     }
