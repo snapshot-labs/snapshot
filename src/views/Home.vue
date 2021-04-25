@@ -68,7 +68,7 @@
 <script>
 import orderBy from 'lodash/orderBy';
 import spotlight from '@snapshot-labs/snapshot-spaces/spaces/spotlight.json';
-import { useScrollMonitor } from '@/composables/useScrollMonitor';
+import { scrollEndMonitor } from '@/helpers/utils';
 import { routeState } from '@/composables/useRouter';
 
 import { onMounted, ref, computed } from 'vue';
@@ -123,7 +123,7 @@ export default {
     const limit = ref(loadBy);
 
     onMounted(() => {
-      useScrollMonitor(() => (limit.value += loadBy));
+      scrollEndMonitor(() => (limit.value += loadBy));
     });
 
     return { q, limit, spaces, toggleFavorite };

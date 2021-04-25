@@ -74,7 +74,7 @@
 <script>
 import { subgraphRequest } from '@snapshot-labs/snapshot.js/src/utils';
 import { useInfiniteLoader } from '@/composables/useInfiniteLoader';
-import { useScrollMonitor } from '@/composables/useScrollMonitor';
+import { scrollEndMonitor } from '@/helpers/utils';
 
 import { onMounted, reactive, computed } from 'vue';
 import { useStore } from 'vuex';
@@ -104,7 +104,7 @@ export default {
     } = useInfiniteLoader(15);
 
     onMounted(() => {
-      useScrollMonitor(() => loadMore(() => loadProposals(), state.loading));
+      scrollEndMonitor(() => loadMore(() => loadProposals(), state.loading));
     });
 
     // Proposals query

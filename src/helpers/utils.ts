@@ -1,4 +1,5 @@
 import pkg from '@/../package.json';
+import scrollMonitor from 'scrollmonitor';
 
 export function shorten(str = '') {
   return `${str.slice(0, 6)}...${str.slice(str.length - 4)}`;
@@ -167,4 +168,21 @@ export function filterProposals(space, proposal, tab) {
   if (tab === 'pending' && start > ts) return true;
 
   return false;
+}
+
+export function scrollEndMonitor(fn) {
+  let canRunAgain = true;
+
+  const el = document.getElementById('endofpage');
+  const elementWatcher = scrollMonitor.create(el);
+  elementWatcher.enterViewport(() => {
+    if (canRunAgain) {
+      canRunAgain = false;
+      fn();
+
+      setTimeout(function () {
+        canRunAgain = true;
+      }, 100);
+    }
+  });
 }

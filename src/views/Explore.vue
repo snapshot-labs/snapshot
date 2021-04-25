@@ -61,7 +61,7 @@
 </template>
 
 <script>
-import { useScrollMonitor } from '@/composables/useScrollMonitor';
+import { scrollEndMonitor } from '@/helpers/utils';
 import { useSearchFilters } from '@/composables/useSearchFilters';
 import { routeState } from '@/composables/useRouter';
 
@@ -111,7 +111,7 @@ export default {
     const limit = ref(loadBy);
 
     onMounted(() => {
-      useScrollMonitor(() => (limit.value += loadBy));
+      scrollEndMonitor(() => (limit.value += loadBy));
     });
 
     return { buttonStr, resultsStr, items, q, limit, routeName };
