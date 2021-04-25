@@ -180,5 +180,16 @@
     "proposalDeleted": "Vorschlag gelöscht",
     "yourIsIn": "Dein {0} ist drinnen!",
     "somethingWentWrong": "Hoppla, da ist etwas schiefgelaufen!"
+  },
+  "explore": {
+    "createStrategy": "Create strategy",
+    "createSkin": "Create skin",
+    "addNetwork": "Add network",
+    "createPlugin": "Create plugin",
+    "strategies": "strategie(s)",
+    "skins": "skin(s)",
+    "networks": "network(s)",
+    "plugins": "plugin(s)",
+    "results": "result(s)"
   }
 }
