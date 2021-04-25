@@ -1,8 +1,6 @@
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
-import { signMessage } from '@snapshot-labs/snapshot.js/src/utils/web3';
 import client from '@/helpers/client';
 import { formatSpace } from '@/helpers/utils';
-import { version } from '@/../package.json';
 import i18n, {
   defaultLocale,
   setI18nLanguage,

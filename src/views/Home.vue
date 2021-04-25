@@ -61,32 +61,36 @@
         />
       </div>
     </Container>
-    <div id="endsensor"></div>
+    <div id="endofpage" />
   </div>
 </template>
 
 <script>
-import { mapActions } from 'vuex';
 import orderBy from 'lodash/orderBy';
 import spotlight from '@snapshot-labs/snapshot-spaces/spaces/spotlight.json';
-import scrollMonitor from 'scrollmonitor';
+import { useScrollMonitor } from '@/composables/useScrollMonitor';
+import { routeState } from '@/composables/useRouter';
+
+import { onMounted, ref, computed } from 'vue';
+import { useStore } from 'vuex';
 
 export default {
-  data() {
-    return {
-      q: this.$route.query.q || '',
-      limit: 16
-    };
-  },
-  computed: {
-    spaces() {
-      const list = Object.keys(this.app.spaces)
+  setup() {
+    const store = useStore();
+    const { routeQuery } = routeState();
+    const favorites = computed(() => store.state.favoriteSpaces.favorites);
+    const stateSpaces = computed(() => store.state.app.spaces);
+
+    const q = ref(routeQuery.value.q || '');
+
+    const spaces = computed(() => {
+      const list = Object.keys(stateSpaces.value)
         .map(key => {
           const spotlightIndex = spotlight.indexOf(key);
           return {
-            ...this.app.spaces[key],
-            favorite: !!this.favoriteSpaces.favorites[key],
-            isActive: !!this.app.spaces[key]._activeProposals,
+            ...stateSpaces.value[key],
+            favorite: !!favorites.value[key],
+            isActive: !!stateSpaces.value[key]._activeProposals,
             spotlight: spotlightIndex === -1 ? 1e3 : spotlightIndex
           };
         })
@@ -96,28 +100,33 @@ export default {
         ['favorite', 'spotlight'],
         ['desc', 'asc']
       ).filter(space =>
-        JSON.stringify(space).toLowerCase().includes(this.q.toLowerCase())
+        JSON.stringify(space).toLowerCase().includes(q.value.toLowerCase())
       );
-    }
-  },
-  methods: {
-    ...mapActions(['addFavoriteSpace', 'removeFavoriteSpace']),
-    toggleFavorite(spaceId) {
-      if (this.favoriteSpaces.favorites[spaceId]) {
-        this.removeFavoriteSpace(spaceId);
-      } else {
-        this.addFavoriteSpace(spaceId);
-      }
-    }
-  },
-  mounted() {
-    const el = document.getElementById('endsensor');
-    const elementWatcher = scrollMonitor.create(el);
-    elementWatcher.enterViewport(() => {
-      if (this.spaces) {
-        this.limit += 16;
-      }
     });
+
+    // Favorites
+    const addFavoriteSpace = spaceId =>
+      store.dispatch('addFavoriteSpace', spaceId);
+    const removeFavoriteSpace = spaceId =>
+      store.dispatch('removeFavoriteSpace', spaceId);
+
+    function toggleFavorite(spaceId) {
+      if (favorites.value[spaceId]) {
+        removeFavoriteSpace(spaceId);
+      } else {
+        addFavoriteSpace(spaceId);
+      }
+    }
+
+    // Scroll
+    const loadBy = 16;
+    const limit = ref(loadBy);
+
+    onMounted(() => {
+      useScrollMonitor(() => (limit.value += loadBy));
+    });
+
+    return { q, limit, spaces, toggleFavorite };
   }
 };
 </script>

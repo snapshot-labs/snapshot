@@ -22,14 +22,14 @@
     </div>
     <Container :slim="true">
       <div class="overflow-hidden">
-        <template v-if="route === 'strategies'">
+        <template v-if="routeName === 'strategies'">
           <template v-for="item in items.slice(0, limit)" :key="item.key">
             <router-link :to="`/strategy/${item.key}`">
               <BlockStrategy :strategy="item" class="mb-3" />
             </router-link>
           </template>
         </template>
-        <template v-if="route === 'skins'">
+        <template v-if="routeName === 'skins'">
           <BlockSkin
             v-for="item in items.slice(0, limit)"
             :key="item.key"
@@ -37,7 +37,7 @@
             class="mb-3"
           />
         </template>
-        <template v-if="route === 'networks'">
+        <template v-if="routeName === 'networks'">
           <BlockNetwork
             v-for="item in items.slice(0, limit)"
             :key="item.key"
@@ -45,7 +45,7 @@
             class="mb-3"
           />
         </template>
-        <template v-if="route === 'plugins'">
+        <template v-if="routeName === 'plugins'">
           <BlockPlugin
             v-for="item in items.slice(0, limit)"
             :key="item.key"
@@ -56,68 +56,65 @@
         <NoResults :block="true" v-if="Object.keys(items).length < 1" />
       </div>
     </Container>
-    <div id="endsensor"></div>
+    <div id="endofpage" />
   </div>
 </template>
 
 <script>
-import networks from '@snapshot-labs/snapshot.js/src/networks.json';
-import plugins from '@snapshot-labs/snapshot.js/src/plugins';
-import strategies from '@/helpers/strategies';
-import skins from '@/helpers/skins';
-import {
-  filterStrategies,
-  filterSkins,
-  filterNetworks,
-  filterPlugins
-} from '@/helpers/utils';
-import scrollMonitor from 'scrollmonitor';
+import { useScrollMonitor } from '@/composables/useScrollMonitor';
+import { useSearchFilters } from '@/composables/useSearchFilters';
+import { routeState } from '@/composables/useRouter';
 
+import { computed, ref, onMounted } from 'vue';
+import { useI18n } from 'vue-i18n';
 export default {
-  data() {
-    return {
-      q: this.$route.query.q || '',
-      limit: 8
-    };
-  },
-  computed: {
-    route() {
-      return this.$route.name;
-    },
-    buttonStr() {
-      if (this.route === 'strategies') return 'Create strategy';
-      if (this.route === 'skins') return 'Create skin';
-      if (this.route === 'networks') return 'Add network';
-      if (this.route === 'plugins') return 'Create plugin';
+  setup() {
+    // Explore
+    const { t } = useI18n();
+    const { routeName, routeQuery } = routeState();
+
+    const q = ref(routeQuery.value.q || '');
+
+    const buttonStr = computed(() => {
+      if (routeName.value === 'strategies') return t('explore.createStrategy');
+      if (routeName.value === 'skins') return t('explore.createSkin');
+      if (routeName.value === 'networks') return t('explore.addNetwork');
+      if (routeName.value === 'plugins') return t('explore.createPlugin');
       return '';
-    },
-    resultsStr() {
-      if (this.route === 'strategies') return 'strategie(s)';
-      if (this.route === 'skins') return 'skin(s)';
-      if (this.route === 'networks') return 'network(s)';
-      if (this.route === 'plugins') return 'plugin(s)';
-      return 'result(s)';
-    },
-    items() {
-      if (this.route === 'strategies')
-        return filterStrategies(strategies, this.app.spaces, this.q);
-      if (this.route === 'skins')
-        return filterSkins(skins, this.app.spaces, this.q);
-      if (this.route === 'networks')
-        return filterNetworks(networks, this.app.spaces, this.q);
-      if (this.route === 'plugins')
-        return filterPlugins(plugins, this.app.spaces, this.q);
-      return [];
-    }
-  },
-  mounted() {
-    const el = document.getElementById('endsensor');
-    const elementWatcher = scrollMonitor.create(el);
-    elementWatcher.enterViewport(() => {
-      if (this.items) {
-        this.limit += 8;
-      }
     });
+
+    const resultsStr = computed(() => {
+      if (routeName.value === 'strategies') return t('explore.strategies');
+      if (routeName.value === 'skins') return t('explore.skins');
+      if (routeName.value === 'networks') return t('explore.networks');
+      if (routeName.value === 'plugins') return t('explore.plugins');
+      return t('explore.results');
+    });
+
+    const {
+      filteredSkins,
+      filteredStrategies,
+      filteredNetworks,
+      filteredPlugins
+    } = useSearchFilters();
+
+    const items = computed(() => {
+      if (routeName.value === 'strategies') return filteredStrategies(q.value);
+      if (routeName.value === 'skins') return filteredSkins(q.value);
+      if (routeName.value === 'networks') return filteredNetworks(q.value);
+      if (routeName.value === 'plugins') return filteredPlugins(q.value);
+      return [];
+    });
+
+    // Scroll
+    const loadBy = 8;
+    const limit = ref(loadBy);
+
+    onMounted(() => {
+      useScrollMonitor(() => (limit.value += loadBy));
+    });
+
+    return { buttonStr, resultsStr, items, q, limit, routeName };
   }
 };
 </script>

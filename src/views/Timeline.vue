@@ -6,7 +6,7 @@
           <router-link
             :to="{ name: 'timeline' }"
             v-text="$t('favorites')"
-            :class="!scope && 'router-link-exact-active'"
+            :class="!state.scope && 'router-link-exact-active'"
             class="d-block px-4 py-2 sidenav-item"
           />
           <router-link
@@ -40,31 +40,31 @@
           ]"
         >
           <UiButton class="pr-3">
-            {{ $t(`proposals.states.${state}`) }}
+            {{ $t(`proposals.states.${state.state}`) }}
             <Icon size="14" name="arrow-down" class="mt-1 mr-1" />
           </UiButton>
         </UiDropdown>
       </div>
 
-      <Block v-if="spaces.length < 1 && !scope" class="text-center">
+      <Block v-if="state.spaces.length < 1 && !state.scope" class="text-center">
         <div class="mb-3">{{ $t('noFavorites') }}</div>
         <router-link :to="{ name: 'home' }">
           <UiButton>{{ $t('addFavorites') }}</UiButton>
         </router-link>
       </Block>
 
-      <Block v-else-if="loading" :slim="true">
+      <Block v-else-if="state.loading" :slim="true">
         <RowLoading class="my-2" />
       </Block>
 
-      <NoResults :block="true" v-else-if="this.proposals.length < 1" />
+      <NoResults :block="true" v-else-if="state.proposals.length < 1" />
       <div v-else>
-        <Block :slim="true" v-for="(proposal, i) in proposals" :key="i">
+        <Block :slim="true" v-for="(proposal, i) in state.proposals" :key="i">
           <TimelineProposal :proposal="proposal" :i="i" />
         </Block>
       </div>
-      <div id="endsensor"></div>
-      <Block v-if="loadingMore && !loading" :slim="true">
+      <div id="endofpage" />
+      <Block v-if="loadingMore && !state.loading" :slim="true">
         <RowLoading class="my-2" />
       </Block>
     </template>
@@ -73,49 +73,53 @@
 
 <script>
 import { subgraphRequest } from '@snapshot-labs/snapshot.js/src/utils';
-import scrollMonitor from 'scrollmonitor';
+import { useInfiniteLoader } from '@/composables/useInfiniteLoader';
+import { useScrollMonitor } from '@/composables/useScrollMonitor';
 
-const loadBy = 15;
+import { onMounted, reactive, computed } from 'vue';
+import { useStore } from 'vuex';
+import { routeState } from '@/composables/useRouter';
 
 export default {
-  data() {
-    return {
+  setup() {
+    const store = useStore();
+    const favorites = computed(() => store.state.favoriteSpaces.favorites);
+    const { routeParams } = routeState();
+
+    const state = reactive({
       loading: false,
-      loadingMore: false,
-      stopLoadingMore: false,
-      proposals: [],
-      scope: this.$route.params.scope,
-      state: 'all',
       spaces: [],
-      limit: loadBy
-    };
-  },
-  watch: {
-    async state() {
-      this.proposals = [];
-      this.limit = loadBy;
-      this.loading = true;
-      await this.loadProposals();
-      this.loading = false;
-    }
-  },
-  methods: {
-    selectState(e) {
-      this.state = e;
-    },
-    async loadProposals(skip = 0) {
-      this.spaces =
-        this.scope === 'all' ? [] : Object.keys(this.favoriteSpaces.favorites);
+      proposals: [],
+      state: 'all',
+      scope: routeParams.value.scope
+    });
+
+    // Infinite scroll with pagination
+    const {
+      loadBy,
+      limit,
+      loadingMore,
+      stopLoadingMore,
+      loadMore
+    } = useInfiniteLoader(15);
+
+    onMounted(() => {
+      useScrollMonitor(() => loadMore(() => loadProposals(), state.loading));
+    });
+
+    // Proposals query
+    async function loadProposals(skip = 0) {
+      state.spaces = state.scope === 'all' ? [] : Object.keys(favorites.value);
       try {
-        const proposals = await subgraphRequest(
+        const response = await subgraphRequest(
           `${process.env.VUE_APP_HUB_URL}/graphql`,
           {
             timeline: {
               __args: {
                 first: loadBy,
                 skip,
-                spaces: this.spaces,
-                state: this.state
+                spaces: state.spaces,
+                state: state.state
               },
               id: true,
               name: true,
@@ -133,32 +137,31 @@ export default {
             }
           }
         );
-        this.stopLoadingMore = proposals.timeline.length < loadBy;
-        this.proposals = this.proposals.concat(proposals.timeline);
+        stopLoadingMore.value = response.timeline?.length < loadBy;
+        state.proposals = state.proposals.concat(response.timeline);
       } catch (e) {
         console.log(e);
       }
-    },
-    async loadMoreProposals() {
-      if (!this.stopLoadingMore && this.proposals[0]) {
-        this.loadingMore = true;
-        await this.loadProposals(this.limit);
-        this.limit += loadBy;
-        this.loadingMore = false;
-      }
     }
-  },
-  async created() {
-    this.loading = true;
-    await this.loadProposals();
-    this.loading = false;
-  },
-  mounted() {
-    const el = document.getElementById('endsensor');
-    const elementWatcher = scrollMonitor.create(el);
-    elementWatcher.enterViewport(() => {
-      this.loadMoreProposals();
-    });
+
+    // Initialize
+    onMounted(load());
+
+    async function load() {
+      state.loading = true;
+      await loadProposals();
+      state.loading = false;
+    }
+
+    // Change filter
+    function selectState(e) {
+      state.state = e;
+      state.proposals = [];
+      limit.value = loadBy;
+      load();
+    }
+
+    return { state, selectState, loadingMore };
   }
 };
 </script>
