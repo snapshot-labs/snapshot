@@ -40,68 +40,87 @@
           ]"
         >
           <UiButton class="pr-3">
-            {{ $t(`proposals.states.${state}`) }}
+            {{ $t(`proposals.states.${filterBy}`) }}
             <Icon size="14" name="arrow-down" class="mt-1 mr-1" />
           </UiButton>
         </UiDropdown>
       </div>
+
       <Block v-if="spaces.length < 1 && !scope" class="text-center">
         <div class="mb-3">{{ $t('noFavorites') }}</div>
         <router-link :to="{ name: 'home' }">
           <UiButton>{{ $t('addFavorites') }}</UiButton>
         </router-link>
       </Block>
+
       <Block v-else-if="loading" :slim="true">
         <RowLoading class="my-2" />
       </Block>
 
-      <NoResults
-        :block="true"
-        v-else-if="Object.keys(this.proposals).length < 1"
-      />
+      <NoResults :block="true" v-else-if="proposals.length < 1" />
       <div v-else>
         <Block :slim="true" v-for="(proposal, i) in proposals" :key="i">
           <TimelineProposal :proposal="proposal" :i="i" />
         </Block>
       </div>
+      <div id="endofpage" />
+      <Block v-if="loadingMore && !loading" :slim="true">
+        <RowLoading class="my-2" />
+      </Block>
     </template>
   </Layout>
 </template>
 
 <script>
+import { onMounted, ref, computed } from 'vue';
+import { useStore } from 'vuex';
+import { useRoute } from 'vue-router';
+import { scrollEndMonitor } from '@/helpers/utils';
+import { useInfiniteLoader } from '@/composables/useInfiniteLoader';
 import { subgraphRequest } from '@snapshot-labs/snapshot.js/src/utils';
 
 export default {
-  data() {
-    return {
-      loading: false,
-      proposals: {},
-      scope: this.$route.params.scope,
-      state: 'all',
-      spaces: []
-    };
-  },
-  watch: {
-    state() {
-      this.loadProposals();
-    }
-  },
-  methods: {
-    selectState(e) {
-      this.state = e;
-    },
-    async loadProposals() {
-      this.loading = true;
-      this.spaces =
-        this.scope === 'all' ? [] : Object.keys(this.favoriteSpaces.favorites);
+  setup() {
+    const store = useStore();
+    const route = useRoute();
+
+    const favorites = computed(() => store.state.favoriteSpaces.favorites);
+    const scope = computed(() => route.params.scope);
+    const spaces = computed(() =>
+      scope.value === 'all' ? [] : Object.keys(favorites.value)
+    );
+
+    const loading = ref(false);
+    const proposals = ref([]);
+    const filterBy = ref('all');
+
+    // Infinite scroll with pagination
+    const {
+      loadBy,
+      limit,
+      loadingMore,
+      stopLoadingMore,
+      loadMore
+    } = useInfiniteLoader(20);
+
+    onMounted(() => {
+      scrollEndMonitor(() =>
+        loadMore(() => loadProposals(limit.value), loading.value)
+      );
+    });
+
+    // Proposals query
+    async function loadProposals(skip = 0) {
       try {
-        const proposals = await subgraphRequest(
+        const response = await subgraphRequest(
           `${process.env.VUE_APP_HUB_URL}/graphql`,
           {
             timeline: {
               __args: {
-                spaces: this.spaces,
-                state: this.state
+                first: loadBy,
+                skip,
+                spaces: spaces.value,
+                state: filterBy.value
               },
               id: true,
               name: true,
@@ -119,15 +138,39 @@ export default {
             }
           }
         );
-        this.proposals = proposals.timeline;
+        stopLoadingMore.value = response.timeline?.length < loadBy;
+        proposals.value = proposals.value.concat(response.timeline);
       } catch (e) {
         console.log(e);
       }
-      this.loading = false;
     }
-  },
-  async created() {
-    await this.loadProposals();
+
+    // Initialize
+    onMounted(load());
+
+    async function load() {
+      loading.value = true;
+      await loadProposals();
+      loading.value = false;
+    }
+
+    // Change filter
+    function selectState(e) {
+      filterBy.value = e;
+      proposals.value = [];
+      limit.value = loadBy;
+      load();
+    }
+
+    return {
+      scope,
+      loading,
+      selectState,
+      loadingMore,
+      filterBy,
+      proposals,
+      spaces
+    };
   }
 };
 </script>

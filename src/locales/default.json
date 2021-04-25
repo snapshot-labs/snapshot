@@ -180,5 +180,16 @@
     "proposalDeleted": "Proposal deleted",
     "yourIsIn": "Your {0} is in!",
     "somethingWentWrong": "Oops, something went wrong!"
+  },
+  "explore": {
+    "createStrategy": "Create strategy",
+    "createSkin": "Create skin",
+    "addNetwork": "Add network",
+    "createPlugin": "Create plugin",
+    "strategies": "strategie(s)",
+    "skins": "skin(s)",
+    "networks": "network(s)",
+    "plugins": "plugin(s)",
+    "results": "result(s)"
   }
 }

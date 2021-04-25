@@ -1,4 +1,5 @@
 import pkg from '@/../package.json';
+import scrollMonitor from 'scrollmonitor';
 
 export function shorten(str = '') {
   return `${str.slice(0, 6)}...${str.slice(str.length - 4)}`;
@@ -169,15 +170,19 @@ export function filterProposals(space, proposal, tab) {
   return false;
 }
 
-export function infiniteScroll() {
-  window.onscroll = () => {
-    const bottomOfWindow =
-      document.documentElement.scrollTop + window.innerHeight >=
-      document.documentElement.offsetHeight - 100;
+export function scrollEndMonitor(fn) {
+  let canRunAgain = true;
 
-    if (bottomOfWindow) {
-      // @ts-ignore
-      this.limit += 16;
+  const el = document.getElementById('endofpage');
+  const elementWatcher = scrollMonitor.create(el);
+  elementWatcher.enterViewport(() => {
+    if (canRunAgain) {
+      canRunAgain = false;
+      fn();
+
+      setTimeout(function () {
+        canRunAgain = true;
+      }, 100);
     }
-  };
+  });
 }
