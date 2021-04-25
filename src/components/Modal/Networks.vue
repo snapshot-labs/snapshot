@@ -22,20 +22,15 @@
 </template>
 
 <script>
-import { computed, ref, toRefs } from 'vue';
-import { useStore } from 'vuex';
-
 import { useNetworkFilter } from '@/composables/useSearchFilters';
 
+import { computed, ref, toRefs } from 'vue';
 export default {
   setup(props, { emit }) {
     const { open } = toRefs(props);
-    const store = useStore();
-
-    const spaces = computed(() => store.state.app.spaces);
-    const { filteredNetworks } = useNetworkFilter(spaces.value);
-
     const searchInput = ref('');
+
+    const { filteredNetworks } = useNetworkFilter();
     const networks = computed(() => filteredNetworks(searchInput.value));
 
     function select(key) {

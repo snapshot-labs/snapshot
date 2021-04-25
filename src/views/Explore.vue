@@ -63,22 +63,19 @@
 <script>
 import { useScrollMonitor } from '@/composables/useScrollMonitor';
 import {
-  useSkinsFilter,
+  useSkinFilter,
   useStrategyFilter,
-  useNetworkFilter
+  useNetworkFilter,
+  usePluginFilter
 } from '@/composables/useSearchFilters';
-import { routeState } from '@/composables/useRoute';
+import { routeState } from '@/composables/useRouter';
 
-import { useI18n } from 'vue-i18n';
-import { useStore } from 'vuex';
 import { computed, ref, onMounted } from 'vue';
-
+import { useI18n } from 'vue-i18n';
 export default {
   setup() {
     // Explore
     const { t } = useI18n({});
-    const store = useStore();
-    const spaces = computed(() => store.state.app.spaces);
     const { routeName, routeQuery } = routeState();
 
     const q = ref(routeQuery.value.q || '');
@@ -99,16 +96,16 @@ export default {
       return t('explore.results');
     });
 
-    const { filteredSkins } = useSkinsFilter(spaces.value);
-    const { filteredStrategies } = useStrategyFilter(spaces.value);
-    const { filteredNetworks } = useNetworkFilter(spaces.value);
-    // const { filteredPlugins } = usePluginFilter(spaces.value);
+    const { filteredSkins } = useSkinFilter();
+    const { filteredStrategies } = useStrategyFilter();
+    const { filteredNetworks } = useNetworkFilter();
+    const { filteredPlugins } = usePluginFilter();
 
     const items = computed(() => {
       if (routeName.value === 'strategies') return filteredStrategies(q.value);
       if (routeName.value === 'skins') return filteredSkins(q.value);
       if (routeName.value === 'networks') return filteredNetworks(q.value);
-      // if (routeName.value === 'plugins') return filteredPlugins(q.value);
+      if (routeName.value === 'plugins') return filteredPlugins(q.value);
       return [];
     });
 
