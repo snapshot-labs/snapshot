@@ -74,12 +74,21 @@
           </UiButton>
         </div>
         <UiButton
-          :disabled="voteLoading || !selectedChoice || !web3.account"
+          v-if="web3.account"
+          :disabled="voteLoading || !selectedChoice"
           :loading="voteLoading"
           @click="modalOpen = true"
           class="d-block width-full button--submit"
         >
           {{ $t('proposal.vote') }}
+        </UiButton>
+        <UiButton
+          v-else
+          @click="setWalletModalOpen(true)"
+          class="d-block width-full button--submit"
+          :loading="app.authLoading"
+        >
+          {{ $t('connectWallet') }}
         </UiButton>
       </Block>
       <BlockVotes
@@ -262,7 +271,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['send']),
+    ...mapActions(['send', 'setWalletModalOpen']),
     async loadProposal() {
       const proposalObj = await getProposal(this.space, this.id);
       const { proposal, votes, blockNumber } = proposalObj;
