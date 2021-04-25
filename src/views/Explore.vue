@@ -22,14 +22,14 @@
     </div>
     <Container :slim="true">
       <div class="overflow-hidden">
-        <template v-if="routeName === 'strategies'">
+        <template v-if="route.name === 'strategies'">
           <template v-for="item in items.slice(0, limit)" :key="item.key">
             <router-link :to="`/strategy/${item.key}`">
               <BlockStrategy :strategy="item" class="mb-3" />
             </router-link>
           </template>
         </template>
-        <template v-if="routeName === 'skins'">
+        <template v-if="route.name === 'skins'">
           <BlockSkin
             v-for="item in items.slice(0, limit)"
             :key="item.key"
@@ -37,7 +37,7 @@
             class="mb-3"
           />
         </template>
-        <template v-if="routeName === 'networks'">
+        <template v-if="route.name === 'networks'">
           <BlockNetwork
             v-for="item in items.slice(0, limit)"
             :key="item.key"
@@ -45,7 +45,7 @@
             class="mb-3"
           />
         </template>
-        <template v-if="routeName === 'plugins'">
+        <template v-if="route.name === 'plugins'">
           <BlockPlugin
             v-for="item in items.slice(0, limit)"
             :key="item.key"
@@ -63,30 +63,31 @@
 <script>
 import { computed, ref, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { useRoute } from 'vue-router';
 import { scrollEndMonitor } from '@/helpers/utils';
 import { useSearchFilters } from '@/composables/useSearchFilters';
-import { routeState } from '@/composables/useRouter';
+
 export default {
   setup() {
-    // Explore
     const { t } = useI18n();
-    const { routeName, routeQuery } = routeState();
+    const route = useRoute();
 
-    const q = ref(routeQuery.value.q || '');
+    // Explore
+    const q = ref(route.query.q || '');
 
     const buttonStr = computed(() => {
-      if (routeName.value === 'strategies') return t('explore.createStrategy');
-      if (routeName.value === 'skins') return t('explore.createSkin');
-      if (routeName.value === 'networks') return t('explore.addNetwork');
-      if (routeName.value === 'plugins') return t('explore.createPlugin');
+      if (route.name === 'strategies') return t('explore.createStrategy');
+      if (route.name === 'skins') return t('explore.createSkin');
+      if (route.name === 'networks') return t('explore.addNetwork');
+      if (route.name === 'plugins') return t('explore.createPlugin');
       return '';
     });
 
     const resultsStr = computed(() => {
-      if (routeName.value === 'strategies') return t('explore.strategies');
-      if (routeName.value === 'skins') return t('explore.skins');
-      if (routeName.value === 'networks') return t('explore.networks');
-      if (routeName.value === 'plugins') return t('explore.plugins');
+      if (route.name === 'strategies') return t('explore.strategies');
+      if (route.name === 'skins') return t('explore.skins');
+      if (route.name === 'networks') return t('explore.networks');
+      if (route.name === 'plugins') return t('explore.plugins');
       return t('explore.results');
     });
 
@@ -98,10 +99,10 @@ export default {
     } = useSearchFilters();
 
     const items = computed(() => {
-      if (routeName.value === 'strategies') return filteredStrategies(q.value);
-      if (routeName.value === 'skins') return filteredSkins(q.value);
-      if (routeName.value === 'networks') return filteredNetworks(q.value);
-      if (routeName.value === 'plugins') return filteredPlugins(q.value);
+      if (route.name === 'strategies') return filteredStrategies(q.value);
+      if (route.name === 'skins') return filteredSkins(q.value);
+      if (route.name === 'networks') return filteredNetworks(q.value);
+      if (route.name === 'plugins') return filteredPlugins(q.value);
       return [];
     });
 
@@ -113,7 +114,7 @@ export default {
       scrollEndMonitor(() => (limit.value += loadBy));
     });
 
-    return { buttonStr, resultsStr, items, q, limit, routeName };
+    return { buttonStr, resultsStr, items, q, limit, route };
   }
 };
 </script>

@@ -74,23 +74,23 @@
 <script>
 import { onMounted, reactive, computed } from 'vue';
 import { useStore } from 'vuex';
+import { useRoute } from 'vue-router';
 import { scrollEndMonitor } from '@/helpers/utils';
 import { useInfiniteLoader } from '@/composables/useInfiniteLoader';
 import { subgraphRequest } from '@snapshot-labs/snapshot.js/src/utils';
-import { routeState } from '@/composables/useRouter';
 
 export default {
   setup() {
     const store = useStore();
     const favorites = computed(() => store.state.favoriteSpaces.favorites);
-    const { routeParams } = routeState();
+    const route = useRoute();
 
     const state = reactive({
       loading: false,
       spaces: [],
       proposals: [],
       state: 'all',
-      scope: routeParams.value.scope
+      scope: route.params.scope
     });
 
     // Infinite scroll with pagination

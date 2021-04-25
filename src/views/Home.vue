@@ -68,18 +68,19 @@
 <script>
 import { onMounted, ref, computed } from 'vue';
 import { useStore } from 'vuex';
+import { useRoute } from 'vue-router';
 import orderBy from 'lodash/orderBy';
 import spotlight from '@snapshot-labs/snapshot-spaces/spaces/spotlight.json';
 import { scrollEndMonitor } from '@/helpers/utils';
-import { routeState } from '@/composables/useRouter';
+
 export default {
   setup() {
     const store = useStore();
-    const { routeQuery } = routeState();
+    const route = useRoute();
     const favorites = computed(() => store.state.favoriteSpaces.favorites);
     const stateSpaces = computed(() => store.state.app.spaces);
 
-    const q = ref(routeQuery.value.q || '');
+    const q = ref(route.query.q || '');
 
     const spaces = computed(() => {
       const list = Object.keys(stateSpaces.value)
