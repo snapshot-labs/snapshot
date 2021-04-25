@@ -13,13 +13,7 @@
       </div>
       <h3 v-text="_shorten(proposal.name, 124)" />
       <div class="mb-1">
-        {{
-          $tc('proposalBy', [
-            proposal.author.name ||
-              proposal.author.ens ||
-              _shorten(proposal.author.address)
-          ])
-        }}
+        {{ $tc('proposalBy', [author]) }}
         <Badges
           :address="proposal.author.address"
           :members="proposal.space.members"
@@ -41,6 +35,13 @@ export default {
       if (this.proposal.state === 'closed') return 'endedAgo';
       if (this.proposal.state === 'active') return 'endIn';
       return 'startIn';
+    },
+    author() {
+      return (
+        this.proposal.author.profile?.name ||
+        this.proposal.author.profile?.ens ||
+        this._shorten(this.proposal.author.address)
+      );
     }
   }
 };

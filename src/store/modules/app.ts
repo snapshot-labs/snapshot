@@ -70,18 +70,13 @@ const actions = {
     const auth = getInstance();
     commit('SEND_REQUEST');
     try {
-      const msg: any = {
-        address: rootState.web3.account,
-        msg: JSON.stringify({
-          version,
-          timestamp: (Date.now() / 1e3).toFixed(),
-          space,
-          type,
-          payload
-        })
-      };
-      msg.sig = await signMessage(auth.web3, msg.msg, rootState.web3.account);
-      const result = await client.send(msg);
+      const result = await client.broadcast(
+        auth.web3,
+        rootState.web3.account,
+        space,
+        type,
+        payload
+      );
       commit('SEND_SUCCESS');
       dispatch('notify', [
         'green',

@@ -34,7 +34,7 @@ export default {
     _n(number, format = '(0.[00]a)') {
       return numeral(number).format(format);
     },
-    _shorten(str: string, key: any): string {
+    _shorten(str: string, key?: any): string {
       if (!str) return str;
       let limit;
       if (typeof key === 'number') limit = key;
