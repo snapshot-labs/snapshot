@@ -74,9 +74,7 @@
           </UiButton>
         </div>
         <UiButton
-          :disabled="
-            voteLoading || app.authLoading || (!selectedChoice && web3.account)
-          "
+          :disabled="voteLoading || app.authLoading || !selectedChoice"
           :loading="voteLoading"
           @click="web3.account ? (modalOpen = true) : (modalAccountOpen = true)"
           class="d-block width-full button--submit"
