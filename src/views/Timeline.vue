@@ -79,7 +79,7 @@ import { scrollEndMonitor } from '@/helpers/utils';
 import { useInfiniteLoader } from '@/composables/useInfiniteLoader';
 import { subgraphRequest } from '@snapshot-labs/snapshot.js/src/utils';
 
-// Persistant filter state
+// Persistent filter state
 const filterBy = ref('all');
 
 export default {
