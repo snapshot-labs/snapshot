@@ -18,27 +18,27 @@
 </template>
 
 <script>
-import skins from '@/helpers/skins';
-import { filterSkins } from '@/helpers/utils';
+import { ref, computed } from 'vue';
+import { useSearchFilters } from '@/composables/useSearchFilters';
 
 export default {
-  props: ['open'],
-  emits: ['update:modelValue', 'close'],
-  data() {
-    return {
-      searchInput: ''
-    };
-  },
-  computed: {
-    skins() {
-      return filterSkins(skins, this.app.spaces, this.searchInput);
+  props: {
+    open: {
+      type: Boolean,
+      required: true
     }
   },
-  methods: {
-    select(key) {
-      this.$emit('update:modelValue', key);
-      this.$emit('close');
+  setup(_, { emit }) {
+    const searchInput = ref('');
+    const { filteredSkins } = useSearchFilters();
+    const skins = computed(() => filteredSkins(searchInput.value));
+
+    function select(key) {
+      emit('update:modelValue', key);
+      emit('close');
     }
+
+    return { skins, searchInput, select };
   }
 };
 </script>

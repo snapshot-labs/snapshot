@@ -48,8 +48,9 @@
 </template>
 
 <script>
-import { clone, filterStrategies } from '@/helpers/utils';
-import strategies from '@/helpers/strategies';
+import { ref, computed } from 'vue';
+import { useSearchFilters } from '@/composables/useSearchFilters';
+import { clone } from '@/helpers/utils';
 
 const defaultParams = {
   symbol: 'DAI',
@@ -58,6 +59,13 @@ const defaultParams = {
 };
 
 export default {
+  setup() {
+    const searchInput = ref('');
+    const { filteredStrategies } = useSearchFilters();
+    const strategies = computed(() => filteredStrategies(searchInput.value));
+
+    return { searchInput, strategies };
+  },
   props: ['open', 'strategy'],
   emits: ['add', 'close'],
   data() {
@@ -65,8 +73,7 @@ export default {
       input: {
         name: '',
         params: JSON.stringify(defaultParams, null, 2)
-      },
-      searchInput: ''
+      }
     };
   },
   watch: {
@@ -84,9 +91,6 @@ export default {
     }
   },
   computed: {
-    strategies() {
-      return filterStrategies(strategies, this.app.spaces, this.searchInput);
-    },
     isValid() {
       try {
         const params = JSON.parse(this.input.params);
