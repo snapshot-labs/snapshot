@@ -311,19 +311,33 @@
 
 <script>
 import { mapActions } from 'vuex';
+import { computed } from 'vue';
+import { useSearchFilters } from '@/composables/useSearchFilters';
 import { getAddress } from '@ethersproject/address';
 import { validateSchema } from '@snapshot-labs/snapshot.js/src/utils';
 import schemas from '@snapshot-labs/snapshot.js/src/schemas';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import gateways from '@snapshot-labs/snapshot.js/src/gateways.json';
-import { clone, filterPlugins } from '@/helpers/utils';
-import plugins from '@snapshot-labs/snapshot.js/src/plugins';
+import { clone } from '@/helpers/utils';
 import { getSpaceUri, uriGet } from '@/helpers/ens';
 import defaults from '@/locales/default';
 
 const gateway = process.env.VUE_APP_IPFS_GATEWAY || gateways[0];
 
 export default {
+  setup() {
+    const { filteredPlugins } = useSearchFilters();
+    const plugins = computed(() => filteredPlugins());
+
+    function pluginName(key) {
+      const plugin = plugins.value.find(obj => {
+        return obj.key === key;
+      });
+      return plugin.name;
+    }
+
+    return { pluginName };
+  },
   data() {
     return {
       key: this.$route.params.key,
@@ -364,9 +378,6 @@ export default {
     },
     isReady() {
       return this.currentContenthash === this.contenthash;
-    },
-    plugins() {
-      return filterPlugins(plugins, this.app.spaces, '');
     }
   },
   async created() {
@@ -479,12 +490,6 @@ export default {
     },
     handleSubmitAddPlugins(payload) {
       this.form.plugins[payload.key] = payload.input;
-    },
-    pluginName(key) {
-      const plugin = this.plugins.find(obj => {
-        return obj.key === key;
-      });
-      return plugin.name;
     }
   }
 };
