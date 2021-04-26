@@ -79,6 +79,9 @@ import { scrollEndMonitor } from '@/helpers/utils';
 import { useInfiniteLoader } from '@/composables/useInfiniteLoader';
 import { subgraphRequest } from '@snapshot-labs/snapshot.js/src/utils';
 
+// Persistent filter state
+const filterBy = ref('all');
+
 export default {
   setup() {
     const store = useStore();
@@ -92,7 +95,6 @@ export default {
 
     const loading = ref(false);
     const proposals = ref([]);
-    const filterBy = ref('all');
 
     // Infinite scroll with pagination
     const {
