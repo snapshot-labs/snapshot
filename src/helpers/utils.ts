@@ -80,15 +80,6 @@ export function getStrategy(strategy, spaces) {
   return strategy;
 }
 
-export function filterStrategies(strategies, spaces, q = '') {
-  return Object.values(strategies)
-    .map((strategy: any) => getStrategy(strategy, spaces))
-    .filter(strategy =>
-      JSON.stringify(strategy).toLowerCase().includes(q.toLowerCase())
-    )
-    .sort((a, b) => b.spaces.length - a.spaces.length);
-}
-
 export function filterPlugins(plugins, spaces, q = '') {
   return Object.entries(plugins)
     .map(([key, pluginClass]: any) => {
