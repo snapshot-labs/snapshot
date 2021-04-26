@@ -22,14 +22,14 @@
     </div>
     <Container :slim="true">
       <div class="overflow-hidden">
-        <template v-if="route === 'strategies'">
+        <template v-if="route.name === 'strategies'">
           <template v-for="item in items.slice(0, limit)" :key="item.key">
             <router-link :to="`/strategy/${item.key}`">
               <BlockStrategy :strategy="item" class="mb-3" />
             </router-link>
           </template>
         </template>
-        <template v-if="route === 'skins'">
+        <template v-if="route.name === 'skins'">
           <BlockSkin
             v-for="item in items.slice(0, limit)"
             :key="item.key"
@@ -37,7 +37,7 @@
             class="mb-3"
           />
         </template>
-        <template v-if="route === 'networks'">
+        <template v-if="route.name === 'networks'">
           <BlockNetwork
             v-for="item in items.slice(0, limit)"
             :key="item.key"
@@ -45,7 +45,7 @@
             class="mb-3"
           />
         </template>
-        <template v-if="route === 'plugins'">
+        <template v-if="route.name === 'plugins'">
           <BlockPlugin
             v-for="item in items.slice(0, limit)"
             :key="item.key"
@@ -56,64 +56,65 @@
         <NoResults :block="true" v-if="Object.keys(items).length < 1" />
       </div>
     </Container>
+    <div id="endofpage" />
   </div>
 </template>
 
 <script>
-import networks from '@snapshot-labs/snapshot.js/src/networks.json';
-import plugins from '@snapshot-labs/snapshot.js/src/plugins';
-import strategies from '@/helpers/strategies';
-import skins from '@/helpers/skins';
-import {
-  filterStrategies,
-  filterSkins,
-  filterNetworks,
-  filterPlugins,
-  infiniteScroll
-} from '@/helpers/utils';
+import { computed, ref, onMounted } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { useRoute } from 'vue-router';
+import { scrollEndMonitor } from '@/helpers/utils';
+import { useSearchFilters } from '@/composables/useSearchFilters';
 
 export default {
-  data() {
-    return {
-      q: this.$route.query.q || '',
-      limit: 8
-    };
-  },
-  computed: {
-    route() {
-      return this.$route.name;
-    },
-    buttonStr() {
-      if (this.route === 'strategies') return 'Create strategy';
-      if (this.route === 'skins') return 'Create skin';
-      if (this.route === 'networks') return 'Add network';
-      if (this.route === 'plugins') return 'Create plugin';
+  setup() {
+    const { t } = useI18n();
+    const route = useRoute();
+
+    // Explore
+    const q = ref(route.query.q || '');
+
+    const buttonStr = computed(() => {
+      if (route.name === 'strategies') return t('explore.createStrategy');
+      if (route.name === 'skins') return t('explore.createSkin');
+      if (route.name === 'networks') return t('explore.addNetwork');
+      if (route.name === 'plugins') return t('explore.createPlugin');
       return '';
-    },
-    resultsStr() {
-      if (this.route === 'strategies') return 'strategie(s)';
-      if (this.route === 'skins') return 'skin(s)';
-      if (this.route === 'networks') return 'network(s)';
-      if (this.route === 'plugins') return 'plugin(s)';
-      return 'result(s)';
-    },
-    items() {
-      if (this.route === 'strategies')
-        return filterStrategies(strategies, this.app.spaces, this.q);
-      if (this.route === 'skins')
-        return filterSkins(skins, this.app.spaces, this.q);
-      if (this.route === 'networks')
-        return filterNetworks(networks, this.app.spaces, this.q);
-      if (this.route === 'plugins')
-        return filterPlugins(plugins, this.app.spaces, this.q);
+    });
+
+    const resultsStr = computed(() => {
+      if (route.name === 'strategies') return t('explore.strategies');
+      if (route.name === 'skins') return t('explore.skins');
+      if (route.name === 'networks') return t('explore.networks');
+      if (route.name === 'plugins') return t('explore.plugins');
+      return t('explore.results');
+    });
+
+    const {
+      filteredSkins,
+      filteredStrategies,
+      filteredNetworks,
+      filteredPlugins
+    } = useSearchFilters();
+
+    const items = computed(() => {
+      if (route.name === 'strategies') return filteredStrategies(q.value);
+      if (route.name === 'skins') return filteredSkins(q.value);
+      if (route.name === 'networks') return filteredNetworks(q.value);
+      if (route.name === 'plugins') return filteredPlugins(q.value);
       return [];
-    }
-  },
-  methods: {
-    scroll: infiniteScroll
-  },
-  mounted() {
-    this.scroll();
+    });
+
+    // Scroll
+    const loadBy = 8;
+    const limit = ref(loadBy);
+
+    onMounted(() => {
+      scrollEndMonitor(() => (limit.value += loadBy));
+    });
+
+    return { buttonStr, resultsStr, items, q, limit, route };
   }
 };
 </script>
