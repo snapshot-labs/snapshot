@@ -15,7 +15,6 @@ const state = {
   authLoading: false,
   modalOpen: false,
   spaces: {},
-  walletModalOpen: false,
   locale: lsGet('locale', defaultLocale)
 };
 
@@ -50,9 +49,6 @@ const actions = {
   },
   loading: ({ commit }, payload) => {
     commit('SET', { loading: payload });
-  },
-  setWalletModalOpen: ({ commit }, payload) => {
-    commit('SET', { walletModalOpen: payload });
   },
   toggleModal: ({ commit }) => {
     commit('SET', { modalOpen: !state.modalOpen });

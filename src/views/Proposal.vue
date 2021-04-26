@@ -74,21 +74,14 @@
           </UiButton>
         </div>
         <UiButton
-          v-if="web3.account"
-          :disabled="voteLoading || !selectedChoice"
-          :loading="voteLoading"
-          @click="modalOpen = true"
+          :disabled="
+            voteLoading || app.authLoading || (!selectedChoice && web3.account)
+          "
+          :loading="voteLoading || app.authLoading"
+          @click="web3.account ? (modalOpen = true) : (accountModalOpen = true)"
           class="d-block width-full button--submit"
         >
-          {{ $t('proposal.vote') }}
-        </UiButton>
-        <UiButton
-          v-else
-          @click="setWalletModalOpen(true)"
-          class="d-block width-full button--submit"
-          :loading="app.authLoading"
-        >
-          {{ $t('connectWallet') }}
+          {{ web3.account ? $t('proposal.vote') : $t('connectWallet') }}
         </UiButton>
       </Block>
       <BlockVotes
@@ -230,8 +223,13 @@
 <script>
 import { mapActions } from 'vuex';
 import { getProposal, getResults, getPower } from '@/helpers/snapshot';
+import { useAccountModal } from '@/composables/useAccountModal';
 
 export default {
+  setup() {
+    const { accountModalOpen } = useAccountModal();
+    return { accountModalOpen };
+  },
   data() {
     return {
       key: this.$route.params.key,
@@ -271,7 +269,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['send', 'setWalletModalOpen']),
+    ...mapActions(['send']),
     async loadProposal() {
       const proposalObj = await getProposal(this.space, this.id);
       const { proposal, votes, blockNumber } = proposalObj;

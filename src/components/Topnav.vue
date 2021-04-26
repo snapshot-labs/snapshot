@@ -36,7 +36,7 @@
           <div :key="web3.account">
             <template v-if="$auth.isAuthenticated.value">
               <UiButton
-                @click="setWalletModalOpen(true)"
+                @click="accountModalOpen = true"
                 class="button-outline"
                 :loading="app.authLoading"
               >
@@ -56,7 +56,7 @@
             </template>
             <UiButton
               v-if="!$auth.isAuthenticated.value"
-              @click="setWalletModalOpen(true)"
+              @click="accountModalOpen = true"
               :loading="loading || app.authLoading"
             >
               <span class="hide-sm" v-text="$t('connectWallet')" />
@@ -75,8 +75,8 @@
     </nav>
     <teleport to="#modal">
       <ModalAccount
-        :open="app.walletModalOpen"
-        @close="setWalletModalOpen(false)"
+        :open="accountModalOpen"
+        @close="accountModalOpen = false"
         @login="handleLogin"
       />
       <ModalAbout
@@ -94,8 +94,13 @@
 
 <script>
 import { mapActions } from 'vuex';
+import { useAccountModal } from '@/composables/useAccountModal';
 
 export default {
+  setup() {
+    const { accountModalOpen } = useAccountModal();
+    return { accountModalOpen };
+  },
   data() {
     return {
       loading: false,
@@ -118,12 +123,12 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['login', 'setWalletModalOpen']),
+    ...mapActions(['login']),
     setTitle() {
       document.title = this.space.name ? this.space.name : 'Snapshot';
     },
     async handleLogin(connector) {
-      this.setWalletModalOpen(false);
+      this.accountModalOpen = false;
       this.loading = true;
       await this.login(connector);
       this.loading = false;
