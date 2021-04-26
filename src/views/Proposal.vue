@@ -77,11 +77,11 @@
           :disabled="
             voteLoading || app.authLoading || (!selectedChoice && web3.account)
           "
-          :loading="voteLoading || app.authLoading"
+          :loading="voteLoading"
           @click="web3.account ? (modalOpen = true) : (modalAccountOpen = true)"
           class="d-block width-full button--submit"
         >
-          {{ web3.account ? $t('proposal.vote') : $t('connectWallet') }}
+          {{ $t('proposal.vote') }}
         </UiButton>
       </Block>
       <BlockVotes
