@@ -42,30 +42,39 @@
       </div>
       <div v-if="!selectedPlugin?.key">
         <a
-          v-for="(plugin, i) in filteredPlugins"
+          v-for="(plugin, i) in filteredPlugins(searchInput)"
           :key="i"
           @click="select(plugin)"
         >
           <BlockPlugin :plugin="plugin" />
         </a>
-        <NoResults v-if="Object.keys(filteredPlugins).length < 1" />
+        <NoResults
+          v-if="Object.keys(filteredPlugins(searchInput)).length < 1"
+        />
       </div>
     </div>
   </UiModal>
 </template>
 
 <script>
-import { clone, filterPlugins } from '@/helpers/utils';
-import plugins from '@snapshot-labs/snapshot.js/src/plugins';
+import { ref, computed } from 'vue';
+import { useSearchFilters } from '@/composables/useSearchFilters';
+import { clone } from '@/helpers/utils';
 
 export default {
+  setup() {
+    const searchInput = ref('');
+    const { filteredPlugins } = useSearchFilters();
+    const plugins = computed(() => filteredPlugins());
+
+    return { searchInput, filteredPlugins, plugins };
+  },
   props: ['open', 'plugin'],
   emits: ['add', 'close'],
   data() {
     return {
       input: '',
-      selectedPlugin: {},
-      searchInput: ''
+      selectedPlugin: {}
     };
   },
   watch: {
@@ -83,12 +92,6 @@ export default {
     }
   },
   computed: {
-    filteredPlugins() {
-      return filterPlugins(plugins, this.app.spaces, this.searchInput);
-    },
-    plugins() {
-      return filterPlugins(plugins, this.app.spaces, '');
-    },
     isValid() {
       try {
         const params = JSON.parse(this.input);
