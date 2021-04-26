@@ -1,6 +1,6 @@
 import { ref } from 'vue';
 
-const accountModalOpen = ref(false);
+const modalAccountOpen = ref(false);
 export function useAccountModal() {
-  return { accountModalOpen };
+  return { modalAccountOpen };
 }

@@ -36,7 +36,7 @@
           <div :key="web3.account">
             <template v-if="$auth.isAuthenticated.value">
               <UiButton
-                @click="accountModalOpen = true"
+                @click="modalAccountOpen = true"
                 class="button-outline"
                 :loading="app.authLoading"
               >
@@ -56,7 +56,7 @@
             </template>
             <UiButton
               v-if="!$auth.isAuthenticated.value"
-              @click="accountModalOpen = true"
+              @click="modalAccountOpen = true"
               :loading="loading || app.authLoading"
             >
               <span class="hide-sm" v-text="$t('connectWallet')" />
@@ -75,8 +75,8 @@
     </nav>
     <teleport to="#modal">
       <ModalAccount
-        :open="accountModalOpen"
-        @close="accountModalOpen = false"
+        :open="modalAccountOpen"
+        @close="modalAccountOpen = false"
         @login="handleLogin"
       />
       <ModalAbout
@@ -98,8 +98,8 @@ import { useAccountModal } from '@/composables/useAccountModal';
 
 export default {
   setup() {
-    const { accountModalOpen } = useAccountModal();
-    return { accountModalOpen };
+    const { modalAccountOpen } = useAccountModal();
+    return { modalAccountOpen };
   },
   data() {
     return {
@@ -128,7 +128,7 @@ export default {
       document.title = this.space.name ? this.space.name : 'Snapshot';
     },
     async handleLogin(connector) {
-      this.accountModalOpen = false;
+      this.modalAccountOpen = false;
       this.loading = true;
       await this.login(connector);
       this.loading = false;

@@ -78,7 +78,7 @@
             voteLoading || app.authLoading || (!selectedChoice && web3.account)
           "
           :loading="voteLoading || app.authLoading"
-          @click="web3.account ? (modalOpen = true) : (accountModalOpen = true)"
+          @click="web3.account ? (modalOpen = true) : (modalAccountOpen = true)"
           class="d-block width-full button--submit"
         >
           {{ web3.account ? $t('proposal.vote') : $t('connectWallet') }}
@@ -227,8 +227,8 @@ import { useAccountModal } from '@/composables/useAccountModal';
 
 export default {
   setup() {
-    const { accountModalOpen } = useAccountModal();
-    return { accountModalOpen };
+    const { modalAccountOpen } = useAccountModal();
+    return { modalAccountOpen };
   },
   data() {
     return {
