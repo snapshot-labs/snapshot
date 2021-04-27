@@ -4,7 +4,10 @@
       <Container class="d-flex flex-items-center">
         <div class="flex-auto text-left d-flex">
           <router-link :to="{ name: 'timeline' }">
-            <UiButton class="mr-2">Timeline</UiButton>
+            <UiButton class="mr-2">
+              {{ $t('timeline') }}
+              <UiCounter :counter="3" class="ml-1 mr-n1" />
+            </UiButton>
           </router-link>
           <UiButton class="pl-3 col-12 col-lg-4">
             <Search v-model="q" :placeholder="$t('searchPlaceholder')" />
