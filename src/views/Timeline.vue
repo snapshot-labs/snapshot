@@ -167,7 +167,7 @@ export default {
       load();
     }
 
-    // Save the last seen proposalId in localStorage
+    // Save the most recently seen proposalId in localStorage
     const { getProposalIds, proposalIds } = useUnseenProposals();
     onMounted(async () => {
       await getProposalIds(favorites.value);

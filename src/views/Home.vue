@@ -110,7 +110,7 @@ export default {
       );
     });
 
-    // Timeline - new active proposals
+    // Get number of unseen proposals
     const { getProposalIds, numberOfNewProposals } = useUnseenProposals();
     watchEffect(() => getProposalIds(favorites.value));
 

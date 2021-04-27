@@ -8,7 +8,7 @@ export function useUnseenProposals() {
   async function getProposalIds(favorites) {
     const favoriteKeys = Object.keys(favorites);
 
-    if (favoriteKeys) {
+    if (favoriteKeys[0]) {
       try {
         const activeProposals = await subgraphRequest(
           `${process.env.VUE_APP_HUB_URL}/graphql`,
