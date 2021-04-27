@@ -6,7 +6,7 @@
           <router-link :to="{ name: 'timeline' }">
             <UiButton class="mr-2">
               {{ $t('timeline') }}
-              <UiCounter :counter="3" class="ml-1 mr-n1" />
+              <UiCounter :counter="numberOfNewProposals" class="ml-1 mr-n1" />
             </UiButton>
           </router-link>
           <UiButton class="pl-3 col-12 col-lg-4">
@@ -72,12 +72,13 @@
 </template>
 
 <script>
-import { onMounted, ref, computed } from 'vue';
+import { onMounted, ref, computed, watchEffect } from 'vue';
 import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
 import orderBy from 'lodash/orderBy';
 import spotlight from '@snapshot-labs/snapshot-spaces/spaces/spotlight.json';
 import { scrollEndMonitor } from '@/helpers/utils';
+import { useUnseenProposals } from '@/composables/useUnseenProposals';
 
 export default {
   setup() {
@@ -109,6 +110,10 @@ export default {
       );
     });
 
+    // Timeline - new active proposals
+    const { getProposalIds, numberOfNewProposals } = useUnseenProposals();
+    watchEffect(() => getProposalIds(favorites.value));
+
     // Favorites
     const addFavoriteSpace = spaceId =>
       store.dispatch('addFavoriteSpace', spaceId);
@@ -131,7 +136,7 @@ export default {
       scrollEndMonitor(() => (limit.value += loadBy));
     });
 
-    return { q, limit, spaces, toggleFavorite };
+    return { q, limit, spaces, toggleFavorite, numberOfNewProposals };
   }
 };
 </script>
