@@ -88,7 +88,7 @@
   "startIn": "début {0}",
   "endIn": "fin {1}",
   "endedAgo": "a terminé {1}",
-  "proposalBy": "Proposition de {0}",
+  "proposalBy": "By {0}",
   "endDate": "fin {0}",
   "contectHash": "Hash du contenu",
   "defaultSkin": "Thème par défaut",
@@ -100,7 +100,8 @@
     "maxLength": "Longueur maximale de {0}",
     "pattern": "Caractère non valide",
     "minItems": "Minimum {0} élément(s) requis",
-    "minStrategy": "Au moins une stratégie est requise."
+    "minStrategy": "Au moins une stratégie est requise.",
+    "format": "Invalid format"
   },
   "create": {
     "question": "Question",
@@ -152,6 +153,7 @@
     "changeAvatar": "Modifier l'avatar",
     "name": "Nom",
     "about": "À propos",
+    "terms": "Terms",
     "network": "Réseau",
     "symbol": "Symbole",
     "skin": "Thème",
@@ -166,8 +168,7 @@
     "showOnly": "Afficher uniquement les propositions des membres",
     "editPlugin": "Modifier le module",
     "addPlugin": "Ajouter un plugin",
-    "pluginParameters": "Paramètres du plugin",
-    "strategyRequired": "Au moins une stratégie est requise."
+    "pluginParameters": "Paramètres du plugin"
   },
   "setup": {
     "example": "ex : yam.eth",
