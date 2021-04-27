@@ -221,11 +221,11 @@
 <script>
 import { mapActions } from 'vuex';
 import { getProposal, getResults, getPower } from '@/helpers/snapshot';
-import { useAccountModal } from '@/composables/useAccountModal';
+import { useModal } from '@/composables/useModal';
 
 export default {
   setup() {
-    const { modalAccountOpen } = useAccountModal();
+    const { modalAccountOpen } = useModal();
     return { modalAccountOpen };
   },
   data() {
