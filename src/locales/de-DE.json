@@ -88,7 +88,7 @@
   "startIn": "start {0}",
   "endIn": "ende {1}",
   "endedAgo": "endete {1}",
-  "proposalBy": "Vorschlag von {0}",
+  "proposalBy": "By {0}",
   "endDate": "ende {0}",
   "contectHash": "Hash des Inhalts",
   "defaultSkin": "Standard-Skin",
@@ -100,7 +100,8 @@
     "maxLength": "Maximallänge ist {0}",
     "pattern": "Ungültiges Zeichen",
     "minItems": "Mindestens {0} Element(e) erforderlich",
-    "minStrategy": "Mindestens eine Strategie ist erforderlich."
+    "minStrategy": "Mindestens eine Strategie ist erforderlich.",
+    "format": "Invalid format"
   },
   "create": {
     "question": "Frage",
@@ -152,6 +153,7 @@
     "changeAvatar": "Avatar ändern",
     "name": "Name",
     "about": "Über uns",
+    "terms": "Terms",
     "network": "Netzwerk",
     "symbol": "Symbol",
     "skin": "Skin",
@@ -166,8 +168,7 @@
     "showOnly": "Nur Mitgliedervorschläge anzeigen",
     "editPlugin": "Plugin bearbeiten",
     "addPlugin": "Plugin hinzufügen",
-    "pluginParameters": "Plugin Parameter",
-    "strategyRequired": "Mindestens eine Strategie ist erforderlich."
+    "pluginParameters": "Plugin Parameter"
   },
   "setup": {
     "example": "z.B. yam.eth",
