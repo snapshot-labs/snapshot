@@ -74,9 +74,9 @@
           </UiButton>
         </div>
         <UiButton
-          :disabled="voteLoading || !selectedChoice || !web3.account"
+          :disabled="voteLoading || app.authLoading || !selectedChoice"
           :loading="voteLoading"
-          @click="modalOpen = true"
+          @click="web3.account ? (modalOpen = true) : (modalAccountOpen = true)"
           class="d-block width-full button--submit"
         >
           {{ $t('proposal.vote') }}
@@ -221,8 +221,13 @@
 <script>
 import { mapActions } from 'vuex';
 import { getProposal, getResults, getPower } from '@/helpers/snapshot';
+import { useAccountModal } from '@/composables/useAccountModal';
 
 export default {
+  setup() {
+    const { modalAccountOpen } = useAccountModal();
+    return { modalAccountOpen };
+  },
   data() {
     return {
       key: this.$route.params.key,
