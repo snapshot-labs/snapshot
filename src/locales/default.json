@@ -88,7 +88,7 @@
   "startIn": "start {0}",
   "endIn": "end {1}",
   "endedAgo": "ended {1}",
-  "proposalBy": "Proposal by {0}",
+  "proposalBy": "By {0}",
   "endDate": "end {0}",
   "contectHash": "Content hash",
   "defaultSkin": "Default skin",
