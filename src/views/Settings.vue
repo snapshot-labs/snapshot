@@ -371,7 +371,6 @@ export default {
   },
   computed: {
     validate() {
-      console.log(validateSchema(schemas.space, this.form));
       return validateSchema(schemas.space, this.form);
     },
     isValid() {
