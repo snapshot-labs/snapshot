@@ -371,6 +371,7 @@ export default {
   },
   computed: {
     validate() {
+      if (this.form.terms === '') delete this.form.terms;
       return validateSchema(schemas.space, this.form);
     },
     isValid() {
