@@ -13,7 +13,6 @@ const state = {
   init: false,
   loading: false,
   authLoading: false,
-  modalOpen: false,
   spaces: {},
   locale: lsGet('locale', defaultLocale)
 };
@@ -49,9 +48,6 @@ const actions = {
   },
   loading: ({ commit }, payload) => {
     commit('SET', { loading: payload });
-  },
-  toggleModal: ({ commit }) => {
-    commit('SET', { modalOpen: !state.modalOpen });
   },
   getSpaces: async ({ commit }) => {
     let spaces: any = await client.getSpaces();
