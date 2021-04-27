@@ -85,9 +85,9 @@
   "addFavorites": "Ajouter aux favoris",
   "createdBy": "Par {0}",
   "startToEnd": "début {0} fin {1}",
-  "startIn": "start {0}",
-  "endIn": "end {1}",
-  "endedAgo": "ended {1}",
+  "startIn": "début {0}",
+  "endIn": "fin {1}",
+  "endedAgo": "a terminé {1}",
   "proposalBy": "Proposition de {0}",
   "endDate": "fin {0}",
   "contectHash": "Hash du contenu",
@@ -96,11 +96,11 @@
   "language": "Langage",
   "errors": {
     "required": "Le champ est requis",
-    "minLength": "Minimum length is {0}",
-    "maxLength": "Maximum length is {0}",
-    "pattern": "Invalid character",
-    "minItems": "Minimum {0} item(s) required",
-    "minStrategy": "At least one strategy is required."
+    "minLength": "Longueur minimale de {0}",
+    "maxLength": "Longueur maximale de {0}",
+    "pattern": "Caractère non valide",
+    "minItems": "Minimum {0} élément(s) requis",
+    "minStrategy": "Au moins une stratégie est requise."
   },
   "create": {
     "question": "Question",
@@ -152,11 +152,11 @@
     "changeAvatar": "Modifier l'avatar",
     "name": "Nom",
     "about": "À propos",
-    "network": "Network",
+    "network": "Réseau",
     "symbol": "Symbole",
     "skin": "Thème",
     "domain": "Nom de domaine",
-    "strategies": "Strategie(s)",
+    "strategies": "Stratégie(s)",
     "hideSpace": "Cacher l'espace de la page d'accueil",
     "addStrategy": "Ajouter une stratégie",
     "members": "Membres",
@@ -167,7 +167,7 @@
     "editPlugin": "Modifier le module",
     "addPlugin": "Ajouter un plugin",
     "pluginParameters": "Paramètres du plugin",
-    "strategyRequired": "At least one strategy is required."
+    "strategyRequired": "Au moins une stratégie est requise."
   },
   "setup": {
     "example": "ex : yam.eth",
@@ -182,14 +182,14 @@
     "somethingWentWrong": "Oups, une erreur s'est produite!"
   },
   "explore": {
-    "createStrategy": "Create strategy",
-    "createSkin": "Create skin",
-    "addNetwork": "Add network",
-    "createPlugin": "Create plugin",
-    "strategies": "strategie(s)",
-    "skins": "skin(s)",
-    "networks": "network(s)",
+    "createStrategy": "Créer une stratégie",
+    "createSkin": "Créer un thème",
+    "addNetwork": "Ajouter un réseau",
+    "createPlugin": "Créer un plugin",
+    "strategies": "stratégie(s)",
+    "skins": "thème(s)",
+    "networks": "réseau(x)",
     "plugins": "plugin(s)",
-    "results": "result(s)"
+    "results": "résultat(s)"
   }
 }
