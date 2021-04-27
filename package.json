@@ -31,6 +31,7 @@
     "@vue/cli-service": "^4.5.12",
     "@walletconnect/web3-provider": "^1.3.2",
     "ajv": "^7.0.0-beta.2",
+    "ajv-formats": "^2.0.2",
     "autolinker": "^3.14.3",
     "bluebird": "^3.7.2",
     "body-parser": "^1.19.0",
