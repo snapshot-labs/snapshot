@@ -128,6 +128,7 @@ export default {
               },
               id: true,
               name: true,
+              body: true,
               start: true,
               end: true,
               state: true,
