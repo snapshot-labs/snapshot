@@ -62,13 +62,6 @@
                 <template v-slot:label> {{ $t(`settings.about`) }} </template>
               </UiInput>
               <UiInput
-                v-model="form.terms"
-                placeholder="e.g. https://example.com/terms"
-                :error="inputError('terms')"
-              >
-                <template v-slot:label> {{ $t(`settings.terms`) }} </template>
-              </UiInput>
-              <UiInput
                 @click="modalNetworksOpen = true"
                 :error="inputError('network')"
               >
@@ -136,6 +129,13 @@
                     <Icon name="info" size="24" class="text-gray p-1" />
                   </a>
                 </template>
+              </UiInput>
+              <UiInput
+                v-model="form.terms"
+                placeholder="e.g. https://example.com/terms"
+                :error="inputError('terms')"
+              >
+                <template v-slot:label> {{ $t(`settings.terms`) }} </template>
               </UiInput>
               <div class="d-flex flex-items-center px-2">
                 <Checkbox v-model="form.private" class="mr-2 mt-1" />
