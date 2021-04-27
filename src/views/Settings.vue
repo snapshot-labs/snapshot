@@ -62,6 +62,13 @@
                 <template v-slot:label> {{ $t(`settings.about`) }} </template>
               </UiInput>
               <UiInput
+                v-model="form.terms"
+                placeholder="e.g. https://example.com/terms"
+                :error="inputError('terms')"
+              >
+                <template v-slot:label> {{ $t(`settings.terms`) }} </template>
+              </UiInput>
+              <UiInput
                 @click="modalNetworksOpen = true"
                 :error="inputError('network')"
               >
@@ -364,6 +371,7 @@ export default {
   },
   computed: {
     validate() {
+      console.log(validateSchema(schemas.space, this.form));
       return validateSchema(schemas.space, this.form);
     },
     isValid() {

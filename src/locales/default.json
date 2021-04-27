@@ -100,7 +100,8 @@
     "maxLength": "Maximum length is {0}",
     "pattern": "Invalid character",
     "minItems": "Minimum {0} item(s) required",
-    "minStrategy": "At least one strategy is required."
+    "minStrategy": "At least one strategy is required.",
+    "format": "Invalid format"
   },
   "create": {
     "question": "Question",
@@ -152,6 +153,7 @@
     "changeAvatar": "Change avatar",
     "name": "Name",
     "about": "About",
+    "terms": "Terms",
     "network": "Network",
     "symbol": "Symbol",
     "skin": "Skin",
@@ -166,8 +168,7 @@
     "showOnly": "Show only members proposals",
     "editPlugin": "Edit plugin",
     "addPlugin": "Add plugin",
-    "pluginParameters": "Plugin parameters",
-    "strategyRequired": "At least one strategy is required."
+    "pluginParameters": "Plugin parameters"
   },
   "setup": {
     "example": "e.g. yam.eth",
