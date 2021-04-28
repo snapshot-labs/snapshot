@@ -23,7 +23,7 @@ Object.keys(languages).forEach(locale => {
 });
 
 const datetimeFormats = {
-  en: {
+  'en-US': {
     short: {
       year: 'numeric',
       month: 'short',
