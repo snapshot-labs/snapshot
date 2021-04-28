@@ -44,7 +44,7 @@ export function setI18nLanguage(i18n, locale) {
   document.querySelector('html').setAttribute('lang', locale);
 }
 
-export function setupI18n(options = { locale: defaultLocale }) {
+export function setupI18n(options = { legacy: false, locale: defaultLocale }) {
   const i18n = createI18n(options);
   setI18nLanguage(i18n, options.locale);
   return i18n;

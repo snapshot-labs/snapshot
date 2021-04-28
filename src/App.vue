@@ -13,14 +13,17 @@
 </template>
 
 <script>
+import { watch } from 'vue';
 import { mapActions } from 'vuex';
+import { useModal } from '@/composables/useModal';
 
 export default {
-  watch: {
-    'app.modalOpen': function (val) {
+  setup() {
+    const { modalOpen } = useModal();
+    watch(modalOpen, val => {
       const el = document.body;
       el.classList[val ? 'add' : 'remove']('overflow-hidden');
-    }
+    });
   },
   computed: {
     space() {

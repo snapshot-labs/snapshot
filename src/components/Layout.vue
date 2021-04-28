@@ -8,7 +8,7 @@
     </div>
     <div
       v-if="$slots['content-right']"
-      class="col-12 col-lg-9 float-left pl-0 pl-lg-5"
+      class="col-12 col-lg-9 float-right pl-0 pl-lg-5"
     >
       <slot name="content-right" />
     </div>

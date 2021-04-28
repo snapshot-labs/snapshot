@@ -1,8 +1,6 @@
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
-import { signMessage } from '@snapshot-labs/snapshot.js/src/utils/web3';
 import client from '@/helpers/client';
 import { formatSpace } from '@/helpers/utils';
-import { version } from '@/../package.json';
 import i18n, {
   defaultLocale,
   setI18nLanguage,
@@ -15,7 +13,6 @@ const state = {
   init: false,
   loading: false,
   authLoading: false,
-  modalOpen: false,
   spaces: {},
   locale: lsGet('locale', defaultLocale)
 };
@@ -51,9 +48,6 @@ const actions = {
   },
   loading: ({ commit }, payload) => {
     commit('SET', { loading: payload });
-  },
-  toggleModal: ({ commit }) => {
-    commit('SET', { modalOpen: !state.modalOpen });
   },
   getSpaces: async ({ commit }) => {
     let spaces: any = await client.getSpaces();
