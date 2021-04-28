@@ -88,7 +88,7 @@
   "startIn": "start {0}",
   "endIn": "end {1}",
   "endedAgo": "ended {1}",
-  "proposalBy": "{0} ద్వారా ప్రతిపాదన",
+  "proposalBy": "By {0}",
   "endDate": "ముగింపు {0}",
   "contectHash": "కంటెంట్ హాష్",
   "defaultSkin": "డిఫాల్ట్ స్కిన్స్",
@@ -100,7 +100,8 @@
     "maxLength": "Maximum length is {0}",
     "pattern": "Invalid character",
     "minItems": "Minimum {0} item(s) required",
-    "minStrategy": "At least one strategy is required."
+    "minStrategy": "At least one strategy is required.",
+    "format": "Invalid format"
   },
   "create": {
     "question": "ప్రశ్న",
@@ -152,6 +153,7 @@
     "changeAvatar": "అవతార్ మార్చండి",
     "name": "పేరు",
     "about": "About",
+    "terms": "Terms",
     "network": "Network",
     "symbol": "చిహ్నం",
     "skin": "స్కిన్స",
@@ -166,8 +168,7 @@
     "showOnly": "సభ్యుల ప్రతిపాదనలను మాత్రమే చూపించు",
     "editPlugin": "Edit plugin",
     "addPlugin": "Add plugin",
-    "pluginParameters": "Plugin parameters",
-    "strategyRequired": "At least one strategy is required."
+    "pluginParameters": "Plugin parameters"
   },
   "setup": {
     "example": "ఉదాహరణ. yarn.eth",
@@ -180,5 +181,16 @@
     "proposalDeleted": "ప్రతిపాదన తొలగించబడింది",
     "yourIsIn": "మీ {0} నమోదు చేయబడింది!",
     "somethingWentWrong": "అయ్యో, ఏదో తప్పు జరిగింది!"
+  },
+  "explore": {
+    "createStrategy": "Create strategy",
+    "createSkin": "Create skin",
+    "addNetwork": "Add network",
+    "createPlugin": "Create plugin",
+    "strategies": "strategie(s)",
+    "skins": "skin(s)",
+    "networks": "network(s)",
+    "plugins": "plugin(s)",
+    "results": "result(s)"
   }
 }

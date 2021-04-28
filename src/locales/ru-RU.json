@@ -88,7 +88,7 @@
   "startIn": "начался {0}",
   "endIn": "по {1}",
   "endedAgo": "по {1}",
-  "proposalBy": "Предложение от {0}",
+  "proposalBy": "By {0}",
   "endDate": "по {0}",
   "contectHash": "Хэш содержимого",
   "defaultSkin": "Тема по умолчанию",
@@ -100,7 +100,8 @@
     "maxLength": "Maximum length is {0}",
     "pattern": "Invalid character",
     "minItems": "Minimum {0} item(s) required",
-    "minStrategy": "At least one strategy is required."
+    "minStrategy": "At least one strategy is required.",
+    "format": "Invalid format"
   },
   "create": {
     "question": "Вопрос",
@@ -152,6 +153,7 @@
     "changeAvatar": "Сменить аватар",
     "name": "Название",
     "about": "О проекте",
+    "terms": "Terms",
     "network": "Network",
     "symbol": "Символ",
     "skin": "Тема",
@@ -166,8 +168,7 @@
     "showOnly": "Показать только опросы участников",
     "editPlugin": "Редактировать плагин",
     "addPlugin": "Добавить плагин",
-    "pluginParameters": "Настройки плагина",
-    "strategyRequired": "At least one strategy is required."
+    "pluginParameters": "Настройки плагина"
   },
   "setup": {
     "example": "например, yam.eth",
@@ -180,5 +181,16 @@
     "proposalDeleted": "Опрос удалён",
     "yourIsIn": "Ваш {0} сохранен!",
     "somethingWentWrong": "Ой, что-то пошло не так!"
+  },
+  "explore": {
+    "createStrategy": "Create strategy",
+    "createSkin": "Create skin",
+    "addNetwork": "Add network",
+    "createPlugin": "Create plugin",
+    "strategies": "strategie(s)",
+    "skins": "skin(s)",
+    "networks": "network(s)",
+    "plugins": "plugin(s)",
+    "results": "result(s)"
   }
 }
