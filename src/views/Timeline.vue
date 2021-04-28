@@ -1,21 +1,23 @@
 <template>
   <Layout>
     <template #sidebar-left>
-      <Block :slim="true" :title="$t('filters')" class="overflow-hidden">
-        <div class="py-3">
-          <router-link
-            :to="{ name: 'timeline' }"
-            v-text="$t('favorites')"
-            :class="!scope && 'router-link-exact-active'"
-            class="d-block px-4 py-2 sidenav-item"
-          />
-          <router-link
-            :to="{ name: 'timeline', params: { scope: 'all' } }"
-            v-text="$t('allSpaces')"
-            class="d-block px-4 py-2 sidenav-item"
-          />
-        </div>
-      </Block>
+      <div style="position: fixed; width: 240px">
+        <Block :slim="true" :title="$t('filters')" class="overflow-hidden">
+          <div class="py-3">
+            <router-link
+              :to="{ name: 'timeline' }"
+              v-text="$t('favorites')"
+              :class="!scope && 'router-link-exact-active'"
+              class="d-block px-4 py-2 sidenav-item"
+            />
+            <router-link
+              :to="{ name: 'timeline', params: { scope: 'all' } }"
+              v-text="$t('allSpaces')"
+              class="d-block px-4 py-2 sidenav-item"
+            />
+          </div>
+        </Block>
+      </div>
     </template>
     <template #content-right>
       <div class="px-4 px-md-0 mb-3 d-flex">
