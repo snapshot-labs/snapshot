@@ -19,7 +19,7 @@
         </Block>
       </div>
     </div>
-    <div class="col-12 col-lg-9 float-left pl-0 pl-lg-5 content-right">
+    <div class="col-12 col-lg-9 float-left pl-0 pl-lg-5 float-right">
       <div class="px-4 px-md-0 mb-3 d-flex">
         <div class="flex-auto">
           <router-link :to="{ name: 'home' }" class="text-gray">
@@ -179,11 +179,3 @@ export default {
   }
 };
 </script>
-
-<style scoped>
-@media only screen and (min-width: 1010px) {
-  .content-right {
-    margin-left: 240px;
-  }
-}
-</style>
