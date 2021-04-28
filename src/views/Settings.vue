@@ -130,6 +130,13 @@
                   </a>
                 </template>
               </UiInput>
+              <UiInput
+                v-model="form.terms"
+                placeholder="e.g. https://example.com/terms"
+                :error="inputError('terms')"
+              >
+                <template v-slot:label> {{ $t(`settings.terms`) }} </template>
+              </UiInput>
               <div class="d-flex flex-items-center px-2">
                 <Checkbox v-model="form.private" class="mr-2 mt-1" />
                 {{ $t('settings.hideSpace') }}
@@ -364,6 +371,7 @@ export default {
   },
   computed: {
     validate() {
+      if (this.form.terms === '') delete this.form.terms;
       return validateSchema(schemas.space, this.form);
     },
     isValid() {
