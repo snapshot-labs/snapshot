@@ -417,8 +417,6 @@ const actions = {
       votes = Object.fromEntries(
         Object.entries(votes)
           .map((vote: any) => {
-            console.log('vote: ', vote);
-
             vote[1].scores = space.strategies.map(
               (strategy, i) => scores[i][vote[1].address] || 0
             );
