@@ -87,7 +87,18 @@ export default {
       if (['staking-mainnet', 'staking-testnet'].indexOf(this.key) > -1) {
         return this.isValidator;
       } else {
-        return this.$auth.isAuthenticated.value;
+        if (!this.web3.account) {
+          return false;
+        }
+        // check members
+        if (this.space.members.length > 0) {
+          const member = this.space.members.find(v =>
+            isAddressEqual(v, this.web3.account)
+          );
+          return (member !== undefined);
+        } else {
+          return this.$auth.isAuthenticated.value;
+        }
       }
     },
     isValidator() {
