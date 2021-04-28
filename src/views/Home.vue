@@ -4,7 +4,7 @@
       <Container class="d-flex flex-items-center">
         <div class="flex-auto text-left d-flex">
           <router-link :to="{ name: 'timeline' }">
-            <UiButton class="mr-2" style="width: 135px">
+            <UiButton class="mr-2 no-wrap">
               {{ $t('timeline') }}
               <UiCounter
                 :counter="numberOfUnseenProposals"
