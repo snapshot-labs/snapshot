@@ -19,9 +19,9 @@
   "strategiesPage": "Strategien",
   "version": "Version",
   "timeline": "Timeline",
-  "filters": "Filters",
-  "favorites": "Favorites",
-  "allSpaces": "All spaces",
+  "filters": "Filter",
+  "favorites": "Favoriten",
+  "allSpaces": "Alle Bereiche",
   "submitOnchain": "On-chain senden",
   "inSpaces": "In {0} bereich(en)",
   "downloadReport": "Bericht herunterladen",
@@ -81,26 +81,27 @@
   "marketSymbol": "{0} Markt",
   "twoChoicesRequired": "Für dieses Plugin sind zwei Optionen erforderlich.",
   "noResultsFound": "Hoppla, wir konnten keine Ergebnisse finden",
-  "noFavorites": "Oops, you don't have any favorites yet",
-  "addFavorites": "Add favorites",
+  "noFavorites": "Hoppla, Sie haben noch keine Favoriten",
+  "addFavorites": "Favoriten hinzufügen",
   "createdBy": "Von {0}",
   "startToEnd": "begin {0} ende {1}",
   "startIn": "start {0}",
-  "endIn": "end {1}",
-  "endedAgo": "ended {1}",
-  "proposalBy": "Vorschlag von {0}",
+  "endIn": "ende {1}",
+  "endedAgo": "endete {1}",
+  "proposalBy": "By {0}",
   "endDate": "ende {0}",
   "contectHash": "Hash des Inhalts",
   "defaultSkin": "Standard-Skin",
   "select": "Auswählen",
   "language": "Sprache",
   "errors": {
-    "required": "Field is required",
-    "minLength": "Minimum length is {0}",
-    "maxLength": "Maximum length is {0}",
-    "pattern": "Invalid character",
-    "minItems": "Minimum {0} item(s) required",
-    "minStrategy": "At least one strategy is required."
+    "required": "Dieses Feld ist ein Pflichtfeld",
+    "minLength": "Mindestlänge ist {0}",
+    "maxLength": "Maximallänge ist {0}",
+    "pattern": "Ungültiges Zeichen",
+    "minItems": "Mindestens {0} Element(e) erforderlich",
+    "minStrategy": "Mindestens eine Strategie ist erforderlich.",
+    "format": "Invalid format"
   },
   "create": {
     "question": "Frage",
@@ -114,8 +115,8 @@
     "endTime": "Endzeit auswählen",
     "publish": "Veröffentlichen",
     "snapshotBlock": "Momentaufnahme Blocknummer",
-    "onlyMembersWarning": "You need to be a member of the space in order to submit a proposal",
-    "minScoreWarning": "You need to have a minimum of {0} {1} in order to submit a proposal"
+    "onlyMembersWarning": "Sie müssen Mitglied des Bereichs sein, um einen Vorschlag einzureichen",
+    "minScoreWarning": "Sie müssen mindestens {0} {1} haben, um einen Vorschlag einzureichen"
   },
   "delegate": {
     "header": "Delegieren",
@@ -152,11 +153,12 @@
     "changeAvatar": "Avatar ändern",
     "name": "Name",
     "about": "Über uns",
-    "network": "Network",
+    "terms": "Terms",
+    "network": "Netzwerk",
     "symbol": "Symbol",
     "skin": "Skin",
     "domain": "Domain-Name",
-    "strategies": "Strategie(s)",
+    "strategies": "Strategie(n)",
     "hideSpace": "Raum auf der Startseite ausblenden",
     "addStrategy": "Strategie hinzufügen",
     "members": "Mitglieder",
@@ -166,8 +168,7 @@
     "showOnly": "Nur Mitgliedervorschläge anzeigen",
     "editPlugin": "Plugin bearbeiten",
     "addPlugin": "Plugin hinzufügen",
-    "pluginParameters": "Plugin Parameter",
-    "strategyRequired": "At least one strategy is required."
+    "pluginParameters": "Plugin Parameter"
   },
   "setup": {
     "example": "z.B. yam.eth",
@@ -180,5 +181,16 @@
     "proposalDeleted": "Vorschlag gelöscht",
     "yourIsIn": "Dein {0} ist drinnen!",
     "somethingWentWrong": "Hoppla, da ist etwas schiefgelaufen!"
+  },
+  "explore": {
+    "createStrategy": "Strategie erstellen",
+    "createSkin": "Neuen Skin erstellen",
+    "addNetwork": "Netzwerk hinzufügen",
+    "createPlugin": "Plugin erstellen",
+    "strategies": "strategie(n)",
+    "skins": "skin(s)",
+    "networks": "netzwerk(e)",
+    "plugins": "plugin(s)",
+    "results": "ergebnis(se)"
   }
 }

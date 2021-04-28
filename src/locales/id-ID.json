@@ -88,7 +88,7 @@
   "startIn": "mulai {0}",
   "endIn": "akhir {1}",
   "endedAgo": "berakhir {1}",
-  "proposalBy": "Proposal oleh {0}",
+  "proposalBy": "By {0}",
   "endDate": "akhir {0}",
   "contectHash": "Hash konten",
   "defaultSkin": "Skin bawaan",
@@ -100,7 +100,8 @@
     "maxLength": "Maximum length is {0}",
     "pattern": "Invalid character",
     "minItems": "Minimum {0} item(s) required",
-    "minStrategy": "At least one strategy is required."
+    "minStrategy": "At least one strategy is required.",
+    "format": "Invalid format"
   },
   "create": {
     "question": "Pertanyaan",
@@ -152,6 +153,7 @@
     "changeAvatar": "Ganti avatar",
     "name": "Nama",
     "about": "Tentang",
+    "terms": "Terms",
     "network": "Network",
     "symbol": "Simbol",
     "skin": "Skin",
@@ -166,8 +168,7 @@
     "showOnly": "Tampilkan hanya proposal anggota",
     "editPlugin": "Edit plugin",
     "addPlugin": "Tambahkan plugin",
-    "pluginParameters": "Parameter plugin",
-    "strategyRequired": "At least one strategy is required."
+    "pluginParameters": "Parameter plugin"
   },
   "setup": {
     "example": "mis. yam.eth",
@@ -180,5 +181,16 @@
     "proposalDeleted": "Proposal dihapus",
     "yourIsIn": "{0} Anda telah masuk!",
     "somethingWentWrong": "Amboy, sesuatu kesalahan telah terjadi!"
+  },
+  "explore": {
+    "createStrategy": "Create strategy",
+    "createSkin": "Create skin",
+    "addNetwork": "Add network",
+    "createPlugin": "Create plugin",
+    "strategies": "strategie(s)",
+    "skins": "skin(s)",
+    "networks": "network(s)",
+    "plugins": "plugin(s)",
+    "results": "result(s)"
   }
 }

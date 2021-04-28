@@ -88,7 +88,7 @@
   "startIn": "start {0}",
   "endIn": "end {1}",
   "endedAgo": "ended {1}",
-  "proposalBy": "Predlog od {0}",
+  "proposalBy": "By {0}",
   "endDate": "kraj {0}",
   "contectHash": "Heš sadržaja",
   "defaultSkin": "Podrazumevana tema",
@@ -100,7 +100,8 @@
     "maxLength": "Maximum length is {0}",
     "pattern": "Invalid character",
     "minItems": "Minimum {0} item(s) required",
-    "minStrategy": "At least one strategy is required."
+    "minStrategy": "At least one strategy is required.",
+    "format": "Invalid format"
   },
   "create": {
     "question": "Pitanje",
@@ -152,6 +153,7 @@
     "changeAvatar": "Promenite avatar",
     "name": "Ime",
     "about": "O nama",
+    "terms": "Terms",
     "network": "Network",
     "symbol": "Simbol",
     "skin": "Tema",
@@ -166,8 +168,7 @@
     "showOnly": "Prikaži samo predloge od članova",
     "editPlugin": "Uredi plagin",
     "addPlugin": "Dodaj plugin",
-    "pluginParameters": "Plugin parametri",
-    "strategyRequired": "At least one strategy is required."
+    "pluginParameters": "Plugin parametri"
   },
   "setup": {
     "example": "npr. yam.eth",
@@ -180,5 +181,16 @@
     "proposalDeleted": "Predlog izbrisan",
     "yourIsIn": "Vaš {0} je sačuvan!",
     "somethingWentWrong": "Ups, nešto je pošlo po zlu!"
+  },
+  "explore": {
+    "createStrategy": "Create strategy",
+    "createSkin": "Create skin",
+    "addNetwork": "Add network",
+    "createPlugin": "Create plugin",
+    "strategies": "strategie(s)",
+    "skins": "skin(s)",
+    "networks": "network(s)",
+    "plugins": "plugin(s)",
+    "results": "result(s)"
   }
 }

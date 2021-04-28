@@ -88,7 +88,7 @@
   "startIn": "{0} 開始",
   "endIn": "{1} 終了",
   "endedAgo": "{1} 前に終了",
-  "proposalBy": "{0} が提案",
+  "proposalBy": "By {0}",
   "endDate": "{0} 終了",
   "contectHash": "コンテンツのハッシュ",
   "defaultSkin": "デフォルトのスキン",
@@ -100,7 +100,8 @@
     "maxLength": "最大文字数は {0} です",
     "pattern": "不正な文字です",
     "minItems": "最低でも {0} 個必要です",
-    "minStrategy": "最低でも１ストラテジー必要です"
+    "minStrategy": "最低でも１ストラテジー必要です",
+    "format": "Invalid format"
   },
   "create": {
     "question": "質問",
@@ -151,7 +152,8 @@
     "profile": "プロフィール",
     "changeAvatar": "アバターを変更する",
     "name": "名前",
-    "about": "About",
+    "about": "Snapshotについて",
+    "terms": "Terms",
     "network": "ネットワーク",
     "symbol": "シンボル",
     "skin": "スキン",
@@ -166,8 +168,7 @@
     "showOnly": "メンバー限定提案",
     "editPlugin": "プラグインを編集する",
     "addPlugin": "プラグインを追加する",
-    "pluginParameters": "プラグインのパラメータ",
-    "strategyRequired": "最低でも１つストラテジーが必要です"
+    "pluginParameters": "プラグインのパラメータ"
   },
   "setup": {
     "example": "例 yam.eth",
@@ -180,5 +181,16 @@
     "proposalDeleted": "提案を削除しました",
     "yourIsIn": "あなたの {0} が来ました",
     "somethingWentWrong": "おっと、何か異常があったようです"
+  },
+  "explore": {
+    "createStrategy": "Create strategy",
+    "createSkin": "Create skin",
+    "addNetwork": "Add network",
+    "createPlugin": "Create plugin",
+    "strategies": "strategie(s)",
+    "skins": "skin(s)",
+    "networks": "network(s)",
+    "plugins": "plugin(s)",
+    "results": "result(s)"
   }
 }
