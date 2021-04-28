@@ -21,7 +21,11 @@
         />
         {{ $tc(period, [_ms(proposal.start), _ms(proposal.end)]) }}
       </div>
-      <p v-text="_shorten(body, 140)" class="break-word" style="font-size: 20px;" />
+      <p
+        v-text="_shorten(body, 140)"
+        class="break-word"
+        style="font-size: 20px"
+      />
     </div>
   </router-link>
 </template>
