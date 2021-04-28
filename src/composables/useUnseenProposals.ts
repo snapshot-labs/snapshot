@@ -30,12 +30,12 @@ export function useUnseenProposals() {
     }
   }
 
-  const numberOfNewProposals = computed(() => {
+  const numberOfUnseenProposals = computed(() => {
     const index = proposalIds.value
       .map((proposal: { id: string }) => proposal.id)
       .indexOf(lsGet('lastSeenProposalId', ''));
     return index < 0 ? proposalIds.value.length : index;
   });
 
-  return { getProposalIds, numberOfNewProposals, proposalIds };
+  return { getProposalIds, numberOfUnseenProposals, proposalIds };
 }

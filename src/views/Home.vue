@@ -4,9 +4,12 @@
       <Container class="d-flex flex-items-center">
         <div class="flex-auto text-left d-flex">
           <router-link :to="{ name: 'timeline' }">
-            <UiButton class="mr-2">
+            <UiButton class="mr-2" style="width: 135px">
               {{ $t('timeline') }}
-              <UiCounter :counter="numberOfNewProposals" class="ml-1 mr-n1" />
+              <UiCounter
+                :counter="numberOfUnseenProposals"
+                class="ml-1 mr-n1"
+              />
             </UiButton>
           </router-link>
           <UiButton class="pl-3 col-12 col-lg-4">
@@ -111,7 +114,7 @@ export default {
     });
 
     // Get number of unseen proposals
-    const { getProposalIds, numberOfNewProposals } = useUnseenProposals();
+    const { getProposalIds, numberOfUnseenProposals } = useUnseenProposals();
     watchEffect(() => getProposalIds(favorites.value));
 
     // Favorites
@@ -136,7 +139,7 @@ export default {
       scrollEndMonitor(() => (limit.value += loadBy));
     });
 
-    return { q, limit, spaces, toggleFavorite, numberOfNewProposals };
+    return { q, limit, spaces, toggleFavorite, numberOfUnseenProposals };
   }
 };
 </script>
