@@ -80,6 +80,8 @@ import { useRoute } from 'vue-router';
 import { scrollEndMonitor } from '@/helpers/utils';
 import { useInfiniteLoader } from '@/composables/useInfiniteLoader';
 import { subgraphRequest } from '@snapshot-labs/snapshot.js/src/utils';
+import { lsSet } from '@/helpers/utils';
+import { useUnseenProposals } from '@/composables/useUnseenProposals';
 
 // Persistent filter state
 const filterBy = ref('all');
@@ -166,6 +168,14 @@ export default {
       limit.value = loadBy;
       load();
     }
+
+    // Save the most recently seen proposalId in localStorage
+    const { getProposalIds, proposalIds } = useUnseenProposals();
+    onMounted(async () => {
+      await getProposalIds(favorites.value);
+      if (proposalIds.value[0])
+        lsSet('lastSeenProposalId', proposalIds.value[0].id);
+    });
 
     return {
       scope,

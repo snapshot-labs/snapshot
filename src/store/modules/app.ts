@@ -1,13 +1,12 @@
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import client from '@/helpers/client';
 import { formatSpace } from '@/helpers/utils';
+import { lsGet, lsSet } from '@/helpers/utils';
 import i18n, {
   defaultLocale,
   setI18nLanguage,
   loadLocaleMessages
 } from '@/i18n';
-
-import { lsGet, lsSet } from '@/helpers/utils';
 
 const state = {
   init: false,
