@@ -1,23 +1,28 @@
 <template>
-  <Layout>
-    <template #sidebar-left>
-      <Block :slim="true" :title="$t('filters')" class="overflow-hidden">
-        <div class="py-3">
-          <router-link
-            :to="{ name: 'timeline' }"
-            v-text="$t('favorites')"
-            :class="!scope && 'router-link-exact-active'"
-            class="d-block px-4 py-2 sidenav-item"
-          />
-          <router-link
-            :to="{ name: 'timeline', params: { scope: 'all' } }"
-            v-text="$t('allSpaces')"
-            class="d-block px-4 py-2 sidenav-item"
-          />
-        </div>
-      </Block>
-    </template>
-    <template #content-right>
+  <Container :slim="true">
+    <div class="col-12 float-left hide-sm hide-md hide-lg">
+      <div style="position: fixed; width: 240px">
+        <Block :slim="true" :title="$t('filters')">
+          <div class="py-3">
+            <router-link
+              :to="{ name: 'timeline' }"
+              v-text="$t('favorites')"
+              :class="!scope && 'router-link-exact-active'"
+              class="d-block px-4 py-2 sidenav-item"
+            />
+            <router-link
+              :to="{ name: 'timeline', params: { scope: 'all' } }"
+              v-text="$t('allSpaces')"
+              class="d-block px-4 py-2 sidenav-item"
+            />
+          </div>
+        </Block>
+      </div>
+    </div>
+    <div
+      class="col-12 col-lg-9 float-left pl-0 pl-lg-5"
+      style="margin-left: 240px"
+    >
       <div class="px-4 px-md-0 mb-3 d-flex">
         <div class="flex-auto">
           <router-link :to="{ name: 'home' }" class="text-gray">
@@ -67,8 +72,8 @@
       <Block v-if="loadingMore && !loading" :slim="true">
         <RowLoading class="my-2" />
       </Block>
-    </template>
-  </Layout>
+    </div>
+  </Container>
 </template>
 
 <script>
