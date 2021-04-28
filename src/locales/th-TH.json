@@ -88,7 +88,7 @@
   "startIn": "start {0}",
   "endIn": "end {1}",
   "endedAgo": "ended {1}",
-  "proposalBy": "Proposal by {0}",
+  "proposalBy": "By {0}",
   "endDate": "end {0}",
   "contectHash": "Content hash",
   "defaultSkin": "Default skin",
@@ -100,7 +100,8 @@
     "maxLength": "Maximum length is {0}",
     "pattern": "Invalid character",
     "minItems": "Minimum {0} item(s) required",
-    "minStrategy": "At least one strategy is required."
+    "minStrategy": "At least one strategy is required.",
+    "format": "Invalid format"
   },
   "create": {
     "question": "Question",
@@ -152,6 +153,7 @@
     "changeAvatar": "Change avatar",
     "name": "Name",
     "about": "About",
+    "terms": "Terms",
     "network": "Network",
     "symbol": "Symbol",
     "skin": "Skin",
@@ -166,8 +168,7 @@
     "showOnly": "Show only members proposals",
     "editPlugin": "Edit plugin",
     "addPlugin": "Add plugin",
-    "pluginParameters": "Plugin parameters",
-    "strategyRequired": "At least one strategy is required."
+    "pluginParameters": "Plugin parameters"
   },
   "setup": {
     "example": "e.g. yam.eth",
@@ -180,5 +181,16 @@
     "proposalDeleted": "ดำเนินการลบข้อเสนอเรียบร้อย",
     "yourIsIn": "Your {0} is in!",
     "somethingWentWrong": "ขออภัย! มีความผิดพลาดบางอย่างเกิดขึ้น"
+  },
+  "explore": {
+    "createStrategy": "Create strategy",
+    "createSkin": "Create skin",
+    "addNetwork": "Add network",
+    "createPlugin": "Create plugin",
+    "strategies": "strategie(s)",
+    "skins": "skin(s)",
+    "networks": "network(s)",
+    "plugins": "plugin(s)",
+    "results": "result(s)"
   }
 }

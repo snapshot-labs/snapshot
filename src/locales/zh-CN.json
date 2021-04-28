@@ -88,7 +88,7 @@
   "startIn": "从 {0} 开始",
   "endIn": "结束 {1}",
   "endedAgo": "结束 {1}",
-  "proposalBy": "{0} 的提案",
+  "proposalBy": "By {0}",
   "endDate": "结束 {0}",
   "contectHash": "内容散列",
   "defaultSkin": "默认皮肤",
@@ -100,7 +100,8 @@
     "maxLength": "最大长度为 {0}",
     "pattern": "无效字符",
     "minItems": "最少需要 {0} 个项目",
-    "minStrategy": "至少需要一个策略。"
+    "minStrategy": "至少需要一个策略。",
+    "format": "Invalid format"
   },
   "create": {
     "question": "问题",
@@ -152,6 +153,7 @@
     "changeAvatar": "修改头像",
     "name": "名称",
     "about": "关于",
+    "terms": "Terms",
     "network": "网络",
     "symbol": "符号",
     "skin": "皮肤",
@@ -166,8 +168,7 @@
     "showOnly": "仅显示会员提议",
     "editPlugin": "编辑插件",
     "addPlugin": "添加插件",
-    "pluginParameters": "插件参数",
-    "strategyRequired": "至少需要一个策略。"
+    "pluginParameters": "插件参数"
   },
   "setup": {
     "example": "例如 yam.eth",
@@ -180,5 +181,16 @@
     "proposalDeleted": "提案被删除",
     "yourIsIn": "您的 {0} 已经加入了！",
     "somethingWentWrong": "哎呀，似乎出了点问题"
+  },
+  "explore": {
+    "createStrategy": "Create strategy",
+    "createSkin": "Create skin",
+    "addNetwork": "Add network",
+    "createPlugin": "Create plugin",
+    "strategies": "strategie(s)",
+    "skins": "skin(s)",
+    "networks": "network(s)",
+    "plugins": "plugin(s)",
+    "results": "result(s)"
   }
 }

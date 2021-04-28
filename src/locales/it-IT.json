@@ -88,7 +88,7 @@
   "startIn": "start {0}",
   "endIn": "end {1}",
   "endedAgo": "ended {1}",
-  "proposalBy": "Proposta da {0}",
+  "proposalBy": "By {0}",
   "endDate": "termina {0}",
   "contectHash": "Hash del contenuto",
   "defaultSkin": "Tema predefinito",
@@ -100,7 +100,8 @@
     "maxLength": "Maximum length is {0}",
     "pattern": "Invalid character",
     "minItems": "Minimum {0} item(s) required",
-    "minStrategy": "At least one strategy is required."
+    "minStrategy": "At least one strategy is required.",
+    "format": "Invalid format"
   },
   "create": {
     "question": "Domande",
@@ -152,6 +153,7 @@
     "changeAvatar": "Cambia avatar",
     "name": "Nome",
     "about": "In merito",
+    "terms": "Terms",
     "network": "Network",
     "symbol": "Simbolo",
     "skin": "Tema",
@@ -166,8 +168,7 @@
     "showOnly": "Mostra solo le proposte dei membri",
     "editPlugin": "Modifica plugin",
     "addPlugin": "Aggiungi plugin",
-    "pluginParameters": "Parametri plugin",
-    "strategyRequired": "At least one strategy is required."
+    "pluginParameters": "Parametri plugin"
   },
   "setup": {
     "example": "e.g. yam.eth",
@@ -180,5 +181,16 @@
     "proposalDeleted": "Proposta eliminata",
     "yourIsIn": "Il tuo {0} è dentro!",
     "somethingWentWrong": "Oops, qualcosa è andato storto!"
+  },
+  "explore": {
+    "createStrategy": "Create strategy",
+    "createSkin": "Create skin",
+    "addNetwork": "Add network",
+    "createPlugin": "Create plugin",
+    "strategies": "strategie(s)",
+    "skins": "skin(s)",
+    "networks": "network(s)",
+    "plugins": "plugin(s)",
+    "results": "result(s)"
   }
 }

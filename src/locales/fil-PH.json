@@ -88,7 +88,7 @@
   "startIn": "start {0}",
   "endIn": "end {1}",
   "endedAgo": "ended {1}",
-  "proposalBy": "Proposal by {0}",
+  "proposalBy": "By {0}",
   "endDate": "end {0}",
   "contectHash": "Content hash",
   "defaultSkin": "Default skin",
@@ -100,7 +100,8 @@
     "maxLength": "Maximum length is {0}",
     "pattern": "Invalid character",
     "minItems": "Minimum {0} item(s) required",
-    "minStrategy": "At least one strategy is required."
+    "minStrategy": "At least one strategy is required.",
+    "format": "Invalid format"
   },
   "create": {
     "question": "Tanong",
@@ -152,6 +153,7 @@
     "changeAvatar": "Ibahin ang avatar",
     "name": "Pangalan",
     "about": "Tungkol Dito",
+    "terms": "Terms",
     "network": "Network",
     "symbol": "Sagisag",
     "skin": "Skin",
@@ -166,8 +168,7 @@
     "showOnly": "Ipakita lamang ang members proposals",
     "editPlugin": "I-edit ang plugin",
     "addPlugin": "Magdagdag ng Plugin",
-    "pluginParameters": "Plugin parameters",
-    "strategyRequired": "At least one strategy is required."
+    "pluginParameters": "Plugin parameters"
   },
   "setup": {
     "example": "e.g. yam.eth",
@@ -180,5 +181,16 @@
     "proposalDeleted": "Proposal deleted",
     "yourIsIn": "Your {0} is in!",
     "somethingWentWrong": "Oops, may maling nangyari!"
+  },
+  "explore": {
+    "createStrategy": "Create strategy",
+    "createSkin": "Create skin",
+    "addNetwork": "Add network",
+    "createPlugin": "Create plugin",
+    "strategies": "strategie(s)",
+    "skins": "skin(s)",
+    "networks": "network(s)",
+    "plugins": "plugin(s)",
+    "results": "result(s)"
   }
 }
