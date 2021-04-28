@@ -31,10 +31,9 @@ export function useUnseenProposals() {
   }
 
   const numberOfNewProposals = computed(() => {
-    const index = proposalIds.value
+    return proposalIds.value
       .map((proposal: { id: string }) => proposal.id)
       .indexOf(lsGet('lastSeenProposalId', ''));
-    return index <= 0 ? 0 : index + 1;
   });
 
   return { getProposalIds, numberOfNewProposals, proposalIds };
