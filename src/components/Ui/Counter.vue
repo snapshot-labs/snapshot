@@ -1,6 +1,5 @@
 <template>
-  <span v-if="counter > 99" v-text="'99+'" class="Counter" />
-  <span v-else-if="counter > 0" v-text="counter" class="Counter" />
+  <span v-if="counter > 0" v-text="counter" class="Counter" />
 </template>
 
 <script>
