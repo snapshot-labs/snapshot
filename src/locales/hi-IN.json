@@ -1,7 +1,7 @@
 {
   "searchPlaceholder": "खोजें",
-  "spaceCount": "{0} स्थान(स्थानों)",
-  "createSpace": "स्थान बनाएं",
+  "spaceCount": "{0} स्पेसेस",
+  "createSpace": "स्पेस बनाएं",
   "backToHome": "होम",
   "actions": "एक्शन",
   "results": "परिणाम",
@@ -15,13 +15,13 @@
   "information": "सुचना",
   "confirm": "पुष्टि करें",
   "snapshot": "स्नैपशॉट",
-  "strategies": "रणनीतियाँ",
-  "strategiesPage": "रणनीतिपेज़",
+  "strategies": "स्ट्रेटेजीज",
+  "strategiesPage": "स्ट्रेटेजीज",
   "version": "संस्करण",
   "timeline": "टाइमलाइन",
   "filters": "छांटे",
   "favorites": "पसंदीदा",
-  "allSpaces": "सभी जगहें",
+  "allSpaces": "सभी स्पेसेस",
   "submitOnchain": "चेन पर जमा करें",
   "inSpaces": "रिक्त स्थान में",
   "downloadReport": "रिपोर्ट डाउनलोड करें",
@@ -124,18 +124,18 @@
     "addressPlaceholder": "Delegate address or ENS name",
     "spacePlaceholder": "Space (optional)",
     "delegations": "Your delegation(s)",
-    "delegated": "Delegated to you"
+    "delegated": "आपको सौंप दिया गया है"
   },
   "proposal": {
-    "castVote": "Cast your vote",
-    "vote": "Vote",
-    "startDate": "Start date",
+    "castVote": "अपना वोट दे",
+    "vote": "वोट",
+    "startDate": "आरंभ तिथि",
     "endDate": "समाप्ति दिनांक"
   },
   "proposals": {
     "header": "प्रपोजल्स",
     "new": "नए प्रपोजल्स",
-    "noProposals": "There aren't any proposals here yet!",
+    "noProposals": "यहाँ अभी प्रोपोज़ल्स नहीं है",
     "states": {
       "all": "सभी",
       "core": "कोर",
@@ -147,8 +147,8 @@
   },
   "settings": {
     "header": "सेटिंग्स",
-    "seeENS": "See on ENS",
-    "setENS": "Set record on ENS",
+    "seeENS": "इ एन ऐस पर देखे",
+    "setENS": "इ एन ऐस पर रिकॉर्ड सेट करें",
     "profile": "प्रोफ़ाइल",
     "changeAvatar": "अवतार बदलें",
     "name": "नाम",
@@ -158,39 +158,39 @@
     "symbol": "चिन्ह",
     "skin": "स्किन",
     "domain": "डोमेन नाम",
-    "strategies": "Strategie(s)",
-    "hideSpace": "Hide space from homepage",
-    "addStrategy": "Add strategy",
+    "strategies": "स्ट्रेटेजीज",
+    "hideSpace": "होमपेज से स्पेस छुपाये",
+    "addStrategy": "स्ट्रेटेजी जोड़े",
     "members": "सदस्य",
     "filters": "छांटे",
-    "defaultTab": "Default tab",
-    "minScore": "Min. score",
-    "showOnly": "Show only members proposals",
+    "defaultTab": "डिफ़ॉल्ट टैब",
+    "minScore": "न्यूनतम स्कोर",
+    "showOnly": "केवल मेंबर्स के प्रोपोज़ल्स दिखाए",
     "editPlugin": "प्लगइन संपादित करें",
     "addPlugin": "प्लगइन जोड़ें",
-    "pluginParameters": "Plugin parameters"
+    "pluginParameters": "प्लगइन पैरामीटर्स"
   },
   "setup": {
-    "example": "e.g. yam.eth",
-    "useExistingEns": "Use an existing ENS name to create your space with.",
-    "createASpace": "Create a space"
+    "example": "उदाहरण. yam.eth",
+    "useExistingEns": "स्पेस बनाने के लिए मौजूदा इ एन ऐस नाम का उपयोग करे",
+    "createASpace": "स्पेस तैयार करे"
   },
   "notify": {
-    "youDidIt": "You did it!",
-    "copied": "Copied!",
-    "proposalDeleted": "Proposal deleted",
-    "yourIsIn": "Your {0} is in!",
-    "somethingWentWrong": "Oops, something went wrong!"
+    "youDidIt": "संपूर्ण हुआ",
+    "copied": "कॉपी किया गया!",
+    "proposalDeleted": "प्रपोजल मिटा दिया गया",
+    "yourIsIn": "आपका {0} आया है!",
+    "somethingWentWrong": "ओह! कुछ गलत हो गया है"
   },
   "explore": {
-    "createStrategy": "Create strategy",
-    "createSkin": "Create skin",
-    "addNetwork": "Add network",
-    "createPlugin": "Create plugin",
-    "strategies": "strategie(s)",
-    "skins": "skin(s)",
-    "networks": "network(s)",
-    "plugins": "plugin(s)",
-    "results": "result(s)"
+    "createStrategy": "स्ट्रेटेजी बनाये",
+    "createSkin": "स्किन बनाये",
+    "addNetwork": "नेटवर्क बनाये",
+    "createPlugin": "प्लगइन बनाये",
+    "strategies": "स्ट्रेटेजीज",
+    "skins": "स्किन",
+    "networks": "नेटवर्क",
+    "plugins": "प्लगइन्स",
+    "results": "परिणाम"
   }
 }
