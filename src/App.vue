@@ -13,33 +13,37 @@
 </template>
 
 <script>
-import { watch } from 'vue';
-import { mapActions } from 'vuex';
+import { onMounted, watch, computed } from 'vue';
+import { useStore } from 'vuex';
 import { useModal } from '@/composables/useModal';
+import { useI18n } from '@/composables/useI18n';
 
 export default {
   setup() {
+    const store = useStore();
     const { modalOpen } = useModal();
+    const { loadLocale } = useI18n();
+
+    onMounted(() => {
+      store.dispatch('init');
+      loadLocale();
+    });
+
     watch(modalOpen, val => {
       const el = document.body;
       el.classList[val ? 'add' : 'remove']('overflow-hidden');
     });
-  },
-  computed: {
-    space() {
+
+    const space = computed(() => {
       try {
         const key = this.domain || this.$route.params.key;
         return this.app.spaces[key];
       } catch (e) {
         return {};
       }
-    }
-  },
-  mounted() {
-    this.init();
-  },
-  methods: {
-    ...mapActions(['init'])
+    });
+
+    return { space };
   }
 };
 </script>
