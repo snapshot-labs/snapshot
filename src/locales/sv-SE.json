@@ -49,9 +49,9 @@
   "removeSpace": "för spaces {0}",
   "confirmVote": "Bekräfta röst",
   "sureToVote": "Är du säker att du vill ta bort \"{0}\"?",
-  "cannotBeUndone": "This action cannot be undone.",
+  "cannotBeUndone": "Denna åtgärd kan inte ångras.",
   "option": "Alternativ",
-  "votingPower": "Your voting power",
+  "votingPower": "Din röststyrka",
   "receipt": "Kvitto",
   "relayer": "Reläer",
   "verifyOnMycrypto": "Verifiera kvitto på MyCrypto",
@@ -72,14 +72,14 @@
   "addMarket": "Lägg till marknad",
   "selectNetwork": "Välj nätverk",
   "conditionId": "Condition ID",
-  "basetokenAddress": "Base token address",
-  "quoteAddress": "Quote currency address",
+  "basetokenAddress": "Bas token adress",
+  "quoteAddress": "Valutaadress för citat",
   "removeMarket": "Ta bort marknaden",
   "back": "Tillbaka",
   "loading": "Laddar...",
   "predictedImpact": "Förutsedd effekt",
   "marketSymbol": "{0} marknad",
-  "twoChoicesRequired": "Two choices are required for this plugin.",
+  "twoChoicesRequired": "Två val krävs för denna plugin.",
   "noResultsFound": "Oj! Vi kan inte hitta några resultat",
   "noFavorites": "Oj, du har inga favoriter ännu",
   "addFavorites": "Lägg till favoriter",
@@ -90,8 +90,8 @@
   "endedAgo": "avslutade {1}",
   "proposalBy": "Av {0}",
   "endDate": "avsluta {0}",
-  "contectHash": "Content hash",
-  "defaultSkin": "Default skin",
+  "contectHash": "Innehåll hash",
+  "defaultSkin": "Förvalt skin",
   "select": "Välj",
   "language": "Språk",
   "errors": {
@@ -115,8 +115,8 @@
     "endTime": "Välj sluttid",
     "publish": "Publicera",
     "snapshotBlock": "Snapshot blocknummer",
-    "onlyMembersWarning": "You need to be a member of the space in order to submit a proposal",
-    "minScoreWarning": "You need to have a minimum of {0} {1} in order to submit a proposal"
+    "onlyMembersWarning": "Du måste vara medlem i space för att kunna lämna in ett förslag",
+    "minScoreWarning": "Du behöver ha minst {0} {1} för att kunna skicka in ett förslag"
   },
   "delegate": {
     "header": "Delegera",
@@ -135,7 +135,7 @@
   "proposals": {
     "header": "Förslagen",
     "new": "Nytt förslag",
-    "noProposals": "There aren't any proposals here yet!",
+    "noProposals": "Det finns inga förslag här ännu!",
     "states": {
       "all": "Alla",
       "core": "Core",
@@ -148,7 +148,7 @@
   "settings": {
     "header": "Inställningar",
     "seeENS": "Se ENS",
-    "setENS": "Set record on ENS",
+    "setENS": "Sätt post på ENS",
     "profile": "Profil",
     "changeAvatar": "Byt Avatar",
     "name": "Namn",
@@ -165,21 +165,21 @@
     "filters": "Filter",
     "defaultTab": "Standardflik",
     "minScore": "Minsta poäng",
-    "showOnly": "Show only members proposals",
+    "showOnly": "Visa endast medlemsförslag",
     "editPlugin": "Redigera plugin",
     "addPlugin": "Lägg till plugin",
-    "pluginParameters": "Plugin parameters"
+    "pluginParameters": "Plugin parametrar"
   },
   "setup": {
     "example": "e.g. yam.eth",
-    "useExistingEns": "Use an existing ENS name to create your space with.",
+    "useExistingEns": "Använd ett befintligt ENS-namn för att skapa ditt space med.",
     "createASpace": "Skapa space"
   },
   "notify": {
     "youDidIt": "Du har gjort det!",
     "copied": "Kopierar!",
     "proposalDeleted": "Förslag borttaget",
-    "yourIsIn": "Your {0} is in!",
+    "yourIsIn": "Din {0} är i!",
     "somethingWentWrong": "Oj! Något gick fel!"
   },
   "explore": {
