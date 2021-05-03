@@ -7,6 +7,8 @@
     >
       <template v-slot:searchWithFilters>
         <UiDropdown
+          top="3.5rem"
+          right="1.25rem"
           class="search-dropdown text-left"
           @select="redirectSearch"
           :items="searchOptions"
