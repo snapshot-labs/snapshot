@@ -20,6 +20,9 @@
   "spaces": "espacios",
   "version": "Versión",
   "timeline": "Cronología",
+  "filters": "Filters",
+  "favorites": "Favorites",
+  "allSpaces": "All spaces",
   "submitOnchain": "Enviar on-chain",
   "inSpaces": "En {0} espacio(s)",
   "downloadReport": "Descargar informe",
@@ -79,14 +82,28 @@
   "marketSymbol": "Mercado {0}",
   "twoChoicesRequired": "Se requieren dos opciones para este plugin.",
   "noResultsFound": "Lo sentimos, no es posible encontrar ningún resultado",
+  "noFavorites": "Oops, you don't have any favorites yet",
+  "addFavorites": "Add favorites",
   "createdBy": "Por {0}",
   "startToEnd": "empieza {0} acaba {1}",
-  "proposalBy": "Propuesta por {0}",
+  "startIn": "start {0}",
+  "endIn": "end {1}",
+  "endedAgo": "ended {1}",
+  "proposalBy": "By {0}",
   "endDate": "acaba {0}",
   "contectHash": "Hash de contenido",
   "defaultSkin": "Aspecto predeterminado",
   "select": "Seleccionar",
   "language": "Language",
+  "errors": {
+    "required": "Field is required",
+    "minLength": "Minimum length is {0}",
+    "maxLength": "Maximum length is {0}",
+    "pattern": "Invalid character",
+    "minItems": "Minimum {0} item(s) required",
+    "minStrategy": "At least one strategy is required.",
+    "format": "Invalid format"
+  },
   "create": {
     "question": "Pregunta",
     "content": "¿Cuál es tu propuesta?",
@@ -99,7 +116,8 @@
     "endTime": "Seleccionar hora de finalización",
     "publish": "Publicar",
     "snapshotBlock": "Número de bloque Snapshot",
-    "onlyMembersWarning": "You need to be a member of the space in order to submit a proposal."
+    "onlyMembersWarning": "You need to be a member of the space in order to submit a proposal",
+    "minScoreWarning": "You need to have a minimum of {0} {1} in order to submit a proposal"
   },
   "delegate": {
     "header": "Delegar",
@@ -136,9 +154,12 @@
     "changeAvatar": "Cambiar avatar",
     "name": "Nombre",
     "about": "About",
+    "terms": "Terms",
+    "network": "Network",
     "symbol": "Símbolo",
     "skin": "Tema",
     "domain": "Nombre de dominio",
+    "strategies": "Strategie(s)",
     "hideSpace": "Ocultar espacio de la página de inicio",
     "addStrategy": "Añadir estrategia",
     "members": "Miembros",
@@ -161,5 +182,16 @@
     "proposalDeleted": "Propuesta eliminada",
     "yourIsIn": "¡Tu {0} está dentro!",
     "somethingWentWrong": "¡Huy! ¡Algo salió mal!"
+  },
+  "explore": {
+    "createStrategy": "Create strategy",
+    "createSkin": "Create skin",
+    "addNetwork": "Add network",
+    "createPlugin": "Create plugin",
+    "strategies": "strategie(s)",
+    "skins": "skin(s)",
+    "networks": "network(s)",
+    "plugins": "plugin(s)",
+    "results": "result(s)"
   }
 }

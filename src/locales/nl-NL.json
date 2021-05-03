@@ -19,6 +19,9 @@
   "strategiesPage": "Strategieën",
   "version": "Versie",
   "timeline": "Tijdlijn",
+  "filters": "Filters",
+  "favorites": "Favorites",
+  "allSpaces": "All spaces",
   "submitOnchain": "Verstuur on-chain",
   "inSpaces": "In {0} ruimte(s)",
   "downloadReport": "Verslag downloaden",
@@ -78,14 +81,28 @@
   "marketSymbol": "{0} markt",
   "twoChoicesRequired": "Twee keuzes zijn nodig voor deze plugin.",
   "noResultsFound": "Oeps, we kunnen geen resultaten vinden",
+  "noFavorites": "Oops, you don't have any favorites yet",
+  "addFavorites": "Add favorites",
   "createdBy": "Door {0}",
   "startToEnd": "begin {0} einde {1}",
-  "proposalBy": "Voorstel van {0}",
+  "startIn": "start {0}",
+  "endIn": "end {1}",
+  "endedAgo": "ended {1}",
+  "proposalBy": "By {0}",
   "endDate": "einde {0}",
   "contectHash": "Inhoud hash",
   "defaultSkin": "Standaard skin",
   "select": "Kies",
   "language": "Taal",
+  "errors": {
+    "required": "Field is required",
+    "minLength": "Minimum length is {0}",
+    "maxLength": "Maximum length is {0}",
+    "pattern": "Invalid character",
+    "minItems": "Minimum {0} item(s) required",
+    "minStrategy": "At least one strategy is required.",
+    "format": "Invalid format"
+  },
   "create": {
     "question": "Vraag",
     "content": "Wat is je voorstel?",
@@ -98,7 +115,8 @@
     "endTime": "Kies eindtijd",
     "publish": "Publiceren",
     "snapshotBlock": "Snapshot bloknummer",
-    "onlyMembersWarning": "U moet lid zijn van de ruimte om een voorstel te kunnen indienen."
+    "onlyMembersWarning": "You need to be a member of the space in order to submit a proposal",
+    "minScoreWarning": "You need to have a minimum of {0} {1} in order to submit a proposal"
   },
   "delegate": {
     "header": "Delegeren",
@@ -135,9 +153,12 @@
     "changeAvatar": "Verander avatar",
     "name": "Naam",
     "about": "Over ons",
+    "terms": "Terms",
+    "network": "Network",
     "symbol": "Symbool",
     "skin": "Skin",
     "domain": "Domeinnaam",
+    "strategies": "Strategie(s)",
     "hideSpace": "Verberg ruimte van homepage",
     "addStrategy": "Strategie toevoegen",
     "members": "Leden",
@@ -160,5 +181,16 @@
     "proposalDeleted": "Voorstel verwijderd",
     "yourIsIn": "Uw {0} is geregistreerd!",
     "somethingWentWrong": "Oeps, er ging iets mis!"
+  },
+  "explore": {
+    "createStrategy": "Create strategy",
+    "createSkin": "Create skin",
+    "addNetwork": "Add network",
+    "createPlugin": "Create plugin",
+    "strategies": "strategie(s)",
+    "skins": "skin(s)",
+    "networks": "network(s)",
+    "plugins": "plugin(s)",
+    "results": "result(s)"
   }
 }

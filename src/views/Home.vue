@@ -2,8 +2,14 @@
   <div>
     <div class="text-center mb-4 mx-auto">
       <Container class="d-flex flex-items-center">
-        <div class="flex-auto text-left col-lg-8">
-          <UiButton class="pl-3 col-12 col-lg-7">
+        <div class="flex-auto text-left d-flex">
+          <router-link :to="{ name: 'timeline' }" class="mr-2">
+            <UiButton class="no-wrap px-3">
+              <Icon name="feed" size="18" />
+              <UiCounter :counter="numberOfUnseenProposals" class="ml-2" />
+            </UiButton>
+          </router-link>
+          <UiButton class="pl-3 col-12 col-lg-6">
             <SearchWithFilters v-model="q" />
           </UiButton>
         </div>
@@ -53,38 +59,44 @@
             </Block>
           </div>
         </router-link>
+
         <NoResults
           :block="true"
-          :length="Object.keys(spaces).length"
+          v-if="Object.keys(spaces).length < 1"
           class="pr-md-4"
         />
       </div>
     </Container>
+    <div id="endofpage" />
   </div>
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { onMounted, ref, computed } from 'vue';
+import { useStore } from 'vuex';
+import { useRoute } from 'vue-router';
 import orderBy from 'lodash/orderBy';
 import spotlight from '@snapshot-labs/snapshot-spaces/spaces/spotlight.json';
-import { infiniteScroll } from '@/helpers/utils';
+import { scrollEndMonitor } from '@/helpers/utils';
+import { useUnseenProposals } from '@/composables/useUnseenProposals';
 
 export default {
-  data() {
-    return {
-      q: this.$route.query.q || '',
-      limit: 16
-    };
-  },
-  computed: {
-    spaces() {
-      const list = Object.keys(this.app.spaces)
+  setup() {
+    const store = useStore();
+    const route = useRoute();
+    const favorites = computed(() => store.state.favoriteSpaces.favorites);
+    const stateSpaces = computed(() => store.state.app.spaces);
+
+    const q = ref(route.query.q || '');
+
+    const spaces = computed(() => {
+      const list = Object.keys(stateSpaces.value)
         .map(key => {
           const spotlightIndex = spotlight.indexOf(key);
           return {
-            ...this.app.spaces[key],
-            favorite: !!this.favoriteSpaces.favorites[key],
-            isActive: !!this.app.spaces[key]._activeProposals,
+            ...stateSpaces.value[key],
+            favorite: !!favorites.value[key],
+            isActive: !!stateSpaces.value[key]._activeProposals,
             spotlight: spotlightIndex === -1 ? 1e3 : spotlightIndex
           };
         })
@@ -94,31 +106,37 @@ export default {
         ['favorite', 'spotlight'],
         ['desc', 'asc']
       ).filter(space =>
-        JSON.stringify(space).toLowerCase().includes(this.q.toLowerCase())
+        JSON.stringify(space).toLowerCase().includes(q.value.toLowerCase())
       );
-    }
-  },
-  methods: {
-    ...mapActions([
-      'loadFavoriteSpaces',
-      'addFavoriteSpace',
-      'removeFavoriteSpace'
-    ]),
-    toggleFavorite(spaceId) {
-      if (this.favoriteSpaces.favorites[spaceId]) {
-        this.removeFavoriteSpace(spaceId);
+    });
+
+    // Get number of unseen proposals
+    const { numberOfUnseenProposals } = useUnseenProposals();
+    // watchEffect(() => getProposalIds(favorites.value));
+
+    // Favorites
+    const addFavoriteSpace = spaceId =>
+      store.dispatch('addFavoriteSpace', spaceId);
+    const removeFavoriteSpace = spaceId =>
+      store.dispatch('removeFavoriteSpace', spaceId);
+
+    function toggleFavorite(spaceId) {
+      if (favorites.value[spaceId]) {
+        removeFavoriteSpace(spaceId);
       } else {
-        this.addFavoriteSpace(spaceId);
+        addFavoriteSpace(spaceId);
       }
-    },
-    scroll: infiniteScroll
-  },
-  created() {
-    this.loadFavoriteSpaces();
-  },
-  mounted() {
-    this.scroll();
-    if (window.screen.height > 1200) this.limit += 16;
+    }
+
+    // Scroll
+    const loadBy = 16;
+    const limit = ref(loadBy);
+
+    onMounted(() => {
+      scrollEndMonitor(() => (limit.value += loadBy));
+    });
+
+    return { q, limit, spaces, toggleFavorite, numberOfUnseenProposals };
   }
 };
 </script>

@@ -18,7 +18,17 @@
         <Icon :name="icon" size="22" />
       </a>
     </h4>
-    <div :class="!slim && 'p-4'">
+    <div v-if="loading" class="d-block px-4 py-4">
+      <div
+        class="bg-gray-9 rounded-1 anim-pulse mb-2"
+        style="width: 80%; height: 20px"
+      />
+      <div
+        class="bg-gray-9 rounded-1 anim-pulse"
+        style="width: 50%; height: 20px"
+      />
+    </div>
+    <div v-else :class="!slim && 'p-4'">
       <slot />
     </div>
   </div>
@@ -26,7 +36,7 @@
 
 <script>
 export default {
-  props: ['title', 'counter', 'slim', 'icon'],
+  props: ['title', 'counter', 'slim', 'icon', 'loading'],
   emits: ['submit']
 };
 </script>

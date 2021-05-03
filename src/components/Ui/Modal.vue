@@ -24,20 +24,22 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { watch, toRefs } from 'vue';
+import { useModal } from '@/composables/useModal';
 
 export default {
   props: {
-    open: Boolean
-  },
-  emits: ['close'],
-  watch: {
-    open(val, prev) {
-      if (val !== prev) this.toggleModal();
+    open: {
+      type: Boolean,
+      required: true
     }
   },
-  methods: {
-    ...mapActions(['toggleModal'])
+  setup(props) {
+    const { open } = toRefs(props);
+    const { modalOpen } = useModal();
+    watch(open, (val, prev) => {
+      if (val !== prev) modalOpen.value = !modalOpen.value;
+    });
   }
 };
 </script>

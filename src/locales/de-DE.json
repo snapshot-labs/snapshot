@@ -19,6 +19,9 @@
   "strategiesPage": "Strategien",
   "version": "Version",
   "timeline": "Timeline",
+  "filters": "Filter",
+  "favorites": "Favoriten",
+  "allSpaces": "Alle Bereiche",
   "submitOnchain": "On-chain senden",
   "inSpaces": "In {0} bereich(en)",
   "downloadReport": "Bericht herunterladen",
@@ -78,14 +81,28 @@
   "marketSymbol": "{0} Markt",
   "twoChoicesRequired": "Für dieses Plugin sind zwei Optionen erforderlich.",
   "noResultsFound": "Hoppla, wir konnten keine Ergebnisse finden",
+  "noFavorites": "Hoppla, Sie haben noch keine Favoriten",
+  "addFavorites": "Favoriten hinzufügen",
   "createdBy": "Von {0}",
   "startToEnd": "begin {0} ende {1}",
-  "proposalBy": "Vorschlag von {0}",
+  "startIn": "start {0}",
+  "endIn": "ende {1}",
+  "endedAgo": "endete {1}",
+  "proposalBy": "By {0}",
   "endDate": "ende {0}",
   "contectHash": "Hash des Inhalts",
   "defaultSkin": "Standard-Skin",
   "select": "Auswählen",
   "language": "Sprache",
+  "errors": {
+    "required": "Dieses Feld ist ein Pflichtfeld",
+    "minLength": "Mindestlänge ist {0}",
+    "maxLength": "Maximallänge ist {0}",
+    "pattern": "Ungültiges Zeichen",
+    "minItems": "Mindestens {0} Element(e) erforderlich",
+    "minStrategy": "Mindestens eine Strategie ist erforderlich.",
+    "format": "Invalid format"
+  },
   "create": {
     "question": "Frage",
     "content": "Was ist Ihr Vorschlag?",
@@ -98,7 +115,8 @@
     "endTime": "Endzeit auswählen",
     "publish": "Veröffentlichen",
     "snapshotBlock": "Momentaufnahme Blocknummer",
-    "onlyMembersWarning": "Sie müssen Mitglied des Bereichs sein, um einen Vorschlag einzureichen."
+    "onlyMembersWarning": "Sie müssen Mitglied des Bereichs sein, um einen Vorschlag einzureichen",
+    "minScoreWarning": "Sie müssen mindestens {0} {1} haben, um einen Vorschlag einzureichen"
   },
   "delegate": {
     "header": "Delegieren",
@@ -135,9 +153,12 @@
     "changeAvatar": "Avatar ändern",
     "name": "Name",
     "about": "Über uns",
+    "terms": "Terms",
+    "network": "Netzwerk",
     "symbol": "Symbol",
     "skin": "Skin",
     "domain": "Domain-Name",
+    "strategies": "Strategie(n)",
     "hideSpace": "Raum auf der Startseite ausblenden",
     "addStrategy": "Strategie hinzufügen",
     "members": "Mitglieder",
@@ -160,5 +181,16 @@
     "proposalDeleted": "Vorschlag gelöscht",
     "yourIsIn": "Dein {0} ist drinnen!",
     "somethingWentWrong": "Hoppla, da ist etwas schiefgelaufen!"
+  },
+  "explore": {
+    "createStrategy": "Strategie erstellen",
+    "createSkin": "Neuen Skin erstellen",
+    "addNetwork": "Netzwerk hinzufügen",
+    "createPlugin": "Plugin erstellen",
+    "strategies": "strategie(n)",
+    "skins": "skin(s)",
+    "networks": "netzwerk(e)",
+    "plugins": "plugin(s)",
+    "results": "ergebnis(se)"
   }
 }
