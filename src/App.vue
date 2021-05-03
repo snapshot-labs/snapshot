@@ -24,9 +24,9 @@ export default {
     const { modalOpen } = useModal();
     const { loadLocale } = useI18n();
 
-    onMounted(() => {
+    onMounted(async () => {
+      await loadLocale();
       store.dispatch('init');
-      loadLocale();
     });
 
     watch(modalOpen, val => {
