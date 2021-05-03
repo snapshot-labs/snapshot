@@ -8,7 +8,7 @@
       <template v-slot:searchWithFilters>
         <UiDropdown
           class="search-dropdown text-left"
-          @redirect="redirectSearch"
+          @select="redirectSearch"
           :items="searchOptions"
         >
           <span v-text="searchSelectedOption" />
@@ -24,9 +24,8 @@ export default {
   props: ['modelValue'],
   methods: {
     redirectSearch(e) {
-      console.log(e);
       this.$router.push({
-        name: e.route,
+        name: e,
         query: this.modelValue ? { q: this.modelValue } : {}
       });
     }
@@ -34,37 +33,31 @@ export default {
   computed: {
     searchSelectedOption() {
       return (
-        this.searchOptions.find(
-          option => option.options.route === this.$route.name
-        )?.text || 'home'
+        this.searchOptions.find(option => option.action === this.$route.name)
+          ?.text || 'home'
       );
     },
     searchOptions() {
       return [
         {
           text: this.$t('spaces'),
-          action: 'redirect',
-          options: { route: 'home' }
+          action: 'home'
         },
         {
           text: this.$t('strategiesPage'),
-          action: 'redirect',
-          options: { route: 'strategies' }
+          action: 'strategies'
         },
         {
           text: this.$t('skins'),
-          action: 'redirect',
-          options: { route: 'skins' }
+          action: 'skins'
         },
         {
           text: this.$t('networks'),
-          action: 'redirect',
-          options: { route: 'networks' }
+          action: 'networks'
         },
         {
           text: this.$t('plugins'),
-          action: 'redirect',
-          options: { route: 'plugins' }
+          action: 'plugins'
         }
       ];
     }
