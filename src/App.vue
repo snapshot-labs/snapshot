@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import { onMounted, watch, computed } from 'vue';
+import { onMounted, watch } from 'vue';
 import { useStore } from 'vuex';
 import { useModal } from '@/composables/useModal';
 import { useI18n } from '@/composables/useI18n';
@@ -33,17 +33,16 @@ export default {
       const el = document.body;
       el.classList[val ? 'add' : 'remove']('overflow-hidden');
     });
-
-    const space = computed(() => {
+  },
+  computed: {
+    space() {
       try {
         const key = this.domain || this.$route.params.key;
         return this.app.spaces[key];
       } catch (e) {
         return {};
       }
-    });
-
-    return { space };
+    }
   }
 };
 </script>
