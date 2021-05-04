@@ -8,7 +8,7 @@
       <template v-slot:searchWithFilters>
         <UiDropdown
           top="3.5rem"
-          right="1.25rem"
+          right="1.0rem"
           class="search-dropdown text-left"
           @select="redirectSearch"
           :items="searchOptions"
@@ -74,7 +74,7 @@ export default {
   line-height: 40px;
   z-index: 1;
   border-left: 1px solid var(--border-color);
-  padding: 4px 5px 0 10px;
+  padding: 4px 15px 0 10px;
   &:hover {
     border-color: var(--link-color);
   }
