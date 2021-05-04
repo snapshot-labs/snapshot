@@ -72,7 +72,7 @@
 </template>
 
 <script>
-import { onMounted, ref, computed, watchEffect } from 'vue';
+import { onMounted, ref, computed } from 'vue';
 import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
 import orderBy from 'lodash/orderBy';
