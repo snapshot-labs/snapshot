@@ -21,7 +21,7 @@
           <UiButton>{{ $t('proposals.new') }}</UiButton>
         </router-link>
         <router-link
-          v-if="isMember && isEns"
+          v-if="(isAdmin && isEns) || (isOwner && isEns)"
           :to="{ name: 'settings', params: { key } }"
           class="ml-2"
         >
@@ -74,6 +74,7 @@
 <script>
 import { filterProposals } from '@/helpers/utils';
 import { getProposals } from '@/helpers/snapshot';
+import { getSpaceUri } from '@/helpers/ens';
 
 export default {
   data() {
@@ -81,7 +82,8 @@ export default {
       loading: false,
       loaded: false,
       proposals: {},
-      tab: 'all'
+      tab: 'all',
+      spaceUri: ''
     };
   },
   computed: {
@@ -115,12 +117,15 @@ export default {
           .sort((a, b) => b[1].msg.payload.end - a[1].msg.payload.end, 0)
       );
     },
-    isMember() {
-      const members = this.space.members.map(address => address.toLowerCase());
+    isOwner() {
+      return this.spaceUri.includes(this.web3.account);
+    },
+    isAdmin() {
+      const admins = this.space.admins.map(address => address.toLowerCase());
       return (
         this.$auth.isAuthenticated.value &&
         this.web3.account &&
-        members.includes(this.web3.account.toLowerCase())
+        admins.includes(this.web3.account.toLowerCase())
       );
     },
     isEns() {
@@ -132,6 +137,7 @@ export default {
     this.tab =
       this.$route.params.tab || this.space.filters.defaultTab || this.tab;
     this.proposals = await getProposals(this.space);
+    this.spaceUri = await getSpaceUri(this.key);
     this.loading = false;
     this.loaded = true;
   }
