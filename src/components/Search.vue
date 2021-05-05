@@ -16,7 +16,6 @@
     <a @click="clearInput">
       <Icon v-if="modelValue" name="close" size="12" class="mb-1" />
     </a>
-    <slot name="searchWithFilters"></slot>
   </div>
 </template>
 

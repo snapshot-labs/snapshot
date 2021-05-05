@@ -9,7 +9,7 @@
               <UiCounter :counter="numberOfUnseenProposals" class="ml-2" />
             </UiButton>
           </router-link>
-          <UiButton class="pl-3 col-12 col-lg-6">
+          <UiButton class="pl-3 col-12 col-lg-6 pr-0">
             <SearchWithFilters v-model="q" />
           </UiButton>
         </div>

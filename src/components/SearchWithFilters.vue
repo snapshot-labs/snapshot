@@ -1,23 +1,24 @@
 <template>
-  <div class="position-relative">
+  <div class="d-flex">
     <Search
       :modelValue="modelValue"
       @update:modelValue="input => $emit('update:modelValue', input)"
       :placeholder="$t('searchPlaceholder')"
-    >
-      <template v-slot:searchWithFilters>
-        <UiDropdown
-          top="3.5rem"
-          right="1.0rem"
-          class="search-dropdown text-left"
-          @select="redirectSearch"
-          :items="searchOptions"
-        >
-          <span v-text="searchSelectedOption" />
-          <Icon name="arrow-down" class="ml-1" />
-        </UiDropdown>
-      </template>
-    </Search>
+      class="flex-auto pr-2"
+    />
+    <div class="border-left" style="height: 44px">
+      <UiDropdown
+        top="3.5rem"
+        right="1.0rem"
+        class="text-left"
+        style="z-index: 1"
+        @select="redirectSearch"
+        :items="searchOptions"
+      >
+        <span v-text="searchSelectedOption" class="ml-3" />
+        <Icon name="arrow-down" class="ml-1 mr-2 pr-1" />
+      </UiDropdown>
+    </div>
   </div>
 </template>
 
@@ -66,17 +67,3 @@ export default {
   }
 };
 </script>
-
-<style scoped lang="scss">
-.search-dropdown {
-  top: -2px;
-  right: -26px;
-  line-height: 40px;
-  z-index: 1;
-  border-left: 1px solid var(--border-color);
-  padding: 4px 15px 0 10px;
-  &:hover {
-    border-color: var(--link-color);
-  }
-}
-</style>
