@@ -47,20 +47,20 @@ export default {
           action: 'home'
         },
         {
-          text: this.$t('strategiesPage'),
-          action: 'strategies'
-        },
-        {
-          text: this.$t('skins'),
-          action: 'skins'
-        },
-        {
           text: this.$t('networks'),
           action: 'networks'
         },
         {
+          text: this.$t('strategiesPage'),
+          action: 'strategies'
+        },
+        {
           text: this.$t('plugins'),
           action: 'plugins'
+        },
+        {
+          text: this.$t('skins'),
+          action: 'skins'
         }
       ];
     }
