@@ -22,7 +22,7 @@
               top="2.2rem"
               right="1.3rem"
               class="float-right"
-              v-if="isAdmin"
+              v-if="isAdmin || isCreator"
               @select="selectFromDropdown"
               :items="[{ text: $t('deleteProposal'), action: 'delete' }]"
             >
@@ -260,11 +260,14 @@ export default {
     symbols() {
       return this.space.strategies.map(strategy => strategy.params.symbol);
     },
+    isCreator() {
+      return this.proposal.address === this.web3.account;
+    },
     isAdmin() {
-      return (
-        this.proposal.address === this.web3.account ||
-        this.space.admins.includes(this.web3.account)
+      const admins = (this.space.admins || []).map(admin =>
+        admin.toLowerCase()
       );
+      return admins.includes(this.web3.account?.toLowerCase());
     }
   },
   watch: {
