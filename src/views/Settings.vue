@@ -408,7 +408,10 @@ export default {
       return this.currentContenthash === this.contenthash;
     },
     isAdmin() {
-      return this.form.admins.includes(this.web3.account);
+      const admins = (this.app.spaces?.[this.key].admins || []).map(admin =>
+        admin.toLowerCase()
+      );
+      return admins.includes(this.web3.account?.toLowerCase());
     }
   },
   async created() {
