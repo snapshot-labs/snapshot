@@ -13,13 +13,22 @@
 </template>
 
 <script>
-import { watch } from 'vue';
-import { mapActions } from 'vuex';
+import { onMounted, watch } from 'vue';
+import { useStore } from 'vuex';
 import { useModal } from '@/composables/useModal';
+import { useI18n } from '@/composables/useI18n';
 
 export default {
   setup() {
+    const store = useStore();
     const { modalOpen } = useModal();
+    const { loadLocale } = useI18n();
+
+    onMounted(async () => {
+      await loadLocale();
+      store.dispatch('init');
+    });
+
     watch(modalOpen, val => {
       const el = document.body;
       el.classList[val ? 'add' : 'remove']('overflow-hidden');
@@ -34,12 +43,6 @@ export default {
         return {};
       }
     }
-  },
-  mounted() {
-    this.init();
-  },
-  methods: {
-    ...mapActions(['init'])
   }
 };
 </script>
