@@ -1,7 +1,6 @@
 <template>
   <span class="d-inline-block v-align-middle line-height-0">
     <UiAvatar
-      class="mr-2 mb-2"
       :imgsrc="url"
       :address="spaceAddress"
       :size="size"
