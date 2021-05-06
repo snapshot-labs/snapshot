@@ -21,7 +21,7 @@
     </div>
     <div class="m-4">
       <a
-        href="https://mycrypto.com/sign-and-verify-message/verify"
+        href="https://app.mycrypto.com/verify-message"
         target="_blank"
         class="mb-2 d-block"
       >
