@@ -49,56 +49,16 @@ function ensReverseRecordRequest(addresses) {
   );
 }
 
-function ensSubGraphRequest(addresses) {
-  return subgraphRequest(
-    'https://api.thegraph.com/subgraphs/name/ensdomains/ens',
-    {
-      accounts: {
-        __args: {
-          first: 1000,
-          where: {
-            id_in: addresses.map(addresses => addresses.toLowerCase())
-          }
-        },
-        id: true,
-        registrations: {
-          __args: {
-            orderBy: 'registrationDate',
-            first: 1
-          },
-          domain: {
-            name: true,
-            labelName: true
-          }
-        }
-      }
-    }
-  );
-}
-
 function lookupAddresses(addresses) {
   return new Promise((resolove, reject) => {
-    Promise.all([
-      ensReverseRecordRequest(addresses),
-      ensSubGraphRequest(addresses)
-    ])
-      .then(([reverseRecords, { accounts }]) => {
+    ensReverseRecordRequest(addresses)
+      .then(reverseRecords => {
         const validNames = reverseRecords.map(n =>
           namehash.normalize(n) === n ? n : ''
         );
-        // reverse record will be given preference
         const ensNames = Object.fromEntries(
           addresses.map((address, index) => {
-            const account = accounts.find(
-              account => account.id.toLowerCase() === address.toLowerCase()
-            );
-            return [
-              address.toLowerCase(),
-              validNames[index] ||
-                (account?.registrations?.[0]?.domain?.labelName &&
-                  account?.registrations?.[0]?.domain?.name) ||
-                ''
-            ];
+            return [address.toLowerCase(), validNames[index]];
           })
         );
 
