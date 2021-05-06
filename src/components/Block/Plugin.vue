@@ -6,11 +6,11 @@
         target="_blank"
         class="d-flex"
       >
-        <img
-          class="circle border mr-2 mb-1"
-          :src="getLogoUrl(plugin.key)"
-          width="28"
-          height="28"
+        <UiAvatar
+          class="mr-2 mb-2"
+          :imgsrc="getLogoUrl(plugin.key)"
+          :seed="plugin.name.charCodeAt()"
+          :size="28"
         />
         <h3 v-text="plugin.name" />
       </a>
@@ -36,8 +36,8 @@
 export default {
   props: ['plugin'],
   methods: {
-    getLogoUrl() {
-      return `https://raw.githubusercontent.com/snapshot-labs/snapshot.js/master/src/plugins/${this.plugin.key}/logo.png`;
+    getLogoUrl(key) {
+      return `https://raw.githubusercontent.com/snapshot-labs/snapshot.js/master/src/plugins/${key}/logo.png`;
     }
   }
 };

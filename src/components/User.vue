@@ -1,7 +1,12 @@
 <template>
   <span>
     <a @click="modalOpen = true" class="no-wrap">
-      <Avatar :profile="profile" :address="address" size="16" class="mr-1" />
+      <UiAvatar
+        :imgsrc="profile?.image"
+        :address="address"
+        size="16"
+        class="mr-1"
+      />
       {{ name }}
       <Badges :address="address" :members="space.members" />
     </a>
