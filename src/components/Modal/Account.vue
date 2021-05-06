@@ -50,8 +50,8 @@
           class="mb-2 d-block"
         >
           <UiButton class="button-outline width-full">
-            <Avatar
-              :profile="web3.profile"
+            <UiAvatar
+              :imgsrc="_ipfsUrl(web3.profile?.image)"
               :address="web3.account"
               size="16"
               class="mr-2 ml-n1"
