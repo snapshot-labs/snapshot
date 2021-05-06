@@ -1,23 +1,13 @@
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
-import { signMessage } from '@snapshot-labs/snapshot.js/src/utils/web3';
 import client from '@/helpers/client';
 import { formatSpace } from '@/helpers/utils';
-import { version } from '@/../package.json';
-import i18n, {
-  defaultLocale,
-  setI18nLanguage,
-  loadLocaleMessages
-} from '@/i18n';
-
-import { lsGet, lsSet } from '@/helpers/utils';
+import i18n from '@/i18n';
 
 const state = {
   init: false,
   loading: false,
   authLoading: false,
-  modalOpen: false,
-  spaces: {},
-  locale: lsGet('locale', defaultLocale)
+  spaces: {}
 };
 
 const mutations = {
@@ -39,8 +29,6 @@ const mutations = {
 
 const actions = {
   init: async ({ commit, dispatch }) => {
-    await loadLocaleMessages(i18n, state.locale);
-    setI18nLanguage(i18n, state.locale);
     const auth = getInstance();
     commit('SET', { loading: true });
     await dispatch('getSpaces');
@@ -52,11 +40,8 @@ const actions = {
   loading: ({ commit }, payload) => {
     commit('SET', { loading: payload });
   },
-  toggleModal: ({ commit }) => {
-    commit('SET', { modalOpen: !state.modalOpen });
-  },
   getSpaces: async ({ commit }) => {
-    let spaces: any = await client.request('spaces');
+    let spaces: any = await client.getSpaces();
     spaces = Object.fromEntries(
       Object.entries(spaces).map(space => [
         space[0],
@@ -70,18 +55,13 @@ const actions = {
     const auth = getInstance();
     commit('SEND_REQUEST');
     try {
-      const msg: any = {
-        address: rootState.web3.account,
-        msg: JSON.stringify({
-          version,
-          timestamp: (Date.now() / 1e3).toFixed(),
-          space,
-          type,
-          payload
-        })
-      };
-      msg.sig = await signMessage(auth.web3, msg.msg, rootState.web3.account);
-      const result = await client.request('message', msg);
+      const result = await client.broadcast(
+        auth.web3,
+        rootState.web3.account,
+        space,
+        type,
+        payload
+      );
       commit('SEND_SUCCESS');
       dispatch('notify', [
         'green',
@@ -99,12 +79,6 @@ const actions = {
       dispatch('notify', ['red', errorMessage]);
       return;
     }
-  },
-  async setLocale(state, locale) {
-    state.locale = locale;
-    lsSet('locale', locale);
-    await loadLocaleMessages(i18n, locale);
-    setI18nLanguage(i18n, locale);
   }
 };
 

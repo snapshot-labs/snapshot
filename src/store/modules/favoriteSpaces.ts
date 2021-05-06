@@ -4,7 +4,7 @@ import { lsGet, lsSet } from '@/helpers/utils';
 const FAVORITES_KEY = 'FAVORITE_SPACES';
 
 const state = {
-  favorites: {}
+  favorites: lsGet(FAVORITES_KEY, {})
 };
 
 const mutations = {
@@ -14,11 +14,6 @@ const mutations = {
 };
 
 const actions = {
-  loadFavoriteSpaces({ commit }) {
-    const favorites = lsGet(FAVORITES_KEY);
-
-    commit('setFavorites', favorites);
-  },
   addFavoriteSpace({ commit, state }, spaceId: string) {
     const favorites = { ...state.favorites, [spaceId]: true };
 

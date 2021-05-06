@@ -19,18 +19,22 @@
           <div class="mb-4">
             <State :proposal="proposal" />
             <UiDropdown
+              top="2.2rem"
+              right="1.3rem"
               class="float-right"
-              v-if="proposal.address === this.web3.account"
-              @delete="deleteProposal"
+              v-if="isAdmin || isCreator"
+              @select="selectFromDropdown"
               :items="[{ text: $t('deleteProposal'), action: 'delete' }]"
             >
-              <UiLoading v-if="deleteLoading" />
-              <Icon
-                v-else
-                name="threedots"
-                size="25"
-                class="v-align-text-bottom"
-              />
+              <div class="pr-3">
+                <UiLoading v-if="dropdownLoading" />
+                <Icon
+                  v-else
+                  name="threedots"
+                  size="25"
+                  class="v-align-text-bottom"
+                />
+              </div>
             </UiDropdown>
           </div>
           <UiMarkdown :body="payload.body" class="mb-6" />
@@ -70,9 +74,9 @@
           </UiButton>
         </div>
         <UiButton
-          :disabled="voteLoading || !selectedChoice || !web3.account"
+          :disabled="voteLoading || app.authLoading || !selectedChoice"
           :loading="voteLoading"
-          @click="modalOpen = true"
+          @click="web3.account ? (modalOpen = true) : (modalAccountOpen = true)"
           class="d-block width-full button--submit"
         >
           {{ $t('proposal.vote') }}
@@ -217,8 +221,13 @@
 <script>
 import { mapActions } from 'vuex';
 import { getProposal, getResults, getPower } from '@/helpers/snapshot';
+import { useModal } from '@/composables/useModal';
 
 export default {
+  setup() {
+    const { modalAccountOpen } = useModal();
+    return { modalAccountOpen };
+  },
   data() {
     return {
       key: this.$route.params.key,
@@ -227,7 +236,7 @@ export default {
       loaded: false,
       loadedResults: false,
       voteLoading: false,
-      deleteLoading: false,
+      dropdownLoading: false,
       proposal: {},
       votes: {},
       results: [],
@@ -250,6 +259,15 @@ export default {
     },
     symbols() {
       return this.space.strategies.map(strategy => strategy.params.symbol);
+    },
+    isCreator() {
+      return this.proposal.address === this.web3.account;
+    },
+    isAdmin() {
+      const admins = (this.space.admins || []).map(admin =>
+        admin.toLowerCase()
+      );
+      return admins.includes(this.web3.account?.toLowerCase());
     }
   },
   watch: {
@@ -263,7 +281,6 @@ export default {
       const proposalObj = await getProposal(this.space, this.id);
       const { proposal, votes, blockNumber } = proposalObj;
       this.proposal = proposal;
-      await this.loadPower();
       this.loaded = true;
       const resultsObj = await getResults(
         this.space,
@@ -271,7 +288,6 @@ export default {
         votes,
         blockNumber
       );
-
       this.votes = resultsObj.votes;
       this.results = resultsObj.results;
       this.loadedResults = true;
@@ -287,7 +303,7 @@ export default {
       this.scores = scores;
     },
     async deleteProposal() {
-      this.deleteLoading = true;
+      this.dropdownLoading = true;
       try {
         if (
           await this.send({
@@ -298,7 +314,7 @@ export default {
             }
           })
         ) {
-          this.deleteLoading = false;
+          this.dropdownLoading = false;
           this.$router.push({
             name: 'proposals'
           });
@@ -306,13 +322,17 @@ export default {
       } catch (e) {
         console.error(e);
       }
-      this.deleteLoading = false;
+      this.dropdownLoading = false;
+    },
+    selectFromDropdown(e) {
+      if (e === 'delete') this.deleteProposal();
     }
   },
   async created() {
     this.loading = true;
     await this.loadProposal();
     this.loading = false;
+    await this.loadPower();
   }
 };
 </script>

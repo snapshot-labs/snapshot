@@ -1,6 +1,6 @@
 {
-  "searchPlaceholder": "Ricerca",
-  "spaceCount": "{0} spazio/i",
+  "searchPlaceholder": "Cerca",
+  "spaceCount": "{0} spazio(i)",
   "createSpace": "Crea spazio",
   "backToHome": "Home",
   "actions": "Azioni",
@@ -19,6 +19,9 @@
   "strategiesPage": "Strategie",
   "version": "Versione",
   "timeline": "Cronologia",
+  "filters": "Filters",
+  "favorites": "Favorites",
+  "allSpaces": "All spaces",
   "submitOnchain": "Invia on-chain",
   "inSpaces": "In {0} spazio(i)",
   "downloadReport": "Scarica il report",
@@ -78,14 +81,28 @@
   "marketSymbol": "{0} mercati",
   "twoChoicesRequired": "Per questo plugin sono necessarie due scelte.",
   "noResultsFound": "Oops, non riusciamo a trovare alcun risultato",
+  "noFavorites": "Oops, you don't have any favorites yet",
+  "addFavorites": "Add favorites",
   "createdBy": "Da {0}",
   "startToEnd": "inizia {0} fine {1}",
-  "proposalBy": "Proposta da {0}",
+  "startIn": "start {0}",
+  "endIn": "end {1}",
+  "endedAgo": "ended {1}",
+  "proposalBy": "By {0}",
   "endDate": "termina {0}",
   "contectHash": "Hash del contenuto",
   "defaultSkin": "Tema predefinito",
   "select": "Seleziona",
   "language": "Lingua",
+  "errors": {
+    "required": "Field is required",
+    "minLength": "Minimum length is {0}",
+    "maxLength": "Maximum length is {0}",
+    "pattern": "Invalid character",
+    "minItems": "Minimum {0} item(s) required",
+    "minStrategy": "At least one strategy is required.",
+    "format": "Invalid format"
+  },
   "create": {
     "question": "Domande",
     "content": "Qual è la tua proposta?",
@@ -98,7 +115,8 @@
     "endTime": "Selezionare un orario di conclusione",
     "publish": "Pubblica",
     "snapshotBlock": "Numero blocco istantanea",
-    "onlyMembersWarning": "You need to be a member of the space in order to submit a proposal."
+    "onlyMembersWarning": "Devi essere un utente attivo per poter inviare una proposta",
+    "minScoreWarning": "Morate imati najmanje {0} {1} da biste podneli predlog"
   },
   "delegate": {
     "header": "Delega",
@@ -134,10 +152,13 @@
     "profile": "Profilo",
     "changeAvatar": "Cambia avatar",
     "name": "Nome",
-    "about": "About",
+    "about": "In merito",
+    "terms": "Terms",
+    "network": "Network",
     "symbol": "Simbolo",
     "skin": "Tema",
     "domain": "Nome del dominio",
+    "strategies": "Strategie(s)",
     "hideSpace": "Nascondi lo spazio dalla pagina iniziale",
     "addStrategy": "Aggiungi strategia",
     "members": "Membri",
@@ -160,5 +181,16 @@
     "proposalDeleted": "Proposta eliminata",
     "yourIsIn": "Il tuo {0} è dentro!",
     "somethingWentWrong": "Oops, qualcosa è andato storto!"
+  },
+  "explore": {
+    "createStrategy": "Create strategy",
+    "createSkin": "Create skin",
+    "addNetwork": "Add network",
+    "createPlugin": "Create plugin",
+    "strategies": "strategie(s)",
+    "skins": "skin(s)",
+    "networks": "network(s)",
+    "plugins": "plugin(s)",
+    "results": "result(s)"
   }
 }

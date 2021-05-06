@@ -19,6 +19,9 @@
   "strategiesPage": "Strategije",
   "version": "Verzija",
   "timeline": "Vremenska linija",
+  "filters": "Filters",
+  "favorites": "Favorites",
+  "allSpaces": "All spaces",
   "submitOnchain": "Podnesi on-chain",
   "inSpaces": "U {0} prostor(a)",
   "downloadReport": "Preuzmi izveštaj",
@@ -78,14 +81,28 @@
   "marketSymbol": "{0} tržište",
   "twoChoicesRequired": "Dva izbora su obavezna za ovaj plugin.",
   "noResultsFound": "Ups, ne možemo pronaći rezultate",
+  "noFavorites": "Oops, you don't have any favorites yet",
+  "addFavorites": "Add favorites",
   "createdBy": "Od {0}",
   "startToEnd": "početak {0} kraj {1}",
-  "proposalBy": "Predlog od {0}",
+  "startIn": "start {0}",
+  "endIn": "end {1}",
+  "endedAgo": "ended {1}",
+  "proposalBy": "By {0}",
   "endDate": "kraj {0}",
   "contectHash": "Heš sadržaja",
   "defaultSkin": "Podrazumevana tema",
   "select": "Izaberi",
   "language": "Jezik",
+  "errors": {
+    "required": "Field is required",
+    "minLength": "Minimum length is {0}",
+    "maxLength": "Maximum length is {0}",
+    "pattern": "Invalid character",
+    "minItems": "Minimum {0} item(s) required",
+    "minStrategy": "At least one strategy is required.",
+    "format": "Invalid format"
+  },
   "create": {
     "question": "Pitanje",
     "content": "Šta je vaš predlog?",
@@ -98,7 +115,8 @@
     "endTime": "Izaberi vreme kraja",
     "publish": "Objavi",
     "snapshotBlock": "Broj bloka snimka",
-    "onlyMembersWarning": "Morate biti član prostora da biste podneli predlog."
+    "onlyMembersWarning": "Morate biti član prostora da biste podneli predlog",
+    "minScoreWarning": "Morate imati najmanje {0} {1} da biste podneli predlog"
   },
   "delegate": {
     "header": "Delegirati",
@@ -135,9 +153,12 @@
     "changeAvatar": "Promenite avatar",
     "name": "Ime",
     "about": "O nama",
+    "terms": "Terms",
+    "network": "Network",
     "symbol": "Simbol",
     "skin": "Tema",
     "domain": "Naziv domena",
+    "strategies": "Strategie(s)",
     "hideSpace": "Sakrij prostor sa početne stranice",
     "addStrategy": "Dodaj strategiju",
     "members": "Članovi",
@@ -160,5 +181,16 @@
     "proposalDeleted": "Predlog izbrisan",
     "yourIsIn": "Vaš {0} je sačuvan!",
     "somethingWentWrong": "Ups, nešto je pošlo po zlu!"
+  },
+  "explore": {
+    "createStrategy": "Create strategy",
+    "createSkin": "Create skin",
+    "addNetwork": "Add network",
+    "createPlugin": "Create plugin",
+    "strategies": "strategie(s)",
+    "skins": "skin(s)",
+    "networks": "network(s)",
+    "plugins": "plugin(s)",
+    "results": "result(s)"
   }
 }

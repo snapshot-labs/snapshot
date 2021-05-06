@@ -1,4 +1,5 @@
 import pkg from '@/../package.json';
+import scrollMonitor from 'scrollmonitor';
 
 export function shorten(str = '') {
   return `${str.slice(0, 6)}...${str.slice(str.length - 4)}`;
@@ -66,33 +67,6 @@ export function formatProposals(proposals) {
   );
 }
 
-export function filterNetworks(networks, spaces, q) {
-  return Object.entries(networks)
-    .map((network: any) => {
-      network[1].key = network[0];
-      network[1].spaces = Object.entries(spaces)
-        .filter((space: any) => space[1].network === network[0])
-        .map(space => space[0]);
-      return network[1];
-    })
-    .filter(network =>
-      JSON.stringify(network).toLowerCase().includes(q.toLowerCase())
-    )
-    .sort((a, b) => b.spaces.length - a.spaces.length);
-}
-
-export function filterSkins(skins, spaces, q) {
-  return skins
-    .map(skin => ({
-      key: skin,
-      spaces: Object.entries(spaces)
-        .filter((space: any) => space[1].skin === skin)
-        .map(space => space[0])
-    }))
-    .filter(skin => skin.key.toLowerCase().includes(q.toLowerCase()))
-    .sort((a, b) => b.spaces.length - a.spaces.length);
-}
-
 export function getStrategy(strategy, spaces) {
   strategy.spaces = Object.entries(spaces)
     .filter(
@@ -106,39 +80,10 @@ export function getStrategy(strategy, spaces) {
   return strategy;
 }
 
-export function filterStrategies(strategies, spaces, q = '') {
-  return Object.values(strategies)
-    .map((strategy: any) => getStrategy(strategy, spaces))
-    .filter(strategy =>
-      JSON.stringify(strategy).toLowerCase().includes(q.toLowerCase())
-    )
-    .sort((a, b) => b.spaces.length - a.spaces.length);
-}
-
 export function switchStrategyAt(space, proposal) {
   const timeNow = Date.now();
   if (timeNow > 1617958750115) return proposal;
   else return space;
-}
-
-export function filterPlugins(plugins, spaces, q = '') {
-  return Object.entries(plugins)
-    .map(([key, pluginClass]: any) => {
-      const plugin = new pluginClass();
-      plugin.key = key;
-      plugin.spaces = Object.entries(spaces)
-        .filter(
-          (space: any) =>
-            space[1].plugins &&
-            Object.keys(space[1].plugins).includes(plugin.key)
-        )
-        .map(space => space[0]);
-      return plugin;
-    })
-    .filter(plugin =>
-      JSON.stringify(plugin).toLowerCase().includes(q.toLowerCase())
-    )
-    .sort((a, b) => b.spaces.length - a.spaces.length);
 }
 
 export function formatSpace(key, space) {
@@ -175,15 +120,19 @@ export function filterProposals(space, proposal, tab) {
   return false;
 }
 
-export function infiniteScroll() {
-  window.onscroll = () => {
-    const bottomOfWindow =
-      document.documentElement.scrollTop + window.innerHeight >=
-      document.documentElement.offsetHeight - 100;
+export function scrollEndMonitor(fn) {
+  let canRunAgain = true;
 
-    if (bottomOfWindow) {
-      // @ts-ignore
-      this.limit += 16;
+  const el = document.getElementById('endofpage');
+  const elementWatcher = scrollMonitor.create(el);
+  elementWatcher.enterViewport(() => {
+    if (canRunAgain) {
+      canRunAgain = false;
+      fn();
+
+      setTimeout(function () {
+        canRunAgain = true;
+      }, 100);
     }
-  };
+  });
 }

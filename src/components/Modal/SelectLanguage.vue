@@ -10,34 +10,30 @@
         @click="selectLang(locale)"
         class="width-full mb-2"
       >
-        {{ languages[locale] }}
+        {{ locale === 'en-US' ? '' : languages[locale].nativeName + ' - ' }}
+        {{ languages[locale].name }}
       </UiButton>
     </div>
   </UiModal>
 </template>
 
 <script>
+import { computed } from 'vue';
 import languages from '@/locales/languages.json';
-import { mapActions } from 'vuex';
+import { useI18n } from '@/composables/useI18n';
 
 export default {
-  emits: ['close'],
-  data() {
-    return {
-      languages
-    };
-  },
-  computed: {
-    locales() {
-      return Object.keys(languages);
+  setup(_, { emit }) {
+    const { setLocale } = useI18n();
+
+    const locales = computed(() => Object.keys(languages));
+
+    function selectLang(locale) {
+      setLocale(locale);
+      emit('close');
     }
-  },
-  methods: {
-    ...mapActions(['setLocale']),
-    selectLang(locale) {
-      this.setLocale(locale);
-      this.$emit('close');
-    }
+
+    return { selectLang, locales, languages };
   }
 };
 </script>
