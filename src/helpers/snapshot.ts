@@ -132,26 +132,7 @@ export async function getPower(space, address, snapshot) {
 
 export async function getProposals(space) {
   try {
-    let proposals: any = await client.getProposals(space.key);
-    if (proposals && !space.filters?.onlyMembers) {
-      const scores: any = await getScores(
-        space.key,
-        space.strategies,
-        space.network,
-        getProvider(space.network),
-        Object.values(proposals).map((proposal: any) => proposal.address)
-      );
-      console.log('Scores', scores);
-      proposals = Object.fromEntries(
-        Object.entries(proposals).map((proposal: any) => {
-          proposal[1].score = scores.reduce(
-            (a, b) => a + (b[proposal[1].address] || 0),
-            0
-          );
-          return [proposal[0], proposal[1]];
-        })
-      );
-    }
+    const proposals: any = await client.getProposals(space.key);
     return formatProposals(proposals);
   } catch (e) {
     console.log(e);
