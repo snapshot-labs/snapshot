@@ -82,7 +82,7 @@ export function getStrategy(strategy, spaces) {
 
 export function switchStrategyAt(space, proposal) {
   const timeNow = Date.now();
-  if (timeNow > 1617958750115) return proposal;
+  if (timeNow > 1620920372000) return proposal;
   else return space;
 }
 
