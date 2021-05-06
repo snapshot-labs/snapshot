@@ -40,8 +40,8 @@
                 class="button-outline"
                 :loading="app.authLoading"
               >
-                <Avatar
-                  :profile="web3.profile"
+                <UiAvatar
+                  :imgsrc="_ipfsUrl(web3.profile?.image)"
                   :address="web3.account"
                   size="16"
                   class="mr-n1 mr-sm-2 mr-md-2 mr-lg-2 mr-xl-2 ml-n1"

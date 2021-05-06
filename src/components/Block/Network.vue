@@ -1,19 +1,11 @@
 <template>
   <Block>
     <div class="d-flex flex-items-center mb-1">
-      <img
-        v-if="imgValid"
-        class="circle border mr-2 mb-2"
-        :src="getLogoUrl(network.key)"
-        @error="imgValid = false"
-        width="28"
-        height="28"
-      />
-      <jazzicon
-        v-else
+      <UiAvatar
+        class="mr-2 mb-2"
+        :imgsrc="getLogoUrl(network.key)"
         :seed="network.key"
-        :diameter="26"
-        class="d-inline-block line-height-0 mr-2 mb-2"
+        :size="28"
       />
       <h3 v-text="network.name" />
       <div v-text="network.key" class="ml-1 text-gray" />
@@ -27,14 +19,9 @@
 <script>
 export default {
   props: ['network'],
-  data() {
-    return {
-      imgValid: true
-    };
-  },
   methods: {
-    getLogoUrl() {
-      return `https://raw.githubusercontent.com/snapshot-labs/snapshot.js/master/src/networks/${this.network.key}.png`;
+    getLogoUrl(key) {
+      return `https://raw.githubusercontent.com/snapshot-labs/snapshot.js/master/src/networks/${key}.png`;
     }
   }
 };
