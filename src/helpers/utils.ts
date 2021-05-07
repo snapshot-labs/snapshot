@@ -80,10 +80,10 @@ export function getStrategy(strategy, spaces) {
   return strategy;
 }
 
-export function switchStrategyAt(space, proposal) {
-  const timeNow = Date.now();
-  if (timeNow > 1620920372000) return proposal;
-  else return space;
+export function switchStrategiesAt(spaceStrategies, proposal) {
+  if (proposal.msg?.timestamp > 1620974463)
+    return proposal.msg.payload.metadata.strategies;
+  else return spaceStrategies;
 }
 
 export function formatSpace(key, space) {

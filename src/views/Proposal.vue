@@ -88,6 +88,7 @@
         :space="space"
         :proposal="proposal"
         :votes="votes"
+        :strategies="strategies"
       />
     </template>
     <template #sidebar-right v-if="loaded">
@@ -163,6 +164,7 @@
         :payload="payload"
         :results="results"
         :votes="votes"
+        :strategies="strategies"
       />
       <div v-if="loadedResults">
         <PluginAragonCustomBlock
@@ -191,6 +193,7 @@
           :space="space"
           :payload="payload"
           :results="results"
+          :strategies="strategies"
         />
       </div>
     </template>
@@ -208,12 +211,13 @@
       :totalScore="totalScore"
       :scores="scores"
       :snapshot="payload.snapshot"
+      :strategies="strategies"
     />
     <ModalStrategies
       :open="modalStrategiesOpen"
       @close="modalStrategiesOpen = false"
       :space="space"
-      :strategies="space.strategies"
+      :strategies="strategies"
     />
   </teleport>
 </template>
@@ -222,6 +226,7 @@
 import { mapActions } from 'vuex';
 import { getProposal, getResults, getPower } from '@/helpers/snapshot';
 import { useModal } from '@/composables/useModal';
+import { switchStrategiesAt } from '@/helpers/utils';
 
 export default {
   setup() {
@@ -258,7 +263,7 @@ export default {
       return (Date.now() / 1e3).toFixed();
     },
     symbols() {
-      return this.space.strategies.map(strategy => strategy.params.symbol);
+      return this.strategies.map(strategy => strategy.params.symbol);
     },
     isCreator() {
       return this.proposal.address === this.web3.account;
@@ -268,6 +273,9 @@ export default {
         admin.toLowerCase()
       );
       return admins.includes(this.web3.account?.toLowerCase());
+    },
+    strategies() {
+      return switchStrategiesAt(this.space.strategies, this.proposal);
     }
   },
   watch: {
@@ -297,7 +305,7 @@ export default {
       const { scores, totalScore } = await getPower(
         this.space,
         this.web3.account,
-        this.payload
+        this.proposal
       );
       this.totalScore = totalScore;
       this.scores = scores;

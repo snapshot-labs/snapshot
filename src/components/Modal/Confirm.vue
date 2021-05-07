@@ -86,7 +86,8 @@ export default {
     'selectedChoice',
     'snapshot',
     'totalScore',
-    'scores'
+    'scores',
+    'strategies'
   ],
   emits: ['reload', 'close'],
   data() {
@@ -96,7 +97,7 @@ export default {
   },
   computed: {
     symbols() {
-      return this.space.strategies.map(strategy => strategy.params.symbol);
+      return this.strategies.map(strategy => strategy.params.symbol);
     }
   },
   methods: {

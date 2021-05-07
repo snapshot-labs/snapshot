@@ -3,7 +3,7 @@ import { ipfsGet, getScores } from '@snapshot-labs/snapshot.js/src/utils';
 import {
   formatProposal,
   formatProposals,
-  switchStrategyAt
+  switchStrategiesAt
 } from '@/helpers/utils';
 import { getProfiles } from '@/helpers/profile';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
@@ -39,10 +39,7 @@ export async function getResults(space, proposal, votes, blockNumber) {
     const voters = Object.keys(votes);
     const { snapshot } = proposal.msg.payload;
     const blockTag = snapshot > blockNumber ? 'latest' : parseInt(snapshot);
-    const strategies = switchStrategyAt(
-      space.strategies,
-      proposal.msg.payload.metadata.strategies
-    );
+    const strategies = switchStrategiesAt(space.strategies, proposal);
     /* Get scores */
     console.time('getProposal.scores');
     const [scores, profiles]: any = await Promise.all([
@@ -111,15 +108,14 @@ export async function getResults(space, proposal, votes, blockNumber) {
   }
 }
 
-export async function getPower(space, address, payload) {
+export async function getPower(space, address, proposal) {
   try {
     const blockNumber = await getBlockNumber(getProvider(space.network));
     const blockTag =
-      payload.snapshot > blockNumber ? 'latest' : parseInt(payload.snapshot);
-    const strategies = switchStrategyAt(
-      space.strategies,
-      payload.metadata.strategies
-    );
+      proposal.msg.payload.snapshot > blockNumber
+        ? 'latest'
+        : parseInt(proposal.msg.payload.snapshot);
+    const strategies = switchStrategiesAt(space.strategies, proposal);
     let scores: any = await getScores(
       space.key,
       strategies,

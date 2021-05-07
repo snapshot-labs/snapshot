@@ -68,7 +68,7 @@
 
 <script>
 export default {
-  props: ['space', 'proposal', 'votes', 'loaded'],
+  props: ['space', 'proposal', 'votes', 'loaded', 'strategies'],
   data() {
     return {
       showAllVotes: false,
@@ -86,7 +86,7 @@ export default {
           );
     },
     titles() {
-      return this.space.strategies.map(strategy => strategy.params.symbol);
+      return this.strategies.map(strategy => strategy.params.symbol);
     }
   },
   methods: {

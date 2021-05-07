@@ -56,13 +56,13 @@ import * as jsonexport from 'jsonexport/dist';
 import pkg from '@/../package.json';
 
 export default {
-  props: ['id', 'space', 'payload', 'results', 'votes', 'loaded'],
+  props: ['id', 'space', 'payload', 'results', 'votes', 'loaded', 'strategies'],
   computed: {
     ts() {
       return (Date.now() / 1e3).toFixed();
     },
     titles() {
-      return this.space.strategies.map(strategy => strategy.params.symbol);
+      return this.strategies.map(strategy => strategy.params.symbol);
     },
     choices() {
       return this.payload.choices
