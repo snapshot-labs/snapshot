@@ -122,9 +122,7 @@ export default {
       return this.spaceUri.includes(this.web3.account);
     },
     isAdmin() {
-      const admins = (this.space?.adminss || []).map(address =>
-        address.toLowerCase()
-      );
+      const admins = this.space.admins.map(address => address.toLowerCase());
       return (
         this.$auth.isAuthenticated.value &&
         this.web3.account &&

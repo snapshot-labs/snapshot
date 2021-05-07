@@ -408,7 +408,7 @@ export default {
       return this.currentContenthash === this.contenthash;
     },
     isAdmin() {
-      const admins = (this.app.spaces?.[this.key].admins || []).map(admin =>
+      const admins = this.app.spaces[this.key].admins.map(admin =>
         admin.toLowerCase()
       );
       return admins.includes(this.web3.account?.toLowerCase());
