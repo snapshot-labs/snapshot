@@ -3,15 +3,15 @@
     <div class="text-center mb-4 mx-auto">
       <Container class="d-flex flex-items-center">
         <div class="flex-auto text-left d-flex">
-          <router-link :to="{ name: 'timeline' }" class="mr-2">
+          <UiButton class="pl-3 col-12 col-lg-7 pr-0">
+            <SearchWithFilters v-model="q" />
+          </UiButton>
+          <router-link :to="{ name: 'timeline' }" class="ml-2">
             <UiButton class="no-wrap px-3">
               <Icon name="feed" size="18" />
               <UiCounter :counter="numberOfUnseenProposals" class="ml-2" />
             </UiButton>
           </router-link>
-          <UiButton class="pl-3 col-12 col-lg-6 pr-0">
-            <SearchWithFilters v-model="q" />
-          </UiButton>
         </div>
         <div class="ml-3 text-right hide-sm col-lg-4">
           {{ $tc('spaceCount', [_n(spaces.length)]) }}

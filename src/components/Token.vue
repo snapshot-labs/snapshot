@@ -1,10 +1,6 @@
 <template>
   <span class="d-inline-block v-align-middle line-height-0">
-    <UiAvatar
-      :imgsrc="url"
-      :address="spaceAddress"
-      :size="size"
-    />
+    <UiAvatar :imgsrc="url" :address="spaceAddress" :size="size" />
   </span>
 </template>
 

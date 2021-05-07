@@ -67,22 +67,27 @@ export default {
     color: var(--link-color);
   }
 }
+
 li {
   list-style: none;
   display: block;
   white-space: nowrap;
-  padding-left: 24px;
-  padding-right: 24px;
-  padding-top: 4px;
+  padding-left: 18px;
+  padding-right: 18px;
+  padding-top: 3px;
+  line-height: 34px;
   cursor: pointer;
 }
+
 li.disabled {
   cursor: not-allowed;
 }
+
 li:hover {
   background-color: var(--border-color);
   color: var(--link-color);
 }
+
 .sub-menu-wrapper {
   position: absolute;
   right: 0;
@@ -93,9 +98,11 @@ li:hover {
   border-radius: 8px;
   box-shadow: 0 0 20px -6px var(--border-color);
 }
+
 .sub-menu-wrapper.hidden {
   display: none;
 }
+
 .sub-menu::before {
   content: '';
   position: absolute;
