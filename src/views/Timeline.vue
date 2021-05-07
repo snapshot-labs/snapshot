@@ -65,7 +65,10 @@
           <TimelineProposal :proposal="proposal" :i="i" />
         </Block>
       </div>
-      <div id="endofpage" />
+      <div
+        style="height: 10px; width: 10px; position: absolute"
+        id="endofpage"
+      />
       <Block v-if="loadingMore && !loading" :slim="true">
         <RowLoading class="my-2" />
       </Block>
