@@ -38,12 +38,11 @@
           />
         </template>
         <template v-if="route.name === 'networks'">
-          <BlockNetwork
-            v-for="item in items.slice(0, limit)"
-            :key="item.key"
-            :network="item"
-            class="mb-3"
-          />
+          <template v-for="item in items.slice(0, limit)" :key="item.key">
+            <router-link :to="`/?network=${item.key}`">
+              <BlockNetwork :network="item" class="mb-3" />
+            </router-link>
+          </template>
         </template>
         <template v-if="route.name === 'plugins'">
           <BlockPlugin

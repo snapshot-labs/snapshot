@@ -2,7 +2,7 @@
   <div>
     <div class="text-center mb-4 mx-auto">
       <Container class="d-flex flex-items-center">
-        <div class="flex-auto text-left d-flex">
+        <div class="flex-auto text-left d-flex" v-if="!networkFilter">
           <UiButton class="pl-3 col-12 col-lg-7 pr-0">
             <SearchWithFilters v-model="q" />
           </UiButton>
@@ -11,6 +11,15 @@
               <Icon name="feed" size="18" />
               <UiCounter :counter="numberOfUnseenProposals" class="ml-2" />
             </UiButton>
+          </router-link>
+        </div>
+        <div class="flex-auto text-left d-flex" v-else>
+          <router-link
+            :to="{ path: '/networks', name: 'networks', component: Explore }"
+            class="text-gray"
+          >
+            <Icon name="back" size="22" class="v-align-middle" />
+            {{ $t('networks') }}
           </router-link>
         </div>
         <div class="ml-3 text-right hide-sm col-lg-4">
@@ -88,6 +97,7 @@ export default {
     const stateSpaces = computed(() => store.state.app.spaces);
 
     const q = ref(route.query.q || '');
+    const networkFilter = ref(route.query.network || '');
 
     const spaces = computed(() => {
       const list = Object.keys(stateSpaces.value)
@@ -106,7 +116,9 @@ export default {
         ['favorite', 'spotlight'],
         ['desc', 'asc']
       ).filter(space =>
-        JSON.stringify(space).toLowerCase().includes(q.value.toLowerCase())
+        networkFilter.value
+          ? space.network === networkFilter.value.toLowerCase()
+          : JSON.stringify(space).toLowerCase().includes(q.value.toLowerCase())
       );
     });
 
@@ -136,7 +148,14 @@ export default {
       scrollEndMonitor(() => (limit.value += loadBy));
     });
 
-    return { q, limit, spaces, toggleFavorite, numberOfUnseenProposals };
+    return {
+      q,
+      networkFilter,
+      limit,
+      spaces,
+      toggleFavorite,
+      numberOfUnseenProposals
+    };
   }
 };
 </script>
