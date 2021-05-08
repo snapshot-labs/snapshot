@@ -13,17 +13,18 @@ export function useUnseenProposals() {
         const activeProposals = await subgraphRequest(
           `${process.env.VUE_APP_HUB_URL}/graphql`,
           {
-            timeline: {
+            proposals: {
               __args: {
                 first: 100,
-                spaces: favoriteKeys,
-                state: 'all'
+                where: {
+                  space_in: favoriteKeys
+                }
               },
               id: true
             }
           }
         );
-        proposalIds.value = activeProposals.timeline;
+        proposalIds.value = activeProposals.proposals;
       } catch (e) {
         console.log(e);
       }
