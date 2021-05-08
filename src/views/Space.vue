@@ -2,17 +2,26 @@
   <Layout>
     <template #sidebar-left>
       <div style="position: fixed; width: 240px">
-        <Block :slim="true" :title="$t('filters')" class="overflow-hidden">
+        <Block :slim="true" class="overflow-hidden">
+          <div class="px-4 py-3 text-center border-bottom">
+            <Token
+              :space="space.key"
+              symbolIndex="space"
+              size="76"
+              class="mb-2"
+            />
+            <h3 v-text="space.name" />
+          </div>
           <div class="py-3">
             <router-link
-              :to="{ name: 'timeline' }"
-              v-text="$t('favorites')"
-              :class="!scope && 'router-link-exact-active'"
+              :to="{ name: 'proposals' }"
+              v-text="$t('proposals.header')"
+              :class="'router-link-exact-active'"
               class="d-block px-4 sidenav-item"
             />
             <router-link
-              :to="{ name: 'timeline', params: { scope: 'all' } }"
-              v-text="$t('allSpaces')"
+              :to="{ name: 'create' }"
+              v-text="$t('proposals.new')"
               class="d-block px-4 sidenav-item"
             />
           </div>
@@ -22,12 +31,9 @@
     <template #content-right>
       <div class="px-4 px-md-0 mb-3 d-flex">
         <div class="flex-auto">
-          <router-link :to="{ name: 'home' }" class="text-gray">
-            <Icon name="back" size="22" class="v-align-middle" />
-            {{ $t('backToHome') }}
-          </router-link>
+          <div v-text="space.name" />
           <div class="d-flex flex-items-center flex-auto">
-            <h2>{{ $t('timeline') }}</h2>
+            <h2>{{ $t('proposals.header') }}</h2>
           </div>
         </div>
         <UiDropdown
@@ -48,14 +54,7 @@
         </UiDropdown>
       </div>
 
-      <Block v-if="spaces.length < 1 && !scope" class="text-center">
-        <div class="mb-3">{{ $t('noFavorites') }}</div>
-        <router-link :to="{ name: 'home' }">
-          <UiButton>{{ $t('addFavorites') }}</UiButton>
-        </router-link>
-      </Block>
-
-      <Block v-else-if="loading" :slim="true">
+      <Block v-if="loading" :slim="true">
         <RowLoading class="my-2" />
       </Block>
 
@@ -75,30 +74,22 @@
 
 <script>
 import { onMounted, ref, computed } from 'vue';
-import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
 import { scrollEndMonitor } from '@/helpers/utils';
 import { useInfiniteLoader } from '@/composables/useInfiniteLoader';
 import { subgraphRequest } from '@snapshot-labs/snapshot.js/src/utils';
-import { lsSet } from '@/helpers/utils';
-import { useUnseenProposals } from '@/composables/useUnseenProposals';
+import { useStore } from 'vuex';
 
 // Persistent filter state
 const filterBy = ref('all');
 
 export default {
   setup() {
-    const store = useStore();
     const route = useRoute();
-
-    const favorites = computed(() => store.state.favoriteSpaces.favorites);
-    const scope = computed(() => route.params.scope);
-    const spaces = computed(() =>
-      scope.value === 'all' ? [] : Object.keys(favorites.value)
-    );
-
+    const store = useStore();
     const loading = ref(false);
     const proposals = ref([]);
+    const space = computed(() => store.state.app.spaces[route.params.key]);
 
     // Infinite scroll with pagination
     const {
@@ -126,7 +117,7 @@ export default {
                 first: loadBy,
                 skip,
                 where: {
-                  space_in: spaces.value,
+                  space_in: [route.params.key],
                   state: filterBy.value
                 }
               },
@@ -169,22 +160,13 @@ export default {
       load();
     }
 
-    // Save the most recently seen proposalId in localStorage
-    const { getProposalIds, proposalIds } = useUnseenProposals();
-    onMounted(async () => {
-      await getProposalIds(favorites.value);
-      if (proposalIds.value[0])
-        lsSet('lastSeenProposalId', proposalIds.value[0].id);
-    });
-
     return {
-      scope,
+      space,
       loading,
       selectState,
       loadingMore,
       filterBy,
-      proposals,
-      spaces
+      proposals
     };
   }
 };

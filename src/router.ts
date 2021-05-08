@@ -2,7 +2,7 @@ import { createRouter, createWebHashHistory } from 'vue-router';
 import domains from '@snapshot-labs/snapshot-spaces/spaces/domains.json';
 import aliases from '@snapshot-labs/snapshot-spaces/spaces/aliases.json';
 import Home from '@/views/Home.vue';
-import Proposals from '@/views/Proposals.vue';
+import Space from '@/views/Space.vue';
 import Proposal from '@/views/Proposal.vue';
 import Create from '@/views/Create.vue';
 import Setup from '@/views/Setup.vue';
@@ -51,19 +51,13 @@ const routes: any[] = [
   {
     path: '/:key',
     name: 'proposals',
-    component: Proposals,
-    beforeEnter
-  },
-  {
-    path: '/:key/:tab',
-    name: 'proposals-tab',
-    component: Proposals,
+    component: Space,
     beforeEnter
   },
   {
     path: '/',
     name: 'home',
-    component: domains[domainName] ? Proposals : Home
+    component: domains[domainName] ? Space : Home
   },
   { path: '/*', name: 'error-404', beforeEnter: (to, from, next) => next('/') }
 ];

@@ -30,7 +30,6 @@
               style="font-size: 24px; padding-top: 4px"
             >
               <Token :space="space.key" symbolIndex="space" size="28" />
-              <span class="ml-2" v-text="space.name" />
             </router-link>
           </div>
           <div :key="web3.account">

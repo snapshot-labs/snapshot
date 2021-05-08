@@ -240,8 +240,18 @@ textarea {
 }
 
 .sidenav-item {
+  padding-top: 7px;
+  padding-bottom: 5px;
+
   &.router-link-exact-active {
     border-left: 3px solid;
     padding-left: 21px !important
   }
+}
+
+#endofpage {
+  height: 1px;
+  width: 1px;
+  position: absolute;
+  margin-top: -1px;
 }
