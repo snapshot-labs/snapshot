@@ -219,14 +219,6 @@
           <Block :title="$t('settings.filters')">
             <div class="mb-2">
               <UiInput
-                v-model="form.filters.defaultTab"
-                :error="inputError('defaultTab')"
-              >
-                <template v-slot:label>{{
-                  $t('settings.defaultTab')
-                }}</template>
-              </UiInput>
-              <UiInput
                 v-model="form.filters.minScore"
                 :error="inputError('minScore')"
                 :number="true"
