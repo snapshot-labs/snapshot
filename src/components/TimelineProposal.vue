@@ -14,7 +14,7 @@
       <h3 v-text="_shorten(proposal.title, 124)" />
       <div class="mb-2">
         <UiState :state="proposal.state" class="d-inline-block mr-1" />
-        {{ $tc('proposalBy', [proposal.author]) }}
+        {{ $tc('proposalBy', [_shorten(proposal.author)]) }}
         <Badges :address="proposal.author" :members="proposal.space.members" />
         {{ $tc(period, [_ms(proposal.start), _ms(proposal.end)]) }}
       </div>
