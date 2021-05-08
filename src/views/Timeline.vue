@@ -110,7 +110,7 @@ export default {
       loadingMore,
       stopLoadingMore,
       loadMore
-    } = useInfiniteLoader(20);
+    } = useInfiniteLoader(12);
 
     onMounted(() => {
       scrollEndMonitor(() =>
@@ -124,22 +124,22 @@ export default {
         const response = await subgraphRequest(
           `${process.env.VUE_APP_HUB_URL}/graphql`,
           {
-            timeline: {
+            proposals: {
               __args: {
                 first: loadBy,
                 skip,
-                spaces: spaces.value,
-                state: filterBy.value
+                where: {
+                  space_in: spaces.value,
+                  state: filterBy.value
+                }
               },
               id: true,
-              name: true,
+              title: true,
               body: true,
               start: true,
               end: true,
               state: true,
-              author: {
-                address: true
-              },
+              author: true,
               space: {
                 id: true,
                 name: true,
@@ -148,8 +148,8 @@ export default {
             }
           }
         );
-        stopLoadingMore.value = response.timeline?.length < loadBy;
-        proposals.value = proposals.value.concat(response.timeline);
+        stopLoadingMore.value = response.proposals?.length < loadBy;
+        proposals.value = proposals.value.concat(response.proposals);
       } catch (e) {
         console.log(e);
       }
