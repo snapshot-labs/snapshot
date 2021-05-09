@@ -11,14 +11,11 @@
         <Token :space="proposal.space.id" symbolIndex="space" size="28" />
         <span class="ml-2" v-text="proposal.space.name" />
       </div>
-      <h3 v-text="_shorten(proposal.name, 124)" />
+      <h3 v-text="_shorten(proposal.title, 124)" />
       <div class="mb-2">
         <UiState :state="proposal.state" class="d-inline-block mr-1" />
-        {{ $tc('proposalBy', [author]) }}
-        <Badges
-          :address="proposal.author.address"
-          :members="proposal.space.members"
-        />
+        {{ $tc('proposalBy', [_shorten(proposal.author)]) }}
+        <Badges :address="proposal.author" :members="proposal.space.members" />
         {{ $tc(period, [_ms(proposal.start), _ms(proposal.end)]) }}
       </div>
       <p
@@ -45,13 +42,6 @@ export default {
       if (this.proposal.state === 'closed') return 'endedAgo';
       if (this.proposal.state === 'active') return 'endIn';
       return 'startIn';
-    },
-    author() {
-      return (
-        this.proposal.author.profile?.name ||
-        this.proposal.author.profile?.ens ||
-        this._shorten(this.proposal.author.address)
-      );
     }
   }
 };
