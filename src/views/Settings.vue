@@ -406,6 +406,7 @@ export default {
     ...mapActions(['notify', 'send', 'getSpaces']),
     async handleSubmit() {
       if (this.isValid) {
+        if (this.form.filters.invalids) delete this.form.filters.invalids;
         this.loading = true;
         try {
           await this.send({

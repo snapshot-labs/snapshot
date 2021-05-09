@@ -87,7 +87,6 @@ export function formatSpace(key, space) {
     members: space.members || [],
     filters: space.filters || {}
   };
-  if (space.filters.invalids) delete space.filters.invalids;
   if (!space.filters.minScore) space.filters.minScore = 0;
   return space;
 }
