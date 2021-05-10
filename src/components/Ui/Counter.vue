@@ -1,11 +1,15 @@
 <template>
-  <span v-if="counter > 0" v-text="counter" class="Counter" />
+  <span
+    v-if="counter > 0 || typeof counter === 'string'"
+    v-text="counter"
+    class="Counter"
+  />
 </template>
 
 <script>
 export default {
   props: {
-    counter: Number
+    counter: Number || String
   }
 };
 </script>

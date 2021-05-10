@@ -1,6 +1,6 @@
 {
   "searchPlaceholder": "Magsaliksik",
-  "spaceCount": "mga puwang",
+  "spaceCount": "{0} space(s)",
   "createSpace": "Lumikha ng puwang",
   "backToHome": "Home",
   "actions": "Mga aksyon",
@@ -17,10 +17,14 @@
   "snapshot": "Snapshot",
   "strategies": "\t\nMga estratehiya",
   "strategiesPage": "\t\nMga estratehiya",
+  "spaces": "Spaces",
   "version": "Bersyon",
   "timeline": "Timeline",
+  "filters": "Filters",
+  "favorites": "Favorites",
+  "allSpaces": "All spaces",
   "submitOnchain": "Submit on-chain",
-  "inSpaces": "Nasa {0} mga puwang",
+  "inSpaces": "In {0} space(s)",
   "downloadReport": "Download report",
   "votes": "Mga boto",
   "seeMore": "Tumingin pa",
@@ -78,14 +82,28 @@
   "marketSymbol": "{0} market",
   "twoChoicesRequired": "Dalawang choice ang kailangan para sa plugin na ito.",
   "noResultsFound": "Oops, wala kaming makitang mga resulta",
+  "noFavorites": "Oops, you don't have any favorites yet",
+  "addFavorites": "Add favorites",
   "createdBy": "By {0}",
   "startToEnd": "start {0} end {1}",
-  "proposalBy": "Proposal by {0}",
+  "startIn": "start {0}",
+  "endIn": "end {1}",
+  "endedAgo": "ended {1}",
+  "proposalBy": "By {0}",
   "endDate": "end {0}",
   "contectHash": "Content hash",
   "defaultSkin": "Default skin",
   "select": "Piliin",
   "language": "Lingwahe",
+  "errors": {
+    "required": "Field is required",
+    "minLength": "Minimum length is {0}",
+    "maxLength": "Maximum length is {0}",
+    "pattern": "Invalid character",
+    "minItems": "Minimum {0} item(s) required",
+    "minStrategy": "At least one strategy is required.",
+    "format": "Invalid format"
+  },
   "create": {
     "question": "Tanong",
     "content": "Ano ang iyong proposal?",
@@ -98,7 +116,8 @@
     "endTime": "Pumili ng oras ng pagtatapos",
     "publish": "Ilathala",
     "snapshotBlock": "Snapshot block number",
-    "onlyMembersWarning": "Kailangan mo maging miyembro ng ispasyo para makapag sumite ng proposal."
+    "onlyMembersWarning": "You need to be a member of the space in order to submit a proposal",
+    "minScoreWarning": "You need to have a minimum of {0} {1} in order to submit a proposal"
   },
   "delegate": {
     "header": "Delegasyon",
@@ -135,12 +154,16 @@
     "changeAvatar": "Ibahin ang avatar",
     "name": "Pangalan",
     "about": "Tungkol Dito",
+    "terms": "Terms",
+    "network": "Network",
     "symbol": "Sagisag",
     "skin": "Skin",
     "domain": "Domain name",
+    "strategies": "Strategie(s)",
     "hideSpace": "Itago ang espasyo sa homepage",
     "addStrategy": "Add strategy",
     "members": "Mga miyembro",
+    "admins": "Admins",
     "filters": "Mga filter",
     "defaultTab": "Default tab",
     "minScore": "Min. score",
@@ -152,7 +175,7 @@
   "setup": {
     "example": "e.g. yam.eth",
     "useExistingEns": "Gumamit ng kasalukuyang ENS name para gumawa ng espasyo kasama ng.",
-    "createASpace": "Gumawa ng espasyo"
+    "createASpace": "Create a space"
   },
   "notify": {
     "youDidIt": "You did it!",
@@ -160,5 +183,16 @@
     "proposalDeleted": "Proposal deleted",
     "yourIsIn": "Your {0} is in!",
     "somethingWentWrong": "Oops, may maling nangyari!"
+  },
+  "explore": {
+    "createStrategy": "Create strategy",
+    "createSkin": "Create skin",
+    "addNetwork": "Add network",
+    "createPlugin": "Create plugin",
+    "strategies": "strategie(s)",
+    "skins": "skin(s)",
+    "networks": "network(s)",
+    "plugins": "plugin(s)",
+    "results": "result(s)"
   }
 }

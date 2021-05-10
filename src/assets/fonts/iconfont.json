@@ -6,6 +6,13 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "7685091",
+      "name": "feed",
+      "font_class": "feed",
+      "unicode": "e6f6",
+      "unicode_decimal": 59126
+    },
+    {
       "icon_id": "20531430",
       "name": "gitbook",
       "font_class": "gitbook",
@@ -74,20 +81,6 @@
       "font_class": "info",
       "unicode": "e93b",
       "unicode_decimal": 59707
-    },
-    {
-      "icon_id": "6087928",
-      "name": "checkbox-blank-outli",
-      "font_class": "checkbox-off",
-      "unicode": "e623",
-      "unicode_decimal": 58915
-    },
-    {
-      "icon_id": "6087931",
-      "name": "checkbox-marked-outl",
-      "font_class": "checkbox-on",
-      "unicode": "e626",
-      "unicode_decimal": 58918
     },
     {
       "icon_id": "1567557",

@@ -14,10 +14,7 @@
             </h2>
           </div>
         </div>
-        <router-link
-          v-if="$auth.isAuthenticated.value"
-          :to="{ name: 'create', params: { key } }"
-        >
+        <router-link :to="{ name: 'create', params: { key } }">
           <UiButton>{{ $t('proposals.new') }}</UiButton>
         </router-link>
         <router-link
@@ -72,8 +69,8 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
 import { filterProposals } from '@/helpers/utils';
+import { getProposals } from '@/helpers/snapshot';
 
 export default {
   data() {
@@ -127,14 +124,11 @@ export default {
       return this.key.includes('.eth') || this.key.includes('.xyz');
     }
   },
-  methods: {
-    ...mapActions(['getProposals'])
-  },
   async created() {
     this.loading = true;
     this.tab =
       this.$route.params.tab || this.space.filters.defaultTab || this.tab;
-    this.proposals = await this.getProposals(this.space);
+    this.proposals = await getProposals(this.space);
     this.loading = false;
     this.loaded = true;
   }

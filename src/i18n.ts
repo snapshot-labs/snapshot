@@ -2,6 +2,7 @@ import { createI18n } from 'vue-i18n';
 import { nextTick } from 'vue';
 import en from '@/locales/default.json';
 import languages from '@/locales/languages.json';
+import { lsRemove } from '@/helpers/utils';
 
 export let defaultLocale = 'en-US';
 
@@ -22,7 +23,7 @@ Object.keys(languages).forEach(locale => {
 });
 
 const datetimeFormats = {
-  en: {
+  'en-US': {
     short: {
       year: 'numeric',
       month: 'short',
@@ -43,21 +44,30 @@ export function setI18nLanguage(i18n, locale) {
   document.querySelector('html').setAttribute('lang', locale);
 }
 
-export function setupI18n(options = { locale: defaultLocale }) {
+export function setupI18n(options = { legacy: false, locale: defaultLocale }) {
   const i18n = createI18n(options);
   setI18nLanguage(i18n, options.locale);
   return i18n;
 }
 
 export async function loadLocaleMessages(i18n, locale) {
+  if (!Object.keys(languages).includes(locale)) {
+    lsRemove('locale');
+    locale = 'default';
+  }
   if (locale === 'en-US') locale = 'default';
-  // load locale messages with dynamic import
-  const messages = await import(
-    /* webpackChunkName: "locale-[request]" */ `./locales/${locale}.json`
-  );
 
-  // set locale and locale message
-  i18n.global.setLocaleMessage(locale, messages.default);
+  try {
+    // load locale messages with dynamic import
+    const messages = await import(
+      /* webpackChunkName: "locale-[request]" */ `./locales/${locale}.json`
+    );
+
+    // set locale and locale message
+    i18n.global.setLocaleMessage(locale, messages.default);
+  } catch (e) {
+    console.log(e);
+  }
 
   return nextTick();
 }

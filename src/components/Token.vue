@@ -1,16 +1,6 @@
 <template>
   <span class="d-inline-block v-align-middle line-height-0">
-    <img
-      v-if="!error"
-      :src="url"
-      :style="{
-        width: `${size || 22}px`,
-        height: `${size || 22}px`
-      }"
-      @error="error = true"
-      class="circle border line-height-0"
-    />
-    <Avatar v-else :address="spaceAddress" :size="size" />
+    <UiAvatar :imgsrc="url" :address="spaceAddress" :size="size" />
   </span>
 </template>
 

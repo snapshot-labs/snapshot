@@ -1,7 +1,6 @@
 import { mapState } from 'vuex';
-import numbro from 'numbro';
-import get from 'lodash/get';
-import prettyMs from 'pretty-ms';
+import numeral from 'numeral';
+import { format } from 'timeago.js';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import domains from '@snapshot-labs/snapshot-spaces/spaces/domains.json';
 import store from '@/store';
@@ -30,21 +29,12 @@ export default {
   },
   methods: {
     _ms(number) {
-      const diff = number * 1e3 - new Date().getTime();
-      return prettyMs(diff);
+      return format(number * 1e3);
     },
-    _n(
-      number,
-      format = {
-        average: true,
-        totalLength: 3,
-        trimMantissa: true,
-        mantissa: 1
-      }
-    ) {
-      return numbro(number).format(format);
+    _n(number, format = '(0.[00]a)') {
+      return numeral(number).format(format);
     },
-    _shorten(str: string, key: any): string {
+    _shorten(str: string, key?: any): string {
       if (!str) return str;
       let limit;
       if (typeof key === 'number') limit = key;

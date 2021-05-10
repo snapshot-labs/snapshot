@@ -31,6 +31,8 @@ const routes: any[] = [
   { path: '/skins', name: 'skins', component: Explore },
   { path: '/delegate', name: 'delegate', component: Delegate },
   { path: '/timeline', name: 'timeline', component: Timeline },
+  { path: '/explore', name: 'explore', component: Timeline },
+
   {
     path: '/strategy/:name',
     name: 'strategy',
