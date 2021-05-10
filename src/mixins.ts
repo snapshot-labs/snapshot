@@ -1,5 +1,5 @@
 import { mapState } from 'vuex';
-import numbro from 'numbro';
+import numeral from 'numeral';
 import { format } from 'timeago.js';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import domains from '@snapshot-labs/snapshot-spaces/spaces/domains.json';
@@ -32,7 +32,8 @@ export default {
       return format(number * 1e3);
     },
     _n(number, format = '(0.[00]a)') {
-      return numbro(number).format(format);
+      if (number < 0.00001) return 0;
+      return numeral(number).format(format);
     },
     _shorten(str: string, key?: any): string {
       if (!str) return str;
