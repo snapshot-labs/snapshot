@@ -14,10 +14,7 @@
             </h2>
           </div>
         </div>
-        <router-link
-          v-if="$auth.isAuthenticated.value"
-          :to="{ name: 'create', params: { key } }"
-        >
+        <router-link :to="{ name: 'create', params: { key } }">
           <UiButton>{{ $t('proposals.new') }}</UiButton>
         </router-link>
         <router-link
