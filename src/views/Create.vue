@@ -26,7 +26,7 @@
       <div class="px-4 px-md-0">
         <div class="d-flex flex-column mb-6">
           <input
-            v-model="form.name"
+            v-model="form.title"
             maxlength="128"
             class="h1 mb-2 input"
             :placeholder="$t('create.question')"
@@ -122,8 +122,8 @@
         </UiButton>
       </Block>
       <PluginDaoModuleCustomBlock
-        v-if="form.metadata.plugins?.daoModule?.txs"
-        :proposalConfig="form.metadata.plugins.daoModule"
+        v-if="form.plugins?.daoModule?.txs"
+        :proposalConfig="form.plugins.daoModule"
       />
     </template>
   </Layout>
@@ -138,7 +138,7 @@
     <ModalProposalPlugins
       :space="space"
       :proposal="{ ...form, choices }"
-      v-model="form.metadata.plugins"
+      v-model="form.plugins"
       :open="modalProposalPluginsOpen"
       @close="modalProposalPluginsOpen = false"
     />
@@ -148,12 +148,10 @@
 <script>
 import { mapActions } from 'vuex';
 import draggable from 'vuedraggable';
-import { ipfsGet, getScores } from '@snapshot-labs/snapshot.js/src/utils';
+import { getScores } from '@snapshot-labs/snapshot.js/src/utils';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import { getBlockNumber } from '@snapshot-labs/snapshot.js/src/utils/web3';
-import gateways from '@snapshot-labs/snapshot.js/src/gateways.json';
-
-const gateway = process.env.VUE_APP_IPFS_GATEWAY || gateways[0];
+import { proposalQuery } from '@/helpers/graph';
 
 export default {
   components: {
@@ -174,7 +172,8 @@ export default {
         start: '',
         end: '',
         snapshot: '',
-        metadata: {}
+        network: '',
+        strategies: []
       },
       modalOpen: false,
       modalProposalPluginsOpen: false,
@@ -246,10 +245,13 @@ export default {
       this.getUserScore();
     if (this.from) {
       try {
-        const proposal = await ipfsGet(gateway, this.from);
-        const msg = JSON.parse(proposal.msg);
-        this.form = msg.payload;
-        this.choices = msg.payload.choices.map((text, key) => ({ key, text }));
+        const proposal = await proposalQuery(this.from);
+
+        this.form = proposal.proposal;
+        this.choices = proposal.proposal.choices.map((text, key) => ({
+          key,
+          text
+        }));
       } catch (e) {
         console.log(e);
       }
@@ -274,8 +276,8 @@ export default {
     async handleSubmit() {
       this.loading = true;
       this.form.choices = this.choices.map(choice => choice.text);
-      this.form.metadata.network = this.space.network;
-      this.form.metadata.strategies = this.space.strategies;
+      this.form.network = this.space.network;
+      this.form.strategies = this.space.strategies;
       try {
         const { ipfsHash } = await this.send({
           space: this.space.key,
