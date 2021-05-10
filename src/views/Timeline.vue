@@ -97,10 +97,9 @@ export default {
     const route = useRoute();
 
     const favorites = computed(() =>
-      route.name === 'timeline'
-        ? Object.keys(store.state.favoriteSpaces.favorites)
-        : []
+      route.name === 'timeline' ? store.state.favoriteSpaces.favorites : []
     );
+    const favoritesKeys = computed(() => Object.keys(favorites.value));
 
     const loading = ref(false);
     const proposals = ref([]);
@@ -131,7 +130,7 @@ export default {
                 first: loadBy,
                 skip,
                 where: {
-                  space_in: favorites.value,
+                  space_in: favoritesKeys.value,
                   state: filterBy.value
                 }
               },
