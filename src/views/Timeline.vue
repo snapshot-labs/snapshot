@@ -7,11 +7,10 @@
             <router-link
               :to="{ name: 'timeline' }"
               v-text="$t('favorites')"
-              :class="!scope && 'router-link-exact-active'"
               class="d-block px-4 py-2 sidenav-item"
             />
             <router-link
-              :to="{ name: 'timeline', params: { scope: 'all' } }"
+              :to="{ name: 'explore' }"
               v-text="$t('allSpaces')"
               class="d-block px-4 py-2 sidenav-item"
             />
@@ -48,7 +47,10 @@
         </UiDropdown>
       </div>
 
-      <Block v-if="spaces.length < 1 && !scope" class="text-center">
+      <Block
+        v-if="favorites.length < 1 && $route.name === 'timeline'"
+        class="text-center"
+      >
         <div class="mb-3">{{ $t('noFavorites') }}</div>
         <router-link :to="{ name: 'home' }">
           <UiButton>{{ $t('addFavorites') }}</UiButton>
@@ -94,10 +96,10 @@ export default {
     const store = useStore();
     const route = useRoute();
 
-    const favorites = computed(() => store.state.favoriteSpaces.favorites);
-    const scope = computed(() => route.params.scope);
-    const spaces = computed(() =>
-      scope.value === 'all' ? [] : Object.keys(favorites.value)
+    const favorites = computed(() =>
+      route.name === 'timeline'
+        ? Object.keys(store.state.favoriteSpaces.favorites)
+        : []
     );
 
     const loading = ref(false);
@@ -129,7 +131,7 @@ export default {
                 first: loadBy,
                 skip,
                 where: {
-                  space_in: spaces.value,
+                  space_in: favorites.value,
                   state: filterBy.value
                 }
               },
@@ -181,13 +183,12 @@ export default {
     });
 
     return {
-      scope,
       loading,
       selectState,
       loadingMore,
       filterBy,
       proposals,
-      spaces
+      favorites
     };
   }
 };
