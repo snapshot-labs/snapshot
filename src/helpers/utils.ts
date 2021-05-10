@@ -87,7 +87,6 @@ export function formatSpace(key, space) {
     members: space.members || [],
     filters: space.filters || {}
   };
-  if (!space.filters.invalids) space.filters.invalids = [];
   if (!space.filters.minScore) space.filters.minScore = 0;
   return space;
 }
@@ -102,7 +101,6 @@ export function filterProposals(space, proposal, tab) {
 
   if (!isMember && proposal[1].score < space.filters.minScore) return false;
   if (space.filters.onlyMembers && !isMember) return false;
-  if (space.filters.invalids.includes(proposal[1].authorIpfsHash)) return false;
 
   if (tab === 'all') return true;
   if (tab === 'active' && start <= ts && end > ts) return true;
