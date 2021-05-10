@@ -219,14 +219,6 @@
           <Block :title="$t('settings.filters')">
             <div class="mb-2">
               <UiInput
-                v-model="form.filters.defaultTab"
-                :error="inputError('defaultTab')"
-              >
-                <template v-slot:label>{{
-                  $t('settings.defaultTab')
-                }}</template>
-              </UiInput>
-              <UiInput
                 v-model="form.filters.minScore"
                 :error="inputError('minScore')"
                 :number="true"
@@ -240,25 +232,6 @@
                 />
                 {{ $t('settings.showOnly') }}
               </div>
-              <Block
-                :style="`border-color: red !important`"
-                v-if="inputError('filters/invalids')"
-              >
-                <Icon name="warning" class="mr-2 text-red" />
-                <span class="text-red">
-                  {{ inputError('filters/invalids') }}&nbsp;</span
-                >
-              </Block>
-              <UiButton class="d-block width-full px-3" style="height: auto">
-                <TextareaArray
-                  v-model="form.filters.invalids"
-                  :placeholder="`${$t(
-                    'invalidProposals'
-                  )}\nQmc4VSHwY3SVmo4oofhL2qDPaYcGaQqndM4oqdQQe2aZHQ\nQmTMAgnPy2q6LRMNwvj27PHvWEgZ3bw7yTtNNEucBZCWhZ`"
-                  class="input width-full text-left"
-                  style="font-size: 18px"
-                />
-              </UiButton>
             </div>
           </Block>
           <Block :title="$t('plugins')">
@@ -433,6 +406,7 @@ export default {
     ...mapActions(['notify', 'send', 'getSpaces']),
     async handleSubmit() {
       if (this.isValid) {
+        if (this.form.filters.invalids) delete this.form.filters.invalids;
         this.loading = true;
         try {
           await this.send({
