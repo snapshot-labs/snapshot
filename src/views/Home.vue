@@ -4,7 +4,7 @@
       <Container class="d-flex flex-items-center">
         <div class="flex-auto text-left d-flex">
           <UiButton class="pl-3 col-12 col-lg-7 pr-0">
-            <SearchWithFilters v-model="q" />
+            <SearchWithFilters v-model="spaces.searchString" />
           </UiButton>
           <router-link :to="{ name: 'timeline' }" class="ml-2">
             <UiButton class="no-wrap px-3">
@@ -14,7 +14,7 @@
           </router-link>
         </div>
         <div class="ml-3 text-right hide-sm col-lg-4">
-          {{ $tc('spaceCount', [_n(spaces.length)]) }}
+          {{ $tc('spaceCount', [_n(spaces.filteredSpaces.length)]) }}
           <router-link :to="{ name: 'setup' }" class="hide-md ml-3">
             <UiButton>{{ $t('createSpace') }}</UiButton>
           </router-link>
@@ -24,7 +24,7 @@
     <Container :slim="true">
       <div class="overflow-hidden mr-n4">
         <router-link
-          v-for="space in spaces.slice(0, limit)"
+          v-for="space in spaces.filteredSpaces.slice(0, limit)"
           :key="space.key"
           :to="{ name: 'proposals', params: { key: space.key } }"
         >
@@ -62,7 +62,7 @@
 
         <NoResults
           :block="true"
-          v-if="Object.keys(spaces).length < 1"
+          v-if="Object.keys(spaces.filteredSpaces).length < 1"
           class="pr-md-4"
         />
       </div>
@@ -87,10 +87,10 @@ export default {
     const favorites = computed(() => store.state.favoriteSpaces.favorites);
     const stateSpaces = computed(() => store.state.app.spaces);
 
-    const q = ref(route.query.q || '');
-    const networkFilter = ref(route.query.network || '');
-
     const spaces = computed(() => {
+      const searchString = route.query.q || '';
+      const networkFilter = route.query.network || '';
+
       const list = Object.keys(stateSpaces.value)
         .map(key => {
           const spotlightIndex = spotlight.indexOf(key);
@@ -102,13 +102,22 @@ export default {
           };
         })
         .filter(space => !space.private);
-      return orderBy(list, ['favorite', 'spotlight'], ['desc', 'asc']).filter(
-        space =>
-          (networkFilter.value
-            ? space.network === networkFilter.value.toLowerCase()
-            : true) &&
-          JSON.stringify(space).toLowerCase().includes(q.value.toLowerCase())
-      );
+      return {
+        searchString,
+        filteredSpaces: orderBy(
+          list,
+          ['favorite', 'spotlight'],
+          ['desc', 'asc']
+        ).filter(
+          space =>
+            (networkFilter
+              ? space.network === networkFilter.toLowerCase()
+              : true) &&
+            JSON.stringify(space)
+              .toLowerCase()
+              .includes(searchString.toLowerCase())
+        )
+      };
     });
 
     // Get number of unseen proposals
@@ -137,7 +146,7 @@ export default {
       scrollEndMonitor(() => (limit.value += loadBy));
     });
 
-    return { q, limit, spaces, toggleFavorite, numberOfUnseenProposals };
+    return { limit, spaces, toggleFavorite, numberOfUnseenProposals };
   }
 };
 </script>
