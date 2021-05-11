@@ -4,20 +4,43 @@ import { formatProposals } from '@/helpers/utils';
 import { getProfiles } from '@/helpers/profile';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import client from '@/helpers/client';
-import { proposalQuery } from '@/helpers/graph';
+import { proposalQuery } from '@/helpers/graphql';
 
 export async function getProposal(space, id) {
   try {
     console.time('getProposal.data');
     const provider = getProvider(space.network);
     const response = await Promise.all([
-      proposalQuery(id),
+      proposalQuery({
+        __args: {
+          id
+        },
+        id: true,
+        title: true,
+        body: true,
+        choices: true,
+        start: true,
+        end: true,
+        snapshot: true,
+        state: true,
+        author: true,
+        created: true,
+        plugins: true,
+        network: true,
+        strategies: {
+          name: true,
+          params: true
+        },
+        space: {
+          id: true,
+          name: true
+        }
+      }),
       client.getVotes(space.key, id),
       getBlockNumber(provider)
     ]);
     console.timeEnd('getProposal.data');
-    const [, votes, blockNumber] = response;
-    const proposal = response[0].proposal;
+    const [proposal, votes, blockNumber] = response;
     proposal.ipfsHash = id;
     return { proposal, votes, blockNumber };
   } catch (e) {

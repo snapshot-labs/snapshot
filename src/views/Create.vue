@@ -151,7 +151,7 @@ import draggable from 'vuedraggable';
 import { getScores } from '@snapshot-labs/snapshot.js/src/utils';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import { getBlockNumber } from '@snapshot-labs/snapshot.js/src/utils/web3';
-import { proposalQuery } from '@/helpers/graph';
+import { proposalQuery } from '@/helpers/graphql';
 
 export default {
   components: {
@@ -166,14 +166,13 @@ export default {
       blockNumber: -1,
       bodyLimit: 1e4,
       form: {
-        name: '',
+        title: '',
         body: '',
         choices: [],
         start: '',
         end: '',
         snapshot: '',
-        network: '',
-        strategies: []
+        metadata: {}
       },
       modalOpen: false,
       modalProposalPluginsOpen: false,
@@ -217,7 +216,7 @@ export default {
       return (
         !this.loading &&
         this.web3.account &&
-        this.form.name &&
+        this.form.title &&
         this.form.body &&
         this.form.body.length <= this.bodyLimit &&
         this.form.start &&
@@ -245,10 +244,27 @@ export default {
       this.getUserScore();
     if (this.from) {
       try {
-        const proposal = await proposalQuery(this.from);
-
-        this.form = proposal.proposal;
-        this.choices = proposal.proposal.choices.map((text, key) => ({
+        const proposal = await proposalQuery({
+          __args: {
+            id: this.from
+          },
+          title: true,
+          body: true,
+          choices: true,
+          start: true,
+          end: true,
+          snapshot: true,
+          plugins: true,
+          network: true,
+          strategies: {
+            name: true,
+            params: true
+          }
+        });
+        this.form = proposal;
+        const { network, strategies } = proposal;
+        this.form.metadata = { network, strategies };
+        this.choices = proposal.choices.map((text, key) => ({
           key,
           text
         }));
@@ -276,8 +292,8 @@ export default {
     async handleSubmit() {
       this.loading = true;
       this.form.choices = this.choices.map(choice => choice.text);
-      this.form.network = this.space.network;
-      this.form.strategies = this.space.strategies;
+      this.form.metadata.network = this.space.network;
+      this.form.metadata.strategies = this.space.strategies;
       try {
         const { ipfsHash } = await this.send({
           space: this.space.key,
