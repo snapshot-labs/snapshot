@@ -15,6 +15,12 @@
       By {{ _shorten(proposal.address) }}
       <Badges :address="proposal.address" :space="space" class="ml-n1" />
       <span
+        v-if="isDao"
+        class="ml-1"
+        v-text="`${proposal.score} Votes`"
+      />
+      <span
+        v-else
         class="ml-1"
         v-text="`${_numeral(proposal.score)} ${space.symbol}`"
       />
@@ -42,6 +48,9 @@ export default {
         this.verified.length > 0 &&
         this.verified.includes(this.proposal.address)
       );
+    },
+    isDao() {
+      return ['dao-mainnet', 'dao-testnet'].indexOf(this.space.key) > -1;
     }
   }
 };

@@ -5,14 +5,18 @@
     </template>
     <div class="d-flex flex-column flex-auto">
       <h4 class="m-4 mb-0 text-center">
-        Are you sure you want to vote "{{
-          proposal.msg.payload.choices[selectedChoice - 1]
-        }}"? <br />This action <b>cannot</b> be undone.
+        Are you sure you want to vote {{
+          selectedChoiceSet.length === 1
+            ? '"' + proposal.msg.payload.choices[selectedChoice - 1] + '"'
+            : 'them'
+        }}? <br />This action <b>cannot</b> be undone.
       </h4>
       <div class="m-4 p-4 border rounded-2 text-white">
         <div class="d-flex">
           <span v-text="'Option'" class="flex-auto text-gray mr-1" />
-          {{ proposal.msg.payload.choices[selectedChoice - 1] }}
+          <template v-for="choice in selectedChoiceSet">
+            {{ proposal.msg.payload.choices[choice - 1] + '\n' }}
+          </template>
         </div>
         <div class="d-flex">
           <span v-text="'Snapshot'" class="flex-auto text-gray mr-1" />
@@ -27,7 +31,13 @@
             <Icon name="external-link" class="ml-1" />
           </a>
         </div>
-        <div class="d-flex">
+        <div class="d-flex" v-if="isDao">
+          <span v-text="'Your voting count'" class="flex-auto text-gray mr-1" />
+          <span class="tooltipped tooltipped-nw">
+            {{ selectedChoiceSet.length }} Vote
+          </span>
+        </div>
+        <div class="d-flex" v-else>
           <span v-text="'Your voting power'" class="flex-auto text-gray mr-1" />
           <span
             class="tooltipped tooltipped-nw"
@@ -81,12 +91,18 @@ export default {
   emits: ['reload', 'close'],
   data() {
     return {
-      loading: false
+      loading: false,
     };
   },
   computed: {
     symbols() {
       return this.space.strategies.map(strategy => strategy.params.symbol);
+    },
+    isDao() {
+      return ['dao-mainnet', 'dao-testnet'].indexOf(this.space.key) > -1;
+    },
+    selectedChoiceSet() {
+      return this.selectedChoice.split('-');
     }
   },
   methods: {

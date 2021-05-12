@@ -152,6 +152,9 @@ export default {
     },
     isEns() {
       return this.key.includes('.eth') || this.key.includes('.xyz');
+    },
+    isDao() {
+      return ['dao-mainnet', 'dao-testnet'].indexOf(this.key) > -1;
     }
   },
   methods: {

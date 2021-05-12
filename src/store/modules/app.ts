@@ -231,22 +231,29 @@ const actions = {
       let proposals: any = await client.request(`${space.key}/proposals`);
       if (proposals) {
         let scores: any;
-        if (['staking-mainnet', 'staking-testnet'].indexOf(space.key) > -1) {
+        if (['staking-mainnet', 'staking-testnet', 'dao-mainnet', 'dao-testnet'].indexOf(space.key) > -1) {
           scores = [
             Object.values(proposals).reduce((acc: any, proposal: any) => {
               const validator = state.validators.find(v =>
                 isAddressEqual(v.address, proposal.address)
               );
 
-              return {
-                ...acc,
-                [proposal.address]: validator
-                  ? Number(ones(validator.total_stake))
-                  : Number(ones(0)) // TODO: test only
-              };
+              if (space.key.includes('dao')) {
+                return {
+                  ...acc,
+                  [proposal.address]: validator ? 1 : 0
+                };
+              } else {
+                return {
+                  ...acc,
+                  [proposal.address]: validator
+                    ? Number(ones(validator.total_stake))
+                    : Number(ones(0))
+                };
+              }
             }, {})
           ];
-          console.log('harmony scores: ', scores);
+          console.log('harmony staked scores: ', scores);
         } else {
           scores = await getScores(
             space.key,
@@ -298,11 +305,23 @@ const actions = {
       let profiles: any;
       let totalStaked = 0;
 
-      if (['staking-mainnet', 'staking-testnet'].indexOf(space.key) > -1) {
+      if (['staking-mainnet', 'staking-testnet', 'dao-mainnet', 'dao-testnet'].indexOf(space.key) > -1) {
         if (!state.validators || !state.validators.length) {
           await dispatch('getValidators', space.key);
         }
         commit('SET', { epoch: '' });
+
+        state.validators.push({
+          address: 'one1ncyrmlvqela83ra9f4e29f2c4q0kyrq89mz4c7',
+          active: true,
+          apr: 1,
+          hasLogo: true,
+          identity: "11111", // "Moonstake"
+          name: "1111", // "Moonstake"
+          rate: "0.100000000000000000", // "0.100000000000000000"
+          total_stake: "8466571117002000000000000", // "8466571117002000000000000"
+          uptime_percentage:  0.9994578043619792
+        });
 
         const endDate = proposal.msg.payload.end * 1000;
         let validators: any = [];
@@ -375,12 +394,19 @@ const actions = {
                 );
               }
 
-              return {
-                ...acc,
-                [addr]: validator
-                  ? Number(ones(validator.totalStake || validator.total_stake))
-                  : Number(ones(0)) // TODO: test only
-              };
+              if (space.key.includes('dao')) {
+                return {
+                  ...acc,
+                  [addr]: validator ? 1 : 0
+                };
+              } else {
+                return {
+                  ...acc,
+                  [addr]: validator
+                    ? Number(ones(validator.totalStake || validator.total_stake))
+                    : Number(ones(0))
+                };
+              }
             }, {})
           ]),
           getProfiles([proposal.address, ...voters])
@@ -428,32 +454,49 @@ const actions = {
       );
 
       /* Get results */
+      let votesResult: any[] = [];
+      if (['dao-mainnet', 'dao-testnet'].indexOf(space.key) > -1) {
+        for (const address in votes) {
+          const choices = votes[address].msg.payload.choice.split('-');
+          for (const choiceIndex in choices) {
+            // deep copy vote result warp
+            const voteItem = JSON.parse(JSON.stringify(votes[address]));
+            voteItem.msg.payload.choice = parseInt(choices[choiceIndex]);
+            votesResult.push(voteItem);
+          }
+        }
+      } else {
+        votesResult = votes;
+      }
+
+      console.log('votesResult: ', votesResult);
+
       const results = {
         totalStaked: ones(totalStaked).toFixed(0),
         totalVotes: proposal.msg.payload.choices.map(
           (choice, i) =>
-            Object.values(votes).filter(
+            Object.values(votesResult).filter(
               (vote: any) => vote.msg.payload.choice === i + 1
             ).length
         ),
         totalBalances: proposal.msg.payload.choices.map((choice, i) =>
-          Object.values(votes)
+          Object.values(votesResult)
             .filter((vote: any) => vote.msg.payload.choice === i + 1)
             .reduce((a, b: any) => a + b.balance, 0)
         ),
         totalScores: proposal.msg.payload.choices.map((choice, i) =>
           space.strategies.map((strategy, sI) =>
-            Object.values(votes)
+            Object.values(votesResult)
               .filter((vote: any) => vote.msg.payload.choice === i + 1)
               .reduce((a, b: any) => a + b.scores[sI], 0)
           )
         ),
-        totalVotesBalances: Object.values(votes).reduce(
+        totalVotesBalances: Object.values(votesResult).reduce(
           (a, b: any) => a + b.balance,
           0
         )
       };
-
+      console.log('proposal: ', proposal);
       commit('GET_PROPOSAL_SUCCESS');
       return { proposal, votes, results };
     } catch (e) {
@@ -471,7 +514,15 @@ const actions = {
             new HarmonyAddress(address).checksum
         );
 
-        scores = [validator ? ones(validator.total_stake) : ones(0)]; // TODO: test only
+        scores = [validator ? ones(validator.total_stake) : ones(0)];
+      } else if (['dao-mainnet', 'dao-testnet'].indexOf(space.key) > -1) {
+        const validator = state.validators.find(
+          v =>
+            new HarmonyAddress(v.address).checksum ===
+            new HarmonyAddress(address).checksum
+        );
+
+        scores = [validator ? 1 : 0];
       } else {
         const blockNumber = await getBlockNumber(getProvider(space.network));
         const addressHex = new HarmonyAddress(address).checksum;
@@ -493,6 +544,7 @@ const actions = {
       }
 
       commit('GET_POWER_SUCCESS');
+      console.log('scores: ', scores);
       return {
         scores,
         totalScore: scores.reduce((a, b: any) => a + b, 0)
