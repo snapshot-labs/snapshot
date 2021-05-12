@@ -244,7 +244,7 @@ export default {
       this.getUserScore();
     if (this.from) {
       try {
-        const proposal = await proposalQuery(this.form);
+        const proposal = await proposalQuery(this.from);
         const { title, body, choices, start, end, snapshot } = proposal;
         this.form = {
           name: title,
