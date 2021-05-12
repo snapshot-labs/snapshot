@@ -26,7 +26,7 @@
       <div class="px-4 px-md-0">
         <div class="d-flex flex-column mb-6">
           <input
-            v-model="form.title"
+            v-model="form.name"
             maxlength="128"
             class="h1 mb-2 input"
             :placeholder="$t('create.question')"
@@ -166,7 +166,7 @@ export default {
       blockNumber: -1,
       bodyLimit: 1e4,
       form: {
-        title: '',
+        name: '',
         body: '',
         choices: [],
         start: '',
@@ -216,7 +216,7 @@ export default {
       return (
         !this.loading &&
         this.web3.account &&
-        this.form.title &&
+        this.form.name &&
         this.form.body &&
         this.form.body.length <= this.bodyLimit &&
         this.form.start &&
@@ -244,26 +244,18 @@ export default {
       this.getUserScore();
     if (this.from) {
       try {
-        const proposal = await proposalQuery({
-          __args: {
-            id: this.from
-          },
-          title: true,
-          body: true,
-          choices: true,
-          start: true,
-          end: true,
-          snapshot: true,
-          plugins: true,
-          network: true,
-          strategies: {
-            name: true,
-            params: true
-          }
-        });
-        this.form = proposal;
-        const { network, strategies } = proposal;
-        this.form.metadata = { network, strategies };
+        const proposal = await proposalQuery(this.form);
+        const { title, body, choices, start, end, snapshot } = proposal;
+        this.form = {
+          name: title,
+          body,
+          choices,
+          start,
+          end,
+          snapshot
+        };
+        const { network, strategies, plugins } = proposal;
+        this.form.metadata = { network, strategies, plugins };
         this.choices = proposal.choices.map((text, key) => ({
           key,
           text

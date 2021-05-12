@@ -11,31 +11,7 @@ export async function getProposal(space, id) {
     console.time('getProposal.data');
     const provider = getProvider(space.network);
     const response = await Promise.all([
-      proposalQuery({
-        __args: {
-          id
-        },
-        id: true,
-        title: true,
-        body: true,
-        choices: true,
-        start: true,
-        end: true,
-        snapshot: true,
-        state: true,
-        author: true,
-        created: true,
-        plugins: true,
-        network: true,
-        strategies: {
-          name: true,
-          params: true
-        },
-        space: {
-          id: true,
-          name: true
-        }
-      }),
+      proposalQuery(id),
       client.getVotes(space.key, id),
       getBlockNumber(provider)
     ]);
