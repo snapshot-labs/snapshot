@@ -122,8 +122,8 @@
         </UiButton>
       </Block>
       <PluginDaoModuleCustomBlock
-        v-if="form.plugins?.daoModule?.txs"
-        :proposalConfig="form.plugins.daoModule"
+        v-if="form.metadata.plugins?.daoModule?.txs"
+        :proposalConfig="form.metadata.plugins.daoModule"
       />
     </template>
   </Layout>
@@ -138,7 +138,7 @@
     <ModalProposalPlugins
       :space="space"
       :proposal="{ ...form, choices }"
-      v-model="form.plugins"
+      v-model="form.metadata.plugins"
       :open="modalProposalPluginsOpen"
       @close="modalProposalPluginsOpen = false"
     />
