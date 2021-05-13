@@ -95,11 +95,14 @@
 <script>
 import { mapActions } from 'vuex';
 import { useModal } from '@/composables/useModal';
+import { useDomain } from '@/composables/useDomain';
 
 export default {
   setup() {
     const { modalAccountOpen } = useModal();
-    return { modalAccountOpen };
+    const { env } = useDomain();
+
+    return { modalAccountOpen, env };
   },
   data() {
     return {
