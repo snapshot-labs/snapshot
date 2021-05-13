@@ -14,7 +14,9 @@
             </h2>
           </div>
         </div>
-        <UiButton @click="newProposal()">{{ $t('proposals.new') }}</UiButton>
+        <UiButton @click="clickNewProposal()">{{
+          $t('proposals.new')
+        }}</UiButton>
         <router-link
           v-if="isMember && isEns"
           :to="{ name: 'settings', params: { key } }"
@@ -90,12 +92,12 @@ export default {
 
     const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(key);
 
-    function newProposal() {
+    function clickNewProposal() {
       if (termsAccepted.value) router.push({ name: 'create', params: { key } });
       else modalTermsOpen.value = true;
     }
 
-    return { key, newProposal, modalTermsOpen, acceptTerms };
+    return { key, clickNewProposal, modalTermsOpen, acceptTerms };
   },
   data() {
     return {
