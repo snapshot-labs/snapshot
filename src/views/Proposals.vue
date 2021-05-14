@@ -14,9 +14,9 @@
             </h2>
           </div>
         </div>
-        <UiButton @click="clickNewProposal()">{{
-          $t('proposals.new')
-        }}</UiButton>
+        <router-link :to="{ name: 'create', params: { key } }">
+          <UiButton>{{ $t('proposals.new') }}</UiButton>
+        </router-link>
         <router-link
           v-if="isMember && isEns"
           :to="{ name: 'settings', params: { key } }"
@@ -66,39 +66,13 @@
       </Block>
     </Container>
   </div>
-  <teleport to="#modal">
-    <ModalTerms
-      :open="modalTermsOpen"
-      :space="space"
-      @close="modalTermsOpen = false"
-      @accept="acceptTerms(), $router.push({ name: 'create', params: { key } })"
-    />
-  </teleport>
 </template>
 
 <script>
-import { useRouter, useRoute } from 'vue-router';
 import { filterProposals } from '@/helpers/utils';
 import { getProposals } from '@/helpers/snapshot';
-import { useDomain } from '@/composables/useDomain';
-import { useTerms } from '@/composables/useTerms';
 
 export default {
-  setup() {
-    const router = useRouter();
-    const route = useRoute();
-    const { domain } = useDomain();
-    const key = domain || route.params.key;
-
-    const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(key);
-
-    function clickNewProposal() {
-      if (termsAccepted.value) router.push({ name: 'create', params: { key } });
-      else modalTermsOpen.value = true;
-    }
-
-    return { key, clickNewProposal, modalTermsOpen, acceptTerms };
-  },
   data() {
     return {
       loading: false,
@@ -108,6 +82,9 @@ export default {
     };
   },
   computed: {
+    key() {
+      return this.domain || this.$route.params.key;
+    },
     space() {
       return this.app.spaces[this.key];
     },
