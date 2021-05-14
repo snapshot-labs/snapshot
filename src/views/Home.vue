@@ -72,7 +72,7 @@
 </template>
 
 <script>
-import { onMounted, ref, computed } from 'vue';
+import { onMounted, ref, computed, watchEffect } from 'vue';
 import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
 import orderBy from 'lodash/orderBy';
@@ -111,8 +111,8 @@ export default {
     });
 
     // Get number of unseen proposals
-    const { numberOfUnseenProposals } = useUnseenProposals();
-    // watchEffect(() => getProposalIds(favorites.value));
+    const { numberOfUnseenProposals, getProposalIds } = useUnseenProposals();
+    watchEffect(() => getProposalIds(favorites.value));
 
     // Favorites
     const addFavoriteSpace = spaceId =>

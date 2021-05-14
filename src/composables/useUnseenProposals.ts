@@ -35,7 +35,9 @@ export function useUnseenProposals() {
     const index = proposalIds.value
       .map((proposal: { id: string }) => proposal.id)
       .indexOf(lsGet('lastSeenProposalId', ''));
-    return index < 0 ? proposalIds.value.length : index;
+    const numberOfUnseen = index < 0 ? proposalIds.value.length : index;
+
+    return numberOfUnseen > 99 ? '99+' : numberOfUnseen;
   });
 
   return { getProposalIds, numberOfUnseenProposals, proposalIds };
