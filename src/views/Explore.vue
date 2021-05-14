@@ -4,7 +4,7 @@
       <Container class="d-flex flex-items-center">
         <div class="flex-auto text-left col-lg-8">
           <UiButton class="pl-3 col-12 col-lg-7 pr-0">
-            <SearchWithFilters v-model="q" />
+            <SearchWithFilters />
           </UiButton>
         </div>
         <div class="ml-3 text-right hide-sm col-lg-4">
@@ -38,12 +38,11 @@
           />
         </template>
         <template v-if="route.name === 'networks'">
-          <BlockNetwork
-            v-for="item in items.slice(0, limit)"
-            :key="item.key"
-            :network="item"
-            class="mb-3"
-          />
+          <template v-for="item in items.slice(0, limit)" :key="item.key">
+            <router-link :to="`/?network=${item.key}`">
+              <BlockNetwork :network="item" class="mb-3" />
+            </router-link>
+          </template>
         </template>
         <template v-if="route.name === 'plugins'">
           <BlockPlugin
@@ -73,8 +72,6 @@ export default {
     const route = useRoute();
 
     // Explore
-    const q = ref(route.query.q || '');
-
     const buttonStr = computed(() => {
       if (route.name === 'strategies') return t('explore.createStrategy');
       if (route.name === 'skins') return t('explore.createSkin');
@@ -99,10 +96,11 @@ export default {
     } = useSearchFilters();
 
     const items = computed(() => {
-      if (route.name === 'strategies') return filteredStrategies(q.value);
-      if (route.name === 'skins') return filteredSkins(q.value);
-      if (route.name === 'networks') return filteredNetworks(q.value);
-      if (route.name === 'plugins') return filteredPlugins(q.value);
+      const q = route.query.q || '';
+      if (route.name === 'strategies') return filteredStrategies(q);
+      if (route.name === 'skins') return filteredSkins(q);
+      if (route.name === 'networks') return filteredNetworks(q);
+      if (route.name === 'plugins') return filteredPlugins(q);
       return [];
     });
 
@@ -114,7 +112,7 @@ export default {
       scrollEndMonitor(() => (limit.value += loadBy));
     });
 
-    return { buttonStr, resultsStr, items, q, limit, route };
+    return { buttonStr, resultsStr, items, limit, route };
   }
 };
 </script>
