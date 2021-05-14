@@ -4,7 +4,7 @@
       <Container class="d-flex flex-items-center">
         <div class="flex-auto text-left d-flex">
           <UiButton class="pl-3 col-12 col-lg-7 pr-0">
-            <SearchWithFilters v-model="q" />
+            <SearchWithFilters />
           </UiButton>
           <router-link :to="{ name: 'timeline' }" class="ml-2">
             <UiButton class="no-wrap px-3">
@@ -84,12 +84,13 @@ export default {
   setup() {
     const store = useStore();
     const route = useRoute();
+
     const favorites = computed(() => store.state.favoriteSpaces.favorites);
     const stateSpaces = computed(() => store.state.app.spaces);
 
-    const q = ref(route.query.q || '');
-
     const spaces = computed(() => {
+      const networkFilter = route.query.network;
+      const q = route.query.q || '';
       const list = Object.keys(stateSpaces.value)
         .map(key => {
           const spotlightIndex = spotlight.indexOf(key);
@@ -101,12 +102,12 @@ export default {
           };
         })
         .filter(space => !space.private);
-      return orderBy(
-        list,
-        ['favorite', 'spotlight'],
-        ['desc', 'asc']
-      ).filter(space =>
-        JSON.stringify(space).toLowerCase().includes(q.value.toLowerCase())
+      return orderBy(list, ['favorite', 'spotlight'], ['desc', 'asc']).filter(
+        space =>
+          (networkFilter
+            ? space.network === networkFilter.toLowerCase()
+            : true) &&
+          JSON.stringify(space).toLowerCase().includes(q.toLowerCase())
       );
     });
 
@@ -136,7 +137,7 @@ export default {
       scrollEndMonitor(() => (limit.value += loadBy));
     });
 
-    return { q, limit, spaces, toggleFavorite, numberOfUnseenProposals };
+    return { limit, spaces, toggleFavorite, numberOfUnseenProposals };
   }
 };
 </script>
