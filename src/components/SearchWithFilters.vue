@@ -28,7 +28,7 @@ export default {
     redirectSearch(e) {
       this.$router.push({
         name: e,
-        query: this.modelValue ? { q: this.modelValue } : {}
+        query: this.routeQuery ? { q: this.routeQuery } : {}
       });
     }
   },
