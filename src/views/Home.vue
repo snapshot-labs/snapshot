@@ -4,7 +4,7 @@
       <Container class="d-flex flex-items-center">
         <div class="flex-auto text-left d-flex">
           <UiButton class="pl-3 col-12 col-lg-7 pr-0">
-            <SearchWithFilters v-model="spaces.searchString" />
+            <SearchWithFilters />
           </UiButton>
           <router-link :to="{ name: 'timeline' }" class="ml-2">
             <UiButton class="no-wrap px-3">
@@ -84,13 +84,13 @@ export default {
   setup() {
     const store = useStore();
     const route = useRoute();
+
     const favorites = computed(() => store.state.favoriteSpaces.favorites);
     const stateSpaces = computed(() => store.state.app.spaces);
+    const q = computed(() => route.query.q || '');
+    const networkFilter = computed(() => route.query.network);
 
     const spaces = computed(() => {
-      const searchString = route.query.q || '';
-      const networkFilter = route.query.network || '';
-
       const list = Object.keys(stateSpaces.value)
         .map(key => {
           const spotlightIndex = spotlight.indexOf(key);
@@ -103,19 +103,16 @@ export default {
         })
         .filter(space => !space.private);
       return {
-        searchString,
         filteredSpaces: orderBy(
           list,
           ['favorite', 'spotlight'],
           ['desc', 'asc']
         ).filter(
           space =>
-            (networkFilter
-              ? space.network === networkFilter.toLowerCase()
+            (networkFilter.value
+              ? space.network === networkFilter.value.toLowerCase()
               : true) &&
-            JSON.stringify(space)
-              .toLowerCase()
-              .includes(searchString.toLowerCase())
+            JSON.stringify(space).toLowerCase().includes(q.value.toLowerCase())
         )
       };
     });

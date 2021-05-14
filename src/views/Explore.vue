@@ -4,7 +4,7 @@
       <Container class="d-flex flex-items-center">
         <div class="flex-auto text-left col-lg-8">
           <UiButton class="pl-3 col-12 col-lg-7 pr-0">
-            <SearchWithFilters v-model="q" />
+            <SearchWithFilters />
           </UiButton>
         </div>
         <div class="ml-3 text-right hide-sm col-lg-4">
@@ -72,7 +72,7 @@ export default {
     const route = useRoute();
 
     // Explore
-    const q = ref(route.query.q || '');
+    const q = computed(() => route.query.q || '');
 
     const buttonStr = computed(() => {
       if (route.name === 'strategies') return t('explore.createStrategy');
@@ -113,7 +113,7 @@ export default {
       scrollEndMonitor(() => (limit.value += loadBy));
     });
 
-    return { buttonStr, resultsStr, items, q, limit, route };
+    return { buttonStr, resultsStr, items, limit, route };
   }
 };
 </script>
