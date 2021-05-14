@@ -1,26 +1,22 @@
 import { getBlockNumber } from '@snapshot-labs/snapshot.js/src/utils/web3';
-import { ipfsGet, getScores } from '@snapshot-labs/snapshot.js/src/utils';
-import { formatProposal, formatProposals } from '@/helpers/utils';
+import { getScores } from '@snapshot-labs/snapshot.js/src/utils';
+import { formatProposals } from '@/helpers/utils';
 import { getProfiles } from '@/helpers/profile';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
-import gateways from '@snapshot-labs/snapshot.js/src/gateways.json';
 import client from '@/helpers/client';
-
-const gateway = process.env.VUE_APP_IPFS_GATEWAY || gateways[0];
+import { proposalQuery } from '@/helpers/graphql';
 
 export async function getProposal(space, id) {
   try {
     console.time('getProposal.data');
     const provider = getProvider(space.network);
     const response = await Promise.all([
-      ipfsGet(gateway, id),
+      proposalQuery(id),
       client.getVotes(space.key, id),
       getBlockNumber(provider)
     ]);
     console.timeEnd('getProposal.data');
-    const [, votes, blockNumber] = response;
-    let [proposal]: any = response;
-    proposal = formatProposal(proposal);
+    const [proposal, votes, blockNumber] = response;
     proposal.ipfsHash = id;
     return { proposal, votes, blockNumber };
   } catch (e) {
@@ -33,8 +29,8 @@ export async function getResults(space, proposal, votes, blockNumber) {
   try {
     const provider = getProvider(space.network);
     const voters = Object.keys(votes);
-    const { snapshot } = proposal.msg.payload;
-    const blockTag = snapshot > blockNumber ? 'latest' : parseInt(snapshot);
+    const blockTag =
+      proposal.snapshot > blockNumber ? 'latest' : parseInt(proposal.snapshot);
 
     /* Get scores */
     console.time('getProposal.scores');
@@ -48,12 +44,12 @@ export async function getResults(space, proposal, votes, blockNumber) {
         // @ts-ignore
         blockTag
       ),
-      getProfiles([proposal.address, ...voters])
+      getProfiles([proposal.author, ...voters])
     ]);
     console.timeEnd('getProposal.scores');
     console.log('Scores', scores);
 
-    const authorProfile = profiles[proposal.address];
+    const authorProfile = profiles[proposal.author];
     voters.forEach(address => {
       votes[address].profile = profiles[address];
     });
@@ -74,18 +70,18 @@ export async function getResults(space, proposal, votes, blockNumber) {
 
     /* Get results */
     const results = {
-      totalVotes: proposal.msg.payload.choices.map(
+      totalVotes: proposal.choices.map(
         (choice, i) =>
           Object.values(votes).filter(
             (vote: any) => vote.msg.payload.choice === i + 1
           ).length
       ),
-      totalBalances: proposal.msg.payload.choices.map((choice, i) =>
+      totalBalances: proposal.choices.map((choice, i) =>
         Object.values(votes)
           .filter((vote: any) => vote.msg.payload.choice === i + 1)
           .reduce((a, b: any) => a + b.balance, 0)
       ),
-      totalScores: proposal.msg.payload.choices.map((choice, i) =>
+      totalScores: proposal.choices.map((choice, i) =>
         space.strategies.map((strategy, sI) =>
           Object.values(votes)
             .filter((vote: any) => vote.msg.payload.choice === i + 1)
