@@ -72,8 +72,6 @@ export default {
     const route = useRoute();
 
     // Explore
-    const q = computed(() => route.query.q || '');
-
     const buttonStr = computed(() => {
       if (route.name === 'strategies') return t('explore.createStrategy');
       if (route.name === 'skins') return t('explore.createSkin');
@@ -98,6 +96,7 @@ export default {
     } = useSearchFilters();
 
     const items = computed(() => {
+      const q = route.query.q || '';
       if (route.name === 'strategies') return filteredStrategies(q.value);
       if (route.name === 'skins') return filteredSkins(q.value);
       if (route.name === 'networks') return filteredNetworks(q.value);

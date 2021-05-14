@@ -87,10 +87,10 @@ export default {
 
     const favorites = computed(() => store.state.favoriteSpaces.favorites);
     const stateSpaces = computed(() => store.state.app.spaces);
-    const q = computed(() => route.query.q || '');
-    const networkFilter = computed(() => route.query.network);
 
     const spaces = computed(() => {
+      const networkFilter = route.query.network;
+      const q = route.query.q || '';
       const list = Object.keys(stateSpaces.value)
         .map(key => {
           const spotlightIndex = spotlight.indexOf(key);
@@ -109,10 +109,10 @@ export default {
           ['desc', 'asc']
         ).filter(
           space =>
-            (networkFilter.value
-              ? space.network === networkFilter.value.toLowerCase()
+            (networkFilter
+              ? space.network === networkFilter.toLowerCase()
               : true) &&
-            JSON.stringify(space).toLowerCase().includes(q.value.toLowerCase())
+            JSON.stringify(space).toLowerCase().includes(q.toLowerCase())
         )
       };
     });
