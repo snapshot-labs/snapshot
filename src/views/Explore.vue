@@ -97,10 +97,10 @@ export default {
 
     const items = computed(() => {
       const q = route.query.q || '';
-      if (route.name === 'strategies') return filteredStrategies(q.value);
-      if (route.name === 'skins') return filteredSkins(q.value);
-      if (route.name === 'networks') return filteredNetworks(q.value);
-      if (route.name === 'plugins') return filteredPlugins(q.value);
+      if (route.name === 'strategies') return filteredStrategies(q);
+      if (route.name === 'skins') return filteredSkins(q);
+      if (route.name === 'networks') return filteredNetworks(q);
+      if (route.name === 'plugins') return filteredPlugins(q);
       return [];
     });
 
