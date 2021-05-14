@@ -17,7 +17,7 @@
   "snapshot": "Snapshot",
   "strategies": "策略",
   "strategiesPage": "策略",
-  "spaces": "Spaces",
+  "spaces": "空间",
   "version": "版本",
   "timeline": "时间轴",
   "filters": "过滤器",
@@ -89,7 +89,7 @@
   "startIn": "从 {0} 开始",
   "endIn": "结束 {1}",
   "endedAgo": "结束 {1}",
-  "proposalBy": "By {0}",
+  "proposalBy": "由 {0}",
   "endDate": "结束 {0}",
   "contectHash": "内容散列",
   "defaultSkin": "默认皮肤",
@@ -102,7 +102,7 @@
     "pattern": "无效字符",
     "minItems": "最少需要 {0} 个项目",
     "minStrategy": "至少需要一个策略。",
-    "format": "Invalid format"
+    "format": "格式无效"
   },
   "create": {
     "question": "问题",
@@ -154,7 +154,7 @@
     "changeAvatar": "修改头像",
     "name": "名称",
     "about": "关于",
-    "terms": "Terms",
+    "terms": "使用条款",
     "network": "网络",
     "symbol": "符号",
     "skin": "皮肤",
@@ -163,7 +163,7 @@
     "hideSpace": "从主页隐藏空间",
     "addStrategy": "添加策略",
     "members": "成员",
-    "admins": "Admins",
+    "admins": "管理员",
     "filters": "过滤器",
     "defaultTab": "默认标签页",
     "minScore": "最小得分",
@@ -185,14 +185,14 @@
     "somethingWentWrong": "哎呀，似乎出了点问题"
   },
   "explore": {
-    "createStrategy": "Create strategy",
-    "createSkin": "Create skin",
-    "addNetwork": "Add network",
-    "createPlugin": "Create plugin",
-    "strategies": "strategie(s)",
-    "skins": "skin(s)",
-    "networks": "network(s)",
-    "plugins": "plugin(s)",
-    "results": "result(s)"
+    "createStrategy": "创建策略",
+    "createSkin": "创建新皮肤",
+    "addNetwork": "添加网络",
+    "createPlugin": "创建插件",
+    "strategies": "策略",
+    "skins": "皮肤",
+    "networks": "网络",
+    "plugins": "插件",
+    "results": "结果"
   }
 }
