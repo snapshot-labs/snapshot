@@ -14,7 +14,7 @@
           </router-link>
         </div>
         <div class="ml-3 text-right hide-sm col-lg-4">
-          {{ $tc('spaceCount', [_n(spaces.filteredSpaces.length)]) }}
+          {{ $tc('spaceCount', [_n(spaces.length)]) }}
           <router-link :to="{ name: 'setup' }" class="hide-md ml-3">
             <UiButton>{{ $t('createSpace') }}</UiButton>
           </router-link>
@@ -24,7 +24,7 @@
     <Container :slim="true">
       <div class="overflow-hidden mr-n4">
         <router-link
-          v-for="space in spaces.filteredSpaces.slice(0, limit)"
+          v-for="space in spaces.slice(0, limit)"
           :key="space.key"
           :to="{ name: 'proposals', params: { key: space.key } }"
         >
@@ -62,7 +62,7 @@
 
         <NoResults
           :block="true"
-          v-if="Object.keys(spaces.filteredSpaces).length < 1"
+          v-if="Object.keys(spaces).length < 1"
           class="pr-md-4"
         />
       </div>
@@ -102,19 +102,13 @@ export default {
           };
         })
         .filter(space => !space.private);
-      return {
-        filteredSpaces: orderBy(
-          list,
-          ['favorite', 'spotlight'],
-          ['desc', 'asc']
-        ).filter(
-          space =>
-            (networkFilter
-              ? space.network === networkFilter.toLowerCase()
-              : true) &&
-            JSON.stringify(space).toLowerCase().includes(q.toLowerCase())
-        )
-      };
+      return orderBy(list, ['favorite', 'spotlight'], ['desc', 'asc']).filter(
+        space =>
+          (networkFilter
+            ? space.network === networkFilter.toLowerCase()
+            : true) &&
+          JSON.stringify(space).toLowerCase().includes(q.toLowerCase())
+      );
     });
 
     // Get number of unseen proposals
