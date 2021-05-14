@@ -1,7 +1,7 @@
 <template>
   <div class="d-flex">
     <Search
-      :modelValue="modelValue"
+      :modelValue="routeQuery"
       @update:modelValue="input => $emit('update:modelValue', input)"
       :placeholder="$t('searchPlaceholder')"
       class="flex-auto pr-2"
@@ -24,12 +24,11 @@
 
 <script>
 export default {
-  props: ['modelValue'],
   methods: {
     redirectSearch(e) {
       this.$router.push({
         name: e,
-        query: this.modelValue ? { q: this.modelValue } : {}
+        query: this.routeQuery ? { q: this.routeQuery } : {}
       });
     }
   },
@@ -63,6 +62,9 @@ export default {
           action: 'skins'
         }
       ];
+    },
+    routeQuery() {
+      return this.$route.query.q;
     }
   }
 };
