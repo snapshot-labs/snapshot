@@ -276,10 +276,6 @@ export default {
       const proposalObj = await getProposal(this.space, this.id);
       const { proposal, votes, blockNumber } = proposalObj;
       this.proposal = proposal;
-      console.log(
-        '🚀 ~ file: Proposal.vue ~ line 279 ~ loadProposal ~ proposal',
-        proposal
-      );
       this.loaded = true;
       const resultsObj = await getResults(
         this.space,
