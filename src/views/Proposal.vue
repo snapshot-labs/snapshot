@@ -164,7 +164,7 @@
               </a>
             </div>
             <div class="mb-1" v-if="payload.maxCanSelect > 1">
-              <b>Maximum can vote</b>
+              <b>Max selections</b>
               <span class="float-right text-white">{{ payload.maxCanSelect }}</span>
             </div>
             <template v-if="isHarmonySpace">

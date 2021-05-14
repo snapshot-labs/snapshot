@@ -126,7 +126,7 @@
                 v-model="form.maxCanSelect"
                 type="number"
                 class="input width-full text-center"
-                placeholder="Maximum can vote"
+                placeholder="Max selections"
               />
             </UiButton>
           </div>
