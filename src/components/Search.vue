@@ -26,11 +26,19 @@ export default {
   methods: {
     handleInput(e) {
       const input = e.target.value;
-      if (!this.modal) this.$router.push({ query: input ? { q: input } : {} });
+      if (!this.modal) {
+        const { query } = this.$router.currentRoute.value;
+        this.$router.push({
+          query: input ? { ...query, q: input } : { ...query, q: undefined }
+        });
+      }
       this.$emit('update:modelValue', input);
     },
     clearInput() {
-      if (!this.modal) this.$router.push({});
+      if (!this.modal) {
+        const { query } = this.$router.currentRoute.value;
+        this.$router.push({ query: { ...query, q: undefined } });
+      }
       this.$emit('update:modelValue', '');
     }
   }
