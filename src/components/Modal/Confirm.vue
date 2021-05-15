@@ -5,27 +5,23 @@
     </template>
     <div class="d-flex flex-column flex-auto">
       <h4 class="m-4 mb-0 text-center">
-        {{
-          $tc('sureToVote', [proposal.msg.payload.choices[selectedChoice - 1]])
-        }}
+        {{ $tc('sureToVote', [proposal.choices[selectedChoice - 1]]) }}
         <br />
         {{ $t('cannotBeUndone') }}
       </h4>
       <div class="m-4 p-4 border rounded-2 text-white">
         <div class="d-flex">
           <span v-text="$t('option')" class="flex-auto text-gray mr-1" />
-          {{ proposal.msg.payload.choices[selectedChoice - 1] }}
+          {{ proposal.choices[selectedChoice - 1] }}
         </div>
         <div class="d-flex">
           <span v-text="$t('snapshot')" class="flex-auto text-gray mr-1" />
           <a
-            :href="
-              _explorer(space.network, proposal.msg.payload.snapshot, 'block')
-            "
+            :href="_explorer(space.network, proposal.snapshot, 'block')"
             target="_blank"
             class="float-right"
           >
-            {{ _n(proposal.msg.payload.snapshot, '0,0') }}
+            {{ _n(proposal.snapshot, '0,0') }}
             <Icon name="external-link" class="ml-1" />
           </a>
         </div>
