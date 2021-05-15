@@ -1,6 +1,6 @@
 <template>
   <Block
-    v-if="plugins.length > 0 && ts >= payload.end"
+    v-if="plugins.length > 0 && ts >= proposal.end"
     :title="'Actions'"
     :loading="!loaded"
   >
@@ -24,7 +24,7 @@ import { mapActions } from 'vuex';
 import plugins from '@snapshot-labs/snapshot.js/src/plugins';
 
 export default {
-  props: ['id', 'space', 'payload', 'results', 'loaded'],
+  props: ['id', 'space', 'proposal', 'results', 'loaded'],
   data() {
     return {
       loading: false
@@ -60,7 +60,7 @@ export default {
           this.web3.network.key,
           this.$auth.web3,
           this.space.plugins[plugin],
-          this.payload.metadata.plugins[plugin],
+          this.proposal.plugins[plugin],
           this.id,
           this.winningChoice
         );
