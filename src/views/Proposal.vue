@@ -13,11 +13,11 @@
       <div class="px-4 px-md-0">
         <template v-if="loaded">
           <h1 class="mb-2">
-            {{ payload.name }}
+            {{ proposal.title }}
             <span v-text="`#${id.slice(0, 7)}`" class="text-gray" />
           </h1>
           <div class="mb-4">
-            <State :proposal="proposal" />
+            <UiState :state="proposal.state" />
             <UiDropdown
               top="2.2rem"
               right="1.3rem"
@@ -37,18 +37,18 @@
               </div>
             </UiDropdown>
           </div>
-          <UiMarkdown :body="payload.body" class="mb-6" />
+          <UiMarkdown :body="proposal.body" class="mb-6" />
         </template>
         <PageLoading v-else />
       </div>
       <Block
-        v-if="loaded && ts >= payload.start && ts < payload.end"
+        v-if="loaded && ts >= proposal.start && ts < proposal.end"
         class="mb-4"
         :title="$t('proposal.castVote')"
       >
         <div class="mb-3">
           <UiButton
-            v-for="(choice, i) in payload.choices"
+            v-for="(choice, i) in proposal.choices"
             :key="i"
             @click="selectedChoice = i + 1"
             class="d-block width-full mb-2"
@@ -56,16 +56,14 @@
           >
             {{ _shorten(choice, 32) }}
             <a
-              v-if="payload.metadata.plugins?.aragon?.[`choice${[i + 1]}`]"
+              v-if="proposal.plugins?.aragon?.[`choice${[i + 1]}`]"
               @click="modalOpen = true"
               :aria-label="`Target address: ${
-                payload.metadata.plugins.aragon[`choice${i + 1}`].actions[0].to
+                proposal.plugins.aragon[`choice${i + 1}`].actions[0].to
               }\nValue: ${
-                payload.metadata.plugins.aragon[`choice${i + 1}`].actions[0]
-                  .value
+                proposal.plugins.aragon[`choice${i + 1}`].actions[0].value
               }\nData: ${
-                payload.metadata.plugins.aragon[`choice${i + 1}`].actions[0]
-                  .data
+                proposal.plugins.aragon[`choice${i + 1}`].actions[0].data
               }`"
               class="tooltipped tooltipped-n break-word"
             >
@@ -109,7 +107,7 @@
         <div class="mb-1">
           <b>{{ $t('author') }}</b>
           <User
-            :address="proposal.address"
+            :address="proposal.author"
             :profile="proposal.profile"
             :space="space"
             class="float-right"
@@ -130,27 +128,27 @@
           <div class="mb-1">
             <b>{{ $t('proposal.startDate') }}</b>
             <span
-              :aria-label="_ms(payload.start)"
-              v-text="$d(payload.start * 1e3, 'short', 'en-US')"
+              :aria-label="_ms(proposal.start)"
+              v-text="$d(proposal.start * 1e3, 'short', 'en-US')"
               class="float-right text-white tooltipped tooltipped-n"
             />
           </div>
           <div class="mb-1">
             <b>{{ $t('proposal.endDate') }}</b>
             <span
-              :aria-label="_ms(payload.end)"
-              v-text="$d(payload.end * 1e3, 'short', 'en-US')"
+              :aria-label="_ms(proposal.end)"
+              v-text="$d(proposal.end * 1e3, 'short', 'en-US')"
               class="float-right text-white tooltipped tooltipped-n"
             />
           </div>
           <div class="mb-1">
             <b>{{ $t('snapshot') }}</b>
             <a
-              :href="_explorer(space.network, payload.snapshot, 'block')"
+              :href="_explorer(space.network, proposal.snapshot, 'block')"
               target="_blank"
               class="float-right"
             >
-              {{ _n(payload.snapshot, '0,0') }}
+              {{ _n(proposal.snapshot, '0,0') }}
               <Icon name="external-link" class="ml-1" />
             </a>
           </div>
@@ -160,7 +158,7 @@
         :loaded="loadedResults"
         :id="id"
         :space="space"
-        :payload="payload"
+        :proposal="proposal"
         :results="results"
         :votes="votes"
       />
@@ -169,18 +167,18 @@
           :loaded="loadedResults"
           :id="id"
           :space="space"
-          :payload="payload"
+          :proposal="proposal"
           :results="results"
         />
         <PluginGnosisCustomBlock
-          v-if="payload.metadata.plugins?.gnosis?.baseTokenAddress"
-          :proposalConfig="payload.metadata.plugins.gnosis"
-          :choices="payload.choices"
+          v-if="proposal.plugins?.gnosis?.baseTokenAddress"
+          :proposalConfig="proposal.plugins.gnosis"
+          :choices="proposal.choices"
         />
         <PluginDaoModuleCustomBlock
-          v-if="payload.metadata.plugins?.daoModule?.txs"
-          :proposalConfig="payload.metadata.plugins.daoModule"
-          :proposalEnd="payload.end"
+          v-if="proposal.plugins?.daoModule?.txs"
+          :proposalConfig="proposal.plugins.daoModule"
+          :proposalEnd="proposal.end"
           :porposalId="id"
           :moduleAddress="space.plugins?.daoModule?.address"
           :network="space.network"
@@ -189,7 +187,7 @@
           :loaded="loadedResults"
           v-if="space.plugins?.quorum"
           :space="space"
-          :payload="payload"
+          :proposal="proposal"
           :results="results"
         />
       </div>
@@ -207,7 +205,7 @@
       :selectedChoice="selectedChoice"
       :totalScore="totalScore"
       :scores="scores"
-      :snapshot="payload.snapshot"
+      :snapshot="proposal.snapshot"
     />
     <ModalStrategies
       :open="modalStrategiesOpen"
@@ -251,9 +249,6 @@ export default {
     space() {
       return this.app.spaces[this.key];
     },
-    payload() {
-      return this.proposal.msg.payload;
-    },
     ts() {
       return (Date.now() / 1e3).toFixed();
     },
@@ -261,7 +256,7 @@ export default {
       return this.space.strategies.map(strategy => strategy.params.symbol);
     },
     isCreator() {
-      return this.proposal.address === this.web3.account;
+      return this.proposal.author === this.web3.account;
     },
     isAdmin() {
       const admins = (this.space.admins || []).map(admin =>
@@ -293,11 +288,11 @@ export default {
       this.loadedResults = true;
     },
     async loadPower() {
-      if (!this.web3.account || !this.proposal.address) return;
+      if (!this.web3.account || !this.proposal.author) return;
       const { scores, totalScore } = await getPower(
         this.space,
         this.web3.account,
-        this.payload.snapshot
+        this.proposal.snapshot
       );
       this.totalScore = totalScore;
       this.scores = scores;

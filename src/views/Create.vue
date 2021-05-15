@@ -148,12 +148,10 @@
 <script>
 import { mapActions } from 'vuex';
 import draggable from 'vuedraggable';
-import { ipfsGet, getScores } from '@snapshot-labs/snapshot.js/src/utils';
+import { getScores } from '@snapshot-labs/snapshot.js/src/utils';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import { getBlockNumber } from '@snapshot-labs/snapshot.js/src/utils/web3';
-import gateways from '@snapshot-labs/snapshot.js/src/gateways.json';
-
-const gateway = process.env.VUE_APP_IPFS_GATEWAY || gateways[0];
+import { proposalQuery } from '@/helpers/graphql';
 
 export default {
   components: {
@@ -246,10 +244,22 @@ export default {
       this.getUserScore();
     if (this.from) {
       try {
-        const proposal = await ipfsGet(gateway, this.from);
-        const msg = JSON.parse(proposal.msg);
-        this.form = msg.payload;
-        this.choices = msg.payload.choices.map((text, key) => ({ key, text }));
+        const proposal = await proposalQuery(this.from);
+        const { title, body, choices, start, end, snapshot } = proposal;
+        this.form = {
+          name: title,
+          body,
+          choices,
+          start,
+          end,
+          snapshot
+        };
+        const { network, strategies, plugins } = proposal;
+        this.form.metadata = { network, strategies, plugins };
+        this.choices = proposal.choices.map((text, key) => ({
+          key,
+          text
+        }));
       } catch (e) {
         console.log(e);
       }
