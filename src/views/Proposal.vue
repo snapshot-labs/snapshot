@@ -223,7 +223,7 @@
 </template>
 
 <script>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { mapActions } from 'vuex';
 import { useRoute } from 'vue-router';
 import { useStore } from 'vuex';
@@ -240,13 +240,15 @@ export default {
 
     const modalOpen = ref(false);
 
+    const space = computed(() => store.state.app.spaces[key]);
+
     const { modalAccountOpen } = useModal();
     const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(key);
 
     function clickVote() {
       !store.state.web3.account
         ? (modalAccountOpen.value = true)
-        : !termsAccepted.value
+        : !termsAccepted.value && space.value.terms
         ? (modalTermsOpen.value = true)
         : (modalOpen.value = true);
     }
@@ -257,7 +259,8 @@ export default {
       modalTermsOpen,
       acceptTerms,
       clickVote,
-      modalOpen
+      modalOpen,
+      space
     };
   },
   data() {
@@ -277,9 +280,6 @@ export default {
     };
   },
   computed: {
-    space() {
-      return this.app.spaces[this.key];
-    },
     ts() {
       return (Date.now() / 1e3).toFixed();
     },

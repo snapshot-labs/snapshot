@@ -171,8 +171,9 @@ export default {
     const store = useStore();
     const auth = getInstance();
 
-    const key = ref(route.params.key);
-    const from = ref(route.params.from);
+    const key = route.params.key;
+    const from = route.params.from;
+
     const loading = ref(false);
     const choices = ref([]);
     const blockNumber = ref(-1);
@@ -194,7 +195,7 @@ export default {
     const nameForm = ref(null);
 
     const web3Account = computed(() => store.state.web3.account);
-    const space = computed(() => store.state.app.spaces[key.value]);
+    const space = computed(() => store.state.app.spaces[key]);
 
     const isMember = computed(() => {
       const members = space.value.members.map(address => address.toLowerCase());
@@ -272,7 +273,7 @@ export default {
         router.push({
           name: 'proposal',
           params: {
-            key: key.value,
+            key: key,
             id: ipfsHash
           }
         });
@@ -297,12 +298,12 @@ export default {
     }
 
     const { modalAccountOpen } = useModal();
-    const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(key.value);
+    const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(key);
 
     function clickSubmit() {
       !web3Account.value
         ? (modalAccountOpen.value = true)
-        : !termsAccepted.value
+        : !termsAccepted.value && space.value.terms
         ? (modalTermsOpen.value = true)
         : handleSubmit();
     }
@@ -325,9 +326,9 @@ export default {
         !isMember.value
       )
         getUserScore();
-      if (from.value) {
+      if (from) {
         try {
-          const proposal = await proposalQuery(from.value);
+          const proposal = await proposalQuery(from);
           form.value = {
             name: proposal.title,
             body: proposal.body,
