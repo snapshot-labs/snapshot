@@ -54,6 +54,10 @@
         </UiDropdown>
       </div>
 
+      <Block v-if="space.about" class="mb-2">
+        <UiText :text="space.about" />
+      </Block>
+
       <Block v-if="loading" :slim="true">
         <RowLoading class="my-2" />
       </Block>
