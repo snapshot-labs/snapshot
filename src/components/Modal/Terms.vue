@@ -8,7 +8,7 @@
         {{ $tc('mustAgreeToTerms', [space.name]) }}
       </h4>
       <a :href="space.terms" target="_blank" rel="noopener noreferrer">
-        <UiText :text="space.terms.substring(0, 35) + '...'" />
+        <UiText :text="getIpfsUrl" :truncate="35" />
         <Icon name="external-link" class="ml-1" />
       </a>
     </div>
@@ -32,13 +32,19 @@
 </template>
 
 <script>
+import { getUrl } from '@snapshot-labs/snapshot.js/src/utils.ts';
 export default {
   props: ['open', 'space'],
-  emits: ['close', 'openLang'],
+  emits: ['close'],
   methods: {
     accept() {
       this.$emit('accept');
       this.$emit('close');
+    }
+  },
+  computed: {
+    getIpfsUrl() {
+      return getUrl(this.space.terms);
     }
   }
 };
