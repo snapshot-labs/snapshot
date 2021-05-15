@@ -95,8 +95,7 @@
   "defaultSkin": "Default skin",
   "select": "Select",
   "language": "Language",
-  "decline": "Decline",
-  "agree": "Agree",
+  "agree": "I agree",
   "mustAgreeToTerms": "Before you can complete this action, you must agree to {0} terms of service here:",
   "errors": {
     "required": "Field is required",

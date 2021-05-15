@@ -15,7 +15,7 @@
     <template v-slot:footer>
       <div class="col-6 float-left pr-2">
         <UiButton @click="$emit('close')" type="button" class="width-full">
-          {{ $t('decline') }}
+          {{ $t('cancel') }}
         </UiButton>
       </div>
       <div class="col-6 float-left pl-2">
