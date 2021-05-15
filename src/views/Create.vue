@@ -113,7 +113,7 @@
           </UiButton>
         </div>
         <UiButton
-          @click="handleSubmit"
+          @click="clickSubmit"
           :disabled="!isValid"
           :loading="loading"
           class="d-block width-full button--submit"
@@ -142,6 +142,12 @@
       :open="modalProposalPluginsOpen"
       @close="modalProposalPluginsOpen = false"
     />
+    <ModalTerms
+      :open="modalTermsOpen"
+      :space="space"
+      @close="modalTermsOpen = false"
+      @accept="acceptTerms(), handleSubmit()"
+    />
   </teleport>
 </template>
 
@@ -155,6 +161,8 @@ import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import { getBlockNumber } from '@snapshot-labs/snapshot.js/src/utils/web3';
 import { proposalQuery } from '@/helpers/graphql';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
+import { useModal } from '@/composables/useModal';
+import { useTerms } from '@/composables/useTerms';
 
 export default {
   setup() {
@@ -214,7 +222,6 @@ export default {
       // const ts = (Date.now() / 1e3).toFixed();
       return (
         !loading.value &&
-        web3Account.value &&
         form.value.name &&
         form.value.body &&
         form.value.body.length <= bodyLimit.value &&
@@ -289,8 +296,18 @@ export default {
       userScore.value = scores;
     }
 
+    const { modalAccountOpen } = useModal();
+    const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(key.value);
+
+    function clickSubmit() {
+      !web3Account.value
+        ? (modalAccountOpen.value = true)
+        : !termsAccepted.value
+        ? (modalTermsOpen.value = true)
+        : handleSubmit();
+    }
+
     watch(web3Account, () => {
-      console.log('watch', web3Account.value);
       if (space.value.filters?.minScore > 0 && !isMember.value) getUserScore();
       else userScore.value = 0;
     });
@@ -311,14 +328,13 @@ export default {
       if (from.value) {
         try {
           const proposal = await proposalQuery(from.value);
-          const { title, body, start, end, snapshot } = proposal;
           form.value = {
-            name: title,
-            body,
-            choices,
-            start,
-            end,
-            snapshot
+            name: proposal.title,
+            body: proposal.body,
+            choices: proposal.choices,
+            start: proposal.start,
+            end: proposal.end,
+            snapshot: proposal.snapshot
           };
           const { network, strategies, plugins } = proposal;
           form.value.metadata = { network, strategies, plugins };
@@ -326,11 +342,6 @@ export default {
             key,
             text
           }));
-          console.log(
-            '🚀 ~ file: Create.vue ~ line 329 ~ choices.value=choices.map ~ choices',
-            choices
-          );
-          console.log(choices.value, form.value.choices);
         } catch (e) {
           console.log(e);
         }
@@ -353,7 +364,10 @@ export default {
       isMember,
       showScoreWarning,
       isValid,
-      addChoice
+      addChoice,
+      clickSubmit,
+      modalTermsOpen,
+      acceptTerms
     };
   },
   components: {
