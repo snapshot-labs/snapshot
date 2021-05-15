@@ -20,10 +20,7 @@
       />
       <div
         v-text="
-          _shorten(
-            proposal.msg.payload.choices[vote.msg.payload.choice - 1],
-            'choice'
-          )
+          _shorten(proposal.choices[vote.msg.payload.choice - 1], 'choice')
         "
         class="flex-auto text-center text-white"
       />
