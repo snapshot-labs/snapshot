@@ -3,15 +3,15 @@
     <div class="text-center mb-4 mx-auto">
       <Container class="d-flex flex-items-center">
         <div class="flex-auto text-left d-flex">
-          <router-link :to="{ name: 'timeline' }" class="mr-2">
+          <UiButton class="pl-3 col-12 col-lg-7 pr-0">
+            <SearchWithFilters />
+          </UiButton>
+          <router-link :to="{ name: 'timeline' }" class="ml-2">
             <UiButton class="no-wrap px-3">
               <Icon name="feed" size="18" />
               <UiCounter :counter="numberOfUnseenProposals" class="ml-2" />
             </UiButton>
           </router-link>
-          <UiButton class="pl-3 col-12 col-lg-6 pr-0">
-            <SearchWithFilters v-model="q" />
-          </UiButton>
         </div>
         <div class="ml-3 text-right hide-sm col-lg-4">
           {{ $tc('spaceCount', [_n(spaces.length)]) }}
@@ -72,7 +72,7 @@
 </template>
 
 <script>
-import { onMounted, ref, computed } from 'vue';
+import { onMounted, ref, computed, watchEffect } from 'vue';
 import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
 import orderBy from 'lodash/orderBy';
@@ -84,12 +84,13 @@ export default {
   setup() {
     const store = useStore();
     const route = useRoute();
+
     const favorites = computed(() => store.state.favoriteSpaces.favorites);
     const stateSpaces = computed(() => store.state.app.spaces);
 
-    const q = ref(route.query.q || '');
-
     const spaces = computed(() => {
+      const networkFilter = route.query.network;
+      const q = route.query.q || '';
       const list = Object.keys(stateSpaces.value)
         .map(key => {
           const spotlightIndex = spotlight.indexOf(key);
@@ -101,18 +102,18 @@ export default {
           };
         })
         .filter(space => !space.private);
-      return orderBy(
-        list,
-        ['favorite', 'spotlight'],
-        ['desc', 'asc']
-      ).filter(space =>
-        JSON.stringify(space).toLowerCase().includes(q.value.toLowerCase())
+      return orderBy(list, ['favorite', 'spotlight'], ['desc', 'asc']).filter(
+        space =>
+          (networkFilter
+            ? space.network === networkFilter.toLowerCase()
+            : true) &&
+          JSON.stringify(space).toLowerCase().includes(q.toLowerCase())
       );
     });
 
     // Get number of unseen proposals
-    const { numberOfUnseenProposals } = useUnseenProposals();
-    // watchEffect(() => getProposalIds(favorites.value));
+    const { numberOfUnseenProposals, getProposalIds } = useUnseenProposals();
+    watchEffect(() => getProposalIds(favorites.value));
 
     // Favorites
     const addFavoriteSpace = spaceId =>
@@ -136,7 +137,7 @@ export default {
       scrollEndMonitor(() => (limit.value += loadBy));
     });
 
-    return { q, limit, spaces, toggleFavorite, numberOfUnseenProposals };
+    return { limit, spaces, toggleFavorite, numberOfUnseenProposals };
   }
 };
 </script>

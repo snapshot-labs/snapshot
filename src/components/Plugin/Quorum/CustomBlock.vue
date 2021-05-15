@@ -16,7 +16,7 @@ import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import Plugin from '@snapshot-labs/snapshot.js/src/plugins/quorum';
 
 export default {
-  props: ['space', 'payload', 'results', 'loaded', 'strategies'],
+  props: ['space', 'proposal', 'results', 'loaded', 'strategies'],
   data() {
     return {
       loading: false,
@@ -40,7 +40,7 @@ export default {
     this.totalVotingPower = await this.plugin.getTotalVotingPower(
       getProvider(this.space.network),
       this.space.plugins.quorum,
-      this.payload.snapshot
+      this.proposal.snapshot
     );
 
     this.quorum =
