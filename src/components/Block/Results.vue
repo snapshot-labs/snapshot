@@ -83,18 +83,16 @@ export default {
   },
   methods: {
     async downloadReport() {
-      const obj = Object.entries(this.votes)
+      const obj = this.votes
         .map(vote => {
           return {
-            address: vote[0],
-            choice: vote[1].msg.payload.choice,
-            balance: vote[1].balance,
-            timestamp: vote[1].msg.timestamp,
-            dateUtc: new Date(
-              parseInt(vote[1].msg.timestamp) * 1e3
-            ).toUTCString(),
-            authorIpfsHash: vote[1].authorIpfsHash,
-            relayerIpfsHash: vote[1].relayerIpfsHash
+            address: vote.voter,
+            choice: vote.choice,
+            balance: vote.balance,
+            timestamp: vote.created,
+            dateUtc: new Date(parseInt(vote.created) * 1e3).toUTCString(),
+            authorIpfsHash: vote.id
+            // relayerIpfsHash: vote[1].relayerIpfsHash
           };
         })
         .sort((a, b) => a.timestamp - b.timestamp, 0);
