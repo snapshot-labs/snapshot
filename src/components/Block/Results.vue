@@ -56,13 +56,21 @@ import * as jsonexport from 'jsonexport/dist';
 import pkg from '@/../package.json';
 
 export default {
-  props: ['id', 'space', 'proposal', 'results', 'votes', 'loaded'],
+  props: [
+    'id',
+    'space',
+    'proposal',
+    'results',
+    'votes',
+    'loaded',
+    'strategies'
+  ],
   computed: {
     ts() {
       return (Date.now() / 1e3).toFixed();
     },
     titles() {
-      return this.space.strategies.map(strategy => strategy.params.symbol);
+      return this.strategies.map(strategy => strategy.params.symbol);
     },
     choices() {
       return this.proposal.choices
@@ -75,18 +83,16 @@ export default {
   },
   methods: {
     async downloadReport() {
-      const obj = Object.entries(this.votes)
+      const obj = this.votes
         .map(vote => {
           return {
-            address: vote[0],
-            choice: vote[1].msg.payload.choice,
-            balance: vote[1].balance,
-            timestamp: vote[1].msg.timestamp,
-            dateUtc: new Date(
-              parseInt(vote[1].msg.timestamp) * 1e3
-            ).toUTCString(),
-            authorIpfsHash: vote[1].authorIpfsHash,
-            relayerIpfsHash: vote[1].relayerIpfsHash
+            address: vote.voter,
+            choice: vote.choice,
+            balance: vote.balance,
+            timestamp: vote.created,
+            dateUtc: new Date(parseInt(vote.created) * 1e3).toUTCString(),
+            authorIpfsHash: vote.id
+            // relayerIpfsHash: vote[1].relayerIpfsHash
           };
         })
         .sort((a, b) => a.timestamp - b.timestamp, 0);
