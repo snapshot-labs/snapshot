@@ -39,11 +39,7 @@ export async function getProposalData(id) {
         id: true,
         voter: true,
         created: true,
-        proposal: true,
-        choice: true,
-        space: {
-          id: true
-        }
+        choice: true
       }
     }
   );
