@@ -4,19 +4,19 @@ import { formatProposals, switchStrategiesAt } from '@/helpers/utils';
 import { getProfiles } from '@/helpers/profile';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import client from '@/helpers/client';
-import { proposalQuery } from '@/helpers/graphql';
+import { getProposalData } from '@/helpers/graphql';
 
 export async function getProposal(space, id) {
   try {
     console.time('getProposal.data');
     const provider = getProvider(space.network);
     const response = await Promise.all([
-      proposalQuery(id),
-      client.getVotes(space.key, id),
+      getProposalData(id),
       getBlockNumber(provider)
     ]);
     console.timeEnd('getProposal.data');
-    const [proposal, votes, blockNumber] = response;
+    const [proposalData, blockNumber] = response;
+    const { proposal, votes } = proposalData;
     proposal.ipfsHash = id;
     return { proposal, votes, blockNumber };
   } catch (e) {
@@ -28,7 +28,7 @@ export async function getProposal(space, id) {
 export async function getResults(space, proposal, votes, blockNumber) {
   try {
     const provider = getProvider(space.network);
-    const voters = Object.keys(votes);
+    const voters = votes.map(vote => vote.voter);
     const blockTag =
       proposal.snapshot > blockNumber ? 'latest' : parseInt(proposal.snapshot);
     const strategies = switchStrategiesAt(space.strategies, proposal);
@@ -49,50 +49,40 @@ export async function getResults(space, proposal, votes, blockNumber) {
     console.timeEnd('getProposal.scores');
     console.log('Scores', scores);
 
-    const authorProfile = profiles[proposal.author];
-    voters.forEach(address => {
-      votes[address].profile = profiles[address];
-    });
-    proposal.profile = authorProfile;
+    proposal.profile = profiles[proposal.author];
+    votes.map(vote => (vote.profile = profiles[vote.voter]));
 
-    votes = Object.fromEntries(
-      Object.entries(votes)
-        .map((vote: any) => {
-          vote[1].scores = strategies.map(
-            (strategy, i) => scores[i][vote[1].address] || 0
-          );
-          vote[1].balance = vote[1].scores.reduce((a, b: any) => a + b, 0);
-          return vote;
-        })
-        .sort((a, b) => b[1].balance - a[1].balance)
-        .filter(vote => vote[1].balance > 0)
-    );
+    votes = votes
+      .map((vote: any) => {
+        vote.scores = strategies.map(
+          (strategy, i) => scores[i][vote.voter] || 0
+        );
+        vote.balance = vote.scores.reduce((a, b: any) => a + b, 0);
+        return vote;
+      })
+      .sort((a, b) => b.balance - a.balance)
+      .filter(vote => vote.balance > 0);
 
     /* Get results */
     const results = {
       totalVotes: proposal.choices.map(
-        (choice, i) =>
-          Object.values(votes).filter(
-            (vote: any) => vote.msg.payload.choice === i + 1
-          ).length
+        (choice, i) => votes.filter((vote: any) => vote.choice === i + 1).length
       ),
       totalBalances: proposal.choices.map((choice, i) =>
-        Object.values(votes)
-          .filter((vote: any) => vote.msg.payload.choice === i + 1)
+        votes
+          .filter((vote: any) => vote.choice === i + 1)
           .reduce((a, b: any) => a + b.balance, 0)
       ),
       totalScores: proposal.choices.map((choice, i) =>
         strategies.map((strategy, sI) =>
-          Object.values(votes)
-            .filter((vote: any) => vote.msg.payload.choice === i + 1)
+          votes
+            .filter((vote: any) => vote.choice === i + 1)
             .reduce((a, b: any) => a + b.scores[sI], 0)
         )
       ),
-      totalVotesBalances: Object.values(votes).reduce(
-        (a, b: any) => a + b.balance,
-        0
-      )
+      totalVotesBalances: votes.reduce((a, b: any) => a + b.balance, 0)
     };
+
     return { votes, results };
   } catch (e) {
     console.log(e);
