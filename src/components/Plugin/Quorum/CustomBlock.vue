@@ -16,7 +16,7 @@ import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import Plugin from '@snapshot-labs/snapshot.js/src/plugins/quorum';
 
 export default {
-  props: ['space', 'proposal', 'results', 'loaded'],
+  props: ['space', 'proposal', 'results', 'loaded', 'strategies'],
   data() {
     return {
       loading: false,
@@ -27,7 +27,7 @@ export default {
   },
   computed: {
     titles() {
-      return this.space.strategies.map(strategy => strategy.params.symbol);
+      return this.strategies.map(strategy => strategy.params.symbol);
     },
     totalScore() {
       return this.results.totalBalances.reduce((a, b) => a + b, 0);

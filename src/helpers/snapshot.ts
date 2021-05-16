@@ -1,6 +1,6 @@
 import { getBlockNumber } from '@snapshot-labs/snapshot.js/src/utils/web3';
 import { getScores } from '@snapshot-labs/snapshot.js/src/utils';
-import { formatProposals } from '@/helpers/utils';
+import { formatProposals, switchStrategiesAt } from '@/helpers/utils';
 import { getProfiles } from '@/helpers/profile';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import client from '@/helpers/client';
@@ -31,13 +31,13 @@ export async function getResults(space, proposal, votes, blockNumber) {
     const voters = Object.keys(votes);
     const blockTag =
       proposal.snapshot > blockNumber ? 'latest' : parseInt(proposal.snapshot);
-
+    const strategies = switchStrategiesAt(space.strategies, proposal);
     /* Get scores */
     console.time('getProposal.scores');
     const [scores, profiles]: any = await Promise.all([
       getScores(
         space.key,
-        space.strategies,
+        strategies,
         space.network,
         provider,
         voters,
@@ -58,7 +58,7 @@ export async function getResults(space, proposal, votes, blockNumber) {
     votes = Object.fromEntries(
       Object.entries(votes)
         .map((vote: any) => {
-          vote[1].scores = space.strategies.map(
+          vote[1].scores = strategies.map(
             (strategy, i) => scores[i][vote[1].address] || 0
           );
           vote[1].balance = vote[1].scores.reduce((a, b: any) => a + b, 0);
@@ -82,7 +82,7 @@ export async function getResults(space, proposal, votes, blockNumber) {
           .reduce((a, b: any) => a + b.balance, 0)
       ),
       totalScores: proposal.choices.map((choice, i) =>
-        space.strategies.map((strategy, sI) =>
+        strategies.map((strategy, sI) =>
           Object.values(votes)
             .filter((vote: any) => vote.msg.payload.choice === i + 1)
             .reduce((a, b: any) => a + b.scores[sI], 0)
@@ -100,13 +100,15 @@ export async function getResults(space, proposal, votes, blockNumber) {
   }
 }
 
-export async function getPower(space, address, snapshot) {
+export async function getPower(space, address, proposal) {
   try {
     const blockNumber = await getBlockNumber(getProvider(space.network));
-    const blockTag = snapshot > blockNumber ? 'latest' : parseInt(snapshot);
+    const blockTag =
+      proposal.snapshot > blockNumber ? 'latest' : parseInt(proposal.snapshot);
+    const strategies = switchStrategiesAt(space.strategies, proposal);
     let scores: any = await getScores(
       space.key,
-      space.strategies,
+      strategies,
       space.network,
       getProvider(space.network),
       [address],
