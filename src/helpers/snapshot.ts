@@ -55,7 +55,6 @@ export async function getResults(space, proposal, votes, blockNumber) {
     votes.map((vote: any) => {
       vote.scores = strategies.map((strategy, i) => scores[i][vote.voter] || 0);
       vote.balance = vote.scores.reduce((a, b: any) => a + b, 0);
-      return vote;
     });
     votes
       .sort((a, b) => b.balance - a.balance)
