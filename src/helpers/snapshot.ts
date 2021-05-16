@@ -52,11 +52,14 @@ export async function getResults(space, proposal, votes, blockNumber) {
     proposal.profile = profiles[proposal.author];
     votes.map(vote => (vote.profile = profiles[vote.voter]));
 
-    votes.map((vote: any) => {
-      vote.scores = strategies.map((strategy, i) => scores[i][vote.voter] || 0);
-      vote.balance = vote.scores.reduce((a, b: any) => a + b, 0);
-    });
-    votes
+    votes = votes
+      .map((vote: any) => {
+        vote.scores = strategies.map(
+          (strategy, i) => scores[i][vote.voter] || 0
+        );
+        vote.balance = vote.scores.reduce((a, b: any) => a + b, 0);
+        return vote;
+      })
       .sort((a, b) => b.balance - a.balance)
       .filter(vote => vote.balance > 0);
 
