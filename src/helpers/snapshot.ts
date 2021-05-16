@@ -104,9 +104,7 @@ export async function getPower(space, address, proposal) {
   try {
     const blockNumber = await getBlockNumber(getProvider(space.network));
     const blockTag =
-      proposal.msg.payload.snapshot > blockNumber
-        ? 'latest'
-        : parseInt(proposal.msg.payload.snapshot);
+      proposal.snapshot > blockNumber ? 'latest' : parseInt(proposal.snapshot);
     const strategies = switchStrategiesAt(space.strategies, proposal);
     let scores: any = await getScores(
       space.key,
