@@ -1,6 +1,6 @@
 import { subgraphRequest } from '@snapshot-labs/snapshot.js/src/utils';
 
-export async function proposalQuery(id) {
+export async function getProposalData(id) {
   const response = await subgraphRequest(
     `${process.env.VUE_APP_HUB_URL}/graphql`,
     {
@@ -28,8 +28,24 @@ export async function proposalQuery(id) {
           id: true,
           name: true
         }
+      },
+      votes: {
+        __args: {
+          first: 10000,
+          where: {
+            proposal: id
+          }
+        },
+        id: true,
+        voter: true,
+        created: true,
+        proposal: true,
+        choice: true,
+        space: {
+          id: true
+        }
       }
     }
   );
-  return response.proposal;
+  return { proposal: response.proposal, votes: response.votes };
 }
