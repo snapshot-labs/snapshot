@@ -81,8 +81,7 @@ export function getStrategy(strategy, spaces) {
 }
 
 export function switchStrategiesAt(spaceStrategies, proposal) {
-  if (proposal.msg?.timestamp > 1620974463)
-    return proposal.msg.payload.metadata.strategies;
+  if (proposal.created > 1620142966) return proposal.strategies;
   else return spaceStrategies;
 }
 
