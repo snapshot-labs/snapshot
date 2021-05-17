@@ -8,19 +8,10 @@ import { shorten } from '@/helpers/utils';
 
 const domainName = window.location.hostname;
 
-let env = 'master';
-if (domainName.includes('localhost')) env = 'local';
-if (domainName === 'demo.snapshot.org') env = 'develop';
-
 // @ts-ignore
 const modules = Object.entries(store.state).map(module => module[0]);
 
 export default {
-  data() {
-    return {
-      env
-    };
-  },
   computed: {
     ...mapState(modules),
     domain() {

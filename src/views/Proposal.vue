@@ -74,7 +74,7 @@
         <UiButton
           :disabled="voteLoading || app.authLoading || !selectedChoice"
           :loading="voteLoading"
-          @click="web3.account ? (modalOpen = true) : (modalAccountOpen = true)"
+          @click="clickVote"
           class="d-block width-full button--submit"
         >
           {{ $t('proposal.vote') }}
@@ -217,24 +217,59 @@
       :space="space"
       :strategies="strategies"
     />
+    <ModalTerms
+      :open="modalTermsOpen"
+      :space="space"
+      @close="modalTermsOpen = false"
+      @accept="acceptTerms(), (modalOpen = true)"
+    />
   </teleport>
 </template>
 
 <script>
+import { ref, computed } from 'vue';
 import { mapActions } from 'vuex';
+import { useRoute } from 'vue-router';
+import { useStore } from 'vuex';
 import { getProposal, getResults, getPower } from '@/helpers/snapshot';
 import { useModal } from '@/composables/useModal';
+import { useTerms } from '@/composables/useTerms';
 import { switchStrategiesAt } from '@/helpers/utils';
 
 export default {
   setup() {
+    const route = useRoute();
+    const store = useStore();
+    const key = route.params.key;
+    const id = route.params.id;
+
+    const modalOpen = ref(false);
+
+    const space = computed(() => store.state.app.spaces[key]);
+
     const { modalAccountOpen } = useModal();
-    return { modalAccountOpen };
+    const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(key);
+
+    function clickVote() {
+      !store.state.web3.account
+        ? (modalAccountOpen.value = true)
+        : !termsAccepted.value && space.value.terms
+        ? (modalTermsOpen.value = true)
+        : (modalOpen.value = true);
+    }
+
+    return {
+      key,
+      id,
+      modalTermsOpen,
+      acceptTerms,
+      clickVote,
+      modalOpen,
+      space
+    };
   },
   data() {
     return {
-      key: this.$route.params.key,
-      id: this.$route.params.id,
       loading: false,
       loaded: false,
       loadedResults: false,
@@ -243,7 +278,6 @@ export default {
       proposal: {},
       votes: {},
       results: [],
-      modalOpen: false,
       modalStrategiesOpen: false,
       selectedChoice: 0,
       totalScore: 0,
@@ -251,9 +285,6 @@ export default {
     };
   },
   computed: {
-    space() {
-      return this.app.spaces[this.key];
-    },
     ts() {
       return (Date.now() / 1e3).toFixed();
     },

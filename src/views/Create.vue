@@ -113,7 +113,7 @@
           </UiButton>
         </div>
         <UiButton
-          @click="handleSubmit"
+          @click="clickSubmit"
           :disabled="!isValid"
           :loading="loading"
           class="d-block width-full button--submit"
@@ -142,181 +142,237 @@
       :open="modalProposalPluginsOpen"
       @close="modalProposalPluginsOpen = false"
     />
+    <ModalTerms
+      :open="modalTermsOpen"
+      :space="space"
+      @close="modalTermsOpen = false"
+      @accept="acceptTerms(), handleSubmit()"
+    />
   </teleport>
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { ref, watch, computed, onMounted } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import { useStore } from 'vuex';
 import draggable from 'vuedraggable';
 import { getScores } from '@snapshot-labs/snapshot.js/src/utils';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import { getBlockNumber } from '@snapshot-labs/snapshot.js/src/utils/web3';
 import { getProposalData } from '@/helpers/graphql';
+import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
+import { useModal } from '@/composables/useModal';
+import { useTerms } from '@/composables/useTerms';
 
 export default {
-  components: {
-    draggable
-  },
-  data() {
-    return {
-      key: this.$route.params.key,
-      from: this.$route.params.from,
-      loading: false,
+  setup() {
+    const route = useRoute();
+    const router = useRouter();
+    const store = useStore();
+    const auth = getInstance();
+
+    const key = route.params.key;
+    const from = route.params.from;
+
+    const loading = ref(false);
+    const choices = ref([]);
+    const blockNumber = ref(-1);
+    const bodyLimit = ref(1e4);
+    const form = ref({
+      name: '',
+      body: '',
       choices: [],
-      blockNumber: -1,
-      bodyLimit: 1e4,
-      form: {
-        name: '',
-        body: '',
-        choices: [],
-        start: '',
-        end: '',
-        snapshot: '',
-        metadata: {}
-      },
-      modalOpen: false,
-      modalProposalPluginsOpen: false,
-      selectedDate: '',
-      counter: 0,
-      userScore: null
-    };
-  },
-  watch: {
-    'web3.account': function () {
-      if (this.space.filters?.minScore > 0 && !this.isMember)
-        this.getUserScore();
-      else this.userScore = 0;
-    }
-  },
-  computed: {
-    space() {
-      return this.app.spaces[this.key];
-    },
-    isMember() {
-      const members = this.space.members.map(address => address.toLowerCase());
+      start: '',
+      end: '',
+      snapshot: '',
+      metadata: {}
+    });
+    const modalOpen = ref(false);
+    const modalProposalPluginsOpen = ref(false);
+    const selectedDate = ref('');
+    const counter = ref(0);
+    const userScore = ref(null);
+    const nameForm = ref(null);
+
+    const web3Account = computed(() => store.state.web3.account);
+    const space = computed(() => store.state.app.spaces[key]);
+
+    const isMember = computed(() => {
+      const members = space.value.members.map(address => address.toLowerCase());
       return (
-        this.$auth.isAuthenticated.value &&
-        this.web3.account &&
-        members.includes(this.web3.account.toLowerCase())
+        auth.isAuthenticated.value &&
+        web3Account.value &&
+        members.includes(web3Account.value.toLowerCase())
       );
-    },
-    showScoreWarning() {
+    });
+
+    const hasMinScore = computed(() => {
+      return userScore.value >= space.value.filters.minScore;
+    });
+
+    const showScoreWarning = computed(() => {
       return (
-        this.space.filters?.minScore > 0 &&
-        !this.hasMinScore &&
-        !this.isMember &&
-        this.userScore !== null
+        space.value.filters?.minScore > 0 &&
+        !hasMinScore.value &&
+        !isMember.value &&
+        userScore.value !== null
       );
-    },
-    hasMinScore() {
-      return this.userScore >= this.space.filters.minScore;
-    },
-    isValid() {
+    });
+
+    const isValid = computed(() => {
       // const ts = (Date.now() / 1e3).toFixed();
       return (
-        !this.loading &&
-        this.web3.account &&
-        this.form.name &&
-        this.form.body &&
-        this.form.body.length <= this.bodyLimit &&
-        this.form.start &&
-        // this.form.start >= ts &&
-        this.form.end &&
-        this.form.end > this.form.start &&
-        this.form.snapshot &&
-        this.form.snapshot > this.blockNumber / 2 &&
-        this.choices.length >= 2 &&
-        !this.choices.some(a => a.text === '') &&
-        (!this.space.filters?.onlyMembers ||
-          (this.space.filters?.onlyMembers && this.isMember)) &&
-        (this.space.filters?.minScore === 0 ||
-          (this.space.filters?.minScore > 0 && this.hasMinScore) ||
-          this.isMember)
+        !loading.value &&
+        form.value.name &&
+        form.value.body &&
+        form.value.body.length <= bodyLimit.value &&
+        form.value.start &&
+        // form.value.start >= ts &&
+        form.value.end &&
+        form.value.end > form.value.start &&
+        form.value.snapshot &&
+        form.value.snapshot > blockNumber.value / 2 &&
+        choices.value.length >= 2 &&
+        !choices.value.some(a => a.text === '') &&
+        (!space.value.filters?.onlyMembers ||
+          (space.value.filters?.onlyMembers && isMember.value)) &&
+        (space.value.filters?.minScore === 0 ||
+          (space.value.filters?.minScore > 0 && hasMinScore.value) ||
+          isMember.value)
       );
-    }
-  },
-  async mounted() {
-    this.$refs.nameForm.focus();
-    this.addChoice(2);
-    this.blockNumber = await getBlockNumber(getProvider(this.space.network));
-    this.form.snapshot = this.blockNumber;
-    if (this.web3.account && this.space.filters?.minScore > 0 && !this.isMember)
-      this.getUserScore();
-    if (this.from) {
-      try {
-        const { proposal } = await getProposalData(this.from);
-        const { title, body, choices, start, end, snapshot } = proposal;
-        this.form = {
-          name: title,
-          body,
-          choices,
-          start,
-          end,
-          snapshot
-        };
-        const { network, strategies, plugins } = proposal;
-        this.form.metadata = { network, strategies, plugins };
-        this.choices = proposal.choices.map((text, key) => ({
-          key,
-          text
-        }));
-      } catch (e) {
-        console.log(e);
-      }
-    }
-  },
-  methods: {
-    ...mapActions(['send']),
-    addChoice(num) {
+    });
+
+    function addChoice(num) {
       for (let i = 1; i <= num; i++) {
-        this.counter++;
-        this.choices.push({ key: this.counter, text: '' });
+        counter.value++;
+        choices.value.push({ key: counter.value, text: '' });
       }
-    },
-    removeChoice(i) {
-      this.choices.splice(i, 1);
-    },
-    setDate(ts) {
-      if (this.selectedDate) {
-        this.form[this.selectedDate] = ts;
+    }
+
+    function removeChoice(i) {
+      choices.value.splice(i, 1);
+    }
+
+    function setDate(ts) {
+      if (selectedDate.value) {
+        form.value[selectedDate.value] = ts;
       }
-    },
-    async handleSubmit() {
-      this.loading = true;
-      this.form.choices = this.choices.map(choice => choice.text);
-      this.form.metadata.network = this.space.network;
-      this.form.metadata.strategies = this.space.strategies;
+    }
+
+    async function handleSubmit() {
+      loading.value = true;
+      form.value.choices = choices.value.map(choice => choice.text);
+      form.value.metadata.network = space.value.network;
+      form.value.metadata.strategies = space.value.strategies;
       try {
-        const { ipfsHash } = await this.send({
-          space: this.space.key,
+        const { ipfsHash } = await store.dispatch('send', {
+          space: space.value.key,
           type: 'proposal',
-          payload: this.form
+          payload: form.value
         });
-        this.$router.push({
+        router.push({
           name: 'proposal',
           params: {
-            key: this.key,
+            key: key,
             id: ipfsHash
           }
         });
       } catch (e) {
         console.error(e);
-        this.loading = false;
+        loading.value = false;
       }
-    },
-    async getUserScore() {
+    }
+
+    async function getUserScore() {
       let scores = await getScores(
-        this.space.key,
-        this.space.strategies,
-        this.space.network,
-        getProvider(this.space.network),
-        [this.web3.account]
+        space.value.key,
+        space.value.strategies,
+        space.value.network,
+        getProvider(space.value.network),
+        [web3Account.value]
       );
       scores = scores
         .map(score => Object.values(score).reduce((a, b) => a + b, 0))
         .reduce((a, b) => a + b, 0);
-      this.userScore = scores;
+      userScore.value = scores;
     }
+
+    const { modalAccountOpen } = useModal();
+    const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(key);
+
+    function clickSubmit() {
+      !web3Account.value
+        ? (modalAccountOpen.value = true)
+        : !termsAccepted.value && space.value.terms
+        ? (modalTermsOpen.value = true)
+        : handleSubmit();
+    }
+
+    watch(web3Account, () => {
+      if (space.value.filters?.minScore > 0 && !isMember.value) getUserScore();
+      else userScore.value = 0;
+    });
+
+    onMounted(async () => {
+      nameForm.value.focus();
+      addChoice(2);
+      blockNumber.value = await getBlockNumber(
+        getProvider(space.value.network)
+      );
+      form.value.snapshot = blockNumber.value;
+      if (
+        web3Account.value &&
+        space.value.filters?.minScore > 0 &&
+        !isMember.value
+      )
+        getUserScore();
+      if (from) {
+        try {
+          const data = await getProposalData(from);
+          form.value = {
+            name: data.proposal.title,
+            body: data.proposal.body,
+            choices: data.proposal.choices,
+            start: data.proposal.start,
+            end: data.proposal.end,
+            snapshot: data.proposal.snapshot
+          };
+          const { network, strategies, plugins } = data.proposal;
+          form.value.metadata = { network, strategies, plugins };
+          choices.value = data.proposal.choices.map((text, key) => ({
+            key,
+            text
+          }));
+        } catch (e) {
+          console.log(e);
+        }
+      }
+    });
+
+    return {
+      loading,
+      choices,
+      bodyLimit,
+      form,
+      modalOpen,
+      modalProposalPluginsOpen,
+      selectedDate,
+      nameForm,
+      handleSubmit,
+      removeChoice,
+      setDate,
+      space,
+      isMember,
+      showScoreWarning,
+      isValid,
+      addChoice,
+      clickSubmit,
+      modalTermsOpen,
+      acceptTerms
+    };
+  },
+  components: {
+    draggable
   }
 };
 </script>
