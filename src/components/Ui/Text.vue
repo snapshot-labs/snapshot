@@ -7,11 +7,17 @@ import Autolinker from 'autolinker';
 
 export default {
   props: {
-    text: String
+    text: String,
+    truncate: {
+      type: Number,
+      default: 0
+    }
   },
   computed: {
     textWithLinks() {
-      return Autolinker.link(this.text);
+      return Autolinker.link(this.text, {
+        truncate: this.truncate
+      });
     }
   }
 };
