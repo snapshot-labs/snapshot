@@ -159,7 +159,7 @@ import draggable from 'vuedraggable';
 import { getScores } from '@snapshot-labs/snapshot.js/src/utils';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import { getBlockNumber } from '@snapshot-labs/snapshot.js/src/utils/web3';
-import { proposalQuery } from '@/helpers/graphql';
+import { getProposalData } from '@/helpers/graphql';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { useModal } from '@/composables/useModal';
 import { useTerms } from '@/composables/useTerms';
@@ -328,18 +328,18 @@ export default {
         getUserScore();
       if (from) {
         try {
-          const proposal = await proposalQuery(from);
+          const data = await getProposalData(from);
           form.value = {
-            name: proposal.title,
-            body: proposal.body,
-            choices: proposal.choices,
-            start: proposal.start,
-            end: proposal.end,
-            snapshot: proposal.snapshot
+            name: data.proposal.title,
+            body: data.proposal.body,
+            choices: data.proposal.choices,
+            start: data.proposal.start,
+            end: data.proposal.end,
+            snapshot: data.proposal.snapshot
           };
-          const { network, strategies, plugins } = proposal;
+          const { network, strategies, plugins } = data.proposal;
           form.value.metadata = { network, strategies, plugins };
-          choices.value = proposal.choices.map((text, key) => ({
+          choices.value = data.proposal.choices.map((text, key) => ({
             key,
             text
           }));
