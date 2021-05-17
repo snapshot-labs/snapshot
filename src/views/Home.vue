@@ -116,16 +116,11 @@ export default {
     watchEffect(() => getProposalIds(favorites.value));
 
     // Favorites
-    const addFavoriteSpace = spaceId =>
-      store.dispatch('addFavoriteSpace', spaceId);
-    const removeFavoriteSpace = spaceId =>
-      store.dispatch('removeFavoriteSpace', spaceId);
-
     function toggleFavorite(spaceId) {
       if (favorites.value[spaceId]) {
-        removeFavoriteSpace(spaceId);
+        store.dispatch('removeFavoriteSpace', spaceId);
       } else {
-        addFavoriteSpace(spaceId);
+        store.dispatch('addFavoriteSpace', spaceId);
       }
     }
 
