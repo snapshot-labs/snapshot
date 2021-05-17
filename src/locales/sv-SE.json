@@ -95,6 +95,8 @@
   "defaultSkin": "Förvalt skin",
   "select": "Välj",
   "language": "Språk",
+  "agree": "I agree",
+  "mustAgreeToTerms": "Before you can complete this action, you must agree to {0} terms of service here:",
   "errors": {
     "required": "Fältet är obligatoriskt",
     "minLength": "Minsta längd är {0}",
