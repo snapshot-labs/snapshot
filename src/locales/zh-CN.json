@@ -95,6 +95,8 @@
   "defaultSkin": "默认皮肤",
   "select": "选择",
   "language": "语言",
+  "agree": "I agree",
+  "mustAgreeToTerms": "Before you can complete this action, you must agree to {0} terms of service here:",
   "errors": {
     "required": "此项为必填项",
     "minLength": "最小长度为 {0}",
