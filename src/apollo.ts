@@ -7,7 +7,7 @@ import {
 // HTTP connection to the API
 const httpLink = createHttpLink({
   // You should use an absolute URL here
-  uri: 'https://hub.snapshot.org/graphql'
+  uri: `${process.env.VUE_APP_HUB_URL}/graphql`
 });
 
 // Create the apollo client
