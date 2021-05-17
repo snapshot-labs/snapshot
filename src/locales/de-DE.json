@@ -95,6 +95,8 @@
   "defaultSkin": "Standard-Skin",
   "select": "Auswählen",
   "language": "Sprache",
+  "agree": "I agree",
+  "mustAgreeToTerms": "Before you can complete this action, you must agree to {0} terms of service here:",
   "errors": {
     "required": "Dieses Feld ist ein Pflichtfeld",
     "minLength": "Mindestlänge ist {0}",
