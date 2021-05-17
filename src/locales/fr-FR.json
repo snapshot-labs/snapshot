@@ -95,6 +95,8 @@
   "defaultSkin": "Thème par défaut",
   "select": "Sélectionnez",
   "language": "Langage",
+  "agree": "I agree",
+  "mustAgreeToTerms": "Before you can complete this action, you must agree to {0} terms of service here:",
   "errors": {
     "required": "Le champ est requis",
     "minLength": "Longueur minimale de {0}",
