@@ -95,6 +95,8 @@
   "defaultSkin": "ค่าเริ่มต้นของผิวหนัง",
   "select": "เลือก",
   "language": "ภาษา",
+  "agree": "I agree",
+  "mustAgreeToTerms": "Before you can complete this action, you must agree to {0} terms of service here:",
   "errors": {
     "required": "ต้องระบุข้อมูลในช่อง",
     "minLength": "ความยาวต่ำสุดคือ {0}",
