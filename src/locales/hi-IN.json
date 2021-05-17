@@ -95,6 +95,8 @@
   "defaultSkin": "डिफ़ॉल्ट स्किन",
   "select": "चुनें",
   "language": "भाषा",
+  "agree": "I agree",
+  "mustAgreeToTerms": "Before you can complete this action, you must agree to {0} terms of service here:",
   "errors": {
     "required": "यह जानकारी जरुरी है",
     "minLength": "न्यूनतम लंबाई {0}",
