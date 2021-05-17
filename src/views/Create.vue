@@ -151,7 +151,7 @@ import draggable from 'vuedraggable';
 import { getScores } from '@snapshot-labs/snapshot.js/src/utils';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import { getBlockNumber } from '@snapshot-labs/snapshot.js/src/utils/web3';
-import { proposalQuery } from '@/helpers/graphql';
+import { getProposalData } from '@/helpers/graphql';
 
 export default {
   components: {
@@ -244,7 +244,7 @@ export default {
       this.getUserScore();
     if (this.from) {
       try {
-        const proposal = await proposalQuery(this.from);
+        const { proposal } = await getProposalData(this.from);
         const { title, body, choices, start, end, snapshot } = proposal;
         this.form = {
           name: title,
