@@ -159,10 +159,11 @@ import draggable from 'vuedraggable';
 import { getScores } from '@snapshot-labs/snapshot.js/src/utils';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import { getBlockNumber } from '@snapshot-labs/snapshot.js/src/utils/web3';
-import { getProposalData } from '@/helpers/graphql';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { useModal } from '@/composables/useModal';
 import { useTerms } from '@/composables/useTerms';
+import { useQuery, useResult } from '@vue/apollo-composable';
+import { PROPOSAL_QUERY } from '@/helpers/queries';
 
 export default {
   setup() {
@@ -326,28 +327,29 @@ export default {
         !isMember.value
       )
         getUserScore();
-      if (from) {
-        try {
-          const data = await getProposalData(from);
-          form.value = {
-            name: data.proposal.title,
-            body: data.proposal.body,
-            choices: data.proposal.choices,
-            start: data.proposal.start,
-            end: data.proposal.end,
-            snapshot: data.proposal.snapshot
-          };
-          const { network, strategies, plugins } = data.proposal;
-          form.value.metadata = { network, strategies, plugins };
-          choices.value = data.proposal.choices.map((text, key) => ({
-            key,
-            text
-          }));
-        } catch (e) {
-          console.log(e);
-        }
-      }
     });
+
+    if (from) {
+      const { result } = useQuery(PROPOSAL_QUERY, { id: from });
+      const proposal = useResult(result, null, data => data.proposal);
+
+      watch(proposal, value => {
+        form.value = {
+          name: value.title,
+          body: value.body,
+          choices: value.choices,
+          start: value.start,
+          end: value.end,
+          snapshot: value.snapshot
+        };
+        const { network, strategies, plugins } = value;
+        form.value.metadata = { network, strategies, plugins };
+        choices.value = value.choices.map((text, key) => ({
+          key,
+          text
+        }));
+      });
+    }
 
     return {
       loading,

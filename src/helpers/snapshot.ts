@@ -4,21 +4,38 @@ import { formatProposals, switchStrategiesAt } from '@/helpers/utils';
 import { getProfiles } from '@/helpers/profile';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import client from '@/helpers/client';
-import { getProposalData } from '@/helpers/graphql';
+import { apolloClient } from '@/apollo';
+import { VOTES_QUERY, PROPOSAL_QUERY } from '@/helpers/queries';
+import { cloneDeep } from 'lodash';
 
 export async function getProposal(space, id) {
   try {
     console.time('getProposal.data');
     const provider = getProvider(space.network);
     const response = await Promise.all([
-      getProposalData(id),
+      apolloClient.query({
+        query: PROPOSAL_QUERY,
+        variables: {
+          id
+        }
+      }),
+      apolloClient.query({
+        query: VOTES_QUERY,
+        variables: {
+          id
+        },
+        fetchPolicy: 'no-cache'
+      }),
+
       getBlockNumber(provider)
     ]);
     console.timeEnd('getProposal.data');
-    const [proposalData, blockNumber] = response;
-    const { proposal, votes } = proposalData;
-    proposal.ipfsHash = id;
-    return { proposal, votes, blockNumber };
+    const [proposal, votes, blockNumber] = cloneDeep(response);
+    return {
+      proposal: proposal.data.proposal,
+      votes: votes.data.votes,
+      blockNumber
+    };
   } catch (e) {
     console.log(e);
     return e;

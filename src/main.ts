@@ -1,10 +1,10 @@
-import { createApp } from 'vue';
-import { LockPlugin } from '@snapshot-labs/lock/plugins/vue3';
-import options from '@/auth';
+import { createApp, h, provide } from 'vue';
 import VueClipboard from 'vue3-clipboard';
 import Jazzicon from 'vue3-jazzicon/src/components';
 import upperFirst from 'lodash/upperFirst';
 import camelCase from 'lodash/camelCase';
+import { LockPlugin } from '@snapshot-labs/lock/plugins/vue3';
+import options from '@/auth';
 import App from '@/App.vue';
 import router from '@/router';
 import store from '@/store';
@@ -13,8 +13,15 @@ import i18n from '@/i18n';
 import '@/auth';
 import '@/helpers/skins';
 import '@/style.scss';
+import { apolloClient } from '@/apollo';
+import { DefaultApolloClient } from '@vue/apollo-composable';
 
-const app = createApp(App)
+const app = createApp({
+  setup() {
+    provide(DefaultApolloClient, apolloClient);
+  },
+  render: () => h(App)
+})
   .use(i18n)
   .use(router)
   .use(store)
