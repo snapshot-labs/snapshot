@@ -135,7 +135,7 @@ const actions = {
     return spaces;
   },
   getValidators: async ({ commit }, spaceKey) => {
-    const network = spaceKey === 'staking-mainnet' ? 'mainnet' : 'testnet';
+    const network = spaceKey.includes('mainnet') ? 'mainnet' : 'testnet';
 
     const res: any = await client.getByUrl(
       `https://api.stake.hmny.io/networks/${network}/validators`
