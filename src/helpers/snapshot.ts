@@ -5,7 +5,7 @@ import { getProfiles } from '@/helpers/profile';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import client from '@/helpers/client';
 import { apolloClient } from '@/apollo';
-import { PROPOSAL_AND_VOTES_QUERY } from '@/helpers/queries';
+import { VOTES_QUERY, PROPOSAL_QUERY } from '@/helpers/queries';
 import { cloneDeep } from 'lodash';
 
 export async function getProposal(space, id) {
@@ -14,18 +14,28 @@ export async function getProposal(space, id) {
     const provider = getProvider(space.network);
     const response = await Promise.all([
       apolloClient.query({
-        query: PROPOSAL_AND_VOTES_QUERY,
+        query: PROPOSAL_QUERY,
+        variables: {
+          id
+        }
+      }),
+      apolloClient.query({
+        query: VOTES_QUERY,
         variables: {
           id
         },
-        fetchPolicy: 'network-only'
+        fetchPolicy: 'no-cache'
       }),
+
       getBlockNumber(provider)
     ]);
     console.timeEnd('getProposal.data');
-    const [proposalData, blockNumber] = response;
-    const { proposal, votes } = cloneDeep(proposalData.data);
-    return { proposal, votes, blockNumber };
+    const [proposal, votes, blockNumber] = cloneDeep(response);
+    return {
+      proposal: proposal.data.proposal,
+      votes: votes.data.votes,
+      blockNumber
+    };
   } catch (e) {
     console.log(e);
     return e;
