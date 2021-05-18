@@ -84,9 +84,7 @@ export default {
   computed: {
     ...mapState(['app', 'web3']),
     canCreateProposal() {
-      if (['staking-mainnet', 'staking-testnet'].indexOf(this.key) > -1) {
-        return this.isValidator;
-      } else if (this.isDao) {
+      if (this.isDao || this.isHarmony) {
         return (this.isValidator || this.isMember);
       } else {
         // check members
@@ -157,6 +155,9 @@ export default {
     },
     isDao() {
       return ['dao-mainnet', 'dao-testnet'].indexOf(this.key) > -1;
+    },
+    isHarmony() {
+      return ['staking-mainnet', 'staking-testnet'].indexOf(this.key) > -1;
     }
   },
   methods: {
