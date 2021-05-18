@@ -96,7 +96,7 @@
   "select": "Select",
   "language": "Language",
   "agree": "I agree",
-  "mustAgreeToTerms": "Before you can complete this action, you must agree to {0} terms of service here:",
+  "mustAgreeToTerms": "You must agree to the {0} terms before you can continue.",
   "errors": {
     "required": "Field is required",
     "minLength": "Minimum length is {0}",

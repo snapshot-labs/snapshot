@@ -8,7 +8,7 @@
         {{ $tc('mustAgreeToTerms', [space.name]) }}
       </h4>
       <a :href="space.terms" target="_blank" rel="noopener noreferrer">
-        <UiText :text="getIpfsUrl" :truncate="35" />
+        Read terms
         <Icon name="external-link" class="ml-1" />
       </a>
     </div>
