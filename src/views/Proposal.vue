@@ -116,12 +116,8 @@
         </div>
         <div class="mb-1">
           <b>IPFS</b>
-          <a
-            :href="_ipfsUrl(proposal.ipfsHash)"
-            target="_blank"
-            class="float-right"
-          >
-            #{{ proposal.ipfsHash.slice(0, 7) }}
+          <a :href="_ipfsUrl(proposal.id)" target="_blank" class="float-right">
+            #{{ proposal.id.slice(0, 7) }}
             <Icon name="external-link" class="ml-1" />
           </a>
         </div>
