@@ -1,7 +1,7 @@
 import gql from 'graphql-tag';
 
 export const PROPOSAL_AND_VOTES_QUERY = gql`
-  query Spaces($id: String!) {
+  query($id: String!) {
     proposal(id: $id) {
       id
       title
@@ -34,7 +34,7 @@ export const PROPOSAL_AND_VOTES_QUERY = gql`
 `;
 
 export const PROPOSAL_QUERY = gql`
-  query Spaces($id: String!) {
+  query Proposal($id: String!) {
     proposal(id: $id) {
       id
       title
