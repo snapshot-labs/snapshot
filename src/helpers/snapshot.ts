@@ -17,7 +17,8 @@ export async function getProposal(space, id) {
         query: PROPOSAL_AND_VOTES_QUERY,
         variables: {
           id
-        }
+        },
+        fetchPolicy: 'network-only'
       }),
       getBlockNumber(provider)
     ]);
