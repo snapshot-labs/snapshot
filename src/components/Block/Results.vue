@@ -16,8 +16,13 @@
               .join(' + ')
           "
         >
-          {{ _numeral(results.totalBalances[choice.i]) }}
-          {{ _shorten(space.symbol, 'symbol') }}
+          <template v-if="isDao">
+            {{ results.totalBalances[choice.i] }} Vote
+          </template>
+          <template v-else>
+            {{ _numeral(results.totalBalances[choice.i]) }}
+            {{ _shorten(space.symbol, 'symbol') }}
+          </template>
         </span>
         <span
           class="float-right"
@@ -75,6 +80,9 @@ export default {
       } else {
         return this.results.totalVotesBalances;
       }
+    },
+    isDao() {
+      return ['dao-mainnet', 'dao-testnet'].indexOf(this.space.key) > -1;
     }
   },
   methods: {

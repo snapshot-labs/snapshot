@@ -43,7 +43,7 @@
     "ethereumjs-util": "^7.0.7",
     "fortmatic": "^2.0.6",
     "jsonexport": "^3.0.1",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.21",
     "numeral": "^2.0.4",
     "pretty-ms": "^7.0.0",
     "primer-support": "^5.0.0",

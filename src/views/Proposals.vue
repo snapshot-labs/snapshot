@@ -84,18 +84,12 @@ export default {
   computed: {
     ...mapState(['app', 'web3']),
     canCreateProposal() {
-      if (['staking-mainnet', 'staking-testnet'].indexOf(this.key) > -1) {
-        return this.isValidator;
+      if (this.isDao || this.isHarmony) {
+        return (this.isValidator || this.isMember);
       } else {
-        if (!this.web3.account) {
-          return false;
-        }
         // check members
         if (this.space.members.length > 0) {
-          const member = this.space.members.find(v =>
-            isAddressEqual(v, this.web3.account)
-          );
-          return (member !== undefined);
+          return this.isMember;
         } else {
           return this.$auth.isAuthenticated.value;
         }
@@ -143,15 +137,27 @@ export default {
       );
     },
     isMember() {
-      const members = this.space.members.map(address => address.toLowerCase());
-      return (
-        this.$auth.isAuthenticated.value &&
-        this.web3.account &&
-        members.includes(this.web3.account.toLowerCase())
-      );
+      if (!this.web3.account) {
+        return false;
+      }
+
+      if (this.space.members.length > 0) {
+        const member = this.space.members.find(v =>
+          isAddressEqual(v, this.web3.account)
+        );
+        return (member !== undefined);
+      } else {
+        return false;
+      }
     },
     isEns() {
       return this.key.includes('.eth') || this.key.includes('.xyz');
+    },
+    isDao() {
+      return ['dao-mainnet', 'dao-testnet'].indexOf(this.key) > -1;
+    },
+    isHarmony() {
+      return ['staking-mainnet', 'staking-testnet'].indexOf(this.key) > -1;
     }
   },
   methods: {

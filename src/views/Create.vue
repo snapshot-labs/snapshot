@@ -113,13 +113,20 @@
                 <span v-else v-text="$d(form.end * 1e3, 'short')" />
               </UiButton>
             </div>
-
             <UiButton class="width-full mb-2">
               <input
                 v-model="form.snapshot"
                 type="number"
                 class="input width-full text-center"
                 placeholder="Snapshot block number"
+              />
+            </UiButton>
+            <UiButton class="width-full mb-2"  v-if="isDao">
+              <input
+                v-model="form.maxCanSelect"
+                type="number"
+                class="input width-full text-center"
+                placeholder="Max selections"
               />
             </UiButton>
           </div>
@@ -184,7 +191,8 @@ export default {
         start: (Date.now() + day * 7) / 1000,
         end: (Date.now() + day * 21) / 1000,
         snapshot: '',
-        metadata: {}
+        metadata: {},
+        maxCanSelect: ''
       },
       modalOpen: false,
       modalPluginsOpen: false,
@@ -195,6 +203,9 @@ export default {
   computed: {
     space() {
       return this.app.spaces[this.key];
+    },
+    isDao() {
+      return ['dao-mainnet', 'dao-testnet'].indexOf(this.key) > -1;
     },
     isValid() {
       // const ts = (Date.now() / 1e3).toFixed();
@@ -210,6 +221,7 @@ export default {
         this.form.end > this.form.start &&
         this.form.snapshot &&
         this.form.snapshot > this.blockNumber / 2 &&
+        this.form.maxCanSelect > 0 &&
         this.choices.length >= 2 &&
         !this.choices.some(a => a.text === '')
       );
@@ -220,6 +232,9 @@ export default {
     this.addChoice(2);
 
     this.blockNumber = await getBlockNumber(getProvider(this.space.network));
+
+    // no-Dao space can only choose one option
+    if (!this.isDao) this.form.maxCanSelect = 1;
 
     this.form.snapshot = this.blockNumber;
     if (this.from) {

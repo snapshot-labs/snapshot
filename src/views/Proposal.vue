@@ -48,9 +48,9 @@
             <UiButton
               v-for="(choice, i) in payload.choices"
               :key="i"
-              @click="selectedChoice = i + 1"
+              @click="selectOption(i + 1)"
               class="d-block width-full mb-2"
-              :class="selectedChoice === i + 1 && 'button--active'"
+              :class="selectedChoiceSet.indexOf(i + 1) > -1 && 'button--active'"
             >
               {{ _shorten(choice, 32) }}
               <a
@@ -75,7 +75,7 @@
             </UiButton>
           </div>
           <UiButton
-            :disabled="voteLoading || !selectedChoice || !web3.account"
+            :disabled="voteLoading || !selectedChoice || !web3.account || selectedChoiceSet.length > payload.maxCanSelect"
             :loading="voteLoading"
             @click="modalOpen = true"
             class="d-block width-full button--submit"
@@ -162,6 +162,10 @@
                 {{ payload.snapshot }}
                 <Icon name="external-link" class="ml-1" />
               </a>
+            </div>
+            <div class="mb-1" v-if="payload.maxCanSelect > 1">
+              <b>Max selections</b>
+              <span class="float-right text-white">{{ payload.maxCanSelect }}</span>
             </div>
             <template v-if="isHarmonySpace">
               <div class="mb-1" v-if="epoch.length">
@@ -265,7 +269,8 @@ export default {
       results: [],
       modalOpen: false,
       modalStrategiesOpen: false,
-      selectedChoice: 0,
+      selectedChoice: '',
+      selectedChoiceSet: [],
       totalScore: 0,
       scores: [],
       validatorNames: {}
@@ -278,6 +283,9 @@ export default {
     },
     isHarmonySpace() {
       return ['staking-mainnet', 'staking-testnet'].indexOf(this.key) > -1;
+    },
+    isDao() {
+      return ['dao-mainnet', 'dao-testnet'].indexOf(this.key) > -1;
     },
     totalVotesOne() {
       return this.results
@@ -298,7 +306,7 @@ export default {
         isAddressEqual(address, this.web3.account)
       );
 
-      if (this.isHarmonySpace) {
+      if (this.isHarmonySpace || this.isDao) {
         const iAmValidator = !!this.app.validators.find(v =>
           isAddressEqual(v.address, this.web3.account)
         );
@@ -364,6 +372,15 @@ export default {
           this.validatorNames[(new HarmonyAddress(item.address).checksum).toLowerCase()] = item.name;
         });
       }
+    },
+    selectOption(id) {
+      const optionIndex = this.selectedChoiceSet.indexOf(id);
+      if (optionIndex > -1) {
+        this.selectedChoiceSet.splice(optionIndex, 1);
+      } else {
+        this.selectedChoiceSet.push(id);
+      }
+      this.selectedChoice = this.selectedChoiceSet.join('-');
     }
   },
   async created() {

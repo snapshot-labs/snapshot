@@ -39,6 +39,7 @@ export default {
       if (key === 'symbol') limit = 6;
       if (key === 'name') limit = 64;
       if (key === 'choice') limit = 12;
+      if (key === 'choice-long') limit = 30;
       if (limit)
         return str.length > limit ? `${str.slice(0, limit).trim()}...` : str;
       return shorten(str);
