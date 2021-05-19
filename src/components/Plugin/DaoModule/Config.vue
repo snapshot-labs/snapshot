@@ -2,6 +2,14 @@
   <form @submit.prevent="handleSubmit">
     <div class="mb-2 text-center">
       <h4 class="mb-3">Transactions</h4>
+      <PluginDaoModuleTransfer
+        :input="input"
+        :nonce="input.txs.length"
+        :network="network"
+        @close="adding = false"
+        @newTransaction="addTransaction($event)"
+        v-if="adding"
+      />
       <div v-if="adding">
         <UiButton class="width-full mb-2">
           <input
@@ -93,7 +101,7 @@ export default {
   emits: ['update:modelValue', 'close'],
   data() {
     return {
-      input: false,
+      input: { txs: [] },
       adding: false,
       plugin: new Plugin(),
       newEntry: defaultEntry()
@@ -112,12 +120,17 @@ export default {
   },
   methods: {
     addTx() {
-      if (!this.input) this.input = { txs: [] };
       // Nonce corresponds to the index, which is the current length of the txs array
       this.input.txs.push(
         toModuleTransaction(this.newEntry, this.input.txs.length)
       );
       this.newEntry = defaultEntry();
+      this.adding = false;
+    },
+    addTransaction(transaction) {
+      console.log('transaction', transaction);
+      this.input.txs.push(transaction);
+      console.log('this.input', this.input);
       this.adding = false;
     },
     removeTx(index) {
@@ -128,18 +141,12 @@ export default {
       this.input.txs.forEach((tx, index) => {
         tx.nonce = index;
       });
-      if (this.input.txs.length == 0) {
-        this.input = false;
-      }
     },
     addAction() {
-      if (!this.input) this.input = {};
-      this.input = {
-        txs: []
-      };
+      this.input = { txs: [] };
     },
     removeAction() {
-      this.input = false;
+      this.input = { txs: [] };
     },
     handleSubmit() {
       this.$emit('update:modelValue', this.input);
