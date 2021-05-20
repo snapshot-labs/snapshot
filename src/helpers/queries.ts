@@ -50,6 +50,7 @@ export const SPACE_QUERY = gql`
       symbol
       admins
       terms
+      plugins
       strategies {
         name
         params
