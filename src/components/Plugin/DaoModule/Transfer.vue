@@ -17,7 +17,12 @@
     @update:modelValue="handleABIChanged($event)"
   ></UiTextarea>
 
-  <UiInput v-model="newEntry.value" placeholder="Value">
+  <UiInput
+    :error="!validValue && 'Invalid Value'"
+    :modelValue="newEntry.value"
+    placeholder="Value"
+    @update:modelValue="handleValueChange($event)"
+  >
     <template v-slot:label>Value</template>
   </UiInput>
 
@@ -58,11 +63,17 @@
 <script>
 import Plugin from '@snapshot-labs/snapshot.js/src/plugins/daoModule';
 import { parseEther } from '@ethersproject/units';
-import { extractUsefulMethods, getContractABI } from '@/helpers/abi/utils';
+import {
+  extractUsefulMethods,
+  getContractABI,
+  getTransactionData
+} from '@/helpers/abi/utils';
+import { BigNumber } from '@ethersproject/bignumber';
 
 const defaultEntry = () => {
   return {
-    operation: '0'
+    operation: '0',
+    value: '0'
   };
 };
 const parseValueInput = input => {
@@ -72,12 +83,12 @@ const parseValueInput = input => {
     return input;
   }
 };
-const toModuleTransaction = (tx, nonce) => {
+const toModuleTransaction = (tx, data, nonce) => {
   return {
     nonce,
     to: tx.to,
     value: parseValueInput(tx.value),
-    data: tx.data,
+    data: data,
     operation: tx.operation
   };
 };
@@ -89,6 +100,7 @@ export default {
       plugin: new Plugin(),
       newEntry: defaultEntry(),
       validAbi: true,
+      validValue: true,
       selectedMethod: undefined,
       methods: [],
       methodIndex: 0,
@@ -98,10 +110,20 @@ export default {
   },
   computed: {
     isValid() {
-      // We validate with nonce 0 here and use the correct index as nonce later
-      return this.plugin.validateTransaction(
-        toModuleTransaction(this.newEntry, 0)
-      );
+      try {
+        const data = getTransactionData(
+          this.newEntry.abi,
+          this.selectedMethod,
+          this.newEntry.to,
+          this.parameters
+        );
+        // We validate with nonce 0 here and use the correct index as nonce later
+        return this.plugin.validateTransaction(
+          toModuleTransaction(this.newEntry, data, 0)
+        );
+      } catch (error) {
+        return false;
+      }
     }
   },
   methods: {
@@ -109,6 +131,14 @@ export default {
       this.$emit('close');
     },
     handleSubmit() {
+      const data = getTransactionData(
+        this.newEntry.abi,
+        this.selectedMethod,
+        this.newEntry.to,
+        this.parameters
+      );
+      console.log({ data });
+
       const transaction = toModuleTransaction(this.newEntry, this.nonce);
       this.$emit('newTransaction', transaction);
       this.$emit('close');
@@ -118,6 +148,15 @@ export default {
       if (result) {
         this.newEntry.abi = result;
         this.handleABIChanged(result);
+      }
+    },
+    handleValueChange(value) {
+      this.newEntry.value = value;
+      try {
+        BigNumber.from(value);
+        this.validValue = true;
+      } catch (error) {
+        this.validValue = false;
       }
     },
     handleABIChanged(value) {

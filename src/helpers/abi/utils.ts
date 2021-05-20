@@ -3,12 +3,15 @@ import { isAddress } from '@ethersproject/address';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import { JsonRpcProvider } from '@ethersproject/providers';
 import { id } from '@ethersproject/hash';
+import { Interface } from '@ethersproject/abi';
 
 import {
   AbiItem,
   AbiItemExtended,
   AllowedAbiItem
 } from '@/helpers/abi/interfaces';
+import { isArrayParameter } from '@/helpers/validator';
+import { BigNumber } from '@ethersproject/bignumber';
 
 const EXPLORER_API_URLS = {
   '1': 'https://api.etherscan.io/api',
@@ -95,23 +98,6 @@ export const getContractABI = async (
   }
 };
 
-export const getMethodSignature = ({ inputs, name }: AbiItem): string => {
-  const params = inputs?.map(x => x.type).join(',');
-  return `${name}(${params})`;
-};
-
-export const getSignatureHash = (signature: string): string => {
-  return id(signature);
-};
-
-export const getMethodSignatureAndSignatureHash = (
-  method: AbiItem
-): { methodSignature: string; signatureHash: string } => {
-  const methodSignature = getMethodSignature(method);
-  const signatureHash = getSignatureHash(methodSignature);
-  return { methodSignature, signatureHash };
-};
-
 export const isAllowedMethod = ({ name, type }: AbiItem): boolean => {
   return type === 'function' && !!name;
 };
@@ -133,11 +119,45 @@ export const extractUsefulMethods = (abi: AbiItem[]): AbiItemExtended[] => {
     .map(
       (method): AbiItemExtended => ({
         action: getMethodAction(method),
-        ...getMethodSignatureAndSignatureHash(method),
         ...method
       })
     )
     .sort(({ name: a }, { name: b }) => {
       return a.toLowerCase() > b.toLowerCase() ? 1 : -1;
     });
+};
+
+export const getParsedJSONOrArrayFromString = (
+  parameter: string
+): (string | number)[] | null => {
+  try {
+    const arrayResult = JSON.parse(parameter);
+    return arrayResult.map(value => {
+      if (Number.isInteger(value)) {
+        return BigNumber.from(value).toString();
+      }
+      return value;
+    });
+  } catch (err) {
+    return null;
+  }
+};
+
+const extractMethodArgs = (values: Record<string, string>) => ({ name }) => {
+  return getParsedJSONOrArrayFromString(values[name]) || values[name];
+};
+
+export const getTransactionData = (
+  abi: string,
+  method: AbiItemExtended,
+  contractAddress: string,
+  values: Record<string, string>
+) => {
+  const contractInterface = new Interface(abi);
+  const { inputs, name } = method;
+  const parameterValues = inputs?.map(extractMethodArgs(values)) || [];
+
+  console.log({ parameterValues });
+
+  return contractInterface.encodeFunctionData(name, parameterValues);
 };
