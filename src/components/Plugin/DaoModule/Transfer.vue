@@ -1,43 +1,56 @@
 <template>
-  <UiButton class="width-full mb-2">
-    <input
-      v-model="newEntry.to"
-      v-on:input="handleAddressChanged"
-      class="input width-full text-center"
-      placeholder="Target address"
-      required
-    />
-  </UiButton>
-  <textarea
-    class="input width-full textarea"
-    v-model="newEntry.abi"
-    v-on:input="handleABIChanged"
-    placeholder="ABI"
-  ></textarea>
-  <UiButton class="width-full mb-2">
-    <input
-      v-model="newEntry.value"
-      class="input width-full text-center"
-      placeholder="Value"
-      required
-    />
-  </UiButton>
+  <span>Contract Interaction</span>
+
+  <PluginDaoModuleInputAddress
+    v-model="newEntry.to"
+    :inputProps="{
+      placeholder: 'Target address',
+      required: true
+    }"
+    @validAddress="handleAddressChanged()"
+  />
+
+  <UiTextarea
+    :error="!validAbi && 'Invalid ABI'"
+    :modelValue="newEntry.abi"
+    :textareaProps="{ placeholder: 'ABI' }"
+    @update:modelValue="handleABIChanged($event)"
+  ></UiTextarea>
+
+  <UiInput v-model="newEntry.value" placeholder="Value">
+    <template v-slot:label>Value</template>
+  </UiInput>
+
   <div v-if="methods.length">
     <span>Methods</span>
     <UiButton class="width-full mb-2">
-      <select v-model="methodIndex" class="input width-full text-center" required>
-        <option
-          v-for="(method, i) in methods"
-          :key="i"
-          :value="i"
-        >
+      <select
+        v-model="methodIndex"
+        class="input width-full text-center"
+        required
+        @change="handleMethodChanged()"
+      >
+        <option v-for="(method, i) in methods" :key="i" :value="i">
           {{ method.name }}
         </option>
       </select>
     </UiButton>
+
+    <div v-if="selectedMethod && selectedMethod.inputs.length">
+      <span>Parameters</span>
+      <PluginDaoModuleInputMethodParameter
+        v-for="input in selectedMethod.inputs"
+        :key="input.name"
+        v-model="parameters[input.name]"
+        :name="input.name"
+        :type="input.type"
+        @isValid="validParameters[input.name] = $event"
+      />
+    </div>
   </div>
-  <UiButton @click="close" class="mb-2">Back</UiButton>
-  <UiButton :disabled="!isValid" @click="handleSubmit" class="button--submit">
+
+  <UiButton class="mb-2" @click="close">Back</UiButton>
+  <UiButton :disabled="!isValid" class="button--submit" @click="handleSubmit">
     Add
   </UiButton>
 </template>
@@ -46,6 +59,7 @@
 import Plugin from '@snapshot-labs/snapshot.js/src/plugins/daoModule';
 import { parseEther } from '@ethersproject/units';
 import { extractUsefulMethods, getContractABI } from '@/helpers/abi/utils';
+
 const defaultEntry = () => {
   return {
     operation: '0'
@@ -74,9 +88,12 @@ export default {
     return {
       plugin: new Plugin(),
       newEntry: defaultEntry(),
+      validAbi: true,
+      selectedMethod: undefined,
       methods: [],
       methodIndex: 0,
-      attributes: [],
+      parameters: {},
+      validParameters: {}
     };
   },
   computed: {
@@ -100,22 +117,50 @@ export default {
       const result = await getContractABI(this.network, this.newEntry.to);
       if (result) {
         this.newEntry.abi = result;
-        this.handleABIChanged();
+        this.handleABIChanged(result);
       }
     },
-    handleABIChanged() {
+    handleABIChanged(value) {
+      this.newEntry.abi = value;
+      this.methodIndex = 0;
+      this.methods = [];
+
+      let abi;
       try {
-        const abi = JSON.parse(this.newEntry.abi);
+        abi = JSON.parse(this.newEntry.abi);
+        this.validAbi = true;
+      } catch (error) {
+        this.validAbi = false;
+        console.warn('invalid abi', error);
+      }
+
+      try {
         this.methods = extractUsefulMethods(abi);
+        this.handleMethodChanged();
       } catch (error) {
         console.warn('error extracting useful methods', error);
       }
+    },
+    handleMethodChanged() {
+      this.parameters = {};
+      this.selectedMethod = this.methods[this.methodIndex];
+
+      // Set all parameters valid state to false as all parameters are empty by default
+      // This takes the `inputs` array (Ex: [{name:'param1', ...}, {name:'param2', ...}, ...])
+      // And converts it to {param1: false, param2: false, ...}
+      this.validParameters = Object.fromEntries(
+        Object.keys(this.selectedMethod.inputs).map(({ name }) => [name, false])
+      );
+    },
+    areParametersValid() {
+      const values = Object.values(this.validParameters);
+      return values.every(value => value);
     }
   }
 };
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 .textarea {
   border: 1px solid var(--border-color);
   background-color: transparent;

@@ -10,46 +10,46 @@
         @newTransaction="addTransaction($event)"
         v-if="adding"
       />
-      <div v-if="adding">
-        <UiButton class="width-full mb-2">
-          <input
-            v-model="newEntry.to"
-            class="input width-full text-center"
-            placeholder="Target address"
-            required
-          />
-        </UiButton>
-        <UiButton class="width-full mb-2">
-          <input
-            v-model="newEntry.value"
-            class="input width-full text-center"
-            placeholder="Value"
-            required
-          />
-        </UiButton>
-        <UiButton class="width-full mb-2">
-          <input
-            v-model="newEntry.data"
-            class="input width-full text-center"
-            placeholder="Data"
-            required
-          />
-        </UiButton>
-        <UiButton class="width-full mb-2">
-          <select
-            v-model="newEntry.operation"
-            class="input width-full text-center"
-            required
-          >
-            <option v-bind:value="'0'" selected="selected">Call</option>
-            <option v-bind:value="'1'">Delegatecall</option>
-          </select>
-        </UiButton>
-        <UiButton @click="adding = false" class="mb-2">Back</UiButton>
-        <UiButton :disabled="!isValid" @click="addTx" class="button--submit">
-          Add
-        </UiButton>
-      </div>
+      <!--      <div v-if="adding">-->
+      <!--        <UiButton class="width-full mb-2">-->
+      <!--          <input-->
+      <!--            v-model="newEntry.to"-->
+      <!--            class="input width-full text-center"-->
+      <!--            placeholder="Target address"-->
+      <!--            required-->
+      <!--          />-->
+      <!--        </UiButton>-->
+      <!--        <UiButton class="width-full mb-2">-->
+      <!--          <input-->
+      <!--            v-model="newEntry.value"-->
+      <!--            class="input width-full text-center"-->
+      <!--            placeholder="Value"-->
+      <!--            required-->
+      <!--          />-->
+      <!--        </UiButton>-->
+      <!--        <UiButton class="width-full mb-2">-->
+      <!--          <input-->
+      <!--            v-model="newEntry.data"-->
+      <!--            class="input width-full text-center"-->
+      <!--            placeholder="Data"-->
+      <!--            required-->
+      <!--          />-->
+      <!--        </UiButton>-->
+      <!--        <UiButton class="width-full mb-2">-->
+      <!--          <select-->
+      <!--            v-model="newEntry.operation"-->
+      <!--            class="input width-full text-center"-->
+      <!--            required-->
+      <!--          >-->
+      <!--            <option v-bind:value="'0'" selected="selected">Call</option>-->
+      <!--            <option v-bind:value="'1'">Delegatecall</option>-->
+      <!--          </select>-->
+      <!--        </UiButton>-->
+      <!--        <UiButton @click="adding = false" class="mb-2">Back</UiButton>-->
+      <!--        <UiButton :disabled="!isValid" @click="addTx" class="button&#45;&#45;submit">-->
+      <!--          Add-->
+      <!--        </UiButton>-->
+      <!--      </div>-->
       <div v-else>
         <div
           v-for="(tx, i) in input.txs"

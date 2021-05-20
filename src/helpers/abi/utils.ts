@@ -1,8 +1,8 @@
 import memoize from 'lodash.memoize';
 import { isAddress } from '@ethersproject/address';
-import getProvider from '../../../../snapshot-js/src/utils/provider';
+import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import { JsonRpcProvider } from '@ethersproject/providers';
-import { id } from "@ethersproject/hash";
+import { id } from '@ethersproject/hash';
 
 import {
   AbiItem,
@@ -13,46 +13,6 @@ import {
 const EXPLORER_API_URLS = {
   '1': 'https://api.etherscan.io/api',
   '4': 'https://api-rinkeby.etherscan.io/api'
-};
-
-export const getContractABI = async (
-  network: string,
-  contractAddress: string
-): Promise<string> => {
-  const apiKey = process.env.VUE_APP_ETHERSCAN_API_KEY;
-  const apiUrl = EXPLORER_API_URLS[network];
-
-
-  if (!apiUrl) {
-    return '';
-  }
-
-  const isEthereumAddress = mustBeEthereumAddress(contractAddress);
-  const isEthereumContractAddress = await mustBeEthereumContractAddress(
-    network,
-    contractAddress
-  );
-
-  if (!isEthereumAddress || !isEthereumContractAddress) {
-    return '';
-  }
-
-  try {
-    const { result, status } = await fetchContractABI(
-      apiUrl,
-      contractAddress,
-      apiKey
-    );
-
-    if (status === '0') {
-      return '';
-    }
-
-    return result;
-  } catch (e) {
-    console.error('Failed to retrieve ABI', e);
-    return '';
-  }
 };
 
 const fetchContractABI = memoize(
@@ -95,6 +55,45 @@ export const mustBeEthereumContractAddress = memoize(
   },
   (url, contractAddress) => `${url}_${contractAddress}`
 );
+
+export const getContractABI = async (
+  network: string,
+  contractAddress: string
+): Promise<string> => {
+  const apiKey = process.env.VUE_APP_ETHERSCAN_API_KEY;
+  const apiUrl = EXPLORER_API_URLS[network];
+
+  if (!apiUrl) {
+    return '';
+  }
+
+  const isEthereumAddress = mustBeEthereumAddress(contractAddress);
+  const isEthereumContractAddress = await mustBeEthereumContractAddress(
+    network,
+    contractAddress
+  );
+
+  if (!isEthereumAddress || !isEthereumContractAddress) {
+    return '';
+  }
+
+  try {
+    const { result, status } = await fetchContractABI(
+      apiUrl,
+      contractAddress,
+      apiKey
+    );
+
+    if (status === '0') {
+      return '';
+    }
+
+    return result;
+  } catch (e) {
+    console.error('Failed to retrieve ABI', e);
+    return '';
+  }
+};
 
 export const getMethodSignature = ({ inputs, name }: AbiItem): string => {
   const params = inputs?.map(x => x.type).join(',');

@@ -1,13 +1,19 @@
 <template>
-  <textarea
-      class="input width-full textarea"
+  <div>
+    <textarea
       v-model="input"
-  ></textarea>
+      v-bind="textareaProps"
+      :class="{ 'border-red': error }"
+      class="input width-full textarea"
+      @input="handleInput()"
+    ></textarea>
+    <span v-if="error" class="error-message">*{{ error }}</span>
+  </div>
 </template>
 
 <script>
 export default {
-  props: ['modelValue'],
+  props: ['modelValue', 'textareaProps', 'error'],
   emits: ['update:modelValue'],
   data() {
     return {
@@ -17,10 +23,24 @@ export default {
   created() {
     if (this.modelValue) this.input = this.modelValue;
   },
-}
+  watch: {
+    modelValue(value) {
+      this.input = value;
+    }
+  },
+  methods: {
+    handleInput() {
+      this.$emit('update:modelValue', this.input);
+    }
+  }
+};
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
+.error-message {
+  color: #ff3856;
+  font-size: 16px;
+}
 .textarea {
   border: 1px solid var(--border-color);
   background-color: transparent;
@@ -28,7 +48,7 @@ export default {
   border-radius: 23px;
   padding: 0 24px;
   outline: none;
-  font-size: 14px;
+  font-size: 16px;
 
   &:hover {
     color: var(--link-color);
