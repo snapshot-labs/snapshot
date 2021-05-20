@@ -230,7 +230,6 @@ import { useStore } from 'vuex';
 import { getProposal, getResults, getPower } from '@/helpers/snapshot';
 import { useModal } from '@/composables/useModal';
 import { useTerms } from '@/composables/useTerms';
-import { switchStrategiesAt } from '@/helpers/utils';
 
 export default {
   setup() {
@@ -297,7 +296,7 @@ export default {
       return admins.includes(this.web3.account?.toLowerCase());
     },
     strategies() {
-      return switchStrategiesAt(this.space.strategies, this.proposal);
+      return this.proposal.strategies ?? this.space.strategies;
     }
   },
   watch: {
