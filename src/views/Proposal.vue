@@ -11,7 +11,7 @@
         </router-link>
       </div>
       <div class="px-4 px-md-0">
-        <template v-if="loaded">
+        <template v-if="loadedProposal">
           <h1 class="mb-2">
             {{ proposal.title }}
             <span v-text="`#${id.slice(0, 7)}`" class="text-gray" />
@@ -42,7 +42,7 @@
         <PageLoading v-else />
       </div>
       <Block
-        v-if="loaded && ts >= proposal.start && ts < proposal.end"
+        v-if="loadedProposal && ts >= proposal.start && ts < proposal.end"
         class="mb-4"
         :title="$t('proposal.castVote')"
       >
@@ -81,7 +81,7 @@
         </UiButton>
       </Block>
       <BlockVotes
-        v-if="loaded"
+        v-if="loadedProposal"
         :loaded="loadedResults"
         :space="space"
         :proposal="proposal"
@@ -89,7 +89,7 @@
         :strategies="strategies"
       />
     </template>
-    <template #sidebar-right v-if="loaded">
+    <template #sidebar-right v-if="loadedProposal">
       <Block :title="$t('information')">
         <div class="mb-1">
           <b>{{ $t('strategies') }}</b>
@@ -99,7 +99,7 @@
           >
             <span v-for="(symbol, symbolIndex) of symbols" :key="symbol">
               <span :aria-label="symbol" class="tooltipped tooltipped-n">
-                <Token :space="space.key" :symbolIndex="symbolIndex" />
+                <Token :space="space.id" :symbolIndex="symbolIndex" />
               </span>
               <span v-show="symbolIndex !== symbols.length - 1" class="ml-1" />
             </span>
@@ -194,7 +194,7 @@
   </Layout>
   <teleport to="#modal">
     <ModalConfirm
-      v-if="loaded"
+      v-if="loadedProposal"
       :open="modalOpen"
       @close="modalOpen = false"
       @reload="loadProposal"
@@ -223,7 +223,7 @@
 </template>
 
 <script>
-import { ref, computed } from 'vue';
+import { ref, computed, watch } from 'vue';
 import { mapActions } from 'vuex';
 import { useRoute } from 'vue-router';
 import { useStore } from 'vuex';
@@ -239,9 +239,17 @@ export default {
     const key = route.params.key;
     const id = route.params.id;
 
-    const modalOpen = ref(false);
+    const web3Account = computed(() => store.state.web3.account);
 
-    const space = computed(() => store.state.app.spaces[key]);
+    const modalOpen = ref(false);
+    const proposal = ref({});
+    const votes = ref({});
+    const results = ref([]);
+    const space = ref({});
+    const loadedProposal = ref(false);
+    const loadedResults = ref(false);
+    const totalScore = ref(0);
+    const scores = ref([]);
 
     const { modalAccountOpen } = useModal();
     const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(key);
@@ -254,6 +262,40 @@ export default {
         : (modalOpen.value = true);
     }
 
+    async function loadPower() {
+      if (!web3Account.value || !proposal.value.author) return;
+      const powerData = await getPower(
+        space.value,
+        web3Account.value,
+        proposal.value
+      );
+      totalScore.value = powerData.totalScore;
+      scores.value = powerData.scores;
+    }
+
+    async function loadProposal() {
+      const proposalData = await getProposal(id, key);
+      proposal.value = proposalData.proposal;
+      space.value = proposalData.space;
+      loadedProposal.value = true;
+      const resultsRes = await getResults(
+        space.value,
+        proposalData.proposal,
+        proposalData.votes,
+        proposalData.blockNumber
+      );
+      votes.value = resultsRes.votes;
+      results.value = resultsRes.results;
+      loadedResults.value = true;
+      loadPower();
+    }
+
+    watch(web3Account, (newValues, prevValues) => {
+      if (newValues?.toLowerCase() !== prevValues) loadPower();
+    });
+
+    loadProposal();
+
     return {
       key,
       id,
@@ -261,23 +303,23 @@ export default {
       acceptTerms,
       clickVote,
       modalOpen,
-      space
+      space,
+      proposal,
+      votes,
+      results,
+      loadedProposal,
+      loadedResults,
+      loadProposal,
+      totalScore,
+      scores
     };
   },
   data() {
     return {
-      loading: false,
-      loaded: false,
-      loadedResults: false,
       voteLoading: false,
       dropdownLoading: false,
-      proposal: {},
-      votes: {},
-      results: [],
       modalStrategiesOpen: false,
-      selectedChoice: 0,
-      totalScore: 0,
-      scores: []
+      selectedChoice: 0
     };
   },
   computed: {
@@ -300,44 +342,14 @@ export default {
       return switchStrategiesAt(this.space.strategies, this.proposal);
     }
   },
-  watch: {
-    'web3.account': async function (val, prev) {
-      if (val?.toLowerCase() !== prev) await this.loadPower();
-    }
-  },
   methods: {
     ...mapActions(['send']),
-    async loadProposal() {
-      const proposalObj = await getProposal(this.space, this.id);
-      const { proposal, votes, blockNumber } = proposalObj;
-      this.proposal = proposal;
-      this.loaded = true;
-      const resultsObj = await getResults(
-        this.space,
-        proposal,
-        votes,
-        blockNumber
-      );
-      this.votes = resultsObj.votes;
-      this.results = resultsObj.results;
-      this.loadedResults = true;
-    },
-    async loadPower() {
-      if (!this.web3.account || !this.proposal.author) return;
-      const { scores, totalScore } = await getPower(
-        this.space,
-        this.web3.account,
-        this.proposal
-      );
-      this.totalScore = totalScore;
-      this.scores = scores;
-    },
     async deleteProposal() {
       this.dropdownLoading = true;
       try {
         if (
           await this.send({
-            space: this.space.key,
+            space: this.space.id,
             type: 'delete-proposal',
             payload: {
               proposal: this.id
@@ -357,12 +369,6 @@ export default {
     selectFromDropdown(e) {
       if (e === 'delete') this.deleteProposal();
     }
-  },
-  async created() {
-    this.loading = true;
-    await this.loadProposal();
-    this.loading = false;
-    await this.loadPower();
   }
 };
 </script>

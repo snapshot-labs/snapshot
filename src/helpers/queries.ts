@@ -37,3 +37,27 @@ export const PROPOSAL_QUERY = gql`
     }
   }
 `;
+
+export const SPACE_QUERY = gql`
+  query Space($key: String!) {
+    space(id: $key) {
+      id
+      name
+      domain
+      members
+      network
+      skin
+      symbol
+      admins
+      terms
+      strategies {
+        name
+        params
+      }
+      filters {
+        minScore
+        onlyMembers
+      }
+    }
+  }
+`;

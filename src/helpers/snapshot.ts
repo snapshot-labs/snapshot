@@ -5,13 +5,19 @@ import { getProfiles } from '@/helpers/profile';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import client from '@/helpers/client';
 import { apolloClient } from '@/apollo';
-import { VOTES_QUERY, PROPOSAL_QUERY } from '@/helpers/queries';
+import { VOTES_QUERY, PROPOSAL_QUERY, SPACE_QUERY } from '@/helpers/queries';
 import { cloneDeep } from 'lodash';
 
-export async function getProposal(space, id) {
+export async function getProposal(id, key) {
   try {
     console.time('getProposal.data');
-    const provider = getProvider(space.network);
+    const space = await apolloClient.query({
+      query: SPACE_QUERY,
+      variables: {
+        key
+      }
+    });
+    const provider = getProvider(space.data.space.network);
     const response = await Promise.all([
       apolloClient.query({
         query: PROPOSAL_QUERY,
@@ -34,7 +40,8 @@ export async function getProposal(space, id) {
     return {
       proposal: proposal.data.proposal,
       votes: votes.data.votes,
-      blockNumber
+      blockNumber,
+      space: space.data.space
     };
   } catch (e) {
     console.log(e);
@@ -53,7 +60,7 @@ export async function getResults(space, proposal, votes, blockNumber) {
     console.time('getProposal.scores');
     const [scores, profiles]: any = await Promise.all([
       getScores(
-        space.key,
+        space.id,
         strategies,
         space.network,
         provider,
@@ -114,7 +121,7 @@ export async function getPower(space, address, proposal) {
       proposal.snapshot > blockNumber ? 'latest' : parseInt(proposal.snapshot);
     const strategies = switchStrategiesAt(space.strategies, proposal);
     let scores: any = await getScores(
-      space.key,
+      space.id,
       strategies,
       space.network,
       getProvider(space.network),
