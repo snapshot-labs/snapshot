@@ -42,11 +42,18 @@
         <PageLoading v-else />
       </div>
       <BlockCastvote
-        v-if="loaded && ts >= proposal.start && ts < proposal.end"
+        v-if="canVote('single-choice')"
         :proposal="proposal"
         :loading="voteLoading"
-        v-model="selectedChoice"
+        v-model="selectedChoices"
         @open="modalOpen = true"
+        @clickVote="clickVote"
+      />
+      <BlockVotingApproval
+        v-if="canVote('approval')"
+        :proposal="proposal"
+        :loading="voteLoading"
+        v-model="selectedChoices"
         @clickVote="clickVote"
       />
       <BlockVotes
@@ -170,7 +177,7 @@
       :space="space"
       :proposal="proposal"
       :id="id"
-      :selectedChoice="selectedChoice"
+      :selectedChoices="selectedChoices"
       :totalScore="totalScore"
       :scores="scores"
       :snapshot="proposal.snapshot"
@@ -192,7 +199,7 @@
 </template>
 
 <script>
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { mapActions } from 'vuex';
 import { useRoute } from 'vue-router';
 import { useStore } from 'vuex';
@@ -207,8 +214,15 @@ export default {
     const store = useStore();
     const key = route.params.key;
     const id = route.params.id;
+    const ts = (Date.now() / 1e3).toFixed();
 
     const modalOpen = ref(false);
+    const selectedChoices = ref(null);
+    const loaded = ref(false);
+    const loadedResults = ref(false);
+    const proposal = ref({});
+    const votes = ref({});
+    const results = ref([]);
 
     const space = computed(() => store.state.app.spaces[key]);
 
@@ -223,36 +237,63 @@ export default {
         : (modalOpen.value = true);
     }
 
+    async function loadProposal() {
+      const proposalObj = await getProposal(space.value, id);
+      proposal.value = proposalObj.proposal;
+      // TODO: Add option for type at proposal creation
+      proposal.value.type = 'single-choice';
+      loaded.value = true;
+      const resultsObj = await getResults(
+        space.value,
+        proposalObj.proposal,
+        proposalObj.votes,
+        proposalObj.blockNumber
+      );
+      votes.value = resultsObj.votes;
+      results.value = resultsObj.results;
+      loadedResults.value = true;
+    }
+
+    loadProposal();
+
+    function canVote(t) {
+      return (
+        proposal.value.type === t &&
+        loaded &&
+        ts >= proposal.value.start &&
+        ts < proposal.value.end
+      );
+    }
+
     return {
       key,
       id,
+      ts,
       modalTermsOpen,
       acceptTerms,
       clickVote,
       modalOpen,
-      space
+      space,
+      selectedChoices,
+      loaded,
+      loadedResults,
+      proposal,
+      votes,
+      results,
+      loadProposal,
+      canVote
     };
   },
   data() {
     return {
-      loading: false,
-      loaded: false,
-      loadedResults: false,
       voteLoading: false,
       dropdownLoading: false,
-      proposal: {},
-      votes: {},
-      results: [],
       modalStrategiesOpen: false,
-      selectedChoice: 0,
       totalScore: 0,
       scores: []
     };
   },
   computed: {
-    ts() {
-      return (Date.now() / 1e3).toFixed();
-    },
     symbols() {
       return this.strategies.map(strategy => strategy.params.symbol);
     },
@@ -276,21 +317,6 @@ export default {
   },
   methods: {
     ...mapActions(['send']),
-    async loadProposal() {
-      const proposalObj = await getProposal(this.space, this.id);
-      const { proposal, votes, blockNumber } = proposalObj;
-      this.proposal = proposal;
-      this.loaded = true;
-      const resultsObj = await getResults(
-        this.space,
-        proposal,
-        votes,
-        blockNumber
-      );
-      this.votes = resultsObj.votes;
-      this.results = resultsObj.results;
-      this.loadedResults = true;
-    },
     async loadPower() {
       if (!this.web3.account || !this.proposal.author) return;
       const { scores, totalScore } = await getPower(
@@ -328,9 +354,6 @@ export default {
     }
   },
   async created() {
-    this.loading = true;
-    await this.loadProposal();
-    this.loading = false;
     await this.loadPower();
   }
 };

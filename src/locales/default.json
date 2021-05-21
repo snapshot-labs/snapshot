@@ -51,7 +51,7 @@
   "confirmVote": "Confirm vote",
   "sureToVote": "Are you sure you want to vote \"{0}\"?",
   "cannotBeUndone": "This action cannot be undone.",
-  "option": "Option",
+  "options": "Option(s)",
   "votingPower": "Your voting power",
   "receipt": "Receipt",
   "relayer": "Relayer",

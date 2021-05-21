@@ -1,5 +1,5 @@
 <template>
-  <Layout>
+  <Layout v-bind="$attrs">
     <template #content-left>
       <div class="px-4 px-md-0 mb-3">
         <router-link
@@ -48,6 +48,10 @@
           </div>
         </div>
       </div>
+      <!-- TODO: Create dropdown? -->
+      <Block title="Type of voting">
+        <input type="text" v-model="form.type" />
+      </Block>
       <Block :title="$t('create.choices')">
         <div v-if="choices.length > 0" class="overflow-hidden mb-2">
           <draggable
@@ -186,7 +190,8 @@ export default {
       start: '',
       end: '',
       snapshot: '',
-      metadata: {}
+      metadata: {},
+      type: ''
     });
     const modalOpen = ref(false);
     const modalProposalPluginsOpen = ref(false);
