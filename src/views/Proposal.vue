@@ -88,6 +88,14 @@
         :votes="votes"
         :strategies="strategies"
       />
+      <PluginDaoModuleCustomBlock
+          v-if="proposal.plugins?.daoModule?.txs"
+          :proposalConfig="proposal.plugins.daoModule"
+          :proposalEnd="proposal.end"
+          :porposalId="id"
+          :moduleAddress="space.plugins?.daoModule?.address"
+          :network="space.network"
+      />
     </template>
     <template #sidebar-right v-if="loaded">
       <Block :title="$t('information')">
@@ -172,14 +180,6 @@
           v-if="proposal.plugins?.gnosis?.baseTokenAddress"
           :proposalConfig="proposal.plugins.gnosis"
           :choices="proposal.choices"
-        />
-        <PluginDaoModuleCustomBlock
-          v-if="proposal.plugins?.daoModule?.txs"
-          :proposalConfig="proposal.plugins.daoModule"
-          :proposalEnd="proposal.end"
-          :porposalId="id"
-          :moduleAddress="space.plugins?.daoModule?.address"
-          :network="space.network"
         />
         <PluginQuorumCustomBlock
           :loaded="loadedResults"
@@ -309,6 +309,7 @@ export default {
     ...mapActions(['send']),
     async loadProposal() {
       const proposalObj = await getProposal(this.space, this.id);
+      console.log({proposalObj});
       const { proposal, votes, blockNumber } = proposalObj;
       this.proposal = proposal;
       this.loaded = true;

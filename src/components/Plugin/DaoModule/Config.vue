@@ -2,7 +2,7 @@
   <form @submit.prevent="handleSubmit">
     <div class="mb-2 text-center">
       <h4 class="mb-3">Transactions</h4>
-      <PluginDaoModuleTransfer
+      <PluginDaoModuleTransactionForm
         :input="input"
         :nonce="input.txs.length"
         :network="network"
