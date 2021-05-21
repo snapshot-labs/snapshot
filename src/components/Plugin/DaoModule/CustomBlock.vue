@@ -13,13 +13,26 @@
         <PluginDaoModuleTransactionPreview :transaction="tx" />
       </div>
     </div>
-    <UiButton
+    <div
       v-if="questionDetails?.questionId"
-      @click="showQuestion"
-      class="width-full mb-2"
+      class="mb-3 p-4 border rounded-2 text-white text-center"
     >
-      Show Question
-    </UiButton>
+      <div>
+        <Label> {{ approvalData.decision }} </Label>
+      </div>
+      <div v-if="questionState === 3">
+        <Label> {{ approvalData.timeLeft }} </Label>
+      </div>
+      <div>
+        <UiButton
+          v-if="canChangeAnswer"
+          @click="modalApproveDecisionOpen = true"
+          class="mb-2"
+        >
+          Change Answer
+        </UiButton>
+      </div>
+    </div>
     <UiButton
       v-if="moduleAddress"
       @click="performAction"
@@ -27,12 +40,23 @@
       v-text="actionLabel"
       class="width-full button--submit"
     />
+    <teleport to="#modal">
+      <ModalOptionApproval
+        :open="modalApproveDecisionOpen"
+        :isApproved="questionDetails?.isApproved"
+        :bond="questionDetails?.currentBond"
+        :questionId="questionDetails?.questionId"
+        @setApproval="voteOnQuestion"
+        @close="modalApproveDecisionOpen = false"
+      />
+    </teleport>
   </Block>
 </template>
 
 <script>
 import Plugin from '@snapshot-labs/snapshot.js/src/plugins/daoModule';
 import { sleep } from '@/helpers/utils';
+import { format } from 'timeago.js';
 
 const QuestionStates = {
   error: -1,
@@ -58,7 +82,8 @@ export default {
       loading: true,
       actionInProgress: false,
       plugin: new Plugin(),
-      questionDetails: undefined
+      questionDetails: undefined,
+      modalApproveDecisionOpen: false
     };
   },
   computed: {
@@ -111,6 +136,40 @@ export default {
         default:
           return false;
       }
+    },
+    approvalData() {
+      if (this.questionDetails.currentBond === '0.0') {
+        return {
+          timeLeft: 'Time to finish: -',
+          decision: 'Current final answer: -'
+        };
+      }
+
+      const time = format(this.questionDetails.endTime * 1e3);
+      if (this.questionDetails.finalizedAt) {
+        const timeLeft = `Finished: ${time}`;
+        if (this.questionDetails.isApproved) {
+          return {
+            decision: 'Final Answer: Yes',
+            timeLeft
+          };
+        }
+
+        return {
+          decision: 'Final answer: No',
+          timeLeft
+        };
+      }
+
+      return {
+        timeLeft: `Time to finish: ${time}`,
+        decision: `Current final answer: ${
+          this.questionDetails.isApproved ? 'Yes' : 'No'
+        }`
+      };
+    },
+    canChangeAnswer() {
+      return this.questionState === 3 && !this.questionDetails.finalizedAt;
     }
   },
   async created() {
@@ -164,13 +223,16 @@ export default {
         this.actionInProgress = false;
       }
     },
-
-    showQuestion() {
-      window.open(
-        'https://reality.eth.link/app/#!/question/' +
-          this.questionDetails.questionId,
-        '_blank'
+    async voteOnQuestion() {
+      await this.plugin.voteForQuestion(
+        this.$auth.web3,
+        this.questionDetails.oracle,
+        this.questionDetails.questionId,
+        this.questionDetails.minimumBond,
+        this.questionDetails.isApproved ? '0' : '1'
       );
+      await sleep(3e3);
+      await this.updateDetails();
     }
   }
 };
