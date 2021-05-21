@@ -1,10 +1,5 @@
 <template>
-  <button
-    :type="type || 'button'"
-    @click="$emit('click')"
-    class="button"
-    :disabled="loading"
-  >
+  <button :type="type || 'button'" class="button" :disabled="loading">
     <UiLoading v-if="loading" />
     <slot v-else />
   </button>
@@ -15,8 +10,7 @@ export default {
   props: {
     loading: Boolean,
     type: String
-  },
-  emits: ['click']
+  }
 };
 </script>
 
