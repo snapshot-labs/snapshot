@@ -1,5 +1,5 @@
 <template>
-  <Layout>
+  <Layout v-bind="$attrs">
     <template #content-left>
       <div class="px-4 px-md-0 mb-3">
         <router-link
@@ -41,45 +41,14 @@
         </template>
         <PageLoading v-else />
       </div>
-      <Block
+      <BlockCastvote
         v-if="loaded && ts >= proposal.start && ts < proposal.end"
-        class="mb-4"
-        :title="$t('proposal.castVote')"
-      >
-        <div class="mb-3">
-          <UiButton
-            v-for="(choice, i) in proposal.choices"
-            :key="i"
-            @click="selectedChoice = i + 1"
-            class="d-block width-full mb-2"
-            :class="selectedChoice === i + 1 && 'button--active'"
-          >
-            {{ _shorten(choice, 32) }}
-            <a
-              v-if="proposal.plugins?.aragon?.[`choice${[i + 1]}`]"
-              @click="modalOpen = true"
-              :aria-label="`Target address: ${
-                proposal.plugins.aragon[`choice${i + 1}`].actions[0].to
-              }\nValue: ${
-                proposal.plugins.aragon[`choice${i + 1}`].actions[0].value
-              }\nData: ${
-                proposal.plugins.aragon[`choice${i + 1}`].actions[0].data
-              }`"
-              class="tooltipped tooltipped-n break-word"
-            >
-              <Icon name="warning" class="v-align-middle ml-1" />
-            </a>
-          </UiButton>
-        </div>
-        <UiButton
-          :disabled="voteLoading || app.authLoading || !selectedChoice"
-          :loading="voteLoading"
-          @click="clickVote"
-          class="d-block width-full button--submit"
-        >
-          {{ $t('proposal.vote') }}
-        </UiButton>
-      </Block>
+        :proposal="proposal"
+        :loading="voteLoading"
+        v-model="selectedChoice"
+        @open="modalOpen = true"
+        @clickVote="clickVote"
+      />
       <BlockVotes
         v-if="loaded"
         :loaded="loadedResults"
