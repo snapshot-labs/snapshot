@@ -239,7 +239,8 @@ export default {
           (space.value.filters?.onlyMembers && isMember.value)) &&
         (space.value.filters?.minScore === 0 ||
           (space.value.filters?.minScore > 0 && hasMinScore.value) ||
-          isMember.value)
+          isMember.value ||
+          !web3Account.value)
       );
     });
 
