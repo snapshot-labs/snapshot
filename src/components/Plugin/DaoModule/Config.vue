@@ -128,9 +128,7 @@ export default {
       this.adding = false;
     },
     addTransaction(transaction) {
-      console.log('transaction', transaction);
       this.input.txs.push(transaction);
-      console.log('this.input', this.input);
       this.adding = false;
     },
     removeTx(index) {

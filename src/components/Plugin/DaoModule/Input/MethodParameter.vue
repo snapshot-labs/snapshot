@@ -21,7 +21,7 @@
   <!-- Text input -->
   <UiInput
     v-else
-    :error="!isValid && `Invalid ${type}`"
+    :error="dirty && !isValid && `Invalid ${type}`"
     :modelValue="value"
     :placeholder="placeholder"
     @update:modelValue="handleInput($event)"
@@ -38,6 +38,7 @@ export default {
     const placeholder = this.name ? `${this.name} (${this.type})` : this.type;
     return {
       placeholder,
+      dirty: false,
       value: undefined
     };
   },
@@ -57,6 +58,7 @@ export default {
   methods: {
     handleInput(value) {
       this.value = value;
+      this.dirty = true;
       this.$emit('update:modelValue', value);
       this.$emit('isValid', this.isValid);
     },

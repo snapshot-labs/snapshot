@@ -156,8 +156,5 @@ export const getTransactionData = (
   const contractInterface = new Interface(abi);
   const { inputs, name } = method;
   const parameterValues = inputs?.map(extractMethodArgs(values)) || [];
-
-  console.log({ parameterValues });
-
   return contractInterface.encodeFunctionData(name, parameterValues);
 };

@@ -137,9 +137,8 @@ export default {
         this.newEntry.to,
         this.parameters
       );
-      console.log({ data });
 
-      const transaction = toModuleTransaction(this.newEntry, this.nonce);
+      const transaction = toModuleTransaction(this.newEntry, data, this.nonce);
       this.$emit('newTransaction', transaction);
       this.$emit('close');
     },
