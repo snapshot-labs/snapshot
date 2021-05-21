@@ -3,8 +3,8 @@
   <!-- ADDRESS -->
   <PluginDaoModuleInputAddress
     v-if="type === 'address'"
+    :label="this.placeholder"
     :inputProps="{
-      placeholder: this.placeholder,
       required: true
     }"
     :modelValue="value"
@@ -23,9 +23,12 @@
     v-else
     :error="dirty && !isValid && `Invalid ${type}`"
     :modelValue="value"
-    :placeholder="placeholder"
     @update:modelValue="handleInput($event)"
-  />
+  >
+    <template v-slot:label>
+      <span class="text-black">{{ this.placeholder }}</span>
+    </template>
+  </UiInput>
 </template>
 
 <script>

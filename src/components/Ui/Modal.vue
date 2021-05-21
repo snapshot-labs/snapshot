@@ -3,11 +3,12 @@
     <div class="backdrop" @click="$emit('close')" />
     <div
       class="shell overflow-hidden anim-scale-in position-relative rounded-0 rounded-md-2"
+      v-bind="shellProps"
     >
       <div v-if="$slots.header" class="border-bottom pt-4 pb-3 text-center">
         <slot name="header" />
       </div>
-      <div class="modal-body">
+      <div class="modal-body" v-bind="modalBodyProps">
         <slot />
       </div>
       <div v-if="$slots.footer" class="border-top p-4 text-center">
@@ -24,7 +25,7 @@
 </template>
 
 <script>
-import { watch, toRefs } from 'vue';
+import { toRefs, watch } from 'vue';
 import { useModal } from '@/composables/useModal';
 
 export default {
@@ -32,7 +33,21 @@ export default {
     open: {
       type: Boolean,
       required: true
+    },
+    shellProps: {
+      type: Object,
+      required: false,
+      default: () => ({})
+    },
+    modalBodyProps: {
+      type: Object,
+      required: false,
+      default: () => ({})
     }
+  },
+  watch: {
+    shellProps: console.log,
+    modalBodyProps: console.log
   },
   setup(props) {
     const { open } = toRefs(props);

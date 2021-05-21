@@ -3,31 +3,30 @@
 
   <PluginDaoModuleInputAddress
     v-model="newEntry.to"
+    label="to (address)"
     :inputProps="{
-      placeholder: 'Target address',
       required: true
     }"
     @validAddress="handleAddressChanged()"
   />
 
-  <UiTextarea
-    :error="!validAbi && 'Invalid ABI'"
-    :modelValue="newEntry.abi"
-    :textareaProps="{ placeholder: 'ABI' }"
-    @update:modelValue="handleABIChanged($event)"
-  ></UiTextarea>
-
   <UiInput
     :error="!validValue && 'Invalid Value'"
     :modelValue="newEntry.value"
-    placeholder="Value"
     @update:modelValue="handleValueChange($event)"
   >
-    <template v-slot:label>Value</template>
+    <template v-slot:label><span class="text-black">value</span></template>
+  </UiInput>
+
+  <UiInput
+    :error="!validAbi && 'Invalid ABI'"
+    :modelValue="newEntry.abi"
+    @update:modelValue="handleABIChanged($event)"
+  >
+    <template v-slot:label><span class="text-black">ABI</span></template>
   </UiInput>
 
   <div v-if="methods.length">
-    <span>Methods</span>
     <UiButton class="width-full mb-2">
       <select
         v-model="methodIndex"
@@ -42,7 +41,9 @@
     </UiButton>
 
     <div v-if="selectedMethod && selectedMethod.inputs.length">
-      <span>Parameters</span>
+
+      <div class="divider"></div>
+
       <PluginDaoModuleInputMethodParameter
         v-for="input in selectedMethod.inputs"
         :key="input.name"
@@ -142,6 +143,8 @@ export default {
         this.parameters
       );
 
+      console.log({ data });
+
       const transaction = toModuleTransaction(this.newEntry, data, this.nonce);
       this.$emit('newTransaction', transaction);
       this.$emit('close');
@@ -216,5 +219,10 @@ export default {
     color: var(--link-color);
     border-color: var(--link-color);
   }
+}
+.divider {
+  border-top: 1px solid #CACACA;
+  margin-top: 16px;
+  margin-bottom: 24px;
 }
 </style>

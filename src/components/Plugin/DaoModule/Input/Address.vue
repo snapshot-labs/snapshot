@@ -5,7 +5,9 @@
     :error="dirty && !isValid && 'Invalid Address'"
     @input="handleInput()"
   >
-    <slot></slot>
+    <template v-if="label" v-slot:label>
+      <span class="text-black">{{ label }}</span>
+    </template>
   </UiInput>
 </template>
 
@@ -13,7 +15,7 @@
 import { mustBeEthereumAddress } from '@/helpers/abi/utils';
 
 export default {
-  props: ['modelValue', 'inputProps'],
+  props: ['modelValue', 'inputProps', 'label'],
   emits: ['update:modelValue', 'validAddress'],
   data() {
     return { input: '', isValid: false, dirty: false };

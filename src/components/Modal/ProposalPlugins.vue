@@ -1,5 +1,5 @@
 <template>
-  <UiModal :open="open" @close="$emit('close')">
+  <UiModal v-bind="modalProps" :open="open" @close="$emit('close')">
     <template v-slot:header>
       <h3>{{ $t('plugins') }}</h3>
     </template>
@@ -96,6 +96,21 @@ export default {
         return [plugin, instance];
       })
     );
+  },
+  computed: {
+    modalProps() {
+      if (this.selected === 'daoModule') {
+        return {
+          shellProps: {
+            style: 'maxWidth: 610px'
+          },
+          modalBodyProps: {
+            style: 'maxHeight: 660px'
+          }
+        };
+      }
+      return {};
+    }
   },
   methods: {
     getLogoUrl(plugin) {
