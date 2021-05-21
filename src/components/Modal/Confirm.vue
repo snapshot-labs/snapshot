@@ -12,7 +12,7 @@
       <div class="m-4 p-4 border rounded-2 text-white">
         <div class="d-flex">
           <span v-text="$t('options')" class="flex-auto text-gray mr-1" />
-          <div class="text-right">{{ formatChoices }}</div>
+          <span class="text-right">{{ formatChoices }}</span>
         </div>
         <div class="d-flex">
           <span v-text="$t('snapshot')" class="flex-auto text-gray mr-1" />

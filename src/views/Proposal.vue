@@ -199,7 +199,7 @@
 </template>
 
 <script>
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed } from 'vue';
 import { mapActions } from 'vuex';
 import { useRoute } from 'vue-router';
 import { useStore } from 'vuex';
@@ -241,7 +241,7 @@ export default {
       const proposalObj = await getProposal(space.value, id);
       proposal.value = proposalObj.proposal;
       // TODO: Add option for type at proposal creation
-      proposal.value.type = 'single-choice';
+      proposal.value.type = 'approval';
       loaded.value = true;
       const resultsObj = await getResults(
         space.value,
