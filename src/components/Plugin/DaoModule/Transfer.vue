@@ -76,9 +76,13 @@ const defaultEntry = () => {
     value: '0'
   };
 };
+const parseAmount = input => {
+  if (input.startsWith('0x')) return BigNumber.from(input).toString();
+  return parseEther(input).toString();
+};
 const parseValueInput = input => {
   try {
-    return parseEther(input).toString();
+    return parseAmount(input);
   } catch (e) {
     return input;
   }
@@ -152,7 +156,7 @@ export default {
     handleValueChange(value) {
       this.newEntry.value = value;
       try {
-        BigNumber.from(value);
+        parseAmount(value);
         this.validValue = true;
       } catch (error) {
         this.validValue = false;
