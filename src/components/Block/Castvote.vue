@@ -9,7 +9,7 @@
         :class="modelValue === i + 1 && 'button--active'"
       >
         {{ _shorten(choice, 32) }}
-        <a
+        <!-- <a
           v-if="proposal.plugins?.aragon?.[`choice${[i + 1]}`]"
           @click="$emit('open')"
           :aria-label="`Target address: ${
@@ -22,12 +22,11 @@
           class="tooltipped tooltipped-n break-word"
         >
           <Icon name="warning" class="v-align-middle ml-1" />
-        </a>
+        </a> -->
       </UiButton>
     </div>
     <UiButton
-      :disabled="loading || app.authLoading || !modelValue"
-      :loading="loading"
+      :disabled="app.authLoading || !modelValue"
       @click="$emit('clickVote')"
       class="d-block width-full button--submit"
     >
@@ -46,8 +45,7 @@ export default {
     proposal: {
       type: Object,
       required: true
-    },
-    loading: Boolean
+    }
   },
   emits: ['update:modelValue', 'open', 'clickVote']
 };

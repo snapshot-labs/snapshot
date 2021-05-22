@@ -28,8 +28,7 @@
       </UiButton>
     </div>
     <UiButton
-      :disabled="loading || app.authLoading || selectedChoices.length < 1"
-      :loading="loading"
+      :disabled="app.authLoading || selectedChoices.length < 1"
       @click="$emit('clickVote')"
       class="d-block width-full button--submit"
     >
@@ -45,8 +44,7 @@ export default {
     proposal: {
       type: Object,
       required: true
-    },
-    loading: Boolean
+    }
   },
   emits: ['update:modelValue', 'open', 'clickVote'],
   setup(_, { emit }) {

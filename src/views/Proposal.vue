@@ -44,7 +44,6 @@
       <BlockCastvote
         v-if="canVote('single-choice')"
         :proposal="proposal"
-        :loading="voteLoading"
         v-model="selectedChoices"
         @open="modalOpen = true"
         @clickVote="clickVote"
@@ -52,8 +51,8 @@
       <BlockVotingApproval
         v-if="canVote('approval')"
         :proposal="proposal"
-        :loading="voteLoading"
         v-model="selectedChoices"
+        @open="modalOpen = true"
         @clickVote="clickVote"
       />
       <BlockVotes
@@ -129,7 +128,6 @@
       </Block>
       <BlockResults
         :loaded="loadedResults"
-        :id="id"
         :space="space"
         :proposal="proposal"
         :results="results"
@@ -285,7 +283,6 @@ export default {
   },
   data() {
     return {
-      voteLoading: false,
       dropdownLoading: false,
       modalStrategiesOpen: false,
       totalScore: 0,

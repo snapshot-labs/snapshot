@@ -1,5 +1,5 @@
 <template>
-  <UiModal :open="open" v-if="open" @close="$emit('close')" class="d-flex">
+  <UiModal :open="open" @close="$emit('close')" class="d-flex">
     <template v-slot:header>
       <h3>{{ $t('confirmVote') }}</h3>
     </template>
@@ -78,7 +78,6 @@ export default {
     'open',
     'space',
     'proposal',
-    'id',
     'selectedChoices',
     'snapshot',
     'totalScore',
@@ -119,7 +118,7 @@ export default {
         space: this.space.key,
         type: this.proposal.type,
         payload: {
-          proposal: this.id,
+          proposal: this.proposal.id,
           choice: this.selectedChoices,
           metadata: {}
         }
