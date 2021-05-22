@@ -133,7 +133,8 @@
     "castVote": "Cast your vote",
     "vote": "Vote",
     "startDate": "Start date",
-    "endDate": "End date"
+    "endDate": "End date",
+    "votingSystem": "Voting system"
   },
   "proposals": {
     "header": "Proposals",

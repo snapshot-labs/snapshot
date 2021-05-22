@@ -97,10 +97,10 @@
           </a>
         </div>
         <div class="mb-1">
-          <b>Voting system</b>
-          <a class="float-right">
+          <b>{{ $t('proposal.votingSystem') }}</b>
+          <span class="float-right text-white">
             {{ $t(`voting.${proposal.type}`) }}
-          </a>
+          </span>
         </div>
         <div>
           <div class="mb-1">
