@@ -96,6 +96,12 @@
             <Icon name="external-link" class="ml-1" />
           </a>
         </div>
+        <div class="mb-1">
+          <b>Voting system</b>
+          <a class="float-right">
+            {{ $t(`voting.${proposal.type}`) }}
+          </a>
+        </div>
         <div>
           <div class="mb-1">
             <b>{{ $t('proposal.startDate') }}</b>
@@ -197,7 +203,7 @@
 </template>
 
 <script>
-import { ref, computed } from 'vue';
+import { ref, computed, watch, onMounted } from 'vue';
 import { mapActions } from 'vuex';
 import { useRoute } from 'vue-router';
 import { useStore } from 'vuex';
@@ -220,8 +226,11 @@ export default {
     const proposal = ref({});
     const votes = ref({});
     const results = ref([]);
+    const totalScore = ref(0);
+    const scores = ref([]);
 
     const space = computed(() => store.state.app.spaces[key]);
+    const web3Account = computed(() => store.state.web3.account);
 
     const { modalAccountOpen } = useModal();
     const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(key);
@@ -234,11 +243,18 @@ export default {
         : (modalOpen.value = true);
     }
 
+    function canVote(t) {
+      return (
+        proposal.value.type === t &&
+        loaded &&
+        ts >= proposal.value.start &&
+        ts < proposal.value.end
+      );
+    }
+
     async function loadProposal() {
       const proposalObj = await getProposal(space.value, id);
       proposal.value = proposalObj.proposal;
-      // TODO: Add option for type at proposal creation
-      proposal.value.type = 'approval';
       loaded.value = true;
       const resultsObj = await getResults(
         space.value,
@@ -251,16 +267,25 @@ export default {
       loadedResults.value = true;
     }
 
-    loadProposal();
-
-    function canVote(t) {
-      return (
-        proposal.value.type === t &&
-        loaded &&
-        ts >= proposal.value.start &&
-        ts < proposal.value.end
+    async function loadPower() {
+      if (!web3Account.value || !proposal.value.author) return;
+      const response = await getPower(
+        space.value,
+        web3Account.value,
+        proposal.value
       );
+      totalScore.value = response.totalScore;
+      scores.value = response.scores;
     }
+
+    watch(web3Account, (val, prev) => {
+      if (val?.toLowerCase() !== prev) loadPower();
+    });
+
+    onMounted(async () => {
+      await loadProposal();
+      loadPower();
+    });
 
     return {
       key,
@@ -278,15 +303,15 @@ export default {
       votes,
       results,
       loadProposal,
-      canVote
+      canVote,
+      totalScore,
+      scores
     };
   },
   data() {
     return {
       dropdownLoading: false,
-      modalStrategiesOpen: false,
-      totalScore: 0,
-      scores: []
+      modalStrategiesOpen: false
     };
   },
   computed: {
@@ -306,23 +331,10 @@ export default {
       return this.proposal.strategies ?? this.space.strategies;
     }
   },
-  watch: {
-    'web3.account': async function (val, prev) {
-      if (val?.toLowerCase() !== prev) await this.loadPower();
-    }
-  },
+
   methods: {
     ...mapActions(['send']),
-    async loadPower() {
-      if (!this.web3.account || !this.proposal.author) return;
-      const { scores, totalScore } = await getPower(
-        this.space,
-        this.web3.account,
-        this.proposal
-      );
-      this.totalScore = totalScore;
-      this.scores = scores;
-    },
+
     async deleteProposal() {
       this.dropdownLoading = true;
       try {
@@ -348,9 +360,6 @@ export default {
     selectFromDropdown(e) {
       if (e === 'delete') this.deleteProposal();
     }
-  },
-  async created() {
-    await this.loadPower();
   }
 };
 </script>

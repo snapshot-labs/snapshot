@@ -26,6 +26,7 @@ export const PROPOSAL_QUERY = gql`
       created
       plugins
       network
+      type
       strategies {
         name
         params
