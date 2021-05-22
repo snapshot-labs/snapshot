@@ -201,7 +201,7 @@
     "selectVoting": "Select voting system",
     "single-choice": "Single choice voting",
     "approval": "Approval voting",
-    "discription": {
+    "description": {
       "single-choice": "Each voter may select only one choice.",
       "approval": "Each voter may select any number of choices."
     }
