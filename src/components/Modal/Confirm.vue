@@ -107,7 +107,7 @@ export default {
       }
       if (this.proposal.type === 'single-choice')
         return this.proposal.choices[this.selectedChoices - 1];
-      else return '-';
+      else return this.proposal.choices;
     }
   },
   methods: {
