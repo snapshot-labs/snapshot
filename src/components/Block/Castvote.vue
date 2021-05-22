@@ -4,16 +4,16 @@
       <UiButton
         v-for="(choice, i) in proposal.choices"
         :key="i"
-        @click="$emit('update:modelValue', i + 1)"
+        @click="selectChoice(i + 1)"
         class="d-block width-full mb-2"
-        :class="modelValue === i + 1 && 'button--active'"
+        :class="selectedChoice === i + 1 && 'button--active'"
       >
         {{ _shorten(choice, 32) }}
         <PluginAragonGovern :proposal="proposal" />
       </UiButton>
     </div>
     <UiButton
-      :disabled="app.authLoading || !modelValue"
+      :disabled="app.authLoading || !selectedChoice"
       @click="$emit('clickVote')"
       class="d-block width-full button--submit"
     >
@@ -23,17 +23,25 @@
 </template>
 
 <script>
+import { ref } from 'vue';
+
 export default {
   props: {
-    modelValue: {
-      type: Number,
-      required: true
-    },
     proposal: {
       type: Object,
       required: true
     }
   },
-  emits: ['update:modelValue', 'open', 'clickVote']
+  emits: ['update:modelValue', 'open', 'clickVote'],
+  setup(_, { emit }) {
+    const selectedChoice = ref(null);
+
+    function selectChoice(i) {
+      selectedChoice.value = i;
+      emit('update:modelValue', i);
+    }
+
+    return { selectChoice, selectedChoice };
+  }
 };
 </script>
