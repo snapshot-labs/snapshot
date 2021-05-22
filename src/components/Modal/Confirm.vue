@@ -116,7 +116,7 @@ export default {
       this.loading = true;
       await this.send({
         space: this.space.key,
-        type: this.proposal.type,
+        type: 'vote',
         payload: {
           proposal: this.proposal.id,
           choice: this.selectedChoices,
