@@ -239,7 +239,8 @@ export default {
           (space.value.filters?.onlyMembers && isMember.value)) &&
         (space.value.filters?.minScore === 0 ||
           (space.value.filters?.minScore > 0 && hasMinScore.value) ||
-          isMember.value)
+          isMember.value ||
+          !web3Account.value)
       );
     });
 
@@ -262,6 +263,7 @@ export default {
 
     async function handleSubmit() {
       loading.value = true;
+      form.value.snapshot = parseInt(form.value.snapshot);
       form.value.choices = choices.value.map(choice => choice.text);
       form.value.metadata.network = space.value.network;
       form.value.metadata.strategies = space.value.strategies;
