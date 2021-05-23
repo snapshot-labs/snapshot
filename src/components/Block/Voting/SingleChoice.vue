@@ -5,10 +5,9 @@
       :key="i"
       @click="selectChoice(i + 1)"
       class="d-block width-full mb-2"
-      :class="selectedChoices.includes(i + 1) && 'button--active'"
+      :class="selectedChoice === i + 1 && 'button--active'"
     >
       {{ _shorten(choice, 32) }}
-
       <PluginAragonGovern :proposal="proposal" />
     </UiButton>
   </div>
@@ -16,6 +15,7 @@
 
 <script>
 import { ref } from 'vue';
+
 export default {
   props: {
     proposal: {
@@ -25,17 +25,14 @@ export default {
   },
   emits: ['selectChoice'],
   setup(_, { emit }) {
-    const selectedChoices = ref([]);
+    const selectedChoice = ref(null);
 
     function selectChoice(i) {
-      if (selectedChoices.value.includes(i))
-        selectedChoices.value.splice(selectedChoices.value.indexOf(i), 1);
-      else selectedChoices.value.push(i);
-
-      emit('selectChoice', selectedChoices.value);
+      selectedChoice.value = i;
+      emit('selectChoice', i);
     }
 
-    return { selectChoice, selectedChoices };
+    return { selectChoice, selectedChoice };
   }
 };
 </script>

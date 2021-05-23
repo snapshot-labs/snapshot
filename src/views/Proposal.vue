@@ -41,20 +41,15 @@
         </template>
         <PageLoading v-else />
       </div>
-      <BlockCastvote
-        v-if="canVote('single-choice')"
+      <BlockCastVote
         :proposal="proposal"
+        :ts="ts"
+        :loaded="loaded"
         v-model="selectedChoices"
         @open="modalOpen = true"
         @clickVote="clickVote"
       />
-      <BlockVotingApproval
-        v-if="canVote('approval')"
-        :proposal="proposal"
-        v-model="selectedChoices"
-        @open="modalOpen = true"
-        @clickVote="clickVote"
-      />
+
       <BlockVotes
         v-if="loaded"
         :loaded="loadedResults"
@@ -243,15 +238,6 @@ export default {
         : (modalOpen.value = true);
     }
 
-    function canVote(t) {
-      return (
-        proposal.value.type === t &&
-        loaded &&
-        ts >= proposal.value.start &&
-        ts < proposal.value.end
-      );
-    }
-
     async function loadProposal() {
       const proposalObj = await getProposal(space.value, id);
       proposal.value = proposalObj.proposal;
@@ -303,7 +289,6 @@ export default {
       votes,
       results,
       loadProposal,
-      canVote,
       totalScore,
       scores
     };

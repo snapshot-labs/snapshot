@@ -1,19 +1,19 @@
 <template>
-  <Block class="mb-4" :title="$t('proposal.castVote')">
+  <Block v-if="loaded" class="mb-4" :title="$t('proposal.castVote')">
     <div class="mb-3">
-      <UiButton
-        v-for="(choice, i) in proposal.choices"
-        :key="i"
-        @click="selectChoice(i + 1)"
-        class="d-block width-full mb-2"
-        :class="selectedChoice === i + 1 && 'button--active'"
-      >
-        {{ _shorten(choice, 32) }}
-        <PluginAragonGovern :proposal="proposal" />
-      </UiButton>
+      <BlockVotingSingleChoice
+        v-if="canVote('single-choice')"
+        :proposal="proposal"
+        @selectChoice="emitChoice"
+      />
+      <BlockVotingApproval
+        v-if="canVote('approval')"
+        :proposal="proposal"
+        @selectChoice="emitChoice"
+      />
     </div>
     <UiButton
-      :disabled="app.authLoading || !selectedChoice"
+      :disabled="app.authLoading || selectedChoices < 1"
       @click="$emit('clickVote')"
       class="d-block width-full button--submit"
     >
@@ -23,25 +23,40 @@
 </template>
 
 <script>
-import { ref } from 'vue';
-
+import { toRefs, computed } from 'vue';
 export default {
   props: {
     proposal: {
       type: Object,
-      required: true
-    }
+      requered: true
+    },
+    modelValue: [Array, Number],
+    loaded: Boolean,
+    ts: String
   },
-  emits: ['update:modelValue', 'open', 'clickVote'],
-  setup(_, { emit }) {
-    const selectedChoice = ref(null);
+  setup(props, { emit }) {
+    const { ts, loaded, proposal, modelValue } = toRefs(props);
 
-    function selectChoice(i) {
-      selectedChoice.value = i;
-      emit('update:modelValue', i);
+    const selectedChoices = computed(() => {
+      if (Array.isArray(modelValue.value)) return modelValue.value.length;
+      return modelValue.value;
+    });
+
+    function canVote(t) {
+      console.log(ts.value, loaded.value);
+      return (
+        proposal.value.type === t &&
+        loaded.value &&
+        ts.value >= proposal.value.start &&
+        ts.value < proposal.value.end
+      );
     }
 
-    return { selectChoice, selectedChoice };
+    function emitChoice(c) {
+      emit('update:modelValue', c);
+    }
+
+    return { canVote, selectedChoices, emitChoice };
   }
 };
 </script>
