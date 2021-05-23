@@ -2,12 +2,12 @@
   <Block class="mb-4" :title="$t('proposal.castVote')">
     <div class="mb-3">
       <BlockVotingSingleChoice
-        v-if="canVote('single-choice')"
+        v-if="proposal.type === 'single-choice'"
         :proposal="proposal"
         @selectChoice="emitChoice"
       />
       <BlockVotingApproval
-        v-if="canVote('approval')"
+        v-if="proposal.type === 'approval'"
         :proposal="proposal"
         @selectChoice="emitChoice"
       />
@@ -23,39 +23,26 @@
 </template>
 
 <script>
-import { toRefs, computed } from 'vue';
+import { computed } from 'vue';
 export default {
   props: {
     proposal: {
       type: Object,
       required: true
     },
-    modelValue: [Array, Number],
-    loaded: Boolean,
-    ts: String
+    modelValue: [Array, Number]
   },
   setup(props, { emit }) {
-    const { ts, loaded, proposal, modelValue } = toRefs(props);
-
     const selectedChoices = computed(() => {
-      if (Array.isArray(modelValue.value)) return modelValue.value.length;
-      return modelValue.value;
+      if (Array.isArray(props.modelValue)) return props.modelValue.length;
+      return props.modelValue;
     });
-
-    function canVote(t) {
-      return (
-        proposal.value.type === t &&
-        loaded.value &&
-        ts.value >= proposal.value.start &&
-        ts.value < proposal.value.end
-      );
-    }
 
     function emitChoice(c) {
       emit('update:modelValue', c);
     }
 
-    return { canVote, selectedChoices, emitChoice };
+    return { selectedChoices, emitChoice };
   }
 };
 </script>

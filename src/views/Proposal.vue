@@ -42,14 +42,12 @@
         <PageLoading v-else />
       </div>
       <BlockCastVote
+        v-if="loaded && proposal.state === 'active'"
         :proposal="proposal"
-        :ts="ts"
-        :loaded="loaded"
         v-model="selectedChoices"
         @open="modalOpen = true"
         @clickVote="clickVote"
       />
-
       <BlockVotes
         v-if="loaded"
         :loaded="loadedResults"
