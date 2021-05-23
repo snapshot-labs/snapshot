@@ -46,15 +46,6 @@
         <div v-if="isReady">
           <Block :title="$t('settings.profile')">
             <div class="mb-2">
-              <a
-                href="https://docs.snapshot.org/spaces/add-avatar"
-                target="_blank"
-              >
-                <UiButton class="width-full mb-2">
-                  {{ $t('settings.changeAvatar') }}
-                  <Icon name="external-link" class="ml-1" />
-                </UiButton>
-              </a>
               <UiInput v-model="form.name" :error="inputError('name')">
                 <template v-slot:label>{{ $t(`settings.name`) }}*</template>
               </UiInput>
@@ -136,6 +127,15 @@
                 :error="inputError('terms')"
               >
                 <template v-slot:label> {{ $t(`settings.terms`) }} </template>
+              </UiInput>
+              <UiInput
+                v-model="form.avatar"
+                placeholder="e.g. https://example.com/space.png"
+                :error="inputError('avatar')"
+              >
+                <template v-slot:label>
+                  {{ $t(`settings.avatar`) }}
+                </template>
               </UiInput>
               <div class="d-flex flex-items-center px-2">
                 <Checkbox v-model="form.private" class="mr-2 mt-1" />
