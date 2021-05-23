@@ -28,7 +28,7 @@ export default {
   props: {
     proposal: {
       type: Object,
-      requered: true
+      required: true
     },
     modelValue: [Array, Number],
     loaded: Boolean,
@@ -43,7 +43,6 @@ export default {
     });
 
     function canVote(t) {
-      console.log(ts.value, loaded.value);
       return (
         proposal.value.type === t &&
         loaded.value &&
