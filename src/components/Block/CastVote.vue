@@ -1,9 +1,7 @@
 <template>
   <Block class="mb-4" :title="$t('proposal.castVote')">
     <div class="mb-3">
-      Testing Testing Testing Testing Testing Testing Testing Testing Testing
-      Testing Testing Testing
-      <!-- <BlockVotingSingleChoice
+      <BlockVotingSingleChoice
         v-if="canVote('single-choice')"
         :proposal="proposal"
         @selectChoice="emitChoice"
@@ -12,7 +10,7 @@
         v-if="canVote('approval')"
         :proposal="proposal"
         @selectChoice="emitChoice"
-      /> -->
+      />
     </div>
     <UiButton
       :disabled="app.authLoading || selectedChoices < 1"
