@@ -71,7 +71,6 @@
 <script>
 import { filterProposals } from '@/helpers/utils';
 import { getProposals } from '@/helpers/snapshot';
-import { getSpaceUri } from '@/helpers/ens';
 
 export default {
   data() {
