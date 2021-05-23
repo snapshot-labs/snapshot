@@ -7,7 +7,7 @@
       <a v-for="type in types" :key="type" @click="select(type)">
         <Block class="button--submit">
           <h3 v-text="$t(`voting.${type}`)" />
-          <div v-text="$t(`voting.discription.${type}`)" class="text-gray" />
+          <div v-text="$t(`voting.description.${type}`)" class="text-gray" />
         </Block>
       </a>
     </div>
