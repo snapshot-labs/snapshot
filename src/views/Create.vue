@@ -263,6 +263,7 @@ export default {
 
     async function handleSubmit() {
       loading.value = true;
+      form.value.snapshot = parseInt(form.value.snapshot);
       form.value.choices = choices.value.map(choice => choice.text);
       form.value.metadata.network = space.value.network;
       form.value.metadata.strategies = space.value.strategies;
