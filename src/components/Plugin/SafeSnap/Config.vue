@@ -10,46 +10,6 @@
         @newTransaction="addTransaction($event)"
         v-if="adding"
       />
-      <!--      <div v-if="adding">-->
-      <!--        <UiButton class="width-full mb-2">-->
-      <!--          <input-->
-      <!--            v-model="newEntry.to"-->
-      <!--            class="input width-full text-center"-->
-      <!--            placeholder="Target address"-->
-      <!--            required-->
-      <!--          />-->
-      <!--        </UiButton>-->
-      <!--        <UiButton class="width-full mb-2">-->
-      <!--          <input-->
-      <!--            v-model="newEntry.value"-->
-      <!--            class="input width-full text-center"-->
-      <!--            placeholder="Value"-->
-      <!--            required-->
-      <!--          />-->
-      <!--        </UiButton>-->
-      <!--        <UiButton class="width-full mb-2">-->
-      <!--          <input-->
-      <!--            v-model="newEntry.data"-->
-      <!--            class="input width-full text-center"-->
-      <!--            placeholder="Data"-->
-      <!--            required-->
-      <!--          />-->
-      <!--        </UiButton>-->
-      <!--        <UiButton class="width-full mb-2">-->
-      <!--          <select-->
-      <!--            v-model="newEntry.operation"-->
-      <!--            class="input width-full text-center"-->
-      <!--            required-->
-      <!--          >-->
-      <!--            <option v-bind:value="'0'" selected="selected">Call</option>-->
-      <!--            <option v-bind:value="'1'">Delegatecall</option>-->
-      <!--          </select>-->
-      <!--        </UiButton>-->
-      <!--        <UiButton @click="adding = false" class="mb-2">Back</UiButton>-->
-      <!--        <UiButton :disabled="!isValid" @click="addTx" class="button&#45;&#45;submit">-->
-      <!--          Add-->
-      <!--        </UiButton>-->
-      <!--      </div>-->
       <div v-else>
         <div
           v-for="(tx, i) in input.txs"
@@ -73,60 +33,19 @@
 </template>
 
 <script>
-import Plugin from '@snapshot-labs/snapshot.js/src/plugins/safeSnap';
-import { parseEther } from '@ethersproject/units';
-const defaultEntry = () => {
-  return {
-    operation: '0'
-  };
-};
-const parseValueInput = input => {
-  try {
-    return parseEther(input).toString();
-  } catch (e) {
-    return input;
-  }
-};
-const toModuleTransaction = (tx, nonce) => {
-  return {
-    nonce,
-    to: tx.to,
-    value: parseValueInput(tx.value),
-    data: tx.data,
-    operation: tx.operation
-  };
-};
 export default {
   props: ['modelValue', 'proposal', 'network'],
   emits: ['update:modelValue', 'close'],
   data() {
     return {
       input: { txs: [] },
-      adding: false,
-      plugin: new Plugin(),
-      newEntry: defaultEntry()
+      adding: false
     };
-  },
-  computed: {
-    isValid() {
-      // We validate with nonce 0 here and use the correct index as nonce later
-      return this.plugin.validateTransaction(
-        toModuleTransaction(this.newEntry, 0)
-      );
-    }
   },
   mounted() {
     if (this.modelValue) return (this.input = this.modelValue);
   },
   methods: {
-    addTx() {
-      // Nonce corresponds to the index, which is the current length of the txs array
-      this.input.txs.push(
-        toModuleTransaction(this.newEntry, this.input.txs.length)
-      );
-      this.newEntry = defaultEntry();
-      this.adding = false;
-    },
     addTransaction(transaction) {
       this.input.txs.push(transaction);
       this.adding = false;
@@ -139,12 +58,6 @@ export default {
       this.input.txs.forEach((tx, index) => {
         tx.nonce = index;
       });
-    },
-    addAction() {
-      this.input = { txs: [] };
-    },
-    removeAction() {
-      this.input = { txs: [] };
     },
     handleSubmit() {
       this.$emit('update:modelValue', this.input);
