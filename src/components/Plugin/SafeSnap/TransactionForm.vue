@@ -177,6 +177,7 @@ export default {
       } catch (error) {
         this.validAbi = false;
         console.warn('invalid abi', error);
+        return;
       }
 
       try {
