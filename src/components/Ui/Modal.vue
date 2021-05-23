@@ -45,10 +45,6 @@ export default {
       default: () => ({})
     }
   },
-  watch: {
-    shellProps: console.log,
-    modalBodyProps: console.log
-  },
   setup(props) {
     const { open } = toRefs(props);
     const { modalOpen } = useModal();

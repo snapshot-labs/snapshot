@@ -57,12 +57,12 @@
         @close="selected = false"
         v-if="selected === 'gnosis'"
       />
-      <PluginDaoModuleConfig
+      <PluginSafeSnapConfig
         :proposal="proposal"
         :network="space.network"
-        v-model="form.daoModule"
+        v-model="form.safeSnap"
         @close="selected = false"
-        v-if="selected === 'daoModule'"
+        v-if="selected === 'safeSnap'"
       />
     </div>
   </UiModal>
@@ -99,7 +99,7 @@ export default {
   },
   computed: {
     modalProps() {
-      if (this.selected === 'daoModule') {
+      if (this.selected === 'safeSnap') {
         return {
           shellProps: {
             style: 'maxWidth: 610px'

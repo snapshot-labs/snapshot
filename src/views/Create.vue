@@ -77,9 +77,9 @@
           {{ $t('create.addChoice') }}
         </UiButton>
       </Block>
-      <PluginDaoModuleCustomBlock
-          v-if="form.metadata.plugins?.daoModule?.txs"
-          :proposalConfig="form.metadata.plugins.daoModule"
+      <PluginSafeSnapCustomBlock
+          v-if="form.metadata.plugins?.safeSnap?.txs"
+          :proposalConfig="form.metadata.plugins.safeSnap"
       />
     </template>
     <template #sidebar-right>

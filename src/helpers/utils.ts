@@ -93,6 +93,13 @@ export function formatSpace(key, space) {
     filters: space.filters || {}
   };
   if (!space.filters.minScore) space.filters.minScore = 0;
+
+  if (space.plugins?.daoModule) {
+    // The Dao Module has been renamed to SafeSnap
+    // Previous spaces plugins have to be renamed
+    space.plugins.safeSnap = space.plugins.daoModule;
+    delete space.plugins.daoModule;
+  }
   return space;
 }
 

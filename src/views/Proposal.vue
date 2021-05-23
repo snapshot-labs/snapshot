@@ -88,12 +88,12 @@
         :votes="votes"
         :strategies="strategies"
       />
-      <PluginDaoModuleCustomBlock
-          v-if="proposal.plugins?.daoModule?.txs"
-          :proposalConfig="proposal.plugins.daoModule"
+      <PluginSafeSnapCustomBlock
+          v-if="proposal.plugins?.safeSnap?.txs"
+          :proposalConfig="proposal.plugins.safeSnap"
           :proposalEnd="proposal.end"
           :porposalId="id"
-          :moduleAddress="space.plugins?.daoModule?.address"
+          :moduleAddress="space.plugins?.safeSnap?.address"
           :network="space.network"
       />
     </template>
@@ -309,7 +309,6 @@ export default {
     ...mapActions(['send']),
     async loadProposal() {
       const proposalObj = await getProposal(this.space, this.id);
-      console.log({proposalObj});
       const { proposal, votes, blockNumber } = proposalObj;
       this.proposal = proposal;
       this.loaded = true;

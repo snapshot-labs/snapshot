@@ -1,7 +1,7 @@
 <template>
   <!-- TODO: BOOL -->
   <!-- ADDRESS -->
-  <PluginDaoModuleInputAddress
+  <PluginSafeSnapInputAddress
     v-if="type === 'address'"
     :label="this.placeholder"
     :inputProps="{
@@ -11,7 +11,7 @@
     @update:modelValue="handleInput($event)"
   />
   <!-- Array of X type -->
-  <PluginDaoModuleInputArrayType
+  <PluginSafeSnapInputArrayType
     v-else-if="isArrayType()"
     :modelValue="value"
     :name="name"

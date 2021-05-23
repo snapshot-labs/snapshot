@@ -1,7 +1,7 @@
 <template>
   <span>Contract Interaction</span>
 
-  <PluginDaoModuleInputAddress
+  <PluginSafeSnapInputAddress
     v-model="newEntry.to"
     label="to (address)"
     :inputProps="{
@@ -44,7 +44,7 @@
 
       <div class="divider"></div>
 
-      <PluginDaoModuleInputMethodParameter
+      <PluginSafeSnapInputMethodParameter
         v-for="input in selectedMethod.inputs"
         :key="input.name"
         v-model="parameters[input.name]"
@@ -62,7 +62,7 @@
 </template>
 
 <script>
-import Plugin from '@snapshot-labs/snapshot.js/src/plugins/daoModule';
+import Plugin from '@snapshot-labs/snapshot.js/src/plugins/safeSnap';
 import { parseEther } from '@ethersproject/units';
 import {
   extractUsefulMethods,

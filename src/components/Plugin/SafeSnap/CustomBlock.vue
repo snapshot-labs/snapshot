@@ -1,6 +1,6 @@
 <template>
   <Block
-    title="DAO Module Transactions"
+    title="SafeSnap Transactions"
     :icon="!loading && moduleAddress ? 'refresh' : undefined"
     @submit="updateDetails"
   >
@@ -10,7 +10,7 @@
         :key="i"
         class="mb-3 p-4 border rounded-2 text-white text-center"
       >
-        <PluginDaoModuleTransactionPreview :transaction="tx" />
+        <PluginSafeSnapTransactionPreview :transaction="tx" />
       </div>
     </div>
     <UiButton
@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import Plugin from '@snapshot-labs/snapshot.js/src/plugins/daoModule';
+import Plugin from '@snapshot-labs/snapshot.js/src/plugins/safeSnap';
 import { sleep } from '@/helpers/utils';
 
 const QuestionStates = {

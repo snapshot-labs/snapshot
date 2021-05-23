@@ -2,7 +2,7 @@
   <form @submit.prevent="handleSubmit">
     <div class="mb-2 text-center">
       <h4 class="mb-3">Transactions</h4>
-      <PluginDaoModuleTransactionForm
+      <PluginSafeSnapTransactionForm
         :input="input"
         :nonce="input.txs.length"
         :network="network"
@@ -56,7 +56,7 @@
           :key="i"
           class="mb-3 p-4 border rounded-2 text-white text-center"
         >
-          <PluginDaoModuleTransactionPreview :transaction="tx" />
+          <PluginSafeSnapTransactionPreview :transaction="tx" />
           <UiButton v-if="input" @click="removeTx(i)" class="width-full mb-2">
             Remove
           </UiButton>
@@ -73,7 +73,7 @@
 </template>
 
 <script>
-import Plugin from '@snapshot-labs/snapshot.js/src/plugins/daoModule';
+import Plugin from '@snapshot-labs/snapshot.js/src/plugins/safeSnap';
 import { parseEther } from '@ethersproject/units';
 const defaultEntry = () => {
   return {
