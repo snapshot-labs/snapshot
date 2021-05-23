@@ -79,8 +79,7 @@ export default {
       loading: false,
       loaded: false,
       proposals: {},
-      tab: 'all',
-      spaceUri: ''
+      tab: 'all'
     };
   },
   computed: {
