@@ -1,6 +1,6 @@
 <template>
   <Block
-    title="DAO Module Transactions"
+    title="SafeSnap"
     :icon="!loading && moduleAddress ? 'refresh' : undefined"
     @submit="updateDetails"
   >
@@ -10,7 +10,7 @@
         :key="i"
         class="mb-3 p-4 border rounded-2 text-white text-center"
       >
-        <PluginDaoModuleTransactionPreview :transaction="tx" />
+        <PluginSafeSnapTransactionPreview :transaction="tx" />
       </div>
     </div>
     <div
@@ -41,7 +41,7 @@
       class="width-full button--submit"
     />
     <teleport to="#modal">
-      <PluginDaoModuleModalOptionApproval
+      <PluginSafeSnapModalOptionApproval
         :open="modalApproveDecisionOpen"
         :isApproved="questionDetails?.isApproved"
         :bond="questionDetails?.currentBond"
@@ -223,13 +223,13 @@ export default {
         this.actionInProgress = false;
       }
     },
-    async voteOnQuestion() {
+    async voteOnQuestion(option) {
       await this.plugin.voteForQuestion(
         this.$auth.web3,
         this.questionDetails.oracle,
         this.questionDetails.questionId,
         this.questionDetails.minimumBond,
-        this.questionDetails.isApproved ? '0' : '1'
+        option
       );
       await sleep(3e3);
       await this.updateDetails();

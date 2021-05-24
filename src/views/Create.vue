@@ -121,7 +121,7 @@
           {{ $t('create.publish') }}
         </UiButton>
       </Block>
-      <PluginDaoModuleCustomBlock
+      <PluginSafeSnapCustomBlock
         v-if="form.metadata.plugins?.daoModule?.txs"
         :proposalConfig="form.metadata.plugins.daoModule"
       />

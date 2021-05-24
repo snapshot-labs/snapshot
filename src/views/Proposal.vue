@@ -142,7 +142,7 @@
           :proposalConfig="proposal.plugins.gnosis"
           :choices="proposal.choices"
         />
-        <PluginDaoModuleCustomBlock
+        <PluginSafeSnapCustomBlock
           v-if="proposal.plugins?.daoModule?.txs"
           :proposalConfig="proposal.plugins.daoModule"
           :proposalEnd="proposal.end"
