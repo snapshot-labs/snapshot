@@ -1,5 +1,5 @@
 <template>
-  <Layout>
+  <Layout v-bind="$attrs">
     <template #content-left>
       <div class="px-4 px-md-0 mb-3">
         <router-link
@@ -41,45 +41,14 @@
         </template>
         <PageLoading v-else />
       </div>
-      <Block
+      <BlockCastvote
         v-if="loaded && ts >= proposal.start && ts < proposal.end"
-        class="mb-4"
-        :title="$t('proposal.castVote')"
-      >
-        <div class="mb-3">
-          <UiButton
-            v-for="(choice, i) in proposal.choices"
-            :key="i"
-            @click="selectedChoice = i + 1"
-            class="d-block width-full mb-2"
-            :class="selectedChoice === i + 1 && 'button--active'"
-          >
-            {{ _shorten(choice, 32) }}
-            <a
-              v-if="proposal.plugins?.aragon?.[`choice${[i + 1]}`]"
-              @click="modalOpen = true"
-              :aria-label="`Target address: ${
-                proposal.plugins.aragon[`choice${i + 1}`].actions[0].to
-              }\nValue: ${
-                proposal.plugins.aragon[`choice${i + 1}`].actions[0].value
-              }\nData: ${
-                proposal.plugins.aragon[`choice${i + 1}`].actions[0].data
-              }`"
-              class="tooltipped tooltipped-n break-word"
-            >
-              <Icon name="warning" class="v-align-middle ml-1" />
-            </a>
-          </UiButton>
-        </div>
-        <UiButton
-          :disabled="voteLoading || app.authLoading || !selectedChoice"
-          :loading="voteLoading"
-          @click="web3.account ? (modalOpen = true) : (modalAccountOpen = true)"
-          class="d-block width-full button--submit"
-        >
-          {{ $t('proposal.vote') }}
-        </UiButton>
-      </Block>
+        :proposal="proposal"
+        :loading="voteLoading"
+        v-model="selectedChoice"
+        @open="modalOpen = true"
+        @clickVote="clickVote"
+      />
       <BlockVotes
         v-if="loaded"
         :loaded="loadedResults"
@@ -116,12 +85,8 @@
         </div>
         <div class="mb-1">
           <b>IPFS</b>
-          <a
-            :href="_ipfsUrl(proposal.ipfsHash)"
-            target="_blank"
-            class="float-right"
-          >
-            #{{ proposal.ipfsHash.slice(0, 7) }}
+          <a :href="_ipfsUrl(proposal.id)" target="_blank" class="float-right">
+            #{{ proposal.id.slice(0, 7) }}
             <Icon name="external-link" class="ml-1" />
           </a>
         </div>
@@ -217,24 +182,58 @@
       :space="space"
       :strategies="strategies"
     />
+    <ModalTerms
+      :open="modalTermsOpen"
+      :space="space"
+      @close="modalTermsOpen = false"
+      @accept="acceptTerms(), (modalOpen = true)"
+    />
   </teleport>
 </template>
 
 <script>
+import { ref, computed } from 'vue';
 import { mapActions } from 'vuex';
+import { useRoute } from 'vue-router';
+import { useStore } from 'vuex';
 import { getProposal, getResults, getPower } from '@/helpers/snapshot';
 import { useModal } from '@/composables/useModal';
-import { switchStrategiesAt } from '@/helpers/utils';
+import { useTerms } from '@/composables/useTerms';
 
 export default {
   setup() {
+    const route = useRoute();
+    const store = useStore();
+    const key = route.params.key;
+    const id = route.params.id;
+
+    const modalOpen = ref(false);
+
+    const space = computed(() => store.state.app.spaces[key]);
+
     const { modalAccountOpen } = useModal();
-    return { modalAccountOpen };
+    const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(key);
+
+    function clickVote() {
+      !store.state.web3.account
+        ? (modalAccountOpen.value = true)
+        : !termsAccepted.value && space.value.terms
+        ? (modalTermsOpen.value = true)
+        : (modalOpen.value = true);
+    }
+
+    return {
+      key,
+      id,
+      modalTermsOpen,
+      acceptTerms,
+      clickVote,
+      modalOpen,
+      space
+    };
   },
   data() {
     return {
-      key: this.$route.params.key,
-      id: this.$route.params.id,
       loading: false,
       loaded: false,
       loadedResults: false,
@@ -243,7 +242,6 @@ export default {
       proposal: {},
       votes: {},
       results: [],
-      modalOpen: false,
       modalStrategiesOpen: false,
       selectedChoice: 0,
       totalScore: 0,
@@ -251,9 +249,6 @@ export default {
     };
   },
   computed: {
-    space() {
-      return this.app.spaces[this.key];
-    },
     ts() {
       return (Date.now() / 1e3).toFixed();
     },
@@ -270,7 +265,7 @@ export default {
       return admins.includes(this.web3.account?.toLowerCase());
     },
     strategies() {
-      return switchStrategiesAt(this.space.strategies, this.proposal);
+      return this.proposal.strategies ?? this.space.strategies;
     }
   },
   watch: {

@@ -21,7 +21,10 @@ export default {
           ? 'space'
           : `logo${this.symbolIndex}`
         : 'logo';
-      return `https://raw.githubusercontent.com/snapshot-labs/snapshot-spaces/master/spaces/${this.space}/${file}.png`;
+      const url = `https://raw.githubusercontent.com/snapshot-labs/snapshot-spaces/master/spaces/${this.space}/${file}.png`;
+      return `https://worker.snapshot.org/mirror?img=${encodeURIComponent(
+        url
+      )}`;
     },
     spaceAddress() {
       if (this.space) return formatBytes32String(this.space.slice(0, 24));

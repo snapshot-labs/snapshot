@@ -80,16 +80,12 @@ export function getStrategy(strategy, spaces) {
   return strategy;
 }
 
-export function switchStrategiesAt(spaceStrategies, proposal) {
-  if (proposal.created > 1620142966) return proposal.strategies;
-  else return spaceStrategies;
-}
-
 export function formatSpace(key, space) {
   space = {
     key,
     ...space,
     members: space.members || [],
+    admins: space.admins || [],
     filters: space.filters || {}
   };
   if (!space.filters.minScore) space.filters.minScore = 0;
