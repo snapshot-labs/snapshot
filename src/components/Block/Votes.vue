@@ -69,7 +69,6 @@
 </template>
 
 <script>
-import { formatChoices } from '@/helpers/utils';
 export default {
   props: ['space', 'proposal', 'votes', 'loaded', 'strategies'],
   data() {
@@ -111,8 +110,7 @@ export default {
         return votes;
       }
       return this.votes;
-    },
-    format: formatChoices
+    }
   }
 };
 </script>
