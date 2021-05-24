@@ -19,15 +19,12 @@
         class="column"
       />
       <div class="flex-auto text-center text-white">
-        <div
-          v-if="proposal.type === 'single-choice'"
-          v-text="_shorten(proposal.choices[vote.choice - 1])"
-        />
-        <VotingApprovalSelection
-          v-if="proposal.type === 'approval'"
-          :proposal="proposal"
-          :choices="vote.choice"
-        />
+        <span
+          :aria-label="format(proposal, vote.choice)"
+          class="text-center text-white tooltipped tooltipped-n"
+        >
+          {{ _shorten(format(proposal, vote.choice), 24) }}
+        </span>
       </div>
 
       <div class="column text-right text-white">
@@ -69,6 +66,8 @@
 </template>
 
 <script>
+import { getChoiceString } from '@/helpers/utils';
+
 export default {
   props: ['space', 'proposal', 'votes', 'loaded', 'strategies'],
   data() {
@@ -110,7 +109,8 @@ export default {
         return votes;
       }
       return this.votes;
-    }
+    },
+    format: getChoiceString
   }
 };
 </script>

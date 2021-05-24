@@ -16,12 +16,8 @@
       <div class="m-4 p-4 border rounded-2 text-white">
         <div class="d-flex">
           <span v-text="$t('options')" class="flex-auto text-gray mr-1" />
-          <span class="text-right">
-            <VotingApprovalSelection
-              v-if="proposal.type === 'approval'"
-              :proposal="proposal"
-              :choices="selectedChoices"
-            />
+          <span class="text-right ml-4">
+            {{ format(proposal, selectedChoices) }}
           </span>
         </div>
         <div class="d-flex">
@@ -82,7 +78,7 @@
 
 <script>
 import { mapActions } from 'vuex';
-import { getChoicesString } from '@/helpers/utils';
+import { getChoiceString } from '@/helpers/utils';
 
 export default {
   props: [
@@ -123,7 +119,7 @@ export default {
       this.$emit('close');
       this.loading = false;
     },
-    format: getChoicesString
+    format: getChoiceString
   }
 };
 </script>
