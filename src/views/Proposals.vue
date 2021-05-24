@@ -18,7 +18,7 @@
           <UiButton>{{ $t('proposals.new') }}</UiButton>
         </router-link>
         <router-link
-          v-if="(isAdmin && isEns) || (isOwner && isEns)"
+          v-if="isAdmin && isEns"
           :to="{ name: 'settings', params: { key } }"
           class="ml-2"
         >
@@ -111,10 +111,6 @@ export default {
           .filter(proposal => filterProposals(this.space, proposal, this.tab))
           .sort((a, b) => b[1].msg.payload.end - a[1].msg.payload.end, 0)
       );
-    },
-    isOwner() {
-      if (!this.spaceUri) return false;
-      return this.spaceUri.includes(this.web3.account);
     },
     isAdmin() {
       const admins = this.space.admins.map(address => address.toLowerCase());
