@@ -11,16 +11,12 @@
         v-if="adding"
       />
       <div v-else>
-        <div
+        <PluginSafeSnapPreviewTransaction
           v-for="(tx, i) in input.txs"
           :key="i"
-          class="mb-3 p-4 border rounded-2 text-white text-center"
-        >
-          <PluginSafeSnapTransactionPreview :transaction="tx" />
-          <UiButton v-if="input" @click="removeTx(i)" class="width-full mb-2">
-            Remove
-          </UiButton>
-        </div>
+          :transaction="tx"
+          @remove="removeTx(i)"
+        />
         <UiButton @click="adding = true" class="width-full mb-2">
           Add
         </UiButton>
@@ -38,7 +34,9 @@ export default {
   emits: ['update:modelValue', 'close'],
   data() {
     return {
-      input: { txs: [] },
+      input: {
+        txs: []
+      },
       adding: false
     };
   },

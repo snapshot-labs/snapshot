@@ -1,5 +1,6 @@
 import pkg from '@/../package.json';
 import scrollMonitor from 'scrollmonitor';
+import { formatEther } from '@ethersproject/units';
 
 export function shorten(str = '') {
   return `${str.slice(0, 6)}...${str.slice(str.length - 4)}`;
@@ -140,3 +141,14 @@ export function scrollEndMonitor(fn) {
     }
   });
 }
+
+export const formatAmount = (amount, maxDecimals) => {
+  let out = formatEther(amount);
+  if (maxDecimals && out.includes('.')) {
+    const parts = out.split('.');
+    if (parts[1].length > maxDecimals) {
+      out = '~' + parts[0] + '.' + parts[1].slice(0, maxDecimals);
+    }
+  }
+  return out + ' ETH';
+};

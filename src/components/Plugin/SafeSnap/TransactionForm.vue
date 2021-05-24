@@ -41,7 +41,6 @@
     </UiButton>
 
     <div v-if="selectedMethod && selectedMethod.inputs.length">
-
       <div class="divider"></div>
 
       <PluginSafeSnapInputMethodParameter
@@ -67,14 +66,17 @@ import { parseEther } from '@ethersproject/units';
 import {
   extractUsefulMethods,
   getContractABI,
-  getTransactionData
+  getTransactionData,
+  parseMethodToABI
 } from '@/helpers/abi/utils';
 import { BigNumber } from '@ethersproject/bignumber';
 
 const defaultEntry = () => {
   return {
-    operation: '0',
-    value: '0'
+    to: '',
+    abi: '',
+    value: '0',
+    operation: '0'
   };
 };
 const parseAmount = input => {
@@ -88,13 +90,15 @@ const parseValueInput = input => {
     return input;
   }
 };
-const toModuleTransaction = (tx, data, nonce) => {
+const toModuleTransaction = (tx, data, nonce, method) => {
   return {
+    type: 'contractInteraction',
     nonce,
     to: tx.to,
     value: parseValueInput(tx.value),
     data: data,
-    operation: tx.operation
+    operation: tx.operation,
+    abi: parseMethodToABI(method)
   };
 };
 export default {
@@ -143,9 +147,12 @@ export default {
         this.parameters
       );
 
-      console.log({ data });
-
-      const transaction = toModuleTransaction(this.newEntry, data, this.nonce);
+      const transaction = toModuleTransaction(
+        this.newEntry,
+        data,
+        this.nonce,
+        this.selectedMethod
+      );
       this.$emit('newTransaction', transaction);
       this.$emit('close');
     },
@@ -222,7 +229,7 @@ export default {
   }
 }
 .divider {
-  border-top: 1px solid #CACACA;
+  border-top: 1px solid #cacaca;
   margin-top: 16px;
   margin-bottom: 24px;
 }
