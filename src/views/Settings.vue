@@ -35,15 +35,19 @@
             class="mb-2 d-block"
           >
             <UiButton
-              :class="!isReady && 'button--submit'"
+              :class="{ 'button--submit': !isOwner && !isAdmin }"
               class="button-outline width-full"
             >
-              {{ isReady ? $t('settings.seeENS') : $t('settings.setENS') }}
+              {{
+                isOwner || isAdmin
+                  ? $t('settings.seeENS')
+                  : $t('settings.setENS')
+              }}
               <Icon name="external-link" class="ml-1" />
             </UiButton>
           </a>
         </Block>
-        <div v-if="isReady">
+        <div v-if="isOwner || isAdmin">
           <Block :title="$t('settings.profile')">
             <div class="mb-2">
               <a
@@ -182,7 +186,7 @@
               {{ $t('settings.addStrategy') }}
             </UiButton>
           </Block>
-          <Block :title="$t('settings.admins')">
+          <Block :title="$t('settings.admins')" v-if="isOwner">
             <Block
               :style="`border-color: red !important`"
               v-if="inputError('admins')"
@@ -264,7 +268,7 @@
         </div>
       </template>
     </template>
-    <template v-if="loaded && isReady" #sidebar-right>
+    <template v-if="(loaded && isOwner) || (loaded && isAdmin)" #sidebar-right>
       <Block :title="$t('actions')">
         <UiButton @click="handleReset" class="d-block width-full mb-2">
           {{ $t('reset') }}
@@ -373,8 +377,14 @@ export default {
         : '<your-address>';
       return `ipns://storage.snapshot.page/registry/${address}/${key}`;
     },
-    isReady() {
+    isOwner() {
       return this.currentContenthash === this.contenthash;
+    },
+    isAdmin() {
+      const admins = this.app.spaces[this.key].admins.map(admin =>
+        admin.toLowerCase()
+      );
+      return admins.includes(this.web3.account?.toLowerCase());
     }
   },
   async created() {
