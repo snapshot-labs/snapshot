@@ -43,6 +43,12 @@ export async function getProposal(space, id) {
 }
 
 export async function getResults(space, proposal, votes, blockNumber) {
+  function filteredVotes(i) {
+    if (proposal.type === 'single-choice')
+      return votes.filter((vote: any) => vote.choice === i + 1);
+    if (proposal.type === 'approval')
+      return votes.filter((vote: any) => vote.choice.includes(i + 1));
+  }
   try {
     const provider = getProvider(space.network);
     const voters = votes.map(vote => vote.voter);
@@ -81,20 +87,15 @@ export async function getResults(space, proposal, votes, blockNumber) {
       .filter(vote => vote.balance > 0);
 
     /* Get results */
+
     const results = {
-      totalVotes: proposal.choices.map(
-        (choice, i) => votes.filter((vote: any) => vote.choice === i + 1).length
-      ),
+      totalVotes: proposal.choices.map((choice, i) => filteredVotes(i).length),
       totalBalances: proposal.choices.map((choice, i) =>
-        votes
-          .filter((vote: any) => vote.choice === i + 1)
-          .reduce((a, b: any) => a + b.balance, 0)
+        filteredVotes(i).reduce((a, b: any) => a + b.balance, 0)
       ),
       totalScores: proposal.choices.map((choice, i) =>
         strategies.map((strategy, sI) =>
-          votes
-            .filter((vote: any) => vote.choice === i + 1)
-            .reduce((a, b: any) => a + b.scores[sI], 0)
+          filteredVotes(i).reduce((a, b: any) => a + b.scores[sI], 0)
         )
       ),
       totalVotesBalances: votes.reduce((a, b: any) => a + b.balance, 0)

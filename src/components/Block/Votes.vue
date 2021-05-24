@@ -18,10 +18,18 @@
         :space="space"
         class="column"
       />
-      <div
-        v-text="_shorten(proposal.choices[vote.choice - 1], 'choice')"
-        class="flex-auto text-center text-white"
-      />
+      <div class="flex-auto text-center text-white">
+        <div
+          v-if="proposal.type === 'single-choice'"
+          v-text="_shorten(proposal.choices[vote.choice - 1])"
+        />
+        <VotingApprovalSelection
+          v-if="proposal.type === 'approval'"
+          :proposal="proposal"
+          :choices="vote.choice"
+        />
+      </div>
+
       <div class="column text-right text-white">
         <span
           class="tooltipped tooltipped-n"
@@ -61,6 +69,7 @@
 </template>
 
 <script>
+import { formatChoices } from '@/helpers/utils';
 export default {
   props: ['space', 'proposal', 'votes', 'loaded', 'strategies'],
   data() {
@@ -81,7 +90,6 @@ export default {
     }
   },
   methods: {
-    // Hide only after loading if zero voters
     isZero() {
       if (!this.loaded) return true;
       if (this.votes.length > 0) return true;
@@ -103,7 +111,8 @@ export default {
         return votes;
       }
       return this.votes;
-    }
+    },
+    format: formatChoices
   }
 };
 </script>
