@@ -5,6 +5,17 @@ export function shorten(str = '') {
   return `${str.slice(0, 6)}...${str.slice(str.length - 4)}`;
 }
 
+export function getChoicesString(proposal, selected) {
+  if (proposal.type === 'approval') {
+    return proposal.choices
+      .filter(choice => selected.includes(proposal.choices.indexOf(choice) + 1))
+      .map(choice => choice, 'choice')
+      .join(', ');
+  }
+  if (proposal.type === 'single-choice') return proposal.choices[selected - 1];
+  else return proposal.choices;
+}
+
 export function jsonParse(input, fallback?) {
   if (typeof input !== 'string') {
     return fallback || {};

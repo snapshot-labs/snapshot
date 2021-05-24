@@ -5,14 +5,24 @@
     </template>
     <div class="d-flex flex-column flex-auto">
       <h4 class="m-4 mb-0 text-center">
-        {{ $tc('sureToVote', [formatChoices]) }}
+        {{
+          $tc('sureToVote', [
+            _shorten(format(proposal, selectedChoices), 'choice')
+          ])
+        }}
         <br />
         {{ $t('cannotBeUndone') }}
       </h4>
       <div class="m-4 p-4 border rounded-2 text-white">
         <div class="d-flex">
           <span v-text="$t('options')" class="flex-auto text-gray mr-1" />
-          <span class="text-right">{{ formatChoices }}</span>
+          <span class="text-right">
+            <VotingApprovalSelection
+              v-if="proposal.type === 'approval'"
+              :proposal="proposal"
+              :choices="selectedChoices"
+            />
+          </span>
         </div>
         <div class="d-flex">
           <span v-text="$t('snapshot')" class="flex-auto text-gray mr-1" />
@@ -72,6 +82,7 @@
 
 <script>
 import { mapActions } from 'vuex';
+import { getChoicesString } from '@/helpers/utils';
 
 export default {
   props: [
@@ -93,21 +104,6 @@ export default {
   computed: {
     symbols() {
       return this.strategies.map(strategy => strategy.params.symbol);
-    },
-    formatChoices() {
-      if (this.proposal.type === 'approval') {
-        return this.proposal.choices
-          .filter(choice =>
-            this.selectedChoices.includes(
-              this.proposal.choices.indexOf(choice) + 1
-            )
-          )
-          .map(choice => this._shorten(choice, 24))
-          .join(', ');
-      }
-      if (this.proposal.type === 'single-choice')
-        return this.proposal.choices[this.selectedChoices - 1];
-      else return this.proposal.choices;
     }
   },
   methods: {
@@ -126,7 +122,8 @@ export default {
       this.$emit('reload');
       this.$emit('close');
       this.loading = false;
-    }
+    },
+    format: getChoicesString
   }
 };
 </script>

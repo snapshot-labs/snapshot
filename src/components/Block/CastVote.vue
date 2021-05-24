@@ -1,12 +1,12 @@
 <template>
   <Block class="mb-4" :title="$t('proposal.castVote')">
     <div class="mb-3">
-      <BlockVotingSingleChoice
+      <VotingSingleChoice
         v-if="proposal.type === 'single-choice'"
         :proposal="proposal"
         @selectChoice="emitChoice"
       />
-      <BlockVotingApproval
+      <VotingApproval
         v-if="proposal.type === 'approval'"
         :proposal="proposal"
         @selectChoice="emitChoice"
