@@ -20,7 +20,7 @@
       <div>
         <Label> {{ approvalData.decision }} </Label>
       </div>
-      <div v-if="questionState === 3">
+      <div v-if="questionState === questionStates.questionNotResolved">
         <Label> {{ approvalData.timeLeft }} </Label>
       </div>
       <div>
@@ -41,7 +41,7 @@
       class="width-full button--submit"
     />
     <teleport to="#modal">
-      <ModalOptionApproval
+      <PluginDaoModuleModalOptionApproval
         :open="modalApproveDecisionOpen"
         :isApproved="questionDetails?.isApproved"
         :bond="questionDetails?.currentBond"
@@ -56,7 +56,6 @@
 <script>
 import Plugin from '@snapshot-labs/snapshot.js/src/plugins/daoModule';
 import { sleep } from '@/helpers/utils';
-import { format } from 'timeago.js';
 
 const QuestionStates = {
   error: -1,
@@ -80,6 +79,7 @@ export default {
   data() {
     return {
       loading: true,
+      questionStates: QuestionStates,
       actionInProgress: false,
       plugin: new Plugin(),
       questionDetails: undefined,
@@ -145,12 +145,12 @@ export default {
         };
       }
 
-      const time = format(this.questionDetails.endTime * 1e3);
+      const time = this._ms(this.questionDetails.endTime);
       if (this.questionDetails.finalizedAt) {
         const timeLeft = `Finished: ${time}`;
         if (this.questionDetails.isApproved) {
           return {
-            decision: 'Final Answer: Yes',
+            decision: 'Final answer: Yes',
             timeLeft
           };
         }
