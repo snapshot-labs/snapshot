@@ -51,7 +51,7 @@
   "confirmVote": "Abstimmung bestätigen",
   "sureToVote": "Bist du sicher, dass du \"{0}\" abstimmen möchtest?",
   "cannotBeUndone": "Diese Aktion kann nicht rückgängig gemacht werden.",
-  "option": "Option",
+  "options": "Option(s)",
   "votingPower": "Deine Stimmmacht",
   "receipt": "Beleg",
   "relayer": "Übertrager",
@@ -133,7 +133,8 @@
     "castVote": "Deine Stimme abgeben",
     "vote": "Abstimmen",
     "startDate": "Anfangsdatum",
-    "endDate": "Enddatum"
+    "endDate": "Enddatum",
+    "votingSystem": "Voting system"
   },
   "proposals": {
     "header": "Vorschläge",
@@ -196,5 +197,14 @@
     "networks": "netzwerk(e)",
     "plugins": "plugin(s)",
     "results": "ergebnis(se)"
+  },
+  "voting": {
+    "selectVoting": "Select voting system",
+    "single-choice": "Single choice voting",
+    "approval": "Approval voting",
+    "description": {
+      "single-choice": "Each voter may select only one choice.",
+      "approval": "Each voter may select any number of choices."
+    }
   }
 }
