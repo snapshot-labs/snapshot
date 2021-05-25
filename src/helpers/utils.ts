@@ -85,6 +85,7 @@ export function formatSpace(key, space) {
     key,
     ...space,
     members: space.members || [],
+    admins: space.admins || [],
     filters: space.filters || {}
   };
   if (!space.filters.minScore) space.filters.minScore = 0;

@@ -18,7 +18,7 @@
           <UiButton>{{ $t('proposals.new') }}</UiButton>
         </router-link>
         <router-link
-          v-if="isMember && isEns"
+          v-if="isAdmin && isEns"
           :to="{ name: 'settings', params: { key } }"
           class="ml-2"
         >
@@ -112,12 +112,12 @@ export default {
           .sort((a, b) => b[1].msg.payload.end - a[1].msg.payload.end, 0)
       );
     },
-    isMember() {
-      const members = this.space.members.map(address => address.toLowerCase());
+    isAdmin() {
+      const admins = this.space.admins.map(address => address.toLowerCase());
       return (
         this.$auth.isAuthenticated.value &&
         this.web3.account &&
-        members.includes(this.web3.account.toLowerCase())
+        admins.includes(this.web3.account.toLowerCase())
       );
     },
     isEns() {
