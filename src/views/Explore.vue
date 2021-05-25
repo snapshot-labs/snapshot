@@ -60,11 +60,11 @@
 </template>
 
 <script>
-import { computed, ref, onMounted } from 'vue';
+import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
-import { scrollEndMonitor } from '@/helpers/utils';
 import { useSearchFilters } from '@/composables/useSearchFilters';
+import { useElementWatcher } from '@/composables/useElementWatcher';
 
 export default {
   setup() {
@@ -108,9 +108,7 @@ export default {
     const loadBy = 8;
     const limit = ref(loadBy);
 
-    onMounted(() => {
-      scrollEndMonitor(() => (limit.value += loadBy));
-    });
+    useElementWatcher(() => (limit.value += loadBy));
 
     return { buttonStr, resultsStr, items, limit, route };
   }
