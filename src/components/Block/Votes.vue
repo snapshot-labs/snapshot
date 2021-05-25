@@ -21,7 +21,7 @@
       <div class="flex-auto text-center text-white">
         <span
           :aria-label="format(proposal, vote.choice)"
-          class="text-center text-white tooltipped tooltipped-n"
+          class="text-center text-white tooltipped tooltipped-multiline tooltipped-n"
         >
           {{ _shorten(format(proposal, vote.choice), 24) }}
         </span>
@@ -29,7 +29,7 @@
 
       <div class="column text-right text-white">
         <span
-          class="tooltipped tooltipped-n"
+          class="tooltipped tooltipped-multiline tooltipped-n"
           :aria-label="
             vote.scores
               .map((score, index) => `${_n(score)} ${titles[index]}`)
