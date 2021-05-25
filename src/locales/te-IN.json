@@ -51,7 +51,7 @@
   "confirmVote": "ఓటును నిర్ధారించండి",
   "sureToVote": "మీరు ఖచ్చితంగా \"{0}\" ఓటు వేయాలనుకుంటున్నారా?",
   "cannotBeUndone": "ఈ చర్య రద్దు చేయబడదు.",
-  "option": "ఎంపిక",
+  "options": "Option(s)",
   "votingPower": "మీ ఓటింగ్ శక్తి",
   "receipt": "రశీదు",
   "relayer": "రిలేయర్",
@@ -133,7 +133,8 @@
     "castVote": "మీ ఓటు వేయండి",
     "vote": "ఓటు",
     "startDate": "ప్రారంబపు తేది",
-    "endDate": "ముగింపు తేదీ"
+    "endDate": "ముగింపు తేదీ",
+    "votingSystem": "Voting system"
   },
   "proposals": {
     "header": "ప్రతిపాదనలు",
@@ -196,5 +197,14 @@
     "networks": "network(s)",
     "plugins": "plugin(s)",
     "results": "result(s)"
+  },
+  "voting": {
+    "selectVoting": "Select voting system",
+    "single-choice": "Single choice voting",
+    "approval": "Approval voting",
+    "description": {
+      "single-choice": "Each voter may select only one choice.",
+      "approval": "Each voter may select any number of choices."
+    }
   }
 }
