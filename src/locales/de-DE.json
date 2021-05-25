@@ -51,7 +51,7 @@
   "confirmVote": "Abstimmung bestätigen",
   "sureToVote": "Bist du sicher, dass du \"{0}\" abstimmen möchtest?",
   "cannotBeUndone": "Diese Aktion kann nicht rückgängig gemacht werden.",
-  "options": "Option(s)",
+  "options": "Option(en)",
   "votingPower": "Deine Stimmmacht",
   "receipt": "Beleg",
   "relayer": "Übertrager",
@@ -89,14 +89,14 @@
   "startIn": "start {0}",
   "endIn": "ende {1}",
   "endedAgo": "endete {1}",
-  "proposalBy": "By {0}",
+  "proposalBy": "Von {0}",
   "endDate": "ende {0}",
   "contectHash": "Hash des Inhalts",
   "defaultSkin": "Standard-Skin",
   "select": "Auswählen",
   "language": "Sprache",
-  "agree": "I agree",
-  "mustAgreeToTerms": "Before you can complete this action, you must agree to {0} terms of service here:",
+  "agree": "Ich stimme zu",
+  "mustAgreeToTerms": "Bevor Sie diese Aktion abschließen können, müssen Sie hier {0} Nutzungsbedingungen zustimmen:",
   "errors": {
     "required": "Dieses Feld ist ein Pflichtfeld",
     "minLength": "Mindestlänge ist {0}",
@@ -104,7 +104,7 @@
     "pattern": "Ungültiges Zeichen",
     "minItems": "Mindestens {0} Element(e) erforderlich",
     "minStrategy": "Mindestens eine Strategie ist erforderlich.",
-    "format": "Invalid format"
+    "format": "Ungültiges Format"
   },
   "create": {
     "question": "Frage",
@@ -134,7 +134,7 @@
     "vote": "Abstimmen",
     "startDate": "Anfangsdatum",
     "endDate": "Enddatum",
-    "votingSystem": "Voting system"
+    "votingSystem": "Wahlsystem"
   },
   "proposals": {
     "header": "Vorschläge",
@@ -166,7 +166,7 @@
     "hideSpace": "Raum auf der Startseite ausblenden",
     "addStrategy": "Strategie hinzufügen",
     "members": "Mitglieder",
-    "admins": "Admins",
+    "admins": "Administratoren",
     "filters": "Filter",
     "defaultTab": "Standard-Tab",
     "minScore": "Min. Punktzahl",
@@ -199,12 +199,12 @@
     "results": "ergebnis(se)"
   },
   "voting": {
-    "selectVoting": "Select voting system",
+    "selectVoting": "Wähle das Abstimmungssystem aus",
     "single-choice": "Single choice voting",
     "approval": "Approval voting",
     "description": {
-      "single-choice": "Each voter may select only one choice.",
-      "approval": "Each voter may select any number of choices."
+      "single-choice": "Jeder Wähler kann nur eine Wahlmöglichkeit wählen.",
+      "approval": "Jeder Wähler kann eine beliebige Anzahl von Wahlmöglichkeiten wählen."
     }
   }
 }
