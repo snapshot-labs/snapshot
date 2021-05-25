@@ -88,10 +88,6 @@ export async function getResults(space, proposal, votes, blockNumber) {
       totalScores: votingClass.totalScores(),
       totalVotesBalances: votes.reduce((a, b: any) => a + b.balance, 0)
     };
-    console.log(
-      '🚀 ~ file: snapshot.ts ~ line 92 ~ getResults ~ results',
-      results
-    );
 
     return { votes, results };
   } catch (e) {
