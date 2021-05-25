@@ -31,10 +31,7 @@ export default class ApprovalVoting {
 
   getChoiceString() {
     return this.proposal.choices
-      .filter(choice =>
-        this.selected.includes(this.proposal.choices.indexOf(choice) + 1)
-      )
-      .map(choice => choice, 'choice')
+      .filter((choice, i) => this.selected.includes(i + 1))
       .join(', ');
   }
 }
