@@ -33,7 +33,7 @@ export default class SingleChoiceVoting {
   }
 
   //  Returns a string of all choices
-  //  Seperate by comma if more than one choice
+  //  Seperated by comma if more than one choice
   getChoiceString() {
     return this.proposal.choices[this.selected - 1];
   }
