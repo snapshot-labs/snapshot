@@ -51,7 +51,7 @@
   "confirmVote": "Potvrdi glas",
   "sureToVote": "Jeste li sigurni da želite da glasate \"{0}\"?",
   "cannotBeUndone": "Ova radnja se ne može opozvati.",
-  "option": "Opcija",
+  "options": "Option(s)",
   "votingPower": "Vaša glasačka moć",
   "receipt": "Priznanica",
   "relayer": "Relej",
@@ -133,7 +133,8 @@
     "castVote": "Dajte svoj glas",
     "vote": "Glasaj",
     "startDate": "Datum početka",
-    "endDate": "Datum završetka"
+    "endDate": "Datum završetka",
+    "votingSystem": "Voting system"
   },
   "proposals": {
     "header": "Predlozi",
@@ -196,5 +197,14 @@
     "networks": "network(s)",
     "plugins": "plugin(s)",
     "results": "result(s)"
+  },
+  "voting": {
+    "selectVoting": "Select voting system",
+    "single-choice": "Single choice voting",
+    "approval": "Approval voting",
+    "description": {
+      "single-choice": "Each voter may select only one choice.",
+      "approval": "Each voter may select any number of choices."
+    }
   }
 }
