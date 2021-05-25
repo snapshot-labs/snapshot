@@ -1,8 +1,14 @@
 import pkg from '@/../package.json';
 import scrollMonitor from 'scrollmonitor';
+import voting from '@/helpers/voting';
 
 export function shorten(str = '') {
   return `${str.slice(0, 6)}...${str.slice(str.length - 4)}`;
+}
+
+export function getChoiceString(proposal, selected) {
+  const votingClass = new voting[proposal.type](proposal, '', '', selected);
+  return votingClass.getChoiceString();
 }
 
 export function jsonParse(input, fallback?) {

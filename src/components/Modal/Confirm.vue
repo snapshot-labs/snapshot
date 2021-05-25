@@ -1,18 +1,24 @@
 <template>
-  <UiModal :open="open" v-if="open" @close="$emit('close')" class="d-flex">
+  <UiModal :open="open" @close="$emit('close')" class="d-flex">
     <template v-slot:header>
       <h3>{{ $t('confirmVote') }}</h3>
     </template>
     <div class="d-flex flex-column flex-auto">
       <h4 class="m-4 mb-0 text-center">
-        {{ $tc('sureToVote', [proposal.choices[selectedChoice - 1]]) }}
+        {{
+          $tc('sureToVote', [
+            _shorten(format(proposal, selectedChoices), 'choice')
+          ])
+        }}
         <br />
         {{ $t('cannotBeUndone') }}
       </h4>
       <div class="m-4 p-4 border rounded-2 text-white">
         <div class="d-flex">
-          <span v-text="$t('option')" class="flex-auto text-gray mr-1" />
-          {{ proposal.choices[selectedChoice - 1] }}
+          <span v-text="$t('options')" class="flex-auto text-gray mr-1" />
+          <span class="text-right ml-4">
+            {{ format(proposal, selectedChoices) }}
+          </span>
         </div>
         <div class="d-flex">
           <span v-text="$t('snapshot')" class="flex-auto text-gray mr-1" />
@@ -72,14 +78,14 @@
 
 <script>
 import { mapActions } from 'vuex';
+import { getChoiceString } from '@/helpers/utils';
 
 export default {
   props: [
     'open',
     'space',
     'proposal',
-    'id',
-    'selectedChoice',
+    'selectedChoices',
     'snapshot',
     'totalScore',
     'scores',
@@ -104,15 +110,16 @@ export default {
         space: this.space.key,
         type: 'vote',
         payload: {
-          proposal: this.id,
-          choice: this.selectedChoice,
+          proposal: this.proposal.id,
+          choice: this.selectedChoices,
           metadata: {}
         }
       });
       this.$emit('reload');
       this.$emit('close');
       this.loading = false;
-    }
+    },
+    format: getChoiceString
   }
 };
 </script>
