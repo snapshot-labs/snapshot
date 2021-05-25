@@ -15,7 +15,7 @@
     :modelValue="newEntry.value"
     @update:modelValue="handleValueChange($event)"
   >
-    <template v-slot:label><span class="text-black">value</span></template>
+    <template v-slot:label>value</template>
   </UiInput>
 
   <UiInput
@@ -23,7 +23,7 @@
     :modelValue="newEntry.abi"
     @update:modelValue="handleABIChanged($event)"
   >
-    <template v-slot:label><span class="text-black">ABI</span></template>
+    <template v-slot:label>ABI</template>
   </UiInput>
 
   <div v-if="methods.length">

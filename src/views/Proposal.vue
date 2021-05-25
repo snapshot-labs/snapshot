@@ -61,7 +61,7 @@
           v-if="proposal.plugins?.safeSnap?.txs"
           :proposalConfig="proposal.plugins.safeSnap"
           :proposalEnd="proposal.end"
-          :porposalId="id"
+          :proposalId="id"
           :moduleAddress="space.plugins?.safeSnap?.address"
           :network="space.network"
       />

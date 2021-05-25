@@ -25,9 +25,7 @@
     :modelValue="value"
     @update:modelValue="handleInput($event)"
   >
-    <template v-slot:label>
-      <span class="text-black">{{ this.placeholder }}</span>
-    </template>
+    <template v-slot:label>{{ this.placeholder }}</template>
   </UiInput>
 </template>
 

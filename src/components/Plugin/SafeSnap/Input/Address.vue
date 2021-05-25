@@ -5,9 +5,7 @@
     :error="dirty && !isValid && 'Invalid Address'"
     @input="handleInput()"
   >
-    <template v-if="label" v-slot:label>
-      <span class="text-black">{{ label }}</span>
-    </template>
+    <template v-if="label" v-slot:label>{{ label }}</template>
   </UiInput>
 </template>
 
