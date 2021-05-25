@@ -51,7 +51,7 @@
   "confirmVote": "تأكيد التصويت",
   "sureToVote": "هل أنت متأكد أنك تريد التصويت <i>\"{0}\"</i>؟",
   "cannotBeUndone": "لا يمكن التراجع عن هذا الإجراء.",
-  "option": "الخيارات",
+  "options": "Option(s)",
   "votingPower": "قوة التصويت الخاصة بك",
   "receipt": "الإيصال",
   "relayer": "المرحّل",
@@ -133,7 +133,8 @@
     "castVote": "سجل صوتك",
     "vote": "صوت",
     "startDate": "تاريخ البدء",
-    "endDate": "تاريخ الانتهاء"
+    "endDate": "تاريخ الانتهاء",
+    "votingSystem": "Voting system"
   },
   "proposals": {
     "header": "المقترحات",
@@ -196,5 +197,14 @@
     "networks": "network(s)",
     "plugins": "plugin(s)",
     "results": "result(s)"
+  },
+  "voting": {
+    "selectVoting": "Select voting system",
+    "single-choice": "Single choice voting",
+    "approval": "Approval voting",
+    "description": {
+      "single-choice": "Each voter may select only one choice.",
+      "approval": "Each voter may select any number of choices."
+    }
   }
 }
