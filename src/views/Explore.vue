@@ -64,7 +64,7 @@ import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 import { useSearchFilters } from '@/composables/useSearchFilters';
-import { useElementWatcher } from '@/composables/useElementWatcher';
+import { useScrollMonitor } from '@/composables/useScrollMonitor';
 
 export default {
   setup() {
@@ -108,7 +108,7 @@ export default {
     const loadBy = 8;
     const limit = ref(loadBy);
 
-    useElementWatcher(() => (limit.value += loadBy));
+    useScrollMonitor(() => (limit.value += loadBy));
 
     return { buttonStr, resultsStr, items, limit, route };
   }

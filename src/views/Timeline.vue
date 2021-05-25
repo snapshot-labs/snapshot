@@ -86,7 +86,7 @@ import { useInfiniteLoader } from '@/composables/useInfiniteLoader';
 import { subgraphRequest } from '@snapshot-labs/snapshot.js/src/utils';
 import { lsSet } from '@/helpers/utils';
 import { useUnseenProposals } from '@/composables/useUnseenProposals';
-import { useElementWatcher } from '@/composables/useElementWatcher';
+import { useScrollMonitor } from '@/composables/useScrollMonitor';
 
 // Persistent filter state
 const filterBy = ref('all');
@@ -113,7 +113,7 @@ export default {
       loadMore
     } = useInfiniteLoader(12);
 
-    useElementWatcher(() =>
+    useScrollMonitor(() =>
       loadMore(() => loadProposals(limit.value), loading.value)
     );
 

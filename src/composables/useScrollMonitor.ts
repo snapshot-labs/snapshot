@@ -1,7 +1,7 @@
 import { onMounted, onBeforeUnmount } from 'vue';
 import scrollMonitor from 'scrollmonitor';
 
-export function useElementWatcher(fn) {
+export function useScrollMonitor(fn) {
   let elementWatcher;
 
   onMounted(() => {
