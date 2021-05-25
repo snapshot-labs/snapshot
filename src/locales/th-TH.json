@@ -51,7 +51,7 @@
   "confirmVote": "ยืนยันการโหวต",
   "sureToVote": "คุณแน่ใจไหมว่าต้องการโหวต \"{0}\"",
   "cannotBeUndone": "ไม่สามารถยกเลิกการดำเนินการนี้ได้",
-  "option": "ตัวเลือก",
+  "options": "Option(s)",
   "votingPower": "การโหวตของคุณ",
   "receipt": "ใบเสร็จ",
   "relayer": "ผู้จัด",
@@ -133,7 +133,8 @@
     "castVote": "การโหวตของคุณ",
     "vote": "ลงคะแนนโหวต",
     "startDate": "วันที่เริ่มต้น",
-    "endDate": "วันสิ้นสุด"
+    "endDate": "วันสิ้นสุด",
+    "votingSystem": "Voting system"
   },
   "proposals": {
     "header": "ข้อเสนอ",
@@ -196,5 +197,14 @@
     "networks": "เครือข่าย(s)",
     "plugins": "ปลั๊กอิน(s)",
     "results": "ผลลัพธ์(s)"
+  },
+  "voting": {
+    "selectVoting": "Select voting system",
+    "single-choice": "Single choice voting",
+    "approval": "Approval voting",
+    "description": {
+      "single-choice": "Each voter may select only one choice.",
+      "approval": "Each voter may select any number of choices."
+    }
   }
 }
