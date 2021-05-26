@@ -118,23 +118,25 @@ export default {
 
       if (this.questionDetails.nextTxIndex >= 0)
         return QuestionStates.completelyExecuted;
+
+      return QuestionStates.error;
     },
     actionLabel() {
       switch (this.questionState) {
         case QuestionStates.loading:
-          return 'Loading...';
+          return this.$i18n.t('loading');
         case QuestionStates.waitingForQuestion:
-          return 'Request Execution';
+          return this.$i18n.t('safeSnap.labels.request');
         case QuestionStates.questionNotSet:
-          return 'Set outcome';
+          return this.$i18n.t('safeSnap.labels.setOutcome');
         case QuestionStates.questionNotResolved:
-          return 'Change outcome';
+          return this.$i18n.t('safeSnap.labels.changeOutcome');
         case QuestionStates.proposalApproved:
-          return 'Execute Transaction 1/x';
+          return this.$i18n.t('safeSnap.labels.executeTxs');
         case QuestionStates.completelyExecuted:
-          return 'Executed!';
+          return this.$i18n.t('safeSnap.labels.executed');
         case QuestionStates.error:
-          return 'Error';
+          return this.$i18n.t('safeSnap.labels.error');
         default:
           return null;
       }
@@ -155,13 +157,13 @@ export default {
     infoLabel() {
       switch (this.questionState) {
         case QuestionStates.proposalNotResolved:
-          return 'Waiting for vote to close';
+          return this.$i18n.t('safeSnap.labels.waiting');
         case QuestionStates.waitingForQuestion:
         case QuestionStates.questionNotSet:
         case QuestionStates.questionNotResolved:
-          return 'Vote finalized';
+          return this.$i18n.t('safeSnap.labels.finalized');
         case QuestionStates.completelyExecuted:
-          return 'Proposal executed';
+          return this.$i18n.t('safeSnap.labels.executed');
         default:
           return null;
       }
@@ -184,31 +186,33 @@ export default {
         } = this.questionDetails;
         if (currentBond === '0.0') {
           return {
-            decision: 'Current outcome: --',
-            timeLeft: 'Finalized in: --',
-            currentBond: 'Current bond: --'
+            decision: this.$i18n.t('safeSnap.currentOutcome', ['--']),
+            timeLeft: this.$i18n.t('safeSnap.finalizedIn', ['--']),
+            currentBond: this.$i18n.t('safeSnap.currentBond', ['--'])
           };
         }
 
         if (finalizedAt) {
           if (isApproved) {
             return {
-              decision: 'Outcome: Yes',
-              timeLeft: `Executable ${this._ms(
-                endTime + this.questionDetails.cooldown
-              )}`
+              decision: this.$i18n.t('safeSnap.finalOutcome', ['Yes']),
+              timeLeft: this.$i18n.t('safeSnap.executableIn', [
+                this._ms(endTime + this.questionDetails.cooldown)
+              ])
             };
           }
 
           return {
-            decision: 'Outcome: No'
+            decision: this.$i18n.t('safeSnap.finalOutcome', ['No'])
           };
         }
 
         return {
-          decision: `Current outcome: ${isApproved ? 'Yes' : 'No'}`,
-          timeLeft: `Finalized ${this._ms(endTime)}`,
-          currentBond: 'Current bond: ' + currentBond
+          decision: this.$i18n.t('safeSnap.currentOutcome', [
+            isApproved ? 'Yes' : 'No'
+          ]),
+          timeLeft: this.$i18n.t('safeSnap.finalizedIn', [this._ms(endTime)]),
+          currentBond: this.$i18n.t('safeSnap.currentBond', [currentBond])
         };
       }
       return {
@@ -246,7 +250,6 @@ export default {
           this.porposalId,
           this.proposalConfig.txs
         );
-        console.log(this.questionDetails);
       } catch (e) {
         console.error(e);
       } finally {

@@ -196,5 +196,26 @@
     "networks": "network(s)",
     "plugins": "plugin(s)",
     "results": "result(s)"
+  },
+  "safeSnap": {
+    "currentOutcome": "Current outcome: {0}",
+    "currentBond": "Current bond: {0}",
+    "finalizedIn": "Finalized {0}",
+    "executableIn": "Executable {0}",
+    "finalOutcome": "Outcome: {0}",
+    "nextBond": "Bond to set outcome: {0}",
+    "setOutcomeTo": "Set outcome to:",
+    "labels": {
+      "request": "Request execution",
+      "setOutcome": "Set outcome",
+      "changeOutcome": "Change outcome",
+      "executeTxs": "Execute transaction 1/x",
+      "finalized": "Vote finalized",
+      "executed": "Executed",
+      "waiting": "Waiting for vote to close",
+      "error": "Error",
+      "question": "Did this proposal pass and does it meet the",
+      "criteria": "acceptance criteria?"
+    }
   }
 }

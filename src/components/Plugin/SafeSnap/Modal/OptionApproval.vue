@@ -5,24 +5,33 @@
     </template>
     <div class="m-4 mb-5">
       <h3>
-        Did this proposal pass and does it meet the
+        {{ $t('safeSnap.labels.question') }}
         <a
           class="question-link"
           rel="noreferrer noopener"
           target="_blank"
           :href="questionLink"
         >
-          acceptance criteria
+          {{ $t('safeSnap.labels.criteria') }}
         </a>
-        ?
       </h3>
       <div class="m-4 text-center">
-        <h4>Current outcome: {{ answer }}</h4>
-        <h4>Current bond: {{ bondData.current }} ETH</h4>
-        <h4>Bond to set outcome: {{ bondData.toSet }} ETH</h4>
+        <h4>
+          {{ $t('safeSnap.currentOutcome', [answer]) }}
+        </h4>
+        <br />
+        <h4>
+          {{ $t('safeSnap.currentBond', [bondData.current + ' ETH']) }}
+        </h4>
+        <br />
+        <h4>
+          {{ $t('safeSnap.nextBond', [bondData.toSet + ' ETH']) }}
+        </h4>
       </div>
       <div>
-        <h4 class="text-center">Set outcome to:</h4>
+        <h4 class="text-center">
+          {{ $t('safeSnap.setOutcomeTo') }}
+        </h4>
         <div class="vote-button-row">
           <UiButton @click="handleSetApproval(0)" class="button vote-button">
             No
@@ -59,13 +68,10 @@ export default {
         toSet: dontHasBond ? 0.1 : Number(this.bond) * 2,
         current: dontHasBond ? '--' : this.bond
       };
+    },
+    questionLink() {
+      return 'https://reality.eth.link/app/#!/question/' + this.questionId;
     }
-  },
-  data() {
-    return {
-      questionLink:
-        'https://reality.eth.link/app/#!/question/' + this.questionId
-    };
   }
 };
 </script>
