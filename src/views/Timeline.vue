@@ -64,7 +64,7 @@
       <NoResults :block="true" v-else-if="proposals.length < 1" />
       <div v-else>
         <Block :slim="true" v-for="(proposal, i) in proposals" :key="i">
-          <TimelineProposal :proposal="proposal" :i="i" />
+          <TimelineProposal :proposal="proposal" />
         </Block>
       </div>
       <div
@@ -142,7 +142,8 @@ export default {
               space: {
                 id: true,
                 name: true,
-                members: true
+                members: true,
+                avatar: true
               }
             }
           }
