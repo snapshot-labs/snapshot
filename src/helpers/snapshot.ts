@@ -7,6 +7,7 @@ import client from '@/helpers/client';
 import { apolloClient } from '@/apollo';
 import { VOTES_QUERY, PROPOSAL_QUERY } from '@/helpers/queries';
 import { cloneDeep } from 'lodash';
+import voting from '@/helpers/voting';
 
 export async function getProposal(space, id) {
   try {
@@ -81,22 +82,10 @@ export async function getResults(space, proposal, votes, blockNumber) {
       .filter(vote => vote.balance > 0);
 
     /* Get results */
+    const votingClass = new voting[proposal.type](proposal, votes, strategies);
     const results = {
-      totalVotes: proposal.choices.map(
-        (choice, i) => votes.filter((vote: any) => vote.choice === i + 1).length
-      ),
-      totalBalances: proposal.choices.map((choice, i) =>
-        votes
-          .filter((vote: any) => vote.choice === i + 1)
-          .reduce((a, b: any) => a + b.balance, 0)
-      ),
-      totalScores: proposal.choices.map((choice, i) =>
-        strategies.map((strategy, sI) =>
-          votes
-            .filter((vote: any) => vote.choice === i + 1)
-            .reduce((a, b: any) => a + b.scores[sI], 0)
-        )
-      ),
+      totalBalances: votingClass.totalBalances(),
+      totalScores: votingClass.totalScores(),
       totalVotesBalances: votes.reduce((a, b: any) => a + b.balance, 0)
     };
 

@@ -1,5 +1,5 @@
 <template>
-  <Layout>
+  <Layout v-bind="$attrs">
     <template #content-left>
       <div class="px-4 px-md-0 mb-3">
         <router-link
@@ -89,6 +89,9 @@
         @submit="modalProposalPluginsOpen = true"
       >
         <div class="mb-2">
+          <UiButton class="width-full mb-2" @click="modalVotingTypeOpen = true">
+            <span>{{ $t(`voting.${form.type}`) }}</span>
+          </UiButton>
           <UiButton
             @click="[(modalOpen = true), (selectedDate = 'start')]"
             class="width-full mb-2"
@@ -148,6 +151,12 @@
       @close="modalTermsOpen = false"
       @accept="acceptTerms(), handleSubmit()"
     />
+
+    <ModalVotingType
+      :open="modalVotingTypeOpen"
+      @close="modalVotingTypeOpen = false"
+      v-model="form.type"
+    />
   </teleport>
 </template>
 
@@ -186,10 +195,12 @@ export default {
       start: '',
       end: '',
       snapshot: '',
-      metadata: {}
+      metadata: {},
+      type: 'single-choice'
     });
     const modalOpen = ref(false);
     const modalProposalPluginsOpen = ref(false);
+    const modalVotingTypeOpen = ref(false);
     const selectedDate = ref('');
     const counter = ref(0);
     const userScore = ref(null);
@@ -342,7 +353,8 @@ export default {
           choices: value.choices,
           start: value.start,
           end: value.end,
-          snapshot: value.snapshot
+          snapshot: value.snapshot,
+          type: value.type
         };
         const { network, strategies, plugins } = value;
         form.value.metadata = { network, strategies, plugins };
@@ -360,6 +372,7 @@ export default {
       form,
       modalOpen,
       modalProposalPluginsOpen,
+      modalVotingTypeOpen,
       selectedDate,
       nameForm,
       handleSubmit,

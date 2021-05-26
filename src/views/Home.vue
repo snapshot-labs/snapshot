@@ -72,13 +72,13 @@
 </template>
 
 <script>
-import { onMounted, ref, computed, watchEffect } from 'vue';
+import { ref, computed, watchEffect } from 'vue';
 import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
 import orderBy from 'lodash/orderBy';
 import spotlight from '@snapshot-labs/snapshot-spaces/spaces/spotlight.json';
-import { scrollEndMonitor } from '@/helpers/utils';
 import { useUnseenProposals } from '@/composables/useUnseenProposals';
+import { useScrollMonitor } from '@/composables/useScrollMonitor';
 
 export default {
   setup() {
@@ -128,9 +128,7 @@ export default {
     const loadBy = 16;
     const limit = ref(loadBy);
 
-    onMounted(() => {
-      scrollEndMonitor(() => (limit.value += loadBy));
-    });
+    useScrollMonitor(() => (limit.value += loadBy));
 
     return { limit, spaces, toggleFavorite, numberOfUnseenProposals };
   }

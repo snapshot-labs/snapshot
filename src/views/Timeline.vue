@@ -82,11 +82,11 @@
 import { onMounted, ref, computed } from 'vue';
 import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
-import { scrollEndMonitor } from '@/helpers/utils';
 import { useInfiniteLoader } from '@/composables/useInfiniteLoader';
 import { subgraphRequest } from '@snapshot-labs/snapshot.js/src/utils';
 import { lsSet } from '@/helpers/utils';
 import { useUnseenProposals } from '@/composables/useUnseenProposals';
+import { useScrollMonitor } from '@/composables/useScrollMonitor';
 
 // Persistent filter state
 const filterBy = ref('all');
@@ -113,11 +113,9 @@ export default {
       loadMore
     } = useInfiniteLoader(12);
 
-    onMounted(() => {
-      scrollEndMonitor(() =>
-        loadMore(() => loadProposals(limit.value), loading.value)
-      );
-    });
+    useScrollMonitor(() =>
+      loadMore(() => loadProposals(limit.value), loading.value)
+    );
 
     // Proposals query
     async function loadProposals(skip = 0) {
