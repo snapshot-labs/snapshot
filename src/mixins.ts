@@ -38,6 +38,7 @@ export default {
       return shorten(str);
     },
     _ipfsUrl(ipfsHash: string): string {
+      if (ipfsHash === undefined) return '';
       return `https://${process.env.VUE_APP_IPFS_GATEWAY}/ipfs/${ipfsHash}`;
     },
     _explorer(network, str: string, type = 'address'): string {
