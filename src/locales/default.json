@@ -51,7 +51,7 @@
   "confirmVote": "Confirm vote",
   "sureToVote": "Are you sure you want to vote \"{0}\"?",
   "cannotBeUndone": "This action cannot be undone.",
-  "option": "Option",
+  "options": "Option(s)",
   "votingPower": "Your voting power",
   "receipt": "Receipt",
   "relayer": "Relayer",
@@ -133,7 +133,8 @@
     "castVote": "Cast your vote",
     "vote": "Vote",
     "startDate": "Start date",
-    "endDate": "End date"
+    "endDate": "End date",
+    "votingSystem": "Voting system"
   },
   "proposals": {
     "header": "Proposals",
@@ -196,5 +197,14 @@
     "networks": "network(s)",
     "plugins": "plugin(s)",
     "results": "result(s)"
+  },
+  "voting": {
+    "selectVoting": "Select voting system",
+    "single-choice": "Single choice voting",
+    "approval": "Approval voting",
+    "description": {
+      "single-choice": "Each voter may select only one choice.",
+      "approval": "Each voter may select any number of choices."
+    }
   }
 }
