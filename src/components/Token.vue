@@ -16,14 +16,14 @@ export default {
   },
   computed: {
     url() {
-      if (this.space.avatar)
-        return `https://worker.snapshot.org/mirror?img=${this.space.avatar}`;
       const file = this.symbolIndex
         ? this.symbolIndex === 'space'
           ? 'space'
           : `logo${this.symbolIndex}`
         : 'logo';
-      const url = `https://raw.githubusercontent.com/snapshot-labs/snapshot-spaces/master/spaces/${this.spaceId}/${file}.png`;
+      const url = this.space.avatar
+        ? this.space.avatar
+        : `https://raw.githubusercontent.com/snapshot-labs/snapshot-spaces/master/spaces/${this.spaceId}/${file}.png`;
       return `https://worker.snapshot.org/mirror?img=${encodeURIComponent(
         url
       )}`;
