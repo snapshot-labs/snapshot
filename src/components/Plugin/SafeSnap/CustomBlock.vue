@@ -4,41 +4,35 @@
     :icon="!loading && moduleAddress ? 'refresh' : undefined"
     @submit="updateDetails"
   >
-    <div class="mb-1">
-      <div
-        v-for="(tx, i) in proposalConfig.txs"
-        :key="i"
-        class="mb-3 p-4 border rounded-2 text-white text-center"
-      >
-        <PluginSafeSnapTransactionPreview :transaction="tx" />
-      </div>
+    <div class="mb-3 text-center">
+      <Label> {{ infoLabel }} </Label>
     </div>
     <div
-      v-if="questionDetails?.questionId"
-      class="mb-3 p-4 border rounded-2 text-white text-center"
+      v-if="questionDetails?.questionId && !showQuestionInfo"
+      class="mb-3 text-white text-center"
+    >
+      <Label> {{ approvalData?.decision }} </Label>
+    </div>
+    <div
+      v-if="questionDetails?.questionId && showQuestionInfo"
+      class="mb-3 p-4 text-white text-center"
     >
       <div>
-        <Label> {{ approvalData.decision }} </Label>
+        <Label> {{ approvalData?.decision }} </Label>
       </div>
-      <div v-if="questionState === questionStates.questionNotResolved">
-        <Label> {{ approvalData.timeLeft }} </Label>
+      <div class="m-4 text-center">
+        <Label> {{ approvalData?.currentBond }} </Label>
       </div>
       <div>
-        <UiButton
-          v-if="canChangeAnswer"
-          @click="modalApproveDecisionOpen = true"
-          class="mb-2"
-        >
-          Change Answer
-        </UiButton>
+        <Label> {{ approvalData?.timeLeft }} </Label>
       </div>
     </div>
     <UiButton
-      v-if="moduleAddress"
+      v-if="showActionButton"
       @click="performAction"
       :disabled="!actionEnabled"
       v-text="actionLabel"
-      class="width-full button--submit"
+      class="width-full button"
     />
     <teleport to="#modal">
       <PluginSafeSnapModalOptionApproval
@@ -62,10 +56,12 @@ const QuestionStates = {
   loading: 0,
   proposalNotResolved: 1,
   waitingForQuestion: 2,
-  questionNotResolved: 3,
-  waitingForCooldown: 4,
-  waitingForExecution: 5,
-  completelyExecuted: 6
+  questionNotSet: 3,
+  questionNotResolved: 4,
+  waitingForCooldown: 5,
+  proposalApproved: 6,
+  proposalRejected: 7,
+  completelyExecuted: 8
 };
 Object.freeze(QuestionStates);
 export default {
@@ -89,87 +85,151 @@ export default {
   computed: {
     questionState() {
       if (this.loading) return QuestionStates.loading;
+
       const ts = (Date.now() / 1e3).toFixed();
       if (ts < this.proposalEnd) return QuestionStates.proposalNotResolved;
       if (!this.questionDetails) return QuestionStates.error;
+
       if (!this.questionDetails.questionId)
         return QuestionStates.waitingForQuestion;
+
+      if (this.questionDetails?.currentBond === '0.0')
+        return QuestionStates.questionNotSet;
+
       if (
-        !this.questionDetails.executionApproved ||
+        this.questionDetails?.currentBond !== '0.0' &&
         !this.questionDetails.finalizedAt
       )
         return QuestionStates.questionNotResolved;
-      if (ts < this.questionDetails.finalizedAt + this.questionDetails.cooldown)
-        return QuestionStates.waitingForCooldown;
+
+      if (this.questionDetails.executionApproved) {
+        if (
+          this.questionDetails.finalizedAt + this.questionDetails.cooldown >
+          ts
+        ) {
+          return QuestionStates.waitingForCooldown;
+        }
+        return QuestionStates.proposalApproved;
+      } else {
+        if (this.questionDetails.finalizedAt < ts) {
+          return QuestionStates.proposalRejected;
+        }
+      }
+
       if (this.questionDetails.nextTxIndex >= 0)
-        return QuestionStates.waitingForExecution;
-      return QuestionStates.completelyExecuted;
+        return QuestionStates.completelyExecuted;
     },
     actionLabel() {
       switch (this.questionState) {
         case QuestionStates.loading:
           return 'Loading...';
-        case QuestionStates.proposalNotResolved:
-          return 'Not resolved yet!';
         case QuestionStates.waitingForQuestion:
           return 'Request Execution';
+        case QuestionStates.questionNotSet:
+          return 'Set outcome';
         case QuestionStates.questionNotResolved:
-          return 'Waiting for Approval!';
-        case QuestionStates.waitingForCooldown:
-          return 'Waiting for Cooldown!';
-        case QuestionStates.waitingForExecution:
-          return 'Execute Proposal';
+          return 'Change outcome';
+        case QuestionStates.proposalApproved:
+          return 'Execute Transaction 1/x';
         case QuestionStates.completelyExecuted:
           return 'Executed!';
         case QuestionStates.error:
-        default:
           return 'Error';
+        default:
+          return null;
       }
     },
     actionEnabled() {
       if (!this.$auth.isAuthenticated.value) return false;
-      if (this.actionInProgress) return false;
       switch (this.questionState) {
         case QuestionStates.waitingForQuestion:
+        case QuestionStates.questionNotResolved:
+        case QuestionStates.questionNotSet:
         case QuestionStates.waitingForExecution:
+        case QuestionStates.proposalApproved:
           return true;
         default:
           return false;
       }
     },
-    approvalData() {
-      if (this.questionDetails.currentBond === '0.0') {
-        return {
-          timeLeft: 'Time to finish: -',
-          decision: 'Current final answer: -'
-        };
+    infoLabel() {
+      switch (this.questionState) {
+        case QuestionStates.proposalNotResolved:
+          return 'Waiting for vote to close';
+        case QuestionStates.waitingForQuestion:
+        case QuestionStates.questionNotSet:
+        case QuestionStates.questionNotResolved:
+          return 'Vote finalized';
+        case QuestionStates.completelyExecuted:
+          return 'Proposal executed';
+        default:
+          return null;
       }
-
-      const time = this._ms(this.questionDetails.endTime);
-      if (this.questionDetails.finalizedAt) {
-        const timeLeft = `Finished: ${time}`;
-        if (this.questionDetails.isApproved) {
+    },
+    showQuestionInfo() {
+      return (
+        this.questionState === this.questionStates.waitingForQuestion ||
+        this.questionState === this.questionStates.questionNotSet ||
+        this.questionState === this.questionStates.questionNotResolved ||
+        this.questionState === this.questionStates.waitingForCooldown
+      );
+    },
+    approvalData() {
+      if (this.questionDetails) {
+        const {
+          currentBond,
+          finalizedAt,
+          isApproved,
+          endTime
+        } = this.questionDetails;
+        if (currentBond === '0.0') {
           return {
-            decision: 'Final answer: Yes',
-            timeLeft
+            decision: 'Current outcome: --',
+            timeLeft: 'Finalized in: --',
+            currentBond: 'Current bond: --'
+          };
+        }
+
+        if (finalizedAt) {
+          if (isApproved) {
+            return {
+              decision: 'Outcome: Yes',
+              timeLeft: `Executable ${this._ms(
+                endTime + this.questionDetails.cooldown
+              )}`
+            };
+          }
+
+          return {
+            decision: 'Outcome: No'
           };
         }
 
         return {
-          decision: 'Final answer: No',
-          timeLeft
+          decision: `Current outcome: ${isApproved ? 'Yes' : 'No'}`,
+          timeLeft: `Finalized ${this._ms(endTime)}`,
+          currentBond: 'Current bond: ' + currentBond
         };
       }
-
       return {
-        timeLeft: `Time to finish: ${time}`,
-        decision: `Current final answer: ${
-          this.questionDetails.isApproved ? 'Yes' : 'No'
-        }`
+        decision: `--`,
+        timeLeft: `--`,
+        currentBond: '--'
       };
     },
     canChangeAnswer() {
       return this.questionState === 3 && !this.questionDetails.finalizedAt;
+    },
+    showActionButton() {
+      return (
+        this.questionState === QuestionStates.waitingForQuestion ||
+        this.questionState === QuestionStates.questionNotResolved ||
+        this.questionState === QuestionStates.questionNotSet ||
+        (this.questionDetails?.executionApproved &&
+          !this.questionState === QuestionStates.waitingForCooldown) ||
+        this.questionState === QuestionStates.waitingForExecution ||
+        this.questionState === QuestionStates.proposalApproved
+      );
     }
   },
   async created() {
@@ -186,6 +246,7 @@ export default {
           this.porposalId,
           this.proposalConfig.txs
         );
+        console.log(this.questionDetails);
       } catch (e) {
         console.error(e);
       } finally {
@@ -205,7 +266,11 @@ export default {
               this.questionDetails.transactions
             );
             break;
-          case QuestionStates.waitingForExecution:
+          case QuestionStates.questionNotSet:
+          case QuestionStates.questionNotResolved:
+            this.modalApproveDecisionOpen = true;
+            return;
+          case QuestionStates.proposalApproved:
             await this.plugin.executeProposal(
               this.$auth.web3,
               this.moduleAddress,

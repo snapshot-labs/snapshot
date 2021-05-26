@@ -11,8 +11,10 @@
           rel="noreferrer noopener"
           target="_blank"
           :href="questionLink"
-          >acceptance criteria</a
-        >?
+        >
+          acceptance criteria
+        </a>
+        ?
       </h3>
       <div class="m-4 text-center">
         <h4>Current outcome: {{ answer }}</h4>
@@ -56,7 +58,7 @@ export default {
       return {
         toSet: dontHasBond ? 0.1 : Number(this.bond) * 2,
         current: dontHasBond ? '--' : this.bond
-      }
+      };
     }
   },
   data() {
