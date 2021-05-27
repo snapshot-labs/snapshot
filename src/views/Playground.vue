@@ -115,23 +115,23 @@ export default {
     const route = useRoute();
     let provider;
 
+    const strategy = computed(() => strategies[route.params.name]);
+    const strategyExample = computed(() => strategy.value.examples?.[0]);
+
     const modalNetworksOpen = ref(false);
     const loading = ref(false);
     const strategyError = ref(null);
     const networkError = ref(null);
     const scores = ref(null);
     const form = ref({
-      params: JSON.stringify(defaultParams, null, 2),
+      params: JSON.stringify(
+        strategyExample.value?.strategy.params ?? defaultParams,
+        null,
+        2
+      ),
       network: 1,
       snapshot: '',
-      addresses: [
-        '0xF78108c9BBaF466dd96BE41be728Fe3220b37119',
-        '0xef37BE5ABF9596B4df70AE9160947866f2355455'
-      ]
-    });
-
-    const strategy = computed(() => {
-      return strategies[route.params.name];
+      addresses: strategyExample.value?.addresses ?? []
     });
 
     async function loadScores() {
