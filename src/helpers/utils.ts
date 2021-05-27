@@ -1,9 +1,15 @@
 import pkg from '@/../package.json';
+import voting from '@/helpers/voting';
 import scrollMonitor from 'scrollmonitor';
 import { formatEther } from '@ethersproject/units';
 
 export function shorten(str = '') {
   return `${str.slice(0, 6)}...${str.slice(str.length - 4)}`;
+}
+
+export function getChoiceString(proposal, selected) {
+  const votingClass = new voting[proposal.type](proposal, '', '', selected);
+  return votingClass.getChoiceString();
 }
 
 export function jsonParse(input, fallback?) {
@@ -86,6 +92,7 @@ export function formatSpace(key, space) {
     key,
     ...space,
     members: space.members || [],
+    admins: space.admins || [],
     filters: space.filters || {}
   };
   if (!space.filters.minScore) space.filters.minScore = 0;
