@@ -50,20 +50,20 @@
         <div v-if="isOwner || isAdmin">
           <Block :title="$t('settings.profile')">
             <div class="mb-2">
-              <a
-                href="https://docs.snapshot.org/spaces/add-avatar"
-                target="_blank"
-              >
-                <UiButton class="width-full mb-2">
-                  {{ $t('settings.changeAvatar') }}
-                  <Icon name="external-link" class="ml-1" />
-                </UiButton>
-              </a>
               <UiInput v-model="form.name" :error="inputError('name')">
                 <template v-slot:label>{{ $t(`settings.name`) }}*</template>
               </UiInput>
               <UiInput v-model="form.about" :error="inputError('about')">
                 <template v-slot:label> {{ $t(`settings.about`) }} </template>
+              </UiInput>
+              <UiInput
+                v-model="form.avatar"
+                placeholder="e.g. https://example.com/space.png"
+                :error="inputError('avatar')"
+              >
+                <template v-slot:label>
+                  {{ $t(`settings.avatar`) }}
+                </template>
               </UiInput>
               <UiInput
                 @click="modalNetworksOpen = true"

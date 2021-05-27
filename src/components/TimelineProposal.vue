@@ -8,7 +8,7 @@
   >
     <div>
       <div class="mb-1">
-        <Token :space="proposal.space.id" symbolIndex="space" size="28" />
+        <Token :space="proposal.space" size="28" />
         <span class="ml-2" v-text="proposal.space.name" />
       </div>
       <h3 v-text="_shorten(proposal.title, 124)" />
