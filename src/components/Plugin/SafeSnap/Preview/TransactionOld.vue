@@ -43,7 +43,7 @@
         class="text-gray p-2 mr-n3"
       />
     </span>
-    <UiButton v-if="input" @click="remove" class="width-full mb-2">
+    <UiButton v-if="input && removable" @click="remove" class="width-full mb-2">
       Remove
     </UiButton>
   </div>
@@ -54,7 +54,7 @@ import { mapActions } from 'vuex';
 import { formatAmount } from '@/helpers/utils';
 
 export default {
-  props: ['transaction'],
+  props: ['transaction', 'removable'],
   emits: ['remove'],
   methods: {
     ...mapActions(['notify']),

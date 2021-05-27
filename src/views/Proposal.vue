@@ -58,9 +58,9 @@
         :strategies="strategies"
       />
       <PluginSafeSnapConfig
+        v-if="loadedResults && proposal.plugins?.safeSnap?.txs"
         :proposal="proposal"
         :network="space.network"
-        v-if="proposal.plugins?.safeSnap?.txs"
         v-model="proposal.plugins.safeSnap"
       />
     </template>

@@ -1,39 +1,33 @@
 <template>
   <Block title="SafeSnap Plugin">
-    <form @submit.prevent="handleSubmit">
-      <div class="text-center">
-        <h4 class="mb-3">Transactions</h4>
-        <!-- TODO: Make sure is working -->
-        <PluginSafeSnapTransactionForm
-          v-if="adding"
-          :input="input"
-          :network="network"
-          :nonce="input.txs.length"
-          @close="adding = false"
-          @newTransaction="addTransaction($event)"
-        />
-        <div v-else>
-          <div
-            v-for="(tx, i) in input.txs"
-            :key="i"
-            class="mb-3 p-4 border rounded-2 text-white text-center"
-          >
-            <PluginSafeSnapTransactionPreview :transaction="tx" />
-            <!-- TODO: Hide button if not creating -->
-            <UiButton
-              v-if="input && create"
-              class="width-full mb-2"
-              @click="removeTx(i)"
-            >
-              Remove
-            </UiButton>
-          </div>
-          <UiButton v-if="create" class="width-full" @click="adding = true"
-            >Add Transaction</UiButton
-          >
+    <div class="text-center">
+      <h4 class="mb-3">Transactions</h4>
+      <!-- TODO: Make sure is working -->
+      <PluginSafeSnapTransactionForm
+        v-if="adding"
+        :input="input"
+        :network="network"
+        :nonce="input.txs.length"
+        @close="adding = false"
+        @newTransaction="addTransaction($event)"
+      />
+      <div v-else>
+        <div
+          v-for="(tx, i) in input.txs"
+          :key="i"
+          class="mb-3 text-white text-center"
+        >
+          <PluginSafeSnapPreviewTransaction
+            :removable="create"
+            :transaction="tx"
+            @remove="removeTx(i)"
+          />
         </div>
+        <UiButton v-if="create" class="width-full" @click="adding = true"
+          >Add Transaction</UiButton
+        >
       </div>
-    </form>
+    </div>
   </Block>
 </template>
 

@@ -38,7 +38,9 @@
         />
       </div>
     </div>
-    <UiButton class="width-full mb-2 mt-2" @click="remove"> Remove</UiButton>
+    <UiButton v-if="removable" class="width-full mb-2 mt-2" @click="remove">
+      Remove
+    </UiButton>
   </div>
 </template>
 
@@ -53,12 +55,9 @@ import {
   isInt,
   isUint
 } from '@/helpers/validator';
-import { parseEther } from '@ethersproject/units';
-import { BigNumber } from '@ethersproject/bignumber';
-import { formatEther } from '@ethersproject/units/src.ts/index';
 
 export default {
-  props: ['transaction'],
+  props: ['transaction', 'removable'],
   emits: ['remove'],
   data() {
     return {
