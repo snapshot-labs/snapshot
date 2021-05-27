@@ -2,9 +2,7 @@
   <Block title="SafeSnap Plugin">
     <form @submit.prevent="handleSubmit">
       <div class="text-center">
-        <h4 class="mb-3">Transactions</h4>
-        <!-- TODO: Make sure is working -->
-        <PluginSafeSnapTransactionForm
+        <PluginSafeSnapFormTransaction
           v-if="adding"
           :input="input"
           :network="network"
@@ -13,6 +11,7 @@
           @newTransaction="addTransaction($event)"
         />
         <div v-else>
+          <h4 class="mb-3">Transactions</h4>
           <div
             v-for="(tx, i) in input.txs"
             :key="i"

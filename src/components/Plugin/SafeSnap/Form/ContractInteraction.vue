@@ -1,6 +1,4 @@
 <template>
-  <span>Contract Interaction</span>
-
   <PluginSafeSnapInputAddress
     v-model="newEntry.to"
     label="to (address)"
@@ -15,7 +13,7 @@
     :modelValue="newEntry.value"
     @update:modelValue="handleValueChange($event)"
   >
-    <template v-slot:label>value</template>
+    <template v-slot:label>value (wei)</template>
   </UiInput>
 
   <UiInput
@@ -27,21 +25,14 @@
   </UiInput>
 
   <div v-if="methods.length">
-    <UiButton class="width-full mb-2">
-      <select
-        v-model="methodIndex"
-        class="input width-full text-center"
-        required
-        @change="handleMethodChanged()"
-      >
-        <option v-for="(method, i) in methods" :key="i" :value="i">
-          {{ method.name }}
-        </option>
-      </select>
-    </UiButton>
+    <UiSelect v-model="methodIndex" @change="handleMethodChanged()">
+      <template v-slot:label>function</template>
+      <option v-for="(method, i) in methods" :key="i" :value="i">
+        {{ method.name }}()
+      </option>
+    </UiSelect>
 
     <div v-if="selectedMethod && selectedMethod.inputs.length">
-
       <div class="divider"></div>
 
       <PluginSafeSnapInputMethodParameter
@@ -50,7 +41,6 @@
         v-model="parameters[input.name]"
         :name="input.name"
         :type="input.type"
-        @isValid="validParameters[input.name] = $event"
       />
     </div>
   </div>
@@ -109,8 +99,7 @@ export default {
       selectedMethod: undefined,
       methods: [],
       methodIndex: 0,
-      parameters: {},
-      validParameters: {}
+      parameters: {}
     };
   },
   computed: {
@@ -190,17 +179,6 @@ export default {
     handleMethodChanged() {
       this.parameters = {};
       this.selectedMethod = this.methods[this.methodIndex];
-
-      // Set all parameters valid state to false as all parameters are empty by default
-      // This takes the `inputs` array (Ex: [{name:'param1', ...}, {name:'param2', ...}, ...])
-      // And converts it to {param1: false, param2: false, ...}
-      this.validParameters = Object.fromEntries(
-        Object.keys(this.selectedMethod.inputs).map(({ name }) => [name, false])
-      );
-    },
-    areParametersValid() {
-      const values = Object.values(this.validParameters);
-      return values.every(value => value);
     }
   }
 };
@@ -222,7 +200,7 @@ export default {
   }
 }
 .divider {
-  border-top: 1px solid #CACACA;
+  border-top: 1px solid #cacaca;
   margin-top: 16px;
   margin-bottom: 24px;
 }
