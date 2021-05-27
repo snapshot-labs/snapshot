@@ -1,5 +1,5 @@
 <template>
-  <UiButton class="width-full mb-2 d-flex boolContainer" v-if="type === 'bool'">
+  <UiButton class="width-full mb-2 d-flex" v-if="type === 'bool'">
     <div class="text-gray mr-2">{{ placeholder }}</div>
     <select
       v-model="value"
