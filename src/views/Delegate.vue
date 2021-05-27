@@ -13,20 +13,19 @@
       </div>
       <template v-if="loaded">
         <Block :itle="$t('delegate.selectAddress')">
-          <UiButton class="width-full mb-2">
-            <input
-              v-model.trim="form.address"
-              class="input width-full"
-              :placeholder="$t('delegate.addressPlaceholder')"
-            />
-          </UiButton>
-          <UiButton class="width-full mb-2">
-            <input
-              v-model.trim="form.id"
-              class="input width-full"
-              :placeholder="$t('delegate.spacePlaceholder')"
-            />
-          </UiButton>
+          <UiInput
+            v-model.trim="form.address"
+            :placeholder="$t('delegate.addressPlaceholder')"
+            class="mt-2"
+          >
+            <template v-slot:label>{{ $t('delegate.to') }}</template>
+          </UiInput>
+          <UiInput
+            v-model.trim="form.id"
+            :placeholder="$t('delegate.spacePlaceholder')"
+          >
+            <template v-slot:label>{{ $t('space') }}</template>
+          </UiInput>
         </Block>
         <Block
           v-if="delegates.length > 0"
@@ -44,7 +43,7 @@
               :space="{ network: web3.network.key }"
             />
             <div
-              v-text="_shorten(delegate.space || '-', 'choice')"
+              v-text="_shorten(delegate.space || $t('allSpaces'), 'choice')"
               class="flex-auto text-right text-white"
             />
             <a
@@ -129,7 +128,7 @@ export default {
       delegators: [],
       form: {
         address: '',
-        id: ''
+        id: this.$route.params.key || ''
       }
     };
   },
