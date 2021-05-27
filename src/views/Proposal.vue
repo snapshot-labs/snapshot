@@ -57,13 +57,11 @@
         :votes="votes"
         :strategies="strategies"
       />
-      <PluginSafeSnapCustomBlock
-          v-if="proposal.plugins?.safeSnap?.txs"
-          :proposalConfig="proposal.plugins.safeSnap"
-          :proposalEnd="proposal.end"
-          :proposalId="id"
-          :moduleAddress="space.plugins?.safeSnap?.address"
-          :network="space.network"
+      <PluginSafeSnapConfig
+        :proposal="proposal"
+        :network="space.network"
+        v-if="proposal.plugins?.safeSnap?.txs"
+        v-model="proposal.plugins.safeSnap"
       />
     </template>
     <template #sidebar-right v-if="loaded">
@@ -149,6 +147,14 @@
           v-if="proposal.plugins?.gnosis?.baseTokenAddress"
           :proposalConfig="proposal.plugins.gnosis"
           :choices="proposal.choices"
+        />
+        <PluginSafeSnapCustomBlock
+          v-if="proposal.plugins?.safeSnap?.txs"
+          :proposalConfig="proposal.plugins.safeSnap"
+          :proposalEnd="proposal.end"
+          :proposalId="id"
+          :moduleAddress="space.plugins?.safeSnap?.address"
+          :network="space.network"
         />
         <PluginQuorumCustomBlock
           :loaded="loadedResults"

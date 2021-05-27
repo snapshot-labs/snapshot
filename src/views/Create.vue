@@ -77,9 +77,12 @@
           {{ $t('create.addChoice') }}
         </UiButton>
       </Block>
-      <PluginSafeSnapCustomBlock
-          v-if="form.metadata.plugins?.safeSnap?.txs"
-          :proposalConfig="form.metadata.plugins.safeSnap"
+      <PluginSafeSnapConfig
+        :create="true"
+        :proposal="proposal"
+        :network="space.network"
+        v-if="form.metadata.plugins.safeSnap"
+        v-model="form.metadata.plugins.safeSnap"
       />
     </template>
     <template #sidebar-right>
@@ -137,7 +140,7 @@
     />
     <ModalProposalPlugins
       :space="space"
-      :proposal="{ ...form, choices }"
+      :proposal="proposal"
       v-model="form.metadata.plugins"
       :open="modalProposalPluginsOpen"
       @close="modalProposalPluginsOpen = false"
@@ -186,7 +189,9 @@ export default {
       start: '',
       end: '',
       snapshot: '',
-      metadata: {}
+      metadata: {
+        plugins: {}
+      }
     });
     const modalOpen = ref(false);
     const modalProposalPluginsOpen = ref(false);
@@ -353,6 +358,10 @@ export default {
       });
     }
 
+    const proposal = computed(() => {
+      return { ...form, choices };
+    });
+
     return {
       loading,
       choices,
@@ -372,7 +381,8 @@ export default {
       addChoice,
       clickSubmit,
       modalTermsOpen,
-      acceptTerms
+      acceptTerms,
+      proposal
     };
   },
   components: {

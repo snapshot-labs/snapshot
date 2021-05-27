@@ -2,7 +2,6 @@ import memoize from 'lodash.memoize';
 import { isAddress } from '@ethersproject/address';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import { JsonRpcProvider } from '@ethersproject/providers';
-import { id } from '@ethersproject/hash';
 import { Interface } from '@ethersproject/abi';
 
 import {
@@ -10,7 +9,6 @@ import {
   AbiItemExtended,
   AllowedAbiItem
 } from '@/helpers/abi/interfaces';
-import { isArrayParameter } from '@/helpers/validator';
 import { BigNumber } from '@ethersproject/bignumber';
 
 const EXPLORER_API_URLS = {
