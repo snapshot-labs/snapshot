@@ -1,36 +1,45 @@
 <template>
-  <form @submit.prevent="handleSubmit">
-    <div class="mb-2 text-center">
-      <h4 class="mb-3">Transactions</h4>
-      <PluginSafeSnapTransactionForm
-        :input="input"
-        :nonce="input.txs.length"
-        :network="network"
-        @close="adding = false"
-        @newTransaction="addTransaction($event)"
-        v-if="adding"
-      />
-      <div v-else>
-        <PluginSafeSnapPreviewTransaction
-          v-for="(tx, i) in input.txs"
-          :key="i"
-          :transaction="tx"
-          @remove="removeTx(i)"
+  <Block title="SafeSnap Plugin">
+    <form @submit.prevent="handleSubmit">
+      <div class="text-center">
+        <h4 class="mb-3">Transactions</h4>
+        <!-- TODO: Make sure is working -->
+        <PluginSafeSnapTransactionForm
+          v-if="adding"
+          :input="input"
+          :network="network"
+          :nonce="input.txs.length"
+          @close="adding = false"
+          @newTransaction="addTransaction($event)"
         />
-        <UiButton @click="adding = true" class="width-full mb-2">
-          Add
-        </UiButton>
-        <UiButton @click="handleSubmit" class="button--submit width-full">
-          Confirm
-        </UiButton>
+        <div v-else>
+          <div
+            v-for="(tx, i) in input.txs"
+            :key="i"
+            class="mb-3 p-4 border rounded-2 text-white text-center"
+          >
+            <PluginSafeSnapTransactionPreview :transaction="tx" />
+            <!-- TODO: Hide button if not creating -->
+            <UiButton
+              v-if="input && create"
+              class="width-full mb-2"
+              @click="removeTx(i)"
+            >
+              Remove
+            </UiButton>
+          </div>
+          <UiButton v-if="create" class="width-full" @click="adding = true"
+            >Add Transaction</UiButton
+          >
+        </div>
       </div>
-    </div>
-  </form>
+    </form>
+  </Block>
 </template>
 
 <script>
 export default {
-  props: ['modelValue', 'proposal', 'network'],
+  props: ['modelValue', 'proposal', 'network', 'create'],
   emits: ['update:modelValue', 'close'],
   data() {
     return {
@@ -41,12 +50,16 @@ export default {
     };
   },
   mounted() {
-    if (this.modelValue) return (this.input = this.modelValue);
+    if (this.modelValue) {
+      this.input = this.modelValue;
+      if (!this.input.txs) this.input.txs = [];
+    }
   },
   methods: {
     addTransaction(transaction) {
       this.input.txs.push(transaction);
       this.adding = false;
+      this.$emit('update:modelValue', this.input);
     },
     removeTx(index) {
       if (!this.input || !this.input.txs || this.input.txs.length <= index)
@@ -56,10 +69,7 @@ export default {
       this.input.txs.forEach((tx, index) => {
         tx.nonce = index;
       });
-    },
-    handleSubmit() {
       this.$emit('update:modelValue', this.input);
-      this.$emit('close');
     }
   }
 };

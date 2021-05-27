@@ -77,9 +77,12 @@
           {{ $t('create.addChoice') }}
         </UiButton>
       </Block>
-      <PluginSafeSnapCustomBlock
-          v-if="form.metadata.plugins?.safeSnap?.txs"
-          :proposalConfig="form.metadata.plugins.safeSnap"
+      <PluginSafeSnapConfig
+        :create="true"
+        :proposal="proposal"
+        :network="space.network"
+        v-if="form.metadata.plugins.safeSnap"
+        v-model="form.metadata.plugins.safeSnap"
       />
     </template>
     <template #sidebar-right>
@@ -137,7 +140,7 @@
     />
     <ModalProposalPlugins
       :space="space"
-      :proposal="{ ...form, choices }"
+      :proposal="proposal"
       v-model="form.metadata.plugins"
       :open="modalProposalPluginsOpen"
       @close="modalProposalPluginsOpen = false"
@@ -186,7 +189,9 @@ export default {
       start: '',
       end: '',
       snapshot: '',
-      metadata: {}
+      metadata: {
+        plugins: {}
+      }
     });
     const modalOpen = ref(false);
     const modalProposalPluginsOpen = ref(false);
@@ -239,7 +244,8 @@ export default {
           (space.value.filters?.onlyMembers && isMember.value)) &&
         (space.value.filters?.minScore === 0 ||
           (space.value.filters?.minScore > 0 && hasMinScore.value) ||
-          isMember.value)
+          isMember.value ||
+          !web3Account.value)
       );
     });
 
@@ -262,6 +268,7 @@ export default {
 
     async function handleSubmit() {
       loading.value = true;
+      form.value.snapshot = parseInt(form.value.snapshot);
       form.value.choices = choices.value.map(choice => choice.text);
       form.value.metadata.network = space.value.network;
       form.value.metadata.strategies = space.value.strategies;
@@ -351,6 +358,10 @@ export default {
       });
     }
 
+    const proposal = computed(() => {
+      return { ...form, choices };
+    });
+
     return {
       loading,
       choices,
@@ -370,7 +381,8 @@ export default {
       addChoice,
       clickSubmit,
       modalTermsOpen,
-      acceptTerms
+      acceptTerms,
+      proposal
     };
   },
   components: {

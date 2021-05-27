@@ -4,15 +4,6 @@
     :icon="!loading && moduleAddress ? 'refresh' : undefined"
     @submit="updateDetails"
   >
-    <div class="mb-1">
-      <div
-        v-for="(tx, i) in proposalConfig.txs"
-        :key="i"
-        class="mb-3 p-4 border rounded-2 text-white text-center"
-      >
-        <PluginSafeSnapTransactionPreview :transaction="tx" />
-      </div>
-    </div>
     <UiButton
       v-if="questionDetails?.questionId"
       @click="showQuestion"
@@ -48,7 +39,7 @@ Object.freeze(QuestionStates);
 export default {
   props: [
     'proposalConfig',
-    'porposalId',
+    'proposalId',
     'proposalEnd',
     'network',
     'moduleAddress'
@@ -124,7 +115,7 @@ export default {
         this.questionDetails = await this.plugin.getExecutionDetails(
           this.network,
           this.moduleAddress,
-          this.porposalId,
+          this.proposalId,
           this.proposalConfig.txs
         );
       } catch (e) {

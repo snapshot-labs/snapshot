@@ -1,8 +1,20 @@
 <template>
-  <!-- TODO: BOOL -->
+  <UiButton class="width-full mb-2 d-flex boolContainer" v-if="type === 'bool'">
+    <div class="text-gray mr-2">{{ placeholder }}</div>
+    <select
+      v-model="value"
+      class="input text-center flex-auto height-full"
+      required
+      @change="handleInput(value)"
+    >
+      <option :value="true">true</option>
+      <option :value="false">false</option>
+    </select>
+  </UiButton>
+
   <!-- ADDRESS -->
   <PluginSafeSnapInputAddress
-    v-if="type === 'address'"
+    v-else-if="type === 'address'"
     :label="this.placeholder"
     :inputProps="{
       required: true
@@ -25,9 +37,7 @@
     :modelValue="value"
     @update:modelValue="handleInput($event)"
   >
-    <template v-slot:label>
-      <span class="text-black">{{ this.placeholder }}</span>
-    </template>
+    <template v-slot:label>{{ placeholder }}</template>
   </UiInput>
 </template>
 
@@ -39,10 +49,14 @@ export default {
   emits: ['update:modelValue', 'isValid'],
   data() {
     const placeholder = this.name ? `${this.name} (${this.type})` : this.type;
+
+    let value;
+    if (this.type === 'bool') value = false;
+
     return {
       placeholder,
-      dirty: false,
-      value: undefined
+      value,
+      dirty: false
     };
   },
   created() {
@@ -71,5 +85,3 @@ export default {
   }
 };
 </script>
-
-<style scoped></style>

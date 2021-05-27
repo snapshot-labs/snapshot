@@ -1,5 +1,5 @@
 <template>
-  <UiModal v-bind="modalProps" :open="open" @close="$emit('close')">
+  <UiModal :open="open" @close="$emit('close')">
     <template v-slot:header>
       <h3>{{ $t('plugins') }}</h3>
     </template>
@@ -57,13 +57,6 @@
         @close="selected = false"
         v-if="selected === 'gnosis'"
       />
-      <PluginSafeSnapConfig
-        :proposal="proposal"
-        :network="space.network"
-        v-model="form.safeSnap"
-        @close="selected = false"
-        v-if="selected === 'safeSnap'"
-      />
     </div>
   </UiModal>
 </template>
@@ -86,6 +79,13 @@ export default {
     open() {
       if (this.modelValue && this.open) this.form = clone(this.modelValue);
       this.selected = false;
+    },
+    selected(value) {
+      if (value === 'safeSnap') {
+        this.form.safeSnap = this.form.safeSnap || {};
+        this.$emit('update:modelValue', this.form);
+        this.$emit('close');
+      }
     }
   },
   created() {
@@ -96,21 +96,6 @@ export default {
         return [plugin, instance];
       })
     );
-  },
-  computed: {
-    modalProps() {
-      if (this.selected === 'safeSnap') {
-        return {
-          shellProps: {
-            style: 'maxWidth: 610px'
-          },
-          modalBodyProps: {
-            style: 'maxHeight: 660px'
-          }
-        };
-      }
-      return {};
-    }
   },
   methods: {
     getLogoUrl(plugin) {

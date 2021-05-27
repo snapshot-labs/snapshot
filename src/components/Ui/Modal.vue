@@ -3,12 +3,11 @@
     <div class="backdrop" @click="$emit('close')" />
     <div
       class="shell overflow-hidden anim-scale-in position-relative rounded-0 rounded-md-2"
-      v-bind="shellProps"
     >
       <div v-if="$slots.header" class="border-bottom pt-4 pb-3 text-center">
         <slot name="header" />
       </div>
-      <div class="modal-body" v-bind="modalBodyProps">
+      <div class="modal-body">
         <slot />
       </div>
       <div v-if="$slots.footer" class="border-top p-4 text-center">
@@ -33,16 +32,6 @@ export default {
     open: {
       type: Boolean,
       required: true
-    },
-    shellProps: {
-      type: Object,
-      required: false,
-      default: () => ({})
-    },
-    modalBodyProps: {
-      type: Object,
-      required: false,
-      default: () => ({})
     }
   },
   setup(props) {

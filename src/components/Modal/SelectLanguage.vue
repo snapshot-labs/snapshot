@@ -23,6 +23,12 @@ import languages from '@/locales/languages.json';
 import { useI18n } from '@/composables/useI18n';
 
 export default {
+  props: {
+    open: {
+      type: Boolean,
+      required: true
+    }
+  },
   setup(_, { emit }) {
     const { setLocale } = useI18n();
 
