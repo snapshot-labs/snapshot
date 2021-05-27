@@ -29,7 +29,7 @@
               class="d-inline-block d-flex flex-items-center"
               style="font-size: 24px; padding-top: 4px"
             >
-              <Token :space="space.key" symbolIndex="space" size="28" />
+              <Token :space="space" symbolIndex="space" size="28" />
               <span class="ml-2" v-text="space.name" />
             </router-link>
           </div>
