@@ -2,16 +2,16 @@
   <Layout>
     <template #content-left>
       <div class="px-4 px-md-0 mb-3">
-        <router-link :to="{ path: '/strategies' }" class="text-gray">
+        <router-link :to="`/strategy/${$route.params.name}`" class="text-gray">
           <Icon name="back" size="22" class="v-align-middle" />
-          {{ $t('strategiesPage') }}
+          {{ $t('back') }}
         </router-link>
       </div>
       <div class="px-4 px-md-0">
         <h1 class="mb-2">
           {{ strategy.key }}
         </h1>
-        <Block :title="$t('settings')">
+        <Block :title="$t('settings.header')">
           <UiInput @click="modalNetworksOpen = true">
             <template v-slot:selected>
               {{
@@ -52,24 +52,25 @@
       </div>
     </template>
     <template #sidebar-right>
-      <Block :title="$t('results')">
-        <div v-if="scores" class="mb-2">
-          <div v-for="score in Object.keys(scores[0])" :key="score">
-            {{ _shorten(score) }}
-            <span class="float-right"
-              >{{ scores[0][score] }} {{ JSON.parse(form.params).symbol }}</span
-            >
-          </div>
-        </div>
+      <Block :title="$t('actions')">
         <UiButton
           @click="loadScores"
           :loading="loading"
           :disables="loading"
-          class="width-full"
-          :style="[loading ? '' : 'padding-top: 0.25rem']"
+          class="width-full button--submit"
+          :style="[loading ? '' : 'padding-top: 0.2rem']"
         >
-          <Icon name="play" size="22" />
+          <Icon name="play" size="18" />
         </UiButton>
+      </Block>
+      <Block v-if="scores" :title="$t('results')">
+        <div v-for="score in Object.keys(scores[0])" :key="score">
+          <User :address="score" />
+          <span class="float-right"
+            >{{ _n(scores[0][score]) }}
+            {{ JSON.parse(form.params).symbol }}</span
+          >
+        </div>
       </Block>
     </template>
   </Layout>
@@ -121,13 +122,13 @@ export default {
 
     async function loadScores() {
       scores.value = null;
+      loading.value = true;
       try {
         const strategyParams = {
           __typename: 'Strategy',
           name: strategy.value.key,
           params: JSON.parse(form.value.params)
         };
-        loading.value = true;
         const blockNumber = await getBlockNumber(provider);
         const blockTag =
           form.value.snapshot > blockNumber
@@ -151,9 +152,15 @@ export default {
 
     watchEffect(async () => {
       loading.value = true;
-      provider = await getProvider(form.value.network);
-      form.value.snapshot = await getBlockNumber(provider);
-      loading.value = false;
+      scores.value = null;
+      try {
+        provider = await getProvider(form.value.network);
+        form.value.snapshot = await getBlockNumber(provider);
+        loading.value = false;
+      } catch (e) {
+        loading.value = false;
+        console.log(e);
+      }
     });
 
     return {
