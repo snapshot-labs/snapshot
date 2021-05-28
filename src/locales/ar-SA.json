@@ -17,6 +17,7 @@
   "snapshot": "لمحة(سنابشوت)",
   "strategies": "الإستراتيجيات (تخطيط)",
   "strategiesPage": "الإستراتيجية (تخطيط)",
+  "space": "Space",
   "spaces": "Spaces",
   "version": "الاصدار",
   "timeline": "الجدول الزمني",
@@ -89,7 +90,7 @@
   "startIn": "start {0}",
   "endIn": "end {1}",
   "endedAgo": "ended {1}",
-  "proposalBy": "By {0}",
+  "proposalBy": "by {0}",
   "endDate": "نهاية {0}",
   "contectHash": "تجزئة المحتوى",
   "defaultSkin": "المضهر الافتراضي",
@@ -128,9 +129,11 @@
   "delegate": {
     "header": "تفويض",
     "selectAddress": "اختيار عنوان",
-    "addressPlaceholder": "عنوان المندوب المفوض أو اسم ENS",
+    "to": "To",
+    "addressPlaceholder": "Address or ENS name",
     "spacePlaceholder": "مساحة (اختياري)",
     "delegations": "التفويض(التفويضات)",
+    "allSpaces": "For all spaces",
     "delegated": "التفويض لنفسك"
   },
   "proposal": {
