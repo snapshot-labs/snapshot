@@ -17,6 +17,7 @@
   "snapshot": "Snimak",
   "strategies": "Strategija(e)",
   "strategiesPage": "Strategije",
+  "space": "Space",
   "spaces": "Spaces",
   "version": "Verzija",
   "timeline": "Vremenska linija",
@@ -89,7 +90,7 @@
   "startIn": "start {0}",
   "endIn": "end {1}",
   "endedAgo": "ended {1}",
-  "proposalBy": "By {0}",
+  "proposalBy": "by {0}",
   "endDate": "kraj {0}",
   "contectHash": "Heš sadržaja",
   "defaultSkin": "Podrazumevana tema",
@@ -128,9 +129,11 @@
   "delegate": {
     "header": "Delegirati",
     "selectAddress": "Izaberi adresu",
-    "addressPlaceholder": "Delegirajte adresu ili ENS ime",
+    "to": "To",
+    "addressPlaceholder": "Address or ENS name",
     "spacePlaceholder": "Prostor (opciono)",
     "delegations": "Vaša delegacija(e)",
+    "allSpaces": "For all spaces",
     "delegated": "Delegirano vama"
   },
   "proposal": {
