@@ -17,6 +17,7 @@
   "snapshot": "Срез",
   "strategies": "Стратегия(и)",
   "strategiesPage": "Стратегии",
+  "space": "Space",
   "spaces": "Spaces",
   "version": "Версия",
   "timeline": "Хронология",
@@ -89,7 +90,7 @@
   "startIn": "начался {0}",
   "endIn": "по {1}",
   "endedAgo": "по {1}",
-  "proposalBy": "By {0}",
+  "proposalBy": "by {0}",
   "endDate": "по {0}",
   "contectHash": "Хэш содержимого",
   "defaultSkin": "Тема по умолчанию",
@@ -128,9 +129,11 @@
   "delegate": {
     "header": "Делегировать право голоса",
     "selectAddress": "Выбрать адрес",
-    "addressPlaceholder": "Делегировать адрес или домен ENS",
+    "to": "To",
+    "addressPlaceholder": "Address or ENS name",
     "spacePlaceholder": "Раздел (опционально)",
     "delegations": "Вы делегировали",
+    "allSpaces": "For all spaces",
     "delegated": "Вам делегировали"
   },
   "proposal": {
