@@ -37,7 +37,8 @@ export default {
         return str.length > limit ? `${str.slice(0, limit).trim()}...` : str;
       return shorten(str);
     },
-    _ipfsUrl(ipfsHash: string): string {
+    _ipfsUrl(ipfsHash: string): string | null {
+      if(!ipfsHash) return null;
       return `https://${process.env.VUE_APP_IPFS_GATEWAY}/ipfs/${ipfsHash}`;
     },
     _explorer(network, str: string, type = 'address'): string {
