@@ -57,6 +57,7 @@
         :strategies="strategies"
       />
       <PluginSafeSnapConfig
+        :preview="true"
         v-if="loadedResults && proposal.plugins?.safeSnap?.txs"
         :proposal="proposal"
         :network="space.network"

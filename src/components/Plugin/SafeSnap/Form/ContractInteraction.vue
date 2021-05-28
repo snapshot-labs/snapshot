@@ -1,6 +1,6 @@
 <template>
   <PluginSafeSnapInputAddress
-    v-model="newEntry.to"
+    v-model="to"
     label="to (address)"
     :inputProps="{
       required: true
@@ -10,7 +10,7 @@
 
   <UiInput
     :error="!validValue && 'Invalid Value'"
-    :modelValue="newEntry.value"
+    :modelValue="value"
     @update:modelValue="handleValueChange($event)"
   >
     <template v-slot:label>value (wei)</template>
@@ -18,7 +18,7 @@
 
   <UiInput
     :error="!validAbi && 'Invalid ABI'"
-    :modelValue="newEntry.abi"
+    :modelValue="abi"
     @update:modelValue="handleABIChanged($event)"
   >
     <template v-slot:label>ABI</template>
@@ -38,22 +38,17 @@
       <PluginSafeSnapInputMethodParameter
         v-for="input in selectedMethod.inputs"
         :key="input.name"
-        v-model="parameters[input.name]"
+        :modelValue="parameters[input.name]"
+        @update:modelValue="handleParameterChanged(input.name, $event)"
         :name="input.name"
         :type="input.type"
       />
     </div>
   </div>
-
-  <UiButton class="mb-2" @click="close">Back</UiButton>
-  <UiButton :disabled="!isValid" class="button--submit" @click="handleSubmit">
-    Add
-  </UiButton>
 </template>
 
 <script>
 import Plugin from '@snapshot-labs/snapshot.js/src/plugins/safeSnap';
-import { parseEther } from '@ethersproject/units';
 import {
   extractUsefulMethods,
   getContractABI,
@@ -61,18 +56,11 @@ import {
   parseMethodToABI
 } from '@/helpers/abi/utils';
 import { BigNumber } from '@ethersproject/bignumber';
+import { isBigNumberish } from '@ethersproject/bignumber/lib/bignumber';
+import { isAddress } from '@ethersproject/address';
 
-const defaultEntry = () => {
-  return {
-    to: '',
-    abi: '',
-    value: '0',
-    operation: '0'
-  };
-};
 const parseAmount = input => {
-  if (input.startsWith('0x')) return BigNumber.from(input).toString();
-  return parseEther(input).toString();
+  return BigNumber.from(input).toString();
 };
 const parseValueInput = input => {
   try {
@@ -81,24 +69,28 @@ const parseValueInput = input => {
     return input;
   }
 };
-const toModuleTransaction = (tx, data, nonce, method) => {
+const toModuleTransaction = ({ to, value, data, nonce, method }) => {
   return {
-    type: 'contractInteraction',
+    to,
+    data,
     nonce,
-    to: tx.to,
-    value: parseValueInput(tx.value),
-    data: data,
-    operation: tx.operation,
+    operation: '0',
+    type: 'contractInteraction',
+    value: parseValueInput(value),
     abi: parseMethodToABI(method)
   };
 };
 export default {
-  props: ['input', 'nonce', 'network'],
-  emits: ['newTransaction', 'close'],
+  props: ['modelValue', 'nonce', 'network'],
+  emits: ['update:modelValue'],
   data() {
     return {
       plugin: new Plugin(),
-      newEntry: defaultEntry(),
+
+      to: '',
+      abi: '',
+      value: '0',
+
       validAbi: true,
       validValue: true,
       selectedMethod: undefined,
@@ -107,54 +99,74 @@ export default {
       parameters: {}
     };
   },
-  computed: {
-    isValid() {
-      try {
-        const data = getTransactionData(
-          this.newEntry.abi,
-          this.selectedMethod,
-          this.newEntry.to,
-          this.parameters
-        );
-        // We validate with nonce 0 here and use the correct index as nonce later
-        return this.plugin.validateTransaction(
-          toModuleTransaction(this.newEntry, data, 0)
-        );
-      } catch (error) {
-        return false;
-      }
+  mounted() {
+    if (this.modelValue) {
+      const { to = '', abi = '', value = '0' } = this.modelValue;
+      this.to = to;
+      this.handleValueChange(value);
+      this.handleABIChanged(
+        typeof abi === 'object' ? JSON.stringify(abi) : abi
+      );
+    }
+  },
+  watch: {
+    to() {
+      this.updateTransaction();
+    },
+    abi() {
+      this.updateTransaction();
+    },
+    value() {
+      this.updateTransaction();
+    },
+    selectedMethod() {
+      this.updateTransaction();
+    },
+    parameters() {
+      this.updateTransaction();
+    },
+    nonce() {
+      this.updateTransaction();
     }
   },
   methods: {
-    close() {
-      this.$emit('close');
-    },
-    handleSubmit() {
-      const data = getTransactionData(
-        this.newEntry.abi,
-        this.selectedMethod,
-        this.newEntry.to,
-        this.parameters
-      );
+    updateTransaction() {
+      try {
+        if (isBigNumberish(this.value) && isAddress(this.to)) {
+          const data = getTransactionData(
+            this.abi,
+            this.selectedMethod,
+            this.to,
+            this.parameters
+          );
 
-      const transaction = toModuleTransaction(
-        this.newEntry,
-        data,
-        this.nonce,
-        this.selectedMethod
-      );
-      this.$emit('newTransaction', transaction);
-      this.$emit('close');
+          const transaction = toModuleTransaction({
+            data,
+            to: this.to,
+            value: this.value,
+            nonce: this.nonce,
+            method: this.selectedMethod
+          });
+
+          if (this.plugin.validateTransaction(transaction)) {
+            this.$emit('update:modelValue', transaction);
+            return;
+          }
+        }
+      } catch (error) {
+        console.warn('invalid transaction');
+      }
+      this.$emit('update:modelValue', undefined);
     },
     async handleAddressChanged() {
-      const result = await getContractABI(this.network, this.newEntry.to);
-      if (result) {
-        this.newEntry.abi = result;
+      const result = await getContractABI(this.network, this.to);
+      if (result && result !== this.abi) {
+        this.abi = result;
         this.handleABIChanged(result);
       }
     },
     handleValueChange(value) {
-      this.newEntry.value = value;
+      this.value = value;
       try {
         parseAmount(value);
         this.validValue = true;
@@ -163,13 +175,13 @@ export default {
       }
     },
     handleABIChanged(value) {
-      this.newEntry.abi = value;
+      this.abi = value;
       this.methodIndex = 0;
       this.methods = [];
 
       let abi;
       try {
-        abi = JSON.parse(this.newEntry.abi);
+        abi = JSON.parse(this.abi);
         this.validAbi = true;
       } catch (error) {
         this.validAbi = false;
@@ -187,6 +199,11 @@ export default {
     handleMethodChanged() {
       this.parameters = {};
       this.selectedMethod = this.methods[this.methodIndex];
+      this.updateTransaction();
+    },
+    handleParameterChanged(parameter, value) {
+      this.parameters[parameter] = value;
+      this.updateTransaction();
     }
   }
 };
@@ -207,6 +224,7 @@ export default {
     border-color: var(--link-color);
   }
 }
+
 .divider {
   border-top: 1px solid #cacaca;
   margin-top: 16px;

@@ -1,0 +1,40 @@
+<template>
+  <div class="width-full collapsible-container">
+    <div class="collapsible-header d-flex">
+      <span class="mr-4 header-number">{{ number }}</span>
+      <span class="flex-auto text-center no-wrap overflow-hidden" @click="$emit('toggle')">
+        {{ title }}
+      </span>
+      <span @click="$emit('remove')" class="ml-4">
+        <Icon name="close" size="12" />
+      </span>
+    </div>
+
+    <div v-if="open" class="p-2">
+      <slot />
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  props: ['open', 'title', 'number'],
+  emits: ['remove', 'toggle']
+};
+</script>
+
+<style scoped lang="scss">
+.collapsible-container {
+  border: 1px solid var(--border-color);
+  background-color: transparent;
+  color: var(--link-color);
+  border-radius: 23px;
+  padding: 0 24px;
+  outline: none;
+}
+.collapsible-header {
+  line-height: 46px;
+  height: 46px;
+  font-size: 18px;
+}
+</style>

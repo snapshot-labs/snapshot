@@ -43,9 +43,6 @@
         class="text-gray p-2 mr-n3"
       />
     </span>
-    <UiButton v-if="input && removable" @click="remove" class="width-full mb-2">
-      Remove
-    </UiButton>
   </div>
 </template>
 
@@ -54,16 +51,12 @@ import { mapActions } from 'vuex';
 import { formatAmount } from '@/helpers/utils';
 
 export default {
-  props: ['transaction', 'removable'],
-  emits: ['remove'],
+  props: ['transaction'],
   methods: {
     ...mapActions(['notify']),
     formatAmount,
     handleCopy() {
       this.notify('Copied!');
-    },
-    remove() {
-      this.$emit('remove');
     }
   }
 };

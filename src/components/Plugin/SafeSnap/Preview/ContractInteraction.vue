@@ -38,9 +38,6 @@
         />
       </div>
     </div>
-    <UiButton v-if="removable" class="width-full mb-2 mt-2" @click="remove">
-      Remove
-    </UiButton>
   </div>
 </template>
 
@@ -57,8 +54,7 @@ import {
 } from '@/helpers/validator';
 
 export default {
-  props: ['transaction', 'removable'],
-  emits: ['remove'],
+  props: ['transaction'],
   data() {
     return {
       contractMethod: '',
@@ -126,9 +122,6 @@ export default {
         return value.toString();
       }
       return value;
-    },
-    remove() {
-      this.$emit('remove');
     }
   }
 };
