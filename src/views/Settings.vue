@@ -5,14 +5,10 @@
     </template>
     <template #content-right>
       <div class="px-4 px-md-0 mb-3">
-        <router-link :to="{ name: 'home' }" class="text-gray">
-          <Icon name="back" size="22" class="v-align-middle" />
-          {{ $t('backToHome') }}
-        </router-link>
-      </div>
-      <div class="px-4 px-md-0">
-        <h1 v-if="loaded" v-text="$t('settings.header')" class="mb-4" />
-        <PageLoading v-else />
+        <div v-text="space.name" />
+        <div class="d-flex flex-items-center flex-auto mb-3">
+          <h2>{{ $t('settings') }}</h2>
+        </div>
       </div>
 
       <template v-if="loaded">
@@ -282,6 +278,7 @@
           </Block>
         </div>
       </template>
+      <PageLoading v-else />
     </template>
   </Layout>
   <teleport to="#modal">
