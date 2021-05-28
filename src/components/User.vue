@@ -8,7 +8,7 @@
         class="mr-1"
       />
       {{ name }}
-      <Badges :address="address" :members="space.members" />
+      <Badges :address="address" :members="space?.members" />
     </a>
     <teleport to="#modal">
       <ModalUser
