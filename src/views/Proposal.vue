@@ -197,8 +197,7 @@
 
 <script>
 import { ref, computed, watch, onMounted } from 'vue';
-import { mapActions } from 'vuex';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 import { getProposal, getResults, getPower } from '@/helpers/snapshot';
 import { useModal } from '@/composables/useModal';
@@ -207,6 +206,7 @@ import { useTerms } from '@/composables/useTerms';
 export default {
   setup() {
     const route = useRoute();
+    const router = useRouter();
     const store = useStore();
     const key = route.params.key;
     const id = route.params.id;
@@ -221,9 +221,26 @@ export default {
     const results = ref([]);
     const totalScore = ref(0);
     const scores = ref([]);
+    const dropdownLoading = ref(false);
+    const modalStrategiesOpen = ref(false);
 
     const space = computed(() => store.state.app.spaces[key]);
     const web3Account = computed(() => store.state.web3.account);
+    const isCreator = computed(
+      () => proposal.value.author === web3Account.value
+    );
+    const isAdmin = computed(() => {
+      const admins = (space.value.admins || []).map(admin =>
+        admin.toLowerCase()
+      );
+      return admins.includes(web3Account.value?.toLowerCase());
+    });
+    const strategies = computed(
+      () => proposal.value.strategies ?? space.value.strategies
+    );
+    const symbols = computed(() =>
+      strategies.value.map(strategy => strategy.params.symbol)
+    );
 
     const { modalAccountOpen } = useModal();
     const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(key);
@@ -262,6 +279,33 @@ export default {
       scores.value = response.scores;
     }
 
+    async function deleteProposal() {
+      dropdownLoading.value = true;
+      try {
+        if (
+          await store.dispatch('send', {
+            space: space.value.key,
+            type: 'delete-proposal',
+            payload: {
+              proposal: id
+            }
+          })
+        ) {
+          dropdownLoading.value = false;
+          router.push({
+            name: 'proposals'
+          });
+        }
+      } catch (e) {
+        console.error(e);
+      }
+      dropdownLoading.value = false;
+    }
+
+    function selectFromDropdown(e) {
+      if (e === 'delete') deleteProposal();
+    }
+
     watch(web3Account, (val, prev) => {
       if (val?.toLowerCase() !== prev) loadPower();
     });
@@ -288,61 +332,15 @@ export default {
       results,
       loadProposal,
       totalScore,
-      scores
+      scores,
+      isCreator,
+      isAdmin,
+      strategies,
+      symbols,
+      dropdownLoading,
+      modalStrategiesOpen,
+      selectFromDropdown
     };
-  },
-  data() {
-    return {
-      dropdownLoading: false,
-      modalStrategiesOpen: false
-    };
-  },
-  computed: {
-    symbols() {
-      return this.strategies.map(strategy => strategy.params.symbol);
-    },
-    isCreator() {
-      return this.proposal.author === this.web3.account;
-    },
-    isAdmin() {
-      const admins = (this.space.admins || []).map(admin =>
-        admin.toLowerCase()
-      );
-      return admins.includes(this.web3.account?.toLowerCase());
-    },
-    strategies() {
-      return this.proposal.strategies ?? this.space.strategies;
-    }
-  },
-
-  methods: {
-    ...mapActions(['send']),
-
-    async deleteProposal() {
-      this.dropdownLoading = true;
-      try {
-        if (
-          await this.send({
-            space: this.space.key,
-            type: 'delete-proposal',
-            payload: {
-              proposal: this.id
-            }
-          })
-        ) {
-          this.dropdownLoading = false;
-          this.$router.push({
-            name: 'proposals'
-          });
-        }
-      } catch (e) {
-        console.error(e);
-      }
-      this.dropdownLoading = false;
-    },
-    selectFromDropdown(e) {
-      if (e === 'delete') this.deleteProposal();
-    }
   }
 };
 </script>
