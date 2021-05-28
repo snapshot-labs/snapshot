@@ -17,6 +17,7 @@
   "snapshot": "Skärmdump",
   "strategies": "Strategier",
   "strategiesPage": "Strategier",
+  "space": "Space",
   "spaces": "Spaces",
   "version": "Version",
   "timeline": "Tidslinje",
@@ -89,7 +90,7 @@
   "startIn": "starta {0}",
   "endIn": "avsluta {1}",
   "endedAgo": "avslutade {1}",
-  "proposalBy": "Av {0}",
+  "proposalBy": "by {0}",
   "endDate": "avsluta {0}",
   "contectHash": "Innehåll hash",
   "defaultSkin": "Förvalt skin",
@@ -128,9 +129,11 @@
   "delegate": {
     "header": "Delegera",
     "selectAddress": "Välj adress",
-    "addressPlaceholder": "Delegera adress eller ENS namn",
+    "to": "To",
+    "addressPlaceholder": "Address or ENS name",
     "spacePlaceholder": "Space (valfritt)",
     "delegations": "Din delegation(er)",
+    "allSpaces": "For all spaces",
     "delegated": "Delegerat till dig"
   },
   "proposal": {
