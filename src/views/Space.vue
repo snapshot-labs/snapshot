@@ -57,6 +57,7 @@ import { useInfiniteLoader } from '@/composables/useInfiniteLoader';
 import { subgraphRequest } from '@snapshot-labs/snapshot.js/src/utils';
 import { useScrollMonitor } from '@/composables/useScrollMonitor';
 import { useStore } from 'vuex';
+import { useDomain } from '@/composables/useDomain';
 
 // Persistent filter state
 const filterBy = ref('all');
@@ -65,10 +66,14 @@ export default {
   setup() {
     const store = useStore();
     const route = useRoute();
+    const { domain } = useDomain();
 
     const loading = ref(false);
     const proposals = ref([]);
-    const space = computed(() => store.state.app.spaces[route.params.key]);
+
+    const spaceId = domain || route.params.key;
+
+    const space = computed(() => store.state.app.spaces[spaceId]);
 
     // Infinite scroll with pagination
     const {
@@ -94,7 +99,7 @@ export default {
                 first: loadBy,
                 skip,
                 where: {
-                  space: route.params.key,
+                  space: spaceId,
                   state: filterBy.value
                 }
               },

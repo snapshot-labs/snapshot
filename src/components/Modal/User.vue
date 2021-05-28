@@ -2,7 +2,7 @@
   <UiModal :open="open" @close="$emit('close')">
     <div class="m-4 mb-0 text-center">
       <UiAvatar
-        :imgsrc="profile?.image"
+        :imgsrc="_ipfsUrl(profile?.image)"
         :address="address"
         size="64"
         class="mb-4"
