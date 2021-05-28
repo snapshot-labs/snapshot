@@ -97,6 +97,10 @@
   "language": "Langage",
   "agree": "J'accepte",
   "mustAgreeToTerms": "Avant de pouvoir effectuer cette action, vous devez accepter les conditions d'utilisation de {0} ici:",
+  "playground": "Playground",
+  "strategyParams": "Strategy params",
+  "addresses": "Addresses",
+  "networkErrorPlayground": "Network error - please open your browser console for more information",
   "errors": {
     "required": "Le champ est requis",
     "minLength": "Longueur minimale de {0}",
