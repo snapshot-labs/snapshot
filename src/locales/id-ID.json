@@ -17,6 +17,7 @@
   "snapshot": "Tangkapan",
   "strategies": "Strategi",
   "strategiesPage": "Semua strategi",
+  "space": "Space",
   "spaces": "Ruang",
   "version": "Versi",
   "timeline": "Waktu habis",
@@ -89,7 +90,7 @@
   "startIn": "mulai {0}",
   "endIn": "akhir {1}",
   "endedAgo": "berakhir {1}",
-  "proposalBy": "Oleh {0}",
+  "proposalBy": "by {0}",
   "endDate": "akhir {0}",
   "contectHash": "Hash konten",
   "defaultSkin": "Skin bawaan",
@@ -128,9 +129,11 @@
   "delegate": {
     "header": "Perwakilan",
     "selectAddress": "Pilih alamat",
-    "addressPlaceholder": "Alamat perwakilan atau nama ENS",
+    "to": "To",
+    "addressPlaceholder": "Address or ENS name",
     "spacePlaceholder": "Ruang (opsional)",
     "delegations": "Perwakilan Anda(s)",
+    "allSpaces": "For all spaces",
     "delegated": "Diwakilkan kepada Anda"
   },
   "proposal": {
