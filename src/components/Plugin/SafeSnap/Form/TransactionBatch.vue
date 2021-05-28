@@ -15,7 +15,7 @@
         :modelValue="transaction"
         :index="index"
         :network="network"
-        :nonce="nonce + index"
+        :nonce="`${nonce + index}`"
         @update:modelValue="updateTransaction(index, $event)"
         @remove="removeTransaction(index)"
       />
