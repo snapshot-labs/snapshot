@@ -8,6 +8,7 @@ import Setup from '@/views/Setup.vue';
 import Settings from '@/views/Settings.vue';
 import Explore from '@/views/Explore.vue';
 import Strategy from '@/views/Strategy.vue';
+import Playground from '@/views/Playground.vue';
 import Delegate from '@/views/Delegate.vue';
 import Timeline from '@/views/Timeline.vue';
 import Space from '@/views/Space.vue';
@@ -42,6 +43,11 @@ const routes: any[] = [
     path: '/strategy/:name',
     name: 'strategy',
     component: Strategy
+  },
+  {
+    path: '/playground/:name',
+    name: 'playground',
+    component: Playground
   },
   {
     path: '/:key/proposal/:id',
