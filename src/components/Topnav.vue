@@ -16,11 +16,7 @@
               class="d-inline-block d-flex flex-items-center"
               style="font-size: 24px; padding-top: 4px"
             >
-              <span
-                :class="space && 'hide-sm'"
-                class="mr-1"
-                v-text="'snapshot'"
-              />
+              snapshot
             </router-link>
           </div>
           <div :key="web3.account">
