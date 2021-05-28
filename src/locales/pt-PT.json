@@ -17,6 +17,7 @@
   "snapshot": "Snapshot",
   "strategies": "Estratégia(s)",
   "strategiesPage": "Estratégias",
+  "space": "Space",
   "spaces": "Spaces",
   "version": "Versão",
   "timeline": "Cronologia",
@@ -89,7 +90,7 @@
   "startIn": "iniciar: {0}",
   "endIn": "terminar {1}",
   "endedAgo": "finalizado {1}",
-  "proposalBy": "By {0}",
+  "proposalBy": "by {0}",
   "endDate": "termina {0}",
   "contectHash": "Hash do conteúdo",
   "defaultSkin": "Skin padrão",
@@ -128,9 +129,11 @@
   "delegate": {
     "header": "Delegar",
     "selectAddress": "Selecionar endereço",
-    "addressPlaceholder": "Delegar endereço ou nome do ENS",
+    "to": "To",
+    "addressPlaceholder": "Address or ENS name",
     "spacePlaceholder": "Comunidade (opcional)",
     "delegations": "Sua(s) delegação(ões)",
+    "allSpaces": "For all spaces",
     "delegated": "Delegado a você"
   },
   "proposal": {
