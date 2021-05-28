@@ -57,7 +57,7 @@
         @close="selected = false"
         v-if="selected === 'gnosis'"
       />
-      <PluginDaoModuleConfig
+      <PluginSafeSnapConfig
         :proposal="proposal"
         :network="space.network"
         v-model="form.daoModule"

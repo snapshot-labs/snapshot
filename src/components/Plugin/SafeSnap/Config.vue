@@ -48,7 +48,7 @@
           :key="i"
           class="mb-3 p-4 border rounded-2 text-white text-center"
         >
-          <PluginDaoModuleTransactionPreview :transaction="tx" />
+          <PluginSafeSnapTransactionPreview :transaction="tx" />
           <UiButton v-if="input" @click="removeTx(i)" class="width-full mb-2">
             Remove
           </UiButton>
