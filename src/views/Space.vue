@@ -1,32 +1,14 @@
 <template>
   <Layout>
     <template #sidebar-left>
-      <div style="position: fixed; width: 240px">
-        <Block :slim="true" :title="$t('filters')" class="overflow-hidden">
-          <div class="py-3">
-            <router-link
-              :to="{ name: 'timeline' }"
-              v-text="$t('favorites')"
-              class="d-block px-4 py-2 sidenav-item"
-            />
-            <router-link
-              :to="{ name: 'explore' }"
-              v-text="$t('allSpaces')"
-              class="d-block px-4 py-2 sidenav-item"
-            />
-          </div>
-        </Block>
-      </div>
+      <BlockSpace :space="space" />
     </template>
     <template #content-right>
       <div class="px-4 px-md-0 mb-3 d-flex">
         <div class="flex-auto">
-          <router-link :to="{ name: 'home' }" class="text-gray">
-            <Icon name="back" size="22" class="v-align-middle" />
-            {{ $t('backToHome') }}
-          </router-link>
+          <div v-text="space.name" />
           <div class="d-flex flex-items-center flex-auto">
-            <h2>{{ $t('timeline') }}</h2>
+            <h2>{{ $t('proposals.header') }}</h2>
           </div>
         </div>
         <UiDropdown
@@ -47,17 +29,7 @@
         </UiDropdown>
       </div>
 
-      <Block
-        v-if="favorites.length < 1 && $route.name === 'timeline'"
-        class="text-center"
-      >
-        <div class="mb-3">{{ $t('noFavorites') }}</div>
-        <router-link :to="{ name: 'home' }">
-          <UiButton>{{ $t('addFavorites') }}</UiButton>
-        </router-link>
-      </Block>
-
-      <Block v-else-if="loading" :slim="true">
+      <Block v-if="loading" :slim="true">
         <RowLoading class="my-2" />
       </Block>
 
@@ -79,14 +51,12 @@
 </template>
 
 <script>
-import { onMounted, ref, computed } from 'vue';
-import { useStore } from 'vuex';
+import { computed, onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { useInfiniteLoader } from '@/composables/useInfiniteLoader';
 import { subgraphRequest } from '@snapshot-labs/snapshot.js/src/utils';
-import { lsSet } from '@/helpers/utils';
-import { useUnseenProposals } from '@/composables/useUnseenProposals';
 import { useScrollMonitor } from '@/composables/useScrollMonitor';
+import { useStore } from 'vuex';
 
 // Persistent filter state
 const filterBy = ref('all');
@@ -96,13 +66,9 @@ export default {
     const store = useStore();
     const route = useRoute();
 
-    const favorites = computed(() =>
-      route.name === 'timeline' ? store.state.favoriteSpaces.favorites : []
-    );
-    const favoritesKeys = computed(() => Object.keys(favorites.value));
-
     const loading = ref(false);
     const proposals = ref([]);
+    const space = computed(() => store.state.app.spaces[route.params.key]);
 
     // Infinite scroll with pagination
     const {
@@ -128,7 +94,7 @@ export default {
                 first: loadBy,
                 skip,
                 where: {
-                  space_in: favoritesKeys.value,
+                  space: route.params.key,
                   state: filterBy.value
                 }
               },
@@ -172,21 +138,13 @@ export default {
       load();
     }
 
-    // Save the most recently seen proposalId in localStorage
-    const { getProposalIds, proposalIds } = useUnseenProposals();
-    onMounted(async () => {
-      await getProposalIds(favorites.value);
-      if (proposalIds.value[0])
-        lsSet('lastSeenProposalId', proposalIds.value[0].id);
-    });
-
     return {
       loading,
       selectState,
       loadingMore,
       filterBy,
       proposals,
-      favorites
+      space
     };
   }
 };

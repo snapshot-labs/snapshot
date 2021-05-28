@@ -27,7 +27,7 @@
         <a
           class="day border-bottom border-right selectable"
           :class="{
-            'bg-gray-dark': formatDate(year, month, day) === today,
+            'header-bg': formatDate(year, month, day) === today,
             selected: input.includes(formatDate(year, month, day))
           }"
           v-if="isSelectable(year, month, day)"

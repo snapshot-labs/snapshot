@@ -2,7 +2,6 @@ import { createRouter, createWebHashHistory } from 'vue-router';
 import domains from '@snapshot-labs/snapshot-spaces/spaces/domains.json';
 import aliases from '@snapshot-labs/snapshot-spaces/spaces/aliases.json';
 import Home from '@/views/Home.vue';
-import Proposals from '@/views/Proposals.vue';
 import Proposal from '@/views/Proposal.vue';
 import Create from '@/views/Create.vue';
 import Setup from '@/views/Setup.vue';
@@ -12,6 +11,8 @@ import Strategy from '@/views/Strategy.vue';
 import Playground from '@/views/Playground.vue';
 import Delegate from '@/views/Delegate.vue';
 import Timeline from '@/views/Timeline.vue';
+import Space from '@/views/Space.vue';
+import About from '@/views/About.vue';
 
 const domainName = window.location.hostname;
 
@@ -24,16 +25,20 @@ const beforeEnter = (to: any, from, next) => {
 };
 
 const routes: any[] = [
+  {
+    path: '/',
+    name: 'home',
+    component: domains[domainName] ? Space : Home
+  },
   { path: '/setup', name: 'setup', component: Setup },
   { path: '/:key/settings/:from?', name: 'settings', component: Settings },
   { path: '/networks', name: 'networks', component: Explore },
   { path: '/strategies', name: 'strategies', component: Explore },
   { path: '/plugins', name: 'plugins', component: Explore },
   { path: '/skins', name: 'skins', component: Explore },
-  { path: '/delegate', name: 'delegate', component: Delegate },
+  { path: '/delegate/:key?', name: 'delegate', component: Delegate },
   { path: '/timeline', name: 'timeline', component: Timeline },
   { path: '/explore', name: 'explore', component: Timeline },
-
   {
     path: '/strategy/:name',
     name: 'strategy',
@@ -59,19 +64,14 @@ const routes: any[] = [
   {
     path: '/:key',
     name: 'proposals',
-    component: Proposals,
+    component: Space,
     beforeEnter
   },
   {
-    path: '/:key/:tab',
-    name: 'proposals-tab',
-    component: Proposals,
+    path: '/:key/about',
+    name: 'about',
+    component: About,
     beforeEnter
-  },
-  {
-    path: '/',
-    name: 'home',
-    component: domains[domainName] ? Proposals : Home
   },
   { path: '/*', name: 'error-404', beforeEnter: (to, from, next) => next('/') }
 ];

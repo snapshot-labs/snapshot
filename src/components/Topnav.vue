@@ -16,21 +16,7 @@
               class="d-inline-block d-flex flex-items-center"
               style="font-size: 24px; padding-top: 4px"
             >
-              <span
-                :class="space && 'hide-sm'"
-                class="mr-1"
-                v-text="'snapshot'"
-              />
-              <span v-if="space" class="pl-1 pr-2 text-gray" v-text="'/'" />
-            </router-link>
-            <router-link
-              v-if="space"
-              :to="{ name: domain ? 'home' : 'proposals' }"
-              class="d-inline-block d-flex flex-items-center"
-              style="font-size: 24px; padding-top: 4px"
-            >
-              <Token :space="space" symbolIndex="space" size="28" />
-              <span class="ml-2" v-text="space.name" />
+              snapshot
             </router-link>
           </div>
           <div :key="web3.account">
