@@ -67,7 +67,7 @@
           >
             <span v-for="(symbol, symbolIndex) of symbols" :key="symbol">
               <span :aria-label="symbol" class="tooltipped tooltipped-n">
-                <Token :space="space.key" :symbolIndex="symbolIndex" />
+                <Token :space="space" :symbolIndex="symbolIndex" />
               </span>
               <span v-show="symbolIndex !== symbols.length - 1" class="ml-1" />
             </span>
