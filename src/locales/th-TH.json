@@ -17,6 +17,7 @@
   "snapshot": "ถ่ายภาพทันที",
   "strategies": "กลยุทธ์(s)",
   "strategiesPage": "กลยุทธ์",
+  "space": "Space",
   "spaces": "พื้นที่",
   "version": "รุ่น",
   "timeline": "ระยะเวลา",
@@ -89,7 +90,7 @@
   "startIn": "เริ่มต้น {0}",
   "endIn": "สินสุด{1}",
   "endedAgo": "สิ้นสุด {1}",
-  "proposalBy": "โดย{0}",
+  "proposalBy": "by {0}",
   "endDate": "สิ้นสุด{0}",
   "contectHash": "เนื้อหายุ่งเหยิง",
   "defaultSkin": "ค่าเริ่มต้นของผิวหนัง",
@@ -128,9 +129,11 @@
   "delegate": {
     "header": "ผู้รับมอบหมาย",
     "selectAddress": "เลือกที่อยู่",
-    "addressPlaceholder": "ที่อยู่ของผู้รับมอบสิทธิ์หรือชื่อ ENS",
+    "to": "To",
+    "addressPlaceholder": "Address or ENS name",
     "spacePlaceholder": "เว้นวรรค (ไม่บังคับ)",
     "delegations": "การมอบหมายของคุณ(s)",
+    "allSpaces": "For all spaces",
     "delegated": "มอบหมายให้คุณ"
   },
   "proposal": {
