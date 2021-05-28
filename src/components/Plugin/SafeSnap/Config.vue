@@ -1,72 +1,70 @@
 <template>
   <Block title="SafeSnap Plugin">
-    <form @submit.prevent="handleSubmit">
-      <div class="text-center">
-        <h4 class="mb-3">Transactions</h4>
-        <!-- TODO: Make sure is working -->
-        <PluginSafeSnapTransactionForm
-          v-if="adding"
-          :input="input"
+    <div v-if="preview">
+      <h4 class="mb-3">Transactions</h4>
+      <PluginSafeSnapPreviewTransaction
+        v-for="(tx, index) in input.txs"
+        v-bind:key="index"
+        :transaction="tx"
+      />
+    </div>
+    <div v-else class="text-center">
+      <div v-for="(batch, index) in batches" v-bind:key="index" class="mb-4">
+        <PluginSafeSnapFormTransactionBatch
+          :modelValue="batch"
+          :index="index"
           :network="network"
-          :nonce="input.txs.length"
-          @close="adding = false"
-          @newTransaction="addTransaction($event)"
+          :nonce="getBatchNonce(index)"
+          @update:modelValue="updateTransactionBatch(index, $event)"
+          @remove="removeBatch(index)"
         />
-        <div v-else>
-          <div
-            v-for="(tx, i) in input.txs"
-            :key="i"
-            class="mb-3 p-4 border rounded-2 text-white text-center"
-          >
-            <PluginSafeSnapTransactionPreview :transaction="tx" />
-            <!-- TODO: Hide button if not creating -->
-            <UiButton
-              v-if="input && create"
-              class="width-full mb-2"
-              @click="removeTx(i)"
-            >
-              Remove
-            </UiButton>
-          </div>
-          <UiButton v-if="create" class="width-full" @click="adding = true"
-            >Add Transaction</UiButton
-          >
-        </div>
       </div>
-    </form>
+      <UiButton @click="createTransactionBatch">
+        Add Transaction Batch
+      </UiButton>
+    </div>
   </Block>
 </template>
 
 <script>
+import { clone } from '@/helpers/utils';
+
 export default {
-  props: ['modelValue', 'proposal', 'network', 'create'],
+  props: ['modelValue', 'proposal', 'network', 'preview'],
   emits: ['update:modelValue', 'close'],
   data() {
     return {
       input: { txs: [] },
-      adding: false
+      batches: []
     };
   },
   mounted() {
+    console.log('preview', this.preview);
     if (this.modelValue) {
-      this.input = this.modelValue;
+      this.input = clone(this.modelValue);
       if (!this.input.txs) this.input.txs = [];
+      this.batches = this.input.txs.length ? [this.input.txs] : [];
     }
   },
   methods: {
-    addTransaction(transaction) {
-      this.input.txs.push(transaction);
-      this.adding = false;
-      this.$emit('update:modelValue', this.input);
+    createTransactionBatch() {
+      this.batches.push([]);
     },
-    removeTx(index) {
-      if (!this.input || !this.input.txs || this.input.txs.length <= index)
-        return;
-      this.input.txs.splice(index, 1);
-      // After removing an tx we need to correct the nonces
-      this.input.txs.forEach((tx, index) => {
-        tx.nonce = index;
-      });
+    removeBatch(index) {
+      this.batches.splice(index, 1);
+      this.updateModel();
+    },
+    getBatchNonce(index) {
+      return this.batches
+        .slice(0, index)
+        .reduce((acc, transactions) => acc + transactions.length, 0);
+    },
+    updateTransactionBatch(index, batch) {
+      this.batches[index] = batch;
+      this.updateModel();
+    },
+    updateModel() {
+      this.input.txs = this.batches.flat();
       this.$emit('update:modelValue', this.input);
     }
   }

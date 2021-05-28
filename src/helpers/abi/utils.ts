@@ -156,3 +156,7 @@ export const getTransactionData = (
   const parameterValues = inputs?.map(extractMethodArgs(values)) || [];
   return contractInterface.encodeFunctionData(name, parameterValues);
 };
+
+export const parseMethodToABI = (method: AbiItemExtended) => {
+  return [method];
+};

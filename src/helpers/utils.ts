@@ -1,5 +1,7 @@
 import pkg from '@/../package.json';
 import voting from '@/helpers/voting';
+import scrollMonitor from 'scrollmonitor';
+import { formatEther } from '@ethersproject/units';
 
 export function shorten(str = '') {
   return `${str.slice(0, 6)}...${str.slice(str.length - 4)}`;
@@ -124,3 +126,31 @@ export function filterProposals(space, proposal, tab) {
 
   return false;
 }
+
+export function scrollEndMonitor(fn) {
+  let canRunAgain = true;
+
+  const el = document.getElementById('endofpage');
+  const elementWatcher = scrollMonitor.create(el);
+  elementWatcher.enterViewport(() => {
+    if (canRunAgain) {
+      canRunAgain = false;
+      fn();
+
+      setTimeout(function () {
+        canRunAgain = true;
+      }, 100);
+    }
+  });
+}
+
+export const formatAmount = (amount, maxDecimals) => {
+  let out = formatEther(amount);
+  if (maxDecimals && out.includes('.')) {
+    const parts = out.split('.');
+    if (parts[1].length > maxDecimals) {
+      out = '~' + parts[0] + '.' + parts[1].slice(0, maxDecimals);
+    }
+  }
+  return out + ' ETH';
+};
