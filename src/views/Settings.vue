@@ -1,6 +1,9 @@
 <template>
   <Layout>
-    <template #content-left>
+    <template #sidebar-left>
+      <BlockSpace :space="space" />
+    </template>
+    <template #content-right>
       <div class="px-4 px-md-0 mb-3">
         <router-link :to="{ name: 'home' }" class="text-gray">
           <Icon name="back" size="22" class="v-align-middle" />
@@ -265,22 +268,20 @@
               {{ $t('settings.addPlugin') }}
             </UiButton>
           </Block>
+          <Block :title="$t('actions')">
+            <UiButton @click="handleReset" class="d-block width-full mb-2">
+              {{ $t('reset') }}
+            </UiButton>
+            <UiButton
+              @click="handleSubmit"
+              :loading="loading"
+              class="d-block width-full button--submit"
+            >
+              {{ $t('save') }}
+            </UiButton>
+          </Block>
         </div>
       </template>
-    </template>
-    <template v-if="(loaded && isOwner) || (loaded && isAdmin)" #sidebar-right>
-      <Block :title="$t('actions')">
-        <UiButton @click="handleReset" class="d-block width-full mb-2">
-          {{ $t('reset') }}
-        </UiButton>
-        <UiButton
-          @click="handleSubmit"
-          :loading="loading"
-          class="d-block width-full button--submit"
-        >
-          {{ $t('save') }}
-        </UiButton>
-      </Block>
     </template>
   </Layout>
   <teleport to="#modal">
@@ -312,6 +313,8 @@
 <script>
 import { mapActions } from 'vuex';
 import { computed } from 'vue';
+import { useRoute } from 'vue-router';
+import { useStore } from 'vuex';
 import { useSearchFilters } from '@/composables/useSearchFilters';
 import { getAddress } from '@ethersproject/address';
 import { validateSchema } from '@snapshot-labs/snapshot.js/src/utils';
@@ -326,8 +329,13 @@ const gateway = process.env.VUE_APP_IPFS_GATEWAY || gateways[0];
 
 export default {
   setup() {
+    const store = useStore();
+    const route = useRoute();
+
     const { filteredPlugins } = useSearchFilters();
     const plugins = computed(() => filteredPlugins());
+
+    const space = computed(() => store.state.app.spaces[route.params.key]);
 
     function pluginName(key) {
       const plugin = plugins.value.find(obj => {
@@ -336,7 +344,10 @@ export default {
       return plugin.name;
     }
 
-    return { pluginName };
+    return {
+      pluginName,
+      space
+    };
   },
   data() {
     return {
