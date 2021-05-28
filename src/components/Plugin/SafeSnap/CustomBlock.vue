@@ -31,7 +31,7 @@
       v-if="showActionButton"
       @click="performAction"
       :disabled="!actionEnabled"
-      v-text="actionLabel"
+      v-text="$t(actionLabel)"
       class="width-full button"
     />
     <teleport to="#modal">
