@@ -4,7 +4,7 @@
     :icon="!loading && moduleAddress ? 'refresh' : undefined"
     @submit="updateDetails"
   >
-    <div class="mb-3 text-center">
+    <div v-if="infoLabel" class="mb-3 text-center">
       <Label> {{ infoLabel }} </Label>
     </div>
     <div
