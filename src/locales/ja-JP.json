@@ -17,6 +17,7 @@
   "snapshot": "Snapshot",
   "strategies": "ストラテジー",
   "strategiesPage": "ストラテジー",
+  "space": "Space",
   "spaces": "Spaces",
   "version": "バージョン",
   "timeline": "タイムライン",
@@ -89,7 +90,7 @@
   "startIn": "{0} 開始",
   "endIn": "{1} 終了",
   "endedAgo": "{1} 前に終了",
-  "proposalBy": "By {0}",
+  "proposalBy": "by {0}",
   "endDate": "{0} 終了",
   "contectHash": "コンテンツのハッシュ",
   "defaultSkin": "デフォルトのスキン",
@@ -128,9 +129,11 @@
   "delegate": {
     "header": "移譲",
     "selectAddress": "アドレスを選択する",
-    "addressPlaceholder": "移譲するアドレスかENS名",
+    "to": "To",
+    "addressPlaceholder": "Address or ENS name",
     "spacePlaceholder": "スペース (任意)",
     "delegations": "あなたの移譲リスト",
+    "allSpaces": "For all spaces",
     "delegated": "あなたへ移譲されたもの"
   },
   "proposal": {
