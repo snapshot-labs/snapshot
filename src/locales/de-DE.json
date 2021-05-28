@@ -97,6 +97,10 @@
   "language": "Sprache",
   "agree": "Ich stimme zu",
   "mustAgreeToTerms": "Bevor Sie diese Aktion abschließen können, müssen Sie hier {0} Nutzungsbedingungen zustimmen:",
+  "playground": "Playground",
+  "strategyParams": "Strategy params",
+  "addresses": "Addresses",
+  "networkErrorPlayground": "Network error - please open your browser console for more information",
   "errors": {
     "required": "Dieses Feld ist ein Pflichtfeld",
     "minLength": "Mindestlänge ist {0}",
