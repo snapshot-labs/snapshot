@@ -17,6 +17,7 @@
   "snapshot": "Snapshot",
   "strategies": "策略",
   "strategiesPage": "策略",
+  "space": "Space",
   "spaces": "空间",
   "version": "版本",
   "timeline": "时间轴",
@@ -89,7 +90,7 @@
   "startIn": "从 {0} 开始",
   "endIn": "结束 {1}",
   "endedAgo": "结束 {1}",
-  "proposalBy": "由 {0}",
+  "proposalBy": "by {0}",
   "endDate": "结束 {0}",
   "contectHash": "内容散列",
   "defaultSkin": "默认皮肤",
@@ -128,9 +129,11 @@
   "delegate": {
     "header": "授权",
     "selectAddress": "选择地址",
-    "addressPlaceholder": "授权地址或ENS名称",
+    "to": "To",
+    "addressPlaceholder": "Address or ENS name",
     "spacePlaceholder": "空间 (可选)",
     "delegations": "您的授权",
+    "allSpaces": "For all spaces",
     "delegated": "已授权给你"
   },
   "proposal": {
