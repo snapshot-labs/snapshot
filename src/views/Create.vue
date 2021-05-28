@@ -5,10 +5,10 @@
     </template>
     <template #content-right>
       <div v-text="space.name" />
-      <div class="d-flex flex-items-center flex-auto">
+      <div class="d-flex flex-items-center flex-auto mb-3">
         <h2>{{ $t('newProposal') }}</h2>
       </div>
-      <Block class="mt-3" v-if="space.filters?.onlyMembers && !isMember">
+      <Block v-if="space.filters?.onlyMembers && !isMember">
         <Icon name="warning" class="mr-1" />
         {{ $t('create.onlyMembersWarning') }}
       </Block>
