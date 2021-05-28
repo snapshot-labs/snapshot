@@ -97,6 +97,10 @@
   "language": "Bahasa",
   "agree": "Saya setuju",
   "mustAgreeToTerms": "Sebelum Anda dapat menyelesaikan tindakan ini, Anda harus setuju pada {0} ketentuan layanan ini:",
+  "playground": "Playground",
+  "strategyParams": "Strategy params",
+  "addresses": "Addresses",
+  "networkErrorPlayground": "Network error - please open your browser console for more information",
   "errors": {
     "required": "Baris diperlukan",
     "minLength": "Panjang minimum adalah {0}",
