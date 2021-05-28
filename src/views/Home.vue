@@ -40,7 +40,7 @@
                   class="position-absolute top-4 right-0 bg-green"
                 />
                 <Token
-                  :space="space.key"
+                  :space="space"
                   symbolIndex="space"
                   size="98"
                   class="my-3"

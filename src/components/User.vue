@@ -2,13 +2,13 @@
   <span>
     <a @click="modalOpen = true" class="no-wrap">
       <UiAvatar
-        :imgsrc="profile?.image"
+        :imgsrc="_ipfsUrl(profile?.image)"
         :address="address"
         size="16"
         class="mr-1"
       />
       {{ name }}
-      <Badges :address="address" :members="space.members" />
+      <Badges :address="address" :members="space?.members" />
     </a>
     <teleport to="#modal">
       <ModalUser

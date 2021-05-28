@@ -17,6 +17,7 @@
   "snapshot": "Snapshot",
   "strategies": "Strategie(s)",
   "strategiesPage": "Strategies",
+  "space": "Space",
   "spaces": "Spaces",
   "version": "Version",
   "timeline": "Timeline",
@@ -89,7 +90,7 @@
   "startIn": "start {0}",
   "endIn": "end {1}",
   "endedAgo": "ended {1}",
-  "proposalBy": "By {0}",
+  "proposalBy": "by {0}",
   "endDate": "end {0}",
   "contectHash": "Content hash",
   "defaultSkin": "Default skin",
@@ -97,6 +98,10 @@
   "language": "Language",
   "agree": "I agree",
   "mustAgreeToTerms": "Before you can complete this action, you must agree to {0} terms of service here:",
+  "playground": "Playground",
+  "strategyParams": "Strategy params",
+  "addresses": "Addresses",
+  "networkErrorPlayground": "Network error - please open your browser console for more information",
   "errors": {
     "required": "Field is required",
     "minLength": "Minimum length is {0}",
@@ -124,9 +129,11 @@
   "delegate": {
     "header": "Delegate",
     "selectAddress": "Select address",
-    "addressPlaceholder": "Delegate address or ENS name",
+    "to": "To",
+    "addressPlaceholder": "Address or ENS name",
     "spacePlaceholder": "Space (optional)",
     "delegations": "Your delegation(s)",
+    "allSpaces": "For all spaces",
     "delegated": "Delegated to you"
   },
   "proposal": {
@@ -154,7 +161,7 @@
     "seeENS": "See on ENS",
     "setENS": "Set record on ENS",
     "profile": "Profile",
-    "changeAvatar": "Change avatar",
+    "avatar": "Avatar",
     "name": "Name",
     "about": "About",
     "terms": "Terms",
@@ -205,6 +212,27 @@
     "description": {
       "single-choice": "Each voter may select only one choice.",
       "approval": "Each voter may select any number of choices."
+    }
+  },
+  "safeSnap": {
+    "currentOutcome": "Current outcome: {0}",
+    "currentBond": "Current bond: {0}",
+    "finalizedIn": "Finalized {0}",
+    "executableIn": "Executable {0}",
+    "finalOutcome": "Outcome: {0}",
+    "nextBond": "Bond to set outcome: {0}",
+    "setOutcomeTo": "Set outcome to:",
+    "labels": {
+      "request": "Request execution",
+      "setOutcome": "Set outcome",
+      "changeOutcome": "Change outcome",
+      "executeTxs": "Execute transaction 1/x",
+      "finalized": "Vote finalized",
+      "executed": "Executed",
+      "waiting": "Waiting for vote to close",
+      "error": "Error",
+      "question": "Did this proposal pass and does it meet the",
+      "criteria": "acceptance criteria?"
     }
   }
 }

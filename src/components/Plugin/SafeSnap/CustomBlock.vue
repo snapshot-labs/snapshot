@@ -2,22 +2,49 @@
   <Block
     title="SafeSnap Transactions"
     :icon="!loading && moduleAddress ? 'refresh' : undefined"
+    :loading="loading"
     @submit="updateDetails"
   >
-    <UiButton
-      v-if="questionDetails?.questionId"
-      @click="showQuestion"
-      class="width-full mb-2"
+    <div v-if="infoLabel" class="mb-3 text-center">
+      <Label> {{ $t(infoLabel) }} </Label>
+    </div>
+    <div
+      v-if="questionDetails?.questionId && !showQuestionInfo"
+      class="mb-3 text-white text-center"
     >
-      Show Question
-    </UiButton>
+      <Label> {{ approvalData?.decision }} </Label>
+    </div>
+    <div
+      v-if="questionDetails?.questionId && showQuestionInfo"
+      class="mb-3 p-4 text-white text-center"
+    >
+      <div>
+        <Label> {{ approvalData?.decision }} </Label>
+      </div>
+      <div class="m-4 text-center">
+        <Label> {{ approvalData?.currentBond }} </Label>
+      </div>
+      <div>
+        <Label> {{ approvalData?.timeLeft }} </Label>
+      </div>
+    </div>
     <UiButton
-      v-if="moduleAddress"
+      v-if="showActionButton"
       @click="performAction"
       :disabled="!actionEnabled"
-      v-text="actionLabel"
-      class="width-full button--submit"
+      v-text="$t(actionLabel)"
+      class="width-full button"
     />
+    <teleport to="#modal">
+      <PluginSafeSnapModalOptionApproval
+        :open="modalApproveDecisionOpen"
+        :isApproved="questionDetails?.isApproved"
+        :bond="questionDetails?.currentBond"
+        :questionId="questionDetails?.questionId"
+        @setApproval="voteOnQuestion"
+        @close="modalApproveDecisionOpen = false"
+      />
+    </teleport>
   </Block>
 </template>
 
@@ -30,10 +57,12 @@ const QuestionStates = {
   loading: 0,
   proposalNotResolved: 1,
   waitingForQuestion: 2,
-  questionNotResolved: 3,
-  waitingForCooldown: 4,
-  waitingForExecution: 5,
-  completelyExecuted: 6
+  questionNotSet: 3,
+  questionNotResolved: 4,
+  waitingForCooldown: 5,
+  proposalApproved: 6,
+  proposalRejected: 7,
+  completelyExecuted: 8
 };
 Object.freeze(QuestionStates);
 export default {
@@ -47,61 +76,165 @@ export default {
   data() {
     return {
       loading: true,
+      questionStates: QuestionStates,
       actionInProgress: false,
       plugin: new Plugin(),
-      questionDetails: undefined
+      questionDetails: undefined,
+      modalApproveDecisionOpen: false
     };
   },
   computed: {
     questionState() {
       if (this.loading) return QuestionStates.loading;
+
       const ts = (Date.now() / 1e3).toFixed();
       if (ts < this.proposalEnd) return QuestionStates.proposalNotResolved;
       if (!this.questionDetails) return QuestionStates.error;
+
       if (!this.questionDetails.questionId)
         return QuestionStates.waitingForQuestion;
+
+      if (this.questionDetails?.currentBond === '0.0')
+        return QuestionStates.questionNotSet;
+
       if (
-        !this.questionDetails.executionApproved ||
+        this.questionDetails?.currentBond !== '0.0' &&
         !this.questionDetails.finalizedAt
       )
         return QuestionStates.questionNotResolved;
-      if (ts < this.questionDetails.finalizedAt + this.questionDetails.cooldown)
-        return QuestionStates.waitingForCooldown;
+
+      if (this.questionDetails.executionApproved) {
+        if (
+          this.questionDetails.finalizedAt + this.questionDetails.cooldown >
+          ts
+        ) {
+          return QuestionStates.waitingForCooldown;
+        }
+        return QuestionStates.proposalApproved;
+      } else {
+        if (this.questionDetails.finalizedAt < ts) {
+          return QuestionStates.proposalRejected;
+        }
+      }
+
       if (this.questionDetails.nextTxIndex >= 0)
-        return QuestionStates.waitingForExecution;
-      return QuestionStates.completelyExecuted;
+        return QuestionStates.completelyExecuted;
+
+      return QuestionStates.error;
     },
     actionLabel() {
       switch (this.questionState) {
         case QuestionStates.loading:
-          return 'Loading...';
-        case QuestionStates.proposalNotResolved:
-          return 'Not resolved yet!';
+          return 'loading';
         case QuestionStates.waitingForQuestion:
-          return 'Request Execution';
+          return 'safeSnap.labels.request';
+        case QuestionStates.questionNotSet:
+          return 'safeSnap.labels.setOutcome';
         case QuestionStates.questionNotResolved:
-          return 'Waiting for Approval!';
-        case QuestionStates.waitingForCooldown:
-          return 'Waiting for Cooldown!';
-        case QuestionStates.waitingForExecution:
-          return 'Execute Proposal';
+          return 'safeSnap.labels.changeOutcome';
+        case QuestionStates.proposalApproved:
+          return 'safeSnap.labels.executeTxs';
         case QuestionStates.completelyExecuted:
-          return 'Executed!';
+          return 'safeSnap.labels.executed';
         case QuestionStates.error:
+          return 'safeSnap.labels.error';
         default:
-          return 'Error';
+          return null;
       }
     },
     actionEnabled() {
       if (!this.$auth.isAuthenticated.value) return false;
-      if (this.actionInProgress) return false;
       switch (this.questionState) {
         case QuestionStates.waitingForQuestion:
+        case QuestionStates.questionNotResolved:
+        case QuestionStates.questionNotSet:
         case QuestionStates.waitingForExecution:
+        case QuestionStates.proposalApproved:
           return true;
         default:
           return false;
       }
+    },
+    infoLabel() {
+      switch (this.questionState) {
+        case QuestionStates.proposalNotResolved:
+          return 'safeSnap.labels.waiting';
+        case QuestionStates.waitingForQuestion:
+        case QuestionStates.questionNotSet:
+        case QuestionStates.questionNotResolved:
+          return 'safeSnap.labels.finalized';
+        case QuestionStates.completelyExecuted:
+          return 'safeSnap.labels.executed';
+        default:
+          return null;
+      }
+    },
+    showQuestionInfo() {
+      return (
+        this.questionState === this.questionStates.waitingForQuestion ||
+        this.questionState === this.questionStates.questionNotSet ||
+        this.questionState === this.questionStates.questionNotResolved ||
+        this.questionState === this.questionStates.waitingForCooldown
+      );
+    },
+    approvalData() {
+      if (this.questionDetails) {
+        const {
+          currentBond,
+          finalizedAt,
+          isApproved,
+          endTime
+        } = this.questionDetails;
+        if (currentBond === '0.0') {
+          return {
+            decision: this.$i18n.t('safeSnap.currentOutcome', ['--']),
+            timeLeft: this.$i18n.t('safeSnap.finalizedIn', ['--']),
+            currentBond: this.$i18n.t('safeSnap.currentBond', ['--'])
+          };
+        }
+
+        if (finalizedAt) {
+          if (isApproved) {
+            return {
+              decision: this.$i18n.t('safeSnap.finalOutcome', ['Yes']),
+              timeLeft: this.$i18n.t('safeSnap.executableIn', [
+                this._ms(endTime + this.questionDetails.cooldown)
+              ])
+            };
+          }
+
+          return {
+            decision: this.$i18n.t('safeSnap.finalOutcome', ['No'])
+          };
+        }
+
+        return {
+          decision: this.$i18n.t('safeSnap.currentOutcome', [
+            isApproved ? 'Yes' : 'No'
+          ]),
+          timeLeft: this.$i18n.t('safeSnap.finalizedIn', [this._ms(endTime)]),
+          currentBond: this.$i18n.t('safeSnap.currentBond', [currentBond])
+        };
+      }
+      return {
+        decision: `--`,
+        timeLeft: `--`,
+        currentBond: '--'
+      };
+    },
+    canChangeAnswer() {
+      return this.questionState === 3 && !this.questionDetails.finalizedAt;
+    },
+    showActionButton() {
+      return (
+        this.questionState === QuestionStates.waitingForQuestion ||
+        this.questionState === QuestionStates.questionNotResolved ||
+        this.questionState === QuestionStates.questionNotSet ||
+        (this.questionDetails?.executionApproved &&
+          !this.questionState === QuestionStates.waitingForCooldown) ||
+        this.questionState === QuestionStates.waitingForExecution ||
+        this.questionState === QuestionStates.proposalApproved
+      );
     }
   },
   async created() {
@@ -137,7 +270,11 @@ export default {
               this.questionDetails.transactions
             );
             break;
-          case QuestionStates.waitingForExecution:
+          case QuestionStates.questionNotSet:
+          case QuestionStates.questionNotResolved:
+            this.modalApproveDecisionOpen = true;
+            return;
+          case QuestionStates.proposalApproved:
             await this.plugin.executeProposal(
               this.$auth.web3,
               this.moduleAddress,
@@ -155,13 +292,16 @@ export default {
         this.actionInProgress = false;
       }
     },
-
-    showQuestion() {
-      window.open(
-        'https://reality.eth.link/app/#!/question/' +
-          this.questionDetails.questionId,
-        '_blank'
+    async voteOnQuestion(option) {
+      await this.plugin.voteForQuestion(
+        this.$auth.web3,
+        this.questionDetails.oracle,
+        this.questionDetails.questionId,
+        this.questionDetails.minimumBond,
+        option
       );
+      await sleep(3e3);
+      await this.updateDetails();
     }
   }
 };
