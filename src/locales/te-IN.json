@@ -17,6 +17,7 @@
   "snapshot": "స్నాప్‌షాట్",
   "strategies": "వ్యూహం(లు)",
   "strategiesPage": "వ్యూహాలు",
+  "space": "Space",
   "spaces": "Spaces",
   "version": "వెర్షన్",
   "timeline": "కాలక్రమం",
@@ -89,7 +90,7 @@
   "startIn": "start {0}",
   "endIn": "end {1}",
   "endedAgo": "ended {1}",
-  "proposalBy": "By {0}",
+  "proposalBy": "by {0}",
   "endDate": "ముగింపు {0}",
   "contectHash": "కంటెంట్ హాష్",
   "defaultSkin": "డిఫాల్ట్ స్కిన్స్",
@@ -128,9 +129,11 @@
   "delegate": {
     "header": "ప్రతినిధి",
     "selectAddress": "చిరునామాను ఎంచుకోండి",
-    "addressPlaceholder": "ప్రతినిధి చిరునామా లేదా ENS పేరు",
+    "to": "To",
+    "addressPlaceholder": "Address or ENS name",
     "spacePlaceholder": "స్పేస్ (ఐచ్ఛిక)",
     "delegations": "మీ ప్రతినిధి బృందం (లు)",
+    "allSpaces": "For all spaces",
     "delegated": "మీకు అప్పగించారు"
   },
   "proposal": {
