@@ -2,10 +2,11 @@
   <Block
     title="SafeSnap"
     :icon="!loading && moduleAddress ? 'refresh' : undefined"
+    :loading="loading"
     @submit="updateDetails"
   >
     <div v-if="infoLabel" class="mb-3 text-center">
-      <Label> {{ infoLabel }} </Label>
+      <Label> {{ $t(infoLabel) }} </Label>
     </div>
     <div
       v-if="questionDetails?.questionId && !showQuestionInfo"
@@ -124,19 +125,19 @@ export default {
     actionLabel() {
       switch (this.questionState) {
         case QuestionStates.loading:
-          return this.$i18n.t('loading');
+          return 'loading';
         case QuestionStates.waitingForQuestion:
-          return this.$i18n.t('safeSnap.labels.request');
+          return 'safeSnap.labels.request';
         case QuestionStates.questionNotSet:
-          return this.$i18n.t('safeSnap.labels.setOutcome');
+          return 'safeSnap.labels.setOutcome';
         case QuestionStates.questionNotResolved:
-          return this.$i18n.t('safeSnap.labels.changeOutcome');
+          return 'safeSnap.labels.changeOutcome';
         case QuestionStates.proposalApproved:
-          return this.$i18n.t('safeSnap.labels.executeTxs');
+          return 'safeSnap.labels.executeTxs';
         case QuestionStates.completelyExecuted:
-          return this.$i18n.t('safeSnap.labels.executed');
+          return 'safeSnap.labels.executed';
         case QuestionStates.error:
-          return this.$i18n.t('safeSnap.labels.error');
+          return 'safeSnap.labels.error';
         default:
           return null;
       }
@@ -157,13 +158,13 @@ export default {
     infoLabel() {
       switch (this.questionState) {
         case QuestionStates.proposalNotResolved:
-          return this.$i18n.t('safeSnap.labels.waiting');
+          return 'safeSnap.labels.waiting';
         case QuestionStates.waitingForQuestion:
         case QuestionStates.questionNotSet:
         case QuestionStates.questionNotResolved:
-          return this.$i18n.t('safeSnap.labels.finalized');
+          return 'safeSnap.labels.finalized';
         case QuestionStates.completelyExecuted:
-          return this.$i18n.t('safeSnap.labels.executed');
+          return 'safeSnap.labels.executed';
         default:
           return null;
       }
