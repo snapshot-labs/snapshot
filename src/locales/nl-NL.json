@@ -17,6 +17,7 @@
   "snapshot": "Snapshot",
   "strategies": "Strategie(ën)",
   "strategiesPage": "Strategieën",
+  "space": "Space",
   "spaces": "Spaces",
   "version": "Versie",
   "timeline": "Tijdlijn",
@@ -89,7 +90,7 @@
   "startIn": "start {0}",
   "endIn": "end {1}",
   "endedAgo": "ended {1}",
-  "proposalBy": "By {0}",
+  "proposalBy": "by {0}",
   "endDate": "einde {0}",
   "contectHash": "Inhoud hash",
   "defaultSkin": "Standaard skin",
@@ -128,9 +129,11 @@
   "delegate": {
     "header": "Delegeren",
     "selectAddress": "Kies adres",
-    "addressPlaceholder": "Adres of ENS naam van de gedelegeerde",
+    "to": "To",
+    "addressPlaceholder": "Address or ENS name",
     "spacePlaceholder": "Ruimte (optioneel)",
     "delegations": "Uw delegatie(s)",
+    "allSpaces": "For all spaces",
     "delegated": "Aan u gedelegeerd"
   },
   "proposal": {
