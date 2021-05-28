@@ -17,6 +17,7 @@
   "snapshot": "स्नैपशॉट",
   "strategies": "स्ट्रेटेजीज",
   "strategiesPage": "स्ट्रेटेजीज",
+  "space": "Space",
   "spaces": "Spaces",
   "version": "संस्करण",
   "timeline": "टाइमलाइन",
@@ -89,7 +90,7 @@
   "startIn": "शुरू {0}",
   "endIn": "ख़त्म {1}",
   "endedAgo": "ख़त्म हुआ {1}",
-  "proposalBy": "तक{0}",
+  "proposalBy": "by {0}",
   "endDate": "ख़त्म {0}",
   "contectHash": "कंटेंट हैश",
   "defaultSkin": "डिफ़ॉल्ट स्किन",
@@ -128,9 +129,11 @@
   "delegate": {
     "header": "डेलीगेट",
     "selectAddress": "एड्रेस चुने",
-    "addressPlaceholder": "एड्रेस डेलीगेट करे या इ एन ऐस का नाम",
+    "to": "To",
+    "addressPlaceholder": "Address or ENS name",
     "spacePlaceholder": "स्पेस (वैकल्पिक)",
     "delegations": "आपके डेलीगेशन",
+    "allSpaces": "For all spaces",
     "delegated": "आपको दिए गए डेलीगेशन"
   },
   "proposal": {
