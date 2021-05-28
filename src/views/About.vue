@@ -4,8 +4,9 @@
       <BlockSpace :space="space" />
     </template>
     <template #content-right>
-      <div class="px-4 px-md-0 mb-3 d-flex">
-        <h2>{{ space.name }}</h2>
+      <div v-text="space.name" />
+      <div class="d-flex flex-items-center flex-auto mb-3">
+        <h2>{{ $t('about') }}</h2>
       </div>
       <Block>
         <div v-if="space.about" class="mb-3">

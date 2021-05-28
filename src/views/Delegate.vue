@@ -1,12 +1,12 @@
 <template>
   <Layout>
-    <template #content-left>
-      <div class="px-4 px-md-0 mb-3">
-        <router-link :to="{ name: 'home' }" class="text-gray">
-          <Icon name="back" size="22" class="v-align-middle" />
-          {{ $t('backToHome') }}
-        </router-link>
-        <h1 v-if="loaded" v-text="$t('delegate.header')" />
+    <template #sidebar-left>
+      <BlockSpace :space="space" />
+    </template>
+    <template #content-right>
+      <div v-text="space.name" />
+      <div class="d-flex flex-items-center flex-auto mb-3">
+        <h2>{{ $t('delegate') }}</h2>
       </div>
       <template v-if="loaded">
         <Block :itle="$t('delegate.selectAddress')">
@@ -72,20 +72,18 @@
             />
           </div>
         </Block>
+        <Block :title="$t('actions')">
+          <UiButton
+            @click="handleSubmit"
+            :disabled="!isValid || !$auth.isAuthenticated.value"
+            :loading="loading"
+            class="d-block width-full button--submit"
+          >
+            {{ $t('confirm') }}
+          </UiButton>
+        </Block>
       </template>
       <PageLoading v-else />
-    </template>
-    <template #sidebar-right>
-      <Block :title="$t('actions')">
-        <UiButton
-          @click="handleSubmit"
-          :disabled="!isValid || !$auth.isAuthenticated.value"
-          :loading="loading"
-          class="d-block width-full button--submit"
-        >
-          {{ $t('confirm') }}
-        </UiButton>
-      </Block>
     </template>
   </Layout>
   <teleport to="#modal">
@@ -101,6 +99,9 @@
 </template>
 
 <script>
+import { computed } from 'vue';
+import { useRoute } from 'vue-router';
+import { useStore } from 'vuex';
 import { mapActions } from 'vuex';
 import { isAddress } from '@ethersproject/address';
 import { formatBytes32String } from '@ethersproject/strings';
@@ -115,6 +116,15 @@ import {
 import { sleep } from '@/helpers/utils';
 
 export default {
+  setup() {
+    const store = useStore();
+    const route = useRoute();
+    const key = route.params.key;
+
+    return {
+      space: computed(() => store.state.app.spaces[key])
+    };
+  },
   data() {
     return {
       modalOpen: false,

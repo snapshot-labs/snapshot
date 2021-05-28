@@ -1,16 +1,14 @@
 <template>
   <Layout v-bind="$attrs">
-    <template #content-left>
-      <div class="px-4 px-md-0 mb-3">
-        <router-link
-          :to="{ name: domain ? 'home' : 'proposals' }"
-          class="text-gray"
-        >
-          <Icon name="back" size="22" class="v-align-middle" />
-          {{ space.name }}
-        </router-link>
+    <template #sidebar-left>
+      <BlockSpace :space="space" />
+    </template>
+    <template #content-right>
+      <div v-text="space.name" />
+      <div class="d-flex flex-items-center flex-auto">
+        <h2>{{ $t('newProposal') }}</h2>
       </div>
-      <Block v-if="space.filters?.onlyMembers && !isMember">
+      <Block class="mt-3" v-if="space.filters?.onlyMembers && !isMember">
         <Icon name="warning" class="mr-1" />
         {{ $t('create.onlyMembersWarning') }}
       </Block>
@@ -77,8 +75,6 @@
           {{ $t('create.addChoice') }}
         </UiButton>
       </Block>
-    </template>
-    <template #sidebar-right>
       <Block
         :title="$t('actions')"
         :icon="
