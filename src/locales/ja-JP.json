@@ -97,6 +97,10 @@
   "language": "言語",
   "agree": "I agree",
   "mustAgreeToTerms": "Before you can complete this action, you must agree to {0} terms of service here:",
+  "playground": "Playground",
+  "strategyParams": "Strategy params",
+  "addresses": "Addresses",
+  "networkErrorPlayground": "Network error - please open your browser console for more information",
   "errors": {
     "required": "フィールドが埋まってません",
     "minLength": "最小文字数は {0} です",
