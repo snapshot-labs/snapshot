@@ -52,15 +52,12 @@
 
 <script>
 import { computed, onMounted, ref } from 'vue';
+import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
 import { useInfiniteLoader } from '@/composables/useInfiniteLoader';
 import { subgraphRequest } from '@snapshot-labs/snapshot.js/src/utils';
 import { useScrollMonitor } from '@/composables/useScrollMonitor';
-import { useStore } from 'vuex';
 import { useDomain } from '@/composables/useDomain';
-
-// Persistent filter state
-const filterBy = ref('all');
 
 export default {
   setup() {
@@ -68,10 +65,11 @@ export default {
     const route = useRoute();
     const { domain } = useDomain();
 
+    const spaceId = domain || route.params.key;
+
     const loading = ref(false);
     const proposals = ref([]);
-
-    const spaceId = domain || route.params.key;
+    const filterBy = ref('all');
 
     const space = computed(() => store.state.app.spaces[spaceId]);
 
