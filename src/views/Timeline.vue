@@ -48,7 +48,7 @@
       </div>
 
       <Block
-        v-if="favorites.length < 1 && $route.name === 'timeline'"
+        v-if="favoritesKeys.length < 1 && $route.name === 'timeline'"
         class="text-center"
       >
         <div class="mb-3">{{ $t('noFavorites') }}</div>
@@ -100,6 +100,10 @@ export default {
       route.name === 'timeline' ? store.state.favoriteSpaces.favorites : []
     );
     const favoritesKeys = computed(() => Object.keys(favorites.value));
+    console.log(
+      '🚀 ~ file: Timeline.vue ~ line 103 ~ setup ~ favoritesKeys',
+      favoritesKeys
+    );
 
     const loading = ref(false);
     const proposals = ref([]);
@@ -186,7 +190,7 @@ export default {
       loadingMore,
       filterBy,
       proposals,
-      favorites
+      favoritesKeys
     };
   }
 };
