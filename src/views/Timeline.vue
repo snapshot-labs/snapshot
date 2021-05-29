@@ -100,10 +100,6 @@ export default {
       route.name === 'timeline' ? store.state.favoriteSpaces.favorites : []
     );
     const favoritesKeys = computed(() => Object.keys(favorites.value));
-    console.log(
-      '🚀 ~ file: Timeline.vue ~ line 103 ~ setup ~ favoritesKeys',
-      favoritesKeys
-    );
 
     const loading = ref(false);
     const proposals = ref([]);
