@@ -17,6 +17,7 @@
   "snapshot": "لمحة(سنابشوت)",
   "strategies": "الإستراتيجيات (تخطيط)",
   "strategiesPage": "الإستراتيجية (تخطيط)",
+  "space": "Space",
   "spaces": "Spaces",
   "version": "الاصدار",
   "timeline": "الجدول الزمني",
@@ -51,7 +52,7 @@
   "confirmVote": "تأكيد التصويت",
   "sureToVote": "هل أنت متأكد أنك تريد التصويت <i>\"{0}\"</i>؟",
   "cannotBeUndone": "لا يمكن التراجع عن هذا الإجراء.",
-  "option": "الخيارات",
+  "options": "Option(s)",
   "votingPower": "قوة التصويت الخاصة بك",
   "receipt": "الإيصال",
   "relayer": "المرحّل",
@@ -89,12 +90,18 @@
   "startIn": "start {0}",
   "endIn": "end {1}",
   "endedAgo": "ended {1}",
-  "proposalBy": "By {0}",
+  "proposalBy": "by {0}",
   "endDate": "نهاية {0}",
   "contectHash": "تجزئة المحتوى",
   "defaultSkin": "المضهر الافتراضي",
   "select": "حدد",
   "language": "اللغة",
+  "agree": "I agree",
+  "mustAgreeToTerms": "Before you can complete this action, you must agree to {0} terms of service here:",
+  "playground": "Playground",
+  "strategyParams": "Strategy params",
+  "addresses": "Addresses",
+  "networkErrorPlayground": "Network error - please open your browser console for more information",
   "errors": {
     "required": "Field is required",
     "minLength": "Minimum length is {0}",
@@ -122,16 +129,19 @@
   "delegate": {
     "header": "تفويض",
     "selectAddress": "اختيار عنوان",
-    "addressPlaceholder": "عنوان المندوب المفوض أو اسم ENS",
+    "to": "To",
+    "addressPlaceholder": "Address or ENS name",
     "spacePlaceholder": "مساحة (اختياري)",
     "delegations": "التفويض(التفويضات)",
+    "allSpaces": "For all spaces",
     "delegated": "التفويض لنفسك"
   },
   "proposal": {
     "castVote": "سجل صوتك",
     "vote": "صوت",
     "startDate": "تاريخ البدء",
-    "endDate": "تاريخ الانتهاء"
+    "endDate": "تاريخ الانتهاء",
+    "votingSystem": "Voting system"
   },
   "proposals": {
     "header": "المقترحات",
@@ -151,7 +161,7 @@
     "seeENS": "انظر على ENS",
     "setENS": "تعيين سجل في ENS",
     "profile": "الملف الشخصي",
-    "changeAvatar": "تغيير صورة الحساب",
+    "avatar": "Avatar",
     "name": "الاسم",
     "about": "عن البرنامج",
     "terms": "Terms",
@@ -194,5 +204,14 @@
     "networks": "network(s)",
     "plugins": "plugin(s)",
     "results": "result(s)"
+  },
+  "voting": {
+    "selectVoting": "Select voting system",
+    "single-choice": "Single choice voting",
+    "approval": "Approval voting",
+    "description": {
+      "single-choice": "Each voter may select only one choice.",
+      "approval": "Each voter may select any number of choices."
+    }
   }
 }

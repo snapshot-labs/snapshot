@@ -17,6 +17,7 @@
   "snapshot": "Snapshot",
   "strategies": "ストラテジー",
   "strategiesPage": "ストラテジー",
+  "space": "Space",
   "spaces": "Spaces",
   "version": "バージョン",
   "timeline": "タイムライン",
@@ -51,7 +52,7 @@
   "confirmVote": "投票内容を確認する",
   "sureToVote": "本当に \"{0}\"　に投票しますか？",
   "cannotBeUndone": "このアクションは取り消せません",
-  "option": "オプション",
+  "options": "Option(s)",
   "votingPower": "あなたの投票力",
   "receipt": "レシート",
   "relayer": "リレーヤー",
@@ -89,12 +90,18 @@
   "startIn": "{0} 開始",
   "endIn": "{1} 終了",
   "endedAgo": "{1} 前に終了",
-  "proposalBy": "By {0}",
+  "proposalBy": "by {0}",
   "endDate": "{0} 終了",
   "contectHash": "コンテンツのハッシュ",
   "defaultSkin": "デフォルトのスキン",
   "select": "選択する",
   "language": "言語",
+  "agree": "I agree",
+  "mustAgreeToTerms": "Before you can complete this action, you must agree to {0} terms of service here:",
+  "playground": "Playground",
+  "strategyParams": "Strategy params",
+  "addresses": "Addresses",
+  "networkErrorPlayground": "Network error - please open your browser console for more information",
   "errors": {
     "required": "フィールドが埋まってません",
     "minLength": "最小文字数は {0} です",
@@ -122,16 +129,19 @@
   "delegate": {
     "header": "移譲",
     "selectAddress": "アドレスを選択する",
-    "addressPlaceholder": "移譲するアドレスかENS名",
+    "to": "To",
+    "addressPlaceholder": "Address or ENS name",
     "spacePlaceholder": "スペース (任意)",
     "delegations": "あなたの移譲リスト",
+    "allSpaces": "For all spaces",
     "delegated": "あなたへ移譲されたもの"
   },
   "proposal": {
     "castVote": "投票する",
     "vote": "投票",
     "startDate": "開始日",
-    "endDate": "終了日"
+    "endDate": "終了日",
+    "votingSystem": "Voting system"
   },
   "proposals": {
     "header": "提案",
@@ -151,7 +161,7 @@
     "seeENS": "ENS上で閲覧する",
     "setENS": "ENSへ記録する",
     "profile": "プロフィール",
-    "changeAvatar": "アバターを変更する",
+    "avatar": "Avatar",
     "name": "名前",
     "about": "Snapshotについて",
     "terms": "Terms",
@@ -194,5 +204,14 @@
     "networks": "network(s)",
     "plugins": "plugin(s)",
     "results": "result(s)"
+  },
+  "voting": {
+    "selectVoting": "Select voting system",
+    "single-choice": "Single choice voting",
+    "approval": "Approval voting",
+    "description": {
+      "single-choice": "Each voter may select only one choice.",
+      "approval": "Each voter may select any number of choices."
+    }
   }
 }

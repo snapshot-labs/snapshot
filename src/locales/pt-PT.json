@@ -17,6 +17,7 @@
   "snapshot": "Snapshot",
   "strategies": "Estratégia(s)",
   "strategiesPage": "Estratégias",
+  "space": "Space",
   "spaces": "Spaces",
   "version": "Versão",
   "timeline": "Cronologia",
@@ -51,7 +52,7 @@
   "confirmVote": "Confirmar voto",
   "sureToVote": "Tem certeza que deseja votar \"{0}\"?",
   "cannotBeUndone": "Esta ação é irreversível.",
-  "option": "Opções",
+  "options": "Option(s)",
   "votingPower": "Seu poder de voto",
   "receipt": "Comprovativo",
   "relayer": "Retransmissor",
@@ -89,12 +90,18 @@
   "startIn": "iniciar: {0}",
   "endIn": "terminar {1}",
   "endedAgo": "finalizado {1}",
-  "proposalBy": "By {0}",
+  "proposalBy": "by {0}",
   "endDate": "termina {0}",
   "contectHash": "Hash do conteúdo",
   "defaultSkin": "Skin padrão",
   "select": "Selecionar",
   "language": "Idioma",
+  "agree": "I agree",
+  "mustAgreeToTerms": "Before you can complete this action, you must agree to {0} terms of service here:",
+  "playground": "Playground",
+  "strategyParams": "Strategy params",
+  "addresses": "Addresses",
+  "networkErrorPlayground": "Network error - please open your browser console for more information",
   "errors": {
     "required": "Field is required",
     "minLength": "Minimum length is {0}",
@@ -122,16 +129,19 @@
   "delegate": {
     "header": "Delegar",
     "selectAddress": "Selecionar endereço",
-    "addressPlaceholder": "Delegar endereço ou nome do ENS",
+    "to": "To",
+    "addressPlaceholder": "Address or ENS name",
     "spacePlaceholder": "Comunidade (opcional)",
     "delegations": "Sua(s) delegação(ões)",
+    "allSpaces": "For all spaces",
     "delegated": "Delegado a você"
   },
   "proposal": {
     "castVote": "Votar",
     "vote": "Votar",
     "startDate": "Data de início",
-    "endDate": "Data final"
+    "endDate": "Data final",
+    "votingSystem": "Voting system"
   },
   "proposals": {
     "header": "Propostas",
@@ -151,7 +161,7 @@
     "seeENS": "Ver no ENS",
     "setENS": "Definir registro no ENS",
     "profile": "Perfil",
-    "changeAvatar": "Alterar foto de perfil",
+    "avatar": "Avatar",
     "name": "Nome",
     "about": "Sobre nós",
     "terms": "Terms",
@@ -194,5 +204,14 @@
     "networks": "network(s)",
     "plugins": "plugin(s)",
     "results": "result(s)"
+  },
+  "voting": {
+    "selectVoting": "Select voting system",
+    "single-choice": "Single choice voting",
+    "approval": "Approval voting",
+    "description": {
+      "single-choice": "Each voter may select only one choice.",
+      "approval": "Each voter may select any number of choices."
+    }
   }
 }

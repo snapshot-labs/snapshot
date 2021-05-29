@@ -17,6 +17,7 @@
   "snapshot": "Snapshot",
   "strategies": "策略",
   "strategiesPage": "策略",
+  "space": "Space",
   "spaces": "空间",
   "version": "版本",
   "timeline": "时间轴",
@@ -51,7 +52,7 @@
   "confirmVote": "确认投票",
   "sureToVote": "您确定要投票 \"{0}\" 吗？",
   "cannotBeUndone": "这个动作无法复原。",
-  "option": "选项",
+  "options": "Option(s)",
   "votingPower": "您的投票权",
   "receipt": "发票",
   "relayer": "中继器",
@@ -89,12 +90,18 @@
   "startIn": "从 {0} 开始",
   "endIn": "结束 {1}",
   "endedAgo": "结束 {1}",
-  "proposalBy": "由 {0}",
+  "proposalBy": "by {0}",
   "endDate": "结束 {0}",
   "contectHash": "内容散列",
   "defaultSkin": "默认皮肤",
   "select": "选择",
   "language": "语言",
+  "agree": "I agree",
+  "mustAgreeToTerms": "Before you can complete this action, you must agree to {0} terms of service here:",
+  "playground": "Playground",
+  "strategyParams": "Strategy params",
+  "addresses": "Addresses",
+  "networkErrorPlayground": "Network error - please open your browser console for more information",
   "errors": {
     "required": "此项为必填项",
     "minLength": "最小长度为 {0}",
@@ -122,16 +129,19 @@
   "delegate": {
     "header": "授权",
     "selectAddress": "选择地址",
-    "addressPlaceholder": "授权地址或ENS名称",
+    "to": "To",
+    "addressPlaceholder": "Address or ENS name",
     "spacePlaceholder": "空间 (可选)",
     "delegations": "您的授权",
+    "allSpaces": "For all spaces",
     "delegated": "已授权给你"
   },
   "proposal": {
     "castVote": "撤回您的投票",
     "vote": "投票",
     "startDate": "开始日期",
-    "endDate": "结束日期"
+    "endDate": "结束日期",
+    "votingSystem": "Voting system"
   },
   "proposals": {
     "header": "提案",
@@ -151,7 +161,7 @@
     "seeENS": "在 ENS 上查看",
     "setENS": "在 ENS 上设置记录",
     "profile": "用户信息",
-    "changeAvatar": "修改头像",
+    "avatar": "Avatar",
     "name": "名称",
     "about": "关于",
     "terms": "使用条款",
@@ -194,5 +204,14 @@
     "networks": "网络",
     "plugins": "插件",
     "results": "结果"
+  },
+  "voting": {
+    "selectVoting": "Select voting system",
+    "single-choice": "Single choice voting",
+    "approval": "Approval voting",
+    "description": {
+      "single-choice": "Each voter may select only one choice.",
+      "approval": "Each voter may select any number of choices."
+    }
   }
 }

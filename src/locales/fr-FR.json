@@ -17,7 +17,8 @@
   "snapshot": "Snapshot",
   "strategies": "Stratégie(s)",
   "strategiesPage": "Stratégies",
-  "spaces": "Spaces",
+  "space": "Space",
+  "spaces": "Espaces",
   "version": "Version",
   "timeline": "Timeline",
   "filters": "Filtres",
@@ -51,7 +52,7 @@
   "confirmVote": "Confirmez votre vote",
   "sureToVote": "Êtes-vous sûr de vouloir voter \"{0}\" ?",
   "cannotBeUndone": "Cette action est irréversible.",
-  "option": "Option",
+  "options": "Option(s)",
   "votingPower": "Votre pouvoir de vote",
   "receipt": "Reçu",
   "relayer": "Relayeur",
@@ -89,12 +90,18 @@
   "startIn": "début {0}",
   "endIn": "fin {1}",
   "endedAgo": "a terminé {1}",
-  "proposalBy": "By {0}",
+  "proposalBy": "by {0}",
   "endDate": "fin {0}",
   "contectHash": "Hash du contenu",
   "defaultSkin": "Thème par défaut",
   "select": "Sélectionnez",
   "language": "Langage",
+  "agree": "J'accepte",
+  "mustAgreeToTerms": "Avant de pouvoir effectuer cette action, vous devez accepter les conditions d'utilisation de {0} ici:",
+  "playground": "Playground",
+  "strategyParams": "Strategy params",
+  "addresses": "Addresses",
+  "networkErrorPlayground": "Network error - please open your browser console for more information",
   "errors": {
     "required": "Le champ est requis",
     "minLength": "Longueur minimale de {0}",
@@ -102,7 +109,7 @@
     "pattern": "Caractère non valide",
     "minItems": "Minimum {0} élément(s) requis",
     "minStrategy": "Au moins une stratégie est requise.",
-    "format": "Invalid format"
+    "format": "Format invalide"
   },
   "create": {
     "question": "Question",
@@ -122,16 +129,19 @@
   "delegate": {
     "header": "Déléguer",
     "selectAddress": "Sélectionnez une adresse",
-    "addressPlaceholder": "Adresse ou ENS du délégué",
+    "to": "To",
+    "addressPlaceholder": "Address or ENS name",
     "spacePlaceholder": "Espace (facultatif)",
     "delegations": "Vos délégation(s)",
+    "allSpaces": "For all spaces",
     "delegated": "Vous délègue"
   },
   "proposal": {
     "castVote": "Votez",
     "vote": "Vote",
     "startDate": "Date de début ",
-    "endDate": "Date de fin"
+    "endDate": "Date de fin",
+    "votingSystem": "Voting system"
   },
   "proposals": {
     "header": "Propositions",
@@ -151,10 +161,10 @@
     "seeENS": "Voir sur l'ENS",
     "setENS": "Définir l'url sur ENS",
     "profile": "Profil",
-    "changeAvatar": "Modifier l'avatar",
+    "avatar": "Avatar",
     "name": "Nom",
     "about": "À propos",
-    "terms": "Terms",
+    "terms": "Conditions générales",
     "network": "Réseau",
     "symbol": "Symbole",
     "skin": "Thème",
@@ -163,7 +173,7 @@
     "hideSpace": "Cacher l'espace de la page d'accueil",
     "addStrategy": "Ajouter une stratégie",
     "members": "Membres",
-    "admins": "Admins",
+    "admins": "Administrateurs",
     "filters": "Filtres",
     "defaultTab": "Onglet par défaut",
     "minScore": "Score min.",
@@ -194,5 +204,14 @@
     "networks": "réseau(x)",
     "plugins": "plugin(s)",
     "results": "résultat(s)"
+  },
+  "voting": {
+    "selectVoting": "Select voting system",
+    "single-choice": "Single choice voting",
+    "approval": "Approval voting",
+    "description": {
+      "single-choice": "Each voter may select only one choice.",
+      "approval": "Each voter may select any number of choices."
+    }
   }
 }
