@@ -48,7 +48,7 @@
       </div>
 
       <Block
-        v-if="favorites.length < 1 && $route.name === 'timeline'"
+        v-if="favoritesKeys.length < 1 && $route.name === 'timeline'"
         class="text-center"
       >
         <div class="mb-3">{{ $t('noFavorites') }}</div>
@@ -186,7 +186,7 @@ export default {
       loadingMore,
       filterBy,
       proposals,
-      favorites
+      favoritesKeys
     };
   }
 };
