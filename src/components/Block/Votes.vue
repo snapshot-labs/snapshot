@@ -18,13 +18,18 @@
         :space="space"
         class="column"
       />
-      <div
-        v-text="_shorten(proposal.choices[vote.choice - 1], 'choice')"
-        class="flex-auto text-center text-white"
-      />
+      <div class="flex-auto text-center text-white">
+        <span
+          :aria-label="format(proposal, vote.choice)"
+          class="text-center text-white tooltipped tooltipped-multiline tooltipped-n"
+        >
+          {{ _shorten(format(proposal, vote.choice), 24) }}
+        </span>
+      </div>
+
       <div class="column text-right text-white">
         <span
-          class="tooltipped tooltipped-n"
+          class="tooltipped tooltipped-multiline tooltipped-n"
           :aria-label="
             vote.scores
               .map((score, index) => `${_n(score)} ${titles[index]}`)
@@ -46,7 +51,7 @@
     <a
       v-if="!showAllVotes && votes.length > 10"
       @click="showAllVotes = true"
-      class="px-4 py-3 border-top text-center d-block bg-gray-dark rounded-bottom-0 rounded-md-bottom-2"
+      class="px-4 py-3 border-top text-center d-block header-bg rounded-bottom-0 rounded-md-bottom-2"
     >
       {{ $t('seeMore') }}
     </a>
@@ -61,6 +66,8 @@
 </template>
 
 <script>
+import { getChoiceString } from '@/helpers/utils';
+
 export default {
   props: ['space', 'proposal', 'votes', 'loaded', 'strategies'],
   data() {
@@ -81,7 +88,6 @@ export default {
     }
   },
   methods: {
-    // Hide only after loading if zero voters
     isZero() {
       if (!this.loaded) return true;
       if (this.votes.length > 0) return true;
@@ -103,7 +109,8 @@ export default {
         return votes;
       }
       return this.votes;
-    }
+    },
+    format: getChoiceString
   }
 };
 </script>

@@ -16,21 +16,7 @@
               class="d-inline-block d-flex flex-items-center"
               style="font-size: 24px; padding-top: 4px"
             >
-              <span
-                :class="space && 'hide-sm'"
-                class="mr-1"
-                v-text="'snapshot'"
-              />
-              <span v-if="space" class="pl-1 pr-2 text-gray" v-text="'/'" />
-            </router-link>
-            <router-link
-              v-if="space"
-              :to="{ name: domain ? 'home' : 'proposals' }"
-              class="d-inline-block d-flex flex-items-center"
-              style="font-size: 24px; padding-top: 4px"
-            >
-              <Token :space="space.key" symbolIndex="space" size="28" />
-              <span class="ml-2" v-text="space.name" />
+              snapshot
             </router-link>
           </div>
           <div :key="web3.account">
@@ -41,7 +27,9 @@
                 :loading="app.authLoading"
               >
                 <UiAvatar
-                  :imgsrc="_ipfsUrl(web3.profile?.image)"
+                  :imgsrc="
+                    web3.profile?.image ? _ipfsUrl(web3.profile.image) : ''
+                  "
                   :address="web3.account"
                   size="16"
                   class="mr-n1 mr-sm-2 mr-md-2 mr-lg-2 mr-xl-2 ml-n1"

@@ -32,7 +32,7 @@
       </div>
       <div
         :title="choices[1]"
-        class="mb-1 border-bottom bg-gray-dark rounded-top-0 rounded-md-top-2"
+        class="mb-1 border-bottom header-bg rounded-top-0 rounded-md-top-2"
         style="padding-bottom: 12px"
       >
         <b>{{ _shorten(choices[1], 'name') }}</b>

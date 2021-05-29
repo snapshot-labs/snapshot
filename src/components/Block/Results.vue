@@ -12,7 +12,7 @@
           class="mr-1"
         />
         <span
-          class="mr-1 tooltipped tooltipped-n"
+          class="mr-1 tooltipped tooltipped-multiline tooltipped-n"
           :aria-label="
             results.totalScores[choice.i]
               .map((score, index) => `${_n(score)} ${titles[index]}`)

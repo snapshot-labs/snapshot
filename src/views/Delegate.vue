@@ -6,27 +6,23 @@
           <Icon name="back" size="22" class="v-align-middle" />
           {{ $t('backToHome') }}
         </router-link>
-      </div>
-      <div class="px-4 px-md-0">
-        <h1 v-if="loaded" v-text="$t('delegate.header')" class="mb-4" />
-        <PageLoading v-else />
+        <h1 v-if="loaded" v-text="$t('delegate.header')" />
       </div>
       <template v-if="loaded">
         <Block :itle="$t('delegate.selectAddress')">
-          <UiButton class="width-full mb-2">
-            <input
-              v-model.trim="form.address"
-              class="input width-full"
-              :placeholder="$t('delegate.addressPlaceholder')"
-            />
-          </UiButton>
-          <UiButton class="width-full mb-2">
-            <input
-              v-model.trim="form.id"
-              class="input width-full"
-              :placeholder="$t('delegate.spacePlaceholder')"
-            />
-          </UiButton>
+          <UiInput
+            v-model.trim="form.address"
+            :placeholder="$t('delegate.addressPlaceholder')"
+            class="mt-2"
+          >
+            <template v-slot:label>{{ $t('delegate.to') }}</template>
+          </UiInput>
+          <UiInput
+            v-model.trim="form.id"
+            :placeholder="$t('delegate.spacePlaceholder')"
+          >
+            <template v-slot:label>{{ $t('space') }}</template>
+          </UiInput>
         </Block>
         <Block
           v-if="delegates.length > 0"
@@ -44,7 +40,7 @@
               :space="{ network: web3.network.key }"
             />
             <div
-              v-text="_shorten(delegate.space || '-', 'choice')"
+              v-text="_shorten(delegate.space || $t('allSpaces'), 'choice')"
               class="flex-auto text-right text-white"
             />
             <a
@@ -77,6 +73,7 @@
           </div>
         </Block>
       </template>
+      <PageLoading v-else />
     </template>
     <template #sidebar-right>
       <Block :title="$t('actions')">
@@ -129,7 +126,7 @@ export default {
       delegators: [],
       form: {
         address: '',
-        id: ''
+        id: this.$route.params.key || ''
       }
     };
   },
