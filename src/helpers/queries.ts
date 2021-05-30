@@ -38,3 +38,39 @@ export const PROPOSAL_QUERY = gql`
     }
   }
 `;
+
+export const PROPOSALS_QUERY = gql`
+  query Proposals(
+    $first: Int!
+    $skip: Int!
+    $space: String!
+    $state: String!
+    $space_in: [String]
+    $author_in: [String]
+  ) {
+    proposals(
+      first: $first
+      skip: $skip
+      where: {
+        space: $space
+        state: $state
+        space_in: $space_in
+        author_in: $author_in
+      }
+    ) {
+      id
+      title
+      body
+      start
+      end
+      state
+      author
+      space {
+        id
+        name
+        members
+        avatar
+      }
+    }
+  }
+`;
