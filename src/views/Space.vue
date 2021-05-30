@@ -19,7 +19,8 @@
             { text: $t('proposals.states.all'), action: 'all' },
             { text: $t('proposals.states.active'), action: 'active' },
             { text: $t('proposals.states.pending'), action: 'pending' },
-            { text: $t('proposals.states.closed'), action: 'closed' }
+            { text: $t('proposals.states.closed'), action: 'closed' },
+            { text: $t('proposals.states.core'), action: 'core' }
           ]"
         >
           <UiButton class="pr-3">
@@ -73,6 +74,9 @@ export default {
     const filterBy = ref('all');
 
     const space = computed(() => store.state.app.spaces[spaceId]);
+    const spaceMembers = computed(() =>
+      space.value.members.length < 1 ? ['none'] : space.value.members
+    );
 
     // Infinite scroll with pagination
     const {
@@ -96,7 +100,8 @@ export default {
             first: loadBy,
             skip,
             space: spaceId,
-            state: filterBy.value
+            state: filterBy.value === 'core' ? 'all' : filterBy.value,
+            author_in: filterBy.value === 'core' ? spaceMembers.value : []
           }
         });
         stopLoadingMore.value = response.data.proposals?.length < loadBy;
