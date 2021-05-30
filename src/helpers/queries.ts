@@ -43,8 +43,8 @@ export const PROPOSALS_QUERY = gql`
   query Proposals(
     $first: Int!
     $skip: Int!
-    $space: String!
     $state: String!
+    $space: String
     $space_in: [String]
     $author_in: [String]
   ) {
