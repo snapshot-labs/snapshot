@@ -1,8 +1,9 @@
 <template>
-  <UiButton class="width-full mb-2 d-flex" v-if="type === 'bool'">
+  <UiButton v-if="type === 'bool'" class="width-full mb-2 d-flex">
     <div class="text-gray mr-2">{{ placeholder }}</div>
     <select
       v-model="value"
+      :disabled="disabled"
       class="input text-center flex-auto height-full"
       required
       @change="handleInput(value)"
@@ -15,16 +16,18 @@
   <!-- ADDRESS -->
   <PluginSafeSnapInputAddress
     v-else-if="type === 'address'"
-    :label="this.placeholder"
+    :disabled="disabled"
     :inputProps="{
       required: true
     }"
+    :label="this.placeholder"
     :modelValue="value"
     @update:modelValue="handleInput($event)"
   />
   <!-- Array of X type -->
   <PluginSafeSnapInputArrayType
     v-else-if="isArrayType()"
+    :disabled="disabled"
     :modelValue="value"
     :name="name"
     :type="type"
@@ -33,6 +36,7 @@
   <!-- Text input -->
   <UiInput
     v-else
+    :disabled="disabled"
     :error="dirty && !isValid && `Invalid ${type}`"
     :modelValue="value"
     @update:modelValue="handleInput($event)"
@@ -45,8 +49,11 @@
 import { isArrayParameter, isParameterValue } from '@/helpers/validator';
 
 export default {
-  props: ['modelValue', 'name', 'type'],
+  props: ['modelValue', 'name', 'type', 'disabled'],
   emits: ['update:modelValue', 'isValid'],
+  mounted() {
+    if (this.modelValue) this.value = this.modelValue;
+  },
   data() {
     const placeholder = this.name ? `${this.name} (${this.type})` : this.type;
 

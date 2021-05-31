@@ -16,11 +16,14 @@
         :index="index"
         :network="network"
         :nonce="`${nonce + index}`"
+        :preview="preview"
         @update:modelValue="updateTransaction(index, $event)"
         @remove="removeTransaction(index)"
       />
     </div>
-    <UiButton @click="addTransaction"> Add Transaction </UiButton>
+    <UiButton v-if="!preview" @click="addTransaction">
+      Add Transaction
+    </UiButton>
   </UiCollapsible>
 </template>
 
@@ -28,7 +31,7 @@
 import { clone } from '@/helpers/utils';
 
 export default {
-  props: ['modelValue', 'index', 'nonce', 'network'],
+  props: ['modelValue', 'index', 'nonce', 'network', 'preview'],
   emits: ['update:modelValue', 'remove'],
   data() {
     return {

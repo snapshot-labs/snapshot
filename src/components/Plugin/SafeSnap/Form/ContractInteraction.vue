@@ -1,14 +1,16 @@
 <template>
   <PluginSafeSnapInputAddress
     v-model="to"
-    label="to (address)"
+    :disabled="preview"
     :inputProps="{
       required: true
     }"
+    label="to (address)"
     @validAddress="handleAddressChanged()"
   />
 
   <UiInput
+    :disabled="preview"
     :error="!validValue && 'Invalid Value'"
     :modelValue="value"
     @update:modelValue="handleValueChange($event)"
@@ -17,6 +19,7 @@
   </UiInput>
 
   <UiInput
+    :disabled="preview"
     :error="!validAbi && 'Invalid ABI'"
     :modelValue="abi"
     @update:modelValue="handleABIChanged($event)"
@@ -25,7 +28,11 @@
   </UiInput>
 
   <div v-if="methods.length">
-    <UiSelect v-model="methodIndex" @change="handleMethodChanged()">
+    <UiSelect
+      v-model="methodIndex"
+      :disabled="preview"
+      @change="handleMethodChanged()"
+    >
       <template v-slot:label>function</template>
       <option v-for="(method, i) in methods" :key="i" :value="i">
         {{ method.name }}()
@@ -38,10 +45,11 @@
       <PluginSafeSnapInputMethodParameter
         v-for="input in selectedMethod.inputs"
         :key="input.name"
+        :disabled="preview"
         :modelValue="parameters[input.name]"
-        @update:modelValue="handleParameterChanged(input.name, $event)"
         :name="input.name"
         :type="input.type"
+        @update:modelValue="handleParameterChanged(input.name, $event)"
       />
     </div>
   </div>
@@ -58,6 +66,8 @@ import {
 import { BigNumber } from '@ethersproject/bignumber';
 import { isBigNumberish } from '@ethersproject/bignumber/lib/bignumber';
 import { isAddress } from '@ethersproject/address';
+import { Interface } from '@ethersproject/abi';
+import { isArrayParameter } from '@/helpers/validator';
 
 const parseAmount = input => {
   return BigNumber.from(input).toString();
@@ -81,7 +91,7 @@ const toModuleTransaction = ({ to, value, data, nonce, method }) => {
   };
 };
 export default {
-  props: ['modelValue', 'nonce', 'network'],
+  props: ['modelValue', 'nonce', 'network', 'preview'],
   emits: ['update:modelValue'],
   data() {
     return {
@@ -101,12 +111,42 @@ export default {
   },
   mounted() {
     if (this.modelValue) {
-      const { to = '', abi = '', value = '0' } = this.modelValue;
+      const { to = '', abi = '', value = '0', data } = this.modelValue;
       this.to = to;
-      this.handleValueChange(value);
-      this.handleABIChanged(
-        typeof abi === 'object' ? JSON.stringify(abi) : abi
-      );
+
+      if (this.preview) {
+        this.abi = JSON.stringify(abi);
+        this.value = value;
+        this.selectedMethod = abi[0];
+        this.methods = [this.selectedMethod];
+        const contractInterface = new Interface(abi);
+        const methodParametersValues = contractInterface.decodeFunctionData(
+          this.selectedMethod.name,
+          data
+        );
+        console.log('methodParametersValues', methodParametersValues);
+        this.parameters = this.selectedMethod.inputs.reduce(
+          (obj, parameter) => {
+            const value = isArrayParameter(parameter.type)
+              ? JSON.stringify(
+                  methodParametersValues[parameter.name].map(value =>
+                    value.toString()
+                  )
+                )
+              : methodParametersValues[parameter.name].toString();
+            return {
+              ...obj,
+              [parameter.name]: value
+            };
+          },
+          {}
+        );
+      } else {
+        this.handleValueChange(value);
+        this.handleABIChanged(
+          typeof abi === 'object' ? JSON.stringify(abi) : abi
+        );
+      }
     }
   },
   watch: {
@@ -131,6 +171,7 @@ export default {
   },
   methods: {
     updateTransaction() {
+      if (this.preview) return;
       try {
         if (isBigNumberish(this.value) && isAddress(this.to)) {
           const data = getTransactionData(

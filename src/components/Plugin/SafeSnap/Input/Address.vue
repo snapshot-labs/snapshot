@@ -2,6 +2,7 @@
   <UiInput
     v-model="input"
     v-bind="inputProps"
+    :disabled="disabled"
     :error="dirty && !isValid && 'Invalid Address'"
     @input="handleInput()"
   >
@@ -13,7 +14,7 @@
 import { mustBeEthereumAddress } from '@/helpers/abi/utils';
 
 export default {
-  props: ['modelValue', 'inputProps', 'label'],
+  props: ['modelValue', 'inputProps', 'label', 'disabled'],
   emits: ['update:modelValue', 'validAddress'],
   data() {
     return { input: '', isValid: false, dirty: false };

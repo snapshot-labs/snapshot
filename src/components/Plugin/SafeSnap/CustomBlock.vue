@@ -249,7 +249,7 @@ export default {
           this.network,
           this.moduleAddress,
           this.proposalId,
-          this.proposalConfig.txs
+          this.proposalConfig.txs.flat()
         );
       } catch (e) {
         console.error(e);

@@ -4,6 +4,7 @@
       v-model="input"
       v-bind="textareaProps"
       :class="{ 'border-red': error }"
+      :disabled="disabled"
       class="input width-full textarea"
       @input="handleInput()"
     ></textarea>
@@ -13,7 +14,7 @@
 
 <script>
 export default {
-  props: ['modelValue', 'textareaProps', 'error'],
+  props: ['modelValue', 'textareaProps', 'error', 'disabled'],
   emits: ['update:modelValue'],
   data() {
     return {
@@ -41,6 +42,7 @@ export default {
   color: #ff3856;
   font-size: 16px;
 }
+
 .textarea {
   border: 1px solid var(--border-color);
   background-color: transparent;

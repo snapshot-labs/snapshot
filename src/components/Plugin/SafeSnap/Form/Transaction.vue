@@ -1,12 +1,12 @@
 <template>
   <UiCollapsible
-    :title="title"
     :number="index + 1"
     :open="open"
-    @toggle="open = !open"
+    :title="title"
     @remove="$emit('remove')"
+    @toggle="open = !open"
   >
-    <UiSelect v-model="type">
+    <UiSelect v-model="type" :disabled="preview">
       <template v-slot:label>type</template>
       <option value="contractInteraction">Contract Interaction</option>
       <option value="transferFunds">Transfer Funds</option>
@@ -17,8 +17,9 @@
       :modelValue="modelValue"
       :network="network"
       :nonce="nonce"
-      @update:modelValue="$emit('update:modelValue', $event)"
+      :preview="preview"
       @valid="$emit('valid', $event)"
+      @update:modelValue="$emit('update:modelValue', $event)"
     />
   </UiCollapsible>
 </template>
@@ -30,7 +31,7 @@ const labels = {
   sendAsset: 'Send Asset'
 };
 export default {
-  props: ['modelValue', 'index', 'nonce', 'network'],
+  props: ['modelValue', 'index', 'nonce', 'network', 'preview'],
   emits: ['update:modelValue', 'valid', 'remove'],
   data() {
     return {

@@ -1,16 +1,9 @@
 <template>
   <Block title="SafeSnap Plugin">
-    <div v-if="preview">
-      <h4 class="mb-3">Transactions</h4>
-      <PluginSafeSnapPreviewTransaction
-        v-for="(tx, index) in input.txs"
-        v-bind:key="index"
-        :transaction="tx"
-      />
-    </div>
-    <div v-else class="text-center">
+    <div class="text-center">
       <div v-for="(batch, index) in batches" v-bind:key="index" class="mb-4">
         <PluginSafeSnapFormTransactionBatch
+          :preview="preview"
           :modelValue="batch"
           :index="index"
           :network="network"
@@ -39,11 +32,41 @@ export default {
     };
   },
   mounted() {
-    console.log('preview', this.preview);
     if (this.modelValue) {
       this.input = clone(this.modelValue);
       if (!this.input.txs) this.input.txs = [];
-      this.batches = this.input.txs.length ? [this.input.txs] : [];
+      this.batches =
+        this.input.txs[0] && !Array.isArray(this.input.txs[0])
+          ? [this.input.txs]
+          : this.input.txs;
+      // this.batches = [
+      //   [
+      //     {
+      //       to: '0xaFF4481D10270F50f203E0763e2597776068CBc5',
+      //       abi: [
+      //         {
+      //           name: 'transfer',
+      //           type: 'function',
+      //           action: 'write',
+      //           inputs: [
+      //             { name: 'to', type: 'address[]' },
+      //             { name: 'tokens', type: 'uint256[]' }
+      //           ],
+      //           outputs: [{ name: 'success', type: 'bool' }],
+      //           payable: false,
+      //           constant: false,
+      //           stateMutability: 'nonpayable'
+      //         }
+      //       ],
+      //       data:
+      //         'ffc3a7690000000000000000000000000000000000000000000000000000000000000040000000000000000000000000000000000000000000000000000000000000008000000000000000000000000000000000000000000000000000000000000000010000000000000000000000002a378cf62c12888a970804ce3d734e0ba543b29c00000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000000',
+      //       type: 'contractInteraction',
+      //       nonce: '0',
+      //       value: '0',
+      //       operation: '0'
+      //     }
+      //   ]
+      // ];
     }
   },
   methods: {
@@ -64,7 +87,7 @@ export default {
       this.updateModel();
     },
     updateModel() {
-      this.input.txs = this.batches.flat();
+      this.input.txs = this.batches;
       this.$emit('update:modelValue', this.input);
     }
   }

@@ -4,6 +4,7 @@
       <slot name="label" />
     </div>
     <select
+      :disabled="disabled"
       v-model="input"
       class="input flex-auto height-full"
       @change="handleChange"
@@ -15,7 +16,7 @@
 
 <script>
 export default {
-  props: ['modelValue'],
+  props: ['modelValue', 'disabled'],
   emits: ['update:modelValue', 'change'],
   data() {
     return { input: this.modelValue };
