@@ -59,6 +59,9 @@ import pkg from '@/../package.json';
 
 export default {
   props: ['id', 'space', 'payload', 'results', 'votes'],
+  mounted() {
+    console.log('results: ', this.results);
+  },
   computed: {
     ts() {
       return (Date.now() / 1e3).toFixed();

@@ -476,18 +476,18 @@ const actions = {
         totalVotes: proposal.msg.payload.choices.map(
           (choice, i) =>
             Object.values(votesResult).filter(
-              (vote: any) => vote.msg.payload.choice === i + 1
+              (vote: any) => parseInt(vote.msg.payload.choice) === i + 1
             ).length
         ),
         totalBalances: proposal.msg.payload.choices.map((choice, i) =>
           Object.values(votesResult)
-            .filter((vote: any) => vote.msg.payload.choice === i + 1)
+            .filter((vote: any) => parseInt(vote.msg.payload.choice) === i + 1)
             .reduce((a, b: any) => a + b.balance, 0)
         ),
         totalScores: proposal.msg.payload.choices.map((choice, i) =>
           space.strategies.map((strategy, sI) =>
             Object.values(votesResult)
-              .filter((vote: any) => vote.msg.payload.choice === i + 1)
+              .filter((vote: any) => parseInt(vote.msg.payload.choice) === i + 1)
               .reduce((a, b: any) => a + b.scores[sI], 0)
           )
         ),
@@ -537,6 +537,8 @@ const actions = {
           // @ts-ignore
           blockTag
         );
+
+        console.log('scores: ', scores);
 
         scores = scores.map((score: any) =>
           Object.values(score).reduce((a, b: any) => a + b, 0)
