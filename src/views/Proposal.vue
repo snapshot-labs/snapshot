@@ -171,6 +171,7 @@
           :results="results"
           :strategies="strategies"
         />
+        <PluginPoapCustomBlock />
       </div>
     </template>
   </Layout>
