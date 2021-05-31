@@ -27,7 +27,7 @@ export default {
   emits: ['update:modelValue', 'close'],
   data() {
     return {
-      input: { txs: [] },
+      input: { txs: [], valid: true },
       batches: []
     };
   },
@@ -39,6 +39,7 @@ export default {
         this.input.txs[0] && !Array.isArray(this.input.txs[0])
           ? [this.input.txs]
           : this.input.txs;
+      this.updateModel();
     }
   },
   methods: {
@@ -59,7 +60,9 @@ export default {
       this.updateModel();
     },
     updateModel() {
+      if (this.preview) return;
       this.input.txs = this.batches;
+      this.input.valid = this.input.txs.flat().every(tx => tx);
       this.$emit('update:modelValue', this.input);
     }
   }

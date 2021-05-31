@@ -11,8 +11,8 @@
       <template v-slot:label>type</template>
       <option value="contractInteraction">Contract Interaction</option>
       <option value="raw">Raw Transaction</option>
-<!--      <option value="transferFunds">Transfer Funds</option>-->
-<!--      <option value="sendAsset">Send Asset</option>-->
+      <!--      <option value="transferFunds">Transfer Funds</option>-->
+      <!--      <option value="sendAsset">Send Asset</option>-->
     </UiSelect>
 
     <PluginSafeSnapFormContractInteraction
@@ -56,6 +56,9 @@ export default {
       types: ['contractInteraction', 'transferFunds', 'sendAsset'],
       type
     };
+  },
+  mounted() {
+    if (!this.preview) this.$emit('update:modelValue', undefined);
   },
   computed: {
     title() {

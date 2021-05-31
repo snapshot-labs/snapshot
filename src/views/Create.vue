@@ -238,6 +238,10 @@ export default {
 
     const isValid = computed(() => {
       // const ts = (Date.now() / 1e3).toFixed();
+      const isSafeSnapPluginValid = form.value.metadata.plugins.safeSnap
+        ? form.value.metadata.plugins.safeSnap.valid
+        : true;
+
       return (
         !loading.value &&
         form.value.name &&
@@ -256,7 +260,8 @@ export default {
         (space.value.filters?.minScore === 0 ||
           (space.value.filters?.minScore > 0 && hasMinScore.value) ||
           isMember.value ||
-          !web3Account.value)
+          !web3Account.value) &&
+        isSafeSnapPluginValid
       );
     });
 
