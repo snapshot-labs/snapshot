@@ -9,16 +9,26 @@
     <UiSelect v-model="type" :disabled="preview">
       <template v-slot:label>type</template>
       <option value="contractInteraction">Contract Interaction</option>
+      <option value="raw">Raw Transaction</option>
       <option value="transferFunds">Transfer Funds</option>
       <option value="sendAsset">Send Asset</option>
     </UiSelect>
+
     <PluginSafeSnapFormContractInteraction
       v-if="type === 'contractInteraction'"
       :modelValue="modelValue"
       :network="network"
       :nonce="nonce"
       :preview="preview"
-      @valid="$emit('valid', $event)"
+      @update:modelValue="$emit('update:modelValue', $event)"
+    />
+
+    <PluginSafeSnapFormRawTransaction
+      v-if="type === 'raw'"
+      :modelValue="modelValue"
+      :network="network"
+      :nonce="nonce"
+      :preview="preview"
       @update:modelValue="$emit('update:modelValue', $event)"
     />
   </UiCollapsible>
@@ -28,11 +38,12 @@
 const labels = {
   contractInteraction: 'Contract Interaction',
   transferFunds: 'Transfer Funds',
-  sendAsset: 'Send Asset'
+  sendAsset: 'Send Asset',
+  raw: 'Raw Transaction'
 };
 export default {
   props: ['modelValue', 'index', 'nonce', 'network', 'preview'],
-  emits: ['update:modelValue', 'valid', 'remove'],
+  emits: ['update:modelValue', 'remove'],
   data() {
     return {
       open: true,
@@ -42,20 +53,19 @@ export default {
   },
   computed: {
     title() {
-      try {
-        if (
-          this.modelValue?.type === 'contractInteraction' &&
-          this.modelValue?.to &&
-          this.modelValue?.abi &&
-          this.modelValue?.value
-        ) {
-          const [{ name: methodName }] = this.modelValue.abi;
-          return `${methodName}() - ${
-            this.modelValue.value
-          } wei to ${this._shorten(this.modelValue.to)}`;
+      if (this.modelValue) {
+        try {
+          const addr = this._shorten(this.modelValue.to);
+          const type = this.modelValue.type || this.type;
+          switch (type) {
+            case 'contractInteraction':
+              return `${this.modelValue.abi[0].name}() - ${this.modelValue.value} wei to ${addr}`;
+            case 'raw':
+              return `Send ${this.modelValue.value} wei to ${addr}`;
+          }
+        } catch (error) {
+          console.log('could not determine title', error);
         }
-      } catch (error) {
-        console.log('could not determine title');
       }
       return this.getLabel(this.type);
     }

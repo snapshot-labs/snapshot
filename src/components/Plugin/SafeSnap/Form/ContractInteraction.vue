@@ -124,7 +124,6 @@ export default {
           this.selectedMethod.name,
           data
         );
-        console.log('methodParametersValues', methodParametersValues);
         this.parameters = this.selectedMethod.inputs.reduce(
           (obj, parameter) => {
             const value = isArrayParameter(parameter.type)
