@@ -12,7 +12,7 @@
           @remove="removeBatch(index)"
         />
       </div>
-      <UiButton @click="createTransactionBatch">
+      <UiButton v-if="!preview" @click="createTransactionBatch">
         Add Transaction Batch
       </UiButton>
     </div>
@@ -39,34 +39,6 @@ export default {
         this.input.txs[0] && !Array.isArray(this.input.txs[0])
           ? [this.input.txs]
           : this.input.txs;
-      // this.batches = [
-      //   [
-      //     {
-      //       to: '0xaFF4481D10270F50f203E0763e2597776068CBc5',
-      //       abi: [
-      //         {
-      //           name: 'transfer',
-      //           type: 'function',
-      //           action: 'write',
-      //           inputs: [
-      //             { name: 'to', type: 'address[]' },
-      //             { name: 'tokens', type: 'uint256[]' }
-      //           ],
-      //           outputs: [{ name: 'success', type: 'bool' }],
-      //           payable: false,
-      //           constant: false,
-      //           stateMutability: 'nonpayable'
-      //         }
-      //       ],
-      //       data:
-      //         'ffc3a7690000000000000000000000000000000000000000000000000000000000000040000000000000000000000000000000000000000000000000000000000000008000000000000000000000000000000000000000000000000000000000000000010000000000000000000000002a378cf62c12888a970804ce3d734e0ba543b29c00000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000000',
-      //       type: 'contractInteraction',
-      //       nonce: '0',
-      //       value: '0',
-      //       operation: '0'
-      //     }
-      //   ]
-      // ];
     }
   },
   methods: {

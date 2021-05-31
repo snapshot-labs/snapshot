@@ -1,10 +1,11 @@
 <template>
   <UiCollapsible
-    title="Multiple transactions"
+    :hideRemove="preview"
     :number="index + 1"
     :open="open"
-    @toggle="open = !open"
+    title="Multiple transactions"
     @remove="$emit('remove')"
+    @toggle="open = !open"
   >
     <div
       v-for="(transaction, index) in transactions"
@@ -12,13 +13,13 @@
       class="mb-2"
     >
       <PluginSafeSnapFormTransaction
-        :modelValue="transaction"
         :index="index"
+        :modelValue="transaction"
         :network="network"
         :nonce="`${nonce + index}`"
         :preview="preview"
-        @update:modelValue="updateTransaction(index, $event)"
         @remove="removeTransaction(index)"
+        @update:modelValue="updateTransaction(index, $event)"
       />
     </div>
     <UiButton v-if="!preview" @click="addTransaction">

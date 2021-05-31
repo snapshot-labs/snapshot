@@ -2,10 +2,13 @@
   <div class="width-full collapsible-container">
     <div class="collapsible-header d-flex">
       <span class="mr-4 header-number">{{ number }}</span>
-      <span class="flex-auto text-center no-wrap overflow-hidden" @click="$emit('toggle')">
+      <span
+        class="flex-auto text-center no-wrap overflow-hidden"
+        @click="$emit('toggle')"
+      >
         {{ title }}
       </span>
-      <span @click="$emit('remove')" class="ml-4">
+      <span v-if="!hideRemove" @click="$emit('remove')" class="ml-4">
         <Icon name="close" size="12" />
       </span>
     </div>
@@ -18,7 +21,7 @@
 
 <script>
 export default {
-  props: ['open', 'title', 'number'],
+  props: ['open', 'title', 'number', 'hideRemove'],
   emits: ['remove', 'toggle']
 };
 </script>

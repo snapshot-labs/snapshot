@@ -1,5 +1,6 @@
 <template>
   <UiCollapsible
+    :hideRemove="preview"
     :number="index + 1"
     :open="open"
     :title="title"
@@ -45,10 +46,15 @@ export default {
   props: ['modelValue', 'index', 'nonce', 'network', 'preview'],
   emits: ['update:modelValue', 'remove'],
   data() {
+    let type = 'contractInteraction';
+    if (this.modelValue) {
+      type = this.modelValue.type ? this.modelValue.type : 'raw';
+    }
+
     return {
       open: true,
       types: ['contractInteraction', 'transferFunds', 'sendAsset'],
-      type: 'contractInteraction'
+      type
     };
   },
   computed: {
