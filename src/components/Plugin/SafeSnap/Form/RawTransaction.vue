@@ -25,19 +25,9 @@
 
 <script>
 import Plugin from '@snapshot-labs/snapshot.js/src/plugins/safeSnap';
-import { BigNumber } from '@ethersproject/bignumber';
 import { isHexString } from '@ethersproject/bytes';
+import { parseAmount } from '@/helpers/utils';
 
-const parseAmount = input => {
-  return BigNumber.from(input).toString();
-};
-const parseValueInput = input => {
-  try {
-    return parseAmount(input);
-  } catch (e) {
-    return input;
-  }
-};
 const toModuleTransaction = ({ to, value, data, nonce }) => {
   return {
     to,

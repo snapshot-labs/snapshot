@@ -63,28 +63,23 @@ import {
   getTransactionData,
   parseMethodToABI
 } from '@/helpers/abi/utils';
-import { BigNumber } from '@ethersproject/bignumber';
 import { isBigNumberish } from '@ethersproject/bignumber/lib/bignumber';
 import { isAddress } from '@ethersproject/address';
 import { Interface } from '@ethersproject/abi';
 import { isArrayParameter } from '@/helpers/validator';
+import { parseAmount, parseValueInput } from '@/helpers/utils';
 
-const parseAmount = input => {
-  return BigNumber.from(input).toString();
-};
-const parseValueInput = input => {
-  try {
-    return parseAmount(input);
-  } catch (e) {
-    return input;
-  }
+const MULTISEND_CONTRACT_ADDRESS = '0x8D29bE29923b68abfDD21e541b9374737B49cdAD';
+const getOperation = to => {
+  if (to === MULTISEND_CONTRACT_ADDRESS) return '1';
+  return '0';
 };
 const toModuleTransaction = ({ to, value, data, nonce, method }) => {
   return {
     to,
     data,
     nonce,
-    operation: '0',
+    operation: getOperation(to),
     type: 'contractInteraction',
     value: parseValueInput(value),
     abi: parseMethodToABI(method)

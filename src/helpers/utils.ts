@@ -2,6 +2,7 @@ import pkg from '@/../package.json';
 import voting from '@/helpers/voting';
 import scrollMonitor from 'scrollmonitor';
 import { formatEther } from '@ethersproject/units';
+import { BigNumber } from '@ethersproject/bignumber';
 
 export function shorten(str = '') {
   return `${str.slice(0, 6)}...${str.slice(str.length - 4)}`;
@@ -153,4 +154,16 @@ export const formatAmount = (amount, maxDecimals) => {
     }
   }
   return out + ' ETH';
+};
+
+export const parseAmount = input => {
+  return BigNumber.from(input).toString();
+};
+
+export const parseValueInput = input => {
+  try {
+    return parseAmount(input);
+  } catch (e) {
+    return input;
+  }
 };
