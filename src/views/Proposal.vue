@@ -171,7 +171,13 @@
           :results="results"
           :strategies="strategies"
         />
-        <PluginPoapCustomBlock />
+        <PluginPoapCustomBlock
+          :loaded="loadedResults"
+          :space="space"
+          :proposal="proposal"
+          :results="results"
+          :strategies="strategies"
+        />
       </div>
     </template>
   </Layout>
