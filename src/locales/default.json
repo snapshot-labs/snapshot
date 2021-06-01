@@ -222,6 +222,7 @@
     "finalOutcome": "Outcome: {0}",
     "nextBond": "Bond to set outcome: {0}",
     "setOutcomeTo": "Set outcome to:",
+    "claimBond": "Claim bond",
     "labels": {
       "request": "Request execution",
       "setOutcome": "Set outcome",

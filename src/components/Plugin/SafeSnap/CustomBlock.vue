@@ -35,6 +35,12 @@
       v-text="$t(actionLabel)"
       class="width-full button"
     />
+    <UiButton
+      v-if="canClaim"
+      @click="claimBond"
+      v-text="$t('safeSnap.claimBond')"
+      class="width-full button"
+    />
     <teleport to="#modal">
       <PluginSafeSnapModalOptionApproval
         :open="modalApproveDecisionOpen"
@@ -80,7 +86,8 @@ export default {
       actionInProgress: false,
       plugin: new Plugin(),
       questionDetails: undefined,
-      modalApproveDecisionOpen: false
+      modalApproveDecisionOpen: false,
+      claimBondData: undefined
     };
   },
   computed: {
@@ -155,6 +162,15 @@ export default {
           return false;
       }
     },
+    canClaim() {
+      return (
+        this.approvalData.hasBondAndCanClaim ||
+        (!!this.questionDetails.finalizedAt &&
+          this.claimBondData.users.includes(
+            this.$auth.provider._value.selectedAddress.toLowerCase()
+          ))
+      );
+    },
     infoLabel() {
       switch (this.questionState) {
         case QuestionStates.proposalNotResolved:
@@ -209,6 +225,7 @@ export default {
         }
 
         return {
+          hasBondAndCanClaim: true,
           decision: this.$i18n.t('safeSnap.currentOutcome', [
             isApproved ? 'Yes' : 'No'
           ]),
@@ -251,10 +268,35 @@ export default {
           this.porposalId,
           this.proposalConfig.txs
         );
+        if (this.questionDetails.questionId) {
+          this.claimBondData = await this.plugin.loadClaimBondData(
+            this.$auth.web3,
+            this.network,
+            this.questionDetails.questionId,
+            this.questionDetails.oracle
+          );
+        }
       } catch (e) {
         console.error(e);
       } finally {
         this.loading = false;
+      }
+    },
+    async claimBond() {
+      if (!this.questionDetails.oracle) return;
+      try {
+        const params = Object.keys(this.claimBondData).map(
+          key => new Array(...this.claimBondData[key])
+        );
+
+        await this.plugin.claimBond(
+          this.$auth.web3,
+          this.questionDetails.oracle,
+          this.questionDetails.questionId,
+          params
+        );
+      } catch (e) {
+        console.error(e);
       }
     },
     async performAction() {
