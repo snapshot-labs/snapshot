@@ -17,9 +17,7 @@
 </template>
 
 <script>
-//import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
-// TODO: cambiar por poap el plugin
-import Plugin from '@snapshot-labs/snapshot.js/src/plugins/quorum';
+import Plugin from '@snapshot-labs/snapshot.js/src/plugins/poap';
 
 export default {
   props: ['space', 'proposal', 'results', 'loaded', 'strategies'],
@@ -29,7 +27,8 @@ export default {
       plugin: new Plugin(),
       states: {},
       currentState: 'NOTPOAP',
-      account: null
+      account: null,
+      poapImg: ''
     };
   },
   computed: {
@@ -40,7 +39,9 @@ export default {
       return this.states[this.currentState].buttonText;
     },
     mainImg() {
-      return this.states[this.currentState].mainImage;
+      return this.poapImg
+        ? this.poapImg
+        : this.states[this.currentState].mainImage;
     },
     headerImg() {
       return this.states[this.currentState].headerImage;
@@ -53,55 +54,25 @@ export default {
   },
   async created() {
     this.loading = true;
-    /*
+
     if (this.$auth.isAuthenticated.value) {
       const accounts = await this.$auth.web3.listAccounts();
       this.account = accounts[0];
     }
 
     this.states = await this.plugin.getCurrentStates();
-    const response = await this.plugin.getCurrentState(this.proposal.id, this.account);
-    const { currentState, poapUrl } = response.data;
-    if (poapUrl) {
-      this.state = {
-        ...this.state,
-        CLAIMED: {mainImage: poapUrl},
-        NOTVOTED: {mainImage: poapUrl},
-        UNCLAIMED: {mainImage: poapUrl},
-      }
+    const response = await this.plugin.getCurrentState(
+      this.proposal.id,
+      this.account
+    );
+
+    const { currentState, poapImg } = response.data;
+
+    if (poapImg) {
+      this.poapImg = poapImg;
     }
+
     this.currentState = currentState;
-    */
-    this.states = {
-      NOTPOAP: {
-        header: "A POAP hasn't been setup for this proposal yet :'(",
-        headerImage:
-          'https://img-test-rlajous.s3.amazonaws.com/Property 1=nopoap.png',
-        mainImage: 'https://img-test-rlajous.s3.amazonaws.com/Group+1229.png'
-      },
-      NOTVOTED: {
-        headerImage:
-          'https://img-test-rlajous.s3.amazonaws.com/Property 1=unavaliable.png',
-        mainImage: 'https://img-test-rlajous.s3.amazonaws.com/Group+1229.png',
-        header: 'Vote to get this POAP',
-        buttonText: 'Claim'
-      },
-      UNCLAIMED: {
-        headerImage:
-          'https://img-test-rlajous.s3.amazonaws.com/Property 1=Voted.png',
-        mainImage: 'https://img-test-rlajous.s3.amazonaws.com/Group+1229.png',
-        header: 'Thanks for voting Claim your I VOTED POAP',
-        buttonText: 'Claim'
-      },
-      CLAIMED: {
-        headerImage:
-          'https://img-test-rlajous.s3.amazonaws.com/Property 1=Claimed.png',
-        mainImage: 'https://img-test-rlajous.s3.amazonaws.com/Group+1229.png',
-        header: 'Congratulations! You got a new POAP in your account',
-        buttonText: 'Show me my badges'
-      }
-    };
-    this.currentState = 'CLAIMED';
 
     this.loading = false;
   },
@@ -114,14 +85,11 @@ export default {
           window.open('https://app.poap.xyz/scan/' + this.account, '_blank');
           break;
         default:
-          /*
-          const response = await this.plugin.claim(this.proposal.id, this.account);
-          if (response.ok) {
-            this.currentState = 'CLAIMED';
-          } else {
-            // Error
-          }
-          */
+          this.currentState = await this.plugin.claim(
+            this.proposal.id,
+            this.account
+          );
+          console.log(this.currentState);
           break;
       }
     }
