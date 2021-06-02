@@ -227,7 +227,7 @@
       "request": "Request execution",
       "setOutcome": "Set outcome",
       "changeOutcome": "Change outcome",
-      "executeTxs": "Execute transaction 1/x",
+      "executeTxs": "Execute transaction 1/{0}",
       "finalized": "Vote finalized",
       "executed": "Executed",
       "waiting": "Waiting for vote to close",

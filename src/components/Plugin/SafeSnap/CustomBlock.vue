@@ -32,14 +32,14 @@
       v-if="showActionButton"
       @click="performAction"
       :disabled="!actionEnabled"
-      v-text="$t(actionLabel)"
+      v-text="$t(actionLabel, [questionDetails.transactions.length])"
       class="width-full button"
     />
     <UiButton
       v-if="canClaim"
       @click="claimBond"
       v-text="$t('safeSnap.claimBond')"
-      class="width-full button"
+      class="mb-3 width-full button"
     />
     <teleport to="#modal">
       <PluginSafeSnapModalOptionApproval
@@ -87,7 +87,10 @@ export default {
       plugin: new Plugin(),
       questionDetails: undefined,
       modalApproveDecisionOpen: false,
-      claimBondData: undefined
+      bondData: {
+        canClaim: undefined,
+        data: undefined
+      }
     };
   },
   computed: {
@@ -162,15 +165,6 @@ export default {
           return false;
       }
     },
-    canClaim() {
-      return (
-        this.approvalData.hasBondAndCanClaim ||
-        (!!this.questionDetails.finalizedAt &&
-          this.claimBondData.users.includes(
-            this.$auth.provider._value.selectedAddress.toLowerCase()
-          ))
-      );
-    },
     infoLabel() {
       switch (this.questionState) {
         case QuestionStates.proposalNotResolved:
@@ -225,7 +219,6 @@ export default {
         }
 
         return {
-          hasBondAndCanClaim: true,
           decision: this.$i18n.t('safeSnap.currentOutcome', [
             isApproved ? 'Yes' : 'No'
           ]),
@@ -252,6 +245,9 @@ export default {
         this.questionState === QuestionStates.waitingForExecution ||
         this.questionState === QuestionStates.proposalApproved
       );
+    },
+    canClaim() {
+      return this.bondData.canClaim;
     }
   },
   async created() {
@@ -269,7 +265,7 @@ export default {
           this.proposalConfig.txs
         );
         if (this.questionDetails.questionId) {
-          this.claimBondData = await this.plugin.loadClaimBondData(
+          this.bondData = await this.plugin.loadClaimBondData(
             this.$auth.web3,
             this.network,
             this.questionDetails.questionId,
@@ -285,8 +281,10 @@ export default {
     async claimBond() {
       if (!this.questionDetails.oracle) return;
       try {
-        const params = Object.keys(this.claimBondData).map(
-          key => new Array(...this.claimBondData[key])
+        this.actionInProgress = true;
+
+        const params = Object.keys(this.bondData.data).map(
+          key => new Array(...this.bondData.data[key])
         );
 
         await this.plugin.claimBond(
@@ -295,8 +293,12 @@ export default {
           this.questionDetails.questionId,
           params
         );
+        await sleep(3e3);
+        await this.updateDetails();
       } catch (e) {
         console.error(e);
+      } finally {
+        this.actionInProgress = true;
       }
     },
     async performAction() {
