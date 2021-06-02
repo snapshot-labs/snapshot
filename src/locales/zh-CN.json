@@ -17,7 +17,7 @@
   "snapshot": "Snapshot",
   "strategies": "策略",
   "strategiesPage": "策略",
-  "space": "Space",
+  "space": "空间",
   "spaces": "空间",
   "version": "版本",
   "timeline": "时间轴",
@@ -52,7 +52,7 @@
   "confirmVote": "确认投票",
   "sureToVote": "您确定要投票 \"{0}\" 吗？",
   "cannotBeUndone": "这个动作无法复原。",
-  "options": "Option(s)",
+  "options": "选项",
   "votingPower": "您的投票权",
   "receipt": "发票",
   "relayer": "中继器",
@@ -90,18 +90,18 @@
   "startIn": "从 {0} 开始",
   "endIn": "结束 {1}",
   "endedAgo": "结束 {1}",
-  "proposalBy": "by {0}",
+  "proposalBy": "由 {0}",
   "endDate": "结束 {0}",
   "contectHash": "内容散列",
   "defaultSkin": "默认皮肤",
   "select": "选择",
   "language": "语言",
-  "agree": "I agree",
-  "mustAgreeToTerms": "Before you can complete this action, you must agree to {0} terms of service here:",
-  "playground": "Playground",
-  "strategyParams": "Strategy params",
-  "addresses": "Addresses",
-  "networkErrorPlayground": "Network error - please open your browser console for more information",
+  "agree": "我同意",
+  "mustAgreeToTerms": "在您完成此操作之前，您必须在此同意 {0} 服务条款：",
+  "playground": "游乐场",
+  "strategyParams": "策略参数",
+  "addresses": "地址",
+  "networkErrorPlayground": "网络错误 - 请打开您的浏览器控制台获取更多信息",
   "errors": {
     "required": "此项为必填项",
     "minLength": "最小长度为 {0}",
@@ -129,11 +129,11 @@
   "delegate": {
     "header": "授权",
     "selectAddress": "选择地址",
-    "to": "To",
-    "addressPlaceholder": "Address or ENS name",
+    "to": "至",
+    "addressPlaceholder": "地址或ENS名称",
     "spacePlaceholder": "空间 (可选)",
     "delegations": "您的授权",
-    "allSpaces": "For all spaces",
+    "allSpaces": "用于所有空间",
     "delegated": "已授权给你"
   },
   "proposal": {
@@ -141,7 +141,7 @@
     "vote": "投票",
     "startDate": "开始日期",
     "endDate": "结束日期",
-    "votingSystem": "Voting system"
+    "votingSystem": "投票制度"
   },
   "proposals": {
     "header": "提案",
@@ -161,7 +161,7 @@
     "seeENS": "在 ENS 上查看",
     "setENS": "在 ENS 上设置记录",
     "profile": "用户信息",
-    "avatar": "Avatar",
+    "avatar": "头像",
     "name": "名称",
     "about": "关于",
     "terms": "使用条款",
@@ -206,12 +206,12 @@
     "results": "结果"
   },
   "voting": {
-    "selectVoting": "Select voting system",
-    "single-choice": "Single choice voting",
-    "approval": "Approval voting",
+    "selectVoting": "选择投票系统",
+    "single-choice": "单选投票",
+    "approval": "批准表决",
     "description": {
-      "single-choice": "Each voter may select only one choice.",
-      "approval": "Each voter may select any number of choices."
+      "single-choice": "每个选民只能选择一个选项。",
+      "approval": "每个选民可选择多个选项。"
     }
   }
 }
