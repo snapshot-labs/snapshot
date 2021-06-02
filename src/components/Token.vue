@@ -6,7 +6,7 @@
 
 <script>
 import { formatBytes32String } from '@ethersproject/strings';
-
+import { getUrl } from '@snapshot-labs/snapshot.js/src/utils.ts';
 export default {
   props: ['space', 'size', 'symbolIndex'],
   data() {
@@ -25,7 +25,7 @@ export default {
         ? this.space.avatar
         : `https://raw.githubusercontent.com/snapshot-labs/snapshot-spaces/master/spaces/${this.spaceId}/${file}.png`;
       return `https://worker.snapshot.org/mirror?img=${encodeURIComponent(
-        url
+        getUrl(url)
       )}`;
     },
     spaceAddress() {

@@ -14,7 +14,9 @@
         </div>
 
         <div v-if="space.filters?.minScore" class="mb-3">
-          <h4 class="text-white mb-2">{{ $t('settings.minScore') }}</h4>
+          <h4 class="text-white mb-2">
+            {{ $t('settings.proposalThreshold') }}
+          </h4>
           {{ _n(space.filters.minScore) }} {{ space.symbol }}
         </div>
 
