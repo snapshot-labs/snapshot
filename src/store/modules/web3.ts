@@ -95,7 +95,7 @@ const actions = {
       const profiles = await getProfiles([account]);
       commit('WEB3_SET', {
         account,
-        walletConnectType: auth.provider.value?.wc?.peerMeta?.name || 'UnKnown',
+        walletConnectType: auth.provider.value?.wc?.peerMeta?.name || 'unknown',
         profile: profiles[account]
       });
     } catch (e) {

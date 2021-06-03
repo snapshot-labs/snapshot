@@ -62,7 +62,7 @@
   "learnMore": "Learn more",
   "logout": "Log out",
   "walletNotice": "Wallet not supported",
-  "gnosisSafeWalletNotice": "You are trying to use Gnosis Safe wallet, which is not supported to sign messages on snapshot",
+  "gnosisSafeWalletNotice": "You are trying to use Gnosis Safe wallet, which is not supported to sign messages on Snapshot",
   "continue": "Continue",
   "add": "Add",
   "edit": "Edit",
