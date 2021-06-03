@@ -83,10 +83,11 @@ import { onMounted, ref, computed } from 'vue';
 import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
 import { useInfiniteLoader } from '@/composables/useInfiniteLoader';
-import { subgraphRequest } from '@snapshot-labs/snapshot.js/src/utils';
 import { lsSet } from '@/helpers/utils';
 import { useUnseenProposals } from '@/composables/useUnseenProposals';
 import { useScrollMonitor } from '@/composables/useScrollMonitor';
+import { apolloClient } from '@/apollo';
+import { PROPOSALS_QUERY } from '@/helpers/queries';
 
 // Persistent filter state
 const filterBy = ref('all');
@@ -120,36 +121,17 @@ export default {
     // Proposals query
     async function loadProposals(skip = 0) {
       try {
-        const response = await subgraphRequest(
-          `${process.env.VUE_APP_HUB_URL}/graphql`,
-          {
-            proposals: {
-              __args: {
-                first: loadBy,
-                skip,
-                where: {
-                  space_in: favoritesKeys.value,
-                  state: filterBy.value
-                }
-              },
-              id: true,
-              title: true,
-              body: true,
-              start: true,
-              end: true,
-              state: true,
-              author: true,
-              space: {
-                id: true,
-                name: true,
-                members: true,
-                avatar: true
-              }
-            }
+        const response = await apolloClient.query({
+          query: PROPOSALS_QUERY,
+          variables: {
+            first: loadBy,
+            skip,
+            space_in: favoritesKeys.value,
+            state: filterBy.value
           }
-        );
-        stopLoadingMore.value = response.proposals?.length < loadBy;
-        proposals.value = proposals.value.concat(response.proposals);
+        });
+        stopLoadingMore.value = response.data.proposals?.length < loadBy;
+        proposals.value = proposals.value.concat(response.data.proposals);
       } catch (e) {
         console.log(e);
       }

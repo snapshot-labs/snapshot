@@ -19,7 +19,8 @@
             { text: $t('proposals.states.all'), action: 'all' },
             { text: $t('proposals.states.active'), action: 'active' },
             { text: $t('proposals.states.pending'), action: 'pending' },
-            { text: $t('proposals.states.closed'), action: 'closed' }
+            { text: $t('proposals.states.closed'), action: 'closed' },
+            { text: $t('proposals.states.core'), action: 'core' }
           ]"
         >
           <UiButton class="pr-3">
@@ -55,9 +56,10 @@ import { computed, onMounted, ref } from 'vue';
 import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
 import { useInfiniteLoader } from '@/composables/useInfiniteLoader';
-import { subgraphRequest } from '@snapshot-labs/snapshot.js/src/utils';
 import { useScrollMonitor } from '@/composables/useScrollMonitor';
 import { useDomain } from '@/composables/useDomain';
+import { apolloClient } from '@/apollo';
+import { PROPOSALS_QUERY } from '@/helpers/queries';
 
 export default {
   setup() {
@@ -72,6 +74,9 @@ export default {
     const filterBy = ref('all');
 
     const space = computed(() => store.state.app.spaces[spaceId]);
+    const spaceMembers = computed(() =>
+      space.value.members.length < 1 ? ['none'] : space.value.members
+    );
 
     // Infinite scroll with pagination
     const {
@@ -89,36 +94,18 @@ export default {
     // Proposals query
     async function loadProposals(skip = 0) {
       try {
-        const response = await subgraphRequest(
-          `${process.env.VUE_APP_HUB_URL}/graphql`,
-          {
-            proposals: {
-              __args: {
-                first: loadBy,
-                skip,
-                where: {
-                  space: spaceId,
-                  state: filterBy.value
-                }
-              },
-              id: true,
-              title: true,
-              body: true,
-              start: true,
-              end: true,
-              state: true,
-              author: true,
-              space: {
-                id: true,
-                name: true,
-                members: true,
-                avatar: true
-              }
-            }
+        const response = await apolloClient.query({
+          query: PROPOSALS_QUERY,
+          variables: {
+            first: loadBy,
+            skip,
+            space: spaceId,
+            state: filterBy.value === 'core' ? 'all' : filterBy.value,
+            author_in: filterBy.value === 'core' ? spaceMembers.value : []
           }
-        );
-        stopLoadingMore.value = response.proposals?.length < loadBy;
-        proposals.value = proposals.value.concat(response.proposals);
+        });
+        stopLoadingMore.value = response.data.proposals?.length < loadBy;
+        proposals.value = proposals.value.concat(response.data.proposals);
       } catch (e) {
         console.log(e);
       }
