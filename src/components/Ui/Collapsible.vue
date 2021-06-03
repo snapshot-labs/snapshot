@@ -29,7 +29,6 @@ export default {
 <style scoped lang="scss">
 .collapsible-container {
   border: 1px solid var(--border-color);
-  background-color: transparent;
   color: var(--link-color);
   border-radius: 23px;
   padding: 0 24px;

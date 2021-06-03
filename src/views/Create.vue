@@ -81,7 +81,6 @@
         :create="true"
         :proposal="proposal"
         :network="space.network"
-        v-if="form.metadata.plugins.safeSnap"
         v-model="form.metadata.plugins.safeSnap"
       />
     </template>
@@ -198,9 +197,7 @@ export default {
       start: '',
       end: '',
       snapshot: '',
-      metadata: {
-        plugins: {}
-      },
+      metadata: { plugins: {} },
       type: 'single-choice'
     });
     const modalOpen = ref(false);
@@ -213,6 +210,7 @@ export default {
 
     const web3Account = computed(() => store.state.web3.account);
     const space = computed(() => store.state.app.spaces[key]);
+    console.log({space});
 
     const isMember = computed(() => {
       const members = space.value.members.map(address => address.toLowerCase());
@@ -238,7 +236,7 @@ export default {
 
     const isValid = computed(() => {
       // const ts = (Date.now() / 1e3).toFixed();
-      const isSafeSnapPluginValid = form.value.metadata.plugins.safeSnap
+      const isSafeSnapPluginValid = form.value.metadata.plugins?.safeSnap
         ? form.value.metadata.plugins.safeSnap.valid
         : true;
 

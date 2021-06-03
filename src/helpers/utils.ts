@@ -128,23 +128,6 @@ export function filterProposals(space, proposal, tab) {
   return false;
 }
 
-export function scrollEndMonitor(fn) {
-  let canRunAgain = true;
-
-  const el = document.getElementById('endofpage');
-  const elementWatcher = scrollMonitor.create(el);
-  elementWatcher.enterViewport(() => {
-    if (canRunAgain) {
-      canRunAgain = false;
-      fn();
-
-      setTimeout(function () {
-        canRunAgain = true;
-      }, 100);
-    }
-  });
-}
-
 export const formatAmount = (amount, maxDecimals) => {
   let out = formatEther(amount);
   if (maxDecimals && out.includes('.')) {

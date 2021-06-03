@@ -1,5 +1,5 @@
 <template>
-  <UiButton class="width-full mb-2 d-flex">
+  <UiButton class="width-full mb-2 px-3 d-flex">
     <div class="text-gray mr-2">
       <slot name="label" />
     </div>
@@ -29,5 +29,3 @@ export default {
   }
 };
 </script>
-
-<style scoped></style>

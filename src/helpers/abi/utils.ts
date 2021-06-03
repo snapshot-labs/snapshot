@@ -17,18 +17,14 @@ const EXPLORER_API_URLS = {
 };
 
 const fetchContractABI = memoize(
-  async (url: string, contractAddress: string, apiKey?: string) => {
-    let params: Record<string, string> = {
+  async (url: string, contractAddress: string) => {
+    const params = new URLSearchParams({
       module: 'contract',
       action: 'getAbi',
       address: contractAddress
-    };
+    });
 
-    if (apiKey) {
-      params = { ...params, apiKey };
-    }
-
-    const response = await fetch(`${url}?${new URLSearchParams(params)}`);
+    const response = await fetch(`${url}?${params}`);
 
     if (!response.ok) {
       return { status: 0, result: '' };
@@ -61,7 +57,6 @@ export const getContractABI = async (
   network: string,
   contractAddress: string
 ): Promise<string> => {
-  const apiKey = process.env.VUE_APP_ETHERSCAN_API_KEY;
   const apiUrl = EXPLORER_API_URLS[network];
 
   if (!apiUrl) {
@@ -79,11 +74,7 @@ export const getContractABI = async (
   }
 
   try {
-    const { result, status } = await fetchContractABI(
-      apiUrl,
-      contractAddress,
-      apiKey
-    );
+    const { result, status } = await fetchContractABI(apiUrl, contractAddress);
 
     if (status === '0') {
       return '';
@@ -103,10 +94,7 @@ export const isAllowedMethod = ({ name, type }: AbiItem): boolean => {
 export const getMethodAction = ({
   stateMutability
 }: AbiItem): 'read' | 'write' => {
-  if (!stateMutability) {
-    return 'write';
-  }
-
+  if (!stateMutability) return 'write';
   return ['view', 'pure'].includes(stateMutability) ? 'read' : 'write';
 };
 

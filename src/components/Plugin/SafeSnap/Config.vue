@@ -13,7 +13,7 @@
         />
       </div>
       <UiButton v-if="!preview" @click="createTransactionBatch">
-        Add Transaction Batch
+        Add transaction Batch
       </UiButton>
     </div>
   </Block>
