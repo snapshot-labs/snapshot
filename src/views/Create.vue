@@ -80,6 +80,7 @@
       <PluginSafeSnapConfig
         :create="true"
         :proposal="proposal"
+        :moduleAddress="space.plugins?.safeSnap?.address"
         :network="space.network"
         v-model="form.metadata.plugins.safeSnap"
       />
@@ -210,7 +211,6 @@ export default {
 
     const web3Account = computed(() => store.state.web3.account);
     const space = computed(() => store.state.app.spaces[key]);
-    console.log({space});
 
     const isMember = computed(() => {
       const members = space.value.members.map(address => address.toLowerCase());

@@ -1,6 +1,5 @@
 import pkg from '@/../package.json';
 import voting from '@/helpers/voting';
-import scrollMonitor from 'scrollmonitor';
 import { formatEther } from '@ethersproject/units';
 import { BigNumber } from '@ethersproject/bignumber';
 

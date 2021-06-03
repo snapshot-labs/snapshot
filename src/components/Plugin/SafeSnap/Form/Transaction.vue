@@ -27,7 +27,6 @@
     <PluginSafeSnapFormRawTransaction
       v-if="type === 'raw'"
       :modelValue="modelValue"
-      :network="network"
       :nonce="nonce"
       :preview="preview"
       @update:modelValue="$emit('update:modelValue', $event)"
@@ -52,7 +51,7 @@ export default {
     }
 
     return {
-      open: true,
+      open: !this.preview,
       types: ['contractInteraction', 'transferFunds', 'sendAsset'],
       type
     };

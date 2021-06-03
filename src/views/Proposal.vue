@@ -60,6 +60,8 @@
         :preview="true"
         v-if="loadedResults && proposal.plugins?.safeSnap?.txs"
         :proposal="proposal"
+        :proposalId="id"
+        :moduleAddress="space.plugins?.safeSnap?.address"
         :network="space.network"
         v-model="proposal.plugins.safeSnap"
       />

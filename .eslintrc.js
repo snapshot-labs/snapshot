@@ -3,7 +3,6 @@ module.exports = {
   env: {
     node: true
   },
-  ignorePatterns: ['/node_modules/**/*.*'],
   extends: [
     'plugin:vue/vue3-essential',
     'eslint:recommended',

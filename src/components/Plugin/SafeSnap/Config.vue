@@ -1,37 +1,69 @@
 <template>
-  <Block title="SafeSnap Plugin">
-    <div class="text-center">
+  <div
+    class="border-top border-bottom border-md rounded-0 rounded-md-2 mb-4 block-bg"
+  >
+    <h4
+      class="px-4 pt-3 border-bottom d-block header-bg rounded-top-0 rounded-md-top-2"
+      style="padding-bottom: 12px"
+    >
+      Transactions
+      {{ gnosisSafeAddress && `(${_shorten(gnosisSafeAddress)})` }}
+      <a
+        v-if="gnosisSafeAddress"
+        :href="`https://rinkeby.gnosis-safe.io/app/#/safes/${gnosisSafeAddress}`"
+        target="_blank"
+        class="text-gray"
+        style="padding-top: 2px"
+      >
+        <i
+          class="iconfont iconexternal-link"
+          style="font-size: 18px; line-height: 18px; vertical-align: middle"
+        />
+      </a>
+    </h4>
+    <div class="p-4 text-center">
       <div v-for="(batch, index) in batches" v-bind:key="index" class="mb-4">
         <PluginSafeSnapFormTransactionBatch
-          :preview="preview"
-          :modelValue="batch"
           :index="index"
+          :modelValue="batch"
           :network="network"
           :nonce="getBatchNonce(index)"
-          @update:modelValue="updateTransactionBatch(index, $event)"
+          :preview="preview"
           @remove="removeBatch(index)"
+          @update:modelValue="updateTransactionBatch(index, $event)"
         />
       </div>
       <UiButton v-if="!preview" @click="createTransactionBatch">
         Add transaction Batch
       </UiButton>
     </div>
-  </Block>
+  </div>
 </template>
 
 <script>
 import { clone } from '@/helpers/utils';
+import Plugin from '@snapshot-labs/snapshot.js/src/plugins/safeSnap';
 
 export default {
-  props: ['modelValue', 'proposal', 'network', 'preview'],
+  props: [
+    'modelValue',
+    'proposal',
+    'network',
+    'moduleAddress',
+    'proposalId',
+    'preview'
+  ],
   emits: ['update:modelValue', 'close'],
   data() {
     return {
       input: { txs: [], valid: true },
-      batches: []
+      batches: [],
+      plugin: new Plugin(),
+      gnosisSafeAddress: undefined,
+      proposalDetails: undefined
     };
   },
-  mounted() {
+  async mounted() {
     if (this.modelValue) {
       this.input = clone(this.modelValue);
       if (!this.input.txs) this.input.txs = [];
@@ -40,6 +72,30 @@ export default {
           ? [this.input.txs]
           : this.input.txs;
       this.updateModel();
+    }
+
+    if (!this.preview) {
+      try {
+        const { dao } = await this.plugin.getModuleDetails(
+          this.network,
+          this.moduleAddress
+        );
+        this.gnosisSafeAddress = dao;
+      } catch (e) {
+        console.error(e);
+      }
+    } else {
+      try {
+        this.proposalDetails = await this.plugin.getExecutionDetails(
+          this.network,
+          this.moduleAddress,
+          this.proposalId,
+          this.modelValue.txs.flat()
+        );
+        this.gnosisSafeAddress = this.proposalDetails.dao;
+      } catch (e) {
+        console.error(e);
+      }
     }
   },
   methods: {

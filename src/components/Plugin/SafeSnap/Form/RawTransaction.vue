@@ -38,7 +38,7 @@ const toModuleTransaction = ({ to, value, data, nonce }) => {
   };
 };
 export default {
-  props: ['modelValue', 'nonce', 'network', 'preview'],
+  props: ['modelValue', 'nonce', 'preview'],
   emits: ['update:modelValue'],
   data() {
     return {
