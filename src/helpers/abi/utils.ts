@@ -134,9 +134,11 @@ export const getParsedJSONOrArrayFromString = (
   }
 };
 
-const extractMethodArgs = (values: Record<string, string>) => ({ name }) => {
-  return getParsedJSONOrArrayFromString(values[name]) || values[name];
-};
+const extractMethodArgs =
+  (values: Record<string, string>) =>
+  ({ name }) => {
+    return getParsedJSONOrArrayFromString(values[name]) || values[name];
+  };
 
 export const getContractTransactionData = (
   abi: string,

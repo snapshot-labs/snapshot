@@ -2,7 +2,13 @@
   <div v-if="open" class="modal mx-auto">
     <div class="backdrop" @click="$emit('close')" />
     <div
-      class="shell overflow-hidden anim-scale-in position-relative rounded-0 rounded-md-2"
+      class="
+        shell
+        overflow-hidden
+        anim-scale-in
+        position-relative
+        rounded-0 rounded-md-2
+      "
     >
       <div v-if="$slots.header" class="border-bottom pt-4 pb-3 text-center">
         <slot name="header" />
