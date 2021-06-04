@@ -69,7 +69,9 @@
                     class="ml-2"
                     @input="setAvatarUrl"
                     @loading="setUploadLoading"
-                  />
+                  >
+                    {{ $t('upload') }}
+                  </Upload>
                 </template>
               </UiInput>
               <UiInput
