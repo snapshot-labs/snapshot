@@ -9,7 +9,7 @@ import {
   AbiItemExtended,
   AllowedAbiItem
 } from '@/helpers/abi/interfaces';
-import { BigNumber } from '@ethersproject/bignumber';
+import { BigNumber, BigNumberish } from '@ethersproject/bignumber';
 
 const EXPLORER_API_URLS = {
   '1': 'https://api.etherscan.io/api',
@@ -133,16 +133,37 @@ const extractMethodArgs = (values: Record<string, string>) => ({ name }) => {
   return getParsedJSONOrArrayFromString(values[name]) || values[name];
 };
 
-export const getTransactionData = (
+export const getContractTransactionData = (
   abi: string,
   method: AbiItemExtended,
-  contractAddress: string,
   values: Record<string, string>
 ) => {
   const contractInterface = new Interface(abi);
   const { inputs, name } = method;
   const parameterValues = inputs?.map(extractMethodArgs(values)) || [];
   return contractInterface.encodeFunctionData(name, parameterValues);
+};
+
+const ERC20ContractABI = [
+  'function transfer(address recipient, uint256 amount) public virtual override returns (bool)'
+];
+
+export const getERC20TokenTransferTransactionData = (
+  recipientAddress: string,
+  amount: BigNumberish
+) => {
+  const contractInterface = new Interface(ERC20ContractABI);
+  return contractInterface.encodeFunctionData('transfer', [
+    recipientAddress,
+    amount
+  ]);
+};
+
+const MULTISEND_CONTRACT_ADDRESS = '0x8D29bE29923b68abfDD21e541b9374737B49cdAD';
+
+export const getOperation = to => {
+  if (to === MULTISEND_CONTRACT_ADDRESS) return '1';
+  return '0';
 };
 
 export const parseMethodToABI = (method: AbiItemExtended) => {

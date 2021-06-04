@@ -78,6 +78,7 @@
         </UiButton>
       </Block>
       <PluginSafeSnapConfig
+        v-if="space?.plugins?.safeSnap"
         :create="true"
         :proposal="proposal"
         :moduleAddress="space.plugins?.safeSnap?.address"

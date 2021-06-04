@@ -60,7 +60,8 @@ import Plugin from '@snapshot-labs/snapshot.js/src/plugins/safeSnap';
 import {
   extractUsefulMethods,
   getContractABI,
-  getTransactionData,
+  getContractTransactionData,
+  getOperation,
   parseMethodToABI
 } from '@/helpers/abi/utils';
 import { isBigNumberish } from '@ethersproject/bignumber/lib/bignumber';
@@ -69,11 +70,6 @@ import { Interface } from '@ethersproject/abi';
 import { isArrayParameter } from '@/helpers/validator';
 import { parseAmount, parseValueInput } from '@/helpers/utils';
 
-const MULTISEND_CONTRACT_ADDRESS = '0x8D29bE29923b68abfDD21e541b9374737B49cdAD';
-const getOperation = to => {
-  if (to === MULTISEND_CONTRACT_ADDRESS) return '1';
-  return '0';
-};
 const toModuleTransaction = ({ to, value, data, nonce, method }) => {
   return {
     to,
@@ -85,6 +81,21 @@ const toModuleTransaction = ({ to, value, data, nonce, method }) => {
     abi: parseMethodToABI(method)
   };
 };
+
+async function toDataURL(url) {
+  const data = await fetch(url);
+  const blob = await data.blob();
+  return new Promise(resolve => {
+    const reader = new FileReader();
+    reader.onloadend = function () {
+      resolve(reader.result);
+    };
+    reader.readAsDataURL(blob);
+  });
+}
+toDataURL('https://www.gravatar.com/avatar/d50c83cc0c6523b4d3f6085295c953e0');
+fetch('https://www.gravatar.com/avatar/d50c83cc0c6523b4d3f6085295c953e0');
+
 export default {
   props: ['modelValue', 'nonce', 'network', 'preview'],
   emits: ['update:modelValue'],
@@ -168,10 +179,9 @@ export default {
       if (this.preview) return;
       try {
         if (isBigNumberish(this.value) && isAddress(this.to)) {
-          const data = getTransactionData(
+          const data = getContractTransactionData(
             this.abi,
             this.selectedMethod,
-            this.to,
             this.parameters
           );
 

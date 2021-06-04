@@ -7,16 +7,29 @@
     @remove="$emit('remove')"
     @toggle="open = !open"
   >
-    <UiSelect v-model="type" :disabled="preview">
+    <UiSelect
+      :modelValue="type"
+      @update:modelValue="handleTypeChange($event)"
+      :disabled="preview"
+    >
       <template v-slot:label>type</template>
       <option value="contractInteraction">Contract Interaction</option>
+      <option value="transferFunds">Transfer Funds</option>
       <option value="raw">Raw Transaction</option>
-      <!--      <option value="transferFunds">Transfer Funds</option>-->
       <!--      <option value="sendAsset">Send Asset</option>-->
     </UiSelect>
 
     <PluginSafeSnapFormContractInteraction
       v-if="type === 'contractInteraction'"
+      :modelValue="modelValue"
+      :network="network"
+      :nonce="nonce"
+      :preview="preview"
+      @update:modelValue="$emit('update:modelValue', $event)"
+    />
+
+    <PluginSafeSnapFormTransferFunds
+      v-if="type === 'transferFunds'"
       :modelValue="modelValue"
       :network="network"
       :nonce="nonce"
@@ -65,9 +78,12 @@ export default {
         try {
           const addr = this._shorten(this.modelValue.to);
           const type = this.modelValue.type || this.type;
+          console.log('this.modelValue', this.modelValue);
           switch (type) {
             case 'contractInteraction':
               return `${this.modelValue.abi[0].name}() - ${this.modelValue.value} wei to ${addr}`;
+            case 'transferFunds':
+              return `Transfer ${this.modelValue.amount} ${this.modelValue.token.symbol} to ${addr}`;
             case 'raw':
               return `Send ${this.modelValue.value} wei to ${addr}`;
           }
@@ -81,6 +97,10 @@ export default {
   methods: {
     getLabel(type) {
       return labels[type];
+    },
+    handleTypeChange(type) {
+      this.type = type;
+      this.$emit('update:modelValue', undefined);
     }
   }
 };
