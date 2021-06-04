@@ -26,9 +26,6 @@ export default {
     };
   },
   computed: {
-    titles() {
-      return this.strategies.map(strategy => strategy.params.symbol);
-    },
     totalScore() {
       return this.results.totalBalances.reduce((a, b) => a + b, 0);
     }
