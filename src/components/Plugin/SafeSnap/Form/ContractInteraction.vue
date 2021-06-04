@@ -1,7 +1,7 @@
 <template>
   <PluginSafeSnapInputAddress
     v-model="to"
-    :disabled="preview"
+    :disabled="config.preview"
     :inputProps="{
       required: true
     }"
@@ -10,7 +10,7 @@
   />
 
   <UiInput
-    :disabled="preview"
+    :disabled="config.preview"
     :error="!validValue && 'Invalid Value'"
     :modelValue="value"
     @update:modelValue="handleValueChange($event)"
@@ -19,7 +19,7 @@
   </UiInput>
 
   <UiInput
-    :disabled="preview"
+    :disabled="config.preview"
     :error="!validAbi && 'Invalid ABI'"
     :modelValue="abi"
     @update:modelValue="handleABIChanged($event)"
@@ -30,7 +30,7 @@
   <div v-if="methods.length">
     <UiSelect
       v-model="methodIndex"
-      :disabled="preview"
+      :disabled="config.preview"
       @change="handleMethodChanged()"
     >
       <template v-slot:label>function</template>
@@ -45,7 +45,7 @@
       <PluginSafeSnapInputMethodParameter
         v-for="input in selectedMethod.inputs"
         :key="input.name"
-        :disabled="preview"
+        :disabled="config.preview"
         :modelValue="parameters[input.name]"
         :name="input.name"
         :type="input.type"
@@ -97,7 +97,7 @@ toDataURL('https://www.gravatar.com/avatar/d50c83cc0c6523b4d3f6085295c953e0');
 fetch('https://www.gravatar.com/avatar/d50c83cc0c6523b4d3f6085295c953e0');
 
 export default {
-  props: ['modelValue', 'nonce', 'network', 'preview'],
+  props: ['modelValue', 'nonce', 'config'],
   emits: ['update:modelValue'],
   data() {
     return {
@@ -120,7 +120,7 @@ export default {
       const { to = '', abi = '', value = '0', data } = this.modelValue;
       this.to = to;
 
-      if (this.preview) {
+      if (this.config.preview) {
         this.abi = JSON.stringify(abi);
         this.value = value;
         this.selectedMethod = abi[0];
@@ -176,7 +176,7 @@ export default {
   },
   methods: {
     updateTransaction() {
-      if (this.preview) return;
+      if (this.config.preview) return;
       try {
         if (isBigNumberish(this.value) && isAddress(this.to)) {
           const data = getContractTransactionData(
@@ -204,7 +204,7 @@ export default {
       this.$emit('update:modelValue', undefined);
     },
     async handleAddressChanged() {
-      const result = await getContractABI(this.network, this.to);
+      const result = await getContractABI(this.config.network, this.to);
       if (result && result !== this.abi) {
         this.abi = result;
         this.handleABIChanged(result);

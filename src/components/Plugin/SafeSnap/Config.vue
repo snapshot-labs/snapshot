@@ -11,9 +11,9 @@
       <a
         v-if="gnosisSafeAddress"
         :href="`https://rinkeby.gnosis-safe.io/app/#/safes/${gnosisSafeAddress}`"
-        target="_blank"
         class="text-gray"
         style="padding-top: 2px"
+        target="_blank"
       >
         <i
           class="iconfont iconexternal-link"
@@ -24,11 +24,10 @@
     <div class="p-4 text-center">
       <div v-for="(batch, index) in batches" v-bind:key="index" class="mb-4">
         <PluginSafeSnapFormTransactionBatch
+          :config="transactionConfig"
           :index="index"
           :modelValue="batch"
-          :network="network"
           :nonce="getBatchNonce(index)"
-          :preview="preview"
           @remove="removeBatch(index)"
           @update:modelValue="updateTransactionBatch(index, $event)"
         />
@@ -43,6 +42,7 @@
 <script>
 import { clone } from '@/helpers/utils';
 import Plugin from '@snapshot-labs/snapshot.js/src/plugins/safeSnap';
+import { getGnosisSafeBalances } from '@/helpers/abi/utils';
 
 export default {
   props: [
@@ -60,7 +60,12 @@ export default {
       batches: [],
       plugin: new Plugin(),
       gnosisSafeAddress: undefined,
-      proposalDetails: undefined
+      proposalDetails: undefined,
+      transactionConfig: {
+        preview: this.preview,
+        network: this.network,
+        tokens: []
+      }
     };
   },
   async mounted() {
@@ -74,28 +79,19 @@ export default {
       this.updateModel();
     }
 
-    if (!this.preview) {
-      try {
-        const { dao } = await this.plugin.getModuleDetails(
-          this.network,
-          this.moduleAddress
-        );
-        this.gnosisSafeAddress = dao;
-      } catch (e) {
-        console.error(e);
-      }
-    } else {
-      try {
-        this.proposalDetails = await this.plugin.getExecutionDetails(
-          this.network,
-          this.moduleAddress,
-          this.proposalId,
-          this.modelValue.txs.flat()
-        );
-        this.gnosisSafeAddress = this.proposalDetails.dao;
-      } catch (e) {
-        console.error(e);
-      }
+    try {
+      const { dao } = await this.plugin.getModuleDetails(
+        this.network,
+        this.moduleAddress
+      );
+      this.gnosisSafeAddress = dao;
+      this.transactionConfig = {
+        ...this.transactionConfig,
+        gnosisSafeAddress: this.gnosisSafeAddress,
+        tokens: await this.fetchTokens(this.gnosisSafeAddress)
+      };
+    } catch (e) {
+      console.error(e);
     }
   },
   methods: {
@@ -120,6 +116,21 @@ export default {
       this.input.txs = this.batches;
       this.input.valid = this.input.txs.flat().every(tx => tx);
       this.$emit('update:modelValue', this.input);
+    },
+    async fetchTokens(gnosisSafeAddress) {
+      console.log('gnosisSafeAddress', gnosisSafeAddress);
+      if (gnosisSafeAddress) {
+        const balances = await getGnosisSafeBalances(
+          this.network,
+          gnosisSafeAddress
+        );
+        return balances
+          .filter(balance => balance.token)
+          .map(balance => ({
+            ...balance.token,
+            address: balance.tokenAddress
+          }));
+      }
     }
   }
 };

@@ -1,6 +1,6 @@
 <template>
   <UiCollapsible
-    :hideRemove="preview"
+    :hideRemove="config.preview"
     :number="index + 1"
     :open="open"
     title="Multiple transactions"
@@ -15,14 +15,13 @@
       <PluginSafeSnapFormTransaction
         :index="index"
         :modelValue="transaction"
-        :network="network"
+        :config="config"
         :nonce="`${nonce + index}`"
-        :preview="preview"
         @remove="removeTransaction(index)"
         @update:modelValue="updateTransaction(index, $event)"
       />
     </div>
-    <UiButton v-if="!preview" @click="addTransaction">
+    <UiButton v-if="!config.preview" @click="addTransaction">
       Add Transaction
     </UiButton>
   </UiCollapsible>
@@ -32,7 +31,7 @@
 import { clone } from '@/helpers/utils';
 
 export default {
-  props: ['modelValue', 'index', 'nonce', 'network', 'preview'],
+  props: ['modelValue', 'index', 'nonce', 'config'],
   emits: ['update:modelValue', 'remove'],
   data() {
     return {

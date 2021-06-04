@@ -1,14 +1,14 @@
 <template>
   <PluginSafeSnapInputAddress
     v-model="to"
-    :disabled="preview"
+    :disabled="config.preview"
     :inputProps="{ required: true }"
     label="to (address)"
   />
 
   <UiInput
     v-model="value"
-    :disabled="preview"
+    :disabled="config.preview"
     :error="!isValidValue && 'Invalid Value'"
   >
     <template v-slot:label>value (wei)</template>
@@ -16,7 +16,7 @@
 
   <UiInput
     v-model="data"
-    :disabled="preview"
+    :disabled="config.preview"
     :error="!isValidData && 'Invalid Data'"
   >
     <template v-slot:label>Data</template>
@@ -38,7 +38,7 @@ const toModuleTransaction = ({ to, value, data, nonce }) => {
   };
 };
 export default {
-  props: ['modelValue', 'nonce', 'preview'],
+  props: ['modelValue', 'nonce', 'config'],
   emits: ['update:modelValue'],
   data() {
     return {
@@ -84,7 +84,7 @@ export default {
   },
   methods: {
     updateTransaction() {
-      if (this.preview) return;
+      if (this.config.preview) return;
 
       const transaction = toModuleTransaction({
         value: this.value,

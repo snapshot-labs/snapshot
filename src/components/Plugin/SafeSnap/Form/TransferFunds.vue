@@ -1,22 +1,26 @@
 <template>
-  <UiSelect v-model="asset" :disabled="preview">
+  <UiSelect v-model="tokenAddress" :disabled="config.preview">
     <template v-slot:label>
       asset
       <img
-        v-if="asset !== undefined"
-        :src="erc20Tokens[asset].image"
-        alt="TOKEN"
+        v-if="selectedToken"
+        :src="selectedToken.logoUri"
+        alt=""
         class="tokenImage"
       />
     </template>
-    <option v-for="(token, index) in erc20Tokens" :key="index" :value="index">
+    <option
+      v-for="(token, index) in tokens"
+      :key="index"
+      :value="token.address"
+    >
       {{ token.name }}
     </option>
   </UiSelect>
 
   <PluginSafeSnapInputAddress
     v-model="to"
-    :disabled="preview"
+    :disabled="config.preview"
     :inputProps="{
       required: true
     }"
@@ -24,7 +28,7 @@
   />
 
   <UiInput
-    :disabled="preview"
+    :disabled="config.preview"
     :error="!validValue && 'Invalid Value'"
     :modelValue="value"
     @update:modelValue="handleValueChange($event)"
@@ -35,88 +39,104 @@
 
 <script>
 import Plugin from '@snapshot-labs/snapshot.js/src/plugins/safeSnap';
-import { Erc20TokenList } from '@snapshot-labs/snapshot.js/src/plugins/safeSnap/erc20TokenList';
-import {
-  getERC20TokenTransferTransactionData,
-  getOperation
-} from '@/helpers/abi/utils';
 import { isBigNumberish } from '@ethersproject/bignumber/lib/bignumber';
 import { isAddress } from '@ethersproject/address';
-import { parseAmount, parseValueInput } from '@/helpers/utils';
+import { parseAmount } from '@/helpers/utils';
+import { getERC20TokenTransferTransactionData } from '@/helpers/abi/utils';
 
-const toModuleTransaction = ({
-  to,
-  recipient,
-  amount,
-  token,
-  value,
-  data,
-  nonce
-}) => {
-  return {
-    to,
-    data,
+const toModuleTransaction = ({ recipient, amount, token, data, nonce }) => {
+  const base = {
+    type: 'transferFunds',
+    operation: '0',
     nonce,
     token,
-    amount,
-    recipient,
-    operation: getOperation(to),
-    type: 'transferFunds',
-    value: parseValueInput(value)
+    recipient
+  };
+  if (token.address === 'main') {
+    return {
+      ...base,
+      data: '0x',
+      to: recipient,
+      amount: parseAmount(amount),
+      value: parseAmount(amount)
+    };
+  }
+  return {
+    ...base,
+    data,
+    to: token.address,
+    amount: parseAmount(amount),
+    value: '0'
   };
 };
-
+const ETHEREUM_COIN = {
+  name: 'Ethereum',
+  symbol: 'wei',
+  logoUri: 'https://gnosis-safe.io/app/static/media/token_eth.bc98bd46.svg',
+  address: 'main'
+};
 export default {
-  props: ['modelValue', 'nonce', 'network', 'preview'],
+  props: ['modelValue', 'nonce', 'config'],
   emits: ['update:modelValue'],
   data() {
     return {
       plugin: new Plugin(),
-      erc20Tokens: Erc20TokenList,
+      tokens: [ETHEREUM_COIN],
+
       to: '',
-      asset: 0,
       value: '0',
+      tokenAddress: 'main',
+
       validValue: true
     };
   },
+  computed: {
+    selectedToken() {
+      return this.tokens.find(token => token.address === this.tokenAddress);
+    }
+  },
   mounted() {
+    this.setTokens();
     if (this.modelValue) {
       const { recipient = '', token, amount = '0' } = this.modelValue;
       this.to = recipient;
       this.handleValueChange(amount);
-      this.asset = this.erc20Tokens.findIndex(t => t.address === token.address);
+      if (token) {
+        this.tokenAddress = token.address;
+        this.tokens = [token];
+      }
     }
   },
   watch: {
     to() {
       this.updateTransaction();
     },
-    asset() {
+    tokenAddress() {
       this.updateTransaction();
     },
     value() {
       this.updateTransaction();
+    },
+    config() {
+      this.setTokens();
     }
   },
   methods: {
     updateTransaction() {
-      if (this.preview) return;
+      if (this.config.preview) return;
       try {
         if (isBigNumberish(this.value) && isAddress(this.to)) {
-          const token = Erc20TokenList[this.asset];
-          const data = getERC20TokenTransferTransactionData(
-            this.to,
-            this.value
-          );
+          const data =
+            this.selectedToken.address === 'main'
+              ? '0x'
+              : getERC20TokenTransferTransactionData(this.to, this.value);
 
           const transaction = toModuleTransaction({
             data,
-            token,
-            value: 0,
-            to: token.address,
-            recipient: this.to,
+            nonce: this.nonce,
             amount: this.value,
-            nonce: this.nonce
+            recipient: this.to,
+            token: this.selectedToken
           });
 
           if (this.plugin.validateTransaction(transaction)) {
@@ -136,6 +156,11 @@ export default {
         this.validValue = true;
       } catch (error) {
         this.validValue = false;
+      }
+    },
+    setTokens() {
+      if (this.config.tokens) {
+        this.tokens = [ETHEREUM_COIN, ...this.config.tokens];
       }
     }
   }

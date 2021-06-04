@@ -16,6 +16,11 @@ const EXPLORER_API_URLS = {
   '4': 'https://api-rinkeby.etherscan.io/api'
 };
 
+const GNOSIS_SAFE_TRANSACTION_API_URLS = {
+  '1': 'https://safe-transaction.gnosis.io/api/v1/',
+  '4': 'https://safe-transaction.rinkeby.gnosis.io/api/v1/'
+};
+
 const fetchContractABI = memoize(
   async (url: string, contractAddress: string) => {
     const params = new URLSearchParams({
@@ -151,7 +156,7 @@ const ERC20ContractABI = [
 export const getERC20TokenTransferTransactionData = (
   recipientAddress: string,
   amount: BigNumberish
-) => {
+): string => {
   const contractInterface = new Interface(ERC20ContractABI);
   return contractInterface.encodeFunctionData('transfer', [
     recipientAddress,
@@ -169,3 +174,25 @@ export const getOperation = to => {
 export const parseMethodToABI = (method: AbiItemExtended) => {
   return [method];
 };
+
+const callGnosisSafeTransactionApi = async (network: string, url: string) => {
+  const apiUrl = GNOSIS_SAFE_TRANSACTION_API_URLS[network];
+  const response = await fetch(apiUrl + url);
+  return response.json();
+};
+
+export const getGnosisSafeBalances = memoize(
+  (network, safeAddress) => {
+    const endpointPath = `/safes/${safeAddress}/balances`;
+    return callGnosisSafeTransactionApi(network, endpointPath);
+  },
+  (safeAddress, network) => `${safeAddress}_${network}`
+);
+
+export const getGnosisSafeCollecibles = memoize(
+  (network, safeAddress) => {
+    const endpointPath = `/safes/${safeAddress}/collectibles`;
+    return callGnosisSafeTransactionApi(network, endpointPath);
+  },
+  (safeAddress, network) => `${safeAddress}_${network}`
+);

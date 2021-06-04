@@ -1,6 +1,6 @@
 <template>
   <UiCollapsible
-    :hideRemove="preview"
+    :hideRemove="config.preview"
     :number="index + 1"
     :open="open"
     :title="title"
@@ -8,9 +8,9 @@
     @toggle="open = !open"
   >
     <UiSelect
+      :disabled="config.preview"
       :modelValue="type"
       @update:modelValue="handleTypeChange($event)"
-      :disabled="preview"
     >
       <template v-slot:label>type</template>
       <option value="contractInteraction">Contract Interaction</option>
@@ -21,19 +21,17 @@
 
     <PluginSafeSnapFormContractInteraction
       v-if="type === 'contractInteraction'"
+      :config="config"
       :modelValue="modelValue"
-      :network="network"
       :nonce="nonce"
-      :preview="preview"
       @update:modelValue="$emit('update:modelValue', $event)"
     />
 
     <PluginSafeSnapFormTransferFunds
       v-if="type === 'transferFunds'"
+      :config="config"
       :modelValue="modelValue"
-      :network="network"
       :nonce="nonce"
-      :preview="preview"
       @update:modelValue="$emit('update:modelValue', $event)"
     />
 
@@ -41,7 +39,7 @@
       v-if="type === 'raw'"
       :modelValue="modelValue"
       :nonce="nonce"
-      :preview="preview"
+      :config="config"
       @update:modelValue="$emit('update:modelValue', $event)"
     />
   </UiCollapsible>
@@ -55,7 +53,7 @@ const labels = {
   raw: 'Raw Transaction'
 };
 export default {
-  props: ['modelValue', 'index', 'nonce', 'network', 'preview'],
+  props: ['modelValue', 'index', 'nonce', 'config'],
   emits: ['update:modelValue', 'remove'],
   data() {
     let type = 'contractInteraction';
@@ -64,13 +62,13 @@ export default {
     }
 
     return {
-      open: !this.preview,
+      open: !this.config.preview,
       types: ['contractInteraction', 'transferFunds', 'sendAsset'],
       type
     };
   },
   mounted() {
-    if (!this.preview) this.$emit('update:modelValue', undefined);
+    if (!this.config.preview) this.$emit('update:modelValue', undefined);
   },
   computed: {
     title() {
@@ -78,7 +76,6 @@ export default {
         try {
           const addr = this._shorten(this.modelValue.to);
           const type = this.modelValue.type || this.type;
-          console.log('this.modelValue', this.modelValue);
           switch (type) {
             case 'contractInteraction':
               return `${this.modelValue.abi[0].name}() - ${this.modelValue.value} wei to ${addr}`;
