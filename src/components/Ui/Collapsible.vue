@@ -13,7 +13,7 @@
       </span>
     </div>
 
-    <div v-if="open" class="p-2">
+    <div :class="{ hide: !open }" class="p-2">
       <slot />
     </div>
   </div>
@@ -38,5 +38,8 @@ export default {
   line-height: 46px;
   height: 46px;
   font-size: 18px;
+}
+.hide {
+  display: none;
 }
 </style>
