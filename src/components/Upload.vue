@@ -1,7 +1,7 @@
 <template>
   <UiLoading v-if="loading" />
   <label v-else class="file-select">
-    <input type="file" @change="handleFileChange" accept="image/*, video/mp4" />
+    <input type="file" @change="handleFileChange" accept="image/*" />
     {{ $t('upload') }}
   </label>
 </template>
