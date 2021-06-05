@@ -229,7 +229,7 @@
       "changeOutcome": "Change outcome",
       "executeTxs": "Execute transaction 1/{0}",
       "finalized": "Vote finalized",
-      "executed": "Executed",
+      "executed": "{0}/{0} Transactions executed",
       "waiting": "Waiting for vote to close",
       "error": "Error",
       "question": "Did this proposal pass and does it meet the",
