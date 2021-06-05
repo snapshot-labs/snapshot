@@ -1,13 +1,9 @@
 <template>
-  <Layout>
-    <template #sidebar-left>
-      <BlockSpace :space="space" />
-    </template>
+  <SpaceLayout :space="space">
     <template #content-right>
       <div class="px-4 px-md-0 mb-3 d-flex">
-        <div class="flex-auto">
-          <div v-text="space.name" />
-          <div class="d-flex flex-items-center flex-auto">
+        <div class="d-flex flex-items-end flex-auto">
+          <div>
             <h2>{{ $t('proposals.header') }}</h2>
           </div>
         </div>
@@ -48,7 +44,7 @@
         <RowLoading class="my-2" />
       </Block>
     </template>
-  </Layout>
+  </SpaceLayout>
 </template>
 
 <script>

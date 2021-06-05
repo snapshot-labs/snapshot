@@ -1,8 +1,24 @@
 <template>
-  <div style="position: fixed; width: 240px">
+  <div>
     <Block :slim="true" class="overflow-hidden">
       <div class="text-center border-bottom header-bg">
         <Token :space="space" symbolIndex="space" size="80" class="mt-3 mb-2" />
+        <div class="my-1" v-if="space.github || space.twitter">
+          <a
+            v-if="space.github"
+            :href="`https://github.com/${space.github}`"
+            target="_blank"
+          >
+            <Icon size="20" name="github" class="mr-1 mx-2" />
+          </a>
+          <a
+            v-if="space.twitter"
+            :href="`https://twitter.com/${space.twitter}`"
+            target="_blank"
+          >
+            <Icon size="20" name="twitter" class="mr-1 mx-2" />
+          </a>
+        </div>
         <h3 class="mb-3 px-4">{{ space.name }}</h3>
       </div>
       <div class="py-3">

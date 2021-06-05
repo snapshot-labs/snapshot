@@ -1,12 +1,6 @@
 <template>
-  <Layout>
-    <template #sidebar-left>
-      <BlockSpace :space="space" />
-    </template>
+  <SpaceLayout :space="space">
     <template #content-right>
-      <div class="px-4 px-md-0 mb-3 d-flex">
-        <h2>{{ space.name }}</h2>
-      </div>
       <Block>
         <div v-if="space.about" class="mb-3">
           <h4 class="text-white mb-2">{{ $t('settings.about') }}</h4>
@@ -65,7 +59,7 @@
         </div>
       </Block>
     </template>
-  </Layout>
+  </SpaceLayout>
 </template>
 
 <script>
