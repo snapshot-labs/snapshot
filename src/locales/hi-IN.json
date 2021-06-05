@@ -105,6 +105,7 @@
   "strategyParams": "Strategy params",
   "addresses": "Addresses",
   "networkErrorPlayground": "Network error - please open your browser console for more information",
+  "upload": "Upload",
   "errors": {
     "required": "यह जानकारी जरुरी है",
     "minLength": "न्यूनतम लंबाई {0}",
@@ -179,7 +180,7 @@
     "admins": "Admins",
     "filters": "छांटे",
     "defaultTab": "डिफ़ॉल्ट टैब",
-    "minScore": "न्यूनतम स्कोर",
+    "proposalThreshold": "Proposal threshold",
     "showOnly": "केवल मेंबर्स के प्रोपोज़ल्स दिखाए",
     "editPlugin": "प्लगइन संपादित करें",
     "addPlugin": "प्लगइन जोड़ें",
