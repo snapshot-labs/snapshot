@@ -113,7 +113,8 @@ export default {
     return {
       connectors,
       step: null,
-      path: 'https://raw.githubusercontent.com/snapshot-labs/lock/master/connectors/assets'
+      path:
+        'https://raw.githubusercontent.com/snapshot-labs/lock/master/connectors/assets'
     };
   },
   watch: {

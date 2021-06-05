@@ -111,15 +111,12 @@ export default {
       network,
       this.proposalConfig.conditionId
     );
-    this.baseProductMarketMaker =
-      conditionQuery.condition.fixedProductMarketMakers.find(
-        market =>
-          market.collateralToken === this.proposalConfig.baseTokenAddress
-      );
-    this.quoteProductMarketMaker =
-      conditionQuery.condition.fixedProductMarketMakers.find(
-        market => market.collateralToken === this.quoteToken.address
-      );
+    this.baseProductMarketMaker = conditionQuery.condition.fixedProductMarketMakers.find(
+      market => market.collateralToken === this.proposalConfig.baseTokenAddress
+    );
+    this.quoteProductMarketMaker = conditionQuery.condition.fixedProductMarketMakers.find(
+      market => market.collateralToken === this.quoteToken.address
+    );
 
     const tokenPairQuery = await this.plugin.getUniswapPair(
       network,
