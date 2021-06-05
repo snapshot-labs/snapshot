@@ -105,6 +105,7 @@
   "strategyParams": "策略参数",
   "addresses": "地址",
   "networkErrorPlayground": "网络错误 - 请打开您的浏览器控制台获取更多信息",
+  "upload": "Upload",
   "errors": {
     "required": "此项为必填项",
     "minLength": "最小长度为 {0}",
@@ -179,7 +180,7 @@
     "admins": "管理员",
     "filters": "过滤器",
     "defaultTab": "默认标签页",
-    "minScore": "最小得分",
+    "proposalThreshold": "Proposal threshold",
     "showOnly": "仅显示会员提议",
     "editPlugin": "编辑插件",
     "addPlugin": "添加插件",
