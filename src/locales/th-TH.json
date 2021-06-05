@@ -105,6 +105,7 @@
   "strategyParams": "Strategy params",
   "addresses": "Addresses",
   "networkErrorPlayground": "Network error - please open your browser console for more information",
+  "upload": "Upload",
   "errors": {
     "required": "ต้องระบุข้อมูลในช่อง",
     "minLength": "ความยาวต่ำสุดคือ {0}",
@@ -179,7 +180,7 @@
     "admins": "ผู้ดูแลระบบ",
     "filters": "ตัวกรอง",
     "defaultTab": "ค่าเริ่มต้นแท็บ",
-    "minScore": "นาที. คะแนน",
+    "proposalThreshold": "Proposal threshold",
     "showOnly": "แสดงเฉพาะข้อเสนอของสมาชิก",
     "editPlugin": "แก้ไขปลั๊กอิน",
     "addPlugin": "เพิ่มปลั๊กอิน",
