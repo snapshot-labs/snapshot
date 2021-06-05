@@ -105,6 +105,7 @@
   "strategyParams": "Strategy params",
   "addresses": "Addresses",
   "networkErrorPlayground": "Network error - please open your browser console for more information",
+  "upload": "Upload",
   "errors": {
     "required": "Le champ est requis",
     "minLength": "Longueur minimale de {0}",
@@ -179,7 +180,7 @@
     "admins": "Administrateurs",
     "filters": "Filtres",
     "defaultTab": "Onglet par défaut",
-    "minScore": "Score min.",
+    "proposalThreshold": "Proposal threshold",
     "showOnly": "Afficher uniquement les propositions des membres",
     "editPlugin": "Modifier le module",
     "addPlugin": "Ajouter un plugin",
