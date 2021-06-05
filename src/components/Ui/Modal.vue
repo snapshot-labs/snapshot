@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import { toRefs, watch } from 'vue';
+import { watch, toRefs } from 'vue';
 import { useModal } from '@/composables/useModal';
 
 export default {
