@@ -17,6 +17,7 @@
   "snapshot": "Срез",
   "strategies": "Стратегия(и)",
   "strategiesPage": "Стратегии",
+  "space": "Space",
   "spaces": "Spaces",
   "version": "Версия",
   "timeline": "Хронология",
@@ -51,7 +52,7 @@
   "confirmVote": "Подтвердить волеизъявление",
   "sureToVote": "Вы уверены, что хотите проголосовать за \"{0}\"?",
   "cannotBeUndone": "Это действие нельзя будет отменить.",
-  "option": "Параметры",
+  "options": "Option(s)",
   "votingPower": "Ваша сила голоса",
   "receipt": "Квитанция",
   "relayer": "Передатчик",
@@ -89,12 +90,18 @@
   "startIn": "начался {0}",
   "endIn": "по {1}",
   "endedAgo": "по {1}",
-  "proposalBy": "By {0}",
+  "proposalBy": "by {0}",
   "endDate": "по {0}",
   "contectHash": "Хэш содержимого",
   "defaultSkin": "Тема по умолчанию",
   "select": "Выбрать",
   "language": "Язык",
+  "agree": "I agree",
+  "mustAgreeToTerms": "Before you can complete this action, you must agree to {0} terms of service here:",
+  "playground": "Playground",
+  "strategyParams": "Strategy params",
+  "addresses": "Addresses",
+  "networkErrorPlayground": "Network error - please open your browser console for more information",
   "errors": {
     "required": "Field is required",
     "minLength": "Minimum length is {0}",
@@ -122,16 +129,19 @@
   "delegate": {
     "header": "Делегировать право голоса",
     "selectAddress": "Выбрать адрес",
-    "addressPlaceholder": "Делегировать адрес или домен ENS",
+    "to": "To",
+    "addressPlaceholder": "Address or ENS name",
     "spacePlaceholder": "Раздел (опционально)",
     "delegations": "Вы делегировали",
+    "allSpaces": "For all spaces",
     "delegated": "Вам делегировали"
   },
   "proposal": {
     "castVote": "Опубликовать бюллетень",
     "vote": "Бюллетень",
     "startDate": "Дата начала",
-    "endDate": "Дата окончания"
+    "endDate": "Дата окончания",
+    "votingSystem": "Voting system"
   },
   "proposals": {
     "header": "Опросы",
@@ -151,7 +161,7 @@
     "seeENS": "Смотреть в ENS",
     "setENS": "Установить запись в ENS",
     "profile": "Профиль",
-    "changeAvatar": "Сменить аватар",
+    "avatar": "Avatar",
     "name": "Название",
     "about": "О проекте",
     "terms": "Terms",
@@ -194,5 +204,14 @@
     "networks": "network(s)",
     "plugins": "plugin(s)",
     "results": "result(s)"
+  },
+  "voting": {
+    "selectVoting": "Select voting system",
+    "single-choice": "Single choice voting",
+    "approval": "Approval voting",
+    "description": {
+      "single-choice": "Each voter may select only one choice.",
+      "approval": "Each voter may select any number of choices."
+    }
   }
 }

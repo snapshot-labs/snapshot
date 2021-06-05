@@ -51,7 +51,7 @@
     <a
       v-if="!showAllVotes && votes.length > 10"
       @click="showAllVotes = true"
-      class="px-4 py-3 border-top text-center d-block bg-gray-dark rounded-bottom-0 rounded-md-bottom-2"
+      class="px-4 py-3 border-top text-center d-block header-bg rounded-bottom-0 rounded-md-bottom-2"
     >
       {{ $t('seeMore') }}
     </a>

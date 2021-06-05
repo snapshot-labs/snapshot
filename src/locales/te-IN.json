@@ -17,6 +17,7 @@
   "snapshot": "స్నాప్‌షాట్",
   "strategies": "వ్యూహం(లు)",
   "strategiesPage": "వ్యూహాలు",
+  "space": "Space",
   "spaces": "Spaces",
   "version": "వెర్షన్",
   "timeline": "కాలక్రమం",
@@ -51,7 +52,7 @@
   "confirmVote": "ఓటును నిర్ధారించండి",
   "sureToVote": "మీరు ఖచ్చితంగా \"{0}\" ఓటు వేయాలనుకుంటున్నారా?",
   "cannotBeUndone": "ఈ చర్య రద్దు చేయబడదు.",
-  "option": "ఎంపిక",
+  "options": "Option(s)",
   "votingPower": "మీ ఓటింగ్ శక్తి",
   "receipt": "రశీదు",
   "relayer": "రిలేయర్",
@@ -89,12 +90,18 @@
   "startIn": "start {0}",
   "endIn": "end {1}",
   "endedAgo": "ended {1}",
-  "proposalBy": "By {0}",
+  "proposalBy": "by {0}",
   "endDate": "ముగింపు {0}",
   "contectHash": "కంటెంట్ హాష్",
   "defaultSkin": "డిఫాల్ట్ స్కిన్స్",
   "select": "ఎంచుకోండి",
   "language": "Language",
+  "agree": "I agree",
+  "mustAgreeToTerms": "Before you can complete this action, you must agree to {0} terms of service here:",
+  "playground": "Playground",
+  "strategyParams": "Strategy params",
+  "addresses": "Addresses",
+  "networkErrorPlayground": "Network error - please open your browser console for more information",
   "errors": {
     "required": "Field is required",
     "minLength": "Minimum length is {0}",
@@ -122,16 +129,19 @@
   "delegate": {
     "header": "ప్రతినిధి",
     "selectAddress": "చిరునామాను ఎంచుకోండి",
-    "addressPlaceholder": "ప్రతినిధి చిరునామా లేదా ENS పేరు",
+    "to": "To",
+    "addressPlaceholder": "Address or ENS name",
     "spacePlaceholder": "స్పేస్ (ఐచ్ఛిక)",
     "delegations": "మీ ప్రతినిధి బృందం (లు)",
+    "allSpaces": "For all spaces",
     "delegated": "మీకు అప్పగించారు"
   },
   "proposal": {
     "castVote": "మీ ఓటు వేయండి",
     "vote": "ఓటు",
     "startDate": "ప్రారంబపు తేది",
-    "endDate": "ముగింపు తేదీ"
+    "endDate": "ముగింపు తేదీ",
+    "votingSystem": "Voting system"
   },
   "proposals": {
     "header": "ప్రతిపాదనలు",
@@ -151,7 +161,7 @@
     "seeENS": "ENS లో చూడండి",
     "setENS": "ENS లో రికార్డు సృష్టించండి",
     "profile": "ప్రొఫైల్",
-    "changeAvatar": "అవతార్ మార్చండి",
+    "avatar": "Avatar",
     "name": "పేరు",
     "about": "About",
     "terms": "Terms",
@@ -194,5 +204,14 @@
     "networks": "network(s)",
     "plugins": "plugin(s)",
     "results": "result(s)"
+  },
+  "voting": {
+    "selectVoting": "Select voting system",
+    "single-choice": "Single choice voting",
+    "approval": "Approval voting",
+    "description": {
+      "single-choice": "Each voter may select only one choice.",
+      "approval": "Each voter may select any number of choices."
+    }
   }
 }

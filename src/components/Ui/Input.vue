@@ -29,7 +29,7 @@
 <script>
 export default {
   props: {
-    modelValue: String || Number,
+    modelValue: [String, Number],
     placeholder: String,
     error: String,
     number: Boolean

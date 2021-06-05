@@ -6,6 +6,7 @@
 
 <script>
 import { formatBytes32String } from '@ethersproject/strings';
+import { getUrl } from '@snapshot-labs/snapshot.js/src/utils.ts';
 
 export default {
   props: ['space', 'size', 'symbolIndex'],
@@ -21,14 +22,19 @@ export default {
           ? 'space'
           : `logo${this.symbolIndex}`
         : 'logo';
-      const url = `https://raw.githubusercontent.com/snapshot-labs/snapshot-spaces/master/spaces/${this.space}/${file}.png`;
+      const url = this.space.avatar
+        ? this.space.avatar
+        : `https://raw.githubusercontent.com/snapshot-labs/snapshot-spaces/master/spaces/${this.spaceId}/${file}.png`;
       return `https://worker.snapshot.org/mirror?img=${encodeURIComponent(
-        url
+        getUrl(url)
       )}`;
     },
     spaceAddress() {
-      if (this.space) return formatBytes32String(this.space.slice(0, 24));
+      if (this.spaceId) return formatBytes32String(this.spaceId.slice(0, 24));
       return '';
+    },
+    spaceId() {
+      return this.space.id ?? this.space.key;
     }
   }
 };

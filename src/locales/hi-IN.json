@@ -17,6 +17,7 @@
   "snapshot": "स्नैपशॉट",
   "strategies": "स्ट्रेटेजीज",
   "strategiesPage": "स्ट्रेटेजीज",
+  "space": "Space",
   "spaces": "Spaces",
   "version": "संस्करण",
   "timeline": "टाइमलाइन",
@@ -51,7 +52,7 @@
   "confirmVote": "वोट की पुष्टी करें",
   "sureToVote": "क्या आप वाकई अपना वोट {0} को देना चाहते है?",
   "cannotBeUndone": "इस क्रिया को पूर्ववत नहीं किया जा सकता है।",
-  "option": "विकल्प",
+  "options": "Option(s)",
   "votingPower": "आपकी वोटिंग पावर:",
   "receipt": "रसीद",
   "relayer": "रिलेयर",
@@ -89,12 +90,18 @@
   "startIn": "शुरू {0}",
   "endIn": "ख़त्म {1}",
   "endedAgo": "ख़त्म हुआ {1}",
-  "proposalBy": "तक{0}",
+  "proposalBy": "by {0}",
   "endDate": "ख़त्म {0}",
   "contectHash": "कंटेंट हैश",
   "defaultSkin": "डिफ़ॉल्ट स्किन",
   "select": "चुनें",
   "language": "भाषा",
+  "agree": "I agree",
+  "mustAgreeToTerms": "Before you can complete this action, you must agree to {0} terms of service here:",
+  "playground": "Playground",
+  "strategyParams": "Strategy params",
+  "addresses": "Addresses",
+  "networkErrorPlayground": "Network error - please open your browser console for more information",
   "errors": {
     "required": "यह जानकारी जरुरी है",
     "minLength": "न्यूनतम लंबाई {0}",
@@ -122,16 +129,19 @@
   "delegate": {
     "header": "डेलीगेट",
     "selectAddress": "एड्रेस चुने",
-    "addressPlaceholder": "एड्रेस डेलीगेट करे या इ एन ऐस का नाम",
+    "to": "To",
+    "addressPlaceholder": "Address or ENS name",
     "spacePlaceholder": "स्पेस (वैकल्पिक)",
     "delegations": "आपके डेलीगेशन",
+    "allSpaces": "For all spaces",
     "delegated": "आपको दिए गए डेलीगेशन"
   },
   "proposal": {
     "castVote": "अपना वोट दे",
     "vote": "वोट",
     "startDate": "आरंभ तिथि",
-    "endDate": "समाप्ति दिनांक"
+    "endDate": "समाप्ति दिनांक",
+    "votingSystem": "Voting system"
   },
   "proposals": {
     "header": "प्रपोजल्स",
@@ -151,7 +161,7 @@
     "seeENS": "इ एन ऐस पर देखे",
     "setENS": "इ एन ऐस पर रिकॉर्ड सेट करें",
     "profile": "प्रोफ़ाइल",
-    "changeAvatar": "अवतार बदलें",
+    "avatar": "Avatar",
     "name": "नाम",
     "about": "जानकारी",
     "terms": "शर्तें",
@@ -194,5 +204,14 @@
     "networks": "नेटवर्क",
     "plugins": "प्लगइन्स",
     "results": "परिणाम"
+  },
+  "voting": {
+    "selectVoting": "Select voting system",
+    "single-choice": "Single choice voting",
+    "approval": "Approval voting",
+    "description": {
+      "single-choice": "Each voter may select only one choice.",
+      "approval": "Each voter may select any number of choices."
+    }
   }
 }

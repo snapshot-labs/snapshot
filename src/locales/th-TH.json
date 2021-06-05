@@ -17,6 +17,7 @@
   "snapshot": "ถ่ายภาพทันที",
   "strategies": "กลยุทธ์(s)",
   "strategiesPage": "กลยุทธ์",
+  "space": "Space",
   "spaces": "พื้นที่",
   "version": "รุ่น",
   "timeline": "ระยะเวลา",
@@ -51,7 +52,7 @@
   "confirmVote": "ยืนยันการโหวต",
   "sureToVote": "คุณแน่ใจไหมว่าต้องการโหวต \"{0}\"",
   "cannotBeUndone": "ไม่สามารถยกเลิกการดำเนินการนี้ได้",
-  "option": "ตัวเลือก",
+  "options": "Option(s)",
   "votingPower": "การโหวตของคุณ",
   "receipt": "ใบเสร็จ",
   "relayer": "ผู้จัด",
@@ -89,12 +90,18 @@
   "startIn": "เริ่มต้น {0}",
   "endIn": "สินสุด{1}",
   "endedAgo": "สิ้นสุด {1}",
-  "proposalBy": "โดย{0}",
+  "proposalBy": "by {0}",
   "endDate": "สิ้นสุด{0}",
   "contectHash": "เนื้อหายุ่งเหยิง",
   "defaultSkin": "ค่าเริ่มต้นของผิวหนัง",
   "select": "เลือก",
   "language": "ภาษา",
+  "agree": "I agree",
+  "mustAgreeToTerms": "Before you can complete this action, you must agree to {0} terms of service here:",
+  "playground": "Playground",
+  "strategyParams": "Strategy params",
+  "addresses": "Addresses",
+  "networkErrorPlayground": "Network error - please open your browser console for more information",
   "errors": {
     "required": "ต้องระบุข้อมูลในช่อง",
     "minLength": "ความยาวต่ำสุดคือ {0}",
@@ -122,16 +129,19 @@
   "delegate": {
     "header": "ผู้รับมอบหมาย",
     "selectAddress": "เลือกที่อยู่",
-    "addressPlaceholder": "ที่อยู่ของผู้รับมอบสิทธิ์หรือชื่อ ENS",
+    "to": "To",
+    "addressPlaceholder": "Address or ENS name",
     "spacePlaceholder": "เว้นวรรค (ไม่บังคับ)",
     "delegations": "การมอบหมายของคุณ(s)",
+    "allSpaces": "For all spaces",
     "delegated": "มอบหมายให้คุณ"
   },
   "proposal": {
     "castVote": "การโหวตของคุณ",
     "vote": "ลงคะแนนโหวต",
     "startDate": "วันที่เริ่มต้น",
-    "endDate": "วันสิ้นสุด"
+    "endDate": "วันสิ้นสุด",
+    "votingSystem": "Voting system"
   },
   "proposals": {
     "header": "ข้อเสนอ",
@@ -151,7 +161,7 @@
     "seeENS": "ดูในENS",
     "setENS": "ตั้งค่าบันทึกใน ENS",
     "profile": "ข้อมูลส่วนตัว",
-    "changeAvatar": "เปลี่ยนรูปประจำตัว",
+    "avatar": "Avatar",
     "name": "ชื่อ",
     "about": "เกี่ยวกับ",
     "terms": "เงื่อนไข",
@@ -194,5 +204,14 @@
     "networks": "เครือข่าย(s)",
     "plugins": "ปลั๊กอิน(s)",
     "results": "ผลลัพธ์(s)"
+  },
+  "voting": {
+    "selectVoting": "Select voting system",
+    "single-choice": "Single choice voting",
+    "approval": "Approval voting",
+    "description": {
+      "single-choice": "Each voter may select only one choice.",
+      "approval": "Each voter may select any number of choices."
+    }
   }
 }

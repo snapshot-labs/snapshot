@@ -50,20 +50,29 @@
         <div v-if="isOwner || isAdmin">
           <Block :title="$t('settings.profile')">
             <div class="mb-2">
-              <a
-                href="https://docs.snapshot.org/spaces/add-avatar"
-                target="_blank"
-              >
-                <UiButton class="width-full mb-2">
-                  {{ $t('settings.changeAvatar') }}
-                  <Icon name="external-link" class="ml-1" />
-                </UiButton>
-              </a>
               <UiInput v-model="form.name" :error="inputError('name')">
                 <template v-slot:label>{{ $t(`settings.name`) }}*</template>
               </UiInput>
               <UiInput v-model="form.about" :error="inputError('about')">
                 <template v-slot:label> {{ $t(`settings.about`) }} </template>
+              </UiInput>
+              <UiInput
+                v-model="form.avatar"
+                placeholder="e.g. https://example.com/space.png"
+                :error="inputError('avatar')"
+              >
+                <template v-slot:label>
+                  {{ $t(`settings.avatar`) }}
+                </template>
+                <template v-slot:info>
+                  <Upload
+                    class="ml-2"
+                    @input="setAvatarUrl"
+                    @loading="setUploadLoading"
+                  >
+                    {{ $t('upload') }}
+                  </Upload>
+                </template>
               </UiInput>
               <UiInput
                 @click="modalNetworksOpen = true"
@@ -227,7 +236,9 @@
                 :error="inputError('minScore')"
                 :number="true"
               >
-                <template v-slot:label>{{ $t('settings.minScore') }}</template>
+                <template v-slot:label>{{
+                  $t('settings.proposalThreshold')
+                }}</template>
               </UiInput>
               <div class="mb-2 d-flex flex-items-center px-2">
                 <Checkbox
@@ -274,6 +285,7 @@
           {{ $t('reset') }}
         </UiButton>
         <UiButton
+          :disabled="uploadLoading"
           @click="handleSubmit"
           :loading="loading"
           class="d-block width-full button--submit"
@@ -353,6 +365,7 @@ export default {
       modalPluginsOpen: false,
       loaded: false,
       loading: false,
+      uploadLoading: false,
       showErrors: false,
       form: {
         strategies: [],
@@ -368,7 +381,7 @@ export default {
       return validateSchema(schemas.space, this.form);
     },
     isValid() {
-      return !this.loading && this.web3.account && this.validate === true;
+      return !this.loading && this.validate === true && !this.uploadLoading;
     },
     contenthash() {
       const key = encodeURIComponent(this.key);
@@ -499,6 +512,12 @@ export default {
     },
     handleSubmitAddPlugins(payload) {
       this.form.plugins[payload.key] = payload.input;
+    },
+    setUploadLoading(s) {
+      this.uploadLoading = s;
+    },
+    setAvatarUrl(url) {
+      if (typeof url === 'string') this.form.avatar = url;
     }
   }
 };

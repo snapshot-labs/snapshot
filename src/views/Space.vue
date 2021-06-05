@@ -1,32 +1,14 @@
 <template>
   <Layout>
     <template #sidebar-left>
-      <div style="position: fixed; width: 240px">
-        <Block :slim="true" :title="$t('filters')" class="overflow-hidden">
-          <div class="py-3">
-            <router-link
-              :to="{ name: 'timeline' }"
-              v-text="$t('favorites')"
-              class="d-block px-4 py-2 sidenav-item"
-            />
-            <router-link
-              :to="{ name: 'explore' }"
-              v-text="$t('allSpaces')"
-              class="d-block px-4 py-2 sidenav-item"
-            />
-          </div>
-        </Block>
-      </div>
+      <BlockSpace :space="space" />
     </template>
     <template #content-right>
       <div class="px-4 px-md-0 mb-3 d-flex">
         <div class="flex-auto">
-          <router-link :to="{ name: 'home' }" class="text-gray">
-            <Icon name="back" size="22" class="v-align-middle" />
-            {{ $t('backToHome') }}
-          </router-link>
+          <div v-text="space.name" />
           <div class="d-flex flex-items-center flex-auto">
-            <h2>{{ $t('timeline') }}</h2>
+            <h2>{{ $t('proposals.header') }}</h2>
           </div>
         </div>
         <UiDropdown
@@ -37,7 +19,8 @@
             { text: $t('proposals.states.all'), action: 'all' },
             { text: $t('proposals.states.active'), action: 'active' },
             { text: $t('proposals.states.pending'), action: 'pending' },
-            { text: $t('proposals.states.closed'), action: 'closed' }
+            { text: $t('proposals.states.closed'), action: 'closed' },
+            { text: $t('proposals.states.core'), action: 'core' }
           ]"
         >
           <UiButton class="pr-3">
@@ -47,17 +30,7 @@
         </UiDropdown>
       </div>
 
-      <Block
-        v-if="favoritesKeys.length < 1 && $route.name === 'timeline'"
-        class="text-center"
-      >
-        <div class="mb-3">{{ $t('noFavorites') }}</div>
-        <router-link :to="{ name: 'home' }">
-          <UiButton>{{ $t('addFavorites') }}</UiButton>
-        </router-link>
-      </Block>
-
-      <Block v-else-if="loading" :slim="true">
+      <Block v-if="loading" :slim="true">
         <RowLoading class="my-2" />
       </Block>
 
@@ -79,31 +52,31 @@
 </template>
 
 <script>
-import { onMounted, ref, computed } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
 import { useInfiniteLoader } from '@/composables/useInfiniteLoader';
-import { lsSet } from '@/helpers/utils';
-import { useUnseenProposals } from '@/composables/useUnseenProposals';
 import { useScrollMonitor } from '@/composables/useScrollMonitor';
+import { useDomain } from '@/composables/useDomain';
 import { apolloClient } from '@/apollo';
 import { PROPOSALS_QUERY } from '@/helpers/queries';
-
-// Persistent filter state
-const filterBy = ref('all');
 
 export default {
   setup() {
     const store = useStore();
     const route = useRoute();
+    const { domain } = useDomain();
 
-    const favorites = computed(() =>
-      route.name === 'timeline' ? store.state.favoriteSpaces.favorites : []
-    );
-    const favoritesKeys = computed(() => Object.keys(favorites.value));
+    const spaceId = domain || route.params.key;
 
     const loading = ref(false);
     const proposals = ref([]);
+    const filterBy = ref('all');
+
+    const space = computed(() => store.state.app.spaces[spaceId]);
+    const spaceMembers = computed(() =>
+      space.value.members.length < 1 ? ['none'] : space.value.members
+    );
 
     // Infinite scroll with pagination
     const {
@@ -126,8 +99,9 @@ export default {
           variables: {
             first: loadBy,
             skip,
-            space_in: favoritesKeys.value,
-            state: filterBy.value
+            space: spaceId,
+            state: filterBy.value === 'core' ? 'all' : filterBy.value,
+            author_in: filterBy.value === 'core' ? spaceMembers.value : []
           }
         });
         stopLoadingMore.value = response.data.proposals?.length < loadBy;
@@ -154,21 +128,13 @@ export default {
       load();
     }
 
-    // Save the most recently seen proposalId in localStorage
-    const { getProposalIds, proposalIds } = useUnseenProposals();
-    onMounted(async () => {
-      await getProposalIds(favorites.value);
-      if (proposalIds.value[0])
-        lsSet('lastSeenProposalId', proposalIds.value[0].id);
-    });
-
     return {
       loading,
       selectState,
       loadingMore,
       filterBy,
       proposals,
-      favoritesKeys
+      space
     };
   }
 };
