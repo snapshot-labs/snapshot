@@ -105,6 +105,7 @@
   "strategyParams": "Strategy params",
   "addresses": "Addresses",
   "networkErrorPlayground": "Network error - please open your browser console for more information",
+  "upload": "Upload",
   "errors": {
     "required": "フィールドが埋まってません",
     "minLength": "最小文字数は {0} です",
@@ -179,7 +180,7 @@
     "admins": "Admins",
     "filters": "フィルター",
     "defaultTab": "デフォルトのタブ",
-    "minScore": "最低スコア",
+    "proposalThreshold": "Proposal threshold",
     "showOnly": "メンバー限定提案",
     "editPlugin": "プラグインを編集する",
     "addPlugin": "プラグインを追加する",
