@@ -105,6 +105,7 @@
   "strategyParams": "Strategy params",
   "addresses": "Addresses",
   "networkErrorPlayground": "Network error - please open your browser console for more information",
+  "upload": "Upload",
   "errors": {
     "required": "Fältet är obligatoriskt",
     "minLength": "Minsta längd är {0}",
@@ -179,7 +180,7 @@
     "admins": "Admins",
     "filters": "Filter",
     "defaultTab": "Standardflik",
-    "minScore": "Minsta poäng",
+    "proposalThreshold": "Proposal threshold",
     "showOnly": "Visa endast medlemsförslag",
     "editPlugin": "Redigera plugin",
     "addPlugin": "Lägg till plugin",
