@@ -105,6 +105,7 @@
   "strategyParams": "Strategy params",
   "addresses": "Addresses",
   "networkErrorPlayground": "Network error - please open your browser console for more information",
+  "upload": "Upload",
   "errors": {
     "required": "Field is required",
     "minLength": "Minimum length is {0}",
@@ -179,7 +180,7 @@
     "admins": "Admins",
     "filters": "ఫిల్టర్లు",
     "defaultTab": "డిఫాల్ట్ టాబ్",
-    "minScore": "కనిష్ట స్కోరు",
+    "proposalThreshold": "Proposal threshold",
     "showOnly": "సభ్యుల ప్రతిపాదనలను మాత్రమే చూపించు",
     "editPlugin": "Edit plugin",
     "addPlugin": "Add plugin",
