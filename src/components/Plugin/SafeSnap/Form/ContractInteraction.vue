@@ -81,21 +81,6 @@ const toModuleTransaction = ({ to, value, data, nonce, method }) => {
     abi: parseMethodToABI(method)
   };
 };
-
-async function toDataURL(url) {
-  const data = await fetch(url);
-  const blob = await data.blob();
-  return new Promise(resolve => {
-    const reader = new FileReader();
-    reader.onloadend = function () {
-      resolve(reader.result);
-    };
-    reader.readAsDataURL(blob);
-  });
-}
-toDataURL('https://www.gravatar.com/avatar/d50c83cc0c6523b4d3f6085295c953e0');
-fetch('https://www.gravatar.com/avatar/d50c83cc0c6523b4d3f6085295c953e0');
-
 export default {
   props: ['modelValue', 'nonce', 'config'],
   emits: ['update:modelValue'],
