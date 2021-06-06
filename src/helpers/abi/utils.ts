@@ -114,7 +114,9 @@ export const getMethodAction = ({
 };
 
 export const extractUsefulMethods = (abi: AbiItem[]): AbiItemExtended[] => {
-  const allowedAbiItems = abi.filter(isAllowedMethod) as AllowedAbiItem[];
+  const allowedAbiItems = abi.filter(method => {
+    return isAllowedMethod(method) && getMethodAction(method) === 'write';
+  }) as AllowedAbiItem[];
 
   return allowedAbiItems
     .map(
