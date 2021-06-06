@@ -21,6 +21,16 @@ const GNOSIS_SAFE_TRANSACTION_API_URLS = {
   '4': 'https://safe-transaction.rinkeby.gnosis.io/api/v1/'
 };
 
+const ERC20ContractABI = [
+  'function transfer(address recipient, uint256 amount) public virtual override returns (bool)'
+];
+
+const ERC721ContractABI = [
+  'function safeTransferFrom(address _from, address _to, uint256 _tokenId) external payable'
+];
+
+const MULTISEND_CONTRACT_ADDRESS = '0x8D29bE29923b68abfDD21e541b9374737B49cdAD';
+
 const fetchContractABI = memoize(
   async (url: string, contractAddress: string) => {
     const params = new URLSearchParams({
@@ -149,10 +159,6 @@ export const getContractTransactionData = (
   return contractInterface.encodeFunctionData(name, parameterValues);
 };
 
-const ERC20ContractABI = [
-  'function transfer(address recipient, uint256 amount) public virtual override returns (bool)'
-];
-
 export const getERC20TokenTransferTransactionData = (
   recipientAddress: string,
   amount: BigNumberish
@@ -164,7 +170,18 @@ export const getERC20TokenTransferTransactionData = (
   ]);
 };
 
-const MULTISEND_CONTRACT_ADDRESS = '0x8D29bE29923b68abfDD21e541b9374737B49cdAD';
+export const getERC721TokenTransferTransactionData = (
+  fromAddress: string,
+  recipientAddress: string,
+  id: BigNumberish
+): string => {
+  const contractInterface = new Interface(ERC721ContractABI);
+  return contractInterface.encodeFunctionData('safeTransferFrom', [
+    fromAddress,
+    recipientAddress,
+    id
+  ]);
+};
 
 export const getOperation = to => {
   if (to === MULTISEND_CONTRACT_ADDRESS) return '1';

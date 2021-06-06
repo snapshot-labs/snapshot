@@ -15,8 +15,8 @@
       <template v-slot:label>type</template>
       <option value="contractInteraction">Contract Interaction</option>
       <option value="transferFunds">Transfer Funds</option>
+      <option value="sendAsset">Send Asset</option>
       <option value="raw">Raw Transaction</option>
-      <!--      <option value="sendAsset">Send Asset</option>-->
     </UiSelect>
 
     <PluginSafeSnapFormContractInteraction
@@ -29,6 +29,14 @@
 
     <PluginSafeSnapFormTransferFunds
       v-if="type === 'transferFunds'"
+      :config="config"
+      :modelValue="modelValue"
+      :nonce="nonce"
+      @update:modelValue="$emit('update:modelValue', $event)"
+    />
+
+    <PluginSafeSnapFormSendAsset
+      v-if="type === 'sendAsset'"
       :config="config"
       :modelValue="modelValue"
       :nonce="nonce"
@@ -81,6 +89,11 @@ export default {
               return `${this.modelValue.abi[0].name}() - ${this.modelValue.value} wei to ${addr}`;
             case 'transferFunds':
               return `Transfer ${this.modelValue.amount} ${this.modelValue.token.symbol} to ${addr}`;
+            case 'sendAsset':
+              return `Send ${this.modelValue.collectable.name} #${this._shorten(
+                this.modelValue.collectable.id,
+                10
+              )} to ${addr}`;
             case 'raw':
               return `Send ${this.modelValue.value} wei to ${addr}`;
           }

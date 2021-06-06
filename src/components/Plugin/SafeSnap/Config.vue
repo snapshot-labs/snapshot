@@ -42,7 +42,10 @@
 <script>
 import { clone } from '@/helpers/utils';
 import Plugin from '@snapshot-labs/snapshot.js/src/plugins/safeSnap';
-import { getGnosisSafeBalances } from '@/helpers/abi/utils';
+import {
+  getGnosisSafeBalances,
+  getGnosisSafeCollecibles
+} from '@/helpers/abi/utils';
 
 export default {
   props: [
@@ -88,7 +91,8 @@ export default {
       this.transactionConfig = {
         ...this.transactionConfig,
         gnosisSafeAddress: this.gnosisSafeAddress,
-        tokens: await this.fetchTokens(this.gnosisSafeAddress)
+        tokens: await this.fetchBalances(this.gnosisSafeAddress),
+        collectables: await this.fetchCollectables(this.gnosisSafeAddress)
       };
     } catch (e) {
       console.error(e);
@@ -117,20 +121,37 @@ export default {
       this.input.valid = this.input.txs.flat().every(tx => tx);
       this.$emit('update:modelValue', this.input);
     },
-    async fetchTokens(gnosisSafeAddress) {
-      console.log('gnosisSafeAddress', gnosisSafeAddress);
+    async fetchBalances(gnosisSafeAddress) {
       if (gnosisSafeAddress) {
-        const balances = await getGnosisSafeBalances(
-          this.network,
-          gnosisSafeAddress
-        );
-        return balances
-          .filter(balance => balance.token)
-          .map(balance => ({
-            ...balance.token,
-            address: balance.tokenAddress
-          }));
+        try {
+          const balances = await getGnosisSafeBalances(
+            this.network,
+            gnosisSafeAddress
+          );
+          return balances
+            .filter(balance => balance.token)
+            .map(balance => ({
+              ...balance.token,
+              address: balance.tokenAddress
+            }));
+        } catch (e) {
+          console.warn('Error fetching balances');
+        }
       }
+      return [];
+    },
+    async fetchCollectables(gnosisSafeAddress) {
+      if (gnosisSafeAddress) {
+        try {
+          return await getGnosisSafeCollecibles(
+            this.network,
+            gnosisSafeAddress
+          );
+        } catch (error) {
+          console.warn('Error fetching collectables');
+        }
+      }
+      return [];
     }
   }
 };

@@ -1,15 +1,18 @@
 <template>
-  <UiSelect v-model="tokenAddress" :disabled="config.preview">
+  <UiSelect v-model="collectableAddress" :disabled="config.preview">
     <template v-slot:label>asset</template>
-    <template v-slot:image v-if="selectedToken">
-      <img :src="selectedToken.logoUri" alt="" class="tokenImage" />
+    <template v-slot:image v-if="selectedCollectable">
+      <img :src="selectedCollectable.logoUri" alt="" class="tokenImage" />
     </template>
+    <option v-if="!collectables.length" disabled selected>
+      - No Collectables -
+    </option>
     <option
-      v-for="(token, index) in tokens"
+      v-for="(collectable, index) in collectables"
       :key="index"
-      :value="token.address"
+      :value="collectable.address"
     >
-      {{ token.name }}
+      {{ collectable.name }} #{{ _shorten(collectable.id, 10) }}
     </option>
   </UiSelect>
 
@@ -37,38 +40,34 @@ import Plugin from '@snapshot-labs/snapshot.js/src/plugins/safeSnap';
 import { isBigNumberish } from '@ethersproject/bignumber/lib/bignumber';
 import { isAddress } from '@ethersproject/address';
 import { parseAmount } from '@/helpers/utils';
-import { getERC20TokenTransferTransactionData } from '@/helpers/abi/utils';
+import { getERC721TokenTransferTransactionData } from '@/helpers/abi/utils';
 
-const toModuleTransaction = ({ recipient, amount, token, data, nonce }) => {
-  const base = {
-    type: 'transferFunds',
-    operation: '0',
-    nonce,
-    token,
-    recipient
-  };
-  if (token.address === 'main') {
-    return {
-      ...base,
-      data: '0x',
-      to: recipient,
-      amount: parseAmount(amount),
-      value: parseAmount(amount)
-    };
-  }
+const shrinkCollectableData = collectable => {
   return {
-    ...base,
-    data,
-    to: token.address,
-    amount: parseAmount(amount),
-    value: '0'
+    id: collectable.id,
+    name: collectable.name,
+    address: collectable.address,
+    tokenName: collectable.tokenName,
+    logoUri: collectable.logoUri
   };
 };
-const ETHEREUM_COIN = {
-  name: 'Ethereum',
-  symbol: 'wei',
-  logoUri: 'https://gnosis-safe.io/app/static/media/token_eth.bc98bd46.svg',
-  address: 'main'
+const toModuleTransaction = ({
+  recipient,
+  value,
+  collectable,
+  data,
+  nonce
+}) => {
+  return {
+    type: 'sendAsset',
+    operation: '0',
+    to: collectable.address,
+    value: parseAmount(value),
+    data,
+    nonce,
+    collectable: shrinkCollectableData(collectable),
+    recipient
+  };
 };
 export default {
   props: ['modelValue', 'nonce', 'config'],
@@ -76,29 +75,33 @@ export default {
   data() {
     return {
       plugin: new Plugin(),
-      tokens: [ETHEREUM_COIN],
+      collectables: [],
+      loading: false,
 
       to: '',
       value: '0',
-      tokenAddress: 'main',
+      collectableAddress: '',
 
       validValue: true
     };
   },
   computed: {
-    selectedToken() {
-      return this.tokens.find(token => token.address === this.tokenAddress);
+    selectedCollectable() {
+      if (!this.collectableAddress) return null;
+      return this.collectables.find(
+        collectable => collectable.address === this.collectableAddress
+      );
     }
   },
   mounted() {
-    this.setTokens();
+    this.setCollectables();
     if (this.modelValue) {
-      const { recipient = '', token, amount = '0' } = this.modelValue;
+      const { recipient = '', collectable, value = '0' } = this.modelValue;
       this.to = recipient;
-      this.handleValueChange(amount);
-      if (token) {
-        this.tokenAddress = token.address;
-        this.tokens = [token];
+      this.handleValueChange(value);
+      if (collectable) {
+        this.collectableAddress = collectable.address;
+        this.collectables = [collectable];
       }
     }
   },
@@ -106,14 +109,14 @@ export default {
     to() {
       this.updateTransaction();
     },
-    tokenAddress() {
+    collectableAddress() {
       this.updateTransaction();
     },
     value() {
       this.updateTransaction();
     },
     config() {
-      this.setTokens();
+      this.setCollectables();
     }
   },
   methods: {
@@ -121,17 +124,18 @@ export default {
       if (this.config.preview) return;
       try {
         if (isBigNumberish(this.value) && isAddress(this.to)) {
-          const data =
-            this.selectedToken.address === 'main'
-              ? '0x'
-              : getERC20TokenTransferTransactionData(this.to, this.value);
+          const data = getERC721TokenTransferTransactionData(
+            this.config.gnosisSafeAddress,
+            this.to,
+            this.selectedCollectable.id
+          );
 
           const transaction = toModuleTransaction({
             data,
+            value: this.value,
             nonce: this.nonce,
-            amount: this.value,
             recipient: this.to,
-            token: this.selectedToken
+            collectable: this.selectedCollectable
           });
 
           if (this.plugin.validateTransaction(transaction)) {
@@ -153,9 +157,12 @@ export default {
         this.validValue = false;
       }
     },
-    setTokens() {
-      if (!this.config.preview && this.config.tokens) {
-        this.tokens = [ETHEREUM_COIN, ...this.config.tokens];
+    setCollectables() {
+      if (!this.config.preview && this.config.collectables) {
+        this.collectables = this.config.collectables;
+        if (!this.selectedCollectable && this.collectables.length) {
+          this.collectableAddress = this.collectables[0].address;
+        }
       }
     }
   }
