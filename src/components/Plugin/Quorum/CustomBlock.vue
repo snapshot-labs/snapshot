@@ -21,16 +21,17 @@ export default {
     return {
       loading: false,
       plugin: new Plugin(),
-      quorum: 0,
       totalVotingPower: 0
     };
   },
   computed: {
-    titles() {
-      return this.strategies.map(strategy => strategy.params.symbol);
-    },
     totalScore() {
       return this.results.totalBalances.reduce((a, b) => a + b, 0);
+    },
+    quorum() {
+      return this.totalVotingPower === 0
+        ? 0
+        : this.totalScore / this.totalVotingPower;
     }
   },
 
@@ -42,9 +43,6 @@ export default {
       this.space.plugins.quorum,
       this.proposal.snapshot
     );
-
-    this.quorum =
-      this.totalVotingPower === 0 ? 0 : this.totalScore / this.totalVotingPower;
 
     this.loading = false;
   }

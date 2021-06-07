@@ -76,6 +76,10 @@
         :open="modalLangOpen"
         @close="modalLangOpen = false"
       />
+      <ModalWalletNotice
+        :open="modalWalletNotice"
+        @close="modalWalletNotice = false"
+      />
     </teleport>
   </Sticky>
 </template>
@@ -96,7 +100,8 @@ export default {
     return {
       loading: false,
       modalAboutOpen: false,
-      modalLangOpen: false
+      modalLangOpen: false,
+      modalWalletNotice: false
     };
   },
   computed: {
@@ -111,6 +116,9 @@ export default {
   watch: {
     space() {
       this.setTitle();
+    },
+    'web3.walletConnectType': async function (val) {
+      if (val === 'Gnosis Safe Multisig') this.modalWalletNotice = true;
     }
   },
   methods: {

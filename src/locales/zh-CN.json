@@ -17,6 +17,7 @@
   "snapshot": "Snapshot",
   "strategies": "策略",
   "strategiesPage": "策略",
+  "space": "空间",
   "spaces": "空间",
   "version": "版本",
   "timeline": "时间轴",
@@ -51,7 +52,7 @@
   "confirmVote": "确认投票",
   "sureToVote": "您确定要投票 \"{0}\" 吗？",
   "cannotBeUndone": "这个动作无法复原。",
-  "option": "选项",
+  "options": "选项",
   "votingPower": "您的投票权",
   "receipt": "发票",
   "relayer": "中继器",
@@ -60,6 +61,9 @@
   "seeInExplorer": "在浏览器上查看",
   "learnMore": "了解更多",
   "logout": "退出",
+  "walletNotice": "Wallet not supported",
+  "gnosisSafeWalletNotice": "You are trying to use Gnosis Safe wallet, which doesn't support signing messages on Snapshot.",
+  "continue": "Continue",
   "add": "添加",
   "edit": "编辑",
   "strategyParameters": "策略参数",
@@ -95,6 +99,13 @@
   "defaultSkin": "默认皮肤",
   "select": "选择",
   "language": "语言",
+  "agree": "我同意",
+  "mustAgreeToTerms": "在您完成此操作之前，您必须在此同意 {0} 服务条款：",
+  "playground": "游乐场",
+  "strategyParams": "策略参数",
+  "addresses": "地址",
+  "networkErrorPlayground": "网络错误 - 请打开您的浏览器控制台获取更多信息",
+  "upload": "Upload",
   "errors": {
     "required": "此项为必填项",
     "minLength": "最小长度为 {0}",
@@ -122,16 +133,19 @@
   "delegate": {
     "header": "授权",
     "selectAddress": "选择地址",
-    "addressPlaceholder": "授权地址或ENS名称",
+    "to": "至",
+    "addressPlaceholder": "地址或ENS名称",
     "spacePlaceholder": "空间 (可选)",
     "delegations": "您的授权",
+    "allSpaces": "用于所有空间",
     "delegated": "已授权给你"
   },
   "proposal": {
     "castVote": "撤回您的投票",
     "vote": "投票",
     "startDate": "开始日期",
-    "endDate": "结束日期"
+    "endDate": "结束日期",
+    "votingSystem": "投票制度"
   },
   "proposals": {
     "header": "提案",
@@ -151,7 +165,7 @@
     "seeENS": "在 ENS 上查看",
     "setENS": "在 ENS 上设置记录",
     "profile": "用户信息",
-    "changeAvatar": "修改头像",
+    "avatar": "头像",
     "name": "名称",
     "about": "关于",
     "terms": "使用条款",
@@ -166,7 +180,7 @@
     "admins": "管理员",
     "filters": "过滤器",
     "defaultTab": "默认标签页",
-    "minScore": "最小得分",
+    "proposalThreshold": "Proposal threshold",
     "showOnly": "仅显示会员提议",
     "editPlugin": "编辑插件",
     "addPlugin": "添加插件",
@@ -194,5 +208,14 @@
     "networks": "网络",
     "plugins": "插件",
     "results": "结果"
+  },
+  "voting": {
+    "selectVoting": "选择投票系统",
+    "single-choice": "单选投票",
+    "approval": "批准表决",
+    "description": {
+      "single-choice": "每个选民只能选择一个选项。",
+      "approval": "每个选民可选择多个选项。"
+    }
   }
 }

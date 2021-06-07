@@ -24,8 +24,7 @@ export async function getProposal(space, id) {
         query: VOTES_QUERY,
         variables: {
           id
-        },
-        fetchPolicy: 'no-cache'
+        }
       }),
 
       getBlockNumber(provider)

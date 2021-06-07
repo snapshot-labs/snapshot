@@ -17,6 +17,7 @@
   "snapshot": "Snapshot",
   "strategies": "Strategie",
   "strategiesPage": "Strategie",
+  "space": "Space",
   "spaces": "Spaces",
   "version": "Versione",
   "timeline": "Cronologia",
@@ -51,7 +52,7 @@
   "confirmVote": "Conferma voto",
   "sureToVote": "Sei sicuro di voler votare \"{0}\"?",
   "cannotBeUndone": "Questa azione non può esser annullata.",
-  "option": "Opzioni",
+  "options": "Option(s)",
   "votingPower": "Il tuo potere di voto",
   "receipt": "Ricevuta",
   "relayer": "Relè",
@@ -60,6 +61,9 @@
   "seeInExplorer": "Vedi su explorer",
   "learnMore": "Scopri di più",
   "logout": "Disconnetti",
+  "walletNotice": "Wallet not supported",
+  "gnosisSafeWalletNotice": "You are trying to use Gnosis Safe wallet, which doesn't support signing messages on Snapshot.",
+  "continue": "Continue",
   "add": "Aggiungi",
   "edit": "Modifica",
   "strategyParameters": "Parametri strategia",
@@ -89,12 +93,19 @@
   "startIn": "start {0}",
   "endIn": "end {1}",
   "endedAgo": "ended {1}",
-  "proposalBy": "By {0}",
+  "proposalBy": "by {0}",
   "endDate": "termina {0}",
   "contectHash": "Hash del contenuto",
   "defaultSkin": "Tema predefinito",
   "select": "Seleziona",
   "language": "Lingua",
+  "agree": "I agree",
+  "mustAgreeToTerms": "Before you can complete this action, you must agree to {0} terms of service here:",
+  "playground": "Playground",
+  "strategyParams": "Strategy params",
+  "addresses": "Addresses",
+  "networkErrorPlayground": "Network error - please open your browser console for more information",
+  "upload": "Upload",
   "errors": {
     "required": "Field is required",
     "minLength": "Minimum length is {0}",
@@ -122,16 +133,19 @@
   "delegate": {
     "header": "Delega",
     "selectAddress": "Seleziona indirizzo",
-    "addressPlaceholder": "Indirizzo delegato o nome ENS",
+    "to": "To",
+    "addressPlaceholder": "Address or ENS name",
     "spacePlaceholder": "Spazio (facoltativo)",
     "delegations": "Le tue deleghe",
+    "allSpaces": "For all spaces",
     "delegated": "Delegate a te"
   },
   "proposal": {
     "castVote": "Esprimi il tuo voto",
     "vote": "Vota",
     "startDate": "Data di inizio",
-    "endDate": "Data di fine"
+    "endDate": "Data di fine",
+    "votingSystem": "Voting system"
   },
   "proposals": {
     "header": "Proposte",
@@ -151,7 +165,7 @@
     "seeENS": "Vedi su ENS",
     "setENS": "Imposta il record su ENS",
     "profile": "Profilo",
-    "changeAvatar": "Cambia avatar",
+    "avatar": "Avatar",
     "name": "Nome",
     "about": "In merito",
     "terms": "Terms",
@@ -166,7 +180,7 @@
     "admins": "Admins",
     "filters": "Filtri",
     "defaultTab": "Scheda predefinita",
-    "minScore": "Punteggio minimo",
+    "proposalThreshold": "Proposal threshold",
     "showOnly": "Mostra solo le proposte dei membri",
     "editPlugin": "Modifica plugin",
     "addPlugin": "Aggiungi plugin",
@@ -194,5 +208,14 @@
     "networks": "network(s)",
     "plugins": "plugin(s)",
     "results": "result(s)"
+  },
+  "voting": {
+    "selectVoting": "Select voting system",
+    "single-choice": "Single choice voting",
+    "approval": "Approval voting",
+    "description": {
+      "single-choice": "Each voter may select only one choice.",
+      "approval": "Each voter may select any number of choices."
+    }
   }
 }
