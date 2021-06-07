@@ -1,149 +1,157 @@
 <template>
-  <form @submit.prevent="handleSubmit">
-    <div class="mb-2 text-center">
-      <h4 class="mb-3">Transactions</h4>
-      <div v-if="adding">
-        <UiButton class="width-full mb-2">
-          <input
-            v-model="newEntry.to"
-            class="input width-full text-center"
-            placeholder="Target address"
-            required
-          />
-        </UiButton>
-        <UiButton class="width-full mb-2">
-          <input
-            v-model="newEntry.value"
-            class="input width-full text-center"
-            placeholder="Value"
-            required
-          />
-        </UiButton>
-        <UiButton class="width-full mb-2">
-          <input
-            v-model="newEntry.data"
-            class="input width-full text-center"
-            placeholder="Data"
-            required
-          />
-        </UiButton>
-        <UiButton class="width-full mb-2">
-          <select
-            v-model="newEntry.operation"
-            class="input width-full text-center"
-            required
-          >
-            <option v-bind:value="'0'" selected="selected">Call</option>
-            <option v-bind:value="'1'">Delegatecall</option>
-          </select>
-        </UiButton>
-        <UiButton @click="adding = false" class="mb-2">Back</UiButton>
-        <UiButton :disabled="!isValid" @click="addTx" class="button--submit">
-          Add
-        </UiButton>
+  <div
+    class="border-top border-bottom border-md rounded-0 rounded-md-2 mb-4 block-bg"
+  >
+    <h4
+      class="px-4 pt-3 border-bottom d-block header-bg rounded-top-0 rounded-md-top-2"
+      style="padding-bottom: 12px"
+    >
+      Transactions
+      {{ gnosisSafeAddress && `(${_shorten(gnosisSafeAddress)})` }}
+      <a
+        v-if="gnosisSafeAddress"
+        :href="`https://rinkeby.gnosis-safe.io/app/#/safes/${gnosisSafeAddress}`"
+        class="text-gray"
+        style="padding-top: 2px"
+        target="_blank"
+      >
+        <i
+          class="iconfont iconexternal-link"
+          style="font-size: 18px; line-height: 18px; vertical-align: middle"
+        />
+      </a>
+    </h4>
+    <div class="p-4 text-center">
+      <div v-for="(batch, index) in batches" v-bind:key="index" class="mb-4">
+        <PluginSafeSnapFormTransactionBatch
+          :config="transactionConfig"
+          :index="index"
+          :modelValue="batch"
+          :nonce="getBatchNonce(index)"
+          @remove="removeBatch(index)"
+          @update:modelValue="updateTransactionBatch(index, $event)"
+        />
       </div>
-      <div v-else>
-        <div
-          v-for="(tx, i) in input.txs"
-          :key="i"
-          class="mb-3 p-4 border rounded-2 text-white text-center"
-        >
-          <PluginSafeSnapTransactionPreview :transaction="tx" />
-          <UiButton v-if="input" @click="removeTx(i)" class="width-full mb-2">
-            Remove
-          </UiButton>
-        </div>
-        <UiButton @click="adding = true" class="width-full mb-2">
-          Add
-        </UiButton>
-        <UiButton @click="handleSubmit" class="button--submit width-full">
-          Confirm
-        </UiButton>
-      </div>
+      <UiButton v-if="!preview" @click="createTransactionBatch">
+        Add transaction Batch
+      </UiButton>
     </div>
-  </form>
+  </div>
 </template>
 
 <script>
-import Plugin from '@snapshot-labs/snapshot.js/src/plugins/daoModule';
-import { parseEther } from '@ethersproject/units';
-const defaultEntry = () => {
-  return {
-    operation: '0'
-  };
-};
-const parseValueInput = input => {
-  try {
-    return parseEther(input).toString();
-  } catch (e) {
-    return input;
-  }
-};
-const toModuleTransaction = (tx, nonce) => {
-  return {
-    nonce,
-    to: tx.to,
-    value: parseValueInput(tx.value),
-    data: tx.data,
-    operation: tx.operation
-  };
-};
+import { clone } from '@/helpers/utils';
+import Plugin from '@snapshot-labs/snapshot.js/src/plugins/safeSnap';
+import {
+  getGnosisSafeBalances,
+  getGnosisSafeCollecibles
+} from '@/helpers/abi/utils';
+
 export default {
-  props: ['modelValue', 'proposal', 'network'],
+  props: [
+    'modelValue',
+    'proposal',
+    'network',
+    'moduleAddress',
+    'proposalId',
+    'preview'
+  ],
   emits: ['update:modelValue', 'close'],
   data() {
     return {
-      input: false,
-      adding: false,
+      input: { txs: [], valid: true },
+      batches: [],
       plugin: new Plugin(),
-      newEntry: defaultEntry()
+      gnosisSafeAddress: undefined,
+      proposalDetails: undefined,
+      transactionConfig: {
+        preview: this.preview,
+        network: this.network,
+        tokens: []
+      }
     };
   },
-  computed: {
-    isValid() {
-      // We validate with nonce 0 here and use the correct index as nonce later
-      return this.plugin.validateTransaction(
-        toModuleTransaction(this.newEntry, 0)
+  async mounted() {
+    if (this.modelValue) {
+      this.input = clone(this.modelValue);
+      if (!this.input.txs) this.input.txs = [];
+      this.batches =
+        this.input.txs[0] && !Array.isArray(this.input.txs[0])
+          ? [this.input.txs]
+          : this.input.txs;
+      this.updateModel();
+    }
+
+    try {
+      const { dao } = await this.plugin.getModuleDetails(
+        this.network,
+        this.moduleAddress
       );
+      this.gnosisSafeAddress = dao;
+      this.transactionConfig = {
+        ...this.transactionConfig,
+        gnosisSafeAddress: this.gnosisSafeAddress,
+        tokens: await this.fetchBalances(this.gnosisSafeAddress),
+        collectables: await this.fetchCollectables(this.gnosisSafeAddress)
+      };
+    } catch (e) {
+      console.error(e);
     }
   },
-  mounted() {
-    if (this.modelValue) return (this.input = this.modelValue);
-  },
   methods: {
-    addTx() {
-      if (!this.input) this.input = { txs: [] };
-      // Nonce corresponds to the index, which is the current length of the txs array
-      this.input.txs.push(
-        toModuleTransaction(this.newEntry, this.input.txs.length)
-      );
-      this.newEntry = defaultEntry();
-      this.adding = false;
+    createTransactionBatch() {
+      this.batches.push([]);
     },
-    removeTx(index) {
-      if (!this.input || !this.input.txs || this.input.txs.length <= index)
-        return;
-      this.input.txs.splice(index, 1);
-      // After removing an tx we need to correct the nonces
-      this.input.txs.forEach((tx, index) => {
-        tx.nonce = index;
-      });
-      if (this.input.txs.length == 0) {
-        this.input = false;
-      }
+    removeBatch(index) {
+      this.batches.splice(index, 1);
+      this.updateModel();
     },
-    addAction() {
-      if (!this.input) this.input = {};
-      this.input = {
-        txs: []
-      };
+    getBatchNonce(index) {
+      return this.batches
+        .slice(0, index)
+        .reduce((acc, transactions) => acc + transactions.length, 0);
     },
-    removeAction() {
-      this.input = false;
+    updateTransactionBatch(index, batch) {
+      this.batches[index] = batch;
+      this.updateModel();
     },
-    handleSubmit() {
+    updateModel() {
+      if (this.preview) return;
+      this.input.txs = this.batches;
+      this.input.valid = this.input.txs.flat().every(tx => tx);
       this.$emit('update:modelValue', this.input);
-      this.$emit('close');
+    },
+    async fetchBalances(gnosisSafeAddress) {
+      if (gnosisSafeAddress) {
+        try {
+          const balances = await getGnosisSafeBalances(
+            this.network,
+            gnosisSafeAddress
+          );
+          return balances
+            .filter(balance => balance.token)
+            .map(balance => ({
+              ...balance.token,
+              address: balance.tokenAddress
+            }));
+        } catch (e) {
+          console.warn('Error fetching balances');
+        }
+      }
+      return [];
+    },
+    async fetchCollectables(gnosisSafeAddress) {
+      if (gnosisSafeAddress) {
+        try {
+          return await getGnosisSafeCollecibles(
+            this.network,
+            gnosisSafeAddress
+          );
+        } catch (error) {
+          console.warn('Error fetching collectables');
+        }
+      }
+      return [];
     }
   }
 };

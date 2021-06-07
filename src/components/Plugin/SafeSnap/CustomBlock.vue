@@ -1,6 +1,6 @@
 <template>
   <Block
-    title="SafeSnap"
+    title="SafeSnap Transactions"
     :icon="!loading && moduleAddress ? 'refresh' : undefined"
     :loading="loading"
     @submit="updateDetails"
@@ -49,7 +49,7 @@
 </template>
 
 <script>
-import Plugin from '@snapshot-labs/snapshot.js/src/plugins/daoModule';
+import Plugin from '@snapshot-labs/snapshot.js/src/plugins/safeSnap';
 import { sleep } from '@/helpers/utils';
 
 const QuestionStates = {
@@ -68,7 +68,7 @@ Object.freeze(QuestionStates);
 export default {
   props: [
     'proposalConfig',
-    'porposalId',
+    'proposalId',
     'proposalEnd',
     'network',
     'moduleAddress'
@@ -248,8 +248,8 @@ export default {
         this.questionDetails = await this.plugin.getExecutionDetails(
           this.network,
           this.moduleAddress,
-          this.porposalId,
-          this.proposalConfig.txs
+          this.proposalId,
+          this.proposalConfig.txs.flat()
         );
       } catch (e) {
         console.error(e);

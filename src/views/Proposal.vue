@@ -56,6 +56,15 @@
         :votes="votes"
         :strategies="strategies"
       />
+      <PluginSafeSnapConfig
+        :preview="true"
+        v-if="loadedResults && proposal.plugins?.safeSnap?.txs"
+        :proposal="proposal"
+        :proposalId="id"
+        :moduleAddress="space.plugins?.safeSnap?.address"
+        :network="space.network"
+        v-model="proposal.plugins.safeSnap"
+      />
     </template>
     <template #sidebar-right v-if="loaded">
       <Block :title="$t('information')">
@@ -147,11 +156,11 @@
           :choices="proposal.choices"
         />
         <PluginSafeSnapCustomBlock
-          v-if="proposal.plugins?.daoModule?.txs"
-          :proposalConfig="proposal.plugins.daoModule"
+          v-if="proposal.plugins?.safeSnap?.txs"
+          :proposalConfig="proposal.plugins.safeSnap"
           :proposalEnd="proposal.end"
-          :porposalId="id"
-          :moduleAddress="space.plugins?.daoModule?.address"
+          :proposalId="id"
+          :moduleAddress="space.plugins?.safeSnap?.address"
           :network="space.network"
         />
         <PluginQuorumCustomBlock
