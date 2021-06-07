@@ -6,12 +6,11 @@
     @submit="updateDetails"
   >
     <div v-if="infoLabel" class="mb-3 text-center">
-      <Label> {{ $t(infoLabel) }} </Label>
+      <Label>
+        {{ $t(infoLabel, [questionDetails.transactions.length]) }}
+      </Label>
     </div>
-    <div
-      v-if="questionDetails?.questionId && !showQuestionInfo"
-      class="mb-3 text-white text-center"
-    >
+    <div v-if="showDecision" class="mb-3 text-white text-center">
       <Label> {{ approvalData?.decision }} </Label>
     </div>
     <div
@@ -32,8 +31,14 @@
       v-if="showActionButton"
       @click="performAction"
       :disabled="!actionEnabled"
-      v-text="$t(actionLabel)"
-      class="width-full button"
+      v-text="$t(actionLabel, [questionDetails.transactions.length])"
+      class="mb-2 width-full button"
+    />
+    <UiButton
+      v-if="canClaim"
+      @click="claimBond"
+      v-text="$t('safeSnap.claimBond')"
+      class="mb-3 width-full button"
     />
     <teleport to="#modal">
       <PluginSafeSnapModalOptionApproval
@@ -80,7 +85,11 @@ export default {
       actionInProgress: false,
       plugin: new Plugin(),
       questionDetails: undefined,
-      modalApproveDecisionOpen: false
+      modalApproveDecisionOpen: false,
+      bondData: {
+        canClaim: undefined,
+        data: undefined
+      }
     };
   },
   computed: {
@@ -110,15 +119,14 @@ export default {
         ) {
           return QuestionStates.waitingForCooldown;
         }
+        if (!Number.isInteger(this.questionDetails.nextTxIndex))
+          return QuestionStates.completelyExecuted;
         return QuestionStates.proposalApproved;
       } else {
         if (this.questionDetails.finalizedAt < ts) {
           return QuestionStates.proposalRejected;
         }
       }
-
-      if (this.questionDetails.nextTxIndex >= 0)
-        return QuestionStates.completelyExecuted;
 
       return QuestionStates.error;
     },
@@ -155,6 +163,14 @@ export default {
           return false;
       }
     },
+    showDecision() {
+      console.log(this.questionDetails.transactions.length);
+      return (
+        this.questionDetails?.questionId &&
+        !this.showQuestionInfo &&
+        !this.questionState === QuestionStates.proposalApproved
+      );
+    },
     infoLabel() {
       switch (this.questionState) {
         case QuestionStates.proposalNotResolved:
@@ -179,12 +195,8 @@ export default {
     },
     approvalData() {
       if (this.questionDetails) {
-        const {
-          currentBond,
-          finalizedAt,
-          isApproved,
-          endTime
-        } = this.questionDetails;
+        const { currentBond, finalizedAt, isApproved, endTime } =
+          this.questionDetails;
         if (currentBond === '0.0') {
           return {
             decision: this.$i18n.t('safeSnap.currentOutcome', ['--']),
@@ -233,8 +245,12 @@ export default {
         (this.questionDetails?.executionApproved &&
           !this.questionState === QuestionStates.waitingForCooldown) ||
         this.questionState === QuestionStates.waitingForExecution ||
-        this.questionState === QuestionStates.proposalApproved
+        this.questionState === QuestionStates.proposalApproved ||
+        !this.questionState === QuestionStates.completelyExecuted
       );
+    },
+    canClaim() {
+      return this.bondData.canClaim;
     }
   },
   async created() {
@@ -251,10 +267,41 @@ export default {
           this.proposalId,
           this.proposalConfig.txs.flat()
         );
+        if (this.questionDetails.questionId) {
+          this.bondData = await this.plugin.loadClaimBondData(
+            this.$auth.web3,
+            this.network,
+            this.questionDetails.questionId,
+            this.questionDetails.oracle
+          );
+        }
       } catch (e) {
         console.error(e);
       } finally {
         this.loading = false;
+      }
+    },
+    async claimBond() {
+      if (!this.questionDetails.oracle) return;
+      try {
+        this.actionInProgress = true;
+
+        const params = Object.keys(this.bondData.data).map(
+          key => new Array(...this.bondData.data[key])
+        );
+
+        await this.plugin.claimBond(
+          this.$auth.web3,
+          this.questionDetails.oracle,
+          this.questionDetails.questionId,
+          params
+        );
+        await sleep(3e3);
+        await this.updateDetails();
+      } catch (e) {
+        console.error(e);
+      } finally {
+        this.actionInProgress = true;
       }
     },
     async performAction() {
@@ -306,3 +353,4 @@ export default {
   }
 };
 </script>
+
