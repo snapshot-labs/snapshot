@@ -85,7 +85,7 @@ export async function getResults(space, proposal, votes, blockNumber) {
     const results = {
       totalBalances: votingClass.totalBalances(),
       totalScores: votingClass.totalScores(),
-      totalVotesBalances: votes.reduce((a, b: any) => a + b.balance, 0)
+      totalVotesBalances: votingClass.totalVotesBalances()
     };
 
     return { votes, results };

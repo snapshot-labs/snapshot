@@ -34,4 +34,8 @@ export default class ApprovalVoting {
       .filter((choice, i) => this.selected.includes(i + 1))
       .join(', ');
   }
+
+  totalVotesBalances() {
+    return this.votes.reduce((a, b: any) => a + b.balance, 0);
+  }
 }
