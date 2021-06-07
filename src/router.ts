@@ -12,6 +12,7 @@ import Playground from '@/views/Playground.vue';
 import Delegate from '@/views/Delegate.vue';
 import Timeline from '@/views/Timeline.vue';
 import Space from '@/views/Space.vue';
+import Proposals from '@/views/Proposals.vue';
 import About from '@/views/About.vue';
 
 const domainName = window.location.hostname;
@@ -63,15 +64,12 @@ const routes: any[] = [
   },
   {
     path: '/:key',
-    name: 'proposals',
+    name: 'space',
     component: Space,
-    beforeEnter
-  },
-  {
-    path: '/:key/about',
-    name: 'about',
-    component: About,
-    beforeEnter
+    children: [
+      { path: '', name: 'space-proposals', component: Proposals },
+      { path: 'about', name: 'space-about', component: About }
+    ]
   },
   { path: '/*', name: 'error-404', beforeEnter: (to, from, next) => next('/') }
 ];

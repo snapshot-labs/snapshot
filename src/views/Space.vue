@@ -1,137 +1,64 @@
 <template>
-  <SpaceLayout :space="space">
-    <template #content-right>
-      <div class="px-4 px-md-0 mb-3 d-flex">
-        <div class="d-flex flex-items-end flex-auto">
-          <div>
-            <h2>{{ $t('proposals.header') }}</h2>
-          </div>
-        </div>
-        <UiDropdown
-          top="3.5rem"
-          right="1.25rem"
-          @select="selectState"
-          :items="[
-            { text: $t('proposals.states.all'), action: 'all' },
-            { text: $t('proposals.states.active'), action: 'active' },
-            { text: $t('proposals.states.pending'), action: 'pending' },
-            { text: $t('proposals.states.closed'), action: 'closed' },
-            { text: $t('proposals.states.core'), action: 'core' }
-          ]"
-        >
-          <UiButton class="pr-3">
-            {{ $t(`proposals.states.${filterBy}`) }}
-            <Icon size="14" name="arrow-down" class="mt-1 mr-1" />
-          </UiButton>
-        </UiDropdown>
-      </div>
-
-      <Block v-if="loading" :slim="true">
-        <RowLoading class="my-2" />
-      </Block>
-
-      <NoResults :block="true" v-else-if="proposals.length < 1" />
-      <div v-else>
-        <Block :slim="true" v-for="(proposal, i) in proposals" :key="i">
-          <TimelineProposal :proposal="proposal" />
-        </Block>
-      </div>
-      <div
-        style="height: 10px; width: 10px; position: absolute"
-        id="endofpage"
+  <Container :slim="true">
+    <div class="mx-4 mx-md-0 d-flex flex-justify-between mb-3 hide-xl">
+      <div v-text="showMenu ? '' : space.name" />
+      <Icon
+        :name="showMenu ? 'close' : 'menu1'"
+        size="25"
+        class="menu-btn v-align-text-bottom text-white"
+        @click="handleMenuToggle"
       />
-      <Block v-if="loadingMore && !loading" :slim="true">
-        <RowLoading class="my-2" />
-      </Block>
-    </template>
-  </SpaceLayout>
+    </div>
+    <div
+      :class="
+        'col-12 col-lg-3 float-left ' +
+        (showMenu ? 'anim-fade-in' : 'hide-sm hide-md hide-lg')
+      "
+    >
+      <BlockSpace :space="space" />
+    </div>
+    <div :class="'col-12 col-lg-9 float-right pl-0 pl-lg-5'">
+      <router-view :space="space" />
+    </div>
+  </Container>
 </template>
 
 <script>
-import { computed, onMounted, ref } from 'vue';
+import { computed } from 'vue';
 import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
-import { useInfiniteLoader } from '@/composables/useInfiniteLoader';
-import { useScrollMonitor } from '@/composables/useScrollMonitor';
 import { useDomain } from '@/composables/useDomain';
-import { apolloClient } from '@/apollo';
-import { PROPOSALS_QUERY } from '@/helpers/queries';
 
 export default {
+  data() {
+    return {
+      showMenu: false
+    };
+  },
   setup() {
     const store = useStore();
     const route = useRoute();
     const { domain } = useDomain();
 
     const spaceId = domain || route.params.key;
-
-    const loading = ref(false);
-    const proposals = ref([]);
-    const filterBy = ref('all');
-
-    const space = computed(() => store.state.app.spaces[spaceId]);
-    const spaceMembers = computed(() =>
-      space.value.members.length < 1 ? ['none'] : space.value.members
-    );
-
-    // Infinite scroll with pagination
-    const {
-      loadBy,
-      limit,
-      loadingMore,
-      stopLoadingMore,
-      loadMore
-    } = useInfiniteLoader();
-
-    useScrollMonitor(() =>
-      loadMore(() => loadProposals(limit.value), loading.value)
-    );
-
-    // Proposals query
-    async function loadProposals(skip = 0) {
-      try {
-        const response = await apolloClient.query({
-          query: PROPOSALS_QUERY,
-          variables: {
-            first: loadBy,
-            skip,
-            space: spaceId,
-            state: filterBy.value === 'core' ? 'all' : filterBy.value,
-            author_in: filterBy.value === 'core' ? spaceMembers.value : []
-          }
-        });
-        stopLoadingMore.value = response.data.proposals?.length < loadBy;
-        proposals.value = proposals.value.concat(response.data.proposals);
-      } catch (e) {
-        console.log(e);
-      }
-    }
-
-    // Initialize
-    onMounted(load());
-
-    async function load() {
-      loading.value = true;
-      await loadProposals();
-      loading.value = false;
-    }
-
-    // Change filter
-    function selectState(e) {
-      filterBy.value = e;
-      proposals.value = [];
-      limit.value = loadBy;
-      load();
-    }
+    const space = computed(() => ({
+      id: spaceId,
+      ...store.state.app.spaces[spaceId]
+    }));
 
     return {
-      loading,
-      selectState,
-      loadingMore,
-      filterBy,
-      proposals,
       space
     };
+  },
+  methods: {
+    handleMenuToggle() {
+      this.showMenu = !this.showMenu;
+    }
   }
 };
 </script>
+<style>
+.menu-btn {
+  cursor: pointer;
+}
+</style>

@@ -26,7 +26,7 @@
         <router-link
           v-for="space in spaces.slice(0, limit)"
           :key="space.key"
-          :to="{ name: 'proposals', params: { key: space.key } }"
+          :to="{ name: 'space-proposals', params: { key: space.key } }"
         >
           <div class="col-12 col-lg-3 pr-4 float-left">
             <Block

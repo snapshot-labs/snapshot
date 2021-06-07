@@ -3,7 +3,7 @@
     <template #content-left>
       <div class="px-4 px-md-0 mb-3">
         <router-link
-          :to="{ name: domain ? 'home' : 'proposals' }"
+          :to="{ name: domain ? 'home' : 'space-proposals' }"
           class="text-gray"
         >
           <Icon name="back" size="22" class="v-align-middle" />
@@ -293,7 +293,7 @@ export default {
         ) {
           dropdownLoading.value = false;
           router.push({
-            name: 'proposals'
+            name: 'space-proposals'
           });
         }
       } catch (e) {

@@ -23,9 +23,11 @@
       </div>
       <div class="py-3">
         <router-link
-          :to="{ name: 'proposals', params: { key: space.key } }"
+          :to="{ name: 'space-proposals', params: { key: space.key } }"
           v-text="$t('Proposals')"
-          :class="$route.name === 'proposals' && 'router-link-exact-active'"
+          :class="
+            $route.name === 'space-proposals' && 'router-link-exact-active'
+          "
           class="d-block px-4 py-2 sidenav-item"
         />
         <router-link
@@ -42,9 +44,9 @@
           class="d-block px-4 py-2 sidenav-item"
         />
         <router-link
-          :to="{ name: 'about', params: { key: space.key } }"
+          :to="{ name: 'space-about', params: { key: space.key } }"
           v-text="$t('about')"
-          :class="$route.name === 'about' && 'router-link-exact-active'"
+          :class="$route.name === 'space-about' && 'router-link-exact-active'"
           class="d-block px-4 py-2 sidenav-item"
         />
         <router-link
