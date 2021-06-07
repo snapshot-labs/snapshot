@@ -10,7 +10,7 @@
       {{ gnosisSafeAddress && `(${_shorten(gnosisSafeAddress)})` }}
       <a
         v-if="gnosisSafeAddress"
-        :href="`https://rinkeby.gnosis-safe.io/app/#/safes/${gnosisSafeAddress}`"
+        :href="getSafeLink()"
         class="text-gray"
         style="padding-top: 2px"
         target="_blank"
@@ -101,6 +101,12 @@ export default {
   methods: {
     createTransactionBatch() {
       this.batches.push([]);
+    },
+    getSafeLink() {
+      if (this.network === '4') {
+        return `https://rinkeby.gnosis-safe.io/app/#/safes/${this.gnosisSafeAddress}`;
+      }
+      return `https://gnosis-safe.io/app/#/safes/${this.gnosisSafeAddress}`;
     },
     removeBatch(index) {
       this.batches.splice(index, 1);
