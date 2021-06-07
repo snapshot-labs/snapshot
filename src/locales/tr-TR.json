@@ -105,7 +105,7 @@
   "strategyParams": "Strateji parametreleri",
   "addresses": "Adresler",
   "networkErrorPlayground": "Ağ hatası - daha fazla bilgi için lütfen tarayıcı konsolunuzu açın",
-  "upload": "Upload",
+  "upload": "Yükle",
   "errors": {
     "required": "Bu alan zorunludur",
     "minLength": "Minimum uzunluk: {0}",
@@ -180,7 +180,7 @@
     "admins": "Admin",
     "filters": "Filtreler",
     "defaultTab": "Varsayılan sekme",
-    "proposalThreshold": "Proposal threshold",
+    "proposalThreshold": "Teklif eşiği",
     "showOnly": "Yalnızca üyelerin tekliflerini göster",
     "editPlugin": "Eklentiyi düzenle",
     "addPlugin": "Eklenti ekle",
