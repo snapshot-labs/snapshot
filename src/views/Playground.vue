@@ -7,8 +7,8 @@
           {{ $t('back') }}
         </router-link>
       </div>
-      <div class="px-4 px-md-0">
-        <h1 class="mb-2">
+      <div class="">
+        <h1 class="mb-2 px-4 px-md-0">
           {{ strategy.key }}
         </h1>
         <Block :title="$t('settings.header')">
