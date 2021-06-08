@@ -57,13 +57,6 @@
         @close="selected = false"
         v-if="selected === 'gnosis'"
       />
-      <PluginDaoModuleConfig
-        :proposal="proposal"
-        :network="space.network"
-        v-model="form.daoModule"
-        @close="selected = false"
-        v-if="selected === 'daoModule'"
-      />
     </div>
   </UiModal>
 </template>
@@ -86,6 +79,13 @@ export default {
     open() {
       if (this.modelValue && this.open) this.form = clone(this.modelValue);
       this.selected = false;
+    },
+    selected(value) {
+      if (value === 'safeSnap') {
+        this.form.safeSnap = this.form.safeSnap || {};
+        this.$emit('update:modelValue', this.form);
+        this.$emit('close');
+      }
     }
   },
   created() {
