@@ -123,6 +123,6 @@ export function numberOfVotes(i, selected) {
     (a: any, b: any) => a + b,
     0
   );
-  const votes = Math.floor((selected[i] / total) * 100);
+  const votes = Math.round((selected[i] / total) * 100);
   return isNaN(votes) ? 0 : votes;
 }
