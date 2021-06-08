@@ -217,5 +217,27 @@
       "single-choice": "Each voter may select only one choice.",
       "approval": "Each voter may select any number of choices."
     }
+  },
+  "safeSnap": {
+    "currentOutcome": "Current outcome: {0}",
+    "currentBond": "Current bond: {0}",
+    "finalizedIn": "Finalized {0}",
+    "executableIn": "Executable {0}",
+    "finalOutcome": "Outcome: {0}",
+    "nextBond": "Bond to set outcome: {0}",
+    "setOutcomeTo": "Set outcome to:",
+    "claimBond": "Claim bond",
+    "labels": {
+      "request": "Request execution",
+      "setOutcome": "Set outcome",
+      "changeOutcome": "Change outcome",
+      "executeTxs": "Execute transaction 1/{0}",
+      "finalized": "Vote finalized",
+      "executed": "{0}/{0} Transactions executed",
+      "waiting": "Waiting for vote to close",
+      "error": "Error",
+      "question": "Did this proposal pass and does it meet the",
+      "criteria": "acceptance criteria?"
+    }
   }
 }
