@@ -30,9 +30,18 @@ export async function getProposal(space, id) {
       getBlockNumber(provider)
     ]);
     console.timeEnd('getProposal.data');
-    const [proposal, votes, blockNumber] = cloneDeep(response);
+    const [proposalQueryResponse, votes, blockNumber] = cloneDeep(response);
+    const proposal = proposalQueryResponse.data.proposal;
+
+    if (proposal?.plugins?.daoModule) {
+      // The Dao Module has been renamed to SafeSnap
+      // Previous proposals have to be renamed
+      proposal.plugins.safeSnap = proposal.plugins.daoModule;
+      delete proposal.plugins.daoModule;
+    }
+
     return {
-      proposal: proposal.data.proposal,
+      proposal,
       votes: votes.data.votes,
       blockNumber
     };

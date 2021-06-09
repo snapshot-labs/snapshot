@@ -13,6 +13,7 @@
       @input="handleInput"
       :placeholder="placeholder"
       :type="number ? 'number' : 'text'"
+      :disabled="disabled"
       class="input flex-auto"
       required
     />
@@ -32,7 +33,8 @@ export default {
     modelValue: [String, Number],
     placeholder: String,
     error: String,
-    number: Boolean
+    number: Boolean,
+    disabled: Boolean
   },
   emits: ['update:modelValue'],
   methods: {
