@@ -29,7 +29,13 @@ const routes: any[] = [
   {
     path: '/',
     name: 'home',
-    component: domains[domainName] ? Space : Home
+    component: Home,
+    beforeEnter(to, from, next) {
+      if (domains[domainName]) {
+        next({ name: 'space-proposals' });
+      }
+      next();
+    }
   },
   { path: '/setup', name: 'setup', component: Setup },
   { path: '/:key/settings/:from?', name: 'settings', component: Settings },
@@ -63,7 +69,7 @@ const routes: any[] = [
     beforeEnter
   },
   {
-    path: '/:key',
+    path: '/:key?',
     name: 'space',
     component: Space,
     children: [
