@@ -12,6 +12,7 @@
     "@ensdomains/ensjs": "^2.0.1",
     "@ethersproject/abi": "^5.0.1",
     "@ethersproject/address": "^5.0.1",
+    "@ethersproject/bignumber": "^5.1.1",
     "@ethersproject/bytes": "^5.0.5",
     "@ethersproject/constants": "^5.0.1",
     "@ethersproject/contracts": "^5.0.1",
@@ -85,7 +86,8 @@
     "prettier": "^2.2.1",
     "sass": "^1.29.0",
     "sass-loader": "^8.0.2",
-    "typescript": "~4.1.5"
+    "typescript": "~4.1.5",
+    "webpack": "^4.1.0"
   },
   "license": "MIT",
   "repository": "snapshot-labs/snapshot"
