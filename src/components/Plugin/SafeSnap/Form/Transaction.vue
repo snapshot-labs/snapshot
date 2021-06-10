@@ -54,6 +54,8 @@
 </template>
 
 <script>
+import { formatUnits } from '@ethersproject/units';
+
 const labels = {
   contractInteraction: 'Contract Interaction',
   transferFunds: 'Transfer Funds',
@@ -77,6 +79,9 @@ export default {
   },
   mounted() {
     if (!this.config.preview) this.$emit('update:modelValue', undefined);
+    if (this.config.preview && !this.modelValue.type) {
+      this.type = 'raw';
+    }
   },
   computed: {
     title() {
@@ -88,7 +93,10 @@ export default {
             case 'contractInteraction':
               return `${this.modelValue.abi[0].name}() - ${this.modelValue.value} wei to ${addr}`;
             case 'transferFunds':
-              return `Transfer ${this.modelValue.amount} ${this.modelValue.token.symbol} to ${addr}`;
+              return `Transfer ${formatUnits(
+                this.modelValue.amount,
+                this.modelValue.token.decimals
+              )} ${this.modelValue.token.symbol} to ${addr}`;
             case 'sendAsset':
               return `Send ${this.modelValue.collectable.name} #${this._shorten(
                 this.modelValue.collectable.id,

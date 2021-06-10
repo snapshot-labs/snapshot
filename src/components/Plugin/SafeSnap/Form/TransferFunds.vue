@@ -21,15 +21,12 @@
     }"
     label="to"
   />
-
-  <UiInput
+  <PluginSafeSnapInputAmount
+    label="amount"
+    v-model="value"
+    :decimals="selectedToken?.decimals"
     :disabled="config.preview"
-    :error="!validValue && 'Invalid Value'"
-    :modelValue="value"
-    @update:modelValue="handleValueChange($event)"
-  >
-    <template v-slot:label>amount</template>
-  </UiInput>
+  />
 </template>
 
 <script>
@@ -66,7 +63,8 @@ const toModuleTransaction = ({ recipient, amount, token, data, nonce }) => {
 };
 const ETHEREUM_COIN = {
   name: 'Ethereum',
-  symbol: 'wei',
+  decimals: 18,
+  symbol: 'ETH',
   logoUri: 'https://gnosis-safe.io/app/static/media/token_eth.bc98bd46.svg',
   address: 'main'
 };
@@ -94,8 +92,9 @@ export default {
     this.setTokens();
     if (this.modelValue) {
       const { recipient = '', token, amount = '0' } = this.modelValue;
+      console.log('model 123', this.modelValue.amount, amount);
       this.to = recipient;
-      this.handleValueChange(amount);
+      this.value = amount;
       if (token) {
         this.tokenAddress = token.address;
         this.tokens = [token];
@@ -143,15 +142,6 @@ export default {
         console.warn('invalid transaction');
       }
       this.$emit('update:modelValue', undefined);
-    },
-    handleValueChange(value) {
-      this.value = value;
-      try {
-        parseAmount(value);
-        this.validValue = true;
-      } catch (error) {
-        this.validValue = false;
-      }
     },
     setTokens() {
       if (!this.config.preview && this.config.tokens) {
