@@ -27,7 +27,7 @@
         <a
           class="day border-bottom border-right selectable"
           :class="{
-            'bg-gray-dark': formatDate(year, month, day) === today,
+            'header-bg': formatDate(year, month, day) === today,
             selected: input.includes(formatDate(year, month, day))
           }"
           v-if="isSelectable(year, month, day)"
@@ -45,11 +45,16 @@ export default {
   props: ['modelValue'],
   emits: ['update:modelValue'],
   data() {
+    const [
+      year = new Date().getFullYear(),
+      month = new Date().getMonth() + 1,
+      day = new Date().getDate()
+    ] = this.modelValue ? this.modelValue.split('-') : [];
     return {
-      input: '',
-      month: new Date().getMonth(),
-      year: new Date().getFullYear(),
-      day: new Date().getDate()
+      input: this.modelValue,
+      month: month - 1,
+      year,
+      day
     };
   },
   computed: {

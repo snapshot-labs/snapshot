@@ -10,6 +10,7 @@ module.exports = {
     '@vue/prettier',
     '@vue/prettier/@typescript-eslint'
   ],
+  ignorePatterns: ['/node_modules/**/*.*'],
   parserOptions: {
     ecmaVersion: 2020
   },
@@ -20,6 +21,7 @@ module.exports = {
     '@typescript-eslint/ban-ts-ignore': 'off',
     '@typescript-eslint/camelcase': 'off',
     '@typescript-eslint/no-undef': 'off',
-    '@typescript-eslint/no-var-requires': 'off'
+    '@typescript-eslint/no-var-requires': 'off',
+    '@typescript-eslint/no-use-before-define': ['error', { functions: false }]
   }
 };

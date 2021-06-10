@@ -2,12 +2,12 @@
   <div>
     <div class="mb-4 mx-auto">
       <Container class="d-flex flex-items-center">
-        <div class="flex-auto text-left">
-          <UiButton class="pl-3 col-12 col-lg-4">
-            <Search v-model="q" :placeholder="$t('searchPlaceholder')" />
+        <div class="flex-auto text-left col-lg-8">
+          <UiButton class="pl-3 col-12 col-lg-7 pr-0">
+            <SearchWithFilters />
           </UiButton>
         </div>
-        <div class="ml-3 text-right hide-sm">
+        <div class="ml-3 text-right hide-sm col-lg-4">
           {{ _n(items.length) }} {{ resultsStr }}
           <a
             v-if="buttonStr"
@@ -22,14 +22,14 @@
     </div>
     <Container :slim="true">
       <div class="overflow-hidden">
-        <template v-if="route === 'strategies'">
+        <template v-if="route.name === 'strategies'">
           <template v-for="item in items.slice(0, limit)" :key="item.key">
             <router-link :to="`/strategy/${item.key}`">
               <BlockStrategy :strategy="item" class="mb-3" />
             </router-link>
           </template>
         </template>
-        <template v-if="route === 'skins'">
+        <template v-if="route.name === 'skins'">
           <BlockSkin
             v-for="item in items.slice(0, limit)"
             :key="item.key"
@@ -37,15 +37,14 @@
             class="mb-3"
           />
         </template>
-        <template v-if="route === 'networks'">
-          <BlockNetwork
-            v-for="item in items.slice(0, limit)"
-            :key="item.key"
-            :network="item"
-            class="mb-3"
-          />
+        <template v-if="route.name === 'networks'">
+          <template v-for="item in items.slice(0, limit)" :key="item.key">
+            <router-link :to="`/?network=${item.key}`">
+              <BlockNetwork :network="item" class="mb-3" />
+            </router-link>
+          </template>
         </template>
-        <template v-if="route === 'plugins'">
+        <template v-if="route.name === 'plugins'">
           <BlockPlugin
             v-for="item in items.slice(0, limit)"
             :key="item.key"
@@ -53,67 +52,65 @@
             class="mb-3"
           />
         </template>
-        <NoResults :block="true" :length="Object.keys(items).length" />
+        <NoResults :block="true" v-if="Object.keys(items).length < 1" />
       </div>
     </Container>
+    <div id="endofpage" />
   </div>
 </template>
 
 <script>
-import networks from '@snapshot-labs/snapshot.js/src/networks.json';
-import plugins from '@snapshot-labs/snapshot.js/src/plugins';
-import strategies from '@/helpers/strategies';
-import skins from '@/helpers/skins';
-import {
-  filterStrategies,
-  filterSkins,
-  filterNetworks,
-  filterPlugins,
-  infiniteScroll
-} from '@/helpers/utils';
+import { computed, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { useRoute } from 'vue-router';
+import { useSearchFilters } from '@/composables/useSearchFilters';
+import { useScrollMonitor } from '@/composables/useScrollMonitor';
 
 export default {
-  data() {
-    return {
-      q: this.$route.query.q || '',
-      limit: 8
-    };
-  },
-  computed: {
-    route() {
-      return this.$route.name;
-    },
-    buttonStr() {
-      if (this.route === 'strategies') return 'Create strategy';
-      if (this.route === 'skins') return 'Create skin';
-      if (this.route === 'networks') return 'Add network';
-      if (this.route === 'plugins') return 'Create plugin';
+  setup() {
+    const { t } = useI18n();
+    const route = useRoute();
+
+    // Explore
+    const buttonStr = computed(() => {
+      if (route.name === 'strategies') return t('explore.createStrategy');
+      if (route.name === 'skins') return t('explore.createSkin');
+      if (route.name === 'networks') return t('explore.addNetwork');
+      if (route.name === 'plugins') return t('explore.createPlugin');
       return '';
-    },
-    resultsStr() {
-      if (this.route === 'strategies') return 'strategie(s)';
-      if (this.route === 'skins') return 'skin(s)';
-      if (this.route === 'networks') return 'network(s)';
-      if (this.route === 'plugins') return 'plugin(s)';
-      return 'result(s)';
-    },
-    items() {
-      if (this.route === 'strategies')
-        return filterStrategies(strategies, this.app.spaces, this.q);
-      if (this.route === 'skins')
-        return filterSkins(skins, this.app.spaces, this.q);
-      if (this.route === 'networks')
-        return filterNetworks(networks, this.app.spaces, this.q);
-      if (this.route === 'plugins')
-        return filterPlugins(plugins, this.app.spaces, this.q);
+    });
+
+    const resultsStr = computed(() => {
+      if (route.name === 'strategies') return t('explore.strategies');
+      if (route.name === 'skins') return t('explore.skins');
+      if (route.name === 'networks') return t('explore.networks');
+      if (route.name === 'plugins') return t('explore.plugins');
+      return t('explore.results');
+    });
+
+    const {
+      filteredSkins,
+      filteredStrategies,
+      filteredNetworks,
+      filteredPlugins
+    } = useSearchFilters();
+
+    const items = computed(() => {
+      const q = route.query.q || '';
+      if (route.name === 'strategies') return filteredStrategies(q);
+      if (route.name === 'skins') return filteredSkins(q);
+      if (route.name === 'networks') return filteredNetworks(q);
+      if (route.name === 'plugins') return filteredPlugins(q);
       return [];
-    }
-  },
-  methods: {
-    scroll: infiniteScroll
-  },
-  mounted() {
-    this.scroll();
+    });
+
+    // Scroll
+    const loadBy = 8;
+    const limit = ref(loadBy);
+
+    useScrollMonitor(() => (limit.value += loadBy));
+
+    return { buttonStr, resultsStr, items, limit, route };
   }
 };
 </script>

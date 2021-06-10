@@ -11,6 +11,7 @@
         <h1 v-if="loaded" v-text="$t('settings.header')" class="mb-4" />
         <PageLoading v-else />
       </div>
+
       <template v-if="loaded">
         <Block title="ENS">
           <UiButton class="d-flex width-full mb-2">
@@ -34,90 +35,128 @@
             class="mb-2 d-block"
           >
             <UiButton
-              :class="!isReady && 'button--submit'"
+              :class="{ 'button--submit': !isOwner && !isAdmin }"
               class="button-outline width-full"
             >
-              {{ isReady ? $t('settings.seeENS') : $t('settings.setENS') }}
+              {{
+                isOwner || isAdmin
+                  ? $t('settings.seeENS')
+                  : $t('settings.setENS')
+              }}
               <Icon name="external-link" class="ml-1" />
             </UiButton>
           </a>
         </Block>
-        <div v-if="isReady">
+        <div v-if="isOwner || isAdmin">
           <Block :title="$t('settings.profile')">
             <div class="mb-2">
-              <a
-                href="https://docs.snapshot.org/spaces/add-avatar"
-                target="_blank"
+              <UiInput v-model="form.name" :error="inputError('name')">
+                <template v-slot:label>{{ $t(`settings.name`) }}*</template>
+              </UiInput>
+              <UiInput v-model="form.about" :error="inputError('about')">
+                <template v-slot:label> {{ $t(`settings.about`) }} </template>
+              </UiInput>
+              <UiInput
+                v-model="form.avatar"
+                placeholder="e.g. https://example.com/space.png"
+                :error="inputError('avatar')"
               >
-                <UiButton class="width-full mb-2">
-                  {{ $t('settings.changeAvatar') }}
-                  <Icon name="external-link" class="ml-1" />
-                </UiButton>
-              </a>
-              <UiButton class="text-left width-full mb-2 d-flex px-3">
-                <div class="text-gray mr-2">{{ $t('settings.name') }}</div>
-                <input v-model="form.name" class="input flex-auto" required />
-              </UiButton>
-              <UiButton class="text-left width-full mb-2 d-flex px-3">
-                <div class="text-gray mr-2">{{ $t('settings.about') }}</div>
-                <input v-model="form.about" class="input flex-auto" />
-              </UiButton>
-              <UiButton
+                <template v-slot:label>
+                  {{ $t(`settings.avatar`) }}
+                </template>
+                <template v-slot:info>
+                  <Upload
+                    class="ml-2"
+                    @input="setAvatarUrl"
+                    @loading="setUploadLoading"
+                  >
+                    {{ $t('upload') }}
+                  </Upload>
+                </template>
+              </UiInput>
+              <UiInput
                 @click="modalNetworksOpen = true"
-                class="text-left width-full mb-2 d-flex px-3"
+                :error="inputError('network')"
               >
-                <div class="text-gray mr-2">{{ $t('network') }}</div>
-                <div class="flex-auto">
+                <template v-slot:selected>
                   {{
                     form.network
                       ? networks[form.network].name
                       : $t('selectNetwork')
                   }}
-                </div>
-              </UiButton>
-              <UiButton class="text-left width-full mb-2 d-flex px-3">
-                <div class="text-gray mr-2">{{ $t('settings.symbol') }}</div>
-                <input v-model="form.symbol" class="input flex-auto" required />
-              </UiButton>
-              <UiButton
-                @click="modalSkinsOpen = true"
-                class="text-left width-full mb-2 d-flex px-3"
+                </template>
+                <template v-slot:label>
+                  {{ $t(`settings.network`) }}*
+                </template>
+              </UiInput>
+              <UiInput
+                v-model="form.symbol"
+                placeholder="e.g. BAL"
+                :error="inputError('symbol')"
               >
-                <div class="text-gray mr-2">{{ $t('settings.skin') }}</div>
-                <div class="flex-auto">
+                <template v-slot:label> {{ $t(`settings.symbol`) }}* </template>
+              </UiInput>
+              <UiInput
+                @click="modalSkinsOpen = true"
+                :error="inputError('skin')"
+              >
+                <template v-slot:selected>
                   {{ form.skin ? form.skin : $t('defaultSkin') }}
-                </div>
-              </UiButton>
-              <UiButton class="text-left width-full mb-2 d-flex px-3">
-                <div class="text-gray mr-2">
-                  <Icon name="twitter" class="mr-1" />
-                </div>
-                <input v-model="form.twitter" class="input flex-auto" />
-              </UiButton>
-              <UiButton class="text-left width-full mb-2 d-flex px-3">
-                <div class="text-gray mr-2">
-                  <Icon name="github" class="mr-1" />
-                </div>
-                <input v-model="form.github" class="input flex-auto" />
-              </UiButton>
-              <UiButton class="text-left width-full mb-2 d-flex px-3">
-                <div class="text-gray mr-2">{{ $t('settings.domain') }}</div>
-                <input v-model="form.domain" class="input flex-auto" />
-                <a
-                  class="d-block py-1 mr-n2"
-                  target="_blank"
-                  href="https://docs.snapshot.org/spaces/add-custom-domain"
-                >
-                  <Icon name="info" size="24" class="text-gray p-1" />
-                </a>
-              </UiButton>
+                </template>
+                <template v-slot:label>
+                  {{ $t(`settings.skin`) }}
+                </template>
+              </UiInput>
+              <UiInput
+                v-model="form.twitter"
+                placeholder="e.g. elonmusk"
+                :error="inputError('twitter')"
+              >
+                <template v-slot:label>
+                  <Icon name="twitter" />
+                </template>
+              </UiInput>
+              <UiInput
+                v-model="form.github"
+                placeholder="e.g. vbuterin"
+                :error="inputError('github')"
+              >
+                <template v-slot:label>
+                  <Icon name="github" />
+                </template>
+              </UiInput>
+              <UiInput
+                v-model="form.domain"
+                placeholder="e.g. vote.balancer.finance"
+                :error="inputError('domain')"
+              >
+                <template v-slot:label>
+                  {{ $t('settings.domain') }}
+                </template>
+                <template v-slot:info>
+                  <a
+                    class="d-block py-1 mr-n2"
+                    target="_blank"
+                    href="https://docs.snapshot.org/spaces/add-custom-domain"
+                  >
+                    <Icon name="info" size="24" class="text-gray p-1" />
+                  </a>
+                </template>
+              </UiInput>
+              <UiInput
+                v-model="form.terms"
+                placeholder="e.g. https://example.com/terms"
+                :error="inputError('terms')"
+              >
+                <template v-slot:label> {{ $t(`settings.terms`) }} </template>
+              </UiInput>
               <div class="d-flex flex-items-center px-2">
                 <Checkbox v-model="form.private" class="mr-2 mt-1" />
                 {{ $t('settings.hideSpace') }}
               </div>
             </div>
           </Block>
-          <Block :title="$t('strategies')">
+          <Block :title="$t('settings.strategies') + '*'">
             <div
               v-for="(strategy, i) in form.strategies"
               :key="i"
@@ -136,12 +175,51 @@
                 <h4 v-text="strategy.name" />
               </a>
             </div>
+            <Block
+              :style="`border-color: red !important`"
+              v-if="inputError('strategies')"
+            >
+              <Icon name="warning" class="mr-2 text-red" />
+              <span class="text-red">
+                {{ inputError('strategies') }}&nbsp;</span
+              >
+              <a
+                href="https://docs.snapshot.org/spaces/create#strategies"
+                target="_blank"
+                rel="noopener noreferrer"
+                >{{ $t('learnMore') }}
+                <Icon name="external-link" />
+              </a>
+            </Block>
             <UiButton @click="handleAddStrategy" class="d-block width-full">
               {{ $t('settings.addStrategy') }}
             </UiButton>
           </Block>
-
+          <Block :title="$t('settings.admins')" v-if="isOwner">
+            <Block
+              :style="`border-color: red !important`"
+              v-if="inputError('admins')"
+            >
+              <Icon name="warning" class="mr-2 text-red" />
+              <span class="text-red"> {{ inputError('admins') }}&nbsp;</span>
+            </Block>
+            <UiButton class="d-block width-full px-3" style="height: auto">
+              <TextareaArray
+                v-model="form.admins"
+                :placeholder="`0x8C28Cf33d9Fd3D0293f963b1cd27e3FF422B425c\n0xeF8305E140ac520225DAf050e2f71d5fBcC543e7`"
+                class="input width-full text-left"
+                style="font-size: 18px"
+              />
+            </UiButton>
+          </Block>
           <Block :title="$t('settings.members')">
+            <Block
+              :style="`border-color: red !important`"
+              v-if="inputError('members')"
+            >
+              <Icon name="warning" class="mr-2 text-red" />
+              <span class="text-red"> {{ inputError('members') }}&nbsp;</span>
+            </Block>
             <UiButton class="d-block width-full px-3" style="height: auto">
               <TextareaArray
                 v-model="form.members"
@@ -153,21 +231,15 @@
           </Block>
           <Block :title="$t('settings.filters')">
             <div class="mb-2">
-              <UiButton class="text-left width-full mb-2 d-flex px-3">
-                <div class="text-gray mr-2">
-                  {{ $t('settings.defaultTab') }}
-                </div>
-                <input
-                  v-model="form.filters.defaultTab"
-                  class="input flex-auto"
-                />
-              </UiButton>
-              <UiButton class="text-left width-full mb-2 d-flex px-3">
-                <div class="text-gray mr-2">{{ $t('settings.minScore') }}</div>
-                <div class="flex-auto">
-                  <InputNumber v-model="form.filters.minScore" class="input" />
-                </div>
-              </UiButton>
+              <UiInput
+                v-model="form.filters.minScore"
+                :error="inputError('minScore')"
+                :number="true"
+              >
+                <template v-slot:label>{{
+                  $t('settings.proposalThreshold')
+                }}</template>
+              </UiInput>
               <div class="mb-2 d-flex flex-items-center px-2">
                 <Checkbox
                   v-model="form.filters.onlyMembers"
@@ -175,16 +247,6 @@
                 />
                 {{ $t('settings.showOnly') }}
               </div>
-              <UiButton class="d-block width-full px-3" style="height: auto">
-                <TextareaArray
-                  v-model="form.filters.invalids"
-                  :placeholder="`${$t(
-                    'invalidProposals'
-                  )}\nQmc4VSHwY3SVmo4oofhL2qDPaYcGaQqndM4oqdQQe2aZHQ\nQmTMAgnPy2q6LRMNwvj27PHvWEgZ3bw7yTtNNEucBZCWhZ`"
-                  class="input width-full text-left"
-                  style="font-size: 18px"
-                />
-              </UiButton>
             </div>
           </Block>
           <Block :title="$t('plugins')">
@@ -217,14 +279,14 @@
         </div>
       </template>
     </template>
-    <template v-if="loaded && isReady" #sidebar-right>
+    <template v-if="(loaded && isOwner) || (loaded && isAdmin)" #sidebar-right>
       <Block :title="$t('actions')">
         <UiButton @click="handleReset" class="d-block width-full mb-2">
           {{ $t('reset') }}
         </UiButton>
         <UiButton
+          :disabled="uploadLoading"
           @click="handleSubmit"
-          :disabled="!isValid"
           :loading="loading"
           class="d-block width-full button--submit"
         >
@@ -261,18 +323,33 @@
 
 <script>
 import { mapActions } from 'vuex';
+import { computed } from 'vue';
+import { useSearchFilters } from '@/composables/useSearchFilters';
 import { getAddress } from '@ethersproject/address';
 import { validateSchema } from '@snapshot-labs/snapshot.js/src/utils';
 import schemas from '@snapshot-labs/snapshot.js/src/schemas';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import gateways from '@snapshot-labs/snapshot.js/src/gateways.json';
-import { clone, filterPlugins } from '@/helpers/utils';
-import plugins from '@snapshot-labs/snapshot.js/src/plugins';
+import { clone } from '@/helpers/utils';
 import { getSpaceUri, uriGet } from '@/helpers/ens';
+import defaults from '@/locales/default';
 
 const gateway = process.env.VUE_APP_IPFS_GATEWAY || gateways[0];
 
 export default {
+  setup() {
+    const { filteredPlugins } = useSearchFilters();
+    const plugins = computed(() => filteredPlugins());
+
+    function pluginName(key) {
+      const plugin = plugins.value.find(obj => {
+        return obj.key === key;
+      });
+      return plugin.name;
+    }
+
+    return { pluginName };
+  },
   data() {
     return {
       key: this.$route.params.key,
@@ -288,6 +365,8 @@ export default {
       modalPluginsOpen: false,
       loaded: false,
       loading: false,
+      uploadLoading: false,
+      showErrors: false,
       form: {
         strategies: [],
         plugins: {},
@@ -298,23 +377,28 @@ export default {
   },
   computed: {
     validate() {
+      if (this.form.terms === '') delete this.form.terms;
       return validateSchema(schemas.space, this.form);
     },
     isValid() {
-      if (this.validate !== true) console.log(this.validate);
-      return !this.loading && this.web3.account && this.validate === true;
+      return !this.loading && this.validate === true && !this.uploadLoading;
     },
     contenthash() {
+      const key = encodeURIComponent(this.key);
       const address = this.web3.account
         ? getAddress(this.web3.account)
         : '<your-address>';
-      return `ipns://storage.snapshot.page/registry/${address}/${this.key}`;
+      return `ipns://storage.snapshot.page/registry/${address}/${key}`;
     },
-    isReady() {
+    isOwner() {
       return this.currentContenthash === this.contenthash;
     },
-    plugins() {
-      return filterPlugins(plugins, this.app.spaces, '');
+    isAdmin() {
+      if (!this.app.spaces[this.key]) return false;
+      const admins = (this.app.spaces[this.key].admins || []).map(admin =>
+        admin.toLowerCase()
+      );
+      return admins.includes(this.web3.account?.toLowerCase());
     }
   },
   async created() {
@@ -345,18 +429,40 @@ export default {
   methods: {
     ...mapActions(['notify', 'send', 'getSpaces']),
     async handleSubmit() {
-      this.loading = true;
-      try {
-        await this.send({
-          space: this.key,
-          type: 'settings',
-          payload: this.form
-        });
-      } catch (e) {
-        console.log(e);
+      if (this.isValid) {
+        if (this.form.filters.invalids) delete this.form.filters.invalids;
+        this.loading = true;
+        try {
+          await this.send({
+            space: this.key,
+            type: 'settings',
+            payload: this.form
+          });
+        } catch (e) {
+          console.log(e);
+        }
+        await this.getSpaces();
+        this.loading = false;
+      } else {
+        this.showErrors = true;
       }
-      await this.getSpaces();
-      this.loading = false;
+    },
+    inputError(field) {
+      if (!this.isValid && !this.loading && this.showErrors) {
+        const errors = Object.keys(defaults.errors);
+        const errorFound = this.validate.find(
+          error =>
+            (errors.includes(error.keyword) &&
+              error.params.missingProperty === field) ||
+            (errors.includes(error.keyword) && error.dataPath.includes(field))
+        );
+        if (errorFound?.dataPath.includes('strategies'))
+          return this.$t('errors.minStrategy');
+        else if (errorFound)
+          return this.$tc(`errors.${errorFound.keyword}`, [
+            errorFound?.params.limit
+          ]);
+      }
     },
     handleReset() {
       if (this.from) return (this.form = clone(this.app.spaces[this.from]));
@@ -370,7 +476,6 @@ export default {
     handleCopy() {
       this.notify(this.$t('notify.copied'));
     },
-
     handleEditStrategy(i) {
       this.currentStrategyIndex = i;
       this.currentStrategy = clone(this.form.strategies[i]);
@@ -393,7 +498,6 @@ export default {
         this.form.strategies = this.form.strategies.concat(strategy);
       }
     },
-
     handleEditPlugins(name) {
       this.currentPlugin = {};
       this.currentPlugin[name] = clone(this.form.plugins[name]);
@@ -409,11 +513,11 @@ export default {
     handleSubmitAddPlugins(payload) {
       this.form.plugins[payload.key] = payload.input;
     },
-    pluginName(key) {
-      const plugin = this.plugins.find(obj => {
-        return obj.key === key;
-      });
-      return plugin.name;
+    setUploadLoading(s) {
+      this.uploadLoading = s;
+    },
+    setAvatarUrl(url) {
+      if (typeof url === 'string') this.form.avatar = url;
     }
   }
 };

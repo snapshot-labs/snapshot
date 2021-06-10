@@ -16,32 +16,20 @@
               class="d-inline-block d-flex flex-items-center"
               style="font-size: 24px; padding-top: 4px"
             >
-              <span
-                :class="space && 'hide-sm'"
-                class="mr-1"
-                v-text="'snapshot'"
-              />
-              <span v-if="space" class="pl-1 pr-2 text-gray" v-text="'/'" />
-            </router-link>
-            <router-link
-              v-if="space"
-              :to="{ name: domain ? 'home' : 'proposals' }"
-              class="d-inline-block d-flex flex-items-center"
-              style="font-size: 24px; padding-top: 4px"
-            >
-              <Token :space="space.key" symbolIndex="space" size="28" />
-              <span class="ml-2" v-text="space.name" />
+              snapshot
             </router-link>
           </div>
           <div :key="web3.account">
             <template v-if="$auth.isAuthenticated.value">
               <UiButton
-                @click="modalOpen = true"
+                @click="modalAccountOpen = true"
                 class="button-outline"
                 :loading="app.authLoading"
               >
-                <Avatar
-                  :profile="web3.profile"
+                <UiAvatar
+                  :imgsrc="
+                    web3.profile?.image ? _ipfsUrl(web3.profile.image) : ''
+                  "
                   :address="web3.account"
                   size="16"
                   class="mr-n1 mr-sm-2 mr-md-2 mr-lg-2 mr-xl-2 ml-n1"
@@ -56,7 +44,7 @@
             </template>
             <UiButton
               v-if="!$auth.isAuthenticated.value"
-              @click="modalOpen = true"
+              @click="modalAccountOpen = true"
               :loading="loading || app.authLoading"
             >
               <span class="hide-sm" v-text="$t('connectWallet')" />
@@ -75,8 +63,8 @@
     </nav>
     <teleport to="#modal">
       <ModalAccount
-        :open="modalOpen"
-        @close="modalOpen = false"
+        :open="modalAccountOpen"
+        @close="modalAccountOpen = false"
         @login="handleLogin"
       />
       <ModalAbout
@@ -88,20 +76,32 @@
         :open="modalLangOpen"
         @close="modalLangOpen = false"
       />
+      <ModalWalletNotice
+        :open="modalWalletNotice"
+        @close="modalWalletNotice = false"
+      />
     </teleport>
   </Sticky>
 </template>
 
 <script>
 import { mapActions } from 'vuex';
+import { useModal } from '@/composables/useModal';
+import { useDomain } from '@/composables/useDomain';
 
 export default {
+  setup() {
+    const { modalAccountOpen } = useModal();
+    const { env } = useDomain();
+
+    return { modalAccountOpen, env };
+  },
   data() {
     return {
       loading: false,
-      modalOpen: false,
       modalAboutOpen: false,
-      modalLangOpen: false
+      modalLangOpen: false,
+      modalWalletNotice: false
     };
   },
   computed: {
@@ -116,6 +116,9 @@ export default {
   watch: {
     space() {
       this.setTitle();
+    },
+    'web3.walletConnectType': async function (val) {
+      if (val === 'Gnosis Safe Multisig') this.modalWalletNotice = true;
     }
   },
   methods: {
@@ -124,7 +127,7 @@ export default {
       document.title = this.space.name ? this.space.name : 'Snapshot';
     },
     async handleLogin(connector) {
-      this.modalOpen = false;
+      this.modalAccountOpen = false;
       this.loading = true;
       await this.login(connector);
       this.loading = false;

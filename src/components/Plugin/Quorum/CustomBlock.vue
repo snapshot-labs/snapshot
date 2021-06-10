@@ -1,5 +1,5 @@
 <template>
-  <Block title="Quorum">
+  <Block title="Quorum" :loading="!loaded">
     <div class="text-white mb-1">
       <span class="mr-1">
         {{ _n(totalScore) }} / {{ _n(totalVotingPower) }}
@@ -16,21 +16,22 @@ import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import Plugin from '@snapshot-labs/snapshot.js/src/plugins/quorum';
 
 export default {
-  props: ['space', 'payload', 'results'],
+  props: ['space', 'proposal', 'results', 'loaded', 'strategies'],
   data() {
     return {
       loading: false,
       plugin: new Plugin(),
-      quorum: 0,
       totalVotingPower: 0
     };
   },
   computed: {
-    titles() {
-      return this.space.strategies.map(strategy => strategy.params.symbol);
-    },
     totalScore() {
       return this.results.totalBalances.reduce((a, b) => a + b, 0);
+    },
+    quorum() {
+      return this.totalVotingPower === 0
+        ? 0
+        : this.totalScore / this.totalVotingPower;
     }
   },
 
@@ -40,11 +41,8 @@ export default {
     this.totalVotingPower = await this.plugin.getTotalVotingPower(
       getProvider(this.space.network),
       this.space.plugins.quorum,
-      this.payload.snapshot
+      this.proposal.snapshot
     );
-
-    this.quorum =
-      this.totalVotingPower === 0 ? 0 : this.totalScore / this.totalVotingPower;
 
     this.loading = false;
   }

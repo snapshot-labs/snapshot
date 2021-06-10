@@ -1,7 +1,15 @@
 import pkg from '@/../package.json';
+import voting from '@/helpers/voting';
+import { formatEther } from '@ethersproject/units';
+import { BigNumber } from '@ethersproject/bignumber';
 
 export function shorten(str = '') {
   return `${str.slice(0, 6)}...${str.slice(str.length - 4)}`;
+}
+
+export function getChoiceString(proposal, selected) {
+  const votingClass = new voting[proposal.type](proposal, '', '', selected);
+  return votingClass.getChoiceString();
 }
 
 export function jsonParse(input, fallback?) {
@@ -66,33 +74,6 @@ export function formatProposals(proposals) {
   );
 }
 
-export function filterNetworks(networks, spaces, q) {
-  return Object.entries(networks)
-    .map((network: any) => {
-      network[1].key = network[0];
-      network[1].spaces = Object.entries(spaces)
-        .filter((space: any) => space[1].network === network[0])
-        .map(space => space[0]);
-      return network[1];
-    })
-    .filter(network =>
-      JSON.stringify(network).toLowerCase().includes(q.toLowerCase())
-    )
-    .sort((a, b) => b.spaces.length - a.spaces.length);
-}
-
-export function filterSkins(skins, spaces, q) {
-  return skins
-    .map(skin => ({
-      key: skin,
-      spaces: Object.entries(spaces)
-        .filter((space: any) => space[1].skin === skin)
-        .map(space => space[0])
-    }))
-    .filter(skin => skin.key.toLowerCase().includes(q.toLowerCase()))
-    .sort((a, b) => b.spaces.length - a.spaces.length);
-}
-
 export function getStrategy(strategy, spaces) {
   strategy.spaces = Object.entries(spaces)
     .filter(
@@ -106,44 +87,22 @@ export function getStrategy(strategy, spaces) {
   return strategy;
 }
 
-export function filterStrategies(strategies, spaces, q = '') {
-  return Object.values(strategies)
-    .map((strategy: any) => getStrategy(strategy, spaces))
-    .filter(strategy =>
-      JSON.stringify(strategy).toLowerCase().includes(q.toLowerCase())
-    )
-    .sort((a, b) => b.spaces.length - a.spaces.length);
-}
-
-export function filterPlugins(plugins, spaces, q = '') {
-  return Object.entries(plugins)
-    .map(([key, pluginClass]: any) => {
-      const plugin = new pluginClass();
-      plugin.key = key;
-      plugin.spaces = Object.entries(spaces)
-        .filter(
-          (space: any) =>
-            space[1].plugins &&
-            Object.keys(space[1].plugins).includes(plugin.key)
-        )
-        .map(space => space[0]);
-      return plugin;
-    })
-    .filter(plugin =>
-      JSON.stringify(plugin).toLowerCase().includes(q.toLowerCase())
-    )
-    .sort((a, b) => b.spaces.length - a.spaces.length);
-}
-
 export function formatSpace(key, space) {
   space = {
     key,
     ...space,
     members: space.members || [],
+    admins: space.admins || [],
     filters: space.filters || {}
   };
-  if (!space.filters.invalids) space.filters.invalids = [];
   if (!space.filters.minScore) space.filters.minScore = 0;
+
+  if (space.plugins?.daoModule) {
+    // The Dao Module has been renamed to SafeSnap
+    // Previous spaces plugins have to be renamed
+    space.plugins.safeSnap = space.plugins.daoModule;
+    delete space.plugins.daoModule;
+  }
   return space;
 }
 
@@ -157,7 +116,6 @@ export function filterProposals(space, proposal, tab) {
 
   if (!isMember && proposal[1].score < space.filters.minScore) return false;
   if (space.filters.onlyMembers && !isMember) return false;
-  if (space.filters.invalids.includes(proposal[1].authorIpfsHash)) return false;
 
   if (tab === 'all') return true;
   if (tab === 'active' && start <= ts && end > ts) return true;
@@ -169,15 +127,25 @@ export function filterProposals(space, proposal, tab) {
   return false;
 }
 
-export function infiniteScroll() {
-  window.onscroll = () => {
-    const bottomOfWindow =
-      document.documentElement.scrollTop + window.innerHeight >=
-      document.documentElement.offsetHeight - 100;
-
-    if (bottomOfWindow) {
-      // @ts-ignore
-      this.limit += 16;
+export const formatAmount = (amount, maxDecimals) => {
+  let out = formatEther(amount);
+  if (maxDecimals && out.includes('.')) {
+    const parts = out.split('.');
+    if (parts[1].length > maxDecimals) {
+      out = '~' + parts[0] + '.' + parts[1].slice(0, maxDecimals);
     }
-  };
-}
+  }
+  return out + ' ETH';
+};
+
+export const parseAmount = input => {
+  return BigNumber.from(input).toString();
+};
+
+export const parseValueInput = input => {
+  try {
+    return parseAmount(input);
+  } catch (e) {
+    return input;
+  }
+};

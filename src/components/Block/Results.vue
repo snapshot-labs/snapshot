@@ -1,5 +1,8 @@
 <template>
-  <Block :title="ts >= payload.end ? $t('results') : $t('currentResults')">
+  <Block
+    :loading="!loaded"
+    :title="ts >= proposal.end ? $t('results') : $t('currentResults')"
+  >
     <div v-for="choice in choices" :key="choice.i">
       <div class="text-white mb-1">
         <span
@@ -9,7 +12,7 @@
           class="mr-1"
         />
         <span
-          class="mr-1 tooltipped tooltipped-n"
+          class="mr-1 tooltipped tooltipped-multiline tooltipped-n"
           :aria-label="
             results.totalScores[choice.i]
               .map((score, index) => `${_n(score)} ${titles[index]}`)
@@ -40,7 +43,7 @@
         class="mb-3"
       />
     </div>
-    <div v-if="ts >= payload.end">
+    <div v-if="ts >= proposal.end">
       <UiButton @click="downloadReport" class="width-full mt-2">
         {{ $t('downloadReport') }}
       </UiButton>
@@ -53,16 +56,24 @@ import * as jsonexport from 'jsonexport/dist';
 import pkg from '@/../package.json';
 
 export default {
-  props: ['id', 'space', 'payload', 'results', 'votes'],
+  props: [
+    'id',
+    'space',
+    'proposal',
+    'results',
+    'votes',
+    'loaded',
+    'strategies'
+  ],
   computed: {
     ts() {
       return (Date.now() / 1e3).toFixed();
     },
     titles() {
-      return this.space.strategies.map(strategy => strategy.params.symbol);
+      return this.strategies.map(strategy => strategy.params.symbol);
     },
     choices() {
-      return this.payload.choices
+      return this.proposal.choices
         .map((choice, i) => ({ i, choice }))
         .sort(
           (a, b) =>
@@ -72,18 +83,16 @@ export default {
   },
   methods: {
     async downloadReport() {
-      const obj = Object.entries(this.votes)
+      const obj = this.votes
         .map(vote => {
           return {
-            address: vote[0],
-            choice: vote[1].msg.payload.choice,
-            balance: vote[1].balance,
-            timestamp: vote[1].msg.timestamp,
-            dateUtc: new Date(
-              parseInt(vote[1].msg.timestamp) * 1e3
-            ).toUTCString(),
-            authorIpfsHash: vote[1].authorIpfsHash,
-            relayerIpfsHash: vote[1].relayerIpfsHash
+            address: vote.voter,
+            choice: vote.choice,
+            balance: vote.balance,
+            timestamp: vote.created,
+            dateUtc: new Date(parseInt(vote.created) * 1e3).toUTCString(),
+            authorIpfsHash: vote.id
+            // relayerIpfsHash: vote[1].relayerIpfsHash
           };
         })
         .sort((a, b) => a.timestamp - b.timestamp, 0);

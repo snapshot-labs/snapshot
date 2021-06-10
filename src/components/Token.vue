@@ -1,21 +1,12 @@
 <template>
   <span class="d-inline-block v-align-middle line-height-0">
-    <img
-      v-if="!error"
-      :src="url"
-      :style="{
-        width: `${size || 22}px`,
-        height: `${size || 22}px`
-      }"
-      @error="error = true"
-      class="circle border line-height-0"
-    />
-    <Avatar v-else :address="spaceAddress" :size="size" />
+    <UiAvatar :imgsrc="url" :address="spaceAddress" :size="size" />
   </span>
 </template>
 
 <script>
 import { formatBytes32String } from '@ethersproject/strings';
+import { getUrl } from '@snapshot-labs/snapshot.js/src/utils.ts';
 
 export default {
   props: ['space', 'size', 'symbolIndex'],
@@ -31,11 +22,19 @@ export default {
           ? 'space'
           : `logo${this.symbolIndex}`
         : 'logo';
-      return `https://raw.githubusercontent.com/snapshot-labs/snapshot-spaces/master/spaces/${this.space}/${file}.png`;
+      const url = this.space.avatar
+        ? this.space.avatar
+        : `https://raw.githubusercontent.com/snapshot-labs/snapshot-spaces/master/spaces/${this.spaceId}/${file}.png`;
+      return `https://worker.snapshot.org/mirror?img=${encodeURIComponent(
+        getUrl(url)
+      )}`;
     },
     spaceAddress() {
-      if (this.space) return formatBytes32String(this.space.slice(0, 24));
+      if (this.spaceId) return formatBytes32String(this.spaceId.slice(0, 24));
       return '';
+    },
+    spaceId() {
+      return this.space.id ?? this.space.key;
     }
   }
 };
