@@ -43,7 +43,7 @@ export default {
           {
             name: 'offset',
             options: {
-              offset: [0, 12]
+              offset: [40, 12]
             }
           }
         ]
@@ -69,6 +69,7 @@ export default {
 <style scoped lang="scss">
 .custom-content {
   width: 350px;
+  z-index: 50;
   background-color: var(--header-bg);
   border: 1px solid var(--border-color);
   border-radius: 8px;
