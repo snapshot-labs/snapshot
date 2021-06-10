@@ -77,6 +77,14 @@
           {{ $t('create.addChoice') }}
         </UiButton>
       </Block>
+      <PluginSafeSnapConfig
+        v-if="space?.plugins?.safeSnap"
+        :create="true"
+        :proposal="proposal"
+        :moduleAddress="space.plugins?.safeSnap?.address"
+        :network="space.network"
+        v-model="form.metadata.plugins.safeSnap"
+      />
     </template>
     <template #sidebar-right>
       <Block
@@ -124,10 +132,6 @@
           {{ $t('create.publish') }}
         </UiButton>
       </Block>
-      <PluginDaoModuleCustomBlock
-        v-if="form.metadata.plugins?.daoModule?.txs"
-        :proposalConfig="form.metadata.plugins.daoModule"
-      />
     </template>
   </Layout>
   <teleport to="#modal">
@@ -140,7 +144,7 @@
     />
     <ModalProposalPlugins
       :space="space"
-      :proposal="{ ...form, choices }"
+      :proposal="proposal"
       v-model="form.metadata.plugins"
       :open="modalProposalPluginsOpen"
       @close="modalProposalPluginsOpen = false"
@@ -195,7 +199,7 @@ export default {
       start: '',
       end: '',
       snapshot: '',
-      metadata: {},
+      metadata: { plugins: {} },
       type: 'single-choice'
     });
     const modalOpen = ref(false);
@@ -233,6 +237,10 @@ export default {
 
     const isValid = computed(() => {
       // const ts = (Date.now() / 1e3).toFixed();
+      const isSafeSnapPluginValid = form.value.metadata.plugins?.safeSnap
+        ? form.value.metadata.plugins.safeSnap.valid
+        : true;
+
       return (
         !loading.value &&
         form.value.name &&
@@ -251,7 +259,8 @@ export default {
         (space.value.filters?.minScore === 0 ||
           (space.value.filters?.minScore > 0 && hasMinScore.value) ||
           isMember.value ||
-          !web3Account.value)
+          !web3Account.value) &&
+        isSafeSnapPluginValid
       );
     });
 
@@ -365,6 +374,10 @@ export default {
       });
     }
 
+    const proposal = computed(() => {
+      return { ...form, choices };
+    });
+
     return {
       loading,
       choices,
@@ -385,7 +398,8 @@ export default {
       addChoice,
       clickSubmit,
       modalTermsOpen,
-      acceptTerms
+      acceptTerms,
+      proposal
     };
   },
   components: {
