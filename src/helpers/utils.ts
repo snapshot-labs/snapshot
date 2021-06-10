@@ -1,5 +1,7 @@
 import pkg from '@/../package.json';
 import voting from '@/helpers/voting';
+import { formatEther } from '@ethersproject/units';
+import { BigNumber } from '@ethersproject/bignumber';
 
 export function shorten(str = '') {
   return `${str.slice(0, 6)}...${str.slice(str.length - 4)}`;
@@ -94,6 +96,13 @@ export function formatSpace(key, space) {
     filters: space.filters || {}
   };
   if (!space.filters.minScore) space.filters.minScore = 0;
+
+  if (space.plugins?.daoModule) {
+    // The Dao Module has been renamed to SafeSnap
+    // Previous spaces plugins have to be renamed
+    space.plugins.safeSnap = space.plugins.daoModule;
+    delete space.plugins.daoModule;
+  }
   return space;
 }
 
@@ -126,3 +135,26 @@ export function numberOfVotes(i, selected) {
   const votes = Math.round((selected[i] / total) * 100);
   return isNaN(votes) ? 0 : votes;
 }
+
+export const formatAmount = (amount, maxDecimals) => {
+  let out = formatEther(amount);
+  if (maxDecimals && out.includes('.')) {
+    const parts = out.split('.');
+    if (parts[1].length > maxDecimals) {
+      out = '~' + parts[0] + '.' + parts[1].slice(0, maxDecimals);
+    }
+  }
+  return out + ' ETH';
+};
+
+export const parseAmount = input => {
+  return BigNumber.from(input).toString();
+};
+
+export const parseValueInput = input => {
+  try {
+    return parseAmount(input);
+  } catch (e) {
+    return input;
+  }
+};
