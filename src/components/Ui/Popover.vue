@@ -2,7 +2,7 @@
   <div
     ref="popref"
     @mouseenter="debounce(() => (open = true))"
-    @mouseleave="debounce(() => popClose())"
+    @mouseleave="debounce(() => popClose(), 300)"
   >
     <slot name="item" />
   </div>
@@ -10,7 +10,7 @@
     ref="contentref"
     v-show="open"
     @mouseenter="debounce(() => (popHovered = true))"
-    @mouseleave="(popHovered = false), debounce(() => (open = false))"
+    @mouseleave="(popHovered = false), debounce(() => (open = false), 300)"
     class="custom-content"
   >
     <slot name="content" />
