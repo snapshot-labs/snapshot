@@ -1,10 +1,14 @@
-import { numberOfVotes } from '@/helpers/utils';
+export function quadraticCredits(selected) {
+  const totalCreditsUsed = Object.values(selected)
+    .map((val: any) => val * val)
+    .reduce((a, b: any) => a + b, 0);
+  return totalCreditsUsed;
+}
 
 function quadraticScore(votes, score) {
   let total = 0;
   for (let v = 1; v <= votes; v++) {
     total = total + score / v;
-    console.log(v, score, total);
   }
   return total;
 }
@@ -26,7 +30,7 @@ export default class ApprovalVoting {
     return this.proposal.choices.map((choice, i) =>
       this.votes
         .map(vote =>
-          quadraticScore(numberOfVotes(i + 1, vote.choice), vote.balance)
+          quadraticScore(quadraticCredits(vote.choice), vote.balance)
         )
         .reduce((a, b: any) => a + b, 0)
     );
@@ -37,7 +41,7 @@ export default class ApprovalVoting {
       this.strategies.map((strategy, sI) =>
         this.votes
           .map(vote =>
-            quadraticScore(numberOfVotes(i + 1, vote.choice), vote.scores[sI])
+            quadraticScore(quadraticCredits(vote.choice), vote.scores[sI])
           )
           .reduce((a, b: any) => a + b, 0)
       )
@@ -48,7 +52,7 @@ export default class ApprovalVoting {
     return this.proposal.choices
       .map((choice, i) => {
         if (this.selected[i + 1]) {
-          return `${numberOfVotes(i + 1, this.selected)} votes for ${choice} `;
+          return `${quadraticCredits(this.selected)} votes for ${choice} `;
         }
       })
       .filter(el => el != null)
@@ -60,7 +64,7 @@ export default class ApprovalVoting {
       .map((choice, i) =>
         this.votes
           .map(vote =>
-            quadraticScore(numberOfVotes(i + 1, vote.choice), vote.balance)
+            quadraticScore(quadraticCredits(vote.choice), vote.balance)
           )
           .reduce((a, b: any) => a + b, 0)
       )

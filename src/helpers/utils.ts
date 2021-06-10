@@ -127,15 +127,6 @@ export function filterProposals(space, proposal, tab) {
   return false;
 }
 
-export function numberOfVotes(i, selected) {
-  const total: any = Object.values(selected).reduce(
-    (a: any, b: any) => a + b,
-    0
-  );
-  const votes = Math.round((selected[i] / total) * 100);
-  return isNaN(votes) ? 0 : votes;
-}
-
 export const formatAmount = (amount, maxDecimals) => {
   let out = formatEther(amount);
   if (maxDecimals && out.includes('.')) {
