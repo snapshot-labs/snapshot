@@ -245,7 +245,7 @@
                   v-model="form.filters.onlyMembers"
                   class="mr-2 mt-1"
                 />
-                {{ $t('settings.showOnly') }}
+                {{ $t('settings.allowOnlyMembers') }}
               </div>
             </div>
           </Block>
