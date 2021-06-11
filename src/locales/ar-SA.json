@@ -181,7 +181,7 @@
     "filters": "التصفيات",
     "defaultTab": "علامة التبويب الافتراضية",
     "proposalThreshold": "Proposal threshold",
-    "showOnly": "إظهار اقتراحات الأعضاء فقط",
+    "allowOnlyMembers": "Allow only members to submit a proposal",
     "editPlugin": "تعديل إضافة",
     "addPlugin": "أضف إضافة",
     "pluginParameters": "إعدادات الإضافة"
