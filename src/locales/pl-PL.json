@@ -181,7 +181,7 @@
     "filters": "Filtry",
     "defaultTab": "Domyślna karta",
     "proposalThreshold": "Proposal threshold",
-    "showOnly": "Pokaż tylko propozycje użytkowników",
+    "allowOnlyMembers": "Allow only members to submit a proposal",
     "editPlugin": "Edytuj plugin",
     "addPlugin": "Dodaj plugin",
     "pluginParameters": "Parametry pluginu"
