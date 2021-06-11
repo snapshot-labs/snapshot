@@ -12,7 +12,7 @@ const types = {
     { name: 'name', type: 'string' },
     { name: 'version', type: 'string' }
   ],
-  Unit: [
+  Vote: [
     { name: 'space', type: 'string' },
     { name: 'type', type: 'string' },
     // { name: 'timestamp', type: 'uint64' },
@@ -20,7 +20,7 @@ const types = {
   ]
 };
 
-const primaryType = 'Unit';
+const primaryType = 'Vote';
 
 interface Unit {
   space: string;
@@ -41,6 +41,8 @@ export async function signMessage(
     message
   };
 
+  console.log(JSON.stringify(data));
+
   if (!web3.provider.request)
     throw new Error('Web3Provider missing request method');
 
@@ -54,7 +56,12 @@ export async function signMessage(
   console.log('Hash', hash);
 
   const recoverAddress = sigUtil.recoverTypedSignature_v4({ data, sig });
+  console.log('Address', address);
   console.log('Recover address', recoverAddress);
 
-  return sig;
+  return {
+    address,
+    sig,
+    data
+  };
 }

@@ -13,6 +13,7 @@ import Delegate from '@/views/Delegate.vue';
 import Timeline from '@/views/Timeline.vue';
 import Space from '@/views/Space.vue';
 import About from '@/views/About.vue';
+import Test from '@/views/Test.vue';
 
 const domainName = window.location.hostname;
 
@@ -72,6 +73,11 @@ const routes: any[] = [
     name: 'about',
     component: About,
     beforeEnter
+  },
+  {
+    path: '/test',
+    name: 'test',
+    component: Test
   },
   { path: '/*', name: 'error-404', beforeEnter: (to, from, next) => next('/') }
 ];
