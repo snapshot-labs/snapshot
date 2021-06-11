@@ -31,7 +31,7 @@
     :modelValue="value"
     @update:modelValue="handleValueChange($event)"
   >
-    <template v-slot:label>amount</template>
+    <template v-slot:label>amount (wei)</template>
   </UiInput>
 </template>
 
