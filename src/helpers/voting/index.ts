@@ -1,9 +1,11 @@
 import singleChoice from './singleChoice';
 import approval from './approval';
 import quadratic from './quadratic';
+import rankedChoice from './rankedChoice';
 
 export default {
   'single-choice': singleChoice,
   approval,
-  quadratic
+  quadratic,
+  'ranked-choice': rankedChoice
 };

@@ -46,17 +46,6 @@ export default class ApprovalVoting {
       .map(sqrt => [sqrt * sqrt]);
   }
 
-  getChoiceString() {
-    return this.proposal.choices
-      .map((choice, i) => {
-        if (this.selected[i + 1]) {
-          return `${percentageOfPower(i + 1, this.selected)}% for ${choice} `;
-        }
-      })
-      .filter(el => el != null)
-      .join(', ');
-  }
-
   totalPowerOfResults() {
     return this.proposal.choices
       .map((choice, i) =>
@@ -66,5 +55,16 @@ export default class ApprovalVoting {
       )
       .map(sqrt => sqrt * sqrt)
       .reduce((a, b: any) => a + b, 0);
+  }
+
+  getChoiceString() {
+    return this.proposal.choices
+      .map((choice, i) => {
+        if (this.selected[i + 1]) {
+          return `${percentageOfPower(i + 1, this.selected)}% for ${choice} `;
+        }
+      })
+      .filter(el => el != null)
+      .join(', ');
   }
 }

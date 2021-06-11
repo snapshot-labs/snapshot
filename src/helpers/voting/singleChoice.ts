@@ -32,13 +32,14 @@ export default class SingleChoiceVoting {
     );
   }
 
+  // Returns the total power of all counted votes
+  totalPowerOfResults() {
+    return this.votes.reduce((a, b: any) => a + b.balance, 0);
+  }
+
   //  Returns a string of all choices
   //  Seperated by comma if more than one choice
   getChoiceString() {
     return this.proposal.choices[this.selected - 1];
-  }
-
-  totalPowerOfResults() {
-    return this.votes.reduce((a, b: any) => a + b.balance, 0);
   }
 }
