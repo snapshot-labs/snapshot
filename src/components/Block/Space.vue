@@ -22,7 +22,7 @@
         </div>
       </div>
     </div>
-    <div class="overflow-auto text-center text-lg-left">
+    <div class="overflow-auto menu-tabs text-center text-lg-left">
       <div class="responsivenav pt-2 py-lg-3 px-2 px-lg-0">
         <router-link
           :to="{
