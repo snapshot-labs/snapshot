@@ -181,7 +181,7 @@
     "filters": "Filtreler",
     "defaultTab": "Varsayılan sekme",
     "proposalThreshold": "Teklif eşiği",
-    "showOnly": "Yalnızca üyelerin tekliflerini göster",
+    "allowOnlyMembers": "Allow only members to submit a proposal",
     "editPlugin": "Eklentiyi düzenle",
     "addPlugin": "Eklenti ekle",
     "pluginParameters": "Eklenti Parametreleri"
