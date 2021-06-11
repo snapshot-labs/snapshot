@@ -181,7 +181,7 @@
     "filters": "ఫిల్టర్లు",
     "defaultTab": "డిఫాల్ట్ టాబ్",
     "proposalThreshold": "Proposal threshold",
-    "showOnly": "సభ్యుల ప్రతిపాదనలను మాత్రమే చూపించు",
+    "allowOnlyMembers": "Allow only members to submit a proposal",
     "editPlugin": "Edit plugin",
     "addPlugin": "Add plugin",
     "pluginParameters": "Plugin parameters"
