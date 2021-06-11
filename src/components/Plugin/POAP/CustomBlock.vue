@@ -2,7 +2,7 @@
   <Block title="I voted POAP" :loading="loading">
     <div class="d-flex flex-column flex-items-center">
       <img :src="headerImg" alt="" class="mb-2" />
-      <div class="text-white text-center mb-2">{{ title }}</div>
+      <div class="text-white text-center mb-2">{{ $t(header) }}</div>
       <img
         :src="mainImg"
         alt=""
@@ -21,30 +21,55 @@
         :disabled="!actionEnabled"
         :loading="actionLoading"
       >
-        {{ buttonText }}
+        {{ $t(buttonText) }}
       </UiButton>
     </div>
   </Block>
 </template>
 
 <script>
-import Plugin from "@snapshot-labs/snapshot.js/src/plugins/poap";
-import { mapActions } from "vuex";
+import Plugin from '@snapshot-labs/snapshot.js/src/plugins/poap';
+import { mapActions } from 'vuex';
+
+const STATES = {
+  NO_POAP: {
+    header: 'poap.no_poap_header',
+    headerImage:
+      'https://img-test-rlajous.s3.amazonaws.com/Property 1=nopoap.png',
+    mainImage: 'https://img-test-rlajous.s3.amazonaws.com/Group+1229.png'
+  },
+  NOT_VOTED: {
+    headerImage:
+      'https://img-test-rlajous.s3.amazonaws.com/Property 1=unavaliable.png',
+    header: 'poap.no_voted_header',
+    buttonText: 'poap.button_claim'
+  },
+  UNCLAIMED: {
+    headerImage:
+      'https://img-test-rlajous.s3.amazonaws.com/Property 1=Voted.png',
+    header: 'poap.unclaimed_header',
+    buttonText: 'poap.button_claim'
+  },
+  CLAIMED: {
+    headerImage:
+      'https://img-test-rlajous.s3.amazonaws.com/Property 1=Claimed.png',
+    header: 'poap.claimed_header',
+    buttonText: 'poap.button_show'
+  },
+  LOADING: {
+    headerImage:
+      'https://img-test-rlajous.s3.amazonaws.com/Property 1=Claimed.png',
+    header: 'poap.loading_header',
+    buttonText: ''
+  }
+};
 
 // STATES
-const NO_POAP = 'NOTPOAP';
-const NOT_VOTED = 'NOTVOTED';
+const NO_POAP = 'NO_POAP';
+const NOT_VOTED = 'NOT_VOTED';
 const LOADING = 'LOADING';
 const UNCLAIMED = 'UNCLAIMED';
 const CLAIMED = 'CLAIMED';
-
-// Check the state if the current state is loading
-async function checkStateLoop(updateFunction) {
-  const currentState = await updateFunction();
-  if (currentState === LOADING) {
-    setTimeout(() => checkStateLoop(updateFunction), 5000);
-  }
-}
 
 export default {
   props: ['space', 'proposal', 'results', 'loaded', 'strategies', 'votes'],
@@ -52,7 +77,6 @@ export default {
     return {
       loading: false,
       plugin: new Plugin(),
-      states: {},
       currentState: NO_POAP,
       address: '',
       poapImg: '',
@@ -63,24 +87,20 @@ export default {
     web3Account() {
       return this.$store.state.web3.account;
     },
-    title() {
-      return this.states[this.currentState].header;
+    header() {
+      return STATES[this.currentState].header;
     },
     buttonText() {
-      return this.states[this.currentState].buttonText;
+      return STATES[this.currentState].buttonText;
     },
     mainImg() {
-      return this.poapImg
-        ? this.poapImg
-        : this.states[this.currentState].mainImage;
+      return this.poapImg ? this.poapImg : STATES[this.currentState].mainImage;
     },
     headerImg() {
-      return this.states[this.currentState].headerImage;
+      return STATES[this.currentState].headerImage;
     },
     actionEnabled() {
-      return (
-        this.currentState !== NOT_VOTED && this.currentState !== NO_POAP
-      );
+      return this.currentState !== NOT_VOTED && this.currentState !== NO_POAP;
     },
     actionLoading() {
       return this.currentState === LOADING || this.loadButton;
@@ -89,7 +109,6 @@ export default {
   async created() {
     this.address = this.web3Account;
     this.loading = true;
-    this.states = await this.plugin.getStates();
     await this.updateState();
   },
   watch: {
@@ -97,7 +116,7 @@ export default {
     currentState: async function (newCurrentState, oldCurrentState) {
       if (newCurrentState === LOADING) {
         // If the state is loading: start updating the state
-        checkStateLoop(this.updateState);
+        this.checkStateLoop(this.updateState);
       }
     },
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -130,12 +149,21 @@ export default {
             this.address
           );
           this.loadButton = false;
-          if (this.currentState === UNCLAIMED) {
-            this.notify(['red', `There was a problem minting the token`]);
-          } else if (this.currentState === CLAIMED) {
-            this.notify(['green', `Your POAP is on your address`]);
-          }
           break;
+      }
+    },
+    // Check the state if the current state is loading
+    async checkStateLoop() {
+      await this.updateState();
+      switch (this.currentState) {
+        case LOADING:
+          setTimeout(() => this.checkStateLoop(), 5000);
+          break;
+        case UNCLAIMED:
+          this.notify(['red', this.$t('poap.error_claim')]);
+          break;
+        case CLAIMED:
+          this.notify(['green', this.$t('poap.success_claim')]);
       }
     },
     async updateState() {
@@ -152,7 +180,6 @@ export default {
 
       this.currentState = currentState;
       this.loading = false;
-      return currentState;
     }
   }
 };
