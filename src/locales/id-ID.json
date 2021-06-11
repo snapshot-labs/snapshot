@@ -181,7 +181,7 @@
     "filters": "Filter",
     "defaultTab": "Tab bawaan",
     "proposalThreshold": "Proposal threshold",
-    "showOnly": "Tampilkan hanya proposal anggota",
+    "allowOnlyMembers": "Allow only members to submit a proposal",
     "editPlugin": "Edit plugin",
     "addPlugin": "Tambahkan plugin",
     "pluginParameters": "Parameter plugin"
