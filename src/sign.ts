@@ -1,17 +1,15 @@
-import * as sigUtil from 'eth-sig-util';
 import { Web3Provider } from '@ethersproject/providers';
+import { verifyTypedData } from '@ethersproject/wallet';
+import { _TypedDataEncoder } from '@ethersproject/hash';
 import { name, version } from '@/../package.json';
 
 const domain = {
   name,
-  version
+  version,
+  chainId: 1
 };
 
 const types = {
-  EIP712Domain: [
-    { name: 'name', type: 'string' },
-    { name: 'version', type: 'string' }
-  ],
   Vote: [
     { name: 'space', type: 'string' },
     { name: 'type', type: 'string' },
@@ -43,21 +41,20 @@ export async function signMessage(
 
   console.log(JSON.stringify(data));
 
-  if (!web3.provider.request)
-    throw new Error('Web3Provider missing request method');
+  const signer = web3.getSigner();
+  const sig = await signer._signTypedData(domain, types, message);
+  console.log('Sig!', sig);
 
-  const sig = await web3.provider.request({
-    method: 'eth_signTypedData_v4',
-    params: [address, JSON.stringify(data)]
-  });
-  console.log('Sig', sig);
+  const recover = verifyTypedData(domain, types, message, sig);
+  console.log('Address', address);
+  console.log('Recover', recover);
+  console.log(recover === address ? 'Match!' : 'Not match!');
 
-  const hash = '0x' + sigUtil.TypedDataUtils.sign(data).toString('hex');
+  const hash = _TypedDataEncoder.hash(domain, types, message);
   console.log('Hash', hash);
 
-  const recoverAddress = sigUtil.recoverTypedSignature_v4({ data, sig });
-  console.log('Address', address);
-  console.log('Recover address', recoverAddress);
+  // const recoverAddress = sigUtil.recoverTypedSignature_v4({ data, sig });
+  // console.log('Recover address', recoverAddress);
 
   return {
     address,
