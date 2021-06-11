@@ -181,7 +181,7 @@
     "filters": "Фильтры",
     "defaultTab": "Вкладка по умолчанию",
     "proposalThreshold": "Proposal threshold",
-    "showOnly": "Показать только опросы участников",
+    "allowOnlyMembers": "Allow only members to submit a proposal",
     "editPlugin": "Редактировать плагин",
     "addPlugin": "Добавить плагин",
     "pluginParameters": "Настройки плагина"
