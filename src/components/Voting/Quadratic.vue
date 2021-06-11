@@ -7,11 +7,11 @@
       >
         <span class="float-left">{{ _shorten(choice, 32) }}</span>
         <div class="d-flex flex-items-center float-right">
-          <a @click="removeVote(i + 1)" style="width: 40px">-</a>
-          <div style="min-width: 25px">{{ selectedChoices[i + 1] || 0 }}</div>
-          <a @click="addVote(i + 1)" style="width: 40px">+</a>
-          <div style="min-width: 75px" class="text-right">
-            {{ percentage(i) }} votes
+          <a class="btn-choice" @click="removeVote(i + 1)"> - </a>
+          <div style="min-width: 35px">{{ selectedChoices[i + 1] || 0 }}</div>
+          <a class="btn-choice" @click="addVote(i + 1)">+</a>
+          <div style="min-width: 50px; margin-right: -5px" class="text-right">
+            {{ percentage(i) }}%
           </div>
         </div>
       </UiButton>
@@ -23,7 +23,7 @@
 
 <script>
 import { ref } from 'vue';
-import { numberOfVotes } from '@/helpers/utils';
+import { percentageOfPower } from '@/helpers/voting/quadratic';
 export default {
   props: {
     proposal: {
@@ -36,7 +36,7 @@ export default {
     const selectedChoices = ref({});
 
     function percentage(i) {
-      return numberOfVotes(i + 1, selectedChoices.value);
+      return percentageOfPower(i + 1, selectedChoices.value);
     }
 
     function addVote(i) {
@@ -56,3 +56,19 @@ export default {
   }
 };
 </script>
+
+<style lang="scss" scoped>
+.btn-choice {
+  margin-bottom: 2px;
+  width: 40px;
+  height: 44px;
+  border-left: 1px solid var(--border-color);
+  border-right: 1px solid var(--border-color);
+  border-bottom: none;
+  border-top: none;
+  &:hover {
+    border-left: 1px solid var(--link-color);
+    border-right: 1px solid var(--link-color);
+  }
+}
+</style>

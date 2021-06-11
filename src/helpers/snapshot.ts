@@ -92,9 +92,9 @@ export async function getResults(space, proposal, votes, blockNumber) {
     /* Get results */
     const votingClass = new voting[proposal.type](proposal, votes, strategies);
     const results = {
-      totalBalances: votingClass.totalBalances(),
-      totalScores: votingClass.totalScores(),
-      totalVotesBalances: votingClass.totalVotesBalances()
+      totalVotingPower: votingClass.totalVotingPower(),
+      votingPowerByStrategy: votingClass.votingPowerByStrategy(),
+      totalBalanceOfResults: votingClass.totalBalanceOfResults()
     };
 
     return { votes, results };

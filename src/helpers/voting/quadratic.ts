@@ -1,12 +1,14 @@
-import { numberOfVotes } from '@/helpers/utils';
+export function percentageOfPower(i, selected) {
+  const total: any = Object.values(selected).reduce(
+    (a: any, b: any) => a + b,
+    0
+  );
+  const percent = Math.round((selected[i] / total) * 1000) / 10;
+  return isNaN(percent) ? 0 : percent;
+}
 
-function quadraticScore(votes, score) {
-  let total = 0;
-  for (let v = 1; v <= votes; v++) {
-    total = total + score / v;
-    console.log(v, score, total);
-  }
-  return total;
+export function quadraticMath(i, choice, balance) {
+  return Math.sqrt((percentageOfPower(i + 1, choice) / 100) * balance);
 }
 
 export default class ApprovalVoting {
@@ -22,48 +24,47 @@ export default class ApprovalVoting {
     this.selected = selected;
   }
 
-  totalBalances() {
-    return this.proposal.choices.map((choice, i) =>
-      this.votes
-        .map(vote =>
-          quadraticScore(numberOfVotes(i + 1, vote.choice), vote.balance)
-        )
-        .reduce((a, b: any) => a + b, 0)
-    );
-  }
-
-  totalScores() {
-    return this.proposal.choices.map((choice, i) =>
-      this.strategies.map((strategy, sI) =>
+  totalVotingPower() {
+    return this.proposal.choices
+      .map((choice, i) =>
         this.votes
-          .map(vote =>
-            quadraticScore(numberOfVotes(i + 1, vote.choice), vote.scores[sI])
-          )
+          .map(vote => quadraticMath(i, vote.choice, vote.balance))
           .reduce((a, b: any) => a + b, 0)
       )
-    );
+      .map(sqrt => sqrt * sqrt);
+  }
+
+  votingPowerByStrategy() {
+    return this.proposal.choices
+      .map((choice, i) =>
+        this.strategies.map((strategy, sI) =>
+          this.votes
+            .map(vote => quadraticMath(i, vote.choice, vote.scores[sI]))
+            .reduce((a, b: any) => a + b, 0)
+        )
+      )
+      .map(sqrt => [sqrt * sqrt]);
   }
 
   getChoiceString() {
     return this.proposal.choices
       .map((choice, i) => {
         if (this.selected[i + 1]) {
-          return `${numberOfVotes(i + 1, this.selected)} votes for ${choice} `;
+          return `${percentageOfPower(i + 1, this.selected)}% for ${choice} `;
         }
       })
       .filter(el => el != null)
       .join(', ');
   }
 
-  totalVotesBalances() {
+  totalBalanceOfResults() {
     return this.proposal.choices
       .map((choice, i) =>
         this.votes
-          .map(vote =>
-            quadraticScore(numberOfVotes(i + 1, vote.choice), vote.balance)
-          )
+          .map(vote => quadraticMath(i, vote.choice, vote.balance))
           .reduce((a, b: any) => a + b, 0)
       )
+      .map(sqrt => sqrt * sqrt)
       .reduce((a, b: any) => a + b, 0);
   }
 }

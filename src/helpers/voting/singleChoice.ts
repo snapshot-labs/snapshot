@@ -12,7 +12,7 @@ export default class SingleChoiceVoting {
   }
 
   //  Returns an array with voter balance for each choice
-  totalBalances() {
+  totalVotingPower() {
     return this.proposal.choices.map((choice, i) =>
       this.votes
         .filter((vote: any) => vote.choice === i + 1)
@@ -22,7 +22,7 @@ export default class SingleChoiceVoting {
 
   //  Returns an array with voter balance for each choice
   //  and for each strategy
-  totalScores() {
+  votingPowerByStrategy() {
     return this.proposal.choices.map((choice, i) =>
       this.strategies.map((strategy, sI) =>
         this.votes
@@ -38,7 +38,7 @@ export default class SingleChoiceVoting {
     return this.proposal.choices[this.selected - 1];
   }
 
-  totalVotesBalances() {
+  totalBalanceOfResults() {
     return this.votes.reduce((a, b: any) => a + b.balance, 0);
   }
 }
