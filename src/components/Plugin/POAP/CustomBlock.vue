@@ -3,12 +3,23 @@
     <div class="d-flex flex-column flex-items-center">
       <img :src="headerImg" alt="" class="mb-2" />
       <div class="text-white text-center mb-2">{{ title }}</div>
-      <img :src="mainImg" alt="" class="mb-2" />
+      <img
+        :src="mainImg"
+        alt=""
+        class="mb-2"
+        style="
+          vertical-align: middle;
+          width: auto;
+          height: auto;
+          max-width: 125px;
+        "
+      />
       <UiButton
+        v-if="currentState !== 'NO_POAP'"
         class="width-full mb-2"
         @click="action"
-        v-if="buttonText"
         :disabled="!actionEnabled"
+        :loading="actionLoading"
       >
         {{ buttonText }}
       </UiButton>
@@ -17,21 +28,41 @@
 </template>
 
 <script>
-import Plugin from '@snapshot-labs/snapshot.js/src/plugins/poap';
+import Plugin from "@snapshot-labs/snapshot.js/src/plugins/poap";
+import { mapActions } from "vuex";
+
+// STATES
+const NO_POAP = 'NOTPOAP';
+const NOT_VOTED = 'NOTVOTED';
+const LOADING = 'LOADING';
+const UNCLAIMED = 'UNCLAIMED';
+const CLAIMED = 'CLAIMED';
+
+// Check the state if the current state is loading
+async function checkStateLoop(updateFunction) {
+  const currentState = await updateFunction();
+  if (currentState === LOADING) {
+    setTimeout(() => checkStateLoop(updateFunction), 5000);
+  }
+}
 
 export default {
-  props: ['space', 'proposal', 'results', 'loaded', 'strategies'],
+  props: ['space', 'proposal', 'results', 'loaded', 'strategies', 'votes'],
   data() {
     return {
       loading: false,
       plugin: new Plugin(),
       states: {},
-      currentState: 'NOTPOAP',
-      account: null,
-      poapImg: ''
+      currentState: NO_POAP,
+      address: '',
+      poapImg: '',
+      loadButton: false
     };
   },
   computed: {
+    web3Account() {
+      return this.$store.state.web3.account;
+    },
     title() {
       return this.states[this.currentState].header;
     },
@@ -47,51 +78,81 @@ export default {
       return this.states[this.currentState].headerImage;
     },
     actionEnabled() {
-      if (!this.$auth.isAuthenticated.value) return false;
-      if (this.currentState === 'NOTVOTED') return false;
-      return true;
+      return (
+        this.currentState !== NOT_VOTED && this.currentState !== NO_POAP
+      );
+    },
+    actionLoading() {
+      return this.currentState === LOADING || this.loadButton;
     }
   },
   async created() {
+    this.address = this.web3Account;
     this.loading = true;
-
-    if (this.$auth.isAuthenticated.value) {
-      const accounts = await this.$auth.web3.listAccounts();
-      this.account = accounts[0];
+    this.states = await this.plugin.getStates();
+    await this.updateState();
+  },
+  watch: {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    currentState: async function (newCurrentState, oldCurrentState) {
+      if (newCurrentState === LOADING) {
+        // If the state is loading: start updating the state
+        checkStateLoop(this.updateState);
+      }
+    },
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    web3Account: async function (newAccount, preAccount) {
+      // Update the state if the address
+      this.loading = true;
+      this.address = newAccount;
+      await this.updateState();
+      this.loading = false;
+    },
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    votes: async function (newCurrentState, oldCurrentState) {
+      // Update the state if the votes change
+      this.loading = true;
+      await this.updateState();
+      this.loading = false;
     }
-
-    this.states = await this.plugin.getCurrentStates();
-    const response = await this.plugin.getCurrentState(
-      this.proposal.id,
-      this.account
-    );
-
-    const { currentState, poapImg } = response.data;
-
-    if (poapImg) {
-      this.poapImg = poapImg;
-    }
-
-    this.currentState = currentState;
-
-    this.loading = false;
   },
   methods: {
+    ...mapActions(['notify']),
     async action() {
-      const accounts = await this.$auth.web3.listAccounts();
-      this.account = accounts[0];
       switch (this.currentState) {
-        case 'CLAIMED':
-          window.open('https://app.poap.xyz/scan/' + this.account, '_blank');
+        case CLAIMED:
+          this.plugin.openScanPage(this.address);
           break;
-        default:
+        case UNCLAIMED:
+          this.loadButton = true;
           this.currentState = await this.plugin.claim(
             this.proposal.id,
-            this.account
+            this.address
           );
-          console.log(this.currentState);
+          this.loadButton = false;
+          if (this.currentState === UNCLAIMED) {
+            this.notify(['red', `There was a problem minting the token`]);
+          } else if (this.currentState === CLAIMED) {
+            this.notify(['green', `Your POAP is on your address`]);
+          }
           break;
       }
+    },
+    async updateState() {
+      const response = await this.plugin.getCurrentState(
+        this.proposal.id,
+        this.address
+      );
+
+      const { currentState, image_url } = response;
+
+      if (image_url) {
+        this.poapImg = image_url;
+      }
+
+      this.currentState = currentState;
+      this.loading = false;
+      return currentState;
     }
   }
 };
