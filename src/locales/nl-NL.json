@@ -181,7 +181,7 @@
     "filters": "Filters",
     "defaultTab": "Standaard tab",
     "proposalThreshold": "Proposal threshold",
-    "showOnly": "Toon alleen voorstellen van leden",
+    "allowOnlyMembers": "Allow only members to submit a proposal",
     "editPlugin": "Bewerk plugin",
     "addPlugin": "Plugin toevoegen",
     "pluginParameters": "Plugin parameters"
