@@ -181,7 +181,7 @@
     "filters": "Filteri",
     "defaultTab": "Podrazumevana kartica",
     "proposalThreshold": "Proposal threshold",
-    "showOnly": "Prikaži samo predloge od članova",
+    "allowOnlyMembers": "Allow only members to submit a proposal",
     "editPlugin": "Uredi plagin",
     "addPlugin": "Dodaj plugin",
     "pluginParameters": "Plugin parametri"
