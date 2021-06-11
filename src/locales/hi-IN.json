@@ -181,7 +181,7 @@
     "filters": "छांटे",
     "defaultTab": "डिफ़ॉल्ट टैब",
     "proposalThreshold": "Proposal threshold",
-    "showOnly": "केवल मेंबर्स के प्रोपोज़ल्स दिखाए",
+    "allowOnlyMembers": "Allow only members to submit a proposal",
     "editPlugin": "प्लगइन संपादित करें",
     "addPlugin": "प्लगइन जोड़ें",
     "pluginParameters": "प्लगइन पैरामीटर्स"
