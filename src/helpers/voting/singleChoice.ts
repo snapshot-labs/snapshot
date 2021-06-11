@@ -38,7 +38,7 @@ export default class SingleChoiceVoting {
     return this.proposal.choices[this.selected - 1];
   }
 
-  totalBalanceOfResults() {
+  totalPowerOfResults() {
     return this.votes.reduce((a, b: any) => a + b.balance, 0);
   }
 }

@@ -57,7 +57,7 @@ export default class ApprovalVoting {
       .join(', ');
   }
 
-  totalBalanceOfResults() {
+  totalPowerOfResults() {
     return this.proposal.choices
       .map((choice, i) =>
         this.votes

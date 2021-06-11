@@ -26,9 +26,9 @@
           class="float-right"
           v-text="
             _n(
-              !results.totalBalanceOfResults
+              !results.totalPowerOfResults
                 ? 0
-                : ((100 / results.totalBalanceOfResults) *
+                : ((100 / results.totalPowerOfResults) *
                     results.totalVotingPower[choice.i]) /
                     1e2,
               '0.[00]%'
@@ -38,7 +38,7 @@
       </div>
       <UiProgress
         :value="results.votingPowerByStrategy[choice.i]"
-        :max="results.totalBalanceOfResults"
+        :max="results.totalPowerOfResults"
         :titles="titles"
         class="mb-3"
       />
