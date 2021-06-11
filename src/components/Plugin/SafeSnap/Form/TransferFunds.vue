@@ -92,7 +92,6 @@ export default {
     this.setTokens();
     if (this.modelValue) {
       const { recipient = '', token, amount = '0' } = this.modelValue;
-      console.log('model 123', this.modelValue.amount, amount);
       this.to = recipient;
       this.value = amount;
       if (token) {
