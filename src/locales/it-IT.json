@@ -181,7 +181,7 @@
     "filters": "Filtri",
     "defaultTab": "Scheda predefinita",
     "proposalThreshold": "Proposal threshold",
-    "showOnly": "Mostra solo le proposte dei membri",
+    "allowOnlyMembers": "Allow only members to submit a proposal",
     "editPlugin": "Modifica plugin",
     "addPlugin": "Aggiungi plugin",
     "pluginParameters": "Parametri plugin"
