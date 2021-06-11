@@ -181,7 +181,7 @@
     "filters": "Filter",
     "defaultTab": "Standard-Tab",
     "proposalThreshold": "Schwellenwert für Vorschläge",
-    "showOnly": "Nur Mitgliedervorschläge anzeigen",
+    "allowOnlyMembers": "Allow only members to submit a proposal",
     "editPlugin": "Plugin bearbeiten",
     "addPlugin": "Plugin hinzufügen",
     "pluginParameters": "Plugin Parameter"
