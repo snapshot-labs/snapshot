@@ -217,7 +217,7 @@
     "description": {
       "single-choice": "Each voter may select only one choice.",
       "approval": "Each voter may select any number of choices.",
-      "quadratic": "Each voter may spread 100 votes across any number of choices."
+      "quadratic": "Each voter may spread voting power across any number of choices. Results are calculated quaratically."
     }
   },
   "safeSnap": {
