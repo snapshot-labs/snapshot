@@ -181,7 +181,7 @@
     "filters": "过滤器",
     "defaultTab": "默认标签页",
     "proposalThreshold": "Proposal threshold",
-    "showOnly": "仅显示会员提议",
+    "allowOnlyMembers": "Allow only members to submit a proposal",
     "editPlugin": "编辑插件",
     "addPlugin": "添加插件",
     "pluginParameters": "插件参数"
