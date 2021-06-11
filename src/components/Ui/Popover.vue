@@ -1,6 +1,6 @@
 <template>
   <div
-    ref="popref"
+    ref="itemref"
     @mouseenter="debounce(() => (open = true))"
     @mouseleave="debounce(() => popClose(), 300)"
   >
@@ -23,11 +23,14 @@ import { createPopper } from '@popperjs/core';
 import { useDebounce } from '@/composables/useDebounce';
 
 export default {
-  setup() {
+  props: {
+    options: Object
+  },
+  setup(props) {
     const open = ref(false);
     const popHovered = ref(false);
 
-    const popref = ref(null);
+    const itemref = ref(null);
     const contentref = ref(null);
 
     function popClose() {
@@ -37,13 +40,13 @@ export default {
     let popperInstance;
 
     onMounted(() => {
-      popperInstance = createPopper(popref.value, contentref.value, {
-        placement: 'bottom',
+      popperInstance = createPopper(itemref.value, contentref.value, {
+        placement: props.options.placement,
         modifiers: [
           {
             name: 'offset',
             options: {
-              offset: [40, 12]
+              offset: props.options.offset
             }
           }
         ]
@@ -58,7 +61,7 @@ export default {
       open,
       popClose,
       popHovered,
-      popref,
+      itemref,
       contentref,
       debounce: useDebounce()
     };

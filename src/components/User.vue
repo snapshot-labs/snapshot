@@ -1,6 +1,6 @@
 <template>
   <span>
-    <UiPopover>
+    <UiPopover :options="{ offset: [0, 12], placement: 'bottom-start' }">
       <template v-slot:item>
         <a class="no-wrap">
           <UiAvatar
