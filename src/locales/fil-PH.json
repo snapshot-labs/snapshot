@@ -181,7 +181,7 @@
     "filters": "Mga filter",
     "defaultTab": "Default tab",
     "proposalThreshold": "Proposal threshold",
-    "showOnly": "Ipakita lamang ang members proposals",
+    "allowOnlyMembers": "Allow only members to submit a proposal",
     "editPlugin": "I-edit ang plugin",
     "addPlugin": "Magdagdag ng Plugin",
     "pluginParameters": "Plugin parameters"
