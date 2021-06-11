@@ -62,3 +62,23 @@ export async function signMessage(
     data
   };
 }
+
+export async function send(body) {
+  const url = `${process.env.VUE_APP_HIGHLIGHT_URL}/api/message`;
+  const init = {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(body)
+  };
+  return new Promise((resolve, reject) => {
+    fetch(url, init)
+      .then(res => {
+        if (res.ok) return resolve(res.json());
+        throw res;
+      })
+      .catch(e => e.json().then(json => reject(json)));
+  });
+}

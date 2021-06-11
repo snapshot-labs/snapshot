@@ -14,12 +14,10 @@
 </template>
 
 <script>
-import gql from 'graphql-tag';
-import { signMessage } from '@/sign';
+import { send, signMessage } from '@/sign';
 import { computed } from 'vue';
 import { useStore } from 'vuex';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
-import { apolloClient } from '@/helpers/highlight';
 
 export default {
   setup() {
@@ -29,23 +27,14 @@ export default {
 
     async function submit() {
       try {
-        const unit = await signMessage(auth.web3, web3Account.value, {
+        const envelop = await signMessage(auth.web3, web3Account.value, {
           space: 'fabien.eth',
           type: 'post',
           payload: 'Hi!'
         });
-        const result = await apolloClient.mutate({
-          mutation: gql`
-            mutation($unit: String!) {
-              send(msg: $unit)
-            }
-          `,
-          variables: {
-            unit: JSON.stringify(unit)
-          }
-        });
+        const result = await send(envelop);
         console.log('Result', result);
-        console.log('Unit', unit);
+        console.log('Envelop', envelop);
       } catch (e) {
         console.log(e);
       }
