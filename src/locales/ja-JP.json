@@ -181,7 +181,7 @@
     "filters": "フィルター",
     "defaultTab": "デフォルトのタブ",
     "proposalThreshold": "Proposal threshold",
-    "showOnly": "メンバー限定提案",
+    "allowOnlyMembers": "Allow only members to submit a proposal",
     "editPlugin": "プラグインを編集する",
     "addPlugin": "プラグインを追加する",
     "pluginParameters": "プラグインのパラメータ"
