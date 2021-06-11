@@ -4,6 +4,6 @@ export function useDebounce() {
     clearTimeout(timeout);
     timeout = setTimeout(() => {
       fnc();
-    }, delayMs || 500);
+    }, delayMs || 800);
   };
 }
