@@ -181,7 +181,7 @@
     "filters": "Filter",
     "defaultTab": "Standardflik",
     "proposalThreshold": "Proposal threshold",
-    "showOnly": "Visa endast medlemsförslag",
+    "allowOnlyMembers": "Allow only members to submit a proposal",
     "editPlugin": "Redigera plugin",
     "addPlugin": "Lägg till plugin",
     "pluginParameters": "Plugin parametrar"
