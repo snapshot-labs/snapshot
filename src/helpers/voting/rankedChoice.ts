@@ -1,3 +1,4 @@
+import { getNumberWithOrdinal } from '@/helpers/utils';
 export default class ApprovalVoting {
   public proposal;
   public votes;
@@ -12,6 +13,7 @@ export default class ApprovalVoting {
   }
 
   totalVotingPower() {
+    //   TODO
     return this.proposal.choices.map((choice, i) =>
       this.votes
         .filter((vote: any) => vote.choice.includes(i + 1))
@@ -20,6 +22,7 @@ export default class ApprovalVoting {
   }
 
   votingPowerByStrategy() {
+    //   TODO
     return this.proposal.choices.map((choice, i) =>
       this.strategies.map((strategy, sI) =>
         this.votes
@@ -30,12 +33,17 @@ export default class ApprovalVoting {
   }
 
   totalPowerOfResults() {
+    //   TODO
     return this.votes.reduce((a, b: any) => a + b.balance, 0);
   }
 
   getChoiceString() {
-    return this.proposal.choices
-      .filter((choice, i) => this.selected.includes(i + 1))
+    return this.selected
+      .map((choice, i) => {
+        if (this.proposal.choices[choice - 1])
+          return this.proposal.choices[choice - 1];
+      })
+      .map((el, i) => `(${getNumberWithOrdinal(i + 1)}) ${el}`)
       .join(', ');
   }
 }

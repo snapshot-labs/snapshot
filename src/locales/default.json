@@ -219,7 +219,7 @@
       "single-choice": "Each voter may select only one choice.",
       "approval": "Each voter may select any number of choices.",
       "quadratic": "Each voter may spread voting power across any number of choices. Results are calculated quaratically.",
-      "ranked-choice": "Also called Instant-runoff voting. Each voter may select and rank any number of choices."
+      "ranked-choice": "Each voter may select and rank any number of choices. Results are calculted by instant-runoff counting method."
     }
   },
   "safeSnap": {
