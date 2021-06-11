@@ -181,7 +181,7 @@
     "filters": "Filters",
     "defaultTab": "Default tab",
     "proposalThreshold": "Proposal threshold",
-    "showOnly": "Show only members proposals",
+    "allowOnlyMembers": "Allow only members to submit a proposal",
     "editPlugin": "Edit plugin",
     "addPlugin": "Add plugin",
     "pluginParameters": "Plugin parameters"
