@@ -58,7 +58,7 @@
 <script>
 import Plugin from '@snapshot-labs/snapshot.js/src/plugins/safeSnap';
 import {
-  extractUsefulMethods,
+  getABIWriteFunctions,
   getContractABI,
   getContractTransactionData,
   getOperation,
@@ -66,9 +66,8 @@ import {
 } from '@/helpers/abi/utils';
 import { isBigNumberish } from '@ethersproject/bignumber/lib/bignumber';
 import { isAddress } from '@ethersproject/address';
-import { Interface } from '@ethersproject/abi';
-import { isArrayParameter } from '@/helpers/validator';
 import { parseAmount, parseValueInput } from '@/helpers/utils';
+import { InterfaceDecoder } from '@/helpers/abi/decoder';
 
 const toModuleTransaction = ({ to, value, data, nonce, method }) => {
   return {
@@ -110,24 +109,14 @@ export default {
         this.value = value;
         this.selectedMethod = abi[0];
         this.methods = [this.selectedMethod];
-        const contractInterface = new Interface(abi);
-        const methodParametersValues = contractInterface.decodeFunctionData(
-          this.selectedMethod.name,
-          data
-        );
+
+        const transactionDecoder = new InterfaceDecoder(abi);
+        const methodParametersValues = transactionDecoder.decodeFunction(data);
+
         this.parameters = this.selectedMethod.inputs.reduce(
           (obj, parameter) => {
-            const value = isArrayParameter(parameter.type)
-              ? JSON.stringify(
-                  methodParametersValues[parameter.name].map(value =>
-                    value.toString()
-                  )
-                )
-              : methodParametersValues[parameter.name].toString();
-            return {
-              ...obj,
-              [parameter.name]: value
-            };
+            const value = methodParametersValues[parameter.name];
+            return { ...obj, [parameter.name]: value };
           },
           {}
         );
@@ -220,7 +209,7 @@ export default {
       }
 
       try {
-        this.methods = extractUsefulMethods(abi);
+        this.methods = getABIWriteFunctions(abi);
         this.handleMethodChanged();
       } catch (error) {
         console.warn('error extracting useful methods', error);

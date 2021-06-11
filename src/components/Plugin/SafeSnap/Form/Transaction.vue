@@ -54,6 +54,9 @@
 </template>
 
 <script>
+import { formatUnits } from '@ethersproject/units';
+import { getAbiFirstFunctionName } from '@/helpers/abi/utils';
+
 const labels = {
   contractInteraction: 'Contract Interaction',
   transferFunds: 'Transfer Funds',
@@ -86,7 +89,9 @@ export default {
           const type = this.modelValue.type || this.type;
           switch (type) {
             case 'contractInteraction':
-              return `${this.modelValue.abi[0].name}() - ${this.modelValue.value} wei to ${addr}`;
+              return `${getAbiFirstFunctionName(this.modelValue.abi)}() - ${
+                this.modelValue.value
+              } wei to ${addr}`;
             case 'transferFunds':
               return `Transfer ${this.modelValue.amount} ${this.modelValue.token.symbol} to ${addr}`;
             case 'sendAsset':
