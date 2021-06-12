@@ -43,7 +43,7 @@ export default class ApprovalVoting {
             .reduce((a, b: any) => a + b, 0)
         )
       )
-      .map(sqrt => [sqrt * sqrt]);
+      .map(arr => arr.map(sqrt => [sqrt * sqrt]));
   }
 
   totalSumOfResults() {
