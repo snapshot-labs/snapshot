@@ -4,7 +4,7 @@
       <Token :space="space" symbolIndex="space" size="80" class="mt-3 mb-2" />
       <div class="d-inline-block d-lg-block v-align-middle mt-3 mt-lg-0">
         <h3 class="px-4">{{ space.name }}</h3>
-        <div class="mb-1" v-if="space.github || space.twitter">
+        <div class="mb-1 mt-2" v-if="space.github || space.twitter">
           <a
             v-if="space.twitter"
             :href="`https://twitter.com/${space.twitter}`"
