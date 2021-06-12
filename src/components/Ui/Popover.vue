@@ -53,8 +53,10 @@ export default {
       });
     });
 
-    watch(open, value => {
-      if (value) popperInstance.update();
+    watch(open, v => {
+      if (window.matchMedia('(min-width: 1150px)').matches)
+        popperInstance.setOptions({ placement: 'bottom' });
+      else popperInstance.setOptions({ placement: 'bottom-start' });
     });
 
     return {
