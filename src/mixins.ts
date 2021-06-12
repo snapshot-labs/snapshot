@@ -38,7 +38,7 @@ export default {
       return shorten(str);
     },
     _ipfsUrl(ipfsHash: string): string | null {
-      if(!ipfsHash) return null;
+      if (!ipfsHash) return null;
       return `https://${process.env.VUE_APP_IPFS_GATEWAY}/ipfs/${ipfsHash}`;
     },
     _explorer(network, str: string, type = 'address'): string {

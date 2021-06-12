@@ -195,8 +195,12 @@ export default {
     },
     approvalData() {
       if (this.questionDetails) {
-        const { currentBond, finalizedAt, isApproved, endTime } =
-          this.questionDetails;
+        const {
+          currentBond,
+          finalizedAt,
+          isApproved,
+          endTime
+        } = this.questionDetails;
         if (currentBond === '0.0') {
           return {
             decision: this.$i18n.t('safeSnap.currentOutcome', ['--']),
@@ -353,4 +357,3 @@ export default {
   }
 };
 </script>
-
