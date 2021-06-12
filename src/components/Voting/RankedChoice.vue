@@ -1,6 +1,6 @@
 <template>
   <div class="mb-3">
-    <div class="mb-5">
+    <div :class="{ 'mb-5': selectedChoices.length > 0 }">
       <draggable
         v-model="selectedChoices"
         tag="transition-group"
