@@ -24,7 +24,7 @@ export default class ApprovalVoting {
     this.selected = selected;
   }
 
-  totalVotingPower() {
+  resultsByChoices() {
     return this.proposal.choices
       .map((choice, i) =>
         this.votes
@@ -34,7 +34,7 @@ export default class ApprovalVoting {
       .map(sqrt => sqrt * sqrt);
   }
 
-  votingPowerByStrategy() {
+  resultsOfChoicesByStrategy() {
     return this.proposal.choices
       .map((choice, i) =>
         this.strategies.map((strategy, sI) =>
@@ -46,6 +46,17 @@ export default class ApprovalVoting {
       .map(sqrt => [sqrt * sqrt]);
   }
 
+  totalSumOfResults() {
+    return this.proposal.choices
+      .map((choice, i) =>
+        this.votes
+          .map(vote => quadraticMath(i, vote.choice, vote.balance))
+          .reduce((a, b: any) => a + b, 0)
+      )
+      .map(sqrt => sqrt * sqrt)
+      .reduce((a, b: any) => a + b, 0);
+  }
+
   getChoiceString() {
     return this.proposal.choices
       .map((choice, i) => {
@@ -55,16 +66,5 @@ export default class ApprovalVoting {
       })
       .filter(el => el != null)
       .join(', ');
-  }
-
-  totalPowerOfResults() {
-    return this.proposal.choices
-      .map((choice, i) =>
-        this.votes
-          .map(vote => quadraticMath(i, vote.choice, vote.balance))
-          .reduce((a, b: any) => a + b, 0)
-      )
-      .map(sqrt => sqrt * sqrt)
-      .reduce((a, b: any) => a + b, 0);
   }
 }
