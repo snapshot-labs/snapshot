@@ -5,6 +5,11 @@
       <UiText :text="space.about" />
     </div>
 
+    <div class="mb-3">
+      <h4 class="text-white mb-2">{{ $t('settings.network') }}</h4>
+      <div>{{ network.name }}</div>
+    </div>
+
     <div v-if="space.filters?.minScore" class="mb-3">
       <h4 class="text-white mb-2">
         {{ $t('settings.proposalThreshold') }}
@@ -59,7 +64,14 @@
 </template>
 
 <script>
+import networks from '@snapshot-labs/snapshot.js/src/networks.json';
+
 export default {
-  props: ['space']
+  props: ['space'],
+  computed: {
+    network() {
+      return networks[this.space.network];
+    }
+  }
 };
 </script>
