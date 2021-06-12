@@ -70,7 +70,9 @@ import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { computed } from 'vue';
 
 export default {
-  props: ['space'],
+  props: {
+    space: Object
+  },
   setup(props) {
     const store = useStore();
     const auth = getInstance();
