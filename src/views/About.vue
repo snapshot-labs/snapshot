@@ -13,6 +13,11 @@
           <UiText :text="space.about" />
         </div>
 
+        <div class="mb-3">
+          <h4 class="text-white mb-2">{{ $t('settings.network') }}</h4>
+          <div>{{ network.name }}</div>
+        </div>
+
         <div v-if="space.filters?.minScore" class="mb-3">
           <h4 class="text-white mb-2">
             {{ $t('settings.proposalThreshold') }}
@@ -72,14 +77,19 @@
 import { computed } from 'vue';
 import { useRoute } from 'vue-router';
 import { useStore } from 'vuex';
+import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 
 export default {
   setup() {
     const store = useStore();
     const route = useRoute();
 
+    const space = computed(() => store.state.app.spaces[route.params.key]);
+    const network = computed(() => networks[space.value.network]);
+
     return {
-      space: computed(() => store.state.app.spaces[route.params.key])
+      space,
+      network
     };
   }
 };
