@@ -14,22 +14,22 @@
         <span
           class="mr-1 tooltipped tooltipped-multiline tooltipped-n"
           :aria-label="
-            results.votingPowerByStrategy[choice.i]
+            results.resultsOfChoicesByStrategy[choice.i]
               .map((score, index) => `${_n(score)} ${titles[index]}`)
               .join(' + ')
           "
         >
-          {{ _n(results.totalVotingPower[choice.i]) }}
+          {{ _n(results.resultsByChoices[choice.i]) }}
           {{ _shorten(space.symbol, 'symbol') }}
         </span>
         <span
           class="float-right"
           v-text="
             _n(
-              !results.totalPowerOfResults
+              !results.totalSumOfResults
                 ? 0
-                : ((100 / results.totalPowerOfResults) *
-                    results.totalVotingPower[choice.i]) /
+                : ((100 / results.totalSumOfResults) *
+                    results.resultsByChoices[choice.i]) /
                     1e2,
               '0.[00]%'
             )
@@ -37,8 +37,8 @@
         />
       </div>
       <UiProgress
-        :value="results.votingPowerByStrategy[choice.i]"
-        :max="results.totalPowerOfResults"
+        :value="results.resultsOfChoicesByStrategy[choice.i]"
+        :max="results.totalSumOfResults"
         :titles="titles"
         class="mb-3"
       />
@@ -77,8 +77,8 @@ export default {
         .map((choice, i) => ({ i, choice }))
         .sort(
           (a, b) =>
-            this.results.totalVotingPower[b.i] -
-            this.results.totalVotingPower[a.i]
+            this.results.resultsByChoices[b.i] -
+            this.results.resultsByChoices[a.i]
         );
     }
   },

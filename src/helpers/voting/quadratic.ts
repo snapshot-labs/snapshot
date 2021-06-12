@@ -24,7 +24,7 @@ export default class ApprovalVoting {
     this.selected = selected;
   }
 
-  totalVotingPower() {
+  resultsByChoices() {
     return this.proposal.choices
       .map((choice, i) =>
         this.votes
@@ -34,7 +34,7 @@ export default class ApprovalVoting {
       .map(sqrt => sqrt * sqrt);
   }
 
-  votingPowerByStrategy() {
+  resultsOfChoicesByStrategy() {
     return this.proposal.choices
       .map((choice, i) =>
         this.strategies.map((strategy, sI) =>
@@ -46,7 +46,7 @@ export default class ApprovalVoting {
       .map(sqrt => [sqrt * sqrt]);
   }
 
-  totalPowerOfResults() {
+  totalSumOfResults() {
     return this.proposal.choices
       .map((choice, i) =>
         this.votes

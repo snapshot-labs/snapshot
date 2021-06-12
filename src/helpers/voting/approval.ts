@@ -11,7 +11,7 @@ export default class ApprovalVoting {
     this.selected = selected;
   }
 
-  totalVotingPower() {
+  resultsByChoices() {
     return this.proposal.choices.map((choice, i) =>
       this.votes
         .filter((vote: any) => vote.choice.includes(i + 1))
@@ -19,7 +19,7 @@ export default class ApprovalVoting {
     );
   }
 
-  votingPowerByStrategy() {
+  resultsOfChoicesByStrategy() {
     return this.proposal.choices.map((choice, i) =>
       this.strategies.map((strategy, sI) =>
         this.votes
@@ -29,7 +29,7 @@ export default class ApprovalVoting {
     );
   }
 
-  totalPowerOfResults() {
+  totalSumOfResults() {
     return this.votes.reduce((a, b: any) => a + b.balance, 0);
   }
 

@@ -2,7 +2,7 @@
   <Block title="Quorum" :loading="!loaded">
     <div class="text-white mb-1">
       <span class="mr-1">
-        {{ _n(totalScore) }} / {{ _n(totalVotingPower) }}
+        {{ _n(totalScore) }} / {{ _n(resultsByChoices) }}
         {{ _shorten(space.symbol, 'symbol') }}
       </span>
       <span class="float-right" v-text="_n(quorum, '0.[00]%')" />
@@ -21,24 +21,24 @@ export default {
     return {
       loading: false,
       plugin: new Plugin(),
-      totalVotingPower: 0
+      resultsByChoices: 0
     };
   },
   computed: {
     totalScore() {
-      return this.results.totalVotingPower.reduce((a, b) => a + b, 0);
+      return this.results.resultsByChoices.reduce((a, b) => a + b, 0);
     },
     quorum() {
-      return this.totalVotingPower === 0
+      return this.resultsByChoices === 0
         ? 0
-        : this.totalScore / this.totalVotingPower;
+        : this.totalScore / this.resultsByChoices;
     }
   },
 
   async created() {
     this.loading = true;
 
-    this.totalVotingPower = await this.plugin.getTotalVotingPower(
+    this.resultsByChoices = await this.plugin.getresultsByChoices(
       getProvider(this.space.network),
       this.space.plugins.quorum,
       this.proposal.snapshot
