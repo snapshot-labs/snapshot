@@ -29,7 +29,7 @@ export default {
     }
   },
   emits: ['selectChoice'],
-  setup(_, { emit }) {
+  setup(props, { emit }) {
     const selectedChoices = ref({});
 
     function percentage(i) {
@@ -56,6 +56,10 @@ export default {
         selectedChoices.value[i] < 1 ? 0 : (selectedChoices.value[i] -= 1);
       emit('selectChoice', selectedChoices.value);
     }
+
+    props.proposal.choices.forEach((e, i) => {
+      selectedChoices.value[i] = 0;
+    });
 
     return { addVote, removeVote, selectedChoices, percentage };
   }
