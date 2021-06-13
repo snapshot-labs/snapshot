@@ -50,8 +50,8 @@ export default class ApprovalVoting {
 
     return results.map((res, i) =>
       this.strategies
-        .map((strategy, iS) => [
-          percentageOfTotal(0, results[i][iS], results.flat(2))
+        .map((strategy, sI) => [
+          percentageOfTotal(0, results[i][sI], results.flat(2))
         ])
         .map(p => [(this.sumBalanceAllVotes() / 100) * p])
     );
