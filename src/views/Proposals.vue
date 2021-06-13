@@ -85,7 +85,7 @@ export default {
     ...mapState(['app', 'web3']),
     canCreateProposal() {
       if (this.isDao || this.isHarmony) {
-        return (this.isValidator || this.isMember);
+        return this.isValidator || this.isMember;
       } else {
         // check members
         if (this.space.members.length > 0) {
@@ -145,7 +145,7 @@ export default {
         const member = this.space.members.find(v =>
           isAddressEqual(v, this.web3.account)
         );
-        return (member !== undefined);
+        return member !== undefined;
       } else {
         return false;
       }

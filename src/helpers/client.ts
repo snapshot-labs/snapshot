@@ -21,11 +21,12 @@ class Client {
         .catch(e => e.json().then(json => reject(json)));
     });
   }
-  getByUrl(url, body?) {
+
+  getByUrl(url, body?, method = 'GET') {
     let init;
     if (body) {
       init = {
-        method: 'GET',
+        method: method,
         headers: {
           Accept: 'application/json',
           'Content-Type': 'application/json'
