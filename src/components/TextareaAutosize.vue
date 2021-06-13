@@ -1,5 +1,5 @@
 <template>
-  <textarea :style="computedStyles" v-model="val" @focus="resize"></textarea>
+  <textarea :disabled="disabled" :style="computedStyles" v-model="val" @focus="resize"></textarea>
 </template>
 <script>
 export default {
@@ -26,6 +26,10 @@ export default {
      */
     important: {
       type: [Boolean, Array],
+      default: false
+    },
+    disabled: {
+      type: Boolean,
       default: false
     }
   },

@@ -5,10 +5,15 @@
         <h1 v-text="'Test'" class="mb-4" />
       </div>
       <Block>
-        <UiButton class="d-block width-full px-3 mb-3" style="height: auto">
-          <TextareaAutosize v-model="body" class="input width-full text-left" />
+        <UiButton class="d-block width-full px-3 mb-3 height-full">
+          <TextareaAutosize
+            :disabled="loading"
+            v-model="body"
+            :placeholder="'Say something'"
+            class="input width-full text-left"
+          />
         </UiButton>
-        <UiButton @click="submit" class="button--submit width-full">
+        <UiButton :loading="loading" @click="submit" class="button--submit width-full">
           {{ $t('submit') }}
         </UiButton>
       </Block>
@@ -17,20 +22,22 @@
 </template>
 
 <script>
-import { send, signMessage } from '@/sign';
 import { computed, ref } from 'vue';
 import { useStore } from 'vuex';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
+import { send, signMessage } from '@/sign';
 
 export default {
   setup() {
     const store = useStore();
     const auth = getInstance();
 
+    const loading = ref(false);
     const body = ref('');
     const web3Account = computed(() => store.state.web3.account);
 
     async function submit() {
+      loading.value = true;
       try {
         const envelop = await signMessage(auth.web3, web3Account.value, {
           space: 'fabien.eth',
@@ -40,11 +47,13 @@ export default {
         const result = await send(envelop);
         console.log('Result', result);
         console.log('Envelop', envelop);
+        body.value = '';
       } catch (e) {
         console.log(e);
       }
+      loading.value = false;
     }
-    return { body, submit };
+    return { loading, body, submit };
   }
 };
 </script>
