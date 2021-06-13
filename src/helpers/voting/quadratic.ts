@@ -73,7 +73,7 @@ export default class ApprovalVoting {
                 Object.values(this.selected)
               ) * 10
             ) / 10
-          }% for ${choice} `;
+          }% for ${choice}`;
         }
       })
       .filter(el => el != null)
