@@ -23,7 +23,7 @@ export default class ApprovalVoting {
     this.selected = selected;
   }
 
-  resultsByChoices() {
+  resultsByVoteBalance() {
     const results = this.proposal.choices
       .map((choice, i) =>
         this.votes
@@ -34,10 +34,10 @@ export default class ApprovalVoting {
 
     return results
       .map((res, i) => percentageOfTotal(i, results, results))
-      .map(p => (this.totalSumOfResults() / 100) * p);
+      .map(p => (this.sumBalanceAllVotes() / 100) * p);
   }
 
-  resultsOfChoicesByStrategy() {
+  resultsByStrategyScore() {
     const results = this.proposal.choices
       .map((choice, i) =>
         this.strategies.map((strategy, sI) =>
@@ -53,11 +53,11 @@ export default class ApprovalVoting {
         .map((strategy, iS) => [
           percentageOfTotal(0, results[i][iS], results.flat(2))
         ])
-        .map(p => [(this.totalSumOfResults() / 100) * p])
+        .map(p => [(this.sumBalanceAllVotes() / 100) * p])
     );
   }
 
-  totalSumOfResults() {
+  sumBalanceAllVotes() {
     return this.votes.reduce((a, b: any) => a + b.balance, 0);
   }
 
