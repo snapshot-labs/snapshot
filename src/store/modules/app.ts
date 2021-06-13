@@ -231,7 +231,14 @@ const actions = {
       let proposals: any = await client.request(`${space.key}/proposals`);
       if (proposals) {
         let scores: any;
-        if (['staking-mainnet', 'staking-testnet', 'dao-mainnet', 'dao-testnet'].indexOf(space.key) > -1) {
+        if (
+          [
+            'staking-mainnet',
+            'staking-testnet',
+            'dao-mainnet',
+            'dao-testnet'
+          ].indexOf(space.key) > -1
+        ) {
           scores = [
             Object.values(proposals).reduce((acc: any, proposal: any) => {
               const validator = state.validators.find(v =>
@@ -304,8 +311,33 @@ const actions = {
       let scores: any;
       let profiles: any;
       let totalStaked = 0;
+      let totalSupply = 0;
 
-      if (['staking-mainnet', 'staking-testnet', 'dao-mainnet', 'dao-testnet'].indexOf(space.key) > -1) {
+      // get latest
+      if (['harmony-mainnet', 'harmony-testnet'].indexOf(space.key) > -1) {
+        const rpcUrl = space.key.includes('mainnet')
+          ? 'https://a.api.s0.t.hmny.io'
+          : 'https://api.s0.b.hmny.io';
+
+        const reqBody = {
+          jsonrpc: '2.0',
+          method: 'hmy_getCirculatingSupply',
+          params: [],
+          id: 1
+        };
+
+        const res: any = await client.getByUrl(rpcUrl, reqBody, 'POST');
+        totalSupply = res.result;
+      }
+
+      if (
+        [
+          'staking-mainnet',
+          'staking-testnet',
+          'dao-mainnet',
+          'dao-testnet'
+        ].indexOf(space.key) > -1
+      ) {
         if (!state.validators || !state.validators.length) {
           await dispatch('getValidators', space.key);
         }
@@ -316,11 +348,11 @@ const actions = {
           active: true,
           apr: 1,
           hasLogo: true,
-          identity: "11111", // "Moonstake"
-          name: "1111", // "Moonstake"
-          rate: "0.100000000000000000", // "0.100000000000000000"
-          total_stake: "8466571117002000000000000", // "8466571117002000000000000"
-          uptime_percentage:  0.9994578043619792
+          identity: '11111', // "Moonstake"
+          name: '1111', // "Moonstake"
+          rate: '0.100000000000000000', // "0.100000000000000000"
+          total_stake: '8466571117002000000000000', // "8466571117002000000000000"
+          uptime_percentage: 0.9994578043619792
         });
 
         const endDate = proposal.msg.payload.end * 1000;
@@ -403,7 +435,9 @@ const actions = {
                 return {
                   ...acc,
                   [addr]: validator
-                    ? Number(ones(validator.totalStake || validator.total_stake))
+                    ? Number(
+                      ones(validator.totalStake || validator.total_stake)
+                    )
                     : Number(ones(0))
                 };
               }
@@ -487,14 +521,17 @@ const actions = {
         totalScores: proposal.msg.payload.choices.map((choice, i) =>
           space.strategies.map((strategy, sI) =>
             Object.values(votesResult)
-              .filter((vote: any) => parseInt(vote.msg.payload.choice) === i + 1)
+              .filter(
+                (vote: any) => parseInt(vote.msg.payload.choice) === i + 1
+              )
               .reduce((a, b: any) => a + b.scores[sI], 0)
           )
         ),
         totalVotesBalances: Object.values(votesResult).reduce(
           (a, b: any) => a + b.balance,
           0
-        )
+        ),
+        totalSupply: totalSupply
       };
       console.log('proposal: ', proposal);
       commit('GET_PROPOSAL_SUCCESS');

@@ -59,9 +59,6 @@ import pkg from '@/../package.json';
 
 export default {
   props: ['id', 'space', 'payload', 'results', 'votes'],
-  mounted() {
-    console.log('results: ', this.results);
-  },
   computed: {
     ts() {
       return (Date.now() / 1e3).toFixed();
@@ -80,6 +77,8 @@ export default {
     totalBase() {
       if (['staking-mainnet', 'staking-testnet'].indexOf(this.space.key) > -1) {
         return this.results.totalStaked;
+      } else if (['harmony-mainnet', 'harmony-testnet'].indexOf(this.space.key) > -1) {
+        return this.results.totalSupply;
       } else {
         return this.results.totalVotesBalances;
       }

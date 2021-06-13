@@ -36,10 +36,7 @@
         </div>
         <Block
           v-if="
-            loaded &&
-              ts >= payload.start &&
-              ts < payload.end &&
-              canVoteProposal
+            loaded && ts >= payload.start && ts < payload.end && canVoteProposal
           "
           class="mb-4"
           title="Cast your vote"
@@ -75,7 +72,12 @@
             </UiButton>
           </div>
           <UiButton
-            :disabled="voteLoading || !selectedChoice || !web3.account || selectedChoiceSet.length > payload.maxCanSelect"
+            :disabled="
+              voteLoading ||
+                !selectedChoice ||
+                !web3.account ||
+                selectedChoiceSet.length > payload.maxCanSelect
+            "
             :loading="voteLoading"
             @click="modalOpen = true"
             class="d-block width-full button--submit"
@@ -165,7 +167,9 @@
             </div>
             <div class="mb-1" v-if="payload.maxCanSelect > 1">
               <b>Max selections</b>
-              <span class="float-right text-white">{{ payload.maxCanSelect }}</span>
+              <span class="float-right text-white">{{
+                payload.maxCanSelect
+              }}</span>
             </div>
             <template v-if="isHarmonySpace">
               <div class="mb-1" v-if="epoch.length">
@@ -184,13 +188,13 @@
                   :v-text="totalVotesOne + ' / ' + results.totalStaked"
                   class="float-right text-white tooltipped tooltipped-n"
                 >
-                {{
+                  {{
                     Number(totalVotesPercent) > 0.01
                       ? totalVotesPercent.toFixed(2)
                       : totalVotesPercent.toFixed(4)
                   }}
-                %
-              </span>
+                  %
+                </span>
               </div>
 
               <div class="mb-1">
@@ -200,8 +204,20 @@
                   :v-text="'Total stake on the network'"
                   class="float-right text-white tooltipped tooltipped-n"
                 >
-                {{ _numeral(results.totalStaked) }} ONE
-              </span>
+                  {{ _numeral(results.totalStaked) }} ONE
+                </span>
+              </div>
+            </template>
+            <template v-if="isNativeSpace">
+              <div class="mb-1">
+                <b>Circulate supply</b>
+                <span
+                  aria-label="Circulate supply on the network"
+                  :v-text="'Circulate supply on the network'"
+                  class="float-right text-white tooltipped tooltipped-n"
+                >
+                  {{ _numeral(results.totalSupply, '(0,0)') }} ONE
+                </span>
               </div>
             </template>
           </div>
@@ -283,6 +299,9 @@ export default {
     },
     isHarmonySpace() {
       return ['staking-mainnet', 'staking-testnet'].indexOf(this.key) > -1;
+    },
+    isNativeSpace() {
+      return ['harmony-mainnet', 'harmony-testnet'].indexOf(this.key) > -1;
     },
     isDao() {
       return ['dao-mainnet', 'dao-testnet'].indexOf(this.key) > -1;
