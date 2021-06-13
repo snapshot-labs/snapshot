@@ -23,7 +23,7 @@
 
 <script>
 import { ref } from 'vue';
-import { percentageOfPower } from '@/helpers/voting/quadratic';
+import { percentageOfTotal } from '@/helpers/voting/quadratic';
 export default {
   props: {
     proposal: {
@@ -36,7 +36,15 @@ export default {
     const selectedChoices = ref({});
 
     function percentage(i) {
-      return percentageOfPower(i + 1, selectedChoices.value);
+      return (
+        Math.round(
+          percentageOfTotal(
+            i + 1,
+            selectedChoices.value,
+            Object.values(selectedChoices.value)
+          ) * 10
+        ) / 10
+      );
     }
 
     function addVote(i) {
