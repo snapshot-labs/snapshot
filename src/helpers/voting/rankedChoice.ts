@@ -58,13 +58,13 @@ export default class ApprovalVoting {
     this.selected = selected;
   }
 
-  resultsByChoices() {
+  resultsByVoteBalance() {
     return this.proposal.choices.map((choice, i) =>
       getFinalRound(i, this.votes).reduce((a, b: any) => a + b[1], 0)
     );
   }
 
-  resultsOfChoicesByStrategy() {
+  resultsByStrategyScore() {
     return this.proposal.choices.map((choice, i) =>
       this.strategies.map((strategy, sI) =>
         getFinalRound(i, this.votes).reduce((a, b: any) => a + b[1], 0)
@@ -72,7 +72,7 @@ export default class ApprovalVoting {
     );
   }
 
-  totalSumOfResults() {
+  sumBalanceAllVotes() {
     return this.votes.reduce((a, b: any) => a + b.balance, 0);
   }
 
