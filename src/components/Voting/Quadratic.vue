@@ -8,11 +8,8 @@
         <span class="float-left">{{ _shorten(choice, 32) }}</span>
         <div class="d-flex flex-items-center float-right">
           <a class="btn-choice" @click="removeVote(i + 1)"> - </a>
-          <div style="min-width: 35px">{{ selectedChoices[i + 1] || 0 }}</div>
+          <div style="min-width: 60px">{{ percentage(i) }}%</div>
           <a class="btn-choice" @click="addVote(i + 1)">+</a>
-          <div style="min-width: 50px; margin-right: -5px" class="text-right">
-            {{ percentage(i) }}%
-          </div>
         </div>
       </UiButton>
 
