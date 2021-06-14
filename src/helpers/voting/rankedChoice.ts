@@ -32,7 +32,8 @@ function irv(ballots, rounds) {
 
   rounds.push({
     round: rounds.length + 1,
-    sortedByHighest
+    sortedByHighest,
+    totalPowerOfVotes
   });
 
   return topCount > totalPowerOfVotes / 2 || sortedByHighest.length < 3
@@ -55,7 +56,12 @@ function getFinalRound(i, votes) {
     []
   );
   const finalRound = results[results.length - 1];
-  return finalRound.sortedByHighest.filter((res: any) => res[0] == i + 1);
+  return {
+    sortedByHighest: finalRound.sortedByHighest.filter(
+      (res: any) => res[0] == i + 1
+    ),
+    totalPowerOfVotes: finalRound.totalPowerOfVotes
+  };
 }
 
 export default class ApprovalVoting {
@@ -73,14 +79,17 @@ export default class ApprovalVoting {
 
   resultsByVoteBalance() {
     return this.proposal.choices.map((choice, i) =>
-      getFinalRound(i, this.votes).reduce((a, b: any) => a + b[1][0], 0)
+      getFinalRound(i, this.votes).sortedByHighest.reduce(
+        (a, b: any) => a + b[1][0],
+        0
+      )
     );
   }
 
   resultsByStrategyScore() {
     return this.proposal.choices.map((choice, i) =>
       this.strategies.map((strategy, sI) => {
-        return getFinalRound(i, this.votes).reduce(
+        return getFinalRound(i, this.votes).sortedByHighest.reduce(
           (a, b: any) => a + b[1][1][sI],
           0
         );
@@ -89,7 +98,7 @@ export default class ApprovalVoting {
   }
 
   sumBalanceAllVotes() {
-    return this.votes.reduce((a, b: any) => a + b.balance, 0);
+    return this.resultsByVoteBalance().reduce((a, b: any) => a + b);
   }
 
   getChoiceString() {
