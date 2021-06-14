@@ -110,9 +110,9 @@
     "required": "Field is required",
     "minLength": "Minimum length is {0}",
     "maxLength": "Maximum length is {0}",
-    "pattern": "Invalid character",
-    "minItems": "Minimum {0} item(s) required",
-    "minStrategy": "At least one strategy is required.",
+    "pattern": "Caracteres Inválidos",
+    "minItems": "Mínimo {0} item(s) obrigatório(s)",
+    "minStrategy": "É necessária pelo menos uma estratégia.",
     "format": "Invalid format"
   },
   "create": {
@@ -234,10 +234,10 @@
       "executeTxs": "Execute transaction 1/{0}",
       "finalized": "Vote finalized",
       "executed": "{0}/{0} Transactions executed",
-      "waiting": "Waiting for vote to close",
+      "waiting": "Aguardando encerramento da votação",
       "error": "Error",
       "question": "Did this proposal pass and does it meet the",
-      "criteria": "acceptance criteria?"
+      "criteria": "Critérios de Aceitação?"
     }
   }
 }
