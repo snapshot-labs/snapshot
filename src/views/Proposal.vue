@@ -172,7 +172,7 @@
           :strategies="strategies"
         />
         <PluginPoapCustomBlock
-          v-if="proposal.plugins?.poap"
+          v-if="space.plugins?.poap"
           :loaded="loadedResults"
           :space="space"
           :proposal="proposal"
