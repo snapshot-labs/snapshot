@@ -173,11 +173,11 @@
     "symbol": "Símbolo",
     "skin": "Skin",
     "domain": "Nome do domínio",
-    "strategies": "Strategie(s)",
+    "strategies": "Estratégia(s)",
     "hideSpace": "Ocultar comunidade da página inicial",
     "addStrategy": "Adicionar estratégia",
     "members": "Membros",
-    "admins": "Admins",
+    "admins": "Administradores",
     "filters": "Filtros",
     "defaultTab": "Separador padrão",
     "proposalThreshold": "Proposal threshold",
@@ -214,8 +214,8 @@
     "single-choice": "Single choice voting",
     "approval": "Approval voting",
     "description": {
-      "single-choice": "Each voter may select only one choice.",
-      "approval": "Each voter may select any number of choices."
+      "single-choice": "Cada eleitor pode selecionar apenas uma opção.",
+      "approval": "Cada eleitor pode selecionar qualquer número de opções."
     }
   },
   "safeSnap": {
