@@ -14,7 +14,6 @@
         <template v-if="loaded">
           <h1 class="mb-2">
             {{ proposal.title }}
-            <span v-text="`#${id.slice(0, 7)}`" class="text-gray" />
           </h1>
           <div class="mb-4">
             <UiState :state="proposal.state" />
