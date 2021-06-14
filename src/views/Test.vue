@@ -13,7 +13,11 @@
             class="input width-full text-left"
           />
         </UiButton>
-        <UiButton :loading="loading" @click="submit" class="button--submit width-full">
+        <UiButton
+          :loading="loading"
+          @click="submit"
+          class="button--submit width-full"
+        >
           {{ $t('submit') }}
         </UiButton>
       </Block>

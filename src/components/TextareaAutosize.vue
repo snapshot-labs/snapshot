@@ -1,5 +1,10 @@
 <template>
-  <textarea :disabled="disabled" :style="computedStyles" v-model="val" @focus="resize"></textarea>
+  <textarea
+    :disabled="disabled"
+    :style="computedStyles"
+    v-model="val"
+    @focus="resize"
+  ></textarea>
 </template>
 <script>
 export default {

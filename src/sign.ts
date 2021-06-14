@@ -13,7 +13,6 @@ const types = {
   Vote: [
     { name: 'space', type: 'string' },
     { name: 'type', type: 'string' },
-    // { name: 'timestamp', type: 'uint64' },
     { name: 'payload', type: 'string' }
   ]
 };
