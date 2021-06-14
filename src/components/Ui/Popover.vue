@@ -1,24 +1,26 @@
 <template>
   <div
     ref="itemref"
-    @mouseenter="debounce(() => (open = true))"
-    @mouseleave="debounce(() => popClose(), 300)"
+    @mouseenter="debounce(() => (open = true), openDelay)"
+    @mouseleave="debounce(() => popClose(), closeDelay)"
   >
     <slot name="item" />
   </div>
   <div
     ref="contentref"
     v-show="open"
-    @mouseenter="debounce(() => (popHovered = true))"
-    @mouseleave="(popHovered = false), debounce(() => (open = false), 300)"
-    class="custom-content"
+    @mouseenter="debounce(() => (popHovered = true), openDelay)"
+    @mouseleave="
+      (popHovered = false), debounce(() => (open = false), closeDelay)
+    "
+    class="custom-content width-full width-sm-auto"
   >
     <slot name="content" />
   </div>
 </template>
 
 <script>
-import { onMounted, ref, watch } from 'vue';
+import { onMounted, ref, watch, computed } from 'vue';
 import { createPopper } from '@popperjs/core';
 import { useDebounce } from '@/composables/useDebounce';
 
@@ -32,6 +34,14 @@ export default {
 
     const itemref = ref(null);
     const contentref = ref(null);
+
+    const openDelay = computed(() =>
+      window.matchMedia('(max-width: 850px)').matches ? 150 : 800
+    );
+
+    const closeDelay = computed(() =>
+      window.matchMedia('(max-width: 850px)').matches ? 50 : 300
+    );
 
     function popClose() {
       if (!popHovered.value) open.value = false;
@@ -65,7 +75,9 @@ export default {
       popHovered,
       itemref,
       contentref,
-      debounce: useDebounce()
+      debounce: useDebounce(),
+      openDelay,
+      closeDelay
     };
   }
 };
@@ -73,8 +85,8 @@ export default {
 
 <style scoped lang="scss">
 .custom-content {
-  width: 350px;
   z-index: 50;
+  min-width: 300px;
   background-color: var(--header-bg);
   border: 1px solid var(--border-color);
   border-radius: 8px;
