@@ -7,16 +7,22 @@
       >
         <span class="float-left">{{ _shorten(choice, 32) }}</span>
         <div class="d-flex flex-items-center float-right">
-          <a class="btn-choice" @click="removeVote(i + 1)"> - </a>
+          <button
+            :disabled="!selectedChoices[i + 1]"
+            class="btn-choice"
+            @click="removeVote(i + 1)"
+          >
+            -
+          </button>
           <input
-            class="input mx-2"
-            style="width: 30px"
+            class="input mx-1 text-center"
+            style="width: 40px; height: 44px; margin-bottom: -1px"
             placeholder="0"
             type="number"
             v-model.number="selectedChoices[i + 1]"
           />
-          <a class="btn-choice" @click="addVote(i + 1)">+</a>
-          <div style="min-width: 60px; margin-right: -5px" class="text-right">
+          <button class="btn-choice" @click="addVote(i + 1)">+</button>
+          <div style="min-width: 52px; margin-right: -5px" class="text-right">
             {{ percentage(i) }}%
           </div>
         </div>
@@ -82,6 +88,8 @@ export default {
 
 <style lang="scss" scoped>
 .btn-choice {
+  background-color: transparent;
+  color: var(--link-color);
   margin-bottom: 2px;
   width: 40px;
   height: 44px;
@@ -92,6 +100,11 @@ export default {
   &:hover {
     border-left: 1px solid var(--link-color);
     border-right: 1px solid var(--link-color);
+  }
+  &:disabled {
+    color: gray;
+    border-left: 1px solid var(--border-color);
+    border-right: 1px solid var(--border-color);
   }
 }
 </style>
