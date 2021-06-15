@@ -11,6 +11,7 @@
           <input
             class="input mx-2"
             style="width: 30px"
+            placeholder="0"
             type="number"
             v-model.number="selectedChoices[i + 1]"
           />
