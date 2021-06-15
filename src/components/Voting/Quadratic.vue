@@ -8,8 +8,16 @@
         <span class="float-left">{{ _shorten(choice, 32) }}</span>
         <div class="d-flex flex-items-center float-right">
           <a class="btn-choice" @click="removeVote(i + 1)"> - </a>
-          <div style="min-width: 60px">{{ percentage(i) }}%</div>
+          <input
+            class="input mx-2"
+            style="width: 30px"
+            type="number"
+            v-model.number="selectedChoices[i + 1]"
+          />
           <a class="btn-choice" @click="addVote(i + 1)">+</a>
+          <div style="min-width: 60px; margin-right: -5px" class="text-right">
+            {{ percentage(i) }}%
+          </div>
         </div>
       </UiButton>
 
@@ -19,7 +27,7 @@
 </template>
 
 <script>
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { percentageOfTotal } from '@/helpers/voting/quadratic';
 export default {
   props: {
@@ -29,7 +37,7 @@ export default {
     }
   },
   emits: ['selectChoice'],
-  setup(props, { emit }) {
+  setup(_, { emit }) {
     const selectedChoices = ref({});
 
     function percentage(i) {
@@ -52,13 +60,18 @@ export default {
     }
 
     function removeVote(i) {
-      selectedChoices.value[i] =
-        selectedChoices.value[i] < 1 ? 0 : (selectedChoices.value[i] -= 1);
+      if (selectedChoices.value[i])
+        selectedChoices.value[i] =
+          selectedChoices.value[i] < 1 ? 0 : (selectedChoices.value[i] -= 1);
       emit('selectChoice', selectedChoices.value);
     }
 
-    props.proposal.choices.forEach((e, i) => {
-      selectedChoices.value[i] = 0;
+    // Delete choice if empty string or 0
+    watch(selectedChoices.value, (currentValue, oldValue) => {
+      Object.entries(currentValue).forEach(choice => {
+        if (choice[1] === '' || choice[1] === 0)
+          delete selectedChoices.value[choice[0]];
+      });
     });
 
     return { addVote, removeVote, selectedChoices, percentage };
