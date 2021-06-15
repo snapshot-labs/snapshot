@@ -38,7 +38,7 @@ export default {
   async created() {
     this.loading = true;
 
-    this.totalVotingPower = await this.plugin.gettotalVotingPower(
+    this.totalVotingPower = await this.plugin.getTotalVotingPower(
       getProvider(this.space.network),
       this.space.plugins.quorum,
       this.proposal.snapshot

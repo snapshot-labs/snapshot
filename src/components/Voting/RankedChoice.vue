@@ -60,7 +60,6 @@ export default {
 
     function selectChoice(i) {
       selectedChoices.value.push(i);
-      console.log(selectedChoices.value);
       emit('selectChoice', selectedChoices.value);
     }
 

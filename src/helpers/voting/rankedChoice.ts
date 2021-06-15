@@ -88,7 +88,7 @@ export default class ApprovalVoting {
     );
   }
 
-  sumBalanceAllVotes() {
+  sumOfResultsBalance() {
     return this.resultsByVoteBalance().reduce((a, b: any) => a + b);
   }
 
