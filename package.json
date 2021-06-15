@@ -2,12 +2,12 @@
   "name": "snapshot",
   "version": "0.1.3",
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build --modern",
-    "lint": "vue-cli-service lint"
+    "serve": "vite",
+    "build": "vite build"
   },
   "dependencies": {
     "@apollo/client": "^3.3.18",
+    "@ensdomains/address-encoder": "^0.2.6",
     "@ensdomains/content-hash": "^2.5.3",
     "@ensdomains/ensjs": "^2.0.1",
     "@ethersproject/abi": "^5.0.1",
@@ -28,10 +28,6 @@
     "@snapshot-labs/snapshot.js": "github:snapshot-labs/snapshot.js#master",
     "@toruslabs/torus-embed": "^1.9.2",
     "@vue/apollo-composable": "^4.0.0-alpha.12",
-    "@vue/cli-plugin-babel": "^4.5.12",
-    "@vue/cli-plugin-eslint": "^4.5.12",
-    "@vue/cli-plugin-typescript": "^4.5.12",
-    "@vue/cli-service": "^4.5.12",
     "@walletconnect/web3-provider": "^1.3.2",
     "ajv": "^7.0.0-beta.2",
     "ajv-formats": "^2.0.2",
@@ -59,9 +55,7 @@
     "stylus": "^0.54.8",
     "stylus-loader": "^3.0.2",
     "timeago.js": "^4.0.2",
-    "typescript": "~3.9.3",
     "vue": "^3.0.11",
-    "vue-cli-plugin-webpack-bundle-analyzer": "^4.0.0",
     "vue-i18n": "^9.1.6",
     "vue-jazzicon": "^0.1.3",
     "vue-router": "^4.0.6",
@@ -76,18 +70,18 @@
     "@types/node": "^14.0.13",
     "@typescript-eslint/eslint-plugin": "^2.33.0",
     "@typescript-eslint/parser": "^2.33.0",
-    "@vue/cli-plugin-router": "^4.5.12",
-    "@vue/cli-plugin-vuex": "^4.5.12",
+    "@vitejs/plugin-vue": "^1.2.3",
     "@vue/compiler-sfc": "^3.0.0-beta.1",
     "@vue/eslint-config-prettier": "^6.0.0",
     "@vue/eslint-config-typescript": "^5.0.2",
+    "detect-browser": "^5.2.0",
     "eslint-plugin-prettier": "^3.1.3",
     "eslint-plugin-vue": "^7.0.0-alpha.0",
     "prettier": "^2.2.1",
     "sass": "^1.29.0",
     "sass-loader": "^8.0.2",
     "typescript": "~4.1.5",
-    "webpack": "^4.1.0"
+    "vite": "^2.3.7"
   },
   "license": "MIT",
   "repository": "snapshot-labs/snapshot"
