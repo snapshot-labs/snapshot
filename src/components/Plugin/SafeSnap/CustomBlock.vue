@@ -56,6 +56,7 @@
 <script>
 import Plugin from '@snapshot-labs/snapshot.js/src/plugins/safeSnap';
 import { sleep } from '@/helpers/utils';
+import { formatBatchTransaction } from '@/helpers/abi/utils';
 
 const QuestionStates = {
   error: -1,
@@ -164,7 +165,6 @@ export default {
       }
     },
     showDecision() {
-      console.log(this.questionDetails.transactions.length);
       return (
         this.questionDetails?.questionId &&
         !this.showQuestionInfo &&
@@ -269,7 +269,7 @@ export default {
           this.network,
           this.moduleAddress,
           this.proposalId,
-          this.proposalConfig.txs.flat()
+          this.proposalConfig.txs.map(formatBatchTransaction)
         );
         if (this.questionDetails.questionId) {
           this.bondData = await this.plugin.loadClaimBondData(
