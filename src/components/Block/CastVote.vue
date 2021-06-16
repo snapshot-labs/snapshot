@@ -11,6 +11,11 @@
         :proposal="proposal"
         @selectChoice="emitChoice"
       />
+      <VotingQuadratic
+        v-if="proposal.type === 'quadratic'"
+        :proposal="proposal"
+        @selectChoice="emitChoice"
+      />
     </div>
     <UiButton
       :disabled="app.authLoading || selectedChoices < 1"
@@ -30,11 +35,13 @@ export default {
       type: Object,
       required: true
     },
-    modelValue: [Array, Number]
+    modelValue: [Array, Number, Object]
   },
   setup(props, { emit }) {
     const selectedChoices = computed(() => {
       if (Array.isArray(props.modelValue)) return props.modelValue.length;
+      if (typeof props.modelValue === 'object' && props.modelValue !== null)
+        return Object.keys(props.modelValue).length;
       return props.modelValue;
     });
 
