@@ -37,7 +37,7 @@ export default {
     winningChoice() {
       let winningChoice = 0;
       let winningScore = 0;
-      this.results.totalScores.forEach((score, i) => {
+      this.results.resultsByStrategyScore.forEach((score, i) => {
         if (score[0] > winningScore) {
           winningChoice = i + 1;
           winningScore = score[0];
