@@ -176,10 +176,8 @@ export const getABIWriteFunctions = (abi: Fragment[]) => {
   );
 };
 
-const extractMethodArgs = (values: Record<string, string>) => (
-  param: ParamType
-) => {
-  const value = values[param.name];
+const extractMethodArgs = (values: string[]) => (param: ParamType, index) => {
+  const value = values[index];
   if (param.baseType === 'array') {
     return JSON.parse(value);
   }
@@ -189,7 +187,7 @@ const extractMethodArgs = (values: Record<string, string>) => (
 export const getContractTransactionData = (
   abi: string,
   method: FunctionFragment,
-  values: Record<string, string>
+  values: string[]
 ) => {
   const contractInterface = new Interface(abi);
   const parameterValues = method.inputs.map(extractMethodArgs(values));
@@ -420,6 +418,7 @@ export const fetchTextSignatures = async (
 ): Promise<string[]> => {
   const url = new URL('/api/v1/signatures', 'https://www.4byte.directory');
   url.searchParams.set('hex_signature', methodSignature);
+  url.searchParams.set('ordering', 'created_at');
   const response = await fetch(url.toString());
   const { results } = await response.json();
   return results.map(signature => signature.text_signature);
@@ -437,7 +436,7 @@ export const decodeContractTransaction = async (
   network: string,
   transaction: ModuleTransaction
 ): Promise<ContractInteractionModuleTransaction> => {
-  const decode = (abi: string | string[]) => {
+  const decode = (abi: string | FunctionFragment[]) => {
     const contractInterface = new InterfaceDecoder(abi);
     const method = contractInterface.getMethodFragment(transaction.data);
     contractInterface.decodeFunction(transaction.data, method); // Validate data can be decode by method.
@@ -456,9 +455,9 @@ export const decodeContractTransaction = async (
   const methodSignature = getMethodSignature(transaction.data);
   if (methodSignature) {
     const textSignatures = await fetchTextSignatures(methodSignature);
-    for (const signature in textSignatures) {
+    for (const signature of textSignatures) {
       try {
-        return decode([signature]);
+        return decode([FunctionFragment.fromString(signature)]);
       } catch (e) {
         console.warn('invalid abi for transaction');
       }

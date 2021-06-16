@@ -43,13 +43,13 @@
       <div class="divider"></div>
 
       <PluginSafeSnapInputMethodParameter
-        v-for="input in selectedMethod.inputs"
+        v-for="(input, index) in selectedMethod.inputs"
         :key="input.name"
         :disabled="config.preview"
-        :modelValue="parameters[input.name]"
+        :modelValue="parameters[index]"
         :name="input.name"
         :type="input.type"
-        @update:modelValue="handleParameterChanged(input.name, $event)"
+        @update:modelValue="handleParameterChanged(index, $event)"
       />
     </div>
   </div>
@@ -84,7 +84,7 @@ export default {
       selectedMethod: undefined,
       methods: [],
       methodIndex: 0,
-      parameters: {}
+      parameters: []
     };
   },
   mounted() {
@@ -93,21 +93,16 @@ export default {
       this.to = to;
 
       if (this.config.preview) {
+        const transactionDecoder = new InterfaceDecoder(abi);
+        this.selectedMethod = transactionDecoder.getMethodFragment(data);
+        this.parameters = transactionDecoder.decodeFunction(
+          data,
+          this.selectedMethod
+        );
+
         this.abi = JSON.stringify(abi);
         this.value = value;
-        this.selectedMethod = abi[0];
         this.methods = [this.selectedMethod];
-
-        const transactionDecoder = new InterfaceDecoder(abi);
-        const methodParametersValues = transactionDecoder.decodeFunction(data);
-
-        this.parameters = this.selectedMethod.inputs.reduce(
-          (obj, parameter) => {
-            const value = methodParametersValues[parameter.name];
-            return { ...obj, [parameter.name]: value };
-          },
-          {}
-        );
       } else {
         this.handleValueChange(value);
         this.handleABIChanged(
@@ -186,30 +181,22 @@ export default {
       this.methodIndex = 0;
       this.methods = [];
 
-      let abi;
       try {
-        abi = JSON.parse(this.abi);
+        this.methods = getABIWriteFunctions(this.abi);
         this.validAbi = true;
-      } catch (error) {
-        this.validAbi = false;
-        console.warn('invalid abi', error);
-        return;
-      }
-
-      try {
-        this.methods = getABIWriteFunctions(abi);
         this.handleMethodChanged();
       } catch (error) {
+        this.validAbi = false;
         console.warn('error extracting useful methods', error);
       }
     },
     handleMethodChanged() {
-      this.parameters = {};
+      this.parameters = [];
       this.selectedMethod = this.methods[this.methodIndex];
       this.updateTransaction();
     },
-    handleParameterChanged(parameter, value) {
-      this.parameters[parameter] = value;
+    handleParameterChanged(index, value) {
+      this.parameters[index] = value;
       this.updateTransaction();
     }
   }
