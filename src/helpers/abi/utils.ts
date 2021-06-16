@@ -227,9 +227,11 @@ const encodePackageMultiSendTransaction = (transaction: ModuleTransaction) => {
 };
 
 export const multiSendTransaction = (
-  transactions: ModuleTransaction[],
+  transactions: ModuleTransaction[] | ModuleTransaction,
   nonce: number
 ): ModuleTransaction => {
+  if (!Array.isArray(transactions)) return transactions;
+
   const multiSendContract = new Interface(MultiSendABI);
   const transactionsEncoded =
     '0x' +
