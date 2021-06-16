@@ -12,10 +12,7 @@
       </div>
       <div class="px-4 px-md-0">
         <template v-if="loaded">
-          <h1 class="mb-2">
-            {{ proposal.title }}
-            <span v-text="`#${id.slice(0, 7)}`" class="text-gray" />
-          </h1>
+          <h1 v-text="proposal.title" class="mb-2" />
           <div class="mb-4">
             <UiState :state="proposal.state" />
             <UiDropdown
