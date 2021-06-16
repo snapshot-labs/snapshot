@@ -1,5 +1,9 @@
-import { FunctionFragment, Interface } from '@ethersproject/abi';
-import { Fragment, JsonFragment } from '@ethersproject/abi/src.ts/fragments';
+import {
+  FunctionFragment,
+  Interface,
+  Fragment,
+  JsonFragment
+} from '@ethersproject/abi';
 import { Logger } from '@ethersproject/logger';
 import { version } from '@ethersproject/logger/src.ts/_version';
 
@@ -21,21 +25,18 @@ export class InterfaceDecoder extends Interface {
     const functionFragment = FunctionFragment.fromObject(fragment);
     const decodedValues = this.decodeFunctionData(functionFragment.name, data);
 
-    return functionFragment.inputs.reduce((obj, parameter, index) => {
+    return functionFragment.inputs.reduce((acc, parameter, index) => {
       const value = decodedValues[index];
       const formattedValue = this.formatParameter(parameter, value);
-      const paramValue = { [index]: formattedValue };
+      acc.push(formattedValue);
       if (parameter.name) {
-        paramValue[parameter.name] = formattedValue;
+        acc[parameter.name] = formattedValue;
       }
-      return {
-        ...obj,
-        ...paramValue
-      };
-    }, {});
+      return acc;
+    }, [] as string[]);
   }
 
-  private getMethodFragment(
+  public getMethodFragment(
     data: string,
     fragmentOrName?: string | Fragment | JsonFragment
   ): Fragment | JsonFragment {

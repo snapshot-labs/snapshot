@@ -77,6 +77,13 @@ export default {
       type
     };
   },
+  watch: {
+    modelValue() {
+      if (this.modelValue?.type) {
+        this.type = this.modelValue.type;
+      }
+    }
+  },
   mounted() {
     if (!this.config.preview) this.$emit('update:modelValue', undefined);
     if (this.config.preview && !this.modelValue.type) {

@@ -58,28 +58,16 @@
 <script>
 import Plugin from '@snapshot-labs/snapshot.js/src/plugins/safeSnap';
 import {
+  contractInteractionToModuleTransaction,
   getABIWriteFunctions,
   getContractABI,
-  getContractTransactionData,
-  getOperation,
-  parseMethodToABI
+  getContractTransactionData
 } from '@/helpers/abi/utils';
 import { isBigNumberish } from '@ethersproject/bignumber/lib/bignumber';
 import { isAddress } from '@ethersproject/address';
-import { parseAmount, parseValueInput } from '@/helpers/utils';
+import { parseAmount } from '@/helpers/utils';
 import { InterfaceDecoder } from '@/helpers/abi/decoder';
 
-const toModuleTransaction = ({ to, value, data, nonce, method }) => {
-  return {
-    to,
-    data,
-    nonce,
-    operation: getOperation(to),
-    type: 'contractInteraction',
-    value: parseValueInput(value),
-    abi: parseMethodToABI(method)
-  };
-};
 export default {
   props: ['modelValue', 'nonce', 'config'],
   emits: ['update:modelValue'],
@@ -159,7 +147,7 @@ export default {
             this.parameters
           );
 
-          const transaction = toModuleTransaction({
+          const transaction = contractInteractionToModuleTransaction({
             data,
             to: this.to,
             value: this.value,
