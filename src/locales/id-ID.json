@@ -213,9 +213,11 @@
     "selectVoting": "Pilih sistem ambil suara",
     "single-choice": "Ambil suara pilihan tunggal",
     "approval": "Ambil suara persetujuan",
+    "quadratic": "Quadratic voting",
     "description": {
       "single-choice": "Setiap pengambil suara hanya dapat mengambil satu pilihan.",
-      "approval": "Setiap pengambil suara dapat mengambil pilihan dengan jumlah apapun."
+      "approval": "Setiap pengambil suara dapat mengambil pilihan dengan jumlah apapun.",
+      "quadratic": "Each voter may spread voting power across any number of choices. Results are calculated quaratically."
     }
   },
   "safeSnap": {
