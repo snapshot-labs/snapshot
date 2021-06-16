@@ -213,9 +213,11 @@
     "selectVoting": "Wähle das Abstimmungssystem aus",
     "single-choice": "Einzelwahl-Abstimmung",
     "approval": "Zustimmungsabstimmung",
+    "quadratic": "Quadratic voting",
     "description": {
       "single-choice": "Jeder Wähler kann nur eine Wahlmöglichkeit wählen.",
-      "approval": "Jeder Wähler kann eine beliebige Anzahl von Wahlmöglichkeiten wählen."
+      "approval": "Jeder Wähler kann eine beliebige Anzahl von Wahlmöglichkeiten wählen.",
+      "quadratic": "Each voter may spread voting power across any number of choices. Results are calculated quaratically."
     }
   },
   "safeSnap": {
