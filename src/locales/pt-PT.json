@@ -213,9 +213,11 @@
     "selectVoting": "Select voting system",
     "single-choice": "Single choice voting",
     "approval": "Approval voting",
+    "quadratic": "Quadratic voting",
     "description": {
       "single-choice": "Cada eleitor pode selecionar apenas uma opção.",
-      "approval": "Cada eleitor pode selecionar qualquer número de opções."
+      "approval": "Cada eleitor pode selecionar qualquer número de opções.",
+      "quadratic": "Each voter may spread voting power across any number of choices. Results are calculated quaratically."
     }
   },
   "safeSnap": {
