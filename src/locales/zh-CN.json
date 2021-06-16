@@ -213,9 +213,11 @@
     "selectVoting": "选择投票系统",
     "single-choice": "单选投票",
     "approval": "批准表决",
+    "quadratic": "Quadratic voting",
     "description": {
       "single-choice": "每个选民只能选择一个选项。",
-      "approval": "每个选民可选择多个选项。"
+      "approval": "每个选民可选择多个选项。",
+      "quadratic": "Each voter may spread voting power across any number of choices. Results are calculated quaratically."
     }
   },
   "safeSnap": {
