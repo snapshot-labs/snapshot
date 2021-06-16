@@ -56,6 +56,7 @@
 <script>
 import Plugin from '@snapshot-labs/snapshot.js/src/plugins/safeSnap';
 import { sleep } from '@/helpers/utils';
+import { formatBatchTransaction } from '@/helpers/abi/utils';
 
 const QuestionStates = {
   error: -1,
@@ -194,8 +195,12 @@ export default {
     },
     approvalData() {
       if (this.questionDetails) {
-        const { currentBond, finalizedAt, isApproved, endTime } =
-          this.questionDetails;
+        const {
+          currentBond,
+          finalizedAt,
+          isApproved,
+          endTime
+        } = this.questionDetails;
         if (currentBond === '0.0') {
           return {
             decision: this.$i18n.t('safeSnap.currentOutcome', ['--']),
@@ -264,7 +269,7 @@ export default {
           this.network,
           this.moduleAddress,
           this.proposalId,
-          this.proposalConfig.txs.flat()
+          this.proposalConfig.txs.map(formatBatchTransaction)
         );
         if (this.questionDetails.questionId) {
           this.bondData = await this.plugin.loadClaimBondData(
@@ -352,4 +357,3 @@ export default {
   }
 };
 </script>
-
