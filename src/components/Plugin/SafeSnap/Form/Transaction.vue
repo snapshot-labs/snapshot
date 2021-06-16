@@ -13,9 +13,9 @@
       @update:modelValue="handleTypeChange($event)"
     >
       <template v-slot:label>type</template>
-      <option value="contractInteraction">Contract Interaction</option>
       <option value="transferFunds">Transfer Funds</option>
       <option value="sendAsset">Send Asset</option>
+      <option value="contractInteraction">Contract Interaction</option>
       <option value="raw">Raw Transaction</option>
     </UiSelect>
 
@@ -66,14 +66,13 @@ export default {
   props: ['modelValue', 'index', 'nonce', 'config'],
   emits: ['update:modelValue', 'remove'],
   data() {
-    let type = 'contractInteraction';
+    let type = 'transferFunds';
     if (this.modelValue) {
       type = this.modelValue.type ? this.modelValue.type : 'raw';
     }
 
     return {
       open: !this.config.preview,
-      types: ['contractInteraction', 'transferFunds', 'sendAsset'],
       type
     };
   },
