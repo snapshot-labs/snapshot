@@ -213,9 +213,11 @@
     "selectVoting": "Oylama sistemini seçiniz",
     "single-choice": "Tek seçenekli oylama",
     "approval": "Oy onayı",
+    "quadratic": "Quadratic voting",
     "description": {
       "single-choice": "Her seçmen sadece bir seçim yapabilir.",
-      "approval": "Her seçmen istediği sayıda seçim yapabilir."
+      "approval": "Her seçmen istediği sayıda seçim yapabilir.",
+      "quadratic": "Each voter may spread voting power across any number of choices. Results are calculated quaratically."
     }
   },
   "safeSnap": {
