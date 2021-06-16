@@ -22,7 +22,7 @@
             <Icon name="external-link" />
           </a>
         </div>
-        <UiButton @click="selected = i">
+        <UiButton v-if="showButton(plugin)" @click="selected = i">
           {{ !form[i] ? $t('add') : $t('edit') }}
         </UiButton>
       </div>
@@ -100,6 +100,9 @@ export default {
   methods: {
     getLogoUrl(plugin) {
       return `https://raw.githubusercontent.com/snapshot-labs/snapshot.js/master/src/plugins/${plugin}/logo.png`;
+    },
+    showButton(plugin) {
+      return plugin.name !== 'SafeSnap';
     }
   }
 };
