@@ -47,7 +47,7 @@ const toModuleTransaction = ({ recipient, collectable, data, nonce }) => {
     recipient,
     value: '0',
     operation: '0',
-    type: 'sendAsset',
+    type: 'transferNFT',
     to: collectable.address,
     collectable: shrinkCollectableData(collectable)
   };

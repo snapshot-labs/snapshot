@@ -14,7 +14,7 @@
     >
       <template v-slot:label>type</template>
       <option value="transferFunds">Transfer Funds</option>
-      <option value="sendAsset">Send Asset</option>
+      <option value="transferNFT">Send Asset</option>
       <option value="contractInteraction">Contract Interaction</option>
       <option value="raw">Raw Transaction</option>
     </UiSelect>
@@ -36,7 +36,7 @@
     />
 
     <PluginSafeSnapFormSendAsset
-      v-if="type === 'sendAsset'"
+      v-if="type === 'transferNFT'"
       :config="config"
       :modelValue="modelValue"
       :nonce="nonce"
@@ -59,7 +59,7 @@ import { formatUnits } from '@ethersproject/units';
 const labels = {
   contractInteraction: 'Contract Interaction',
   transferFunds: 'Transfer Funds',
-  sendAsset: 'Send Asset',
+  transferNFT: 'Transfer NFT',
   raw: 'Raw Transaction'
 };
 export default {
@@ -96,7 +96,7 @@ export default {
                 this.modelValue.amount,
                 this.modelValue.token.decimals
               )} ${this.modelValue.token.symbol} to ${addr}`;
-            case 'sendAsset':
+            case 'transferNFT':
               return `Send ${this.modelValue.collectable.name} #${this._shorten(
                 this.modelValue.collectable.id,
                 10
