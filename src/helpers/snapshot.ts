@@ -1,4 +1,3 @@
-import { getBlockNumber } from '@snapshot-labs/snapshot.js/src/utils/web3';
 import { getScores } from '@snapshot-labs/snapshot.js/src/utils';
 import { formatProposals } from '@/helpers/utils';
 import { getProfiles } from '@/helpers/profile';
@@ -12,7 +11,6 @@ import voting from '@/helpers/voting';
 export async function getProposal(space, id) {
   try {
     console.time('getProposal.data');
-    const provider = getProvider(space.network);
     const response = await Promise.all([
       apolloClient.query({
         query: PROPOSAL_QUERY,
@@ -25,12 +23,10 @@ export async function getProposal(space, id) {
         variables: {
           id
         }
-      }),
-
-      getBlockNumber(provider)
+      })
     ]);
     console.timeEnd('getProposal.data');
-    const [proposalQueryResponse, votes, blockNumber] = cloneDeep(response);
+    const [proposalQueryResponse, votes] = cloneDeep(response);
     const proposal = proposalQueryResponse.data.proposal;
 
     if (proposal?.plugins?.daoModule) {
@@ -42,8 +38,7 @@ export async function getProposal(space, id) {
 
     return {
       proposal,
-      votes: votes.data.votes,
-      blockNumber
+      votes: votes.data.votes
     };
   } catch (e) {
     console.log(e);
@@ -51,12 +46,10 @@ export async function getProposal(space, id) {
   }
 }
 
-export async function getResults(space, proposal, votes, blockNumber) {
+export async function getResults(space, proposal, votes) {
   try {
     const provider = getProvider(space.network);
     const voters = votes.map(vote => vote.voter);
-    const blockTag =
-      proposal.snapshot > blockNumber ? 'latest' : parseInt(proposal.snapshot);
     const strategies = proposal.strategies ?? space.strategies;
     /* Get scores */
     console.time('getProposal.scores');
@@ -67,8 +60,7 @@ export async function getResults(space, proposal, votes, blockNumber) {
         space.network,
         provider,
         voters,
-        // @ts-ignore
-        blockTag
+        parseInt(proposal.snapshot)
       ),
       getProfiles([proposal.author, ...voters])
     ]);
@@ -106,9 +98,6 @@ export async function getResults(space, proposal, votes, blockNumber) {
 
 export async function getPower(space, address, proposal) {
   try {
-    const blockNumber = await getBlockNumber(getProvider(space.network));
-    const blockTag =
-      proposal.snapshot > blockNumber ? 'latest' : parseInt(proposal.snapshot);
     const strategies = proposal.strategies ?? space.strategies;
     let scores: any = await getScores(
       space.key,
@@ -116,8 +105,7 @@ export async function getPower(space, address, proposal) {
       space.network,
       getProvider(space.network),
       [address],
-      // @ts-ignore
-      blockTag
+      parseInt(proposal.snapshot)
     );
     scores = scores.map((score: any) =>
       Object.values(score).reduce((a, b: any) => a + b, 0)
