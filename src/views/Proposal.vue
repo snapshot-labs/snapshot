@@ -168,6 +168,15 @@
           :results="results"
           :strategies="strategies"
         />
+        <PluginPoapCustomBlock
+          v-if="space.plugins?.poap"
+          :loaded="loadedResults"
+          :space="space"
+          :proposal="proposal"
+          :results="results"
+          :votes="votes"
+          :strategies="strategies"
+        />
       </div>
     </template>
   </Layout>
