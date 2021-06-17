@@ -97,9 +97,14 @@
         </div>
         <div class="mb-1">
           <b>{{ $t('proposal.votingSystem') }}</b>
-          <span class="float-right text-white">
-            {{ $t(`voting.${proposal.type}`) }}
-          </span>
+          <a
+            class="float-right text-white"
+            :href="`https://docs.snapshot.org/proposals/voting-types#${proposal.type}`"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {{ $t(`voting.${proposal.type}`) }}</a
+          >
         </div>
         <div>
           <div class="mb-1">
