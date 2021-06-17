@@ -14,7 +14,7 @@
     >
       <template v-slot:label>type</template>
       <option value="transferFunds">Transfer Funds</option>
-      <option value="transferNFT">Send Asset</option>
+      <option value="transferNFT">Transfer NFT</option>
       <option value="contractInteraction">Contract Interaction</option>
       <option value="raw">Raw Transaction</option>
     </UiSelect>
