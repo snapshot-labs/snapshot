@@ -34,7 +34,7 @@ interface Token {
 }
 
 export interface SendAssetModuleTransaction extends ModuleTransaction {
-  type: 'sendAsset';
+  type: 'transferNFT';
   recipient: string;
   collectable: Collectable;
 }
@@ -356,7 +356,7 @@ export const sendAssetToModuleTransaction = ({
     recipient,
     value: '0',
     operation: '0',
-    type: 'sendAsset',
+    type: 'transferNFT',
     to: collectable.address,
     collectable: shrinkCollectableData(collectable)
   };
