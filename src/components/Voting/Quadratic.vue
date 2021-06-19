@@ -5,7 +5,16 @@
         class="d-block width-full mb-2"
         :class="selectedChoices[i + 1] > 0 && 'button--active'"
       >
-        <span class="float-left">{{ _shorten(choice, 32) }}</span>
+        <span
+          class="float-left tooltipped tooltipped-multiline"
+          :class="[
+            isSmallScreen()
+              ? 'tooltipped-ne tooltipped-align-left-2'
+              : 'tooltipped-n'
+          ]"
+          :aria-label="choice"
+          >{{ _shorten(choice, shortenBy) }}</span
+        >
         <div class="d-flex flex-items-center float-right">
           <button
             :disabled="!selectedChoices[i + 1]"
@@ -34,8 +43,9 @@
 </template>
 
 <script>
-import { ref, watch } from 'vue';
+import { ref, watch, computed } from 'vue';
 import { percentageOfTotal } from '@/helpers/voting/quadratic';
+import { useMediaQuery } from '@/composables/useMediaQuery';
 export default {
   props: {
     proposal: {
@@ -46,6 +56,12 @@ export default {
   emits: ['selectChoice'],
   setup(_, { emit }) {
     const selectedChoices = ref({});
+
+    const { isXXSmallScreen, isXSmallScreen, isSmallScreen } = useMediaQuery();
+
+    const shortenBy = computed(() =>
+      isXXSmallScreen() ? 2 : isXSmallScreen() ? 6 : isSmallScreen() ? 18 : 32
+    );
 
     function percentage(i) {
       return (
@@ -80,7 +96,14 @@ export default {
       emit('selectChoice', selectedChoices.value);
     });
 
-    return { addVote, removeVote, selectedChoices, percentage };
+    return {
+      addVote,
+      removeVote,
+      selectedChoices,
+      percentage,
+      shortenBy,
+      isSmallScreen
+    };
   }
 };
 </script>
