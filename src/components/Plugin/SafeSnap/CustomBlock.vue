@@ -165,7 +165,6 @@ export default {
       }
     },
     showDecision() {
-      console.log(this.questionDetails.transactions.length);
       return (
         this.questionDetails?.questionId &&
         !this.showQuestionInfo &&
