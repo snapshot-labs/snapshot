@@ -73,11 +73,11 @@ export default {
 
     // Delete choice if empty string or 0
     watch(selectedChoices.value, (currentValue, oldValue) => {
-      emit('selectChoice', selectedChoices.value);
       Object.entries(currentValue).forEach(choice => {
         if (choice[1] === '' || choice[1] === 0)
           delete selectedChoices.value[choice[0]];
       });
+      emit('selectChoice', selectedChoices.value);
     });
 
     return { addVote, removeVote, selectedChoices, percentage };
