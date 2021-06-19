@@ -16,6 +16,11 @@
         :proposal="proposal"
         @selectChoice="emitChoice"
       />
+      <VotingProportional
+        v-if="proposal.type === 'custom'"
+        :proposal="proposal"
+        @selectChoice="emitChoice"
+      />
     </div>
     <UiButton
       :disabled="app.authLoading || selectedChoices < 1"
