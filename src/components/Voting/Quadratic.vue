@@ -63,14 +63,12 @@ export default {
       selectedChoices.value[i] = selectedChoices.value[i]
         ? (selectedChoices.value[i] += 1)
         : 1;
-      emit('selectChoice', selectedChoices.value);
     }
 
     function removeVote(i) {
       if (selectedChoices.value[i])
         selectedChoices.value[i] =
           selectedChoices.value[i] < 1 ? 0 : (selectedChoices.value[i] -= 1);
-      emit('selectChoice', selectedChoices.value);
     }
 
     // Delete choice if empty string or 0
