@@ -49,8 +49,9 @@
 </template>
 
 <script>
+import { BigNumber } from '@ethersproject/bignumber';
 export default {
-  props: ['open', 'isApproved', 'bond', 'questionId'],
+  props: ['open', 'isApproved', 'bond', 'questionId', 'minimumBond'],
   emits: ['close', 'setApproval'],
   methods: {
     async handleSetApproval(option) {
@@ -64,8 +65,11 @@ export default {
     },
     bondData() {
       const dontHasBond = this.bond === '0.0';
+      const minimumBond = BigNumber.from(this.minimumBond).eq(0)
+        ? 0.001
+        : this.minimumBond;
       return {
-        toSet: dontHasBond ? 0.1 : Number(this.bond) * 2,
+        toSet: dontHasBond ? minimumBond : BigNumber.from(this.bond).mul(2),
         current: dontHasBond ? '--' : this.bond
       };
     },

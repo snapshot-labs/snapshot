@@ -24,22 +24,11 @@
     }"
     label="to"
   />
-
-  <UiInput
-    :disabled="config.preview"
-    :error="!validValue && 'Invalid Value'"
-    :modelValue="value"
-    @update:modelValue="handleValueChange($event)"
-  >
-    <template v-slot:label>amount</template>
-  </UiInput>
 </template>
 
 <script>
 import Plugin from '@snapshot-labs/snapshot.js/src/plugins/safeSnap';
-import { isBigNumberish } from '@ethersproject/bignumber/lib/bignumber';
 import { isAddress } from '@ethersproject/address';
-import { parseAmount } from '@/helpers/utils';
 import { getERC721TokenTransferTransactionData } from '@/helpers/abi/utils';
 
 const shrinkCollectableData = collectable => {
@@ -51,22 +40,16 @@ const shrinkCollectableData = collectable => {
     logoUri: collectable.logoUri
   };
 };
-const toModuleTransaction = ({
-  recipient,
-  value,
-  collectable,
-  data,
-  nonce
-}) => {
+const toModuleTransaction = ({ recipient, collectable, data, nonce }) => {
   return {
-    type: 'sendAsset',
-    operation: '0',
-    to: collectable.address,
-    value: parseAmount(value),
     data,
     nonce,
-    collectable: shrinkCollectableData(collectable),
-    recipient
+    recipient,
+    value: '0',
+    operation: '0',
+    type: 'transferNFT',
+    to: collectable.address,
+    collectable: shrinkCollectableData(collectable)
   };
 };
 export default {
@@ -79,10 +62,7 @@ export default {
       loading: false,
 
       to: '',
-      value: '0',
-      collectableAddress: '',
-
-      validValue: true
+      collectableAddress: ''
     };
   },
   computed: {
@@ -96,9 +76,8 @@ export default {
   mounted() {
     this.setCollectables();
     if (this.modelValue) {
-      const { recipient = '', collectable, value = '0' } = this.modelValue;
+      const { recipient = '', collectable } = this.modelValue;
       this.to = recipient;
-      this.handleValueChange(value);
       if (collectable) {
         this.collectableAddress = collectable.address;
         this.collectables = [collectable];
@@ -112,9 +91,6 @@ export default {
     collectableAddress() {
       this.updateTransaction();
     },
-    value() {
-      this.updateTransaction();
-    },
     config() {
       this.setCollectables();
     }
@@ -123,7 +99,7 @@ export default {
     updateTransaction() {
       if (this.config.preview) return;
       try {
-        if (isBigNumberish(this.value) && isAddress(this.to)) {
+        if (isAddress(this.to)) {
           const data = getERC721TokenTransferTransactionData(
             this.config.gnosisSafeAddress,
             this.to,
@@ -132,7 +108,6 @@ export default {
 
           const transaction = toModuleTransaction({
             data,
-            value: this.value,
             nonce: this.nonce,
             recipient: this.to,
             collectable: this.selectedCollectable
@@ -147,15 +122,6 @@ export default {
         console.warn('invalid transaction');
       }
       this.$emit('update:modelValue', undefined);
-    },
-    handleValueChange(value) {
-      this.value = value;
-      try {
-        parseAmount(value);
-        this.validValue = true;
-      } catch (error) {
-        this.validValue = false;
-      }
     },
     setCollectables() {
       if (!this.config.preview && this.config.collectables) {

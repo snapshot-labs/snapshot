@@ -42,6 +42,7 @@
     />
     <teleport to="#modal">
       <PluginSafeSnapModalOptionApproval
+        :minimumBond="questionDetails?.minimumBond"
         :open="modalApproveDecisionOpen"
         :isApproved="questionDetails?.isApproved"
         :bond="questionDetails?.currentBond"

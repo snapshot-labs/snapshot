@@ -11,7 +11,7 @@ export default class ApprovalVoting {
     this.selected = selected;
   }
 
-  totalBalances() {
+  resultsByVoteBalance() {
     return this.proposal.choices.map((choice, i) =>
       this.votes
         .filter((vote: any) => vote.choice.includes(i + 1))
@@ -19,7 +19,7 @@ export default class ApprovalVoting {
     );
   }
 
-  totalScores() {
+  resultsByStrategyScore() {
     return this.proposal.choices.map((choice, i) =>
       this.strategies.map((strategy, sI) =>
         this.votes
@@ -27,6 +27,10 @@ export default class ApprovalVoting {
           .reduce((a, b: any) => a + b.scores[sI], 0)
       )
     );
+  }
+
+  sumBalanceAllVotes() {
+    return this.votes.reduce((a, b: any) => a + b.balance, 0);
   }
 
   getChoiceString() {
