@@ -42,6 +42,7 @@
     />
     <teleport to="#modal">
       <PluginSafeSnapModalOptionApproval
+        :minimumBond="questionDetails?.minimumBond"
         :open="modalApproveDecisionOpen"
         :isApproved="questionDetails?.isApproved"
         :bond="questionDetails?.currentBond"
@@ -194,8 +195,12 @@ export default {
     },
     approvalData() {
       if (this.questionDetails) {
-        const { currentBond, finalizedAt, isApproved, endTime } =
-          this.questionDetails;
+        const {
+          currentBond,
+          finalizedAt,
+          isApproved,
+          endTime
+        } = this.questionDetails;
         if (currentBond === '0.0') {
           return {
             decision: this.$i18n.t('safeSnap.currentOutcome', ['--']),
@@ -352,4 +357,3 @@ export default {
   }
 };
 </script>
-
