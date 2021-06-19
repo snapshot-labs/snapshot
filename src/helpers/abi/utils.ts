@@ -1,9 +1,11 @@
 import memoize from 'lodash.memoize';
 import { isAddress } from '@ethersproject/address';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
+import { ModuleTransaction } from '@snapshot-labs/snapshot.js/src/plugins/safeSnap';
 import { JsonRpcProvider } from '@ethersproject/providers';
 import { Interface } from '@ethersproject/abi';
-
+import { pack } from '@ethersproject/solidity';
+import { hexDataLength } from '@ethersproject/bytes';
 import {
   AbiItem,
   AbiItemExtended,
@@ -28,6 +30,8 @@ const ERC20ContractABI = [
 const ERC721ContractABI = [
   'function safeTransferFrom(address _from, address _to, uint256 _tokenId) external payable'
 ];
+
+const MultiSendABI = ['function multiSend(bytes memory transactions)'];
 
 const MULTISEND_CONTRACT_ADDRESS = '0x8D29bE29923b68abfDD21e541b9374737B49cdAD';
 
@@ -215,3 +219,60 @@ export const getGnosisSafeCollecibles = memoize(
   },
   (safeAddress, network) => `${safeAddress}_${network}`
 );
+
+export const removeHexPrefix = (hexString: string) => {
+  return hexString.startsWith('0x') ? hexString.substr(2) : hexString;
+};
+
+const encodePackageMultiSendTransaction = (transaction: ModuleTransaction) => {
+  return pack(
+    ['uint8', 'address', 'uint256', 'uint256', 'bytes'],
+    [
+      transaction.operation,
+      transaction.to,
+      transaction.value,
+      hexDataLength(transaction.data),
+      transaction.data
+    ]
+  );
+};
+
+export const multiSendTransaction = (
+  transactions: ModuleTransaction[] | ModuleTransaction,
+  nonce: number
+): ModuleTransaction => {
+  if (!Array.isArray(transactions)) return transactions;
+
+  const multiSendContract = new Interface(MultiSendABI);
+  const transactionsEncoded =
+    '0x' +
+    transactions
+      .map(encodePackageMultiSendTransaction)
+      .map(removeHexPrefix)
+      .join('');
+  const value: string = transactions.reduce(
+    (total, tx) => BigNumber.from(tx.value).add(total).toString(),
+    '0'
+  );
+  const data = multiSendContract.encodeFunctionData('multiSend', [
+    transactionsEncoded
+  ]);
+
+  return {
+    to: MULTISEND_CONTRACT_ADDRESS,
+    operation: '1',
+    value,
+    nonce: nonce.toString(),
+    data
+  };
+};
+
+export const formatBatchTransaction = (
+  batch: ModuleTransaction[],
+  nonce = 0
+): ModuleTransaction => {
+  if (batch.length === 1) {
+    return { ...batch[0], nonce: nonce.toString() };
+  }
+  return multiSendTransaction(batch, nonce);
+};

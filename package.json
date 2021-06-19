@@ -18,6 +18,7 @@
     "@ethersproject/contracts": "^5.0.1",
     "@ethersproject/hash": "^5.0.6",
     "@ethersproject/providers": "^5.0.12",
+    "@ethersproject/solidity": "^5.0.10",
     "@ethersproject/strings": "^5.0.5",
     "@ethersproject/units": "^5.0.1",
     "@ethersproject/wallet": "^5.0.1",
