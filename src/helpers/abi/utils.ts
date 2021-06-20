@@ -3,15 +3,54 @@ import { isAddress } from '@ethersproject/address';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import { ModuleTransaction } from '@snapshot-labs/snapshot.js/src/plugins/safeSnap';
 import { JsonRpcProvider } from '@ethersproject/providers';
-import { Interface } from '@ethersproject/abi';
 import { pack } from '@ethersproject/solidity';
-import { hexDataLength } from '@ethersproject/bytes';
+import { hexDataLength, isHexString } from '@ethersproject/bytes';
 import {
-  AbiItem,
-  AbiItemExtended,
-  AllowedAbiItem
-} from '@/helpers/abi/interfaces';
+  FormatTypes,
+  Fragment,
+  FunctionFragment,
+  Interface,
+  ParamType
+} from '@ethersproject/abi';
 import { BigNumber, BigNumberish } from '@ethersproject/bignumber';
+import { JsonFragment } from '@ethersproject/abi/src.ts/fragments';
+import { InterfaceDecoder } from '@/helpers/abi/decoder';
+import { parseAmount, parseValueInput } from '@/helpers/utils';
+
+interface Collectable {
+  id: string;
+  name: string;
+  address: string;
+  tokenName?: string;
+  logoUri?: string;
+}
+
+interface Token {
+  address: string;
+  name: string;
+  symbol: string;
+  decimals: number;
+  logoUri: string;
+}
+
+export interface SendAssetModuleTransaction extends ModuleTransaction {
+  type: 'transferNFT';
+  recipient: string;
+  collectable: Collectable;
+}
+
+export interface TransferFundsModuleTransaction extends ModuleTransaction {
+  type: 'transferFunds';
+  amount: string;
+  recipient: any;
+  token: Token;
+}
+
+export interface ContractInteractionModuleTransaction
+  extends ModuleTransaction {
+  type: 'contractInteraction';
+  abi: string[];
+}
 
 const EXPLORER_API_URLS = {
   '1': 'https://api.etherscan.io/api',
@@ -28,12 +67,42 @@ const ERC20ContractABI = [
 ];
 
 const ERC721ContractABI = [
-  'function safeTransferFrom(address _from, address _to, uint256 _tokenId) external payable'
+  'function safeTransferFrom(address _from, address _to, uint256 _tokenId) external payable',
+  'function safeTransferFrom(address _from, address _to, uint256 _tokenId, bytes data) external payable',
+  'function transferFrom(address _from, address _to, uint256 _tokenId) external payable'
 ];
 
 const MultiSendABI = ['function multiSend(bytes memory transactions)'];
 
 const MULTISEND_CONTRACT_ADDRESS = '0x8D29bE29923b68abfDD21e541b9374737B49cdAD';
+
+export const ETHEREUM_COIN: Token = {
+  name: 'Ethereum',
+  decimals: 18,
+  symbol: 'ETH',
+  logoUri: 'https://gnosis-safe.io/app/static/media/token_eth.bc98bd46.svg',
+  address: 'main'
+};
+
+type ABI = string | Array<Fragment | JsonFragment | string>;
+
+export const mustBeEthereumAddress = memoize((address: string) => {
+  const startsWith0x = address?.startsWith('0x');
+  const isValidAddress = isAddress(address);
+  return startsWith0x && isValidAddress;
+});
+
+export const mustBeEthereumContractAddress = memoize(
+  async (network: string, address: string) => {
+    const provider = getProvider(network) as JsonRpcProvider;
+    const contractCode = await provider.getCode(address);
+
+    return (
+      contractCode && contractCode.replace('0x', '').replace(/0/g, '') !== ''
+    );
+  },
+  (url, contractAddress) => `${url}_${contractAddress}`
+);
 
 const fetchContractABI = memoize(
   async (url: string, contractAddress: string) => {
@@ -50,24 +119,6 @@ const fetchContractABI = memoize(
     }
 
     return response.json();
-  },
-  (url, contractAddress) => `${url}_${contractAddress}`
-);
-
-export const mustBeEthereumAddress = memoize((address: string) => {
-  const startsWith0x = address?.startsWith('0x');
-  const isValidAddress = isAddress(address);
-  return startsWith0x && isValidAddress;
-});
-
-export const mustBeEthereumContractAddress = memoize(
-  async (network: string, address: string) => {
-    const provider = getProvider(network) as JsonRpcProvider;
-    const contractCode = await provider.getCode(address);
-
-    return (
-      contractCode && contractCode.replace('0x', '').replace(/0/g, '') !== ''
-    );
   },
   (url, contractAddress) => `${url}_${contractAddress}`
 );
@@ -106,63 +157,46 @@ export const getContractABI = async (
   }
 };
 
-export const isAllowedMethod = ({ name, type }: AbiItem): boolean => {
-  return type === 'function' && !!name;
+export const isWriteFunction = (method: FunctionFragment) => {
+  if (!method.stateMutability) return true;
+  return !['view', 'pure'].includes(method.stateMutability);
 };
 
-export const getMethodAction = ({
-  stateMutability
-}: AbiItem): 'read' | 'write' => {
-  if (!stateMutability) return 'write';
-  return ['view', 'pure'].includes(stateMutability) ? 'read' : 'write';
+export const getABIWriteFunctions = (abi: Fragment[]) => {
+  const abiInterface = new Interface(abi);
+  return (
+    abiInterface.fragments
+      // Return only contract's functions
+      .filter(FunctionFragment.isFunctionFragment)
+      .map(FunctionFragment.fromObject)
+      // Return only write functions
+      .filter(isWriteFunction)
+      // Sort by name
+      .sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1))
+  );
 };
 
-export const extractUsefulMethods = (abi: AbiItem[]): AbiItemExtended[] => {
-  const allowedAbiItems = abi.filter(method => {
-    return isAllowedMethod(method) && getMethodAction(method) === 'write';
-  }) as AllowedAbiItem[];
-
-  return allowedAbiItems
-    .map(
-      (method): AbiItemExtended => ({
-        action: getMethodAction(method),
-        ...method
-      })
-    )
-    .sort(({ name: a }, { name: b }) => {
-      return a.toLowerCase() > b.toLowerCase() ? 1 : -1;
-    });
-};
-
-export const getParsedJSONOrArrayFromString = (
-  parameter: string
-): (string | number)[] | null => {
-  try {
-    const arrayResult = JSON.parse(parameter);
-    return arrayResult.map(value => {
-      if (Number.isInteger(value)) {
-        return BigNumber.from(value).toString();
-      }
-      return value;
-    });
-  } catch (err) {
-    return null;
+const extractMethodArgs = (values: string[]) => (param: ParamType, index) => {
+  const value = values[index];
+  if (param.baseType === 'array') {
+    return JSON.parse(value);
   }
-};
-
-const extractMethodArgs = (values: Record<string, string>) => ({ name }) => {
-  return getParsedJSONOrArrayFromString(values[name]) || values[name];
+  return value;
 };
 
 export const getContractTransactionData = (
   abi: string,
-  method: AbiItemExtended,
-  values: Record<string, string>
+  method: FunctionFragment,
+  values: string[]
 ) => {
   const contractInterface = new Interface(abi);
-  const { inputs, name } = method;
-  const parameterValues = inputs?.map(extractMethodArgs(values)) || [];
-  return contractInterface.encodeFunctionData(name, parameterValues);
+  const parameterValues = method.inputs.map(extractMethodArgs(values));
+  return contractInterface.encodeFunctionData(method, parameterValues);
+};
+
+export const getAbiFirstFunctionName = (abi: ABI): string => {
+  const abiInterface = new Interface(abi);
+  return abiInterface.fragments[0].name;
 };
 
 export const getERC20TokenTransferTransactionData = (
@@ -194,8 +228,8 @@ export const getOperation = to => {
   return '0';
 };
 
-export const parseMethodToABI = (method: AbiItemExtended) => {
-  return [method];
+export const parseMethodToABI = (method: FunctionFragment) => {
+  return [method.format(FormatTypes.full)];
 };
 
 const callGnosisSafeTransactionApi = async (network: string, url: string) => {
@@ -218,6 +252,14 @@ export const getGnosisSafeCollecibles = memoize(
     return callGnosisSafeTransactionApi(network, endpointPath);
   },
   (safeAddress, network) => `${safeAddress}_${network}`
+);
+
+export const getGnosisSafeToken = memoize(
+  async (network, tokenAddress): Promise<Token> => {
+    const endpointPath = `/tokens/${tokenAddress}`;
+    return callGnosisSafeTransactionApi(network, endpointPath);
+  },
+  (tokenAddress, network) => `${tokenAddress}_${network}`
 );
 
 export const removeHexPrefix = (hexString: string) => {
@@ -275,4 +317,216 @@ export const formatBatchTransaction = (
     return { ...batch[0], nonce: nonce.toString() };
   }
   return multiSendTransaction(batch, nonce);
+};
+
+const shrinkCollectableData = (collectable): Collectable => {
+  return {
+    id: collectable.id,
+    name: collectable.name,
+    address: collectable.address,
+    tokenName: collectable.tokenName,
+    logoUri: collectable.logoUri
+  };
+};
+
+export const rawToModuleTransaction = ({
+  to,
+  value,
+  data,
+  nonce
+}): ModuleTransaction => {
+  return {
+    to,
+    value,
+    data,
+    nonce,
+    operation: '0'
+  };
+};
+
+export const sendAssetToModuleTransaction = ({
+  recipient,
+  collectable,
+  data,
+  nonce
+}): SendAssetModuleTransaction => {
+  return {
+    data,
+    nonce,
+    recipient,
+    value: '0',
+    operation: '0',
+    type: 'transferNFT',
+    to: collectable.address,
+    collectable: shrinkCollectableData(collectable)
+  };
+};
+
+export const transferFundsToModuleTransaction = ({
+  recipient,
+  amount,
+  token,
+  data,
+  nonce
+}): TransferFundsModuleTransaction => {
+  const base = {
+    operation: '0',
+    nonce,
+    token,
+    recipient
+  };
+  if (token.address === 'main') {
+    return {
+      ...base,
+      type: 'transferFunds',
+      data: '0x',
+      to: recipient,
+      amount: parseAmount(amount),
+      value: parseAmount(amount)
+    };
+  }
+  return {
+    ...base,
+    data,
+    type: 'transferFunds',
+    to: token.address,
+    amount: parseAmount(amount),
+    value: '0'
+  };
+};
+
+export const contractInteractionToModuleTransaction = ({
+  to,
+  value,
+  data,
+  nonce,
+  method
+}): ContractInteractionModuleTransaction => {
+  return {
+    to,
+    data,
+    nonce,
+    operation: getOperation(to),
+    type: 'contractInteraction',
+    value: parseValueInput(value),
+    abi: parseMethodToABI(method)
+  };
+};
+
+export const fetchTextSignatures = async (
+  methodSignature: string
+): Promise<string[]> => {
+  const url = new URL('/api/v1/signatures', 'https://www.4byte.directory');
+  url.searchParams.set('hex_signature', methodSignature);
+  url.searchParams.set('ordering', 'created_at');
+  const response = await fetch(url.toString());
+  const { results } = await response.json();
+  return results.map(signature => signature.text_signature);
+};
+
+const getMethodSignature = (data: string) => {
+  const methodSignature = data.substr(0, 10);
+  if (isHexString(methodSignature) && methodSignature.length === 10) {
+    return methodSignature;
+  }
+  return null;
+};
+
+export const decodeContractTransaction = async (
+  network: string,
+  transaction: ModuleTransaction
+): Promise<ContractInteractionModuleTransaction> => {
+  const decode = (abi: string | FunctionFragment[]) => {
+    const contractInterface = new InterfaceDecoder(abi);
+    const method = contractInterface.getMethodFragment(transaction.data);
+    contractInterface.decodeFunction(transaction.data, method); // Validate data can be decode by method.
+    return contractInteractionToModuleTransaction({
+      data: transaction.data,
+      nonce: 0,
+      to: transaction.to,
+      value: transaction.value,
+      method
+    });
+  };
+
+  const contractAbi = await getContractABI(network, transaction.to);
+  if (contractAbi) return decode(contractAbi);
+
+  const methodSignature = getMethodSignature(transaction.data);
+  if (methodSignature) {
+    const textSignatures = await fetchTextSignatures(methodSignature);
+    for (const signature of textSignatures) {
+      try {
+        return decode([FunctionFragment.fromString(signature)]);
+      } catch (e) {
+        console.warn('invalid abi for transaction');
+      }
+    }
+  }
+
+  throw new Error(`we were not able to decode this transaction`);
+};
+
+export const isERC20TransferTransaction = (transaction: ModuleTransaction) => {
+  return getMethodSignature(transaction.data) === '0xa9059cbb';
+};
+
+export const decodeERC721TransferTransaction = (
+  transaction: ModuleTransaction
+) => {
+  const erc721ContractInterface = new InterfaceDecoder(ERC721ContractABI);
+  try {
+    return erc721ContractInterface.decodeFunction(transaction.data);
+  } catch (e) {
+    return null;
+  }
+};
+
+export const decodeTransactionData = async (
+  network: string,
+  transaction: ModuleTransaction
+) => {
+  if (!transaction.data || transaction.data === '0x') {
+    return transferFundsToModuleTransaction({
+      recipient: transaction.to,
+      amount: transaction.value,
+      data: '0x',
+      token: ETHEREUM_COIN,
+      nonce: 0
+    });
+  }
+
+  if (isERC20TransferTransaction(transaction)) {
+    try {
+      const erc20ContractInterface = new InterfaceDecoder(ERC20ContractABI);
+      const params = erc20ContractInterface.decodeFunction(transaction.data);
+      const token = await getGnosisSafeToken(network, transaction.to);
+      return transferFundsToModuleTransaction({
+        recipient: params[0],
+        amount: params[1],
+        data: transaction.data,
+        nonce: 0,
+        token
+      });
+    } catch (e) {
+      console.warn('invalid ERC20 transfer transaction');
+    }
+  }
+
+  const erc721DecodedParams = decodeERC721TransferTransaction(transaction);
+  if (erc721DecodedParams) {
+    const collectable: Collectable = {
+      id: erc721DecodedParams[2],
+      address: transaction.to,
+      name: 'Unknown'
+    };
+    return sendAssetToModuleTransaction({
+      collectable,
+      nonce: 0,
+      data: transaction.data,
+      recipient: erc721DecodedParams[1]
+    });
+  }
+
+  return decodeContractTransaction(network, transaction);
 };

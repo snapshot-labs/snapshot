@@ -1,7 +1,7 @@
 <template>
   <UiSelect v-model="collectableAddress" :disabled="config.preview">
     <template v-slot:label>asset</template>
-    <template v-slot:image v-if="selectedCollectable">
+    <template v-slot:image v-if="selectedCollectable && selectedCollectable.logoUri">
       <img :src="selectedCollectable.logoUri" alt="" class="tokenImage" />
     </template>
     <option v-if="!collectables.length" disabled selected>
@@ -29,29 +29,11 @@
 <script>
 import Plugin from '@snapshot-labs/snapshot.js/src/plugins/safeSnap';
 import { isAddress } from '@ethersproject/address';
-import { getERC721TokenTransferTransactionData } from '@/helpers/abi/utils';
+import {
+  getERC721TokenTransferTransactionData,
+  sendAssetToModuleTransaction
+} from '@/helpers/abi/utils';
 
-const shrinkCollectableData = collectable => {
-  return {
-    id: collectable.id,
-    name: collectable.name,
-    address: collectable.address,
-    tokenName: collectable.tokenName,
-    logoUri: collectable.logoUri
-  };
-};
-const toModuleTransaction = ({ recipient, collectable, data, nonce }) => {
-  return {
-    data,
-    nonce,
-    recipient,
-    value: '0',
-    operation: '0',
-    type: 'transferNFT',
-    to: collectable.address,
-    collectable: shrinkCollectableData(collectable)
-  };
-};
 export default {
   props: ['modelValue', 'nonce', 'config'],
   emits: ['update:modelValue'],
@@ -106,7 +88,7 @@ export default {
             this.selectedCollectable.id
           );
 
-          const transaction = toModuleTransaction({
+          const transaction = sendAssetToModuleTransaction({
             data,
             nonce: this.nonce,
             recipient: this.to,

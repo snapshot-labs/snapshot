@@ -27,16 +27,11 @@
 import Plugin from '@snapshot-labs/snapshot.js/src/plugins/safeSnap';
 import { isHexString } from '@ethersproject/bytes';
 import { parseAmount } from '@/helpers/utils';
+import {
+  decodeTransactionData,
+  rawToModuleTransaction
+} from '@/helpers/abi/utils';
 
-const toModuleTransaction = ({ to, value, data, nonce }) => {
-  return {
-    to,
-    value,
-    data,
-    nonce,
-    operation: '0'
-  };
-};
 export default {
   props: ['modelValue', 'nonce', 'config'],
   emits: ['update:modelValue'],
@@ -49,12 +44,26 @@ export default {
       data: ''
     };
   },
-  mounted() {
+  async mounted() {
     if (this.modelValue) {
       const { to = '', value = '0', data = '' } = this.modelValue;
       this.to = to;
       this.value = value;
       this.data = data;
+
+      if (this.config.preview) {
+        try {
+          const transaction = await decodeTransactionData(
+            this.config.network,
+            this.modelValue
+          );
+          if (this.plugin.validateTransaction(transaction)) {
+            this.$emit('update:modelValue', transaction);
+          }
+        } catch (e) {
+          console.warn('raw-transaction: failed to decode transaction');
+        }
+      }
     }
   },
   watch: {
@@ -86,7 +95,7 @@ export default {
     updateTransaction() {
       if (this.config.preview) return;
 
-      const transaction = toModuleTransaction({
+      const transaction = rawToModuleTransaction({
         value: this.value,
         to: this.to,
         data: this.data,

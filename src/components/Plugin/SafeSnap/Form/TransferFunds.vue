@@ -33,41 +33,12 @@
 import Plugin from '@snapshot-labs/snapshot.js/src/plugins/safeSnap';
 import { isBigNumberish } from '@ethersproject/bignumber/lib/bignumber';
 import { isAddress } from '@ethersproject/address';
-import { parseAmount } from '@/helpers/utils';
-import { getERC20TokenTransferTransactionData } from '@/helpers/abi/utils';
+import {
+  ETHEREUM_COIN,
+  getERC20TokenTransferTransactionData,
+  transferFundsToModuleTransaction
+} from '@/helpers/abi/utils';
 
-const toModuleTransaction = ({ recipient, amount, token, data, nonce }) => {
-  const base = {
-    type: 'transferFunds',
-    operation: '0',
-    nonce,
-    token,
-    recipient
-  };
-  if (token.address === 'main') {
-    return {
-      ...base,
-      data: '0x',
-      to: recipient,
-      amount: parseAmount(amount),
-      value: parseAmount(amount)
-    };
-  }
-  return {
-    ...base,
-    data,
-    to: token.address,
-    amount: parseAmount(amount),
-    value: '0'
-  };
-};
-const ETHEREUM_COIN = {
-  name: 'Ethereum',
-  decimals: 18,
-  symbol: 'ETH',
-  logoUri: 'https://gnosis-safe.io/app/static/media/token_eth.bc98bd46.svg',
-  address: 'main'
-};
 export default {
   props: ['modelValue', 'nonce', 'config'],
   emits: ['update:modelValue'],
@@ -124,7 +95,7 @@ export default {
               ? '0x'
               : getERC20TokenTransferTransactionData(this.to, this.value);
 
-          const transaction = toModuleTransaction({
+          const transaction = transferFundsToModuleTransaction({
             data,
             nonce: this.nonce,
             amount: this.value,

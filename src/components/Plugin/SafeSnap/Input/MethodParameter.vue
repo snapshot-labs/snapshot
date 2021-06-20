@@ -1,17 +1,14 @@
 <template>
-  <UiButton v-if="type === 'bool'" class="width-full mb-2 d-flex">
-    <div class="text-gray mr-2">{{ placeholder }}</div>
-    <select
-      v-model="value"
-      :disabled="disabled"
-      class="input text-center flex-auto height-full"
-      required
-      @change="handleInput(value)"
-    >
-      <option :value="true">true</option>
-      <option :value="false">false</option>
-    </select>
-  </UiButton>
+  <UiSelect
+    v-if="type === 'bool'"
+    :disabled="disabled"
+    :modelValue="value"
+    @update:modelValue="handleInput($event)"
+  >
+    <template v-slot:label>{{ placeholder }}</template>
+    <option :value="true">true</option>
+    <option :value="false">false</option>
+  </UiSelect>
 
   <!-- ADDRESS -->
   <PluginSafeSnapInputAddress

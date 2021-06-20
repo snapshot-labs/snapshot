@@ -55,6 +55,7 @@
 
 <script>
 import { formatUnits } from '@ethersproject/units';
+import { getAbiFirstFunctionName } from '@/helpers/abi/utils';
 
 const labels = {
   contractInteraction: 'Contract Interaction',
@@ -76,6 +77,13 @@ export default {
       type
     };
   },
+  watch: {
+    modelValue() {
+      if (this.modelValue?.type) {
+        this.type = this.modelValue.type;
+      }
+    }
+  },
   mounted() {
     if (!this.config.preview) this.$emit('update:modelValue', undefined);
     if (this.config.preview && !this.modelValue.type) {
@@ -90,7 +98,9 @@ export default {
           const type = this.modelValue.type || this.type;
           switch (type) {
             case 'contractInteraction':
-              return `${this.modelValue.abi[0].name}() - ${this.modelValue.value} wei to ${addr}`;
+              return `${getAbiFirstFunctionName(this.modelValue.abi)}() - ${
+                this.modelValue.value
+              } wei to ${addr}`;
             case 'transferFunds':
               return `Transfer ${formatUnits(
                 this.modelValue.amount,
