@@ -503,7 +503,7 @@ export const decodeTransactionData = async (
       const token = await getGnosisSafeToken(network, transaction.to);
       return transferFundsToModuleTransaction({
         recipient: params[0],
-        amount: params[0],
+        amount: params[1],
         data: transaction.data,
         nonce: 0,
         token
