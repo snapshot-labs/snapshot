@@ -6,11 +6,11 @@ import { JsonRpcProvider } from '@ethersproject/providers';
 import { pack } from '@ethersproject/solidity';
 import { hexDataLength, isHexString } from '@ethersproject/bytes';
 import {
+  FormatTypes,
   Fragment,
   FunctionFragment,
   Interface,
-  ParamType,
-  FormatTypes
+  ParamType
 } from '@ethersproject/abi';
 import { BigNumber, BigNumberish } from '@ethersproject/bignumber';
 import { JsonFragment } from '@ethersproject/abi/src.ts/fragments';
