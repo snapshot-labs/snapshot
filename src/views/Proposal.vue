@@ -46,7 +46,7 @@
         @clickVote="clickVote"
       />
       <BlockVotes
-        v-if="loaded"
+        v-if="loaded && !isPending"
         :loaded="loadedResults"
         :space="space"
         :proposal="proposal"
@@ -131,34 +131,21 @@
           </div>
         </div>
       </Block>
-      <BlockResults
-        :loaded="loadedResults"
-        :space="space"
-        :proposal="proposal"
-        :results="results"
-        :votes="votes"
-        :strategies="strategies"
-      />
-      <div v-if="loadedResults">
+      <div v-if="loadedResults && !isPending">
+        <BlockResults
+          :loaded="loadedResults"
+          :space="space"
+          :proposal="proposal"
+          :results="results"
+          :votes="votes"
+          :strategies="strategies"
+        />
         <PluginAragonCustomBlock
           :loaded="loadedResults"
           :id="id"
           :space="space"
           :proposal="proposal"
           :results="results"
-        />
-        <PluginGnosisCustomBlock
-          v-if="proposal.plugins?.gnosis?.baseTokenAddress"
-          :proposalConfig="proposal.plugins.gnosis"
-          :choices="proposal.choices"
-        />
-        <PluginSafeSnapCustomBlock
-          v-if="proposal.plugins?.safeSnap?.txs"
-          :proposalConfig="proposal.plugins.safeSnap"
-          :proposalEnd="proposal.end"
-          :proposalId="id"
-          :moduleAddress="space.plugins?.safeSnap?.address"
-          :network="space.network"
         />
         <PluginQuorumCustomBlock
           :loaded="loadedResults"
@@ -178,6 +165,19 @@
           :strategies="strategies"
         />
       </div>
+      <PluginGnosisCustomBlock
+        v-if="proposal.plugins?.gnosis?.baseTokenAddress"
+        :proposalConfig="proposal.plugins.gnosis"
+        :choices="proposal.choices"
+      />
+      <PluginSafeSnapCustomBlock
+        v-if="proposal.plugins?.safeSnap?.txs"
+        :proposalConfig="proposal.plugins.safeSnap"
+        :proposalEnd="proposal.end"
+        :proposalId="id"
+        :moduleAddress="space.plugins?.safeSnap?.address"
+        :network="space.network"
+      />
     </template>
   </Layout>
   <teleport to="#modal">
@@ -256,6 +256,7 @@ export default {
     const symbols = computed(() =>
       strategies.value.map(strategy => strategy.params.symbol)
     );
+    const isPending = computed(() => proposal.value.state === 'pending');
 
     const { modalAccountOpen } = useModal();
     const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(key);
@@ -272,14 +273,16 @@ export default {
       const proposalObj = await getProposal(space.value, id);
       proposal.value = proposalObj.proposal;
       loaded.value = true;
-      const resultsObj = await getResults(
-        space.value,
-        proposalObj.proposal,
-        proposalObj.votes,
-        proposalObj.blockNumber
-      );
-      votes.value = resultsObj.votes;
-      results.value = resultsObj.results;
+      if (!isPending.value) {
+        const resultsObj = await getResults(
+          space.value,
+          proposalObj.proposal,
+          proposalObj.votes,
+          proposalObj.blockNumber
+        );
+        votes.value = resultsObj.votes;
+        results.value = resultsObj.results;
+      }
       loadedResults.value = true;
     }
 
@@ -354,7 +357,8 @@ export default {
       symbols,
       dropdownLoading,
       modalStrategiesOpen,
-      selectFromDropdown
+      selectFromDropdown,
+      isPending
     };
   }
 };
