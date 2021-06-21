@@ -5,20 +5,12 @@
         <h1 v-text="'Test'" class="mb-4" />
       </div>
       <Block>
-        <UiButton class="d-block width-full px-3 mb-3 height-full">
-          <TextareaAutosize
-            :disabled="loading"
-            v-model="body"
-            :placeholder="'Say something'"
-            class="input width-full text-left"
-          />
-        </UiButton>
         <UiButton
           :loading="loading"
           @click="submit"
           class="button--submit width-full"
         >
-          {{ $t('submit') }}
+          {{ $t('proposal.vote') }}
         </UiButton>
       </Block>
     </template>
@@ -29,7 +21,7 @@
 import { computed, ref } from 'vue';
 import { useStore } from 'vuex';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
-import { send, signMessage } from '@/sign';
+import { send, vote } from '@/sign';
 
 export default {
   setup() {
@@ -43,10 +35,13 @@ export default {
     async function submit() {
       loading.value = true;
       try {
-        const envelop = await signMessage(auth.web3, web3Account.value, {
+        const envelop = await vote(auth.web3, web3Account.value, {
           space: 'fabien.eth',
-          type: 'post',
-          payload: body.value
+          timestamp: 1624139921,
+          proposal:
+            '0x71618aeb1a793d6af3c8e33e895a945623ba58cfb02f10119dc29263cb242572',
+          choice: 1,
+          metadata: JSON.stringify({})
         });
         const result = await send(envelop);
         console.log('Result', result);
