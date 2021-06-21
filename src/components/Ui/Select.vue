@@ -8,8 +8,9 @@
     </div>
     <select
       :disabled="disabled"
-      :modelValue="modelValue"
+      :value="modelValue"
       @change="handleChange($event)"
+      v-bind:class="{ disabled }"
       class="input flex-auto height-full width-full"
     >
       <slot />
@@ -33,5 +34,8 @@ export default {
 <style scoped lang="scss">
 .no-shrink {
   flex-shrink: 0;
+}
+.disabled {
+  appearance: none;
 }
 </style>
