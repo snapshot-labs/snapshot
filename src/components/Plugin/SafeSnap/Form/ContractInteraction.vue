@@ -43,13 +43,13 @@
       <div class="divider"></div>
 
       <PluginSafeSnapInputMethodParameter
-        v-for="input in selectedMethod.inputs"
+        v-for="(input, index) in selectedMethod.inputs"
         :key="input.name"
         :disabled="config.preview"
-        :modelValue="parameters[input.name]"
+        :modelValue="parameters[index]"
         :name="input.name"
         :type="input.type"
-        @update:modelValue="handleParameterChanged(input.name, $event)"
+        @update:modelValue="handleParameterChanged(index, $event)"
       />
     </div>
   </div>
@@ -58,29 +58,16 @@
 <script>
 import Plugin from '@snapshot-labs/snapshot.js/src/plugins/safeSnap';
 import {
-  extractUsefulMethods,
+  contractInteractionToModuleTransaction,
+  getABIWriteFunctions,
   getContractABI,
-  getContractTransactionData,
-  getOperation,
-  parseMethodToABI
+  getContractTransactionData
 } from '@/helpers/abi/utils';
 import { isBigNumberish } from '@ethersproject/bignumber/lib/bignumber';
 import { isAddress } from '@ethersproject/address';
-import { Interface } from '@ethersproject/abi';
-import { isArrayParameter } from '@/helpers/validator';
-import { parseAmount, parseValueInput } from '@/helpers/utils';
+import { parseAmount } from '@/helpers/utils';
+import { InterfaceDecoder } from '@/helpers/abi/decoder';
 
-const toModuleTransaction = ({ to, value, data, nonce, method }) => {
-  return {
-    to,
-    data,
-    nonce,
-    operation: getOperation(to),
-    type: 'contractInteraction',
-    value: parseValueInput(value),
-    abi: parseMethodToABI(method)
-  };
-};
 export default {
   props: ['modelValue', 'nonce', 'config'],
   emits: ['update:modelValue'],
@@ -97,7 +84,7 @@ export default {
       selectedMethod: undefined,
       methods: [],
       methodIndex: 0,
-      parameters: {}
+      parameters: []
     };
   },
   mounted() {
@@ -106,31 +93,16 @@ export default {
       this.to = to;
 
       if (this.config.preview) {
+        const transactionDecoder = new InterfaceDecoder(abi);
+        this.selectedMethod = transactionDecoder.getMethodFragment(data);
+        this.parameters = transactionDecoder.decodeFunction(
+          data,
+          this.selectedMethod
+        );
+
         this.abi = JSON.stringify(abi);
         this.value = value;
-        this.selectedMethod = abi[0];
         this.methods = [this.selectedMethod];
-        const contractInterface = new Interface(abi);
-        const methodParametersValues = contractInterface.decodeFunctionData(
-          this.selectedMethod.name,
-          data
-        );
-        this.parameters = this.selectedMethod.inputs.reduce(
-          (obj, parameter) => {
-            const value = isArrayParameter(parameter.type)
-              ? JSON.stringify(
-                  methodParametersValues[parameter.name].map(value =>
-                    value.toString()
-                  )
-                )
-              : methodParametersValues[parameter.name].toString();
-            return {
-              ...obj,
-              [parameter.name]: value
-            };
-          },
-          {}
-        );
       } else {
         this.handleValueChange(value);
         this.handleABIChanged(
@@ -170,7 +142,7 @@ export default {
             this.parameters
           );
 
-          const transaction = toModuleTransaction({
+          const transaction = contractInteractionToModuleTransaction({
             data,
             to: this.to,
             value: this.value,
@@ -209,30 +181,22 @@ export default {
       this.methodIndex = 0;
       this.methods = [];
 
-      let abi;
       try {
-        abi = JSON.parse(this.abi);
+        this.methods = getABIWriteFunctions(this.abi);
         this.validAbi = true;
-      } catch (error) {
-        this.validAbi = false;
-        console.warn('invalid abi', error);
-        return;
-      }
-
-      try {
-        this.methods = extractUsefulMethods(abi);
         this.handleMethodChanged();
       } catch (error) {
+        this.validAbi = false;
         console.warn('error extracting useful methods', error);
       }
     },
     handleMethodChanged() {
-      this.parameters = {};
+      this.parameters = [];
       this.selectedMethod = this.methods[this.methodIndex];
       this.updateTransaction();
     },
-    handleParameterChanged(parameter, value) {
-      this.parameters[parameter] = value;
+    handleParameterChanged(index, value) {
+      this.parameters[index] = value;
       this.updateTransaction();
     }
   }
