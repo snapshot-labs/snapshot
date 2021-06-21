@@ -13,9 +13,9 @@
       @update:modelValue="handleTypeChange($event)"
     >
       <template v-slot:label>type</template>
-      <option value="contractInteraction">Contract Interaction</option>
       <option value="transferFunds">Transfer Funds</option>
-      <option value="sendAsset">Send Asset</option>
+      <option value="transferNFT">Transfer NFT</option>
+      <option value="contractInteraction">Contract Interaction</option>
       <option value="raw">Raw Transaction</option>
     </UiSelect>
 
@@ -36,7 +36,7 @@
     />
 
     <PluginSafeSnapFormSendAsset
-      v-if="type === 'sendAsset'"
+      v-if="type === 'transferNFT'"
       :config="config"
       :modelValue="modelValue"
       :nonce="nonce"
@@ -54,29 +54,41 @@
 </template>
 
 <script>
+import { formatUnits } from '@ethersproject/units';
+import { getAbiFirstFunctionName } from '@/helpers/abi/utils';
+
 const labels = {
   contractInteraction: 'Contract Interaction',
   transferFunds: 'Transfer Funds',
-  sendAsset: 'Send Asset',
+  transferNFT: 'Transfer NFT',
   raw: 'Raw Transaction'
 };
 export default {
   props: ['modelValue', 'index', 'nonce', 'config'],
   emits: ['update:modelValue', 'remove'],
   data() {
-    let type = 'contractInteraction';
+    let type = 'transferFunds';
     if (this.modelValue) {
       type = this.modelValue.type ? this.modelValue.type : 'raw';
     }
 
     return {
       open: !this.config.preview,
-      types: ['contractInteraction', 'transferFunds', 'sendAsset'],
       type
     };
   },
+  watch: {
+    modelValue() {
+      if (this.modelValue?.type) {
+        this.type = this.modelValue.type;
+      }
+    }
+  },
   mounted() {
     if (!this.config.preview) this.$emit('update:modelValue', undefined);
+    if (this.config.preview && !this.modelValue.type) {
+      this.type = 'raw';
+    }
   },
   computed: {
     title() {
@@ -86,10 +98,15 @@ export default {
           const type = this.modelValue.type || this.type;
           switch (type) {
             case 'contractInteraction':
-              return `${this.modelValue.abi[0].name}() - ${this.modelValue.value} wei to ${addr}`;
+              return `${getAbiFirstFunctionName(this.modelValue.abi)}() - ${
+                this.modelValue.value
+              } wei to ${addr}`;
             case 'transferFunds':
-              return `Transfer ${this.modelValue.amount} ${this.modelValue.token.symbol} to ${addr}`;
-            case 'sendAsset':
+              return `Transfer ${formatUnits(
+                this.modelValue.amount,
+                this.modelValue.token.decimals
+              )} ${this.modelValue.token.symbol} to ${addr}`;
+            case 'transferNFT':
               return `Send ${this.modelValue.collectable.name} #${this._shorten(
                 this.modelValue.collectable.id,
                 10
