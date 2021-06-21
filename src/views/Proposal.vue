@@ -99,12 +99,18 @@
           <b>{{ $t('proposal.votingSystem') }}</b>
           <a
             class="float-right text-white"
+            :class="{
+              'tooltipped tooltipped-n':
+                $t(`voting.${proposal.type}`).length > 16
+            }"
+            :aria-label="$t(`voting.${proposal.type}`)"
             :href="`https://docs.snapshot.org/proposals/voting-types#${proposal.type}`"
             target="_blank"
             rel="noopener noreferrer"
           >
-            {{ $t(`voting.${proposal.type}`) }}</a
-          >
+            {{ _shorten($t(`voting.${proposal.type}`), 16) }}
+            <Icon name="external-link" class="ml-1" />
+          </a>
         </div>
         <div>
           <div class="mb-1">
