@@ -252,10 +252,10 @@ textarea {
     &.router-link-exact-active {
       border-left: none;
       border-bottom: 3px solid;
-      padding-left: 21px !important;
       @include breakpoint(lg) {
         border-left: 3px solid;
         border-bottom: none;
+        padding-left: 21px !important;
       }
     }
   }

@@ -3,6 +3,24 @@
     <div v-if="space.about" class="mb-3">
       <h4 class="text-white mb-2">{{ $t('settings.about') }}</h4>
       <UiText :text="space.about" />
+      <div class="my-3" v-if="space.github || space.twitter">
+        <a
+          v-if="space.twitter"
+          :href="`https://twitter.com/${space.twitter}`"
+          target="_blank"
+        >
+          <Icon size="20" name="twitter" class="mt-1 mr-1" /> @{{
+            space.twitter
+          }}
+        </a>
+        <a
+          v-if="space.github"
+          :href="`https://github.com/${space.github}`"
+          target="_blank"
+        >
+          <Icon size="20" name="github" class="ml-4 mr-1" /> {{ space.github }}
+        </a>
+      </div>
     </div>
 
     <div class="mb-3">
