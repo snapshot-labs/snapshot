@@ -1,28 +1,28 @@
 <template>
   <div
     ref="itemref"
-    @mouseenter="debounce(() => (open = true), openDelay)"
-    @mouseleave="debounce(() => popClose(), closeDelay)"
+    @mouseenter="isTouchScreen() ? null : debounce(() => (open = true), 800)"
+    @mouseleave="debounce(() => popClose(), 300)"
   >
     <slot name="item" />
   </div>
   <div
     ref="contentref"
     v-show="open"
-    @mouseenter="debounce(() => (popHovered = true), openDelay)"
-    @mouseleave="
-      (popHovered = false), debounce(() => (open = false), closeDelay)
-    "
-    class="custom-content width-full width-sm-auto"
+    @mouseenter="popHovered = true"
+    @mouseleave="(popHovered = false), debounce(() => (open = false), 300)"
+    class="custom-content"
   >
     <slot name="content" />
   </div>
 </template>
 
 <script>
-import { onMounted, ref, watch, computed } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import { createPopper } from '@popperjs/core';
 import { useDebounce } from '@/composables/useDebounce';
+import { useDetectInput } from '@/composables/useDetectInput';
+import { useMediaQuery } from '@/composables/useMediaQuery';
 
 export default {
   props: {
@@ -35,13 +35,8 @@ export default {
     const itemref = ref(null);
     const contentref = ref(null);
 
-    const openDelay = computed(() =>
-      window.matchMedia('(max-width: 850px)').matches ? 150 : 800
-    );
-
-    const closeDelay = computed(() =>
-      window.matchMedia('(max-width: 850px)').matches ? 50 : 300
-    );
+    const { isTouchScreen } = useDetectInput();
+    const { isXLargeScreen } = useMediaQuery();
 
     function popClose() {
       if (!popHovered.value) open.value = false;
@@ -64,7 +59,7 @@ export default {
     });
 
     watch(open, v => {
-      if (window.matchMedia('(min-width: 1150px)').matches)
+      if (!isXLargeScreen.value)
         popperInstance.setOptions({ placement: 'bottom' });
       else popperInstance.setOptions({ placement: 'bottom-start' });
     });
@@ -76,8 +71,7 @@ export default {
       itemref,
       contentref,
       debounce: useDebounce(),
-      openDelay,
-      closeDelay
+      isTouchScreen
     };
   }
 };
