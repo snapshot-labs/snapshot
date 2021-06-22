@@ -26,7 +26,7 @@ export default {
   },
   computed: {
     totalScore() {
-      return this.results.totalBalances.reduce((a, b) => a + b, 0);
+      return this.results.resultsByVoteBalance.reduce((a, b) => a + b, 0);
     },
     quorum() {
       return this.totalVotingPower === 0
