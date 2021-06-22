@@ -3,7 +3,7 @@
     :hideRemove="config.preview"
     :number="index + 1"
     :open="open"
-    title="Multiple transactions"
+    :title="`Batch #${index + 1}`"
     @remove="$emit('remove')"
     @toggle="open = !open"
   >
@@ -54,6 +54,9 @@ export default {
     removeTransaction(index) {
       this.transactions.splice(index, 1);
       this.$emit('update:modelValue', this.transactions);
+      if (!this.transactions.length) {
+        this.$emit('remove');
+      }
     }
   }
 };
