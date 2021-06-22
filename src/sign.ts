@@ -39,6 +39,38 @@ interface Vote {
   metadata: string;
 }
 
+interface Proposal {
+  space: string;
+  timestamp: number;
+  type: string;
+  title: string;
+  body: string;
+  choices: string[];
+  start: number;
+  end: number;
+  snapshot: number;
+  metadata: string;
+}
+
+export async function proposal(
+  web3: Web3Provider,
+  address: string,
+  message: Proposal
+) {
+  const data: any = { domain, types: { Proposal: types.Proposal }, message };
+  console.log(JSON.stringify(data));
+
+  const signer = web3.getSigner();
+  const sig = await signer._signTypedData(domain, data.types, message);
+  console.log('Sig!', sig);
+
+  return {
+    address,
+    sig,
+    data
+  };
+}
+
 export async function vote(web3: Web3Provider, address: string, message: Vote) {
   const data: any = { domain, types: { Vote: types.Vote }, message };
 

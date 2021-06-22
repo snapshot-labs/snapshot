@@ -6,11 +6,18 @@
       </div>
       <Block>
         <UiButton
-          :loading="loading"
-          @click="submit"
+          :loading="loadingProposal"
+          @click="submitProposal"
+          class="button--submit width-full mb-2"
+        >
+          Proposal
+        </UiButton>
+        <UiButton
+          :loading="loadingVote"
+          @click="submitVote"
           class="button--submit width-full"
         >
-          {{ $t('proposal.vote') }}
+          Vote
         </UiButton>
       </Block>
     </template>
@@ -21,19 +28,43 @@
 import { computed, ref } from 'vue';
 import { useStore } from 'vuex';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
-import { send, vote } from '@/sign';
+import { proposal, send, vote } from '@/sign';
 
 export default {
   setup() {
     const store = useStore();
     const auth = getInstance();
 
-    const loading = ref(false);
-    const body = ref('');
+    const loadingProposal = ref(false);
+    const loadingVote = ref(false);
     const web3Account = computed(() => store.state.web3.account);
 
-    async function submit() {
-      loading.value = true;
+    async function submitProposal() {
+      loadingProposal.value = true;
+      try {
+        const envelop = await proposal(auth.web3, web3Account.value, {
+          space: 'fabien.eth',
+          timestamp: 1624139921,
+          type: 'single-choice',
+          title: 'This is a test!',
+          body: 'Just a test.',
+          choices: ['Alice', 'Bob', 'Carol'],
+          start: 1623139921,
+          end: 1625139921,
+          snapshot: 12682785,
+          metadata: JSON.stringify({})
+        });
+        const result = await send(envelop);
+        console.log('Result', result);
+        console.log('Envelop', envelop);
+      } catch (e) {
+        console.log(e);
+      }
+      loadingProposal.value = false;
+    }
+
+    async function submitVote() {
+      loadingVote.value = true;
       try {
         const envelop = await vote(auth.web3, web3Account.value, {
           space: 'fabien.eth',
@@ -46,13 +77,13 @@ export default {
         const result = await send(envelop);
         console.log('Result', result);
         console.log('Envelop', envelop);
-        body.value = '';
       } catch (e) {
         console.log(e);
       }
-      loading.value = false;
+      loadingVote.value = false;
     }
-    return { loading, body, submit };
+
+    return { loadingProposal, loadingVote, submitProposal, submitVote };
   }
 };
 </script>
