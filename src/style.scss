@@ -65,7 +65,8 @@ p {
   min-height: 100vh;
 }
 
-a, .a {
+a,
+.a {
   color: var(--link-color);
 
   &:hover {
@@ -205,7 +206,7 @@ textarea {
   &::before {
     border-top-color: var(--text-color) !important;
     margin-bottom: 14px;
-    top: -14px !important;
+    top: -15px !important;
   }
 
   &::after {
@@ -242,6 +243,13 @@ textarea {
 .sidenav-item {
   &.router-link-exact-active {
     border-left: 3px solid;
-    padding-left: 21px !important
+    padding-left: 21px !important;
   }
+}
+
+.truncated {
+  display: block;
+  white-space: nowrap; /* forces text to single line */
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

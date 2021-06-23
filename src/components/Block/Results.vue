@@ -6,10 +6,14 @@
     <div v-for="choice in choices" :key="choice.i">
       <div class="text-white mb-1">
         <span
-          :class="choice.choice.length > 12 && 'tooltipped tooltipped-n'"
+          class="mr-1 tooltipped"
+          :class="[
+            isSmallScreen
+              ? 'tooltipped-ne tooltipped-align-left-2'
+              : 'tooltipped-n'
+          ]"
           :aria-label="choice.choice.length > 12 && choice.choice"
           v-text="_shorten(choice.choice, 'choice')"
-          class="mr-1"
         />
         <span
           class="mr-1 tooltipped tooltipped-multiline tooltipped-n"
@@ -54,6 +58,7 @@
 <script>
 import * as jsonexport from 'jsonexport/dist';
 import pkg from '@/../package.json';
+import { useMediaQuery } from '@/composables/useMediaQuery';
 
 export default {
   props: [
@@ -65,6 +70,10 @@ export default {
     'loaded',
     'strategies'
   ],
+  setup() {
+    const { isSmallScreen } = useMediaQuery();
+    return { isSmallScreen };
+  },
   computed: {
     ts() {
       return (Date.now() / 1e3).toFixed();
