@@ -58,7 +58,7 @@ export default {
       });
     });
 
-    watch(open, v => {
+    watch(open, () => {
       if (!isXLargeScreen.value)
         popperInstance.setOptions({ placement: 'bottom' });
       else popperInstance.setOptions({ placement: 'bottom-start' });
