@@ -50,7 +50,6 @@
         </div>
       </template>
     </UiPopover>
-    <teleport to="#modal"> </teleport>
   </span>
 </template>
 
