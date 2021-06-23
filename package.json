@@ -22,6 +22,7 @@
     "@ethersproject/strings": "^5.0.5",
     "@ethersproject/units": "^5.0.1",
     "@ethersproject/wallet": "^5.0.1",
+    "@popperjs/core": "^2.9.2",
     "@portis/web3": "^3.0.8",
     "@primer/css": "^14.4.0",
     "@snapshot-labs/lock": "github:snapshot-labs/lock#master",
