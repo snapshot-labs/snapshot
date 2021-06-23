@@ -137,10 +137,4 @@ export default {
     border-right: 1px solid var(--border-color);
   }
 }
-.truncated {
-  display: block;
-  white-space: nowrap; /* forces text to single line */
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
 </style>

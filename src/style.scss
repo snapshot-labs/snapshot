@@ -246,3 +246,10 @@ textarea {
     padding-left: 21px !important;
   }
 }
+
+.truncated {
+  display: block;
+  white-space: nowrap; /* forces text to single line */
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
