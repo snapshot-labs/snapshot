@@ -214,12 +214,12 @@
     "single-choice": "Single choice voting",
     "approval": "Approval voting",
     "quadratic": "Quadratic voting",
-    "proportional": "Proportional voting",
+    "weighted": "Weighted voting",
     "description": {
       "single-choice": "Each voter may select only one choice.",
       "approval": "Each voter may select any number of choices.",
       "quadratic": "Each voter may spread voting power across any number of choices. Results are calculated quaratically.",
-      "proportional": "Each voter may spread voting power across any number of choices."
+      "weighted": "Each voter may spread voting power across any number of choices."
     }
   },
   "safeSnap": {

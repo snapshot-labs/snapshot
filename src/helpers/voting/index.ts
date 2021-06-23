@@ -1,11 +1,11 @@
 import singleChoice from './singleChoice';
 import approval from './approval';
 import quadratic from './quadratic';
-import proportional from './proportional';
+import weighted from './weighted';
 
 export default {
   'single-choice': singleChoice,
   approval,
   quadratic,
-  custom: proportional
+  weighted
 };
