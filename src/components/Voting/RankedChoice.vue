@@ -9,18 +9,24 @@
         @change="updateChoices"
       >
         <template #item="{ element, index }">
-          <div class="d-flex mb-2">
-            <UiButton class="width-full button--active position-relative">
-              <span class="position-absolute left-4">
-                ({{ getNumberWithOrdinal(index + 1) }})</span
-              >
-              <span>{{ proposal.choices[element - 1] }}</span>
-              <span
+          <div class="mb-2">
+            <UiButton
+              class="d-flex flex-justify-center width-full button--active position-relative"
+            >
+              <div class="position-absolute left-4">
+                ({{ getNumberWithOrdinal(index + 1) }})
+              </div>
+              <div style="width: 60%" class="ml-3">
+                <span class="truncated w-full">
+                  {{ proposal.choices[element - 1] }}
+                </span>
+              </div>
+              <div
                 @click="removeChoice(index)"
-                class="float-right position-absolute right-4"
+                class="float-right position-absolute right-2 px-3"
               >
                 <Icon name="close" size="12" />
-              </span>
+              </div>
             </UiButton>
           </div>
         </template>
@@ -33,7 +39,7 @@
         class="d-block width-full mb-2"
         :class="selectedChoices.includes(i + 1) && 'button--active'"
       >
-        {{ _shorten(choice, 32) }}
+        <span class="truncated">{{ choice }}</span>
 
         <PluginAragonGovern :proposal="proposal" />
       </UiButton>
