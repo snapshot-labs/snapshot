@@ -1,8 +1,6 @@
 import { getScores } from '@snapshot-labs/snapshot.js/src/utils';
-import { formatProposals } from '@/helpers/utils';
 import { getProfiles } from '@/helpers/profile';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
-import client from '@/helpers/client';
 import { apolloClient } from '@/apollo';
 import { VOTES_QUERY, PROPOSAL_QUERY } from '@/helpers/queries';
 import { cloneDeep } from 'lodash';
