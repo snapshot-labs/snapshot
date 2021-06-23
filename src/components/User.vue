@@ -1,35 +1,62 @@
 <template>
   <span>
-    <a @click="modalOpen = true" class="no-wrap">
-      <UiAvatar
-        :imgsrc="_ipfsUrl(profile?.image)"
-        :address="address"
-        size="16"
-        class="mr-1"
-      />
-      {{ name }}
-      <Badges :address="address" :members="space?.members" />
-    </a>
-    <teleport to="#modal">
-      <ModalUser
-        :profile="profile"
-        :open="modalOpen"
-        @close="modalOpen = false"
-        :space="space"
-        :address="address"
-      />
-    </teleport>
+    <UiPopover :options="{ offset: [0, 12], placement: 'bottom-start' }">
+      <template v-slot:item>
+        <a class="no-wrap">
+          <UiAvatar
+            :imgsrc="_ipfsUrl(profile?.image)"
+            :address="address"
+            size="16"
+            class="mr-1"
+          />
+          {{ name }}
+          <Badges :address="address" :members="space?.members" />
+        </a>
+      </template>
+      <template v-slot:content>
+        <div class="m-4 mb-0 text-center">
+          <UiAvatar
+            :imgsrc="_ipfsUrl(profile?.image)"
+            :address="address"
+            size="64"
+            class="mb-4"
+          />
+          <h3 v-if="profile?.name" class="mt-3" v-text="profile.name" />
+          <h3 v-else-if="profile?.ens" v-text="profile.ens" class="mt-3" />
+          <h3 v-else v-text="_shorten(address)" class="mt-3" />
+        </div>
+        <div class="m-4">
+          <a
+            :href="_explorer(space ? space.network : '1', address)"
+            target="_blank"
+            class="mb-2 d-block"
+          >
+            <UiButton class="button-outline width-full">
+              {{ $t('seeInExplorer') }}
+              <Icon name="external-link" class="ml-1" />
+            </UiButton>
+          </a>
+          <a
+            v-if="profile?.name || profile?.image"
+            :href="`https://3box.io/${address}`"
+            target="_blank"
+            class="mb-2 d-block"
+          >
+            <UiButton class="button-outline width-full">
+              {{ $t('view3box') }}
+              <Icon name="external-link" class="ml-1" />
+            </UiButton>
+          </a>
+        </div>
+      </template>
+    </UiPopover>
+    <teleport to="#modal"> </teleport>
   </span>
 </template>
 
 <script>
 export default {
   props: ['address', 'space', 'profile'],
-  data() {
-    return {
-      modalOpen: false
-    };
-  },
   computed: {
     name() {
       if (
