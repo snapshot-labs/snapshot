@@ -119,13 +119,3 @@ export async function getPower(space, address, proposal) {
     return e;
   }
 }
-
-export async function getProposals(space) {
-  try {
-    const proposals: any = await client.getProposals(space.key);
-    return formatProposals(proposals);
-  } catch (e) {
-    console.log(e);
-    return e;
-  }
-}
