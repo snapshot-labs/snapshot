@@ -8,7 +8,7 @@
         <span
           class="mr-1 tooltipped"
           :class="[
-            isSmallScreen()
+            isSmallScreen
               ? 'tooltipped-ne tooltipped-align-left-2'
               : 'tooltipped-n'
           ]"

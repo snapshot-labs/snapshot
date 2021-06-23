@@ -5,18 +5,24 @@
         class="d-block width-full mb-2"
         :class="selectedChoices[i + 1] > 0 && 'button--active'"
       >
-        <span
-          class="float-left tooltipped tooltipped-multiline"
+        <div
+          class="col-sm-8 col-7 float-left text-left pr-3 tooltipped tooltipped-multiline"
           :class="[
-            isSmallScreen()
+            isSmallScreen
               ? 'tooltipped-ne tooltipped-align-left-2'
               : 'tooltipped-n'
           ]"
           :aria-label="choice"
-          >{{ _shorten(choice, shortenBy) }}</span
         >
-        <div class="d-flex flex-items-center float-right">
+          <span class="truncated width-full">
+            {{ choice }}
+          </span>
+        </div>
+        <div
+          class="col-4 d-flex flex-items-center flex-justify-end float-right"
+        >
           <button
+            v-if="!isSmallScreen"
             :disabled="!selectedChoices[i + 1]"
             class="btn-choice"
             @click="removeVote(i + 1)"
@@ -24,13 +30,20 @@
             -
           </button>
           <input
-            class="input mx-1 text-center"
-            style="width: 40px; height: 44px; margin-bottom: -1px"
+            class="input text-center"
+            :class="{ 'btn-choice': isSmallScreen }"
+            style="width: 40px; height: 44px"
             placeholder="0"
             type="number"
             v-model.number="selectedChoices[i + 1]"
           />
-          <button class="btn-choice" @click="addVote(i + 1)">+</button>
+          <button
+            v-if="!isSmallScreen"
+            class="btn-choice"
+            @click="addVote(i + 1)"
+          >
+            +
+          </button>
           <div style="min-width: 52px; margin-right: -5px" class="text-right">
             {{ percentage(i) }}%
           </div>
@@ -43,7 +56,7 @@
 </template>
 
 <script>
-import { ref, watch, computed } from 'vue';
+import { ref, watch } from 'vue';
 import { percentageOfTotal } from '@/helpers/voting/quadratic';
 import { useMediaQuery } from '@/composables/useMediaQuery';
 export default {
@@ -57,11 +70,7 @@ export default {
   setup(_, { emit }) {
     const selectedChoices = ref({});
 
-    const { isXXSmallScreen, isXSmallScreen, isSmallScreen } = useMediaQuery();
-
-    const shortenBy = computed(() =>
-      isXXSmallScreen() ? 2 : isXSmallScreen() ? 6 : isSmallScreen() ? 18 : 32
-    );
+    const { isSmallScreen } = useMediaQuery();
 
     function percentage(i) {
       return (
@@ -101,7 +110,6 @@ export default {
       removeVote,
       selectedChoices,
       percentage,
-      shortenBy,
       isSmallScreen
     };
   }
@@ -128,5 +136,11 @@ export default {
     border-left: 1px solid var(--border-color);
     border-right: 1px solid var(--border-color);
   }
+}
+.truncated {
+  display: block;
+  white-space: nowrap; /* forces text to single line */
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 </style>
