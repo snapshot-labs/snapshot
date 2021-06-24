@@ -12,7 +12,7 @@
         @selectChoice="emitChoice"
       />
       <VotingQuadratic
-        v-if="proposal.type === 'quadratic'"
+        v-if="proposal.type === 'quadratic' || proposal.type === 'weighted'"
         :proposal="proposal"
         @selectChoice="emitChoice"
       />

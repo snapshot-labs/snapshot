@@ -24,7 +24,13 @@ export default {
   },
   data() {
     return {
-      types: ['single-choice', 'approval', 'quadratic', 'ranked-choice']
+      types: [
+        'single-choice',
+        'approval',
+        'quadratic',
+        'ranked-choice',
+        'weighted'
+      ]
     };
   },
   methods: {
