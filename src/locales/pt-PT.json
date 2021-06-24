@@ -214,10 +214,12 @@
     "single-choice": "Single choice voting",
     "approval": "Approval voting",
     "quadratic": "Quadratic voting",
+    "ranked-choice": "Ranked choice voting",
     "description": {
       "single-choice": "Cada eleitor pode selecionar apenas uma opção.",
       "approval": "Cada eleitor pode selecionar qualquer número de opções.",
-      "quadratic": "Each voter may spread voting power across any number of choices. Results are calculated quaratically."
+      "quadratic": "Each voter may spread voting power across any number of choices. Results are calculated quaratically.",
+      "ranked-choice": "Each voter may select and rank any number of choices. Results are calculted by instant-runoff counting method."
     }
   },
   "safeSnap": {
