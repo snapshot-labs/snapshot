@@ -34,7 +34,7 @@ export default class ApprovalVoting {
 
     return results
       .map((res, i) => percentageOfTotal(i, results, results))
-      .map(p => (this.sumBalanceAllVotes() / 100) * p);
+      .map(p => (this.sumOfResultsBalance() / 100) * p);
   }
 
   resultsByStrategyScore() {
@@ -53,11 +53,11 @@ export default class ApprovalVoting {
         .map((strategy, sI) => [
           percentageOfTotal(0, results[i][sI], results.flat(2))
         ])
-        .map(p => [(this.sumBalanceAllVotes() / 100) * p])
+        .map(p => [(this.sumOfResultsBalance() / 100) * p])
     );
   }
 
-  sumBalanceAllVotes() {
+  sumOfResultsBalance() {
     return this.votes.reduce((a, b: any) => a + b.balance, 0);
   }
 

@@ -16,6 +16,11 @@
         :proposal="proposal"
         @selectChoice="emitChoice"
       />
+      <VotingRankedChoice
+        v-if="proposal.type === 'ranked-choice'"
+        :proposal="proposal"
+        @selectChoice="emitChoice"
+      />
     </div>
     <UiButton
       :disabled="app.authLoading || selectedChoices < 1"
