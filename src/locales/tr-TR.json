@@ -214,10 +214,12 @@
     "single-choice": "Tek seçenekli oylama",
     "approval": "Oy onayı",
     "quadratic": "Quadratic voting",
+    "ranked-choice": "Ranked choice voting",
     "description": {
       "single-choice": "Her seçmen sadece bir seçim yapabilir.",
       "approval": "Her seçmen istediği sayıda seçim yapabilir.",
-      "quadratic": "Each voter may spread voting power across any number of choices. Results are calculated quaratically."
+      "quadratic": "Each voter may spread voting power across any number of choices. Results are calculated quaratically.",
+      "ranked-choice": "Each voter may select and rank any number of choices. Results are calculted by instant-runoff counting method."
     }
   },
   "safeSnap": {
