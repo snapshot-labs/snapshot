@@ -3,7 +3,6 @@
     <div :class="{ 'mb-5': selectedChoices.length > 0 }">
       <draggable
         v-model="selectedChoices"
-        tag="transition-group"
         :component-data="{ name: 'list' }"
         item-key="id"
         @change="updateChoices"
@@ -16,7 +15,7 @@
               <div class="position-absolute left-4">
                 ({{ getNumberWithOrdinal(index + 1) }})
               </div>
-              <div style="width: 60%" class="ml-3">
+              <div style="width: 60%">
                 <span class="truncated w-full">
                   {{ proposal.choices[element - 1] }}
                 </span>
