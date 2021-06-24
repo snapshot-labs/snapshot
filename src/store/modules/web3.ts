@@ -73,6 +73,7 @@ const actions = {
         auth.provider.value.on('accountsChanged', async accounts => {
           if (accounts.length !== 0) {
             commit('WEB3_SET', { account: accounts[0] });
+            await dispatch('login');
             await dispatch('loadProvider');
           }
         });
