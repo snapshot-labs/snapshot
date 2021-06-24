@@ -215,11 +215,13 @@
     "approval": "批准表决",
     "quadratic": "Quadratic voting",
     "ranked-choice": "Ranked choice voting",
+    "weighted": "Weighted voting",
     "description": {
       "single-choice": "每个选民只能选择一个选项。",
       "approval": "每个选民可选择多个选项。",
       "quadratic": "Each voter may spread voting power across any number of choices. Results are calculated quaratically.",
-      "ranked-choice": "Each voter may select and rank any number of choices. Results are calculted by instant-runoff counting method."
+      "ranked-choice": "Each voter may select and rank any number of choices. Results are calculted by instant-runoff counting method.",
+      "weighted": "Each voter may spread voting power across any number of choices."
     }
   },
   "safeSnap": {
