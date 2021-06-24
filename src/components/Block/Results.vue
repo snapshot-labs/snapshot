@@ -6,10 +6,14 @@
     <div v-for="choice in choices" :key="choice.i">
       <div class="text-white mb-1">
         <span
-          :class="choice.choice.length > 12 && 'tooltipped tooltipped-n'"
+          class="mr-1 tooltipped"
+          :class="[
+            isSmallScreen
+              ? 'tooltipped-ne tooltipped-align-left-2'
+              : 'tooltipped-n'
+          ]"
           :aria-label="choice.choice.length > 12 && choice.choice"
           v-text="_shorten(choice.choice, 'choice')"
-          class="mr-1"
         />
         <span
           class="mr-1 tooltipped tooltipped-multiline tooltipped-n"
@@ -26,9 +30,9 @@
           class="float-right"
           v-text="
             _n(
-              !results.sumBalanceAllVotes
+              !results.sumOfResultsBalance
                 ? 0
-                : ((100 / results.sumBalanceAllVotes) *
+                : ((100 / results.sumOfResultsBalance) *
                     results.resultsByVoteBalance[choice.i]) /
                     1e2,
               '0.[00]%'
@@ -38,7 +42,7 @@
       </div>
       <UiProgress
         :value="results.resultsByStrategyScore[choice.i]"
-        :max="results.sumBalanceAllVotes"
+        :max="results.sumOfResultsBalance"
         :titles="titles"
         class="mb-3"
       />
@@ -54,6 +58,7 @@
 <script>
 import * as jsonexport from 'jsonexport/dist';
 import pkg from '@/../package.json';
+import { useMediaQuery } from '@/composables/useMediaQuery';
 
 export default {
   props: [
@@ -65,6 +70,10 @@ export default {
     'loaded',
     'strategies'
   ],
+  setup() {
+    const { isSmallScreen } = useMediaQuery();
+    return { isSmallScreen };
+  },
   computed: {
     ts() {
       return (Date.now() / 1e3).toFixed();
