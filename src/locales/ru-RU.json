@@ -215,11 +215,13 @@
     "approval": "Approval voting",
     "quadratic": "Quadratic voting",
     "ranked-choice": "Ranked choice voting",
+    "weighted": "Weighted voting",
     "description": {
       "single-choice": "Each voter may select only one choice.",
       "approval": "Each voter may select any number of choices.",
       "quadratic": "Each voter may spread voting power across any number of choices. Results are calculated quaratically.",
-      "ranked-choice": "Each voter may select and rank any number of choices. Results are calculted by instant-runoff counting method."
+      "ranked-choice": "Each voter may select and rank any number of choices. Results are calculted by instant-runoff counting method.",
+      "weighted": "Each voter may spread voting power across any number of choices."
     }
   },
   "safeSnap": {
