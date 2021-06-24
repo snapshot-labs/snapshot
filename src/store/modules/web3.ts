@@ -74,7 +74,6 @@ const actions = {
           if (accounts.length !== 0) {
             commit('WEB3_SET', { account: accounts[0] });
             await dispatch('login');
-            await dispatch('loadProvider');
           }
         });
         // auth.provider.on('disconnect', async () => {});
