@@ -33,7 +33,7 @@ export default class SingleChoiceVoting {
   }
 
   // Returns the total amount of the results
-  sumBalanceAllVotes() {
+  sumOfResultsBalance() {
     return this.votes.reduce((a, b: any) => a + b.balance, 0);
   }
 

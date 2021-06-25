@@ -4,8 +4,8 @@ export function percentageOfTotal(i, values, total) {
   return isNaN(percent) ? 0 : percent;
 }
 
-export function quadraticMath(i, choice, balance) {
-  return Math.sqrt(
+export function weightedPower(i, choice, balance) {
+  return (
     (percentageOfTotal(i + 1, choice, Object.values(choice)) / 100) * balance
   );
 }
@@ -24,13 +24,11 @@ export default class ApprovalVoting {
   }
 
   resultsByVoteBalance() {
-    const results = this.proposal.choices
-      .map((choice, i) =>
-        this.votes
-          .map(vote => quadraticMath(i, vote.choice, vote.balance))
-          .reduce((a, b: any) => a + b, 0)
-      )
-      .map(sqrt => sqrt * sqrt);
+    const results = this.proposal.choices.map((choice, i) =>
+      this.votes
+        .map(vote => weightedPower(i, vote.choice, vote.balance))
+        .reduce((a, b: any) => a + b, 0)
+    );
 
     return results
       .map((res, i) => percentageOfTotal(i, results, results))
@@ -42,11 +40,11 @@ export default class ApprovalVoting {
       .map((choice, i) =>
         this.strategies.map((strategy, sI) =>
           this.votes
-            .map(vote => quadraticMath(i, vote.choice, vote.scores[sI]))
+            .map(vote => weightedPower(i, vote.choice, vote.scores[sI]))
             .reduce((a, b: any) => a + b, 0)
         )
       )
-      .map(arr => arr.map(sqrt => [sqrt * sqrt]));
+      .map(arr => arr.map(pwr => [pwr]));
 
     return results.map((res, i) =>
       this.strategies
