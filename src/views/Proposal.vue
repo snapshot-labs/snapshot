@@ -300,7 +300,7 @@ export default {
         if (
           await store.dispatch('send', {
             space: space.value.key,
-            type: 'delete-proposal',
+            type: 'deleteProposal',
             payload: {
               proposal: id
             }

@@ -55,17 +55,16 @@ const actions = {
     const auth = getInstance();
     commit('SEND_REQUEST');
     try {
-      const result = await client.broadcast(
+      const result = await client[type](
         auth.web3,
         rootState.web3.account,
         space,
-        type,
         payload
       );
       commit('SEND_SUCCESS');
       dispatch('notify', [
         'green',
-        type === 'delete-proposal'
+        type === 'deleteProposal'
           ? i18n.global.t('notify.proposalDeleted')
           : i18n.global.t('notify.yourIsIn', [type])
       ]);
