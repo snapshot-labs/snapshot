@@ -1,7 +1,10 @@
 <template>
   <UiSelect v-model="collectableAddress" :disabled="config.preview">
     <template v-slot:label>asset</template>
-    <template v-slot:image v-if="selectedCollectable && selectedCollectable.logoUri">
+    <template
+      v-slot:image
+      v-if="selectedCollectable && selectedCollectable.logoUri"
+    >
       <img :src="selectedCollectable.logoUri" alt="" class="tokenImage" />
     </template>
     <option v-if="!collectables.length" disabled selected>
