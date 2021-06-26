@@ -40,8 +40,8 @@ export async function getProposal(id) {
 
 export async function getResults(space, proposal, votes) {
   try {
-    const provider = getProvider(space.network);
     const voters = votes.map(vote => vote.voter);
+    const provider = getProvider(space.network);
     const strategies = proposal.strategies ?? space.strategies;
     /* Get scores */
     if (proposal.state !== 'pending') {
