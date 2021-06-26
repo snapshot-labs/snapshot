@@ -2,23 +2,24 @@ import { getScores } from '@snapshot-labs/snapshot.js/src/utils';
 import { getProfiles } from '@/helpers/profile';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import { apolloClient } from '@/apollo';
-import { VOTES_QUERY, PROPOSAL_QUERY } from '@/helpers/queries';
+import { PROPOSAL_VOTES_QUERY } from '@/helpers/queries';
 import { cloneDeep } from 'lodash';
 import voting from '@/helpers/voting';
 
-export async function getProposal(space, id) {
+export async function getProposal(id) {
   try {
     console.time('getProposal.data');
     const response = await apolloClient.query({
-      query: PROPOSAL_QUERY,
+      query: PROPOSAL_VOTES_QUERY,
       variables: {
         id
       }
     });
-
     console.timeEnd('getProposal.data');
-    const proposalQueryResponse = cloneDeep(response);
-    const proposal = proposalQueryResponse.data.proposal;
+
+    const proposalResClone = cloneDeep(response);
+    const proposal = proposalResClone.data.proposal;
+    const votes = proposalResClone.data.votes;
 
     if (proposal?.plugins?.daoModule) {
       // The Dao Module has been renamed to SafeSnap
@@ -27,31 +28,23 @@ export async function getProposal(space, id) {
       delete proposal.plugins.daoModule;
     }
 
-    return proposal;
+    return {
+      proposal,
+      votes
+    };
   } catch (e) {
     console.log(e);
     return e;
   }
 }
 
-export async function getResults(space, proposal, id) {
+export async function getResults(space, proposal, votes) {
   try {
-    let votes: any = [];
     const provider = getProvider(space.network);
+    const voters = votes.map(vote => vote.voter);
     const strategies = proposal.strategies ?? space.strategies;
     /* Get scores */
     if (proposal.state !== 'pending') {
-      console.time('getProposal.votes');
-      const response = await apolloClient.query({
-        query: VOTES_QUERY,
-        variables: {
-          id
-        }
-      });
-      votes = response.data.votes;
-      console.timeEnd('getProposal.votes');
-      const voters = votes.map(vote => vote.voter);
-
       console.time('getProposal.scores');
       const [scores, profiles]: any = await Promise.all([
         getScores(

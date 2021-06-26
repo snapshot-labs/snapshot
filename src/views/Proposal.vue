@@ -269,9 +269,14 @@ export default {
     }
 
     async function loadProposal() {
-      proposal.value = await getProposal(space.value, id);
+      const proposalObj = await getProposal(id);
+      proposal.value = proposalObj.proposal;
       loaded.value = true;
-      const resultsObj = await getResults(space.value, proposal.value, id);
+      const resultsObj = await getResults(
+        space.value,
+        proposal.value,
+        proposalObj.votes
+      );
       results.value = resultsObj.results;
       votes.value = resultsObj.votes;
       loadedResults.value = true;
