@@ -25,7 +25,7 @@ function irv(ballots, rounds) {
     ([n, m]: any, [v, c]: any) => (c < m ? [v, c] : [n, m]),
     ['?', Infinity]
   );
-  /* eslint-disable @typescript-eslint/no-unused-vars */
+  /* eslint-enable @typescript-eslint/no-unused-vars */
 
   const sortedByHighest = votes.sort((a: any, b: any) => b[1][0] - a[1][0]);
 
