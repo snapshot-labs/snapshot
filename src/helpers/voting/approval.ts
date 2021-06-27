@@ -29,7 +29,7 @@ export default class ApprovalVoting {
     );
   }
 
-  sumBalanceAllVotes() {
+  sumOfResultsBalance() {
     return this.votes.reduce((a, b: any) => a + b.balance, 0);
   }
 
