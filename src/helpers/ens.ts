@@ -87,7 +87,7 @@ export async function getSpaceUriFromTextRecord(id) {
       type: 'function'
     }
   ];
-  
+
   const REGISTRAR_ADDRESS = '0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e';
   let uri: any = false;
   try {
@@ -110,10 +110,8 @@ export async function getSpaceUriFromTextRecord(id) {
 }
 
 export async function getSpaceUri(id) {
-  console.log(id);
   let uri = await getSpaceUriFromTextRecord(id);
   if (!uri) uri = await getSpaceUriFromContentHash(id);
-  console.log(uri);
   return uri;
 }
 
