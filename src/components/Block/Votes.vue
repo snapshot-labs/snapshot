@@ -66,51 +66,71 @@
 </template>
 
 <script>
+import { ref, computed } from 'vue';
+import { useStore } from 'vuex';
 import { getChoiceString } from '@/helpers/utils';
 
 export default {
-  props: ['space', 'proposal', 'votes', 'loaded', 'strategies'],
-  data() {
-    return {
-      showAllVotes: false,
-      authorIpfsHash: '',
-      modalReceiptOpen: false
-    };
+  props: {
+    space: Object,
+    proposal: Object,
+    votes: Object,
+    loaded: Boolean,
+    strategies: Object
   },
-  computed: {
-    visibleVotes() {
-      return this.showAllVotes
-        ? this.sortVotesUserFirst()
-        : this.sortVotesUserFirst().slice(0, 10);
-    },
-    titles() {
-      return this.strategies.map(strategy => strategy.params.symbol);
+  setup(props) {
+    const store = useStore();
+
+    const showAllVotes = ref(false);
+    const authorIpfsHash = ref('');
+    const modalReceiptOpen = ref(false);
+
+    const web3Account = computed(() => store.state.web3.account);
+
+    const visibleVotes = computed(() =>
+      showAllVotes.value
+        ? sortVotesUserFirst()
+        : sortVotesUserFirst().slice(0, 10)
+    );
+    const titles = computed(() =>
+      props.strategies.map(strategy => strategy.params.symbol)
+    );
+
+    function isZero() {
+      if (!props.loaded) return true;
+      if (props.votes.length > 0) return true;
     }
-  },
-  methods: {
-    isZero() {
-      if (!this.loaded) return true;
-      if (this.votes.length > 0) return true;
-    },
-    openReceiptModal(vote) {
-      this.authorIpfsHash = vote.id;
+
+    function openReceiptModal(vote) {
+      authorIpfsHash.value = vote.id;
       // this.relayerIpfsHash = vote.relayerIpfsHash;
-      this.modalReceiptOpen = true;
-    },
-    sortVotesUserFirst() {
-      const votes = this.votes;
-      if (votes.map(vote => vote.voter).includes(this.web3.account)) {
+      modalReceiptOpen.value = true;
+    }
+
+    function sortVotesUserFirst() {
+      const votes = props.votes;
+      if (votes.map(vote => vote.voter).includes(web3Account.value)) {
         votes.unshift(
           votes.splice(
-            votes.findIndex(item => item.voter === this.web3.account),
+            votes.findIndex(item => item.voter === web3Account.value),
             1
           )[0]
         );
         return votes;
       }
-      return this.votes;
-    },
-    format: getChoiceString
+      return votes;
+    }
+
+    return {
+      showAllVotes,
+      authorIpfsHash,
+      modalReceiptOpen,
+      isZero,
+      openReceiptModal,
+      visibleVotes,
+      titles,
+      format: getChoiceString
+    };
   }
 };
 </script>
