@@ -1,5 +1,8 @@
 <template>
-  <Block title="Quorum">
+  <Block
+    v-if="quorum > 0 && !isZWAP"
+    title="Quorum"
+  >
     <div>
       <div class="text-white mb-1">
         <span class="mr-1 tooltipped tooltipped-n">
@@ -28,6 +31,9 @@ export default {
     };
   },
   computed: {
+    isZWAP() {
+      return this.proposal.msg.token === 'zil1p5suryq6q647usxczale29cu3336hhp376c627'
+    },
     totalSupply() {
       return this.proposal.totalSupply;
     },
@@ -35,6 +41,10 @@ export default {
       return this.payload.quorum;
     },
     percents() {
+      if (this.quorum <= 0) {
+        return 0;
+      }
+
       const { decimals } = this.space.strategies[0].params;
       const _amounts = Big(this.results.totalVotesBalances);
       const _totalSupply = Big(this.totalSupply)

@@ -112,7 +112,7 @@
             <UiButton v-show="showAdvaced" class="width-full mb-2">
               <input
                 v-model="form.quorum"
-                min="1"
+                min="0"
                 max="100"
                 type="number"
                 class="input width-full text-center"
@@ -193,7 +193,6 @@ export default {
         this.form.name &&
         this.form.body &&
         this.form.start &&
-        Number(this.form.quorum) > 0 &&
         Number(this.form.quorum) <= 100 &&
         // this.form.start >= ts &&
         this.form.end &&
