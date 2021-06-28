@@ -79,6 +79,7 @@
 <script>
 import { mapActions } from 'vuex';
 import { getChoiceString } from '@/helpers/utils';
+import client from '@/helpers/clientERC712';
 
 export default {
   props: [
@@ -106,15 +107,18 @@ export default {
     ...mapActions(['send']),
     async handleSubmit() {
       this.loading = true;
-      await this.send({
-        space: this.space.key,
-        type: 'vote',
-        payload: {
+      try {
+        const result = await client.vote(this.$auth.web3, this.web3.account, {
+          space: this.space.key,
+          timestamp: ~~(Date.now() / 1e3),
           proposal: this.proposal.id,
           choice: this.selectedChoices,
-          metadata: {}
-        }
-      });
+          metadata: JSON.stringify({})
+        });
+        console.log('Ok!', result);
+      } catch (e) {
+        if (!e.code || e.code !== 4001) console.log('Oops!', e);
+      }
       this.$emit('reload');
       this.$emit('close');
       this.loading = false;

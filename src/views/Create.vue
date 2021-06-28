@@ -177,6 +177,7 @@ import { useModal } from '@/composables/useModal';
 import { useTerms } from '@/composables/useTerms';
 import { useQuery, useResult } from '@vue/apollo-composable';
 import { PROPOSAL_QUERY } from '@/helpers/queries';
+import client from '@/helpers/clientERC712';
 
 export default {
   setup() {
@@ -285,9 +286,27 @@ export default {
       loading.value = true;
       form.value.snapshot = parseInt(form.value.snapshot);
       form.value.choices = choices.value.map(choice => choice.text);
-      form.value.metadata.network = space.value.network;
-      form.value.metadata.strategies = space.value.strategies;
+      let plugins = {};
+      if (Object.keys(form.value.metadata?.plugins).length !== 0)
+        plugins = form.value.metadata.plugins;
+
       try {
+        const result = await client.proposal(auth.web3, web3Account.value, {
+          space: space.value.key,
+          timestamp: ~~(Date.now() / 1e3),
+          type: form.value.type,
+          title: form.value.name,
+          body: form.value.body,
+          choices: form.value.choices,
+          start: form.value.start,
+          end: form.value.end,
+          snapshot: form.value.snapshot,
+          network: space.value.network,
+          strategies: JSON.stringify(space.value.strategies),
+          plugins: JSON.stringify(plugins),
+          metadata: JSON.stringify({})
+        });
+        /*
         const { ipfsHash } = await store.dispatch('send', {
           space: space.value.key,
           type: 'proposal',
@@ -300,8 +319,10 @@ export default {
             id: ipfsHash
           }
         });
+        */
+        console.log('Ok!', result);
       } catch (e) {
-        console.error(e);
+        if (!e.code || e.code !== 4001) console.log('Oops!', e);
         loading.value = false;
       }
     }
