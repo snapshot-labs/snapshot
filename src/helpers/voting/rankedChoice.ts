@@ -15,11 +15,11 @@ function irv(ballots, rounds) {
   );
 
   const votesWithoutScore = votes.map((vote: any) => [vote[0], vote[1][0]]);
-  const [, topCount] = votesWithoutScore.reduce(
+  const [topCand, topCount] = votesWithoutScore.reduce(
     ([n, m]: any[], [v, c]: any[]) => (c > m ? [v, c] : [n, m]),
     ['?', -Infinity]
   );
-  const [bottomCand] = votesWithoutScore.reduce(
+  const [bottomCand, bottomCount] = votesWithoutScore.reduce(
     ([n, m]: any, [v, c]: any) => (c < m ? [v, c] : [n, m]),
     ['?', Infinity]
   );
@@ -94,7 +94,7 @@ export default class ApprovalVoting {
 
   getChoiceString() {
     return this.selected
-      .map(choice => {
+      .map((choice, i) => {
         if (this.proposal.choices[choice - 1])
           return this.proposal.choices[choice - 1];
       })
