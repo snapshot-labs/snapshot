@@ -35,10 +35,12 @@
 <script>
 export default {
   props: ['plugin'],
-  methods: {
-    getLogoUrl(key) {
+  setup() {
+    function getLogoUrl(key) {
       return `https://raw.githubusercontent.com/snapshot-labs/snapshot.js/master/src/plugins/${key}/logo.png`;
     }
+
+    return { getLogoUrl };
   }
 };
 </script>
