@@ -79,7 +79,7 @@
 <script>
 import { mapActions } from 'vuex';
 import { getChoiceString } from '@/helpers/utils';
-import client from '@/helpers/clientERC712';
+import client from '@/helpers/clientEIP712';
 
 export default {
   props: [

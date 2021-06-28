@@ -177,7 +177,7 @@ import { useModal } from '@/composables/useModal';
 import { useTerms } from '@/composables/useTerms';
 import { useQuery, useResult } from '@vue/apollo-composable';
 import { PROPOSAL_QUERY } from '@/helpers/queries';
-import client from '@/helpers/clientERC712';
+import client from '@/helpers/clientEIP712';
 
 export default {
   setup() {
