@@ -15,6 +15,8 @@ function irv(ballots, rounds) {
   );
 
   const votesWithoutScore = votes.map((vote: any) => [vote[0], vote[1][0]]);
+
+  /* eslint-disable @typescript-eslint/no-unused-vars */
   const [topCand, topCount] = votesWithoutScore.reduce(
     ([n, m]: any[], [v, c]: any[]) => (c > m ? [v, c] : [n, m]),
     ['?', -Infinity]
@@ -23,6 +25,7 @@ function irv(ballots, rounds) {
     ([n, m]: any, [v, c]: any) => (c < m ? [v, c] : [n, m]),
     ['?', Infinity]
   );
+  /* eslint-enable @typescript-eslint/no-unused-vars */
 
   const sortedByHighest = votes.sort((a: any, b: any) => b[1][0] - a[1][0]);
 
@@ -94,7 +97,7 @@ export default class ApprovalVoting {
 
   getChoiceString() {
     return this.selected
-      .map((choice, i) => {
+      .map(choice => {
         if (this.proposal.choices[choice - 1])
           return this.proposal.choices[choice - 1];
       })

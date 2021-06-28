@@ -2,30 +2,24 @@ import { getScores } from '@snapshot-labs/snapshot.js/src/utils';
 import { getProfiles } from '@/helpers/profile';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import { apolloClient } from '@/apollo';
-import { VOTES_QUERY, PROPOSAL_QUERY } from '@/helpers/queries';
+import { PROPOSAL_VOTES_QUERY } from '@/helpers/queries';
 import { cloneDeep } from 'lodash';
 import voting from '@/helpers/voting';
 
-export async function getProposal(space, id) {
+export async function getProposal(id) {
   try {
     console.time('getProposal.data');
-    const response = await Promise.all([
-      apolloClient.query({
-        query: PROPOSAL_QUERY,
-        variables: {
-          id
-        }
-      }),
-      apolloClient.query({
-        query: VOTES_QUERY,
-        variables: {
-          id
-        }
-      })
-    ]);
+    const response = await apolloClient.query({
+      query: PROPOSAL_VOTES_QUERY,
+      variables: {
+        id
+      }
+    });
     console.timeEnd('getProposal.data');
-    const [proposalQueryResponse, votes] = cloneDeep(response);
-    const proposal = proposalQueryResponse.data.proposal;
+
+    const proposalResClone = cloneDeep(response);
+    const proposal = proposalResClone.data.proposal;
+    const votes = proposalResClone.data.votes;
 
     if (proposal?.plugins?.daoModule) {
       // The Dao Module has been renamed to SafeSnap
@@ -36,7 +30,7 @@ export async function getProposal(space, id) {
 
     return {
       proposal,
-      votes: votes.data.votes
+      votes
     };
   } catch (e) {
     console.log(e);
@@ -46,38 +40,40 @@ export async function getProposal(space, id) {
 
 export async function getResults(space, proposal, votes) {
   try {
-    const provider = getProvider(space.network);
     const voters = votes.map(vote => vote.voter);
+    const provider = getProvider(space.network);
     const strategies = proposal.strategies ?? space.strategies;
     /* Get scores */
-    console.time('getProposal.scores');
-    const [scores, profiles]: any = await Promise.all([
-      getScores(
-        space.key,
-        strategies,
-        space.network,
-        provider,
-        voters,
-        parseInt(proposal.snapshot)
-      ),
-      getProfiles([proposal.author, ...voters])
-    ]);
-    console.timeEnd('getProposal.scores');
-    console.log('Scores', scores);
+    if (proposal.state !== 'pending') {
+      console.time('getProposal.scores');
+      const [scores, profiles]: any = await Promise.all([
+        getScores(
+          space.key,
+          strategies,
+          space.network,
+          provider,
+          voters,
+          parseInt(proposal.snapshot)
+        ),
+        getProfiles([proposal.author, ...voters])
+      ]);
+      console.timeEnd('getProposal.scores');
+      console.log('Scores', scores);
 
-    proposal.profile = profiles[proposal.author];
-    votes.map(vote => (vote.profile = profiles[vote.voter]));
+      proposal.profile = profiles[proposal.author];
+      votes.map(vote => (vote.profile = profiles[vote.voter]));
 
-    votes = votes
-      .map((vote: any) => {
-        vote.scores = strategies.map(
-          (strategy, i) => scores[i][vote.voter] || 0
-        );
-        vote.balance = vote.scores.reduce((a, b: any) => a + b, 0);
-        return vote;
-      })
-      .sort((a, b) => b.balance - a.balance)
-      .filter(vote => vote.balance > 0);
+      votes = votes
+        .map((vote: any) => {
+          vote.scores = strategies.map(
+            (strategy, i) => scores[i][vote.voter] || 0
+          );
+          vote.balance = vote.scores.reduce((a, b: any) => a + b, 0);
+          return vote;
+        })
+        .sort((a, b) => b.balance - a.balance)
+        .filter(vote => vote.balance > 0);
+    }
 
     /* Get results */
     const votingClass = new voting[proposal.type](proposal, votes, strategies);

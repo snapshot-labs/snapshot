@@ -74,3 +74,37 @@ export const PROPOSALS_QUERY = gql`
     }
   }
 `;
+
+export const PROPOSAL_VOTES_QUERY = gql`
+  query($id: String!) {
+    proposal(id: $id) {
+      id
+      title
+      body
+      choices
+      start
+      end
+      snapshot
+      state
+      author
+      created
+      plugins
+      network
+      type
+      strategies {
+        name
+        params
+      }
+      space {
+        id
+        name
+      }
+    }
+    votes(first: 10000, where: { proposal: $id }) {
+      id
+      voter
+      created
+      choice
+    }
+  }
+`;
