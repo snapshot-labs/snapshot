@@ -232,8 +232,8 @@ export default {
     const loaded = ref(false);
     const loadedResults = ref(false);
     const proposal = ref({});
-    const votes = ref({});
-    const results = ref([]);
+    const votes = ref([]);
+    const results = ref({});
     const totalScore = ref(0);
     const scores = ref([]);
     const dropdownLoading = ref(false);
@@ -269,17 +269,16 @@ export default {
     }
 
     async function loadProposal() {
-      const proposalObj = await getProposal(space.value, id);
+      const proposalObj = await getProposal(id);
       proposal.value = proposalObj.proposal;
       loaded.value = true;
       const resultsObj = await getResults(
         space.value,
-        proposalObj.proposal,
-        proposalObj.votes,
-        proposalObj.blockNumber
+        proposal.value,
+        proposalObj.votes
       );
-      votes.value = resultsObj.votes;
       results.value = resultsObj.results;
+      votes.value = resultsObj.votes;
       loadedResults.value = true;
     }
 
