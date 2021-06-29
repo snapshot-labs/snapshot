@@ -182,44 +182,44 @@
     "defaultTab": "डीफॉल्ट टॅब",
     "proposalThreshold": "प्रोपोसलं थ्रेशोल्ड",
     "allowOnlyMembers": "केवळ सदस्यांना प्रोपोसलं सबमिट करण्याची परवानगी द्या",
-    "editPlugin": "Edit plugin",
-    "addPlugin": "Add plugin",
-    "pluginParameters": "Plugin parameters"
+    "editPlugin": "प्लगइन एडिट करा",
+    "addPlugin": "प्लगइन जोडा",
+    "pluginParameters": "प्लगइन पॅरामीटर्स"
   },
   "setup": {
-    "example": "e.g. yam.eth",
-    "useExistingEns": "Use an existing ENS name to create your space with.",
-    "createASpace": "Create a space"
+    "example": "उदा. yam.eth",
+    "useExistingEns": "आपली जागा तयार करण्यासाठी विद्यमान ईएनएस नाव वापरा.",
+    "createASpace": "जागा बनवा"
   },
   "notify": {
-    "youDidIt": "You did it!",
-    "copied": "Copied!",
-    "proposalDeleted": "Proposal deleted",
-    "yourIsIn": "Your {0} is in!",
-    "somethingWentWrong": "Oops, something went wrong!"
+    "youDidIt": "आपण पूर्ण केले!",
+    "copied": "कॉपी केले!",
+    "proposalDeleted": "प्रोपोसलं हटले",
+    "yourIsIn": "आपले {0} येथे आहे!",
+    "somethingWentWrong": "उप्स, काहीतरी चुकले!"
   },
   "explore": {
-    "createStrategy": "Create strategy",
-    "createSkin": "Create skin",
-    "addNetwork": "Add network",
-    "createPlugin": "Create plugin",
-    "strategies": "strategie(s)",
-    "skins": "skin(s)",
-    "networks": "network(s)",
-    "plugins": "plugin(s)",
-    "results": "result(s)"
+    "createStrategy": "स्ट्रॅटेजि बनवा",
+    "createSkin": "स्किन बनवा",
+    "addNetwork": "नेटवर्क जोडा",
+    "createPlugin": "प्लगइन बनवा",
+    "strategies": "स्ट्रॅटेजि",
+    "skins": "स्कीन",
+    "networks": "नेटवर्क",
+    "plugins": "प्लगइन",
+    "results": "परिणाम"
   },
   "voting": {
-    "selectVoting": "Select voting system",
-    "single-choice": "Single choice voting",
-    "approval": "Approval voting",
-    "quadratic": "Quadratic voting",
-    "ranked-choice": "Ranked choice voting",
-    "weighted": "Weighted voting",
+    "selectVoting": "मतदान प्रणाली निवडा",
+    "single-choice": "एकल निवड मतदान",
+    "approval": "मान्यता मतदान",
+    "quadratic": "चतुर्भुज मतदान",
+    "ranked-choice": "निवड मतदान",
+    "weighted": "भारित सरासरी मतदान",
     "description": {
-      "single-choice": "Each voter may select only one choice.",
-      "approval": "Each voter may select any number of choices.",
-      "quadratic": "Each voter may spread voting power across any number of choices. Results are calculated quaratically.",
+      "single-choice": "प्रत्येक मतदार केवळ एक निवड निवडू शकतो.",
+      "approval": "प्रत्येक मतदार कितीही निवडी निवडू शकतो.",
+      "quadratic": "प्रत्येक मतदार कोणत्याही निवडीमध्ये मतदानाची शक्ती पसरवू शकतो. परिणामांची मोजमाप मोजली जाते.",
       "ranked-choice": "प्रत्येक मतदार कितीही निवडी निवडू शकतो आणि रँक करू शकतो. इन्स्टंट-रनऑफ मोजणीच्या पद्धतीद्वारे परिणामांची गणना केली जाते.",
       "weighted": "Each voter may spread voting power across any number of choices."
     }
@@ -239,16 +239,16 @@
       "changeOutcome": "परिणाम बदल करा",
       "executeTxs": "ट्रान्सऍकशन एक्सिक्युट करा 1/{0}",
       "finalized": "मत निश्चित करण्यात आले",
-      "executed": "{0}/{0} Transactions executed",
-      "waiting": "Waiting for vote to close",
-      "error": "Error",
-      "question": "Did this proposal pass and does it meet the",
-      "criteria": "acceptance criteria?"
+      "executed": "{0}/{0} ट्रान्सआकशन एक्सिक्यूट आहेत",
+      "waiting": "मते बंद होण्याची प्रतीक्षा करीत आहे",
+      "error": "एरर",
+      "question": "हा प्रस्ताव पास झाला आणि तो पूर्ण करतो का",
+      "criteria": "स्वीकृती निकष?"
     }
   },
   "poap": {
-    "no_poap_header": "A POAP hasn't been setup for this proposal yet :'(",
-    "no_voted_header": "Vote to get this POAP",
+    "no_poap_header": "या प्रस्तावासाठी अद्याप एक पीओएपी सेट केला गेला नाही :'(",
+    "no_voted_header": "हे पीओएपी मिळविण्यासाठी मतदान करा",
     "unclaimed_header": "आपला मी मत नोंदविलेला पीओएपी चा दावा करा",
     "claimed_header": "अभिनंदन! आपल्या खात्यात एक नवीन पीओएपी आला",
     "loading_header": "आपल्या संग्रहात पीओएपी जोडला जात आहे",
