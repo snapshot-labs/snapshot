@@ -37,68 +37,20 @@ export async function getSpaceUriFromContentHash(id) {
 }
 
 export async function getSpaceUriFromTextRecord(id) {
-  const REGISTRAR_ABI = [
-    {
-      constant: true,
-      inputs: [
-        {
-          name: 'node',
-          type: 'bytes32'
-        }
-      ],
-      name: 'resolver',
-      outputs: [
-        {
-          name: 'resolverAddress',
-          type: 'address'
-        }
-      ],
-      payable: false,
-      stateMutability: 'view',
-      type: 'function'
-    }
-  ];
-
-  const RESOLVER_ABI = [
-    {
-      constant: true,
-      inputs: [
-        {
-          internalType: 'bytes32',
-          name: 'node',
-          type: 'bytes32'
-        },
-        {
-          internalType: 'string',
-          name: 'key',
-          type: 'string'
-        }
-      ],
-      name: 'text',
-      outputs: [
-        {
-          internalType: 'string',
-          name: '',
-          type: 'string'
-        }
-      ],
-      payable: false,
-      stateMutability: 'view',
-      type: 'function'
-    }
-  ];
+  const REGISTRAR_ABI = 'function resolver(bytes32 node) external view returns (address)';
+  const RESOLVER_ABI = 'function text(bytes32 node, string calldata key) external view returns (string memory)'
 
   const REGISTRAR_ADDRESS = '0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e';
   let uri: any = false;
   try {
     const hash = namehash(id);
     const provider = getProvider('1');
-    const resolverAddress = await utils.call(provider, REGISTRAR_ABI, [
+    const resolverAddress = await utils.call(provider, [REGISTRAR_ABI], [
       REGISTRAR_ADDRESS,
       'resolver',
       [hash]
     ]);
-    uri = await utils.call(provider, RESOLVER_ABI, [
+    uri = await utils.call(provider, [RESOLVER_ABI], [
       resolverAddress,
       'text',
       [hash, 'snapshot']
