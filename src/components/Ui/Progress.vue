@@ -1,24 +1,26 @@
 <template>
-  <span class="Progress Progress--small overflow-hidden anim-scale-in">
-    <span
-      v-for="(bar, i) in bars"
-      :key="i"
-      :style="`width: ${parseFloat((100 / max) * bar).toFixed(3)}%;`"
-      class="bg-blue"
-    />
-  </span>
+  <UiTooltip :text="tooltip">
+    <span class="Progress overflow-hidden anim-scale-in">
+      <span
+        v-for="(bar, i) in bars"
+        :key="i"
+        :style="`width: ${parseFloat((100 / max) * bar).toFixed(3)}%;`"
+      />
+    </span>
+  </UiTooltip>
 </template>
 
 <script>
+import { computed } from 'vue';
 export default {
-  props: ['value', 'max', 'titles'],
-  computed: {
-    bars() {
-      return Array.isArray(this.value) ? this.value : [this.value];
-    },
-    total() {
-      return this.bars.reduce((a, b) => a + b, 0);
-    }
+  props: ['value', 'max', 'titles', 'tooltip'],
+  setup(props) {
+    const bars = computed(() =>
+      Array.isArray(props.value) ? props.value : [props.value]
+    );
+    const total = computed(() => bars.value.reduce((a, b) => a + b, 0));
+
+    return { bars, total };
   }
 };
 </script>
@@ -28,6 +30,10 @@ export default {
   background-color: var(--border-color);
   height: 8px;
   border-radius: 4px;
+  border: var(--border-color) 1px solid;
+  &:hover {
+    border: var(--primary-color) !important;
+  }
 
   span:first-child {
     background-color: var(--primary-color) !important;

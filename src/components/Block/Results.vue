@@ -4,44 +4,52 @@
     :title="ts >= proposal.end ? $t('results') : $t('currentResults')"
   >
     <div v-for="choice in choices" :key="choice.i">
-      <div class="text-white mb-1">
+      <div class="text-white mb-1 d-flex">
         <span
-          class="mr-1 tooltipped"
+          class="mr-1 tooltipped tooltipped-multiline"
           :class="[
             isSmallScreen
               ? 'tooltipped-ne tooltipped-align-left-2'
               : 'tooltipped-n'
           ]"
-          :aria-label="choice.choice.length > 12 && choice.choice"
-          v-text="_shorten(choice.choice, 'choice')"
-        />
-        <span
-          class="mr-1 tooltipped tooltipped-multiline tooltipped-n"
-          :aria-label="
-            results.resultsByStrategyScore[choice.i]
-              .map((score, index) => `${_n(score)} ${titles[index]}`)
-              .join(' + ')
-          "
+          style="max-width: 70%"
+          :aria-label="choice.choice"
         >
-          {{ _n(results.resultsByVoteBalance[choice.i]) }}
-          {{ _shorten(space.symbol, 'symbol') }}
+          <span class="truncated width-full">{{ choice.choice }}</span>
         </span>
-        <span
-          class="float-right"
-          v-text="
-            _n(
-              !results.sumOfResultsBalance
-                ? 0
-                : ((100 / results.sumOfResultsBalance) *
-                    results.resultsByVoteBalance[choice.i]) /
-                    1e2,
-              '0.[00]%'
-            )
-          "
-        />
+        <div style="width: 100%">
+          <span
+            v-if="!isSmallScreen"
+            class="mr-1 tooltipped tooltipped-multiline tooltipped-n"
+            :aria-label="
+              results.resultsByStrategyScore[choice.i]
+                .map((score, index) => `${_n(score)} ${titles[index]}`)
+                .join(' + ')
+            "
+          />
+          <span
+            class="float-right"
+            v-text="
+              _n(
+                !results.sumOfResultsBalance
+                  ? 0
+                  : ((100 / results.sumOfResultsBalance) *
+                      results.resultsByVoteBalance[choice.i]) /
+                      1e2,
+                '0.[00]%'
+              )
+            "
+          />
+        </div>
       </div>
       <UiProgress
         :value="results.resultsByStrategyScore[choice.i]"
+        :tooltip="`${_n(results.resultsByVoteBalance[choice.i])} ${
+          space.symbol
+        } 
+        (${results.resultsByStrategyScore[choice.i]
+          .map((score, index) => `${_n(score)} ${titles[index]}`)
+          .join(' + ')})`"
         :max="results.sumOfResultsBalance"
         :titles="titles"
         class="mb-3"
