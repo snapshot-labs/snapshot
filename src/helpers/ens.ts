@@ -37,18 +37,18 @@ export async function getSpaceUriFromContentHash(id) {
 }
 
 export async function getSpaceUriFromTextRecord(id) {
-  const RESOLVER_ABI =
+  const abi =
     'function text(bytes32 node, string calldata key) external view returns (string memory)';
+  const address = '0x4976fb03C32e5B8cfe2b6cCB31c09Ba78EBaBa41';
 
-  const RESOLVER_ADDRESS = '0x4976fb03C32e5B8cfe2b6cCB31c09Ba78EBaBa41';
   let uri: any = false;
   try {
     const hash = namehash(id);
     const provider = getProvider('1');
     uri = await utils.call(
       provider,
-      [RESOLVER_ABI],
-      [RESOLVER_ADDRESS, 'text', [hash, 'snapshot']]
+      [abi],
+      [address, 'text', [hash, 'snapshot']]
     );
   } catch (e) {
     console.log('getSpaceUriFromTextRecord failed', id, e);
