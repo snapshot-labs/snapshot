@@ -7,7 +7,7 @@ import { getProfiles } from '@/helpers/profile';
 
 let wsProvider;
 let auth;
-const defaultNetwork =
+const defaultNetwork: any =
   import.meta.env.VITE_APP_DEFAULT_NETWORK || Object.keys(networks)[0];
 
 if (wsProvider) {
