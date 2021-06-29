@@ -10,7 +10,7 @@
       v-for="(vote, i) in visibleVotes"
       :key="i"
       :style="i === 0 && 'border: 0 !important;'"
-      class="px-4 py-3 border-top d-flex"
+      class="px-4 py-3 border-top d-flex flex-justify-between"
     >
       <User
         :profile="vote.profile"
@@ -18,12 +18,14 @@
         :space="space"
         class="column"
       />
-      <div class="flex-auto text-center text-white">
+      <div v-if="!isSmallScreen" class="flex-auto text-center text-white col-6">
         <span
           :aria-label="format(proposal, vote.choice)"
           class="text-center text-white tooltipped tooltipped-multiline tooltipped-n"
         >
-          {{ _shorten(format(proposal, vote.choice), 24) }}
+          <span class="truncated width-full">
+            {{ format(proposal, vote.choice) }}</span
+          >
         </span>
       </div>
 
@@ -69,6 +71,7 @@
 import { ref, computed } from 'vue';
 import { useStore } from 'vuex';
 import { getChoiceString } from '@/helpers/utils';
+import { useMediaQuery } from '@/composables/useMediaQuery';
 
 export default {
   props: {
@@ -80,6 +83,7 @@ export default {
   },
   setup(props) {
     const store = useStore();
+    const { isSmallScreen } = useMediaQuery();
 
     const showAllVotes = ref(false);
     const authorIpfsHash = ref('');
@@ -129,7 +133,8 @@ export default {
       openReceiptModal,
       visibleVotes,
       titles,
-      format: getChoiceString
+      format: getChoiceString,
+      isSmallScreen
     };
   }
 };
