@@ -252,9 +252,9 @@
     "unclaimed_header": "Claim je stem op POAP",
     "claimed_header": "Gefeliciteerd! Je hebt een nieuwe POAP in je account",
     "loading_header": "De POAP wordt toegevoegd aan je collectie",
-    "button_claim": "Claim",
-    "button_show": "Show me my badges",
-    "success_claim": "Your POAP is on your address",
-    "error_claim": "There was a problem minting the token"
+    "button_claim": "Claimen",
+    "button_show": "Laat me mijn badges zien",
+    "success_claim": "Uw POAP bevindt zich op uw adres",
+    "error_claim": "Er is een probleem opgetreden bij het minen van het token"
   }
 }
