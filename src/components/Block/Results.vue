@@ -6,10 +6,14 @@
     <div v-for="choice in choices" :key="choice.i">
       <div class="text-white mb-1">
         <span
-          :class="choice.choice.length > 12 && 'tooltipped tooltipped-n'"
+          class="mr-1 tooltipped"
+          :class="[
+            isSmallScreen
+              ? 'tooltipped-ne tooltipped-align-left-2'
+              : 'tooltipped-n'
+          ]"
           :aria-label="choice.choice.length > 12 && choice.choice"
           v-text="_shorten(choice.choice, 'choice')"
-          class="mr-1"
         />
         <span
           class="mr-1 tooltipped tooltipped-multiline tooltipped-n"
@@ -26,9 +30,9 @@
           class="float-right"
           v-text="
             _n(
-              !results.sumBalanceAllVotes
+              !results.sumOfResultsBalance
                 ? 0
-                : ((100 / results.sumBalanceAllVotes) *
+                : ((100 / results.sumOfResultsBalance) *
                     results.resultsByVoteBalance[choice.i]) /
                     1e2,
               '0.[00]%'
@@ -38,7 +42,7 @@
       </div>
       <UiProgress
         :value="results.resultsByStrategyScore[choice.i]"
-        :max="results.sumBalanceAllVotes"
+        :max="results.sumOfResultsBalance"
         :titles="titles"
         class="mb-3"
       />
@@ -52,39 +56,41 @@
 </template>
 
 <script>
+import { computed } from 'vue';
 import * as jsonexport from 'jsonexport/dist';
 import pkg from '@/../package.json';
+import { useMediaQuery } from '@/composables/useMediaQuery';
 
 export default {
-  props: [
-    'id',
-    'space',
-    'proposal',
-    'results',
-    'votes',
-    'loaded',
-    'strategies'
-  ],
-  computed: {
-    ts() {
-      return (Date.now() / 1e3).toFixed();
-    },
-    titles() {
-      return this.strategies.map(strategy => strategy.params.symbol);
-    },
-    choices() {
-      return this.proposal.choices
+  props: {
+    id: String,
+    space: Object,
+    proposal: Object,
+    results: Object,
+    votes: Object,
+    loaded: Boolean,
+    strategies: Object
+  },
+  setup(props) {
+    const ts = (Date.now() / 1e3).toFixed();
+
+    const { isSmallScreen } = useMediaQuery();
+
+    const titles = computed(() =>
+      props.strategies.map(strategy => strategy.params.symbol)
+    );
+    const choices = computed(() =>
+      props.proposal.choices
         .map((choice, i) => ({ i, choice }))
         .sort(
           (a, b) =>
-            this.results.resultsByVoteBalance[b.i] -
-            this.results.resultsByVoteBalance[a.i]
-        );
-    }
-  },
-  methods: {
-    async downloadReport() {
-      const obj = this.votes
+            props.results.resultsByVoteBalance[b.i] -
+            props.results.resultsByVoteBalance[a.i]
+        )
+    );
+
+    async function downloadReport() {
+      const obj = props.votes
         .map(vote => {
           return {
             address: vote.voter,
@@ -101,13 +107,15 @@ export default {
         const csv = await jsonexport(obj);
         const link = document.createElement('a');
         link.setAttribute('href', `data:text/csv;charset=utf-8,${csv}`);
-        link.setAttribute('download', `${pkg.name}-report-${this.id}.csv`);
+        link.setAttribute('download', `${pkg.name}-report-${props.id}.csv`);
         document.body.appendChild(link);
         link.click();
       } catch (e) {
         console.error(e);
       }
     }
+
+    return { ts, isSmallScreen, titles, choices, downloadReport };
   }
 };
 </script>

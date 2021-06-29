@@ -32,7 +32,10 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { ref } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { useStore } from 'vuex';
+import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { sendTransaction } from '@snapshot-labs/snapshot.js/src/utils';
 import { formatBytes32String } from '@ethersproject/strings';
 import { contractAddress } from '@/helpers/delegation';
@@ -40,36 +43,38 @@ import abi from '@/helpers/abi';
 import { sleep } from '@/helpers/utils';
 
 export default {
-  props: ['open', 'id', 'delegate'],
+  props: { open: Boolean, id: String, delegate: String },
   emits: ['close', 'reload'],
-  data() {
-    return {
-      loading: false
-    };
-  },
-  methods: {
-    ...mapActions(['notify']),
-    async handleSubmit() {
-      this.loading = true;
+  setup(props, { emit }) {
+    const store = useStore();
+    const auth = getInstance();
+    const { t } = useI18n();
+
+    const loading = ref(false);
+
+    async function handleSubmit() {
+      loading.value = true;
       try {
         const tx = await sendTransaction(
-          this.$auth.web3,
+          auth.web3,
           contractAddress,
           abi['DelegateRegistry'],
           'clearDelegate',
-          [formatBytes32String(this.id)]
+          [formatBytes32String(props.id)]
         );
         const receipt = await tx.wait();
         console.log('Receipt', receipt);
         await sleep(3e3);
-        this.notify(this.$t('notify.youDidIt'));
-        this.$emit('reload');
-        this.$emit('close');
+        store.dispatch('notify', t('notify.youDidIt'));
+        emit('reload');
+        emit('close');
       } catch (e) {
         console.log(e);
       }
-      this.loading = false;
+      loading.value = false;
     }
+
+    return { loading, handleSubmit };
   }
 };
 </script>
