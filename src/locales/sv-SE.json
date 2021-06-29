@@ -17,8 +17,8 @@
   "snapshot": "Skärmdump",
   "strategies": "Strategier",
   "strategiesPage": "Strategier",
-  "space": "Space",
-  "spaces": "Spaces",
+  "space": "Utrymme",
+  "spaces": "Utrymmen",
   "version": "Version",
   "timeline": "Tidslinje",
   "filters": "Filter",
@@ -52,7 +52,7 @@
   "confirmVote": "Bekräfta röst",
   "sureToVote": "Är du säker att du vill ta bort \"{0}\"?",
   "cannotBeUndone": "Denna åtgärd kan inte ångras.",
-  "options": "Option(s)",
+  "options": "Alternativ(er)",
   "votingPower": "Din röststyrka",
   "receipt": "Kvitto",
   "relayer": "Reläer",
@@ -61,9 +61,9 @@
   "seeInExplorer": "Se på explorer",
   "learnMore": "Läs mer",
   "logout": "Logga ut",
-  "walletNotice": "Wallet not supported",
-  "gnosisSafeWalletNotice": "You are trying to use Gnosis Safe wallet, which doesn't support signing messages on Snapshot.",
-  "continue": "Continue",
+  "walletNotice": "Plånbok stöds inte",
+  "gnosisSafeWalletNotice": "Du försöker använda Gnosis Safe plånbok, som inte stöder signering meddelanden på Snapshot.",
+  "continue": "Fortsätt",
   "add": "Lägg till",
   "edit": "Redigera",
   "strategyParameters": "Strategi parametrar",
@@ -93,19 +93,19 @@
   "startIn": "starta {0}",
   "endIn": "avsluta {1}",
   "endedAgo": "avslutade {1}",
-  "proposalBy": "by {0}",
+  "proposalBy": "av {0}",
   "endDate": "avsluta {0}",
   "contectHash": "Innehåll hash",
   "defaultSkin": "Förvalt skin",
   "select": "Välj",
   "language": "Språk",
-  "agree": "I agree",
-  "mustAgreeToTerms": "Before you can complete this action, you must agree to {0} terms of service here:",
+  "agree": "Jag godkänner",
+  "mustAgreeToTerms": "Innan du kan slutföra denna åtgärd, måste du godkänna {0} användarvillkor här:",
   "playground": "Playground",
-  "strategyParams": "Strategy params",
-  "addresses": "Addresses",
-  "networkErrorPlayground": "Network error - please open your browser console for more information",
-  "upload": "Upload",
+  "strategyParams": "Strategi params",
+  "addresses": "Adresser",
+  "networkErrorPlayground": "Nätverksfel - öppna din webbläsarkonsol för mer information",
+  "upload": "Uppladdning",
   "errors": {
     "required": "Fältet är obligatoriskt",
     "minLength": "Minsta längd är {0}",
@@ -133,11 +133,11 @@
   "delegate": {
     "header": "Delegera",
     "selectAddress": "Välj adress",
-    "to": "To",
-    "addressPlaceholder": "Address or ENS name",
+    "to": "Till",
+    "addressPlaceholder": "Adress eller ENS namn",
     "spacePlaceholder": "Space (valfritt)",
     "delegations": "Din delegation(er)",
-    "allSpaces": "For all spaces",
+    "allSpaces": "För alla utrymmen",
     "delegated": "Delegerat till dig"
   },
   "proposal": {
@@ -145,7 +145,7 @@
     "vote": "Rösta",
     "startDate": "Startdatum",
     "endDate": "Slutdatum",
-    "votingSystem": "Voting system"
+    "votingSystem": "Röstningssystem"
   },
   "proposals": {
     "header": "Förslagen",
@@ -180,8 +180,8 @@
     "admins": "Admins",
     "filters": "Filter",
     "defaultTab": "Standardflik",
-    "proposalThreshold": "Proposal threshold",
-    "showOnly": "Visa endast medlemsförslag",
+    "proposalThreshold": "Förslag tröskel",
+    "allowOnlyMembers": "Tillåt endast medlemmar att lägga fram ett förslag",
     "editPlugin": "Redigera plugin",
     "addPlugin": "Lägg till plugin",
     "pluginParameters": "Plugin parametrar"
@@ -210,12 +210,51 @@
     "results": "resultat (er)"
   },
   "voting": {
-    "selectVoting": "Select voting system",
-    "single-choice": "Single choice voting",
-    "approval": "Approval voting",
+    "selectVoting": "Välj röstsystem",
+    "single-choice": "Enstaka val röstning",
+    "approval": "Godkännande röstning",
+    "quadratic": "Kvadratisk röstning",
+    "ranked-choice": "Rankad röstning",
+    "weighted": "Vägd röstning",
     "description": {
-      "single-choice": "Each voter may select only one choice.",
-      "approval": "Each voter may select any number of choices."
+      "single-choice": "Varje väljare kan välja endast ett val.",
+      "approval": "Varje väljare kan välja valfritt antal val.",
+      "quadratic": "Varje väljare kan sprida röststyrka över valfritt antal val. Resultaten beräknas kvartalsvis.",
+      "ranked-choice": "Varje väljare kan välja och rangordna valfritt antal val. Resultat kalkyleras genom omedelbar avrinningsräkning.",
+      "weighted": "Varje väljare kan sprida rösträtt över valfritt antal val."
     }
+  },
+  "safeSnap": {
+    "currentOutcome": "Aktuellt resultat: {0}",
+    "currentBond": "Nuvarande obligation: {0}",
+    "finalizedIn": "Slutförd {0}",
+    "executableIn": "Körbar {0}",
+    "finalOutcome": "Resultat: {0}",
+    "nextBond": "Bond för att ange utfall: {0}",
+    "setOutcomeTo": "Ställ in resultat till:",
+    "claimBond": "Kräva obligation",
+    "labels": {
+      "request": "Begär utförande",
+      "setOutcome": "Ställ in resultat",
+      "changeOutcome": "Ändra resultat",
+      "executeTxs": "Utför transaktion 1/{0}",
+      "finalized": "Omröstning slutförd",
+      "executed": "{0}/{0} Transaktioner utförda",
+      "waiting": "Väntar på att omröstningen ska avslutas",
+      "error": "Fel",
+      "question": "Klarade detta förslag och uppfyller det",
+      "criteria": "kriterier för godkännande?"
+    }
+  },
+  "poap": {
+    "no_poap_header": "En POAP har inte installerats för detta förslag ännu :'(",
+    "no_voted_header": "Rösta för att få denna POAP",
+    "unclaimed_header": "Gör anspråk på din jag röstade på POAP",
+    "claimed_header": "Grattis! Du fick en ny POAP på ditt konto",
+    "loading_header": "POAP läggs till i din kollektion",
+    "button_claim": "Anspråk",
+    "button_show": "Visa mig mina märken",
+    "success_claim": "Din POAP är på din adress",
+    "error_claim": "Det gick inte att radera den token"
   }
 }
