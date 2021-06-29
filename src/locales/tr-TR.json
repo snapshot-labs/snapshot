@@ -105,7 +105,7 @@
   "strategyParams": "Strateji parametreleri",
   "addresses": "Adresler",
   "networkErrorPlayground": "Ağ hatası - daha fazla bilgi için lütfen tarayıcı konsolunuzu açın",
-  "upload": "Upload",
+  "upload": "Yükle",
   "errors": {
     "required": "Bu alan zorunludur",
     "minLength": "Minimum uzunluk: {0}",
@@ -180,8 +180,8 @@
     "admins": "Admin",
     "filters": "Filtreler",
     "defaultTab": "Varsayılan sekme",
-    "proposalThreshold": "Proposal threshold",
-    "showOnly": "Yalnızca üyelerin tekliflerini göster",
+    "proposalThreshold": "Teklif eşiği",
+    "allowOnlyMembers": "Allow only members to submit a proposal",
     "editPlugin": "Eklentiyi düzenle",
     "addPlugin": "Eklenti ekle",
     "pluginParameters": "Eklenti Parametreleri"
@@ -213,9 +213,48 @@
     "selectVoting": "Oylama sistemini seçiniz",
     "single-choice": "Tek seçenekli oylama",
     "approval": "Oy onayı",
+    "quadratic": "Quadratic voting",
+    "ranked-choice": "Ranked choice voting",
+    "weighted": "Weighted voting",
     "description": {
       "single-choice": "Her seçmen sadece bir seçim yapabilir.",
-      "approval": "Her seçmen istediği sayıda seçim yapabilir."
+      "approval": "Her seçmen istediği sayıda seçim yapabilir.",
+      "quadratic": "Each voter may spread voting power across any number of choices. Results are calculated quaratically.",
+      "ranked-choice": "Each voter may select and rank any number of choices. Results are calculted by instant-runoff counting method.",
+      "weighted": "Each voter may spread voting power across any number of choices."
     }
+  },
+  "safeSnap": {
+    "currentOutcome": "Current outcome: {0}",
+    "currentBond": "Current bond: {0}",
+    "finalizedIn": "Finalized {0}",
+    "executableIn": "Executable {0}",
+    "finalOutcome": "Outcome: {0}",
+    "nextBond": "Bond to set outcome: {0}",
+    "setOutcomeTo": "Set outcome to:",
+    "claimBond": "Claim bond",
+    "labels": {
+      "request": "Request execution",
+      "setOutcome": "Set outcome",
+      "changeOutcome": "Change outcome",
+      "executeTxs": "Execute transaction 1/{0}",
+      "finalized": "Vote finalized",
+      "executed": "{0}/{0} Transactions executed",
+      "waiting": "Waiting for vote to close",
+      "error": "Error",
+      "question": "Did this proposal pass and does it meet the",
+      "criteria": "acceptance criteria?"
+    }
+  },
+  "poap": {
+    "no_poap_header": "A POAP hasn't been setup for this proposal yet :'(",
+    "no_voted_header": "Vote to get this POAP",
+    "unclaimed_header": "Claim your I voted POAP",
+    "claimed_header": "Congratulations! You got a new POAP in your account",
+    "loading_header": "The POAP is being added to your collection",
+    "button_claim": "Claim",
+    "button_show": "Show me my badges",
+    "success_claim": "Your POAP is on your address",
+    "error_claim": "There was a problem minting the token"
   }
 }
