@@ -1,5 +1,5 @@
 <template>
-  <Layout>
+  <Layout v-bind="$attrs">
     <template #content-left>
       <div class="px-4 px-md-0 mb-3">
         <router-link :to="{ name: 'home' }" class="text-gray">
@@ -229,17 +229,8 @@
               />
             </UiButton>
           </Block>
-          <Block :title="$t('settings.validation')">
+          <Block :title="$t('settings.proposalValidation')">
             <div class="mb-2">
-              <UiInput
-                v-model="form.filters.minScore"
-                :error="inputError('minScore')"
-                :number="true"
-              >
-                <template v-slot:label>{{
-                  $t('settings.proposalThreshold')
-                }}</template>
-              </UiInput>
               <UiInput
                 @click="modalValidationOpen = true"
                 :error="inputError('settings.validation')"
@@ -256,12 +247,23 @@
                   </span>
                 </template>
               </UiInput>
-              <div class="mb-2 d-flex flex-items-center px-2">
-                <Checkbox
-                  v-model="form.filters.onlyMembers"
-                  class="mr-2 mt-1"
-                />
-                {{ $t('settings.allowOnlyMembers') }}
+              <div v-if="form.validation.name === 'basic'">
+                <UiInput
+                  v-model="form.filters.minScore"
+                  :error="inputError('minScore')"
+                  :number="true"
+                >
+                  <template v-slot:label>{{
+                    $t('settings.proposalThreshold')
+                  }}</template>
+                </UiInput>
+                <div class="mb-2 d-flex flex-items-center px-2">
+                  <Checkbox
+                    v-model="form.filters.onlyMembers"
+                    class="mr-2 mt-1"
+                  />
+                  {{ $t('settings.allowOnlyMembers') }}
+                </div>
               </div>
             </div>
           </Block>
