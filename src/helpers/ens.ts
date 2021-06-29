@@ -1,7 +1,8 @@
-const get = () => import(/* webpackChunkName: "ens" */ '@ensdomains/ensjs');
+import { namehash } from '@ethersproject/hash';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import { resolveContent } from '@snapshot-labs/snapshot.js/src/utils/contentHash';
 import gateways from '@snapshot-labs/snapshot.js/src/gateways.json';
+import utils from '@snapshot-labs/snapshot.js/src/utils';
 
 const gateway = process.env.VUE_APP_IPFS_GATEWAY || gateways[0];
 
@@ -36,12 +37,19 @@ export async function getSpaceUriFromContentHash(id) {
 }
 
 export async function getSpaceUriFromTextRecord(id) {
+  const abi =
+    'function text(bytes32 node, string calldata key) external view returns (string memory)';
+  const address = '0x4976fb03C32e5B8cfe2b6cCB31c09Ba78EBaBa41';
+
   let uri: any = false;
   try {
-    const ensAddress = '0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e';
-    const ENS = (await get()).default;
-    const ens = new ENS({ provider: getProvider('1'), ensAddress });
-    uri = await ens.name(id).getText('snapshot');
+    const hash = namehash(id);
+    const provider = getProvider('1');
+    uri = await utils.call(
+      provider,
+      [abi],
+      [address, 'text', [hash, 'snapshot']]
+    );
   } catch (e) {
     console.log('getSpaceUriFromTextRecord failed', id, e);
   }
