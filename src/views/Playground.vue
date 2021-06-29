@@ -7,8 +7,8 @@
           {{ $t('back') }}
         </router-link>
       </div>
-      <div class="px-4 px-md-0">
-        <h1 class="mb-2">
+      <div class="">
+        <h1 class="mb-2 px-4 px-md-0">
           {{ strategy.key }}
         </h1>
         <Block :title="$t('settings.header')">
@@ -144,18 +144,13 @@ export default {
           name: strategy.value.key,
           params: JSON.parse(form.value.params)
         };
-        const blockNumber = await getBlockNumber(provider);
-        const blockTag =
-          form.value.snapshot > blockNumber
-            ? 'latest'
-            : parseInt(form.value.snapshot);
         scores.value = await getScores(
           '',
           [strategyParams],
-          form.value.network,
+          form.value.network.toString(),
           provider,
           form.value.addresses,
-          blockTag
+          parseInt(form.value.snapshot)
         );
         console.log(scores.value);
         loading.value = false;

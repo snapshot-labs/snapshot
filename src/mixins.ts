@@ -23,7 +23,7 @@ export default {
       return format(number * 1e3);
     },
     _n(number, format = '(0.[00]a)') {
-      if (number < 0.00001) return 0;
+      if (number < 0.00001) return format.includes('%') ? '0%' : 0;
       return numeral(number).format(format);
     },
     _shorten(str: string, key?: any): string {
@@ -38,7 +38,7 @@ export default {
       return shorten(str);
     },
     _ipfsUrl(ipfsHash: string): string | null {
-      if(!ipfsHash) return null;
+      if (!ipfsHash) return null;
       return `https://${process.env.VUE_APP_IPFS_GATEWAY}/ipfs/${ipfsHash}`;
     },
     _explorer(network, str: string, type = 'address'): string {

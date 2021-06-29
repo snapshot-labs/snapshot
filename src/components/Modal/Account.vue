@@ -102,37 +102,37 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { toRefs, ref, watch, computed } from 'vue';
+import { useStore } from 'vuex';
 import { getInjected } from '@snapshot-labs/lock/src/utils';
 import connectors from '@/helpers/connectors.json';
 
 export default {
   props: ['open'],
   emits: ['login', 'close'],
-  data() {
+  setup(props, { emit }) {
+    const store = useStore();
+    const { open } = toRefs(props);
+
+    const step = ref(null);
+
+    const injected = computed(() => getInjected());
+
+    async function handleLogout() {
+      await store.dispatch('logout');
+      emit('close');
+    }
+
+    watch(open, () => (step.value = null));
+
     return {
       connectors,
-      step: null,
+      step,
       path:
-        'https://raw.githubusercontent.com/snapshot-labs/lock/master/connectors/assets'
+        'https://raw.githubusercontent.com/snapshot-labs/lock/master/connectors/assets',
+      injected,
+      handleLogout
     };
-  },
-  watch: {
-    open() {
-      this.step = null;
-    }
-  },
-  computed: {
-    injected() {
-      return getInjected();
-    }
-  },
-  methods: {
-    ...mapActions(['logout']),
-    async handleLogout() {
-      await this.logout();
-      this.$emit('close');
-    }
   }
 };
 </script>

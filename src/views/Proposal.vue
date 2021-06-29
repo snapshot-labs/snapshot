@@ -12,10 +12,7 @@
       </div>
       <div class="px-4 px-md-0">
         <template v-if="loaded">
-          <h1 class="mb-2">
-            {{ proposal.title }}
-            <span v-text="`#${id.slice(0, 7)}`" class="text-gray" />
-          </h1>
+          <h1 v-text="proposal.title" class="mb-2" />
           <div class="mb-4">
             <UiState :state="proposal.state" />
             <UiDropdown
@@ -55,6 +52,15 @@
         :proposal="proposal"
         :votes="votes"
         :strategies="strategies"
+      />
+      <PluginSafeSnapConfig
+        :preview="true"
+        v-if="loadedResults && proposal.plugins?.safeSnap?.txs"
+        :proposal="proposal"
+        :proposalId="id"
+        :moduleAddress="space.plugins?.safeSnap?.address"
+        :network="space.network"
+        v-model="proposal.plugins.safeSnap"
       />
     </template>
     <template #sidebar-right v-if="loaded">
@@ -146,12 +152,12 @@
           :proposalConfig="proposal.plugins.gnosis"
           :choices="proposal.choices"
         />
-        <PluginDaoModuleCustomBlock
-          v-if="proposal.plugins?.daoModule?.txs"
-          :proposalConfig="proposal.plugins.daoModule"
+        <PluginSafeSnapCustomBlock
+          v-if="proposal.plugins?.safeSnap?.txs"
+          :proposalConfig="proposal.plugins.safeSnap"
           :proposalEnd="proposal.end"
-          :porposalId="id"
-          :moduleAddress="space.plugins?.daoModule?.address"
+          :proposalId="id"
+          :moduleAddress="space.plugins?.safeSnap?.address"
           :network="space.network"
         />
         <PluginQuorumCustomBlock
@@ -160,6 +166,15 @@
           :space="space"
           :proposal="proposal"
           :results="results"
+          :strategies="strategies"
+        />
+        <PluginPoapCustomBlock
+          v-if="space.plugins?.poap"
+          :loaded="loadedResults"
+          :space="space"
+          :proposal="proposal"
+          :results="results"
+          :votes="votes"
           :strategies="strategies"
         />
       </div>
@@ -217,8 +232,8 @@ export default {
     const loaded = ref(false);
     const loadedResults = ref(false);
     const proposal = ref({});
-    const votes = ref({});
-    const results = ref([]);
+    const votes = ref([]);
+    const results = ref({});
     const totalScore = ref(0);
     const scores = ref([]);
     const dropdownLoading = ref(false);
@@ -254,17 +269,16 @@ export default {
     }
 
     async function loadProposal() {
-      const proposalObj = await getProposal(space.value, id);
+      const proposalObj = await getProposal(id);
       proposal.value = proposalObj.proposal;
       loaded.value = true;
       const resultsObj = await getResults(
         space.value,
-        proposalObj.proposal,
-        proposalObj.votes,
-        proposalObj.blockNumber
+        proposal.value,
+        proposalObj.votes
       );
-      votes.value = resultsObj.votes;
       results.value = resultsObj.results;
+      votes.value = resultsObj.votes;
       loadedResults.value = true;
     }
 

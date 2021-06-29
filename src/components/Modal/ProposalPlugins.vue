@@ -22,7 +22,7 @@
             <Icon name="external-link" />
           </a>
         </div>
-        <UiButton @click="selected = i">
+        <UiButton v-if="showButton(plugin)" @click="selected = i">
           {{ !form[i] ? $t('add') : $t('edit') }}
         </UiButton>
       </div>
@@ -57,13 +57,6 @@
         @close="selected = false"
         v-if="selected === 'gnosis'"
       />
-      <PluginDaoModuleConfig
-        :proposal="proposal"
-        :network="space.network"
-        v-model="form.daoModule"
-        @close="selected = false"
-        v-if="selected === 'daoModule'"
-      />
     </div>
   </UiModal>
 </template>
@@ -86,6 +79,13 @@ export default {
     open() {
       if (this.modelValue && this.open) this.form = clone(this.modelValue);
       this.selected = false;
+    },
+    selected(value) {
+      if (value === 'safeSnap') {
+        this.form.safeSnap = this.form.safeSnap || {};
+        this.$emit('update:modelValue', this.form);
+        this.$emit('close');
+      }
     }
   },
   created() {
@@ -100,6 +100,9 @@ export default {
   methods: {
     getLogoUrl(plugin) {
       return `https://raw.githubusercontent.com/snapshot-labs/snapshot.js/master/src/plugins/${plugin}/logo.png`;
+    },
+    showButton(plugin) {
+      return plugin.name !== 'SafeSnap';
     }
   }
 };
