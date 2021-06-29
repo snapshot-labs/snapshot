@@ -4,7 +4,7 @@ import { resolveContent } from '@snapshot-labs/snapshot.js/src/utils/contentHash
 import gateways from '@snapshot-labs/snapshot.js/src/gateways.json';
 import utils from '@snapshot-labs/snapshot.js/src/utils';
 
-const gateway = process.env.VUE_APP_IPFS_GATEWAY || gateways[0];
+const gateway = import.meta.env.VITE_APP_IPFS_GATEWAY || gateways[0];
 
 export async function uriGet(
   gateway: string,

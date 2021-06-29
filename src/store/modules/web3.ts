@@ -8,7 +8,7 @@ import { getProfiles } from '@/helpers/profile';
 let wsProvider;
 let auth;
 const defaultNetwork =
-  process.env.VUE_APP_DEFAULT_NETWORK || Object.keys(networks)[0];
+  import.meta.env.VITE_APP_DEFAULT_NETWORK || Object.keys(networks)[0];
 
 if (wsProvider) {
   wsProvider.on('block', blockNumber => {

@@ -21,7 +21,7 @@ export default {
       const formData = new FormData();
       formData.append('file', file);
       try {
-        const url = `${process.env.VUE_APP_HUB_URL}/api/upload`;
+        const url = `${import.meta.env.VITE_APP_HUB_URL}/api/upload`;
         const init = {
           method: 'POST',
           body: formData

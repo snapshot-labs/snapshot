@@ -39,7 +39,9 @@ export default {
     },
     _ipfsUrl(ipfsHash: string): string | null {
       if (!ipfsHash) return null;
-      return `https://${process.env.VUE_APP_IPFS_GATEWAY}/ipfs/${ipfsHash}`;
+      return `https://${
+        import.meta.env.VITE_APP_IPFS_GATEWAY
+      }/ipfs/${ipfsHash}`;
     },
     _explorer(network, str: string, type = 'address'): string {
       return `${networks[network].explorer}/${type}/${str}`;

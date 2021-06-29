@@ -1,12 +1,11 @@
-import camelCase from 'lodash/camelCase';
+import app from './app';
+import favoriteSpaces from './favoriteSpaces';
+import notifications from './notifications';
+import web3 from './web3';
 
-const requireModule = require.context('.', false, /\.ts$/);
-const modules = {};
-
-requireModule.keys().forEach(fileName => {
-  if (fileName === './index.ts') return;
-  const moduleName = camelCase(fileName.replace(/(\.\/|\.ts)/g, ''));
-  modules[moduleName] = requireModule(fileName).default;
-});
-
-export default modules;
+export default {
+  app,
+  favoriteSpaces,
+  notifications,
+  web3
+};
