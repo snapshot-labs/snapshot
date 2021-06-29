@@ -23,7 +23,7 @@
         >
           <TextareaAutosize
             v-model="input.params"
-            :placeholder="$t('validationParameters')"
+            :placeholder="$t('settings.validationParameters')"
             class="input text-left"
             style="width: 560px"
           />
