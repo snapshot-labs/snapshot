@@ -77,49 +77,48 @@
 </template>
 
 <script>
+import { ref, computed } from 'vue';
+import { useStore } from 'vuex';
 import { mapActions } from 'vuex';
 import { getChoiceString } from '@/helpers/utils';
 
 export default {
-  props: [
-    'open',
-    'space',
-    'proposal',
-    'selectedChoices',
-    'snapshot',
-    'totalScore',
-    'scores',
-    'strategies'
-  ],
+  props: {
+    open: Boolean,
+    space: Object,
+    proposal: Object,
+    selectedChoices: Object,
+    snapshot: String,
+    totalScore: Number,
+    scores: Object,
+    strategies: Object
+  },
   emits: ['reload', 'close'],
-  data() {
-    return {
-      loading: false
-    };
-  },
-  computed: {
-    symbols() {
-      return this.strategies.map(strategy => strategy.params.symbol);
-    }
-  },
-  methods: {
-    ...mapActions(['send']),
-    async handleSubmit() {
-      this.loading = true;
-      await this.send({
-        space: this.space.key,
+  setup(props, { emit }) {
+    const store = useStore();
+
+    const loading = ref(false);
+    const symbols = computed(() =>
+      props.strategies.map(strategy => strategy.params.symbol)
+    );
+
+    async function handleSubmit() {
+      loading.value = true;
+      await store.dispatch('send', {
+        space: props.space.key,
         type: 'vote',
         payload: {
-          proposal: this.proposal.id,
-          choice: this.selectedChoices,
+          proposal: props.proposal.id,
+          choice: props.selectedChoices,
           metadata: {}
         }
       });
-      this.$emit('reload');
-      this.$emit('close');
-      this.loading = false;
-    },
-    format: getChoiceString
+      emit('reload');
+      emit('close');
+      loading.value = false;
+    }
+
+    return { loading, symbols, handleSubmit, format: getChoiceString };
   }
 };
 </script>

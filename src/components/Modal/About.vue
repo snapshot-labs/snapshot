@@ -71,20 +71,20 @@ const gateway = process.env.VUE_APP_IPFS_GATEWAY || gateways[0];
 export default {
   props: ['open'],
   emits: ['close', 'openLang'],
-  data() {
+  setup(_, { emit }) {
+    function changeLang() {
+      emit('openLang');
+      emit('close');
+    }
+
     return {
       pkg,
       commitSha: process.env.VUE_APP_COMMIT_SHA,
       hubUrl: process.env.VUE_APP_HUB_URL,
       gateway,
-      languages
+      languages,
+      changeLang
     };
-  },
-  methods: {
-    changeLang() {
-      this.$emit('openLang');
-      this.$emit('close');
-    }
   }
 };
 </script>
