@@ -181,7 +181,7 @@
     "filters": "التصفيات",
     "defaultTab": "علامة التبويب الافتراضية",
     "proposalThreshold": "Proposal threshold",
-    "showOnly": "إظهار اقتراحات الأعضاء فقط",
+    "allowOnlyMembers": "Allow only members to submit a proposal",
     "editPlugin": "تعديل إضافة",
     "addPlugin": "أضف إضافة",
     "pluginParameters": "إعدادات الإضافة"
@@ -213,9 +213,48 @@
     "selectVoting": "Select voting system",
     "single-choice": "Single choice voting",
     "approval": "Approval voting",
+    "quadratic": "Quadratic voting",
+    "ranked-choice": "Ranked choice voting",
+    "weighted": "Weighted voting",
     "description": {
       "single-choice": "Each voter may select only one choice.",
-      "approval": "Each voter may select any number of choices."
+      "approval": "Each voter may select any number of choices.",
+      "quadratic": "Each voter may spread voting power across any number of choices. Results are calculated quaratically.",
+      "ranked-choice": "Each voter may select and rank any number of choices. Results are calculted by instant-runoff counting method.",
+      "weighted": "Each voter may spread voting power across any number of choices."
     }
+  },
+  "safeSnap": {
+    "currentOutcome": "Current outcome: {0}",
+    "currentBond": "Current bond: {0}",
+    "finalizedIn": "Finalized {0}",
+    "executableIn": "Executable {0}",
+    "finalOutcome": "Outcome: {0}",
+    "nextBond": "Bond to set outcome: {0}",
+    "setOutcomeTo": "Set outcome to:",
+    "claimBond": "Claim bond",
+    "labels": {
+      "request": "Request execution",
+      "setOutcome": "Set outcome",
+      "changeOutcome": "Change outcome",
+      "executeTxs": "Execute transaction 1/{0}",
+      "finalized": "Vote finalized",
+      "executed": "{0}/{0} Transactions executed",
+      "waiting": "Waiting for vote to close",
+      "error": "Error",
+      "question": "Did this proposal pass and does it meet the",
+      "criteria": "acceptance criteria?"
+    }
+  },
+  "poap": {
+    "no_poap_header": "A POAP hasn't been setup for this proposal yet :'(",
+    "no_voted_header": "Vote to get this POAP",
+    "unclaimed_header": "Claim your I voted POAP",
+    "claimed_header": "Congratulations! You got a new POAP in your account",
+    "loading_header": "The POAP is being added to your collection",
+    "button_claim": "Claim",
+    "button_show": "Show me my badges",
+    "success_claim": "Your POAP is on your address",
+    "error_claim": "There was a problem minting the token"
   }
 }
