@@ -30,7 +30,7 @@
 
 <script>
 export default {
-  props: ['open'],
+  props: { open: Boolean },
   emits: ['close']
 };
 </script>
