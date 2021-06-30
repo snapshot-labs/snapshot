@@ -1,5 +1,5 @@
 <template>
-  <Layout>
+  <Layout v-bind="$attrs">
     <template #content-left>
       <div class="px-4 px-md-0 mb-3">
         <router-link :to="{ name: 'home' }" class="text-gray">
@@ -511,7 +511,7 @@ export default {
       this.modalPluginsOpen = true;
     },
     handleSubmitAddPlugins(payload) {
-      this.form.plugins[payload.key] = payload.input;
+      this.form.plugins[payload.key] = payload.inputClone;
     },
     setUploadLoading(s) {
       this.uploadLoading = s;
