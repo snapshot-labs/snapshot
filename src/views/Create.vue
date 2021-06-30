@@ -52,7 +52,6 @@
         <div v-if="choices.length > 0" class="overflow-hidden mb-2">
           <draggable
             v-model="choices"
-            tag="transition-group"
             :component-data="{ name: 'list' }"
             item-key="id"
           >
@@ -196,8 +195,8 @@ export default {
       name: '',
       body: '',
       choices: [],
-      start: '',
-      end: '',
+      start: 0,
+      end: 0,
       snapshot: '',
       metadata: { plugins: {} },
       type: 'single-choice'
