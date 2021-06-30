@@ -25,15 +25,16 @@
     "@primer/css": "^14.4.0",
     "@snapshot-labs/lock": "github:snapshot-labs/lock#master",
     "@snapshot-labs/snapshot-spaces": "github:snapshot-labs/snapshot-spaces#master",
-    "@snapshot-labs/snapshot.js": "github:snapshot-labs/snapshot.js#master",
+    "@snapshot-labs/snapshot.js": "github:snapshot-labs/snapshot.js#vite",
     "@toruslabs/torus-embed": "^1.9.2",
     "@vue/apollo-composable": "^4.0.0-alpha.12",
+    "@walletconnect/web3-provider": "^1.3.2",
     "autolinker": "^3.14.3",
     "body-parser": "^1.19.0",
     "core-js": "^3.6.5",
     "cors": "^2.8.5",
     "eslint": "^6.7.2",
-    "ethereumjs-util": "^7.0.7",
+    "fortmatic": "^2.0.6",
     "graphql": "^15.5.0",
     "graphql-tag": "^2.12.4",
     "jsonexport": "^3.0.1",
@@ -58,7 +59,8 @@
     "vue3-infinite-scroll": "^3.0.4",
     "vue3-jazzicon": "^0.1.1",
     "vuedraggable": "^4.0.1",
-    "vuex": "^4.0.2"
+    "vuex": "^4.0.2",
+    "walletlink": "^2.0.2"
   },
   "devDependencies": {
     "@types/node": "^14.0.13",
