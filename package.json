@@ -9,7 +9,6 @@
   "dependencies": {
     "@apollo/client": "^3.3.18",
     "@ensdomains/content-hash": "^2.5.3",
-    "@ensdomains/ensjs": "^2.0.1",
     "@ethersproject/abi": "^5.0.1",
     "@ethersproject/address": "^5.0.1",
     "@ethersproject/bignumber": "^5.1.1",

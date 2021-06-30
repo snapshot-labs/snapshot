@@ -17,7 +17,7 @@
   "snapshot": "Momentaufnahme",
   "strategies": "Strategie(n)",
   "strategiesPage": "Strategien",
-  "space": "Space",
+  "space": "Bereiche",
   "spaces": "Bereiche",
   "version": "Version",
   "timeline": "Timeline",
@@ -61,9 +61,9 @@
   "seeInExplorer": "Im Explorer ansehen",
   "learnMore": "Mehr erfahren",
   "logout": "Ausloggen",
-  "walletNotice": "Wallet not supported",
-  "gnosisSafeWalletNotice": "You are trying to use Gnosis Safe wallet, which doesn't support signing messages on Snapshot.",
-  "continue": "Continue",
+  "walletNotice": "Wallet wird nicht unterstützt",
+  "gnosisSafeWalletNotice": "Sie versuchen Gnosis Safe Wallet zu verwenden, was die Signierung von Nachrichten auf Snapshot nicht unterstützt.",
+  "continue": "Weiter",
   "add": "Hinzufügen",
   "edit": "Bearbeiten",
   "strategyParameters": "Strategieparameter",
@@ -93,7 +93,7 @@
   "startIn": "start {0}",
   "endIn": "ende {1}",
   "endedAgo": "endete {1}",
-  "proposalBy": "by {0}",
+  "proposalBy": "von {0}",
   "endDate": "ende {0}",
   "contectHash": "Hash des Inhalts",
   "defaultSkin": "Standard-Skin",
@@ -101,11 +101,11 @@
   "language": "Sprache",
   "agree": "Ich stimme zu",
   "mustAgreeToTerms": "Bevor Sie diese Aktion abschließen können, müssen Sie hier {0} Nutzungsbedingungen zustimmen:",
-  "playground": "Playground",
-  "strategyParams": "Strategy params",
-  "addresses": "Addresses",
-  "networkErrorPlayground": "Network error - please open your browser console for more information",
-  "upload": "Upload",
+  "playground": "Spielplatz",
+  "strategyParams": "Strategieparameter",
+  "addresses": "Adressen",
+  "networkErrorPlayground": "Netzwerkfehler - Bitte öffne deine Browserkonsole für weitere Informationen",
+  "upload": "Hochladen",
   "errors": {
     "required": "Dieses Feld ist ein Pflichtfeld",
     "minLength": "Mindestlänge ist {0}",
@@ -133,11 +133,11 @@
   "delegate": {
     "header": "Delegieren",
     "selectAddress": "Adresse auswählen",
-    "to": "To",
-    "addressPlaceholder": "Address or ENS name",
+    "to": "An",
+    "addressPlaceholder": "Adresse oder ENS Name",
     "spacePlaceholder": "Bereich (optional)",
     "delegations": "Ihre Delegation(en)",
-    "allSpaces": "For all spaces",
+    "allSpaces": "Für alle Bereiche",
     "delegated": "An dich delegiert"
   },
   "proposal": {
@@ -180,8 +180,8 @@
     "admins": "Administratoren",
     "filters": "Filter",
     "defaultTab": "Standard-Tab",
-    "proposalThreshold": "Proposal threshold",
-    "showOnly": "Nur Mitgliedervorschläge anzeigen",
+    "proposalThreshold": "Schwellenwert für Vorschläge",
+    "allowOnlyMembers": "Allow only members to submit a proposal",
     "editPlugin": "Plugin bearbeiten",
     "addPlugin": "Plugin hinzufügen",
     "pluginParameters": "Plugin Parameter"
@@ -213,9 +213,48 @@
     "selectVoting": "Wähle das Abstimmungssystem aus",
     "single-choice": "Einzelwahl-Abstimmung",
     "approval": "Zustimmungsabstimmung",
+    "quadratic": "Quadratic voting",
+    "ranked-choice": "Ranked choice voting",
+    "weighted": "Weighted voting",
     "description": {
       "single-choice": "Jeder Wähler kann nur eine Wahlmöglichkeit wählen.",
-      "approval": "Jeder Wähler kann eine beliebige Anzahl von Wahlmöglichkeiten wählen."
+      "approval": "Jeder Wähler kann eine beliebige Anzahl von Wahlmöglichkeiten wählen.",
+      "quadratic": "Each voter may spread voting power across any number of choices. Results are calculated quaratically.",
+      "ranked-choice": "Each voter may select and rank any number of choices. Results are calculted by instant-runoff counting method.",
+      "weighted": "Each voter may spread voting power across any number of choices."
     }
+  },
+  "safeSnap": {
+    "currentOutcome": "Current outcome: {0}",
+    "currentBond": "Current bond: {0}",
+    "finalizedIn": "Finalized {0}",
+    "executableIn": "Executable {0}",
+    "finalOutcome": "Outcome: {0}",
+    "nextBond": "Bond to set outcome: {0}",
+    "setOutcomeTo": "Set outcome to:",
+    "claimBond": "Claim bond",
+    "labels": {
+      "request": "Request execution",
+      "setOutcome": "Set outcome",
+      "changeOutcome": "Change outcome",
+      "executeTxs": "Execute transaction 1/{0}",
+      "finalized": "Vote finalized",
+      "executed": "{0}/{0} Transactions executed",
+      "waiting": "Waiting for vote to close",
+      "error": "Error",
+      "question": "Did this proposal pass and does it meet the",
+      "criteria": "acceptance criteria?"
+    }
+  },
+  "poap": {
+    "no_poap_header": "A POAP hasn't been setup for this proposal yet :'(",
+    "no_voted_header": "Vote to get this POAP",
+    "unclaimed_header": "Claim your I voted POAP",
+    "claimed_header": "Congratulations! You got a new POAP in your account",
+    "loading_header": "The POAP is being added to your collection",
+    "button_claim": "Claim",
+    "button_show": "Show me my badges",
+    "success_claim": "Your POAP is on your address",
+    "error_claim": "There was a problem minting the token"
   }
 }

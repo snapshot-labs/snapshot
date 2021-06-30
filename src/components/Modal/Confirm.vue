@@ -77,53 +77,48 @@
 </template>
 
 <script>
+import { ref, computed } from 'vue';
+import { useStore } from 'vuex';
 import { mapActions } from 'vuex';
 import { getChoiceString } from '@/helpers/utils';
-import client from '@/helpers/clientEIP712';
 
 export default {
-  props: [
-    'open',
-    'space',
-    'proposal',
-    'selectedChoices',
-    'snapshot',
-    'totalScore',
-    'scores',
-    'strategies'
-  ],
+  props: {
+    open: Boolean,
+    space: Object,
+    proposal: Object,
+    selectedChoices: Object,
+    snapshot: String,
+    totalScore: Number,
+    scores: Object,
+    strategies: Object
+  },
   emits: ['reload', 'close'],
-  data() {
-    return {
-      loading: false
-    };
-  },
-  computed: {
-    symbols() {
-      return this.strategies.map(strategy => strategy.params.symbol);
+  setup(props, { emit }) {
+    const store = useStore();
+
+    const loading = ref(false);
+    const symbols = computed(() =>
+      props.strategies.map(strategy => strategy.params.symbol)
+    );
+
+    async function handleSubmit() {
+      loading.value = true;
+      await store.dispatch('send', {
+        space: props.space.key,
+        type: 'vote',
+        payload: {
+          proposal: props.proposal.id,
+          choice: props.selectedChoices,
+          metadata: {}
+        }
+      });
+      emit('reload');
+      emit('close');
+      loading.value = false;
     }
-  },
-  methods: {
-    ...mapActions(['send']),
-    async handleSubmit() {
-      this.loading = true;
-      try {
-        const result = await client.vote(this.$auth.web3, this.web3.account, {
-          space: this.space.key,
-          timestamp: ~~(Date.now() / 1e3),
-          proposal: this.proposal.id,
-          choice: this.selectedChoices,
-          metadata: JSON.stringify({})
-        });
-        console.log('Ok!', result);
-      } catch (e) {
-        if (!e.code || e.code !== 4001) console.log('Oops!', e);
-      }
-      this.$emit('reload');
-      this.$emit('close');
-      this.loading = false;
-    },
-    format: getChoiceString
+
+    return { loading, symbols, handleSubmit, format: getChoiceString };
   }
 };
 </script>
