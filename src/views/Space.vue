@@ -1,12 +1,12 @@
 <template>
-  <Container :slim="true">
-    <div class="col-12 col-lg-3 float-left">
+  <Layout>
+    <template #sidebar-left>
       <BlockSpace :space="space" />
-    </div>
-    <div :class="'col-12 col-lg-9 float-right pl-0 pl-lg-5'">
+    </template>
+    <template #content-right>
       <router-view :space="space" />
-    </div>
-  </Container>
+    </template>
+  </Layout>
 </template>
 
 <script>

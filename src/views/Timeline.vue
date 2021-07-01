@@ -1,22 +1,22 @@
 <template>
   <Layout>
     <template #sidebar-left>
-      <div style="position: fixed; width: 240px">
-        <Block :slim="true" :title="$t('filters')" class="overflow-hidden">
-          <div class="py-3">
-            <router-link
-              :to="{ name: 'timeline' }"
-              v-text="$t('favorites')"
-              class="d-block px-4 py-2 sidenav-item"
-            />
-            <router-link
-              :to="{ name: 'explore' }"
-              v-text="$t('allSpaces')"
-              class="d-block px-4 py-2 sidenav-item"
-            />
-          </div>
-        </Block>
-      </div>
+      <Block :slim="true" :title="$t('filters')" class="overflow-hidden">
+        <div
+          class="responsivenav pt-2 py-lg-3 px-4 px-lg-0 text-center text-lg-left"
+        >
+          <router-link
+            :to="{ name: 'timeline' }"
+            v-text="$t('favorites')"
+            class="d-lg-block d-inline-block px-3 px-lg-4 py-2 responsivenav-item"
+          />
+          <router-link
+            :to="{ name: 'explore' }"
+            v-text="$t('allSpaces')"
+            class="d-lg-block d-inline-block px-3 px-lg-4 py-2 responsivenav-item"
+          />
+        </div>
+      </Block>
     </template>
     <template #content-right>
       <div class="px-4 px-md-0 mb-3 d-flex">

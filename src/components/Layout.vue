@@ -1,10 +1,7 @@
 <template>
   <Container :slim="true">
     <slot />
-    <div
-      v-if="$slots['sidebar-left']"
-      class="col-12 col-lg-3 float-left hide-sm hide-md hide-lg"
-    >
+    <div v-if="$slots['sidebar-left']" class="col-12 col-lg-3 float-left">
       <slot name="sidebar-left" />
     </div>
     <div
