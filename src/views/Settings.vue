@@ -454,9 +454,11 @@ export default {
           error =>
             (errors.includes(error.keyword) &&
               error.params.missingProperty === field) ||
-            (errors.includes(error.keyword) && error.dataPath.includes(field))
+            (errors.includes(error.keyword) &&
+              error.instancePath.includes(field))
         );
-        if (errorFound?.dataPath.includes('strategies'))
+
+        if (errorFound?.instancePath.includes('strategies'))
           return this.$t('errors.minStrategy');
         else if (errorFound)
           return this.$tc(`errors.${errorFound.keyword}`, [
