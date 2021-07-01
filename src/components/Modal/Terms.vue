@@ -42,7 +42,7 @@ export default {
       emit('close');
     }
 
-    return { accept, getIpfsUrl: getUrl(props.space.terms) };
+    return { accept, getIpfsUrl: getUrl(props.space.terms ?? '') };
   }
 };
 </script>
