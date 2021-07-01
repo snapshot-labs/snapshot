@@ -450,13 +450,16 @@ export default {
     inputError(field) {
       if (!this.isValid && !this.loading && this.showErrors) {
         const errors = Object.keys(defaults.errors);
+        console.log(this.validate);
         const errorFound = this.validate.find(
           error =>
             (errors.includes(error.keyword) &&
               error.params.missingProperty === field) ||
-            (errors.includes(error.keyword) && error.dataPath.includes(field))
+            (errors.includes(error.keyword) &&
+              error.instancePath.includes(field))
         );
-        if (errorFound?.dataPath.includes('strategies'))
+
+        if (errorFound?.instancePath.includes('strategies'))
           return this.$t('errors.minStrategy');
         else if (errorFound)
           return this.$tc(`errors.${errorFound.keyword}`, [
