@@ -178,13 +178,17 @@
     "addStrategy": "स्ट्रॅटेजि जोडा",
     "members": "मेंबर्स",
     "admins": "अ‍ॅडमिन",
-    "filters": "फिल्टर",
     "defaultTab": "डीफॉल्ट टॅब",
     "proposalThreshold": "प्रोपोसलं थ्रेशोल्ड",
     "allowOnlyMembers": "केवळ सदस्यांना प्रोपोसलं सबमिट करण्याची परवानगी द्या",
     "editPlugin": "प्लगइन एडिट करा",
     "addPlugin": "प्लगइन जोडा",
-    "pluginParameters": "प्लगइन पॅरामीटर्स"
+    "pluginParameters": "प्लगइन पॅरामीटर्स",
+    "proposalValidation": "Proposal validation",
+    "validation": "Validation",
+    "editValidation": "Edit validation",
+    "selectValidation": "Select validation",
+    "validationParameters": "Validation parameters"
   },
   "setup": {
     "example": "उदा. yam.eth",
