@@ -178,13 +178,17 @@
     "addStrategy": "Добавить стратегию",
     "members": "Члены сообщества",
     "admins": "Admins",
-    "filters": "Фильтры",
     "defaultTab": "Вкладка по умолчанию",
     "proposalThreshold": "Proposal threshold",
     "allowOnlyMembers": "Allow only members to submit a proposal",
     "editPlugin": "Редактировать плагин",
     "addPlugin": "Добавить плагин",
-    "pluginParameters": "Настройки плагина"
+    "pluginParameters": "Настройки плагина",
+    "proposalValidation": "Proposal validation",
+    "validation": "Validation",
+    "editValidation": "Edit validation",
+    "selectValidation": "Select validation",
+    "validationParameters": "Validation parameters"
   },
   "setup": {
     "example": "например, yam.eth",
