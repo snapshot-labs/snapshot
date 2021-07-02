@@ -127,8 +127,13 @@
     "endTime": "Bitiş zamanını seçin",
     "publish": "Yayımla",
     "snapshotBlock": "Ekran görüntüsü alınma blok numarası",
-    "onlyMembersWarning": "Teklif göndermek için alana üye olmanız gerekir",
-    "minScoreWarning": "Teklif göndermek için minimum {0} {1} olması gerekir"
+    "validationWarning": {
+      "basic": {
+        "member": "You need to be a member of the space in order to submit a proposal.",
+        "minScore": "You need to have a minimum of {0} {1} in order to submit a proposal."
+      },
+      "customValidation": "You need to pass the proposal validation in order to submit a proposal."
+    }
   },
   "delegate": {
     "header": "Temsilci",
