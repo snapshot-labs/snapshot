@@ -1,7 +1,11 @@
 <template>
   <Layout>
     <template #sidebar-left>
-      <Block :slim="true" :title="$t('filters')" class="overflow-hidden">
+      <Block
+        :slim="true"
+        :title="$t('filters')"
+        class="text-center overflow-hidden"
+      >
         <div
           class="responsivenav pt-2 py-lg-3 px-4 px-lg-0 text-center text-lg-left"
         >
