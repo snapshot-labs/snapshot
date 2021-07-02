@@ -6,13 +6,14 @@
     <div v-for="choice in choices" :key="choice.i">
       <div class="text-white mb-1">
         <span
-          class="mr-1 tooltipped"
+          class="mr-1"
           :class="[
-            isSmallScreen
-              ? 'tooltipped-ne tooltipped-align-left-2'
-              : 'tooltipped-n'
+            choice.choice.length > 12 &&
+              (isSmallScreen
+                ? 'tooltipped tooltipped-ne tooltipped-align-left-2'
+                : 'tooltipped tooltipped-n')
           ]"
-          :aria-label="choice.choice.length > 12 && choice.choice"
+          :aria-label="choice.choice"
           v-text="_shorten(choice.choice, 'choice')"
         />
         <span
