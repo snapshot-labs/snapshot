@@ -127,8 +127,13 @@
     "endTime": "शेवटची वेळ निवड करा",
     "publish": "प्रकाशित करा",
     "snapshotBlock": "स्नॅपशॉट ब्लॉक नंबर",
-    "onlyMembersWarning": "प्रोपोसलं सबमिट कारण्यासाठी जागेचे मेंबर असणे आवश्यक आहे",
-    "minScoreWarning": "प्रोपोसलं सबमिट करण्यासाठी किमत{0}{1} असणे आवश्यक आहे"
+    "validationWarning": {
+      "basic": {
+        "member": "You need to be a member of the space in order to submit a proposal.",
+        "minScore": "You need to have a minimum of {0} {1} in order to submit a proposal."
+      },
+      "customValidation": "You need to pass the proposal validation in order to submit a proposal."
+    }
   },
   "delegate": {
     "header": "डेलिगेट",
