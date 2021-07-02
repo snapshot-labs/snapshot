@@ -46,6 +46,10 @@
     "name": "Turkish",
     "nativeName": "Türkçe"
   },
+  "vi-VN": {
+    "name": "Vietnamese",
+    "nativeName": "Tiếng Việt"
+  },
   "zh-CN": {
     "name": "Chinese",
     "nativeName": "简体中文"
