@@ -14,10 +14,12 @@
         <Icon name="warning" class="mr-1" />
         <span v-if="passValidation[1] === 'basic'">
           {{
-            $tc('create.validationWarning.basic', [
-              _n(space.filters.minScore),
-              space.symbol
-            ])
+            space.validation?.params.minScore || space?.filters.minScore
+              ? $tc('create.validationWarning.basic.minScore', [
+                  _n(space.filters.minScore),
+                  space.symbol
+                ])
+              : $t('create.validationWarning.basic.member')
           }}
         </span>
         <span v-else>
@@ -221,7 +223,7 @@ export default {
           web3Account.value,
           space.value,
           '',
-          {}
+          space.value.validation?.params ?? {}
         ))
           ? [true]
           : [false, spaceValidation];
