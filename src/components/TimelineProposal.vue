@@ -10,7 +10,11 @@
       <div class="mb-2">
         <Token :space="proposal.space" size="28" />
         <span class="ml-2" v-text="proposal.space.name" />
-        {{ $tc('proposalBy', [_shorten(proposal.author)]) }}
+        {{
+          $tc('proposalBy', [
+            profiles[proposal.author]?.ens || _shorten(proposal.author)
+          ])
+        }}
         <Badges :address="proposal.author" :members="proposal.space.members" />
         <UiState :state="proposal.state" class="d-inline-block float-right" />
       </div>
@@ -32,7 +36,8 @@ import removeMd from 'remove-markdown';
 
 export default {
   props: {
-    proposal: Object
+    proposal: Object,
+    profiles: Object
   },
   computed: {
     body() {

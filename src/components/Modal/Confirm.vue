@@ -79,7 +79,6 @@
 <script>
 import { ref, computed } from 'vue';
 import { useStore } from 'vuex';
-import { mapActions } from 'vuex';
 import { getChoiceString } from '@/helpers/utils';
 
 export default {
@@ -87,7 +86,7 @@ export default {
     open: Boolean,
     space: Object,
     proposal: Object,
-    selectedChoices: Object,
+    selectedChoices: [Object, Number],
     snapshot: String,
     totalScore: Number,
     scores: Object,
