@@ -13,26 +13,30 @@
 </template>
 
 <script>
+import { ref, onMounted, toRefs, watch } from 'vue';
 export default {
-  props: ['modelValue', 'textareaProps', 'error', 'disabled'],
+  props: {
+    modelValue: String,
+    textareaProps: String,
+    error: String,
+    disabled: Boolean
+  },
   emits: ['update:modelValue'],
-  data() {
-    return {
-      input: ''
-    };
-  },
-  created() {
-    if (this.modelValue) this.input = this.modelValue;
-  },
-  watch: {
-    modelValue(value) {
-      this.input = value;
+  setup(props, { emit }) {
+    const input = ref('');
+    const { modelValue } = toRefs(props);
+
+    function handleInput() {
+      emit('update:modelValue', input.value);
     }
-  },
-  methods: {
-    handleInput() {
-      this.$emit('update:modelValue', this.input);
-    }
+
+    onMounted(() => {
+      if (props.modelValue) input.value = props.modelValue;
+    });
+
+    watch(modelValue, value => (input.value = value));
+
+    return { input, handleInput };
   }
 };
 </script>
