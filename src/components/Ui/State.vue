@@ -7,16 +7,19 @@
 </template>
 
 <script>
+import { computed } from 'vue';
 export default {
   props: {
     state: String
   },
-  computed: {
-    stateClass() {
-      if (this.state === 'closed') return 'bg-purple';
-      if (this.state === 'active') return 'bg-green';
+  setup(props) {
+    const stateClass = computed(() => {
+      if (props.state === 'closed') return 'bg-purple';
+      if (props.state === 'active') return 'bg-green';
       return '';
-    }
+    });
+
+    return { stateClass };
   }
 };
 </script>

@@ -20,13 +20,15 @@
 
 <script>
 export default {
-  props: ['modelValue', 'disabled'],
+  props: { modelValue: String, disabled: Boolean },
   emits: ['update:modelValue', 'change'],
-  methods: {
-    handleChange(event) {
-      this.$emit('update:modelValue', event.target.value);
-      this.$emit('change', event.target.value);
+  setup(_, { emit }) {
+    function handleChange(event) {
+      emit('update:modelValue', event.target.value);
+      emit('change', event.target.value);
     }
+
+    return { handleChange };
   }
 };
 </script>

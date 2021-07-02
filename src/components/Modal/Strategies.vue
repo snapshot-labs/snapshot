@@ -45,10 +45,10 @@
 import { isAddress } from '@ethersproject/address';
 
 export default {
-  props: ['open', 'strategies', 'space'],
+  props: { open: Boolean, strategies: Object, space: Object },
   emits: ['close'],
-  methods: {
-    isAddress
+  setup() {
+    return { isAddress };
   }
 };
 </script>

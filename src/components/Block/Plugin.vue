@@ -10,7 +10,7 @@
           class="mr-2 mb-2"
           :imgsrc="getLogoUrl(plugin.key)"
           :seed="plugin.name.charCodeAt()"
-          :size="28"
+          size="28"
         />
         <h3 v-text="plugin.name" />
       </a>

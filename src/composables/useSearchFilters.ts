@@ -4,6 +4,7 @@ import skins from '@/helpers/skins';
 import strategies from '@/helpers/strategies';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import plugins from '@snapshot-labs/snapshot.js/src/plugins';
+import validations from '@snapshot-labs/snapshot.js/src/validations';
 import { getStrategy } from '@/helpers/utils';
 
 export function useSearchFilters() {
@@ -78,10 +79,30 @@ export function useSearchFilters() {
       .sort((a, b) => b.spaces.length - a.spaces.length);
   };
 
+  const minifiedValidationsArray = computed(() => {
+    return Object.keys(validations).map((key: any) => {
+      return {
+        name: key,
+        spaces: Object.entries(spaces.value)
+          .filter((space: any) => space[1].validation?.name === key)
+          .map(space => space[0])
+      };
+    });
+  });
+
+  const filteredValidations = (q = '') => {
+    return minifiedValidationsArray.value
+      .filter(validation =>
+        JSON.stringify(validation).toLowerCase().includes(q.toLowerCase())
+      )
+      .sort((a, b) => b.spaces.length - a.spaces.length);
+  };
+
   return {
     filteredSkins,
     filteredStrategies,
     filteredNetworks,
-    filteredPlugins
+    filteredPlugins,
+    filteredValidations
   };
 }
