@@ -178,13 +178,17 @@
     "addStrategy": "Strateji ekle",
     "members": "Üyeler",
     "admins": "Admin",
-    "filters": "Filtreler",
     "defaultTab": "Varsayılan sekme",
     "proposalThreshold": "Teklif eşiği",
     "allowOnlyMembers": "Allow only members to submit a proposal",
     "editPlugin": "Eklentiyi düzenle",
     "addPlugin": "Eklenti ekle",
-    "pluginParameters": "Eklenti Parametreleri"
+    "pluginParameters": "Eklenti Parametreleri",
+    "proposalValidation": "Proposal validation",
+    "validation": "Validation",
+    "editValidation": "Edit validation",
+    "selectValidation": "Select validation",
+    "validationParameters": "Validation parameters"
   },
   "setup": {
     "example": "örneğin. yam.eth",
