@@ -127,8 +127,13 @@
     "endTime": "选择结束时间",
     "publish": "发布",
     "snapshotBlock": "Snapshot 模块号码",
-    "onlyMembersWarning": "您需要成为空间的成员才能提交提案",
-    "minScoreWarning": "您需要至少 {0} {1} 才能提交提案"
+    "validationWarning": {
+      "basic": {
+        "member": "You need to be a member of the space in order to submit a proposal.",
+        "minScore": "You need to have a minimum of {0} {1} in order to submit a proposal."
+      },
+      "customValidation": "You need to pass the proposal validation in order to submit a proposal."
+    }
   },
   "delegate": {
     "header": "授权",
