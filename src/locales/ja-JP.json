@@ -178,13 +178,17 @@
     "addStrategy": "ストラテジーを追加する",
     "members": "メンバー",
     "admins": "Admins",
-    "filters": "フィルター",
     "defaultTab": "デフォルトのタブ",
     "proposalThreshold": "Proposal threshold",
     "allowOnlyMembers": "Allow only members to submit a proposal",
     "editPlugin": "プラグインを編集する",
     "addPlugin": "プラグインを追加する",
-    "pluginParameters": "プラグインのパラメータ"
+    "pluginParameters": "プラグインのパラメータ",
+    "proposalValidation": "Proposal validation",
+    "validation": "Validation",
+    "editValidation": "Edit validation",
+    "selectValidation": "Select validation",
+    "validationParameters": "Validation parameters"
   },
   "setup": {
     "example": "例 yam.eth",
