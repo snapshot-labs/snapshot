@@ -23,7 +23,7 @@
           }}
         </span>
         <span v-else>
-          {{ $t('create.validationWarning.customValidation') }}
+          {{ $t(space.validation.params.rules || 'create.validationWarning.customValidation') }}
         </span>
       </Block>
       <div class="px-4 px-md-0">
@@ -179,6 +179,7 @@ import { useTerms } from '@/composables/useTerms';
 import { useQuery, useResult } from '@vue/apollo-composable';
 import { PROPOSAL_QUERY } from '@/helpers/queries';
 import validations from '@snapshot-labs/snapshot.js/src/validations';
+import { clone } from '@/helpers/utils';
 
 export default {
   setup() {
@@ -217,16 +218,17 @@ export default {
 
     // Check if account passes space validation
     watchEffect(async () => {
-      const spaceValidation = space.value.validation?.name ?? 'basic';
-      if (web3Account.value && auth.isAuthenticated.value)
-        passValidation.value = (await validations[spaceValidation](
+      if (web3Account.value && auth.isAuthenticated.value) {
+        const validationName = space.value.validation?.name ?? 'basic';
+        const validationParams = space.value.validation?.params ?? {};
+        const isValid = await validations[validationName](
           web3Account.value,
-          space.value,
+          clone(space.value),
           '',
-          space.value.validation?.params ?? {}
-        ))
-          ? [true]
-          : [false, spaceValidation];
+          clone(validationParams)
+        );
+        passValidation.value = [isValid, validationName];
+      }
     });
 
     const isValid = computed(() => {
