@@ -36,7 +36,7 @@
 
 <script>
 export default {
-  props: ['open', 'authorIpfsHash', 'relayerIpfsHash'],
+  props: { open: Boolean, authorIpfsHash: String, relayerIpfsHash: Object },
   emits: ['close']
 };
 </script>

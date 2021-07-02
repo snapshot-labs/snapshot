@@ -16,7 +16,7 @@
           height="64"
         />
         <h3 v-text="plugin.name" />
-        <div class="mb-2">
+        <div v-if="plugin.website" class="mb-2">
           <a :href="plugin.website" target="_blank" class="text-white">
             {{ $t('learnMore') }}
             <Icon name="external-link" />
@@ -62,48 +62,50 @@
 </template>
 
 <script>
-import plugins from '@snapshot-labs/snapshot.js/src/plugins';
+import { ref, watch, toRefs } from 'vue';
+import pluginsObj from '@snapshot-labs/snapshot.js/src/plugins';
 import { clone } from '@/helpers/utils';
 
 export default {
-  props: ['open', 'modelValue', 'space', 'proposal'],
+  props: { open: Boolean, modelValue: Object, space: Object, proposal: Object },
   emits: ['close', 'update:modelValue'],
-  data() {
-    return {
-      plugins: [],
-      selected: false,
-      form: {}
-    };
-  },
-  watch: {
-    open() {
-      if (this.modelValue && this.open) this.form = clone(this.modelValue);
-      this.selected = false;
-    },
-    selected(value) {
-      if (value === 'safeSnap') {
-        this.form.safeSnap = this.form.safeSnap || {};
-        this.$emit('update:modelValue', this.form);
-        this.$emit('close');
-      }
-    }
-  },
-  created() {
-    if (!this.space.plugins) return;
-    this.plugins = Object.fromEntries(
-      Object.keys(this.space.plugins).map(plugin => {
-        const instance = new plugins[plugin]();
-        return [plugin, instance];
-      })
-    );
-  },
-  methods: {
-    getLogoUrl(plugin) {
+  setup(props, { emit }) {
+    const { open } = toRefs(props);
+    const plugins = ref([]);
+    const selected = ref(false);
+    const form = ref({});
+
+    function getLogoUrl(plugin) {
       return `https://raw.githubusercontent.com/snapshot-labs/snapshot.js/master/src/plugins/${plugin}/logo.png`;
-    },
-    showButton(plugin) {
+    }
+
+    function showButton(plugin) {
       return plugin.name !== 'SafeSnap';
     }
+
+    if (props.space.plugins) {
+      plugins.value = Object.fromEntries(
+        Object.keys(props.space.plugins).map(plugin => {
+          const instance = new pluginsObj[plugin]();
+          return [plugin, instance];
+        })
+      );
+    }
+
+    watch(open, () => {
+      if (props.modelValue && props.open) form.value = clone(props.modelValue);
+      selected.value = false;
+    });
+
+    watch(selected, value => {
+      if (value === 'safeSnap') {
+        form.value.safeSnap = form.value.safeSnap || {};
+        emit('update:modelValue', form.value);
+        emit('close');
+      }
+    });
+
+    return { plugins, selected, form, getLogoUrl, showButton };
   }
 };
 </script>

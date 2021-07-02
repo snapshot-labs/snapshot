@@ -50,29 +50,21 @@
 </template>
 
 <script>
+import { ref, toRefs, watch } from 'vue';
+
 export default {
-  props: ['open', 'value', 'selectedDate'],
+  props: { open: Boolean, value: Number, selectedDate: String },
   emits: ['input', 'close'],
-  data() {
-    return {
-      input: '',
-      step: 0,
-      form: {
-        h: '12',
-        m: '00'
-      }
-    };
-  },
-  watch: {
-    open() {
-      const { dateString, h, m } = this.formatDate(this.value);
-      this.step = 0;
-      this.form = { h, m };
-      this.input = dateString;
-    }
-  },
-  methods: {
-    formatDate(date) {
+  setup(props, { emit }) {
+    const { open } = toRefs(props);
+    const input = ref('');
+    const step = ref(0);
+    const form = ref({
+      h: '12',
+      m: '00'
+    });
+
+    function formatDate(date) {
       const output = { h: '12', m: '00', dateString: '' };
       if (!date) return output;
       const dateObject = new Date(date * 1000);
@@ -82,15 +74,32 @@ export default {
       output.h = ('0' + dateObject.getHours().toString()).slice(-2);
       output.m = ('0' + dateObject.getMinutes().toString()).slice(-2);
       return output;
-    },
-    handleSubmit() {
-      if (this.step === 0) return (this.step = 1);
-      const [year, month, day] = this.input.split('-');
-      let input = new Date(year, month - 1, day, this.form.h, this.form.m, 0);
-      input = new Date(input).getTime() / (1e3).toFixed();
-      this.$emit('input', input);
-      this.$emit('close');
     }
+
+    function handleSubmit() {
+      if (step.value === 0) return (step.value = 1);
+      const [year, month, day] = input.value.split('-');
+      let timestamp = new Date(
+        year,
+        month - 1,
+        day,
+        form.value.h,
+        form.value.m,
+        0
+      );
+      timestamp = new Date(timestamp).getTime() / (1e3).toFixed();
+      emit('input', timestamp);
+      emit('close');
+    }
+
+    watch(open, () => {
+      const { dateString, h, m } = formatDate(props.value);
+      step.value = 0;
+      form.value = { h, m };
+      input.value = dateString;
+    });
+
+    return { input, step, form, handleSubmit };
   }
 };
 </script>
