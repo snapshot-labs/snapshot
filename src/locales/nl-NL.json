@@ -178,13 +178,17 @@
     "addStrategy": "Strategie toevoegen",
     "members": "Leden",
     "admins": "Admins",
-    "filters": "Filters",
     "defaultTab": "Standaard tab",
     "proposalThreshold": "Voorstel drempel",
     "allowOnlyMembers": "Sta alleen leden toe een voorstel in te dienen",
     "editPlugin": "Bewerk plugin",
     "addPlugin": "Plugin toevoegen",
-    "pluginParameters": "Plugin parameters"
+    "pluginParameters": "Plugin parameters",
+    "proposalValidation": "Proposal validation",
+    "validation": "Validation",
+    "editValidation": "Edit validation",
+    "selectValidation": "Select validation",
+    "validationParameters": "Validation parameters"
   },
   "setup": {
     "example": "b.v. yam.eth",
