@@ -32,7 +32,7 @@ export default {
   props: {
     modelValue: [String, Number],
     placeholder: String,
-    error: Boolean,
+    error: String,
     number: Boolean,
     disabled: Boolean
   },
