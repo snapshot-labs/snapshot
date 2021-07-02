@@ -178,13 +178,17 @@
     "addStrategy": "Añadir estrategia",
     "members": "Miembros",
     "admins": "Admins",
-    "filters": "Filtros",
     "defaultTab": "Pestaña por defecto",
     "proposalThreshold": "Proposal threshold",
     "allowOnlyMembers": "Allow only members to submit a proposal",
     "editPlugin": "Edit plugin",
     "addPlugin": "Add plugin",
-    "pluginParameters": "Plugin parameters"
+    "pluginParameters": "Plugin parameters",
+    "proposalValidation": "Proposal validation",
+    "validation": "Validation",
+    "editValidation": "Edit validation",
+    "selectValidation": "Select validation",
+    "validationParameters": "Validation parameters"
   },
   "setup": {
     "example": "ej. yam.eth",
