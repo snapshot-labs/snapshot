@@ -79,7 +79,6 @@
 <script>
 import { ref, computed } from 'vue';
 import { useStore } from 'vuex';
-import { mapActions } from 'vuex';
 import { getChoiceString } from '@/helpers/utils';
 
 export default {

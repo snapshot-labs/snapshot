@@ -541,7 +541,7 @@ export default {
       this.modalPluginsOpen = true;
     },
     handleSubmitAddPlugins(payload) {
-      this.form.plugins[payload.key] = payload.input;
+      this.form.plugins[payload.key] = payload.inputClone;
     },
     handleEditValidation() {
       this.currentValidation = {};
