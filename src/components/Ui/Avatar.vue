@@ -21,12 +21,12 @@
 </template>
 
 <script>
+import { ref } from 'vue';
 export default {
-  props: ['address', 'size', 'imgsrc', 'seed'],
-  data() {
-    return {
-      error: false
-    };
+  props: { address: String, size: String, imgsrc: String, seed: Number },
+  setup() {
+    const error = ref(false);
+    return { error };
   }
 };
 </script>

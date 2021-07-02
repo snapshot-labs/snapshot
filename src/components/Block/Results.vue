@@ -43,7 +43,6 @@
       <UiProgress
         :value="results.resultsByStrategyScore[choice.i]"
         :max="results.sumOfResultsBalance"
-        :titles="titles"
         class="mb-3"
       />
     </div>
