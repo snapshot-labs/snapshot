@@ -178,13 +178,17 @@
     "addStrategy": "Thêm chiến lược",
     "members": "Thành viên",
     "admins": "Admins",
-    "filters": "Lọc",
     "defaultTab": "Tab mặc định",
     "proposalThreshold": "Ngưỡng đề xuất",
     "allowOnlyMembers": "Chỉ cho phép các thành viên gửi đề xuất",
     "editPlugin": "Chỉnh sửa plugin",
     "addPlugin": "Thêm plugin",
-    "pluginParameters": "Thông số plugin"
+    "pluginParameters": "Thông số plugin",
+    "proposalValidation": "Proposal validation",
+    "validation": "Validation",
+    "editValidation": "Edit validation",
+    "selectValidation": "Select validation",
+    "validationParameters": "Validation parameters"
   },
   "setup": {
     "example": "e.g.yam.eth",
