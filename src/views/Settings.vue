@@ -359,6 +359,7 @@ import { getSpaceUri, uriGet } from '@/helpers/ens';
 import defaults from '@/locales/default';
 
 const gateway = process.env.VUE_APP_IPFS_GATEWAY || gateways[0];
+const basicValidation = { name: 'basic', params: {} };
 
 export default {
   setup() {
@@ -397,7 +398,7 @@ export default {
         strategies: [],
         plugins: {},
         filters: {},
-        validation: {}
+        validation: basicValidation
       },
       networks
     };
@@ -439,7 +440,7 @@ export default {
       delete space._activeProposals;
       space.strategies = space.strategies || [];
       space.plugins = space.plugins || {};
-      space.validation = space.validation || { name: 'basic', params: {} };
+      space.validation = space.validation || basicValidation;
       space.filters = space.filters || {};
       this.currentSettings = clone(space);
       this.form = space;
