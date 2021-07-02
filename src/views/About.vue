@@ -18,6 +18,13 @@
           <div>{{ network.name }}</div>
         </div>
 
+        <div class="mb-3">
+          <h4 class="text-white mb-2">
+            {{ $t('settings.proposalValidation') }}
+          </h4>
+          {{ space.validation?.name || 'basic' }}
+        </div>
+
         <div v-if="space.filters?.minScore" class="mb-3">
           <h4 class="text-white mb-2">
             {{ $t('settings.proposalThreshold') }}
