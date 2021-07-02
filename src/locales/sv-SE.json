@@ -178,13 +178,17 @@
     "addStrategy": "Lägg till strategi",
     "members": "Medlemmar",
     "admins": "Admins",
-    "filters": "Filter",
     "defaultTab": "Standardflik",
     "proposalThreshold": "Förslag tröskel",
     "allowOnlyMembers": "Tillåt endast medlemmar att lägga fram ett förslag",
     "editPlugin": "Redigera plugin",
     "addPlugin": "Lägg till plugin",
-    "pluginParameters": "Plugin parametrar"
+    "pluginParameters": "Plugin parametrar",
+    "proposalValidation": "Proposal validation",
+    "validation": "Validation",
+    "editValidation": "Edit validation",
+    "selectValidation": "Select validation",
+    "validationParameters": "Validation parameters"
   },
   "setup": {
     "example": "e.g. yam.eth",
