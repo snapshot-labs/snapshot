@@ -22,22 +22,21 @@ export default {
       required: true
     }
   },
-  data() {
-    return {
-      types: [
-        'single-choice',
-        'approval',
-        'quadratic',
-        'ranked-choice',
-        'weighted'
-      ]
-    };
-  },
-  methods: {
-    select(id) {
-      this.$emit('update:modelValue', id);
-      this.$emit('close');
+  setup(_, { emit }) {
+    const types = [
+      'single-choice',
+      'approval',
+      'quadratic',
+      'ranked-choice',
+      'weighted'
+    ];
+
+    function select(id) {
+      emit('update:modelValue', id);
+      emit('close');
     }
+
+    return { types, select };
   }
 };
 </script>

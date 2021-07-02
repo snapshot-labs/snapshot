@@ -34,18 +34,15 @@
 <script>
 import { getUrl } from '@snapshot-labs/snapshot.js/src/utils.ts';
 export default {
-  props: ['open', 'space'],
+  props: { open: Boolean, space: Object },
   emits: ['close'],
-  methods: {
-    accept() {
-      this.$emit('accept');
-      this.$emit('close');
+  setup(props, { emit }) {
+    function accept() {
+      emit('accept');
+      emit('close');
     }
-  },
-  computed: {
-    getIpfsUrl() {
-      return getUrl(this.space.terms);
-    }
+
+    return { accept, getIpfsUrl: getUrl(props.space.terms ?? '') };
   }
 };
 </script>
