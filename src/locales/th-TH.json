@@ -127,8 +127,13 @@
     "endTime": "เลือกเวลาสิ้นสุด",
     "publish": "ต้องการเผยแพร่",
     "snapshotBlock": "หมายเลขบล็อกสแนปชอต",
-    "onlyMembersWarning": "คุณต้องเป็นสมาชิกจึงจะส่งข้อเสนอได้",
-    "minScoreWarning": "คุณต้องมีจำนวนขั้นต่ำ {0} {1} ในการส่งข้อเสนอ"
+    "validationWarning": {
+      "basic": {
+        "member": "You need to be a member of the space in order to submit a proposal.",
+        "minScore": "You need to have a minimum of {0} {1} in order to submit a proposal."
+      },
+      "customValidation": "You need to pass the proposal validation in order to submit a proposal."
+    }
   },
   "delegate": {
     "header": "ผู้รับมอบหมาย",
@@ -178,13 +183,17 @@
     "addStrategy": "แก้ไขกลยุทธ์",
     "members": "สมาชิก",
     "admins": "ผู้ดูแลระบบ",
-    "filters": "ตัวกรอง",
     "defaultTab": "ค่าเริ่มต้นแท็บ",
     "proposalThreshold": "Proposal threshold",
     "allowOnlyMembers": "Allow only members to submit a proposal",
     "editPlugin": "แก้ไขปลั๊กอิน",
     "addPlugin": "เพิ่มปลั๊กอิน",
-    "pluginParameters": "ปลั๊กอินที่ส่งไป"
+    "pluginParameters": "ปลั๊กอินที่ส่งไป",
+    "proposalValidation": "Proposal validation",
+    "validation": "Validation",
+    "editValidation": "Edit validation",
+    "selectValidation": "Select validation",
+    "validationParameters": "Validation parameters"
   },
   "setup": {
     "example": "เช่น.แยมและอื่นๆ",
