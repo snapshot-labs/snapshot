@@ -178,13 +178,17 @@
     "addStrategy": "Ajouter une stratégie",
     "members": "Membres",
     "admins": "Administrateurs",
-    "filters": "Filtres",
     "defaultTab": "Onglet par défaut",
     "proposalThreshold": "Proposal threshold",
     "allowOnlyMembers": "Allow only members to submit a proposal",
     "editPlugin": "Modifier le module",
     "addPlugin": "Ajouter un plugin",
-    "pluginParameters": "Paramètres du plugin"
+    "pluginParameters": "Paramètres du plugin",
+    "proposalValidation": "Proposal validation",
+    "validation": "Validation",
+    "editValidation": "Edit validation",
+    "selectValidation": "Select validation",
+    "validationParameters": "Validation parameters"
   },
   "setup": {
     "example": "ex : yam.eth",
