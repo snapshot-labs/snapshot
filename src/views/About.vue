@@ -25,7 +25,13 @@
           {{ space.validation?.name || 'basic' }}
         </div>
 
-        <div v-if="space.filters?.minScore" class="mb-3">
+        <div
+          v-if="
+            (!space.validation || space.validation?.name === 'basic') &&
+            space.filters?.minScore
+          "
+          class="mb-3"
+        >
           <h4 class="text-white mb-2">
             {{ $t('settings.proposalThreshold') }}
           </h4>

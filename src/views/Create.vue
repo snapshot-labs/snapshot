@@ -23,7 +23,12 @@
           }}
         </span>
         <span v-else>
-          {{ $t(space.validation.params.rules || 'create.validationWarning.customValidation') }}
+          {{
+            $t(
+              space.validation.params.rules ||
+                'create.validationWarning.customValidation'
+            )
+          }}
         </span>
       </Block>
       <div class="px-4 px-md-0">
