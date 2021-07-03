@@ -127,8 +127,13 @@
     "endTime": "ముగింపు సమయాన్ని ఎంచుకోండి",
     "publish": "ప్రచురించండి",
     "snapshotBlock": "స్నాప్‌షాట్ బ్లాక్ సంఖ్య",
-    "onlyMembersWarning": "You need to be a member of the space in order to submit a proposal",
-    "minScoreWarning": "You need to have a minimum of {0} {1} in order to submit a proposal"
+    "validationWarning": {
+      "basic": {
+        "member": "You need to be a member of the space in order to submit a proposal.",
+        "minScore": "You need to have a minimum of {0} {1} in order to submit a proposal."
+      },
+      "customValidation": "You need to pass the proposal validation in order to submit a proposal."
+    }
   },
   "delegate": {
     "header": "ప్రతినిధి",
@@ -178,13 +183,17 @@
     "addStrategy": "వ్యూహాన్ని జోడించండి",
     "members": "సభ్యులు",
     "admins": "Admins",
-    "filters": "ఫిల్టర్లు",
     "defaultTab": "డిఫాల్ట్ టాబ్",
     "proposalThreshold": "Proposal threshold",
     "allowOnlyMembers": "Allow only members to submit a proposal",
     "editPlugin": "Edit plugin",
     "addPlugin": "Add plugin",
-    "pluginParameters": "Plugin parameters"
+    "pluginParameters": "Plugin parameters",
+    "proposalValidation": "Proposal validation",
+    "validation": "Validation",
+    "editValidation": "Edit validation",
+    "selectValidation": "Select validation",
+    "validationParameters": "Validation parameters"
   },
   "setup": {
     "example": "ఉదాహరణ. yarn.eth",

@@ -127,8 +127,13 @@
     "endTime": "Kies eindtijd",
     "publish": "Publiceren",
     "snapshotBlock": "Snapshot bloknummer",
-    "onlyMembersWarning": "U moet lid zijn van de spatie om een voorstel te kunnen indienen",
-    "minScoreWarning": "U moet een minimum van {0} {1} hebben om een voorstel te kunnen indienen"
+    "validationWarning": {
+      "basic": {
+        "member": "You need to be a member of the space in order to submit a proposal.",
+        "minScore": "You need to have a minimum of {0} {1} in order to submit a proposal."
+      },
+      "customValidation": "You need to pass the proposal validation in order to submit a proposal."
+    }
   },
   "delegate": {
     "header": "Delegeren",
@@ -178,13 +183,17 @@
     "addStrategy": "Strategie toevoegen",
     "members": "Leden",
     "admins": "Admins",
-    "filters": "Filters",
     "defaultTab": "Standaard tab",
     "proposalThreshold": "Voorstel drempel",
     "allowOnlyMembers": "Sta alleen leden toe een voorstel in te dienen",
     "editPlugin": "Bewerk plugin",
     "addPlugin": "Plugin toevoegen",
-    "pluginParameters": "Plugin parameters"
+    "pluginParameters": "Plugin parameters",
+    "proposalValidation": "Proposal validation",
+    "validation": "Validation",
+    "editValidation": "Edit validation",
+    "selectValidation": "Select validation",
+    "validationParameters": "Validation parameters"
   },
   "setup": {
     "example": "b.v. yam.eth",

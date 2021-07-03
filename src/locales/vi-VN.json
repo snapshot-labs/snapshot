@@ -127,8 +127,13 @@
     "endTime": "Chọn thời gian kết thúc",
     "publish": "Xuất bản",
     "snapshotBlock": "Số khối chụp ảnh nhanh",
-    "onlyMembersWarning": "Bạn cần phải là thành viên của không gian để gửi đề xuất",
-    "minScoreWarning": "Bạn cần có tối thiểu {0} {1} để gửi đề xuất"
+    "validationWarning": {
+      "basic": {
+        "member": "You need to be a member of the space in order to submit a proposal.",
+        "minScore": "You need to have a minimum of {0} {1} in order to submit a proposal."
+      },
+      "customValidation": "You need to pass the proposal validation in order to submit a proposal."
+    }
   },
   "delegate": {
     "header": "Ủy thác",
@@ -178,13 +183,17 @@
     "addStrategy": "Thêm chiến lược",
     "members": "Thành viên",
     "admins": "Admins",
-    "filters": "Lọc",
     "defaultTab": "Tab mặc định",
     "proposalThreshold": "Ngưỡng đề xuất",
     "allowOnlyMembers": "Chỉ cho phép các thành viên gửi đề xuất",
     "editPlugin": "Chỉnh sửa plugin",
     "addPlugin": "Thêm plugin",
-    "pluginParameters": "Thông số plugin"
+    "pluginParameters": "Thông số plugin",
+    "proposalValidation": "Proposal validation",
+    "validation": "Validation",
+    "editValidation": "Edit validation",
+    "selectValidation": "Select validation",
+    "validationParameters": "Validation parameters"
   },
   "setup": {
     "example": "e.g.yam.eth",

@@ -127,8 +127,13 @@
     "endTime": "选择结束时间",
     "publish": "发布",
     "snapshotBlock": "Snapshot 模块号码",
-    "onlyMembersWarning": "您需要成为空间的成员才能提交提案",
-    "minScoreWarning": "您需要至少 {0} {1} 才能提交提案"
+    "validationWarning": {
+      "basic": {
+        "member": "You need to be a member of the space in order to submit a proposal.",
+        "minScore": "You need to have a minimum of {0} {1} in order to submit a proposal."
+      },
+      "customValidation": "You need to pass the proposal validation in order to submit a proposal."
+    }
   },
   "delegate": {
     "header": "授权",
@@ -178,13 +183,17 @@
     "addStrategy": "添加策略",
     "members": "成员",
     "admins": "管理员",
-    "filters": "过滤器",
     "defaultTab": "默认标签页",
     "proposalThreshold": "Proposal threshold",
     "allowOnlyMembers": "Allow only members to submit a proposal",
     "editPlugin": "编辑插件",
     "addPlugin": "添加插件",
-    "pluginParameters": "插件参数"
+    "pluginParameters": "插件参数",
+    "proposalValidation": "Proposal validation",
+    "validation": "Validation",
+    "editValidation": "Edit validation",
+    "selectValidation": "Select validation",
+    "validationParameters": "Validation parameters"
   },
   "setup": {
     "example": "例如 yam.eth",
