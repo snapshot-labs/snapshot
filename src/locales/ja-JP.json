@@ -127,8 +127,13 @@
     "endTime": "終了日を選択する",
     "publish": "公開",
     "snapshotBlock": "Snapshotのブロック高",
-    "onlyMembersWarning": "提案を送信するため、スペースのメンバーである必要がある。",
-    "minScoreWarning": "提案を作成するためには、最低でも {0} {1} 所有していなければなりません。"
+    "validationWarning": {
+      "basic": {
+        "member": "You need to be a member of the space in order to submit a proposal.",
+        "minScore": "You need to have a minimum of {0} {1} in order to submit a proposal."
+      },
+      "customValidation": "You need to pass the proposal validation in order to submit a proposal."
+    }
   },
   "delegate": {
     "header": "移譲",
@@ -178,13 +183,17 @@
     "addStrategy": "ストラテジーを追加する",
     "members": "メンバー",
     "admins": "Admins",
-    "filters": "フィルター",
     "defaultTab": "デフォルトのタブ",
     "proposalThreshold": "Proposal threshold",
     "allowOnlyMembers": "Allow only members to submit a proposal",
     "editPlugin": "プラグインを編集する",
     "addPlugin": "プラグインを追加する",
-    "pluginParameters": "プラグインのパラメータ"
+    "pluginParameters": "プラグインのパラメータ",
+    "proposalValidation": "Proposal validation",
+    "validation": "Validation",
+    "editValidation": "Edit validation",
+    "selectValidation": "Select validation",
+    "validationParameters": "Validation parameters"
   },
   "setup": {
     "example": "例 yam.eth",

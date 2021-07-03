@@ -127,8 +127,13 @@
     "endTime": "Välj sluttid",
     "publish": "Publicera",
     "snapshotBlock": "Snapshot blocknummer",
-    "onlyMembersWarning": "Du måste vara medlem i space för att kunna lämna in ett förslag",
-    "minScoreWarning": "Du behöver ha minst {0} {1} för att kunna skicka in ett förslag"
+    "validationWarning": {
+      "basic": {
+        "member": "You need to be a member of the space in order to submit a proposal.",
+        "minScore": "You need to have a minimum of {0} {1} in order to submit a proposal."
+      },
+      "customValidation": "You need to pass the proposal validation in order to submit a proposal."
+    }
   },
   "delegate": {
     "header": "Delegera",
@@ -178,13 +183,17 @@
     "addStrategy": "Lägg till strategi",
     "members": "Medlemmar",
     "admins": "Admins",
-    "filters": "Filter",
     "defaultTab": "Standardflik",
     "proposalThreshold": "Förslag tröskel",
     "allowOnlyMembers": "Tillåt endast medlemmar att lägga fram ett förslag",
     "editPlugin": "Redigera plugin",
     "addPlugin": "Lägg till plugin",
-    "pluginParameters": "Plugin parametrar"
+    "pluginParameters": "Plugin parametrar",
+    "proposalValidation": "Proposal validation",
+    "validation": "Validation",
+    "editValidation": "Edit validation",
+    "selectValidation": "Select validation",
+    "validationParameters": "Validation parameters"
   },
   "setup": {
     "example": "e.g. yam.eth",

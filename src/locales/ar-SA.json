@@ -127,8 +127,13 @@
     "endTime": "حدد موعد الانتهاء",
     "publish": "نشر",
     "snapshotBlock": "رقم القطعة (البلوك) في لمحة سلسلة البلوكشين",
-    "onlyMembersWarning": "You need to be a member of the space in order to submit a proposal",
-    "minScoreWarning": "You need to have a minimum of {0} {1} in order to submit a proposal"
+    "validationWarning": {
+      "basic": {
+        "member": "You need to be a member of the space in order to submit a proposal.",
+        "minScore": "You need to have a minimum of {0} {1} in order to submit a proposal."
+      },
+      "customValidation": "You need to pass the proposal validation in order to submit a proposal."
+    }
   },
   "delegate": {
     "header": "تفويض",
@@ -178,13 +183,17 @@
     "addStrategy": "إضافة استراتيجية",
     "members": "الأعضاء",
     "admins": "Admins",
-    "filters": "التصفيات",
     "defaultTab": "علامة التبويب الافتراضية",
     "proposalThreshold": "Proposal threshold",
     "allowOnlyMembers": "Allow only members to submit a proposal",
     "editPlugin": "تعديل إضافة",
     "addPlugin": "أضف إضافة",
-    "pluginParameters": "إعدادات الإضافة"
+    "pluginParameters": "إعدادات الإضافة",
+    "proposalValidation": "Proposal validation",
+    "validation": "Validation",
+    "editValidation": "Edit validation",
+    "selectValidation": "Select validation",
+    "validationParameters": "Validation parameters"
   },
   "setup": {
     "example": "مثال yam.eth",

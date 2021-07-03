@@ -10,18 +10,26 @@
           {{ space.name }}
         </router-link>
       </div>
-      <Block v-if="space.filters?.onlyMembers && !isMember">
+      <Block v-if="passValidation[0] === false">
         <Icon name="warning" class="mr-1" />
-        {{ $t('create.onlyMembersWarning') }}
-      </Block>
-      <Block v-else-if="showScoreWarning">
-        <Icon name="warning" class="mr-1" />
-        {{
-          $t('create.minScoreWarning', [
-            _n(space.filters.minScore),
-            space.symbol
-          ])
-        }}
+        <span v-if="passValidation[1] === 'basic'">
+          {{
+            space.validation?.params.minScore || space?.filters.minScore
+              ? $tc('create.validationWarning.basic.minScore', [
+                  _n(space.filters.minScore),
+                  space.symbol
+                ])
+              : $t('create.validationWarning.basic.member')
+          }}
+        </span>
+        <span v-else>
+          {{
+            $t(
+              space.validation.params.rules ||
+                'create.validationWarning.customValidation'
+            )
+          }}
+        </span>
       </Block>
       <div class="px-4 px-md-0">
         <div class="d-flex flex-column mb-6">
@@ -52,7 +60,6 @@
         <div v-if="choices.length > 0" class="overflow-hidden mb-2">
           <draggable
             v-model="choices"
-            tag="transition-group"
             :component-data="{ name: 'list' }"
             item-key="id"
           >
@@ -165,11 +172,10 @@
 </template>
 
 <script>
-import { ref, watch, computed, onMounted } from 'vue';
+import { ref, watch, watchEffect, computed, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 import draggable from 'vuedraggable';
-import { getScores } from '@snapshot-labs/snapshot.js/src/utils';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import { getBlockNumber } from '@snapshot-labs/snapshot.js/src/utils/web3';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
@@ -178,6 +184,8 @@ import { useTerms } from '@/composables/useTerms';
 import { useQuery, useResult } from '@vue/apollo-composable';
 import { PROPOSAL_QUERY } from '@/helpers/queries';
 import client from '@/helpers/clientEIP712';
+import validations from '@snapshot-labs/snapshot.js/src/validations';
+import { clone } from '@/helpers/utils';
 
 export default {
   setup() {
@@ -197,8 +205,8 @@ export default {
       name: '',
       body: '',
       choices: [],
-      start: '',
-      end: '',
+      start: 0,
+      end: 0,
       snapshot: '',
       metadata: { plugins: {} },
       type: 'single-choice'
@@ -208,32 +216,25 @@ export default {
     const modalVotingTypeOpen = ref(false);
     const selectedDate = ref('');
     const counter = ref(0);
-    const userScore = ref(null);
     const nameForm = ref(null);
+    const passValidation = ref([true]);
 
     const web3Account = computed(() => store.state.web3.account);
     const space = computed(() => store.state.app.spaces[key]);
 
-    const isMember = computed(() => {
-      const members = space.value.members.map(address => address.toLowerCase());
-      return (
-        auth.isAuthenticated.value &&
-        web3Account.value &&
-        members.includes(web3Account.value.toLowerCase())
-      );
-    });
-
-    const hasMinScore = computed(() => {
-      return userScore.value >= space.value.filters.minScore;
-    });
-
-    const showScoreWarning = computed(() => {
-      return (
-        space.value.filters?.minScore > 0 &&
-        !hasMinScore.value &&
-        !isMember.value &&
-        userScore.value !== null
-      );
+    // Check if account passes space validation
+    watchEffect(async () => {
+      if (web3Account.value && auth.isAuthenticated.value) {
+        const validationName = space.value.validation?.name ?? 'basic';
+        const validationParams = space.value.validation?.params ?? {};
+        const isValid = await validations[validationName](
+          web3Account.value,
+          clone(space.value),
+          '',
+          clone(validationParams)
+        );
+        passValidation.value = [isValid, validationName];
+      }
     });
 
     const isValid = computed(() => {
@@ -255,13 +256,9 @@ export default {
         form.value.snapshot > blockNumber.value / 2 &&
         choices.value.length >= 2 &&
         !choices.value.some(a => a.text === '') &&
-        (!space.value.filters?.onlyMembers ||
-          (space.value.filters?.onlyMembers && isMember.value)) &&
-        (space.value.filters?.minScore === 0 ||
-          (space.value.filters?.minScore > 0 && hasMinScore.value) ||
-          isMember.value ||
-          !web3Account.value) &&
-        isSafeSnapPluginValid
+        passValidation.value[0] &&
+        isSafeSnapPluginValid &&
+        !store.state.app.authLoading
       );
     });
 
@@ -327,20 +324,6 @@ export default {
       }
     }
 
-    async function getUserScore() {
-      let scores = await getScores(
-        space.value.key,
-        space.value.strategies,
-        space.value.network,
-        getProvider(space.value.network),
-        [web3Account.value]
-      );
-      scores = scores
-        .map(score => Object.values(score).reduce((a, b) => a + b, 0))
-        .reduce((a, b) => a + b, 0);
-      userScore.value = scores;
-    }
-
     const { modalAccountOpen } = useModal();
     const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(key);
 
@@ -352,11 +335,6 @@ export default {
         : handleSubmit();
     }
 
-    watch(web3Account, () => {
-      if (space.value.filters?.minScore > 0 && !isMember.value) getUserScore();
-      else userScore.value = 0;
-    });
-
     onMounted(async () => {
       nameForm.value.focus();
       addChoice(2);
@@ -364,12 +342,6 @@ export default {
         getProvider(space.value.network)
       );
       form.value.snapshot = blockNumber.value;
-      if (
-        web3Account.value &&
-        space.value.filters?.minScore > 0 &&
-        !isMember.value
-      )
-        getUserScore();
     });
 
     if (from) {
@@ -413,8 +385,7 @@ export default {
       removeChoice,
       setDate,
       space,
-      isMember,
-      showScoreWarning,
+      passValidation,
       isValid,
       addChoice,
       clickSubmit,

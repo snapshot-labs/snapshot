@@ -10,15 +10,16 @@
 </template>
 
 <script>
+import { computed } from 'vue';
 export default {
-  props: ['value', 'max', 'titles'],
-  computed: {
-    bars() {
-      return Array.isArray(this.value) ? this.value : [this.value];
-    },
-    total() {
-      return this.bars.reduce((a, b) => a + b, 0);
-    }
+  props: { value: { Number, Array }, max: Number },
+  setup(props) {
+    const bars = computed(() =>
+      Array.isArray(props.value) ? props.value : [props.value]
+    );
+    const total = computed(() => bars.value.reduce((a, b) => a + b, 0));
+
+    return { bars, total };
   }
 };
 </script>

@@ -82,6 +82,7 @@ import { useStore } from 'vuex';
 import { useI18n } from 'vue-i18n';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import client from '@/helpers/clientEIP712';
+
 import { getChoiceString } from '@/helpers/utils';
 
 export default {
