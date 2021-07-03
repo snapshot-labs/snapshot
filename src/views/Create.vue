@@ -186,11 +186,13 @@ import { PROPOSAL_QUERY } from '@/helpers/queries';
 import client from '@/helpers/clientEIP712';
 import validations from '@snapshot-labs/snapshot.js/src/validations';
 import { clone } from '@/helpers/utils';
+import { useI18n } from 'vue-i18n';
 
 export default {
   setup() {
     const route = useRoute();
     const router = useRouter();
+    const { t } = useI18n();
     const store = useStore();
     const auth = getInstance();
 
@@ -303,23 +305,24 @@ export default {
           plugins: JSON.stringify(plugins),
           metadata: JSON.stringify({})
         });
-        /*
-        const { ipfsHash } = await store.dispatch('send', {
-          space: space.value.key,
-          type: 'proposal',
-          payload: form.value
-        });
+        console.log('Result', result);
+        store.dispatch('notify', t('notify.yourIsIn', ['proposal']));
+
         router.push({
           name: 'proposal',
           params: {
             key: key,
-            id: ipfsHash
+            id: result.id
           }
         });
-        */
-        console.log('Ok!', result);
       } catch (e) {
-        if (!e.code || e.code !== 4001) console.log('Oops!', e);
+        if (!e.code || e.code !== 4001) {
+          console.log('Oops!', e);
+          const errorMessage = e?.error_description
+            ? `Oops, ${e.error_description}`
+            : t('notify.somethingWentWrong');
+          store.dispatch('notify', ['red', errorMessage]);
+        }
         loading.value = false;
       }
     }
