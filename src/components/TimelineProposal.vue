@@ -8,15 +8,25 @@
   >
     <div>
       <div class="mb-2">
-        <Token :space="proposal.space" size="28" />
-        <span class="ml-2" v-text="proposal.space.name" />
-        {{
-          $tc('proposalBy', [
-            profiles[proposal.author]?.ens || _shorten(proposal.author)
-          ])
-        }}
-        <Badges :address="proposal.author" :members="proposal.space.members" />
-        <UiState :state="proposal.state" class="d-inline-block float-right" />
+        <div class="d-flex flex-justify-between">
+          <div class="d-flex flex-items-center">
+            <Token :space="proposal.space" size="28" />
+            <span class="ml-2" v-text="proposal.space.name" />
+            &nbsp;{{ $t('proposalBy') }}
+            <User
+              class="ml-1"
+              :hideAvatar="true"
+              :address="proposal.author"
+              :profile="profiles[proposal.author]"
+            />
+            <Badges
+              :address="proposal.author"
+              :members="proposal.space.members"
+            />
+          </div>
+
+          <UiState :state="proposal.state" class="d-inline-block float-right" />
+        </div>
       </div>
       <h3 v-text="_shorten(proposal.title, 124)" class="mt-1" />
       <p

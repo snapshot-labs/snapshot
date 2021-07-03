@@ -4,6 +4,7 @@
       <template v-slot:item>
         <a class="no-wrap">
           <UiAvatar
+            v-if="!hideAvatar"
             :imgsrc="_ipfsUrl(profile?.image)"
             :address="address"
             size="16"
@@ -55,7 +56,7 @@
 
 <script>
 export default {
-  props: ['address', 'space', 'profile'],
+  props: ['address', 'space', 'profile', 'hideAvatar'],
   computed: {
     name() {
       if (
