@@ -214,15 +214,21 @@
 import { ref, computed, watch, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useStore } from 'vuex';
+import { useI18n } from 'vue-i18n';
+import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { getProposal, getResults, getPower } from '@/helpers/snapshot';
 import { useModal } from '@/composables/useModal';
 import { useTerms } from '@/composables/useTerms';
+import client from '@/helpers/clientEIP712';
 
 export default {
   setup() {
+    const auth = getInstance();
     const route = useRoute();
     const router = useRouter();
     const store = useStore();
+    const { t } = useI18n();
+
     const key = route.params.key;
     const id = route.params.id;
     const ts = (Date.now() / 1e3).toFixed();
@@ -296,22 +302,27 @@ export default {
     async function deleteProposal() {
       dropdownLoading.value = true;
       try {
-        if (
-          await store.dispatch('send', {
+        const result = await client.cancelProposal(
+          auth.web3,
+          web3Account.value,
+          {
             space: space.value.key,
-            type: 'delete-proposal',
-            payload: {
-              proposal: id
-            }
-          })
-        ) {
-          dropdownLoading.value = false;
-          router.push({
-            name: 'proposals'
-          });
-        }
+            timestamp: ~~(Date.now() / 1e3),
+            proposal: id
+          }
+        );
+        console.log('Result', result);
+        store.dispatch('notify', t('notify.proposalDeleted'));
+        dropdownLoading.value = false;
+        router.push({ name: 'proposals' });
       } catch (e) {
-        console.error(e);
+        if (!e.code || e.code !== 4001) {
+          console.log('Oops!', e);
+          const errorMessage = e?.error_description
+            ? `Oops, ${e.error_description}`
+            : t('notify.somethingWentWrong');
+          store.dispatch('notify', ['red', errorMessage]);
+        }
       }
       dropdownLoading.value = false;
     }
@@ -326,7 +337,7 @@ export default {
 
     onMounted(async () => {
       await loadProposal();
-      loadPower();
+      await loadPower();
     });
 
     return {

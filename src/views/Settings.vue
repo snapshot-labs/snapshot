@@ -357,6 +357,7 @@ import gateways from '@snapshot-labs/snapshot.js/src/gateways.json';
 import { clone } from '@/helpers/utils';
 import { getSpaceUri, uriGet } from '@/helpers/ens';
 import defaults from '@/locales/default';
+import client from '@/helpers/clientEIP712';
 
 const gateway = process.env.VUE_APP_IPFS_GATEWAY || gateways[0];
 const basicValidation = { name: 'basic', params: {} };
@@ -456,20 +457,34 @@ export default {
     this.loaded = true;
   },
   methods: {
-    ...mapActions(['notify', 'send', 'getSpaces']),
+    ...mapActions(['notify', 'getSpaces']),
     async handleSubmit() {
       if (this.isValid) {
         if (this.form.filters.invalids) delete this.form.filters.invalids;
         this.loading = true;
+
         try {
-          await this.send({
-            space: this.key,
-            type: 'settings',
-            payload: this.form
-          });
+          const result = await client.space(
+            this.$auth.web3,
+            this.web3.account,
+            {
+              space: this.key,
+              timestamp: ~~(Date.now() / 1e3),
+              settings: JSON.stringify(this.form)
+            }
+          );
+          console.log('Result', result);
+          this.notify(this.$t('notify.yourIsIn', ['settings']));
         } catch (e) {
-          console.log(e);
+          if (!e.code || e.code !== 4001) {
+            console.log('Oops!', e);
+            const errorMessage = e?.error_description
+              ? `Oops, ${e.error_description}`
+              : this.$t('notify.somethingWentWrong');
+            this.notify(['red', errorMessage]);
+          }
         }
+
         await this.getSpaces();
         this.loading = false;
       } else {
