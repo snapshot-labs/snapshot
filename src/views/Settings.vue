@@ -1,5 +1,5 @@
 <template>
-  <Layout>
+  <Layout v-bind="$attrs">
     <template #content-left>
       <div class="px-4 px-md-0 mb-3">
         <router-link :to="{ name: 'home' }" class="text-gray">
@@ -229,23 +229,41 @@
               />
             </UiButton>
           </Block>
-          <Block :title="$t('settings.filters')">
+          <Block :title="$t('settings.proposalValidation')">
             <div class="mb-2">
               <UiInput
-                v-model="form.filters.minScore"
-                :error="inputError('minScore')"
-                :number="true"
+                @click="modalValidationOpen = true"
+                :error="inputError('settings.validation')"
               >
-                <template v-slot:label>{{
-                  $t('settings.proposalThreshold')
-                }}</template>
+                <template v-slot:selected>
+                  {{ form.validation.name }}
+                </template>
+                <template v-slot:label>
+                  {{ $t(`settings.validation`) }}
+                </template>
+                <template v-slot:info>
+                  <span @click="handleEditValidation">
+                    {{ $t(`edit`) }}
+                  </span>
+                </template>
               </UiInput>
-              <div class="mb-2 d-flex flex-items-center px-2">
-                <Checkbox
-                  v-model="form.filters.onlyMembers"
-                  class="mr-2 mt-1"
-                />
-                {{ $t('settings.allowOnlyMembers') }}
+              <div v-if="form.validation.name === 'basic'">
+                <UiInput
+                  v-model="form.filters.minScore"
+                  :error="inputError('minScore')"
+                  :number="true"
+                >
+                  <template v-slot:label>{{
+                    $t('settings.proposalThreshold')
+                  }}</template>
+                </UiInput>
+                <div class="mb-2 d-flex flex-items-center px-2">
+                  <Checkbox
+                    v-model="form.filters.onlyMembers"
+                    class="mr-2 mt-1"
+                  />
+                  {{ $t('settings.allowOnlyMembers') }}
+                </div>
               </div>
             </div>
           </Block>
@@ -318,6 +336,12 @@
       @add="handleSubmitAddPlugins"
       :plugin="currentPlugin"
     />
+    <ModalValidation
+      :open="modalValidationOpen"
+      @close="(modalValidationOpen = false), (currentValidation = {})"
+      @add="handleSubmitAddValidation"
+      :validation="currentValidation"
+    />
   </teleport>
 </template>
 
@@ -335,6 +359,7 @@ import { getSpaceUri, uriGet } from '@/helpers/ens';
 import defaults from '@/locales/default';
 
 const gateway = process.env.VUE_APP_IPFS_GATEWAY || gateways[0];
+const basicValidation = { name: 'basic', params: {} };
 
 export default {
   setup() {
@@ -358,11 +383,13 @@ export default {
       currentContenthash: '',
       currentStrategy: {},
       currentPlugin: {},
+      currentValidation: {},
       currentStrategyIndex: false,
       modalNetworksOpen: false,
       modalSkinsOpen: false,
       modalStrategyOpen: false,
       modalPluginsOpen: false,
+      modalValidationOpen: false,
       loaded: false,
       loading: false,
       uploadLoading: false,
@@ -370,7 +397,8 @@ export default {
       form: {
         strategies: [],
         plugins: {},
-        filters: {}
+        filters: {},
+        validation: basicValidation
       },
       networks
     };
@@ -412,6 +440,7 @@ export default {
       delete space._activeProposals;
       space.strategies = space.strategies || [];
       space.plugins = space.plugins || {};
+      space.validation = space.validation || basicValidation;
       space.filters = space.filters || {};
       this.currentSettings = clone(space);
       this.form = space;
@@ -513,7 +542,15 @@ export default {
       this.modalPluginsOpen = true;
     },
     handleSubmitAddPlugins(payload) {
-      this.form.plugins[payload.key] = payload.input;
+      this.form.plugins[payload.key] = payload.inputClone;
+    },
+    handleEditValidation() {
+      this.currentValidation = {};
+      this.currentValidation = clone(this.form.validation);
+      this.modalValidationOpen = true;
+    },
+    handleSubmitAddValidation(validation) {
+      this.form.validation = validation;
     },
     setUploadLoading(s) {
       this.uploadLoading = s;

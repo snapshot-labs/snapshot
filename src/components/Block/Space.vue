@@ -16,7 +16,7 @@
           :class="
             $route.name === 'space-proposals' && 'router-link-exact-active'
           "
-          v-text="$t('Proposals')"
+          v-text="$t('proposals.header')"
           class="d-lg-block d-inline-block px-3 px-lg-4 py-2 responsivenav-item"
         />
         <router-link

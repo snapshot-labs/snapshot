@@ -37,7 +37,7 @@
         <a
           v-for="strategy in strategies"
           :key="strategy.key"
-          @click="select(strategy.key)"
+          @click="input.name = strategy.key"
         >
           <BlockStrategy :strategy="strategy" />
         </a>
@@ -48,7 +48,7 @@
 </template>
 
 <script>
-import { ref, computed } from 'vue';
+import { ref, computed, toRefs, watch } from 'vue';
 import { useSearchFilters } from '@/composables/useSearchFilters';
 import { clone } from '@/helpers/utils';
 
@@ -59,57 +59,49 @@ const defaultParams = {
 };
 
 export default {
-  setup() {
-    const searchInput = ref('');
-    const { filteredStrategies } = useSearchFilters();
-    const strategies = computed(() => filteredStrategies(searchInput.value));
-
-    return { searchInput, strategies };
-  },
-  props: ['open', 'strategy'],
+  props: { open: Boolean, strategy: Object },
   emits: ['add', 'close'],
-  data() {
-    return {
-      input: {
-        name: '',
-        params: JSON.stringify(defaultParams, null, 2)
-      }
-    };
-  },
-  watch: {
-    open() {
-      if (this.strategy?.name) {
-        const strategy = this.strategy;
-        strategy.params = JSON.stringify(strategy.params, null, 2);
-        this.input = this.strategy;
-      } else {
-        this.input = {
-          name: '',
-          params: JSON.stringify(defaultParams, null, 2)
-        };
-      }
-    }
-  },
-  computed: {
-    isValid() {
+  setup(props, { emit }) {
+    const { open } = toRefs(props);
+    const searchInput = ref('');
+    const input = ref({
+      name: '',
+      params: JSON.stringify(defaultParams, null, 2)
+    });
+
+    const isValid = computed(() => {
       try {
-        const params = JSON.parse(this.input.params);
+        const params = JSON.parse(input.value.params);
         return !!params.symbol;
       } catch (e) {
         return false;
       }
+    });
+
+    const { filteredStrategies } = useSearchFilters();
+    const strategies = computed(() => filteredStrategies(searchInput.value));
+
+    function handleSubmit() {
+      const strategyObj = clone(input.value);
+      strategyObj.params = JSON.parse(strategyObj.params);
+      emit('add', strategyObj);
+      emit('close');
     }
-  },
-  methods: {
-    select(strategy) {
-      this.input.name = strategy;
-    },
-    handleSubmit() {
-      const strategy = clone(this.input);
-      strategy.params = JSON.parse(strategy.params);
-      this.$emit('add', strategy);
-      this.$emit('close');
-    }
+
+    watch(open, () => {
+      if (props.strategy?.name) {
+        const strategyObj = props.strategy;
+        strategyObj.params = JSON.stringify(strategyObj.params, null, 2);
+        input.value = props.strategy;
+      } else {
+        input.value = {
+          name: '',
+          params: JSON.stringify(defaultParams, null, 2)
+        };
+      }
+    });
+
+    return { searchInput, strategies, input, isValid, handleSubmit };
   }
 };
 </script>

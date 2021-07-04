@@ -127,8 +127,13 @@
     "endTime": "Selezionare un orario di conclusione",
     "publish": "Pubblica",
     "snapshotBlock": "Numero blocco istantanea",
-    "onlyMembersWarning": "Devi essere un utente attivo per poter inviare una proposta",
-    "minScoreWarning": "Morate imati najmanje {0} {1} da biste podneli predlog"
+    "validationWarning": {
+      "basic": {
+        "member": "You need to be a member of the space in order to submit a proposal.",
+        "minScore": "You need to have a minimum of {0} {1} in order to submit a proposal."
+      },
+      "customValidation": "You need to pass the proposal validation in order to submit a proposal."
+    }
   },
   "delegate": {
     "header": "Delega",
@@ -178,13 +183,17 @@
     "addStrategy": "Aggiungi strategia",
     "members": "Membri",
     "admins": "Admins",
-    "filters": "Filtri",
     "defaultTab": "Scheda predefinita",
     "proposalThreshold": "Proposal threshold",
     "allowOnlyMembers": "Allow only members to submit a proposal",
     "editPlugin": "Modifica plugin",
     "addPlugin": "Aggiungi plugin",
-    "pluginParameters": "Parametri plugin"
+    "pluginParameters": "Parametri plugin",
+    "proposalValidation": "Proposal validation",
+    "validation": "Validation",
+    "editValidation": "Edit validation",
+    "selectValidation": "Select validation",
+    "validationParameters": "Validation parameters"
   },
   "setup": {
     "example": "e.g. yam.eth",

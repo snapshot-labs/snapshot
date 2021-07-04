@@ -21,7 +21,7 @@
 
 <script>
 export default {
-  props: ['open', 'title', 'number', 'hideRemove'],
+  props: { open: Boolean, title: String, number: Number, hideRemove: String },
   emits: ['remove', 'toggle']
 };
 </script>

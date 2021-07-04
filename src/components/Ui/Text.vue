@@ -3,6 +3,7 @@
 </template>
 
 <script>
+import { computed } from 'vue';
 import Autolinker from 'autolinker';
 
 export default {
@@ -13,12 +14,14 @@ export default {
       default: 0
     }
   },
-  computed: {
-    textWithLinks() {
-      return Autolinker.link(this.text, {
-        truncate: this.truncate
-      });
-    }
+  setup(props) {
+    const textWithLinks = computed(() =>
+      Autolinker.link(props.text, {
+        truncate: props.truncate
+      })
+    );
+
+    return { textWithLinks };
   }
 };
 </script>

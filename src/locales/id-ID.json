@@ -127,8 +127,13 @@
     "endTime": "Pilih waktu selesai",
     "publish": "Publikasikan",
     "snapshotBlock": "Jumlah blok Snapshot",
-    "onlyMembersWarning": "Anda harus menjadi anggota ruang tersebut untuk mengajukan sebuah proposal",
-    "minScoreWarning": "Anda harus memiliki setidaknya minimal {0} {1} untuk mengajukan sebuah proposal"
+    "validationWarning": {
+      "basic": {
+        "member": "You need to be a member of the space in order to submit a proposal.",
+        "minScore": "You need to have a minimum of {0} {1} in order to submit a proposal."
+      },
+      "customValidation": "You need to pass the proposal validation in order to submit a proposal."
+    }
   },
   "delegate": {
     "header": "Perwakilan",
@@ -178,13 +183,17 @@
     "addStrategy": "Tambahkan strategi",
     "members": "Anggota",
     "admins": "Admin",
-    "filters": "Filter",
     "defaultTab": "Tab bawaan",
     "proposalThreshold": "Proposal threshold",
     "allowOnlyMembers": "Allow only members to submit a proposal",
     "editPlugin": "Edit plugin",
     "addPlugin": "Tambahkan plugin",
-    "pluginParameters": "Parameter plugin"
+    "pluginParameters": "Parameter plugin",
+    "proposalValidation": "Proposal validation",
+    "validation": "Validation",
+    "editValidation": "Edit validation",
+    "selectValidation": "Select validation",
+    "validationParameters": "Validation parameters"
   },
   "setup": {
     "example": "mis. yam.eth",

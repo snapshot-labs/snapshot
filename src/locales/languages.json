@@ -46,6 +46,10 @@
     "name": "Turkish",
     "nativeName": "Türkçe"
   },
+  "vi-VN": {
+    "name": "Vietnamese",
+    "nativeName": "Tiếng Việt"
+  },
   "zh-CN": {
     "name": "Chinese",
     "nativeName": "简体中文"
@@ -73,5 +77,9 @@
   "ja-JP": {
     "name": "Japanese",
     "nativeName": "日本語"
+  },
+  "mr-IN": {
+    "name": "Marathi",
+    "nativeName": "मराठी"
   }
 }
