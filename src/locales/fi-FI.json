@@ -122,23 +122,23 @@
     "choices": "Vaihtoehtoja",
     "addChoice": "Lisää valinta",
     "startDate": "Valitse aloituspäivä",
-    "endDate": "Select end date",
-    "startTime": "Select start time",
-    "endTime": "Select end time",
-    "publish": "Publish",
-    "snapshotBlock": "Snapshot block number",
+    "endDate": "Valitse lopetuspäivä",
+    "startTime": "Valitse aloituspäivä",
+    "endTime": "Valitse lopetusaika",
+    "publish": "Julkaise",
+    "snapshotBlock": "Snapshot block numero",
     "validationWarning": {
       "basic": {
-        "member": "You need to be a member of the space in order to submit a proposal.",
-        "minScore": "You need to have a minimum of {0} {1} in order to submit a proposal."
+        "member": "Sinun on oltava avaruuden jäsen ehdotuksen tekemiseksi.",
+        "minScore": "Ehdotuksen lähettämiseen vaaditaan vähintään {0} {1}."
       },
-      "customValidation": "You need to pass the proposal validation in order to submit a proposal."
+      "customValidation": "Sinun on läpäistävä ehdotuksen vahvistus voidaksesi lähettää ehdotuksen."
     }
   },
   "delegate": {
-    "header": "Delegate",
-    "selectAddress": "Select address",
-    "to": "To",
+    "header": "Delegoi",
+    "selectAddress": "Valitse osoite",
+    "to": "Että",
     "addressPlaceholder": "Osoite tai ENS-nimi",
     "spacePlaceholder": "Välilyönti (vapaaehtoinen)",
     "delegations": "Sinun valtuuskunta(t)",
@@ -201,68 +201,68 @@
     "createASpace": "Luo välilehti"
   },
   "notify": {
-    "youDidIt": "You did it!",
-    "copied": "Copied!",
-    "proposalDeleted": "Proposal deleted",
-    "yourIsIn": "Your {0} is in!",
-    "somethingWentWrong": "Oops, something went wrong!"
+    "youDidIt": "Sinä teit sen!",
+    "copied": "Kopioitu!",
+    "proposalDeleted": "Ehdotus poistettu",
+    "yourIsIn": "Your {0} is inside!",
+    "somethingWentWrong": "Hups, jokin meni pieleen!"
   },
   "explore": {
-    "createStrategy": "Create strategy",
-    "createSkin": "Create skin",
-    "addNetwork": "Add network",
-    "createPlugin": "Create plugin",
-    "strategies": "strategie(s)",
-    "skins": "skin(s)",
-    "networks": "network(s)",
-    "plugins": "plugin(s)",
-    "results": "result(s)"
+    "createStrategy": "Luo strategia",
+    "createSkin": "Luo skin",
+    "addNetwork": "Lisää verkko",
+    "createPlugin": "Luo liitännäinen",
+    "strategies": "strategia(t)",
+    "skins": "skins(s)",
+    "networks": "verkoissa",
+    "plugins": "liitännäinen(s)",
+    "results": "tuloksia"
   },
   "voting": {
-    "selectVoting": "Select voting system",
-    "single-choice": "Single choice voting",
-    "approval": "Approval voting",
-    "quadratic": "Quadratic voting",
-    "ranked-choice": "Ranked choice voting",
-    "weighted": "Weighted voting",
+    "selectVoting": "Valitse äänestysjärjestelmä",
+    "single-choice": "Yhden valinnan ääni",
+    "approval": "Hyväksyntääänestys",
+    "quadratic": "Quadraattinen äänestys",
+    "ranked-choice": "Sijoittui äänestykseen",
+    "weighted": "Painotettu äänestys",
     "description": {
-      "single-choice": "Each voter may select only one choice.",
-      "approval": "Each voter may select any number of choices.",
-      "quadratic": "Each voter may spread voting power across any number of choices. Results are calculated quaratically.",
-      "ranked-choice": "Each voter may select and rank any number of choices. Results are calculted by instant-runoff counting method.",
-      "weighted": "Each voter may spread voting power across any number of choices."
+      "single-choice": "Jokainen äänestäjä voi valita vain yhden vaihtoehdon.",
+      "approval": "Jokainen äänestäjä voi valita minkä tahansa määrän vaihtoehtoja.",
+      "quadratic": "Jokainen äänestäjä voi jakaa äänivoimansa mihin tahansa määrään valintoja. Tulokset lasketaan quaratically.",
+      "ranked-choice": "Jokainen äänestäjä voi valita ja asettaa paremmuusjärjestykseen minkä tahansa määrän valintoja. Tulokset kalmennetaan instant-runoff laskentamenetelmällä.",
+      "weighted": "Jokainen äänestäjä voi jakaa äänivoimansa mihin tahansa määrään valintoja."
     }
   },
   "safeSnap": {
-    "currentOutcome": "Current outcome: {0}",
-    "currentBond": "Current bond: {0}",
-    "finalizedIn": "Finalized {0}",
-    "executableIn": "Executable {0}",
-    "finalOutcome": "Outcome: {0}",
-    "nextBond": "Bond to set outcome: {0}",
-    "setOutcomeTo": "Set outcome to:",
-    "claimBond": "Claim bond",
+    "currentOutcome": "Nykyinen tulos: {0}",
+    "currentBond": "Nykyinen bond: {0}",
+    "finalizedIn": "Päättynyt {0}",
+    "executableIn": "Suoritettava {0}",
+    "finalOutcome": "Tulos: {0}",
+    "nextBond": "Bond asettaa tuloksen: {0}",
+    "setOutcomeTo": "Aseta tulos:",
+    "claimBond": "Lunasta joukkovelkakirja",
     "labels": {
-      "request": "Request execution",
-      "setOutcome": "Set outcome",
-      "changeOutcome": "Change outcome",
-      "executeTxs": "Execute transaction 1/{0}",
-      "finalized": "Vote finalized",
-      "executed": "{0}/{0} Transactions executed",
-      "waiting": "Waiting for vote to close",
-      "error": "Error",
-      "question": "Did this proposal pass and does it meet the",
-      "criteria": "acceptance criteria?"
+      "request": "Pyydä suoritus",
+      "setOutcome": "Aseta tulos",
+      "changeOutcome": "Muuta tulos",
+      "executeTxs": "Suorita tapahtuma 1/{0}",
+      "finalized": "Äänestys valmistui",
+      "executed": "{0}/{0} Tapahtumia suoritettu",
+      "waiting": "Odottaa äänestyksen päättymistä",
+      "error": "Virhe",
+      "question": "Onko tämä ehdotus hyväksytty ja onko se yhdenmukainen",
+      "criteria": "hyväksymisperusteet?"
     }
   },
   "poap": {
-    "no_poap_header": "A POAP hasn't been setup for this proposal yet :'(",
-    "no_voted_header": "Vote to get this POAP",
-    "unclaimed_header": "Claim your I voted POAP",
-    "claimed_header": "Congratulations! You got a new POAP in your account",
-    "loading_header": "The POAP is being added to your collection",
-    "button_claim": "Claim",
-    "button_show": "Show me my badges",
+    "no_poap_header": "POAP-palvelua ei ole vielä perustettu tälle ehdotukselle: '(",
+    "no_voted_header": "Äänestää saadaksesi tämän POAP: n",
+    "unclaimed_header": "Lunasta sinun äänestin POAP",
+    "claimed_header": "Onnittelut! Sinulla on uusi POAP tililläsi",
+    "loading_header": "POAP on lisätty kokoelmaasi",
+    "button_claim": "Lunasta",
+    "button_show": "Näytä minulle merkkini",
     "success_claim": "Sinun POAP on osoitteessasi",
     "error_claim": "Kirjoituksen tallentaminen epäonnistui"
   }
