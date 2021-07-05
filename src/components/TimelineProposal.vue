@@ -8,25 +8,11 @@
   >
     <div>
       <div class="mb-2">
-        <div class="d-flex flex-justify-between">
-          <div class="d-flex flex-items-center">
-            <Token :space="proposal.space" size="28" />
-            <span class="ml-2" v-text="proposal.space.name" />
-            &nbsp;{{ $t('proposalBy') }}
-            <User
-              class="ml-1"
-              :hideAvatar="true"
-              :address="proposal.author"
-              :profile="profiles[proposal.author]"
-            />
-            <Badges
-              :address="proposal.author"
-              :members="proposal.space.members"
-            />
-          </div>
-
-          <UiState :state="proposal.state" class="d-inline-block float-right" />
-        </div>
+        <Token :space="proposal.space" size="28" />
+        <span class="ml-2" v-text="proposal.space.name" />
+        {{ $tc('proposalBy', [name]) }}
+        <Badges :address="proposal.author" :members="proposal.space.members" />
+        <UiState :state="proposal.state" class="d-inline-block float-right" />
       </div>
       <h3 v-text="_shorten(proposal.title, 124)" class="mt-1" />
       <p
@@ -42,6 +28,8 @@
 </template>
 
 <script>
+import { watchEffect, computed } from 'vue';
+import { useUsername } from '@/composables/useUsername';
 import removeMd from 'remove-markdown';
 
 export default {
@@ -49,15 +37,23 @@ export default {
     proposal: Object,
     profiles: Object
   },
-  computed: {
-    body() {
-      return removeMd(this.proposal.body);
-    },
-    period() {
-      if (this.proposal.state === 'closed') return 'endedAgo';
-      if (this.proposal.state === 'active') return 'endIn';
+  setup(props) {
+    const body = computed(() => removeMd(props.proposal.body));
+
+    const period = computed(() => {
+      if (props.proposal.state === 'closed') return 'endedAgo';
+      if (props.proposal.state === 'active') return 'endIn';
       return 'startIn';
-    }
+    });
+
+    const { address, profile, name } = useUsername();
+
+    watchEffect(() => {
+      address.value = props.proposal.author;
+      profile.value = props.profiles[props.proposal.author];
+    });
+
+    return { name, body, period };
   }
 };
 </script>
