@@ -13,12 +13,12 @@ export function useProfiles() {
   );
 
   watch(addressArray, async () => {
-    console.time('getProposal.profiles');
+    console.time('getProfiles');
     const response =
       filteredArray.value.length > 0
         ? await getProfiles(filteredArray.value)
         : {};
-    console.timeEnd('getProposal.profiles');
+    console.timeEnd('getProfiles');
 
     profiles.value = { ...profiles.value, ...response };
   });
