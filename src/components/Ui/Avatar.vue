@@ -23,7 +23,12 @@
 <script>
 import { ref } from 'vue';
 export default {
-  props: { address: String, size: String, imgsrc: String, seed: Number },
+  props: {
+    address: String,
+    size: String,
+    imgsrc: String,
+    seed: [Number, String]
+  },
   setup() {
     const error = ref(false);
     return { error };

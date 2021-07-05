@@ -36,7 +36,13 @@
 
 <script>
 export default {
-  props: ['title', 'counter', 'slim', 'icon', 'loading'],
+  props: {
+    title: String,
+    counter: Number,
+    slim: Boolean,
+    icon: String,
+    loading: Boolean
+  },
   emits: ['submit']
 };
 </script>
