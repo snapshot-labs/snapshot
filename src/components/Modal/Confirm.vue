@@ -114,6 +114,7 @@ export default {
           space: props.space.key,
           timestamp: ~~(Date.now() / 1e3),
           proposal: props.proposal.id,
+          type: props.proposal.type,
           choice: props.selectedChoices,
           metadata: JSON.stringify({})
         });
