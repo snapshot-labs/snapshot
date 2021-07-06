@@ -1,20 +1,12 @@
 import { Web3Provider } from '@ethersproject/providers';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
-import store from '@/store';
 import { formatUnits } from '@ethersproject/units';
 import { getProfiles } from '@/helpers/profile';
 
-let wsProvider;
 let auth;
 const defaultNetwork =
   process.env.VUE_APP_DEFAULT_NETWORK || Object.keys(networks)[0];
-
-if (wsProvider) {
-  wsProvider.on('block', blockNumber => {
-    store.commit('GET_BLOCK_SUCCESS', blockNumber);
-  });
-}
 
 const state = {
   account: null,
