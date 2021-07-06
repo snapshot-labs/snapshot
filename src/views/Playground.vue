@@ -76,12 +76,16 @@
         </UiButton>
       </Block>
       <Block v-if="scores" :title="$t('results')">
-        <div v-for="score in Object.keys(scores[0])" :key="score">
+        <div
+          class="d-flex flex-justify-between"
+          v-for="score in Object.keys(scores[0])"
+          :key="score"
+        >
           <User :address="score" />
-          <span class="float-right"
-            >{{ _n(scores[0][score]) }}
-            {{ JSON.parse(form.params).symbol }}</span
-          >
+          <span>
+            {{ _n(scores[0][score]) }}
+            {{ JSON.parse(form.params).symbol }}
+          </span>
         </div>
       </Block>
     </template>
