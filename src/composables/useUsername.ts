@@ -1,6 +1,6 @@
 import { computed, ref } from 'vue';
 import { useStore } from 'vuex';
-import { _shorten } from '@/helpers/utils';
+import { shorten } from '@/helpers/utils';
 
 export function useUsername() {
   const store = useStore();
@@ -23,9 +23,9 @@ export function useUsername() {
     if (profile.value?.name) {
       return profile.value.name;
     } else if (profile.value?.ens) {
-      return _shorten(profile.value.ens, 20);
+      return shorten(profile.value.ens, 20);
     }
-    return _shorten(address.value);
+    return shorten(address.value);
   });
 
   return { address, profile, name };
