@@ -1,5 +1,5 @@
 <template>
-  <Layout>
+  <Layout v-bind="$attrs">
     <template #content-left>
       <div class="px-4 px-md-0 mb-3">
         <router-link :to="{ name: 'home' }" class="text-gray">
@@ -9,7 +9,7 @@
         <h1 v-if="loaded" v-text="$t('delegate.header')" />
       </div>
       <template v-if="loaded">
-        <Block :itle="$t('delegate.selectAddress')">
+        <Block :title="$t('delegate.selectAddress')">
           <UiInput
             v-model.trim="form.address"
             :placeholder="$t('delegate.addressPlaceholder')"

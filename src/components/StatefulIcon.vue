@@ -5,31 +5,32 @@
 </template>
 
 <script>
+import { computed } from 'vue';
 export default {
   props: {
-    onName: { type: String },
-    offName: { type: String },
+    onName: String,
+    offName: String,
     on: { type: Boolean, default: true }
   },
   emits: ['favorite'],
-  computed: {
-    name() {
-      return this.on ? 'favorite-on' : 'favorite-off';
-    },
-    buttonClasses() {
+  setup(props, { emit }) {
+    const name = computed(() => (props.on ? 'favorite-on' : 'favorite-off'));
+
+    const buttonClasses = computed(() => {
       return {
         'extra-icon': true,
-        'extra-icon-off': !this.on,
-        'text-primary': this.on,
-        'text-gray': !this.on
+        'extra-icon-off': !props.on,
+        'text-primary': props.on,
+        'text-gray': !props.on
       };
-    }
-  },
-  methods: {
-    handleClick(e) {
+    });
+
+    function handleClick(e) {
       e.preventDefault();
-      this.$emit('favorite');
+      emit('favorite');
     }
+
+    return { name, buttonClasses, handleClick };
   }
 };
 </script>
