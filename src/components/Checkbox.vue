@@ -9,24 +9,24 @@
 </template>
 
 <script>
+import { ref } from 'vue';
+
 export default {
   props: {
     modelValue: Boolean
   },
   emits: ['update:modelValue'],
-  data() {
-    return {
-      input: false
-    };
-  },
-  created() {
-    if (this.modelValue) this.input = this.modelValue.toString();
-  },
-  methods: {
-    handleToggle() {
-      this.input = !this.input;
-      this.$emit('update:modelValue', this.input);
+  setup(props, { emit }) {
+    const input = ref(false);
+
+    function handleToggle() {
+      input.value = !input.value;
+      emit('update:modelValue', input.value);
     }
+
+    if (props.modelValue) input.value = props.modelValue.toString();
+
+    return { input, handleToggle };
   }
 };
 </script>

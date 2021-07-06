@@ -37,7 +37,7 @@
       <NoResults :block="true" v-else-if="proposals.length < 1" />
       <div v-else>
         <Block :slim="true" v-for="(proposal, i) in proposals" :key="i">
-          <TimelineProposal :proposal="proposal" />
+          <TimelineProposal :proposal="proposal" :profiles="profiles" />
         </Block>
       </div>
       <div
@@ -52,7 +52,7 @@
 </template>
 
 <script>
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
 import { useInfiniteLoader } from '@/composables/useInfiniteLoader';
@@ -60,6 +60,7 @@ import { useScrollMonitor } from '@/composables/useScrollMonitor';
 import { useDomain } from '@/composables/useDomain';
 import { apolloClient } from '@/apollo';
 import { PROPOSALS_QUERY } from '@/helpers/queries';
+import { useProfiles } from '@/composables/useProfiles';
 
 export default {
   setup() {
@@ -128,13 +129,20 @@ export default {
       load();
     }
 
+    const { profiles, addressArray } = useProfiles();
+
+    watch(proposals, () => {
+      addressArray.value = proposals.value.map(proposal => proposal.author);
+    });
+
     return {
       loading,
       selectState,
       loadingMore,
       filterBy,
       proposals,
-      space
+      space,
+      profiles
     };
   }
 };

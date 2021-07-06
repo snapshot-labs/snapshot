@@ -1,5 +1,4 @@
 import { getScores } from '@snapshot-labs/snapshot.js/src/utils';
-import { getProfiles } from '@/helpers/profile';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import { apolloClient } from '@/apollo';
 import { PROPOSAL_VOTES_QUERY } from '@/helpers/queries';
@@ -46,22 +45,16 @@ export async function getResults(space, proposal, votes) {
     /* Get scores */
     if (proposal.state !== 'pending') {
       console.time('getProposal.scores');
-      const [scores, profiles]: any = await Promise.all([
-        getScores(
-          space.key,
-          strategies,
-          space.network,
-          provider,
-          voters,
-          parseInt(proposal.snapshot)
-        ),
-        getProfiles([proposal.author, ...voters])
-      ]);
+      const scores = await getScores(
+        space.key,
+        strategies,
+        space.network,
+        provider,
+        voters,
+        parseInt(proposal.snapshot)
+      );
       console.timeEnd('getProposal.scores');
       console.log('Scores', scores);
-
-      proposal.profile = profiles[proposal.author];
-      votes.map(vote => (vote.profile = profiles[vote.voter]));
 
       votes = votes
         .map((vote: any) => {

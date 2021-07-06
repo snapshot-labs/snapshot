@@ -83,7 +83,7 @@
           <b>{{ $t('author') }}</b>
           <User
             :address="proposal.author"
-            :profile="proposal.profile"
+            :profile="profiles[proposal.author]"
             :space="space"
             class="float-right"
           />
@@ -220,6 +220,7 @@ import { getProposal, getResults, getPower } from '@/helpers/snapshot';
 import { useModal } from '@/composables/useModal';
 import { useTerms } from '@/composables/useTerms';
 import client from '@/helpers/clientEIP712';
+import { useProfiles } from '@/composables/useProfiles';
 
 export default {
   setup() {
@@ -280,7 +281,7 @@ export default {
       loaded.value = true;
       const resultsObj = await getResults(
         space.value,
-        proposal.value,
+        proposalObj.proposal,
         proposalObj.votes
       );
       results.value = resultsObj.results;
@@ -331,6 +332,12 @@ export default {
       if (e === 'delete') deleteProposal();
     }
 
+    const { profiles, addressArray } = useProfiles();
+
+    watch(proposal, () => {
+      addressArray.value = [proposal.value.author];
+    });
+
     watch(web3Account, (val, prev) => {
       if (val?.toLowerCase() !== prev) loadPower();
     });
@@ -364,7 +371,8 @@ export default {
       symbols,
       dropdownLoading,
       modalStrategiesOpen,
-      selectFromDropdown
+      selectFromDropdown,
+      profiles
     };
   }
 };

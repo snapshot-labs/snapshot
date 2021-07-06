@@ -13,7 +13,7 @@
       class="px-4 py-3 border-top d-flex"
     >
       <User
-        :profile="vote.profile"
+        :profile="profiles[vote.voter]"
         :address="vote.voter"
         :space="space"
         class="column"
@@ -66,9 +66,10 @@
 </template>
 
 <script>
-import { ref, computed } from 'vue';
+import { ref, computed, watch, toRefs } from 'vue';
 import { useStore } from 'vuex';
 import { getChoiceString } from '@/helpers/utils';
+import { useProfiles } from '@/composables/useProfiles';
 
 export default {
   props: {
@@ -80,6 +81,8 @@ export default {
   },
   setup(props) {
     const store = useStore();
+
+    const { votes } = toRefs(props);
 
     const showAllVotes = ref(false);
     const authorIpfsHash = ref('');
@@ -121,6 +124,12 @@ export default {
       return votes;
     }
 
+    const { profiles, addressArray } = useProfiles();
+
+    watch(votes, () => {
+      addressArray.value = votes.value.map(vote => vote.voter);
+    });
+
     return {
       showAllVotes,
       authorIpfsHash,
@@ -129,7 +138,8 @@ export default {
       openReceiptModal,
       visibleVotes,
       titles,
-      format: getChoiceString
+      format: getChoiceString,
+      profiles
     };
   }
 };
