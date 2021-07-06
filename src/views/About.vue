@@ -64,7 +64,7 @@
           :style="i === 0 && 'border: 0 !important;'"
           class="px-4 py-3 border-top d-flex"
         >
-          <User :address="user" />
+          <User :address="user" :profile="profiles[user]" />
         </div>
       </Block>
       <Block
@@ -79,7 +79,7 @@
           :style="i === 0 && 'border: 0 !important;'"
           class="px-4 py-3 border-top d-flex"
         >
-          <User :address="user" />
+          <User :address="user" :profile="profiles[user]" />
         </div>
       </Block>
     </template>
@@ -87,10 +87,11 @@
 </template>
 
 <script>
-import { computed } from 'vue';
+import { computed, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { useStore } from 'vuex';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
+import { useProfiles } from '@/composables/useProfiles';
 
 export default {
   setup() {
@@ -100,9 +101,16 @@ export default {
     const space = computed(() => store.state.app.spaces[route.params.key]);
     const network = computed(() => networks[space.value.network]);
 
+    const { profiles, addressArray } = useProfiles();
+
+    onMounted(() => {
+      addressArray.value = space.value.admins.concat(space.value.members);
+    });
+
     return {
       space,
-      network
+      network,
+      profiles
     };
   }
 };

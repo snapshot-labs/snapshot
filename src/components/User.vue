@@ -4,6 +4,7 @@
       <template v-slot:item>
         <a class="no-wrap">
           <UiAvatar
+            v-if="!hideAvatar"
             :imgsrc="_ipfsUrl(profile?.image)"
             :address="address"
             size="16"
@@ -54,23 +55,25 @@
 </template>
 
 <script>
+import { watchEffect } from 'vue';
+import { useUsername } from '@/composables/useUsername';
+
 export default {
-  props: ['address', 'space', 'profile'],
-  computed: {
-    name() {
-      if (
-        this.web3.account &&
-        this.address.toLowerCase() === this.web3.account.toLowerCase()
-      ) {
-        return 'You';
-      }
-      if (this.profile?.name) {
-        return this.profile.name;
-      } else if (this.profile?.ens) {
-        return this._shorten(this.profile.ens, 20);
-      }
-      return this._shorten(this.address);
-    }
+  props: {
+    address: String,
+    space: Object,
+    profile: Object,
+    hideAvatar: Boolean
+  },
+  setup(props) {
+    const { address, profile, name } = useUsername();
+
+    watchEffect(() => {
+      address.value = props.address;
+      profile.value = props.profile;
+    });
+
+    return { name };
   }
 };
 </script>
