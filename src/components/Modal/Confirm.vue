@@ -86,7 +86,7 @@ export default {
     open: Boolean,
     space: Object,
     proposal: Object,
-    selectedChoices: Object,
+    selectedChoices: [Object, Number],
     snapshot: String,
     totalScore: Number,
     scores: Object,
