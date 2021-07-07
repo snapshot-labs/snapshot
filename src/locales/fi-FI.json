@@ -228,7 +228,7 @@
     "description": {
       "single-choice": "Jokainen äänestäjä voi valita vain yhden vaihtoehdon.",
       "approval": "Jokainen äänestäjä voi valita minkä tahansa määrän vaihtoehtoja.",
-      "quadratic": "Jokainen äänestäjä voi jakaa äänivoimansa mihin tahansa määrään valintoja. Tulokset lasketaan quaratically.",
+      "quadratic": "Each voter may spread voting power across any number of choices. Results are calculated quadratically.",
       "ranked-choice": "Jokainen äänestäjä voi valita ja asettaa paremmuusjärjestykseen minkä tahansa määrän valintoja. Tulokset kalmennetaan instant-runoff laskentamenetelmällä.",
       "weighted": "Jokainen äänestäjä voi jakaa äänivoimansa mihin tahansa määrään valintoja."
     }
