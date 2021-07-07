@@ -20,27 +20,33 @@
 </template>
 
 <script>
+import { useRouter } from 'vue-router';
+
 export default {
-  props: ['modelValue', 'placeholder', 'modal'],
+  props: { modelValue: String, placeholder: String, modal: Boolean },
   emits: ['update:modelValue'],
-  methods: {
-    handleInput(e) {
+  setup(props, { emit }) {
+    const router = useRouter();
+
+    function handleInput(e) {
       const input = e.target.value;
-      if (!this.modal) {
-        const { query } = this.$router.currentRoute.value;
-        this.$router.push({
+      if (!props.modal) {
+        const { query } = router.currentRoute.value;
+        router.push({
           query: input ? { ...query, q: input } : { ...query, q: undefined }
         });
       }
-      this.$emit('update:modelValue', input);
-    },
-    clearInput() {
-      if (!this.modal) {
-        const { query } = this.$router.currentRoute.value;
-        this.$router.push({ query: { ...query, q: undefined } });
-      }
-      this.$emit('update:modelValue', '');
+      emit('update:modelValue', input);
     }
+
+    function clearInput() {
+      if (!props.modal) {
+        const { query } = router.currentRoute.value;
+        router.push({ query: { ...query, q: undefined } });
+      }
+      emit('update:modelValue', '');
+    }
+    return { handleInput, clearInput };
   }
 };
 </script>

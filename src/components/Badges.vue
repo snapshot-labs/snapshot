@@ -6,7 +6,7 @@
 
 <script>
 export default {
-  props: ['address', 'members'],
+  props: { address: String, members: Object },
   computed: {
     isCore() {
       if (!this.members) return false;

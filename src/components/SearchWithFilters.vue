@@ -23,49 +23,55 @@
 </template>
 
 <script>
+import { computed } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import { useI18n } from 'vue-i18n';
+
 export default {
-  methods: {
-    redirectSearch(e) {
-      this.$router.push({
+  setup() {
+    const route = useRoute();
+    const router = useRouter();
+    const { t } = useI18n();
+
+    const searchOptions = computed(() => [
+      {
+        text: t('spaces'),
+        action: 'home'
+      },
+      {
+        text: t('networks'),
+        action: 'networks'
+      },
+      {
+        text: t('strategiesPage'),
+        action: 'strategies'
+      },
+      {
+        text: t('plugins'),
+        action: 'plugins'
+      },
+      {
+        text: t('skins'),
+        action: 'skins'
+      }
+    ]);
+
+    const searchSelectedOption = computed(
+      () =>
+        searchOptions.value.find(option => option.action === route.name)
+          ?.text || 'home'
+    );
+
+    const routeQuery = computed(() => route.query.q);
+
+    function redirectSearch(e) {
+      router.push({
         name: e,
-        query: this.routeQuery ? { q: this.routeQuery } : {}
+        query: routeQuery.value ? { q: routeQuery.value } : {}
       });
     }
-  },
-  computed: {
-    searchSelectedOption() {
-      return (
-        this.searchOptions.find(option => option.action === this.$route.name)
-          ?.text || 'home'
-      );
-    },
-    searchOptions() {
-      return [
-        {
-          text: this.$t('spaces'),
-          action: 'home'
-        },
-        {
-          text: this.$t('networks'),
-          action: 'networks'
-        },
-        {
-          text: this.$t('strategiesPage'),
-          action: 'strategies'
-        },
-        {
-          text: this.$t('plugins'),
-          action: 'plugins'
-        },
-        {
-          text: this.$t('skins'),
-          action: 'skins'
-        }
-      ];
-    },
-    routeQuery() {
-      return this.$route.query.q;
-    }
+
+    return { redirectSearch, searchSelectedOption, searchOptions, routeQuery };
   }
 };
 </script>
