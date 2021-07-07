@@ -1,0 +1,17 @@
+{
+  "aragon": {
+    "proposalParams": true
+  },
+  "gnosis": {
+    "proposalParams": true
+  },
+  "poap": {
+    "proposalParams": true
+  },
+  "quorum": {
+    "proposalParams": false
+  },
+  "safeSnap": {
+    "proposalParams": true
+  }
+}

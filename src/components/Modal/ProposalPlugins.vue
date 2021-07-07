@@ -65,9 +65,15 @@
 import { ref, watch, toRefs } from 'vue';
 import pluginsObj from '@snapshot-labs/snapshot.js/src/plugins';
 import { clone } from '@/helpers/utils';
+import pluginsConfig from '@/components/Plugin/config.json';
 
 export default {
-  props: { open: Boolean, modelValue: Object, space: Object, proposal: Object },
+  props: {
+    open: Boolean,
+    modelValue: Object,
+    space: Object,
+    proposal: Object
+  },
   emits: ['close', 'update:modelValue'],
   setup(props, { emit }) {
     const { open } = toRefs(props);
@@ -80,7 +86,10 @@ export default {
     }
 
     function showButton(plugin) {
-      return plugin.name !== 'SafeSnap';
+      const pluginsWithParams = Object.keys(props.space.plugins).filter(
+        plugin => pluginsConfig[plugin].proposalParams
+      );
+      return pluginsWithParams.includes(plugin.name);
     }
 
     if (props.space.plugins) {
