@@ -228,7 +228,7 @@
     "description": {
       "single-choice": "Ogni elettore può selezionare una sola opzione.",
       "approval": "Ogni elettore può selezionare un numero qualsiasi di scelte.",
-      "quadratic": "Ogni elettore può distribuire il potere di voto su un numero qualsiasi di scelte. I risultati sono calcolati in termini quadratici.",
+      "quadratic": "Each voter may spread voting power across any number of choices. Results are calculated quadratically.",
       "ranked-choice": "Ogni elettore può selezionare e classificare un numero qualsiasi di scelte. I risultati sono calcolati con il metodo di conteggio del runoff istantaneo.",
       "weighted": "Ogni elettore può distribuire il potere di voto su qualsiasi numero di scelte."
     }
