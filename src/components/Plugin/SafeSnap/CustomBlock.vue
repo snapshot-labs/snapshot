@@ -57,7 +57,9 @@
 <script>
 import Plugin from '@snapshot-labs/snapshot.js/src/plugins/safeSnap';
 import { sleep } from '@/helpers/utils';
+import { BigNumber } from '@ethersproject/bignumber';
 import { formatBatchTransaction } from '@/helpers/abi/utils';
+import { formatUnits } from '@ethersproject/units';
 
 const QuestionStates = {
   error: -1,
@@ -196,13 +198,12 @@ export default {
     },
     approvalData() {
       if (this.questionDetails) {
-        const {
-          currentBond,
-          finalizedAt,
-          isApproved,
-          endTime
-        } = this.questionDetails;
-        if (currentBond === '0.0') {
+        const { currentBond, finalizedAt, isApproved, endTime } =
+          this.questionDetails;
+        console.log({ currentBond });
+        console.log(BigNumber.from(currentBond).eq(0));
+
+        if (BigNumber.from(currentBond).eq(0)) {
           return {
             decision: this.$i18n.t('safeSnap.currentOutcome', ['--']),
             timeLeft: this.$i18n.t('safeSnap.finalizedIn', ['--']),
@@ -230,7 +231,9 @@ export default {
             isApproved ? 'Yes' : 'No'
           ]),
           timeLeft: this.$i18n.t('safeSnap.finalizedIn', [this._ms(endTime)]),
-          currentBond: this.$i18n.t('safeSnap.currentBond', [currentBond])
+          currentBond: this.$i18n.t('safeSnap.currentBond', [
+            formatUnits(currentBond, 18), 'ETH'
+          ])
         };
       }
       return {
