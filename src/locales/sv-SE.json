@@ -228,7 +228,7 @@
     "description": {
       "single-choice": "Varje väljare kan välja endast ett val.",
       "approval": "Varje väljare kan välja valfritt antal val.",
-      "quadratic": "Varje väljare kan sprida röststyrka över valfritt antal val. Resultaten beräknas kvartalsvis.",
+      "quadratic": "Each voter may spread voting power across any number of choices. Results are calculated quadratically.",
       "ranked-choice": "Varje väljare kan välja och rangordna valfritt antal val. Resultat kalkyleras genom omedelbar avrinningsräkning.",
       "weighted": "Varje väljare kan sprida rösträtt över valfritt antal val."
     }
