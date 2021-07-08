@@ -362,7 +362,7 @@ export default {
   setup() {
     const route = useRoute();
     const store = useStore();
-    const { t, tc } = useI18n();
+    const { t } = useI18n();
 
     const key = ref(route.params.key);
     const from = ref(route.params.from);
@@ -462,7 +462,7 @@ export default {
         if (errorFound?.instancePath.includes('strategies'))
           return t('errors.minStrategy');
         else if (errorFound)
-          return tc(`errors.${errorFound.keyword}`, [errorFound?.params.limit]);
+          return t(`errors.${errorFound.keyword}`, [errorFound?.params.limit]);
       }
     }
 
