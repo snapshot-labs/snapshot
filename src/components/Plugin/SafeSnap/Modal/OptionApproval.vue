@@ -81,7 +81,7 @@ export default {
     bondData() {
       const bondNotSet = BigNumber.from(this.bond).eq(0);
       const minimumBond = BigNumber.from(this.minimumBond).eq(0)
-        ? 1
+        ? BigNumber.from(10).pow(this.tokenDecimals)
         : this.minimumBond;
       const toSet = bondNotSet ? minimumBond : BigNumber.from(this.bond).mul(2);
       return {
