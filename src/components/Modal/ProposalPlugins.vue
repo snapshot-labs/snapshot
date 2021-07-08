@@ -85,11 +85,13 @@ export default {
       return `https://raw.githubusercontent.com/snapshot-labs/snapshot.js/master/src/plugins/${plugin}/logo.png`;
     }
 
-    function showButton(plugin) {
+    function showButton(pluginObj) {
       const pluginsWithParams = Object.keys(props.space.plugins).filter(
         plugin => pluginsConfig[plugin].proposalParams
       );
-      return pluginsWithParams.includes(plugin.name);
+      return pluginsWithParams
+        .map(plugin => plugin.toLowerCase())
+        .includes(pluginObj.name.toLowerCase());
     }
 
     if (props.space.plugins) {

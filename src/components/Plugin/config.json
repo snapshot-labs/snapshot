@@ -6,12 +6,12 @@
     "proposalParams": true
   },
   "poap": {
-    "proposalParams": true
+    "proposalParams": false
   },
   "quorum": {
     "proposalParams": false
   },
   "safeSnap": {
-    "proposalParams": true
+    "proposalParams": false
   }
 }
