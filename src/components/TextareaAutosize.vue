@@ -1,7 +1,13 @@
 <template>
-  <textarea :style="computedStyles" v-model="val" @focus="resize"></textarea>
+  <textarea
+    ref="textarea"
+    :style="computedStyles"
+    v-model="val"
+    @focus="resize"
+  ></textarea>
 </template>
 <script>
+import { ref, computed, nextTick, toRefs, watch, onMounted } from 'vue';
 export default {
   name: 'TextareaAutosize',
   props: {
@@ -30,88 +36,91 @@ export default {
     }
   },
   emits: ['update:modelValue'],
-  data() {
-    return {
-      // data property for v-model binding with real textarea tag
-      val: null,
-      // works when content height becomes more then value of the maxHeight property
-      maxHeightScroll: false,
-      height: 'auto'
-    };
-  },
-  computed: {
-    computedStyles() {
-      if (!this.autosize) return {};
+  setup(props, { emit }) {
+    const { modelValue, minHeight, maxHeight } = toRefs(props);
+
+    // data property for v-model binding with real textarea tag
+    const val = ref(props.modelValue);
+    // works when content height becomes more then value of the maxHeight property
+    const maxHeightScroll = ref(false);
+    const height = ref('auto');
+    const textarea = ref(null);
+
+    const isResizeImportant = computed(() => {
+      const imp = props.important;
+      return imp === true || (Array.isArray(imp) && imp.includes('resize'));
+    });
+
+    const isOverflowImportant = computed(() => {
+      const imp = props.important;
+      return imp === true || (Array.isArray(imp) && imp.includes('overflow'));
+    });
+
+    const isHeightImportant = computed(() => {
+      const imp = props.important;
+      return imp === true || (Array.isArray(imp) && imp.includes('height'));
+    });
+
+    const computedStyles = computed(() => {
+      if (!props.autosize) return {};
       return {
-        resize: !this.isResizeImportant ? 'none' : 'none !important',
-        height: this.height,
-        overflow: this.maxHeightScroll
+        resize: !isResizeImportant.value ? 'none' : 'none !important',
+        height: height.value,
+        overflow: maxHeightScroll.value
           ? 'auto'
-          : !this.isOverflowImportant
+          : !isOverflowImportant.value
           ? 'hidden'
           : 'hidden !important'
       };
-    },
-    isResizeImportant() {
-      const imp = this.important;
-      return imp === true || (Array.isArray(imp) && imp.includes('resize'));
-    },
-    isOverflowImportant() {
-      const imp = this.important;
-      return imp === true || (Array.isArray(imp) && imp.includes('overflow'));
-    },
-    isHeightImportant() {
-      const imp = this.important;
-      return imp === true || (Array.isArray(imp) && imp.includes('height'));
-    }
-  },
-  watch: {
-    modelValue(val) {
-      this.val = val;
-    },
-    val(val) {
-      this.$nextTick(this.resize);
-      this.$emit('update:modelValue', val);
-    },
-    minHeight() {
-      this.$nextTick(this.resize);
-    },
-    maxHeight() {
-      this.$nextTick(this.resize);
-    },
-    autosize(val) {
-      if (val) this.resize();
-    }
-  },
-  methods: {
-    resize() {
-      const important = this.isHeightImportant ? 'important' : '';
-      this.height = `auto${important ? ' !important' : ''}`;
-      this.$nextTick(() => {
-        let contentHeight = this.$el.scrollHeight + 1;
-        if (this.minHeight) {
+    });
+
+    function resize() {
+      const important = isHeightImportant.value ? 'important' : '';
+      height.value = `auto${important ? ' !important' : ''}`;
+      nextTick(() => {
+        let contentHeight = textarea.value.scrollHeight + 1;
+        if (props.minHeight) {
           contentHeight =
-            contentHeight < this.minHeight ? this.minHeight : contentHeight;
+            contentHeight < props.minHeight ? props.minHeight : contentHeight;
         }
-        if (this.maxHeight) {
-          if (contentHeight > this.maxHeight) {
-            contentHeight = this.maxHeight;
-            this.maxHeightScroll = true;
+        if (props.maxHeight) {
+          if (contentHeight > props.maxHeight) {
+            contentHeight = props.maxHeight;
+            maxHeightScroll.value = true;
           } else {
-            this.maxHeightScroll = false;
+            maxHeightScroll.value = false;
           }
         }
         const heightVal = contentHeight + 'px';
-        this.height = `${heightVal}${important ? ' !important' : ''}`;
+        height.value = `${heightVal}${important ? ' !important' : ''}`;
       });
       return this;
     }
-  },
-  created() {
-    this.val = this.modelValue;
-  },
-  mounted() {
-    this.resize();
+
+    watch(modelValue, v => {
+      val.value = v;
+    });
+
+    watch(val, v => {
+      nextTick(resize);
+      emit('update:modelValue', v);
+    });
+
+    watch(minHeight, () => {
+      nextTick(resize);
+    });
+
+    watch(maxHeight, () => {
+      nextTick(resize);
+    });
+
+    watch(val, v => {
+      if (v) resize();
+    });
+
+    onMounted(() => resize());
+
+    return { val, computedStyles, textarea, resize };
   }
 };
 </script>
