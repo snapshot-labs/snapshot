@@ -21,11 +21,17 @@
         </h4>
         <br />
         <h4>
-          {{ $t('safeSnap.currentBond', [bondData.current + ' ETH']) }}
+          {{
+            $t('safeSnap.currentBond', [bondData.current + ' ' + tokenSymbol])
+          }}
         </h4>
         <br />
         <h4>
-          {{ $t('safeSnap.nextBond', [bondData.toSet + ' ETH']) }}
+          {{
+            $t('safeSnap.nextBond', [
+              bondData.toSet + ' ' + bondData.tokenSymbol
+            ])
+          }}
         </h4>
       </div>
       <div>
@@ -52,7 +58,15 @@
 import { BigNumber } from '@ethersproject/bignumber';
 import { formatUnits } from '@ethersproject/units';
 export default {
-  props: ['open', 'isApproved', 'bond', 'questionId', 'minimumBond'],
+  props: [
+    'open',
+    'isApproved',
+    'bond',
+    'questionId',
+    'minimumBond',
+    'tokenSymbol',
+    'decimals'
+  ],
   emits: ['close', 'setApproval'],
   methods: {
     async handleSetApproval(option) {
@@ -71,8 +85,9 @@ export default {
         : this.minimumBond;
       const toSet = bondNotSet ? minimumBond : BigNumber.from(this.bond).mul(2);
       return {
-        toSet: formatUnits(toSet, 18),
-        current: bondNotSet ? '--' : formatUnits(this.bond, 18)
+        toSet: formatUnits(toSet, this.decimals),
+        current: bondNotSet ? '--' : formatUnits(this.bond, this.decimals),
+        tokenSymbol: this.tokenSymbol
       };
     },
     questionLink() {

@@ -47,6 +47,8 @@
         :isApproved="questionDetails?.isApproved"
         :bond="questionDetails?.currentBond"
         :questionId="questionDetails?.questionId"
+        :tokenSymbol="bondData?.tokenSymbol"
+        :tokenDecimals="bondData?.tokenDecimals"
         @setApproval="voteOnQuestion"
         @close="modalApproveDecisionOpen = false"
       />
@@ -198,10 +200,12 @@ export default {
     },
     approvalData() {
       if (this.questionDetails) {
-        const { currentBond, finalizedAt, isApproved, endTime } =
-          this.questionDetails;
-        console.log({ currentBond });
-        console.log(BigNumber.from(currentBond).eq(0));
+        const { 
+          currentBond, 
+          finalizedAt, 
+          isApproved, 
+          endTime 
+        } = this.questionDetails;
 
         if (BigNumber.from(currentBond).eq(0)) {
           return {
@@ -232,7 +236,7 @@ export default {
           ]),
           timeLeft: this.$i18n.t('safeSnap.finalizedIn', [this._ms(endTime)]),
           currentBond: this.$i18n.t('safeSnap.currentBond', [
-            formatUnits(currentBond, 18), 'ETH'
+            formatUnits(currentBond, this.bondData.tokenDecimals), this.bondData.tokenSymbol
           ])
         };
       }
