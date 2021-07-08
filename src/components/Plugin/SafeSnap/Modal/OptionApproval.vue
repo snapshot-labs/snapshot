@@ -57,6 +57,7 @@
 <script>
 import { BigNumber } from '@ethersproject/bignumber';
 import { formatUnits } from '@ethersproject/units';
+
 export default {
   props: [
     'open',
