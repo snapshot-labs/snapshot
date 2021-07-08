@@ -67,9 +67,9 @@ export default {
     bondData() {
       const bondNotSet = BigNumber.from(this.bond).eq(0);
       const minimumBond = BigNumber.from(this.minimumBond).eq(0)
-        ? 0.001
+        ? 1
         : this.minimumBond;
-      const toSet = bondNotSet ? minimumBond : BigNumber.from(this.bond).mul(2)
+      const toSet = bondNotSet ? minimumBond : BigNumber.from(this.bond).mul(2);
       return {
         toSet: formatUnits(toSet, 18),
         current: bondNotSet ? '--' : formatUnits(this.bond, 18)

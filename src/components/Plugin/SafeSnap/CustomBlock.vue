@@ -349,6 +349,7 @@ export default {
     },
     async voteOnQuestion(option) {
       await this.plugin.voteForQuestion(
+        this.network,
         this.$auth.web3,
         this.questionDetails.oracle,
         this.questionDetails.questionId,
