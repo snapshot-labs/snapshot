@@ -6,7 +6,7 @@
     <form @submit.prevent="handleSubmit" class="d-flex flex-column flex-auto">
       <h4 class="m-4 text-center">
         {{ $t('confirmRemove') }}
-        <User :address="delegate" class="ml-1" />
+        {{ username }}
         <template v-if="id">{{ $tc('removeSpace', [id]) }}</template
         >?
       </h4>
@@ -32,9 +32,10 @@
 </template>
 
 <script>
-import { ref } from 'vue';
+import { ref, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useStore } from 'vuex';
+import { useUsername } from '@/composables/useUsername';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { sendTransaction } from '@snapshot-labs/snapshot.js/src/utils';
 import { formatBytes32String } from '@ethersproject/strings';
@@ -43,7 +44,7 @@ import abi from '@/helpers/abi';
 import { sleep } from '@/helpers/utils';
 
 export default {
-  props: { open: Boolean, id: String, delegate: String },
+  props: { open: Boolean, id: String, delegate: String, profiles: Object },
   emits: ['close', 'reload'],
   setup(props, { emit }) {
     const store = useStore();
@@ -51,6 +52,13 @@ export default {
     const { t } = useI18n();
 
     const loading = ref(false);
+
+    const { address, profile, username } = useUsername();
+
+    watchEffect(() => {
+      address.value = props.delegate;
+      profile.value = props.profiles[props.delegate];
+    });
 
     async function handleSubmit() {
       loading.value = true;
@@ -74,7 +82,7 @@ export default {
       loading.value = false;
     }
 
-    return { loading, handleSubmit };
+    return { loading, handleSubmit, username };
   }
 };
 </script>
