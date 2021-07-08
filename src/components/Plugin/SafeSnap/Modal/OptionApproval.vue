@@ -65,7 +65,7 @@ export default {
     'questionId',
     'minimumBond',
     'tokenSymbol',
-    'decimals'
+    'tokenDecimals'
   ],
   emits: ['close', 'setApproval'],
   methods: {
@@ -85,8 +85,8 @@ export default {
         : this.minimumBond;
       const toSet = bondNotSet ? minimumBond : BigNumber.from(this.bond).mul(2);
       return {
-        toSet: formatUnits(toSet, this.decimals),
-        current: bondNotSet ? '--' : formatUnits(this.bond, this.decimals),
+        toSet: formatUnits(toSet, this.tokenDecimals),
+        current: bondNotSet ? '--' : formatUnits(this.bond, this.tokenDecimals),
         tokenSymbol: this.tokenSymbol
       };
     },

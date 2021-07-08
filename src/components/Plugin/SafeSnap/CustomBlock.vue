@@ -200,11 +200,11 @@ export default {
     },
     approvalData() {
       if (this.questionDetails) {
-        const { 
-          currentBond, 
-          finalizedAt, 
-          isApproved, 
-          endTime 
+        const {
+          currentBond,
+          finalizedAt,
+          isApproved,
+          endTime
         } = this.questionDetails;
 
         if (BigNumber.from(currentBond).eq(0)) {
