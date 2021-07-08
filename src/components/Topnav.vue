@@ -85,53 +85,63 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { ref, computed, watch, onMounted } from 'vue';
+import { useStore } from 'vuex';
+import { useRoute } from 'vue-router';
 import { useModal } from '@/composables/useModal';
 import { useDomain } from '@/composables/useDomain';
 
 export default {
   setup() {
     const { modalAccountOpen } = useModal();
-    const { env } = useDomain();
+    const { env, domain } = useDomain();
+    const route = useRoute();
+    const store = useStore();
 
-    return { modalAccountOpen, env };
-  },
-  data() {
+    const loading = ref(false);
+    const modalAboutOpen = ref(false);
+    const modalLangOpen = ref(false);
+    const modalWalletNotice = ref(false);
+
+    const space = computed(() => {
+      const key = domain || route.params.key;
+      return store.state.app.spaces[key] ? store.state.app.spaces[key] : false;
+    });
+
+    const walletConnectType = computed(
+      () => store.state.web3.walletConnectType
+    );
+
+    function setTitle() {
+      document.title = space.value.name ? space.value.name : 'Snapshot';
+    }
+
+    async function handleLogin(connector) {
+      modalAccountOpen.value = false;
+      loading.value = true;
+      await store.dispatch('login', connector);
+      loading.value = false;
+    }
+
+    watch(space, () => {
+      setTitle();
+    });
+
+    watch(walletConnectType, val => {
+      if (val === 'Gnosis Safe Multisig') modalWalletNotice.value = true;
+    });
+
+    onMounted(() => setTitle());
+
     return {
-      loading: false,
-      modalAboutOpen: false,
-      modalLangOpen: false,
-      modalWalletNotice: false
+      modalAccountOpen,
+      env,
+      loading,
+      modalAboutOpen,
+      modalLangOpen,
+      modalWalletNotice,
+      handleLogin
     };
-  },
-  computed: {
-    space() {
-      const key = this.domain || this.$route.params.key;
-      return this.app.spaces[key] ? this.app.spaces[key] : false;
-    }
-  },
-  created() {
-    this.setTitle();
-  },
-  watch: {
-    space() {
-      this.setTitle();
-    },
-    'web3.walletConnectType': async function (val) {
-      if (val === 'Gnosis Safe Multisig') this.modalWalletNotice = true;
-    }
-  },
-  methods: {
-    ...mapActions(['login']),
-    setTitle() {
-      document.title = this.space.name ? this.space.name : 'Snapshot';
-    },
-    async handleLogin(connector) {
-      this.modalAccountOpen = false;
-      this.loading = true;
-      await this.login(connector);
-      this.loading = false;
-    }
   }
 };
 </script>
