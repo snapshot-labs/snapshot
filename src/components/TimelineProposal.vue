@@ -10,7 +10,7 @@
       <div class="mb-2">
         <Token :space="proposal.space" size="28" />
         <span class="ml-2" v-text="proposal.space.name" />
-        {{ $tc('proposalBy', [name]) }}
+        {{ $tc('proposalBy', [username]) }}
         <Badges :address="proposal.author" :members="proposal.space.members" />
         <UiState :state="proposal.state" class="d-inline-block float-right" />
       </div>
@@ -46,14 +46,14 @@ export default {
       return 'startIn';
     });
 
-    const { address, profile, name } = useUsername();
+    const { address, profile, username } = useUsername();
 
     watchEffect(() => {
       address.value = props.proposal.author;
       profile.value = props.profiles[props.proposal.author];
     });
 
-    return { name, body, period };
+    return { username, body, period };
   }
 };
 </script>

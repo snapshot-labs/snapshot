@@ -9,7 +9,7 @@
             size="16"
             class="mr-1"
           />
-          {{ name }}
+          {{ username }}
           <Badges :address="address" :members="space?.members" />
         </a>
       </template>
@@ -64,14 +64,14 @@ export default {
     profile: Object
   },
   setup(props) {
-    const { address, profile, name } = useUsername();
+    const { address, profile, username } = useUsername();
 
     watchEffect(() => {
       address.value = props.address;
       profile.value = props.profile;
     });
 
-    return { name };
+    return { username };
   }
 };
 </script>
