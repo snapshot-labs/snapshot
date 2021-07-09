@@ -137,7 +137,7 @@
   },
   "delegate": {
     "header": "Delegeren",
-    "selectAddress": "Kies adres",
+    "selectDelegate": "Select delegate",
     "to": "Naar",
     "addressPlaceholder": "Adres of ENS naam",
     "spacePlaceholder": "Ruimte (optioneel)",
