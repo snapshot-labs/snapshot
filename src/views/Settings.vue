@@ -341,8 +341,10 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
-import { computed } from 'vue';
+import { computed, onMounted, ref } from 'vue';
+import { useRoute } from 'vue-router';
+import { useStore } from 'vuex';
+import { useI18n } from 'vue-i18n';
 import { useSearchFilters } from '@/composables/useSearchFilters';
 import { getAddress } from '@ethersproject/address';
 import { validateSchema } from '@snapshot-labs/snapshot.js/src/utils';
@@ -358,6 +360,64 @@ const basicValidation = { name: 'basic', params: {} };
 
 export default {
   setup() {
+    const route = useRoute();
+    const store = useStore();
+    const { t } = useI18n();
+
+    const key = ref(route.params.key);
+    const from = ref(route.params.from);
+    const currentSettings = ref({});
+    const currentContenthash = ref('');
+    const currentStrategy = ref({});
+    const currentPlugin = ref({});
+    const currentStrategyIndex = ref(false);
+    const modalNetworksOpen = ref(false);
+    const modalSkinsOpen = ref(false);
+    const modalStrategyOpen = ref(false);
+    const modalPluginsOpen = ref(false);
+    const modalValidationOpen = ref(false);
+    const loaded = ref(false);
+    const loading = ref(false);
+    const uploadLoading = ref(false);
+    const showErrors = ref(false);
+    const form = ref({
+      strategies: [],
+      plugins: {},
+      filters: {},
+      validation: basicValidation
+    });
+
+    const web3Account = computed(() => store.state.web3.account);
+
+    const validate = computed(() => {
+      if (form.value.terms === '') delete form.value.terms;
+      return validateSchema(schemas.space, form.value);
+    });
+
+    const isValid = computed(() => {
+      return !loading.value && validate.value === true && !uploadLoading.value;
+    });
+
+    const contenthash = computed(() => {
+      const keyURI = encodeURIComponent(key.value);
+      const address = web3Account.value
+        ? getAddress(web3Account.value)
+        : '<your-address>';
+      return `ipns://storage.snapshot.page/registry/${address}/${keyURI}`;
+    });
+
+    const isOwner = computed(() => {
+      return currentContenthash.value === contenthash.value;
+    });
+
+    const isAdmin = computed(() => {
+      if (!store.state.app.spaces[key.value]) return false;
+      const admins = (
+        store.state.app.spaces[key.value].admins || []
+      ).map(admin => admin.toLowerCase());
+      return admins.includes(web3Account.value?.toLowerCase());
+    });
+
     const { filteredPlugins } = useSearchFilters();
     const plugins = computed(() => filteredPlugins());
 
@@ -368,112 +428,30 @@ export default {
       return plugin.name;
     }
 
-    return { pluginName };
-  },
-  data() {
-    return {
-      key: this.$route.params.key,
-      from: this.$route.params.from,
-      currentSettings: {},
-      currentContenthash: '',
-      currentStrategy: {},
-      currentPlugin: {},
-      currentStrategyIndex: false,
-      modalNetworksOpen: false,
-      modalSkinsOpen: false,
-      modalStrategyOpen: false,
-      modalPluginsOpen: false,
-      modalValidationOpen: false,
-      loaded: false,
-      loading: false,
-      uploadLoading: false,
-      showErrors: false,
-      form: {
-        strategies: [],
-        plugins: {},
-        filters: {},
-        validation: basicValidation
-      },
-      networks
-    };
-  },
-  computed: {
-    validate() {
-      if (this.form.terms === '') delete this.form.terms;
-      return validateSchema(schemas.space, this.form);
-    },
-    isValid() {
-      return !this.loading && this.validate === true && !this.uploadLoading;
-    },
-    contenthash() {
-      const key = encodeURIComponent(this.key);
-      const address = this.web3.account
-        ? getAddress(this.web3.account)
-        : '<your-address>';
-      return `ipns://storage.snapshot.page/registry/${address}/${key}`;
-    },
-    isOwner() {
-      return this.currentContenthash === this.contenthash;
-    },
-    isAdmin() {
-      if (!this.app.spaces[this.key]) return false;
-      const admins = (this.app.spaces[this.key].admins || []).map(admin =>
-        admin.toLowerCase()
-      );
-      return admins.includes(this.web3.account?.toLowerCase());
-    }
-  },
-  async created() {
-    try {
-      const uri = await getSpaceUri(this.key);
-      this.currentContenthash = uri;
-      const [protocolType, decoded] = uri.split('://');
-      let space = clone(this.app.spaces?.[this.key]);
-      if (!space) space = await uriGet(gateway, decoded, protocolType);
-      delete space.key;
-      delete space._activeProposals;
-      space.strategies = space.strategies || [];
-      space.plugins = space.plugins || {};
-      space.validation = space.validation || basicValidation;
-      space.filters = space.filters || {};
-      this.currentSettings = clone(space);
-      this.form = space;
-    } catch (e) {
-      console.log(e);
-    }
-    if (this.from) {
-      const from = clone(this.app.spaces[this.from]);
-      delete from.key;
-      delete from._activeProposals;
-      this.form = from;
-    }
-    this.loaded = true;
-  },
-  methods: {
-    ...mapActions(['notify', 'send', 'getSpaces']),
-    async handleSubmit() {
-      if (this.isValid) {
-        if (this.form.filters.invalids) delete this.form.filters.invalids;
-        this.loading = true;
+    async function handleSubmit() {
+      if (isValid.value) {
+        if (form.value.filters.invalids) delete form.value.filters.invalids;
+        loading.value = true;
         try {
-          await this.send({
-            space: this.key,
+          await store.dispatch('send', {
+            space: key.value,
             type: 'settings',
-            payload: this.form
+            payload: form.value
           });
         } catch (e) {
           console.log(e);
         }
-        await this.getSpaces();
-        this.loading = false;
+        await store.dispatch('getSpaces');
+        loading.value = false;
       } else {
-        this.showErrors = true;
+        showErrors.value = true;
       }
-    },
-    inputError(field) {
-      if (!this.isValid && !this.loading && this.showErrors) {
+    }
+
+    function inputError(field) {
+      if (!isValid.value && !loading.value && showErrors.value) {
         const errors = Object.keys(defaults.errors);
-        const errorFound = this.validate.find(
+        const errorFound = validate.value.find(
           error =>
             (errors.includes(error.keyword) &&
               error.params.missingProperty === field) ||
@@ -482,72 +460,151 @@ export default {
         );
 
         if (errorFound?.instancePath.includes('strategies'))
-          return this.$t('errors.minStrategy');
+          return t('errors.minStrategy');
         else if (errorFound)
-          return this.$tc(`errors.${errorFound.keyword}`, [
-            errorFound?.params.limit
-          ]);
+          return t(`errors.${errorFound.keyword}`, [errorFound?.params.limit]);
       }
-    },
-    handleReset() {
-      if (this.from) return (this.form = clone(this.app.spaces[this.from]));
-      if (this.currentSettings) return (this.form = this.currentSettings);
-      this.form = {
+    }
+
+    function handleReset() {
+      if (from.value)
+        return (form.value = clone(store.state.app.spaces[from.value]));
+      if (currentSettings.value) return (form.value = currentSettings.value);
+      form.value = {
         strategies: [],
         plugins: {},
         filters: {}
       };
-    },
-    handleCopy() {
-      this.notify(this.$t('notify.copied'));
-    },
-    handleEditStrategy(i) {
-      this.currentStrategyIndex = i;
-      this.currentStrategy = clone(this.form.strategies[i]);
-      this.modalStrategyOpen = true;
-    },
-    handleRemoveStrategy(i) {
-      this.form.strategies = this.form.strategies.filter(
+    }
+
+    function handleCopy() {
+      store.dispatch('notify', t('notify.copied'));
+    }
+
+    function handleEditStrategy(i) {
+      currentStrategyIndex.value = i;
+      currentStrategy.value = clone(form.value.strategies[i]);
+      modalStrategyOpen.value = true;
+    }
+
+    function handleRemoveStrategy(i) {
+      form.value.strategies = form.value.strategies.filter(
         (strategy, index) => index !== i
       );
-    },
-    handleAddStrategy() {
-      this.currentStrategyIndex = false;
-      this.currentStrategy = {};
-      this.modalStrategyOpen = true;
-    },
-    handleSubmitAddStrategy(strategy) {
-      if (this.currentStrategyIndex !== false) {
-        this.form.strategies[this.currentStrategyIndex] = strategy;
+    }
+
+    function handleAddStrategy() {
+      currentStrategyIndex.value = false;
+      currentStrategy.value = {};
+      modalStrategyOpen.value = true;
+    }
+
+    function handleSubmitAddStrategy(strategy) {
+      if (currentStrategyIndex.value !== false) {
+        form.value.strategies[currentStrategyIndex.value] = strategy;
       } else {
-        this.form.strategies = this.form.strategies.concat(strategy);
+        form.value.strategies = form.value.strategies.concat(strategy);
       }
-    },
-    handleEditPlugins(name) {
-      this.currentPlugin = {};
-      this.currentPlugin[name] = clone(this.form.plugins[name]);
-      this.modalPluginsOpen = true;
-    },
-    handleRemovePlugins(plugin) {
-      delete this.form.plugins[plugin];
-    },
-    handleAddPlugins() {
-      this.currentPlugin = {};
-      this.modalPluginsOpen = true;
-    },
-    handleSubmitAddPlugins(payload) {
-      this.form.plugins[payload.key] = payload.inputClone;
-    },
-    handleSubmitAddValidation(validation) {
-      this.form.validation = validation;
-    },
-    setUploadLoading(s) {
-      this.uploadLoading = s;
-    },
-    setAvatarUrl(url) {
-      if (typeof url === 'string') this.form.avatar = url;
-    },
-    clone
+    }
+
+    function handleEditPlugins(name) {
+      currentPlugin.value = {};
+      currentPlugin.value[name] = clone(form.value.plugins[name]);
+      modalPluginsOpen.value = true;
+    }
+
+    function handleRemovePlugins(plugin) {
+      delete form.value.plugins[plugin];
+    }
+
+    function handleAddPlugins() {
+      currentPlugin.value = {};
+      modalPluginsOpen.value = true;
+    }
+
+    function handleSubmitAddPlugins(payload) {
+      form.value.plugins[payload.key] = payload.inputClone;
+    }
+
+    function handleSubmitAddValidation(validation) {
+      form.value.validation = validation;
+    }
+
+    function setUploadLoading(s) {
+      uploadLoading.value = s;
+    }
+
+    function setAvatarUrl(url) {
+      if (typeof url === 'string') form.value.avatar = url;
+    }
+
+    onMounted(async () => {
+      try {
+        const uri = await getSpaceUri(key.value);
+        currentContenthash.value = uri;
+        const [protocolType, decoded] = uri.split('://');
+        let space = clone(store.state.app.spaces?.[key.value]);
+        if (!space) space = await uriGet(gateway, decoded, protocolType);
+        delete space.key;
+        delete space._activeProposals;
+        space.strategies = space.strategies || [];
+        space.plugins = space.plugins || {};
+        space.validation = space.validation || basicValidation;
+        space.filters = space.filters || {};
+        currentSettings.value = clone(space);
+        form.value = space;
+      } catch (e) {
+        console.log(e);
+      }
+      if (from.value) {
+        const fromClone = clone(store.state.app.spaces[from.value]);
+        delete fromClone.key;
+        delete fromClone._activeProposals;
+        form.value = fromClone;
+      }
+      loaded.value = true;
+    });
+
+    return {
+      pluginName,
+      key,
+      from,
+      currentSettings,
+      currentContenthash,
+      currentStrategy,
+      currentPlugin,
+      currentStrategyIndex,
+      modalNetworksOpen,
+      modalSkinsOpen,
+      modalStrategyOpen,
+      modalPluginsOpen,
+      modalValidationOpen,
+      loaded,
+      loading,
+      uploadLoading,
+      showErrors,
+      form,
+      networks,
+      contenthash,
+      isOwner,
+      isAdmin,
+      clone,
+      handleSubmit,
+      inputError,
+      handleReset,
+      handleCopy,
+      handleEditStrategy,
+      handleRemoveStrategy,
+      handleAddStrategy,
+      handleSubmitAddStrategy,
+      handleEditPlugins,
+      handleRemovePlugins,
+      handleAddPlugins,
+      handleSubmitAddPlugins,
+      handleSubmitAddValidation,
+      setUploadLoading,
+      setAvatarUrl
+    };
   }
 };
 </script>

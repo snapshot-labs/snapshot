@@ -5,17 +5,19 @@
 </template>
 
 <script>
+import { computed } from 'vue';
+
 export default {
   props: { address: String, members: Object },
-  computed: {
-    isCore() {
-      if (!this.members) return false;
-      const members = this.members.map(address => address.toLowerCase());
-      return members.includes(this.address.toLowerCase());
-    },
-    isVerified() {
-      return false;
-    }
+  setup(props) {
+    const isCore = computed(() => {
+      if (!props.members) return false;
+      const members = props.members.map(address => address.toLowerCase());
+      return members.includes(props.address.toLowerCase());
+    });
+    const isVerified = computed(() => false);
+
+    return { isCore, isVerified };
   }
 };
 </script>
