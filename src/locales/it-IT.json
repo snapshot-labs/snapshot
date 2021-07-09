@@ -137,7 +137,7 @@
   },
   "delegate": {
     "header": "Delega",
-    "selectAddress": "Seleziona indirizzo",
+    "selectDelegate": "Select delegate",
     "to": "To",
     "addressPlaceholder": "Indirizzo o nome ENS",
     "spacePlaceholder": "Spazio (facoltativo)",
