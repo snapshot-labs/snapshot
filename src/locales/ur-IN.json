@@ -137,7 +137,7 @@
   },
   "delegate": {
     "header": "نمائندہ",
-    "selectAddress": "پتہ منتخب کریں",
+    "selectDelegate": "Select delegate",
     "to": "کو",
     "addressPlaceholder": "پتہ یا ENS نام",
     "spacePlaceholder": "جاگہ (اختیاری)",
