@@ -137,7 +137,7 @@
   },
   "delegate": {
     "header": "授权",
-    "selectAddress": "选择地址",
+    "selectDelegate": "Select delegate",
     "to": "至",
     "addressPlaceholder": "地址或ENS名称",
     "spacePlaceholder": "空间 (可选)",
