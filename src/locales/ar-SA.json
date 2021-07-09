@@ -137,7 +137,7 @@
   },
   "delegate": {
     "header": "تفويض",
-    "selectAddress": "اختيار عنوان",
+    "selectDelegate": "Select delegate",
     "to": "To",
     "addressPlaceholder": "Address or ENS name",
     "spacePlaceholder": "مساحة (اختياري)",
