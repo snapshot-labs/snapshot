@@ -137,7 +137,7 @@
   },
   "delegate": {
     "header": "डेलीगेट",
-    "selectAddress": "एड्रेस चुने",
+    "selectDelegate": "Select delegate",
     "to": "को",
     "addressPlaceholder": "पता या ईएनएस नाम",
     "spacePlaceholder": "स्पेस (वैकल्पिक)",
