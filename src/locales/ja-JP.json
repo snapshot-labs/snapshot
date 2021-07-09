@@ -137,7 +137,7 @@
   },
   "delegate": {
     "header": "移譲",
-    "selectAddress": "アドレスを選択する",
+    "selectDelegate": "Select delegate",
     "to": "To",
     "addressPlaceholder": "Address or ENS name",
     "spacePlaceholder": "スペース (任意)",
