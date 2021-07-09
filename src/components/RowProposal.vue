@@ -25,6 +25,7 @@
 </template>
 
 <script>
+import { computed } from 'vue';
 export default {
   props: {
     space: Object,
@@ -32,21 +33,24 @@ export default {
     verified: Array,
     i: String
   },
-  computed: {
-    isVerified() {
+  setup(props) {
+    const isVerified = computed(() => {
       return (
-        Array.isArray(this.verified) &&
-        this.verified.length > 0 &&
-        this.verified.includes(this.proposal.address)
+        Array.isArray(props.verified) &&
+        props.verified.length > 0 &&
+        props.verified.includes(props.proposal.address)
       );
-    },
-    period() {
+    });
+
+    const period = computed(() => {
       const ts = (Date.now() / 1e3).toFixed();
-      const { start, end } = this.proposal.msg.payload;
+      const { start, end } = props.proposal.msg.payload;
       if (ts > end) return 'endedAgo';
       if (ts > start) return 'endIn';
       return 'startIn';
-    }
+    });
+
+    return { isVerified, period };
   }
 };
 </script>
