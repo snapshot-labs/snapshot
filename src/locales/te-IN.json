@@ -137,7 +137,7 @@
   },
   "delegate": {
     "header": "ప్రతినిధి",
-    "selectAddress": "చిరునామాను ఎంచుకోండి",
+    "selectDelegate": "Select delegate",
     "to": "To",
     "addressPlaceholder": "Address or ENS name",
     "spacePlaceholder": "స్పేస్ (ఐచ్ఛిక)",
