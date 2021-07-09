@@ -137,7 +137,7 @@
   },
   "delegate": {
     "header": "Delegoi",
-    "selectAddress": "Valitse osoite",
+    "selectDelegate": "Select delegate",
     "to": "Että",
     "addressPlaceholder": "Osoite tai ENS-nimi",
     "spacePlaceholder": "Välilyönti (vapaaehtoinen)",
