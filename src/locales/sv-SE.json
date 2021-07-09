@@ -137,7 +137,7 @@
   },
   "delegate": {
     "header": "Delegera",
-    "selectAddress": "Välj adress",
+    "selectDelegate": "Select delegate",
     "to": "Till",
     "addressPlaceholder": "Adress eller ENS namn",
     "spacePlaceholder": "Space (valfritt)",
