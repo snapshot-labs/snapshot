@@ -137,7 +137,7 @@
   },
   "delegate": {
     "header": "Delegirati",
-    "selectAddress": "Izaberi adresu",
+    "selectDelegate": "Select delegate",
     "to": "To",
     "addressPlaceholder": "Address or ENS name",
     "spacePlaceholder": "Prostor (opciono)",
