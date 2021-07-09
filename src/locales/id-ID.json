@@ -137,7 +137,7 @@
   },
   "delegate": {
     "header": "Perwakilan",
-    "selectAddress": "Pilih alamat",
+    "selectDelegate": "Select delegate",
     "to": "Kepada",
     "addressPlaceholder": "Address or ENS name",
     "spacePlaceholder": "Ruang (opsional)",
