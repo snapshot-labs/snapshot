@@ -137,7 +137,7 @@
   },
   "delegate": {
     "header": "Ủy thác",
-    "selectAddress": "Chọn địa chỉ",
+    "selectDelegate": "Select delegate",
     "to": "Đến",
     "addressPlaceholder": "Địa chỉ hay ENS",
     "spacePlaceholder": "Không gian (không bắt buộc)",
