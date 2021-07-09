@@ -137,7 +137,7 @@
   },
   "delegate": {
     "header": "Делегировать право голоса",
-    "selectAddress": "Выбрать адрес",
+    "selectDelegate": "Select delegate",
     "to": "To",
     "addressPlaceholder": "Address or ENS name",
     "spacePlaceholder": "Раздел (опционально)",
