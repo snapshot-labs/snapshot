@@ -86,12 +86,8 @@ const resultsStr = computed(() => {
   return t('explore.results');
 });
 
-const {
-  filteredSkins,
-  filteredStrategies,
-  filteredNetworks,
-  filteredPlugins
-} = useSearchFilters();
+const { filteredSkins, filteredStrategies, filteredNetworks, filteredPlugins } =
+  useSearchFilters();
 
 const items = computed(() => {
   const q = route.query.q || '';

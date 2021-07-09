@@ -224,7 +224,6 @@ const router = useRouter();
 const store = useStore();
 const key = route.params.key;
 const id = route.params.id;
-const ts = (Date.now() / 1e3).toFixed();
 
 const modalOpen = ref(false);
 const selectedChoices = ref(null);

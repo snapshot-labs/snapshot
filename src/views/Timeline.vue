@@ -105,13 +105,8 @@ const loading = ref(false);
 const proposals = ref([]);
 
 // Infinite scroll with pagination
-const {
-  loadBy,
-  limit,
-  loadingMore,
-  stopLoadingMore,
-  loadMore
-} = useInfiniteLoader();
+const { loadBy, limit, loadingMore, stopLoadingMore, loadMore } =
+  useInfiniteLoader();
 
 useScrollMonitor(() =>
   loadMore(() => loadProposals(limit.value), loading.value)

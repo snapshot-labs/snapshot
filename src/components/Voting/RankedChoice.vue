@@ -10,7 +10,13 @@
         <template #item="{ element, index }">
           <div class="mb-2">
             <UiButton
-              class="d-flex flex-justify-center width-full button--active position-relative"
+              class="
+                d-flex
+                flex-justify-center
+                width-full
+                button--active
+                position-relative
+              "
             >
               <div class="position-absolute left-4">
                 ({{ getNumberWithOrdinal(index + 1) }})
