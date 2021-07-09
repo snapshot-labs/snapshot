@@ -137,7 +137,7 @@
   },
   "delegate": {
     "header": "Temsilci",
-    "selectAddress": "Adresini Seçin",
+    "selectDelegate": "Select delegate",
     "to": "Alıcı",
     "addressPlaceholder": "Adres veya ENS adı",
     "spacePlaceholder": "Boşluk (isteğe bağlı)",
