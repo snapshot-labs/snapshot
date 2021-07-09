@@ -137,7 +137,7 @@
   },
   "delegate": {
     "header": "Delegasyon",
-    "selectAddress": "Pumili ng address",
+    "selectDelegate": "Select delegate",
     "to": "To",
     "addressPlaceholder": "Address or ENS name",
     "spacePlaceholder": "Space (optional)",
