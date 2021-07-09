@@ -3,14 +3,14 @@
     <template v-slot:header>
       <h3>
         {{
-          validation.name
+          input.name
             ? $t('settings.editValidation')
             : $t('settings.selectValidation')
         }}
       </h3>
     </template>
     <Search
-      v-if="!validation.name && !input.name"
+      v-if="!input.name"
       v-model="searchInput"
       :placeholder="$t('searchPlaceholder')"
       :modal="true"
@@ -51,64 +51,68 @@
 </template>
 
 <script>
-import { ref, computed } from 'vue';
+import { ref, computed, toRefs, watch } from 'vue';
 import { useSearchFilters } from '@/composables/useSearchFilters';
 import { clone } from '@/helpers/utils';
 
 const defaultParams = {};
 
 export default {
-  setup() {
+  props: { open: Boolean, validation: Object },
+  emits: ['add', 'close'],
+  setup(props, { emit }) {
+    const { open } = toRefs(props);
+
     const searchInput = ref('');
+    const input = ref({
+      name: '',
+      params: JSON.stringify(defaultParams, null, 2)
+    });
+
     const { filteredValidations } = useSearchFilters();
     const validations = computed(() => filteredValidations(searchInput.value));
 
-    return { searchInput, filteredValidations, validations };
-  },
-  props: ['open', 'validation'],
-  emits: ['add', 'close'],
-  data() {
-    return {
-      input: {
-        name: '',
-        params: JSON.stringify(defaultParams, null, 2)
-      }
-    };
-  },
-  watch: {
-    open() {
-      if (this.validation?.name) {
-        const validation = this.validation;
-        validation.params = JSON.stringify(validation.params, null, 2);
-        this.input = this.validation;
-      } else {
-        this.input = {
-          name: '',
-          params: JSON.stringify(defaultParams, null, 2)
-        };
-      }
-    }
-  },
-  computed: {
-    isValid() {
+    const isValid = computed(() => {
       try {
-        const params = JSON.parse(this.input.params);
+        const params = JSON.parse(input.value.params);
         return !!params;
       } catch (e) {
         return false;
       }
+    });
+
+    function select(n) {
+      input.value.name = n;
     }
-  },
-  methods: {
-    select(n) {
-      this.input.name = n;
-    },
-    handleSubmit() {
-      const validation = clone(this.input);
+
+    function handleSubmit() {
+      const validation = clone(input.value);
       validation.params = JSON.parse(validation.params);
-      this.$emit('add', validation);
-      this.$emit('close');
+      emit('add', validation);
+      emit('close');
     }
+
+    watch(open, () => {
+      input.value.name = '';
+      if (props.validation?.params) {
+        input.value.params = JSON.stringify(props.validation.params, null, 2);
+      } else {
+        input.value = {
+          name: '',
+          params: JSON.stringify(defaultParams, null, 2)
+        };
+      }
+    });
+
+    return {
+      searchInput,
+      filteredValidations,
+      validations,
+      input,
+      isValid,
+      select,
+      handleSubmit
+    };
   }
 };
 </script>

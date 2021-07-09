@@ -241,11 +241,6 @@
                 <template v-slot:label>
                   {{ $t(`settings.validation`) }}
                 </template>
-                <template v-slot:info>
-                  <span @click="handleEditValidation">
-                    {{ $t(`edit`) }}
-                  </span>
-                </template>
               </UiInput>
               <div v-if="form.validation.name === 'basic'">
                 <UiInput
@@ -338,9 +333,9 @@
     />
     <ModalValidation
       :open="modalValidationOpen"
-      @close="(modalValidationOpen = false), (currentValidation = {})"
+      @close="modalValidationOpen = false"
       @add="handleSubmitAddValidation"
-      :validation="currentValidation"
+      :validation="clone(form.validation)"
     />
   </teleport>
 </template>
@@ -384,7 +379,6 @@ export default {
       currentContenthash: '',
       currentStrategy: {},
       currentPlugin: {},
-      currentValidation: {},
       currentStrategyIndex: false,
       modalNetworksOpen: false,
       modalSkinsOpen: false,
@@ -559,11 +553,6 @@ export default {
     handleSubmitAddPlugins(payload) {
       this.form.plugins[payload.key] = payload.inputClone;
     },
-    handleEditValidation() {
-      this.currentValidation = {};
-      this.currentValidation = clone(this.form.validation);
-      this.modalValidationOpen = true;
-    },
     handleSubmitAddValidation(validation) {
       this.form.validation = validation;
     },
@@ -572,7 +561,8 @@ export default {
     },
     setAvatarUrl(url) {
       if (typeof url === 'string') this.form.avatar = url;
-    }
+    },
+    clone
   }
 };
 </script>

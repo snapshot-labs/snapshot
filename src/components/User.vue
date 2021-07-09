@@ -4,7 +4,6 @@
       <template v-slot:item>
         <a class="no-wrap">
           <UiAvatar
-            v-if="!hideAvatar"
             :imgsrc="_ipfsUrl(profile?.image)"
             :address="address"
             size="16"
@@ -62,8 +61,7 @@ export default {
   props: {
     address: String,
     space: Object,
-    profile: Object,
-    hideAvatar: Boolean
+    profile: Object
   },
   setup(props) {
     const { address, profile, name } = useUsername();
