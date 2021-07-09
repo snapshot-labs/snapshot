@@ -9,7 +9,7 @@
         <h1 v-if="loaded" v-text="$t('delegate.header')" />
       </div>
       <template v-if="loaded">
-        <Block :title="$t('delegate.selectAddress')">
+        <Block :title="$t('delegate.selectDelegate')">
           <UiInput
             v-model.trim="form.address"
             :placeholder="$t('delegate.addressPlaceholder')"
