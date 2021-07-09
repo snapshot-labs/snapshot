@@ -137,7 +137,7 @@
   },
   "delegate": {
     "header": "ผู้รับมอบหมาย",
-    "selectAddress": "เลือกที่อยู่",
+    "selectDelegate": "Select delegate",
     "to": "To",
     "addressPlaceholder": "Address or ENS name",
     "spacePlaceholder": "เว้นวรรค (ไม่บังคับ)",
