@@ -23,6 +23,6 @@ module.exports = {
     '@typescript-eslint/no-undef': 'off',
     '@typescript-eslint/no-var-requires': 'off',
     '@typescript-eslint/no-use-before-define': ['error', { functions: false }],
-    '@typescript-eslint/vue/script-setup-uses-vars': 'error'
+    'vue/script-setup-uses-vars': 'error'
   }
 };
