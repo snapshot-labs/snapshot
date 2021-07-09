@@ -4,7 +4,7 @@ module.exports = {
     node: true
   },
   extends: [
-    'plugin:vue/vue3-essential',
+    'plugin:vue/vue3-recommended',
     'eslint:recommended',
     '@vue/typescript/recommended',
     '@vue/prettier',
@@ -22,6 +22,7 @@ module.exports = {
     '@typescript-eslint/camelcase': 'off',
     '@typescript-eslint/no-undef': 'off',
     '@typescript-eslint/no-var-requires': 'off',
-    '@typescript-eslint/no-use-before-define': ['error', { functions: false }]
+    '@typescript-eslint/no-use-before-define': ['error', { functions: false }],
+    '@typescript-eslint/vue/script-setup-uses-vars': 'on'
   }
 };

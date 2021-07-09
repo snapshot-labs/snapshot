@@ -52,15 +52,17 @@
   </Layout>
 </template>
 
-<script>
+<script setup>
+import { computed } from 'vue';
+import { useRoute } from 'vue-router';
+import { useStore } from 'vuex';
 import strategies from '@/helpers/strategies';
 import { getStrategy } from '@/helpers/utils';
 
-export default {
-  computed: {
-    strategy() {
-      return getStrategy(strategies[this.$route.params.name], this.app.spaces);
-    }
-  }
-};
+const route = useRoute();
+const store = useStore();
+
+const strategy = computed(() =>
+  getStrategy(strategies[route.params.name], store.state.app.spaces)
+);
 </script>
