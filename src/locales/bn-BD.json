@@ -137,7 +137,7 @@
   },
   "delegate": {
     "header": "প্রতিনিধি",
-    "selectAddress": "এড্রেস নির্বাচন করুন",
+    "selectDelegate": "Select delegate",
     "to": "প্রতি",
     "addressPlaceholder": "এড্রেস বা ENS নাম",
     "spacePlaceholder": "স্থান (বিকল্প)",
