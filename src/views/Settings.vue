@@ -345,21 +345,24 @@ import { computed, onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { useStore } from 'vuex';
 import { useI18n } from 'vue-i18n';
-import { useSearchFilters } from '@/composables/useSearchFilters';
 import { getAddress } from '@ethersproject/address';
 import { validateSchema } from '@snapshot-labs/snapshot.js/src/utils';
+import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import schemas from '@snapshot-labs/snapshot.js/src/schemas';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import gateways from '@snapshot-labs/snapshot.js/src/gateways.json';
+import { useSearchFilters } from '@/composables/useSearchFilters';
 import { clone } from '@/helpers/utils';
 import { getSpaceUri, uriGet } from '@/helpers/ens';
 import defaults from '@/locales/default';
+import client from '@/helpers/clientEIP712';
 
 const gateway = process.env.VUE_APP_IPFS_GATEWAY || gateways[0];
 const basicValidation = { name: 'basic', params: {} };
 
 export default {
   setup() {
+    const auth = getInstance();
     const route = useRoute();
     const store = useStore();
     const { t } = useI18n();
@@ -432,15 +435,25 @@ export default {
       if (isValid.value) {
         if (form.value.filters.invalids) delete form.value.filters.invalids;
         loading.value = true;
+
         try {
-          await store.dispatch('send', {
+          const result = await client.space(auth.web3, web3Account.value, {
             space: key.value,
-            type: 'settings',
-            payload: form.value
+            timestamp: ~~(Date.now() / 1e3),
+            settings: JSON.stringify(form.value)
           });
+          console.log('Result', result);
+          store.dispatch('notify', t('notify.yourIsIn', ['settings']));
         } catch (e) {
-          console.log(e);
+          if (!e.code || e.code !== 4001) {
+            console.log('Oops!', e);
+            const errorMessage = e?.error_description
+              ? `Oops, ${e.error_description}`
+              : t('notify.somethingWentWrong');
+            store.dispatch('notify', ['red', errorMessage]);
+          }
         }
+
         await store.dispatch('getSpaces');
         loading.value = false;
       } else {
