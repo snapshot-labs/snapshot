@@ -235,7 +235,7 @@
   },
   "safeSnap": {
     "currentOutcome": "موجودہ نتیجہ: {0}",
-    "currentBond": "موجودہ بانڈ:{0}",
+    "currentBond": "Current bond: {0} {1}",
     "finalizedIn": "حتمی شکل دی گئی {0}",
     "executableIn": "قابل عمل {0}",
     "finalOutcome": "نتیجہ: {0}",
