@@ -235,7 +235,7 @@
   },
   "safeSnap": {
     "currentOutcome": "Huidig resultaat: {0}",
-    "currentBond": "Huidige obligatie: {0}",
+    "currentBond": "Current bond: {0} {1}",
     "finalizedIn": "Afgeronde {0}",
     "executableIn": "Uitvoerbaar {0}",
     "finalOutcome": "Resultaat: {0}",
