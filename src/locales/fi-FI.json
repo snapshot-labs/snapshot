@@ -235,7 +235,7 @@
   },
   "safeSnap": {
     "currentOutcome": "Nykyinen tulos: {0}",
-    "currentBond": "Nykyinen bond: {0}",
+    "currentBond": "Current bond: {0} {1}",
     "finalizedIn": "Päättynyt {0}",
     "executableIn": "Suoritettava {0}",
     "finalOutcome": "Tulos: {0}",
