@@ -1,16 +1,19 @@
-import { onMounted, onBeforeUnmount } from 'vue';
+import { onMounted, onBeforeUnmount, ref } from 'vue';
 import scrollMonitor from 'scrollmonitor';
 
 export function useScrollMonitor(fn) {
   let elementWatcher;
 
+  const endElement = ref(null);
+
   onMounted(() => {
-    const el = document.getElementById('endofpage');
-    elementWatcher = scrollMonitor.create(el);
+    elementWatcher = scrollMonitor.create(endElement.value);
     elementWatcher.enterViewport(() => {
       fn();
     });
   });
 
   onBeforeUnmount(() => elementWatcher.destroy());
+
+  return { endElement };
 }

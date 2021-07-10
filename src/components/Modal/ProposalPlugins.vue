@@ -35,7 +35,7 @@
       </div>
       <div class="col-6 float-left pl-2">
         <UiButton
-          @click="[$emit('update:modelValue', form), $emit('close')]"
+          @click="$emit('update:modelValue', form), $emit('close')"
           type="submit"
           class="width-full button--submit"
         >
