@@ -235,7 +235,7 @@
   },
   "safeSnap": {
     "currentOutcome": "सध्याचे परिणाम: {0}",
-    "currentBond": "चालू बाँड: {0}",
+    "currentBond": "Current bond: {0} {1}",
     "finalizedIn": "फाईनलाईसड{0}",
     "executableIn": "एक्सिक्युटेबल {0}",
     "finalOutcome": "औटकॉम: {0}",
