@@ -40,18 +40,20 @@
   </Layout>
 </template>
 
-<script setup>
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
-
-const router = useRouter();
-
-const id = ref('');
-
-function handleSubmit() {
-  router.push({
-    name: 'settings',
-    params: { key: id.value.toLowerCase() }
-  });
-}
+<script>
+export default {
+  data() {
+    return {
+      id: ''
+    };
+  },
+  methods: {
+    handleSubmit() {
+      this.$router.push({
+        name: 'settings',
+        params: { key: this.id.toLowerCase() }
+      });
+    }
+  }
+};
 </script>
