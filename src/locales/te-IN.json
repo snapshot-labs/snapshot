@@ -235,7 +235,7 @@
   },
   "safeSnap": {
     "currentOutcome": "Current outcome: {0}",
-    "currentBond": "Current bond: {0}",
+    "currentBond": "Current bond: {0} {1}",
     "finalizedIn": "Finalized {0}",
     "executableIn": "Executable {0}",
     "finalOutcome": "Outcome: {0}",
