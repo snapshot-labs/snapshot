@@ -235,7 +235,7 @@
   },
   "safeSnap": {
     "currentOutcome": "Aktuellt resultat: {0}",
-    "currentBond": "Nuvarande obligation: {0}",
+    "currentBond": "Current bond: {0} {1}",
     "finalizedIn": "Slutförd {0}",
     "executableIn": "Körbar {0}",
     "finalOutcome": "Resultat: {0}",
