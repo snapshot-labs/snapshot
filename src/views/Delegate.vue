@@ -103,7 +103,7 @@
   </teleport>
 </template>
 
-<script>
+<script setup>
 import { ref, computed, watch, onMounted, watchEffect } from 'vue';
 import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
@@ -122,115 +122,95 @@ import {
 } from '@/helpers/delegation';
 import { sleep } from '@/helpers/utils';
 
-export default {
-  setup() {
-    const route = useRoute();
-    const store = useStore();
-    const { t } = useI18n();
-    const auth = getInstance();
+const route = useRoute();
+const store = useStore();
+const { t } = useI18n();
+const auth = getInstance();
 
-    const modalOpen = ref(false);
-    const currentId = ref('');
-    const currentDelegate = ref('');
-    const loaded = ref(false);
-    const loading = ref(false);
-    const delegates = ref([]);
-    const delegators = ref([]);
-    const form = ref({
-      address: '',
-      id: route.params.key || ''
-    });
+const modalOpen = ref(false);
+const currentId = ref('');
+const currentDelegate = ref('');
+const loaded = ref(false);
+const loading = ref(false);
+const delegates = ref([]);
+const delegators = ref([]);
+const form = ref({
+  address: '',
+  id: route.params.key || ''
+});
 
-    const web3Account = computed(() => store.state.web3.account);
-    const networkKey = computed(() => store.state.web3.network.key);
+const web3Account = computed(() => store.state.web3.account);
+const networkKey = computed(() => store.state.web3.network.key);
 
-    const isValid = computed(() => {
-      const address = form.value.address;
-      return (
-        auth.isAuthenticated.value &&
-        (address.includes('.eth') || isAddress(address)) &&
-        address.toLowerCase() !== web3Account.value.toLowerCase() &&
-        (form.value.id === '' || store.state.app.spaces[form.value.id])
-      );
-    });
+const isValid = computed(() => {
+  const address = form.value.address;
+  return (
+    auth.isAuthenticated.value &&
+    (address.includes('.eth') || isAddress(address)) &&
+    address.toLowerCase() !== web3Account.value.toLowerCase() &&
+    (form.value.id === '' || store.state.app.spaces[form.value.id])
+  );
+});
 
-    async function load() {
-      if (web3Account.value) {
-        const [delegatesObj, delegatorsObj] = await Promise.all([
-          getDelegates(networkKey.value, web3Account.value),
-          getDelegators(networkKey.value, web3Account.value)
-        ]);
-        delegates.value = delegatesObj.delegations;
-        delegators.value = delegatorsObj.delegations;
-      }
-    }
-
-    async function handleSubmit() {
-      loading.value = true;
-      try {
-        let address = form.value.address;
-        if (address.includes('.eth'))
-          address = await getProvider('1').resolveName(address);
-        const tx = await sendTransaction(
-          auth.web3,
-          contractAddress,
-          abi['DelegateRegistry'],
-          'setDelegate',
-          [formatBytes32String(form.value.id), address]
-        );
-        const receipt = await tx.wait();
-        console.log('Receipt', receipt);
-        await sleep(3e3);
-        store.dispatch('notify', t('notify.youDidIt'));
-        await load();
-      } catch (e) {
-        console.log(e);
-      }
-      loading.value = false;
-    }
-
-    function clearDelegate(id, delegate) {
-      currentId.value = id;
-      currentDelegate.value = delegate;
-      modalOpen.value = true;
-    }
-
-    const { profiles, addressArray } = useProfiles();
-
-    watchEffect(() => {
-      addressArray.value = delegates.value
-        .map(delegate => delegate.delegate)
-        .concat(delegators.value.map(delegator => delegator.delegator));
-    });
-
-    watch(web3Account, (val, prev) => {
-      if (val?.toLowerCase() !== prev) load();
-    });
-
-    watch(networkKey, (val, prev) => {
-      if (val !== prev) load();
-    });
-
-    onMounted(async () => {
-      await load();
-      loaded.value = true;
-    });
-
-    return {
-      modalOpen,
-      currentId,
-      currentDelegate,
-      loaded,
-      loading,
-      delegates,
-      delegators,
-      form,
-      load,
-      handleSubmit,
-      isValid,
-      clearDelegate,
-      profiles
-    };
+async function load() {
+  if (web3Account.value) {
+    const [delegatesObj, delegatorsObj] = await Promise.all([
+      getDelegates(networkKey.value, web3Account.value),
+      getDelegators(networkKey.value, web3Account.value)
+    ]);
+    delegates.value = delegatesObj.delegations;
+    delegators.value = delegatorsObj.delegations;
   }
-};
+}
+
+async function handleSubmit() {
+  loading.value = true;
+  try {
+    let address = form.value.address;
+    if (address.includes('.eth'))
+      address = await getProvider('1').resolveName(address);
+    const tx = await sendTransaction(
+      auth.web3,
+      contractAddress,
+      abi['DelegateRegistry'],
+      'setDelegate',
+      [formatBytes32String(form.value.id), address]
+    );
+    const receipt = await tx.wait();
+    console.log('Receipt', receipt);
+    await sleep(3e3);
+    store.dispatch('notify', t('notify.youDidIt'));
+    await load();
+  } catch (e) {
+    console.log(e);
+  }
+  loading.value = false;
+}
+
+function clearDelegate(id, delegate) {
+  currentId.value = id;
+  currentDelegate.value = delegate;
+  modalOpen.value = true;
+}
+
+const { profiles, addressArray } = useProfiles();
+
+watchEffect(() => {
+  addressArray.value = delegates.value
+    .map(delegate => delegate.delegate)
+    .concat(delegators.value.map(delegator => delegator.delegator));
+});
+
+watch(web3Account, (val, prev) => {
+  if (val?.toLowerCase() !== prev) load();
+});
+
+watch(networkKey, (val, prev) => {
+  if (val !== prev) load();
+});
+
+onMounted(async () => {
+  await load();
+  loaded.value = true;
+});
 </script>

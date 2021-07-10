@@ -76,7 +76,7 @@ export const PROPOSALS_QUERY = gql`
 `;
 
 export const PROPOSAL_VOTES_QUERY = gql`
-  query($id: String!) {
+  query ($id: String!) {
     proposal(id: $id) {
       id
       title

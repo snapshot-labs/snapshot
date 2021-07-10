@@ -6,7 +6,13 @@
         :class="selectedChoices[i + 1] > 0 && 'button--active'"
       >
         <div
-          class="col-sm-8 col-7 float-left text-left pr-3 tooltipped tooltipped-multiline"
+          class="
+            col-sm-8 col-7
+            float-left
+            text-left
+            pr-3
+            tooltipped tooltipped-multiline
+          "
           :class="[
             isSmallScreen
               ? 'tooltipped-ne tooltipped-align-left-2'

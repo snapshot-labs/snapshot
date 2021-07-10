@@ -22,6 +22,7 @@ module.exports = {
     '@typescript-eslint/camelcase': 'off',
     '@typescript-eslint/no-undef': 'off',
     '@typescript-eslint/no-var-requires': 'off',
-    '@typescript-eslint/no-use-before-define': ['error', { functions: false }]
+    '@typescript-eslint/no-use-before-define': ['error', { functions: false }],
+    'vue/script-setup-uses-vars': 'error'
   }
 };

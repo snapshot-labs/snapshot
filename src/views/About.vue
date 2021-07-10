@@ -86,32 +86,22 @@
   </Layout>
 </template>
 
-<script>
+<script setup>
 import { computed, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { useStore } from 'vuex';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { useProfiles } from '@/composables/useProfiles';
 
-export default {
-  setup() {
-    const store = useStore();
-    const route = useRoute();
+const store = useStore();
+const route = useRoute();
 
-    const space = computed(() => store.state.app.spaces[route.params.key]);
-    const network = computed(() => networks[space.value.network]);
+const space = computed(() => store.state.app.spaces[route.params.key]);
+const network = computed(() => networks[space.value.network]);
 
-    const { profiles, addressArray } = useProfiles();
+const { profiles, addressArray } = useProfiles();
 
-    onMounted(() => {
-      addressArray.value = space.value.admins.concat(space.value.members);
-    });
-
-    return {
-      space,
-      network,
-      profiles
-    };
-  }
-};
+onMounted(() => {
+  addressArray.value = space.value.admins.concat(space.value.members);
+});
 </script>

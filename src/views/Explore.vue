@@ -59,58 +59,48 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 import { useSearchFilters } from '@/composables/useSearchFilters';
 import { useScrollMonitor } from '@/composables/useScrollMonitor';
 
-export default {
-  setup() {
-    const { t } = useI18n();
-    const route = useRoute();
+const { t } = useI18n();
+const route = useRoute();
 
-    // Explore
-    const buttonStr = computed(() => {
-      if (route.name === 'strategies') return t('explore.createStrategy');
-      if (route.name === 'skins') return t('explore.createSkin');
-      if (route.name === 'networks') return t('explore.addNetwork');
-      if (route.name === 'plugins') return t('explore.createPlugin');
-      return '';
-    });
+// Explore
+const buttonStr = computed(() => {
+  if (route.name === 'strategies') return t('explore.createStrategy');
+  if (route.name === 'skins') return t('explore.createSkin');
+  if (route.name === 'networks') return t('explore.addNetwork');
+  if (route.name === 'plugins') return t('explore.createPlugin');
+  return '';
+});
 
-    const resultsStr = computed(() => {
-      if (route.name === 'strategies') return t('explore.strategies');
-      if (route.name === 'skins') return t('explore.skins');
-      if (route.name === 'networks') return t('explore.networks');
-      if (route.name === 'plugins') return t('explore.plugins');
-      return t('explore.results');
-    });
+const resultsStr = computed(() => {
+  if (route.name === 'strategies') return t('explore.strategies');
+  if (route.name === 'skins') return t('explore.skins');
+  if (route.name === 'networks') return t('explore.networks');
+  if (route.name === 'plugins') return t('explore.plugins');
+  return t('explore.results');
+});
 
-    const {
-      filteredSkins,
-      filteredStrategies,
-      filteredNetworks,
-      filteredPlugins
-    } = useSearchFilters();
+const { filteredSkins, filteredStrategies, filteredNetworks, filteredPlugins } =
+  useSearchFilters();
 
-    const items = computed(() => {
-      const q = route.query.q || '';
-      if (route.name === 'strategies') return filteredStrategies(q);
-      if (route.name === 'skins') return filteredSkins(q);
-      if (route.name === 'networks') return filteredNetworks(q);
-      if (route.name === 'plugins') return filteredPlugins(q);
-      return [];
-    });
+const items = computed(() => {
+  const q = route.query.q || '';
+  if (route.name === 'strategies') return filteredStrategies(q);
+  if (route.name === 'skins') return filteredSkins(q);
+  if (route.name === 'networks') return filteredNetworks(q);
+  if (route.name === 'plugins') return filteredPlugins(q);
+  return [];
+});
 
-    // Scroll
-    const loadBy = 8;
-    const limit = ref(loadBy);
+// Scroll
+const loadBy = 8;
+const limit = ref(loadBy);
 
-    useScrollMonitor(() => (limit.value += loadBy));
-
-    return { buttonStr, resultsStr, items, limit, route };
-  }
-};
+useScrollMonitor(() => (limit.value += loadBy));
 </script>

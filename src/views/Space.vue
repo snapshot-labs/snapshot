@@ -51,7 +51,7 @@
   </Layout>
 </template>
 
-<script>
+<script setup>
 import { computed, onMounted, ref, watch } from 'vue';
 import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
@@ -62,88 +62,69 @@ import { apolloClient } from '@/apollo';
 import { PROPOSALS_QUERY } from '@/helpers/queries';
 import { useProfiles } from '@/composables/useProfiles';
 
-export default {
-  setup() {
-    const store = useStore();
-    const route = useRoute();
-    const { domain } = useDomain();
+const store = useStore();
+const route = useRoute();
+const { domain } = useDomain();
 
-    const spaceId = domain || route.params.key;
+const spaceId = domain || route.params.key;
 
-    const loading = ref(false);
-    const proposals = ref([]);
-    const filterBy = ref('all');
+const loading = ref(false);
+const proposals = ref([]);
+const filterBy = ref('all');
 
-    const space = computed(() => store.state.app.spaces[spaceId]);
-    const spaceMembers = computed(() =>
-      space.value.members.length < 1 ? ['none'] : space.value.members
-    );
+const space = computed(() => store.state.app.spaces[spaceId]);
+const spaceMembers = computed(() =>
+  space.value.members.length < 1 ? ['none'] : space.value.members
+);
 
-    // Infinite scroll with pagination
-    const {
-      loadBy,
-      limit,
-      loadingMore,
-      stopLoadingMore,
-      loadMore
-    } = useInfiniteLoader();
+// Infinite scroll with pagination
+const { loadBy, limit, loadingMore, stopLoadingMore, loadMore } =
+  useInfiniteLoader();
 
-    useScrollMonitor(() =>
-      loadMore(() => loadProposals(limit.value), loading.value)
-    );
+useScrollMonitor(() =>
+  loadMore(() => loadProposals(limit.value), loading.value)
+);
 
-    // Proposals query
-    async function loadProposals(skip = 0) {
-      try {
-        const response = await apolloClient.query({
-          query: PROPOSALS_QUERY,
-          variables: {
-            first: loadBy,
-            skip,
-            space: spaceId,
-            state: filterBy.value === 'core' ? 'all' : filterBy.value,
-            author_in: filterBy.value === 'core' ? spaceMembers.value : []
-          }
-        });
-        stopLoadingMore.value = response.data.proposals?.length < loadBy;
-        proposals.value = proposals.value.concat(response.data.proposals);
-      } catch (e) {
-        console.log(e);
+// Proposals query
+async function loadProposals(skip = 0) {
+  try {
+    const response = await apolloClient.query({
+      query: PROPOSALS_QUERY,
+      variables: {
+        first: loadBy,
+        skip,
+        space: spaceId,
+        state: filterBy.value === 'core' ? 'all' : filterBy.value,
+        author_in: filterBy.value === 'core' ? spaceMembers.value : []
       }
-    }
-
-    // Initialize
-    onMounted(load());
-
-    async function load() {
-      loading.value = true;
-      await loadProposals();
-      loading.value = false;
-    }
-
-    // Change filter
-    function selectState(e) {
-      filterBy.value = e;
-      proposals.value = [];
-      limit.value = loadBy;
-      load();
-    }
-
-    const { profiles, addressArray } = useProfiles();
-
-    watch(proposals, () => {
-      addressArray.value = proposals.value.map(proposal => proposal.author);
     });
-
-    return {
-      loading,
-      selectState,
-      loadingMore,
-      filterBy,
-      proposals,
-      space,
-      profiles
-    };
+    stopLoadingMore.value = response.data.proposals?.length < loadBy;
+    proposals.value = proposals.value.concat(response.data.proposals);
+  } catch (e) {
+    console.log(e);
   }
-};
+}
+
+// Initialize
+onMounted(load());
+
+async function load() {
+  loading.value = true;
+  await loadProposals();
+  loading.value = false;
+}
+
+// Change filter
+function selectState(e) {
+  filterBy.value = e;
+  proposals.value = [];
+  limit.value = loadBy;
+  load();
+}
+
+const { profiles, addressArray } = useProfiles();
+
+watch(proposals, () => {
+  addressArray.value = proposals.value.map(proposal => proposal.author);
+});
 </script>
