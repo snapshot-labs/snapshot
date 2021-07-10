@@ -38,6 +38,14 @@
           {{ _n(space.filters.minScore) }} {{ space.symbol }}
         </div>
 
+        <div v-if="space.terms" class="mb-3">
+          <h4 class="text-white mb-2">{{ $t('settings.terms') }}</h4>
+          <a :href="space.terms" target="_blank" rel="noopener noreferrer">
+            <UiText :text="getUrl(space.terms)" :truncate="35" />
+            <Icon name="external-link" class="ml-1" />
+          </a>
+        </div>
+
         <div v-if="space.strategies" class="mb-3">
           <h4 class="text-white mb-2">{{ $t('settings.strategies') }}</h4>
           <div v-for="(strategy, i) in space.strategies" :key="i">
@@ -92,6 +100,7 @@ import { useRoute } from 'vue-router';
 import { useStore } from 'vuex';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { useProfiles } from '@/composables/useProfiles';
+import { getUrl } from '@snapshot-labs/snapshot.js/src/utils';
 
 const store = useStore();
 const route = useRoute();
