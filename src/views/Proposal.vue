@@ -298,7 +298,6 @@ async function deleteProposal() {
   try {
     const result = await client.cancelProposal(auth.web3, web3Account.value, {
       space: space.value.key,
-      timestamp: ~~(Date.now() / 1e3),
       proposal: id
     });
     console.log('Result', result);

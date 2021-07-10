@@ -290,7 +290,6 @@ async function handleSubmit() {
   try {
     const result = await client.proposal(auth.web3, web3Account.value, {
       space: space.value.key,
-      timestamp: ~~(Date.now() / 1e3),
       type: form.value.type,
       title: form.value.name,
       body: form.value.body,

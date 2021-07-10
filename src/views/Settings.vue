@@ -436,7 +436,6 @@ async function handleSubmit() {
     try {
       const result = await client.space(auth.web3, web3Account.value, {
         space: key.value,
-        timestamp: ~~(Date.now() / 1e3),
         settings: JSON.stringify(form.value)
       });
       console.log('Result', result);
