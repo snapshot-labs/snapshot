@@ -108,14 +108,14 @@
             <span>{{ $t(`voting.${form.type}`) }}</span>
           </UiButton>
           <UiButton
-            @click="[(modalOpen = true), (selectedDate = 'start')]"
+            @click="(modalOpen = true), (selectedDate = 'start')"
             class="width-full mb-2"
           >
             <span v-if="!form.start">{{ $t('create.startDate') }}</span>
             <span v-else v-text="$d(form.start * 1e3, 'short', 'en-US')" />
           </UiButton>
           <UiButton
-            @click="[(modalOpen = true), (selectedDate = 'end')]"
+            @click="(modalOpen = true), (selectedDate = 'end')"
             class="width-full mb-2"
           >
             <span v-if="!form.end">{{ $t('create.endDate') }}</span>
