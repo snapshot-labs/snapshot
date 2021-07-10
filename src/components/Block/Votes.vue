@@ -21,7 +21,10 @@
       <div class="flex-auto text-center text-white">
         <span
           :aria-label="format(proposal, vote.choice)"
-          class="text-center text-white tooltipped tooltipped-multiline tooltipped-n"
+          class="
+            text-center text-white
+            tooltipped tooltipped-multiline tooltipped-n
+          "
         >
           {{ _shorten(format(proposal, vote.choice), 24) }}
         </span>
@@ -51,7 +54,15 @@
     <a
       v-if="!showAllVotes && votes.length > 10"
       @click="showAllVotes = true"
-      class="px-4 py-3 border-top text-center d-block header-bg rounded-bottom-0 rounded-md-bottom-2"
+      class="
+        px-4
+        py-3
+        border-top
+        text-center
+        d-block
+        header-bg
+        rounded-bottom-0 rounded-md-bottom-2
+      "
     >
       {{ $t('seeMore') }}
     </a>

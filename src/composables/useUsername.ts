@@ -13,7 +13,7 @@ export function useUsername() {
 
   const web3Account = computed(() => store.state.web3.account);
 
-  const name = computed(() => {
+  const username = computed(() => {
     if (
       web3Account.value &&
       address.value.toLowerCase() === web3Account.value.toLowerCase()
@@ -28,5 +28,5 @@ export function useUsername() {
     return shorten(address.value);
   });
 
-  return { address, profile, name };
+  return { address, profile, username };
 }
