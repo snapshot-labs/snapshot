@@ -235,7 +235,7 @@
   },
   "safeSnap": {
     "currentOutcome": "वर्तमान परिणाम:{0}",
-    "currentBond": "वर्त्तमान बॉन्ड:{0}",
+    "currentBond": "Current bond: {0} {1}",
     "finalizedIn": "फायनलाइस{0}",
     "executableIn": "निष्पादन{0}",
     "finalOutcome": "निष्पादन:{0}",
