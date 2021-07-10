@@ -67,7 +67,7 @@
         />
       </div>
     </Container>
-    <div id="endofpage" />
+    <div ref="endElement" />
   </div>
 </template>
 
@@ -124,5 +124,5 @@ function toggleFavorite(spaceId) {
 const loadBy = 16;
 const limit = ref(loadBy);
 
-useScrollMonitor(() => (limit.value += loadBy));
+const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
 </script>
