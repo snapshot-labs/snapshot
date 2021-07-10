@@ -47,6 +47,8 @@
         :isApproved="questionDetails?.isApproved"
         :bond="questionDetails?.currentBond"
         :questionId="questionDetails?.questionId"
+        :tokenSymbol="bondData?.tokenSymbol"
+        :tokenDecimals="bondData?.tokenDecimals"
         @setApproval="voteOnQuestion"
         @close="modalApproveDecisionOpen = false"
       />
@@ -57,7 +59,9 @@
 <script>
 import Plugin from '@snapshot-labs/snapshot.js/src/plugins/safeSnap';
 import { sleep } from '@/helpers/utils';
+import { BigNumber } from '@ethersproject/bignumber';
 import { formatBatchTransaction } from '@/helpers/abi/utils';
+import { formatUnits } from '@ethersproject/units';
 
 const QuestionStates = {
   error: -1,
@@ -198,7 +202,8 @@ export default {
       if (this.questionDetails) {
         const { currentBond, finalizedAt, isApproved, endTime } =
           this.questionDetails;
-        if (currentBond === '0.0') {
+
+        if (BigNumber.from(currentBond).eq(0)) {
           return {
             decision: this.$i18n.t('safeSnap.currentOutcome', ['--']),
             timeLeft: this.$i18n.t('safeSnap.finalizedIn', ['--']),
@@ -226,7 +231,9 @@ export default {
             isApproved ? 'Yes' : 'No'
           ]),
           timeLeft: this.$i18n.t('safeSnap.finalizedIn', [this._ms(endTime)]),
-          currentBond: this.$i18n.t('safeSnap.currentBond', [currentBond])
+          currentBond: this.$i18n.t('safeSnap.currentBond', [
+            formatUnits(currentBond, this.bondData.tokenDecimals), this.bondData.tokenSymbol
+          ])
         };
       }
       return {
@@ -342,6 +349,7 @@ export default {
     },
     async voteOnQuestion(option) {
       await this.plugin.voteForQuestion(
+        this.network,
         this.$auth.web3,
         this.questionDetails.oracle,
         this.questionDetails.questionId,
