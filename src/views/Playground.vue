@@ -99,7 +99,7 @@
   </teleport>
 </template>
 
-<script>
+<script setup>
 import { watchEffect, ref, computed } from 'vue';
 import { useRoute } from 'vue-router';
 import strategies from '@/helpers/strategies';
@@ -114,83 +114,67 @@ const defaultParams = {
   decimals: 18
 };
 
-export default {
-  setup() {
-    const route = useRoute();
-    let provider;
+const route = useRoute();
+let provider;
 
-    const strategy = computed(() => strategies[route.params.name]);
-    const strategyExample = computed(() => strategy.value.examples?.[0]);
+const strategy = computed(() => strategies[route.params.name]);
+const strategyExample = computed(() => strategy.value.examples?.[0]);
 
-    const modalNetworksOpen = ref(false);
-    const loading = ref(false);
-    const strategyError = ref(null);
-    const networkError = ref(null);
-    const scores = ref(null);
-    const form = ref({
-      params: JSON.stringify(
-        strategyExample.value?.strategy.params ?? defaultParams,
-        null,
-        2
-      ),
-      network: 1,
-      snapshot: '',
-      addresses: strategyExample.value?.addresses ?? []
-    });
+const modalNetworksOpen = ref(false);
+const loading = ref(false);
+const strategyError = ref(null);
+const networkError = ref(null);
+const scores = ref(null);
+const form = ref({
+  params: JSON.stringify(
+    strategyExample.value?.strategy.params ?? defaultParams,
+    null,
+    2
+  ),
+  network: 1,
+  snapshot: '',
+  addresses: strategyExample.value?.addresses ?? []
+});
 
-    async function loadScores() {
-      scores.value = null;
-      strategyError.value = null;
-      loading.value = true;
-      try {
-        const strategyParams = {
-          __typename: 'Strategy',
-          name: strategy.value.key,
-          params: JSON.parse(form.value.params)
-        };
-        scores.value = await getScores(
-          '',
-          [strategyParams],
-          form.value.network.toString(),
-          provider,
-          form.value.addresses,
-          parseInt(form.value.snapshot)
-        );
-        console.log(scores.value);
-        loading.value = false;
-      } catch (e) {
-        loading.value = false;
-        console.log(e);
-        strategyError.value = e;
-      }
-    }
-
-    watchEffect(async () => {
-      loading.value = true;
-      scores.value = null;
-      networkError.value = false;
-      try {
-        provider = await getProvider(form.value.network);
-        form.value.snapshot = await getBlockNumber(provider);
-        loading.value = false;
-      } catch (e) {
-        loading.value = false;
-        networkError.value = true;
-        console.log(e);
-      }
-    });
-
-    return {
-      form,
-      modalNetworksOpen,
-      networks,
-      loading,
-      strategy,
-      loadScores,
-      scores,
-      strategyError,
-      networkError
+async function loadScores() {
+  scores.value = null;
+  strategyError.value = null;
+  loading.value = true;
+  try {
+    const strategyParams = {
+      __typename: 'Strategy',
+      name: strategy.value.key,
+      params: JSON.parse(form.value.params)
     };
+    scores.value = await getScores(
+      '',
+      [strategyParams],
+      form.value.network.toString(),
+      provider,
+      form.value.addresses,
+      parseInt(form.value.snapshot)
+    );
+    console.log(scores.value);
+    loading.value = false;
+  } catch (e) {
+    loading.value = false;
+    console.log(e);
+    strategyError.value = e;
   }
-};
+}
+
+watchEffect(async () => {
+  loading.value = true;
+  scores.value = null;
+  networkError.value = false;
+  try {
+    provider = await getProvider(form.value.network);
+    form.value.snapshot = await getBlockNumber(provider);
+    loading.value = false;
+  } catch (e) {
+    loading.value = false;
+    networkError.value = true;
+    console.log(e);
+  }
+});
 </script>

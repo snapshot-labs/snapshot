@@ -128,8 +128,7 @@ export default {
     return {
       connectors,
       step,
-      path:
-        'https://raw.githubusercontent.com/snapshot-labs/lock/master/connectors/assets',
+      path: 'https://raw.githubusercontent.com/snapshot-labs/lock/master/connectors/assets',
       injected,
       handleLogout
     };
