@@ -235,7 +235,7 @@
   },
   "safeSnap": {
     "currentOutcome": "Kết quả hiện tại: {0}",
-    "currentBond": "Đặt cược hiện tại: {0}",
+    "currentBond": "Current bond: {0} {1}",
     "finalizedIn": "Đã hoàn thành {0}",
     "executableIn": "Thực thi {0}",
     "finalOutcome": "Kết quả: {0}",
