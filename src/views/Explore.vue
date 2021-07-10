@@ -55,7 +55,7 @@
         <NoResults :block="true" v-if="Object.keys(items).length < 1" />
       </div>
     </Container>
-    <div id="endofpage" />
+    <div ref="endElement" />
   </div>
 </template>
 
@@ -102,5 +102,5 @@ const items = computed(() => {
 const loadBy = 8;
 const limit = ref(loadBy);
 
-useScrollMonitor(() => (limit.value += loadBy));
+const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
 </script>

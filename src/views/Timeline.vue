@@ -69,7 +69,7 @@
       </div>
       <div
         style="height: 10px; width: 10px; position: absolute"
-        id="endofpage"
+        ref="endElement"
       />
       <Block v-if="loadingMore && !loading" :slim="true">
         <RowLoading class="my-2" />
@@ -108,7 +108,7 @@ const proposals = ref([]);
 const { loadBy, limit, loadingMore, stopLoadingMore, loadMore } =
   useInfiniteLoader();
 
-useScrollMonitor(() =>
+const { endElement } = useScrollMonitor(() =>
   loadMore(() => loadProposals(limit.value), loading.value)
 );
 
