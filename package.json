@@ -40,7 +40,6 @@
     "cors": "^2.8.5",
     "eslint": "^6.7.2",
     "ethereumjs-util": "^7.0.7",
-    "fortmatic": "^2.2.1",
     "graphql": "^15.5.0",
     "graphql-tag": "^2.12.4",
     "jsonexport": "^3.0.1",
