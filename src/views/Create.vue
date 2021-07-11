@@ -243,7 +243,6 @@ const isValid = computed(() => {
   return (
     !loading.value &&
     form.value.name &&
-    form.value.body &&
     form.value.body.length <= bodyLimit.value &&
     form.value.start &&
     // form.value.start >= ts &&
