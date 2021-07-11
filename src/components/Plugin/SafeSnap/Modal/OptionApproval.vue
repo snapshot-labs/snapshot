@@ -21,11 +21,17 @@
         </h4>
         <br />
         <h4>
-          {{ $t('safeSnap.currentBond', [bondData.current + ' ETH']) }}
+          {{
+            $t('safeSnap.currentBond', [bondData.current + ' ' + tokenSymbol])
+          }}
         </h4>
         <br />
         <h4>
-          {{ $t('safeSnap.nextBond', [bondData.toSet + ' ETH']) }}
+          {{
+            $t('safeSnap.nextBond', [
+              bondData.toSet + ' ' + bondData.tokenSymbol
+            ])
+          }}
         </h4>
       </div>
       <div>
@@ -50,8 +56,18 @@
 
 <script>
 import { BigNumber } from '@ethersproject/bignumber';
+import { formatUnits } from '@ethersproject/units';
+
 export default {
-  props: ['open', 'isApproved', 'bond', 'questionId', 'minimumBond'],
+  props: [
+    'open',
+    'isApproved',
+    'bond',
+    'questionId',
+    'minimumBond',
+    'tokenSymbol',
+    'tokenDecimals'
+  ],
   emits: ['close', 'setApproval'],
   methods: {
     async handleSetApproval(option) {
@@ -64,13 +80,15 @@ export default {
       return this.isApproved ? 'Yes' : 'No';
     },
     bondData() {
-      const dontHasBond = this.bond === '0.0';
+      const bondNotSet = BigNumber.from(this.bond).eq(0);
       const minimumBond = BigNumber.from(this.minimumBond).eq(0)
-        ? 0.001
+        ? BigNumber.from(10).pow(this.tokenDecimals)
         : this.minimumBond;
+      const toSet = bondNotSet ? minimumBond : BigNumber.from(this.bond).mul(2);
       return {
-        toSet: dontHasBond ? minimumBond : BigNumber.from(this.bond).mul(2),
-        current: dontHasBond ? '--' : this.bond
+        toSet: formatUnits(toSet, this.tokenDecimals),
+        current: bondNotSet ? '--' : formatUnits(this.bond, this.tokenDecimals),
+        tokenSymbol: this.tokenSymbol
       };
     },
     questionLink() {

@@ -1,62 +1,60 @@
 <template>
-  <div>
-    <div class="mb-4 mx-auto">
-      <Container class="d-flex flex-items-center">
-        <div class="flex-auto text-left col-lg-8">
-          <UiButton class="pl-3 col-12 col-lg-7 pr-0">
-            <SearchWithFilters />
-          </UiButton>
-        </div>
-        <div class="ml-3 text-right hide-sm col-lg-4">
-          {{ _n(items.length) }} {{ resultsStr }}
-          <a
-            v-if="buttonStr"
-            href="https://discord.snapshot.org"
-            target="_blank"
-            class="hide-md ml-3"
-          >
-            <UiButton>{{ buttonStr }}</UiButton>
-          </a>
-        </div>
-      </Container>
-    </div>
-    <Container :slim="true">
-      <div class="overflow-hidden">
-        <template v-if="route.name === 'strategies'">
-          <template v-for="item in items.slice(0, limit)" :key="item.key">
-            <router-link :to="`/strategy/${item.key}`">
-              <BlockStrategy :strategy="item" class="mb-3" />
-            </router-link>
-          </template>
-        </template>
-        <template v-if="route.name === 'skins'">
-          <BlockSkin
-            v-for="item in items.slice(0, limit)"
-            :key="item.key"
-            :skin="item"
-            class="mb-3"
-          />
-        </template>
-        <template v-if="route.name === 'networks'">
-          <template v-for="item in items.slice(0, limit)" :key="item.key">
-            <router-link :to="`/?network=${item.key}`">
-              <BlockNetwork :network="item" class="mb-3" />
-            </router-link>
-          </template>
-        </template>
-        <template v-if="route.name === 'plugins'">
-          <BlockPlugin
-            v-for="item in items.slice(0, limit)"
-            :key="item.key"
-            :plugin="item"
-            class="mb-3"
-          />
-        </template>
-        <NoResults :block="true" v-if="Object.keys(items).length < 1" />
+  <div class="mb-4 mx-auto">
+    <Container class="d-flex flex-items-center">
+      <div class="flex-auto text-left col-lg-8">
+        <UiButton class="pl-3 col-12 col-lg-7 pr-0">
+          <SearchWithFilters />
+        </UiButton>
+      </div>
+      <div class="ml-3 text-right hide-sm col-lg-4">
+        {{ _n(items.length) }} {{ resultsStr }}
+        <a
+          v-if="buttonStr"
+          href="https://discord.snapshot.org"
+          target="_blank"
+          class="hide-md ml-3"
+        >
+          <UiButton>{{ buttonStr }}</UiButton>
+        </a>
       </div>
     </Container>
-    <div ref="endElement" />
   </div>
+  <Container :slim="true">
+    <div class="overflow-hidden">
+      <template v-if="route.name === 'strategies'">
+        <template v-for="item in items.slice(0, limit)" :key="item.key">
+          <router-link :to="`/strategy/${item.key}`">
+            <BlockStrategy :strategy="item" class="mb-3" />
+          </router-link>
+        </template>
+      </template>
+      <template v-if="route.name === 'skins'">
+        <BlockSkin
+          v-for="item in items.slice(0, limit)"
+          :key="item.key"
+          :skin="item"
+          class="mb-3"
+        />
+      </template>
+      <template v-if="route.name === 'networks'">
+        <template v-for="item in items.slice(0, limit)" :key="item.key">
+          <router-link :to="`/?network=${item.key}`">
+            <BlockNetwork :network="item" class="mb-3" />
+          </router-link>
+        </template>
+      </template>
+      <template v-if="route.name === 'plugins'">
+        <BlockPlugin
+          v-for="item in items.slice(0, limit)"
+          :key="item.key"
+          :plugin="item"
+          class="mb-3"
+        />
+      </template>
+      <NoResults :block="true" v-if="Object.keys(items).length < 1" />
+    </div>
+  </Container>
+  <div ref="endElement" />
 </template>
 
 <script setup>
