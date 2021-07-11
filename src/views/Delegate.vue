@@ -1,108 +1,3 @@
-<template>
-  <Layout v-bind="$attrs">
-    <template #content-left>
-      <div class="px-4 px-md-0 mb-3">
-        <router-link :to="{ name: 'home' }" class="text-gray">
-          <Icon name="back" size="22" class="v-align-middle" />
-          {{ $t('backToHome') }}
-        </router-link>
-        <h1 v-if="loaded" v-text="$t('delegate.header')" />
-      </div>
-      <template v-if="loaded">
-        <Block :title="$t('delegate.selectDelegate')">
-          <UiInput
-            v-model.trim="form.address"
-            :placeholder="$t('delegate.addressPlaceholder')"
-            class="mt-2"
-          >
-            <template v-slot:label>{{ $t('delegate.to') }}</template>
-          </UiInput>
-          <UiInput
-            v-model.trim="form.id"
-            :placeholder="$t('delegate.spacePlaceholder')"
-          >
-            <template v-slot:label>{{ $t('space') }}</template>
-          </UiInput>
-        </Block>
-        <Block
-          v-if="delegates.length > 0"
-          :slim="true"
-          :title="$t('delegate.delegations')"
-        >
-          <div
-            v-for="(delegate, i) in delegates"
-            :key="i"
-            :style="i === 0 && 'border: 0 !important;'"
-            class="px-4 py-3 border-top d-flex"
-          >
-            <User
-              :address="delegate.delegate"
-              :space="{ network: web3.network.key }"
-              :profile="profiles[delegate.delegate]"
-            />
-            <div
-              v-text="_shorten(delegate.space || $t('allSpaces'), 'choice')"
-              class="flex-auto text-right text-white"
-            />
-            <a
-              @click="clearDelegate(delegate.space, delegate.delegate)"
-              class="px-2 mr-n2 ml-2"
-            >
-              <Icon name="close" size="12" class="mb-1" />
-            </a>
-          </div>
-        </Block>
-        <Block
-          v-if="delegators.length > 0"
-          :slim="true"
-          :title="$t('delegate.delegated')"
-        >
-          <div
-            v-for="(delegator, i) in delegators"
-            :key="i"
-            :style="i === 0 && 'border: 0 !important;'"
-            class="px-4 py-3 border-top d-flex"
-          >
-            <User
-              :address="delegator.delegator"
-              :space="{ network: web3.network.key }"
-              :profile="profiles[delegator.delegator]"
-            />
-            <div
-              v-text="_shorten(delegator.space || '-', 'choice')"
-              class="flex-auto text-right text-white"
-            />
-          </div>
-        </Block>
-      </template>
-      <PageLoading v-else />
-    </template>
-    <template #sidebar-right>
-      <Block :title="$t('actions')">
-        <UiButton
-          @click="handleSubmit"
-          :disabled="!isValid || !$auth.isAuthenticated.value"
-          :loading="loading"
-          class="d-block width-full button--submit"
-        >
-          {{ $t('confirm') }}
-        </UiButton>
-      </Block>
-    </template>
-  </Layout>
-  <teleport to="#modal">
-    <ModalClearDelegate
-      v-if="loaded"
-      :open="modalOpen"
-      @close="modalOpen = false"
-      @reload="load"
-      :id="currentId"
-      :delegate="currentDelegate"
-      :profiles="profiles"
-    />
-  </teleport>
-</template>
-
 <script setup>
 import { ref, computed, watch, onMounted, watchEffect } from 'vue';
 import { useStore } from 'vuex';
@@ -214,3 +109,108 @@ onMounted(async () => {
   loaded.value = true;
 });
 </script>
+
+<template>
+  <Layout v-bind="$attrs">
+    <template #content-left>
+      <div class="px-4 px-md-0 mb-3">
+        <router-link :to="{ name: 'home' }" class="text-gray">
+          <Icon name="back" size="22" class="v-align-middle" />
+          {{ $t('backToHome') }}
+        </router-link>
+        <h1 v-if="loaded" v-text="$t('delegate.header')" />
+      </div>
+      <template v-if="loaded">
+        <Block :title="$t('delegate.selectDelegate')">
+          <UiInput
+            v-model.trim="form.address"
+            :placeholder="$t('delegate.addressPlaceholder')"
+            class="mt-2"
+          >
+            <template v-slot:label>{{ $t('delegate.to') }}</template>
+          </UiInput>
+          <UiInput
+            v-model.trim="form.id"
+            :placeholder="$t('delegate.spacePlaceholder')"
+          >
+            <template v-slot:label>{{ $t('space') }}</template>
+          </UiInput>
+        </Block>
+        <Block
+          v-if="delegates.length > 0"
+          :slim="true"
+          :title="$t('delegate.delegations')"
+        >
+          <div
+            v-for="(delegate, i) in delegates"
+            :key="i"
+            :style="i === 0 && 'border: 0 !important;'"
+            class="px-4 py-3 border-top d-flex"
+          >
+            <User
+              :address="delegate.delegate"
+              :space="{ network: web3.network.key }"
+              :profile="profiles[delegate.delegate]"
+            />
+            <div
+              v-text="_shorten(delegate.space || $t('allSpaces'), 'choice')"
+              class="flex-auto text-right text-white"
+            />
+            <a
+              @click="clearDelegate(delegate.space, delegate.delegate)"
+              class="px-2 mr-n2 ml-2"
+            >
+              <Icon name="close" size="12" class="mb-1" />
+            </a>
+          </div>
+        </Block>
+        <Block
+          v-if="delegators.length > 0"
+          :slim="true"
+          :title="$t('delegate.delegated')"
+        >
+          <div
+            v-for="(delegator, i) in delegators"
+            :key="i"
+            :style="i === 0 && 'border: 0 !important;'"
+            class="px-4 py-3 border-top d-flex"
+          >
+            <User
+              :address="delegator.delegator"
+              :space="{ network: web3.network.key }"
+              :profile="profiles[delegator.delegator]"
+            />
+            <div
+              v-text="_shorten(delegator.space || '-', 'choice')"
+              class="flex-auto text-right text-white"
+            />
+          </div>
+        </Block>
+      </template>
+      <PageLoading v-else />
+    </template>
+    <template #sidebar-right>
+      <Block :title="$t('actions')">
+        <UiButton
+          @click="handleSubmit"
+          :disabled="!isValid || !$auth.isAuthenticated.value"
+          :loading="loading"
+          class="d-block width-full button--submit"
+        >
+          {{ $t('confirm') }}
+        </UiButton>
+      </Block>
+    </template>
+  </Layout>
+  <teleport to="#modal">
+    <ModalClearDelegate
+      v-if="loaded"
+      :open="modalOpen"
+      @close="modalOpen = false"
+      @reload="load"
+      :id="currentId"
+      :delegate="currentDelegate"
+      :profiles="profiles"
+    />
+  </teleport>
+</template>

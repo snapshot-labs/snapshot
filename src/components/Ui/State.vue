@@ -1,13 +1,6 @@
-<template>
-  <span
-    :class="stateClass"
-    v-text="$t(`proposals.states.${state}`)"
-    class="State text-normal"
-  />
-</template>
-
 <script>
 import { computed } from 'vue';
+
 export default {
   props: {
     state: String
@@ -23,3 +16,11 @@ export default {
   }
 };
 </script>
+
+<template>
+  <span
+    :class="stateClass"
+    v-text="$t(`proposals.states.${state}`)"
+    class="State text-normal"
+  />
+</template>

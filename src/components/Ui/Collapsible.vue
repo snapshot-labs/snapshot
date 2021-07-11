@@ -1,3 +1,10 @@
+<script>
+export default {
+  props: { open: Boolean, title: String, number: Number, hideRemove: Boolean },
+  emits: ['remove', 'toggle']
+};
+</script>
+
 <template>
   <div class="width-full collapsible-container">
     <div class="collapsible-header d-flex">
@@ -18,13 +25,6 @@
     </div>
   </div>
 </template>
-
-<script>
-export default {
-  props: { open: Boolean, title: String, number: Number, hideRemove: Boolean },
-  emits: ['remove', 'toggle']
-};
-</script>
 
 <style scoped lang="scss">
 .collapsible-container {

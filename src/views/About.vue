@@ -1,3 +1,24 @@
+<script setup>
+import { computed, onMounted } from 'vue';
+import { useRoute } from 'vue-router';
+import { useStore } from 'vuex';
+import networks from '@snapshot-labs/snapshot.js/src/networks.json';
+import { useProfiles } from '@/composables/useProfiles';
+import { getUrl } from '@snapshot-labs/snapshot.js/src/utils';
+
+const store = useStore();
+const route = useRoute();
+
+const space = computed(() => store.state.app.spaces[route.params.key]);
+const network = computed(() => networks[space.value.network]);
+
+const { profiles, addressArray } = useProfiles();
+
+onMounted(() => {
+  addressArray.value = space.value.admins.concat(space.value.members);
+});
+</script>
+
 <template>
   <Layout>
     <template #sidebar-left>
@@ -93,24 +114,3 @@
     </template>
   </Layout>
 </template>
-
-<script setup>
-import { computed, onMounted } from 'vue';
-import { useRoute } from 'vue-router';
-import { useStore } from 'vuex';
-import networks from '@snapshot-labs/snapshot.js/src/networks.json';
-import { useProfiles } from '@/composables/useProfiles';
-import { getUrl } from '@snapshot-labs/snapshot.js/src/utils';
-
-const store = useStore();
-const route = useRoute();
-
-const space = computed(() => store.state.app.spaces[route.params.key]);
-const network = computed(() => networks[space.value.network]);
-
-const { profiles, addressArray } = useProfiles();
-
-onMounted(() => {
-  addressArray.value = space.value.admins.concat(space.value.members);
-});
-</script>

@@ -1,3 +1,47 @@
+<script>
+import { BigNumber } from '@ethersproject/bignumber';
+import { formatUnits } from '@ethersproject/units';
+
+export default {
+  props: [
+    'open',
+    'isApproved',
+    'bond',
+    'questionId',
+    'minimumBond',
+    'tokenSymbol',
+    'tokenDecimals'
+  ],
+  emits: ['close', 'setApproval'],
+  methods: {
+    async handleSetApproval(option) {
+      await this.$emit('setApproval', option);
+      this.$emit('close');
+    }
+  },
+  computed: {
+    answer() {
+      return this.isApproved ? 'Yes' : 'No';
+    },
+    bondData() {
+      const bondNotSet = BigNumber.from(this.bond).eq(0);
+      const minimumBond = BigNumber.from(this.minimumBond).eq(0)
+        ? BigNumber.from(10).pow(this.tokenDecimals)
+        : this.minimumBond;
+      const toSet = bondNotSet ? minimumBond : BigNumber.from(this.bond).mul(2);
+      return {
+        toSet: formatUnits(toSet, this.tokenDecimals),
+        current: bondNotSet ? '--' : formatUnits(this.bond, this.tokenDecimals),
+        tokenSymbol: this.tokenSymbol
+      };
+    },
+    questionLink() {
+      return 'https://reality.eth.link/app/#!/question/' + this.questionId;
+    }
+  }
+};
+</script>
+
 <template>
   <UiModal :open="open" @close="$emit('close')">
     <template v-slot:header>
@@ -53,50 +97,6 @@
     </div>
   </UiModal>
 </template>
-
-<script>
-import { BigNumber } from '@ethersproject/bignumber';
-import { formatUnits } from '@ethersproject/units';
-
-export default {
-  props: [
-    'open',
-    'isApproved',
-    'bond',
-    'questionId',
-    'minimumBond',
-    'tokenSymbol',
-    'tokenDecimals'
-  ],
-  emits: ['close', 'setApproval'],
-  methods: {
-    async handleSetApproval(option) {
-      await this.$emit('setApproval', option);
-      this.$emit('close');
-    }
-  },
-  computed: {
-    answer() {
-      return this.isApproved ? 'Yes' : 'No';
-    },
-    bondData() {
-      const bondNotSet = BigNumber.from(this.bond).eq(0);
-      const minimumBond = BigNumber.from(this.minimumBond).eq(0)
-        ? BigNumber.from(10).pow(this.tokenDecimals)
-        : this.minimumBond;
-      const toSet = bondNotSet ? minimumBond : BigNumber.from(this.bond).mul(2);
-      return {
-        toSet: formatUnits(toSet, this.tokenDecimals),
-        current: bondNotSet ? '--' : formatUnits(this.bond, this.tokenDecimals),
-        tokenSymbol: this.tokenSymbol
-      };
-    },
-    questionLink() {
-      return 'https://reality.eth.link/app/#!/question/' + this.questionId;
-    }
-  }
-};
-</script>
 
 <style>
 .vote-button {

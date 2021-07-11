@@ -1,7 +1,3 @@
-<template>
-  <span v-html="textWithLinks" />
-</template>
-
 <script>
 import { computed } from 'vue';
 import Autolinker from 'autolinker';
@@ -25,6 +21,10 @@ export default {
   }
 };
 </script>
+
+<template>
+  <span v-html="textWithLinks" />
+</template>
 
 <style lang="scss">
 @import '../../vars';

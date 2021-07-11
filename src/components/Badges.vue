@@ -1,9 +1,3 @@
-<template>
-  <UiLabel v-if="isCore" class="ml-1">
-    {{ $t('isCore') }}
-  </UiLabel>
-</template>
-
 <script>
 import { computed } from 'vue';
 
@@ -21,3 +15,9 @@ export default {
   }
 };
 </script>
+
+<template>
+  <UiLabel v-if="isCore" class="ml-1">
+    {{ $t('isCore') }}
+  </UiLabel>
+</template>

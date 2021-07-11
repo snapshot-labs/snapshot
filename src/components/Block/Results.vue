@@ -1,60 +1,3 @@
-<template>
-  <Block
-    :loading="!loaded"
-    :title="ts >= proposal.end ? $t('results') : $t('currentResults')"
-  >
-    <div v-for="choice in choices" :key="choice.i">
-      <div class="text-white mb-1">
-        <span
-          class="mr-1"
-          :class="[
-            choice.choice.length > 12 &&
-              (isSmallScreen
-                ? 'tooltipped tooltipped-ne tooltipped-align-left-2'
-                : 'tooltipped tooltipped-n')
-          ]"
-          :aria-label="choice.choice"
-          v-text="_shorten(choice.choice, 'choice')"
-        />
-        <span
-          class="mr-1 tooltipped tooltipped-multiline tooltipped-n"
-          :aria-label="
-            results.resultsByStrategyScore[choice.i]
-              .map((score, index) => `${_n(score)} ${titles[index]}`)
-              .join(' + ')
-          "
-        >
-          {{ _n(results.resultsByVoteBalance[choice.i]) }}
-          {{ _shorten(space.symbol, 'symbol') }}
-        </span>
-        <span
-          class="float-right"
-          v-text="
-            _n(
-              !results.sumOfResultsBalance
-                ? 0
-                : ((100 / results.sumOfResultsBalance) *
-                    results.resultsByVoteBalance[choice.i]) /
-                    1e2,
-              '0.[00]%'
-            )
-          "
-        />
-      </div>
-      <UiProgress
-        :value="results.resultsByStrategyScore[choice.i]"
-        :max="results.sumOfResultsBalance"
-        class="mb-3"
-      />
-    </div>
-    <div v-if="ts >= proposal.end">
-      <UiButton @click="downloadReport" class="width-full mt-2">
-        {{ $t('downloadReport') }}
-      </UiButton>
-    </div>
-  </Block>
-</template>
-
 <script>
 import { computed } from 'vue';
 import * as jsonexport from 'jsonexport/dist';
@@ -119,3 +62,60 @@ export default {
   }
 };
 </script>
+
+<template>
+  <Block
+    :loading="!loaded"
+    :title="ts >= proposal.end ? $t('results') : $t('currentResults')"
+  >
+    <div v-for="choice in choices" :key="choice.i">
+      <div class="text-white mb-1">
+        <span
+          class="mr-1"
+          :class="[
+            choice.choice.length > 12 &&
+              (isSmallScreen
+                ? 'tooltipped tooltipped-ne tooltipped-align-left-2'
+                : 'tooltipped tooltipped-n')
+          ]"
+          :aria-label="choice.choice"
+          v-text="_shorten(choice.choice, 'choice')"
+        />
+        <span
+          class="mr-1 tooltipped tooltipped-multiline tooltipped-n"
+          :aria-label="
+            results.resultsByStrategyScore[choice.i]
+              .map((score, index) => `${_n(score)} ${titles[index]}`)
+              .join(' + ')
+          "
+        >
+          {{ _n(results.resultsByVoteBalance[choice.i]) }}
+          {{ _shorten(space.symbol, 'symbol') }}
+        </span>
+        <span
+          class="float-right"
+          v-text="
+            _n(
+              !results.sumOfResultsBalance
+                ? 0
+                : ((100 / results.sumOfResultsBalance) *
+                    results.resultsByVoteBalance[choice.i]) /
+                    1e2,
+              '0.[00]%'
+            )
+          "
+        />
+      </div>
+      <UiProgress
+        :value="results.resultsByStrategyScore[choice.i]"
+        :max="results.sumOfResultsBalance"
+        class="mb-3"
+      />
+    </div>
+    <div v-if="ts >= proposal.end">
+      <UiButton @click="downloadReport" class="width-full mt-2">
+        {{ $t('downloadReport') }}
+      </UiButton>
+    </div>
+  </Block>
+</template>

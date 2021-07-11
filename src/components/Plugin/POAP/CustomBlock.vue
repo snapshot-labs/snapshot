@@ -1,32 +1,3 @@
-<template>
-  <Block title="I voted POAP" :loading="loading">
-    <div class="d-flex flex-column flex-items-center">
-      <img :src="headerImg" alt="" class="mb-2" />
-      <div class="text-white text-center mb-2">{{ $t(header) }}</div>
-      <img
-        :src="mainImg"
-        alt=""
-        class="mb-2"
-        style="
-          vertical-align: middle;
-          width: auto;
-          height: auto;
-          max-width: 125px;
-        "
-      />
-      <UiButton
-        v-if="currentState !== 'NO_POAP'"
-        class="width-full mb-2"
-        @click="action"
-        :disabled="!actionEnabled"
-        :loading="actionLoading"
-      >
-        {{ $t(buttonText) }}
-      </UiButton>
-    </div>
-  </Block>
-</template>
-
 <script>
 import Plugin from '@snapshot-labs/snapshot.js/src/plugins/poap';
 import { mapActions } from 'vuex';
@@ -184,3 +155,32 @@ export default {
   }
 };
 </script>
+
+<template>
+  <Block title="I voted POAP" :loading="loading">
+    <div class="d-flex flex-column flex-items-center">
+      <img :src="headerImg" alt="" class="mb-2" />
+      <div class="text-white text-center mb-2">{{ $t(header) }}</div>
+      <img
+        :src="mainImg"
+        alt=""
+        class="mb-2"
+        style="
+          vertical-align: middle;
+          width: auto;
+          height: auto;
+          max-width: 125px;
+        "
+      />
+      <UiButton
+        v-if="currentState !== 'NO_POAP'"
+        class="width-full mb-2"
+        @click="action"
+        :disabled="!actionEnabled"
+        :loading="actionLoading"
+      >
+        {{ $t(buttonText) }}
+      </UiButton>
+    </div>
+  </Block>
+</template>

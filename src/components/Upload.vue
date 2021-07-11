@@ -1,11 +1,3 @@
-<template>
-  <UiLoading v-if="loading" />
-  <label v-else class="file-select">
-    <input type="file" @change="handleFileChange" accept="image/*" />
-    <slot />
-  </label>
-</template>
-
 <script>
 export default {
   data() {
@@ -55,3 +47,11 @@ label {
   }
 }
 </style>
+
+<template>
+  <UiLoading v-if="loading" />
+  <label v-else class="file-select">
+    <input type="file" @change="handleFileChange" accept="image/*" />
+    <slot />
+  </label>
+</template>

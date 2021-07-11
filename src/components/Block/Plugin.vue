@@ -1,3 +1,16 @@
+<script>
+export default {
+  props: ['plugin'],
+  setup() {
+    function getLogoUrl(key) {
+      return `https://raw.githubusercontent.com/snapshot-labs/snapshot.js/master/src/plugins/${key}/logo.png`;
+    }
+
+    return { getLogoUrl };
+  }
+};
+</script>
+
 <template>
   <Block>
     <div class="d-flex flex-items-center mb-1">
@@ -31,16 +44,3 @@
     </div>
   </Block>
 </template>
-
-<script>
-export default {
-  props: ['plugin'],
-  setup() {
-    function getLogoUrl(key) {
-      return `https://raw.githubusercontent.com/snapshot-labs/snapshot.js/master/src/plugins/${key}/logo.png`;
-    }
-
-    return { getLogoUrl };
-  }
-};
-</script>

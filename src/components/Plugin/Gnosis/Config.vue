@@ -1,3 +1,53 @@
+<script>
+export default {
+  props: ['modelValue', 'proposal', 'network'],
+  emits: ['update:modelValue', 'close'],
+  data() {
+    return {
+      input: false,
+      preview: false
+    };
+  },
+  computed: {
+    isValid() {
+      return (
+        (this.input.conditionId &&
+          this.input.baseTokenAddress &&
+          this.input.quoteCurrencyAddress) ||
+        this.input === false
+      );
+    }
+  },
+  mounted() {
+    if (this.modelValue) return (this.input = this.modelValue);
+  },
+  methods: {
+    getLogoUrl() {
+      return `https://raw.githubusercontent.com/snapshot-labs/snapshot.js/master/src/plugins/gnosis/logo.png`;
+    },
+    addAction() {
+      if (!this.input) this.input = {};
+      this.input = {
+        network: '1',
+        conditionId: '',
+        baseTokenAddress: '',
+        quoteCurrencyAddress: ''
+      };
+    },
+    removeAction() {
+      this.input = false;
+    },
+    handleSubmit() {
+      this.$emit('update:modelValue', this.input);
+      this.$emit('close');
+    },
+    getChoices() {
+      return this.proposal.choices.map(choice => choice.text);
+    }
+  }
+};
+</script>
+
 <template>
   <form @submit.prevent="handleSubmit">
     <div class="mb-2 text-center">
@@ -72,53 +122,3 @@
     </UiButton>
   </form>
 </template>
-
-<script>
-export default {
-  props: ['modelValue', 'proposal', 'network'],
-  emits: ['update:modelValue', 'close'],
-  data() {
-    return {
-      input: false,
-      preview: false
-    };
-  },
-  computed: {
-    isValid() {
-      return (
-        (this.input.conditionId &&
-          this.input.baseTokenAddress &&
-          this.input.quoteCurrencyAddress) ||
-        this.input === false
-      );
-    }
-  },
-  mounted() {
-    if (this.modelValue) return (this.input = this.modelValue);
-  },
-  methods: {
-    getLogoUrl() {
-      return `https://raw.githubusercontent.com/snapshot-labs/snapshot.js/master/src/plugins/gnosis/logo.png`;
-    },
-    addAction() {
-      if (!this.input) this.input = {};
-      this.input = {
-        network: '1',
-        conditionId: '',
-        baseTokenAddress: '',
-        quoteCurrencyAddress: ''
-      };
-    },
-    removeAction() {
-      this.input = false;
-    },
-    handleSubmit() {
-      this.$emit('update:modelValue', this.input);
-      this.$emit('close');
-    },
-    getChoices() {
-      return this.proposal.choices.map(choice => choice.text);
-    }
-  }
-};
-</script>

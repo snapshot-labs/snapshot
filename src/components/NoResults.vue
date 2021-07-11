@@ -1,12 +1,3 @@
-<template>
-  <div class="mb-3 text-center">
-    <Block v-if="block" class="pt-1">
-      {{ text }}
-    </Block>
-    <div v-else>{{ text }}</div>
-  </div>
-</template>
-
 <script>
 export default {
   props: ['block'],
@@ -17,3 +8,12 @@ export default {
   }
 };
 </script>
+
+<template>
+  <div class="mb-3 text-center">
+    <Block v-if="block" class="pt-1">
+      {{ text }}
+    </Block>
+    <div v-else>{{ text }}</div>
+  </div>
+</template>

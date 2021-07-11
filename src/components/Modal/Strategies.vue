@@ -1,3 +1,15 @@
+<script>
+import { isAddress } from '@ethersproject/address';
+
+export default {
+  props: { open: Boolean, strategies: Object, space: Object },
+  emits: ['close'],
+  setup() {
+    return { isAddress };
+  }
+};
+</script>
+
 <template>
   <UiModal :open="open" @close="$emit('close')">
     <template v-slot:header>
@@ -40,15 +52,3 @@
     </div>
   </UiModal>
 </template>
-
-<script>
-import { isAddress } from '@ethersproject/address';
-
-export default {
-  props: { open: Boolean, strategies: Object, space: Object },
-  emits: ['close'],
-  setup() {
-    return { isAddress };
-  }
-};
-</script>
