@@ -1,6 +1,6 @@
 <script>
-import { useStore } from 'vuex';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
+import { useStore } from 'vuex';
 import { computed } from 'vue';
 
 export default {
