@@ -16,6 +16,8 @@ import '@/style.scss';
 import { apolloClient } from '@/apollo';
 import { DefaultApolloClient } from '@vue/apollo-composable';
 
+console.log('Started');
+
 const app = createApp({
   setup() {
     provide(DefaultApolloClient, apolloClient);
