@@ -262,7 +262,7 @@
     "claimed_header": "बधाई हो! आपको अपने खाते में एक नया POAP मिला है",
     "loading_header": "POAP को आपके संग्रह में जोड़ा जा रहा है",
     "button_claim": "दावा करें",
-    "button_show": "मेरे बैज दिखाए",
+    "button_show": "Show me my collection",
     "success_claim": "आपका POAP आपके पते पर है",
     "error_claim": "टोकन बनाने में एक समस्या हुई"
   }
