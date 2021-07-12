@@ -196,10 +196,13 @@ function setAvatarUrl(url) {
 onMounted(async () => {
   try {
     const uri = await getSpaceUri(key.value);
+    console.log('URI', uri);
     currentContenthash.value = uri;
-    const [protocolType, decoded] = uri.split('://');
     let space = clone(store.state.app.spaces?.[key.value]);
-    if (!space) space = await uriGet(gateway, decoded, protocolType);
+    if (!space) {
+      const [protocolType, decoded] = uri.split('://');
+      space = await uriGet(gateway, decoded, protocolType);
+    }
     delete space.key;
     delete space._activeProposals;
     space.strategies = space.strategies || [];
