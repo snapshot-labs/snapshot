@@ -6,30 +6,31 @@ const STATES = {
   NO_POAP: {
     header: 'poap.no_poap_header',
     headerImage: 'https://snapshotsplugin.s3.us-west-2.amazonaws.com/empty.svg',
-    mainImage: 'https://snapshotsplugin.s3.us-west-2.amazonaws.com/placeholder.png',
+    mainImage:
+      'https://snapshotsplugin.s3.us-west-2.amazonaws.com/placeholder.png'
   },
   NOT_VOTED: {
     headerImage: 'https://snapshotsplugin.s3.us-west-2.amazonaws.com/vote.svg',
     header: 'poap.no_voted_header',
-    buttonText: 'poap.button_claim',
+    buttonText: 'poap.button_claim'
   },
   UNCLAIMED: {
     headerImage: 'https://snapshotsplugin.s3.us-west-2.amazonaws.com/claim.svg',
     header: 'poap.unclaimed_header',
-    buttonText: 'poap.button_claim',
+    buttonText: 'poap.button_claim'
   },
   CLAIMED: {
     headerImage:
       'https://snapshotsplugin.s3.us-west-2.amazonaws.com/succes.svg',
     header: 'poap.claimed_header',
-    buttonText: 'poap.button_show',
+    buttonText: 'poap.button_show'
   },
   LOADING: {
     headerImage:
       'https://snapshotsplugin.s3.us-west-2.amazonaws.com/succes.svg',
     header: 'poap.loading_header',
-    buttonText: '',
-  },
+    buttonText: ''
+  }
 };
 
 // STATES
@@ -48,7 +49,7 @@ export default {
       currentState: NO_POAP,
       address: '',
       poapImg: '',
-      loadButton: false,
+      loadButton: false
     };
   },
   computed: {
@@ -72,7 +73,7 @@ export default {
     },
     actionLoading() {
       return this.currentState === LOADING || this.loadButton;
-    },
+    }
   },
   async created() {
     this.address = this.web3Account;
@@ -101,7 +102,7 @@ export default {
       this.loading = true;
       await this.updateState();
       this.loading = false;
-    },
+    }
   },
   methods: {
     ...mapActions(['notify']),
@@ -148,8 +149,8 @@ export default {
 
       this.currentState = currentState;
       this.loading = false;
-    },
-  },
+    }
+  }
 };
 </script>
 
