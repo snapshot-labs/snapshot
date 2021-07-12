@@ -262,7 +262,7 @@
     "claimed_header": "Onnittelut! Sinulla on uusi POAP tililläsi",
     "loading_header": "POAP on lisätty kokoelmaasi",
     "button_claim": "Lunasta",
-    "button_show": "Näytä minulle merkkini",
+    "button_show": "Show me my collection",
     "success_claim": "Sinun POAP on osoitteessasi",
     "error_claim": "Kirjoituksen tallentaminen epäonnistui"
   }
