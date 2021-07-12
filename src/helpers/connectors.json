@@ -15,6 +15,10 @@
       }
     }
   },
+  "torus": {
+    "id": "torus",
+    "name": "Torus"
+  },
   "portis": {
     "id": "portis",
     "name": "Portis",
@@ -23,10 +27,6 @@
       "dappId": "3eb93706-c71d-456b-b4eb-322ea27f7d48",
       "network": "mainnet"
     }
-  },
-  "torus": {
-    "id": "torus",
-    "name": "Torus"
   },
   "walletlink": {
     "id": "walletlink",
