@@ -262,7 +262,7 @@
     "claimed_header": "Xin chúc mừng! Bạn có một POAP mới trong tài khoản của mình",
     "loading_header": "POAP đang được thêm vào bộ sưu tập của bạn",
     "button_claim": "Yêu cầu",
-    "button_show": "Cho tôi xem huy hiệu của tôi",
+    "button_show": "Show me my collection",
     "success_claim": "POAP của bạn có trên địa chỉ của bạn",
     "error_claim": "Đã xảy ra sự cố khi in mã thông báo"
   }
