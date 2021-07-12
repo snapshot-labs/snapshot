@@ -5,13 +5,13 @@
     "chainId": 1,
     "network": "homestead",
     "rpc": [
-      "https://api.s0.t.hmny.io",
+      "https://a.api.s0.t.hmny.io",
       {
-        "url": "https://api.s0.t.hmny.io",
+        "url": "https://a.api.s0.t.hmny.io",
         "user": "balancer_user",
         "password": "balancerAnkr20201015"
       },
-      "https://api.s0.t.hmny.io"
+      "https://a.api.s0.t.hmny.io"
     ],
     "explorer": "https://explorer.harmony.one/#",
     "staking": "https://staking.harmony.one/validators/mainnet"
@@ -39,7 +39,7 @@
     "shortName": "HarmonyMainnet",
     "chainId": 1666600000,
     "network": "mainnet",
-    "rpc": ["https://api.s0.t.hmny.io"],
+    "rpc": ["https://a.api.s0.t.hmny.io"],
     "ws": ["wss://ws.s0.t.hmny.io"],
     "explorer": "https://explorer.harmony.one/#",
     "staking": "https://staking.harmony.one/validators/mainnet"
