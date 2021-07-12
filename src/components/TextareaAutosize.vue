@@ -1,13 +1,6 @@
-<template>
-  <textarea
-    ref="textarea"
-    :style="computedStyles"
-    v-model="val"
-    @focus="resize"
-  ></textarea>
-</template>
 <script>
 import { ref, computed, nextTick, toRefs, watch, onMounted } from 'vue';
+
 export default {
   name: 'TextareaAutosize',
   props: {
@@ -124,3 +117,12 @@ export default {
   }
 };
 </script>
+
+<template>
+  <textarea
+    ref="textarea"
+    :style="computedStyles"
+    v-model="val"
+    @focus="resize"
+  ></textarea>
+</template>

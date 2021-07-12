@@ -1,3 +1,44 @@
+<script>
+import { ref } from 'vue';
+import draggable from 'vuedraggable';
+import { getNumberWithOrdinal } from '@/helpers/utils';
+
+export default {
+  components: { draggable },
+  props: {
+    proposal: {
+      type: Object,
+      required: true
+    }
+  },
+  emits: ['selectChoice'],
+  setup(_, { emit }) {
+    const selectedChoices = ref([]);
+
+    function selectChoice(i) {
+      selectedChoices.value.push(i);
+      emit('selectChoice', selectedChoices.value);
+    }
+
+    function removeChoice(i) {
+      selectedChoices.value.splice(i, 1);
+    }
+
+    function updateChoices() {
+      emit('selectChoice', selectedChoices.value);
+    }
+
+    return {
+      selectChoice,
+      selectedChoices,
+      removeChoice,
+      getNumberWithOrdinal,
+      updateChoices
+    };
+  }
+};
+</script>
+
 <template>
   <div class="mb-3">
     <div :class="{ 'mb-5': selectedChoices.length > 0 }">
@@ -51,44 +92,3 @@
     </div>
   </div>
 </template>
-
-<script>
-import { ref } from 'vue';
-import draggable from 'vuedraggable';
-import { getNumberWithOrdinal } from '@/helpers/utils';
-
-export default {
-  components: { draggable },
-  props: {
-    proposal: {
-      type: Object,
-      required: true
-    }
-  },
-  emits: ['selectChoice'],
-  setup(_, { emit }) {
-    const selectedChoices = ref([]);
-
-    function selectChoice(i) {
-      selectedChoices.value.push(i);
-      emit('selectChoice', selectedChoices.value);
-    }
-
-    function removeChoice(i) {
-      selectedChoices.value.splice(i, 1);
-    }
-
-    function updateChoices() {
-      emit('selectChoice', selectedChoices.value);
-    }
-
-    return {
-      selectChoice,
-      selectedChoices,
-      removeChoice,
-      getNumberWithOrdinal,
-      updateChoices
-    };
-  }
-};
-</script>

@@ -1,16 +1,6 @@
-<template>
-  <span class="Progress Progress--small overflow-hidden anim-scale-in">
-    <span
-      v-for="(bar, i) in bars"
-      :key="i"
-      :style="`width: ${parseFloat((100 / max) * bar).toFixed(3)}%;`"
-      class="bg-blue"
-    />
-  </span>
-</template>
-
 <script>
 import { computed } from 'vue';
+
 export default {
   props: { value: { Number, Array }, max: Number },
   setup(props) {
@@ -23,6 +13,17 @@ export default {
   }
 };
 </script>
+
+<template>
+  <span class="Progress Progress--small overflow-hidden anim-scale-in">
+    <span
+      v-for="(bar, i) in bars"
+      :key="i"
+      :style="`width: ${parseFloat((100 / max) * bar).toFixed(3)}%;`"
+      class="bg-blue"
+    />
+  </span>
+</template>
 
 <style scoped lang="scss">
 .Progress {

@@ -1,7 +1,3 @@
-<template>
-  <TextareaAutosize v-model="input" />
-</template>
-
 <script>
 import { ref, watch } from 'vue';
 
@@ -32,3 +28,7 @@ export default {
   }
 };
 </script>
+
+<template>
+  <TextareaAutosize v-model="input" />
+</template>

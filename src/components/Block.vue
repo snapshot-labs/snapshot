@@ -1,3 +1,16 @@
+<script>
+export default {
+  props: {
+    title: String,
+    counter: Number,
+    slim: Boolean,
+    icon: String,
+    loading: Boolean
+  },
+  emits: ['submit']
+};
+</script>
+
 <template>
   <div
     class="
@@ -45,16 +58,3 @@
     </div>
   </div>
 </template>
-
-<script>
-export default {
-  props: {
-    title: String,
-    counter: Number,
-    slim: Boolean,
-    icon: String,
-    loading: Boolean
-  },
-  emits: ['submit']
-};
-</script>

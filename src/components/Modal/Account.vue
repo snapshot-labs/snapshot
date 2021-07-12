@@ -1,3 +1,38 @@
+<script>
+import { toRefs, ref, watch, computed } from 'vue';
+import { useStore } from 'vuex';
+import { getInjected } from '@snapshot-labs/lock/src/utils';
+import connectors from '@/helpers/connectors.json';
+
+export default {
+  props: ['open'],
+  emits: ['login', 'close'],
+  setup(props, { emit }) {
+    const store = useStore();
+    const { open } = toRefs(props);
+
+    const step = ref(null);
+
+    const injected = computed(() => getInjected());
+
+    async function handleLogout() {
+      await store.dispatch('logout');
+      emit('close');
+    }
+
+    watch(open, () => (step.value = null));
+
+    return {
+      connectors,
+      step,
+      path: 'https://raw.githubusercontent.com/snapshot-labs/lock/master/connectors/assets',
+      injected,
+      handleLogout
+    };
+  }
+};
+</script>
+
 <template>
   <UiModal :open="open" @close="$emit('close')">
     <template v-slot:header>
@@ -100,38 +135,3 @@
     </div>
   </UiModal>
 </template>
-
-<script>
-import { toRefs, ref, watch, computed } from 'vue';
-import { useStore } from 'vuex';
-import { getInjected } from '@snapshot-labs/lock/src/utils';
-import connectors from '@/helpers/connectors.json';
-
-export default {
-  props: ['open'],
-  emits: ['login', 'close'],
-  setup(props, { emit }) {
-    const store = useStore();
-    const { open } = toRefs(props);
-
-    const step = ref(null);
-
-    const injected = computed(() => getInjected());
-
-    async function handleLogout() {
-      await store.dispatch('logout');
-      emit('close');
-    }
-
-    watch(open, () => (step.value = null));
-
-    return {
-      connectors,
-      step,
-      path: 'https://raw.githubusercontent.com/snapshot-labs/lock/master/connectors/assets',
-      injected,
-      handleLogout
-    };
-  }
-};
-</script>

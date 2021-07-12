@@ -1,14 +1,6 @@
-<template>
-  <input
-    v-model="input"
-    @input="handleInput"
-    type="number"
-    class="input width-full"
-  />
-</template>
-
 <script>
 import { ref } from 'vue';
+
 export default {
   props: {
     modelValue: Number
@@ -28,3 +20,12 @@ export default {
   }
 };
 </script>
+
+<template>
+  <input
+    v-model="input"
+    @input="handleInput"
+    type="number"
+    class="input width-full"
+  />
+</template>

@@ -1,3 +1,10 @@
+<script>
+export default {
+  props: { open: Boolean, authorIpfsHash: String, relayerIpfsHash: Object },
+  emits: ['close']
+};
+</script>
+
 <template>
   <UiModal :open="open" @close="$emit('close')">
     <template v-slot:header>
@@ -29,10 +36,3 @@
     </div>
   </UiModal>
 </template>
-
-<script>
-export default {
-  props: { open: Boolean, authorIpfsHash: String, relayerIpfsHash: Object },
-  emits: ['close']
-};
-</script>

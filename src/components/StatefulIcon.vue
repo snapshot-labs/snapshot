@@ -1,11 +1,6 @@
-<template>
-  <button :class="buttonClasses" @click="handleClick($event)">
-    <Icon :name="name" size="22" />
-  </button>
-</template>
-
 <script>
 import { computed } from 'vue';
+
 export default {
   props: {
     onName: String,
@@ -34,6 +29,12 @@ export default {
   }
 };
 </script>
+
+<template>
+  <button :class="buttonClasses" @click="handleClick($event)">
+    <Icon :name="name" size="22" />
+  </button>
+</template>
 
 <style scoped lang="scss">
 .extra-icon {

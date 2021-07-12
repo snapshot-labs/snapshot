@@ -1,24 +1,3 @@
-<template>
-  <div
-    class="d-flex flex-items-center"
-    :class="{ 'bg-color border-bottom py-3 px-4': modal }"
-  >
-    <Icon name="search" size="22" class="mb-1 mr-2 text-gray" />
-    <input
-      :value="modelValue"
-      :placeholder="placeholder"
-      @input="handleInput"
-      type="text"
-      autocorrect="off"
-      autocapitalize="none"
-      class="border-0 input flex-auto width-full"
-    />
-    <a @click="clearInput">
-      <Icon v-if="modelValue" name="close" size="12" class="mb-1" />
-    </a>
-  </div>
-</template>
-
 <script>
 import { useRouter } from 'vue-router';
 
@@ -50,3 +29,24 @@ export default {
   }
 };
 </script>
+
+<template>
+  <div
+    class="d-flex flex-items-center"
+    :class="{ 'bg-color border-bottom py-3 px-4': modal }"
+  >
+    <Icon name="search" size="22" class="mb-1 mr-2 text-gray" />
+    <input
+      :value="modelValue"
+      :placeholder="placeholder"
+      @input="handleInput"
+      type="text"
+      autocorrect="off"
+      autocapitalize="none"
+      class="border-0 input flex-auto width-full"
+    />
+    <a @click="clearInput">
+      <Icon v-if="modelValue" name="close" size="12" class="mb-1" />
+    </a>
+  </div>
+</template>

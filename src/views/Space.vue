@@ -1,56 +1,3 @@
-<template>
-  <Layout>
-    <template #sidebar-left>
-      <BlockSpace :space="space" />
-    </template>
-    <template #content-right>
-      <div class="px-4 px-md-0 mb-3 d-flex">
-        <div class="flex-auto">
-          <div v-text="space.name" />
-          <div class="d-flex flex-items-center flex-auto">
-            <h2>{{ $t('proposals.header') }}</h2>
-          </div>
-        </div>
-        <UiDropdown
-          top="3.5rem"
-          right="1.25rem"
-          @select="selectState"
-          :items="[
-            { text: $t('proposals.states.all'), action: 'all' },
-            { text: $t('proposals.states.active'), action: 'active' },
-            { text: $t('proposals.states.pending'), action: 'pending' },
-            { text: $t('proposals.states.closed'), action: 'closed' },
-            { text: $t('proposals.states.core'), action: 'core' }
-          ]"
-        >
-          <UiButton class="pr-3">
-            {{ $t(`proposals.states.${filterBy}`) }}
-            <Icon size="14" name="arrow-down" class="mt-1 mr-1" />
-          </UiButton>
-        </UiDropdown>
-      </div>
-
-      <Block v-if="loading" :slim="true">
-        <RowLoading class="my-2" />
-      </Block>
-
-      <NoResults :block="true" v-else-if="proposals.length < 1" />
-      <div v-else>
-        <Block :slim="true" v-for="(proposal, i) in proposals" :key="i">
-          <TimelineProposal :proposal="proposal" :profiles="profiles" />
-        </Block>
-      </div>
-      <div
-        style="height: 10px; width: 10px; position: absolute"
-        ref="endElement"
-      />
-      <Block v-if="loadingMore && !loading" :slim="true">
-        <RowLoading class="my-2" />
-      </Block>
-    </template>
-  </Layout>
-</template>
-
 <script setup>
 import { computed, onMounted, ref, watch } from 'vue';
 import { useStore } from 'vuex';
@@ -128,3 +75,56 @@ watch(proposals, () => {
   addressArray.value = proposals.value.map(proposal => proposal.author);
 });
 </script>
+
+<template>
+  <Layout>
+    <template #sidebar-left>
+      <BlockSpace :space="space" />
+    </template>
+    <template #content-right>
+      <div class="px-4 px-md-0 mb-3 d-flex">
+        <div class="flex-auto">
+          <div v-text="space.name" />
+          <div class="d-flex flex-items-center flex-auto">
+            <h2>{{ $t('proposals.header') }}</h2>
+          </div>
+        </div>
+        <UiDropdown
+          top="3.5rem"
+          right="1.25rem"
+          @select="selectState"
+          :items="[
+            { text: $t('proposals.states.all'), action: 'all' },
+            { text: $t('proposals.states.active'), action: 'active' },
+            { text: $t('proposals.states.pending'), action: 'pending' },
+            { text: $t('proposals.states.closed'), action: 'closed' },
+            { text: $t('proposals.states.core'), action: 'core' }
+          ]"
+        >
+          <UiButton class="pr-3">
+            {{ $t(`proposals.states.${filterBy}`) }}
+            <Icon size="14" name="arrow-down" class="mt-1 mr-1" />
+          </UiButton>
+        </UiDropdown>
+      </div>
+
+      <Block v-if="loading" :slim="true">
+        <RowLoading class="my-2" />
+      </Block>
+
+      <NoResults :block="true" v-else-if="proposals.length < 1" />
+      <div v-else>
+        <Block :slim="true" v-for="(proposal, i) in proposals" :key="i">
+          <TimelineProposal :proposal="proposal" :profiles="profiles" />
+        </Block>
+      </div>
+      <div
+        style="height: 10px; width: 10px; position: absolute"
+        ref="endElement"
+      />
+      <Block v-if="loadingMore && !loading" :slim="true">
+        <RowLoading class="my-2" />
+      </Block>
+    </template>
+  </Layout>
+</template>

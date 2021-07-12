@@ -1,19 +1,6 @@
-<template>
-  <div>
-    <textarea
-      v-model="input"
-      v-bind="textareaProps"
-      :class="{ 'border-red': error }"
-      :disabled="disabled"
-      class="input width-full textarea"
-      @input="handleInput()"
-    ></textarea>
-    <span v-if="error" class="error-message">*{{ error }}</span>
-  </div>
-</template>
-
 <script>
 import { ref, onMounted, toRefs, watch } from 'vue';
+
 export default {
   props: {
     modelValue: String,
@@ -40,6 +27,20 @@ export default {
   }
 };
 </script>
+
+<template>
+  <div>
+    <textarea
+      v-model="input"
+      v-bind="textareaProps"
+      :class="{ 'border-red': error }"
+      :disabled="disabled"
+      class="input width-full textarea"
+      @input="handleInput()"
+    ></textarea>
+    <span v-if="error" class="error-message">*{{ error }}</span>
+  </div>
+</template>
 
 <style lang="scss" scoped>
 .error-message {
