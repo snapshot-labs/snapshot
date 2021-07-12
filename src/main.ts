@@ -1,6 +1,6 @@
 import { createApp, h, provide } from 'vue';
 import VueClipboard from 'vue3-clipboard';
-// import Jazzicon from 'vue3-jazzicon/src/components';
+import Jazzicon from 'vue3-jazzicon/src/components';
 import { LockPlugin } from '@snapshot-labs/lock/plugins/vue3';
 import options from '@/auth';
 import App from '@/App.vue';
@@ -29,7 +29,7 @@ const app = createApp({
   })
   .use(LockPlugin, options)
 
-  // .component('jazzicon', Jazzicon)
+  .component('jazzicon', Jazzicon)
   .mixin(mixins);
 
 app.mount('#app');
