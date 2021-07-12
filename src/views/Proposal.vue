@@ -1,3 +1,129 @@
+<script setup>
+import { ref, computed, watch, onMounted } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import { useStore } from 'vuex';
+import { useI18n } from 'vue-i18n';
+import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
+import { getProposal, getResults, getPower } from '@/helpers/snapshot';
+import { useModal } from '@/composables/useModal';
+import { useTerms } from '@/composables/useTerms';
+import { useProfiles } from '@/composables/useProfiles';
+import client from '@/helpers/clientEIP712';
+
+const auth = getInstance();
+const route = useRoute();
+const router = useRouter();
+const store = useStore();
+const { t } = useI18n();
+
+const key = route.params.key;
+const id = route.params.id;
+
+const modalOpen = ref(false);
+const selectedChoices = ref(null);
+const loaded = ref(false);
+const loadedResults = ref(false);
+const proposal = ref({});
+const votes = ref([]);
+const results = ref({});
+const totalScore = ref(0);
+const scores = ref([]);
+const dropdownLoading = ref(false);
+const modalStrategiesOpen = ref(false);
+
+const space = computed(() => store.state.app.spaces[key]);
+const web3Account = computed(() => store.state.web3.account);
+const isCreator = computed(() => proposal.value.author === web3Account.value);
+const isAdmin = computed(() => {
+  const admins = (space.value.admins || []).map(admin => admin.toLowerCase());
+  return admins.includes(web3Account.value?.toLowerCase());
+});
+const strategies = computed(
+  () => proposal.value.strategies ?? space.value.strategies
+);
+const symbols = computed(() =>
+  strategies.value.map(strategy => strategy.params.symbol)
+);
+
+const { modalAccountOpen } = useModal();
+const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(key);
+
+function clickVote() {
+  !store.state.web3.account
+    ? (modalAccountOpen.value = true)
+    : !termsAccepted.value && space.value.terms
+    ? (modalTermsOpen.value = true)
+    : (modalOpen.value = true);
+}
+
+async function loadProposal() {
+  const proposalObj = await getProposal(id);
+  proposal.value = proposalObj.proposal;
+  loaded.value = true;
+  const resultsObj = await getResults(
+    space.value,
+    proposalObj.proposal,
+    proposalObj.votes
+  );
+  results.value = resultsObj.results;
+  votes.value = resultsObj.votes;
+  loadedResults.value = true;
+}
+
+async function loadPower() {
+  if (!web3Account.value || !proposal.value.author) return;
+  const response = await getPower(
+    space.value,
+    web3Account.value,
+    proposal.value
+  );
+  totalScore.value = response.totalScore;
+  scores.value = response.scores;
+}
+
+async function deleteProposal() {
+  dropdownLoading.value = true;
+  try {
+    const result = await client.cancelProposal(auth.web3, web3Account.value, {
+      space: space.value.key,
+      proposal: id
+    });
+    console.log('Result', result);
+    store.dispatch('notify', t('notify.proposalDeleted'));
+    dropdownLoading.value = false;
+    router.push({ name: 'proposals' });
+  } catch (e) {
+    if (!e.code || e.code !== 4001) {
+      console.log('Oops!', e);
+      const errorMessage = e?.error_description
+        ? `Oops, ${e.error_description}`
+        : t('notify.somethingWentWrong');
+      store.dispatch('notify', ['red', errorMessage]);
+    }
+  }
+  dropdownLoading.value = false;
+}
+
+function selectFromDropdown(e) {
+  if (e === 'delete') deleteProposal();
+}
+
+const { profiles, addressArray } = useProfiles();
+
+watch(proposal, () => {
+  addressArray.value = [proposal.value.author];
+});
+
+watch(web3Account, (val, prev) => {
+  if (val?.toLowerCase() !== prev) loadPower();
+});
+
+onMounted(async () => {
+  await loadProposal();
+  await loadPower();
+});
+</script>
+
 <template>
   <Layout v-bind="$attrs">
     <template #content-left>
@@ -209,129 +335,3 @@
     />
   </teleport>
 </template>
-
-<script setup>
-import { ref, computed, watch, onMounted } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
-import { useStore } from 'vuex';
-import { useI18n } from 'vue-i18n';
-import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
-import { getProposal, getResults, getPower } from '@/helpers/snapshot';
-import { useModal } from '@/composables/useModal';
-import { useTerms } from '@/composables/useTerms';
-import { useProfiles } from '@/composables/useProfiles';
-import client from '@/helpers/clientEIP712';
-
-const auth = getInstance();
-const route = useRoute();
-const router = useRouter();
-const store = useStore();
-const { t } = useI18n();
-
-const key = route.params.key;
-const id = route.params.id;
-
-const modalOpen = ref(false);
-const selectedChoices = ref(null);
-const loaded = ref(false);
-const loadedResults = ref(false);
-const proposal = ref({});
-const votes = ref([]);
-const results = ref({});
-const totalScore = ref(0);
-const scores = ref([]);
-const dropdownLoading = ref(false);
-const modalStrategiesOpen = ref(false);
-
-const space = computed(() => store.state.app.spaces[key]);
-const web3Account = computed(() => store.state.web3.account);
-const isCreator = computed(() => proposal.value.author === web3Account.value);
-const isAdmin = computed(() => {
-  const admins = (space.value.admins || []).map(admin => admin.toLowerCase());
-  return admins.includes(web3Account.value?.toLowerCase());
-});
-const strategies = computed(
-  () => proposal.value.strategies ?? space.value.strategies
-);
-const symbols = computed(() =>
-  strategies.value.map(strategy => strategy.params.symbol)
-);
-
-const { modalAccountOpen } = useModal();
-const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(key);
-
-function clickVote() {
-  !store.state.web3.account
-    ? (modalAccountOpen.value = true)
-    : !termsAccepted.value && space.value.terms
-    ? (modalTermsOpen.value = true)
-    : (modalOpen.value = true);
-}
-
-async function loadProposal() {
-  const proposalObj = await getProposal(id);
-  proposal.value = proposalObj.proposal;
-  loaded.value = true;
-  const resultsObj = await getResults(
-    space.value,
-    proposalObj.proposal,
-    proposalObj.votes
-  );
-  results.value = resultsObj.results;
-  votes.value = resultsObj.votes;
-  loadedResults.value = true;
-}
-
-async function loadPower() {
-  if (!web3Account.value || !proposal.value.author) return;
-  const response = await getPower(
-    space.value,
-    web3Account.value,
-    proposal.value
-  );
-  totalScore.value = response.totalScore;
-  scores.value = response.scores;
-}
-
-async function deleteProposal() {
-  dropdownLoading.value = true;
-  try {
-    const result = await client.cancelProposal(auth.web3, web3Account.value, {
-      space: space.value.key,
-      proposal: id
-    });
-    console.log('Result', result);
-    store.dispatch('notify', t('notify.proposalDeleted'));
-    dropdownLoading.value = false;
-    router.push({ name: 'proposals' });
-  } catch (e) {
-    if (!e.code || e.code !== 4001) {
-      console.log('Oops!', e);
-      const errorMessage = e?.error_description
-        ? `Oops, ${e.error_description}`
-        : t('notify.somethingWentWrong');
-      store.dispatch('notify', ['red', errorMessage]);
-    }
-  }
-  dropdownLoading.value = false;
-}
-
-function selectFromDropdown(e) {
-  if (e === 'delete') deleteProposal();
-}
-
-const { profiles, addressArray } = useProfiles();
-
-watch(proposal, () => {
-  addressArray.value = [proposal.value.author];
-});
-
-watch(web3Account, (val, prev) => {
-  if (val?.toLowerCase() !== prev) loadPower();
-});
-
-onMounted(async () => {
-  await loadProposal();
-  await loadPower();
-});
-</script>
