@@ -232,7 +232,8 @@ export default {
           ]),
           timeLeft: this.$i18n.t('safeSnap.finalizedIn', [this._ms(endTime)]),
           currentBond: this.$i18n.t('safeSnap.currentBond', [
-            formatUnits(currentBond, this.bondData.tokenDecimals), this.bondData.tokenSymbol
+            formatUnits(currentBond, this.bondData.tokenDecimals),
+            this.bondData.tokenSymbol
           ])
         };
       }
