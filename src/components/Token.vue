@@ -1,9 +1,3 @@
-<template>
-  <span class="d-inline-block v-align-middle line-height-0">
-    <UiAvatar :imgsrc="url" :address="spaceAddress" :size="size" />
-  </span>
-</template>
-
 <script>
 import { computed } from 'vue';
 import { formatBytes32String } from '@ethersproject/strings';
@@ -37,3 +31,9 @@ export default {
   }
 };
 </script>
+
+<template>
+  <span class="d-inline-block v-align-middle line-height-0">
+    <UiAvatar :imgsrc="url" :address="spaceAddress" :size="size" />
+  </span>
+</template>

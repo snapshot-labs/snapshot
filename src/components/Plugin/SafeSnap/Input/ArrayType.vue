@@ -1,15 +1,3 @@
-<template>
-  <UiInput
-    :disabled="disabled"
-    :error="dirty && !isValid && `Invalid ${type}`"
-    :modelValue="value"
-    :placeholder="placeholder"
-    @update:modelValue="handleInput($event)"
-  >
-    <template v-slot:label>{{ label }}</template>
-  </UiInput>
-</template>
-
 <script>
 import {
   isAddress,
@@ -70,3 +58,15 @@ export default {
   }
 };
 </script>
+
+<template>
+  <UiInput
+    :disabled="disabled"
+    :error="dirty && !isValid && `Invalid ${type}`"
+    :modelValue="value"
+    :placeholder="placeholder"
+    @update:modelValue="handleInput($event)"
+  >
+    <template v-slot:label>{{ label }}</template>
+  </UiInput>
+</template>

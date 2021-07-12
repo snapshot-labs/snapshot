@@ -1,24 +1,3 @@
-<template>
-  <Block
-    v-if="plugins.length > 0 && ts >= proposal.end"
-    :title="'Actions'"
-    :loading="!loaded"
-  >
-    <div v-if="loaded">
-      <UiButton
-        v-for="plugin in plugins"
-        :key="plugin"
-        @click="execute(plugin)"
-        :loading="loading"
-        :disabled="!$auth.isAuthenticated.value"
-        class="width-full button--submit"
-      >
-        {{ $t('submitOnchain') }}
-      </UiButton>
-    </div>
-  </Block>
-</template>
-
 <script>
 import { mapActions } from 'vuex';
 import plugins from '@snapshot-labs/snapshot.js/src/plugins';
@@ -75,3 +54,24 @@ export default {
   }
 };
 </script>
+
+<template>
+  <Block
+    v-if="plugins.length > 0 && ts >= proposal.end"
+    :title="'Actions'"
+    :loading="!loaded"
+  >
+    <div v-if="loaded">
+      <UiButton
+        v-for="plugin in plugins"
+        :key="plugin"
+        @click="execute(plugin)"
+        :loading="loading"
+        :disabled="!$auth.isAuthenticated.value"
+        class="width-full button--submit"
+      >
+        {{ $t('submitOnchain') }}
+      </UiButton>
+    </div>
+  </Block>
+</template>

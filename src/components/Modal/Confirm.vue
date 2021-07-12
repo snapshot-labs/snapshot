@@ -1,3 +1,49 @@
+<script>
+import { ref, computed } from 'vue';
+import { useStore } from 'vuex';
+import { getChoiceString } from '@/helpers/utils';
+
+export default {
+  props: {
+    open: Boolean,
+    space: Object,
+    proposal: Object,
+    selectedChoices: [Object, Number],
+    snapshot: String,
+    totalScore: Number,
+    scores: Object,
+    strategies: Object
+  },
+  emits: ['reload', 'close'],
+  setup(props, { emit }) {
+    const store = useStore();
+
+    const loading = ref(false);
+    const symbols = computed(() =>
+      props.strategies.map(strategy => strategy.params.symbol)
+    );
+
+    async function handleSubmit() {
+      loading.value = true;
+      await store.dispatch('send', {
+        space: props.space.key,
+        type: 'vote',
+        payload: {
+          proposal: props.proposal.id,
+          choice: props.selectedChoices,
+          metadata: {}
+        }
+      });
+      emit('reload');
+      emit('close');
+      loading.value = false;
+    }
+
+    return { loading, symbols, handleSubmit, format: getChoiceString };
+  }
+};
+</script>
+
 <template>
   <UiModal :open="open" @close="$emit('close')" class="d-flex">
     <template v-slot:header>
@@ -75,49 +121,3 @@
     </template>
   </UiModal>
 </template>
-
-<script>
-import { ref, computed } from 'vue';
-import { useStore } from 'vuex';
-import { getChoiceString } from '@/helpers/utils';
-
-export default {
-  props: {
-    open: Boolean,
-    space: Object,
-    proposal: Object,
-    selectedChoices: [Object, Number],
-    snapshot: String,
-    totalScore: Number,
-    scores: Object,
-    strategies: Object
-  },
-  emits: ['reload', 'close'],
-  setup(props, { emit }) {
-    const store = useStore();
-
-    const loading = ref(false);
-    const symbols = computed(() =>
-      props.strategies.map(strategy => strategy.params.symbol)
-    );
-
-    async function handleSubmit() {
-      loading.value = true;
-      await store.dispatch('send', {
-        space: props.space.key,
-        type: 'vote',
-        payload: {
-          proposal: props.proposal.id,
-          choice: props.selectedChoices,
-          metadata: {}
-        }
-      });
-      emit('reload');
-      emit('close');
-      loading.value = false;
-    }
-
-    return { loading, symbols, handleSubmit, format: getChoiceString };
-  }
-};
-</script>

@@ -1,58 +1,3 @@
-<template>
-  <UiCollapsible
-    :hideRemove="config.preview"
-    :number="index + 1"
-    :open="open"
-    :title="title"
-    @remove="$emit('remove')"
-    @toggle="open = !open"
-  >
-    <UiSelect
-      :disabled="config.preview"
-      :modelValue="type"
-      @update:modelValue="handleTypeChange($event)"
-    >
-      <template v-slot:label>type</template>
-      <option value="transferFunds">Transfer Funds</option>
-      <option value="transferNFT">Transfer NFT</option>
-      <option value="contractInteraction">Contract Interaction</option>
-      <option value="raw">Raw Transaction</option>
-    </UiSelect>
-
-    <PluginSafeSnapFormContractInteraction
-      v-if="type === 'contractInteraction'"
-      :config="config"
-      :modelValue="modelValue"
-      :nonce="nonce"
-      @update:modelValue="$emit('update:modelValue', $event)"
-    />
-
-    <PluginSafeSnapFormTransferFunds
-      v-if="type === 'transferFunds'"
-      :config="config"
-      :modelValue="modelValue"
-      :nonce="nonce"
-      @update:modelValue="$emit('update:modelValue', $event)"
-    />
-
-    <PluginSafeSnapFormSendAsset
-      v-if="type === 'transferNFT'"
-      :config="config"
-      :modelValue="modelValue"
-      :nonce="nonce"
-      @update:modelValue="$emit('update:modelValue', $event)"
-    />
-
-    <PluginSafeSnapFormRawTransaction
-      v-if="type === 'raw'"
-      :modelValue="modelValue"
-      :nonce="nonce"
-      :config="config"
-      @update:modelValue="$emit('update:modelValue', $event)"
-    />
-  </UiCollapsible>
-</template>
-
 <script>
 import { formatUnits } from '@ethersproject/units';
 import { getAbiFirstFunctionName } from '@/helpers/abi/utils';
@@ -63,6 +8,7 @@ const labels = {
   transferNFT: 'Transfer NFT',
   raw: 'Raw Transaction'
 };
+
 export default {
   props: ['modelValue', 'index', 'nonce', 'config'],
   emits: ['update:modelValue', 'remove'],
@@ -132,3 +78,58 @@ export default {
   }
 };
 </script>
+
+<template>
+  <UiCollapsible
+    :hideRemove="config.preview"
+    :number="index + 1"
+    :open="open"
+    :title="title"
+    @remove="$emit('remove')"
+    @toggle="open = !open"
+  >
+    <UiSelect
+      :disabled="config.preview"
+      :modelValue="type"
+      @update:modelValue="handleTypeChange($event)"
+    >
+      <template v-slot:label>type</template>
+      <option value="transferFunds">Transfer Funds</option>
+      <option value="transferNFT">Transfer NFT</option>
+      <option value="contractInteraction">Contract Interaction</option>
+      <option value="raw">Raw Transaction</option>
+    </UiSelect>
+
+    <PluginSafeSnapFormContractInteraction
+      v-if="type === 'contractInteraction'"
+      :config="config"
+      :modelValue="modelValue"
+      :nonce="nonce"
+      @update:modelValue="$emit('update:modelValue', $event)"
+    />
+
+    <PluginSafeSnapFormTransferFunds
+      v-if="type === 'transferFunds'"
+      :config="config"
+      :modelValue="modelValue"
+      :nonce="nonce"
+      @update:modelValue="$emit('update:modelValue', $event)"
+    />
+
+    <PluginSafeSnapFormSendAsset
+      v-if="type === 'transferNFT'"
+      :config="config"
+      :modelValue="modelValue"
+      :nonce="nonce"
+      @update:modelValue="$emit('update:modelValue', $event)"
+    />
+
+    <PluginSafeSnapFormRawTransaction
+      v-if="type === 'raw'"
+      :modelValue="modelValue"
+      :nonce="nonce"
+      :config="config"
+      @update:modelValue="$emit('update:modelValue', $event)"
+    />
+  </UiCollapsible>
+</template>

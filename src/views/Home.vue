@@ -1,3 +1,59 @@
+<script setup>
+import { ref, computed, watchEffect } from 'vue';
+import { useStore } from 'vuex';
+import { useRoute } from 'vue-router';
+import orderBy from 'lodash/orderBy';
+import spotlight from '@snapshot-labs/snapshot-spaces/spaces/spotlight.json';
+import { useUnseenProposals } from '@/composables/useUnseenProposals';
+import { useScrollMonitor } from '@/composables/useScrollMonitor';
+
+const store = useStore();
+const route = useRoute();
+
+const favorites = computed(() => store.state.favoriteSpaces.favorites);
+const stateSpaces = computed(() => store.state.app.spaces);
+
+const spaces = computed(() => {
+  const networkFilter = route.query.network;
+  const q = route.query.q || '';
+  const list = Object.keys(stateSpaces.value)
+    .map(key => {
+      const spotlightIndex = spotlight.indexOf(key);
+      return {
+        ...stateSpaces.value[key],
+        favorite: !!favorites.value[key],
+        isActive: !!stateSpaces.value[key]._activeProposals,
+        spotlight: spotlightIndex === -1 ? 1e3 : spotlightIndex
+      };
+    })
+    .filter(space => !space.private);
+  return orderBy(list, ['favorite', 'spotlight'], ['desc', 'asc']).filter(
+    space =>
+      (networkFilter ? space.network === networkFilter.toLowerCase() : true) &&
+      JSON.stringify(space).toLowerCase().includes(q.toLowerCase())
+  );
+});
+
+// Get number of unseen proposals
+const { numberOfUnseenProposals, getProposalIds } = useUnseenProposals();
+watchEffect(() => getProposalIds(favorites.value));
+
+// Favorites
+function toggleFavorite(spaceId) {
+  if (favorites.value[spaceId]) {
+    store.dispatch('removeFavoriteSpace', spaceId);
+  } else {
+    store.dispatch('addFavoriteSpace', spaceId);
+  }
+}
+
+// Scroll
+const loadBy = 16;
+const limit = ref(loadBy);
+
+const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
+</script>
+
 <template>
   <div class="text-center mb-4 mx-auto">
     <Container class="d-flex flex-items-center">
@@ -68,59 +124,3 @@
   </Container>
   <div ref="endElement" />
 </template>
-
-<script setup>
-import { ref, computed, watchEffect } from 'vue';
-import { useStore } from 'vuex';
-import { useRoute } from 'vue-router';
-import orderBy from 'lodash/orderBy';
-import spotlight from '@snapshot-labs/snapshot-spaces/spaces/spotlight.json';
-import { useUnseenProposals } from '@/composables/useUnseenProposals';
-import { useScrollMonitor } from '@/composables/useScrollMonitor';
-
-const store = useStore();
-const route = useRoute();
-
-const favorites = computed(() => store.state.favoriteSpaces.favorites);
-const stateSpaces = computed(() => store.state.app.spaces);
-
-const spaces = computed(() => {
-  const networkFilter = route.query.network;
-  const q = route.query.q || '';
-  const list = Object.keys(stateSpaces.value)
-    .map(key => {
-      const spotlightIndex = spotlight.indexOf(key);
-      return {
-        ...stateSpaces.value[key],
-        favorite: !!favorites.value[key],
-        isActive: !!stateSpaces.value[key]._activeProposals,
-        spotlight: spotlightIndex === -1 ? 1e3 : spotlightIndex
-      };
-    })
-    .filter(space => !space.private);
-  return orderBy(list, ['favorite', 'spotlight'], ['desc', 'asc']).filter(
-    space =>
-      (networkFilter ? space.network === networkFilter.toLowerCase() : true) &&
-      JSON.stringify(space).toLowerCase().includes(q.toLowerCase())
-  );
-});
-
-// Get number of unseen proposals
-const { numberOfUnseenProposals, getProposalIds } = useUnseenProposals();
-watchEffect(() => getProposalIds(favorites.value));
-
-// Favorites
-function toggleFavorite(spaceId) {
-  if (favorites.value[spaceId]) {
-    store.dispatch('removeFavoriteSpace', spaceId);
-  } else {
-    store.dispatch('addFavoriteSpace', spaceId);
-  }
-}
-
-// Scroll
-const loadBy = 16;
-const limit = ref(loadBy);
-
-const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
-</script>

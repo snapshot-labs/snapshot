@@ -1,32 +1,3 @@
-<template>
-  <UiCollapsible
-    :hideRemove="config.preview"
-    :number="index + 1"
-    :open="open"
-    :title="`Batch #${index + 1}`"
-    @remove="$emit('remove')"
-    @toggle="open = !open"
-  >
-    <div
-      v-for="(transaction, index) in transactions"
-      v-bind:key="index"
-      class="mb-2"
-    >
-      <PluginSafeSnapFormTransaction
-        :index="index"
-        :modelValue="transaction"
-        :config="config"
-        :nonce="`${nonce + index}`"
-        @remove="removeTransaction(index)"
-        @update:modelValue="updateTransaction(index, $event)"
-      />
-    </div>
-    <UiButton v-if="!config.preview" @click="addTransaction">
-      Add Transaction
-    </UiButton>
-  </UiCollapsible>
-</template>
-
 <script>
 import { clone } from '@/helpers/utils';
 
@@ -61,3 +32,32 @@ export default {
   }
 };
 </script>
+
+<template>
+  <UiCollapsible
+    :hideRemove="config.preview"
+    :number="index + 1"
+    :open="open"
+    :title="`Batch #${index + 1}`"
+    @remove="$emit('remove')"
+    @toggle="open = !open"
+  >
+    <div
+      v-for="(transaction, index) in transactions"
+      v-bind:key="index"
+      class="mb-2"
+    >
+      <PluginSafeSnapFormTransaction
+        :index="index"
+        :modelValue="transaction"
+        :config="config"
+        :nonce="`${nonce + index}`"
+        @remove="removeTransaction(index)"
+        @update:modelValue="updateTransaction(index, $event)"
+      />
+    </div>
+    <UiButton v-if="!config.preview" @click="addTransaction">
+      Add Transaction
+    </UiButton>
+  </UiCollapsible>
+</template>

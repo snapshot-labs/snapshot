@@ -1,15 +1,3 @@
-<template>
-  <UiInput
-    v-model="input"
-    v-bind="inputProps"
-    :disabled="disabled"
-    :error="dirty && !isValid && 'Invalid Amount'"
-    @input="handleInput()"
-  >
-    <template v-if="label" v-slot:label>{{ label }}</template>
-  </UiInput>
-</template>
-
 <script>
 import { parseUnits, formatUnits } from '@ethersproject/units';
 
@@ -51,3 +39,15 @@ export default {
   }
 };
 </script>
+
+<template>
+  <UiInput
+    v-model="input"
+    v-bind="inputProps"
+    :disabled="disabled"
+    :error="dirty && !isValid && 'Invalid Amount'"
+    @input="handleInput()"
+  >
+    <template v-if="label" v-slot:label>{{ label }}</template>
+  </UiInput>
+</template>

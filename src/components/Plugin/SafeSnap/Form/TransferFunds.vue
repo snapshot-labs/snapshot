@@ -1,34 +1,3 @@
-<template>
-  <UiSelect v-model="tokenAddress" :disabled="config.preview">
-    <template v-slot:label>asset</template>
-    <template v-slot:image v-if="selectedToken">
-      <img :src="selectedToken.logoUri" alt="" class="tokenImage" />
-    </template>
-    <option
-      v-for="(token, index) in tokens"
-      :key="index"
-      :value="token.address"
-    >
-      {{ token.name }}
-    </option>
-  </UiSelect>
-
-  <PluginSafeSnapInputAddress
-    v-model="to"
-    :disabled="config.preview"
-    :inputProps="{
-      required: true
-    }"
-    label="to"
-  />
-  <PluginSafeSnapInputAmount
-    label="amount"
-    v-model="value"
-    :decimals="selectedToken?.decimals"
-    :disabled="config.preview"
-  />
-</template>
-
 <script>
 import Plugin from '@snapshot-labs/snapshot.js/src/plugins/safeSnap';
 import { isBigNumberish } from '@ethersproject/bignumber/lib/bignumber';
@@ -121,6 +90,37 @@ export default {
   }
 };
 </script>
+
+<template>
+  <UiSelect v-model="tokenAddress" :disabled="config.preview">
+    <template v-slot:label>asset</template>
+    <template v-slot:image v-if="selectedToken">
+      <img :src="selectedToken.logoUri" alt="" class="tokenImage" />
+    </template>
+    <option
+      v-for="(token, index) in tokens"
+      :key="index"
+      :value="token.address"
+    >
+      {{ token.name }}
+    </option>
+  </UiSelect>
+
+  <PluginSafeSnapInputAddress
+    v-model="to"
+    :disabled="config.preview"
+    :inputProps="{
+      required: true
+    }"
+    label="to"
+  />
+  <PluginSafeSnapInputAmount
+    label="amount"
+    v-model="value"
+    :decimals="selectedToken?.decimals"
+    :disabled="config.preview"
+  />
+</template>
 
 <style scoped>
 .tokenImage {

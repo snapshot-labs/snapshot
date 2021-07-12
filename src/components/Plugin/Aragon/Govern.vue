@@ -1,3 +1,14 @@
+<script>
+export default {
+  props: {
+    proposal: {
+      type: Object,
+      required: true
+    }
+  }
+};
+</script>
+
 <template>
   <a
     v-if="proposal.plugins?.aragon?.[`choice${[i + 1]}`]"
@@ -12,14 +23,3 @@
     <Icon name="warning" class="v-align-middle ml-1" />
   </a>
 </template>
-
-<script>
-export default {
-  props: {
-    proposal: {
-      type: Object,
-      required: true
-    }
-  }
-};
-</script>

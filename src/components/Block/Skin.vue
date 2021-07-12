@@ -1,3 +1,9 @@
+<script>
+export default {
+  props: ['skin']
+};
+</script>
+
 <template>
   <div :class="skin.key" class="bg-black rounded-0 rounded-md-2">
     <Block>
@@ -8,9 +14,3 @@
     </Block>
   </div>
 </template>
-
-<script>
-export default {
-  props: ['skin']
-};
-</script>

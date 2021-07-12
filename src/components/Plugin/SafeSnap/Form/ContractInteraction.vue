@@ -1,60 +1,3 @@
-<template>
-  <PluginSafeSnapInputAddress
-    v-model="to"
-    :disabled="config.preview"
-    :inputProps="{
-      required: true
-    }"
-    label="to (address)"
-    @validAddress="handleAddressChanged()"
-  />
-
-  <UiInput
-    :disabled="config.preview"
-    :error="!validValue && 'Invalid Value'"
-    :modelValue="value"
-    @update:modelValue="handleValueChange($event)"
-  >
-    <template v-slot:label>value (wei)</template>
-  </UiInput>
-
-  <UiInput
-    :disabled="config.preview"
-    :error="!validAbi && 'Invalid ABI'"
-    :modelValue="abi"
-    @update:modelValue="handleABIChanged($event)"
-  >
-    <template v-slot:label>ABI</template>
-  </UiInput>
-
-  <div v-if="methods.length">
-    <UiSelect
-      v-model="methodIndex"
-      :disabled="config.preview"
-      @change="handleMethodChanged()"
-    >
-      <template v-slot:label>function</template>
-      <option v-for="(method, i) in methods" :key="i" :value="i">
-        {{ method.name }}()
-      </option>
-    </UiSelect>
-
-    <div v-if="selectedMethod && selectedMethod.inputs.length">
-      <div class="divider"></div>
-
-      <PluginSafeSnapInputMethodParameter
-        v-for="(input, index) in selectedMethod.inputs"
-        :key="input.name"
-        :disabled="config.preview"
-        :modelValue="parameters[index]"
-        :name="input.name"
-        :type="input.type"
-        @update:modelValue="handleParameterChanged(index, $event)"
-      />
-    </div>
-  </div>
-</template>
-
 <script>
 import Plugin from '@snapshot-labs/snapshot.js/src/plugins/safeSnap';
 import {
@@ -202,6 +145,63 @@ export default {
   }
 };
 </script>
+
+<template>
+  <PluginSafeSnapInputAddress
+    v-model="to"
+    :disabled="config.preview"
+    :inputProps="{
+      required: true
+    }"
+    label="to (address)"
+    @validAddress="handleAddressChanged()"
+  />
+
+  <UiInput
+    :disabled="config.preview"
+    :error="!validValue && 'Invalid Value'"
+    :modelValue="value"
+    @update:modelValue="handleValueChange($event)"
+  >
+    <template v-slot:label>value (wei)</template>
+  </UiInput>
+
+  <UiInput
+    :disabled="config.preview"
+    :error="!validAbi && 'Invalid ABI'"
+    :modelValue="abi"
+    @update:modelValue="handleABIChanged($event)"
+  >
+    <template v-slot:label>ABI</template>
+  </UiInput>
+
+  <div v-if="methods.length">
+    <UiSelect
+      v-model="methodIndex"
+      :disabled="config.preview"
+      @change="handleMethodChanged()"
+    >
+      <template v-slot:label>function</template>
+      <option v-for="(method, i) in methods" :key="i" :value="i">
+        {{ method.name }}()
+      </option>
+    </UiSelect>
+
+    <div v-if="selectedMethod && selectedMethod.inputs.length">
+      <div class="divider"></div>
+
+      <PluginSafeSnapInputMethodParameter
+        v-for="(input, index) in selectedMethod.inputs"
+        :key="input.name"
+        :disabled="config.preview"
+        :modelValue="parameters[index]"
+        :name="input.name"
+        :type="input.type"
+        @update:modelValue="handleParameterChanged(index, $event)"
+      />
+    </div>
+  </div>
+</template>
 
 <style lang="scss" scoped>
 .textarea {

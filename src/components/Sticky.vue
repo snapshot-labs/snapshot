@@ -1,16 +1,3 @@
-<template>
-  <div>
-    <div v-if="isFixed" :style="`height: ${offsetHeight}px;`" />
-    <div
-      style="z-index: 20"
-      ref="sticky"
-      :class="{ 'position-fixed width-full top-0': isFixed }"
-    >
-      <slot />
-    </div>
-  </div>
-</template>
-
 <script>
 import { ref, onBeforeUnmount, onMounted } from 'vue';
 export default {
@@ -41,3 +28,16 @@ export default {
   }
 };
 </script>
+
+<template>
+  <div>
+    <div v-if="isFixed" :style="`height: ${offsetHeight}px;`" />
+    <div
+      style="z-index: 20"
+      ref="sticky"
+      :class="{ 'position-fixed width-full top-0': isFixed }"
+    >
+      <slot />
+    </div>
+  </div>
+</template>

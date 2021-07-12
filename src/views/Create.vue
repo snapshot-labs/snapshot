@@ -1,176 +1,3 @@
-<template>
-  <Layout v-bind="$attrs">
-    <template #content-left>
-      <div class="px-4 px-md-0 mb-3">
-        <router-link
-          :to="{ name: domain ? 'home' : 'proposals' }"
-          class="text-gray"
-        >
-          <Icon name="back" size="22" class="v-align-middle" />
-          {{ space.name }}
-        </router-link>
-      </div>
-      <Block v-if="passValidation[0] === false">
-        <Icon name="warning" class="mr-1" />
-        <span v-if="passValidation[1] === 'basic'">
-          {{
-            space.validation?.params.minScore || space?.filters.minScore
-              ? $tc('create.validationWarning.basic.minScore', [
-                  _n(space.filters.minScore),
-                  space.symbol
-                ])
-              : $t('create.validationWarning.basic.member')
-          }}
-        </span>
-        <span v-else>
-          {{
-            $t(
-              space.validation.params.rules ||
-                'create.validationWarning.customValidation'
-            )
-          }}
-        </span>
-      </Block>
-      <div class="px-4 px-md-0">
-        <div class="d-flex flex-column mb-6">
-          <input
-            v-model="form.name"
-            maxlength="128"
-            class="h1 mb-2 input"
-            :placeholder="$t('create.question')"
-            ref="nameForm"
-          />
-          <TextareaAutosize
-            v-model="form.body"
-            class="input pt-1"
-            :placeholder="$t('create.content')"
-          />
-          <div class="mb-6">
-            <p v-if="form.body.length > bodyLimit" class="text-red mt-4">
-              -{{ _n(-(bodyLimit - form.body.length)) }}
-            </p>
-          </div>
-          <div v-if="form.body">
-            <h4 class="mb-4">{{ $t('create.preview') }}</h4>
-            <UiMarkdown :body="form.body" />
-          </div>
-        </div>
-      </div>
-      <Block :title="$t('create.choices')">
-        <div v-if="choices.length > 0" class="overflow-hidden mb-2">
-          <draggable
-            v-model="choices"
-            :component-data="{ name: 'list' }"
-            item-key="id"
-          >
-            <template #item="{ element, index }">
-              <div class="d-flex mb-2">
-                <UiButton class="d-flex width-full">
-                  <span class="mr-4">{{ index + 1 }}</span>
-                  <input
-                    v-model="element.text"
-                    class="input height-full flex-auto text-center"
-                    maxlength="32"
-                  />
-                  <span @click="removeChoice(index)" class="ml-4">
-                    <Icon name="close" size="12" />
-                  </span>
-                </UiButton>
-              </div>
-            </template>
-          </draggable>
-        </div>
-        <UiButton @click="addChoice(1)" class="d-block width-full">
-          {{ $t('create.addChoice') }}
-        </UiButton>
-      </Block>
-      <PluginSafeSnapConfig
-        v-if="space?.plugins?.safeSnap"
-        :create="true"
-        :proposal="proposal"
-        :moduleAddress="space.plugins?.safeSnap?.address"
-        :network="space.network"
-        v-model="form.metadata.plugins.safeSnap"
-      />
-    </template>
-    <template #sidebar-right>
-      <Block
-        :title="$t('actions')"
-        :icon="
-          space.plugins && Object.keys(space.plugins).length > 0
-            ? 'stars'
-            : undefined
-        "
-        @submit="modalProposalPluginsOpen = true"
-      >
-        <div class="mb-2">
-          <UiButton class="width-full mb-2" @click="modalVotingTypeOpen = true">
-            <span>{{ $t(`voting.${form.type}`) }}</span>
-          </UiButton>
-          <UiButton
-            @click="(modalOpen = true), (selectedDate = 'start')"
-            class="width-full mb-2"
-          >
-            <span v-if="!form.start">{{ $t('create.startDate') }}</span>
-            <span v-else v-text="$d(form.start * 1e3, 'short', 'en-US')" />
-          </UiButton>
-          <UiButton
-            @click="(modalOpen = true), (selectedDate = 'end')"
-            class="width-full mb-2"
-          >
-            <span v-if="!form.end">{{ $t('create.endDate') }}</span>
-            <span v-else v-text="$d(form.end * 1e3, 'short', 'en-US')" />
-          </UiButton>
-          <UiButton class="width-full mb-2">
-            <input
-              v-model="form.snapshot"
-              type="number"
-              class="input width-full text-center"
-              :placeholder="$t('create.snapshotBlock')"
-            />
-          </UiButton>
-        </div>
-        <UiButton
-          @click="clickSubmit"
-          :disabled="!isValid"
-          :loading="loading"
-          class="d-block width-full button--submit"
-        >
-          {{ $t('create.publish') }}
-        </UiButton>
-      </Block>
-    </template>
-  </Layout>
-  <teleport to="#modal">
-    <ModalSelectDate
-      :value="form[selectedDate]"
-      :selectedDate="selectedDate"
-      :open="modalOpen"
-      @close="modalOpen = false"
-      @input="setDate"
-    />
-    <ModalProposalPlugins
-      :space="space"
-      :proposal="proposal"
-      v-model="form.metadata.plugins"
-      :open="modalProposalPluginsOpen"
-      @close="modalProposalPluginsOpen = false"
-    />
-    <ModalTerms
-      :open="modalTermsOpen"
-      :space="space"
-      @close="modalTermsOpen = false"
-      @accept="acceptTerms(), handleSubmit()"
-    />
-
-    <ModalVotingType
-      :open="modalVotingTypeOpen"
-      @close="modalVotingTypeOpen = false"
-      v-model="form.type"
-    />
-  </teleport>
-</template>
-
 <script setup>
 import { ref, watch, watchEffect, computed, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
@@ -345,6 +172,179 @@ const proposal = computed(() => {
   return { ...form, choices };
 });
 </script>
+
+<template>
+  <Layout v-bind="$attrs">
+    <template #content-left>
+      <div class="px-4 px-md-0 mb-3">
+        <router-link
+          :to="{ name: domain ? 'home' : 'proposals' }"
+          class="text-gray"
+        >
+          <Icon name="back" size="22" class="v-align-middle" />
+          {{ space.name }}
+        </router-link>
+      </div>
+      <Block v-if="passValidation[0] === false">
+        <Icon name="warning" class="mr-1" />
+        <span v-if="passValidation[1] === 'basic'">
+          {{
+            space.validation?.params.minScore || space?.filters.minScore
+              ? $tc('create.validationWarning.basic.minScore', [
+                  _n(space.filters.minScore),
+                  space.symbol
+                ])
+              : $t('create.validationWarning.basic.member')
+          }}
+        </span>
+        <span v-else>
+          {{
+            $t(
+              space.validation.params.rules ||
+                'create.validationWarning.customValidation'
+            )
+          }}
+        </span>
+      </Block>
+      <div class="px-4 px-md-0">
+        <div class="d-flex flex-column mb-6">
+          <input
+            v-model="form.name"
+            maxlength="128"
+            class="h1 mb-2 input"
+            :placeholder="$t('create.question')"
+            ref="nameForm"
+          />
+          <TextareaAutosize
+            v-model="form.body"
+            class="input pt-1"
+            :placeholder="$t('create.content')"
+          />
+          <div class="mb-6">
+            <p v-if="form.body.length > bodyLimit" class="text-red mt-4">
+              -{{ _n(-(bodyLimit - form.body.length)) }}
+            </p>
+          </div>
+          <div v-if="form.body">
+            <h4 class="mb-4">{{ $t('create.preview') }}</h4>
+            <UiMarkdown :body="form.body" />
+          </div>
+        </div>
+      </div>
+      <Block :title="$t('create.choices')">
+        <div v-if="choices.length > 0" class="overflow-hidden mb-2">
+          <draggable
+            v-model="choices"
+            :component-data="{ name: 'list' }"
+            item-key="id"
+          >
+            <template #item="{ element, index }">
+              <div class="d-flex mb-2">
+                <UiButton class="d-flex width-full">
+                  <span class="mr-4">{{ index + 1 }}</span>
+                  <input
+                    v-model="element.text"
+                    class="input height-full flex-auto text-center"
+                    maxlength="32"
+                  />
+                  <span @click="removeChoice(index)" class="ml-4">
+                    <Icon name="close" size="12" />
+                  </span>
+                </UiButton>
+              </div>
+            </template>
+          </draggable>
+        </div>
+        <UiButton @click="addChoice(1)" class="d-block width-full">
+          {{ $t('create.addChoice') }}
+        </UiButton>
+      </Block>
+      <PluginSafeSnapConfig
+        v-if="space?.plugins?.safeSnap"
+        :create="true"
+        :proposal="proposal"
+        :moduleAddress="space.plugins?.safeSnap?.address"
+        :network="space.network"
+        v-model="form.metadata.plugins.safeSnap"
+      />
+    </template>
+    <template #sidebar-right>
+      <Block
+        :title="$t('actions')"
+        :icon="
+          space.plugins && Object.keys(space.plugins).length > 0
+            ? 'stars'
+            : undefined
+        "
+        @submit="modalProposalPluginsOpen = true"
+      >
+        <div class="mb-2">
+          <UiButton class="width-full mb-2" @click="modalVotingTypeOpen = true">
+            <span>{{ $t(`voting.${form.type}`) }}</span>
+          </UiButton>
+          <UiButton
+            @click="(modalOpen = true), (selectedDate = 'start')"
+            class="width-full mb-2"
+          >
+            <span v-if="!form.start">{{ $t('create.startDate') }}</span>
+            <span v-else v-text="$d(form.start * 1e3, 'short', 'en-US')" />
+          </UiButton>
+          <UiButton
+            @click="(modalOpen = true), (selectedDate = 'end')"
+            class="width-full mb-2"
+          >
+            <span v-if="!form.end">{{ $t('create.endDate') }}</span>
+            <span v-else v-text="$d(form.end * 1e3, 'short', 'en-US')" />
+          </UiButton>
+          <UiButton class="width-full mb-2">
+            <input
+              v-model="form.snapshot"
+              type="number"
+              class="input width-full text-center"
+              :placeholder="$t('create.snapshotBlock')"
+            />
+          </UiButton>
+        </div>
+        <UiButton
+          @click="clickSubmit"
+          :disabled="!isValid"
+          :loading="loading"
+          class="d-block width-full button--submit"
+        >
+          {{ $t('create.publish') }}
+        </UiButton>
+      </Block>
+    </template>
+  </Layout>
+  <teleport to="#modal">
+    <ModalSelectDate
+      :value="form[selectedDate]"
+      :selectedDate="selectedDate"
+      :open="modalOpen"
+      @close="modalOpen = false"
+      @input="setDate"
+    />
+    <ModalProposalPlugins
+      :space="space"
+      :proposal="proposal"
+      v-model="form.metadata.plugins"
+      :open="modalProposalPluginsOpen"
+      @close="modalProposalPluginsOpen = false"
+    />
+    <ModalTerms
+      :open="modalTermsOpen"
+      :space="space"
+      @close="modalTermsOpen = false"
+      @accept="acceptTerms(), handleSubmit()"
+    />
+
+    <ModalVotingType
+      :open="modalVotingTypeOpen"
+      @close="modalVotingTypeOpen = false"
+      v-model="form.type"
+    />
+  </teleport>
+</template>
 
 <style>
 .list-leave-active,
