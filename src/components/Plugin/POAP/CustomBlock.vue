@@ -5,31 +5,29 @@ import { mapActions } from 'vuex';
 const STATES = {
   NO_POAP: {
     header: 'poap.no_poap_header',
-    headerImage:
-      'https://img-test-rlajous.s3.amazonaws.com/Property 1=nopoap.png',
-    mainImage: 'https://img-test-rlajous.s3.amazonaws.com/Group+1229.png'
+    headerImage: 'https://snapshotsplugin.s3.us-west-2.amazonaws.com/empty.svg',
+    mainImage:
+      'https://snapshotsplugin.s3.us-west-2.amazonaws.com/placeholder.png'
   },
   NOT_VOTED: {
-    headerImage:
-      'https://img-test-rlajous.s3.amazonaws.com/Property 1=unavaliable.png',
+    headerImage: 'https://snapshotsplugin.s3.us-west-2.amazonaws.com/vote.svg',
     header: 'poap.no_voted_header',
     buttonText: 'poap.button_claim'
   },
   UNCLAIMED: {
-    headerImage:
-      'https://img-test-rlajous.s3.amazonaws.com/Property 1=Voted.png',
+    headerImage: 'https://snapshotsplugin.s3.us-west-2.amazonaws.com/claim.svg',
     header: 'poap.unclaimed_header',
     buttonText: 'poap.button_claim'
   },
   CLAIMED: {
     headerImage:
-      'https://img-test-rlajous.s3.amazonaws.com/Property 1=Claimed.png',
+      'https://snapshotsplugin.s3.us-west-2.amazonaws.com/succes.svg',
     header: 'poap.claimed_header',
     buttonText: 'poap.button_show'
   },
   LOADING: {
     headerImage:
-      'https://img-test-rlajous.s3.amazonaws.com/Property 1=Claimed.png',
+      'https://snapshotsplugin.s3.us-west-2.amazonaws.com/succes.svg',
     header: 'poap.loading_header',
     buttonText: ''
   }
