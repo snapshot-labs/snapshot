@@ -3,13 +3,6 @@
     "id": "injected",
     "name": "MetaMask"
   },
-  "fortmatic": {
-    "id": "fortmatic",
-    "name": "Fortmatic",
-    "options": {
-      "apiKey": "pk_live_9CE8FD92E54684ED"
-    }
-  },
   "portis": {
     "id": "portis",
     "name": "Portis",
