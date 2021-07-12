@@ -7,7 +7,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "@apollo/client": "^3.3.18",
+    "@apollo/client": "^3.3.21",
     "@ensdomains/content-hash": "^2.5.3",
     "@ethersproject/abi": "^5.0.1",
     "@ethersproject/address": "^5.0.1",
@@ -28,7 +28,7 @@
     "@snapshot-labs/snapshot-spaces": "github:snapshot-labs/snapshot-spaces#master",
     "@snapshot-labs/snapshot.js": "github:snapshot-labs/snapshot.js#master",
     "@toruslabs/torus-embed": "^1.9.2",
-    "@vue/apollo-composable": "^4.0.0-alpha.12",
+    "@vue/apollo-composable": "4.0.0-alpha.12",
     "@vue/cli-plugin-babel": "^4.5.13",
     "@vue/cli-plugin-eslint": "^4.5.13",
     "@vue/cli-plugin-typescript": "^4.5.13",
@@ -41,7 +41,7 @@
     "eslint": "^6.7.2",
     "ethereumjs-util": "^7.0.7",
     "fortmatic": "^2.0.6",
-    "graphql": "^15.5.0",
+    "graphql": "^15.5.1",
     "graphql-tag": "^2.12.4",
     "jsonexport": "^3.0.1",
     "lodash": "^4.17.21",
