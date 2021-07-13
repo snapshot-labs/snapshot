@@ -21,4 +21,4 @@ jobs:
           yarn
           yarn build --if-present
           yarn lint --if-present
-          npm run test:unit --if-present
+          yarn test:unit --if-present
