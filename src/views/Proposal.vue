@@ -85,6 +85,7 @@ async function deleteProposal() {
   dropdownLoading.value = true;
   try {
     const result = await client.cancelProposal(auth.web3, web3Account.value, {
+      from: web3Account.value,
       space: space.value.key,
       proposal: id
     });
