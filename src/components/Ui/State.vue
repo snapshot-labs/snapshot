@@ -1,3 +1,22 @@
+<script>
+import { computed } from 'vue';
+
+export default {
+  props: {
+    state: String
+  },
+  setup(props) {
+    const stateClass = computed(() => {
+      if (props.state === 'closed') return 'bg-purple';
+      if (props.state === 'active') return 'bg-green';
+      return '';
+    });
+
+    return { stateClass };
+  }
+};
+</script>
+
 <template>
   <span
     :class="stateClass"
@@ -5,18 +24,3 @@
     class="State text-normal"
   />
 </template>
-
-<script>
-export default {
-  props: {
-    state: String
-  },
-  computed: {
-    stateClass() {
-      if (this.state === 'closed') return 'bg-purple';
-      if (this.state === 'active') return 'bg-green';
-      return '';
-    }
-  }
-};
-</script>

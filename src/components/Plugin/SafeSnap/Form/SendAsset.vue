@@ -1,34 +1,3 @@
-<template>
-  <UiSelect v-model="collectableAddress" :disabled="config.preview">
-    <template v-slot:label>asset</template>
-    <template
-      v-slot:image
-      v-if="selectedCollectable && selectedCollectable.logoUri"
-    >
-      <img :src="selectedCollectable.logoUri" alt="" class="tokenImage" />
-    </template>
-    <option v-if="!collectables.length" disabled selected>
-      - No Collectables -
-    </option>
-    <option
-      v-for="(collectable, index) in collectables"
-      :key="index"
-      :value="collectable.address"
-    >
-      {{ collectable.name }} #{{ _shorten(collectable.id, 10) }}
-    </option>
-  </UiSelect>
-
-  <PluginSafeSnapInputAddress
-    v-model="to"
-    :disabled="config.preview"
-    :inputProps="{
-      required: true
-    }"
-    label="to"
-  />
-</template>
-
 <script>
 import Plugin from '@snapshot-labs/snapshot.js/src/plugins/safeSnap';
 import { isAddress } from '@ethersproject/address';
@@ -119,6 +88,37 @@ export default {
   }
 };
 </script>
+
+<template>
+  <UiSelect v-model="collectableAddress" :disabled="config.preview">
+    <template v-slot:label>asset</template>
+    <template
+      v-slot:image
+      v-if="selectedCollectable && selectedCollectable.logoUri"
+    >
+      <img :src="selectedCollectable.logoUri" alt="" class="tokenImage" />
+    </template>
+    <option v-if="!collectables.length" disabled selected>
+      - No Collectables -
+    </option>
+    <option
+      v-for="(collectable, index) in collectables"
+      :key="index"
+      :value="collectable.address"
+    >
+      {{ collectable.name }} #{{ _shorten(collectable.id, 10) }}
+    </option>
+  </UiSelect>
+
+  <PluginSafeSnapInputAddress
+    v-model="to"
+    :disabled="config.preview"
+    :inputProps="{
+      required: true
+    }"
+    label="to"
+  />
+</template>
 
 <style scoped>
 .tokenImage {

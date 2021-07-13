@@ -1,3 +1,18 @@
+<script>
+export default {
+  props: { modelValue: String, disabled: Boolean },
+  emits: ['update:modelValue', 'change'],
+  setup(_, { emit }) {
+    function handleChange(event) {
+      emit('update:modelValue', event.target.value);
+      emit('change', event.target.value);
+    }
+
+    return { handleChange };
+  }
+};
+</script>
+
 <template>
   <UiButton class="width-full mb-2 px-3 d-flex overflow-hidden">
     <div class="text-gray mr-2 no-shrink">
@@ -17,19 +32,6 @@
     </select>
   </UiButton>
 </template>
-
-<script>
-export default {
-  props: ['modelValue', 'disabled'],
-  emits: ['update:modelValue', 'change'],
-  methods: {
-    handleChange(event) {
-      this.$emit('update:modelValue', event.target.value);
-      this.$emit('change', event.target.value);
-    }
-  }
-};
-</script>
 
 <style scoped lang="scss">
 .no-shrink {

@@ -1,3 +1,34 @@
+<script>
+import { watchEffect, computed } from 'vue';
+import { useUsername } from '@/composables/useUsername';
+import removeMd from 'remove-markdown';
+
+export default {
+  props: {
+    proposal: Object,
+    profiles: Object
+  },
+  setup(props) {
+    const body = computed(() => removeMd(props.proposal.body));
+
+    const period = computed(() => {
+      if (props.proposal.state === 'closed') return 'endedAgo';
+      if (props.proposal.state === 'active') return 'endIn';
+      return 'startIn';
+    });
+
+    const { address, profile, username } = useUsername();
+
+    watchEffect(() => {
+      address.value = props.proposal.author;
+      profile.value = props.profiles[props.proposal.author];
+    });
+
+    return { username, body, period };
+  }
+};
+</script>
+
 <template>
   <router-link
     class="p-4 d-block text-gray"
@@ -10,7 +41,7 @@
       <div class="mb-2">
         <Token :space="proposal.space" size="28" />
         <span class="ml-2" v-text="proposal.space.name" />
-        {{ $tc('proposalBy', [_shorten(proposal.author)]) }}
+        {{ $tc('proposalBy', [username]) }}
         <Badges :address="proposal.author" :members="proposal.space.members" />
         <UiState :state="proposal.state" class="d-inline-block float-right" />
       </div>
@@ -26,23 +57,3 @@
     </div>
   </router-link>
 </template>
-
-<script>
-import removeMd from 'remove-markdown';
-
-export default {
-  props: {
-    proposal: Object
-  },
-  computed: {
-    body() {
-      return removeMd(this.proposal.body);
-    },
-    period() {
-      if (this.proposal.state === 'closed') return 'endedAgo';
-      if (this.proposal.state === 'active') return 'endIn';
-      return 'startIn';
-    }
-  }
-};
-</script>

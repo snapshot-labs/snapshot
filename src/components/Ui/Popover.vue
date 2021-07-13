@@ -1,22 +1,3 @@
-<template>
-  <div
-    ref="itemref"
-    @mouseenter="isTouchScreen() ? null : debounce(() => (open = true), 800)"
-    @mouseleave="debounce(() => popClose(), 300)"
-  >
-    <slot name="item" />
-  </div>
-  <div
-    ref="contentref"
-    v-show="open"
-    @mouseenter="popHovered = true"
-    @mouseleave="(popHovered = false), debounce(() => (open = false), 300)"
-    class="custom-content"
-  >
-    <slot name="content" />
-  </div>
-</template>
-
 <script>
 import { onMounted, ref, watch } from 'vue';
 import { createPopper } from '@popperjs/core';
@@ -76,6 +57,25 @@ export default {
   }
 };
 </script>
+
+<template>
+  <div
+    ref="itemref"
+    @mouseenter="isTouchScreen() ? null : debounce(() => (open = true), 800)"
+    @mouseleave="debounce(() => popClose(), 300)"
+  >
+    <slot name="item" />
+  </div>
+  <div
+    ref="contentref"
+    v-show="open"
+    @mouseenter="popHovered = true"
+    @mouseleave="(popHovered = false), debounce(() => (open = false), 300)"
+    class="custom-content"
+  >
+    <slot name="content" />
+  </div>
+</template>
 
 <style scoped lang="scss">
 .custom-content {

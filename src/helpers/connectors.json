@@ -3,22 +3,6 @@
     "id": "injected",
     "name": "MetaMask"
   },
-  "fortmatic": {
-    "id": "fortmatic",
-    "name": "Fortmatic",
-    "options": {
-      "apiKey": "pk_live_9CE8FD92E54684ED"
-    }
-  },
-  "portis": {
-    "id": "portis",
-    "name": "Portis",
-    "network": "1",
-    "options": {
-      "dappId": "3eb93706-c71d-456b-b4eb-322ea27f7d48",
-      "network": "mainnet"
-    }
-  },
   "walletconnect": {
     "id": "walletconnect",
     "name": "WalletConnect",
@@ -31,6 +15,19 @@
       }
     }
   },
+  "torus": {
+    "id": "torus",
+    "name": "Torus"
+  },
+  "portis": {
+    "id": "portis",
+    "name": "Portis",
+    "network": "1",
+    "options": {
+      "dappId": "3eb93706-c71d-456b-b4eb-322ea27f7d48",
+      "network": "mainnet"
+    }
+  },
   "walletlink": {
     "id": "walletlink",
     "name": "Coinbase",
@@ -41,9 +38,5 @@
       "chainId": 1,
       "ethJsonrpcUrl": "https://cloudflare-eth.com"
     }
-  },
-  "torus": {
-    "id": "torus",
-    "name": "Torus"
   }
 }

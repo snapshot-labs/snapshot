@@ -1,3 +1,97 @@
+<script>
+import { ref, computed } from 'vue';
+import { useI18n } from '@/composables/useI18n';
+
+export default {
+  props: { modelValue: String },
+  emits: ['update:modelValue'],
+  setup(props, { emit }) {
+    const { locale } = useI18n();
+
+    const [
+      yearNow = new Date().getFullYear(),
+      monthNow = new Date().getMonth() + 1,
+      dayNow = new Date().getDate()
+    ] = props.modelValue ? props.modelValue.split('-') : [];
+
+    const input = ref(props.modelValue);
+    const year = ref(yearNow);
+    const month = ref(monthNow - 1);
+    const day = ref(dayNow);
+
+    const today = computed(() => {
+      return formatDate(
+        new Date().getFullYear(),
+        new Date().getMonth(),
+        new Date().getDate()
+      );
+    });
+    const daysOfWeek = computed(() => {
+      const sunday = new Date(2017, 0, 0);
+      return [...Array(7)].map(() => {
+        sunday.setDate(sunday.getDate() + 1);
+        return sunday.toLocaleDateString(locale, {
+          weekday: 'short'
+        });
+      });
+    });
+    const monthName = computed(() => {
+      const name = new Date(year.value, month.value).toLocaleString(locale, {
+        month: 'long'
+      });
+      return `${name.charAt(0).toUpperCase()}${name.slice(1)}`;
+    });
+    const fullYear = computed(() => {
+      return new Date(year.value, month.value).getFullYear();
+    });
+    const days = computed(() => {
+      return new Date(year.value, month.value + 1, 0).getDate();
+    });
+    const emptyDays = computed(() => {
+      return new Date(year.value, month.value, 1).getDay();
+    });
+
+    function formatDate(year, month, day) {
+      let date = new Date(year, month, day);
+      const offset = date.getTimezoneOffset();
+      date = new Date(date.getTime() - offset * 60 * 1000);
+      return date.toISOString().split('T')[0];
+    }
+    function toggleDay(year, month, day) {
+      input.value = formatDate(year, month, day);
+      emit('update:modelValue', input.value);
+    }
+    function isSelectable() {
+      return true;
+      /*
+      const in30Days = new Date();
+      in30Days.setDate(in30Days.getDate() + 30);
+      return (
+        new Date(year, month, day) > new Date() &&
+        new Date(year, month, day) < in30Days
+      );
+      */
+    }
+
+    return {
+      year,
+      month,
+      day,
+      input,
+      today,
+      daysOfWeek,
+      monthName,
+      fullYear,
+      days,
+      emptyDays,
+      toggleDay,
+      formatDate,
+      isSelectable
+    };
+  }
+};
+</script>
+
 <template>
   <div class="calendar">
     <div class="mb-2 d-flex">
@@ -39,85 +133,6 @@
     </div>
   </div>
 </template>
-
-<script>
-export default {
-  props: ['modelValue'],
-  emits: ['update:modelValue'],
-  data() {
-    const [
-      year = new Date().getFullYear(),
-      month = new Date().getMonth() + 1,
-      day = new Date().getDate()
-    ] = this.modelValue ? this.modelValue.split('-') : [];
-    return {
-      input: this.modelValue,
-      month: month - 1,
-      year,
-      day
-    };
-  },
-  computed: {
-    today() {
-      return this.formatDate(
-        new Date().getFullYear(),
-        new Date().getMonth(),
-        new Date().getDate()
-      );
-    },
-    daysOfWeek() {
-      const sunday = new Date(2017, 0, 0);
-      return [...Array(7)].map(() => {
-        sunday.setDate(sunday.getDate() + 1);
-        return sunday.toLocaleDateString(this.$i18n.locale, {
-          weekday: 'short'
-        });
-      });
-    },
-    monthName() {
-      const name = new Date(this.year, this.month).toLocaleString(
-        this.$i18n.locale,
-        {
-          month: 'long'
-        }
-      );
-      return `${name.charAt(0).toUpperCase()}${name.slice(1)}`;
-    },
-    fullYear() {
-      return new Date(this.year, this.month).getFullYear();
-    },
-    days() {
-      return new Date(this.year, this.month + 1, 0).getDate();
-    },
-    emptyDays() {
-      return new Date(this.year, this.month, 1).getDay();
-    }
-  },
-  methods: {
-    formatDate(year, month, day) {
-      let data = new Date(year, month, day);
-      const offset = data.getTimezoneOffset();
-      data = new Date(data.getTime() - offset * 60 * 1000);
-      return data.toISOString().split('T')[0];
-    },
-    toggleDay(year, month, day) {
-      this.input = this.formatDate(year, month, day);
-      this.$emit('update:modelValue', this.input);
-    },
-    isSelectable() {
-      return true;
-      /*
-      const in30Days = new Date();
-      in30Days.setDate(in30Days.getDate() + 30);
-      return (
-        new Date(year, month, day) > new Date() &&
-        new Date(year, month, day) < in30Days
-      );
-      */
-    }
-  }
-};
-</script>
 
 <style scoped lang="scss">
 .calendar {

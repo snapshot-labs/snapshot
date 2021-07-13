@@ -1,10 +1,35 @@
+<script>
+export default {
+  props: {
+    title: String,
+    counter: Number,
+    slim: Boolean,
+    icon: String,
+    loading: Boolean
+  },
+  emits: ['submit']
+};
+</script>
+
 <template>
   <div
-    class="border-top border-bottom border-md rounded-0 rounded-md-2 mb-4 block-bg"
+    class="
+      border-top border-bottom border-md
+      rounded-0 rounded-md-2
+      mb-4
+      block-bg
+    "
   >
     <h4
       v-if="title"
-      class="px-4 pt-3 border-bottom d-block header-bg rounded-top-0 rounded-md-top-2"
+      class="
+        px-4
+        pt-3
+        border-bottom
+        d-block
+        header-bg
+        rounded-top-0 rounded-md-top-2
+      "
       style="padding-bottom: 12px"
     >
       {{ title }}
@@ -33,10 +58,3 @@
     </div>
   </div>
 </template>
-
-<script>
-export default {
-  props: ['title', 'counter', 'slim', 'icon', 'loading'],
-  emits: ['submit']
-};
-</script>

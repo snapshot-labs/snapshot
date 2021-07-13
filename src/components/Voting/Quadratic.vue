@@ -1,64 +1,8 @@
-<template>
-  <div class="mb-3">
-    <div v-for="(choice, i) in proposal.choices" :key="i">
-      <UiButton
-        class="d-block width-full mb-2"
-        :class="selectedChoices[i + 1] > 0 && 'button--active'"
-      >
-        <div
-          class="col-sm-8 col-7 float-left text-left pr-3 tooltipped tooltipped-multiline"
-          :class="[
-            isSmallScreen
-              ? 'tooltipped-ne tooltipped-align-left-2'
-              : 'tooltipped-n'
-          ]"
-          :aria-label="choice"
-        >
-          <span class="truncated width-full">
-            {{ choice }}
-          </span>
-        </div>
-        <div
-          class="col-4 d-flex flex-items-center flex-justify-end float-right"
-        >
-          <button
-            v-if="!isSmallScreen"
-            :disabled="!selectedChoices[i + 1]"
-            class="btn-choice"
-            @click="removeVote(i + 1)"
-          >
-            -
-          </button>
-          <input
-            class="input text-center"
-            :class="{ 'btn-choice': isSmallScreen }"
-            style="width: 40px; height: 44px"
-            placeholder="0"
-            type="number"
-            v-model.number="selectedChoices[i + 1]"
-          />
-          <button
-            v-if="!isSmallScreen"
-            class="btn-choice"
-            @click="addVote(i + 1)"
-          >
-            +
-          </button>
-          <div style="min-width: 52px; margin-right: -5px" class="text-right">
-            {{ percentage(i) }}%
-          </div>
-        </div>
-      </UiButton>
-
-      <PluginAragonGovern :proposal="proposal" />
-    </div>
-  </div>
-</template>
-
 <script>
 import { ref, watch } from 'vue';
 import { percentageOfTotal } from '@/helpers/voting/quadratic';
 import { useMediaQuery } from '@/composables/useMediaQuery';
+
 export default {
   props: {
     proposal: {
@@ -115,6 +59,69 @@ export default {
   }
 };
 </script>
+
+<template>
+  <div class="mb-3">
+    <div v-for="(choice, i) in proposal.choices" :key="i">
+      <UiButton
+        class="d-block width-full mb-2"
+        :class="selectedChoices[i + 1] > 0 && 'button--active'"
+      >
+        <div
+          class="
+            col-sm-8 col-7
+            float-left
+            text-left
+            pr-3
+            tooltipped tooltipped-multiline
+          "
+          :class="[
+            isSmallScreen
+              ? 'tooltipped-ne tooltipped-align-left-2'
+              : 'tooltipped-n'
+          ]"
+          :aria-label="choice"
+        >
+          <span class="truncated width-full">
+            {{ choice }}
+          </span>
+        </div>
+        <div
+          class="col-4 d-flex flex-items-center flex-justify-end float-right"
+        >
+          <button
+            v-if="!isSmallScreen"
+            :disabled="!selectedChoices[i + 1]"
+            class="btn-choice"
+            @click="removeVote(i + 1)"
+          >
+            -
+          </button>
+          <input
+            class="input text-center"
+            :class="{ 'btn-choice': isSmallScreen }"
+            style="width: 40px; height: 44px"
+            placeholder="0"
+            type="number"
+            v-model.number="selectedChoices[i + 1]"
+          />
+          <button
+            v-if="!isSmallScreen"
+            class="btn-choice"
+            @click="addVote(i + 1)"
+          >
+            +
+          </button>
+          <div style="min-width: 52px; margin-right: -5px" class="text-right">
+            {{ percentage(i) }}%
+          </div>
+        </div>
+      </UiButton>
+
+      <PluginAragonGovern :proposal="proposal" />
+    </div>
+  </div>
+</template>
 
 <style lang="scss" scoped>
 .btn-choice {

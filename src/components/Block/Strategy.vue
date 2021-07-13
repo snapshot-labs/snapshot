@@ -1,3 +1,9 @@
+<script>
+export default {
+  props: ['strategy']
+};
+</script>
+
 <template>
   <Block>
     <div class="d-flex flex-items-baseline">
@@ -13,9 +19,3 @@
     <div>{{ $tc('inSpaces', [_n(strategy.spaces.length)]) }}</div>
   </Block>
 </template>
-
-<script>
-export default {
-  props: ['strategy']
-};
-</script>

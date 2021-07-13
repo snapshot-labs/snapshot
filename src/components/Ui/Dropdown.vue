@@ -1,22 +1,3 @@
-<template>
-  <div @click.capture="open = !open" class="position-relative">
-    <div class="button">
-      <slot />
-    </div>
-    <div
-      class="sub-menu-wrapper anim-scale-in"
-      :class="{ hidden: !open }"
-      :style="cssVars"
-    >
-      <ul class="sub-menu my-2">
-        <li v-for="item in items" :key="item" @click="handleClick(item.action)">
-          {{ item.text }}
-        </li>
-      </ul>
-    </div>
-  </div>
-</template>
-
 <script>
 export default {
   emits: ['select'],
@@ -58,6 +39,25 @@ export default {
   }
 };
 </script>
+
+<template>
+  <div @click.capture="open = !open" class="position-relative">
+    <div class="button">
+      <slot />
+    </div>
+    <div
+      class="sub-menu-wrapper anim-scale-in"
+      :class="{ hidden: !open }"
+      :style="cssVars"
+    >
+      <ul class="sub-menu my-2">
+        <li v-for="item in items" :key="item" @click="handleClick(item.action)">
+          {{ item.text }}
+        </li>
+      </ul>
+    </div>
+  </div>
+</template>
 
 <style scoped lang="scss">
 .button {
