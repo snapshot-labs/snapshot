@@ -55,72 +55,74 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
 </script>
 
 <template>
-  <div class="text-center mb-4 mx-auto">
-    <Container class="d-flex flex-items-center">
-      <div class="flex-auto text-left d-flex">
-        <UiButton class="pl-3 col-12 col-lg-7 pr-0">
-          <SearchWithFilters />
-        </UiButton>
-        <router-link :to="{ name: 'timeline' }" class="ml-2">
-          <UiButton class="no-wrap px-3">
-            <Icon name="feed" size="18" />
-            <UiCounter :counter="numberOfUnseenProposals" class="ml-2" />
+  <div>
+    <div class="text-center mb-4 mx-auto">
+      <Container class="d-flex flex-items-center">
+        <div class="flex-auto text-left d-flex">
+          <UiButton class="pl-3 col-12 col-lg-7 pr-0">
+            <SearchWithFilters />
           </UiButton>
+          <router-link :to="{ name: 'timeline' }" class="ml-2">
+            <UiButton class="no-wrap px-3">
+              <Icon name="feed" size="18" />
+              <UiCounter :counter="numberOfUnseenProposals" class="ml-2" />
+            </UiButton>
+          </router-link>
+        </div>
+        <div class="ml-3 text-right hide-sm col-lg-4">
+          {{ $tc('spaceCount', [_n(spaces.length)]) }}
+          <router-link :to="{ name: 'setup' }" class="hide-md ml-3">
+            <UiButton>{{ $t('createSpace') }}</UiButton>
+          </router-link>
+        </div>
+      </Container>
+    </div>
+    <Container :slim="true">
+      <div class="overflow-hidden mr-n4">
+        <router-link
+          v-for="space in spaces.slice(0, limit)"
+          :key="space.key"
+          :to="{ name: 'proposals', params: { key: space.key } }"
+        >
+          <div class="col-12 col-lg-3 pr-4 float-left">
+            <Block
+              class="text-center extra-icon-container"
+              style="height: 250px; margin-bottom: 24px !important"
+            >
+              <span class="position-relative d-inline-block">
+                <UiCounter
+                  v-if="space._activeProposals"
+                  :counter="space._activeProposals"
+                  class="position-absolute top-4 right-0 bg-green"
+                />
+                <Token
+                  :space="space"
+                  symbolIndex="space"
+                  size="98"
+                  class="my-3"
+                />
+              </span>
+              <StatefulIcon
+                :on="space.favorite"
+                onName="star"
+                offName="star1"
+                @click="toggleFavorite(space.key)"
+              />
+              <div class="">
+                <h3 v-text="space.name" />
+                <div class="text-gray">{{ space.symbol }}</div>
+              </div>
+            </Block>
+          </div>
         </router-link>
-      </div>
-      <div class="ml-3 text-right hide-sm col-lg-4">
-        {{ $tc('spaceCount', [_n(spaces.length)]) }}
-        <router-link :to="{ name: 'setup' }" class="hide-md ml-3">
-          <UiButton>{{ $t('createSpace') }}</UiButton>
-        </router-link>
+
+        <NoResults
+          :block="true"
+          v-if="Object.keys(spaces).length < 1"
+          class="pr-md-4"
+        />
       </div>
     </Container>
+    <div ref="endElement" />
   </div>
-  <Container :slim="true">
-    <div class="overflow-hidden mr-n4">
-      <router-link
-        v-for="space in spaces.slice(0, limit)"
-        :key="space.key"
-        :to="{ name: 'proposals', params: { key: space.key } }"
-      >
-        <div class="col-12 col-lg-3 pr-4 float-left">
-          <Block
-            class="text-center extra-icon-container"
-            style="height: 250px; margin-bottom: 24px !important"
-          >
-            <span class="position-relative d-inline-block">
-              <UiCounter
-                v-if="space._activeProposals"
-                :counter="space._activeProposals"
-                class="position-absolute top-4 right-0 bg-green"
-              />
-              <Token
-                :space="space"
-                symbolIndex="space"
-                size="98"
-                class="my-3"
-              />
-            </span>
-            <StatefulIcon
-              :on="space.favorite"
-              onName="star"
-              offName="star1"
-              @click="toggleFavorite(space.key)"
-            />
-            <div class="">
-              <h3 v-text="space.name" />
-              <div class="text-gray">{{ space.symbol }}</div>
-            </div>
-          </Block>
-        </div>
-      </router-link>
-
-      <NoResults
-        :block="true"
-        v-if="Object.keys(spaces).length < 1"
-        class="pr-md-4"
-      />
-    </div>
-  </Container>
-  <div ref="endElement" />
 </template>
