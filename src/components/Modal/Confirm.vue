@@ -2,6 +2,8 @@
 import { ref, computed } from 'vue';
 import { useStore } from 'vuex';
 import { getChoiceString } from '@/helpers/utils';
+import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
+import client from '@/helpers/clientEIP712';
 
 export default {
   props: {
@@ -17,23 +19,29 @@ export default {
   emits: ['reload', 'close'],
   setup(props, { emit }) {
     const store = useStore();
+    const auth = getInstance();
 
     const loading = ref(false);
+
     const symbols = computed(() =>
       props.strategies.map(strategy => strategy.params.symbol)
     );
+    const web3Account = computed(() => store.state.web3.account);
 
     async function handleSubmit() {
       loading.value = true;
-      await store.dispatch('send', {
-        space: props.space.key,
-        type: 'vote',
-        payload: {
+      try {
+        const result = await client.vote(auth.web3, web3Account.value, {
+          space: props.space.key,
+          timestamp: ~~(Date.now() / 1e3),
           proposal: props.proposal.id,
           choice: props.selectedChoices,
-          metadata: {}
-        }
-      });
+          metadata: JSON.stringify({})
+        });
+        console.log('Ok!', result);
+      } catch (e) {
+        if (!e.code || e.code !== 4001) console.log('Oops!', e);
+      }
       emit('reload');
       emit('close');
       loading.value = false;
