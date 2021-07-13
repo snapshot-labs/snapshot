@@ -1,9 +1,10 @@
 <script>
 import { ref, computed } from 'vue';
 import { useStore } from 'vuex';
-import { getChoiceString } from '@/helpers/utils';
+import { useI18n } from 'vue-i18n';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import client from '@/helpers/clientEIP712';
+import { getChoiceString } from '@/helpers/utils';
 
 export default {
   props: {
@@ -18,8 +19,9 @@ export default {
   },
   emits: ['reload', 'close'],
   setup(props, { emit }) {
-    const store = useStore();
     const auth = getInstance();
+    const store = useStore();
+    const { t } = useI18n();
 
     const loading = ref(false);
 
@@ -35,12 +37,20 @@ export default {
           space: props.space.key,
           timestamp: ~~(Date.now() / 1e3),
           proposal: props.proposal.id,
+          type: props.proposal.type,
           choice: props.selectedChoices,
           metadata: JSON.stringify({})
         });
-        console.log('Ok!', result);
+        console.log('Result', result);
+        store.dispatch('notify', t('notify.yourIsIn', ['vote']));
       } catch (e) {
-        if (!e.code || e.code !== 4001) console.log('Oops!', e);
+        if (!e.code || e.code !== 4001) {
+          console.log('Oops!', e);
+          const errorMessage = e?.error_description
+            ? `Oops, ${e.error_description}`
+            : t('notify.somethingWentWrong');
+          store.dispatch('notify', ['red', errorMessage]);
+        }
       }
       emit('reload');
       emit('close');

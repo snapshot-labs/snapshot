@@ -3,6 +3,7 @@ import { ref, watchEffect, computed, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 import draggable from 'vuedraggable';
+import { useI18n } from 'vue-i18n';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import { getBlockNumber } from '@snapshot-labs/snapshot.js/src/utils/web3';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
@@ -16,6 +17,7 @@ import client from '@/helpers/clientEIP712';
 
 const route = useRoute();
 const router = useRouter();
+const { t } = useI18n();
 const store = useStore();
 const auth = getInstance();
 
@@ -131,6 +133,8 @@ async function handleSubmit() {
       plugins: JSON.stringify(plugins),
       metadata: JSON.stringify({})
     });
+    console.log('Result', result);
+    store.dispatch('notify', t('notify.yourIsIn', ['proposal']));
     router.push({
       name: 'proposal',
       params: {
@@ -140,7 +144,13 @@ async function handleSubmit() {
     });
     console.log('Ok!', result);
   } catch (e) {
-    if (!e.code || e.code !== 4001) console.log('Oops!', e);
+    if (!e.code || e.code !== 4001) {
+      console.log('Oops!', e);
+      const errorMessage = e?.error_description
+        ? `Oops, ${e.error_description}`
+        : t('notify.somethingWentWrong');
+      store.dispatch('notify', ['red', errorMessage]);
+    }
     loading.value = false;
   }
 }
