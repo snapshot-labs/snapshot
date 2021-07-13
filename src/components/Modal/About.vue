@@ -3,7 +3,7 @@ import pkg from '@/../package.json';
 import languages from '@/locales/languages.json';
 import gateways from '@snapshot-labs/snapshot.js/src/gateways.json';
 
-const gateway = process.env.VUE_APP_IPFS_GATEWAY || gateways[0];
+const gateway = import.meta.env.VITE_APP_IPFS_GATEWAY || gateways[0];
 
 export default {
   props: ['open'],
@@ -16,8 +16,8 @@ export default {
 
     return {
       pkg,
-      commitSha: process.env.VUE_APP_COMMIT_SHA,
-      hubUrl: process.env.VUE_APP_HUB_URL,
+      commitSha: import.meta.env.VITE_APP_COMMIT_SHA,
+      hubUrl: import.meta.env.VITE_APP_HUB_URL,
       gateway,
       languages,
       changeLang

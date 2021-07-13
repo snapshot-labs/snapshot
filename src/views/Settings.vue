@@ -13,7 +13,7 @@ import { clone } from '@/helpers/utils';
 import { getSpaceUri, uriGet } from '@/helpers/ens';
 import defaults from '@/locales/default';
 
-const gateway = process.env.VUE_APP_IPFS_GATEWAY || gateways[0];
+const gateway = import.meta.env.VITE_APP_IPFS_GATEWAY || gateways[0];
 const basicValidation = { name: 'basic', params: {} };
 
 const route = useRoute();
