@@ -731,8 +731,8 @@
   resolved "https://codeload.github.com/snapshot-labs/snapshot-spaces/tar.gz/4c03af2828f5130d227ae660126e7d2dd4bcc548"
 
 "@snapshot-labs/snapshot.js@github:snapshot-labs/snapshot.js#vite":
-  version "0.1.10"
-  resolved "https://codeload.github.com/snapshot-labs/snapshot.js/tar.gz/97e9eabd9397370eadcdc8f6957c20dda18f2097"
+  version "0.1.11"
+  resolved "https://codeload.github.com/snapshot-labs/snapshot.js/tar.gz/03582b391bb5391e780e91084349622a16e1e73d"
   dependencies:
     "@ensdomains/content-hash" "^2.5.3"
     "@ethersproject/abi" "^5.0.4"
