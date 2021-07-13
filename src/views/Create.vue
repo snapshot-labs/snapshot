@@ -1,6 +1,6 @@
 <script setup>
 import { ref, watchEffect, computed, onMounted } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 import draggable from 'vuedraggable';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
@@ -15,6 +15,7 @@ import { apolloClient } from '@/apollo';
 import client from '@/helpers/clientEIP712';
 
 const route = useRoute();
+const router = useRouter();
 const store = useStore();
 const auth = getInstance();
 
@@ -130,20 +131,13 @@ async function handleSubmit() {
       plugins: JSON.stringify(plugins),
       metadata: JSON.stringify({})
     });
-    /*
-        const { ipfsHash } = await store.dispatch('send', {
-          space: space.value.key,
-          type: 'proposal',
-          payload: form.value
-        });
-        router.push({
-          name: 'proposal',
-          params: {
-            key: key,
-            id: ipfsHash
-          }
-        });
-        */
+    router.push({
+      name: 'proposal',
+      params: {
+        key: key,
+        id: result.id
+      }
+    });
     console.log('Ok!', result);
   } catch (e) {
     if (!e.code || e.code !== 4001) console.log('Oops!', e);
