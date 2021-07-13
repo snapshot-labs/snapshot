@@ -1,9 +1,9 @@
-<script>
-export default {
-  props: {
-    slim: Boolean
-  }
-};
+<script setup>
+import { defineProps } from 'vue';
+
+defineProps({
+  slim: Boolean
+});
 </script>
 
 <template>

@@ -1510,11 +1510,11 @@
 
 "@snapshot-labs/snapshot-spaces@github:snapshot-labs/snapshot-spaces#master":
   version "0.1.0"
-  resolved "https://codeload.github.com/snapshot-labs/snapshot-spaces/tar.gz/4c03af2828f5130d227ae660126e7d2dd4bcc548"
+  resolved "https://codeload.github.com/snapshot-labs/snapshot-spaces/tar.gz/master"
 
 "@snapshot-labs/snapshot.js@github:snapshot-labs/snapshot.js#master":
   version "0.1.11"
-  resolved "https://codeload.github.com/snapshot-labs/snapshot.js/tar.gz/0a226676217e755dd0d70dff8242d9fa502afd74"
+  resolved "https://codeload.github.com/snapshot-labs/snapshot.js/tar.gz/master"
   dependencies:
     "@ensdomains/content-hash" "^2.5.3"
     "@ethersproject/abi" "^5.0.4"
