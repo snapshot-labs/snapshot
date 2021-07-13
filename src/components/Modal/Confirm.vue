@@ -34,6 +34,7 @@ export default {
       loading.value = true;
       try {
         const result = await client.vote(auth.web3, web3Account.value, {
+          from: web3Account.value,
           space: props.space.key,
           timestamp: ~~(Date.now() / 1e3),
           proposal: props.proposal.id,
