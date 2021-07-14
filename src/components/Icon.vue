@@ -1,7 +1,10 @@
-<script>
-export default {
-  props: { name: String, size: String }
-};
+<script setup>
+import { defineProps } from 'vue';
+
+defineProps({
+  name: String,
+  size: String
+});
 </script>
 
 <template>

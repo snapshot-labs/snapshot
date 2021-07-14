@@ -1,10 +1,8 @@
 import injected from '@snapshot-labs/lock/connectors/injected';
 import connectors from '@/helpers/connectors.json';
-import torus from '@snapshot-labs/lock/connectors/torus';
 
 const options: any = { connectors: [] };
 const lockConnectors = {
-  torus,
   injected
 };
 
