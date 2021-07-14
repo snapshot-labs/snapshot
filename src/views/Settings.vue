@@ -216,6 +216,7 @@ onMounted(async () => {
   }
   if (from.value) {
     const fromClone = clone(store.state.app.spaces[from.value]);
+    fromClone.validation = fromClone.validation || basicValidation;
     delete fromClone.key;
     delete fromClone._activeProposals;
     form.value = fromClone;
