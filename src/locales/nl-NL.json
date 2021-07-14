@@ -137,7 +137,7 @@
   },
   "delegate": {
     "header": "Delegeren",
-    "selectAddress": "Kies adres",
+    "selectDelegate": "Select delegate",
     "to": "Naar",
     "addressPlaceholder": "Adres of ENS naam",
     "spacePlaceholder": "Ruimte (optioneel)",
@@ -228,14 +228,14 @@
     "description": {
       "single-choice": "Elke kiezer mag maar één keuze selecteren.",
       "approval": "Elke kiezer mag een willekeurig aantal keuzes selecteren.",
-      "quadratic": "Elke kiezer kan zijn stemrecht over meerdere keuzes verspreiden. Resultaten worden per kwartaal berekend.",
+      "quadratic": "Each voter may spread voting power across any number of choices. Results are calculated quadratically.",
       "ranked-choice": "Elke kiezer kan een willekeurig aantal keuzes selecteren en rangschikken. Resultaten worden berekend door de onmiddellijke afloop-methode.",
       "weighted": "Elke kiezer kan zijn stemkracht over elk aantal keuzes verspreiden."
     }
   },
   "safeSnap": {
     "currentOutcome": "Huidig resultaat: {0}",
-    "currentBond": "Huidige obligatie: {0}",
+    "currentBond": "Current bond: {0} {1}",
     "finalizedIn": "Afgeronde {0}",
     "executableIn": "Uitvoerbaar {0}",
     "finalOutcome": "Resultaat: {0}",
@@ -262,7 +262,7 @@
     "claimed_header": "Gefeliciteerd! Je hebt een nieuwe POAP in je account",
     "loading_header": "De POAP wordt toegevoegd aan je collectie",
     "button_claim": "Claimen",
-    "button_show": "Laat me mijn badges zien",
+    "button_show": "Show me my collection",
     "success_claim": "Uw POAP bevindt zich op uw adres",
     "error_claim": "Er is een probleem opgetreden bij het minen van het token"
   }

@@ -137,7 +137,7 @@
   },
   "delegate": {
     "header": "Ủy thác",
-    "selectAddress": "Chọn địa chỉ",
+    "selectDelegate": "Select delegate",
     "to": "Đến",
     "addressPlaceholder": "Địa chỉ hay ENS",
     "spacePlaceholder": "Không gian (không bắt buộc)",
@@ -228,14 +228,14 @@
     "description": {
       "single-choice": "Mỗi cử tri chỉ được chọn một sự lựa chọn.",
       "approval": "Mỗi cử tri có thể chọn bất kỳ số lượng lựa chọn nào.",
-      "quadratic": "Mỗi cử tri có thể phân tán quyền biểu quyết trên bất kỳ số lượng lựa chọn nào. Kết quả được tính toán qua bậc hai.",
+      "quadratic": "Each voter may spread voting power across any number of choices. Results are calculated quadratically.",
       "ranked-choice": "Each voter may select and rank any number of choices. Results are calculted by instant-runoff counting method.",
       "weighted": "Each voter may spread voting power across any number of choices."
     }
   },
   "safeSnap": {
     "currentOutcome": "Kết quả hiện tại: {0}",
-    "currentBond": "Đặt cược hiện tại: {0}",
+    "currentBond": "Current bond: {0} {1}",
     "finalizedIn": "Đã hoàn thành {0}",
     "executableIn": "Thực thi {0}",
     "finalOutcome": "Kết quả: {0}",
@@ -262,7 +262,7 @@
     "claimed_header": "Xin chúc mừng! Bạn có một POAP mới trong tài khoản của mình",
     "loading_header": "POAP đang được thêm vào bộ sưu tập của bạn",
     "button_claim": "Yêu cầu",
-    "button_show": "Cho tôi xem huy hiệu của tôi",
+    "button_show": "Show me my collection",
     "success_claim": "POAP của bạn có trên địa chỉ của bạn",
     "error_claim": "Đã xảy ra sự cố khi in mã thông báo"
   }
