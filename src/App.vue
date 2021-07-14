@@ -1,5 +1,36 @@
+<script setup>
+import { computed, onMounted, watch } from 'vue';
+import { useStore } from 'vuex';
+import { useRoute } from 'vue-router';
+import { useModal } from '@/composables/useModal';
+import { useI18n } from '@/composables/useI18n';
+import { useDomain } from '@/composables/useDomain';
+
+const { domain } = useDomain();
+const { loadLocale } = useI18n();
+const store = useStore();
+const route = useRoute();
+
+const { modalOpen } = useModal();
+
+const space = computed(() => {
+  const key = domain || route.params.key;
+  return store.state.app.spaces[key] ? store.state.app.spaces[key] : {};
+});
+
+onMounted(async () => {
+  await loadLocale();
+  store.dispatch('init');
+});
+
+watch(modalOpen, val => {
+  const el = document.body;
+  el.classList[val ? 'add' : 'remove']('overflow-hidden');
+});
+</script>
+
 <template>
-  <div :class="space && space.skin" id="app" class="overflow-hidden pb-4">
+  <div :class="space?.skin" id="app" class="overflow-hidden pb-4">
     <UiLoading v-if="app.loading || !app.init" class="overlay big" />
     <div v-else>
       <Topnav />
@@ -11,38 +42,3 @@
     <Notifications />
   </div>
 </template>
-
-<script>
-import { onMounted, watch } from 'vue';
-import { useStore } from 'vuex';
-import { useModal } from '@/composables/useModal';
-import { useI18n } from '@/composables/useI18n';
-
-export default {
-  setup() {
-    const store = useStore();
-    const { modalOpen } = useModal();
-    const { loadLocale } = useI18n();
-
-    onMounted(async () => {
-      await loadLocale();
-      store.dispatch('init');
-    });
-
-    watch(modalOpen, val => {
-      const el = document.body;
-      el.classList[val ? 'add' : 'remove']('overflow-hidden');
-    });
-  },
-  computed: {
-    space() {
-      try {
-        const key = this.domain || this.$route.params.key;
-        return this.app.spaces[key];
-      } catch (e) {
-        return {};
-      }
-    }
-  }
-};
-</script>

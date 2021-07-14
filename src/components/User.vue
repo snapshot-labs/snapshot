@@ -1,3 +1,26 @@
+<script>
+import { watchEffect } from 'vue';
+import { useUsername } from '@/composables/useUsername';
+
+export default {
+  props: {
+    address: String,
+    space: Object,
+    profile: Object
+  },
+  setup(props) {
+    const { address, profile, username } = useUsername();
+
+    watchEffect(() => {
+      address.value = props.address;
+      profile.value = props.profile;
+    });
+
+    return { username };
+  }
+};
+</script>
+
 <template>
   <span>
     <UiPopover :options="{ offset: [0, 12], placement: 'bottom-start' }">
@@ -9,7 +32,7 @@
             size="16"
             class="mr-1"
           />
-          {{ name }}
+          {{ username }}
           <Badges :address="address" :members="space?.members" />
         </a>
       </template>
@@ -52,25 +75,3 @@
     </UiPopover>
   </span>
 </template>
-
-<script>
-export default {
-  props: ['address', 'space', 'profile'],
-  computed: {
-    name() {
-      if (
-        this.web3.account &&
-        this.address.toLowerCase() === this.web3.account.toLowerCase()
-      ) {
-        return 'You';
-      }
-      if (this.profile?.name) {
-        return this.profile.name;
-      } else if (this.profile?.ens) {
-        return this._shorten(this.profile.ens, 20);
-      }
-      return this._shorten(this.address);
-    }
-  }
-};
-</script>

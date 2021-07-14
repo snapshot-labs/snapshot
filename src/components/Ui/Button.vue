@@ -1,10 +1,3 @@
-<template>
-  <button :type="type || 'button'" class="button" :disabled="loading">
-    <UiLoading v-if="loading" />
-    <slot v-else />
-  </button>
-</template>
-
 <script>
 export default {
   props: {
@@ -13,6 +6,13 @@ export default {
   }
 };
 </script>
+
+<template>
+  <button :type="type || 'button'" class="button" :disabled="loading">
+    <UiLoading v-if="loading" />
+    <slot v-else />
+  </button>
+</template>
 
 <style scoped lang="scss">
 .button {

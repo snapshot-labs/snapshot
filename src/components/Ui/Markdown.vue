@@ -1,7 +1,3 @@
-<template>
-  <div class="markdown-body break-word" v-html="markdown" />
-</template>
-
 <script>
 import { computed } from 'vue';
 import { Remarkable } from 'remarkable';
@@ -28,6 +24,10 @@ export default {
   }
 };
 </script>
+
+<template>
+  <div class="markdown-body break-word" v-html="markdown" />
+</template>
 
 <style lang="scss">
 @import '../../vars';

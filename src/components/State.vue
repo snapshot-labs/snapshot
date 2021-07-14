@@ -1,7 +1,3 @@
-<template>
-  <span :class="state.class" v-text="state.name" class="State text-normal" />
-</template>
-
 <script>
 export default {
   props: {
@@ -20,3 +16,7 @@ export default {
   }
 };
 </script>
+
+<template>
+  <span :class="state.class" v-text="state.name" class="State text-normal" />
+</template>

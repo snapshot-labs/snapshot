@@ -1,5 +1,117 @@
+<script setup>
+import { ref, computed, watch, onMounted, watchEffect } from 'vue';
+import { useStore } from 'vuex';
+import { useRoute } from 'vue-router';
+import { useI18n } from 'vue-i18n';
+import { useProfiles } from '@/composables/useProfiles';
+import { isAddress } from '@ethersproject/address';
+import { formatBytes32String } from '@ethersproject/strings';
+import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
+import { sendTransaction } from '@snapshot-labs/snapshot.js/src/utils';
+import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
+import abi from '@/helpers/abi';
+import {
+  getDelegates,
+  getDelegators,
+  contractAddress
+} from '@/helpers/delegation';
+import { sleep } from '@/helpers/utils';
+
+const route = useRoute();
+const store = useStore();
+const { t } = useI18n();
+const auth = getInstance();
+
+const modalOpen = ref(false);
+const currentId = ref('');
+const currentDelegate = ref('');
+const loaded = ref(false);
+const loading = ref(false);
+const delegates = ref([]);
+const delegators = ref([]);
+const form = ref({
+  address: '',
+  id: route.params.key || ''
+});
+
+const web3Account = computed(() => store.state.web3.account);
+const networkKey = computed(() => store.state.web3.network.key);
+
+const isValid = computed(() => {
+  const address = form.value.address;
+  return (
+    auth.isAuthenticated.value &&
+    (address.includes('.eth') || isAddress(address)) &&
+    address.toLowerCase() !== web3Account.value.toLowerCase() &&
+    (form.value.id === '' || store.state.app.spaces[form.value.id])
+  );
+});
+
+async function load() {
+  if (web3Account.value) {
+    const [delegatesObj, delegatorsObj] = await Promise.all([
+      getDelegates(networkKey.value, web3Account.value),
+      getDelegators(networkKey.value, web3Account.value)
+    ]);
+    delegates.value = delegatesObj.delegations;
+    delegators.value = delegatorsObj.delegations;
+  }
+}
+
+async function handleSubmit() {
+  loading.value = true;
+  try {
+    let address = form.value.address;
+    if (address.includes('.eth'))
+      address = await getProvider('1').resolveName(address);
+    const tx = await sendTransaction(
+      auth.web3,
+      contractAddress,
+      abi['DelegateRegistry'],
+      'setDelegate',
+      [formatBytes32String(form.value.id), address]
+    );
+    const receipt = await tx.wait();
+    console.log('Receipt', receipt);
+    await sleep(3e3);
+    store.dispatch('notify', t('notify.youDidIt'));
+    await load();
+  } catch (e) {
+    console.log(e);
+  }
+  loading.value = false;
+}
+
+function clearDelegate(id, delegate) {
+  currentId.value = id;
+  currentDelegate.value = delegate;
+  modalOpen.value = true;
+}
+
+const { profiles, addressArray } = useProfiles();
+
+watchEffect(() => {
+  addressArray.value = delegates.value
+    .map(delegate => delegate.delegate)
+    .concat(delegators.value.map(delegator => delegator.delegator));
+});
+
+watch(web3Account, (val, prev) => {
+  if (val?.toLowerCase() !== prev) load();
+});
+
+watch(networkKey, (val, prev) => {
+  if (val !== prev) load();
+});
+
+onMounted(async () => {
+  await load();
+  loaded.value = true;
+});
+</script>
+
 <template>
-  <Layout>
+  <Layout v-bind="$attrs">
     <template #content-left>
       <div class="px-4 px-md-0 mb-3">
         <router-link :to="{ name: 'home' }" class="text-gray">
@@ -9,7 +121,7 @@
         <h1 v-if="loaded" v-text="$t('delegate.header')" />
       </div>
       <template v-if="loaded">
-        <Block :itle="$t('delegate.selectAddress')">
+        <Block :title="$t('delegate.selectDelegate')">
           <UiInput
             v-model.trim="form.address"
             :placeholder="$t('delegate.addressPlaceholder')"
@@ -38,6 +150,7 @@
             <User
               :address="delegate.delegate"
               :space="{ network: web3.network.key }"
+              :profile="profiles[delegate.delegate]"
             />
             <div
               v-text="_shorten(delegate.space || $t('allSpaces'), 'choice')"
@@ -65,6 +178,7 @@
             <User
               :address="delegator.delegator"
               :space="{ network: web3.network.key }"
+              :profile="profiles[delegator.delegator]"
             />
             <div
               v-text="_shorten(delegator.space || '-', 'choice')"
@@ -96,103 +210,7 @@
       @reload="load"
       :id="currentId"
       :delegate="currentDelegate"
+      :profiles="profiles"
     />
   </teleport>
 </template>
-
-<script>
-import { mapActions } from 'vuex';
-import { isAddress } from '@ethersproject/address';
-import { formatBytes32String } from '@ethersproject/strings';
-import { sendTransaction } from '@snapshot-labs/snapshot.js/src/utils';
-import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
-import abi from '@/helpers/abi';
-import {
-  getDelegates,
-  getDelegators,
-  contractAddress
-} from '@/helpers/delegation';
-import { sleep } from '@/helpers/utils';
-
-export default {
-  data() {
-    return {
-      modalOpen: false,
-      currentId: '',
-      currentDelegate: '',
-      loaded: false,
-      loading: false,
-      delegates: [],
-      delegators: [],
-      form: {
-        address: '',
-        id: this.$route.params.key || ''
-      }
-    };
-  },
-  watch: {
-    'web3.account': async function (val, prev) {
-      if (val?.toLowerCase() !== prev) await this.load();
-    },
-    'web3.network.key': async function (val, prev) {
-      if (val !== prev) await this.load();
-    }
-  },
-  async created() {
-    await this.load();
-    this.loaded = true;
-  },
-  computed: {
-    isValid() {
-      const address = this.form.address;
-      return (
-        this.$auth.isAuthenticated.value &&
-        (address.includes('.eth') || isAddress(address)) &&
-        address.toLowerCase() !== this.web3.account.toLowerCase() &&
-        (this.form.id === '' || this.app.spaces[this.form.id])
-      );
-    }
-  },
-  methods: {
-    ...mapActions(['notify']),
-    async load() {
-      if (this.web3.account) {
-        const [delegates, delegators] = await Promise.all([
-          getDelegates(this.web3.network.key, this.web3.account),
-          getDelegators(this.web3.network.key, this.web3.account)
-        ]);
-        this.delegates = delegates.delegations;
-        this.delegators = delegators.delegations;
-      }
-    },
-    async handleSubmit() {
-      this.loading = true;
-      try {
-        let address = this.form.address;
-        if (address.includes('.eth'))
-          address = await getProvider('1').resolveName(address);
-        const tx = await sendTransaction(
-          this.$auth.web3,
-          contractAddress,
-          abi['DelegateRegistry'],
-          'setDelegate',
-          [formatBytes32String(this.form.id), address]
-        );
-        const receipt = await tx.wait();
-        console.log('Receipt', receipt);
-        await sleep(3e3);
-        this.notify(this.$t('notify.youDidIt'));
-        await this.load();
-      } catch (e) {
-        console.log(e);
-      }
-      this.loading = false;
-    },
-    clearDelegate(id, delegate) {
-      this.currentId = id;
-      this.currentDelegate = delegate;
-      this.modalOpen = true;
-    }
-  }
-};
-</script>

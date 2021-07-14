@@ -1,11 +1,3 @@
-<template>
-  <span
-    v-if="counter > 0 || typeof counter === 'string'"
-    v-text="counter"
-    class="Counter"
-  />
-</template>
-
 <script>
 export default {
   props: {
@@ -13,6 +5,14 @@ export default {
   }
 };
 </script>
+
+<template>
+  <span
+    v-if="counter > 0 || typeof counter === 'string'"
+    v-text="counter"
+    class="Counter"
+  />
+</template>
 
 <style scoped lang="scss">
 .Counter {

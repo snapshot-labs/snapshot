@@ -1,3 +1,35 @@
+<script>
+import { useRouter } from 'vue-router';
+
+export default {
+  props: { modelValue: String, placeholder: String, modal: Boolean },
+  emits: ['update:modelValue'],
+  setup(props, { emit }) {
+    const router = useRouter();
+
+    function handleInput(e) {
+      const input = e.target.value;
+      if (!props.modal) {
+        const { query } = router.currentRoute.value;
+        router.push({
+          query: input ? { ...query, q: input } : { ...query, q: undefined }
+        });
+      }
+      emit('update:modelValue', input);
+    }
+
+    function clearInput() {
+      if (!props.modal) {
+        const { query } = router.currentRoute.value;
+        router.push({ query: { ...query, q: undefined } });
+      }
+      emit('update:modelValue', '');
+    }
+    return { handleInput, clearInput };
+  }
+};
+</script>
+
 <template>
   <div
     class="d-flex flex-items-center"
@@ -18,29 +50,3 @@
     </a>
   </div>
 </template>
-
-<script>
-export default {
-  props: ['modelValue', 'placeholder', 'modal'],
-  emits: ['update:modelValue'],
-  methods: {
-    handleInput(e) {
-      const input = e.target.value;
-      if (!this.modal) {
-        const { query } = this.$router.currentRoute.value;
-        this.$router.push({
-          query: input ? { ...query, q: input } : { ...query, q: undefined }
-        });
-      }
-      this.$emit('update:modelValue', input);
-    },
-    clearInput() {
-      if (!this.modal) {
-        const { query } = this.$router.currentRoute.value;
-        this.$router.push({ query: { ...query, q: undefined } });
-      }
-      this.$emit('update:modelValue', '');
-    }
-  }
-};
-</script>

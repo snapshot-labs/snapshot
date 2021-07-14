@@ -1,28 +1,3 @@
-<template>
-  <div v-if="open" class="modal mx-auto">
-    <div class="backdrop" @click="$emit('close')" />
-    <div
-      class="shell overflow-hidden anim-scale-in position-relative rounded-0 rounded-md-2"
-    >
-      <div v-if="$slots.header" class="border-bottom pt-4 pb-3 text-center">
-        <slot name="header" />
-      </div>
-      <div class="modal-body">
-        <slot />
-      </div>
-      <div v-if="$slots.footer" class="border-top p-4 text-center">
-        <slot name="footer" />
-      </div>
-      <a
-        @click="$emit('close')"
-        class="position-absolute right-0 top-1 p-4 text-gray"
-      >
-        <Icon name="close" />
-      </a>
-    </div>
-  </div>
-</template>
-
 <script>
 import { watch, toRefs } from 'vue';
 import { useModal } from '@/composables/useModal';
@@ -43,6 +18,37 @@ export default {
   }
 };
 </script>
+
+<template>
+  <div v-if="open" class="modal mx-auto">
+    <div class="backdrop" @click="$emit('close')" />
+    <div
+      class="
+        shell
+        overflow-hidden
+        anim-scale-in
+        position-relative
+        rounded-0 rounded-md-2
+      "
+    >
+      <div v-if="$slots.header" class="border-bottom pt-4 pb-3 text-center">
+        <slot name="header" />
+      </div>
+      <div class="modal-body">
+        <slot />
+      </div>
+      <div v-if="$slots.footer" class="border-top p-4 text-center">
+        <slot name="footer" />
+      </div>
+      <a
+        @click="$emit('close')"
+        class="position-absolute right-0 top-1 p-4 text-gray"
+      >
+        <Icon name="close" />
+      </a>
+    </div>
+  </div>
+</template>
 
 <style lang="scss">
 .modal {

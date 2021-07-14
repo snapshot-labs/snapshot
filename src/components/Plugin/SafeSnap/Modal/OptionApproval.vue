@@ -1,3 +1,47 @@
+<script>
+import { BigNumber } from '@ethersproject/bignumber';
+import { formatUnits } from '@ethersproject/units';
+
+export default {
+  props: [
+    'open',
+    'isApproved',
+    'bond',
+    'questionId',
+    'minimumBond',
+    'tokenSymbol',
+    'tokenDecimals'
+  ],
+  emits: ['close', 'setApproval'],
+  methods: {
+    async handleSetApproval(option) {
+      await this.$emit('setApproval', option);
+      this.$emit('close');
+    }
+  },
+  computed: {
+    answer() {
+      return this.isApproved ? 'Yes' : 'No';
+    },
+    bondData() {
+      const bondNotSet = BigNumber.from(this.bond).eq(0);
+      const minimumBond = BigNumber.from(this.minimumBond).eq(0)
+        ? BigNumber.from(10).pow(this.tokenDecimals)
+        : this.minimumBond;
+      const toSet = bondNotSet ? minimumBond : BigNumber.from(this.bond).mul(2);
+      return {
+        toSet: formatUnits(toSet, this.tokenDecimals),
+        current: bondNotSet ? '--' : formatUnits(this.bond, this.tokenDecimals),
+        tokenSymbol: this.tokenSymbol
+      };
+    },
+    questionLink() {
+      return 'https://reality.eth.link/app/#!/question/' + this.questionId;
+    }
+  }
+};
+</script>
+
 <template>
   <UiModal :open="open" @close="$emit('close')">
     <template v-slot:header>
@@ -21,11 +65,17 @@
         </h4>
         <br />
         <h4>
-          {{ $t('safeSnap.currentBond', [bondData.current + ' ETH']) }}
+          {{
+            $t('safeSnap.currentBond', [bondData.current + ' ' + tokenSymbol])
+          }}
         </h4>
         <br />
         <h4>
-          {{ $t('safeSnap.nextBond', [bondData.toSet + ' ETH']) }}
+          {{
+            $t('safeSnap.nextBond', [
+              bondData.toSet + ' ' + bondData.tokenSymbol
+            ])
+          }}
         </h4>
       </div>
       <div>
@@ -47,38 +97,6 @@
     </div>
   </UiModal>
 </template>
-
-<script>
-import { BigNumber } from '@ethersproject/bignumber';
-export default {
-  props: ['open', 'isApproved', 'bond', 'questionId', 'minimumBond'],
-  emits: ['close', 'setApproval'],
-  methods: {
-    async handleSetApproval(option) {
-      await this.$emit('setApproval', option);
-      this.$emit('close');
-    }
-  },
-  computed: {
-    answer() {
-      return this.isApproved ? 'Yes' : 'No';
-    },
-    bondData() {
-      const dontHasBond = this.bond === '0.0';
-      const minimumBond = BigNumber.from(this.minimumBond).eq(0)
-        ? 0.001
-        : this.minimumBond;
-      return {
-        toSet: dontHasBond ? minimumBond : BigNumber.from(this.bond).mul(2),
-        current: dontHasBond ? '--' : this.bond
-      };
-    },
-    questionLink() {
-      return 'https://reality.eth.link/app/#!/question/' + this.questionId;
-    }
-  }
-};
-</script>
 
 <style>
 .vote-button {

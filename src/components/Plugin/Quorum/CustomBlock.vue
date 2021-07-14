@@ -1,16 +1,3 @@
-<template>
-  <Block title="Quorum" :loading="!loaded">
-    <div class="text-white mb-1">
-      <span class="mr-1">
-        {{ _n(totalScore) }} / {{ _n(totalVotingPower) }}
-        {{ _shorten(space.symbol, 'symbol') }}
-      </span>
-      <span class="float-right" v-text="_n(quorum, '0.[00]%')" />
-    </div>
-    <UiProgress :value="quorum" :max="1" class="mb-3" />
-  </Block>
-</template>
-
 <script>
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import Plugin from '@snapshot-labs/snapshot.js/src/plugins/quorum';
@@ -48,3 +35,16 @@ export default {
   }
 };
 </script>
+
+<template>
+  <Block title="Quorum" :loading="!loaded">
+    <div class="text-white mb-1">
+      <span class="mr-1">
+        {{ _n(totalScore) }} / {{ _n(totalVotingPower) }}
+        {{ _shorten(space.symbol, 'symbol') }}
+      </span>
+      <span class="float-right" v-text="_n(quorum, '0.[00]%')" />
+    </div>
+    <UiProgress :value="quorum" :max="1" class="mb-3" />
+  </Block>
+</template>
