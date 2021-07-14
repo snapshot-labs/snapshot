@@ -137,7 +137,7 @@
   },
   "delegate": {
     "header": "ప్రతినిధి",
-    "selectAddress": "చిరునామాను ఎంచుకోండి",
+    "selectDelegate": "Select delegate",
     "to": "To",
     "addressPlaceholder": "Address or ENS name",
     "spacePlaceholder": "స్పేస్ (ఐచ్ఛిక)",
@@ -228,14 +228,14 @@
     "description": {
       "single-choice": "Each voter may select only one choice.",
       "approval": "Each voter may select any number of choices.",
-      "quadratic": "Each voter may spread voting power across any number of choices. Results are calculated quaratically.",
+      "quadratic": "Each voter may spread voting power across any number of choices. Results are calculated quadratically.",
       "ranked-choice": "Each voter may select and rank any number of choices. Results are calculted by instant-runoff counting method.",
       "weighted": "Each voter may spread voting power across any number of choices."
     }
   },
   "safeSnap": {
     "currentOutcome": "Current outcome: {0}",
-    "currentBond": "Current bond: {0}",
+    "currentBond": "Current bond: {0} {1}",
     "finalizedIn": "Finalized {0}",
     "executableIn": "Executable {0}",
     "finalOutcome": "Outcome: {0}",
@@ -262,7 +262,7 @@
     "claimed_header": "Congratulations! You got a new POAP in your account",
     "loading_header": "The POAP is being added to your collection",
     "button_claim": "Claim",
-    "button_show": "Show me my badges",
+    "button_show": "Show me my collection",
     "success_claim": "Your POAP is on your address",
     "error_claim": "There was a problem minting the token"
   }

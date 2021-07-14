@@ -137,7 +137,7 @@
   },
   "delegate": {
     "header": "Delegera",
-    "selectAddress": "Välj adress",
+    "selectDelegate": "Select delegate",
     "to": "Till",
     "addressPlaceholder": "Adress eller ENS namn",
     "spacePlaceholder": "Space (valfritt)",
@@ -228,14 +228,14 @@
     "description": {
       "single-choice": "Varje väljare kan välja endast ett val.",
       "approval": "Varje väljare kan välja valfritt antal val.",
-      "quadratic": "Varje väljare kan sprida röststyrka över valfritt antal val. Resultaten beräknas kvartalsvis.",
+      "quadratic": "Each voter may spread voting power across any number of choices. Results are calculated quadratically.",
       "ranked-choice": "Varje väljare kan välja och rangordna valfritt antal val. Resultat kalkyleras genom omedelbar avrinningsräkning.",
       "weighted": "Varje väljare kan sprida rösträtt över valfritt antal val."
     }
   },
   "safeSnap": {
     "currentOutcome": "Aktuellt resultat: {0}",
-    "currentBond": "Nuvarande obligation: {0}",
+    "currentBond": "Current bond: {0} {1}",
     "finalizedIn": "Slutförd {0}",
     "executableIn": "Körbar {0}",
     "finalOutcome": "Resultat: {0}",
@@ -262,7 +262,7 @@
     "claimed_header": "Grattis! Du fick en ny POAP på ditt konto",
     "loading_header": "POAP läggs till i din kollektion",
     "button_claim": "Anspråk",
-    "button_show": "Visa mig mina märken",
+    "button_show": "Show me my collection",
     "success_claim": "Din POAP är på din adress",
     "error_claim": "Det gick inte att radera den token"
   }

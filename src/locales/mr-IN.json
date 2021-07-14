@@ -137,7 +137,7 @@
   },
   "delegate": {
     "header": "डेलिगेट",
-    "selectAddress": "ऍड्रेस सिलेक्ट करा",
+    "selectDelegate": "Select delegate",
     "to": "प्रति",
     "addressPlaceholder": "ई एन एस नाव किंवा ऍड्रेस",
     "spacePlaceholder": "जागा (पर्यायी)",
@@ -228,14 +228,14 @@
     "description": {
       "single-choice": "प्रत्येक मतदार केवळ एक निवड निवडू शकतो.",
       "approval": "प्रत्येक मतदार कितीही निवडी निवडू शकतो.",
-      "quadratic": "प्रत्येक मतदार कोणत्याही निवडीमध्ये मतदानाची शक्ती पसरवू शकतो. परिणामांची मोजमाप मोजली जाते.",
+      "quadratic": "Each voter may spread voting power across any number of choices. Results are calculated quadratically.",
       "ranked-choice": "प्रत्येक मतदार कितीही निवडी निवडू शकतो आणि रँक करू शकतो. इन्स्टंट-रनऑफ मोजणीच्या पद्धतीद्वारे परिणामांची गणना केली जाते.",
       "weighted": "Each voter may spread voting power across any number of choices."
     }
   },
   "safeSnap": {
     "currentOutcome": "सध्याचे परिणाम: {0}",
-    "currentBond": "चालू बाँड: {0}",
+    "currentBond": "Current bond: {0} {1}",
     "finalizedIn": "फाईनलाईसड{0}",
     "executableIn": "एक्सिक्युटेबल {0}",
     "finalOutcome": "औटकॉम: {0}",
@@ -262,7 +262,7 @@
     "claimed_header": "अभिनंदन! आपल्या खात्यात एक नवीन पीओएपी आला",
     "loading_header": "आपल्या संग्रहात पीओएपी जोडला जात आहे",
     "button_claim": "दावा करा",
-    "button_show": "माझे बॅज दाखवा",
+    "button_show": "Show me my collection",
     "success_claim": "आपला पीओएपी आपल्या पत्त्यावर आहे",
     "error_claim": "टोकन मिंट करताना एक समस्या आली"
   }

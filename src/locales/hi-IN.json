@@ -137,7 +137,7 @@
   },
   "delegate": {
     "header": "डेलीगेट",
-    "selectAddress": "एड्रेस चुने",
+    "selectDelegate": "Select delegate",
     "to": "को",
     "addressPlaceholder": "पता या ईएनएस नाम",
     "spacePlaceholder": "स्पेस (वैकल्पिक)",
@@ -228,14 +228,14 @@
     "description": {
       "single-choice": "प्रत्येक मतदाता केवल एक विकल्प का चयन कर सकता है",
       "approval": "प्रत्येक मतदाता किसी भी संख्या में विकल्पों का चयन कर सकता है",
-      "quadratic": "प्रत्येक मतदाता किसी भी संख्या में विकल्पों में मतदान शक्ति का प्रसार कर सकता है। परिणामों की गणना त्रैमासिक रूप से की जाती है",
+      "quadratic": "Each voter may spread voting power across any number of choices. Results are calculated quadratically.",
       "ranked-choice": "प्रत्येक मतदाता किसी भी विकल्प का चयन और रैंक कर सकता है। परिणामों की गणना तत्काल गणना पद्धति द्वारा की जाती है",
       "weighted": "प्रत्येक मतदाता किसी भी संख्या में विकल्पों में मतदान शक्ति का प्रसार कर सकता है"
     }
   },
   "safeSnap": {
     "currentOutcome": "वर्तमान परिणाम:{0}",
-    "currentBond": "वर्त्तमान बॉन्ड:{0}",
+    "currentBond": "Current bond: {0} {1}",
     "finalizedIn": "फायनलाइस{0}",
     "executableIn": "निष्पादन{0}",
     "finalOutcome": "निष्पादन:{0}",
@@ -262,7 +262,7 @@
     "claimed_header": "बधाई हो! आपको अपने खाते में एक नया POAP मिला है",
     "loading_header": "POAP को आपके संग्रह में जोड़ा जा रहा है",
     "button_claim": "दावा करें",
-    "button_show": "मेरे बैज दिखाए",
+    "button_show": "Show me my collection",
     "success_claim": "आपका POAP आपके पते पर है",
     "error_claim": "टोकन बनाने में एक समस्या हुई"
   }
