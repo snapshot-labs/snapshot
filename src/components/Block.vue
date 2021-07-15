@@ -1,7 +1,7 @@
 <script setup>
 import { defineProps, defineEmits } from 'vue';
 
-const props = defineProps({
+defineProps({
   title: String,
   counter: Number,
   slim: Boolean,
@@ -9,7 +9,7 @@ const props = defineProps({
   loading: Boolean
 });
 
-const emit = defineEmits(['submit']);
+defineEmits(['submit']);
 </script>
 
 <template>

@@ -8,7 +8,6 @@ const isCore = computed(() => {
   const members = props.members.map(address => address.toLowerCase());
   return members.includes(props.address.toLowerCase());
 });
-const isVerified = computed(() => false);
 </script>
 
 <template>

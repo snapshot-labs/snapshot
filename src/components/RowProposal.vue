@@ -7,13 +7,6 @@ const props = defineProps({
   verified: Array,
   i: String
 });
-const isVerified = computed(() => {
-  return (
-    Array.isArray(props.verified) &&
-    props.verified.length > 0 &&
-    props.verified.includes(props.proposal.address)
-  );
-});
 
 const period = computed(() => {
   const ts = (Date.now() / 1e3).toFixed();
