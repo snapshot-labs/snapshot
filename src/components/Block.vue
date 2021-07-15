@@ -1,14 +1,15 @@
-<script>
-export default {
-  props: {
-    title: String,
-    counter: Number,
-    slim: Boolean,
-    icon: String,
-    loading: Boolean
-  },
-  emits: ['submit']
-};
+<script setup>
+import { defineProps, defineEmits } from 'vue';
+
+const props = defineProps({
+  title: String,
+  counter: Number,
+  slim: Boolean,
+  icon: String,
+  loading: Boolean
+});
+
+const emit = defineEmits(['submit']);
 </script>
 
 <template>

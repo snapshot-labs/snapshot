@@ -28,7 +28,7 @@ export default {
     />
     <jazzicon
       v-else
-      :seed="seed"
+      :seed="parseInt(seed)"
       :address="address"
       :diameter="parseInt(size) - 2 || 22"
       class="d-inline-block v-align-middle line-height-0"
