@@ -1,63 +1,53 @@
-<script>
-import { ref, watch } from 'vue';
+<script setup>
+import { ref, watch, defineEmits, defineProps } from 'vue';
 import { percentageOfTotal } from '@/helpers/voting/quadratic';
 import { useMediaQuery } from '@/composables/useMediaQuery';
 
-export default {
-  props: {
-    proposal: {
-      type: Object,
-      required: true
-    }
-  },
-  emits: ['selectChoice'],
-  setup(_, { emit }) {
-    const selectedChoices = ref({});
-
-    const { isSmallScreen } = useMediaQuery();
-
-    function percentage(i) {
-      return (
-        Math.round(
-          percentageOfTotal(
-            i + 1,
-            selectedChoices.value,
-            Object.values(selectedChoices.value)
-          ) * 10
-        ) / 10
-      );
-    }
-
-    function addVote(i) {
-      selectedChoices.value[i] = selectedChoices.value[i]
-        ? (selectedChoices.value[i] += 1)
-        : 1;
-    }
-
-    function removeVote(i) {
-      if (selectedChoices.value[i])
-        selectedChoices.value[i] =
-          selectedChoices.value[i] < 1 ? 0 : (selectedChoices.value[i] -= 1);
-    }
-
-    // Delete choice if empty string or 0
-    watch(selectedChoices.value, currentValue => {
-      Object.entries(currentValue).forEach(choice => {
-        if (choice[1] === '' || choice[1] === 0)
-          delete selectedChoices.value[choice[0]];
-      });
-      emit('selectChoice', selectedChoices.value);
-    });
-
-    return {
-      addVote,
-      removeVote,
-      selectedChoices,
-      percentage,
-      isSmallScreen
-    };
+defineProps({
+  proposal: {
+    type: Object,
+    required: true
   }
-};
+});
+
+const emit = defineEmits(['selectChoice']);
+
+const selectedChoices = ref({});
+
+const { isSmallScreen } = useMediaQuery();
+
+function percentage(i) {
+  return (
+    Math.round(
+      percentageOfTotal(
+        i + 1,
+        selectedChoices.value,
+        Object.values(selectedChoices.value)
+      ) * 10
+    ) / 10
+  );
+}
+
+function addVote(i) {
+  selectedChoices.value[i] = selectedChoices.value[i]
+    ? (selectedChoices.value[i] += 1)
+    : 1;
+}
+
+function removeVote(i) {
+  if (selectedChoices.value[i])
+    selectedChoices.value[i] =
+      selectedChoices.value[i] < 1 ? 0 : (selectedChoices.value[i] -= 1);
+}
+
+// Delete choice if empty string or 0
+watch(selectedChoices.value, currentValue => {
+  Object.entries(currentValue).forEach(choice => {
+    if (choice[1] === '' || choice[1] === 0)
+      delete selectedChoices.value[choice[0]];
+  });
+  emit('selectChoice', selectedChoices.value);
+});
 </script>
 
 <template>

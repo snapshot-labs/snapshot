@@ -1,16 +1,14 @@
-<script>
-export default {
-  props: { modelValue: String, disabled: Boolean },
-  emits: ['update:modelValue', 'change'],
-  setup(_, { emit }) {
-    function handleChange(event) {
-      emit('update:modelValue', event.target.value);
-      emit('change', event.target.value);
-    }
+<script setup>
+import { defineEmits, defineProps } from 'vue';
 
-    return { handleChange };
-  }
-};
+defineProps({ modelValue: String, disabled: Boolean });
+
+const emit = defineEmits[('update:modelValue', 'change')];
+
+function handleChange(event) {
+  emit('update:modelValue', event.target.value);
+  emit('change', event.target.value);
+}
 </script>
 
 <template>

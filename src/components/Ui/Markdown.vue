@@ -1,28 +1,23 @@
-<script>
-import { computed } from 'vue';
+<script setup>
+import { computed, defineProps } from 'vue';
 import { Remarkable } from 'remarkable';
 import { linkify } from 'remarkable/linkify';
 // import sanitizeHtml from 'sanitize-html';
 
-export default {
-  props: { body: String },
-  setup(props) {
-    const remarkable = new Remarkable({
-      html: false,
-      breaks: true,
-      typographer: false
-    }).use(linkify);
+const props = defineProps({ body: String });
 
-    const markdown = computed(() => {
-      let body = props.body;
-      body = remarkable.render(body);
-      // body = sanitizeHtml(body);
-      return body;
-    });
+const remarkable = new Remarkable({
+  html: false,
+  breaks: true,
+  typographer: false
+}).use(linkify);
 
-    return { markdown };
-  }
-};
+const markdown = computed(() => {
+  let body = props.body;
+  body = remarkable.render(body);
+  // body = sanitizeHtml(body);
+  return body;
+});
 </script>
 
 <template>

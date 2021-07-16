@@ -1,47 +1,39 @@
-<script>
-export default {
-  emits: ['select'],
-  props: {
-    items: Array,
-    top: String,
-    right: String
-  },
-  data() {
-    return {
-      open: false
-    };
-  },
+<script setup>
+import { ref, onBeforeUnmount, computed, defineProps, defineEmits } from 'vue';
 
-  computed: {
-    cssVars() {
-      return { '--top': this.top, '--right': this.right };
-    }
-  },
+const props = defineProps({
+  items: Array,
+  top: String,
+  right: String
+});
 
-  methods: {
-    handleClick(action) {
-      this.$emit('select', action);
-      this.open = false;
-    },
-    close(e) {
-      if (!this.$el.contains(e.target)) {
-        this.open = false;
-      }
-    }
-  },
+const emit = defineEmits(['select']);
 
-  created() {
-    window.addEventListener('click', this.close);
-  },
+const open = ref(false);
+const dropdownEl = ref(null);
 
-  beforeUnmount() {
-    window.removeEventListener('click', this.close);
+const cssVars = computed(() => {
+  return { '--top': props.top, '--right': props.right };
+});
+
+function handleClick(action) {
+  emit('select', action);
+  open.value = false;
+}
+
+function close(e) {
+  if (!dropdownEl.value.contains(e.target)) {
+    open.value = false;
   }
-};
+}
+
+window.addEventListener('click', close);
+
+onBeforeUnmount(() => window.removeEventListener('click', close));
 </script>
 
 <template>
-  <div @click.capture="open = !open" class="position-relative">
+  <div ref="dropdownEl" @click.capture="open = !open" class="position-relative">
     <div class="button">
       <slot />
     </div>
