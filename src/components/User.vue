@@ -1,24 +1,19 @@
-<script>
-import { watchEffect } from 'vue';
+<script setup>
+import { watchEffect, defineProps } from 'vue';
 import { useUsername } from '@/composables/useUsername';
 
-export default {
-  props: {
-    address: String,
-    space: Object,
-    profile: Object
-  },
-  setup(props) {
-    const { address, profile, username } = useUsername();
+const props = defineProps({
+  address: String,
+  space: Object,
+  profile: Object
+});
 
-    watchEffect(() => {
-      address.value = props.address;
-      profile.value = props.profile;
-    });
+const { address, profile, username } = useUsername();
 
-    return { username };
-  }
-};
+watchEffect(() => {
+  address.value = props.address;
+  profile.value = props.profile;
+});
 </script>
 
 <template>

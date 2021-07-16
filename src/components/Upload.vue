@@ -1,36 +1,33 @@
-<script>
-export default {
-  data() {
-    return {
-      loading: false
+<script setup>
+import { ref, defineEmits } from 'vue';
+
+const emit = defineEmits(['loading', 'input']);
+
+const loading = ref(false);
+
+async function handleFileChange(e) {
+  loading.value = true;
+  emit('loading', loading.value);
+  const file = e.target.files[0];
+  const formData = new FormData();
+  formData.append('file', file);
+  try {
+    const url = `${process.env.VUE_APP_HUB_URL}/api/upload`;
+    const init = {
+      method: 'POST',
+      body: formData
     };
-  },
-  methods: {
-    async handleFileChange(e) {
-      this.loading = true;
-      this.$emit('loading', this.loading);
-      const file = e.target.files[0];
-      const formData = new FormData();
-      formData.append('file', file);
-      try {
-        const url = `${process.env.VUE_APP_HUB_URL}/api/upload`;
-        const init = {
-          method: 'POST',
-          body: formData
-        };
-        const result = await fetch(url, init);
-        const output = await result.json();
-        this.$emit('input', `ipfs://${output.file.ipfs_hash}`);
-        this.loading = false;
-        this.$emit('loading', this.loading);
-      } catch (error) {
-        this.loading = false;
-        this.$emit('loading', this.loading);
-        console.log(error);
-      }
-    }
+    const result = await fetch(url, init);
+    const output = await result.json();
+    emit('input', `ipfs://${output.file.ipfs_hash}`);
+    loading.value = false;
+    emit('loading', loading.value);
+  } catch (error) {
+    loading.value = false;
+    emit('loading', loading.value);
+    console.log(error);
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

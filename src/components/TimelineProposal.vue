@@ -1,32 +1,27 @@
-<script>
-import { watchEffect, computed } from 'vue';
+<script setup>
+import { watchEffect, computed, defineProps } from 'vue';
 import { useUsername } from '@/composables/useUsername';
 import removeMd from 'remove-markdown';
 
-export default {
-  props: {
-    proposal: Object,
-    profiles: Object
-  },
-  setup(props) {
-    const body = computed(() => removeMd(props.proposal.body));
+const props = defineProps({
+  proposal: Object,
+  profiles: Object
+});
 
-    const period = computed(() => {
-      if (props.proposal.state === 'closed') return 'endedAgo';
-      if (props.proposal.state === 'active') return 'endIn';
-      return 'startIn';
-    });
+const body = computed(() => removeMd(props.proposal.body));
 
-    const { address, profile, username } = useUsername();
+const period = computed(() => {
+  if (props.proposal.state === 'closed') return 'endedAgo';
+  if (props.proposal.state === 'active') return 'endIn';
+  return 'startIn';
+});
 
-    watchEffect(() => {
-      address.value = props.proposal.author;
-      profile.value = props.profiles[props.proposal.author];
-    });
+const { address, profile, username } = useUsername();
 
-    return { username, body, period };
-  }
-};
+watchEffect(() => {
+  address.value = props.proposal.author;
+  profile.value = props.profiles[props.proposal.author];
+});
 </script>
 
 <template>
