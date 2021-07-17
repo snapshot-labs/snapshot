@@ -1,17 +1,11 @@
-<script>
-import { computed } from 'vue';
+<script setup>
+import { computed, defineProps } from 'vue';
 
-export default {
-  props: { value: { Number, Array }, max: Number },
-  setup(props) {
-    const bars = computed(() =>
-      Array.isArray(props.value) ? props.value : [props.value]
-    );
-    const total = computed(() => bars.value.reduce((a, b) => a + b, 0));
+const props = defineProps({ value: { Number, Array }, max: Number });
 
-    return { bars, total };
-  }
-};
+const bars = computed(() =>
+  Array.isArray(props.value) ? props.value : [props.value]
+);
 </script>
 
 <template>

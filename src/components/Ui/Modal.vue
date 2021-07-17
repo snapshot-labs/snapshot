@@ -1,22 +1,20 @@
-<script>
-import { watch, toRefs } from 'vue';
+<script setup>
+import { watch, toRefs, defineProps } from 'vue';
 import { useModal } from '@/composables/useModal';
 
-export default {
-  props: {
-    open: {
-      type: Boolean,
-      required: true
-    }
-  },
-  setup(props) {
-    const { open } = toRefs(props);
-    const { modalOpen } = useModal();
-    watch(open, (val, prev) => {
-      if (val !== prev) modalOpen.value = !modalOpen.value;
-    });
+const props = defineProps({
+  open: {
+    type: Boolean,
+    required: true
   }
-};
+});
+
+const { open } = toRefs(props);
+const { modalOpen } = useModal();
+
+watch(open, (val, prev) => {
+  if (val !== prev) modalOpen.value = !modalOpen.value;
+});
 </script>
 
 <template>

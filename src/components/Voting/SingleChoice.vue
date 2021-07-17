@@ -1,25 +1,21 @@
-<script>
-import { ref } from 'vue';
+<script setup>
+import { ref, defineProps, defineEmits } from 'vue';
 
-export default {
-  props: {
-    proposal: {
-      type: Object,
-      required: true
-    }
-  },
-  emits: ['selectChoice'],
-  setup(_, { emit }) {
-    const selectedChoice = ref(null);
-
-    function selectChoice(i) {
-      selectedChoice.value = i;
-      emit('selectChoice', i);
-    }
-
-    return { selectChoice, selectedChoice };
+defineProps({
+  proposal: {
+    type: Object,
+    required: true
   }
-};
+});
+
+const emit = defineEmits(['selectChoice']);
+
+const selectedChoice = ref(null);
+
+function selectChoice(i) {
+  selectedChoice.value = i;
+  emit('selectChoice', i);
+}
 </script>
 
 <template>

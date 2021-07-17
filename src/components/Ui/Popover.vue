@@ -1,61 +1,49 @@
-<script>
-import { onMounted, ref, watch } from 'vue';
+<script setup>
+import { onMounted, ref, watch, defineProps } from 'vue';
 import { createPopper } from '@popperjs/core';
 import { useDebounce } from '@/composables/useDebounce';
 import { useDetectInput } from '@/composables/useDetectInput';
 import { useMediaQuery } from '@/composables/useMediaQuery';
 
-export default {
-  props: {
-    options: Object
-  },
-  setup(props) {
-    const open = ref(false);
-    const popHovered = ref(false);
+const props = defineProps({
+  options: Object
+});
 
-    const itemref = ref(null);
-    const contentref = ref(null);
+const open = ref(false);
+const popHovered = ref(false);
 
-    const { isTouchScreen } = useDetectInput();
-    const { isXLargeScreen } = useMediaQuery();
+const itemref = ref(null);
+const contentref = ref(null);
 
-    function popClose() {
-      if (!popHovered.value) open.value = false;
-    }
+const { isTouchScreen } = useDetectInput();
+const { isXLargeScreen } = useMediaQuery();
 
-    let popperInstance;
+const debounce = useDebounce();
 
-    onMounted(() => {
-      popperInstance = createPopper(itemref.value, contentref.value, {
-        placement: props.options.placement,
-        modifiers: [
-          {
-            name: 'offset',
-            options: {
-              offset: props.options.offset
-            }
-          }
-        ]
-      });
-    });
+function popClose() {
+  if (!popHovered.value) open.value = false;
+}
 
-    watch(open, () => {
-      if (!isXLargeScreen.value)
-        popperInstance.setOptions({ placement: 'bottom' });
-      else popperInstance.setOptions({ placement: 'bottom-start' });
-    });
+let popperInstance;
 
-    return {
-      open,
-      popClose,
-      popHovered,
-      itemref,
-      contentref,
-      debounce: useDebounce(),
-      isTouchScreen
-    };
-  }
-};
+onMounted(() => {
+  popperInstance = createPopper(itemref.value, contentref.value, {
+    placement: props.options.placement,
+    modifiers: [
+      {
+        name: 'offset',
+        options: {
+          offset: props.options.offset
+        }
+      }
+    ]
+  });
+});
+
+watch(open, () => {
+  if (!isXLargeScreen.value) popperInstance.setOptions({ placement: 'bottom' });
+  else popperInstance.setOptions({ placement: 'bottom-start' });
+});
 </script>
 
 <template>

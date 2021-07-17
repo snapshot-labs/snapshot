@@ -1,17 +1,14 @@
-<script>
-import { ref } from 'vue';
-export default {
-  props: {
-    address: String,
-    size: String,
-    imgsrc: String,
-    seed: [Number, String]
-  },
-  setup() {
-    const error = ref(false);
-    return { error };
-  }
-};
+<script setup>
+import { ref, defineProps } from 'vue';
+
+defineProps({
+  address: String,
+  size: String,
+  imgsrc: String,
+  seed: [Number, String]
+});
+
+const error = ref(false);
 </script>
 
 <template>

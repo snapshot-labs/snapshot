@@ -1,25 +1,20 @@
-<script>
-import { computed } from 'vue';
+<script setup>
+import { computed, defineProps } from 'vue';
 import Autolinker from 'autolinker';
 
-export default {
-  props: {
-    text: String,
-    truncate: {
-      type: Number,
-      default: 0
-    }
-  },
-  setup(props) {
-    const textWithLinks = computed(() =>
-      Autolinker.link(props.text, {
-        truncate: props.truncate
-      })
-    );
-
-    return { textWithLinks };
+const props = defineProps({
+  text: String,
+  truncate: {
+    type: Number,
+    default: 0
   }
-};
+});
+
+const textWithLinks = computed(() =>
+  Autolinker.link(props.text, {
+    truncate: props.truncate
+  })
+);
 </script>
 
 <template>
