@@ -10,14 +10,14 @@ const { locale } = useI18n();
 
 const [
   yearNow = new Date().getFullYear(),
-  monthNow = new Date().getMonth() + 1,
-  dayNow = new Date().getDate()
+  monthNow = new Date().getMonth() + 1
+  // dayNow = new Date().getDate()
 ] = props.modelValue ? props.modelValue.split('-') : [];
 
 const input = ref(props.modelValue);
 const year = ref(yearNow);
 const month = ref(monthNow - 1);
-const day = ref(dayNow);
+// const day = ref(dayNow);
 
 const today = computed(() => {
   return formatDate(
