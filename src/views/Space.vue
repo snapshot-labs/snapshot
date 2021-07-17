@@ -5,7 +5,7 @@ import { useRoute } from 'vue-router';
 import { useInfiniteLoader } from '@/composables/useInfiniteLoader';
 import { useScrollMonitor } from '@/composables/useScrollMonitor';
 import { useDomain } from '@/composables/useDomain';
-import { apolloClient } from '@/apollo';
+import { apolloClient } from '@/helpers/apollo';
 import { PROPOSALS_QUERY } from '@/helpers/queries';
 import { useProfiles } from '@/composables/useProfiles';
 

@@ -4,7 +4,7 @@ import i18n, {
   defaultLocale,
   setI18nLanguage,
   loadLocaleMessages
-} from '@/i18n';
+} from '@/helpers/i18n';
 
 const currentLocale = ref(lsGet('locale', defaultLocale));
 
