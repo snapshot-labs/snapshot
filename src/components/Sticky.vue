@@ -1,32 +1,27 @@
-<script>
+<script setup>
 import { ref, onBeforeUnmount, onMounted } from 'vue';
-export default {
-  setup() {
-    const sticky = ref(null);
-    const isFixed = ref(false);
-    const offsetTop = ref(-1);
-    const offsetHeight = ref(0);
 
-    function onScroll(e) {
-      const windowTop = e.target.documentElement.scrollTop;
-      isFixed.value = windowTop >= offsetTop.value;
-    }
+const sticky = ref(null);
+const isFixed = ref(false);
+const offsetTop = ref(-1);
+const offsetHeight = ref(0);
 
-    onMounted(() => {
-      window.addEventListener('scroll', onScroll);
-      if (sticky.value) {
-        offsetTop.value = sticky.value.offsetTop;
-        offsetHeight.value = sticky.value.offsetHeight;
-      }
-    });
+function onScroll(e) {
+  const windowTop = e.target.documentElement.scrollTop;
+  isFixed.value = windowTop >= offsetTop.value;
+}
 
-    onBeforeUnmount(() => {
-      window.removeEventListener('scroll', onScroll);
-    });
-
-    return { isFixed, offsetHeight, offsetTop, sticky };
+onMounted(() => {
+  window.addEventListener('scroll', onScroll);
+  if (sticky.value) {
+    offsetTop.value = sticky.value.offsetTop;
+    offsetHeight.value = sticky.value.offsetHeight;
   }
-};
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener('scroll', onScroll);
+});
 </script>
 
 <template>

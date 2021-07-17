@@ -1,12 +1,12 @@
-<script>
-export default {
-  props: ['block'],
-  computed: {
-    text() {
-      return this.$t('noResultsFound');
-    }
-  }
-};
+<script setup>
+import { computed, defineProps } from 'vue';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
+
+defineProps(['block']);
+
+const text = computed(() => t('noResultsFound'));
 </script>
 
 <template>
