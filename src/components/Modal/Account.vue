@@ -1,36 +1,29 @@
-<script>
-import { toRefs, ref, watch, computed } from 'vue';
+<script setup>
+import { toRefs, ref, watch, computed, defineProps, defineEmits } from 'vue';
 import { useStore } from 'vuex';
 import { getInjected } from '@snapshot-labs/lock/src/utils';
 import connectors from '@/helpers/connectors.json';
 
-export default {
-  props: ['open'],
-  emits: ['login', 'close'],
-  setup(props, { emit }) {
-    const store = useStore();
-    const { open } = toRefs(props);
+const props = defineProps(['open']);
 
-    const step = ref(null);
+const emit = defineEmits(['login', 'close']);
 
-    const injected = computed(() => getInjected());
+const store = useStore();
+const { open } = toRefs(props);
 
-    async function handleLogout() {
-      await store.dispatch('logout');
-      emit('close');
-    }
+const step = ref(null);
 
-    watch(open, () => (step.value = null));
+const injected = computed(() => getInjected());
 
-    return {
-      connectors,
-      step,
-      path: 'https://raw.githubusercontent.com/snapshot-labs/lock/master/connectors/assets',
-      injected,
-      handleLogout
-    };
-  }
-};
+async function handleLogout() {
+  await store.dispatch('logout');
+  emit('close');
+}
+
+const path =
+  'https://raw.githubusercontent.com/snapshot-labs/lock/master/connectors/assets';
+
+watch(open, () => (step.value = null));
 </script>
 
 <template>

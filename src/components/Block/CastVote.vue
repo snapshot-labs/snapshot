@@ -9,7 +9,7 @@ const props = defineProps({
   modelValue: [Array, Number, Object]
 });
 
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits(['update:modelValue', 'clickVote']);
 
 const selectedChoices = computed(() => {
   if (Array.isArray(props.modelValue)) return props.modelValue.length;

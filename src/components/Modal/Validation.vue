@@ -1,68 +1,56 @@
-<script>
-import { ref, computed, toRefs, watch } from 'vue';
+<script setup>
+import { ref, computed, toRefs, watch, defineProps, defineEmits } from 'vue';
 import { useSearchFilters } from '@/composables/useSearchFilters';
 import { clone } from '@/helpers/utils';
 
 const defaultParams = {};
 
-export default {
-  props: { open: Boolean, validation: Object },
-  emits: ['add', 'close'],
-  setup(props, { emit }) {
-    const { open } = toRefs(props);
+const props = defineProps({ open: Boolean, validation: Object });
 
-    const searchInput = ref('');
-    const input = ref({
+const emit = defineEmits(['add', 'close']);
+
+const { open } = toRefs(props);
+
+const searchInput = ref('');
+const input = ref({
+  name: '',
+  params: JSON.stringify(defaultParams, null, 2)
+});
+
+const { filteredValidations } = useSearchFilters();
+const validations = computed(() => filteredValidations(searchInput.value));
+
+const isValid = computed(() => {
+  try {
+    const params = JSON.parse(input.value.params);
+    return !!params;
+  } catch (e) {
+    return false;
+  }
+});
+
+function select(n) {
+  input.value.name = n;
+}
+
+function handleSubmit() {
+  const validation = clone(input.value);
+  validation.params = JSON.parse(validation.params);
+  emit('add', validation);
+  emit('close');
+}
+
+watch(open, () => {
+  input.value.name = '';
+  if (props.validation?.params) {
+    input.value.params = JSON.stringify(props.validation.params, null, 2);
+  } else {
+    input.value = {
       name: '',
       params: JSON.stringify(defaultParams, null, 2)
-    });
-
-    const { filteredValidations } = useSearchFilters();
-    const validations = computed(() => filteredValidations(searchInput.value));
-
-    const isValid = computed(() => {
-      try {
-        const params = JSON.parse(input.value.params);
-        return !!params;
-      } catch (e) {
-        return false;
-      }
-    });
-
-    function select(n) {
-      input.value.name = n;
-    }
-
-    function handleSubmit() {
-      const validation = clone(input.value);
-      validation.params = JSON.parse(validation.params);
-      emit('add', validation);
-      emit('close');
-    }
-
-    watch(open, () => {
-      input.value.name = '';
-      if (props.validation?.params) {
-        input.value.params = JSON.stringify(props.validation.params, null, 2);
-      } else {
-        input.value = {
-          name: '',
-          params: JSON.stringify(defaultParams, null, 2)
-        };
-      }
-    });
-
-    return {
-      searchInput,
-      filteredValidations,
-      validations,
-      input,
-      isValid,
-      select,
-      handleSubmit
     };
   }
-};
+});
 </script>
 
 <template>

@@ -1,56 +1,49 @@
-<script>
-import { ref, toRefs, watch } from 'vue';
+<script setup>
+import { ref, toRefs, watch, defineProps, defineEmits } from 'vue';
 
-export default {
-  props: { open: Boolean, value: Number, selectedDate: String },
-  emits: ['input', 'close'],
-  setup(props, { emit }) {
-    const { open } = toRefs(props);
-    const input = ref('');
-    const step = ref(0);
-    const form = ref({
-      h: '12',
-      m: '00'
-    });
+const props = defineProps({
+  open: Boolean,
+  value: Number,
+  selectedDate: String
+});
 
-    function formatDate(date) {
-      const output = { h: '12', m: '00', dateString: '' };
-      if (!date) return output;
-      const dateObject = new Date(date * 1000);
-      const offset = dateObject.getTimezoneOffset();
-      const data = new Date(dateObject.getTime() - offset * 60 * 1000);
-      output.dateString = data.toISOString().split('T')[0];
-      output.h = ('0' + dateObject.getHours().toString()).slice(-2);
-      output.m = ('0' + dateObject.getMinutes().toString()).slice(-2);
-      return output;
-    }
+const emit = defineEmits(['input', 'close']);
 
-    function handleSubmit() {
-      if (step.value === 0) return (step.value = 1);
-      const [year, month, day] = input.value.split('-');
-      let timestamp = new Date(
-        year,
-        month - 1,
-        day,
-        form.value.h,
-        form.value.m,
-        0
-      );
-      timestamp = new Date(timestamp).getTime() / (1e3).toFixed();
-      emit('input', timestamp);
-      emit('close');
-    }
+const { open } = toRefs(props);
+const input = ref('');
+const step = ref(0);
+const form = ref({
+  h: '12',
+  m: '00'
+});
 
-    watch(open, () => {
-      const { dateString, h, m } = formatDate(props.value);
-      step.value = 0;
-      form.value = { h, m };
-      input.value = dateString;
-    });
+function formatDate(date) {
+  const output = { h: '12', m: '00', dateString: '' };
+  if (!date) return output;
+  const dateObject = new Date(date * 1000);
+  const offset = dateObject.getTimezoneOffset();
+  const data = new Date(dateObject.getTime() - offset * 60 * 1000);
+  output.dateString = data.toISOString().split('T')[0];
+  output.h = ('0' + dateObject.getHours().toString()).slice(-2);
+  output.m = ('0' + dateObject.getMinutes().toString()).slice(-2);
+  return output;
+}
 
-    return { input, step, form, handleSubmit };
-  }
-};
+function handleSubmit() {
+  if (step.value === 0) return (step.value = 1);
+  const [year, month, day] = input.value.split('-');
+  let timestamp = new Date(year, month - 1, day, form.value.h, form.value.m, 0);
+  timestamp = new Date(timestamp).getTime() / (1e3).toFixed();
+  emit('input', timestamp);
+  emit('close');
+}
+
+watch(open, () => {
+  const { dateString, h, m } = formatDate(props.value);
+  step.value = 0;
+  form.value = { h, m };
+  input.value = dateString;
+});
 </script>
 
 <template>

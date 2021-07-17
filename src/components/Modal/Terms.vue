@@ -1,18 +1,17 @@
-<script>
+<script setup>
+import { defineProps, defineEmits } from 'vue';
 import { getUrl } from '@snapshot-labs/snapshot.js/src/utils.ts';
 
-export default {
-  props: { open: Boolean, space: Object },
-  emits: ['close'],
-  setup(props, { emit }) {
-    function accept() {
-      emit('accept');
-      emit('close');
-    }
+const props = defineProps({ open: Boolean, space: Object });
 
-    return { accept, getIpfsUrl: getUrl(props.space.terms ?? '') };
-  }
-};
+const emit = defineEmits(['close']);
+
+const getIpfsUrl = getUrl(props.space.terms ?? '');
+
+function accept() {
+  emit('accept');
+  emit('close');
+}
 </script>
 
 <template>
