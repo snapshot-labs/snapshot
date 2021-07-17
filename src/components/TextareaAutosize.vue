@@ -102,18 +102,11 @@ watch(modelValue, v => {
 watch(val, v => {
   nextTick(resize);
   emit('update:modelValue', v);
-});
-
-watch(minHeight, () => {
-  nextTick(resize);
-});
-
-watch(maxHeight, () => {
-  nextTick(resize);
-});
-
-watch(val, v => {
   if (v) resize();
+});
+
+watch([minHeight, maxHeight], () => {
+  nextTick(resize);
 });
 
 onMounted(() => resize());
