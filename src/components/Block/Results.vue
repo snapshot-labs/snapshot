@@ -1,66 +1,61 @@
-<script>
-import { computed } from 'vue';
+<script setup>
+import { computed, defineProps } from 'vue';
 import * as jsonexport from 'jsonexport/dist';
 import pkg from '@/../package.json';
 import { useMediaQuery } from '@/composables/useMediaQuery';
 
-export default {
-  props: {
-    id: String,
-    space: Object,
-    proposal: Object,
-    results: Object,
-    votes: Object,
-    loaded: Boolean,
-    strategies: Object
-  },
-  setup(props) {
-    const ts = (Date.now() / 1e3).toFixed();
+const props = defineProps({
+  id: String,
+  space: Object,
+  proposal: Object,
+  results: Object,
+  votes: Object,
+  loaded: Boolean,
+  strategies: Object
+});
 
-    const { isSmallScreen } = useMediaQuery();
+const ts = (Date.now() / 1e3).toFixed();
 
-    const titles = computed(() =>
-      props.strategies.map(strategy => strategy.params.symbol)
-    );
-    const choices = computed(() =>
-      props.proposal.choices
-        .map((choice, i) => ({ i, choice }))
-        .sort(
-          (a, b) =>
-            props.results.resultsByVoteBalance[b.i] -
-            props.results.resultsByVoteBalance[a.i]
-        )
-    );
+const { isSmallScreen } = useMediaQuery();
 
-    async function downloadReport() {
-      const obj = props.votes
-        .map(vote => {
-          return {
-            address: vote.voter,
-            choice: vote.choice,
-            balance: vote.balance,
-            timestamp: vote.created,
-            dateUtc: new Date(parseInt(vote.created) * 1e3).toUTCString(),
-            authorIpfsHash: vote.id
-            // relayerIpfsHash: vote[1].relayerIpfsHash
-          };
-        })
-        .sort((a, b) => a.timestamp - b.timestamp, 0);
-      try {
-        const csv = await jsonexport(obj);
-        const link = document.createElement('a');
-        link.setAttribute('href', `data:text/csv;charset=utf-8,${csv}`);
-        link.setAttribute('download', `${pkg.name}-report-${props.id}.csv`);
-        document.body.appendChild(link);
-        link.click();
-      } catch (e) {
-        console.error(e);
-      }
-    }
+const titles = computed(() =>
+  props.strategies.map(strategy => strategy.params.symbol)
+);
+const choices = computed(() =>
+  props.proposal.choices
+    .map((choice, i) => ({ i, choice }))
+    .sort(
+      (a, b) =>
+        props.results.resultsByVoteBalance[b.i] -
+        props.results.resultsByVoteBalance[a.i]
+    )
+);
 
-    return { ts, isSmallScreen, titles, choices, downloadReport };
+async function downloadReport() {
+  const obj = props.votes
+    .map(vote => {
+      return {
+        address: vote.voter,
+        choice: vote.choice,
+        balance: vote.balance,
+        timestamp: vote.created,
+        dateUtc: new Date(parseInt(vote.created) * 1e3).toUTCString(),
+        authorIpfsHash: vote.id
+        // relayerIpfsHash: vote[1].relayerIpfsHash
+      };
+    })
+    .sort((a, b) => a.timestamp - b.timestamp, 0);
+  try {
+    const csv = await jsonexport(obj);
+    const link = document.createElement('a');
+    link.setAttribute('href', `data:text/csv;charset=utf-8,${csv}`);
+    link.setAttribute('download', `${pkg.name}-report-${props.id}.csv`);
+    document.body.appendChild(link);
+    link.click();
+  } catch (e) {
+    console.error(e);
   }
-};
+}
 </script>
 
 <template>

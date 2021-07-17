@@ -1,30 +1,25 @@
-<script>
-import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
+<script setup>
+import { computed, defineProps } from 'vue';
 import { useStore } from 'vuex';
-import { computed } from 'vue';
+import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 
-export default {
-  props: {
-    space: Object
-  },
-  setup(props) {
-    const store = useStore();
-    const auth = getInstance();
+const props = defineProps({
+  space: Object
+});
 
-    const web3Account = computed(() => store.state.web3.account);
+const store = useStore();
+const auth = getInstance();
 
-    return {
-      isAdmin: computed(() => {
-        const admins = props.space.admins.map(address => address.toLowerCase());
-        return (
-          auth.isAuthenticated.value &&
-          web3Account.value &&
-          admins.includes(web3Account.value.toLowerCase())
-        );
-      })
-    };
-  }
-};
+const web3Account = computed(() => store.state.web3.account);
+
+const isAdmin = computed(() => {
+  const admins = props.space.admins.map(address => address.toLowerCase());
+  return (
+    auth.isAuthenticated.value &&
+    web3Account.value &&
+    admins.includes(web3Account.value.toLowerCase())
+  );
+});
 </script>
 
 <template>
