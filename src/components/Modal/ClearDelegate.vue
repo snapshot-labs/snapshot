@@ -7,7 +7,6 @@ import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { sendTransaction } from '@snapshot-labs/snapshot.js/src/utils';
 import { formatBytes32String } from '@ethersproject/strings';
 import { contractAddress } from '@/helpers/delegation';
-import abi from '@/helpers/abi';
 import { sleep } from '@/helpers/utils';
 
 const props = defineProps({
@@ -16,6 +15,8 @@ const props = defineProps({
   delegate: String,
   profiles: Object
 });
+
+const abi = ['function clearDelegate(bytes32 id)'];
 
 const emit = defineEmits(['close', 'reload']);
 
@@ -38,7 +39,7 @@ async function handleSubmit() {
     const tx = await sendTransaction(
       auth.web3,
       contractAddress,
-      abi['DelegateRegistry'],
+      abi,
       'clearDelegate',
       [formatBytes32String(props.id)]
     );
