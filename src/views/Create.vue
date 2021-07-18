@@ -191,8 +191,8 @@ const proposal = computed(() => {
           {{
             space.validation?.params.minScore || space?.filters.minScore
               ? $tc('create.validationWarning.basic.minScore', [
-                _n(space.filters.minScore),
-                space.symbol
+                  _n(space.filters.minScore),
+                  space.symbol
               ])
               : $t('create.validationWarning.basic.member')
           }}
@@ -201,7 +201,7 @@ const proposal = computed(() => {
           {{
             $t(
               space.validation.params.rules ||
-              'create.validationWarning.customValidation'
+                'create.validationWarning.customValidation'
             )
           }}
         </span>

@@ -414,7 +414,7 @@ onMounted(async () => {
                 href="https://docs.snapshot.org/spaces/create#strategies"
                 target="_blank"
                 rel="noopener noreferrer"
-              >{{ $t('learnMore') }}
+                >{{ $t('learnMore') }}
                 <Icon name="external-link" />
               </a>
             </Block>
@@ -476,8 +476,8 @@ onMounted(async () => {
                   :number="true"
                 >
                   <template v-slot:label>{{
-                      $t('settings.proposalThreshold')
-                    }}</template>
+                    $t('settings.proposalThreshold')
+                  }}</template>
                 </UiInput>
                 <div class="mb-2 d-flex flex-items-center px-2">
                   <Checkbox
