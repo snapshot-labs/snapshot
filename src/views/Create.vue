@@ -12,7 +12,7 @@ import { useTerms } from '@/composables/useTerms';
 import { PROPOSAL_QUERY } from '@/helpers/queries';
 import validations from '@snapshot-labs/snapshot.js/src/validations';
 import { clone } from '@/helpers/utils';
-import { apolloClient } from '@/apollo';
+import { apolloClient } from '@/helpers/apollo';
 import client from '@/helpers/clientEIP712';
 
 const route = useRoute();
