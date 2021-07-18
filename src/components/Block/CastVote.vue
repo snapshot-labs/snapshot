@@ -1,29 +1,26 @@
-<script>
-import { computed } from 'vue';
+<script setup>
+import { computed, defineProps, defineEmits } from 'vue';
 
-export default {
-  props: {
-    proposal: {
-      type: Object,
-      required: true
-    },
-    modelValue: [Array, Number, Object]
+const props = defineProps({
+  proposal: {
+    type: Object,
+    required: true
   },
-  setup(props, { emit }) {
-    const selectedChoices = computed(() => {
-      if (Array.isArray(props.modelValue)) return props.modelValue.length;
-      if (typeof props.modelValue === 'object' && props.modelValue !== null)
-        return Object.keys(props.modelValue).length;
-      return props.modelValue;
-    });
+  modelValue: [Array, Number, Object]
+});
 
-    function emitChoice(c) {
-      emit('update:modelValue', c);
-    }
+const emit = defineEmits(['update:modelValue', 'clickVote']);
 
-    return { selectedChoices, emitChoice };
-  }
-};
+const selectedChoices = computed(() => {
+  if (Array.isArray(props.modelValue)) return props.modelValue.length;
+  if (typeof props.modelValue === 'object' && props.modelValue !== null)
+    return Object.keys(props.modelValue).length;
+  return props.modelValue;
+});
+
+function emitChoice(c) {
+  emit('update:modelValue', c);
+}
 </script>
 
 <template>

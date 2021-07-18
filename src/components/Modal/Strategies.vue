@@ -1,13 +1,10 @@
-<script>
+<script setup>
+import { defineProps, defineEmits } from 'vue';
 import { isAddress } from '@ethersproject/address';
 
-export default {
-  props: { open: Boolean, strategies: Object, space: Object },
-  emits: ['close'],
-  setup() {
-    return { isAddress };
-  }
-};
+defineProps({ open: Boolean, strategies: Object, space: Object });
+
+defineEmits(['close']);
 </script>
 
 <template>

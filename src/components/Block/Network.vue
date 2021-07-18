@@ -1,13 +1,11 @@
-<script>
-export default {
-  props: ['network'],
-  setup() {
-    function getLogoUrl(key) {
-      return `https://raw.githubusercontent.com/snapshot-labs/snapshot.js/master/src/networks/${key}.png`;
-    }
-    return { getLogoUrl };
-  }
-};
+<script setup>
+import { defineProps } from 'vue';
+
+defineProps(['network']);
+
+function getLogoUrl(key) {
+  return `https://raw.githubusercontent.com/snapshot-labs/snapshot.js/master/src/networks/${key}.png`;
+}
 </script>
 
 <template>

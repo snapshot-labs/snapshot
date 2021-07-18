@@ -1,5 +1,5 @@
-<script>
-import { ref, watchEffect } from 'vue';
+<script setup>
+import { ref, watchEffect, defineEmits, defineProps } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useStore } from 'vuex';
 import { useUsername } from '@/composables/useUsername';
@@ -9,50 +9,51 @@ import { formatBytes32String } from '@ethersproject/strings';
 import { contractAddress } from '@/helpers/delegation';
 import { sleep } from '@/helpers/utils';
 
+const props = defineProps({
+  open: Boolean,
+  id: String,
+  delegate: String,
+  profiles: Object
+});
+
 const abi = ['function clearDelegate(bytes32 id)'];
 
-export default {
-  props: { open: Boolean, id: String, delegate: String, profiles: Object },
-  emits: ['close', 'reload'],
-  setup(props, { emit }) {
-    const store = useStore();
-    const auth = getInstance();
-    const { t } = useI18n();
+const emit = defineEmits(['close', 'reload']);
 
-    const loading = ref(false);
+const store = useStore();
+const auth = getInstance();
+const { t } = useI18n();
 
-    const { address, profile, username } = useUsername();
+const loading = ref(false);
 
-    watchEffect(() => {
-      address.value = props.delegate;
-      profile.value = props.profiles[props.delegate];
-    });
+const { address, profile, username } = useUsername();
 
-    async function handleSubmit() {
-      loading.value = true;
-      try {
-        const tx = await sendTransaction(
-          auth.web3,
-          contractAddress,
-          abi,
-          'clearDelegate',
-          [formatBytes32String(props.id)]
-        );
-        const receipt = await tx.wait();
-        console.log('Receipt', receipt);
-        await sleep(3e3);
-        store.dispatch('notify', t('notify.youDidIt'));
-        emit('reload');
-        emit('close');
-      } catch (e) {
-        console.log(e);
-      }
-      loading.value = false;
-    }
+watchEffect(() => {
+  address.value = props.delegate;
+  profile.value = props.profiles[props.delegate];
+});
 
-    return { loading, handleSubmit, username };
+async function handleSubmit() {
+  loading.value = true;
+  try {
+    const tx = await sendTransaction(
+      auth.web3,
+      contractAddress,
+      abi,
+      'clearDelegate',
+      [formatBytes32String(props.id)]
+    );
+    const receipt = await tx.wait();
+    console.log('Receipt', receipt);
+    await sleep(3e3);
+    store.dispatch('notify', t('notify.youDidIt'));
+    emit('reload');
+    emit('close');
+  } catch (e) {
+    console.log(e);
   }
-};
+  loading.value = false;
+}
 </script>
 
 <template>
