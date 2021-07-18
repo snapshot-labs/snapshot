@@ -1,31 +1,27 @@
-<script>
-import { ref, onMounted, toRefs, watch } from 'vue';
+<script setup>
+import { ref, onMounted, toRefs, watch, defineProps, defineEmits } from 'vue';
 
-export default {
-  props: {
-    modelValue: String,
-    textareaProps: String,
-    error: String,
-    disabled: Boolean
-  },
-  emits: ['update:modelValue'],
-  setup(props, { emit }) {
-    const input = ref('');
-    const { modelValue } = toRefs(props);
+const props = defineProps({
+  modelValue: String,
+  textareaProps: String,
+  error: String,
+  disabled: Boolean
+});
 
-    function handleInput() {
-      emit('update:modelValue', input.value);
-    }
+const emit = defineEmits(['update:modelValue']);
 
-    onMounted(() => {
-      if (props.modelValue) input.value = props.modelValue;
-    });
+const input = ref('');
+const { modelValue } = toRefs(props);
 
-    watch(modelValue, value => (input.value = value));
+function handleInput() {
+  emit('update:modelValue', input.value);
+}
 
-    return { input, handleInput };
-  }
-};
+onMounted(() => {
+  if (props.modelValue) input.value = props.modelValue;
+});
+
+watch(modelValue, value => (input.value = value));
 </script>
 
 <template>

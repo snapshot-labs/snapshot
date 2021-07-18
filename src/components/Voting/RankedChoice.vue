@@ -1,42 +1,31 @@
-<script>
-import { ref } from 'vue';
+<script setup>
+import { ref, defineProps, defineEmits } from 'vue';
 import draggable from 'vuedraggable';
 import { getNumberWithOrdinal } from '@/helpers/utils';
 
-export default {
-  components: { draggable },
-  props: {
-    proposal: {
-      type: Object,
-      required: true
-    }
-  },
-  emits: ['selectChoice'],
-  setup(_, { emit }) {
-    const selectedChoices = ref([]);
-
-    function selectChoice(i) {
-      selectedChoices.value.push(i);
-      emit('selectChoice', selectedChoices.value);
-    }
-
-    function removeChoice(i) {
-      selectedChoices.value.splice(i, 1);
-    }
-
-    function updateChoices() {
-      emit('selectChoice', selectedChoices.value);
-    }
-
-    return {
-      selectChoice,
-      selectedChoices,
-      removeChoice,
-      getNumberWithOrdinal,
-      updateChoices
-    };
+defineProps({
+  proposal: {
+    type: Object,
+    required: true
   }
-};
+});
+
+const emit = defineEmits(['selectChoice']);
+
+const selectedChoices = ref([]);
+
+function selectChoice(i) {
+  selectedChoices.value.push(i);
+  emit('selectChoice', selectedChoices.value);
+}
+
+function removeChoice(i) {
+  selectedChoices.value.splice(i, 1);
+}
+
+function updateChoices() {
+  emit('selectChoice', selectedChoices.value);
+}
 </script>
 
 <template>

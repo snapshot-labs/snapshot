@@ -1,9 +1,9 @@
-<script>
-export default {
-  props: {
-    counter: [Number, String]
-  }
-};
+<script setup>
+import { defineProps } from 'vue';
+
+defineProps({
+  counter: [Number, String]
+});
 </script>
 
 <template>

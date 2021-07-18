@@ -1,63 +1,47 @@
-<script>
+<script setup>
 import { ref, computed, watch, onMounted } from 'vue';
 import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
 import { useModal } from '@/composables/useModal';
 import { useDomain } from '@/composables/useDomain';
 
-export default {
-  setup() {
-    const { modalAccountOpen } = useModal();
-    const { env, domain } = useDomain();
-    const route = useRoute();
-    const store = useStore();
+const { modalAccountOpen } = useModal();
+const { env, domain } = useDomain();
+const route = useRoute();
+const store = useStore();
 
-    const loading = ref(false);
-    const modalAboutOpen = ref(false);
-    const modalLangOpen = ref(false);
-    const modalWalletNotice = ref(false);
+const loading = ref(false);
+const modalAboutOpen = ref(false);
+const modalLangOpen = ref(false);
+const modalWalletNotice = ref(false);
 
-    const space = computed(() => {
-      const key = domain || route.params.key;
-      return store.state.app.spaces[key] ? store.state.app.spaces[key] : false;
-    });
+const space = computed(() => {
+  const key = domain || route.params.key;
+  return store.state.app.spaces[key] ? store.state.app.spaces[key] : false;
+});
 
-    const walletConnectType = computed(
-      () => store.state.web3.walletConnectType
-    );
+const walletConnectType = computed(() => store.state.web3.walletConnectType);
 
-    function setTitle() {
-      document.title = space.value.name ? space.value.name : 'Snapshot';
-    }
+function setTitle() {
+  document.title = space.value.name ? space.value.name : 'Snapshot';
+}
 
-    async function handleLogin(connector) {
-      modalAccountOpen.value = false;
-      loading.value = true;
-      await store.dispatch('login', connector);
-      loading.value = false;
-    }
+async function handleLogin(connector) {
+  modalAccountOpen.value = false;
+  loading.value = true;
+  await store.dispatch('login', connector);
+  loading.value = false;
+}
 
-    watch(space, () => {
-      setTitle();
-    });
+watch(space, () => {
+  setTitle();
+});
 
-    watch(walletConnectType, val => {
-      if (val === 'Gnosis Safe Multisig') modalWalletNotice.value = true;
-    });
+watch(walletConnectType, val => {
+  if (val === 'Gnosis Safe Multisig') modalWalletNotice.value = true;
+});
 
-    onMounted(() => setTitle());
-
-    return {
-      modalAccountOpen,
-      env,
-      loading,
-      modalAboutOpen,
-      modalLangOpen,
-      modalWalletNotice,
-      handleLogin
-    };
-  }
-};
+onMounted(() => setTitle());
 </script>
 
 <template>

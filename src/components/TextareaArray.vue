@@ -1,32 +1,28 @@
-<script>
-import { ref, watch } from 'vue';
+<script setup>
+import { ref, watch, defineProps, defineEmits } from 'vue';
 
-export default {
-  props: {
-    modelValue: Array
-  },
-  emits: ['update:modelValue'],
-  setup(props, { emit }) {
-    const input = ref('');
+const props = defineProps({
+  modelValue: Array
+});
 
-    function handleInput() {
-      const inputString = input.value
-        .replace(/\n/g, ' ')
-        .replace(/,/g, ' ')
-        .replace(/;/g, ' ')
-        .split(' ')
-        .map(item => item.trim())
-        .filter(item => !!item);
-      emit('update:modelValue', inputString);
-    }
+const emit = defineEmits(['update:modelValue']);
 
-    watch(input, () => handleInput());
+const input = ref('');
 
-    if (props.modelValue) input.value = props.modelValue.join('\n');
+function handleInput() {
+  const inputString = input.value
+    .replace(/\n/g, ' ')
+    .replace(/,/g, ' ')
+    .replace(/;/g, ' ')
+    .split(' ')
+    .map(item => item.trim())
+    .filter(item => !!item);
+  emit('update:modelValue', inputString);
+}
 
-    return { input, handleInput };
-  }
-};
+watch(input, () => handleInput());
+
+if (props.modelValue) input.value = props.modelValue.join('\n');
 </script>
 
 <template>

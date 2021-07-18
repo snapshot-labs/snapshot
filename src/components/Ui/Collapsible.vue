@@ -1,8 +1,14 @@
-<script>
-export default {
-  props: { open: Boolean, title: String, number: Number, hideRemove: Boolean },
-  emits: ['remove', 'toggle']
-};
+<script setup>
+import { defineProps, defineEmits } from 'vue';
+
+defineProps({
+  open: Boolean,
+  title: String,
+  number: Number,
+  hideRemove: Boolean
+});
+
+defineEmits(['remove', 'toggle']);
 </script>
 
 <template>

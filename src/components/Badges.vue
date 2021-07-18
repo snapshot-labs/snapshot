@@ -1,19 +1,13 @@
-<script>
-import { computed } from 'vue';
+<script setup>
+import { computed, defineProps } from 'vue';
 
-export default {
-  props: { address: String, members: Object },
-  setup(props) {
-    const isCore = computed(() => {
-      if (!props.members) return false;
-      const members = props.members.map(address => address.toLowerCase());
-      return members.includes(props.address.toLowerCase());
-    });
-    const isVerified = computed(() => false);
+const props = defineProps({ address: String, members: Object });
 
-    return { isCore, isVerified };
-  }
-};
+const isCore = computed(() => {
+  if (!props.members) return false;
+  const members = props.members.map(address => address.toLowerCase());
+  return members.includes(props.address.toLowerCase());
+});
 </script>
 
 <template>
