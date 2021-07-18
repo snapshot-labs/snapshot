@@ -1,33 +1,29 @@
-<script>
-import { computed } from 'vue';
+<script setup>
+import { computed, defineProps, defineEmits } from 'vue';
 
-export default {
-  props: {
-    onName: String,
-    offName: String,
-    on: { type: Boolean, default: true }
-  },
-  emits: ['favorite'],
-  setup(props, { emit }) {
-    const name = computed(() => (props.on ? 'favorite-on' : 'favorite-off'));
+const props = defineProps({
+  onName: String,
+  offName: String,
+  on: { type: Boolean, default: true }
+});
 
-    const buttonClasses = computed(() => {
-      return {
-        'extra-icon': true,
-        'extra-icon-off': !props.on,
-        'text-primary': props.on,
-        'text-gray': !props.on
-      };
-    });
+const emit = defineEmits(['favorite']);
 
-    function handleClick(e) {
-      e.preventDefault();
-      emit('favorite');
-    }
+const name = computed(() => (props.on ? 'favorite-on' : 'favorite-off'));
 
-    return { name, buttonClasses, handleClick };
-  }
-};
+const buttonClasses = computed(() => {
+  return {
+    'extra-icon': true,
+    'extra-icon-off': !props.on,
+    'text-primary': props.on,
+    'text-gray': !props.on
+  };
+});
+
+function handleClick(e) {
+  e.preventDefault();
+  emit('favorite');
+}
 </script>
 
 <template>

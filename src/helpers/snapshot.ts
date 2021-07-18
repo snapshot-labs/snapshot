@@ -1,6 +1,6 @@
 import { getScores } from '@snapshot-labs/snapshot.js/src/utils';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
-import { apolloClient } from '@/apollo';
+import { apolloClient } from '@/helpers/apollo';
 import { PROPOSAL_VOTES_QUERY } from '@/helpers/queries';
 import cloneDeep from 'lodash/cloneDeep';
 import voting from '@/helpers/voting';

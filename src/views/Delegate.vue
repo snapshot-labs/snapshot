@@ -9,13 +9,14 @@ import { formatBytes32String } from '@ethersproject/strings';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { sendTransaction } from '@snapshot-labs/snapshot.js/src/utils';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
-import abi from '@/helpers/abi';
 import {
   getDelegates,
   getDelegators,
   contractAddress
 } from '@/helpers/delegation';
 import { sleep } from '@/helpers/utils';
+
+const abi = ['function setDelegate(bytes32 id, address delegate)'];
 
 const route = useRoute();
 const store = useStore();
@@ -67,7 +68,7 @@ async function handleSubmit() {
     const tx = await sendTransaction(
       auth.web3,
       contractAddress,
-      abi['DelegateRegistry'],
+      abi,
       'setDelegate',
       [formatBytes32String(form.value.id), address]
     );

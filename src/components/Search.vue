@@ -1,33 +1,34 @@
-<script>
+<script setup>
+import { defineProps, defineEmits } from 'vue';
 import { useRouter } from 'vue-router';
 
-export default {
-  props: { modelValue: String, placeholder: String, modal: Boolean },
-  emits: ['update:modelValue'],
-  setup(props, { emit }) {
-    const router = useRouter();
+const props = defineProps({
+  modelValue: String,
+  placeholder: String,
+  modal: Boolean
+});
+const emit = defineEmits(['update:modelValue']);
 
-    function handleInput(e) {
-      const input = e.target.value;
-      if (!props.modal) {
-        const { query } = router.currentRoute.value;
-        router.push({
-          query: input ? { ...query, q: input } : { ...query, q: undefined }
-        });
-      }
-      emit('update:modelValue', input);
-    }
+const router = useRouter();
 
-    function clearInput() {
-      if (!props.modal) {
-        const { query } = router.currentRoute.value;
-        router.push({ query: { ...query, q: undefined } });
-      }
-      emit('update:modelValue', '');
-    }
-    return { handleInput, clearInput };
+function handleInput(e) {
+  const input = e.target.value;
+  if (!props.modal) {
+    const { query } = router.currentRoute.value;
+    router.push({
+      query: input ? { ...query, q: input } : { ...query, q: undefined }
+    });
   }
-};
+  emit('update:modelValue', input);
+}
+
+function clearInput() {
+  if (!props.modal) {
+    const { query } = router.currentRoute.value;
+    router.push({ query: { ...query, q: undefined } });
+  }
+  emit('update:modelValue', '');
+}
 </script>
 
 <template>

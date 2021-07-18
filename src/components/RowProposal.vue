@@ -1,32 +1,20 @@
-<script>
-import { computed } from 'vue';
-export default {
-  props: {
-    space: Object,
-    proposal: Object,
-    verified: Array,
-    i: String
-  },
-  setup(props) {
-    const isVerified = computed(() => {
-      return (
-        Array.isArray(props.verified) &&
-        props.verified.length > 0 &&
-        props.verified.includes(props.proposal.address)
-      );
-    });
+<script setup>
+import { computed, defineProps } from 'vue';
 
-    const period = computed(() => {
-      const ts = (Date.now() / 1e3).toFixed();
-      const { start, end } = props.proposal.msg.payload;
-      if (ts > end) return 'endedAgo';
-      if (ts > start) return 'endIn';
-      return 'startIn';
-    });
+const props = defineProps({
+  space: Object,
+  proposal: Object,
+  verified: Array,
+  i: String
+});
 
-    return { isVerified, period };
-  }
-};
+const period = computed(() => {
+  const ts = (Date.now() / 1e3).toFixed();
+  const { start, end } = props.proposal.msg.payload;
+  if (ts > end) return 'endedAgo';
+  if (ts > start) return 'endIn';
+  return 'startIn';
+});
 </script>
 
 <template>

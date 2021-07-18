@@ -1,20 +1,15 @@
-<script>
-import { computed } from 'vue';
+<script setup>
+import { computed, defineProps } from 'vue';
 
-export default {
-  props: {
-    state: String
-  },
-  setup(props) {
-    const stateClass = computed(() => {
-      if (props.state === 'closed') return 'bg-purple';
-      if (props.state === 'active') return 'bg-green';
-      return '';
-    });
+const props = defineProps({
+  state: String
+});
 
-    return { stateClass };
-  }
-};
+const stateClass = computed(() => {
+  if (props.state === 'closed') return 'bg-purple';
+  if (props.state === 'active') return 'bg-green';
+  return '';
+});
 </script>
 
 <template>

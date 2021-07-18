@@ -1,24 +1,20 @@
-<script>
-import { ref } from 'vue';
+<script setup>
+import { ref, defineProps, defineEmits } from 'vue';
 
-export default {
-  props: {
-    modelValue: Boolean
-  },
-  emits: ['update:modelValue'],
-  setup(props, { emit }) {
-    const input = ref(false);
+const props = defineProps({
+  modelValue: Boolean
+});
 
-    function handleToggle() {
-      input.value = !input.value;
-      emit('update:modelValue', input.value);
-    }
+const emit = defineEmits(['update:modelValue']);
 
-    if (props.modelValue) input.value = props.modelValue.toString();
+const input = ref(false);
 
-    return { input, handleToggle };
-  }
-};
+function handleToggle() {
+  input.value = !input.value;
+  emit('update:modelValue', input.value);
+}
+
+if (props.modelValue) input.value = props.modelValue.toString();
 </script>
 
 <template>

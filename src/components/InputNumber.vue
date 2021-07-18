@@ -1,24 +1,20 @@
-<script>
-import { ref } from 'vue';
+<script setup>
+import { ref, defineProps, defineEmits } from 'vue';
 
-export default {
-  props: {
-    modelValue: Number
-  },
-  emits: ['update:modelValue'],
-  setup(props, { emit }) {
-    const input = ref('');
+const props = defineProps({
+  modelValue: Number
+});
 
-    function handleInput() {
-      if (!input.value) return emit('update:modelValue', undefined);
-      emit('update:modelValue', parseFloat(input.value));
-    }
+const emit = defineEmits(['update:modelValue']);
 
-    if (props.modelValue) input.value = props.modelValue.toString();
+const input = ref('');
 
-    return { input, handleInput };
-  }
-};
+function handleInput() {
+  if (!input.value) return emit('update:modelValue', undefined);
+  emit('update:modelValue', parseFloat(input.value));
+}
+
+if (props.modelValue) input.value = props.modelValue.toString();
 </script>
 
 <template>
