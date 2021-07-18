@@ -193,7 +193,7 @@ const proposal = computed(() => {
               ? $tc('create.validationWarning.basic.minScore', [
                   _n(space.filters.minScore),
                   space.symbol
-              ])
+                ])
               : $t('create.validationWarning.basic.member')
           }}
         </span>
