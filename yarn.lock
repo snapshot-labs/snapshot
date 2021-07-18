@@ -732,7 +732,7 @@
 
 "@snapshot-labs/snapshot.js@github:snapshot-labs/snapshot.js#vite":
   version "0.1.11"
-  resolved "https://codeload.github.com/snapshot-labs/snapshot.js/tar.gz/vite"
+  resolved "https://codeload.github.com/snapshot-labs/snapshot.js/tar.gz/master"
   dependencies:
     "@ensdomains/content-hash" "^2.5.3"
     "@ethersproject/abi" "^5.0.4"
