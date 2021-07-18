@@ -10,7 +10,7 @@ const { locale } = useI18n();
 
 const [
   yearNow = new Date().getFullYear(),
-  monthNow = new Date().getMonth() + 1
+  monthNow = new Date().getMonth() + 1,
   // dayNow = new Date().getDate()
 ] = props.modelValue ? props.modelValue.split('-') : [];
 

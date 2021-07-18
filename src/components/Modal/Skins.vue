@@ -1,27 +1,24 @@
-<script>
-import { ref, computed } from 'vue';
+<script setup>
+import { ref, computed, defineProps, defineEmits } from 'vue';
 import { useSearchFilters } from '@/composables/useSearchFilters';
 
-export default {
-  props: {
-    open: {
-      type: Boolean,
-      required: true
-    }
-  },
-  setup(_, { emit }) {
-    const searchInput = ref('');
-    const { filteredSkins } = useSearchFilters();
-    const skins = computed(() => filteredSkins(searchInput.value));
-
-    function select(key) {
-      emit('update:modelValue', key);
-      emit('close');
-    }
-
-    return { skins, searchInput, select };
+defineProps({
+  open: {
+    type: Boolean,
+    required: true
   }
-};
+});
+
+const emit = defineEmits(['close', 'update:modelValue']);
+
+const searchInput = ref('');
+const { filteredSkins } = useSearchFilters();
+const skins = computed(() => filteredSkins(searchInput.value));
+
+function select(key) {
+  emit('update:modelValue', key);
+  emit('close');
+}
 </script>
 
 <template>

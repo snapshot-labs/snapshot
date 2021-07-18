@@ -1,5 +1,5 @@
-<script>
-import { ref, computed, toRefs, watch } from 'vue';
+<script setup>
+import { ref, computed, toRefs, watch, defineProps, defineEmits } from 'vue';
 import { useSearchFilters } from '@/composables/useSearchFilters';
 import { clone } from '@/helpers/utils';
 
@@ -9,52 +9,48 @@ const defaultParams = {
   decimals: 18
 };
 
-export default {
-  props: { open: Boolean, strategy: Object },
-  emits: ['add', 'close'],
-  setup(props, { emit }) {
-    const { open } = toRefs(props);
-    const searchInput = ref('');
-    const input = ref({
+const props = defineProps({ open: Boolean, strategy: Object });
+
+const emit = defineEmits(['add', 'close']);
+
+const { open } = toRefs(props);
+const searchInput = ref('');
+const input = ref({
+  name: '',
+  params: JSON.stringify(defaultParams, null, 2)
+});
+
+const isValid = computed(() => {
+  try {
+    const params = JSON.parse(input.value.params);
+    return !!params.symbol;
+  } catch (e) {
+    return false;
+  }
+});
+
+const { filteredStrategies } = useSearchFilters();
+const strategies = computed(() => filteredStrategies(searchInput.value));
+
+function handleSubmit() {
+  const strategyObj = clone(input.value);
+  strategyObj.params = JSON.parse(strategyObj.params);
+  emit('add', strategyObj);
+  emit('close');
+}
+
+watch(open, () => {
+  if (props.strategy?.name) {
+    const strategyObj = props.strategy;
+    strategyObj.params = JSON.stringify(strategyObj.params, null, 2);
+    input.value = props.strategy;
+  } else {
+    input.value = {
       name: '',
       params: JSON.stringify(defaultParams, null, 2)
-    });
-
-    const isValid = computed(() => {
-      try {
-        const params = JSON.parse(input.value.params);
-        return !!params.symbol;
-      } catch (e) {
-        return false;
-      }
-    });
-
-    const { filteredStrategies } = useSearchFilters();
-    const strategies = computed(() => filteredStrategies(searchInput.value));
-
-    function handleSubmit() {
-      const strategyObj = clone(input.value);
-      strategyObj.params = JSON.parse(strategyObj.params);
-      emit('add', strategyObj);
-      emit('close');
-    }
-
-    watch(open, () => {
-      if (props.strategy?.name) {
-        const strategyObj = props.strategy;
-        strategyObj.params = JSON.stringify(strategyObj.params, null, 2);
-        input.value = props.strategy;
-      } else {
-        input.value = {
-          name: '',
-          params: JSON.stringify(defaultParams, null, 2)
-        };
-      }
-    });
-
-    return { searchInput, strategies, input, isValid, handleSubmit };
+    };
   }
-};
+});
 </script>
 
 <template>

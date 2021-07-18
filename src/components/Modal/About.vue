@@ -1,29 +1,21 @@
-<script>
+<script setup>
+import { defineEmits, defineProps } from 'vue';
 import pkg from '@/../package.json';
 import languages from '@/locales/languages.json';
 import gateways from '@snapshot-labs/snapshot.js/src/gateways.json';
 
-const gateway = import.meta.env.VITE_APP_IPFS_GATEWAY || gateways[0];
+defineProps(['open']);
 
-export default {
-  props: ['open'],
-  emits: ['close', 'openLang'],
-  setup(_, { emit }) {
-    function changeLang() {
-      emit('openLang');
-      emit('close');
-    }
+const emit = defineEmits(['close', 'openLang']);
 
-    return {
-      pkg,
-      commitSha: import.meta.env.VITE_APP_COMMIT_SHA,
-      hubUrl: import.meta.env.VITE_APP_HUB_URL,
-      gateway,
-      languages,
-      changeLang
-    };
-  }
-};
+const gateway = process.env.VUE_APP_IPFS_GATEWAY || gateways[0];
+const commitSha = import.meta.env.VITE_APP_COMMIT_SHA;
+const hubUrl = import.meta.env.VITE_APP_HUB_URL;
+
+function changeLang() {
+  emit('openLang');
+  emit('close');
+}
 </script>
 
 <template>
