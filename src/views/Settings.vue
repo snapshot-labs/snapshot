@@ -3,22 +3,19 @@ import { computed, onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { useStore } from 'vuex';
 import { useI18n } from 'vue-i18n';
-import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
+import { useSearchFilters } from '@/composables/useSearchFilters';
 import { getAddress } from '@ethersproject/address';
 import { validateSchema } from '@snapshot-labs/snapshot.js/src/utils';
 import schemas from '@snapshot-labs/snapshot.js/src/schemas';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import gateways from '@snapshot-labs/snapshot.js/src/gateways.json';
-import { useSearchFilters } from '@/composables/useSearchFilters';
 import { clone } from '@/helpers/utils';
 import { getSpaceUri, uriGet } from '@/helpers/ens';
 import defaults from '@/locales/default';
-import client from '@/helpers/clientEIP712';
 
 const gateway = import.meta.env.VITE_APP_IPFS_GATEWAY || gateways[0];
 const basicValidation = { name: 'basic', params: {} };
 
-const auth = getInstance();
 const route = useRoute();
 const store = useStore();
 const { t } = useI18n();
@@ -92,22 +89,14 @@ async function handleSubmit() {
     if (form.value.filters.invalids) delete form.value.filters.invalids;
     loading.value = true;
     try {
-      const result = await client.space(auth.web3, web3Account.value, {
+      await store.dispatch('send', {
         space: key.value,
-        settings: JSON.stringify(form.value)
+        type: 'settings',
+        payload: form.value
       });
-      console.log('Result', result);
-      store.dispatch('notify', t('notify.yourIsIn', ['settings']));
     } catch (e) {
-      if (!e.code || e.code !== 4001) {
-        console.log('Oops!', e);
-        const errorMessage = e?.error_description
-          ? `Oops, ${e.error_description}`
-          : t('notify.somethingWentWrong');
-        store.dispatch('notify', ['red', errorMessage]);
-      }
+      console.log(e);
     }
-
     await store.dispatch('getSpaces');
     loading.value = false;
   } else {
@@ -425,7 +414,7 @@ onMounted(async () => {
                 href="https://docs.snapshot.org/spaces/create#strategies"
                 target="_blank"
                 rel="noopener noreferrer"
-                >{{ $t('learnMore') }}
+              >{{ $t('learnMore') }}
                 <Icon name="external-link" />
               </a>
             </Block>
@@ -487,8 +476,8 @@ onMounted(async () => {
                   :number="true"
                 >
                   <template v-slot:label>{{
-                    $t('settings.proposalThreshold')
-                  }}</template>
+                      $t('settings.proposalThreshold')
+                    }}</template>
                 </UiInput>
                 <div class="mb-2 d-flex flex-items-center px-2">
                   <Checkbox

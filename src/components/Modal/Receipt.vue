@@ -27,9 +27,13 @@ export default {
       </div>
     </div>
     <div class="m-4">
-      <a href="https://signator.io" target="_blank" class="mb-2 d-block">
+      <a
+        href="https://app.mycrypto.com/verify-message"
+        target="_blank"
+        class="mb-2 d-block"
+      >
         <UiButton class="button-outline width-full">
-          {{ $t('verifyOnSignatorio') }}
+          {{ $t('verifyOnMycrypto') }}
           <Icon name="external-link" class="ml-1" />
         </UiButton>
       </a>
