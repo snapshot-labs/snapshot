@@ -229,7 +229,7 @@
       "single-choice": "每个选民只能选择一个选项。",
       "approval": "每个选民可选择多个选项。",
       "quadratic": "Each voter may spread voting power across any number of choices. Results are calculated quadratically.",
-      "ranked-choice": "Each voter may select and rank any number of choices. Results are calculted by instant-runoff counting method.",
+      "ranked-choice": "Each voter may select and rank any number of choices. Results are calculated by instant-runoff counting method.",
       "weighted": "Each voter may spread voting power across any number of choices."
     }
   },
