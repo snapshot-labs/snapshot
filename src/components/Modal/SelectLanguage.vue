@@ -1,28 +1,25 @@
-<script>
-import { computed } from 'vue';
+<script setup>
+import { computed, defineProps, defineEmits } from 'vue';
 import languages from '@/locales/languages.json';
 import { useI18n } from '@/composables/useI18n';
 
-export default {
-  props: {
-    open: {
-      type: Boolean,
-      required: true
-    }
-  },
-  setup(_, { emit }) {
-    const { setLocale } = useI18n();
-
-    const locales = computed(() => Object.keys(languages));
-
-    function selectLang(locale) {
-      setLocale(locale);
-      emit('close');
-    }
-
-    return { selectLang, locales, languages };
+defineProps({
+  open: {
+    type: Boolean,
+    required: true
   }
-};
+});
+
+const emit = defineEmits(['close']);
+
+const { setLocale } = useI18n();
+
+const locales = computed(() => Object.keys(languages));
+
+function selectLang(locale) {
+  setLocale(locale);
+  emit('close');
+}
 </script>
 
 <template>

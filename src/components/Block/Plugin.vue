@@ -1,14 +1,11 @@
-<script>
-export default {
-  props: ['plugin'],
-  setup() {
-    function getLogoUrl(key) {
-      return `https://raw.githubusercontent.com/snapshot-labs/snapshot.js/master/src/plugins/${key}/logo.png`;
-    }
+<script setup>
+import { defineProps } from 'vue';
 
-    return { getLogoUrl };
-  }
-};
+defineProps(['plugin']);
+
+function getLogoUrl(key) {
+  return `https://raw.githubusercontent.com/snapshot-labs/snapshot.js/master/src/plugins/${key}/logo.png`;
+}
 </script>
 
 <template>

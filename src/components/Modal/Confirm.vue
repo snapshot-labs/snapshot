@@ -1,63 +1,60 @@
-<script>
-import { ref, computed } from 'vue';
+<script setup>
+import { ref, computed, defineProps, defineEmits } from 'vue';
 import { useStore } from 'vuex';
 import { useI18n } from 'vue-i18n';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import client from '@/helpers/clientEIP712';
 import { getChoiceString } from '@/helpers/utils';
 
-export default {
-  props: {
-    open: Boolean,
-    space: Object,
-    proposal: Object,
-    selectedChoices: [Object, Number],
-    snapshot: String,
-    totalScore: Number,
-    scores: Object,
-    strategies: Object
-  },
-  emits: ['reload', 'close'],
-  setup(props, { emit }) {
-    const auth = getInstance();
-    const store = useStore();
-    const { t } = useI18n();
+const props = defineProps({
+  open: Boolean,
+  space: Object,
+  proposal: Object,
+  selectedChoices: [Object, Number],
+  snapshot: String,
+  totalScore: Number,
+  scores: Object,
+  strategies: Object
+});
 
-    const loading = ref(false);
-    const symbols = computed(() =>
-      props.strategies.map(strategy => strategy.params.symbol)
-    );
-    const web3Account = computed(() => store.state.web3.account);
+const emit = defineEmits(['reload', 'close']);
 
-    async function handleSubmit() {
-      loading.value = true;
-      try {
-        const result = await client.vote(auth.web3, web3Account.value, {
-          space: props.space.key,
-          proposal: props.proposal.id,
-          type: props.proposal.type,
-          choice: props.selectedChoices,
-          metadata: JSON.stringify({})
-        });
-        console.log('Result', result);
-        store.dispatch('notify', t('notify.yourIsIn', ['vote']));
-      } catch (e) {
-        if (!e.code || e.code !== 4001) {
-          console.log('Oops!', e);
-          const errorMessage = e?.error_description
-            ? `Oops, ${e.error_description}`
-            : t('notify.somethingWentWrong');
-          store.dispatch('notify', ['red', errorMessage]);
-        }
-      }
-      emit('reload');
-      emit('close');
-      loading.value = false;
+const store = useStore();
+const auth = getInstance();
+const { t } = useI18n();
+
+const loading = ref(false);
+const symbols = computed(() =>
+  props.strategies.map(strategy => strategy.params.symbol)
+);
+const web3Account = computed(() => store.state.web3.account);
+const format = getChoiceString;
+
+async function handleSubmit() {
+  loading.value = true;
+  try {
+    const result = await client.vote(auth.web3, web3Account.value, {
+      space: props.space.key,
+      proposal: props.proposal.id,
+      type: props.proposal.type,
+      choice: props.selectedChoices,
+      metadata: JSON.stringify({})
+    });
+    console.log('Result', result);
+    store.dispatch('notify', t('notify.yourIsIn', ['vote']));
+  } catch (e) {
+    if (!e.code || e.code !== 4001) {
+      console.log('Oops!', e);
+      const errorMessage = e?.error_description
+        ? `Oops, ${e.error_description}`
+        : t('notify.somethingWentWrong');
+      store.dispatch('notify', ['red', errorMessage]);
     }
-
-    return { loading, symbols, handleSubmit, format: getChoiceString };
   }
-};
+  emit('reload');
+  emit('close');
+  loading.value = false;
+}
 </script>
 
 <template>

@@ -1,61 +1,48 @@
-<script>
-import { ref, computed, watch, toRefs } from 'vue';
+<script setup>
+import { ref, computed, watch, toRefs, defineProps, defineEmits } from 'vue';
 import { useSearchFilters } from '@/composables/useSearchFilters';
 import { clone } from '@/helpers/utils';
 
-export default {
-  props: { open: Boolean, plugin: Object },
-  emits: ['add', 'close'],
-  setup(props, { emit }) {
-    const { open } = toRefs(props);
-    const searchInput = ref('');
-    const input = ref('');
-    const selectedPlugin = ref({});
+const props = defineProps({ open: Boolean, plugin: Object });
+const emit = defineEmits(['add', 'close']);
 
-    const { filteredPlugins } = useSearchFilters();
-    const plugins = computed(() => filteredPlugins());
+const { open } = toRefs(props);
+const searchInput = ref('');
+const input = ref('');
+const selectedPlugin = ref({});
 
-    const isValid = computed(() => {
-      try {
-        const params = JSON.parse(input.value);
-        return !!params;
-      } catch (e) {
-        return false;
-      }
-    });
+const { filteredPlugins } = useSearchFilters();
+const plugins = computed(() => filteredPlugins());
 
-    function handleSubmit() {
-      let inputClone = clone(input.value);
-      inputClone = JSON.parse(inputClone);
-      const key = selectedPlugin.value.key;
-      emit('add', { inputClone, key });
-      emit('close');
-    }
-
-    watch(open, () => {
-      if (Object.keys(props.plugin).length > 0) {
-        const key = Object.keys(props.plugin)[0];
-        input.value = JSON.stringify(props.plugin[key], null, 2);
-        selectedPlugin.value = plugins.value.find(obj => {
-          return obj.key === key;
-        });
-      } else {
-        input.value = JSON.stringify({}, null, 2);
-        selectedPlugin.value = {};
-      }
-    });
-
-    return {
-      searchInput,
-      input,
-      selectedPlugin,
-      filteredPlugins,
-      plugins,
-      isValid,
-      handleSubmit
-    };
+const isValid = computed(() => {
+  try {
+    const params = JSON.parse(input.value);
+    return !!params;
+  } catch (e) {
+    return false;
   }
-};
+});
+
+function handleSubmit() {
+  let inputClone = clone(input.value);
+  inputClone = JSON.parse(inputClone);
+  const key = selectedPlugin.value.key;
+  emit('add', { inputClone, key });
+  emit('close');
+}
+
+watch(open, () => {
+  if (Object.keys(props.plugin).length > 0) {
+    const key = Object.keys(props.plugin)[0];
+    input.value = JSON.stringify(props.plugin[key], null, 2);
+    selectedPlugin.value = plugins.value.find(obj => {
+      return obj.key === key;
+    });
+  } else {
+    input.value = JSON.stringify({}, null, 2);
+    selectedPlugin.value = {};
+  }
+});
 </script>
 
 <template>
