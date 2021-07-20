@@ -13,10 +13,10 @@ function handleChange(event) {
 
 <template>
   <UiButton class="width-full mb-2 px-3 d-flex overflow-hidden">
-    <div class="text-gray mr-2 no-shrink">
+    <div class="text-color mr-2 no-shrink">
       <slot name="label" />
     </div>
-    <div v-if="$slots.image" class="text-gray mr-2 no-shrink">
+    <div v-if="$slots.image" class="text-color mr-2 no-shrink">
       <slot name="image" />
     </div>
     <select

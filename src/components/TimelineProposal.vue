@@ -26,7 +26,7 @@ watchEffect(() => {
 
 <template>
   <router-link
-    class="p-4 d-block text-gray"
+    class="p-4 d-block text-color"
     :to="{
       name: 'proposal',
       params: { key: proposal.space.id, id: proposal.id }

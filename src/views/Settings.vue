@@ -229,7 +229,7 @@ onMounted(async () => {
   <Layout v-bind="$attrs">
     <template #content-left>
       <div class="px-4 px-md-0 mb-3">
-        <router-link :to="{ name: 'home' }" class="text-gray">
+        <router-link :to="{ name: 'home' }" class="text-color">
           <Icon name="back" size="22" class="v-align-middle" />
           {{ $t('backToHome') }}
         </router-link>
@@ -253,7 +253,7 @@ onMounted(async () => {
               v-clipboard:success="handleCopy"
               name="copy"
               size="24"
-              class="text-gray p-2 mr-n3"
+              class="text-color p-2 mr-n3"
             />
           </UiButton>
           <a
@@ -366,7 +366,7 @@ onMounted(async () => {
                     target="_blank"
                     href="https://docs.snapshot.org/spaces/add-custom-domain"
                   >
-                    <Icon name="info" size="24" class="text-gray p-1" />
+                    <Icon name="info" size="24" class="text-color p-1" />
                   </a>
                 </template>
               </UiInput>

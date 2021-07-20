@@ -26,12 +26,12 @@ function getLogoUrl(key) {
       </a>
       <div class="ml-1">v{{ plugin.version }}</div>
     </div>
-    <div class="text-gray">
+    <div class="text-color">
       <div>
         <a
           :href="`https://github.com/${plugin.author}`"
           target="_blank"
-          class="text-gray"
+          class="text-color"
         >
           <Icon name="github" class="mr-1" />
           {{ plugin.author }}

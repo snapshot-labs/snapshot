@@ -10,7 +10,7 @@ const { locale } = useI18n();
 
 const [
   yearNow = new Date().getFullYear(),
-  monthNow = new Date().getMonth() + 1,
+  monthNow = new Date().getMonth() + 1
   // dayNow = new Date().getDate()
 ] = props.modelValue ? props.modelValue.split('-') : [];
 
@@ -78,18 +78,18 @@ function isSelectable() {
   <div class="calendar">
     <div class="mb-2 d-flex">
       <a
-        class="col-3 iconfont iconback text-left h3 text-gray"
+        class="col-3 iconfont iconback text-left h3 text-color"
         @click="month--"
       />
       <h4 class="mb-3 flex-auto text-center">{{ monthName }} {{ fullYear }}</h4>
       <a
-        class="col-3 iconfont icongo text-right h3 text-gray"
+        class="col-3 iconfont icongo text-right h3 text-color"
         @click="month++"
       />
     </div>
     <div class="border-left border-top overflow-hidden">
       <div
-        class="day border-bottom border-right text-white"
+        class="day border-bottom border-right link-color"
         v-for="dayOfWeek in daysOfWeek"
         v-text="dayOfWeek"
         :key="dayOfWeek"

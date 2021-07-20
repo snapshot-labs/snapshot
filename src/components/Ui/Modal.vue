@@ -40,7 +40,7 @@ watch(open, (val, prev) => {
       </div>
       <a
         @click="$emit('close')"
-        class="position-absolute right-0 top-1 p-4 text-gray"
+        class="position-absolute right-0 top-1 p-4 text-color"
       >
         <Icon name="close" />
       </a>
