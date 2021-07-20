@@ -38,7 +38,7 @@ export default {
 
 <template>
   <Block title="Quorum" :loading="!loaded">
-    <div class="text-white mb-1">
+    <div class="link-color mb-1">
       <span class="mr-1">
         {{ _n(totalScore) }} / {{ _n(totalVotingPower) }}
         {{ _shorten(space.symbol, 'symbol') }}

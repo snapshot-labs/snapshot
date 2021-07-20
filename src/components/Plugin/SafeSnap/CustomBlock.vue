@@ -10,12 +10,12 @@
         {{ $t(infoLabel, [questionDetails.transactions.length]) }}
       </Label>
     </div>
-    <div v-if="showDecision" class="mb-3 text-white text-center">
+    <div v-if="showDecision" class="mb-3 link-color text-center">
       <Label> {{ approvalData?.decision }} </Label>
     </div>
     <div
       v-if="questionDetails?.questionId && showQuestionInfo"
-      class="mb-3 p-4 text-white text-center"
+      class="mb-3 p-4 link-color text-center"
     >
       <div>
         <Label> {{ approvalData?.decision }} </Label>

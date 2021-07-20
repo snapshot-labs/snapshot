@@ -10,17 +10,17 @@ export default {
     <template v-slot:header>
       <h3>{{ $t('receipt') }}</h3>
     </template>
-    <div class="m-4 mb-0 p-4 border rounded-2 text-white">
+    <div class="m-4 mb-0 p-4 border rounded-2 link-color">
       <div class="d-flex">
-        <span v-text="$t('author')" class="flex-auto text-gray mr-1" />
-        <a :href="_ipfsUrl(authorIpfsHash)" target="_blank" class="text-white">
+        <span v-text="$t('author')" class="flex-auto text-color mr-1" />
+        <a :href="_ipfsUrl(authorIpfsHash)" target="_blank" class="link-color">
           #{{ authorIpfsHash.slice(0, 7) }}
           <Icon name="external-link" class="ml-1" />
         </a>
       </div>
       <div v-if="relayerIpfsHash" class="d-flex">
-        <span v-text="$t('relayer')" class="flex-auto text-gray mr-1" />
-        <a :href="_ipfsUrl(relayerIpfsHash)" target="_blank" class="text-white">
+        <span v-text="$t('relayer')" class="flex-auto text-color mr-1" />
+        <a :href="_ipfsUrl(relayerIpfsHash)" target="_blank" class="link-color">
           #{{ relayerIpfsHash.slice(0, 7) }}
           <Icon name="external-link" class="ml-1" />
         </a>

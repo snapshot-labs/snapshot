@@ -115,7 +115,7 @@ onMounted(async () => {
   <Layout v-bind="$attrs">
     <template #content-left>
       <div class="px-4 px-md-0 mb-3">
-        <router-link :to="{ name: 'home' }" class="text-gray">
+        <router-link :to="{ name: 'home' }" class="text-color">
           <Icon name="back" size="22" class="v-align-middle" />
           {{ $t('backToHome') }}
         </router-link>
@@ -155,7 +155,7 @@ onMounted(async () => {
             />
             <div
               v-text="_shorten(delegate.space || $t('allSpaces'), 'choice')"
-              class="flex-auto text-right text-white"
+              class="flex-auto text-right link-color"
             />
             <a
               @click="clearDelegate(delegate.space, delegate.delegate)"
@@ -183,7 +183,7 @@ onMounted(async () => {
             />
             <div
               v-text="_shorten(delegator.space || '-', 'choice')"
-              class="flex-auto text-right text-white"
+              class="flex-auto text-right link-color"
             />
           </div>
         </Block>
