@@ -12,7 +12,7 @@ export default {
       </h3>
       <div class="ml-1">v{{ strategy.version }}</div>
     </div>
-    <div class="text-gray">
+    <div class="text-color">
       <Icon name="github" class="mr-1" />
       {{ strategy.author }}
     </div>

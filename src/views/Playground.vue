@@ -82,7 +82,7 @@ watchEffect(async () => {
   <Layout v-bind="$attrs">
     <template #content-left>
       <div class="px-4 px-md-0 mb-3">
-        <router-link :to="`/strategy/${$route.params.name}`" class="text-gray">
+        <router-link :to="`/strategy/${$route.params.name}`" class="text-color">
           <Icon name="back" size="22" class="v-align-middle" />
           {{ $t('back') }}
         </router-link>

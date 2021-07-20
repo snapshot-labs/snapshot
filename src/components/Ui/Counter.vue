@@ -20,7 +20,7 @@ defineProps({
   line-height: 18px;
   height: 20px;
   min-width: 20px;
-  color: white;
+  color: var(--bg-color);
   text-align: center;
   background-color: var(--text-color);
   border-radius: 10px;

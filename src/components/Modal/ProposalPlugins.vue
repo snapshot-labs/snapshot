@@ -57,7 +57,7 @@ watch(selected, value => {
       <div
         v-for="(plugin, i) in plugins"
         :key="i"
-        class="mb-3 p-4 border rounded-2 text-white text-center"
+        class="mb-3 p-4 border rounded-2 link-color text-center"
       >
         <img
           class="circle border"
@@ -67,7 +67,7 @@ watch(selected, value => {
         />
         <h3 v-text="plugin.name" />
         <div v-if="plugin.website" class="mb-2">
-          <a :href="plugin.website" target="_blank" class="text-white">
+          <a :href="plugin.website" target="_blank" class="link-color">
             {{ $t('learnMore') }}
             <Icon name="external-link" />
           </a>
@@ -93,7 +93,7 @@ watch(selected, value => {
         </UiButton>
       </div>
     </template>
-    <div v-if="selected !== false" class="m-4 p-4 border rounded-2 text-white">
+    <div v-if="selected !== false" class="m-4 p-4 border rounded-2 link-color">
       <PluginAragonConfig
         :proposal="proposal"
         v-model="form.aragon"

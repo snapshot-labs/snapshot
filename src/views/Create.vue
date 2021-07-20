@@ -179,7 +179,7 @@ const proposal = computed(() => {
       <div class="px-4 px-md-0 mb-3">
         <router-link
           :to="{ name: domain ? 'home' : 'proposals' }"
-          class="text-gray"
+          class="text-color"
         >
           <Icon name="back" size="22" class="v-align-middle" />
           {{ space.name }}
