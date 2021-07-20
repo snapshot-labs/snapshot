@@ -1,3 +1,12 @@
+<script setup>
+import { defineProps, defineEmits } from 'vue';
+import { isAddress } from '@ethersproject/address';
+
+defineProps({ open: Boolean, strategies: Object, space: Object });
+
+defineEmits(['close']);
+</script>
+
 <template>
   <UiModal :open="open" @close="$emit('close')">
     <template v-slot:header>
@@ -40,15 +49,3 @@
     </div>
   </UiModal>
 </template>
-
-<script>
-import { isAddress } from '@ethersproject/address';
-
-export default {
-  props: { open: Boolean, strategies: Object, space: Object },
-  emits: ['close'],
-  setup() {
-    return { isAddress };
-  }
-};
-</script>

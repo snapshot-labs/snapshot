@@ -1,3 +1,29 @@
+<script setup>
+import { ref, onMounted, toRefs, watch, defineProps, defineEmits } from 'vue';
+
+const props = defineProps({
+  modelValue: String,
+  textareaProps: String,
+  error: String,
+  disabled: Boolean
+});
+
+const emit = defineEmits(['update:modelValue']);
+
+const input = ref('');
+const { modelValue } = toRefs(props);
+
+function handleInput() {
+  emit('update:modelValue', input.value);
+}
+
+onMounted(() => {
+  if (props.modelValue) input.value = props.modelValue;
+});
+
+watch(modelValue, value => (input.value = value));
+</script>
+
 <template>
   <div>
     <textarea
@@ -11,35 +37,6 @@
     <span v-if="error" class="error-message">*{{ error }}</span>
   </div>
 </template>
-
-<script>
-import { ref, onMounted, toRefs, watch } from 'vue';
-export default {
-  props: {
-    modelValue: String,
-    textareaProps: String,
-    error: String,
-    disabled: Boolean
-  },
-  emits: ['update:modelValue'],
-  setup(props, { emit }) {
-    const input = ref('');
-    const { modelValue } = toRefs(props);
-
-    function handleInput() {
-      emit('update:modelValue', input.value);
-    }
-
-    onMounted(() => {
-      if (props.modelValue) input.value = props.modelValue;
-    });
-
-    watch(modelValue, value => (input.value = value));
-
-    return { input, handleInput };
-  }
-};
-</script>
 
 <style lang="scss" scoped>
 .error-message {

@@ -1,3 +1,26 @@
+<script setup>
+import { ref, computed, defineProps, defineEmits } from 'vue';
+import { useSearchFilters } from '@/composables/useSearchFilters';
+
+defineProps({
+  open: {
+    type: Boolean,
+    required: true
+  }
+});
+
+const emit = defineEmits(['update:modelValue', 'close']);
+
+const searchInput = ref('');
+const { filteredNetworks } = useSearchFilters();
+const networks = computed(() => filteredNetworks(searchInput.value));
+
+function select(key) {
+  emit('update:modelValue', key);
+  emit('close');
+}
+</script>
+
 <template>
   <UiModal :open="open" @close="$emit('close')">
     <template v-slot:header>
@@ -20,29 +43,3 @@
     </div>
   </UiModal>
 </template>
-
-<script>
-import { ref, computed } from 'vue';
-import { useSearchFilters } from '@/composables/useSearchFilters';
-
-export default {
-  props: {
-    open: {
-      type: Boolean,
-      required: true
-    }
-  },
-  setup(_, { emit }) {
-    const searchInput = ref('');
-    const { filteredNetworks } = useSearchFilters();
-    const networks = computed(() => filteredNetworks(searchInput.value));
-
-    function select(key) {
-      emit('update:modelValue', key);
-      emit('close');
-    }
-
-    return { networks, searchInput, select };
-  }
-};
-</script>

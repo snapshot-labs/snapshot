@@ -1,3 +1,21 @@
+<script setup>
+import { watchEffect, defineProps } from 'vue';
+import { useUsername } from '@/composables/useUsername';
+
+const props = defineProps({
+  address: String,
+  space: Object,
+  profile: Object
+});
+
+const { address, profile, username } = useUsername();
+
+watchEffect(() => {
+  address.value = props.address;
+  profile.value = props.profile;
+});
+</script>
+
 <template>
   <span>
     <UiPopover :options="{ offset: [0, 12], placement: 'bottom-start' }">
@@ -52,26 +70,3 @@
     </UiPopover>
   </span>
 </template>
-
-<script>
-import { watchEffect } from 'vue';
-import { useUsername } from '@/composables/useUsername';
-
-export default {
-  props: {
-    address: String,
-    space: Object,
-    profile: Object
-  },
-  setup(props) {
-    const { address, profile, username } = useUsername();
-
-    watchEffect(() => {
-      address.value = props.address;
-      profile.value = props.profile;
-    });
-
-    return { username };
-  }
-};
-</script>

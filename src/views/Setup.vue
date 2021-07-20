@@ -1,3 +1,19 @@
+<script setup>
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+
+const id = ref('');
+
+function handleSubmit() {
+  router.push({
+    name: 'settings',
+    params: { key: id.value.toLowerCase() }
+  });
+}
+</script>
+
 <template>
   <Layout>
     <template #content-left>
@@ -39,19 +55,3 @@
     </template>
   </Layout>
 </template>
-
-<script setup>
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
-
-const router = useRouter();
-
-const id = ref('');
-
-function handleSubmit() {
-  router.push({
-    name: 'settings',
-    params: { key: id.value.toLowerCase() }
-  });
-}
-</script>

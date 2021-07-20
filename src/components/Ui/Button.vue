@@ -1,18 +1,18 @@
+<script setup>
+import { defineProps } from 'vue';
+
+defineProps({
+  loading: Boolean,
+  type: String
+});
+</script>
+
 <template>
   <button :type="type || 'button'" class="button" :disabled="loading">
     <UiLoading v-if="loading" />
     <slot v-else />
   </button>
 </template>
-
-<script>
-export default {
-  props: {
-    loading: Boolean,
-    type: String
-  }
-};
-</script>
 
 <style scoped lang="scss">
 .button {

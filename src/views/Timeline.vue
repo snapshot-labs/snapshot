@@ -1,3 +1,88 @@
+<script setup>
+import { onMounted, ref, computed, watch } from 'vue';
+import { useStore } from 'vuex';
+import { useRoute } from 'vue-router';
+import { useInfiniteLoader } from '@/composables/useInfiniteLoader';
+import { lsSet } from '@/helpers/utils';
+import { useUnseenProposals } from '@/composables/useUnseenProposals';
+import { useScrollMonitor } from '@/composables/useScrollMonitor';
+import { apolloClient } from '@/helpers/apollo';
+import { PROPOSALS_QUERY } from '@/helpers/queries';
+import { useProfiles } from '@/composables/useProfiles';
+
+// Persistent filter state
+const filterBy = ref('all');
+
+const store = useStore();
+const route = useRoute();
+
+const favorites = computed(() =>
+  route.name === 'timeline' ? store.state.favoriteSpaces.favorites : []
+);
+const favoritesKeys = computed(() => Object.keys(favorites.value));
+
+const loading = ref(false);
+const proposals = ref([]);
+
+// Infinite scroll with pagination
+const { loadBy, limit, loadingMore, stopLoadingMore, loadMore } =
+  useInfiniteLoader();
+
+const { endElement } = useScrollMonitor(() =>
+  loadMore(() => loadProposals(limit.value), loading.value)
+);
+
+// Proposals query
+async function loadProposals(skip = 0) {
+  try {
+    const response = await apolloClient.query({
+      query: PROPOSALS_QUERY,
+      variables: {
+        first: loadBy,
+        skip,
+        space_in: favoritesKeys.value,
+        state: filterBy.value
+      }
+    });
+    stopLoadingMore.value = response.data.proposals?.length < loadBy;
+    proposals.value = proposals.value.concat(response.data.proposals);
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+const { profiles, addressArray } = useProfiles();
+
+watch(proposals, () => {
+  addressArray.value = proposals.value.map(proposal => proposal.author);
+});
+
+// Initialize
+onMounted(load());
+
+async function load() {
+  loading.value = true;
+  await loadProposals();
+  loading.value = false;
+}
+
+// Change filter
+function selectState(e) {
+  filterBy.value = e;
+  proposals.value = [];
+  limit.value = loadBy;
+  load();
+}
+
+// Save the most recently seen proposalId in localStorage
+const { getProposalIds, proposalIds } = useUnseenProposals();
+onMounted(async () => {
+  await getProposalIds(favorites.value);
+  if (proposalIds.value[0])
+    lsSet('lastSeenProposalId', proposalIds.value[0].id);
+});
+</script>
+
 <template>
   <Layout>
     <template #sidebar-left>
@@ -77,88 +162,3 @@
     </template>
   </Layout>
 </template>
-
-<script setup>
-import { onMounted, ref, computed, watch } from 'vue';
-import { useStore } from 'vuex';
-import { useRoute } from 'vue-router';
-import { useInfiniteLoader } from '@/composables/useInfiniteLoader';
-import { lsSet } from '@/helpers/utils';
-import { useUnseenProposals } from '@/composables/useUnseenProposals';
-import { useScrollMonitor } from '@/composables/useScrollMonitor';
-import { apolloClient } from '@/apollo';
-import { PROPOSALS_QUERY } from '@/helpers/queries';
-import { useProfiles } from '@/composables/useProfiles';
-
-// Persistent filter state
-const filterBy = ref('all');
-
-const store = useStore();
-const route = useRoute();
-
-const favorites = computed(() =>
-  route.name === 'timeline' ? store.state.favoriteSpaces.favorites : []
-);
-const favoritesKeys = computed(() => Object.keys(favorites.value));
-
-const loading = ref(false);
-const proposals = ref([]);
-
-// Infinite scroll with pagination
-const { loadBy, limit, loadingMore, stopLoadingMore, loadMore } =
-  useInfiniteLoader();
-
-const { endElement } = useScrollMonitor(() =>
-  loadMore(() => loadProposals(limit.value), loading.value)
-);
-
-// Proposals query
-async function loadProposals(skip = 0) {
-  try {
-    const response = await apolloClient.query({
-      query: PROPOSALS_QUERY,
-      variables: {
-        first: loadBy,
-        skip,
-        space_in: favoritesKeys.value,
-        state: filterBy.value
-      }
-    });
-    stopLoadingMore.value = response.data.proposals?.length < loadBy;
-    proposals.value = proposals.value.concat(response.data.proposals);
-  } catch (e) {
-    console.log(e);
-  }
-}
-
-const { profiles, addressArray } = useProfiles();
-
-watch(proposals, () => {
-  addressArray.value = proposals.value.map(proposal => proposal.author);
-});
-
-// Initialize
-onMounted(load());
-
-async function load() {
-  loading.value = true;
-  await loadProposals();
-  loading.value = false;
-}
-
-// Change filter
-function selectState(e) {
-  filterBy.value = e;
-  proposals.value = [];
-  limit.value = loadBy;
-  load();
-}
-
-// Save the most recently seen proposalId in localStorage
-const { getProposalIds, proposalIds } = useUnseenProposals();
-onMounted(async () => {
-  await getProposalIds(favorites.value);
-  if (proposalIds.value[0])
-    lsSet('lastSeenProposalId', proposalIds.value[0].id);
-});
-</script>

@@ -1,3 +1,29 @@
+<script setup>
+import { defineProps, defineEmits } from 'vue';
+
+defineProps({
+  open: {
+    type: Boolean,
+    required: true
+  }
+});
+
+const emit = defineEmits(['close', 'update:modelValue']);
+
+const types = [
+  'single-choice',
+  'approval',
+  'quadratic',
+  'ranked-choice',
+  'weighted'
+];
+
+function select(id) {
+  emit('update:modelValue', id);
+  emit('close');
+}
+</script>
+
 <template>
   <UiModal :open="open" @close="$emit('close')">
     <template v-slot:header>
@@ -13,30 +39,3 @@
     </div>
   </UiModal>
 </template>
-
-<script>
-export default {
-  props: {
-    open: {
-      type: Boolean,
-      required: true
-    }
-  },
-  setup(_, { emit }) {
-    const types = [
-      'single-choice',
-      'approval',
-      'quadratic',
-      'ranked-choice',
-      'weighted'
-    ];
-
-    function select(id) {
-      emit('update:modelValue', id);
-      emit('close');
-    }
-
-    return { types, select };
-  }
-};
-</script>

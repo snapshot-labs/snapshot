@@ -1,3 +1,13 @@
+<script setup>
+import { computed, defineProps } from 'vue';
+
+const props = defineProps({ value: { Number, Array }, max: Number });
+
+const bars = computed(() =>
+  Array.isArray(props.value) ? props.value : [props.value]
+);
+</script>
+
 <template>
   <span class="Progress Progress--small overflow-hidden anim-scale-in">
     <span
@@ -8,21 +18,6 @@
     />
   </span>
 </template>
-
-<script>
-import { computed } from 'vue';
-export default {
-  props: { value: { Number, Array }, max: Number },
-  setup(props) {
-    const bars = computed(() =>
-      Array.isArray(props.value) ? props.value : [props.value]
-    );
-    const total = computed(() => bars.value.reduce((a, b) => a + b, 0));
-
-    return { bars, total };
-  }
-};
-</script>
 
 <style scoped lang="scss">
 .Progress {

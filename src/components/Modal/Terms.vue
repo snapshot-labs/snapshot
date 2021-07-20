@@ -1,3 +1,19 @@
+<script setup>
+import { defineProps, defineEmits } from 'vue';
+import { getUrl } from '@snapshot-labs/snapshot.js/src/utils.ts';
+
+const props = defineProps({ open: Boolean, space: Object });
+
+const emit = defineEmits(['close']);
+
+const getIpfsUrl = getUrl(props.space.terms ?? '');
+
+function accept() {
+  emit('accept');
+  emit('close');
+}
+</script>
+
 <template>
   <UiModal :open="open" @close="$emit('close')">
     <template v-slot:header>
@@ -30,19 +46,3 @@
     </template>
   </UiModal>
 </template>
-
-<script>
-import { getUrl } from '@snapshot-labs/snapshot.js/src/utils.ts';
-export default {
-  props: { open: Boolean, space: Object },
-  emits: ['close'],
-  setup(props, { emit }) {
-    function accept() {
-      emit('accept');
-      emit('close');
-    }
-
-    return { accept, getIpfsUrl: getUrl(props.space.terms ?? '') };
-  }
-};
-</script>

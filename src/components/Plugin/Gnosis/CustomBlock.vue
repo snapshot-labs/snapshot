@@ -1,78 +1,3 @@
-<template>
-  <Block title="Gnosis Impact">
-    <div v-if="choices.length > 1">
-      <div v-if="loading" class="loading">
-        {{ $t('loading') }}
-      </div>
-      <div class="mb-1">
-        <b>
-          {{ $t('predictedImpact') }}
-        </b>
-        <div class="float-right">
-          <span :aria-label="baseToken.name" class="tooltipped tooltipped-n">
-            <img
-              class="d-inline-block v-align-middle line-height-0 circle border"
-              :src="baseTokenUrl"
-              width="22"
-              height="22"
-            />
-          </span>
-          {{ predictPriceImpact.toFixed(2) }}%
-        </div>
-      </div>
-      <div class="mb-1" :title="choices[0]">
-        <b>{{ _shorten(choices[0], 'name') }}</b>
-        <span class="float-right">
-          1
-          {{ baseToken.symbol }}
-          =
-          {{ priceFirstOption.toFixed(2) }}
-          {{ quoteToken.symbol }}
-        </span>
-      </div>
-      <div
-        :title="choices[1]"
-        class="mb-1 border-bottom header-bg rounded-top-0 rounded-md-top-2"
-        style="padding-bottom: 12px"
-      >
-        <b>{{ _shorten(choices[1], 'name') }}</b>
-        <span class="float-right">
-          1
-          {{ baseToken.symbol }}
-          =
-          {{ priceSecondOption.toFixed(2) }}
-          {{ quoteToken.symbol }}
-        </span>
-      </div>
-      <div class="mb-1" style="padding-top: 12px">
-        <b>{{ $tc('marketSymbol', [baseToken.symbol]) }}</b>
-        <a
-          :href="getMarketUrl(baseProductMarketMaker)"
-          target="_blank"
-          class="float-right"
-        >
-          <Icon name="external-link" class="ml-1" />
-        </a>
-      </div>
-      <div>
-        <div class="mb-1">
-          <b>{{ $tc('marketSymbol', [baseToken.symbol]) }}</b>
-          <a
-            :href="getMarketUrl(quoteProductMarketMaker)"
-            target="_blank"
-            class="float-right"
-          >
-            <Icon name="external-link" class="ml-1" />
-          </a>
-        </div>
-      </div>
-    </div>
-    <div v-else>
-      {{ $t('twoChoicesRequired') }}
-    </div>
-  </Block>
-</template>
-
 <script>
 import Plugin from '@snapshot-labs/snapshot.js/src/plugins/gnosis';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
@@ -167,3 +92,78 @@ export default {
   }
 };
 </script>
+
+<template>
+  <Block title="Gnosis Impact">
+    <div v-if="choices.length > 1">
+      <div v-if="loading" class="loading">
+        {{ $t('loading') }}
+      </div>
+      <div class="mb-1">
+        <b>
+          {{ $t('predictedImpact') }}
+        </b>
+        <div class="float-right">
+          <span :aria-label="baseToken.name" class="tooltipped tooltipped-n">
+            <img
+              class="d-inline-block v-align-middle line-height-0 circle border"
+              :src="baseTokenUrl"
+              width="22"
+              height="22"
+            />
+          </span>
+          {{ predictPriceImpact.toFixed(2) }}%
+        </div>
+      </div>
+      <div class="mb-1" :title="choices[0]">
+        <b>{{ _shorten(choices[0], 'name') }}</b>
+        <span class="float-right">
+          1
+          {{ baseToken.symbol }}
+          =
+          {{ priceFirstOption.toFixed(2) }}
+          {{ quoteToken.symbol }}
+        </span>
+      </div>
+      <div
+        :title="choices[1]"
+        class="mb-1 border-bottom header-bg rounded-top-0 rounded-md-top-2"
+        style="padding-bottom: 12px"
+      >
+        <b>{{ _shorten(choices[1], 'name') }}</b>
+        <span class="float-right">
+          1
+          {{ baseToken.symbol }}
+          =
+          {{ priceSecondOption.toFixed(2) }}
+          {{ quoteToken.symbol }}
+        </span>
+      </div>
+      <div class="mb-1" style="padding-top: 12px">
+        <b>{{ $tc('marketSymbol', [baseToken.symbol]) }}</b>
+        <a
+          :href="getMarketUrl(baseProductMarketMaker)"
+          target="_blank"
+          class="float-right"
+        >
+          <Icon name="external-link" class="ml-1" />
+        </a>
+      </div>
+      <div>
+        <div class="mb-1">
+          <b>{{ $tc('marketSymbol', [baseToken.symbol]) }}</b>
+          <a
+            :href="getMarketUrl(quoteProductMarketMaker)"
+            target="_blank"
+            class="float-right"
+          >
+            <Icon name="external-link" class="ml-1" />
+          </a>
+        </div>
+      </div>
+    </div>
+    <div v-else>
+      {{ $t('twoChoicesRequired') }}
+    </div>
+  </Block>
+</template>

@@ -1,3 +1,25 @@
+<script setup>
+import { defineProps, defineEmits } from 'vue';
+
+const props = defineProps({
+  modelValue: [String, Number],
+  placeholder: String,
+  error: String,
+  number: Boolean,
+  disabled: Boolean
+});
+
+const emit = defineEmits(['update:modelValue']);
+
+function handleInput(e) {
+  const input = e.target.value;
+  if (props.number) {
+    return emit('update:modelValue', !input ? undefined : parseFloat(input));
+  }
+  emit('update:modelValue', input);
+}
+</script>
+
 <template>
   <UiButton
     class="text-left width-full mb-2 d-flex px-3"
@@ -26,28 +48,3 @@
     /></span>
   </UiButton>
 </template>
-
-<script>
-export default {
-  props: {
-    modelValue: [String, Number],
-    placeholder: String,
-    error: String,
-    number: Boolean,
-    disabled: Boolean
-  },
-  emits: ['update:modelValue'],
-  methods: {
-    handleInput(e) {
-      const input = e.target.value;
-      if (this.number) {
-        return this.$emit(
-          'update:modelValue',
-          !input ? undefined : parseFloat(input)
-        );
-      }
-      this.$emit('update:modelValue', input);
-    }
-  }
-};
-</script>

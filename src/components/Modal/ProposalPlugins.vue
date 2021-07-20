@@ -1,3 +1,59 @@
+<script setup>
+import { ref, watch, toRefs, defineProps, defineEmits } from 'vue';
+import { clone } from '@/helpers/utils';
+import pluginsObj from '@snapshot-labs/snapshot.js/src/plugins';
+import pluginsConfig from '@/components/Plugin/config.json';
+
+const props = defineProps({
+  open: Boolean,
+  modelValue: Object,
+  space: Object,
+  proposal: Object
+});
+
+const emit = defineEmits(['close', 'update:modelValue']);
+
+const { open } = toRefs(props);
+const plugins = ref([]);
+const selected = ref(false);
+const form = ref({});
+
+function getLogoUrl(plugin) {
+  return `https://raw.githubusercontent.com/snapshot-labs/snapshot.js/master/src/plugins/${plugin}/logo.png`;
+}
+
+function showButton(pluginObj) {
+  const pluginsWithParams = Object.keys(props.space.plugins).filter(
+    plugin => pluginsConfig[plugin].proposalParams
+  );
+  return pluginsWithParams
+    .map(plugin => plugin.toLowerCase())
+    .includes(pluginObj.name.toLowerCase());
+}
+
+if (props.space.plugins) {
+  plugins.value = Object.fromEntries(
+    Object.keys(props.space.plugins).map(plugin => {
+      const instance = new pluginsObj[plugin]();
+      return [plugin, instance];
+    })
+  );
+}
+
+watch(open, () => {
+  if (props.modelValue && props.open) form.value = clone(props.modelValue);
+  selected.value = false;
+});
+
+watch(selected, value => {
+  if (value === 'safeSnap') {
+    form.value.safeSnap = form.value.safeSnap || {};
+    emit('update:modelValue', form.value);
+    emit('close');
+  }
+});
+</script>
+
 <template>
   <UiModal :open="open" @close="$emit('close')">
     <template v-slot:header>
@@ -60,63 +116,3 @@
     </div>
   </UiModal>
 </template>
-
-<script>
-import { ref, watch, toRefs } from 'vue';
-import pluginsObj from '@snapshot-labs/snapshot.js/src/plugins';
-import { clone } from '@/helpers/utils';
-import pluginsConfig from '@/components/Plugin/config.json';
-
-export default {
-  props: {
-    open: Boolean,
-    modelValue: Object,
-    space: Object,
-    proposal: Object
-  },
-  emits: ['close', 'update:modelValue'],
-  setup(props, { emit }) {
-    const { open } = toRefs(props);
-    const plugins = ref([]);
-    const selected = ref(false);
-    const form = ref({});
-
-    function getLogoUrl(plugin) {
-      return `https://raw.githubusercontent.com/snapshot-labs/snapshot.js/master/src/plugins/${plugin}/logo.png`;
-    }
-
-    function showButton(pluginObj) {
-      const pluginsWithParams = Object.keys(props.space.plugins).filter(
-        plugin => pluginsConfig[plugin].proposalParams
-      );
-      return pluginsWithParams
-        .map(plugin => plugin.toLowerCase())
-        .includes(pluginObj.name.toLowerCase());
-    }
-
-    if (props.space.plugins) {
-      plugins.value = Object.fromEntries(
-        Object.keys(props.space.plugins).map(plugin => {
-          const instance = new pluginsObj[plugin]();
-          return [plugin, instance];
-        })
-      );
-    }
-
-    watch(open, () => {
-      if (props.modelValue && props.open) form.value = clone(props.modelValue);
-      selected.value = false;
-    });
-
-    watch(selected, value => {
-      if (value === 'safeSnap') {
-        form.value.safeSnap = form.value.safeSnap || {};
-        emit('update:modelValue', form.value);
-        emit('close');
-      }
-    });
-
-    return { plugins, selected, form, getLogoUrl, showButton };
-  }
-};
-</script>

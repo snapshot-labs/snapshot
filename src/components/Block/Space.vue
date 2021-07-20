@@ -1,3 +1,27 @@
+<script setup>
+import { computed, defineProps } from 'vue';
+import { useStore } from 'vuex';
+import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
+
+const props = defineProps({
+  space: Object
+});
+
+const store = useStore();
+const auth = getInstance();
+
+const web3Account = computed(() => store.state.web3.account);
+
+const isAdmin = computed(() => {
+  const admins = props.space.admins.map(address => address.toLowerCase());
+  return (
+    auth.isAuthenticated.value &&
+    web3Account.value &&
+    admins.includes(web3Account.value.toLowerCase())
+  );
+});
+</script>
+
 <template>
   <div style="position: fixed; width: 240px">
     <Block :slim="true" class="overflow-hidden">
@@ -41,32 +65,3 @@
     </Block>
   </div>
 </template>
-
-<script>
-import { useStore } from 'vuex';
-import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
-import { computed } from 'vue';
-
-export default {
-  props: {
-    space: Object
-  },
-  setup(props) {
-    const store = useStore();
-    const auth = getInstance();
-
-    const web3Account = computed(() => store.state.web3.account);
-
-    return {
-      isAdmin: computed(() => {
-        const admins = props.space.admins.map(address => address.toLowerCase());
-        return (
-          auth.isAuthenticated.value &&
-          web3Account.value &&
-          admins.includes(web3Account.value.toLowerCase())
-        );
-      })
-    };
-  }
-};
-</script>

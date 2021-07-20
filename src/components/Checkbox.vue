@@ -1,3 +1,22 @@
+<script setup>
+import { ref, defineProps, defineEmits } from 'vue';
+
+const props = defineProps({
+  modelValue: Boolean
+});
+
+const emit = defineEmits(['update:modelValue']);
+
+const input = ref(false);
+
+function handleToggle() {
+  input.value = !input.value;
+  emit('update:modelValue', input.value);
+}
+
+if (props.modelValue) input.value = props.modelValue.toString();
+</script>
+
 <template>
   <a @click="handleToggle">
     <Icon
@@ -7,26 +26,3 @@
     />
   </a>
 </template>
-
-<script>
-import { ref } from 'vue';
-
-export default {
-  props: {
-    modelValue: Boolean
-  },
-  emits: ['update:modelValue'],
-  setup(props, { emit }) {
-    const input = ref(false);
-
-    function handleToggle() {
-      input.value = !input.value;
-      emit('update:modelValue', input.value);
-    }
-
-    if (props.modelValue) input.value = props.modelValue.toString();
-
-    return { input, handleToggle };
-  }
-};
-</script>

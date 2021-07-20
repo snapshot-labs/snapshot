@@ -1,3 +1,9 @@
+<script>
+export default {
+  props: ['validation']
+};
+</script>
+
 <template>
   <Block>
     <div class="d-flex flex-items-center mb-1">
@@ -8,9 +14,3 @@
     </div>
   </Block>
 </template>
-
-<script>
-export default {
-  props: ['validation']
-};
-</script>

@@ -1,3 +1,10 @@
+<script>
+export default {
+  props: { open: Boolean },
+  emits: ['close']
+};
+</script>
+
 <template>
   <UiModal :open="open" @close="$emit('close')">
     <template v-slot:header>
@@ -27,10 +34,3 @@
     </template>
   </UiModal>
 </template>
-
-<script>
-export default {
-  props: { open: Boolean },
-  emits: ['close']
-};
-</script>
