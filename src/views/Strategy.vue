@@ -17,7 +17,7 @@ const strategy = computed(() =>
   <Layout>
     <template #content-left>
       <div class="px-4 px-md-0 mb-3">
-        <router-link :to="{ path: '/strategies' }" class="text-gray">
+        <router-link :to="{ path: '/strategies' }" class="text-color">
           <Icon name="back" size="22" class="v-align-middle" />
           {{ $t('strategiesPage') }}
         </router-link>
@@ -28,7 +28,7 @@ const strategy = computed(() =>
         </h1>
         <span
           v-text="`In ${strategy.spaces.length} space(s)`"
-          class="text-gray"
+          class="text-color"
         />
         <UiMarkdown :body="strategy.about" class="mb-6 mt-4" />
       </div>

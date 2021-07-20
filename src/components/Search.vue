@@ -36,7 +36,7 @@ function clearInput() {
     class="d-flex flex-items-center"
     :class="{ 'bg-color border-bottom py-3 px-4': modal }"
   >
-    <Icon name="search" size="22" class="mb-1 mr-2 text-gray" />
+    <Icon name="search" size="22" class="mb-1 mr-2 text-color" />
     <input
       :value="modelValue"
       :placeholder="placeholder"

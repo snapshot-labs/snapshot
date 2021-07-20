@@ -110,7 +110,7 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
               />
               <div class="">
                 <h3 v-text="space.name" />
-                <div class="text-gray">{{ space.symbol }}</div>
+                <div class="text-color">{{ space.symbol }}</div>
               </div>
             </Block>
           </div>

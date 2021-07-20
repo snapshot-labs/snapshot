@@ -57,15 +57,15 @@ async function handleSubmit() {
         <br />
         {{ $t('cannotBeUndone') }}
       </h4>
-      <div class="m-4 p-4 border rounded-2 text-white">
+      <div class="m-4 p-4 border rounded-2 link-color">
         <div class="d-flex">
-          <span v-text="$t('options')" class="flex-auto text-gray mr-1" />
+          <span v-text="$t('options')" class="flex-auto text-color mr-1" />
           <span class="text-right ml-4">
             {{ format(proposal, selectedChoices) }}
           </span>
         </div>
         <div class="d-flex">
-          <span v-text="$t('snapshot')" class="flex-auto text-gray mr-1" />
+          <span v-text="$t('snapshot')" class="flex-auto text-color mr-1" />
           <a
             :href="_explorer(space.network, proposal.snapshot, 'block')"
             target="_blank"
@@ -76,7 +76,7 @@ async function handleSubmit() {
           </a>
         </div>
         <div class="d-flex">
-          <span v-text="$t('votingPower')" class="flex-auto text-gray mr-1" />
+          <span v-text="$t('votingPower')" class="flex-auto text-color mr-1" />
           <span
             class="tooltipped tooltipped-nw"
             :aria-label="
@@ -94,7 +94,7 @@ async function handleSubmit() {
             href="https://docs.snapshot.org/faq#why-i-cant-vote"
             class="d-inline-block mt-n1 ml-1"
           >
-            <Icon name="info" size="24" class="text-gray" />
+            <Icon name="info" size="24" class="text-color" />
           </a>
         </div>
       </div>

@@ -106,7 +106,7 @@ onMounted(async () => {
     <template #content-right>
       <div class="px-4 px-md-0 mb-3 d-flex">
         <div class="flex-auto">
-          <router-link :to="{ name: 'home' }" class="text-gray">
+          <router-link :to="{ name: 'home' }" class="text-color">
             <Icon name="back" size="22" class="v-align-middle" />
             {{ $t('backToHome') }}
           </router-link>

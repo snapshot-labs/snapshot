@@ -10,7 +10,7 @@ export function weightedPower(i, choice, balance) {
   );
 }
 
-export default class ApprovalVoting {
+export default class WeightedVoting {
   public proposal;
   public votes;
   public strategies;
