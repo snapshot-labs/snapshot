@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "esnext",
+    "target": "es6",
     "module": "esnext",
     "strict": true,
     "jsx": "preserve",
@@ -26,8 +26,7 @@
     ],
     "noImplicitAny": false,
     "resolveJsonModule": true,
-    "skipLibCheck": true,
-    "downlevelIteration": true
+    "skipLibCheck": true
   },
   "include": [
     "src/**/*.ts",
