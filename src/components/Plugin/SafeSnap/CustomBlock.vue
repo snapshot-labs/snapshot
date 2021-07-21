@@ -6,25 +6,25 @@
     @submit="updateDetails"
   >
     <div v-if="infoLabel" class="mb-3 text-center">
-      <Label>
+      <UiLabel>
         {{ $t(infoLabel, [questionDetails.transactions.length]) }}
-      </Label>
+      </UiLabel>
     </div>
     <div v-if="showDecision" class="mb-3 link-color text-center">
-      <Label> {{ approvalData?.decision }} </Label>
+      <UiLabel> {{ approvalData?.decision }} </UiLabel>
     </div>
     <div
       v-if="questionDetails?.questionId && showQuestionInfo"
       class="mb-3 p-4 link-color text-center"
     >
       <div>
-        <Label> {{ approvalData?.decision }} </Label>
+        <UiLabel> {{ approvalData?.decision }} </UiLabel>
       </div>
       <div class="m-4 text-center">
-        <Label> {{ approvalData?.currentBond }} </Label>
+        <UiLabel> {{ approvalData?.currentBond }} </UiLabel>
       </div>
       <div>
-        <Label> {{ approvalData?.timeLeft }} </Label>
+        <UiLabel> {{ approvalData?.timeLeft }} </UiLabel>
       </div>
     </div>
     <UiButton
