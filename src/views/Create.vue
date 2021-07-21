@@ -12,6 +12,7 @@ import { useQuery, useResult } from '@vue/apollo-composable';
 import { PROPOSAL_QUERY } from '@/helpers/queries';
 import validations from '@snapshot-labs/snapshot.js/src/validations';
 import { clone } from '@/helpers/utils';
+import cloneDeep from 'lodash/cloneDeep';
 
 const route = useRoute();
 const router = useRouter();
@@ -159,7 +160,7 @@ if (from) {
       snapshot: value.snapshot,
       type: value.type
     };
-    const { network, strategies, plugins } = value;
+    const { network, strategies, plugins } = cloneDeep(value);
     form.value.metadata = { network, strategies, plugins };
     choices.value = value.choices.map((text, key) => ({
       key,
