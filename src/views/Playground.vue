@@ -30,7 +30,7 @@ const form = ref({
     null,
     2
   ),
-  network: 1,
+  network: strategyExample.value?.network ?? 1,
   snapshot: '',
   addresses: strategyExample.value?.addresses ?? []
 });
