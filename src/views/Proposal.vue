@@ -39,6 +39,11 @@ const symbols = computed(() =>
   strategies.value.map(strategy => strategy.params.symbol)
 );
 
+const safeSnapInput = computed({
+  get: () => proposal.value?.plugins?.safeSnap,
+  set: value => (proposal.value.plugins.safeSnap = value)
+});
+
 const { modalAccountOpen } = useModal();
 const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(key);
 
@@ -173,14 +178,12 @@ onMounted(async () => {
         :votes="votes"
         :strategies="strategies"
       />
-      <PluginSafeSnapConfig
-        :preview="true"
-        v-if="loadedResults && proposal.plugins?.safeSnap?.txs"
+      <ProposalPluginsContent
+        v-model:safeSnapInput="safeSnapInput"
+        :id="id"
+        :space="space"
         :proposal="proposal"
-        :proposalId="id"
-        :moduleAddress="space.plugins?.safeSnap?.address"
-        :network="space.network"
-        v-model="proposal.plugins.safeSnap"
+        :loadedResults="loadedResults"
       />
     </template>
     <template #sidebar-right v-if="loaded">
