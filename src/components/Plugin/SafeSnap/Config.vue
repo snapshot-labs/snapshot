@@ -147,7 +147,7 @@ export default {
       <a
         v-if="gnosisSafeAddress"
         :href="getSafeLink()"
-        class="text-gray"
+        class="text-color"
         style="padding-top: 2px"
         target="_blank"
       >

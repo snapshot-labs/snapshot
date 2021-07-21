@@ -33,7 +33,7 @@ function select(id) {
       <a v-for="type in types" :key="type" @click="select(type)">
         <Block class="button--submit">
           <h3 v-text="$t(`voting.${type}`)" />
-          <div v-text="$t(`voting.description.${type}`)" class="text-gray" />
+          <div v-text="$t(`voting.description.${type}`)" class="text-color" />
         </Block>
       </a>
     </div>
