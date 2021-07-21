@@ -2,6 +2,7 @@
 import { ref, watch, toRefs, defineProps, defineEmits } from 'vue';
 import { clone } from '@/helpers/utils';
 import pluginsObj from '@snapshot-labs/snapshot.js/src/plugins';
+import pluginsConfig from '@/components/Plugin/config.json';
 
 const props = defineProps({
   open: Boolean,
@@ -21,8 +22,13 @@ function getLogoUrl(plugin) {
   return `https://raw.githubusercontent.com/snapshot-labs/snapshot.js/master/src/plugins/${plugin}/logo.png`;
 }
 
-function showButton(plugin) {
-  return plugin.name !== 'SafeSnap';
+function showButton(pluginObj) {
+  const pluginsWithParams = Object.keys(props.space.plugins).filter(
+    plugin => pluginsConfig[plugin].proposalParams
+  );
+  return pluginsWithParams
+    .map(plugin => plugin.toLowerCase())
+    .includes(pluginObj.name.toLowerCase());
 }
 
 if (props.space.plugins) {
