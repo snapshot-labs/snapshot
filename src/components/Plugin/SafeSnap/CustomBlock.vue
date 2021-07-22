@@ -5,27 +5,23 @@
     :loading="loading"
     @submit="updateDetails"
   >
-    <div v-if="infoLabel" class="mb-3 text-center">
-      <Label>
-        {{ $t(infoLabel, [questionDetails.transactions.length]) }}
-      </Label>
-    </div>
-    <div v-if="showDecision" class="mb-3 link-color text-center">
-      <Label> {{ approvalData?.decision }} </Label>
-    </div>
+    <b
+      v-if="infoLabel"
+      v-text="$t(infoLabel, [questionDetails.transactions.length])"
+      class="d-block mb-3 text-center"
+    />
+    <b
+      v-if="showDecision"
+      v-text="approvalData?.decision"
+      class="d-block mb-3 link-color text-center"
+    />
     <div
       v-if="questionDetails?.questionId && showQuestionInfo"
       class="mb-3 p-4 link-color text-center"
     >
-      <div>
-        <Label> {{ approvalData?.decision }} </Label>
-      </div>
-      <div class="m-4 text-center">
-        <Label> {{ approvalData?.currentBond }} </Label>
-      </div>
-      <div>
-        <Label> {{ approvalData?.timeLeft }} </Label>
-      </div>
+      <b v-text="approvalData?.decision" class="d-block mb-3" />
+      <b v-text="approvalData?.currentBond" class="d-block mb-3" />
+      <b v-text="approvalData?.timeLeft" class="d-block mb-3" />
     </div>
     <UiButton
       v-if="showActionButton"
