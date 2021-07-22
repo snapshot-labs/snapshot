@@ -22,5 +22,6 @@ module.exports = {
         }
       ]
     }
-  }
+  },
+  transpileDependencies: [/[\\/]node_modules[\\/]tiptap.*/]
 };
