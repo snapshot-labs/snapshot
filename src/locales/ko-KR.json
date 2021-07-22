@@ -147,7 +147,7 @@
   },
   "proposal": {
     "castVote": "Cast your vote",
-    "vote": "Vote",
+    "vote": "투표",
     "startDate": "Start date",
     "endDate": "End date",
     "votingSystem": "Voting system"
