@@ -1,9 +1,9 @@
 <script setup>
 import { defineEmits, defineProps } from 'vue';
 
-defineProps({ modelValue: String, disabled: Boolean });
+defineProps({ modelValue: [String, Number], disabled: Boolean });
 
-const emit = defineEmits[('update:modelValue', 'change')];
+const emit = defineEmits(['update:modelValue', 'change']);
 
 function handleChange(event) {
   emit('update:modelValue', event.target.value);
