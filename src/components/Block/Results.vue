@@ -64,7 +64,7 @@ async function downloadReport() {
     :title="ts >= proposal.end ? $t('results') : $t('currentResults')"
   >
     <div v-for="choice in choices" :key="choice.i">
-      <div class="text-white mb-1">
+      <div class="link-color mb-1">
         <span
           class="mr-1"
           :class="[
