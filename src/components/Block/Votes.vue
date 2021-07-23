@@ -83,11 +83,12 @@ watch(votes, () => {
         :space="space"
         class="column"
       />
-      <div class="flex-auto text-center text-white">
+      <div class="flex-auto text-center link-color">
         <span
           :aria-label="format(proposal, vote.choice)"
           class="
-            text-center text-white
+            text-center
+            link-color
             tooltipped tooltipped-multiline tooltipped-n
           "
         >
@@ -95,7 +96,7 @@ watch(votes, () => {
         </span>
       </div>
 
-      <div class="column text-right text-white">
+      <div class="column text-right link-color">
         <span
           class="tooltipped tooltipped-multiline tooltipped-n"
           :aria-label="
@@ -109,7 +110,7 @@ watch(votes, () => {
         <a
           @click="openReceiptModal(vote)"
           target="_blank"
-          class="ml-2 text-gray"
+          class="ml-2 text-color"
           title="Receipt"
         >
           <Icon name="signature" />

@@ -15,8 +15,8 @@ const buttonClasses = computed(() => {
   return {
     'extra-icon': true,
     'extra-icon-off': !props.on,
-    'text-primary': props.on,
-    'text-gray': !props.on
+    'primary-color': props.on,
+    'text-color': !props.on
   };
 });
 

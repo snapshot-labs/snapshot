@@ -38,7 +38,7 @@ defineEmits(['submit']);
       <a
         v-if="icon"
         @click="$emit('submit')"
-        class="float-right text-gray"
+        class="float-right text-color"
         style="padding-top: 2px"
       >
         <Icon :name="icon" size="22" />

@@ -16,7 +16,7 @@ defineEmits(['close']);
       <div
         v-for="(strategy, i) in strategies"
         :key="i"
-        class="p-4 mb-3 border rounded-2 text-white"
+        class="p-4 mb-3 border rounded-2 link-color"
       >
         <h3 v-text="strategy.name" />
         <div>
@@ -25,7 +25,7 @@ defineEmits(['close']);
             :key="key"
             class="d-flex"
           >
-            <span v-text="key" class="flex-auto text-gray mr-1" />
+            <span v-text="key" class="flex-auto text-color mr-1" />
             <a
               v-if="key === 'address' || isAddress(option)"
               :href="_explorer(space.network, option)"
