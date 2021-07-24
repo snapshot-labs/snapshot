@@ -229,7 +229,7 @@
       "single-choice": "প্রতিটি ভোটার কেবল একটি পছন্দ বেছে নিতে পারেন।",
       "approval": "প্রতিটি ভোটার যে কোনও পছন্দ বেছে নিতে পারেন",
       "quadratic": "Each voter may spread voting power across any number of choices. Results are calculated quadratically.",
-      "ranked-choice": "প্রতিটি ভোটার যে কোনও পছন্দ বেছে নিতে এবং র‌্যাঙ্ক করতে পারে। তাত্ক্ষণিকভাবে রান-গণনা পদ্ধতিতে ফলাফল গণনা করা হয়।",
+      "ranked-choice": "Each voter may select and rank any number of choices. Results are calculated by instant-runoff counting method.",
       "weighted": "প্রতিটি ভোটার যে কোনও পছন্দ অনুসারে ভোটের শক্তি ছড়িয়ে দিতে পারে."
     }
   },

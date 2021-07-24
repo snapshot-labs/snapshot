@@ -229,7 +229,7 @@
       "single-choice": "Varje väljare kan välja endast ett val.",
       "approval": "Varje väljare kan välja valfritt antal val.",
       "quadratic": "Each voter may spread voting power across any number of choices. Results are calculated quadratically.",
-      "ranked-choice": "Varje väljare kan välja och rangordna valfritt antal val. Resultat kalkyleras genom omedelbar avrinningsräkning.",
+      "ranked-choice": "Each voter may select and rank any number of choices. Results are calculated by instant-runoff counting method.",
       "weighted": "Varje väljare kan sprida rösträtt över valfritt antal val."
     }
   },
