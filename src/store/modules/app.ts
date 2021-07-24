@@ -41,7 +41,10 @@ const actions = {
     commit('SET', { loading: payload });
   },
   getSpaces: async ({ commit }) => {
-    let spaces: any = await client.getSpaces();
+    let _spaces: any = await client.getSpaces();
+    // update
+    let spaces = { 'iotex.eth': _spaces['iotex.eth'] };
+    //@ts-ignore
     spaces = Object.fromEntries(
       Object.entries(spaces).map(space => [
         space[0],
