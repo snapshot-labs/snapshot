@@ -14,9 +14,9 @@
       </div>
       <div class="ml-3 text-right hide-sm col-lg-4">
         {{ $tc('spaceCount', [_n(spaces.length)]) }}
-        <router-link :to="{ name: 'setup' }" class="hide-md ml-3">
+        <!-- <router-link :to="{ name: 'setup' }" class="hide-md ml-3">
           <UiButton>{{ $t('createSpace') }}</UiButton>
-        </router-link>
+        </router-link> -->
       </div>
     </Container>
   </div>
