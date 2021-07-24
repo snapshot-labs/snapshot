@@ -18,9 +18,9 @@ function getLogoUrl(key) {
         size="28"
       />
       <h3 v-text="network.name" />
-      <div v-text="network.key" class="ml-1 text-gray" />
+      <div v-text="network.key" class="ml-1 text-color" />
     </div>
-    <div class="text-gray">
+    <div class="text-color">
       {{ $tc('inSpaces', [_n(network.spaces.length)]) }}
     </div>
   </Block>

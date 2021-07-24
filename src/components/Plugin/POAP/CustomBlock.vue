@@ -158,7 +158,7 @@ export default {
   <Block title="I voted POAP" :loading="loading">
     <div class="d-flex flex-column flex-items-center">
       <img :src="headerImg" alt="" class="mb-2" />
-      <div class="text-white text-center mb-2">{{ $t(header) }}</div>
+      <div class="link-color text-center mb-2">{{ $t(header) }}</div>
       <img
         :src="mainImg"
         alt=""

@@ -18,7 +18,7 @@ function handleSubmit() {
   <Layout>
     <template #content-left>
       <div class="px-4 px-md-0 mb-3">
-        <router-link :to="{ name: 'home' }" class="text-gray">
+        <router-link :to="{ name: 'home' }" class="text-color">
           <Icon name="back" size="22" class="v-align-middle" />
           {{ $t('backToHome') }}
         </router-link>
@@ -41,7 +41,7 @@ function handleSubmit() {
             target="_blank"
             href="https://docs.snapshot.org/spaces/create"
           >
-            <Icon name="info" size="24" class="text-gray p-1" />
+            <Icon name="info" size="24" class="text-color p-1" />
           </a>
         </UiButton>
         <UiButton
