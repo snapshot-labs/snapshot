@@ -229,7 +229,7 @@
       "single-choice": "प्रत्येक मतदाता केवल एक विकल्प का चयन कर सकता है",
       "approval": "प्रत्येक मतदाता किसी भी संख्या में विकल्पों का चयन कर सकता है",
       "quadratic": "Each voter may spread voting power across any number of choices. Results are calculated quadratically.",
-      "ranked-choice": "प्रत्येक मतदाता किसी भी विकल्प का चयन और रैंक कर सकता है। परिणामों की गणना तत्काल गणना पद्धति द्वारा की जाती है",
+      "ranked-choice": "Each voter may select and rank any number of choices. Results are calculated by instant-runoff counting method.",
       "weighted": "प्रत्येक मतदाता किसी भी संख्या में विकल्पों में मतदान शक्ति का प्रसार कर सकता है"
     }
   },
