@@ -81,5 +81,9 @@
   "mr-IN": {
     "name": "Marathi",
     "nativeName": "मराठी"
+  },
+  "ko-KR": {
+    "name": "Korean",
+    "nativeName": "한국어"
   }
 }

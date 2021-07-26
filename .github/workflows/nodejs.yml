@@ -19,5 +19,5 @@ jobs:
       - name: yarn install, build, lint
         run: |
           yarn
-          yarn build 
-          yarn lint
+          yarn run build
+          yarn run lint

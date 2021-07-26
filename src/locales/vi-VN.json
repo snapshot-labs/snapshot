@@ -229,7 +229,7 @@
       "single-choice": "Mỗi cử tri chỉ được chọn một sự lựa chọn.",
       "approval": "Mỗi cử tri có thể chọn bất kỳ số lượng lựa chọn nào.",
       "quadratic": "Each voter may spread voting power across any number of choices. Results are calculated quadratically.",
-      "ranked-choice": "Each voter may select and rank any number of choices. Results are calculted by instant-runoff counting method.",
+      "ranked-choice": "Each voter may select and rank any number of choices. Results are calculated by instant-runoff counting method.",
       "weighted": "Each voter may spread voting power across any number of choices."
     }
   },
