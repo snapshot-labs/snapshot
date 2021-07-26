@@ -4,6 +4,9 @@ import Vue from '@vitejs/plugin-vue';
 import ViteComponents from 'vite-plugin-components';
 
 export default defineConfig({
+  define: {
+    'process.env': process.env
+  },
   plugins: [Vue(), ViteComponents({ deep: true, directoryAsNamespace: true })],
   resolve: {
     alias: {

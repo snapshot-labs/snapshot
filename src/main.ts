@@ -1,3 +1,6 @@
+import { Buffer } from 'buffer';
+window.global = window;
+window.Buffer = Buffer;
 import { createApp, h, provide } from 'vue';
 import VueClipboard from 'vue3-clipboard';
 import Jazzicon from 'vue3-jazzicon/src/components';
