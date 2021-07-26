@@ -6,6 +6,7 @@ import { getProposal, getResults, getPower } from '@/helpers/snapshot';
 import { useModal } from '@/composables/useModal';
 import { useTerms } from '@/composables/useTerms';
 import { useProfiles } from '@/composables/useProfiles';
+import { useShare } from '@/composables/useShare';
 
 const route = useRoute();
 const router = useRouter();
@@ -98,8 +99,16 @@ async function deleteProposal() {
   dropdownLoading.value = false;
 }
 
+const { shareToTwitter, shareToFacebook, shareToClipboard, sharingItems } =
+  useShare();
+
 function selectFromDropdown(e) {
   if (e === 'delete') deleteProposal();
+  if (e === 'shareToTwitter')
+    window.open(shareToTwitter(space.value, proposal.value), '_blank').focus();
+  if (e === 'shareToFacebook')
+    window.open(shareToFacebook(space.value, proposal.value), '_blank').focus();
+  if (e === 'shareToClipboard') shareToClipboard(space.value, proposal.value);
 }
 
 const { profiles, addressArray } = useProfiles();
@@ -136,9 +145,22 @@ onMounted(async () => {
           <div class="mb-4">
             <UiState :state="proposal.state" />
             <UiDropdown
-              top="2.2rem"
+              top="2.5rem"
+              right="1.8rem"
+              class="float-right mr-2"
+              v-if="isAdmin || isCreator"
+              @select="selectFromDropdown"
+              :items="sharingItems"
+            >
+              <div class="pr-1" style="user-select: none">
+                <Icon name="upload" size="25" class="v-align-text-bottom" />
+                Share
+              </div>
+            </UiDropdown>
+            <UiDropdown
+              top="2.5rem"
               right="1.3rem"
-              class="float-right"
+              class="float-right mr-2"
               v-if="isAdmin || isCreator"
               @select="selectFromDropdown"
               :items="[{ text: $t('deleteProposal'), action: 'delete' }]"

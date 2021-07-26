@@ -44,6 +44,12 @@ onBeforeUnmount(() => window.removeEventListener('click', close));
     >
       <ul class="sub-menu my-2">
         <li v-for="item in items" :key="item" @click="handleClick(item.action)">
+          <Icon
+            v-if="item.icon"
+            :name="item.icon"
+            size="21"
+            class="v-align-text-bottom mr-2"
+          />
           {{ item.text }}
         </li>
       </ul>
