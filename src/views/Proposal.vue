@@ -146,9 +146,8 @@ onMounted(async () => {
             <UiState :state="proposal.state" />
             <UiDropdown
               top="2.5rem"
-              right="1.8rem"
+              right="1.5rem"
               class="float-right mr-2"
-              v-if="isAdmin || isCreator"
               @select="selectFromDropdown"
               :items="sharingItems"
             >

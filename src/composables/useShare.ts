@@ -1,30 +1,29 @@
 import { useI18n } from 'vue-i18n';
-import { useClipboard } from '@vueuse/core';
+import { useCopy } from '@/composables/useCopy';
 
 export function useShare() {
   const { t } = useI18n();
-  const { copy } = useClipboard();
 
   const sharingItems = [
     {
-      text: t('Twitter'),
+      text: 'Twitter',
       action: 'shareToTwitter',
       icon: 'twitter'
     },
     {
-      text: t('Facebook'),
+      text: 'Facebook',
       action: 'shareToFacebook',
       icon: 'facebook'
     },
     {
-      text: t('Copy link'),
+      text: t('copyLink'),
       action: 'shareToClipboard',
       icon: 'insertlink'
     }
   ];
 
   function proposalUrl(key, proposal) {
-    return `https://snapshot.org/#/${key}/proposal/${proposal.id}`;
+    return `https://${window.location.hostname}/#/${key}/proposal/${proposal.id}`;
   }
   function encodedProposalUrl(key, proposal) {
     return encodeURIComponent(proposalUrl(key, proposal));
@@ -46,8 +45,10 @@ export function useShare() {
     )}&quote=${encodeURIComponent(proposal.title)}`;
   }
 
+  const { copyToClipboard } = useCopy();
+
   function shareToClipboard(space, proposal) {
-    copy(proposalUrl(space.key, proposal));
+    copyToClipboard(proposalUrl(space.key, proposal));
   }
 
   return {
