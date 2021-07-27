@@ -29,7 +29,7 @@
     "@vue/cli-plugin-eslint": "^4.5.13",
     "@vue/cli-plugin-typescript": "^4.5.13",
     "@vue/cli-service": "^4.5.13",
-    "@walletconnect/web3-provider": "^1.3.2",
+    "@walletconnect/web3-provider": "^1.5.0",
     "autolinker": "^3.14.3",
     "eslint": "^6.7.2",
     "graphql": "^15.5.1",
