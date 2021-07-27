@@ -41,27 +41,21 @@ export function useSharing() {
   }
 
   function shareToTwitter(space, proposal, window) {
-    if (isSupported) startShare(space, proposal);
-    else {
-      const url = `https://twitter.com/intent/tweet?text=@${
-        space.twitter || space.name
-      }%20${encodeURIComponent(proposal.title)}%20${encodedProposalUrl(
-        space.key,
-        proposal
-      )}`;
-      window.open(url, '_blank').focus();
-    }
+    const url = `https://twitter.com/intent/tweet?text=@${
+      space.twitter || space.name
+    }%20${encodeURIComponent(proposal.title)}%20${encodedProposalUrl(
+      space.key,
+      proposal
+    )}`;
+    window.open(url, '_blank').focus();
   }
 
   function shareToFacebook(space, proposal, window) {
-    if (isSupported) startShare(space, proposal);
-    else {
-      const url = `https://www.facebook.com/sharer/sharer.php?u=${encodedProposalUrl(
-        space.key,
-        proposal
-      )}&quote=${encodeURIComponent(proposal.title)}`;
-      window.open(url, '_blank').focus();
-    }
+    const url = `https://www.facebook.com/sharer/sharer.php?u=${encodedProposalUrl(
+      space.key,
+      proposal
+    )}&quote=${encodeURIComponent(proposal.title)}`;
+    window.open(url, '_blank').focus();
   }
 
   const { copyToClipboard } = useCopy();
@@ -75,6 +69,8 @@ export function useSharing() {
     shareToFacebook,
     shareToClipboard,
     proposalUrl,
+    startShare,
+    sharingIsSupported: isSupported,
     sharingItems
   };
 }

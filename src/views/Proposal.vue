@@ -99,11 +99,19 @@ async function deleteProposal() {
   dropdownLoading.value = false;
 }
 
-const { shareToTwitter, shareToFacebook, shareToClipboard, sharingItems } =
-  useSharing();
+const {
+  shareToTwitter,
+  shareToFacebook,
+  shareToClipboard,
+  startShare,
+  sharingIsSupported,
+  sharingItems
+} = useSharing();
 
 function selectFromDropdown(e) {
   if (e === 'delete') deleteProposal();
+  if (e.includes('shareTo') && sharingIsSupported)
+    return startShare(space.value, proposal.value);
   if (e === 'shareToTwitter')
     shareToTwitter(space.value, proposal.value, window);
   if (e === 'shareToFacebook')
