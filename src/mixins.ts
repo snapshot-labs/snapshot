@@ -28,7 +28,7 @@ export default {
       return numeral(number).format(format);
     },
     _shorten: shorten,
-    _ipfsUrl: getUrl,
+    _getUrl: getUrl,
     _explorer(network, str: string, type = 'address'): string {
       return `${networks[network].explorer}/${type}/${str}`;
     }
