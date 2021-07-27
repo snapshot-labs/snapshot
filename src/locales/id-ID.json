@@ -230,13 +230,13 @@
       "approval": "Setiap pengambil suara dapat mengambil pilihan dengan jumlah apapun.",
       "quadratic": "Setiap pemilih bisa membagi hak pilihnya ke beberapa nomer pilihan. Hasil dihitung secara kuadrat.",
       "ranked-choice": "Each voter may select and rank any number of choices. Results are calculated by instant-runoff counting method.",
-      "weighted": "Each voter may spread voting power across any number of choices."
+      "weighted": "Setiap pemilih dapat membagi hak suara pada sejumlah pilihan."
     }
   },
   "safeSnap": {
-    "currentOutcome": "Current outcome: {0}",
+    "currentOutcome": "Hasil sekarang{0}",
     "currentBond": "Current bond: {0} {1}",
-    "finalizedIn": "Finalized {0}",
+    "finalizedIn": "Selesai{0}",
     "executableIn": "Executable {0}",
     "finalOutcome": "Outcome: {0}",
     "nextBond": "Bond to set outcome: {0}",
