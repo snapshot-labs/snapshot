@@ -4,10 +4,11 @@ import { ref, onBeforeUnmount, computed, defineProps, defineEmits } from 'vue';
 const props = defineProps({
   items: Array,
   top: String,
-  right: String
+  right: String,
+  hideDropdown: Boolean
 });
 
-const emit = defineEmits(['select']);
+const emit = defineEmits(['select', 'clickedNoDropdown']);
 
 const open = ref(false);
 const dropdownEl = ref(null);
@@ -33,7 +34,11 @@ onBeforeUnmount(() => window.removeEventListener('click', close));
 </script>
 
 <template>
-  <div ref="dropdownEl" @click.capture="open = !open" class="position-relative">
+  <div
+    ref="dropdownEl"
+    @click.capture="hideDropdown ? $emit('clickedNoDropdown') : (open = !open)"
+    class="position-relative"
+  >
     <div class="button">
       <slot />
     </div>

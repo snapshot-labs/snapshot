@@ -154,22 +154,14 @@ onMounted(async () => {
           <h1 v-text="proposal.title" class="mb-2" />
           <div class="mb-4">
             <UiState :state="proposal.state" />
-            <div
-              v-if="sharingIsSupported"
-              @click="startShare(space, proposal)"
-              class="pr-1 float-right mr-2"
-              style="user-select: none"
-            >
-              <Icon name="upload" size="25" class="v-align-text-bottom" />
-              Share
-            </div>
             <UiDropdown
-              v-else
               top="2.5rem"
               right="1.5rem"
               class="float-right mr-2"
               @select="selectFromShareDropdown"
+              @clickedNoDropdown="startShare(space, proposal)"
               :items="sharingItems"
+              :hideDropdown="true"
             >
               <div class="pr-1" style="user-select: none">
                 <Icon name="upload" size="25" class="v-align-text-bottom" />
