@@ -156,7 +156,7 @@ onMounted(async () => {
             <UiState :state="proposal.state" />
             <div
               v-if="sharingIsSupported"
-              @click="startShare(space.value, proposal.value)"
+              @click="startShare(space, proposal)"
               class="pr-1 float-right mr-2"
               style="user-select: none"
             >
