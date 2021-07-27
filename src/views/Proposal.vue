@@ -6,7 +6,7 @@ import { getProposal, getResults, getPower } from '@/helpers/snapshot';
 import { useModal } from '@/composables/useModal';
 import { useTerms } from '@/composables/useTerms';
 import { useProfiles } from '@/composables/useProfiles';
-import { useShare } from '@/composables/useShare';
+import { useSharing } from '@/composables/useSharing';
 
 const route = useRoute();
 const router = useRouter();
@@ -100,14 +100,14 @@ async function deleteProposal() {
 }
 
 const { shareToTwitter, shareToFacebook, shareToClipboard, sharingItems } =
-  useShare();
+  useSharing();
 
 function selectFromDropdown(e) {
   if (e === 'delete') deleteProposal();
   if (e === 'shareToTwitter')
-    window.open(shareToTwitter(space.value, proposal.value), '_blank').focus();
+    shareToTwitter(space.value, proposal.value, window);
   if (e === 'shareToFacebook')
-    window.open(shareToFacebook(space.value, proposal.value), '_blank').focus();
+    shareToFacebook(space.value, proposal.value, window);
   if (e === 'shareToClipboard') shareToClipboard(space.value, proposal.value);
 }
 
