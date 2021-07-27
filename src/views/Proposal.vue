@@ -108,15 +108,18 @@ const {
   sharingItems
 } = useSharing();
 
-function selectFromDropdown(e) {
+function selectFromThreedotDropdown(e) {
   if (e === 'delete') deleteProposal();
-  if (e.includes('shareTo') && sharingIsSupported)
-    return startShare(space.value, proposal.value);
-  if (e === 'shareToTwitter')
+}
+
+function selectFromShareDropdown(e) {
+  if (sharingIsSupported) startShare(space.value, proposal.value);
+  else if (e === 'shareToTwitter')
     shareToTwitter(space.value, proposal.value, window);
-  if (e === 'shareToFacebook')
+  else if (e === 'shareToFacebook')
     shareToFacebook(space.value, proposal.value, window);
-  if (e === 'shareToClipboard') shareToClipboard(space.value, proposal.value);
+  else if (e === 'shareToClipboard')
+    shareToClipboard(space.value, proposal.value);
 }
 
 const { profiles, addressArray } = useProfiles();
@@ -156,7 +159,7 @@ onMounted(async () => {
               top="2.5rem"
               right="1.5rem"
               class="float-right mr-2"
-              @select="selectFromDropdown"
+              @select="selectFromShareDropdown"
               :items="sharingItems"
             >
               <div class="pr-1" style="user-select: none">
@@ -169,7 +172,7 @@ onMounted(async () => {
               right="1.3rem"
               class="float-right mr-2"
               v-if="isAdmin || isCreator"
-              @select="selectFromDropdown"
+              @select="selectFromThreedotDropdown"
               :items="[{ text: $t('deleteProposal'), action: 'delete' }]"
             >
               <div class="pr-3">
