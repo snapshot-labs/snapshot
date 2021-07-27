@@ -161,7 +161,7 @@ onMounted(async () => {
               @select="selectFromShareDropdown"
               @clickedNoDropdown="startShare(space, proposal)"
               :items="sharingItems"
-              :hideDropdown="true"
+              :hideDropdown="sharingIsSupported"
             >
               <div class="pr-1" style="user-select: none">
                 <Icon name="upload" size="25" class="v-align-text-bottom" />
