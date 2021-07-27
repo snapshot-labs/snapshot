@@ -6,7 +6,7 @@ import { getProfiles } from '@/helpers/profile';
 
 let auth;
 const defaultNetwork: any =
-  import.meta.env.VITE_APP_DEFAULT_NETWORK || Object.keys(networks)[0];
+  import.meta.env.VITE_DEFAULT_NETWORK || Object.keys(networks)[0];
 
 const state = {
   account: null,

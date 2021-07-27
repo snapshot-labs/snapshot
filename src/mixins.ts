@@ -29,9 +29,7 @@ export default {
     _shorten: shorten,
     _ipfsUrl(ipfsHash: string): string | null {
       if (!ipfsHash) return null;
-      return `https://${
-        import.meta.env.VITE_APP_IPFS_GATEWAY
-      }/ipfs/${ipfsHash}`;
+      return `https://${import.meta.env.VITE_IPFS_GATEWAY}/ipfs/${ipfsHash}`;
     },
     _explorer(network, str: string, type = 'address'): string {
       return `${networks[network].explorer}/${type}/${str}`;
