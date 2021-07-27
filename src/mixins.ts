@@ -28,7 +28,10 @@ export default {
       return numeral(number).format(format);
     },
     _shorten: shorten,
-    _getUrl: getUrl,
+    _getUrl(url) {
+      const gateway = process.env.VUE_APP_IPFS_GATEWAY || 'cloudflare-ipfs.com';
+      return getUrl(url, gateway);
+    },
     _explorer(network, str: string, type = 'address'): string {
       return `${networks[network].explorer}/${type}/${str}`;
     }
