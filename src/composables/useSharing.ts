@@ -34,8 +34,8 @@ export function useSharing() {
 
   function startShare(space, proposal) {
     share({
-      title: proposal.title,
-      text: `${space.twitter || space.name}`,
+      title: '',
+      text: `${space.name} - ${proposal.title}`,
       url: proposalUrl(space.key, proposal)
     });
   }
