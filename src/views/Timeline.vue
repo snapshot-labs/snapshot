@@ -120,7 +120,7 @@ async function loadProposals(skip = 0) {
       variables: {
         first: loadBy,
         skip,
-        space_in: favoritesKeys.value,
+        space_in: ["iotex.eth"],
         state: filterBy.value
       }
     });
