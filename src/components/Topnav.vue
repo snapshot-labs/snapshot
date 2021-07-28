@@ -11,13 +11,12 @@
       <Container>
         <div class="d-flex flex-items-center" style="height: 78px">
           <div class="flex-auto d-flex flex-items-center">
-            <router-link
-              :to="{ name: 'home' }"
+            <p
               class="d-inline-block d-flex flex-items-center"
-              style="font-size: 24px; padding-top: 4px"
+              style="font-size: 24px; padding-top: 15px; color: black"
             >
-              snapshot
-            </router-link>
+              IoTeX Governance Portal<br> <span style="color: gray;font-size: 18px">powered by <a href="https://snapshot.org/" target="_blank" style="color: gray;">snapshot</a></span>
+            </p>
           </div>
           <div :key="web3.account">
             <template v-if="$auth.isAuthenticated.value">
