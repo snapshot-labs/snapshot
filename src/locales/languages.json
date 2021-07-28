@@ -2,6 +2,10 @@
   "en-US": {
     "name": "English"
   },
+  "da-DK": {
+    "name": "Danish",
+    "nativeName": "Dansk"
+  },
   "de-DE": {
     "name": "German",
     "nativeName": "Deutsch"
