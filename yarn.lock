@@ -1495,7 +1495,6 @@
     bs58 "^4.0.1"
     cross-fetch "^3.0.6"
     eth-ens-namehash "^2.0.8"
-    ethereumjs-util "^7.0.7"
     json-to-graphql-query "^2.0.0"
     lodash.set "^4.3.2"
     lodash.tonumber "^4.0.3"
@@ -2241,7 +2240,6 @@
   resolved "https://registry.yarnpkg.com/@vue/web-component-wrapper/-/web-component-wrapper-1.3.0.tgz#b6b40a7625429d2bd7c2281ddba601ed05dc7f1a"
   integrity sha512-Iu8Tbg3f+emIIMmI2ycSI8QcEuAUgPTgHwesDU1eKMLE4YC/c/sFbGc70QgMq31ijRftV0R7vCm9co6rldCeOA==
 
-
 "@vueuse/core@^5.2.0":
   version "5.2.0"
   resolved "https://registry.yarnpkg.com/@vueuse/core/-/core-5.2.0.tgz#c2c0b89d9506fdfca41cd3056e38478226bc5e31"
@@ -2257,11 +2255,10 @@
   dependencies:
     vue-demi "*"
 
-
 "@walletconnect/browser-utils@^1.5.0":
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/@walletconnect/browser-utils/-/browser-utils-1.5.0.tgz#0d89a4a6a76b1fe0510cd21e6921ffd0ae3f14f2"
-  integrity sha512-bEdZY4gWtuS4cho52xIG83eXXiZR4hKkwoMnSWK05vH7MabVYf6rjGI0sesmt2uNdA1+Z3w1XAWa9QK3rVlEoQ== sha1-DYmkpqdrH+BRDNIeaSH/0K4/FPI=
+  integrity sha512-bEdZY4gWtuS4cho52xIG83eXXiZR4hKkwoMnSWK05vH7MabVYf6rjGI0sesmt2uNdA1+Z3w1XAWa9QK3rVlEoQ==
   dependencies:
     "@walletconnect/safe-json" "1.0.0-beta.1"
     "@walletconnect/types" "^1.5.0"
