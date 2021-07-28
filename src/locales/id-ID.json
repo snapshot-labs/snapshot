@@ -17,7 +17,7 @@
   "snapshot": "Tangkapan",
   "strategies": "Strategi",
   "strategiesPage": "Semua strategi",
-  "space": "Space",
+  "space": "Ruang",
   "spaces": "Ruang",
   "version": "Versi",
   "timeline": "Waktu habis",
@@ -61,8 +61,8 @@
   "seeInExplorer": "Lihat di Penelusur",
   "learnMore": "Pelajari lebih lanjut",
   "logout": "Keluar",
-  "walletNotice": "Wallet not supported",
-  "gnosisSafeWalletNotice": "You are trying to use Gnosis Safe wallet, which doesn't support signing messages on Snapshot.",
+  "walletNotice": "Dompet tidak didukung",
+  "gnosisSafeWalletNotice": "Anda mencoba menggunakan wallet Gnosis Safe, yang tidak mendukung pesan tanda tangan di Snapshot.",
   "continue": "Lanjutkan",
   "add": "Tambah",
   "edit": "Edit",
@@ -93,7 +93,7 @@
   "startIn": "mulai {0}",
   "endIn": "akhir {1}",
   "endedAgo": "berakhir {1}",
-  "proposalBy": "by {0}",
+  "proposalBy": "oleh {0}",
   "endDate": "akhir {0}",
   "contectHash": "Hash konten",
   "defaultSkin": "Skin bawaan",
@@ -101,10 +101,10 @@
   "language": "Bahasa",
   "agree": "Saya setuju",
   "mustAgreeToTerms": "Sebelum Anda dapat menyelesaikan tindakan ini, Anda harus setuju pada {0} ketentuan layanan ini:",
-  "playground": "Playground",
-  "strategyParams": "Strategy params",
-  "addresses": "Addresses",
-  "networkErrorPlayground": "Network error - please open your browser console for more information",
+  "playground": "Tempat bermain",
+  "strategyParams": "Parameter strategi",
+  "addresses": "Alamat",
+  "networkErrorPlayground": "Jaringan eror - buka browser untuk informasi lebih lanjut",
   "upload": "Unggah",
   "errors": {
     "required": "Baris diperlukan",
@@ -129,20 +129,20 @@
     "snapshotBlock": "Jumlah blok Snapshot",
     "validationWarning": {
       "basic": {
-        "member": "You need to be a member of the space in order to submit a proposal.",
-        "minScore": "You need to have a minimum of {0} {1} in order to submit a proposal."
+        "member": "Anda harus menjadi member untuk mengajukan proposal.",
+        "minScore": "Anda harus memiliki setidaknya minimal {0} {1} untuk mengajukan sebuah proposal."
       },
-      "customValidation": "You need to pass the proposal validation in order to submit a proposal."
+      "customValidation": "Anda harus lolos validasi proposal untuk mengajukan proposal."
     }
   },
   "delegate": {
     "header": "Perwakilan",
-    "selectDelegate": "Select delegate",
+    "selectDelegate": "Pilih delegasi",
     "to": "Kepada",
-    "addressPlaceholder": "Address or ENS name",
+    "addressPlaceholder": "Alamat atau nama ENS",
     "spacePlaceholder": "Ruang (opsional)",
     "delegations": "Perwakilan Anda(s)",
-    "allSpaces": "For all spaces",
+    "allSpaces": "Untuk spasi",
     "delegated": "Diwakilkan kepada Anda"
   },
   "proposal": {
@@ -184,16 +184,16 @@
     "members": "Anggota",
     "admins": "Admin",
     "defaultTab": "Tab bawaan",
-    "proposalThreshold": "Proposal threshold",
-    "allowOnlyMembers": "Allow only members to submit a proposal",
+    "proposalThreshold": "Ambang batas proposal",
+    "allowOnlyMembers": "Izinkan hanya anggota untuk mengajukan propsal",
     "editPlugin": "Edit plugin",
     "addPlugin": "Tambahkan plugin",
     "pluginParameters": "Parameter plugin",
-    "proposalValidation": "Proposal validation",
-    "validation": "Validation",
-    "editValidation": "Edit validation",
-    "selectValidation": "Select validation",
-    "validationParameters": "Validation parameters"
+    "proposalValidation": "Validasi proposal",
+    "validation": "Validitas",
+    "editValidation": "Sunting validitas",
+    "selectValidation": "Pilih validitas",
+    "validationParameters": "Parameter validitas"
   },
   "setup": {
     "example": "mis. yam.eth",
@@ -222,23 +222,23 @@
     "selectVoting": "Pilih sistem ambil suara",
     "single-choice": "Ambil suara pilihan tunggal",
     "approval": "Ambil suara persetujuan",
-    "quadratic": "Quadratic voting",
-    "ranked-choice": "Ranked choice voting",
-    "weighted": "Weighted voting",
+    "quadratic": "Pemungutan suara kuadrat",
+    "ranked-choice": "Pilihan peringkat pemungutan suara",
+    "weighted": "Bobot suara",
     "description": {
       "single-choice": "Setiap pengambil suara hanya dapat mengambil satu pilihan.",
       "approval": "Setiap pengambil suara dapat mengambil pilihan dengan jumlah apapun.",
-      "quadratic": "Each voter may spread voting power across any number of choices. Results are calculated quadratically.",
+      "quadratic": "Setiap pemilih bisa membagi hak pilihnya ke beberapa nomer pilihan. Hasil dihitung secara kuadrat.",
       "ranked-choice": "Each voter may select and rank any number of choices. Results are calculated by instant-runoff counting method.",
-      "weighted": "Each voter may spread voting power across any number of choices."
+      "weighted": "Setiap pemilih dapat membagi hak suara pada sejumlah pilihan."
     }
   },
   "safeSnap": {
-    "currentOutcome": "Current outcome: {0}",
+    "currentOutcome": "Hasil sekarang{0}",
     "currentBond": "Current bond: {0} {1}",
-    "finalizedIn": "Finalized {0}",
-    "executableIn": "Executable {0}",
-    "finalOutcome": "Outcome: {0}",
+    "finalizedIn": "Selesai{0}",
+    "executableIn": "Bisa dieksekusi{0}",
+    "finalOutcome": "Hasil{0}",
     "nextBond": "Bond to set outcome: {0}",
     "setOutcomeTo": "Set outcome to:",
     "claimBond": "Claim bond",
