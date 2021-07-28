@@ -2261,7 +2261,7 @@
 "@walletconnect/browser-utils@^1.5.0":
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/@walletconnect/browser-utils/-/browser-utils-1.5.0.tgz#0d89a4a6a76b1fe0510cd21e6921ffd0ae3f14f2"
-  integrity sha512-bEdZY4gWtuS4cho52xIG83eXXiZR4hKkwoMnSWK05vH7MabVYf6rjGI0sesmt2uNdA1+Z3w1XAWa9QK3rVlEoQca204b353f1512d8604dd083bfb14fb9cb659163
+  integrity sha512-bEdZY4gWtuS4cho52xIG83eXXiZR4hKkwoMnSWK05vH7MabVYf6rjGI0sesmt2uNdA1+Z3w1XAWa9QK3rVlEoQ== sha1-DYmkpqdrH+BRDNIeaSH/0K4/FPI=
   dependencies:
     "@walletconnect/safe-json" "1.0.0-beta.1"
     "@walletconnect/types" "^1.5.0"
