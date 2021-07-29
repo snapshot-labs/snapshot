@@ -4,6 +4,6 @@ export default Object.fromEntries(
   Object.keys(strategies).map(strategyName => {
     const strategy = strategies[strategyName];
     strategy.key = strategyName;
-    return [strategyName, strategy];
+    return [name, strategy];
   })
 );
