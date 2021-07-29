@@ -106,6 +106,7 @@
   "addresses": "Adres",
   "networkErrorPlayground": "Chyba sítě - prosím otevřete konzoli prohlížeče pro více informací",
   "upload": "Odeslat",
+  "copyLink": "Copy link",
   "errors": {
     "required": "Pole je povinné.",
     "minLength": "Minimální délka je {0}",
