@@ -37,5 +37,8 @@
   ],
   "exclude": [
     "node_modules"
+  ],
+  "files": [
+    "./typings.d.ts"
   ]
 }
