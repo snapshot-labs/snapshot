@@ -106,6 +106,7 @@
   "addresses": "Adresser",
   "networkErrorPlayground": "Netværksfejl - åbn venligst din browserkonsol for mere information",
   "upload": "Send/Upload",
+  "copyLink": "Copy link",
   "errors": {
     "required": "Feltet er obligatorisk",
     "minLength": "Minimumslængde på {0}",
