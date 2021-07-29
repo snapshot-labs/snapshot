@@ -5,13 +5,13 @@ import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 
 const auth = getInstance();
 const content = ref('');
+const loading = ref(false);
 
 const abi = ['function post(string memory content) public'];
 const address = '0xA0c7A49916Ce3ed7dd15871550212fcc7079AD61';
 
 async function handleSubmit() {
-  console.log('Submit!');
-
+  loading.value = true;
   try {
     const tx = await sendTransaction(auth.web3, address, abi, 'post', [
       content.value
@@ -22,6 +22,7 @@ async function handleSubmit() {
   } catch (e) {
     console.log(e);
   }
+  loading.value = false;
 }
 </script>
 
@@ -33,7 +34,7 @@ async function handleSubmit() {
       </div>
       <Block>
         <UiButton
-          class="d-block width-full mb-2 overflow-x-auto text-left"
+          class="d-block width-full mb-3 overflow-x-auto text-left"
           style="height: auto"
         >
           <TextareaAutosize
@@ -44,6 +45,7 @@ async function handleSubmit() {
         </UiButton>
         <UiButton
           @click="handleSubmit"
+          :loading="loading"
           class="d-block width-full button--submit"
         >
           Post
