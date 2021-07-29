@@ -5,6 +5,7 @@ import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import domains from '@snapshot-labs/snapshot-spaces/spaces/domains.json';
 import store from '@/store';
 import { shorten } from '@/helpers/utils';
+import { getUrl } from '@snapshot-labs/snapshot.js/src/utils';
 
 const domainName = window.location.hostname;
 
@@ -27,9 +28,9 @@ export default {
       return numeral(number).format(format);
     },
     _shorten: shorten,
-    _ipfsUrl(ipfsHash: string): string | null {
-      if (!ipfsHash) return null;
-      return `https://${process.env.VUE_APP_IPFS_GATEWAY}/ipfs/${ipfsHash}`;
+    _getUrl(url) {
+      const gateway = process.env.VUE_APP_IPFS_GATEWAY || 'cloudflare-ipfs.com';
+      return getUrl(url, gateway);
     },
     _explorer(network, str: string, type = 'address'): string {
       return `${networks[network].explorer}/${type}/${str}`;
