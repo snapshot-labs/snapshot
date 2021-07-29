@@ -31,7 +31,7 @@ const loading = ref(false);
 const delegates = ref([]);
 const delegators = ref([]);
 const form = ref({
-  address: '',
+  address: route.params.to || '',
   id: route.params.key || ''
 });
 

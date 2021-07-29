@@ -14,6 +14,7 @@ import { clone } from '@/helpers/utils';
 import { getSpaceUri, uriGet } from '@/helpers/ens';
 import defaults from '@/locales/default';
 import client from '@/helpers/clientEIP712';
+import { useCopy } from '@/composables/useCopy';
 
 const gateway = process.env.VUE_APP_IPFS_GATEWAY || gateways[0];
 const basicValidation = { name: 'basic', params: {} };
@@ -22,6 +23,7 @@ const auth = getInstance();
 const route = useRoute();
 const store = useStore();
 const { t } = useI18n();
+const { copyToClipboard } = useCopy();
 
 const key = ref(route.params.key);
 const from = ref(route.params.from);
@@ -143,10 +145,6 @@ function handleReset() {
   };
 }
 
-function handleCopy() {
-  store.dispatch('notify', t('notify.copied'));
-}
-
 function handleEditStrategy(i) {
   currentStrategyIndex.value = i;
   currentStrategy.value = clone(form.value.strategies[i]);
@@ -260,8 +258,7 @@ onMounted(async () => {
               :placeholder="$t('contectHash')"
             />
             <Icon
-              v-clipboard:copy="contenthash"
-              v-clipboard:success="handleCopy"
+              @click="copyToClipboard(contenthash)"
               name="copy"
               size="24"
               class="text-color p-2 mr-n3"
