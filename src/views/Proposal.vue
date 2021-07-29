@@ -6,6 +6,7 @@ import { getProposal, getResults, getPower } from '@/helpers/snapshot';
 import { useModal } from '@/composables/useModal';
 import { useTerms } from '@/composables/useTerms';
 import { useProfiles } from '@/composables/useProfiles';
+import { useSharing } from '@/composables/useSharing';
 
 const route = useRoute();
 const router = useRouter();
@@ -98,8 +99,26 @@ async function deleteProposal() {
   dropdownLoading.value = false;
 }
 
-function selectFromDropdown(e) {
+const {
+  shareToTwitter,
+  shareToFacebook,
+  shareToClipboard,
+  startShare,
+  sharingIsSupported,
+  sharingItems
+} = useSharing();
+
+function selectFromThreedotDropdown(e) {
   if (e === 'delete') deleteProposal();
+}
+
+function selectFromShareDropdown(e) {
+  if (e === 'shareToTwitter')
+    shareToTwitter(space.value, proposal.value, window);
+  else if (e === 'shareToFacebook')
+    shareToFacebook(space.value, proposal.value, window);
+  else if (e === 'shareToClipboard')
+    shareToClipboard(space.value, proposal.value);
 }
 
 const { profiles, addressArray } = useProfiles();
@@ -136,11 +155,25 @@ onMounted(async () => {
           <div class="mb-4">
             <UiState :state="proposal.state" />
             <UiDropdown
-              top="2.2rem"
+              top="2.5rem"
+              right="1.5rem"
+              class="float-right mr-2"
+              @select="selectFromShareDropdown"
+              @clickedNoDropdown="startShare(space, proposal)"
+              :items="sharingItems"
+              :hideDropdown="sharingIsSupported"
+            >
+              <div class="pr-1" style="user-select: none">
+                <Icon name="upload" size="25" class="v-align-text-bottom" />
+                Share
+              </div>
+            </UiDropdown>
+            <UiDropdown
+              top="2.5rem"
               right="1.3rem"
-              class="float-right"
+              class="float-right mr-2"
               v-if="isAdmin || isCreator"
-              @select="selectFromDropdown"
+              @select="selectFromThreedotDropdown"
               :items="[{ text: $t('deleteProposal'), action: 'delete' }]"
             >
               <div class="pr-3">
