@@ -229,7 +229,7 @@
       "single-choice": "Setiap pengambil suara hanya dapat mengambil satu pilihan.",
       "approval": "Setiap pengambil suara dapat mengambil pilihan dengan jumlah apapun.",
       "quadratic": "Setiap pemilih bisa membagi hak pilihnya ke beberapa nomer pilihan. Hasil dihitung secara kuadrat.",
-      "ranked-choice": "Setiap pemilih bisa dan memilih dan memberikan ranking pada setiap pilihan. Hasil akan dihitung dengan metode pemungutan suara langsung.",
+      "ranked-choice": "Setiap pemilih bisa memilih dan memberikan ranking pada pilihanya. Hasil akan dihitung dengan metode penghitungan berjalan.",
       "weighted": "Setiap pemilih dapat membagi hak suara pada sejumlah pilihan."
     }
   },
