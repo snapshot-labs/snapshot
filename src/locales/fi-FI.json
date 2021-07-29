@@ -106,6 +106,7 @@
   "addresses": "Osoitteet",
   "networkErrorPlayground": "Verkkovirhe - Avaa selainkonsoli saadaksesi lisätietoja",
   "upload": "Lataa",
+  "copyLink": "Copy link",
   "errors": {
     "required": "Pakollinen kenttä",
     "minLength": "Pienin pituus on {0}",
