@@ -106,6 +106,7 @@
   "addresses": "Adresler",
   "networkErrorPlayground": "Ağ hatası - daha fazla bilgi için lütfen tarayıcı konsolunuzu açın",
   "upload": "Yükle",
+  "copyLink": "Copy link",
   "errors": {
     "required": "Bu alan zorunludur",
     "minLength": "Minimum uzunluk: {0}",
