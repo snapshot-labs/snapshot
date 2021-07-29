@@ -13,6 +13,7 @@ import Delegate from '@/views/Delegate.vue';
 import Timeline from '@/views/Timeline.vue';
 import Space from '@/views/Space.vue';
 import About from '@/views/About.vue';
+import Test from '@/views/Test.vue';
 
 const domainName = window.location.hostname;
 
@@ -39,6 +40,7 @@ const routes: any[] = [
   { path: '/delegate/:key?', name: 'delegate', component: Delegate },
   { path: '/timeline', name: 'timeline', component: Timeline },
   { path: '/explore', name: 'explore', component: Timeline },
+  { path: '/test', name: 'test', component: Test },
   {
     path: '/strategy/:name',
     name: 'strategy',
