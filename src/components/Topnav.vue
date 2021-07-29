@@ -74,7 +74,7 @@ onMounted(() => setTitle());
               >
                 <UiAvatar
                   :imgsrc="
-                    web3.profile?.image ? _ipfsUrl(web3.profile.image) : ''
+                    web3.profile?.image ? _getUrl(web3.profile.image) : ''
                   "
                   :address="web3.account"
                   size="16"
