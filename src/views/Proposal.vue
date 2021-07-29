@@ -6,6 +6,7 @@ import { getProposal, getResults, getPower } from '@/helpers/snapshot';
 import { useModal } from '@/composables/useModal';
 import { useTerms } from '@/composables/useTerms';
 import { useProfiles } from '@/composables/useProfiles';
+import { useDomain } from '@/composables/useDomain';
 import { useSharing } from '@/composables/useSharing';
 
 const route = useRoute();
@@ -13,6 +14,7 @@ const router = useRouter();
 const store = useStore();
 const key = route.params.key;
 const id = route.params.id;
+const { domain } = useDomain();
 
 const modalOpen = ref(false);
 const selectedChoices = ref(null);
