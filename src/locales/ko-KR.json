@@ -106,6 +106,7 @@
   "addresses": "주소",
   "networkErrorPlayground": "네트워크 오류 - 자세한 내용을 보려면 브라우저 콘솔을 여십시오",
   "upload": "업로드",
+  "copyLink": "Copy link",
   "errors": {
     "required": "필드가 필요합니다",
     "minLength": "최소 길이는 {0}",
