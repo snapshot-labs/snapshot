@@ -106,6 +106,7 @@
   "addresses": "Adresser",
   "networkErrorPlayground": "Nätverksfel - öppna din webbläsarkonsol för mer information",
   "upload": "Uppladdning",
+  "copyLink": "Copy link",
   "errors": {
     "required": "Fältet är obligatoriskt",
     "minLength": "Minsta längd är {0}",
