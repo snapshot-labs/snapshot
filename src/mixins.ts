@@ -13,8 +13,11 @@ export default {
   methods: {
     _explorer: explorerUrl,
     _shorten: shorten,
-    _ipfsUrl: getUrl,
     _ms: ms,
-    _n: n
+    _n: n,
+    _getUrl(url) {
+      const gateway = process.env.VUE_APP_IPFS_GATEWAY || 'cloudflare-ipfs.com';
+      return getUrl(url, gateway);
+    }
   }
 };
