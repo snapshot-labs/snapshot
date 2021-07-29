@@ -106,6 +106,7 @@
   "addresses": "Indirizzi",
   "networkErrorPlayground": "Errore di rete: aprire la console del browser per ulteriori informazioni",
   "upload": "Caricare",
+  "copyLink": "Copy link",
   "errors": {
     "required": "Campo necessario",
     "minLength": "La lunghezza minima è {0}",
