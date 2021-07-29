@@ -13,9 +13,9 @@
           <div class="flex-auto d-flex flex-items-center">
             <p
               class="d-inline-block d-flex flex-items-center"
-              style="font-size: 24px; padding-top: 15px; color: black"
+              style="font-size: 24px; padding-top: 45px; color: black; line-height: 20px;"
             >
-              IoTeX Governance Portal<br> <span style="color: gray;font-size: 18px">powered by <a href="https://snapshot.org/" target="_blank" style="color: gray;">snapshot</a></span>
+              IoTeX Governance Portal<br/> <span style="color: gray;font-size: 18px">powered by <a href="https://snapshot.org/" target="_blank" style="color: gray;">snapshot</a></span>
             </p>
           </div>
           <div :key="web3.account">
