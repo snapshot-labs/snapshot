@@ -194,7 +194,8 @@
     "validation": "Validace",
     "editValidation": "Přidat/upravit ověření",
     "selectValidation": "Přidat/upravit ověření",
-    "validationParameters": "Parametry ověření"
+    "validationParameters": "Parametry ověření",
+    "warningTextRecord": "You must set a text record on the ENS domain."
   },
   "setup": {
     "example": "e.g. yam.eth",
