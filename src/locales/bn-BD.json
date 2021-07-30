@@ -194,7 +194,8 @@
     "validation": "বৈধতা",
     "editValidation": "বৈধতা সম্পাদনা করুন",
     "selectValidation": "বৈধতা নির্বাচন করুন",
-    "validationParameters": "বৈধতা প্যারামিটার"
+    "validationParameters": "বৈধতা প্যারামিটার",
+    "warningTextRecord": "You must set a text record on the ENS domain."
   },
   "setup": {
     "example": "উদাহরণ. yam.eth",
