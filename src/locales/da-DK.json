@@ -194,7 +194,8 @@
     "validation": "Validering",
     "editValidation": "Rediger validering",
     "selectValidation": "Rediger validering",
-    "validationParameters": "Valideringsparametre"
+    "validationParameters": "Valideringsparametre",
+    "warningTextRecord": "You must set a text record on the ENS domain."
   },
   "setup": {
     "example": "e.g. yam.eth",
