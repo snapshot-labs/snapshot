@@ -1,6 +1,6 @@
 import { computed } from 'vue';
 import { useStore } from 'vuex';
-import skins from '@snapshot-labs/snapshot-spaces/skins.js';
+import skins from '@snapshot-labs/snapshot-spaces/skins';
 import strategies from '@/helpers/strategies';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import plugins from '@snapshot-labs/snapshot.js/src/plugins';
