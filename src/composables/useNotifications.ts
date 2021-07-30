@@ -1,11 +1,22 @@
-import { useStore } from 'vuex';
+import { ref } from 'vue';
+
+interface Notification {
+  message: string;
+  type: string;
+  timestamp: number;
+}
 
 export function useNotifications() {
-  const store = useStore();
+  const items = ref<Notification[]>([]);
 
   const notify = payload => {
-    store.dispatch('notify', payload);
+    const item = Array.isArray(payload)
+      ? { message: payload[1], type: payload[0], timestamp: Date.now() }
+      : { message: payload, type: 'green', timestamp: Date.now() };
+
+    items.value.push(item);
+    return item;
   };
 
-  return { notify };
+  return { notify, items };
 }
