@@ -194,7 +194,8 @@
     "validation": "Validitas",
     "editValidation": "Sunting validitas",
     "selectValidation": "Pilih validitas",
-    "validationParameters": "Parameter validitas"
+    "validationParameters": "Parameter validitas",
+    "warningTextRecord": "You must set a text record on the ENS domain."
   },
   "setup": {
     "example": "mis. yam.eth",
