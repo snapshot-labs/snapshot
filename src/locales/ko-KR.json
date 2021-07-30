@@ -194,7 +194,8 @@
     "validation": "확인",
     "editValidation": "유효성 검사 편집",
     "selectValidation": "유효성 검사 선택",
-    "validationParameters": "검증 매개변수"
+    "validationParameters": "검증 매개변수",
+    "warningTextRecord": "You must set a text record on the ENS domain."
   },
   "setup": {
     "example": "예를 들어 얌.eth",
