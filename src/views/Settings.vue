@@ -12,6 +12,7 @@ import gateways from '@snapshot-labs/snapshot.js/src/gateways.json';
 import { clone } from '@/helpers/utils';
 import { getSpaceUri, uriGet } from '@/helpers/ens';
 import defaults from '@/locales/default';
+import { useCopy } from '@/composables/useCopy';
 
 const gateway = process.env.VUE_APP_IPFS_GATEWAY || gateways[0];
 const basicValidation = { name: 'basic', params: {} };
@@ -19,6 +20,7 @@ const basicValidation = { name: 'basic', params: {} };
 const route = useRoute();
 const store = useStore();
 const { t } = useI18n();
+const { copyToClipboard } = useCopy();
 
 const key = ref(route.params.key);
 const from = ref(route.params.from);
@@ -130,10 +132,6 @@ function handleReset() {
     plugins: {},
     filters: {}
   };
-}
-
-function handleCopy() {
-  store.dispatch('notify', t('notify.copied'));
 }
 
 function handleEditStrategy(i) {
@@ -249,8 +247,7 @@ onMounted(async () => {
               :placeholder="$t('contectHash')"
             />
             <Icon
-              v-clipboard:copy="contenthash"
-              v-clipboard:success="handleCopy"
+              @click="copyToClipboard(contenthash)"
               name="copy"
               size="24"
               class="text-color p-2 mr-n3"

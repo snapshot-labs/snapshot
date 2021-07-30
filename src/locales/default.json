@@ -106,6 +106,7 @@
   "addresses": "Addresses",
   "networkErrorPlayground": "Network error - please open your browser console for more information",
   "upload": "Upload",
+  "copyLink": "Copy link",
   "errors": {
     "required": "Field is required",
     "minLength": "Minimum length is {0}",

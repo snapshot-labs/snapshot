@@ -13,11 +13,13 @@ import { PROPOSAL_QUERY } from '@/helpers/queries';
 import validations from '@snapshot-labs/snapshot.js/src/validations';
 import { clone } from '@/helpers/utils';
 import cloneDeep from 'lodash/cloneDeep';
+import { useDomain } from '@/composables/useDomain';
 
 const route = useRoute();
 const router = useRouter();
 const store = useStore();
 const auth = getInstance();
+const { domain } = useDomain();
 
 const key = route.params.key;
 const from = route.params.from;
