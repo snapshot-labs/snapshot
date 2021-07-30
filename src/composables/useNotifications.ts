@@ -6,11 +6,11 @@ interface Notification {
   timestamp: number;
 }
 
-export function useNotifications() {
-  const state = reactive({
-    items: [] as Notification[]
-  });
+const state = reactive({
+  items: [] as Notification[]
+});
 
+export function useNotifications() {
   const notify = payload => {
     const item = Array.isArray(payload)
       ? { message: payload[1], type: payload[0], timestamp: Date.now() }
