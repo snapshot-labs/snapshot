@@ -1,4 +1,4 @@
-import { ref } from 'vue';
+import { reactive, toRefs } from 'vue';
 
 interface Notification {
   message: string;
@@ -7,16 +7,17 @@ interface Notification {
 }
 
 export function useNotifications() {
-  const items = ref<Notification[]>([]);
+  const state = reactive({
+    items: [] as Notification[]
+  });
 
   const notify = payload => {
     const item = Array.isArray(payload)
       ? { message: payload[1], type: payload[0], timestamp: Date.now() }
       : { message: payload, type: 'green', timestamp: Date.now() };
 
-    items.value.push(item);
-    return item;
+    state.items.push(item);
   };
 
-  return { notify, items };
+  return { notify, ...toRefs(state) };
 }
