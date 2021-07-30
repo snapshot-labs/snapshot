@@ -267,7 +267,7 @@ onMounted(async () => {
             </UiButton>
           </a>
           <Block
-            v-if="!currentTextRecord"
+            v-if="currentSettings?.name && !currentTextRecord"
             :style="'border-color: red !important; margin-bottom: 0 !important;'"
             class="mb-0 mt-3"
           >
