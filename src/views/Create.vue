@@ -153,28 +153,20 @@ async function loadProposal() {
     'proposal'
   );
 
-  const {
-    title,
-    body,
-    choices: choicesArray,
-    start,
-    end,
-    snapshot,
-    type
-  } = proposal;
-
   form.value = {
-    name: title,
-    body,
-    choices: choicesArray,
-    start,
-    end,
-    snapshot,
-    type
+    name: proposal.title,
+    body: proposal.body,
+    choices: proposal.choices,
+    start: proposal.start,
+    end: proposal.end,
+    snapshot: proposal.snapshot,
+    type: proposal.type
   };
+
   const { network, strategies, plugins } = proposal;
   form.value.metadata = { network, strategies, plugins };
-  choices.value = choicesArray.map((text, key) => ({
+
+  choices.value = proposal.choices.map((text, key) => ({
     key,
     text
   }));
