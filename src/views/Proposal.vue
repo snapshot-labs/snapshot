@@ -9,6 +9,7 @@ import { useModal } from '@/composables/useModal';
 import { useTerms } from '@/composables/useTerms';
 import { useProfiles } from '@/composables/useProfiles';
 import client from '@/helpers/clientEIP712';
+import { useDomain } from '@/composables/useDomain';
 import { useSharing } from '@/composables/useSharing';
 
 const auth = getInstance();
@@ -19,6 +20,7 @@ const { t } = useI18n();
 
 const key = route.params.key;
 const id = route.params.id;
+const { domain } = useDomain();
 
 const modalOpen = ref(false);
 const selectedChoices = ref(null);
