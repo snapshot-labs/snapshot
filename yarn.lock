@@ -1464,11 +1464,11 @@
   version "0.1.3"
   resolved "https://codeload.github.com/snapshot-labs/lock/tar.gz/0cfc5367aa7ba0ef42b49c73aea3956fbac1e5c3"
 
-"@snapshot-labs/snapshot-spaces@github:snapshot-labs/snapshot-spaces#82f4d418624312b6e3342b86f5a655adbbf5d8cc":
+"@snapshot-labs/snapshot-spaces@github:snapshot-labs/snapshot-spaces#master":
   version "0.1.0"
   resolved "https://codeload.github.com/snapshot-labs/snapshot-spaces/tar.gz/82f4d418624312b6e3342b86f5a655adbbf5d8cc"
 
-"@snapshot-labs/snapshot.js@github:snapshot-labs/snapshot.js#41b16589256752275b9768896486177a270e5f1f":
+"@snapshot-labs/snapshot.js@github:snapshot-labs/snapshot.js#master":
   version "0.1.11"
   resolved "https://codeload.github.com/snapshot-labs/snapshot.js/tar.gz/41b16589256752275b9768896486177a270e5f1f"
   dependencies:
