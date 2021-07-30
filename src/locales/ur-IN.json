@@ -194,7 +194,8 @@
     "validation": "توثیق",
     "editValidation": "توثیق کی توثیق",
     "selectValidation": "توثیق منتخب کریں",
-    "validationParameters": "توثیق کے پیرامیٹرز"
+    "validationParameters": "توثیق کے پیرامیٹرز",
+    "warningTextRecord": "You must set a text record on the ENS domain."
   },
   "setup": {
     "example": "مثال. yam.eth",
