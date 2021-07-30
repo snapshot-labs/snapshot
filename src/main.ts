@@ -1,5 +1,4 @@
 import { createApp, h, provide } from 'vue';
-import VueClipboard from 'vue3-clipboard';
 import Jazzicon from 'vue3-jazzicon/src/components';
 import upperFirst from 'lodash/upperFirst';
 import camelCase from 'lodash/camelCase';
@@ -25,10 +24,6 @@ const app = createApp({
   .use(i18n)
   .use(router)
   .use(store)
-
-  .use(VueClipboard, {
-    autoSetContainer: true
-  })
   .use(LockPlugin, options)
 
   .component('jazzicon', Jazzicon)
