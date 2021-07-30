@@ -194,7 +194,8 @@
     "validation": "Validazione",
     "editValidation": "Modifica validatore",
     "selectValidation": "Seleziona validazione",
-    "validationParameters": "Parametri di validazione"
+    "validationParameters": "Parametri di validazione",
+    "warningTextRecord": "You must set a text record on the ENS domain."
   },
   "setup": {
     "example": "e.g. yam.eth",
