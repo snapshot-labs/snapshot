@@ -107,6 +107,7 @@
   "networkErrorPlayground": "Netzwerkfehler - Bitte öffne deine Browserkonsole für weitere Informationen",
   "upload": "Hochladen",
   "copyLink": "Copy link",
+  "duplicateProposal": "Duplicate proposal",
   "errors": {
     "required": "Dieses Feld ist ein Pflichtfeld",
     "minLength": "Mindestlänge ist {0}",
