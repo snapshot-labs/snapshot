@@ -1,6 +1,5 @@
 import { ref } from 'vue';
 import omit from 'lodash/omit';
-
 import { lsGet, lsSet } from '@/helpers/utils';
 
 const FAVORITES_KEY = 'FAVORITE_SPACES';
