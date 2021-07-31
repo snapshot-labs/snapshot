@@ -1,15 +1,15 @@
-import { useStore } from 'vuex';
 import { useI18n } from 'vue-i18n';
 import { useClipboard } from '@vueuse/core';
+import { useNotifications } from './useNotifications';
 
 export function useCopy() {
   const { t } = useI18n();
-  const store = useStore();
   const { copy, copied } = useClipboard();
+  const { notify } = useNotifications();
 
   function copyToClipboard(text) {
     copy(text);
-    if (copied) store.dispatch('notify', t('notify.copied'));
+    if (copied) notify(t('notify.copied'));
   }
 
   return { copyToClipboard };
