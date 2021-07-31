@@ -107,6 +107,7 @@
   "networkErrorPlayground": "Errore di rete: aprire la console del browser per ulteriori informazioni",
   "upload": "Caricare",
   "copyLink": "Copy link",
+  "duplicateProposal": "Duplicate proposal",
   "errors": {
     "required": "Campo necessario",
     "minLength": "La lunghezza minima è {0}",
