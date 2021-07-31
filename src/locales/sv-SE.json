@@ -107,6 +107,7 @@
   "networkErrorPlayground": "Nätverksfel - öppna din webbläsarkonsol för mer information",
   "upload": "Uppladdning",
   "copyLink": "Copy link",
+  "duplicateProposal": "Duplicate proposal",
   "errors": {
     "required": "Fältet är obligatoriskt",
     "minLength": "Minsta längd är {0}",
