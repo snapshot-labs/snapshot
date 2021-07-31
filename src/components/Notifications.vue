@@ -1,15 +1,14 @@
 <script setup>
-import { ref, computed } from 'vue';
-import { useStore } from 'vuex';
+import { ref } from 'vue';
+
+import { useNotifications } from '@/composables/useNotifications';
 
 const DURATION = 4000;
 
-const store = useStore();
+const { items } = useNotifications();
 
 const now = ref(Date.now());
 const duration = ref(DURATION);
-
-const items = computed(() => store.state.notifications.items);
 
 setInterval(() => (now.value = Date.now()), 1000);
 </script>
