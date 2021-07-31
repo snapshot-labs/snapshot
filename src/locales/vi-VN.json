@@ -107,6 +107,7 @@
   "networkErrorPlayground": "Lỗi mạng - vui lòng mở bảng điều khiển trình duyệt của bạn để biết thêm thông tin",
   "upload": "Tải lên",
   "copyLink": "Copy link",
+  "duplicateProposal": "Duplicate proposal",
   "errors": {
     "required": "Trường này là bắt buộc",
     "minLength": "Độ dài tối thiểu là {0}",
