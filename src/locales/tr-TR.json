@@ -107,6 +107,7 @@
   "networkErrorPlayground": "Ağ hatası - daha fazla bilgi için lütfen tarayıcı konsolunuzu açın",
   "upload": "Yükle",
   "copyLink": "Copy link",
+  "duplicateProposal": "Duplicate proposal",
   "errors": {
     "required": "Bu alan zorunludur",
     "minLength": "Minimum uzunluk: {0}",
