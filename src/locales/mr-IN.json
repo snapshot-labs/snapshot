@@ -107,6 +107,7 @@
   "networkErrorPlayground": "नेटवर्क त्रुटी - अधिक माहिती साठी आपले ब्राउसर कॉन्सोल खोला",
   "upload": "अपलोड करा",
   "copyLink": "Copy link",
+  "duplicateProposal": "Duplicate proposal",
   "errors": {
     "required": "फील्ड आवश्यक आहे",
     "minLength": "किमान लांबी {0}",
