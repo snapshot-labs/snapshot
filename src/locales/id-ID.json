@@ -107,6 +107,7 @@
   "networkErrorPlayground": "Jaringan eror - buka browser untuk informasi lebih lanjut",
   "upload": "Unggah",
   "copyLink": "Salin tautan",
+  "duplicateProposal": "Duplicate proposal",
   "errors": {
     "required": "Baris diperlukan",
     "minLength": "Panjang minimum adalah {0}",
