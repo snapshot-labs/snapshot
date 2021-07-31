@@ -22,7 +22,7 @@ watchEffect(() => {
       <template v-slot:item>
         <a class="no-wrap">
           <UiAvatar
-            :imgsrc="_ipfsUrl(profile?.image)"
+            :imgsrc="_getUrl(profile?.image)"
             :address="address"
             size="16"
             class="mr-1"
@@ -34,7 +34,7 @@ watchEffect(() => {
       <template v-slot:content>
         <div class="m-4 mb-0 text-center">
           <UiAvatar
-            :imgsrc="_ipfsUrl(profile?.image)"
+            :imgsrc="_getUrl(profile?.image)"
             :address="address"
             size="64"
             class="mb-4"

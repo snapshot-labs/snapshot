@@ -4,6 +4,7 @@ import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { useProfiles } from '@/composables/useProfiles';
+import { useNotifications } from '@/composables/useNotifications';
 import { isAddress } from '@ethersproject/address';
 import { formatBytes32String } from '@ethersproject/strings';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
@@ -22,6 +23,7 @@ const route = useRoute();
 const store = useStore();
 const { t } = useI18n();
 const auth = getInstance();
+const { notify } = useNotifications();
 
 const modalOpen = ref(false);
 const currentId = ref('');
@@ -31,7 +33,7 @@ const loading = ref(false);
 const delegates = ref([]);
 const delegators = ref([]);
 const form = ref({
-  address: '',
+  address: route.params.to || '',
   id: route.params.key || ''
 });
 
@@ -75,7 +77,7 @@ async function handleSubmit() {
     const receipt = await tx.wait();
     console.log('Receipt', receipt);
     await sleep(3e3);
-    store.dispatch('notify', t('notify.youDidIt'));
+    notify(t('notify.youDidIt'));
     await load();
   } catch (e) {
     console.log(e);
