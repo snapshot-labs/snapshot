@@ -107,6 +107,7 @@
   "networkErrorPlayground": "Chyba sítě - prosím otevřete konzoli prohlížeče pro více informací",
   "upload": "Odeslat",
   "copyLink": "Copy link",
+  "duplicateProposal": "Duplicate proposal",
   "errors": {
     "required": "Pole je povinné.",
     "minLength": "Minimální délka je {0}",
