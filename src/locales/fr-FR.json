@@ -107,6 +107,7 @@
   "networkErrorPlayground": "Network error - please open your browser console for more information",
   "upload": "Upload",
   "copyLink": "Copy link",
+  "duplicateProposal": "Duplicate proposal",
   "errors": {
     "required": "Le champ est requis",
     "minLength": "Longueur minimale de {0}",
