@@ -107,6 +107,7 @@
   "networkErrorPlayground": "Netwerkfout - Open uw browserconsole voor meer informatie",
   "upload": "Uploaden",
   "copyLink": "Copy link",
+  "duplicateProposal": "Duplicate proposal",
   "errors": {
     "required": "Veld is verplicht",
     "minLength": "Minimale lengte is {0}",
