@@ -6,11 +6,13 @@ import orderBy from 'lodash/orderBy';
 import spotlight from '@snapshot-labs/snapshot-spaces/spaces/spotlight.json';
 import { useUnseenProposals } from '@/composables/useUnseenProposals';
 import { useScrollMonitor } from '@/composables/useScrollMonitor';
+import { useFavoriteSpaces } from '@/composables/useFavoriteSpaces';
 
 const store = useStore();
 const route = useRoute();
+const { addFavoriteSpace, removeFavoriteSpace, favorites } =
+  useFavoriteSpaces();
 
-const favorites = computed(() => store.state.favoriteSpaces.favorites);
 const stateSpaces = computed(() => store.state.app.spaces);
 
 const spaces = computed(() => {
@@ -41,9 +43,9 @@ watchEffect(() => getProposalIds(favorites.value));
 // Favorites
 function toggleFavorite(spaceId) {
   if (favorites.value[spaceId]) {
-    store.dispatch('removeFavoriteSpace', spaceId);
+    removeFavoriteSpace(spaceId);
   } else {
-    store.dispatch('addFavoriteSpace', spaceId);
+    addFavoriteSpace(spaceId);
   }
 }
 
