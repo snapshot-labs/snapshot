@@ -107,6 +107,7 @@
   "networkErrorPlayground": "Verkkovirhe - Avaa selainkonsoli saadaksesi lisätietoja",
   "upload": "Lataa",
   "copyLink": "Copy link",
+  "duplicateProposal": "Duplicate proposal",
   "errors": {
     "required": "Pakollinen kenttä",
     "minLength": "Pienin pituus on {0}",
