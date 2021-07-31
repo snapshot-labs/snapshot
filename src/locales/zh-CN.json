@@ -107,6 +107,7 @@
   "networkErrorPlayground": "网络错误 - 请打开您的浏览器控制台获取更多信息",
   "upload": "Upload",
   "copyLink": "Copy link",
+  "duplicateProposal": "Duplicate proposal",
   "errors": {
     "required": "此项为必填项",
     "minLength": "最小长度为 {0}",
