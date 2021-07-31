@@ -1,6 +1,7 @@
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import client from '@/helpers/client';
 import { formatSpace } from '@/helpers/utils';
+import i18n from '@/helpers/i18n';
 
 const state = {
   init: false,
