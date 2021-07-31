@@ -1,5 +1,5 @@
 diff --git a/node_modules/@snapshot-labs/lock/connectors/walletconnect.ts b/node_modules/@snapshot-labs/lock/connectors/walletconnect.ts
-index ffedb9a..aaa9c19 100644
+index ffedb9a..73a295f 100644
 --- a/node_modules/@snapshot-labs/lock/connectors/walletconnect.ts
 +++ b/node_modules/@snapshot-labs/lock/connectors/walletconnect.ts
 @@ -6,11 +6,15 @@ export default class Connector extends LockConnector {
@@ -7,7 +7,7 @@ index ffedb9a..aaa9c19 100644
      let provider;
      try {
 -      const WalletConnectProvider = (await get()).default;
-+      let WalletConnectProvider = (await get()).default;
++      let WalletConnectProvider: any = await get();
 +      console.log('WalletConnectProvider', WalletConnectProvider);
 +      if (WalletConnectProvider.default)
 +        WalletConnectProvider = WalletConnectProvider.default;
