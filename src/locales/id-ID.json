@@ -106,7 +106,7 @@
   "addresses": "Alamat",
   "networkErrorPlayground": "Jaringan eror - buka browser untuk informasi lebih lanjut",
   "upload": "Unggah",
-  "copyLink": "Copy link",
+  "copyLink": "Salin tautan",
   "errors": {
     "required": "Baris diperlukan",
     "minLength": "Panjang minimum adalah {0}",
@@ -195,7 +195,7 @@
     "editValidation": "Sunting validitas",
     "selectValidation": "Pilih validitas",
     "validationParameters": "Parameter validitas",
-    "warningTextRecord": "You must set a text record on the ENS domain."
+    "warningTextRecord": "Anda harus mengatur catatan teks pada domain ENS."
   },
   "setup": {
     "example": "mis. yam.eth",
