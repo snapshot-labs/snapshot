@@ -11,12 +11,11 @@ import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import gateways from '@snapshot-labs/snapshot.js/src/gateways.json';
 import { useSearchFilters } from '@/composables/useSearchFilters';
 import { clone } from '@/helpers/utils';
-import { getSpaceUri, uriGet } from '@/helpers/ens';
+import { getSpaceUri } from '@/helpers/ens';
 import defaults from '@/locales/default';
 import client from '@/helpers/clientEIP712';
 import { useCopy } from '@/composables/useCopy';
 
-const gateway = process.env.VUE_APP_IPFS_GATEWAY || gateways[0];
 const basicValidation = { name: 'basic', params: {} };
 
 const auth = getInstance();
@@ -28,7 +27,7 @@ const { copyToClipboard } = useCopy();
 const key = ref(route.params.key);
 const from = ref(route.params.from);
 const currentSettings = ref({});
-const currentContenthash = ref('');
+const currentTextRecord = ref('');
 const currentStrategy = ref({});
 const currentPlugin = ref({});
 const currentStrategyIndex = ref(false);
@@ -59,7 +58,7 @@ const isValid = computed(() => {
   return !loading.value && validate.value === true && !uploadLoading.value;
 });
 
-const contenthash = computed(() => {
+const textRecord = computed(() => {
   const keyURI = encodeURIComponent(key.value);
   const address = web3Account.value
     ? getAddress(web3Account.value)
@@ -68,11 +67,12 @@ const contenthash = computed(() => {
 });
 
 const isOwner = computed(() => {
-  return currentContenthash.value === contenthash.value;
+  return currentTextRecord.value === textRecord.value;
 });
 
 const isAdmin = computed(() => {
-  if (!store.state.app.spaces[key.value]) return false;
+  if (!store.state.app.spaces[key.value] || !currentTextRecord.value)
+    return false;
   const admins = (store.state.app.spaces[key.value].admins || []).map(admin =>
     admin.toLowerCase()
   );
@@ -206,12 +206,9 @@ onMounted(async () => {
   try {
     const uri = await getSpaceUri(key.value);
     console.log('URI', uri);
-    currentContenthash.value = uri;
-    let space = clone(store.state.app.spaces?.[key.value]);
-    if (!space) {
-      const [protocolType, decoded] = uri.split('://');
-      space = await uriGet(gateway, decoded, protocolType);
-    }
+    currentTextRecord.value = uri;
+    const space = clone(store.state.app.spaces?.[key.value]);
+    if (!space) return;
     delete space.key;
     delete space._activeProposals;
     space.strategies = space.strategies || [];
@@ -253,12 +250,12 @@ onMounted(async () => {
           <UiButton class="d-flex width-full mb-2">
             <input
               readonly
-              v-model="contenthash"
+              v-model="textRecord"
               class="input width-full"
               :placeholder="$t('contectHash')"
             />
             <Icon
-              @click="copyToClipboard(contenthash)"
+              @click="copyToClipboard(textRecord)"
               name="copy"
               size="24"
               class="text-color p-2 mr-n3"
@@ -281,6 +278,21 @@ onMounted(async () => {
               <Icon name="external-link" class="ml-1" />
             </UiButton>
           </a>
+          <Block
+            v-if="currentSettings?.name && !currentTextRecord"
+            :style="'border-color: red !important; margin-bottom: 0 !important;'"
+            class="mb-0 mt-3"
+          >
+            <Icon name="warning" class="mr-2 text-red" />
+            <span class="text-red">
+              {{ $t('settings.warningTextRecord') }}
+              <a
+                v-text="$t('learnMore')"
+                href="https://docs.snapshot.org/spaces/create"
+                target="_blank"
+              />
+            </span>
+          </Block>
         </Block>
         <div v-if="isOwner || isAdmin">
           <Block :title="$t('settings.profile')">
