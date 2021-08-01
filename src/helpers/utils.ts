@@ -62,16 +62,15 @@ export function lsRemove(key: string) {
 }
 
 export function getStrategy(strategy, spaces) {
-  strategy.spaces = Object.entries(spaces)
+  const clonedStrategy = clone(strategy);
+  clonedStrategy.spaces = Object.entries(spaces)
     .filter(
       (space: any) =>
         space[1].strategies &&
-        space[1].strategies
-          .map(strategy => strategy.name)
-          .includes(strategy.key)
+        space[1].strategies.map(s => s.name).includes(strategy.key)
     )
     .map(space => space[0]);
-  return strategy;
+  return clonedStrategy;
 }
 
 export function formatSpace(key, space) {

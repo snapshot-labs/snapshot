@@ -1,7 +1,8 @@
+import { Buffer } from 'buffer';
+(window as any).global = window;
+(window as any).Buffer = Buffer;
 import { createApp, h, provide } from 'vue';
 import Jazzicon from 'vue3-jazzicon/src/components';
-import upperFirst from 'lodash/upperFirst';
-import camelCase from 'lodash/camelCase';
 import { LockPlugin } from '@snapshot-labs/lock/plugins/vue3';
 import options from '@/helpers/auth';
 import '@snapshot-labs/snapshot-spaces/skins';
@@ -28,15 +29,6 @@ const app = createApp({
 
   .component('jazzicon', Jazzicon)
   .mixin(mixins);
-
-const requireComponent = require.context('@/components', true, /[\w-]+\.vue$/);
-requireComponent.keys().forEach(fileName => {
-  const componentConfig = requireComponent(fileName);
-  const componentName = upperFirst(
-    camelCase(fileName.replace(/^\.\//, '').replace(/\.\w+$/, ''))
-  );
-  app.component(componentName, componentConfig.default || componentConfig);
-});
 
 app.mount('#app');
 

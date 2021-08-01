@@ -1,0 +1,12 @@
+diff --git a/node_modules/core-util-is/lib/util.js b/node_modules/core-util-is/lib/util.js
+index ff4c851..b38ce9e 100644
+--- a/node_modules/core-util-is/lib/util.js
++++ b/node_modules/core-util-is/lib/util.js
+@@ -21,6 +21,7 @@
+ 
+ // NOTE: These type checking functions intentionally don't use `instanceof`
+ // because it is fragile and can be easily faked with `Object.create()`.
++const Buffer = require('buffer');
+ 
+ function isArray(arg) {
+   if (Array.isArray) {

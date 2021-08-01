@@ -11,6 +11,7 @@ import { useProfiles } from '@/composables/useProfiles';
 import client from '@/helpers/clientEIP712';
 import { useDomain } from '@/composables/useDomain';
 import { useSharing } from '@/composables/useSharing';
+import { useI18n } from 'vue-i18n';
 
 const auth = getInstance();
 const route = useRoute();
@@ -21,6 +22,7 @@ const { t } = useI18n();
 const key = route.params.key;
 const id = route.params.id;
 const { domain } = useDomain();
+const { t } = useI18n();
 
 const modalOpen = ref(false);
 const selectedChoices = ref(null);
@@ -47,6 +49,12 @@ const strategies = computed(
 const symbols = computed(() =>
   strategies.value.map(strategy => strategy.params.symbol)
 );
+const threeDotItems = computed(() => {
+  const items = [{ text: t('duplicateProposal'), action: 'duplicate' }];
+  if (isAdmin.value || isCreator.value)
+    items.push({ text: t('deleteProposal'), action: 'delete' });
+  return items;
+});
 
 const { modalAccountOpen } = useModal();
 const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(key);
@@ -118,6 +126,14 @@ const {
 
 function selectFromThreedotDropdown(e) {
   if (e === 'delete') deleteProposal();
+  if (e === 'duplicate')
+    router.push({
+      name: 'create',
+      params: {
+        key: proposal.value.space.id,
+        from: proposal.value.id
+      }
+    });
 }
 
 function selectFromShareDropdown(e) {
@@ -180,9 +196,8 @@ onMounted(async () => {
               top="2.5rem"
               right="1.3rem"
               class="float-right mr-2"
-              v-if="isAdmin || isCreator"
               @select="selectFromThreedotDropdown"
-              :items="[{ text: $t('deleteProposal'), action: 'delete' }]"
+              :items="threeDotItems"
             >
               <div class="pr-3">
                 <UiLoading v-if="dropdownLoading" />
@@ -329,7 +344,7 @@ onMounted(async () => {
           :results="results"
           :strategies="strategies"
         />
-        <PluginPoapCustomBlock
+        <PluginPOAPCustomBlock
           v-if="space.plugins?.poap"
           :loaded="loadedResults"
           :space="space"
