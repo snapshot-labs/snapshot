@@ -11,18 +11,18 @@ import { useProfiles } from '@/composables/useProfiles';
 import client from '@/helpers/clientEIP712';
 import { useDomain } from '@/composables/useDomain';
 import { useSharing } from '@/composables/useSharing';
-import { useI18n } from 'vue-i18n';
+import { useNotifications } from '@/composables/useNotifications';
 
 const auth = getInstance();
 const route = useRoute();
 const router = useRouter();
 const store = useStore();
 const { t } = useI18n();
+const { domain } = useDomain();
+const { notify } = useNotifications();
 
 const key = route.params.key;
 const id = route.params.id;
-const { domain } = useDomain();
-const { t } = useI18n();
 
 const modalOpen = ref(false);
 const selectedChoices = ref(null);
@@ -100,7 +100,7 @@ async function deleteProposal() {
       proposal: id
     });
     console.log('Result', result);
-    store.dispatch('notify', t('notify.proposalDeleted'));
+    notify(t('notify.proposalDeleted'));
     dropdownLoading.value = false;
     router.push({ name: 'proposals' });
   } catch (e) {
@@ -109,7 +109,7 @@ async function deleteProposal() {
       const errorMessage = e?.error_description
         ? `Oops, ${e.error_description}`
         : t('notify.somethingWentWrong');
-      store.dispatch('notify', ['red', errorMessage]);
+      notify(['red', errorMessage]);
     }
   }
   dropdownLoading.value = false;

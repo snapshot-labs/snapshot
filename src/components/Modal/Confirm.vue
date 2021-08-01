@@ -5,6 +5,7 @@ import { useI18n } from 'vue-i18n';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import client from '@/helpers/clientEIP712';
 import { getChoiceString } from '@/helpers/utils';
+import { useNotifications } from '@/composables/useNotifications';
 
 const props = defineProps({
   open: Boolean,
@@ -22,6 +23,7 @@ const emit = defineEmits(['reload', 'close']);
 const store = useStore();
 const auth = getInstance();
 const { t } = useI18n();
+const { notify } = useNotifications();
 
 const loading = ref(false);
 const symbols = computed(() =>
@@ -41,14 +43,14 @@ async function handleSubmit() {
       metadata: JSON.stringify({})
     });
     console.log('Result', result);
-    store.dispatch('notify', t('notify.yourIsIn', ['vote']));
+    notify(t('notify.yourIsIn', ['vote']));
   } catch (e) {
     if (!e.code || e.code !== 4001) {
       console.log('Oops!', e);
       const errorMessage = e?.error_description
         ? `Oops, ${e.error_description}`
         : t('notify.somethingWentWrong');
-      store.dispatch('notify', ['red', errorMessage]);
+      notify(['red', errorMessage]);
     }
   }
   emit('reload');

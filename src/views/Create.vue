@@ -15,6 +15,7 @@ import { clone } from '@/helpers/utils';
 import client from '@/helpers/clientEIP712';
 import { useDomain } from '@/composables/useDomain';
 import { useApolloQuery } from '@/composables/useApolloQuery';
+import { useNotifications } from '@/composables/useNotifications';
 
 const route = useRoute();
 const router = useRouter();
@@ -22,6 +23,7 @@ const { t } = useI18n();
 const store = useStore();
 const auth = getInstance();
 const { domain } = useDomain();
+const { notify } = useNotifications();
 
 const key = route.params.key;
 const from = route.params.from;
@@ -131,7 +133,7 @@ async function handleSubmit() {
       metadata: JSON.stringify({})
     });
     console.log('Result', result);
-    store.dispatch('notify', t('notify.yourIsIn', ['proposal']));
+    notify(t('notify.yourIsIn', ['proposal']));
     router.push({
       name: 'proposal',
       params: {
@@ -145,7 +147,7 @@ async function handleSubmit() {
       const errorMessage = e?.error_description
         ? `Oops, ${e.error_description}`
         : t('notify.somethingWentWrong');
-      store.dispatch('notify', ['red', errorMessage]);
+      notify(['red', errorMessage]);
     }
     loading.value = false;
   }

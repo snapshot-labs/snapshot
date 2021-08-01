@@ -8,13 +8,13 @@ import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { validateSchema } from '@snapshot-labs/snapshot.js/src/utils';
 import schemas from '@snapshot-labs/snapshot.js/src/schemas';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
-import gateways from '@snapshot-labs/snapshot.js/src/gateways.json';
 import { useSearchFilters } from '@/composables/useSearchFilters';
 import { clone } from '@/helpers/utils';
 import { getSpaceUri } from '@/helpers/ens';
 import defaults from '@/locales/default';
 import client from '@/helpers/clientEIP712';
 import { useCopy } from '@/composables/useCopy';
+import { useNotifications } from '@/composables/useNotifications';
 
 const basicValidation = { name: 'basic', params: {} };
 
@@ -23,6 +23,7 @@ const route = useRoute();
 const store = useStore();
 const { t } = useI18n();
 const { copyToClipboard } = useCopy();
+const { notify } = useNotifications();
 
 const key = ref(route.params.key);
 const from = ref(route.params.from);
@@ -99,14 +100,14 @@ async function handleSubmit() {
         settings: JSON.stringify(form.value)
       });
       console.log('Result', result);
-      store.dispatch('notify', t('notify.yourIsIn', ['settings']));
+      notify(t('notify.yourIsIn', ['settings']));
     } catch (e) {
       if (!e.code || e.code !== 4001) {
         console.log('Oops!', e);
         const errorMessage = e?.error_description
           ? `Oops, ${e.error_description}`
           : t('notify.somethingWentWrong');
-        store.dispatch('notify', ['red', errorMessage]);
+        notify(['red', errorMessage]);
       }
     }
 

@@ -1,6 +1,8 @@
 <script>
-import { mapActions } from 'vuex';
 import plugins from '@snapshot-labs/snapshot.js/src/plugins';
+import { useNotifications } from '@/composables/useNotifications';
+
+const { notify } = useNotifications();
 
 export default {
   props: ['id', 'space', 'proposal', 'results', 'loaded'],
@@ -30,7 +32,6 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['notify']),
     async execute(plugin) {
       this.loading = true;
       const action = new plugins[plugin]();
@@ -45,7 +46,7 @@ export default {
         );
         const receipt = await tx.wait();
         console.log('Receipt', receipt);
-        this.notify(['green', this.$t('notify.youDidIt')]);
+        notify(['green', this.$t('notify.youDidIt')]);
       } catch (e) {
         console.error(e);
       }

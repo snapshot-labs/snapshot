@@ -1,6 +1,8 @@
 <script>
 import Plugin from '@snapshot-labs/snapshot.js/src/plugins/poap';
-import { mapActions } from 'vuex';
+import { useNotifications } from '@/composables/useNotifications';
+
+const { notify } = useNotifications();
 
 const STATES = {
   NO_POAP: {
@@ -105,7 +107,6 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['notify']),
     async action() {
       switch (this.currentState) {
         case CLAIMED:
@@ -129,10 +130,10 @@ export default {
           setTimeout(() => this.checkStateLoop(), 5000);
           break;
         case UNCLAIMED:
-          this.notify(['red', this.$t('poap.error_claim')]);
+          notify(['red', this.$t('poap.error_claim')]);
           break;
         case CLAIMED:
-          this.notify(['green', this.$t('poap.success_claim')]);
+          notify(['green', this.$t('poap.success_claim')]);
       }
     },
     async updateState() {
