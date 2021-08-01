@@ -1,7 +1,7 @@
 <script setup>
 import { watchEffect, ref, computed } from 'vue';
 import { useRoute } from 'vue-router';
-import strategies from '@/helpers/strategies';
+import { useStore } from 'vuex';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import { getBlockNumber } from '@snapshot-labs/snapshot.js/src/utils/web3';
@@ -14,9 +14,11 @@ const defaultParams = {
 };
 
 const route = useRoute();
+const store = useStore();
 let provider;
 
-const strategy = computed(() => strategies[route.params.name]);
+const strategies = computed(() => store.state.app.strategies);
+const strategy = computed(() => strategies.value[route.params.name]);
 const strategyExample = computed(() => strategy.value.examples?.[0]);
 
 const modalNetworksOpen = ref(false);

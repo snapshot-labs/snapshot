@@ -5,8 +5,8 @@ import { formatUnits } from '@ethersproject/units';
 import { getProfiles } from '@/helpers/profile';
 
 let auth;
-const defaultNetwork =
-  process.env.VUE_APP_DEFAULT_NETWORK || Object.keys(networks)[0];
+const defaultNetwork: any =
+  import.meta.env.VITE_DEFAULT_NETWORK || Object.keys(networks)[0];
 
 const state = {
   account: null,

@@ -108,6 +108,7 @@
   "upload": "Upload",
   "follow": "Follow",
   "copyLink": "Copy link",
+  "duplicateProposal": "Duplicate proposal",
   "errors": {
     "required": "Field is required",
     "minLength": "Minimum length is {0}",

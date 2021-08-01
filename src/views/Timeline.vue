@@ -1,6 +1,5 @@
 <script setup>
 import { onMounted, ref, computed, watch } from 'vue';
-import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
 import { useInfiniteLoader } from '@/composables/useInfiniteLoader';
 import { lsSet } from '@/helpers/utils';
@@ -9,15 +8,16 @@ import { useScrollMonitor } from '@/composables/useScrollMonitor';
 import { apolloClient } from '@/helpers/apollo';
 import { PROPOSALS_QUERY } from '@/helpers/queries';
 import { useProfiles } from '@/composables/useProfiles';
+import { useFavoriteSpaces } from '@/composables/useFavoriteSpaces';
 
 // Persistent filter state
 const filterBy = ref('all');
 
-const store = useStore();
 const route = useRoute();
+const { favorites: favoriteSpaces } = useFavoriteSpaces();
 
 const favorites = computed(() =>
-  route.name === 'timeline' ? store.state.favoriteSpaces.favorites : []
+  route.name === 'timeline' ? favoriteSpaces.value : []
 );
 const favoritesKeys = computed(() => Object.keys(favorites.value));
 
