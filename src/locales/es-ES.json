@@ -102,7 +102,7 @@
   "agree": "Acepto",
   "mustAgreeToTerms": "Antes de poder completar esta acción, debes aceptar los {0} términos de servicio aquí:",
   "playground": "Playground",
-  "strategyParams": "Strategy params",
+  "strategyParams": "Parámetros de estrategia",
   "addresses": "Direcciones",
   "networkErrorPlayground": "Error de red - por favor, abra la consola de su navegador para obtener más información",
   "upload": "Cargar",
@@ -190,7 +190,7 @@
     "allowOnlyMembers": "Permitir sólo a los miembros enviar una propuesta",
     "editPlugin": "Editar extensión",
     "addPlugin": "Agregar extensión",
-    "pluginParameters": "Plugin parameters",
+    "pluginParameters": "Parámetros de la extensión",
     "proposalValidation": "Validación de oferta",
     "validation": "Validación",
     "editValidation": "Editar validación",
@@ -214,7 +214,7 @@
     "createStrategy": "Crear estrategia",
     "createSkin": "Create skin",
     "addNetwork": "Añadir red",
-    "createPlugin": "Create plugin",
+    "createPlugin": "Crear extensión",
     "strategies": "estrategia(s)",
     "skins": "skin(s)",
     "networks": "red(es)",
@@ -267,6 +267,6 @@
     "button_claim": "Reclamar",
     "button_show": "Show me my collection",
     "success_claim": "Your POAP is on your address",
-    "error_claim": "There was a problem minting the token"
+    "error_claim": "Hubo un problema en la acuñación de esta token"
   }
 }
