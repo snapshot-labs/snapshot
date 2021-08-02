@@ -22,7 +22,7 @@
     "@primer/css": "^14.4.0",
     "@snapshot-labs/lock": "github:snapshot-labs/lock#master",
     "@snapshot-labs/snapshot-spaces": "github:snapshot-labs/snapshot-spaces#master",
-    "@snapshot-labs/snapshot.js": "github:snapshot-labs/snapshot.js#4d31765c7dca3e1ef2a93ab994554f7327fc5d07",
+    "@snapshot-labs/snapshot.js": "github:snapshot-labs/snapshot.js#next",
     "@toruslabs/torus-embed": "^1.9.2",
     "@vue/apollo-composable": "4.0.0-alpha.12",
     "@vueuse/core": "^5.2.0",
