@@ -41,10 +41,10 @@
   "connectWallet": "잇다 지갑",
   "about": "약",
   "license": "면허장",
-  "ipfsServer": "내가피에프에스 섬기는 사람",
-  "hub": "바퀴통",
+  "ipfsServer": "IPFS 써버",
+  "hub": "하브",
   "cancel": "취소",
-  "deleteProposal": "지우다 제창",
+  "deleteProposal": "제안서 삭제",
   "demoSite": "이것은 데모 사이트입니다. 시도해 보십시오!",
   "removeDelegation": "위임 제거",
   "confirmRemove": "위임을 제거하시겠습니까",
@@ -106,8 +106,8 @@
   "addresses": "주소",
   "networkErrorPlayground": "네트워크 오류 - 자세한 내용을 보려면 브라우저 콘솔을 여십시오",
   "upload": "업로드",
-  "copyLink": "Copy link",
-  "duplicateProposal": "Duplicate proposal",
+  "copyLink": "링크 복사하기",
+  "duplicateProposal": "제안서 중복하기.",
   "errors": {
     "required": "필드가 필요합니다",
     "minLength": "최소 길이는 {0}",
@@ -196,7 +196,7 @@
     "editValidation": "유효성 검사 편집",
     "selectValidation": "유효성 검사 선택",
     "validationParameters": "검증 매개변수",
-    "warningTextRecord": "You must set a text record on the ENS domain."
+    "warningTextRecord": "ENS 도메인에 텍스트 레코드를 설정해야 합니다."
   },
   "setup": {
     "example": "예를 들어 얌.eth",
