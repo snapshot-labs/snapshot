@@ -14,15 +14,15 @@ export function useFollowSpace() {
 
   const web3Account = computed(() => store.state.web3.account);
 
-  function followSpace(space) {
+  function clickFollow(space) {
     !store.state.app.authLoading
       ? web3Account.value
-        ? sendFollow(space)
+        ? follow(space)
         : (modalAccountOpen.value = true)
       : null;
   }
 
-  async function sendFollow(space) {
+  async function follow(space) {
     loading.value = true;
     try {
       await client.follow(auth.web3, web3Account.value, { space });
@@ -33,5 +33,5 @@ export function useFollowSpace() {
     }
   }
 
-  return { followSpace, loadingFollow: computed(() => loading) };
+  return { clickFollow, loadingFollow: computed(() => loading) };
 }

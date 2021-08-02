@@ -22,7 +22,7 @@ const isAdmin = computed(() => {
   );
 });
 
-const { followSpace, loadingFollow } = useFollowSpace();
+const { clickFollow, loadingFollow } = useFollowSpace();
 </script>
 
 <template>
@@ -32,7 +32,7 @@ const { followSpace, loadingFollow } = useFollowSpace();
         <Token :space="space" symbolIndex="space" size="80" class="mt-3 mb-2" />
         <h3 class="mb-3 px-4">{{ space.name }}</h3>
         <UiButton
-          @click="followSpace(space.key)"
+          @click="clickFollow(space.key)"
           :loading="loadingFollow.value"
           class="mb-4"
           style="width: 120px"
