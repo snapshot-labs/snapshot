@@ -302,6 +302,7 @@ onMounted(async () => {
         </div>
       </Block>
       <BlockResults
+        :id="id"
         :loaded="loadedResults"
         :space="space"
         :proposal="proposal"
