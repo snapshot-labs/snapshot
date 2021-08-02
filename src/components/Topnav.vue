@@ -13,9 +13,20 @@
           <div class="flex-auto d-flex flex-items-center">
             <p
               class="d-inline-block d-flex flex-items-center"
-              style="font-size: 24px; padding-top: 45px; color: black; line-height: 20px;"
+              style="color: black; line-height: 20px"
+              :style="titleStyle"
             >
-              IoTeX Governance Portal<br/> <span style="color: gray;font-size: 18px">powered by <a href="https://snapshot.org/" target="_blank" style="color: gray;">snapshot</a></span>
+              IoTeX Governance Portal<br />
+              <span style="color: gray; font-size: 1.125rem">
+                powered by
+                <a
+                  href="https://snapshot.org/"
+                  target="_blank"
+                  style="color: gray"
+                >
+                  snapshot
+                </a>
+              </span>
             </p>
           </div>
           <div :key="web3.account">
@@ -89,11 +100,22 @@ import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
 import { useModal } from '@/composables/useModal';
 import { useDomain } from '@/composables/useDomain';
+import { useMediaQuery } from '@/composables/useMediaQuery';
 
 export default {
   setup() {
     const { modalAccountOpen } = useModal();
     const { env, domain } = useDomain();
+    const { isXSmallScreen } = useMediaQuery();
+    const titleStyle = isXSmallScreen
+      ? {
+          paddingTop: '1.5rem',
+          fontSize: '1.2rem'
+        }
+      : {
+          paddingTop: '3rem',
+          fontSize: '1.5rem'
+        };
     const route = useRoute();
     const store = useStore();
 
@@ -139,7 +161,8 @@ export default {
       modalAboutOpen,
       modalLangOpen,
       modalWalletNotice,
-      handleLogin
+      handleLogin,
+      titleStyle
     };
   }
 };
