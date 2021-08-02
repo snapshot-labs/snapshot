@@ -10,7 +10,8 @@ const state = {
   init: false,
   loading: false,
   authLoading: false,
-  spaces: {}
+  spaces: {},
+  strategies: {}
 };
 
 const mutations = {
@@ -34,7 +35,7 @@ const actions = {
   init: async ({ commit, dispatch }) => {
     const auth = getInstance();
     commit('SET', { loading: true });
-    await dispatch('getSpaces');
+    await Promise.all([dispatch('getSpaces'), dispatch('getStrategies')]);
     auth.getConnector().then(connector => {
       if (connector) dispatch('login', connector);
     });
@@ -53,6 +54,13 @@ const actions = {
     );
     commit('SET', { spaces });
     return spaces;
+  },
+  getStrategies: async ({ commit }) => {
+    const strategies: any = await fetch(
+      'https://score.snapshot.org/api/strategies'
+    ).then(res => res.json());
+    commit('SET', { strategies });
+    return strategies;
   },
   send: async ({ commit, rootState }, { space, type, payload }) => {
     const auth = getInstance();

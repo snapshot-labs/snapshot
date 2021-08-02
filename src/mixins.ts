@@ -16,7 +16,8 @@ export default {
     _ms: ms,
     _n: n,
     _getUrl(url) {
-      const gateway = process.env.VUE_APP_IPFS_GATEWAY || 'cloudflare-ipfs.com';
+      const gateway: string =
+        import.meta.env.VITE_IPFS_GATEWAY || 'cloudflare-ipfs.com';
       return getUrl(url, gateway);
     }
   }
