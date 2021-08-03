@@ -1,3 +1,13 @@
+<script setup>
+import { defineProps } from 'vue';
+
+defineProps(['network']);
+
+function getLogoUrl(key) {
+  return `https://raw.githubusercontent.com/snapshot-labs/snapshot.js/master/src/networks/${key}.png`;
+}
+</script>
+
 <template>
   <Block>
     <div class="d-flex flex-items-center mb-1">
@@ -8,22 +18,10 @@
         size="28"
       />
       <h3 v-text="network.name" />
-      <div v-text="network.key" class="ml-1 text-gray" />
+      <div v-text="network.key" class="ml-1 text-color" />
     </div>
-    <div class="text-gray">
+    <div class="text-color">
       {{ $tc('inSpaces', [_n(network.spaces.length)]) }}
     </div>
   </Block>
 </template>
-
-<script>
-export default {
-  props: ['network'],
-  setup() {
-    function getLogoUrl(key) {
-      return `https://raw.githubusercontent.com/snapshot-labs/snapshot.js/master/src/networks/${key}.png`;
-    }
-    return { getLogoUrl };
-  }
-};
-</script>

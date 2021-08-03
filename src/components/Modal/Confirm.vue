@@ -1,3 +1,47 @@
+<script setup>
+import { ref, computed, defineProps, defineEmits } from 'vue';
+import { useStore } from 'vuex';
+import { getChoiceString } from '@/helpers/utils';
+
+const props = defineProps({
+  open: Boolean,
+  space: Object,
+  proposal: Object,
+  selectedChoices: [Object, Number],
+  snapshot: String,
+  totalScore: Number,
+  scores: Object,
+  strategies: Object
+});
+
+const emit = defineEmits(['reload', 'close']);
+
+const store = useStore();
+
+const loading = ref(false);
+const symbols = computed(() =>
+  props.strategies.map(strategy => strategy.params.symbol)
+);
+
+const format = getChoiceString;
+
+async function handleSubmit() {
+  loading.value = true;
+  await store.dispatch('send', {
+    space: props.space.key,
+    type: 'vote',
+    payload: {
+      proposal: props.proposal.id,
+      choice: props.selectedChoices,
+      metadata: {}
+    }
+  });
+  emit('reload');
+  emit('close');
+  loading.value = false;
+}
+</script>
+
 <template>
   <UiModal :open="open" @close="$emit('close')" class="d-flex">
     <template v-slot:header>
@@ -13,15 +57,15 @@
         <br />
         {{ $t('cannotBeUndone') }}
       </h4>
-      <div class="m-4 p-4 border rounded-2 text-white">
+      <div class="m-4 p-4 border rounded-2 link-color">
         <div class="d-flex">
-          <span v-text="$t('options')" class="flex-auto text-gray mr-1" />
+          <span v-text="$t('options')" class="flex-auto text-color mr-1" />
           <span class="text-right ml-4">
             {{ format(proposal, selectedChoices) }}
           </span>
         </div>
         <div class="d-flex">
-          <span v-text="$t('snapshot')" class="flex-auto text-gray mr-1" />
+          <span v-text="$t('snapshot')" class="flex-auto text-color mr-1" />
           <a
             :href="_explorer(space.network, proposal.snapshot, 'block')"
             target="_blank"
@@ -32,7 +76,7 @@
           </a>
         </div>
         <div class="d-flex">
-          <span v-text="$t('votingPower')" class="flex-auto text-gray mr-1" />
+          <span v-text="$t('votingPower')" class="flex-auto text-color mr-1" />
           <span
             class="tooltipped tooltipped-nw"
             :aria-label="
@@ -50,7 +94,7 @@
             href="https://docs.snapshot.org/faq#why-i-cant-vote"
             class="d-inline-block mt-n1 ml-1"
           >
-            <Icon name="info" size="24" class="text-gray" />
+            <Icon name="info" size="24" class="text-color" />
           </a>
         </div>
       </div>
@@ -75,49 +119,3 @@
     </template>
   </UiModal>
 </template>
-
-<script>
-import { ref, computed } from 'vue';
-import { useStore } from 'vuex';
-import { getChoiceString } from '@/helpers/utils';
-
-export default {
-  props: {
-    open: Boolean,
-    space: Object,
-    proposal: Object,
-    selectedChoices: [Object, Number],
-    snapshot: String,
-    totalScore: Number,
-    scores: Object,
-    strategies: Object
-  },
-  emits: ['reload', 'close'],
-  setup(props, { emit }) {
-    const store = useStore();
-
-    const loading = ref(false);
-    const symbols = computed(() =>
-      props.strategies.map(strategy => strategy.params.symbol)
-    );
-
-    async function handleSubmit() {
-      loading.value = true;
-      await store.dispatch('send', {
-        space: props.space.key,
-        type: 'vote',
-        payload: {
-          proposal: props.proposal.id,
-          choice: props.selectedChoices,
-          metadata: {}
-        }
-      });
-      emit('reload');
-      emit('close');
-      loading.value = false;
-    }
-
-    return { loading, symbols, handleSubmit, format: getChoiceString };
-  }
-};
-</script>

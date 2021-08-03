@@ -1,12 +1,7 @@
-import camelCase from 'lodash/camelCase';
+import app from './app';
+import web3 from './web3';
 
-const requireModule = require.context('.', false, /\.ts$/);
-const modules = {};
-
-requireModule.keys().forEach(fileName => {
-  if (fileName === './index.ts') return;
-  const moduleName = camelCase(fileName.replace(/(\.\/|\.ts)/g, ''));
-  modules[moduleName] = requireModule(fileName).default;
-});
-
-export default modules;
+export default {
+  app,
+  web3
+};

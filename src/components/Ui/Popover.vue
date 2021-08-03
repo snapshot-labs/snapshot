@@ -1,3 +1,51 @@
+<script setup>
+import { onMounted, ref, watch, defineProps } from 'vue';
+import { createPopper } from '@popperjs/core';
+import { useDebounce } from '@/composables/useDebounce';
+import { useDetectInput } from '@/composables/useDetectInput';
+import { useMediaQuery } from '@/composables/useMediaQuery';
+
+const props = defineProps({
+  options: Object
+});
+
+const open = ref(false);
+const popHovered = ref(false);
+
+const itemref = ref(null);
+const contentref = ref(null);
+
+const { isTouchScreen } = useDetectInput();
+const { isXLargeScreen } = useMediaQuery();
+
+const debounce = useDebounce();
+
+function popClose() {
+  if (!popHovered.value) open.value = false;
+}
+
+let popperInstance;
+
+onMounted(() => {
+  popperInstance = createPopper(itemref.value, contentref.value, {
+    placement: props.options.placement,
+    modifiers: [
+      {
+        name: 'offset',
+        options: {
+          offset: props.options.offset
+        }
+      }
+    ]
+  });
+});
+
+watch(open, () => {
+  if (!isXLargeScreen.value) popperInstance.setOptions({ placement: 'bottom' });
+  else popperInstance.setOptions({ placement: 'bottom-start' });
+});
+</script>
+
 <template>
   <div
     ref="itemref"
@@ -16,66 +64,6 @@
     <slot name="content" />
   </div>
 </template>
-
-<script>
-import { onMounted, ref, watch } from 'vue';
-import { createPopper } from '@popperjs/core';
-import { useDebounce } from '@/composables/useDebounce';
-import { useDetectInput } from '@/composables/useDetectInput';
-import { useMediaQuery } from '@/composables/useMediaQuery';
-
-export default {
-  props: {
-    options: Object
-  },
-  setup(props) {
-    const open = ref(false);
-    const popHovered = ref(false);
-
-    const itemref = ref(null);
-    const contentref = ref(null);
-
-    const { isTouchScreen } = useDetectInput();
-    const { isXLargeScreen } = useMediaQuery();
-
-    function popClose() {
-      if (!popHovered.value) open.value = false;
-    }
-
-    let popperInstance;
-
-    onMounted(() => {
-      popperInstance = createPopper(itemref.value, contentref.value, {
-        placement: props.options.placement,
-        modifiers: [
-          {
-            name: 'offset',
-            options: {
-              offset: props.options.offset
-            }
-          }
-        ]
-      });
-    });
-
-    watch(open, () => {
-      if (!isXLargeScreen.value)
-        popperInstance.setOptions({ placement: 'bottom' });
-      else popperInstance.setOptions({ placement: 'bottom-start' });
-    });
-
-    return {
-      open,
-      popClose,
-      popHovered,
-      itemref,
-      contentref,
-      debounce: useDebounce(),
-      isTouchScreen
-    };
-  }
-};
-</script>
 
 <style scoped lang="scss">
 .custom-content {

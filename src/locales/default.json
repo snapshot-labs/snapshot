@@ -106,6 +106,8 @@
   "addresses": "Addresses",
   "networkErrorPlayground": "Network error - please open your browser console for more information",
   "upload": "Upload",
+  "copyLink": "Copy link",
+  "duplicateProposal": "Duplicate proposal",
   "errors": {
     "required": "Field is required",
     "minLength": "Minimum length is {0}",
@@ -193,7 +195,8 @@
     "validation": "Validation",
     "editValidation": "Edit validation",
     "selectValidation": "Select validation",
-    "validationParameters": "Validation parameters"
+    "validationParameters": "Validation parameters",
+    "warningTextRecord": "You must set a text record on the ENS domain."
   },
   "setup": {
     "example": "e.g. yam.eth",
@@ -229,7 +232,7 @@
       "single-choice": "Each voter may select only one choice.",
       "approval": "Each voter may select any number of choices.",
       "quadratic": "Each voter may spread voting power across any number of choices. Results are calculated quadratically.",
-      "ranked-choice": "Each voter may select and rank any number of choices. Results are calculted by instant-runoff counting method.",
+      "ranked-choice": "Each voter may select and rank any number of choices. Results are calculated by instant-runoff counting method.",
       "weighted": "Each voter may spread voting power across any number of choices."
     }
   },
@@ -262,7 +265,7 @@
     "claimed_header": "Congratulations! You got a new POAP in your account",
     "loading_header": "The POAP is being added to your collection",
     "button_claim": "Claim",
-    "button_show": "Show me my badges",
+    "button_show": "Show me my collection",
     "success_claim": "Your POAP is on your address",
     "error_claim": "There was a problem minting the token"
   }

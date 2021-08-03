@@ -1,32 +1,3 @@
-<template>
-  <Block title="I voted POAP" :loading="loading">
-    <div class="d-flex flex-column flex-items-center">
-      <img :src="headerImg" alt="" class="mb-2" />
-      <div class="text-white text-center mb-2">{{ $t(header) }}</div>
-      <img
-        :src="mainImg"
-        alt=""
-        class="mb-2"
-        style="
-          vertical-align: middle;
-          width: auto;
-          height: auto;
-          max-width: 125px;
-        "
-      />
-      <UiButton
-        v-if="currentState !== 'NO_POAP'"
-        class="width-full mb-2"
-        @click="action"
-        :disabled="!actionEnabled"
-        :loading="actionLoading"
-      >
-        {{ $t(buttonText) }}
-      </UiButton>
-    </div>
-  </Block>
-</template>
-
 <script>
 import Plugin from '@snapshot-labs/snapshot.js/src/plugins/poap';
 import { mapActions } from 'vuex';
@@ -34,31 +5,29 @@ import { mapActions } from 'vuex';
 const STATES = {
   NO_POAP: {
     header: 'poap.no_poap_header',
-    headerImage:
-      'https://img-test-rlajous.s3.amazonaws.com/Property 1=nopoap.png',
-    mainImage: 'https://img-test-rlajous.s3.amazonaws.com/Group+1229.png'
+    headerImage: 'https://snapshotsplugin.s3.us-west-2.amazonaws.com/empty.svg',
+    mainImage:
+      'https://snapshotsplugin.s3.us-west-2.amazonaws.com/placeholder.png'
   },
   NOT_VOTED: {
-    headerImage:
-      'https://img-test-rlajous.s3.amazonaws.com/Property 1=unavaliable.png',
+    headerImage: 'https://snapshotsplugin.s3.us-west-2.amazonaws.com/vote.svg',
     header: 'poap.no_voted_header',
     buttonText: 'poap.button_claim'
   },
   UNCLAIMED: {
-    headerImage:
-      'https://img-test-rlajous.s3.amazonaws.com/Property 1=Voted.png',
+    headerImage: 'https://snapshotsplugin.s3.us-west-2.amazonaws.com/claim.svg',
     header: 'poap.unclaimed_header',
     buttonText: 'poap.button_claim'
   },
   CLAIMED: {
     headerImage:
-      'https://img-test-rlajous.s3.amazonaws.com/Property 1=Claimed.png',
+      'https://snapshotsplugin.s3.us-west-2.amazonaws.com/succes.svg',
     header: 'poap.claimed_header',
     buttonText: 'poap.button_show'
   },
   LOADING: {
     headerImage:
-      'https://img-test-rlajous.s3.amazonaws.com/Property 1=Claimed.png',
+      'https://snapshotsplugin.s3.us-west-2.amazonaws.com/succes.svg',
     header: 'poap.loading_header',
     buttonText: ''
   }
@@ -184,3 +153,32 @@ export default {
   }
 };
 </script>
+
+<template>
+  <Block title="I voted POAP" :loading="loading">
+    <div class="d-flex flex-column flex-items-center">
+      <img :src="headerImg" alt="" class="mb-2" />
+      <div class="link-color text-center mb-2">{{ $t(header) }}</div>
+      <img
+        :src="mainImg"
+        alt=""
+        class="mb-2"
+        style="
+          vertical-align: middle;
+          width: auto;
+          height: auto;
+          max-width: 125px;
+        "
+      />
+      <UiButton
+        v-if="currentState !== 'NO_POAP'"
+        class="width-full mb-2"
+        @click="action"
+        :disabled="!actionEnabled"
+        :loading="actionLoading"
+      >
+        {{ $t(buttonText) }}
+      </UiButton>
+    </div>
+  </Block>
+</template>

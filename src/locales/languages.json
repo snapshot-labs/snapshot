@@ -2,6 +2,14 @@
   "en-US": {
     "name": "English"
   },
+  "da-DK": {
+    "name": "Danish",
+    "nativeName": "Dansk"
+  },
+  "cs-CZ": {
+    "name": "Czech",
+    "nativeName": "Čeština"
+  },
   "de-DE": {
     "name": "German",
     "nativeName": "Deutsch"
@@ -81,5 +89,9 @@
   "mr-IN": {
     "name": "Marathi",
     "nativeName": "मराठी"
+  },
+  "ko-KR": {
+    "name": "Korean",
+    "nativeName": "한국어"
   }
 }

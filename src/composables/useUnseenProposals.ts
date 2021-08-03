@@ -11,7 +11,7 @@ export function useUnseenProposals() {
     if (favoriteKeys[0]) {
       try {
         const activeProposals = await subgraphRequest(
-          `${process.env.VUE_APP_HUB_URL}/graphql`,
+          `${import.meta.env.VITE_HUB_URL}/graphql`,
           {
             proposals: {
               __args: {

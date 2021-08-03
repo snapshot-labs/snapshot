@@ -1,3 +1,59 @@
+<script setup>
+import { ref, computed, watch, onMounted } from 'vue';
+import { useStore } from 'vuex';
+import { useRoute } from 'vue-router';
+import { useModal } from '@/composables/useModal';
+import { useDomain } from '@/composables/useDomain';
+import { useMediaQuery } from '@/composables/useMediaQuery';
+
+const { modalAccountOpen } = useModal();
+const { env, domain } = useDomain();
+const route = useRoute();
+const store = useStore();
+
+const loading = ref(false);
+const modalAboutOpen = ref(false);
+const modalLangOpen = ref(false);
+const modalWalletNotice = ref(false);
+
+const space = computed(() => {
+  const key = domain || route.params.key;
+  return store.state.app.spaces[key] ? store.state.app.spaces[key] : false;
+});
+
+const walletConnectType = computed(() => store.state.web3.walletConnectType);
+
+function setTitle() {
+  document.title = space.value.name ? space.value.name : 'Snapshot';
+}
+
+async function handleLogin(connector) {
+  modalAccountOpen.value = false;
+  loading.value = true;
+  await store.dispatch('login', connector);
+  loading.value = false;
+}
+
+watch(space, () => {
+  setTitle();
+});
+
+watch(walletConnectType, val => {
+  if (val === 'Gnosis Safe Multisig') modalWalletNotice.value = true;
+});
+const { isXSmallScreen } = useMediaQuery();
+const titleStyle = isXSmallScreen
+  ? {
+    paddingTop: '1.5rem',
+    fontSize: '1.2rem'
+  }
+  : {
+    paddingTop: '3rem',
+    fontSize: '1.5rem'
+  };
+onMounted(() => setTitle());
+</script>
+
 <template>
   <Sticky class="mb-4">
     <div
@@ -38,7 +94,7 @@
               >
                 <UiAvatar
                   :imgsrc="
-                    web3.profile?.image ? _ipfsUrl(web3.profile.image) : ''
+                    web3.profile?.image ? _getUrl(web3.profile.image) : ''
                   "
                   :address="web3.account"
                   size="16"
@@ -93,77 +149,3 @@
     </teleport>
   </Sticky>
 </template>
-
-<script>
-import { ref, computed, watch, onMounted } from 'vue';
-import { useStore } from 'vuex';
-import { useRoute } from 'vue-router';
-import { useModal } from '@/composables/useModal';
-import { useDomain } from '@/composables/useDomain';
-import { useMediaQuery } from '@/composables/useMediaQuery';
-
-export default {
-  setup() {
-    const { modalAccountOpen } = useModal();
-    const { env, domain } = useDomain();
-    const { isXSmallScreen } = useMediaQuery();
-    const titleStyle = isXSmallScreen
-      ? {
-          paddingTop: '1.5rem',
-          fontSize: '1.2rem'
-        }
-      : {
-          paddingTop: '3rem',
-          fontSize: '1.5rem'
-        };
-    const route = useRoute();
-    const store = useStore();
-
-    const loading = ref(false);
-    const modalAboutOpen = ref(false);
-    const modalLangOpen = ref(false);
-    const modalWalletNotice = ref(false);
-
-    const space = computed(() => {
-      const key = domain || route.params.key;
-      return store.state.app.spaces[key] ? store.state.app.spaces[key] : false;
-    });
-
-    const walletConnectType = computed(
-      () => store.state.web3.walletConnectType
-    );
-
-    function setTitle() {
-      document.title = space.value.name ? space.value.name : 'Snapshot';
-    }
-
-    async function handleLogin(connector) {
-      modalAccountOpen.value = false;
-      loading.value = true;
-      await store.dispatch('login', connector);
-      loading.value = false;
-    }
-
-    watch(space, () => {
-      setTitle();
-    });
-
-    watch(walletConnectType, val => {
-      if (val === 'Gnosis Safe Multisig') modalWalletNotice.value = true;
-    });
-
-    onMounted(() => setTitle());
-
-    return {
-      modalAccountOpen,
-      env,
-      loading,
-      modalAboutOpen,
-      modalLangOpen,
-      modalWalletNotice,
-      handleLogin,
-      titleStyle
-    };
-  }
-};
-</script>

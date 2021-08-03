@@ -1,3 +1,12 @@
+<script setup>
+import { defineProps } from 'vue';
+
+defineProps({
+  name: String,
+  size: String
+});
+</script>
+
 <template>
   <i
     class="iconfont"
@@ -5,12 +14,6 @@
     :style="size ? `font-size: ${size}px; line-height: ${size}px;` : ''"
   />
 </template>
-
-<script>
-export default {
-  props: { name: String, size: String }
-};
-</script>
 
 <style scoped lang="scss">
 .iconfont {

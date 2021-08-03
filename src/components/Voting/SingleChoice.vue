@@ -1,3 +1,23 @@
+<script setup>
+import { ref, defineProps, defineEmits } from 'vue';
+
+defineProps({
+  proposal: {
+    type: Object,
+    required: true
+  }
+});
+
+const emit = defineEmits(['selectChoice']);
+
+const selectedChoice = ref(null);
+
+function selectChoice(i) {
+  selectedChoice.value = i;
+  emit('selectChoice', i);
+}
+</script>
+
 <template>
   <div class="mb-3">
     <UiButton
@@ -12,27 +32,3 @@
     </UiButton>
   </div>
 </template>
-
-<script>
-import { ref } from 'vue';
-
-export default {
-  props: {
-    proposal: {
-      type: Object,
-      required: true
-    }
-  },
-  emits: ['selectChoice'],
-  setup(_, { emit }) {
-    const selectedChoice = ref(null);
-
-    function selectChoice(i) {
-      selectedChoice.value = i;
-      emit('selectChoice', i);
-    }
-
-    return { selectChoice, selectedChoice };
-  }
-};
-</script>

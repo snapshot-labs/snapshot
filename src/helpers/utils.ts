@@ -2,6 +2,9 @@ import pkg from '@/../package.json';
 import voting from '@/helpers/voting';
 import { formatEther } from '@ethersproject/units';
 import { BigNumber } from '@ethersproject/bignumber';
+import networks from '@snapshot-labs/snapshot.js/src/networks.json';
+import numeral from 'numeral';
+import { format } from 'timeago.js';
 
 export function shortenAddress(str = '') {
   return `${str.slice(0, 6)}...${str.slice(str.length - 4)}`;
@@ -59,16 +62,15 @@ export function lsRemove(key: string) {
 }
 
 export function getStrategy(strategy, spaces) {
-  strategy.spaces = Object.entries(spaces)
+  const clonedStrategy = clone(strategy);
+  clonedStrategy.spaces = Object.entries(spaces)
     .filter(
       (space: any) =>
         space[1].strategies &&
-        space[1].strategies
-          .map(strategy => strategy.name)
-          .includes(strategy.key)
+        space[1].strategies.map(s => s.name).includes(strategy.key)
     )
     .map(space => space[0]);
-  return strategy;
+  return clonedStrategy;
 }
 
 export function formatSpace(key, space) {
@@ -138,4 +140,17 @@ export function getNumberWithOrdinal(n) {
   const s = ['th', 'st', 'nd', 'rd'],
     v = n % 100;
   return n + (s[(v - 20) % 10] || s[v] || s[0]);
+}
+
+export function explorerUrl(network, str: string, type = 'address'): string {
+  return `${networks[network].explorer}/${type}/${str}`;
+}
+
+export function n(number, format = '(0.[00]a)') {
+  if (number < 0.00001) return format.includes('%') ? '0%' : 0;
+  return numeral(number).format(format);
+}
+
+export function ms(number) {
+  return format(number * 1e3);
 }

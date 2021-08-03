@@ -1,3 +1,22 @@
+<script setup>
+import { watch, toRefs, defineProps } from 'vue';
+import { useModal } from '@/composables/useModal';
+
+const props = defineProps({
+  open: {
+    type: Boolean,
+    required: true
+  }
+});
+
+const { open } = toRefs(props);
+const { modalOpen } = useModal();
+
+watch(open, (val, prev) => {
+  if (val !== prev) modalOpen.value = !modalOpen.value;
+});
+</script>
+
 <template>
   <div v-if="open" class="modal mx-auto">
     <div class="backdrop" @click="$emit('close')" />
@@ -21,34 +40,13 @@
       </div>
       <a
         @click="$emit('close')"
-        class="position-absolute right-0 top-1 p-4 text-gray"
+        class="position-absolute right-0 top-1 p-4 text-color"
       >
         <Icon name="close" />
       </a>
     </div>
   </div>
 </template>
-
-<script>
-import { watch, toRefs } from 'vue';
-import { useModal } from '@/composables/useModal';
-
-export default {
-  props: {
-    open: {
-      type: Boolean,
-      required: true
-    }
-  },
-  setup(props) {
-    const { open } = toRefs(props);
-    const { modalOpen } = useModal();
-    watch(open, (val, prev) => {
-      if (val !== prev) modalOpen.value = !modalOpen.value;
-    });
-  }
-};
-</script>
 
 <style lang="scss">
 .modal {

@@ -1,0 +1,35 @@
+diff --git a/node_modules/readable-stream/lib/_stream_readable.js b/node_modules/readable-stream/lib/_stream_readable.js
+index 0f80764..cc6c484 100644
+--- a/node_modules/readable-stream/lib/_stream_readable.js
++++ b/node_modules/readable-stream/lib/_stream_readable.js
+@@ -53,7 +53,7 @@ var Stream = require('./internal/streams/stream');
+ /*<replacement>*/
+ 
+ var Buffer = require('safe-buffer').Buffer;
+-var OurUint8Array = global.Uint8Array || function () {};
++var OurUint8Array = function () {};
+ function _uint8ArrayToBuffer(chunk) {
+   return Buffer.from(chunk);
+ }
+diff --git a/node_modules/readable-stream/lib/_stream_writable.js b/node_modules/readable-stream/lib/_stream_writable.js
+index b0b0220..fe84bfe 100644
+--- a/node_modules/readable-stream/lib/_stream_writable.js
++++ b/node_modules/readable-stream/lib/_stream_writable.js
+@@ -54,7 +54,7 @@ function CorkedRequest(state) {
+ /* </replacement> */
+ 
+ /*<replacement>*/
+-var asyncWrite = !process.browser && ['v0.10', 'v0.9.'].indexOf(process.version.slice(0, 5)) > -1 ? setImmediate : pna.nextTick;
++var asyncWrite = pna.nextTick;
+ /*</replacement>*/
+ 
+ /*<replacement>*/
+@@ -81,7 +81,7 @@ var Stream = require('./internal/streams/stream');
+ /*<replacement>*/
+ 
+ var Buffer = require('safe-buffer').Buffer;
+-var OurUint8Array = global.Uint8Array || function () {};
++var OurUint8Array = function () {};
+ function _uint8ArrayToBuffer(chunk) {
+   return Buffer.from(chunk);
+ }

@@ -1,3 +1,24 @@
+<script setup>
+import { computed, onMounted } from 'vue';
+import { useRoute } from 'vue-router';
+import { useStore } from 'vuex';
+import networks from '@snapshot-labs/snapshot.js/src/networks.json';
+import { useProfiles } from '@/composables/useProfiles';
+import { getUrl } from '@snapshot-labs/snapshot.js/src/utils';
+
+const store = useStore();
+const route = useRoute();
+
+const space = computed(() => store.state.app.spaces[route.params.key]);
+const network = computed(() => networks[space.value.network]);
+
+const { profiles, addressArray } = useProfiles();
+
+onMounted(() => {
+  addressArray.value = space.value.admins.concat(space.value.members);
+});
+</script>
+
 <template>
   <Layout>
     <template #sidebar-left>
@@ -9,17 +30,17 @@
       </div>
       <Block>
         <div v-if="space.about" class="mb-3">
-          <h4 class="text-white mb-2">{{ $t('settings.about') }}</h4>
+          <h4 class="link-color mb-2">{{ $t('settings.about') }}</h4>
           <UiText :text="space.about" />
         </div>
 
         <div class="mb-3">
-          <h4 class="text-white mb-2">{{ $t('settings.network') }}</h4>
+          <h4 class="link-color mb-2">{{ $t('settings.network') }}</h4>
           <div>{{ network.name }}</div>
         </div>
 
         <div class="mb-3">
-          <h4 class="text-white mb-2">
+          <h4 class="link-color mb-2">
             {{ $t('settings.proposalValidation') }}
           </h4>
           {{ space.validation?.name || 'basic' }}
@@ -32,14 +53,14 @@
           "
           class="mb-3"
         >
-          <h4 class="text-white mb-2">
+          <h4 class="link-color mb-2">
             {{ $t('settings.proposalThreshold') }}
           </h4>
           {{ _n(space.filters.minScore) }} {{ space.symbol }}
         </div>
 
         <div v-if="space.terms" class="mb-3">
-          <h4 class="text-white mb-2">{{ $t('settings.terms') }}</h4>
+          <h4 class="link-color mb-2">{{ $t('settings.terms') }}</h4>
           <a :href="space.terms" target="_blank" rel="noopener noreferrer">
             <UiText :text="getUrl(space.terms)" :truncate="35" />
             <Icon name="external-link" class="ml-1" />
@@ -47,14 +68,14 @@
         </div>
 
         <div v-if="space.strategies" class="mb-3">
-          <h4 class="text-white mb-2">{{ $t('settings.strategies') }}</h4>
+          <h4 class="link-color mb-2">{{ $t('settings.strategies') }}</h4>
           <div v-for="(strategy, i) in space.strategies" :key="i">
             <div>{{ strategy.name }}</div>
           </div>
         </div>
 
         <div v-if="Object.keys(space.plugins || {}).length" class="mb-3">
-          <h4 class="text-white mb-2">{{ $t('plugins') }}</h4>
+          <h4 class="link-color mb-2">{{ $t('plugins') }}</h4>
           <div v-for="(plugin, i) in space.plugins" :key="i">
             <div>{{ i }}</div>
           </div>
@@ -93,24 +114,3 @@
     </template>
   </Layout>
 </template>
-
-<script setup>
-import { computed, onMounted } from 'vue';
-import { useRoute } from 'vue-router';
-import { useStore } from 'vuex';
-import networks from '@snapshot-labs/snapshot.js/src/networks.json';
-import { useProfiles } from '@/composables/useProfiles';
-import { getUrl } from '@snapshot-labs/snapshot.js/src/utils';
-
-const store = useStore();
-const route = useRoute();
-
-const space = computed(() => store.state.app.spaces[route.params.key]);
-const network = computed(() => networks[space.value.network]);
-
-const { profiles, addressArray } = useProfiles();
-
-onMounted(() => {
-  addressArray.value = space.value.admins.concat(space.value.members);
-});
-</script>

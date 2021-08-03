@@ -1,5 +1,44 @@
+<script setup>
+import { ref, onBeforeUnmount, computed, defineProps, defineEmits } from 'vue';
+
+const props = defineProps({
+  items: Array,
+  top: String,
+  right: String,
+  hideDropdown: Boolean
+});
+
+const emit = defineEmits(['select', 'clickedNoDropdown']);
+
+const open = ref(false);
+const dropdownEl = ref(null);
+
+const cssVars = computed(() => {
+  return { '--top': props.top, '--right': props.right };
+});
+
+function handleClick(action) {
+  emit('select', action);
+  open.value = false;
+}
+
+function close(e) {
+  if (!dropdownEl.value.contains(e.target)) {
+    open.value = false;
+  }
+}
+
+window.addEventListener('click', close);
+
+onBeforeUnmount(() => window.removeEventListener('click', close));
+</script>
+
 <template>
-  <div @click.capture="open = !open" class="position-relative">
+  <div
+    ref="dropdownEl"
+    @click.capture="hideDropdown ? $emit('clickedNoDropdown') : (open = !open)"
+    class="position-relative"
+  >
     <div class="button">
       <slot />
     </div>
@@ -10,54 +49,18 @@
     >
       <ul class="sub-menu my-2">
         <li v-for="item in items" :key="item" @click="handleClick(item.action)">
+          <Icon
+            v-if="item.icon"
+            :name="item.icon"
+            size="21"
+            class="v-align-text-bottom mr-2"
+          />
           {{ item.text }}
         </li>
       </ul>
     </div>
   </div>
 </template>
-
-<script>
-export default {
-  emits: ['select'],
-  props: {
-    items: Array,
-    top: String,
-    right: String
-  },
-  data() {
-    return {
-      open: false
-    };
-  },
-
-  computed: {
-    cssVars() {
-      return { '--top': this.top, '--right': this.right };
-    }
-  },
-
-  methods: {
-    handleClick(action) {
-      this.$emit('select', action);
-      this.open = false;
-    },
-    close(e) {
-      if (!this.$el.contains(e.target)) {
-        this.open = false;
-      }
-    }
-  },
-
-  created() {
-    window.addEventListener('click', this.close);
-  },
-
-  beforeUnmount() {
-    window.removeEventListener('click', this.close);
-  }
-};
-</script>
 
 <style scoped lang="scss">
 .button {

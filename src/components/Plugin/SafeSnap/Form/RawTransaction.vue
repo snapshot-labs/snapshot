@@ -1,28 +1,3 @@
-<template>
-  <PluginSafeSnapInputAddress
-    v-model="to"
-    :disabled="config.preview"
-    :inputProps="{ required: true }"
-    label="to (address)"
-  />
-
-  <UiInput
-    v-model="value"
-    :disabled="config.preview"
-    :error="!isValidValue && 'Invalid Value'"
-  >
-    <template v-slot:label>value (wei)</template>
-  </UiInput>
-
-  <UiInput
-    v-model="data"
-    :disabled="config.preview"
-    :error="!isValidData && 'Invalid Data'"
-  >
-    <template v-slot:label>Data</template>
-  </UiInput>
-</template>
-
 <script>
 import Plugin from '@snapshot-labs/snapshot.js/src/plugins/safeSnap';
 import { isHexString } from '@ethersproject/bytes';
@@ -111,6 +86,31 @@ export default {
   }
 };
 </script>
+
+<template>
+  <PluginSafeSnapInputAddress
+    v-model="to"
+    :disabled="config.preview"
+    :inputProps="{ required: true }"
+    label="to (address)"
+  />
+
+  <UiInput
+    v-model="value"
+    :disabled="config.preview"
+    :error="!isValidValue && 'Invalid Value'"
+  >
+    <template v-slot:label>value (wei)</template>
+  </UiInput>
+
+  <UiInput
+    v-model="data"
+    :disabled="config.preview"
+    :error="!isValidData && 'Invalid Data'"
+  >
+    <template v-slot:label>Data</template>
+  </UiInput>
+</template>
 
 <style lang="scss" scoped>
 .textarea {

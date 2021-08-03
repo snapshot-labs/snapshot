@@ -1,13 +1,17 @@
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import client from '@/helpers/client';
 import { formatSpace } from '@/helpers/utils';
-import i18n from '@/i18n';
+import i18n from '@/helpers/i18n';
+import { useNotifications } from '@/composables/useNotifications';
+
+const { notify } = useNotifications();
 
 const state = {
   init: false,
   loading: false,
   authLoading: false,
-  spaces: {}
+  spaces: {},
+  strategies: {}
 };
 
 const mutations = {
@@ -31,7 +35,7 @@ const actions = {
   init: async ({ commit, dispatch }) => {
     const auth = getInstance();
     commit('SET', { loading: true });
-    await dispatch('getSpaces');
+    await Promise.all([dispatch('getSpaces'), dispatch('getStrategies')]);
     auth.getConnector().then(connector => {
       if (connector) dispatch('login', connector);
     });
@@ -54,7 +58,14 @@ const actions = {
     commit('SET', { spaces });
     return spaces;
   },
-  send: async ({ commit, dispatch, rootState }, { space, type, payload }) => {
+  getStrategies: async ({ commit }) => {
+    const strategies: any = await fetch(
+      'https://score.snapshot.org/api/strategies'
+    ).then(res => res.json());
+    commit('SET', { strategies });
+    return strategies;
+  },
+  send: async ({ commit, rootState }, { space, type, payload }) => {
     const auth = getInstance();
     commit('SEND_REQUEST');
     try {
@@ -66,7 +77,7 @@ const actions = {
         payload
       );
       commit('SEND_SUCCESS');
-      dispatch('notify', [
+      notify([
         'green',
         type === 'delete-proposal'
           ? i18n.global.t('notify.proposalDeleted')
@@ -79,7 +90,7 @@ const actions = {
         e && e.error_description
           ? `Oops, ${e.error_description}`
           : i18n.global.t('notify.somethingWentWrong');
-      dispatch('notify', ['red', errorMessage]);
+      notify(['red', errorMessage]);
       return;
     }
   }

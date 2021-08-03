@@ -1,3 +1,68 @@
+<script setup>
+import { ref, computed, watch, toRefs, defineProps } from 'vue';
+import { useStore } from 'vuex';
+import { getChoiceString } from '@/helpers/utils';
+import { useProfiles } from '@/composables/useProfiles';
+
+const props = defineProps({
+  space: Object,
+  proposal: Object,
+  votes: Object,
+  loaded: Boolean,
+  strategies: Object
+});
+
+const store = useStore();
+
+const format = getChoiceString;
+
+const { votes } = toRefs(props);
+
+const showAllVotes = ref(false);
+const authorIpfsHash = ref('');
+const modalReceiptOpen = ref(false);
+
+const web3Account = computed(() => store.state.web3.account);
+
+const visibleVotes = computed(() =>
+  showAllVotes.value ? sortVotesUserFirst() : sortVotesUserFirst().slice(0, 10)
+);
+const titles = computed(() =>
+  props.strategies.map(strategy => strategy.params.symbol)
+);
+
+function isZero() {
+  if (!props.loaded) return true;
+  if (props.votes.length > 0) return true;
+}
+
+function openReceiptModal(vote) {
+  authorIpfsHash.value = vote.id;
+  // this.relayerIpfsHash = vote.relayerIpfsHash;
+  modalReceiptOpen.value = true;
+}
+
+function sortVotesUserFirst() {
+  const votes = props.votes;
+  if (votes.map(vote => vote.voter).includes(web3Account.value)) {
+    votes.unshift(
+      votes.splice(
+        votes.findIndex(item => item.voter === web3Account.value),
+        1
+      )[0]
+    );
+    return votes;
+  }
+  return votes;
+}
+
+const { profiles, addressArray } = useProfiles();
+
+watch(votes, () => {
+  addressArray.value = votes.value.map(vote => vote.voter);
+});
+</script>
+
 <template>
   <Block
     v-if="isZero()"
@@ -18,11 +83,12 @@
         :space="space"
         class="column"
       />
-      <div class="flex-auto text-center text-white">
+      <div class="flex-auto text-center link-color">
         <span
           :aria-label="format(proposal, vote.choice)"
           class="
-            text-center text-white
+            text-center
+            link-color
             tooltipped tooltipped-multiline tooltipped-n
           "
         >
@@ -30,7 +96,7 @@
         </span>
       </div>
 
-      <div class="column text-right text-white">
+      <div class="column text-right link-color">
         <span
           class="tooltipped tooltipped-multiline tooltipped-n"
           :aria-label="
@@ -44,7 +110,7 @@
         <a
           @click="openReceiptModal(vote)"
           target="_blank"
-          class="ml-2 text-gray"
+          class="ml-2 text-color"
           title="Receipt"
         >
           <Icon name="signature" />
@@ -75,83 +141,3 @@
     </teleport>
   </Block>
 </template>
-
-<script>
-import { ref, computed, watch, toRefs } from 'vue';
-import { useStore } from 'vuex';
-import { getChoiceString } from '@/helpers/utils';
-import { useProfiles } from '@/composables/useProfiles';
-
-export default {
-  props: {
-    space: Object,
-    proposal: Object,
-    votes: Object,
-    loaded: Boolean,
-    strategies: Object
-  },
-  setup(props) {
-    const store = useStore();
-
-    const { votes } = toRefs(props);
-
-    const showAllVotes = ref(false);
-    const authorIpfsHash = ref('');
-    const modalReceiptOpen = ref(false);
-
-    const web3Account = computed(() => store.state.web3.account);
-
-    const visibleVotes = computed(() =>
-      showAllVotes.value
-        ? sortVotesUserFirst()
-        : sortVotesUserFirst().slice(0, 10)
-    );
-    const titles = computed(() =>
-      props.strategies.map(strategy => strategy.params.symbol)
-    );
-
-    function isZero() {
-      if (!props.loaded) return true;
-      if (props.votes.length > 0) return true;
-    }
-
-    function openReceiptModal(vote) {
-      authorIpfsHash.value = vote.id;
-      // this.relayerIpfsHash = vote.relayerIpfsHash;
-      modalReceiptOpen.value = true;
-    }
-
-    function sortVotesUserFirst() {
-      const votes = props.votes;
-      if (votes.map(vote => vote.voter).includes(web3Account.value)) {
-        votes.unshift(
-          votes.splice(
-            votes.findIndex(item => item.voter === web3Account.value),
-            1
-          )[0]
-        );
-        return votes;
-      }
-      return votes;
-    }
-
-    const { profiles, addressArray } = useProfiles();
-
-    watch(votes, () => {
-      addressArray.value = votes.value.map(vote => vote.voter);
-    });
-
-    return {
-      showAllVotes,
-      authorIpfsHash,
-      modalReceiptOpen,
-      isZero,
-      openReceiptModal,
-      visibleVotes,
-      titles,
-      format: getChoiceString,
-      profiles
-    };
-  }
-};
-</script>

@@ -1,5 +1,5 @@
 @import './vars';
-@import '~@primer/css';
+@import '@primer/css';
 @import './assets/fonts/iconfont.css';
 
 :root {
@@ -155,15 +155,15 @@ textarea {
   background-color: var(--text-color) !important;
 }
 
-.text-primary {
+.primary-color {
   color: var(--primary-color) !important;
 }
 
-.text-gray {
+.text-color {
   color: var(--text-color) !important;
 }
 
-.text-white {
+.link-color {
   color: var(--link-color) !important;
 }
 

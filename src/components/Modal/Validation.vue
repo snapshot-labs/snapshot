@@ -1,3 +1,58 @@
+<script setup>
+import { ref, computed, toRefs, watch, defineProps, defineEmits } from 'vue';
+import { useSearchFilters } from '@/composables/useSearchFilters';
+import { clone } from '@/helpers/utils';
+
+const defaultParams = {};
+
+const props = defineProps({ open: Boolean, validation: Object });
+
+const emit = defineEmits(['add', 'close']);
+
+const { open } = toRefs(props);
+
+const searchInput = ref('');
+const input = ref({
+  name: '',
+  params: JSON.stringify(defaultParams, null, 2)
+});
+
+const { filteredValidations } = useSearchFilters();
+const validations = computed(() => filteredValidations(searchInput.value));
+
+const isValid = computed(() => {
+  try {
+    const params = JSON.parse(input.value.params);
+    return !!params;
+  } catch (e) {
+    return false;
+  }
+});
+
+function select(n) {
+  input.value.name = n;
+}
+
+function handleSubmit() {
+  const validation = clone(input.value);
+  validation.params = JSON.parse(validation.params);
+  emit('add', validation);
+  emit('close');
+}
+
+watch(open, () => {
+  input.value.name = '';
+  if (props.validation?.params) {
+    input.value.params = JSON.stringify(props.validation.params, null, 2);
+  } else {
+    input.value = {
+      name: '',
+      params: JSON.stringify(defaultParams, null, 2)
+    };
+  }
+});
+</script>
+
 <template>
   <UiModal :open="open" @close="$emit('close')">
     <template v-slot:header>
@@ -16,7 +71,7 @@
       :modal="true"
     />
     <div class="mt-4 mx-0 mx-md-4">
-      <div v-if="input.name" class="p-4 mb-4 border rounded-2 text-white">
+      <div v-if="input.name" class="p-4 mb-4 border rounded-2 link-color">
         <UiButton
           class="d-block width-full mb-3 overflow-x-auto"
           style="height: auto"
@@ -49,70 +104,3 @@
     </div>
   </UiModal>
 </template>
-
-<script>
-import { ref, computed, toRefs, watch } from 'vue';
-import { useSearchFilters } from '@/composables/useSearchFilters';
-import { clone } from '@/helpers/utils';
-
-const defaultParams = {};
-
-export default {
-  props: { open: Boolean, validation: Object },
-  emits: ['add', 'close'],
-  setup(props, { emit }) {
-    const { open } = toRefs(props);
-
-    const searchInput = ref('');
-    const input = ref({
-      name: '',
-      params: JSON.stringify(defaultParams, null, 2)
-    });
-
-    const { filteredValidations } = useSearchFilters();
-    const validations = computed(() => filteredValidations(searchInput.value));
-
-    const isValid = computed(() => {
-      try {
-        const params = JSON.parse(input.value.params);
-        return !!params;
-      } catch (e) {
-        return false;
-      }
-    });
-
-    function select(n) {
-      input.value.name = n;
-    }
-
-    function handleSubmit() {
-      const validation = clone(input.value);
-      validation.params = JSON.parse(validation.params);
-      emit('add', validation);
-      emit('close');
-    }
-
-    watch(open, () => {
-      input.value.name = '';
-      if (props.validation?.params) {
-        input.value.params = JSON.stringify(props.validation.params, null, 2);
-      } else {
-        input.value = {
-          name: '',
-          params: JSON.stringify(defaultParams, null, 2)
-        };
-      }
-    });
-
-    return {
-      searchInput,
-      filteredValidations,
-      validations,
-      input,
-      isValid,
-      select,
-      handleSubmit
-    };
-  }
-};
-</script>

@@ -1,8 +1,24 @@
+<script setup>
+import { computed } from 'vue';
+import { useRoute } from 'vue-router';
+import { useStore } from 'vuex';
+import { getStrategy } from '@/helpers/utils';
+
+const route = useRoute();
+const store = useStore();
+
+const strategies = computed(() => store.state.app.strategies);
+
+const strategy = computed(() =>
+  getStrategy(strategies.value[route.params.name], store.state.app.spaces)
+);
+</script>
+
 <template>
   <Layout>
     <template #content-left>
       <div class="px-4 px-md-0 mb-3">
-        <router-link :to="{ path: '/strategies' }" class="text-gray">
+        <router-link :to="{ path: '/strategies' }" class="text-color">
           <Icon name="back" size="22" class="v-align-middle" />
           {{ $t('strategiesPage') }}
         </router-link>
@@ -13,7 +29,7 @@
         </h1>
         <span
           v-text="`In ${strategy.spaces.length} space(s)`"
-          class="text-gray"
+          class="text-color"
         />
         <UiMarkdown :body="strategy.about" class="mb-6 mt-4" />
       </div>
@@ -51,18 +67,3 @@
     </template>
   </Layout>
 </template>
-
-<script setup>
-import { computed } from 'vue';
-import { useRoute } from 'vue-router';
-import { useStore } from 'vuex';
-import strategies from '@/helpers/strategies';
-import { getStrategy } from '@/helpers/utils';
-
-const route = useRoute();
-const store = useStore();
-
-const strategy = computed(() =>
-  getStrategy(strategies[route.params.name], store.state.app.spaces)
-);
-</script>

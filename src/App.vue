@@ -1,17 +1,3 @@
-<template>
-  <div :class="space?.skin" id="app" class="overflow-hidden pb-4">
-    <UiLoading v-if="app.loading || !app.init" class="overlay big" />
-    <div v-else>
-      <Topnav />
-      <div class="pb-6">
-        <router-view :key="$route.path" class="flex-auto" />
-      </div>
-    </div>
-    <div id="modal" />
-    <Notifications />
-  </div>
-</template>
-
 <script setup>
 import { computed, onMounted, watch } from 'vue';
 import { useStore } from 'vuex';
@@ -42,3 +28,17 @@ watch(modalOpen, val => {
   el.classList[val ? 'add' : 'remove']('overflow-hidden');
 });
 </script>
+
+<template>
+  <div :class="space?.skin" id="app" class="overflow-hidden pb-4">
+    <UiLoading v-if="app.loading || !app.init" class="overlay big" />
+    <div v-else>
+      <Topnav />
+      <div class="pb-6">
+        <router-view :key="$route.path" class="flex-auto" />
+      </div>
+    </div>
+    <div id="modal" />
+    <Notifications />
+  </div>
+</template>

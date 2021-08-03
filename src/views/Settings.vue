@@ -1,8 +1,229 @@
+<script setup>
+import { computed, onMounted, ref } from 'vue';
+import { useRoute } from 'vue-router';
+import { useStore } from 'vuex';
+import { useI18n } from 'vue-i18n';
+import { useSearchFilters } from '@/composables/useSearchFilters';
+import { getAddress } from '@ethersproject/address';
+import { validateSchema } from '@snapshot-labs/snapshot.js/src/utils';
+import schemas from '@snapshot-labs/snapshot.js/src/schemas';
+import networks from '@snapshot-labs/snapshot.js/src/networks.json';
+import { clone } from '@/helpers/utils';
+import { getSpaceUri } from '@/helpers/ens';
+import defaults from '@/locales/default';
+import { useCopy } from '@/composables/useCopy';
+
+const basicValidation = { name: 'basic', params: {} };
+
+const route = useRoute();
+const store = useStore();
+const { t } = useI18n();
+const { copyToClipboard } = useCopy();
+
+const key = ref(route.params.key);
+const from = ref(route.params.from);
+const currentSettings = ref({});
+const currentTextRecord = ref('');
+const currentStrategy = ref({});
+const currentPlugin = ref({});
+const currentStrategyIndex = ref(false);
+const modalNetworksOpen = ref(false);
+const modalSkinsOpen = ref(false);
+const modalStrategyOpen = ref(false);
+const modalPluginsOpen = ref(false);
+const modalValidationOpen = ref(false);
+const loaded = ref(false);
+const loading = ref(false);
+const uploadLoading = ref(false);
+const showErrors = ref(false);
+const form = ref({
+  strategies: [],
+  plugins: {},
+  filters: {},
+  validation: basicValidation
+});
+
+const web3Account = computed(() => store.state.web3.account);
+
+const validate = computed(() => {
+  if (form.value.terms === '') delete form.value.terms;
+  return validateSchema(schemas.space, form.value);
+});
+
+const isValid = computed(() => {
+  return !loading.value && validate.value === true && !uploadLoading.value;
+});
+
+const textRecord = computed(() => {
+  const keyURI = encodeURIComponent(key.value);
+  const address = web3Account.value
+    ? getAddress(web3Account.value)
+    : '<your-address>';
+  return `ipns://storage.snapshot.page/registry/${address}/${keyURI}`;
+});
+
+const isOwner = computed(() => {
+  return currentTextRecord.value === textRecord.value;
+});
+
+const isAdmin = computed(() => {
+  if (!store.state.app.spaces[key.value] || !currentTextRecord.value)
+    return false;
+  const admins = (store.state.app.spaces[key.value].admins || []).map(admin =>
+    admin.toLowerCase()
+  );
+  return admins.includes(web3Account.value?.toLowerCase());
+});
+
+const { filteredPlugins } = useSearchFilters();
+const plugins = computed(() => filteredPlugins());
+
+function pluginName(key) {
+  const plugin = plugins.value.find(obj => {
+    return obj.key === key;
+  });
+  return plugin.name;
+}
+
+async function handleSubmit() {
+  if (isValid.value) {
+    if (form.value.filters.invalids) delete form.value.filters.invalids;
+    loading.value = true;
+    try {
+      await store.dispatch('send', {
+        space: key.value,
+        type: 'settings',
+        payload: form.value
+      });
+    } catch (e) {
+      console.log(e);
+    }
+    await store.dispatch('getSpaces');
+    loading.value = false;
+  } else {
+    showErrors.value = true;
+  }
+}
+
+function inputError(field) {
+  if (!isValid.value && !loading.value && showErrors.value) {
+    const errors = Object.keys(defaults.errors);
+    const errorFound = validate.value.find(
+      error =>
+        (errors.includes(error.keyword) &&
+          error.params.missingProperty === field) ||
+        (errors.includes(error.keyword) && error.instancePath.includes(field))
+    );
+
+    if (errorFound?.instancePath.includes('strategies'))
+      return t('errors.minStrategy');
+    else if (errorFound)
+      return t(`errors.${errorFound.keyword}`, [errorFound?.params.limit]);
+  }
+}
+
+function handleReset() {
+  if (from.value)
+    return (form.value = clone(store.state.app.spaces[from.value]));
+  if (currentSettings.value) return (form.value = currentSettings.value);
+  form.value = {
+    strategies: [],
+    plugins: {},
+    filters: {}
+  };
+}
+
+function handleEditStrategy(i) {
+  currentStrategyIndex.value = i;
+  currentStrategy.value = clone(form.value.strategies[i]);
+  modalStrategyOpen.value = true;
+}
+
+function handleRemoveStrategy(i) {
+  form.value.strategies = form.value.strategies.filter(
+    (strategy, index) => index !== i
+  );
+}
+
+function handleAddStrategy() {
+  currentStrategyIndex.value = false;
+  currentStrategy.value = {};
+  modalStrategyOpen.value = true;
+}
+
+function handleSubmitAddStrategy(strategy) {
+  if (currentStrategyIndex.value !== false) {
+    form.value.strategies[currentStrategyIndex.value] = strategy;
+  } else {
+    form.value.strategies = form.value.strategies.concat(strategy);
+  }
+}
+
+function handleEditPlugins(name) {
+  currentPlugin.value = {};
+  currentPlugin.value[name] = clone(form.value.plugins[name]);
+  modalPluginsOpen.value = true;
+}
+
+function handleRemovePlugins(plugin) {
+  delete form.value.plugins[plugin];
+}
+
+function handleAddPlugins() {
+  currentPlugin.value = {};
+  modalPluginsOpen.value = true;
+}
+
+function handleSubmitAddPlugins(payload) {
+  form.value.plugins[payload.key] = payload.inputClone;
+}
+
+function handleSubmitAddValidation(validation) {
+  form.value.validation = validation;
+}
+
+function setUploadLoading(s) {
+  uploadLoading.value = s;
+}
+
+function setAvatarUrl(url) {
+  if (typeof url === 'string') form.value.avatar = url;
+}
+
+onMounted(async () => {
+  try {
+    const uri = await getSpaceUri(key.value);
+    console.log('URI', uri);
+    currentTextRecord.value = uri;
+    const space = clone(store.state.app.spaces?.[key.value]);
+    if (!space) return;
+    delete space.key;
+    delete space._activeProposals;
+    space.strategies = space.strategies || [];
+    space.plugins = space.plugins || {};
+    space.validation = space.validation || basicValidation;
+    space.filters = space.filters || {};
+    currentSettings.value = clone(space);
+    form.value = space;
+  } catch (e) {
+    console.log(e);
+  }
+  if (from.value) {
+    const fromClone = clone(store.state.app.spaces[from.value]);
+    fromClone.validation = fromClone.validation || basicValidation;
+    delete fromClone.key;
+    delete fromClone._activeProposals;
+    form.value = fromClone;
+  }
+  loaded.value = true;
+});
+</script>
+
 <template>
   <Layout v-bind="$attrs">
     <template #content-left>
       <div class="px-4 px-md-0 mb-3">
-        <router-link :to="{ name: 'home' }" class="text-gray">
+        <router-link :to="{ name: 'home' }" class="text-color">
           <Icon name="back" size="22" class="v-align-middle" />
           {{ $t('backToHome') }}
         </router-link>
@@ -17,16 +238,15 @@
           <UiButton class="d-flex width-full mb-2">
             <input
               readonly
-              v-model="contenthash"
+              v-model="textRecord"
               class="input width-full"
               :placeholder="$t('contectHash')"
             />
             <Icon
-              v-clipboard:copy="contenthash"
-              v-clipboard:success="handleCopy"
+              @click="copyToClipboard(textRecord)"
               name="copy"
               size="24"
-              class="text-gray p-2 mr-n3"
+              class="text-color p-2 mr-n3"
             />
           </UiButton>
           <a
@@ -46,6 +266,21 @@
               <Icon name="external-link" class="ml-1" />
             </UiButton>
           </a>
+          <Block
+            v-if="currentSettings?.name && !currentTextRecord"
+            :style="'border-color: red !important; margin-bottom: 0 !important;'"
+            class="mb-0 mt-3"
+          >
+            <Icon name="warning" class="mr-2 text-red" />
+            <span class="text-red">
+              {{ $t('settings.warningTextRecord') }}
+              <a
+                v-text="$t('learnMore')"
+                href="https://docs.snapshot.org/spaces/create"
+                target="_blank"
+              />
+            </span>
+          </Block>
         </Block>
         <div v-if="isOwner || isAdmin">
           <Block :title="$t('settings.profile')">
@@ -139,7 +374,7 @@
                     target="_blank"
                     href="https://docs.snapshot.org/spaces/add-custom-domain"
                   >
-                    <Icon name="info" size="24" class="text-gray p-1" />
+                    <Icon name="info" size="24" class="text-color p-1" />
                   </a>
                 </template>
               </UiInput>
@@ -339,226 +574,3 @@
     />
   </teleport>
 </template>
-
-<script setup>
-import { computed, onMounted, ref } from 'vue';
-import { useRoute } from 'vue-router';
-import { useStore } from 'vuex';
-import { useI18n } from 'vue-i18n';
-import { useSearchFilters } from '@/composables/useSearchFilters';
-import { getAddress } from '@ethersproject/address';
-import { validateSchema } from '@snapshot-labs/snapshot.js/src/utils';
-import schemas from '@snapshot-labs/snapshot.js/src/schemas';
-import networks from '@snapshot-labs/snapshot.js/src/networks.json';
-import gateways from '@snapshot-labs/snapshot.js/src/gateways.json';
-import { clone } from '@/helpers/utils';
-import { getSpaceUri, uriGet } from '@/helpers/ens';
-import defaults from '@/locales/default';
-
-const gateway = process.env.VUE_APP_IPFS_GATEWAY || gateways[0];
-const basicValidation = { name: 'basic', params: {} };
-
-const route = useRoute();
-const store = useStore();
-const { t } = useI18n();
-
-const key = ref(route.params.key);
-const from = ref(route.params.from);
-const currentSettings = ref({});
-const currentContenthash = ref('');
-const currentStrategy = ref({});
-const currentPlugin = ref({});
-const currentStrategyIndex = ref(false);
-const modalNetworksOpen = ref(false);
-const modalSkinsOpen = ref(false);
-const modalStrategyOpen = ref(false);
-const modalPluginsOpen = ref(false);
-const modalValidationOpen = ref(false);
-const loaded = ref(false);
-const loading = ref(false);
-const uploadLoading = ref(false);
-const showErrors = ref(false);
-const form = ref({
-  strategies: [],
-  plugins: {},
-  filters: {},
-  validation: basicValidation
-});
-
-const web3Account = computed(() => store.state.web3.account);
-
-const validate = computed(() => {
-  if (form.value.terms === '') delete form.value.terms;
-  return validateSchema(schemas.space, form.value);
-});
-
-const isValid = computed(() => {
-  return !loading.value && validate.value === true && !uploadLoading.value;
-});
-
-const contenthash = computed(() => {
-  const keyURI = encodeURIComponent(key.value);
-  const address = web3Account.value
-    ? getAddress(web3Account.value)
-    : '<your-address>';
-  return `ipns://storage.snapshot.page/registry/${address}/${keyURI}`;
-});
-
-const isOwner = computed(() => {
-  return currentContenthash.value === contenthash.value;
-});
-
-const isAdmin = computed(() => {
-  if (!store.state.app.spaces[key.value]) return false;
-  const admins = (store.state.app.spaces[key.value].admins || []).map(admin =>
-    admin.toLowerCase()
-  );
-  return admins.includes(web3Account.value?.toLowerCase());
-});
-
-const { filteredPlugins } = useSearchFilters();
-const plugins = computed(() => filteredPlugins());
-
-function pluginName(key) {
-  const plugin = plugins.value.find(obj => {
-    return obj.key === key;
-  });
-  return plugin.name;
-}
-
-async function handleSubmit() {
-  if (isValid.value) {
-    if (form.value.filters.invalids) delete form.value.filters.invalids;
-    loading.value = true;
-    try {
-      await store.dispatch('send', {
-        space: key.value,
-        type: 'settings',
-        payload: form.value
-      });
-    } catch (e) {
-      console.log(e);
-    }
-    await store.dispatch('getSpaces');
-    loading.value = false;
-  } else {
-    showErrors.value = true;
-  }
-}
-
-function inputError(field) {
-  if (!isValid.value && !loading.value && showErrors.value) {
-    const errors = Object.keys(defaults.errors);
-    const errorFound = validate.value.find(
-      error =>
-        (errors.includes(error.keyword) &&
-          error.params.missingProperty === field) ||
-        (errors.includes(error.keyword) && error.instancePath.includes(field))
-    );
-
-    if (errorFound?.instancePath.includes('strategies'))
-      return t('errors.minStrategy');
-    else if (errorFound)
-      return t(`errors.${errorFound.keyword}`, [errorFound?.params.limit]);
-  }
-}
-
-function handleReset() {
-  if (from.value)
-    return (form.value = clone(store.state.app.spaces[from.value]));
-  if (currentSettings.value) return (form.value = currentSettings.value);
-  form.value = {
-    strategies: [],
-    plugins: {},
-    filters: {}
-  };
-}
-
-function handleCopy() {
-  store.dispatch('notify', t('notify.copied'));
-}
-
-function handleEditStrategy(i) {
-  currentStrategyIndex.value = i;
-  currentStrategy.value = clone(form.value.strategies[i]);
-  modalStrategyOpen.value = true;
-}
-
-function handleRemoveStrategy(i) {
-  form.value.strategies = form.value.strategies.filter(
-    (strategy, index) => index !== i
-  );
-}
-
-function handleAddStrategy() {
-  currentStrategyIndex.value = false;
-  currentStrategy.value = {};
-  modalStrategyOpen.value = true;
-}
-
-function handleSubmitAddStrategy(strategy) {
-  if (currentStrategyIndex.value !== false) {
-    form.value.strategies[currentStrategyIndex.value] = strategy;
-  } else {
-    form.value.strategies = form.value.strategies.concat(strategy);
-  }
-}
-
-function handleEditPlugins(name) {
-  currentPlugin.value = {};
-  currentPlugin.value[name] = clone(form.value.plugins[name]);
-  modalPluginsOpen.value = true;
-}
-
-function handleRemovePlugins(plugin) {
-  delete form.value.plugins[plugin];
-}
-
-function handleAddPlugins() {
-  currentPlugin.value = {};
-  modalPluginsOpen.value = true;
-}
-
-function handleSubmitAddPlugins(payload) {
-  form.value.plugins[payload.key] = payload.inputClone;
-}
-
-function handleSubmitAddValidation(validation) {
-  form.value.validation = validation;
-}
-
-function setUploadLoading(s) {
-  uploadLoading.value = s;
-}
-
-function setAvatarUrl(url) {
-  if (typeof url === 'string') form.value.avatar = url;
-}
-
-onMounted(async () => {
-  try {
-    const uri = await getSpaceUri(key.value);
-    currentContenthash.value = uri;
-    const [protocolType, decoded] = uri.split('://');
-    let space = clone(store.state.app.spaces?.[key.value]);
-    if (!space) space = await uriGet(gateway, decoded, protocolType);
-    delete space.key;
-    delete space._activeProposals;
-    space.strategies = space.strategies || [];
-    space.plugins = space.plugins || {};
-    space.validation = space.validation || basicValidation;
-    space.filters = space.filters || {};
-    currentSettings.value = clone(space);
-    form.value = space;
-  } catch (e) {
-    console.log(e);
-  }
-  if (from.value) {
-    const fromClone = clone(store.state.app.spaces[from.value]);
-    delete fromClone.key;
-    delete fromClone._activeProposals;
-    form.value = fromClone;
-  }
-  loaded.value = true;
-});
-</script>

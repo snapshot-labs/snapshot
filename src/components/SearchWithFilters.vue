@@ -1,3 +1,53 @@
+<script setup>
+import { computed, defineEmits } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import { useI18n } from 'vue-i18n';
+
+defineEmits(['update:modelValue']);
+
+const route = useRoute();
+const router = useRouter();
+const { t } = useI18n();
+
+const searchOptions = computed(() => [
+  {
+    text: t('spaces'),
+    action: 'home'
+  },
+  {
+    text: t('networks'),
+    action: 'networks'
+  },
+  {
+    text: t('strategiesPage'),
+    action: 'strategies'
+  },
+  {
+    text: t('plugins'),
+    action: 'plugins'
+  },
+  {
+    text: t('skins'),
+    action: 'skins'
+  }
+]);
+
+const searchSelectedOption = computed(
+  () =>
+    searchOptions.value.find(option => option.action === route.name)?.text ||
+    'home'
+);
+
+const routeQuery = computed(() => route.query.q);
+
+function redirectSearch(e) {
+  router.push({
+    name: e,
+    query: routeQuery.value ? { q: routeQuery.value } : {}
+  });
+}
+</script>
+
 <template>
   <div class="d-flex">
     <Search
@@ -21,57 +71,3 @@
     </div>
   </div>
 </template>
-
-<script>
-import { computed } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
-import { useI18n } from 'vue-i18n';
-
-export default {
-  setup() {
-    const route = useRoute();
-    const router = useRouter();
-    const { t } = useI18n();
-
-    const searchOptions = computed(() => [
-      {
-        text: t('spaces'),
-        action: 'home'
-      },
-      {
-        text: t('networks'),
-        action: 'networks'
-      },
-      {
-        text: t('strategiesPage'),
-        action: 'strategies'
-      },
-      {
-        text: t('plugins'),
-        action: 'plugins'
-      },
-      {
-        text: t('skins'),
-        action: 'skins'
-      }
-    ]);
-
-    const searchSelectedOption = computed(
-      () =>
-        searchOptions.value.find(option => option.action === route.name)
-          ?.text || 'home'
-    );
-
-    const routeQuery = computed(() => route.query.q);
-
-    function redirectSearch(e) {
-      router.push({
-        name: e,
-        query: routeQuery.value ? { q: routeQuery.value } : {}
-      });
-    }
-
-    return { redirectSearch, searchSelectedOption, searchOptions, routeQuery };
-  }
-};
-</script>

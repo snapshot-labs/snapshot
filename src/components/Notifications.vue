@@ -1,3 +1,18 @@
+<script setup>
+import { ref } from 'vue';
+
+import { useNotifications } from '@/composables/useNotifications';
+
+const DURATION = 4000;
+
+const { items } = useNotifications();
+
+const now = ref(Date.now());
+const duration = ref(DURATION);
+
+setInterval(() => (now.value = Date.now()), 1000);
+</script>
+
 <template>
   <div
     class="position-fixed left-0 right-0 bottom-0 text-center"
@@ -17,25 +32,3 @@
     </div>
   </div>
 </template>
-
-<script>
-import { ref, computed } from 'vue';
-import { useStore } from 'vuex';
-
-const DURATION = 4000;
-
-export default {
-  setup() {
-    const store = useStore();
-
-    const now = ref(Date.now());
-    const duration = ref(DURATION);
-
-    const items = computed(() => store.state.notifications.items);
-
-    setInterval(() => (now.value = Date.now()), 1000);
-
-    return { now, duration, items };
-  }
-};
-</script>

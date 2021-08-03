@@ -1,3 +1,13 @@
+<script setup>
+import { defineProps } from 'vue';
+
+defineProps(['plugin']);
+
+function getLogoUrl(key) {
+  return `https://raw.githubusercontent.com/snapshot-labs/snapshot.js/master/src/plugins/${key}/logo.png`;
+}
+</script>
+
 <template>
   <Block>
     <div class="d-flex flex-items-center mb-1">
@@ -16,12 +26,12 @@
       </a>
       <div class="ml-1">v{{ plugin.version }}</div>
     </div>
-    <div class="text-gray">
+    <div class="text-color">
       <div>
         <a
           :href="`https://github.com/${plugin.author}`"
           target="_blank"
-          class="text-gray"
+          class="text-color"
         >
           <Icon name="github" class="mr-1" />
           {{ plugin.author }}
@@ -31,16 +41,3 @@
     </div>
   </Block>
 </template>
-
-<script>
-export default {
-  props: ['plugin'],
-  setup() {
-    function getLogoUrl(key) {
-      return `https://raw.githubusercontent.com/snapshot-labs/snapshot.js/master/src/plugins/${key}/logo.png`;
-    }
-
-    return { getLogoUrl };
-  }
-};
-</script>

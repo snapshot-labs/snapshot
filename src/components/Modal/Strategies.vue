@@ -1,3 +1,12 @@
+<script setup>
+import { defineProps, defineEmits } from 'vue';
+import { isAddress } from '@ethersproject/address';
+
+defineProps({ open: Boolean, strategies: Object, space: Object });
+
+defineEmits(['close']);
+</script>
+
 <template>
   <UiModal :open="open" @close="$emit('close')">
     <template v-slot:header>
@@ -7,7 +16,7 @@
       <div
         v-for="(strategy, i) in strategies"
         :key="i"
-        class="p-4 mb-3 border rounded-2 text-white"
+        class="p-4 mb-3 border rounded-2 link-color"
       >
         <h3 v-text="strategy.name" />
         <div>
@@ -16,7 +25,7 @@
             :key="key"
             class="d-flex"
           >
-            <span v-text="key" class="flex-auto text-gray mr-1" />
+            <span v-text="key" class="flex-auto text-color mr-1" />
             <a
               v-if="key === 'address' || isAddress(option)"
               :href="_explorer(space.network, option)"
@@ -40,15 +49,3 @@
     </div>
   </UiModal>
 </template>
-
-<script>
-import { isAddress } from '@ethersproject/address';
-
-export default {
-  props: { open: Boolean, strategies: Object, space: Object },
-  emits: ['close'],
-  setup() {
-    return { isAddress };
-  }
-};
-</script>

@@ -1,3 +1,29 @@
+<script setup>
+import { defineProps, defineEmits } from 'vue';
+
+defineProps({
+  open: {
+    type: Boolean,
+    required: true
+  }
+});
+
+const emit = defineEmits(['close', 'update:modelValue']);
+
+const types = [
+  'single-choice',
+  'approval',
+  'quadratic',
+  'ranked-choice',
+  'weighted'
+];
+
+function select(id) {
+  emit('update:modelValue', id);
+  emit('close');
+}
+</script>
+
 <template>
   <UiModal :open="open" @close="$emit('close')">
     <template v-slot:header>
@@ -7,36 +33,9 @@
       <a v-for="type in types" :key="type" @click="select(type)">
         <Block class="button--submit">
           <h3 v-text="$t(`voting.${type}`)" />
-          <div v-text="$t(`voting.description.${type}`)" class="text-gray" />
+          <div v-text="$t(`voting.description.${type}`)" class="text-color" />
         </Block>
       </a>
     </div>
   </UiModal>
 </template>
-
-<script>
-export default {
-  props: {
-    open: {
-      type: Boolean,
-      required: true
-    }
-  },
-  setup(_, { emit }) {
-    const types = [
-      'single-choice',
-      'approval',
-      'quadratic',
-      'ranked-choice',
-      'weighted'
-    ];
-
-    function select(id) {
-      emit('update:modelValue', id);
-      emit('close');
-    }
-
-    return { types, select };
-  }
-};
-</script>
