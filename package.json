@@ -38,6 +38,7 @@
     "patch-package": "^6.4.7",
     "postinstall-postinstall": "^2.1.0",
     "primer-support": "^5.0.0",
+    "punycode": "^2.1.1",
     "raw-loader": "^4.0.2",
     "remarkable": "^2.0.1",
     "remove-markdown": "^0.3.0",

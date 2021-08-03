@@ -1,4 +1,4 @@
-import { namehash } from '@ethersproject/hash';
+import normalize from './library/idna-uts46/normalize';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import { subgraphRequest, call } from '@snapshot-labs/snapshot.js/src/utils';
 
@@ -53,9 +53,11 @@ function lookupAddresses(addresses) {
   return new Promise((resolove, reject) => {
     ensReverseRecordRequest(addresses)
       .then(reverseRecords => {
+        // TODO: Normalize with https://github.com/danfinlay/eth-ens-namehash in future versions of vite
         const validNames = reverseRecords.map(n =>
-          namehash(n) === n ? n : ''
+          normalize(n) === n ? n : ''
         );
+
         const ensNames = Object.fromEntries(
           addresses.map((address, index) => {
             return [address.toLowerCase(), validNames[index]];
