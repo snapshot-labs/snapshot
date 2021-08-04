@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed, defineProps, defineEmits } from 'vue';
-import { useStore } from 'vuex';
 import { getChoiceString } from '@/helpers/utils';
+import { useClient } from '@/composables/useClient';
 
 const props = defineProps({
   open: Boolean,
@@ -16,7 +16,7 @@ const props = defineProps({
 
 const emit = defineEmits(['reload', 'close']);
 
-const store = useStore();
+const { send } = useClient();
 
 const loading = ref(false);
 const symbols = computed(() =>
@@ -27,14 +27,11 @@ const format = getChoiceString;
 
 async function handleSubmit() {
   loading.value = true;
-  await store.dispatch('send', {
-    space: props.space.key,
-    type: 'vote',
-    payload: {
-      proposal: props.proposal.id,
-      choice: props.selectedChoices,
-      metadata: {}
-    }
+  console.log(props.space.key);
+  await send(props.space.key, 'vote', {
+    proposal: props.proposal.id,
+    choice: props.selectedChoices,
+    metadata: {}
   });
   emit('reload');
   emit('close');

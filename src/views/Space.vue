@@ -1,6 +1,5 @@
 <script setup>
 import { computed, onMounted, ref, watch } from 'vue';
-import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
 import { useInfiniteLoader } from '@/composables/useInfiniteLoader';
 import { useScrollMonitor } from '@/composables/useScrollMonitor';
@@ -8,18 +7,18 @@ import { useDomain } from '@/composables/useDomain';
 import { useApolloQuery } from '@/composables/useApolloQuery';
 import { PROPOSALS_QUERY } from '@/helpers/queries';
 import { useProfiles } from '@/composables/useProfiles';
+import { useApp } from '@/composables/useApp';
 
-const store = useStore();
 const route = useRoute();
 const { domain } = useDomain();
-
+const { spaces } = useApp();
 const spaceId = domain || route.params.key;
 
 const loading = ref(false);
 const proposals = ref([]);
 const filterBy = ref('all');
 
-const space = computed(() => store.state.app.spaces[spaceId]);
+const space = computed(() => spaces.value[spaceId]);
 const spaceMembers = computed(() =>
   space.value.members.length < 1 ? ['none'] : space.value.members
 );
