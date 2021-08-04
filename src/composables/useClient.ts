@@ -12,7 +12,6 @@ export function useClient() {
 
   async function send(space, type, payload) {
     try {
-      console.log(space);
       const result = await client.broadcast(
         auth.web3,
         web3.value.account,
