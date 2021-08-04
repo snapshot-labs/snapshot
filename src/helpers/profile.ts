@@ -1,4 +1,4 @@
-import { namehash } from '@ethersproject/hash';
+import namehash from 'eth-ens-namehash';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import { subgraphRequest, call } from '@snapshot-labs/snapshot.js/src/utils';
 
@@ -54,7 +54,7 @@ function lookupAddresses(addresses) {
     ensReverseRecordRequest(addresses)
       .then(reverseRecords => {
         const validNames = reverseRecords.map(n =>
-          namehash(n) === n ? n : ''
+          namehash.normalize(n) === n ? n : ''
         );
         const ensNames = Object.fromEntries(
           addresses.map((address, index) => {
