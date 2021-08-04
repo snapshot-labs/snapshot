@@ -5,7 +5,7 @@ import { useInfiniteLoader } from '@/composables/useInfiniteLoader';
 import { lsSet } from '@/helpers/utils';
 import { useUnseenProposals } from '@/composables/useUnseenProposals';
 import { useScrollMonitor } from '@/composables/useScrollMonitor';
-import { apolloClient } from '@/helpers/apollo';
+import { useApolloQuery } from '@/composables/useApolloQuery';
 import { PROPOSALS_QUERY } from '@/helpers/queries';
 import { useProfiles } from '@/composables/useProfiles';
 import { useFavoriteSpaces } from '@/composables/useFavoriteSpaces';
@@ -33,9 +33,10 @@ const { endElement } = useScrollMonitor(() =>
 );
 
 // Proposals query
+const { apolloQuery } = useApolloQuery();
 async function loadProposals(skip = 0) {
-  try {
-    const response = await apolloClient.query({
+  const proposalsObj = await apolloQuery(
+    {
       query: PROPOSALS_QUERY,
       variables: {
         first: loadBy,
@@ -43,12 +44,11 @@ async function loadProposals(skip = 0) {
         space_in: favoritesKeys.value,
         state: filterBy.value
       }
-    });
-    stopLoadingMore.value = response.data.proposals?.length < loadBy;
-    proposals.value = proposals.value.concat(response.data.proposals);
-  } catch (e) {
-    console.log(e);
-  }
+    },
+    'proposals'
+  );
+  stopLoadingMore.value = proposalsObj?.length < loadBy;
+  proposals.value = proposals.value.concat(proposalsObj);
 }
 
 const { profiles, addressArray } = useProfiles();

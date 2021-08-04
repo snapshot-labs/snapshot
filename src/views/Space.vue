@@ -4,7 +4,7 @@ import { useRoute } from 'vue-router';
 import { useInfiniteLoader } from '@/composables/useInfiniteLoader';
 import { useScrollMonitor } from '@/composables/useScrollMonitor';
 import { useDomain } from '@/composables/useDomain';
-import { apolloClient } from '@/helpers/apollo';
+import { useApolloQuery } from '@/composables/useApolloQuery';
 import { PROPOSALS_QUERY } from '@/helpers/queries';
 import { useProfiles } from '@/composables/useProfiles';
 import { useApp } from '@/composables/useApp';
@@ -32,9 +32,10 @@ const { endElement } = useScrollMonitor(() =>
 );
 
 // Proposals query
+const { apolloQuery } = useApolloQuery();
 async function loadProposals(skip = 0) {
-  try {
-    const response = await apolloClient.query({
+  const proposalsObj = await apolloQuery(
+    {
       query: PROPOSALS_QUERY,
       variables: {
         first: loadBy,
@@ -43,12 +44,11 @@ async function loadProposals(skip = 0) {
         state: filterBy.value === 'core' ? 'all' : filterBy.value,
         author_in: filterBy.value === 'core' ? spaceMembers.value : []
       }
-    });
-    stopLoadingMore.value = response.data.proposals?.length < loadBy;
-    proposals.value = proposals.value.concat(response.data.proposals);
-  } catch (e) {
-    console.log(e);
-  }
+    },
+    'proposals'
+  );
+  stopLoadingMore.value = proposalsObj?.length < loadBy;
+  proposals.value = proposals.value.concat(proposalsObj);
 }
 
 // Initialize
