@@ -60,6 +60,7 @@ watchEffect(async () => {
       clone(validationParams)
     );
     passValidation.value = [isValid, validationName];
+    console.log('Pass validation?', isValid, validationName);
   }
 });
 

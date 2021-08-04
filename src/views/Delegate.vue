@@ -44,6 +44,7 @@ const isValid = computed(() => {
   const address = form.value.address;
   return (
     auth.isAuthenticated.value &&
+    web3Account.value &&
     (address.includes('.eth') || isAddress(address)) &&
     address.toLowerCase() !== web3Account.value.toLowerCase() &&
     (form.value.id === '' || store.state.app.spaces[form.value.id])
