@@ -1,9 +1,9 @@
 <script>
-import { mapActions } from 'vuex';
 import plugins from '@snapshot-labs/snapshot.js/src/plugins';
 
 export default {
   props: ['id', 'space', 'proposal', 'results', 'loaded'],
+  inject: ['web3', 'notify'],
   data() {
     return {
       loading: false
@@ -30,13 +30,12 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['notify']),
     async execute(plugin) {
       this.loading = true;
       const action = new plugins[plugin]();
       try {
         const tx = await action.action(
-          this.web3.network.key,
+          this.web3.value.network.key,
           this.$auth.web3,
           this.space.plugins[plugin],
           this.proposal.plugins[plugin],

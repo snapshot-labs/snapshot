@@ -1,4 +1,4 @@
-import memoize from 'lodash.memoize';
+import memoize from 'lodash/memoize';
 import { isAddress } from '@ethersproject/address';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import { ModuleTransaction } from '@snapshot-labs/snapshot.js/src/plugins/safeSnap';

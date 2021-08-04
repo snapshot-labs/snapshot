@@ -1,26 +1,32 @@
 <script setup>
-import { computed, onMounted, watch } from 'vue';
-import { useStore } from 'vuex';
+import { computed, onMounted, provide, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { useModal } from '@/composables/useModal';
 import { useI18n } from '@/composables/useI18n';
 import { useDomain } from '@/composables/useDomain';
+import { useApp } from '@/composables/useApp';
+import { useWeb3 } from '@/composables/useWeb3';
+import { useNotifications } from '@/composables/useNotifications';
 
 const { domain } = useDomain();
 const { loadLocale } = useI18n();
-const store = useStore();
 const route = useRoute();
-
 const { modalOpen } = useModal();
+const { init, spaces, app } = useApp();
+const { web3 } = useWeb3();
+const { notify } = useNotifications();
+
+provide('web3', web3);
+provide('notify', notify);
 
 const space = computed(() => {
   const key = domain || route.params.key;
-  return store.state.app.spaces[key] ? store.state.app.spaces[key] : {};
+  return spaces.value[key] ? spaces.value[key] : {};
 });
 
 onMounted(async () => {
   await loadLocale();
-  store.dispatch('init');
+  init();
 });
 
 watch(modalOpen, val => {

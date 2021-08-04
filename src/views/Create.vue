@@ -1,7 +1,6 @@
 <script setup>
 import { ref, watchEffect, computed, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { useStore } from 'vuex';
 import draggable from 'vuedraggable';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import { getBlockNumber } from '@snapshot-labs/snapshot.js/src/utils/web3';
@@ -13,12 +12,17 @@ import validations from '@snapshot-labs/snapshot.js/src/validations';
 import { clone } from '@/helpers/utils';
 import { useDomain } from '@/composables/useDomain';
 import { useApolloQuery } from '@/composables/useApolloQuery';
+import { useApp } from '@/composables/useApp';
+import { useWeb3 } from '@/composables/useWeb3';
+import { useClient } from '@/composables/useClient';
 
 const route = useRoute();
 const router = useRouter();
-const store = useStore();
 const auth = getInstance();
 const { domain } = useDomain();
+const { spaces } = useApp();
+const { web3 } = useWeb3();
+const { send } = useClient();
 
 const key = route.params.key;
 const from = route.params.from;
@@ -45,8 +49,8 @@ const counter = ref(0);
 const nameForm = ref(null);
 const passValidation = ref([true]);
 
-const web3Account = computed(() => store.state.web3.account);
-const space = computed(() => store.state.app.spaces[key]);
+const web3Account = computed(() => web3.value.account);
+const space = computed(() => spaces.value[key]);
 
 // Check if account passes space validation
 watchEffect(async () => {
@@ -84,7 +88,7 @@ const isValid = computed(() => {
     !choices.value.some(a => a.text === '') &&
     passValidation.value[0] &&
     isSafeSnapPluginValid &&
-    !store.state.app.authLoading
+    !web3.value.authLoading
   );
 });
 
@@ -112,11 +116,7 @@ async function handleSubmit() {
   form.value.metadata.network = space.value.network;
   form.value.metadata.strategies = space.value.strategies;
   try {
-    const { ipfsHash } = await store.dispatch('send', {
-      space: space.value.key,
-      type: 'proposal',
-      payload: form.value
-    });
+    const { ipfsHash } = await send(space.value.key, 'proposal', form.value);
     router.push({
       name: 'proposal',
       params: {

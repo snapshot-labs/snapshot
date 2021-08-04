@@ -1,11 +1,11 @@
 <script setup>
 import { watchEffect, ref, computed } from 'vue';
 import { useRoute } from 'vue-router';
-import { useStore } from 'vuex';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import { getBlockNumber } from '@snapshot-labs/snapshot.js/src/utils/web3';
 import { getScores } from '@snapshot-labs/snapshot.js/src/utils';
+import { useApp } from '@/composables/useApp';
 
 const defaultParams = {
   symbol: 'BAL',
@@ -14,10 +14,10 @@ const defaultParams = {
 };
 
 const route = useRoute();
-const store = useStore();
+const { strategies } = useApp();
+
 let provider;
 
-const strategies = computed(() => store.state.app.strategies);
 const strategy = computed(() => strategies.value[route.params.name]);
 const strategyExample = computed(() => strategy.value.examples?.[0]);
 

@@ -1,7 +1,6 @@
 <script setup>
 import { computed, onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
-import { useStore } from 'vuex';
 import { useI18n } from 'vue-i18n';
 import { useSearchFilters } from '@/composables/useSearchFilters';
 import { getAddress } from '@ethersproject/address';
@@ -12,13 +11,18 @@ import { clone } from '@/helpers/utils';
 import { getSpaceUri } from '@/helpers/ens';
 import defaults from '@/locales/default';
 import { useCopy } from '@/composables/useCopy';
+import { useApp } from '@/composables/useApp';
+import { useWeb3 } from '@/composables/useWeb3';
+import { useClient } from '@/composables/useClient';
 
 const basicValidation = { name: 'basic', params: {} };
 
 const route = useRoute();
-const store = useStore();
 const { t } = useI18n();
 const { copyToClipboard } = useCopy();
+const { spaces, getSpaces } = useApp();
+const { web3 } = useWeb3();
+const { send } = useClient();
 
 const key = ref(route.params.key);
 const from = ref(route.params.from);
@@ -43,7 +47,7 @@ const form = ref({
   validation: basicValidation
 });
 
-const web3Account = computed(() => store.state.web3.account);
+const web3Account = computed(() => web3.value.account);
 
 const validate = computed(() => {
   if (form.value.terms === '') delete form.value.terms;
@@ -67,9 +71,8 @@ const isOwner = computed(() => {
 });
 
 const isAdmin = computed(() => {
-  if (!store.state.app.spaces[key.value] || !currentTextRecord.value)
-    return false;
-  const admins = (store.state.app.spaces[key.value].admins || []).map(admin =>
+  if (!spaces.value[key.value] || !currentTextRecord.value) return false;
+  const admins = (spaces.value[key.value].admins || []).map(admin =>
     admin.toLowerCase()
   );
   return admins.includes(web3Account.value?.toLowerCase());
@@ -90,15 +93,11 @@ async function handleSubmit() {
     if (form.value.filters.invalids) delete form.value.filters.invalids;
     loading.value = true;
     try {
-      await store.dispatch('send', {
-        space: key.value,
-        type: 'settings',
-        payload: form.value
-      });
+      await send(key.value, 'settings', form.value);
     } catch (e) {
       console.log(e);
     }
-    await store.dispatch('getSpaces');
+    await getSpaces();
     loading.value = false;
   } else {
     showErrors.value = true;
@@ -123,8 +122,7 @@ function inputError(field) {
 }
 
 function handleReset() {
-  if (from.value)
-    return (form.value = clone(store.state.app.spaces[from.value]));
+  if (from.value) return (form.value = clone(spaces.value[from.value]));
   if (currentSettings.value) return (form.value = currentSettings.value);
   form.value = {
     strategies: [],
@@ -195,7 +193,7 @@ onMounted(async () => {
     const uri = await getSpaceUri(key.value);
     console.log('URI', uri);
     currentTextRecord.value = uri;
-    const space = clone(store.state.app.spaces?.[key.value]);
+    const space = clone(spaces.value?.[key.value]);
     if (!space) return;
     delete space.key;
     delete space._activeProposals;
@@ -209,7 +207,7 @@ onMounted(async () => {
     console.log(e);
   }
   if (from.value) {
-    const fromClone = clone(store.state.app.spaces[from.value]);
+    const fromClone = clone(spaces.value[from.value]);
     fromClone.validation = fromClone.validation || basicValidation;
     delete fromClone.key;
     delete fromClone._activeProposals;

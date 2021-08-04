@@ -1,16 +1,17 @@
 <script setup>
 import { computed, defineProps } from 'vue';
-import { useStore } from 'vuex';
+
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
+import { useWeb3 } from '@/composables/useWeb3';
 
 const props = defineProps({
   space: Object
 });
 
-const store = useStore();
 const auth = getInstance();
+const { web3 } = useWeb3();
 
-const web3Account = computed(() => store.state.web3.account);
+const web3Account = computed(() => web3.value.account);
 
 const isAdmin = computed(() => {
   const admins = props.space.admins.map(address => address.toLowerCase());
