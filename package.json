@@ -29,6 +29,7 @@
     "@walletconnect/web3-provider": "1.4.1",
     "autolinker": "^3.14.3",
     "eslint": "^6.7.2",
+    "eth-ens-namehash": "^2.0.8",
     "graphql": "^15.5.1",
     "graphql-tag": "^2.12.4",
     "jsonexport": "^3.0.1",
