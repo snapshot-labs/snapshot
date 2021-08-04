@@ -195,6 +195,7 @@ onMounted(async () => {
     currentTextRecord.value = uri;
     const space = clone(spaces.value?.[key.value]);
     if (!space) return;
+    delete space.id;
     delete space.key;
     delete space._activeProposals;
     space.strategies = space.strategies || [];
