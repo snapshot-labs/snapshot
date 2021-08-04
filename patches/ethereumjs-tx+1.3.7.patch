@@ -1,15 +1,13 @@
 diff --git a/node_modules/ethereumjs-tx/es5/index.js b/node_modules/ethereumjs-tx/es5/index.js
-index 0108471..a87535d 100644
+index 0108471..270427e 100644
 --- a/node_modules/ethereumjs-tx/es5/index.js
 +++ b/node_modules/ethereumjs-tx/es5/index.js
-@@ -2,9 +2,8 @@
+@@ -4,7 +4,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  
- function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
- 
--var ethUtil = require('ethereumjs-util');
-+var ethUtil, { BN } = require('ethereumjs-util');
+ var ethUtil = require('ethereumjs-util');
  var fees = require('ethereum-common/params.json');
 -var BN = ethUtil.BN;
++var { BN } = ethUtil;
  
  // secp256k1n/2
  var N_DIV_2 = new BN('7fffffffffffffffffffffffffffffff5d576e7357a4501ddfe92f46681b20a0', 16);
