@@ -4,7 +4,7 @@ import { useNotifications } from './useNotifications';
 
 export function useCopy() {
   const { t } = useI18n();
-  const { copy, copied } = useClipboard();
+  const { copy, copied } = useClipboard({ read: false });
   const { notify } = useNotifications();
 
   function copyToClipboard(text) {
