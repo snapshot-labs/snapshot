@@ -1,6 +1,5 @@
 <script setup>
 import { ref, computed, watch, onMounted, watchEffect } from 'vue';
-import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { useProfiles } from '@/composables/useProfiles';
@@ -16,14 +15,17 @@ import {
   contractAddress
 } from '@/helpers/delegation';
 import { sleep } from '@/helpers/utils';
+import { useApp } from '@/composables/useApp';
+import { useWeb3 } from '@/composables/useWeb3';
 
 const abi = ['function setDelegate(bytes32 id, address delegate)'];
 
 const route = useRoute();
-const store = useStore();
 const { t } = useI18n();
 const auth = getInstance();
 const { notify } = useNotifications();
+const { spaces } = useApp();
+const { web3 } = useWeb3();
 
 const modalOpen = ref(false);
 const currentId = ref('');
@@ -37,8 +39,8 @@ const form = ref({
   id: route.params.key || ''
 });
 
-const web3Account = computed(() => store.state.web3.account);
-const networkKey = computed(() => store.state.web3.network.key);
+const web3Account = computed(() => web3.value.account);
+const networkKey = computed(() => web3.value.network.key);
 
 const isValid = computed(() => {
   const address = form.value.address;
@@ -47,7 +49,7 @@ const isValid = computed(() => {
     web3Account.value &&
     (address.includes('.eth') || isAddress(address)) &&
     address.toLowerCase() !== web3Account.value.toLowerCase() &&
-    (form.value.id === '' || store.state.app.spaces[form.value.id])
+    (form.value.id === '' || spaces.value[form.value.id])
   );
 });
 

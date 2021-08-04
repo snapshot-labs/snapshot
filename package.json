@@ -51,7 +51,6 @@
     "vue-router": "^4.0.9",
     "vue3-jazzicon": "^0.1.1",
     "vuedraggable": "^4.0.2",
-    "vuex": "^4.0.2",
     "walletlink": "^2.1.7"
   },
   "devDependencies": {

@@ -1,30 +1,29 @@
 <script setup>
 import { ref, computed, watchEffect } from 'vue';
-import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
 import orderBy from 'lodash/orderBy';
 import spotlight from '@snapshot-labs/snapshot-spaces/spaces/spotlight.json';
 import { useUnseenProposals } from '@/composables/useUnseenProposals';
 import { useScrollMonitor } from '@/composables/useScrollMonitor';
 import { useFavoriteSpaces } from '@/composables/useFavoriteSpaces';
+import { useApp } from '@/composables/useApp';
 
-const store = useStore();
 const route = useRoute();
 const { addFavoriteSpace, removeFavoriteSpace, favorites } =
   useFavoriteSpaces();
 
-const stateSpaces = computed(() => store.state.app.spaces);
+const { spaces } = useApp();
 
-const spaces = computed(() => {
+const orderedSpaces = computed(() => {
   const networkFilter = route.query.network;
   const q = route.query.q || '';
-  const list = Object.keys(stateSpaces.value)
+  const list = Object.keys(spaces.value)
     .map(key => {
       const spotlightIndex = spotlight.indexOf(key);
       return {
-        ...stateSpaces.value[key],
+        ...spaces.value[key],
         favorite: !!favorites.value[key],
-        isActive: !!stateSpaces.value[key]._activeProposals,
+        isActive: !!spaces.value[key]._activeProposals,
         spotlight: spotlightIndex === -1 ? 1e3 : spotlightIndex
       };
     })
@@ -72,7 +71,7 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
           </router-link>
         </div>
         <div class="ml-3 text-right hide-sm col-lg-4">
-          {{ $tc('spaceCount', [_n(spaces.length)]) }}
+          {{ $tc('spaceCount', [_n(orderedSpaces.length)]) }}
           <router-link :to="{ name: 'setup' }" class="hide-md ml-3">
             <UiButton>{{ $t('createSpace') }}</UiButton>
           </router-link>
@@ -82,7 +81,7 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
     <Container :slim="true">
       <div class="overflow-hidden mr-n4">
         <router-link
-          v-for="space in spaces.slice(0, limit)"
+          v-for="space in orderedSpaces.slice(0, limit)"
           :key="space.key"
           :to="{ name: 'proposals', params: { key: space.key } }"
         >
@@ -120,7 +119,7 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
 
         <NoResults
           :block="true"
-          v-if="Object.keys(spaces).length < 1"
+          v-if="Object.keys(orderedSpaces).length < 1"
           class="pr-md-4"
         />
       </div>

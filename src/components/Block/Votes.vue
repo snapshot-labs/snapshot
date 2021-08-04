@@ -1,8 +1,8 @@
 <script setup>
 import { ref, computed, watch, toRefs, defineProps } from 'vue';
-import { useStore } from 'vuex';
 import { getChoiceString } from '@/helpers/utils';
 import { useProfiles } from '@/composables/useProfiles';
+import { useWeb3 } from '@/composables/useWeb3';
 
 const props = defineProps({
   space: Object,
@@ -12,17 +12,16 @@ const props = defineProps({
   strategies: Object
 });
 
-const store = useStore();
-
 const format = getChoiceString;
 
 const { votes } = toRefs(props);
+const { web3 } = useWeb3();
 
 const showAllVotes = ref(false);
 const authorIpfsHash = ref('');
 const modalReceiptOpen = ref(false);
 
-const web3Account = computed(() => store.state.web3.account);
+const web3Account = computed(() => web3.value.account);
 
 const visibleVotes = computed(() =>
   showAllVotes.value ? sortVotesUserFirst() : sortVotesUserFirst().slice(0, 10)
