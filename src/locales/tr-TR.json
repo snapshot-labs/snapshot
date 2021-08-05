@@ -238,13 +238,13 @@
   },
   "safeSnap": {
     "currentOutcome": "Mevcut sonuç: {0}",
-    "currentBond": "Current bond: {0} {1}",
+    "currentBond": "Mevcut teminat: {0} {1}",
     "finalizedIn": "Sonuçlandı {0}",
     "executableIn": "Çalıştırılabilir {0}",
     "finalOutcome": "Sonuç: {0}",
-    "nextBond": "Bond to set outcome: {0}",
+    "nextBond": "Sonucu ayarlamak için teminatlandır: {0}",
     "setOutcomeTo": "Sonucu ayarla:",
-    "claimBond": "Claim bond",
+    "claimBond": "Teminat talebi",
     "labels": {
       "request": "Yürütme isteğinde bulun",
       "setOutcome": "Sonucu ayarla",
@@ -254,7 +254,7 @@
       "executed": "{0}/{0} Gerçekleştirilen işlemler",
       "waiting": "Oylamanın kapanması bekleniyor",
       "error": "Hata",
-      "question": "Bu teklif geçti mi ve beklentileri karşılıyor mu",
+      "question": "Bu teklif kabul edildi mi ve beklentileri karşılıyor mu",
       "criteria": "kabul şartları?"
     }
   },
