@@ -1,21 +1,20 @@
 import { computed, ref } from 'vue';
-import { useStore } from 'vuex';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { useModal } from '@/composables/useModal';
+import { useWeb3 } from '@/composables/useWeb3';
 import client from '@/helpers/EIP712';
 
 export function useFollowSpace() {
   const auth = getInstance();
-  const store = useStore();
+  const { web3 } = useWeb3();
+  const { modalAccountOpen } = useModal();
 
   const loading = ref(false);
 
-  const { modalAccountOpen } = useModal();
-
-  const web3Account = computed(() => store.state.web3.account);
+  const web3Account = computed(() => web3.value.account);
 
   function clickFollow(space) {
-    !store.state.app.authLoading
+    !web3.value.authLoading
       ? web3Account.value
         ? follow(space)
         : (modalAccountOpen.value = true)
