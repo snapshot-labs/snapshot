@@ -1,0 +1,20 @@
+diff --git a/node_modules/walletlink/dist/vendor-js/keccak/lib/api/keccak.js b/node_modules/walletlink/dist/vendor-js/keccak/lib/api/keccak.js
+index 4dba2ce..6ae6307 100644
+--- a/node_modules/walletlink/dist/vendor-js/keccak/lib/api/keccak.js
++++ b/node_modules/walletlink/dist/vendor-js/keccak/lib/api/keccak.js
+@@ -1,4 +1,4 @@
+-const { Transform } = require('stream')
++const { Transform } = require('readable-stream')
+ 
+ module.exports = (KeccakState) => class Keccak extends Transform {
+   constructor (rate, capacity, delimitedSuffix, hashBitLength, options) {
+diff --git a/node_modules/walletlink/dist/vendor-js/keccak/lib/api/shake.js b/node_modules/walletlink/dist/vendor-js/keccak/lib/api/shake.js
+index a890aa7..8895e59 100644
+--- a/node_modules/walletlink/dist/vendor-js/keccak/lib/api/shake.js
++++ b/node_modules/walletlink/dist/vendor-js/keccak/lib/api/shake.js
+@@ -1,4 +1,4 @@
+-const { Transform } = require('stream')
++const { Transform } = require('readable-stream')
+ 
+ module.exports = (KeccakState) => class Shake extends Transform {
+   constructor (rate, capacity, delimitedSuffix, options) {
