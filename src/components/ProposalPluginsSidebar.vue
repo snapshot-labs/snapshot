@@ -42,7 +42,7 @@ defineProps({
       :results="results"
       :strategies="strategies"
     />
-    <PluginPoapCustomBlock
+    <PluginPOAPCustomBlock
       v-if="space.plugins?.poap"
       :loaded="loadedResults"
       :space="space"
