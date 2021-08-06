@@ -1,14 +1,17 @@
 <script setup>
 import { ref, computed, watch, onMounted } from 'vue';
-import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
 import { useModal } from '@/composables/useModal';
 import { useDomain } from '@/composables/useDomain';
+import { useApp } from '@/composables/useApp';
+import { useWeb3 } from '@/composables/useWeb3';
 
 const { modalAccountOpen } = useModal();
 const { env, domain } = useDomain();
 const route = useRoute();
-const store = useStore();
+
+const { spaces } = useApp();
+const { login, web3 } = useWeb3();
 
 const loading = ref(false);
 const modalAboutOpen = ref(false);
@@ -17,10 +20,8 @@ const modalWalletNotice = ref(false);
 
 const space = computed(() => {
   const key = domain || route.params.key;
-  return store.state.app.spaces[key] ? store.state.app.spaces[key] : false;
+  return spaces.value[key] ? spaces.value[key] : false;
 });
-
-const walletConnectType = computed(() => store.state.web3.walletConnectType);
 
 function setTitle() {
   document.title = space.value.name ? space.value.name : 'Snapshot';
@@ -29,13 +30,15 @@ function setTitle() {
 async function handleLogin(connector) {
   modalAccountOpen.value = false;
   loading.value = true;
-  await store.dispatch('login', connector);
+  await login(connector);
   loading.value = false;
 }
 
 watch(space, () => {
   setTitle();
 });
+
+const walletConnectType = computed(() => web3.value.walletConnectType);
 
 watch(walletConnectType, val => {
   if (val === 'Gnosis Safe Multisig') modalWalletNotice.value = true;
@@ -70,7 +73,7 @@ onMounted(() => setTitle());
               <UiButton
                 @click="modalAccountOpen = true"
                 class="button-outline"
-                :loading="app.authLoading"
+                :loading="web3.authLoading"
               >
                 <UiAvatar
                   :imgsrc="
@@ -91,7 +94,7 @@ onMounted(() => setTitle());
             <UiButton
               v-if="!$auth.isAuthenticated.value"
               @click="modalAccountOpen = true"
-              :loading="loading || app.authLoading"
+              :loading="loading || web3.authLoading"
             >
               <span class="hide-sm" v-text="$t('connectWallet')" />
               <Icon
