@@ -3,7 +3,7 @@ import { clone } from '@/helpers/utils';
 import Plugin from '@snapshot-labs/snapshot.js/src/plugins/safeSnap';
 import {
   getGnosisSafeBalances,
-  getGnosisSafeCollecibles
+  getGnosisSafeCollectibles
 } from '@/helpers/abi/utils';
 
 export default {
@@ -105,10 +105,10 @@ export default {
       }
       return [];
     },
-    async fetchCollectables(gnosisSafeAddress) {
+    async fetchCollectibles(gnosisSafeAddress) {
       if (gnosisSafeAddress) {
         try {
-          return await getGnosisSafeCollecibles(
+          return await getGnosisSafeCollectibles(
             this.network,
             gnosisSafeAddress
           );
