@@ -23,7 +23,6 @@ const spaceMembers = computed(() =>
   space.value.members.length < 1 ? ['none'] : space.value.members
 );
 
-// Infinite scroll with pagination
 const { loadBy, limit, loadingMore, stopLoadingMore, loadMore } =
   useInfiniteLoader();
 
@@ -31,7 +30,6 @@ const { endElement } = useScrollMonitor(() =>
   loadMore(() => loadProposals(limit.value), loading.value)
 );
 
-// Proposals query
 const { apolloQuery } = useApolloQuery();
 async function loadProposals(skip = 0) {
   const proposalsObj = await apolloQuery(
@@ -51,7 +49,6 @@ async function loadProposals(skip = 0) {
   proposals.value = proposals.value.concat(proposalsObj);
 }
 
-// Initialize
 onMounted(load());
 
 async function load() {
@@ -60,7 +57,6 @@ async function load() {
   loading.value = false;
 }
 
-// Change filter
 function selectState(e) {
   filterBy.value = e;
   proposals.value = [];
