@@ -54,6 +54,11 @@ const threeDotItems = computed(() => {
   return items;
 });
 
+const safeSnapInput = computed({
+  get: () => proposal.value?.plugins?.safeSnap,
+  set: value => (proposal.value.plugins.safeSnap = value)
+});
+
 const { modalAccountOpen } = useModal();
 const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(key);
 
@@ -223,14 +228,12 @@ onMounted(async () => {
         :votes="votes"
         :strategies="strategies"
       />
-      <PluginSafeSnapConfig
-        :preview="true"
-        v-if="loadedResults && proposal.plugins?.safeSnap?.txs"
+      <ProposalPluginsContent
+        v-model:safeSnapInput="safeSnapInput"
+        :id="id"
+        :space="space"
         :proposal="proposal"
-        :proposalId="id"
-        :moduleAddress="space.plugins?.safeSnap?.address"
-        :network="space.network"
-        v-model="proposal.plugins.safeSnap"
+        :loadedResults="loadedResults"
       />
     </template>
     <template #sidebar-right v-if="loaded">
@@ -310,45 +313,16 @@ onMounted(async () => {
         :votes="votes"
         :strategies="strategies"
       />
-      <div v-if="loadedResults">
-        <PluginAragonCustomBlock
-          :loaded="loadedResults"
-          :id="id"
-          :space="space"
-          :proposal="proposal"
-          :results="results"
-        />
-        <PluginGnosisCustomBlock
-          v-if="proposal.plugins?.gnosis?.baseTokenAddress"
-          :proposalConfig="proposal.plugins.gnosis"
-          :choices="proposal.choices"
-        />
-        <PluginSafeSnapCustomBlock
-          v-if="proposal.plugins?.safeSnap?.txs"
-          :proposalConfig="proposal.plugins.safeSnap"
-          :proposalEnd="proposal.end"
-          :proposalId="id"
-          :moduleAddress="space.plugins?.safeSnap?.address"
-          :network="space.network"
-        />
-        <PluginQuorumCustomBlock
-          :loaded="loadedResults"
-          v-if="space.plugins?.quorum"
-          :space="space"
-          :proposal="proposal"
-          :results="results"
-          :strategies="strategies"
-        />
-        <PluginPOAPCustomBlock
-          v-if="space.plugins?.poap"
-          :loaded="loadedResults"
-          :space="space"
-          :proposal="proposal"
-          :results="results"
-          :votes="votes"
-          :strategies="strategies"
-        />
-      </div>
+      <ProposalPluginsSidebar
+        v-if="loadedResults"
+        :id="id"
+        :space="space"
+        :proposal="proposal"
+        :results="results"
+        :votes="votes"
+        :strategies="strategies"
+        :loadedResults="loadedResults"
+      />
     </template>
   </Layout>
   <teleport to="#modal">

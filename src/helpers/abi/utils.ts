@@ -244,7 +244,7 @@ export const getGnosisSafeBalances = memoize(
   (safeAddress, network) => `${safeAddress}_${network}`
 );
 
-export const getGnosisSafeCollecibles = memoize(
+export const getGnosisSafeCollectibles = memoize(
   (network, safeAddress) => {
     const endpointPath = `/safes/${safeAddress}/collectibles`;
     return callGnosisSafeTransactionApi(network, endpointPath);
