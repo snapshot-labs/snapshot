@@ -105,7 +105,7 @@ export default {
       }
       return [];
     },
-    async fetchCollectibles(gnosisSafeAddress) {
+    async fetchCollectables(gnosisSafeAddress) {
       if (gnosisSafeAddress) {
         try {
           return await getGnosisSafeCollectibles(
