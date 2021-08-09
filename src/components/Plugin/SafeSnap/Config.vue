@@ -51,7 +51,7 @@ export default {
         ...this.transactionConfig,
         gnosisSafeAddress: this.gnosisSafeAddress,
         tokens: await this.fetchBalances(this.gnosisSafeAddress),
-        collectables: await this.fetchCollectables(this.gnosisSafeAddress)
+        collectables: await this.fetchCollectibles(this.gnosisSafeAddress)
       };
     } catch (e) {
       console.error(e);
@@ -105,7 +105,7 @@ export default {
       }
       return [];
     },
-    async fetchCollectables(gnosisSafeAddress) {
+    async fetchCollectibles(gnosisSafeAddress) {
       if (gnosisSafeAddress) {
         try {
           return await getGnosisSafeCollectibles(
