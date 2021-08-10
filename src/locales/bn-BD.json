@@ -106,6 +106,8 @@
   "addresses": "এড্রেস",
   "networkErrorPlayground": "নেটওয়ার্ক ত্রুটি - আরও তথ্যের জন্য দয়া করে আপনার ব্রাউজার কনসোলটি খুলুন",
   "upload": "আপলোড",
+  "copyLink": "Copy link",
+  "duplicateProposal": "Duplicate proposal",
   "errors": {
     "required": "ফিল্ড প্রয়োজন হয়",
     "minLength": "সর্বনিম্ন দৈর্ঘ্য {0}",
@@ -193,7 +195,8 @@
     "validation": "বৈধতা",
     "editValidation": "বৈধতা সম্পাদনা করুন",
     "selectValidation": "বৈধতা নির্বাচন করুন",
-    "validationParameters": "বৈধতা প্যারামিটার"
+    "validationParameters": "বৈধতা প্যারামিটার",
+    "warningTextRecord": "You must set a text record on the ENS domain."
   },
   "setup": {
     "example": "উদাহরণ. yam.eth",
