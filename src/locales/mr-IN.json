@@ -106,6 +106,8 @@
   "addresses": "ऍड्रेस",
   "networkErrorPlayground": "नेटवर्क त्रुटी - अधिक माहिती साठी आपले ब्राउसर कॉन्सोल खोला",
   "upload": "अपलोड करा",
+  "copyLink": "Copy link",
+  "duplicateProposal": "Duplicate proposal",
   "errors": {
     "required": "फील्ड आवश्यक आहे",
     "minLength": "किमान लांबी {0}",
@@ -193,7 +195,8 @@
     "validation": "Validation",
     "editValidation": "Edit validation",
     "selectValidation": "Select validation",
-    "validationParameters": "Validation parameters"
+    "validationParameters": "Validation parameters",
+    "warningTextRecord": "You must set a text record on the ENS domain."
   },
   "setup": {
     "example": "उदा. yam.eth",
