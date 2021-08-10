@@ -1,11 +1,11 @@
 <script setup>
 import { ref, computed, defineProps, defineEmits } from 'vue';
-import { useStore } from 'vuex';
 import { useI18n } from 'vue-i18n';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import client from '@/helpers/clientEIP712';
 import { getChoiceString } from '@/helpers/utils';
 import { useNotifications } from '@/composables/useNotifications';
+import { useWeb3 } from '@/composables/useWeb3';
 
 const props = defineProps({
   open: Boolean,
@@ -20,16 +20,16 @@ const props = defineProps({
 
 const emit = defineEmits(['reload', 'close']);
 
-const store = useStore();
 const auth = getInstance();
 const { t } = useI18n();
 const { notify } = useNotifications();
+const { web3 } = useWeb3();
 
 const loading = ref(false);
 const symbols = computed(() =>
   props.strategies.map(strategy => strategy.params.symbol)
 );
-const web3Account = computed(() => store.state.web3.account);
+const web3Account = computed(() => web3.value.account);
 const format = getChoiceString;
 
 async function handleSubmit() {
@@ -136,4 +136,3 @@ async function handleSubmit() {
     </template>
   </UiModal>
 </template>
-

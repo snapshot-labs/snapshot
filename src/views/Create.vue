@@ -1,7 +1,6 @@
 <script setup>
 import { ref, watchEffect, computed, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { useStore } from 'vuex';
 import draggable from 'vuedraggable';
 import { useI18n } from 'vue-i18n';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
@@ -16,14 +15,17 @@ import client from '@/helpers/clientEIP712';
 import { useDomain } from '@/composables/useDomain';
 import { useApolloQuery } from '@/composables/useApolloQuery';
 import { useNotifications } from '@/composables/useNotifications';
+import { useApp } from '@/composables/useApp';
+import { useWeb3 } from '@/composables/useWeb3';
 
 const route = useRoute();
 const router = useRouter();
 const { t } = useI18n();
-const store = useStore();
 const auth = getInstance();
 const { domain } = useDomain();
 const { notify } = useNotifications();
+const { spaces } = useApp();
+const { web3 } = useWeb3();
 
 const key = route.params.key;
 const from = route.params.from;
@@ -50,8 +52,8 @@ const counter = ref(0);
 const nameForm = ref(null);
 const passValidation = ref([true]);
 
-const web3Account = computed(() => store.state.web3.account);
-const space = computed(() => store.state.app.spaces[key]);
+const web3Account = computed(() => web3.value.account);
+const space = computed(() => spaces.value[key]);
 
 // Check if account passes space validation
 watchEffect(async () => {
@@ -89,7 +91,7 @@ const isValid = computed(() => {
     !choices.value.some(a => a.text === '') &&
     passValidation.value[0] &&
     isSafeSnapPluginValid &&
-    !store.state.app.authLoading
+    !web3.value.authLoading
   );
 });
 

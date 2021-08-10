@@ -106,6 +106,8 @@
   "addresses": "Adressen",
   "networkErrorPlayground": "Netwerkfout - Open uw browserconsole voor meer informatie",
   "upload": "Uploaden",
+  "copyLink": "Copy link",
+  "duplicateProposal": "Duplicate proposal",
   "errors": {
     "required": "Veld is verplicht",
     "minLength": "Minimale lengte is {0}",
@@ -193,7 +195,8 @@
     "validation": "Validation",
     "editValidation": "Edit validation",
     "selectValidation": "Select validation",
-    "validationParameters": "Validation parameters"
+    "validationParameters": "Validation parameters",
+    "warningTextRecord": "You must set a text record on the ENS domain."
   },
   "setup": {
     "example": "b.v. yam.eth",

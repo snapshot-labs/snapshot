@@ -44,6 +44,7 @@ const CLAIMED = 'CLAIMED';
 
 export default {
   props: ['space', 'proposal', 'results', 'loaded', 'strategies', 'votes'],
+  inject: ['web3', 'notify'],
   data() {
     return {
       loading: false,
@@ -56,7 +57,7 @@ export default {
   },
   computed: {
     web3Account() {
-      return this.$store.state.web3.account;
+      return this.web3.value.account;
     },
     header() {
       return STATES[this.currentState].header;

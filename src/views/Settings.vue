@@ -1,7 +1,6 @@
 <script setup>
 import { computed, onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
-import { useStore } from 'vuex';
 import { useI18n } from 'vue-i18n';
 import { getAddress } from '@ethersproject/address';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
@@ -15,15 +14,18 @@ import defaults from '@/locales/default';
 import client from '@/helpers/clientEIP712';
 import { useCopy } from '@/composables/useCopy';
 import { useNotifications } from '@/composables/useNotifications';
+import { useApp } from '@/composables/useApp';
+import { useWeb3 } from '@/composables/useWeb3';
 
 const basicValidation = { name: 'basic', params: {} };
 
 const auth = getInstance();
 const route = useRoute();
-const store = useStore();
 const { t } = useI18n();
 const { copyToClipboard } = useCopy();
 const { notify } = useNotifications();
+const { spaces, getSpaces } = useApp();
+const { web3 } = useWeb3();
 
 const key = ref(route.params.key);
 const from = ref(route.params.from);
@@ -48,7 +50,7 @@ const form = ref({
   validation: basicValidation
 });
 
-const web3Account = computed(() => store.state.web3.account);
+const web3Account = computed(() => web3.value.account);
 
 const validate = computed(() => {
   if (form.value.terms === '') delete form.value.terms;
@@ -72,9 +74,8 @@ const isOwner = computed(() => {
 });
 
 const isAdmin = computed(() => {
-  if (!store.state.app.spaces[key.value] || !currentTextRecord.value)
-    return false;
-  const admins = (store.state.app.spaces[key.value].admins || []).map(admin =>
+  if (!spaces.value[key.value] || !currentTextRecord.value) return false;
+  const admins = (spaces.value[key.value].admins || []).map(admin =>
     admin.toLowerCase()
   );
   return admins.includes(web3Account.value?.toLowerCase());
@@ -110,10 +111,10 @@ async function handleSubmit() {
         notify(['red', errorMessage]);
       }
     }
-
-    await store.dispatch('getSpaces');
+    await getSpaces();
     loading.value = false;
   } else {
+    console.log('Invalid schema', validate.value);
     showErrors.value = true;
   }
 }
@@ -136,8 +137,7 @@ function inputError(field) {
 }
 
 function handleReset() {
-  if (from.value)
-    return (form.value = clone(store.state.app.spaces[from.value]));
+  if (from.value) return (form.value = clone(spaces.value[from.value]));
   if (currentSettings.value) return (form.value = currentSettings.value);
   form.value = {
     strategies: [],
@@ -208,8 +208,9 @@ onMounted(async () => {
     const uri = await getSpaceUri(key.value);
     console.log('URI', uri);
     currentTextRecord.value = uri;
-    const space = clone(store.state.app.spaces?.[key.value]);
+    const space = clone(spaces.value?.[key.value]);
     if (!space) return;
+    delete space.id;
     delete space.key;
     delete space._activeProposals;
     space.strategies = space.strategies || [];
@@ -222,7 +223,7 @@ onMounted(async () => {
     console.log(e);
   }
   if (from.value) {
-    const fromClone = clone(store.state.app.spaces[from.value]);
+    const fromClone = clone(spaces.value[from.value]);
     fromClone.validation = fromClone.validation || basicValidation;
     delete fromClone.key;
     delete fromClone._activeProposals;
