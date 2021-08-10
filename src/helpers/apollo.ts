@@ -7,7 +7,7 @@ import {
 // HTTP connection to the API
 const httpLink = createHttpLink({
   // You should use an absolute URL here
-  uri: `${process.env.VUE_APP_HUB_URL}/graphql`
+  uri: `${import.meta.env.VITE_HUB_URL}/graphql`
 });
 
 // Create the apollo client

@@ -3,14 +3,17 @@ import { defineEmits, defineProps } from 'vue';
 import pkg from '@/../package.json';
 import languages from '@/locales/languages.json';
 import gateways from '@snapshot-labs/snapshot.js/src/gateways.json';
+import { useWeb3 } from '@/composables/useWeb3';
 
 defineProps(['open']);
 
 const emit = defineEmits(['close', 'openLang']);
 
-const gateway = process.env.VUE_APP_IPFS_GATEWAY || gateways[0];
-const commitSha = process.env.VUE_APP_COMMIT_SHA;
-const hubUrl = process.env.VUE_APP_HUB_URL;
+const { web3 } = useWeb3();
+
+const gateway = import.meta.env.VITE_IPFS_GATEWAY || gateways[0];
+const commitSha = import.meta.env.VITE_COMMIT_SHA;
+const hubUrl = import.meta.env.VITE_HUB_URL;
 
 function changeLang() {
   emit('openLang');

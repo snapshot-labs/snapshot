@@ -1,4 +1,4 @@
-import memoize from 'lodash.memoize';
+import memoize from 'lodash/memoize';
 import { isAddress } from '@ethersproject/address';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import { ModuleTransaction } from '@snapshot-labs/snapshot.js/src/plugins/safeSnap';
@@ -244,7 +244,7 @@ export const getGnosisSafeBalances = memoize(
   (safeAddress, network) => `${safeAddress}_${network}`
 );
 
-export const getGnosisSafeCollecibles = memoize(
+export const getGnosisSafeCollectibles = memoize(
   (network, safeAddress) => {
     const endpointPath = `/safes/${safeAddress}/collectibles`;
     return callGnosisSafeTransactionApi(network, endpointPath);

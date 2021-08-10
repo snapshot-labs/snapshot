@@ -1,15 +1,14 @@
 <script setup>
 import { computed } from 'vue';
 import { useRoute } from 'vue-router';
-import { useStore } from 'vuex';
-import strategies from '@/helpers/strategies';
 import { getStrategy } from '@/helpers/utils';
+import { useApp } from '@/composables/useApp';
 
 const route = useRoute();
-const store = useStore();
+const { spaces, strategies } = useApp();
 
 const strategy = computed(() =>
-  getStrategy(strategies[route.params.name], store.state.app.spaces)
+  getStrategy(strategies.value[route.params.name], spaces.value)
 );
 </script>
 

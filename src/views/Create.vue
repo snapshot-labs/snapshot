@@ -1,24 +1,28 @@
 <script setup>
-import { ref, watch, watchEffect, computed, onMounted } from 'vue';
+import { ref, watchEffect, computed, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { useStore } from 'vuex';
 import draggable from 'vuedraggable';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import { getBlockNumber } from '@snapshot-labs/snapshot.js/src/utils/web3';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { useModal } from '@/composables/useModal';
 import { useTerms } from '@/composables/useTerms';
-import { useQuery, useResult } from '@vue/apollo-composable';
 import { PROPOSAL_QUERY } from '@/helpers/queries';
 import validations from '@snapshot-labs/snapshot.js/src/validations';
 import { clone } from '@/helpers/utils';
 import { useDomain } from '@/composables/useDomain';
+import { useApolloQuery } from '@/composables/useApolloQuery';
+import { useApp } from '@/composables/useApp';
+import { useWeb3 } from '@/composables/useWeb3';
+import { useClient } from '@/composables/useClient';
 
 const route = useRoute();
 const router = useRouter();
-const store = useStore();
 const auth = getInstance();
 const { domain } = useDomain();
+const { spaces } = useApp();
+const { web3 } = useWeb3();
+const { send } = useClient();
 
 const key = route.params.key;
 const from = route.params.from;
@@ -45,8 +49,8 @@ const counter = ref(0);
 const nameForm = ref(null);
 const passValidation = ref([true]);
 
-const web3Account = computed(() => store.state.web3.account);
-const space = computed(() => store.state.app.spaces[key]);
+const web3Account = computed(() => web3.value.account);
+const space = computed(() => spaces.value[key]);
 
 // Check if account passes space validation
 watchEffect(async () => {
@@ -60,6 +64,7 @@ watchEffect(async () => {
       clone(validationParams)
     );
     passValidation.value = [isValid, validationName];
+    console.log('Pass validation?', isValid, validationName);
   }
 });
 
@@ -83,7 +88,7 @@ const isValid = computed(() => {
     !choices.value.some(a => a.text === '') &&
     passValidation.value[0] &&
     isSafeSnapPluginValid &&
-    !store.state.app.authLoading
+    !web3.value.authLoading
   );
 });
 
@@ -111,11 +116,7 @@ async function handleSubmit() {
   form.value.metadata.network = space.value.network;
   form.value.metadata.strategies = space.value.strategies;
   try {
-    const { ipfsHash } = await store.dispatch('send', {
-      space: space.value.key,
-      type: 'proposal',
-      payload: form.value
-    });
+    const { ipfsHash } = await send(space.value.key, 'proposal', form.value);
     router.push({
       name: 'proposal',
       params: {
@@ -140,35 +141,46 @@ function clickSubmit() {
     : handleSubmit();
 }
 
+const { apolloQuery, queryLoading } = useApolloQuery();
+
+async function loadProposal() {
+  const proposal = await apolloQuery(
+    {
+      query: PROPOSAL_QUERY,
+      variables: {
+        id: from
+      }
+    },
+    'proposal'
+  );
+
+  form.value = {
+    name: proposal.title,
+    body: proposal.body,
+    choices: proposal.choices,
+    start: proposal.start,
+    end: proposal.end,
+    snapshot: proposal.snapshot,
+    type: proposal.type
+  };
+
+  const { network, strategies, plugins } = proposal;
+  form.value.metadata = { network, strategies, plugins };
+
+  choices.value = proposal.choices.map((text, key) => ({
+    key,
+    text
+  }));
+}
+
 onMounted(async () => {
   nameForm.value.focus();
   addChoice(2);
   blockNumber.value = await getBlockNumber(getProvider(space.value.network));
   form.value.snapshot = blockNumber.value;
+
+  if (from) loadProposal();
 });
-
-if (from) {
-  const { result } = useQuery(PROPOSAL_QUERY, { id: from });
-  const proposal = useResult(result, null, data => data.proposal);
-
-  watch(proposal, value => {
-    form.value = {
-      name: value.title,
-      body: value.body,
-      choices: value.choices,
-      start: value.start,
-      end: value.end,
-      snapshot: value.snapshot,
-      type: value.type
-    };
-    const { network, strategies, plugins } = value;
-    form.value.metadata = { network, strategies, plugins };
-    choices.value = value.choices.map((text, key) => ({
-      key,
-      text
-    }));
-  });
-}
 
 const proposal = computed(() => {
   return { ...form, choices };
@@ -310,7 +322,7 @@ const proposal = computed(() => {
         <UiButton
           @click="clickSubmit"
           :disabled="!isValid"
-          :loading="loading"
+          :loading="loading || queryLoading"
           class="d-block width-full button--submit"
         >
           {{ $t('create.publish') }}

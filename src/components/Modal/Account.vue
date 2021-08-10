@@ -1,22 +1,22 @@
 <script setup>
 import { toRefs, ref, watch, computed, defineProps, defineEmits } from 'vue';
-import { useStore } from 'vuex';
 import { getInjected } from '@snapshot-labs/lock/src/utils';
 import connectors from '@/helpers/connectors.json';
+import { useWeb3 } from '@/composables/useWeb3';
 
 const props = defineProps(['open']);
 
 const emit = defineEmits(['login', 'close']);
 
-const store = useStore();
 const { open } = toRefs(props);
+const { web3, logout } = useWeb3();
 
 const step = ref(null);
 
 const injected = computed(() => getInjected());
 
 async function handleLogout() {
-  await store.dispatch('logout');
+  await logout();
   emit('close');
 }
 

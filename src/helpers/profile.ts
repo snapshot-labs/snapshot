@@ -1,6 +1,6 @@
+import namehash from 'eth-ens-namehash';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import { subgraphRequest, call } from '@snapshot-labs/snapshot.js/src/utils';
-import namehash from 'eth-ens-namehash';
 
 function get3BoxProfiles(addresses) {
   return new Promise((resolove, reject) => {
