@@ -3,7 +3,7 @@ import client from '@/helpers/client';
 import { formatSpace } from '@/helpers/utils';
 import i18n from '@/helpers/i18n';
 import { useNotifications } from '@/composables/useNotifications';
-
+import allProjects from '@/config/allProjects.json'
 const { notify } = useNotifications();
 
 const state = {
@@ -47,7 +47,7 @@ const actions = {
   getSpaces: async ({ commit }) => {
     const _spaces: any = await client.getSpaces();
     // update
-    let spaces = { 'iotex.eth': _spaces['iotex.eth'] };
+    let spaces = Object.fromEntries(allProjects.map(project=>[project,_spaces[project]]))
     //@ts-ignore
     spaces = Object.fromEntries(
       Object.entries(spaces).map(space => [
