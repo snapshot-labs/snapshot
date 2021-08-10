@@ -8,7 +8,6 @@ import { useScrollMonitor } from '@/composables/useScrollMonitor';
 const { t } = useI18n();
 const route = useRoute();
 
-// Explore
 const buttonStr = computed(() => {
   if (route.name === 'strategies') return t('explore.createStrategy');
   if (route.name === 'skins') return t('explore.createSkin');
@@ -37,7 +36,6 @@ const items = computed(() => {
   return [];
 });
 
-// Scroll
 const loadBy = 8;
 const limit = ref(loadBy);
 
