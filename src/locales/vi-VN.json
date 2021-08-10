@@ -106,6 +106,8 @@
   "addresses": "Địa chỉ",
   "networkErrorPlayground": "Lỗi mạng - vui lòng mở bảng điều khiển trình duyệt của bạn để biết thêm thông tin",
   "upload": "Tải lên",
+  "copyLink": "Copy link",
+  "duplicateProposal": "Duplicate proposal",
   "errors": {
     "required": "Trường này là bắt buộc",
     "minLength": "Độ dài tối thiểu là {0}",
@@ -193,7 +195,8 @@
     "validation": "Validation",
     "editValidation": "Edit validation",
     "selectValidation": "Select validation",
-    "validationParameters": "Validation parameters"
+    "validationParameters": "Validation parameters",
+    "warningTextRecord": "You must set a text record on the ENS domain."
   },
   "setup": {
     "example": "e.g.yam.eth",

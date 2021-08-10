@@ -106,6 +106,8 @@
   "addresses": "Adresser",
   "networkErrorPlayground": "Netværksfejl - åbn venligst din browserkonsol for mere information",
   "upload": "Send/Upload",
+  "copyLink": "Copy link",
+  "duplicateProposal": "Duplicate proposal",
   "errors": {
     "required": "Feltet er obligatorisk",
     "minLength": "Minimumslængde på {0}",
@@ -193,7 +195,8 @@
     "validation": "Validering",
     "editValidation": "Rediger validering",
     "selectValidation": "Rediger validering",
-    "validationParameters": "Valideringsparametre"
+    "validationParameters": "Valideringsparametre",
+    "warningTextRecord": "You must set a text record on the ENS domain."
   },
   "setup": {
     "example": "e.g. yam.eth",

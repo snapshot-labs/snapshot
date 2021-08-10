@@ -106,6 +106,8 @@
   "addresses": "Adresler",
   "networkErrorPlayground": "Ağ hatası - daha fazla bilgi için lütfen tarayıcı konsolunuzu açın",
   "upload": "Yükle",
+  "copyLink": "Linki kopyala",
+  "duplicateProposal": "Teklifi yinele",
   "errors": {
     "required": "Bu alan zorunludur",
     "minLength": "Minimum uzunluk: {0}",
@@ -129,15 +131,15 @@
     "snapshotBlock": "Ekran görüntüsü alınma blok numarası",
     "validationWarning": {
       "basic": {
-        "member": "You need to be a member of the space in order to submit a proposal.",
-        "minScore": "You need to have a minimum of {0} {1} in order to submit a proposal."
+        "member": "Teklif göndermek için alana üye olmanız gerekir.",
+        "minScore": "Bir teklif gönderebilmek için minimum {0} {1} sahip olunması gerekir."
       },
-      "customValidation": "You need to pass the proposal validation in order to submit a proposal."
+      "customValidation": "Bir teklif göndermek için teklif doğrulamasını geçmeniz gerekir."
     }
   },
   "delegate": {
     "header": "Temsilci",
-    "selectDelegate": "Select delegate",
+    "selectDelegate": "Temsilci seç",
     "to": "Alıcı",
     "addressPlaceholder": "Adres veya ENS adı",
     "spacePlaceholder": "Boşluk (isteğe bağlı)",
@@ -185,15 +187,16 @@
     "admins": "Admin",
     "defaultTab": "Varsayılan sekme",
     "proposalThreshold": "Teklif eşiği",
-    "allowOnlyMembers": "Allow only members to submit a proposal",
+    "allowOnlyMembers": "Yalnızca üyelerin teklif göndermesine izin ver",
     "editPlugin": "Eklentiyi düzenle",
     "addPlugin": "Eklenti ekle",
     "pluginParameters": "Eklenti Parametreleri",
-    "proposalValidation": "Proposal validation",
-    "validation": "Validation",
-    "editValidation": "Edit validation",
-    "selectValidation": "Select validation",
-    "validationParameters": "Validation parameters"
+    "proposalValidation": "Teklif doğrulama",
+    "validation": "Doğrulama",
+    "editValidation": "Doğrulamaları düzenle",
+    "selectValidation": "Doğrulamayı seçin",
+    "validationParameters": "Doğrulama parametreleri",
+    "warningTextRecord": "ENS alanında bir metin kaydı ayarlamalısınız."
   },
   "setup": {
     "example": "örneğin. yam.eth",
@@ -222,48 +225,48 @@
     "selectVoting": "Oylama sistemini seçiniz",
     "single-choice": "Tek seçenekli oylama",
     "approval": "Oy onayı",
-    "quadratic": "Quadratic voting",
-    "ranked-choice": "Ranked choice voting",
-    "weighted": "Weighted voting",
+    "quadratic": "İkinci dereceden(quadratic) oylama",
+    "ranked-choice": "Dereceli seçim oylaması",
+    "weighted": "Ağırlıklı oylama",
     "description": {
       "single-choice": "Her seçmen sadece bir seçim yapabilir.",
       "approval": "Her seçmen istediği sayıda seçim yapabilir.",
-      "quadratic": "Each voter may spread voting power across any number of choices. Results are calculated quadratically.",
-      "ranked-choice": "Each voter may select and rank any number of choices. Results are calculated by instant-runoff counting method.",
-      "weighted": "Each voter may spread voting power across any number of choices."
+      "quadratic": "Her seçmen, oy verme gücünü herhangi bir sayıda seçeneğe yayabilir. Sonuçlar kuadratik olarak hesaplanır.",
+      "ranked-choice": "Her seçmen istediği sayıda seçeneği seçebilir ve sıralayabilir. Sonuçlar anlık akış sayma yöntemiyle hesaplanır.",
+      "weighted": "Her seçmen, oy verme gücünü herhangi bir sayıda seçeneğe yayabilir."
     }
   },
   "safeSnap": {
-    "currentOutcome": "Current outcome: {0}",
-    "currentBond": "Current bond: {0} {1}",
-    "finalizedIn": "Finalized {0}",
-    "executableIn": "Executable {0}",
-    "finalOutcome": "Outcome: {0}",
-    "nextBond": "Bond to set outcome: {0}",
-    "setOutcomeTo": "Set outcome to:",
-    "claimBond": "Claim bond",
+    "currentOutcome": "Mevcut sonuç: {0}",
+    "currentBond": "Mevcut teminat: {0} {1}",
+    "finalizedIn": "Sonuçlandı {0}",
+    "executableIn": "Çalıştırılabilir {0}",
+    "finalOutcome": "Sonuç: {0}",
+    "nextBond": "Sonucu ayarlamak için teminatlandır: {0}",
+    "setOutcomeTo": "Sonucu ayarla:",
+    "claimBond": "Teminat talebi",
     "labels": {
-      "request": "Request execution",
-      "setOutcome": "Set outcome",
-      "changeOutcome": "Change outcome",
-      "executeTxs": "Execute transaction 1/{0}",
-      "finalized": "Vote finalized",
-      "executed": "{0}/{0} Transactions executed",
-      "waiting": "Waiting for vote to close",
-      "error": "Error",
-      "question": "Did this proposal pass and does it meet the",
-      "criteria": "acceptance criteria?"
+      "request": "Yürütme isteğinde bulun",
+      "setOutcome": "Sonucu ayarla",
+      "changeOutcome": "Sonucu değiştir",
+      "executeTxs": "İşlem yürütülüyor 1/{0}",
+      "finalized": "Oylama sonuçlandı",
+      "executed": "{0}/{0} Gerçekleştirilen işlemler",
+      "waiting": "Oylamanın kapanması bekleniyor",
+      "error": "Hata",
+      "question": "Bu teklif kabul edildi mi ve beklentileri karşılıyor mu",
+      "criteria": "kabul şartları?"
     }
   },
   "poap": {
-    "no_poap_header": "A POAP hasn't been setup for this proposal yet :'(",
-    "no_voted_header": "Vote to get this POAP",
-    "unclaimed_header": "Claim your I voted POAP",
-    "claimed_header": "Congratulations! You got a new POAP in your account",
-    "loading_header": "The POAP is being added to your collection",
-    "button_claim": "Claim",
-    "button_show": "Show me my collection",
-    "success_claim": "Your POAP is on your address",
-    "error_claim": "There was a problem minting the token"
+    "no_poap_header": "Bu teklif için henüz bir POAP kurulmadı :'(",
+    "no_voted_header": "Bu POAP'ı almak için oy verin",
+    "unclaimed_header": "Oy verdiğiniz POAP'ınızı talep edin",
+    "claimed_header": "Tebrikler! Hesabınızda yeni bir POAP var",
+    "loading_header": "POAP topladıklarınıza ekleniyor",
+    "button_claim": "Topla",
+    "button_show": "Topladıklarımı göster",
+    "success_claim": "POAP'ınız adresinizde",
+    "error_claim": "Jeton basılırken bir hata oluştu"
   }
 }

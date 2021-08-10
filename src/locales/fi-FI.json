@@ -106,6 +106,8 @@
   "addresses": "Osoitteet",
   "networkErrorPlayground": "Verkkovirhe - Avaa selainkonsoli saadaksesi lisätietoja",
   "upload": "Lataa",
+  "copyLink": "Kopioi linkki",
+  "duplicateProposal": "Ehdotuksen kaksoiskappale",
   "errors": {
     "required": "Pakollinen kenttä",
     "minLength": "Pienin pituus on {0}",
@@ -137,7 +139,7 @@
   },
   "delegate": {
     "header": "Delegoi",
-    "selectDelegate": "Select delegate",
+    "selectDelegate": "Valitse edustaja",
     "to": "Että",
     "addressPlaceholder": "Osoite tai ENS-nimi",
     "spacePlaceholder": "Välilyönti (vapaaehtoinen)",
@@ -193,7 +195,8 @@
     "validation": "Validointi",
     "editValidation": "Muokkaa validointia",
     "selectValidation": "Valitse validointi",
-    "validationParameters": "Validaatioparametrit"
+    "validationParameters": "Validaatioparametrit",
+    "warningTextRecord": "Sinun on asetettava tekstitietue ENS -toimialueelle."
   },
   "setup": {
     "example": "e.g. yam.eth",
@@ -228,14 +231,14 @@
     "description": {
       "single-choice": "Jokainen äänestäjä voi valita vain yhden vaihtoehdon.",
       "approval": "Jokainen äänestäjä voi valita minkä tahansa määrän vaihtoehtoja.",
-      "quadratic": "Each voter may spread voting power across any number of choices. Results are calculated quadratically.",
-      "ranked-choice": "Each voter may select and rank any number of choices. Results are calculated by instant-runoff counting method.",
+      "quadratic": "Jokainen äänestäjä voi jakaa äänioikeutensa useisiin eri vaihtoehtoihin. Tulokset lasketaan kvadratiivisesti.",
+      "ranked-choice": "Jokainen äänestäjä voi valita ja asettaa paremmuusjärjestykseen minkä tahansa määrän valintoja. Tulokset lasketaan instant-runoff laskentamenetelmällä.",
       "weighted": "Jokainen äänestäjä voi jakaa äänivoimansa mihin tahansa määrään valintoja."
     }
   },
   "safeSnap": {
     "currentOutcome": "Nykyinen tulos: {0}",
-    "currentBond": "Current bond: {0} {1}",
+    "currentBond": "Nykyinen bond: {0}{1}",
     "finalizedIn": "Päättynyt {0}",
     "executableIn": "Suoritettava {0}",
     "finalOutcome": "Tulos: {0}",
@@ -262,7 +265,7 @@
     "claimed_header": "Onnittelut! Sinulla on uusi POAP tililläsi",
     "loading_header": "POAP on lisätty kokoelmaasi",
     "button_claim": "Lunasta",
-    "button_show": "Show me my collection",
+    "button_show": "Näytä minulle kokoelmani",
     "success_claim": "Sinun POAP on osoitteessasi",
     "error_claim": "Kirjoituksen tallentaminen epäonnistui"
   }
