@@ -1,16 +1,13 @@
 <script setup>
-import { ref } from 'vue';
-
 import { useNotifications } from '@/composables/useNotifications';
 
-const DURATION = 4000;
+const duration = 4000;
 
 const { items } = useNotifications();
 
-const now = ref(Date.now());
-const duration = ref(DURATION);
+let now = $ref(Date.now());
 
-setInterval(() => (now.value = Date.now()), 1000);
+setInterval(() => (now = Date.now()), 1000);
 </script>
 
 <template>
