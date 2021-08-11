@@ -28,7 +28,8 @@
       "darkMode": false,
       "chainId": 1,
       "ethJsonrpcUrl": "https://cloudflare-eth.com"
-    },
+    }
+  },
   "portis": {
     "id": "portis",
     "name": "Portis",
