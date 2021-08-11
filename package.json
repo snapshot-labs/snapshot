@@ -65,6 +65,7 @@
     "eslint-plugin-prettier": "^3.4.0",
     "eslint-plugin-vue": "^7.15.1",
     "prettier": "^2.3.2",
+    "rollup-plugin-node-polyfills": "^0.2.1",
     "rollup-plugin-visualizer": "^5.5.2",
     "sass": "~1.32.6",
     "sass-loader": "^8.0.2",
