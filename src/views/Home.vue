@@ -11,7 +11,6 @@ import { useApp } from '@/composables/useApp';
 const route = useRoute();
 const { addFavoriteSpace, removeFavoriteSpace, favorites } =
   useFavoriteSpaces();
-
 const { spaces } = useApp();
 
 const orderedSpaces = computed(() => {
@@ -35,11 +34,9 @@ const orderedSpaces = computed(() => {
   );
 });
 
-// Get number of unseen proposals
 const { numberOfUnseenProposals, getProposalIds } = useUnseenProposals();
 watchEffect(() => getProposalIds(favorites.value));
 
-// Favorites
 function toggleFavorite(spaceId) {
   if (favorites.value[spaceId]) {
     removeFavoriteSpace(spaceId);

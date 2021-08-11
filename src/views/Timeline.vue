@@ -10,8 +10,9 @@ import { PROPOSALS_QUERY } from '@/helpers/queries';
 import { useProfiles } from '@/composables/useProfiles';
 import { useFavoriteSpaces } from '@/composables/useFavoriteSpaces';
 
-// Persistent filter state
 const filterBy = ref('all');
+const loading = ref(false);
+const proposals = ref([]);
 
 const route = useRoute();
 const { favorites: favoriteSpaces } = useFavoriteSpaces();
@@ -21,10 +22,6 @@ const favorites = computed(() =>
 );
 const favoritesKeys = computed(() => Object.keys(favorites.value));
 
-const loading = ref(false);
-const proposals = ref([]);
-
-// Infinite scroll with pagination
 const { loadBy, limit, loadingMore, stopLoadingMore, loadMore } =
   useInfiniteLoader();
 
@@ -32,7 +29,6 @@ const { endElement } = useScrollMonitor(() =>
   loadMore(() => loadProposals(limit.value), loading.value)
 );
 
-// Proposals query
 const { apolloQuery } = useApolloQuery();
 async function loadProposals(skip = 0) {
   const proposalsObj = await apolloQuery(

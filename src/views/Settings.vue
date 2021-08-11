@@ -100,6 +100,7 @@ async function handleSubmit() {
     await getSpaces();
     loading.value = false;
   } else {
+    console.log('Invalid schema', validate.value);
     showErrors.value = true;
   }
 }

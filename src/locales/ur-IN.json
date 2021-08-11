@@ -106,6 +106,8 @@
   "addresses": "ایڈریسز",
   "networkErrorPlayground": "نیٹ ورک کی خرابی - براہ کرم مزید معلومات کے ل اپنے براؤزر کنسول کو کھولیں",
   "upload": "اپ لوڈ کریں",
+  "copyLink": "Copy link",
+  "duplicateProposal": "Duplicate proposal",
   "errors": {
     "required": "فیلڈ کی ضرورت ہے",
     "minLength": "کم سے کم لمبائی {0} ہے",
@@ -193,7 +195,8 @@
     "validation": "توثیق",
     "editValidation": "توثیق کی توثیق",
     "selectValidation": "توثیق منتخب کریں",
-    "validationParameters": "توثیق کے پیرامیٹرز"
+    "validationParameters": "توثیق کے پیرامیٹرز",
+    "warningTextRecord": "You must set a text record on the ENS domain."
   },
   "setup": {
     "example": "مثال. yam.eth",
