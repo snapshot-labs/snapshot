@@ -1,7 +1,6 @@
 <script setup>
 import { ref, computed, watch, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { useStore } from 'vuex';
 import { getProposal, getResults, getPower } from '@/helpers/snapshot';
 import { useModal } from '@/composables/useModal';
 import { useTerms } from '@/composables/useTerms';
@@ -9,14 +8,19 @@ import { useProfiles } from '@/composables/useProfiles';
 import { useDomain } from '@/composables/useDomain';
 import { useSharing } from '@/composables/useSharing';
 import { useI18n } from 'vue-i18n';
+import { useApp } from '@/composables/useApp';
+import { useWeb3 } from '@/composables/useWeb3';
+import { useClient } from '@/composables/useClient';
 
 const route = useRoute();
 const router = useRouter();
-const store = useStore();
 const key = route.params.key;
 const id = route.params.id;
 const { domain } = useDomain();
 const { t } = useI18n();
+const { spaces } = useApp();
+const { web3 } = useWeb3();
+const { send } = useClient();
 
 const modalOpen = ref(false);
 const selectedChoices = ref(null);
@@ -30,8 +34,8 @@ const scores = ref([]);
 const dropdownLoading = ref(false);
 const modalStrategiesOpen = ref(false);
 
-const space = computed(() => store.state.app.spaces[key]);
-const web3Account = computed(() => store.state.web3.account);
+const space = computed(() => spaces.value[key]);
+const web3Account = computed(() => web3.value.account);
 const isCreator = computed(() => proposal.value.author === web3Account.value);
 const isAdmin = computed(() => {
   const admins = (space.value.admins || []).map(admin => admin.toLowerCase());
@@ -50,11 +54,16 @@ const threeDotItems = computed(() => {
   return items;
 });
 
+const safeSnapInput = computed({
+  get: () => proposal.value?.plugins?.safeSnap,
+  set: value => (proposal.value.plugins.safeSnap = value)
+});
+
 const { modalAccountOpen } = useModal();
 const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(key);
 
 function clickVote() {
-  !store.state.web3.account
+  !web3.value.account
     ? (modalAccountOpen.value = true)
     : !termsAccepted.value && space.value.terms
     ? (modalTermsOpen.value = true)
@@ -90,12 +99,8 @@ async function deleteProposal() {
   dropdownLoading.value = true;
   try {
     if (
-      await store.dispatch('send', {
-        space: space.value.key,
-        type: 'delete-proposal',
-        payload: {
-          proposal: id
-        }
+      await send(space.value.key, 'delete-proposal', {
+        proposal: id
       })
     ) {
       dropdownLoading.value = false;
@@ -223,14 +228,12 @@ onMounted(async () => {
         :votes="votes"
         :strategies="strategies"
       />
-      <PluginSafeSnapConfig
-        :preview="true"
-        v-if="loadedResults && proposal.plugins?.safeSnap?.txs"
+      <ProposalPluginsContent
+        v-model:safeSnapInput="safeSnapInput"
+        :id="id"
+        :space="space"
         :proposal="proposal"
-        :proposalId="id"
-        :moduleAddress="space.plugins?.safeSnap?.address"
-        :network="space.network"
-        v-model="proposal.plugins.safeSnap"
+        :loadedResults="loadedResults"
       />
     </template>
     <template #sidebar-right v-if="loaded">
@@ -310,45 +313,16 @@ onMounted(async () => {
         :votes="votes"
         :strategies="strategies"
       />
-      <div v-if="loadedResults">
-        <PluginAragonCustomBlock
-          :loaded="loadedResults"
-          :id="id"
-          :space="space"
-          :proposal="proposal"
-          :results="results"
-        />
-        <PluginGnosisCustomBlock
-          v-if="proposal.plugins?.gnosis?.baseTokenAddress"
-          :proposalConfig="proposal.plugins.gnosis"
-          :choices="proposal.choices"
-        />
-        <PluginSafeSnapCustomBlock
-          v-if="proposal.plugins?.safeSnap?.txs"
-          :proposalConfig="proposal.plugins.safeSnap"
-          :proposalEnd="proposal.end"
-          :proposalId="id"
-          :moduleAddress="space.plugins?.safeSnap?.address"
-          :network="space.network"
-        />
-        <PluginQuorumCustomBlock
-          :loaded="loadedResults"
-          v-if="space.plugins?.quorum"
-          :space="space"
-          :proposal="proposal"
-          :results="results"
-          :strategies="strategies"
-        />
-        <PluginPOAPCustomBlock
-          v-if="space.plugins?.poap"
-          :loaded="loadedResults"
-          :space="space"
-          :proposal="proposal"
-          :results="results"
-          :votes="votes"
-          :strategies="strategies"
-        />
-      </div>
+      <ProposalPluginsSidebar
+        v-if="loadedResults"
+        :id="id"
+        :space="space"
+        :proposal="proposal"
+        :results="results"
+        :votes="votes"
+        :strategies="strategies"
+        :loadedResults="loadedResults"
+      />
     </template>
   </Layout>
   <teleport to="#modal">

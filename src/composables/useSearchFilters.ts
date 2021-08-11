@@ -1,14 +1,13 @@
 import { computed } from 'vue';
-import { useStore } from 'vuex';
 import skins from '@snapshot-labs/snapshot-spaces/skins';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import plugins from '@snapshot-labs/snapshot.js/src/plugins';
 import validations from '@snapshot-labs/snapshot.js/src/validations';
 import { getStrategy } from '@/helpers/utils';
+import { useApp } from '@/composables/useApp';
 
 export function useSearchFilters() {
-  const store = useStore();
-  const spaces = computed(() => store.state.app.spaces);
+  const { spaces, strategies } = useApp();
 
   const minifiedSkinsArray = computed(() => {
     return Object.keys(skins).map(skin => ({
@@ -24,8 +23,6 @@ export function useSearchFilters() {
       .filter(skin => skin.key.toLowerCase().includes(q.toLowerCase()))
       .sort((a, b) => b.spaces.length - a.spaces.length);
   };
-
-  const strategies = computed(() => store.state.app.strategies);
 
   const minifiedStrategiesArray = computed(() => {
     return Object.values(strategies.value).map(strategy =>

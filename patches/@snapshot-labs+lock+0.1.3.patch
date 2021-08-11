@@ -1,3 +1,14 @@
+diff --git a/node_modules/@snapshot-labs/lock/connectors/portis.ts b/node_modules/@snapshot-labs/lock/connectors/portis.ts
+index 27730c0..946dc45 100644
+--- a/node_modules/@snapshot-labs/lock/connectors/portis.ts
++++ b/node_modules/@snapshot-labs/lock/connectors/portis.ts
+@@ -1,5 +1,5 @@
+ // @ts-ignore
+-const get = () => import(/* webpackChunkName: "portis" */ '@portis/web3'); // v2.0.0-beta.49
++const get = () => import(/* webpackChunkName: "portis" */ '@portis/web3/umd'); // v2.0.0-beta.49
+ import LockConnector from '../src/connector';
+ 
+ export default class Connector extends LockConnector {
 diff --git a/node_modules/@snapshot-labs/lock/connectors/walletconnect.ts b/node_modules/@snapshot-labs/lock/connectors/walletconnect.ts
 index ffedb9a..81c4ef7 100644
 --- a/node_modules/@snapshot-labs/lock/connectors/walletconnect.ts

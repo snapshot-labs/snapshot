@@ -8,7 +8,6 @@ import options from '@/helpers/auth';
 import '@snapshot-labs/snapshot-spaces/skins';
 import App from '@/App.vue';
 import router from '@/router';
-import store from '@/store';
 import mixins from '@/mixins';
 import i18n from '@/helpers/i18n';
 import '@/helpers/auth';
@@ -24,7 +23,6 @@ const app = createApp({
 })
   .use(i18n)
   .use(router)
-  .use(store)
   .use(LockPlugin, options)
 
   .component('jazzicon', Jazzicon)

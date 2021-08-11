@@ -61,9 +61,9 @@
   "seeInExplorer": "在浏览器上查看",
   "learnMore": "了解更多",
   "logout": "退出",
-  "walletNotice": "Wallet not supported",
-  "gnosisSafeWalletNotice": "You are trying to use Gnosis Safe wallet, which doesn't support signing messages on Snapshot.",
-  "continue": "Continue",
+  "walletNotice": "钱包未加密",
+  "gnosisSafeWalletNotice": "您正在尝试使用 Gnosis Safe 钱包，这不支持在 Snapshot 上签名消息。",
+  "continue": "继续",
   "add": "添加",
   "edit": "编辑",
   "strategyParameters": "策略参数",
@@ -105,7 +105,9 @@
   "strategyParams": "策略参数",
   "addresses": "地址",
   "networkErrorPlayground": "网络错误 - 请打开您的浏览器控制台获取更多信息",
-  "upload": "Upload",
+  "upload": "上传",
+  "copyLink": "复制链接",
+  "duplicateProposal": "复制提案",
   "errors": {
     "required": "此项为必填项",
     "minLength": "最小长度为 {0}",
@@ -129,15 +131,15 @@
     "snapshotBlock": "Snapshot 模块号码",
     "validationWarning": {
       "basic": {
-        "member": "You need to be a member of the space in order to submit a proposal.",
-        "minScore": "You need to have a minimum of {0} {1} in order to submit a proposal."
+        "member": "您需要成为空间的成员才能提交提案.",
+        "minScore": "您需要至少有 {0} {1} 才能提交提案。"
       },
-      "customValidation": "You need to pass the proposal validation in order to submit a proposal."
+      "customValidation": "您需要通过提案验证才能提交提案。"
     }
   },
   "delegate": {
     "header": "授权",
-    "selectDelegate": "Select delegate",
+    "selectDelegate": "选择委托",
     "to": "至",
     "addressPlaceholder": "地址或ENS名称",
     "spacePlaceholder": "空间 (可选)",
@@ -184,16 +186,17 @@
     "members": "成员",
     "admins": "管理员",
     "defaultTab": "默认标签页",
-    "proposalThreshold": "Proposal threshold",
-    "allowOnlyMembers": "Allow only members to submit a proposal",
+    "proposalThreshold": "提案阈值",
+    "allowOnlyMembers": "只允许成员提交提案",
     "editPlugin": "编辑插件",
     "addPlugin": "添加插件",
     "pluginParameters": "插件参数",
-    "proposalValidation": "Proposal validation",
-    "validation": "Validation",
-    "editValidation": "Edit validation",
-    "selectValidation": "Select validation",
-    "validationParameters": "Validation parameters"
+    "proposalValidation": "提案验证",
+    "validation": "验证",
+    "editValidation": "编辑验证",
+    "selectValidation": "选择验证",
+    "validationParameters": "验证参数",
+    "warningTextRecord": "您必须在 ENS 域上设置文本记录。"
   },
   "setup": {
     "example": "例如 yam.eth",
@@ -222,48 +225,48 @@
     "selectVoting": "选择投票系统",
     "single-choice": "单选投票",
     "approval": "批准表决",
-    "quadratic": "Quadratic voting",
-    "ranked-choice": "Ranked choice voting",
-    "weighted": "Weighted voting",
+    "quadratic": "二次投票",
+    "ranked-choice": "排序选择投票",
+    "weighted": "权重投票",
     "description": {
       "single-choice": "每个选民只能选择一个选项。",
       "approval": "每个选民可选择多个选项。",
-      "quadratic": "Each voter may spread voting power across any number of choices. Results are calculated quadratically.",
-      "ranked-choice": "Each voter may select and rank any number of choices. Results are calculated by instant-runoff counting method.",
-      "weighted": "Each voter may spread voting power across any number of choices."
+      "quadratic": "每个选民都可以在任何数量的选择中分配投票权。结果按四舍五入计算。",
+      "ranked-choice": "每个选民都可以选择和排列任何数目的选择。结果是通过即时计算的。",
+      "weighted": "每个选民都可以在任何选择中分散投票权。"
     }
   },
   "safeSnap": {
-    "currentOutcome": "Current outcome: {0}",
-    "currentBond": "Current bond: {0} {1}",
-    "finalizedIn": "Finalized {0}",
-    "executableIn": "Executable {0}",
-    "finalOutcome": "Outcome: {0}",
-    "nextBond": "Bond to set outcome: {0}",
-    "setOutcomeTo": "Set outcome to:",
-    "claimBond": "Claim bond",
+    "currentOutcome": "当前结果： {0}",
+    "currentBond": "当前联接： {0} {1}",
+    "finalizedIn": "已完成 {0}",
+    "executableIn": "可执行的 {0}",
+    "finalOutcome": "结果： {0}",
+    "nextBond": "设置结果的绑定： {0}",
+    "setOutcomeTo": "将结果设置为：",
+    "claimBond": "认领保证金",
     "labels": {
-      "request": "Request execution",
+      "request": "请求执行",
       "setOutcome": "添加结果",
       "changeOutcome": "失败",
-      "executeTxs": "Execute transaction 1/{0}",
-      "finalized": "Vote finalized",
-      "executed": "{0}/{0} Transactions executed",
-      "waiting": "Waiting for vote to close",
-      "error": "Error",
-      "question": "Did this proposal pass and does it meet the",
-      "criteria": "acceptance criteria?"
+      "executeTxs": "执行交易 1/{0}",
+      "finalized": "投票已完成",
+      "executed": "{0}/{0} 交易已执行",
+      "waiting": "等待投票关闭",
+      "error": "错误",
+      "question": "这个建议是否通过并满足了这个建议",
+      "criteria": "验收标准"
     }
   },
   "poap": {
-    "no_poap_header": "A POAP hasn't been setup for this proposal yet :'(",
-    "no_voted_header": "Vote to get this POAP",
-    "unclaimed_header": "Claim your I voted POAP",
-    "claimed_header": "Congratulations! You got a new POAP in your account",
-    "loading_header": "The POAP is being added to your collection",
-    "button_claim": "Claim",
-    "button_show": "Show me my collection",
-    "success_claim": "Your POAP is on your address",
-    "error_claim": "There was a problem minting the token"
+    "no_poap_header": "尚未为此提议设置POAP :'(",
+    "no_voted_header": "投票以获取此POAP",
+    "unclaimed_header": "认领您已投票的 POAP",
+    "claimed_header": "恭喜！您在您的帐户中获得了一个新的 POAP",
+    "loading_header": "POAP 正被添加到您的收藏",
+    "button_claim": "领取",
+    "button_show": "显示我的收藏",
+    "success_claim": "您的POAP 在您的地址上",
+    "error_claim": "创建令牌时出错"
   }
 }

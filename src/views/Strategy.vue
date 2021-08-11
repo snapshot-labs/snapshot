@@ -1,16 +1,14 @@
 <script setup>
 import { computed } from 'vue';
 import { useRoute } from 'vue-router';
-import { useStore } from 'vuex';
 import { getStrategy } from '@/helpers/utils';
+import { useApp } from '@/composables/useApp';
 
 const route = useRoute();
-const store = useStore();
-
-const strategies = computed(() => store.state.app.strategies);
+const { spaces, strategies } = useApp();
 
 const strategy = computed(() =>
-  getStrategy(strategies.value[route.params.name], store.state.app.spaces)
+  getStrategy(strategies.value[route.params.name], spaces.value)
 );
 </script>
 
@@ -53,7 +51,7 @@ const strategy = computed(() =>
             <a
               target="_blank"
               class="float-right"
-              :href="`https://github.com/snapshot-labs/snapshot.js/tree/master/src/strategies/${strategy.key}`"
+              :href="`https://github.com/snapshot-labs/snapshot-strategies/tree/master/src/strategies/${strategy.key}`"
             >
               {{ strategy.version }}
               <Icon name="external-link" class="ml-1" />
