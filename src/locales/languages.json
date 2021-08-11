@@ -97,5 +97,9 @@
   "uk-UA": {
     "name": "Ukrainian",
     "nativeName": "Українська мова"
+  },
+  "he-IL": {
+    "name": "Hebrew",
+    "nativeName": "עִבְרִית"
   }
 }
