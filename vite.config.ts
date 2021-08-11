@@ -3,7 +3,6 @@ import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import ViteComponents from 'vite-plugin-components';
 import visualizer from 'rollup-plugin-visualizer';
-import nodePolyfills from 'rollup-plugin-node-polyfills';
 
 export default defineConfig({
   define: {
@@ -29,10 +28,5 @@ export default defineConfig({
   },
   optimizeDeps: {
     include: ['color', 'mersenne-twister']
-  },
-  build: {
-    rollupOptions: {
-      plugins: [nodePolyfills({})]
-    }
   }
 });
