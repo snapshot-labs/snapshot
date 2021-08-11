@@ -51,7 +51,7 @@ const strategy = computed(() =>
             <a
               target="_blank"
               class="float-right"
-              :href="`https://github.com/snapshot-labs/snapshot.js/tree/master/src/strategies/${strategy.key}`"
+              :href="`https://github.com/snapshot-labs/snapshot-strategies/tree/master/src/strategies/${strategy.key}`"
             >
               {{ strategy.version }}
               <Icon name="external-link" class="ml-1" />
