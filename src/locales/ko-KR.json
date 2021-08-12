@@ -155,9 +155,9 @@
     "votingSystem": "투표 시스템"
   },
   "proposals": {
-    "header": "제창",
-    "new": "새로운 제창",
-    "noProposals": "그곳에 아르 아니 어떤 제창 여기 아직!",
+    "header": "제안",
+    "new": "새 제안",
+    "noProposals": "아직 새로운 제안이 없어요!",
     "states": {
       "all": "모두",
       "core": "심",
