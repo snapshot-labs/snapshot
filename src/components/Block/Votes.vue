@@ -36,7 +36,7 @@ function isZero() {
 }
 
 function openReceiptModal(vote) {
-  authorIpfsHash.value = vote.id;
+  authorIpfsHash.value = vote.ipfs;
   // this.relayerIpfsHash = vote.relayerIpfsHash;
   modalReceiptOpen.value = true;
 }

@@ -4,6 +4,7 @@ export const VOTES_QUERY = gql`
   query Votes($id: String!) {
     votes(first: 10000, where: { proposal: $id }) {
       id
+      ipfs
       voter
       created
       choice
@@ -15,6 +16,7 @@ export const PROPOSAL_QUERY = gql`
   query Proposal($id: String!) {
     proposal(id: $id) {
       id
+      ipfs
       title
       body
       choices
@@ -59,6 +61,7 @@ export const PROPOSALS_QUERY = gql`
       }
     ) {
       id
+      ipfs
       title
       body
       start
@@ -79,6 +82,7 @@ export const PROPOSAL_VOTES_QUERY = gql`
   query ($id: String!) {
     proposal(id: $id) {
       id
+      ipfs
       title
       body
       choices
@@ -102,6 +106,7 @@ export const PROPOSAL_VOTES_QUERY = gql`
     }
     votes(first: 10000, where: { proposal: $id }) {
       id
+      ipfs
       voter
       created
       choice
