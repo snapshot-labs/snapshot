@@ -107,6 +107,8 @@
   "networkErrorPlayground": "Network error - please open your browser console for more information",
   "upload": "Upload",
   "follow": "Follow",
+  "following": "Following",
+  "unfollow": "Unfollow",
   "copyLink": "Copy link",
   "duplicateProposal": "Duplicate proposal",
   "errors": {

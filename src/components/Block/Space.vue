@@ -5,7 +5,6 @@ import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { useFollowSpace } from '@/composables/useFollowSpace';
 import { useWeb3 } from '@/composables/useWeb3';
 
-
 const props = defineProps({
   space: Object
 });
@@ -24,21 +23,27 @@ const isAdmin = computed(() => {
   );
 });
 
-const { clickFollow, loadingFollow } = useFollowSpace();
+const { clickFollow, loadingFollow, isFollowing, loadingAllFollows } =
+  useFollowSpace(props.space);
 </script>
 
 <template>
   <div style="position: fixed; width: 240px">
-    <Block :slim="true" class="overflow-hidden">
+    <Block
+      :loading="loadingAllFollows || web3.authLoading"
+      :slim="true"
+      class="overflow-hidden"
+    >
       <div class="text-center border-bottom header-bg">
         <Token :space="space" symbolIndex="space" size="80" class="mt-3 mb-2" />
         <h3 class="mb-3 px-4">{{ space.name }}</h3>
+
         <UiButton
           @click="clickFollow(space.key)"
-          :loading="loadingFollow.value"
+          :loading="loadingFollow"
           class="mb-4"
           style="width: 120px"
-          >{{ $t('follow') }}</UiButton
+          >{{ isFollowing ? $t('unfollow') : $t('follow') }}</UiButton
         >
       </div>
       <div class="py-3">
