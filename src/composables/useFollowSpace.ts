@@ -5,6 +5,7 @@ import { useWeb3 } from '@/composables/useWeb3';
 import client from '@/helpers/EIP712';
 import { useApolloQuery } from '@/composables/useApolloQuery';
 import { FOLLOWS_QUERY } from '@/helpers/queries';
+import { useAliasAction } from '@/composables/useAliasAction';
 
 const follows: any = ref({});
 
@@ -57,20 +58,29 @@ export function useFollowSpace(spaceObj) {
       : null;
   }
 
+  const { setAlias, aliasWallet } = useAliasAction();
   async function follow(space) {
-    loading.value = true;
-    try {
-      if (isFollowing.value) {
-        await client.unfollow(auth.web3, web3Account.value, { space });
-        isFollowing.value = false;
-      } else {
-        await client.follow(auth.web3, web3Account.value, { space });
-        isFollowing.value = true;
+    if (!aliasWallet.value) setAlias();
+    else {
+      console.log(aliasWallet.value);
+      loading.value = true;
+      try {
+        if (isFollowing.value) {
+          await client.unfollow(aliasWallet.value.provider, web3Account.value, {
+            space
+          });
+          isFollowing.value = false;
+        } else {
+          await client.follow(aliasWallet.value.provider, web3Account.value, {
+            space
+          });
+          isFollowing.value = true;
+        }
+        loading.value = false;
+      } catch (e) {
+        loading.value = false;
+        console.error(e);
       }
-      loading.value = false;
-    } catch (e) {
-      loading.value = false;
-      console.error(e);
     }
   }
 
