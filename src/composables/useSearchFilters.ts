@@ -5,9 +5,11 @@ import plugins from '@snapshot-labs/snapshot.js/src/plugins';
 import validations from '@snapshot-labs/snapshot.js/src/validations';
 import { getStrategy } from '@/helpers/utils';
 import { useApp } from '@/composables/useApp';
+import { useSpaces } from '@/composables/useSpaces';
 
 export function useSearchFilters() {
-  const { spaces, strategies } = useApp();
+  const { strategies } = useApp();
+  const { spaces } = useSpaces();
 
   const minifiedSkinsArray = computed(() => {
     return Object.keys(skins).map(skin => ({

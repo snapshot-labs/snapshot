@@ -3,9 +3,11 @@ import { computed } from 'vue';
 import { useRoute } from 'vue-router';
 import { getStrategy } from '@/helpers/utils';
 import { useApp } from '@/composables/useApp';
+import { useSpaces } from '@/composables/useSpaces';
 
 const route = useRoute();
-const { spaces, strategies } = useApp();
+const { strategies } = useApp();
+const { spaces } = useSpaces(true);
 
 const strategy = computed(() =>
   getStrategy(strategies.value[route.params.name], spaces.value)

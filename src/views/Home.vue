@@ -6,12 +6,12 @@ import spotlight from '@snapshot-labs/snapshot-spaces/spaces/spotlight.json';
 import { useUnseenProposals } from '@/composables/useUnseenProposals';
 import { useScrollMonitor } from '@/composables/useScrollMonitor';
 import { useFavoriteSpaces } from '@/composables/useFavoriteSpaces';
-import { useApp } from '@/composables/useApp';
+import { useSpaces } from '@/composables/useSpaces';
 
 const route = useRoute();
 const { addFavoriteSpace, removeFavoriteSpace, favorites } =
   useFavoriteSpaces();
-const { spaces } = useApp();
+const { spaces, loadingSpaces } = useSpaces();
 
 const orderedSpaces = computed(() => {
   const networkFilter = route.query.network;
@@ -77,7 +77,11 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
     </div>
     <Container :slim="true">
       <div class="overflow-hidden mr-n4">
+        <Block v-if="loadingSpaces" :slim="true">
+          <RowLoading class="my-2" />
+        </Block>
         <router-link
+          v-else
           v-for="space in orderedSpaces.slice(0, limit)"
           :key="space.key"
           :to="{ name: 'proposals', params: { key: space.key } }"
@@ -116,7 +120,7 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
 
         <NoResults
           :block="true"
-          v-if="Object.keys(orderedSpaces).length < 1"
+          v-if="Object.keys(orderedSpaces).length < 1 && !loadingSpaces"
           class="pr-md-4"
         />
       </div>

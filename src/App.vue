@@ -1,28 +1,22 @@
 <script setup>
-import { computed, onMounted, provide, watch } from 'vue';
-import { useRoute } from 'vue-router';
+import { onMounted, provide, watch } from 'vue';
 import { useModal } from '@/composables/useModal';
 import { useI18n } from '@/composables/useI18n';
-import { useDomain } from '@/composables/useDomain';
 import { useApp } from '@/composables/useApp';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useNotifications } from '@/composables/useNotifications';
+import { useSpace } from '@/composables/useSpace';
 
-const { domain } = useDomain();
 const { loadLocale } = useI18n();
-const route = useRoute();
 const { modalOpen } = useModal();
-const { init, spaces, app } = useApp();
+const { init, app } = useApp();
 const { web3 } = useWeb3();
 const { notify } = useNotifications();
+const { space, spaceLoading } = useSpace();
 
 provide('web3', web3);
 provide('notify', notify);
-
-const space = computed(() => {
-  const key = domain || route.params.key;
-  return spaces.value[key] ? spaces.value[key] : {};
-});
+provide('space', space);
 
 onMounted(async () => {
   await loadLocale();
@@ -37,7 +31,10 @@ watch(modalOpen, val => {
 
 <template>
   <div :class="space?.skin" id="app" class="overflow-hidden pb-4">
-    <UiLoading v-if="app.loading || !app.init" class="overlay big" />
+    <UiLoading
+      v-if="app.loading || !app.init || spaceLoading"
+      class="overlay big"
+    />
     <div v-else>
       <Topnav />
       <div class="pb-6">

@@ -15,8 +15,8 @@ import {
   contractAddress
 } from '@/helpers/delegation';
 import { sleep } from '@/helpers/utils';
-import { useApp } from '@/composables/useApp';
 import { useWeb3 } from '@/composables/useWeb3';
+import { useSpaces } from '@/composables/useSpaces';
 
 const abi = ['function setDelegate(bytes32 id, address delegate)'];
 
@@ -24,8 +24,8 @@ const route = useRoute();
 const { t } = useI18n();
 const auth = getInstance();
 const { notify } = useNotifications();
-const { spaces } = useApp();
 const { web3 } = useWeb3();
+const { spaces } = useSpaces(true);
 
 const modalOpen = ref(false);
 const currentId = ref('');

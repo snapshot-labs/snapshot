@@ -108,3 +108,30 @@ export const PROPOSAL_VOTES_QUERY = gql`
     }
   }
 `;
+
+export const SPACES_QUERY = gql`
+  query Spaces($id_in: [String]) {
+    spaces(where: { id_in: $id_in }) {
+      id
+      name
+      about
+      network
+      symbol
+      network
+      terms
+      skin
+      avatar
+      strategies {
+        name
+        params
+      }
+      admins
+      members
+      filters {
+        minScore
+        onlyMembers
+      }
+      plugins
+    }
+  }
+`;
