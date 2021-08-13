@@ -30,7 +30,7 @@ export function useAliasAction() {
         aliases.value
       )
     );
-    // TODO: save wallet.address to hub?
+    // TODO: save rndWallet.address to hub?
     aliases.value = lsGet('aliases');
   }
 

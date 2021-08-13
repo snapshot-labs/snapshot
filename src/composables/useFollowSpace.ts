@@ -66,12 +66,12 @@ export function useFollowSpace(spaceObj) {
       loading.value = true;
       try {
         if (isFollowing.value) {
-          await client.unfollow(aliasWallet.value.provider, web3Account.value, {
+          await client.unfollow(auth.web3, web3Account.value, {
             space
           });
           isFollowing.value = false;
         } else {
-          await client.follow(aliasWallet.value.provider, web3Account.value, {
+          await client.follow(auth.web3, web3Account.value, {
             space
           });
           isFollowing.value = true;
