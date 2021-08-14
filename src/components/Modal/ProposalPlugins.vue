@@ -28,7 +28,7 @@ function showButton(pluginObj) {
   );
   return pluginsWithParams
     .map(plugin => plugin.toLowerCase())
-    .includes(pluginObj.name.toLowerCase());
+    .includes(pluginObj.name.toLowerCase().split(' ')[0]);
 }
 
 if (props.space.plugins) {
