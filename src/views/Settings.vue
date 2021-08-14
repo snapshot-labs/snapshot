@@ -24,8 +24,6 @@ const { spaces, getSpaces } = useApp();
 const { web3 } = useWeb3();
 const { send } = useClient();
 
-const key = ref(route.params.key);
-const from = ref(route.params.from);
 const currentSettings = ref({});
 const currentTextRecord = ref('');
 const currentStrategy = ref({});
@@ -47,6 +45,8 @@ const form = ref({
   validation: basicValidation
 });
 
+const key = computed(() => route.params.key);
+const from = computed(() => route.params.from);
 const web3Account = computed(() => web3.value.account);
 
 const validate = computed(() => {
@@ -54,9 +54,9 @@ const validate = computed(() => {
   return validateSchema(schemas.space, form.value);
 });
 
-const isValid = computed(() => {
-  return !loading.value && validate.value === true && !uploadLoading.value;
-});
+const isValid = computed(
+  () => !loading.value && validate.value === true && !uploadLoading.value
+);
 
 const textRecord = computed(() => {
   const keyURI = encodeURIComponent(key.value);
@@ -66,9 +66,7 @@ const textRecord = computed(() => {
   return `ipns://storage.snapshot.page/registry/${address}/${keyURI}`;
 });
 
-const isOwner = computed(() => {
-  return currentTextRecord.value === textRecord.value;
-});
+const isOwner = computed(() => currentTextRecord.value === textRecord.value);
 
 const isAdmin = computed(() => {
   if (!spaces.value[key.value] || !currentTextRecord.value) return false;

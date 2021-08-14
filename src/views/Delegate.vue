@@ -25,7 +25,7 @@ const { t } = useI18n();
 const auth = getInstance();
 const { notify } = useNotifications();
 const { web3 } = useWeb3();
-const { spaces } = useSpaces(true);
+const { spaces } = useSpaces();
 
 const modalOpen = ref(false);
 const currentId = ref('');

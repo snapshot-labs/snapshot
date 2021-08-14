@@ -27,7 +27,7 @@ const format = getChoiceString;
 
 async function handleSubmit() {
   loading.value = true;
-  await send(props.space.key, 'vote', {
+  await send(props.space.id, 'vote', {
     proposal: props.proposal.id,
     choice: props.selectedChoices,
     metadata: {}

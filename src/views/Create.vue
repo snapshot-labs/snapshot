@@ -24,8 +24,8 @@ const { send } = useClient();
 
 const space = inject('space');
 
-const key = route.params.key;
-const from = route.params.from;
+const key = computed(() => route.params.key);
+const from = computed(() => route.params.from);
 
 const loading = ref(false);
 const choices = ref([]);
@@ -119,7 +119,7 @@ async function handleSubmit() {
     router.push({
       name: 'proposal',
       params: {
-        key: key,
+        key: key.value,
         id: ipfsHash
       }
     });
@@ -130,7 +130,7 @@ async function handleSubmit() {
 }
 
 const { modalAccountOpen } = useModal();
-const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(key);
+const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(key.value);
 
 function clickSubmit() {
   !web3Account.value
@@ -147,7 +147,7 @@ async function loadProposal() {
     {
       query: PROPOSAL_QUERY,
       variables: {
-        id: from
+        id: from.value
       }
     },
     'proposal'
@@ -178,7 +178,7 @@ onMounted(async () => {
   blockNumber.value = await getBlockNumber(getProvider(space.value.network));
   form.value.snapshot = blockNumber.value;
 
-  if (from) loadProposal();
+  if (from.value) loadProposal();
 });
 
 const proposal = computed(() => {
