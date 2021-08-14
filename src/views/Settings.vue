@@ -11,18 +11,18 @@ import { clone } from '@/helpers/utils';
 import { getSpaceUri } from '@/helpers/ens';
 import defaults from '@/locales/default';
 import { useCopy } from '@/composables/useCopy';
-import { useApp } from '@/composables/useApp';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useClient } from '@/composables/useClient';
+import { useSpaces } from '@/composables/useSpaces';
 
 const basicValidation = { name: 'basic', params: {} };
 
 const route = useRoute();
 const { t } = useI18n();
 const { copyToClipboard } = useCopy();
-const { spaces, getSpaces } = useApp();
 const { web3 } = useWeb3();
 const { send } = useClient();
+const { spaces, getSpaces } = useSpaces();
 
 const currentSettings = ref({});
 const currentTextRecord = ref('');
