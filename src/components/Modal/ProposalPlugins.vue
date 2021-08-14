@@ -22,13 +22,11 @@ function getLogoUrl(plugin) {
   return `https://raw.githubusercontent.com/snapshot-labs/snapshot.js/master/src/plugins/${plugin}/logo.png`;
 }
 
-function showButton(pluginObj) {
+function showButton(key) {
   const pluginsWithParams = Object.keys(props.space.plugins).filter(
     plugin => pluginsConfig[plugin].proposalParams
   );
-  return pluginsWithParams
-    .map(plugin => plugin.toLowerCase())
-    .includes(pluginObj.name.toLowerCase());
+  return pluginsWithParams.map(plugin => plugin).includes(key);
 }
 
 if (props.space.plugins) {
@@ -61,13 +59,13 @@ watch(selected, value => {
     </template>
     <div class="m-4 mt-4" v-if="selected === false">
       <div
-        v-for="(plugin, i) in plugins"
-        :key="i"
+        v-for="(plugin, key) in plugins"
+        :key="key"
         class="mb-3 p-4 border rounded-2 link-color text-center"
       >
         <img
           class="circle border"
-          :src="getLogoUrl(i)"
+          :src="getLogoUrl(key)"
           width="64"
           height="64"
         />
@@ -78,8 +76,8 @@ watch(selected, value => {
             <Icon name="external-link" />
           </a>
         </div>
-        <UiButton v-if="showButton(plugin)" @click="selected = i">
-          {{ !form[i] ? $t('add') : $t('edit') }}
+        <UiButton v-if="showButton(key)" @click="selected = key">
+          {{ !form[key] ? $t('add') : $t('edit') }}
         </UiButton>
       </div>
     </div>
