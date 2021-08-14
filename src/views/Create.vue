@@ -50,6 +50,10 @@ const nameForm = ref(null);
 const passValidation = ref([true]);
 
 const web3Account = computed(() => web3.value.account);
+const proposal = computed(() =>
+  Object.assign(form.value, { choices: choices.value })
+);
+
 
 // Check if account passes space validation
 watchEffect(async () => {
@@ -179,10 +183,6 @@ onMounted(async () => {
   form.value.snapshot = blockNumber.value;
 
   if (from.value) loadProposal();
-});
-
-const proposal = computed(() => {
-  return { ...form, choices };
 });
 </script>
 
