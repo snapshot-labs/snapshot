@@ -145,8 +145,7 @@
     "spacePlaceholder": "Space (optional)",
     "delegations": "Your delegation(s)",
     "allSpaces": "For all spaces",
-    "delegated": "Delegated to you",
-    "pendingTransaction": "1 pending transaction"
+    "delegated": "Delegated to you"
   },
   "proposal": {
     "castVote": "Cast your vote",
