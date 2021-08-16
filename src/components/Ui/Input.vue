@@ -42,7 +42,7 @@ function handleInput(e) {
       :placeholder="placeholder"
       :type="number ? 'number' : 'text'"
       :disabled="disabled"
-      class="input flex-auto"
+      class="flex-auto input"
       :required="required"
     />
     <slot name="info" />
