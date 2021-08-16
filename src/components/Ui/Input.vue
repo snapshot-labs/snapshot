@@ -25,7 +25,10 @@ function handleInput(e) {
 </script>
 
 <template>
-  <UiButton class="text-left width-full mb-2 d-flex px-3" :class="{ 'border-red': error }">
+  <UiButton
+    class="text-left mb-2 px-3 width-full d-flex"
+    :class="{ 'border-red': error }"
+  >
     <div class="text-color mr-2">
       <slot name="label" />
     </div>
@@ -39,12 +42,16 @@ function handleInput(e) {
       :placeholder="placeholder"
       :type="number ? 'number' : 'text'"
       :disabled="disabled"
-      class="input flex-auto"
+      class="flex-auto input"
       :required="required"
     />
     <slot name="info" />
-    <span v-if="error" :aria-label="error" class="float-right link-color tooltipped tooltipped-n">
-      <Icon name="warning" class="text-red p-1 d-block pt-2 mt-1 mr-n1" />
+    <span
+      v-if="error"
+      :aria-label="error"
+      class="float-right link-color tooltipped tooltipped-n"
+    >
+      <Icon name="warning" class="mt-1 text-red mr-n1 p-1 pt-2 d-block" />
     </span>
   </UiButton>
 </template>
