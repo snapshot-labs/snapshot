@@ -91,15 +91,23 @@ export default {
   <PluginSafeSnapInputAddress
     v-model="to"
     :disabled="config.preview"
-    :inputProps="{ required: false }"
+    :inputProps="{ required: true }"
     label="to (address)"
   />
 
-  <UiInput v-model="value" :disabled="config.preview" :error="!isValidValue && 'Invalid Value'">
+  <UiInput
+    v-model="value"
+    :disabled="config.preview"
+    :error="!isValidValue && 'Invalid Value'"
+  >
     <template v-slot:label>value (wei)</template>
   </UiInput>
 
-  <UiInput v-model="data" :disabled="config.preview" :error="!isValidData && 'Invalid Data'">
+  <UiInput
+    v-model="data"
+    :disabled="config.preview"
+    :error="!isValidData && 'Invalid Data'"
+  >
     <template v-slot:label>Data</template>
   </UiInput>
 </template>
