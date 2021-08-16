@@ -723,7 +723,7 @@
 
 "@snapshot-labs/snapshot-spaces@github:snapshot-labs/snapshot-spaces#master":
   version "0.1.0"
-  resolved "https://codeload.github.com/snapshot-labs/snapshot-spaces/tar.gz/f2da8aed07825652af908f2ce98db2c76118351f"
+  resolved "https://codeload.github.com/snapshot-labs/snapshot-spaces/tar.gz/a4db7e47fa7f6bee4bb4dda6cf538c6532220efd"
 
 "@snapshot-labs/snapshot.js@github:snapshot-labs/snapshot.js#master":
   version "0.2.0"
