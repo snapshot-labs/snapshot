@@ -42,7 +42,7 @@ function handleInput(e) {
       :placeholder="placeholder"
       :type="number ? 'number' : 'text'"
       :disabled="disabled"
-      class="flex-auto input"
+      class="input flex-auto"
       :required="required"
     />
     <slot name="info" />
@@ -51,7 +51,7 @@ function handleInput(e) {
       :aria-label="error"
       class="float-right link-color tooltipped tooltipped-n"
     >
-      <Icon name="warning" class="mt-1 text-red mr-n1 p-1 pt-2 d-block" />
+      <Icon name="warning" class="text-red p-1 d-block pt-2 mt-1 mr-n1" />
     </span>
   </UiButton>
 </template>
