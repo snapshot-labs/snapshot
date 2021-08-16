@@ -146,7 +146,7 @@
     "delegations": "Your delegation(s)",
     "allSpaces": "For all spaces",
     "delegated": "Delegated to you",
-    "pendingTransaction": "1 pending transaction"
+    "pendingTransaction": "no pending transaction | 1 pending transaction | {count} pending transactions"
   },
   "proposal": {
     "castVote": "Cast your vote",

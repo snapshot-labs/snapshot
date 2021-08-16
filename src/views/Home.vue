@@ -54,35 +54,35 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
 
 <template>
   <div>
-    <div class="text-center mb-4 mx-auto">
-      <Container class="d-flex flex-items-center">
+    <div class="mx-auto text-center mb-4">
+      <Container class="flex-items-center d-flex">
         <div class="flex-auto text-left d-flex">
-          <UiButton class="pl-3 col-12 col-lg-7 pr-0">
+          <UiButton class="pr-0 pl-3 col-12 col-lg-7">
             <SearchWithFilters />
           </UiButton>
           <router-link :to="{ name: 'timeline' }" class="ml-2">
-            <UiButton class="no-wrap px-3">
+            <UiButton class="px-3 no-wrap">
               <Icon name="feed" size="18" />
               <UiCounter :counter="numberOfUnseenProposals" class="ml-2" />
             </UiButton>
           </router-link>
         </div>
-        <div class="ml-3 text-right hide-sm col-lg-4">
+        <div class="text-right ml-3 col-lg-4 hide-sm">
           {{ $tc('spaceCount', [_n(orderedSpaces.length)]) }}
-          <router-link :to="{ name: 'setup' }" class="hide-md ml-3">
+          <router-link :to="{ name: 'setup' }" class="ml-3 hide-md">
             <UiButton>{{ $t('createSpace') }}</UiButton>
           </router-link>
         </div>
       </Container>
     </div>
     <Container :slim="true">
-      <div class="overflow-hidden mr-n4">
+      <div class="mr-n4 overflow-hidden">
         <router-link
           v-for="space in orderedSpaces.slice(0, limit)"
           :key="space.key"
           :to="{ name: 'proposals', params: { key: space.key } }"
         >
-          <div class="col-12 col-lg-3 pr-4 float-left">
+          <div class="pr-4 col-12 col-lg-3 float-left">
             <Block
               class="text-center extra-icon-container"
               style="height: 250px; margin-bottom: 24px !important"
@@ -91,14 +91,9 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
                 <UiCounter
                   v-if="space._activeProposals"
                   :counter="space._activeProposals"
-                  class="position-absolute top-4 right-0 bg-green"
+                  class="bg-green top-4 right-0 position-absolute"
                 />
-                <Token
-                  :space="space"
-                  symbolIndex="space"
-                  size="98"
-                  class="my-3"
-                />
+                <Token :space="space" symbolIndex="space" size="98" class="my-3" />
               </span>
               <StatefulIcon
                 :on="space.favorite"
@@ -106,7 +101,7 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
                 offName="star1"
                 @click="toggleFavorite(space.key)"
               />
-              <div class="">
+              <div class>
                 <h3 v-text="space.name" />
                 <div class="text-color">{{ space.symbol }}</div>
               </div>
@@ -114,11 +109,7 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
           </div>
         </router-link>
 
-        <NoResults
-          :block="true"
-          v-if="Object.keys(orderedSpaces).length < 1"
-          class="pr-md-4"
-        />
+        <NoResults :block="true" v-if="Object.keys(orderedSpaces).length < 1" class="pr-md-4" />
       </div>
     </Container>
     <div ref="endElement" />

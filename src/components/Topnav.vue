@@ -5,7 +5,9 @@ import { useModal } from '@/composables/useModal';
 import { useDomain } from '@/composables/useDomain';
 import { useApp } from '@/composables/useApp';
 import { useWeb3 } from '@/composables/useWeb3';
+import { useTxStatus } from '@/composables/useTxStatus';
 
+const { pendingCount } = useTxStatus();
 const { modalAccountOpen } = useModal();
 const { env, domain } = useDomain();
 const route = useRoute();
@@ -51,22 +53,18 @@ onMounted(() => setTitle());
   <Sticky class="mb-4">
     <div
       v-if="env === 'develop'"
-      class="p-3 text-center bg-blue"
+      class="bg-blue text-center p-3"
       style="color: white; font-size: 20px"
-    >
-      {{ $t('demoSite') }}
-    </div>
-    <nav id="topnav" class="border-bottom width-full bg-black">
+    >{{ $t('demoSite') }}</div>
+    <nav id="topnav" class="bg-black border-bottom width-full">
       <Container>
-        <div class="d-flex flex-items-center" style="height: 78px">
-          <div class="flex-auto d-flex flex-items-center">
+        <div class="flex-items-center d-flex" style="height: 78px">
+          <div class="flex-auto flex-items-center d-flex">
             <router-link
               :to="{ name: 'home' }"
-              class="d-inline-block d-flex flex-items-center"
+              class="flex-items-center d-inline-block d-flex"
               style="font-size: 24px; padding-top: 4px"
-            >
-              snapshot
-            </router-link>
+            >snapshot</router-link>
           </div>
           <div :key="web3.account">
             <template v-if="$auth.isAuthenticated.value">
@@ -100,16 +98,20 @@ onMounted(() => setTitle());
               <Icon
                 name="login"
                 size="20"
-                class="hide-md hide-lg hide-xl ml-n2 mr-n2 v-align-text-bottom"
+                class="mr-n2 ml-n2 hide-md hide-lg hide-xl v-align-text-bottom"
               />
             </UiButton>
             <UiButton @click="modalAboutOpen = true" class="ml-2">
-              <span v-text="'?'" class="ml-n1 mr-n1" />
+              <span v-text="'?'" class="mr-n1 ml-n1" />
             </UiButton>
           </div>
         </div>
       </Container>
     </nav>
+    <div class="bg-blue text-white text-center py-2" v-if="pendingCount > 0">
+      <UiLoading :fill-white="true" class="mr-2" />
+      {{ $tc('delegate.pendingTransaction', pendingCount) }}
+    </div>
     <teleport to="#modal">
       <ModalAccount
         :open="modalAccountOpen"
@@ -121,14 +123,8 @@ onMounted(() => setTitle());
         @close="modalAboutOpen = false"
         @openLang="modalLangOpen = true"
       />
-      <ModalSelectLanguage
-        :open="modalLangOpen"
-        @close="modalLangOpen = false"
-      />
-      <ModalWalletNotice
-        :open="modalWalletNotice"
-        @close="modalWalletNotice = false"
-      />
+      <ModalSelectLanguage :open="modalLangOpen" @close="modalLangOpen = false" />
+      <ModalWalletNotice :open="modalWalletNotice" @close="modalWalletNotice = false" />
     </teleport>
   </Sticky>
 </template>

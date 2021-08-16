@@ -4,6 +4,7 @@ import { useRoute } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { useProfiles } from '@/composables/useProfiles';
 import { useNotifications } from '@/composables/useNotifications';
+import { useTxStatus } from '@/composables/useTxStatus';
 import { isAddress } from '@ethersproject/address';
 import { formatBytes32String } from '@ethersproject/strings';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
@@ -17,6 +18,7 @@ import {
 import { sleep } from '@/helpers/utils';
 import { useApp } from '@/composables/useApp';
 import { useWeb3 } from '@/composables/useWeb3';
+const { pendingCount } = useTxStatus();
 
 const abi = ['function setDelegate(bytes32 id, address delegate)'];
 
@@ -77,10 +79,12 @@ async function handleSubmit() {
       'setDelegate',
       [formatBytes32String(form.value.id), address]
     );
+    pendingCount.value++;
     const receipt = await tx.wait();
     console.log('Receipt', receipt);
     await sleep(3e3);
     notify(t('notify.youDidIt'));
+    pendingCount.value--;
     await load();
   } catch (e) {
     console.log(e);
@@ -117,13 +121,9 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="bg-blue text-white py-2 text-center mb-4" v-if="loading">
-    <UiLoading />
-    {{ $t('delegate.pendingTransaction') }}
-  </div>
   <Layout v-bind="$attrs">
     <template #content-left>
-      <div class="px-4 px-md-0 mb-3">
+      <div class="mb-3 px-4 px-md-0">
         <router-link :to="{ name: 'home' }" class="text-color">
           <Icon name="back" size="22" class="v-align-middle" />
           {{ $t('backToHome') }}
@@ -148,7 +148,7 @@ onMounted(async () => {
             v-for="(delegate, i) in delegates"
             :key="i"
             :style="i === 0 && 'border: 0 !important;'"
-            class="px-4 py-3 border-top d-flex"
+            class="border-top py-3 px-4 d-flex"
           >
             <User
               :address="delegate.delegate"
@@ -159,7 +159,7 @@ onMounted(async () => {
               v-text="_shorten(delegate.space || $t('allSpaces'), 'choice')"
               class="flex-auto text-right link-color"
             />
-            <a @click="clearDelegate(delegate.space, delegate.delegate)" class="px-2 mr-n2 ml-2">
+            <a @click="clearDelegate(delegate.space, delegate.delegate)" class="mr-n2 ml-2 px-2">
               <Icon name="close" size="12" class="mb-1" />
             </a>
           </div>
@@ -169,7 +169,7 @@ onMounted(async () => {
             v-for="(delegator, i) in delegators"
             :key="i"
             :style="i === 0 && 'border: 0 !important;'"
-            class="px-4 py-3 border-top d-flex"
+            class="border-top py-3 px-4 d-flex"
           >
             <User
               :address="delegator.delegator"
