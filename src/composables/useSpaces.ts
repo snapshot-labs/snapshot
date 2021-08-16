@@ -36,6 +36,10 @@ export function useSpaces(options = { autoLoad: true }) {
     }
   }
 
+  if (spaces.value.length < 1 && options.autoLoad) {
+    onMounted(async () => getSpaces());
+  }
+
   const { domain } = useDomain();
   const route = useRoute();
 
@@ -73,10 +77,6 @@ export function useSpaces(options = { autoLoad: true }) {
     if (key.value && !spaces.value.find((s: any) => s.id === key.value))
       getGraphSpaces([key.value]);
   });
-
-  if (spaces.value.length < 1 && options.autoLoad) {
-    onMounted(async () => getSpaces());
-  }
 
   const space = computed(() => {
     return (
