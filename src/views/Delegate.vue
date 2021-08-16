@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup>
 import { ref, computed, watch, onMounted, watchEffect } from 'vue';
 import { useRoute } from 'vue-router';
 import { useI18n } from 'vue-i18n';
@@ -117,10 +117,6 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="bg-blue text-white py-2 text-center mb-4" v-if="loading">
-    <UiLoading />
-    {{ $t('delegate.pendingTransaction') }}
-  </div>
   <Layout v-bind="$attrs">
     <template #content-left>
       <div class="px-4 px-md-0 mb-3">
@@ -139,11 +135,18 @@ onMounted(async () => {
           >
             <template v-slot:label>{{ $t('delegate.to') }}</template>
           </UiInput>
-          <UiInput v-model.trim="form.id" :placeholder="$t('delegate.spacePlaceholder')">
+          <UiInput
+            v-model.trim="form.id"
+            :placeholder="$t('delegate.spacePlaceholder')"
+          >
             <template v-slot:label>{{ $t('space') }}</template>
           </UiInput>
         </Block>
-        <Block v-if="delegates.length > 0" :slim="true" :title="$t('delegate.delegations')">
+        <Block
+          v-if="delegates.length > 0"
+          :slim="true"
+          :title="$t('delegate.delegations')"
+        >
           <div
             v-for="(delegate, i) in delegates"
             :key="i"
@@ -159,12 +162,19 @@ onMounted(async () => {
               v-text="_shorten(delegate.space || $t('allSpaces'), 'choice')"
               class="flex-auto text-right link-color"
             />
-            <a @click="clearDelegate(delegate.space, delegate.delegate)" class="px-2 mr-n2 ml-2">
+            <a
+              @click="clearDelegate(delegate.space, delegate.delegate)"
+              class="px-2 mr-n2 ml-2"
+            >
               <Icon name="close" size="12" class="mb-1" />
             </a>
           </div>
         </Block>
-        <Block v-if="delegators.length > 0" :slim="true" :title="$t('delegate.delegated')">
+        <Block
+          v-if="delegators.length > 0"
+          :slim="true"
+          :title="$t('delegate.delegated')"
+        >
           <div
             v-for="(delegator, i) in delegators"
             :key="i"
@@ -192,7 +202,9 @@ onMounted(async () => {
           :disabled="!isValid || !$auth.isAuthenticated.value"
           :loading="loading"
           class="d-block width-full button--submit"
-        >{{ $t('confirm') }}</UiButton>
+        >
+          {{ $t('confirm') }}
+        </UiButton>
       </Block>
     </template>
   </Layout>
