@@ -49,7 +49,7 @@ const isValid = computed(() => {
     web3Account.value &&
     (address.includes('.eth') || isAddress(address)) &&
     address.toLowerCase() !== web3Account.value.toLowerCase() &&
-    (form.value.id === '' || spaces.value[form.value.id])
+    (form.value.id === '' || spaces.value.find(s => s.id === form.value.id))
   );
 });
 

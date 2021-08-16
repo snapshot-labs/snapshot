@@ -1,29 +1,20 @@
-import { computed, onMounted, ref } from 'vue';
+import { ref, computed, watchEffect, onMounted } from 'vue';
 import client from '@/helpers/client';
 import { formatSpace } from '@/helpers/utils';
 import { useDomain } from '@/composables/useDomain';
 import { useRoute } from 'vue-router';
+import { useApolloQuery } from '@/composables/useApolloQuery';
+import { SPACES_QUERY } from '@/helpers/queries';
 
-const spaces = ref({});
+const spaces: any = ref([]);
+const graphSpaces: any = ref([]);
 
-export function useSpaces() {
-  const { domain } = useDomain();
-  const route = useRoute();
-
-  const key = computed(() => domain || route.params.key);
-  const from: any = computed(() => route.params.from);
-  const space = computed(() =>
-    spaces.value[key.value] ? spaces.value[key.value] : {}
-  );
-  const spaceFrom = computed(() =>
-    spaces.value[from.value] ? spaces.value[from.value] : {}
-  );
-
-  const loadingSpaces = ref(false);
+export function useSpaces(options = { autoLoad: true }) {
+  const spacesLoading = ref(false);
 
   async function getSpaces() {
     try {
-      loadingSpaces.value = true;
+      spacesLoading.value = true;
       let spacesObj: any = await client.getSpaces();
       spacesObj = Object.fromEntries(
         Object.entries(spacesObj).map(space => [
@@ -31,26 +22,75 @@ export function useSpaces() {
           formatSpace(space[0], space[1])
         ])
       );
-
-      spaces.value = spacesObj;
-      loadingSpaces.value = false;
+      const spacesArray = Object.keys(spacesObj).map(s => {
+        const obj = spacesObj[s];
+        obj.id = s;
+        delete obj.key;
+        return obj;
+      });
+      spaces.value = spacesArray;
+      spacesLoading.value = false;
     } catch (e) {
-      loadingSpaces.value = false;
+      spacesLoading.value = false;
       console.error(e);
     }
   }
 
-  if (Object.keys(spaces.value).length < 1) {
+  const { domain } = useDomain();
+  const route = useRoute();
+
+  const graphSpacesLoading = ref(false);
+
+  const key = computed(() => domain || route.params.key);
+
+  const { apolloQuery } = useApolloQuery();
+
+  async function getGraphSpaces(id_in: any = []) {
+    if (graphSpaces.value.some((s: any) => s.id === key.value)) {
+      return graphSpaces.value.find((s: any) => s.id === key.value);
+    } else {
+      try {
+        graphSpacesLoading.value = true;
+        const response = await apolloQuery(
+          {
+            query: SPACES_QUERY,
+            variables: {
+              id_in
+            }
+          },
+          'spaces'
+        );
+        graphSpacesLoading.value = false;
+        graphSpaces.value = response.concat(graphSpaces.value);
+      } catch (e) {
+        graphSpacesLoading.value = false;
+        console.error(e);
+      }
+    }
+  }
+
+  watchEffect(() => {
+    if (key.value && !spaces.value.find((s: any) => s.id === key.value))
+      getGraphSpaces([key.value]);
+  });
+
+  if (spaces.value.length < 1 && options.autoLoad) {
     onMounted(async () => getSpaces());
   }
+
+  const space = computed(() => {
+    return (
+      spaces.value.find((s: any) => s.id === key.value) ??
+      graphSpaces.value.find((s: any) => s.id === key.value) ??
+      {}
+    );
+  });
 
   return {
     getSpaces,
     spaces,
     space,
-    spaceFrom,
-    loadingSpaces,
-    key,
-    from
+    spacesLoading,
+    graphSpacesLoading
   };
 }

@@ -14,9 +14,9 @@ export function useSearchFilters() {
   const minifiedSkinsArray = computed(() => {
     return Object.keys(skins).map(skin => ({
       key: skin,
-      spaces: Object.entries(spaces.value)
-        .filter((space: any) => space[1].skin === skin)
-        .map(space => space[0])
+      spaces: spaces.value
+        .filter((space: any) => space.skin === skin)
+        .map(space => space.id)
     }));
   });
 
@@ -41,9 +41,9 @@ export function useSearchFilters() {
   const minifiedNetworksArray = computed(() => {
     return Object.entries(networks).map((network: any) => {
       network[1].key = network[0];
-      network[1].spaces = Object.entries(spaces.value)
-        .filter((space: any) => space[1].network === network[0])
-        .map(space => space[0]);
+      network[1].spaces = spaces.value
+        .filter((space: any) => space.network === network[0])
+        .map(space => space.id);
       return network[1];
     });
   });
@@ -60,13 +60,12 @@ export function useSearchFilters() {
     return Object.entries(plugins).map(([key, pluginClass]: any) => {
       const plugin = new pluginClass();
       plugin.key = key;
-      plugin.spaces = Object.entries(spaces.value)
+      plugin.spaces = spaces.value
         .filter(
           (space: any) =>
-            space[1].plugins &&
-            Object.keys(space[1].plugins).includes(plugin.key)
+            space.plugins && Object.keys(space.plugins).includes(plugin.key)
         )
-        .map(space => space[0]);
+        .map(space => space.id);
       return plugin;
     });
   });
@@ -83,9 +82,9 @@ export function useSearchFilters() {
     return Object.keys(validations).map((key: any) => {
       return {
         name: key,
-        spaces: Object.entries(spaces.value)
-          .filter((space: any) => space[1].validation?.name === key)
-          .map(space => space[0])
+        spaces: spaces.value
+          .filter((space: any) => space.validation?.name === key)
+          .map(space => space.id)
       };
     });
   });

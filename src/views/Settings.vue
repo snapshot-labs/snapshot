@@ -48,6 +48,8 @@ const form = ref({
 const key = computed(() => route.params.key);
 const from = computed(() => route.params.from);
 const web3Account = computed(() => web3.value.account);
+const space = computed(() => spaces.value.find(s => s.id === key.value));
+const spaceFrom = computed(() => spaces.value.find(s => s.id === from.value));
 
 const validate = computed(() => {
   if (form.value.terms === '') delete form.value.terms;
@@ -69,10 +71,8 @@ const textRecord = computed(() => {
 const isOwner = computed(() => currentTextRecord.value === textRecord.value);
 
 const isAdmin = computed(() => {
-  if (!spaces.value[key.value] || !currentTextRecord.value) return false;
-  const admins = (spaces.value[key.value].admins || []).map(admin =>
-    admin.toLowerCase()
-  );
+  if (!space.value || !currentTextRecord.value) return false;
+  const admins = (space.value.admins || []).map(admin => admin.toLowerCase());
   return admins.includes(web3Account.value?.toLowerCase());
 });
 
@@ -121,7 +121,7 @@ function inputError(field) {
 }
 
 function handleReset() {
-  if (from.value) return (form.value = clone(spaces.value[from.value]));
+  if (from.value) return (form.value = clone(spaceFrom.value));
   if (currentSettings.value) return (form.value = currentSettings.value);
   form.value = {
     strategies: [],
@@ -192,22 +192,22 @@ onMounted(async () => {
     const uri = await getSpaceUri(key.value);
     console.log('URI', uri);
     currentTextRecord.value = uri;
-    const space = clone(spaces.value?.[key.value]);
-    if (!space) return;
-    delete space.id;
-    delete space.key;
-    delete space._activeProposals;
-    space.strategies = space.strategies || [];
-    space.plugins = space.plugins || {};
-    space.validation = space.validation || basicValidation;
-    space.filters = space.filters || {};
-    currentSettings.value = clone(space);
-    form.value = space;
+    const spaceObj = clone(space.value);
+    if (!spaceObj) return;
+    delete spaceObj.id;
+    delete spaceObj.key;
+    delete spaceObj._activeProposals;
+    spaceObj.strategies = spaceObj.strategies || [];
+    spaceObj.plugins = spaceObj.plugins || {};
+    spaceObj.validation = spaceObj.validation || basicValidation;
+    spaceObj.filters = spaceObj.filters || {};
+    currentSettings.value = clone(spaceObj);
+    form.value = spaceObj;
   } catch (e) {
     console.log(e);
   }
   if (from.value) {
-    const fromClone = clone(spaces.value[from.value]);
+    const fromClone = clone(spaceFrom.value);
     fromClone.validation = fromClone.validation || basicValidation;
     delete fromClone.key;
     delete fromClone._activeProposals;

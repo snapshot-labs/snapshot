@@ -63,13 +63,13 @@ export function lsRemove(key: string) {
 
 export function getStrategy(strategy, spaces) {
   const clonedStrategy = clone(strategy);
-  clonedStrategy.spaces = Object.entries(spaces)
+  clonedStrategy.spaces = spaces
     .filter(
       (space: any) =>
-        space[1].strategies &&
-        space[1].strategies.map(s => s.name).includes(strategy.key)
+        space.strategies &&
+        space.strategies.map(s => s.name).includes(strategy.key)
     )
-    .map(space => space[0]);
+    .map(space => space.id);
   return clonedStrategy;
 }
 

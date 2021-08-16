@@ -121,6 +121,8 @@ export const SPACES_QUERY = gql`
       terms
       skin
       avatar
+      twitter
+      github
       strategies {
         name
         params

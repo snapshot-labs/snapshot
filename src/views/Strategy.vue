@@ -7,7 +7,7 @@ import { useSpaces } from '@/composables/useSpaces';
 
 const route = useRoute();
 const { strategies } = useApp();
-const { spaces } = useSpaces(true);
+const { spaces } = useSpaces();
 
 const strategy = computed(() =>
   getStrategy(strategies.value[route.params.name], spaces.value)

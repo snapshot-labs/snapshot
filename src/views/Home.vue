@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, watchEffect } from 'vue';
+import { ref, computed, watchEffect, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import orderBy from 'lodash/orderBy';
 import spotlight from '@snapshot-labs/snapshot-spaces/spaces/spotlight.json';
@@ -11,18 +11,18 @@ import { useSpaces } from '@/composables/useSpaces';
 const route = useRoute();
 const { addFavoriteSpace, removeFavoriteSpace, favorites } =
   useFavoriteSpaces();
-const { spaces, loadingSpaces } = useSpaces();
+const { spaces, spacesLoading } = useSpaces();
 
 const orderedSpaces = computed(() => {
   const networkFilter = route.query.network;
   const q = route.query.q || '';
-  const list = Object.keys(spaces.value)
-    .map(key => {
-      const spotlightIndex = spotlight.indexOf(key);
+  const list = spaces.value
+    .map(s => {
+      const spotlightIndex = spotlight.indexOf(s);
       return {
-        ...spaces.value[key],
-        favorite: !!favorites.value[key],
-        isActive: !!spaces.value[key]._activeProposals,
+        ...s,
+        favorite: !!favorites.value[s.id],
+        isActive: !!s._activeProposals,
         spotlight: spotlightIndex === -1 ? 1e3 : spotlightIndex
       };
     })
@@ -77,14 +77,14 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
     </div>
     <Container :slim="true">
       <div class="overflow-hidden mr-n4">
-        <Block v-if="loadingSpaces" :slim="true">
+        <Block v-if="spacesLoading" :slim="true">
           <RowLoading class="my-2" />
         </Block>
         <router-link
           v-else
           v-for="space in orderedSpaces.slice(0, limit)"
-          :key="space.key"
-          :to="{ name: 'proposals', params: { key: space.key } }"
+          :key="space.id"
+          :to="{ name: 'proposals', params: { key: space.id } }"
         >
           <div class="col-12 col-lg-3 pr-4 float-left">
             <Block
@@ -108,7 +108,7 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
                 :on="space.favorite"
                 onName="star"
                 offName="star1"
-                @click="toggleFavorite(space.key)"
+                @click="toggleFavorite(space.id)"
               />
               <div class="">
                 <h3 v-text="space.name" />
@@ -120,7 +120,7 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
 
         <NoResults
           :block="true"
-          v-if="Object.keys(orderedSpaces).length < 1 && !loadingSpaces"
+          v-if="orderedSpaces.length < 1 && !spacesLoading"
           class="pr-md-4"
         />
       </div>

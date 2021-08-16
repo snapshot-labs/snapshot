@@ -5,14 +5,14 @@ import { useI18n } from '@/composables/useI18n';
 import { useApp } from '@/composables/useApp';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useNotifications } from '@/composables/useNotifications';
-import { useSpace } from '@/composables/useSpace';
+import { useSpaces } from '@/composables/useSpaces';
 
 const { loadLocale } = useI18n();
 const { modalOpen } = useModal();
 const { init, app } = useApp();
 const { web3 } = useWeb3();
 const { notify } = useNotifications();
-const { space, spaceLoading } = useSpace();
+const { space, graphSpacesLoading } = useSpaces({ autoLoad: false });
 
 provide('web3', web3);
 provide('notify', notify);
@@ -32,7 +32,7 @@ watch(modalOpen, val => {
 <template>
   <div :class="space?.skin" id="app" class="overflow-hidden pb-4">
     <UiLoading
-      v-if="app.loading || !app.init || spaceLoading"
+      v-if="app.loading || !app.init || graphSpacesLoading"
       class="overlay big"
     />
     <div v-else>
