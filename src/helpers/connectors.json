@@ -27,5 +27,12 @@
       "dappId": "3eb93706-c71d-456b-b4eb-322ea27f7d48",
       "network": "mainnet"
     }
+  },
+  "fortmatic": { 
+    "id": "fortmatic", 
+    "name": "Fortmatic", 
+    "options": { 
+      "apiKey": "pk_live_9CE8FD92E54684ED" 
+    } 
   }
 }
