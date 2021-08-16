@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { ref, watchEffect, computed, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import draggable from 'vuedraggable';
@@ -140,8 +140,8 @@ function clickSubmit() {
   !web3Account.value
     ? (modalAccountOpen.value = true)
     : !termsAccepted.value && space.value.terms
-    ? (modalTermsOpen.value = true)
-    : handleSubmit();
+      ? (modalTermsOpen.value = true)
+      : handleSubmit();
 }
 
 const { apolloQuery, queryLoading } = useApolloQuery();
@@ -190,10 +190,7 @@ onMounted(async () => {
   <Layout v-bind="$attrs">
     <template #content-left>
       <div class="px-4 px-md-0 mb-3">
-        <router-link
-          :to="{ name: domain ? 'home' : 'proposals' }"
-          class="text-color"
-        >
+        <router-link :to="{ name: domain ? 'home' : 'proposals' }" class="text-color">
           <Icon name="back" size="22" class="v-align-middle" />
           {{ space.name }}
         </router-link>
@@ -204,9 +201,9 @@ onMounted(async () => {
           {{
             space.validation?.params.minScore || space?.filters.minScore
               ? $tc('create.validationWarning.basic.minScore', [
-                  _n(space.filters.minScore),
-                  space.symbol
-                ])
+                _n(space.filters.minScore),
+                space.symbol
+              ])
               : $t('create.validationWarning.basic.member')
           }}
         </span>
@@ -214,7 +211,7 @@ onMounted(async () => {
           {{
             $t(
               space.validation.params.rules ||
-                'create.validationWarning.customValidation'
+              'create.validationWarning.customValidation'
             )
           }}
         </span>
@@ -234,9 +231,10 @@ onMounted(async () => {
             :placeholder="$t('create.content')"
           />
           <div class="mb-6">
-            <p v-if="form.body.length > bodyLimit" class="text-red mt-4">
-              -{{ _n(-(bodyLimit - form.body.length)) }}
-            </p>
+            <p
+              v-if="form.body.length > bodyLimit"
+              class="text-red mt-4"
+            >-{{ _n(-(bodyLimit - form.body.length)) }}</p>
           </div>
           <div v-if="form.body">
             <h4 class="mb-4">{{ $t('create.preview') }}</h4>
@@ -246,11 +244,7 @@ onMounted(async () => {
       </div>
       <Block :title="$t('create.choices')">
         <div v-if="choices.length > 0" class="overflow-hidden mb-2">
-          <draggable
-            v-model="choices"
-            :component-data="{ name: 'list' }"
-            item-key="id"
-          >
+          <draggable v-model="choices" :component-data="{ name: 'list' }" item-key="id">
             <template #item="{ element, index }">
               <div class="d-flex mb-2">
                 <UiButton class="d-flex width-full">
@@ -268,9 +262,7 @@ onMounted(async () => {
             </template>
           </draggable>
         </div>
-        <UiButton @click="addChoice(1)" class="d-block width-full">
-          {{ $t('create.addChoice') }}
-        </UiButton>
+        <UiButton @click="addChoice(1)" class="d-block width-full">{{ $t('create.addChoice') }}</UiButton>
       </Block>
       <PluginSafeSnapConfig
         v-if="space?.plugins?.safeSnap"
@@ -295,17 +287,11 @@ onMounted(async () => {
           <UiButton class="width-full mb-2" @click="modalVotingTypeOpen = true">
             <span>{{ $t(`voting.${form.type}`) }}</span>
           </UiButton>
-          <UiButton
-            @click="(modalOpen = true), (selectedDate = 'start')"
-            class="width-full mb-2"
-          >
+          <UiButton @click="(modalOpen = true), (selectedDate = 'start')" class="width-full mb-2">
             <span v-if="!form.start">{{ $t('create.startDate') }}</span>
             <span v-else v-text="$d(form.start * 1e3, 'short', 'en-US')" />
           </UiButton>
-          <UiButton
-            @click="(modalOpen = true), (selectedDate = 'end')"
-            class="width-full mb-2"
-          >
+          <UiButton @click="(modalOpen = true), (selectedDate = 'end')" class="width-full mb-2">
             <span v-if="!form.end">{{ $t('create.endDate') }}</span>
             <span v-else v-text="$d(form.end * 1e3, 'short', 'en-US')" />
           </UiButton>
@@ -323,9 +309,7 @@ onMounted(async () => {
           :disabled="!isValid"
           :loading="loading || queryLoading"
           class="d-block width-full button--submit"
-        >
-          {{ $t('create.publish') }}
-        </UiButton>
+        >{{ $t('create.publish') }}</UiButton>
       </Block>
     </template>
   </Layout>

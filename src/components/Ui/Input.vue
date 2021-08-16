@@ -6,7 +6,11 @@ const props = defineProps({
   placeholder: String,
   error: [String, Boolean],
   number: Boolean,
-  disabled: Boolean
+  disabled: Boolean,
+  required: {
+    type: Boolean,
+    default: true
+  }
 });
 
 const emit = defineEmits(['update:modelValue']);
@@ -21,14 +25,13 @@ function handleInput(e) {
 </script>
 
 <template>
-  <UiButton
-    class="text-left width-full mb-2 d-flex px-3"
-    :class="{ 'border-red': error }"
-  >
+  <UiButton class="text-left width-full mb-2 d-flex px-3" :class="{ 'border-red': error }">
     <div class="text-color mr-2">
       <slot name="label" />
     </div>
-    <div v-if="$slots.selected" class="flex-auto"><slot name="selected" /></div>
+    <div v-if="$slots.selected" class="flex-auto">
+      <slot name="selected" />
+    </div>
     <input
       v-else
       :value="modelValue"
@@ -37,14 +40,11 @@ function handleInput(e) {
       :type="number ? 'number' : 'text'"
       :disabled="disabled"
       class="input flex-auto"
-      required
+      :required="required"
     />
     <slot name="info" />
-    <span
-      v-if="error"
-      :aria-label="error"
-      class="float-right link-color tooltipped tooltipped-n"
-      ><Icon name="warning" class="text-red p-1 d-block pt-2 mt-1 mr-n1"
-    /></span>
+    <span v-if="error" :aria-label="error" class="float-right link-color tooltipped tooltipped-n">
+      <Icon name="warning" class="text-red p-1 d-block pt-2 mt-1 mr-n1" />
+    </span>
   </UiButton>
 </template>
