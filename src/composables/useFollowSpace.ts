@@ -59,9 +59,11 @@ export function useFollowSpace(spaceObj) {
   }
 
   async function follow(space) {
-    if (!aliasWallet.value) setAlias(() => follow(space));
-    else {
-      loading.value = true;
+    loading.value = true;
+    if (!aliasWallet.value) {
+      await setAlias();
+      follow(space);
+    } else {
       try {
         if (isFollowing.value) {
           await client.unfollow(aliasWallet.value, aliasWallet.value.address, {

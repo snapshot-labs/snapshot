@@ -21,7 +21,7 @@ export function useAliasAction() {
     return userAlias.value ? new Wallet(userAlias.value, provider) : null;
   });
 
-  async function setAlias(action) {
+  async function setAlias() {
     const rndWallet = Wallet.createRandom();
     aliases.value = Object.assign(
       {
@@ -35,8 +35,6 @@ export function useAliasAction() {
       await client.alias(auth.web3, web3.value.account, {
         alias: aliasWallet.value.address
       });
-
-      action();
     }
   }
 
