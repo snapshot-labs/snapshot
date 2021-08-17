@@ -2,10 +2,13 @@ import { computed, ref } from 'vue';
 import { lsGet, lsSet } from '@/helpers/utils';
 import { useWeb3 } from '@/composables/useWeb3';
 import { Wallet } from '@ethersproject/wallet';
-import { getDefaultProvider } from '@ethersproject/providers';
+import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
+import { getDefaultProvider, Provider } from '@ethersproject/providers';
+import client from '@/helpers/EIP712';
 
 export function useAliasAction() {
   const { web3 } = useWeb3();
+  const auth = getInstance();
 
   const aliases = ref(lsGet('aliases') || {});
 
@@ -14,24 +17,27 @@ export function useAliasAction() {
   });
 
   const aliasWallet = computed(() => {
-    const provider = getDefaultProvider();
+    const provider: Provider = getDefaultProvider();
     return userAlias.value ? new Wallet(userAlias.value, provider) : null;
   });
 
-  function setAlias() {
-    console.log('asf', aliases.value);
+  async function setAlias(action) {
     const rndWallet = Wallet.createRandom();
-    lsSet(
-      'aliases',
-      Object.assign(
-        {
-          [web3.value.account]: rndWallet.privateKey
-        },
-        aliases.value
-      )
+    aliases.value = Object.assign(
+      {
+        [web3.value.account]: rndWallet.privateKey
+      },
+      aliases.value
     );
-    // TODO: save rndWallet.address to hub?
-    aliases.value = lsGet('aliases');
+    lsSet('aliases', aliases.value);
+
+    if (aliasWallet.value?.address) {
+      await client.alias(auth.web3, web3.value.account, {
+        alias: aliasWallet.value.address
+      });
+
+      action();
+    }
   }
 
   return { setAlias, aliasWallet };

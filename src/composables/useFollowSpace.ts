@@ -1,16 +1,14 @@
 import { computed, ref, onMounted, watchEffect } from 'vue';
-import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { useModal } from '@/composables/useModal';
 import { useWeb3 } from '@/composables/useWeb3';
-import client from '@/helpers/EIP712';
 import { useApolloQuery } from '@/composables/useApolloQuery';
 import { FOLLOWS_QUERY } from '@/helpers/queries';
 import { useAliasAction } from '@/composables/useAliasAction';
+import client from '@/helpers/EIP712';
 
 const follows: any = ref({});
 
 export function useFollowSpace(spaceObj) {
-  const auth = getInstance();
   const { web3 } = useWeb3();
   const { modalAccountOpen } = useModal();
 
@@ -43,9 +41,11 @@ export function useFollowSpace(spaceObj) {
     }
   }
 
+  const { setAlias, aliasWallet } = useAliasAction();
+
   watchEffect(() => {
     (isFollowing.value = (follows.value?.[spaceObj.key] ?? []).some(
-      (f: any) => f.follower === web3Account.value
+      (f: any) => f.follower === aliasWallet.value?.address
     )),
       { deep: true };
   });
@@ -58,20 +58,18 @@ export function useFollowSpace(spaceObj) {
       : null;
   }
 
-  const { setAlias, aliasWallet } = useAliasAction();
   async function follow(space) {
-    if (!aliasWallet.value) setAlias();
+    if (!aliasWallet.value) setAlias(() => follow(space));
     else {
-      console.log(aliasWallet.value);
       loading.value = true;
       try {
         if (isFollowing.value) {
-          await client.unfollow(auth.web3, web3Account.value, {
+          await client.unfollow(aliasWallet.value, aliasWallet.value.address, {
             space
           });
           isFollowing.value = false;
         } else {
-          await client.follow(auth.web3, web3Account.value, {
+          await client.follow(aliasWallet.value, aliasWallet.value.address, {
             space
           });
           isFollowing.value = true;
