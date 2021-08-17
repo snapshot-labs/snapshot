@@ -69,7 +69,7 @@
     "rollup-plugin-visualizer": "^5.5.2",
     "sass": "~1.32.6",
     "sass-loader": "^8.0.2",
-    "vite": "^2.4.4",
+    "vite": "^2.5.0",
     "vite-plugin-components": "^0.13.2"
   },
   "license": "MIT",
