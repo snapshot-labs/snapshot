@@ -91,7 +91,7 @@ export default {
   <PluginSafeSnapInputAddress
     v-model="to"
     :disabled="config.preview"
-    :inputProps="{ required: true }"
+    :inputProps="{ required: false }"
     label="to (address)"
   />
 
@@ -113,24 +113,24 @@ export default {
 </template>
 
 <style lang="scss" scoped>
-.textarea {
-  border: 1px solid var(--border-color);
-  background-color: transparent;
-  color: var(--link-color);
-  border-radius: 23px;
-  padding: 0 24px;
-  outline: none;
-  font-size: 14px;
-
-  &:hover {
+  .textarea {
+    border: 1px solid var(--border-color);
+    background-color: transparent;
     color: var(--link-color);
-    border-color: var(--link-color);
-  }
-}
+    border-radius: 23px;
+    padding: 0 24px;
+    outline: none;
+    font-size: 14px;
 
-.divider {
-  border-top: 1px solid #cacaca;
-  margin-top: 16px;
-  margin-bottom: 24px;
-}
+    &:hover {
+      color: var(--link-color);
+      border-color: var(--link-color);
+    }
+  }
+
+  .divider {
+    border-top: 1px solid #cacaca;
+    margin-top: 16px;
+    margin-bottom: 24px;
+  }
 </style>
