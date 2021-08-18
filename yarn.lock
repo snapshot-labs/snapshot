@@ -723,7 +723,7 @@
 
 "@snapshot-labs/snapshot-spaces@github:snapshot-labs/snapshot-spaces#master":
   version "0.1.0"
-  resolved "https://codeload.github.com/snapshot-labs/snapshot-spaces/tar.gz/f2da8aed07825652af908f2ce98db2c76118351f"
+  resolved "https://codeload.github.com/snapshot-labs/snapshot-spaces/tar.gz/a4db7e47fa7f6bee4bb4dda6cf538c6532220efd"
 
 "@snapshot-labs/snapshot.js@github:snapshot-labs/snapshot.js#master":
   version "0.2.0"
@@ -2844,6 +2844,11 @@ form-data@~2.3.2:
     asynckit "^0.4.0"
     combined-stream "^1.0.6"
     mime-types "^2.1.12"
+
+fortmatic@^2.2.1:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/fortmatic/-/fortmatic-2.2.1.tgz#91ce9159c1fe539bd87e483125fca5c27a410a86"
+  integrity sha512-PEfPoErJSErU2A8iYD2Mab2c8eJK5dCdCr1jR/8yc49aEAlyQ4UXnZXyeO6MU5zBGkDAZmg9brnRSPzc+8MKPQ==
 
 fs-extra@^7.0.1:
   version "7.0.1"
