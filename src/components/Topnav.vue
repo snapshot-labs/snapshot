@@ -11,41 +11,32 @@ const { pendingCount } = useTxStatus();
 const { modalAccountOpen } = useModal();
 const { env, domain } = useDomain();
 const route = useRoute();
-
 const { spaces } = useApp();
 const { login, web3 } = useWeb3();
-
 const loading = ref(false);
 const modalAboutOpen = ref(false);
 const modalLangOpen = ref(false);
 const modalWalletNotice = ref(false);
-
 const space = computed(() => {
   const key = domain || route.params.key;
   return spaces.value[key] ? spaces.value[key] : false;
 });
-
 function setTitle() {
   document.title = space.value.name ? space.value.name : 'Snapshot';
 }
-
 async function handleLogin(connector) {
   modalAccountOpen.value = false;
   loading.value = true;
   await login(connector);
   loading.value = false;
 }
-
 watch(space, () => {
   setTitle();
 });
-
 const walletConnectType = computed(() => web3.value.walletConnectType);
-
 watch(walletConnectType, val => {
   if (val === 'Gnosis Safe Multisig') modalWalletNotice.value = true;
 });
-
 onMounted(() => setTitle());
 </script>
 
@@ -53,18 +44,22 @@ onMounted(() => setTitle());
   <Sticky class="mb-4">
     <div
       v-if="env === 'develop'"
-      class="bg-blue text-center p-3"
+      class="p-3 text-center bg-blue"
       style="color: white; font-size: 20px"
-    >{{ $t('demoSite') }}</div>
-    <nav id="topnav" class="bg-black border-bottom width-full">
+    >
+      {{ $t('demoSite') }}
+    </div>
+    <nav id="topnav" class="border-bottom width-full bg-black">
       <Container>
-        <div class="flex-items-center d-flex" style="height: 78px">
-          <div class="flex-auto flex-items-center d-flex">
+        <div class="d-flex flex-items-center" style="height: 78px">
+          <div class="flex-auto d-flex flex-items-center">
             <router-link
               :to="{ name: 'home' }"
-              class="flex-items-center d-inline-block d-flex"
+              class="d-inline-block d-flex flex-items-center"
               style="font-size: 24px; padding-top: 4px"
-            >snapshot</router-link>
+            >
+              snapshot
+            </router-link>
           </div>
           <div :key="web3.account">
             <template v-if="$auth.isAuthenticated.value">
@@ -98,17 +93,20 @@ onMounted(() => setTitle());
               <Icon
                 name="login"
                 size="20"
-                class="mr-n2 ml-n2 hide-md hide-lg hide-xl v-align-text-bottom"
+                class="hide-md hide-lg hide-xl ml-n2 mr-n2 v-align-text-bottom"
               />
             </UiButton>
             <UiButton @click="modalAboutOpen = true" class="ml-2">
-              <span v-text="'?'" class="mr-n1 ml-n1" />
+              <span v-text="'?'" class="ml-n1 mr-n1" />
             </UiButton>
           </div>
         </div>
       </Container>
     </nav>
-    <div class="bg-blue text-white text-center py-2 top-border" v-if="pendingCount > 0">
+    <div
+      class="bg-blue text-white text-center py-2 top-border"
+      v-if="pendingCount > 0"
+    >
       <UiLoading :fill-white="true" class="mr-2" />
       {{ $tc('delegate.pendingTransaction', pendingCount) }}
     </div>
@@ -123,8 +121,14 @@ onMounted(() => setTitle());
         @close="modalAboutOpen = false"
         @openLang="modalLangOpen = true"
       />
-      <ModalSelectLanguage :open="modalLangOpen" @close="modalLangOpen = false" />
-      <ModalWalletNotice :open="modalWalletNotice" @close="modalWalletNotice = false" />
+      <ModalSelectLanguage
+        :open="modalLangOpen"
+        @close="modalLangOpen = false"
+      />
+      <ModalWalletNotice
+        :open="modalWalletNotice"
+        @close="modalWalletNotice = false"
+      />
     </teleport>
   </Sticky>
 </template>
