@@ -45,7 +45,7 @@ export function useFollowSpace(spaceObj) {
 
   watchEffect(() => {
     (isFollowing.value = (follows.value?.[spaceObj.key] ?? []).some(
-      (f: any) => f.follower === aliasWallet.value?.address
+      (f: any) => f.follower === web3Account.value
     )),
       { deep: true };
   });
