@@ -112,7 +112,7 @@ onMounted(() => setTitle());
       </Container>
     </nav>
     <div
-      class="bg-blue text-white text-center py-2 top-border"
+      class="bg-blue text-white text-center py-2 border-top"
       v-if="pendingCount > 0"
     >
       <UiLoading :fill-white="true" class="mr-2" />
