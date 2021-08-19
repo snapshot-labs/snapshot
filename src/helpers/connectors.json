@@ -19,6 +19,17 @@
     "id": "torus",
     "name": "Torus"
   },
+  "walletlink": {
+    "id": "walletlink",
+    "name": "Coinbase",
+    "network": "1",
+    "options": {
+      "appName": "Snapshot",
+      "darkMode": false,
+      "chainId": 1,
+      "ethJsonrpcUrl": "https://cloudflare-eth.com"
+    }
+  },
   "portis": {
     "id": "portis",
     "name": "Portis",
