@@ -1,6 +1,6 @@
 import { ref } from 'vue';
 
-const pendingCount = ref(1);
+const pendingCount = ref(0);
 
 export function useTxStatus() {
   return { pendingCount };
