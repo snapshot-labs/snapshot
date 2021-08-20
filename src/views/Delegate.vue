@@ -80,6 +80,7 @@ async function handleSubmit() {
       [formatBytes32String(form.value.id), address]
     );
     pendingCount.value++;
+    loading.value = false;
     const receipt = await tx.wait();
     console.log('Receipt', receipt);
     await sleep(3e3);
@@ -89,7 +90,6 @@ async function handleSubmit() {
   } catch (e) {
     console.log(e);
   }
-  loading.value = false;
 }
 
 function clearDelegate(id, delegate) {
