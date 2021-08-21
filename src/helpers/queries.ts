@@ -117,3 +117,12 @@ export const FOLLOWS_QUERY = gql`
     }
   }
 `;
+
+export const ALIASES_QUERY = gql`
+  query Aliases($address: String!, $alias: String!) {
+    aliases(where: { address: $address, alias: $alias }) {
+      address
+      alias
+    }
+  }
+`;

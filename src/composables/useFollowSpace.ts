@@ -11,20 +11,14 @@ const follows: any = ref({});
 export function useFollowSpace(spaceObj) {
   const { web3 } = useWeb3();
   const { modalAccountOpen } = useModal();
+  const { apolloQuery } = useApolloQuery();
+  const { setAlias, aliasWallet, validAlias } = useAliasAction();
 
   const loading = ref(false);
-  const loadingAllFollows = ref(false);
   const isFollowing = ref(false);
 
   const web3Account = computed(() => web3.value.account);
 
-  onMounted(async () => {
-    loadingAllFollows.value = true;
-    await loadFollows();
-    loadingAllFollows.value = false;
-  });
-
-  const { apolloQuery } = useApolloQuery();
   async function loadFollows() {
     try {
       follows.value[spaceObj.key] = await apolloQuery(
@@ -41,15 +35,6 @@ export function useFollowSpace(spaceObj) {
     }
   }
 
-  const { setAlias, aliasWallet } = useAliasAction();
-
-  watchEffect(() => {
-    (isFollowing.value = (follows.value?.[spaceObj.key] ?? []).some(
-      (f: any) => f.follower === web3Account.value
-    )),
-      { deep: true };
-  });
-
   function clickFollow(space) {
     !web3.value.authLoading
       ? web3Account.value
@@ -60,7 +45,7 @@ export function useFollowSpace(spaceObj) {
 
   async function follow(space) {
     loading.value = true;
-    if (!aliasWallet.value) {
+    if (!aliasWallet.value && !validAlias.value) {
       await setAlias();
       follow(space);
     } else {
@@ -86,10 +71,18 @@ export function useFollowSpace(spaceObj) {
     }
   }
 
+  watchEffect(() => {
+    (isFollowing.value = (follows.value?.[spaceObj.key] ?? []).some(
+      (f: any) => f.follower === web3Account.value
+    )),
+      { deep: true };
+  });
+
+  onMounted(() => loadFollows());
+
   return {
     clickFollow,
     loadingFollow: computed(() => loading.value),
-    isFollowing,
-    loadingAllFollows
+    isFollowing
   };
 }

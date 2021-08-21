@@ -24,8 +24,7 @@ const isAdmin = computed(() => {
   );
 });
 
-const { clickFollow, loadingFollow, isFollowing, loadingAllFollows } =
-  useFollowSpace(props.space);
+const { clickFollow, loadingFollow, isFollowing } = useFollowSpace(props.space);
 </script>
 
 <template>
