@@ -12,7 +12,7 @@ export function useFollowSpace(spaceObj) {
   const { web3 } = useWeb3();
   const { modalAccountOpen } = useModal();
   const { apolloQuery } = useApolloQuery();
-  const { setAlias, aliasWallet, validAlias } = useAliasAction();
+  const { setAlias, aliasWallet, isValidAlias, checkAlias } = useAliasAction();
 
   const loading = ref(false);
   const isFollowing = ref(false);
@@ -45,11 +45,12 @@ export function useFollowSpace(spaceObj) {
 
   async function follow(space) {
     loading.value = true;
-    if (!aliasWallet.value && !validAlias.value) {
-      await setAlias();
-      follow(space);
-    } else {
-      try {
+    try {
+      await checkAlias();
+      if (!aliasWallet.value || !isValidAlias.value) {
+        await setAlias();
+        follow(space);
+      } else {
         if (isFollowing.value) {
           await client.unfollow(aliasWallet.value, aliasWallet.value.address, {
             from: web3Account.value,
@@ -64,10 +65,10 @@ export function useFollowSpace(spaceObj) {
           isFollowing.value = true;
         }
         loading.value = false;
-      } catch (e) {
-        loading.value = false;
-        console.error(e);
       }
+    } catch (e) {
+      loading.value = false;
+      console.error(e);
     }
   }
 

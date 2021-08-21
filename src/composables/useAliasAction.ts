@@ -1,4 +1,4 @@
-import { computed, ref, watchEffect } from 'vue';
+import { computed, ref } from 'vue';
 import { lsGet, lsSet } from '@/helpers/utils';
 import { useWeb3 } from '@/composables/useWeb3';
 import { Wallet } from '@ethersproject/wallet';
@@ -14,7 +14,7 @@ export function useAliasAction() {
   const { apolloQuery } = useApolloQuery();
 
   const aliases = ref(lsGet('aliases') || {});
-  const validAlias = ref(false);
+  const isValidAlias = ref(false);
 
   const userAlias = computed(() => {
     return aliases.value?.[web3.value.account];
@@ -24,6 +24,25 @@ export function useAliasAction() {
     const provider: Provider = getDefaultProvider();
     return userAlias.value ? new Wallet(userAlias.value, provider) : null;
   });
+
+  async function checkAlias() {
+    if (aliasWallet.value?.address && web3.value?.account) {
+      const alias = await apolloQuery(
+        {
+          query: ALIASES_QUERY,
+          variables: {
+            address: web3.value.account,
+            alias: aliasWallet.value.address
+          }
+        },
+        'aliases'
+      );
+
+      isValidAlias.value =
+        alias[0]?.address === web3.value.account &&
+        alias[0]?.alias === aliasWallet.value.address;
+    }
+  }
 
   async function setAlias() {
     const rndWallet = Wallet.createRandom();
@@ -40,26 +59,8 @@ export function useAliasAction() {
         alias: aliasWallet.value.address
       });
     }
+    await checkAlias();
   }
 
-  watchEffect(async () => {
-    if (aliasWallet.value?.address && web3.value?.account) {
-      const alias = await apolloQuery(
-        {
-          query: ALIASES_QUERY,
-          variables: {
-            address: web3.value.account,
-            alias: aliasWallet.value.address
-          }
-        },
-        'aliases'
-      );
-
-      validAlias.value =
-        alias?.address === web3.value.account &&
-        alias?.alias === aliasWallet.value.address;
-    }
-  });
-
-  return { setAlias, aliasWallet, validAlias };
+  return { setAlias, aliasWallet, isValidAlias, checkAlias };
 }
