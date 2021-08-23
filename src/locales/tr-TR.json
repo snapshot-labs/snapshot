@@ -106,6 +106,9 @@
   "addresses": "Adresler",
   "networkErrorPlayground": "Ağ hatası - daha fazla bilgi için lütfen tarayıcı konsolunuzu açın",
   "upload": "Yükle",
+  "join": "Join",
+  "joined": "Joined",
+  "leave": "Leave",
   "copyLink": "Linki kopyala",
   "duplicateProposal": "Teklifi yinele",
   "errors": {
