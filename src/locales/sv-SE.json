@@ -106,6 +106,9 @@
   "addresses": "Adresser",
   "networkErrorPlayground": "Nätverksfel - öppna din webbläsarkonsol för mer information",
   "upload": "Uppladdning",
+  "join": "Join",
+  "joined": "Joined",
+  "leave": "Leave",
   "copyLink": "Copy link",
   "duplicateProposal": "Duplicate proposal",
   "errors": {
