@@ -106,6 +106,9 @@
   "addresses": "Alamat",
   "networkErrorPlayground": "Jaringan eror - buka browser untuk informasi lebih lanjut",
   "upload": "Unggah",
+  "join": "Join",
+  "joined": "Joined",
+  "leave": "Leave",
   "copyLink": "Salin tautan",
   "duplicateProposal": "Duplikat proposal",
   "errors": {
