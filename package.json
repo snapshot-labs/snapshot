@@ -18,6 +18,7 @@
     "@ethersproject/solidity": "^5.4.0",
     "@ethersproject/strings": "^5.4.0",
     "@ethersproject/units": "^5.4.0",
+    "@ethersproject/wallet": "^5.4.0",
     "@popperjs/core": "^2.9.2",
     "@portis/web3": "^4.0.5",
     "@primer/css": "^14.4.0",
