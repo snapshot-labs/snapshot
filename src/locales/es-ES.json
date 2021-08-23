@@ -106,6 +106,9 @@
   "addresses": "Direcciones",
   "networkErrorPlayground": "Error de red - por favor, abra la consola de su navegador para obtener más información",
   "upload": "Cargar",
+  "join": "Join",
+  "joined": "Joined",
+  "leave": "Leave",
   "copyLink": "Copiar enlace",
   "duplicateProposal": "Duplicar propuesta",
   "errors": {
