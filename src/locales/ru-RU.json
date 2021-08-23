@@ -106,6 +106,9 @@
   "addresses": "Адреса",
   "networkErrorPlayground": "Сетевая ошибка - откройте консоль браузера для получения дополнительной информации",
   "upload": "Загрузить",
+  "join": "Join",
+  "joined": "Joined",
+  "leave": "Leave",
   "copyLink": "Копировать ссылку",
   "duplicateProposal": "Повторяющееся предложение",
   "errors": {
