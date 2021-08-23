@@ -106,6 +106,9 @@
   "addresses": "पते",
   "networkErrorPlayground": "नेटवर्क त्रुटि - अधिक जानकारी के लिए कृपया अपना ब्राउज़र कंसोल खोलें",
   "upload": "अपलोड करें",
+  "join": "Join",
+  "joined": "Joined",
+  "leave": "Leave",
   "copyLink": "लिंक कॉपी करें",
   "duplicateProposal": "डुप्लीकेट प्रस्ताव",
   "errors": {
