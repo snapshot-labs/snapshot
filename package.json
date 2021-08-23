@@ -52,8 +52,7 @@
     "vue-i18n": "^9.1.7",
     "vue-router": "^4.0.9",
     "vue3-jazzicon": "^0.1.1",
-    "vuedraggable": "^4.0.2",
-    "walletlink": "^2.1.7"
+    "vuedraggable": "^4.0.2"
   },
   "devDependencies": {
     "@types/node": "^16.4.10",
@@ -70,7 +69,8 @@
     "sass": "~1.32.6",
     "sass-loader": "^8.0.2",
     "vite": "^2.5.0",
-    "vite-plugin-components": "^0.13.2"
+    "vite-plugin-components": "^0.13.2",
+    "walletlink": "^2.1.8"
   },
   "license": "MIT",
   "repository": "snapshot-labs/snapshot"
