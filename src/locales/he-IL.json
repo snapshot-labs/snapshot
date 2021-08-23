@@ -106,6 +106,9 @@
   "addresses": "כתובות",
   "networkErrorPlayground": "בעיית רשת - פתח את הקונסול בדפדפן שלך למידע בנושא",
   "upload": "העלה",
+  "join": "Join",
+  "joined": "Joined",
+  "leave": "Leave",
   "copyLink": "העתק קישור",
   "duplicateProposal": "שכפל הצעה",
   "errors": {
