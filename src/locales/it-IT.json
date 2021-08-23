@@ -106,6 +106,9 @@
   "addresses": "Indirizzi",
   "networkErrorPlayground": "Errore di rete: aprire la console del browser per ulteriori informazioni",
   "upload": "Caricare",
+  "join": "Join",
+  "joined": "Joined",
+  "leave": "Leave",
   "copyLink": "Copy link",
   "duplicateProposal": "Duplicate proposal",
   "errors": {
