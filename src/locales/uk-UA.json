@@ -106,6 +106,9 @@
   "addresses": "Адреси",
   "networkErrorPlayground": "Помилка мережі - будь ласка, відкрийте ваш браузер для отримання додаткової інформації",
   "upload": "Завантажити",
+  "join": "Join",
+  "joined": "Joined",
+  "leave": "Leave",
   "copyLink": "Скопіювати посилання",
   "duplicateProposal": "Дублювати пропозицію",
   "errors": {
