@@ -106,6 +106,9 @@
   "addresses": "Địa chỉ",
   "networkErrorPlayground": "Lỗi mạng - vui lòng mở bảng điều khiển trình duyệt của bạn để biết thêm thông tin",
   "upload": "Tải lên",
+  "join": "Join",
+  "joined": "Joined",
+  "leave": "Leave",
   "copyLink": "Copy link",
   "duplicateProposal": "Duplicate proposal",
   "errors": {
