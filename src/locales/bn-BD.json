@@ -106,6 +106,9 @@
   "addresses": "এড্রেস",
   "networkErrorPlayground": "নেটওয়ার্ক ত্রুটি - আরও তথ্যের জন্য দয়া করে আপনার ব্রাউজার কনসোলটি খুলুন",
   "upload": "আপলোড",
+  "join": "Join",
+  "joined": "Joined",
+  "leave": "Leave",
   "copyLink": "Copy link",
   "duplicateProposal": "Duplicate proposal",
   "errors": {
