@@ -106,6 +106,9 @@
   "addresses": "地址",
   "networkErrorPlayground": "网络错误 - 请打开您的浏览器控制台获取更多信息",
   "upload": "上传",
+  "join": "Join",
+  "joined": "Joined",
+  "leave": "Leave",
   "copyLink": "复制链接",
   "duplicateProposal": "复制提案",
   "errors": {
