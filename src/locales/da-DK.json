@@ -106,6 +106,9 @@
   "addresses": "Adresser",
   "networkErrorPlayground": "Netværksfejl - åbn venligst din browserkonsol for mere information",
   "upload": "Send/Upload",
+  "join": "Join",
+  "joined": "Joined",
+  "leave": "Leave",
   "copyLink": "Copy link",
   "duplicateProposal": "Duplicate proposal",
   "errors": {
