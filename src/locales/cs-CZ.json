@@ -106,6 +106,9 @@
   "addresses": "Adres",
   "networkErrorPlayground": "Chyba sítě - prosím otevřete konzoli prohlížeče pro více informací",
   "upload": "Odeslat",
+  "join": "Join",
+  "joined": "Joined",
+  "leave": "Leave",
   "copyLink": "Copy link",
   "duplicateProposal": "Duplicate proposal",
   "errors": {
