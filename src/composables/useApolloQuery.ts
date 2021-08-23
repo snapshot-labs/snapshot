@@ -5,7 +5,7 @@ import { apolloClient } from '@/helpers/apollo';
 export function useApolloQuery() {
   const loading = ref(false);
 
-  async function apolloQuery(options, path) {
+  async function apolloQuery(options, path = '') {
     try {
       loading.value = true;
       const response = await apolloClient.query(options);

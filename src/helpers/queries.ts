@@ -108,3 +108,21 @@ export const PROPOSAL_VOTES_QUERY = gql`
     }
   }
 `;
+
+export const FOLLOWS_QUERY = gql`
+  query Follows($space_in: [String]!, $follower_in: [String]) {
+    follows(where: { space_in: $space_in, follower_in: $follower_in }) {
+      id
+      follower
+    }
+  }
+`;
+
+export const ALIASES_QUERY = gql`
+  query Aliases($address: String!, $alias: String!) {
+    aliases(where: { address: $address, alias: $alias }) {
+      address
+      alias
+    }
+  }
+`;
