@@ -54,6 +54,7 @@ async function handleSubmit() {
     pendingCount.value--;
     emit('reload');
   } catch (e) {
+    pendingCount.value--;
     console.log(e);
   }
   loading.value = false;

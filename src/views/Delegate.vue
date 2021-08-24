@@ -88,6 +88,7 @@ async function handleSubmit() {
     pendingCount.value--;
     await load();
   } catch (e) {
+    pendingCount.value--;
     console.log(e);
   }
 }
