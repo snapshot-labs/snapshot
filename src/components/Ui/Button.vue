@@ -3,12 +3,20 @@ import { defineProps } from 'vue';
 
 defineProps({
   loading: Boolean,
-  type: String
+  type: String,
+  disable: {
+    type: Boolean,
+    default: true
+  }
 });
 </script>
 
 <template>
-  <button :type="type || 'button'" class="button" :disabled="loading">
+  <button
+    :type="type || 'button'"
+    class="button"
+    :disabled="disable ? loading : false"
+  >
     <UiLoading v-if="loading" />
     <slot v-else />
   </button>
