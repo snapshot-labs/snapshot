@@ -1,5 +1,6 @@
 <script setup>
 import { ref, onBeforeUnmount, onMounted } from 'vue';
+import { watchTxStatus } from '@/composables/useTxStatus';
 
 const sticky = ref(null);
 const isFixed = ref(false);
@@ -18,6 +19,8 @@ onMounted(() => {
     offsetHeight.value = sticky.value.offsetHeight;
   }
 });
+
+watchTxStatus(() => (offsetHeight.value = sticky.value.offsetHeight));
 
 onBeforeUnmount(() => {
   window.removeEventListener('scroll', onScroll);
