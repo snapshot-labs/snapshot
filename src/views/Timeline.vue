@@ -135,7 +135,11 @@ onMounted(async () => {
       </div>
 
       <Block
-        v-if="loading || (loadingFollows && $route.name === 'timeline')"
+        v-if="
+          loading ||
+          (web3.authLoading && $route.name === 'timeline') ||
+          (loadingFollows && $route.name === 'timeline')
+        "
         :slim="true"
       >
         <RowLoading class="my-2" />
@@ -154,7 +158,8 @@ onMounted(async () => {
         </router-link>
       </Block>
 
-      <NoResults :block="true" v-else-if="proposals.length < 1" />
+      <NoResults v-else-if="proposals.length < 1" :block="true" />
+
       <div v-else>
         <Block :slim="true" v-for="(proposal, i) in proposals" :key="i">
           <TimelineProposal :proposal="proposal" :profiles="profiles" />
