@@ -8,19 +8,23 @@ import { useScrollMonitor } from '@/composables/useScrollMonitor';
 import { useApolloQuery } from '@/composables/useApolloQuery';
 import { PROPOSALS_QUERY } from '@/helpers/queries';
 import { useProfiles } from '@/composables/useProfiles';
-import { useFavoriteSpaces } from '@/composables/useFavoriteSpaces';
+import { useFollowSpace } from '@/composables/useFollowSpace';
 
 const filterBy = ref('all');
 const loading = ref(false);
 const proposals = ref([]);
 
 const route = useRoute();
-const { favorites: favoriteSpaces } = useFavoriteSpaces();
+const { followingSpaces, loadingFollows } = useFollowSpace();
 
-const favorites = computed(() =>
-  route.name === 'timeline' ? favoriteSpaces.value : []
-);
-const favoritesKeys = computed(() => Object.keys(favorites.value));
+const following = computed(() => {
+  return route.name === 'timeline' ? followingSpaces.value : [];
+});
+
+watch(following, () => {
+  proposals.value = [];
+  load();
+});
 
 const { loadBy, limit, loadingMore, stopLoadingMore, loadMore } =
   useInfiniteLoader();
@@ -37,7 +41,7 @@ async function loadProposals(skip = 0) {
       variables: {
         first: loadBy,
         skip,
-        space_in: favoritesKeys.value,
+        space_in: following.value,
         state: filterBy.value
       }
     },
@@ -73,7 +77,7 @@ function selectState(e) {
 // Save the most recently seen proposalId in localStorage
 const { getProposalIds, proposalIds } = useUnseenProposals();
 onMounted(async () => {
-  await getProposalIds(favorites.value);
+  await getProposalIds(following.value);
   if (proposalIds.value[0])
     lsSet('lastSeenProposalId', proposalIds.value[0].id);
 });
@@ -87,7 +91,7 @@ onMounted(async () => {
           <div class="py-3">
             <router-link
               :to="{ name: 'timeline' }"
-              v-text="$t('favorites')"
+              v-text="$t('joinedSpaces')"
               class="d-block px-4 py-2 sidenav-item"
             />
             <router-link
@@ -129,16 +133,18 @@ onMounted(async () => {
       </div>
 
       <Block
-        v-if="favoritesKeys.length < 1 && $route.name === 'timeline'"
+        v-if="
+          following.length < 1 && $route.name === 'timeline' && !loadingFollows
+        "
         class="text-center"
       >
-        <div class="mb-3">{{ $t('noFavorites') }}</div>
+        <div class="mb-3">{{ $t('noSpacesJoined') }}</div>
         <router-link :to="{ name: 'home' }">
-          <UiButton>{{ $t('addFavorites') }}</UiButton>
+          <UiButton>{{ $t('joinSpaces') }}</UiButton>
         </router-link>
       </Block>
 
-      <Block v-else-if="loading" :slim="true">
+      <Block v-else-if="loading || loadingFollows" :slim="true">
         <RowLoading class="my-2" />
       </Block>
 

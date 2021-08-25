@@ -10,6 +10,7 @@ const props = defineProps({
 
 const auth = getInstance();
 const { web3 } = useWeb3();
+const { clickFollow, loadingFollow, isFollowing } = useFollowSpace(props.space);
 
 const hoverJoin = ref(false);
 
@@ -23,8 +24,6 @@ const isAdmin = computed(() => {
     admins.includes(web3Account.value.toLowerCase())
   );
 });
-
-const { clickFollow, loadingFollow, isFollowing } = useFollowSpace(props.space);
 </script>
 
 <template>

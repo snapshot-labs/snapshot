@@ -1,4 +1,4 @@
-import { computed, ref, onMounted, watchEffect } from 'vue';
+import { computed, onMounted, ref, watch, watchEffect } from 'vue';
 import { useModal } from '@/composables/useModal';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useApolloQuery } from '@/composables/useApolloQuery';
@@ -6,31 +6,54 @@ import { FOLLOWS_QUERY } from '@/helpers/queries';
 import { useAliasAction } from '@/composables/useAliasAction';
 import client from '@/helpers/EIP712';
 
-const follows: any = ref({});
+// const spaceFollows: any = ref({});
+const following = ref([]);
 
-export function useFollowSpace(spaceObj) {
+export function useFollowSpace(spaceObj: any = {}) {
   const { web3 } = useWeb3();
   const { modalAccountOpen } = useModal();
   const { apolloQuery } = useApolloQuery();
   const { setAlias, aliasWallet, isValidAlias, checkAlias } = useAliasAction();
 
   const loading = ref(false);
+  const loadingFollows = ref(true);
   const isFollowing = ref(false);
 
   const web3Account = computed(() => web3.value.account);
 
+  const followingSpaces = computed(() =>
+    following.value.map((f: any) => f.space.id)
+  );
+
   async function loadFollows() {
+    if (!web3Account.value) return;
+    loadingFollows.value = true;
     try {
-      follows.value[spaceObj.key] = await apolloQuery(
-        {
-          query: FOLLOWS_QUERY,
-          variables: {
-            space_in: spaceObj.key
-          }
-        },
-        'follows'
-      );
+      Promise.all([
+        // Hint: Saving this for when we want to show how many users follow a space.
+        //
+        // (spaceFollows.value[spaceObj.key] = await apolloQuery(
+        //   {
+        //     query: FOLLOWS_QUERY,
+        //     variables: {
+        //       space_in: spaceObj.key
+        //     }
+        //   },
+        //   'follows'
+        // )),
+        (following.value = await apolloQuery(
+          {
+            query: FOLLOWS_QUERY,
+            variables: {
+              follower_in: web3Account.value
+            }
+          },
+          'follows'
+        ))
+      ]);
+      loadingFollows.value = false;
     } catch (e) {
+      loadingFollows.value = false;
       console.error(e);
     }
   }
@@ -62,6 +85,7 @@ export function useFollowSpace(spaceObj) {
             from: web3Account.value,
             space
           });
+
           isFollowing.value = true;
         }
         loading.value = false;
@@ -72,18 +96,23 @@ export function useFollowSpace(spaceObj) {
     }
   }
 
-  watchEffect(() => {
-    (isFollowing.value = (follows.value?.[spaceObj.key] ?? []).some(
-      (f: any) => f.follower === web3Account.value
+  watchEffect(async () => {
+    (isFollowing.value = (following.value ?? []).some(
+      (f: any) =>
+        f.space.id === spaceObj?.key && f.follower === web3Account.value
     )),
       { deep: true };
   });
+
+  watch(web3Account, () => loadFollows());
 
   onMounted(() => loadFollows());
 
   return {
     clickFollow,
     loadingFollow: computed(() => loading.value),
-    isFollowing
+    loadingFollows: computed(() => loadingFollows.value),
+    isFollowing,
+    followingSpaces
   };
 }

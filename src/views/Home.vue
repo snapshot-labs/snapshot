@@ -5,13 +5,12 @@ import orderBy from 'lodash/orderBy';
 import spotlight from '@snapshot-labs/snapshot-spaces/spaces/spotlight.json';
 import { useUnseenProposals } from '@/composables/useUnseenProposals';
 import { useScrollMonitor } from '@/composables/useScrollMonitor';
-import { useFavoriteSpaces } from '@/composables/useFavoriteSpaces';
 import { useApp } from '@/composables/useApp';
+import { useFollowSpace } from '@/composables/useFollowSpace';
 
 const route = useRoute();
-const { addFavoriteSpace, removeFavoriteSpace, favorites } =
-  useFavoriteSpaces();
 const { spaces } = useApp();
+const { followingSpaces } = useFollowSpace();
 
 const orderedSpaces = computed(() => {
   const networkFilter = route.query.network;
@@ -21,13 +20,13 @@ const orderedSpaces = computed(() => {
       const spotlightIndex = spotlight.indexOf(key);
       return {
         ...spaces.value[key],
-        favorite: !!favorites.value[key],
+        following: followingSpaces.value.some(s => s === key),
         isActive: !!spaces.value[key]._activeProposals,
         spotlight: spotlightIndex === -1 ? 1e3 : spotlightIndex
       };
     })
     .filter(space => !space.private);
-  return orderBy(list, ['favorite', 'spotlight'], ['desc', 'asc']).filter(
+  return orderBy(list, ['following', 'spotlight'], ['desc', 'asc']).filter(
     space =>
       (networkFilter ? space.network === networkFilter.toLowerCase() : true) &&
       JSON.stringify(space).toLowerCase().includes(q.toLowerCase())
@@ -35,15 +34,7 @@ const orderedSpaces = computed(() => {
 });
 
 const { numberOfUnseenProposals, getProposalIds } = useUnseenProposals();
-watchEffect(() => getProposalIds(favorites.value));
-
-function toggleFavorite(spaceId) {
-  if (favorites.value[spaceId]) {
-    removeFavoriteSpace(spaceId);
-  } else {
-    addFavoriteSpace(spaceId);
-  }
-}
+watchEffect(() => getProposalIds(followingSpaces.value));
 
 // Scroll
 const loadBy = 16;
@@ -100,12 +91,7 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
                   class="my-3"
                 />
               </span>
-              <StatefulIcon
-                :on="space.favorite"
-                onName="star"
-                offName="star1"
-                @click="toggleFavorite(space.key)"
-              />
+              <StatefulIcon :on="followingSpaces.some(s => s === space.key)" />
               <div class="">
                 <h3 v-text="space.name" />
                 <div class="text-color">{{ space.symbol }}</div>
