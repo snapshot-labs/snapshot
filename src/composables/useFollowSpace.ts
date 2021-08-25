@@ -26,12 +26,11 @@ export function useFollowSpace(spaceObj: any = {}) {
   );
 
   async function loadFollows() {
-    if (!web3Account.value) return;
     loadingFollows.value = true;
     try {
       Promise.all([
         // Hint: Saving this for when we want to show how many users follow a space.
-        //
+
         // (spaceFollows.value[spaceObj.key] = await apolloQuery(
         //   {
         //     query: FOLLOWS_QUERY,
