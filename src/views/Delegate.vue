@@ -91,6 +91,7 @@ async function handleSubmit() {
     pendingCount.value--;
     console.log(e);
   }
+  loading.value = false;
 }
 
 function clearDelegate(id, delegate) {

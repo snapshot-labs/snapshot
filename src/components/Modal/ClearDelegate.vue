@@ -47,6 +47,7 @@ async function handleSubmit() {
     );
     pendingCount.value++;
     emit('close');
+    loading.value = false;
     const receipt = await tx.wait();
     console.log('Receipt', receipt);
     await sleep(3e3);
