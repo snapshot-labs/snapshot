@@ -7,7 +7,7 @@ export function useTxStatus() {
     if (pendingCount.value < 0) {
       pendingCount.value = 0
     }
-  })
+  });
   return { pendingCount };
 }
 
