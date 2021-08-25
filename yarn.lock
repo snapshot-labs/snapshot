@@ -719,7 +719,7 @@
 
 "@snapshot-labs/lock@github:snapshot-labs/lock#master":
   version "0.1.3"
-  resolved "https://codeload.github.com/snapshot-labs/lock/tar.gz/0cfc5367aa7ba0ef42b49c73aea3956fbac1e5c3"
+  resolved "https://codeload.github.com/snapshot-labs/lock/tar.gz/master"
 
 "@snapshot-labs/snapshot-spaces@github:snapshot-labs/snapshot-spaces#master":
   version "0.1.0"
@@ -727,7 +727,7 @@
 
 "@snapshot-labs/snapshot.js@github:snapshot-labs/snapshot.js#master":
   version "0.2.0"
-  resolved "https://codeload.github.com/snapshot-labs/snapshot.js/tar.gz/8bf25958a77edf76273921d2addea99257ee9215"
+  resolved "https://codeload.github.com/snapshot-labs/snapshot.js/tar.gz/master"
   dependencies:
     "@ethersproject/abi" "^5.0.4"
     "@ethersproject/address" "^5.0.4"
