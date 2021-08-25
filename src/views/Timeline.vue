@@ -9,6 +9,7 @@ import { useApolloQuery } from '@/composables/useApolloQuery';
 import { PROPOSALS_QUERY } from '@/helpers/queries';
 import { useProfiles } from '@/composables/useProfiles';
 import { useFollowSpace } from '@/composables/useFollowSpace';
+import { useWeb3 } from '@/composables/useWeb3';
 
 const filterBy = ref('all');
 const loading = ref(false);
@@ -16,6 +17,7 @@ const proposals = ref([]);
 
 const route = useRoute();
 const { followingSpaces, loadingFollows } = useFollowSpace();
+const { web3 } = useWeb3();
 
 const following = computed(() => {
   return route.name === 'timeline' ? followingSpaces.value : [];
@@ -133,8 +135,16 @@ onMounted(async () => {
       </div>
 
       <Block
-        v-if="
-          following.length < 1 && $route.name === 'timeline' && !loadingFollows
+        v-if="loading || (loadingFollows && $route.name === 'timeline')"
+        :slim="true"
+      >
+        <RowLoading class="my-2" />
+      </Block>
+
+      <Block
+        v-else-if="
+          ($route.name === 'timeline' && following.length < 1) ||
+          ($route.name === 'timeline' && !web3.account)
         "
         class="text-center"
       >
@@ -142,10 +152,6 @@ onMounted(async () => {
         <router-link :to="{ name: 'home' }">
           <UiButton>{{ $t('joinSpaces') }}</UiButton>
         </router-link>
-      </Block>
-
-      <Block v-else-if="loading || loadingFollows" :slim="true">
-        <RowLoading class="my-2" />
       </Block>
 
       <NoResults :block="true" v-else-if="proposals.length < 1" />
