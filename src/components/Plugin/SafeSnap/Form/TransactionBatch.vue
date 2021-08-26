@@ -78,6 +78,24 @@ export default {
 </template>
 
 <style scoped lang="scss">
+@font-face {
+  font-family: 'Calibre';
+  src: url('../../../../assets/fonts/Calibre-Semibold.woff2') format('woff2'),
+    url('../../../../assets/fonts/Calibre-Semibold.woff') format('woff'),
+    url('../../../../assets/fonts/Calibre-Semibold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Calibre-regular';
+  src: url('../../../../assets/fonts/Calibre-Regular.woff2') format('woff2'),
+    url('../../../../assets/fonts/Calibre-Regular.woff') format('woff'),
+    url('../../../../assets/fonts/Calibre-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+
 .batch-error {
   border: 1px solid red;
   border-radius: 12px;
