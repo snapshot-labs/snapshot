@@ -1,6 +1,4 @@
 <script setup>
-import { defineProps } from 'vue';
-
 defineProps(['plugin']);
 
 function getLogoUrl(key) {

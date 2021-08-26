@@ -1,5 +1,4 @@
 <script setup>
-import { defineProps, defineEmits } from 'vue';
 import { getUrl } from '@snapshot-labs/snapshot.js/src/utils.ts';
 
 const props = defineProps({ open: Boolean, space: Object });

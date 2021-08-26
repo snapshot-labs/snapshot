@@ -1,5 +1,4 @@
 <script setup>
-import { defineEmits, defineProps } from 'vue';
 import pkg from '@/../package.json';
 import languages from '@/locales/languages.json';
 import gateways from '@snapshot-labs/snapshot.js/src/gateways.json';

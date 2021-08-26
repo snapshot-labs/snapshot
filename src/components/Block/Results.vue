@@ -1,5 +1,5 @@
 <script setup>
-import { computed, defineProps } from 'vue';
+import { computed } from 'vue';
 import jsonexport from 'jsonexport/dist';
 import pkg from '@/../package.json';
 import { useMediaQuery } from '@/composables/useMediaQuery';

@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watchEffect, defineEmits, defineProps } from 'vue';
+import { ref, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useUsername } from '@/composables/useUsername';
 import { useNotifications } from '@/composables/useNotifications';
