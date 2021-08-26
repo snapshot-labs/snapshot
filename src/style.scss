@@ -31,6 +31,23 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: 'Calibre-regular';
+  src: url('./assets/fonts/Calibre-Regular.woff2') format('woff2'),
+  url('./assets/fonts/Calibre-Regular.woff') format('woff'),
+  url('./assets/fonts/Calibre-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Overpass Mono';
+  src: url('./assets/fonts/OverpassMono-Regular.woff2') format('woff2'),
+    url('./assets/fonts/OverpassMono-Regular.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+}
+
 html,
 body,
 #app {

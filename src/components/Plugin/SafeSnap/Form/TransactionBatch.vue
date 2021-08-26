@@ -1,9 +1,14 @@
 <script>
 import { clone } from '@/helpers/utils';
+import { useSafesnap } from '../../../../composables/useSafesnap';
 
 export default {
   props: ['modelValue', 'index', 'nonce', 'config'],
   emits: ['update:modelValue', 'remove'],
+  setup() {
+    const { safesnap } = useSafesnap();
+    return { safesnap };
+  },
   data() {
     return {
       open: true,
@@ -56,8 +61,46 @@ export default {
         @update:modelValue="updateTransaction(index, $event)"
       />
     </div>
+    <div
+      class="mt-4 batch-error"
+      v-if="safesnap.batchError && index === safesnap.batchError.num"
+    >
+      <h4>Transaction Failed</h4>
+      <div class="mt-2 batch-error-message-container">
+        Error: {{ safesnap.batchError.message }}
+      </div>
+    </div>
+
     <UiButton v-if="!config.preview" @click="addTransaction">
       Add Transaction
     </UiButton>
   </UiCollapsible>
 </template>
+
+<style scoped lang="scss">
+.batch-error {
+  border: 1px solid red;
+  border-radius: 12px;
+  padding: 16px 12px 12px 12px;
+  text-align: left;
+  font-family: 'Calibre-regular', 'Calibre', sans-serif;
+}
+
+.batch-error h4 {
+  color: #ff3030;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 18px;
+}
+
+.batch-error-message-container {
+  color: #ff3030;
+  font-size: 12px;
+  font-weight: normal;
+  font-family: 'Overpass Mono', 'Calibre', sans-serif;
+  word-break: break-word;
+  padding: 8px 8px 8px 12px;
+  border-radius: 12px;
+  background-color: rgba(255, 0, 0, 0.1);
+}
+</style>
