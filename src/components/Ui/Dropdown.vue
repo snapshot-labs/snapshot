@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onBeforeUnmount, computed, defineProps, defineEmits } from 'vue';
+import { ref, onBeforeUnmount, computed } from 'vue';
 
 const props = defineProps({
   items: Array,

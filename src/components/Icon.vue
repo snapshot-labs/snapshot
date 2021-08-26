@@ -1,6 +1,4 @@
 <script setup>
-import { defineProps } from 'vue';
-
 defineProps({
   name: String,
   size: String

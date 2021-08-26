@@ -4,7 +4,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "lint": "eslint src/*.ts --fix",
+    "lint": "eslint './src/*/**/*.{ts,vue,json}' --fix",
     "postinstall": "patch-package"
   },
   "dependencies": {

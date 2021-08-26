@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, toRefs, watch, defineProps, defineEmits } from 'vue';
+import { ref, computed, toRefs, watch } from 'vue';
 import { useSearchFilters } from '@/composables/useSearchFilters';
 import { clone } from '@/helpers/utils';
 

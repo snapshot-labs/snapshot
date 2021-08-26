@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, toRefs, watch, defineProps, defineEmits } from 'vue';
+import { ref, onMounted, toRefs, watch } from 'vue';
 
 const props = defineProps({
   modelValue: String,

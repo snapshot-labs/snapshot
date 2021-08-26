@@ -1,5 +1,5 @@
 <script setup>
-import { computed, defineProps, ref } from 'vue';
+import { computed, ref } from 'vue';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { useFollowSpace } from '@/composables/useFollowSpace';
 import { useWeb3 } from '@/composables/useWeb3';
