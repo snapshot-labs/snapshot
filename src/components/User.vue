@@ -1,5 +1,5 @@
 <script setup>
-import { watchEffect, defineProps } from 'vue';
+import { watchEffect } from 'vue';
 import { useUsername } from '@/composables/useUsername';
 
 const props = defineProps({

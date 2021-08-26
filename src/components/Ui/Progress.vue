@@ -1,5 +1,5 @@
 <script setup>
-import { computed, defineProps } from 'vue';
+import { computed } from 'vue';
 
 const props = defineProps({ value: { Number, Array }, max: Number });
 
