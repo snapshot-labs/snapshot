@@ -23,6 +23,8 @@ const following = computed(() => {
   return route.name === 'timeline' ? followingSpaces.value : [];
 });
 
+const isTimeline = computed(() => route.name === 'timeline');
+
 watch(following, () => {
   proposals.value = [];
   load();
@@ -137,8 +139,8 @@ onMounted(async () => {
       <Block
         v-if="
           loading ||
-          (web3.authLoading && $route.name === 'timeline') ||
-          (loadingFollows && $route.name === 'timeline')
+          (web3.authLoading && isTimeline) ||
+          (loadingFollows && isTimeline)
         "
         :slim="true"
       >
@@ -147,8 +149,7 @@ onMounted(async () => {
 
       <Block
         v-else-if="
-          ($route.name === 'timeline' && following.length < 1) ||
-          ($route.name === 'timeline' && !web3.account)
+          (isTimeline && following.length < 1) || (isTimeline && !web3.account)
         "
         class="text-center"
       >
