@@ -167,7 +167,6 @@ watch(web3Account, (val, prev) => {
 
 onMounted(async () => {
   await loadProposal();
-
   loadPower();
 });
 </script>
