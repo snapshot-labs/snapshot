@@ -1,10 +1,10 @@
 <script setup lang="ts">
-  defineProps({
-    fillWhite: {
-      type: Boolean,
-      default: false
-    }
-  });
+defineProps({
+  fillWhite: {
+    type: Boolean,
+    default: false
+  }
+});
 </script>
 <template>
   <span class="loading">
@@ -34,43 +34,43 @@
 </template>
 
 <style lang="scss">
-  .loading {
-    span {
-      width: 100%;
-    }
+.loading {
+  span {
+    width: 100%;
+  }
 
-    &.big {
-      svg {
-        width: 34px;
-        height: 34px;
-      }
-    }
-
+  &.big {
     svg {
-      display: inline-block;
-      vertical-align: middle;
-      width: 20px;
-      height: 20px;
-
-      path {
-        fill: var(--link-color);
-        &.fill-white {
-          fill: white;
-        }
-      }
-    }
-
-    &.overlay {
-      position: fixed;
-      text-align: center;
-      display: flex;
-      align-items: center;
-      align-content: center;
-      top: 0;
-      bottom: 80px;
-      left: 0;
-      right: 0;
-      width: 100%;
+      width: 34px;
+      height: 34px;
     }
   }
+
+  svg {
+    display: inline-block;
+    vertical-align: middle;
+    width: 20px;
+    height: 20px;
+
+    path {
+      fill: var(--link-color);
+      &.fill-white {
+        fill: white;
+      }
+    }
+  }
+
+  &.overlay {
+    position: fixed;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    align-content: center;
+    top: 0;
+    bottom: 80px;
+    left: 0;
+    right: 0;
+    width: 100%;
+  }
+}
 </style>
