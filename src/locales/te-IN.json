@@ -148,7 +148,8 @@
     "spacePlaceholder": "స్పేస్ (ఐచ్ఛిక)",
     "delegations": "మీ ప్రతినిధి బృందం (లు)",
     "allSpaces": "For all spaces",
-    "delegated": "మీకు అప్పగించారు"
+    "delegated": "మీకు అప్పగించారు",
+    "pendingTransaction": "no pending transaction | 1 pending transaction | {count} pending transactions"
   },
   "proposal": {
     "castVote": "మీ ఓటు వేయండి",
