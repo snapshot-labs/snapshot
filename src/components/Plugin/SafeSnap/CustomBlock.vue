@@ -58,6 +58,9 @@ import { sleep } from '@/helpers/utils';
 import { BigNumber } from '@ethersproject/bignumber';
 import { formatBatchTransaction } from '@/helpers/abi/utils';
 import { formatUnits } from '@ethersproject/units';
+import { useSafesnap } from '@/composables/useSafesnap';
+
+const { clearBatchError, setBatchError } = useSafesnap();
 
 const QuestionStates = {
   error: -1,
@@ -327,13 +330,7 @@ export default {
             this.modalApproveDecisionOpen = true;
             return;
           case QuestionStates.proposalApproved:
-            await this.plugin.executeProposal(
-              this.$auth.web3,
-              this.moduleAddress,
-              this.questionDetails.proposalId,
-              this.questionDetails.transactions,
-              this.questionDetails.nextTxIndex
-            );
+            await this.executeProposal();
             break;
         }
         await sleep(3e3);
@@ -355,6 +352,20 @@ export default {
       );
       await sleep(3e3);
       await this.updateDetails();
+    },
+    async executeProposal() {
+      try {
+        clearBatchError();
+        await this.plugin.executeProposal(
+          this.$auth.web3,
+          this.moduleAddress,
+          this.questionDetails.proposalId,
+          this.questionDetails.transactions,
+          this.questionDetails.nextTxIndex
+        );
+      } catch (err) {
+        setBatchError(this.questionDetails.nextTxIndex, err.reason);
+      }
     }
   }
 };
