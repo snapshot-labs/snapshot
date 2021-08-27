@@ -61,64 +61,18 @@ export default {
         @update:modelValue="updateTransaction(index, $event)"
       />
     </div>
-    <div
-      class="mt-4 batch-error"
+
+    <Block
       v-if="safesnap.batchError && index === safesnap.batchError.num"
+      class="mt-4"
+      style="border-color: red !important"
     >
-      <h4>Transaction Failed</h4>
-      <div class="mt-2 batch-error-message-container">
-        Error: {{ safesnap.batchError.message }}
-      </div>
-    </div>
+      <Icon name="warning" class="mr-2 text-red" />
+      <span class="text-red"> Error: {{ safesnap.batchError.message }}</span>
+    </Block>
 
     <UiButton v-if="!config.preview" @click="addTransaction">
       Add Transaction
     </UiButton>
   </UiCollapsible>
 </template>
-
-<style scoped lang="scss">
-@font-face {
-  font-family: 'Calibre';
-  src: url('../../../../assets/fonts/Calibre-Semibold.woff2') format('woff2'),
-    url('../../../../assets/fonts/Calibre-Semibold.woff') format('woff'),
-    url('../../../../assets/fonts/Calibre-Semibold.ttf') format('truetype');
-  font-weight: 600;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'Calibre-regular';
-  src: url('../../../../assets/fonts/Calibre-Regular.woff2') format('woff2'),
-    url('../../../../assets/fonts/Calibre-Regular.woff') format('woff'),
-    url('../../../../assets/fonts/Calibre-Regular.ttf') format('truetype');
-  font-weight: 400;
-  font-style: normal;
-}
-
-.batch-error {
-  border: 1px solid red;
-  border-radius: 12px;
-  padding: 16px 12px 12px 12px;
-  text-align: left;
-  font-family: 'Calibre-regular', 'Calibre', sans-serif;
-}
-
-.batch-error h4 {
-  color: #ff3030;
-  font-weight: normal;
-  font-size: 18px;
-  line-height: 18px;
-}
-
-.batch-error-message-container {
-  color: #ff3030;
-  font-size: 12px;
-  font-weight: normal;
-  font-family: 'Overpass Mono', 'Calibre', sans-serif;
-  word-break: break-word;
-  padding: 8px 8px 8px 12px;
-  border-radius: 12px;
-  background-color: rgba(255, 0, 0, 0.1);
-}
-</style>

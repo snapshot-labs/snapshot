@@ -23,10 +23,11 @@
 }
 
 @font-face {
-  font-family: 'Overpass Mono';
-  src: url('./assets/fonts/OverpassMono-Regular.woff2') format('woff2'),
-    url('./assets/fonts/OverpassMono-Regular.ttf') format('truetype');
-  font-weight: 500;
+  font-family: 'Calibre';
+  src: url('./assets/fonts/Calibre-Semibold.woff2') format('woff2'),
+    url('./assets/fonts/Calibre-Semibold.woff') format('woff'),
+    url('./assets/fonts/Calibre-Semibold.ttf') format('truetype');
+  font-weight: 600;
   font-style: normal;
 }
 
