@@ -58,7 +58,7 @@ import { sleep } from '@/helpers/utils';
 import { BigNumber } from '@ethersproject/bignumber';
 import { formatBatchTransaction } from '@/helpers/abi/utils';
 import { formatUnits } from '@ethersproject/units';
-import { useSafesnap } from '../../../composables/useSafesnap';
+import { useSafesnap } from '@/composables/useSafesnap';
 
 const { clearBatchError, setBatchError } = useSafesnap();
 
