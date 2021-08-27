@@ -68,10 +68,12 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
     </div>
     <Container :slim="true">
       <div class="overflow-hidden mr-n4">
-        <router-link
+        <a
+          @click="
+            $router.push({ name: 'proposals', params: { key: space.key } })
+          "
           v-for="space in orderedSpaces.slice(0, limit)"
           :key="space.key"
-          :to="{ name: 'proposals', params: { key: space.key } }"
         >
           <div class="col-12 col-lg-3 pr-4 float-left">
             <Block
@@ -88,17 +90,15 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
                   :space="space"
                   symbolIndex="space"
                   size="98"
-                  class="my-3"
+                  class="mb-1"
                 />
               </span>
-              <StatefulIcon :on="followingSpaces.some(s => s === space.key)" />
-              <div class="">
-                <h3 v-text="space.name" />
-                <div class="text-color">{{ space.symbol }}</div>
-              </div>
+
+              <h3 class="my-2" v-text="space.name" />
+              <FollowButton :space="space" />
             </Block>
           </div>
-        </router-link>
+        </a>
 
         <NoResults
           :block="true"
