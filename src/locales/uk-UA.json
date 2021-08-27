@@ -148,7 +148,8 @@
     "spacePlaceholder": "Сховище (не обов'язково)",
     "delegations": "Ваша делегація(ї)",
     "allSpaces": "Для всіх сховищ",
-    "delegated": "Делеговано вам"
+    "delegated": "Делеговано вам",
+    "pendingTransaction": "no pending transaction | 1 pending transaction | {count} pending transactions"
   },
   "proposal": {
     "castVote": "Віддайте свій голос",
