@@ -148,7 +148,8 @@
     "spacePlaceholder": "Раздел (опционально)",
     "delegations": "Вы делегировали",
     "allSpaces": "Для всех разделов",
-    "delegated": "Вам делегировали"
+    "delegated": "Вам делегировали",
+    "pendingTransaction": "no pending transaction | 1 pending transaction | {count} pending transactions"
   },
   "proposal": {
     "castVote": "Опубликовать бюллетень",
