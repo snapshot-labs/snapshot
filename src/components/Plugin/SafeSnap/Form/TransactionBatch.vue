@@ -1,6 +1,6 @@
 <script>
 import { clone } from '@/helpers/utils';
-import { useSafesnap } from '../../../../composables/useSafesnap';
+import { useSafesnap } from '@/composables/useSafesnap';
 
 export default {
   props: ['modelValue', 'index', 'nonce', 'config'],
