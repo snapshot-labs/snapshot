@@ -1,0 +1,45 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$ref": "#/definitions/Vote",
+  "definitions": {
+    "Profile": {
+      "title": "Edit profile",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "title": "Name",
+          "default": "Fabien"
+        },
+        "year": {
+          "type": "number",
+          "title": "Year"
+        },
+        "isGreat": {
+          "type": "boolean",
+          "title": "Are you great?"
+        },
+        "friends": {
+          "type": "array",
+          "title": "Friend(s)"
+        },
+        "location": {
+          "title": "Location",
+          "type": "object",
+          "properties": {
+            "city": {
+              "type": "string",
+              "title": "City"
+            },
+            "country": {
+              "type": "number",
+              "title": "Country",
+              "description": "Where are you living?"
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}
