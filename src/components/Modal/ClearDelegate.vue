@@ -8,6 +8,7 @@ import { sendTransaction } from '@snapshot-labs/snapshot.js/src/utils';
 import { formatBytes32String } from '@ethersproject/strings';
 import { contractAddress } from '@/helpers/delegation';
 import { sleep } from '@/helpers/utils';
+import { useTxStatus } from '@/composables/useTxStatus';
 
 const props = defineProps({
   open: Boolean,
@@ -24,6 +25,7 @@ const auth = getInstance();
 const { t } = useI18n();
 
 const loading = ref(false);
+const { pendingCount } = useTxStatus();
 
 const { address, profile, username } = useUsername();
 const { notify } = useNotifications();
@@ -43,13 +45,17 @@ async function handleSubmit() {
       'clearDelegate',
       [formatBytes32String(props.id)]
     );
+    pendingCount.value++;
+    emit('close');
+    loading.value = false;
     const receipt = await tx.wait();
     console.log('Receipt', receipt);
     await sleep(3e3);
     notify(t('notify.youDidIt'));
+    pendingCount.value--;
     emit('reload');
-    emit('close');
   } catch (e) {
+    pendingCount.value--;
     console.log(e);
   }
   loading.value = false;
