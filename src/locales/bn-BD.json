@@ -148,7 +148,8 @@
     "spacePlaceholder": "স্থান (বিকল্প)",
     "delegations": "আপনার প্রতিনিধিরা",
     "allSpaces": "সমস্ত জায়গার জন্য",
-    "delegated": "আপনার জন্য নিযুক্ত"
+    "delegated": "আপনার জন্য নিযুক্ত",
+    "pendingTransaction": "no pending transaction | 1 pending transaction | {count} pending transactions"
   },
   "proposal": {
     "castVote": "আপনার ভোট দিন",
