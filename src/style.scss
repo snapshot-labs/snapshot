@@ -1,6 +1,7 @@
 @import './vars';
 @import '@primer/css';
 @import './assets/fonts/iconfont.css';
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap');
 
 :root {
   --primary-color: #384aff;
@@ -29,6 +30,14 @@
     url('./assets/fonts/Calibre-Semibold.ttf') format('truetype');
   font-weight: 600;
   font-style: normal;
+}
+
+.mono {
+  font-size: 52px;
+  font-family: 'Space Mono', monospace;
+  letter-spacing: -1px;
+  font-weight: 700;
+  line-height: 1.1em;
 }
 
 html,
