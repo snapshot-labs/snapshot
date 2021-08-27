@@ -148,7 +148,8 @@
     "spacePlaceholder": "Ruimte (optioneel)",
     "delegations": "Uw delegatie(s)",
     "allSpaces": "Voor alle spaties",
-    "delegated": "Aan u gedelegeerd"
+    "delegated": "Aan u gedelegeerd",
+    "pendingTransaction": "no pending transaction | 1 pending transaction | {count} pending transactions"
   },
   "proposal": {
     "castVote": "Breng uw stem uit",
