@@ -84,7 +84,7 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
                 <UiCounter
                   v-if="space._activeProposals"
                   :counter="space._activeProposals"
-                  class="position-absolute top-4 right-0 bg-green"
+                  class="position-absolute top-2 right-0 bg-green"
                 />
                 <Token
                   :space="space"
