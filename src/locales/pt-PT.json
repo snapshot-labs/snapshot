@@ -148,7 +148,8 @@
     "spacePlaceholder": "Comunidade (opcional)",
     "delegations": "Sua(s) delegação(ões)",
     "allSpaces": "For all spaces",
-    "delegated": "Delegado a você"
+    "delegated": "Delegado a você",
+    "pendingTransaction": "no pending transaction | 1 pending transaction | {count} pending transactions"
   },
   "proposal": {
     "castVote": "Votar",
