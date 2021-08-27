@@ -148,7 +148,8 @@
     "spacePlaceholder": "Bereich (optional)",
     "delegations": "Ihre Delegation(en)",
     "allSpaces": "Für alle Bereiche",
-    "delegated": "An dich delegiert"
+    "delegated": "An dich delegiert",
+    "pendingTransaction": "no pending transaction | 1 pending transaction | {count} pending transactions"
   },
   "proposal": {
     "castVote": "Deine Stimme abgeben",
