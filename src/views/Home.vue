@@ -5,13 +5,12 @@ import orderBy from 'lodash/orderBy';
 import spotlight from '@snapshot-labs/snapshot-spaces/spaces/spotlight.json';
 import { useUnseenProposals } from '@/composables/useUnseenProposals';
 import { useScrollMonitor } from '@/composables/useScrollMonitor';
-import { useFavoriteSpaces } from '@/composables/useFavoriteSpaces';
 import { useApp } from '@/composables/useApp';
+import { useFollowSpace } from '@/composables/useFollowSpace';
 
 const route = useRoute();
-const { addFavoriteSpace, removeFavoriteSpace, favorites } =
-  useFavoriteSpaces();
 const { spaces } = useApp();
+const { followingSpaces } = useFollowSpace();
 
 const orderedSpaces = computed(() => {
   const networkFilter = route.query.network;
@@ -21,13 +20,13 @@ const orderedSpaces = computed(() => {
       const spotlightIndex = spotlight.indexOf(key);
       return {
         ...spaces.value[key],
-        favorite: !!favorites.value[key],
+        following: followingSpaces.value.some(s => s === key),
         isActive: !!spaces.value[key]._activeProposals,
         spotlight: spotlightIndex === -1 ? 1e3 : spotlightIndex
       };
     })
     .filter(space => !space.private);
-  return orderBy(list, ['favorite', 'spotlight'], ['desc', 'asc']).filter(
+  return orderBy(list, ['following', 'spotlight'], ['desc', 'asc']).filter(
     space =>
       (networkFilter ? space.network === networkFilter.toLowerCase() : true) &&
       JSON.stringify(space).toLowerCase().includes(q.toLowerCase())
@@ -35,15 +34,7 @@ const orderedSpaces = computed(() => {
 });
 
 const { numberOfUnseenProposals, getProposalIds } = useUnseenProposals();
-watchEffect(() => getProposalIds(favorites.value));
-
-function toggleFavorite(spaceId) {
-  if (favorites.value[spaceId]) {
-    removeFavoriteSpace(spaceId);
-  } else {
-    addFavoriteSpace(spaceId);
-  }
-}
+watchEffect(() => getProposalIds(followingSpaces.value));
 
 // Scroll
 const loadBy = 16;
@@ -77,10 +68,12 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
     </div>
     <Container :slim="true">
       <div class="overflow-hidden mr-n4">
-        <router-link
+        <a
+          @click="
+            $router.push({ name: 'proposals', params: { key: space.key } })
+          "
           v-for="space in orderedSpaces.slice(0, limit)"
           :key="space.key"
-          :to="{ name: 'proposals', params: { key: space.key } }"
         >
           <div class="col-12 col-lg-3 pr-4 float-left">
             <Block
@@ -91,28 +84,21 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
                 <UiCounter
                   v-if="space._activeProposals"
                   :counter="space._activeProposals"
-                  class="position-absolute top-4 right-0 bg-green"
+                  class="position-absolute top-2 right-0 bg-green"
                 />
                 <Token
                   :space="space"
                   symbolIndex="space"
                   size="98"
-                  class="my-3"
+                  class="mb-1"
                 />
               </span>
-              <StatefulIcon
-                :on="space.favorite"
-                onName="star"
-                offName="star1"
-                @click="toggleFavorite(space.key)"
-              />
-              <div class="">
-                <h3 v-text="space.name" />
-                <div class="text-color">{{ space.symbol }}</div>
-              </div>
+
+              <h3 class="my-2" v-text="space.name" />
+              <FollowButton :space="space" />
             </Block>
           </div>
-        </router-link>
+        </a>
 
         <NoResults
           :block="true"
