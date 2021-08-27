@@ -18,6 +18,7 @@
     "@ethersproject/strings": "^5.4.0",
     "@ethersproject/units": "^5.4.0",
     "@ethersproject/wallet": "^5.4.0",
+    "@harmony-js/crypto": "^0.1.56",
     "@portis/web3": "2.0.0-beta.49",
     "@primer/css": "^14.4.0",
     "@snapshot-labs/lock": "github:snapshot-labs/lock#master",
