@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch, defineEmits, defineProps } from 'vue';
+import { ref, watch } from 'vue';
 import { percentageOfTotal } from '@/helpers/voting/quadratic';
 import { useMediaQuery } from '@/composables/useMediaQuery';
 

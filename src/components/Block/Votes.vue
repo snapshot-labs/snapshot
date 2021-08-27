@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, watch, toRefs, defineProps } from 'vue';
+import { ref, computed, watch, toRefs } from 'vue';
 import { getChoiceString } from '@/helpers/utils';
 import { useProfiles } from '@/composables/useProfiles';
 import { useWeb3 } from '@/composables/useWeb3';

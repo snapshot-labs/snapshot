@@ -1,5 +1,5 @@
 <script setup>
-import { watch, toRefs, defineProps } from 'vue';
+import { watch, toRefs } from 'vue';
 import { useModal } from '@/composables/useModal';
 
 const props = defineProps({

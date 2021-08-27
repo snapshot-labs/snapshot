@@ -1,5 +1,4 @@
 <script setup>
-import { defineProps, defineEmits } from 'vue';
 import { isAddress } from '@ethersproject/address';
 
 defineProps({ open: Boolean, strategies: Object, space: Object });
