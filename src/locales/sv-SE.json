@@ -148,7 +148,8 @@
     "spacePlaceholder": "Space (valfritt)",
     "delegations": "Din delegation(er)",
     "allSpaces": "För alla utrymmen",
-    "delegated": "Delegerat till dig"
+    "delegated": "Delegerat till dig",
+    "pendingTransaction": "no pending transaction | 1 pending transaction | {count} pending transactions"
   },
   "proposal": {
     "castVote": "Lägg din röst",
