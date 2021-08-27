@@ -27,5 +27,8 @@ const safeSnapInput = computed({
       :preview="true"
       :moduleAddress="space.plugins?.safeSnap?.address"
     />
+      <PluginCommentBoxCustomBlock
+      
+    />
   </div>
 </template>

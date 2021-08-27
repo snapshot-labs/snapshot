@@ -725,9 +725,8 @@
   version "0.1.0"
   resolved "https://codeload.github.com/snapshot-labs/snapshot-spaces/tar.gz/master"
 
-"@snapshot-labs/snapshot.js@github:snapshot-labs/snapshot.js#master":
+"@snapshot-labs/snapshot.js@file:../snapshot.js":
   version "0.2.0"
-  resolved "https://codeload.github.com/snapshot-labs/snapshot.js/tar.gz/master"
   dependencies:
     "@ethersproject/abi" "^5.0.4"
     "@ethersproject/address" "^5.0.4"
