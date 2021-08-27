@@ -148,7 +148,8 @@
     "spacePlaceholder": "空间 (可选)",
     "delegations": "您的授权",
     "allSpaces": "用于所有空间",
-    "delegated": "已授权给你"
+    "delegated": "已授权给你",
+    "pendingTransaction": "no pending transaction | 1 pending transaction | {count} pending transactions"
   },
   "proposal": {
     "castVote": "撤回您的投票",
