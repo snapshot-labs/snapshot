@@ -17,6 +17,7 @@ import {
 import { sleep } from '@/helpers/utils';
 import { useApp } from '@/composables/useApp';
 import { useWeb3 } from '@/composables/useWeb3';
+import { useTxStatus } from '@/composables/useTxStatus';
 
 const abi = ['function setDelegate(bytes32 id, address delegate)'];
 
@@ -26,6 +27,7 @@ const auth = getInstance();
 const { notify } = useNotifications();
 const { spaces } = useApp();
 const { web3 } = useWeb3();
+const { pendingCount } = useTxStatus();
 
 const modalOpen = ref(false);
 const currentId = ref('');
@@ -77,12 +79,16 @@ async function handleSubmit() {
       'setDelegate',
       [formatBytes32String(form.value.id), address]
     );
+    pendingCount.value++;
+    loading.value = false;
     const receipt = await tx.wait();
     console.log('Receipt', receipt);
     await sleep(3e3);
     notify(t('notify.youDidIt'));
+    pendingCount.value--;
     await load();
   } catch (e) {
+    pendingCount.value--;
     console.log(e);
   }
   loading.value = false;

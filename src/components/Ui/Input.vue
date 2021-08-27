@@ -1,6 +1,4 @@
 <script setup>
-import { defineProps, defineEmits } from 'vue';
-
 const props = defineProps({
   modelValue: [String, Number],
   placeholder: String,

@@ -1,6 +1,4 @@
 <script setup>
-import { defineEmits, defineProps } from 'vue';
-
 defineProps({ modelValue: [String, Number], disabled: Boolean });
 
 const emit = defineEmits(['update:modelValue', 'change']);
