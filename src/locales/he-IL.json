@@ -148,7 +148,8 @@
     "spacePlaceholder": "מרחב (אופציונלי)",
     "delegations": "ההאצלות שלך",
     "allSpaces": "לכל המרחבים",
-    "delegated": "מואצל אליך"
+    "delegated": "מואצל אליך",
+    "pendingTransaction": "no pending transaction | 1 pending transaction | {count} pending transactions"
   },
   "proposal": {
     "castVote": "הצבע",
