@@ -13,6 +13,7 @@ import Delegate from '@/views/Delegate.vue';
 import Timeline from '@/views/Timeline.vue';
 import Space from '@/views/Space.vue';
 import About from '@/views/About.vue';
+import Test from '@/views/Test.vue';
 
 const domainName = window.location.hostname;
 
@@ -30,6 +31,7 @@ const routes: any[] = [
     name: 'home',
     component: domains[domainName] ? Space : Home
   },
+  { path: '/test', name: 'test', component: Test },
   { path: '/setup', name: 'setup', component: Setup },
   { path: '/:key/settings/:from?', name: 'settings', component: Settings },
   { path: '/networks', name: 'networks', component: Explore },
