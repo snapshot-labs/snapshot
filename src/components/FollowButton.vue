@@ -1,5 +1,4 @@
 <script setup>
-import { defineProps } from 'vue';
 import { useFollowSpace } from '@/composables/useFollowSpace';
 
 const props = defineProps({ space: Object });
