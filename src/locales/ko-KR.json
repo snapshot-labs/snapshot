@@ -148,7 +148,8 @@
     "spacePlaceholder": "공간(선택 사항)",
     "delegations": "너의\n대표단 (에스)",
     "allSpaces": "모든 공간에 대해",
-    "delegated": "당신에게 위임"
+    "delegated": "당신에게 위임",
+    "pendingTransaction": "no pending transaction | 1 pending transaction | {count} pending transactions"
   },
   "proposal": {
     "castVote": "캐스트 너의 투표",
