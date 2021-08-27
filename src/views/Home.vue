@@ -94,7 +94,11 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
                 />
               </span>
 
-              <h3 class="my-2" v-text="space.name" />
+              <h3
+                class="my-2"
+                v-text="_shorten(space.name, 16)"
+                style="font-size: 22px"
+              />
               <FollowButton :space="space" />
             </Block>
           </div>

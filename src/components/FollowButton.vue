@@ -14,7 +14,6 @@ const { clickFollow, loadingFollow, isFollowing, hoverJoin } = useFollowSpace(
     @mouseleave="hoverJoin = ''"
     :loading="loadingFollow === space.key"
     :disable="false"
-    class="mb-4"
     style="width: 120px"
   >
     {{ isFollowing ? (hoverJoin ? $t('leave') : $t('joined')) : $t('join') }}
