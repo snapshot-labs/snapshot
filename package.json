@@ -2,7 +2,7 @@
   "name": "snapshot",
   "version": "0.1.3",
   "scripts": {
-    "preinstall": "git submodule update --init",
+    "preinstall": "git submodule update --init --remote",
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint './src/*/**/*.{ts,vue,json}' --fix",
