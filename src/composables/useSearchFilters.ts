@@ -1,5 +1,5 @@
 import { computed } from 'vue';
-import skins from '@snapshot-labs/snapshot-spaces/skins';
+import skins from '@/../snapshot-spaces/skins';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import plugins from '@snapshot-labs/snapshot.js/src/plugins';
 import validations from '@snapshot-labs/snapshot.js/src/validations';
