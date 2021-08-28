@@ -1,13 +1,35 @@
 <script setup>
-import { ref, defineProps, defineEmits,onMounted } from 'vue';
-
+import { ref, defineProps, defineEmits,onMounted,computed } from 'vue';
+import { useModal } from '@/composables/useModal';
+import { useTerms } from '@/composables/useTerms';
+import { useWeb3 } from '@/composables/useWeb3';
+import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
+import { useRoute } from 'vue-router';
 const props = defineProps({
-  modelValue: Number
+    proposalId: String,
+  space: Object,
+  proposal: Object,
+});
+const auth = getInstance();
+const { web3 } = useWeb3();
+const route = useRoute();
+const key = route.params.key;
+
+const web3Account = computed(() => web3.value.account);
+
+const isAdmin = computed(() => {
+  const admins = props.space.admins.map(address => address.toLowerCase());
+  return (
+    auth.isAuthenticated.value &&
+    web3Account.value &&
+    admins.includes(web3Account.value.toLowerCase())
+  );
 });
 
-const emit = defineEmits(['update:modelValue']);
 
-const input = ref('');
+const emit = defineEmits(['update:modelValue']);
+const loading = ref(false);
+const comment = ref('');
 async function getData(url = '') {
   // Default options are marked with *
   const response = await fetch(url, {
@@ -17,8 +39,8 @@ async function getData(url = '') {
   return response.json(); // parses JSON response into native JavaScript objects
 }
 onMounted(async () => {
-  const apa=await getData(`https://uia5m1.deta.dev/all`);
-  console.log(apa)
+  // const apa=await getData(`https://uia5m1.deta.dev/all`);
+  // console.log(apa)
 });
 async function postData(url = '', data = {}) {
   // Default options are marked with *
@@ -29,10 +51,19 @@ async function postData(url = '', data = {}) {
   });
   return response.json(); // parses JSON response into native JavaScript objects
 }
-async function sendComment(){
+async function handleSubmit(){
   await postData(`https://uia5m1.deta.dev/add`,{name:"sadaras",markdown:"dsad",reply:[]})
 }
+const { modalAccountOpen } = useModal();
+const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(key);
 
+function clickSubmit() {
+  !web3Account.value
+    ? (modalAccountOpen.value = true)
+    : !termsAccepted.value && space.value.terms
+    ? (modalTermsOpen.value = true)
+    : handleSubmit();
+}
 </script>
 <template>
   <Block title="Comment Box">
@@ -41,13 +72,18 @@ async function sendComment(){
       style="height: auto; cursor: default"
     >
       <TextareaArray
+      v-model="comment"
         :placeholder="`Add your comment here`"
         class="input width-full text-left"
         style="font-size: 18px"
       />
     </UiButton>
     <div></div>
-    <UiButton @click="sendComment" class="mt-2 button--submit"> Submit </UiButton>
+    <UiButton 
+     @click="clickSubmit"
+          :disabled="comment.trim()!==''"
+          :loading="loading"
+    class="mt-2 button--submit"> Submit </UiButton>
     <UiButton class="ml-2 mt-2 button--primary"> Preview </UiButton>
     <Block :slim="true" class="p-4 d-block text-color mt-2">
       <div>
