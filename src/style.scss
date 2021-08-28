@@ -33,7 +33,7 @@
 }
 
 .mono {
-  font-size: 52px;
+  font-size: 50px;
   font-family: 'Space Mono', monospace;
   letter-spacing: -1px;
   font-weight: 700;
@@ -257,4 +257,8 @@ textarea {
   white-space: nowrap; /* forces text to single line */
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.bg {
+  background: var(--bg-color);
 }
