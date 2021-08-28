@@ -9,7 +9,7 @@ export default {
     <Block>
       <UiButton class="button--submit mb-2">{{ skin.key }}</UiButton>
       <div class="text-color">
-        {{ $tc('inSpaces', [_n(skin.spaces.length)]) }}
+        {{ $tc('inSpaces', [_n(skin.spaces)]) }}
       </div>
     </Block>
   </div>
