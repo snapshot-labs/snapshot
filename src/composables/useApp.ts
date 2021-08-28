@@ -1,7 +1,5 @@
 import { ref, computed, reactive } from 'vue';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
-import client from '@/helpers/client';
-import { formatSpace } from '@/helpers/utils';
 import { useWeb3 } from '@/composables/useWeb3';
 
 const state = reactive({
@@ -9,7 +7,7 @@ const state = reactive({
   loading: false
 });
 
-const spaces = ref({});
+const explore: any = ref({});
 const strategies = ref({});
 
 const { login } = useWeb3();
@@ -18,7 +16,7 @@ export function useApp() {
   async function init() {
     const auth = getInstance();
     state.loading = true;
-    await Promise.all([getSpaces(), getStrategies()]);
+    await Promise.all([getExplore(), getStrategies()]);
     auth.getConnector().then(connector => {
       if (connector) login(connector);
     });
@@ -26,17 +24,23 @@ export function useApp() {
     state.loading = false;
   }
 
-  async function getSpaces() {
-    let spacesObj: any = await client.getSpaces();
-    spacesObj = Object.fromEntries(
-      Object.entries(spacesObj).map(space => [
+  async function getExplore() {
+    const exploreObj: any = await fetch(
+      'https://hub.snapshot.org/api/explore'
+    ).then(res => res.json());
+
+    exploreObj.spaces = Object.fromEntries(
+      Object.entries(exploreObj.spaces).map((space: any) => [
         space[0],
-        formatSpace(space[0], space[1])
+        {
+          key: space[0],
+          ...space[1]
+        }
       ])
     );
 
-    spaces.value = spacesObj;
-    return spacesObj;
+    explore.value = exploreObj;
+    return;
   }
 
   async function getStrategies() {
@@ -44,14 +48,15 @@ export function useApp() {
       'https://score.snapshot.org/api/strategies'
     ).then(res => res.json());
     strategies.value = strategiesObj;
-    return strategiesObj;
+    return;
   }
 
   return {
     init,
-    getSpaces,
+    getExplore,
     app: computed(() => state),
-    spaces: computed(() => spaces.value),
+    spaces: computed(() => explore.value?.spaces || {}),
+    explore: computed(() => explore.value),
     strategies: computed(() => strategies.value)
   };
 }

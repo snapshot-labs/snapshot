@@ -7,21 +7,23 @@ import { getStrategy } from '@/helpers/utils';
 import { useApp } from '@/composables/useApp';
 
 export function useSearchFilters() {
-  const { spaces, strategies } = useApp();
+  const { explore, strategies } = useApp();
 
   const minifiedSkinsArray = computed(() => {
-    return Object.keys(skins).map(skin => ({
-      key: skin,
-      spaces: Object.entries(spaces.value)
-        .filter((space: any) => space[1].skin === skin)
-        .map(space => space[0])
-    }));
+    return Object.keys(skins).map(skin => {
+      console.log(explore.value.skins[skin], skin);
+
+      return {
+        key: skin,
+        spaces: explore.value.skins[skin]
+      };
+    });
   });
 
   const filteredSkins = (q = '') => {
     return minifiedSkinsArray.value
       .filter(skin => skin.key.toLowerCase().includes(q.toLowerCase()))
-      .sort((a, b) => b.spaces.length - a.spaces.length);
+      .sort((a, b) => b.spaces - a.spaces);
   };
 
   const minifiedStrategiesArray = computed(() => {
