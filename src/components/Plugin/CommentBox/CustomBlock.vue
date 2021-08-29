@@ -1,20 +1,21 @@
 <script setup>
-import { ref, defineProps, defineEmits,onMounted,computed } from 'vue';
+import { ref, defineProps, defineEmits, onMounted, computed } from 'vue';
 import { useModal } from '@/composables/useModal';
 import { useTerms } from '@/composables/useTerms';
 import { useWeb3 } from '@/composables/useWeb3';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { useRoute } from 'vue-router';
+import { useProfiles } from '@/composables/useProfiles';
 const props = defineProps({
-    proposalId: String,
+  proposalId: String,
   space: Object,
-  proposal: Object,
+  proposal: Object
 });
 const auth = getInstance();
 const { web3 } = useWeb3();
 const route = useRoute();
 const key = route.params.key;
-
+const { profiles } = useProfiles();
 const web3Account = computed(() => web3.value.account);
 
 const isAdmin = computed(() => {
@@ -26,15 +27,13 @@ const isAdmin = computed(() => {
   );
 });
 
-
 const emit = defineEmits(['update:modelValue']);
 const loading = ref(false);
 const comment = ref('');
 async function getData(url = '') {
   // Default options are marked with *
   const response = await fetch(url, {
-    method: 'GET', // *GET, POST, PUT, DELETE, etc.
-    
+    method: 'GET' // *GET, POST, PUT, DELETE, etc.
   });
   return response.json(); // parses JSON response into native JavaScript objects
 }
@@ -45,14 +44,20 @@ onMounted(async () => {
 async function postData(url = '', data = {}) {
   // Default options are marked with *
   const response = await fetch(url, {
-    method: 'POST', 
+    method: 'POST',
     body: JSON.stringify(data),
-     headers: {"Content-type": "application/json;charset=UTF-8"}
+    headers: { 'Content-type': 'application/json;charset=UTF-8' }
   });
   return response.json(); // parses JSON response into native JavaScript objects
 }
-async function handleSubmit(){
-  await postData(`https://uia5m1.deta.dev/add`,{name:"sadaras",markdown:"dsad",reply:[]})
+async function handleSubmit() {
+  try {
+  } catch (e) {}
+  await postData(`https://uia5m1.deta.dev/add`, {
+    name: 'sadaras',
+    markdown: 'dsad',
+    reply: []
+  });
 }
 const { modalAccountOpen } = useModal();
 const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(key);
@@ -67,31 +72,40 @@ function clickSubmit() {
 </script>
 <template>
   <Block title="Comment Box">
+    ini yang digunakan untuk di kirim ke deta.base
+    {{web3.account}}
     <UiButton
       class="d-block width-full px-3"
       style="height: auto; cursor: default"
     >
       <TextareaArray
-      v-model="comment"
+        v-model="comment"
         :placeholder="`Add your comment here`"
         class="input width-full text-left"
         style="font-size: 18px"
       />
     </UiButton>
-    <div></div>
-    <UiButton 
-     @click="clickSubmit"
-          :disabled="comment.trim()!==''"
-          :loading="loading"
-    class="mt-2 button--submit"> Submit </UiButton>
+
+    <UiButton
+      @click="clickSubmit"
+      :disabled="comment.length === 0"
+      :loading="loading"
+      class="mt-2 button--submit"
+    >
+      Submit
+    </UiButton>
     <UiButton class="ml-2 mt-2 button--primary"> Preview </UiButton>
-    <Block :slim="true" class="p-4 d-block text-color mt-2">
-      <div>
-        <div class="mb-2">
-          <Token :space="{ space: { id: 'thanku.eth' } }" size="23" />
-          <span class="ml-2" v-text="`dsa`" />
+    <Block :slim="true" class="p-4  text-color mt-2">
+      <div >
+
+          <User
+            :address="`0x40b28eDAcd68dF94746DA8ad86CF49eF0edfb3e1`"
+            :profile="profiles[`0x40b28eDAcd68dF94746DA8ad86CF49eF0edfb3e1`]"
+            :space="space"
+          class="d-inline-block"
+          />
           <UiDropdown class="float-right">
-            <div>
+            <div >
               <UiLoading v-if="dropdownLoading" />
               <Icon
                 v-else
@@ -101,10 +115,10 @@ function clickSubmit() {
               />
             </div>
           </UiDropdown>
-        </div>
-        <p v-text="`sadas`" class="break-word mb-1" style="font-size: 20px" />
-        <div class="mt-1">adsad</div>
+      
       </div>
+  <p v-text="`sadas`" class="break-word mb-1" style="font-size: 20px" />
+        <div class="mt-1">adsad</div>
     </Block>
   </Block>
 </template>
