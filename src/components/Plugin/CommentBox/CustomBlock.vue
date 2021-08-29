@@ -111,10 +111,9 @@ function clickSubmit() {
       Submit
     </UiButton>
     <UiButton class="ml-2 mt-2 button--primary"> Preview </UiButton>
-    {{ allData.value }}
-    <Block
+    <PluginCommentBoxBlock
       :slim="true"
-      class="p-4 text-color mt-2"
+      class="p-4 text-color mt-2 mb-0"
       :key="index"
       v-for="(item, index) in allData"
     >
@@ -142,7 +141,19 @@ function clickSubmit() {
         class="break-word mb-1"
         style="font-size: 20px"
       />
-      <div class="mt-1">{{item.timestamp}}</div>
+      <div class="mt-1"> 
+     
+         <span
+              :aria-label="_ms(item.timestamp/1e3)"
+              v-text="$d(item.timestamp, 'short', 'en-US')"
+              class="link-color tooltipped tooltipped-n"
+            /></div>
+    </PluginCommentBoxBlock>
+    <div class="d-inline-block">  <Icon
+      :name="'loveit'"
+      class="pt-3"
+      size="18"
+    />like</div>
+    <div class="d-inline-block">reply</div>
     </Block>
-  </Block>
 </template>
