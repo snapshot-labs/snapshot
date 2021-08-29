@@ -6,11 +6,13 @@ import { useWeb3 } from '@/composables/useWeb3';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { useRoute } from 'vue-router';
 import { useProfiles } from '@/composables/useProfiles';
+import { useNotifications } from '@/composables/useNotifications';
 const props = defineProps({
   proposalId: String,
   space: Object,
   proposal: Object
 });
+const { notify } = useNotifications();
 const auth = getInstance();
 const { web3 } = useWeb3();
 const route = useRoute();
@@ -30,6 +32,7 @@ const isAdmin = computed(() => {
 const emit = defineEmits(['update:modelValue']);
 const loading = ref(false);
 const comment = ref('');
+const allData = ref([]);
 async function getData(url = '') {
   // Default options are marked with *
   const response = await fetch(url, {
@@ -37,9 +40,12 @@ async function getData(url = '') {
   });
   return response.json(); // parses JSON response into native JavaScript objects
 }
+async function getCommentData() {
+  const res = await getData(`https://uia5m1.deta.dev/all/${props.proposalId}`);
+  if (res.status) allData.value = res.data.items;
+}
 onMounted(async () => {
-  // const apa=await getData(`https://uia5m1.deta.dev/all`);
-  // console.log(apa)
+  getCommentData();
 });
 async function postData(url = '', data = {}) {
   // Default options are marked with *
@@ -50,14 +56,26 @@ async function postData(url = '', data = {}) {
   });
   return response.json(); // parses JSON response into native JavaScript objects
 }
+
 async function handleSubmit() {
   try {
-  } catch (e) {}
-  await postData(`https://uia5m1.deta.dev/add`, {
-    name: 'sadaras',
-    markdown: 'dsad',
-    reply: []
-  });
+    loading.value = true;
+    const res = await postData(`https://uia5m1.deta.dev/add`, {
+      author: web3Account.value,
+      markdown: comment.value,
+      reply: [],
+      proposal_id: props.proposalId,
+      timestamp:new Date().getTime()
+    });
+    comment.value = '';
+    loading.value = false;
+    await getCommentData();
+    if (!res.status) notify(['red', 'Oops, something went wrong']);
+    return;
+  } catch (e) {
+    loading.value = false;
+    notify(['red', 'Oops, something went wrong']);
+  }
 }
 const { modalAccountOpen } = useModal();
 const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(key);
@@ -72,13 +90,11 @@ function clickSubmit() {
 </script>
 <template>
   <Block title="Comment Box">
-    ini yang digunakan untuk di kirim ke deta.base
-    {{web3.account}}
     <UiButton
       class="d-block width-full px-3"
       style="height: auto; cursor: default"
     >
-      <TextareaArray
+      <TextareaAutosize
         v-model="comment"
         :placeholder="`Add your comment here`"
         class="input width-full text-left"
@@ -95,30 +111,38 @@ function clickSubmit() {
       Submit
     </UiButton>
     <UiButton class="ml-2 mt-2 button--primary"> Preview </UiButton>
-    <Block :slim="true" class="p-4  text-color mt-2">
-      <div >
-
-          <User
-            :address="`0x40b28eDAcd68dF94746DA8ad86CF49eF0edfb3e1`"
-            :profile="profiles[`0x40b28eDAcd68dF94746DA8ad86CF49eF0edfb3e1`]"
-            :space="space"
+    {{ allData.value }}
+    <Block
+      :slim="true"
+      class="p-4 text-color mt-2"
+      :key="index"
+      v-for="(item, index) in allData"
+    >
+      <div>
+        <User
+          :address="item.author"
+          :profile="profiles[item.author]"
+          :space="space"
           class="d-inline-block"
-          />
-          <UiDropdown class="float-right">
-            <div >
-              <UiLoading v-if="dropdownLoading" />
-              <Icon
-                v-else
-                name="threedots"
-                size="25"
-                class="v-align-text-bottom"
-              />
-            </div>
-          </UiDropdown>
-      
+        />
+        <UiDropdown class="float-right">
+          <div>
+            <UiLoading v-if="dropdownLoading" />
+            <Icon
+              v-else
+              name="threedots"
+              size="25"
+              class="v-align-text-bottom"
+            />
+          </div>
+        </UiDropdown>
       </div>
-  <p v-text="`sadas`" class="break-word mb-1" style="font-size: 20px" />
-        <div class="mt-1">adsad</div>
+      <p
+        v-text="item.markdown"
+        class="break-word mb-1"
+        style="font-size: 20px"
+      />
+      <div class="mt-1">{{item.timestamp}}</div>
     </Block>
   </Block>
 </template>
