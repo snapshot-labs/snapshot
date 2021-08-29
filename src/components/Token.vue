@@ -9,7 +9,7 @@ const props = defineProps({
   symbolIndex: [String, Number]
 });
 
-const spaceId = computed(() => props.space.id ?? props.space.key);
+const spaceId = computed(() => props.space.id);
 
 const url = computed(() => {
   const file = props.symbolIndex

@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watchEffect, computed, onMounted } from 'vue';
+import { ref, watchEffect, computed, onMounted, inject } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import draggable from 'vuedraggable';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
@@ -12,7 +12,6 @@ import validations from '@snapshot-labs/snapshot.js/src/validations';
 import { clone } from '@/helpers/utils';
 import { useDomain } from '@/composables/useDomain';
 import { useApolloQuery } from '@/composables/useApolloQuery';
-import { useApp } from '@/composables/useApp';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useClient } from '@/composables/useClient';
 
@@ -20,9 +19,10 @@ const route = useRoute();
 const router = useRouter();
 const auth = getInstance();
 const { domain } = useDomain();
-const { spaces } = useApp();
 const { web3 } = useWeb3();
 const { send } = useClient();
+
+const space = inject('space');
 
 const key = route.params.key;
 const from = route.params.from;
@@ -50,7 +50,6 @@ const nameForm = ref(null);
 const passValidation = ref([true]);
 
 const web3Account = computed(() => web3.value.account);
-const space = computed(() => spaces.value[key]);
 const proposal = computed(() =>
   Object.assign(form.value, { choices: choices.value })
 );

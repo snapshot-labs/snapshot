@@ -12,17 +12,20 @@ const { domain } = useDomain();
 const { loadLocale } = useI18n();
 const route = useRoute();
 const { modalOpen } = useModal();
-const { init, spaces, app } = useApp();
+const { init, spaces, app, strategies } = useApp();
 const { web3 } = useWeb3();
 const { notify } = useNotifications();
-
-provide('web3', web3);
-provide('notify', notify);
 
 const space = computed(() => {
   const key = domain || route.params.key;
   return spaces.value[key] ? spaces.value[key] : {};
 });
+
+provide('web3', web3);
+provide('notify', notify);
+provide('space', space);
+provide('spaces', spaces);
+provide('strategies', strategies);
 
 onMounted(async () => {
   await loadLocale();

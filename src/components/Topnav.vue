@@ -1,28 +1,21 @@
 <script setup>
-import { ref, computed, watch, onMounted } from 'vue';
-import { useRoute } from 'vue-router';
+import { ref, computed, watch, onMounted, inject } from 'vue';
 import { useModal } from '@/composables/useModal';
 import { useDomain } from '@/composables/useDomain';
-import { useApp } from '@/composables/useApp';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useTxStatus } from '@/composables/useTxStatus';
+
 const { pendingCount } = useTxStatus();
 const { modalAccountOpen } = useModal();
-const { env, domain } = useDomain();
-const route = useRoute();
-
-const { spaces } = useApp();
+const { env } = useDomain();
 const { login, web3 } = useWeb3();
+
+const space = inject('space');
 
 const loading = ref(false);
 const modalAboutOpen = ref(false);
 const modalLangOpen = ref(false);
 const modalWalletNotice = ref(false);
-
-const space = computed(() => {
-  const key = domain || route.params.key;
-  return spaces.value[key] ? spaces.value[key] : false;
-});
 
 function setTitle() {
   document.title = space.value.name ? space.value.name : 'Snapshot';

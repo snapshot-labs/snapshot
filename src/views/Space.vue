@@ -1,5 +1,5 @@
 <script setup>
-import { computed, onMounted, ref, watch } from 'vue';
+import { computed, inject, onMounted, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { useInfiniteLoader } from '@/composables/useInfiniteLoader';
 import { useScrollMonitor } from '@/composables/useScrollMonitor';
@@ -7,18 +7,16 @@ import { useDomain } from '@/composables/useDomain';
 import { useApolloQuery } from '@/composables/useApolloQuery';
 import { PROPOSALS_QUERY } from '@/helpers/queries';
 import { useProfiles } from '@/composables/useProfiles';
-import { useApp } from '@/composables/useApp';
 
 const route = useRoute();
 const { domain } = useDomain();
-const { spaces } = useApp();
-const spaceId = domain || route.params.key;
+
+const space = inject('space');
 
 const loading = ref(false);
 const proposals = ref([]);
 const filterBy = ref('all');
 
-const space = computed(() => spaces.value[spaceId]);
 const spaceMembers = computed(() =>
   space.value.members.length < 1 ? ['none'] : space.value.members
 );
@@ -38,7 +36,7 @@ async function loadProposals(skip = 0) {
       variables: {
         first: loadBy,
         skip,
-        space: spaceId,
+        space: domain || route.params.key,
         state: filterBy.value === 'core' ? 'all' : filterBy.value,
         author_in: filterBy.value === 'core' ? spaceMembers.value : []
       }

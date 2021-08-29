@@ -1,5 +1,5 @@
 <script setup>
-import { computed, onMounted, ref } from 'vue';
+import { computed, inject, onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { useSearchFilters } from '@/composables/useSearchFilters';
@@ -11,7 +11,6 @@ import { clone } from '@/helpers/utils';
 import { getSpaceUri } from '@/helpers/ens';
 import defaults from '@/locales/default';
 import { useCopy } from '@/composables/useCopy';
-import { useApp } from '@/composables/useApp';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useClient } from '@/composables/useClient';
 
@@ -20,9 +19,10 @@ const basicValidation = { name: 'basic', params: {} };
 const route = useRoute();
 const { t } = useI18n();
 const { copyToClipboard } = useCopy();
-const { spaces, getSpaces } = useApp();
 const { web3 } = useWeb3();
 const { send } = useClient();
+
+const spaces = inject('spaces');
 
 const key = ref(route.params.key);
 const from = ref(route.params.from);
@@ -97,7 +97,7 @@ async function handleSubmit() {
     } catch (e) {
       console.log(e);
     }
-    await getSpaces();
+    // await getSpaces();
     loading.value = false;
   } else {
     console.log('Invalid schema', validate.value);
@@ -197,7 +197,6 @@ onMounted(async () => {
     const space = clone(spaces.value?.[key.value]);
     if (!space) return;
     delete space.id;
-    delete space.key;
     delete space._activeProposals;
     space.strategies = space.strategies || [];
     space.plugins = space.plugins || {};

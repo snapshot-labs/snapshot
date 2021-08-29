@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, watch, onMounted, watchEffect } from 'vue';
+import { ref, computed, watch, onMounted, watchEffect, inject } from 'vue';
 import { useRoute } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { useProfiles } from '@/composables/useProfiles';
@@ -15,7 +15,6 @@ import {
   contractAddress
 } from '@/helpers/delegation';
 import { sleep } from '@/helpers/utils';
-import { useApp } from '@/composables/useApp';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useTxStatus } from '@/composables/useTxStatus';
 
@@ -25,9 +24,10 @@ const route = useRoute();
 const { t } = useI18n();
 const auth = getInstance();
 const { notify } = useNotifications();
-const { spaces } = useApp();
 const { web3 } = useWeb3();
 const { pendingCount } = useTxStatus();
+
+const spaces = inject('spaces');
 
 const modalOpen = ref(false);
 const currentId = ref('');

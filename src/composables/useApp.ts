@@ -33,7 +33,7 @@ export function useApp() {
       Object.entries(exploreObj.spaces).map((space: any) => [
         space[0],
         {
-          key: space[0],
+          id: space[0],
           ...space[1]
         }
       ])

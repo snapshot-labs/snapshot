@@ -1,16 +1,16 @@
 <script setup>
-import { ref, computed, watchEffect } from 'vue';
+import { ref, computed, watchEffect, inject } from 'vue';
 import { useRoute } from 'vue-router';
 import orderBy from 'lodash/orderBy';
 import spotlight from '@/../snapshot-spaces/spaces/spotlight.json';
 import { useUnseenProposals } from '@/composables/useUnseenProposals';
 import { useScrollMonitor } from '@/composables/useScrollMonitor';
-import { useApp } from '@/composables/useApp';
 import { useFollowSpace } from '@/composables/useFollowSpace';
 
 const route = useRoute();
-const { spaces } = useApp();
 const { followingSpaces } = useFollowSpace();
+
+const spaces = inject('spaces');
 
 const orderedSpaces = computed(() => {
   const networkFilter = route.query.network;
@@ -70,10 +70,10 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
       <div class="overflow-hidden mr-n4">
         <a
           @click="
-            $router.push({ name: 'proposals', params: { key: space.key } })
+            $router.push({ name: 'proposals', params: { key: space.id } })
           "
           v-for="space in orderedSpaces.slice(0, limit)"
-          :key="space.key"
+          :key="space.id"
         >
           <div class="col-12 col-lg-3 pr-4 float-left">
             <Block
