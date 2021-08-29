@@ -9,14 +9,14 @@ import client from '@/helpers/EIP712';
 // const spaceFollows: any = ref({});
 const following = ref([]);
 
-export function useFollowSpace(spaceObj: any = {}) {
+export function useFollowSpace(spaceObj: any = {}, watching = true) {
   const { web3 } = useWeb3();
   const { modalAccountOpen } = useModal();
   const { apolloQuery } = useApolloQuery();
   const { setAlias, aliasWallet, isValidAlias, checkAlias } = useAliasAction();
 
   const loadingFollow = ref('');
-  const loadingFollows = ref(true);
+  const loadingFollows = ref(false);
   const hoverJoin = ref('');
 
   const web3Account = computed(() => web3.value.account);
@@ -35,6 +35,7 @@ export function useFollowSpace(spaceObj: any = {}) {
   async function loadFollows() {
     loadingFollows.value = true;
     try {
+      console.time('getFollows');
       Promise.all([
         // Hint: Saving this for when we want to show how many users follow a space.
 
@@ -47,6 +48,7 @@ export function useFollowSpace(spaceObj: any = {}) {
         //   },
         //   'follows'
         // )),
+
         (following.value = await apolloQuery(
           {
             query: FOLLOWS_QUERY,
@@ -57,6 +59,8 @@ export function useFollowSpace(spaceObj: any = {}) {
           'follows'
         ))
       ]);
+
+      console.timeEnd('getFollows');
       loadingFollows.value = false;
     } catch (e) {
       loadingFollows.value = false;
@@ -108,9 +112,11 @@ export function useFollowSpace(spaceObj: any = {}) {
   //     { deep: true };
   // });
 
-  watch(web3Account, () => loadFollows());
+  if (watching) {
+    watch(web3Account, () => loadFollows());
 
-  onMounted(() => loadFollows());
+    onMounted(() => loadFollows());
+  }
 
   return {
     clickFollow,
