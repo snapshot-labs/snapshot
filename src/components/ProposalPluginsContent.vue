@@ -28,6 +28,7 @@ const safeSnapInput = computed({
       :moduleAddress="space.plugins?.safeSnap?.address"
     />
        <PluginCommentBoxCustomBlock
+       v-if="space.plugins?.commentBox"
       :proposalId="id"
       :proposal="proposal"
       :space="space"

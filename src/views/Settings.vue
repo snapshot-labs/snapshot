@@ -85,7 +85,7 @@ function pluginName(key) {
   const plugin = plugins.value.find(obj => {
     return obj.key === key;
   });
-  return plugin.name;
+  return plugin?.name;
 }
 
 async function handleSubmit() {
