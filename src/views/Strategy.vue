@@ -1,15 +1,16 @@
 <script setup>
-import { computed } from 'vue';
+import { computed, watchEffect } from 'vue';
 import { useRoute } from 'vue-router';
-import { getStrategy } from '@/helpers/utils';
-import { useApp } from '@/composables/useApp';
+import { useSearchFilters } from '@/composables/useSearchFilters';
 
 const route = useRoute();
-const { spaces, strategies } = useApp();
+const { minifiedStrategiesArray } = useSearchFilters();
 
 const strategy = computed(() =>
-  getStrategy(strategies.value[route.params.name], spaces.value)
+  minifiedStrategiesArray.value.find(s => s.key === route.params.name)
 );
+
+watchEffect(() => console.log(strategy.value));
 </script>
 
 <template>
@@ -25,10 +26,7 @@ const strategy = computed(() =>
         <h1 class="mb-2">
           {{ strategy.key }}
         </h1>
-        <span
-          v-text="`In ${strategy.spaces.length} space(s)`"
-          class="text-color"
-        />
+        <span v-text="`In ${strategy.spaces} space(s)`" class="text-color" />
         <UiMarkdown :body="strategy.about" class="mb-6 mt-4" />
       </div>
     </template>

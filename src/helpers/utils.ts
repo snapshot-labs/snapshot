@@ -61,18 +61,6 @@ export function lsRemove(key: string) {
   return localStorage.removeItem(`${pkg.name}.${key}`);
 }
 
-export function getStrategy(strategy, spaces) {
-  const clonedStrategy = clone(strategy);
-  clonedStrategy.spaces = Object.entries(spaces)
-    .filter(
-      (space: any) =>
-        space[1].strategies &&
-        space[1].strategies.map(s => s.name).includes(strategy.key)
-    )
-    .map(space => space[0]);
-  return clonedStrategy;
-}
-
 export function formatSpace(key, space) {
   space = {
     key,

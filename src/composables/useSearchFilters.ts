@@ -80,6 +80,7 @@ export function useSearchFilters() {
     filteredStrategies,
     filteredNetworks,
     filteredPlugins,
-    filteredValidations
+    filteredValidations,
+    minifiedStrategiesArray
   };
 }
