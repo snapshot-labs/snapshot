@@ -14,7 +14,6 @@ export function useSearchFilters() {
       spaces: explore.value.skins[s] ?? 0
     }))
   );
-
   const filteredSkins = (q = '') =>
     minifiedSkinsArray.value
       .filter(s => s.key.toLowerCase().includes(q.toLowerCase()))
@@ -27,7 +26,6 @@ export function useSearchFilters() {
       ...strategies.value[s]
     }))
   );
-
   const filteredStrategies = (q = '') =>
     minifiedStrategiesArray.value
       .filter(s => s.key.toLowerCase().includes(q.toLowerCase()))
@@ -39,7 +37,6 @@ export function useSearchFilters() {
       ...networks[n]
     }))
   );
-
   const filteredNetworks = (q = '') =>
     minifiedNetworksArray.value
       .filter(n => JSON.stringify(n).toLowerCase().includes(q.toLowerCase()))
@@ -53,7 +50,6 @@ export function useSearchFilters() {
       return plugin;
     })
   );
-
   const filteredPlugins = (q = '') =>
     minifiedPluginsArray.value
       .filter(plugin =>
@@ -69,7 +65,6 @@ export function useSearchFilters() {
         .map(space => space[0])
     }))
   );
-
   const filteredValidations = (q = '') =>
     minifiedValidationsArray.value
       .filter(v => JSON.stringify(v).toLowerCase().includes(q.toLowerCase()))

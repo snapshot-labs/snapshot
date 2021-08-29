@@ -3,7 +3,8 @@ import { useFollowSpace } from '@/composables/useFollowSpace';
 
 const props = defineProps({ space: Object });
 const { clickFollow, loadingFollow, isFollowing, hoverJoin } = useFollowSpace(
-  props.space
+  props.space,
+  false
 );
 </script>
 
