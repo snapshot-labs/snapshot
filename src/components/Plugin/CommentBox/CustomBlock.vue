@@ -65,7 +65,7 @@ async function handleSubmit() {
       markdown: comment.value,
       reply: [],
       proposal_id: props.proposalId,
-      timestamp:new Date().getTime()
+      timestamp: new Date().getTime()
     });
     comment.value = '';
     loading.value = false;
@@ -112,11 +112,13 @@ function clickSubmit() {
     </UiButton>
     <UiButton class="ml-2 mt-2 button--primary"> Preview </UiButton>
     <PluginCommentBoxBlock
+    
       :slim="true"
       class="p-4 text-color mt-2 mb-0"
       :key="index"
       v-for="(item, index) in allData"
     >
+    
       <div>
         <User
           :address="item.author"
@@ -141,19 +143,26 @@ function clickSubmit() {
         class="break-word mb-1"
         style="font-size: 20px"
       />
-      <div class="mt-1"> 
-     
-         <span
-              :aria-label="_ms(item.timestamp/1e3)"
-              v-text="$d(item.timestamp, 'short', 'en-US')"
-              class="link-color tooltipped tooltipped-n"
-            /></div>
+      <div class="mt-1">
+       <span
+          :aria-label="_ms(item.timestamp / 1e3)"
+          v-text="$d(item.timestamp, 'short', 'en-US')"
+          class="link-color tooltipped tooltipped-n"
+        />
+      </div>
+      
     </PluginCommentBoxBlock>
-    <div class="d-inline-block">  <Icon
-      :name="'loveit'"
-      class="pt-3"
-      size="18"
-    />like</div>
-    <div class="d-inline-block">reply</div>
-    </Block>
+    <div class="ml-2 d-inline-block">
+     <UiButton class="p-1 rounded-0 ml-2" style="line-height: 0px;height:auto;">
+      <Icon :name="'loveit'" class="v-align-middle" size="18" />
+      <div class="d-inline-block ml-1">0</div>
+    </UiButton>
+    </div>
+    <UiButton class="p-1 rounded-0 ml-2" style="line-height: 0px;height:auto;">
+      <Icon :name="'receipt-outlined'" class="v-align-middle" size="18" />
+      <div class="d-inline-block ml-1">reply</div>
+    </UiButton>
+    <PluginCommentBoxComment />
+    <PluginCommentBoxReply :reply="allData" :profiles="profiles" :space="space"/>
+  </Block>
 </template>
