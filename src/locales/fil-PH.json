@@ -22,7 +22,6 @@
   "version": "Bersyon",
   "timeline": "Timeline",
   "filters": "Filters",
-  "favorites": "Favorites",
   "allSpaces": "All spaces",
   "submitOnchain": "Submit on-chain",
   "inSpaces": "In {0} space(s)",
@@ -86,7 +85,7 @@
   "marketSymbol": "{0} market",
   "twoChoicesRequired": "Dalawang choice ang kailangan para sa plugin na ito.",
   "noResultsFound": "Oops, wala kaming makitang mga resulta",
-  "noFavorites": "Oops, you don't have any favorites yet",
+  "noSpacesJoined": "Oops, you haven't joined any spaces yet",
   "addFavorites": "Add favorites",
   "createdBy": "By {0}",
   "startToEnd": "start {0} end {1}",
@@ -106,8 +105,13 @@
   "addresses": "Addresses",
   "networkErrorPlayground": "Network error - please open your browser console for more information",
   "upload": "Upload",
+  "join": "Join",
+  "joined": "Joined",
+  "leave": "Leave",
   "copyLink": "Copy link",
   "duplicateProposal": "Duplicate proposal",
+  "joinedSpaces": "Joined spaces",
+  "joinSpaces": "Join spaces",
   "errors": {
     "required": "Field is required",
     "minLength": "Minimum length is {0}",
@@ -145,7 +149,8 @@
     "spacePlaceholder": "Space (optional)",
     "delegations": "Ang iyong delegasyon",
     "allSpaces": "For all spaces",
-    "delegated": "Pinagkatiwala kay"
+    "delegated": "Pinagkatiwala kay",
+    "pendingTransaction": "no pending transaction | 1 pending transaction | {count} pending transactions"
   },
   "proposal": {
     "castVote": "Ilagay ang iyong boto",
