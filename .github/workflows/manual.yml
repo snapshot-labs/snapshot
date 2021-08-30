@@ -10,15 +10,16 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.ADMIN_TOKEN }}
 
       - name: Pull & update submodules recursively
         run: |
           git submodule update --init --recursive
           git submodule update --recursive --remote
-
       - name: Commit & push changes
         run: |
-          git config --global user.name "Github Actions"
-          git config --global user.email "actions@github.com"
+          git config --global user.name 'bonustrack'
+          git config --global user.email 'bonustrack@users.noreply.github.com'
           git commit -am "Update submodules"
           git push
