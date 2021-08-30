@@ -13,7 +13,7 @@ const { domain } = useDomain();
 const { loadLocale } = useI18n();
 const route = useRoute();
 const { modalOpen } = useModal();
-const { init, initialSpaces, app, strategies } = useApp();
+const { init, initialSpaces, app, strategies, explore } = useApp();
 const { spaces, spacesLoading, getSpaces } = useSpaces();
 const { web3 } = useWeb3();
 const { notify } = useNotifications();
@@ -33,6 +33,7 @@ provide('space', space);
 provide('initialSpaces', initialSpaces);
 provide('spaces', spaces);
 provide('strategies', strategies);
+provide('explore', explore);
 provide('getSpaces', getSpaces);
 
 onMounted(async () => {
