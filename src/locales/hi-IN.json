@@ -22,7 +22,6 @@
   "version": "संस्करण",
   "timeline": "टाइमलाइन",
   "filters": "छांटे",
-  "favorites": "पसंदीदा",
   "allSpaces": "सभी स्पेसेस",
   "submitOnchain": "चेन पर जमा करें",
   "inSpaces": "रिक्त स्थान में",
@@ -86,7 +85,7 @@
   "marketSymbol": "{0} मारकेट",
   "twoChoicesRequired": "इस प्लगइन के लिए २ विकल्प जरुरी है",
   "noResultsFound": "कोई परिणाम नहीं मिल पा रहा है",
-  "noFavorites": "आपके पसंदीदा में अभी कुछ नहीं है",
+  "noSpacesJoined": "Oops, you haven't joined any spaces yet",
   "addFavorites": "पसंदीदा में जोड़ें",
   "createdBy": "तक {0}",
   "startToEnd": "शुरू {0} ख़त्म {1}",
@@ -106,8 +105,13 @@
   "addresses": "पते",
   "networkErrorPlayground": "नेटवर्क त्रुटि - अधिक जानकारी के लिए कृपया अपना ब्राउज़र कंसोल खोलें",
   "upload": "अपलोड करें",
-  "copyLink": "Copy link",
-  "duplicateProposal": "Duplicate proposal",
+  "join": "Join",
+  "joined": "Joined",
+  "leave": "Leave",
+  "copyLink": "लिंक कॉपी करें",
+  "duplicateProposal": "डुप्लीकेट प्रस्ताव",
+  "joinedSpaces": "Joined spaces",
+  "joinSpaces": "Join spaces",
   "errors": {
     "required": "यह जानकारी जरुरी है",
     "minLength": "न्यूनतम लंबाई {0}",
@@ -131,21 +135,22 @@
     "snapshotBlock": "स्नैपशॉट ब्लॉक नंबर",
     "validationWarning": {
       "basic": {
-        "member": "You need to be a member of the space in order to submit a proposal.",
-        "minScore": "You need to have a minimum of {0} {1} in order to submit a proposal."
+        "member": "प्रस्ताव जमा करने के लिए आपको सदस्य होना आवश्यक ह",
+        "minScore": "प्रपोजल सबमिट करने के लिए काम से काम {0} {1} होना जरुरी है"
       },
-      "customValidation": "You need to pass the proposal validation in order to submit a proposal."
+      "customValidation": "प्रस्ताव जमा करने के लिए आपको प्रस्ताव सत्यापन पास करना होगा"
     }
   },
   "delegate": {
     "header": "डेलीगेट",
-    "selectDelegate": "Select delegate",
+    "selectDelegate": "प्रतिनिधि चुनें",
     "to": "को",
     "addressPlaceholder": "पता या ईएनएस नाम",
     "spacePlaceholder": "स्पेस (वैकल्पिक)",
     "delegations": "आपके डेलीगेशन",
     "allSpaces": "सब जगहों के लिए",
-    "delegated": "आपको दिए गए डेलीगेशन"
+    "delegated": "आपको दिए गए डेलीगेशन",
+    "pendingTransaction": "no pending transaction | 1 pending transaction | {count} pending transactions"
   },
   "proposal": {
     "castVote": "अपना वोट दे",
@@ -191,12 +196,12 @@
     "editPlugin": "प्लगइन संपादित करें",
     "addPlugin": "प्लगइन जोड़ें",
     "pluginParameters": "प्लगइन पैरामीटर्स",
-    "proposalValidation": "Proposal validation",
-    "validation": "Validation",
-    "editValidation": "Edit validation",
-    "selectValidation": "Select validation",
-    "validationParameters": "Validation parameters",
-    "warningTextRecord": "You must set a text record on the ENS domain."
+    "proposalValidation": "प्रस्ताव सत्यापन",
+    "validation": "मान्यकरण",
+    "editValidation": "प्रमाणीकरण जोड़ें/संपादित करें",
+    "selectValidation": "मान्यता का चयन करें",
+    "validationParameters": "इन मापदंडों को मान्य करें",
+    "warningTextRecord": "आपको ENS डोमेन पर एक टेक्स्ट रिकॉर्ड सेट करना होगा।"
   },
   "setup": {
     "example": "उदाहरण. yam.eth",
@@ -231,14 +236,14 @@
     "description": {
       "single-choice": "प्रत्येक मतदाता केवल एक विकल्प का चयन कर सकता है",
       "approval": "प्रत्येक मतदाता किसी भी संख्या में विकल्पों का चयन कर सकता है",
-      "quadratic": "Each voter may spread voting power across any number of choices. Results are calculated quadratically.",
-      "ranked-choice": "Each voter may select and rank any number of choices. Results are calculated by instant-runoff counting method.",
+      "quadratic": "प्रत्येक मतदाता किसी भी संख्या में विकल्पों में मतदान शक्ति का प्रसार कर सकता है। परिणामों की गणना त्रैमासिक रूप से की जाती है",
+      "ranked-choice": "प्रत्येक मतदाता किसी भी विकल्प का चयन और रैंक कर सकता है। परिणामों की गणना तत्काल गणना पद्धति द्वारा की जाती है",
       "weighted": "प्रत्येक मतदाता किसी भी संख्या में विकल्पों में मतदान शक्ति का प्रसार कर सकता है"
     }
   },
   "safeSnap": {
     "currentOutcome": "वर्तमान परिणाम:{0}",
-    "currentBond": "Current bond: {0} {1}",
+    "currentBond": "वर्त्तमान बॉन्ड:{0} {1}",
     "finalizedIn": "फायनलाइस{0}",
     "executableIn": "निष्पादन{0}",
     "finalOutcome": "निष्पादन:{0}",
@@ -265,7 +270,7 @@
     "claimed_header": "बधाई हो! आपको अपने खाते में एक नया POAP मिला है",
     "loading_header": "POAP को आपके संग्रह में जोड़ा जा रहा है",
     "button_claim": "दावा करें",
-    "button_show": "Show me my collection",
+    "button_show": "मेरा संग्रह दिखाओ",
     "success_claim": "आपका POAP आपके पते पर है",
     "error_claim": "टोकन बनाने में एक समस्या हुई"
   }

@@ -22,7 +22,6 @@
   "version": "バージョン",
   "timeline": "タイムライン",
   "filters": "フィルター",
-  "favorites": "お気に入り",
   "allSpaces": "全てのスペース",
   "submitOnchain": "パブリックチェーンへ書き込む",
   "inSpaces": "スペースに {0} 個あります",
@@ -86,7 +85,7 @@
   "marketSymbol": "{0} の市場",
   "twoChoicesRequired": "このプラグインは２つ選択しないといけません",
   "noResultsFound": "おっと、何もみつかりませんでした。",
-  "noFavorites": "おっと、あなたはまだお気に入りをしていません。",
+  "noSpacesJoined": "Oops, you haven't joined any spaces yet",
   "addFavorites": "お気に入りを追加する",
   "createdBy": "{0} が作成",
   "startToEnd": "{0} 開始 {1} 終了",
@@ -106,8 +105,13 @@
   "addresses": "Addresses",
   "networkErrorPlayground": "Network error - please open your browser console for more information",
   "upload": "Upload",
+  "join": "Join",
+  "joined": "Joined",
+  "leave": "Leave",
   "copyLink": "Copy link",
   "duplicateProposal": "Duplicate proposal",
+  "joinedSpaces": "Joined spaces",
+  "joinSpaces": "Join spaces",
   "errors": {
     "required": "フィールドが埋まってません",
     "minLength": "最小文字数は {0} です",
@@ -145,7 +149,8 @@
     "spacePlaceholder": "スペース (任意)",
     "delegations": "あなたの移譲リスト",
     "allSpaces": "For all spaces",
-    "delegated": "あなたへ移譲されたもの"
+    "delegated": "あなたへ移譲されたもの",
+    "pendingTransaction": "no pending transaction | 1 pending transaction | {count} pending transactions"
   },
   "proposal": {
     "castVote": "投票する",
