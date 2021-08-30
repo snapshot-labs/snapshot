@@ -111,6 +111,6 @@ function clickSubmit() {
     </UiButton>
     <UiButton class="ml-2 mt-2 button--primary"> Preview </UiButton>
    <PluginCommentBoxListComment :allData="allData" :profiles="profiles" :space="space"/>
-    <PluginCommentBoxReply :reply="allData" :profiles="profiles" :space="space"/>
+    <PluginCommentBoxListReply :reply="allData" :profiles="profiles" :space="space"/>
   </Block>
 </template>
