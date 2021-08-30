@@ -5,7 +5,8 @@ import { useModal } from '@/composables/useModal';
 import { useDomain } from '@/composables/useDomain';
 import { useApp } from '@/composables/useApp';
 import { useWeb3 } from '@/composables/useWeb3';
-
+import { useTxStatus } from '@/composables/useTxStatus';
+const { pendingCount } = useTxStatus();
 const { modalAccountOpen } = useModal();
 const { env, domain } = useDomain();
 const route = useRoute();
@@ -110,6 +111,10 @@ onMounted(() => setTitle());
         </div>
       </Container>
     </nav>
+    <div class="bg-blue text-white text-center py-2" v-if="pendingCount > 0">
+      <UiLoading :fill-white="true" class="mr-2" />
+      {{ $tc('delegate.pendingTransaction', pendingCount) }}
+    </div>
     <teleport to="#modal">
       <ModalAccount
         :open="modalAccountOpen"

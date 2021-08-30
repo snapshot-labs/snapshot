@@ -1,5 +1,5 @@
 <script setup>
-import { ref, defineProps, defineEmits } from 'vue';
+import { ref } from 'vue';
 import draggable from 'vuedraggable';
 import { getNumberWithOrdinal } from '@/helpers/utils';
 
