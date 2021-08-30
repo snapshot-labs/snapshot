@@ -39,6 +39,7 @@ watch(modalOpen, val => {
   <div :class="space?.skin" id="app" class="overflow-hidden pb-4">
     <UiLoading v-if="app.loading || !app.init" class="overlay big" />
     <div v-else>
+      <MainSidebar />
       <Topnav />
       <div class="pb-6">
         <router-view :key="$route.path" class="flex-auto" />
