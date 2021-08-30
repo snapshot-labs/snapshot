@@ -43,7 +43,7 @@ onMounted(async () => {
 
 watchEffect(async () => {
   spacesLoading.value = true;
-  key.value ? await getSpaces([key.value]) : null;
+  if (key.value) await getSpaces([key.value]);
   spacesLoading.value = false;
 });
 
