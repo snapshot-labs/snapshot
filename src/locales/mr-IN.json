@@ -22,7 +22,6 @@
   "version": "वरशन",
   "timeline": "टाइमलाइन",
   "filters": "फिल्टर",
-  "favorites": "आवडते",
   "allSpaces": "सर्व जागा",
   "submitOnchain": "ओन चैन सबमिट करा",
   "inSpaces": "{0} जागा",
@@ -86,7 +85,7 @@
   "marketSymbol": "{0} मार्केट",
   "twoChoicesRequired": "या प्लगइनसाठी दोन निवडी आवश्यक आहेत.",
   "noResultsFound": "ओह, आम्हाला कोणतेही परिणाम सापडत नाहीत",
-  "noFavorites": "ओह, आपल्याकडे अद्याप कोणतेही आवडते नाहीत",
+  "noSpacesJoined": "Oops, you haven't joined any spaces yet",
   "addFavorites": "आवडते जोडा",
   "createdBy": "द्वारा{0}",
   "startToEnd": "सुरुवात {0} शेवट {1}",
@@ -106,8 +105,13 @@
   "addresses": "ऍड्रेस",
   "networkErrorPlayground": "नेटवर्क त्रुटी - अधिक माहिती साठी आपले ब्राउसर कॉन्सोल खोला",
   "upload": "अपलोड करा",
+  "join": "Join",
+  "joined": "Joined",
+  "leave": "Leave",
   "copyLink": "Copy link",
   "duplicateProposal": "Duplicate proposal",
+  "joinedSpaces": "Joined spaces",
+  "joinSpaces": "Join spaces",
   "errors": {
     "required": "फील्ड आवश्यक आहे",
     "minLength": "किमान लांबी {0}",
@@ -145,7 +149,8 @@
     "spacePlaceholder": "जागा (पर्यायी)",
     "delegations": "तुमचे डेलिगेशन",
     "allSpaces": "सरव्या जागा साठी",
-    "delegated": "तुम्हाला डेलिगेट केलेले"
+    "delegated": "तुम्हाला डेलिगेट केलेले",
+    "pendingTransaction": "no pending transaction | 1 pending transaction | {count} pending transactions"
   },
   "proposal": {
     "castVote": "मत टाका",

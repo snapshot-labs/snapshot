@@ -22,7 +22,6 @@
   "version": "รุ่น",
   "timeline": "ระยะเวลา",
   "filters": "ตัวกรอง",
-  "favorites": "รายการโปรด",
   "allSpaces": "พื้นที่ว่างทั้งหมด",
   "submitOnchain": "ส่งแบบออนไลน์",
   "inSpaces": "ใน {0} พื้นที่(s)",
@@ -86,7 +85,7 @@
   "marketSymbol": "{0} ตลาด",
   "twoChoicesRequired": "ทางเลือกทั้งสองต้องการปลั๊กอินนี้",
   "noResultsFound": "เอ๊ะ, เราไม่พบผลลัพธ์ใด ๆ",
-  "noFavorites": "เอ๊ะ, คุณยังไม่ได้ระบุรายการโปรด",
+  "noSpacesJoined": "Oops, you haven't joined any spaces yet",
   "addFavorites": "เพิ่มรายการโปรด",
   "createdBy": "โดย{0}",
   "startToEnd": "เริ่มต้น {0} สินสุด {1}",
@@ -106,8 +105,13 @@
   "addresses": "Addresses",
   "networkErrorPlayground": "Network error - please open your browser console for more information",
   "upload": "Upload",
+  "join": "Join",
+  "joined": "Joined",
+  "leave": "Leave",
   "copyLink": "Copy link",
   "duplicateProposal": "Duplicate proposal",
+  "joinedSpaces": "Joined spaces",
+  "joinSpaces": "Join spaces",
   "errors": {
     "required": "ต้องระบุข้อมูลในช่อง",
     "minLength": "ความยาวต่ำสุดคือ {0}",
@@ -145,7 +149,8 @@
     "spacePlaceholder": "เว้นวรรค (ไม่บังคับ)",
     "delegations": "การมอบหมายของคุณ(s)",
     "allSpaces": "For all spaces",
-    "delegated": "มอบหมายให้คุณ"
+    "delegated": "มอบหมายให้คุณ",
+    "pendingTransaction": "no pending transaction | 1 pending transaction | {count} pending transactions"
   },
   "proposal": {
     "castVote": "การโหวตของคุณ",

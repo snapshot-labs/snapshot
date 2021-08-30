@@ -22,7 +22,6 @@
   "version": "Verzija",
   "timeline": "Vremenska linija",
   "filters": "Filters",
-  "favorites": "Favorites",
   "allSpaces": "All spaces",
   "submitOnchain": "Podnesi on-chain",
   "inSpaces": "U {0} prostor(a)",
@@ -86,7 +85,7 @@
   "marketSymbol": "{0} tržište",
   "twoChoicesRequired": "Dva izbora su obavezna za ovaj plugin.",
   "noResultsFound": "Ups, ne možemo pronaći rezultate",
-  "noFavorites": "Oops, you don't have any favorites yet",
+  "noSpacesJoined": "Oops, you haven't joined any spaces yet",
   "addFavorites": "Add favorites",
   "createdBy": "Od {0}",
   "startToEnd": "početak {0} kraj {1}",
@@ -106,8 +105,13 @@
   "addresses": "Addresses",
   "networkErrorPlayground": "Network error - please open your browser console for more information",
   "upload": "Upload",
+  "join": "Join",
+  "joined": "Joined",
+  "leave": "Leave",
   "copyLink": "Copy link",
   "duplicateProposal": "Duplicate proposal",
+  "joinedSpaces": "Joined spaces",
+  "joinSpaces": "Join spaces",
   "errors": {
     "required": "Field is required",
     "minLength": "Minimum length is {0}",
@@ -145,7 +149,8 @@
     "spacePlaceholder": "Prostor (opciono)",
     "delegations": "Vaša delegacija(e)",
     "allSpaces": "For all spaces",
-    "delegated": "Delegirano vama"
+    "delegated": "Delegirano vama",
+    "pendingTransaction": "no pending transaction | 1 pending transaction | {count} pending transactions"
   },
   "proposal": {
     "castVote": "Dajte svoj glas",
