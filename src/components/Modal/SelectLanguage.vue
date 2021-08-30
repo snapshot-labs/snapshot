@@ -1,5 +1,5 @@
 <script setup>
-import { computed, defineProps, defineEmits } from 'vue';
+import { computed } from 'vue';
 import languages from '@/locales/languages.json';
 import { useI18n } from '@/composables/useI18n';
 

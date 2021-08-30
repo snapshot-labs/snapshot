@@ -26,6 +26,8 @@ module.exports = {
     'vue/script-setup-uses-vars': 'error'
   },
   globals: {
-    $ref: 'readonly'
+    $ref: 'readonly',
+    defineProps: 'readonly',
+    defineEmits: 'readonly'
   }
 };

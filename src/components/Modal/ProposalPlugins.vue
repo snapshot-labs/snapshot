@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch, toRefs, defineProps, defineEmits } from 'vue';
+import { ref, watch, toRefs } from 'vue';
 import { clone } from '@/helpers/utils';
 import pluginsObj from '@snapshot-labs/snapshot.js/src/plugins';
 import pluginsConfig from '@/components/Plugin/config.json';

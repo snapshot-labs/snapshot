@@ -1,5 +1,5 @@
 <script setup>
-import { watchEffect, computed, defineProps } from 'vue';
+import { watchEffect, computed } from 'vue';
 import { useUsername } from '@/composables/useUsername';
 import removeMd from 'remove-markdown';
 

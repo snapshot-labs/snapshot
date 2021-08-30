@@ -1,5 +1,5 @@
 <script setup>
-import { toRefs, ref, watch, computed, defineProps, defineEmits } from 'vue';
+import { toRefs, ref, watch, computed } from 'vue';
 import { getInjected } from '@snapshot-labs/lock/src/utils';
 import connectors from '@/helpers/connectors.json';
 import { useWeb3 } from '@/composables/useWeb3';

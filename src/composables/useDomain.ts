@@ -1,4 +1,4 @@
-import domains from '@snapshot-labs/snapshot-spaces/spaces/domains.json';
+import domains from '@/../snapshot-spaces/spaces/domains.json';
 
 export function useDomain() {
   const domainName = window.location.hostname;

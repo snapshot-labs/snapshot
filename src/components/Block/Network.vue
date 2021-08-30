@@ -1,6 +1,4 @@
 <script setup>
-import { defineProps } from 'vue';
-
 defineProps(['network']);
 
 function getLogoUrl(key) {
