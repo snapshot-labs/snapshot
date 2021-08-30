@@ -10,7 +10,7 @@ const { modalAccountOpen } = useModal();
 const { env } = useDomain();
 const { login, web3 } = useWeb3();
 
-const space = inject('space');
+const space = inject('initialSpaces');
 
 const loading = ref(false);
 const modalAboutOpen = ref(false);

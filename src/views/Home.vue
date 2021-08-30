@@ -10,7 +10,7 @@ import { useFollowSpace } from '@/composables/useFollowSpace';
 const route = useRoute();
 const { followingSpaces } = useFollowSpace();
 
-const spaces = inject('spaces');
+const spaces = inject('initialSpaces');
 
 const orderedSpaces = computed(() => {
   const networkFilter = route.query.network;

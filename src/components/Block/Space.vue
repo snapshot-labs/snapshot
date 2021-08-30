@@ -13,8 +13,7 @@ const { web3 } = useWeb3();
 const web3Account = computed(() => web3.value.account);
 
 const isAdmin = computed(() => {
-  const admins =
-    props.space.admins?.map(address => address.toLowerCase()) ?? [];
+  const admins = props.space.admins.map(address => address.toLowerCase());
   return (
     auth.isAuthenticated.value &&
     web3Account.value &&
@@ -45,7 +44,7 @@ const isAdmin = computed(() => {
         />
         <router-link
           v-if="
-            space.strategies?.find(strategy => strategy.name === 'delegation')
+            space.strategies.find(strategy => strategy.name === 'delegation')
           "
           :to="{ name: 'delegate', params: { key: space.id } }"
           v-text="$t('delegate.header')"
@@ -59,7 +58,7 @@ const isAdmin = computed(() => {
         />
         <router-link
           v-if="isAdmin"
-          :to="{ name: 'settings' }"
+          :to="{ name: 'settings', params: { key: space.id } }"
           v-text="$t('settings.header')"
           class="d-block px-4 py-2 sidenav-item"
         />

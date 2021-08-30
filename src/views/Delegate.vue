@@ -27,7 +27,7 @@ const { notify } = useNotifications();
 const { web3 } = useWeb3();
 const { pendingCount } = useTxStatus();
 
-const spaces = inject('spaces');
+const spaces = inject('initialSpaces');
 
 const modalOpen = ref(false);
 const currentId = ref('');

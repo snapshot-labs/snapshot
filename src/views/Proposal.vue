@@ -109,7 +109,7 @@ async function deleteProposal() {
   dropdownLoading.value = true;
   try {
     if (
-      await send(space.value.key, 'delete-proposal', {
+      await send(space.value.id, 'delete-proposal', {
         proposal: id
       })
     ) {

@@ -11,7 +11,9 @@ const network = computed(() => networks[space.value.network]);
 const { profiles, addressArray } = useProfiles();
 
 onMounted(() => {
-  addressArray.value = space.value.admins.concat(space.value.members);
+  if (space.value.admins) {
+    addressArray.value = space.value.admins.concat(space.value.members);
+  }
 });
 </script>
 
