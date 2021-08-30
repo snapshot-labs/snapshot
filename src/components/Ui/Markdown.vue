@@ -1,5 +1,5 @@
 <script setup>
-import { computed, defineProps } from 'vue';
+import { computed } from 'vue';
 import { Remarkable } from 'remarkable';
 import { linkify } from 'remarkable/linkify';
 // import sanitizeHtml from 'sanitize-html';

@@ -1,5 +1,5 @@
 <script setup>
-import { ref, toRefs, watch, defineProps, defineEmits } from 'vue';
+import { ref, toRefs, watch } from 'vue';
 
 const props = defineProps({
   open: Boolean,

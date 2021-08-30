@@ -17,7 +17,7 @@ export default {
   },
   methods: {
     handleInput() {
-      this.dirty = true;
+      this.dirty = this.input !== '';
       this.$emit('update:modelValue', this.input);
       this.isValid = mustBeEthereumAddress(this.input);
       if (this.isValid) {

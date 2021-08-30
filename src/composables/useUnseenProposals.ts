@@ -5,10 +5,8 @@ import { lsGet } from '@/helpers/utils';
 const proposalIds = ref([]);
 
 export function useUnseenProposals() {
-  async function getProposalIds(favorites) {
-    const favoriteKeys = Object.keys(favorites);
-
-    if (favoriteKeys[0]) {
+  async function getProposalIds(followingSpaces) {
+    if (followingSpaces[0]) {
       try {
         const activeProposals = await subgraphRequest(
           `${import.meta.env.VITE_HUB_URL}/graphql`,
@@ -17,7 +15,7 @@ export function useUnseenProposals() {
               __args: {
                 first: 100,
                 where: {
-                  space_in: favoriteKeys
+                  space_in: followingSpaces
                 }
               },
               id: true

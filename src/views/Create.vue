@@ -30,7 +30,7 @@ const from = route.params.from;
 const loading = ref(false);
 const choices = ref([]);
 const blockNumber = ref(-1);
-const bodyLimit = ref(1e4);
+const bodyLimit = ref(6400);
 const form = ref({
   name: '',
   body: '',

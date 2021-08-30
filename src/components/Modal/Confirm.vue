@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, defineProps, defineEmits } from 'vue';
+import { ref, computed } from 'vue';
 import { getChoiceString } from '@/helpers/utils';
 import { useClient } from '@/composables/useClient';
 

@@ -91,7 +91,7 @@ export default {
   <PluginSafeSnapInputAddress
     v-model="to"
     :disabled="config.preview"
-    :inputProps="{ required: true }"
+    :inputProps="{ required: false }"
     label="to (address)"
   />
 

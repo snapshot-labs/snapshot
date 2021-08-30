@@ -8,13 +8,13 @@ import { ALIASES_QUERY } from '@/helpers/queries';
 import { useApolloQuery } from '@/composables/useApolloQuery';
 import client from '@/helpers/EIP712';
 
+const aliases = ref(lsGet('aliases') || {});
+const isValidAlias = ref(false);
+
 export function useAliasAction() {
   const { web3 } = useWeb3();
   const auth = getInstance();
   const { apolloQuery } = useApolloQuery();
-
-  const aliases = ref(lsGet('aliases') || {});
-  const isValidAlias = ref(false);
 
   const userAlias = computed(() => {
     return aliases.value?.[web3.value.account];

@@ -1,12 +1,14 @@
 <script setup>
-import { defineProps, defineEmits } from 'vue';
-
 const props = defineProps({
   modelValue: [String, Number],
   placeholder: String,
   error: [String, Boolean],
   number: Boolean,
-  disabled: Boolean
+  disabled: Boolean,
+  required: {
+    type: Boolean,
+    default: true
+  }
 });
 
 const emit = defineEmits(['update:modelValue']);
@@ -37,7 +39,7 @@ function handleInput(e) {
       :type="number ? 'number' : 'text'"
       :disabled="disabled"
       class="input flex-auto"
-      required
+      :required="required"
     />
     <slot name="info" />
     <span
