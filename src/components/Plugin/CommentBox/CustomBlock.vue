@@ -32,6 +32,7 @@ const emit = defineEmits(['update:modelValue']);
 const loading = ref(false);
 const comment = ref('');
 const allData = ref([]);
+const togglePreview = ref(true);
 async function getData(url = '') {
   // Default options are marked with *
   const response = await fetch(url, {
@@ -86,10 +87,12 @@ function clickSubmit() {
     ? (modalTermsOpen.value = true)
     : handleSubmit();
 }
+const closeModal=ref(false)
 </script>
 <template>
   <Block title="Comment Box">
     <UiButton
+    v-if="togglePreview"
       class="d-block width-full px-3"
       style="height: auto; cursor: default"
     >
@@ -99,7 +102,12 @@ function clickSubmit() {
         class="input width-full text-left"
         style="font-size: 18px"
       />
+      
     </UiButton>
+     <PluginCommentBoxBlock v-if="!togglePreview"
+      slim="true" class="p-4 h6 text-color mt-2 mb-0">
+<UiMarkdown  :body="comment" />      
+      </PluginCommentBoxBlock>
 
     <UiButton
       @click="clickSubmit"
@@ -109,8 +117,8 @@ function clickSubmit() {
     >
       Submit
     </UiButton>
-    <UiButton class="ml-2 mt-2 button--primary"> Preview </UiButton>
+    <UiButton @click="togglePreview=!togglePreview" class="ml-2 mt-2 button--primary"  :disabled="comment.length === 0">{{togglePreview?"Preview":"Continue Editing"}}</UiButton>
    <PluginCommentBoxListComment :allData="allData" :profiles="profiles" :space="space"/>
-    <PluginCommentBoxListReply :reply="allData" :profiles="profiles" :space="space"/>
+   
   </Block>
 </template>
