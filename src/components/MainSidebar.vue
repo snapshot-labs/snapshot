@@ -21,7 +21,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="w-[70px] h-screen fixed m-0 border-r border-bcolor">
+  <div class="w-[68px] h-screen fixed m-0 border-r border-bcolor">
     <div class="h-[78px] flex items-center justify-center">
       <router-link to="/">
         <Icon size="36" name="snapshot" class="text-snapshot" />
