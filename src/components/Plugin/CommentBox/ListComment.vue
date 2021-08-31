@@ -5,7 +5,7 @@ const props = defineProps({
   space: Object,
   allData: Array
 });
-
+const emit=defineEmits(["deleteItem"])
 </script>
 <template>
   
@@ -14,14 +14,15 @@ const props = defineProps({
       :item="item"
       :profiles="profiles"
       :space="space"
+      @deleteItem="$emit('deleteItem')"
     />
     <div class="ml-2 mt-2 d-inline-block" style="color: blue; cursor: pointer">
       show replies (0)
     </div>
-    <PluginCommentBoxListReply
+    <!-- <PluginCommentBoxListReply
       :reply="allData"
       :profiles="profiles"
       :space="space"
-    />
+    /> -->
   </div>
 </template>

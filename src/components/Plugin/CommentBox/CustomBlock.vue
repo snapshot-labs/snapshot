@@ -28,7 +28,7 @@ const isAdmin = computed(() => {
   );
 });
 
-const emit = defineEmits(['update:modelValue']);
+
 const loading = ref(false);
 const comment = ref('');
 const allData = ref([]);
@@ -42,7 +42,7 @@ async function getData(url = '') {
 }
 async function getCommentData() {
   const res = await getData(`https://uia5m1.deta.dev/all/${props.proposalId}`);
-  if (res.status) allData.value = res.data.items;
+  if (res.status) allData.value = res.data.items.sort((a,b)=>{return Number(b.timestamp)-Number(a.timestamp)});
 }
 onMounted(async () => {
   getCommentData();
@@ -58,6 +58,7 @@ async function postData(url = '', data = {}) {
 }
 
 async function handleSubmit() {
+  if(loading.value) return
   try {
     loading.value = true;
     const res = await postData(`https://uia5m1.deta.dev/add`, {
@@ -118,7 +119,7 @@ const closeModal=ref(false)
       Submit
     </UiButton>
     <UiButton @click="togglePreview=!togglePreview" class="ml-2 mt-2 button--primary"  :disabled="comment.length === 0">{{togglePreview?"Preview":"Continue Editing"}}</UiButton>
-   <PluginCommentBoxListComment :allData="allData" :profiles="profiles" :space="space"/>
+   <PluginCommentBoxListComment @deleteItem="getCommentData" :allData="allData" :profiles="profiles" :space="space"/>
    
   </Block>
 </template>

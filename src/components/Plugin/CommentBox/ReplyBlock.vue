@@ -116,16 +116,7 @@ function selectFromThreedotDropdown(e) {
         />
       </div>
     </PluginCommentBoxBlock>
-    <div class="ml-2 d-inline-block">
-      <UiButton
-        class="p-1 rounded-0 ml-2"
-        style="line-height: 0px; height: auto"
-      >
-        <Icon :name="'loveit'" class="v-align-middle" size="18" />
-        <div class="d-inline-block ml-1">0</div>
-      </UiButton>
-    </div>
-    <UiButton @click="toggleComment = !toggleComment" class="p-1 rounded-0 ml-2" style="line-height: 0px; height: auto">
+      <UiButton @click="toggleComment = !toggleComment" class="p-1 rounded-0 ml-2" style="line-height: 0px; height: auto">
       <Icon :name="'receipt-outlined'" class="v-align-middle" size="18" />
       <div class="d-inline-block ml-1">reply</div>
     </UiButton>
