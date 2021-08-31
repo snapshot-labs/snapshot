@@ -1,5 +1,5 @@
 <script setup>
-import { computed, watch, onMounted } from 'vue';
+import { computed, watch, onMounted, ref } from 'vue';
 import { useFollowSpace } from '@/composables/useFollowSpace';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useApp } from '@/composables/useApp';
@@ -7,6 +7,9 @@ import { useApp } from '@/composables/useApp';
 const { spaces } = useApp();
 const { web3 } = useWeb3();
 const { loadFollows, followingSpaces } = useFollowSpace();
+
+const modalAboutOpen = ref(false);
+const modalLangOpen = ref(false);
 
 const web3Account = computed(() => web3.value.account);
 
@@ -52,22 +55,23 @@ onMounted(() => {
           <UiSidebarButton><Icon size="20" name="plus" /></UiSidebarButton>
         </router-link>
       </div>
-      <div
-        class="
-          flex flex-col
-          items-center
-          justify-center
-          h-[70px]
-          mb-2
-          mt-[12px]
-        "
-      >
-        <UiSidebarButton class="hover:text-lcolor">
+      <div class="flex flex-col items-center justify-center mb-3 mt-[12px]">
+        <UiSidebarButton
+          @click="modalAboutOpen = true"
+          class="hover:text-lcolor"
+        >
           <span class="select-none mt-1">?</span>
         </UiSidebarButton>
       </div>
     </div>
   </div>
+  <teleport to="#modal">
+    <ModalAbout
+      :open="modalAboutOpen"
+      @close="modalAboutOpen = false"
+      @openLang="modalLangOpen = true" />
+    <ModalSelectLanguage :open="modalLangOpen" @close="modalLangOpen = false"
+  /></teleport>
 </template>
 
 <style scoped>
