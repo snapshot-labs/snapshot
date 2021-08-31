@@ -27,7 +27,7 @@ function selectFromThreedotDropdown(e) {
     closeModal.value = true;
   }
 }
-const emit = defineEmits(['deleteItem']);
+const emit = defineEmits(['deleteItem','finishEdit']);
 async function deleteData(url = '') {
   // Default options are marked with *
   const response = await fetch(url, {
@@ -56,6 +56,7 @@ function closeEvent() {
   if (loading.value) return;
   closeModal.value = false;
 }
+
 </script>
 <template>
   <UiModal :open="closeModal" @close="closeEvent">
@@ -87,6 +88,8 @@ function closeEvent() {
       buttonName="Edit"
       placeholder="Edit your reply here"
       @dismissComment="toggleEditComment = true"
+      @finishEdit="toggleEditComment = true"
+      method="edit"
     />
   </div>
   <div v-if="toggleEditComment">
@@ -123,7 +126,7 @@ function closeEvent() {
           :aria-label="_ms(item.timestamp / 1e3)"
           v-text="$d(item.timestamp, 'short', 'en-US')"
           class="link-color tooltipped tooltipped-n"
-        />
+        /> <span v-if="item.edit_timestamp" :aria-label="$d(item.timestamp, 'short', 'en-US')" class="tooltipped tooltipped-n">(edited)</span>
       </div>
     </PluginCommentBoxBlock>
 
