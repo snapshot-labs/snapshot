@@ -1,26 +1,103 @@
 <script setup>
-import { ref, defineProps, defineEmits, onMounted, computed, toRef } from 'vue';
+import { ref, defineProps, defineEmits, onMounted, computed, toRef,watch } from 'vue';
 import { clone } from '@/helpers/utils';
 import { useNotifications } from '@/composables/useNotifications';
+import { useModal } from '@/composables/useModal';
+const {modalOpen}=useModal()
 const props = defineProps({
   placeholder: String,
   buttonName: String,
-  editComment: {
-    type: String,
-    required: false,
-    default: ''
-  },
-  method: Function
+  item: Object,
+  method: String
 });
-const editComment = toRef(props, 'editComment');
-const comment = ref(clone(editComment.value));
+const item2 = toRef(props, 'item');
+const comment = ref(item2.value?.markdown ? clone(item2.value?.markdown) : '');
 
 const loading = ref(false);
 const togglePreview = ref(true);
-const emit = defineEmits(['dismissComment']);
-const chooseMethod={}
+const closeModal = ref(false);
+const emit = defineEmits(['dismissComment', 'updateItem']);
+async function postData(url = '', data = {}) {
+  // Default options are marked with *
+  const response = await fetch(url, {
+    method: 'POST',
+    body: JSON.stringify(data),
+    headers: { 'Content-type': 'application/json;charset=UTF-8' }
+  });
+  return response.json(); // parses JSON response into native JavaScript objects
+}
+const { notify } = useNotifications();
+async function updateItems() {
+  if (loading.value) return;
+  try {
+    loading.value = true;
+    const res = await postData(
+      `https://uia5m1.deta.dev/update/${props.item.key}`,
+      { markdown: comment.value }
+    );
+    loading.value = false;
+    if (!res.status) return notify(['red', 'Oops, something went wrong']);
+    emit('updateItem');
+    closeModal.value = false;
+  
+    return;
+  } catch (e) {
+    loading.value = false;
+    notify(['red', 'Oops, something went wrong']);
+  }
+}
+const chooseMethod = {
+  edit: () => {
+    closeModal.value = true;
+
+  }
+};
+function closeEvent() {
+  if (loading.value) return;
+  closeModal.value = false;
+ 
+}
+watch([modalOpen,closeModal],()=>{
+  const el = document.body;
+  if(!closeModal.value){
+
+    el.classList['remove']('overflow-hidden');
+  }else if(closeModal.value&&!el.classList['contains']('overflow-hidden')){
+    
+    el.classList['add']('overflow-hidden');
+  }
+  
+})
 </script>
 <template>
+  <UiModal :open="closeModal" @close="closeEvent">
+    <template v-slot:header>
+      <h3>Edit Comment</h3>
+    </template>
+    <div class="text-center mt-4">
+      <p>are you sure you want to edit?</p>
+    </div>
+    <div
+      class="mb-2"
+      style="
+        text-align: center;
+        display: flex;
+        align-items: center;
+        align-content: center;
+        justify-content: center;
+      "
+    >
+      <UiButton
+        class="bg-red text-white"
+        :loading="loading"
+        @click="updateItems"
+        >Yes</UiButton
+      >
+      <UiButton @click="closeEvent" :disabled="loading" class="ml-2"
+        >No</UiButton
+      >
+    </div>
+  </UiModal>
   <div class="mt-2">
     <UiButton
       v-if="togglePreview"

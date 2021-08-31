@@ -1,6 +1,8 @@
 <script setup>
-import { ref, defineProps, defineEmits, onMounted, computed } from 'vue';
+import { ref, defineProps, defineEmits, onMounted, computed,watch } from 'vue';
 import { useNotifications } from '@/composables/useNotifications';
+import { useModal } from '@/composables/useModal';
+const {modalOpen}=useModal()
 const props = defineProps({
   profiles: Object,
   space: Object,
@@ -25,9 +27,11 @@ function selectFromThreedotDropdown(e) {
   }
   if (e === 'delete') {
     closeModal.value = true;
+      const el = document.body;
+    el.classList['remove']('overflow-hidden');
   }
 }
-const emit = defineEmits(['deleteItem','finishEdit']);
+const emit = defineEmits(['deleteItem','updateItem']);
 async function deleteData(url = '') {
   // Default options are marked with *
   const response = await fetch(url, {
@@ -45,6 +49,8 @@ async function deleteItem() {
     if (!res.status) return notify(['red', 'Oops, something went wrong']);
     emit("deleteItem")
     closeModal.value = false;
+    
+    
     return;
   } catch (e) {
     loading.value = false;
@@ -55,8 +61,23 @@ async function deleteItem() {
 function closeEvent() {
   if (loading.value) return;
   closeModal.value = false;
-}
 
+}
+async function updateItem(){
+  toggleEditComment.value = true;
+  emit("updateItem")
+}
+watch([modalOpen,closeModal],()=>{
+ const el = document.body;
+  if(!closeModal.value){
+
+    el.classList['remove']('overflow-hidden');
+  }else if(closeModal.value&&!el.classList['contains']('overflow-hidden')){
+    
+    el.classList['add']('overflow-hidden');
+  }
+  
+})
 </script>
 <template>
   <UiModal :open="closeModal" @close="closeEvent">
@@ -84,11 +105,11 @@ function closeEvent() {
   </UiModal>
   <div v-if="!toggleEditComment">
     <PluginCommentBoxComment
-      :editComment="item.markdown"
+      :item="item"
       buttonName="Edit"
       placeholder="Edit your reply here"
       @dismissComment="toggleEditComment = true"
-      @finishEdit="toggleEditComment = true"
+      @updateItem="updateItem"
       method="edit"
     />
   </div>
@@ -126,7 +147,7 @@ function closeEvent() {
           :aria-label="_ms(item.timestamp / 1e3)"
           v-text="$d(item.timestamp, 'short', 'en-US')"
           class="link-color tooltipped tooltipped-n"
-        /> <span v-if="item.edit_timestamp" :aria-label="$d(item.timestamp, 'short', 'en-US')" class="tooltipped tooltipped-n">(edited)</span>
+        /> <span v-if="item.edit_timestamp" :aria-label="$d(item.edit_timestamp, 'short', 'en-US')" class="tooltipped tooltipped-n">(edited)</span>
       </div>
     </PluginCommentBoxBlock>
 

@@ -119,7 +119,7 @@ const closeModal=ref(false)
       Submit
     </UiButton>
     <UiButton @click="togglePreview=!togglePreview" class="ml-2 mt-2 button--primary"  :disabled="comment.length === 0">{{togglePreview?"Preview":"Continue Editing"}}</UiButton>
-   <PluginCommentBoxListComment @deleteItem="getCommentData" :allData="allData" :profiles="profiles" :space="space"/>
+   <PluginCommentBoxListComment @updateItem="getCommentData" @deleteItem="getCommentData" :allData="allData" :profiles="profiles" :space="space"/>
    
   </Block>
 </template>
