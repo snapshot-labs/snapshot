@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from 'vue';
+import VueBlockie from 'vue-blockies';
 
 defineProps({
   address: String,
@@ -23,12 +24,12 @@ const error = ref(false);
       @error="error = true"
       class="circle border line-height-0 v-align-middle"
     />
-    <jazzicon
+    <VueBlockie
       v-else
-      :seed="parseInt(seed)"
-      :address="address"
-      :diameter="parseInt(size) - 2 || 22"
-      class="d-inline-block v-align-middle line-height-0"
+      :seed="address"
+      :scale="4"
+      :size="(parseInt(size) - 2 || 22) / 4"
+      class="circle v-align-middle line-height-0"
     />
   </span>
 </template>
