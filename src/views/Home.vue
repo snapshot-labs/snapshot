@@ -20,12 +20,12 @@ const orderedSpaces = computed(() => {
       const spotlightIndex = spotlight.indexOf(key);
       return {
         ...spaces.value[key],
-        following: followingSpaces.value.some(s => s === key),
         isActive: !!spaces.value[key]._activeProposals,
         spotlight: spotlightIndex === -1 ? 1e3 : spotlightIndex
       };
     })
-    .filter(space => !space.private);
+    .filter(space => !space.private)
+    .filter(space => !followingSpaces.value.some(s => s === space.key));
   return orderBy(list, ['following', 'spotlight'], ['desc', 'asc']).filter(
     space =>
       (networkFilter ? space.network === networkFilter.toLowerCase() : true) &&
@@ -46,23 +46,14 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
 <template>
   <div>
     <div class="text-center mb-4 mx-auto">
-      <Container class="d-flex flex-items-center">
+      <Container class="d-flex flex-items-end">
         <div class="flex-auto text-left d-flex">
           <UiButton class="pl-3 col-12 col-lg-7 pr-0">
             <SearchWithFilters />
           </UiButton>
-          <router-link :to="{ name: 'timeline' }" class="ml-2">
-            <UiButton class="no-wrap px-3">
-              <Icon name="feed" size="18" />
-              <UiCounter :counter="numberOfUnseenProposals" class="ml-2" />
-            </UiButton>
-          </router-link>
         </div>
         <div class="ml-3 text-right hide-sm col-lg-4">
           {{ $tc('spaceCount', [_n(orderedSpaces.length)]) }}
-          <router-link :to="{ name: 'setup' }" class="hide-md ml-3">
-            <UiButton>{{ $t('createSpace') }}</UiButton>
-          </router-link>
         </div>
       </Container>
     </div>

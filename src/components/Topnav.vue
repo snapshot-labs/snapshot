@@ -15,8 +15,6 @@ const { spaces } = useApp();
 const { login, web3 } = useWeb3();
 
 const loading = ref(false);
-const modalAboutOpen = ref(false);
-const modalLangOpen = ref(false);
 const modalWalletNotice = ref(false);
 
 const space = computed(() => {
@@ -104,9 +102,6 @@ onMounted(() => setTitle());
                 class="hide-md hide-lg hide-xl ml-n2 mr-n2 v-align-text-bottom"
               />
             </UiButton>
-            <UiButton @click="modalAboutOpen = true" class="ml-2">
-              <span v-text="'?'" class="ml-n1 mr-n1" />
-            </UiButton>
           </div>
         </div>
       </Container>
@@ -120,15 +115,6 @@ onMounted(() => setTitle());
         :open="modalAccountOpen"
         @close="modalAccountOpen = false"
         @login="handleLogin"
-      />
-      <ModalAbout
-        :open="modalAboutOpen"
-        @close="modalAboutOpen = false"
-        @openLang="modalLangOpen = true"
-      />
-      <ModalSelectLanguage
-        :open="modalLangOpen"
-        @close="modalLangOpen = false"
       />
       <ModalWalletNotice
         :open="modalWalletNotice"

@@ -40,9 +40,11 @@ watch(modalOpen, val => {
     <UiLoading v-if="app.loading || !app.init" class="overlay big" />
     <div v-else>
       <MainSidebar />
-      <Topnav />
-      <div class="pb-6">
-        <router-view :key="$route.path" class="flex-auto" />
+      <div style="margin-left: 60px">
+        <Topnav />
+        <div class="pb-6">
+          <router-view :key="$route.path" class="flex-auto" />
+        </div>
       </div>
     </div>
     <div id="modal" />

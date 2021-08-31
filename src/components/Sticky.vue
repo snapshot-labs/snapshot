@@ -31,9 +31,9 @@ onBeforeUnmount(() => {
   <div>
     <div v-if="isFixed" :style="`height: ${offsetHeight}px;`" />
     <div
-      style="z-index: 20"
+      style="z-index: 20; right: 0px; left: 60px"
       ref="sticky"
-      :class="{ 'position-fixed width-full top-0': isFixed }"
+      :class="{ 'position-fixed top-0': isFixed }"
     >
       <slot />
     </div>
