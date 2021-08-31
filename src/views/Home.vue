@@ -7,10 +7,12 @@ import { useUnseenProposals } from '@/composables/useUnseenProposals';
 import { useScrollMonitor } from '@/composables/useScrollMonitor';
 import { useApp } from '@/composables/useApp';
 import { useFollowSpace } from '@/composables/useFollowSpace';
+import { useWeb3 } from '@/composables/useWeb3';
 
 const route = useRoute();
 const { spaces } = useApp();
 const { followingSpaces } = useFollowSpace();
+const { web3 } = useWeb3();
 
 const orderedSpaces = computed(() => {
   const networkFilter = route.query.network;
@@ -45,6 +47,20 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
 
 <template>
   <div>
+    <div v-if="!web3.authLoading && !$auth.isAuthenticated.value" class="border-bottom py-8 mb-4">
+      <Container class="clearfix">
+        <div class="col-6 float-left">
+          <h1 class="mono mb-5">Where decisions get made</h1>
+          <a>Learn more</a>
+        </div>
+        <div class="col-6 float-left">
+          <div
+            class="placeholder float-right"
+            style="width: 380px; height: 180px"
+          />
+        </div>
+      </Container>
+    </div>
     <div class="text-center mb-4 mx-auto">
       <Container class="d-flex flex-items-center">
         <div class="flex-auto text-left d-flex">
