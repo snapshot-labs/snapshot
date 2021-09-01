@@ -86,10 +86,17 @@ async function getData(url = '') {
   });
   return response.json(); // parses JSON response into native JavaScript objects
 }
+const lastPage=ref(false)
 async function getReplyData() {
-  console.log("dsa")
-  const res = await getData(`https://uia5m1.deta.dev/all_reply/${props.item.proposal_id}/${props.item.key}`);
-  if (res.status) allReply.value = res.data.items.sort((a,b)=>{return Number(a.timestamp)-Number(b.timestamp)});
+  const lastPageCondition=lastPage.value?`?last=${lastPage.value}`:""
+  const res = await getData(`https://uia5m1.deta.dev/all_reply/${props.item.proposal_id}/${props.item.key}${lastPageCondition}`);
+  if (res.status&&!lastPage.value) {
+    allReply.value = res.data.items.sort((a,b)=>{return Number(a.timestamp)-Number(b.timestamp)});
+    lastPage.value=res.data.last
+    }else{
+      allReply.value=allReply.value.concat(res.data.items)
+      lastPage.value=res.data.last
+    }
 }
 onMounted(async () => {
   getReplyData();
@@ -190,8 +197,11 @@ onMounted(async () => {
       :profiles="profiles"
       :space="space"
       :allReply="allReply"
+      :lastPage="lastPage"
       :mainThread="item.key"
       @replyComment="getReplyData"
-      
+      @updateItem="getReplyData"
+      @deleteItem="getReplyData"
+      @loadMore="getReplyData"
     />
 </template>

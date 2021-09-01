@@ -41,6 +41,7 @@ async function updateItems() {
     loading.value = false;
     if (!res.status) return notify(['red', 'Oops, something went wrong']);
     emit('updateItem');
+     emit("dismissComment")
     closeModal.value = false;
   
     return;

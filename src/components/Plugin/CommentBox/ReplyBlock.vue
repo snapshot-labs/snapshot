@@ -1,15 +1,19 @@
 <script setup>
-import { defineProps, toRef, computed, ref, defineEmits } from 'vue';
+import { defineProps, watch, computed, ref, defineEmits } from 'vue';
+import { useNotifications } from '@/composables/useNotifications';
+import { useModal } from '@/composables/useModal';
+const {modalOpen}=useModal()
 const props = defineProps({
   item: Object,
   space: Object,
   profiles: Object,
   mainThread:String
 });
-const emit = defineEmits(['deleteItem','updateItem','replyComment']);
+const emit = defineEmits(['deleteItem','updateItem','replyComment','scrollTo']);
 const toggleComment = ref(true);
-const toggleEditComment = ref(true);
 const toggleReplyTo = ref(false);
+const toggleEditComment = ref(true);
+const loading = ref(false);
 const threeDotItems = computed(() => {
   const items = [
     { text: 'edit', action: 'edit' },
@@ -28,6 +32,42 @@ function selectFromThreedotDropdown(e) {
     closeModal.value = true;
   }
 }
+async function deleteData(url = '') {
+  // Default options are marked with *
+  const response = await fetch(url, {
+    method: 'DELETE'
+   });
+  return response.json(); // parses JSON response into native JavaScript objects
+}
+const { notify } = useNotifications();
+async function deleteItem() {
+  if(loading.value) return
+  try {
+    loading.value = true;
+    const res = await deleteData(`https://uia5m1.deta.dev/delete/${props.item.key}`);
+    loading.value = false;
+    if (!res.status) return notify(['red', 'Oops, something went wrong']);
+    emit("deleteItem")
+    closeModal.value = false;
+    
+    
+    return;
+  } catch (e) {
+    loading.value = false;
+    notify(['red', 'Oops, something went wrong']);
+  }
+}
+watch([modalOpen,closeModal],()=>{
+ const el = document.body;
+  if(!closeModal.value){
+
+    el.classList['remove']('overflow-hidden');
+  }else if(closeModal.value&&!el.classList['contains']('overflow-hidden')){
+    
+    el.classList['add']('overflow-hidden');
+  }
+  
+})
 </script>
 <template>
   <UiModal :open="closeModal" @close="closeModal = false">
@@ -47,16 +87,18 @@ function selectFromThreedotDropdown(e) {
         justify-content: center;
       "
     >
-      <UiButton class="bg-red text-white">Yes</UiButton>
-      <UiButton class="ml-2">No</UiButton>
+      <UiButton @click="deleteItem" :loading="loading" class="bg-red text-white">Yes</UiButton>
+      <UiButton :disabled="loading" class="ml-2">No</UiButton>
     </div>
   </UiModal>
   <div v-if="!toggleEditComment">
     <PluginCommentBoxComment
-      :editComment="item.markdown"
+      :item="item"
       buttonName="Edit"
       placeholder="Edit your reply here"
       @dismissComment="toggleEditComment = true"
+      @updateItem="$emit('replyComment')"
+      method="edit"
     />
   </div>
   <div v-if="toggleEditComment">
@@ -79,16 +121,20 @@ function selectFromThreedotDropdown(e) {
           v-text="profiles[item.reply_to].ens"
         />
         <span v-else v-text="_shorten(item.reply_to)" />
+        
       </span>
       <PluginCommentBoxBlock v-if="toggleReplyTo" slim="true">
         <div class="ml-2 mt-2">
-          comment by
+          <span @click="$emit('scrollTo',item.reply_thread_id)" style="cursor:pointer;">
+comment by
           <User
             :address="item.reply_to"
             :profile="profiles[item.reply_to]"
             :space="space"
             class="d-inline-block"
-          />
+          /> <span v-if="item?.edited">(edited)</span> <span v-if="item?.deleted">(deleted)</span>
+          </span>
+          
         </div>
 
         <div class="border-bottom"></div>
@@ -126,7 +172,7 @@ function selectFromThreedotDropdown(e) {
           :aria-label="_ms(item.timestamp / 1e3)"
           v-text="$d(item.timestamp, 'short', 'en-US')"
           class="link-color tooltipped tooltipped-n"
-        /><span v-if="item.edit_timestamp" :aria-label="$d(item.edit_timestamp, 'short', 'en-US')" class="tooltipped tooltipped-n">(edited)</span>
+        /> <span v-if="item.edit_timestamp" :aria-label="$d(item.edit_timestamp, 'short', 'en-US')" class="tooltipped tooltipped-n">(edited)</span>
       </div>
     </PluginCommentBoxBlock>
     <UiButton
@@ -142,6 +188,7 @@ function selectFromThreedotDropdown(e) {
       buttonName="Reply"
       @dismissComment="toggleComment = true"
       @replyComment="$emit('replyComment')"
+      @updateItem="$emit('updateItem')"
       :item="item"
       :mainThread="mainThread"
       method="replyComment"

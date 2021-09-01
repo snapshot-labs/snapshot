@@ -1,12 +1,13 @@
 <script setup>
-import { defineProps, toRef,computed,ref,onMounted } from 'vue';
+import { defineProps, toRef,computed,ref,onMounted,onBeforeUpdate,watch } from 'vue';
 const props = defineProps({
   space: Object,
   profiles: Object,
  allReply:Array,
- mainThread:String
+ mainThread:String,
+ lastPage:String
 });
-const emit = defineEmits(['deleteItem','updateItem','replyComment']);
+const emit = defineEmits(['deleteItem','updateItem','replyComment','loadMore']);
 const toggleComment = ref(true);
 const toggleEditComment = ref(true);
 const toggleReplyTo = ref(false);
@@ -28,22 +29,65 @@ function selectFromThreedotDropdown(e) {
     closeModal.value=true
   }
 }
-
+const listReply = ref({})
+onBeforeUpdate(() => {
+        listReply.value = {}
+      })
+function goto(index) {
+  try{
+const element = listReply.value[index];
+      const child=element.querySelector("div > div > div > div.border-top")
+      child.classList.remove("block-bg")
+      child.classList.add("goto")
+      const top = element.offsetTop;
+      window.scrollTo(0, top-79);
+      setTimeout(()=>{child.classList.remove("goto");child.classList.add("block-bg");},1000)
+  }catch(e){
+// console.log("")
+  }
+      
+      
+    }
+const showIt=ref(false)
+const loadIt=ref(false)
+watch(()=>props.allReply,()=>{
+ loadIt.value=false;
+})
 </script>
+<style lang="scss">
+.goto {
+  animation-name: fade-to-black;
+  animation-duration: 1s;
+}
+
+@keyframes fade-to-black {
+  0% {background-color: grey }
+    100% {background-color: var(--bg-color)}
+  
+  
+}
+html{scroll-behavior: smooth;}
+</style>
 <template>
-<div class="ml-2 mt-2 d-inline-block" style="color: blue; cursor: pointer">
-      show replies ({{allReply.length}})
+<div v-if="allReply.length>0" @click="showIt=!showIt" class="ml-2 mt-2 d-inline-block" style="color: blue; cursor: pointer">
+      {{showIt?"hide":"show"}} replies ({{allReply.length}})
     </div>
  
-  <div class="pl-4" :key="index" v-for="(item, index) in allReply">
-   
+  <div v-show="showIt" class="pl-4" :ref="el => { if (el) listReply[item.key] = el }" :key="index" v-for="(item, index) in allReply">
        <PluginCommentBoxReplyBlock
-      :item="item"
+        :item="item"
       :profiles="profiles"
       :space="space"
       :mainThread="mainThread"
       @replyComment="$emit('replyComment')"
+       @updateItem="$emit('updateItem')"
+       @deleteItem="$emit('deleteItem')"
+      @scrollTo="goto($event)"
     />
   </div>
-  <div class="ml-5 mt-2 d-inline-block" style="color:blue;cursor:pointer;">load more...</div>
+
+  <div @click="$emit('loadMore');loadIt=true;" v-if="lastPage&&showIt&&!loadIt" class="ml-5 mt-2 d-inline-block" style="color:blue;cursor:pointer;">load more...</div>
 </template>
+<style>
+
+</style>

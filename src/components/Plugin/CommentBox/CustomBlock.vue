@@ -43,7 +43,7 @@ async function getCommentData() {
   const res = await getData(`https://uia5m1.deta.dev/all/${props.proposalId}`);
   if (res.status)
     allData.value = res.data.items.sort((a, b) => {
-      return Number(b.timestamp) - Number(a.timestamp);
+      return Number(a.timestamp) - Number(b.timestamp);
     });
 }
 onMounted(async () => {
