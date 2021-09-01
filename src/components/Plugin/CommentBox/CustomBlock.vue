@@ -47,6 +47,10 @@ async function getCommentData() {
 onMounted(async () => {
   getCommentData();
 });
+function clickSubmit() {
+console.log(modalTermsOpen.value)
+  !web3Account.value ? (modalAccountOpen.value = true): handleSubmit();
+}
 async function postData(url = '', data = {}) {
   // Default options are marked with *
   const response = await fetch(url, {
@@ -58,6 +62,7 @@ async function postData(url = '', data = {}) {
 }
 
 async function handleSubmit() {
+ 
   if(loading.value) return
   try {
     loading.value = true;
@@ -81,17 +86,12 @@ async function handleSubmit() {
 const { modalAccountOpen } = useModal();
 const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(key);
 
-function clickSubmit() {
-  !web3Account.value
-    ? (modalAccountOpen.value = true)
-    : !termsAccepted.value && space.value.terms
-    ? (modalTermsOpen.value = true)
-    : handleSubmit();
-}
+
 const closeModal=ref(false)
 </script>
 <template>
   <Block title="Comment Box">
+  
     <UiButton
     v-if="togglePreview"
       class="d-block width-full px-3"
