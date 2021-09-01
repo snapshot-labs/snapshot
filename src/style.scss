@@ -41,6 +41,10 @@ body,
   -moz-osx-font-smoothing: grayscale;
 }
 
+body {
+  overscroll-behavior-y: none;
+}
+
 * {
   outline: none !important;
 }
@@ -195,10 +199,6 @@ textarea {
 
   .extra-icon-off {
     display: none;
-  }
-
-  &:hover .extra-icon-off {
-    display: inline;
   }
 }
 

@@ -5,7 +5,7 @@ import { createApp, h, provide } from 'vue';
 import Jazzicon from 'vue3-jazzicon/src/components';
 import { LockPlugin } from '@snapshot-labs/lock/plugins/vue3';
 import options from '@/helpers/auth';
-import '@snapshot-labs/snapshot-spaces/skins';
+import '../snapshot-spaces/skins';
 import App from '@/App.vue';
 import router from '@/router';
 import mixins from '@/mixins';

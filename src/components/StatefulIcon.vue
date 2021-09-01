@@ -2,12 +2,8 @@
 import { computed } from 'vue';
 
 const props = defineProps({
-  onName: String,
-  offName: String,
   on: { type: Boolean, default: true }
 });
-
-const emit = defineEmits(['favorite']);
 
 const name = computed(() => (props.on ? 'favorite-on' : 'favorite-off'));
 
@@ -19,15 +15,10 @@ const buttonClasses = computed(() => {
     'text-color': !props.on
   };
 });
-
-function handleClick(e) {
-  e.preventDefault();
-  emit('favorite');
-}
 </script>
 
 <template>
-  <button :class="buttonClasses" @click="handleClick($event)">
+  <button :class="buttonClasses">
     <Icon :name="name" size="22" />
   </button>
 </template>
