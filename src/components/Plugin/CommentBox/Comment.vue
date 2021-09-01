@@ -9,7 +9,8 @@ const props = defineProps({
   placeholder: String,
   buttonName: String,
   item: Object,
-  method: String
+  method: String,
+  mainThread:String
 });
 const { web3 } = useWeb3();
 const item2 = toRef(props, 'item');
@@ -64,8 +65,9 @@ const chooseMethod = {
       {   author: web3Account.value,
       markdown: comment.value,
       proposal_id: props.item.proposal_id,
-      main_thread_id:props.item.key,
+      main_thread_id:props.mainThread,
       reply_to:props.item.author,
+      reply_thread_id:props.item.key,
       reply:props.item.markdown 
       }
     );

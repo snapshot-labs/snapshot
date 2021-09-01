@@ -1,10 +1,12 @@
 <script setup>
-import { defineProps, toRef, computed, ref } from 'vue';
+import { defineProps, toRef, computed, ref, defineEmits } from 'vue';
 const props = defineProps({
   item: Object,
   space: Object,
-  profiles: Object
+  profiles: Object,
+  mainThread:String
 });
+const emit = defineEmits(['deleteItem','updateItem','replyComment']);
 const toggleComment = ref(true);
 const toggleEditComment = ref(true);
 const toggleReplyTo = ref(false);
@@ -63,32 +65,34 @@ function selectFromThreedotDropdown(e) {
         style="cursor: pointer"
         class="State mb-2 text-normal"
         @click="toggleReplyTo = !toggleReplyTo"
+        v-if="mainThread!==item.reply_thread_id"
       >
+      
         reply to
         <span
-          v-if="profiles[item.author]?.name"
+          v-if="profiles[item.reply_to]?.name"
           class="mt-3"
-          v-text="profiles[item.author].name"
+          v-text="profiles[item.reply_to].name"
         />
         <span
-          v-else-if="profiles[item.author]?.ens"
-          v-text="profiles[item.author].ens"
+          v-else-if="profiles[item.reply_to]?.ens"
+          v-text="profiles[item.reply_to].ens"
         />
-        <span v-else v-text="_shorten(item.author)" />
+        <span v-else v-text="_shorten(item.reply_to)" />
       </span>
       <PluginCommentBoxBlock v-if="toggleReplyTo" slim="true">
         <div class="ml-2 mt-2">
           comment by
           <User
-            :address="item.author"
-            :profile="profiles[item.author]"
+            :address="item.reply_to"
+            :profile="profiles[item.reply_to]"
             :space="space"
             class="d-inline-block"
           />
         </div>
 
         <div class="border-bottom"></div>
-        <div class="ml-2 mt-2"><UiMarkdown :body="`comment`" /></div>
+        <div class="ml-2 mt-2"><UiMarkdown :body="item.reply" /></div>
       </PluginCommentBoxBlock>
       <div>
         <User
@@ -122,7 +126,7 @@ function selectFromThreedotDropdown(e) {
           :aria-label="_ms(item.timestamp / 1e3)"
           v-text="$d(item.timestamp, 'short', 'en-US')"
           class="link-color tooltipped tooltipped-n"
-        />
+        /><span v-if="item.edit_timestamp" :aria-label="$d(item.edit_timestamp, 'short', 'en-US')" class="tooltipped tooltipped-n">(edited)</span>
       </div>
     </PluginCommentBoxBlock>
     <UiButton
@@ -137,6 +141,10 @@ function selectFromThreedotDropdown(e) {
       v-if="!toggleComment"
       buttonName="Reply"
       @dismissComment="toggleComment = true"
+      @replyComment="$emit('replyComment')"
+      :item="item"
+      :mainThread="mainThread"
+      method="replyComment"
       placeholder="add your reply here"
     />
   </div>

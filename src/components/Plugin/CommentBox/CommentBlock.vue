@@ -89,7 +89,7 @@ async function getData(url = '') {
 async function getReplyData() {
   console.log("dsa")
   const res = await getData(`https://uia5m1.deta.dev/all_reply/${props.item.proposal_id}/${props.item.key}`);
-  if (res.status) allReply.value = res.data.items.sort((a,b)=>{return Number(b.timestamp)-Number(a.timestamp)});
+  if (res.status) allReply.value = res.data.items.sort((a,b)=>{return Number(a.timestamp)-Number(b.timestamp)});
 }
 onMounted(async () => {
   getReplyData();
@@ -181,14 +181,17 @@ onMounted(async () => {
       @dismissComment="toggleComment = true"
       @replyComment="getReplyData"
       :item="item"
+      :mainThread="item.key"
       method="replyComment"
       placeholder="add your reply here"
     />
   </div>
-    
     <PluginCommentBoxListReply
       :profiles="profiles"
       :space="space"
       :allReply="allReply"
+      :mainThread="item.key"
+      @replyComment="getReplyData"
+      
     />
 </template>
