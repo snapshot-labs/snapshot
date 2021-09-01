@@ -78,6 +78,22 @@ watch([modalOpen,closeModal],()=>{
   }
   
 })
+const allReply=ref([])
+async function getData(url = '') {
+  // Default options are marked with *
+  const response = await fetch(url, {
+    method: 'GET' // *GET, POST, PUT, DELETE, etc.
+  });
+  return response.json(); // parses JSON response into native JavaScript objects
+}
+async function getReplyData() {
+  console.log("dsa")
+  const res = await getData(`https://uia5m1.deta.dev/all_reply/${props.item.proposal_id}/${props.item.key}`);
+  if (res.status) allReply.value = res.data.items.sort((a,b)=>{return Number(b.timestamp)-Number(a.timestamp)});
+}
+onMounted(async () => {
+  getReplyData();
+});
 </script>
 <template>
   <UiModal :open="closeModal" @close="closeEvent">
@@ -163,9 +179,16 @@ watch([modalOpen,closeModal],()=>{
       v-if="!toggleComment"
       buttonName="Reply"
       @dismissComment="toggleComment = true"
+      @replyComment="getReplyData"
       :item="item"
       method="replyComment"
       placeholder="add your reply here"
     />
   </div>
+    
+    <PluginCommentBoxListReply
+      :profiles="profiles"
+      :space="space"
+      :allReply="allReply"
+    />
 </template>

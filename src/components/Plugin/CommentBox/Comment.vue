@@ -4,7 +4,7 @@ import { clone } from '@/helpers/utils';
 import { useNotifications } from '@/composables/useNotifications';
 import { useModal } from '@/composables/useModal';
 import { useWeb3 } from '@/composables/useWeb3';
-const {modalOpen}=useModal()
+const {modalOpen,modalAccountOpen}=useModal()
 const props = defineProps({
   placeholder: String,
   buttonName: String,
@@ -13,7 +13,7 @@ const props = defineProps({
 });
 const { web3 } = useWeb3();
 const item2 = toRef(props, 'item');
-const comment = ref(item2.value?.markdown ? clone(item2.value?.markdown) : '');
+const comment = ref(props.method==="edit" && item2.value?.markdown ? clone(item2.value?.markdown) : '');
 const web3Account = computed(() => web3.value.account);
 const loading = ref(false);
 const togglePreview = ref(true);
@@ -50,10 +50,12 @@ async function updateItems() {
 }
 const chooseMethod = {
   edit: () => {
+    if(!web3Account.value) return modalAccountOpen.value = true;
     closeModal.value = true;
 
   },
   replyComment:async function replyComment() {
+    if(!web3Account.value) return modalAccountOpen.value = true;
   if (loading.value) return;
   try {
     loading.value = true;
@@ -70,6 +72,7 @@ const chooseMethod = {
     loading.value = false;
     if (!res.status) return notify(['red', 'Oops, something went wrong']);
      emit("dismissComment")
+     emit("replyComment")
     return;
   } catch (e) {
     console.log(e.message)

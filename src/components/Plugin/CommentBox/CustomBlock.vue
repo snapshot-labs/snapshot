@@ -48,7 +48,6 @@ onMounted(async () => {
   getCommentData();
 });
 function clickSubmit() {
-console.log(modalTermsOpen.value)
   !web3Account.value ? (modalAccountOpen.value = true): handleSubmit();
 }
 async function postData(url = '', data = {}) {

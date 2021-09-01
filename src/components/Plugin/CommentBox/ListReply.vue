@@ -1,9 +1,9 @@
 <script setup>
-import { defineProps, toRef,computed,ref } from 'vue';
+import { defineProps, toRef,computed,ref,onMounted } from 'vue';
 const props = defineProps({
-  reply: Array,
   space: Object,
-  profiles: Object
+  profiles: Object,
+ allReply:Array
 });
 const toggleComment = ref(true);
 const toggleEditComment = ref(true);
@@ -29,8 +29,10 @@ function selectFromThreedotDropdown(e) {
 
 </script>
 <template>
-
-  <div class="pl-4" :key="index" v-for="(item, index) in reply">
+<div class="ml-2 mt-2 d-inline-block" style="color: blue; cursor: pointer">
+      show replies ({{allReply.length}})
+    </div>
+  <div class="pl-4" :key="index" v-for="(item, index) in allReply">
    
        <PluginCommentBoxReplyBlock
       :item="item"
