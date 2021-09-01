@@ -3,6 +3,7 @@ import { ref, defineProps, defineEmits, onMounted, computed, toRef,watch } from 
 import { clone } from '@/helpers/utils';
 import { useNotifications } from '@/composables/useNotifications';
 import { useModal } from '@/composables/useModal';
+import { useWeb3 } from '@/composables/useWeb3';
 const {modalOpen}=useModal()
 const props = defineProps({
   placeholder: String,
@@ -10,13 +11,14 @@ const props = defineProps({
   item: Object,
   method: String
 });
+const { web3 } = useWeb3();
 const item2 = toRef(props, 'item');
 const comment = ref(item2.value?.markdown ? clone(item2.value?.markdown) : '');
-
+const web3Account = computed(() => web3.value.account);
 const loading = ref(false);
 const togglePreview = ref(true);
 const closeModal = ref(false);
-const emit = defineEmits(['dismissComment', 'updateItem']);
+const emit = defineEmits(['dismissComment', 'updateItem','replyComment']);
 async function postData(url = '', data = {}) {
   // Default options are marked with *
   const response = await fetch(url, {
@@ -50,7 +52,31 @@ const chooseMethod = {
   edit: () => {
     closeModal.value = true;
 
+  },
+  replyComment:async function replyComment() {
+  if (loading.value) return;
+  try {
+    loading.value = true;
+    const res = await postData(
+      `https://uia5m1.deta.dev/add_reply`,
+      {   author: web3Account.value,
+      markdown: comment.value,
+      proposal_id: props.item.proposal_id,
+      main_thread_id:props.item.key,
+      reply_to:props.item.author,
+      reply:props.item.markdown 
+      }
+    );
+    loading.value = false;
+    if (!res.status) return notify(['red', 'Oops, something went wrong']);
+     emit("dismissComment")
+    return;
+  } catch (e) {
+    console.log(e.message)
+    loading.value = false;
+    notify(['red', 'Oops, something went wrong']);
   }
+}
 };
 function closeEvent() {
   if (loading.value) return;
@@ -68,6 +94,7 @@ watch([modalOpen,closeModal],()=>{
   }
   
 })
+
 </script>
 <template>
   <UiModal :open="closeModal" @close="closeEvent">

@@ -69,9 +69,7 @@ async function handleSubmit() {
     const res = await postData(`https://uia5m1.deta.dev/add`, {
       author: web3Account.value,
       markdown: comment.value,
-      reply: [],
-      proposal_id: props.proposalId,
-      timestamp: new Date().getTime()
+      proposal_id: props.proposalId
     });
     comment.value = '';
     loading.value = false;
@@ -119,7 +117,7 @@ const closeModal=ref(false)
       Submit
     </UiButton>
     <UiButton @click="togglePreview=!togglePreview" class="ml-2 mt-2 button--primary"  :disabled="comment.length === 0">{{togglePreview?"Preview":"Continue Editing"}}</UiButton>
-   <PluginCommentBoxListComment @updateItem="getCommentData" @deleteItem="getCommentData" :allData="allData" :profiles="profiles" :space="space"/>
+   <PluginCommentBoxListComment @replyComment="getCommentData" @updateItem="getCommentData" @deleteItem="getCommentData" :allData="allData" :profiles="profiles" :space="space"/>
    
   </Block>
 </template>

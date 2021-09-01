@@ -31,7 +31,7 @@ function selectFromThreedotDropdown(e) {
     el.classList['remove']('overflow-hidden');
   }
 }
-const emit = defineEmits(['deleteItem','updateItem']);
+const emit = defineEmits(['deleteItem','updateItem','replyComment']);
 async function deleteData(url = '') {
   // Default options are marked with *
   const response = await fetch(url, {
@@ -163,6 +163,8 @@ watch([modalOpen,closeModal],()=>{
       v-if="!toggleComment"
       buttonName="Reply"
       @dismissComment="toggleComment = true"
+      :item="item"
+      method="replyComment"
       placeholder="add your reply here"
     />
   </div>

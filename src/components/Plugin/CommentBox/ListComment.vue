@@ -5,7 +5,7 @@ const props = defineProps({
   space: Object,
   allData: Array
 });
-const emit=defineEmits(["deleteItem","updateItem"])
+const emit=defineEmits(["deleteItem","updateItem","replyComment"])
 </script>
 <template>
   
@@ -16,6 +16,7 @@ const emit=defineEmits(["deleteItem","updateItem"])
       :space="space"
       @deleteItem="$emit('deleteItem')"
       @updateItem="$emit('updateItem')"
+      @replyComment="$emit('replyComment')"
     />
     <div class="ml-2 mt-2 d-inline-block" style="color: blue; cursor: pointer">
       show replies (0)
