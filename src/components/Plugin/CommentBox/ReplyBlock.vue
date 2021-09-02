@@ -2,7 +2,10 @@
 import { defineProps, watch, computed, ref, defineEmits } from 'vue';
 import { useNotifications } from '@/composables/useNotifications';
 import { useModal } from '@/composables/useModal';
-const {modalOpen}=useModal()
+import { useWeb3 } from '@/composables/useWeb3';
+const { modalOpen,modalAccountOpen } = useModal();
+const { web3 } = useWeb3();
+const web3Account = computed(() => web3.value.account);
 const props = defineProps({
   item: Object,
   space: Object,
@@ -29,6 +32,7 @@ function selectFromThreedotDropdown(e) {
     toggleComment.value = true;
   }
   if (e === 'delete') {
+    if(!web3Account.value) return modalAccountOpen.value = true;
     closeModal.value = true;
   }
 }
@@ -88,7 +92,7 @@ watch([modalOpen,closeModal],()=>{
       "
     >
       <UiButton @click="deleteItem" :loading="loading" class="bg-red text-white">Yes</UiButton>
-      <UiButton :disabled="loading" class="ml-2">No</UiButton>
+      <UiButton :disabled="loading" @click="closeModal=false" class="ml-2">No</UiButton>
     </div>
   </UiModal>
   <div v-if="!toggleEditComment">

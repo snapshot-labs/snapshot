@@ -1,13 +1,11 @@
 <script setup>
 import { ref, defineProps, defineEmits, onMounted, computed } from 'vue';
 import { useModal } from '@/composables/useModal';
-import { useTerms } from '@/composables/useTerms';
 import { useWeb3 } from '@/composables/useWeb3';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { useRoute } from 'vue-router';
 import { useProfiles } from '@/composables/useProfiles';
 import { useNotifications } from '@/composables/useNotifications';
-import { useInfiniteLoader } from '@/composables/useInfiniteLoader';
 import { useScrollMonitor } from '@/composables/useScrollMonitor';
 const props = defineProps({
   proposalId: String,
@@ -33,6 +31,7 @@ const isAdmin = computed(() => {
 const loading = ref(false);
 const comment = ref('');
 const allData = ref([]);
+const loadingMore=ref(false)
 const togglePreview = ref(true);
 async function getData(url = '') {
   // Default options are marked with *
@@ -44,7 +43,9 @@ async function getData(url = '') {
 const lastPage=ref(false)
 const isLast=ref(false)
 async function getCommentData() {
+  loadingMore.value=true
   if(!lastPage.value&&!isLast.value&&allData.value.length>0){
+    loadingMore.value=false
       return
     }
     const lastPageCondition = isLast.value ? `?last=${lastPage.value}` : '';
@@ -60,7 +61,7 @@ async function getCommentData() {
     lastPage.value = res.data.last;
     if(res.data.last) {isLast.value=true;}else{isLast.value=false}
   } 
-  
+    loadingMore.value=false
 }
 const { endElement } = useScrollMonitor(() =>
 getCommentData()
@@ -160,15 +161,8 @@ function deleteItem(key){
         style="height: 10px; width: 10px; position: absolute"
         ref="endElement"
       />
-    <!-- <PluginCommentBoxListComment
-      @updateItem="updateItem($event)"
-      @deleteItem="deleteItem($event)"
-      :allData="allData"
-      :profiles="profiles"
-      :space="space"
-      :loadMore="loadMore"
-      :loading="loading"
-      @getComment="getCommentData"
-    /> -->
+ 
+        <RowLoading v-if="loadingMore" class="my-2" />
+    
   </Block>
 </template>

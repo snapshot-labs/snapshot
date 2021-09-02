@@ -1,8 +1,11 @@
 <script setup>
-import { ref, defineProps, defineEmits, onMounted, computed, watch } from 'vue';
+import { ref, defineProps, defineEmits, onMounted, computed, watch,onUpdated } from 'vue';
 import { useNotifications } from '@/composables/useNotifications';
 import { useModal } from '@/composables/useModal';
-const { modalOpen } = useModal();
+import { useWeb3 } from '@/composables/useWeb3';
+const { modalOpen,modalAccountOpen } = useModal();
+const { web3 } = useWeb3();
+const web3Account = computed(() => web3.value.account);
 const props = defineProps({
   profiles: Object,
   space: Object,
@@ -20,12 +23,14 @@ const toggleComment = ref(true);
 const toggleEditComment = ref(true);
 const closeModal = ref(false);
 const loading = ref(false);
+const loadingMore = ref(false);
 function selectFromThreedotDropdown(e) {
   if (e === 'edit') {
     toggleEditComment.value = false;
     toggleComment.value = true;
   }
   if (e === 'delete') {
+    if(!web3Account.value) return modalAccountOpen.value = true;
     closeModal.value = true;
     const el = document.body;
     el.classList['remove']('overflow-hidden');
@@ -50,6 +55,7 @@ async function deleteItem() {
     loading.value = false;
     if (!res.status) return notify(['red', 'Oops, something went wrong']);
     emit('deleteItem',props.item.key);
+    await getDataAfterDelete()
     closeModal.value = false;
 
     return;
@@ -84,7 +90,21 @@ async function getData(url = '') {
   return response.json(); // parses JSON response into native JavaScript objects
 }
 const lastPage = ref(false);
+async function getDataAfterDelete(){
+loadingMore.value=true;
+  const res = await getData(
+    `https://uia5m1.deta.dev/all_reply/${props.item.proposal_id}/${props.item.key}`
+  );
+  if (res.status) {
+    const resData=res.data.items;
+    allReply.value = resData;
+    lastPage.value = false;
+  }
+  loadingMore.value=false;
+}
+
 async function getReplyData() {
+  loadingMore.value=true;
   const lastPageCondition = lastPage.value ? `?last=${lastPage.value}` : '';
   const res = await getData(
     `https://uia5m1.deta.dev/all_reply/${props.item.proposal_id}/${props.item.key}${lastPageCondition}`
@@ -102,17 +122,19 @@ async function getReplyData() {
     });
     lastPage.value = res.data.last;
   }
+  loadingMore.value=false;
 }
 onMounted(async () => {
   getReplyData();
 });
 function updateItemReply(data){
-  console.log(data)
+  
 allReply.value[allReply.value.findIndex(a=>a.key===data.key)]=data;
 }
 function deleteItemReply(key){
 allReply.value.splice(allReply.value.findIndex(a=>a.key===key),1)
 }
+
 </script>
 <template>
   <UiModal :open="closeModal" @close="closeEvent">
@@ -219,6 +241,7 @@ allReply.value.splice(allReply.value.findIndex(a=>a.key===key),1)
     :allReply="allReply"
     :lastPage="lastPage"
     :mainThread="item.key"
+    :loadingMore="loadingMore"
     @replyComment="allReply.push($event)"
     @updateItem="updateItemReply($event)"
     @deleteItem="deleteItemReply($event)"

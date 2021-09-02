@@ -1,11 +1,13 @@
 <script setup>
 import { defineProps, toRef,computed,ref,onMounted,onBeforeUpdate,watch } from 'vue';
+
 const props = defineProps({
   space: Object,
   profiles: Object,
  allReply:Array,
  mainThread:String,
- lastPage:String
+ lastPage:String,
+ loadingMore:Boolean
 });
 const emit = defineEmits(['deleteItem','updateItem','replyComment','loadMore']);
 const toggleComment = ref(true);
@@ -26,6 +28,7 @@ function selectFromThreedotDropdown(e) {
     toggleComment.value = true;
   }
   if(e==="delete") {
+  
     closeModal.value=true
   }
 }
@@ -88,6 +91,7 @@ html{scroll-behavior: smooth;}
   </div>
 
   <div @click="$emit('loadMore');loadIt=true;" v-if="lastPage&&showIt&&!loadIt" class="ml-5 mt-2 d-inline-block" style="color:blue;cursor:pointer;">load more...</div>
+  <RowLoading v-if="loadingMore" class="my-2" />
 </template>
 <style>
 
