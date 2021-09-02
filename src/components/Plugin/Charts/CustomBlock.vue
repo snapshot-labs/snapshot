@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { Chart, registerables } from 'chart.js';
 
 Chart.register(...registerables);
@@ -14,10 +14,12 @@ const totalVotesPerDayChart = ref(null);
 const votingPowerPerAddress = ref(null);
 const votingPowerPerDay = ref(null);
 
-const space = props.space;
-const proposal = props.proposal;
-const votes = props.votes;
-votes.sort((a, b) => a.created - b.created);
+const space = computed(() => props.space);
+const proposal = computed(() => props.proposal);
+const votes = computed(() => {
+  votes.sort((a, b) => a.created - b.created);
+  return votes;
+});
 
 onMounted(() => {
   const canvasRef = totalVotesPerDayChart.value;
@@ -27,7 +29,7 @@ onMounted(() => {
 
   const dates = new Map();
 
-  votes.forEach(vote => {
+  votes.value.forEach(vote => {
     const date = new Date(vote.created * 1000);
     const day = `${date.getMonth() + 1}/${date.getDate() + 1}`;
 
@@ -75,7 +77,7 @@ onMounted(() => {
 
   const MAX_ADDRESSES = 20;
 
-  const newVotes = [...votes];
+  const newVotes = [...votes.value];
   newVotes.sort((a, b) => b.balance - a.balance);
 
   let labels = newVotes.map(vote => vote.voter);
@@ -124,8 +126,8 @@ onMounted(() => {
     return;
   }
 
-  const datasets = proposal.choices.map((choice, index) => {
-    const votesForThisChoice = votes.filter(vote => vote.choice === index + 1);
+  const datasets = proposal.value.choices.map((choice, index) => {
+    const votesForThisChoice = votes.value.filter(vote => vote.choice === index + 1);
     const data = votesForThisChoice.reduce((result, current, index) => {
       const date = new Date(current.created * 1000).toString()
       const balance = current.balance;
