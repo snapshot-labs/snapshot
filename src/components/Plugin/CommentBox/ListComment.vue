@@ -5,7 +5,7 @@ const props = defineProps({
   space: Object,
   allData: Array
 });
-const emit=defineEmits(["deleteItem","updateItem","replyComment"])
+const emit=defineEmits(["deleteItem","updateItem"])
 </script>
 <template>
   
@@ -14,8 +14,8 @@ const emit=defineEmits(["deleteItem","updateItem","replyComment"])
       :item="item"
       :profiles="profiles"
       :space="space"
-      @deleteItem="$emit('deleteItem')"
-      @updateItem="$emit('updateItem')"
+      @deleteItem="$emit('deleteItem',$event)"
+      @updateItem="$emit('updateItem',$event)"
     />
   
   </div>

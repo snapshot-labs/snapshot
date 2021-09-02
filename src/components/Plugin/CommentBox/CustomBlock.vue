@@ -73,18 +73,22 @@ async function handleSubmit() {
     });
     comment.value = '';
     loading.value = false;
-    await getCommentData();
-    if (!res.status) notify(['red', 'Oops, something went wrong']);
-    return;
+    if (!res.status) return notify(['red', 'Oops, something went wrong']);
+      allData.value.push(res.data)
   } catch (e) {
     loading.value = false;
     notify(['red', 'Oops, something went wrong']);
   }
 }
 const { modalAccountOpen } = useModal();
-const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(key);
 
 const closeModal = ref(false);
+function updateItem(data){
+  allData.value[allData.value.findIndex(a=>a.key===data.key)]=data;
+}
+function deleteItem(key){
+  allData.value.splice(allData.value.findIndex(a=>a.key===key),1);
+}
 </script>
 <template>
   <Block title="Comment Box">
@@ -123,9 +127,8 @@ const closeModal = ref(false);
       >{{ togglePreview ? 'Preview' : 'Continue Editing' }}</UiButton
     >
     <PluginCommentBoxListComment
-      @replyComment="getCommentData"
-      @updateItem="getCommentData"
-      @deleteItem="getCommentData"
+      @updateItem="updateItem($event)"
+      @deleteItem="deleteItem($event)"
       :allData="allData"
       :profiles="profiles"
       :space="space"

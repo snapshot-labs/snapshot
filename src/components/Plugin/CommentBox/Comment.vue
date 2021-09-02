@@ -40,7 +40,8 @@ async function updateItems() {
     );
     loading.value = false;
     if (!res.status) return notify(['red', 'Oops, something went wrong']);
-    emit('updateItem');
+    
+    emit('updateItem',res.data);
      emit("dismissComment")
     closeModal.value = false;
   
@@ -75,7 +76,7 @@ const chooseMethod = {
     loading.value = false;
     if (!res.status) return notify(['red', 'Oops, something went wrong']);
      emit("dismissComment")
-     emit("replyComment")
+     emit("replyComment",res.data)
     return;
   } catch (e) {
     console.log(e.message)

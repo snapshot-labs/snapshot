@@ -187,7 +187,7 @@ comment by
       v-if="!toggleComment"
       buttonName="Reply"
       @dismissComment="toggleComment = true"
-      @replyComment="$emit('replyComment')"
+      @replyComment="$emit('replyComment',$event)"
       @updateItem="$emit('updateItem')"
       :item="item"
       :mainThread="mainThread"

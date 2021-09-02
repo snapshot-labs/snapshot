@@ -79,7 +79,7 @@ html{scroll-behavior: smooth;}
       :profiles="profiles"
       :space="space"
       :mainThread="mainThread"
-      @replyComment="$emit('replyComment')"
+      @replyComment="$emit('replyComment',$event)"
        @updateItem="$emit('updateItem')"
        @deleteItem="$emit('deleteItem')"
       @scrollTo="goto($event)"

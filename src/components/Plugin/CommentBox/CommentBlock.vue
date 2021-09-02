@@ -1,8 +1,8 @@
 <script setup>
-import { ref, defineProps, defineEmits, onMounted, computed,watch } from 'vue';
+import { ref, defineProps, defineEmits, onMounted, computed, watch } from 'vue';
 import { useNotifications } from '@/composables/useNotifications';
 import { useModal } from '@/composables/useModal';
-const {modalOpen}=useModal()
+const { modalOpen } = useModal();
 const props = defineProps({
   profiles: Object,
   space: Object,
@@ -27,30 +27,31 @@ function selectFromThreedotDropdown(e) {
   }
   if (e === 'delete') {
     closeModal.value = true;
-      const el = document.body;
+    const el = document.body;
     el.classList['remove']('overflow-hidden');
   }
 }
-const emit = defineEmits(['deleteItem','updateItem','replyComment']);
+const emit = defineEmits(['deleteItem', 'updateItem', 'replyComment']);
 async function deleteData(url = '') {
   // Default options are marked with *
   const response = await fetch(url, {
     method: 'DELETE'
-   });
+  });
   return response.json(); // parses JSON response into native JavaScript objects
 }
 const { notify } = useNotifications();
 async function deleteItem() {
-  if(loading.value) return
+  if (loading.value) return;
   try {
     loading.value = true;
-    const res = await deleteData(`https://uia5m1.deta.dev/delete/${props.item.key}`);
+    const res = await deleteData(
+      `https://uia5m1.deta.dev/delete/${props.item.key}`
+    );
     loading.value = false;
     if (!res.status) return notify(['red', 'Oops, something went wrong']);
-    emit("deleteItem")
+    emit('deleteItem',props.item.key);
     closeModal.value = false;
-    
-    
+
     return;
   } catch (e) {
     loading.value = false;
@@ -61,24 +62,20 @@ async function deleteItem() {
 function closeEvent() {
   if (loading.value) return;
   closeModal.value = false;
-
 }
-async function updateItem(){
+async function updateItem(e) {
   toggleEditComment.value = true;
-  emit("updateItem")
+  emit('updateItem',e);
 }
-watch([modalOpen,closeModal],()=>{
- const el = document.body;
-  if(!closeModal.value){
-
+watch([modalOpen, closeModal], () => {
+  const el = document.body;
+  if (!closeModal.value) {
     el.classList['remove']('overflow-hidden');
-  }else if(closeModal.value&&!el.classList['contains']('overflow-hidden')){
-    
+  } else if (closeModal.value && !el.classList['contains']('overflow-hidden')) {
     el.classList['add']('overflow-hidden');
   }
-  
-})
-const allReply=ref([])
+});
+const allReply = ref([]);
 async function getData(url = '') {
   // Default options are marked with *
   const response = await fetch(url, {
@@ -86,17 +83,25 @@ async function getData(url = '') {
   });
   return response.json(); // parses JSON response into native JavaScript objects
 }
-const lastPage=ref(false)
+const lastPage = ref(false);
 async function getReplyData() {
-  const lastPageCondition=lastPage.value?`?last=${lastPage.value}`:""
-  const res = await getData(`https://uia5m1.deta.dev/all_reply/${props.item.proposal_id}/${props.item.key}${lastPageCondition}`);
-  if (res.status&&!lastPage.value) {
-    allReply.value = res.data.items.sort((a,b)=>{return Number(a.timestamp)-Number(b.timestamp)});
-    lastPage.value=res.data.last
-    }else{
-      allReply.value=allReply.value.concat(res.data.items)
-      lastPage.value=res.data.last
-    }
+  const lastPageCondition = lastPage.value ? `?last=${lastPage.value}` : '';
+  const res = await getData(
+    `https://uia5m1.deta.dev/all_reply/${props.item.proposal_id}/${props.item.key}${lastPageCondition}`
+  );
+  if (res.status && !lastPage.value) {
+    const resData=res.data.items.filter(a=>allReply.value.findIndex(b=>b.key===a.key)<0)
+    allReply.value = allReply.value.concat(resData).sort((a, b) => {
+      return Number(a.timestamp) - Number(b.timestamp);
+    });
+    lastPage.value = res.data.last;
+  } else {
+    const resData=res.data.items.filter(a=>allReply.value.findIndex(b=>b.key===a.key)<0)
+    allReply.value = allReply.value.concat(resData).sort((a, b) => {
+      return Number(a.timestamp) - Number(b.timestamp);
+    });
+    lastPage.value = res.data.last;
+  }
 }
 onMounted(async () => {
   getReplyData();
@@ -120,7 +125,9 @@ onMounted(async () => {
         justify-content: center;
       "
     >
-      <UiButton class="bg-red text-white" :loading="loading" @click="deleteItem">Yes</UiButton>
+      <UiButton class="bg-red text-white" :loading="loading" @click="deleteItem"
+        >Yes</UiButton
+      >
       <UiButton @click="closeEvent" :disabled="loading" class="ml-2"
         >No</UiButton
       >
@@ -132,7 +139,7 @@ onMounted(async () => {
       buttonName="Edit"
       placeholder="Edit your reply here"
       @dismissComment="toggleEditComment = true"
-      @updateItem="updateItem"
+      @updateItem="updateItem($event)"
       method="edit"
     />
   </div>
@@ -170,7 +177,13 @@ onMounted(async () => {
           :aria-label="_ms(item.timestamp / 1e3)"
           v-text="$d(item.timestamp, 'short', 'en-US')"
           class="link-color tooltipped tooltipped-n"
-        /> <span v-if="item.edit_timestamp" :aria-label="$d(item.edit_timestamp, 'short', 'en-US')" class="tooltipped tooltipped-n">(edited)</span>
+        />
+        <span
+          v-if="item.edit_timestamp"
+          :aria-label="$d(item.edit_timestamp, 'short', 'en-US')"
+          class="tooltipped tooltipped-n"
+          > (edited)</span
+        >
       </div>
     </PluginCommentBoxBlock>
 
@@ -186,22 +199,22 @@ onMounted(async () => {
       v-if="!toggleComment"
       buttonName="Reply"
       @dismissComment="toggleComment = true"
-      @replyComment="getReplyData"
+      @replyComment="allReply.push($event)"
       :item="item"
       :mainThread="item.key"
       method="replyComment"
       placeholder="add your reply here"
     />
   </div>
-    <PluginCommentBoxListReply
-      :profiles="profiles"
-      :space="space"
-      :allReply="allReply"
-      :lastPage="lastPage"
-      :mainThread="item.key"
-      @replyComment="getReplyData"
-      @updateItem="getReplyData"
-      @deleteItem="getReplyData"
-      @loadMore="getReplyData"
-    />
+  <PluginCommentBoxListReply
+    :profiles="profiles"
+    :space="space"
+    :allReply="allReply"
+    :lastPage="lastPage"
+    :mainThread="item.key"
+    @replyComment="allReply.push($event)"
+    @updateItem="getReplyData"
+    @deleteItem="getReplyData"
+    @loadMore="getReplyData"
+  />
 </template>
