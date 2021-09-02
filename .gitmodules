@@ -1,0 +1,3 @@
+[submodule "snapshot-spaces"]
+	path = snapshot-spaces
+	url = https://github.com/snapshot-labs/snapshot-spaces

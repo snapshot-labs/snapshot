@@ -22,7 +22,6 @@
   "version": "Versión",
   "timeline": "Cronología",
   "filters": "Filtros",
-  "favorites": "Favoritos",
   "allSpaces": "Todos los espacios",
   "submitOnchain": "Enviar on-chain",
   "inSpaces": "En {0} espacio(s)",
@@ -86,7 +85,7 @@
   "marketSymbol": "Mercado {0}",
   "twoChoicesRequired": "Se requieren dos opciones para este plugin.",
   "noResultsFound": "Lo sentimos, no es posible encontrar ningún resultado",
-  "noFavorites": "Todavía no tienes ningún favorito",
+  "noSpacesJoined": "Oops, you haven't joined any spaces yet",
   "addFavorites": "Añadir favoritos",
   "createdBy": "Por {0}",
   "startToEnd": "empieza {0} acaba {1}",
@@ -101,13 +100,18 @@
   "language": "Idioma",
   "agree": "Acepto",
   "mustAgreeToTerms": "Antes de poder completar esta acción, debes aceptar los {0} términos de servicio aquí:",
-  "playground": "Playground",
+  "playground": "Centro de Pruebas",
   "strategyParams": "Parámetros de estrategia",
   "addresses": "Direcciones",
   "networkErrorPlayground": "Error de red - por favor, abra la consola de su navegador para obtener más información",
   "upload": "Cargar",
+  "join": "Unirse",
+  "joined": "Registrado",
+  "leave": "Salir",
   "copyLink": "Copiar enlace",
   "duplicateProposal": "Duplicar propuesta",
+  "joinedSpaces": "Te uniste a un espacio",
+  "joinSpaces": "Únete a los espacios",
   "errors": {
     "required": "Campo obligatorio",
     "minLength": "La cantidad mínima es {0}",
@@ -134,18 +138,19 @@
         "member": "Necesitas ser miembro del espacio para poder presentar una propuesta.",
         "minScore": "Necesitas tener un mínimo de {0} {1} para poder presentar una propuesta."
       },
-      "customValidation": "You need to pass the proposal validation in order to submit a proposal."
+      "customValidation": "Es necesario aprobar la validación de la propuesta para presentarla."
     }
   },
   "delegate": {
     "header": "Delegar",
-    "selectDelegate": "Select delegate",
+    "selectDelegate": "Seleccionar delegado",
     "to": "A",
     "addressPlaceholder": "Dirección o nombre de ENS",
     "spacePlaceholder": "Espacio (opcional)",
     "delegations": "Tus delegación(es)",
     "allSpaces": "Para todos los espacios",
-    "delegated": "Delegado a ti"
+    "delegated": "Delegado a ti",
+    "pendingTransaction": "no hay transacciones pendientes | 1 transacción pendiente | {count} transacciones pendientes"
   },
   "proposal": {
     "castVote": "Emite tu voto",
@@ -196,7 +201,7 @@
     "editValidation": "Editar validación",
     "selectValidation": "Seleccionar validación",
     "validationParameters": "Parámetros de validación",
-    "warningTextRecord": "You must set a text record on the ENS domain."
+    "warningTextRecord": "Debe establecer un registro de texto en el dominio ENS."
   },
   "setup": {
     "example": "ej. yam.eth",
@@ -212,11 +217,11 @@
   },
   "explore": {
     "createStrategy": "Crear estrategia",
-    "createSkin": "Create skin",
+    "createSkin": "Crear apecto",
     "addNetwork": "Añadir red",
     "createPlugin": "Crear extensión",
     "strategies": "estrategia(s)",
-    "skins": "skin(s)",
+    "skins": "aspecto(s)",
     "networks": "red(es)",
     "plugins": "extensión(es)",
     "results": "resultado(s)"
@@ -237,22 +242,22 @@
     }
   },
   "safeSnap": {
-    "currentOutcome": "Current outcome: {0}",
-    "currentBond": "Current bond: {0} {1}",
+    "currentOutcome": "Resultado actual: {0}",
+    "currentBond": "Vínculo actual: {0}{1}",
     "finalizedIn": "Finalizado {0}",
-    "executableIn": "Executable {0}",
-    "finalOutcome": "Outcome: {0}",
-    "nextBond": "Bond to set outcome: {0}",
-    "setOutcomeTo": "Set outcome to:",
-    "claimBond": "Claim bond",
+    "executableIn": "Ejecutable {0}",
+    "finalOutcome": "Resultado {0}",
+    "nextBond": "Vínculo para establecer resultado: {0}",
+    "setOutcomeTo": "Establecer resultado como:",
+    "claimBond": "Reclamar vínculo",
     "labels": {
-      "request": "Request execution",
-      "setOutcome": "Set outcome",
-      "changeOutcome": "Change outcome",
+      "request": "Solicitar ejecución",
+      "setOutcome": "Establecer resultado",
+      "changeOutcome": "Cambiar resultado",
       "executeTxs": "Realizar operación 1/{0}",
       "finalized": "Votación finalizada",
       "executed": "{0}/{0} Operaciones realizadas",
-      "waiting": "Waiting for vote to close",
+      "waiting": "Esperando a que la votación se cierre",
       "error": "Error",
       "question": "Did this proposal pass and does it meet the",
       "criteria": "acceptance criteria?"

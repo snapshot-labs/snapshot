@@ -22,7 +22,6 @@
   "version": "వెర్షన్",
   "timeline": "కాలక్రమం",
   "filters": "Filters",
-  "favorites": "Favorites",
   "allSpaces": "All spaces",
   "submitOnchain": "ఆన్-చైన్ సమర్పించండి",
   "inSpaces": "{0} స్పేస్(ల) లో",
@@ -86,7 +85,7 @@
   "marketSymbol": "{0} మార్కెట్‌",
   "twoChoicesRequired": "ఈ ప్లగ్ఇన్ కోసం రెండు ఎంపికలు అవసరం.",
   "noResultsFound": "అయ్యో, మేము ఏ ఫలితాలను కనుగొనలేకపోయాము",
-  "noFavorites": "Oops, you don't have any favorites yet",
+  "noSpacesJoined": "Oops, you haven't joined any spaces yet",
   "addFavorites": "Add favorites",
   "createdBy": "{0} ద్వారా",
   "startToEnd": "ప్రారంభం {0} ముగింపు {1}",
@@ -106,8 +105,13 @@
   "addresses": "Addresses",
   "networkErrorPlayground": "Network error - please open your browser console for more information",
   "upload": "Upload",
+  "join": "Join",
+  "joined": "Joined",
+  "leave": "Leave",
   "copyLink": "Copy link",
   "duplicateProposal": "Duplicate proposal",
+  "joinedSpaces": "Joined spaces",
+  "joinSpaces": "Join spaces",
   "errors": {
     "required": "Field is required",
     "minLength": "Minimum length is {0}",
@@ -145,7 +149,8 @@
     "spacePlaceholder": "స్పేస్ (ఐచ్ఛిక)",
     "delegations": "మీ ప్రతినిధి బృందం (లు)",
     "allSpaces": "For all spaces",
-    "delegated": "మీకు అప్పగించారు"
+    "delegated": "మీకు అప్పగించారు",
+    "pendingTransaction": "no pending transaction | 1 pending transaction | {count} pending transactions"
   },
   "proposal": {
     "castVote": "మీ ఓటు వేయండి",

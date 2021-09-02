@@ -22,7 +22,6 @@
   "version": "Versie",
   "timeline": "Tijdlijn",
   "filters": "Filter",
-  "favorites": "Favoriten",
   "allSpaces": "Alle spaties",
   "submitOnchain": "Verstuur on-chain",
   "inSpaces": "In {0} ruimte(s)",
@@ -86,7 +85,7 @@
   "marketSymbol": "{0} markt",
   "twoChoicesRequired": "Twee keuzes zijn nodig voor deze plugin.",
   "noResultsFound": "Oeps, we kunnen geen resultaten vinden",
-  "noFavorites": "Oeps, je hebt nog geen favorieten",
+  "noSpacesJoined": "Oops, you haven't joined any spaces yet",
   "addFavorites": "Favorieten toevoegen",
   "createdBy": "Door {0}",
   "startToEnd": "begin {0} einde {1}",
@@ -106,8 +105,13 @@
   "addresses": "Adressen",
   "networkErrorPlayground": "Netwerkfout - Open uw browserconsole voor meer informatie",
   "upload": "Uploaden",
+  "join": "Join",
+  "joined": "Joined",
+  "leave": "Leave",
   "copyLink": "Copy link",
   "duplicateProposal": "Duplicate proposal",
+  "joinedSpaces": "Joined spaces",
+  "joinSpaces": "Join spaces",
   "errors": {
     "required": "Veld is verplicht",
     "minLength": "Minimale lengte is {0}",
@@ -145,7 +149,8 @@
     "spacePlaceholder": "Ruimte (optioneel)",
     "delegations": "Uw delegatie(s)",
     "allSpaces": "Voor alle spaties",
-    "delegated": "Aan u gedelegeerd"
+    "delegated": "Aan u gedelegeerd",
+    "pendingTransaction": "no pending transaction | 1 pending transaction | {count} pending transactions"
   },
   "proposal": {
     "castVote": "Breng uw stem uit",

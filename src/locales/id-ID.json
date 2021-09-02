@@ -22,7 +22,6 @@
   "version": "Versi",
   "timeline": "Lini Masa",
   "filters": "Filter",
-  "favorites": "Favorit",
   "allSpaces": "Semua ruang",
   "submitOnchain": "Simpan on-chain",
   "inSpaces": "Kode string",
@@ -86,7 +85,7 @@
   "marketSymbol": "{0} pasar",
   "twoChoicesRequired": "Dua pilihan diperlukan untuk plugin ini.",
   "noResultsFound": "Maaf, kami tidak dapat menemukan hasil apapun",
-  "noFavorites": "Maaf, Anda belum memiliki favorit apapun juga",
+  "noSpacesJoined": "Oops, you haven't joined any spaces yet",
   "addFavorites": "Tambahkan favorit",
   "createdBy": "Oleh {0}",
   "startToEnd": "mulai {0} akhir {1}",
@@ -106,8 +105,13 @@
   "addresses": "Alamat",
   "networkErrorPlayground": "Jaringan eror - buka browser untuk informasi lebih lanjut",
   "upload": "Unggah",
+  "join": "Join",
+  "joined": "Joined",
+  "leave": "Leave",
   "copyLink": "Salin tautan",
   "duplicateProposal": "Duplikat proposal",
+  "joinedSpaces": "Joined spaces",
+  "joinSpaces": "Join spaces",
   "errors": {
     "required": "Baris diperlukan",
     "minLength": "Panjang minimum adalah {0}",
@@ -145,7 +149,8 @@
     "spacePlaceholder": "Ruang (opsional)",
     "delegations": "Perwakilan Anda(s)",
     "allSpaces": "Untuk spasi",
-    "delegated": "Diwakilkan kepada Anda"
+    "delegated": "Diwakilkan kepada Anda",
+    "pendingTransaction": "no pending transaction | 1 pending transaction | {count} pending transactions"
   },
   "proposal": {
     "castVote": "Berikan voting Anda",
