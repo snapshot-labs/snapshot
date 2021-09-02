@@ -268,9 +268,5 @@
     "button_show": "显示我的收藏",
     "success_claim": "您的POAP 在您的地址上",
     "error_claim": "创建令牌时出错"
-  },
-  "charts": {
-    "charts": "Charts",
-    "noVotesYet": "There are no votes to visualize yet."
   }
 }

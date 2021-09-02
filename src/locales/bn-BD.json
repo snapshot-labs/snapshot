@@ -268,9 +268,5 @@
     "button_show": "Show me my collection",
     "success_claim": "আপনার POAP আপনার ঠিকানায় রয়েছে",
     "error_claim": "টোকেনটি টানতে সমস্যা ছিল"
-  },
-  "charts": {
-    "charts": "Charts",
-    "noVotesYet": "There are no votes to visualize yet."
   }
 }

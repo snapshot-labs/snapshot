@@ -268,9 +268,5 @@
     "button_show": "Perlihatkan koleksi saya",
     "success_claim": "POAP anda di alamat anda",
     "error_claim": "Ada masalah dalam pencetakaan token"
-  },
-  "charts": {
-    "charts": "Charts",
-    "noVotesYet": "There are no votes to visualize yet."
   }
 }

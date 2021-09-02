@@ -268,9 +268,5 @@
     "button_show": "Show me my collection",
     "success_claim": "آپ کا POAP آپ کے پتے پر ہے",
     "error_claim": "ٹوکن کو نشان زد کرنے میں ایک دشواری تھی"
-  },
-  "charts": {
-    "charts": "Charts",
-    "noVotesYet": "There are no votes to visualize yet."
   }
 }

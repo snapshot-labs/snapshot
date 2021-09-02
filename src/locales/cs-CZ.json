@@ -268,9 +268,5 @@
     "button_show": "Zobrazit týdenní kolekci",
     "success_claim": "Váš POAP je na vaší adrese",
     "error_claim": "Při mazání tokenu nastal problém."
-  },
-  "charts": {
-    "charts": "Charts",
-    "noVotesYet": "There are no votes to visualize yet."
   }
 }

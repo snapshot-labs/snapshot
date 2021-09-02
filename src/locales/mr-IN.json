@@ -268,9 +268,5 @@
     "button_show": "Show me my collection",
     "success_claim": "आपला पीओएपी आपल्या पत्त्यावर आहे",
     "error_claim": "टोकन मिंट करताना एक समस्या आली"
-  },
-  "charts": {
-    "charts": "Charts",
-    "noVotesYet": "There are no votes to visualize yet."
   }
 }

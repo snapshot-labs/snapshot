@@ -268,9 +268,5 @@
     "button_show": "내 컬렉션 보여줘",
     "success_claim": "너의 피영형에이피 귀하의 주소에 있습니다",
     "error_claim": "토큰을 조폐 문제가 발생했습니다"
-  },
-  "charts": {
-    "charts": "Charts",
-    "noVotesYet": "There are no votes to visualize yet."
   }
 }

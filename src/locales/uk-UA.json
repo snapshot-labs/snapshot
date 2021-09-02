@@ -268,9 +268,5 @@
     "button_show": "Показати мою колекцію",
     "success_claim": "Ваш POAP на вашій адресі",
     "error_claim": "Під створюванні токену виникла проблема"
-  },
-  "charts": {
-    "charts": "Charts",
-    "noVotesYet": "There are no votes to visualize yet."
   }
 }

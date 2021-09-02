@@ -268,9 +268,5 @@
     "button_show": "Vis ugentlig samling",
     "success_claim": "Din POAP er på din adresse",
     "error_claim": "Der var et problem med at slette denne token."
-  },
-  "charts": {
-    "charts": "Charts",
-    "noVotesYet": "There are no votes to visualize yet."
   }
 }
