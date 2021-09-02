@@ -268,5 +268,9 @@
     "button_show": "הקולקציה שלי",
     "success_claim": "ה-POAP נמצא על הכתובת שלך",
     "error_claim": "ארעה בעיה בעת יצירת המטבע"
+  },
+  "charts": {
+    "charts": "Charts",
+    "noVotesYet": "There are no votes to visualize yet."
   }
 }

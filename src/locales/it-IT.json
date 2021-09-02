@@ -268,5 +268,9 @@
     "button_show": "Show me my collection",
     "success_claim": "Il tuo POAP è sul tuo indirizzo",
     "error_claim": "Si è verificato un problema durante il conio del token"
+  },
+  "charts": {
+    "charts": "Charts",
+    "noVotesYet": "There are no votes to visualize yet."
   }
 }

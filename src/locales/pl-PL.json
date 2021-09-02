@@ -268,5 +268,9 @@
     "button_show": "Show me my collection",
     "success_claim": "Your POAP is on your address",
     "error_claim": "There was a problem minting the token"
+  },
+  "charts": {
+    "charts": "Charts",
+    "noVotesYet": "There are no votes to visualize yet."
   }
 }

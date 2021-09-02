@@ -268,5 +268,9 @@
     "button_show": "Topladıklarımı göster",
     "success_claim": "POAP'ınız adresinizde",
     "error_claim": "Jeton basılırken bir hata oluştu"
+  },
+  "charts": {
+    "charts": "Charts",
+    "noVotesYet": "There are no votes to visualize yet."
   }
 }

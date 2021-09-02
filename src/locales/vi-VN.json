@@ -268,5 +268,9 @@
     "button_show": "Show me my collection",
     "success_claim": "POAP của bạn có trên địa chỉ của bạn",
     "error_claim": "Đã xảy ra sự cố khi in mã thông báo"
+  },
+  "charts": {
+    "charts": "Charts",
+    "noVotesYet": "There are no votes to visualize yet."
   }
 }

@@ -268,5 +268,9 @@
     "button_show": "Näytä minulle kokoelmani",
     "success_claim": "Sinun POAP on osoitteessasi",
     "error_claim": "Kirjoituksen tallentaminen epäonnistui"
+  },
+  "charts": {
+    "charts": "Charts",
+    "noVotesYet": "There are no votes to visualize yet."
   }
 }

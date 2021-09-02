@@ -244,6 +244,7 @@ onMounted(async () => {
         :id="id"
         :space="space"
         :proposal="proposal"
+        :votes="votes"
         :loadedResults="loadedResults"
       />
     </template>

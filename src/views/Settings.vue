@@ -85,7 +85,7 @@ function pluginName(key) {
   const plugin = plugins.value.find(obj => {
     return obj.key === key;
   });
-  return plugin.name;
+  return plugin ? plugin.name : key; // temporary as the other guy works on the comment box and this breaks
 }
 
 async function handleSubmit() {

@@ -30,6 +30,7 @@
     "@vueuse/core": "^5.2.0",
     "@walletconnect/web3-provider": "1.4.1",
     "autolinker": "^3.14.3",
+    "chart.js": "^3.5.1",
     "eslint": "^7.32.0",
     "eth-ens-namehash": "^2.0.8",
     "fortmatic": "^2.2.1",

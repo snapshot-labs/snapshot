@@ -268,5 +268,9 @@
     "button_show": "Show me my collection",
     "success_claim": "Uw POAP bevindt zich op uw adres",
     "error_claim": "Er is een probleem opgetreden bij het minen van het token"
+  },
+  "charts": {
+    "charts": "Charts",
+    "noVotesYet": "There are no votes to visualize yet."
   }
 }

@@ -268,5 +268,9 @@
     "button_show": "Show me my collection",
     "success_claim": "Din POAP är på din adress",
     "error_claim": "Det gick inte att radera den token"
+  },
+  "charts": {
+    "charts": "Charts",
+    "noVotesYet": "There are no votes to visualize yet."
   }
 }

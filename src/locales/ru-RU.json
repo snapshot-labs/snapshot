@@ -268,5 +268,9 @@
     "button_show": "Показать мою коллекцию",
     "success_claim": "Ваш POAP на вашем адресе ",
     "error_claim": "При создании токена возникла проблема"
+  },
+  "charts": {
+    "charts": "Charts",
+    "noVotesYet": "There are no votes to visualize yet."
   }
 }
