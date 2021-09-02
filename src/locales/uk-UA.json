@@ -22,7 +22,6 @@
   "version": "Версія ",
   "timeline": "Часова шкала",
   "filters": "Фільтри",
-  "favorites": "Обрані",
   "allSpaces": "Всі області",
   "submitOnchain": "Надіслати в ланцюжок",
   "inSpaces": "У {0} сховищах",
@@ -86,7 +85,7 @@
   "marketSymbol": "{0} ринок",
   "twoChoicesRequired": "Потрібно два варіанти для цього плагіна.",
   "noResultsFound": "Ой! Нічого не знайдено",
-  "noFavorites": "Ой! На жаль, у вас ще немає улюблених",
+  "noSpacesJoined": "Oops, you haven't joined any spaces yet",
   "addFavorites": "Додати улюблені",
   "createdBy": "Від {0}",
   "startToEnd": "початок {0} кінець {1}",
@@ -106,8 +105,13 @@
   "addresses": "Адреси",
   "networkErrorPlayground": "Помилка мережі - будь ласка, відкрийте ваш браузер для отримання додаткової інформації",
   "upload": "Завантажити",
+  "join": "Join",
+  "joined": "Joined",
+  "leave": "Leave",
   "copyLink": "Скопіювати посилання",
   "duplicateProposal": "Дублювати пропозицію",
+  "joinedSpaces": "Joined spaces",
+  "joinSpaces": "Join spaces",
   "errors": {
     "required": "Обов'язкове поле",
     "minLength": "Мінімальна довжина: {0}",
@@ -145,7 +149,8 @@
     "spacePlaceholder": "Сховище (не обов'язково)",
     "delegations": "Ваша делегація(ї)",
     "allSpaces": "Для всіх сховищ",
-    "delegated": "Делеговано вам"
+    "delegated": "Делеговано вам",
+    "pendingTransaction": "no pending transaction | 1 pending transaction | {count} pending transactions"
   },
   "proposal": {
     "castVote": "Віддайте свій голос",

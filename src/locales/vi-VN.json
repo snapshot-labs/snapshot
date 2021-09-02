@@ -22,7 +22,6 @@
   "version": "Phiên bản",
   "timeline": "Mốc thời gian",
   "filters": "Bộ lọc",
-  "favorites": "Yêu thích",
   "allSpaces": "Tất cả các khoảng trống",
   "submitOnchain": "Nộp on chain",
   "inSpaces": "Trong {0} khoảng trống(s)",
@@ -86,7 +85,7 @@
   "marketSymbol": "{0} thị trường",
   "twoChoicesRequired": "Cần có hai lựa chọn cho plugin này.",
   "noResultsFound": "Rất tiếc, chúng tôi không thể tìm thấy bất kỳ kết quả nào",
-  "noFavorites": "Rất tiếc, bạn chưa có mục yêu thích nào",
+  "noSpacesJoined": "Oops, you haven't joined any spaces yet",
   "addFavorites": "Thêm yêu thích",
   "createdBy": "Bởi {0}",
   "startToEnd": "bắt đầu {0} kết thúc {1}",
@@ -106,8 +105,13 @@
   "addresses": "Địa chỉ",
   "networkErrorPlayground": "Lỗi mạng - vui lòng mở bảng điều khiển trình duyệt của bạn để biết thêm thông tin",
   "upload": "Tải lên",
+  "join": "Join",
+  "joined": "Joined",
+  "leave": "Leave",
   "copyLink": "Copy link",
   "duplicateProposal": "Duplicate proposal",
+  "joinedSpaces": "Joined spaces",
+  "joinSpaces": "Join spaces",
   "errors": {
     "required": "Trường này là bắt buộc",
     "minLength": "Độ dài tối thiểu là {0}",
@@ -145,7 +149,8 @@
     "spacePlaceholder": "Không gian (không bắt buộc)",
     "delegations": "Ủy quyền của bạn(s)",
     "allSpaces": "Cho tất cả không gian",
-    "delegated": "Ủy quyền cho bạn"
+    "delegated": "Ủy quyền cho bạn",
+    "pendingTransaction": "no pending transaction | 1 pending transaction | {count} pending transactions"
   },
   "proposal": {
     "castVote": "Hãy bình chọn",

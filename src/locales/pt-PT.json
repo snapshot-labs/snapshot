@@ -22,7 +22,6 @@
   "version": "Versão",
   "timeline": "Cronologia",
   "filters": "Filtros",
-  "favorites": "Favoritos",
   "allSpaces": "Todos os espaços",
   "submitOnchain": "Enviar na cadeia",
   "inSpaces": "Em {0} comunidade(s)",
@@ -86,7 +85,7 @@
   "marketSymbol": "{0} mercado",
   "twoChoicesRequired": "Duas opções são necessárias para este plugin.",
   "noResultsFound": "Ops, não encontramos nenhum resultado",
-  "noFavorites": "Oops, you don't have any favorites yet",
+  "noSpacesJoined": "Oops, you haven't joined any spaces yet",
   "addFavorites": "Add favorites",
   "createdBy": "Por {0}",
   "startToEnd": "iniciar {0} fim {1}",
@@ -106,8 +105,13 @@
   "addresses": "Addresses",
   "networkErrorPlayground": "Network error - please open your browser console for more information",
   "upload": "Upload",
+  "join": "Join",
+  "joined": "Joined",
+  "leave": "Leave",
   "copyLink": "Copy link",
   "duplicateProposal": "Duplicate proposal",
+  "joinedSpaces": "Joined spaces",
+  "joinSpaces": "Join spaces",
   "errors": {
     "required": "Field is required",
     "minLength": "Minimum length is {0}",
@@ -145,7 +149,8 @@
     "spacePlaceholder": "Comunidade (opcional)",
     "delegations": "Sua(s) delegação(ões)",
     "allSpaces": "For all spaces",
-    "delegated": "Delegado a você"
+    "delegated": "Delegado a você",
+    "pendingTransaction": "no pending transaction | 1 pending transaction | {count} pending transactions"
   },
   "proposal": {
     "castVote": "Votar",

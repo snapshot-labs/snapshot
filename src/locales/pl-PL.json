@@ -22,7 +22,6 @@
   "version": "Wersja",
   "timeline": "Oś czasu",
   "filters": "Filters",
-  "favorites": "Favorites",
   "allSpaces": "All spaces",
   "submitOnchain": "Wyślij na blockchain",
   "inSpaces": "W {0} sekcji (-cjach)",
@@ -86,7 +85,7 @@
   "marketSymbol": "{0} rynek",
   "twoChoicesRequired": "Dla tej wtyczki wymagane są dwie opcje.",
   "noResultsFound": "Ups, nie możemy znaleźć żadnych wyników",
-  "noFavorites": "Oops, you don't have any favorites yet",
+  "noSpacesJoined": "Oops, you haven't joined any spaces yet",
   "addFavorites": "Add favorites",
   "createdBy": "Przez {0}",
   "startToEnd": "początek {0} koniec {1}",
@@ -106,8 +105,13 @@
   "addresses": "Addresses",
   "networkErrorPlayground": "Network error - please open your browser console for more information",
   "upload": "Upload",
+  "join": "Join",
+  "joined": "Joined",
+  "leave": "Leave",
   "copyLink": "Copy link",
   "duplicateProposal": "Duplicate proposal",
+  "joinedSpaces": "Joined spaces",
+  "joinSpaces": "Join spaces",
   "errors": {
     "required": "Field is required",
     "minLength": "Minimum length is {0}",
@@ -145,7 +149,8 @@
     "spacePlaceholder": "Sekcja (opcjonalnie)",
     "delegations": "Oddelegowano",
     "allSpaces": "For all spaces",
-    "delegated": "Zdelegowano dla Ciebie"
+    "delegated": "Zdelegowano dla Ciebie",
+    "pendingTransaction": "no pending transaction | 1 pending transaction | {count} pending transactions"
   },
   "proposal": {
     "castVote": "Oddaj swój głos",

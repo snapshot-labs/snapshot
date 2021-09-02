@@ -22,7 +22,6 @@
   "version": "Sürüm",
   "timeline": "Zaman çizelgesi",
   "filters": "Filtreler",
-  "favorites": "Favoriler",
   "allSpaces": "Tümü",
   "submitOnchain": "Zincirde onayla",
   "inSpaces": "{0} Adet alan içinde",
@@ -86,7 +85,7 @@
   "marketSymbol": "{0} market",
   "twoChoicesRequired": "Bu eklenti için iki seçenek gereklidir.",
   "noResultsFound": "Hata, herhangi bir sonuç bulamıyoruz",
-  "noFavorites": "Oops, henüz favoriniz yok",
+  "noSpacesJoined": "Oops, you haven't joined any spaces yet",
   "addFavorites": "Favorileri ekleyin",
   "createdBy": "{0} Tarafından",
   "startToEnd": "başlangıç {0} bitiş {1}",
@@ -106,8 +105,13 @@
   "addresses": "Adresler",
   "networkErrorPlayground": "Ağ hatası - daha fazla bilgi için lütfen tarayıcı konsolunuzu açın",
   "upload": "Yükle",
+  "join": "Join",
+  "joined": "Joined",
+  "leave": "Leave",
   "copyLink": "Linki kopyala",
   "duplicateProposal": "Teklifi yinele",
+  "joinedSpaces": "Joined spaces",
+  "joinSpaces": "Join spaces",
   "errors": {
     "required": "Bu alan zorunludur",
     "minLength": "Minimum uzunluk: {0}",
@@ -145,7 +149,8 @@
     "spacePlaceholder": "Boşluk (isteğe bağlı)",
     "delegations": "Temsilcilik(ler)iniz",
     "allSpaces": "Tüm alanlar için",
-    "delegated": "Görevlendir"
+    "delegated": "Görevlendir",
+    "pendingTransaction": "no pending transaction | 1 pending transaction | {count} pending transactions"
   },
   "proposal": {
     "castVote": "Oyunu kullan",

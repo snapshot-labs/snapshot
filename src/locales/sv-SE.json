@@ -22,7 +22,6 @@
   "version": "Version",
   "timeline": "Tidslinje",
   "filters": "Filter",
-  "favorites": "Favoriter",
   "allSpaces": "Alla spaces",
   "submitOnchain": "Skicka on-chain",
   "inSpaces": "I {0} space{0}",
@@ -86,7 +85,7 @@
   "marketSymbol": "{0} marknad",
   "twoChoicesRequired": "Två val krävs för denna plugin.",
   "noResultsFound": "Oj! Vi kan inte hitta några resultat",
-  "noFavorites": "Oj, du har inga favoriter ännu",
+  "noSpacesJoined": "Oops, you haven't joined any spaces yet",
   "addFavorites": "Lägg till favoriter",
   "createdBy": "Av {0}",
   "startToEnd": "starta {0} slut {1}",
@@ -106,8 +105,13 @@
   "addresses": "Adresser",
   "networkErrorPlayground": "Nätverksfel - öppna din webbläsarkonsol för mer information",
   "upload": "Uppladdning",
+  "join": "Join",
+  "joined": "Joined",
+  "leave": "Leave",
   "copyLink": "Copy link",
   "duplicateProposal": "Duplicate proposal",
+  "joinedSpaces": "Joined spaces",
+  "joinSpaces": "Join spaces",
   "errors": {
     "required": "Fältet är obligatoriskt",
     "minLength": "Minsta längd är {0}",
@@ -145,7 +149,8 @@
     "spacePlaceholder": "Space (valfritt)",
     "delegations": "Din delegation(er)",
     "allSpaces": "För alla utrymmen",
-    "delegated": "Delegerat till dig"
+    "delegated": "Delegerat till dig",
+    "pendingTransaction": "no pending transaction | 1 pending transaction | {count} pending transactions"
   },
   "proposal": {
     "castVote": "Lägg din röst",

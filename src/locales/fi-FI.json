@@ -22,7 +22,6 @@
   "version": "Versio",
   "timeline": "Aikajana",
   "filters": "Suodattimet",
-  "favorites": "Suosikki",
   "allSpaces": "Kaikki välilyönnit",
   "submitOnchain": "Lähetä ketjussa",
   "inSpaces": "{0} välilyönnillä",
@@ -86,7 +85,7 @@
   "marketSymbol": "{0} markkina",
   "twoChoicesRequired": "Tätä laajennusta varten tarvitaan kaksi vaihtoehtoa.",
   "noResultsFound": "Hups, emme löydä tuloksia",
-  "noFavorites": "Hups, sinulla ei ole vielä suosikkeja",
+  "noSpacesJoined": "Oops, you haven't joined any spaces yet",
   "addFavorites": "Lisää suosikki",
   "createdBy": "Tekijältä {0}",
   "startToEnd": "aloita {0} loppu {1}",
@@ -106,8 +105,13 @@
   "addresses": "Osoitteet",
   "networkErrorPlayground": "Verkkovirhe - Avaa selainkonsoli saadaksesi lisätietoja",
   "upload": "Lataa",
+  "join": "Join",
+  "joined": "Joined",
+  "leave": "Leave",
   "copyLink": "Kopioi linkki",
   "duplicateProposal": "Ehdotuksen kaksoiskappale",
+  "joinedSpaces": "Joined spaces",
+  "joinSpaces": "Join spaces",
   "errors": {
     "required": "Pakollinen kenttä",
     "minLength": "Pienin pituus on {0}",
@@ -145,7 +149,8 @@
     "spacePlaceholder": "Välilyönti (vapaaehtoinen)",
     "delegations": "Sinun valtuuskunta(t)",
     "allSpaces": "Kaikkiin välilyönteihin",
-    "delegated": "Delegoitu sinulle"
+    "delegated": "Delegoitu sinulle",
+    "pendingTransaction": "no pending transaction | 1 pending transaction | {count} pending transactions"
   },
   "proposal": {
     "castVote": "Anna äänesi",

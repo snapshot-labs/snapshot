@@ -22,7 +22,6 @@
   "version": "Version",
   "timeline": "Tidslinje",
   "filters": "Filtrèr",
-  "favorites": "Foretrukne",
   "allSpaces": "allspace",
   "submitOnchain": "indsend kæde",
   "inSpaces": "i mellemrum",
@@ -86,7 +85,7 @@
   "marketSymbol": "Tilføj marked",
   "twoChoicesRequired": "Emner er påkrævede for dette spørgsmål.",
   "noResultsFound": "Beklager, vi fandt ingen resultater!",
-  "noFavorites": "Du har endnu ingen favoritter!",
+  "noSpacesJoined": "Oops, you haven't joined any spaces yet",
   "addFavorites": "Tilføj favoritter",
   "createdBy": "By {0} (Automatic Copy)",
   "startToEnd": "start {0} slutter {1}",
@@ -106,8 +105,13 @@
   "addresses": "Adresser",
   "networkErrorPlayground": "Netværksfejl - åbn venligst din browserkonsol for mere information",
   "upload": "Send/Upload",
+  "join": "Join",
+  "joined": "Joined",
+  "leave": "Leave",
   "copyLink": "Copy link",
   "duplicateProposal": "Duplicate proposal",
+  "joinedSpaces": "Joined spaces",
+  "joinSpaces": "Join spaces",
   "errors": {
     "required": "Feltet er obligatorisk",
     "minLength": "Minimumslængde på {0}",
@@ -145,7 +149,8 @@
     "spacePlaceholder": "Mellemrum (valgfrit)",
     "delegations": "Din delegation(er)",
     "allSpaces": "For rummet ",
-    "delegated": "Delegeret for dig"
+    "delegated": "Delegeret for dig",
+    "pendingTransaction": "no pending transaction | 1 pending transaction | {count} pending transactions"
   },
   "proposal": {
     "castVote": "Afgive din stemme",

@@ -22,7 +22,6 @@
   "version": "Version",
   "timeline": "ٹائم لائن",
   "filters": "فلٹرز",
-  "favorites": "پسندیدہ",
   "allSpaces": "تمام مقامات",
   "submitOnchain": "آن لائن جمع کروائیں",
   "inSpaces": "جگہ{0}",
@@ -86,7 +85,7 @@
   "marketSymbol": "مارکیٹ {0}",
   "twoChoicesRequired": "اس پلگ ان کو دو انتخاب کی ضرورت ہے۔",
   "noResultsFound": "ہمیں کوئی نتیجہ نہیں ملا",
-  "noFavorites": "آپ کے پاس ابھی تک کوئی پسندیدہ انتخاب نہیں ہے",
+  "noSpacesJoined": "Oops, you haven't joined any spaces yet",
   "addFavorites": "پسندیدہ شامل کریں",
   "createdBy": "سے{0}",
   "startToEnd": "شروع {0} اختتام {1}",
@@ -106,8 +105,13 @@
   "addresses": "ایڈریسز",
   "networkErrorPlayground": "نیٹ ورک کی خرابی - براہ کرم مزید معلومات کے ل اپنے براؤزر کنسول کو کھولیں",
   "upload": "اپ لوڈ کریں",
+  "join": "Join",
+  "joined": "Joined",
+  "leave": "Leave",
   "copyLink": "Copy link",
   "duplicateProposal": "Duplicate proposal",
+  "joinedSpaces": "Joined spaces",
+  "joinSpaces": "Join spaces",
   "errors": {
     "required": "فیلڈ کی ضرورت ہے",
     "minLength": "کم سے کم لمبائی {0} ہے",
@@ -145,7 +149,8 @@
     "spacePlaceholder": "جاگہ (اختیاری)",
     "delegations": "آپ کے وفود",
     "allSpaces": "تمام جگا کے لئے",
-    "delegated": "آپ کے حوالے کیا گیا"
+    "delegated": "آپ کے حوالے کیا گیا",
+    "pendingTransaction": "no pending transaction | 1 pending transaction | {count} pending transactions"
   },
   "proposal": {
     "castVote": "اپنا ووٹ کاسٹ کریں",

@@ -2,7 +2,7 @@
 import { ref, computed, watchEffect } from 'vue';
 import { useRoute } from 'vue-router';
 import orderBy from 'lodash/orderBy';
-import spotlight from '@snapshot-labs/snapshot-spaces/spaces/spotlight.json';
+import spotlight from '@/../snapshot-spaces/spaces/spotlight.json';
 import { useUnseenProposals } from '@/composables/useUnseenProposals';
 import { useScrollMonitor } from '@/composables/useScrollMonitor';
 import { useApp } from '@/composables/useApp';

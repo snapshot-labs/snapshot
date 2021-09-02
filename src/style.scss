@@ -41,6 +41,10 @@ body,
   -moz-osx-font-smoothing: grayscale;
 }
 
+body {
+  overscroll-behavior-y: none;
+}
+
 * {
   outline: none !important;
 }

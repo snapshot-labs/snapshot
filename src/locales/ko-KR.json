@@ -22,7 +22,6 @@
   "version": "버전",
   "timeline": "타임라인",
   "filters": "필터",
-  "favorites": "즐겨찾기",
   "allSpaces": "모든 공간",
   "submitOnchain": "온체인 제출",
   "inSpaces": "{0} 공간(들)",
@@ -86,7 +85,7 @@
   "marketSymbol": "{0} 시장",
   "twoChoicesRequired": "두 가지 선택이 플러그인이 필요합니다.",
   "noResultsFound": "아차, 우리는 어떤 결과를 찾을 수 없습니다",
-  "noFavorites": "아차, 당신은 아직 즐겨 찾기가 없습니다",
+  "noSpacesJoined": "Oops, you haven't joined any spaces yet",
   "addFavorites": "즐겨찾기 추가",
   "createdBy": "에 의하여 {0}",
   "startToEnd": "시작 {0} 끝 {1}",
@@ -106,8 +105,13 @@
   "addresses": "주소",
   "networkErrorPlayground": "네트워크 오류 - 자세한 내용을 보려면 브라우저 콘솔을 여십시오",
   "upload": "업로드",
+  "join": "Join",
+  "joined": "Joined",
+  "leave": "Leave",
   "copyLink": "링크 복사하기",
   "duplicateProposal": "제안서 중복하기.",
+  "joinedSpaces": "Joined spaces",
+  "joinSpaces": "Join spaces",
   "errors": {
     "required": "필드가 필요합니다",
     "minLength": "최소 길이는 {0}",
@@ -145,7 +149,8 @@
     "spacePlaceholder": "공간(선택 사항)",
     "delegations": "너의\n대표단 (에스)",
     "allSpaces": "모든 공간에 대해",
-    "delegated": "당신에게 위임"
+    "delegated": "당신에게 위임",
+    "pendingTransaction": "no pending transaction | 1 pending transaction | {count} pending transactions"
   },
   "proposal": {
     "castVote": "캐스트 너의 투표",
@@ -155,9 +160,9 @@
     "votingSystem": "투표 시스템"
   },
   "proposals": {
-    "header": "제창",
-    "new": "새로운 제창",
-    "noProposals": "그곳에 아르 아니 어떤 제창 여기 아직!",
+    "header": "제안",
+    "new": "새 제안",
+    "noProposals": "아직 새로운 제안이 없어요!",
     "states": {
       "all": "모두",
       "core": "심",

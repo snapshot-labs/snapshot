@@ -22,7 +22,6 @@
   "version": "সংস্করণ",
   "timeline": "সময়রেখা",
   "filters": "ফিলটার",
-  "favorites": "প্রিয়গুলো",
   "allSpaces": "সমস্ত জায়গা",
   "submitOnchain": "অন-চেইন জমা দিন",
   "inSpaces": "{0} স্থান",
@@ -86,7 +85,7 @@
   "marketSymbol": "{0} মার্কেট",
   "twoChoicesRequired": "এই প্লাগইনটির দুটি পছন্দ প্রয়োজন.",
   "noResultsFound": "ওফ, আমরা কোনও ফলাফল খুঁজে পাচ্ছি না",
-  "noFavorites": "ওহো, আপনার কোনও পছন্দ নেই",
+  "noSpacesJoined": "Oops, you haven't joined any spaces yet",
   "addFavorites": "পছন্দ যোগ করুন",
   "createdBy": "দ্বারা{0}",
   "startToEnd": "শুরু{0} শেষ{1}",
@@ -106,8 +105,13 @@
   "addresses": "এড্রেস",
   "networkErrorPlayground": "নেটওয়ার্ক ত্রুটি - আরও তথ্যের জন্য দয়া করে আপনার ব্রাউজার কনসোলটি খুলুন",
   "upload": "আপলোড",
+  "join": "Join",
+  "joined": "Joined",
+  "leave": "Leave",
   "copyLink": "Copy link",
   "duplicateProposal": "Duplicate proposal",
+  "joinedSpaces": "Joined spaces",
+  "joinSpaces": "Join spaces",
   "errors": {
     "required": "ফিল্ড প্রয়োজন হয়",
     "minLength": "সর্বনিম্ন দৈর্ঘ্য {0}",
@@ -145,7 +149,8 @@
     "spacePlaceholder": "স্থান (বিকল্প)",
     "delegations": "আপনার প্রতিনিধিরা",
     "allSpaces": "সমস্ত জায়গার জন্য",
-    "delegated": "আপনার জন্য নিযুক্ত"
+    "delegated": "আপনার জন্য নিযুক্ত",
+    "pendingTransaction": "no pending transaction | 1 pending transaction | {count} pending transactions"
   },
   "proposal": {
     "castVote": "আপনার ভোট দিন",

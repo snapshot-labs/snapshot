@@ -22,7 +22,6 @@
   "version": "Verze",
   "timeline": "Časové",
   "filters": "Filtrovat",
-  "favorites": "Oblíbené",
   "allSpaces": "Všechny skupiny",
   "submitOnchain": "Odeslat on-chain",
   "inSpaces": "{0} skupin(y)",
@@ -86,7 +85,7 @@
   "marketSymbol": "Přidat trh",
   "twoChoicesRequired": "Pro tento zásuvný modul jsou vyžadovány dvě možnosti.",
   "noResultsFound": "Jejda, nemůžeme najít žádné výsledky",
-  "noFavorites": "Zatím nemáte žádnou oblíbenou položku!",
+  "noSpacesJoined": "Oops, you haven't joined any spaces yet",
   "addFavorites": "Přidat oblíbené",
   "createdBy": "Od {0}",
   "startToEnd": "začít {0} konec {1}",
@@ -106,8 +105,13 @@
   "addresses": "Adres",
   "networkErrorPlayground": "Chyba sítě - prosím otevřete konzoli prohlížeče pro více informací",
   "upload": "Odeslat",
+  "join": "Join",
+  "joined": "Joined",
+  "leave": "Leave",
   "copyLink": "Copy link",
   "duplicateProposal": "Duplicate proposal",
+  "joinedSpaces": "Joined spaces",
+  "joinSpaces": "Join spaces",
   "errors": {
     "required": "Pole je povinné.",
     "minLength": "Minimální délka je {0}",
@@ -145,7 +149,8 @@
     "spacePlaceholder": "Mezera (volitelné)",
     "delegations": "Vaše delegace",
     "allSpaces": "Pro všechny mezery",
-    "delegated": "Delegován:"
+    "delegated": "Delegován:",
+    "pendingTransaction": "no pending transaction | 1 pending transaction | {count} pending transactions"
   },
   "proposal": {
     "castVote": "Hlasujte",
