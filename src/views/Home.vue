@@ -33,7 +33,7 @@ const orderedSpaces = computed(() => {
   );
 });
 
-const { numberOfUnseenProposals, getProposalIds } = useUnseenProposals();
+const { getProposalIds } = useUnseenProposals();
 watchEffect(() => getProposalIds(followingSpaces.value));
 
 // Scroll
