@@ -27,8 +27,8 @@ const error = ref(false);
     <VueBlockie
       v-else
       :seed="address"
-      :scale="4"
-      :size="(parseInt(size) - 2 || 22) / 4"
+      :scale="8"
+      :size="(parseInt(size) - 2 || 22) / 8"
       class="circle v-align-middle line-height-0"
     />
   </span>
