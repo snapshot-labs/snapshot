@@ -73,15 +73,16 @@ html{scroll-behavior: smooth;}
       {{showIt?"hide":"show"}} replies ({{allReply.length}})
     </div>
  
-  <div v-show="showIt" class="pl-4" :ref="el => { if (el) listReply[item.key] = el }" :key="index" v-for="(item, index) in allReply">
+  <div v-show="showIt" class="pl-4" :ref="el => { if (el) listReply[item.key] = el }"  :key="index" v-for="(item, index) in allReply">
        <PluginCommentBoxReplyBlock
+    
         :item="item"
       :profiles="profiles"
       :space="space"
       :mainThread="mainThread"
       @replyComment="$emit('replyComment',$event)"
-       @updateItem="$emit('updateItem')"
-       @deleteItem="$emit('deleteItem')"
+       @updateItem="$emit('updateItem',$event)"
+       @deleteItem="$emit('deleteItem',$event)"
       @scrollTo="goto($event)"
     />
   </div>

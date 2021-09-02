@@ -106,6 +106,13 @@ async function getReplyData() {
 onMounted(async () => {
   getReplyData();
 });
+function updateItemReply(data){
+  console.log(data)
+allReply.value[allReply.value.findIndex(a=>a.key===data.key)]=data;
+}
+function deleteItemReply(key){
+allReply.value.splice(allReply.value.findIndex(a=>a.key===key),1)
+}
 </script>
 <template>
   <UiModal :open="closeModal" @close="closeEvent">
@@ -213,8 +220,8 @@ onMounted(async () => {
     :lastPage="lastPage"
     :mainThread="item.key"
     @replyComment="allReply.push($event)"
-    @updateItem="getReplyData"
-    @deleteItem="getReplyData"
+    @updateItem="updateItemReply($event)"
+    @deleteItem="deleteItemReply($event)"
     @loadMore="getReplyData"
   />
 </template>

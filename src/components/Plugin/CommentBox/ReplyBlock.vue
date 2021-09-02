@@ -47,7 +47,7 @@ async function deleteItem() {
     const res = await deleteData(`https://uia5m1.deta.dev/delete/${props.item.key}`);
     loading.value = false;
     if (!res.status) return notify(['red', 'Oops, something went wrong']);
-    emit("deleteItem")
+    emit("deleteItem",props.item.key)
     closeModal.value = false;
     
     
@@ -97,7 +97,7 @@ watch([modalOpen,closeModal],()=>{
       buttonName="Edit"
       placeholder="Edit your reply here"
       @dismissComment="toggleEditComment = true"
-      @updateItem="$emit('replyComment')"
+      @updateItem="$emit('updateItem',$event)"
       method="edit"
     />
   </div>
@@ -188,7 +188,7 @@ comment by
       buttonName="Reply"
       @dismissComment="toggleComment = true"
       @replyComment="$emit('replyComment',$event)"
-      @updateItem="$emit('updateItem')"
+      @updateItem="$emit('updateItem',$event)"
       :item="item"
       :mainThread="mainThread"
       method="replyComment"

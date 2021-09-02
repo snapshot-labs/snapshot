@@ -7,6 +7,8 @@ import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { useRoute } from 'vue-router';
 import { useProfiles } from '@/composables/useProfiles';
 import { useNotifications } from '@/composables/useNotifications';
+import { useInfiniteLoader } from '@/composables/useInfiniteLoader';
+import { useScrollMonitor } from '@/composables/useScrollMonitor';
 const props = defineProps({
   proposalId: String,
   space: Object,
@@ -39,16 +41,34 @@ async function getData(url = '') {
   });
   return response.json(); // parses JSON response into native JavaScript objects
 }
+const lastPage=ref(false)
+const isLast=ref(false)
 async function getCommentData() {
-  const res = await getData(`https://uia5m1.deta.dev/all/${props.proposalId}`);
-  if (res.status)
-    allData.value = res.data.items.sort((a, b) => {
+  if(!lastPage.value&&!isLast.value&&allData.value.length>0){
+      return
+    }
+    const lastPageCondition = isLast.value ? `?last=${lastPage.value}` : '';
+  const res = await getData(
+    `https://uia5m1.deta.dev/all/${props.proposalId}${lastPageCondition}`
+  );
+  if (res.status) {
+    
+    const resData=res.data.items.filter(a=>allData.value.findIndex(b=>b.key===a.key)<0)
+    allData.value = allData.value.concat(resData).sort((a, b) => {
       return Number(a.timestamp) - Number(b.timestamp);
     });
+    lastPage.value = res.data.last;
+    if(res.data.last) {isLast.value=true;}else{isLast.value=false}
+  } 
+  
 }
+const { endElement } = useScrollMonitor(() =>
+getCommentData()
+);
 onMounted(async () => {
   getCommentData();
 });
+
 function clickSubmit() {
   !web3Account.value ? (modalAccountOpen.value = true) : handleSubmit();
 }
@@ -126,12 +146,29 @@ function deleteItem(key){
       :disabled="comment.length === 0"
       >{{ togglePreview ? 'Preview' : 'Continue Editing' }}</UiButton
     >
-    <PluginCommentBoxListComment
+     <div :key="index" v-for="(item, index) in allData">
+    <PluginCommentBoxCommentBlock
+      :item="item"
+      :profiles="profiles"
+      :space="space"
+          @updateItem="updateItem($event)"
+      @deleteItem="deleteItem($event)"
+    />
+  
+  </div>
+   <div
+        style="height: 10px; width: 10px; position: absolute"
+        ref="endElement"
+      />
+    <!-- <PluginCommentBoxListComment
       @updateItem="updateItem($event)"
       @deleteItem="deleteItem($event)"
       :allData="allData"
       :profiles="profiles"
       :space="space"
-    />
+      :loadMore="loadMore"
+      :loading="loading"
+      @getComment="getCommentData"
+    /> -->
   </Block>
 </template>
