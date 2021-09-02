@@ -108,6 +108,7 @@ function updateItem(data){
   allData.value[allData.value.findIndex(a=>a.key===data.key)]=data;
 }
 function deleteItem(key){
+  // console.log(allData.value.findIndex(a=>a.key===key))
   allData.value.splice(allData.value.findIndex(a=>a.key===key),1);
 }
 </script>

@@ -1,5 +1,5 @@
 <script setup>
-import { ref, defineProps, defineEmits, onMounted, computed, watch,onUpdated } from 'vue';
+import { ref, defineProps, defineEmits, onMounted, computed, watch } from 'vue';
 import { useNotifications } from '@/composables/useNotifications';
 import { useModal } from '@/composables/useModal';
 import { useWeb3 } from '@/composables/useWeb3';
@@ -19,6 +19,7 @@ const threeDotItems = computed(() => {
 
   return items;
 });
+
 const toggleComment = ref(true);
 const toggleEditComment = ref(true);
 const closeModal = ref(false);
@@ -54,10 +55,9 @@ async function deleteItem() {
     );
     loading.value = false;
     if (!res.status) return notify(['red', 'Oops, something went wrong']);
+    allReply.value=0;
     emit('deleteItem',props.item.key);
-    await getDataAfterDelete()
     closeModal.value = false;
-
     return;
   } catch (e) {
     loading.value = false;
@@ -73,7 +73,12 @@ async function updateItem(e) {
   toggleEditComment.value = true;
   emit('updateItem',e);
 }
-watch([modalOpen, closeModal], () => {
+watch([modalOpen, closeModal,()=>props.item], (oldVal,newVal) => {
+  if(oldVal[2].key!==newVal[2].key){
+    // console.log(newVal[2].markdown)
+getDataAfterDelete(props.item.key)
+  }
+   
   const el = document.body;
   if (!closeModal.value) {
     el.classList['remove']('overflow-hidden');
@@ -81,6 +86,7 @@ watch([modalOpen, closeModal], () => {
     el.classList['add']('overflow-hidden');
   }
 });
+
 const allReply = ref([]);
 async function getData(url = '') {
   // Default options are marked with *
@@ -90,10 +96,11 @@ async function getData(url = '') {
   return response.json(); // parses JSON response into native JavaScript objects
 }
 const lastPage = ref(false);
-async function getDataAfterDelete(){
+async function getDataAfterDelete(key){
+  
 loadingMore.value=true;
   const res = await getData(
-    `https://uia5m1.deta.dev/all_reply/${props.item.proposal_id}/${props.item.key}`
+    `https://uia5m1.deta.dev/all_reply/${props.item.proposal_id}/${key}`
   );
   if (res.status) {
     const resData=res.data.items;
@@ -125,7 +132,7 @@ async function getReplyData() {
   loadingMore.value=false;
 }
 onMounted(async () => {
-  getReplyData();
+   getReplyData();
 });
 function updateItemReply(data){
   
@@ -173,6 +180,7 @@ allReply.value.splice(allReply.value.findIndex(a=>a.key===key),1)
     />
   </div>
   <div v-if="toggleEditComment">
+ 
     <PluginCommentBoxBlock :slim="true" class="p-4 text-color mt-2 mb-0">
       <div>
         <User
