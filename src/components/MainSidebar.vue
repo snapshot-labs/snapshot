@@ -22,20 +22,17 @@ onMounted(() => {
 
 <template>
   <div class="w-[68px] h-screen fixed m-0 border-r border-bcolor">
-    <div class="h-[78px] flex items-center justify-center">
-      <router-link to="/">
-        <Icon size="36" name="snapshot" class="text-snapshot" />
-      </router-link>
-    </div>
-    <div
-      class="
-        flex flex-col
-        h-[calc(100%-80px)]
-        justify-between
-        overflow-scroll
-        menu-tabs
-      "
-    >
+    <div class="flex flex-col h-full justify-between overflow-scroll menu-tabs">
+      <div
+        class="mt-[22px] mb-[20px] flex flex-col items-center justify-center"
+      >
+        <Icon
+          @click="$router.push({ name: 'home' })"
+          size="36"
+          name="snapshot"
+          class="text-snapshot cursor-pointer"
+        />
+      </div>
       <div class="flex flex-col items-center space-y-3 pt-2">
         <router-link :to="{ name: 'timeline' }">
           <UiSidebarButton>
@@ -55,7 +52,7 @@ onMounted(() => {
           <UiSidebarButton><Icon size="20" name="plus" /></UiSidebarButton>
         </router-link>
       </div>
-      <div class="flex flex-col items-center justify-center mb-3 mt-[12px]">
+      <div class="flex items-center justify-center mb-3 mt-[12px]">
         <UiSidebarButton
           @click="modalAboutOpen = true"
           class="hover:text-lcolor"
