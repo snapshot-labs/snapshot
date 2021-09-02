@@ -8,7 +8,8 @@ module.exports = {
         snapshot: '#f3b04e', // TODO: get correct color for snapshot logo
         bcolor: 'var(--border-color)',
         tcolor: 'var(--text-color)',
-        lcolor: 'var(--link-color)'
+        lcolor: 'var(--link-color)',
+        bgcolor: 'var(--bg-color)'
       }
     }
   },

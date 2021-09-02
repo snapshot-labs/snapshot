@@ -33,6 +33,11 @@ const spaceAddress = computed(() => {
 
 <template>
   <span class="d-inline-block v-align-middle line-height-0">
-    <UiAvatar :imgsrc="url" :address="spaceAddress" :size="size" />
+    <UiAvatar
+      :space="space"
+      :imgsrc="url"
+      :address="spaceAddress"
+      :size="size"
+    />
   </span>
 </template>

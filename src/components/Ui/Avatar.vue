@@ -5,7 +5,8 @@ defineProps({
   address: String,
   size: String,
   imgsrc: String,
-  seed: [Number, String]
+  seed: [Number, String],
+  space: Object
 });
 
 const error = ref(false);
@@ -21,8 +22,10 @@ const error = ref(false);
         height: `${parseInt(size) || 22}px`
       }"
       @error="error = true"
-      class="circle border line-height-0 v-align-middle"
+      :class="space?.skin"
+      class="circle background-avatar line-height-0 v-align-middle"
     />
+
     <jazzicon
       v-else
       :seed="parseInt(seed)"
@@ -32,3 +35,9 @@ const error = ref(false);
     />
   </span>
 </template>
+
+<style scoped>
+.background-avatar {
+  background-color: var(--bg-color);
+}
+</style>
