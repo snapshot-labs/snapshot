@@ -22,7 +22,7 @@ const error = ref(false);
         height: `${parseInt(size) || 22}px`
       }"
       @error="error = true"
-      :class="space?.skin"
+      :class="space?.skin ? space?.skin : 'eth'"
       class="circle background-avatar line-height-0 v-align-middle"
     />
 
