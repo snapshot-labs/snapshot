@@ -1,6 +1,10 @@
 @import './vars';
-@import '@primer/css';
+
 @import './assets/fonts/iconfont.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 :root {
   --primary-color: #384aff;
@@ -13,22 +17,41 @@
   --block-bg: transparent;
 }
 
-@font-face {
-  font-family: 'Calibre';
-  src: url('./assets/fonts/Calibre-Medium.woff2') format('woff2'),
-    url('./assets/fonts/Calibre-Medium.woff') format('woff'),
-    url('./assets/fonts/Calibre-Medium.ttf') format('truetype');
-  font-weight: 500;
-  font-style: normal;
-}
+@layer base {
+  @font-face {
+    font-family: 'Calibre';
+    src: url('./assets/fonts/Calibre-Medium.woff2') format('woff2'),
+      url('./assets/fonts/Calibre-Medium.woff') format('woff'),
+      url('./assets/fonts/Calibre-Medium.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+  }
 
-@font-face {
-  font-family: 'Calibre';
-  src: url('./assets/fonts/Calibre-Semibold.woff2') format('woff2'),
-    url('./assets/fonts/Calibre-Semibold.woff') format('woff'),
-    url('./assets/fonts/Calibre-Semibold.ttf') format('truetype');
-  font-weight: 600;
-  font-style: normal;
+  @font-face {
+    font-family: 'Calibre';
+    src: url('./assets/fonts/Calibre-Semibold.woff2') format('woff2'),
+      url('./assets/fonts/Calibre-Semibold.woff') format('woff'),
+      url('./assets/fonts/Calibre-Semibold.ttf') format('truetype');
+    font-weight: 600;
+    font-style: normal;
+  }
+
+  h1 {
+    @apply text-2xl;
+  }
+  h2 {
+    @apply text-xl;
+  }
+  h3 {
+    @apply text-lg;
+  }
+  h4 {
+    @apply text-md;
+  }
+
+  p {
+    @apply leading-7;
+  }
 }
 
 html,
@@ -36,7 +59,6 @@ body,
 #app {
   background: var(--bg-color);
   color: var(--text-color);
-  font-family: $body-font;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -50,11 +72,11 @@ h2,
 h3,
 h4 {
   color: var(--heading-color);
-  font-weight: $font-weight-bold;
+  font-weight: 600;
 }
 
 b {
-  font-weight: $font-weight-bold;
+  font-weight: 600;
 }
 
 p {
@@ -142,8 +164,8 @@ textarea {
 .border,
 .border-md,
 .border-lg,
-.border-bottom,
-.border-top {
+.border-b,
+.border-t {
   border-color: var(--border-color) !important;
 }
 

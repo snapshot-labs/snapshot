@@ -65,11 +65,11 @@ watch(open, () => {
     <div class="mt-4 mx-0 mx-md-4">
       <div
         v-if="selectedPlugin?.key"
-        class="p-4 mb-4 border rounded-2 link-color"
+        class="p-4 mb-4 border rounded-2 text-skin-link"
       >
         <h4 v-text="selectedPlugin.name" class="mb-3 text-center" />
         <UiButton
-          class="d-block width-full mb-3 overflow-x-auto"
+          class="block w-full mb-3 overflow-x-auto"
           style="height: auto"
         >
           <TextareaAutosize
@@ -82,7 +82,7 @@ watch(open, () => {
         <UiButton
           @click="handleSubmit"
           :disabled="!isValid"
-          class="button--submit width-full"
+          class="button--submit w-full"
         >
           {{ plugin.name ? $t('save') : $t('add') }}
         </UiButton>

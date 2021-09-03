@@ -61,7 +61,7 @@ watch(selected, value => {
       <div
         v-for="(plugin, key) in plugins"
         :key="key"
-        class="mb-3 p-4 border rounded-2 link-color text-center"
+        class="mb-3 p-4 border rounded-2 text-skin-link text-center"
       >
         <img
           class="circle border"
@@ -71,7 +71,7 @@ watch(selected, value => {
         />
         <h3 v-text="plugin.name" />
         <div v-if="plugin.website" class="mb-2">
-          <a :href="plugin.website" target="_blank" class="link-color">
+          <a :href="plugin.website" target="_blank" class="text-skin-link">
             {{ $t('learnMore') }}
             <Icon name="external-link" />
           </a>
@@ -83,7 +83,7 @@ watch(selected, value => {
     </div>
     <template v-if="selected === false" v-slot:footer>
       <div class="col-6 float-left pr-2">
-        <UiButton @click="$emit('close')" type="button" class="width-full">
+        <UiButton @click="$emit('close')" type="button" class="w-full">
           {{ $t('cancel') }}
         </UiButton>
       </div>
@@ -91,13 +91,16 @@ watch(selected, value => {
         <UiButton
           @click="$emit('update:modelValue', form), $emit('close')"
           type="submit"
-          class="width-full button--submit"
+          class="w-full button--submit"
         >
           {{ $t('save') }}
         </UiButton>
       </div>
     </template>
-    <div v-if="selected !== false" class="m-4 p-4 border rounded-2 link-color">
+    <div
+      v-if="selected !== false"
+      class="m-4 p-4 border rounded-2 text-skin-link"
+    >
       <PluginAragonConfig
         :proposal="proposal"
         v-model="form.aragon"

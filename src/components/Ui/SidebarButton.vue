@@ -1,9 +1,9 @@
 <template>
   <div
     class="
-      border border-bcolor
-      w-10
-      h-10
+      border border-skin-border
+      w-[42px]
+      h-[42px]
       rounded-full
       flex
       justify-center

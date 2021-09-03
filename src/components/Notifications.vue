@@ -13,7 +13,7 @@ setInterval(() => (now = Date.now()), 1000);
 <template>
   <div
     v-if="items.some(i => now < i.timestamp + duration && !i.hide)"
-    class="position-fixed left-0 right-0 bottom-0 text-center"
+    class="fixed left-0 right-0 bottom-0 text-center"
     style="z-index: 99999"
   >
     <div class="mb-4">

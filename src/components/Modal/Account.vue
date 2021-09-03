@@ -41,11 +41,11 @@ watch(open, () => (step.value = null));
           :key="i"
           @click="$emit('login', connector.id)"
           target="_blank"
-          class="mb-2 d-block"
+          class="mb-2 block"
         >
           <UiButton
             v-if="id !== 'injected'"
-            class="button-outline width-full v-align-middle"
+            class="button-outline w-full v-align-middle"
           >
             <img
               :src="`${path}/${connector.id}.png`"
@@ -57,7 +57,7 @@ watch(open, () => (step.value = null));
           </UiButton>
           <UiButton
             v-else-if="injected"
-            class="button-outline width-full v-align-middle"
+            class="button-outline w-full v-align-middle"
           >
             <img
               :src="`${path}/${injected.id}.png`"
@@ -75,9 +75,9 @@ watch(open, () => (step.value = null));
         <a
           :href="_explorer(web3.network.key, web3.account)"
           target="_blank"
-          class="mb-2 d-block"
+          class="mb-2 block"
         >
-          <UiButton class="button-outline width-full">
+          <UiButton class="button-outline w-full">
             <UiAvatar
               :imgsrc="_getUrl(web3.profile?.image)"
               :address="web3.account"
@@ -94,33 +94,25 @@ watch(open, () => (step.value = null));
           v-if="web3.profile?.name || web3.profile?.image"
           :href="`https://3box.io/${web3.account}/edit`"
           target="_blank"
-          class="mb-2 d-block"
+          class="mb-2 block"
         >
-          <UiButton class="button-outline width-full">
+          <UiButton class="button-outline w-full">
             {{ $t('edit3box') }}
             <Icon name="external-link" class="ml-1" />
           </UiButton>
         </a>
-        <a
-          v-else
-          href="https://3box.io/hub"
-          target="_blank"
-          class="mb-2 d-block"
-        >
-          <UiButton class="button-outline width-full">
+        <a v-else href="https://3box.io/hub" target="_blank" class="mb-2 block">
+          <UiButton class="button-outline w-full">
             {{ $t('create3box') }}
             <Icon name="external-link" class="ml-1" />
           </UiButton>
         </a>
-        <UiButton
-          @click="step = 'connect'"
-          class="button-outline width-full mb-2"
-        >
+        <UiButton @click="step = 'connect'" class="button-outline w-full mb-2">
           {{ $t('connectWallet') }}
         </UiButton>
         <UiButton
           @click="handleLogout"
-          class="button-outline width-full text-red mb-2"
+          class="button-outline w-full text-red mb-2"
         >
           {{ $t('logout') }}
         </UiButton>

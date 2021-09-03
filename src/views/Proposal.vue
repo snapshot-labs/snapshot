@@ -174,20 +174,20 @@ onMounted(async () => {
 <template>
   <Layout v-bind="$attrs">
     <template #content-left>
-      <div class="px-4 px-md-0 mb-3">
+      <div class="px-4 md:px-0 mb-3">
         <router-link
           :to="{ name: domain ? 'home' : 'proposals' }"
-          class="text-color"
+          class="text-skin-text"
         >
-          <Icon name="back" size="22" class="v-align-middle" />
+          <Icon name="back" size="22" class="!align-middle" />
           {{ space.name }}
         </router-link>
       </div>
-      <div class="px-4 px-md-0">
+      <div class="px-4 md:px-0">
         <template v-if="loaded">
           <h1 v-text="proposal.title" class="mb-2" />
           <div class="mb-4">
-            <UiState :state="proposal.state" />
+            <UiState :state="proposal.state" class="inline-block" />
             <UiDropdown
               top="2.5rem"
               right="1.5rem"
@@ -197,8 +197,8 @@ onMounted(async () => {
               :items="sharingItems"
               :hideDropdown="sharingIsSupported"
             >
-              <div class="pr-1" style="user-select: none">
-                <Icon name="upload" size="25" class="v-align-text-bottom" />
+              <div class="pr-1 select-none">
+                <Icon name="upload" size="25" class="!align-text-bottom" />
                 Share
               </div>
             </UiDropdown>
@@ -211,12 +211,7 @@ onMounted(async () => {
             >
               <div class="pr-3">
                 <UiLoading v-if="dropdownLoading" />
-                <Icon
-                  v-else
-                  name="threedots"
-                  size="25"
-                  class="v-align-text-bottom"
-                />
+                <Icon v-else name="threedots" size="25" />
               </div>
             </UiDropdown>
           </div>
@@ -253,7 +248,7 @@ onMounted(async () => {
           <b>{{ $t('strategies') }}</b>
           <span
             @click="modalStrategiesOpen = true"
-            class="float-right link-color a"
+            class="float-right text-skin-link a"
           >
             <span v-for="(symbol, symbolIndex) of symbols" :key="symbol">
               <span :aria-label="symbol" class="tooltipped tooltipped-n">
@@ -281,7 +276,7 @@ onMounted(async () => {
         </div>
         <div class="mb-1">
           <b>{{ $t('proposal.votingSystem') }}</b>
-          <span class="float-right link-color">
+          <span class="float-right text-skin-link">
             {{ $t(`voting.${proposal.type}`) }}
           </span>
         </div>
@@ -291,7 +286,7 @@ onMounted(async () => {
             <span
               :aria-label="_ms(proposal.start)"
               v-text="$d(proposal.start * 1e3, 'short', 'en-US')"
-              class="float-right link-color tooltipped tooltipped-n"
+              class="float-right text-skin-link tooltipped tooltipped-n"
             />
           </div>
           <div class="mb-1">
@@ -299,7 +294,7 @@ onMounted(async () => {
             <span
               :aria-label="_ms(proposal.end)"
               v-text="$d(proposal.end * 1e3, 'short', 'en-US')"
-              class="float-right link-color tooltipped tooltipped-n"
+              class="float-right text-skin-link tooltipped tooltipped-n"
             />
           </div>
           <div class="mb-1">

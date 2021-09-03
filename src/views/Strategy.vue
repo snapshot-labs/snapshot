@@ -59,7 +59,7 @@ const strategy = computed(() =>
           </div>
         </div>
         <router-link :to="`/playground/${$route.params.name}`">
-          <UiButton class="width-full mt-2">{{ $t('playground') }}</UiButton>
+          <UiButton class="w-full mt-2">{{ $t('playground') }}</UiButton>
         </router-link>
       </Block>
     </template>

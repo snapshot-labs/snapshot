@@ -74,7 +74,7 @@ watch(votes, () => {
       v-for="(vote, i) in visibleVotes"
       :key="i"
       :style="i === 0 && 'border: 0 !important;'"
-      class="px-4 py-3 border-top d-flex"
+      class="px-4 py-3 border-t flex"
     >
       <User
         :profile="profiles[vote.voter]"
@@ -82,12 +82,11 @@ watch(votes, () => {
         :space="space"
         class="column"
       />
-      <div class="flex-auto text-center link-color">
+      <div class="flex-auto text-center text-skin-link">
         <span
           :aria-label="format(proposal, vote.choice)"
           class="
-            text-center
-            link-color
+            text-center text-skin-link
             tooltipped tooltipped-multiline tooltipped-n
           "
         >
@@ -95,7 +94,7 @@ watch(votes, () => {
         </span>
       </div>
 
-      <div class="column text-right link-color">
+      <div class="column text-right text-skin-link">
         <span
           class="tooltipped tooltipped-multiline tooltipped-n"
           :aria-label="
@@ -122,9 +121,9 @@ watch(votes, () => {
       class="
         px-4
         py-3
-        border-top
+        border-t
         text-center
-        d-block
+        block
         header-bg
         rounded-bottom-0 rounded-md-bottom-2
       "

@@ -118,7 +118,7 @@ watchEffect(async () => {
         </Block>
         <Block :title="$t('strategyParams')">
           <UiButton
-            class="d-block width-full mb-3 overflow-x-auto"
+            class="block w-full mb-3 overflow-x-auto"
             style="height: auto"
           >
             <TextareaAutosize
@@ -134,11 +134,11 @@ watchEffect(async () => {
           </Block>
         </Block>
         <Block :title="$t('addresses')">
-          <UiButton class="d-block width-full px-3" style="height: auto">
+          <UiButton class="block w-full px-3" style="height: auto">
             <TextareaArray
               v-model="form.addresses"
               :placeholder="`0x8C28Cf33d9Fd3D0293f963b1cd27e3FF422B425c\n0xeF8305E140ac520225DAf050e2f71d5fBcC543e7`"
-              class="input width-full text-left"
+              class="input w-full text-left"
               style="font-size: 18px"
             />
           </UiButton>
@@ -151,7 +151,7 @@ watchEffect(async () => {
           @click="loadScores"
           :loading="loading"
           :disables="loading"
-          class="width-full button--submit"
+          class="w-full button--submit"
           :style="[loading ? '' : 'padding-top: 0.2rem']"
         >
           <Icon name="play" size="18" />
@@ -159,7 +159,7 @@ watchEffect(async () => {
       </Block>
       <Block v-if="scores" :title="$t('results')">
         <div
-          class="d-flex flex-justify-between"
+          class="flex justify-between"
           v-for="score in Object.keys(scores[0])"
           :key="score"
         >

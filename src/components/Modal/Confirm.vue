@@ -39,11 +39,11 @@ async function handleSubmit() {
 </script>
 
 <template>
-  <UiModal :open="open" @close="$emit('close')" class="d-flex">
+  <UiModal :open="open" @close="$emit('close')" class="flex">
     <template v-slot:header>
       <h3>{{ $t('confirmVote') }}</h3>
     </template>
-    <div class="d-flex flex-column flex-auto">
+    <div class="flex flex-col flex-auto">
       <h4 class="m-4 mb-0 text-center">
         {{
           $tc('sureToVote', [
@@ -53,14 +53,14 @@ async function handleSubmit() {
         <br />
         {{ $t('cannotBeUndone') }}
       </h4>
-      <div class="m-4 p-4 border rounded-2 link-color">
-        <div class="d-flex">
+      <div class="m-4 p-4 border rounded-2 text-skin-link">
+        <div class="flex">
           <span v-text="$t('options')" class="flex-auto text-color mr-1" />
           <span class="text-right ml-4">
             {{ format(proposal, selectedChoices) }}
           </span>
         </div>
-        <div class="d-flex">
+        <div class="flex">
           <span v-text="$t('snapshot')" class="flex-auto text-color mr-1" />
           <a
             :href="_explorer(space.network, proposal.snapshot, 'block')"
@@ -71,7 +71,7 @@ async function handleSubmit() {
             <Icon name="external-link" class="ml-1" />
           </a>
         </div>
-        <div class="d-flex">
+        <div class="flex">
           <span v-text="$t('votingPower')" class="flex-auto text-color mr-1" />
           <span
             class="tooltipped tooltipped-nw"
@@ -97,7 +97,7 @@ async function handleSubmit() {
     </div>
     <template v-slot:footer>
       <div class="col-6 float-left pr-2">
-        <UiButton @click="$emit('close')" type="button" class="width-full">
+        <UiButton @click="$emit('close')" type="button" class="w-full">
           {{ $t('cancel') }}
         </UiButton>
       </div>
@@ -107,7 +107,7 @@ async function handleSubmit() {
           :loading="loading"
           @click="handleSubmit"
           type="submit"
-          class="width-full button--submit"
+          class="w-full button--submit"
         >
           {{ $t('proposal.vote') }}
         </UiButton>

@@ -235,11 +235,11 @@ onMounted(async () => {
 
       <template v-if="loaded">
         <Block title="ENS">
-          <UiButton class="d-flex width-full mb-2">
+          <UiButton class="flex w-full mb-2">
             <input
               readonly
               v-model="textRecord"
-              class="input width-full"
+              class="input w-full"
               :placeholder="$t('contectHash')"
             />
             <Icon
@@ -252,11 +252,11 @@ onMounted(async () => {
           <a
             :href="`https://app.ens.domains/name/${key}`"
             target="_blank"
-            class="mb-2 d-block"
+            class="mb-2 block"
           >
             <UiButton
               :class="{ 'button--submit': !isOwner && !isAdmin }"
-              class="button-outline width-full"
+              class="button-outline w-full"
             >
               {{
                 isOwner || isAdmin
@@ -370,7 +370,7 @@ onMounted(async () => {
                 </template>
                 <template v-slot:info>
                   <a
-                    class="d-block py-1 mr-n2"
+                    class="block py-1 mr-n2"
                     target="_blank"
                     href="https://docs.snapshot.org/spaces/add-custom-domain"
                   >
@@ -385,7 +385,7 @@ onMounted(async () => {
               >
                 <template v-slot:label> {{ $t(`settings.terms`) }} </template>
               </UiInput>
-              <div class="d-flex flex-items-center px-2">
+              <div class="flex items-center px-2">
                 <Checkbox v-model="form.private" class="mr-2 mt-1" />
                 {{ $t('settings.hideSpace') }}
               </div>
@@ -395,17 +395,14 @@ onMounted(async () => {
             <div
               v-for="(strategy, i) in form.strategies"
               :key="i"
-              class="mb-3 position-relative"
+              class="mb-3relative"
             >
-              <a
-                @click="handleRemoveStrategy(i)"
-                class="position-absolute p-4 right-0"
-              >
+              <a @click="handleRemoveStrategy(i)" class="absolute p-4 right-0">
                 <Icon name="close" size="12" />
               </a>
               <a
                 @click="handleEditStrategy(i)"
-                class="p-4 d-block border rounded-2"
+                class="p-4 block border rounded-2"
               >
                 <h4 v-text="strategy.name" />
               </a>
@@ -426,7 +423,7 @@ onMounted(async () => {
                 <Icon name="external-link" />
               </a>
             </Block>
-            <UiButton @click="handleAddStrategy" class="d-block width-full">
+            <UiButton @click="handleAddStrategy" class="block w-full">
               {{ $t('settings.addStrategy') }}
             </UiButton>
           </Block>
@@ -438,11 +435,11 @@ onMounted(async () => {
               <Icon name="warning" class="mr-2 text-red" />
               <span class="text-red"> {{ inputError('admins') }}&nbsp;</span>
             </Block>
-            <UiButton class="d-block width-full px-3" style="height: auto">
+            <UiButton class="block w-full px-3" style="height: auto">
               <TextareaArray
                 v-model="form.admins"
                 :placeholder="`0x8C28Cf33d9Fd3D0293f963b1cd27e3FF422B425c\n0xeF8305E140ac520225DAf050e2f71d5fBcC543e7`"
-                class="input width-full text-left"
+                class="input w-full text-left"
                 style="font-size: 18px"
               />
             </UiButton>
@@ -455,11 +452,11 @@ onMounted(async () => {
               <Icon name="warning" class="mr-2 text-red" />
               <span class="text-red"> {{ inputError('members') }}&nbsp;</span>
             </Block>
-            <UiButton class="d-block width-full px-3" style="height: auto">
+            <UiButton class="block w-full px-3" style="height: auto">
               <TextareaArray
                 v-model="form.members"
                 :placeholder="`0x8C28Cf33d9Fd3D0293f963b1cd27e3FF422B425c\n0xeF8305E140ac520225DAf050e2f71d5fBcC543e7`"
-                class="input width-full text-left"
+                class="input w-full text-left"
                 style="font-size: 18px"
               />
             </UiButton>
@@ -487,7 +484,7 @@ onMounted(async () => {
                     $t('settings.proposalThreshold')
                   }}</template>
                 </UiInput>
-                <div class="mb-2 d-flex flex-items-center px-2">
+                <div class="mb-2 flex items-center px-2">
                   <Checkbox
                     v-model="form.filters.onlyMembers"
                     class="mr-2 mt-1"
@@ -502,25 +499,25 @@ onMounted(async () => {
               <div
                 v-for="(plugin, name, index) in form.plugins"
                 :key="index"
-                class="mb-3 position-relative"
+                class="mb-3relative"
               >
                 <div v-if="pluginName(name)">
                   <a
                     @click="handleRemovePlugins(name)"
-                    class="position-absolute p-4 right-0"
+                    class="absolute p-4 right-0"
                   >
                     <Icon name="close" size="12" />
                   </a>
                   <a
                     @click="handleEditPlugins(name)"
-                    class="p-4 d-block border rounded-2"
+                    class="p-4 block border rounded-2"
                   >
                     <h4 v-text="pluginName(name)" />
                   </a>
                 </div>
               </div>
             </div>
-            <UiButton @click="handleAddPlugins" class="d-block width-full">
+            <UiButton @click="handleAddPlugins" class="block w-full">
               {{ $t('settings.addPlugin') }}
             </UiButton>
           </Block>
@@ -529,14 +526,14 @@ onMounted(async () => {
     </template>
     <template v-if="(loaded && isOwner) || (loaded && isAdmin)" #sidebar-right>
       <Block :title="$t('actions')">
-        <UiButton @click="handleReset" class="d-block width-full mb-2">
+        <UiButton @click="handleReset" class="block w-full mb-2">
           {{ $t('reset') }}
         </UiButton>
         <UiButton
           :disabled="uploadLoading"
           @click="handleSubmit"
           :loading="loading"
-          class="d-block width-full button--submit"
+          class="block w-full button--submit"
         >
           {{ $t('save') }}
         </UiButton>

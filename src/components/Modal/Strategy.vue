@@ -67,10 +67,10 @@ watch(open, () => {
       :modal="true"
     />
     <div class="mt-4 mx-0 mx-md-4">
-      <div v-if="input.name" class="p-4 mb-4 border rounded-2 link-color">
+      <div v-if="input.name" class="p-4 mb-4 border rounded-2 text-skin-link">
         <h4 v-text="input.name" class="mb-3 text-center" />
         <UiButton
-          class="d-block width-full mb-3 overflow-x-auto"
+          class="block w-full mb-3 overflow-x-auto"
           style="height: auto"
         >
           <TextareaAutosize
@@ -83,7 +83,7 @@ watch(open, () => {
         <UiButton
           @click="handleSubmit"
           :disabled="!isValid"
-          class="button--submit width-full"
+          class="button--submit w-full"
         >
           {{ strategy.name ? $t('save') : $t('add') }}
         </UiButton>

@@ -157,7 +157,7 @@ onMounted(async () => {
             v-for="(delegate, i) in delegates"
             :key="i"
             :style="i === 0 && 'border: 0 !important;'"
-            class="px-4 py-3 border-top d-flex"
+            class="px-4 py-3 border-t flex"
           >
             <User
               :address="delegate.delegate"
@@ -166,7 +166,7 @@ onMounted(async () => {
             />
             <div
               v-text="_shorten(delegate.space || $t('allSpaces'), 'choice')"
-              class="flex-auto text-right link-color"
+              class="flex-auto text-right text-skin-link"
             />
             <a
               @click="clearDelegate(delegate.space, delegate.delegate)"
@@ -185,7 +185,7 @@ onMounted(async () => {
             v-for="(delegator, i) in delegators"
             :key="i"
             :style="i === 0 && 'border: 0 !important;'"
-            class="px-4 py-3 border-top d-flex"
+            class="px-4 py-3 border-t flex"
           >
             <User
               :address="delegator.delegator"
@@ -194,7 +194,7 @@ onMounted(async () => {
             />
             <div
               v-text="_shorten(delegator.space || '-', 'choice')"
-              class="flex-auto text-right link-color"
+              class="flex-auto text-right text-skin-link"
             />
           </div>
         </Block>
@@ -207,7 +207,7 @@ onMounted(async () => {
           @click="handleSubmit"
           :disabled="!isValid || !$auth.isAuthenticated.value"
           :loading="loading"
-          class="d-block width-full button--submit"
+          class="block w-full button--submit"
         >
           {{ $t('confirm') }}
         </UiButton>

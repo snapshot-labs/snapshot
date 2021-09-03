@@ -13,10 +13,12 @@ defineEmits(['submit']);
 <template>
   <div
     class="
-      border-top border-bottom border-md
-      rounded-0 rounded-md-2
+      border-t border-b
+      md:border
+      rounded-none
+      md:rounded-lg
       mb-4
-      block-bg
+      bg-skin-block-bg
     "
   >
     <h4
@@ -24,10 +26,11 @@ defineEmits(['submit']);
       class="
         px-4
         pt-3
-        border-bottom
-        d-block
-        header-bg
-        rounded-top-0 rounded-md-top-2
+        border-b border-skin-border
+        block
+        bg-skin-header-bg
+        rounded-t-none
+        md:rounded-t-lg
       "
       style="padding-bottom: 12px"
     >
@@ -36,19 +39,19 @@ defineEmits(['submit']);
       <a
         v-if="icon"
         @click="$emit('submit')"
-        class="float-right text-color"
+        class="float-right text-skin-text"
         style="padding-top: 2px"
       >
         <Icon :name="icon" size="22" />
       </a>
     </h4>
-    <div v-if="loading" class="d-block px-4 py-4">
+    <div v-if="loading" class="block px-4 py-4">
       <div
-        class="bg-gray-9 rounded-1 anim-pulse mb-2"
+        class="bg-gray-600 rounded-md anim-pulse mb-2"
         style="width: 80%; height: 20px"
       />
       <div
-        class="bg-gray-9 rounded-1 anim-pulse"
+        class="bg-gray-600 rounded-md anim-pulse"
         style="width: 50%; height: 20px"
       />
     </div>

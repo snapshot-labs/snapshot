@@ -21,7 +21,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="w-[68px] h-screen fixed m-0 border-r border-bcolor">
+  <div class="w-[68px] h-screen fixed m-0 border-r border-skin-border">
     <div class="flex flex-col h-full overflow-scroll menu-tabs">
       <div
         class="mt-[22px] mb-[20px] flex flex-col items-center justify-center"
@@ -55,7 +55,7 @@ onMounted(() => {
       <div class="flex items-center justify-center mb-3 mt-[12px]">
         <UiSidebarButton
           @click="modalAboutOpen = true"
-          class="hover:text-lcolor"
+          class="hover:text-skin-link"
         >
           <span class="select-none mt-1">?</span>
         </UiSidebarButton>
@@ -70,9 +70,3 @@ onMounted(() => {
     <ModalSelectLanguage :open="modalLangOpen" @close="modalLangOpen = false"
   /></teleport>
 </template>
-
-<style scoped>
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-</style>

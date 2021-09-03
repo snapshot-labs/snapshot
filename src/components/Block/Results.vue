@@ -64,7 +64,7 @@ async function downloadReport() {
     :title="ts >= proposal.end ? $t('results') : $t('currentResults')"
   >
     <div v-for="choice in choices" :key="choice.i">
-      <div class="link-color mb-1">
+      <div class="text-skin-link mb-1">
         <span
           class="mr-1"
           :class="[
@@ -108,7 +108,7 @@ async function downloadReport() {
       />
     </div>
     <div v-if="ts >= proposal.end">
-      <UiButton @click="downloadReport" class="width-full mt-2">
+      <UiButton @click="downloadReport" class="w-full mt-2">
         {{ $t('downloadReport') }}
       </UiButton>
     </div>

@@ -55,13 +55,13 @@ onMounted(() => setTitle());
     >
       {{ $t('demoSite') }}
     </div>
-    <nav id="topnav" class="border-bottom width-full bg-black">
+    <nav id="topnav" class="border-b border-skin-border w-full bg-black">
       <Container>
-        <div class="d-flex flex-items-center" style="height: 78px">
-          <div class="flex-auto d-flex flex-items-center">
+        <div class="flex items-center" style="height: 78px">
+          <div class="flex-auto flex items-center">
             <router-link
               :to="{ name: 'home' }"
-              class="d-inline-block d-flex flex-items-center"
+              class="flex items-center"
               style="font-size: 24px; padding-top: 4px"
             >
               snapshot
@@ -71,8 +71,8 @@ onMounted(() => setTitle());
             <template v-if="$auth.isAuthenticated.value">
               <UiButton
                 @click="modalAccountOpen = true"
-                class="button-outline"
                 :loading="web3.authLoading"
+                class="flex items-center"
               >
                 <UiAvatar
                   :imgsrc="
@@ -80,14 +80,18 @@ onMounted(() => setTitle());
                   "
                   :address="web3.account"
                   size="16"
-                  class="mr-n1 mr-sm-2 mr-md-2 mr-lg-2 mr-xl-2 ml-n1"
+                  class="-mr-1 sm:mr-2 md:mr-2 lg:mr-2 xl:mr-2 -ml-1 mb-1"
                 />
                 <span
                   v-if="web3.profile?.name || web3.profile?.ens"
                   v-text="web3.profile.name || web3.profile.ens"
-                  class="hide-sm"
+                  class="hidden sm:block"
                 />
-                <span v-else v-text="_shorten(web3.account)" class="hide-sm" />
+                <span
+                  v-else
+                  v-text="_shorten(web3.account)"
+                  class="hidden sm:block"
+                />
               </UiButton>
             </template>
             <UiButton
@@ -95,11 +99,11 @@ onMounted(() => setTitle());
               @click="modalAccountOpen = true"
               :loading="loading || web3.authLoading"
             >
-              <span class="hide-sm" v-text="$t('connectWallet')" />
+              <span class="hidden sm:block" v-text="$t('connectWallet')" />
               <Icon
                 name="login"
                 size="20"
-                class="hide-md hide-lg hide-xl ml-n2 mr-n2 v-align-text-bottom"
+                class="sm:hidden ml-n2 -mr-2 align-text-bottom"
               />
             </UiButton>
           </div>

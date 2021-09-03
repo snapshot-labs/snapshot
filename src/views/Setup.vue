@@ -30,14 +30,14 @@ function handleSubmit() {
         <div class="mb-3">
           {{ $t('setup.useExistingEns') }}
         </div>
-        <UiButton class="text-left width-full mb-3 d-flex px-3">
+        <UiButton class="text-left w-full mb-3 flex px-3">
           <input
             v-model="id"
             class="input flex-auto"
             :placeholder="$t('setup.example')"
           />
           <a
-            class="d-block py-1 mr-n2"
+            class="block py-1 mr-n2"
             target="_blank"
             href="https://docs.snapshot.org/spaces/create"
           >
@@ -47,7 +47,7 @@ function handleSubmit() {
         <UiButton
           :disabled="!id.includes('.eth') && !id.includes('.xyz')"
           @click="handleSubmit"
-          class="button--submit width-full"
+          class="button--submit w-full"
         >
           {{ $t('next') }}
         </UiButton>

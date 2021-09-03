@@ -33,7 +33,7 @@ onBeforeUnmount(() => {
     <div
       style="z-index: 20; right: 0px; left: 68px"
       ref="sticky"
-      :class="{ 'position-fixed top-0': isFixed }"
+      :class="{ 'fixed top-0': isFixed }"
     >
       <slot />
     </div>

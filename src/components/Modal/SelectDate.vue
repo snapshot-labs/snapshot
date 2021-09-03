@@ -69,7 +69,7 @@ watch(open, () => {
         <UiCalendar v-model="input" class="mx-auto mb-2" />
       </div>
     </div>
-    <div v-else class="d-flex m-4 mx-auto" style="max-width: 160px">
+    <div v-else class="flex m-4 mx-auto" style="max-width: 160px">
       <UiButton class="px-0 width-fit">
         <input v-model="form.h" max="24" class="input text-center col-5" />
         <span class="col-2">:</span>
@@ -78,7 +78,7 @@ watch(open, () => {
     </div>
     <template v-slot:footer>
       <div class="col-6 float-left pr-2">
-        <UiButton @click="$emit('close')" type="button" class="width-full">
+        <UiButton @click="$emit('close')" type="button" class="w-full">
           {{ $t('cancel') }}
         </UiButton>
       </div>
@@ -87,7 +87,7 @@ watch(open, () => {
           @click="handleSubmit"
           type="submit"
           :disabled="!input"
-          class="width-full button--submit"
+          class="w-full button--submit"
         >
           <span v-if="step === 0">{{ $t('next') }}</span>
           <span v-else>{{ $t('select') }}</span>

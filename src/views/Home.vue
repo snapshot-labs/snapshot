@@ -46,19 +46,19 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
 <template>
   <div>
     <div class="text-center mb-4 mx-auto">
-      <Container class="d-flex flex-items-end">
-        <div class="flex-auto text-left d-flex">
-          <UiButton class="pl-3 col-12 col-lg-7 pr-0">
+      <Container class="flex items-center">
+        <div class="flex-auto text-left flex">
+          <UiButton class="pl-3 pr-0 w-full md:w-7/12">
             <SearchWithFilters />
           </UiButton>
         </div>
-        <div class="ml-3 text-right hide-sm col-lg-4">
+        <div class="ml-3 text-right hidden sm:block lg:w-4/12">
           {{ $tc('spaceCount', [_n(orderedSpaces.length)]) }}
         </div>
       </Container>
     </div>
     <Container :slim="true">
-      <div class="overflow-hidden mr-n4">
+      <div class="overflow-hidden -mr-4">
         <a
           @click="
             $router.push({ name: 'proposals', params: { key: space.key } })
@@ -66,17 +66,27 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
           v-for="space in orderedSpaces.slice(0, limit)"
           :key="space.key"
         >
-          <div class="col-12 col-lg-3 pr-4 float-left">
+          <div class="w-full lg:w-1/4 pr-4 float-left">
             <Block
               class="text-center extra-icon-container"
               style="height: 250px; margin-bottom: 24px !important"
             >
-              <span class="position-relative d-inline-block">
-                <UiCounter
-                  v-if="space._activeProposals"
-                  :counter="space._activeProposals"
-                  class="position-absolute top-2 right-0 bg-green"
-                />
+              <div
+                v-if="space._activeProposals"
+                class="
+                  absolute
+                  top-[12px]
+                  left-[14px]
+                  !bg-green
+                  rounded-md
+                  text-white text-xs
+                  px-2
+                  pt-1
+                "
+              >
+                {{ space._activeProposals }} Open
+              </div>
+              <span class="relative inline-block">
                 <Token
                   :space="space"
                   symbolIndex="space"
@@ -98,7 +108,7 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
         <NoResults
           :block="true"
           v-if="Object.keys(orderedSpaces).length < 1"
-          class="pr-md-4"
+          class="md:pr-6"
         />
       </div>
     </Container>

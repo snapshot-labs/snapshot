@@ -54,7 +54,7 @@ watch(selectedChoices.value, currentValue => {
   <div class="mb-3">
     <div v-for="(choice, i) in proposal.choices" :key="i">
       <UiButton
-        class="d-block width-full mb-2"
+        class="block w-full mb-2"
         :class="selectedChoices[i + 1] > 0 && 'button--active'"
       >
         <div
@@ -72,13 +72,11 @@ watch(selectedChoices.value, currentValue => {
           ]"
           :aria-label="choice"
         >
-          <span class="truncated width-full">
+          <span class="truncated w-full">
             {{ choice }}
           </span>
         </div>
-        <div
-          class="col-4 d-flex flex-items-center flex-justify-end float-right"
-        >
+        <div class="col-4 flex items-center justify-end float-right">
           <button
             v-if="!isSmallScreen"
             :disabled="!selectedChoices[i + 1]"
