@@ -22,7 +22,7 @@ onMounted(() => {
 
 <template>
   <div class="w-[68px] h-screen fixed m-0 border-r border-bcolor">
-    <div class="flex flex-col h-full justify-between overflow-scroll menu-tabs">
+    <div class="flex flex-col h-full overflow-scroll menu-tabs">
       <div
         class="mt-[22px] mb-[20px] flex flex-col items-center justify-center"
       >
@@ -33,7 +33,7 @@ onMounted(() => {
           class="text-snapshot cursor-pointer"
         />
       </div>
-      <div class="flex flex-col items-center space-y-3 pt-2">
+      <div class="flex flex-col h-full items-center space-y-3 pt-2">
         <router-link :to="{ name: 'timeline' }">
           <UiSidebarButton>
             <Icon size="20" name="feed" />
