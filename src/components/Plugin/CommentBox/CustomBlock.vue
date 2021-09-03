@@ -7,6 +7,7 @@ import { useRoute } from 'vue-router';
 import { useProfiles } from '@/composables/useProfiles';
 import { useNotifications } from '@/composables/useNotifications';
 import { useScrollMonitor } from '@/composables/useScrollMonitor';
+import { signMessage } from '@snapshot-labs/snapshot.js/src/utils/web3';
 const props = defineProps({
   proposalId: String,
   space: Object,
@@ -70,8 +71,11 @@ onMounted(async () => {
   getCommentData();
 });
 
-function clickSubmit() {
-  !web3Account.value ? (modalAccountOpen.value = true) : handleSubmit();
+async function clickSubmit() {
+    !web3Account.value ? (modalAccountOpen.value = true) : handleSubmit();
+}
+async function pujols(){
+console.log(await signMessage(auth.web3, "dwad", web3Account.value));
 }
 async function postData(url = '', data = {}) {
   // Default options are marked with *
@@ -133,7 +137,12 @@ function deleteItem(key){
     >
       <UiMarkdown :body="comment" />
     </PluginCommentBoxBlock>
-
+ <UiButton
+      @click="pujols"
+           class="mt-2 button--submit"
+    >
+      pujols
+    </UiButton>
     <UiButton
       @click="clickSubmit"
       :disabled="comment.length === 0"
@@ -150,6 +159,7 @@ function deleteItem(key){
     >
      <div :key="index" v-for="(item, index) in allData">
     <PluginCommentBoxCommentBlock
+    :proposal="proposal"
       :item="item"
       :profiles="profiles"
       :space="space"

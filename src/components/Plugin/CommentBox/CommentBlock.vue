@@ -3,13 +3,17 @@ import { ref, defineProps, defineEmits, onMounted, computed, watch } from 'vue';
 import { useNotifications } from '@/composables/useNotifications';
 import { useModal } from '@/composables/useModal';
 import { useWeb3 } from '@/composables/useWeb3';
+import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
+
+const auth = getInstance();
 const { modalOpen,modalAccountOpen } = useModal();
 const { web3 } = useWeb3();
 const web3Account = computed(() => web3.value.account);
 const props = defineProps({
   profiles: Object,
   space: Object,
-  item: Object
+  item: Object,
+  proposal:Object
 });
 const threeDotItems = computed(() => {
   const items = [
@@ -19,7 +23,19 @@ const threeDotItems = computed(() => {
 
   return items;
 });
-
+const isAdmin = computed(() => {
+  const admins = props.space.admins.map(address => address.toLowerCase());
+  return (
+    auth.isAuthenticated.value &&
+    web3Account.value &&
+    admins.includes(web3Account.value.toLowerCase())
+  );
+});
+const isOwner = computed(() => {
+   return web3Account.value===props.item.author;
+    
+});
+const isCreator = computed(() => props.proposal.author === web3Account.value);
 const toggleComment = ref(true);
 const toggleEditComment = ref(true);
 const closeModal = ref(false);
@@ -190,6 +206,7 @@ allReply.value.splice(allReply.value.findIndex(a=>a.key===key),1)
           class="d-inline-block"
         />
         <UiDropdown
+        v-if="isAdmin || isOwner || isCreator"
           top="2.5rem"
           right="1.3rem"
           class="float-right"
@@ -197,9 +214,9 @@ allReply.value.splice(allReply.value.findIndex(a=>a.key===key),1)
           :items="threeDotItems"
         >
           <div class="pr-3">
-            <UiLoading v-if="dropdownLoading" />
+            
             <Icon
-              v-else
+         
               name="threedots"
               size="25"
               class="v-align-text-bottom"

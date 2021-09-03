@@ -159,9 +159,9 @@ comment by
           :items="threeDotItems"
         >
           <div class="pr-3">
-            <UiLoading v-if="dropdownLoading" />
+           
             <Icon
-              v-else
+         
               name="threedots"
               size="25"
               class="v-align-text-bottom"
