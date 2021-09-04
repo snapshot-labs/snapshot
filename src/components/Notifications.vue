@@ -19,8 +19,8 @@ setInterval(() => (now = Date.now()), 1000);
     <div class="mb-4">
       <div v-for="(item, key) in items" :key="key" class="mb-2">
         <UiButton
-          class="notification d-inline-block anim-scale-in border-0"
-          :class="`bg-${item.type}`"
+          class="notification inline-block anim-scale-in border-none"
+          :class="`!bg-${item.type}`"
           v-if="now < item.timestamp + duration && !item.hide"
           @click="item.hide = true"
         >
