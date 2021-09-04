@@ -30,7 +30,7 @@ const error = ref(false);
       :seed="parseInt(seed)"
       :address="address"
       :diameter="parseInt(size) - 2 || 22"
-      class="inline-block align-middle leading-none"
+      class="inline-block !align-middle leading-none"
     />
   </span>
 </template>

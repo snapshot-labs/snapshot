@@ -166,7 +166,7 @@ onMounted(async () => {
             />
             <div
               v-text="_shorten(delegate.space || $t('allSpaces'), 'choice')"
-              class="flex-auto text-right text-skin-link"
+              class="flex-auto text-right link-color"
             />
             <a
               @click="clearDelegate(delegate.space, delegate.delegate)"
@@ -194,7 +194,7 @@ onMounted(async () => {
             />
             <div
               v-text="_shorten(delegator.space || '-', 'choice')"
-              class="flex-auto text-right text-skin-link"
+              class="flex-auto text-right link-color"
             />
           </div>
         </Block>

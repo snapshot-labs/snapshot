@@ -82,11 +82,12 @@ watch(votes, () => {
         :space="space"
         class="column"
       />
-      <div class="flex-auto text-center text-skin-link">
+      <div class="flex-auto text-center link-color">
         <span
           :aria-label="format(proposal, vote.choice)"
           class="
-            text-center text-skin-link
+            text-center
+            link-color
             tooltipped tooltipped-multiline tooltipped-n
           "
         >
@@ -94,7 +95,7 @@ watch(votes, () => {
         </span>
       </div>
 
-      <div class="column text-right text-skin-link">
+      <div class="column text-right link-color">
         <span
           class="tooltipped tooltipped-multiline tooltipped-n"
           :aria-label="

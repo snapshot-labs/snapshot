@@ -55,7 +55,7 @@ onMounted(() => {
       <div class="flex items-center justify-center mb-3 mt-[12px]">
         <UiSidebarButton
           @click="modalAboutOpen = true"
-          class="hover:text-skin-link"
+          class="hover:link-color"
         >
           <span class="select-none mt-1">?</span>
         </UiSidebarButton>

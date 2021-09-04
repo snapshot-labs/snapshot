@@ -106,7 +106,7 @@ export default {
         <div class="float-right">
           <span :aria-label="baseToken.name" class="tooltipped tooltipped-n">
             <img
-              class="d-inline-block !align-middle line-height-0 circle border"
+              class="d-inline-block !align-middle leading-none circle border"
               :src="baseTokenUrl"
               width="22"
               height="22"

@@ -35,11 +35,11 @@ defineEmits(['submit']);
       style="padding-bottom: 12px"
     >
       {{ title }}
-      <UiCounter v-if="counter" :counter="counter" class="ml-1" />
+      <UiCounter v-if="counter" :counter="counter" class="ml-1 inline-block" />
       <a
         v-if="icon"
         @click="$emit('submit')"
-        class="float-right text-skin-text"
+        class="float-right text-color"
         style="padding-top: 2px"
       >
         <Icon :name="icon" size="22" />

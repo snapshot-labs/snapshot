@@ -25,23 +25,24 @@ const markdown = computed(() => {
 </template>
 
 <style lang="scss">
-@import '../../vars';
-
 .markdown-body {
   h1,
   h2 {
-    font-size: 28px;
-    border-bottom: 0;
-  }
-
-  h2 {
+    font-size: 30px;
     border-bottom: 1px solid white;
-    margin-bottom: 20px;
-    padding-bottom: 10px;
+    margin-bottom: 16px;
+    margin-top: 24px;
+    padding-bottom: 9px;
   }
 
   img {
     border-radius: 8px;
+  }
+
+  p {
+    margin-bottom: 16px;
+    line-height: 30px;
+    font-size: 22px;
   }
 }
 </style>

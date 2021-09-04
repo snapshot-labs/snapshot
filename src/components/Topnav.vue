@@ -80,7 +80,7 @@ onMounted(() => setTitle());
                   "
                   :address="web3.account"
                   size="16"
-                  class="-mr-1 sm:mr-2 md:mr-2 lg:mr-2 xl:mr-2 -ml-1 mb-1"
+                  class="-mr-1 sm:mr-2 md:mr-2 lg:mr-2 xl:mr-2 -ml-1"
                 />
                 <span
                   v-if="web3.profile?.name || web3.profile?.ens"

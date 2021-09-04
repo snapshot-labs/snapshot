@@ -67,7 +67,7 @@ watch(open, () => {
       :modal="true"
     />
     <div class="mt-4 mx-0 md:mx-4">
-      <div v-if="input.name" class="p-4 mb-4 border rounded-md text-skin-link">
+      <div v-if="input.name" class="p-4 mb-4 border rounded-md link-color">
         <h4 v-text="input.name" class="mb-3 text-center" />
         <UiButton
           class="block w-full mb-3 overflow-x-auto"

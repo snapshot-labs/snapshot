@@ -61,7 +61,7 @@ watch(selected, value => {
       <div
         v-for="(plugin, key) in plugins"
         :key="key"
-        class="mb-3 p-4 border rounded-md text-skin-link text-center"
+        class="mb-3 p-4 border rounded-md link-color text-center"
       >
         <img
           class="circle border"
@@ -71,7 +71,7 @@ watch(selected, value => {
         />
         <h3 v-text="plugin.name" />
         <div v-if="plugin.website" class="mb-2">
-          <a :href="plugin.website" target="_blank" class="text-skin-link">
+          <a :href="plugin.website" target="_blank" class="link-color">
             {{ $t('learnMore') }}
             <Icon name="external-link" />
           </a>
@@ -82,12 +82,12 @@ watch(selected, value => {
       </div>
     </div>
     <template v-if="selected === false" v-slot:footer>
-      <div class="col-6 float-left pr-2">
+      <div class="w-2/4 float-left pr-2">
         <UiButton @click="$emit('close')" type="button" class="w-full">
           {{ $t('cancel') }}
         </UiButton>
       </div>
-      <div class="col-6 float-left pl-2">
+      <div class="w-2/4 float-left pl-2">
         <UiButton
           @click="$emit('update:modelValue', form), $emit('close')"
           type="submit"
@@ -97,10 +97,7 @@ watch(selected, value => {
         </UiButton>
       </div>
     </template>
-    <div
-      v-if="selected !== false"
-      class="m-4 p-4 border rounded-md text-skin-link"
-    >
+    <div v-if="selected !== false" class="m-4 p-4 border rounded-md link-color">
       <PluginAragonConfig
         :proposal="proposal"
         v-model="form.aragon"

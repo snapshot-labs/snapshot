@@ -45,25 +45,25 @@ watch(open, () => (step.value = null));
         >
           <UiButton
             v-if="id !== 'injected'"
-            class="button-outline w-full !align-middle"
+            class="button-outline w-full flex justify-center items-center"
           >
             <img
               :src="`${path}/${connector.id}.png`"
               height="28"
               width="28"
-              class="mr-1 !align-middle"
+              class="mr-2 -mt-1"
             />
             {{ connector.name }}
           </UiButton>
           <UiButton
             v-else-if="injected"
-            class="button-outline w-full !align-middle"
+            class="button-outline w-full flex justify-center items-center"
           >
             <img
               :src="`${path}/${injected.id}.png`"
               height="28"
               width="28"
-              class="mr-1 !align-middle"
+              class="mr-2 -mt-1"
             />
             {{ injected.name }}
           </UiButton>

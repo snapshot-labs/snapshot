@@ -177,7 +177,7 @@ onMounted(async () => {
       <div class="px-4 md:px-0 mb-3">
         <router-link
           :to="{ name: domain ? 'home' : 'proposals' }"
-          class="text-skin-text"
+          class="text-color"
         >
           <Icon name="back" size="22" class="!align-middle" />
           {{ space.name }}
@@ -248,7 +248,7 @@ onMounted(async () => {
           <b>{{ $t('strategies') }}</b>
           <span
             @click="modalStrategiesOpen = true"
-            class="float-right text-skin-link a"
+            class="float-right link-color a"
           >
             <span v-for="(symbol, symbolIndex) of symbols" :key="symbol">
               <span :aria-label="symbol" class="tooltipped tooltipped-n">
@@ -276,7 +276,7 @@ onMounted(async () => {
         </div>
         <div class="mb-1">
           <b>{{ $t('proposal.votingSystem') }}</b>
-          <span class="float-right text-skin-link">
+          <span class="float-right link-color">
             {{ $t(`voting.${proposal.type}`) }}
           </span>
         </div>
@@ -286,7 +286,7 @@ onMounted(async () => {
             <span
               :aria-label="_ms(proposal.start)"
               v-text="$d(proposal.start * 1e3, 'short', 'en-US')"
-              class="float-right text-skin-link tooltipped tooltipped-n"
+              class="float-right link-color tooltipped tooltipped-n"
             />
           </div>
           <div class="mb-1">
@@ -294,7 +294,7 @@ onMounted(async () => {
             <span
               :aria-label="_ms(proposal.end)"
               v-text="$d(proposal.end * 1e3, 'short', 'en-US')"
-              class="float-right text-skin-link tooltipped tooltipped-n"
+              class="float-right link-color tooltipped tooltipped-n"
             />
           </div>
           <div class="mb-1">

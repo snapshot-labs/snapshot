@@ -75,12 +75,12 @@ async function handleSubmit() {
         >?
       </h4>
       <div class="p-4 overflow-hidden text-center border-t">
-        <div class="col-6 float-left pr-2">
+        <div class="w-2/4 float-left pr-2">
           <UiButton @click="$emit('close')" type="button" class="w-full">
             {{ $t('cancel') }}
           </UiButton>
         </div>
-        <div class="col-6 float-left pl-2">
+        <div class="w-2/4 float-left pl-2">
           <UiButton
             :disabled="loading"
             :loading="loading"

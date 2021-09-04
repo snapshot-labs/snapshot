@@ -3,8 +3,6 @@ module.exports = {
   purge: ['./index.html', './src/**/*.{js,ts,vue}'],
   darkMode: false, // or 'media' or 'class'
   theme: {
-    // TODO:
-    // - replace primer anim-pulse
     extend: {
       colors: {
         snapshot: '#f3b04e', // TODO: get correct color for snapshot logo
@@ -49,7 +47,7 @@ module.exports = {
       '2xl': '36px',
       xl: '28px',
       lg: '24px',
-      md: '22px',
+      md: '20px',
       base: '18px',
       sm: '16px',
       xs: '14px'

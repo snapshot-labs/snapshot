@@ -53,7 +53,7 @@ async function handleSubmit() {
         <br />
         {{ $t('cannotBeUndone') }}
       </h4>
-      <div class="m-4 p-4 border rounded-md text-skin-link">
+      <div class="m-4 p-4 border rounded-md link-color">
         <div class="flex">
           <span v-text="$t('options')" class="flex-auto text-color mr-1" />
           <span class="text-right ml-4">
@@ -96,12 +96,12 @@ async function handleSubmit() {
       </div>
     </div>
     <template v-slot:footer>
-      <div class="col-6 float-left pr-2">
+      <div class="w-2/4 float-left pr-2">
         <UiButton @click="$emit('close')" type="button" class="w-full">
           {{ $t('cancel') }}
         </UiButton>
       </div>
-      <div class="col-6 float-left pl-2">
+      <div class="w-2/4 float-left pl-2">
         <UiButton
           :disabled="totalScore === 0 || loading"
           :loading="loading"

@@ -78,18 +78,18 @@ function isSelectable() {
   <div class="calendar">
     <div class="mb-2 flex">
       <a
-        class="col-3 iconfont iconback text-left h3 text-color"
+        class="w-1/4 iconfont iconback text-left text-lg font-bold text-color"
         @click="month--"
       />
       <h4 class="mb-3 flex-auto text-center">{{ monthName }} {{ fullYear }}</h4>
       <a
-        class="col-3 iconfont icongo text-right h3 text-color"
+        class="w-1/4 iconfont icongo text-right text-lg font-bold text-color"
         @click="month++"
       />
     </div>
-    <div class="border-r border-t overflow-hidden">
+    <div class="border-l border-t overflow-hidden">
       <div
-        class="day border-b border-r text-skin-link"
+        class="day border-b border-r link-color"
         v-for="dayOfWeek in daysOfWeek"
         v-text="dayOfWeek"
         :key="dayOfWeek"

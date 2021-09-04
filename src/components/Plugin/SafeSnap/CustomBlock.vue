@@ -13,11 +13,11 @@
     <b
       v-if="showDecision"
       v-text="approvalData?.decision"
-      class="block mb-3 text-skin-link text-center"
+      class="block mb-3 link-color text-center"
     />
     <div
       v-if="questionDetails?.questionId && showQuestionInfo"
-      class="mb-3 p-4 text-skin-link text-center"
+      class="mb-3 p-4 link-color text-center"
     >
       <b v-text="approvalData?.decision" class="block mb-3" />
       <b v-text="approvalData?.currentBond" class="block mb-3" />
