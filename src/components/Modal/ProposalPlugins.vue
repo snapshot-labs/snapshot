@@ -61,7 +61,7 @@ watch(selected, value => {
       <div
         v-for="(plugin, key) in plugins"
         :key="key"
-        class="mb-3 p-4 border rounded-2 text-skin-link text-center"
+        class="mb-3 p-4 border rounded-md text-skin-link text-center"
       >
         <img
           class="circle border"
@@ -99,7 +99,7 @@ watch(selected, value => {
     </template>
     <div
       v-if="selected !== false"
-      class="m-4 p-4 border rounded-2 text-skin-link"
+      class="m-4 p-4 border rounded-md text-skin-link"
     >
       <PluginAragonConfig
         :proposal="proposal"

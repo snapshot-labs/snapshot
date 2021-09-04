@@ -50,7 +50,7 @@
   }
 
   p {
-    @apply leading-7;
+    @apply leading-7 text-md mb-3;
   }
 }
 
@@ -81,10 +81,6 @@ h4 {
 
 b {
   font-weight: 600;
-}
-
-p {
-  font-size: 22px;
 }
 
 #app {

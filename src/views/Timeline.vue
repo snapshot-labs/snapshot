@@ -108,10 +108,10 @@ onMounted(async () => {
       </div>
     </template>
     <template #content-right>
-      <div class="px-4 px-md-0 mb-3 flex">
+      <div class="px-4 md:px-0 mb-3 flex">
         <div class="flex-auto">
           <router-link :to="{ name: 'home' }" class="text-color">
-            <Icon name="back" size="22" class="v-align-middle" />
+            <Icon name="back" size="22" class="!align-middle" />
             {{ $t('backToHome') }}
           </router-link>
           <div class="flex items-center flex-auto">

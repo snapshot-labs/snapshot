@@ -15,7 +15,7 @@ defineEmits(['close']);
       <div
         v-for="(strategy, i) in strategies"
         :key="i"
-        class="p-4 mb-3 border rounded-2 text-skin-link"
+        class="p-4 mb-3 border rounded-md text-skin-link"
       >
         <h3 v-text="strategy.name" />
         <div>

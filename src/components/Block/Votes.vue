@@ -125,7 +125,8 @@ watch(votes, () => {
         text-center
         block
         header-bg
-        rounded-bottom-0 rounded-md-bottom-2
+        rounded-b-none
+        md:rounded-b-md
       "
     >
       {{ $t('seeMore') }}

@@ -49,7 +49,7 @@ module.exports = {
       '2xl': '36px',
       xl: '28px',
       lg: '24px',
-      md: '20px',
+      md: '22px',
       base: '18px',
       sm: '16px',
       xs: '14px'

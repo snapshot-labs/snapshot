@@ -189,12 +189,12 @@ onMounted(async () => {
 <template>
   <Layout v-bind="$attrs">
     <template #content-left>
-      <div class="px-4 px-md-0 mb-3">
+      <div class="px-4 md:px-0 mb-3">
         <router-link
           :to="{ name: domain ? 'home' : 'proposals' }"
           class="text-color"
         >
-          <Icon name="back" size="22" class="v-align-middle" />
+          <Icon name="back" size="22" class="!align-middle" />
           {{ space.name }}
         </router-link>
       </div>
@@ -219,12 +219,12 @@ onMounted(async () => {
           }}
         </span>
       </Block>
-      <div class="px-4 px-md-0">
+      <div class="px-4 md:px-0">
         <div class="flex flex-col mb-6">
           <input
             v-model="form.name"
             maxlength="128"
-            class="h1 mb-2 input"
+            class="text-2xl font-bold mb-2 input"
             :placeholder="$t('create.question')"
             ref="nameForm"
           />

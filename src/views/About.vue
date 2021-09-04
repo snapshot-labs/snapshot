@@ -25,7 +25,7 @@ onMounted(() => {
       <BlockSpace :space="space" />
     </template>
     <template #content-right>
-      <div class="px-4 px-md-0 mb-3 flex">
+      <div class="px-4 md:px-0 mb-3 flex">
         <h2>{{ space.name }}</h2>
       </div>
       <Block>

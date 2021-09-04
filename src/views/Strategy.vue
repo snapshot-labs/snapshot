@@ -15,13 +15,13 @@ const strategy = computed(() =>
 <template>
   <Layout>
     <template #content-left>
-      <div class="px-4 px-md-0 mb-3">
+      <div class="px-4 md:px-0 mb-3">
         <router-link :to="{ path: '/strategies' }" class="text-color">
-          <Icon name="back" size="22" class="v-align-middle" />
+          <Icon name="back" size="22" class="!align-middle" />
           {{ $t('strategiesPage') }}
         </router-link>
       </div>
-      <div class="px-4 px-md-0">
+      <div class="px-4 md:px-0">
         <h1 class="mb-2">
           {{ strategy.key }}
         </h1>

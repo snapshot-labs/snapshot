@@ -53,7 +53,7 @@ async function handleSubmit() {
         <br />
         {{ $t('cannotBeUndone') }}
       </h4>
-      <div class="m-4 p-4 border rounded-2 text-skin-link">
+      <div class="m-4 p-4 border rounded-md text-skin-link">
         <div class="flex">
           <span v-text="$t('options')" class="flex-auto text-color mr-1" />
           <span class="text-right ml-4">

@@ -45,7 +45,7 @@ function changeLang() {
         <Icon size="32" name="loveit" class="mr-1 mx-2" />
       </a>
     </div>
-    <div class="m-4 p-4 mt-3 border rounded-2 text-skin-link">
+    <div class="m-4 p-4 mt-3 border rounded-md text-skin-link">
       <div class="flex">
         <span v-text="$t('language')" class="flex-auto text-color mr-1" />
         <a @click="changeLang()">{{ languages[$i18n.locale]?.name }}</a>

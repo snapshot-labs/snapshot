@@ -10,7 +10,7 @@ export default {
     <template v-slot:header>
       <h3>{{ $t('receipt') }}</h3>
     </template>
-    <div class="m-4 mb-0 p-4 border rounded-2 text-skin-link">
+    <div class="m-4 mb-0 p-4 border rounded-md text-skin-link">
       <div class="flex">
         <span v-text="$t('author')" class="flex-auto text-color mr-1" />
         <a

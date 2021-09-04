@@ -21,7 +21,7 @@ const markdown = computed(() => {
 </script>
 
 <template>
-  <div class="markdown-body break-word" v-html="markdown" />
+  <div class="markdown-body break-words" v-html="markdown" />
 </template>
 
 <style lang="scss">
@@ -32,6 +32,12 @@ const markdown = computed(() => {
   h2 {
     font-size: 28px;
     border-bottom: 0;
+  }
+
+  h2 {
+    border-bottom: 1px solid white;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
   }
 
   img {

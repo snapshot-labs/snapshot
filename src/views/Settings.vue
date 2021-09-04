@@ -85,7 +85,7 @@ function pluginName(key) {
   const plugin = plugins.value.find(obj => {
     return obj.key === key;
   });
-  return plugin.name;
+  return plugin?.name;
 }
 
 async function handleSubmit() {
@@ -222,13 +222,13 @@ onMounted(async () => {
 <template>
   <Layout v-bind="$attrs">
     <template #content-left>
-      <div class="px-4 px-md-0 mb-3">
+      <div class="px-4 md:px-0 mb-3">
         <router-link :to="{ name: 'home' }" class="text-color">
-          <Icon name="back" size="22" class="v-align-middle" />
+          <Icon name="back" size="22" class="!align-middle" />
           {{ $t('backToHome') }}
         </router-link>
       </div>
-      <div class="px-4 px-md-0">
+      <div class="px-4 md:px-0">
         <h1 v-if="loaded" v-text="$t('settings.header')" class="mb-4" />
         <PageLoading v-else />
       </div>
@@ -395,14 +395,14 @@ onMounted(async () => {
             <div
               v-for="(strategy, i) in form.strategies"
               :key="i"
-              class="mb-3relative"
+              class="mb-3 relative"
             >
               <a @click="handleRemoveStrategy(i)" class="absolute p-4 right-0">
                 <Icon name="close" size="12" />
               </a>
               <a
                 @click="handleEditStrategy(i)"
-                class="p-4 block border rounded-2"
+                class="p-4 block border rounded-md"
               >
                 <h4 v-text="strategy.name" />
               </a>
@@ -499,7 +499,7 @@ onMounted(async () => {
               <div
                 v-for="(plugin, name, index) in form.plugins"
                 :key="index"
-                class="mb-3relative"
+                class="mb-3 relative"
               >
                 <div v-if="pluginName(name)">
                   <a
@@ -510,7 +510,7 @@ onMounted(async () => {
                   </a>
                   <a
                     @click="handleEditPlugins(name)"
-                    class="p-4 block border rounded-2"
+                    class="p-4 block border rounded-md"
                   >
                     <h4 v-text="pluginName(name)" />
                   </a>
