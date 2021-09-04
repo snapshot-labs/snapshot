@@ -57,7 +57,8 @@ const emit = defineEmits(['deleteItem', 'updateItem', 'replyComment']);
 async function deleteData(url = '') {
   // Default options are marked with *
   const response = await fetch(url, {
-    method: 'DELETE'
+    method: 'DELETE',
+    credentials: 'include'
   });
   return response.json(); // parses JSON response into native JavaScript objects
 }
@@ -107,13 +108,14 @@ const allReply = ref([]);
 async function getData(url = '') {
   // Default options are marked with *
   const response = await fetch(url, {
-    method: 'GET' // *GET, POST, PUT, DELETE, etc.
+    method: 'GET',
+    credentials: 'include'
   });
   return response.json(); // parses JSON response into native JavaScript objects
 }
 const lastPage = ref(false);
 async function getDataAfterDelete(key){
-  
+  try{
 loadingMore.value=true;
   const res = await getData(
     `https://uia5m1.deta.dev/all_reply/${props.item.proposal_id}/${key}`
@@ -124,10 +126,15 @@ loadingMore.value=true;
     lastPage.value = false;
   }
   loadingMore.value=false;
+  }catch(e){
+    loadingMore.value=false;
+  }
+
 }
 
 async function getReplyData() {
-  loadingMore.value=true;
+  try{
+loadingMore.value=true;
   const lastPageCondition = lastPage.value ? `?last=${lastPage.value}` : '';
   const res = await getData(
     `https://uia5m1.deta.dev/all_reply/${props.item.proposal_id}/${props.item.key}${lastPageCondition}`
@@ -146,6 +153,10 @@ async function getReplyData() {
     lastPage.value = res.data.last;
   }
   loadingMore.value=false;
+  }catch(e){
+loadingMore.value=false;
+  }
+  
 }
 onMounted(async () => {
    getReplyData();

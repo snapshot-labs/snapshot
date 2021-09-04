@@ -37,14 +37,16 @@ const togglePreview = ref(true);
 async function getData(url = '') {
   // Default options are marked with *
   const response = await fetch(url, {
-    method: 'GET' // *GET, POST, PUT, DELETE, etc.
+    method: 'GET',
+    credentials:"include"
   });
   return response.json(); // parses JSON response into native JavaScript objects
 }
 const lastPage=ref(false)
 const isLast=ref(false)
 async function getCommentData() {
-  loadingMore.value=true
+  try{
+loadingMore.value=true
   if(!lastPage.value&&!isLast.value&&allData.value.length>0){
     loadingMore.value=false
       return
@@ -63,6 +65,10 @@ async function getCommentData() {
     if(res.data.last) {isLast.value=true;}else{isLast.value=false}
   } 
     loadingMore.value=false
+  }catch(e){
+loadingMore.value=false
+  }
+  
 }
 const { endElement } = useScrollMonitor(() =>
 getCommentData()
@@ -75,12 +81,18 @@ async function clickSubmit() {
     !web3Account.value ? (modalAccountOpen.value = true) : handleSubmit();
 }
 async function pujols(){
-console.log(await signMessage(auth.web3, "dwad", web3Account.value));
+     const res = await postData(`https://uia5m1.deta.dev/ajur`, {
+      author: web3Account.value,
+      markdown: comment.value,
+      proposal_id: props.proposalId
+    });
+// console.log(await signMessage(auth.web3, "dwad", web3Account.value));
 }
 async function postData(url = '', data = {}) {
   // Default options are marked with *
   const response = await fetch(url, {
     method: 'POST',
+    credentials: 'include',
     body: JSON.stringify(data),
     headers: { 'Content-type': 'application/json;charset=UTF-8' }
   });
