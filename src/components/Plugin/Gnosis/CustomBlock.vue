@@ -107,7 +107,7 @@ export default {
           <!-- TODO: use tooltip component -->
           <span :aria-label="baseToken.name" class="tooltipped tooltipped-n">
             <img
-              class="d-inline-block !align-middle leading-none circle border"
+              class="inline-block !align-middle leading-none circle border"
               :src="baseTokenUrl"
               width="22"
               height="22"
