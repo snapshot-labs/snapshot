@@ -283,7 +283,10 @@ onMounted(async () => {
         <div>
           <div class="mb-1">
             <b>{{ $t('proposal.startDate') }}</b>
-            <UiTooltip class="inline-block" :text="_ms(proposal.start)">
+            <UiTooltip
+              class="inline-block float-right"
+              :text="_ms(proposal.start)"
+            >
               <span
                 v-text="$d(proposal.start * 1e3, 'short', 'en-US')"
                 class="float-right link-color"
@@ -292,10 +295,13 @@ onMounted(async () => {
           </div>
           <div class="mb-1">
             <b>{{ $t('proposal.endDate') }}</b>
-            <UiTooltip class="inline-block" :text="_ms(proposal.end)">
+            <UiTooltip
+              class="inline-block float-right"
+              :text="_ms(proposal.end)"
+            >
               <span
                 v-text="$d(proposal.end * 1e3, 'short', 'en-US')"
-                class="float-right link-color"
+                class="link-color"
               />
             </UiTooltip>
           </div>
