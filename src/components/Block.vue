@@ -55,7 +55,7 @@ defineEmits(['submit']);
         style="width: 50%; height: 20px"
       />
     </div>
-    <div v-else :class="!slim && 'p-4'">
+    <div v-else :class="!slim && 'p-4'" class="leading-6">
       <slot />
     </div>
   </div>

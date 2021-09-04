@@ -29,10 +29,19 @@ const markdown = computed(() => {
   h1,
   h2 {
     font-size: 30px;
-    border-bottom: 1px solid white;
-    margin-bottom: 16px;
-    margin-top: 24px;
-    padding-bottom: 9px;
+    border-bottom: 1px solid #eaecef;
+    margin: 24px 0 16px;
+    padding-bottom: 7px;
+  }
+
+  h3 {
+    margin: 24px 0 16px;
+    font-size: 25px;
+  }
+
+  h4 {
+    margin: 24px 0 16px;
+    font-size: 20px;
   }
 
   img {
@@ -40,9 +49,53 @@ const markdown = computed(() => {
   }
 
   p {
-    margin-bottom: 16px;
     line-height: 30px;
     font-size: 22px;
+  }
+
+  ul {
+    padding-left: 40px;
+    list-style-type: disc;
+    font-size: 20px;
+    line-height: 28px;
+  }
+
+  ol {
+    padding-left: 40px;
+    list-style-type: decimal;
+    font-size: 20px;
+    line-height: 28px;
+  }
+
+  li {
+    margin-top: 6px;
+  }
+
+  code {
+    font-size: 17px;
+  }
+
+  pre {
+    padding: 16px;
+    overflow: auto;
+    font-size: 85%;
+    line-height: 1.45;
+    background-color: #f6f8fa;
+    border-radius: 4px;
+    word-wrap: normal;
+    font-size: 17px !important;
+  }
+
+  p,
+  blockquote,
+  ul,
+  ol,
+  dl,
+  table,
+  pre,
+  details {
+    margin-top: 0;
+    margin-bottom: 16px;
   }
 }
 </style>
