@@ -37,8 +37,7 @@ const togglePreview = ref(true);
 async function getData(url = '') {
   // Default options are marked with *
   const response = await fetch(url, {
-    method: 'GET',
-    credentials:"include"
+    method: 'GET'
   });
   return response.json(); // parses JSON response into native JavaScript objects
 }
@@ -80,38 +79,40 @@ onMounted(async () => {
 async function clickSubmit() {
     !web3Account.value ? (modalAccountOpen.value = true) : handleSubmit();
 }
-async function pujols(){
-     const res = await postData(`https://uia5m1.deta.dev/ajur`, {
-      author: web3Account.value,
-      markdown: comment.value,
-      proposal_id: props.proposalId
-    });
-// console.log(await signMessage(auth.web3, "dwad", web3Account.value));
-}
-async function postData(url = '', data = {}) {
+
+async function postData(url = '', data = {},authorization) {
   // Default options are marked with *
   const response = await fetch(url, {
     method: 'POST',
-    credentials: 'include',
     body: JSON.stringify(data),
-    headers: { 'Content-type': 'application/json;charset=UTF-8' }
+    headers: {'Content-type': 'application/json;charset=UTF-8',...authorization}
   });
   return response.json(); // parses JSON response into native JavaScript objects
 }
 
 async function handleSubmit() {
+  
   if (loading.value) return;
   try {
     loading.value = true;
-    const res = await postData(`https://uia5m1.deta.dev/add`, {
+    let token = sessionStorage.getItem('token');
+    let sig;
+    let msg= {
       author: web3Account.value,
       markdown: comment.value,
       proposal_id: props.proposalId
-    });
+    };
+    if(!token) sig = await signMessage(auth.web3, JSON.stringify(msg), web3Account.value);
+    const res = await postData(`https://uia5m1.deta.dev/add`, {
+      address: web3Account.value,
+      msg:JSON.stringify(msg),
+      sig
+    },token?{authorization:token}:null);
     comment.value = '';
     loading.value = false;
     if (!res.status) return notify(['red', 'Oops, something went wrong']);
-      allData.value.push(res.data)
+    if(res.token) sessionStorage.setItem('token', res.token);
+    allData.value.push(res.data)
   } catch (e) {
     loading.value = false;
     notify(['red', 'Oops, something went wrong']);
@@ -149,12 +150,7 @@ function deleteItem(key){
     >
       <UiMarkdown :body="comment" />
     </PluginCommentBoxBlock>
- <UiButton
-      @click="pujols"
-           class="mt-2 button--submit"
-    >
-      pujols
-    </UiButton>
+ 
     <UiButton
       @click="clickSubmit"
       :disabled="comment.length === 0"

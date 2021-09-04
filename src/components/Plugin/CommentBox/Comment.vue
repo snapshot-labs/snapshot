@@ -24,7 +24,6 @@ async function postData(url = '', data = {}) {
   // Default options are marked with *
   const response = await fetch(url, {
     method: 'POST',
-    credentials: 'include',
     body: JSON.stringify(data),
     headers: { 'Content-type': 'application/json;charset=UTF-8' }
   });

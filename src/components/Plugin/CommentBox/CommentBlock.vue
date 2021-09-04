@@ -58,8 +58,7 @@ async function deleteData(url = '') {
   // Default options are marked with *
   const response = await fetch(url, {
     method: 'DELETE',
-    credentials: 'include'
-  });
+    });
   return response.json(); // parses JSON response into native JavaScript objects
 }
 const { notify } = useNotifications();
@@ -109,8 +108,7 @@ async function getData(url = '') {
   // Default options are marked with *
   const response = await fetch(url, {
     method: 'GET',
-    credentials: 'include'
-  });
+      });
   return response.json(); // parses JSON response into native JavaScript objects
 }
 const lastPage = ref(false);
