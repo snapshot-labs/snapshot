@@ -170,7 +170,7 @@ onMounted(async () => {
             />
             <a
               @click="clearDelegate(delegate.space, delegate.delegate)"
-              class="px-2 mr-n2 ml-2"
+              class="px-2 -mr-2 ml-2"
             >
               <Icon name="close" size="12" class="mb-1" />
             </a>

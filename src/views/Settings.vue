@@ -246,7 +246,7 @@ onMounted(async () => {
               @click="copyToClipboard(textRecord)"
               name="copy"
               size="24"
-              class="text-color p-2 mr-n3"
+              class="text-color p-2 -mr-3"
             />
           </UiButton>
           <a
@@ -370,7 +370,7 @@ onMounted(async () => {
                 </template>
                 <template v-slot:info>
                   <a
-                    class="block py-1 mr-n2"
+                    class="block py-1 -mr-2"
                     target="_blank"
                     href="https://docs.snapshot.org/spaces/add-custom-domain"
                   >

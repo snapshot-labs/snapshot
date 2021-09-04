@@ -37,7 +37,7 @@ function handleSubmit() {
             :placeholder="$t('setup.example')"
           />
           <a
-            class="block py-1 mr-n2"
+            class="block py-1 -mr-2"
             target="_blank"
             href="https://docs.snapshot.org/spaces/create"
           >

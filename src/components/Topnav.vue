@@ -103,7 +103,7 @@ onMounted(() => setTitle());
               <Icon
                 name="login"
                 size="20"
-                class="sm:hidden ml-n2 -mr-2 align-text-bottom"
+                class="sm:hidden -ml-2 -mr-2 align-text-bottom"
               />
             </UiButton>
           </div>

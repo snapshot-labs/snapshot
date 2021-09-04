@@ -82,7 +82,7 @@ watch(open, () => (step.value = null));
               :imgsrc="_getUrl(web3.profile?.image)"
               :address="web3.account"
               size="16"
-              class="mr-2 ml-n1"
+              class="mr-2 -ml-1"
             />
             <span v-if="web3.profile.name" v-text="web3.profile.name" />
             <span v-else-if="web3.profile.ens" v-text="web3.profile.ens" />
