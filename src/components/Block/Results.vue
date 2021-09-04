@@ -65,20 +65,16 @@ async function downloadReport() {
   >
     <div v-for="choice in choices" :key="choice.i">
       <div class="link-color mb-1">
-        <span
-          class="mr-1"
-          :class="[
-            choice.choice.length > 12 &&
-              (isSmallScreen
-                ? 'tooltipped tooltipped-ne tooltipped-align-left-2'
-                : 'tooltipped tooltipped-n')
-          ]"
-          :aria-label="choice.choice"
-          v-text="_shorten(choice.choice, 'choice')"
-        />
-        <span
-          class="mr-1 tooltipped tooltipped-multiline tooltipped-n"
-          :aria-label="
+        <UiTooltip
+          class="inline-block"
+          :text="choice.choice"
+          :show="choice.choice.length > 12"
+        >
+          <span class="mr-1" v-text="_shorten(choice.choice, 'choice')" />
+        </UiTooltip>
+        <UiTooltip
+          class="inline-block"
+          :text="
             results.resultsByStrategyScore[choice.i]
               .map((score, index) => `${_n(score)} ${titles[index]}`)
               .join(' + ')
@@ -86,7 +82,7 @@ async function downloadReport() {
         >
           {{ _n(results.resultsByVoteBalance[choice.i]) }}
           {{ _shorten(space.symbol, 'symbol') }}
-        </span>
+        </UiTooltip>
         <span
           class="float-right"
           v-text="

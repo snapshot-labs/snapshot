@@ -210,26 +210,6 @@ textarea {
   }
 }
 
-.tooltipped {
-  &::before {
-    border-top-color: var(--text-color) !important;
-    margin-bottom: 14px;
-    top: -15px !important;
-  }
-
-  &::after {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 300px;
-    margin-bottom: 14px;
-    border-radius: 20px;
-    padding: 6px 16px 2px;
-    font-size: 16px;
-    background-color: var(--text-color);
-    color: var(--header-bg);
-  }
-}
-
 .markdown-body blockquote {
   color: var(--text-color);
   border-left-color: var(--text-color);

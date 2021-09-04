@@ -10,6 +10,7 @@ export default {
 </script>
 
 <template>
+  <!-- TODO: use tooltip component -->
   <a
     v-if="proposal.plugins?.aragon?.[`choice${[i + 1]}`]"
     @click="$emit('open')"
