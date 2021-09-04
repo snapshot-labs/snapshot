@@ -9,6 +9,7 @@
       justify-center
       items-center
       cursor-pointer
+      hover:!border-skin-link
     "
   >
     <slot />

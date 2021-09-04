@@ -68,7 +68,7 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
         >
           <div class="w-full lg:w-1/4 pr-4 float-left">
             <Block
-              class="text-center extra-icon-container"
+              class="text-center extra-icon-container hover:!bg-gray-50"
               style="height: 250px; margin-bottom: 24px !important"
             >
               <div
@@ -100,7 +100,7 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
                 v-text="_shorten(space.name, 16)"
                 style="font-size: 22px"
               />
-              <FollowButton :space="space" />
+              <FollowButton :space="space" class="!bg-white" />
             </Block>
           </div>
         </a>

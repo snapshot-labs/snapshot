@@ -57,7 +57,7 @@ onMounted(() => {
           @click="modalAboutOpen = true"
           class="hover:link-color"
         >
-          <span class="select-none mt-1">?</span>
+          <span class="select-none mt-1 link-color">?</span>
         </UiSidebarButton>
       </div>
     </div>
