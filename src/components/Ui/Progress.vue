@@ -18,7 +18,7 @@ const bars = computed(() =>
       :key="i"
       :style="`width: ${parseFloat((100 / max) * bar).toFixed(3)}%;`"
       class="bg-blue h-full z-10"
-      :class="{ 'opacity-60': i > 1 }"
+      :class="{ 'opacity-60': i !== 1 && i % 2 !== 0 }"
     />
   </div>
 </template>
