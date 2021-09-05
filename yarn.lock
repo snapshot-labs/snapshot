@@ -703,20 +703,6 @@
     pocket-js-core "0.0.3"
     web3-provider-engine "16.0.1"
 
-"@primer/css@^14.4.0":
-  version "14.4.0"
-  resolved "https://registry.yarnpkg.com/@primer/css/-/css-14.4.0.tgz#7a131411dd38890e9019f804a3cd0663b17575fc"
-  integrity sha512-o9DwcAH43jZNDC/rPLjsYTU/I1LsHIgIQlSO3X8vZV2u65LmWeA5jHI2cSadZYN3N0Gm0Soh0zVYuhh7kMskXA==
-  dependencies:
-    "@primer/octicons" "^9.1.1"
-
-"@primer/octicons@^9.1.1":
-  version "9.6.0"
-  resolved "https://registry.yarnpkg.com/@primer/octicons/-/octicons-9.6.0.tgz#e195f2dd5f30b6918ad5d8ff224c12f778d02408"
-  integrity sha512-B5Wzk5izRXXz0JqEXJkVUtqhCXSpUKgqYkVwegMkp5sziBW+ksd9LPbONlCWyyLODwf9GsI2sBXekR7m+JJDBw==
-  dependencies:
-    object-assign "^4.1.1"
-
 "@snapshot-labs/lock@github:snapshot-labs/lock#master":
   version "0.1.3"
   resolved "https://codeload.github.com/snapshot-labs/lock/tar.gz/master"
@@ -4449,11 +4435,6 @@ pretty-hrtime@^1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/pretty-hrtime/-/pretty-hrtime-1.0.3.tgz#b7e3ea42435a4c9b2759d99e0f201eb195802ee1"
   integrity sha1-t+PqQkNaTJsnWdmeDyAesZWALuE=
-
-primer-support@^5.0.0:
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/primer-support/-/primer-support-5.0.0.tgz#d19c7cea59e8783400b9391943c8a2bb2ebddc5e"
-  integrity sha512-inUxVSsGirn5IkPxBhFsMBgm8ZHyfOUmOWyDCN8cBXtbaLiCIAjHsPI46yS1zrWxnn0J2kvq8haomkrlHGF08g==
 
 printj@~1.1.0:
   version "1.1.2"
