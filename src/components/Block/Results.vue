@@ -2,7 +2,6 @@
 import { computed } from 'vue';
 import jsonexport from 'jsonexport/dist';
 import pkg from '@/../package.json';
-import { useMediaQuery } from '@/composables/useMediaQuery';
 
 const props = defineProps({
   id: String,
@@ -15,8 +14,6 @@ const props = defineProps({
 });
 
 const ts = (Date.now() / 1e3).toFixed();
-
-const { isSmallScreen } = useMediaQuery();
 
 const titles = computed(() =>
   props.strategies.map(strategy => strategy.params.symbol)
