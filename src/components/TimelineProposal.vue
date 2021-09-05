@@ -43,7 +43,7 @@ watchEffect(() => {
       <h3 v-text="_shorten(proposal.title, 124)" class="mt-1" />
       <p
         v-text="_shorten(body, 140)"
-        class="break-words mb-1"
+        class="break-words mb-2"
         style="font-size: 20px"
       />
       <div class="mt-1">
