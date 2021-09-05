@@ -234,7 +234,7 @@ onMounted(async () => {
             :placeholder="$t('create.content')"
           />
           <div class="mb-6">
-            <p v-if="form.body.length > bodyLimit" class="text-red mt-4">
+            <p v-if="form.body.length > bodyLimit" class="!text-red mt-4">
               -{{ _n(-(bodyLimit - form.body.length)) }}
             </p>
           </div>

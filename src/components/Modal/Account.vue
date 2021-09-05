@@ -112,7 +112,7 @@ watch(open, () => (step.value = null));
         </UiButton>
         <UiButton
           @click="handleLogout"
-          class="button-outline w-full text-red mb-2"
+          class="button-outline w-full !text-red mb-2"
         >
           {{ $t('logout') }}
         </UiButton>

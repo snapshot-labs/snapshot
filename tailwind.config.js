@@ -49,9 +49,9 @@ module.exports = {
       bold: 600
     },
     fontSize: {
-      '2xl': ['36px', '44px'],
-      xl: ['28px', '50px'],
-      lg: ['24px', '40px'],
+      '2xl': ['36px', '50px'],
+      xl: ['28px', '44px'],
+      lg: ['24px', '42px'],
       md: ['20px', '32px'],
       base: ['18px', '24px'],
       sm: ['16px', '22px'],

@@ -112,8 +112,8 @@ watchEffect(async () => {
             class="mt-4"
             style="border-color: red !important"
           >
-            <Icon name="warning" class="mr-2 text-red" />
-            <span class="text-red">{{ $t('networkErrorPlayground') }}</span>
+            <Icon name="warning" class="mr-2 !text-red" />
+            <span class="!text-red">{{ $t('networkErrorPlayground') }}</span>
           </Block>
         </Block>
         <Block :title="$t('strategyParams')">
@@ -129,8 +129,8 @@ watchEffect(async () => {
             />
           </UiButton>
           <Block v-if="strategyError" style="border-color: red !important">
-            <Icon name="warning" class="mr-2 text-red" />
-            <span class="text-red"> {{ strategyError }}</span>
+            <Icon name="warning" class="mr-2 !text-red" />
+            <span class="!text-red"> {{ strategyError }}</span>
           </Block>
         </Block>
         <Block :title="$t('addresses')">

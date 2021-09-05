@@ -271,8 +271,8 @@ onMounted(async () => {
             :style="'border-color: red !important; margin-bottom: 0 !important;'"
             class="mb-0 mt-3"
           >
-            <Icon name="warning" class="mr-2 text-red" />
-            <span class="text-red">
+            <Icon name="warning" class="mr-2 !text-red" />
+            <span class="!text-red">
               {{ $t('settings.warningTextRecord') }}
               <a
                 v-text="$t('learnMore')"
@@ -411,8 +411,8 @@ onMounted(async () => {
               :style="`border-color: red !important`"
               v-if="inputError('strategies')"
             >
-              <Icon name="warning" class="mr-2 text-red" />
-              <span class="text-red">
+              <Icon name="warning" class="mr-2 !text-red" />
+              <span class="!text-red">
                 {{ inputError('strategies') }}&nbsp;</span
               >
               <a
@@ -432,8 +432,8 @@ onMounted(async () => {
               :style="`border-color: red !important`"
               v-if="inputError('admins')"
             >
-              <Icon name="warning" class="mr-2 text-red" />
-              <span class="text-red"> {{ inputError('admins') }}&nbsp;</span>
+              <Icon name="warning" class="mr-2 !text-red" />
+              <span class="!text-red"> {{ inputError('admins') }}&nbsp;</span>
             </Block>
             <UiButton class="block w-full px-3" style="height: auto">
               <TextareaArray
@@ -449,8 +449,8 @@ onMounted(async () => {
               :style="`border-color: red !important`"
               v-if="inputError('members')"
             >
-              <Icon name="warning" class="mr-2 text-red" />
-              <span class="text-red"> {{ inputError('members') }}&nbsp;</span>
+              <Icon name="warning" class="mr-2 !text-red" />
+              <span class="!text-red"> {{ inputError('members') }}&nbsp;</span>
             </Block>
             <UiButton class="block w-full px-3" style="height: auto">
               <TextareaArray
