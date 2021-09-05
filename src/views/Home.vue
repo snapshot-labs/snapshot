@@ -20,12 +20,13 @@ const orderedSpaces = computed(() => {
       const spotlightIndex = spotlight.indexOf(key);
       return {
         ...spaces.value[key],
+        following: followingSpaces.value.some(s => s === key),
         isActive: !!spaces.value[key]._activeProposals,
         spotlight: spotlightIndex === -1 ? 1e3 : spotlightIndex
       };
     })
-    .filter(space => !space.private)
-    .filter(space => !followingSpaces.value.some(s => s === space.key));
+    .filter(space => !space.private);
+
   return orderBy(list, ['following', 'spotlight'], ['desc', 'asc']).filter(
     space =>
       (networkFilter ? space.network === networkFilter.toLowerCase() : true) &&
