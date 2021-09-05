@@ -55,7 +55,7 @@ onMounted(() => setTitle());
     >
       {{ $t('demoSite') }}
     </div>
-    <nav id="topnav" class="border-b border-skin-border w-full bg-black">
+    <nav id="topnav" class="border-b w-full bg-black">
       <Container>
         <div class="flex items-center" style="height: 78px">
           <div class="flex-auto flex items-center">

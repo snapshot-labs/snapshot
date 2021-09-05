@@ -26,7 +26,7 @@ defineEmits(['submit']);
       class="
         px-4
         pt-3
-        border-b border-skin-border
+        border-b
         block
         bg-skin-header-bg
         rounded-t-none
@@ -47,11 +47,11 @@ defineEmits(['submit']);
     </h4>
     <div v-if="loading" class="block px-4 py-4">
       <div
-        class="bg-skin-text rounded-md anim-pulse mb-2"
+        class="bg-skin-text rounded-md animate-pulse-fast mb-2"
         style="width: 80%; height: 20px"
       />
       <div
-        class="bg-skin-text rounded-md anim-pulse"
+        class="bg-skin-text rounded-md animate-pulse-fast"
         style="width: 50%; height: 20px"
       />
     </div>

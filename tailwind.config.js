@@ -18,6 +18,9 @@ module.exports = {
         blue: '#384aff',
         green: '#21b66f',
         red: '#ff3856'
+      },
+      animation: {
+        'pulse-fast': 'pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite'
       }
     },
     spacing: {

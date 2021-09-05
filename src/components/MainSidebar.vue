@@ -21,21 +21,9 @@ onMounted(() => {
 </script>
 
 <template>
-  <div
-    class="
-      w-[68px]
-      h-screen
-      hidden
-      sm:block
-      fixed
-      m-0
-      border-r border-skin-border
-    "
-  >
+  <div class="w-[68px] h-screen hidden sm:block fixed m-0 border-r">
     <div class="flex flex-col h-full overflow-scroll menu-tabs">
-      <div
-        class="mt-[22px] mb-[20px] flex flex-col items-center justify-center"
-      >
+      <div class="min-h-[78px] h-[78px] flex items-center justify-center">
         <Icon
           @click="$router.push({ name: 'home' })"
           size="36"
@@ -43,7 +31,9 @@ onMounted(() => {
           class="text-snapshot cursor-pointer"
         />
       </div>
-      <div class="flex flex-col h-full items-center space-y-3 pt-2">
+      <div
+        class="flex flex-col h-[calc(100%-78px)] items-center space-y-3 pt-2"
+      >
         <router-link :to="{ name: 'timeline' }">
           <UiSidebarButton>
             <Icon size="20" name="feed" />
@@ -61,14 +51,11 @@ onMounted(() => {
         <router-link :to="{ name: 'setup' }">
           <UiSidebarButton><Icon size="20" name="plus" /></UiSidebarButton>
         </router-link>
-      </div>
-      <div class="flex items-center justify-center mb-3 mt-[12px]">
-        <UiSidebarButton
-          @click="modalAboutOpen = true"
-          class="hover:link-color"
-        >
-          <span class="select-none mt-1 link-color">?</span>
-        </UiSidebarButton>
+        <div class="flex items-center justify-center !mb-0 !mt-auto py-3">
+          <UiSidebarButton @click="modalAboutOpen = true">
+            <span class="mt-1 link-color">?</span>
+          </UiSidebarButton>
+        </div>
       </div>
     </div>
   </div>

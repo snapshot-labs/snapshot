@@ -1,7 +1,7 @@
 <template>
   <div
     class="
-      border border-skin-border
+      border
       w-[42px]
       h-[42px]
       rounded-full
@@ -10,6 +10,7 @@
       items-center
       cursor-pointer
       hover:!border-skin-link
+      select-none
     "
   >
     <slot />
