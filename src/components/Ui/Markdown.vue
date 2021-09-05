@@ -31,7 +31,7 @@ const markdown = computed(() => {
     font-size: 30px;
     border-bottom: 1px solid #eaecef;
     margin: 24px 0 16px;
-    padding-bottom: 7px;
+    padding-bottom: 9px;
   }
 
   h3 {
@@ -49,7 +49,7 @@ const markdown = computed(() => {
   }
 
   p {
-    line-height: 28px;
+    line-height: 30px;
     font-size: 22px;
   }
 
