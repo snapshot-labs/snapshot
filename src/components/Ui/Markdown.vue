@@ -97,5 +97,13 @@ const markdown = computed(() => {
     margin-top: 0;
     margin-bottom: 16px;
   }
+
+  blockquote {
+    margin-bottom: 16px;
+    padding: 0 20px;
+    color: var(--text-color);
+    border-left-color: var(--text-color);
+    border-left: 5px solid #dfe2e5;
+  }
 }
 </style>
