@@ -301,7 +301,7 @@ onMounted(async () => {
                 </template>
                 <template v-slot:info>
                   <Upload
-                    class="ml-2"
+                    class="!ml-2"
                     @input="setAvatarUrl"
                     @loading="setUploadLoading"
                   >
