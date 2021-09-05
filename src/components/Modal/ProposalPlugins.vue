@@ -64,7 +64,7 @@ watch(selected, value => {
         class="mb-3 p-4 border rounded-md link-color text-center"
       >
         <img
-          class="circle border"
+          class="rounded-full border mx-auto mb-1"
           :src="getLogoUrl(key)"
           width="64"
           height="64"
