@@ -72,27 +72,17 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
               class="text-center extra-icon-container hover:!bg-gray-50"
               style="height: 250px; margin-bottom: 24px !important"
             >
-              <div
-                v-if="space._activeProposals"
-                class="
-                  absolute
-                  top-[12px]
-                  left-[14px]
-                  !bg-green
-                  rounded-md
-                  text-white text-xs
-                  px-2
-                  pt-1
-                "
-              >
-                {{ space._activeProposals }} Open
-              </div>
               <span class="relative inline-block">
                 <Token
                   :space="space"
                   symbolIndex="space"
                   size="98"
                   class="mb-1"
+                />
+                <UiCounter
+                  v-if="space._activeProposals"
+                  :counter="space._activeProposals"
+                  class="absolute top-2 right-0 !bg-green"
                 />
               </span>
 
