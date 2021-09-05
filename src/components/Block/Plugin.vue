@@ -12,7 +12,7 @@ function getLogoUrl(key) {
       <a
         :href="`https://github.com/snapshot-labs/snapshot.js/tree/master/src/plugins/${plugin.key}`"
         target="_blank"
-        class="flex"
+        class="flex items-center"
       >
         <UiAvatar
           class="mr-2 mb-2"

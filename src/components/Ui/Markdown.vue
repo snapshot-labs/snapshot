@@ -49,7 +49,7 @@ const markdown = computed(() => {
   }
 
   p {
-    line-height: 30px;
+    line-height: 28px;
     font-size: 22px;
   }
 

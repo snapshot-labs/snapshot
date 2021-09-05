@@ -252,7 +252,7 @@ onMounted(async () => {
           >
             <span v-for="(symbol, symbolIndex) of symbols" :key="symbol">
               <UiTooltip class="inline-block" :text="symbol">
-                <Token size="20" :space="space" :symbolIndex="symbolIndex" />
+                <Token :space="space" :symbolIndex="symbolIndex" />
               </UiTooltip>
               <span v-show="symbolIndex !== symbols.length - 1" class="ml-1" />
             </span>

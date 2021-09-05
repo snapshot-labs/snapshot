@@ -21,7 +21,17 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="w-[68px] h-screen fixed m-0 border-r border-skin-border">
+  <div
+    class="
+      w-[68px]
+      h-screen
+      hidden
+      sm:block
+      fixed
+      m-0
+      border-r border-skin-border
+    "
+  >
     <div class="flex flex-col h-full overflow-scroll menu-tabs">
       <div
         class="mt-[22px] mb-[20px] flex flex-col items-center justify-center"

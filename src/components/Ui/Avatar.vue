@@ -23,14 +23,15 @@ const error = ref(false);
       }"
       @error="error = true"
       :class="[space?.skin ? 'background-avatar' : 'bg-white']"
-      class="rounded-full inline-block leading-none align-middle"
+      class="rounded-full inline-block !align-middle leading-none"
     />
     <jazzicon
       v-else
       :seed="parseInt(seed)"
       :address="address"
       :diameter="parseInt(size) - 2 || 22"
-      class="inline-block !align-middle leading-none"
+      class="inline-block !align-middle"
+      style="line-height: 0"
     />
   </span>
 </template>

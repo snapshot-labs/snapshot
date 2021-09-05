@@ -47,11 +47,11 @@ defineEmits(['submit']);
     </h4>
     <div v-if="loading" class="block px-4 py-4">
       <div
-        class="bg-gray-600 rounded-md anim-pulse mb-2"
+        class="bg-skin-text rounded-md anim-pulse mb-2"
         style="width: 80%; height: 20px"
       />
       <div
-        class="bg-gray-600 rounded-md anim-pulse"
+        class="bg-skin-text rounded-md anim-pulse"
         style="width: 50%; height: 20px"
       />
     </div>

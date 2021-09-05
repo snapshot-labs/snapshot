@@ -6,12 +6,14 @@ module.exports = {
     extend: {
       colors: {
         snapshot: '#f3b04e', // TODO: get correct color for snapshot logo
+        primary: 'var(--primary-color)',
         'skin-border': 'var(--border-color)',
         'skin-text': 'var(--text-color)',
         'skin-link': 'var(--link-color)',
         'skin-bg': 'var(--bg-color)',
         'skin-block-bg': 'var(--block-bg)',
         'skin-header-bg': 'var(--header-bg)',
+        'skin-heading': 'var(--heading-color)',
 
         blue: '#384aff',
         green: '#21b66f',
@@ -44,13 +46,13 @@ module.exports = {
       bold: 600
     },
     fontSize: {
-      '2xl': '36px',
-      xl: '28px',
-      lg: '24px',
-      md: '20px',
-      base: '18px',
-      sm: '16px',
-      xs: '14px'
+      '2xl': ['36px', '44px'],
+      xl: ['28px', '50px'],
+      lg: ['24px', '40px'],
+      md: ['20px', '32px'],
+      base: ['18px', '24px'],
+      sm: ['16px', '22px'],
+      xs: ['14px', '20px']
     }
   },
   variants: {
