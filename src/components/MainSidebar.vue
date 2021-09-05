@@ -21,7 +21,18 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="w-[68px] h-screen hidden sm:block fixed m-0 border-r">
+  <div
+    class="
+      w-[68px]
+      h-screen
+      hidden
+      sm:block
+      fixed
+      m-0
+      border-r
+      bg-skin-block-bg
+    "
+  >
     <div class="flex flex-col h-full overflow-scroll menu-tabs">
       <div class="min-h-[78px] h-[78px] flex items-center justify-center">
         <Icon
