@@ -69,7 +69,7 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
         >
           <div class="w-full lg:w-1/4 pr-4 float-left">
             <Block
-              class="text-center extra-icon-container hover:!bg-gray-50"
+              class="text-center extra-icon-container !bg-gray-50"
               style="height: 250px; margin-bottom: 24px !important"
             >
               <span class="relative inline-block">
