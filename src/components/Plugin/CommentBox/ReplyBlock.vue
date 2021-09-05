@@ -3,6 +3,9 @@ import { defineProps, watch, computed, ref, defineEmits } from 'vue';
 import { useNotifications } from '@/composables/useNotifications';
 import { useModal } from '@/composables/useModal';
 import { useWeb3 } from '@/composables/useWeb3';
+import { signMessage } from '@snapshot-labs/snapshot.js/src/utils/web3';
+import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
+const auth = getInstance();
 const { modalOpen,modalAccountOpen } = useModal();
 const { web3 } = useWeb3();
 const web3Account = computed(() => web3.value.account);
@@ -10,7 +13,8 @@ const props = defineProps({
   item: Object,
   space: Object,
   profiles: Object,
-  mainThread:String
+  mainThread:String,
+  proposal:Object
 });
 const emit = defineEmits(['deleteItem','updateItem','replyComment','scrollTo']);
 const toggleComment = ref(true);
@@ -36,11 +40,12 @@ function selectFromThreedotDropdown(e) {
     closeModal.value = true;
   }
 }
-async function deleteData(url = '') {
+async function deleteData(url = '',data={},authorization) {
   // Default options are marked with *
   const response = await fetch(url, {
-    method: 'DELETE'
-    
+    method: 'POST',
+    body: JSON.stringify(data),
+    headers: {'Content-type': 'application/json;charset=UTF-8',...authorization}
    });
   return response.json(); // parses JSON response into native JavaScript objects
 }
@@ -49,9 +54,19 @@ async function deleteItem() {
   if(loading.value) return
   try {
     loading.value = true;
-    const res = await deleteData(`https://uia5m1.deta.dev/delete/${props.item.key}`);
+    let token = sessionStorage.getItem('token');
+    let sig;
+    let msg= { key: props.item.key };
+        if(!token) sig = await signMessage(auth.web3, JSON.stringify(msg), web3Account.value);
+    const res = await deleteData(`https://uia5m1.deta.dev/delete/` ,{
+      address: web3Account.value,
+      msg:JSON.stringify(msg),
+      sig
+    }
+      ,token?{authorization:token}:null);
     loading.value = false;
     if (!res.status) return notify(['red', 'Oops, something went wrong']);
+    if(res.token) sessionStorage.setItem('token', res.token);
     emit("deleteItem",props.item.key)
     closeModal.value = false;
     
@@ -73,6 +88,19 @@ watch([modalOpen,closeModal],()=>{
   }
   
 })
+const isAdmin = computed(() => {
+  const admins = props.space.admins.map(address => address.toLowerCase());
+  return (
+    auth.isAuthenticated.value &&
+    web3Account.value &&
+    admins.includes(web3Account.value.toLowerCase())
+  );
+});
+const isOwner = computed(() => {
+   return web3Account.value===props.item.author;
+    
+});
+const isCreator = computed(() => props.proposal.author === web3Account.value);
 </script>
 <template>
   <UiModal :open="closeModal" @close="closeModal = false">
@@ -153,6 +181,7 @@ comment by
           class="d-inline-block"
         />
         <UiDropdown
+         v-if="isAdmin || isOwner || isCreator"
           top="2.5rem"
           right="1.3rem"
           class="float-right"

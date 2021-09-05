@@ -108,9 +108,9 @@ async function handleSubmit() {
       msg:JSON.stringify(msg),
       sig
     },token?{authorization:token}:null);
-    comment.value = '';
     loading.value = false;
     if (!res.status) return notify(['red', 'Oops, something went wrong']);
+    comment.value = '';
     if(res.token) sessionStorage.setItem('token', res.token);
     allData.value.push(res.data)
   } catch (e) {

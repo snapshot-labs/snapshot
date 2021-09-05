@@ -3,8 +3,8 @@ import { ref, defineProps, defineEmits, onMounted, computed, watch } from 'vue';
 import { useNotifications } from '@/composables/useNotifications';
 import { useModal } from '@/composables/useModal';
 import { useWeb3 } from '@/composables/useWeb3';
+import { signMessage } from '@snapshot-labs/snapshot.js/src/utils/web3';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
-
 const auth = getInstance();
 const { modalOpen,modalAccountOpen } = useModal();
 const { web3 } = useWeb3();
@@ -54,11 +54,13 @@ function selectFromThreedotDropdown(e) {
   }
 }
 const emit = defineEmits(['deleteItem', 'updateItem', 'replyComment']);
-async function deleteData(url = '') {
+async function deleteData(url = '',data={},authorization) {
   // Default options are marked with *
   const response = await fetch(url, {
-    method: 'DELETE',
-    });
+    method: 'POST',
+    body: JSON.stringify(data),
+    headers: {'Content-type': 'application/json;charset=UTF-8',...authorization}
+   });
   return response.json(); // parses JSON response into native JavaScript objects
 }
 const { notify } = useNotifications();
@@ -66,12 +68,22 @@ async function deleteItem() {
   if (loading.value) return;
   try {
     loading.value = true;
+    let token = sessionStorage.getItem('token');
+    let sig;
+    let msg= { key: props.item.key };
+        if(!token) sig = await signMessage(auth.web3, JSON.stringify(msg), web3Account.value);
     const res = await deleteData(
-      `https://uia5m1.deta.dev/delete/${props.item.key}`
+      `https://uia5m1.deta.dev/delete`,{
+      address: web3Account.value,
+      msg:JSON.stringify(msg),
+      sig
+    }
+      ,token?{authorization:token}:null
     );
     loading.value = false;
     if (!res.status) return notify(['red', 'Oops, something went wrong']);
-    allReply.value=0;
+    if(res.token) sessionStorage.setItem('token', res.token);
+    allReply.value=0;    
     emit('deleteItem',props.item.key);
     closeModal.value = false;
     return;
@@ -270,6 +282,7 @@ allReply.value.splice(allReply.value.findIndex(a=>a.key===key),1)
     />
   </div>
   <PluginCommentBoxListReply
+  :proposal="proposal"
     :profiles="profiles"
     :space="space"
     :allReply="allReply"

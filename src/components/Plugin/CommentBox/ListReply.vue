@@ -7,7 +7,8 @@ const props = defineProps({
  allReply:Array,
  mainThread:String,
  lastPage:String,
- loadingMore:Boolean
+ loadingMore:Boolean,
+ proposal:Object
 });
 const emit = defineEmits(['deleteItem','updateItem','replyComment','loadMore']);
 const toggleComment = ref(true);
@@ -78,7 +79,7 @@ html{scroll-behavior: smooth;}
  
   <div v-show="showIt" class="pl-4" :ref="el => { if (el) listReply[item.key] = el }"  :key="index" v-for="(item, index) in allReply">
        <PluginCommentBoxReplyBlock
-    
+    :proposal="proposal"
         :item="item"
       :profiles="profiles"
       :space="space"
