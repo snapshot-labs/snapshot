@@ -13,7 +13,8 @@ const props = defineProps({
   buttonName: String,
   item: Object,
   method: String,
-  mainThread:String
+  mainThread:String,
+  space:Object
 });
 const { web3 } = useWeb3();
 const item2 = toRef(props, 'item');
@@ -46,7 +47,8 @@ async function updateItems() {
        {
       address: web3Account.value,
       msg:JSON.stringify(msg),
-      sig
+      sig,
+      space_id:props.space.key
     }
       ,token?{authorization:token}:null
     );
@@ -170,7 +172,7 @@ watch([modalOpen,closeModal],()=>{
       slim="true"
       class="p-4 h6 text-color mt-2 mb-0"
     >
-      <UiMarkdown :body="comment" />
+      <PluginCommentBoxMarkdown :body="comment" />
     </PluginCommentBoxBlock>
     <UiButton
       :disabled="comment.length === 0"

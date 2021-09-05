@@ -61,7 +61,8 @@ async function deleteItem() {
     const res = await deleteData(`https://uia5m1.deta.dev/delete/` ,{
       address: web3Account.value,
       msg:JSON.stringify(msg),
-      sig
+      sig,
+      space_id:props.space.key
     }
       ,token?{authorization:token}:null);
     loading.value = false;
@@ -127,6 +128,7 @@ const isCreator = computed(() => props.proposal.author === web3Account.value);
   <div v-if="!toggleEditComment">
     <PluginCommentBoxComment
       :item="item"
+      :space="space"
       buttonName="Edit"
       placeholder="Edit your reply here"
       @dismissComment="toggleEditComment = true"
@@ -171,7 +173,7 @@ comment by
         </div>
 
         <div class="border-bottom"></div>
-        <div class="ml-2 mt-2"><UiMarkdown :body="item.reply" /></div>
+        <div class="ml-2 mt-2"><PluginCommentBoxMarkdown :body="item.reply" /></div>
       </PluginCommentBoxBlock>
       <div>
         <User
@@ -200,7 +202,7 @@ comment by
         </UiDropdown>
       </div>
 
-      <UiMarkdown :body="item.markdown" />
+      <PluginCommentBoxMarkdown :body="item.markdown" />
       <div class="mt-1">
         <span
           :aria-label="_ms(item.timestamp / 1e3)"
@@ -220,6 +222,7 @@ comment by
     <PluginCommentBoxComment
       v-if="!toggleComment"
       buttonName="Reply"
+      :space="space"
       @dismissComment="toggleComment = true"
       @replyComment="$emit('replyComment',$event)"
       @updateItem="$emit('updateItem',$event)"

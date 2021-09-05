@@ -76,7 +76,8 @@ async function deleteItem() {
       `https://uia5m1.deta.dev/delete`,{
       address: web3Account.value,
       msg:JSON.stringify(msg),
-      sig
+      sig,
+      space_id:props.space.key
     }
       ,token?{authorization:token}:null
     );
@@ -208,6 +209,7 @@ allReply.value.splice(allReply.value.findIndex(a=>a.key===key),1)
   </UiModal>
   <div v-if="!toggleEditComment">
     <PluginCommentBoxComment
+    :space="space"
       :item="item"
       buttonName="Edit"
       placeholder="Edit your reply here"
@@ -226,6 +228,7 @@ allReply.value.splice(allReply.value.findIndex(a=>a.key===key),1)
           :space="space"
           class="d-inline-block"
         />
+        
         <UiDropdown
         v-if="isAdmin || isOwner || isCreator"
           top="2.5rem"
@@ -246,7 +249,7 @@ allReply.value.splice(allReply.value.findIndex(a=>a.key===key),1)
         </UiDropdown>
       </div>
 
-      <UiMarkdown :body="item.markdown" />
+      <PluginCommentBoxMarkdown :body="item.markdown" />
       <div class="mt-1">
         <span
           :aria-label="_ms(item.timestamp / 1e3)"
@@ -273,6 +276,7 @@ allReply.value.splice(allReply.value.findIndex(a=>a.key===key),1)
     <PluginCommentBoxComment
       v-if="!toggleComment"
       buttonName="Reply"
+      :space="space"
       @dismissComment="toggleComment = true"
       @replyComment="allReply.push($event)"
       :item="item"
