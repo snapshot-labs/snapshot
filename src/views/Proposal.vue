@@ -75,7 +75,7 @@ async function loadProposal() {
   proposal.value = proposalObj.proposal;
 
   // Redirect to proposal spaceId if it doesn't match route key
-  if (route.key !== proposal.value.space.id)
+  if (route.params.key && route.params.key !== proposal.value.space.id)
     router.push({
       name: 'proposal',
       params: {
