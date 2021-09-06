@@ -6,17 +6,22 @@ import { useWeb3 } from '@/composables/useWeb3';
 import { signMessage } from '@snapshot-labs/snapshot.js/src/utils/web3';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 const auth = getInstance();
-const { modalOpen,modalAccountOpen } = useModal();
+const { modalOpen, modalAccountOpen } = useModal();
 const { web3 } = useWeb3();
 const web3Account = computed(() => web3.value.account);
 const props = defineProps({
   item: Object,
   space: Object,
   profiles: Object,
-  mainThread:String,
-  proposal:Object
+  mainThread: String,
+  proposal: Object
 });
-const emit = defineEmits(['deleteItem','updateItem','replyComment','scrollTo']);
+const emit = defineEmits([
+  'deleteItem',
+  'updateItem',
+  'replyComment',
+  'scrollTo'
+]);
 const toggleComment = ref(true);
 const toggleReplyTo = ref(false);
 const toggleEditComment = ref(true);
@@ -36,59 +41,66 @@ function selectFromThreedotDropdown(e) {
     toggleComment.value = true;
   }
   if (e === 'delete') {
-    if(!web3Account.value) return modalAccountOpen.value = true;
+    if (!web3Account.value) return (modalAccountOpen.value = true);
     closeModal.value = true;
   }
 }
-async function deleteData(url = '',data={},authorization) {
+async function deleteData(url = '', data = {}, authorization) {
   // Default options are marked with *
   const response = await fetch(url, {
     method: 'POST',
     body: JSON.stringify(data),
-    headers: {'Content-type': 'application/json;charset=UTF-8',...authorization}
-   });
+    headers: {
+      'Content-type': 'application/json;charset=UTF-8',
+      ...authorization
+    }
+  });
   return response.json(); // parses JSON response into native JavaScript objects
 }
 const { notify } = useNotifications();
 async function deleteItem() {
-  if(loading.value) return
+  if (loading.value) return;
   try {
     loading.value = true;
-    let token = sessionStorage.getItem('token');
+    const token = sessionStorage.getItem('token');
     let sig;
-    let msg= { key: props.item.key };
-        if(!token) sig = await signMessage(auth.web3, JSON.stringify(msg), web3Account.value);
-    const res = await deleteData(`https://uia5m1.deta.dev/delete/` ,{
-      address: web3Account.value,
-      msg:JSON.stringify(msg),
-      sig,
-      space_id:props.space.key
-    }
-      ,token?{authorization:token}:null);
+    const msg = { key: props.item.key };
+    if (!token)
+      sig = await signMessage(
+        auth.web3,
+        JSON.stringify(msg),
+        web3Account.value
+      );
+    const res = await deleteData(
+      `https://uia5m1.deta.dev/delete/`,
+      {
+        address: web3Account.value,
+        msg: JSON.stringify(msg),
+        sig,
+        space_id: props.space.key
+      },
+      token ? { authorization: token } : null
+    );
     loading.value = false;
     if (!res.status) return notify(['red', 'Oops, something went wrong']);
-    if(res.token) sessionStorage.setItem('token', res.token);
-    emit("deleteItem",props.item.key)
+    if (res.token) sessionStorage.setItem('token', res.token);
+    emit('deleteItem', props.item.key);
     closeModal.value = false;
-    
-    
+
     return;
   } catch (e) {
     loading.value = false;
     notify(['red', 'Oops, something went wrong']);
   }
 }
-watch([modalOpen,closeModal],()=>{
- const el = document.body;
-  if(!closeModal.value){
-
+watch([modalOpen, closeModal], () => {
+  const el = document.body;
+  if (!closeModal.value) {
     el.classList['remove']('overflow-hidden');
-  }else if(closeModal.value&&!el.classList['contains']('overflow-hidden')){
-    
+  } else if (closeModal.value && !el.classList['contains']('overflow-hidden')) {
     el.classList['add']('overflow-hidden');
   }
-  
-})
+});
 const isAdmin = computed(() => {
   const admins = props.space.admins.map(address => address.toLowerCase());
   return (
@@ -98,8 +110,7 @@ const isAdmin = computed(() => {
   );
 });
 const isOwner = computed(() => {
-   return web3Account.value===props.item.author;
-    
+  return web3Account.value === props.item.author;
 });
 const isCreator = computed(() => props.proposal.author === web3Account.value);
 </script>
@@ -121,8 +132,12 @@ const isCreator = computed(() => props.proposal.author === web3Account.value);
         justify-content: center;
       "
     >
-      <UiButton @click="deleteItem" :loading="loading" class="bg-red text-white">Yes</UiButton>
-      <UiButton :disabled="loading" @click="closeModal=false" class="ml-2">No</UiButton>
+      <UiButton @click="deleteItem" :loading="loading" class="bg-red text-white"
+        >Yes</UiButton
+      >
+      <UiButton :disabled="loading" @click="closeModal = false" class="ml-2"
+        >No</UiButton
+      >
     </div>
   </UiModal>
   <div v-if="!toggleEditComment">
@@ -132,7 +147,7 @@ const isCreator = computed(() => props.proposal.author === web3Account.value);
       buttonName="Edit"
       placeholder="Edit your reply here"
       @dismissComment="toggleEditComment = true"
-      @updateItem="$emit('updateItem',$event)"
+      @updateItem="$emit('updateItem', $event)"
       method="edit"
     />
   </div>
@@ -142,9 +157,8 @@ const isCreator = computed(() => props.proposal.author === web3Account.value);
         style="cursor: pointer"
         class="State mb-2 text-normal"
         @click="toggleReplyTo = !toggleReplyTo"
-        v-if="mainThread!==item.reply_thread_id"
+        v-if="mainThread !== item.reply_thread_id"
       >
-      
         reply to
         <span
           v-if="profiles[item.reply_to]?.name"
@@ -156,24 +170,29 @@ const isCreator = computed(() => props.proposal.author === web3Account.value);
           v-text="profiles[item.reply_to].ens"
         />
         <span v-else v-text="_shorten(item.reply_to)" />
-        
       </span>
       <PluginCommentBoxBlock v-if="toggleReplyTo" slim="true">
         <div class="ml-2 mt-2">
-          <span @click="$emit('scrollTo',item.reply_thread_id)" style="cursor:pointer;">
-comment by
-          <User
-            :address="item.reply_to"
-            :profile="profiles[item.reply_to]"
-            :space="space"
-            class="d-inline-block"
-          /> <span v-if="item?.edited">(edited)</span> <span v-if="item?.deleted">(deleted)</span>
+          <span
+            @click="$emit('scrollTo', item.reply_thread_id)"
+            style="cursor: pointer"
+          >
+            comment by
+            <User
+              :address="item.reply_to"
+              :profile="profiles[item.reply_to]"
+              :space="space"
+              class="d-inline-block"
+            />
+            <span v-if="item?.edited">(edited)</span>
+            <span v-if="item?.deleted">(deleted)</span>
           </span>
-          
         </div>
 
         <div class="border-bottom"></div>
-        <div class="ml-2 mt-2"><PluginCommentBoxMarkdown :body="item.reply" /></div>
+        <div class="ml-2 mt-2">
+          <PluginCommentBoxMarkdown :body="item.reply" />
+        </div>
       </PluginCommentBoxBlock>
       <div>
         <User
@@ -183,7 +202,7 @@ comment by
           class="d-inline-block"
         />
         <UiDropdown
-         v-if="isAdmin || isOwner || isCreator"
+          v-if="isAdmin || isOwner || isCreator"
           top="2.5rem"
           right="1.3rem"
           class="float-right"
@@ -191,13 +210,7 @@ comment by
           :items="threeDotItems"
         >
           <div class="pr-3">
-           
-            <Icon
-         
-              name="threedots"
-              size="25"
-              class="v-align-text-bottom"
-            />
+            <Icon name="threedots" size="25" class="v-align-text-bottom" />
           </div>
         </UiDropdown>
       </div>
@@ -208,7 +221,13 @@ comment by
           :aria-label="_ms(item.timestamp / 1e3)"
           v-text="$d(item.timestamp, 'short', 'en-US')"
           class="link-color tooltipped tooltipped-n"
-        /> <span v-if="item.edit_timestamp" :aria-label="$d(item.edit_timestamp, 'short', 'en-US')" class="tooltipped tooltipped-n">(edited)</span>
+        />
+        <span
+          v-if="item.edit_timestamp"
+          :aria-label="$d(item.edit_timestamp, 'short', 'en-US')"
+          class="tooltipped tooltipped-n"
+          >(edited)</span
+        >
       </div>
     </PluginCommentBoxBlock>
     <UiButton
@@ -224,8 +243,8 @@ comment by
       buttonName="Reply"
       :space="space"
       @dismissComment="toggleComment = true"
-      @replyComment="$emit('replyComment',$event)"
-      @updateItem="$emit('updateItem',$event)"
+      @replyComment="$emit('replyComment', $event)"
+      @updateItem="$emit('updateItem', $event)"
       :item="item"
       :mainThread="mainThread"
       method="replyComment"

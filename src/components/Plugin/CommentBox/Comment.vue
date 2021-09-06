@@ -1,5 +1,5 @@
 <script setup>
-import { ref, defineProps, defineEmits, onMounted, computed, toRef,watch } from 'vue';
+import { ref, defineProps, defineEmits, computed, toRef, watch } from 'vue';
 import { clone } from '@/helpers/utils';
 import { useNotifications } from '@/composables/useNotifications';
 import { useModal } from '@/composables/useModal';
@@ -7,29 +7,36 @@ import { useWeb3 } from '@/composables/useWeb3';
 import { signMessage } from '@snapshot-labs/snapshot.js/src/utils/web3';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 const auth = getInstance();
-const {modalOpen,modalAccountOpen}=useModal()
+const { modalOpen, modalAccountOpen } = useModal();
 const props = defineProps({
   placeholder: String,
   buttonName: String,
   item: Object,
   method: String,
-  mainThread:String,
-  space:Object
+  mainThread: String,
+  space: Object
 });
 const { web3 } = useWeb3();
 const item2 = toRef(props, 'item');
-const comment = ref(props.method==="edit" && item2.value?.markdown ? clone(item2.value?.markdown) : '');
+const comment = ref(
+  props.method === 'edit' && item2.value?.markdown
+    ? clone(item2.value?.markdown)
+    : ''
+);
 const web3Account = computed(() => web3.value.account);
 const loading = ref(false);
 const togglePreview = ref(true);
 const closeModal = ref(false);
-const emit = defineEmits(['dismissComment', 'updateItem','replyComment']);
-async function postData(url = '', data = {},authorization) {
+const emit = defineEmits(['dismissComment', 'updateItem', 'replyComment']);
+async function postData(url = '', data = {}, authorization) {
   // Default options are marked with *
   const response = await fetch(url, {
     method: 'POST',
     body: JSON.stringify(data),
-    headers: { 'Content-type': 'application/json;charset=UTF-8',...authorization }
+    headers: {
+      'Content-type': 'application/json;charset=UTF-8',
+      ...authorization
+    }
   });
   return response.json(); // parses JSON response into native JavaScript objects
 }
@@ -38,27 +45,32 @@ async function updateItems() {
   if (loading.value) return;
   try {
     loading.value = true;
-    let token = sessionStorage.getItem('token');
+    const token = sessionStorage.getItem('token');
     let sig;
-    let msg= { markdown: comment.value };
-        if(!token) sig = await signMessage(auth.web3, JSON.stringify(msg), web3Account.value);
+    const msg = { markdown: comment.value };
+    if (!token)
+      sig = await signMessage(
+        auth.web3,
+        JSON.stringify(msg),
+        web3Account.value
+      );
     const res = await postData(
       `https://uia5m1.deta.dev/update/${props.item.key}`,
-       {
-      address: web3Account.value,
-      msg:JSON.stringify(msg),
-      sig,
-      space_id:props.space.key
-    }
-      ,token?{authorization:token}:null
+      {
+        address: web3Account.value,
+        msg: JSON.stringify(msg),
+        sig,
+        space_id: props.space.key
+      },
+      token ? { authorization: token } : null
     );
     loading.value = false;
     if (!res.status) return notify(['red', 'Oops, something went wrong']);
-        if(res.token) sessionStorage.setItem('token', res.token);
-    emit('updateItem',res.data);
-     emit("dismissComment")
+    if (res.token) sessionStorage.setItem('token', res.token);
+    emit('updateItem', res.data);
+    emit('dismissComment');
     closeModal.value = false;
-  
+
     return;
   } catch (e) {
     loading.value = false;
@@ -67,63 +79,64 @@ async function updateItems() {
 }
 const chooseMethod = {
   edit: () => {
-    if(!web3Account.value) return modalAccountOpen.value = true;
+    if (!web3Account.value) return (modalAccountOpen.value = true);
     closeModal.value = true;
-
   },
-  replyComment:async function replyComment() {
-    if(!web3Account.value) return modalAccountOpen.value = true;
-  if (loading.value) return;
-  try {
-    loading.value = true;
-    let token = sessionStorage.getItem('token');
-    let sig;
-    let msg= {   author: web3Account.value,
-      markdown: comment.value,
-      proposal_id: props.item.proposal_id,
-      main_thread_id:props.mainThread,
-      reply_to:props.item.author,
-      reply_thread_id:props.item.key,
-      reply:props.item.markdown 
+  replyComment: async function replyComment() {
+    if (!web3Account.value) return (modalAccountOpen.value = true);
+    if (loading.value) return;
+    try {
+      loading.value = true;
+      const token = sessionStorage.getItem('token');
+      let sig;
+      const msg = {
+        author: web3Account.value,
+        markdown: comment.value,
+        proposal_id: props.item.proposal_id,
+        main_thread_id: props.mainThread,
+        reply_to: props.item.author,
+        reply_thread_id: props.item.key,
+        reply: props.item.markdown
       };
-    if(!token) sig = await signMessage(auth.web3, JSON.stringify(msg), web3Account.value);
-    const res = await postData(
-      `https://uia5m1.deta.dev/add_reply`, {
-      address: web3Account.value,
-      msg:JSON.stringify(msg),
-      sig
+      if (!token)
+        sig = await signMessage(
+          auth.web3,
+          JSON.stringify(msg),
+          web3Account.value
+        );
+      const res = await postData(
+        `https://uia5m1.deta.dev/add_reply`,
+        {
+          address: web3Account.value,
+          msg: JSON.stringify(msg),
+          sig
+        },
+        token ? { authorization: token } : null
+      );
+      loading.value = false;
+      if (!res.status) return notify(['red', 'Oops, something went wrong']);
+      if (res.token) sessionStorage.setItem('token', res.token);
+      emit('dismissComment');
+      emit('replyComment', res.data);
+      return;
+    } catch (e) {
+      loading.value = false;
+      notify(['red', 'Oops, something went wrong']);
     }
-      ,token?{authorization:token}:null
-    );
-    loading.value = false;
-    if (!res.status) return notify(['red', 'Oops, something went wrong']);
-    if(res.token) sessionStorage.setItem('token', res.token);
-     emit("dismissComment")
-     emit("replyComment",res.data)
-    return;
-  } catch (e) {
-       loading.value = false;
-    notify(['red', 'Oops, something went wrong']);
   }
-}
 };
 function closeEvent() {
   if (loading.value) return;
   closeModal.value = false;
- 
 }
-watch([modalOpen,closeModal],()=>{
+watch([modalOpen, closeModal], () => {
   const el = document.body;
-  if(!closeModal.value){
-
+  if (!closeModal.value) {
     el.classList['remove']('overflow-hidden');
-  }else if(closeModal.value&&!el.classList['contains']('overflow-hidden')){
-    
+  } else if (closeModal.value && !el.classList['contains']('overflow-hidden')) {
     el.classList['add']('overflow-hidden');
   }
-  
-})
-
+});
 </script>
 <template>
   <UiModal :open="closeModal" @close="closeEvent">

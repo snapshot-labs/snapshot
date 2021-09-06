@@ -24,17 +24,17 @@ const markdown = computed(() => {
   <div class="markdown-body markdown-body1 break-word" v-html="markdown" />
 </template>
 
-<style lang="scss" >
-
+<style lang="scss">
 .markdown-body1 {
   h1,
   h2 {
     font-size: 28px;
     border-bottom: 0;
   }
- a,a:hover {
-   text-decoration: underline !important;
-}
+  a,
+  a:hover {
+    text-decoration: underline !important;
+  }
   img {
     border-radius: 8px;
   }

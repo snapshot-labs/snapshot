@@ -6,14 +6,14 @@ import { useWeb3 } from '@/composables/useWeb3';
 import { signMessage } from '@snapshot-labs/snapshot.js/src/utils/web3';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 const auth = getInstance();
-const { modalOpen,modalAccountOpen } = useModal();
+const { modalOpen, modalAccountOpen } = useModal();
 const { web3 } = useWeb3();
 const web3Account = computed(() => web3.value.account);
 const props = defineProps({
   profiles: Object,
   space: Object,
   item: Object,
-  proposal:Object
+  proposal: Object
 });
 const threeDotItems = computed(() => {
   const items = [
@@ -32,8 +32,7 @@ const isAdmin = computed(() => {
   );
 });
 const isOwner = computed(() => {
-   return web3Account.value===props.item.author;
-    
+  return web3Account.value === props.item.author;
 });
 const isCreator = computed(() => props.proposal.author === web3Account.value);
 const toggleComment = ref(true);
@@ -41,26 +40,30 @@ const toggleEditComment = ref(true);
 const closeModal = ref(false);
 const loading = ref(false);
 const loadingMore = ref(false);
+const allReply = ref([]);
 function selectFromThreedotDropdown(e) {
   if (e === 'edit') {
     toggleEditComment.value = false;
     toggleComment.value = true;
   }
   if (e === 'delete') {
-    if(!web3Account.value) return modalAccountOpen.value = true;
+    if (!web3Account.value) return (modalAccountOpen.value = true);
     closeModal.value = true;
     const el = document.body;
     el.classList['remove']('overflow-hidden');
   }
 }
 const emit = defineEmits(['deleteItem', 'updateItem', 'replyComment']);
-async function deleteData(url = '',data={},authorization) {
+async function deleteData(url = '', data = {}, authorization) {
   // Default options are marked with *
   const response = await fetch(url, {
     method: 'POST',
     body: JSON.stringify(data),
-    headers: {'Content-type': 'application/json;charset=UTF-8',...authorization}
-   });
+    headers: {
+      'Content-type': 'application/json;charset=UTF-8',
+      ...authorization
+    }
+  });
   return response.json(); // parses JSON response into native JavaScript objects
 }
 const { notify } = useNotifications();
@@ -68,24 +71,30 @@ async function deleteItem() {
   if (loading.value) return;
   try {
     loading.value = true;
-    let token = sessionStorage.getItem('token');
+    const token = sessionStorage.getItem('token');
     let sig;
-    let msg= { key: props.item.key };
-        if(!token) sig = await signMessage(auth.web3, JSON.stringify(msg), web3Account.value);
+    const msg = { key: props.item.key };
+    if (!token)
+      sig = await signMessage(
+        auth.web3,
+        JSON.stringify(msg),
+        web3Account.value
+      );
     const res = await deleteData(
-      `https://uia5m1.deta.dev/delete`,{
-      address: web3Account.value,
-      msg:JSON.stringify(msg),
-      sig,
-      space_id:props.space.key
-    }
-      ,token?{authorization:token}:null
+      `https://uia5m1.deta.dev/delete`,
+      {
+        address: web3Account.value,
+        msg: JSON.stringify(msg),
+        sig,
+        space_id: props.space.key
+      },
+      token ? { authorization: token } : null
     );
     loading.value = false;
     if (!res.status) return notify(['red', 'Oops, something went wrong']);
-    if(res.token) sessionStorage.setItem('token', res.token);
-    allReply.value=0;    
-    emit('deleteItem',props.item.key);
+    if (res.token) sessionStorage.setItem('token', res.token);
+    allReply.value = 0;
+    emit('deleteItem', props.item.key);
     closeModal.value = false;
     return;
   } catch (e) {
@@ -100,14 +109,14 @@ function closeEvent() {
 }
 async function updateItem(e) {
   toggleEditComment.value = true;
-  emit('updateItem',e);
+  emit('updateItem', e);
 }
-watch([modalOpen, closeModal,()=>props.item], (oldVal,newVal) => {
-  if(oldVal[2].key!==newVal[2].key){
+watch([modalOpen, closeModal, () => props.item], (oldVal, newVal) => {
+  if (oldVal[2].key !== newVal[2].key) {
     // console.log(newVal[2].markdown)
-getDataAfterDelete(props.item.key)
+    getDataAfterDelete(props.item.key);
   }
-   
+
   const el = document.body;
   if (!closeModal.value) {
     el.classList['remove']('overflow-hidden');
@@ -116,70 +125,72 @@ getDataAfterDelete(props.item.key)
   }
 });
 
-const allReply = ref([]);
 async function getData(url = '') {
   // Default options are marked with *
   const response = await fetch(url, {
-    method: 'GET',
-      });
+    method: 'GET'
+  });
   return response.json(); // parses JSON response into native JavaScript objects
 }
 const lastPage = ref(false);
-async function getDataAfterDelete(key){
-  try{
-loadingMore.value=true;
-  const res = await getData(
-    `https://uia5m1.deta.dev/all_reply/${props.item.proposal_id}/${key}`
-  );
-  if (res.status) {
-    const resData=res.data.items;
-    allReply.value = resData;
-    lastPage.value = false;
+async function getDataAfterDelete(key) {
+  try {
+    loadingMore.value = true;
+    const res = await getData(
+      `https://uia5m1.deta.dev/all_reply/${props.item.proposal_id}/${key}`
+    );
+    if (res.status) {
+      const resData = res.data.items;
+      allReply.value = resData;
+      lastPage.value = false;
+    }
+    loadingMore.value = false;
+  } catch (e) {
+    loadingMore.value = false;
   }
-  loadingMore.value=false;
-  }catch(e){
-    loadingMore.value=false;
-  }
-
 }
 
 async function getReplyData() {
-  try{
-loadingMore.value=true;
-  const lastPageCondition = lastPage.value ? `?last=${lastPage.value}` : '';
-  const res = await getData(
-    `https://uia5m1.deta.dev/all_reply/${props.item.proposal_id}/${props.item.key}${lastPageCondition}`
-  );
-  if (res.status && !lastPage.value) {
-    const resData=res.data.items.filter(a=>allReply.value.findIndex(b=>b.key===a.key)<0)
-    allReply.value = allReply.value.concat(resData).sort((a, b) => {
-      return Number(a.timestamp) - Number(b.timestamp);
-    });
-    lastPage.value = res.data.last;
-  } else {
-    const resData=res.data.items.filter(a=>allReply.value.findIndex(b=>b.key===a.key)<0)
-    allReply.value = allReply.value.concat(resData).sort((a, b) => {
-      return Number(a.timestamp) - Number(b.timestamp);
-    });
-    lastPage.value = res.data.last;
+  try {
+    loadingMore.value = true;
+    const lastPageCondition = lastPage.value ? `?last=${lastPage.value}` : '';
+    const res = await getData(
+      `https://uia5m1.deta.dev/all_reply/${props.item.proposal_id}/${props.item.key}${lastPageCondition}`
+    );
+    if (res.status && !lastPage.value) {
+      const resData = res.data.items.filter(
+        a => allReply.value.findIndex(b => b.key === a.key) < 0
+      );
+      allReply.value = allReply.value.concat(resData).sort((a, b) => {
+        return Number(a.timestamp) - Number(b.timestamp);
+      });
+      lastPage.value = res.data.last;
+    } else {
+      const resData = res.data.items.filter(
+        a => allReply.value.findIndex(b => b.key === a.key) < 0
+      );
+      allReply.value = allReply.value.concat(resData).sort((a, b) => {
+        return Number(a.timestamp) - Number(b.timestamp);
+      });
+      lastPage.value = res.data.last;
+    }
+    loadingMore.value = false;
+  } catch (e) {
+    loadingMore.value = false;
   }
-  loadingMore.value=false;
-  }catch(e){
-loadingMore.value=false;
-  }
-  
 }
 onMounted(async () => {
-   getReplyData();
+  getReplyData();
 });
-function updateItemReply(data){
-  
-allReply.value[allReply.value.findIndex(a=>a.key===data.key)]=data;
+function updateItemReply(data) {
+  allReply.value[allReply.value.findIndex(a => a.key === data.key)] = data;
 }
-function deleteItemReply(key){
-allReply.value.splice(allReply.value.findIndex(a=>a.key===key),1)
+function deleteItemReply(key) {
+  allReply.value.splice(
+    allReply.value.findIndex(a => a.key === key),
+    1
+  );
 }
-
 </script>
 <template>
   <UiModal :open="closeModal" @close="closeEvent">
@@ -209,7 +220,7 @@ allReply.value.splice(allReply.value.findIndex(a=>a.key===key),1)
   </UiModal>
   <div v-if="!toggleEditComment">
     <PluginCommentBoxComment
-    :space="space"
+      :space="space"
       :item="item"
       buttonName="Edit"
       placeholder="Edit your reply here"
@@ -219,7 +230,6 @@ allReply.value.splice(allReply.value.findIndex(a=>a.key===key),1)
     />
   </div>
   <div v-if="toggleEditComment">
- 
     <PluginCommentBoxBlock :slim="true" class="p-4 text-color mt-2 mb-0">
       <div>
         <User
@@ -228,9 +238,9 @@ allReply.value.splice(allReply.value.findIndex(a=>a.key===key),1)
           :space="space"
           class="d-inline-block"
         />
-        
+
         <UiDropdown
-        v-if="isAdmin || isOwner || isCreator"
+          v-if="isAdmin || isOwner || isCreator"
           top="2.5rem"
           right="1.3rem"
           class="float-right"
@@ -238,13 +248,7 @@ allReply.value.splice(allReply.value.findIndex(a=>a.key===key),1)
           :items="threeDotItems"
         >
           <div class="pr-3">
-            
-            <Icon
-         
-              name="threedots"
-              size="25"
-              class="v-align-text-bottom"
-            />
+            <Icon name="threedots" size="25" class="v-align-text-bottom" />
           </div>
         </UiDropdown>
       </div>
@@ -260,7 +264,8 @@ allReply.value.splice(allReply.value.findIndex(a=>a.key===key),1)
           v-if="item.edit_timestamp"
           :aria-label="$d(item.edit_timestamp, 'short', 'en-US')"
           class="tooltipped tooltipped-n"
-          > (edited)</span
+        >
+          (edited)</span
         >
       </div>
     </PluginCommentBoxBlock>
@@ -286,7 +291,7 @@ allReply.value.splice(allReply.value.findIndex(a=>a.key===key),1)
     />
   </div>
   <PluginCommentBoxListReply
-  :proposal="proposal"
+    :proposal="proposal"
     :profiles="profiles"
     :space="space"
     :allReply="allReply"
