@@ -31,7 +31,7 @@ function select(key) {
       :placeholder="$t('searchPlaceholder')"
       :modal="true"
     />
-    <div class="mt-4 mx-0 mx-md-4">
+    <div class="mt-4 mx-0 md:mx-4">
       <a
         v-for="network in networks"
         :key="network.key"

@@ -22,6 +22,6 @@ if (props.modelValue) input.value = props.modelValue.toString();
     v-model="input"
     @input="handleInput"
     type="number"
-    class="input width-full"
+    class="input w-full"
   />
 </template>

@@ -1,4 +1,4 @@
-import { computed, onMounted, ref, watch } from 'vue';
+import { computed, ref } from 'vue';
 import { useModal } from '@/composables/useModal';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useApolloQuery } from '@/composables/useApolloQuery';
@@ -8,6 +8,7 @@ import client from '@/helpers/EIP712';
 
 // const spaceFollows: any = ref({});
 const following = ref([]);
+const loadingFollows = ref(false);
 
 export function useFollowSpace(spaceObj: any = {}) {
   const { web3 } = useWeb3();
@@ -16,7 +17,6 @@ export function useFollowSpace(spaceObj: any = {}) {
   const { setAlias, aliasWallet, isValidAlias, checkAlias } = useAliasAction();
 
   const loadingFollow = ref('');
-  const loadingFollows = ref(true);
   const hoverJoin = ref('');
 
   const web3Account = computed(() => web3.value.account);
@@ -108,12 +108,9 @@ export function useFollowSpace(spaceObj: any = {}) {
   //     { deep: true };
   // });
 
-  watch(web3Account, () => loadFollows());
-
-  onMounted(() => loadFollows());
-
   return {
     clickFollow,
+    loadFollows,
     loadingFollow: computed(() => loadingFollow.value),
     loadingFollows: computed(() => loadingFollows.value),
     isFollowing,

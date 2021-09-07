@@ -74,7 +74,7 @@ watch(votes, () => {
       v-for="(vote, i) in visibleVotes"
       :key="i"
       :style="i === 0 && 'border: 0 !important;'"
-      class="px-4 py-3 border-top d-flex"
+      class="px-4 py-3 border-t flex"
     >
       <User
         :profile="profiles[vote.voter]"
@@ -83,29 +83,28 @@ watch(votes, () => {
         class="column"
       />
       <div class="flex-auto text-center link-color">
-        <span
-          :aria-label="format(proposal, vote.choice)"
-          class="
-            text-center
-            link-color
-            tooltipped tooltipped-multiline tooltipped-n
-          "
+        <UiTooltip
+          class="inline-block"
+          :text="format(proposal, vote.choice)"
+          :show="format(proposal, vote.choice).length > 24"
         >
-          {{ _shorten(format(proposal, vote.choice), 24) }}
-        </span>
+          <span class="text-center link-color">
+            {{ _shorten(format(proposal, vote.choice), 24) }}
+          </span>
+        </UiTooltip>
       </div>
 
       <div class="column text-right link-color">
-        <span
-          class="tooltipped tooltipped-multiline tooltipped-n"
-          :aria-label="
+        <UiTooltip
+          class="inline-block"
+          :text="
             vote.scores
               .map((score, index) => `${_n(score)} ${titles[index]}`)
               .join(' + ')
           "
         >
           {{ `${_n(vote.balance)} ${_shorten(space.symbol, 'symbol')}` }}
-        </span>
+        </UiTooltip>
         <a
           @click="openReceiptModal(vote)"
           target="_blank"
@@ -122,11 +121,12 @@ watch(votes, () => {
       class="
         px-4
         py-3
-        border-top
+        border-t
         text-center
-        d-block
+        block
         header-bg
-        rounded-bottom-0 rounded-md-bottom-2
+        rounded-b-none
+        md:rounded-b-md
       "
     >
       {{ $t('seeMore') }}

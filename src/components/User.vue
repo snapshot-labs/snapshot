@@ -20,12 +20,12 @@ watchEffect(() => {
   <span>
     <UiPopover :options="{ offset: [0, 12], placement: 'bottom-start' }">
       <template v-slot:item>
-        <a class="no-wrap">
+        <a class="flex flex-nowrap">
           <UiAvatar
             :imgsrc="_getUrl(profile?.image)"
             :address="address"
             size="16"
-            class="mr-1"
+            class="mr-2"
           />
           {{ username }}
           <Badges :address="address" :members="space?.members" />
@@ -47,9 +47,9 @@ watchEffect(() => {
           <a
             :href="_explorer(space ? space.network : '1', address)"
             target="_blank"
-            class="mb-2 d-block"
+            class="mb-2 block"
           >
-            <UiButton class="button-outline width-full">
+            <UiButton class="button-outline w-full">
               {{ $t('seeInExplorer') }}
               <Icon name="external-link" class="ml-1" />
             </UiButton>
@@ -58,9 +58,9 @@ watchEffect(() => {
             v-if="profile?.name || profile?.image"
             :href="`https://3box.io/${address}`"
             target="_blank"
-            class="mb-2 d-block"
+            class="mb-2 block"
           >
-            <UiButton class="button-outline width-full">
+            <UiButton class="button-outline w-full">
               {{ $t('view3box') }}
               <Icon name="external-link" class="ml-1" />
             </UiButton>

@@ -9,48 +9,17 @@ const bars = computed(() =>
 </script>
 
 <template>
-  <span class="Progress Progress--small overflow-hidden anim-scale-in">
-    <span
+  <div class="h-2 relative overflow-hidden rounded-full flex">
+    <div
+      class="w-full h-full bg-[color:var(--border-color)] absolute z-5"
+    ></div>
+    <!-- TODO: Reword progress bar, for now opcity is just alternating -->
+    <div
       v-for="(bar, i) in bars"
       :key="i"
       :style="`width: ${parseFloat((100 / max) * bar).toFixed(3)}%;`"
-      class="bg-blue"
+      class="bg-blue h-full z-10"
+      :class="{ 'opacity-50': i % 2 == 1 }"
     />
-  </span>
+  </div>
 </template>
-
-<style scoped lang="scss">
-.Progress {
-  background-color: var(--border-color);
-  height: 8px;
-  border-radius: 4px;
-
-  span:first-child {
-    background-color: var(--primary-color) !important;
-    border-top-left-radius: 4px;
-    border-bottom-left-radius: 4px;
-  }
-
-  span:nth-child(1) {
-    opacity: 1;
-  }
-
-  span:nth-child(2) {
-    opacity: 0.75;
-  }
-
-  span:nth-child(3) {
-    opacity: 0.5;
-  }
-
-  span:nth-child(4) {
-    opacity: 0.25;
-  }
-
-  span:last-child {
-    background-color: var(--primary-color) !important;
-    border-top-right-radius: 4px;
-    border-bottom-right-radius: 4px;
-  }
-}
-</style>
