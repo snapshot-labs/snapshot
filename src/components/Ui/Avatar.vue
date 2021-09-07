@@ -22,7 +22,9 @@ const error = ref(false);
         height: `${parseInt(size) || 22}px`
       }"
       @error="error = true"
-      :class="[space?.skin ? 'background-avatar' : 'bg-white']"
+      :class="[
+        space?.skin ? `${space?.skin} bg-[color:var(--bg-color)]` : 'bg-white'
+      ]"
       class="rounded-full inline-block !align-middle leading-none"
     />
     <jazzicon
@@ -35,9 +37,3 @@ const error = ref(false);
     />
   </span>
 </template>
-
-<style scoped>
-.background-avatar {
-  background-color: var(--bg-color);
-}
-</style>
