@@ -2,8 +2,8 @@
   <div
     class="
       border
-      w-[42px]
-      h-[42px]
+      w-[44px]
+      h-[44px]
       rounded-full
       flex
       justify-center

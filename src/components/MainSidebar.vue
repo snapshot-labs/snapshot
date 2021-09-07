@@ -3,10 +3,12 @@ import { computed, watch, onMounted, ref } from 'vue';
 import { useFollowSpace } from '@/composables/useFollowSpace';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useApp } from '@/composables/useApp';
+import { useDomain } from '@/composables/useDomain';
 
 const { spaces } = useApp();
 const { web3 } = useWeb3();
 const { loadFollows, followingSpaces } = useFollowSpace();
+const { domain } = useDomain();
 
 const modalAboutOpen = ref(false);
 const modalLangOpen = ref(false);
@@ -22,6 +24,7 @@ onMounted(() => {
 
 <template>
   <div
+    v-if="!domain"
     class="
       w-[68px]
       h-screen
@@ -43,7 +46,13 @@ onMounted(() => {
         />
       </div>
       <div
-        class="flex flex-col h-[calc(100%-78px)] items-center space-y-3 pt-2"
+        class="
+          flex flex-col
+          h-[calc(100%-78px)]
+          items-center
+          space-y-[14px]
+          pt-2
+        "
       >
         <router-link :to="{ name: 'timeline' }">
           <UiSidebarButton>
@@ -56,13 +65,13 @@ onMounted(() => {
               $router.push({ name: 'proposals', params: { key: follow } })
             "
           >
-            <Token :space="spaces[follow]" symbolIndex="space" size="40" />
+            <Token :space="spaces[follow]" symbolIndex="space" size="44" />
           </a>
         </div>
         <router-link :to="{ name: 'setup' }">
           <UiSidebarButton><Icon size="20" name="plus" /></UiSidebarButton>
         </router-link>
-        <div class="flex items-center justify-center !mb-0 !mt-auto py-3">
+        <div class="flex items-center justify-center !mb-0 !mt-auto py-[14px]">
           <UiSidebarButton @click="modalAboutOpen = true">
             <span class="mt-1 link-color">?</span>
           </UiSidebarButton>
