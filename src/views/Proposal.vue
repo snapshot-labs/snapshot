@@ -73,9 +73,12 @@ function clickVote() {
 async function loadProposal() {
   const proposalObj = await getProposal(id);
   proposal.value = proposalObj.proposal;
-
   // Redirect to proposal spaceId if it doesn't match route key
-  if (route.params.key && route.params.key !== proposal.value.space.id)
+  if (
+    route.name === 'proposal' &&
+    route.params.key &&
+    route.params.key !== proposal.value.space.id
+  )
     router.push({
       name: 'proposal',
       params: {
