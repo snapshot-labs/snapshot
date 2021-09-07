@@ -123,9 +123,7 @@ export default {
 </script>
 
 <template>
-  <div
-    class="border-t border-b border-md rounded-none md:rounded-md mb-4 block-bg"
-  >
+  <div class="border border-md rounded-none md:rounded-md mb-4 block-bg">
     <h4
       class="px-4 pt-3 border-b block header-bg rounded-t-none md:rounded-t-md"
       style="padding-bottom: 12px"
