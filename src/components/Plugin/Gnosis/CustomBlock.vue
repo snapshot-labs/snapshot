@@ -104,9 +104,10 @@ export default {
           {{ $t('predictedImpact') }}
         </b>
         <div class="float-right">
+          <!-- TODO: use tooltip component -->
           <span :aria-label="baseToken.name" class="tooltipped tooltipped-n">
             <img
-              class="d-inline-block v-align-middle line-height-0 circle border"
+              class="inline-block !align-middle leading-none circle border"
               :src="baseTokenUrl"
               width="22"
               height="22"
@@ -127,7 +128,7 @@ export default {
       </div>
       <div
         :title="choices[1]"
-        class="mb-1 border-bottom header-bg rounded-top-0 rounded-md-top-2"
+        class="mb-1 border-b header-bg rounded-t-none md:rounded-t-md"
         style="padding-bottom: 12px"
       >
         <b>{{ _shorten(choices[1], 'name') }}</b>

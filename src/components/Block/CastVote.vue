@@ -53,7 +53,7 @@ function emitChoice(c) {
     <UiButton
       :disabled="web3.authLoading || selectedChoices < 1"
       @click="$emit('clickVote')"
-      class="d-block width-full button--submit"
+      class="block w-full button--submit"
     >
       {{ $t('proposal.vote') }}
     </UiButton>

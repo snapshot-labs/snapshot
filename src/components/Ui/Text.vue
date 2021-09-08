@@ -27,7 +27,7 @@ const textWithLinks = computed(() =>
 .markdown-body {
   h1,
   h2 {
-    font-size: $h2-size;
+    font-size: 28px;
     border-bottom: 0;
   }
 

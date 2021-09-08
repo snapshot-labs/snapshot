@@ -6,9 +6,9 @@ const props = defineProps({
 });
 
 const stateClass = computed(() => {
-  if (props.state === 'closed') return 'bg-purple';
+  if (props.state === 'closed') return 'bg-purple-600';
   if (props.state === 'active') return 'bg-green';
-  return '';
+  return 'bg-gray-500';
 });
 </script>
 
@@ -16,6 +16,6 @@ const stateClass = computed(() => {
   <span
     :class="stateClass"
     v-text="$t(`proposals.states.${state}`)"
-    class="State text-normal"
+    class="State text-white"
   />
 </template>
