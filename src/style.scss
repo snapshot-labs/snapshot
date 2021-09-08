@@ -250,3 +250,14 @@ input[type='number']::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
+
+.tippy-box {
+  border-radius: 7px !important;
+  padding: 4px 6px 0 !important;
+  max-width: 350px !important;
+  text-align: center;
+  font-family: 'Calibre';
+  font-size: 16px !important;
+  line-height: 10px;
+  font-weight: 600;
+}

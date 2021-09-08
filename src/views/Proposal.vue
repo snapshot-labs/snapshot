@@ -254,9 +254,13 @@ onMounted(async () => {
             class="float-right link-color a"
           >
             <span v-for="(symbol, symbolIndex) of symbols" :key="symbol">
-              <UiTooltip class="inline-block" :text="symbol">
+              <span
+                v-tippy="{
+                  content: symbol
+                }"
+              >
                 <Token :space="space" :symbolIndex="symbolIndex" />
-              </UiTooltip>
+              </span>
               <span v-show="symbolIndex !== symbols.length - 1" class="ml-1" />
             </span>
           </span>
@@ -286,27 +290,23 @@ onMounted(async () => {
         <div>
           <div class="mb-1">
             <b>{{ $t('proposal.startDate') }}</b>
-            <UiTooltip
-              class="inline-block float-right"
-              :text="_ms(proposal.start)"
-            >
-              <span
-                v-text="$d(proposal.start * 1e3, 'short', 'en-US')"
-                class="float-right link-color"
-              />
-            </UiTooltip>
+            <span
+              v-text="$d(proposal.start * 1e3, 'short', 'en-US')"
+              v-tippy="{
+                content: _ms(proposal.start)
+              }"
+              class="float-right link-color"
+            />
           </div>
           <div class="mb-1">
             <b>{{ $t('proposal.endDate') }}</b>
-            <UiTooltip
-              class="inline-block float-right"
-              :text="_ms(proposal.end)"
-            >
-              <span
-                v-text="$d(proposal.end * 1e3, 'short', 'en-US')"
-                class="link-color"
-              />
-            </UiTooltip>
+            <span
+              v-text="$d(proposal.end * 1e3, 'short', 'en-US')"
+              v-tippy="{
+                content: _ms(proposal.end)
+              }"
+              class="link-color float-right"
+            />
           </div>
           <div class="mb-1">
             <b>{{ $t('snapshot') }}</b>

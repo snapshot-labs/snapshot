@@ -83,28 +83,29 @@ watch(votes, () => {
         class="column"
       />
       <div class="flex-auto text-center link-color">
-        <UiTooltip
-          class="inline-block"
-          :text="format(proposal, vote.choice)"
-          :show="format(proposal, vote.choice).length > 24"
+        <span
+          class="text-center link-color"
+          v-tippy="{
+            content:
+              format(proposal, vote.choice).length > 24
+                ? format(proposal, vote.choice)
+                : null
+          }"
         >
-          <span class="text-center link-color">
-            {{ _shorten(format(proposal, vote.choice), 24) }}
-          </span>
-        </UiTooltip>
+          {{ _shorten(format(proposal, vote.choice), 24) }}
+        </span>
       </div>
 
       <div class="column text-right link-color">
-        <UiTooltip
-          class="inline-block"
-          :text="
-            vote.scores
+        <span
+          v-tippy="{
+            content: vote.scores
               .map((score, index) => `${_n(score)} ${titles[index]}`)
               .join(' + ')
-          "
+          }"
         >
           {{ `${_n(vote.balance)} ${_shorten(space.symbol, 'symbol')}` }}
-        </UiTooltip>
+        </span>
         <a
           @click="openReceiptModal(vote)"
           target="_blank"

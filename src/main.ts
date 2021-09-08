@@ -14,6 +14,8 @@ import '@/helpers/auth';
 import '@/style.scss';
 import { apolloClient } from '@/helpers/apollo';
 import { DefaultApolloClient } from '@vue/apollo-composable';
+import VueTippy from 'vue-tippy';
+import 'tippy.js/dist/tippy.css';
 
 const app = createApp({
   setup() {
@@ -23,7 +25,11 @@ const app = createApp({
 })
   .use(i18n)
   .use(router)
-  .use(LockPlugin, options)
+  .use(LockPlugin, options);
+app
+  .use(VueTippy, {
+    directive: 'tippy' // => v-tippy
+  })
 
   .component('jazzicon', Jazzicon)
   .mixin(mixins);
