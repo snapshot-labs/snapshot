@@ -13,7 +13,6 @@ const bars = computed(() =>
     <div
       class="w-full h-full bg-[color:var(--border-color)] absolute z-5"
     ></div>
-    <!-- TODO: Reword progress bar, for now opcity is just alternating -->
     <div
       v-for="(bar, i) in bars.filter(b => b !== 0)"
       :key="i"
