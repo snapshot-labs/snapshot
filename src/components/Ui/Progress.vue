@@ -22,7 +22,7 @@ const bars = computed(() =>
         'opacity-80': i === 1,
         'opacity-60': i === 2,
         'opacity-40': i === 3,
-        'opacity-20': i === 4
+        'opacity-20': i >= 4
       }"
     />
   </div>
