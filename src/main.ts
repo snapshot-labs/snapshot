@@ -15,7 +15,6 @@ import '@/style.scss';
 import { apolloClient } from '@/helpers/apollo';
 import { DefaultApolloClient } from '@vue/apollo-composable';
 import VueTippy from 'vue-tippy';
-import 'tippy.js/dist/tippy.css';
 
 const app = createApp({
   setup() {
