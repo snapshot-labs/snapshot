@@ -98,28 +98,28 @@
   "defaultSkin": "Skin padrão",
   "select": "Selecionar",
   "language": "Idioma",
-  "agree": "I agree",
-  "mustAgreeToTerms": "Before you can complete this action, you must agree to {0} terms of service here:",
-  "playground": "Playground",
-  "strategyParams": "Strategy params",
-  "addresses": "Addresses",
-  "networkErrorPlayground": "Network error - please open your browser console for more information",
+  "agree": "Eu concordo",
+  "mustAgreeToTerms": "Antes de concluir esta ação, você deve concordar com os {0} termos de serviço aqui:",
+  "playground": "Parque infantil",
+  "strategyParams": "Parâmetros de estratégia",
+  "addresses": "Moradas",
+  "networkErrorPlayground": "Erro de rede - por favor, abra o console do seu navegador para mais informações",
   "upload": "Upload",
-  "join": "Join",
-  "joined": "Joined",
-  "leave": "Leave",
-  "copyLink": "Copy link",
-  "duplicateProposal": "Duplicate proposal",
-  "joinedSpaces": "Joined spaces",
-  "joinSpaces": "Join spaces",
+  "join": "Junte-se",
+  "joined": "Juntou-se",
+  "leave": "Sair",
+  "copyLink": "Copiar link",
+  "duplicateProposal": "Duplicar proposta",
+  "joinedSpaces": "Juntou espaços",
+  "joinSpaces": "Juntar-se aos espaços",
   "errors": {
-    "required": "Field is required",
-    "minLength": "Minimum length is {0}",
-    "maxLength": "Maximum length is {0}",
+    "required": "O campo é obrigatório",
+    "minLength": "O comprimento mínimo é {0}",
+    "maxLength": "O comprimento máximo é {0}",
     "pattern": "Caracteres Inválidos",
     "minItems": "Mínimo {0} item(s) obrigatório(s)",
     "minStrategy": "É necessária pelo menos uma estratégia.",
-    "format": "Invalid format"
+    "format": "Formato inválido"
   },
   "create": {
     "question": "Pergunta",
@@ -135,16 +135,16 @@
     "snapshotBlock": "Número de bloco Snapshot",
     "validationWarning": {
       "basic": {
-        "member": "You need to be a member of the space in order to submit a proposal.",
-        "minScore": "You need to have a minimum of {0} {1} in order to submit a proposal."
+        "member": "Você deve ser um membro do espaço para enviar uma proposta.",
+        "minScore": "Você precisa ter um mínimo de {0} {1} para submeter uma proposta."
       },
-      "customValidation": "You need to pass the proposal validation in order to submit a proposal."
+      "customValidation": "Você precisa passar a validação da proposta para submeter uma proposta."
     }
   },
   "delegate": {
     "header": "Delegar",
-    "selectDelegate": "Select delegate",
-    "to": "To",
+    "selectDelegate": "Selecionar delegado",
+    "to": "Para",
     "addressPlaceholder": "Address or ENS name",
     "spacePlaceholder": "Comunidade (opcional)",
     "delegations": "Sua(s) delegação(ões)",
