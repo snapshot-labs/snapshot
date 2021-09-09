@@ -13,13 +13,17 @@ const bars = computed(() =>
     <div
       class="w-full h-full bg-[color:var(--border-color)] absolute z-5"
     ></div>
-    <!-- TODO: Reword progress bar, for now opcity is just alternating -->
     <div
-      v-for="(bar, i) in bars"
+      v-for="(bar, i) in bars.filter(b => b !== 0)"
       :key="i"
       :style="`width: ${parseFloat((100 / max) * bar).toFixed(3)}%;`"
-      class="bg-blue h-full z-10"
-      :class="{ 'opacity-50': i % 2 == 1 }"
+      class="bg-primary h-full z-10"
+      :class="{
+        'opacity-80': i === 1,
+        'opacity-60': i === 2,
+        'opacity-40': i === 3,
+        'opacity-20': i >= 4
+      }"
     />
   </div>
 </template>
