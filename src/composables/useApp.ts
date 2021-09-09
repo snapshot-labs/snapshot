@@ -50,7 +50,7 @@ export function useApp() {
 
   async function getExplore() {
     const exploreObj: any = await fetch(
-      'https://hub.snapshot.org/api/explore'
+      `${import.meta.env.VITE_HUB_URL}/api/explore`
     ).then(res => res.json());
 
     exploreObj.spaces = Object.fromEntries(
