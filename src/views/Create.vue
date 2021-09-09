@@ -189,12 +189,12 @@ onMounted(async () => {
 <template>
   <Layout v-bind="$attrs">
     <template #content-left>
-      <div class="px-4 px-md-0 mb-3">
+      <div class="px-4 md:px-0 mb-3">
         <router-link
           :to="{ name: domain ? 'home' : 'proposals' }"
           class="text-color"
         >
-          <Icon name="back" size="22" class="v-align-middle" />
+          <Icon name="back" size="22" class="!align-middle" />
           {{ space.name }}
         </router-link>
       </div>
@@ -219,12 +219,12 @@ onMounted(async () => {
           }}
         </span>
       </Block>
-      <div class="px-4 px-md-0">
-        <div class="d-flex flex-column mb-6">
+      <div class="px-4 md:px-0">
+        <div class="flex flex-col mb-6">
           <input
             v-model="form.name"
             maxlength="128"
-            class="h1 mb-2 input"
+            class="text-2xl font-bold mb-2 input"
             :placeholder="$t('create.question')"
             ref="nameForm"
           />
@@ -234,7 +234,7 @@ onMounted(async () => {
             :placeholder="$t('create.content')"
           />
           <div class="mb-6">
-            <p v-if="form.body.length > bodyLimit" class="text-red mt-4">
+            <p v-if="form.body.length > bodyLimit" class="!text-red mt-4">
               -{{ _n(-(bodyLimit - form.body.length)) }}
             </p>
           </div>
@@ -252,8 +252,8 @@ onMounted(async () => {
             item-key="id"
           >
             <template #item="{ element, index }">
-              <div class="d-flex mb-2">
-                <UiButton class="d-flex width-full">
+              <div class="flex mb-2">
+                <UiButton class="flex w-full">
                   <span class="mr-4">{{ index + 1 }}</span>
                   <input
                     v-model="element.text"
@@ -268,7 +268,7 @@ onMounted(async () => {
             </template>
           </draggable>
         </div>
-        <UiButton @click="addChoice(1)" class="d-block width-full">
+        <UiButton @click="addChoice(1)" class="block w-full">
           {{ $t('create.addChoice') }}
         </UiButton>
       </Block>
@@ -292,28 +292,28 @@ onMounted(async () => {
         @submit="modalProposalPluginsOpen = true"
       >
         <div class="mb-2">
-          <UiButton class="width-full mb-2" @click="modalVotingTypeOpen = true">
+          <UiButton class="w-full mb-2" @click="modalVotingTypeOpen = true">
             <span>{{ $t(`voting.${form.type}`) }}</span>
           </UiButton>
           <UiButton
             @click="(modalOpen = true), (selectedDate = 'start')"
-            class="width-full mb-2"
+            class="w-full mb-2"
           >
             <span v-if="!form.start">{{ $t('create.startDate') }}</span>
             <span v-else v-text="$d(form.start * 1e3, 'short', 'en-US')" />
           </UiButton>
           <UiButton
             @click="(modalOpen = true), (selectedDate = 'end')"
-            class="width-full mb-2"
+            class="w-full mb-2"
           >
             <span v-if="!form.end">{{ $t('create.endDate') }}</span>
             <span v-else v-text="$d(form.end * 1e3, 'short', 'en-US')" />
           </UiButton>
-          <UiButton class="width-full mb-2">
+          <UiButton class="w-full mb-2">
             <input
               v-model="form.snapshot"
               type="number"
-              class="input width-full text-center"
+              class="input w-full text-center"
               :placeholder="$t('create.snapshotBlock')"
             />
           </UiButton>
@@ -322,7 +322,7 @@ onMounted(async () => {
           @click="clickSubmit"
           :disabled="!isValid"
           :loading="loading || queryLoading"
-          class="d-block width-full button--submit"
+          class="block w-full button--submit"
         >
           {{ $t('create.publish') }}
         </UiButton>

@@ -24,7 +24,7 @@ function handleInput(e) {
 
 <template>
   <UiButton
-    class="text-left width-full mb-2 d-flex px-3"
+    class="text-left w-full mb-2 flex px-3"
     :class="{ 'border-red': error }"
   >
     <div class="text-color mr-2">
@@ -42,11 +42,10 @@ function handleInput(e) {
       :required="required"
     />
     <slot name="info" />
-    <span
-      v-if="error"
-      :aria-label="error"
-      class="float-right link-color tooltipped tooltipped-n"
-      ><Icon name="warning" class="text-red p-1 d-block pt-2 mt-1 mr-n1"
-    /></span>
+    <UiTooltip class="inline-block" :text="error">
+      <span v-if="error" class="float-right link-color">
+        <Icon name="warning" class="!text-red p-1 block pt-2 mt-1 -mr-1" />
+      </span>
+    </UiTooltip>
   </UiButton>
 </template>

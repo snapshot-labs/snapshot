@@ -63,29 +63,29 @@ async function handleSubmit() {
 </script>
 
 <template>
-  <UiModal :open="open" v-if="open" @close="$emit('close')" class="d-flex">
+  <UiModal :open="open" v-if="open" @close="$emit('close')" class="flex">
     <template v-slot:header>
       <h3>{{ $t('removeDelegation') }}</h3>
     </template>
-    <form @submit.prevent="handleSubmit" class="d-flex flex-column flex-auto">
+    <form @submit.prevent="handleSubmit" class="flex flex-col flex-auto">
       <h4 class="m-4 text-center">
         {{ $t('confirmRemove') }}
         {{ username }}
         <template v-if="id">{{ $tc('removeSpace', [id]) }}</template
         >?
       </h4>
-      <div class="p-4 overflow-hidden text-center border-top">
-        <div class="col-6 float-left pr-2">
-          <UiButton @click="$emit('close')" type="button" class="width-full">
+      <div class="p-4 overflow-hidden text-center border-t">
+        <div class="w-2/4 float-left pr-2">
+          <UiButton @click="$emit('close')" type="button" class="w-full">
             {{ $t('cancel') }}
           </UiButton>
         </div>
-        <div class="col-6 float-left pl-2">
+        <div class="w-2/4 float-left pl-2">
           <UiButton
             :disabled="loading"
             :loading="loading"
             type="submit"
-            class="width-full button--submit"
+            class="w-full button--submit"
           >
             {{ $t('confirm') }}
           </UiButton>

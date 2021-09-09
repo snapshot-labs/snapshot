@@ -36,12 +36,19 @@ watch(modalOpen, val => {
 </script>
 
 <template>
-  <div :class="space?.skin" id="app" class="overflow-hidden pb-4">
+  <div
+    :class="space?.skin"
+    id="app"
+    class="overflow-hidden pb-4 font-serif text-base"
+  >
     <UiLoading v-if="app.loading || !app.init" class="overlay big" />
     <div v-else>
-      <Topnav />
-      <div class="pb-6">
-        <router-view :key="$route.path" class="flex-auto" />
+      <MainSidebar />
+      <div :class="{ 'sm:ml-[68px]': !domain }">
+        <Topnav />
+        <div class="pb-6">
+          <router-view :key="$route.path" class="flex-auto" />
+        </div>
       </div>
     </div>
     <div id="modal" />

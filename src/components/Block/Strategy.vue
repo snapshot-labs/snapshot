@@ -6,7 +6,7 @@ export default {
 
 <template>
   <Block>
-    <div class="d-flex flex-items-baseline">
+    <div class="flex items-baseline">
       <h3>
         {{ strategy.key }}
       </h3>

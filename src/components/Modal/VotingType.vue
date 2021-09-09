@@ -27,7 +27,7 @@ function select(id) {
     <template v-slot:header>
       <h3>{{ $t('voting.selectVoting') }}</h3>
     </template>
-    <div class="mt-4 mx-0 mx-md-4">
+    <div class="mt-4 mx-0 md:mx-4">
       <a v-for="type in types" :key="type" @click="select(type)">
         <Block class="button--submit">
           <h3 v-text="$t(`voting.${type}`)" />

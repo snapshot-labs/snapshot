@@ -27,12 +27,12 @@ function selectLang(locale) {
     <template v-slot:header>
       <h3>{{ $t('language') }}</h3>
     </template>
-    <div class="text-center mt-4 mb-3 px-4 width-full">
+    <div class="text-center mt-4 mb-3 px-4 w-full">
       <UiButton
         v-for="locale in locales"
         :key="locale"
         @click="selectLang(locale)"
-        class="width-full mb-2"
+        class="w-full mb-2"
       >
         {{ locale === 'en-US' ? '' : languages[locale].nativeName + ' - ' }}
         {{ languages[locale].name }}

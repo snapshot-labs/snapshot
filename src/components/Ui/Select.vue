@@ -10,7 +10,7 @@ function handleChange(event) {
 </script>
 
 <template>
-  <UiButton class="width-full mb-2 px-3 d-flex overflow-hidden">
+  <UiButton class="w-full mb-2 px-3 flex items-center overflow-hidden">
     <div class="text-color mr-2 no-shrink">
       <slot name="label" />
     </div>
@@ -22,7 +22,7 @@ function handleChange(event) {
       :value="modelValue"
       @change="handleChange($event)"
       v-bind:class="{ disabled }"
-      class="input flex-auto height-full width-full"
+      class="input flex-auto height-full w-full"
     >
       <slot />
     </select>

@@ -40,15 +40,9 @@ function updateChoices() {
         <template #item="{ element, index }">
           <div class="mb-2">
             <UiButton
-              class="
-                d-flex
-                flex-justify-center
-                width-full
-                button--active
-                position-relative
-              "
+              class="flex justify-center w-full button--active relative"
             >
-              <div class="position-absolute left-4">
+              <div class="absolute left-4">
                 ({{ getNumberWithOrdinal(index + 1) }})
               </div>
               <div style="width: 60%">
@@ -58,7 +52,7 @@ function updateChoices() {
               </div>
               <div
                 @click="removeChoice(index)"
-                class="float-right position-absolute right-2 px-3"
+                class="float-rightabsolute right-2 px-3"
               >
                 <Icon name="close" size="12" />
               </div>
@@ -71,7 +65,7 @@ function updateChoices() {
       <UiButton
         v-if="!selectedChoices.includes(i + 1)"
         @click="selectChoice(i + 1)"
-        class="d-block width-full mb-2"
+        class="block w-full mb-2"
         :class="selectedChoices.includes(i + 1) && 'button--active'"
       >
         <span class="truncated">{{ choice }}</span>

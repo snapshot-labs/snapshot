@@ -5,7 +5,7 @@ export default {
 </script>
 
 <template>
-  <div :class="skin.key" class="bg-black rounded-0 rounded-md-2">
+  <div :class="skin.key" class="bg-black rounded-none md:rounded-md">
     <Block>
       <UiButton class="button--submit mb-2">{{ skin.key }}</UiButton>
       <div class="text-color">

@@ -54,31 +54,18 @@ watch(selectedChoices.value, currentValue => {
   <div class="mb-3">
     <div v-for="(choice, i) in proposal.choices" :key="i">
       <UiButton
-        class="d-block width-full mb-2"
+        class="block w-full mb-2"
         :class="selectedChoices[i + 1] > 0 && 'button--active'"
       >
-        <div
-          class="
-            col-sm-8 col-7
-            float-left
-            text-left
-            pr-3
-            tooltipped tooltipped-multiline
-          "
-          :class="[
-            isSmallScreen
-              ? 'tooltipped-ne tooltipped-align-left-2'
-              : 'tooltipped-n'
-          ]"
-          :aria-label="choice"
+        <UiTooltip
+          class="inline-block w-7/12 sm:w-8/12 float-left text-left pr-3"
+          :text="choice"
         >
-          <span class="truncated width-full">
+          <span class="truncated w-full">
             {{ choice }}
           </span>
-        </div>
-        <div
-          class="col-4 d-flex flex-items-center flex-justify-end float-right"
-        >
+        </UiTooltip>
+        <div class="w-4/12 flex items-center justify-end float-right">
           <button
             v-if="!isSmallScreen"
             :disabled="!selectedChoices[i + 1]"
