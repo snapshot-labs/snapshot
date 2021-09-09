@@ -16,6 +16,6 @@ export default {
       <Icon name="github" class="mr-1" />
       {{ strategy.author }}
     </div>
-    <div>{{ $tc('inSpaces', [_n(strategy.spaces.length)]) }}</div>
+    <div>{{ $tc('inSpaces', [_n(strategy.spaces)]) }}</div>
   </Block>
 </template>
