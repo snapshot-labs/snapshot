@@ -6,7 +6,7 @@ import validations from '@snapshot-labs/snapshot.js/src/validations';
 import { useApp } from '@/composables/useApp';
 
 export function useSearchFilters() {
-  const { spaces, strategies, explore } = useApp();
+  const { strategies, explore } = useApp();
 
   const minifiedSkinsArray = computed(() =>
     Object.keys(skins).map(s => ({
@@ -57,23 +57,16 @@ export function useSearchFilters() {
       )
       .sort((a, b) => b.spaces - a.spaces);
 
-  const minifiedValidationsArray = computed(() => {
-    return Object.keys(validations).map((key: any) => {
-      return {
-        name: key,
-        spaces: Object.entries(spaces.value)
-          .filter((space: any) => space[1].validation?.name === key)
-          .map(space => space[0])
-      };
-    });
-  });
-  const filteredValidations = (q = '') => {
-    return minifiedValidationsArray.value
-      .filter(validation =>
-        JSON.stringify(validation).toLowerCase().includes(q.toLowerCase())
-      )
-      .sort((a, b) => b.spaces.length - a.spaces.length);
-  };
+  const minifiedValidationsArray = computed(() =>
+    Object.keys(validations).map((key: any) => ({
+      name: key,
+      spaces: explore.value.validations[key]
+    }))
+  );
+  const filteredValidations = (q = '') =>
+    minifiedValidationsArray.value
+      .filter(v => JSON.stringify(v).toLowerCase().includes(q.toLowerCase()))
+      .sort((a, b) => b.spaces - a.spaces);
 
   return {
     filteredSkins,
