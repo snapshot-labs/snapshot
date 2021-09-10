@@ -11,6 +11,7 @@ const state = reactive({
 
 const spaces = ref({});
 const strategies = ref({});
+const explore: any = ref({});
 
 const { login } = useWeb3();
 
@@ -18,7 +19,7 @@ export function useApp() {
   async function init() {
     const auth = getInstance();
     state.loading = true;
-    await Promise.all([getSpaces(), getStrategies()]);
+    await Promise.all([getSpaces(), getStrategies(), getExplore()]);
     auth.getConnector().then(connector => {
       if (connector) login(connector);
     });
@@ -36,7 +37,7 @@ export function useApp() {
     );
 
     spaces.value = spacesObj;
-    return spacesObj;
+    return;
   }
 
   async function getStrategies() {
@@ -44,7 +45,25 @@ export function useApp() {
       'https://score.snapshot.org/api/strategies'
     ).then(res => res.json());
     strategies.value = strategiesObj;
-    return strategiesObj;
+    return;
+  }
+
+  async function getExplore() {
+    const exploreObj: any = await fetch(
+      `${import.meta.env.VITE_HUB_URL}/api/explore`
+    ).then(res => res.json());
+
+    exploreObj.spaces = Object.fromEntries(
+      Object.entries(exploreObj.spaces).map((space: any) => [
+        space[0],
+        {
+          id: space[0],
+          ...space[1]
+        }
+      ])
+    );
+    explore.value = exploreObj;
+    return;
   }
 
   return {
@@ -52,6 +71,7 @@ export function useApp() {
     getSpaces,
     app: computed(() => state),
     spaces: computed(() => spaces.value),
-    strategies: computed(() => strategies.value)
+    strategies: computed(() => strategies.value),
+    explore: computed(() => explore.value)
   };
 }
