@@ -9,10 +9,10 @@ const { clickFollow, loadingFollow, isFollowing, hoverJoin } = useFollowSpace(
 
 <template>
   <UiButton
-    @click.stop="loadingFollow !== '' ? null : clickFollow(space.key)"
-    @mouseenter="hoverJoin = space.key"
+    @click.stop="loadingFollow !== '' ? null : clickFollow(space.id)"
+    @mouseenter="hoverJoin = space.id"
     @mouseleave="hoverJoin = ''"
-    :loading="loadingFollow === space.key"
+    :loading="loadingFollow === space.id"
     :disable="false"
     style="width: 120px"
   >
