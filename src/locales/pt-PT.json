@@ -145,19 +145,19 @@
     "header": "Delegar",
     "selectDelegate": "Selecionar delegado",
     "to": "Para",
-    "addressPlaceholder": "Address or ENS name",
+    "addressPlaceholder": "Nome do endereço ou ENS",
     "spacePlaceholder": "Comunidade (opcional)",
     "delegations": "Sua(s) delegação(ões)",
-    "allSpaces": "For all spaces",
+    "allSpaces": "Para todos os espaços",
     "delegated": "Delegado a você",
-    "pendingTransaction": "no pending transaction | 1 pending transaction | {count} pending transactions"
+    "pendingTransaction": "sem transações pendentes | 1 transação pendente | {count} transações pendentes"
   },
   "proposal": {
     "castVote": "Votar",
     "vote": "Votar",
     "startDate": "Data de início",
     "endDate": "Data final",
-    "votingSystem": "Voting system"
+    "votingSystem": "Sistema de votação"
   },
   "proposals": {
     "header": "Propostas",
@@ -191,17 +191,17 @@
     "members": "Membros",
     "admins": "Administradores",
     "defaultTab": "Separador padrão",
-    "proposalThreshold": "Proposal threshold",
-    "allowOnlyMembers": "Allow only members to submit a proposal",
+    "proposalThreshold": "Limite da proposta",
+    "allowOnlyMembers": "Permitir que somente membros enviem uma proposta",
     "editPlugin": "Editar plugin",
     "addPlugin": "Adicionar plugin",
     "pluginParameters": "Parâmetros do plugin",
-    "proposalValidation": "Proposal validation",
-    "validation": "Validation",
-    "editValidation": "Edit validation",
-    "selectValidation": "Select validation",
-    "validationParameters": "Validation parameters",
-    "warningTextRecord": "You must set a text record on the ENS domain."
+    "proposalValidation": "Validação da proposta",
+    "validation": "Validação",
+    "editValidation": "Editar validação",
+    "selectValidation": "Selecionar validação",
+    "validationParameters": "Parâmetros de validação",
+    "warningTextRecord": "Você deve definir um registro de texto no domínio ENS."
   },
   "setup": {
     "example": "p. ex. yam.eth",
@@ -216,20 +216,20 @@
     "somethingWentWrong": "Ops, algo correu mal!"
   },
   "explore": {
-    "createStrategy": "Create strategy",
-    "createSkin": "Create skin",
-    "addNetwork": "Add network",
-    "createPlugin": "Create plugin",
-    "strategies": "strategie(s)",
+    "createStrategy": "Criar estratégia",
+    "createSkin": "Criar skin",
+    "addNetwork": "Adicionar rede",
+    "createPlugin": "Criar plug-in",
+    "strategies": "estratégia(s)",
     "skins": "skin(s)",
-    "networks": "network(s)",
+    "networks": "rede(s)",
     "plugins": "plugin(s)",
-    "results": "result(s)"
+    "results": "resultado(s)"
   },
   "voting": {
-    "selectVoting": "Select voting system",
-    "single-choice": "Single choice voting",
-    "approval": "Approval voting",
+    "selectVoting": "Selecionar sistema de votação",
+    "single-choice": "Voto de escolha única",
+    "approval": "Votação de aprovação",
     "quadratic": "Quadratic voting",
     "ranked-choice": "Ranked choice voting",
     "weighted": "Weighted voting",
