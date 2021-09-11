@@ -27,12 +27,11 @@ const error = ref(false);
       ]"
       class="rounded-full inline-block !align-middle leading-none"
     />
-    <jazzicon
+    <vueblockies
       v-else
-      :seed="parseInt(seed)"
-      :address="address"
-      :diameter="parseInt(size) - 2 || 22"
-      class="inline-block !align-middle"
+      :seed="address"
+      :scale="parseInt(size) - 14 || 14"
+      class="inline-block !align-middle rounded-full"
       style="line-height: 0"
     />
   </span>
