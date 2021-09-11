@@ -36,7 +36,7 @@ export function useSharing() {
     share({
       title: '',
       text: `${space.name} - ${proposal.title}`,
-      url: proposalUrl(space.key, proposal)
+      url: proposalUrl(space.id, proposal)
     });
   }
 
@@ -44,7 +44,7 @@ export function useSharing() {
     const url = `https://twitter.com/intent/tweet?text=@${
       space.twitter || space.name
     }%20${encodeURIComponent(proposal.title)}%20${encodedProposalUrl(
-      space.key,
+      space.id,
       proposal
     )}`;
     window.open(url, '_blank').focus();
@@ -52,7 +52,7 @@ export function useSharing() {
 
   function shareToFacebook(space, proposal, window) {
     const url = `https://www.facebook.com/sharer/sharer.php?u=${encodedProposalUrl(
-      space.key,
+      space.id,
       proposal
     )}&quote=${encodeURIComponent(proposal.title)}`;
     window.open(url, '_blank').focus();
@@ -61,7 +61,7 @@ export function useSharing() {
   const { copyToClipboard } = useCopy();
 
   function shareToClipboard(space, proposal) {
-    copyToClipboard(proposalUrl(space.key, proposal));
+    copyToClipboard(proposalUrl(space.id, proposal));
   }
 
   return {

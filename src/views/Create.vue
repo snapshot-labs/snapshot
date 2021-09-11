@@ -119,7 +119,7 @@ async function handleSubmit() {
   form.value.metadata.network = space.value.network;
   form.value.metadata.strategies = space.value.strategies;
   try {
-    const { ipfsHash } = await send(space.value.key, 'proposal', form.value);
+    const { ipfsHash } = await send(space.value.id, 'proposal', form.value);
     router.push({
       name: 'proposal',
       params: {
