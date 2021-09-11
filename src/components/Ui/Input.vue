@@ -23,8 +23,8 @@ function handleInput(e) {
 </script>
 
 <template>
-  <UiButton
-    class="text-left w-full mb-2 flex px-3"
+  <div
+    class="fake-button text-left w-full mb-2 flex px-3"
     :class="{ 'border-red': error }"
   >
     <div class="text-color mr-2">
@@ -47,5 +47,27 @@ function handleInput(e) {
         <Icon name="warning" class="!text-red p-1 block pt-2 mt-1 -mr-1" />
       </span>
     </UiTooltip>
-  </UiButton>
+  </div>
 </template>
+
+<style scoped lang="scss">
+.fake-button {
+  border: 1px solid var(--border-color);
+  background-color: transparent;
+  color: var(--link-color);
+  border-radius: 23px;
+  outline: none;
+  line-height: 46px;
+  height: 46px;
+  font-size: 18px;
+
+  &.fake-button--active {
+    border-color: var(--link-color) !important;
+  }
+
+  &:hover {
+    color: var(--link-color);
+    border-color: var(--link-color);
+  }
+}
+</style>
