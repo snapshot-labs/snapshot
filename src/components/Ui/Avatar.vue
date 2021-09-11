@@ -27,10 +27,9 @@ const error = ref(false);
       ]"
       class="rounded-full inline-block !align-middle leading-none"
     />
-    <UiVueBlockie
+    <UiBlockie
       v-else
       :seed="address"
-      :scale="14"
       class="inline-block !align-middle rounded-full"
       :style="{
         'line-height': 0,
