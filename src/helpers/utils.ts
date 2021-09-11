@@ -75,7 +75,7 @@ export function getStrategy(strategy, spaces) {
 
 export function formatSpace(key, space) {
   space = {
-    key,
+    id: key,
     ...space,
     members: space.members || [],
     admins: space.admins || [],
