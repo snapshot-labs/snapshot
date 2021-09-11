@@ -1,7 +1,7 @@
 <script setup>
 import { computed } from 'vue';
-
 import makeBlockie from 'ethereum-blockies-base64';
+
 const props = defineProps({
   seed: {
     type: String,
@@ -9,9 +9,7 @@ const props = defineProps({
   }
 });
 
-const blockie = computed(() => {
-  return makeBlockie(props.seed);
-});
+const blockie = computed(() => makeBlockie(props.seed));
 </script>
 
 <template>
