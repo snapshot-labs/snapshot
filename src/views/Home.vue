@@ -2,35 +2,30 @@
 import { ref, computed, watchEffect } from 'vue';
 import { useRoute } from 'vue-router';
 import orderBy from 'lodash/orderBy';
-import spotlight from '@/../snapshot-spaces/spaces/spotlight.json';
 import { useUnseenProposals } from '@/composables/useUnseenProposals';
 import { useScrollMonitor } from '@/composables/useScrollMonitor';
 import { useApp } from '@/composables/useApp';
 import { useFollowSpace } from '@/composables/useFollowSpace';
 
 const route = useRoute();
-const { spaces } = useApp();
+const { explore } = useApp();
 const { followingSpaces } = useFollowSpace();
 
 const orderedSpaces = computed(() => {
-  const networkFilter = route.query.network;
   const q = route.query.q || '';
-  const list = Object.keys(spaces.value)
+  const list = Object.keys(explore.value.spaces)
     .map(key => {
-      const spotlightIndex = spotlight.indexOf(key);
       return {
-        ...spaces.value[key],
+        ...explore.value.spaces[key],
         following: followingSpaces.value.some(s => s === key),
-        isActive: !!spaces.value[key]._activeProposals,
-        spotlight: spotlightIndex === -1 ? 1e3 : spotlightIndex
+        followers: explore.value.spaces[key].followers ?? 0,
+        private: explore.value.spaces[key].private ?? false
       };
     })
     .filter(space => !space.private);
 
-  return orderBy(list, ['following', 'spotlight'], ['desc', 'asc']).filter(
-    space =>
-      (networkFilter ? space.network === networkFilter.toLowerCase() : true) &&
-      JSON.stringify(space).toLowerCase().includes(q.toLowerCase())
+  return orderBy(list, ['following', 'followers'], ['desc', 'desc']).filter(
+    space => JSON.stringify(space).toLowerCase().includes(q.toLowerCase())
   );
 });
 
@@ -62,10 +57,10 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
       <div class="overflow-hidden -mr-4">
         <a
           @click="
-            $router.push({ name: 'proposals', params: { key: space.key } })
+            $router.push({ name: 'proposals', params: { key: space.id } })
           "
           v-for="space in orderedSpaces.slice(0, limit)"
-          :key="space.key"
+          :key="space.id"
         >
           <div class="w-full lg:w-1/4 pr-4 float-left">
             <Block
@@ -80,8 +75,8 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
                   class="mb-1"
                 />
                 <UiCounter
-                  v-if="space._activeProposals"
-                  :counter="space._activeProposals"
+                  v-if="space.activeProposals"
+                  :counter="space.activeProposals"
                   class="absolute top-2 right-0 !bg-green"
                 />
               </span>

@@ -28,7 +28,7 @@ export function useFollowSpace(spaceObj: any = {}) {
   const isFollowing = computed(() =>
     following.value.some(
       (f: any) =>
-        f.space.id === spaceObj?.key && f.follower === web3Account.value
+        f.space.id === spaceObj?.id && f.follower === web3Account.value
     )
   );
 
@@ -38,11 +38,11 @@ export function useFollowSpace(spaceObj: any = {}) {
       Promise.all([
         // Hint: Saving this for when we want to show how many users follow a space.
 
-        // (spaceFollows.value[spaceObj.key] = await apolloQuery(
+        // (spaceFollows.value[spaceObj.id] = await apolloQuery(
         //   {
         //     query: FOLLOWS_QUERY,
         //     variables: {
-        //       space_in: spaceObj.key
+        //       space_in: spaceObj.id
         //     }
         //   },
         //   'follows'
@@ -73,7 +73,7 @@ export function useFollowSpace(spaceObj: any = {}) {
   }
 
   async function follow(space) {
-    loadingFollow.value = spaceObj.key;
+    loadingFollow.value = spaceObj.id;
     try {
       await checkAlias();
       if (!aliasWallet.value || !isValidAlias.value) {
@@ -103,7 +103,7 @@ export function useFollowSpace(spaceObj: any = {}) {
   // watchEffect(async () => {
   //   (isFollowing.value = (following.value ?? []).some(
   //     (f: any) =>
-  //       f.space.id === spaceObj?.key && f.follower === web3Account.value
+  //       f.space.id === spaceObj?.id && f.follower === web3Account.value
   //   )),
   //     { deep: true };
   // });
