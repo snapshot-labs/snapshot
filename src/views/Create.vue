@@ -252,8 +252,13 @@ onMounted(async () => {
             item-key="id"
           >
             <template #item="{ element, index }">
-              <UiInput v-model="element.text"
-                ><template v-slot:label class="mr-4">{{ index + 1 }}</template>
+              <UiInput v-model="element.text" maxlength="32"
+                ><template v-slot:label>{{ index + 1 }} </template>
+                <template v-slot:info
+                  ><span @click="removeChoice(index)">
+                    <Icon name="close" size="12" />
+                  </span>
+                </template>
               </UiInput>
             </template>
           </draggable>

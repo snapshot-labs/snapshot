@@ -5,6 +5,7 @@ const props = defineProps({
   error: [String, Boolean],
   number: Boolean,
   disabled: Boolean,
+  maxlength: Number,
   required: {
     type: Boolean,
     default: true
@@ -40,6 +41,7 @@ function handleInput(e) {
       :disabled="disabled"
       class="input flex-auto"
       :required="required"
+      :maxlength="maxlength"
     />
     <slot name="info" />
     <UiTooltip class="inline-block" :text="error">
