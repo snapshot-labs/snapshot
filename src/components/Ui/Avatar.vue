@@ -27,12 +27,16 @@ const error = ref(false);
       ]"
       class="rounded-full inline-block !align-middle leading-none"
     />
-    <vueblockies
+    <UiVueBlockie
       v-else
       :seed="address"
-      :scale="parseInt(size) - 14 || 14"
+      :scale="14"
       class="inline-block !align-middle rounded-full"
-      style="line-height: 0"
+      :style="{
+        'line-height': 0,
+        width: `${parseInt(size) || 22}px`,
+        height: `${parseInt(size) || 22}px`
+      }"
     />
   </span>
 </template>

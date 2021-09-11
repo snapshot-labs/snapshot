@@ -32,7 +32,7 @@ const spaceAddress = computed(() => {
 </script>
 
 <template>
-  <span class="inline-block align-middle leading-none w-[98px] h-[98px]">
+  <span class="inline-block align-middle leading-none">
     <UiAvatar
       :space="space"
       :imgsrc="url"
