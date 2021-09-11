@@ -197,7 +197,6 @@ onMounted(async () => {
     const space = clone(spaces.value?.[key.value]);
     if (!space) return;
     delete space.id;
-    delete space.key;
     delete space._activeProposals;
     space.strategies = space.strategies || [];
     space.plugins = space.plugins || {};
@@ -211,7 +210,7 @@ onMounted(async () => {
   if (from.value) {
     const fromClone = clone(spaces.value[from.value]);
     fromClone.validation = fromClone.validation || basicValidation;
-    delete fromClone.key;
+    delete fromClone.id;
     delete fromClone._activeProposals;
     form.value = fromClone;
   }
