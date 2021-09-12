@@ -27,7 +27,7 @@ export default defineConfig({
     }
   },
   optimizeDeps: {
-    include: ['color', 'mersenne-twister'],
+    include: ['color'],
     // @ts-ignore
     allowNodeBuiltins: ['stream']
   }
