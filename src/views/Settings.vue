@@ -443,7 +443,7 @@ onMounted(async () => {
               />
             </UiButton>
           </Block>
-          <Block :title="$t('settings.members')">
+          <Block :title="$t('settings.authors')">
             <Block
               :style="`border-color: red !important`"
               v-if="inputError('members')"
@@ -488,7 +488,7 @@ onMounted(async () => {
                     v-model="form.filters.onlyMembers"
                     class="mr-2 mt-1"
                   />
-                  {{ $t('settings.allowOnlyMembers') }}
+                  {{ $t('settings.allowOnlyAuthors') }}
                 </div>
               </div>
             </div>
