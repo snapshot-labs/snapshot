@@ -31,6 +31,7 @@
   "network": "Nätverk",
   "networks": "Nätverk",
   "skins": "Skins",
+  "members": "No members | {count} member | {count} members",
   "editStrategy": "Redigera strategi",
   "invalidProposals": "Ogiltiga förslag",
   "account": "Konto",
@@ -135,7 +136,7 @@
     "snapshotBlock": "Snapshot blocknummer",
     "validationWarning": {
       "basic": {
-        "member": "You need to be a member of the space in order to submit a proposal.",
+        "member": "You need to be an author of the space in order to submit a proposal.",
         "minScore": "You need to have a minimum of {0} {1} in order to submit a proposal."
       },
       "customValidation": "You need to pass the proposal validation in order to submit a proposal."
@@ -188,11 +189,11 @@
     "strategies": "Strategi(er)",
     "hideSpace": "Dölj space från hemsida",
     "addStrategy": "Lägg till strategi",
-    "members": "Medlemmar",
+    "authors": "Authors",
     "admins": "Admins",
     "defaultTab": "Standardflik",
     "proposalThreshold": "Förslag tröskel",
-    "allowOnlyMembers": "Tillåt endast medlemmar att lägga fram ett förslag",
+    "allowOnlyAuthors": "Allow only authors to submit a proposal",
     "editPlugin": "Redigera plugin",
     "addPlugin": "Lägg till plugin",
     "pluginParameters": "Plugin parametrar",
