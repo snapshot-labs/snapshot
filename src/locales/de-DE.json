@@ -31,6 +31,7 @@
   "network": "Netzwerk",
   "networks": "Netzwerke",
   "skins": "Skins",
+  "members": "No members | {count} member | {count} members",
   "editStrategy": "Strategie bearbeiten",
   "invalidProposals": "Ungültige Vorschläge",
   "account": "Konto",
@@ -135,7 +136,7 @@
     "snapshotBlock": "Momentaufnahme Blocknummer",
     "validationWarning": {
       "basic": {
-        "member": "Sie müssen Mitglied des Bereichs sein, um einen Vorschlag einzureichen.",
+        "member": "You need to be an author of the space in order to submit a proposal.",
         "minScore": "Sie müssen mindestens {0} {1} haben, um einen Vorschlag einzureichen."
       },
       "customValidation": "Sie müssen Zugang haben, um einen Vorschlag einzureichen."
@@ -188,11 +189,11 @@
     "strategies": "Strategie(n)",
     "hideSpace": "Raum auf der Startseite ausblenden",
     "addStrategy": "Strategie hinzufügen",
-    "members": "Mitglieder",
+    "authors": "Authors",
     "admins": "Administratoren",
     "defaultTab": "Standard-Tab",
     "proposalThreshold": "Schwellenwert für Vorschläge",
-    "allowOnlyMembers": "Nur Mitgliedern erlauben, einen Vorschlag einzureichen",
+    "allowOnlyAuthors": "Allow only authors to submit a proposal",
     "editPlugin": "Plugin bearbeiten",
     "addPlugin": "Plugin hinzufügen",
     "pluginParameters": "Plugin Parameter",
