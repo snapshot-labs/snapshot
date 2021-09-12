@@ -26,7 +26,21 @@ function handleInput(e) {
 
 <template>
   <div
-    class="fake-button text-left w-full mb-2 flex px-3"
+    class="
+      border border-skin-border
+      bg-transparent
+      text-skin-link
+      rounded-3xl
+      outline-none
+      leading-[46px]
+      text-left
+      w-full
+      mb-2
+      flex
+      px-3
+      active:!border-skin-link
+      hover:!border-skin-link
+    "
     :class="{ 'border-red': error }"
   >
     <div class="text-color mr-2">
@@ -52,24 +66,3 @@ function handleInput(e) {
     </UiTooltip>
   </div>
 </template>
-
-<style scoped lang="scss">
-.fake-button {
-  border: 1px solid var(--border-color);
-  background-color: transparent;
-  color: var(--link-color);
-  border-radius: 23px;
-  outline: none;
-  line-height: 46px;
-  height: 46px;
-  font-size: 18px;
-  &.fake-button--active {
-    border-color: var(--link-color) !important;
-  }
-
-  &:hover {
-    color: var(--link-color);
-    border-color: var(--link-color);
-  }
-}
-</style>
