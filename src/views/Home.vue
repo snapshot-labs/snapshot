@@ -82,7 +82,7 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
               </span>
 
               <h3
-                class="my-1"
+                class="my-[11px]"
                 v-text="_shorten(space.name, 16)"
                 style="font-size: 22px"
               />
