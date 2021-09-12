@@ -31,6 +31,7 @@
   "network": "网络",
   "networks": "网络",
   "skins": "皮肤",
+  "members": "No members | {count} member | {count} members",
   "editStrategy": "编辑策略",
   "invalidProposals": "提案无效",
   "account": "账户",
@@ -135,7 +136,7 @@
     "snapshotBlock": "Snapshot 模块号码",
     "validationWarning": {
       "basic": {
-        "member": "您需要成为空间的成员才能提交提案.",
+        "member": "You need to be an author of the space in order to submit a proposal.",
         "minScore": "您需要至少有 {0} {1} 才能提交提案。"
       },
       "customValidation": "您需要通过提案验证才能提交提案。"
@@ -188,11 +189,11 @@
     "strategies": "策略",
     "hideSpace": "从主页隐藏空间",
     "addStrategy": "添加策略",
-    "members": "成员",
+    "authors": "Authors",
     "admins": "管理员",
     "defaultTab": "默认标签页",
     "proposalThreshold": "提案阈值",
-    "allowOnlyMembers": "只允许成员提交提案",
+    "allowOnlyAuthors": "Allow only authors to submit a proposal",
     "editPlugin": "编辑插件",
     "addPlugin": "添加插件",
     "pluginParameters": "插件参数",
