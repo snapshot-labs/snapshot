@@ -31,6 +31,7 @@
   "network": "الشبكة",
   "networks": "الشبكات",
   "skins": "المظاهر",
+  "members": "No members | {count} member | {count} members",
   "editStrategy": "تعديل الاستراتيجية",
   "invalidProposals": "اقتراحات غير صالحة",
   "account": "الحساب",
@@ -135,7 +136,7 @@
     "snapshotBlock": "رقم القطعة (البلوك) في لمحة سلسلة البلوكشين",
     "validationWarning": {
       "basic": {
-        "member": "يجب أن تكون عضوا في المساحة لتقديم اقتراح.",
+        "member": "You need to be an author of the space in order to submit a proposal.",
         "minScore": "تحتاج إلى الحد الأدنى من {0} {1} لتقديم اقتراح."
       },
       "customValidation": "تحتاج إلى اجتياز المصادقة على الاقتراح من أجل تقديم اقتراح."
@@ -188,11 +189,11 @@
     "strategies": "استراتيجية (استراتيجيات)",
     "hideSpace": "إخفاء المساحة من الصفحة الرئيسية",
     "addStrategy": "إضافة استراتيجية",
-    "members": "الأعضاء",
+    "authors": "Authors",
     "admins": "المشرفون",
     "defaultTab": "علامة التبويب الافتراضية",
     "proposalThreshold": "عتبة المقترحات",
-    "allowOnlyMembers": "السماح للأعضاء فقط بتقديم اقتراح",
+    "allowOnlyAuthors": "Allow only authors to submit a proposal",
     "editPlugin": "تعديل إضافة",
     "addPlugin": "أضف إضافة",
     "pluginParameters": "إعدادات الإضافة",
