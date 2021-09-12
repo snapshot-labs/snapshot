@@ -252,8 +252,13 @@ onMounted(async () => {
             item-key="id"
           >
             <template #item="{ element, index }">
-              <UiInput v-model="element.text" maxlength="32"
-                ><template v-slot:label>{{ index + 1 }} </template>
+              <UiInput
+                v-model="element.text"
+                maxlength="32"
+                additionalClass="text-center"
+                ><template v-slot:label
+                  ><span class="text-skin-link">{{ index + 1 }}</span></template
+                >
                 <template v-slot:info
                   ><span @click="removeChoice(index)">
                     <Icon name="close" size="12" />

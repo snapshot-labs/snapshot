@@ -6,6 +6,7 @@ const props = defineProps({
   number: Boolean,
   disabled: Boolean,
   maxlength: Number,
+  additionalClass: String,
   required: {
     type: Boolean,
     default: true
@@ -39,7 +40,7 @@ function handleInput(e) {
       :placeholder="placeholder"
       :type="number ? 'number' : 'text'"
       :disabled="disabled"
-      class="input flex-auto"
+      :class="[`input flex-auto`, additionalClass]"
       :required="required"
       :maxlength="maxlength"
     />
@@ -62,7 +63,6 @@ function handleInput(e) {
   line-height: 46px;
   height: 46px;
   font-size: 18px;
-
   &.fake-button--active {
     border-color: var(--link-color) !important;
   }
