@@ -31,6 +31,7 @@
   "network": "WiFi a mobilních sítí",
   "networks": "Sítě",
   "skins": "Vzhledy",
+  "members": "No members | {count} member | {count} members",
   "editStrategy": "Upravit strategii",
   "invalidProposals": "Neplatný návrh.",
   "account": "Účet",
@@ -135,7 +136,7 @@
     "snapshotBlock": "Číslo bloku snímku",
     "validationWarning": {
       "basic": {
-        "member": "Musíte být členem prostoru, abyste mohli podat návrh.",
+        "member": "You need to be an author of the space in order to submit a proposal.",
         "minScore": "Musíte být členem prostoru, abyste mohli podat návrh."
       },
       "customValidation": "Pro předložení návrhu musíte schválit validaci návrhu."
@@ -188,11 +189,11 @@
     "strategies": "Strategie (strategie)",
     "hideSpace": "Skrýt místo z domovské stránky",
     "addStrategy": "Upravit strategii",
-    "members": "Members",
+    "authors": "Authors",
     "admins": "Správce",
     "defaultTab": "Výchozí záložka",
     "proposalThreshold": "Prahová hodnota návrhu",
-    "allowOnlyMembers": "Povolit pouze členům odeslat návrh",
+    "allowOnlyAuthors": "Allow only authors to submit a proposal",
     "editPlugin": "Úpravy pluginů",
     "addPlugin": "Vytvořit plugin",
     "pluginParameters": "Parametry pluginu",

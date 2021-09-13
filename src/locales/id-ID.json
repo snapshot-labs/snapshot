@@ -31,6 +31,7 @@
   "network": "Jaringan",
   "networks": "Jaringan",
   "skins": "Tampilan",
+  "members": "No members | {count} member | {count} members",
   "editStrategy": "Ubah strategi",
   "invalidProposals": "Proposal tidak valid",
   "account": "Akun",
@@ -135,7 +136,7 @@
     "snapshotBlock": "Jumlah blok Snapshot",
     "validationWarning": {
       "basic": {
-        "member": "Anda harus menjadi member untuk mengajukan proposal.",
+        "member": "You need to be an author of the space in order to submit a proposal.",
         "minScore": "Anda harus memiliki setidaknya minimal {0} {1} untuk mengajukan sebuah proposal."
       },
       "customValidation": "Anda harus lolos validasi proposal untuk mengajukan proposal."
@@ -188,11 +189,11 @@
     "strategies": "Strategi",
     "hideSpace": "Sembunyikan ruang dari halaman beranda",
     "addStrategy": "Tambahkan strategi",
-    "members": "Anggota",
+    "authors": "Authors",
     "admins": "Admin",
     "defaultTab": "Tab bawaan",
     "proposalThreshold": "Ambang batas proposal",
-    "allowOnlyMembers": "Izinkan hanya anggota untuk mengajukan propsal",
+    "allowOnlyAuthors": "Allow only authors to submit a proposal",
     "editPlugin": "Edit plugin",
     "addPlugin": "Tambahkan plugin",
     "pluginParameters": "Parameter plugin",
