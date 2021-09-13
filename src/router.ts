@@ -2,17 +2,18 @@ import { createRouter, createWebHashHistory } from 'vue-router';
 import domains from '@/../snapshot-spaces/spaces/domains.json';
 import aliases from '@/../snapshot-spaces/spaces/aliases.json';
 import Home from '@/views/Home.vue';
-import Proposal from '@/views/Proposal.vue';
-import Create from '@/views/Create.vue';
+import SpaceProposal from '@/views/SpaceProposal.vue';
+import SpaceCreate from '@/views/SpaceCreate.vue';
 import Setup from '@/views/Setup.vue';
-import Settings from '@/views/Settings.vue';
+import SpaceSettings from '@/views/SpaceSettings.vue';
 import Explore from '@/views/Explore.vue';
 import Strategy from '@/views/Strategy.vue';
 import Playground from '@/views/Playground.vue';
 import Delegate from '@/views/Delegate.vue';
 import Timeline from '@/views/Timeline.vue';
 import Space from '@/views/Space.vue';
-import About from '@/views/About.vue';
+import SpaceAbout from '@/views/SpaceAbout.vue';
+import SpaceProposals from '@/views/SpaceProposals.vue';
 
 const domainName = window.location.hostname;
 
@@ -31,7 +32,6 @@ const routes: any[] = [
     component: domains[domainName] ? Space : Home
   },
   { path: '/setup', name: 'setup', component: Setup },
-  { path: '/:key/settings/:from?', name: 'settings', component: Settings },
   { path: '/networks', name: 'networks', component: Explore },
   { path: '/strategies', name: 'strategies', component: Explore },
   { path: '/plugins', name: 'plugins', component: Explore },
@@ -40,39 +40,54 @@ const routes: any[] = [
   { path: '/timeline', name: 'timeline', component: Timeline },
   { path: '/explore', name: 'explore', component: Timeline },
   {
-    path: '/strategy/:name',
-    name: 'strategy',
-    component: Strategy
-  },
-  {
     path: '/playground/:name',
     name: 'playground',
     component: Playground
   },
   {
-    path: '/:key/proposal/:id',
-    name: 'proposal',
-    component: Proposal,
-    beforeEnter
+    path: '/strategy/:name',
+    name: 'strategy',
+    component: Strategy
   },
-  {
-    path: '/:key/create/:from?',
-    name: 'create',
-    component: Create,
-    beforeEnter
-  },
+
   {
     path: '/:key',
-    name: 'proposals',
+    name: 'space',
     component: Space,
-    beforeEnter
+    children: [
+      {
+        path: '',
+        name: 'proposals',
+        component: SpaceProposals,
+        beforeEnter
+      },
+      {
+        path: 'proposal/:id',
+        name: 'proposal',
+        component: SpaceProposal,
+        beforeEnter
+      },
+      {
+        path: 'create/:from?',
+        name: 'create',
+        component: SpaceCreate,
+        beforeEnter
+      },
+
+      {
+        path: 'about',
+        name: 'about',
+        component: SpaceAbout,
+        beforeEnter
+      },
+      {
+        path: 'settings/:from?',
+        name: 'settings',
+        component: SpaceSettings
+      }
+    ]
   },
-  {
-    path: '/:key/about',
-    name: 'about',
-    component: About,
-    beforeEnter
-  },
+
   { path: '/*', name: 'error-404', beforeEnter: (to, from, next) => next('/') }
 ];
 
