@@ -31,6 +31,7 @@
   "network": "netværk",
   "networks": "netværk",
   "skins": "skind",
+  "members": "No members | {count} member | {count} members",
   "editStrategy": "rediger Strategi",
   "invalidProposals": "ugyldige forslag",
   "account": "konto",
@@ -135,7 +136,7 @@
     "snapshotBlock": "Nulstil blok nummer",
     "validationWarning": {
       "basic": {
-        "member": "Du skal være medlem af pladsen for at kunne indsende et forslag.",
+        "member": "You need to be an author of the space in order to submit a proposal.",
         "minScore": "Du skal være medlem af pladsen for at kunne indsende et forslag."
       },
       "customValidation": "Du skal bestå forslaget validering for at kunne fremlægge et forslag."
@@ -188,11 +189,11 @@
     "strategies": "Strategier",
     "hideSpace": "strategierSide)",
     "addStrategy": "Tilføj strategi",
-    "members": "Medlemmer",
+    "authors": "Authors",
     "admins": "Administratore",
     "defaultTab": "Standard fane",
     "proposalThreshold": "Forslag tærskel",
-    "allowOnlyMembers": "Tillad kun medlemmer at fremsætte et forslag",
+    "allowOnlyAuthors": "Allow only authors to submit a proposal",
     "editPlugin": "rediger plugins",
     "addPlugin": "Tilføj Plugin",
     "pluginParameters": "Plugin parametre",

@@ -31,6 +31,7 @@
   "network": "רשת",
   "networks": "רשתות",
   "skins": "סקינים",
+  "members": "No members | {count} member | {count} members",
   "editStrategy": "ערוך אסטרטגיה",
   "invalidProposals": "הצעות לא חוקיות",
   "account": "חשבון",
@@ -135,7 +136,7 @@
     "snapshotBlock": "מספר הבלוק בSnapshot",
     "validationWarning": {
       "basic": {
-        "member": "עליך להיות חבר במרחב בכדי לפרסם הצעה.",
+        "member": "You need to be an author of the space in order to submit a proposal.",
         "minScore": "בכדי לפרסם הצעה צריך להיות ברשותך לפחות {0}{1}."
       },
       "customValidation": "עליך לעבור אישור לפני שתוכל לפרסם הצעה."
@@ -188,11 +189,11 @@
     "strategies": "אסטרטגיות",
     "hideSpace": "הסתר מרחב מדף הבית",
     "addStrategy": "הוסף אסטרטגיה",
-    "members": "חברים",
+    "authors": "Authors",
     "admins": "מנהלים",
     "defaultTab": "כרטיסיית ברירת מחדל",
     "proposalThreshold": "סף ההצעה",
-    "allowOnlyMembers": "אשר רק לחברים להעלות הצעה חדשה",
+    "allowOnlyAuthors": "Allow only authors to submit a proposal",
     "editPlugin": "ערוך פלאגין",
     "addPlugin": "הוסף פלאגין",
     "pluginParameters": "פרמטרים לפלאגין",

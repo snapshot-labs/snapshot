@@ -708,7 +708,7 @@
   resolved "https://codeload.github.com/snapshot-labs/lock/tar.gz/master"
 
 "@snapshot-labs/snapshot.js@github:snapshot-labs/snapshot.js#master":
-  version "0.2.0"
+  version "0.2.3"
   resolved "https://codeload.github.com/snapshot-labs/snapshot.js/tar.gz/master"
   dependencies:
     "@ethersproject/abi" "^5.0.4"
@@ -1831,7 +1831,7 @@ clsx@^1.1.0:
   resolved "https://registry.yarnpkg.com/clsx/-/clsx-1.1.1.tgz#98b3134f9abbdf23b2663491ace13c5c03a73188"
   integrity sha512-6/bPho624p3S2pMyvP5kKBPXnI3ufHLObBFCfgx+LkeR5lg2XYy2hqZqUf45ypD8COn2bhgGJSUE+l5dhNBieA==
 
-color-convert@^1.9.0, color-convert@^1.9.3:
+color-convert@^1.9.0:
   version "1.9.3"
   resolved "https://registry.yarnpkg.com/color-convert/-/color-convert-1.9.3.tgz#bb71850690e1f136567de629d2d5471deda4c1e8"
   integrity sha512-QfAUtd+vFdAtFQcC8CCyYt1fYWxSqAiK2cSD6zDB8N3cpsEBAvRxp9zOGg6G/SHHJYAT88/az/IuDGALsNVbGg==
@@ -1862,14 +1862,6 @@ color-string@^1.6.0:
   dependencies:
     color-name "^1.0.0"
     simple-swizzle "^0.2.2"
-
-color@^3.1.0:
-  version "3.2.1"
-  resolved "https://registry.yarnpkg.com/color/-/color-3.2.1.tgz#3544dc198caf4490c3ecc9a790b54fe9ff45e164"
-  integrity sha512-aBl7dZI9ENN6fUGC7mWpMTPNHmWUSNan9tuWN6ahh5ZLNk9baLJOnSMlrQkHcrfFgz2/RigjUVAjdx36VcemKA==
-  dependencies:
-    color-convert "^1.9.3"
-    color-string "^1.6.0"
 
 color@^4.0.1:
   version "4.0.1"
@@ -1927,11 +1919,6 @@ core-js-compat@^3.14.0:
   dependencies:
     browserslist "^4.16.7"
     semver "7.0.0"
-
-core-js@^3.6.5:
-  version "3.16.2"
-  resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.16.2.tgz#3f485822889c7fc48ef463e35be5cc2a4a01a1f4"
-  integrity sha512-P0KPukO6OjMpjBtHSceAZEWlDD1M2Cpzpg6dBbrjFqFhBHe/BwhxaP820xKOjRn/lZRQirrCusIpLS/n2sgXLQ==
 
 core-util-is@1.0.2, core-util-is@~1.0.0:
   version "1.0.2"
@@ -2592,6 +2579,13 @@ eth-sig-util@^1.4.2:
   dependencies:
     ethereumjs-abi "git+https://github.com/ethereumjs/ethereumjs-abi.git"
     ethereumjs-util "^5.1.1"
+
+ethereum-blockies-base64@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/ethereum-blockies-base64/-/ethereum-blockies-base64-1.0.2.tgz#4aebca52142bf4d16a3144e6e2b59303e39ed2b3"
+  integrity sha512-Vg2HTm7slcWNKaRhCUl/L3b4KrB8ohQXdd5Pu3OI897EcR6tVRvUqdTwAyx+dnmoDzj8e2bwBLDQ50ByFmcz6w==
+  dependencies:
+    pnglib "0.0.1"
 
 ethereum-bloom-filters@^1.0.6:
   version "1.0.10"
@@ -3917,11 +3911,6 @@ merkle-patricia-tree@^2.1.2, merkle-patricia-tree@^2.3.2:
     rlp "^2.0.0"
     semaphore ">=1.0.1"
 
-mersenne-twister@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/mersenne-twister/-/mersenne-twister-1.1.0.tgz#f916618ee43d7179efcf641bec4531eb9670978a"
-  integrity sha1-+RZhjuQ9cXnvz2Qb7EUx65Zwl4o=
-
 micromatch@^4.0.2, micromatch@^4.0.4:
   version "4.0.4"
   resolved "https://registry.yarnpkg.com/micromatch/-/micromatch-4.0.4.tgz#896d519dfe9db25fce94ceb7a500919bf881ebf9"
@@ -4293,6 +4282,11 @@ pngjs@^3.3.0:
   version "3.4.0"
   resolved "https://registry.yarnpkg.com/pngjs/-/pngjs-3.4.0.tgz#99ca7d725965fb655814eaf65f38f12bbdbf555f"
   integrity sha512-NCrCHhWmnQklfH4MtJMRjZ2a8c80qXeMlQMv2uVp9ISJMTt562SbGd6n2oq0PaPgKm7Z6pL9E2UlLIhC+SHL3w==
+
+pnglib@0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/pnglib/-/pnglib-0.0.1.tgz#f9ab6f9c688f4a9d579ad8be28878a716e30c096"
+  integrity sha1-+atvnGiPSp1Xmti+KIeKcW4wwJY=
 
 pocket-js-core@0.0.3:
   version "0.0.3"
@@ -5590,17 +5584,7 @@ vue-router@^4.0.9:
   dependencies:
     "@vue/devtools-api" "^6.0.0-beta.14"
 
-vue3-jazzicon@^0.1.1:
-  version "0.1.2"
-  resolved "https://registry.yarnpkg.com/vue3-jazzicon/-/vue3-jazzicon-0.1.2.tgz#7d5bc1c7cc1c11365954e5639e90a4ef60894813"
-  integrity sha512-m1do5WyL2uMUziPA5oKoEBInvwS4eT7yfNm8v5InT2CfKKIGJYabVPBhpbRTkdSnKG022LCW6jTSvcG33I/adA==
-  dependencies:
-    color "^3.1.0"
-    core-js "^3.6.5"
-    mersenne-twister "^1.1.0"
-    vue "^3.0.0"
-
-vue@^3.0.0, vue@^3.2.1:
+vue@^3.2.1:
   version "3.2.4"
   resolved "https://registry.yarnpkg.com/vue/-/vue-3.2.4.tgz#d94d88675e41c050d3a722d0848a7063b5e87a60"
   integrity sha512-rNCFmoewm8IwmTK0nj3ysKq53iRpNEFKoBJ4inar6tIh7Oj7juubS39RI8UI+VE7x+Cs2z6PBsadtZu7z2qppg==

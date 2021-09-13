@@ -26,8 +26,8 @@ const markdown = computed(() => {
 
 <style lang="scss">
 .markdown-body {
-  font-size: 20px;
-  line-height: 1.3;
+  font-size: 22px;
+  line-height: 1.4;
   word-wrap: break-word;
 }
 .markdown-body::before {
@@ -111,7 +111,7 @@ const markdown = computed(() => {
   margin-top: 24px;
   margin-bottom: 16px;
   font-weight: 600;
-  line-height: 1.25;
+  line-height: 1.4 !important;
 }
 .markdown-body h1 .octicon-link,
 .markdown-body h2 .octicon-link,
