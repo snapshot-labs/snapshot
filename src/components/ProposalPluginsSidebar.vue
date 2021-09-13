@@ -49,9 +49,5 @@ defineProps({
       :votes="votes"
       :strategies="strategies"
     />
-    <PluginSubscribeCustomBlock
-      v-if="space.plugins?.subscribe"
-      :proposalId="id"
-    />
   </div>
 </template>

@@ -13,8 +13,5 @@
   },
   "safeSnap": {
     "proposalParams": false
-  },
-  "subscribe": {
-    "proposalParams": false
   }
 }
