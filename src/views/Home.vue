@@ -65,27 +65,28 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
           <div class="w-full lg:w-1/4 pr-4 float-left">
             <Block
               class="text-center extra-icon-container"
-              style="height: 250px; margin-bottom: 24px !important"
+              style="height: 266px; margin-bottom: 24px !important"
             >
-              <span class="relative inline-block">
+              <div class="relative inline-block mb-2">
                 <Token
                   :space="space"
                   symbolIndex="space"
-                  size="98"
+                  size="82"
                   class="mb-1"
                 />
                 <UiCounter
                   v-if="space.activeProposals"
                   :counter="space.activeProposals"
-                  class="absolute top-2 right-0 !bg-green"
+                  class="absolute top-0 right-0 !bg-green"
                 />
-              </span>
-
+              </div>
               <h3
-                class="my-1"
                 v-text="_shorten(space.name, 16)"
-                style="font-size: 22px"
+                class="mb-0 pb-0 mt-0 text-[22px] !h-[32px] overflow-hidden"
               />
+              <div class="mb-[12px] text-color">
+                {{ $tc('members', space.followers) }}
+              </div>
               <FollowButton :space="space" class="!bg-white" />
             </Block>
           </div>
