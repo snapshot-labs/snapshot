@@ -82,13 +82,7 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
               </div>
               <h3
                 v-text="_shorten(space.name, 16)"
-                style="
-                  font-size: 22px;
-                  line-height: 1.5em;
-                  height: 32px;
-                  overflow: hidden;
-                "
-                class="mb-0 pb-0"
+                class="mb-0 pb-0 mt-0 text-[22px] !h-[32px] overflow-hidden"
               />
               <div class="mb-[12px] text-color">
                 {{ $tc('members', space.followers) }}
