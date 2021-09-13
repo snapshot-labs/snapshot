@@ -37,23 +37,19 @@ onBeforeUnmount(() => window.removeEventListener('click', close));
   <div
     ref="dropdownEl"
     @click.capture="hideDropdown ? $emit('clickedNoDropdown') : (open = !open)"
-    class="position-relative"
+    class="relative"
   >
     <div class="button">
       <slot />
     </div>
-    <div
-      class="sub-menu-wrapper anim-scale-in"
-      :class="{ hidden: !open }"
-      :style="cssVars"
-    >
+    <div class="sub-menu-wrapper" :class="{ hidden: !open }" :style="cssVars">
       <ul class="sub-menu my-2">
         <li v-for="item in items" :key="item" @click="handleClick(item.action)">
           <Icon
             v-if="item.icon"
             :name="item.icon"
             size="21"
-            class="v-align-text-bottom mr-2"
+            class="align-text-bottom mr-2"
           />
           {{ item.text }}
         </li>

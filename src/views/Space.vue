@@ -77,10 +77,10 @@ watch(proposals, () => {
       <BlockSpace :space="space" />
     </template>
     <template #content-right>
-      <div class="px-4 px-md-0 mb-3 d-flex">
+      <div class="px-4 md:px-0 mb-3 flex">
         <div class="flex-auto">
           <div v-text="space.name" />
-          <div class="d-flex flex-items-center flex-auto">
+          <div class="flex items-center flex-auto">
             <h2>{{ $t('proposals.header') }}</h2>
           </div>
         </div>

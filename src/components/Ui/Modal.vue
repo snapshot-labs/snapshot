@@ -25,23 +25,21 @@ watch(open, (val, prev) => {
         shell
         overflow-hidden
         anim-scale-in
-        position-relative
-        rounded-0 rounded-md-2
+        relative
+        rounded-none
+        md:rounded-md
       "
     >
-      <div v-if="$slots.header" class="border-bottom pt-4 pb-3 text-center">
+      <div v-if="$slots.header" class="border-b pt-4 pb-3 text-center">
         <slot name="header" />
       </div>
       <div class="modal-body">
         <slot />
       </div>
-      <div v-if="$slots.footer" class="border-top p-4 text-center">
+      <div v-if="$slots.footer" class="border-t p-4 text-center">
         <slot name="footer" />
       </div>
-      <a
-        @click="$emit('close')"
-        class="position-absolute right-0 top-1 p-4 text-color"
-      >
+      <a @click="$emit('close')" class="absolute right-0 top-1 p-4 text-color">
         <Icon name="close" />
       </a>
     </div>
