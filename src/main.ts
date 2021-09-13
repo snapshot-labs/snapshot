@@ -2,7 +2,6 @@ import { Buffer } from 'buffer';
 (window as any).global = window;
 (window as any).Buffer = Buffer;
 import { createApp, h, provide } from 'vue';
-import Jazzicon from 'vue3-jazzicon/src/components';
 import { LockPlugin } from '@snapshot-labs/lock/plugins/vue3';
 import options from '@/helpers/auth';
 import '../snapshot-spaces/skins';
@@ -31,7 +30,7 @@ app
     directive: 'tippy' // => v-tippy
   })
 
-  .component('jazzicon', Jazzicon)
+  .use(LockPlugin, options)
   .mixin(mixins);
 
 app.mount('#app');

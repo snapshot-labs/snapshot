@@ -197,7 +197,6 @@ onMounted(async () => {
     const space = clone(spaces.value?.[key.value]);
     if (!space) return;
     delete space.id;
-    delete space.key;
     delete space._activeProposals;
     space.strategies = space.strategies || [];
     space.plugins = space.plugins || {};
@@ -211,7 +210,7 @@ onMounted(async () => {
   if (from.value) {
     const fromClone = clone(spaces.value[from.value]);
     fromClone.validation = fromClone.validation || basicValidation;
-    delete fromClone.key;
+    delete fromClone.id;
     delete fromClone._activeProposals;
     form.value = fromClone;
   }
@@ -444,7 +443,7 @@ onMounted(async () => {
               />
             </UiButton>
           </Block>
-          <Block :title="$t('settings.members')">
+          <Block :title="$t('settings.authors')">
             <Block
               :style="`border-color: red !important`"
               v-if="inputError('members')"
@@ -489,7 +488,7 @@ onMounted(async () => {
                     v-model="form.filters.onlyMembers"
                     class="mr-2 mt-1"
                   />
-                  {{ $t('settings.allowOnlyMembers') }}
+                  {{ $t('settings.allowOnlyAuthors') }}
                 </div>
               </div>
             </div>

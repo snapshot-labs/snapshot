@@ -28,7 +28,7 @@ export default defineConfig({
     dedupe: ['@popperjs/core']
   },
   optimizeDeps: {
-    include: ['color', 'mersenne-twister'],
+    include: ['color'],
     // @ts-ignore
     allowNodeBuiltins: ['stream']
   }
