@@ -31,6 +31,7 @@
   "network": "Ağ",
   "networks": "Ağlar",
   "skins": "Ciltler",
+  "members": "No members | {count} member | {count} members",
   "editStrategy": "Stratejiyi Düzenle",
   "invalidProposals": "Geçersiz teklifler",
   "account": "Hesap",
@@ -135,7 +136,7 @@
     "snapshotBlock": "Ekran görüntüsü alınma blok numarası",
     "validationWarning": {
       "basic": {
-        "member": "Teklif göndermek için alana üye olmanız gerekir.",
+        "member": "You need to be an author of the space in order to submit a proposal.",
         "minScore": "Bir teklif gönderebilmek için minimum {0} {1} sahip olunması gerekir."
       },
       "customValidation": "Bir teklif göndermek için teklif doğrulamasını geçmeniz gerekir."
@@ -188,11 +189,11 @@
     "strategies": "Strateji",
     "hideSpace": "Ana sayfadan alanı gizle",
     "addStrategy": "Strateji ekle",
-    "members": "Üyeler",
+    "authors": "Authors",
     "admins": "Admin",
     "defaultTab": "Varsayılan sekme",
     "proposalThreshold": "Teklif eşiği",
-    "allowOnlyMembers": "Yalnızca üyelerin teklif göndermesine izin ver",
+    "allowOnlyAuthors": "Allow only authors to submit a proposal",
     "editPlugin": "Eklentiyi düzenle",
     "addPlugin": "Eklenti ekle",
     "pluginParameters": "Eklenti Parametreleri",

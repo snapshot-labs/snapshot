@@ -31,6 +31,7 @@
   "network": "నెట్‌వర్క్",
   "networks": "నెట్‌వర్క్‌లు",
   "skins": "స్కిన్స్",
+  "members": "No members | {count} member | {count} members",
   "editStrategy": "వ్యూహాన్ని సవరించండి",
   "invalidProposals": "చెల్లని ప్రతిపాదనలు",
   "account": "ఖాతా",
@@ -135,7 +136,7 @@
     "snapshotBlock": "స్నాప్‌షాట్ బ్లాక్ సంఖ్య",
     "validationWarning": {
       "basic": {
-        "member": "You need to be a member of the space in order to submit a proposal.",
+        "member": "You need to be an author of the space in order to submit a proposal.",
         "minScore": "You need to have a minimum of {0} {1} in order to submit a proposal."
       },
       "customValidation": "You need to pass the proposal validation in order to submit a proposal."
@@ -188,11 +189,11 @@
     "strategies": "Strategie(s)",
     "hideSpace": "హోమ్‌పేజీ నుండి స్పేస్ దాచండి",
     "addStrategy": "వ్యూహాన్ని జోడించండి",
-    "members": "సభ్యులు",
+    "authors": "Authors",
     "admins": "Admins",
     "defaultTab": "డిఫాల్ట్ టాబ్",
     "proposalThreshold": "Proposal threshold",
-    "allowOnlyMembers": "Allow only members to submit a proposal",
+    "allowOnlyAuthors": "Allow only authors to submit a proposal",
     "editPlugin": "Edit plugin",
     "addPlugin": "Add plugin",
     "pluginParameters": "Plugin parameters",
