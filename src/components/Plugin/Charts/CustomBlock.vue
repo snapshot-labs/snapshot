@@ -1,8 +1,5 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue';
-import { Chart, registerables } from 'chart.js';
-
-Chart.register(...registerables);
 
 const props = defineProps({
   space: Object,
@@ -17,11 +14,12 @@ const votingPowerPerDay = ref(null);
 const space = computed(() => props.space);
 const proposal = computed(() => props.proposal);
 const votes = computed(() => {
+  const votes = [...props.votes];
   votes.sort((a, b) => a.created - b.created);
   return votes;
 });
 
-onMounted(() => {
+function loadDailyChart(Chart) {
   const canvasRef = totalVotesPerDayChart.value;
   if (! canvasRef) {
     return;
@@ -67,9 +65,9 @@ onMounted(() => {
   };
 
   new Chart(canvasRef, config);
-});
+}
 
-onMounted(() => {
+function loadShareOfVotingPowerChart(Chart) {
   const canvasRef = votingPowerPerAddress.value;
   if (! canvasRef) {
     return;
@@ -118,9 +116,9 @@ onMounted(() => {
   };
 
   new Chart(canvasRef, config);
-});
+}
 
-onMounted(() => {
+function loadVotingPowerPerDayChart(Chart) {
   const canvasRef = votingPowerPerDay.value;
   if (! canvasRef) {
     return;
@@ -167,6 +165,16 @@ onMounted(() => {
   };
 
   new Chart(canvasRef, { type: 'line', data, options });
+}
+
+onMounted(() => {
+  import('chart.js').then(({ Chart, registerables }) => {
+    Chart.register(...registerables);
+
+    loadDailyChart(Chart);
+    loadShareOfVotingPowerChart(Chart);
+    loadVotingPowerPerDayChart(Chart);
+  });
 });
 
 </script>
@@ -174,13 +182,13 @@ onMounted(() => {
 <template>
   <Block :title="$t('charts.charts')">
     <div v-if="votes.length > 0">
-      <div v-if="space.plugins?.charts.total_votes_per_day.enable">
+      <div v-if="space.plugins?.charts.total_votes_per_day.enabled">
         <canvas ref="totalVotesPerDayChart" />
       </div>
-      <div v-if="space.plugins?.charts.voting_power_per_address.enable">
+      <div v-if="space.plugins?.charts.voting_power_per_address.enabled">
         <canvas ref="votingPowerPerAddress" />
       </div>
-      <div v-if="space.plugins?.charts.voting_power_per_day.enable">
+      <div v-if="space.plugins?.charts.voting_power_per_day.enabled">
         <canvas ref="votingPowerPerDay" />
       </div>
     </div>
