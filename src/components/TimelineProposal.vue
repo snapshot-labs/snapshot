@@ -40,13 +40,9 @@ watchEffect(() => {
         <Badges :address="proposal.author" :members="proposal.space.members" />
         <UiState :state="proposal.state" class="inline-block float-right" />
       </div>
-      <h3 v-text="_shorten(proposal.title, 124)" class="mt-1" />
-      <p
-        v-text="_shorten(body, 140)"
-        class="break-words mb-2"
-        style="font-size: 20px"
-      />
-      <div class="mt-1">
+      <h3 v-text="_shorten(proposal.title, 124)" class="mt-1 mb-1" />
+      <p v-text="_shorten(body, 140)" class="break-words mb-1 text-md" />
+      <div>
         {{ $tc(period, [_ms(proposal.start), _ms(proposal.end)]) }}
       </div>
     </div>

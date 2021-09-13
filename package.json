@@ -32,6 +32,7 @@
     "chart.js": "^3.5.1",
     "eslint": "^7.32.0",
     "eth-ens-namehash": "^2.0.8",
+    "ethereum-blockies-base64": "^1.0.2",
     "fortmatic": "^2.2.1",
     "graphql": "^15.5.1",
     "graphql-tag": "^2.12.4",
@@ -51,7 +52,6 @@
     "vue": "^3.2.1",
     "vue-i18n": "^9.1.7",
     "vue-router": "^4.0.9",
-    "vue3-jazzicon": "^0.1.1",
     "vuedraggable": "^4.0.2"
   },
   "devDependencies": {
