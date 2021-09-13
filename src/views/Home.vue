@@ -2,35 +2,30 @@
 import { ref, computed, watchEffect } from 'vue';
 import { useRoute } from 'vue-router';
 import orderBy from 'lodash/orderBy';
-import spotlight from '@/../snapshot-spaces/spaces/spotlight.json';
 import { useUnseenProposals } from '@/composables/useUnseenProposals';
 import { useScrollMonitor } from '@/composables/useScrollMonitor';
 import { useApp } from '@/composables/useApp';
 import { useFollowSpace } from '@/composables/useFollowSpace';
 
 const route = useRoute();
-const { spaces } = useApp();
+const { explore } = useApp();
 const { followingSpaces } = useFollowSpace();
 
 const orderedSpaces = computed(() => {
-  const networkFilter = route.query.network;
   const q = route.query.q || '';
-  const list = Object.keys(spaces.value)
+  const list = Object.keys(explore.value.spaces)
     .map(key => {
-      const spotlightIndex = spotlight.indexOf(key);
       return {
-        ...spaces.value[key],
+        ...explore.value.spaces[key],
         following: followingSpaces.value.some(s => s === key),
-        isActive: !!spaces.value[key]._activeProposals,
-        spotlight: spotlightIndex === -1 ? 1e3 : spotlightIndex
+        followers: explore.value.spaces[key].followers ?? 0,
+        private: explore.value.spaces[key].private ?? false
       };
     })
     .filter(space => !space.private);
 
-  return orderBy(list, ['following', 'spotlight'], ['desc', 'asc']).filter(
-    space =>
-      (networkFilter ? space.network === networkFilter.toLowerCase() : true) &&
-      JSON.stringify(space).toLowerCase().includes(q.toLowerCase())
+  return orderBy(list, ['following', 'followers'], ['desc', 'desc']).filter(
+    space => JSON.stringify(space).toLowerCase().includes(q.toLowerCase())
   );
 });
 
@@ -59,38 +54,41 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
       </Container>
     </div>
     <Container :slim="true">
-      <div class="overflow-hidden -mr-4">
+      <div class="flex flex-wrap gap-4">
         <a
+          class="flex md:flex-1 lg:flex-1 min-w-[200px] w-full"
           @click="
-            $router.push({ name: 'proposals', params: { key: space.key } })
+            $router.push({ name: 'proposals', params: { key: space.id } })
           "
           v-for="space in orderedSpaces.slice(0, limit)"
-          :key="space.key"
+          :key="space.id"
         >
-          <div class="w-full lg:w-1/4 pr-4 float-left">
+          <div class="w-full">
+            <!-- Added mb-0 to remove mb-4 added by block component -->
             <Block
-              class="text-center extra-icon-container"
-              style="height: 250px; margin-bottom: 24px !important"
+              class="text-center extra-icon-container mb-0"
+              style="height: 266px"
             >
-              <span class="relative inline-block">
+              <div class="relative inline-block mb-2">
                 <Token
                   :space="space"
                   symbolIndex="space"
-                  size="98"
+                  size="82"
                   class="mb-1"
                 />
                 <UiCounter
-                  v-if="space._activeProposals"
-                  :counter="space._activeProposals"
-                  class="absolute top-2 right-0 !bg-green"
+                  v-if="space.activeProposals"
+                  :counter="space.activeProposals"
+                  class="absolute top-0 right-0 !bg-green"
                 />
-              </span>
-
+              </div>
               <h3
-                class="my-1"
                 v-text="_shorten(space.name, 16)"
-                style="font-size: 22px"
+                class="mb-0 pb-0 mt-0 text-[22px] !h-[32px] overflow-hidden"
               />
+              <div class="mb-[12px] text-color">
+                {{ $tc('members', space.followers) }}
+              </div>
               <FollowButton :space="space" class="!bg-white" />
             </Block>
           </div>
