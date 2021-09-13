@@ -56,7 +56,6 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
     <Container :slim="true">
       <div class="grid lg:grid-cols-4 md:grid-cols-3 gap-4">
         <a
-          class="flex md:flex-1 lg:flex-1 min-w-[200px] w-full"
           @click="
             $router.push({ name: 'proposals', params: { key: space.id } })
           "
