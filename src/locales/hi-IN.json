@@ -31,6 +31,7 @@
   "network": "नेटवर्क",
   "networks": "नेटवर्क",
   "skins": "स्किन",
+  "members": "No members | {count} member | {count} members",
   "editStrategy": "रणनीति संपादित करें",
   "invalidProposals": "अमान्य प्रस्ताव",
   "account": "खाता",
@@ -135,7 +136,7 @@
     "snapshotBlock": "स्नैपशॉट ब्लॉक नंबर",
     "validationWarning": {
       "basic": {
-        "member": "प्रस्ताव जमा करने के लिए आपको सदस्य होना आवश्यक ह",
+        "member": "You need to be an author of the space in order to submit a proposal.",
         "minScore": "प्रपोजल सबमिट करने के लिए काम से काम {0} {1} होना जरुरी है"
       },
       "customValidation": "प्रस्ताव जमा करने के लिए आपको प्रस्ताव सत्यापन पास करना होगा"
@@ -188,11 +189,11 @@
     "strategies": "स्ट्रेटेजीज",
     "hideSpace": "होमपेज से स्पेस छुपाये",
     "addStrategy": "स्ट्रेटेजी जोड़े",
-    "members": "सदस्य",
+    "authors": "Authors",
     "admins": "एडमिन",
     "defaultTab": "डिफ़ॉल्ट टैब",
     "proposalThreshold": "प्रपोजल थ्रेसहोल्ड",
-    "allowOnlyMembers": "केवल सदस्यों को प्रस्ताव प्रस्तुत करने की अनुमति दें",
+    "allowOnlyAuthors": "Allow only authors to submit a proposal",
     "editPlugin": "प्लगइन संपादित करें",
     "addPlugin": "प्लगइन जोड़ें",
     "pluginParameters": "प्लगइन पैरामीटर्स",
