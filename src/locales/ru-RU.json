@@ -31,6 +31,7 @@
   "network": "Сеть",
   "networks": "Сети",
   "skins": "Темы",
+  "members": "No members | {count} member | {count} members",
   "editStrategy": "Редактировать стратегию",
   "invalidProposals": "Неверные параметры опроса",
   "account": "Учетная запись",
@@ -135,7 +136,7 @@
     "snapshotBlock": "Номер блока среза",
     "validationWarning": {
       "basic": {
-        "member": "Вы должны быть членом сообщества раздела для того, чтобы создать опрос.",
+        "member": "You need to be an author of the space in order to submit a proposal.",
         "minScore": "Вам нужно иметь минимум {0} {1} для того, чтобы отправить предложение."
       },
       "customValidation": "Вам необходимо пройти проверку предложения, чтобы подать предложение"
@@ -188,11 +189,11 @@
     "strategies": "Стратегия(и)",
     "hideSpace": "Скрыть раздел на главной страницы",
     "addStrategy": "Добавить стратегию",
-    "members": "Члены сообщества",
+    "authors": "Authors",
     "admins": "Администратор",
     "defaultTab": "Вкладка по умолчанию",
     "proposalThreshold": "Порог предложения",
-    "allowOnlyMembers": "Разрешать только членам Комитета представлять предложение",
+    "allowOnlyAuthors": "Allow only authors to submit a proposal",
     "editPlugin": "Редактировать плагин",
     "addPlugin": "Добавить плагин",
     "pluginParameters": "Настройки плагина",

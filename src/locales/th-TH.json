@@ -31,6 +31,7 @@
   "network": "เครือข่าย",
   "networks": "เครือข่าย",
   "skins": "ผิวหนัง",
+  "members": "No members | {count} member | {count} members",
   "editStrategy": "แก้ไขกลยุทธ์",
   "invalidProposals": "ข้อเสนอไม่ถูกต้อง",
   "account": "บัญชีผู้ใช้",
@@ -135,7 +136,7 @@
     "snapshotBlock": "หมายเลขบล็อกสแนปชอต",
     "validationWarning": {
       "basic": {
-        "member": "You need to be a member of the space in order to submit a proposal.",
+        "member": "You need to be an author of the space in order to submit a proposal.",
         "minScore": "You need to have a minimum of {0} {1} in order to submit a proposal."
       },
       "customValidation": "You need to pass the proposal validation in order to submit a proposal."
@@ -188,11 +189,11 @@
     "strategies": "กลยุทธ์(s)",
     "hideSpace": "ซ่อนจากหน้าหลัก",
     "addStrategy": "แก้ไขกลยุทธ์",
-    "members": "สมาชิก",
+    "authors": "Authors",
     "admins": "ผู้ดูแลระบบ",
     "defaultTab": "ค่าเริ่มต้นแท็บ",
     "proposalThreshold": "Proposal threshold",
-    "allowOnlyMembers": "Allow only members to submit a proposal",
+    "allowOnlyAuthors": "Allow only authors to submit a proposal",
     "editPlugin": "แก้ไขปลั๊กอิน",
     "addPlugin": "เพิ่มปลั๊กอิน",
     "pluginParameters": "ปลั๊กอินที่ส่งไป",
