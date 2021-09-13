@@ -10,7 +10,7 @@ export default {
       <h3 v-text="validation.name" />
     </div>
     <div class="text-color">
-      {{ $tc('inSpaces', [_n(validation.spaces.length)]) }}
+      {{ $tc('inSpaces', [_n(validation.spaces)]) }}
     </div>
   </Block>
 </template>

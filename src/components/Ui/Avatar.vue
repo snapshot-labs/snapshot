@@ -27,13 +27,15 @@ const error = ref(false);
       ]"
       class="rounded-full inline-block !align-middle leading-none"
     />
-    <jazzicon
+    <UiBlockie
       v-else
-      :seed="parseInt(seed)"
-      :address="address"
-      :diameter="parseInt(size) - 2 || 22"
-      class="inline-block !align-middle"
-      style="line-height: 0"
+      :seed="address"
+      class="inline-block !align-middle rounded-full"
+      :style="{
+        'line-height': 0,
+        width: `${parseInt(size) || 22}px`,
+        height: `${parseInt(size) || 22}px`
+      }"
     />
   </span>
 </template>
