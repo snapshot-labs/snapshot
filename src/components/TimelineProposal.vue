@@ -41,11 +41,7 @@ watchEffect(() => {
         <UiState :state="proposal.state" class="inline-block float-right" />
       </div>
       <h3 v-text="_shorten(proposal.title, 124)" class="mt-1 mb-1" />
-      <p
-        v-text="_shorten(body, 140)"
-        class="break-words mb-3"
-        style="font-size: 20px"
-      />
+      <p v-text="_shorten(body, 140)" class="break-words mb-1 text-md" />
       <div>
         {{ $tc(period, [_ms(proposal.start), _ms(proposal.end)]) }}
       </div>
