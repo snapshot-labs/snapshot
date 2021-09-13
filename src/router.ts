@@ -11,7 +11,7 @@ import Strategy from '@/views/Strategy.vue';
 import Playground from '@/views/Playground.vue';
 import Delegate from '@/views/Delegate.vue';
 import Timeline from '@/views/Timeline.vue';
-import Space from '@/views/Space.vue';
+import SpaceIndex from '@/views/SpaceIndex.vue';
 import SpaceAbout from '@/views/SpaceAbout.vue';
 import SpaceProposals from '@/views/SpaceProposals.vue';
 
@@ -52,37 +52,37 @@ const routes: any[] = [
 
   {
     path: '/:key',
-    name: 'space',
-    component: Space,
+    name: 'SpaceIndex',
+    component: SpaceIndex,
     children: [
       {
         path: '',
-        name: 'proposals',
+        name: 'SpaceProposals',
         component: SpaceProposals,
         beforeEnter
       },
       {
         path: 'proposal/:id',
-        name: 'proposal',
+        name: 'SpaceProposal',
         component: SpaceProposal,
         beforeEnter
       },
       {
         path: 'create/:from?',
-        name: 'create',
+        name: 'SpaceCreate',
         component: SpaceCreate,
         beforeEnter
       },
 
       {
         path: 'about',
-        name: 'about',
+        name: 'SpaceAbout',
         component: SpaceAbout,
         beforeEnter
       },
       {
         path: 'settings/:from?',
-        name: 'settings',
+        name: 'SpaceSettings',
         component: SpaceSettings
       }
     ]

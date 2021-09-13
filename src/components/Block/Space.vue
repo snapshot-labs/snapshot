@@ -32,13 +32,15 @@ const isAdmin = computed(() => {
       </div>
       <div class="py-3">
         <router-link
-          :to="{ name: 'proposals', params: { key: space.id } }"
+          :to="{ name: 'SpaceProposals', params: { key: space.id } }"
           v-text="$t('proposals.header')"
-          :class="$route.name === 'proposals' && 'router-link-exact-active'"
+          :class="
+            $route.name === 'SpaceProposals' && 'router-link-exact-active'
+          "
           class="block px-4 py-2 sidenav-item"
         />
         <router-link
-          :to="{ name: 'create', params: { key: space.id } }"
+          :to="{ name: 'SpaceCreate', params: { key: space.id } }"
           v-text="$t('proposals.new')"
           class="block px-4 py-2 sidenav-item"
         />
@@ -51,14 +53,14 @@ const isAdmin = computed(() => {
           class="block px-4 py-2 sidenav-item"
         />
         <router-link
-          :to="{ name: 'about', params: { key: space.id } }"
+          :to="{ name: 'SpaceAbout', params: { key: space.id } }"
           v-text="$t('about')"
-          :class="$route.name === 'about' && 'router-link-exact-active'"
+          :class="$route.name === 'SpaceAbout' && 'router-link-exact-active'"
           class="block px-4 py-2 sidenav-item"
         />
         <router-link
           v-if="isAdmin"
-          :to="{ name: 'settings' }"
+          :to="{ name: 'SpaceSettings' }"
           v-text="$t('settings.header')"
           class="block px-4 py-2 sidenav-item"
         />

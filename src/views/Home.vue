@@ -58,7 +58,7 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
         <a
           class="flex md:flex-1 lg:flex-1 min-w-[200px] w-full"
           @click="
-            $router.push({ name: 'proposals', params: { key: space.id } })
+            $router.push({ name: 'SpaceProposals', params: { key: space.id } })
           "
           v-for="space in orderedSpaces.slice(0, limit)"
           :key="space.id"

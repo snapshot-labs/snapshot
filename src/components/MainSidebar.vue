@@ -62,7 +62,7 @@ onMounted(() => {
         <div v-for="follow in followingSpaces" :key="follow">
           <a
             @click="
-              $router.push({ name: 'proposals', params: { key: follow } })
+              $router.push({ name: 'SpaceProposals', params: { key: follow } })
             "
           >
             <Token :space="spaces[follow]" symbolIndex="space" size="44" />
