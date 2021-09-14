@@ -31,6 +31,7 @@
   "network": "नेटवर्क",
   "networks": "नेटवर्क",
   "skins": "स्कीन",
+  "members": "No members | {count} member | {count} members",
   "editStrategy": "स्ट्रॅटेजि एडिट करा",
   "invalidProposals": "अवैध प्रोपोसलं",
   "account": "खाते",
@@ -135,7 +136,7 @@
     "snapshotBlock": "स्नॅपशॉट ब्लॉक नंबर",
     "validationWarning": {
       "basic": {
-        "member": "You need to be a member of the space in order to submit a proposal.",
+        "member": "You need to be an author of the space in order to submit a proposal.",
         "minScore": "You need to have a minimum of {0} {1} in order to submit a proposal."
       },
       "customValidation": "You need to pass the proposal validation in order to submit a proposal."
@@ -188,11 +189,11 @@
     "strategies": "स्ट्रॅटेजि",
     "hideSpace": "मुख्यपृष्ठावरून जागा लपवा",
     "addStrategy": "स्ट्रॅटेजि जोडा",
-    "members": "मेंबर्स",
+    "authors": "Authors",
     "admins": "अ‍ॅडमिन",
     "defaultTab": "डीफॉल्ट टॅब",
     "proposalThreshold": "प्रोपोसलं थ्रेशोल्ड",
-    "allowOnlyMembers": "केवळ सदस्यांना प्रोपोसलं सबमिट करण्याची परवानगी द्या",
+    "allowOnlyAuthors": "Allow only authors to submit a proposal",
     "editPlugin": "प्लगइन एडिट करा",
     "addPlugin": "प्लगइन जोडा",
     "pluginParameters": "प्लगइन पॅरामीटर्स",

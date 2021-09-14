@@ -54,16 +54,15 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
       </Container>
     </div>
     <Container :slim="true">
-      <div class="flex flex-wrap gap-4">
+      <div class="grid lg:grid-cols-4 md:grid-cols-3 gap-4">
         <a
-          class="flex md:flex-1 lg:flex-1 min-w-[200px] w-full"
           @click="
             $router.push({ name: 'proposals', params: { key: space.id } })
           "
           v-for="space in orderedSpaces.slice(0, limit)"
           :key="space.id"
         >
-          <div class="w-full">
+          <div>
             <!-- Added mb-0 to remove mb-4 added by block component -->
             <Block
               class="text-center extra-icon-container mb-0"

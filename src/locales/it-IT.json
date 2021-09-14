@@ -31,6 +31,7 @@
   "network": "Rete",
   "networks": "Reti",
   "skins": "Temi",
+  "members": "No members | {count} member | {count} members",
   "editStrategy": "Modifica strategia",
   "invalidProposals": "Proposta non valida",
   "account": "Profilo",
@@ -135,7 +136,7 @@
     "snapshotBlock": "Numero blocco istantanea",
     "validationWarning": {
       "basic": {
-        "member": "Devi essere un membro dello spazio per inviare una proposta.",
+        "member": "You need to be an author of the space in order to submit a proposal.",
         "minScore": "Devi avere un minimo di {0} {1} per inviare una proposta."
       },
       "customValidation": "È necessario superare la convalida della proposta per inviare una proposta."
@@ -188,11 +189,11 @@
     "strategies": "Strategie",
     "hideSpace": "Nascondi lo spazio dalla pagina iniziale",
     "addStrategy": "Aggiungi strategia",
-    "members": "Membri",
+    "authors": "Authors",
     "admins": "Admins",
     "defaultTab": "Scheda predefinita",
     "proposalThreshold": "Soglia della proposta",
-    "allowOnlyMembers": "Permetti solo ai membri di presentare una proposta",
+    "allowOnlyAuthors": "Allow only authors to submit a proposal",
     "editPlugin": "Modifica plugin",
     "addPlugin": "Aggiungi plugin",
     "pluginParameters": "Parametri plugin",
