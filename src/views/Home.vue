@@ -92,13 +92,8 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
             </Block>
           </div>
         </a>
-
-        <NoResults
-          :block="true"
-          v-if="Object.keys(orderedSpaces).length < 1"
-          class="md:pr-6"
-        />
       </div>
+      <NoResults :block="true" v-if="Object.keys(orderedSpaces).length < 1" />
     </Container>
     <div ref="endElement" />
   </div>
