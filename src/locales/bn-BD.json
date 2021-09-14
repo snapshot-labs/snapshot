@@ -31,6 +31,7 @@
   "network": "নেটওয়ার্ক",
   "networks": "নেটওয়ার্ক",
   "skins": "স্কীন",
+  "members": "No members | {count} member | {count} members",
   "editStrategy": "স্ট্রাটেজি সম্পাদনা করুন",
   "invalidProposals": "অবৈধ প্রোপসল",
   "account": "অ্যাকাউন্ট",
@@ -135,7 +136,7 @@
     "snapshotBlock": "স্ন্যাপশট ব্লক নম্বর",
     "validationWarning": {
       "basic": {
-        "member": "প্রপোসাল জমা দেওয়ার জন্য আপনাকে অবশ্যই স্থানটির সদস্য হতে হবে.",
+        "member": "You need to be an author of the space in order to submit a proposal.",
         "minScore": "আপনার কাছে প্রপোসাল জমা দেওয়ার ন্যূনতম {0}{1} থাকতে হবে."
       },
       "customValidation": "প্রস্তাব জমা দেওয়ার জন্য আপনাকে প্রস্তাবের বৈধতাটি পাস করতে হবে।."
@@ -188,11 +189,11 @@
     "strategies": "স্ট্রাটেজি",
     "hideSpace": "হোমপৃষ্ঠা থেকে স্থান লুকান",
     "addStrategy": "স্ট্রাটেজি যুক্ত করুন",
-    "members": "সদস্যরা",
+    "authors": "Authors",
     "admins": "প্রশাসকগণ",
     "defaultTab": "ডিফল্ট ট্যাব",
     "proposalThreshold": "প্রস্তাব থ্রেশহোল্ড",
-    "allowOnlyMembers": "কেবল সদস্যদের প্রস্তাব জমা দেওয়ার অনুমতি দিন",
+    "allowOnlyAuthors": "Allow only authors to submit a proposal",
     "editPlugin": "প্লাগইন সম্পাদনা করুন",
     "addPlugin": "প্লাগ ইন যোগ করুন",
     "pluginParameters": "প্লাগইন প্যারামিটার",

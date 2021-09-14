@@ -31,6 +31,7 @@
   "network": "Réseau",
   "networks": "Réseaux",
   "skins": "Thèmes",
+  "members": "No members | {count} member | {count} members",
   "editStrategy": "Modifier la stratégie",
   "invalidProposals": "Propositions incorrectes",
   "account": "Compte",
@@ -135,7 +136,7 @@
     "snapshotBlock": "Numéro du bloc",
     "validationWarning": {
       "basic": {
-        "member": "You need to be a member of the space in order to submit a proposal.",
+        "member": "You need to be an author of the space in order to submit a proposal.",
         "minScore": "You need to have a minimum of {0} {1} in order to submit a proposal."
       },
       "customValidation": "You need to pass the proposal validation in order to submit a proposal."
@@ -188,11 +189,11 @@
     "strategies": "Stratégie(s)",
     "hideSpace": "Cacher l'espace de la page d'accueil",
     "addStrategy": "Ajouter une stratégie",
-    "members": "Membres",
+    "authors": "Authors",
     "admins": "Administrateurs",
     "defaultTab": "Onglet par défaut",
     "proposalThreshold": "Proposal threshold",
-    "allowOnlyMembers": "Allow only members to submit a proposal",
+    "allowOnlyAuthors": "Allow only authors to submit a proposal",
     "editPlugin": "Modifier le module",
     "addPlugin": "Ajouter un plugin",
     "pluginParameters": "Paramètres du plugin",

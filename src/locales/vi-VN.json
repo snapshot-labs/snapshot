@@ -31,6 +31,7 @@
   "network": "Mạng",
   "networks": "Mạng",
   "skins": "Giao diện",
+  "members": "No members | {count} member | {count} members",
   "editStrategy": "Chỉnh sửa chiến lược",
   "invalidProposals": "Đề xuất không hợp lệ",
   "account": "Tài khoản",
@@ -135,7 +136,7 @@
     "snapshotBlock": "Số khối chụp ảnh nhanh",
     "validationWarning": {
       "basic": {
-        "member": "You need to be a member of the space in order to submit a proposal.",
+        "member": "You need to be an author of the space in order to submit a proposal.",
         "minScore": "You need to have a minimum of {0} {1} in order to submit a proposal."
       },
       "customValidation": "You need to pass the proposal validation in order to submit a proposal."
@@ -188,11 +189,11 @@
     "strategies": "Chiến lược(s)",
     "hideSpace": "Ẩn không gian khỏi trang chủ",
     "addStrategy": "Thêm chiến lược",
-    "members": "Thành viên",
+    "authors": "Authors",
     "admins": "Admins",
     "defaultTab": "Tab mặc định",
     "proposalThreshold": "Ngưỡng đề xuất",
-    "allowOnlyMembers": "Chỉ cho phép các thành viên gửi đề xuất",
+    "allowOnlyAuthors": "Allow only authors to submit a proposal",
     "editPlugin": "Chỉnh sửa plugin",
     "addPlugin": "Thêm plugin",
     "pluginParameters": "Thông số plugin",
