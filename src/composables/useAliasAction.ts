@@ -6,7 +6,7 @@ import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { getDefaultProvider, Provider } from '@ethersproject/providers';
 import { ALIASES_QUERY } from '@/helpers/queries';
 import { useApolloQuery } from '@/composables/useApolloQuery';
-import client from '@/helpers/EIP712';
+import client from '@/helpers/clientEIP712';
 
 const aliases = ref(lsGet('aliases') || {});
 const isValidAlias = ref(false);
