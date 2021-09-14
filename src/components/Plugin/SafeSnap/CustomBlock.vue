@@ -53,7 +53,7 @@
 </template>
 
 <script>
-import Plugin from '@snapshot-labs/snapshot.js/src/plugins/safeSnap';
+import Plugin from '@/../snapshot-plugins/src/plugins/safeSnap';
 import { sleep } from '@/helpers/utils';
 import { BigNumber } from '@ethersproject/bignumber';
 import { formatBatchTransaction } from '@/helpers/abi/utils';
