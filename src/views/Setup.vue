@@ -8,7 +8,7 @@ const id = ref('');
 
 function handleSubmit() {
   router.push({
-    name: 'SpaceSettings',
+    name: 'spaceSettings',
     params: { key: id.value.toLowerCase() }
   });
 }

@@ -120,7 +120,7 @@ async function handleSubmit() {
   try {
     const { ipfsHash } = await send(props.space.id, 'proposal', form.value);
     router.push({
-      name: 'SpaceProposal',
+      name: 'spaceProposal',
       params: {
         key: props.spaceId,
         id: ipfsHash
@@ -190,7 +190,7 @@ onMounted(async () => {
     <template #content-left>
       <div class="px-4 md:px-0 mb-3">
         <router-link
-          :to="{ name: domain ? 'home' : 'SpaceProposals' }"
+          :to="{ name: domain ? 'home' : 'spaceProposals' }"
           class="text-color"
         >
           <Icon name="back" size="22" class="!align-middle" />

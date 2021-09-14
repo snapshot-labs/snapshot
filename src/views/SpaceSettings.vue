@@ -223,7 +223,7 @@ onMounted(async () => {
   <Layout v-bind="$attrs">
     <template #content-left>
       <div class="px-4 md:px-0 mb-3">
-        <router-link :to="{ name: 'SpaceProposals' }" class="text-color">
+        <router-link :to="{ name: 'spaceProposals' }" class="text-color">
           <Icon name="back" size="22" class="!align-middle" />
           {{ space.name }}
         </router-link>

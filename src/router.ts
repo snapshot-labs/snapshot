@@ -17,19 +17,16 @@ import SpaceProposals from '@/views/SpaceProposals.vue';
 
 const domainName = window.location.hostname;
 
-const beforeEnter = (to: any, from, next) => {
-  if (aliases?.[to?.params?.key]) {
-    to.params.key = aliases[to.params.key];
-    return next(to);
-  }
-  next();
-};
-
 const routes: any[] = [
   {
     path: '/',
     name: 'home',
-    component: domains[domainName] ? Space : Home
+    component: Home,
+    beforeEnter: (to, from, next) => {
+      if (domains[domainName])
+        next({ name: 'spaceProposals', params: { key: domains[domainName] } });
+      else next();
+    }
   },
   { path: '/setup', name: 'setup', component: Setup },
   { path: '/networks', name: 'networks', component: Explore },
@@ -52,37 +49,39 @@ const routes: any[] = [
 
   {
     path: '/:key',
-    name: 'Space',
+    name: 'space',
     component: Space,
+    beforeEnter: (to: any, from, next) => {
+      if (aliases?.[to?.params?.key]) {
+        to.params.key = aliases[to.params.key];
+        return next(to);
+      } else next();
+    },
     children: [
       {
         path: '',
-        name: 'SpaceProposals',
-        component: SpaceProposals,
-        beforeEnter
+        name: 'spaceProposals',
+        component: SpaceProposals
       },
       {
         path: 'proposal/:id',
-        name: 'SpaceProposal',
-        component: SpaceProposal,
-        beforeEnter
+        name: 'spaceProposal',
+        component: SpaceProposal
       },
       {
         path: 'create/:from?',
-        name: 'SpaceCreate',
-        component: SpaceCreate,
-        beforeEnter
+        name: 'spaceCreate',
+        component: SpaceCreate
       },
 
       {
         path: 'about',
-        name: 'SpaceAbout',
-        component: SpaceAbout,
-        beforeEnter
+        name: 'spaceAbout',
+        component: SpaceAbout
       },
       {
         path: 'settings/:from?',
-        name: 'SpaceSettings',
+        name: 'spaceSettings',
         component: SpaceSettings
       }
     ]

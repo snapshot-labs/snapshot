@@ -76,12 +76,12 @@ async function loadProposal() {
   proposal.value = proposalObj.proposal;
   // Redirect to proposal spaceId if it doesn't match route key
   if (
-    route.name === 'SpaceProposal' &&
+    route.name === 'spaceProposal' &&
     route.params.key &&
     route.params.key !== proposal.value.space.id
   )
     router.push({
-      name: 'SpaceProposal',
+      name: 'spaceProposal',
       params: {
         key: proposal.value.space.id,
         id: proposal.value.id
@@ -120,7 +120,7 @@ async function deleteProposal() {
     ) {
       dropdownLoading.value = false;
       router.push({
-        name: 'SpaceProposals'
+        name: 'spaceProposals'
       });
     }
   } catch (e) {
@@ -142,7 +142,7 @@ function selectFromThreedotDropdown(e) {
   if (e === 'delete') deleteProposal();
   if (e === 'duplicate')
     router.push({
-      name: 'SpaceCreate',
+      name: 'spaceCreate',
       params: {
         key: proposal.value.space.id,
         from: proposal.value.id
@@ -180,7 +180,7 @@ onMounted(async () => {
     <template #content-left>
       <div class="px-4 md:px-0 mb-3">
         <router-link
-          :to="{ name: domain ? 'home' : 'SpaceProposals' }"
+          :to="{ name: domain ? 'home' : 'spaceProposals' }"
           class="text-color"
         >
           <Icon name="back" size="22" class="!align-middle" />
