@@ -24,7 +24,6 @@ const app = createApp({
   .use(i18n)
   .use(router)
   .use(LockPlugin, options);
-app
   .use(VueTippy, {
     defaultProps: { delay: [400, null] },
     directive: 'tippy' // => v-tippy
