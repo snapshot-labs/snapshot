@@ -62,24 +62,25 @@ async function downloadReport() {
   >
     <div v-for="choice in choices" :key="choice.i">
       <div class="link-color mb-1">
-        <UiTooltip
+        <span
+          v-tippy="{
+            content: choice.choice.length > 12 ? choice.choice : null
+          }"
+          class="mr-1"
+          v-text="_shorten(choice.choice, 'choice')"
+        />
+
+        <span
           class="inline-block"
-          :text="choice.choice"
-          :show="choice.choice.length > 12"
-        >
-          <span class="mr-1" v-text="_shorten(choice.choice, 'choice')" />
-        </UiTooltip>
-        <UiTooltip
-          class="inline-block"
-          :text="
-            results.resultsByStrategyScore[choice.i]
+          v-tippy="{
+            content: results.resultsByStrategyScore[choice.i]
               .map((score, index) => `${_n(score)} ${titles[index]}`)
               .join(' + ')
-          "
+          }"
         >
           {{ _n(results.resultsByVoteBalance[choice.i]) }}
           {{ _shorten(space.symbol, 'symbol') }}
-        </UiTooltip>
+        </span>
         <span
           class="float-right"
           v-text="
