@@ -59,10 +59,14 @@ function handleInput(e) {
       :maxlength="maxlength"
     />
     <slot name="info" />
-    <UiTooltip class="inline-block" :text="error">
-      <span v-if="error" class="float-right link-color">
-        <Icon name="warning" class="!text-red p-1 block pt-2 mt-1 -mr-1" />
-      </span>
-    </UiTooltip>
+    <span
+      v-if="error"
+      v-tippy="{
+        content: error
+      }"
+      class="float-right link-color"
+    >
+      <Icon name="warning" class="!text-red p-1 block pt-2 mt-[6px] -mr-1" />
+    </span>
   </div>
 </template>
