@@ -40,7 +40,6 @@ onMounted(() => {
       <div class="min-h-[78px] h-[78px] flex items-center justify-center">
         <router-link :to="{ name: 'home' }">
           <Icon
-            @click="$router.push({ name: 'home' })"
             size="36"
             name="snapshot"
             class="text-snapshot cursor-pointer"
