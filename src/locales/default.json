@@ -274,5 +274,29 @@
     "button_show": "Show me my collection",
     "success_claim": "Your POAP is on your address",
     "error_claim": "There was a problem minting the token"
+  },
+  "comment_box":{
+    "title":"Comment Box",
+    "add":"Add your comment here",
+    "submit":"Submit",
+    "preview":"Preview",
+    "continue_editing":"Continue Editing",
+    "edit":"Edit your reply here",
+    "edit_button":"Edit",
+    "dismiss":"Dismiss",
+    "delete":"delete",
+    "add_reply":"add your reply here",
+    "edit_comment":"Edit Comment",
+    "edit_modal":"are you sure you want to edit?",
+    "yes":"Yes",
+    "no":"No",
+    "delete_comment":"Delete Comment",
+    "delete_modal":"are you sure you want to delete?",
+    "error":"Oops, something went wrong",
+    "replies":"replies",
+    "hide":"hide",
+    "show":"show",
+    "reply":"reply",
+    "load_more":"load more"
   }
 }

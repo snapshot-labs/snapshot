@@ -6,6 +6,8 @@ import { useModal } from '@/composables/useModal';
 import { useWeb3 } from '@/composables/useWeb3';
 import { signMessage } from '@snapshot-labs/snapshot.js/src/utils/web3';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n();
 const auth = getInstance();
 const { modalOpen, modalAccountOpen } = useModal();
 const props = defineProps({
@@ -45,7 +47,7 @@ async function updateItems() {
   if (loading.value) return;
   try {
     loading.value = true;
-    const token = sessionStorage.getItem('token');
+    const token = localStorage.getItem('_commentBox.token');
     let sig;
     const msg = { markdown: comment.value };
     if (!token)
@@ -60,21 +62,27 @@ async function updateItems() {
         address: web3Account.value,
         msg: JSON.stringify(msg),
         sig,
-        space_id: props.space.key
+        space_id: props.space.id
       },
       token ? { authorization: token } : null
     );
     loading.value = false;
-    if (!res.status) return notify(['red', 'Oops, something went wrong']);
-    if (res.token) sessionStorage.setItem('token', res.token);
+    if (res.refresh) throw new Error('refresh');
+    if (!res.status) return notify(['primary', t('comment_box.error')]);
+    if (res.token) localStorage.setItem('_commentBox.token', res.token);
     emit('updateItem', res.data);
     emit('dismissComment');
     closeModal.value = false;
 
     return;
   } catch (e) {
+    if (e.message === 'refresh') {
+      localStorage.removeItem('_commentBox.token');
+      updateItems();
+      return;
+    }
     loading.value = false;
-    notify(['red', 'Oops, something went wrong']);
+    notify(['primary', t('comment_box.error')]);
   }
 }
 const chooseMethod = {
@@ -87,7 +95,7 @@ const chooseMethod = {
     if (loading.value) return;
     try {
       loading.value = true;
-      const token = sessionStorage.getItem('token');
+      const token = localStorage.getItem('_commentBox.token');
       let sig;
       const msg = {
         author: web3Account.value,
@@ -114,14 +122,20 @@ const chooseMethod = {
         token ? { authorization: token } : null
       );
       loading.value = false;
-      if (!res.status) return notify(['red', 'Oops, something went wrong']);
-      if (res.token) sessionStorage.setItem('token', res.token);
+      if (res.refresh) throw new Error('refresh');
+      if (!res.status) return notify(['primary', t('comment_box.error')]);
+      if (res.token) localStorage.setItem('_commentBox.token', res.token);
       emit('dismissComment');
       emit('replyComment', res.data);
       return;
     } catch (e) {
+      if (e.message === 'refresh') {
+        localStorage.removeItem('_commentBox.token');
+        replyComment();
+        return;
+      }
       loading.value = false;
-      notify(['red', 'Oops, something went wrong']);
+      notify(['primary', t('comment_box.error')]);
     }
   }
 };
@@ -141,52 +155,53 @@ watch([modalOpen, closeModal], () => {
 <template>
   <UiModal :open="closeModal" @close="closeEvent">
     <template v-slot:header>
-      <h3>Edit Comment</h3>
+      <h3>{{ $t('comment_box.edit_comment') }}</h3>
     </template>
-    <div class="text-center mt-4">
-      <p>are you sure you want to edit?</p>
+    <div class="text-center mt-3">
+      <p>{{ $t('comment_box.edit_modal') }}</p>
     </div>
     <div
-      class="mb-2"
-      style="
-        text-align: center;
-        display: flex;
-        align-items: center;
-        align-content: center;
-        justify-content: center;
+      class="
+        mb-2
+        mt-3
+        text-center
+        flex
+        items-center
+        content-center
+        justify-center
       "
     >
       <UiButton
-        class="bg-red text-white"
+        class="!bg-primary !text-white"
         :loading="loading"
         @click="updateItems"
-        >Yes</UiButton
+        >{{ $t('comment_box.yes') }}</UiButton
       >
-      <UiButton @click="closeEvent" :disabled="loading" class="ml-2"
-        >No</UiButton
-      >
+      <UiButton @click="closeEvent" :disabled="loading" class="ml-2">{{
+        $t('comment_box.no')
+      }}</UiButton>
     </div>
   </UiModal>
   <div class="mt-2">
     <UiButton
       v-if="togglePreview"
-      class="d-block width-full px-3"
-      style="height: auto; cursor: default"
+      class="flex w-full px-3 !h-auto cursor-default"
     >
       <TextareaAutosize
         v-model="comment"
         :placeholder="placeholder"
-        class="input width-full text-left"
+        class="input w-full text-left"
+        :minHeight="100"
         style="font-size: 18px"
       />
     </UiButton>
-    <PluginCommentBoxBlock
+    <Block
       v-if="!togglePreview"
       slim="true"
       class="p-4 h6 text-color mt-2 mb-0"
     >
       <PluginCommentBoxMarkdown :body="comment" />
-    </PluginCommentBoxBlock>
+    </Block>
     <UiButton
       :disabled="comment.length === 0"
       :loading="loading"
@@ -200,14 +215,19 @@ watch([modalOpen, closeModal], () => {
       :disabled="comment.length === 0"
       class="ml-2 mt-2 button--primary"
     >
-      {{ togglePreview ? 'Preview' : 'Continue Editing' }}
+      {{
+        togglePreview
+          ? $t('comment_box.preview')
+          : $t('comment_box.continue_editing')
+      }}
     </UiButton>
     <UiButton
+      :disabled="loading"
       @click="$emit('dismissComment')"
       type="text"
       class="border-0 ml-2 mt-2 button--text"
     >
-      Dismiss
+      {{ $t('comment_box.dismiss') }}
     </UiButton>
   </div>
 </template>

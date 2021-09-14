@@ -7,6 +7,8 @@ import { useProfiles } from '@/composables/useProfiles';
 import { useNotifications } from '@/composables/useNotifications';
 import { useScrollMonitor } from '@/composables/useScrollMonitor';
 import { signMessage } from '@snapshot-labs/snapshot.js/src/utils/web3';
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n();
 const props = defineProps({
   proposalId: String,
   space: Object,
@@ -73,6 +75,7 @@ async function clickSubmit() {
 
 async function postData(url = '', data = {}, authorization) {
   // Default options are marked with *
+
   const response = await fetch(url, {
     method: 'POST',
     body: JSON.stringify(data),
@@ -88,7 +91,7 @@ async function handleSubmit() {
   if (loading.value) return;
   try {
     loading.value = true;
-    const token = sessionStorage.getItem('token');
+    const token = localStorage.getItem('_commentBox.token');
     let sig;
     const msg = {
       author: web3Account.value,
@@ -111,13 +114,19 @@ async function handleSubmit() {
       token ? { authorization: token } : null
     );
     loading.value = false;
-    if (!res.status) return notify(['red', 'Oops, something went wrong']);
+    if (res.refresh) throw new Error('refresh');
+    if (!res.status) return notify(['primary', t('comment_box.error')]);
     comment.value = '';
-    if (res.token) sessionStorage.setItem('token', res.token);
+    if (res.token) localStorage.setItem('_commentBox.token', res.token);
     allData.value.push(res.data);
   } catch (e) {
+    if (e.message === 'refresh') {
+      localStorage.removeItem('_commentBox.token');
+      handleSubmit();
+      return;
+    }
     loading.value = false;
-    notify(['red', 'Oops, something went wrong']);
+    notify(['primary', t('comment_box.error')]);
   }
 }
 
@@ -133,26 +142,26 @@ function deleteItem(key) {
 }
 </script>
 <template>
-  <Block title="Comment Box">
+  <Block :title="$t('comment_box.title')">
     <UiButton
       v-if="togglePreview"
-      class="d-block width-full px-3"
-      style="height: auto; cursor: default"
+      class="flex w-full px-3 !h-auto cursor-default"
     >
       <TextareaAutosize
         v-model="comment"
-        :placeholder="`Add your comment here`"
-        class="input width-full text-left"
+        :placeholder="$t('comment_box.add')"
+        class="input text-left w-full h-full"
         style="font-size: 18px"
+        :minHeight="100"
       />
     </UiButton>
-    <PluginCommentBoxBlock
+    <Block
       v-if="!togglePreview"
       slim="true"
       class="p-4 h6 text-color mt-2 mb-0"
     >
       <PluginCommentBoxMarkdown :body="comment" />
-    </PluginCommentBoxBlock>
+    </Block>
 
     <UiButton
       @click="clickSubmit"
@@ -160,13 +169,17 @@ function deleteItem(key) {
       :loading="loading"
       class="mt-2 button--submit"
     >
-      Submit
+      {{ $t(`comment_box.submit`) }}
     </UiButton>
     <UiButton
       @click="togglePreview = !togglePreview"
       class="ml-2 mt-2 button--primary"
       :disabled="comment.length === 0"
-      >{{ togglePreview ? 'Preview' : 'Continue Editing' }}</UiButton
+      >{{
+        togglePreview
+          ? $t(`comment_box.preview`)
+          : $t(`comment_box.continue_editing`)
+      }}</UiButton
     >
     <div :key="index" v-for="(item, index) in allData">
       <PluginCommentBoxCommentBlock

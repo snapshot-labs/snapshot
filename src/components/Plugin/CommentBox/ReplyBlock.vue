@@ -5,6 +5,8 @@ import { useModal } from '@/composables/useModal';
 import { useWeb3 } from '@/composables/useWeb3';
 import { signMessage } from '@snapshot-labs/snapshot.js/src/utils/web3';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n();
 const auth = getInstance();
 const { modalOpen, modalAccountOpen } = useModal();
 const { web3 } = useWeb3();
@@ -28,8 +30,8 @@ const toggleEditComment = ref(true);
 const loading = ref(false);
 const threeDotItems = computed(() => {
   const items = [
-    { text: 'edit', action: 'edit' },
-    { text: 'delete', action: 'delete' }
+    { text: t('comment_box.edit_button').toLowerCase(), action: 'edit' },
+    { text: t('comment_box.delete'), action: 'delete' }
   ];
 
   return items;
@@ -62,7 +64,7 @@ async function deleteItem() {
   if (loading.value) return;
   try {
     loading.value = true;
-    const token = sessionStorage.getItem('token');
+    const token = localStorage.getItem('_commentBox.token');
     let sig;
     const msg = { key: props.item.key };
     if (!token)
@@ -77,20 +79,26 @@ async function deleteItem() {
         address: web3Account.value,
         msg: JSON.stringify(msg),
         sig,
-        space_id: props.space.key
+        space_id: props.space.id
       },
       token ? { authorization: token } : null
     );
     loading.value = false;
-    if (!res.status) return notify(['red', 'Oops, something went wrong']);
-    if (res.token) sessionStorage.setItem('token', res.token);
+    if (res.refresh) throw new Error('refresh');
+    if (!res.status) return notify(['primary', t('comment_box.error')]);
+    if (res.token) localStorage.setItem('_commentBox.token', res.token);
     emit('deleteItem', props.item.key);
     closeModal.value = false;
 
     return;
   } catch (e) {
+    if (e.message === 'refresh') {
+      localStorage.removeItem('_commentBox.token');
+      deleteItem();
+      return;
+    }
     loading.value = false;
-    notify(['red', 'Oops, something went wrong']);
+    notify(['primary', t('comment_box.error')]);
   }
 }
 watch([modalOpen, closeModal], () => {
@@ -117,10 +125,10 @@ const isCreator = computed(() => props.proposal.author === web3Account.value);
 <template>
   <UiModal :open="closeModal" @close="closeModal = false">
     <template v-slot:header>
-      <h3>Delete Comment</h3>
+      <h3>{{ $t('comment_box.delete_comment') }}</h3>
     </template>
     <div class="text-center mt-4">
-      <p>are you sure you want to delete?</p>
+      <p>{{ $t('comment_box.delete_modal') }}</p>
     </div>
     <div
       class="mb-2"
@@ -132,30 +140,33 @@ const isCreator = computed(() => props.proposal.author === web3Account.value);
         justify-content: center;
       "
     >
-      <UiButton @click="deleteItem" :loading="loading" class="bg-red text-white"
-        >Yes</UiButton
+      <UiButton
+        @click="deleteItem"
+        :loading="loading"
+        class="!bg-primary !text-white"
+        >{{ $t('comment_box.yes') }}</UiButton
       >
-      <UiButton :disabled="loading" @click="closeModal = false" class="ml-2"
-        >No</UiButton
-      >
+      <UiButton :disabled="loading" @click="closeModal = false" class="ml-2">{{
+        $t('comment_box.no')
+      }}</UiButton>
     </div>
   </UiModal>
   <div v-if="!toggleEditComment">
     <PluginCommentBoxComment
       :item="item"
       :space="space"
-      buttonName="Edit"
-      placeholder="Edit your reply here"
+      :buttonName="$t('comment_box.edit_button')"
+      :placeholder="$t('comment_box.edit')"
       @dismissComment="toggleEditComment = true"
       @updateItem="$emit('updateItem', $event)"
       method="edit"
     />
   </div>
   <div v-if="toggleEditComment">
-    <PluginCommentBoxBlock :slim="true" class="p-4 text-color mt-2 mb-0">
+    <Block :slim="true" class="p-4 text-color mt-2 mb-0">
       <span
         style="cursor: pointer"
-        class="State mb-2 text-normal"
+        class="!bg-purple-400 State text-white inline-block mb-2"
         @click="toggleReplyTo = !toggleReplyTo"
         v-if="mainThread !== item.reply_thread_id"
       >
@@ -171,35 +182,37 @@ const isCreator = computed(() => props.proposal.author === web3Account.value);
         />
         <span v-else v-text="_shorten(item.reply_to)" />
       </span>
-      <PluginCommentBoxBlock v-if="toggleReplyTo" slim="true">
-        <div class="ml-2 mt-2">
-          <span
-            @click="$emit('scrollTo', item.reply_thread_id)"
-            style="cursor: pointer"
-          >
-            comment by
-            <User
-              :address="item.reply_to"
-              :profile="profiles[item.reply_to]"
-              :space="space"
-              class="d-inline-block"
-            />
-            <span v-if="item?.edited">(edited)</span>
-            <span v-if="item?.deleted">(deleted)</span>
-          </span>
-        </div>
+      <Block v-if="toggleReplyTo" slim="true">
+        <span
+          class="
+            px-4
+            pt-3
+            border-b
+            block
+            bg-skin-header-bg
+            rounded-t-none
+            md:rounded-t-lg
+          "
+          style="padding-bottom: 12px; cursor: pointer"
+          @click="$emit('scrollTo', item.reply_thread_id)"
+        >
+          comment by {{ _shorten(item.reply_to) }}
+
+          <span v-if="item?.edited">(edited)</span>
+          <span v-if="item?.deleted">(deleted)</span>
+        </span>
 
         <div class="border-bottom"></div>
         <div class="ml-2 mt-2">
           <PluginCommentBoxMarkdown :body="item.reply" />
         </div>
-      </PluginCommentBoxBlock>
+      </Block>
       <div>
         <User
           :address="item.author"
           :profile="profiles[item.author]"
           :space="space"
-          class="d-inline-block"
+          class="inline-block"
         />
         <UiDropdown
           v-if="isAdmin || isOwner || isCreator"
@@ -229,14 +242,14 @@ const isCreator = computed(() => props.proposal.author === web3Account.value);
           >(edited)</span
         >
       </div>
-    </PluginCommentBoxBlock>
+    </Block>
     <UiButton
       @click="toggleComment = !toggleComment"
-      class="p-1 rounded-0 ml-2"
+      class="p-1 rounded-0 ml-2 mt-2"
       style="line-height: 0px; height: auto"
     >
-      <Icon :name="'receipt-outlined'" class="v-align-middle" size="18" />
-      <div class="d-inline-block ml-1">reply</div>
+      <Icon :name="'receipt-outlined'" class="v-align-middle" size="15" />
+      <span class="ml-1">{{ $t('comment_box.reply') }}</span>
     </UiButton>
     <PluginCommentBoxComment
       v-if="!toggleComment"
@@ -248,7 +261,7 @@ const isCreator = computed(() => props.proposal.author === web3Account.value);
       :item="item"
       :mainThread="mainThread"
       method="replyComment"
-      placeholder="add your reply here"
+      :placeholder="$t('comment_box.add_reply')"
     />
   </div>
 </template>

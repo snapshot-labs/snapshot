@@ -17,8 +17,9 @@ onBeforeUpdate(() => {
 });
 function goto(index) {
   try {
+    console.log('dsa');
     const element = listReply.value[index];
-    const child = element.querySelector('div > div > div > div.border-top');
+    const child = element.querySelector('div > div > div > div.border-t');
     child.classList.remove('block-bg');
     child.classList.add('goto');
     const top = element.offsetTop;
@@ -28,7 +29,7 @@ function goto(index) {
       child.classList.add('block-bg');
     }, 1000);
   } catch (e) {
-    // console.log("")
+    console.log(e.message);
   }
 }
 const showIt = ref(false);
@@ -65,7 +66,8 @@ html {
     class="ml-2 mt-2 d-inline-block"
     style="color: blue; cursor: pointer"
   >
-    {{ showIt ? 'hide' : 'show' }} replies ({{ allReply.length }})
+    {{ showIt ? $t('comment_box.hide') : $t('comment_box.show') }}
+    {{ $t('comment_box.replies') }} ({{ allReply.length }})
   </div>
 
   <div
@@ -101,7 +103,7 @@ html {
     class="ml-5 mt-2 d-inline-block"
     style="color: blue; cursor: pointer"
   >
-    load more...
+    {{ $t('comment_box.load_more') }}...
   </div>
   <RowLoading v-if="loadingMore" class="my-2" />
 </template>

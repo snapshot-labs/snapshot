@@ -5,6 +5,8 @@ import { useModal } from '@/composables/useModal';
 import { useWeb3 } from '@/composables/useWeb3';
 import { signMessage } from '@snapshot-labs/snapshot.js/src/utils/web3';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n();
 const auth = getInstance();
 const { modalOpen, modalAccountOpen } = useModal();
 const { web3 } = useWeb3();
@@ -17,8 +19,8 @@ const props = defineProps({
 });
 const threeDotItems = computed(() => {
   const items = [
-    { text: 'edit', action: 'edit' },
-    { text: 'delete', action: 'delete' }
+    { text: t('comment_box.edit_button').toLowerCase(), action: 'edit' },
+    { text: t('comment_box.delete'), action: 'delete' }
   ];
 
   return items;
@@ -70,8 +72,9 @@ const { notify } = useNotifications();
 async function deleteItem() {
   if (loading.value) return;
   try {
+    console.log(props.space);
     loading.value = true;
-    const token = sessionStorage.getItem('token');
+    const token = localStorage.getItem('_commentBox.token');
     let sig;
     const msg = { key: props.item.key };
     if (!token)
@@ -86,20 +89,26 @@ async function deleteItem() {
         address: web3Account.value,
         msg: JSON.stringify(msg),
         sig,
-        space_id: props.space.key
+        space_id: props.space.id
       },
       token ? { authorization: token } : null
     );
     loading.value = false;
-    if (!res.status) return notify(['red', 'Oops, something went wrong']);
-    if (res.token) sessionStorage.setItem('token', res.token);
+    if (res.refresh) throw new Error('refresh');
+    if (!res.status) return notify(['primary', t('comment_box.error')]);
+    if (res.token) localStorage.setItem('_commentBox.token', res.token);
     allReply.value = 0;
     emit('deleteItem', props.item.key);
     closeModal.value = false;
     return;
   } catch (e) {
+    if (e.message === 'refresh') {
+      localStorage.removeItem('_commentBox.token');
+      deleteItem();
+      return;
+    }
     loading.value = false;
-    notify(['red', 'Oops, something went wrong']);
+    notify(['primary', t('comment_box.error')]);
   }
 }
 
@@ -195,48 +204,52 @@ function deleteItemReply(key) {
 <template>
   <UiModal :open="closeModal" @close="closeEvent">
     <template v-slot:header>
-      <h3>Delete Comment</h3>
+      <h3>{{ $t('comment_box.delete_comment') }}</h3>
     </template>
-    <div class="text-center mt-4">
-      <p>are you sure you want to delete?</p>
+    <div class="text-center mt-3">
+      <p>{{ $t('comment_box.delete_modal') }}</p>
     </div>
     <div
-      class="mb-2"
-      style="
-        text-align: center;
-        display: flex;
-        align-items: center;
-        align-content: center;
-        justify-content: center;
+      class="
+        mb-2
+        mt-3
+        text-center
+        flex
+        items-center
+        content-center
+        justify-center
       "
     >
-      <UiButton class="bg-red text-white" :loading="loading" @click="deleteItem"
-        >Yes</UiButton
+      <UiButton
+        class="!bg-primary !text-white"
+        :loading="loading"
+        @click="deleteItem"
+        >{{ $t('comment_box.yes') }}</UiButton
       >
-      <UiButton @click="closeEvent" :disabled="loading" class="ml-2"
-        >No</UiButton
-      >
+      <UiButton @click="closeEvent" :disabled="loading" class="ml-2">{{
+        $t('comment_box.no')
+      }}</UiButton>
     </div>
   </UiModal>
   <div v-if="!toggleEditComment">
     <PluginCommentBoxComment
       :space="space"
       :item="item"
-      buttonName="Edit"
-      placeholder="Edit your reply here"
+      :buttonName="$t('comment_box.edit_button')"
+      :placeholder="$t('comment_box.edit')"
       @dismissComment="toggleEditComment = true"
       @updateItem="updateItem($event)"
       method="edit"
     />
   </div>
   <div v-if="toggleEditComment">
-    <PluginCommentBoxBlock :slim="true" class="p-4 text-color mt-2 mb-0">
+    <Block :slim="true" class="p-4 text-color mt-2 mb-0">
       <div>
         <User
           :address="item.author"
           :profile="profiles[item.author]"
           :space="space"
-          class="d-inline-block"
+          class="inline-block"
         />
 
         <UiDropdown
@@ -268,15 +281,15 @@ function deleteItemReply(key) {
           (edited)</span
         >
       </div>
-    </PluginCommentBoxBlock>
+    </Block>
 
     <UiButton
       @click="toggleComment = !toggleComment"
-      class="p-1 rounded-0 ml-2"
+      class="p-1 rounded-0 ml-2 mt-2"
       style="line-height: 0px; height: auto"
     >
-      <Icon :name="'receipt-outlined'" class="v-align-middle" size="18" />
-      <div class="d-inline-block ml-1">reply</div>
+      <Icon :name="'receipt-outlined'" class="v-align-middle" size="15" />
+      <span class="ml-1">{{ $t('comment_box.reply') }}</span>
     </UiButton>
     <PluginCommentBoxComment
       v-if="!toggleComment"
@@ -287,7 +300,7 @@ function deleteItemReply(key) {
       :item="item"
       :mainThread="item.key"
       method="replyComment"
-      placeholder="add your reply here"
+      :placeholder="$t('comment_box.add_reply')"
     />
   </div>
   <PluginCommentBoxListReply
