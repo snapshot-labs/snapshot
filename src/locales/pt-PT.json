@@ -31,7 +31,7 @@
   "network": "Rede",
   "networks": "Redes",
   "skins": "Skins",
-  "members": "No members | {count} member | {count} members",
+  "members": "Sem membros, {count} membro, {count} membros",
   "editStrategy": "Editar estratégia",
   "invalidProposals": "Propostas inválidas",
   "account": "Conta",
@@ -136,7 +136,7 @@
     "snapshotBlock": "Número de bloco Snapshot",
     "validationWarning": {
       "basic": {
-        "member": "You need to be an author of the space in order to submit a proposal.",
+        "member": "Você precisa ser um autor deste espaço para poder submeter uma proposta.",
         "minScore": "Você precisa ter um mínimo de {0} {1} para submeter uma proposta."
       },
       "customValidation": "Você precisa passar a validação da proposta para submeter uma proposta."
@@ -189,11 +189,11 @@
     "strategies": "Estratégia(s)",
     "hideSpace": "Ocultar comunidade da página inicial",
     "addStrategy": "Adicionar estratégia",
-    "authors": "Authors",
+    "authors": "Autores",
     "admins": "Administradores",
     "defaultTab": "Separador padrão",
     "proposalThreshold": "Limite da proposta",
-    "allowOnlyAuthors": "Allow only authors to submit a proposal",
+    "allowOnlyAuthors": "Permitir apenas autores para submeter a proposta",
     "editPlugin": "Editar plugin",
     "addPlugin": "Adicionar plugin",
     "pluginParameters": "Parâmetros do plugin",
