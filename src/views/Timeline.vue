@@ -8,19 +8,27 @@ import { useScrollMonitor } from '@/composables/useScrollMonitor';
 import { useApolloQuery } from '@/composables/useApolloQuery';
 import { PROPOSALS_QUERY } from '@/helpers/queries';
 import { useProfiles } from '@/composables/useProfiles';
-import { useFavoriteSpaces } from '@/composables/useFavoriteSpaces';
+import { useFollowSpace } from '@/composables/useFollowSpace';
+import { useWeb3 } from '@/composables/useWeb3';
 
 const filterBy = ref('all');
 const loading = ref(false);
 const proposals = ref([]);
 
 const route = useRoute();
-const { favorites: favoriteSpaces } = useFavoriteSpaces();
+const { followingSpaces, loadingFollows } = useFollowSpace();
+const { web3 } = useWeb3();
 
-const favorites = computed(() =>
-  route.name === 'timeline' ? favoriteSpaces.value : []
-);
-const favoritesKeys = computed(() => Object.keys(favorites.value));
+const following = computed(() => {
+  return route.name === 'timeline' ? followingSpaces.value : [];
+});
+
+const isTimeline = computed(() => route.name === 'timeline');
+
+watch(following, () => {
+  proposals.value = [];
+  load();
+});
 
 const { loadBy, limit, loadingMore, stopLoadingMore, loadMore } =
   useInfiniteLoader();
@@ -37,7 +45,7 @@ async function loadProposals(skip = 0) {
       variables: {
         first: loadBy,
         skip,
-        space_in: favoritesKeys.value,
+        space_in: following.value,
         state: filterBy.value
       }
     },
@@ -73,7 +81,7 @@ function selectState(e) {
 // Save the most recently seen proposalId in localStorage
 const { getProposalIds, proposalIds } = useUnseenProposals();
 onMounted(async () => {
-  await getProposalIds(favorites.value);
+  await getProposalIds(following.value);
   if (proposalIds.value[0])
     lsSet('lastSeenProposalId', proposalIds.value[0].id);
 });
@@ -87,26 +95,26 @@ onMounted(async () => {
           <div class="py-3">
             <router-link
               :to="{ name: 'timeline' }"
-              v-text="$t('favorites')"
-              class="d-block px-4 py-2 sidenav-item"
+              v-text="$t('joinedSpaces')"
+              class="block px-4 py-2 sidenav-item"
             />
             <router-link
               :to="{ name: 'explore' }"
               v-text="$t('allSpaces')"
-              class="d-block px-4 py-2 sidenav-item"
+              class="block px-4 py-2 sidenav-item"
             />
           </div>
         </Block>
       </div>
     </template>
     <template #content-right>
-      <div class="px-4 px-md-0 mb-3 d-flex">
+      <div class="px-4 md:px-0 mb-3 flex">
         <div class="flex-auto">
           <router-link :to="{ name: 'home' }" class="text-color">
-            <Icon name="back" size="22" class="v-align-middle" />
+            <Icon name="back" size="22" class="!align-middle" />
             {{ $t('backToHome') }}
           </router-link>
-          <div class="d-flex flex-items-center flex-auto">
+          <div class="flex items-center flex-auto">
             <h2>{{ $t('timeline') }}</h2>
           </div>
         </div>
@@ -129,20 +137,30 @@ onMounted(async () => {
       </div>
 
       <Block
-        v-if="favoritesKeys.length < 1 && $route.name === 'timeline'"
-        class="text-center"
+        v-if="
+          loading ||
+          (web3.authLoading && isTimeline) ||
+          (loadingFollows && isTimeline)
+        "
+        :slim="true"
       >
-        <div class="mb-3">{{ $t('noFavorites') }}</div>
-        <router-link :to="{ name: 'home' }">
-          <UiButton>{{ $t('addFavorites') }}</UiButton>
-        </router-link>
-      </Block>
-
-      <Block v-else-if="loading" :slim="true">
         <RowLoading class="my-2" />
       </Block>
 
-      <NoResults :block="true" v-else-if="proposals.length < 1" />
+      <Block
+        v-else-if="
+          (isTimeline && following.length < 1) || (isTimeline && !web3.account)
+        "
+        class="text-center"
+      >
+        <div class="mb-3">{{ $t('noSpacesJoined') }}</div>
+        <router-link :to="{ name: 'home' }">
+          <UiButton>{{ $t('joinSpaces') }}</UiButton>
+        </router-link>
+      </Block>
+
+      <NoResults v-else-if="proposals.length < 1" :block="true" />
+
       <div v-else>
         <Block :slim="true" v-for="(proposal, i) in proposals" :key="i">
           <TimelineProposal :proposal="proposal" :profiles="profiles" />

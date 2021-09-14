@@ -1,10 +1,14 @@
 <script setup>
 import { ref, onBeforeUnmount, onMounted } from 'vue';
+import { watchTxStatus } from '@/composables/useTxStatus';
+import { useDomain } from '@/composables/useDomain';
 
 const sticky = ref(null);
 const isFixed = ref(false);
 const offsetTop = ref(-1);
 const offsetHeight = ref(0);
+
+const { domain } = useDomain();
 
 function onScroll(e) {
   const windowTop = e.target.documentElement.scrollTop;
@@ -19,6 +23,8 @@ onMounted(() => {
   }
 });
 
+watchTxStatus(() => (offsetHeight.value = sticky.value.offsetHeight));
+
 onBeforeUnmount(() => {
   window.removeEventListener('scroll', onScroll);
 });
@@ -28,9 +34,10 @@ onBeforeUnmount(() => {
   <div>
     <div v-if="isFixed" :style="`height: ${offsetHeight}px;`" />
     <div
-      style="z-index: 20"
+      style="z-index: 20; right: 0px"
+      class="left-0"
       ref="sticky"
-      :class="{ 'position-fixed width-full top-0': isFixed }"
+      :class="{ 'fixed top-0': isFixed, 'sm:left-[68px]': !domain }"
     >
       <slot />
     </div>

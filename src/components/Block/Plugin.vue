@@ -1,6 +1,4 @@
 <script setup>
-import { defineProps } from 'vue';
-
 defineProps(['plugin']);
 
 function getLogoUrl(key) {
@@ -10,11 +8,11 @@ function getLogoUrl(key) {
 
 <template>
   <Block>
-    <div class="d-flex flex-items-center mb-1">
+    <div class="flex items-center mb-1">
       <a
         :href="`https://github.com/snapshot-labs/snapshot.js/tree/master/src/plugins/${plugin.key}`"
         target="_blank"
-        class="d-flex"
+        class="flex items-center"
       >
         <UiAvatar
           class="mr-2 mb-2"
@@ -37,7 +35,7 @@ function getLogoUrl(key) {
           {{ plugin.author }}
         </a>
       </div>
-      {{ $tc('inSpaces', [_n(plugin.spaces.length)]) }}
+      {{ $tc('inSpaces', [_n(plugin.spaces)]) }}
     </div>
   </Block>
 </template>

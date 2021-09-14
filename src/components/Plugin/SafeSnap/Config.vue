@@ -124,22 +124,10 @@ export default {
 
 <template>
   <div
-    class="
-      border-top border-bottom border-md
-      rounded-0 rounded-md-2
-      mb-4
-      block-bg
-    "
+    class="border-t border-b md:border rounded-none md:rounded-md mb-4 block-bg"
   >
     <h4
-      class="
-        px-4
-        pt-3
-        border-bottom
-        d-block
-        header-bg
-        rounded-top-0 rounded-md-top-2
-      "
+      class="px-4 pt-3 border-b block header-bg rounded-t-none md:rounded-t-md"
       style="padding-bottom: 12px"
     >
       Transactions

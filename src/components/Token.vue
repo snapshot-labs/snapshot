@@ -1,5 +1,5 @@
 <script setup>
-import { computed, defineProps } from 'vue';
+import { computed } from 'vue';
 import { formatBytes32String } from '@ethersproject/strings';
 import { getUrl } from '@snapshot-labs/snapshot.js/src/utils.ts';
 
@@ -9,7 +9,7 @@ const props = defineProps({
   symbolIndex: [String, Number]
 });
 
-const spaceId = computed(() => props.space.id ?? props.space.key);
+const spaceId = computed(() => props.space.id);
 
 const url = computed(() => {
   const file = props.symbolIndex
@@ -32,7 +32,12 @@ const spaceAddress = computed(() => {
 </script>
 
 <template>
-  <span class="d-inline-block v-align-middle line-height-0">
-    <UiAvatar :imgsrc="url" :address="spaceAddress" :size="size" />
+  <span class="inline-block align-middle leading-none">
+    <UiAvatar
+      :space="space"
+      :imgsrc="url"
+      :address="spaceAddress"
+      :size="size"
+    />
   </span>
 </template>

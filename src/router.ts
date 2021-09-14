@@ -1,6 +1,6 @@
 import { createRouter, createWebHashHistory } from 'vue-router';
-import domains from '@snapshot-labs/snapshot-spaces/spaces/domains.json';
-import aliases from '@snapshot-labs/snapshot-spaces/spaces/aliases.json';
+import domains from '@/../snapshot-spaces/spaces/domains.json';
+import aliases from '@/../snapshot-spaces/spaces/aliases.json';
 import Home from '@/views/Home.vue';
 import Proposal from '@/views/Proposal.vue';
 import Create from '@/views/Create.vue';

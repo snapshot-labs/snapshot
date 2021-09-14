@@ -1,0 +1,24 @@
+name: Manually update submodule
+
+# Controls when the action will run. Workflow runs when manually triggered using the UI
+# or API.
+on: [workflow_dispatch]
+
+jobs:
+  updateSubModules:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Pull & update submodules recursively
+        run: |
+          git submodule update --init --recursive
+          git submodule update --recursive --remote
+
+      - name: Commit & push changes
+        run: |
+          git config --global user.name "Github Actions"
+          git config --global user.email "actions@github.com"
+          git commit -am "Update submodules"
+          git push

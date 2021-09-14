@@ -1,6 +1,4 @@
 <script setup>
-import { defineProps, defineEmits } from 'vue';
-
 defineProps({
   open: Boolean,
   title: String,
@@ -12,11 +10,17 @@ defineEmits(['remove', 'toggle']);
 </script>
 
 <template>
-  <div class="width-full collapsible-container">
-    <div class="collapsible-header d-flex">
+  <div class="w-full collapsible-container">
+    <div class="collapsible-header flex">
       <span class="mr-4 header-number">{{ number }}</span>
       <span
-        class="flex-auto text-center no-wrap overflow-hidden"
+        class="
+          flex-auto
+          text-center
+          flex flex-nowrap
+          justify-center
+          overflow-hidden
+        "
         @click="$emit('toggle')"
       >
         {{ title }}

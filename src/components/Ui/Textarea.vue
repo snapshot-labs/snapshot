@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, toRefs, watch, defineProps, defineEmits } from 'vue';
+import { ref, onMounted, toRefs, watch } from 'vue';
 
 const props = defineProps({
   modelValue: String,
@@ -31,7 +31,7 @@ watch(modelValue, value => (input.value = value));
       v-bind="textareaProps"
       :class="{ 'border-red': error }"
       :disabled="disabled"
-      class="input width-full textarea"
+      class="input w-full textarea"
       @input="handleInput()"
     ></textarea>
     <span v-if="error" class="error-message">*{{ error }}</span>

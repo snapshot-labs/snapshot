@@ -22,7 +22,6 @@
   "version": "वरशन",
   "timeline": "टाइमलाइन",
   "filters": "फिल्टर",
-  "favorites": "आवडते",
   "allSpaces": "सर्व जागा",
   "submitOnchain": "ओन चैन सबमिट करा",
   "inSpaces": "{0} जागा",
@@ -32,6 +31,7 @@
   "network": "नेटवर्क",
   "networks": "नेटवर्क",
   "skins": "स्कीन",
+  "members": "No members | {count} member | {count} members",
   "editStrategy": "स्ट्रॅटेजि एडिट करा",
   "invalidProposals": "अवैध प्रोपोसलं",
   "account": "खाते",
@@ -86,7 +86,7 @@
   "marketSymbol": "{0} मार्केट",
   "twoChoicesRequired": "या प्लगइनसाठी दोन निवडी आवश्यक आहेत.",
   "noResultsFound": "ओह, आम्हाला कोणतेही परिणाम सापडत नाहीत",
-  "noFavorites": "ओह, आपल्याकडे अद्याप कोणतेही आवडते नाहीत",
+  "noSpacesJoined": "Oops, you haven't joined any spaces yet",
   "addFavorites": "आवडते जोडा",
   "createdBy": "द्वारा{0}",
   "startToEnd": "सुरुवात {0} शेवट {1}",
@@ -106,8 +106,13 @@
   "addresses": "ऍड्रेस",
   "networkErrorPlayground": "नेटवर्क त्रुटी - अधिक माहिती साठी आपले ब्राउसर कॉन्सोल खोला",
   "upload": "अपलोड करा",
+  "join": "Join",
+  "joined": "Joined",
+  "leave": "Leave",
   "copyLink": "Copy link",
   "duplicateProposal": "Duplicate proposal",
+  "joinedSpaces": "Joined spaces",
+  "joinSpaces": "Join spaces",
   "errors": {
     "required": "फील्ड आवश्यक आहे",
     "minLength": "किमान लांबी {0}",
@@ -131,7 +136,7 @@
     "snapshotBlock": "स्नॅपशॉट ब्लॉक नंबर",
     "validationWarning": {
       "basic": {
-        "member": "You need to be a member of the space in order to submit a proposal.",
+        "member": "You need to be an author of the space in order to submit a proposal.",
         "minScore": "You need to have a minimum of {0} {1} in order to submit a proposal."
       },
       "customValidation": "You need to pass the proposal validation in order to submit a proposal."
@@ -145,7 +150,8 @@
     "spacePlaceholder": "जागा (पर्यायी)",
     "delegations": "तुमचे डेलिगेशन",
     "allSpaces": "सरव्या जागा साठी",
-    "delegated": "तुम्हाला डेलिगेट केलेले"
+    "delegated": "तुम्हाला डेलिगेट केलेले",
+    "pendingTransaction": "no pending transaction | 1 pending transaction | {count} pending transactions"
   },
   "proposal": {
     "castVote": "मत टाका",
@@ -183,11 +189,11 @@
     "strategies": "स्ट्रॅटेजि",
     "hideSpace": "मुख्यपृष्ठावरून जागा लपवा",
     "addStrategy": "स्ट्रॅटेजि जोडा",
-    "members": "मेंबर्स",
+    "authors": "Authors",
     "admins": "अ‍ॅडमिन",
     "defaultTab": "डीफॉल्ट टॅब",
     "proposalThreshold": "प्रोपोसलं थ्रेशोल्ड",
-    "allowOnlyMembers": "केवळ सदस्यांना प्रोपोसलं सबमिट करण्याची परवानगी द्या",
+    "allowOnlyAuthors": "Allow only authors to submit a proposal",
     "editPlugin": "प्लगइन एडिट करा",
     "addPlugin": "प्लगइन जोडा",
     "pluginParameters": "प्लगइन पॅरामीटर्स",

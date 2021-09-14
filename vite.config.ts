@@ -24,10 +24,11 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src')
-    }
+    },
+    dedupe: ['@popperjs/core']
   },
   optimizeDeps: {
-    include: ['color', 'mersenne-twister'],
+    include: ['color'],
     // @ts-ignore
     allowNodeBuiltins: ['stream']
   }

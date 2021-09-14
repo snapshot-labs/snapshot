@@ -22,7 +22,6 @@
   "version": "รุ่น",
   "timeline": "ระยะเวลา",
   "filters": "ตัวกรอง",
-  "favorites": "รายการโปรด",
   "allSpaces": "พื้นที่ว่างทั้งหมด",
   "submitOnchain": "ส่งแบบออนไลน์",
   "inSpaces": "ใน {0} พื้นที่(s)",
@@ -32,6 +31,7 @@
   "network": "เครือข่าย",
   "networks": "เครือข่าย",
   "skins": "ผิวหนัง",
+  "members": "No members | {count} member | {count} members",
   "editStrategy": "แก้ไขกลยุทธ์",
   "invalidProposals": "ข้อเสนอไม่ถูกต้อง",
   "account": "บัญชีผู้ใช้",
@@ -86,7 +86,7 @@
   "marketSymbol": "{0} ตลาด",
   "twoChoicesRequired": "ทางเลือกทั้งสองต้องการปลั๊กอินนี้",
   "noResultsFound": "เอ๊ะ, เราไม่พบผลลัพธ์ใด ๆ",
-  "noFavorites": "เอ๊ะ, คุณยังไม่ได้ระบุรายการโปรด",
+  "noSpacesJoined": "Oops, you haven't joined any spaces yet",
   "addFavorites": "เพิ่มรายการโปรด",
   "createdBy": "โดย{0}",
   "startToEnd": "เริ่มต้น {0} สินสุด {1}",
@@ -106,8 +106,13 @@
   "addresses": "Addresses",
   "networkErrorPlayground": "Network error - please open your browser console for more information",
   "upload": "Upload",
+  "join": "Join",
+  "joined": "Joined",
+  "leave": "Leave",
   "copyLink": "Copy link",
   "duplicateProposal": "Duplicate proposal",
+  "joinedSpaces": "Joined spaces",
+  "joinSpaces": "Join spaces",
   "errors": {
     "required": "ต้องระบุข้อมูลในช่อง",
     "minLength": "ความยาวต่ำสุดคือ {0}",
@@ -131,7 +136,7 @@
     "snapshotBlock": "หมายเลขบล็อกสแนปชอต",
     "validationWarning": {
       "basic": {
-        "member": "You need to be a member of the space in order to submit a proposal.",
+        "member": "You need to be an author of the space in order to submit a proposal.",
         "minScore": "You need to have a minimum of {0} {1} in order to submit a proposal."
       },
       "customValidation": "You need to pass the proposal validation in order to submit a proposal."
@@ -145,7 +150,8 @@
     "spacePlaceholder": "เว้นวรรค (ไม่บังคับ)",
     "delegations": "การมอบหมายของคุณ(s)",
     "allSpaces": "For all spaces",
-    "delegated": "มอบหมายให้คุณ"
+    "delegated": "มอบหมายให้คุณ",
+    "pendingTransaction": "no pending transaction | 1 pending transaction | {count} pending transactions"
   },
   "proposal": {
     "castVote": "การโหวตของคุณ",
@@ -183,11 +189,11 @@
     "strategies": "กลยุทธ์(s)",
     "hideSpace": "ซ่อนจากหน้าหลัก",
     "addStrategy": "แก้ไขกลยุทธ์",
-    "members": "สมาชิก",
+    "authors": "Authors",
     "admins": "ผู้ดูแลระบบ",
     "defaultTab": "ค่าเริ่มต้นแท็บ",
     "proposalThreshold": "Proposal threshold",
-    "allowOnlyMembers": "Allow only members to submit a proposal",
+    "allowOnlyAuthors": "Allow only authors to submit a proposal",
     "editPlugin": "แก้ไขปลั๊กอิน",
     "addPlugin": "เพิ่มปลั๊กอิน",
     "pluginParameters": "ปลั๊กอินที่ส่งไป",

@@ -22,7 +22,6 @@
   "version": "Verze",
   "timeline": "Časové",
   "filters": "Filtrovat",
-  "favorites": "Oblíbené",
   "allSpaces": "Všechny skupiny",
   "submitOnchain": "Odeslat on-chain",
   "inSpaces": "{0} skupin(y)",
@@ -32,6 +31,7 @@
   "network": "WiFi a mobilních sítí",
   "networks": "Sítě",
   "skins": "Vzhledy",
+  "members": "No members | {count} member | {count} members",
   "editStrategy": "Upravit strategii",
   "invalidProposals": "Neplatný návrh.",
   "account": "Účet",
@@ -86,7 +86,7 @@
   "marketSymbol": "Přidat trh",
   "twoChoicesRequired": "Pro tento zásuvný modul jsou vyžadovány dvě možnosti.",
   "noResultsFound": "Jejda, nemůžeme najít žádné výsledky",
-  "noFavorites": "Zatím nemáte žádnou oblíbenou položku!",
+  "noSpacesJoined": "Oops, you haven't joined any spaces yet",
   "addFavorites": "Přidat oblíbené",
   "createdBy": "Od {0}",
   "startToEnd": "začít {0} konec {1}",
@@ -106,8 +106,13 @@
   "addresses": "Adres",
   "networkErrorPlayground": "Chyba sítě - prosím otevřete konzoli prohlížeče pro více informací",
   "upload": "Odeslat",
+  "join": "Join",
+  "joined": "Joined",
+  "leave": "Leave",
   "copyLink": "Copy link",
   "duplicateProposal": "Duplicate proposal",
+  "joinedSpaces": "Joined spaces",
+  "joinSpaces": "Join spaces",
   "errors": {
     "required": "Pole je povinné.",
     "minLength": "Minimální délka je {0}",
@@ -131,7 +136,7 @@
     "snapshotBlock": "Číslo bloku snímku",
     "validationWarning": {
       "basic": {
-        "member": "Musíte být členem prostoru, abyste mohli podat návrh.",
+        "member": "You need to be an author of the space in order to submit a proposal.",
         "minScore": "Musíte být členem prostoru, abyste mohli podat návrh."
       },
       "customValidation": "Pro předložení návrhu musíte schválit validaci návrhu."
@@ -145,7 +150,8 @@
     "spacePlaceholder": "Mezera (volitelné)",
     "delegations": "Vaše delegace",
     "allSpaces": "Pro všechny mezery",
-    "delegated": "Delegován:"
+    "delegated": "Delegován:",
+    "pendingTransaction": "no pending transaction | 1 pending transaction | {count} pending transactions"
   },
   "proposal": {
     "castVote": "Hlasujte",
@@ -183,11 +189,11 @@
     "strategies": "Strategie (strategie)",
     "hideSpace": "Skrýt místo z domovské stránky",
     "addStrategy": "Upravit strategii",
-    "members": "Members",
+    "authors": "Authors",
     "admins": "Správce",
     "defaultTab": "Výchozí záložka",
     "proposalThreshold": "Prahová hodnota návrhu",
-    "allowOnlyMembers": "Povolit pouze členům odeslat návrh",
+    "allowOnlyAuthors": "Allow only authors to submit a proposal",
     "editPlugin": "Úpravy pluginů",
     "addPlugin": "Vytvořit plugin",
     "pluginParameters": "Parametry pluginu",

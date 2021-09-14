@@ -1,5 +1,5 @@
 <script setup>
-import { watchEffect, computed, defineProps } from 'vue';
+import { watchEffect, computed } from 'vue';
 import { useUsername } from '@/composables/useUsername';
 import removeMd from 'remove-markdown';
 
@@ -26,7 +26,7 @@ watchEffect(() => {
 
 <template>
   <router-link
-    class="p-4 d-block text-color"
+    class="p-4 block text-color"
     :to="{
       name: 'proposal',
       params: { key: proposal.space.id, id: proposal.id }
@@ -38,15 +38,11 @@ watchEffect(() => {
         <span class="ml-2" v-text="proposal.space.name" />
         {{ $tc('proposalBy', [username]) }}
         <Badges :address="proposal.author" :members="proposal.space.members" />
-        <UiState :state="proposal.state" class="d-inline-block float-right" />
+        <UiState :state="proposal.state" class="inline-block float-right" />
       </div>
-      <h3 v-text="_shorten(proposal.title, 124)" class="mt-1" />
-      <p
-        v-text="_shorten(body, 140)"
-        class="break-word mb-1"
-        style="font-size: 20px"
-      />
-      <div class="mt-1">
+      <h3 v-text="_shorten(proposal.title, 124)" class="mt-1 mb-1" />
+      <p v-text="_shorten(body, 140)" class="break-words mb-1 text-md" />
+      <div>
         {{ $tc(period, [_ms(proposal.start), _ms(proposal.end)]) }}
       </div>
     </div>

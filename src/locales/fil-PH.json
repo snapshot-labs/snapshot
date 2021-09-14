@@ -22,7 +22,6 @@
   "version": "Bersyon",
   "timeline": "Timeline",
   "filters": "Filters",
-  "favorites": "Favorites",
   "allSpaces": "All spaces",
   "submitOnchain": "Submit on-chain",
   "inSpaces": "In {0} space(s)",
@@ -32,6 +31,7 @@
   "network": "Network",
   "networks": "Mga network",
   "skins": "Mga Skin",
+  "members": "No members | {count} member | {count} members",
   "editStrategy": "Edit strategy",
   "invalidProposals": "Invalid proposals",
   "account": "Account",
@@ -86,7 +86,7 @@
   "marketSymbol": "{0} market",
   "twoChoicesRequired": "Dalawang choice ang kailangan para sa plugin na ito.",
   "noResultsFound": "Oops, wala kaming makitang mga resulta",
-  "noFavorites": "Oops, you don't have any favorites yet",
+  "noSpacesJoined": "Oops, you haven't joined any spaces yet",
   "addFavorites": "Add favorites",
   "createdBy": "By {0}",
   "startToEnd": "start {0} end {1}",
@@ -106,8 +106,13 @@
   "addresses": "Addresses",
   "networkErrorPlayground": "Network error - please open your browser console for more information",
   "upload": "Upload",
+  "join": "Join",
+  "joined": "Joined",
+  "leave": "Leave",
   "copyLink": "Copy link",
   "duplicateProposal": "Duplicate proposal",
+  "joinedSpaces": "Joined spaces",
+  "joinSpaces": "Join spaces",
   "errors": {
     "required": "Field is required",
     "minLength": "Minimum length is {0}",
@@ -131,7 +136,7 @@
     "snapshotBlock": "Snapshot block number",
     "validationWarning": {
       "basic": {
-        "member": "You need to be a member of the space in order to submit a proposal.",
+        "member": "You need to be an author of the space in order to submit a proposal.",
         "minScore": "You need to have a minimum of {0} {1} in order to submit a proposal."
       },
       "customValidation": "You need to pass the proposal validation in order to submit a proposal."
@@ -145,7 +150,8 @@
     "spacePlaceholder": "Space (optional)",
     "delegations": "Ang iyong delegasyon",
     "allSpaces": "For all spaces",
-    "delegated": "Pinagkatiwala kay"
+    "delegated": "Pinagkatiwala kay",
+    "pendingTransaction": "no pending transaction | 1 pending transaction | {count} pending transactions"
   },
   "proposal": {
     "castVote": "Ilagay ang iyong boto",
@@ -183,11 +189,11 @@
     "strategies": "Strategie(s)",
     "hideSpace": "Itago ang espasyo sa homepage",
     "addStrategy": "Add strategy",
-    "members": "Mga miyembro",
+    "authors": "Authors",
     "admins": "Admins",
     "defaultTab": "Default tab",
     "proposalThreshold": "Proposal threshold",
-    "allowOnlyMembers": "Allow only members to submit a proposal",
+    "allowOnlyAuthors": "Allow only authors to submit a proposal",
     "editPlugin": "I-edit ang plugin",
     "addPlugin": "Magdagdag ng Plugin",
     "pluginParameters": "Plugin parameters",

@@ -1,5 +1,5 @@
 <script setup>
-import { ref, defineProps, defineEmits } from 'vue';
+import { ref } from 'vue';
 
 defineProps({
   proposal: {
@@ -27,7 +27,7 @@ function selectChoice(i) {
       v-for="(choice, i) in proposal.choices"
       :key="i"
       @click="selectChoice(i + 1)"
-      class="d-block width-full mb-2"
+      class="block w-full mb-2"
       :class="selectedChoices.includes(i + 1) && 'button--active'"
     >
       {{ _shorten(choice, 32) }}

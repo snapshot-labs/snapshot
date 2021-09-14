@@ -1,6 +1,4 @@
 <script setup>
-import { defineProps } from 'vue';
-
 defineProps(['network']);
 
 function getLogoUrl(key) {
@@ -10,7 +8,7 @@ function getLogoUrl(key) {
 
 <template>
   <Block>
-    <div class="d-flex flex-items-center mb-1">
+    <div class="flex items-center mb-1">
       <UiAvatar
         class="mr-2 mb-2"
         :imgsrc="getLogoUrl(network.key)"
@@ -21,7 +19,7 @@ function getLogoUrl(key) {
       <div v-text="network.key" class="ml-1 text-color" />
     </div>
     <div class="text-color">
-      {{ $tc('inSpaces', [_n(network.spaces.length)]) }}
+      {{ $tc('inSpaces', [_n(network.spaces)]) }}
     </div>
   </Block>
 </template>

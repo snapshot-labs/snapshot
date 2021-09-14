@@ -22,7 +22,6 @@
   "version": "Версия",
   "timeline": "Хронология",
   "filters": "Фильтр",
-  "favorites": "Как это работает",
   "allSpaces": "All spaces",
   "submitOnchain": "Отправить в блокчейн",
   "inSpaces": "В {0} раздел(ах)",
@@ -32,6 +31,7 @@
   "network": "Сеть",
   "networks": "Сети",
   "skins": "Темы",
+  "members": "No members | {count} member | {count} members",
   "editStrategy": "Редактировать стратегию",
   "invalidProposals": "Неверные параметры опроса",
   "account": "Учетная запись",
@@ -86,7 +86,7 @@
   "marketSymbol": "Рынок {0}",
   "twoChoicesRequired": "Для этого плагина необходимо выбрать два варианта.",
   "noResultsFound": "Упс, мы не можем найти результаты",
-  "noFavorites": "Упс, у вас пока нет закладок",
+  "noSpacesJoined": "Oops, you haven't joined any spaces yet",
   "addFavorites": "Добавить закладки",
   "createdBy": "От: {0}",
   "startToEnd": "с {0} по {1}",
@@ -106,8 +106,13 @@
   "addresses": "Адреса",
   "networkErrorPlayground": "Сетевая ошибка - откройте консоль браузера для получения дополнительной информации",
   "upload": "Загрузить",
+  "join": "Join",
+  "joined": "Joined",
+  "leave": "Leave",
   "copyLink": "Копировать ссылку",
   "duplicateProposal": "Повторяющееся предложение",
+  "joinedSpaces": "Joined spaces",
+  "joinSpaces": "Join spaces",
   "errors": {
     "required": "Обязательное поле",
     "minLength": "Минимальная длина {0}",
@@ -131,7 +136,7 @@
     "snapshotBlock": "Номер блока среза",
     "validationWarning": {
       "basic": {
-        "member": "Вы должны быть членом сообщества раздела для того, чтобы создать опрос.",
+        "member": "You need to be an author of the space in order to submit a proposal.",
         "minScore": "Вам нужно иметь минимум {0} {1} для того, чтобы отправить предложение."
       },
       "customValidation": "Вам необходимо пройти проверку предложения, чтобы подать предложение"
@@ -145,7 +150,8 @@
     "spacePlaceholder": "Раздел (опционально)",
     "delegations": "Вы делегировали",
     "allSpaces": "Для всех разделов",
-    "delegated": "Вам делегировали"
+    "delegated": "Вам делегировали",
+    "pendingTransaction": "no pending transaction | 1 pending transaction | {count} pending transactions"
   },
   "proposal": {
     "castVote": "Опубликовать бюллетень",
@@ -183,11 +189,11 @@
     "strategies": "Стратегия(и)",
     "hideSpace": "Скрыть раздел на главной страницы",
     "addStrategy": "Добавить стратегию",
-    "members": "Члены сообщества",
+    "authors": "Authors",
     "admins": "Администратор",
     "defaultTab": "Вкладка по умолчанию",
     "proposalThreshold": "Порог предложения",
-    "allowOnlyMembers": "Разрешать только членам Комитета представлять предложение",
+    "allowOnlyAuthors": "Allow only authors to submit a proposal",
     "editPlugin": "Редактировать плагин",
     "addPlugin": "Добавить плагин",
     "pluginParameters": "Настройки плагина",

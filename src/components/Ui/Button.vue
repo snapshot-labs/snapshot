@@ -1,6 +1,4 @@
 <script setup>
-import { defineProps } from 'vue';
-
 defineProps({
   loading: Boolean,
   type: String,
@@ -14,7 +12,7 @@ defineProps({
 <template>
   <button
     :type="type || 'button'"
-    class="button"
+    class="button px-[24px]"
     :disabled="disable ? loading : false"
   >
     <UiLoading v-if="loading" />
@@ -28,7 +26,6 @@ defineProps({
   background-color: transparent;
   color: var(--link-color);
   border-radius: 23px;
-  padding: 0 24px;
   outline: none;
   line-height: 46px;
   height: 46px;

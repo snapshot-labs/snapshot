@@ -22,7 +22,6 @@
   "version": "Version",
   "timeline": "Timeline",
   "filters": "Filters",
-  "favorites": "Favorites",
   "allSpaces": "All spaces",
   "submitOnchain": "Submit on-chain",
   "inSpaces": "In {0} space(s)",
@@ -32,6 +31,7 @@
   "network": "Network",
   "networks": "Networks",
   "skins": "Skins",
+  "members": "No members | {count} member | {count} members",
   "editStrategy": "Edit strategy",
   "invalidProposals": "Invalid proposals",
   "account": "Account",
@@ -87,7 +87,7 @@
   "marketSymbol": "{0} market",
   "twoChoicesRequired": "Two choices are required for this plugin.",
   "noResultsFound": "Oops, we can't find any results",
-  "noFavorites": "Oops, you don't have any favorites yet",
+  "noSpacesJoined": "Oops, you haven't joined any spaces yet",
   "addFavorites": "Add favorites",
   "createdBy": "By {0}",
   "startToEnd": "start {0} end {1}",
@@ -112,6 +112,8 @@
   "leave": "Leave",
   "copyLink": "Copy link",
   "duplicateProposal": "Duplicate proposal",
+  "joinedSpaces": "Joined spaces",
+  "joinSpaces": "Join spaces",
   "errors": {
     "required": "Field is required",
     "minLength": "Minimum length is {0}",
@@ -135,7 +137,7 @@
     "snapshotBlock": "Snapshot block number",
     "validationWarning": {
       "basic": {
-        "member": "You need to be a member of the space in order to submit a proposal.",
+        "member": "You need to be an author of the space in order to submit a proposal.",
         "minScore": "You need to have a minimum of {0} {1} in order to submit a proposal."
       },
       "customValidation": "You need to pass the proposal validation in order to submit a proposal."
@@ -149,7 +151,8 @@
     "spacePlaceholder": "Space (optional)",
     "delegations": "Your delegation(s)",
     "allSpaces": "For all spaces",
-    "delegated": "Delegated to you"
+    "delegated": "Delegated to you",
+    "pendingTransaction": "no pending transaction | 1 pending transaction | {count} pending transactions"
   },
   "proposal": {
     "castVote": "Cast your vote",
@@ -187,11 +190,11 @@
     "strategies": "Strategie(s)",
     "hideSpace": "Hide space from homepage",
     "addStrategy": "Add strategy",
-    "members": "Members",
+    "authors": "Authors",
     "admins": "Admins",
     "defaultTab": "Default tab",
     "proposalThreshold": "Proposal threshold",
-    "allowOnlyMembers": "Allow only members to submit a proposal",
+    "allowOnlyAuthors": "Allow only authors to submit a proposal",
     "editPlugin": "Edit plugin",
     "addPlugin": "Add plugin",
     "pluginParameters": "Plugin parameters",

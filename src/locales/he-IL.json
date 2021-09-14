@@ -22,7 +22,6 @@
   "version": "גירסא",
   "timeline": "ציר זמן",
   "filters": "פילטרים",
-  "favorites": "מועדפים",
   "allSpaces": "כל המרחבים",
   "submitOnchain": "שלח לבלוקצ'יין",
   "inSpaces": "ב{0} מרחבים",
@@ -32,6 +31,7 @@
   "network": "רשת",
   "networks": "רשתות",
   "skins": "סקינים",
+  "members": "No members | {count} member | {count} members",
   "editStrategy": "ערוך אסטרטגיה",
   "invalidProposals": "הצעות לא חוקיות",
   "account": "חשבון",
@@ -86,7 +86,7 @@
   "marketSymbol": "{0} שוק",
   "twoChoicesRequired": "שתי אפשרויות נדרשות לפלאגין זה.",
   "noResultsFound": "אופס, לא מצאנו תוצאות",
-  "noFavorites": "אופס, אין לך מועדפים עדיין",
+  "noSpacesJoined": "Oops, you haven't joined any spaces yet",
   "addFavorites": "הוסף מועדפים",
   "createdBy": "על ידי {0}",
   "startToEnd": "התחל {0} סיים {1}",
@@ -106,8 +106,13 @@
   "addresses": "כתובות",
   "networkErrorPlayground": "בעיית רשת - פתח את הקונסול בדפדפן שלך למידע בנושא",
   "upload": "העלה",
+  "join": "Join",
+  "joined": "Joined",
+  "leave": "Leave",
   "copyLink": "העתק קישור",
   "duplicateProposal": "שכפל הצעה",
+  "joinedSpaces": "Joined spaces",
+  "joinSpaces": "Join spaces",
   "errors": {
     "required": "שדה חובה",
     "minLength": "האורך המינימלי הוא {0}",
@@ -131,7 +136,7 @@
     "snapshotBlock": "מספר הבלוק בSnapshot",
     "validationWarning": {
       "basic": {
-        "member": "עליך להיות חבר במרחב בכדי לפרסם הצעה.",
+        "member": "You need to be an author of the space in order to submit a proposal.",
         "minScore": "בכדי לפרסם הצעה צריך להיות ברשותך לפחות {0}{1}."
       },
       "customValidation": "עליך לעבור אישור לפני שתוכל לפרסם הצעה."
@@ -145,7 +150,8 @@
     "spacePlaceholder": "מרחב (אופציונלי)",
     "delegations": "ההאצלות שלך",
     "allSpaces": "לכל המרחבים",
-    "delegated": "מואצל אליך"
+    "delegated": "מואצל אליך",
+    "pendingTransaction": "no pending transaction | 1 pending transaction | {count} pending transactions"
   },
   "proposal": {
     "castVote": "הצבע",
@@ -183,11 +189,11 @@
     "strategies": "אסטרטגיות",
     "hideSpace": "הסתר מרחב מדף הבית",
     "addStrategy": "הוסף אסטרטגיה",
-    "members": "חברים",
+    "authors": "Authors",
     "admins": "מנהלים",
     "defaultTab": "כרטיסיית ברירת מחדל",
     "proposalThreshold": "סף ההצעה",
-    "allowOnlyMembers": "אשר רק לחברים להעלות הצעה חדשה",
+    "allowOnlyAuthors": "Allow only authors to submit a proposal",
     "editPlugin": "ערוך פלאגין",
     "addPlugin": "הוסף פלאגין",
     "pluginParameters": "פרמטרים לפלאגין",
