@@ -23,8 +23,7 @@ const routes: any[] = [
     name: 'home',
     component: Home,
     beforeEnter: (to, from, next) => {
-      if (domains[domainName])
-        next({ name: 'spaceProposals', params: { key: domains[domainName] } });
+      if (domains[domainName]) next({ name: 'spaceProposals' });
       else next();
     }
   },
@@ -46,9 +45,8 @@ const routes: any[] = [
     name: 'strategy',
     component: Strategy
   },
-
   {
-    path: '/:key',
+    path: domains[domainName] ? '/' : '/:key',
     name: 'space',
     component: Space,
     beforeEnter: (to: any, from, next) => {
@@ -86,7 +84,6 @@ const routes: any[] = [
       }
     ]
   },
-
   { path: '/*', name: 'error-404', beforeEnter: (to, from, next) => next('/') }
 ];
 
