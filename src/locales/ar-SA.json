@@ -23,7 +23,7 @@
   "timeline": "الجدول الزمني",
   "filters": "المرشحات",
   "allSpaces": "جميع المساحات",
-  "submitOnchain": "اعتمد على السلسلة (البلوكشين)",
+  "submitOnchain": "إرسال على السلسلة",
   "inSpaces": "في {0} مساحة(مساحات)",
   "downloadReport": "تنزيل التقرير",
   "votes": "الأصوات",
@@ -136,7 +136,7 @@
     "snapshotBlock": "رقم القطعة (البلوك) في لمحة سلسلة البلوكشين",
     "validationWarning": {
       "basic": {
-        "member": "You need to be an author of the space in order to submit a proposal.",
+        "member": "لا يوجد أعضاء <unk> {count} عضو <unk> {count} أعضاء\n0x3EA21b58B8F73bB70A8df9Fb4528246668BAE46E ",
         "minScore": "تحتاج إلى الحد الأدنى من {0} {1} لتقديم اقتراح."
       },
       "customValidation": "تحتاج إلى اجتياز المصادقة على الاقتراح من أجل تقديم اقتراح."
@@ -189,7 +189,7 @@
     "strategies": "استراتيجية (استراتيجيات)",
     "hideSpace": "إخفاء المساحة من الصفحة الرئيسية",
     "addStrategy": "إضافة استراتيجية",
-    "authors": "Authors",
+    "authors": "المؤلفون",
     "admins": "المشرفون",
     "defaultTab": "علامة التبويب الافتراضية",
     "proposalThreshold": "عتبة المقترحات",
