@@ -77,16 +77,10 @@ async function loadProposal() {
   // Redirect to proposal spaceId if it doesn't match route key
   if (
     route.name === 'spaceProposal' &&
-    route.params.key &&
-    route.params.key !== proposal.value.space.id
-  )
-    router.push({
-      name: 'spaceProposal',
-      params: {
-        key: proposal.value.space.id,
-        id: proposal.value.id
-      }
-    });
+    props.spaceId !== proposal.value.space.id
+  ) {
+    router.push({ name: 'error-404' });
+  }
 
   loaded.value = true;
   const resultsObj = await getResults(
