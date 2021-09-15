@@ -46,7 +46,7 @@ const routes: any[] = [
     component: Strategy
   },
   {
-    path: domains[domainName] ? '/' : '/:key',
+    path: '/:key?/',
     name: 'space',
     component: Space,
     beforeEnter: (to: any, from, next) => {
