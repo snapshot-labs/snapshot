@@ -1,25 +1,22 @@
 <template>
   <Container :slim="true">
     <slot />
-    <div
-      v-if="$slots['sidebar-left']"
-      class="col-12 col-lg-3 float-left hide-sm hide-md hide-lg"
-    >
+    <div v-if="$slots['sidebar-left']" class="w-1/4 float-left hidden lg:block">
       <slot name="sidebar-left" />
     </div>
     <div
       v-if="$slots['content-right']"
-      class="col-12 col-lg-9 float-right pl-0 pl-lg-5"
+      class="w-full lg:w-3/4 float-right pl-0 lg:pl-5"
     >
       <slot name="content-right" />
     </div>
     <div
       v-if="$slots['content-left']"
-      class="col-12 col-lg-8 float-left pr-0 pr-lg-5"
+      class="w-full float-left pr-0 lg:w-8/12 lg:pr-5"
     >
       <slot name="content-left" />
     </div>
-    <div v-if="$slots['sidebar-right']" class="col-12 col-lg-4 float-left">
+    <div v-if="$slots['sidebar-right']" class="w-full lg:w-4/12 float-left">
       <slot name="sidebar-right" />
     </div>
   </Container>

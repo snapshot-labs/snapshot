@@ -73,9 +73,12 @@ function clickVote() {
 async function loadProposal() {
   const proposalObj = await getProposal(id);
   proposal.value = proposalObj.proposal;
-
   // Redirect to proposal spaceId if it doesn't match route key
-  if (route.key !== proposal.value.space.id)
+  if (
+    route.name === 'proposal' &&
+    route.params.key &&
+    route.params.key !== proposal.value.space.id
+  )
     router.push({
       name: 'proposal',
       params: {
@@ -110,7 +113,7 @@ async function deleteProposal() {
   dropdownLoading.value = true;
   try {
     if (
-      await send(space.value.key, 'delete-proposal', {
+      await send(space.value.id, 'delete-proposal', {
         proposal: id
       })
     ) {
@@ -174,20 +177,20 @@ onMounted(async () => {
 <template>
   <Layout v-bind="$attrs">
     <template #content-left>
-      <div class="px-4 px-md-0 mb-3">
+      <div class="px-4 md:px-0 mb-3">
         <router-link
           :to="{ name: domain ? 'home' : 'proposals' }"
           class="text-color"
         >
-          <Icon name="back" size="22" class="v-align-middle" />
+          <Icon name="back" size="22" class="!align-middle" />
           {{ space.name }}
         </router-link>
       </div>
-      <div class="px-4 px-md-0">
+      <div class="px-4 md:px-0">
         <template v-if="loaded">
           <h1 v-text="proposal.title" class="mb-2" />
           <div class="mb-4">
-            <UiState :state="proposal.state" />
+            <UiState :state="proposal.state" class="inline-block" />
             <UiDropdown
               top="2.5rem"
               right="1.5rem"
@@ -197,8 +200,8 @@ onMounted(async () => {
               :items="sharingItems"
               :hideDropdown="sharingIsSupported"
             >
-              <div class="pr-1" style="user-select: none">
-                <Icon name="upload" size="25" class="v-align-text-bottom" />
+              <div class="pr-1 select-none">
+                <Icon name="upload" size="25" class="!align-text-bottom" />
                 Share
               </div>
             </UiDropdown>
@@ -211,12 +214,7 @@ onMounted(async () => {
             >
               <div class="pr-3">
                 <UiLoading v-if="dropdownLoading" />
-                <Icon
-                  v-else
-                  name="threedots"
-                  size="25"
-                  class="v-align-text-bottom"
-                />
+                <Icon v-else name="threedots" size="25" />
               </div>
             </UiDropdown>
           </div>
@@ -256,7 +254,11 @@ onMounted(async () => {
             class="float-right link-color a"
           >
             <span v-for="(symbol, symbolIndex) of symbols" :key="symbol">
-              <span :aria-label="symbol" class="tooltipped tooltipped-n">
+              <span
+                v-tippy="{
+                  content: symbol
+                }"
+              >
                 <Token :space="space" :symbolIndex="symbolIndex" />
               </span>
               <span v-show="symbolIndex !== symbols.length - 1" class="ml-1" />
@@ -289,17 +291,21 @@ onMounted(async () => {
           <div class="mb-1">
             <b>{{ $t('proposal.startDate') }}</b>
             <span
-              :aria-label="_ms(proposal.start)"
               v-text="$d(proposal.start * 1e3, 'short', 'en-US')"
-              class="float-right link-color tooltipped tooltipped-n"
+              v-tippy="{
+                content: _ms(proposal.start)
+              }"
+              class="float-right link-color"
             />
           </div>
           <div class="mb-1">
             <b>{{ $t('proposal.endDate') }}</b>
             <span
-              :aria-label="_ms(proposal.end)"
               v-text="$d(proposal.end * 1e3, 'short', 'en-US')"
-              class="float-right link-color tooltipped tooltipped-n"
+              v-tippy="{
+                content: _ms(proposal.end)
+              }"
+              class="link-color float-right"
             />
           </div>
           <div class="mb-1">

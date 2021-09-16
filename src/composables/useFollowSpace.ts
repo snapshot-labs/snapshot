@@ -1,4 +1,4 @@
-import { computed, onMounted, ref, watch } from 'vue';
+import { computed, ref } from 'vue';
 import { useModal } from '@/composables/useModal';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useApolloQuery } from '@/composables/useApolloQuery';
@@ -8,6 +8,7 @@ import client from '@/helpers/EIP712';
 
 // const spaceFollows: any = ref({});
 const following = ref([]);
+const loadingFollows = ref(false);
 
 export function useFollowSpace(spaceObj: any = {}) {
   const { web3 } = useWeb3();
@@ -16,7 +17,6 @@ export function useFollowSpace(spaceObj: any = {}) {
   const { setAlias, aliasWallet, isValidAlias, checkAlias } = useAliasAction();
 
   const loadingFollow = ref('');
-  const loadingFollows = ref(true);
   const hoverJoin = ref('');
 
   const web3Account = computed(() => web3.value.account);
@@ -28,7 +28,7 @@ export function useFollowSpace(spaceObj: any = {}) {
   const isFollowing = computed(() =>
     following.value.some(
       (f: any) =>
-        f.space.id === spaceObj?.key && f.follower === web3Account.value
+        f.space.id === spaceObj?.id && f.follower === web3Account.value
     )
   );
 
@@ -38,11 +38,11 @@ export function useFollowSpace(spaceObj: any = {}) {
       Promise.all([
         // Hint: Saving this for when we want to show how many users follow a space.
 
-        // (spaceFollows.value[spaceObj.key] = await apolloQuery(
+        // (spaceFollows.value[spaceObj.id] = await apolloQuery(
         //   {
         //     query: FOLLOWS_QUERY,
         //     variables: {
-        //       space_in: spaceObj.key
+        //       space_in: spaceObj.id
         //     }
         //   },
         //   'follows'
@@ -73,7 +73,7 @@ export function useFollowSpace(spaceObj: any = {}) {
   }
 
   async function follow(space) {
-    loadingFollow.value = spaceObj.key;
+    loadingFollow.value = spaceObj.id;
     try {
       await checkAlias();
       if (!aliasWallet.value || !isValidAlias.value) {
@@ -103,17 +103,14 @@ export function useFollowSpace(spaceObj: any = {}) {
   // watchEffect(async () => {
   //   (isFollowing.value = (following.value ?? []).some(
   //     (f: any) =>
-  //       f.space.id === spaceObj?.key && f.follower === web3Account.value
+  //       f.space.id === spaceObj?.id && f.follower === web3Account.value
   //   )),
   //     { deep: true };
   // });
 
-  watch(web3Account, () => loadFollows());
-
-  onMounted(() => loadFollows());
-
   return {
     clickFollow,
+    loadFollows,
     loadingFollow: computed(() => loadingFollow.value),
     loadingFollows: computed(() => loadingFollows.value),
     isFollowing,

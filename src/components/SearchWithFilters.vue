@@ -49,14 +49,14 @@ function redirectSearch(e) {
 </script>
 
 <template>
-  <div class="d-flex">
+  <div class="flex">
     <Search
       :modelValue="routeQuery"
       @update:modelValue="input => $emit('update:modelValue', input)"
       :placeholder="$t('searchPlaceholder')"
       class="flex-auto pr-2"
     />
-    <div class="border-left" style="height: 44px">
+    <div class="border-l" style="height: 44px">
       <UiDropdown
         top="3.5rem"
         right="1.0rem"

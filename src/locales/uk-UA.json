@@ -31,6 +31,7 @@
   "network": "Мережа",
   "networks": "Мережі",
   "skins": "Теми оформлення",
+  "members": "No members | {count} member | {count} members",
   "editStrategy": "Редагувати стратегію",
   "invalidProposals": "Недійсні пропозиції",
   "account": "Мій профіль",
@@ -135,7 +136,7 @@
     "snapshotBlock": "Номер блоку знімка",
     "validationWarning": {
       "basic": {
-        "member": "Потрібно бути членом сховища для того, щоб зробити пропозицію.",
+        "member": "You need to be an author of the space in order to submit a proposal.",
         "minScore": "Вам потрібно мати мінімум {0} {1} для того, щоб зробити пропозицію."
       },
       "customValidation": "Вам необхідно пройти перевірку пропозиції, щоб запропонувати пропозицію."
@@ -188,11 +189,11 @@
     "strategies": "Стратегія(ї)",
     "hideSpace": "Сховати простір з головної сторінки",
     "addStrategy": "Додати стратегію",
-    "members": "Члени",
+    "authors": "Authors",
     "admins": "Адмінстратори",
     "defaultTab": "Закладка за замовчуванням",
     "proposalThreshold": "Поріг пропозиції",
-    "allowOnlyMembers": "Дозволити лише учасникам подавати пропозицію",
+    "allowOnlyAuthors": "Allow only authors to submit a proposal",
     "editPlugin": "Редагувати плагін",
     "addPlugin": "Додати плагін",
     "pluginParameters": "Параметри плагіну",

@@ -125,9 +125,9 @@ onMounted(async () => {
 <template>
   <Layout v-bind="$attrs">
     <template #content-left>
-      <div class="px-4 px-md-0 mb-3">
+      <div class="px-4 md:px-0 mb-3">
         <router-link :to="{ name: 'home' }" class="text-color">
-          <Icon name="back" size="22" class="v-align-middle" />
+          <Icon name="back" size="22" class="!align-middle" />
           {{ $t('backToHome') }}
         </router-link>
         <h1 v-if="loaded" v-text="$t('delegate.header')" />
@@ -157,7 +157,7 @@ onMounted(async () => {
             v-for="(delegate, i) in delegates"
             :key="i"
             :style="i === 0 && 'border: 0 !important;'"
-            class="px-4 py-3 border-top d-flex"
+            class="px-4 py-3 border-t flex"
           >
             <User
               :address="delegate.delegate"
@@ -170,7 +170,7 @@ onMounted(async () => {
             />
             <a
               @click="clearDelegate(delegate.space, delegate.delegate)"
-              class="px-2 mr-n2 ml-2"
+              class="px-2 -mr-2 ml-2"
             >
               <Icon name="close" size="12" class="mb-1" />
             </a>
@@ -185,7 +185,7 @@ onMounted(async () => {
             v-for="(delegator, i) in delegators"
             :key="i"
             :style="i === 0 && 'border: 0 !important;'"
-            class="px-4 py-3 border-top d-flex"
+            class="px-4 py-3 border-t flex"
           >
             <User
               :address="delegator.delegator"
@@ -207,7 +207,7 @@ onMounted(async () => {
           @click="handleSubmit"
           :disabled="!isValid || !$auth.isAuthenticated.value"
           :loading="loading"
-          class="d-block width-full button--submit"
+          class="block w-full button--submit"
         >
           {{ $t('confirm') }}
         </UiButton>

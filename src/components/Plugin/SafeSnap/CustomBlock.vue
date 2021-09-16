@@ -8,33 +8,33 @@
     <b
       v-if="infoLabel"
       v-text="$t(infoLabel, [questionDetails.transactions.length])"
-      class="d-block mb-3 text-center"
+      class="block mb-3 text-center"
     />
     <b
       v-if="showDecision"
       v-text="approvalData?.decision"
-      class="d-block mb-3 link-color text-center"
+      class="block mb-3 link-color text-center"
     />
     <div
       v-if="questionDetails?.questionId && showQuestionInfo"
       class="mb-3 p-4 link-color text-center"
     >
-      <b v-text="approvalData?.decision" class="d-block mb-3" />
-      <b v-text="approvalData?.currentBond" class="d-block mb-3" />
-      <b v-text="approvalData?.timeLeft" class="d-block mb-3" />
+      <b v-text="approvalData?.decision" class="block mb-3" />
+      <b v-text="approvalData?.currentBond" class="block mb-3" />
+      <b v-text="approvalData?.timeLeft" class="block mb-3" />
     </div>
     <UiButton
       v-if="showActionButton"
       @click="performAction"
       :disabled="!actionEnabled"
       v-text="$t(actionLabel, [questionDetails.transactions.length])"
-      class="mb-2 width-full button"
+      class="mb-2 w-full button"
     />
     <UiButton
       v-if="canClaim"
       @click="claimBond"
       v-text="$t('safeSnap.claimBond')"
-      class="mb-3 width-full button"
+      class="mb-3 w-full button"
     />
     <teleport to="#modal">
       <PluginSafeSnapModalOptionApproval
@@ -53,7 +53,7 @@
 </template>
 
 <script>
-import Plugin from '@snapshot-labs/snapshot.js/src/plugins/safeSnap';
+import Plugin from '@/../snapshot-plugins/src/plugins/safeSnap';
 import { sleep } from '@/helpers/utils';
 import { BigNumber } from '@ethersproject/bignumber';
 import { formatBatchTransaction } from '@/helpers/abi/utils';

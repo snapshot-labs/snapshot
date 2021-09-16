@@ -40,25 +40,26 @@ export default {
     title() {
       if (this.modelValue) {
         try {
-          const addr = this._shorten(this.modelValue.to);
+          const recipientAddr = this._shorten(this.modelValue.recipient);
+          const toAddr = this._shorten(this.modelValue.to);
           const type = this.modelValue.type || this.type;
           switch (type) {
             case 'contractInteraction':
               return `${getAbiFirstFunctionName(this.modelValue.abi)}() - ${
                 this.modelValue.value
-              } wei to ${addr}`;
+              } wei to ${toAddr}`;
             case 'transferFunds':
               return `Transfer ${formatUnits(
                 this.modelValue.amount,
                 this.modelValue.token.decimals
-              )} ${this.modelValue.token.symbol} to ${addr}`;
+              )} ${this.modelValue.token.symbol} to ${recipientAddr}`;
             case 'transferNFT':
               return `Send ${this.modelValue.collectable.name} #${this._shorten(
                 this.modelValue.collectable.id,
                 10
-              )} to ${addr}`;
+              )} to ${recipientAddr}`;
             case 'raw':
-              return `Send ${this.modelValue.value} wei to ${addr}`;
+              return `Send ${this.modelValue.value} wei to ${recipientAddr}`;
           }
         } catch (error) {
           console.log('could not determine title', error);

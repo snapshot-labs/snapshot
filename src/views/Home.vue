@@ -2,7 +2,6 @@
 import { ref, computed, watchEffect } from 'vue';
 import { useRoute } from 'vue-router';
 import orderBy from 'lodash/orderBy';
-import spotlight from '@/../snapshot-spaces/spaces/spotlight.json';
 import { useUnseenProposals } from '@/composables/useUnseenProposals';
 import { useScrollMonitor } from '@/composables/useScrollMonitor';
 import { useApp } from '@/composables/useApp';
@@ -10,32 +9,29 @@ import { useFollowSpace } from '@/composables/useFollowSpace';
 import { useWeb3 } from '@/composables/useWeb3';
 
 const route = useRoute();
-const { spaces } = useApp();
+const { explore } = useApp();
 const { followingSpaces } = useFollowSpace();
 const { web3 } = useWeb3();
 
 const orderedSpaces = computed(() => {
-  const networkFilter = route.query.network;
   const q = route.query.q || '';
-  const list = Object.keys(spaces.value)
+  const list = Object.keys(explore.value.spaces)
     .map(key => {
-      const spotlightIndex = spotlight.indexOf(key);
       return {
-        ...spaces.value[key],
+        ...explore.value.spaces[key],
         following: followingSpaces.value.some(s => s === key),
-        isActive: !!spaces.value[key]._activeProposals,
-        spotlight: spotlightIndex === -1 ? 1e3 : spotlightIndex
+        followers: explore.value.spaces[key].followers ?? 0,
+        private: explore.value.spaces[key].private ?? false
       };
     })
     .filter(space => !space.private);
-  return orderBy(list, ['following', 'spotlight'], ['desc', 'asc']).filter(
-    space =>
-      (networkFilter ? space.network === networkFilter.toLowerCase() : true) &&
-      JSON.stringify(space).toLowerCase().includes(q.toLowerCase())
+
+  return orderBy(list, ['following', 'followers'], ['desc', 'desc']).filter(
+    space => JSON.stringify(space).toLowerCase().includes(q.toLowerCase())
   );
 });
 
-const { numberOfUnseenProposals, getProposalIds } = useUnseenProposals();
+const { getProposalIds } = useUnseenProposals();
 watchEffect(() => getProposalIds(followingSpaces.value));
 
 // Scroll
@@ -62,70 +58,58 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
       </Container>
     </div>
     <div class="text-center mb-4 mx-auto">
-      <Container class="d-flex flex-items-center">
-        <div class="flex-auto text-left d-flex">
-          <UiButton class="pl-3 col-12 col-lg-7 pr-0">
+      <Container class="flex items-center">
+        <div class="flex-auto text-left flex">
+          <UiButton class="pl-3 pr-0 w-full md:w-7/12">
             <SearchWithFilters />
           </UiButton>
-          <router-link :to="{ name: 'timeline' }" class="ml-2">
-            <UiButton class="no-wrap px-3">
-              <Icon name="feed" size="18" />
-              <UiCounter :counter="numberOfUnseenProposals" class="ml-2" />
-            </UiButton>
-          </router-link>
         </div>
-        <div class="ml-3 text-right hide-sm col-lg-4">
+        <div class="ml-3 text-right hidden sm:block lg:w-4/12">
           {{ $tc('spaceCount', [_n(orderedSpaces.length)]) }}
-          <router-link :to="{ name: 'setup' }" class="hide-md ml-3">
-            <UiButton>{{ $t('createSpace') }}</UiButton>
-          </router-link>
         </div>
       </Container>
     </div>
     <Container :slim="true">
-      <div class="overflow-hidden mr-n4">
+      <div class="grid lg:grid-cols-4 md:grid-cols-3 gap-4">
         <a
           @click="
-            $router.push({ name: 'proposals', params: { key: space.key } })
+            $router.push({ name: 'proposals', params: { key: space.id } })
           "
           v-for="space in orderedSpaces.slice(0, limit)"
-          :key="space.key"
+          :key="space.id"
         >
-          <div class="col-12 col-lg-3 pr-4 float-left">
+          <div>
+            <!-- Added mb-0 to remove mb-4 added by block component -->
             <Block
-              class="text-center extra-icon-container"
-              style="height: 250px; margin-bottom: 24px !important"
+              class="text-center extra-icon-container mb-0"
+              style="height: 266px"
             >
-              <span class="position-relative d-inline-block">
-                <UiCounter
-                  v-if="space._activeProposals"
-                  :counter="space._activeProposals"
-                  class="position-absolute top-2 right-0 bg-green"
-                />
+              <div class="relative inline-block mb-2">
                 <Token
                   :space="space"
                   symbolIndex="space"
-                  size="98"
+                  size="82"
                   class="mb-1"
                 />
-              </span>
-
+                <UiCounter
+                  v-if="space.activeProposals"
+                  :counter="space.activeProposals"
+                  class="absolute top-0 right-0 !bg-green"
+                />
+              </div>
               <h3
-                class="my-2"
                 v-text="_shorten(space.name, 16)"
-                style="font-size: 22px"
+                class="mb-0 pb-0 mt-0 text-[22px] !h-[32px] overflow-hidden"
               />
-              <FollowButton :space="space" />
+              <div class="mb-[12px] text-color">
+                {{ $tc('members', space.followers) }}
+              </div>
+              <FollowButton :space="space" class="!bg-white" />
             </Block>
           </div>
         </a>
-
-        <NoResults
-          :block="true"
-          v-if="Object.keys(orderedSpaces).length < 1"
-          class="pr-md-4"
-        />
       </div>
+      <NoResults :block="true" v-if="Object.keys(orderedSpaces).length < 1" />
     </Container>
     <div ref="endElement" />
   </div>

@@ -1,7 +1,9 @@
-@import './vars';
-@import '@primer/css';
 @import './assets/fonts/iconfont.css';
 @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 :root {
   --primary-color: #384aff;
@@ -14,22 +16,37 @@
   --block-bg: transparent;
 }
 
-@font-face {
-  font-family: 'Calibre';
-  src: url('./assets/fonts/Calibre-Medium.woff2') format('woff2'),
-    url('./assets/fonts/Calibre-Medium.woff') format('woff'),
-    url('./assets/fonts/Calibre-Medium.ttf') format('truetype');
-  font-weight: 500;
-  font-style: normal;
-}
+@layer base {
+  @font-face {
+    font-family: 'Calibre';
+    src: url('./assets/fonts/Calibre-Medium.woff2') format('woff2'),
+      url('./assets/fonts/Calibre-Medium.woff') format('woff'),
+      url('./assets/fonts/Calibre-Medium.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+  }
 
-@font-face {
-  font-family: 'Calibre';
-  src: url('./assets/fonts/Calibre-Semibold.woff2') format('woff2'),
-    url('./assets/fonts/Calibre-Semibold.woff') format('woff'),
-    url('./assets/fonts/Calibre-Semibold.ttf') format('truetype');
-  font-weight: 600;
-  font-style: normal;
+  @font-face {
+    font-family: 'Calibre';
+    src: url('./assets/fonts/Calibre-Semibold.woff2') format('woff2'),
+      url('./assets/fonts/Calibre-Semibold.woff') format('woff'),
+      url('./assets/fonts/Calibre-Semibold.ttf') format('truetype');
+    font-weight: 600;
+    font-style: normal;
+  }
+
+  h1 {
+    @apply text-2xl;
+  }
+  h2 {
+    @apply text-xl;
+  }
+  h3 {
+    @apply text-lg my-2;
+  }
+  h4 {
+    @apply text-md;
+  }
 }
 
 .mono {
@@ -45,9 +62,12 @@ body,
 #app {
   background: var(--bg-color);
   color: var(--text-color);
-  font-family: $body-font;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  overscroll-behavior-y: none;
 }
 
 * {
@@ -59,15 +79,11 @@ h2,
 h3,
 h4 {
   color: var(--heading-color);
-  font-weight: $font-weight-bold;
+  font-weight: 600;
 }
 
 b {
-  font-weight: $font-weight-bold;
-}
-
-p {
-  font-size: 22px;
+  font-weight: 600;
 }
 
 #app {
@@ -86,7 +102,8 @@ a,
 }
 
 ::placeholder {
-  color: var(--text-color);
+  color: var(--text-color) !important;
+  opacity: 0.6 !important;
 }
 
 .input {
@@ -127,10 +144,6 @@ textarea {
   animation-duration: 0.6s !important;
 }
 
-.line-height-0 {
-  line-height: 0;
-}
-
 .bg-black {
   background-color: var(--bg-color);
 }
@@ -151,8 +164,10 @@ textarea {
 .border,
 .border-md,
 .border-lg,
-.border-bottom,
-.border-top {
+.border-b,
+.border-t,
+.border-r,
+.border-l {
   border-color: var(--border-color) !important;
 }
 
@@ -207,26 +222,6 @@ textarea {
   }
 }
 
-.tooltipped {
-  &::before {
-    border-top-color: var(--text-color) !important;
-    margin-bottom: 14px;
-    top: -15px !important;
-  }
-
-  &::after {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 300px;
-    margin-bottom: 14px;
-    border-radius: 20px;
-    padding: 6px 16px 2px;
-    font-size: 16px;
-    background-color: var(--text-color);
-    color: var(--header-bg);
-  }
-}
-
 .markdown-body blockquote {
   color: var(--text-color);
   border-left-color: var(--text-color);
@@ -261,4 +256,87 @@ textarea {
 
 .bg {
   background: var(--bg-color);
+}
+
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.tippy-box[data-animation='fade'][data-state='hidden'] {
+  opacity: 0;
+}
+[data-tippy-root] {
+  max-width: calc(100vw - 10px);
+}
+.tippy-box {
+  position: relative;
+  background-color: var(--text-color);
+  color: var(--header-bg);
+  border-radius: 7px;
+  font-size: 14px;
+  line-height: 1.4;
+  outline: 0;
+  transition-property: transform, visibility, opacity;
+  padding: 3px 6px 4px;
+  text-align: center;
+  font-weight: 600;
+}
+.tippy-box[data-placement^='top'] > .tippy-arrow {
+  bottom: 0;
+}
+.tippy-box[data-placement^='top'] > .tippy-arrow:before {
+  bottom: -7px;
+  left: 0;
+  border-width: 8px 8px 0;
+  border-top-color: var(--text-color);
+  transform-origin: center top;
+}
+.tippy-box[data-placement^='bottom'] > .tippy-arrow {
+  top: 0;
+}
+.tippy-box[data-placement^='bottom'] > .tippy-arrow:before {
+  top: -7px;
+  left: 0;
+  border-width: 0 8px 8px;
+  border-bottom-color: var(--text-color);
+  transform-origin: center bottom;
+}
+.tippy-box[data-placement^='left'] > .tippy-arrow {
+  right: 0;
+}
+.tippy-box[data-placement^='left'] > .tippy-arrow:before {
+  border-width: 8px 0 8px 8px;
+  border-left-color: var(--text-color);
+  right: -7px;
+  transform-origin: center left;
+}
+.tippy-box[data-placement^='right'] > .tippy-arrow {
+  left: 0;
+}
+.tippy-box[data-placement^='right'] > .tippy-arrow:before {
+  left: -7px;
+  border-width: 8px 8px 8px 0;
+  border-right-color: var(--text-color);
+  transform-origin: center right;
+}
+.tippy-box[data-inertia][data-state='visible'] {
+  transition-timing-function: cubic-bezier(0.54, 1.5, 0.38, 1.11);
+}
+.tippy-arrow {
+  width: 16px;
+  height: 16px;
+  color: #333;
+}
+.tippy-arrow:before {
+  content: '';
+  position: absolute;
+  border-color: transparent;
+  border-style: solid;
+}
+.tippy-content {
+  position: relative;
+  padding: 5px 9px;
+  z-index: 1;
 }
