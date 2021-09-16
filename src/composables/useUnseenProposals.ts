@@ -3,6 +3,7 @@ import { subgraphRequest } from '@snapshot-labs/snapshot.js/src/utils';
 import { lsGet } from '@/helpers/utils';
 
 const proposalIds = ref([]);
+const lastSeenProposals = ref(lsGet('lastSeenProposals') || {});
 
 export function useUnseenProposals() {
   async function getProposalIds(followingSpaces) {
@@ -18,7 +19,10 @@ export function useUnseenProposals() {
                   space_in: followingSpaces
                 }
               },
-              id: true
+              id: true,
+              space: {
+                id: true
+              }
             }
           }
         );
@@ -38,5 +42,10 @@ export function useUnseenProposals() {
     return numberOfUnseen > 99 ? '99+' : numberOfUnseen;
   });
 
-  return { getProposalIds, numberOfUnseenProposals, proposalIds };
+  return {
+    getProposalIds,
+    numberOfUnseenProposals,
+    proposalIds,
+    lastSeenProposals
+  };
 }

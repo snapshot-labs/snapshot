@@ -8,10 +8,13 @@ import { useApolloQuery } from '@/composables/useApolloQuery';
 import { PROPOSALS_QUERY } from '@/helpers/queries';
 import { useProfiles } from '@/composables/useProfiles';
 import { useApp } from '@/composables/useApp';
+import { useUnseenProposals } from '@/composables/useUnseenProposals';
+import { lsSet, lsGet } from '@/helpers/utils';
 
 const route = useRoute();
 const { domain } = useDomain();
 const { spaces } = useApp();
+const { lastSeenProposals } = useUnseenProposals();
 const spaceId = domain || route.params.key;
 
 const loading = ref(false);
@@ -68,6 +71,14 @@ const { profiles, addressArray } = useProfiles();
 
 watch(proposals, () => {
   addressArray.value = proposals.value.map(proposal => proposal.author);
+});
+
+watch(proposals, () => {
+  lsSet(
+    'lastSeenProposals',
+    Object.assign(lastSeenProposals.value, { [spaceId]: proposals.value[0].id })
+  );
+  lastSeenProposals.value = lsGet('lastSeenProposals') || {};
 });
 </script>
 

@@ -1,14 +1,16 @@
 <script setup>
-import { computed, watch, onMounted, ref } from 'vue';
+import { computed, watch, onMounted, ref, watchEffect } from 'vue';
 import { useFollowSpace } from '@/composables/useFollowSpace';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useApp } from '@/composables/useApp';
 import { useDomain } from '@/composables/useDomain';
+import { useUnseenProposals } from '@/composables/useUnseenProposals';
 
 const { spaces } = useApp();
 const { web3 } = useWeb3();
 const { loadFollows, followingSpaces } = useFollowSpace();
 const { domain } = useDomain();
+const { proposalIds, getProposalIds, lastSeenProposals } = useUnseenProposals();
 
 const modalAboutOpen = ref(false);
 const modalLangOpen = ref(false);
@@ -16,6 +18,8 @@ const modalLangOpen = ref(false);
 const web3Account = computed(() => web3.value.account);
 
 watch(web3Account, () => loadFollows());
+
+watchEffect(() => getProposalIds(followingSpaces.value));
 
 onMounted(() => {
   loadFollows();
@@ -60,7 +64,30 @@ onMounted(() => {
             <Icon size="20" name="feed" />
           </UiSidebarButton>
         </router-link>
-        <div v-for="follow in followingSpaces" :key="follow">
+        <div
+          class="w-full flex items-center justify-center relative group"
+          v-for="follow in followingSpaces"
+          :key="follow"
+        >
+          <div
+            v-if="
+              lastSeenProposals[follow]
+                ? proposalIds
+                    .filter(p => p.space.id === follow)
+                    .map(p => p.id)[0] !== lastSeenProposals[follow]
+                : true
+            "
+            class="
+              w-[6px]
+              h-[9px]
+              !bg-skin-text
+              absolute
+              left-[-1px]
+              rounded-r-full
+              opacity-70
+              group-hover:opacity-100
+            "
+          />
           <router-link :to="{ name: 'proposals', params: { key: follow } }">
             <Token :space="spaces[follow]" symbolIndex="space" size="44" />
           </router-link>
