@@ -1,7 +1,7 @@
 import memoize from 'lodash/memoize';
 import { isAddress } from '@ethersproject/address';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
-import { ModuleTransaction } from '@snapshot-labs/snapshot.js/src/plugins/safeSnap';
+import { ModuleTransaction } from '@/../snapshot-plugins/src/plugins/safeSnap';
 import { JsonRpcProvider } from '@ethersproject/providers';
 import { pack } from '@ethersproject/solidity';
 import { hexDataLength, isHexString } from '@ethersproject/bytes';

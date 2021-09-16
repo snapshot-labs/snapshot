@@ -1,7 +1,7 @@
 import { computed } from 'vue';
 import skins from '@/../snapshot-spaces/skins';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
-import plugins from '@snapshot-labs/snapshot.js/src/plugins';
+import plugins from '@/../snapshot-plugins/src/plugins';
 import validations from '@snapshot-labs/snapshot.js/src/validations';
 import { useApp } from '@/composables/useApp';
 

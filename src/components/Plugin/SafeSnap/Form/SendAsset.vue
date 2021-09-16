@@ -1,5 +1,5 @@
 <script>
-import Plugin from '@snapshot-labs/snapshot.js/src/plugins/safeSnap';
+import Plugin from '@/../snapshot-plugins/src/plugins/safeSnap';
 import { isAddress } from '@ethersproject/address';
 import {
   getERC721TokenTransferTransactionData,
