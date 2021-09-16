@@ -43,17 +43,14 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
 
 <template>
   <div>
-    <div v-if="!web3.authLoading && !$auth.isAuthenticated.value" class="border-bottom py-8 mb-4">
-      <Container class="clearfix">
-        <div class="col-6 float-left">
+    <div
+      v-if="!web3.authLoading && !$auth.isAuthenticated.value"
+      class="-mt-4 border-bottom mb-4 dots overflow-hidden dots"
+    >
+      <Container class="clearfix mt-3 py-6">
+        <div class="w-7/12 float-left mb-4">
           <h1 class="mono mb-5">Where decisions get made</h1>
-          <a>Learn more</a>
-        </div>
-        <div class="col-6 float-left">
-          <div
-            class="placeholder float-right"
-            style="width: 380px; height: 180px"
-          />
+          <router-link :to="{ name: 'snapshot' }">Learn more</router-link>
         </div>
       </Container>
     </div>

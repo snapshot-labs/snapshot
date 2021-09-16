@@ -340,3 +340,9 @@ input[type='number']::-webkit-outer-spin-button {
   padding: 5px 9px;
   z-index: 1;
 }
+
+.dots {
+  background-image: url('./assets/dots.svg');
+  background-position: top right;
+  background-repeat: no-repeat;
+}
