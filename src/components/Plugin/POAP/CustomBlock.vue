@@ -1,5 +1,5 @@
 <script>
-import Plugin from '@snapshot-labs/snapshot.js/src/plugins/poap';
+import Plugin from '@/../snapshot-plugins/src/plugins/poap';
 
 const STATES = {
   NO_POAP: {
