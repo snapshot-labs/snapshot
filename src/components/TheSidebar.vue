@@ -78,12 +78,12 @@ onMounted(() => {
                 : true
             "
             class="
-              w-[6px]
-              h-[9px]
-              !bg-skin-text
+              w-[8px]
+              h-[8px]
+              !bg-skin-link
               absolute
-              left-[-1px]
-              rounded-r-full
+              left-[-4px]
+              rounded-full
               opacity-70
               group-hover:opacity-100
             "
