@@ -77,7 +77,7 @@ const QuestionStates = {
 Object.freeze(QuestionStates);
 export default {
   props: [
-    'proposalConfig',
+    'txs',
     'proposalId',
     'proposalEnd',
     'network',
@@ -199,8 +199,12 @@ export default {
     },
     approvalData() {
       if (this.questionDetails) {
-        const { currentBond, finalizedAt, isApproved, endTime } =
-          this.questionDetails;
+        const {
+          currentBond,
+          finalizedAt,
+          isApproved,
+          endTime
+        } = this.questionDetails;
 
         if (BigNumber.from(currentBond).eq(0)) {
           return {
@@ -273,7 +277,7 @@ export default {
           this.network,
           this.moduleAddress,
           this.proposalId,
-          this.proposalConfig.txs.map(formatBatchTransaction)
+          this.txs.map(formatBatchTransaction)
         );
         if (this.questionDetails.questionId) {
           this.bondData = await this.plugin.loadClaimBondData(

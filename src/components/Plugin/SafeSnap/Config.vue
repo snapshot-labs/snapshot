@@ -12,7 +12,6 @@ export default {
     'proposal',
     'network',
     'moduleAddress',
-    'proposalId',
     'preview'
   ],
   emits: ['update:modelValue', 'close'],
@@ -22,7 +21,6 @@ export default {
       batches: [],
       plugin: new Plugin(),
       gnosisSafeAddress: undefined,
-      proposalDetails: undefined,
       transactionConfig: {
         preview: this.preview,
         network: this.network,
@@ -156,9 +154,19 @@ export default {
           @update:modelValue="updateTransactionBatch(index, $event)"
         />
       </div>
+
       <UiButton v-if="!preview" @click="createTransactionBatch">
         Add transaction Batch
       </UiButton>
+
+      <PluginSafeSnapCustomBlock
+        v-if="preview || batches"
+        :txs="modelValue.txs"
+        :proposalEnd="proposal.end"
+        :proposalId="proposal.id"
+        :moduleAddress="moduleAddress"
+        :network="transactionConfig.network"
+      />
     </div>
   </div>
 </template>
