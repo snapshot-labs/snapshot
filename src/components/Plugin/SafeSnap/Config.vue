@@ -1,6 +1,6 @@
 <script>
 import { clone } from '@/helpers/utils';
-import Plugin from '@snapshot-labs/snapshot.js/src/plugins/safeSnap';
+import Plugin from '@/../snapshot-plugins/src/plugins/safeSnap';
 import {
   getGnosisSafeBalances,
   getGnosisSafeCollectibles
