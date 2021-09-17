@@ -1,7 +1,7 @@
 <template>
   <Block
     title="SafeSnap Transactions"
-    :icon="!loading && moduleAddress ? 'refresh' : undefined"
+    :icon="!loading && realityAddress ? 'refresh' : undefined"
     :loading="loading"
     @submit="updateDetails"
   >
@@ -81,7 +81,7 @@ export default {
     'proposalId',
     'proposalEnd',
     'network',
-    'moduleAddress'
+    'realityAddress'
   ],
   data() {
     return {
@@ -270,12 +270,12 @@ export default {
   },
   methods: {
     async updateDetails() {
-      if (!this.moduleAddress) return;
+      if (!this.realityAddress) return;
       this.loading = true;
       try {
         this.questionDetails = await this.plugin.getExecutionDetails(
           this.network,
-          this.moduleAddress,
+          this.realityAddress,
           this.proposalId,
           this.txs.map(formatBatchTransaction)
         );
@@ -324,7 +324,7 @@ export default {
           case QuestionStates.waitingForQuestion:
             await this.plugin.submitProposal(
               this.$auth.web3,
-              this.moduleAddress,
+              this.realityAddress,
               this.questionDetails.proposalId,
               this.questionDetails.transactions
             );
@@ -362,7 +362,7 @@ export default {
         clearBatchError();
         await this.plugin.executeProposal(
           this.$auth.web3,
-          this.moduleAddress,
+          this.realityAddress,
           this.questionDetails.proposalId,
           this.questionDetails.transactions,
           this.questionDetails.nextTxIndex
