@@ -60,7 +60,7 @@ onMounted(() => setTitle());
         <div class="flex items-center" style="height: 78px">
           <div class="flex-auto flex items-center">
             <router-link
-              :to="{ name: 'home' }"
+              :to="{ path: '/' }"
               class="flex items-center"
               style="font-size: 24px; padding-top: 4px"
             >

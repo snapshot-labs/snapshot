@@ -3,12 +3,12 @@ import { computed } from 'vue';
 import { useApp } from '@/composables/useApp';
 import { useRoute } from 'vue-router';
 import { useDomain } from '@/composables/useDomain';
+import aliases from '@/../snapshot-spaces/spaces/aliases.json';
 
 const route = useRoute();
 const { domain } = useDomain();
 const { spaces } = useApp();
-
-const spaceId = computed(() => domain || route.params.key);
+const spaceId = computed(() => aliases[domain] || domain || route.params.key);
 const space = computed(() => spaces.value[spaceId.value]);
 
 const from = computed(() => route.params.from);

@@ -174,7 +174,7 @@ onMounted(async () => {
     <template #content-left>
       <div class="px-4 md:px-0 mb-3">
         <router-link
-          :to="{ name: domain ? 'home' : 'spaceProposals' }"
+          :to="domain ? { path: '/' } : { name: 'spaceProposals' }"
           class="text-color"
         >
           <Icon name="back" size="22" class="!align-middle" />

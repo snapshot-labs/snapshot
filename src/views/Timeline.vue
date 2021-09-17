@@ -110,7 +110,7 @@ onMounted(async () => {
     <template #content-right>
       <div class="px-4 md:px-0 mb-3 flex">
         <div class="flex-auto">
-          <router-link :to="{ name: 'home' }" class="text-color">
+          <router-link :to="{ path: '/' }" class="text-color">
             <Icon name="back" size="22" class="!align-middle" />
             {{ $t('backToHome') }}
           </router-link>
@@ -154,7 +154,7 @@ onMounted(async () => {
         class="text-center"
       >
         <div class="mb-3">{{ $t('noSpacesJoined') }}</div>
-        <router-link :to="{ name: 'home' }">
+        <router-link :to="{ path: '/' }">
           <UiButton>{{ $t('joinSpaces') }}</UiButton>
         </router-link>
       </Block>

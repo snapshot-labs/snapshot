@@ -1,4 +1,8 @@
-import { createRouter, createWebHashHistory } from 'vue-router';
+import {
+  createRouter,
+  createWebHashHistory,
+  RouteLocationNormalized
+} from 'vue-router';
 import domains from '@/../snapshot-spaces/spaces/domains.json';
 import aliases from '@/../snapshot-spaces/spaces/aliases.json';
 import Home from '@/views/Home.vue';
@@ -17,16 +21,73 @@ import SpaceProposals from '@/views/SpaceProposals.vue';
 
 const domainName = window.location.hostname;
 
-const routes: any[] = [
+const spaceChildrenRoutes = [
   {
-    path: '/',
-    name: 'home',
-    component: Home,
-    beforeEnter: (to, from, next) => {
-      if (domains[domainName]) next({ name: 'spaceProposals' });
-      else next();
-    }
+    path: '',
+    name: 'spaceProposals',
+    component: SpaceProposals
   },
+  {
+    path: 'proposal/:id',
+    name: 'spaceProposal',
+    component: SpaceProposal
+  },
+  {
+    path: 'create/:from?',
+    name: 'spaceCreate',
+    component: SpaceCreate
+  },
+
+  {
+    path: 'about',
+    name: 'spaceAbout',
+    component: SpaceAbout
+  },
+  {
+    path: 'settings/:from?',
+    name: 'spaceSettings',
+    component: SpaceSettings
+  }
+];
+
+const homeRoutes = domains[domainName]
+  ? [
+      {
+        path: '/',
+        name: 'home',
+        component: Space,
+        children: spaceChildrenRoutes
+      }
+    ]
+  : [
+      {
+        path: '/',
+        name: 'home',
+        component: Home
+      }
+    ];
+
+const spaceRoutes = domains[domainName]
+  ? [
+      {
+        path: '/:key',
+        name: 'space',
+        redirect: {
+          path: `/`
+        }
+      }
+    ]
+  : [
+      {
+        path: '/:key',
+        name: 'space',
+        component: Space,
+        children: spaceChildrenRoutes
+      }
+    ];
+
+const routes: any[] = [
+  ...homeRoutes,
   { path: '/setup', name: 'setup', component: Setup },
   { path: '/networks', name: 'networks', component: Explore },
   { path: '/strategies', name: 'strategies', component: Explore },
@@ -45,45 +106,7 @@ const routes: any[] = [
     name: 'strategy',
     component: Strategy
   },
-  {
-    path: '/:key?/',
-    name: 'space',
-    component: Space,
-    beforeEnter: (to: any, from, next) => {
-      if (aliases?.[to?.params?.key]) {
-        to.params.key = aliases[to.params.key];
-        return next(to);
-      } else next();
-    },
-    children: [
-      {
-        path: '',
-        name: 'spaceProposals',
-        component: SpaceProposals
-      },
-      {
-        path: 'proposal/:id',
-        name: 'spaceProposal',
-        component: SpaceProposal
-      },
-      {
-        path: 'create/:from?',
-        name: 'spaceCreate',
-        component: SpaceCreate
-      },
-
-      {
-        path: 'about',
-        name: 'spaceAbout',
-        component: SpaceAbout
-      },
-      {
-        path: 'settings/:from?',
-        name: 'spaceSettings',
-        component: SpaceSettings
-      }
-    ]
-  },
+  ...spaceRoutes,
   { path: '/*', name: 'error-404', beforeEnter: (to, from, next) => next('/') }
 ];
 
