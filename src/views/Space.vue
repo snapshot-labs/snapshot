@@ -9,12 +9,15 @@ import { PROPOSALS_QUERY } from '@/helpers/queries';
 import { useProfiles } from '@/composables/useProfiles';
 import { useApp } from '@/composables/useApp';
 import { useUnseenProposals } from '@/composables/useUnseenProposals';
-import { lsSet, lsGet } from '@/helpers/utils';
+import { lsSet } from '@/helpers/utils';
+import { useWeb3 } from '@/composables/useWeb3';
 
 const route = useRoute();
 const { domain } = useDomain();
 const { spaces } = useApp();
-const { lastSeenProposals } = useUnseenProposals();
+const { lastSeenProposals, updateLastSeenProposal } = useUnseenProposals();
+const { web3 } = useWeb3();
+
 const spaceId = domain || route.params.key;
 
 const loading = ref(false);
@@ -25,6 +28,7 @@ const space = computed(() => spaces.value[spaceId]);
 const spaceMembers = computed(() =>
   space.value.members.length < 1 ? ['none'] : space.value.members
 );
+const web3Account = computed(() => web3.value.account);
 
 const { loadBy, limit, loadingMore, stopLoadingMore, loadMore } =
   useInfiniteLoader();
@@ -73,12 +77,16 @@ watch(proposals, () => {
   addressArray.value = proposals.value.map(proposal => proposal.author);
 });
 
-watch(proposals, () => {
-  lsSet(
-    'lastSeenProposals',
-    Object.assign(lastSeenProposals.value, { [spaceId]: proposals.value[0].id })
-  );
-  lastSeenProposals.value = lsGet('lastSeenProposals') || {};
+watch([proposals, web3Account], () => {
+  if (web3Account.value) {
+    lsSet(
+      `lastSeenProposals.${web3Account.value.slice(0, 8).toLowerCase()}`,
+      Object.assign(lastSeenProposals.value, {
+        [spaceId]: proposals.value[0].created
+      })
+    );
+  }
+  updateLastSeenProposal(web3Account.value);
 });
 </script>
 

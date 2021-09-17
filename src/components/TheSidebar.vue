@@ -10,14 +10,22 @@ const { spaces } = useApp();
 const { web3 } = useWeb3();
 const { loadFollows, followingSpaces } = useFollowSpace();
 const { domain } = useDomain();
-const { proposalIds, getProposalIds, lastSeenProposals } = useUnseenProposals();
+const {
+  proposalIds,
+  getProposalIds,
+  lastSeenProposals,
+  updateLastSeenProposal
+} = useUnseenProposals();
 
 const modalAboutOpen = ref(false);
 const modalLangOpen = ref(false);
 
 const web3Account = computed(() => web3.value.account);
 
-watch(web3Account, () => loadFollows());
+watch(web3Account, () => {
+  loadFollows();
+  updateLastSeenProposal(web3Account.value);
+});
 
 watchEffect(() => getProposalIds(followingSpaces.value));
 
@@ -66,15 +74,15 @@ onMounted(() => {
         </router-link>
         <div
           class="w-full flex items-center justify-center relative group"
-          v-for="follow in followingSpaces"
-          :key="follow"
+          v-for="space in followingSpaces"
+          :key="space"
         >
           <div
             v-if="
-              lastSeenProposals[follow]
+              lastSeenProposals[space]
                 ? proposalIds
-                    .filter(p => p.space.id === follow)
-                    .map(p => p.id)[0] !== lastSeenProposals[follow]
+                    .filter(p => p.space.id === space)
+                    .map(p => p.created)[0] > lastSeenProposals[space]
                 : true
             "
             class="
@@ -88,8 +96,8 @@ onMounted(() => {
               group-hover:opacity-100
             "
           />
-          <router-link :to="{ name: 'proposals', params: { key: follow } }">
-            <Token :space="spaces[follow]" symbolIndex="space" size="44" />
+          <router-link :to="{ name: 'proposals', params: { key: space } }">
+            <Token :space="spaces[space]" symbolIndex="space" size="44" />
           </router-link>
         </div>
         <router-link :to="{ name: 'setup' }">
