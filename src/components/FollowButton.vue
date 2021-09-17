@@ -1,4 +1,5 @@
 <script setup>
+import { computed } from 'vue';
 import { useFollowSpace } from '@/composables/useFollowSpace';
 import { useTerms } from '@/composables/useTerms';
 
@@ -9,16 +10,24 @@ const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(props.space.id);
 const { clickFollow, loadingFollow, isFollowing, hoverJoin } = useFollowSpace(
   props.space
 );
+
+const canFollow = computed(() => {
+  if (props.space.terms) {
+    if (termsAccepted.value || isFollowing.value) return true;
+    else return false;
+  } else return true;
+});
 </script>
 
 <template>
   <UiButton
+    v-bind="$attrs"
     @click.stop="
       loadingFollow !== ''
         ? null
-        : !termsAccepted && !isFollowing
-        ? (modalTermsOpen = true)
-        : clickFollow(space.id)
+        : canFollow
+        ? clickFollow(space.id)
+        : (modalTermsOpen = true)
     "
     @mouseenter="hoverJoin = space.id"
     @mouseleave="hoverJoin = ''"
