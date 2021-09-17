@@ -83,14 +83,14 @@ watchEffect(async () => {
 <template>
   <Layout v-bind="$attrs">
     <template #content-left>
-      <div class="px-4 px-md-0 mb-3">
+      <div class="px-4 md:px-0 mb-3">
         <router-link :to="`/strategy/${$route.params.name}`" class="text-color">
-          <Icon name="back" size="22" class="v-align-middle" />
+          <Icon name="back" size="22" class="!align-middle" />
           {{ $t('back') }}
         </router-link>
       </div>
       <div class="">
-        <h1 class="mb-2 px-4 px-md-0">
+        <h1 class="mb-2 px-4 md:px-0">
           {{ strategy.key }}
         </h1>
         <Block :title="$t('settings.header')">
@@ -112,13 +112,13 @@ watchEffect(async () => {
             class="mt-4"
             style="border-color: red !important"
           >
-            <Icon name="warning" class="mr-2 text-red" />
-            <span class="text-red">{{ $t('networkErrorPlayground') }}</span>
+            <Icon name="warning" class="mr-2 !text-red" />
+            <span class="!text-red">{{ $t('networkErrorPlayground') }}</span>
           </Block>
         </Block>
         <Block :title="$t('strategyParams')">
           <UiButton
-            class="d-block width-full mb-3 overflow-x-auto"
+            class="block w-full mb-3 overflow-x-auto"
             style="height: auto"
           >
             <TextareaAutosize
@@ -129,16 +129,16 @@ watchEffect(async () => {
             />
           </UiButton>
           <Block v-if="strategyError" style="border-color: red !important">
-            <Icon name="warning" class="mr-2 text-red" />
-            <span class="text-red"> {{ strategyError }}</span>
+            <Icon name="warning" class="mr-2 !text-red" />
+            <span class="!text-red"> {{ strategyError }}</span>
           </Block>
         </Block>
         <Block :title="$t('addresses')">
-          <UiButton class="d-block width-full px-3" style="height: auto">
+          <UiButton class="block w-full px-3" style="height: auto">
             <TextareaArray
               v-model="form.addresses"
               :placeholder="`0x8C28Cf33d9Fd3D0293f963b1cd27e3FF422B425c\n0xeF8305E140ac520225DAf050e2f71d5fBcC543e7`"
-              class="input width-full text-left"
+              class="input w-full text-left"
               style="font-size: 18px"
             />
           </UiButton>
@@ -151,7 +151,7 @@ watchEffect(async () => {
           @click="loadScores"
           :loading="loading"
           :disables="loading"
-          class="width-full button--submit"
+          class="w-full button--submit"
           :style="[loading ? '' : 'padding-top: 0.2rem']"
         >
           <Icon name="play" size="18" />
@@ -159,7 +159,7 @@ watchEffect(async () => {
       </Block>
       <Block v-if="scores" :title="$t('results')">
         <div
-          class="d-flex flex-justify-between"
+          class="flex justify-between"
           v-for="score in Object.keys(scores[0])"
           :key="score"
         >

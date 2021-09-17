@@ -25,7 +25,7 @@ onMounted(() => {
       <BlockSpace :space="space" />
     </template>
     <template #content-right>
-      <div class="px-4 px-md-0 mb-3 d-flex">
+      <div class="px-4 md:px-0 mb-3 flex">
         <h2>{{ space.name }}</h2>
       </div>
       <Block>
@@ -91,13 +91,13 @@ onMounted(() => {
           v-for="(user, i) in space.admins"
           :key="i"
           :style="i === 0 && 'border: 0 !important;'"
-          class="px-4 py-3 border-top d-flex"
+          class="px-4 py-3 border-t flex"
         >
           <User :address="user" :profile="profiles[user]" />
         </div>
       </Block>
       <Block
-        :title="$t('settings.members')"
+        :title="$t('settings.authors')"
         v-if="space.members?.length"
         :slim="true"
         class="mb-3"
@@ -106,7 +106,7 @@ onMounted(() => {
           v-for="(user, i) in space.members"
           :key="i"
           :style="i === 0 && 'border: 0 !important;'"
-          class="px-4 py-3 border-top d-flex"
+          class="px-4 py-3 border-t flex"
         >
           <User :address="user" :profile="profiles[user]" />
         </div>

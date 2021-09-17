@@ -96,25 +96,25 @@ onMounted(async () => {
             <router-link
               :to="{ name: 'timeline' }"
               v-text="$t('joinedSpaces')"
-              class="d-block px-4 py-2 sidenav-item"
+              class="block px-4 py-2 sidenav-item"
             />
             <router-link
               :to="{ name: 'explore' }"
               v-text="$t('allSpaces')"
-              class="d-block px-4 py-2 sidenav-item"
+              class="block px-4 py-2 sidenav-item"
             />
           </div>
         </Block>
       </div>
     </template>
     <template #content-right>
-      <div class="px-4 px-md-0 mb-3 d-flex">
+      <div class="px-4 md:px-0 mb-3 flex">
         <div class="flex-auto">
           <router-link :to="{ name: 'home' }" class="text-color">
-            <Icon name="back" size="22" class="v-align-middle" />
+            <Icon name="back" size="22" class="!align-middle" />
             {{ $t('backToHome') }}
           </router-link>
-          <div class="d-flex flex-items-center flex-auto">
+          <div class="flex items-center flex-auto">
             <h2>{{ $t('timeline') }}</h2>
           </div>
         </div>

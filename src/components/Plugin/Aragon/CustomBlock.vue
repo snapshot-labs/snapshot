@@ -1,5 +1,5 @@
 <script>
-import plugins from '@snapshot-labs/snapshot.js/src/plugins';
+import plugins from '@/../snapshot-plugins/src/plugins';
 
 export default {
   props: ['id', 'space', 'proposal', 'results', 'loaded'],
@@ -67,7 +67,7 @@ export default {
         @click="execute(plugin)"
         :loading="loading"
         :disabled="!$auth.isAuthenticated.value"
-        class="width-full button--submit"
+        class="w-full button--submit"
       >
         {{ $t('submitOnchain') }}
       </UiButton>

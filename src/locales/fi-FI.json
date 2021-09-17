@@ -31,6 +31,7 @@
   "network": "Verkko",
   "networks": "Verkoissa",
   "skins": "Skins",
+  "members": "No members | {count} member | {count} members",
   "editStrategy": "Muokkaa strategiaa",
   "invalidProposals": "Virheelliset ehdotukset",
   "account": "Tili",
@@ -135,7 +136,7 @@
     "snapshotBlock": "Snapshot block numero",
     "validationWarning": {
       "basic": {
-        "member": "Sinun on oltava avaruuden jäsen ehdotuksen tekemiseksi.",
+        "member": "You need to be an author of the space in order to submit a proposal.",
         "minScore": "Ehdotuksen lähettämiseen vaaditaan vähintään {0} {1}."
       },
       "customValidation": "Sinun on läpäistävä ehdotuksen vahvistus voidaksesi lähettää ehdotuksen."
@@ -188,11 +189,11 @@
     "strategies": "Strategia(t)",
     "hideSpace": "Piilota välilyönti etusivulta",
     "addStrategy": "Lisää strategia",
-    "members": "Jäsenet",
+    "authors": "Authors",
     "admins": "Järjestelmänvalvojat",
     "defaultTab": "Oletus tab",
     "proposalThreshold": "Ehdotuksen kynnysarvo",
-    "allowOnlyMembers": "Salli ehdotuksen jättää vain jäseniä",
+    "allowOnlyAuthors": "Allow only authors to submit a proposal",
     "editPlugin": "Muokkaa liitännäistä",
     "addPlugin": "Lisää liitännäinen",
     "pluginParameters": "Liitännäisen parametrit",

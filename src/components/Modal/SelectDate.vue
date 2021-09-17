@@ -69,25 +69,25 @@ watch(open, () => {
         <UiCalendar v-model="input" class="mx-auto mb-2" />
       </div>
     </div>
-    <div v-else class="d-flex m-4 mx-auto" style="max-width: 160px">
-      <UiButton class="px-0 width-fit">
-        <input v-model="form.h" max="24" class="input text-center col-5" />
-        <span class="col-2">:</span>
-        <input v-model="form.m" max="60" class="input text-center col-5" />
+    <div v-else class="flex m-4 mx-auto" style="max-width: 160px">
+      <UiButton class="!px-0 w-max">
+        <input v-model="form.h" max="24" class="input text-center w-5/12" />
+        <span class="w-2/12">:</span>
+        <input v-model="form.m" max="60" class="input text-center w-5/12" />
       </UiButton>
     </div>
     <template v-slot:footer>
-      <div class="col-6 float-left pr-2">
-        <UiButton @click="$emit('close')" type="button" class="width-full">
+      <div class="w-2/4 float-left pr-2">
+        <UiButton @click="$emit('close')" type="button" class="w-full">
           {{ $t('cancel') }}
         </UiButton>
       </div>
-      <div class="col-6 float-left pl-2">
+      <div class="w-2/4 float-left pl-2">
         <UiButton
           @click="handleSubmit"
           type="submit"
           :disabled="!input"
-          class="width-full button--submit"
+          class="w-full button--submit"
         >
           <span v-if="step === 0">{{ $t('next') }}</span>
           <span v-else>{{ $t('select') }}</span>
