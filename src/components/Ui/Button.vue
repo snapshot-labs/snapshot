@@ -20,10 +20,8 @@ defineProps({
   background-color: transparent;
   color: var(--link-color);
   border-radius: 23px;
-  padding: 0 24px;
+  padding: 12px 24px;
   outline: none;
-  line-height: 46px;
-  height: 46px;
   font-size: 18px;
 
   &.button--submit {

@@ -57,15 +57,19 @@ watch(open, () => (step.value = null));
           </UiButton>
           <UiButton
             v-else-if="injected"
-            class="button-outline width-full v-align-middle"
+            class="button-outline width-full"
+            style="display: flex;justify-content: center"
           >
             <img
-              :src="`${path}/${injected.id}.png`"
+              :src="injected.id==='trustwallet'?`${path}/metamask.png`:`${path}/${injected.id}.png`"
               height="28"
               width="28"
               class="mr-1 v-align-middle"
             />
-            {{ injected.name }}
+            <div style="text-align: left">
+              <span v-if="injected.id==='trustwallet'">Browser Wallet</span>
+              <span v-if="injected.id==='trustwallet'" style="display:block">(ioPay, Metamask, Trust, etc.)</span>
+            </div>
           </UiButton>
         </a>
       </div>
