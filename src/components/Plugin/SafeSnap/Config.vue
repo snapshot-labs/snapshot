@@ -40,8 +40,8 @@ export default {
   methods: {
     updateSafeTransactions(safeIndex, txs) {
       if (this.preview) return;
-      this.input.safes[index].txs;
-      this.input.valid = isValidInput(input);
+      this.input.safes[safeIndex].txs;
+      this.input.valid = isValidInput(this.input);
       this.$emit('update:modelValue', this.input);
     }
   }
