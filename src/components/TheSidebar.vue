@@ -1,21 +1,33 @@
 <script setup>
-import { computed, watch, onMounted, ref } from 'vue';
+import { computed, watch, onMounted, ref, watchEffect } from 'vue';
 import { useFollowSpace } from '@/composables/useFollowSpace';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useApp } from '@/composables/useApp';
 import { useDomain } from '@/composables/useDomain';
+import { useUnseenProposals } from '@/composables/useUnseenProposals';
 
 const { spaces } = useApp();
 const { web3 } = useWeb3();
 const { loadFollows, followingSpaces } = useFollowSpace();
 const { domain } = useDomain();
+const {
+  proposalIds,
+  getProposalIds,
+  lastSeenProposals,
+  updateLastSeenProposal
+} = useUnseenProposals();
 
 const modalAboutOpen = ref(false);
 const modalLangOpen = ref(false);
 
 const web3Account = computed(() => web3.value.account);
 
-watch(web3Account, () => loadFollows());
+watch(web3Account, () => {
+  loadFollows();
+  updateLastSeenProposal(web3Account.value);
+});
+
+watchEffect(() => getProposalIds(followingSpaces.value));
 
 onMounted(() => {
   loadFollows();
@@ -60,9 +72,32 @@ onMounted(() => {
             <Icon size="20" name="feed" />
           </UiSidebarButton>
         </router-link>
-        <div v-for="follow in followingSpaces" :key="follow">
-          <router-link :to="{ name: 'proposals', params: { key: follow } }">
-            <Token :space="spaces[follow]" symbolIndex="space" size="44" />
+        <div
+          class="w-full flex items-center justify-center relative group"
+          v-for="space in followingSpaces"
+          :key="space"
+        >
+          <div
+            v-if="
+              lastSeenProposals[space]
+                ? proposalIds
+                    .filter(p => p.space.id === space)
+                    .map(p => p.created)[0] > lastSeenProposals[space]
+                : true
+            "
+            class="
+              w-[8px]
+              h-[8px]
+              !bg-skin-link
+              absolute
+              left-[-4px]
+              rounded-full
+              opacity-70
+              group-hover:opacity-100
+            "
+          />
+          <router-link :to="{ name: 'proposals', params: { key: space } }">
+            <Token :space="spaces[space]" symbolIndex="space" size="44" />
           </router-link>
         </div>
         <router-link :to="{ name: 'setup' }">

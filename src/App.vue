@@ -43,7 +43,7 @@ watch(modalOpen, val => {
   >
     <UiLoading v-if="app.loading || !app.init" class="overlay big" />
     <div v-else>
-      <MainSidebar />
+      <TheSidebar />
       <div :class="{ 'sm:ml-[68px]': !domain }">
         <Topnav />
         <div class="pb-6">
