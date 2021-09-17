@@ -31,6 +31,7 @@
   "network": "نیٹ ورک",
   "networks": "نیٹ ورک",
   "skins": "سکینس",
+  "members": "No members | {count} member | {count} members",
   "editStrategy": "Edit Strategies",
   "invalidProposals": "غلط تجاویز",
   "account": "کھاتہ",
@@ -135,7 +136,7 @@
     "snapshotBlock": "اسنیپ شاٹ بلاک نمبر",
     "validationWarning": {
       "basic": {
-        "member": "تجویز پیش کرنے کے لئے آپ کو جگہ کا ممبر بننے کی ضرورت ہے۔",
+        "member": "You need to be an author of the space in order to submit a proposal.",
         "minScore": "تجویز پیش کرنے کے ل You آپ کے پاس کم از کم {0} {1} have ہونا ضروری ہے۔"
       },
       "customValidation": "تجویز پیش کرنے کے لئے تجویز کی توثیق کو منظور کرنے کی ضرورت ہے۔"
@@ -188,11 +189,11 @@
     "strategies": "سٹریٹیجیز",
     "hideSpace": "ہوم پیج سے جگہ چھپائیں",
     "addStrategy": "سٹریٹیجیز شامل کریں",
-    "members": "ممبران",
+    "authors": "Authors",
     "admins": "منتظمین",
     "defaultTab": "ڈیفالٹ ٹیب",
     "proposalThreshold": "پروپوسل دہلیز",
-    "allowOnlyMembers": "صرف ممبروں کو تجویز پیش کرنے کی اجازت دیں",
+    "allowOnlyAuthors": "Allow only authors to submit a proposal",
     "editPlugin": "پلگ ان میں ترمیم کریں",
     "addPlugin": "پلگ ان شامل کریں",
     "pluginParameters": "پلگ ان پیرامیٹرز",

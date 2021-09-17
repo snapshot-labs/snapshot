@@ -5,23 +5,19 @@ defineProps({
 </script>
 
 <template>
-  <span
+  <div
     v-if="counter > 0 || typeof counter === 'string'"
     v-text="counter"
-    class="Counter"
+    class="count h-[20px] min-w-[20px] leading-6 px-1 rounded-full"
   />
 </template>
 
 <style scoped lang="scss">
-.Counter {
-  display: inline-block;
-  line-height: 18px;
-  height: 20px;
-  min-width: 20px;
+.count {
   color: var(--bg-color);
   text-align: center;
   background-color: var(--text-color);
-  border-radius: 10px;
   vertical-align: middle;
+  font-size: 13px;
 }
 </style>

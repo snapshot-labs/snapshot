@@ -1,5 +1,5 @@
 <script>
-import Plugin from '@snapshot-labs/snapshot.js/src/plugins/poap';
+import Plugin from '@/../snapshot-plugins/src/plugins/poap';
 
 const STATES = {
   NO_POAP: {
@@ -155,13 +155,13 @@ export default {
 
 <template>
   <Block title="I voted POAP" :loading="loading">
-    <div class="d-flex flex-column flex-items-center">
+    <div class="flex flex-col items-center">
       <img :src="headerImg" alt="" class="mb-2" />
       <div class="link-color text-center mb-2">{{ $t(header) }}</div>
       <img
         :src="mainImg"
         alt=""
-        class="mb-2"
+        class="mt-1"
         style="
           vertical-align: middle;
           width: auto;
@@ -171,7 +171,7 @@ export default {
       />
       <UiButton
         v-if="currentState !== 'NO_POAP'"
-        class="width-full mb-2"
+        class="w-full mb-2 mt-3"
         @click="action"
         :disabled="!actionEnabled"
         :loading="actionLoading"

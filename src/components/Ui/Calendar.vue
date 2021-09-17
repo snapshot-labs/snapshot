@@ -76,32 +76,32 @@ function isSelectable() {
 
 <template>
   <div class="calendar">
-    <div class="mb-2 d-flex">
+    <div class="mb-2 flex">
       <a
-        class="col-3 iconfont iconback text-left h3 text-color"
+        class="w-1/4 iconfont iconback text-left text-lg font-bold text-color"
         @click="month--"
       />
       <h4 class="mb-3 flex-auto text-center">{{ monthName }} {{ fullYear }}</h4>
       <a
-        class="col-3 iconfont icongo text-right h3 text-color"
+        class="w-1/4 iconfont icongo text-right text-lg font-bold text-color"
         @click="month++"
       />
     </div>
-    <div class="border-left border-top overflow-hidden">
+    <div class="border-l border-t overflow-hidden">
       <div
-        class="day border-bottom border-right link-color"
+        class="day border-b border-r link-color"
         v-for="dayOfWeek in daysOfWeek"
         v-text="dayOfWeek"
         :key="dayOfWeek"
       />
       <div
-        class="day border-bottom border-right"
+        class="day border-b border-r"
         v-for="emptyDay in emptyDays"
         :key="`empty-${emptyDay}`"
       />
       <div v-for="day in days" :key="day">
         <a
-          class="day border-bottom border-right selectable"
+          class="day border-b border-r selectable"
           :class="{
             'header-bg': formatDate(year, month, day) === today,
             selected: input.includes(formatDate(year, month, day))
@@ -110,7 +110,7 @@ function isSelectable() {
           v-text="day"
           @click="toggleDay(year, month, day)"
         />
-        <div class="day border-bottom border-right" v-text="day" v-else />
+        <div class="day border-b border-r" v-text="day" v-else />
       </div>
     </div>
   </div>

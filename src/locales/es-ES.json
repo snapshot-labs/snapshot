@@ -31,6 +31,7 @@
   "network": "Red",
   "networks": "Redes",
   "skins": "Skins",
+  "members": "No members | {count} member | {count} members",
   "editStrategy": "Editar estrategia",
   "invalidProposals": "Propuestas invalidas",
   "account": "Cuenta",
@@ -135,7 +136,7 @@
     "snapshotBlock": "Número de bloque Snapshot",
     "validationWarning": {
       "basic": {
-        "member": "Necesitas ser miembro del espacio para poder presentar una propuesta.",
+        "member": "You need to be an author of the space in order to submit a proposal.",
         "minScore": "Necesitas tener un mínimo de {0} {1} para poder presentar una propuesta."
       },
       "customValidation": "Es necesario aprobar la validación de la propuesta para presentarla."
@@ -188,11 +189,11 @@
     "strategies": "Estrategia(s)",
     "hideSpace": "Ocultar espacio de la página de inicio",
     "addStrategy": "Añadir estrategia",
-    "members": "Miembros",
+    "authors": "Authors",
     "admins": "Admins",
     "defaultTab": "Pestaña por defecto",
     "proposalThreshold": "Umbral de oferta",
-    "allowOnlyMembers": "Permitir sólo a los miembros enviar una propuesta",
+    "allowOnlyAuthors": "Allow only authors to submit a proposal",
     "editPlugin": "Editar extensión",
     "addPlugin": "Agregar extensión",
     "pluginParameters": "Parámetros de la extensión",

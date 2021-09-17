@@ -12,7 +12,7 @@ const { domain } = useDomain();
 const { loadLocale } = useI18n();
 const route = useRoute();
 const { modalOpen } = useModal();
-const { init, spaces, app } = useApp();
+const { init, explore, app } = useApp();
 const { web3 } = useWeb3();
 const { notify } = useNotifications();
 
@@ -21,7 +21,7 @@ provide('notify', notify);
 
 const space = computed(() => {
   const key = domain || route.params.key;
-  return spaces.value[key] ? spaces.value[key] : {};
+  return explore.value.spaces?.[key] ? explore.value.spaces[key] : {};
 });
 
 onMounted(async () => {
@@ -36,12 +36,19 @@ watch(modalOpen, val => {
 </script>
 
 <template>
-  <div :class="space?.skin" id="app" class="overflow-hidden pb-4">
+  <div
+    :class="space?.skin"
+    id="app"
+    class="overflow-hidden pb-4 font-serif text-base"
+  >
     <UiLoading v-if="app.loading || !app.init" class="overlay big" />
     <div v-else>
-      <Topnav />
-      <div class="pb-6">
-        <router-view :key="$route.path" class="flex-auto" />
+      <MainSidebar />
+      <div :class="{ 'sm:ml-[68px]': !domain }">
+        <Topnav />
+        <div class="pb-6">
+          <router-view :key="$route.path" class="flex-auto" />
+        </div>
       </div>
     </div>
     <div id="modal" />
