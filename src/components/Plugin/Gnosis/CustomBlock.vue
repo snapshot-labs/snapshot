@@ -1,5 +1,5 @@
 <script>
-import Plugin from '@snapshot-labs/snapshot.js/src/plugins/gnosis';
+import Plugin from '@/../snapshot-plugins/src/plugins/gnosis';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 
 export default {

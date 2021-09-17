@@ -252,19 +252,19 @@ onMounted(async () => {
             item-key="id"
           >
             <template #item="{ element, index }">
-              <div class="flex mb-2">
-                <UiButton class="flex w-full">
-                  <span class="mr-4">{{ index + 1 }}</span>
-                  <input
-                    v-model="element.text"
-                    class="input height-full flex-auto text-center"
-                    maxlength="32"
-                  />
-                  <span @click="removeChoice(index)" class="ml-4">
+              <UiInput
+                v-model="element.text"
+                maxlength="32"
+                additionalClass="text-center"
+                ><template v-slot:label
+                  ><span class="text-skin-link">{{ index + 1 }}</span></template
+                >
+                <template v-slot:info
+                  ><span @click="removeChoice(index)">
                     <Icon name="close" size="12" />
                   </span>
-                </UiButton>
-              </div>
+                </template>
+              </UiInput>
             </template>
           </draggable>
         </div>

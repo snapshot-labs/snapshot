@@ -369,11 +369,11 @@ onMounted(async () => {
                 </template>
                 <template v-slot:info>
                   <a
-                    class="block py-1 -mr-2"
+                    class="flex items-center -mr-2"
                     target="_blank"
                     href="https://docs.snapshot.org/spaces/add-custom-domain"
                   >
-                    <Icon name="info" size="24" class="text-color p-1" />
+                    <Icon name="info" size="24" class="text-color" />
                   </a>
                 </template>
               </UiInput>

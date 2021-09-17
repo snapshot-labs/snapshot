@@ -73,18 +73,16 @@ async function handleSubmit() {
         </div>
         <div class="flex">
           <span v-text="$t('votingPower')" class="flex-auto text-color mr-1" />
-          <UiTooltip
-            class="inline-block"
-            :text="
-              scores
+          <span
+            v-tippy="{
+              content: scores
                 .map((score, index) => `${_n(score)} ${symbols[index]}`)
                 .join(' + ')
-            "
-            :direction="'left'"
+            }"
           >
             {{ _n(totalScore) }}
             {{ _shorten(space.symbol, 'symbol') }}
-          </UiTooltip>
+          </span>
           <a
             v-if="totalScore === 0"
             target="_blank"
