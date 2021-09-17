@@ -1,11 +1,23 @@
 <script>
 import Plugin from '@snapshot-labs/snapshot.js/src/plugins/safeSnap';
+import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import {
   getGnosisSafeBalances,
   getGnosisSafeCollectibles
 } from '@/helpers/abi/utils';
 
 const plugin = new Plugin();
+
+const GNOSIS_SAFE_DEPLOYMENTS = {
+  1: 'https://gnosis-safe.io',
+  4: 'https://rinkeby.gnosis-safe.io',
+  100: 'https://xdai.gnosis-safe.io',
+  73799: 'https://volta.gnosis-safe.io',
+  246: 'https://ewc.gnosis-safe.io',
+  137: 'https://polygon.gnosis-safe.io',
+  56: 'https://bsc.gnosis-safe.io',
+  42161: 'https://arbitrum.gnosis-safe.io'
+};
 
 async function fetchBalances(network, gnosisSafeAddress) {
   if (gnosisSafeAddress) {
@@ -62,7 +74,10 @@ export default {
         ...this.transactionConfig,
         gnosisSafeAddress: this.gnosisSafeAddress,
         tokens: await fetchBalances(this.network, this.gnosisSafeAddress),
-        collectables: await fetchCollectibles(this.network, this.gnosisSafeAddress)
+        collectables: await fetchCollectibles(
+          this.network,
+          this.gnosisSafeAddress
+        )
       };
     } catch (e) {
       console.error(e);
@@ -70,10 +85,13 @@ export default {
   },
   computed: {
     safeLink() {
-      if (this.network === '4') {
-        return `https://rinkeby.gnosis-safe.io/app/#/safes/${this.gnosisSafeAddress}`;
-      }
-      return `https://gnosis-safe.io/app/#/safes/${this.gnosisSafeAddress}`;
+      const baseUrl =
+        GNOSIS_SAFE_DEPLOYMENTS[this.network] || 'https://gnosis-safe.io';
+      return `${baseUrl}/app/#/safes/${this.gnosisSafeAddress}`;
+    },
+    networkName() {
+      const { shortName, name } = networks[this.network] || {};
+      return shortName || name || `#${this.network}`;
     }
   },
   methods: {
@@ -107,7 +125,9 @@ export default {
       style="padding-bottom: 12px"
     >
       Transactions
-      {{ gnosisSafeAddress && `(${_shorten(gnosisSafeAddress)})` }}
+      {{
+        gnosisSafeAddress && `(${_shorten(gnosisSafeAddress)} on ${networkName})`
+      }}
       <a
         v-if="gnosisSafeAddress"
         :href="safeLink"
