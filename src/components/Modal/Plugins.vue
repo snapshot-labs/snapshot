@@ -43,6 +43,16 @@ watch(open, () => {
     selectedPlugin.value = {};
   }
 });
+
+watch(
+  selectedPlugin,
+  () =>
+    (input.value = JSON.stringify(
+      selectedPlugin.value?.defaultParams ?? {},
+      null,
+      2
+    ))
+);
 </script>
 
 <template>
