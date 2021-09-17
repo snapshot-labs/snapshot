@@ -38,12 +38,13 @@ onMounted(() => {
   >
     <div class="flex flex-col h-full overflow-scroll menu-tabs">
       <div class="min-h-[78px] h-[78px] flex items-center justify-center">
-        <Icon
-          @click="$router.push({ name: 'home' })"
-          size="36"
-          name="snapshot"
-          class="text-snapshot cursor-pointer"
-        />
+        <router-link :to="{ name: 'home' }">
+          <Icon
+            size="36"
+            name="snapshot"
+            class="text-snapshot cursor-pointer"
+          />
+        </router-link>
       </div>
       <div
         class="
@@ -60,13 +61,9 @@ onMounted(() => {
           </UiSidebarButton>
         </router-link>
         <div v-for="follow in followingSpaces" :key="follow">
-          <a
-            @click="
-              $router.push({ name: 'proposals', params: { key: follow } })
-            "
-          >
+          <router-link :to="{ name: 'proposals', params: { key: follow } }">
             <Token :space="spaces[follow]" symbolIndex="space" size="44" />
-          </a>
+          </router-link>
         </div>
         <router-link :to="{ name: 'setup' }">
           <UiSidebarButton><Icon size="20" name="plus" /></UiSidebarButton>

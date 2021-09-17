@@ -22,7 +22,7 @@ function handleChange(event) {
       :value="modelValue"
       @change="handleChange($event)"
       v-bind:class="{ disabled }"
-      class="input flex-auto height-full w-full"
+      class="input flex-auto h-full w-full"
     >
       <slot />
     </select>
