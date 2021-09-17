@@ -274,9 +274,5 @@
     "button_show": "Show me my collection",
     "success_claim": "Your POAP is on your address",
     "error_claim": "Hubo un problema en la acuñación de esta token"
-  },
-  "charts": {
-    "charts": "Gráficos",
-    "noVotesYet": "No hay votos que visualizar todavía."
   }
 }
