@@ -118,7 +118,10 @@ onMounted(() => {
         >
           <template #item="{ element }">
             <div class="w-full flex items-center justify-center relative group">
-              <UiUnreadIndicator v-if="hasUnseenProposalsBySpace(element)" />
+              <UiUnreadIndicator
+                class="group-hover:opacity-100 group-active:hidden"
+                v-if="hasUnseenProposalsBySpace(element)"
+              />
               <router-link
                 :to="{ name: 'proposals', params: { key: element } }"
               >
