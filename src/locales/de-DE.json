@@ -1,6 +1,6 @@
 {
   "searchPlaceholder": "Suche",
-  "spaceCount": "{0} Bereich(e)",
+  "spaceCount": "bereich(e) {0}",
   "createSpace": "Bereich erstellen",
   "backToHome": "Startseite",
   "actions": "Aktionen",
@@ -273,6 +273,6 @@
     "button_claim": "Beanspruchen",
     "button_show": "Zeige mir meine Sammlung",
     "success_claim": "Dein POAP ist auf deiner Adresse",
-    "error_claim": "There was a problem minting the token"
+    "error_claim": "Bei der Vernichtung dieses Tokens ist ein Problem aufgetreten"
   }
 }
