@@ -82,7 +82,7 @@ watch([proposals, web3Account], () => {
     lsSet(
       `lastSeenProposals.${web3Account.value.slice(0, 8).toLowerCase()}`,
       Object.assign(lastSeenProposals.value, {
-        [spaceId]: proposals.value[0].created
+        [spaceId]: new Date().getTime()
       })
     );
   }
