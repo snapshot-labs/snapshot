@@ -65,6 +65,7 @@ export const PROPOSALS_QUERY = gql`
       end
       state
       author
+      created
       space {
         id
         name
