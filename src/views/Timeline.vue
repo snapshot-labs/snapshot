@@ -10,7 +10,7 @@ import { PROPOSALS_QUERY } from '@/helpers/queries';
 import { useProfiles } from '@/composables/useProfiles';
 import { useFollowSpace } from '@/composables/useFollowSpace';
 import { useWeb3 } from '@/composables/useWeb3';
-
+import zipObject from 'lodash/zipObject';
 const filterBy = ref('all');
 const loading = ref(false);
 const proposals = ref([]);
@@ -78,12 +78,22 @@ function selectState(e) {
   load();
 }
 
-// Save the most recently seen proposalId in localStorage
-const { getProposalIds, proposalIds } = useUnseenProposals();
-onMounted(async () => {
-  await getProposalIds(following.value);
-  if (proposalIds.value[0])
-    lsSet('lastSeenProposalId', proposalIds.value[0].id);
+const { updateLastSeenProposal } = useUnseenProposals();
+
+const web3Account = computed(() => web3.value.account);
+
+// Save the lastSeenProposal times for all spaces
+watch([proposals, web3Account], () => {
+  if (web3Account.value) {
+    lsSet(
+      `lastSeenProposals.${web3Account.value.slice(0, 8).toLowerCase()}`,
+      zipObject(
+        followingSpaces.value,
+        Array(followingSpaces.value.length).fill(new Date().getTime())
+      )
+    );
+  }
+  updateLastSeenProposal(web3Account.value);
 });
 </script>
 
