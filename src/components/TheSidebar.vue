@@ -115,7 +115,7 @@ onMounted(() => {
           "
         >
           <UiSidebarButton @click="toggleSkin">
-            <Icon size="20" :name="getSkinIcon()" />
+            <Icon size="20" class="link-color" :name="getSkinIcon()" />
           </UiSidebarButton>
           <UiSidebarButton @click="modalAboutOpen = true">
             <span class="mt-1 link-color">?</span>
