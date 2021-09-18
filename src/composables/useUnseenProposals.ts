@@ -5,6 +5,10 @@ import { lsGet } from '@/helpers/utils';
 const proposalIds = ref([]);
 const lastSeenProposals = ref({});
 
+/**
+ * Fixme: This will not work if one of the followed spaces has more than 100 proposals created before
+ * other spaces had proposals.
+ */
 export function useUnseenProposals() {
   async function getProposalIds(followingSpaces) {
     if (followingSpaces[0]) {
@@ -33,15 +37,6 @@ export function useUnseenProposals() {
       }
     }
   }
-
-  // const numberOfUnseenProposals = computed(() => {
-  //   const index = proposalIds.value
-  //     .map((proposal: { id: string }) => proposal.id)
-  //     .indexOf(lsGet('lastSeenProposalId', ''));
-  //   const numberOfUnseen = index < 0 ? proposalIds.value.length : index;
-
-  //   return numberOfUnseen > 99 ? '99+' : numberOfUnseen;
-  // });
 
   function updateLastSeenProposal(account) {
     if (account) {

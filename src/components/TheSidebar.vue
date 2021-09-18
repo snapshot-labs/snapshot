@@ -32,6 +32,16 @@ function saveSpaceOrder() {
       draggableSpaces.value
     );
 }
+const hasUnseenProposalsBySpace = space => {
+  return proposalIds.value.some(p => {
+    return (
+      p.space.id === space && p.created > (lastSeenProposals.value[space] || 0)
+    );
+  });
+};
+
+const hasUnseenProposals = () =>
+  followingSpaces.value.some(fs => hasUnseenProposalsBySpace(fs));
 
 watch(web3Account, () => {
   loadFollows();
@@ -91,11 +101,14 @@ onMounted(() => {
       <div
         class="flex flex-col h-[calc(100%-78px)] items-center space-y-2 pt-2"
       >
-        <router-link :to="{ name: 'timeline' }">
-          <UiSidebarButton>
-            <Icon size="20" name="feed" />
-          </UiSidebarButton>
-        </router-link>
+        <div class="flex items-center">
+          <UiUnreadIndicator v-if="hasUnseenProposals()" />
+          <router-link :to="{ name: 'timeline' }">
+            <UiSidebarButton>
+              <Icon size="20" name="feed" />
+            </UiSidebarButton>
+          </router-link>
+        </div>
         <draggable
           v-model="draggableSpaces"
           :component-data="{ name: 'list' }"
@@ -105,26 +118,7 @@ onMounted(() => {
         >
           <template #item="{ element }">
             <div class="w-full flex items-center justify-center relative group">
-              <div
-                v-if="
-                  lastSeenProposals[element]
-                    ? proposalIds
-                        .filter(p => p.space.id === element)
-                        .map(p => p.created)[0] > lastSeenProposals[element]
-                    : true
-                "
-                class="
-                  w-[8px]
-                  h-[8px]
-                  !bg-skin-link
-                  absolute
-                  left-[-4px]
-                  rounded-full
-                  opacity-70
-                  group-hover:opacity-100
-                  group-active:hidden
-                "
-              />
+              <UiUnreadIndicator v-if="hasUnseenProposalsBySpace(element)" />
               <router-link
                 :to="{ name: 'proposals', params: { key: element } }"
               >
