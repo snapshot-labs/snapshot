@@ -1,12 +1,12 @@
 <script setup>
 import { computed, watch, onMounted, ref, watchEffect } from 'vue';
+import draggable from 'vuedraggable';
 import { useFollowSpace } from '@/composables/useFollowSpace';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useApp } from '@/composables/useApp';
 import { useDomain } from '@/composables/useDomain';
 import { useUnseenProposals } from '@/composables/useUnseenProposals';
 import { useUserSkin } from '@/composables/useUserSkin';
-import draggable from 'vuedraggable';
 import { lsSet, lsGet } from '@/helpers/utils';
 
 const { spaces } = useApp();
