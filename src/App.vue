@@ -39,7 +39,11 @@ watch(modalOpen, val => {
 
 <template>
   <div
-    :class="space?.skin || userSkin"
+    :class="
+      space?.skin && userSkin === 'dark-mode'
+        ? `${space?.skin} ${space?.skin}-dark-mode`
+        : space?.skin || userSkin
+    "
     id="app"
     class="overflow-hidden pb-4 font-serif text-base"
   >
