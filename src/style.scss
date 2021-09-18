@@ -15,6 +15,16 @@
   --block-bg: transparent;
 }
 
+.dark-mode {
+  --primary-color: #384aff;
+  --bg-color: #111111;
+  --text-color: #ffffff;
+  --link-color: #ffffff;
+  --heading-color: #ffffff;
+  --border-color: #666666;
+  --header-bg: #111111;
+}
+
 @layer base {
   @font-face {
     font-family: 'Calibre';
