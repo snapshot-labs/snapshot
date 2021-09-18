@@ -351,7 +351,9 @@ const markdown = computed(() => {
 }
 .markdown-body pre {
   word-wrap: normal;
-  border: 1px solid var(--border-color);
+}
+.dark-mode .markdown-body pre {
+  color: var(--bg-color);
 }
 .markdown-body pre > code {
   padding: 0;
@@ -375,7 +377,8 @@ const markdown = computed(() => {
   overflow: auto;
   font-size: 85%;
   line-height: 1.45;
-  border-radius: 0.5rem;
+  background-color: #f6f8fa;
+  border-radius: 3px;
 }
 .markdown-body pre code,
 .markdown-body pre tt {
