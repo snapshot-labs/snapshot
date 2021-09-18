@@ -22,6 +22,17 @@ const modalLangOpen = ref(false);
 
 const web3Account = computed(() => web3.value.account);
 
+const hasUnseenProposalsBySpace = space => {
+  return proposalIds.value.some(p => {
+    return (
+      p.space.id === space && p.created > (lastSeenProposals.value[space] || 0)
+    );
+  });
+};
+
+const hasUnseenProposals = () =>
+  followingSpaces.value.some(fs => hasUnseenProposalsBySpace(fs));
+
 watch(web3Account, () => {
   loadFollows();
   updateLastSeenProposal(web3Account.value);
@@ -67,35 +78,21 @@ onMounted(() => {
           pt-2
         "
       >
-        <router-link :to="{ name: 'timeline' }">
-          <UiSidebarButton>
-            <Icon size="20" name="feed" />
-          </UiSidebarButton>
-        </router-link>
+        <div class="flex items-center">
+          <UiUnreadIndicator v-if="hasUnseenProposals()" />
+          <router-link :to="{ name: 'timeline' }">
+            <UiSidebarButton>
+              <Icon size="20" name="feed" />
+            </UiSidebarButton>
+          </router-link>
+        </div>
         <div
           class="w-full flex items-center justify-center relative group"
           v-for="space in followingSpaces"
           :key="space"
         >
-          <div
-            v-if="
-              lastSeenProposals[space]
-                ? proposalIds
-                    .filter(p => p.space.id === space)
-                    .map(p => p.created)[0] > lastSeenProposals[space]
-                : true
-            "
-            class="
-              w-[8px]
-              h-[8px]
-              !bg-skin-link
-              absolute
-              left-[-4px]
-              rounded-full
-              opacity-70
-              group-hover:opacity-100
-            "
-          />
+          <UiUnreadIndicator v-if="hasUnseenProposalsBySpace(space)" />
+
           <router-link :to="{ name: 'proposals', params: { key: space } }">
             <Token :space="spaces[space]" symbolIndex="space" size="44" />
           </router-link>
