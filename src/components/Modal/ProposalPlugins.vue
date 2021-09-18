@@ -1,7 +1,7 @@
 <script setup>
 import { ref, watch, toRefs } from 'vue';
 import { clone } from '@/helpers/utils';
-import pluginsObj from '@snapshot-labs/snapshot.js/src/plugins';
+import pluginsObj from '@/../snapshot-plugins/src/plugins';
 import pluginsConfig from '@/components/Plugin/config.json';
 
 const props = defineProps({
@@ -19,7 +19,7 @@ const selected = ref(false);
 const form = ref({});
 
 function getLogoUrl(plugin) {
-  return `https://raw.githubusercontent.com/snapshot-labs/snapshot.js/master/src/plugins/${plugin}/logo.png`;
+  return `https://raw.githubusercontent.com/snapshot-labs/snapshot-plugins/master/src/plugins/${plugin}/logo.png`;
 }
 
 function showButton(key) {

@@ -1,5 +1,5 @@
 <script>
-import plugins from '@snapshot-labs/snapshot.js/src/plugins';
+import plugins from '@/../snapshot-plugins/src/plugins';
 import { useNotifications } from '@/composables/useNotifications';
 
 const { notify } = useNotifications();
