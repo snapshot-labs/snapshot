@@ -43,7 +43,6 @@ const strategies = computed(
 const symbols = computed(() =>
   strategies.value.map(strategy => strategy.params.symbol)
 );
-
 const threeDotItems = computed(() => {
   const items = [{ text: t('duplicateProposal'), action: 'duplicate' }];
   if (isAdmin.value || isCreator.value)
@@ -64,9 +63,6 @@ function clickVote() {
 
 async function loadProposal() {
   const proposalObj = await getProposal(id);
-  if (proposalObj.proposal?.id==="QmdSq7Fj7s1QaLVgNnJ2V8WxAHCXDry1kqSSSYDD4wpHea"&&proposalObj.proposal?.strategies[0]?.params?.symbol === 'DAI') {
-    proposalObj.proposal.strategies[0].params.symbol='IOTX'
-  }
   proposal.value = proposalObj.proposal;
   loaded.value = true;
   const resultsObj = await getResults(
