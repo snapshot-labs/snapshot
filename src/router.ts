@@ -1,10 +1,5 @@
-import {
-  createRouter,
-  createWebHashHistory,
-  RouteLocationNormalized
-} from 'vue-router';
+import { createRouter, createWebHashHistory, RouteLocation } from 'vue-router';
 import domains from '@/../snapshot-spaces/spaces/domains.json';
-import aliases from '@/../snapshot-spaces/spaces/aliases.json';
 import Home from '@/views/Home.vue';
 import SpaceProposal from '@/views/SpaceProposal.vue';
 import SpaceCreate from '@/views/SpaceCreate.vue';
@@ -18,6 +13,7 @@ import Timeline from '@/views/Timeline.vue';
 import Space from '@/views/Space.vue';
 import SpaceAbout from '@/views/SpaceAbout.vue';
 import SpaceProposals from '@/views/SpaceProposals.vue';
+import aliases from '@/../snapshot-spaces/spaces/aliases.json';
 
 const domainName = window.location.hostname;
 
@@ -68,7 +64,32 @@ const homeRoutes = domains[domainName]
     ];
 
 const spaceRoutes = domains[domainName]
-  ? [] // no spaceRoutes when domain is configured.
+  ? [
+      /**
+      Its quite hard to match /abc/pqr/abc without using a full pathMatch from vue router. 
+      So I have used this, and also tried to handle the situations where the user has a link 
+      like this. /balancer/proposals/:proposalId it will redirect the user to /proposals/:proposalId
+      Similarly, /balancer.eth will also be redirected. 
+      However if the user manually tries to change the space to something else `abc.eth` then the user 
+      will be redirected to the homepage.
+    */
+      {
+        path: `/:pathMatch(.*)*`,
+        name: 'space',
+        redirect: (to: RouteLocation) => {
+          const updatedPath = to.fullPath
+            .replace(`/${aliases[domains[domainName]] || ''}`, '')
+            .replace(`/${domains[domainName] || ''}`, '');
+
+          // couldn't replace the space - means the user tried to modify the space
+          if (updatedPath === to.fullPath) {
+            return { path: '/' };
+          }
+
+          return { path: updatedPath };
+        }
+      }
+    ]
   : [
       {
         path: '/:key',
