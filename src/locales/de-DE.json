@@ -136,7 +136,7 @@
     "snapshotBlock": "Momentaufnahme Blocknummer",
     "validationWarning": {
       "basic": {
-        "member": "You need to be an Author in diesem Bereich sein um einen Vorschlag einzureichen.",
+        "member": "You need to be an author of the space in order to submit a proposal.",
         "minScore": "Sie müssen mindestens {0} {1} haben, um einen Vorschlag einzureichen."
       },
       "customValidation": "Sie müssen Zugang haben, um einen Vorschlag einzureichen."
@@ -273,6 +273,6 @@
     "button_claim": "Beanspruchen",
     "button_show": "Zeige mir meine Sammlung",
     "success_claim": "Dein POAP ist auf deiner Adresse",
-    "error_claim": "Bei der Vernichtung dieses Tokens ist ein Problem aufgetreten"
+    "error_claim": "There was a problem minting the token"
   }
 }
