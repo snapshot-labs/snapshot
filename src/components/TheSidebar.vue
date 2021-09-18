@@ -47,9 +47,9 @@ watch(followingSpaces, () => {
   );
   // Order side bar and add new spaces to the end of the sidebar
   draggableSpaces.value.sort((a, b) => {
-    if (!draggableSpaces.value.some(s => sidebarSpaceOrder.includes(a)))
+    if (!draggableSpaces.value.some(() => sidebarSpaceOrder.includes(a)))
       return 1;
-    if (!draggableSpaces.value.some(s => sidebarSpaceOrder.includes(b)))
+    if (!draggableSpaces.value.some(() => sidebarSpaceOrder.includes(b)))
       return -1;
     return sidebarSpaceOrder.indexOf(a) - sidebarSpaceOrder.indexOf(b);
   });
