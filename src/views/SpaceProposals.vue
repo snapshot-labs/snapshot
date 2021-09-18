@@ -5,8 +5,14 @@ import { useScrollMonitor } from '@/composables/useScrollMonitor';
 import { useApolloQuery } from '@/composables/useApolloQuery';
 import { PROPOSALS_QUERY } from '@/helpers/queries';
 import { useProfiles } from '@/composables/useProfiles';
+import { useUnseenProposals } from '@/composables/useUnseenProposals';
+import { lsSet } from '@/helpers/utils';
+import { useWeb3 } from '@/composables/useWeb3';
 
 const props = defineProps({ space: Object, spaceId: String });
+
+const { lastSeenProposals, updateLastSeenProposal } = useUnseenProposals();
+const { web3 } = useWeb3();
 
 const loading = ref(false);
 const proposals = ref([]);
@@ -15,6 +21,7 @@ const filterBy = ref('all');
 const spaceMembers = computed(() =>
   props.space.members.length < 1 ? ['none'] : props.space.members
 );
+const web3Account = computed(() => web3.value.account);
 
 const { loadBy, limit, loadingMore, stopLoadingMore, loadMore } =
   useInfiniteLoader();
@@ -61,6 +68,18 @@ const { profiles, addressArray } = useProfiles();
 
 watch(proposals, () => {
   addressArray.value = proposals.value.map(proposal => proposal.author);
+});
+
+watch([proposals, web3Account], () => {
+  if (web3Account.value) {
+    lsSet(
+      `lastSeenProposals.${web3Account.value.slice(0, 8).toLowerCase()}`,
+      Object.assign(lastSeenProposals.value, {
+        [props.spaceId]: proposals.value[0].created
+      })
+    );
+  }
+  updateLastSeenProposal(web3Account.value);
 });
 </script>
 

@@ -95,7 +95,7 @@ onMounted(() => {
         </div>
       </Block>
       <Block
-        :title="$t('settings.members')"
+        :title="$t('settings.authors')"
         v-if="space.members?.length"
         :slim="true"
         class="mb-3"

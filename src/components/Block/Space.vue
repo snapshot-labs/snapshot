@@ -28,7 +28,7 @@ const isAdmin = computed(() => {
       <div class="text-center border-b bg-skin-header-bg">
         <Token :space="space" symbolIndex="space" size="80" class="mt-3 mb-2" />
         <h3 class="mb-3 px-4">{{ space.name }}</h3>
-        <FollowButton :space="space" class="mb-4" />
+        <FollowButton :space="space" />
       </div>
       <div class="py-3">
         <router-link
