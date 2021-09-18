@@ -68,15 +68,7 @@ const homeRoutes = domains[domainName]
     ];
 
 const spaceRoutes = domains[domainName]
-  ? [
-      {
-        path: '/:key',
-        name: 'space',
-        redirect: {
-          path: `/`
-        }
-      }
-    ]
+  ? [] // no spaceRoutes when domain is configured.
   : [
       {
         path: '/:key',
@@ -107,7 +99,11 @@ const routes: any[] = [
     component: Strategy
   },
   ...spaceRoutes,
-  { path: '/*', name: 'error-404', beforeEnter: (to, from, next) => next('/') }
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'error-404',
+    redirect: '/'
+  }
 ];
 
 const router = createRouter({
