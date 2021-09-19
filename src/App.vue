@@ -4,6 +4,7 @@ import { useRoute } from 'vue-router';
 import { useModal } from '@/composables/useModal';
 import { useI18n } from '@/composables/useI18n';
 import { useDomain } from '@/composables/useDomain';
+import { useUserSkin } from '@/composables/useUserSkin';
 import { useApp } from '@/composables/useApp';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useNotifications } from '@/composables/useNotifications';
@@ -13,6 +14,7 @@ const { domain } = useDomain();
 const { loadLocale } = useI18n();
 const route = useRoute();
 const { modalOpen } = useModal();
+const { userSkin } = useUserSkin();
 const { init, explore, app } = useApp();
 const { web3 } = useWeb3();
 const { notify } = useNotifications();
@@ -38,7 +40,11 @@ watch(modalOpen, val => {
 
 <template>
   <div
-    :class="space?.skin"
+    :class="
+      space?.skin && userSkin === 'dark-mode'
+        ? `${space?.skin} ${space?.skin}-dark-mode`
+        : space?.skin || userSkin
+    "
     id="app"
     class="overflow-hidden pb-4 font-serif text-base"
   >
