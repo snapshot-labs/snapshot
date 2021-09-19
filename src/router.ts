@@ -77,31 +77,19 @@ const spaceRoutes = domains[domainName]
         path: `/:pathMatch(.*)*`,
         name: 'space',
         redirect: (to: RouteLocation) => {
-          const { firstItem, secondItem } = (() => {
-            if (
-              (domains[domainName] || '').length >
-              (aliases[domains[domainName]] || '').length
-            ) {
-              return {
-                firstItem: domains[domainName] || 'do-not-match',
-                secondItem: aliases[domains[domainName]] || 'do-not-match'
-              };
-            } else {
-              return {
-                firstItem: aliases[domains[domainName]] || 'do-not-match',
-                secondItem: domains[domainName] || 'do-not-match'
-              };
-            }
-          })();
+          const isSpaceRoute =
+            Object.keys(aliases).includes(to.params.pathMatch[0]) ||
+            Object.values(aliases).includes(to.params.pathMatch[0]) ||
+            domains[domainName] === to.params.pathMatch[0];
 
-          const updatedPath = to.fullPath
-            .replace(`/${firstItem}`, '')
-            .replace(`/${secondItem}`, '');
-
-          // couldn't replace the space - means the user tried to modify the space
-          if (updatedPath === to.fullPath) {
+          if (!isSpaceRoute) {
             return { path: '/' };
           }
+
+          const updatedPath = to.fullPath.replace(
+            `/${to.params.pathMatch[0]}`,
+            ''
+          );
 
           return { path: updatedPath };
         }
