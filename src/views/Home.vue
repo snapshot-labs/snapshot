@@ -54,16 +54,15 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
       </Container>
     </div>
     <Container :slim="true">
-      <div class="flex flex-wrap gap-4">
+      <div class="grid lg:grid-cols-4 md:grid-cols-3 gap-4">
         <a
-          class="flex md:flex-1 lg:flex-1 min-w-[200px] w-full"
           @click="
             $router.push({ name: 'proposals', params: { key: space.id } })
           "
           v-for="space in orderedSpaces.slice(0, limit)"
           :key="space.id"
         >
-          <div class="w-full">
+          <div>
             <!-- Added mb-0 to remove mb-4 added by block component -->
             <Block
               class="text-center extra-icon-container mb-0"
@@ -89,17 +88,12 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
               <div class="mb-[12px] text-color">
                 {{ $tc('members', space.followers) }}
               </div>
-              <FollowButton :space="space" class="!bg-white" />
+              <FollowButton :space="space" />
             </Block>
           </div>
         </a>
-
-        <NoResults
-          :block="true"
-          v-if="Object.keys(orderedSpaces).length < 1"
-          class="md:pr-6"
-        />
       </div>
+      <NoResults :block="true" v-if="Object.keys(orderedSpaces).length < 1" />
     </Container>
     <div ref="endElement" />
   </div>
