@@ -154,9 +154,12 @@ watch(networkKey, (val, prev) => {
   if (val !== prev) load();
 });
 
+watchEffect(() => {
+  if (space.value) getDelegatesWithScore();
+});
+
 onMounted(async () => {
   await load();
-  await getDelegatesWithScore();
   loaded.value = true;
 });
 </script>
