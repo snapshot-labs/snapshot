@@ -7,7 +7,10 @@ import { useNotifications } from '@/composables/useNotifications';
 import { isAddress } from '@ethersproject/address';
 import { formatBytes32String } from '@ethersproject/strings';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
-import { sendTransaction } from '@snapshot-labs/snapshot.js/src/utils';
+import {
+  sendTransaction,
+  getScores
+} from '@snapshot-labs/snapshot.js/src/utils';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import {
   getDelegates,
@@ -18,6 +21,7 @@ import { sleep } from '@/helpers/utils';
 import { useApp } from '@/composables/useApp';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useTxStatus } from '@/composables/useTxStatus';
+import { getBlockNumber } from '@snapshot-labs/snapshot.js/src/utils/web3';
 
 const abi = ['function setDelegate(bytes32 id, address delegate)'];
 
@@ -35,14 +39,20 @@ const currentDelegate = ref('');
 const loaded = ref(false);
 const loading = ref(false);
 const delegates = ref([]);
+const delegatesWithScore = ref([]);
 const delegators = ref([]);
 const form = ref({
   address: route.params.to || '',
   id: route.params.key || ''
 });
 
+const { profiles, addressArray } = useProfiles();
+
 const web3Account = computed(() => web3.value.account);
 const networkKey = computed(() => web3.value.network.key);
+const space = computed(
+  () => spaces.value[form.value.id] || spaces.value[route.params.key]
+);
 
 const isValid = computed(() => {
   const address = form.value.address;
@@ -100,7 +110,35 @@ function clearDelegate(id, delegate) {
   modalOpen.value = true;
 }
 
-const { profiles, addressArray } = useProfiles();
+async function getDelegatesWithScore() {
+  const provider = getProvider(space.value.network);
+  const delegatesAddresses = delegates.value.map(d => d.delegate);
+  const snapshot = await getBlockNumber(provider);
+  const scores = await getScores(
+    space.value.id,
+    space.value.strategies,
+    space.value.network,
+    provider,
+    delegatesAddresses,
+    snapshot
+  );
+
+  delegates.value.forEach(delegate => {
+    scores.forEach(score => {
+      Object.entries(score).forEach(([address, score]) => {
+        if (address === delegate.delegate) {
+          delegate.score = score;
+        }
+      });
+    });
+  });
+
+  const sortedDelegates = delegates.value
+    .filter(delegate => delegate.score > 0)
+    .sort((a, b) => b.score - a.score);
+
+  delegatesWithScore.value = sortedDelegates;
+}
 
 watchEffect(() => {
   addressArray.value = delegates.value
@@ -118,6 +156,7 @@ watch(networkKey, (val, prev) => {
 
 onMounted(async () => {
   await load();
+  await getDelegatesWithScore();
   loaded.value = true;
 });
 </script>
@@ -196,6 +235,28 @@ onMounted(async () => {
               v-text="_shorten(delegator.space || '-', 'choice')"
               class="flex-auto text-right link-color"
             />
+          </div>
+        </Block>
+        <Block
+          v-if="delegatesWithScore.length > 0"
+          :title="$t('Top delegates')"
+          :slim="true"
+        >
+          <div
+            v-for="(delegate, i) in delegates"
+            :key="i"
+            :style="i === 0 && 'border: 0 !important;'"
+            class="px-4 py-3 border-t flex"
+          >
+            <User
+              :profile="profiles[delegate.delegate]"
+              :address="delegate.delegate"
+              :space="{ network: web3.network.key }"
+              class="column"
+            />
+            <div class="flex-auto column text-right link-color">
+              {{ delegate.score }} {{ space.symbol }}
+            </div>
           </div>
         </Block>
       </template>
