@@ -1,6 +1,7 @@
 <script setup>
 import { ref, computed } from 'vue';
 import { useSearchFilters } from '@/composables/useSearchFilters';
+import { useUserSkin } from '@/composables/useUserSkin';
 
 defineProps({
   open: {
@@ -19,6 +20,8 @@ function select(key) {
   emit('update:modelValue', key);
   emit('close');
 }
+
+const { userSkin } = useUserSkin();
 </script>
 
 <template>
@@ -32,6 +35,15 @@ function select(key) {
       :modal="true"
     />
     <div class="mt-4 mx-0 md:mx-4">
+      <a v-if="!searchInput" key="" @click="select(undefined)">
+        <div :class="userSkin" class="bg-black rounded-none md:rounded-md">
+          <Block>
+            <UiButton class="button--submit mb-2">{{
+              $t('defaultSkin')
+            }}</UiButton>
+          </Block>
+        </div>
+      </a>
       <a v-for="skin in skins" :key="skin.key" @click="select(skin.key)">
         <BlockSkin :skin="skin" />
       </a>

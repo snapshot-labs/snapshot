@@ -4,7 +4,8 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
+:root,
+.light-mode {
   --primary-color: #384aff;
   --bg-color: white;
   --text-color: #586069;
