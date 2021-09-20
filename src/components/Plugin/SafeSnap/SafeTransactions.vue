@@ -90,6 +90,7 @@ export default {
       return `${baseUrl}/app/#/safes/${this.gnosisSafeAddress}`;
     },
     networkName() {
+      if (this.network === '1') return 'Mainnet';
       const { shortName, name } = networks[this.network] || {};
       return shortName || name || `#${this.network}`;
     }
@@ -118,31 +119,28 @@ export default {
 
 <template>
   <div
-    class="border-t border-b md:border rounded-none md:rounded-md mb-4 block-bg"
+    class="border-t border-b md:border rounded-none md:rounded-md mb-4 block-bg-alternate"
   >
     <h4
-      class="px-4 pt-3 border-b block header-bg rounded-t-none md:rounded-t-md"
+      class="px-4 pt-3 border-b block header-bg-alternate rounded-t-none md:rounded-t-md"
       style="padding-bottom: 12px"
     >
-      Transactions
-      {{
-        gnosisSafeAddress && `(${_shorten(gnosisSafeAddress)} on ${networkName})`
-      }}
+      {{ networkName }} Safe
       <a
         v-if="gnosisSafeAddress"
         :href="safeLink"
         class="text-color"
-        style="padding-top: 2px"
+        style="font-weight: normal;"
         target="_blank"
       >
+        {{ _shorten(gnosisSafeAddress) }}
         <i
           class="iconfont iconexternal-link"
-          style="font-size: 18px; line-height: 18px; vertical-align: middle"
         />
       </a>
     </h4>
-    <div class="p-4 text-center">
-      <div v-for="(batch, index) in input" v-bind:key="index" class="mb-4">
+    <div class="text-center">
+      <div v-for="(batch, index) in input" v-bind:key="index" class="mx-3 my-4">
         <PluginSafeSnapFormTransactionBatch
           :config="transactionConfig"
           :index="index"
@@ -153,9 +151,11 @@ export default {
         />
       </div>
 
+    <div class="border-t py-3">
       <UiButton v-if="!preview" @click="addTransactionBatch">
         Add transaction batch
       </UiButton>
+      </div>
 
       <PluginSafeSnapHandleOutcome
         v-if="preview"

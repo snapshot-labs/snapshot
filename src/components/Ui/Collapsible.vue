@@ -12,8 +12,8 @@ defineEmits(['remove', 'toggle']);
 
 <template>
   <div class="w-full collapsible-container" v-bind:class="{ alternateBg }">
-    <div class="collapsible-header flex">
-      <span class="mr-4 header-number">{{ number }}</span>
+    <div class="px-2 collapsible-header flex">
+      <div class="mr-4 header-number">{{ number }}</div>
       <span
         class="
           flex-auto
@@ -29,13 +29,13 @@ defineEmits(['remove', 'toggle']);
       <span
         v-if="!hideRemove"
         @click="$emit('remove')"
-        class="ml-1 cursor-pointer -mr-3 px-3"
+        class="ml-1 cursor-pointer -mr-2 px-3"
       >
         <Icon name="close" size="12" />
       </span>
     </div>
 
-    <div :class="{ hide: !open }" class="py-2">
+    <div :class="{ hide: !open }" class="p-2">
       <slot />
     </div>
   </div>
@@ -47,18 +47,28 @@ defineEmits(['remove', 'toggle']);
   border: 1px solid var(--border-color);
   color: var(--link-color);
   border-radius: 23px;
-  padding: 0 24px;
   outline: none;
 }
 .collapsible-container.alternateBg {
   background-color: var(--block-bg-alternate);
 }
 .collapsible-header {
+  cursor: pointer;
   line-height: 46px;
   height: 46px;
   font-size: 18px;
 }
 .hide {
   display: none;
+}
+.header-number {
+  border: 1px solid var(--border-color);
+  padding: 2px;
+  line-height: 32px;
+  width: 32px;
+  height: 32px;
+  border-radius: 16px;
+  margin-top: 8px;
+  background-color: white;
 }
 </style>

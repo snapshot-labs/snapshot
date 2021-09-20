@@ -12,7 +12,7 @@ defineProps({
 <template>
   <button
     :type="type || 'button'"
-    class="button px-[24px]"
+    class="button px-3"
     :disabled="disable ? loading : false"
   >
     <UiLoading v-if="loading" />

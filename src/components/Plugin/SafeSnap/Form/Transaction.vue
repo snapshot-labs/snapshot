@@ -38,6 +38,10 @@ export default {
   },
   computed: {
     title() {
+      if(this.open) {
+        return ''
+      }
+
       if (this.modelValue) {
         try {
           const recipientAddr = this._shorten(this.modelValue.recipient);
