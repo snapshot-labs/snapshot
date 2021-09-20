@@ -57,7 +57,7 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
       <div class="grid lg:grid-cols-4 md:grid-cols-3 gap-4">
         <a
           @click="
-            $router.push({ name: 'proposals', params: { key: space.id } })
+            $router.push({ name: 'spaceProposals', params: { key: space.id } })
           "
           v-for="space in orderedSpaces.slice(0, limit)"
           :key="space.id"
