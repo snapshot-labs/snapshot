@@ -250,6 +250,12 @@ function deleteItemReply(key) {
           :profile="profiles[item.author]"
           :space="space"
           class="inline-block"
+        /><span
+          v-text="$d(item.timestamp, 'short', 'en-US')"
+          v-tippy="{
+            content: _ms(item.timestamp / 1e3)
+          }"
+          class="ml-1"
         />
 
         <UiDropdown
@@ -266,21 +272,6 @@ function deleteItemReply(key) {
         </UiDropdown>
       </div>
       <div class="mt-2">{{ item.markdown }}</div>
-
-      <div class="mt-1">
-        <span
-          :aria-label="_ms(item.timestamp / 1e3)"
-          v-text="$d(item.timestamp, 'short', 'en-US')"
-          class="link-color tooltipped tooltipped-n"
-        />
-        <span
-          v-if="item.edit_timestamp"
-          :aria-label="$d(item.edit_timestamp, 'short', 'en-US')"
-          class="tooltipped tooltipped-n"
-        >
-          (edited)</span
-        >
-      </div>
     </Block>
 
     <UiButton
