@@ -285,7 +285,7 @@ function deleteItemReply(key) {
 
     <UiButton
       @click="toggleComment = !toggleComment"
-      class="p-1 rounded-0 ml-2 mt-2"
+      class="p-1 rounded-0 mt-2"
       style="line-height: 0px; height: auto"
     >
       <Icon :name="'receipt-outlined'" class="v-align-middle" size="15" />
