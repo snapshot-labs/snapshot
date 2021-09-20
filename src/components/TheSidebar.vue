@@ -113,6 +113,7 @@ onMounted(() => {
           </router-link>
         </div>
         <draggable
+          v-if="draggableSpaces.length > 0"
           v-model="draggableSpaces"
           :component-data="{ name: 'list' }"
           item-key="id"
@@ -140,11 +141,11 @@ onMounted(() => {
           class="
             flex flex-col
             items-center
-            space-y-[14px]
+            space-y-2
             justify-center
             !mb-0
             !mt-auto
-            py-[14px]
+            py-2
           "
         >
           <UiSidebarButton @click="toggleSkin">
