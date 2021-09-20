@@ -352,6 +352,9 @@ const markdown = computed(() => {
 .markdown-body pre {
   word-wrap: normal;
 }
+.dark-mode .markdown-body pre {
+  color: var(--bg-color);
+}
 .markdown-body pre > code {
   padding: 0;
   margin: 0;

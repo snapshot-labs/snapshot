@@ -4,7 +4,8 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
+:root,
+.light-mode {
   --primary-color: #384aff;
   --bg-color: white;
   --text-color: #586069;
@@ -13,6 +14,16 @@
   --border-color: #d1d5da;
   --header-bg: white;
   --block-bg: transparent;
+}
+
+.dark-mode, .eth-dark-mode {
+  --primary-color: #384aff;
+  --bg-color: #111111;
+  --text-color: #929292;
+  --link-color: #ffffff;
+  --heading-color: #ffffff;
+  --border-color: #525252;
+  --header-bg: #111111;
 }
 
 @layer base {

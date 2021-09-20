@@ -1,10 +1,13 @@
 <script setup>
 import { computed, watch, onMounted, ref, watchEffect } from 'vue';
+import draggable from 'vuedraggable';
 import { useFollowSpace } from '@/composables/useFollowSpace';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useApp } from '@/composables/useApp';
 import { useDomain } from '@/composables/useDomain';
 import { useUnseenProposals } from '@/composables/useUnseenProposals';
+import { useUserSkin } from '@/composables/useUserSkin';
+import { lsSet, lsGet } from '@/helpers/utils';
 
 const { spaces } = useApp();
 const { web3 } = useWeb3();
@@ -19,12 +22,52 @@ const {
 
 const modalAboutOpen = ref(false);
 const modalLangOpen = ref(false);
+const draggableSpaces = ref([]);
+
+const { toggleSkin, getSkinIcon } = useUserSkin();
 
 const web3Account = computed(() => web3.value.account);
+
+function saveSpaceOrder() {
+  if (web3Account.value)
+    lsSet(
+      `sidebarSpaceOrder.${web3Account.value.slice(0, 8).toLowerCase()}`,
+      draggableSpaces.value
+    );
+}
+const hasUnseenProposalsBySpace = space => {
+  return proposalIds.value.some(p => {
+    return (
+      p.space.id === space && p.created > (lastSeenProposals.value[space] || 0)
+    );
+  });
+};
+
+const hasUnseenProposals = () =>
+  followingSpaces.value.some(fs => hasUnseenProposalsBySpace(fs));
 
 watch(web3Account, () => {
   loadFollows();
   updateLastSeenProposal(web3Account.value);
+});
+
+watch(followingSpaces, () => {
+  draggableSpaces.value = followingSpaces.value;
+
+  const sidebarSpaceOrder = lsGet(
+    `sidebarSpaceOrder.${web3Account.value.slice(0, 8).toLowerCase()}`,
+    []
+  );
+  // Order side bar and add new spaces to the end of the sidebar
+  draggableSpaces.value.sort((a, b) => {
+    if (!draggableSpaces.value.some(() => sidebarSpaceOrder.includes(a)))
+      return 1;
+    if (!draggableSpaces.value.some(() => sidebarSpaceOrder.includes(b)))
+      return -1;
+    return sidebarSpaceOrder.indexOf(a) - sidebarSpaceOrder.indexOf(b);
+  });
+
+  saveSpaceOrder();
 });
 
 watchEffect(() => getProposalIds(followingSpaces.value));
@@ -59,51 +102,55 @@ onMounted(() => {
         </router-link>
       </div>
       <div
-        class="
-          flex flex-col
-          h-[calc(100%-78px)]
-          items-center
-          space-y-[14px]
-          pt-2
-        "
+        class="flex flex-col h-[calc(100%-78px)] items-center space-y-2 pt-2"
       >
-        <router-link :to="{ name: 'timeline' }">
-          <UiSidebarButton>
-            <Icon size="20" name="feed" />
-          </UiSidebarButton>
-        </router-link>
-        <div
-          class="w-full flex items-center justify-center relative group"
-          v-for="space in followingSpaces"
-          :key="space"
-        >
-          <div
-            v-if="
-              lastSeenProposals[space]
-                ? proposalIds
-                    .filter(p => p.space.id === space)
-                    .map(p => p.created)[0] > lastSeenProposals[space]
-                : true
-            "
-            class="
-              w-[8px]
-              h-[8px]
-              !bg-skin-link
-              absolute
-              left-[-4px]
-              rounded-full
-              opacity-70
-              group-hover:opacity-100
-            "
-          />
-          <router-link :to="{ name: 'proposals', params: { key: space } }">
-            <Token :space="spaces[space]" symbolIndex="space" size="44" />
+        <div class="flex items-center">
+          <UiUnreadIndicator v-if="hasUnseenProposals()" />
+          <router-link :to="{ name: 'timeline' }">
+            <UiSidebarButton>
+              <Icon size="20" name="feed" />
+            </UiSidebarButton>
           </router-link>
         </div>
+        <draggable
+          v-if="draggableSpaces.length > 0"
+          v-model="draggableSpaces"
+          :component-data="{ name: 'list' }"
+          item-key="id"
+          @update="saveSpaceOrder"
+          class="w-full space-y-2"
+        >
+          <template #item="{ element }">
+            <div class="w-full flex items-center justify-center relative group">
+              <UiUnreadIndicator
+                class="group-hover:opacity-100 group-active:hidden"
+                v-if="hasUnseenProposalsBySpace(element)"
+              />
+              <router-link
+                :to="{ name: 'proposals', params: { key: element } }"
+              >
+                <Token :space="spaces[element]" symbolIndex="space" size="44" />
+              </router-link>
+            </div>
+          </template>
+        </draggable>
         <router-link :to="{ name: 'setup' }">
           <UiSidebarButton><Icon size="20" name="plus" /></UiSidebarButton>
         </router-link>
-        <div class="flex items-center justify-center !mb-0 !mt-auto py-[14px]">
+        <div
+          class="
+            flex flex-col
+            items-center
+            space-y-2
+            justify-center
+            !mb-0
+            !mt-auto
+            py-2
+          "
+        >
+          <UiSidebarButton @click="toggleSkin">
+            <Icon size="20" class="link-color" :name="getSkinIcon()" />
+          </UiSidebarButton>
           <UiSidebarButton @click="modalAboutOpen = true">
             <span class="mt-1 link-color">?</span>
           </UiSidebarButton>
