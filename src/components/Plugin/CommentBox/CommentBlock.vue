@@ -265,8 +265,8 @@ function deleteItemReply(key) {
           </div>
         </UiDropdown>
       </div>
+      <div class="mt-2">{{ item.markdown }}</div>
 
-      <PluginCommentBoxMarkdown :body="item.markdown" />
       <div class="mt-1">
         <span
           :aria-label="_ms(item.timestamp / 1e3)"

@@ -160,7 +160,7 @@ function deleteItem(key) {
       slim="true"
       class="p-4 h6 text-color mt-2 mb-0"
     >
-      <PluginCommentBoxMarkdown :body="comment" />
+      <div>{{ comment }}</div>
     </Block>
 
     <UiButton
