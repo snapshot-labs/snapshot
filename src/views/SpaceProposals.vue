@@ -1,34 +1,27 @@
 <script setup>
-import { onMounted, ref, computed, watch } from 'vue';
-import { useRoute } from 'vue-router';
+import { computed, onMounted, ref, watch } from 'vue';
 import { useInfiniteLoader } from '@/composables/useInfiniteLoader';
-import { lsSet } from '@/helpers/utils';
-import { useUnseenProposals } from '@/composables/useUnseenProposals';
 import { useScrollMonitor } from '@/composables/useScrollMonitor';
 import { useApolloQuery } from '@/composables/useApolloQuery';
 import { PROPOSALS_QUERY } from '@/helpers/queries';
 import { useProfiles } from '@/composables/useProfiles';
-import { useFollowSpace } from '@/composables/useFollowSpace';
+import { useUnseenProposals } from '@/composables/useUnseenProposals';
+import { lsSet } from '@/helpers/utils';
 import { useWeb3 } from '@/composables/useWeb3';
-import zipObject from 'lodash/zipObject';
-const filterBy = ref('all');
-const loading = ref(false);
-const proposals = ref([]);
 
-const route = useRoute();
-const { followingSpaces, loadingFollows } = useFollowSpace();
+const props = defineProps({ space: Object, spaceId: String });
+
+const { lastSeenProposals, updateLastSeenProposal } = useUnseenProposals();
 const { web3 } = useWeb3();
 
-const following = computed(() => {
-  return route.name === 'timeline' ? followingSpaces.value : [];
-});
+const loading = ref(false);
+const proposals = ref([]);
+const filterBy = ref('all');
 
-const isTimeline = computed(() => route.name === 'timeline');
-
-watch(following, () => {
-  proposals.value = [];
-  load();
-});
+const spaceMembers = computed(() =>
+  props.space.members.length < 1 ? ['none'] : props.space.members
+);
+const web3Account = computed(() => web3.value.account);
 
 const { loadBy, limit, loadingMore, stopLoadingMore, loadMore } =
   useInfiniteLoader();
@@ -45,8 +38,9 @@ async function loadProposals(skip = 0) {
       variables: {
         first: loadBy,
         skip,
-        space_in: following.value,
-        state: filterBy.value
+        space: props.spaceId,
+        state: filterBy.value === 'core' ? 'all' : filterBy.value,
+        author_in: filterBy.value === 'core' ? spaceMembers.value : []
       }
     },
     'proposals'
@@ -55,13 +49,6 @@ async function loadProposals(skip = 0) {
   proposals.value = proposals.value.concat(proposalsObj);
 }
 
-const { profiles, addressArray } = useProfiles();
-
-watch(proposals, () => {
-  addressArray.value = proposals.value.map(proposal => proposal.author);
-});
-
-// Initialize
 onMounted(load());
 
 async function load() {
@@ -70,7 +57,6 @@ async function load() {
   loading.value = false;
 }
 
-// Change filter
 function selectState(e) {
   filterBy.value = e;
   proposals.value = [];
@@ -78,19 +64,19 @@ function selectState(e) {
   load();
 }
 
-const { updateLastSeenProposal } = useUnseenProposals();
+const { profiles, addressArray } = useProfiles();
 
-const web3Account = computed(() => web3.value.account);
+watch(proposals, () => {
+  addressArray.value = proposals.value.map(proposal => proposal.author);
+});
 
-// Save the lastSeenProposal times for all spaces
 watch([proposals, web3Account], () => {
   if (web3Account.value) {
     lsSet(
       `lastSeenProposals.${web3Account.value.slice(0, 8).toLowerCase()}`,
-      zipObject(
-        followingSpaces.value,
-        Array(followingSpaces.value.length).fill(new Date().getTime())
-      )
+      Object.assign(lastSeenProposals.value, {
+        [props.spaceId]: proposals.value[0].created
+      })
     );
   }
   updateLastSeenProposal(web3Account.value);
@@ -100,32 +86,14 @@ watch([proposals, web3Account], () => {
 <template>
   <Layout>
     <template #sidebar-left>
-      <div style="position: fixed; width: 240px">
-        <Block :slim="true" :title="$t('filters')" class="overflow-hidden">
-          <div class="py-3">
-            <router-link
-              :to="{ name: 'timeline' }"
-              v-text="$t('joinedSpaces')"
-              class="block px-4 py-2 sidenav-item"
-            />
-            <router-link
-              :to="{ name: 'explore' }"
-              v-text="$t('allSpaces')"
-              class="block px-4 py-2 sidenav-item"
-            />
-          </div>
-        </Block>
-      </div>
+      <BlockSpace :space="space" />
     </template>
     <template #content-right>
       <div class="px-4 md:px-0 mb-3 flex">
         <div class="flex-auto">
-          <router-link :to="{ path: '/' }" class="text-color">
-            <Icon name="back" size="22" class="!align-middle" />
-            {{ $t('backToHome') }}
-          </router-link>
+          <div v-text="space.name" />
           <div class="flex items-center flex-auto">
-            <h2>{{ $t('timeline') }}</h2>
+            <h2>{{ $t('proposals.header') }}</h2>
           </div>
         </div>
         <UiDropdown
@@ -136,7 +104,8 @@ watch([proposals, web3Account], () => {
             { text: $t('proposals.states.all'), action: 'all' },
             { text: $t('proposals.states.active'), action: 'active' },
             { text: $t('proposals.states.pending'), action: 'pending' },
-            { text: $t('proposals.states.closed'), action: 'closed' }
+            { text: $t('proposals.states.closed'), action: 'closed' },
+            { text: $t('proposals.states.core'), action: 'core' }
           ]"
         >
           <UiButton class="pr-3">
@@ -146,31 +115,11 @@ watch([proposals, web3Account], () => {
         </UiDropdown>
       </div>
 
-      <Block
-        v-if="
-          loading ||
-          (web3.authLoading && isTimeline) ||
-          (loadingFollows && isTimeline)
-        "
-        :slim="true"
-      >
+      <Block v-if="loading" :slim="true">
         <RowLoading class="my-2" />
       </Block>
 
-      <Block
-        v-else-if="
-          (isTimeline && following.length < 1) || (isTimeline && !web3.account)
-        "
-        class="text-center"
-      >
-        <div class="mb-3">{{ $t('noSpacesJoined') }}</div>
-        <router-link :to="{ path: '/' }">
-          <UiButton>{{ $t('joinSpaces') }}</UiButton>
-        </router-link>
-      </Block>
-
-      <NoResults v-else-if="proposals.length < 1" :block="true" />
-
+      <NoResults :block="true" v-else-if="proposals.length < 1" />
       <div v-else>
         <Block :slim="true" v-for="(proposal, i) in proposals" :key="i">
           <TimelineProposal :proposal="proposal" :profiles="profiles" />

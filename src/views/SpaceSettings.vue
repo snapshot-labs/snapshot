@@ -1,6 +1,5 @@
 <script setup>
 import { computed, onMounted, ref } from 'vue';
-import { useRoute } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { useSearchFilters } from '@/composables/useSearchFilters';
 import { getAddress } from '@ethersproject/address';
@@ -15,17 +14,21 @@ import { useApp } from '@/composables/useApp';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useClient } from '@/composables/useClient';
 
+const props = defineProps({
+  spaceId: String,
+  space: Object,
+  from: String,
+  spaceFrom: Object
+});
+
 const basicValidation = { name: 'basic', params: {} };
 
-const route = useRoute();
 const { t } = useI18n();
 const { copyToClipboard } = useCopy();
-const { spaces, getSpaces } = useApp();
+const { getSpaces } = useApp();
 const { web3 } = useWeb3();
 const { send } = useClient();
 
-const key = ref(route.params.key);
-const from = ref(route.params.from);
 const currentSettings = ref({});
 const currentTextRecord = ref('');
 const currentStrategy = ref({});
@@ -59,7 +62,7 @@ const isValid = computed(() => {
 });
 
 const textRecord = computed(() => {
-  const keyURI = encodeURIComponent(key.value);
+  const keyURI = encodeURIComponent(props.spaceId);
   const address = web3Account.value
     ? getAddress(web3Account.value)
     : '<your-address>';
@@ -71,10 +74,8 @@ const isOwner = computed(() => {
 });
 
 const isAdmin = computed(() => {
-  if (!spaces.value[key.value] || !currentTextRecord.value) return false;
-  const admins = (spaces.value[key.value].admins || []).map(admin =>
-    admin.toLowerCase()
-  );
+  if (!props.space || !currentTextRecord.value) return false;
+  const admins = (props.space.admins || []).map(admin => admin.toLowerCase());
   return admins.includes(web3Account.value?.toLowerCase());
 });
 
@@ -93,7 +94,7 @@ async function handleSubmit() {
     if (form.value.filters.invalids) delete form.value.filters.invalids;
     loading.value = true;
     try {
-      await send(key.value, 'settings', form.value);
+      await send(props.spaceId, 'settings', form.value);
     } catch (e) {
       console.log(e);
     }
@@ -123,7 +124,7 @@ function inputError(field) {
 }
 
 function handleReset() {
-  if (from.value) return (form.value = clone(spaces.value[from.value]));
+  if (props.from) return (form.value = clone(props.spaceFrom));
   if (currentSettings.value) return (form.value = currentSettings.value);
   form.value = {
     strategies: [],
@@ -191,10 +192,10 @@ function setAvatarUrl(url) {
 
 onMounted(async () => {
   try {
-    const uri = await getSpaceUri(key.value);
+    const uri = await getSpaceUri(props.spaceId);
     console.log('URI', uri);
     currentTextRecord.value = uri;
-    const space = clone(spaces.value?.[key.value]);
+    const space = clone(props.space);
     if (!space) return;
     delete space.id;
     delete space._activeProposals;
@@ -207,8 +208,8 @@ onMounted(async () => {
   } catch (e) {
     console.log(e);
   }
-  if (from.value) {
-    const fromClone = clone(spaces.value[from.value]);
+  if (props.from) {
+    const fromClone = clone(props.spaceFrom);
     fromClone.validation = fromClone.validation || basicValidation;
     delete fromClone.id;
     delete fromClone._activeProposals;
@@ -222,9 +223,9 @@ onMounted(async () => {
   <Layout v-bind="$attrs">
     <template #content-left>
       <div class="px-4 md:px-0 mb-3">
-        <router-link :to="{ name: 'home' }" class="text-color">
+        <router-link :to="{ name: 'spaceProposals' }" class="text-color">
           <Icon name="back" size="22" class="!align-middle" />
-          {{ $t('backToHome') }}
+          {{ space.name }}
         </router-link>
       </div>
       <div class="px-4 md:px-0">
@@ -249,7 +250,7 @@ onMounted(async () => {
             />
           </UiButton>
           <a
-            :href="`https://app.ens.domains/name/${key}`"
+            :href="`https://app.ens.domains/name/${spaceId}`"
             target="_blank"
             class="mb-2 block"
           >

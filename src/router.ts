@@ -1,37 +1,112 @@
-import { createRouter, createWebHashHistory } from 'vue-router';
+import { createRouter, createWebHashHistory, RouteLocation } from 'vue-router';
 import domains from '@/../snapshot-spaces/spaces/domains.json';
-import aliases from '@/../snapshot-spaces/spaces/aliases.json';
 import Home from '@/views/Home.vue';
-import Proposal from '@/views/Proposal.vue';
-import Create from '@/views/Create.vue';
+import SpaceProposal from '@/views/SpaceProposal.vue';
+import SpaceCreate from '@/views/SpaceCreate.vue';
 import Setup from '@/views/Setup.vue';
-import Settings from '@/views/Settings.vue';
+import SpaceSettings from '@/views/SpaceSettings.vue';
 import Explore from '@/views/Explore.vue';
 import Strategy from '@/views/Strategy.vue';
 import Playground from '@/views/Playground.vue';
 import Delegate from '@/views/Delegate.vue';
 import Timeline from '@/views/Timeline.vue';
 import Space from '@/views/Space.vue';
-import About from '@/views/About.vue';
+import SpaceAbout from '@/views/SpaceAbout.vue';
+import SpaceProposals from '@/views/SpaceProposals.vue';
+import aliases from '@/../snapshot-spaces/spaces/aliases.json';
 
 const domainName = window.location.hostname;
 
-const beforeEnter = (to: any, from, next) => {
-  if (aliases?.[to?.params?.key]) {
-    to.params.key = aliases[to.params.key];
-    return next(to);
+const spaceChildrenRoutes = [
+  {
+    path: '',
+    name: 'spaceProposals',
+    component: SpaceProposals
+  },
+  {
+    path: 'proposal/:id',
+    name: 'spaceProposal',
+    component: SpaceProposal
+  },
+  {
+    path: 'create/:from?',
+    name: 'spaceCreate',
+    component: SpaceCreate
+  },
+
+  {
+    path: 'about',
+    name: 'spaceAbout',
+    component: SpaceAbout
+  },
+  {
+    path: 'settings/:from?',
+    name: 'spaceSettings',
+    component: SpaceSettings
   }
-  next();
-};
+];
+
+const homeRoutes = domains[domainName]
+  ? [
+      {
+        path: '/',
+        name: 'home',
+        component: Space,
+        children: spaceChildrenRoutes
+      }
+    ]
+  : [
+      {
+        path: '/',
+        name: 'home',
+        component: Home
+      }
+    ];
+
+const spaceRoutes = domains[domainName]
+  ? [
+      /**
+      Its quite hard to match /abc/pqr/abc without using a full pathMatch from vue router. 
+      So I have used this, and also tried to handle the situations where the user has a link 
+      like this. /balancer/proposals/:proposalId it will redirect the user to /proposals/:proposalId
+      Similarly, /balancer.eth will also be redirected. 
+      However if the user manually tries to change the space to something else `abc.eth` then the user 
+      will be redirected to the homepage.
+    */
+      {
+        path: `/:pathMatch(.*)*`,
+        name: 'space',
+        redirect: (to: RouteLocation) => {
+          const isSpaceRoute =
+            Object.keys(aliases).includes(to.params.pathMatch[0]) ||
+            Object.values(aliases).includes(to.params.pathMatch[0]) ||
+            domains[domainName] === to.params.pathMatch[0];
+
+          if (!isSpaceRoute) {
+            return { path: '/' };
+          }
+
+          const updatedPath = to.fullPath.replace(
+            `/${to.params.pathMatch[0]}`,
+            ''
+          );
+
+          return { path: updatedPath };
+        }
+      }
+    ]
+  : [
+      {
+        path: '/:key',
+        name: 'space',
+        component: Space,
+        children: spaceChildrenRoutes
+      }
+    ];
 
 const routes: any[] = [
-  {
-    path: '/',
-    name: 'home',
-    component: domains[domainName] ? Space : Home
-  },
+  ...homeRoutes,
   { path: '/setup', name: 'setup', component: Setup },
-  { path: '/:key/settings/:from?', name: 'settings', component: Settings },
   { path: '/networks', name: 'networks', component: Explore },
   { path: '/strategies', name: 'strategies', component: Explore },
   { path: '/plugins', name: 'plugins', component: Explore },
@@ -40,40 +115,21 @@ const routes: any[] = [
   { path: '/timeline', name: 'timeline', component: Timeline },
   { path: '/explore', name: 'explore', component: Timeline },
   {
-    path: '/strategy/:name',
-    name: 'strategy',
-    component: Strategy
-  },
-  {
     path: '/playground/:name',
     name: 'playground',
     component: Playground
   },
   {
-    path: '/:key/proposal/:id',
-    name: 'proposal',
-    component: Proposal,
-    beforeEnter
+    path: '/strategy/:name',
+    name: 'strategy',
+    component: Strategy
   },
+  ...spaceRoutes,
   {
-    path: '/:key/create/:from?',
-    name: 'create',
-    component: Create,
-    beforeEnter
-  },
-  {
-    path: '/:key',
-    name: 'proposals',
-    component: Space,
-    beforeEnter
-  },
-  {
-    path: '/:key/about',
-    name: 'about',
-    component: About,
-    beforeEnter
-  },
-  { path: '/*', name: 'error-404', beforeEnter: (to, from, next) => next('/') }
+    path: '/:pathMatch(.*)*',
+    name: 'error-404',
+    redirect: '/'
+  }
 ];
 
 const router = createRouter({
