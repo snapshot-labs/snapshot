@@ -3,14 +3,15 @@ defineProps({
   open: Boolean,
   title: String,
   number: Number,
-  hideRemove: Boolean
+  hideRemove: Boolean,
+  alternateBg: Boolean
 });
 
 defineEmits(['remove', 'toggle']);
 </script>
 
 <template>
-  <div class="w-full collapsible-container">
+  <div class="w-full collapsible-container" v-bind:class="{ alternateBg }">
     <div class="collapsible-header flex">
       <span class="mr-4 header-number">{{ number }}</span>
       <span
@@ -34,7 +35,7 @@ defineEmits(['remove', 'toggle']);
       </span>
     </div>
 
-    <div :class="{ hide: !open }" class="p-2">
+    <div :class="{ hide: !open }" class="py-2">
       <slot />
     </div>
   </div>
@@ -42,12 +43,15 @@ defineEmits(['remove', 'toggle']);
 
 <style scoped lang="scss">
 .collapsible-container {
-  background-color: white;
+  background-color: var(--block-bg);
   border: 1px solid var(--border-color);
   color: var(--link-color);
   border-radius: 23px;
   padding: 0 24px;
   outline: none;
+}
+.collapsible-container.alternateBg {
+  background-color: var(--block-bg-alternate);
 }
 .collapsible-header {
   line-height: 46px;
