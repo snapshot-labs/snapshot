@@ -23,7 +23,7 @@ defineProps({
 <style scoped lang="scss">
 .button {
   border: 1px solid var(--border-color);
-  background-color: transparent;
+  background-color: var(--block-bg);
   color: var(--link-color);
   border-radius: 23px;
   outline: none;
