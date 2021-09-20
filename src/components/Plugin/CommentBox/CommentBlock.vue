@@ -144,7 +144,6 @@ async function getData(url = '') {
 const lastPage = ref(false);
 async function getDataAfterDelete(key) {
   try {
-    loadingMore.value = true;
     const res = await getData(
       `https://uia5m1.deta.dev/all_reply/${props.item.proposal_id}/${key}`
     );
@@ -161,7 +160,6 @@ async function getDataAfterDelete(key) {
 
 async function getReplyData() {
   try {
-    loadingMore.value = true;
     const lastPageCondition = lastPage.value ? `?last=${lastPage.value}` : '';
     const res = await getData(
       `https://uia5m1.deta.dev/all_reply/${props.item.proposal_id}/${props.item.key}${lastPageCondition}`

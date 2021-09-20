@@ -36,7 +36,8 @@ const lastPage = ref(false);
 const isLast = ref(false);
 async function getCommentData() {
   try {
-    loadingMore.value = true;
+    if (allData.value.length > 0) loadingMore.value = true;
+
     if (!lastPage.value && !isLast.value && allData.value.length > 0) {
       loadingMore.value = false;
       return;
