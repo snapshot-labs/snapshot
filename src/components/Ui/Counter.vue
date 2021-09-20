@@ -14,7 +14,7 @@ defineProps({
 
 <style scoped lang="scss">
 .count {
-  color: var(--bg-color);
+  color: white;
   text-align: center;
   background-color: var(--text-color);
   vertical-align: middle;

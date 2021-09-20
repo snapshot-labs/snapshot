@@ -1,21 +1,19 @@
 <script setup>
 import { computed, onMounted } from 'vue';
-import { useRoute } from 'vue-router';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { useProfiles } from '@/composables/useProfiles';
 import { getUrl } from '@snapshot-labs/snapshot.js/src/utils';
-import { useApp } from '@/composables/useApp';
 
-const route = useRoute();
-const { spaces } = useApp();
+const props = defineProps({
+  space: Object
+});
 
-const space = computed(() => spaces.value[route.params.key]);
-const network = computed(() => networks[space.value.network]);
+const network = computed(() => networks[props.space.network]);
 
 const { profiles, addressArray } = useProfiles();
 
 onMounted(() => {
-  addressArray.value = space.value.admins.concat(space.value.members);
+  addressArray.value = props.space.admins.concat(props.space.members);
 });
 </script>
 
