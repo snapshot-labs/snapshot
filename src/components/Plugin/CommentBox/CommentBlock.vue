@@ -260,7 +260,7 @@ function deleteItemReply(key) {
           @select="selectFromThreedotDropdown"
           :items="threeDotItems"
         >
-          <div class="pr-3">
+          <div>
             <Icon name="threedots" size="25" class="v-align-text-bottom" />
           </div>
         </UiDropdown>
