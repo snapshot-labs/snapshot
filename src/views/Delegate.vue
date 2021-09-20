@@ -51,9 +51,7 @@ const { profiles, addressArray } = useProfiles();
 
 const web3Account = computed(() => web3.value.account);
 const networkKey = computed(() => web3.value.network.key);
-const space = computed(
-  () => spaces.value[form.value.id] || spaces.value[route.params.key]
-);
+const space = computed(() => spaces.value[form.value.id]);
 
 const isValid = computed(() => {
   const address = form.value.address;
@@ -166,7 +164,11 @@ watch(networkKey, (val, prev) => {
 });
 
 watchEffect(() => {
-  if (space.value) getDelegatesWithScore();
+  if (spaces.value[form.value.id]) {
+    getDelegatesWithScore();
+  } else {
+    delegatesWithScore.value = [];
+  }
 });
 
 onMounted(async () => {
@@ -253,7 +255,7 @@ onMounted(async () => {
         </Block>
         <Block
           v-if="delegatesWithScore.length > 0"
-          :title="$t('Top delegates')"
+          :title="$t('delegate.topDelegates')"
           :slim="true"
         >
           <div
