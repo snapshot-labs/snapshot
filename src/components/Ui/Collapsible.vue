@@ -25,7 +25,11 @@ defineEmits(['remove', 'toggle']);
       >
         {{ title }}
       </span>
-      <span v-if="!hideRemove" @click="$emit('remove')" class="ml-4">
+      <span
+        v-if="!hideRemove"
+        @click="$emit('remove')"
+        class="ml-1 cursor-pointer -mr-3 px-3"
+      >
         <Icon name="close" size="12" />
       </span>
     </div>
@@ -38,6 +42,7 @@ defineEmits(['remove', 'toggle']);
 
 <style scoped lang="scss">
 .collapsible-container {
+  background-color: white;
   border: 1px solid var(--border-color);
   color: var(--link-color);
   border-radius: 23px;
