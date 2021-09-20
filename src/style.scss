@@ -12,7 +12,9 @@
   --heading-color: #111111;
   --border-color: #d1d5da;
   --header-bg: white;
-  --block-bg: transparent;
+  --block-bg: white;
+  --header-bg-alternate: #f4f6f7;
+  --block-bg-alternate: #f4f6f7;
 }
 
 @layer base {
@@ -165,6 +167,9 @@ textarea {
 .header-bg {
   background-color: var(--header-bg) !important;
 }
+.header-bg-alternate {
+  background-color: var(--header-bg-alternate) !important;
+}
 
 .bg-gray-9 {
   background-color: var(--text-color) !important;
@@ -184,6 +189,9 @@ textarea {
 
 .block-bg {
   background-color: var(--block-bg) !important;
+}
+.block-bg-alternate {
+  background-color: var(--block-bg-alternate) !important;
 }
 
 .bg-blue {
