@@ -30,7 +30,7 @@ const toggleEditComment = ref(true);
 const loading = ref(false);
 const threeDotItems = computed(() => {
   const items = [
-    { text: t('comment_box.edit_button').toLowerCase(), action: 'edit' },
+    { text: t('comment_box.edit_button'), action: 'edit' },
     { text: t('comment_box.delete'), action: 'delete' }
   ];
 
@@ -131,13 +131,14 @@ const isCreator = computed(() => props.proposal.author === web3Account.value);
       <p>{{ $t('comment_box.delete_modal') }}</p>
     </div>
     <div
-      class="mb-2"
-      style="
-        text-align: center;
-        display: flex;
-        align-items: center;
-        align-content: center;
-        justify-content: center;
+      class="
+        mb-2
+        mt-3
+        text-center
+        flex
+        items-center
+        content-center
+        justify-center
       "
     >
       <UiButton

@@ -19,7 +19,7 @@ const props = defineProps({
 });
 const threeDotItems = computed(() => {
   const items = [
-    { text: t('comment_box.edit_button').toLowerCase(), action: 'edit' },
+    { text: t('comment_box.edit_button'), action: 'edit' },
     { text: t('comment_box.delete'), action: 'delete' }
   ];
 
