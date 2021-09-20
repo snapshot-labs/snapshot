@@ -15,6 +15,7 @@ import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import {
   getDelegates,
   getDelegators,
+  getDelegatesBySpace,
   contractAddress
 } from '@/helpers/delegation';
 import { sleep } from '@/helpers/utils';
@@ -111,19 +112,29 @@ function clearDelegate(id, delegate) {
 }
 
 async function getDelegatesWithScore() {
+  const { delegations } = await getDelegatesBySpace(
+    space.value.network,
+    space.value.id
+  );
+
+  const uniqueDelegators = Array.from(
+    new Set(delegations.map(d => d.delegate))
+  ).map(delegate => {
+    return delegations.find(a => a.delegate === delegate);
+  });
+
   const provider = getProvider(space.value.network);
-  const delegatesAddresses = delegates.value.map(d => d.delegate);
-  const snapshot = await getBlockNumber(provider);
+  const delegatesAddresses = uniqueDelegators.map(d => d.delegate);
   const scores = await getScores(
     space.value.id,
     space.value.strategies,
     space.value.network,
     provider,
     delegatesAddresses,
-    snapshot
+    'latest'
   );
 
-  delegates.value.forEach(delegate => {
+  uniqueDelegators.forEach(delegate => {
     scores.forEach(score => {
       Object.entries(score).forEach(([address, score]) => {
         if (address === delegate.delegate) {
@@ -133,7 +144,7 @@ async function getDelegatesWithScore() {
     });
   });
 
-  const sortedDelegates = delegates.value
+  const sortedDelegates = uniqueDelegators
     .filter(delegate => delegate.score > 0)
     .sort((a, b) => b.score - a.score);
 
@@ -246,7 +257,7 @@ onMounted(async () => {
           :slim="true"
         >
           <div
-            v-for="(delegate, i) in delegates"
+            v-for="(delegate, i) in delegatesWithScore"
             :key="i"
             :style="i === 0 && 'border: 0 !important;'"
             class="px-4 py-3 border-t flex"
@@ -258,7 +269,7 @@ onMounted(async () => {
               class="column"
             />
             <div class="flex-auto column text-right link-color">
-              {{ delegate.score }} {{ space.symbol }}
+              {{ parseFloat(delegate.score).toFixed(2) }} {{ space.symbol }}
             </div>
           </div>
         </Block>
