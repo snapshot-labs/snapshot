@@ -133,10 +133,11 @@ async function getDelegatesWithScore() {
   );
 
   uniqueDelegators.forEach(delegate => {
+    delegate.score = 0;
     scores.forEach(score => {
       Object.entries(score).forEach(([address, score]) => {
         if (address === delegate.delegate) {
-          delegate.score = score;
+          delegate.score += score;
         }
       });
     });
