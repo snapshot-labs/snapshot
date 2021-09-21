@@ -123,9 +123,12 @@ async function getDelegatesWithScore() {
 
   const provider = getProvider(space.value.network);
   const delegatesAddresses = uniqueDelegators.map(d => d.delegate);
+  const delegationStrategy = space.value.strategies.filter(
+    strategy => strategy.name === 'delegation'
+  );
   const scores = await getScores(
     space.value.id,
-    space.value.strategies,
+    delegationStrategy,
     space.value.network,
     provider,
     delegatesAddresses,
@@ -133,13 +136,11 @@ async function getDelegatesWithScore() {
   );
 
   uniqueDelegators.forEach(delegate => {
-    delegate.score = 0;
-    scores.forEach(score => {
-      Object.entries(score).forEach(([address, score]) => {
-        if (address === delegate.delegate) {
-          delegate.score += score;
-        }
-      });
+    const delegationScore = scores[0];
+    Object.entries(delegationScore).forEach(([address, score]) => {
+      if (address === delegate.delegate) {
+        delegate.score = score;
+      }
     });
   });
 
