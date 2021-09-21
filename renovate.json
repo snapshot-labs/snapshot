@@ -1,5 +1,18 @@
 {
   "extends": [
     "config:base"
+  ],
+  "enabledManagers": ["npm"],
+  "pinVersions": false,
+  "packageRules": [
+    {
+      "matchPackagePatterns": ["*"],
+      "enabled": false
+    },
+    {
+      "matchPackagePatterns": ["^@snapshot-labs/"],
+      "groupName": "snapshot-labs packages",
+      "enabled": true
+    }
   ]
 }
