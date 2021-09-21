@@ -48,6 +48,7 @@ const selectedDate = ref('');
 const counter = ref(0);
 const nameForm = ref(null);
 const passValidation = ref([true]);
+const loadingSnapshot = ref(true);
 
 const web3Account = computed(() => web3.value.account);
 const proposal = computed(() =>
@@ -178,10 +179,17 @@ async function loadProposal() {
 onMounted(async () => {
   nameForm.value.focus();
   addChoice(2);
-  blockNumber.value = await getBlockNumber(getProvider(props.space.network));
-  form.value.snapshot = blockNumber.value;
 
   if (props.from) loadProposal();
+});
+
+watchEffect(async () => {
+  loadingSnapshot.value = true;
+  if (props.space.network) {
+    blockNumber.value = await getBlockNumber(getProvider(props.space.network));
+    form.value.snapshot = blockNumber.value;
+    loadingSnapshot.value = false;
+  }
 });
 </script>
 
@@ -308,7 +316,7 @@ onMounted(async () => {
             <span v-if="!form.end">{{ $t('create.endDate') }}</span>
             <span v-else v-text="$d(form.end * 1e3, 'short', 'en-US')" />
           </UiButton>
-          <UiButton class="w-full mb-2">
+          <UiButton :loading="loadingSnapshot" class="w-full mb-2">
             <input
               v-model="form.snapshot"
               type="number"

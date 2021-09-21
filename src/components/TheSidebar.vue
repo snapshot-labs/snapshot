@@ -9,7 +9,7 @@ import { useUnseenProposals } from '@/composables/useUnseenProposals';
 import { useUserSkin } from '@/composables/useUserSkin';
 import { lsSet, lsGet } from '@/helpers/utils';
 
-const { spaces } = useApp();
+const { explore } = useApp();
 const { web3 } = useWeb3();
 const { loadFollows, followingSpaces } = useFollowSpace();
 const { domain } = useDomain();
@@ -129,7 +129,11 @@ onMounted(() => {
               <router-link
                 :to="{ name: 'spaceProposals', params: { key: element } }"
               >
-                <Token :space="spaces[element]" symbolIndex="space" size="44" />
+                <Token
+                  :space="explore.spaces.find(s => s.id === element)"
+                  symbolIndex="space"
+                  size="44"
+                />
               </router-link>
             </div>
           </template>

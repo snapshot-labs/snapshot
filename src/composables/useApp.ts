@@ -19,25 +19,12 @@ export function useApp() {
   async function init() {
     const auth = getInstance();
     state.loading = true;
-    await Promise.all([getSpaces(), getStrategies(), getExplore()]);
+    await Promise.all([getStrategies(), getExplore()]);
     auth.getConnector().then(connector => {
       if (connector) login(connector);
     });
     state.init = true;
     state.loading = false;
-  }
-
-  async function getSpaces() {
-    let spacesObj: any = await client.getSpaces();
-    spacesObj = Object.fromEntries(
-      Object.entries(spacesObj).map(space => [
-        space[0],
-        formatSpace(space[0], space[1])
-      ])
-    );
-
-    spaces.value = spacesObj;
-    return;
   }
 
   async function getStrategies() {
@@ -53,22 +40,17 @@ export function useApp() {
       `${import.meta.env.VITE_HUB_URL}/api/explore`
     ).then(res => res.json());
 
-    exploreObj.spaces = Object.fromEntries(
-      Object.entries(exploreObj.spaces).map((space: any) => [
-        space[0],
-        {
-          id: space[0],
-          ...space[1]
-        }
-      ])
-    );
+    exploreObj.spaces = Object.entries(exploreObj.spaces).map((space: any) => ({
+      id: space[0],
+      ...space[1]
+    }));
+
     explore.value = exploreObj;
     return;
   }
 
   return {
     init,
-    getSpaces,
     app: computed(() => state),
     spaces: computed(() => spaces.value),
     strategies: computed(() => strategies.value),
