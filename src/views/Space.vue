@@ -35,10 +35,8 @@ const space = computed(
 );
 
 const from = computed(() => route.params.from);
-const spaceFrom = computed(
-  () =>
-    extentedSpaces.value?.find(s => s.id === from.value) ??
-    explore.value.spaces.find(s => s.id === from.value)
+const spaceFrom = computed(() =>
+  extentedSpaces.value?.find(s => s.id === from.value)
 );
 
 async function getExtentedSpaces(id_in = []) {
