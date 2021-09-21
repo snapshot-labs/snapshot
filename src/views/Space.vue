@@ -1,5 +1,5 @@
 <script setup>
-import { computed, onMounted, ref, watch } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { useApp } from '@/composables/useApp';
 import { useRoute } from 'vue-router';
 import { useDomain } from '@/composables/useDomain';
