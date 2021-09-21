@@ -61,17 +61,8 @@ export function lsRemove(key: string) {
   return localStorage.removeItem(`${pkg.name}.${key}`);
 }
 
-export function formatSpace(key, space) {
-  space = {
-    id: key,
-    ...space,
-    members: space.members || [],
-    admins: space.admins || [],
-    filters: space.filters || {}
-  };
-  if (!space.filters.minScore) space.filters.minScore = 0;
-
-  if (space.plugins?.daoModule) {
+export function formatSpace(space) {
+  if (space?.plugins?.daoModule) {
     // The Dao Module has been renamed to SafeSnap
     // Previous spaces plugins have to be renamed
     space.plugins.safeSnap = space.plugins.daoModule;

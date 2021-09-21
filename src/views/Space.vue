@@ -7,6 +7,7 @@ import aliases from '@/../snapshot-spaces/spaces/aliases.json';
 import { useRouter } from 'vue-router';
 import { useApolloQuery } from '@/composables/useApolloQuery';
 import { SPACES_QUERY } from '@/helpers/queries';
+import { formatSpace } from '@/helpers/utils';
 
 const route = useRoute();
 const router = useRouter();
@@ -36,7 +37,7 @@ const space = computed(
 
 const from = computed(() => route.params.from);
 const spaceFrom = computed(() =>
-  extentedSpaces.value?.find(s => s.id === from.value)
+  formatSpace(extentedSpaces.value?.find(s => s.id === from.value))
 );
 
 async function getExtentedSpaces(id_in = []) {
