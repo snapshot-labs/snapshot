@@ -61,7 +61,7 @@ async function getExtentedSpaces(id_in = []) {
   }
 }
 
-onMounted(() => getExtentedSpaces(spaceId.value, from.value));
+onMounted(() => getExtentedSpaces([spaceId.value, from.value]));
 </script>
 
 <template>
