@@ -3,16 +3,12 @@
     "config:base"
   ],
   "enabledManagers": ["npm"],
-  "pinVersions": false,
+  "rangeStrategy": "bump",
   "packageRules": [
     {
-      "matchPackagePatterns": ["*"],
+      "packagePatterns": ["*"],
+      "excludePackagePatterns": ["@snapshot-labs/snapshot.js"],
       "enabled": false
-    },
-    {
-      "matchPackagePatterns": ["^@snapshot-labs/"],
-      "groupName": "snapshot-labs packages",
-      "enabled": true
     }
   ]
 }
