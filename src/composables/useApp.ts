@@ -1,7 +1,5 @@
 import { ref, computed, reactive } from 'vue';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
-import client from '@/helpers/client';
-import { formatSpace } from '@/helpers/utils';
 import { useWeb3 } from '@/composables/useWeb3';
 
 const state = reactive({
