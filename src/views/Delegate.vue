@@ -22,7 +22,6 @@ import { sleep } from '@/helpers/utils';
 import { useApp } from '@/composables/useApp';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useTxStatus } from '@/composables/useTxStatus';
-import { getBlockNumber } from '@snapshot-labs/snapshot.js/src/utils/web3';
 
 const abi = ['function setDelegate(bytes32 id, address delegate)'];
 
@@ -39,6 +38,7 @@ const currentId = ref('');
 const currentDelegate = ref('');
 const loaded = ref(false);
 const loading = ref(false);
+const delegatesLoading = ref(false);
 const delegates = ref([]);
 const delegatesWithScore = ref([]);
 const delegators = ref([]);
@@ -110,6 +110,7 @@ function clearDelegate(id, delegate) {
 }
 
 async function getDelegatesWithScore() {
+  delegatesLoading.value = true;
   const { delegations } = await getDelegatesBySpace(
     space.value.network,
     space.value.id
@@ -149,6 +150,7 @@ async function getDelegatesWithScore() {
     .sort((a, b) => b.score - a.score);
 
   delegatesWithScore.value = sortedDelegates;
+  delegatesLoading.value = false;
 }
 
 watchEffect(() => {
@@ -256,7 +258,7 @@ onMounted(async () => {
           </div>
         </Block>
         <Block
-          v-if="delegatesWithScore.length > 0"
+          v-if="delegatesLoading || delegatesWithScore.length > 0"
           :title="$t('delegate.topDelegates')"
           :slim="true"
         >
@@ -273,7 +275,7 @@ onMounted(async () => {
               class="column"
             />
             <div class="flex-auto column text-right link-color">
-              {{ parseFloat(delegate.score).toFixed(2) }} {{ space.symbol }}
+              {{ _n(delegate.score) }} {{ space.symbol }}
             </div>
           </div>
         </Block>
