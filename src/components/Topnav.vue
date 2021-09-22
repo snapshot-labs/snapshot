@@ -19,11 +19,11 @@ const modalWalletNotice = ref(false);
 
 const space = computed(() => {
   const key = domain || route.params.key;
-  return explore.value.spaces.find(s => s.id === key) ?? false;
+  return explore.value.spaces?.find(s => s.id === key);
 });
 
 function setTitle() {
-  document.title = space.value.name ? space.value.name : 'Snapshot';
+  document.title = space.value?.name ?? 'Snapshot';
 }
 
 async function handleLogin(connector) {
