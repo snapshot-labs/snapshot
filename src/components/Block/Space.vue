@@ -2,6 +2,7 @@
 import { computed } from 'vue';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { useWeb3 } from '@/composables/useWeb3';
+import { useApp } from '@/composables/useApp';
 
 const props = defineProps({
   space: Object
@@ -9,6 +10,10 @@ const props = defineProps({
 
 const auth = getInstance();
 const { web3 } = useWeb3();
+
+const { explore } = useApp();
+
+const nbrMembers = explore.value.spaces[props.space.id].followers;
 
 const web3Account = computed(() => web3.value.account);
 
@@ -28,6 +33,9 @@ const isAdmin = computed(() => {
       <div class="text-center border-b bg-skin-header-bg">
         <Token :space="space" symbolIndex="space" size="80" class="mt-3 mb-2" />
         <h3 class="mb-3 px-4">{{ space.name }}</h3>
+        <div class="mb-[12px] text-color">
+          {{ $tc('members', nbrMembers) }}
+        </div>
         <FollowButton :space="space" />
       </div>
       <div class="py-3">
