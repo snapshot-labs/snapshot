@@ -32,7 +32,7 @@ const isAdmin = computed(() => {
     <Block :slim="true" class="overflow-hidden">
       <div class="text-center border-b bg-skin-header-bg">
         <Token :space="space" symbolIndex="space" size="80" class="mt-3 mb-2" />
-        <h3 class="mb-0 pb-0 mt-0 text-[22px] !h-[32px] overflow-hidden">{{ space.name }}</h3>
+        <h3 class="mb-[2px]">{{ space.name }}</h3>
         <div class="mb-[12px] text-color">
           {{ $tc('members', nbrMembers,{count:_n(nbrMembers)}) }}
         </div>
