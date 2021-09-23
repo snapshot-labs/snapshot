@@ -38,10 +38,15 @@ export function useApp() {
       `${import.meta.env.VITE_HUB_URL}/api/explore`
     ).then(res => res.json());
 
-    exploreObj.spaces = Object.entries(exploreObj.spaces).map((space: any) => ({
-      id: space[0],
-      ...space[1]
-    }));
+    exploreObj.spaces = Object.fromEntries(
+      Object.entries(exploreObj.spaces).map((space: any) => [
+        space[0],
+        {
+          id: space[0],
+          ...space[1]
+        }
+      ])
+    );
 
     explore.value = exploreObj;
     return;

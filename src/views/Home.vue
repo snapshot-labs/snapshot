@@ -13,13 +13,13 @@ const { followingSpaces } = useFollowSpace();
 
 const orderedSpaces = computed(() => {
   const q = route.query.q || '';
-  const list = explore.value.spaces
-    .map(s => {
+  const list = Object.keys(explore.value.spaces)
+    .map(key => {
       return {
-        ...s,
-        following: followingSpaces.value.some(fS => fS === s.id),
-        followers: s.followers ?? 0,
-        private: s.private ?? false
+        ...explore.value.spaces[key],
+        following: followingSpaces.value.some(s => s === key),
+        followers: explore.value.spaces[key].followers ?? 0,
+        private: explore.value.spaces[key].private ?? false
       };
     })
     .filter(space => !space.private);

@@ -53,7 +53,6 @@ watch(web3Account, () => {
 
 watch(followingSpaces, () => {
   draggableSpaces.value = followingSpaces.value;
-
   const sidebarSpaceOrder = lsGet(
     `sidebarSpaceOrder.${web3Account.value.slice(0, 8).toLowerCase()}`,
     []
@@ -130,7 +129,7 @@ onMounted(() => {
                 :to="{ name: 'spaceProposals', params: { key: element } }"
               >
                 <Token
-                  :space="explore.spaces.find(s => s.id === element)"
+                  :space="explore.spaces[element]"
                   symbolIndex="space"
                   size="44"
                 />

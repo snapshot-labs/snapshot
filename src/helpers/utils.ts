@@ -68,6 +68,7 @@ export function formatSpace(space) {
     space.plugins.safeSnap = space.plugins.daoModule;
     delete space.plugins.daoModule;
   }
+  if (space?.skin === null) delete space.skin;
   return space;
 }
 
