@@ -256,7 +256,6 @@
       "setOutcome": "Set outcome",
       "changeOutcome": "Change outcome",
       "executeTxs": "Execute transaction batch {0} of {1}",
-      "finalized": "Vote finalized",
       "executed": "All transactions have been executed",
       "error": "Something went wrong",
       "connectWallet": "Connect wallet to see execution details",

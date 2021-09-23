@@ -15,7 +15,7 @@
     <UiButton @click="performAction" v-text="$t('safeSnap.labels.request')" />
   </div>
 
-  <div v-if="showOracleInfo || bondData.canClaim" class="my-4">
+  <div v-if="(showOracleInfo || bondData.canClaim) && questionState !== questionStates.loading" class="my-4">
     <div class="text-base block-bg p-3 rounded-3xl border inline-block">
       <h5 class="text-center link-color">
         Reality Oracle
@@ -126,7 +126,6 @@ import { BigNumber } from '@ethersproject/bignumber';
 import { formatBatchTransaction } from '@/helpers/abi/utils';
 import { formatUnits } from '@ethersproject/units';
 import { useSafesnap } from '@/composables/useSafesnap';
-import { useWeb3 } from '@/composables/useWeb3';
 
 const { clearBatchError, setBatchError } = useSafesnap();
 
@@ -286,6 +285,7 @@ export default {
         return QuestionStates.questionNotResolved;
 
       if (this.questionDetails.executionApproved) {
+        const ts = (Date.now() / 1e3).toFixed();
         if (
           this.questionDetails.finalizedAt + this.questionDetails.cooldown >
           ts
