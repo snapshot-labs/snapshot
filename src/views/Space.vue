@@ -52,6 +52,7 @@ async function getExtentedSpaces(id_in = []) {
       },
       'spaces'
     );
+
     extentedSpaces.value = response;
     spaceLoading.value = false;
   } catch (e) {
