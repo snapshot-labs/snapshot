@@ -12,11 +12,11 @@ const GNOSIS_SAFE_DEPLOYMENTS = {
   1: 'https://gnosis-safe.io',
   4: 'https://rinkeby.gnosis-safe.io',
   100: 'https://xdai.gnosis-safe.io',
-  73799: 'https://volta.gnosis-safe.io',
+  73799: 'https://volta.gnosis-safe.io', // not listed in networks.json, remove here?
   246: 'https://ewc.gnosis-safe.io',
   137: 'https://polygon.gnosis-safe.io',
   56: 'https://bsc.gnosis-safe.io',
-  42161: 'https://arbitrum.gnosis-safe.io'
+  42161: 'https://arbitrum.gnosis-safe.io' // not listed in networks.json, remove here?
 };
 
 async function fetchBalances(network, gnosisSafeAddress) {
