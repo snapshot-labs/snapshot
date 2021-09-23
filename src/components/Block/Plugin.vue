@@ -2,7 +2,7 @@
 defineProps(['plugin']);
 
 function getLogoUrl(key) {
-  return `https://raw.githubusercontent.com/snapshot-labs/snapshot.js/master/src/plugins/${key}/logo.png`;
+  return `https://raw.githubusercontent.com/snapshot-labs/snapshot-plugins/master/src/plugins/${key}/logo.png`;
 }
 </script>
 
@@ -10,7 +10,7 @@ function getLogoUrl(key) {
   <Block>
     <div class="flex items-center mb-1">
       <a
-        :href="`https://github.com/snapshot-labs/snapshot.js/tree/master/src/plugins/${plugin.key}`"
+        :href="`https://github.com/snapshot-labs/snapshot-plugins/tree/master/src/plugins/${plugin.key}`"
         target="_blank"
         class="flex items-center"
       >

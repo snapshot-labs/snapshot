@@ -1,6 +1,6 @@
 <script setup>
 import { ref, watchEffect, computed, onMounted } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import { useRouter } from 'vue-router';
 import draggable from 'vuedraggable';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import { getBlockNumber } from '@snapshot-labs/snapshot.js/src/utils/web3';
@@ -12,20 +12,20 @@ import validations from '@snapshot-labs/snapshot.js/src/validations';
 import { clone } from '@/helpers/utils';
 import { useDomain } from '@/composables/useDomain';
 import { useApolloQuery } from '@/composables/useApolloQuery';
-import { useApp } from '@/composables/useApp';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useClient } from '@/composables/useClient';
 
-const route = useRoute();
+const props = defineProps({
+  spaceId: String,
+  space: Object,
+  from: String
+});
+
 const router = useRouter();
 const auth = getInstance();
 const { domain } = useDomain();
-const { spaces } = useApp();
 const { web3 } = useWeb3();
 const { send } = useClient();
-
-const key = route.params.key;
-const from = route.params.from;
 
 const loading = ref(false);
 const choices = ref([]);
@@ -50,7 +50,6 @@ const nameForm = ref(null);
 const passValidation = ref([true]);
 
 const web3Account = computed(() => web3.value.account);
-const space = computed(() => spaces.value[key]);
 const proposal = computed(() =>
   Object.assign(form.value, { choices: choices.value })
 );
@@ -58,11 +57,11 @@ const proposal = computed(() =>
 // Check if account passes space validation
 watchEffect(async () => {
   if (web3Account.value && auth.isAuthenticated.value) {
-    const validationName = space.value.validation?.name ?? 'basic';
-    const validationParams = space.value.validation?.params ?? {};
+    const validationName = props.space.validation?.name ?? 'basic';
+    const validationParams = props.space.validation?.params ?? {};
     const isValid = await validations[validationName](
       web3Account.value,
-      clone(space.value),
+      clone(props.space),
       '',
       clone(validationParams)
     );
@@ -116,14 +115,14 @@ async function handleSubmit() {
   loading.value = true;
   form.value.snapshot = parseInt(form.value.snapshot);
   form.value.choices = choices.value.map(choice => choice.text);
-  form.value.metadata.network = space.value.network;
-  form.value.metadata.strategies = space.value.strategies;
+  form.value.metadata.network = props.space.network;
+  form.value.metadata.strategies = props.space.strategies;
   try {
-    const { ipfsHash } = await send(space.value.id, 'proposal', form.value);
+    const { ipfsHash } = await send(props.space.id, 'proposal', form.value);
     router.push({
-      name: 'proposal',
+      name: 'spaceProposal',
       params: {
-        key: key,
+        key: props.spaceId,
         id: ipfsHash
       }
     });
@@ -134,12 +133,12 @@ async function handleSubmit() {
 }
 
 const { modalAccountOpen } = useModal();
-const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(key);
+const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(props.spaceId);
 
 function clickSubmit() {
   !web3Account.value
     ? (modalAccountOpen.value = true)
-    : !termsAccepted.value && space.value.terms
+    : !termsAccepted.value && props.space.terms
     ? (modalTermsOpen.value = true)
     : handleSubmit();
 }
@@ -151,7 +150,7 @@ async function loadProposal() {
     {
       query: PROPOSAL_QUERY,
       variables: {
-        id: from
+        id: props.from
       }
     },
     'proposal'
@@ -179,10 +178,10 @@ async function loadProposal() {
 onMounted(async () => {
   nameForm.value.focus();
   addChoice(2);
-  blockNumber.value = await getBlockNumber(getProvider(space.value.network));
+  blockNumber.value = await getBlockNumber(getProvider(props.space.network));
   form.value.snapshot = blockNumber.value;
 
-  if (from) loadProposal();
+  if (props.from) loadProposal();
 });
 </script>
 
@@ -191,7 +190,7 @@ onMounted(async () => {
     <template #content-left>
       <div class="px-4 md:px-0 mb-3">
         <router-link
-          :to="{ name: domain ? 'home' : 'proposals' }"
+          :to="domain ? { path: '/' } : { name: 'spaceProposals' }"
           class="text-color"
         >
           <Icon name="back" size="22" class="!align-middle" />
