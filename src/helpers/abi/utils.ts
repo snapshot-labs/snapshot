@@ -238,7 +238,7 @@ const callGnosisSafeTransactionApi = async (network: string, url: string) => {
 
 export const getGnosisSafeBalances = memoize(
   (network, safeAddress) => {
-    const endpointPath = `/safes/${safeAddress}/balances`;
+    const endpointPath = `/safes/${safeAddress}/balances/`;
     return callGnosisSafeTransactionApi(network, endpointPath);
   },
   (safeAddress, network) => `${safeAddress}_${network}`
@@ -246,7 +246,7 @@ export const getGnosisSafeBalances = memoize(
 
 export const getGnosisSafeCollectibles = memoize(
   (network, safeAddress) => {
-    const endpointPath = `/safes/${safeAddress}/collectibles`;
+    const endpointPath = `/safes/${safeAddress}/collectibles/`;
     return callGnosisSafeTransactionApi(network, endpointPath);
   },
   (safeAddress, network) => `${safeAddress}_${network}`
