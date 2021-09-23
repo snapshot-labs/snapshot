@@ -25,7 +25,6 @@ const emit = defineEmits([
   'scrollTo'
 ]);
 const toggleComment = ref(true);
-const toggleReplyTo = ref(false);
 const toggleEditComment = ref(true);
 const loading = ref(false);
 const threeDotItems = computed(() => {
@@ -165,49 +164,7 @@ const isCreator = computed(() => props.proposal.author === web3Account.value);
   </div>
   <div v-if="toggleEditComment">
     <Block :slim="true" class="p-4 text-color mt-2 mb-0">
-      <span
-        style="cursor: pointer"
-        class="!bg-purple-400 State text-white inline-block mb-2"
-        @click="toggleReplyTo = !toggleReplyTo"
-        v-if="mainThread !== item.reply_thread_id"
-      >
-        reply to
-        <span
-          v-if="profiles[item.reply_to]?.name"
-          class="mt-3"
-          v-text="profiles[item.reply_to].name"
-        />
-        <span
-          v-else-if="profiles[item.reply_to]?.ens"
-          v-text="profiles[item.reply_to].ens"
-        />
-        <span v-else v-text="_shorten(item.reply_to)" />
-      </span>
-      <Block v-if="toggleReplyTo" slim="true">
-        <span
-          class="
-            px-4
-            pt-3
-            border-b
-            block
-            bg-skin-header-bg
-            rounded-t-none
-            md:rounded-t-lg
-          "
-          style="padding-bottom: 12px; cursor: pointer"
-          @click="$emit('scrollTo', item.reply_thread_id)"
-        >
-          comment by {{ _shorten(item.reply_to) }}
-
-          <span v-if="item?.edited">(edited)</span>
-          <span v-if="item?.deleted">(deleted)</span>
-        </span>
-
-        <div class="border-bottom"></div>
-        <div class="ml-2 mt-2">
-          <PluginCommentBoxMarkdown :body="item.reply" />
-        </div>
-      </Block>
+      
       <div>
         <User
           :address="item.author"
