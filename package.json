@@ -23,7 +23,7 @@
     "@popperjs/core": "^2.8.3",
     "@portis/web3": "^4.0.5",
     "@snapshot-labs/lock": "github:snapshot-labs/lock#master",
-    "@snapshot-labs/snapshot.js": "^0.2.5",
+    "@snapshot-labs/snapshot.js": "^0.2.8",
     "@toruslabs/torus-embed": "^1.12.1",
     "@vue/apollo-composable": "4.0.0-alpha.12",
     "@vueuse/core": "^5.2.0",
