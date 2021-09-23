@@ -243,23 +243,23 @@
     }
   },
   "safeSnap": {
-    "currentOutcome": "Current outcome: {0}",
-    "currentBond": "Current bond: {0} {1}",
+    "currentOutcome": "Current outcome",
+    "currentBond": "Current bond",
     "finalizedIn": "Finalized {0}",
     "executableIn": "Executable {0}",
-    "finalOutcome": "Outcome: {0}",
-    "nextBond": "Bond to set outcome: {0}",
-    "setOutcomeTo": "Set outcome to:",
+    "finalOutcome": "Outcome",
+    "nextBond": "Bond to set outcome",
+    "setOutcomeTo": "Set outcome to",
     "claimBond": "Claim bond",
     "labels": {
       "request": "Request execution",
       "setOutcome": "Set outcome",
       "changeOutcome": "Change outcome",
-      "executeTxs": "Execute transaction 1/{0}",
+      "executeTxs": "Execute transaction batch {0} of {1}",
       "finalized": "Vote finalized",
-      "executed": "{0}/{0} Transactions executed",
-      "waiting": "Waiting for vote to close",
-      "error": "Error",
+      "executed": "All transactions have been executed",
+      "error": "Something went wrong",
+      "connectWallet": "Connect wallet to see execution details",
       "question": "Did this proposal pass and does it meet the",
       "criteria": "acceptance criteria?"
     }

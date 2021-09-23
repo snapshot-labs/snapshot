@@ -93,6 +93,10 @@ export default {
       if (this.network === '1') return 'Mainnet';
       const { shortName, name } = networks[this.network] || {};
       return shortName || name || `#${this.network}`;
+    },
+    proposalResolved() {
+      const ts = (Date.now() / 1e3).toFixed();
+      return ts > this.proposal.end;
     }
   },
   methods: {
@@ -119,10 +123,25 @@ export default {
 
 <template>
   <div
-    class="border-t border-b md:border rounded-none md:rounded-md mb-4 block-bg-alternate"
+    class="
+      border-t border-b
+      md:border
+      rounded-none
+      md:rounded-md
+      mb-4
+      block-bg-alternate
+    "
   >
     <h4
-      class="px-4 pt-3 border-b block header-bg-alternate rounded-t-none md:rounded-t-md"
+      class="
+        px-4
+        pt-3
+        border-b
+        block
+        header-bg-alternate
+        rounded-t-none
+        md:rounded-t-md
+      "
       style="padding-bottom: 12px"
     >
       {{ networkName }} Safe
@@ -130,13 +149,11 @@ export default {
         v-if="gnosisSafeAddress"
         :href="safeLink"
         class="text-color"
-        style="font-weight: normal;"
+        style="font-weight: normal"
         target="_blank"
       >
         {{ _shorten(gnosisSafeAddress) }}
-        <i
-          class="iconfont iconexternal-link"
-        />
+        <i class="iconfont iconexternal-link" />
       </a>
     </h4>
     <div class="text-center">
@@ -151,20 +168,19 @@ export default {
         />
       </div>
 
-    <div class="border-t py-3">
-      <UiButton v-if="!preview" @click="addTransactionBatch">
-        Add transaction batch
-      </UiButton>
-      </div>
+      <div class="border-t py-3" v-if="!preview || proposalResolved">
+        <UiButton v-if="!preview" @click="addTransactionBatch">
+          Add transaction batch
+        </UiButton>
 
-      <PluginSafeSnapHandleOutcome
-        v-if="preview"
-        :txs="input"
-        :proposalEnd="proposal.end"
-        :proposalId="proposal.id"
-        :realityAddress="realityAddress"
-        :network="transactionConfig.network"
-      />
+        <PluginSafeSnapHandleOutcome
+          v-if="preview && proposalResolved"
+          :txs="input"
+          :proposalId="proposal.id"
+          :realityAddress="realityAddress"
+          :network="transactionConfig.network"
+        />
+      </div>
     </div>
   </div>
 </template>

@@ -1,55 +1,101 @@
 <template>
-  <Block
-    title="SafeSnap Transactions"
-    :icon="!loading && realityAddress ? 'refresh' : undefined"
-    :loading="loading"
-    @submit="updateDetails"
+  <div v-if="questionState === questionStates.error">
+    {{ $t('safeSnap.labels.error') }}
+  </div>
+
+  <div v-if="questionState === questionStates.noWalletConnection">
+    {{ $t('safeSnap.labels.connectWallet') }}
+  </div>
+
+  <div v-if="questionState === questionStates.loading">
+    <UiLoading />
+  </div>
+
+  <div v-if="questionState === questionStates.waitingForQuestion">
+    <UiButton @click="performAction" v-text="$t('safeSnap.labels.request')" />
+  </div>
+
+  <div
+    v-if="showOracleInfo"
+    class="text-base block-bg p-3 rounded-3xl border inline-block"
   >
-    <b
-      v-if="infoLabel"
-      v-text="$t(infoLabel, [questionDetails.transactions.length])"
-      class="block mb-3 text-center"
-    />
-    <b
-      v-if="showDecision"
-      v-text="approvalData?.decision"
-      class="block mb-3 link-color text-center"
-    />
+    <h5 class="text-center link-color">
+      Reality Oracle
+      <a
+        @click="updateDetails"
+        class="float-right text-color"
+        style="padding-top: 2px"
+      >
+        <Icon name="refresh" size="16" />
+      </a>
+    </h5>
     <div
-      v-if="questionDetails?.questionId && showQuestionInfo"
-      class="mb-3 p-4 link-color text-center"
+      v-if="questionState !== questionStates.questionNotSet"
+      class="flex items-center my-3"
+      style="text-align: left"
     >
-      <b v-text="approvalData?.decision" class="block mb-3" />
-      <b v-text="approvalData?.currentBond" class="block mb-3" />
-      <b v-text="approvalData?.timeLeft" class="block mb-3" />
+      <div class="border rounded-lg p-3 mr-3">
+        <div>
+          <b class="pr-3"
+            >{{
+              questionDetails?.finalizedAt
+                ? $t('safeSnap.finalOutcome')
+                : $t('safeSnap.currentOutcome')
+            }}:</b
+          >
+          <span class="float-right link-color">
+            {{ approvalData?.decision }}
+          </span>
+        </div>
+        <div v-if="!questionDetails?.finalizedAt" mt-3>
+          <b class="pr-3">{{ $t('safeSnap.currentBond') }}:</b>
+          <span class="float-right link-color">
+            {{ approvalData?.currentBond }}
+          </span>
+        </div>
+      </div>
+
+      <div class="border rounded-lg p-3 link-color">
+        <b>{{ approvalData?.timeLeft }}</b>
+      </div>
     </div>
-    <UiButton
-      v-if="showActionButton"
-      @click="performAction"
-      :disabled="!actionEnabled"
-      v-text="$t(actionLabel, [questionDetails.transactions.length])"
-      class="mb-2 w-full button"
-    />
-    <UiButton
-      v-if="canClaim"
-      @click="claimBond"
-      v-text="$t('safeSnap.claimBond')"
-      class="mb-3 w-full button"
-    />
-    <teleport to="#modal">
-      <PluginSafeSnapModalOptionApproval
-        :minimumBond="questionDetails?.minimumBond"
-        :open="modalApproveDecisionOpen"
-        :isApproved="questionDetails?.isApproved"
-        :bond="questionDetails?.currentBond"
-        :questionId="questionDetails?.questionId"
-        :tokenSymbol="bondData?.tokenSymbol"
-        :tokenDecimals="bondData?.tokenDecimals"
-        @setApproval="voteOnQuestion"
-        @close="modalApproveDecisionOpen = false"
+
+    <div v-if="questionState === questionStates.questionNotSet">
+      <UiButton
+        class="w-full my-1"
+        @click="performAction"
+        v-text="$t('safeSnap.labels.setOutcome')"
       />
-    </teleport>
-  </Block>
+    </div>
+    <div v-if="questionState === questionStates.questionNotResolved">
+      <UiButton
+        class="w-full my-1"
+        @click="performAction"
+        v-text="$t('safeSnap.labels.changeOutcome')"
+      />
+    </div>
+    <div v-if="bondData.canClaim">
+      <UiButton
+        class="w-full my-1"
+        @click="claimBond"
+        v-text="$t('safeSnap.claimBond')"
+      />
+    </div>
+  </div>
+
+  <teleport to="#modal">
+    <PluginSafeSnapModalOptionApproval
+      :minimumBond="questionDetails?.minimumBond"
+      :open="modalApproveDecisionOpen"
+      :isApproved="questionDetails?.isApproved"
+      :bond="questionDetails?.currentBond"
+      :questionId="questionDetails?.questionId"
+      :tokenSymbol="bondData?.tokenSymbol"
+      :tokenDecimals="bondData?.tokenDecimals"
+      @setApproval="voteOnQuestion"
+      @close="modalApproveDecisionOpen = false"
+    />
+  </teleport>
 </template>
 
 <script>
@@ -59,13 +105,16 @@ import { BigNumber } from '@ethersproject/bignumber';
 import { formatBatchTransaction } from '@/helpers/abi/utils';
 import { formatUnits } from '@ethersproject/units';
 import { useSafesnap } from '@/composables/useSafesnap';
+import { useWeb3 } from '@/composables/useWeb3';
 
 const { clearBatchError, setBatchError } = useSafesnap();
 
+const plugin = new Plugin();
+
 const QuestionStates = {
   error: -1,
-  loading: 0,
-  proposalNotResolved: 1,
+  noWalletConnection: 0,
+  loading: 1,
   waitingForQuestion: 2,
   questionNotSet: 3,
   questionNotResolved: 4,
@@ -75,20 +124,14 @@ const QuestionStates = {
   completelyExecuted: 8
 };
 Object.freeze(QuestionStates);
+
 export default {
-  props: [
-    'txs',
-    'proposalId',
-    'proposalEnd',
-    'network',
-    'realityAddress'
-  ],
+  props: ['txs', 'proposalId', 'network', 'realityAddress'],
   data() {
     return {
       loading: true,
       questionStates: QuestionStates,
       actionInProgress: false,
-      plugin: new Plugin(),
       questionDetails: undefined,
       modalApproveDecisionOpen: false,
       bondData: {
@@ -96,174 +139,6 @@ export default {
         data: undefined
       }
     };
-  },
-  computed: {
-    questionState() {
-      if (this.loading) return QuestionStates.loading;
-
-      const ts = (Date.now() / 1e3).toFixed();
-      if (ts < this.proposalEnd) return QuestionStates.proposalNotResolved;
-      if (!this.questionDetails) return QuestionStates.error;
-
-      if (!this.questionDetails.questionId)
-        return QuestionStates.waitingForQuestion;
-
-      if (this.questionDetails?.currentBond === '0.0')
-        return QuestionStates.questionNotSet;
-
-      if (
-        this.questionDetails?.currentBond !== '0.0' &&
-        !this.questionDetails.finalizedAt
-      )
-        return QuestionStates.questionNotResolved;
-
-      if (this.questionDetails.executionApproved) {
-        if (
-          this.questionDetails.finalizedAt + this.questionDetails.cooldown >
-          ts
-        ) {
-          return QuestionStates.waitingForCooldown;
-        }
-        if (!Number.isInteger(this.questionDetails.nextTxIndex))
-          return QuestionStates.completelyExecuted;
-        return QuestionStates.proposalApproved;
-      } else {
-        if (this.questionDetails.finalizedAt < ts) {
-          return QuestionStates.proposalRejected;
-        }
-      }
-
-      return QuestionStates.error;
-    },
-    actionLabel() {
-      switch (this.questionState) {
-        case QuestionStates.loading:
-          return 'loading';
-        case QuestionStates.waitingForQuestion:
-          return 'safeSnap.labels.request';
-        case QuestionStates.questionNotSet:
-          return 'safeSnap.labels.setOutcome';
-        case QuestionStates.questionNotResolved:
-          return 'safeSnap.labels.changeOutcome';
-        case QuestionStates.proposalApproved:
-          return 'safeSnap.labels.executeTxs';
-        case QuestionStates.completelyExecuted:
-          return 'safeSnap.labels.executed';
-        case QuestionStates.error:
-          return 'safeSnap.labels.error';
-        default:
-          return null;
-      }
-    },
-    actionEnabled() {
-      if (!this.$auth.isAuthenticated.value) return false;
-      switch (this.questionState) {
-        case QuestionStates.waitingForQuestion:
-        case QuestionStates.questionNotResolved:
-        case QuestionStates.questionNotSet:
-        case QuestionStates.waitingForExecution:
-        case QuestionStates.proposalApproved:
-          return true;
-        default:
-          return false;
-      }
-    },
-    showDecision() {
-      return (
-        this.questionDetails?.questionId &&
-        !this.showQuestionInfo &&
-        !this.questionState === QuestionStates.proposalApproved
-      );
-    },
-    infoLabel() {
-      switch (this.questionState) {
-        case QuestionStates.proposalNotResolved:
-          return 'safeSnap.labels.waiting';
-        case QuestionStates.waitingForQuestion:
-        case QuestionStates.questionNotSet:
-        case QuestionStates.questionNotResolved:
-          return 'safeSnap.labels.finalized';
-        case QuestionStates.completelyExecuted:
-          return 'safeSnap.labels.executed';
-        default:
-          return null;
-      }
-    },
-    showQuestionInfo() {
-      return (
-        this.questionState === this.questionStates.waitingForQuestion ||
-        this.questionState === this.questionStates.questionNotSet ||
-        this.questionState === this.questionStates.questionNotResolved ||
-        this.questionState === this.questionStates.waitingForCooldown
-      );
-    },
-    approvalData() {
-      if (this.questionDetails) {
-        const {
-          currentBond,
-          finalizedAt,
-          isApproved,
-          endTime
-        } = this.questionDetails;
-
-        if (BigNumber.from(currentBond).eq(0)) {
-          return {
-            decision: this.$i18n.t('safeSnap.currentOutcome', ['--']),
-            timeLeft: this.$i18n.t('safeSnap.finalizedIn', ['--']),
-            currentBond: this.$i18n.t('safeSnap.currentBond', ['--'])
-          };
-        }
-
-        if (finalizedAt) {
-          if (isApproved) {
-            return {
-              decision: this.$i18n.t('safeSnap.finalOutcome', ['Yes']),
-              timeLeft: this.$i18n.t('safeSnap.executableIn', [
-                this._ms(endTime + this.questionDetails.cooldown)
-              ])
-            };
-          }
-
-          return {
-            decision: this.$i18n.t('safeSnap.finalOutcome', ['No'])
-          };
-        }
-
-        return {
-          decision: this.$i18n.t('safeSnap.currentOutcome', [
-            isApproved ? 'Yes' : 'No'
-          ]),
-          timeLeft: this.$i18n.t('safeSnap.finalizedIn', [this._ms(endTime)]),
-          currentBond: this.$i18n.t('safeSnap.currentBond', [
-            formatUnits(currentBond, this.bondData.tokenDecimals),
-            this.bondData.tokenSymbol
-          ])
-        };
-      }
-      return {
-        decision: `--`,
-        timeLeft: `--`,
-        currentBond: '--'
-      };
-    },
-    canChangeAnswer() {
-      return this.questionState === 3 && !this.questionDetails.finalizedAt;
-    },
-    showActionButton() {
-      return (
-        this.questionState === QuestionStates.waitingForQuestion ||
-        this.questionState === QuestionStates.questionNotResolved ||
-        this.questionState === QuestionStates.questionNotSet ||
-        (this.questionDetails?.executionApproved &&
-          !this.questionState === QuestionStates.waitingForCooldown) ||
-        this.questionState === QuestionStates.waitingForExecution ||
-        this.questionState === QuestionStates.proposalApproved ||
-        !this.questionState === QuestionStates.completelyExecuted
-      );
-    },
-    canClaim() {
-      return this.bondData.canClaim;
-    }
   },
   async created() {
     await this.updateDetails();
@@ -273,14 +148,14 @@ export default {
       if (!this.realityAddress) return;
       this.loading = true;
       try {
-        this.questionDetails = await this.plugin.getExecutionDetails(
+        this.questionDetails = await plugin.getExecutionDetails(
           this.network,
           this.realityAddress,
           this.proposalId,
           this.txs.map(formatBatchTransaction)
         );
-        if (this.questionDetails.questionId) {
-          this.bondData = await this.plugin.loadClaimBondData(
+        if (this.questionDetails.questionId && this.$auth.web3) {
+          this.bondData = await plugin.loadClaimBondData(
             this.$auth.web3,
             this.network,
             this.questionDetails.questionId,
@@ -302,7 +177,7 @@ export default {
           key => new Array(...this.bondData.data[key])
         );
 
-        await this.plugin.claimBond(
+        await plugin.claimBond(
           this.$auth.web3,
           this.questionDetails.oracle,
           this.questionDetails.questionId,
@@ -322,7 +197,7 @@ export default {
       try {
         switch (this.questionState) {
           case QuestionStates.waitingForQuestion:
-            await this.plugin.submitProposal(
+            await plugin.submitProposal(
               this.$auth.web3,
               this.realityAddress,
               this.questionDetails.proposalId,
@@ -346,7 +221,7 @@ export default {
       }
     },
     async voteOnQuestion(option) {
-      await this.plugin.voteForQuestion(
+      await plugin.voteForQuestion(
         this.network,
         this.$auth.web3,
         this.questionDetails.oracle,
@@ -360,7 +235,7 @@ export default {
     async executeProposal() {
       try {
         clearBatchError();
-        await this.plugin.executeProposal(
+        await plugin.executeProposal(
           this.$auth.web3,
           this.realityAddress,
           this.questionDetails.proposalId,
@@ -370,6 +245,92 @@ export default {
       } catch (err) {
         setBatchError(this.questionDetails.nextTxIndex, err.reason);
       }
+    }
+  },
+  computed: {
+    questionState() {
+      if (!this.$auth.web3) return QuestionStates.noWalletConnection;
+
+      if (this.loading) return QuestionStates.loading;
+
+      if (!this.questionDetails) return QuestionStates.error;
+
+      if (!this.questionDetails.questionId)
+        return QuestionStates.waitingForQuestion;
+        
+      if (this.questionDetails.currentBond.isZero())
+        return QuestionStates.questionNotSet;
+
+      if (!this.questionDetails.finalizedAt)
+        return QuestionStates.questionNotResolved;
+
+      if (this.questionDetails.executionApproved) {
+        if (
+          this.questionDetails.finalizedAt + this.questionDetails.cooldown >
+          ts
+        ) {
+          return QuestionStates.waitingForCooldown;
+        }
+        if (!Number.isInteger(this.questionDetails.nextTxIndex))
+          return QuestionStates.completelyExecuted;
+        return QuestionStates.proposalApproved;
+      } else {
+        if (this.questionDetails.finalizedAt < ts) {
+          return QuestionStates.proposalRejected;
+        }
+      }
+
+      return QuestionStates.error;
+    },
+    showOracleInfo() {
+      return (
+        this.questionState === this.questionStates.questionNotSet ||
+        this.questionState === this.questionStates.questionNotResolved ||
+        this.questionState === this.questionStates.waitingForCooldown
+      );
+    },
+    approvalData() {
+      if (this.questionDetails) {
+        const { currentBond, finalizedAt, isApproved, endTime } =
+          this.questionDetails;
+
+        if (currentBond === undefined || BigNumber.from(currentBond).eq(0)) {
+          return {
+            decision: '--',
+            timeLeft: '--',
+            currentBond: '--'
+          };
+        }
+
+        if (finalizedAt) {
+          if (isApproved) {
+            return {
+              decision: 'Yes',
+              timeLeft: this.$i18n.t('safeSnap.executableIn', [
+                this._ms(endTime + this.questionDetails.cooldown)
+              ])
+            };
+          }
+
+          return {
+            decision: 'No'
+          };
+        }
+
+        return {
+          decision: isApproved ? 'Yes' : 'No',
+          timeLeft: this.$i18n.t('safeSnap.finalizedIn', [this._ms(endTime)]),
+          currentBond:
+            formatUnits(currentBond, this.bondData.tokenDecimals) +
+            ' ' +
+            this.bondData.tokenSymbol
+        };
+      }
+      return {
+        decision: '--',
+        timeLeft: '--',
+        currentBond: '--'
+      };
     }
   }
 };
