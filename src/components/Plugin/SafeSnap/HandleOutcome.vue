@@ -1,86 +1,107 @@
 <template>
-  <div v-if="questionState === questionStates.error">
+  <div v-if="questionState === questionStates.error" class="my-4">
     {{ $t('safeSnap.labels.error') }}
   </div>
 
-  <div v-if="questionState === questionStates.noWalletConnection">
+  <div v-if="questionState === questionStates.noWalletConnection" class="my-4">
     {{ $t('safeSnap.labels.connectWallet') }}
   </div>
 
-  <div v-if="questionState === questionStates.loading">
+  <div v-if="questionState === questionStates.loading" class="my-4">
     <UiLoading />
   </div>
 
-  <div v-if="questionState === questionStates.waitingForQuestion">
+  <div v-if="questionState === questionStates.waitingForQuestion" class="my-4">
     <UiButton @click="performAction" v-text="$t('safeSnap.labels.request')" />
   </div>
 
-  <div
-    v-if="showOracleInfo"
-    class="text-base block-bg p-3 rounded-3xl border inline-block"
-  >
-    <h5 class="text-center link-color">
-      Reality Oracle
-      <a
-        @click="updateDetails"
-        class="float-right text-color"
-        style="padding-top: 2px"
+  <div v-if="showOracleInfo || bondData.canClaim" class="my-4">
+    <div class="text-base block-bg p-3 rounded-3xl border inline-block">
+      <h5 class="text-center link-color">
+        Reality Oracle
+        <a
+          @click="updateDetails"
+          class="float-right text-color"
+          style="padding-top: 2px"
+        >
+          <Icon name="refresh" size="16" />
+        </a>
+      </h5>
+      <div
+        v-if="questionState !== questionStates.questionNotSet"
+        class="flex items-center my-3"
+        style="text-align: left"
       >
-        <Icon name="refresh" size="16" />
-      </a>
-    </h5>
-    <div
-      v-if="questionState !== questionStates.questionNotSet"
-      class="flex items-center my-3"
-      style="text-align: left"
-    >
-      <div class="border rounded-lg p-3 mr-3">
-        <div>
-          <b class="pr-3"
-            >{{
-              questionDetails?.finalizedAt
-                ? $t('safeSnap.finalOutcome')
-                : $t('safeSnap.currentOutcome')
-            }}:</b
-          >
-          <span class="float-right link-color">
-            {{ approvalData?.decision }}
-          </span>
+        <div class="border rounded-lg p-3 mr-3">
+          <div>
+            <b class="pr-3"
+              >{{
+                questionDetails?.finalizedAt
+                  ? $t('safeSnap.finalOutcome')
+                  : $t('safeSnap.currentOutcome')
+              }}:</b
+            >
+            <span class="float-right link-color">
+              {{ approvalData?.decision }}
+            </span>
+          </div>
+          <div v-if="!questionDetails?.finalizedAt" mt-3>
+            <b class="pr-3">{{ $t('safeSnap.currentBond') }}:</b>
+            <span class="float-right link-color">
+              {{ approvalData?.currentBond }}
+            </span>
+          </div>
         </div>
-        <div v-if="!questionDetails?.finalizedAt" mt-3>
-          <b class="pr-3">{{ $t('safeSnap.currentBond') }}:</b>
-          <span class="float-right link-color">
-            {{ approvalData?.currentBond }}
-          </span>
+
+        <div class="border rounded-lg p-3 link-color">
+          <b>{{ approvalData?.timeLeft }}</b>
         </div>
       </div>
 
-      <div class="border rounded-lg p-3 link-color">
-        <b>{{ approvalData?.timeLeft }}</b>
+      <div v-if="questionState === questionStates.questionNotSet">
+        <UiButton
+          class="w-full my-1"
+          @click="performAction"
+          v-text="$t('safeSnap.labels.setOutcome')"
+        />
+      </div>
+      <div v-if="questionState === questionStates.questionNotResolved">
+        <UiButton
+          class="w-full my-1"
+          @click="performAction"
+          v-text="$t('safeSnap.labels.changeOutcome')"
+        />
+      </div>
+      <div v-if="bondData.canClaim">
+        <UiButton
+          class="w-full my-1"
+          @click="claimBond"
+          v-text="$t('safeSnap.claimBond')"
+        />
       </div>
     </div>
+  </div>
 
-    <div v-if="questionState === questionStates.questionNotSet">
-      <UiButton
-        class="w-full my-1"
-        @click="performAction"
-        v-text="$t('safeSnap.labels.setOutcome')"
-      />
-    </div>
-    <div v-if="questionState === questionStates.questionNotResolved">
-      <UiButton
-        class="w-full my-1"
-        @click="performAction"
-        v-text="$t('safeSnap.labels.changeOutcome')"
-      />
-    </div>
-    <div v-if="bondData.canClaim">
-      <UiButton
-        class="w-full my-1"
-        @click="claimBond"
-        v-text="$t('safeSnap.claimBond')"
-      />
-    </div>
+  <div
+    v-if="questionState === questionStates.proposalApproved"
+    class="my-4"
+  >
+    <UiButton
+      @click="performAction"
+      v-text="
+        $t('safeSnap.labels.executeTxs', [
+          questionDetails.nextTxIndex + 1,
+          txs.length
+        ])
+      "
+    />
+  </div>
+
+  <div
+    v-if="questionState === questionStates.completelyExecuted"
+    class="my-4"
+  >
+    {{ $t('safeSnap.labels.executed') }}
   </div>
 
   <teleport to="#modal">
@@ -257,7 +278,7 @@ export default {
 
       if (!this.questionDetails.questionId)
         return QuestionStates.waitingForQuestion;
-        
+
       if (this.questionDetails.currentBond.isZero())
         return QuestionStates.questionNotSet;
 

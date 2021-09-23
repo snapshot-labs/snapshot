@@ -168,8 +168,8 @@ export default {
         />
       </div>
 
-      <div class="border-t py-3" v-if="!preview || proposalResolved">
-        <UiButton v-if="!preview" @click="addTransactionBatch">
+      <div class="border-t" v-if="!preview || proposalResolved">
+        <UiButton class="my-3" v-if="!preview" @click="addTransactionBatch">
           Add transaction batch
         </UiButton>
 
