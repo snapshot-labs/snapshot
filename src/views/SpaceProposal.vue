@@ -86,6 +86,7 @@ async function loadProposal() {
   }
 
   loading.value = false;
+  if (loaded.value) loadResults();
 }
 
 async function loadResults() {
