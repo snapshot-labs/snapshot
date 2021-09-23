@@ -86,7 +86,11 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
                 class="mb-0 pb-0 mt-0 text-[22px] !h-[32px] overflow-hidden"
               />
               <div class="mb-[12px] text-color">
-                {{ $tc('members', space.followers) }}
+                {{
+                  $tc('members', space.followers, {
+                    count: _n(space.followers)
+                  })
+                }}
               </div>
               <FollowButton :space="space" />
             </Block>
