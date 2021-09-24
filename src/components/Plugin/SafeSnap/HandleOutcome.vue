@@ -126,8 +126,10 @@ import { BigNumber } from '@ethersproject/bignumber';
 import { formatBatchTransaction } from '@/helpers/abi/utils';
 import { formatUnits } from '@ethersproject/units';
 import { useSafesnap } from '@/composables/useSafesnap';
+import { useWeb3 } from '@/composables/useWeb3';
 
 const { clearBatchError, setBatchError } = useSafesnap();
+const { web3 } = useWeb3();
 
 const plugin = new Plugin();
 
@@ -269,7 +271,7 @@ export default {
   },
   computed: {
     questionState() {
-      if (!this.$auth.web3) return QuestionStates.noWalletConnection;
+      if (!web3.value.account) return QuestionStates.noWalletConnection;
 
       if (this.loading) return QuestionStates.loading;
 
