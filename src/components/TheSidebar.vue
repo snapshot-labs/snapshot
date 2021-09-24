@@ -9,7 +9,7 @@ import { useUnseenProposals } from '@/composables/useUnseenProposals';
 import { useUserSkin } from '@/composables/useUserSkin';
 import { lsSet, lsGet } from '@/helpers/utils';
 
-const { spaces } = useApp();
+const { explore } = useApp();
 const { web3 } = useWeb3();
 const { loadFollows, followingSpaces } = useFollowSpace();
 const { domain } = useDomain();
@@ -53,7 +53,6 @@ watch(web3Account, () => {
 
 watch(followingSpaces, () => {
   draggableSpaces.value = followingSpaces.value;
-
   const sidebarSpaceOrder = lsGet(
     `sidebarSpaceOrder.${web3Account.value.slice(0, 8).toLowerCase()}`,
     []
@@ -93,7 +92,7 @@ onMounted(() => {
   >
     <div class="flex flex-col h-full overflow-scroll menu-tabs">
       <div class="min-h-[78px] h-[78px] flex items-center justify-center">
-        <router-link :to="{ name: 'home' }">
+        <router-link :to="{ path: '/' }">
           <Icon
             size="36"
             name="snapshot"
@@ -127,9 +126,13 @@ onMounted(() => {
                 v-if="hasUnseenProposalsBySpace(element)"
               />
               <router-link
-                :to="{ name: 'proposals', params: { key: element } }"
+                :to="{ name: 'spaceProposals', params: { key: element } }"
               >
-                <Token :space="spaces[element]" symbolIndex="space" size="44" />
+                <Token
+                  :space="explore.spaces[element]"
+                  symbolIndex="space"
+                  size="44"
+                />
               </router-link>
             </div>
           </template>
