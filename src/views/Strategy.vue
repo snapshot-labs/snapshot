@@ -1,15 +1,14 @@
 <script setup>
 import { computed } from 'vue';
 import { useRoute } from 'vue-router';
-import { getStrategy } from '@/helpers/utils';
 import { useApp } from '@/composables/useApp';
+import { useSearchFilters } from '@/composables/useSearchFilters';
 
 const route = useRoute();
-const { spaces, strategies } = useApp();
+const { strategies } = useApp();
+const { minifiedStrategiesArray } = useSearchFilters();
 
-const strategy = computed(() =>
-  getStrategy(strategies.value[route.params.name], spaces.value)
-);
+const strategy = computed(() => strategies.value[route.params.name]);
 </script>
 
 <template>
@@ -26,7 +25,12 @@ const strategy = computed(() =>
           {{ strategy.key }}
         </h1>
         <span
-          v-text="`In ${strategy.spaces.length} space(s)`"
+          v-text="
+            `In ${
+              minifiedStrategiesArray.find(st => st.key === route.params.name)
+                .spaces
+            } space(s)`
+          "
           class="text-color"
         />
         <UiMarkdown :body="strategy.about" class="mb-6 mt-4" />
