@@ -1,5 +1,5 @@
 <script setup>
-import { computed, onMounted, ref } from 'vue';
+import { computed, ref, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useSearchFilters } from '@/composables/useSearchFilters';
 import { getAddress } from '@ethersproject/address';
@@ -10,7 +10,6 @@ import { clone } from '@/helpers/utils';
 import { getSpaceUri } from '@/helpers/ens';
 import defaults from '@/locales/default';
 import { useCopy } from '@/composables/useCopy';
-import { useApp } from '@/composables/useApp';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useClient } from '@/composables/useClient';
 
@@ -18,14 +17,15 @@ const props = defineProps({
   spaceId: String,
   space: Object,
   from: String,
-  spaceFrom: Object
+  spaceFrom: Object,
+  spaceLoading: Boolean,
+  getExtentedSpaces: Function
 });
 
 const basicValidation = { name: 'basic', params: {} };
 
 const { t } = useI18n();
 const { copyToClipboard } = useCopy();
-const { getSpaces } = useApp();
 const { web3 } = useWeb3();
 const { send } = useClient();
 
@@ -98,7 +98,7 @@ async function handleSubmit() {
     } catch (e) {
       console.log(e);
     }
-    await getSpaces();
+    await props.getExtentedSpaces([props.spaceId]);
     loading.value = false;
   } else {
     console.log('Invalid schema', validate.value);
@@ -190,32 +190,34 @@ function setAvatarUrl(url) {
   if (typeof url === 'string') form.value.avatar = url;
 }
 
-onMounted(async () => {
-  try {
-    const uri = await getSpaceUri(props.spaceId);
-    console.log('URI', uri);
-    currentTextRecord.value = uri;
-    const space = clone(props.space);
-    if (!space) return;
-    delete space.id;
-    delete space._activeProposals;
-    space.strategies = space.strategies || [];
-    space.plugins = space.plugins || {};
-    space.validation = space.validation || basicValidation;
-    space.filters = space.filters || {};
-    currentSettings.value = clone(space);
-    form.value = space;
-  } catch (e) {
-    console.log(e);
+watchEffect(async () => {
+  if (!props.spaceLoading) {
+    try {
+      const uri = await getSpaceUri(props.spaceId);
+      console.log('URI', uri);
+      currentTextRecord.value = uri;
+      const space = clone(props.space);
+      if (!space) return;
+      delete space.id;
+      delete space._activeProposals;
+      space.strategies = space.strategies || [];
+      space.plugins = space.plugins || {};
+      space.validation = space.validation || basicValidation;
+      space.filters = space.filters || {};
+      currentSettings.value = clone(space);
+      form.value = space;
+    } catch (e) {
+      console.log(e);
+    }
+    if (props.from) {
+      const fromClone = clone(props.spaceFrom);
+      fromClone.validation = fromClone.validation || basicValidation;
+      delete fromClone.id;
+      delete fromClone._activeProposals;
+      form.value = fromClone;
+    }
+    loaded.value = true;
   }
-  if (props.from) {
-    const fromClone = clone(props.spaceFrom);
-    fromClone.validation = fromClone.validation || basicValidation;
-    delete fromClone.id;
-    delete fromClone._activeProposals;
-    form.value = fromClone;
-  }
-  loaded.value = true;
 });
 </script>
 

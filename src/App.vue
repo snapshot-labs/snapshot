@@ -24,7 +24,7 @@ provide('notify', notify);
 
 const space = computed(() => {
   const key = aliases[domain] || domain || route.params.key;
-  return explore.value.spaces?.[key] ? explore.value.spaces[key] : {};
+  return explore.value.spaces?.[key];
 });
 
 onMounted(async () => {
