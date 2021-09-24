@@ -54,12 +54,24 @@ export interface ContractInteractionModuleTransaction
 
 const EXPLORER_API_URLS = {
   '1': 'https://api.etherscan.io/api',
-  '4': 'https://api-rinkeby.etherscan.io/api'
+  '4': 'https://api-rinkeby.etherscan.io/api',
+  '100': 'https://blockscout.com/xdai/mainnet/api',
+  '73799': 'https://volta-explorer.energyweb.org/api',
+  '246': 'https://explorer.energyweb.org/api',
+  '137': 'https://api.polygonscan.com/api',
+  '56': 'https://api.bscscan.com/api',
+  '42161': 'https://api.arbiscan.io/api'
 };
 
 const GNOSIS_SAFE_TRANSACTION_API_URLS = {
   '1': 'https://safe-transaction.gnosis.io/api/v1/',
-  '4': 'https://safe-transaction.rinkeby.gnosis.io/api/v1/'
+  '4': 'https://safe-transaction.rinkeby.gnosis.io/api/v1/',
+  '100': 'https://safe-transaction.xdai.gnosis-safe.io/api/v1/',
+  '73799': 'https://safe-transaction.volta.gnosis-safe.io/api/v1/',
+  '246': 'https://safe-transaction.ewc.gnosis-safe.io/api/v1/',
+  '137': 'https://safe-transaction.polygon.gnosis-safe.io/api/v1/',
+  '56': 'https://safe-transaction.bsc.gnosis-safe.io/api/v1/',
+  '42161': 'https://safe-transaction.arbitrum.gnosis-safe.io/api/v1/'
 };
 
 const ERC20ContractABI = [
