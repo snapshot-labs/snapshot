@@ -1,19 +1,21 @@
 <script setup>
-import { computed, onMounted } from 'vue';
+import { computed, watchEffect } from 'vue';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { useProfiles } from '@/composables/useProfiles';
 import { getUrl } from '@snapshot-labs/snapshot.js/src/utils';
 
 const props = defineProps({
-  space: Object
+  space: Object,
+  spaceLoading: Boolean
 });
 
 const network = computed(() => networks[props.space.network]);
 
 const { profiles, addressArray } = useProfiles();
 
-onMounted(() => {
-  addressArray.value = props.space.admins.concat(props.space.members);
+watchEffect(() => {
+  if (props.space.admins)
+    addressArray.value = props.space.admins.concat(props.space.members);
 });
 </script>
 
@@ -26,7 +28,7 @@ onMounted(() => {
       <div class="px-4 md:px-0 mb-3 flex">
         <h2>{{ space.name }}</h2>
       </div>
-      <Block>
+      <Block :loading="spaceLoading">
         <div v-if="space.about" class="mb-3">
           <h4 class="link-color mb-2">{{ $t('settings.about') }}</h4>
           <UiText :text="space.about" />
