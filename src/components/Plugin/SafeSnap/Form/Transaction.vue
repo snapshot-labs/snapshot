@@ -38,8 +38,8 @@ export default {
   },
   computed: {
     title() {
-      if(this.open) {
-        return ''
+      if (this.open) {
+        return '';
       }
 
       if (this.modelValue) {
@@ -99,11 +99,13 @@ export default {
       :modelValue="type"
       @update:modelValue="handleTypeChange($event)"
     >
-      <template v-slot:label>type</template>
-      <option value="transferFunds">Transfer Funds</option>
-      <option value="transferNFT">Transfer NFT</option>
-      <option value="contractInteraction">Contract Interaction</option>
-      <option value="raw">Raw Transaction</option>
+      <template v-slot:label>{{ $t('safeSnap.type') }}</template>
+      <option value="transferFunds">{{ $t('safeSnap.transferFunds') }}</option>
+      <option value="transferNFT">{{ $t('safeSnap.transferNFT') }}</option>
+      <option value="contractInteraction">
+        {{ $t('safeSnap.contractInteraction') }}
+      </option>
+      <option value="raw">{{ $t('safeSnap.rawTransaction') }}</option>
     </UiSelect>
 
     <PluginSafeSnapFormContractInteraction

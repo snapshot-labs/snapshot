@@ -43,7 +43,7 @@ export default {
     :hideRemove="config.preview"
     :number="index + 1"
     :open="open"
-    :title="`Transaction Batch (${transactions.length})`"
+    :title="`${$t('safeSnap.batch')} (${transactions.length})`"
     @remove="$emit('remove')"
     @toggle="open = !open"
   >
@@ -72,7 +72,7 @@ export default {
     </Block>
 
     <UiButton v-if="!config.preview" @click="addTransaction">
-      Add transaction
+      {{ $t('safeSnap.addTransaction') }}
     </UiButton>
   </UiCollapsible>
 </template>

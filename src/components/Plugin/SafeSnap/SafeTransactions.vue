@@ -171,7 +171,7 @@ export default {
 
       <div class="border-t" v-if="!preview || proposalResolved">
         <UiButton class="my-3" v-if="!preview" @click="addTransactionBatch">
-          Add transaction batch
+          {{ $t('safeSnap.addBatch') }}
         </UiButton>
 
         <PluginSafeSnapHandleOutcome

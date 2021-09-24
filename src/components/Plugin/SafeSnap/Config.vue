@@ -52,13 +52,12 @@ export default {
   <div
     v-if="!preview || input.safes.length > 0"
     class="border-t border-b md:border rounded-none md:rounded-md mb-4 block-bg"
-    
   >
     <h4
       class="px-4 pt-3 border-b block header-bg rounded-t-none md:rounded-t-md"
-      style="padding-bottom: 12px;"
+      style="padding-bottom: 12px"
     >
-      Transactions
+      {{ $t('safeSnap.transactions') }}
     </h4>
     <div class="p-4">
       <div v-for="(safe, index) in input.safes" v-bind:key="index">
