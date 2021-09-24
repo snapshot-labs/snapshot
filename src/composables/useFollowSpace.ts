@@ -33,6 +33,8 @@ export function useFollowSpace(spaceObj: any = {}) {
   );
 
   async function loadFollows() {
+    if (!web3.value.isAuth) return;
+
     loadingFollows.value = true;
     try {
       Promise.all([
