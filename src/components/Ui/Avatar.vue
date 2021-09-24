@@ -5,7 +5,6 @@ defineProps({
   address: String,
   size: String,
   imgsrc: String,
-  seed: [Number, String],
   space: Object
 });
 

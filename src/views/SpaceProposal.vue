@@ -13,7 +13,8 @@ import { useClient } from '@/composables/useClient';
 
 const props = defineProps({
   spaceId: String,
-  space: Object
+  space: Object,
+  spaceLoading: Boolean
 });
 
 const route = useRoute();
@@ -26,7 +27,7 @@ const { send } = useClient();
 
 const modalOpen = ref(false);
 const selectedChoices = ref(null);
-const loaded = ref(false);
+const loading = ref(true);
 const loadedResults = ref(false);
 const proposal = ref({});
 const votes = ref([]);
@@ -35,9 +36,11 @@ const totalScore = ref(0);
 const scores = ref([]);
 const dropdownLoading = ref(false);
 const modalStrategiesOpen = ref(false);
+const proposalObj = ref({});
 
 const web3Account = computed(() => web3.value.account);
 const isCreator = computed(() => proposal.value.author === web3Account.value);
+const loaded = computed(() => !props.spaceLoading && !loading.value);
 const isAdmin = computed(() => {
   const admins = (props.space.admins || []).map(admin => admin.toLowerCase());
   return admins.includes(web3Account.value?.toLowerCase());
@@ -72,8 +75,8 @@ function clickVote() {
 }
 
 async function loadProposal() {
-  const proposalObj = await getProposal(id);
-  proposal.value = proposalObj.proposal;
+  proposalObj.value = await getProposal(id);
+  proposal.value = proposalObj.value.proposal;
   // Redirect to proposal spaceId if it doesn't match route key
   if (
     route.name === 'spaceProposal' &&
@@ -82,11 +85,15 @@ async function loadProposal() {
     router.push({ name: 'error-404' });
   }
 
-  loaded.value = true;
+  loading.value = false;
+  if (loaded.value) loadResults();
+}
+
+async function loadResults() {
   const resultsObj = await getResults(
     props.space,
-    proposalObj.proposal,
-    proposalObj.votes
+    proposalObj.value.proposal,
+    proposalObj.value.votes
   );
   results.value = resultsObj.results;
   votes.value = resultsObj.votes;
@@ -163,9 +170,15 @@ watch(web3Account, (val, prev) => {
   if (val?.toLowerCase() !== prev) loadPower();
 });
 
+watch(loaded, () => {
+  if (loaded.value) {
+    loadResults();
+    loadPower();
+  }
+});
+
 onMounted(async () => {
   await loadProposal();
-  loadPower();
 });
 </script>
 

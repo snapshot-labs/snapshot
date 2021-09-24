@@ -5,7 +5,7 @@ const props = defineProps({
   error: [String, Boolean],
   number: Boolean,
   disabled: Boolean,
-  maxlength: Number,
+  maxlength: [Number, String],
   additionalClass: String,
   required: {
     type: Boolean,

@@ -18,11 +18,12 @@ const nbrMembers = explore.value.spaces[props.space.id].followers;
 const web3Account = computed(() => web3.value.account);
 
 const isAdmin = computed(() => {
-  const admins = props.space.admins.map(address => address.toLowerCase());
+  const admins = props.space?.admins?.map(address => address.toLowerCase());
+
   return (
     auth.isAuthenticated.value &&
     web3Account.value &&
-    admins.includes(web3Account.value.toLowerCase())
+    admins?.includes(web3Account.value.toLowerCase())
   );
 });
 </script>
@@ -54,7 +55,7 @@ const isAdmin = computed(() => {
         />
         <router-link
           v-if="
-            space.strategies.find(strategy => strategy.name === 'delegation')
+            space.strategies?.find(strategy => strategy.name === 'delegation')
           "
           :to="{ name: 'delegate', params: { key: space.id } }"
           v-text="$t('delegate.header')"
