@@ -261,6 +261,7 @@ onMounted(async () => {
           v-if="delegatesLoading || delegatesWithScore.length > 0"
           :title="$t('delegate.topDelegates')"
           :slim="true"
+          :loading="delegatesLoading"
         >
           <div
             v-for="(delegate, i) in delegatesWithScore"
