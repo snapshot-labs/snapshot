@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, onMounted, watch, watchPostEffect } from 'vue';
 
 const props = defineProps({
   space: Object,
@@ -7,6 +7,8 @@ const props = defineProps({
   votes: Object
 });
 
+const Chart = ref(null);
+const currentTab = ref('total_votes_per_day');
 const totalVotesPerDayChart = ref(null);
 const votingPowerPerAddress = ref(null);
 const votingPowerPerDay = ref(null);
@@ -108,6 +110,8 @@ function loadShareOfVotingPowerChart(Chart) {
     type: 'doughnut',
     data: data,
     options: {
+      maintainAspectRatio: false,
+      responsive: true,
       plugins: {
         legend: {
           display: true,
@@ -179,26 +183,65 @@ function loadVotingPowerPerDayChart(Chart) {
 }
 
 onMounted(() => {
-  import('chart.js').then(({ Chart, registerables }) => {
-    Chart.register(...registerables);
-
-    loadDailyChart(Chart);
-    loadShareOfVotingPowerChart(Chart);
-    loadVotingPowerPerDayChart(Chart);
+  import('chart.js').then(({ Chart: Chartjs, registerables }) => {
+    Chartjs.register(...registerables);
+    Chart.value = Chartjs;
   });
 });
+
+watch(
+  [currentTab, Chart],
+  ([currentTab, Chart]) => {
+    if (currentTab === 'total_votes_per_day') {
+      loadDailyChart(Chart);
+    }
+    if (currentTab === 'share_of_voting_power') {
+      loadShareOfVotingPowerChart(Chart);
+    }
+    if (currentTab === 'voting_power_per_day') {
+      loadVotingPowerPerDayChart(Chart);
+    }
+  },
+  { flush: 'post' }
+);
 </script>
 
 <template>
   <Block :title="$t('charts.charts')">
+    <div class="py-3 flex flex-row">
+      <button
+        v-if="space.plugins?.charts.total_votes_per_day.enabled"
+        class="block px-4 py-2 sidenav-item"
+        :class="currentTab === 'total_votes_per_day' && 'charts-selected-tab'"
+        @click="currentTab = 'total_votes_per_day'"
+      >
+      {{ $t('charts.totalVotesPerDay') }}
+      </button>
+      <button
+        v-if="space.plugins?.charts.voting_power_per_address.enabled"
+        class="block px-4 py-2 sidenav-item"
+        :class="currentTab === 'share_of_voting_power' && 'charts-selected-tab'"
+        @click="currentTab = 'share_of_voting_power'"
+      >
+        {{ $t('charts.shareOfVotingPower') }}
+      </button>
+      <button
+        v-if="space.plugins?.charts.voting_power_per_day.enabled"
+        class="block px-4 py-2 sidenav-item"
+        :class="currentTab === 'voting_power_per_day' && 'charts-selected-tab'"
+        @click="currentTab = 'voting_power_per_day'"
+      >
+        {{ $t('charts.totalVotesPerDay') }}
+      </button>
+    </div>
     <div v-if="votes.length > 0">
-      <div v-if="space.plugins?.charts.total_votes_per_day.enabled">
+      <div v-if="space.plugins?.charts.total_votes_per_day.enabled && currentTab === 'total_votes_per_day'">
         <canvas ref="totalVotesPerDayChart" />
       </div>
-      <div v-if="space.plugins?.charts.voting_power_per_address.enabled">
+      <div v-if="space.plugins?.charts.voting_power_per_address.enabled && currentTab === 'share_of_voting_power'">
         <canvas ref="votingPowerPerAddress" />
       </div>
-      <div v-if="space.plugins?.charts.voting_power_per_day.enabled">
+      <div v-if="space.plugins?.charts.voting_power_per_day.enabled && currentTab === 'voting_power_per_day'">
         <canvas ref="votingPowerPerDay" />
       </div>
     </div>

@@ -249,6 +249,12 @@ textarea {
   }
 }
 
+.sidenav-item {
+  &.charts-selected-tab {
+    border-bottom: 3px solid;
+  }
+}
+
 .truncated {
   display: block;
   white-space: nowrap; /* forces text to single line */

@@ -277,6 +277,9 @@
   },
   "charts": {
     "charts": "Charts",
-    "noVotesYet": "There are no votes to visualize yet."
+    "noVotesYet": "There are no votes to visualize yet.",
+    "totalVotesPerDay": "Total votes per day",
+    "shareOfVotingPower": "Share of voting power",
+    "votingPowerPerDay": "Voting power per day"
   }
 }
