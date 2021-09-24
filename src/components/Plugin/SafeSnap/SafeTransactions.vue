@@ -144,6 +144,7 @@ export default {
       "
       style="padding-bottom: 12px"
     >
+      <PluginSafeSnapNetworkIcon :network="network" class="mr-2 float-left" />
       {{ networkName }} Safe
       <a
         v-if="gnosisSafeAddress"
