@@ -71,7 +71,7 @@
     "sass": "~1.32.6",
     "sass-loader": "^8.0.2",
     "tailwindcss": "^2.2.9",
-    "vite": "^2.5.0",
+    "vite": "^2.6.0-beta.2",
     "vite-plugin-components": "^0.13.2",
     "walletlink": "^2.1.8"
   },
