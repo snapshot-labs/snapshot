@@ -185,6 +185,7 @@
     "network": "Ağ",
     "symbol": "Sembol",
     "skin": "Birim",
+    "customDomain": "Custom domain",
     "domain": "Domain adı",
     "strategies": "Strateji",
     "hideSpace": "Ana sayfadan alanı gizle",
