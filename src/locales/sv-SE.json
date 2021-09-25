@@ -185,6 +185,7 @@
     "network": "Nätverk",
     "symbol": "Symbol",
     "skin": "Skin",
+    "customDomain": "Custom domain",
     "domain": "Domain namn",
     "strategies": "Strategi(er)",
     "hideSpace": "Dölj space från hemsida",
