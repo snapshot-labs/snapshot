@@ -175,11 +175,11 @@ watch(networkKey, (val, prev) => {
 });
 
 watchEffect(async () => {
-  if (explore.value.spaces[form.value.id])
+  if (explore.value.spaces[form.value.id]) {
     await getExtentedSpaces([form.value.id]);
-  if (extentedSpaces.value.some(s => s.id === form.value.id))
-    getDelegatesWithScore();
-  else delegatesWithScore.value = [];
+    if (extentedSpaces.value.some(s => s.id === form.value.id))
+      getDelegatesWithScore();
+  } else delegatesWithScore.value = [];
 });
 
 onMounted(async () => {
