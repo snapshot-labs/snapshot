@@ -185,6 +185,7 @@
     "network": "Network",
     "symbol": "Sagisag",
     "skin": "Skin",
+    "customDomain": "Custom domain",
     "domain": "Domain name",
     "strategies": "Strategie(s)",
     "hideSpace": "Itago ang espasyo sa homepage",
