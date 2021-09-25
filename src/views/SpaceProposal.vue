@@ -11,7 +11,6 @@ import client from '@/helpers/clientEIP712';
 import { useDomain } from '@/composables/useDomain';
 import { useSharing } from '@/composables/useSharing';
 import { useNotifications } from '@/composables/useNotifications';
-import { useI18n } from 'vue-i18n';
 import { useWeb3 } from '@/composables/useWeb3';
 
 const props = defineProps({
@@ -28,7 +27,6 @@ const { t } = useI18n();
 const { web3 } = useWeb3();
 const { notify } = useNotifications();
 
-const key = route.params.key;
 const id = route.params.id;
 
 const modalOpen = ref(false);
