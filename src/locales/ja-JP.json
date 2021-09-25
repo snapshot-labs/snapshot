@@ -185,6 +185,7 @@
     "network": "ネットワーク",
     "symbol": "シンボル",
     "skin": "スキン",
+    "customDomain": "Custom domain",
     "domain": "ドメイン名",
     "strategies": "ストラテジー",
     "hideSpace": "サイトからスペースを隠す",
