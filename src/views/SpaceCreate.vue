@@ -1,6 +1,6 @@
 <script setup>
 import { ref, watchEffect, computed, onMounted } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import { useRouter } from 'vue-router';
 import draggable from 'vuedraggable';
 import { useI18n } from 'vue-i18n';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
@@ -15,20 +15,20 @@ import client from '@/helpers/clientEIP712';
 import { useDomain } from '@/composables/useDomain';
 import { useApolloQuery } from '@/composables/useApolloQuery';
 import { useNotifications } from '@/composables/useNotifications';
-import { useApp } from '@/composables/useApp';
 import { useWeb3 } from '@/composables/useWeb3';
 
-const route = useRoute();
+const props = defineProps({
+  spaceId: String,
+  space: Object,
+  from: String
+});
+
 const router = useRouter();
 const { t } = useI18n();
 const auth = getInstance();
 const { domain } = useDomain();
 const { notify } = useNotifications();
-const { spaces } = useApp();
 const { web3 } = useWeb3();
-
-const key = route.params.key;
-const from = route.params.from;
 
 const loading = ref(false);
 const choices = ref([]);
@@ -51,9 +51,9 @@ const selectedDate = ref('');
 const counter = ref(0);
 const nameForm = ref(null);
 const passValidation = ref([true]);
+const loadingSnapshot = ref(true);
 
 const web3Account = computed(() => web3.value.account);
-const space = computed(() => spaces.value[key]);
 const proposal = computed(() =>
   Object.assign(form.value, { choices: choices.value })
 );
@@ -61,11 +61,11 @@ const proposal = computed(() =>
 // Check if account passes space validation
 watchEffect(async () => {
   if (web3Account.value && auth.isAuthenticated.value) {
-    const validationName = space.value.validation?.name ?? 'basic';
-    const validationParams = space.value.validation?.params ?? {};
+    const validationName = props.space.validation?.name ?? 'basic';
+    const validationParams = props.space.validation?.params ?? {};
     const isValid = await validations[validationName](
       web3Account.value,
-      clone(space.value),
+      clone(props.space),
       '',
       clone(validationParams)
     );
@@ -125,7 +125,7 @@ async function handleSubmit() {
 
   try {
     const result = await client.proposal(auth.web3, web3Account.value, {
-      space: space.value.id,
+      space: props.space.id,
       type: form.value.type,
       title: form.value.name,
       body: form.value.body,
@@ -133,17 +133,17 @@ async function handleSubmit() {
       start: form.value.start,
       end: form.value.end,
       snapshot: form.value.snapshot,
-      network: space.value.network,
-      strategies: JSON.stringify(space.value.strategies),
+      network: props.space.network,
+      strategies: JSON.stringify(props.space.strategies),
       plugins: JSON.stringify(plugins),
       metadata: JSON.stringify({})
     });
     console.log('Result', result);
     notify(t('notify.yourIsIn', ['proposal']));
     router.push({
-      name: 'proposal',
+      name: 'spaceProposal',
       params: {
-        key: key,
+        key: props.spaceId,
         id: result.id
       }
     });
@@ -160,12 +160,12 @@ async function handleSubmit() {
 }
 
 const { modalAccountOpen } = useModal();
-const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(key);
+const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(props.spaceId);
 
 function clickSubmit() {
   !web3Account.value
     ? (modalAccountOpen.value = true)
-    : !termsAccepted.value && space.value.terms
+    : !termsAccepted.value && props.space.terms
     ? (modalTermsOpen.value = true)
     : handleSubmit();
 }
@@ -177,7 +177,7 @@ async function loadProposal() {
     {
       query: PROPOSAL_QUERY,
       variables: {
-        id: from
+        id: props.from
       }
     },
     'proposal'
@@ -205,10 +205,17 @@ async function loadProposal() {
 onMounted(async () => {
   nameForm.value.focus();
   addChoice(2);
-  blockNumber.value = await getBlockNumber(getProvider(space.value.network));
-  form.value.snapshot = blockNumber.value;
 
-  if (from) loadProposal();
+  if (props.from) loadProposal();
+});
+
+watchEffect(async () => {
+  loadingSnapshot.value = true;
+  if (props.space.network) {
+    blockNumber.value = await getBlockNumber(getProvider(props.space.network));
+    form.value.snapshot = blockNumber.value;
+    loadingSnapshot.value = false;
+  }
 });
 </script>
 
@@ -217,7 +224,7 @@ onMounted(async () => {
     <template #content-left>
       <div class="px-4 md:px-0 mb-3">
         <router-link
-          :to="{ name: domain ? 'home' : 'proposals' }"
+          :to="domain ? { path: '/' } : { name: 'spaceProposals' }"
           class="text-color"
         >
           <Icon name="back" size="22" class="!align-middle" />
@@ -335,7 +342,7 @@ onMounted(async () => {
             <span v-if="!form.end">{{ $t('create.endDate') }}</span>
             <span v-else v-text="$d(form.end * 1e3, 'short', 'en-US')" />
           </UiButton>
-          <UiButton class="w-full mb-2">
+          <UiButton :loading="loadingSnapshot" class="w-full mb-2">
             <input
               v-model="form.snapshot"
               type="number"

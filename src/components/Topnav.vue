@@ -11,7 +11,7 @@ const { modalAccountOpen } = useModal();
 const { env, domain } = useDomain();
 const route = useRoute();
 
-const { spaces } = useApp();
+const { explore } = useApp();
 const { login, web3 } = useWeb3();
 
 const loading = ref(false);
@@ -19,11 +19,11 @@ const modalWalletNotice = ref(false);
 
 const space = computed(() => {
   const key = domain || route.params.key;
-  return spaces.value[key] ? spaces.value[key] : false;
+  return explore.value.space?.[key];
 });
 
 function setTitle() {
-  document.title = space.value.name ? space.value.name : 'Snapshot';
+  document.title = space.value?.name ?? 'Snapshot';
 }
 
 async function handleLogin(connector) {
@@ -60,7 +60,7 @@ onMounted(() => setTitle());
         <div class="flex items-center" style="height: 78px">
           <div class="flex-auto flex items-center">
             <router-link
-              :to="{ name: 'home' }"
+              :to="{ path: '/' }"
               class="flex items-center"
               style="font-size: 24px; padding-top: 4px"
             >

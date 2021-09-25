@@ -61,34 +61,14 @@ export function lsRemove(key: string) {
   return localStorage.removeItem(`${pkg.name}.${key}`);
 }
 
-export function getStrategy(strategy, spaces) {
-  const clonedStrategy = clone(strategy);
-  clonedStrategy.spaces = Object.entries(spaces)
-    .filter(
-      (space: any) =>
-        space[1].strategies &&
-        space[1].strategies.map(s => s.name).includes(strategy.key)
-    )
-    .map(space => space[0]);
-  return clonedStrategy;
-}
-
-export function formatSpace(key, space) {
-  space = {
-    id: key,
-    ...space,
-    members: space.members || [],
-    admins: space.admins || [],
-    filters: space.filters || {}
-  };
-  if (!space.filters.minScore) space.filters.minScore = 0;
-
-  if (space.plugins?.daoModule) {
+export function formatSpace(space) {
+  if (space?.plugins?.daoModule) {
     // The Dao Module has been renamed to SafeSnap
     // Previous spaces plugins have to be renamed
     space.plugins.safeSnap = space.plugins.daoModule;
     delete space.plugins.daoModule;
   }
+  if (space?.skin === null) delete space.skin;
   return space;
 }
 
