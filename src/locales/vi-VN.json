@@ -185,6 +185,7 @@
     "network": "Mạng",
     "symbol": "Biểu tượng",
     "skin": "Skin",
+    "customDomain": "Custom domain",
     "domain": "Tên miền",
     "strategies": "Chiến lược(s)",
     "hideSpace": "Ẩn không gian khỏi trang chủ",
