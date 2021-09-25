@@ -14,8 +14,7 @@ const state = reactive({
   network: networks[defaultNetwork],
   authLoading: false,
   profile: null,
-  walletConnectType: null,
-  isAuth: false
+  walletConnectType: null
 });
 
 export function useWeb3() {
@@ -23,7 +22,6 @@ export function useWeb3() {
     auth = getInstance();
     state.authLoading = true;
     await auth.login(connector);
-    state.isAuth = true;
     if (auth.provider.value) {
       auth.web3 = new Web3Provider(auth.provider.value);
       await loadProvider();
@@ -36,7 +34,6 @@ export function useWeb3() {
     auth.logout();
     state.account = '';
     state.profile = null;
-    state.isAuth = false;
   }
 
   async function loadProvider() {

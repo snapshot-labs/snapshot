@@ -2,6 +2,7 @@ import { computed, ref } from 'vue';
 import { useModal } from '@/composables/useModal';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useApolloQuery } from '@/composables/useApolloQuery';
+import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { FOLLOWS_QUERY } from '@/helpers/queries';
 import { useAliasAction } from '@/composables/useAliasAction';
 import client from '@/helpers/EIP712';
@@ -33,7 +34,9 @@ export function useFollowSpace(spaceObj: any = {}) {
   );
 
   async function loadFollows() {
-    if (!web3.value.isAuth) return;
+    const { isAuthenticated } = getInstance();
+
+    if (!isAuthenticated.value) return;
 
     loadingFollows.value = true;
     try {
