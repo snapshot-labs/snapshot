@@ -35,7 +35,7 @@ const isAdmin = computed(() => {
         <Token :space="space" symbolIndex="space" size="80" class="mt-3 mb-2" />
         <h3 class="mb-[2px]">{{ space.name }}</h3>
         <div class="mb-[12px] text-color">
-          {{ $tc('members', nbrMembers,{count:_n(nbrMembers)}) }}
+          {{ $tc('members', nbrMembers, { count: _n(nbrMembers) }) }}
         </div>
         <FollowButton :space="space" />
       </div>
