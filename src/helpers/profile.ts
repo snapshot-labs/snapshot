@@ -70,6 +70,17 @@ function lookupAddresses(addresses) {
   });
 }
 
+async function getENSAvatar(ens: string) {
+  const network = '1';
+  const provider = getProvider(network);
+  const resolver = await provider.getResolver(ens);
+  const avatar = await resolver.getText('avatar');
+  if (avatar && avatar.length > 0) {
+    return avatar;
+  }
+  return '';
+}
+
 export async function getProfiles(addresses) {
   addresses = addresses.slice(0, 1000);
   let ensNames: any = {};
@@ -84,11 +95,20 @@ export async function getProfiles(addresses) {
   }
 
   const profiles = Object.fromEntries(addresses.map(address => [address, {}]));
+
   return Object.fromEntries(
-    Object.entries(profiles).map(([address, profile]) => {
-      profile = _3BoxProfiles[address.toLowerCase()] || {};
-      profile.ens = ensNames[address.toLowerCase()] || '';
-      return [address, profile];
-    })
+    await Promise.all(
+      Object.entries(profiles).map(async ([address, profile]) => {
+        profile = _3BoxProfiles[address.toLowerCase()] || {};
+        profile.ens = ensNames[address.toLowerCase()] || '';
+        if (profile.ens) {
+          const ensAvatar = await getENSAvatar(profile.ens);
+          if (ensAvatar.length > 0) {
+            profile.image = ensAvatar;
+          }
+        }
+        return [address, profile];
+      })
+    )
   );
 }
