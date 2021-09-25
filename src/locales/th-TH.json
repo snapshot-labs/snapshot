@@ -185,6 +185,7 @@
     "network": "เครือข่าย",
     "symbol": "สัญลักษณ์",
     "skin": "ผิว",
+    "customDomain": "Custom domain",
     "domain": "ชื่อโดเมน",
     "strategies": "กลยุทธ์(s)",
     "hideSpace": "ซ่อนจากหน้าหลัก",
