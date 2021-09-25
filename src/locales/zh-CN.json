@@ -185,6 +185,7 @@
     "network": "网络",
     "symbol": "符号",
     "skin": "皮肤",
+    "customDomain": "Custom domain",
     "domain": "域名",
     "strategies": "策略",
     "hideSpace": "从主页隐藏空间",
