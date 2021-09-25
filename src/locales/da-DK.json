@@ -185,6 +185,7 @@
     "network": "netværk",
     "symbol": "Symbol",
     "skin": "Layout",
+    "customDomain": "Custom domain",
     "domain": "Domænenavn",
     "strategies": "Strategier",
     "hideSpace": "strategierSide)",
