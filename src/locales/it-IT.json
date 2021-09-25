@@ -185,6 +185,7 @@
     "network": "Rete",
     "symbol": "Simbolo",
     "skin": "Tema",
+    "customDomain": "Custom domain",
     "domain": "Nome del dominio",
     "strategies": "Strategie",
     "hideSpace": "Nascondi lo spazio dalla pagina iniziale",
