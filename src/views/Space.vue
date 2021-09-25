@@ -1,23 +1,19 @@
 <script setup>
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted } from 'vue';
 import { useApp } from '@/composables/useApp';
 import { useRoute } from 'vue-router';
 import { useDomain } from '@/composables/useDomain';
 import aliases from '@/../snapshot-spaces/spaces/aliases.json';
 import { useRouter } from 'vue-router';
-import { useApolloQuery } from '@/composables/useApolloQuery';
-import { SPACES_QUERY } from '@/helpers/queries';
 import { formatSpace } from '@/helpers/utils';
+import { useGetSpaces } from '@/composables/useGetSpaces';
 
 const route = useRoute();
 const router = useRouter();
 const { domain } = useDomain();
 const { explore } = useApp();
-const { apolloQuery } = useApolloQuery();
 const aliasedSpace = aliases[domain] || aliases[route.params.key];
-
-const extentedSpaces = ref([]);
-const spaceLoading = ref(true);
+const { getExtentedSpaces, extentedSpaces, spaceLoading } = useGetSpaces();
 
 // Redirect the user to the ENS address if the space is aliased.
 if (aliasedSpace) {
@@ -39,26 +35,6 @@ const from = computed(() => route.params.from);
 const spaceFrom = computed(() =>
   formatSpace(extentedSpaces.value?.find(s => s.id === from.value))
 );
-
-async function getExtentedSpaces(id_in = []) {
-  spaceLoading.value = true;
-  try {
-    const response = await apolloQuery(
-      {
-        query: SPACES_QUERY,
-        variables: {
-          id_in
-        }
-      },
-      'spaces'
-    );
-    extentedSpaces.value = response;
-    spaceLoading.value = false;
-  } catch (e) {
-    console.error(e);
-    spaceLoading.value = false;
-  }
-}
 
 onMounted(() => getExtentedSpaces([spaceId.value, from.value]));
 </script>

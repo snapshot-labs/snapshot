@@ -22,6 +22,7 @@ import { sleep } from '@/helpers/utils';
 import { useApp } from '@/composables/useApp';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useTxStatus } from '@/composables/useTxStatus';
+import { useGetSpaces } from '@/composables/useGetSpaces';
 
 const abi = ['function setDelegate(bytes32 id, address delegate)'];
 
@@ -32,6 +33,7 @@ const { notify } = useNotifications();
 const { explore } = useApp();
 const { web3 } = useWeb3();
 const { pendingCount } = useTxStatus();
+const { getExtentedSpaces, extentedSpaces, spaceLoading } = useGetSpaces();
 
 const modalOpen = ref(false);
 const currentId = ref('');
@@ -51,7 +53,7 @@ const { profiles, addressArray } = useProfiles();
 
 const web3Account = computed(() => web3.value.account);
 const networkKey = computed(() => web3.value.network.key);
-const space = computed(() => spaces.value[form.value.id]);
+const space = computed(() => explore.value.spaces[form.value.id]);
 
 const isValid = computed(() => {
   const address = form.value.address;
@@ -60,8 +62,7 @@ const isValid = computed(() => {
     web3Account.value &&
     (address.includes('.eth') || isAddress(address)) &&
     address.toLowerCase() !== web3Account.value.toLowerCase() &&
-    (form.value.id === '' ||
-      explore.value.spaces.some(s => s.id === form.value.id))
+    (form.value.id === '' || explore.value.spaces[form.value.id])
   );
 });
 
@@ -112,46 +113,51 @@ function clearDelegate(id, delegate) {
 
 async function getDelegatesWithScore() {
   delegatesLoading.value = true;
-  const { delegations } = await getDelegatesBySpace(
-    space.value.network,
-    space.value.id
-  );
+  try {
+    const { delegations } = await getDelegatesBySpace(
+      space.value.network,
+      space.value.id
+    );
 
-  const uniqueDelegators = Array.from(
-    new Set(delegations.map(d => d.delegate))
-  ).map(delegate => {
-    return delegations.find(a => a.delegate === delegate);
-  });
-
-  const provider = getProvider(space.value.network);
-  const delegatesAddresses = uniqueDelegators.map(d => d.delegate);
-  const delegationStrategy = space.value.strategies.filter(
-    strategy => strategy.name === 'delegation'
-  );
-  const scores = await getScores(
-    space.value.id,
-    delegationStrategy,
-    space.value.network,
-    provider,
-    delegatesAddresses,
-    'latest'
-  );
-
-  uniqueDelegators.forEach(delegate => {
-    const delegationScore = scores[0];
-    Object.entries(delegationScore).forEach(([address, score]) => {
-      if (address === delegate.delegate) {
-        delegate.score = score;
-      }
+    const uniqueDelegators = Array.from(
+      new Set(delegations.map(d => d.delegate))
+    ).map(delegate => {
+      return delegations.find(a => a.delegate === delegate);
     });
-  });
 
-  const sortedDelegates = uniqueDelegators
-    .filter(delegate => delegate.score > 0)
-    .sort((a, b) => b.score - a.score);
+    const provider = getProvider(space.value.network);
+    const delegatesAddresses = uniqueDelegators.map(d => d.delegate);
+    const delegationStrategy = extentedSpaces.value
+      .find(s => s.id === form.value.id)
+      .strategies.filter(strategy => strategy.name === 'delegation');
+    const scores = await getScores(
+      space.value.id,
+      delegationStrategy,
+      space.value.network,
+      provider,
+      delegatesAddresses,
+      'latest'
+    );
 
-  delegatesWithScore.value = sortedDelegates;
-  delegatesLoading.value = false;
+    uniqueDelegators.forEach(delegate => {
+      const delegationScore = scores[0];
+      Object.entries(delegationScore).forEach(([address, score]) => {
+        if (address === delegate.delegate) {
+          delegate.score = score;
+        }
+      });
+    });
+
+    const sortedDelegates = uniqueDelegators
+      .filter(delegate => delegate.score > 0)
+      .sort((a, b) => b.score - a.score);
+
+    delegatesWithScore.value = sortedDelegates;
+    delegatesLoading.value = false;
+  } catch (e) {
+    delegatesLoading.value = false;
+    console.log(e);
+  }
 }
 
 watchEffect(() => {
@@ -168,12 +174,12 @@ watch(networkKey, (val, prev) => {
   if (val !== prev) load();
 });
 
-watchEffect(() => {
-  if (spaces.value[form.value.id]) {
+watchEffect(async () => {
+  if (explore.value.spaces[form.value.id])
+    await getExtentedSpaces([form.value.id]);
+  if (extentedSpaces.value.some(s => s.id === form.value.id))
     getDelegatesWithScore();
-  } else {
-    delegatesWithScore.value = [];
-  }
+  else delegatesWithScore.value = [];
 });
 
 onMounted(async () => {
@@ -259,10 +265,12 @@ onMounted(async () => {
           </div>
         </Block>
         <Block
-          v-if="delegatesLoading || delegatesWithScore.length > 0"
+          v-if="
+            delegatesLoading || spaceLoading || delegatesWithScore.length > 0
+          "
           :title="$t('delegate.topDelegates')"
           :slim="true"
-          :loading="delegatesLoading"
+          :loading="delegatesLoading || spaceLoading"
         >
           <div
             v-for="(delegate, i) in delegatesWithScore"
