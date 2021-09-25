@@ -185,6 +185,7 @@
     "network": "Сеть",
     "symbol": "Символ",
     "skin": "Тема",
+    "customDomain": "Custom domain",
     "domain": "Доменное имя",
     "strategies": "Стратегия(и)",
     "hideSpace": "Скрыть раздел на главной страницы",
