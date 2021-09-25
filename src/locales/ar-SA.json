@@ -185,6 +185,7 @@
     "network": "الشبكة",
     "symbol": "الرمز",
     "skin": "المظهر",
+    "customDomain": "Custom domain",
     "domain": "إسم النطاق",
     "strategies": "استراتيجية (استراتيجيات)",
     "hideSpace": "إخفاء المساحة من الصفحة الرئيسية",
