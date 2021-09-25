@@ -185,6 +185,7 @@
     "network": "Verkko",
     "symbol": "Symboli",
     "skin": "Skin",
+    "customDomain": "Custom domain",
     "domain": "Verkkotunnus",
     "strategies": "Strategia(t)",
     "hideSpace": "Piilota välilyönti etusivulta",
