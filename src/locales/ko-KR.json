@@ -185,6 +185,7 @@
     "network": "회로망",
     "symbol": "상징",
     "skin": "피부",
+    "customDomain": "Custom domain",
     "domain": "도메인 이름",
     "strategies": "전략(에스)",
     "hideSpace": "숨기기 공간 부터 홈페이지",
