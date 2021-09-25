@@ -185,6 +185,7 @@
     "network": "Network",
     "symbol": "Simbol",
     "skin": "Tema",
+    "customDomain": "Custom domain",
     "domain": "Naziv domena",
     "strategies": "Strategie(s)",
     "hideSpace": "Sakrij prostor sa početne stranice",
