@@ -25,7 +25,7 @@ const route = useRoute();
 const { t } = useI18n();
 const auth = getInstance();
 const { notify } = useNotifications();
-const { spaces } = useApp();
+const { explore } = useApp();
 const { web3 } = useWeb3();
 const { pendingCount } = useTxStatus();
 
@@ -51,7 +51,8 @@ const isValid = computed(() => {
     web3Account.value &&
     (address.includes('.eth') || isAddress(address)) &&
     address.toLowerCase() !== web3Account.value.toLowerCase() &&
-    (form.value.id === '' || spaces.value[form.value.id])
+    (form.value.id === '' ||
+      explore.value.spaces.some(s => s.id === form.value.id))
   );
 });
 

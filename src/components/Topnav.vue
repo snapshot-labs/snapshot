@@ -13,7 +13,7 @@ const { modalAccountOpen } = useModal();
 const { env, domain } = useDomain();
 const route = useRoute();
 
-const { spaces } = useApp();
+const { explore } = useApp();
 const { login, web3 } = useWeb3();
 const { toggleSkin, getSkinIcon } = useUserSkin();
 
@@ -22,11 +22,11 @@ const modalWalletNotice = ref(false);
 
 const space = computed(() => {
   const key = domain || route.params.key;
-  return spaces.value[key] ? spaces.value[key] : false;
+  return explore.value.space?.[key];
 });
 
 function setTitle() {
-  document.title = space.value.name ? space.value.name : 'Snapshot';
+  document.title = space.value?.name ?? 'Snapshot';
 }
 
 async function handleLogin(connector) {
