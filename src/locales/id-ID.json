@@ -185,6 +185,7 @@
     "network": "Jaringan",
     "symbol": "Simbol",
     "skin": "Skin",
+    "customDomain": "Custom domain",
     "domain": "Nama domain",
     "strategies": "Strategi",
     "hideSpace": "Sembunyikan ruang dari halaman beranda",
