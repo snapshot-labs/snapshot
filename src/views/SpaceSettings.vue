@@ -200,6 +200,9 @@ watchEffect(async () => {
       if (!space) return;
       delete space.id;
       delete space._activeProposals;
+      Object.entries(space).forEach(([key, value]) => {
+        if (value === null) delete space[key];
+      });
       space.strategies = space.strategies || [];
       space.plugins = space.plugins || {};
       space.validation = space.validation || basicValidation;
