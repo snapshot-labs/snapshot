@@ -67,5 +67,11 @@ const safeSnapInput = computed({
       :config="space.plugins?.safeSnap"
       :network="space.network"
     />
+       <PluginCommentBoxCustomBlock
+       v-if="space.plugins?.commentBox"
+      :proposalId="id"
+      :proposal="proposal"
+      :space="space"
+    />
   </div>
 </template>

@@ -6,7 +6,6 @@ import { useWeb3 } from '@/composables/useWeb3';
 import { useApp } from '@/composables/useApp';
 import { useDomain } from '@/composables/useDomain';
 import { useUnseenProposals } from '@/composables/useUnseenProposals';
-import { useUserSkin } from '@/composables/useUserSkin';
 import { lsSet, lsGet } from '@/helpers/utils';
 
 const { explore } = useApp();
@@ -23,8 +22,6 @@ const {
 const modalAboutOpen = ref(false);
 const modalLangOpen = ref(false);
 const draggableSpaces = ref([]);
-
-const { toggleSkin, getSkinIcon } = useUserSkin();
 
 const web3Account = computed(() => web3.value.account);
 
@@ -146,14 +143,11 @@ onMounted(() => {
             items-center
             space-y-2
             justify-center
-            !mb-0
+            !mb-2
             !mt-auto
             py-2
           "
         >
-          <UiSidebarButton @click="toggleSkin">
-            <Icon size="20" class="link-color" :name="getSkinIcon()" />
-          </UiSidebarButton>
           <UiSidebarButton @click="modalAboutOpen = true">
             <span class="mt-1 link-color">?</span>
           </UiSidebarButton>
