@@ -101,12 +101,14 @@ function clearDelegate(id, delegate) {
   modalOpen.value = true;
 }
 
-const { profiles, addressArray } = useProfiles();
+const { profiles, updateAddressArray } = useProfiles();
 
 watchEffect(() => {
-  addressArray.value = delegates.value
-    .map(delegate => delegate.delegate)
-    .concat(delegators.value.map(delegator => delegator.delegator));
+  updateAddressArray(
+    delegates.value
+      .map(delegate => delegate.delegate)
+      .concat(delegators.value.map(delegator => delegator.delegator))
+  );
 });
 
 watch(web3Account, (val, prev) => {

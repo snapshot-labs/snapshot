@@ -11,11 +11,11 @@ const props = defineProps({
 
 const network = computed(() => networks[props.space.network]);
 
-const { profiles, addressArray } = useProfiles();
+const { profiles, updateAddressArray } = useProfiles();
 
 watchEffect(() => {
   if (props.space.admins)
-    addressArray.value = props.space.admins.concat(props.space.members);
+    updateAddressArray(props.space.admins.concat(props.space.members));
 });
 </script>
 
