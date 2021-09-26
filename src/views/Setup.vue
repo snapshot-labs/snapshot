@@ -8,7 +8,7 @@ const id = ref('');
 
 function handleSubmit() {
   router.push({
-    name: 'settings',
+    name: 'spaceSettings',
     params: { key: id.value.toLowerCase() }
   });
 }
@@ -18,7 +18,7 @@ function handleSubmit() {
   <Layout>
     <template #content-left>
       <div class="px-4 md:px-0 mb-3">
-        <router-link :to="{ name: 'home' }" class="text-color">
+        <router-link :to="{ path: '/' }" class="text-color">
           <Icon name="back" size="22" class="!align-middle" />
           {{ $t('backToHome') }}
         </router-link>

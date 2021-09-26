@@ -1,6 +1,5 @@
 <script setup>
-import { computed, onMounted, ref } from 'vue';
-import { useRoute } from 'vue-router';
+import { computed, ref, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useSearchFilters } from '@/composables/useSearchFilters';
 import { getAddress } from '@ethersproject/address';
@@ -11,21 +10,25 @@ import { clone } from '@/helpers/utils';
 import { getSpaceUri } from '@/helpers/ens';
 import defaults from '@/locales/default';
 import { useCopy } from '@/composables/useCopy';
-import { useApp } from '@/composables/useApp';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useClient } from '@/composables/useClient';
 
+const props = defineProps({
+  spaceId: String,
+  space: Object,
+  from: String,
+  spaceFrom: Object,
+  spaceLoading: Boolean,
+  getExtentedSpaces: Function
+});
+
 const basicValidation = { name: 'basic', params: {} };
 
-const route = useRoute();
 const { t } = useI18n();
 const { copyToClipboard } = useCopy();
-const { spaces, getSpaces } = useApp();
 const { web3 } = useWeb3();
 const { send } = useClient();
 
-const key = ref(route.params.key);
-const from = ref(route.params.from);
 const currentSettings = ref({});
 const currentTextRecord = ref('');
 const currentStrategy = ref({});
@@ -59,7 +62,7 @@ const isValid = computed(() => {
 });
 
 const textRecord = computed(() => {
-  const keyURI = encodeURIComponent(key.value);
+  const keyURI = encodeURIComponent(props.spaceId);
   const address = web3Account.value
     ? getAddress(web3Account.value)
     : '<your-address>';
@@ -71,10 +74,8 @@ const isOwner = computed(() => {
 });
 
 const isAdmin = computed(() => {
-  if (!spaces.value[key.value] || !currentTextRecord.value) return false;
-  const admins = (spaces.value[key.value].admins || []).map(admin =>
-    admin.toLowerCase()
-  );
+  if (!props.space || !currentTextRecord.value) return false;
+  const admins = (props.space.admins || []).map(admin => admin.toLowerCase());
   return admins.includes(web3Account.value?.toLowerCase());
 });
 
@@ -93,11 +94,11 @@ async function handleSubmit() {
     if (form.value.filters.invalids) delete form.value.filters.invalids;
     loading.value = true;
     try {
-      await send(key.value, 'settings', form.value);
+      await send(props.spaceId, 'settings', form.value);
     } catch (e) {
       console.log(e);
     }
-    await getSpaces();
+    await props.getExtentedSpaces([props.spaceId]);
     loading.value = false;
   } else {
     console.log('Invalid schema', validate.value);
@@ -123,7 +124,7 @@ function inputError(field) {
 }
 
 function handleReset() {
-  if (from.value) return (form.value = clone(spaces.value[from.value]));
+  if (props.from) return (form.value = clone(props.spaceFrom));
   if (currentSettings.value) return (form.value = currentSettings.value);
   form.value = {
     strategies: [],
@@ -189,49 +190,50 @@ function setAvatarUrl(url) {
   if (typeof url === 'string') form.value.avatar = url;
 }
 
-onMounted(async () => {
-  try {
-    const uri = await getSpaceUri(key.value);
-    console.log('URI', uri);
-    currentTextRecord.value = uri;
-    const space = clone(spaces.value?.[key.value]);
-    if (!space) return;
-    delete space.id;
-    delete space._activeProposals;
-    space.strategies = space.strategies || [];
-    space.plugins = space.plugins || {};
-    space.validation = space.validation || basicValidation;
-    space.filters = space.filters || {};
-    currentSettings.value = clone(space);
-    form.value = space;
-  } catch (e) {
-    console.log(e);
+watchEffect(async () => {
+  if (!props.spaceLoading) {
+    try {
+      const uri = await getSpaceUri(props.spaceId);
+      console.log('URI', uri);
+      currentTextRecord.value = uri;
+      const space = clone(props.space);
+      if (!space) return;
+      delete space.id;
+      delete space._activeProposals;
+      space.strategies = space.strategies || [];
+      space.plugins = space.plugins || {};
+      space.validation = space.validation || basicValidation;
+      space.filters = space.filters || {};
+      currentSettings.value = clone(space);
+      form.value = space;
+    } catch (e) {
+      console.log(e);
+    }
+    if (props.from) {
+      const fromClone = clone(props.spaceFrom);
+      fromClone.validation = fromClone.validation || basicValidation;
+      delete fromClone.id;
+      delete fromClone._activeProposals;
+      form.value = fromClone;
+    }
+    loaded.value = true;
   }
-  if (from.value) {
-    const fromClone = clone(spaces.value[from.value]);
-    fromClone.validation = fromClone.validation || basicValidation;
-    delete fromClone.id;
-    delete fromClone._activeProposals;
-    form.value = fromClone;
-  }
-  loaded.value = true;
 });
 </script>
 
 <template>
   <Layout v-bind="$attrs">
     <template #content-left>
-      <div class="px-4 md:px-0 mb-3">
-        <router-link :to="{ name: 'home' }" class="text-color">
+      <div v-if="space?.name" class="px-4 md:px-0 mb-3">
+        <router-link :to="{ name: 'spaceProposals' }" class="text-color">
           <Icon name="back" size="22" class="!align-middle" />
-          {{ $t('backToHome') }}
+          {{ space.name }}
         </router-link>
       </div>
       <div class="px-4 md:px-0">
         <h1 v-if="loaded" v-text="$t('settings.header')" class="mb-4" />
         <PageLoading v-else />
       </div>
-
       <template v-if="loaded">
         <Block title="ENS">
           <UiButton class="flex w-full mb-2">
@@ -249,7 +251,7 @@ onMounted(async () => {
             />
           </UiButton>
           <a
-            :href="`https://app.ens.domains/name/${key}`"
+            :href="`https://app.ens.domains/name/${spaceId}`"
             target="_blank"
             class="mb-2 block"
           >
@@ -281,7 +283,7 @@ onMounted(async () => {
             </span>
           </Block>
         </Block>
-        <div v-if="isOwner || isAdmin">
+        <div v-if="space || isOwner">
           <Block :title="$t('settings.profile')">
             <div class="mb-2">
               <UiInput v-model="form.name" :error="inputError('name')">
@@ -331,17 +333,6 @@ onMounted(async () => {
                 <template v-slot:label> {{ $t(`settings.symbol`) }}* </template>
               </UiInput>
               <UiInput
-                @click="modalSkinsOpen = true"
-                :error="inputError('skin')"
-              >
-                <template v-slot:selected>
-                  {{ form.skin ? form.skin : $t('defaultSkin') }}
-                </template>
-                <template v-slot:label>
-                  {{ $t(`settings.skin`) }}
-                </template>
-              </UiInput>
-              <UiInput
                 v-model="form.twitter"
                 placeholder="e.g. elonmusk"
                 :error="inputError('twitter')"
@@ -360,24 +351,6 @@ onMounted(async () => {
                 </template>
               </UiInput>
               <UiInput
-                v-model="form.domain"
-                placeholder="e.g. vote.balancer.finance"
-                :error="inputError('domain')"
-              >
-                <template v-slot:label>
-                  {{ $t('settings.domain') }}
-                </template>
-                <template v-slot:info>
-                  <a
-                    class="flex items-center -mr-2"
-                    target="_blank"
-                    href="https://docs.snapshot.org/spaces/add-custom-domain"
-                  >
-                    <Icon name="info" size="24" class="text-color" />
-                  </a>
-                </template>
-              </UiInput>
-              <UiInput
                 v-model="form.terms"
                 placeholder="e.g. https://example.com/terms"
                 :error="inputError('terms')"
@@ -389,6 +362,68 @@ onMounted(async () => {
                 {{ $t('settings.hideSpace') }}
               </div>
             </div>
+          </Block>
+          <Block :title="$t('settings.customDomain')">
+            <UiInput
+              v-model="form.domain"
+              placeholder="e.g. vote.balancer.fi"
+              :error="inputError('domain')"
+            >
+              <template v-slot:label>
+                {{ $t('settings.domain') }}
+              </template>
+              <template v-slot:info>
+                <a
+                  class="flex items-center -mr-1"
+                  target="_blank"
+                  href="https://docs.snapshot.org/spaces/add-custom-domain"
+                >
+                  <Icon name="info" size="24" class="text-color" />
+                </a>
+              </template>
+            </UiInput>
+            <UiInput @click="modalSkinsOpen = true" :error="inputError('skin')">
+              <template v-slot:selected>
+                {{ form.skin ? form.skin : $t('defaultSkin') }}
+              </template>
+              <template v-slot:label>
+                {{ $t(`settings.skin`) }}
+              </template>
+            </UiInput>
+          </Block>
+          <Block :title="$t('settings.admins')" v-if="isOwner">
+            <Block
+              :style="`border-color: red !important`"
+              v-if="inputError('admins')"
+            >
+              <Icon name="warning" class="mr-2 !text-red" />
+              <span class="!text-red"> {{ inputError('admins') }}&nbsp;</span>
+            </Block>
+            <UiButton class="block w-full px-3" style="height: auto">
+              <TextareaArray
+                v-model="form.admins"
+                :placeholder="`0x8C28Cf33d9Fd3D0293f963b1cd27e3FF422B425c\n0xeF8305E140ac520225DAf050e2f71d5fBcC543e7`"
+                class="input w-full text-left"
+                style="font-size: 18px"
+              />
+            </UiButton>
+          </Block>
+          <Block :title="$t('settings.authors')">
+            <Block
+              :style="`border-color: red !important`"
+              v-if="inputError('members')"
+            >
+              <Icon name="warning" class="mr-2 !text-red" />
+              <span class="!text-red"> {{ inputError('members') }}&nbsp;</span>
+            </Block>
+            <UiButton class="block w-full px-3" style="height: auto">
+              <TextareaArray
+                v-model="form.members"
+                :placeholder="`0x8C28Cf33d9Fd3D0293f963b1cd27e3FF422B425c\n0xeF8305E140ac520225DAf050e2f71d5fBcC543e7`"
+                class="input w-full text-left"
+                style="font-size: 18px"
+              />
+            </UiButton>
           </Block>
           <Block :title="$t('settings.strategies') + '*'">
             <div
@@ -424,40 +459,6 @@ onMounted(async () => {
             </Block>
             <UiButton @click="handleAddStrategy" class="block w-full">
               {{ $t('settings.addStrategy') }}
-            </UiButton>
-          </Block>
-          <Block :title="$t('settings.admins')" v-if="isOwner">
-            <Block
-              :style="`border-color: red !important`"
-              v-if="inputError('admins')"
-            >
-              <Icon name="warning" class="mr-2 !text-red" />
-              <span class="!text-red"> {{ inputError('admins') }}&nbsp;</span>
-            </Block>
-            <UiButton class="block w-full px-3" style="height: auto">
-              <TextareaArray
-                v-model="form.admins"
-                :placeholder="`0x8C28Cf33d9Fd3D0293f963b1cd27e3FF422B425c\n0xeF8305E140ac520225DAf050e2f71d5fBcC543e7`"
-                class="input w-full text-left"
-                style="font-size: 18px"
-              />
-            </UiButton>
-          </Block>
-          <Block :title="$t('settings.authors')">
-            <Block
-              :style="`border-color: red !important`"
-              v-if="inputError('members')"
-            >
-              <Icon name="warning" class="mr-2 !text-red" />
-              <span class="!text-red"> {{ inputError('members') }}&nbsp;</span>
-            </Block>
-            <UiButton class="block w-full px-3" style="height: auto">
-              <TextareaArray
-                v-model="form.members"
-                :placeholder="`0x8C28Cf33d9Fd3D0293f963b1cd27e3FF422B425c\n0xeF8305E140ac520225DAf050e2f71d5fBcC543e7`"
-                class="input w-full text-left"
-                style="font-size: 18px"
-              />
             </UiButton>
           </Block>
           <Block :title="$t('settings.proposalValidation')">
