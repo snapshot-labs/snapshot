@@ -27,6 +27,16 @@ const space = computed(() => {
   return explore.value.spaces?.[key];
 });
 
+const skin = computed(() => {
+  if (domain && space.value?.skin) {
+    let skinClass = space.value.skin;
+    if (userSkin.value === 'dark-mode')
+      skinClass += ` ${space.value.skin}-dark-mode`;
+    return skinClass;
+  }
+  return userSkin.value;
+});
+
 onMounted(async () => {
   await loadLocale();
   init();
@@ -40,17 +50,13 @@ watch(modalOpen, val => {
 
 <template>
   <div
-    :class="
-      space?.skin && userSkin === 'dark-mode'
-        ? `${space?.skin} ${space?.skin}-dark-mode`
-        : space?.skin || userSkin
-    "
+    :class="skin"
     id="app"
     class="overflow-hidden pb-4 font-serif text-base"
   >
     <UiLoading v-if="app.loading || !app.init" class="overlay big" />
     <div v-else>
-      <TheSidebar />
+      <Scroller />
       <div :class="{ 'sm:ml-[68px]': !domain }">
         <Topnav />
         <div class="pb-6">
