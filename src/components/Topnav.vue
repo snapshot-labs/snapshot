@@ -112,7 +112,7 @@ onMounted(() => setTitle());
             </UiButton>
 
             <UiSidebarButton
-              class="ml-2 float-right h-[46px] w-[46px]"
+              class="ml-2 float-right !h-[46px] !w-[46px]"
               @click="modalPrefOpen = true"
             >
               <Icon class="text-skin-link" size="20" name="gear" />
