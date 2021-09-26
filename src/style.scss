@@ -8,22 +8,22 @@
 .light-mode {
   --primary-color: #384aff;
   --bg-color: white;
-  --text-color: #586069;
+  --text-color: #57606a;
   --link-color: #111111;
   --heading-color: #111111;
-  --border-color: #d1d5da;
+  --border-color: #d0d7de;
   --header-bg: white;
   --block-bg: transparent;
 }
 
 .dark-mode, .eth-dark-mode {
   --primary-color: #384aff;
-  --bg-color: #111111;
-  --text-color: #929292;
+  --bg-color: #121212;
+  --text-color: #8b949e;
   --link-color: #ffffff;
   --heading-color: #ffffff;
-  --border-color: #525252;
-  --header-bg: #111111;
+  --border-color: #424242;
+  --header-bg: #121212;
 }
 
 @layer base {
