@@ -224,7 +224,7 @@ watchEffect(async () => {
 <template>
   <Layout v-bind="$attrs">
     <template #content-left>
-      <div class="px-4 md:px-0 mb-3">
+      <div v-if="space?.name" class="px-4 md:px-0 mb-3">
         <router-link :to="{ name: 'spaceProposals' }" class="text-color">
           <Icon name="back" size="22" class="!align-middle" />
           {{ space.name }}
@@ -234,7 +234,6 @@ watchEffect(async () => {
         <h1 v-if="loaded" v-text="$t('settings.header')" class="mb-4" />
         <PageLoading v-else />
       </div>
-
       <template v-if="loaded">
         <Block title="ENS">
           <UiButton class="flex w-full mb-2">
@@ -284,7 +283,7 @@ watchEffect(async () => {
             </span>
           </Block>
         </Block>
-        <div v-if="isOwner || isAdmin">
+        <div v-if="space || isOwner">
           <Block :title="$t('settings.profile')">
             <div class="mb-2">
               <UiInput v-model="form.name" :error="inputError('name')">
@@ -334,17 +333,6 @@ watchEffect(async () => {
                 <template v-slot:label> {{ $t(`settings.symbol`) }}* </template>
               </UiInput>
               <UiInput
-                @click="modalSkinsOpen = true"
-                :error="inputError('skin')"
-              >
-                <template v-slot:selected>
-                  {{ form.skin ? form.skin : $t('defaultSkin') }}
-                </template>
-                <template v-slot:label>
-                  {{ $t(`settings.skin`) }}
-                </template>
-              </UiInput>
-              <UiInput
                 v-model="form.twitter"
                 placeholder="e.g. elonmusk"
                 :error="inputError('twitter')"
@@ -363,24 +351,6 @@ watchEffect(async () => {
                 </template>
               </UiInput>
               <UiInput
-                v-model="form.domain"
-                placeholder="e.g. vote.balancer.finance"
-                :error="inputError('domain')"
-              >
-                <template v-slot:label>
-                  {{ $t('settings.domain') }}
-                </template>
-                <template v-slot:info>
-                  <a
-                    class="flex items-center -mr-2"
-                    target="_blank"
-                    href="https://docs.snapshot.org/spaces/add-custom-domain"
-                  >
-                    <Icon name="info" size="24" class="text-color" />
-                  </a>
-                </template>
-              </UiInput>
-              <UiInput
                 v-model="form.terms"
                 placeholder="e.g. https://example.com/terms"
                 :error="inputError('terms')"
@@ -392,6 +362,68 @@ watchEffect(async () => {
                 {{ $t('settings.hideSpace') }}
               </div>
             </div>
+          </Block>
+          <Block :title="$t('settings.customDomain')">
+            <UiInput
+              v-model="form.domain"
+              placeholder="e.g. vote.balancer.fi"
+              :error="inputError('domain')"
+            >
+              <template v-slot:label>
+                {{ $t('settings.domain') }}
+              </template>
+              <template v-slot:info>
+                <a
+                  class="flex items-center -mr-1"
+                  target="_blank"
+                  href="https://docs.snapshot.org/spaces/add-custom-domain"
+                >
+                  <Icon name="info" size="24" class="text-color" />
+                </a>
+              </template>
+            </UiInput>
+            <UiInput @click="modalSkinsOpen = true" :error="inputError('skin')">
+              <template v-slot:selected>
+                {{ form.skin ? form.skin : $t('defaultSkin') }}
+              </template>
+              <template v-slot:label>
+                {{ $t(`settings.skin`) }}
+              </template>
+            </UiInput>
+          </Block>
+          <Block :title="$t('settings.admins')" v-if="isOwner">
+            <Block
+              :style="`border-color: red !important`"
+              v-if="inputError('admins')"
+            >
+              <Icon name="warning" class="mr-2 !text-red" />
+              <span class="!text-red"> {{ inputError('admins') }}&nbsp;</span>
+            </Block>
+            <UiButton class="block w-full px-3" style="height: auto">
+              <TextareaArray
+                v-model="form.admins"
+                :placeholder="`0x8C28Cf33d9Fd3D0293f963b1cd27e3FF422B425c\n0xeF8305E140ac520225DAf050e2f71d5fBcC543e7`"
+                class="input w-full text-left"
+                style="font-size: 18px"
+              />
+            </UiButton>
+          </Block>
+          <Block :title="$t('settings.authors')">
+            <Block
+              :style="`border-color: red !important`"
+              v-if="inputError('members')"
+            >
+              <Icon name="warning" class="mr-2 !text-red" />
+              <span class="!text-red"> {{ inputError('members') }}&nbsp;</span>
+            </Block>
+            <UiButton class="block w-full px-3" style="height: auto">
+              <TextareaArray
+                v-model="form.members"
+                :placeholder="`0x8C28Cf33d9Fd3D0293f963b1cd27e3FF422B425c\n0xeF8305E140ac520225DAf050e2f71d5fBcC543e7`"
+                class="input w-full text-left"
+                style="font-size: 18px"
+              />
+            </UiButton>
           </Block>
           <Block :title="$t('settings.strategies') + '*'">
             <div
@@ -427,40 +459,6 @@ watchEffect(async () => {
             </Block>
             <UiButton @click="handleAddStrategy" class="block w-full">
               {{ $t('settings.addStrategy') }}
-            </UiButton>
-          </Block>
-          <Block :title="$t('settings.admins')" v-if="isOwner">
-            <Block
-              :style="`border-color: red !important`"
-              v-if="inputError('admins')"
-            >
-              <Icon name="warning" class="mr-2 !text-red" />
-              <span class="!text-red"> {{ inputError('admins') }}&nbsp;</span>
-            </Block>
-            <UiButton class="block w-full px-3" style="height: auto">
-              <TextareaArray
-                v-model="form.admins"
-                :placeholder="`0x8C28Cf33d9Fd3D0293f963b1cd27e3FF422B425c\n0xeF8305E140ac520225DAf050e2f71d5fBcC543e7`"
-                class="input w-full text-left"
-                style="font-size: 18px"
-              />
-            </UiButton>
-          </Block>
-          <Block :title="$t('settings.authors')">
-            <Block
-              :style="`border-color: red !important`"
-              v-if="inputError('members')"
-            >
-              <Icon name="warning" class="mr-2 !text-red" />
-              <span class="!text-red"> {{ inputError('members') }}&nbsp;</span>
-            </Block>
-            <UiButton class="block w-full px-3" style="height: auto">
-              <TextareaArray
-                v-model="form.members"
-                :placeholder="`0x8C28Cf33d9Fd3D0293f963b1cd27e3FF422B425c\n0xeF8305E140ac520225DAf050e2f71d5fBcC543e7`"
-                class="input w-full text-left"
-                style="font-size: 18px"
-              />
             </UiButton>
           </Block>
           <Block :title="$t('settings.proposalValidation')">
