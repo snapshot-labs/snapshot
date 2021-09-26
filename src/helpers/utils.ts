@@ -69,7 +69,6 @@ export function formatSpace(space) {
     delete space.plugins.daoModule;
   }
   if (space?.skin === null) delete space.skin;
-  if (space?.terms === null) delete space.terms;
   return space;
 }
 
