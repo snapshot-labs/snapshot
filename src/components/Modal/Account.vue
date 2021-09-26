@@ -72,6 +72,12 @@ watch(open, () => (step.value = null));
     </div>
     <div v-else>
       <div v-if="$auth.isAuthenticated.value" class="m-4">
+        <UiButton
+          @click="$emit('pref'), $emit('close')"
+          class="button-outline w-full flex justify-center items-center mb-2"
+        >
+          {{ $t('preferences') }}
+        </UiButton>
         <a
           :href="_explorer(web3.network.key, web3.account)"
           target="_blank"
@@ -107,16 +113,22 @@ watch(open, () => (step.value = null));
             <Icon name="external-link" class="ml-1" />
           </UiButton>
         </a>
-        <UiButton @click="step = 'connect'" class="button-outline w-full mb-2">
-          {{ $t('connectWallet') }}
-        </UiButton>
-        <UiButton
-          @click="handleLogout"
-          class="button-outline w-full !text-red mb-2"
-        >
-          {{ $t('logout') }}
-        </UiButton>
       </div>
     </div>
+    <template
+      v-slot:footer
+      v-if="step !== 'connect' && $auth.isAuthenticated.value"
+    >
+      <div class="w-2/4 float-left pr-2">
+        <UiButton @click="step = 'connect'" class="button-outline w-full">
+          {{ $t('change') }}
+        </UiButton>
+      </div>
+      <div class="w-2/4 float-left pl-2">
+        <UiButton @click="handleLogout" class="button-outline !text-red w-full">
+          {{ $t('disconnect') }}
+        </UiButton>
+      </div>
+    </template>
   </UiModal>
 </template>

@@ -6,7 +6,6 @@ import { useDomain } from '@/composables/useDomain';
 import { useApp } from '@/composables/useApp';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useTxStatus } from '@/composables/useTxStatus';
-import { useUserSkin } from '@/composables/useUserSkin';
 
 const { pendingCount } = useTxStatus();
 const { modalAccountOpen } = useModal();
@@ -15,10 +14,12 @@ const route = useRoute();
 
 const { explore } = useApp();
 const { login, web3 } = useWeb3();
-const { toggleSkin, getSkinIcon } = useUserSkin();
 
 const loading = ref(false);
 const modalWalletNotice = ref(false);
+const modalAboutOpen = ref(false);
+const modalLangOpen = ref(false);
+const modalPrefOpen = ref(false);
 
 const space = computed(() => {
   const key = domain || route.params.key;
@@ -109,12 +110,12 @@ onMounted(() => setTitle());
                 class="sm:hidden -ml-2 -mr-2 block align-text-bottom"
               />
             </UiButton>
+
             <UiSidebarButton
-              v-if="!domain"
-              @click="toggleSkin"
-              class="float-right ml-2"
+              class="ml-2 float-right"
+              @click="modalAboutOpen = true"
             >
-              <Icon size="20" class="link-color" :name="getSkinIcon()" />
+              <span class="mt-1 link-color">?</span>
             </UiSidebarButton>
           </div>
         </div>
@@ -129,10 +130,21 @@ onMounted(() => setTitle());
         :open="modalAccountOpen"
         @close="modalAccountOpen = false"
         @login="handleLogin"
+        @pref="modalPrefOpen = true"
       />
       <ModalWalletNotice
         :open="modalWalletNotice"
         @close="modalWalletNotice = false"
+      />
+      <ModalAbout :open="modalAboutOpen" @close="modalAboutOpen = false" />
+      <ModalSelectLanguage
+        :open="modalLangOpen"
+        @close="(modalLangOpen = false), (modalPrefOpen = true)"
+      />
+      <ModalPreferences
+        :open="modalPrefOpen"
+        @close="modalPrefOpen = false"
+        @lang="modalLangOpen = true"
       />
     </teleport>
   </Sticky>

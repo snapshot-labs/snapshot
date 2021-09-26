@@ -19,8 +19,6 @@ const {
   updateLastSeenProposal
 } = useUnseenProposals();
 
-const modalAboutOpen = ref(false);
-const modalLangOpen = ref(false);
 const draggableSpaces = ref([]);
 
 const web3Account = computed(() => web3.value.account);
@@ -135,31 +133,11 @@ onMounted(() => {
           </template>
         </draggable>
         <router-link :to="{ name: 'setup' }">
-          <UiSidebarButton><Icon size="20" name="plus" /></UiSidebarButton>
+          <UiSidebarButton class="mb-2"
+            ><Icon size="20" name="plus"
+          /></UiSidebarButton>
         </router-link>
-        <div
-          class="
-            flex flex-col
-            items-center
-            space-y-2
-            justify-center
-            !mb-2
-            !mt-auto
-            py-2
-          "
-        >
-          <UiSidebarButton @click="modalAboutOpen = true">
-            <span class="mt-1 link-color">?</span>
-          </UiSidebarButton>
-        </div>
       </div>
     </div>
   </div>
-  <teleport to="#modal">
-    <ModalAbout
-      :open="modalAboutOpen"
-      @close="modalAboutOpen = false"
-      @openLang="modalLangOpen = true" />
-    <ModalSelectLanguage :open="modalLangOpen" @close="modalLangOpen = false"
-  /></teleport>
 </template>
