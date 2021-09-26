@@ -30,5 +30,9 @@ export function useProfiles() {
     profiles.value = { ...profiles.value, ...response };
   });
 
-  return { profiles, addressArray, updateAddressArray };
+  return {
+    profiles,
+    addressArray: computed(() => addressArray.value),
+    updateAddressArray
+  };
 }
