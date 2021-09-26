@@ -72,12 +72,6 @@ watch(open, () => (step.value = null));
     </div>
     <div v-else>
       <div v-if="$auth.isAuthenticated.value" class="m-4">
-        <UiButton
-          @click="$emit('pref'), $emit('close')"
-          class="button-outline w-full flex justify-center items-center mb-2"
-        >
-          {{ $t('preferences') }}
-        </UiButton>
         <a
           :href="_explorer(web3.network.key, web3.account)"
           target="_blank"

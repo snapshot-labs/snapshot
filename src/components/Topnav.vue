@@ -112,10 +112,10 @@ onMounted(() => setTitle());
             </UiButton>
 
             <UiSidebarButton
-              class="ml-2 float-right"
-              @click="modalAboutOpen = true"
+              class="ml-2 float-right h-[46px] w-[46px]"
+              @click="modalPrefOpen = true"
             >
-              <span class="mt-1 link-color">?</span>
+              <Icon class="text-skin-link" size="20" name="gear" />
             </UiSidebarButton>
           </div>
         </div>
@@ -136,7 +136,6 @@ onMounted(() => setTitle());
         :open="modalWalletNotice"
         @close="modalWalletNotice = false"
       />
-      <ModalAbout :open="modalAboutOpen" @close="modalAboutOpen = false" />
       <ModalSelectLanguage
         :open="modalLangOpen"
         @close="(modalLangOpen = false), (modalPrefOpen = true)"
