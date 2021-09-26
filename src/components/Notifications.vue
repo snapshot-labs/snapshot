@@ -1,7 +1,7 @@
 <script setup>
 import { useNotifications } from '@/composables/useNotifications';
 
-const duration = 4000000;
+const duration = 4000;
 
 const { items } = useNotifications();
 
