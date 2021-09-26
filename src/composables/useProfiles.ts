@@ -32,7 +32,6 @@ export function useProfiles() {
 
   return {
     profiles,
-    addressArray: computed(() => addressArray.value),
     updateAddressArray
   };
 }
