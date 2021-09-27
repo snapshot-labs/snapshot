@@ -24,8 +24,8 @@ let provider;
 
 const strategy = computed(() => strategies.value[route.params.name]);
 const strategyExample = computed(() => {
-  const queryParams = window.location.hash.indexOf('?query=');
-  if (queryParams != -1) {
+  const queryParamsIndex = window.location.hash.indexOf('?query=');
+  if (queryParamsIndex != -1) {
     const playgroundQuery = window.location.hash.substring(
       window.location.hash.indexOf('?query=') + 7
     );
@@ -42,7 +42,7 @@ const strategyExample = computed(() => {
           params: JSON.parse(params)
         }
       };
-    } catch {
+    } catch (e) {
       return strategy.value.examples?.[0];
     }
   }
@@ -93,10 +93,14 @@ async function loadScores() {
 }
 
 function copyURL() {
+  const queryIndex = window.location.href.indexOf('?query=');
+  const locationPath =
+    queryIndex !== -1
+      ? window.location.href.slice(0, queryIndex)
+      : window.location.href;
+
   navigator.clipboard.writeText(
-    `${window.location.href}?query=${encodeURIComponent(
-      JSON.stringify(form.value)
-    )}`
+    `${locationPath}?query=${encodeURIComponent(JSON.stringify(form.value))}`
   );
   notify(['green', t('notify.copied')]);
 }
@@ -105,14 +109,20 @@ watchEffect(async () => {
   loading.value = true;
   scores.value = null;
   networkError.value = false;
-  try {
-    provider = await getProvider(form.value.network);
-    form.value.snapshot = await getBlockNumber(provider);
+  const queryParamsIndex = window.location.hash.indexOf('?query=');
+  if (queryParamsIndex != -1) {
+    form.value.snapshot = strategyExample.value.snapshot;
     loading.value = false;
-  } catch (e) {
-    loading.value = false;
-    networkError.value = true;
-    console.log(e);
+  } else {
+    try {
+      provider = await getProvider(form.value.network);
+      form.value.snapshot = await getBlockNumber(provider);
+      loading.value = false;
+    } catch (e) {
+      loading.value = false;
+      networkError.value = true;
+      console.log(e);
+    }
   }
 });
 </script>
