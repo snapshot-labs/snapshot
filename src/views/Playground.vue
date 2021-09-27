@@ -6,6 +6,8 @@ import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import { getBlockNumber } from '@snapshot-labs/snapshot.js/src/utils/web3';
 import { getScores } from '@snapshot-labs/snapshot.js/src/utils';
 import { useApp } from '@/composables/useApp';
+import { useNotifications } from '@/composables/useNotifications';
+import { useI18n } from 'vue-i18n';
 
 const defaultParams = {
   symbol: 'BAL',
@@ -15,11 +17,37 @@ const defaultParams = {
 
 const route = useRoute();
 const { strategies } = useApp();
+const { notify } = useNotifications();
+const { t } = useI18n();
 
 let provider;
 
 const strategy = computed(() => strategies.value[route.params.name]);
-const strategyExample = computed(() => strategy.value.examples?.[0]);
+const strategyExample = computed(() => {
+  const queryParams = window.location.hash.indexOf('?query=');
+  if (queryParams != -1) {
+    const playgroundQuery = window.location.hash.substring(
+      window.location.hash.indexOf('?query=') + 7
+    );
+    try {
+      const { params, network, snapshot, addresses } = JSON.parse(
+        decodeURIComponent(playgroundQuery)
+      );
+      return {
+        ...strategy.value.examples?.[0],
+        addresses,
+        network,
+        snapshot,
+        strategy: {
+          params: JSON.parse(params)
+        }
+      };
+    } catch {
+      return strategy.value.examples?.[0];
+    }
+  }
+  return strategy.value.examples?.[0];
+});
 
 const modalNetworksOpen = ref(false);
 const loading = ref(false);
@@ -62,6 +90,15 @@ async function loadScores() {
     console.log(e);
     strategyError.value = e;
   }
+}
+
+function copyURL() {
+  navigator.clipboard.writeText(
+    `${window.location.href}?query=${encodeURIComponent(
+      JSON.stringify(form.value)
+    )}`
+  );
+  notify(['green', t('notify.copied')]);
 }
 
 watchEffect(async () => {
@@ -155,6 +192,9 @@ watchEffect(async () => {
           :style="[loading ? '' : 'padding-top: 0.2rem']"
         >
           <Icon name="play" size="18" />
+        </UiButton>
+        <UiButton @click="copyURL" class="w-full mt-2">
+          {{ t('copyLink') }}
         </UiButton>
       </Block>
       <Block v-if="scores" :title="$t('results')">
