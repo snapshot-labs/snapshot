@@ -86,7 +86,6 @@ export default {
 
 <template>
   <UiCollapsible
-    alternateBg
     :hideRemove="config.preview"
     :number="index + 1"
     :open="open"

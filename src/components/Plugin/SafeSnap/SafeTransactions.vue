@@ -122,26 +122,9 @@ export default {
 </script>
 
 <template>
-  <div
-    class="
-      border-t border-b
-      md:border
-      rounded-none
-      md:rounded-md
-      mb-4
-      block-bg-alternate
-    "
-  >
+  <div class="border-t border-b md:border rounded-none md:rounded-md mb-4">
     <h4
-      class="
-        px-4
-        pt-3
-        border-b
-        block
-        header-bg-alternate
-        rounded-t-none
-        md:rounded-t-md
-      "
+      class="px-4 pt-3 border-b block rounded-t-none md:rounded-t-md"
       style="padding-bottom: 12px"
     >
       <PluginSafeSnapNetworkIcon :network="network" class="mr-2 float-left" />
@@ -158,7 +141,7 @@ export default {
       </a>
     </h4>
     <div class="text-center">
-      <div v-for="(batch, index) in input" v-bind:key="index" class="mx-3 my-4">
+      <div v-for="(batch, index) in input" v-bind:key="index" class="border-b">
         <PluginSafeSnapFormTransactionBatch
           :config="transactionConfig"
           :index="index"
@@ -169,7 +152,7 @@ export default {
         />
       </div>
 
-      <div class="border-t" v-if="!preview || proposalResolved">
+      <div v-if="!preview || proposalResolved">
         <UiButton class="my-3" v-if="!preview" @click="addTransactionBatch">
           {{ $t('safeSnap.addBatch') }}
         </UiButton>

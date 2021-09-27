@@ -15,7 +15,13 @@
     <UiButton @click="performAction" v-text="$t('safeSnap.labels.request')" />
   </div>
 
-  <div v-if="(showOracleInfo || bondData.canClaim) && questionState !== questionStates.loading" class="my-4">
+  <div
+    v-if="
+      (showOracleInfo || bondData.canClaim) &&
+      questionState !== questionStates.loading
+    "
+    class="my-4"
+  >
     <div class="text-base block-bg p-3 rounded-3xl border inline-block">
       <h5 class="text-center link-color">
         Reality Oracle
@@ -82,10 +88,7 @@
     </div>
   </div>
 
-  <div
-    v-if="questionState === questionStates.proposalApproved"
-    class="my-4"
-  >
+  <div v-if="questionState === questionStates.proposalApproved" class="my-4">
     <UiButton
       @click="performAction"
       v-text="
@@ -97,10 +100,7 @@
     />
   </div>
 
-  <div
-    v-if="questionState === questionStates.completelyExecuted"
-    class="my-4"
-  >
+  <div v-if="questionState === questionStates.completelyExecuted" class="my-4">
     {{ $t('safeSnap.labels.executed') }}
   </div>
 

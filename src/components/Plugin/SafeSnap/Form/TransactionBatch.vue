@@ -40,6 +40,7 @@ export default {
 
 <template>
   <UiCollapsible
+    borderless
     :hideRemove="config.preview"
     :number="index + 1"
     :open="open"

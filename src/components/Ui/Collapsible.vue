@@ -4,14 +4,14 @@ defineProps({
   title: String,
   number: Number,
   hideRemove: Boolean,
-  alternateBg: Boolean
+  borderless: Boolean
 });
 
 defineEmits(['remove', 'toggle']);
 </script>
 
 <template>
-  <div class="w-full collapsible-container" v-bind:class="{ alternateBg }">
+  <div class="w-full collapsible-container" v-bind:class="{ borderless }">
     <div class="px-2 collapsible-header flex">
       <div class="mr-4 header-number">{{ number }}</div>
       <span
@@ -49,8 +49,9 @@ defineEmits(['remove', 'toggle']);
   border-radius: 23px;
   outline: none;
 }
-.collapsible-container.alternateBg {
-  background-color: var(--block-bg-alternate);
+.collapsible-container.borderless {
+  border-radius: 0;
+  border: none;
 }
 .collapsible-header {
   cursor: pointer;
