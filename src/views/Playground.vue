@@ -204,6 +204,7 @@ watchEffect(async () => {
           <Icon name="play" size="18" />
         </UiButton>
         <UiButton @click="copyURL" class="w-full mt-2">
+          <Icon name="insertlink" size="18" class="align-text-bottom mr-1" />
           {{ t('copyLink') }}
         </UiButton>
       </Block>
