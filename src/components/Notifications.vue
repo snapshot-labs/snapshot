@@ -19,7 +19,7 @@ setInterval(() => (now = Date.now()), 1000);
     <div class="mb-4">
       <div v-for="(item, key) in items" :key="key" class="mb-2">
         <UiButton
-          class="notification inline-block anim-scale-in border-none"
+          class="notification inline-block anim-scale-in !border-none"
           :class="{
             '!bg-red': item.type === 'red',
             '!bg-green': item.type === 'green'
