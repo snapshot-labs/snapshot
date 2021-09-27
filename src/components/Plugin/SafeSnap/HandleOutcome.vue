@@ -24,7 +24,7 @@
   >
     <div class="text-base block-bg p-3 rounded-3xl border inline-block">
       <h5 class="text-center link-color">
-        Reality Oracle
+        Reality oracle
         <a
           @click="updateDetails"
           class="float-right text-color"
