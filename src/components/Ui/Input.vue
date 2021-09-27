@@ -38,10 +38,10 @@ function handleInput(e) {
       mb-2
       flex
       px-3
-      active:!border-skin-link
-      hover:!border-skin-link
+      focus-within:border-skin-link
+      hover:border-skin-link
     "
-    :class="{ 'border-red': error }"
+    :class="{ '!border-red': error }"
   >
     <div class="text-color mr-2">
       <slot name="label" />
