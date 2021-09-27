@@ -43,7 +43,6 @@ defineEmits(['remove', 'toggle']);
 
 <style scoped lang="scss">
 .collapsible-container {
-  background-color: var(--block-bg);
   border: 1px solid var(--border-color);
   color: var(--link-color);
   border-radius: 23px;

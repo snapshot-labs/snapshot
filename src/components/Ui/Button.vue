@@ -12,7 +12,7 @@ defineProps({
 <template>
   <button
     :type="type || 'button'"
-    class="button px-3"
+    class="button px-[24px]"
     :disabled="disable ? loading : false"
   >
     <UiLoading v-if="loading" />
@@ -23,7 +23,7 @@ defineProps({
 <style scoped lang="scss">
 .button {
   border: 1px solid var(--border-color);
-  background-color: var(--block-bg);
+  background-color: transparent;
   color: var(--link-color);
   border-radius: 23px;
   outline: none;

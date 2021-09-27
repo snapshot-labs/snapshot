@@ -28,7 +28,7 @@ function handleInput(e) {
   <div
     class="
       border border-skin-border
-      block-bg
+      bg-transparent
       text-skin-link
       rounded-3xl
       outline-none
