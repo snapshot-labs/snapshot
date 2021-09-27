@@ -285,7 +285,8 @@ onMounted(async () => {
               class="column"
             />
             <div class="flex-auto column text-right link-color">
-              {{ _n(delegate.score) }} {{ space.symbol }}
+              {{ _n(delegate.score) }}
+              {{ extentedSpaces.find(s => s.id === form.id).symbol }}
             </div>
           </div>
         </Block>
