@@ -1,13 +1,13 @@
 <script setup>
-import { watchEffect, ref, computed } from 'vue';
-import { useRoute } from 'vue-router';
+import { ref, computed, onMounted } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import { getBlockNumber } from '@snapshot-labs/snapshot.js/src/utils/web3';
 import { getScores } from '@snapshot-labs/snapshot.js/src/utils';
 import { useApp } from '@/composables/useApp';
-import { useNotifications } from '@/composables/useNotifications';
 import { useI18n } from 'vue-i18n';
+import { useCopy } from '@/composables/useCopy';
 
 const defaultParams = {
   symbol: 'BAL',
@@ -15,23 +15,21 @@ const defaultParams = {
   decimals: 18
 };
 
+const router = useRouter();
 const route = useRoute();
+const { query: queryParams } = useRoute();
 const { strategies } = useApp();
-const { notify } = useNotifications();
+const { copyToClipboard } = useCopy();
 const { t } = useI18n();
 
 let provider;
 
 const strategy = computed(() => strategies.value[route.params.name]);
 const strategyExample = computed(() => {
-  const queryParamsIndex = window.location.hash.indexOf('?query=');
-  if (queryParamsIndex != -1) {
-    const playgroundQuery = window.location.hash.substring(
-      window.location.hash.indexOf('?query=') + 7
-    );
+  if (queryParams.query) {
     try {
       const { params, network, snapshot, addresses } = JSON.parse(
-        decodeURIComponent(playgroundQuery)
+        decodeURIComponent(queryParams.query)
       );
       return {
         ...strategy.value.examples?.[0],
@@ -92,25 +90,27 @@ async function loadScores() {
   }
 }
 
-function copyURL() {
-  const queryIndex = window.location.href.indexOf('?query=');
-  const locationPath =
-    queryIndex !== -1
-      ? window.location.href.slice(0, queryIndex)
-      : window.location.href;
-
-  navigator.clipboard.writeText(
-    `${locationPath}?query=${encodeURIComponent(JSON.stringify(form.value))}`
-  );
-  notify(['green', t('notify.copied')]);
+function handleURLUpdate() {
+  router.replace({
+    query: { query: encodeURIComponent(JSON.stringify(form.value)) },
+    params: { retainScrollPosition: true }
+  });
 }
 
-watchEffect(async () => {
+function copyURL() {
+  copyToClipboard(
+    `${window.location.origin}/#${route.path}?query=${encodeURIComponent(
+      JSON.stringify(form.value)
+    )}`
+  );
+}
+
+onMounted(async () => {
   loading.value = true;
   scores.value = null;
   networkError.value = false;
-  const queryParamsIndex = window.location.hash.indexOf('?query=');
-  if (queryParamsIndex != -1) {
+
+  if (queryParams.query) {
     form.value.snapshot = strategyExample.value.snapshot;
     loading.value = false;
   } else {
@@ -149,7 +149,7 @@ watchEffect(async () => {
             </template>
             <template v-slot:label> {{ $t(`settings.network`) }} </template>
           </UiInput>
-          <UiInput v-model="form.snapshot">
+          <UiInput v-model="form.snapshot" @update:modelValue="handleURLUpdate">
             <template v-slot:label>
               {{ $t('snapshot') }}
             </template>
@@ -170,6 +170,7 @@ watchEffect(async () => {
           >
             <TextareaAutosize
               v-model="form.params"
+              @update:modelValue="handleURLUpdate"
               :placeholder="$t('strategyParameters')"
               class="input text-left"
               style="width: 560px"
@@ -184,6 +185,7 @@ watchEffect(async () => {
           <UiButton class="block w-full px-3" style="height: auto">
             <TextareaArray
               v-model="form.addresses"
+              @update:modelValue="handleURLUpdate"
               :placeholder="`0x8C28Cf33d9Fd3D0293f963b1cd27e3FF422B425c\n0xeF8305E140ac520225DAf050e2f71d5fBcC543e7`"
               class="input w-full text-left"
               style="font-size: 18px"
@@ -228,6 +230,7 @@ watchEffect(async () => {
       :open="modalNetworksOpen"
       @close="modalNetworksOpen = false"
       v-model="form.network"
+      @update:modelValue="handleURLUpdate"
     />
   </teleport>
 </template>

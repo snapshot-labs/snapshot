@@ -135,7 +135,20 @@ const routes: any[] = [
 const router = createRouter({
   history: createWebHashHistory(),
   routes,
-  scrollBehavior(): {} {
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition;
+    }
+
+    if (to.params.retainScrollPosition) {
+      return {};
+    }
+
+    if (to.hash) {
+      const position = { selector: to.hash };
+      return { el: position };
+    }
+
     return { top: 0 };
   }
 });
