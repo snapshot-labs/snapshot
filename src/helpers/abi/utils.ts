@@ -277,14 +277,15 @@ export const removeHexPrefix = (hexString: string) => {
 };
 
 const encodePackageMultiSendTransaction = (transaction: ModuleTransaction) => {
+  const data = transaction.data || '0x';
   return pack(
     ['uint8', 'address', 'uint256', 'uint256', 'bytes'],
     [
       transaction.operation,
       transaction.to,
       transaction.value,
-      hexDataLength(transaction.data),
-      transaction.data
+      hexDataLength(data),
+      data
     ]
   );
 };
