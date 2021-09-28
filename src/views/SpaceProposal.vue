@@ -76,6 +76,7 @@ function clickVote() {
 
 async function loadProposal() {
   proposalObj.value = await getProposal(id);
+  if (route.query.type) proposalObj.value.proposal.type = route.query.type;
   proposal.value = proposalObj.value.proposal;
   // Redirect to proposal spaceId if it doesn't match route key
   if (
