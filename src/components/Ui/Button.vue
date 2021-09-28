@@ -12,7 +12,7 @@ defineProps({
 <template>
   <button
     :type="type || 'button'"
-    class="button px-[24px]"
+    class="button px-[24px] focus-within:border-skin-link"
     :disabled="disable ? loading : false"
   >
     <UiLoading v-if="loading" />
