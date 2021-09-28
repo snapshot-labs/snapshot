@@ -16,8 +16,10 @@ export default {
     };
   },
   mounted() {
-    if (this.modelValue) this.transactions = clone(this.modelValue);
-    if (!this.transactions.length) this.addTransaction();
+    if (!this.config.preview) {
+      if (this.modelValue) this.transactions = clone(this.modelValue);
+      if (!this.transactions.length) this.addTransaction();
+    }
   },
   methods: {
     addTransaction() {

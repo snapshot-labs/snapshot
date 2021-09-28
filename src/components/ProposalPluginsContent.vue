@@ -45,7 +45,11 @@ const safeSnapInput = computed({
           {
             network: props.space.network,
             realityAddress: props.space.plugins?.safeSnap?.address,
-            txs: input.txs
+            // Some legacy proposals have a plain array of transactions instead of the current two-dimensional structure for batches.
+            txs:
+              input.txs[0] && !Array.isArray(input.txs[0])
+                ? [input.txs]
+                : input.txs
           }
         ]
       };
@@ -67,8 +71,8 @@ const safeSnapInput = computed({
       :config="space.plugins?.safeSnap"
       :network="space.network"
     />
-       <PluginCommentBoxCustomBlock
-       v-if="space.plugins?.commentBox"
+    <PluginCommentBoxCustomBlock
+      v-if="space.plugins?.commentBox"
       :proposalId="id"
       :proposal="proposal"
       :space="space"
