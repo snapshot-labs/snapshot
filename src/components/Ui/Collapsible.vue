@@ -69,6 +69,5 @@ defineEmits(['remove', 'toggle']);
   height: 32px;
   border-radius: 16px;
   margin-top: 7px; // (46px header height - 32px element height) / 2
-  background-color: white;
 }
 </style>
