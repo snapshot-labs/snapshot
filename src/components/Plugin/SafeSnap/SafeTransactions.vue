@@ -94,6 +94,9 @@ export default {
       const { shortName, name } = networks[this.network] || {};
       return shortName || name || `#${this.network}`;
     },
+    networkIcon() {
+      return `https://raw.githubusercontent.com/snapshot-labs/snapshot.js/master/src/networks/${this.network}.png`;
+    },
     proposalResolved() {
       const ts = (Date.now() / 1e3).toFixed();
       return ts > this.proposal.end;
@@ -127,7 +130,12 @@ export default {
       class="px-4 pt-3 border-b block rounded-t-none md:rounded-t-md"
       style="padding-bottom: 12px"
     >
-      <PluginSafeSnapNetworkIcon :network="network" class="mr-2 float-left" />
+      <UiAvatar
+        class="mr-2 float-left mt-[-2px]"
+        :imgsrc="networkIcon"
+        :seed="network"
+        size="28"
+      />
       {{ networkName }} Safe
       <a
         v-if="gnosisSafeAddress"
