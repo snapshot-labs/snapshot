@@ -1,11 +1,13 @@
 <script setup>
-import { watchEffect, ref, computed } from 'vue';
-import { useRoute } from 'vue-router';
+import { ref, computed, onMounted } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import { getBlockNumber } from '@snapshot-labs/snapshot.js/src/utils/web3';
 import { getScores } from '@snapshot-labs/snapshot.js/src/utils';
 import { useApp } from '@/composables/useApp';
+import { useI18n } from 'vue-i18n';
+import { useCopy } from '@/composables/useCopy';
 
 const defaultParams = {
   symbol: 'BAL',
@@ -13,13 +15,37 @@ const defaultParams = {
   decimals: 18
 };
 
+const router = useRouter();
 const route = useRoute();
+const { query: queryParams } = useRoute();
 const { strategies } = useApp();
+const { copyToClipboard } = useCopy();
+const { t } = useI18n();
 
 let provider;
 
 const strategy = computed(() => strategies.value[route.params.name]);
-const strategyExample = computed(() => strategy.value.examples?.[0]);
+const strategyExample = computed(() => {
+  if (queryParams.query) {
+    try {
+      const { params, network, snapshot, addresses } = JSON.parse(
+        decodeURIComponent(queryParams.query)
+      );
+      return {
+        ...strategy.value.examples?.[0],
+        addresses,
+        network,
+        snapshot,
+        strategy: {
+          params: JSON.parse(params)
+        }
+      };
+    } catch (e) {
+      return strategy.value.examples?.[0];
+    }
+  }
+  return strategy.value.examples?.[0];
+});
 
 const modalNetworksOpen = ref(false);
 const loading = ref(false);
@@ -64,18 +90,39 @@ async function loadScores() {
   }
 }
 
-watchEffect(async () => {
+function handleURLUpdate() {
+  router.replace({
+    query: { query: encodeURIComponent(JSON.stringify(form.value)) },
+    params: { retainScrollPosition: true }
+  });
+}
+
+function copyURL() {
+  copyToClipboard(
+    `${window.location.origin}/#${route.path}?query=${encodeURIComponent(
+      JSON.stringify(form.value)
+    )}`
+  );
+}
+
+onMounted(async () => {
   loading.value = true;
   scores.value = null;
   networkError.value = false;
-  try {
-    provider = await getProvider(form.value.network);
-    form.value.snapshot = await getBlockNumber(provider);
+
+  if (queryParams.query) {
+    form.value.snapshot = strategyExample.value.snapshot;
     loading.value = false;
-  } catch (e) {
-    loading.value = false;
-    networkError.value = true;
-    console.log(e);
+  } else {
+    try {
+      provider = await getProvider(form.value.network);
+      form.value.snapshot = await getBlockNumber(provider);
+      loading.value = false;
+    } catch (e) {
+      loading.value = false;
+      networkError.value = true;
+      console.log(e);
+    }
   }
 });
 </script>
@@ -102,7 +149,7 @@ watchEffect(async () => {
             </template>
             <template v-slot:label> {{ $t(`settings.network`) }} </template>
           </UiInput>
-          <UiInput v-model="form.snapshot">
+          <UiInput v-model="form.snapshot" @update:modelValue="handleURLUpdate">
             <template v-slot:label>
               {{ $t('snapshot') }}
             </template>
@@ -123,6 +170,7 @@ watchEffect(async () => {
           >
             <TextareaAutosize
               v-model="form.params"
+              @update:modelValue="handleURLUpdate"
               :placeholder="$t('strategyParameters')"
               class="input text-left"
               style="width: 560px"
@@ -137,6 +185,7 @@ watchEffect(async () => {
           <UiButton class="block w-full px-3" style="height: auto">
             <TextareaArray
               v-model="form.addresses"
+              @update:modelValue="handleURLUpdate"
               :placeholder="`0x8C28Cf33d9Fd3D0293f963b1cd27e3FF422B425c\n0xeF8305E140ac520225DAf050e2f71d5fBcC543e7`"
               class="input w-full text-left"
               style="font-size: 18px"
@@ -155,6 +204,10 @@ watchEffect(async () => {
           :style="[loading ? '' : 'padding-top: 0.2rem']"
         >
           <Icon name="play" size="18" />
+        </UiButton>
+        <UiButton @click="copyURL" class="w-full mt-2">
+          <Icon name="insertlink" size="18" class="align-text-bottom mr-1" />
+          {{ t('copyLink') }}
         </UiButton>
       </Block>
       <Block v-if="scores" :title="$t('results')">
@@ -177,6 +230,7 @@ watchEffect(async () => {
       :open="modalNetworksOpen"
       @close="modalNetworksOpen = false"
       v-model="form.network"
+      @update:modelValue="handleURLUpdate"
     />
   </teleport>
 </template>
