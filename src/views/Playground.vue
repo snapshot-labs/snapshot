@@ -90,11 +90,27 @@ async function loadScores() {
   }
 }
 
-function handleURLUpdate() {
+async function handleURLUpdate(_, paramName) {
   router.replace({
     query: { query: encodeURIComponent(JSON.stringify(form.value)) },
     params: { retainScrollPosition: true }
   });
+
+  if (paramName === 'networkUpdate') {
+    loading.value = true;
+    scores.value = null;
+    networkError.value = false;
+
+    try {
+      provider = await getProvider(form.value.network);
+      form.value.snapshot = await getBlockNumber(provider);
+      loading.value = false;
+    } catch (e) {
+      loading.value = false;
+      networkError.value = true;
+      console.log(e);
+    }
+  }
 }
 
 function copyURL() {
@@ -230,7 +246,7 @@ onMounted(async () => {
       :open="modalNetworksOpen"
       @close="modalNetworksOpen = false"
       v-model="form.network"
-      @update:modelValue="handleURLUpdate"
+      @update:modelValue="event => handleURLUpdate(event, 'networkUpdate')"
     />
   </teleport>
 </template>
