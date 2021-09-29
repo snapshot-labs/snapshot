@@ -286,8 +286,8 @@ export default {
       if (!this.questionDetails.finalizedAt)
         return QuestionStates.questionNotResolved;
 
+      const ts = (Date.now() / 1e3).toFixed();
       if (this.questionDetails.executionApproved) {
-        const ts = (Date.now() / 1e3).toFixed();
         if (
           this.questionDetails.finalizedAt + this.questionDetails.cooldown >
           ts
