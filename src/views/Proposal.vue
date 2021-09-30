@@ -360,10 +360,14 @@ export default {
         space: this.space,
         id: this.id
       });
-      this.proposal = proposalObj.proposal;
-      this.votes = proposalObj.votes;
-      this.results = proposalObj.results;
-      console.log('proposalObj:', proposalObj);
+      try {
+        this.proposal = proposalObj.proposal;
+        this.votes = proposalObj.votes;
+        this.results = proposalObj.results;
+        console.log('proposalObj:', proposalObj);
+      } catch (error) {
+        console.log(error);
+      }
     },
     async loadPower() {
       if (!this.web3.account || !this.proposal.address) return;
