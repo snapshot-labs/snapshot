@@ -49,21 +49,31 @@ export default {
           const type = this.modelValue.type || this.type;
           switch (type) {
             case 'contractInteraction':
-              return `${getAbiFirstFunctionName(this.modelValue.abi)}() - ${
-                this.modelValue.value
-              } wei to ${toAddr}`;
+              return this.$t('safeSnap.transactions.contractInteraction', {
+                functionName: getAbiFirstFunctionName(this.modelValue.abi),
+                amount: this.modelValue.value,
+                address: toAddr
+              });
             case 'transferFunds':
-              return `Transfer ${formatUnits(
-                this.modelValue.amount,
-                this.modelValue.token.decimals
-              )} ${this.modelValue.token.symbol} to ${recipientAddr}`;
+              return this.$t('safeSnap.transactions.transferFunds', {
+                amount: formatUnits(
+                  this.modelValue.amount,
+                  this.modelValue.token.decimals
+                ),
+                tokenSymbol: this.modelValue.token.symbol,
+                address: recipientAddr
+              });
             case 'transferNFT':
-              return `Send ${this.modelValue.collectable.name} #${this._shorten(
-                this.modelValue.collectable.id,
-                10
-              )} to ${recipientAddr}`;
+              return this.$t('safeSnap.transactions.transferNFT', {
+                name: this.modelValue.collectable.name,
+                id: this._shorten(this.modelValue.collectable.id, 10),
+                address: recipientAddr
+              });
             case 'raw':
-              return `Send ${this.modelValue.value} wei to ${recipientAddr}`;
+              return this.$t('safeSnap.transactions.transferNFT', {
+                amount: this.modelValue.value,
+                address: recipientAddr
+              });
           }
         } catch (error) {
           console.log('could not determine title', error);
