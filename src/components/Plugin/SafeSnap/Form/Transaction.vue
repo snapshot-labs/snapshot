@@ -49,13 +49,13 @@ export default {
           const type = this.modelValue.type || this.type;
           switch (type) {
             case 'contractInteraction':
-              return this.$t('safeSnap.transactions.contractInteraction', {
+              return this.$t('safeSnap.transactionLabels.contractInteraction', {
                 functionName: getAbiFirstFunctionName(this.modelValue.abi),
                 amount: this.modelValue.value,
                 address: toAddr
               });
             case 'transferFunds':
-              return this.$t('safeSnap.transactions.transferFunds', {
+              return this.$t('safeSnap.transactionLabels.transferFunds', {
                 amount: formatUnits(
                   this.modelValue.amount,
                   this.modelValue.token.decimals
@@ -64,13 +64,13 @@ export default {
                 address: recipientAddr
               });
             case 'transferNFT':
-              return this.$t('safeSnap.transactions.transferNFT', {
+              return this.$t('safeSnap.transactionLabels.transferNFT', {
                 name: this.modelValue.collectable.name,
                 id: this._shorten(this.modelValue.collectable.id, 10),
                 address: recipientAddr
               });
             case 'raw':
-              return this.$t('safeSnap.transactions.transferNFT', {
+              return this.$t('safeSnap.transactionLabels.transferNFT', {
                 amount: this.modelValue.value,
                 address: recipientAddr
               });

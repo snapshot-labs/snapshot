@@ -272,7 +272,7 @@
     "contractInteraction": "Contract interaction",
     "rawTransaction": "Raw transaction",
     "addTransaction": "Add transaction",
-    "transactions": {
+    "transactionLabels": {
       "contractInteraction": "{functionName}() - {amount} wei to {address}",
       "transferFunds": "Transfer {amount} {tokenSymbol} to {address}",
       "transferNFT": "Send {name} #{id} to {address}",
