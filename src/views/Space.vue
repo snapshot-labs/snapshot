@@ -6,14 +6,14 @@ import { useDomain } from '@/composables/useDomain';
 import aliases from '@/../snapshot-spaces/spaces/aliases.json';
 import { useRouter } from 'vue-router';
 import { formatSpace } from '@/helpers/utils';
-import { useGetSpaces } from '@/composables/useGetSpaces';
+import { useExtentedSpaces } from '@/composables/useExtentedSpaces';
 
 const route = useRoute();
 const router = useRouter();
 const { domain } = useDomain();
 const { explore } = useApp();
 const aliasedSpace = aliases[domain] || aliases[route.params.key];
-const { getExtentedSpaces, extentedSpaces, spaceLoading } = useGetSpaces();
+const { getExtentedSpaces, extentedSpaces, spaceLoading } = useExtentedSpaces();
 
 // Redirect the user to the ENS address if the space is aliased.
 if (aliasedSpace) {
