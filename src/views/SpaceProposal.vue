@@ -76,7 +76,6 @@ function clickVote() {
 
 async function loadProposal() {
   proposalObj.value = await getProposal(id);
-  if (route.query.type) proposalObj.value.proposal.type = route.query.type;
   proposal.value = proposalObj.value.proposal;
   // Redirect to proposal spaceId if it doesn't match route key
   if (
@@ -169,6 +168,11 @@ watch(proposal, () => {
 
 watch(web3Account, (val, prev) => {
   if (val?.toLowerCase() !== prev) loadPower();
+  const choice = route.query.choice;
+  if (proposal.value && choice) {
+    selectedChoices.value = choice;
+    clickVote();
+  }
 });
 
 watch(loaded, () => {
@@ -180,6 +184,11 @@ watch(loaded, () => {
 
 onMounted(async () => {
   await loadProposal();
+  const choice = route.query.choice;
+  if (web3Account.value && choice) {
+    selectedChoices.value = choice;
+    clickVote();
+  }
 });
 </script>
 
