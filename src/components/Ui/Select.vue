@@ -10,7 +10,7 @@ function handleChange(event) {
 </script>
 
 <template>
-  <UiButton class="w-full mb-2 px-3 flex items-center overflow-hidden">
+  <UiButton class="w-full mb-2 !px-3 flex items-center overflow-hidden">
     <div class="text-color mr-2 no-shrink">
       <slot name="label" />
     </div>
