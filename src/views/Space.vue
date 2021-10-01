@@ -13,7 +13,8 @@ const router = useRouter();
 const { domain } = useDomain();
 const { explore } = useApp();
 const aliasedSpace = aliases[domain] || aliases[route.params.key];
-const { getExtentedSpaces, extentedSpaces, spaceLoading } = useExtentedSpaces();
+const { loadExtentedSpaces, extentedSpaces, spaceLoading } =
+  useExtentedSpaces();
 
 // Redirect the user to the ENS address if the space is aliased.
 if (aliasedSpace) {
@@ -36,7 +37,7 @@ const spaceFrom = computed(() =>
   formatSpace(extentedSpaces.value?.find(s => s.id === from.value))
 );
 
-onMounted(() => getExtentedSpaces([spaceId.value, from.value]));
+onMounted(() => loadExtentedSpaces([spaceId.value, from.value]));
 </script>
 
 <template>
@@ -46,6 +47,6 @@ onMounted(() => getExtentedSpaces([spaceId.value, from.value]));
     :from="from"
     :spaceFrom="spaceFrom"
     :spaceLoading="spaceLoading"
-    :getExtentedSpaces="getExtentedSpaces"
+    :loadExtentedSpaces="loadExtentedSpaces"
   />
 </template>

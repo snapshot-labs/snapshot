@@ -8,7 +8,7 @@ const loading = ref(true);
 export function useExtentedSpaces() {
   const { apolloQuery } = useApolloQuery();
 
-  async function getExtentedSpaces(id_in = []) {
+  async function loadExtentedSpaces(id_in = []) {
     loading.value = true;
     try {
       const response = await apolloQuery(
@@ -29,7 +29,7 @@ export function useExtentedSpaces() {
   }
 
   return {
-    getExtentedSpaces,
+    loadExtentedSpaces,
     extentedSpaces: computed(() => extentedSpaces.value),
     spaceLoading: computed(() => loading.value)
   };

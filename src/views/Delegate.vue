@@ -33,7 +33,8 @@ const { notify } = useNotifications();
 const { explore } = useApp();
 const { web3 } = useWeb3();
 const { pendingCount } = useTxStatus();
-const { getExtentedSpaces, extentedSpaces, spaceLoading } = useExtentedSpaces();
+const { loadExtentedSpaces, extentedSpaces, spaceLoading } =
+  useExtentedSpaces();
 
 const modalOpen = ref(false);
 const currentId = ref('');
@@ -176,7 +177,7 @@ watch(networkKey, (val, prev) => {
 
 watchEffect(async () => {
   if (explore.value.spaces[form.value.id]) {
-    await getExtentedSpaces([form.value.id]);
+    await loadExtentedSpaces([form.value.id]);
     if (extentedSpaces.value.some(s => s.id === form.value.id))
       getDelegatesWithScore();
   } else delegatesWithScore.value = [];
