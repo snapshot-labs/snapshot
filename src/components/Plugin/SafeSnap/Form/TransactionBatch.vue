@@ -17,7 +17,8 @@ export default {
   },
   mounted() {
     if (this.modelValue) this.transactions = clone(this.modelValue);
-    if (!this.transactions.length) this.addTransaction();
+    if (!this.config.preview && !this.transactions.length)
+      this.addTransaction();
   },
   methods: {
     addTransaction() {
@@ -40,10 +41,11 @@ export default {
 
 <template>
   <UiCollapsible
+    borderless
     :hideRemove="config.preview"
     :number="index + 1"
     :open="open"
-    :title="`Batch #${index + 1}`"
+    :title="`${$t('safeSnap.batch')} (${transactions.length})`"
     @remove="$emit('remove')"
     @toggle="open = !open"
   >
@@ -72,7 +74,7 @@ export default {
     </Block>
 
     <UiButton v-if="!config.preview" @click="addTransaction">
-      Add Transaction
+      {{ $t('safeSnap.addTransaction') }}
     </UiButton>
   </UiCollapsible>
 </template>
