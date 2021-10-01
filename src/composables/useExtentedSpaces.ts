@@ -3,13 +3,13 @@ import { SPACES_QUERY } from '@/helpers/queries';
 import { useApolloQuery } from '@/composables/useApolloQuery';
 
 const extentedSpaces = ref([]);
-const spaceLoading = ref(true);
+const loading = ref(true);
 
 export function useExtentedSpaces() {
   const { apolloQuery } = useApolloQuery();
 
   async function getExtentedSpaces(id_in = []) {
-    spaceLoading.value = true;
+    loading.value = true;
     try {
       const response = await apolloQuery(
         {
@@ -21,16 +21,16 @@ export function useExtentedSpaces() {
         'spaces'
       );
       extentedSpaces.value = response;
-      spaceLoading.value = false;
+      loading.value = false;
     } catch (e) {
       console.error(e);
-      spaceLoading.value = false;
+      loading.value = false;
     }
   }
 
   return {
     getExtentedSpaces,
     extentedSpaces: computed(() => extentedSpaces.value),
-    spaceLoading: computed(() => spaceLoading.value)
+    spaceLoading: computed(() => loading.value)
   };
 }
