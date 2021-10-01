@@ -23,8 +23,9 @@ export function useExtentedSpaces() {
       extentedSpaces.value = response;
       loading.value = false;
     } catch (e) {
-      console.error(e);
       loading.value = false;
+      console.error(e);
+      return e;
     }
   }
 
