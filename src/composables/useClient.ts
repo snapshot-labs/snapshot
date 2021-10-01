@@ -24,6 +24,8 @@ export function useClient() {
         'green',
         type === 'delete-proposal'
           ? t('notify.proposalDeleted')
+          : type === 'vote-safe'
+          ? t('???')
           : t('notify.yourIsIn', [type])
       ]);
       return result;
