@@ -147,8 +147,8 @@ export const SPACES_QUERY = gql`
       github
       private
       domain
-      admins
       members
+      admins
       plugins
       strategies {
         name
