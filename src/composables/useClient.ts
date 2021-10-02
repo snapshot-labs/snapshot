@@ -27,7 +27,7 @@ export function useClient() {
           : t('notify.yourIsIn', [type])
       ]);
       return result;
-    } catch (e) {
+    } catch (e: any) {
       const errorMessage =
         e && e.error_description
           ? `Oops, ${e.error_description}`

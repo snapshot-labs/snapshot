@@ -8,23 +8,26 @@ import { useProfiles } from '@/composables/useProfiles';
 import { useDomain } from '@/composables/useDomain';
 import { useSharing } from '@/composables/useSharing';
 import { useI18n } from 'vue-i18n';
-import { useApp } from '@/composables/useApp';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useClient } from '@/composables/useClient';
 
+const props = defineProps({
+  spaceId: String,
+  space: Object,
+  spaceLoading: Boolean
+});
+
 const route = useRoute();
 const router = useRouter();
-const key = route.params.key;
 const id = route.params.id;
 const { domain } = useDomain();
 const { t } = useI18n();
-const { spaces } = useApp();
 const { web3 } = useWeb3();
 const { send } = useClient();
 
 const modalOpen = ref(false);
 const selectedChoices = ref(null);
-const loaded = ref(false);
+const loading = ref(true);
 const loadedResults = ref(false);
 const proposal = ref({});
 const votes = ref([]);
@@ -33,16 +36,17 @@ const totalScore = ref(0);
 const scores = ref([]);
 const dropdownLoading = ref(false);
 const modalStrategiesOpen = ref(false);
+const proposalObj = ref({});
 
-const space = computed(() => spaces.value[key]);
 const web3Account = computed(() => web3.value.account);
 const isCreator = computed(() => proposal.value.author === web3Account.value);
+const loaded = computed(() => !props.spaceLoading && !loading.value);
 const isAdmin = computed(() => {
-  const admins = (space.value.admins || []).map(admin => admin.toLowerCase());
+  const admins = (props.space.admins || []).map(admin => admin.toLowerCase());
   return admins.includes(web3Account.value?.toLowerCase());
 });
 const strategies = computed(
-  () => proposal.value.strategies ?? space.value.strategies
+  () => proposal.value.strategies ?? props.space.strategies
 );
 const symbols = computed(() =>
   strategies.value.map(strategy => strategy.params.symbol)
@@ -60,38 +64,36 @@ const safeSnapInput = computed({
 });
 
 const { modalAccountOpen } = useModal();
-const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(key);
+const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(props.spaceId);
 
 function clickVote() {
   !web3.value.account
     ? (modalAccountOpen.value = true)
-    : !termsAccepted.value && space.value.terms
+    : !termsAccepted.value && props.space.terms
     ? (modalTermsOpen.value = true)
     : (modalOpen.value = true);
 }
 
 async function loadProposal() {
-  const proposalObj = await getProposal(id);
-  proposal.value = proposalObj.proposal;
+  proposalObj.value = await getProposal(id);
+  proposal.value = proposalObj.value.proposal;
   // Redirect to proposal spaceId if it doesn't match route key
   if (
-    route.name === 'proposal' &&
-    route.params.key &&
-    route.params.key !== proposal.value.space.id
-  )
-    router.push({
-      name: 'proposal',
-      params: {
-        key: proposal.value.space.id,
-        id: proposal.value.id
-      }
-    });
+    route.name === 'spaceProposal' &&
+    props.spaceId !== proposal.value.space.id
+  ) {
+    router.push({ name: 'error-404' });
+  }
 
-  loaded.value = true;
+  loading.value = false;
+  if (loaded.value) loadResults();
+}
+
+async function loadResults() {
   const resultsObj = await getResults(
-    space.value,
-    proposalObj.proposal,
-    proposalObj.votes
+    props.space,
+    proposalObj.value.proposal,
+    proposalObj.value.votes
   );
   results.value = resultsObj.results;
   votes.value = resultsObj.votes;
@@ -101,7 +103,7 @@ async function loadProposal() {
 async function loadPower() {
   if (!web3Account.value || !proposal.value.author) return;
   const response = await getPower(
-    space.value,
+    props.space,
     web3Account.value,
     proposal.value
   );
@@ -113,13 +115,13 @@ async function deleteProposal() {
   dropdownLoading.value = true;
   try {
     if (
-      await send(space.value.id, 'delete-proposal', {
+      await send(props.space.id, 'delete-proposal', {
         proposal: id
       })
     ) {
       dropdownLoading.value = false;
       router.push({
-        name: 'proposals'
+        name: 'spaceProposals'
       });
     }
   } catch (e) {
@@ -141,7 +143,7 @@ function selectFromThreedotDropdown(e) {
   if (e === 'delete') deleteProposal();
   if (e === 'duplicate')
     router.push({
-      name: 'create',
+      name: 'spaceCreate',
       params: {
         key: proposal.value.space.id,
         from: proposal.value.id
@@ -151,11 +153,11 @@ function selectFromThreedotDropdown(e) {
 
 function selectFromShareDropdown(e) {
   if (e === 'shareToTwitter')
-    shareToTwitter(space.value, proposal.value, window);
+    shareToTwitter(props.space, proposal.value, window);
   else if (e === 'shareToFacebook')
-    shareToFacebook(space.value, proposal.value, window);
+    shareToFacebook(props.space, proposal.value, window);
   else if (e === 'shareToClipboard')
-    shareToClipboard(space.value, proposal.value);
+    shareToClipboard(props.space, proposal.value);
 }
 
 const { profiles, addressArray } = useProfiles();
@@ -166,11 +168,27 @@ watch(proposal, () => {
 
 watch(web3Account, (val, prev) => {
   if (val?.toLowerCase() !== prev) loadPower();
+  const choice = route.query.choice;
+  if (proposal.value && choice) {
+    selectedChoices.value = parseInt(choice);
+    clickVote();
+  }
+});
+
+watch(loaded, () => {
+  if (loaded.value) {
+    loadResults();
+    loadPower();
+  }
 });
 
 onMounted(async () => {
   await loadProposal();
-  loadPower();
+  const choice = route.query.choice;
+  if (web3Account.value && choice) {
+    selectedChoices.value = parseInt(choice);
+    clickVote();
+  }
 });
 </script>
 
@@ -179,7 +197,7 @@ onMounted(async () => {
     <template #content-left>
       <div class="px-4 md:px-0 mb-3">
         <router-link
-          :to="{ name: domain ? 'home' : 'proposals' }"
+          :to="domain ? { path: '/' } : { name: 'spaceProposals' }"
           class="text-color"
         >
           <Icon name="back" size="22" class="!align-middle" />

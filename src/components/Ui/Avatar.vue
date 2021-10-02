@@ -5,7 +5,6 @@ defineProps({
   address: String,
   size: String,
   imgsrc: String,
-  seed: [Number, String],
   space: Object
 });
 
@@ -28,7 +27,7 @@ const error = ref(false);
       class="rounded-full inline-block !align-middle leading-none"
     />
     <UiBlockie
-      v-else
+      v-else-if="!!address"
       :seed="address"
       class="inline-block !align-middle rounded-full"
       :style="{

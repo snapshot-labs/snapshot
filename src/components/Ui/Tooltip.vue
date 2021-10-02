@@ -4,8 +4,7 @@ import { useDebounce } from '@/composables/useDebounce';
 
 defineProps({
   text: {
-    type: String,
-    required: true
+    type: String
   },
   show: {
     type: Boolean,

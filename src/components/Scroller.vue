@@ -6,10 +6,9 @@ import { useWeb3 } from '@/composables/useWeb3';
 import { useApp } from '@/composables/useApp';
 import { useDomain } from '@/composables/useDomain';
 import { useUnseenProposals } from '@/composables/useUnseenProposals';
-import { useUserSkin } from '@/composables/useUserSkin';
 import { lsSet, lsGet } from '@/helpers/utils';
 
-const { spaces } = useApp();
+const { explore } = useApp();
 const { web3 } = useWeb3();
 const { loadFollows, followingSpaces } = useFollowSpace();
 const { domain } = useDomain();
@@ -23,8 +22,6 @@ const {
 const modalAboutOpen = ref(false);
 const modalLangOpen = ref(false);
 const draggableSpaces = ref([]);
-
-const { toggleSkin, getSkinIcon } = useUserSkin();
 
 const web3Account = computed(() => web3.value.account);
 
@@ -53,7 +50,6 @@ watch(web3Account, () => {
 
 watch(followingSpaces, () => {
   draggableSpaces.value = followingSpaces.value;
-
   const sidebarSpaceOrder = lsGet(
     `sidebarSpaceOrder.${web3Account.value.slice(0, 8).toLowerCase()}`,
     []
@@ -93,7 +89,7 @@ onMounted(() => {
   >
     <div class="flex flex-col h-full overflow-scroll menu-tabs">
       <div class="min-h-[78px] h-[78px] flex items-center justify-center">
-        <router-link :to="{ name: 'home' }">
+        <router-link :to="{ path: '/' }">
           <Icon
             size="36"
             name="snapshot"
@@ -127,9 +123,13 @@ onMounted(() => {
                 v-if="hasUnseenProposalsBySpace(element)"
               />
               <router-link
-                :to="{ name: 'proposals', params: { key: element } }"
+                :to="{ name: 'spaceProposals', params: { key: element } }"
               >
-                <Token :space="spaces[element]" symbolIndex="space" size="44" />
+                <Token
+                  :space="explore.spaces[element]"
+                  symbolIndex="space"
+                  size="44"
+                />
               </router-link>
             </div>
           </template>
@@ -143,14 +143,11 @@ onMounted(() => {
             items-center
             space-y-2
             justify-center
-            !mb-0
+            !mb-2
             !mt-auto
             py-2
           "
         >
-          <UiSidebarButton @click="toggleSkin">
-            <Icon size="20" class="link-color" :name="getSkinIcon()" />
-          </UiSidebarButton>
           <UiSidebarButton @click="modalAboutOpen = true">
             <span class="mt-1 link-color">?</span>
           </UiSidebarButton>

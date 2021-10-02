@@ -54,12 +54,24 @@ export interface ContractInteractionModuleTransaction
 
 const EXPLORER_API_URLS = {
   '1': 'https://api.etherscan.io/api',
-  '4': 'https://api-rinkeby.etherscan.io/api'
+  '4': 'https://api-rinkeby.etherscan.io/api',
+  '100': 'https://blockscout.com/xdai/mainnet/api',
+  '73799': 'https://volta-explorer.energyweb.org/api',
+  '246': 'https://explorer.energyweb.org/api',
+  '137': 'https://api.polygonscan.com/api',
+  '56': 'https://api.bscscan.com/api',
+  '42161': 'https://api.arbiscan.io/api'
 };
 
 const GNOSIS_SAFE_TRANSACTION_API_URLS = {
   '1': 'https://safe-transaction.gnosis.io/api/v1/',
-  '4': 'https://safe-transaction.rinkeby.gnosis.io/api/v1/'
+  '4': 'https://safe-transaction.rinkeby.gnosis.io/api/v1/',
+  '100': 'https://safe-transaction.xdai.gnosis-safe.io/api/v1/',
+  '73799': 'https://safe-transaction.volta.gnosis-safe.io/api/v1/',
+  '246': 'https://safe-transaction.ewc.gnosis-safe.io/api/v1/',
+  '137': 'https://safe-transaction.polygon.gnosis-safe.io/api/v1/',
+  '56': 'https://safe-transaction.bsc.gnosis-safe.io/api/v1/',
+  '42161': 'https://safe-transaction.arbitrum.gnosis-safe.io/api/v1/'
 };
 
 const ERC20ContractABI = [
@@ -238,7 +250,7 @@ const callGnosisSafeTransactionApi = async (network: string, url: string) => {
 
 export const getGnosisSafeBalances = memoize(
   (network, safeAddress) => {
-    const endpointPath = `/safes/${safeAddress}/balances`;
+    const endpointPath = `/safes/${safeAddress}/balances/`;
     return callGnosisSafeTransactionApi(network, endpointPath);
   },
   (safeAddress, network) => `${safeAddress}_${network}`
@@ -246,7 +258,7 @@ export const getGnosisSafeBalances = memoize(
 
 export const getGnosisSafeCollectibles = memoize(
   (network, safeAddress) => {
-    const endpointPath = `/safes/${safeAddress}/collectibles`;
+    const endpointPath = `/safes/${safeAddress}/collectibles/`;
     return callGnosisSafeTransactionApi(network, endpointPath);
   },
   (safeAddress, network) => `${safeAddress}_${network}`
@@ -265,14 +277,15 @@ export const removeHexPrefix = (hexString: string) => {
 };
 
 const encodePackageMultiSendTransaction = (transaction: ModuleTransaction) => {
+  const data = transaction.data || '0x';
   return pack(
     ['uint8', 'address', 'uint256', 'uint256', 'bytes'],
     [
       transaction.operation,
       transaction.to,
       transaction.value,
-      hexDataLength(transaction.data),
-      transaction.data
+      hexDataLength(data),
+      data
     ]
   );
 };

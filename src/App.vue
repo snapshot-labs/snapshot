@@ -8,6 +8,7 @@ import { useUserSkin } from '@/composables/useUserSkin';
 import { useApp } from '@/composables/useApp';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useNotifications } from '@/composables/useNotifications';
+import aliases from '@/../snapshot-spaces/spaces/aliases.json';
 
 const { domain } = useDomain();
 const { loadLocale } = useI18n();
@@ -22,8 +23,18 @@ provide('web3', web3);
 provide('notify', notify);
 
 const space = computed(() => {
-  const key = domain || route.params.key;
-  return explore.value.spaces?.[key] ? explore.value.spaces[key] : {};
+  const key = aliases[domain] || domain || route.params.key;
+  return explore.value.spaces?.[key];
+});
+
+const skin = computed(() => {
+  if (domain && space.value?.skin) {
+    let skinClass = space.value.skin;
+    if (userSkin.value === 'dark-mode')
+      skinClass += ` ${space.value.skin}-dark-mode`;
+    return skinClass;
+  }
+  return userSkin.value;
 });
 
 onMounted(async () => {
@@ -39,17 +50,13 @@ watch(modalOpen, val => {
 
 <template>
   <div
-    :class="
-      space?.skin && userSkin === 'dark-mode'
-        ? `${space?.skin} ${space?.skin}-dark-mode`
-        : space?.skin || userSkin
-    "
+    :class="skin"
     id="app"
     class="overflow-hidden pb-4 font-serif text-base"
   >
     <UiLoading v-if="app.loading || !app.init" class="overlay big" />
     <div v-else>
-      <TheSidebar />
+      <Scroller />
       <div :class="{ 'sm:ml-[68px]': !domain }">
         <Topnav />
         <div class="pb-6">

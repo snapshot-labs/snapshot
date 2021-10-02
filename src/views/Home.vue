@@ -12,6 +12,7 @@ const { explore } = useApp();
 const { followingSpaces } = useFollowSpace();
 
 const orderedSpaces = computed(() => {
+  const network = route.query.network || '';
   const q = route.query.q || '';
   const list = Object.keys(explore.value.spaces)
     .map(key => {
@@ -22,7 +23,14 @@ const orderedSpaces = computed(() => {
         private: explore.value.spaces[key].private ?? false
       };
     })
-    .filter(space => !space.private);
+    .filter(space => !space.private)
+    .filter(space => {
+      if (space.network === network) {
+        return space;
+      } else if (!network) {
+        return space;
+      }
+    });
 
   return orderBy(list, ['following', 'followers'], ['desc', 'desc']).filter(
     space => JSON.stringify(space).toLowerCase().includes(q.toLowerCase())
@@ -57,7 +65,7 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
       <div class="grid lg:grid-cols-4 md:grid-cols-3 gap-4">
         <a
           @click="
-            $router.push({ name: 'proposals', params: { key: space.id } })
+            $router.push({ name: 'spaceProposals', params: { key: space.id } })
           "
           v-for="space in orderedSpaces.slice(0, limit)"
           :key="space.id"
@@ -86,7 +94,11 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
                 class="mb-0 pb-0 mt-0 text-[22px] !h-[32px] overflow-hidden"
               />
               <div class="mb-[12px] text-color">
-                {{ $tc('members', space.followers) }}
+                {{
+                  $tc('members', space.followers, {
+                    count: _n(space.followers)
+                  })
+                }}
               </div>
               <FollowButton :space="space" />
             </Block>
