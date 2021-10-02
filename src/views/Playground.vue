@@ -90,6 +90,18 @@ async function loadScores() {
   }
 }
 
+async function loadSnapshotBlockNumber() {
+  try {
+    provider = await getProvider(form.value.network);
+    form.value.snapshot = await getBlockNumber(provider);
+    loading.value = false;
+  } catch (e) {
+    loading.value = false;
+    networkError.value = true;
+    console.log(e);
+  }
+}
+
 async function handleURLUpdate(_, paramName) {
   router.replace({
     query: { query: encodeURIComponent(JSON.stringify(form.value)) },
@@ -100,16 +112,7 @@ async function handleURLUpdate(_, paramName) {
     loading.value = true;
     scores.value = null;
     networkError.value = false;
-
-    try {
-      provider = await getProvider(form.value.network);
-      form.value.snapshot = await getBlockNumber(provider);
-      loading.value = false;
-    } catch (e) {
-      loading.value = false;
-      networkError.value = true;
-      console.log(e);
-    }
+    loadSnapshotBlockNumber();
   }
 }
 
@@ -130,15 +133,7 @@ onMounted(async () => {
     form.value.snapshot = strategyExample.value.snapshot;
     loading.value = false;
   } else {
-    try {
-      provider = await getProvider(form.value.network);
-      form.value.snapshot = await getBlockNumber(provider);
-      loading.value = false;
-    } catch (e) {
-      loading.value = false;
-      networkError.value = true;
-      console.log(e);
-    }
+    loadSnapshotBlockNumber();
   }
 });
 </script>
