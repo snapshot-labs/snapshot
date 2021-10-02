@@ -67,6 +67,7 @@ async function loadScores() {
   scores.value = null;
   strategyError.value = null;
   loading.value = true;
+  
   try {
     const strategyParams = {
       __typename: 'Strategy',
@@ -90,11 +91,30 @@ async function loadScores() {
   }
 }
 
-function handleURLUpdate() {
+async function loadSnapshotBlockNumber() {
+  try {
+    provider = await getProvider(form.value.network);
+    form.value.snapshot = await getBlockNumber(provider);
+    loading.value = false;
+  } catch (e) {
+    loading.value = false;
+    networkError.value = true;
+    console.log(e);
+  }
+}
+
+async function handleURLUpdate(_, paramName) {
   router.replace({
     query: { query: encodeURIComponent(JSON.stringify(form.value)) },
     params: { retainScrollPosition: true }
   });
+
+  if (paramName === 'networkUpdate') {
+    loading.value = true;
+    scores.value = null;
+    networkError.value = false;
+    loadSnapshotBlockNumber();
+  }
 }
 
 function copyURL() {
@@ -114,15 +134,7 @@ onMounted(async () => {
     form.value.snapshot = strategyExample.value.snapshot;
     loading.value = false;
   } else {
-    try {
-      provider = await getProvider(form.value.network);
-      form.value.snapshot = await getBlockNumber(provider);
-      loading.value = false;
-    } catch (e) {
-      loading.value = false;
-      networkError.value = true;
-      console.log(e);
-    }
+    loadSnapshotBlockNumber();
   }
 });
 </script>
@@ -230,7 +242,7 @@ onMounted(async () => {
       :open="modalNetworksOpen"
       @close="modalNetworksOpen = false"
       v-model="form.network"
-      @update:modelValue="handleURLUpdate"
+      @update:modelValue="event => handleURLUpdate(event, 'networkUpdate')"
     />
   </teleport>
 </template>
