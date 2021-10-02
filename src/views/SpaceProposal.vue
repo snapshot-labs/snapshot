@@ -176,6 +176,11 @@ watch(proposal, () => {
 
 watch(web3Account, (val, prev) => {
   if (val?.toLowerCase() !== prev) loadPower();
+  const choice = route.query.choice;
+  if (proposal.value && choice) {
+    selectedChoices.value = parseInt(choice);
+    clickVote();
+  }
 });
 
 watch(loaded, () => {
@@ -187,6 +192,11 @@ watch(loaded, () => {
 
 onMounted(async () => {
   await loadProposal();
+  const choice = route.query.choice;
+  if (web3Account.value && choice) {
+    selectedChoices.value = parseInt(choice);
+    clickVote();
+  }
 });
 </script>
 
