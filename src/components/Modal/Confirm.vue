@@ -31,16 +31,12 @@ const walletConnectType = computed(() => web3.value.walletConnectType);
 async function handleSubmit() {
   loading.value = true;
   const isSafe = walletConnectType.value === 'Gnosis Safe Multisig';
-  const payload = {
+  const fn = isSafe ? sign : send;
+  await fn(props.space.id, 'vote', {
     proposal: props.proposal.id,
     choice: props.selectedChoices,
     metadata: {}
-  };
-  if (isSafe) {
-    await send(props.space.id, 'vote', payload);
-  } else {
-    await sign(props.space.id, 'vote', payload);
-  }
+  });
   emit('reload');
   emit('close');
   loading.value = false;
