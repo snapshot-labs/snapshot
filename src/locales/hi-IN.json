@@ -31,7 +31,7 @@
   "network": "नेटवर्क",
   "networks": "नेटवर्क",
   "skins": "स्किन",
-  "members": "कोई सदस्य नहीं | {count} सदस्य | {count} सदस्यों",
+  "members": "कोई सदस्य नहीं | {count} सदस्य | {count} सदस्य",
   "editStrategy": "रणनीति संपादित करें",
   "invalidProposals": "अमान्य प्रस्ताव",
   "account": "खाता",
@@ -111,7 +111,7 @@
   "leave": "छोड़ना",
   "copyLink": "लिंक कॉपी करें",
   "duplicateProposal": "डुप्लीकेट प्रस्ताव",
-  "joinedSpaces": "जगह में शामिल हों हो गए",
+  "joinedSpaces": "स्पेस में शामिल हों",
   "joinSpaces": "जगह में शामिल हों",
   "errors": {
     "required": "यह जानकारी जरुरी है",
