@@ -93,7 +93,7 @@ export default {
 
 <template>
   <UiSelect v-model="tokenAddress" :disabled="config.preview">
-    <template v-slot:label>asset</template>
+    <template v-slot:label>{{ $t('safeSnap.asset') }}</template>
     <template v-slot:image v-if="selectedToken">
       <img :src="selectedToken.logoUri" alt="" class="tokenImage" />
     </template>
@@ -112,10 +112,10 @@ export default {
     :inputProps="{
       required: true
     }"
-    label="to"
+    :label="$t('safeSnap.to')"
   />
   <PluginSafeSnapInputAmount
-    label="amount"
+    :label="$t('safeSnap.amount')"
     v-model="value"
     :decimals="selectedToken?.decimals"
     :disabled="config.preview"
