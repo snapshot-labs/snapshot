@@ -114,6 +114,11 @@ function clearDelegate(id, delegate) {
 }
 
 async function getDelegatesWithScore() {
+  const delegationStrategy = extentedSpaces.value
+    .find(s => s.id === form.value.id)
+    .strategies.filter(strategy => strategy.name === 'delegation');
+  if (delegationStrategy.length === 0) return;
+
   delegatesLoading.value = true;
   try {
     const delegationsRes = await Promise.all([
@@ -132,11 +137,9 @@ async function getDelegatesWithScore() {
       return delegations.find(a => a.delegate === delegate);
     });
 
-    const provider = getProvider(space.value.network);
     const delegatesAddresses = uniqueDelegators.map(d => d.delegate);
-    const delegationStrategy = extentedSpaces.value
-      .find(s => s.id === form.value.id)
-      .strategies.filter(strategy => strategy.name === 'delegation');
+
+    const provider = getProvider(space.value.network);
     const scores = await getScores(
       space.value.id,
       delegationStrategy,
@@ -164,6 +167,7 @@ async function getDelegatesWithScore() {
   } catch (e) {
     delegatesLoading.value = false;
     console.log(e);
+    return e;
   }
 }
 
