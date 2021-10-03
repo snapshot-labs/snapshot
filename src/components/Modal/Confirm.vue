@@ -17,7 +17,7 @@ const props = defineProps({
 
 const emit = defineEmits(['reload', 'close']);
 
-const { send } = useClient();
+const { send, sign } = useClient();
 const { web3 } = useWeb3();
 const format = getChoiceString;
 
@@ -31,11 +31,16 @@ const walletConnectType = computed(() => web3.value.walletConnectType);
 async function handleSubmit() {
   loading.value = true;
   const isSafe = walletConnectType.value === 'Gnosis Safe Multisig';
-  await send(props.space.id, isSafe ? 'vote-safe' : 'vote', {
+  const payload = {
     proposal: props.proposal.id,
     choice: props.selectedChoices,
     metadata: {}
-  });
+  };
+  if (isSafe) {
+    await send(props.space.id, 'vote', payload);
+  } else {
+    await sign(props.space.id, 'vote', payload);
+  }
   emit('reload');
   emit('close');
   loading.value = false;

@@ -19,13 +19,10 @@ export function useClient() {
         type,
         payload
       );
-
       notify([
         'green',
         type === 'delete-proposal'
           ? t('notify.proposalDeleted')
-          : type === 'vote-safe'
-          ? t('???')
           : t('notify.yourIsIn', [type])
       ]);
       return result;
@@ -39,5 +36,26 @@ export function useClient() {
     }
   }
 
-  return { send };
+  async function sign(space, type, payload) {
+    try {
+      const result = await client.sign(
+        auth.web3,
+        web3.value.account,
+        space,
+        type,
+        payload
+      );
+      notify(['green', t('notify.yourIsIn', [type])]);
+      return result;
+    } catch (e: any) {
+      const errorMessage =
+        e && e.error_description
+          ? `Oops, ${e.error_description}`
+          : t('notify.somethingWentWrong');
+      notify(['red', errorMessage]);
+      return;
+    }
+  }
+
+  return { send, sign };
 }
