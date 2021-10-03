@@ -23,6 +23,7 @@ import { useApp } from '@/composables/useApp';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useTxStatus } from '@/composables/useTxStatus';
 import { useExtentedSpaces } from '@/composables/useExtentedSpaces';
+import { n } from '@/helpers/utils';
 
 const abi = ['function setDelegate(bytes32 id, address delegate)'];
 
@@ -115,10 +116,15 @@ function clearDelegate(id, delegate) {
 async function getDelegatesWithScore() {
   delegatesLoading.value = true;
   try {
-    const { delegations } = await getDelegatesBySpace(
-      space.value.network,
-      space.value.id
-    );
+    const delegationsRes = await Promise.all([
+      getDelegatesBySpace(space.value.network, ''),
+      getDelegatesBySpace(space.value.network, space.value.id)
+    ]);
+
+    const delegations = [
+      ...delegationsRes[0].delegations,
+      ...delegationsRes[1].delegations
+    ];
 
     const uniqueDelegators = Array.from(
       new Set(delegations.map(d => d.delegate))
@@ -150,7 +156,7 @@ async function getDelegatesWithScore() {
     });
 
     const sortedDelegates = uniqueDelegators
-      .filter(delegate => delegate.score > 0)
+      .filter(delegate => n(delegate.score) > 0)
       .sort((a, b) => b.score - a.score);
 
     delegatesWithScore.value = sortedDelegates;
