@@ -151,7 +151,8 @@
     "delegations": "التفويض(التفويضات)",
     "allSpaces": "لجميع المساحات",
     "delegated": "التفويض لنفسك",
-    "pendingTransaction": "لا توجد معاملات معلقة | 1 معاملات معلقة | {count} معاملات معلقة"
+    "pendingTransaction": "لا توجد معاملات معلقة | 1 معاملات معلقة | {count} معاملات معلقة",
+    "topDelegates": "Top delegates"
   },
   "proposal": {
     "castVote": "سجل صوتك",
