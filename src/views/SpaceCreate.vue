@@ -71,6 +71,18 @@ watchEffect(async () => {
   }
 });
 
+// TODO: replace with space settings value
+const delay = 0;
+const period = 0;
+
+const dateStart = computed(() => {
+  return delay ? new Date().getTime() / 1000 + delay : form.value.start;
+});
+
+const dateEnd = computed(() => {
+  return period && dateStart.value ? dateStart.value + period : form.value.end;
+});
+
 const isValid = computed(() => {
   // const ts = (Date.now() / 1e3).toFixed();
   const isSafeSnapPluginValid = form.value.metadata.plugins?.safeSnap
@@ -81,10 +93,10 @@ const isValid = computed(() => {
     !loading.value &&
     form.value.name &&
     form.value.body.length <= bodyLimit.value &&
-    form.value.start &&
+    dateStart.value &&
     // form.value.start >= ts &&
-    form.value.end &&
-    form.value.end > form.value.start &&
+    dateEnd.value &&
+    dateEnd.value > dateStart.value &&
     form.value.snapshot &&
     form.value.snapshot > blockNumber.value / 2 &&
     choices.value.length >= 2 &&
@@ -118,6 +130,8 @@ async function handleSubmit() {
   form.value.choices = choices.value.map(choice => choice.text);
   form.value.metadata.network = props.space.network;
   form.value.metadata.strategies = props.space.strategies;
+  form.value.start = dateStart.value;
+  form.value.end = dateEnd.value;
   try {
     const { ipfsHash } = await send(props.space.id, 'proposal', form.value);
     router.push({
@@ -303,17 +317,19 @@ watchEffect(async () => {
           </UiButton>
           <UiButton
             @click="(modalOpen = true), (selectedDate = 'start')"
+            :disabled="delay"
             class="w-full mb-2"
           >
-            <span v-if="!form.start">{{ $t('create.startDate') }}</span>
-            <span v-else v-text="$d(form.start * 1e3, 'short', 'en-US')" />
+            <span v-if="!dateStart">{{ $t('create.startDate') }}</span>
+            <span v-else v-text="$d(dateStart * 1e3, 'short', 'en-US')" />
           </UiButton>
           <UiButton
             @click="(modalOpen = true), (selectedDate = 'end')"
+            :disabled="period"
             class="w-full mb-2"
           >
-            <span v-if="!form.end">{{ $t('create.endDate') }}</span>
-            <span v-else v-text="$d(form.end * 1e3, 'short', 'en-US')" />
+            <span v-if="!dateEnd">{{ $t('create.endDate') }}</span>
+            <span v-else v-text="$d(dateEnd * 1e3, 'short', 'en-US')" />
           </UiButton>
           <UiButton :loading="loadingSnapshot" class="w-full mb-2">
             <input

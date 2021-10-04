@@ -79,6 +79,16 @@ const isAdmin = computed(() => {
   return admins.includes(web3Account.value?.toLowerCase());
 });
 
+const votingDelay = computed({
+  get: () => Math.floor(form.value?.votingDelay / (60 * 60)),
+  set: newVal => (form.value.votingDelay = newVal ? newVal * 60 * 60 : 0)
+});
+
+const votingPeriod = computed({
+  get: () => Math.floor(form.value?.votingPeriod / (60 * 60)),
+  set: newVal => (form.value.votingPeriod = newVal ? newVal * 60 * 60 : 0)
+});
+
 const { filteredPlugins } = useSearchFilters();
 const plugins = computed(() => filteredPlugins());
 
@@ -92,6 +102,8 @@ function pluginName(key) {
 async function handleSubmit() {
   if (isValid.value) {
     if (form.value.filters.invalids) delete form.value.filters.invalids;
+    if (!form.value.votingDelay) delete form.value.votingDelay;
+    if (!form.value.votingPeriod) delete form.value.votingPeriod;
     loading.value = true;
     try {
       await send(props.spaceId, 'settings', form.value);
@@ -495,6 +507,26 @@ watchEffect(async () => {
                   {{ $t('settings.allowOnlyAuthors') }}
                 </div>
               </div>
+              <UiInput
+                v-model="votingDelay"
+                :error="inputError('votingDelay')"
+                :number="true"
+                placeholder="24"
+              >
+                <template v-slot:label>
+                  {{ $t('settings.votingDelay') }}
+                </template>
+              </UiInput>
+              <UiInput
+                v-model="votingPeriod"
+                :error="inputError('votingPeriod')"
+                :number="true"
+                placeholder="24"
+              >
+                <template v-slot:label>
+                  {{ $t('settings.votingPeriod') }}
+                </template>
+              </UiInput>
             </div>
           </Block>
           <Block :title="$t('plugins')">
