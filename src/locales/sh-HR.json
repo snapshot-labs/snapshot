@@ -151,7 +151,8 @@
     "delegations": "Vaša delegacija(e)",
     "allSpaces": "For all spaces",
     "delegated": "Delegirano vama",
-    "pendingTransaction": "no pending transaction | 1 pending transaction | {count} pending transactions"
+    "pendingTransaction": "no pending transaction | 1 pending transaction | {count} pending transactions",
+    "topDelegates": "Top delegates"
   },
   "proposal": {
     "castVote": "Dajte svoj glas",
