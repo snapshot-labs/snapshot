@@ -151,7 +151,8 @@
     "delegations": "آپ کے وفود",
     "allSpaces": "تمام جگا کے لئے",
     "delegated": "آپ کے حوالے کیا گیا",
-    "pendingTransaction": "no pending transaction | 1 pending transaction | {count} pending transactions"
+    "pendingTransaction": "no pending transaction | 1 pending transaction | {count} pending transactions",
+    "topDelegates": "Top delegates"
   },
   "proposal": {
     "castVote": "اپنا ووٹ کاسٹ کریں",
