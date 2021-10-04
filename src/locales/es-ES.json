@@ -151,7 +151,8 @@
     "delegations": "Tus delegación(es)",
     "allSpaces": "Para todos los espacios",
     "delegated": "Delegado a ti",
-    "pendingTransaction": "no hay transacciones pendientes | 1 transacción pendiente | {count} transacciones pendientes"
+    "pendingTransaction": "no hay transacciones pendientes | 1 transacción pendiente | {count} transacciones pendientes",
+    "topDelegates": "Top delegates"
   },
   "proposal": {
     "castVote": "Emite tu voto",
