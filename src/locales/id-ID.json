@@ -151,7 +151,8 @@
     "delegations": "Perwakilan Anda(s)",
     "allSpaces": "Untuk spasi",
     "delegated": "Diwakilkan kepada Anda",
-    "pendingTransaction": "tidak ada transaksi yang tertunda | 1 transaksi yang tertunda | {count} transaksi yang tertunda"
+    "pendingTransaction": "tidak ada transaksi yang tertunda | 1 transaksi yang tertunda | {count} transaksi yang tertunda",
+    "topDelegates": "Top delegates"
   },
   "proposal": {
     "castVote": "Berikan voting Anda",
