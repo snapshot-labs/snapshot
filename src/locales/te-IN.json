@@ -151,7 +151,8 @@
     "delegations": "మీ ప్రతినిధి బృందం (లు)",
     "allSpaces": "For all spaces",
     "delegated": "మీకు అప్పగించారు",
-    "pendingTransaction": "no pending transaction | 1 pending transaction | {count} pending transactions"
+    "pendingTransaction": "no pending transaction | 1 pending transaction | {count} pending transactions",
+    "topDelegates": "Top delegates"
   },
   "proposal": {
     "castVote": "మీ ఓటు వేయండి",
