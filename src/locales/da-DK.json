@@ -151,7 +151,8 @@
     "delegations": "Din delegation(er)",
     "allSpaces": "For rummet ",
     "delegated": "Delegeret for dig",
-    "pendingTransaction": "no pending transaction | 1 pending transaction | {count} pending transactions"
+    "pendingTransaction": "no pending transaction | 1 pending transaction | {count} pending transactions",
+    "topDelegates": "Top delegates"
   },
   "proposal": {
     "castVote": "Afgive din stemme",
