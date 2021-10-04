@@ -151,7 +151,8 @@
     "delegations": "Uw delegatie(s)",
     "allSpaces": "Voor alle spaties",
     "delegated": "Aan u gedelegeerd",
-    "pendingTransaction": "no pending transaction | 1 pending transaction | {count} pending transactions"
+    "pendingTransaction": "no pending transaction | 1 pending transaction | {count} pending transactions",
+    "topDelegates": "Top delegates"
   },
   "proposal": {
     "castVote": "Breng uw stem uit",
