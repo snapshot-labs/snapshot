@@ -151,7 +151,8 @@
     "delegations": "आपके डेलीगेशन",
     "allSpaces": "सब जगहों के लिए",
     "delegated": "आपको दिए गए डेलीगेशन",
-    "pendingTransaction": "कोई लंबित लेनदेन नहीं | 1 लंबित लेनदेन | {count} लंबित लेनदेन"
+    "pendingTransaction": "कोई लंबित लेनदेन नहीं | 1 लंबित लेनदेन | {count} लंबित लेनदेन",
+    "topDelegates": "Top delegates"
   },
   "proposal": {
     "castVote": "अपना वोट दे",
