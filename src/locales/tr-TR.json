@@ -151,7 +151,8 @@
     "delegations": "Temsilcilik(ler)iniz",
     "allSpaces": "Tüm alanlar için",
     "delegated": "Görevlendir",
-    "pendingTransaction": "no pending transaction | 1 pending transaction | {count} pending transactions"
+    "pendingTransaction": "no pending transaction | 1 pending transaction | {count} pending transactions",
+    "topDelegates": "Top delegates"
   },
   "proposal": {
     "castVote": "Oyunu kullan",
