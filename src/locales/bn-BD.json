@@ -151,7 +151,8 @@
     "delegations": "আপনার প্রতিনিধিরা",
     "allSpaces": "সমস্ত জায়গার জন্য",
     "delegated": "আপনার জন্য নিযুক্ত",
-    "pendingTransaction": "no pending transaction | 1 pending transaction | {count} pending transactions"
+    "pendingTransaction": "no pending transaction | 1 pending transaction | {count} pending transactions",
+    "topDelegates": "Top delegates"
   },
   "proposal": {
     "castVote": "আপনার ভোট দিন",
