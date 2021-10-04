@@ -151,7 +151,8 @@
     "delegations": "Ihre Delegation(en)",
     "allSpaces": "Für alle Bereiche",
     "delegated": "An dich delegiert",
-    "pendingTransaction": "keine ausstehende Transaktion | 1 ausstehende Transaktion | {count} ausstehende Transaktionen"
+    "pendingTransaction": "keine ausstehende Transaktion | 1 ausstehende Transaktion | {count} ausstehende Transaktionen",
+    "topDelegates": "Top delegates"
   },
   "proposal": {
     "castVote": "Deine Stimme abgeben",
