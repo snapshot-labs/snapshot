@@ -151,7 +151,8 @@
     "delegations": "Ủy quyền của bạn(s)",
     "allSpaces": "Cho tất cả không gian",
     "delegated": "Ủy quyền cho bạn",
-    "pendingTransaction": "no pending transaction | 1 pending transaction | {count} pending transactions"
+    "pendingTransaction": "no pending transaction | 1 pending transaction | {count} pending transactions",
+    "topDelegates": "Top delegates"
   },
   "proposal": {
     "castVote": "Hãy bình chọn",
