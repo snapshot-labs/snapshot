@@ -151,7 +151,8 @@
     "delegations": "Sinun valtuuskunta(t)",
     "allSpaces": "Kaikkiin välilyönteihin",
     "delegated": "Delegoitu sinulle",
-    "pendingTransaction": "no pending transaction | 1 pending transaction | {count} pending transactions"
+    "pendingTransaction": "no pending transaction | 1 pending transaction | {count} pending transactions",
+    "topDelegates": "Top delegates"
   },
   "proposal": {
     "castVote": "Anna äänesi",
