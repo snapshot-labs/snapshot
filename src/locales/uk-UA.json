@@ -151,7 +151,8 @@
     "delegations": "Ваша делегація(ї)",
     "allSpaces": "Для всіх сховищ",
     "delegated": "Делеговано вам",
-    "pendingTransaction": "no pending transaction | 1 pending transaction | {count} pending transactions"
+    "pendingTransaction": "no pending transaction | 1 pending transaction | {count} pending transactions",
+    "topDelegates": "Top delegates"
   },
   "proposal": {
     "castVote": "Віддайте свій голос",
