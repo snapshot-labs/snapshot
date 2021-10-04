@@ -151,7 +151,8 @@
     "delegations": "您的授权",
     "allSpaces": "用于所有空间",
     "delegated": "已授权给你",
-    "pendingTransaction": "no pending transaction | 1 pending transaction | {count} pending transactions"
+    "pendingTransaction": "no pending transaction | 1 pending transaction | {count} pending transactions",
+    "topDelegates": "Top delegates"
   },
   "proposal": {
     "castVote": "撤回您的投票",
