@@ -151,7 +151,8 @@
     "delegations": "ההאצלות שלך",
     "allSpaces": "לכל המרחבים",
     "delegated": "מואצל אליך",
-    "pendingTransaction": "no pending transaction | 1 pending transaction | {count} pending transactions"
+    "pendingTransaction": "no pending transaction | 1 pending transaction | {count} pending transactions",
+    "topDelegates": "Top delegates"
   },
   "proposal": {
     "castVote": "הצבע",
