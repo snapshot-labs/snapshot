@@ -151,7 +151,8 @@
     "delegations": "Oddelegowano",
     "allSpaces": "For all spaces",
     "delegated": "Zdelegowano dla Ciebie",
-    "pendingTransaction": "brak oczekującej transakcji | 1 oczekująca transakcja | {count} oczekujące transakcje"
+    "pendingTransaction": "brak oczekującej transakcji | 1 oczekująca transakcja | {count} oczekujące transakcje",
+    "topDelegates": "Top delegates"
   },
   "proposal": {
     "castVote": "Oddaj swój głos",
