@@ -11,8 +11,10 @@ export function useClient() {
   const { notify } = useNotifications();
 
   async function send(space, type, payload) {
+    const isSafe = web3.value?.walletConnectType === 'Gnosis Safe Multisig';
+    const fn = isSafe ? client.sign : client.broadcast;
     try {
-      const result = await client.broadcast(
+      const result = await fn(
         auth.web3,
         web3.value.account,
         space,
@@ -36,26 +38,5 @@ export function useClient() {
     }
   }
 
-  async function sign(space, type, payload) {
-    try {
-      const result = await client.sign(
-        auth.web3,
-        web3.value.account,
-        space,
-        type,
-        payload
-      );
-      notify(['green', t('notify.yourIsIn', [type])]);
-      return result;
-    } catch (e: any) {
-      const errorMessage =
-        e && e.error_description
-          ? `Oops, ${e.error_description}`
-          : t('notify.somethingWentWrong');
-      notify(['red', errorMessage]);
-      return;
-    }
-  }
-
-  return { send, sign };
+  return { send };
 }

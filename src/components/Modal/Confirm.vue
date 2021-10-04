@@ -2,7 +2,6 @@
 import { ref, computed } from 'vue';
 import { getChoiceString } from '@/helpers/utils';
 import { useClient } from '@/composables/useClient';
-import { useWeb3 } from '@/composables/useWeb3';
 
 const props = defineProps({
   open: Boolean,
@@ -17,8 +16,7 @@ const props = defineProps({
 
 const emit = defineEmits(['reload', 'close']);
 
-const { send, sign } = useClient();
-const { web3 } = useWeb3();
+const { send } = useClient();
 const format = getChoiceString;
 
 const loading = ref(false);
@@ -26,13 +24,10 @@ const loading = ref(false);
 const symbols = computed(() =>
   props.strategies.map(strategy => strategy.params.symbol)
 );
-const walletConnectType = computed(() => web3.value.walletConnectType);
 
 async function handleSubmit() {
   loading.value = true;
-  const isSafe = walletConnectType.value === 'Gnosis Safe Multisig';
-  const fn = isSafe ? sign : send;
-  await fn(props.space.id, 'vote', {
+  await send(props.space.id, 'vote', {
     proposal: props.proposal.id,
     choice: props.selectedChoices,
     metadata: {}
