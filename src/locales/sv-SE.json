@@ -151,7 +151,8 @@
     "delegations": "Din delegation(er)",
     "allSpaces": "För alla utrymmen",
     "delegated": "Delegerat till dig",
-    "pendingTransaction": "no pending transaction | 1 pending transaction | {count} pending transactions"
+    "pendingTransaction": "no pending transaction | 1 pending transaction | {count} pending transactions",
+    "topDelegates": "Top delegates"
   },
   "proposal": {
     "castVote": "Lägg din röst",
