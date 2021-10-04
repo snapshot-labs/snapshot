@@ -151,7 +151,8 @@
     "delegations": "あなたの移譲リスト",
     "allSpaces": "For all spaces",
     "delegated": "あなたへ移譲されたもの",
-    "pendingTransaction": "no pending transaction | 1 pending transaction | {count} pending transactions"
+    "pendingTransaction": "no pending transaction | 1 pending transaction | {count} pending transactions",
+    "topDelegates": "Top delegates"
   },
   "proposal": {
     "castVote": "投票する",
