@@ -151,7 +151,8 @@
     "delegations": "Le tue deleghe",
     "allSpaces": "Per tutti gli spazi",
     "delegated": "Delegate a te",
-    "pendingTransaction": "no pending transaction | 1 pending transaction | {count} pending transactions"
+    "pendingTransaction": "no pending transaction | 1 pending transaction | {count} pending transactions",
+    "topDelegates": "Top delegates"
   },
   "proposal": {
     "castVote": "Esprimi il tuo voto",
