@@ -1,5 +1,5 @@
 <script setup>
-import { ref, defineProps, defineEmits, onMounted, computed, watch } from 'vue';
+import { ref, onMounted, computed, watch } from 'vue';
 import { useNotifications } from '@/composables/useNotifications';
 import { useModal } from '@/composables/useModal';
 import { useWeb3 } from '@/composables/useWeb3';
