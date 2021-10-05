@@ -1,5 +1,5 @@
 <script setup>
-import { ref, defineProps } from 'vue';
+import { ref } from 'vue';
 import { useDebounce } from '@/composables/useDebounce';
 
 defineProps({
