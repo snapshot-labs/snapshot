@@ -207,7 +207,8 @@
     "validationParameters": "Validation parameters",
     "warningTextRecord": "You must set a text record on the ENS domain.",
     "votingDelay": "Voting delay",
-    "votingPeriod": "Voting period"
+    "votingPeriod": "Voting period",
+    "voting": "Voting"
   },
   "setup": {
     "example": "e.g. yam.eth",

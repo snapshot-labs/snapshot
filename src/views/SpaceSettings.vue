@@ -50,6 +50,7 @@ const form = ref({
   strategies: [],
   plugins: {},
   filters: {},
+  voting: {},
   validation: basicValidation
 });
 
@@ -83,17 +84,17 @@ const isAdmin = computed(() => {
 });
 
 const votingDelay = computed({
-  get: () => calcFromSeconds(form.value?.votingDelay, delayUnit.value),
+  get: () => calcFromSeconds(form.value.voting?.delay, delayUnit.value),
   set: newVal =>
-    (form.value.votingDelay = newVal
+    (form.value.voting.delay = newVal
       ? calcToSeconds(newVal, delayUnit.value)
       : undefined)
 });
 
 const votingPeriod = computed({
-  get: () => calcFromSeconds(form.value?.votingPeriod, periodUnit.value),
+  get: () => calcFromSeconds(form.value.voting?.period, periodUnit.value),
   set: newVal =>
-    (form.value.votingPeriod = newVal
+    (form.value.voting.period = newVal
       ? calcToSeconds(newVal, periodUnit.value)
       : undefined)
 });
@@ -111,8 +112,8 @@ function pluginName(key) {
 async function handleSubmit() {
   if (isValid.value) {
     if (form.value.filters.invalids) delete form.value.filters.invalids;
-    if (!form.value.votingDelay) delete form.value.votingDelay;
-    if (!form.value.votingPeriod) delete form.value.votingPeriod;
+    if (!form.value.voting.delay) delete form.value.voting.delay;
+    if (!form.value.voting.period) delete form.value.voting.period;
     loading.value = true;
     try {
       await send(props.spaceId, 'settings', form.value);
@@ -228,6 +229,7 @@ watchEffect(async () => {
       space.plugins = space.plugins || {};
       space.validation = space.validation || basicValidation;
       space.filters = space.filters || {};
+      space.voting = space.voting || {};
       currentSettings.value = clone(space);
       form.value = space;
     } catch (e) {
@@ -516,47 +518,49 @@ watchEffect(async () => {
                   {{ $t('settings.allowOnlyAuthors') }}
                 </div>
               </div>
-              <UiInput
-                v-model="votingDelay"
-                :error="inputError('votingDelay')"
-                :number="true"
-                placeholder="12"
-              >
-                <template v-slot:label>
-                  {{ $t('settings.votingDelay') }}
-                </template>
-                <template v-slot:info>
-                  <select
-                    v-model="delayUnit"
-                    class="input text-center pr-1 pt-[3px] ml-2"
-                    required
-                  >
-                    <option value="h" selected>hours</option>
-                    <option value="d">days</option>
-                  </select>
-                </template>
-              </UiInput>
-              <UiInput
-                v-model="votingPeriod"
-                :error="inputError('votingPeriod')"
-                :number="true"
-                placeholder="7"
-              >
-                <template v-slot:label>
-                  {{ $t('settings.votingPeriod') }}
-                </template>
-                <template v-slot:info>
-                  <select
-                    v-model="periodUnit"
-                    class="input text-center pr-1 pt-[3px] ml-2"
-                    required
-                  >
-                    <option value="h">hours</option>
-                    <option value="d" selected>days</option>
-                  </select>
-                </template>
-              </UiInput>
             </div>
+          </Block>
+          <Block :title="$t('settings.voting')">
+            <UiInput
+              v-model="votingDelay"
+              :error="inputError('votingDelay')"
+              :number="true"
+              placeholder="12"
+            >
+              <template v-slot:label>
+                {{ $t('settings.votingDelay') }}
+              </template>
+              <template v-slot:info>
+                <select
+                  v-model="delayUnit"
+                  class="input text-center pr-1 pt-[3px] ml-2"
+                  required
+                >
+                  <option value="h" selected>hours</option>
+                  <option value="d">days</option>
+                </select>
+              </template>
+            </UiInput>
+            <UiInput
+              v-model="votingPeriod"
+              :error="inputError('votingPeriod')"
+              :number="true"
+              placeholder="5"
+            >
+              <template v-slot:label>
+                {{ $t('settings.votingPeriod') }}
+              </template>
+              <template v-slot:info>
+                <select
+                  v-model="periodUnit"
+                  class="input text-center pr-1 pt-[3px] ml-2"
+                  required
+                >
+                  <option value="h">hours</option>
+                  <option value="d" selected>days</option>
+                </select>
+              </template>
+            </UiInput>
           </Block>
           <Block :title="$t('plugins')">
             <div v-if="form?.plugins">
