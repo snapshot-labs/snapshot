@@ -71,16 +71,16 @@ watchEffect(async () => {
   }
 });
 
-// TODO: replace with space settings value
-const delay = 0;
-const period = 0;
-
 const dateStart = computed(() => {
-  return delay ? new Date().getTime() / 1000 + delay : form.value.start;
+  return props.space.voting.delay
+    ? new Date().getTime() / 1000 + props.space.voting.delay
+    : form.value.start;
 });
 
 const dateEnd = computed(() => {
-  return period && dateStart.value ? dateStart.value + period : form.value.end;
+  return props.space.voting.period && dateStart.value
+    ? dateStart.value + props.space.voting.period
+    : form.value.end;
 });
 
 const isValid = computed(() => {
@@ -317,7 +317,7 @@ watchEffect(async () => {
           </UiButton>
           <UiButton
             @click="(modalOpen = true), (selectedDate = 'start')"
-            :disabled="delay"
+            :disabled="props.space.voting.delay"
             class="w-full mb-2"
           >
             <span v-if="!dateStart">{{ $t('create.startDate') }}</span>
@@ -325,7 +325,7 @@ watchEffect(async () => {
           </UiButton>
           <UiButton
             @click="(modalOpen = true), (selectedDate = 'end')"
-            :disabled="period"
+            :disabled="props.space.voting.period"
             class="w-full mb-2"
           >
             <span v-if="!dateEnd">{{ $t('create.endDate') }}</span>
