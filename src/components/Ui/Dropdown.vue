@@ -49,7 +49,7 @@ onBeforeUnmount(() => window.removeEventListener('click', close));
             v-if="item.icon"
             :name="item.icon"
             size="21"
-            class="align-text-bottom mr-2"
+            class="align-middle mr-2"
           />
           {{ item.text }}
         </li>
