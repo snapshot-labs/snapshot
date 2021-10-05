@@ -1,5 +1,5 @@
 <script setup>
-import { ref, defineProps, defineEmits, computed, toRef, watch } from 'vue';
+import { ref, computed, toRef, watch } from 'vue';
 import { clone } from '@/helpers/utils';
 import { useNotifications } from '@/composables/useNotifications';
 import { useModal } from '@/composables/useModal';
