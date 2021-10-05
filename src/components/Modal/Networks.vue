@@ -35,7 +35,7 @@ function select(key) {
       <a
         v-for="network in networks"
         :key="network.key"
-        @click="select(network.key)"
+        @click="!network.disabled && select(network.key)"
       >
         <BlockNetwork :network="network" />
       </a>

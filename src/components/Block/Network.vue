@@ -7,7 +7,7 @@ function getLogoUrl(key) {
 </script>
 
 <template>
-  <Block>
+  <Block :class="network.disabled && 'opacity-50'">
     <div class="flex items-center mb-1">
       <UiAvatar
         class="mr-2 mb-2"
