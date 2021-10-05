@@ -39,6 +39,7 @@ export function useSearchFilters() {
   );
   const filteredNetworks = (q = '') =>
     minifiedNetworksArray.value
+      .filter(n => !n.disabled)
       .filter(n => JSON.stringify(n).toLowerCase().includes(q.toLowerCase()))
       .sort((a, b) => b.spaces - a.spaces);
 
