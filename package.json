@@ -5,7 +5,7 @@
     "preinstall": "git submodule update --init --remote",
     "dev": "vite",
     "build": "vite build",
-    "lint": "eslint './src/*/**/*.{ts,vue,json}' --fix",
+    "lint": "eslint \"./src/*/**/*.{ts,vue,json}\" --fix",
     "postinstall": "patch-package"
   },
   "dependencies": {
