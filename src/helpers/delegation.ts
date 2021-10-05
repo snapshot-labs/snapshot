@@ -44,3 +44,23 @@ export async function getDelegators(network, address, snapshot = 'latest') {
   }
   return await subgraphRequest(SNAPSHOT_SUBGRAPH_URL[network], params);
 }
+
+export async function getDelegatesBySpace(network, space, snapshot = 'latest') {
+  const params = {
+    delegations: {
+      __args: {
+        where: {
+          space
+        },
+        first: 1000
+      },
+      delegate: true,
+      delegator: true
+    }
+  };
+  if (snapshot !== 'latest') {
+    // @ts-ignore
+    params.delegations.__args.block = { number: snapshot };
+  }
+  return await subgraphRequest(SNAPSHOT_SUBGRAPH_URL[network], params);
+}
