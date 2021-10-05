@@ -17,6 +17,5 @@ defineProps({
 .iconfont {
   font-size: 16px;
   line-height: 16px;
-  vertical-align: baseline;
 }
 </style>

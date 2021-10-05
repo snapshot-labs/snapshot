@@ -1,5 +1,5 @@
 <script setup>
-import { ref, defineProps, onMounted, computed } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import { useModal } from '@/composables/useModal';
 import { useWeb3 } from '@/composables/useWeb3';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';

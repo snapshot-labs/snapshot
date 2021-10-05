@@ -1,5 +1,5 @@
 <script setup>
-import { defineProps, ref, onBeforeUpdate, watch } from 'vue';
+import { ref, onBeforeUpdate, watch } from 'vue';
 
 const props = defineProps({
   space: Object,

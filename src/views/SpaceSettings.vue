@@ -21,7 +21,7 @@ const props = defineProps({
   from: String,
   spaceFrom: Object,
   spaceLoading: Boolean,
-  getExtentedSpaces: Function
+  loadExtentedSpaces: Function
 });
 
 const basicValidation = { name: 'basic', params: {} };
@@ -112,7 +112,7 @@ async function handleSubmit() {
         notify(['red', errorMessage]);
       }
     }
-    await props.getExtentedSpaces([props.spaceId]);
+    await props.loadExtentedSpaces([props.spaceId]);
     loading.value = false;
   } else {
     console.log('Invalid schema', validate.value);
