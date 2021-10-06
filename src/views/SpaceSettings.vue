@@ -521,12 +521,7 @@ watchEffect(async () => {
             </div>
           </Block>
           <Block :title="$t('settings.voting')">
-            <UiInput
-              v-model="votingDelay"
-              :error="inputError('votingDelay')"
-              :number="true"
-              placeholder="12"
-            >
+            <UiInput v-model="votingDelay" :number="true" placeholder="12">
               <template v-slot:label>
                 {{ $t('settings.votingDelay') }}
               </template>
@@ -541,12 +536,7 @@ watchEffect(async () => {
                 </select>
               </template>
             </UiInput>
-            <UiInput
-              v-model="votingPeriod"
-              :error="inputError('votingPeriod')"
-              :number="true"
-              placeholder="5"
-            >
+            <UiInput v-model="votingPeriod" :number="true" placeholder="5">
               <template v-slot:label>
                 {{ $t('settings.votingPeriod') }}
               </template>
