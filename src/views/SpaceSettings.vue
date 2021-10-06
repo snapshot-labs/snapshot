@@ -551,6 +551,15 @@ watchEffect(async () => {
                 </select>
               </template>
             </UiInput>
+            <UiInput
+              v-model="form.voting.quorum"
+              :number="true"
+              placeholder="1000"
+            >
+              <template v-slot:label>
+                {{ $t('settings.quorum') }}
+              </template>
+            </UiInput>
           </Block>
           <Block :title="$t('plugins')">
             <div v-if="form?.plugins">
