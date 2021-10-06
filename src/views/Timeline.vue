@@ -45,7 +45,7 @@ async function loadProposals(skip = 0) {
       variables: {
         first: loadBy,
         skip,
-        space_in: following.value,
+        space_in: ["iotex.eth"],
         state: filterBy.value
       }
     },

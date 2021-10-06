@@ -1,6 +1,7 @@
 import { ref, computed, reactive } from 'vue';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { useWeb3 } from '@/composables/useWeb3';
+import allProjects from '@/config/allProjects.json'
 
 const state = reactive({
   init: false,
@@ -47,7 +48,7 @@ export function useApp() {
         }
       ])
     );
-
+    exploreObj.spaces = Object.fromEntries(allProjects.map(project=>[project,exploreObj.spaces[project]]))
     explore.value = exploreObj;
     return;
   }

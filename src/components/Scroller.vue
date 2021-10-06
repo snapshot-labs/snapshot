@@ -134,9 +134,9 @@ onMounted(() => {
             </div>
           </template>
         </draggable>
-        <router-link :to="{ name: 'setup' }">
-          <UiSidebarButton><Icon size="20" name="plus" /></UiSidebarButton>
-        </router-link>
+<!--        <router-link :to="{ name: 'setup' }">-->
+<!--          <UiSidebarButton><Icon size="20" name="plus" /></UiSidebarButton>-->
+<!--        </router-link>-->
         <div
           class="
             flex flex-col

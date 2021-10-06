@@ -60,14 +60,20 @@ watch(open, () => (step.value = null));
             class="button-outline w-full flex justify-center items-center"
           >
             <img
-              :src="injected.id==='trustwallet'?`${path}/metamask.png`:`${path}/${injected.id}.png`"
+              :src="
+                injected.id === 'trustwallet'
+                  ? `${path}/metamask.png`
+                  : `${path}/${injected.id}.png`
+              "
               height="28"
               width="28"
               class="mr-2 -mt-1"
             />
             <div style="text-align: left">
-              <span v-if="injected.id==='trustwallet'">Browser Wallet</span>
-              <span v-if="injected.id==='trustwallet'" style="display:block">(ioPay, Metamask, Trust, etc.)</span>
+              <span v-if="injected.id === 'trustwallet'">Browser Wallet</span>
+              <span v-if="injected.id === 'trustwallet'" style="display: block"
+                >(ioPay, Metamask, Trust, etc.)</span
+              >
             </div>
           </UiButton>
         </a>

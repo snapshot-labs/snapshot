@@ -12,7 +12,6 @@ const { pendingCount } = useTxStatus();
 const { modalAccountOpen } = useModal();
 const { env, domain } = useDomain();
 const route = useRoute();
-
 const { explore } = useApp();
 const { login, web3 } = useWeb3();
 const { toggleSkin, getSkinIcon } = useUserSkin();
@@ -62,15 +61,23 @@ onMounted(() => setTitle());
       <Container>
         <div class="flex items-center" style="height: 78px">
           <div class="flex-auto flex items-center">
-            <router-link
-              :to="{ path: '/' }"
-              class="flex items-center"
-              style="font-size: 24px; padding-top: 4px"
+            <h3
+              class="d-inline-block d-flex flex-items-center"
+              style="line-height: 20px"
             >
-              snapshot
-            </router-link>
+              IoTeX Governance Portal<br />
+              <span style="color: gray; font-size: 18px"
+                >powered by
+                <a
+                  href="https://snapshot.org/"
+                  target="_blank"
+                  style="color: gray"
+                  >snapshot</a
+                ></span
+              >
+            </h3>
           </div>
-          <div :key="web3.account">
+          <div :key="web3.account" class="flex">
             <template v-if="$auth.isAuthenticated.value">
               <UiButton
                 @click="modalAccountOpen = true"
