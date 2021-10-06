@@ -11,93 +11,107 @@
     <UiLoading />
   </div>
 
-  <div v-if="questionState === questionStates.waitingForQuestion" class="my-4">
-    <UiButton @click="performAction" v-text="$t('safeSnap.labels.request')" />
-  </div>
+  <div v-if="connectedToRightChain || usingMetaMask">
+    <div
+      v-if="questionState === questionStates.waitingForQuestion"
+      class="my-4"
+    >
+      <UiButton @click="performAction" v-text="$t('safeSnap.labels.request')" />
+    </div>
 
+    <div
+      v-if="
+        (showOracleInfo || bondData.canClaim) &&
+        questionState !== questionStates.loading
+      "
+      class="my-4"
+    >
+      <div class="text-base block-bg p-3 rounded-3xl border inline-block">
+        <h5 class="text-center link-color">
+          Reality oracle
+          <a
+            @click="updateDetails"
+            class="float-right text-color"
+            style="padding-top: 2px"
+          >
+            <Icon name="refresh" size="16" />
+          </a>
+        </h5>
+        <div
+          v-if="questionState !== questionStates.questionNotSet"
+          class="flex items-center my-3"
+          style="text-align: left"
+        >
+          <div class="border rounded-lg p-3 mr-3">
+            <div>
+              <b class="pr-3"
+                >{{
+                  questionDetails?.finalizedAt
+                    ? $t('safeSnap.finalOutcome')
+                    : $t('safeSnap.currentOutcome')
+                }}:</b
+              >
+              <span class="float-right link-color">
+                {{ approvalData?.decision }}
+              </span>
+            </div>
+            <div v-if="!questionDetails?.finalizedAt" mt-3>
+              <b class="pr-3">{{ $t('safeSnap.currentBond') }}:</b>
+              <span class="float-right link-color">
+                {{ approvalData?.currentBond }}
+              </span>
+            </div>
+          </div>
+
+          <div class="border rounded-lg p-3 link-color">
+            <b>{{ approvalData?.timeLeft }}</b>
+          </div>
+        </div>
+
+        <div v-if="questionState === questionStates.questionNotSet">
+          <UiButton
+            class="w-full my-1"
+            @click="performAction"
+            v-text="$t('safeSnap.labels.setOutcome')"
+          />
+        </div>
+        <div v-if="questionState === questionStates.questionNotResolved">
+          <UiButton
+            class="w-full my-1"
+            @click="performAction"
+            v-text="$t('safeSnap.labels.changeOutcome')"
+          />
+        </div>
+        <div v-if="bondData.canClaim">
+          <UiButton
+            class="w-full my-1"
+            @click="claimBond"
+            v-text="$t('safeSnap.claimBond')"
+          />
+        </div>
+      </div>
+    </div>
+
+    <div v-if="questionState === questionStates.proposalApproved" class="my-4">
+      <UiButton
+        @click="performAction"
+        v-text="
+          $t('safeSnap.labels.executeTxs', [
+            questionDetails.nextTxIndex + 1,
+            txs.length
+          ])
+        "
+      />
+    </div>
+  </div>
   <div
-    v-if="
-      (showOracleInfo || bondData.canClaim) &&
-      questionState !== questionStates.loading
+    v-else-if="
+      questionState !== questionStates.loading &&
+      questionState !== questionStates.noWalletConnection
     "
     class="my-4"
   >
-    <div class="text-base block-bg p-3 rounded-3xl border inline-block">
-      <h5 class="text-center link-color">
-        Reality oracle
-        <a
-          @click="updateDetails"
-          class="float-right text-color"
-          style="padding-top: 2px"
-        >
-          <Icon name="refresh" size="16" />
-        </a>
-      </h5>
-      <div
-        v-if="questionState !== questionStates.questionNotSet"
-        class="flex items-center my-3"
-        style="text-align: left"
-      >
-        <div class="border rounded-lg p-3 mr-3">
-          <div>
-            <b class="pr-3"
-              >{{
-                questionDetails?.finalizedAt
-                  ? $t('safeSnap.finalOutcome')
-                  : $t('safeSnap.currentOutcome')
-              }}:</b
-            >
-            <span class="float-right link-color">
-              {{ approvalData?.decision }}
-            </span>
-          </div>
-          <div v-if="!questionDetails?.finalizedAt" mt-3>
-            <b class="pr-3">{{ $t('safeSnap.currentBond') }}:</b>
-            <span class="float-right link-color">
-              {{ approvalData?.currentBond }}
-            </span>
-          </div>
-        </div>
-
-        <div class="border rounded-lg p-3 link-color">
-          <b>{{ approvalData?.timeLeft }}</b>
-        </div>
-      </div>
-
-      <div v-if="questionState === questionStates.questionNotSet">
-        <UiButton
-          class="w-full my-1"
-          @click="performAction"
-          v-text="$t('safeSnap.labels.setOutcome')"
-        />
-      </div>
-      <div v-if="questionState === questionStates.questionNotResolved">
-        <UiButton
-          class="w-full my-1"
-          @click="performAction"
-          v-text="$t('safeSnap.labels.changeOutcome')"
-        />
-      </div>
-      <div v-if="bondData.canClaim">
-        <UiButton
-          class="w-full my-1"
-          @click="claimBond"
-          v-text="$t('safeSnap.claimBond')"
-        />
-      </div>
-    </div>
-  </div>
-
-  <div v-if="questionState === questionStates.proposalApproved" class="my-4">
-    <UiButton
-      @click="performAction"
-      v-text="
-        $t('safeSnap.labels.executeTxs', [
-          questionDetails.nextTxIndex + 1,
-          txs.length
-        ])
-      "
-    />
+    {{ $t('safeSnap.labels.switchChain', [networkName]) }}
   </div>
 
   <div v-if="questionState === questionStates.completelyExecuted" class="my-4">
@@ -150,10 +164,19 @@ const QuestionStates = {
 Object.freeze(QuestionStates);
 
 const ensureRightNetwork = async chainId => {
-  if (!window.ethereum || !getInstance().provider.value?.isMetaMask) return;
+  const chainIdInt = parseInt(chainId);
+  const connectedToChainId = getInstance().provider.value?.chainId;
+  if (connectedToChainId === chainIdInt) return; // already on right chain
+
+  if (!window.ethereum || !getInstance().provider.value?.isMetaMask) {
+    // we cannot switch automatically
+    throw new Error(
+      `Connected to wrong chain #${connectedToChainId}, required: #${chainId}`
+    );
+  }
 
   const network = networks[chainId];
-  const chainIdHex = `0x${parseInt(chainId).toString(16)}`;
+  const chainIdHex = `0x${chainIdInt.toString(16)}`;
 
   try {
     // check if the chain to connect to is installed
@@ -330,6 +353,12 @@ export default {
   computed: {
     usingMetaMask() {
       return window.ethereum && getInstance().provider.value?.isMetaMask;
+    },
+    connectedToRightChain() {
+      return getInstance().provider.value?.chainId === parseInt(this.network);
+    },
+    networkName() {
+      return networks[this.network].name;
     },
     questionState() {
       if (!web3.value.account) return QuestionStates.noWalletConnection;
