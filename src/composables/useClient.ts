@@ -11,16 +11,15 @@ export function useClient() {
   const { notify } = useNotifications();
 
   async function send(space, type, payload) {
-    const isSafe = web3.value?.walletConnectType === 'Gnosis Safe Multisig';
-    const fn = isSafe ? client.sign : client.broadcast;
     try {
-      const result = await fn(
+      const result = await client.broadcast(
         auth.web3,
         web3.value.account,
         space,
         type,
         payload
       );
+
       notify([
         'green',
         type === 'delete-proposal'
