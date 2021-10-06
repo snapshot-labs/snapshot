@@ -121,6 +121,8 @@
 
 <script>
 import Plugin from '@/../snapshot-plugins/src/plugins/safeSnap';
+import networks from '@snapshot-labs/snapshot.js/src/networks.json';
+import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { sleep } from '@/helpers/utils';
 import { BigNumber } from '@ethersproject/bignumber';
 import { formatBatchTransaction } from '@/helpers/abi/utils';
@@ -146,6 +148,48 @@ const QuestionStates = {
   completelyExecuted: 8
 };
 Object.freeze(QuestionStates);
+
+const ensureRightNetwork = async chainId => {
+  if (!window.ethereum || !getInstance().provider.value?.isMetaMask) return;
+
+  const network = networks[chainId];
+  const chainIdHex = `0x${parseInt(chainId).toString(16)}`;
+
+  try {
+    // check if the chain to connect to is installed
+    await window.ethereum.request({
+      method: 'wallet_switchEthereumChain',
+      params: [{ chainId: chainIdHex }] // chainId must be in hexadecimal numbers
+    });
+  } catch (error) {
+    // This error code indicates that the chain has not been added to MetaMask. Let's add it.
+    if (error.code === 4902) {
+      try {
+        await window.ethereum.request({
+          method: 'wallet_addEthereumChain',
+          params: [
+            {
+              chainId: chainIdHex,
+              chainName: network.name,
+              rpcUrls: network.rpc,
+              blockExplorerUrls: [network.explorer]
+            }
+          ]
+        });
+      } catch (addError) {
+        console.error(addError);
+      }
+    }
+    console.error(error);
+  }
+
+  await sleep(1e3); // somehow the switch does not take immediate effect :/
+  if (window.ethereum.chainId !== chainIdHex) {
+    throw new Error(
+      `Could not switch to the right chain on MetaMask (required: ${chainIdHex}, active: ${window.ethereum.chainId})`
+    );
+  }
+};
 
 export default {
   props: ['txs', 'proposalId', 'network', 'realityAddress'],
@@ -199,6 +243,7 @@ export default {
           key => new Array(...this.bondData.data[key])
         );
 
+        await ensureRightNetwork(this.network);
         await plugin.claimBond(
           this.$auth.web3,
           this.questionDetails.oracle,
@@ -219,6 +264,7 @@ export default {
       try {
         switch (this.questionState) {
           case QuestionStates.waitingForQuestion:
+            await ensureRightNetwork(this.network);
             await plugin.submitProposal(
               this.$auth.web3,
               this.realityAddress,
@@ -243,18 +289,30 @@ export default {
       }
     },
     async voteOnQuestion(option) {
-      await plugin.voteForQuestion(
-        this.network,
-        this.$auth.web3,
-        this.questionDetails.oracle,
-        this.questionDetails.questionId,
-        this.questionDetails.minimumBond,
-        option
-      );
-      await sleep(3e3);
-      await this.updateDetails();
+      try {
+        await ensureRightNetwork(this.network);
+        await plugin.voteForQuestion(
+          this.network,
+          this.$auth.web3,
+          this.questionDetails.oracle,
+          this.questionDetails.questionId,
+          this.questionDetails.minimumBond,
+          option
+        );
+        await sleep(3e3);
+        await this.updateDetails();
+      } catch (e) {
+        console.error(e);
+      }
     },
     async executeProposal() {
+      try {
+        await ensureRightNetwork(this.network);
+      } catch (e) {
+        console.error(e);
+        return;
+      }
+
       try {
         clearBatchError();
         await plugin.executeProposal(
@@ -270,6 +328,9 @@ export default {
     }
   },
   computed: {
+    usingMetaMask() {
+      return window.ethereum && getInstance().provider.value?.isMetaMask;
+    },
     questionState() {
       if (!web3.value.account) return QuestionStates.noWalletConnection;
 
