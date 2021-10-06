@@ -72,13 +72,13 @@ watchEffect(async () => {
 });
 
 const dateStart = computed(() => {
-  return props.space.voting.delay
+  return props.space.voting?.delay
     ? new Date().getTime() / 1000 + props.space.voting.delay
     : form.value.start;
 });
 
 const dateEnd = computed(() => {
-  return props.space.voting.period && dateStart.value
+  return props.space.voting?.period && dateStart.value
     ? dateStart.value + props.space.voting.period
     : form.value.end;
 });
@@ -204,6 +204,7 @@ watchEffect(async () => {
     form.value.snapshot = blockNumber.value;
     loadingSnapshot.value = false;
   }
+  if (props.space.voting?.type) form.value.type = props.space.voting.type;
 });
 </script>
 
@@ -312,12 +313,18 @@ watchEffect(async () => {
         @submit="modalProposalPluginsOpen = true"
       >
         <div class="mb-2">
-          <UiButton class="w-full mb-2" @click="modalVotingTypeOpen = true">
-            <span>{{ $t(`voting.${form.type}`) }}</span>
+          <UiButton
+            class="w-full mb-2"
+            :disabled="props.space.voting?.type"
+            @click="modalVotingTypeOpen = true"
+          >
+            <span>{{
+              $t(`voting.${props.space.voting?.type ?? form.type}`)
+            }}</span>
           </UiButton>
           <UiButton
             @click="(modalOpen = true), (selectedDate = 'start')"
-            :disabled="props.space.voting.delay"
+            :disabled="props.space.voting?.delay"
             class="w-full mb-2"
           >
             <span v-if="!dateStart">{{ $t('create.startDate') }}</span>
@@ -325,7 +332,7 @@ watchEffect(async () => {
           </UiButton>
           <UiButton
             @click="(modalOpen = true), (selectedDate = 'end')"
-            :disabled="props.space.voting.period"
+            :disabled="props.space.voting?.period"
             class="w-full mb-2"
           >
             <span v-if="!dateEnd">{{ $t('create.endDate') }}</span>
