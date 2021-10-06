@@ -1,9 +1,9 @@
 import { computed, ref } from 'vue';
-import { useStore } from 'vuex';
 import { shorten } from '@/helpers/utils';
+import { useWeb3 } from '@/composables/useWeb3';
 
 export function useUsername() {
-  const store = useStore();
+  const { web3 } = useWeb3();
 
   const address = ref('');
   const profile = ref({
@@ -11,7 +11,7 @@ export function useUsername() {
     ens: ''
   });
 
-  const web3Account = computed(() => store.state.web3.account);
+  const web3Account = computed(() => web3.value.account);
 
   const username = computed(() => {
     if (

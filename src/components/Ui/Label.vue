@@ -1,5 +1,5 @@
 <template>
-  <span class="Label border v-align-middle">
+  <span class="Label border !align-middle">
     <slot />
   </span>
 </template>

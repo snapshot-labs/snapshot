@@ -1,53 +1,44 @@
 <script setup>
 import { ref, computed, watchEffect } from 'vue';
-import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
 import orderBy from 'lodash/orderBy';
-import spotlight from '@snapshot-labs/snapshot-spaces/spaces/spotlight.json';
 import { useUnseenProposals } from '@/composables/useUnseenProposals';
 import { useScrollMonitor } from '@/composables/useScrollMonitor';
-import { useFavoriteSpaces } from '@/composables/useFavoriteSpaces';
+import { useApp } from '@/composables/useApp';
+import { useFollowSpace } from '@/composables/useFollowSpace';
 
-const store = useStore();
 const route = useRoute();
-const { addFavoriteSpace, removeFavoriteSpace, favorites } =
-  useFavoriteSpaces();
+const { explore } = useApp();
+const { followingSpaces } = useFollowSpace();
 
-const stateSpaces = computed(() => store.state.app.spaces);
-
-const spaces = computed(() => {
-  const networkFilter = route.query.network;
+const orderedSpaces = computed(() => {
+  const network = route.query.network || '';
   const q = route.query.q || '';
-  const list = Object.keys(stateSpaces.value)
+  const list = Object.keys(explore.value.spaces)
     .map(key => {
-      const spotlightIndex = spotlight.indexOf(key);
       return {
-        ...stateSpaces.value[key],
-        favorite: !!favorites.value[key],
-        isActive: !!stateSpaces.value[key]._activeProposals,
-        spotlight: spotlightIndex === -1 ? 1e3 : spotlightIndex
+        ...explore.value.spaces[key],
+        following: followingSpaces.value.some(s => s === key),
+        followers: explore.value.spaces[key].followers ?? 0,
+        private: explore.value.spaces[key].private ?? false
       };
     })
-    .filter(space => !space.private);
-  return orderBy(list, ['favorite', 'spotlight'], ['desc', 'asc']).filter(
-    space =>
-      (networkFilter ? space.network === networkFilter.toLowerCase() : true) &&
-      JSON.stringify(space).toLowerCase().includes(q.toLowerCase())
+    .filter(space => !space.private)
+    .filter(space => {
+      if (space.network === network) {
+        return space;
+      } else if (!network) {
+        return space;
+      }
+    });
+
+  return orderBy(list, ['following', 'followers'], ['desc', 'desc']).filter(
+    space => JSON.stringify(space).toLowerCase().includes(q.toLowerCase())
   );
 });
 
-// Get number of unseen proposals
-const { numberOfUnseenProposals, getProposalIds } = useUnseenProposals();
-watchEffect(() => getProposalIds(favorites.value));
-
-// Favorites
-function toggleFavorite(spaceId) {
-  if (favorites.value[spaceId]) {
-    removeFavoriteSpace(spaceId);
-  } else {
-    addFavoriteSpace(spaceId);
-  }
-}
+const { getProposalIds } = useUnseenProposals();
+watchEffect(() => getProposalIds(followingSpaces.value));
 
 // Scroll
 const loadBy = 16;
@@ -59,71 +50,62 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
 <template>
   <div>
     <div class="text-center mb-4 mx-auto">
-      <Container class="d-flex flex-items-center">
-        <div class="flex-auto text-left d-flex">
-          <UiButton class="pl-3 col-12 col-lg-7 pr-0">
+      <Container class="flex items-center">
+        <div class="flex-auto text-left flex">
+          <UiButton class="pl-3 pr-0 w-full md:w-7/12">
             <SearchWithFilters />
           </UiButton>
-          <router-link :to="{ name: 'timeline' }" class="ml-2">
-            <UiButton class="no-wrap px-3">
-              <Icon name="feed" size="18" />
-              <UiCounter :counter="numberOfUnseenProposals" class="ml-2" />
-            </UiButton>
-          </router-link>
         </div>
-        <div class="ml-3 text-right hide-sm col-lg-4">
-          {{ $tc('spaceCount', [_n(spaces.length)]) }}
-<!--          <router-link :to="{ name: 'setup' }" class="hide-md ml-3">-->
-<!--            <UiButton>{{ $t('createSpace') }}</UiButton>-->
-<!--          </router-link>-->
+        <div class="ml-3 text-right hidden sm:block lg:w-4/12">
+          {{ $tc('spaceCount', [_n(orderedSpaces.length)]) }}
         </div>
       </Container>
     </div>
     <Container :slim="true">
-      <div class="overflow-hidden mr-n4">
-        <router-link
-          v-for="space in spaces.slice(0, limit)"
-          :key="space.key"
-          :to="{ name: 'proposals', params: { key: space.key } }"
+      <div class="grid lg:grid-cols-4 md:grid-cols-3 gap-4">
+        <a
+          @click="
+            $router.push({ name: 'spaceProposals', params: { key: space.id } })
+          "
+          v-for="space in orderedSpaces.slice(0, limit)"
+          :key="space.id"
         >
-          <div class="col-12 col-lg-3 pr-4 float-left">
+          <div>
+            <!-- Added mb-0 to remove mb-4 added by block component -->
             <Block
-              class="text-center extra-icon-container"
-              style="height: 250px; margin-bottom: 24px !important"
+              class="text-center extra-icon-container mb-0"
+              style="height: 266px"
             >
-              <span class="position-relative d-inline-block">
-                <UiCounter
-                  v-if="space._activeProposals"
-                  :counter="space._activeProposals"
-                  class="position-absolute top-4 right-0 bg-green"
-                />
+              <div class="relative inline-block mb-2">
                 <Token
                   :space="space"
                   symbolIndex="space"
-                  size="98"
-                  class="my-3"
+                  size="82"
+                  class="mb-1"
                 />
-              </span>
-              <StatefulIcon
-                :on="space.favorite"
-                onName="star"
-                offName="star1"
-                @click="toggleFavorite(space.key)"
-              />
-              <div class="">
-                <h3 v-text="space.name" />
-                <div class="text-color">{{ space.symbol }}</div>
+                <UiCounter
+                  v-if="space.activeProposals"
+                  :counter="space.activeProposals"
+                  class="absolute top-0 right-0 !bg-green"
+                />
               </div>
+              <h3
+                v-text="_shorten(space.name, 16)"
+                class="mb-0 pb-0 mt-0 text-[22px] !h-[32px] overflow-hidden"
+              />
+              <div class="mb-[12px] text-color">
+                {{
+                  $tc('members', space.followers, {
+                    count: _n(space.followers)
+                  })
+                }}
+              </div>
+              <FollowButton :space="space" />
             </Block>
           </div>
-        </router-link>
-
-        <NoResults
-          :block="true"
-          v-if="Object.keys(spaces).length < 1"
-          class="pr-md-4"
-        />
+        </a>
       </div>
+      <NoResults :block="true" v-if="Object.keys(orderedSpaces).length < 1" />
     </Container>
     <div ref="endElement" />
   </div>

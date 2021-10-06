@@ -8,7 +8,6 @@ import { useScrollMonitor } from '@/composables/useScrollMonitor';
 const { t } = useI18n();
 const route = useRoute();
 
-// Explore
 const buttonStr = computed(() => {
   if (route.name === 'strategies') return t('explore.createStrategy');
   if (route.name === 'skins') return t('explore.createSkin');
@@ -37,7 +36,6 @@ const items = computed(() => {
   return [];
 });
 
-// Scroll
 const loadBy = 8;
 const limit = ref(loadBy);
 
@@ -47,19 +45,21 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
 <template>
   <div>
     <div class="mb-4 mx-auto">
-      <Container class="d-flex flex-items-center">
-        <div class="flex-auto text-left col-lg-8">
-          <UiButton class="pl-3 col-12 col-lg-7 pr-0">
+      <Container class="flex items-center">
+        <div class="flex-auto text-left flex">
+          <UiButton class="pl-3 pr-0 w-full lg:w-7/12 md:w-10/12">
             <SearchWithFilters />
           </UiButton>
         </div>
-        <div class="ml-3 text-right hide-sm col-lg-4">
-          {{ _n(items.length) }} {{ resultsStr }}
+        <div class="ml-3 hidden sm:flex text-right items-center">
+          <div class="flex flex-col">
+            {{ _n(items.length) }} {{ resultsStr }}
+          </div>
           <a
             v-if="buttonStr"
             href="https://discord.snapshot.org"
             target="_blank"
-            class="hide-md ml-3"
+            class="hidden md:block ml-3"
           >
             <UiButton>{{ buttonStr }}</UiButton>
           </a>

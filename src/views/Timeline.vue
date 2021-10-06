@@ -5,26 +5,31 @@ import { useInfiniteLoader } from '@/composables/useInfiniteLoader';
 import { lsSet } from '@/helpers/utils';
 import { useUnseenProposals } from '@/composables/useUnseenProposals';
 import { useScrollMonitor } from '@/composables/useScrollMonitor';
-import { apolloClient } from '@/helpers/apollo';
+import { useApolloQuery } from '@/composables/useApolloQuery';
 import { PROPOSALS_QUERY } from '@/helpers/queries';
 import { useProfiles } from '@/composables/useProfiles';
-import { useFavoriteSpaces } from '@/composables/useFavoriteSpaces';
-
-// Persistent filter state
+import { useFollowSpace } from '@/composables/useFollowSpace';
+import { useWeb3 } from '@/composables/useWeb3';
+import zipObject from 'lodash/zipObject';
 const filterBy = ref('all');
-
-const route = useRoute();
-const { favorites: favoriteSpaces } = useFavoriteSpaces();
-
-const favorites = computed(() =>
-  route.name === 'timeline' ? favoriteSpaces.value : []
-);
-const favoritesKeys = computed(() => Object.keys(favorites.value));
-
 const loading = ref(false);
 const proposals = ref([]);
 
-// Infinite scroll with pagination
+const route = useRoute();
+const { followingSpaces, loadingFollows } = useFollowSpace();
+const { web3 } = useWeb3();
+
+const following = computed(() => {
+  return route.name === 'timeline' ? followingSpaces.value : [];
+});
+
+const isTimeline = computed(() => route.name === 'timeline');
+
+watch(following, () => {
+  proposals.value = [];
+  load();
+});
+
 const { loadBy, limit, loadingMore, stopLoadingMore, loadMore } =
   useInfiniteLoader();
 
@@ -32,23 +37,22 @@ const { endElement } = useScrollMonitor(() =>
   loadMore(() => loadProposals(limit.value), loading.value)
 );
 
-// Proposals query
+const { apolloQuery } = useApolloQuery();
 async function loadProposals(skip = 0) {
-  try {
-    const response = await apolloClient.query({
+  const proposalsObj = await apolloQuery(
+    {
       query: PROPOSALS_QUERY,
       variables: {
         first: loadBy,
         skip,
-        space_in: ["iotex.eth"],
+        space_in: following.value,
         state: filterBy.value
       }
-    });
-    stopLoadingMore.value = response.data.proposals?.length < loadBy;
-    proposals.value = proposals.value.concat(response.data.proposals);
-  } catch (e) {
-    console.log(e);
-  }
+    },
+    'proposals'
+  );
+  stopLoadingMore.value = proposalsObj?.length < loadBy;
+  proposals.value = proposals.value.concat(proposalsObj);
 }
 
 const { profiles, addressArray } = useProfiles();
@@ -74,12 +78,22 @@ function selectState(e) {
   load();
 }
 
-// Save the most recently seen proposalId in localStorage
-const { getProposalIds, proposalIds } = useUnseenProposals();
-onMounted(async () => {
-  await getProposalIds(favorites.value);
-  if (proposalIds.value[0])
-    lsSet('lastSeenProposalId', proposalIds.value[0].id);
+const { updateLastSeenProposal } = useUnseenProposals();
+
+const web3Account = computed(() => web3.value.account);
+
+// Save the lastSeenProposal times for all spaces
+watch([proposals, web3Account], () => {
+  if (web3Account.value) {
+    lsSet(
+      `lastSeenProposals.${web3Account.value.slice(0, 8).toLowerCase()}`,
+      zipObject(
+        followingSpaces.value,
+        Array(followingSpaces.value.length).fill(new Date().getTime())
+      )
+    );
+  }
+  updateLastSeenProposal(web3Account.value);
 });
 </script>
 
@@ -91,26 +105,26 @@ onMounted(async () => {
           <div class="py-3">
             <router-link
               :to="{ name: 'timeline' }"
-              v-text="$t('favorites')"
-              class="d-block px-4 py-2 sidenav-item"
+              v-text="$t('joinedSpaces')"
+              class="block px-4 py-2 sidenav-item"
             />
             <router-link
               :to="{ name: 'explore' }"
               v-text="$t('allSpaces')"
-              class="d-block px-4 py-2 sidenav-item"
+              class="block px-4 py-2 sidenav-item"
             />
           </div>
         </Block>
       </div>
     </template>
     <template #content-right>
-      <div class="px-4 px-md-0 mb-3 d-flex">
+      <div class="px-4 md:px-0 mb-3 flex">
         <div class="flex-auto">
-          <router-link :to="{ name: 'home' }" class="text-color">
-            <Icon name="back" size="22" class="v-align-middle" />
+          <router-link :to="{ path: '/' }" class="text-color">
+            <Icon name="back" size="22" class="!align-middle" />
             {{ $t('backToHome') }}
           </router-link>
-          <div class="d-flex flex-items-center flex-auto">
+          <div class="flex items-center flex-auto">
             <h2>{{ $t('timeline') }}</h2>
           </div>
         </div>
@@ -133,20 +147,30 @@ onMounted(async () => {
       </div>
 
       <Block
-        v-if="favoritesKeys.length < 1 && $route.name === 'timeline'"
-        class="text-center"
+        v-if="
+          loading ||
+          (web3.authLoading && isTimeline) ||
+          (loadingFollows && isTimeline)
+        "
+        :slim="true"
       >
-        <div class="mb-3">{{ $t('noFavorites') }}</div>
-        <router-link :to="{ name: 'home' }">
-          <UiButton>{{ $t('addFavorites') }}</UiButton>
-        </router-link>
-      </Block>
-
-      <Block v-else-if="loading" :slim="true">
         <RowLoading class="my-2" />
       </Block>
 
-      <NoResults :block="true" v-else-if="proposals.length < 1" />
+      <Block
+        v-else-if="
+          (isTimeline && following.length < 1) || (isTimeline && !web3.account)
+        "
+        class="text-center"
+      >
+        <div class="mb-3">{{ $t('noSpacesJoined') }}</div>
+        <router-link :to="{ path: '/' }">
+          <UiButton>{{ $t('joinSpaces') }}</UiButton>
+        </router-link>
+      </Block>
+
+      <NoResults v-else-if="proposals.length < 1" :block="true" />
+
       <div v-else>
         <Block :slim="true" v-for="(proposal, i) in proposals" :key="i">
           <TimelineProposal :proposal="proposal" :profiles="profiles" />

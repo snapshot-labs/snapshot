@@ -1,7 +1,6 @@
 <script setup>
 import { ref, watchEffect, computed, onMounted } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
-import { useStore } from 'vuex';
+import { useRouter } from 'vue-router';
 import draggable from 'vuedraggable';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import { getBlockNumber } from '@snapshot-labs/snapshot.js/src/utils/web3';
@@ -13,20 +12,25 @@ import validations from '@snapshot-labs/snapshot.js/src/validations';
 import { clone } from '@/helpers/utils';
 import { useDomain } from '@/composables/useDomain';
 import { useApolloQuery } from '@/composables/useApolloQuery';
+import { useWeb3 } from '@/composables/useWeb3';
+import { useClient } from '@/composables/useClient';
 
-const route = useRoute();
+const props = defineProps({
+  spaceId: String,
+  space: Object,
+  from: String
+});
+
 const router = useRouter();
-const store = useStore();
 const auth = getInstance();
 const { domain } = useDomain();
-
-const key = route.params.key;
-const from = route.params.from;
+const { web3 } = useWeb3();
+const { send } = useClient();
 
 const loading = ref(false);
 const choices = ref([]);
 const blockNumber = ref(-1);
-const bodyLimit = ref(1e4);
+const bodyLimit = ref(6400);
 const form = ref({
   name: '',
   body: '',
@@ -44,22 +48,26 @@ const selectedDate = ref('');
 const counter = ref(0);
 const nameForm = ref(null);
 const passValidation = ref([true]);
+const loadingSnapshot = ref(true);
 
-const web3Account = computed(() => store.state.web3.account);
-const space = computed(() => store.state.app.spaces[key]);
+const web3Account = computed(() => web3.value.account);
+const proposal = computed(() =>
+  Object.assign(form.value, { choices: choices.value })
+);
 
 // Check if account passes space validation
 watchEffect(async () => {
   if (web3Account.value && auth.isAuthenticated.value) {
-    const validationName = space.value.validation?.name ?? 'basic';
-    const validationParams = space.value.validation?.params ?? {};
+    const validationName = props.space.validation?.name ?? 'basic';
+    const validationParams = props.space.validation?.params ?? {};
     const isValid = await validations[validationName](
       web3Account.value,
-      clone(space.value),
+      clone(props.space),
       '',
       clone(validationParams)
     );
     passValidation.value = [isValid, validationName];
+    console.log('Pass validation?', isValid, validationName);
   }
 });
 
@@ -83,7 +91,7 @@ const isValid = computed(() => {
     !choices.value.some(a => a.text === '') &&
     passValidation.value[0] &&
     isSafeSnapPluginValid &&
-    !store.state.app.authLoading
+    !web3.value.authLoading
   );
 });
 
@@ -108,18 +116,14 @@ async function handleSubmit() {
   loading.value = true;
   form.value.snapshot = parseInt(form.value.snapshot);
   form.value.choices = choices.value.map(choice => choice.text);
-  form.value.metadata.network = space.value.network;
-  form.value.metadata.strategies = space.value.strategies;
+  form.value.metadata.network = props.space.network;
+  form.value.metadata.strategies = props.space.strategies;
   try {
-    const { ipfsHash } = await store.dispatch('send', {
-      space: space.value.key,
-      type: 'proposal',
-      payload: form.value
-    });
+    const { ipfsHash } = await send(props.space.id, 'proposal', form.value);
     router.push({
-      name: 'proposal',
+      name: 'spaceProposal',
       params: {
-        key: key,
+        key: props.spaceId,
         id: ipfsHash
       }
     });
@@ -130,12 +134,12 @@ async function handleSubmit() {
 }
 
 const { modalAccountOpen } = useModal();
-const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(key);
+const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(props.spaceId);
 
 function clickSubmit() {
   !web3Account.value
     ? (modalAccountOpen.value = true)
-    : !termsAccepted.value && space.value.terms
+    : !termsAccepted.value && props.space.terms
     ? (modalTermsOpen.value = true)
     : handleSubmit();
 }
@@ -147,7 +151,7 @@ async function loadProposal() {
     {
       query: PROPOSAL_QUERY,
       variables: {
-        id: from
+        id: props.from
       }
     },
     'proposal'
@@ -175,26 +179,29 @@ async function loadProposal() {
 onMounted(async () => {
   nameForm.value.focus();
   addChoice(2);
-  blockNumber.value = await getBlockNumber(getProvider(space.value.network));
-  form.value.snapshot = blockNumber.value;
 
-  if (from) loadProposal();
+  if (props.from) loadProposal();
 });
 
-const proposal = computed(() => {
-  return { ...form, choices };
+watchEffect(async () => {
+  loadingSnapshot.value = true;
+  if (props.space.network) {
+    blockNumber.value = await getBlockNumber(getProvider(props.space.network));
+    form.value.snapshot = blockNumber.value;
+    loadingSnapshot.value = false;
+  }
 });
 </script>
 
 <template>
   <Layout v-bind="$attrs">
     <template #content-left>
-      <div class="px-4 px-md-0 mb-3">
+      <div class="px-4 md:px-0 mb-3">
         <router-link
-          :to="{ name: domain ? 'home' : 'proposals' }"
+          :to="domain ? { path: '/' } : { name: 'spaceProposals' }"
           class="text-color"
         >
-          <Icon name="back" size="22" class="v-align-middle" />
+          <Icon name="back" size="22" class="!align-middle" />
           {{ space.name }}
         </router-link>
       </div>
@@ -219,12 +226,12 @@ const proposal = computed(() => {
           }}
         </span>
       </Block>
-      <div class="px-4 px-md-0">
-        <div class="d-flex flex-column mb-6">
+      <div class="px-4 md:px-0">
+        <div class="flex flex-col mb-6">
           <input
             v-model="form.name"
             maxlength="128"
-            class="h1 mb-2 input"
+            class="text-2xl font-bold mb-2 input"
             :placeholder="$t('create.question')"
             ref="nameForm"
           />
@@ -234,7 +241,7 @@ const proposal = computed(() => {
             :placeholder="$t('create.content')"
           />
           <div class="mb-6">
-            <p v-if="form.body.length > bodyLimit" class="text-red mt-4">
+            <p v-if="form.body.length > bodyLimit" class="!text-red mt-4">
               -{{ _n(-(bodyLimit - form.body.length)) }}
             </p>
           </div>
@@ -252,31 +259,30 @@ const proposal = computed(() => {
             item-key="id"
           >
             <template #item="{ element, index }">
-              <div class="d-flex mb-2">
-                <UiButton class="d-flex width-full">
-                  <span class="mr-4">{{ index + 1 }}</span>
-                  <input
-                    v-model="element.text"
-                    class="input height-full flex-auto text-center"
-                    maxlength="32"
-                  />
-                  <span @click="removeChoice(index)" class="ml-4">
+              <UiInput
+                v-model="element.text"
+                maxlength="32"
+                additionalClass="text-center"
+                ><template v-slot:label
+                  ><span class="text-skin-link">{{ index + 1 }}</span></template
+                >
+                <template v-slot:info
+                  ><span @click="removeChoice(index)">
                     <Icon name="close" size="12" />
                   </span>
-                </UiButton>
-              </div>
+                </template>
+              </UiInput>
             </template>
           </draggable>
         </div>
-        <UiButton @click="addChoice(1)" class="d-block width-full">
+        <UiButton @click="addChoice(1)" class="block w-full">
           {{ $t('create.addChoice') }}
         </UiButton>
       </Block>
       <PluginSafeSnapConfig
         v-if="space?.plugins?.safeSnap"
-        :create="true"
         :proposal="proposal"
-        :moduleAddress="space.plugins?.safeSnap?.address"
+        :config="space.plugins?.safeSnap"
         :network="space.network"
         v-model="form.metadata.plugins.safeSnap"
       />
@@ -292,28 +298,28 @@ const proposal = computed(() => {
         @submit="modalProposalPluginsOpen = true"
       >
         <div class="mb-2">
-          <UiButton class="width-full mb-2" @click="modalVotingTypeOpen = true">
+          <UiButton class="w-full mb-2" @click="modalVotingTypeOpen = true">
             <span>{{ $t(`voting.${form.type}`) }}</span>
           </UiButton>
           <UiButton
             @click="(modalOpen = true), (selectedDate = 'start')"
-            class="width-full mb-2"
+            class="w-full mb-2"
           >
             <span v-if="!form.start">{{ $t('create.startDate') }}</span>
             <span v-else v-text="$d(form.start * 1e3, 'short', 'en-US')" />
           </UiButton>
           <UiButton
             @click="(modalOpen = true), (selectedDate = 'end')"
-            class="width-full mb-2"
+            class="w-full mb-2"
           >
             <span v-if="!form.end">{{ $t('create.endDate') }}</span>
             <span v-else v-text="$d(form.end * 1e3, 'short', 'en-US')" />
           </UiButton>
-          <UiButton class="width-full mb-2">
+          <UiButton :loading="loadingSnapshot" class="w-full mb-2">
             <input
               v-model="form.snapshot"
               type="number"
-              class="input width-full text-center"
+              class="input w-full text-center"
               :placeholder="$t('create.snapshotBlock')"
             />
           </UiButton>
@@ -322,7 +328,7 @@ const proposal = computed(() => {
           @click="clickSubmit"
           :disabled="!isValid"
           :loading="loading || queryLoading"
-          class="d-block width-full button--submit"
+          class="block w-full button--submit"
         >
           {{ $t('create.publish') }}
         </UiButton>

@@ -1,6 +1,6 @@
 <script>
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
-import Plugin from '@snapshot-labs/snapshot.js/src/plugins/quorum';
+import Plugin from '@/../snapshot-plugins/src/plugins/quorum';
 
 export default {
   props: ['space', 'proposal', 'results', 'loaded', 'strategies'],

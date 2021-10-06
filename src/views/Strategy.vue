@@ -1,34 +1,36 @@
 <script setup>
 import { computed } from 'vue';
 import { useRoute } from 'vue-router';
-import { useStore } from 'vuex';
-import { getStrategy } from '@/helpers/utils';
+import { useApp } from '@/composables/useApp';
+import { useSearchFilters } from '@/composables/useSearchFilters';
 
 const route = useRoute();
-const store = useStore();
+const { strategies } = useApp();
+const { minifiedStrategiesArray } = useSearchFilters();
 
-const strategies = computed(() => store.state.app.strategies);
-
-const strategy = computed(() =>
-  getStrategy(strategies.value[route.params.name], store.state.app.spaces)
-);
+const strategy = computed(() => strategies.value[route.params.name]);
 </script>
 
 <template>
   <Layout>
     <template #content-left>
-      <div class="px-4 px-md-0 mb-3">
+      <div class="px-4 md:px-0 mb-3">
         <router-link :to="{ path: '/strategies' }" class="text-color">
-          <Icon name="back" size="22" class="v-align-middle" />
+          <Icon name="back" size="22" class="!align-middle" />
           {{ $t('strategiesPage') }}
         </router-link>
       </div>
-      <div class="px-4 px-md-0">
+      <div class="px-4 md:px-0">
         <h1 class="mb-2">
           {{ strategy.key }}
         </h1>
         <span
-          v-text="`In ${strategy.spaces.length} space(s)`"
+          v-text="
+            `In ${
+              minifiedStrategiesArray.find(st => st.key === route.params.name)
+                .spaces
+            } space(s)`
+          "
           class="text-color"
         />
         <UiMarkdown :body="strategy.about" class="mb-6 mt-4" />
@@ -53,7 +55,7 @@ const strategy = computed(() =>
             <a
               target="_blank"
               class="float-right"
-              :href="`https://github.com/snapshot-labs/snapshot.js/tree/master/src/strategies/${strategy.key}`"
+              :href="`https://github.com/snapshot-labs/snapshot-strategies/tree/master/src/strategies/${strategy.key}`"
             >
               {{ strategy.version }}
               <Icon name="external-link" class="ml-1" />
@@ -61,7 +63,7 @@ const strategy = computed(() =>
           </div>
         </div>
         <router-link :to="`/playground/${$route.params.name}`">
-          <UiButton class="width-full mt-2">{{ $t('playground') }}</UiButton>
+          <UiButton class="w-full mt-2">{{ $t('playground') }}</UiButton>
         </router-link>
       </Block>
     </template>

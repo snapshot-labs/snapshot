@@ -9,7 +9,11 @@ export default defineConfig({
     'process.env': process.env
   },
   plugins: [
-    vue(),
+    vue({
+      script: {
+        refSugar: true
+      }
+    }),
     ViteComponents({ deep: true, directoryAsNamespace: true }),
     visualizer({
       filename: './dist/stats.html',
@@ -20,9 +24,12 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src')
-    }
+    },
+    dedupe: ['@popperjs/core']
   },
   optimizeDeps: {
-    include: ['color', 'mersenne-twister']
+    include: ['color'],
+    // @ts-ignore
+    allowNodeBuiltins: ['stream']
   }
 });

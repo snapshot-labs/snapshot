@@ -1,6 +1,5 @@
 <script>
-import Plugin from '@snapshot-labs/snapshot.js/src/plugins/poap';
-import { mapActions } from 'vuex';
+import Plugin from '@/../snapshot-plugins/src/plugins/poap';
 
 const STATES = {
   NO_POAP: {
@@ -42,6 +41,7 @@ const CLAIMED = 'CLAIMED';
 
 export default {
   props: ['space', 'proposal', 'results', 'loaded', 'strategies', 'votes'],
+  inject: ['web3', 'notify'],
   data() {
     return {
       loading: false,
@@ -54,7 +54,7 @@ export default {
   },
   computed: {
     web3Account() {
-      return this.$store.state.web3.account;
+      return this.web3.value.account;
     },
     header() {
       return STATES[this.currentState].header;
@@ -105,7 +105,6 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['notify']),
     async action() {
       switch (this.currentState) {
         case CLAIMED:
@@ -156,13 +155,13 @@ export default {
 
 <template>
   <Block title="I voted POAP" :loading="loading">
-    <div class="d-flex flex-column flex-items-center">
+    <div class="flex flex-col items-center">
       <img :src="headerImg" alt="" class="mb-2" />
       <div class="link-color text-center mb-2">{{ $t(header) }}</div>
       <img
         :src="mainImg"
         alt=""
-        class="mb-2"
+        class="mt-1"
         style="
           vertical-align: middle;
           width: auto;
@@ -172,7 +171,7 @@ export default {
       />
       <UiButton
         v-if="currentState !== 'NO_POAP'"
-        class="width-full mb-2"
+        class="w-full mb-2 mt-3"
         @click="action"
         :disabled="!actionEnabled"
         :loading="actionLoading"

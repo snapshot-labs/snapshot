@@ -1,5 +1,4 @@
 <script setup>
-import { defineProps, defineEmits } from 'vue';
 import { getUrl } from '@snapshot-labs/snapshot.js/src/utils.ts';
 
 const props = defineProps({ open: Boolean, space: Object });
@@ -29,17 +28,13 @@ function accept() {
       </a>
     </div>
     <template v-slot:footer>
-      <div class="col-6 float-left pr-2">
-        <UiButton @click="$emit('close')" type="button" class="width-full">
+      <div class="w-2/4 float-left pr-2">
+        <UiButton @click="$emit('close')" type="button" class="w-full">
           {{ $t('cancel') }}
         </UiButton>
       </div>
-      <div class="col-6 float-left pl-2">
-        <UiButton
-          @click="accept"
-          type="submit"
-          class="width-full button--submit"
-        >
+      <div class="w-2/4 float-left pl-2">
+        <UiButton @click="accept" type="submit" class="w-full button--submit">
           {{ $t('agree') }}
         </UiButton>
       </div>

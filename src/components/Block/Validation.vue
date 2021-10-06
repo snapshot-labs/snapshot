@@ -6,11 +6,11 @@ export default {
 
 <template>
   <Block>
-    <div class="d-flex flex-items-center mb-1">
+    <div class="flex items-center mb-1">
       <h3 v-text="validation.name" />
     </div>
     <div class="text-color">
-      {{ $tc('inSpaces', [_n(validation.spaces.length)]) }}
+      {{ $tc('inSpaces', [_n(validation.spaces)]) }}
     </div>
   </Block>
 </template>

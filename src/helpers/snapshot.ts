@@ -46,7 +46,7 @@ export async function getResults(space, proposal, votes) {
     if (proposal.state !== 'pending') {
       console.time('getProposal.scores');
       const scores = await getScores(
-        space.key,
+        space.id,
         strategies,
         space.network,
         provider,
@@ -87,7 +87,7 @@ export async function getPower(space, address, proposal) {
   try {
     const strategies = proposal.strategies ?? space.strategies;
     let scores: any = await getScores(
-      space.key,
+      space.id,
       strategies,
       space.network,
       getProvider(space.network),

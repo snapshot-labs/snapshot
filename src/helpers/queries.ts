@@ -65,6 +65,7 @@ export const PROPOSALS_QUERY = gql`
       end
       state
       author
+      created
       space {
         id
         name
@@ -105,6 +106,58 @@ export const PROPOSAL_VOTES_QUERY = gql`
       voter
       created
       choice
+    }
+  }
+`;
+
+export const FOLLOWS_QUERY = gql`
+  query Follows($space_in: [String], $follower_in: [String]) {
+    follows(where: { space_in: $space_in, follower_in: $follower_in }) {
+      id
+      follower
+      space {
+        id
+      }
+    }
+  }
+`;
+
+export const ALIASES_QUERY = gql`
+  query Aliases($address: String!, $alias: String!) {
+    aliases(where: { address: $address, alias: $alias }) {
+      address
+      alias
+    }
+  }
+`;
+
+export const SPACES_QUERY = gql`
+  query Spaces($id_in: [String]) {
+    spaces(where: { id_in: $id_in }) {
+      id
+      name
+      about
+      network
+      symbol
+      network
+      terms
+      skin
+      avatar
+      twitter
+      github
+      private
+      domain
+      members
+      admins
+      plugins
+      strategies {
+        name
+        params
+      }
+      filters {
+        minScore
+        onlyMembers
+      }
     }
   }
 `;

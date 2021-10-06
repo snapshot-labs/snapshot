@@ -26,7 +26,7 @@ export default {
         <UiButton
           @click="$emit('close')"
           type="submit"
-          class="width-full button--submit"
+          class="w-full button--submit"
         >
           {{ $t('continue') }}
         </UiButton>

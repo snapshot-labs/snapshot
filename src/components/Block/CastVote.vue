@@ -1,5 +1,6 @@
 <script setup>
-import { computed, defineProps, defineEmits } from 'vue';
+import { computed } from 'vue';
+import { useWeb3 } from '@/composables/useWeb3';
 
 const props = defineProps({
   proposal: {
@@ -10,6 +11,8 @@ const props = defineProps({
 });
 
 const emit = defineEmits(['update:modelValue', 'clickVote']);
+
+const { web3 } = useWeb3();
 
 const selectedChoices = computed(() => {
   if (Array.isArray(props.modelValue)) return props.modelValue.length;
@@ -48,9 +51,9 @@ function emitChoice(c) {
       />
     </div>
     <UiButton
-      :disabled="app.authLoading || selectedChoices < 1"
+      :disabled="web3.authLoading || selectedChoices < 1"
       @click="$emit('clickVote')"
-      class="d-block width-full button--submit"
+      class="block w-full button--submit"
     >
       {{ $t('proposal.vote') }}
     </UiButton>

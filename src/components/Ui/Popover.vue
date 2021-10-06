@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref, watch, defineProps } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import { createPopper } from '@popperjs/core';
 import { useDebounce } from '@/composables/useDebounce';
 import { useDetectInput } from '@/composables/useDetectInput';
