@@ -295,10 +295,10 @@
     "no_poap_header": "Bu teklif için henüz bir POAP kurulmadı :'(",
     "no_voted_header": "Bu POAP'ı almak için oy verin",
     "unclaimed_header": "Oy verdiğiniz POAP'ınızı talep edin",
-    "claimed_header": "Tebrikler! Hesabınızda yeni bir POAP var",
+    "claimed_header": "Congratulations! The POAP has been minted to your account",
     "loading_header": "POAP topladıklarınıza ekleniyor",
     "button_claim": "Topla",
-    "button_show": "Topladıklarımı göster",
+    "button_show": "Browse collection",
     "success_claim": "POAP'ınız adresinizde",
     "error_claim": "Jeton basılırken bir hata oluştu"
   },
