@@ -295,10 +295,10 @@
     "no_poap_header": "इस प्रस्ताव के लिए अभी तक POAP सेटअप नहीं किया गया है :'(",
     "no_voted_header": "इस POAP को पाने के लिए वोट करें",
     "unclaimed_header": "दावा करें कि मैंने पीओएपी को वोट दिया है",
-    "claimed_header": "बधाई हो! आपको अपने खाते में एक नया POAP मिला है",
+    "claimed_header": "Congratulations! The POAP has been minted to your account",
     "loading_header": "POAP को आपके संग्रह में जोड़ा जा रहा है",
     "button_claim": "दावा करें",
-    "button_show": "मेरा संग्रह दिखाओ",
+    "button_show": "Browse collection",
     "success_claim": "आपका POAP आपके पते पर है",
     "error_claim": "टोकन बनाने में एक समस्या हुई"
   },
