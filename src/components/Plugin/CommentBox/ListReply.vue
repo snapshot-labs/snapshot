@@ -55,9 +55,6 @@ watch(
     background-color: var(--bg-color);
   }
 }
-html {
-  scroll-behavior: smooth;
-}
 </style>
 <template>
   <div
