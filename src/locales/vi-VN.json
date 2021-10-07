@@ -295,10 +295,10 @@
     "no_poap_header": "POAP chưa được thiết lập cho đề xuất này: '(",
     "no_voted_header": "Bỏ phiếu để nhận POAP này",
     "unclaimed_header": "Yêu cầu POAP tôi đã bình chọn của bạn",
-    "claimed_header": "Xin chúc mừng! Bạn có một POAP mới trong tài khoản của mình",
+    "claimed_header": "Congratulations! The POAP has been minted to your account",
     "loading_header": "POAP đang được thêm vào bộ sưu tập của bạn",
     "button_claim": "Yêu cầu",
-    "button_show": "Show me my collection",
+    "button_show": "Browse collection",
     "success_claim": "POAP của bạn có trên địa chỉ của bạn",
     "error_claim": "Đã xảy ra sự cố khi in mã thông báo"
   },
