@@ -295,10 +295,10 @@
     "no_poap_header": "Ein POAP wurde für diesen Vorschlag noch nicht eingerichtet :'(",
     "no_voted_header": "Stimme ab um diesen POAP zu erhalten",
     "unclaimed_header": "Beanspruche deinen POAP",
-    "claimed_header": "Glückwunsch! Sie haben einen neuen POAP in Ihrem Konto erhalten",
+    "claimed_header": "Congratulations! The POAP has been minted to your account",
     "loading_header": "Der POAP wird Ihrer Sammlung hinzugefügt",
     "button_claim": "Beanspruchen",
-    "button_show": "Zeige mir meine Sammlung",
+    "button_show": "Browse collection",
     "success_claim": "Dein POAP ist auf deiner Adresse",
     "error_claim": "There was a problem minting the token"
   },
