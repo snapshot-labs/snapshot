@@ -271,7 +271,7 @@
     "claimed_header": "Grattis! Du fick en ny POAP på ditt konto",
     "loading_header": "POAP läggs till i din kollektion",
     "button_claim": "Anspråk",
-    "button_show": "Show me my collection",
+    "button_show": "Browse collection",
     "success_claim": "Din POAP är på din adress",
     "error_claim": "Det gick inte att radera den token"
   }

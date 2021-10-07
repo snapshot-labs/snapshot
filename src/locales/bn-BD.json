@@ -271,7 +271,7 @@
     "claimed_header": "অভিনন্দন! আপনি আপনার অ্যাকাউন্টে একটি নতুন POAP পেয়েছেন",
     "loading_header": "আপনার সংগ্রহে POAP যোগ করা হচ্ছে",
     "button_claim": "দাবি",
-    "button_show": "Show me my collection",
+    "button_show": "Browse collection",
     "success_claim": "আপনার POAP আপনার ঠিকানায় রয়েছে",
     "error_claim": "টোকেনটি টানতে সমস্যা ছিল"
   }
