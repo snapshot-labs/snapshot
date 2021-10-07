@@ -41,7 +41,7 @@ function handleInput(e) {
       focus-within:border-skin-link
       hover:border-skin-link
     "
-    :class="{ '!border-red': error }"
+    :class="{ '!border-red': error, 'cursor-pointer': $slots.selected }"
   >
     <div class="text-color mr-2">
       <slot name="label" />
