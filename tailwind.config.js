@@ -5,7 +5,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        snapshot: '#f3b04e', // TODO: get correct color for snapshot logo
+        snapshot: '#f3b04e',
         primary: 'var(--primary-color)',
         'skin-border': 'var(--border-color)',
         'skin-text': 'var(--text-color)',
