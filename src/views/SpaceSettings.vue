@@ -316,7 +316,6 @@ watchEffect(async () => {
               <UiInput
                 @click="modalNetworksOpen = true"
                 :error="inputError('network')"
-                class="cursor-pointer"
               >
                 <template v-slot:selected>
                   {{
@@ -386,11 +385,7 @@ watchEffect(async () => {
                 </a>
               </template>
             </UiInput>
-            <UiInput
-              @click="modalSkinsOpen = true"
-              :error="inputError('skin')"
-              class="cursor-pointer"
-            >
+            <UiInput @click="modalSkinsOpen = true" :error="inputError('skin')">
               <template v-slot:selected>
                 {{ form.skin ? form.skin : $t('defaultSkin') }}
               </template>
@@ -474,7 +469,6 @@ watchEffect(async () => {
               <UiInput
                 @click="modalValidationOpen = true"
                 :error="inputError('settings.validation')"
-                class="cursor-pointer"
               >
                 <template v-slot:selected>
                   {{ form.validation.name }}
