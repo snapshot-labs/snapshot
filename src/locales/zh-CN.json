@@ -295,10 +295,10 @@
     "no_poap_header": "尚未为此提议设置POAP :'(",
     "no_voted_header": "投票以获取此POAP",
     "unclaimed_header": "认领您已投票的 POAP",
-    "claimed_header": "恭喜！您在您的帐户中获得了一个新的 POAP",
+    "claimed_header": "Congratulations! The POAP has been minted to your account",
     "loading_header": "POAP 正被添加到您的收藏",
     "button_claim": "领取",
-    "button_show": "显示我的收藏",
+    "button_show": "Browse collection",
     "success_claim": "您的POAP 在您的地址上",
     "error_claim": "创建令牌时出错"
   },
