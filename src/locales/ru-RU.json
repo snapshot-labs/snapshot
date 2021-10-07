@@ -295,10 +295,10 @@
     "no_poap_header": "POAP еще не был настроен для этого предложения :'(",
     "no_voted_header": "Проголосуйте, чтобы получить этот POAP",
     "unclaimed_header": "Я проголосовал, забрать свой POAP",
-    "claimed_header": "Поздравляем! Вы получили новый POAP в вашей учетной записи",
+    "claimed_header": "Congratulations! The POAP has been minted to your account",
     "loading_header": "POAP добавляется в вашу коллекцию",
     "button_claim": "Получить",
-    "button_show": "Показать мою коллекцию",
+    "button_show": "Browse collection",
     "success_claim": "Ваш POAP на вашем адресе ",
     "error_claim": "При создании токена возникла проблема"
   },
