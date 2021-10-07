@@ -295,10 +295,10 @@
     "no_poap_header": "עוד לא נוצר POAP להצעה זו :'(",
     "no_voted_header": "הצבעה בכדי לקבל POAP זה",
     "unclaimed_header": "קבל את ה-POAP שלך",
-    "claimed_header": "מזל טוב! יש לך POAP חדש במשתמש",
+    "claimed_header": "Congratulations! The POAP has been minted to your account",
     "loading_header": "ה-POAP מתווסף לקולקציה שלך ברגע זה",
     "button_claim": "תבע",
-    "button_show": "הקולקציה שלי",
+    "button_show": "Browse collection",
     "success_claim": "ה-POAP נמצא על הכתובת שלך",
     "error_claim": "ארעה בעיה בעת יצירת המטבע"
   },
