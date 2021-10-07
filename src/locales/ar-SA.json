@@ -295,10 +295,10 @@
     "no_poap_header": "لم يتم إعداد POAP لهذا الاقتراح بعد :'(",
     "no_voted_header": "التصويت للحصول على هذا POAP",
     "unclaimed_header": "المطالبة بأنني صوتت على POAP",
-    "claimed_header": "تهانينا! لقد حصلت على POAP جديد في حسابك",
+    "claimed_header": "Congratulations! The POAP has been minted to your account",
     "loading_header": "تم إضافة POAP إلى مجموعتك",
     "button_claim": "الحصول عليه",
-    "button_show": "أرني مجموعتي",
+    "button_show": "Browse collection",
     "success_claim": "POAP الخاص بك موجود على عنوانك",
     "error_claim": "حدثت مشكلة في سك العملة الرمزية"
   },
