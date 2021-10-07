@@ -295,10 +295,10 @@
     "no_poap_header": "Er is nog geen POAP ingesteld voor dit voorstel :'(",
     "no_voted_header": "Stem om deze POAP te krijgen",
     "unclaimed_header": "Claim je stem op POAP",
-    "claimed_header": "Gefeliciteerd! Je hebt een nieuwe POAP in je account",
+    "claimed_header": "Congratulations! The POAP has been minted to your account",
     "loading_header": "De POAP wordt toegevoegd aan je collectie",
     "button_claim": "Claimen",
-    "button_show": "Show me my collection",
+    "button_show": "Browse collection",
     "success_claim": "Uw POAP bevindt zich op uw adres",
     "error_claim": "Er is een probleem opgetreden bij het minen van het token"
   },
