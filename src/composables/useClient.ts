@@ -12,8 +12,10 @@ export function useClient() {
 
   async function send(space, type, payload) {
     const isSafe = web3.value?.walletConnectType === 'Gnosis Safe Multisig';
-    const fn = isSafe ? client.sign : client.broadcast;
     try {
+      const fn = isSafe
+        ? client.sign.bind(client)
+        : client.broadcast.bind(client);
       const result = await fn(
         auth.web3,
         web3.value.account,
