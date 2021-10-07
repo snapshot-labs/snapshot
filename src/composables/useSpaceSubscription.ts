@@ -1,5 +1,4 @@
 import { computed, ref, watch } from 'vue';
-import { useModal } from '@/composables/useModal';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useApolloQuery } from '@/composables/useApolloQuery';
 import { SUBSCRIPTIONS_QUERY } from '@/helpers/queries';
@@ -8,7 +7,6 @@ import client from '@/helpers/EIP712';
 
 export function useSpaceSubscription(spaceId: any) {
   const { web3 } = useWeb3();
-  const { modalAccountOpen } = useModal();
   const { apolloQuery } = useApolloQuery();
   const { setAlias, aliasWallet, isValidAlias, checkAlias } = useAliasAction();
 
@@ -53,11 +51,6 @@ export function useSpaceSubscription(spaceId: any) {
   async function toggleSubscription() {
     if (web3.value.authLoading) {
       return null;
-    }
-
-    if (!web3Account.value) {
-      modalAccountOpen.value = true;
-      return;
     }
 
     loading.value = true;
