@@ -29,7 +29,6 @@ const app = createApp({
     directive: 'tippy' // => v-tippy
   })
 
-  .use(LockPlugin, options)
   .mixin(mixins);
 
 app.mount('#app');
