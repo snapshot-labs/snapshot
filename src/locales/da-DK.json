@@ -295,10 +295,10 @@
     "no_poap_header": "En POAP er ikke blevet opsat til dette forslag endnu :' (",
     "no_voted_header": "Stem for at få denne POAP",
     "unclaimed_header": "Gør krav på din jeg stemte POAP",
-    "claimed_header": "Tillykke! Du har fået en ny POAP på din konto",
+    "claimed_header": "Congratulations! The POAP has been minted to your account",
     "loading_header": "POAP'en bliver tilføjet til din samling",
     "button_claim": "Modtag",
-    "button_show": "Vis ugentlig samling",
+    "button_show": "Browse collection",
     "success_claim": "Din POAP er på din adresse",
     "error_claim": "Der var et problem med at slette denne token."
   },
