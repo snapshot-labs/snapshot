@@ -295,10 +295,10 @@
     "no_poap_header": "Aun no se ha creado un POAP para esta oferta :'(",
     "no_voted_header": "Vote para obtener este POAP",
     "unclaimed_header": "Claim your I voted POAP",
-    "claimed_header": "¡Felicidades! Ha recibido un nuevo POAP en su cuenta",
+    "claimed_header": "Congratulations! The POAP has been minted to your account",
     "loading_header": "The POAP is being added to your collection",
     "button_claim": "Reclamar",
-    "button_show": "Show me my collection",
+    "button_show": "Browse collection",
     "success_claim": "Your POAP is on your address",
     "error_claim": "Hubo un problema en la acuñación de esta token"
   },
