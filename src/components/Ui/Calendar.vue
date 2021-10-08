@@ -61,16 +61,11 @@ function toggleDay(year, month, day) {
   input.value = formatDate(year, month, day);
   emit('update:modelValue', input.value);
 }
-function isSelectable() {
-  return true;
-  /*
-      const in30Days = new Date();
-      in30Days.setDate(in30Days.getDate() + 30);
-      return (
-        new Date(year, month, day) > new Date() &&
-        new Date(year, month, day) < in30Days
-      );
-      */
+function isSelectable(year, month, day) {
+  const dateForCheck = new Date(year, month, day);
+  const diff = new Date().setHours(0, 0, 0, 0) - dateForCheck;
+
+  return diff > 0 ? false : true;
 }
 </script>
 
