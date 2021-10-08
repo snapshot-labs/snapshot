@@ -32,6 +32,7 @@ async function handleSubmit() {
     choice: props.selectedChoices,
     metadata: {}
   });
+  
   emit('reload');
   emit('close');
   loading.value = false;
