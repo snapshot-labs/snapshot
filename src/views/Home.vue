@@ -12,6 +12,7 @@ const { explore } = useApp();
 const { followingSpaces } = useFollowSpace();
 
 const orderedSpaces = computed(() => {
+  const network = route.query.network || '';
   const q = route.query.q || '';
   const list = Object.keys(explore.value.spaces)
     .map(key => {
@@ -22,7 +23,14 @@ const orderedSpaces = computed(() => {
         private: explore.value.spaces[key].private ?? false
       };
     })
-    .filter(space => !space.private);
+    .filter(space => !space.private)
+    .filter(space => {
+      if (space.network === network) {
+        return space;
+      } else if (!network) {
+        return space;
+      }
+    });
 
   return orderBy(list, ['following', 'followers'], ['desc', 'desc']).filter(
     space => JSON.stringify(space).toLowerCase().includes(q.toLowerCase())

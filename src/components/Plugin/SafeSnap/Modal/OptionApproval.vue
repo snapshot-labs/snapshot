@@ -48,7 +48,7 @@ export default {
       <h3 class="title">SafeSnap</h3>
     </template>
     <div class="m-4 mb-5">
-      <h3>
+      <p>
         {{ $t('safeSnap.labels.question') }}
         <a
           class="question-link"
@@ -58,27 +58,30 @@ export default {
         >
           {{ $t('safeSnap.labels.criteria') }}
         </a>
-      </h3>
-      <div class="m-4 text-center">
-        <h4>
-          {{ $t('safeSnap.currentOutcome', [answer]) }}
-        </h4>
-        <br />
-        <h4>
-          {{
-            $t('safeSnap.currentBond', [bondData.current + ' ' + tokenSymbol])
-          }}
-        </h4>
-        <br />
-        <h4>
-          {{
-            $t('safeSnap.nextBond', [
-              bondData.toSet + ' ' + bondData.tokenSymbol
-            ])
-          }}
-        </h4>
+      </p>
+
+      <div class="border rounded-lg p-3 my-3">
+        <div>
+          <b class="pr-3">{{ $t('safeSnap.currentOutcome') }}:</b>
+          <span class="float-right link-color">
+            {{ answer }}
+          </span>
+        </div>
+        <div>
+          <b class="pr-3">{{ $t('safeSnap.currentBond') }}:</b>
+          <span class="float-right link-color">
+            {{ bondData.current + ' ' + tokenSymbol }}
+          </span>
+        </div>
+        <div>
+          <b class="pr-3">{{ $t('safeSnap.nextBond') }}:</b>
+          <span class="float-right link-color">
+            {{ bondData.toSet + ' ' + bondData.tokenSymbol }}
+          </span>
+        </div>
       </div>
-      <div>
+
+      <div class="mt-5">
         <h4 class="text-center">
           {{ $t('safeSnap.setOutcomeTo') }}
         </h4>

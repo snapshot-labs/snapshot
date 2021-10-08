@@ -16,7 +16,8 @@
   --block-bg: transparent;
 }
 
-.dark-mode, .eth-dark-mode {
+.dark-mode,
+.eth-dark-mode {
   --primary-color: #384aff;
   --bg-color: #121212;
   --text-color: #8b949e;
@@ -170,7 +171,7 @@ textarea {
 .border-t,
 .border-r,
 .border-l {
-  border-color: var(--border-color) !important;
+  border-color: var(--border-color);
 }
 
 .header-bg {
