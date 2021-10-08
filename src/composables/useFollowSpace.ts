@@ -7,7 +7,6 @@ import { FOLLOWS_QUERY } from '@/helpers/queries';
 import { useAliasAction } from '@/composables/useAliasAction';
 import client from '@/helpers/EIP712';
 
-// const spaceFollows: any = ref({});
 const following = ref([]);
 const loadingFollows = ref(false);
 
@@ -41,17 +40,6 @@ export function useFollowSpace(spaceObj: any = {}) {
     loadingFollows.value = true;
     try {
       Promise.all([
-        // Hint: Saving this for when we want to show how many users follow a space.
-
-        // (spaceFollows.value[spaceObj.id] = await apolloQuery(
-        //   {
-        //     query: FOLLOWS_QUERY,
-        //     variables: {
-        //       space_in: spaceObj.id
-        //     }
-        //   },
-        //   'follows'
-        // )),
         (following.value = await apolloQuery(
           {
             query: FOLLOWS_QUERY,

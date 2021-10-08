@@ -23,7 +23,7 @@ export function useWeb3() {
     state.authLoading = true;
     await auth.login(connector);
     if (auth.provider.value) {
-      auth.web3 = new Web3Provider(auth.provider.value);
+      auth.web3 = new Web3Provider(auth.provider.value, 'any');
       await loadProvider();
     }
     state.authLoading = false;

@@ -300,7 +300,7 @@
     "loading_header": "Der POAP wird Ihrer Sammlung hinzugefügt",
     "button_claim": "Beanspruchen",
     "button_show": "Browse collection",
-    "success_claim": "Dein POAP ist auf deiner Adresse",
+    "success_claim": "Your POAP is on your address",
     "error_claim": "There was a problem minting the token"
   },
   "comment_box": {

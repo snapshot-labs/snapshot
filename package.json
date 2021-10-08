@@ -5,7 +5,7 @@
     "preinstall": "git submodule update --init --remote",
     "dev": "vite",
     "build": "vite build",
-    "lint": "eslint './src/*/**/*.{ts,vue,json}' --fix",
+    "lint": "eslint \"./src/*/**/*.{ts,vue,json}\" --fix",
     "postinstall": "patch-package"
   },
   "dependencies": {
@@ -23,7 +23,7 @@
     "@popperjs/core": "^2.8.3",
     "@portis/web3": "^4.0.5",
     "@snapshot-labs/lock": "github:snapshot-labs/lock#master",
-    "@snapshot-labs/snapshot.js": "^0.2.10",
+    "@snapshot-labs/snapshot.js": "^0.2.14",
     "@toruslabs/torus-embed": "^1.12.1",
     "@vue/apollo-composable": "4.0.0-alpha.12",
     "@vueuse/core": "^5.2.0",
@@ -72,7 +72,7 @@
     "sass-loader": "^8.0.2",
     "tailwindcss": "^2.2.9",
     "vite": "^2.6.0-beta.2",
-    "vite-plugin-components": "^0.13.2",
+    "unplugin-vue-components": "^0.15.6",
     "walletlink": "^2.1.8"
   },
   "license": "MIT",

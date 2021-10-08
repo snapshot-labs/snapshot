@@ -1,7 +1,7 @@
 import path from 'path';
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
-import ViteComponents from 'vite-plugin-components';
+import ViteComponents from 'unplugin-vue-components/vite';
 import visualizer from 'rollup-plugin-visualizer';
 
 export default defineConfig({
@@ -14,7 +14,7 @@ export default defineConfig({
         refSugar: true
       }
     }),
-    ViteComponents({ deep: true, directoryAsNamespace: true }),
+    ViteComponents({ directoryAsNamespace: true }),
     visualizer({
       filename: './dist/stats.html',
       template: 'sunburst',
