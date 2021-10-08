@@ -119,7 +119,17 @@ watch([proposals, web3Account], () => {
         <RowLoading class="my-2" />
       </Block>
 
-      <NoResults :block="true" v-else-if="proposals.length < 1" />
+      <NoResults
+        text="createFirstProposal"
+        :block="true"
+        v-else-if="proposals.length < 1"
+      >
+        <router-link :to="{ name: 'spaceCreate', params: { key: space.id } }">
+          <UiButton class="mt-2">
+            {{ $t('proposals.createProposal') }}
+          </UiButton>
+        </router-link>
+      </NoResults>
       <div v-else>
         <Block :slim="true" v-for="(proposal, i) in proposals" :key="i">
           <TimelineProposal :proposal="proposal" :profiles="profiles" />
