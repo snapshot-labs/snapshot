@@ -131,7 +131,7 @@ export default {
       style="padding-bottom: 12px"
     >
       <UiAvatar
-        class="mr-2 float-left mt-[-2px]"
+        class="mr-2 float-left"
         :imgsrc="networkIcon"
         :seed="network"
         size="28"
