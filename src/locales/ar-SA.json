@@ -284,8 +284,8 @@
       "setOutcome": "تعيين النتيجة",
       "changeOutcome": "تغيير النتيجة",
       "executeTxs": "Execute transaction batch {0} of {1}",
-      "executed": "All transactions have been executed",
-      "error": "Something went wrong",
+      "executed": "تم تنفيذ جميع المعاملات",
+      "error": "حدث خطأ ما",
       "connectWallet": "Connect wallet to see execution details",
       "question": "هل تم إقرار هذا الاقتراح وهل استوفى",
       "criteria": "معايير القبول؟"
@@ -305,7 +305,7 @@
   "comment_box": {
     "title": "صندوق التعليق",
     "add": "أضف تعليقك هنا",
-    "submit": "Submit",
+    "submit": "ارسال",
     "preview": "المعاينة",
     "continue_editing": "الاستمرار في التعديل",
     "edit": "عدل ردك هنا",
