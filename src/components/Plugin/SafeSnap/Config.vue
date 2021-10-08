@@ -38,7 +38,7 @@ export default {
     };
   },
   methods: {
-    updateSafeTransactions(safeIndex, txs) {
+    updateSafeTransactions(safeIndex) {
       if (this.preview) return;
       this.input.safes[safeIndex].txs;
       this.input.valid = isValidInput(this.input);
