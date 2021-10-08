@@ -287,6 +287,7 @@
       "executed": "All transactions have been executed",
       "error": "Something went wrong",
       "connectWallet": "Connect wallet to see execution details",
+      "switchChain": "Switch your wallet to {0} to request execution",
       "question": "Did this proposal pass and does it meet the",
       "criteria": "acceptance criteria?"
     }
