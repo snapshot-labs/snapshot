@@ -67,7 +67,7 @@ async function loadScores() {
   scores.value = null;
   strategyError.value = null;
   loading.value = true;
-  
+
   try {
     const strategyParams = {
       __typename: 'Strategy',
