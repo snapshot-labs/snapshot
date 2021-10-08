@@ -287,6 +287,7 @@
       "executed": "所有交易已执行",
       "error": "出了些问题",
       "connectWallet": "连接钱包以查看执行详情",
+      "switchChain": "Switch your wallet to {0} to request execution",
       "question": "这个建议是否通过并满足了这个建议",
       "criteria": "验收标准"
     }
