@@ -271,7 +271,7 @@
     "claimed_header": "¡Felicidades! Ha recibido un nuevo POAP en su cuenta",
     "loading_header": "The POAP is being added to your collection",
     "button_claim": "Reclamar",
-    "button_show": "Show me my collection",
+    "button_show": "Browse collection",
     "success_claim": "Your POAP is on your address",
     "error_claim": "Hubo un problema en la acuñación de esta token"
   }
