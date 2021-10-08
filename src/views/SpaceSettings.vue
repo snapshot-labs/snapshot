@@ -460,6 +460,7 @@ watchEffect(async () => {
               <a @click="handleRemoveStrategy(i)" class="absolute p-4 right-0">
                 <Icon name="close" size="12" />
               </a>
+              
               <a
                 @click="handleEditStrategy(i)"
                 class="p-4 block border rounded-md"
