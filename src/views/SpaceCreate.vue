@@ -281,9 +281,8 @@ watchEffect(async () => {
       </Block>
       <PluginSafeSnapConfig
         v-if="space?.plugins?.safeSnap"
-        :create="true"
         :proposal="proposal"
-        :moduleAddress="space.plugins?.safeSnap?.address"
+        :config="space.plugins?.safeSnap"
         :network="space.network"
         v-model="form.metadata.plugins.safeSnap"
       />

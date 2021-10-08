@@ -1,5 +1,5 @@
 <script setup>
-import { defineProps, watch, computed, ref, defineEmits } from 'vue';
+import { watch, computed, ref } from 'vue';
 import { useNotifications } from '@/composables/useNotifications';
 import { useModal } from '@/composables/useModal';
 import { useWeb3 } from '@/composables/useWeb3';
@@ -164,7 +164,6 @@ const isCreator = computed(() => props.proposal.author === web3Account.value);
   </div>
   <div v-if="toggleEditComment">
     <Block :slim="true" class="p-4 text-color mt-2 mb-0">
-      
       <div>
         <User
           :address="item.author"
