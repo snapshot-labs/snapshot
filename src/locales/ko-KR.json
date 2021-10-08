@@ -287,6 +287,7 @@
       "executed": "All transactions have been executed",
       "error": "Something went wrong",
       "connectWallet": "Connect wallet to see execution details",
+      "switchChain": "Switch your wallet to {0} to request execution",
       "question": "이 제안서가 지나갔을 때 그것을 만난다",
       "criteria": "허용 기준?"
     }
