@@ -51,7 +51,7 @@ async function handleSubmit() {
     const receipt = await tx.wait();
     console.log('Receipt', receipt);
     await sleep(3e3);
-    notify(t('notify.youDidIt'));
+    notify(t('notify.delegationRemoved'));
     pendingCount.value--;
     emit('reload');
   } catch (e) {

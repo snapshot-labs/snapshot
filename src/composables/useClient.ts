@@ -10,6 +10,22 @@ export function useClient() {
   const auth = getInstance();
   const { notify } = useNotifications();
 
+  function successNotification(keyword: string) {
+    let notification;
+
+    if (keyword === 'delete-proposal')
+      notification = ['red', t('notify.proposalDeleted')];
+    else if (keyword === 'proposal')
+      notification = ['green', t('notify.proposalCreated')];
+    else if (keyword === 'settings')
+      notification = ['green', t('notify.saved')];
+    else if (keyword === 'vote')
+      notification = ['green', t('notify.voteSuccessful')];
+    else notification = ['green', t('notify.youDidIt')];
+
+    notify([notification[0], notification[1]]);
+  }
+
   async function send(space, type, payload) {
     const isSafe = web3.value?.walletConnectType === 'Gnosis Safe Multisig';
     try {
@@ -23,12 +39,7 @@ export function useClient() {
         type,
         payload
       );
-      notify([
-        'green',
-        type === 'delete-proposal'
-          ? t('notify.proposalDeleted')
-          : t('notify.yourIsIn', [type])
-      ]);
+      successNotification(type);
       return result;
     } catch (e: any) {
       const errorMessage =
