@@ -353,13 +353,13 @@ const markdown = computed(() => {
   word-wrap: normal;
 }
 .dark-mode .markdown-body pre {
-  background-color: var(--bg-color);
-  border: 1px solid var(--border-color);
+  color: var(--link-color);
+  background-color: var(--border-color);
 }
 .markdown-body pre > code {
   padding: 0;
   margin: 0;
-  font-size: 100%;
+  font-size: 90%;
   word-break: normal;
   white-space: pre;
   background: transparent;
