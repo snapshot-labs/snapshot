@@ -17,13 +17,13 @@ const props = defineProps({
 const emit = defineEmits(['reload', 'close']);
 
 const { send } = useClient();
+const format = getChoiceString;
 
 const loading = ref(false);
+
 const symbols = computed(() =>
   props.strategies.map(strategy => strategy.params.symbol)
 );
-
-const format = getChoiceString;
 
 async function handleSubmit() {
   loading.value = true;
@@ -32,6 +32,7 @@ async function handleSubmit() {
     choice: props.selectedChoices,
     metadata: {}
   });
+  
   emit('reload');
   emit('close');
   loading.value = false;
