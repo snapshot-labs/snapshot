@@ -67,6 +67,11 @@ function isSelectable(year, month, day) {
 
   return !(diff > 0);
 }
+function prevMonth() {
+  if (month.value > new Date().getMonth()) {
+    month.value--;
+  }
+}
 </script>
 
 <template>
@@ -74,7 +79,7 @@ function isSelectable(year, month, day) {
     <div class="mb-2 flex">
       <a
         class="w-1/4 iconfont iconback text-left text-lg font-bold text-color"
-        @click="month--"
+        @click="prevMonth"
       />
       <h4 class="mb-3 flex-auto text-center">{{ monthName }} {{ fullYear }}</h4>
       <a
