@@ -8,6 +8,7 @@ import { useProfiles } from '@/composables/useProfiles';
 import { useUnseenProposals } from '@/composables/useUnseenProposals';
 import { lsSet } from '@/helpers/utils';
 import { useWeb3 } from '@/composables/useWeb3';
+import { useApp } from '@/composables/useApp'
 
 const props = defineProps({ space: Object, spaceId: String });
 
@@ -81,6 +82,16 @@ watch([proposals, web3Account], () => {
   }
   updateLastSeenProposal(web3Account.value);
 });
+
+const { explore } = useApp();
+  const proposalsIs = computed(() => {
+    return Object.values(explore.value.spaces).find(
+      el => el.id === props.space.id
+    ).proposals;
+  });
+  const proposalsText = computed(() => {
+    return !proposalsIs.value ? 'createFirstProposal' : undefined
+  })
 </script>
 
 <template>
@@ -120,15 +131,17 @@ watch([proposals, web3Account], () => {
       </Block>
 
       <NoResults
-        text="createFirstProposal"
+        :text="proposalsText"
         :block="true"
         v-else-if="proposals.length < 1"
       >
-        <router-link :to="{ name: 'spaceCreate', params: { key: space.id } }">
-          <UiButton class="mt-2">
-            {{ $t('proposals.createProposal') }}
-          </UiButton>
-        </router-link>
+        <div v-if="!proposalsIs">
+          <router-link :to="{ name: 'spaceCreate', params: { key: space.id } }">
+            <UiButton class="mt-2">
+              {{ $t('proposals.createProposal') }}
+            </UiButton>
+          </router-link>
+        </div>
       </NoResults>
       <div v-else>
         <Block :slim="true" v-for="(proposal, i) in proposals" :key="i">
