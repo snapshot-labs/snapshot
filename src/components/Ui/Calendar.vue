@@ -65,7 +65,7 @@ function isSelectable(year, month, day) {
   const dateForCheck = new Date(year, month, day);
   const diff = new Date().setHours(0, 0, 0, 0) - dateForCheck;
 
-  return diff > 0 ? false : true;
+  return !(diff > 0);
 }
 </script>
 
