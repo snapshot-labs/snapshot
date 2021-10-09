@@ -4,15 +4,22 @@ import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
 
-defineProps(['block']);
+const props = defineProps({
+  block: Boolean,
+  text: {
+    type: String,
+    default: 'noResultsFound'
+  }
+});
 
-const text = computed(() => t('noResultsFound'));
+const text = computed(() => t(props.text));
 </script>
 
 <template>
   <div class="mb-3 text-center">
     <Block v-if="block" class="pt-1">
-      {{ text }}
+      <p>{{ text }}</p>
+      <slot />
     </Block>
     <div v-else>{{ text }}</div>
   </div>
