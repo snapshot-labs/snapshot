@@ -159,7 +159,7 @@ async function getDelegatesWithScore() {
     });
 
     const sortedDelegates = uniqueDelegators
-      .filter(delegate => n(delegate.score) > 0)
+      .filter(delegate => delegate.score > 0)
       .sort((a, b) => b.score - a.score);
 
     delegatesWithScore.value = sortedDelegates;
@@ -296,7 +296,7 @@ onMounted(async () => {
               class="column"
             />
             <div class="flex-auto column text-right link-color">
-              {{ _n(delegate.score) }}
+              {{ delegate.score >= 0.005 ? _n(delegate.score) : '> 0.01' }}
               {{ extentedSpaces.find(s => s.id === form.id).symbol }}
             </div>
           </div>
