@@ -23,7 +23,6 @@ import { useApp } from '@/composables/useApp';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useTxStatus } from '@/composables/useTxStatus';
 import { useExtentedSpaces } from '@/composables/useExtentedSpaces';
-import { n } from '@/helpers/utils';
 
 const abi = ['function setDelegate(bytes32 id, address delegate)'];
 
@@ -174,7 +173,8 @@ async function getDelegatesWithScore() {
 watchEffect(() => {
   addressArray.value = delegates.value
     .map(delegate => delegate.delegate)
-    .concat(delegators.value.map(delegator => delegator.delegator));
+    .concat(delegators.value.map(delegator => delegator.delegator))
+    .concat(delegatesWithScore.value.map(delegate => delegate.delegate));
 });
 
 watch(web3Account, (val, prev) => {
