@@ -23,7 +23,7 @@ export function useClient() {
       notification = ['green', t('notify.voteSuccessful')];
     else notification = ['green', t('notify.youDidIt')];
 
-    notify([notification[0], notification[1]]);
+    notify(notification);
   }
 
   async function send(space, type, payload) {
