@@ -1,0 +1,19 @@
+name: Verify PR Issue
+
+on:
+  pull_request:
+    types: [edited, synchronize, opened, reopened]
+  check_run:
+
+jobs:
+  verify_linked_issue:
+    if: github.actor != 'dependabot[bot]'
+    runs-on: ubuntu-latest
+    name: Ensure Pull Request has a linked issue.
+    steps:
+      - name: Verify Linked Issue
+        uses: hattan/verify-linked-issue-action@v1.1.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          message: 'All pull requests must be linked to an issue.'
