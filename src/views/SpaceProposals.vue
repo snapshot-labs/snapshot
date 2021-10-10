@@ -8,7 +8,7 @@ import { useProfiles } from '@/composables/useProfiles';
 import { useUnseenProposals } from '@/composables/useUnseenProposals';
 import { lsSet } from '@/helpers/utils';
 import { useWeb3 } from '@/composables/useWeb3';
-import { useApp } from '@/composables/useApp'
+import { useApp } from '@/composables/useApp';
 
 const props = defineProps({ space: Object, spaceId: String });
 
@@ -84,14 +84,12 @@ watch([proposals, web3Account], () => {
 });
 
 const { explore } = useApp();
-  const proposalsIs = computed(() => {
-    return Object.values(explore.value.spaces).find(
-      el => el.id === props.space.id
-    ).proposals;
-  });
-  const proposalsText = computed(() => {
-    return !proposalsIs.value ? 'createFirstProposal' : undefined
-  })
+const proposalsIs = computed(() => {
+  return explore.value.spaces[props.space.id].proposals;
+});
+const proposalsText = computed(() => {
+  return !proposalsIs.value ? 'createFirstProposal' : undefined;
+});
 </script>
 
 <template>

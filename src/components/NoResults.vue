@@ -1,5 +1,4 @@
 <script setup>
-import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
@@ -11,18 +10,16 @@ const props = defineProps({
     default: 'noResultsFound'
   }
 });
-
-const text = computed(() => t(props.text));
 </script>
 
 <template>
   <div class="mb-3 text-center">
     <Block v-if="block" class="pt-1">
-      <p>{{ text }}</p>
+      <p>{{ t(props.text) }}</p>
       <div>
         <slot />
       </div>
     </Block>
-    <div v-else>{{ text }}</div>
+    <div v-else>{{ t(props.text) }}</div>
   </div>
 </template>
