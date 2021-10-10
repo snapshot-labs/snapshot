@@ -14,7 +14,7 @@ export function useClient() {
     let notification;
 
     if (keyword === 'delete-proposal')
-      notification = ['red', t('notify.proposalDeleted')];
+      notification = ['green', t('notify.proposalDeleted')];
     else if (keyword === 'proposal')
       notification = ['green', t('notify.proposalCreated')];
     else if (keyword === 'settings')
