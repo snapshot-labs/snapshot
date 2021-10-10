@@ -50,6 +50,9 @@ const days = computed(() => {
 const emptyDays = computed(() => {
   return new Date(year.value, month.value, 1).getDay();
 });
+const hidePrevMonth = computed(() => {
+  return month.value > new Date().getMonth();
+});
 
 function formatDate(year, month, day) {
   let date = new Date(year, month, day);
@@ -67,19 +70,15 @@ function isSelectable(year, month, day) {
 
   return !(diff > 0);
 }
-function prevMonth() {
-  if (month.value > new Date().getMonth()) {
-    month.value--;
-  }
-}
 </script>
 
 <template>
   <div class="calendar">
     <div class="mb-2 flex">
       <a
+        v-show="hidePrevMonth"
         class="w-1/4 iconfont iconback text-left text-lg font-bold text-color"
-        @click="prevMonth"
+        @click="month--"
       />
       <h4 class="mb-3 flex-auto text-center">{{ monthName }} {{ fullYear }}</h4>
       <a
