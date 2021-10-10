@@ -39,8 +39,6 @@ watch(space, () => {
   setTitle();
 });
 
-const walletConnectType = computed(() => web3.value.walletConnectType);
-
 onMounted(() => setTitle());
 </script>
 
