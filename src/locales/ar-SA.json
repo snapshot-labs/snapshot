@@ -61,8 +61,6 @@
   "seeInExplorer": "شاهد على المستكشف",
   "learnMore": "لمعرفة المزيد",
   "logout": "تسجيل خروج",
-  "walletNotice": "المحفظة غير مدعومة",
-  "gnosisSafeWalletNotice": "أنت تحاول استخدام محفظة Gnosis الآمنة، التي لا تدعم توقيع الرسائل على Snapshot.",
   "continue": "متابعة",
   "add": "إضافة",
   "edit": "تعديل",

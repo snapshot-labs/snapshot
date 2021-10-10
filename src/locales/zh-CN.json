@@ -61,8 +61,6 @@
   "seeInExplorer": "在浏览器上查看",
   "learnMore": "了解更多",
   "logout": "退出",
-  "walletNotice": "钱包未加密",
-  "gnosisSafeWalletNotice": "您正在尝试使用 Gnosis Safe 钱包，这不支持在 Snapshot 上签名消息。",
   "continue": "继续",
   "add": "添加",
   "edit": "编辑",

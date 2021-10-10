@@ -61,8 +61,6 @@
   "seeInExplorer": "Zobacz w przeglądarce",
   "learnMore": "Dowiedz się więcej",
   "logout": "Wyloguj się",
-  "walletNotice": "Wallet not supported",
-  "gnosisSafeWalletNotice": "You are trying to use Gnosis Safe wallet, which doesn't support signing messages on Snapshot.",
   "continue": "Kontynuuj",
   "add": "Dodaj",
   "edit": "Edytuj",

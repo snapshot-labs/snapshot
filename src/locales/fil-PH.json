@@ -61,8 +61,6 @@
   "seeInExplorer": "Tignan sa explorer",
   "learnMore": "Karagdagang impormasyon",
   "logout": "I-logout",
-  "walletNotice": "Wallet not supported",
-  "gnosisSafeWalletNotice": "You are trying to use Gnosis Safe wallet, which doesn't support signing messages on Snapshot.",
   "continue": "Continue",
   "add": "Idagdag",
   "edit": "Mag-edit",

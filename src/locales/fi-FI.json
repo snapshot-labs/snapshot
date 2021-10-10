@@ -61,8 +61,6 @@
   "seeInExplorer": "Katso Explorer",
   "learnMore": "Lue lisää",
   "logout": "Kirjaudu ulos",
-  "walletNotice": "Lompakkoa ei tueta",
-  "gnosisSafeWalletNotice": "Yrität käyttää Gnosis Safe -lompakkoa, joka ei tue viestien allekirjoittamista Snapshotissa.",
   "continue": "Jatka",
   "add": "Lisää",
   "edit": "Muokkaa",

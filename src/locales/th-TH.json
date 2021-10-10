@@ -61,8 +61,6 @@
   "seeInExplorer": "ดูในการสำรวจ",
   "learnMore": "เรียนรู้เพิ่มเติม",
   "logout": "ออกจากระบบ",
-  "walletNotice": "ไม่รองรับกระเป๋านี้",
-  "gnosisSafeWalletNotice": "You are trying to use Gnosis Safe wallet, which doesn't support signing messages on Snapshot.",
   "continue": "ต่อไป",
   "add": "เพิ่ม",
   "edit": "แก้ไข",

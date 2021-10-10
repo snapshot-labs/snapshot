@@ -18,7 +18,6 @@ const { login, web3 } = useWeb3();
 const { toggleSkin, getSkinIcon } = useUserSkin();
 
 const loading = ref(false);
-const modalWalletNotice = ref(false);
 
 const space = computed(() => {
   const key = domain || route.params.key;
@@ -41,10 +40,6 @@ watch(space, () => {
 });
 
 const walletConnectType = computed(() => web3.value.walletConnectType);
-
-watch(walletConnectType, val => {
-  if (val === 'Gnosis Safe Multisig') modalWalletNotice.value = true;
-});
 
 onMounted(() => setTitle());
 </script>
@@ -129,10 +124,6 @@ onMounted(() => setTitle());
         :open="modalAccountOpen"
         @close="modalAccountOpen = false"
         @login="handleLogin"
-      />
-      <ModalWalletNotice
-        :open="modalWalletNotice"
-        @close="modalWalletNotice = false"
       />
     </teleport>
   </Sticky>
