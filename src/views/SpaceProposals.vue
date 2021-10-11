@@ -84,11 +84,12 @@ watch([proposals, web3Account], () => {
 });
 
 const { explore } = useApp();
-const proposalsIs = computed(() => {
-  return explore.value.spaces[props.space.id].proposals;
+const proposalsCount = computed(() => {
+  const count = explore.value.spaces[props.space.id].proposals;
+  return count ? count : 0;
 });
 const proposalsText = computed(() => {
-  return !proposalsIs.value ? 'createFirstProposal' : undefined;
+  return !proposalsCount.value ? 'createFirstProposal' : undefined;
 });
 </script>
 
@@ -133,7 +134,7 @@ const proposalsText = computed(() => {
         :block="true"
         v-else-if="proposals.length < 1"
       >
-        <div v-if="!proposalsIs">
+        <div v-if="!proposalsCount">
           <router-link :to="{ name: 'spaceCreate', params: { key: space.id } }">
             <UiButton class="mt-2">
               {{ $t('proposals.createProposal') }}
