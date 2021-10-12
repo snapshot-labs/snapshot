@@ -152,7 +152,7 @@
     "allSpaces": "Для всех разделов",
     "delegated": "Вам делегировали",
     "pendingTransaction": "нет ожидающих транзакций | 1 ожидающая транзакция | {count} ожидающих транзакций",
-    "topDelegates": "Top delegates"
+    "topDelegates": "Лучшие делегаты"
   },
   "proposal": {
     "castVote": "Опубликовать бюллетень",
@@ -186,12 +186,12 @@
     "network": "Сеть",
     "symbol": "Символ",
     "skin": "Тема",
-    "customDomain": "Custom domain",
+    "customDomain": "Пользовательский домен",
     "domain": "Доменное имя",
     "strategies": "Стратегия(и)",
     "hideSpace": "Скрыть раздел на главной страницы",
     "addStrategy": "Добавить стратегию",
-    "authors": "Authors",
+    "authors": "Авторы",
     "admins": "Администратор",
     "defaultTab": "Вкладка по умолчанию",
     "proposalThreshold": "Порог предложения",
