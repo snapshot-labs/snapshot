@@ -153,22 +153,22 @@ export default {
     :inputProps="{
       required: true
     }"
-    label="to (address)"
+    :label="$t('safeSnap.to')"
     @validAddress="handleAddressChanged()"
   />
 
   <UiInput
     :disabled="config.preview"
-    :error="!validValue && 'Invalid Value'"
+    :error="!validValue && $t('safeSnap.invalidValue')"
     :modelValue="value"
     @update:modelValue="handleValueChange($event)"
   >
-    <template v-slot:label>value (wei)</template>
+    <template v-slot:label>{{ $t('safeSnap.value') }}</template>
   </UiInput>
 
   <UiInput
     :disabled="config.preview"
-    :error="!validAbi && 'Invalid ABI'"
+    :error="!validAbi && $t('safeSnap.invalidAbi')"
     :modelValue="abi"
     @update:modelValue="handleABIChanged($event)"
   >

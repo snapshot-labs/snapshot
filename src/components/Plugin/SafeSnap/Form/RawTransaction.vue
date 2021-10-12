@@ -92,23 +92,23 @@ export default {
     v-model="to"
     :disabled="config.preview"
     :inputProps="{ required: false }"
-    label="to (address)"
+    :label="$t('safeSnap.to')"
   />
 
   <UiInput
     v-model="value"
     :disabled="config.preview"
-    :error="!isValidValue && 'Invalid Value'"
+    :error="!isValidValue && $t('safeSnap.invalidValue')"
   >
-    <template v-slot:label>value (wei)</template>
+    <template v-slot:label>{{ $t('safeSnap.value') }}</template>
   </UiInput>
 
   <UiInput
     v-model="data"
     :disabled="config.preview"
-    :error="!isValidData && 'Invalid Data'"
+    :error="!isValidData && $t('safeSnap.invalidData')"
   >
-    <template v-slot:label>Data</template>
+    <template v-slot:label>{{ $t('safeSnap.data') }}</template>
   </UiInput>
 </template>
 
