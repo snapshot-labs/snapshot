@@ -44,8 +44,8 @@ const loaded = ref(false);
 const loading = ref(false);
 const uploadLoading = ref(false);
 const showErrors = ref(false);
-const delayUnit = ref('d');
-const periodUnit = ref('d');
+const delayUnit = ref('h');
+const periodUnit = ref('h');
 const form = ref({
   strategies: [],
   plugins: {},
@@ -531,8 +531,8 @@ watchEffect(async () => {
                   class="input text-center pr-1 pt-[3px] ml-2"
                   required
                 >
-                  <option value="h">hours</option>
-                  <option value="d" selected>days</option>
+                  <option value="h" selected>hours</option>
+                  <option value="d">days</option>
                 </select>
               </template>
             </UiInput>
@@ -546,8 +546,8 @@ watchEffect(async () => {
                   class="input text-center pr-1 pt-[3px] ml-2"
                   required
                 >
-                  <option value="h">hours</option>
-                  <option value="d" selected>days</option>
+                  <option value="h" selected>hours</option>
+                  <option value="d">days</option>
                 </select>
               </template>
             </UiInput>
