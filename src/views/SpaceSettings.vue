@@ -228,6 +228,8 @@ watchEffect(async () => {
       space.validation = space.validation || basicValidation;
       space.filters = space.filters || {};
       space.voting = space.voting || {};
+      space.voting.delay = space.voting?.delay || undefined;
+      space.voting.period = space.voting?.period || undefined;
       currentSettings.value = clone(space);
       form.value = space;
     } catch (e) {
