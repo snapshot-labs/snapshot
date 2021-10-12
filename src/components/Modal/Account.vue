@@ -90,7 +90,8 @@ watch(open, () => (step.value = null));
             <Icon name="external-link" class="ml-1" />
           </UiButton>
         </a>
-        <a
+        <!-- need to fix here and profile.ts for switching from 3box to self.id -->
+        <!-- <a
           v-if="web3.profile?.name || web3.profile?.image"
           :href="`https://3box.io/${web3.account}/edit`"
           target="_blank"
@@ -106,7 +107,7 @@ watch(open, () => (step.value = null));
             {{ $t('create3box') }}
             <Icon name="external-link" class="ml-1" />
           </UiButton>
-        </a>
+        </a> -->
         <UiButton @click="step = 'connect'" class="button-outline w-full mb-2">
           {{ $t('connectWallet') }}
         </UiButton>
