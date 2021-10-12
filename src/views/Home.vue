@@ -1,18 +1,18 @@
 <script setup>
-import { ref, computed, watchEffect } from 'vue';
-import { useRoute } from 'vue-router';
-import orderBy from 'lodash/orderBy';
-import { useUnseenProposals } from '@/composables/useUnseenProposals';
-import { useScrollMonitor } from '@/composables/useScrollMonitor';
-import { useApp } from '@/composables/useApp';
-import { useFollowSpace } from '@/composables/useFollowSpace';
+import { computed, ref, watchEffect } from "vue";
+import { useRoute } from "vue-router";
+import orderBy from "lodash/orderBy";
+import { useUnseenProposals } from "@/composables/useUnseenProposals";
+import { useScrollMonitor } from "@/composables/useScrollMonitor";
+import { useApp } from "@/composables/useApp";
+import { useFollowSpace } from "@/composables/useFollowSpace";
 
 const route = useRoute();
 const { explore } = useApp();
 const { followingSpaces } = useFollowSpace();
 
 const orderedSpaces = computed(() => {
-  const network = route.query.network || '';
+  const network = '4689';//IOTEX NETWORK
   const q = route.query.q || '';
   const list = Object.keys(explore.value.spaces)
     .map(key => {
@@ -31,7 +31,6 @@ const orderedSpaces = computed(() => {
         return space;
       }
     });
-
   return orderBy(list, ['following', 'followers'], ['desc', 'desc']).filter(
     space => JSON.stringify(space).toLowerCase().includes(q.toLowerCase())
   );
