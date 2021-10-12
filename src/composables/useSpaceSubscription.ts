@@ -23,26 +23,24 @@ export function useSpaceSubscription(spaceId: any) {
     });
   });
 
-  async function loadSubscriptions(force = false) {
+  async function loadSubscriptions() {
     if (!web3Account.value) return;
 
     loading.value = true;
     try {
-      if (subscriptions.value === undefined || force) {
-        const spaceSubscriptions = await apolloQuery(
-          {
-            query: SUBSCRIPTIONS_QUERY,
-            variables: {
-              address: web3Account.value
-            }
-          },
-          'subscriptions'
-        );
-        if (spaceSubscriptions) {
-          subscriptions.value = spaceSubscriptions;
-        } else {
-          subscriptions.value = undefined;
-        }
+      const spaceSubscriptions = await apolloQuery(
+        {
+          query: SUBSCRIPTIONS_QUERY,
+          variables: {
+            address: web3Account.value
+          }
+        },
+        'subscriptions'
+      );
+      if (spaceSubscriptions) {
+        subscriptions.value = spaceSubscriptions;
+      } else {
+        subscriptions.value = undefined;
       }
     } catch (e) {
       console.error(e);
@@ -75,7 +73,7 @@ export function useSpaceSubscription(spaceId: any) {
           space: spaceId
         });
       }
-      await loadSubscriptions(true);
+      await loadSubscriptions();
     } catch (e) {
       console.error(e);
     } finally {
@@ -85,7 +83,9 @@ export function useSpaceSubscription(spaceId: any) {
 
   // load subscriptions when the hook is loaded on the page.
   watch(web3Account, () => {
-    loadSubscriptions();
+    if (subscriptions.value === undefined) {
+      loadSubscriptions();
+    }
   });
 
   return {
