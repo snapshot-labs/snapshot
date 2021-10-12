@@ -30,7 +30,7 @@ function emitChoice(c) {
   <Block class="mb-4" :title="$t('proposal.castVote')">
     <div class="mb-3">
       <VotingSingleChoice
-        v-if="proposal.type === 'single-choice'"
+        v-if="proposal.type === 'single-choice' || proposal.type === 'basic'"
         :proposal="proposal"
         @selectChoice="emitChoice"
       />

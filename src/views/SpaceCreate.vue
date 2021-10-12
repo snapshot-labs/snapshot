@@ -191,6 +191,19 @@ watchEffect(async () => {
     loadingSnapshot.value = false;
   }
 });
+
+watchEffect(() => {
+  if (form.value.type === 'basic') {
+    choices.value = [
+      { key: 1, text: 'For' },
+      { key: 2, text: 'Against' },
+      { key: 3, text: 'Abstain' }
+    ];
+  } else {
+    choices.value = [];
+    addChoice(2);
+  }
+});
 </script>
 
 <template>
@@ -256,6 +269,7 @@ watchEffect(async () => {
           <draggable
             v-model="choices"
             :component-data="{ name: 'list' }"
+            :disabled="form.type === 'basic'"
             item-key="id"
           >
             <template #item="{ element, index }">
@@ -263,11 +277,15 @@ watchEffect(async () => {
                 v-model="element.text"
                 maxlength="32"
                 additionalClass="text-center"
+                :disabled="form.type === 'basic'"
                 ><template v-slot:label
                   ><span class="text-skin-link">{{ index + 1 }}</span></template
                 >
                 <template v-slot:info
-                  ><span @click="removeChoice(index)">
+                  ><span
+                    v-if="form.type !== 'basic'"
+                    @click="removeChoice(index)"
+                  >
                     <Icon name="close" size="12" />
                   </span>
                 </template>
@@ -275,7 +293,11 @@ watchEffect(async () => {
             </template>
           </draggable>
         </div>
-        <UiButton @click="addChoice(1)" class="block w-full">
+        <UiButton
+          v-if="form.type !== 'basic'"
+          @click="addChoice(1)"
+          class="block w-full"
+        >
           {{ $t('create.addChoice') }}
         </UiButton>
       </Block>
