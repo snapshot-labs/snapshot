@@ -31,7 +31,7 @@
   "network": "Сеть",
   "networks": "Сети",
   "skins": "Темы",
-  "members": "No members | {count} member | {count} members",
+  "members": "Нет участников | {count} участников | {count} участников",
   "editStrategy": "Редактировать стратегию",
   "invalidProposals": "Неверные параметры опроса",
   "account": "Учетная запись",
@@ -86,7 +86,7 @@
   "marketSymbol": "Рынок {0}",
   "twoChoicesRequired": "Для этого плагина необходимо выбрать два варианта.",
   "noResultsFound": "Упс, мы не можем найти результаты",
-  "noSpacesJoined": "Oops, you haven't joined any spaces yet",
+  "noSpacesJoined": "К сожалению, вы еще не присоединились ни к одному пространству",
   "addFavorites": "Добавить закладки",
   "createdBy": "От: {0}",
   "startToEnd": "с {0} по {1}",
@@ -106,13 +106,13 @@
   "addresses": "Адреса",
   "networkErrorPlayground": "Сетевая ошибка - откройте консоль браузера для получения дополнительной информации",
   "upload": "Загрузить",
-  "join": "Join",
-  "joined": "Joined",
-  "leave": "Leave",
+  "join": "Присоединиться",
+  "joined": "Присоединился",
+  "leave": "Покинуть",
   "copyLink": "Копировать ссылку",
   "duplicateProposal": "Повторяющееся предложение",
-  "joinedSpaces": "Joined spaces",
-  "joinSpaces": "Join spaces",
+  "joinedSpaces": "Вступившие сообщества",
+  "joinSpaces": "Вступить в сообщества",
   "errors": {
     "required": "Обязательное поле",
     "minLength": "Минимальная длина {0}",
@@ -136,7 +136,7 @@
     "snapshotBlock": "Номер блока среза",
     "validationWarning": {
       "basic": {
-        "member": "You need to be an author of the space in order to submit a proposal.",
+        "member": "Вы должны быть автором пространства для того, чтобы представить предложение.",
         "minScore": "Вам нужно иметь минимум {0} {1} для того, чтобы отправить предложение."
       },
       "customValidation": "Вам необходимо пройти проверку предложения, чтобы подать предложение"
@@ -151,7 +151,7 @@
     "delegations": "Вы делегировали",
     "allSpaces": "Для всех разделов",
     "delegated": "Вам делегировали",
-    "pendingTransaction": "no pending transaction | 1 pending transaction | {count} pending transactions",
+    "pendingTransaction": "нет ожидающих транзакций | 1 ожидающая транзакция | {count} ожидающих транзакций",
     "topDelegates": "Top delegates"
   },
   "proposal": {
