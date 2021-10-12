@@ -231,6 +231,7 @@ watchEffect(async () => {
       space.voting = space.voting || {};
       space.voting.delay = space.voting?.delay || undefined;
       space.voting.period = space.voting?.period || undefined;
+      space.voting.type = space.voting?.type || undefined;
       currentSettings.value = clone(space);
       form.value = space;
     } catch (e) {
@@ -552,12 +553,23 @@ watchEffect(async () => {
                 </select>
               </template>
             </UiInput>
-            <UiInput @click="modalVotingTypeOpen = true" class="cursor-pointer">
+            <UiInput>
               <template v-slot:label>
                 {{ $t('settings.type') }}
               </template>
               <template v-slot:selected>
-                {{ form.voting?.type ?? $t('settings.anyType') }}
+                <div @click="modalVotingTypeOpen = true" class="w-full">
+                  {{ form.voting?.type ?? $t('settings.anyType') }}
+                </div>
+              </template>
+              <template v-slot:info>
+                <a
+                  v-if="form.voting?.type"
+                  @click="delete form.voting.type"
+                  class="flex items-center px-2 -mr-2"
+                >
+                  <Icon name="close" size="12" />
+                </a>
               </template>
             </UiInput>
           </Block>
