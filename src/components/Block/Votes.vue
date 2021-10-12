@@ -1,8 +1,8 @@
 <script setup>
-import { ref, computed, watch, toRefs, defineProps } from 'vue';
-import { useStore } from 'vuex';
+import { ref, computed, watch, toRefs } from 'vue';
 import { getChoiceString } from '@/helpers/utils';
 import { useProfiles } from '@/composables/useProfiles';
+import { useWeb3 } from '@/composables/useWeb3';
 
 const props = defineProps({
   space: Object,
@@ -12,17 +12,16 @@ const props = defineProps({
   strategies: Object
 });
 
-const store = useStore();
-
 const format = getChoiceString;
 
 const { votes } = toRefs(props);
+const { web3 } = useWeb3();
 
 const showAllVotes = ref(false);
 const authorIpfsHash = ref('');
 const modalReceiptOpen = ref(false);
 
-const web3Account = computed(() => store.state.web3.account);
+const web3Account = computed(() => web3.value.account);
 
 const visibleVotes = computed(() =>
   showAllVotes.value ? sortVotesUserFirst() : sortVotesUserFirst().slice(0, 10)
@@ -75,7 +74,7 @@ watch(votes, () => {
       v-for="(vote, i) in visibleVotes"
       :key="i"
       :style="i === 0 && 'border: 0 !important;'"
-      class="px-4 py-3 border-top d-flex"
+      class="px-4 py-3 border-t flex"
     >
       <User
         :profile="profiles[vote.voter]"
@@ -85,12 +84,13 @@ watch(votes, () => {
       />
       <div class="flex-auto text-center link-color">
         <span
-          :aria-label="format(proposal, vote.choice)"
-          class="
-            text-center
-            link-color
-            tooltipped tooltipped-multiline tooltipped-n
-          "
+          class="text-center link-color"
+          v-tippy="{
+            content:
+              format(proposal, vote.choice).length > 24
+                ? format(proposal, vote.choice)
+                : null
+          }"
         >
           {{ _shorten(format(proposal, vote.choice), 24) }}
         </span>
@@ -98,12 +98,11 @@ watch(votes, () => {
 
       <div class="column text-right link-color">
         <span
-          class="tooltipped tooltipped-multiline tooltipped-n"
-          :aria-label="
-            vote.scores
+          v-tippy="{
+            content: vote.scores
               .map((score, index) => `${_n(score)} ${titles[index]}`)
               .join(' + ')
-          "
+          }"
         >
           {{ `${_n(vote.balance)} ${_shorten(space.symbol, 'symbol')}` }}
         </span>
@@ -123,11 +122,12 @@ watch(votes, () => {
       class="
         px-4
         py-3
-        border-top
+        border-t
         text-center
-        d-block
+        block
         header-bg
-        rounded-bottom-0 rounded-md-bottom-2
+        rounded-b-none
+        md:rounded-b-md
       "
     >
       {{ $t('seeMore') }}

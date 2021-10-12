@@ -1,6 +1,5 @@
 <script setup>
 import { ref, computed, watch, onMounted, watchEffect } from 'vue';
-import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { useProfiles } from '@/composables/useProfiles';
@@ -8,45 +7,64 @@ import { useNotifications } from '@/composables/useNotifications';
 import { isAddress } from '@ethersproject/address';
 import { formatBytes32String } from '@ethersproject/strings';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
-import { sendTransaction } from '@snapshot-labs/snapshot.js/src/utils';
+import {
+  sendTransaction,
+  getScores
+} from '@snapshot-labs/snapshot.js/src/utils';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import {
   getDelegates,
   getDelegators,
+  getDelegatesBySpace,
   contractAddress
 } from '@/helpers/delegation';
 import { sleep } from '@/helpers/utils';
+import { useApp } from '@/composables/useApp';
+import { useWeb3 } from '@/composables/useWeb3';
+import { useTxStatus } from '@/composables/useTxStatus';
+import { useExtentedSpaces } from '@/composables/useExtentedSpaces';
+import { n } from '@/helpers/utils';
 
 const abi = ['function setDelegate(bytes32 id, address delegate)'];
 
 const route = useRoute();
-const store = useStore();
 const { t } = useI18n();
 const auth = getInstance();
 const { notify } = useNotifications();
+const { explore } = useApp();
+const { web3 } = useWeb3();
+const { pendingCount } = useTxStatus();
+const { loadExtentedSpaces, extentedSpaces, spaceLoading } =
+  useExtentedSpaces();
 
 const modalOpen = ref(false);
 const currentId = ref('');
 const currentDelegate = ref('');
 const loaded = ref(false);
 const loading = ref(false);
+const delegatesLoading = ref(false);
 const delegates = ref([]);
+const delegatesWithScore = ref([]);
 const delegators = ref([]);
 const form = ref({
   address: route.params.to || '',
   id: route.params.key || ''
 });
 
-const web3Account = computed(() => store.state.web3.account);
-const networkKey = computed(() => store.state.web3.network.key);
+const { profiles, addressArray } = useProfiles();
+
+const web3Account = computed(() => web3.value.account);
+const networkKey = computed(() => web3.value.network.key);
+const space = computed(() => explore.value.spaces[form.value.id]);
 
 const isValid = computed(() => {
   const address = form.value.address;
   return (
     auth.isAuthenticated.value &&
+    web3Account.value &&
     (address.includes('.eth') || isAddress(address)) &&
     address.toLowerCase() !== web3Account.value.toLowerCase() &&
-    (form.value.id === '' || store.state.app.spaces[form.value.id])
+    (form.value.id === '' || explore.value.spaces[form.value.id])
   );
 });
 
@@ -74,12 +92,16 @@ async function handleSubmit() {
       'setDelegate',
       [formatBytes32String(form.value.id), address]
     );
+    pendingCount.value++;
+    loading.value = false;
     const receipt = await tx.wait();
     console.log('Receipt', receipt);
     await sleep(3e3);
     notify(t('notify.youDidIt'));
+    pendingCount.value--;
     await load();
   } catch (e) {
+    pendingCount.value--;
     console.log(e);
   }
   loading.value = false;
@@ -91,7 +113,63 @@ function clearDelegate(id, delegate) {
   modalOpen.value = true;
 }
 
-const { profiles, addressArray } = useProfiles();
+async function getDelegatesWithScore() {
+  const delegationStrategy = extentedSpaces.value
+    .find(s => s.id === form.value.id)
+    .strategies.filter(strategy => strategy.name === 'delegation');
+  if (delegationStrategy.length === 0) return;
+
+  delegatesLoading.value = true;
+  try {
+    const delegationsRes = await Promise.all([
+      getDelegatesBySpace(space.value.network, ''),
+      getDelegatesBySpace(space.value.network, space.value.id)
+    ]);
+
+    const delegations = [
+      ...delegationsRes[0].delegations,
+      ...delegationsRes[1].delegations
+    ];
+
+    const uniqueDelegators = Array.from(
+      new Set(delegations.map(d => d.delegate))
+    ).map(delegate => {
+      return delegations.find(a => a.delegate === delegate);
+    });
+
+    const delegatesAddresses = uniqueDelegators.map(d => d.delegate);
+
+    const provider = getProvider(space.value.network);
+    const scores = await getScores(
+      space.value.id,
+      delegationStrategy,
+      space.value.network,
+      provider,
+      delegatesAddresses,
+      'latest'
+    );
+
+    uniqueDelegators.forEach(delegate => {
+      const delegationScore = scores[0];
+      Object.entries(delegationScore).forEach(([address, score]) => {
+        if (address === delegate.delegate) {
+          delegate.score = score;
+        }
+      });
+    });
+
+    const sortedDelegates = uniqueDelegators
+      .filter(delegate => n(delegate.score) > 0)
+      .sort((a, b) => b.score - a.score);
+
+    delegatesWithScore.value = sortedDelegates;
+    delegatesLoading.value = false;
+  } catch (e) {
+    delegatesLoading.value = false;
+    console.log(e);
+    return e;
+  }
+}
 
 watchEffect(() => {
   addressArray.value = delegates.value
@@ -107,6 +185,14 @@ watch(networkKey, (val, prev) => {
   if (val !== prev) load();
 });
 
+watchEffect(async () => {
+  if (explore.value.spaces[form.value.id]) {
+    await loadExtentedSpaces([form.value.id]);
+    if (extentedSpaces.value.some(s => s.id === form.value.id))
+      getDelegatesWithScore();
+  } else delegatesWithScore.value = [];
+});
+
 onMounted(async () => {
   await load();
   loaded.value = true;
@@ -116,9 +202,9 @@ onMounted(async () => {
 <template>
   <Layout v-bind="$attrs">
     <template #content-left>
-      <div class="px-4 px-md-0 mb-3">
-        <router-link :to="{ name: 'home' }" class="text-color">
-          <Icon name="back" size="22" class="v-align-middle" />
+      <div class="px-4 md:px-0 mb-3">
+        <router-link :to="{ path: '/' }" class="text-color">
+          <Icon name="back" size="22" class="!align-middle" />
           {{ $t('backToHome') }}
         </router-link>
         <h1 v-if="loaded" v-text="$t('delegate.header')" />
@@ -148,7 +234,7 @@ onMounted(async () => {
             v-for="(delegate, i) in delegates"
             :key="i"
             :style="i === 0 && 'border: 0 !important;'"
-            class="px-4 py-3 border-top d-flex"
+            class="px-4 py-3 border-t flex"
           >
             <User
               :address="delegate.delegate"
@@ -161,7 +247,7 @@ onMounted(async () => {
             />
             <a
               @click="clearDelegate(delegate.space, delegate.delegate)"
-              class="px-2 mr-n2 ml-2"
+              class="px-2 -mr-2 ml-2"
             >
               <Icon name="close" size="12" class="mb-1" />
             </a>
@@ -176,7 +262,7 @@ onMounted(async () => {
             v-for="(delegator, i) in delegators"
             :key="i"
             :style="i === 0 && 'border: 0 !important;'"
-            class="px-4 py-3 border-top d-flex"
+            class="px-4 py-3 border-t flex"
           >
             <User
               :address="delegator.delegator"
@@ -189,6 +275,32 @@ onMounted(async () => {
             />
           </div>
         </Block>
+        <Block
+          v-if="
+            delegatesLoading || spaceLoading || delegatesWithScore.length > 0
+          "
+          :title="$t('delegate.topDelegates')"
+          :slim="true"
+          :loading="delegatesLoading || spaceLoading"
+        >
+          <div
+            v-for="(delegate, i) in delegatesWithScore"
+            :key="i"
+            :style="i === 0 && 'border: 0 !important;'"
+            class="px-4 py-3 border-t flex"
+          >
+            <User
+              :profile="profiles[delegate.delegate]"
+              :address="delegate.delegate"
+              :space="{ network: web3.network.key }"
+              class="column"
+            />
+            <div class="flex-auto column text-right link-color">
+              {{ _n(delegate.score) }}
+              {{ extentedSpaces.find(s => s.id === form.id).symbol }}
+            </div>
+          </div>
+        </Block>
       </template>
       <PageLoading v-else />
     </template>
@@ -198,7 +310,7 @@ onMounted(async () => {
           @click="handleSubmit"
           :disabled="!isValid || !$auth.isAuthenticated.value"
           :loading="loading"
-          class="d-block width-full button--submit"
+          class="block w-full button--submit"
         >
           {{ $t('confirm') }}
         </UiButton>

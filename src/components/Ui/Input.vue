@@ -1,12 +1,16 @@
 <script setup>
-import { defineProps, defineEmits } from 'vue';
-
 const props = defineProps({
   modelValue: [String, Number],
   placeholder: String,
   error: [String, Boolean],
   number: Boolean,
-  disabled: Boolean
+  disabled: Boolean,
+  maxlength: [Number, String],
+  additionalClass: String,
+  required: {
+    type: Boolean,
+    default: true
+  }
 });
 
 const emit = defineEmits(['update:modelValue']);
@@ -21,9 +25,23 @@ function handleInput(e) {
 </script>
 
 <template>
-  <UiButton
-    class="text-left width-full mb-2 d-flex px-3"
-    :class="{ 'border-red': error }"
+  <div
+    class="
+      border border-skin-border
+      bg-transparent
+      text-skin-link
+      rounded-3xl
+      outline-none
+      leading-[46px]
+      text-left
+      w-full
+      mb-2
+      flex
+      px-3
+      focus-within:border-skin-link
+      hover:border-skin-link
+    "
+    :class="{ '!border-red': error }"
   >
     <div class="text-color mr-2">
       <slot name="label" />
@@ -36,15 +54,19 @@ function handleInput(e) {
       :placeholder="placeholder"
       :type="number ? 'number' : 'text'"
       :disabled="disabled"
-      class="input flex-auto"
-      required
+      :class="[`input flex-auto`, additionalClass]"
+      :required="required"
+      :maxlength="maxlength"
     />
     <slot name="info" />
     <span
       v-if="error"
-      :aria-label="error"
-      class="float-right link-color tooltipped tooltipped-n"
-      ><Icon name="warning" class="text-red p-1 d-block pt-2 mt-1 mr-n1"
-    /></span>
-  </UiButton>
+      v-tippy="{
+        content: error
+      }"
+      class="float-right link-color"
+    >
+      <Icon name="warning" class="!text-red p-1 block pt-2 mt-[6px] -mr-1" />
+    </span>
+  </div>
 </template>

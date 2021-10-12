@@ -6,7 +6,7 @@ export default {
 
 <template>
   <Block>
-    <div class="d-flex flex-items-baseline">
+    <div class="flex items-baseline">
       <h3>
         {{ strategy.key }}
       </h3>
@@ -16,6 +16,6 @@ export default {
       <Icon name="github" class="mr-1" />
       {{ strategy.author }}
     </div>
-    <div>{{ $tc('inSpaces', [_n(strategy.spaces.length)]) }}</div>
+    <div>{{ $tc('inSpaces', [_n(strategy.spaces)]) }}</div>
   </Block>
 </template>

@@ -1,36 +1,37 @@
 <script setup>
 import { ref, computed, watch, onMounted } from 'vue';
-import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
 import { useModal } from '@/composables/useModal';
 import { useDomain } from '@/composables/useDomain';
-import { useMediaQuery } from '@/composables/useMediaQuery';
+import { useApp } from '@/composables/useApp';
+import { useWeb3 } from '@/composables/useWeb3';
+import { useTxStatus } from '@/composables/useTxStatus';
+import { useUserSkin } from '@/composables/useUserSkin';
 
+const { pendingCount } = useTxStatus();
 const { modalAccountOpen } = useModal();
 const { env, domain } = useDomain();
 const route = useRoute();
-const store = useStore();
+const { explore } = useApp();
+const { login, web3 } = useWeb3();
+const { toggleSkin, getSkinIcon } = useUserSkin();
 
 const loading = ref(false);
-const modalAboutOpen = ref(false);
-const modalLangOpen = ref(false);
 const modalWalletNotice = ref(false);
 
 const space = computed(() => {
   const key = domain || route.params.key;
-  return store.state.app.spaces[key] ? store.state.app.spaces[key] : false;
+  return explore.value.space?.[key];
 });
 
-const walletConnectType = computed(() => store.state.web3.walletConnectType);
-
 function setTitle() {
-  document.title = space.value.name ? space.value.name : 'Snapshot';
+  document.title = space.value?.name ?? 'Snapshot';
 }
 
 async function handleLogin(connector) {
   modalAccountOpen.value = false;
   loading.value = true;
-  await store.dispatch('login', connector);
+  await login(connector);
   loading.value = false;
 }
 
@@ -38,19 +39,12 @@ watch(space, () => {
   setTitle();
 });
 
+const walletConnectType = computed(() => web3.value.walletConnectType);
+
 watch(walletConnectType, val => {
   if (val === 'Gnosis Safe Multisig') modalWalletNotice.value = true;
 });
-const { isXSmallScreen } = useMediaQuery();
-const titleStyle = isXSmallScreen
-  ? {
-    paddingTop: '1.5rem',
-    fontSize: '1.2rem'
-  }
-  : {
-    paddingTop: '3rem',
-    fontSize: '1.5rem'
-  };
+
 onMounted(() => setTitle());
 </script>
 
@@ -63,34 +57,32 @@ onMounted(() => setTitle());
     >
       {{ $t('demoSite') }}
     </div>
-    <nav id="topnav" class="border-bottom width-full bg-black">
+    <nav id="topnav" class="border-b w-full bg-black">
       <Container>
-        <div class="d-flex flex-items-center" style="height: 78px">
-          <div class="flex-auto d-flex flex-items-center">
-            <p
+        <div class="flex items-center" style="height: 78px">
+          <div class="flex-auto flex items-center">
+            <h3
               class="d-inline-block d-flex flex-items-center"
-              style="color: black; line-height: 20px"
-              :style="titleStyle"
+              style="line-height: 20px"
             >
               IoTeX Governance Portal<br />
-              <span style="color: gray; font-size: 1.125rem">
-                powered by
+              <span style="color: gray; font-size: 18px"
+                >powered by
                 <a
                   href="https://snapshot.org/"
                   target="_blank"
                   style="color: gray"
-                >
-                  snapshot
-                </a>
-              </span>
-            </p>
+                  >snapshot</a
+                ></span
+              >
+            </h3>
           </div>
-          <div :key="web3.account">
+          <div :key="web3.account" class="flex">
             <template v-if="$auth.isAuthenticated.value">
               <UiButton
                 @click="modalAccountOpen = true"
-                class="button-outline"
-                :loading="app.authLoading"
+                :loading="web3.authLoading"
+                class="flex items-center float-left"
               >
                 <UiAvatar
                   :imgsrc="
@@ -98,49 +90,52 @@ onMounted(() => setTitle());
                   "
                   :address="web3.account"
                   size="16"
-                  class="mr-n1 mr-sm-2 mr-md-2 mr-lg-2 mr-xl-2 ml-n1"
+                  class="-mr-1 sm:mr-2 md:mr-2 lg:mr-2 xl:mr-2 -ml-1"
                 />
                 <span
                   v-if="web3.profile?.name || web3.profile?.ens"
                   v-text="web3.profile.name || web3.profile.ens"
-                  class="hide-sm"
+                  class="hidden sm:block"
                 />
-                <span v-else v-text="_shorten(web3.account)" class="hide-sm" />
+                <span
+                  v-else
+                  v-text="_shorten(web3.account)"
+                  class="hidden sm:block"
+                />
               </UiButton>
             </template>
             <UiButton
               v-if="!$auth.isAuthenticated.value"
               @click="modalAccountOpen = true"
-              :loading="loading || app.authLoading"
+              :loading="loading || web3.authLoading"
             >
-              <span class="hide-sm" v-text="$t('connectWallet')" />
+              <span class="hidden sm:block" v-text="$t('connectWallet')" />
               <Icon
                 name="login"
                 size="20"
-                class="hide-md hide-lg hide-xl ml-n2 mr-n2 v-align-text-bottom"
+                class="sm:hidden -ml-2 -mr-2 block align-text-bottom"
               />
             </UiButton>
-            <UiButton @click="modalAboutOpen = true" class="ml-2">
-              <span v-text="'?'" class="ml-n1 mr-n1" />
-            </UiButton>
+            <UiSidebarButton
+              v-if="!domain"
+              @click="toggleSkin"
+              class="float-right ml-2"
+            >
+              <Icon size="20" class="link-color" :name="getSkinIcon()" />
+            </UiSidebarButton>
           </div>
         </div>
       </Container>
     </nav>
+    <div class="bg-blue text-white text-center py-2" v-if="pendingCount > 0">
+      <UiLoading :fill-white="true" class="mr-2" />
+      {{ $tc('delegate.pendingTransaction', pendingCount) }}
+    </div>
     <teleport to="#modal">
       <ModalAccount
         :open="modalAccountOpen"
         @close="modalAccountOpen = false"
         @login="handleLogin"
-      />
-      <ModalAbout
-        :open="modalAboutOpen"
-        @close="modalAboutOpen = false"
-        @openLang="modalLangOpen = true"
-      />
-      <ModalSelectLanguage
-        :open="modalLangOpen"
-        @close="modalLangOpen = false"
       />
       <ModalWalletNotice
         :open="modalWalletNotice"

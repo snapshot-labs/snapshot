@@ -38,27 +38,42 @@ export default {
   },
   computed: {
     title() {
+      if (this.open) {
+        return '';
+      }
+
       if (this.modelValue) {
         try {
-          const addr = this._shorten(this.modelValue.to);
+          const recipientAddr = this._shorten(this.modelValue.recipient);
+          const toAddr = this._shorten(this.modelValue.to);
           const type = this.modelValue.type || this.type;
           switch (type) {
             case 'contractInteraction':
-              return `${getAbiFirstFunctionName(this.modelValue.abi)}() - ${
-                this.modelValue.value
-              } wei to ${addr}`;
+              return this.$t('safeSnap.transactionLabels.contractInteraction', {
+                functionName: getAbiFirstFunctionName(this.modelValue.abi),
+                amount: this.modelValue.value,
+                address: toAddr
+              });
             case 'transferFunds':
-              return `Transfer ${formatUnits(
-                this.modelValue.amount,
-                this.modelValue.token.decimals
-              )} ${this.modelValue.token.symbol} to ${addr}`;
+              return this.$t('safeSnap.transactionLabels.transferFunds', {
+                amount: formatUnits(
+                  this.modelValue.amount,
+                  this.modelValue.token.decimals
+                ),
+                tokenSymbol: this.modelValue.token.symbol,
+                address: recipientAddr
+              });
             case 'transferNFT':
-              return `Send ${this.modelValue.collectable.name} #${this._shorten(
-                this.modelValue.collectable.id,
-                10
-              )} to ${addr}`;
+              return this.$t('safeSnap.transactionLabels.transferNFT', {
+                name: this.modelValue.collectable.name,
+                id: this._shorten(this.modelValue.collectable.id, 10),
+                address: recipientAddr
+              });
             case 'raw':
-              return `Send ${this.modelValue.value} wei to ${addr}`;
+              return this.$t('safeSnap.transactionLabels.transferNFT', {
+                amount: this.modelValue.value,
+                address: recipientAddr
+              });
           }
         } catch (error) {
           console.log('could not determine title', error);
@@ -93,11 +108,13 @@ export default {
       :modelValue="type"
       @update:modelValue="handleTypeChange($event)"
     >
-      <template v-slot:label>type</template>
-      <option value="transferFunds">Transfer Funds</option>
-      <option value="transferNFT">Transfer NFT</option>
-      <option value="contractInteraction">Contract Interaction</option>
-      <option value="raw">Raw Transaction</option>
+      <template v-slot:label>{{ $t('safeSnap.type') }}</template>
+      <option value="transferFunds">{{ $t('safeSnap.transferFunds') }}</option>
+      <option value="transferNFT">{{ $t('safeSnap.transferNFT') }}</option>
+      <option value="contractInteraction">
+        {{ $t('safeSnap.contractInteraction') }}
+      </option>
+      <option value="raw">{{ $t('safeSnap.rawTransaction') }}</option>
     </UiSelect>
 
     <PluginSafeSnapFormContractInteraction

@@ -1,14 +1,20 @@
 <script setup>
-import { defineProps } from 'vue';
-
 defineProps({
   loading: Boolean,
-  type: String
+  type: String,
+  disable: {
+    type: Boolean,
+    default: true
+  }
 });
 </script>
 
 <template>
-  <button :type="type || 'button'" class="button" :disabled="loading">
+  <button
+    :type="type || 'button'"
+    class="button px-[24px] focus-within:border-skin-link"
+    :disabled="disable ? loading : false"
+  >
     <UiLoading v-if="loading" />
     <slot v-else />
   </button>
@@ -20,8 +26,9 @@ defineProps({
   background-color: transparent;
   color: var(--link-color);
   border-radius: 23px;
-  padding: 12px 24px;
   outline: none;
+  line-height: 46px;
+  height: 46px;
   font-size: 18px;
 
   &.button--submit {

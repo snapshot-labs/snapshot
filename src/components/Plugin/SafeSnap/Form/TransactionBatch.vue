@@ -1,9 +1,14 @@
 <script>
 import { clone } from '@/helpers/utils';
+import { useSafesnap } from '@/composables/useSafesnap';
 
 export default {
   props: ['modelValue', 'index', 'nonce', 'config'],
   emits: ['update:modelValue', 'remove'],
+  setup() {
+    const { safesnap } = useSafesnap();
+    return { safesnap };
+  },
   data() {
     return {
       open: true,
@@ -12,7 +17,8 @@ export default {
   },
   mounted() {
     if (this.modelValue) this.transactions = clone(this.modelValue);
-    if (!this.transactions.length) this.addTransaction();
+    if (!this.config.preview && !this.transactions.length)
+      this.addTransaction();
   },
   methods: {
     addTransaction() {
@@ -35,10 +41,11 @@ export default {
 
 <template>
   <UiCollapsible
+    borderless
     :hideRemove="config.preview"
     :number="index + 1"
     :open="open"
-    :title="`Batch #${index + 1}`"
+    :title="`${$t('safeSnap.batch')} (${transactions.length})`"
     @remove="$emit('remove')"
     @toggle="open = !open"
   >
@@ -56,8 +63,18 @@ export default {
         @update:modelValue="updateTransaction(index, $event)"
       />
     </div>
+
+    <Block
+      v-if="safesnap.batchError && index === safesnap.batchError.num"
+      class="mt-4"
+      style="border-color: red !important"
+    >
+      <Icon name="warning" class="mr-2 !text-red" />
+      <span class="!text-red"> Error: {{ safesnap.batchError.message }}</span>
+    </Block>
+
     <UiButton v-if="!config.preview" @click="addTransaction">
-      Add Transaction
+      {{ $t('safeSnap.addTransaction') }}
     </UiButton>
   </UiCollapsible>
 </template>

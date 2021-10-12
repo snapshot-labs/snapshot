@@ -59,41 +59,41 @@ export default {
         @click="addAction"
         :disabled="!canAddAction"
         v-if="!input || !input[`choice${choice}`]"
-        class="width-full mb-2"
+        class="w-full mb-2"
       >
         {{ $t('addAction') }}
       </UiButton>
       <div v-else>
-        <UiButton class="width-full mb-2">
+        <UiButton class="w-full mb-2">
           <input
             v-model="input[`choice${choice}`].actions[0].to"
-            class="input width-full text-center"
+            class="input w-full text-center"
             :placeholder="$t('targetAddress')"
             required
           />
         </UiButton>
-        <UiButton class="width-full mb-2">
+        <UiButton class="w-full mb-2">
           <input
             v-model="input[`choice${choice}`].actions[0].value"
-            class="input width-full text-center"
+            class="input w-full text-center"
             :placeholder="$t('value')"
             required
           />
         </UiButton>
-        <UiButton class="width-full mb-2">
+        <UiButton class="w-full mb-2">
           <input
             v-model="input[`choice${choice}`].actions[0].data"
-            class="input width-full text-center"
+            class="input w-full text-center"
             :placeholder="$t('data')"
             required
           />
         </UiButton>
-        <UiButton @click="removeAction" class="width-full mb-2">
+        <UiButton @click="removeAction" class="w-full mb-2">
           {{ $t('removeAction') }}
         </UiButton>
       </div>
     </div>
-    <UiButton @click="handleSubmit" class="button--submit width-full">
+    <UiButton @click="handleSubmit" class="button--submit w-full">
       {{ choice === proposal.choices.length ? $t('confirm') : $t('next') }}
     </UiButton>
   </form>

@@ -1,7 +1,6 @@
 <script setup>
 import { ref, computed, watch, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { useStore } from 'vuex';
 import { getProposal, getResults, getPower } from '@/helpers/snapshot';
 import { useModal } from '@/composables/useModal';
 import { useTerms } from '@/composables/useTerms';
@@ -9,18 +8,26 @@ import { useProfiles } from '@/composables/useProfiles';
 import { useDomain } from '@/composables/useDomain';
 import { useSharing } from '@/composables/useSharing';
 import { useI18n } from 'vue-i18n';
+import { useWeb3 } from '@/composables/useWeb3';
+import { useClient } from '@/composables/useClient';
+
+const props = defineProps({
+  spaceId: String,
+  space: Object,
+  spaceLoading: Boolean
+});
 
 const route = useRoute();
 const router = useRouter();
-const store = useStore();
-const key = route.params.key;
 const id = route.params.id;
 const { domain } = useDomain();
 const { t } = useI18n();
+const { web3 } = useWeb3();
+const { send } = useClient();
 
 const modalOpen = ref(false);
 const selectedChoices = ref(null);
-const loaded = ref(false);
+const loading = ref(true);
 const loadedResults = ref(false);
 const proposal = ref({});
 const votes = ref([]);
@@ -29,16 +36,17 @@ const totalScore = ref(0);
 const scores = ref([]);
 const dropdownLoading = ref(false);
 const modalStrategiesOpen = ref(false);
+const proposalObj = ref({});
 
-const space = computed(() => store.state.app.spaces[key]);
-const web3Account = computed(() => store.state.web3.account);
+const web3Account = computed(() => web3.value.account);
 const isCreator = computed(() => proposal.value.author === web3Account.value);
+const loaded = computed(() => !props.spaceLoading && !loading.value);
 const isAdmin = computed(() => {
-  const admins = (space.value.admins || []).map(admin => admin.toLowerCase());
+  const admins = (props.space.admins || []).map(admin => admin.toLowerCase());
   return admins.includes(web3Account.value?.toLowerCase());
 });
 const strategies = computed(
-  () => proposal.value.strategies ?? space.value.strategies
+  () => proposal.value.strategies ?? props.space.strategies
 );
 const symbols = computed(() =>
   strategies.value.map(strategy => strategy.params.symbol)
@@ -50,25 +58,42 @@ const threeDotItems = computed(() => {
   return items;
 });
 
+const safeSnapInput = computed({
+  get: () => proposal.value?.plugins?.safeSnap,
+  set: value => (proposal.value.plugins.safeSnap = value)
+});
+
 const { modalAccountOpen } = useModal();
-const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(key);
+const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(props.spaceId);
 
 function clickVote() {
-  !store.state.web3.account
+  !web3.value.account
     ? (modalAccountOpen.value = true)
-    : !termsAccepted.value && space.value.terms
+    : !termsAccepted.value && props.space.terms
     ? (modalTermsOpen.value = true)
     : (modalOpen.value = true);
 }
 
 async function loadProposal() {
-  const proposalObj = await getProposal(id);
-  proposal.value = proposalObj.proposal;
-  loaded.value = true;
+  proposalObj.value = await getProposal(id);
+  proposal.value = proposalObj.value.proposal;
+  // Redirect to proposal spaceId if it doesn't match route key
+  if (
+    route.name === 'spaceProposal' &&
+    props.spaceId !== proposal.value.space.id
+  ) {
+    router.push({ name: 'error-404' });
+  }
+
+  loading.value = false;
+  if (loaded.value) loadResults();
+}
+
+async function loadResults() {
   const resultsObj = await getResults(
-    space.value,
-    proposalObj.proposal,
-    proposalObj.votes
+    props.space,
+    proposalObj.value.proposal,
+    proposalObj.value.votes
   );
   results.value = resultsObj.results;
   votes.value = resultsObj.votes;
@@ -78,7 +103,7 @@ async function loadProposal() {
 async function loadPower() {
   if (!web3Account.value || !proposal.value.author) return;
   const response = await getPower(
-    space.value,
+    props.space,
     web3Account.value,
     proposal.value
   );
@@ -90,17 +115,13 @@ async function deleteProposal() {
   dropdownLoading.value = true;
   try {
     if (
-      await store.dispatch('send', {
-        space: space.value.key,
-        type: 'delete-proposal',
-        payload: {
-          proposal: id
-        }
+      await send(props.space.id, 'delete-proposal', {
+        proposal: id
       })
     ) {
       dropdownLoading.value = false;
       router.push({
-        name: 'proposals'
+        name: 'spaceProposals'
       });
     }
   } catch (e) {
@@ -122,7 +143,7 @@ function selectFromThreedotDropdown(e) {
   if (e === 'delete') deleteProposal();
   if (e === 'duplicate')
     router.push({
-      name: 'create',
+      name: 'spaceCreate',
       params: {
         key: proposal.value.space.id,
         from: proposal.value.id
@@ -132,11 +153,11 @@ function selectFromThreedotDropdown(e) {
 
 function selectFromShareDropdown(e) {
   if (e === 'shareToTwitter')
-    shareToTwitter(space.value, proposal.value, window);
+    shareToTwitter(props.space, proposal.value, window);
   else if (e === 'shareToFacebook')
-    shareToFacebook(space.value, proposal.value, window);
+    shareToFacebook(props.space, proposal.value, window);
   else if (e === 'shareToClipboard')
-    shareToClipboard(space.value, proposal.value);
+    shareToClipboard(props.space, proposal.value);
 }
 
 const { profiles, addressArray } = useProfiles();
@@ -147,31 +168,47 @@ watch(proposal, () => {
 
 watch(web3Account, (val, prev) => {
   if (val?.toLowerCase() !== prev) loadPower();
+  const choice = route.query.choice;
+  if (proposal.value && choice) {
+    selectedChoices.value = parseInt(choice);
+    clickVote();
+  }
+});
+
+watch(loaded, () => {
+  if (loaded.value) {
+    loadResults();
+    loadPower();
+  }
 });
 
 onMounted(async () => {
   await loadProposal();
-  loadPower();
+  const choice = route.query.choice;
+  if (web3Account.value && choice) {
+    selectedChoices.value = parseInt(choice);
+    clickVote();
+  }
 });
 </script>
 
 <template>
   <Layout v-bind="$attrs">
     <template #content-left>
-      <div class="px-4 px-md-0 mb-3">
+      <div class="px-4 md:px-0 mb-3">
         <router-link
-          :to="{ name: domain ? 'home' : 'proposals' }"
+          :to="domain ? { path: '/' } : { name: 'spaceProposals' }"
           class="text-color"
         >
-          <Icon name="back" size="22" class="v-align-middle" />
+          <Icon name="back" size="22" class="!align-middle" />
           {{ space.name }}
         </router-link>
       </div>
-      <div class="px-4 px-md-0">
+      <div class="px-4 md:px-0">
         <template v-if="loaded">
           <h1 v-text="proposal.title" class="mb-2" />
           <div class="mb-4">
-            <UiState :state="proposal.state" />
+            <UiState :state="proposal.state" class="inline-block" />
             <UiDropdown
               top="2.5rem"
               right="1.5rem"
@@ -181,8 +218,8 @@ onMounted(async () => {
               :items="sharingItems"
               :hideDropdown="sharingIsSupported"
             >
-              <div class="pr-1" style="user-select: none">
-                <Icon name="upload" size="25" class="v-align-text-bottom" />
+              <div class="pr-1 select-none">
+                <Icon name="upload" size="25" class="!align-text-bottom" />
                 Share
               </div>
             </UiDropdown>
@@ -195,12 +232,7 @@ onMounted(async () => {
             >
               <div class="pr-3">
                 <UiLoading v-if="dropdownLoading" />
-                <Icon
-                  v-else
-                  name="threedots"
-                  size="25"
-                  class="v-align-text-bottom"
-                />
+                <Icon v-else name="threedots" size="25" />
               </div>
             </UiDropdown>
           </div>
@@ -223,14 +255,12 @@ onMounted(async () => {
         :votes="votes"
         :strategies="strategies"
       />
-      <PluginSafeSnapConfig
-        :preview="true"
-        v-if="loadedResults && proposal.plugins?.safeSnap?.txs"
+      <ProposalPluginsContent
+        v-model:safeSnapInput="safeSnapInput"
+        :id="id"
+        :space="space"
         :proposal="proposal"
-        :proposalId="id"
-        :moduleAddress="space.plugins?.safeSnap?.address"
-        :network="space.network"
-        v-model="proposal.plugins.safeSnap"
+        :loadedResults="loadedResults"
       />
     </template>
     <template #sidebar-right v-if="loaded">
@@ -242,7 +272,11 @@ onMounted(async () => {
             class="float-right link-color a"
           >
             <span v-for="(symbol, symbolIndex) of symbols" :key="symbol">
-              <span :aria-label="symbol" class="tooltipped tooltipped-n">
+              <span
+                v-tippy="{
+                  content: symbol
+                }"
+              >
                 <Token :space="space" :symbolIndex="symbolIndex" />
               </span>
               <span v-show="symbolIndex !== symbols.length - 1" class="ml-1" />
@@ -275,17 +309,21 @@ onMounted(async () => {
           <div class="mb-1">
             <b>{{ $t('proposal.startDate') }}</b>
             <span
-              :aria-label="_ms(proposal.start)"
               v-text="$d(proposal.start * 1e3, 'short', 'en-US')"
-              class="float-right link-color tooltipped tooltipped-n"
+              v-tippy="{
+                content: _ms(proposal.start)
+              }"
+              class="float-right link-color"
             />
           </div>
           <div class="mb-1">
             <b>{{ $t('proposal.endDate') }}</b>
             <span
-              :aria-label="_ms(proposal.end)"
               v-text="$d(proposal.end * 1e3, 'short', 'en-US')"
-              class="float-right link-color tooltipped tooltipped-n"
+              v-tippy="{
+                content: _ms(proposal.end)
+              }"
+              class="link-color float-right"
             />
           </div>
           <div class="mb-1">
@@ -310,45 +348,16 @@ onMounted(async () => {
         :votes="votes"
         :strategies="strategies"
       />
-      <div v-if="loadedResults">
-        <PluginAragonCustomBlock
-          :loaded="loadedResults"
-          :id="id"
-          :space="space"
-          :proposal="proposal"
-          :results="results"
-        />
-        <PluginGnosisCustomBlock
-          v-if="proposal.plugins?.gnosis?.baseTokenAddress"
-          :proposalConfig="proposal.plugins.gnosis"
-          :choices="proposal.choices"
-        />
-        <PluginSafeSnapCustomBlock
-          v-if="proposal.plugins?.safeSnap?.txs"
-          :proposalConfig="proposal.plugins.safeSnap"
-          :proposalEnd="proposal.end"
-          :proposalId="id"
-          :moduleAddress="space.plugins?.safeSnap?.address"
-          :network="space.network"
-        />
-        <PluginQuorumCustomBlock
-          :loaded="loadedResults"
-          v-if="space.plugins?.quorum"
-          :space="space"
-          :proposal="proposal"
-          :results="results"
-          :strategies="strategies"
-        />
-        <PluginPOAPCustomBlock
-          v-if="space.plugins?.poap"
-          :loaded="loadedResults"
-          :space="space"
-          :proposal="proposal"
-          :results="results"
-          :votes="votes"
-          :strategies="strategies"
-        />
-      </div>
+      <ProposalPluginsSidebar
+        v-if="loadedResults"
+        :id="id"
+        :space="space"
+        :proposal="proposal"
+        :results="results"
+        :votes="votes"
+        :strategies="strategies"
+        :loadedResults="loadedResults"
+      />
     </template>
   </Layout>
   <teleport to="#modal">

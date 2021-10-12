@@ -1,5 +1,5 @@
 <script>
-import Plugin from '@snapshot-labs/snapshot.js/src/plugins/safeSnap';
+import Plugin from '@/../snapshot-plugins/src/plugins/safeSnap';
 import { isHexString } from '@ethersproject/bytes';
 import { parseAmount } from '@/helpers/utils';
 import {
@@ -91,24 +91,24 @@ export default {
   <PluginSafeSnapInputAddress
     v-model="to"
     :disabled="config.preview"
-    :inputProps="{ required: true }"
-    label="to (address)"
+    :inputProps="{ required: false }"
+    :label="$t('safeSnap.to')"
   />
 
   <UiInput
     v-model="value"
     :disabled="config.preview"
-    :error="!isValidValue && 'Invalid Value'"
+    :error="!isValidValue && $t('safeSnap.invalidValue')"
   >
-    <template v-slot:label>value (wei)</template>
+    <template v-slot:label>{{ $t('safeSnap.value') }}</template>
   </UiInput>
 
   <UiInput
     v-model="data"
     :disabled="config.preview"
-    :error="!isValidData && 'Invalid Data'"
+    :error="!isValidData && $t('safeSnap.invalidData')"
   >
-    <template v-slot:label>Data</template>
+    <template v-slot:label>{{ $t('safeSnap.data') }}</template>
   </UiInput>
 </template>
 

@@ -24,5 +24,10 @@ module.exports = {
     '@typescript-eslint/no-var-requires': 'off',
     '@typescript-eslint/no-use-before-define': ['error', { functions: false }],
     'vue/script-setup-uses-vars': 'error'
+  },
+  globals: {
+    $ref: 'readonly',
+    defineProps: 'readonly',
+    defineEmits: 'readonly'
   }
 };

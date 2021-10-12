@@ -17,7 +17,7 @@ export default {
   },
   methods: {
     handleInput() {
-      this.dirty = true;
+      this.dirty = this.input !== '';
       this.$emit('update:modelValue', this.input);
       this.isValid = mustBeEthereumAddress(this.input);
       if (this.isValid) {
@@ -33,7 +33,7 @@ export default {
     v-model="input"
     v-bind="inputProps"
     :disabled="disabled"
-    :error="dirty && !isValid && 'Invalid Address'"
+    :error="dirty && !isValid && $t('safeSnap.invalidAddress')"
     @input="handleInput()"
   >
     <template v-if="label" v-slot:label>{{ label }}</template>
