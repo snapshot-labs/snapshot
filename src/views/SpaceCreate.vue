@@ -14,6 +14,7 @@ import { useDomain } from '@/composables/useDomain';
 import { useApolloQuery } from '@/composables/useApolloQuery';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useClient } from '@/composables/useClient';
+import { useApp } from '@/composables/useApp';
 
 const props = defineProps({
   spaceId: String,
@@ -26,6 +27,7 @@ const auth = getInstance();
 const { domain } = useDomain();
 const { web3 } = useWeb3();
 const { send } = useClient();
+const { getExplore } = useApp();
 
 const loading = ref(false);
 const choices = ref([]);
@@ -120,6 +122,7 @@ async function handleSubmit() {
   form.value.metadata.strategies = props.space.strategies;
   try {
     const { ipfsHash } = await send(props.space.id, 'proposal', form.value);
+    getExplore();
     router.push({
       name: 'spaceProposal',
       params: {
