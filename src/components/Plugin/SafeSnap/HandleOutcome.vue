@@ -16,7 +16,11 @@
       v-if="questionState === questionStates.waitingForQuestion"
       class="my-4"
     >
-      <UiButton @click="performAction" v-text="$t('safeSnap.labels.request')" />
+      <UiButton
+        @click="performAction"
+        :loading="actionInProgress"
+        v-text="$t('safeSnap.labels.request')"
+      />
     </div>
 
     <div
@@ -72,6 +76,7 @@
           <UiButton
             class="w-full my-1"
             @click="performAction"
+            :loading="actionInProgress"
             v-text="$t('safeSnap.labels.setOutcome')"
           />
         </div>
@@ -79,6 +84,7 @@
           <UiButton
             class="w-full my-1"
             @click="performAction"
+            :loading="actionInProgress"
             v-text="$t('safeSnap.labels.changeOutcome')"
           />
         </div>
@@ -143,9 +149,15 @@ import { formatBatchTransaction } from '@/helpers/abi/utils';
 import { formatUnits } from '@ethersproject/units';
 import { useSafesnap } from '@/composables/useSafesnap';
 import { useWeb3 } from '@/composables/useWeb3';
+import { useTxStatus } from '@/composables/useTxStatus';
+import { useNotifications } from '@/composables/useNotifications';
+import { useI18n } from 'vue-i18n';
 
 const { clearBatchError, setBatchError } = useSafesnap();
 const { web3 } = useWeb3();
+const { pendingCount } = useTxStatus();
+const { notify } = useNotifications();
+const { t } = useI18n();
 
 const plugin = new Plugin();
 
@@ -267,18 +279,29 @@ export default {
         );
 
         await ensureRightNetwork(this.network);
-        await plugin.claimBond(
+        const { tx, multi } = await plugin.claimBond(
           this.$auth.web3,
           this.questionDetails.oracle,
           this.questionDetails.questionId,
           params
+        );
+        this.actionInProgress = false;
+        pendingCount.value++;
+        const receipt = await tx.wait();
+        notify(t('notify.youDidIt'));
+        pendingCount.value--;
+        console.log(
+          multi
+            ? '[Realitio] executed claimMultipleAndWithdrawBalance:'
+            : '[Realitio] executed withdraw:',
+          receipt
         );
         await sleep(3e3);
         await this.updateDetails();
       } catch (e) {
         console.error(e);
       } finally {
-        this.actionInProgress = true;
+        this.actionInProgress = false;
       }
     },
     async performAction() {
@@ -286,15 +309,22 @@ export default {
       this.actionInProgress = true;
       try {
         switch (this.questionState) {
-          case QuestionStates.waitingForQuestion:
+          case QuestionStates.waitingForQuestion: {
             await ensureRightNetwork(this.network);
-            await plugin.submitProposal(
+            const tx = await plugin.submitProposal(
               this.$auth.web3,
               this.realityAddress,
               this.questionDetails.proposalId,
               this.questionDetails.transactions
             );
+            this.actionInProgress = false;
+            pendingCount.value++;
+            const receipt = await tx.wait();
+            notify(t('notify.youDidIt'));
+            pendingCount.value--;
+            console.log('[DAO module] submitted proposal:', receipt);
             break;
+          }
           case QuestionStates.questionNotSet:
           case QuestionStates.questionNotResolved:
             this.modalApproveDecisionOpen = true;
@@ -338,14 +368,20 @@ export default {
 
       try {
         clearBatchError();
-        await plugin.executeProposal(
+        const tx = await plugin.executeProposal(
           this.$auth.web3,
           this.realityAddress,
           this.questionDetails.proposalId,
           this.questionDetails.transactions,
           this.questionDetails.nextTxIndex
         );
+        pendingCount.value++;
+        const receipt = await tx.wait();
+        notify(t('notify.youDidIt'));
+        pendingCount.value--;
+        console.log('[DAO module] executed proposal:', receipt);
       } catch (err) {
+        pendingCount.value--;
         setBatchError(this.questionDetails.nextTxIndex, err.reason);
       }
     }
