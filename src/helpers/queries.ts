@@ -162,6 +162,10 @@ export const SPACES_QUERY = gql`
       members
       admins
       plugins
+      voting {
+        delay
+        period
+      }
       strategies {
         name
         params

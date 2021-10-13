@@ -12,6 +12,7 @@ import defaults from '@/locales/default';
 import { useCopy } from '@/composables/useCopy';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useClient } from '@/composables/useClient';
+import { calcFromSeconds, calcToSeconds } from '@/helpers/utils';
 
 const props = defineProps({
   spaceId: String,
@@ -43,10 +44,13 @@ const loaded = ref(false);
 const loading = ref(false);
 const uploadLoading = ref(false);
 const showErrors = ref(false);
+const delayUnit = ref('h');
+const periodUnit = ref('h');
 const form = ref({
   strategies: [],
   plugins: {},
   filters: {},
+  voting: {},
   validation: basicValidation
 });
 
@@ -79,6 +83,22 @@ const isAdmin = computed(() => {
   return admins.includes(web3Account.value?.toLowerCase());
 });
 
+const votingDelay = computed({
+  get: () => calcFromSeconds(form.value.voting?.delay, delayUnit.value),
+  set: newVal =>
+    (form.value.voting.delay = newVal
+      ? calcToSeconds(newVal, delayUnit.value)
+      : undefined)
+});
+
+const votingPeriod = computed({
+  get: () => calcFromSeconds(form.value.voting?.period, periodUnit.value),
+  set: newVal =>
+    (form.value.voting.period = newVal
+      ? calcToSeconds(newVal, periodUnit.value)
+      : undefined)
+});
+
 const { filteredPlugins } = useSearchFilters();
 const plugins = computed(() => filteredPlugins());
 
@@ -95,10 +115,10 @@ async function handleSubmit() {
     loading.value = true;
     try {
       await send(props.spaceId, 'settings', form.value);
+      await props.loadExtentedSpaces([props.spaceId]);
     } catch (e) {
       console.log(e);
     }
-    await props.loadExtentedSpaces([props.spaceId]);
     loading.value = false;
   } else {
     console.log('Invalid schema', validate.value);
@@ -207,6 +227,9 @@ watchEffect(async () => {
       space.plugins = space.plugins || {};
       space.validation = space.validation || basicValidation;
       space.filters = space.filters || {};
+      space.voting = space.voting || {};
+      space.voting.delay = space.voting?.delay || undefined;
+      space.voting.period = space.voting?.period || undefined;
       currentSettings.value = clone(space);
       form.value = space;
     } catch (e) {
@@ -496,6 +519,38 @@ watchEffect(async () => {
                 </div>
               </div>
             </div>
+          </Block>
+          <Block :title="$t('settings.voting')">
+            <UiInput v-model="votingDelay" :number="true" placeholder="e.g. 1">
+              <template v-slot:label>
+                {{ $t('settings.votingDelay') }}
+              </template>
+              <template v-slot:info>
+                <select
+                  v-model="delayUnit"
+                  class="input text-center pr-1 pt-[3px] ml-2"
+                  required
+                >
+                  <option value="h" selected>hours</option>
+                  <option value="d">days</option>
+                </select>
+              </template>
+            </UiInput>
+            <UiInput v-model="votingPeriod" :number="true" placeholder="e.g. 5">
+              <template v-slot:label>
+                {{ $t('settings.votingPeriod') }}
+              </template>
+              <template v-slot:info>
+                <select
+                  v-model="periodUnit"
+                  class="input text-center pr-1 pt-[3px] ml-2"
+                  required
+                >
+                  <option value="h" selected>hours</option>
+                  <option value="d">days</option>
+                </select>
+              </template>
+            </UiInput>
           </Block>
           <Block :title="$t('plugins')">
             <div v-if="form?.plugins">
