@@ -208,7 +208,9 @@
     "warningTextRecord": "ENS 도메인에 텍스트 레코드를 설정해야 합니다.",
     "votingDelay": "Voting delay",
     "votingPeriod": "Voting period",
-    "voting": "Voting"
+    "voting": "Voting",
+    "type": "Type",
+    "anyType": "Any"
   },
   "setup": {
     "example": "예를 들어 얌.eth",
