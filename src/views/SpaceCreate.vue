@@ -14,6 +14,7 @@ import { useDomain } from '@/composables/useDomain';
 import { useApolloQuery } from '@/composables/useApolloQuery';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useClient } from '@/composables/useClient';
+import { useExtendedSpaces } from '@/composables/useExtendedSpaces';
 
 const props = defineProps({
   spaceId: String,
@@ -26,6 +27,7 @@ const auth = getInstance();
 const { domain } = useDomain();
 const { web3 } = useWeb3();
 const { send } = useClient();
+const { spaceLoading } = useExtendedSpaces();
 
 const loading = ref(false);
 const choices = ref([]);
@@ -66,7 +68,7 @@ watchEffect(async () => {
       '',
       clone(validationParams)
     );
-    
+
     passValidation.value = [isValid, validationName];
     console.log('Pass validation?', isValid, validationName);
   }
@@ -310,6 +312,7 @@ watchEffect(async () => {
             ? 'stars'
             : undefined
         "
+        :loading="spaceLoading"
         @submit="modalProposalPluginsOpen = true"
       >
         <div class="mb-2">
