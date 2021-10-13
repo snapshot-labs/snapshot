@@ -120,7 +120,8 @@
     "pattern": "ตัวอักษรไม่ถูกต้อง",
     "minItems": "ขั้นต่ำ {0} รายการ(s) ที่ต้องการ",
     "minStrategy": "ต้องใช้อย่างน้อยหนึ่งอย่าง",
-    "format": "รูปแบบไม่ถูกต้อง"
+    "format": "รูปแบบไม่ถูกต้อง",
+    "type": "Invalid type"
   },
   "create": {
     "question": "คำถาม",
@@ -204,7 +205,10 @@
     "editValidation": "Edit validation",
     "selectValidation": "Select validation",
     "validationParameters": "Validation parameters",
-    "warningTextRecord": "You must set a text record on the ENS domain."
+    "warningTextRecord": "You must set a text record on the ENS domain.",
+    "votingDelay": "Voting delay",
+    "votingPeriod": "Voting period",
+    "voting": "Voting"
   },
   "setup": {
     "example": "เช่น.แยมและอื่นๆ",
