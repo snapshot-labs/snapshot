@@ -208,7 +208,9 @@
     "warningTextRecord": "Você deve definir um registro de texto no domínio ENS.",
     "votingDelay": "Voting delay",
     "votingPeriod": "Voting period",
-    "voting": "Voting"
+    "voting": "Voting",
+    "type": "Type",
+    "anyType": "Any"
   },
   "setup": {
     "example": "p. ex. yam.eth",
