@@ -120,7 +120,8 @@
     "pattern": "غلط ان پٹ",
     "minItems": "کم از کم {0} آئٹمز کی ضرورت ہے",
     "minStrategy": "کم از کم ایک سٹرٹیگے کی ضرورت ہے۔",
-    "format": "غلط فارمیٹ"
+    "format": "غلط فارمیٹ",
+    "type": "Invalid type"
   },
   "create": {
     "question": "سوال",
@@ -204,7 +205,10 @@
     "editValidation": "توثیق کی توثیق",
     "selectValidation": "توثیق منتخب کریں",
     "validationParameters": "توثیق کے پیرامیٹرز",
-    "warningTextRecord": "You must set a text record on the ENS domain."
+    "warningTextRecord": "You must set a text record on the ENS domain.",
+    "votingDelay": "Voting delay",
+    "votingPeriod": "Voting period",
+    "voting": "Voting"
   },
   "setup": {
     "example": "مثال. yam.eth",
