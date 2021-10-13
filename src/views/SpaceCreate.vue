@@ -207,6 +207,7 @@ watchEffect(async () => {
     form.value.snapshot = blockNumber.value;
     loadingSnapshot.value = false;
   }
+  if (props.space.voting?.type) form.value.type = props.space.voting.type;
 });
 </script>
 
@@ -279,7 +280,7 @@ watchEffect(async () => {
               <UiInput
                 v-model="element.text"
                 maxlength="32"
-                additionalClass="text-center"
+                additionalInputClass="text-center"
                 ><template v-slot:label
                   ><span class="text-skin-link">{{ index + 1 }}</span></template
                 >
@@ -316,8 +317,14 @@ watchEffect(async () => {
         @submit="modalProposalPluginsOpen = true"
       >
         <div class="mb-2">
-          <UiButton class="w-full mb-2" @click="modalVotingTypeOpen = true">
-            <span>{{ $t(`voting.${form.type}`) }}</span>
+          <UiButton
+            class="w-full mb-2"
+            :disabled="props.space.voting?.type"
+            @click="modalVotingTypeOpen = true"
+          >
+            <span>{{
+              $t(`voting.${props.space.voting?.type ?? form.type}`)
+            }}</span>
           </UiButton>
           <UiButton
             @click="(modalOpen = true), (selectedDate = 'start')"
