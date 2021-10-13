@@ -209,7 +209,9 @@
     "votingDelay": "Voting delay",
     "votingPeriod": "Voting period",
     "voting": "Voting",
-    "quorum": "Quorum"
+    "quorum": "Quorum",
+    "type": "Type",
+    "anyType": "Any"
   },
   "setup": {
     "example": "e.g. yam.eth",

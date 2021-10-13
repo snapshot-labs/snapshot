@@ -6,7 +6,7 @@ const props = defineProps({
   number: Boolean,
   disabled: Boolean,
   maxlength: [Number, String],
-  additionalClass: String,
+  additionalInputClass: String,
   required: {
     type: Boolean,
     default: true
@@ -43,10 +43,15 @@ function handleInput(e) {
     "
     :class="{ '!border-red': error, 'cursor-pointer': $slots.selected }"
   >
-    <div class="text-color mr-2">
+    <div class="text-color mr-2 whitespace-nowrap">
       <slot name="label" />
     </div>
-    <div v-if="$slots.selected" class="flex-auto"><slot name="selected" /></div>
+    <div
+      v-if="$slots.selected"
+      class="flex-auto whitespace-nowrap overflow-scroll"
+    >
+      <slot name="selected" />
+    </div>
     <input
       v-else
       :value="modelValue"
@@ -54,7 +59,8 @@ function handleInput(e) {
       :placeholder="placeholder"
       :type="number ? 'number' : 'text'"
       :disabled="disabled"
-      :class="[`input flex-auto`, additionalClass]"
+      class="input flex-auto w-full"
+      :class="additionalInputClass"
       :required="required"
       :maxlength="maxlength"
     />

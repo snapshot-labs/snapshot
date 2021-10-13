@@ -165,6 +165,7 @@ export const SPACES_QUERY = gql`
       voting {
         delay
         period
+        type
       }
       strategies {
         name
