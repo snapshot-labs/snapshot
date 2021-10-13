@@ -208,7 +208,9 @@
     "warningTextRecord": "Вы должны задать текстовую запись в домене ENS.",
     "votingDelay": "Voting delay",
     "votingPeriod": "Voting period",
-    "voting": "Voting"
+    "voting": "Voting",
+    "type": "Type",
+    "anyType": "Any"
   },
   "setup": {
     "example": "например, yam.eth",
