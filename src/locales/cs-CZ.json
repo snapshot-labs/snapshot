@@ -120,7 +120,8 @@
     "pattern": "Nepovolené znaky",
     "minItems": "Minimálně {0} položek vyžadováno",
     "minStrategy": "Je vyžadována alespoň jedna kategorie.",
-    "format": "Nesprávný formát"
+    "format": "Nesprávný formát",
+    "type": "Invalid type"
   },
   "create": {
     "question": "Otázka",
@@ -204,7 +205,10 @@
     "editValidation": "Přidat/upravit ověření",
     "selectValidation": "Přidat/upravit ověření",
     "validationParameters": "Parametry ověření",
-    "warningTextRecord": "You must set a text record on the ENS domain."
+    "warningTextRecord": "You must set a text record on the ENS domain.",
+    "votingDelay": "Voting delay",
+    "votingPeriod": "Voting period",
+    "voting": "Voting"
   },
   "setup": {
     "example": "e.g. yam.eth",
