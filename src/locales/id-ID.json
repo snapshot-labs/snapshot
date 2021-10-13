@@ -120,7 +120,8 @@
     "pattern": "Karakter tidak valid",
     "minItems": "Minimal {0} item diperlukan",
     "minStrategy": "Setidaknya satu strategi diperlukan.",
-    "format": "Format tidak valid"
+    "format": "Format tidak valid",
+    "type": "Invalid type"
   },
   "create": {
     "question": "Pertanyaan",
@@ -204,7 +205,10 @@
     "editValidation": "Sunting validitas",
     "selectValidation": "Pilih validitas",
     "validationParameters": "Parameter validitas",
-    "warningTextRecord": "Anda harus mengatur catatan teks pada domain ENS."
+    "warningTextRecord": "Anda harus mengatur catatan teks pada domain ENS.",
+    "votingDelay": "Voting delay",
+    "votingPeriod": "Voting period",
+    "voting": "Voting"
   },
   "setup": {
     "example": "mis. yam.eth",
