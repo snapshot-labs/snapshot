@@ -120,7 +120,8 @@
     "pattern": "Ongeldige tekens",
     "minItems": "Minimaal {0} artikel(en) vereist",
     "minStrategy": "Ten minste één strategie is vereist.",
-    "format": "Ongeldig formaat"
+    "format": "Ongeldig formaat",
+    "type": "Invalid type"
   },
   "create": {
     "question": "Vraag",
@@ -204,7 +205,10 @@
     "editValidation": "Edit validation",
     "selectValidation": "Select validation",
     "validationParameters": "Validation parameters",
-    "warningTextRecord": "You must set a text record on the ENS domain."
+    "warningTextRecord": "You must set a text record on the ENS domain.",
+    "votingDelay": "Voting delay",
+    "votingPeriod": "Voting period",
+    "voting": "Voting"
   },
   "setup": {
     "example": "b.v. yam.eth",
