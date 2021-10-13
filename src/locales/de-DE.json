@@ -120,7 +120,8 @@
     "pattern": "Ungültiges Zeichen",
     "minItems": "Mindestens {0} Element(e) erforderlich",
     "minStrategy": "Mindestens eine Strategie ist erforderlich.",
-    "format": "Ungültiges Format"
+    "format": "Ungültiges Format",
+    "type": "Invalid type"
   },
   "create": {
     "question": "Frage",
@@ -204,7 +205,10 @@
     "editValidation": "Validierung bearbeiten",
     "selectValidation": "Validierung auswählen",
     "validationParameters": "Validierungsparameter",
-    "warningTextRecord": "Sie müssen einen Text-Eintrag auf der ENS-Domain festlegen."
+    "warningTextRecord": "Sie müssen einen Text-Eintrag auf der ENS-Domain festlegen.",
+    "votingDelay": "Voting delay",
+    "votingPeriod": "Voting period",
+    "voting": "Voting"
   },
   "setup": {
     "example": "z.B. yam.eth",
@@ -300,7 +304,7 @@
     "loading_header": "Der POAP wird Ihrer Sammlung hinzugefügt",
     "button_claim": "Beanspruchen",
     "button_show": "Browse collection",
-    "success_claim": "Your POAP is on your address",
+    "success_claim": "Dein POAP ist auf deiner Adresse",
     "error_claim": "There was a problem minting the token"
   },
   "comment_box": {
