@@ -120,7 +120,8 @@
     "pattern": "अवैध वर्ण",
     "minItems": "किमान लांबी {0} चे आयटम आवयस्यक",
     "minStrategy": "कमीतकमी एक स्ट्रॅटेजि आवश्यक आहे.",
-    "format": "अवैध्य फॉरमॅट"
+    "format": "अवैध्य फॉरमॅट",
+    "type": "Invalid type"
   },
   "create": {
     "question": "प्रश्न",
@@ -204,7 +205,10 @@
     "editValidation": "Edit validation",
     "selectValidation": "Select validation",
     "validationParameters": "Validation parameters",
-    "warningTextRecord": "You must set a text record on the ENS domain."
+    "warningTextRecord": "You must set a text record on the ENS domain.",
+    "votingDelay": "Voting delay",
+    "votingPeriod": "Voting period",
+    "voting": "Voting"
   },
   "setup": {
     "example": "उदा. yam.eth",
