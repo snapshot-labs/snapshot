@@ -208,7 +208,9 @@
     "warningTextRecord": "您必须在 ENS 域上设置文本记录。",
     "votingDelay": "Voting delay",
     "votingPeriod": "Voting period",
-    "voting": "Voting"
+    "voting": "Voting",
+    "type": "Type",
+    "anyType": "Any"
   },
   "setup": {
     "example": "例如 yam.eth",
