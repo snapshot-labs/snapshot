@@ -120,7 +120,8 @@
     "pattern": "Неверный символ",
     "minItems": "Минимум {0} элемент(ов) требуется",
     "minStrategy": "Требуется как минимум одна категория.",
-    "format": "Недопустимый формат"
+    "format": "Недопустимый формат",
+    "type": "Invalid type"
   },
   "create": {
     "question": "Вопрос",
@@ -204,7 +205,10 @@
     "editValidation": "Редактировать проверку",
     "selectValidation": "Выбрать проверку",
     "validationParameters": "Параметры проверки",
-    "warningTextRecord": "Вы должны задать текстовую запись в домене ENS."
+    "warningTextRecord": "Вы должны задать текстовую запись в домене ENS.",
+    "votingDelay": "Voting delay",
+    "votingPeriod": "Voting period",
+    "voting": "Voting"
   },
   "setup": {
     "example": "например, yam.eth",
