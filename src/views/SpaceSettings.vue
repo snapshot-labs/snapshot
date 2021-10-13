@@ -559,17 +559,12 @@ watchEffect(async () => {
               </template>
               <template v-slot:selected>
                 <div @click="modalVotingTypeOpen = true" class="w-full">
-                  {{ form.voting?.type ?? $t('settings.anyType') }}
+                  {{
+                    form.voting?.type
+                      ? $t(`voting.${form.voting?.type}`)
+                      : $t('settings.anyType')
+                  }}
                 </div>
-              </template>
-              <template v-slot:info>
-                <a
-                  v-if="form.voting?.type"
-                  @click="delete form.voting.type"
-                  class="flex items-center px-2 -mr-2"
-                >
-                  <Icon name="close" size="12" />
-                </a>
               </template>
             </UiInput>
           </Block>
@@ -648,11 +643,11 @@ watchEffect(async () => {
       @close="modalValidationOpen = false"
       @add="handleSubmitAddValidation"
     />
-
     <ModalVotingType
       :open="modalVotingTypeOpen"
       @close="modalVotingTypeOpen = false"
       v-model="form.voting.type"
+      :selected="form.voting?.type"
     />
   </teleport>
 </template>
