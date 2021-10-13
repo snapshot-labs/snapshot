@@ -120,7 +120,8 @@
     "pattern": "Caracteres Inválidos",
     "minItems": "Mínimo {0} item(s) obrigatório(s)",
     "minStrategy": "É necessária pelo menos uma estratégia.",
-    "format": "Formato inválido"
+    "format": "Formato inválido",
+    "type": "Invalid type"
   },
   "create": {
     "question": "Pergunta",
@@ -204,7 +205,10 @@
     "editValidation": "Editar validação",
     "selectValidation": "Selecionar validação",
     "validationParameters": "Parâmetros de validação",
-    "warningTextRecord": "Você deve definir um registro de texto no domínio ENS."
+    "warningTextRecord": "Você deve definir um registro de texto no domínio ENS.",
+    "votingDelay": "Voting delay",
+    "votingPeriod": "Voting period",
+    "voting": "Voting"
   },
   "setup": {
     "example": "p. ex. yam.eth",
