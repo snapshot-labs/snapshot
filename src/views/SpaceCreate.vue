@@ -14,6 +14,7 @@ import { useDomain } from '@/composables/useDomain';
 import { useApolloQuery } from '@/composables/useApolloQuery';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useClient } from '@/composables/useClient';
+import { useExtendedSpaces } from '@/composables/useExtendedSpaces';
 
 const props = defineProps({
   spaceId: String,
@@ -26,6 +27,7 @@ const auth = getInstance();
 const { domain } = useDomain();
 const { web3 } = useWeb3();
 const { send } = useClient();
+const { spaceLoading } = useExtendedSpaces();
 
 const loading = ref(false);
 const choices = ref([]);
@@ -66,19 +68,20 @@ watchEffect(async () => {
       '',
       clone(validationParams)
     );
+
     passValidation.value = [isValid, validationName];
     console.log('Pass validation?', isValid, validationName);
   }
 });
 
 const dateStart = computed(() => {
-  return props.space.voting.delay
+  return props.space.voting?.delay
     ? new Date().getTime() / 1000 + props.space.voting.delay
     : form.value.start;
 });
 
 const dateEnd = computed(() => {
-  return props.space.voting.period && dateStart.value
+  return props.space.voting?.period && dateStart.value
     ? dateStart.value + props.space.voting.period
     : form.value.end;
 });
@@ -309,6 +312,7 @@ watchEffect(async () => {
             ? 'stars'
             : undefined
         "
+        :loading="spaceLoading"
         @submit="modalProposalPluginsOpen = true"
       >
         <div class="mb-2">
@@ -317,7 +321,7 @@ watchEffect(async () => {
           </UiButton>
           <UiButton
             @click="(modalOpen = true), (selectedDate = 'start')"
-            :disabled="props.space.voting.delay"
+            :disabled="props.space.voting?.delay"
             class="w-full mb-2"
           >
             <span v-if="!dateStart">{{ $t('create.startDate') }}</span>
@@ -325,7 +329,7 @@ watchEffect(async () => {
           </UiButton>
           <UiButton
             @click="(modalOpen = true), (selectedDate = 'end')"
-            :disabled="props.space.voting.period"
+            :disabled="props.space.voting?.period"
             class="w-full mb-2"
           >
             <span v-if="!dateEnd">{{ $t('create.endDate') }}</span>

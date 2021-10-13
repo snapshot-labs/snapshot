@@ -45,7 +45,7 @@ const loading = ref(false);
 const uploadLoading = ref(false);
 const showErrors = ref(false);
 const delayUnit = ref('h');
-const periodUnit = ref('d');
+const periodUnit = ref('h');
 const form = ref({
   strategies: [],
   plugins: {},
@@ -117,10 +117,10 @@ async function handleSubmit() {
     loading.value = true;
     try {
       await send(props.spaceId, 'settings', form.value);
+      await props.loadExtentedSpaces([props.spaceId]);
     } catch (e) {
       console.log(e);
     }
-    await props.loadExtentedSpaces([props.spaceId]);
     loading.value = false;
   } else {
     console.log('Invalid schema', validate.value);
@@ -230,6 +230,8 @@ watchEffect(async () => {
       space.validation = space.validation || basicValidation;
       space.filters = space.filters || {};
       space.voting = space.voting || {};
+      space.voting.delay = space.voting?.delay || undefined;
+      space.voting.period = space.voting?.period || undefined;
       currentSettings.value = clone(space);
       form.value = space;
     } catch (e) {
@@ -460,7 +462,7 @@ watchEffect(async () => {
               <a @click="handleRemoveStrategy(i)" class="absolute p-4 right-0">
                 <Icon name="close" size="12" />
               </a>
-              
+
               <a
                 @click="handleEditStrategy(i)"
                 class="p-4 block border rounded-md"
@@ -522,7 +524,7 @@ watchEffect(async () => {
             </div>
           </Block>
           <Block :title="$t('settings.voting')">
-            <UiInput v-model="votingDelay" :number="true" placeholder="12">
+            <UiInput v-model="votingDelay" :number="true" placeholder="e.g. 1">
               <template v-slot:label>
                 {{ $t('settings.votingDelay') }}
               </template>
@@ -537,7 +539,7 @@ watchEffect(async () => {
                 </select>
               </template>
             </UiInput>
-            <UiInput v-model="votingPeriod" :number="true" placeholder="5">
+            <UiInput v-model="votingPeriod" :number="true" placeholder="e.g. 5">
               <template v-slot:label>
                 {{ $t('settings.votingPeriod') }}
               </template>
@@ -547,8 +549,8 @@ watchEffect(async () => {
                   class="input text-center pr-1 pt-[3px] ml-2"
                   required
                 >
-                  <option value="h">hours</option>
-                  <option value="d" selected>days</option>
+                  <option value="h" selected>hours</option>
+                  <option value="d">days</option>
                 </select>
               </template>
             </UiInput>

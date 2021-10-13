@@ -22,8 +22,7 @@ import { sleep } from '@/helpers/utils';
 import { useApp } from '@/composables/useApp';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useTxStatus } from '@/composables/useTxStatus';
-import { useExtentedSpaces } from '@/composables/useExtentedSpaces';
-import { n } from '@/helpers/utils';
+import { useExtendedSpaces } from '@/composables/useExtendedSpaces';
 
 const abi = ['function setDelegate(bytes32 id, address delegate)'];
 
@@ -35,7 +34,7 @@ const { explore } = useApp();
 const { web3 } = useWeb3();
 const { pendingCount } = useTxStatus();
 const { loadExtentedSpaces, extentedSpaces, spaceLoading } =
-  useExtentedSpaces();
+  useExtendedSpaces();
 
 const modalOpen = ref(false);
 const currentId = ref('');
@@ -159,7 +158,7 @@ async function getDelegatesWithScore() {
     });
 
     const sortedDelegates = uniqueDelegators
-      .filter(delegate => n(delegate.score) > 0)
+      .filter(delegate => delegate.score > 0)
       .sort((a, b) => b.score - a.score);
 
     delegatesWithScore.value = sortedDelegates;
@@ -174,7 +173,8 @@ async function getDelegatesWithScore() {
 watchEffect(() => {
   addressArray.value = delegates.value
     .map(delegate => delegate.delegate)
-    .concat(delegators.value.map(delegator => delegator.delegator));
+    .concat(delegators.value.map(delegator => delegator.delegator))
+    .concat(delegatesWithScore.value.map(delegate => delegate.delegate));
 });
 
 watch(web3Account, (val, prev) => {
@@ -296,7 +296,7 @@ onMounted(async () => {
               class="column"
             />
             <div class="flex-auto column text-right link-color">
-              {{ _n(delegate.score) }}
+              {{ delegate.score >= 0.005 ? _n(delegate.score) : '> 0.01' }}
               {{ extentedSpaces.find(s => s.id === form.id).symbol }}
             </div>
           </div>
