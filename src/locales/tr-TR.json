@@ -120,7 +120,8 @@
     "pattern": "Geçersiz karakter",
     "minItems": "Minimum {0} öğe gerekli",
     "minStrategy": "En az bir strateji gerekiyor.",
-    "format": "Geçersiz format"
+    "format": "Geçersiz format",
+    "type": "Invalid type"
   },
   "create": {
     "question": "Soru",
@@ -204,7 +205,10 @@
     "editValidation": "Doğrulamaları düzenle",
     "selectValidation": "Doğrulamayı seçin",
     "validationParameters": "Doğrulama parametreleri",
-    "warningTextRecord": "ENS alanında bir metin kaydı ayarlamalısınız."
+    "warningTextRecord": "ENS alanında bir metin kaydı ayarlamalısınız.",
+    "votingDelay": "Voting delay",
+    "votingPeriod": "Voting period",
+    "voting": "Voting"
   },
   "setup": {
     "example": "örneğin. yam.eth",
