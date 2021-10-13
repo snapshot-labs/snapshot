@@ -120,7 +120,8 @@
     "pattern": "不正な文字です",
     "minItems": "最低でも {0} 個必要です",
     "minStrategy": "最低でも１ストラテジー必要です",
-    "format": "Invalid format"
+    "format": "Invalid format",
+    "type": "Invalid type"
   },
   "create": {
     "question": "質問",
@@ -204,7 +205,10 @@
     "editValidation": "Edit validation",
     "selectValidation": "Select validation",
     "validationParameters": "Validation parameters",
-    "warningTextRecord": "You must set a text record on the ENS domain."
+    "warningTextRecord": "You must set a text record on the ENS domain.",
+    "votingDelay": "Voting delay",
+    "votingPeriod": "Voting period",
+    "voting": "Voting"
   },
   "setup": {
     "example": "例 yam.eth",
