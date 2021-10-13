@@ -120,7 +120,8 @@
     "pattern": "תו לא תקין",
     "minItems": "דרושים לפחות {0} פריטים",
     "minStrategy": "נדרשת לפחות אסטרטגיה אחת.",
-    "format": "פורמט לא חוקי"
+    "format": "פורמט לא חוקי",
+    "type": "Invalid type"
   },
   "create": {
     "question": "שאלה",
@@ -204,7 +205,10 @@
     "editValidation": "ערוך אימות",
     "selectValidation": "בחר אימות",
     "validationParameters": "פרמטרים לאימות",
-    "warningTextRecord": "עליך לקבוע text record בדומיין ה-ENS."
+    "warningTextRecord": "עליך לקבוע text record בדומיין ה-ENS.",
+    "votingDelay": "Voting delay",
+    "votingPeriod": "Voting period",
+    "voting": "Voting"
   },
   "setup": {
     "example": "לדוגמא yam.eth",
