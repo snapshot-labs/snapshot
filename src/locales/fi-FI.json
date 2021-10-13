@@ -120,7 +120,8 @@
     "pattern": "Väärä merkki",
     "minItems": "Vähintään {0} tuotetta vaaditaan",
     "minStrategy": "Ainakin yksi strategia tarvitaan.",
-    "format": "Muoto ei kelpaa"
+    "format": "Muoto ei kelpaa",
+    "type": "Invalid type"
   },
   "create": {
     "question": "Kysymys",
@@ -204,7 +205,10 @@
     "editValidation": "Muokkaa validointia",
     "selectValidation": "Valitse validointi",
     "validationParameters": "Validaatioparametrit",
-    "warningTextRecord": "Sinun on asetettava tekstitietue ENS -toimialueelle."
+    "warningTextRecord": "Sinun on asetettava tekstitietue ENS -toimialueelle.",
+    "votingDelay": "Voting delay",
+    "votingPeriod": "Voting period",
+    "voting": "Voting"
   },
   "setup": {
     "example": "e.g. yam.eth",
