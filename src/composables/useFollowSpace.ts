@@ -6,6 +6,7 @@ import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { FOLLOWS_QUERY } from '@/helpers/queries';
 import { useAliasAction } from '@/composables/useAliasAction';
 import client from '@/helpers/EIP712';
+import { useSpaceSubscription } from './useSpaceSubscription';
 
 const following = ref([]);
 const loadingFollows = ref(false);
@@ -15,6 +16,9 @@ export function useFollowSpace(spaceObj: any = {}) {
   const { modalAccountOpen } = useModal();
   const { apolloQuery } = useApolloQuery();
   const { setAlias, aliasWallet, isValidAlias, checkAlias } = useAliasAction();
+  const { toggleSubscription, isSubscribed } = useSpaceSubscription(
+    spaceObj?.id
+  );
 
   const loadingFollow = ref('');
   const hoverJoin = ref('');
@@ -74,6 +78,10 @@ export function useFollowSpace(spaceObj: any = {}) {
         follow(space);
       } else {
         if (isFollowing.value) {
+          // Also unsubscribe to the notifications if the user leaves the space.
+          if (isSubscribed) {
+            await toggleSubscription();
+          }
           await client.unfollow(aliasWallet.value, aliasWallet.value.address, {
             from: web3Account.value,
             space
