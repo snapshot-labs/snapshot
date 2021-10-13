@@ -335,7 +335,7 @@ watchEffect(async () => {
             <span v-if="!dateEnd">{{ $t('create.endDate') }}</span>
             <span v-else v-text="$d(dateEnd * 1e3, 'short', 'en-US')" />
           </UiButton>
-          <UiButton class="w-full mb-2">
+          <UiButton :loading="loadingSnapshot" class="w-full mb-2">
             <input
               v-model="form.snapshot"
               type="number"
