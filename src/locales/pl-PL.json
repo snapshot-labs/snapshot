@@ -120,7 +120,8 @@
     "pattern": "Nieprawidłowy znak",
     "minItems": "Wymagany minimum {0} elementów",
     "minStrategy": "At least one strategy is required.",
-    "format": "Nieprawidłowy format"
+    "format": "Nieprawidłowy format",
+    "type": "Invalid type"
   },
   "create": {
     "question": "Pytanie",
@@ -204,7 +205,10 @@
     "editValidation": "Edit validation",
     "selectValidation": "Select validation",
     "validationParameters": "Validation parameters",
-    "warningTextRecord": "You must set a text record on the ENS domain."
+    "warningTextRecord": "You must set a text record on the ENS domain.",
+    "votingDelay": "Voting delay",
+    "votingPeriod": "Voting period",
+    "voting": "Voting"
   },
   "setup": {
     "example": "np. yam.eth",
