@@ -530,7 +530,7 @@ watchEffect(async () => {
               <template v-slot:info>
                 <select
                   v-model="delayUnit"
-                  class="input text-center pr-1 pt-[3px] ml-2"
+                  class="input text-center mr-[6px] pt-[3px] ml-2"
                   required
                 >
                   <option value="h" selected>hours</option>
@@ -545,7 +545,7 @@ watchEffect(async () => {
               <template v-slot:info>
                 <select
                   v-model="periodUnit"
-                  class="input text-center pr-1 pt-[3px] ml-2"
+                  class="input text-center mr-[6px] pt-[3px] ml-2"
                   required
                 >
                   <option value="h" selected>hours</option>
