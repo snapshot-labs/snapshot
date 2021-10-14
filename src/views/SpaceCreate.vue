@@ -15,6 +15,7 @@ import { useApolloQuery } from '@/composables/useApolloQuery';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useClient } from '@/composables/useClient';
 import { useExtendedSpaces } from '@/composables/useExtendedSpaces';
+import { useI18n } from 'vue-i18n';
 
 const props = defineProps({
   spaceId: String,
@@ -28,6 +29,7 @@ const { domain } = useDomain();
 const { web3 } = useWeb3();
 const { send } = useClient();
 const { spaceLoading } = useExtendedSpaces();
+const { t } = useI18n();
 
 const loading = ref(false);
 const choices = ref([]);
@@ -213,9 +215,9 @@ watchEffect(async () => {
 watchEffect(() => {
   if (form.value.type === 'basic') {
     choices.value = [
-      { key: 1, text: 'For' },
-      { key: 2, text: 'Against' },
-      { key: 3, text: 'Abstain' }
+      { key: 1, text: t('voting.choices.for') },
+      { key: 2, text: t('voting.choices.against') },
+      { key: 3, text: t('voting.choices.abstain') }
     ];
   } else {
     choices.value = [];
