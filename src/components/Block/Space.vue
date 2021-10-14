@@ -1,8 +1,10 @@
 <script setup>
-import { computed } from 'vue';
+import { computed, ref, watchEffect } from 'vue';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useApp } from '@/composables/useApp';
+import { useSpaceSubscription } from '@/composables/useSpaceSubscription';
+import { useFollowSpace } from '@/composables/useFollowSpace';
 
 const props = defineProps({
   space: Object
@@ -26,6 +28,19 @@ const isAdmin = computed(() => {
     admins?.includes(web3Account.value.toLowerCase())
   );
 });
+
+const { loading, toggleSubscription, isSubscribed } = useSpaceSubscription(
+  props.space.id
+);
+
+const { isFollowing } = useFollowSpace(props.space);
+
+const notificationIcon = ref('notifications-off');
+
+watchEffect(() => {
+  if (isSubscribed.value) notificationIcon.value = 'notifications-on';
+  else notificationIcon.value = 'notifications-off';
+});
 </script>
 
 <template>
@@ -37,7 +52,22 @@ const isAdmin = computed(() => {
         <div class="mb-[12px] text-color">
           {{ $tc('members', nbrMembers, { count: _n(nbrMembers) }) }}
         </div>
-        <FollowButton :space="space" />
+        <div class="flex justify-center gap-x-2">
+          <FollowButton :space="space" />
+          <UiSidebarButton
+            class="inline"
+            v-if="isFollowing"
+            @click="toggleSubscription()"
+          >
+            <UiLoading v-if="loading" />
+            <Icon
+              v-else
+              size="20"
+              class="link-color"
+              :name="notificationIcon"
+            />
+          </UiSidebarButton>
+        </div>
       </div>
       <div class="py-3">
         <router-link

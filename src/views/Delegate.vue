@@ -22,7 +22,7 @@ import { sleep } from '@/helpers/utils';
 import { useApp } from '@/composables/useApp';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useTxStatus } from '@/composables/useTxStatus';
-import { useExtentedSpaces } from '@/composables/useExtentedSpaces';
+import { useExtendedSpaces } from '@/composables/useExtendedSpaces';
 
 const abi = ['function setDelegate(bytes32 id, address delegate)'];
 
@@ -34,7 +34,7 @@ const { explore } = useApp();
 const { web3 } = useWeb3();
 const { pendingCount } = useTxStatus();
 const { loadExtentedSpaces, extentedSpaces, spaceLoading } =
-  useExtentedSpaces();
+  useExtendedSpaces();
 
 const modalOpen = ref(false);
 const currentId = ref('');
