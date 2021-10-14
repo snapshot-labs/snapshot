@@ -112,6 +112,10 @@ const isValid = computed(() => {
   );
 });
 
+const enforceChoicePosition = computed(() => form.value.type === 'basic');
+const enforceChoiceText = computed(() => form.value.type === 'basic');
+const enforceNumberOfChoices = computed(() => form.value.type !== 'basic');
+
 function addChoice(num) {
   for (let i = 1; i <= num; i++) {
     counter.value++;
@@ -289,7 +293,7 @@ watchEffect(() => {
           <draggable
             v-model="choices"
             :component-data="{ name: 'list' }"
-            :disabled="form.type === 'basic'"
+            :disabled="enforceChoicePosition"
             item-key="id"
           >
             <template #item="{ element, index }">
@@ -297,13 +301,13 @@ watchEffect(() => {
                 v-model="element.text"
                 maxlength="32"
                 additionalInputClass="text-center"
-                :disabled="form.type === 'basic'"
+                :disabled="enforceChoiceText"
                 ><template v-slot:label
                   ><span class="text-skin-link">{{ index + 1 }}</span></template
                 >
                 <template v-slot:info
                   ><span
-                    v-if="form.type !== 'basic'"
+                    v-if="enforceNumberOfChoices"
                     @click="removeChoice(index)"
                   >
                     <Icon name="close" size="12" />
@@ -314,7 +318,7 @@ watchEffect(() => {
           </draggable>
         </div>
         <UiButton
-          v-if="form.type !== 'basic'"
+          v-if="enforceNumberOfChoices"
           @click="addChoice(1)"
           class="block w-full"
         >
