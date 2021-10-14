@@ -3,7 +3,8 @@ defineProps({
   open: {
     type: Boolean,
     required: true
-  }
+  },
+  selected: String
 });
 
 const emit = defineEmits(['close', 'update:modelValue']);
@@ -28,6 +29,13 @@ function select(id) {
       <h3>{{ $t('voting.selectVoting') }}</h3>
     </template>
     <div class="mt-4 mx-0 md:mx-4">
+      <a v-if="selected" @click="select(undefined)">
+        <Block>
+          <h3>
+            {{ $t('settings.anyType') }}
+          </h3>
+        </Block>
+      </a>
       <a v-for="type in types" :key="type" @click="select(type)">
         <Block class="button--submit">
           <h3 v-text="$t(`voting.${type}`)" />

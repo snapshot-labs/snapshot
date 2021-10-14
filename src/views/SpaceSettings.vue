@@ -38,6 +38,7 @@ const currentStrategyIndex = ref(false);
 const modalNetworksOpen = ref(false);
 const modalSkinsOpen = ref(false);
 const modalStrategyOpen = ref(false);
+const modalVotingTypeOpen = ref(false);
 const modalPluginsOpen = ref(false);
 const modalValidationOpen = ref(false);
 const loaded = ref(false);
@@ -230,6 +231,7 @@ watchEffect(async () => {
       space.voting = space.voting || {};
       space.voting.delay = space.voting?.delay || undefined;
       space.voting.period = space.voting?.period || undefined;
+      space.voting.type = space.voting?.type || undefined;
       currentSettings.value = clone(space);
       form.value = space;
     } catch (e) {
@@ -551,6 +553,20 @@ watchEffect(async () => {
                 </select>
               </template>
             </UiInput>
+            <UiInput>
+              <template v-slot:label>
+                {{ $t('settings.type') }}
+              </template>
+              <template v-slot:selected>
+                <div @click="modalVotingTypeOpen = true" class="w-full">
+                  {{
+                    form.voting?.type
+                      ? $t(`voting.${form.voting?.type}`)
+                      : $t('settings.anyType')
+                  }}
+                </div>
+              </template>
+            </UiInput>
           </Block>
           <Block :title="$t('plugins')">
             <div v-if="form?.plugins">
@@ -626,6 +642,12 @@ watchEffect(async () => {
       :validation="clone(form.validation)"
       @close="modalValidationOpen = false"
       @add="handleSubmitAddValidation"
+    />
+    <ModalVotingType
+      :open="modalVotingTypeOpen"
+      @close="modalVotingTypeOpen = false"
+      v-model="form.voting.type"
+      :selected="form.voting?.type"
     />
   </teleport>
 </template>
