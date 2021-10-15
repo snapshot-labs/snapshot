@@ -221,8 +221,12 @@
     "youDidIt": "تم نے یہ کیا!",
     "copied": "کاپی!",
     "proposalDeleted": "تجویز حذف کردی گئی",
-    "yourIsIn": "آپ کا {0} ہے!",
-    "somethingWentWrong": "اہ! کچھ غلط ہو گیا!"
+    "somethingWentWrong": "اہ! کچھ غلط ہو گیا!",
+    "saved": "Saved!",
+    "delegationSuccess": "Delegation successful",
+    "delegationRemoved": "Delegation removed",
+    "proposalCreated": "Proposal created",
+    "voteSuccessful": "Your vote is in!"
   },
   "explore": {
     "createStrategy": "سٹرٹیگے بنائے",
