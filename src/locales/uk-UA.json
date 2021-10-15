@@ -221,8 +221,12 @@
     "youDidIt": "Ви це зробили!",
     "copied": "Скопійовано!",
     "proposalDeleted": "Пропозицію видалено",
-    "yourIsIn": "Ваш {0} увійшов!",
-    "somethingWentWrong": "Ой, щось пішло не так!"
+    "somethingWentWrong": "Ой, щось пішло не так!",
+    "saved": "Saved!",
+    "delegationSuccess": "Delegation successful",
+    "delegationRemoved": "Delegation removed",
+    "proposalCreated": "Proposal created",
+    "voteSuccessful": "Your vote is in!"
   },
   "explore": {
     "createStrategy": "Створити стратегію",
