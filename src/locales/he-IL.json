@@ -221,8 +221,12 @@
     "youDidIt": "עשית זאת!",
     "copied": "הועתק!",
     "proposalDeleted": "הצעה נמחקה",
-    "yourIsIn": "ה{0} שלך בפנים!",
-    "somethingWentWrong": "אופס, משהו השתבש!"
+    "somethingWentWrong": "אופס, משהו השתבש!",
+    "saved": "Saved!",
+    "delegationSuccess": "Delegation successful",
+    "delegationRemoved": "Delegation removed",
+    "proposalCreated": "Proposal created",
+    "voteSuccessful": "Your vote is in!"
   },
   "explore": {
     "createStrategy": "צור אסטרטגיה",
