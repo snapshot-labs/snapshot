@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watchEffect, computed, onMounted } from 'vue';
+import { ref, watchEffect, computed, onMounted, inject } from 'vue';
 import { useRouter } from 'vue-router';
 import draggable from 'vuedraggable';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
@@ -15,6 +15,7 @@ import { useApolloQuery } from '@/composables/useApolloQuery';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useClient } from '@/composables/useClient';
 import { useExtendedSpaces } from '@/composables/useExtendedSpaces';
+import { useI18n } from 'vue-i18n';
 
 const props = defineProps({
   spaceId: String,
@@ -28,6 +29,8 @@ const { domain } = useDomain();
 const { web3 } = useWeb3();
 const { send } = useClient();
 const { spaceLoading } = useExtendedSpaces();
+const { t } = useI18n();
+const notify = inject('notify');
 
 const loading = ref(false);
 const choices = ref([]);
@@ -137,6 +140,7 @@ async function handleSubmit() {
   form.value.end = dateEnd.value;
   try {
     const { ipfsHash } = await send(props.space.id, 'proposal', form.value);
+    notify(['green', t('notify.proposalCreated')]);
     router.push({
       name: 'spaceProposal',
       params: {
