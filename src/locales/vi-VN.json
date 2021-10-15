@@ -221,8 +221,12 @@
     "youDidIt": "Bạn đã thực hiện nó!",
     "copied": "Đã sao chép!",
     "proposalDeleted": "Đề xuất bị xóa",
-    "yourIsIn": "Bạn {0} đã vào!",
-    "somethingWentWrong": "Rất tiếc, có gì đó không ổn!"
+    "somethingWentWrong": "Rất tiếc, có gì đó không ổn!",
+    "saved": "Saved!",
+    "delegationSuccess": "Delegation successful",
+    "delegationRemoved": "Delegation removed",
+    "proposalCreated": "Proposal created",
+    "voteSuccessful": "Your vote is in!"
   },
   "explore": {
     "createStrategy": "Tạo chiến lược",
