@@ -221,8 +221,12 @@
     "youDidIt": "你成功了!",
     "copied": "已复制！",
     "proposalDeleted": "提案被删除",
-    "yourIsIn": "您的 {0} 已经加入了！",
-    "somethingWentWrong": "哎呀，似乎出了点问题"
+    "somethingWentWrong": "哎呀，似乎出了点问题",
+    "saved": "Saved!",
+    "delegationSuccess": "Delegation successful",
+    "delegationRemoved": "Delegation removed",
+    "proposalCreated": "Proposal created",
+    "voteSuccessful": "Your vote is in!"
   },
   "explore": {
     "createStrategy": "创建策略",
