@@ -45,5 +45,12 @@
     "options": {
       "apiKey": "pk_live_9CE8FD92E54684ED"
     }
+  },
+  "gnosis": {
+    "id": "gnosis",
+    "name": "Gnosis Safe",
+    "options": {
+      "apiKey": "pk_live_9CE8FD92E54684ED"
+    }
   }
 }
