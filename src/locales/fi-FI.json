@@ -221,8 +221,12 @@
     "youDidIt": "Sinä teit sen!",
     "copied": "Kopioitu!",
     "proposalDeleted": "Ehdotus poistettu",
-    "yourIsIn": "Your {0} is inside!",
-    "somethingWentWrong": "Hups, jokin meni pieleen!"
+    "somethingWentWrong": "Hups, jokin meni pieleen!",
+    "saved": "Saved!",
+    "delegationSuccess": "Delegation successful",
+    "delegationRemoved": "Delegation removed",
+    "proposalCreated": "Proposal created",
+    "voteSuccessful": "Your vote is in!"
   },
   "explore": {
     "createStrategy": "Luo strategia",
