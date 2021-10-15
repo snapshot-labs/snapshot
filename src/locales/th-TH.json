@@ -221,8 +221,12 @@
     "youDidIt": "คุณทำได้แล้ว!",
     "copied": "ดำเนินการคัดลอกเรียบร้อย!",
     "proposalDeleted": "ดำเนินการลบข้อเสนอเรียบร้อย",
-    "yourIsIn": "{0} ของคุณอยู่ข้างใน!",
-    "somethingWentWrong": "ขออภัย! มีความผิดพลาดบางอย่างเกิดขึ้น"
+    "somethingWentWrong": "ขออภัย! มีความผิดพลาดบางอย่างเกิดขึ้น",
+    "saved": "Saved!",
+    "delegationSuccess": "Delegation successful",
+    "delegationRemoved": "Delegation removed",
+    "proposalCreated": "Proposal created",
+    "voteSuccessful": "Your vote is in!"
   },
   "explore": {
     "createStrategy": "สร้างกลยุทธ์",
