@@ -221,8 +221,12 @@
     "youDidIt": "Het is je gelukt!",
     "copied": "Gekopieerd!",
     "proposalDeleted": "Voorstel verwijderd",
-    "yourIsIn": "Uw {0} is geregistreerd!",
-    "somethingWentWrong": "Oeps, er ging iets mis!"
+    "somethingWentWrong": "Oeps, er ging iets mis!",
+    "saved": "Saved!",
+    "delegationSuccess": "Delegation successful",
+    "delegationRemoved": "Delegation removed",
+    "proposalCreated": "Proposal created",
+    "voteSuccessful": "Your vote is in!"
   },
   "explore": {
     "createStrategy": "Maak strategie",
