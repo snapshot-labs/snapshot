@@ -221,8 +221,12 @@
     "youDidIt": "संपूर्ण हुआ",
     "copied": "कॉपी किया गया!",
     "proposalDeleted": "प्रपोजल मिटा दिया गया",
-    "yourIsIn": "आपका {0} आया है!",
-    "somethingWentWrong": "ओह! कुछ गलत हो गया है"
+    "somethingWentWrong": "ओह! कुछ गलत हो गया है",
+    "saved": "Saved!",
+    "delegationSuccess": "Delegation successful",
+    "delegationRemoved": "Delegation removed",
+    "proposalCreated": "Proposal created",
+    "voteSuccessful": "Your vote is in!"
   },
   "explore": {
     "createStrategy": "स्ट्रेटेजी बनाये",
