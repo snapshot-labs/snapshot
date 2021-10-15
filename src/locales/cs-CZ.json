@@ -221,8 +221,12 @@
     "youDidIt": "Dokázals to!",
     "copied": "Kopie",
     "proposalDeleted": "návrh vybrán",
-    "yourIsIn": "Tvůj {0} je za!",
-    "somethingWentWrong": "Ups, něco se pokazilo!"
+    "somethingWentWrong": "Ups, něco se pokazilo!",
+    "saved": "Saved!",
+    "delegationSuccess": "Delegation successful",
+    "delegationRemoved": "Delegation removed",
+    "proposalCreated": "Proposal created",
+    "voteSuccessful": "Your vote is in!"
   },
   "explore": {
     "createStrategy": "Vytvořit strategii",
