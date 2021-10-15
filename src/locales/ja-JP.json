@@ -221,8 +221,12 @@
     "youDidIt": "おつかれさまです！",
     "copied": "コピーしました！",
     "proposalDeleted": "提案を削除しました",
-    "yourIsIn": "あなたの {0} が来ました",
-    "somethingWentWrong": "おっと、何か異常があったようです"
+    "somethingWentWrong": "おっと、何か異常があったようです",
+    "saved": "Saved!",
+    "delegationSuccess": "Delegation successful",
+    "delegationRemoved": "Delegation removed",
+    "proposalCreated": "Proposal created",
+    "voteSuccessful": "Your vote is in!"
   },
   "explore": {
     "createStrategy": "Create strategy",
