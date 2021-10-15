@@ -221,8 +221,12 @@
     "youDidIt": "Du har gjort det!",
     "copied": "Kopierar!",
     "proposalDeleted": "Förslag borttaget",
-    "yourIsIn": "Din {0} är i!",
-    "somethingWentWrong": "Oj! Något gick fel!"
+    "somethingWentWrong": "Oj! Något gick fel!",
+    "saved": "Saved!",
+    "delegationSuccess": "Delegation successful",
+    "delegationRemoved": "Delegation removed",
+    "proposalCreated": "Proposal created",
+    "voteSuccessful": "Your vote is in!"
   },
   "explore": {
     "createStrategy": "Skapa strategi",
