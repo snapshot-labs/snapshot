@@ -221,8 +221,12 @@
     "youDidIt": "Anda berhasil!",
     "copied": "Tersalin!",
     "proposalDeleted": "Proposal dihapus",
-    "yourIsIn": "{0} Anda telah masuk!",
-    "somethingWentWrong": "Amboy, sesuatu kesalahan telah terjadi!"
+    "somethingWentWrong": "Amboy, sesuatu kesalahan telah terjadi!",
+    "saved": "Saved!",
+    "delegationSuccess": "Delegation successful",
+    "delegationRemoved": "Delegation removed",
+    "proposalCreated": "Proposal created",
+    "voteSuccessful": "Your vote is in!"
   },
   "explore": {
     "createStrategy": "Buat strategi",
