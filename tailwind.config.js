@@ -1,5 +1,3 @@
-const plugin = require('tailwindcss/plugin');
-
 module.exports = {
   mode: 'jit',
   purge: ['./index.html', './src/**/*.{js,ts,vue}'],
@@ -63,19 +61,5 @@ module.exports = {
   variants: {
     extend: {}
   },
-  plugins: [
-    plugin(function ({ addUtilities }) {
-      const newUtilities = {
-        '.no-scrollbar::-webkit-scrollbar': {
-          display: 'none'
-        },
-        '.no-scrollbar': {
-          '-ms-overflow-style': 'none' /* IE and Edge */,
-          'scrollbar-width': 'none' /* Firefox */
-        }
-      };
-
-      addUtilities(newUtilities);
-    })
-  ]
+  plugins: []
 };
