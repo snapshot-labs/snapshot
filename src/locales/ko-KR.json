@@ -221,8 +221,12 @@
     "youDidIt": "해냈어!",
     "copied": "복사되었습니다!",
     "proposalDeleted": "제안이 삭제됨",
-    "yourIsIn": "귀하의 {0} 이다 안에!",
-    "somethingWentWrong": "아차, 뭔가 잘못!"
+    "somethingWentWrong": "아차, 뭔가 잘못!",
+    "saved": "Saved!",
+    "delegationSuccess": "Delegation successful",
+    "delegationRemoved": "Delegation removed",
+    "proposalCreated": "Proposal created",
+    "voteSuccessful": "Your vote is in!"
   },
   "explore": {
     "createStrategy": "전략 만들기",
