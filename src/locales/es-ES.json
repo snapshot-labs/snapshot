@@ -221,8 +221,12 @@
     "youDidIt": "¡Lo hiciste!",
     "copied": "¡Copiado!",
     "proposalDeleted": "Propuesta eliminada",
-    "yourIsIn": "¡Tu {0} está dentro!",
-    "somethingWentWrong": "¡Huy! ¡Algo salió mal!"
+    "somethingWentWrong": "¡Huy! ¡Algo salió mal!",
+    "saved": "Saved!",
+    "delegationSuccess": "Delegation successful",
+    "delegationRemoved": "Delegation removed",
+    "proposalCreated": "Proposal created",
+    "voteSuccessful": "Your vote is in!"
   },
   "explore": {
     "createStrategy": "Crear estrategia",
