@@ -221,8 +221,12 @@
     "youDidIt": "У вас получилось!",
     "copied": "Скопировано!",
     "proposalDeleted": "Опрос удалён",
-    "yourIsIn": "Ваш {0} сохранен!",
-    "somethingWentWrong": "Ой, что-то пошло не так!"
+    "somethingWentWrong": "Ой, что-то пошло не так!",
+    "saved": "Saved!",
+    "delegationSuccess": "Delegation successful",
+    "delegationRemoved": "Delegation removed",
+    "proposalCreated": "Proposal created",
+    "voteSuccessful": "Your vote is in!"
   },
   "explore": {
     "createStrategy": "Создать стратегию",
