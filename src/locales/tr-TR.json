@@ -221,8 +221,12 @@
     "youDidIt": "Başardınız!",
     "copied": "Kopyalandı!",
     "proposalDeleted": "Teklif silindi",
-    "yourIsIn": "{0}'iniz içeride!",
-    "somethingWentWrong": "Hoop! Birşeyler yanlış gitti!"
+    "somethingWentWrong": "Hoop! Birşeyler yanlış gitti!",
+    "saved": "Saved!",
+    "delegationSuccess": "Delegation successful",
+    "delegationRemoved": "Delegation removed",
+    "proposalCreated": "Proposal created",
+    "voteSuccessful": "Your vote is in!"
   },
   "explore": {
     "createStrategy": "Strateji oluştur",
