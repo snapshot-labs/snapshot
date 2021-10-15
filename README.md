@@ -20,6 +20,8 @@ Snapshot is an off-chain gasless multi-governance client with easy to verify and
 yarn
 ```
 
+Copy [`.env.example`](https://github.com/snapshot-labs/snapshot/blob/master/.env.example), rename it to `.env` and adjust the values if needed.
+
 ### Compiles and hot-reloads for development
 
 ```
