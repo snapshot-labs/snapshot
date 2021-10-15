@@ -221,8 +221,12 @@
     "youDidIt": "Du gjorde det!",
     "copied": "Kopieret",
     "proposalDeleted": "Forslag slettet",
-    "yourIsIn": "Din {0} er ind!",
-    "somethingWentWrong": "Ups, noget gik galt!"
+    "somethingWentWrong": "Ups, noget gik galt!",
+    "saved": "Saved!",
+    "delegationSuccess": "Delegation successful",
+    "delegationRemoved": "Delegation removed",
+    "proposalCreated": "Proposal created",
+    "voteSuccessful": "Your vote is in!"
   },
   "explore": {
     "createStrategy": "Opret strategi",
