@@ -221,8 +221,12 @@
     "youDidIt": "لقد نجحت!",
     "copied": "تم النسخ!",
     "proposalDeleted": "تم حذف الاقتراح",
-    "yourIsIn": "تم اعتماد{0} الخاص بك!",
-    "somethingWentWrong": "عفوا، حدث خطأ ما!"
+    "somethingWentWrong": "عفوا، حدث خطأ ما!",
+    "saved": "Saved!",
+    "delegationSuccess": "Delegation successful",
+    "delegationRemoved": "Delegation removed",
+    "proposalCreated": "Proposal created",
+    "voteSuccessful": "Your vote is in!"
   },
   "explore": {
     "createStrategy": "إنشاء استراتيجية",
