@@ -221,8 +221,12 @@
     "youDidIt": "Uspjeh!",
     "copied": "Kopirano!",
     "proposalDeleted": "Predlog izbrisan",
-    "yourIsIn": "Vaš {0} je sačuvan!",
-    "somethingWentWrong": "Ups, nešto je pošlo po zlu!"
+    "somethingWentWrong": "Ups, nešto je pošlo po zlu!",
+    "saved": "Saved!",
+    "delegationSuccess": "Delegation successful",
+    "delegationRemoved": "Delegation removed",
+    "proposalCreated": "Proposal created",
+    "voteSuccessful": "Your vote is in!"
   },
   "explore": {
     "createStrategy": "Create strategy",
