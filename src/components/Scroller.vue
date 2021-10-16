@@ -100,7 +100,7 @@ onMounted(() => {
       <div
         class="flex flex-col h-[calc(100%-78px)] items-center space-y-2 pt-2"
       >
-        <div class="flex items-center">
+        <div class="flex items-center justify-center relative w-full">
           <UiUnreadIndicator v-if="hasUnseenProposals()" />
           <router-link :to="{ name: 'timeline' }">
             <UiSidebarButton>
