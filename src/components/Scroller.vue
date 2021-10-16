@@ -87,7 +87,7 @@ onMounted(() => {
       bg-skin-block-bg
     "
   >
-    <div class="flex flex-col h-full overflow-scroll menu-tabs">
+    <div class="flex flex-col h-full overflow-auto no-scrollbar">
       <div class="min-h-[78px] h-[78px] flex items-center justify-center">
         <router-link :to="{ path: '/' }">
           <Icon
