@@ -153,7 +153,7 @@
     "allSpaces": "Para todos os espaços",
     "delegated": "Delegado a você",
     "pendingTransaction": "sem transações pendentes | 1 transação pendente | {count} transações pendentes",
-    "topDelegates": "Top delegates"
+    "topDelegates": "Principais delegados"
   },
   "proposal": {
     "castVote": "Votar",
@@ -209,8 +209,8 @@
     "votingDelay": "Atraso na votação",
     "votingPeriod": "Período de votação",
     "voting": "Votar",
-    "type": "Type",
-    "anyType": "Any"
+    "type": "Modelo",
+    "anyType": "Qualquer"
   },
   "setup": {
     "example": "p. ex. yam.eth",
@@ -222,11 +222,11 @@
     "copied": "Copiado!",
     "proposalDeleted": "Proposta excluída",
     "somethingWentWrong": "Ops, algo correu mal!",
-    "saved": "Saved!",
-    "delegationSuccess": "Delegation successful",
-    "delegationRemoved": "Delegation removed",
-    "proposalCreated": "Proposal created",
-    "voteSuccessful": "Your vote is in!"
+    "saved": "Guardado!",
+    "delegationSuccess": "Delegação bem sucedida",
+    "delegationRemoved": "Delegação removida",
+    "proposalCreated": "Proposta criada",
+    "voteSuccessful": "Seu voto foi processado!"
   },
   "explore": {
     "createStrategy": "Criar estratégia",
@@ -255,23 +255,23 @@
     }
   },
   "safeSnap": {
-    "currentOutcome": "Current outcome",
-    "currentBond": "Current bond",
+    "currentOutcome": "Resultado atual",
+    "currentBond": "Vínculo atual",
     "finalizedIn": "{0} finalizado",
     "executableIn": "Executável {0}",
-    "finalOutcome": "Outcome",
-    "nextBond": "Bond to set outcome",
-    "setOutcomeTo": "Set outcome to",
+    "finalOutcome": "Resultado",
+    "nextBond": "Contexto",
+    "setOutcomeTo": "Definir resultado para",
     "claimBond": "Alegar bond",
-    "addBatch": "Add transaction batch",
-    "batch": "Transaction batch",
-    "transactions": "Transactions",
-    "to": "To (address)",
-    "invalidAddress": "Invalid address",
-    "invalidAmount": "Invalid amount",
-    "invalidValue": "Invalid value",
-    "invalidAbi": "Invalid ABI",
-    "invalidData": "Invalid data",
+    "addBatch": "Adicionar lote de transação",
+    "batch": "Lote de transação",
+    "transactions": "Transações",
+    "to": "Endereçar",
+    "invalidAddress": "Adresso inválido",
+    "invalidAmount": "Quantia inválida",
+    "invalidValue": "Valor inválido",
+    "invalidAbi": "ABI inválido",
+    "invalidData": "Dados Inválidos",
     "value": "Value (wei)",
     "data": "Data",
     "noCollectibles": "No collectibles",
