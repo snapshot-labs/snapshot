@@ -121,7 +121,7 @@
     "minItems": "Mínimo {0} item(s) obrigatório(s)",
     "minStrategy": "É necessária pelo menos uma estratégia.",
     "format": "Formato inválido",
-    "type": "Invalid type"
+    "type": "Contexto"
   },
   "create": {
     "question": "Pergunta",
@@ -187,7 +187,7 @@
     "network": "Rede",
     "symbol": "Símbolo",
     "skin": "Skin",
-    "customDomain": "Custom domain",
+    "customDomain": "Domínio Personalizado",
     "domain": "Nome do domínio",
     "strategies": "Estratégia(s)",
     "hideSpace": "Ocultar comunidade da página inicial",
@@ -206,9 +206,9 @@
     "selectValidation": "Selecionar validação",
     "validationParameters": "Parâmetros de validação",
     "warningTextRecord": "Você deve definir um registro de texto no domínio ENS.",
-    "votingDelay": "Voting delay",
-    "votingPeriod": "Voting period",
-    "voting": "Voting",
+    "votingDelay": "Atraso na votação",
+    "votingPeriod": "Período de votação",
+    "voting": "Votar",
     "type": "Type",
     "anyType": "Any"
   },
