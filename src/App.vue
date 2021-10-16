@@ -49,7 +49,7 @@ watch(modalOpen, val => {
 </script>
 
 <template>
-  <div :class="skin" id="app" class="overflow-hidden pb-4 font-serif text-base">
+  <div :class="skin" class="overflow-hidden pb-4 font-serif text-base">
     <UiLoading v-if="app.loading || !app.init" class="overlay big" />
     <div v-else>
       <Scroller />
