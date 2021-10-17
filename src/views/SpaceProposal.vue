@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, watch, onMounted } from 'vue';
+import { ref, computed, watch, onMounted, inject } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { getProposal, getResults, getPower } from '@/helpers/snapshot';
 import { useModal } from '@/composables/useModal';
@@ -26,6 +26,7 @@ const { t } = useI18n();
 const { web3 } = useWeb3();
 const { send } = useClient();
 const { getExplore } = useApp();
+const notify = inject('notify');
 
 const modalOpen = ref(false);
 const selectedChoices = ref(null);
@@ -121,6 +122,7 @@ async function deleteProposal() {
         proposal: id
       })
     ) {
+      notify(['green', t('notify.proposalDeleted')]);
       dropdownLoading.value = false;
       getExplore();
       router.push({

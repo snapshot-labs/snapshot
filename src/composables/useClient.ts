@@ -23,12 +23,6 @@ export function useClient() {
         type,
         payload
       );
-      notify([
-        'green',
-        type === 'delete-proposal'
-          ? t('notify.proposalDeleted')
-          : t('notify.yourIsIn', [type])
-      ]);
       return result;
     } catch (e: any) {
       const errorMessage =

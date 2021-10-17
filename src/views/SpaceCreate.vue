@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watchEffect, computed, onMounted } from 'vue';
+import { ref, watchEffect, computed, onMounted, inject } from 'vue';
 import { useRouter } from 'vue-router';
 import draggable from 'vuedraggable';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
@@ -15,6 +15,8 @@ import { useApolloQuery } from '@/composables/useApolloQuery';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useClient } from '@/composables/useClient';
 import { useApp } from '@/composables/useApp';
+import { useExtendedSpaces } from '@/composables/useExtendedSpaces';
+import { useI18n } from 'vue-i18n';
 
 const props = defineProps({
   spaceId: String,
@@ -28,6 +30,9 @@ const { domain } = useDomain();
 const { web3 } = useWeb3();
 const { send } = useClient();
 const { getExplore } = useApp();
+const { spaceLoading } = useExtendedSpaces();
+const { t } = useI18n();
+const notify = inject('notify');
 
 const loading = ref(false);
 const choices = ref([]);
@@ -68,9 +73,22 @@ watchEffect(async () => {
       '',
       clone(validationParams)
     );
+
     passValidation.value = [isValid, validationName];
     console.log('Pass validation?', isValid, validationName);
   }
+});
+
+const dateStart = computed(() => {
+  return props.space.voting?.delay
+    ? new Date().getTime() / 1000 + props.space.voting.delay
+    : form.value.start;
+});
+
+const dateEnd = computed(() => {
+  return props.space.voting?.period && dateStart.value
+    ? dateStart.value + props.space.voting.period
+    : form.value.end;
 });
 
 const isValid = computed(() => {
@@ -83,10 +101,10 @@ const isValid = computed(() => {
     !loading.value &&
     form.value.name &&
     form.value.body.length <= bodyLimit.value &&
-    form.value.start &&
+    dateStart.value &&
     // form.value.start >= ts &&
-    form.value.end &&
-    form.value.end > form.value.start &&
+    dateEnd.value &&
+    dateEnd.value > dateStart.value &&
     form.value.snapshot &&
     form.value.snapshot > blockNumber.value / 2 &&
     choices.value.length >= 2 &&
@@ -120,9 +138,12 @@ async function handleSubmit() {
   form.value.choices = choices.value.map(choice => choice.text);
   form.value.metadata.network = props.space.network;
   form.value.metadata.strategies = props.space.strategies;
+  form.value.start = dateStart.value;
+  form.value.end = dateEnd.value;
   try {
     const { ipfsHash } = await send(props.space.id, 'proposal', form.value);
     getExplore();
+    notify(['green', t('notify.proposalCreated')]);
     router.push({
       name: 'spaceProposal',
       params: {
@@ -193,6 +214,7 @@ watchEffect(async () => {
     form.value.snapshot = blockNumber.value;
     loadingSnapshot.value = false;
   }
+  if (props.space.voting?.type) form.value.type = props.space.voting.type;
 });
 </script>
 
@@ -265,7 +287,7 @@ watchEffect(async () => {
               <UiInput
                 v-model="element.text"
                 maxlength="32"
-                additionalClass="text-center"
+                additionalInputClass="text-center"
                 ><template v-slot:label
                   ><span class="text-skin-link">{{ index + 1 }}</span></template
                 >
@@ -298,25 +320,34 @@ watchEffect(async () => {
             ? 'stars'
             : undefined
         "
+        :loading="spaceLoading"
         @submit="modalProposalPluginsOpen = true"
       >
         <div class="mb-2">
-          <UiButton class="w-full mb-2" @click="modalVotingTypeOpen = true">
-            <span>{{ $t(`voting.${form.type}`) }}</span>
+          <UiButton
+            class="w-full mb-2"
+            :disabled="props.space.voting?.type"
+            @click="modalVotingTypeOpen = true"
+          >
+            <span>{{
+              $t(`voting.${props.space.voting?.type ?? form.type}`)
+            }}</span>
           </UiButton>
           <UiButton
             @click="(modalOpen = true), (selectedDate = 'start')"
+            :disabled="props.space.voting?.delay"
             class="w-full mb-2"
           >
-            <span v-if="!form.start">{{ $t('create.startDate') }}</span>
-            <span v-else v-text="$d(form.start * 1e3, 'short', 'en-US')" />
+            <span v-if="!dateStart">{{ $t('create.startDate') }}</span>
+            <span v-else v-text="$d(dateStart * 1e3, 'short', 'en-US')" />
           </UiButton>
           <UiButton
             @click="(modalOpen = true), (selectedDate = 'end')"
+            :disabled="props.space.voting?.period"
             class="w-full mb-2"
           >
-            <span v-if="!form.end">{{ $t('create.endDate') }}</span>
-            <span v-else v-text="$d(form.end * 1e3, 'short', 'en-US')" />
+            <span v-if="!dateEnd">{{ $t('create.endDate') }}</span>
+            <span v-else v-text="$d(dateEnd * 1e3, 'short', 'en-US')" />
           </UiButton>
           <UiButton :loading="loadingSnapshot" class="w-full mb-2">
             <input

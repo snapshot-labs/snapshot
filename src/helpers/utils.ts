@@ -134,3 +134,13 @@ export function n(number, format = '(0.[00]a)') {
 export function ms(number) {
   return format(number * 1e3);
 }
+
+export function calcFromSeconds(value, unit) {
+  if (unit === 'h') return Math.floor(value / (60 * 60));
+  if (unit === 'd') return Math.floor(value / (60 * 60 * 24));
+}
+
+export function calcToSeconds(value, unit) {
+  if (unit === 'h') return value * 60 * 60;
+  if (unit === 'd') return value * 60 * 60 * 24;
+}
