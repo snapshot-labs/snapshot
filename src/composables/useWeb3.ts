@@ -4,6 +4,7 @@ import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { formatUnits } from '@ethersproject/units';
 import { getProfiles } from '@/helpers/profile';
+import { SafeAppProvider } from '@gnosis.pm/safe-apps-provider';
 
 let auth;
 const defaultNetwork: any =
@@ -14,7 +15,8 @@ const state = reactive({
   network: networks[defaultNetwork],
   authLoading: false,
   profile: null,
-  walletConnectType: null
+  walletConnectType: null,
+  isGnosisSafe: false
 });
 
 export function useWeb3() {
@@ -74,6 +76,7 @@ export function useWeb3() {
       state.account = acc;
       state.walletConnectType =
         auth.provider.value?.wc?.peerMeta?.name || 'unknown';
+      state.isGnosisSafe = auth.provider.value instanceof SafeAppProvider;
       state.profile = profiles[acc];
     } catch (e) {
       state.account = '';

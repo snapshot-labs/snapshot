@@ -11,7 +11,9 @@ export function useClient() {
   const { notify } = useNotifications();
 
   async function send(space, type, payload) {
-    const isSafe = web3.value?.walletConnectType === 'Gnosis Safe Multisig';
+    const isSafe =
+      web3.value?.walletConnectType === 'Gnosis Safe Multisig' ||
+      web3.value.isGnosisSafe;
     try {
       const fn = isSafe
         ? client.sign.bind(client)
