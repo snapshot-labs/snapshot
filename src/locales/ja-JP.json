@@ -99,7 +99,7 @@
   "defaultSkin": "デフォルトのスキン",
   "select": "選択する",
   "language": "言語",
-  "agree": "I agree",
+  "agree": "同意する",
   "mustAgreeToTerms": "Before you can complete this action, you must agree to {0} terms of service here:",
   "playground": "Playground",
   "strategyParams": "Strategy params",
