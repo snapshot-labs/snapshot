@@ -2,6 +2,7 @@
 import { ref, computed, toRefs, watch } from 'vue';
 import { useSearchFilters } from '@/composables/useSearchFilters';
 import { clone } from '@/helpers/utils';
+import isEmpty from 'lodash/isEmpty';
 
 const defaultParams = {
   symbol: 'DAI',
@@ -37,6 +38,16 @@ function handleSubmit() {
   strategyObj.params = JSON.parse(strategyObj.params);
   emit('add', strategyObj);
   emit('close');
+}
+
+function handleClick(strategy) {
+  const { params } = strategy.examples[0].strategy;
+  const hasStrategy = !isEmpty(params);
+
+  input.value = {
+    name: strategy.key,
+    params: hasStrategy ? JSON.stringify(params, null, 2) : ''
+  };
 }
 
 watch(open, () => {
@@ -92,7 +103,7 @@ watch(open, () => {
         <a
           v-for="strategy in strategies"
           :key="strategy.key"
-          @click="input.name = strategy.key"
+          @click="handleClick(strategy)"
         >
           <BlockStrategy :strategy="strategy" />
         </a>
