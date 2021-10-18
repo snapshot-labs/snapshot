@@ -55,10 +55,10 @@ async function loadProposals(skip = 0) {
   proposals.value = proposals.value.concat(proposalsObj);
 }
 
-const { profiles, addressArray } = useProfiles();
+const { profiles, updateAddressArray } = useProfiles();
 
 watch(proposals, () => {
-  addressArray.value = proposals.value.map(proposal => proposal.author);
+  updateAddressArray(proposals.value.map(proposal => proposal.author));
 });
 
 // Initialize
