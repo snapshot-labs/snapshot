@@ -90,23 +90,6 @@ watch(open, () => (step.value = null));
             <Icon name="external-link" class="ml-1" />
           </UiButton>
         </a>
-        <a
-          v-if="web3.profile?.name || web3.profile?.image"
-          :href="`https://3box.io/${web3.account}/edit`"
-          target="_blank"
-          class="mb-2 block"
-        >
-          <UiButton class="button-outline w-full">
-            {{ $t('edit3box') }}
-            <Icon name="external-link" class="ml-1" />
-          </UiButton>
-        </a>
-        <a v-else href="https://3box.io/hub" target="_blank" class="mb-2 block">
-          <UiButton class="button-outline w-full">
-            {{ $t('create3box') }}
-            <Icon name="external-link" class="ml-1" />
-          </UiButton>
-        </a>
         <UiButton @click="step = 'connect'" class="button-outline w-full mb-2">
           {{ $t('connectWallet') }}
         </UiButton>
