@@ -33,7 +33,6 @@ const skin = computed(() => {
     if (userSkin.value === 'dark-mode')
       skinClass += ` ${space.value.skin}-dark-mode`;
     return skinClass;
-    
   }
   return userSkin.value;
 });
@@ -50,11 +49,7 @@ watch(modalOpen, val => {
 </script>
 
 <template>
-  <div
-    :class="skin"
-    id="app"
-    class="overflow-hidden pb-4 font-serif text-base"
-  >
+  <div :class="skin" id="app" class="overflow-hidden pb-4 font-serif text-base">
     <UiLoading v-if="app.loading || !app.init" class="overlay big" />
     <div v-else>
       <Scroller />
