@@ -24,14 +24,6 @@ defineProps({
       :proposalConfig="proposal.plugins.gnosis"
       :choices="proposal.choices"
     />
-    <PluginSafeSnapCustomBlock
-      v-if="proposal.plugins?.safeSnap?.txs"
-      :proposalConfig="proposal.plugins.safeSnap"
-      :proposalEnd="proposal.end"
-      :proposalId="id"
-      :moduleAddress="space.plugins?.safeSnap?.address"
-      :network="space.network"
-    />
     <PluginQuorumCustomBlock
       :loaded="loadedResults"
       v-if="space.plugins?.quorum"
