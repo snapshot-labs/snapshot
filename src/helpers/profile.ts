@@ -85,12 +85,10 @@ export async function getProfiles(addresses) {
 
   const profiles = Object.fromEntries(addresses.map(address => [address, {}]));
   return Object.fromEntries(
-    await Promise.all(
-      Object.entries(profiles).map(([address, profile]) => {
-        profile = _3BoxProfiles[address.toLowerCase()] || {};
-        profile.ens = ensNames[address.toLowerCase()] || '';
-        return [address, profile];
-      })
-    )
+    Object.entries(profiles).map(([address, profile]) => {
+      profile = _3BoxProfiles[address.toLowerCase()] || {};
+      profile.ens = ensNames[address.toLowerCase()] || '';
+      return [address, profile];
+    })
   );
 }
