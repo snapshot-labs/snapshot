@@ -1,9 +1,6 @@
 import namehash from 'eth-ens-namehash';
-import getProvider, {
-  getBatchedProvider
-} from '@snapshot-labs/snapshot.js/src/utils/provider';
+import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import { subgraphRequest, call } from '@snapshot-labs/snapshot.js/src/utils';
-import zipObject from 'lodash/zipObject';
 
 function get3BoxProfiles(addresses) {
   return new Promise((resolove, reject) => {
@@ -73,38 +70,15 @@ function lookupAddresses(addresses) {
   });
 }
 
-async function getENSAvatars(ensNames: string[], provider) {
-  const avatars = await Promise.all(
-    ensNames.map(ens => {
-      if (ens) {
-        return provider.getResolver(ens).then(resolver => {
-          return resolver?.getText('avatar').then(avatar => {
-            if (avatar && avatar.length > 0) {
-              return avatar;
-            }
-            return '';
-          });
-        });
-      }
-      return '';
-    })
-  );
-
-  return zipObject(ensNames, avatars);
-}
-
 export async function getProfiles(addresses) {
   addresses = addresses.slice(0, 1000);
   let ensNames: any = {};
   let _3BoxProfiles: any = {};
-  let ensAvatars: any = {};
-  const provider = getBatchedProvider('1');
   try {
     [ensNames, _3BoxProfiles] = await Promise.all([
       lookupAddresses(addresses),
       get3BoxProfiles(addresses)
     ]);
-    ensAvatars = await getENSAvatars(Object.values(ensNames), provider);
   } catch (e) {
     console.log(e);
   }
@@ -112,15 +86,9 @@ export async function getProfiles(addresses) {
   const profiles = Object.fromEntries(addresses.map(address => [address, {}]));
   return Object.fromEntries(
     await Promise.all(
-      Object.entries(profiles).map(async ([address, profile]) => {
+      Object.entries(profiles).map(([address, profile]) => {
         profile = _3BoxProfiles[address.toLowerCase()] || {};
         profile.ens = ensNames[address.toLowerCase()] || '';
-        if (profile.ens) {
-          const ensAvatar = ensAvatars[profile.ens];
-          if (ensAvatar?.length > 0) {
-            profile.image = ensAvatar;
-          }
-        }
         return [address, profile];
       })
     )
