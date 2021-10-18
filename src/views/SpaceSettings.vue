@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref, watchEffect } from 'vue';
+import { computed, ref, watchEffect, inject } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useSearchFilters } from '@/composables/useSearchFilters';
 import { getAddress } from '@ethersproject/address';
@@ -29,6 +29,7 @@ const { t } = useI18n();
 const { copyToClipboard } = useCopy();
 const { web3 } = useWeb3();
 const { send } = useClient();
+const notify = inject('notify');
 
 const currentSettings = ref({});
 const currentTextRecord = ref('');
@@ -117,6 +118,7 @@ async function handleSubmit() {
     try {
       await send(props.spaceId, 'settings', form.value);
       await props.loadExtentedSpaces([props.spaceId]);
+      notify(['green', t('notify.saved')]);
     } catch (e) {
       console.log(e);
     }
@@ -530,7 +532,7 @@ watchEffect(async () => {
               <template v-slot:info>
                 <select
                   v-model="delayUnit"
-                  class="input text-center pr-1 pt-[3px] ml-2"
+                  class="input text-center mr-[6px] pt-[3px] ml-2"
                   required
                 >
                   <option value="h" selected>hours</option>
@@ -545,7 +547,7 @@ watchEffect(async () => {
               <template v-slot:info>
                 <select
                   v-model="periodUnit"
-                  class="input text-center pr-1 pt-[3px] ml-2"
+                  class="input text-center mr-[6px] pt-[3px] ml-2"
                   required
                 >
                   <option value="h" selected>hours</option>

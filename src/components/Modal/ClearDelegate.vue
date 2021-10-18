@@ -1,8 +1,7 @@
 <script setup>
-import { ref, watchEffect } from 'vue';
+import { ref, watchEffect, inject } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useUsername } from '@/composables/useUsername';
-import { useNotifications } from '@/composables/useNotifications';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { sendTransaction } from '@snapshot-labs/snapshot.js/src/utils';
 import { formatBytes32String } from '@ethersproject/strings';
@@ -23,12 +22,11 @@ const emit = defineEmits(['close', 'reload']);
 
 const auth = getInstance();
 const { t } = useI18n();
+const { address, profile, username } = useUsername();
+const notify = inject('notify');
 
 const loading = ref(false);
 const { pendingCount } = useTxStatus();
-
-const { address, profile, username } = useUsername();
-const { notify } = useNotifications();
 
 watchEffect(() => {
   address.value = props.delegate;
@@ -51,7 +49,7 @@ async function handleSubmit() {
     const receipt = await tx.wait();
     console.log('Receipt', receipt);
     await sleep(3e3);
-    notify(t('notify.youDidIt'));
+    notify(t('notify.delegationRemoved'));
     pendingCount.value--;
     emit('reload');
   } catch (e) {
