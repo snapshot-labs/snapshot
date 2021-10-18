@@ -49,7 +49,7 @@ const form = ref({
   id: route.params.key || ''
 });
 
-const { profiles, addressArray } = useProfiles();
+const { profiles, updateAddressArray } = useProfiles();
 
 const web3Account = computed(() => web3.value.account);
 const networkKey = computed(() => web3.value.network.key);
@@ -170,10 +170,12 @@ async function getDelegatesWithScore() {
 }
 
 watchEffect(() => {
-  addressArray.value = delegates.value
-    .map(delegate => delegate.delegate)
-    .concat(delegators.value.map(delegator => delegator.delegator))
-    .concat(delegatesWithScore.value.map(delegate => delegate.delegate));
+  updateAddressArray(
+    delegates.value
+      .map(delegate => delegate.delegate)
+      .concat(delegators.value.map(delegator => delegator.delegator))
+      .concat(delegatesWithScore.value.map(delegate => delegate.delegate))
+  );
 });
 
 watch(web3Account, (val, prev) => {
