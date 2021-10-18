@@ -60,6 +60,21 @@
   }
 }
 
+@layer utilities {
+  // This allows us to use 'no-scrollbar' with Tailwind breakpoints like this 'md:no-scrollbar'
+  @variants responsive {
+    /* Chrome, Safari and Opera */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+
+    .no-scrollbar {
+      -ms-overflow-style: none; /* IE and Edge */
+      scrollbar-width: none; /* Firefox */
+    }
+  }
+}
+
 html,
 body,
 #app {
@@ -139,6 +154,10 @@ textarea {
   font-size: 16px;
 }
 
+select {
+  background-color: var(--bg-color) !important;
+}
+
 .column {
   width: 160px;
 }
@@ -207,14 +226,6 @@ textarea {
   &:first-letter {
     text-transform: capitalize;
   }
-}
-
-.menu-tabs {
-  white-space: nowrap;
-}
-
-.menu-tabs::-webkit-scrollbar {
-  display: none;
 }
 
 .extra-icon-container {

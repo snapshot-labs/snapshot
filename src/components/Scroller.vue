@@ -87,7 +87,7 @@ onMounted(() => {
       bg-skin-block-bg
     "
   >
-    <div class="flex flex-col h-full overflow-scroll menu-tabs">
+    <div class="flex flex-col h-full overflow-auto no-scrollbar">
       <div class="min-h-[78px] h-[78px] flex items-center justify-center">
         <router-link :to="{ path: '/' }">
           <Icon
@@ -100,7 +100,7 @@ onMounted(() => {
       <div
         class="flex flex-col h-[calc(100%-78px)] items-center space-y-2 pt-2"
       >
-        <div class="flex items-center">
+        <div class="flex items-center justify-center relative w-full">
           <UiUnreadIndicator v-if="hasUnseenProposals()" />
           <router-link :to="{ name: 'timeline' }">
             <UiSidebarButton>

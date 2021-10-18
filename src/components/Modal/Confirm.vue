@@ -1,7 +1,8 @@
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, inject } from 'vue';
 import { getChoiceString } from '@/helpers/utils';
 import { useClient } from '@/composables/useClient';
+import { useI18n } from 'vue-i18n';
 
 const props = defineProps({
   open: Boolean,
@@ -17,13 +18,15 @@ const props = defineProps({
 const emit = defineEmits(['reload', 'close']);
 
 const { send } = useClient();
+const { t } = useI18n();
+const notify = inject('notify');
+const format = getChoiceString;
 
 const loading = ref(false);
+
 const symbols = computed(() =>
   props.strategies.map(strategy => strategy.params.symbol)
 );
-
-const format = getChoiceString;
 
 async function handleSubmit() {
   loading.value = true;
@@ -32,6 +35,7 @@ async function handleSubmit() {
     choice: props.selectedChoices,
     metadata: {}
   });
+  notify(['green', t('notify.voteSuccessful')]);
   emit('reload');
   emit('close');
   loading.value = false;

@@ -55,10 +55,10 @@ function sortVotesUserFirst() {
   return votes;
 }
 
-const { profiles, addressArray } = useProfiles();
+const { profiles, updateAddressArray } = useProfiles();
 
 watch(votes, () => {
-  addressArray.value = votes.value.map(vote => vote.voter);
+  updateAddressArray(votes.value.map(vote => vote.voter));
 });
 </script>
 

@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 1946815 */
-  src: url('iconfont.woff2?t=1627302472360') format('woff2'),
-       url('iconfont.woff?t=1627302472360') format('woff'),
-       url('iconfont.ttf?t=1627302472360') format('truetype');
+  src: url('iconfont.woff2?t=1632986541203') format('woff2'),
+       url('iconfont.woff?t=1632986541203') format('woff'),
+       url('iconfont.ttf?t=1632986541203') format('truetype');
 }
 
 .iconfont {
@@ -11,6 +11,50 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.iconremind:before {
+  content: "\e69e";
+}
+
+.iconemoji:before {
+  content: "\e709";
+}
+
+.iconflag_fill:before {
+  content: "\e711";
+}
+
+.iconmine:before {
+  content: "\e732";
+}
+
+.iconmore:before {
+  content: "\e736";
+}
+
+.iconpeople:before {
+  content: "\e73d";
+}
+
+.iconstealth_fill:before {
+  content: "\e75f";
+}
+
+.iconnotifications-on:before {
+  content: "\ec64";
+}
+
+.iconnotifications:before {
+  content: "\e630";
+}
+
+.iconnotifications-off:before {
+  content: "\e6e4";
+}
+
+.iconstamp:before {
+  content: "\e6de";
 }
 
 .iconinsertlink:before {
