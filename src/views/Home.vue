@@ -20,6 +20,8 @@ const orderedSpaces = computed(() => {
         ...explore.value.spaces[key],
         following: followingSpaces.value.some(s => s === key),
         followers: explore.value.spaces[key].followers ?? 0,
+        voters_1d: explore.value.spaces[key].voters_1d ?? 0,
+        followers_1d: explore.value.spaces[key].followers_1d ?? 0,
         private: explore.value.spaces[key].private ?? false
       };
     })
