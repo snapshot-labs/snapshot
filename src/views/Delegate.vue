@@ -1,9 +1,8 @@
 <script setup>
-import { ref, computed, watch, onMounted, watchEffect } from 'vue';
+import { ref, computed, watch, onMounted, watchEffect, inject } from 'vue';
 import { useRoute } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { useProfiles } from '@/composables/useProfiles';
-import { useNotifications } from '@/composables/useNotifications';
 import { isAddress } from '@ethersproject/address';
 import { formatBytes32String } from '@ethersproject/strings';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
@@ -29,7 +28,7 @@ const abi = ['function setDelegate(bytes32 id, address delegate)'];
 const route = useRoute();
 const { t } = useI18n();
 const auth = getInstance();
-const { notify } = useNotifications();
+const notify = inject('notify');
 const { explore } = useApp();
 const { web3 } = useWeb3();
 const { pendingCount } = useTxStatus();
@@ -96,7 +95,7 @@ async function handleSubmit() {
     const receipt = await tx.wait();
     console.log('Receipt', receipt);
     await sleep(3e3);
-    notify(t('notify.youDidIt'));
+    notify(t('notify.delegationSuccess'));
     pendingCount.value--;
     await load();
   } catch (e) {
