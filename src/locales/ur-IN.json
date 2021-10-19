@@ -120,7 +120,8 @@
     "pattern": "غلط ان پٹ",
     "minItems": "کم از کم {0} آئٹمز کی ضرورت ہے",
     "minStrategy": "کم از کم ایک سٹرٹیگے کی ضرورت ہے۔",
-    "format": "غلط فارمیٹ"
+    "format": "غلط فارمیٹ",
+    "type": "Invalid type"
   },
   "create": {
     "question": "سوال",
@@ -204,7 +205,12 @@
     "editValidation": "توثیق کی توثیق",
     "selectValidation": "توثیق منتخب کریں",
     "validationParameters": "توثیق کے پیرامیٹرز",
-    "warningTextRecord": "You must set a text record on the ENS domain."
+    "warningTextRecord": "You must set a text record on the ENS domain.",
+    "votingDelay": "Voting delay",
+    "votingPeriod": "Voting period",
+    "voting": "Voting",
+    "type": "Type",
+    "anyType": "Any"
   },
   "setup": {
     "example": "مثال. yam.eth",
@@ -215,8 +221,12 @@
     "youDidIt": "تم نے یہ کیا!",
     "copied": "کاپی!",
     "proposalDeleted": "تجویز حذف کردی گئی",
-    "yourIsIn": "آپ کا {0} ہے!",
-    "somethingWentWrong": "اہ! کچھ غلط ہو گیا!"
+    "somethingWentWrong": "اہ! کچھ غلط ہو گیا!",
+    "saved": "Saved!",
+    "delegationSuccess": "Delegation successful",
+    "delegationRemoved": "Delegation removed",
+    "proposalCreated": "Proposal created",
+    "voteSuccessful": "Your vote is in!"
   },
   "explore": {
     "createStrategy": "سٹرٹیگے بنائے",
