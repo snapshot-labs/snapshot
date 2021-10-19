@@ -120,7 +120,8 @@
     "pattern": "无效字符",
     "minItems": "最少需要 {0} 个项目",
     "minStrategy": "至少需要一个策略。",
-    "format": "格式无效"
+    "format": "格式无效",
+    "type": "Invalid type"
   },
   "create": {
     "question": "问题",
@@ -204,7 +205,12 @@
     "editValidation": "编辑验证",
     "selectValidation": "选择验证",
     "validationParameters": "验证参数",
-    "warningTextRecord": "您必须在 ENS 域上设置文本记录。"
+    "warningTextRecord": "您必须在 ENS 域上设置文本记录。",
+    "votingDelay": "Voting delay",
+    "votingPeriod": "Voting period",
+    "voting": "Voting",
+    "type": "Type",
+    "anyType": "Any"
   },
   "setup": {
     "example": "例如 yam.eth",
@@ -215,8 +221,12 @@
     "youDidIt": "你成功了!",
     "copied": "已复制！",
     "proposalDeleted": "提案被删除",
-    "yourIsIn": "您的 {0} 已经加入了！",
-    "somethingWentWrong": "哎呀，似乎出了点问题"
+    "somethingWentWrong": "哎呀，似乎出了点问题",
+    "saved": "Saved!",
+    "delegationSuccess": "Delegation successful",
+    "delegationRemoved": "Delegation removed",
+    "proposalCreated": "Proposal created",
+    "voteSuccessful": "Your vote is in!"
   },
   "explore": {
     "createStrategy": "创建策略",

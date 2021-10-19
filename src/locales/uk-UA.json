@@ -120,7 +120,8 @@
     "pattern": "Неприпустимий символ:",
     "minItems": "Потрібно мінімум {0} елементів",
     "minStrategy": "Потрібна принаймні одна стратегія.",
-    "format": "Невірний формат"
+    "format": "Невірний формат",
+    "type": "Invalid type"
   },
   "create": {
     "question": "Запитання",
@@ -204,7 +205,12 @@
     "editValidation": "Редагувати перевірку",
     "selectValidation": "Виберіть перевірку",
     "validationParameters": "Параметри перевірки",
-    "warningTextRecord": "Ви повинні встановити текстовий запис з домену ENS."
+    "warningTextRecord": "Ви повинні встановити текстовий запис з домену ENS.",
+    "votingDelay": "Voting delay",
+    "votingPeriod": "Voting period",
+    "voting": "Voting",
+    "type": "Type",
+    "anyType": "Any"
   },
   "setup": {
     "example": "наприклад yam.eth",
@@ -215,8 +221,12 @@
     "youDidIt": "Ви це зробили!",
     "copied": "Скопійовано!",
     "proposalDeleted": "Пропозицію видалено",
-    "yourIsIn": "Ваш {0} увійшов!",
-    "somethingWentWrong": "Ой, щось пішло не так!"
+    "somethingWentWrong": "Ой, щось пішло не так!",
+    "saved": "Saved!",
+    "delegationSuccess": "Delegation successful",
+    "delegationRemoved": "Delegation removed",
+    "proposalCreated": "Proposal created",
+    "voteSuccessful": "Your vote is in!"
   },
   "explore": {
     "createStrategy": "Створити стратегію",
