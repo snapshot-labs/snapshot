@@ -120,7 +120,8 @@
     "pattern": "رمز غير صحيح",
     "minItems": "الحد الأدنى {0} عنصر(ار) مطلوب",
     "minStrategy": "تلزم خطة واحدة على الأقل.",
-    "format": "تنسيق غير صحيح"
+    "format": "تنسيق غير صحيح",
+    "type": "Invalid type"
   },
   "create": {
     "question": "سؤال",
@@ -204,7 +205,12 @@
     "editValidation": "تعديل المصادقة",
     "selectValidation": "اختر المصادقة",
     "validationParameters": "معايير المصادقة",
-    "warningTextRecord": "يجب عليك تعيين سجل نصي على نطاق ENS."
+    "warningTextRecord": "يجب عليك تعيين سجل نصي على نطاق ENS.",
+    "votingDelay": "Voting delay",
+    "votingPeriod": "Voting period",
+    "voting": "Voting",
+    "type": "Type",
+    "anyType": "Any"
   },
   "setup": {
     "example": "مثال yam.eth",
@@ -215,8 +221,12 @@
     "youDidIt": "لقد نجحت!",
     "copied": "تم النسخ!",
     "proposalDeleted": "تم حذف الاقتراح",
-    "yourIsIn": "تم اعتماد{0} الخاص بك!",
-    "somethingWentWrong": "عفوا، حدث خطأ ما!"
+    "somethingWentWrong": "عفوا، حدث خطأ ما!",
+    "saved": "Saved!",
+    "delegationSuccess": "Delegation successful",
+    "delegationRemoved": "Delegation removed",
+    "proposalCreated": "Proposal created",
+    "voteSuccessful": "Your vote is in!"
   },
   "explore": {
     "createStrategy": "إنشاء استراتيجية",
