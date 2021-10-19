@@ -31,7 +31,7 @@
   "network": "Сеть",
   "networks": "Сети",
   "skins": "Темы",
-  "members": "No members | {count} member | {count} members",
+  "members": "Нет участников | {count} участников | {count} участников",
   "editStrategy": "Редактировать стратегию",
   "invalidProposals": "Неверные параметры опроса",
   "account": "Учетная запись",
@@ -86,7 +86,7 @@
   "marketSymbol": "Рынок {0}",
   "twoChoicesRequired": "Для этого плагина необходимо выбрать два варианта.",
   "noResultsFound": "Упс, мы не можем найти результаты",
-  "noSpacesJoined": "Oops, you haven't joined any spaces yet",
+  "noSpacesJoined": "К сожалению, вы еще не присоединились ни к одному пространству",
   "addFavorites": "Добавить закладки",
   "createdBy": "От: {0}",
   "startToEnd": "с {0} по {1}",
@@ -106,13 +106,13 @@
   "addresses": "Адреса",
   "networkErrorPlayground": "Сетевая ошибка - откройте консоль браузера для получения дополнительной информации",
   "upload": "Загрузить",
-  "join": "Join",
-  "joined": "Joined",
-  "leave": "Leave",
+  "join": "Присоединиться",
+  "joined": "Присоединился",
+  "leave": "Покинуть",
   "copyLink": "Копировать ссылку",
   "duplicateProposal": "Повторяющееся предложение",
-  "joinedSpaces": "Joined spaces",
-  "joinSpaces": "Join spaces",
+  "joinedSpaces": "Вступившие сообщества",
+  "joinSpaces": "Вступить в сообщества",
   "errors": {
     "required": "Обязательное поле",
     "minLength": "Минимальная длина {0}",
@@ -120,7 +120,8 @@
     "pattern": "Неверный символ",
     "minItems": "Минимум {0} элемент(ов) требуется",
     "minStrategy": "Требуется как минимум одна категория.",
-    "format": "Недопустимый формат"
+    "format": "Недопустимый формат",
+    "type": "Invalid type"
   },
   "create": {
     "question": "Вопрос",
@@ -136,7 +137,7 @@
     "snapshotBlock": "Номер блока среза",
     "validationWarning": {
       "basic": {
-        "member": "You need to be an author of the space in order to submit a proposal.",
+        "member": "Вы должны быть автором пространства для того, чтобы представить предложение.",
         "minScore": "Вам нужно иметь минимум {0} {1} для того, чтобы отправить предложение."
       },
       "customValidation": "Вам необходимо пройти проверку предложения, чтобы подать предложение"
@@ -151,8 +152,8 @@
     "delegations": "Вы делегировали",
     "allSpaces": "Для всех разделов",
     "delegated": "Вам делегировали",
-    "pendingTransaction": "no pending transaction | 1 pending transaction | {count} pending transactions",
-    "topDelegates": "Top delegates"
+    "pendingTransaction": "нет ожидающих транзакций | 1 ожидающая транзакция | {count} ожидающих транзакций",
+    "topDelegates": "Лучшие делегаты"
   },
   "proposal": {
     "castVote": "Опубликовать бюллетень",
@@ -186,12 +187,12 @@
     "network": "Сеть",
     "symbol": "Символ",
     "skin": "Тема",
-    "customDomain": "Custom domain",
+    "customDomain": "Пользовательский домен",
     "domain": "Доменное имя",
     "strategies": "Стратегия(и)",
     "hideSpace": "Скрыть раздел на главной страницы",
     "addStrategy": "Добавить стратегию",
-    "authors": "Authors",
+    "authors": "Авторы",
     "admins": "Администратор",
     "defaultTab": "Вкладка по умолчанию",
     "proposalThreshold": "Порог предложения",
@@ -204,7 +205,12 @@
     "editValidation": "Редактировать проверку",
     "selectValidation": "Выбрать проверку",
     "validationParameters": "Параметры проверки",
-    "warningTextRecord": "Вы должны задать текстовую запись в домене ENS."
+    "warningTextRecord": "Вы должны задать текстовую запись в домене ENS.",
+    "votingDelay": "Voting delay",
+    "votingPeriod": "Voting period",
+    "voting": "Voting",
+    "type": "Type",
+    "anyType": "Any"
   },
   "setup": {
     "example": "например, yam.eth",
@@ -215,8 +221,12 @@
     "youDidIt": "У вас получилось!",
     "copied": "Скопировано!",
     "proposalDeleted": "Опрос удалён",
-    "yourIsIn": "Ваш {0} сохранен!",
-    "somethingWentWrong": "Ой, что-то пошло не так!"
+    "somethingWentWrong": "Ой, что-то пошло не так!",
+    "saved": "Saved!",
+    "delegationSuccess": "Delegation successful",
+    "delegationRemoved": "Delegation removed",
+    "proposalCreated": "Proposal created",
+    "voteSuccessful": "Your vote is in!"
   },
   "explore": {
     "createStrategy": "Создать стратегию",
