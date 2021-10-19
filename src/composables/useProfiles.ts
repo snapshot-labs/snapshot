@@ -2,9 +2,16 @@ import { getProfiles } from '@/helpers/profile';
 import { ref, computed, watch } from 'vue';
 
 const profiles = ref({});
+const addressArray = ref<string[]>([]);
 
 export function useProfiles() {
-  const addressArray = ref([]);
+  const updateAddressArray = (addresses: string[]) => {
+    const addressesToAdd = addresses.filter(
+      address => !addressArray.value.includes(address)
+    );
+
+    addressArray.value = addressArray.value.concat(addressesToAdd);
+  };
 
   const filteredArray = computed(() =>
     addressArray.value.filter(address => {
@@ -23,5 +30,8 @@ export function useProfiles() {
     profiles.value = { ...profiles.value, ...response };
   });
 
-  return { profiles, addressArray };
+  return {
+    profiles,
+    updateAddressArray
+  };
 }

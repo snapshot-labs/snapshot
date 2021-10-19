@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, watch, onMounted } from 'vue';
+import { ref, computed, watch, onMounted, inject } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
@@ -10,7 +10,6 @@ import { useProfiles } from '@/composables/useProfiles';
 import client from '@/helpers/clientEIP712';
 import { useDomain } from '@/composables/useDomain';
 import { useSharing } from '@/composables/useSharing';
-import { useNotifications } from '@/composables/useNotifications';
 import { useWeb3 } from '@/composables/useWeb3';
 
 const props = defineProps({
@@ -25,7 +24,7 @@ const router = useRouter();
 const { domain } = useDomain();
 const { t } = useI18n();
 const { web3 } = useWeb3();
-const { notify } = useNotifications();
+const notify = inject('notify');
 
 const id = route.params.id;
 
@@ -123,7 +122,7 @@ async function deleteProposal() {
       proposal: id
     });
     console.log('Result', result);
-    notify(t('notify.proposalDeleted'));
+    notify(['green', t('notify.proposalDeleted')]);
     dropdownLoading.value = false;
     router.push({ name: 'spaceProposals' });
   } catch (e) {
@@ -168,10 +167,10 @@ function selectFromShareDropdown(e) {
     shareToClipboard(props.space, proposal.value);
 }
 
-const { profiles, addressArray } = useProfiles();
+const { profiles, updateAddressArray } = useProfiles();
 
 watch(proposal, () => {
-  addressArray.value = [proposal.value.author];
+  updateAddressArray([proposal.value.author]);
 });
 
 watch(web3Account, (val, prev) => {

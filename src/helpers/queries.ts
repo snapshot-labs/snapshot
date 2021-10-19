@@ -127,6 +127,18 @@ export const FOLLOWS_QUERY = gql`
   }
 `;
 
+export const SUBSCRIPTIONS_QUERY = gql`
+  query Subscriptions($space: String, $address: String) {
+    subscriptions(where: { space: $space, address: $address }) {
+      id
+      address
+      space {
+        id
+      }
+    }
+  }
+`;
+
 export const ALIASES_QUERY = gql`
   query Aliases($address: String!, $alias: String!) {
     aliases(where: { address: $address, alias: $alias }) {
@@ -155,6 +167,11 @@ export const SPACES_QUERY = gql`
       members
       admins
       plugins
+      voting {
+        delay
+        period
+        type
+      }
       strategies {
         name
         params

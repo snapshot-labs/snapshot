@@ -3,9 +3,9 @@ import { SPACES_QUERY } from '@/helpers/queries';
 import { useApolloQuery } from '@/composables/useApolloQuery';
 
 const extentedSpaces = ref([]);
-const loading = ref(true);
+const loading = ref(false);
 
-export function useExtentedSpaces() {
+export function useExtendedSpaces() {
   const { apolloQuery } = useApolloQuery();
 
   async function loadExtentedSpaces(id_in = []) {

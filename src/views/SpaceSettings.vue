@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref, watchEffect } from 'vue';
+import { computed, ref, watchEffect, inject } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { getAddress } from '@ethersproject/address';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
@@ -12,8 +12,8 @@ import { getSpaceUri } from '@/helpers/ens';
 import defaults from '@/locales/default';
 import client from '@/helpers/clientEIP712';
 import { useCopy } from '@/composables/useCopy';
-import { useNotifications } from '@/composables/useNotifications';
 import { useWeb3 } from '@/composables/useWeb3';
+import { calcFromSeconds, calcToSeconds } from '@/helpers/utils';
 
 const props = defineProps({
   spaceId: String,
@@ -28,9 +28,9 @@ const basicValidation = { name: 'basic', params: {} };
 
 const auth = getInstance();
 const { t } = useI18n();
-const { notify } = useNotifications();
 const { copyToClipboard } = useCopy();
 const { web3 } = useWeb3();
+const notify = inject('notify');
 
 const currentSettings = ref({});
 const currentTextRecord = ref('');
@@ -40,16 +40,20 @@ const currentStrategyIndex = ref(false);
 const modalNetworksOpen = ref(false);
 const modalSkinsOpen = ref(false);
 const modalStrategyOpen = ref(false);
+const modalVotingTypeOpen = ref(false);
 const modalPluginsOpen = ref(false);
 const modalValidationOpen = ref(false);
 const loaded = ref(false);
 const loading = ref(false);
 const uploadLoading = ref(false);
 const showErrors = ref(false);
+const delayUnit = ref('h');
+const periodUnit = ref('h');
 const form = ref({
   strategies: [],
   plugins: {},
   filters: {},
+  voting: {},
   validation: basicValidation
 });
 
@@ -82,6 +86,22 @@ const isAdmin = computed(() => {
   return admins.includes(web3Account.value?.toLowerCase());
 });
 
+const votingDelay = computed({
+  get: () => calcFromSeconds(form.value.voting?.delay, delayUnit.value),
+  set: newVal =>
+    (form.value.voting.delay = newVal
+      ? calcToSeconds(newVal, delayUnit.value)
+      : undefined)
+});
+
+const votingPeriod = computed({
+  get: () => calcFromSeconds(form.value.voting?.period, periodUnit.value),
+  set: newVal =>
+    (form.value.voting.period = newVal
+      ? calcToSeconds(newVal, periodUnit.value)
+      : undefined)
+});
+
 const { filteredPlugins } = useSearchFilters();
 const plugins = computed(() => filteredPlugins());
 
@@ -102,7 +122,7 @@ async function handleSubmit() {
         settings: JSON.stringify(form.value)
       });
       console.log('Result', result);
-      notify(t('notify.yourIsIn', ['settings']));
+      notify(['green', t('notify.saved')]);
     } catch (e) {
       if (!e.code || e.code !== 4001) {
         console.log('Oops!', e);
@@ -112,7 +132,6 @@ async function handleSubmit() {
         notify(['red', errorMessage]);
       }
     }
-    await props.loadExtentedSpaces([props.spaceId]);
     loading.value = false;
   } else {
     console.log('Invalid schema', validate.value);
@@ -221,6 +240,10 @@ watchEffect(async () => {
       space.plugins = space.plugins || {};
       space.validation = space.validation || basicValidation;
       space.filters = space.filters || {};
+      space.voting = space.voting || {};
+      space.voting.delay = space.voting?.delay || undefined;
+      space.voting.period = space.voting?.period || undefined;
+      space.voting.type = space.voting?.type || undefined;
       currentSettings.value = clone(space);
       form.value = space;
     } catch (e) {
@@ -511,6 +534,52 @@ watchEffect(async () => {
               </div>
             </div>
           </Block>
+          <Block :title="$t('settings.voting')">
+            <UiInput v-model="votingDelay" :number="true" placeholder="e.g. 1">
+              <template v-slot:label>
+                {{ $t('settings.votingDelay') }}
+              </template>
+              <template v-slot:info>
+                <select
+                  v-model="delayUnit"
+                  class="input text-center mr-[6px] pt-[3px] ml-2"
+                  required
+                >
+                  <option value="h" selected>hours</option>
+                  <option value="d">days</option>
+                </select>
+              </template>
+            </UiInput>
+            <UiInput v-model="votingPeriod" :number="true" placeholder="e.g. 5">
+              <template v-slot:label>
+                {{ $t('settings.votingPeriod') }}
+              </template>
+              <template v-slot:info>
+                <select
+                  v-model="periodUnit"
+                  class="input text-center mr-[6px] pt-[3px] ml-2"
+                  required
+                >
+                  <option value="h" selected>hours</option>
+                  <option value="d">days</option>
+                </select>
+              </template>
+            </UiInput>
+            <UiInput>
+              <template v-slot:label>
+                {{ $t('settings.type') }}
+              </template>
+              <template v-slot:selected>
+                <div @click="modalVotingTypeOpen = true" class="w-full">
+                  {{
+                    form.voting?.type
+                      ? $t(`voting.${form.voting?.type}`)
+                      : $t('settings.anyType')
+                  }}
+                </div>
+              </template>
+            </UiInput>
+          </Block>
           <Block :title="$t('plugins')">
             <div v-if="form?.plugins">
               <div
@@ -585,6 +654,12 @@ watchEffect(async () => {
       :validation="clone(form.validation)"
       @close="modalValidationOpen = false"
       @add="handleSubmitAddValidation"
+    />
+    <ModalVotingType
+      :open="modalVotingTypeOpen"
+      @close="modalVotingTypeOpen = false"
+      v-model="form.voting.type"
+      :selected="form.voting?.type"
     />
   </teleport>
 </template>
