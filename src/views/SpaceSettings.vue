@@ -114,8 +114,6 @@ function pluginName(key) {
 async function handleSubmit() {
   if (isValid.value) {
     if (form.value.filters.invalids) delete form.value.filters.invalids;
-    if (!form.value.voting.delay) delete form.value.voting.delay;
-    if (!form.value.voting.period) delete form.value.voting.period;
     loading.value = true;
     try {
       await send(props.spaceId, 'settings', form.value);
