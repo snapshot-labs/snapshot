@@ -1,9 +1,8 @@
 <script setup>
-import { ref, computed, watch, onMounted, watchEffect } from 'vue';
+import { ref, computed, watch, onMounted, watchEffect, inject } from 'vue';
 import { useRoute } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { useProfiles } from '@/composables/useProfiles';
-import { useNotifications } from '@/composables/useNotifications';
 import { isAddress } from '@ethersproject/address';
 import { formatBytes32String } from '@ethersproject/strings';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
@@ -29,7 +28,7 @@ const abi = ['function setDelegate(bytes32 id, address delegate)'];
 const route = useRoute();
 const { t } = useI18n();
 const auth = getInstance();
-const { notify } = useNotifications();
+const notify = inject('notify');
 const { explore } = useApp();
 const { web3 } = useWeb3();
 const { pendingCount } = useTxStatus();
@@ -50,7 +49,7 @@ const form = ref({
   id: route.params.key || ''
 });
 
-const { profiles, addressArray } = useProfiles();
+const { profiles, updateAddressArray } = useProfiles();
 
 const web3Account = computed(() => web3.value.account);
 const networkKey = computed(() => web3.value.network.key);
@@ -96,7 +95,7 @@ async function handleSubmit() {
     const receipt = await tx.wait();
     console.log('Receipt', receipt);
     await sleep(3e3);
-    notify(t('notify.youDidIt'));
+    notify(t('notify.delegationSuccess'));
     pendingCount.value--;
     await load();
   } catch (e) {
@@ -171,10 +170,12 @@ async function getDelegatesWithScore() {
 }
 
 watchEffect(() => {
-  addressArray.value = delegates.value
-    .map(delegate => delegate.delegate)
-    .concat(delegators.value.map(delegator => delegator.delegator))
-    .concat(delegatesWithScore.value.map(delegate => delegate.delegate));
+  updateAddressArray(
+    delegates.value
+      .map(delegate => delegate.delegate)
+      .concat(delegators.value.map(delegator => delegator.delegator))
+      .concat(delegatesWithScore.value.map(delegate => delegate.delegate))
+  );
 });
 
 watch(web3Account, (val, prev) => {

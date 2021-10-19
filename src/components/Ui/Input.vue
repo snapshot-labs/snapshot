@@ -48,7 +48,7 @@ function handleInput(e) {
     </div>
     <div
       v-if="$slots.selected"
-      class="flex-auto whitespace-nowrap overflow-scroll"
+      class="flex-auto whitespace-nowrap overflow-x-auto"
     >
       <slot name="selected" />
     </div>
