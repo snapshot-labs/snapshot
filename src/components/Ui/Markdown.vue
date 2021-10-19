@@ -276,7 +276,7 @@ const markdown = computed(() => {
 }
 
 .markdown-body table tbody tr {
-  background-color: var(--bg-darker-color);
+  background-color: var(--bg-color);
 }
 
 .markdown-body table img {
