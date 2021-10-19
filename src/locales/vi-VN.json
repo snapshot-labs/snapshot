@@ -120,7 +120,8 @@
     "pattern": "Ký tự không hợp lệ",
     "minItems": "Yêu cầu tối thiểu {0} mục(s)",
     "minStrategy": "Ít nhất một chiến lược là bắt buộc.",
-    "format": "Định dạng không hợp lệ"
+    "format": "Định dạng không hợp lệ",
+    "type": "Invalid type"
   },
   "create": {
     "question": "Câu hỏi",
@@ -204,7 +205,12 @@
     "editValidation": "Edit validation",
     "selectValidation": "Select validation",
     "validationParameters": "Validation parameters",
-    "warningTextRecord": "You must set a text record on the ENS domain."
+    "warningTextRecord": "You must set a text record on the ENS domain.",
+    "votingDelay": "Voting delay",
+    "votingPeriod": "Voting period",
+    "voting": "Voting",
+    "type": "Type",
+    "anyType": "Any"
   },
   "setup": {
     "example": "e.g.yam.eth",
@@ -215,8 +221,12 @@
     "youDidIt": "Bạn đã thực hiện nó!",
     "copied": "Đã sao chép!",
     "proposalDeleted": "Đề xuất bị xóa",
-    "yourIsIn": "Bạn {0} đã vào!",
-    "somethingWentWrong": "Rất tiếc, có gì đó không ổn!"
+    "somethingWentWrong": "Rất tiếc, có gì đó không ổn!",
+    "saved": "Saved!",
+    "delegationSuccess": "Delegation successful",
+    "delegationRemoved": "Delegation removed",
+    "proposalCreated": "Proposal created",
+    "voteSuccessful": "Your vote is in!"
   },
   "explore": {
     "createStrategy": "Tạo chiến lược",

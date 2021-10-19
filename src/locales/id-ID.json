@@ -120,7 +120,8 @@
     "pattern": "Karakter tidak valid",
     "minItems": "Minimal {0} item diperlukan",
     "minStrategy": "Setidaknya satu strategi diperlukan.",
-    "format": "Format tidak valid"
+    "format": "Format tidak valid",
+    "type": "Invalid type"
   },
   "create": {
     "question": "Pertanyaan",
@@ -204,7 +205,12 @@
     "editValidation": "Sunting validitas",
     "selectValidation": "Pilih validitas",
     "validationParameters": "Parameter validitas",
-    "warningTextRecord": "Anda harus mengatur catatan teks pada domain ENS."
+    "warningTextRecord": "Anda harus mengatur catatan teks pada domain ENS.",
+    "votingDelay": "Voting delay",
+    "votingPeriod": "Voting period",
+    "voting": "Voting",
+    "type": "Type",
+    "anyType": "Any"
   },
   "setup": {
     "example": "mis. yam.eth",
@@ -215,8 +221,12 @@
     "youDidIt": "Anda berhasil!",
     "copied": "Tersalin!",
     "proposalDeleted": "Proposal dihapus",
-    "yourIsIn": "{0} Anda telah masuk!",
-    "somethingWentWrong": "Amboy, sesuatu kesalahan telah terjadi!"
+    "somethingWentWrong": "Amboy, sesuatu kesalahan telah terjadi!",
+    "saved": "Saved!",
+    "delegationSuccess": "Delegation successful",
+    "delegationRemoved": "Delegation removed",
+    "proposalCreated": "Proposal created",
+    "voteSuccessful": "Your vote is in!"
   },
   "explore": {
     "createStrategy": "Buat strategi",
