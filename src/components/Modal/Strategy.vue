@@ -87,7 +87,7 @@ watch(open, () => {
           <TextareaAutosize
             v-model="input.params"
             :placeholder="$t('strategyParameters')"
-            class="input text-left"
+            class="input text-left no-scrollbar"
             style="width: 560px"
           />
         </UiButton>
