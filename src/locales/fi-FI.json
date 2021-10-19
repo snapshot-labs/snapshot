@@ -120,7 +120,8 @@
     "pattern": "Väärä merkki",
     "minItems": "Vähintään {0} tuotetta vaaditaan",
     "minStrategy": "Ainakin yksi strategia tarvitaan.",
-    "format": "Muoto ei kelpaa"
+    "format": "Muoto ei kelpaa",
+    "type": "Invalid type"
   },
   "create": {
     "question": "Kysymys",
@@ -204,7 +205,12 @@
     "editValidation": "Muokkaa validointia",
     "selectValidation": "Valitse validointi",
     "validationParameters": "Validaatioparametrit",
-    "warningTextRecord": "Sinun on asetettava tekstitietue ENS -toimialueelle."
+    "warningTextRecord": "Sinun on asetettava tekstitietue ENS -toimialueelle.",
+    "votingDelay": "Voting delay",
+    "votingPeriod": "Voting period",
+    "voting": "Voting",
+    "type": "Type",
+    "anyType": "Any"
   },
   "setup": {
     "example": "e.g. yam.eth",
@@ -215,8 +221,12 @@
     "youDidIt": "Sinä teit sen!",
     "copied": "Kopioitu!",
     "proposalDeleted": "Ehdotus poistettu",
-    "yourIsIn": "Your {0} is inside!",
-    "somethingWentWrong": "Hups, jokin meni pieleen!"
+    "somethingWentWrong": "Hups, jokin meni pieleen!",
+    "saved": "Saved!",
+    "delegationSuccess": "Delegation successful",
+    "delegationRemoved": "Delegation removed",
+    "proposalCreated": "Proposal created",
+    "voteSuccessful": "Your vote is in!"
   },
   "explore": {
     "createStrategy": "Luo strategia",
