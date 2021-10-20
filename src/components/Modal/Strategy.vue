@@ -41,12 +41,11 @@ function handleSubmit() {
 }
 
 function handleClick(strategy) {
-  const { params } = strategy.examples[0].strategy;
-  const hasStrategy = !isEmpty(params);
+  const params = strategy.examples[0]?.strategy?.params || defaultParams;
 
   input.value = {
     name: strategy.key,
-    params: hasStrategy ? JSON.stringify(params, null, 2) : ''
+    params: JSON.stringify(params, null, 2)
   };
 }
 
