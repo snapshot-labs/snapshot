@@ -151,13 +151,11 @@ import { useSafesnap } from '@/composables/useSafesnap';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useTxStatus } from '@/composables/useTxStatus';
 import { useNotifications } from '@/composables/useNotifications';
-import { useI18n } from 'vue-i18n';
 
 const { clearBatchError, setBatchError } = useSafesnap();
 const { web3 } = useWeb3();
 const { pendingCount } = useTxStatus();
 const { notify } = useNotifications();
-const { t } = useI18n();
 
 const plugin = new Plugin();
 
@@ -279,23 +277,18 @@ export default {
         );
 
         await ensureRightNetwork(this.network);
-        const { tx, multi } = await plugin.claimBond(
+        const clamingBond = plugin.claimBond(
           this.$auth.web3,
           this.questionDetails.oracle,
           this.questionDetails.questionId,
           params
         );
+        await clamingBond.next();
         this.actionInProgress = false;
         pendingCount.value++;
-        const receipt = await tx.wait();
-        notify(t('notify.youDidIt'));
+        await clamingBond.next();
+        notify(this.$i18n.t('notify.youDidIt'));
         pendingCount.value--;
-        console.log(
-          multi
-            ? '[Realitio] executed claimMultipleAndWithdrawBalance:'
-            : '[Realitio] executed withdraw:',
-          receipt
-        );
         await sleep(3e3);
         await this.updateDetails();
       } catch (e) {
@@ -311,18 +304,18 @@ export default {
         switch (this.questionState) {
           case QuestionStates.waitingForQuestion: {
             await ensureRightNetwork(this.network);
-            const tx = await plugin.submitProposal(
+            const proposalSubmission = plugin.submitProposal(
               this.$auth.web3,
               this.realityAddress,
               this.questionDetails.proposalId,
               this.questionDetails.transactions
             );
+            await proposalSubmission.next();
             this.actionInProgress = false;
             pendingCount.value++;
-            const receipt = await tx.wait();
-            notify(t('notify.youDidIt'));
+            await proposalSubmission.next();
+            notify(this.$i18n.t('notify.youDidIt'));
             pendingCount.value--;
-            console.log('[DAO module] submitted proposal:', receipt);
             break;
           }
           case QuestionStates.questionNotSet:
@@ -344,7 +337,7 @@ export default {
     async voteOnQuestion(option) {
       try {
         await ensureRightNetwork(this.network);
-        await plugin.voteForQuestion(
+        const voting = plugin.voteForQuestion(
           this.network,
           this.$auth.web3,
           this.questionDetails.oracle,
@@ -352,6 +345,16 @@ export default {
           this.questionDetails.minimumBond,
           option
         );
+        const step = await voting.next();
+        if (step.value == 'erc20-approval') {
+          pendingCount.value++;
+          await voting.next();
+          pendingCount.value--;
+          await voting.next();
+        }
+        pendingCount.value++;
+        await voting.next();
+        pendingCount.value--;
         await sleep(3e3);
         await this.updateDetails();
       } catch (e) {
@@ -368,18 +371,18 @@ export default {
 
       try {
         clearBatchError();
-        const tx = await plugin.executeProposal(
+        const executingProposal = plugin.executeProposal(
           this.$auth.web3,
           this.realityAddress,
           this.questionDetails.proposalId,
           this.questionDetails.transactions,
           this.questionDetails.nextTxIndex
         );
+        await executingProposal.next();
         pendingCount.value++;
-        const receipt = await tx.wait();
-        notify(t('notify.youDidIt'));
+        await executingProposal.next();
+        notify(this.$i18n.t('notify.youDidIt'));
         pendingCount.value--;
-        console.log('[DAO module] executed proposal:', receipt);
       } catch (err) {
         pendingCount.value--;
         setBatchError(this.questionDetails.nextTxIndex, err.reason);
