@@ -72,7 +72,7 @@ function isSelectable(year, month, day) {
 
 <template>
   <div class="calendar">
-    <div class="mb-2 flex">
+    <div class="mb-2 flex items-center">
       <div class="w-1/4 text-left">
         <a
           v-show="isFutureMonth"
@@ -80,7 +80,7 @@ function isSelectable(year, month, day) {
           @click="month--"
         />
       </div>
-      <h4 class="mb-3 flex-auto text-center">{{ monthName }} {{ fullYear }}</h4>
+      <h4 class="h-full w-full text-center">{{ monthName }} {{ fullYear }}</h4>
       <div class="w-1/4 text-right">
         <a
           class="iconfont icongo text-lg font-bold text-color"
