@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed, toRefs, watch } from 'vue';
 import { useSearchFilters } from '@/composables/useSearchFilters';
-import { clone } from '@/helpers/utils';
+import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 
 const defaultParams = {
   symbol: 'DAI',
