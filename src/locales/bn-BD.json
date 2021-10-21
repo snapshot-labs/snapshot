@@ -120,7 +120,8 @@
     "pattern": "অবৈধ অক্ষর",
     "minItems": "ন্যূনতম {0} আইটেম (গুলি) প্রয়োজন",
     "minStrategy": "কমপক্ষে একটি স্ট্রাটেজি প্রয়োজন।",
-    "format": "অবৈধ ফর্ম্যাট"
+    "format": "অবৈধ ফর্ম্যাট",
+    "type": "Invalid type"
   },
   "create": {
     "question": "প্রশ্ন",
@@ -204,7 +205,12 @@
     "editValidation": "বৈধতা সম্পাদনা করুন",
     "selectValidation": "বৈধতা নির্বাচন করুন",
     "validationParameters": "বৈধতা প্যারামিটার",
-    "warningTextRecord": "You must set a text record on the ENS domain."
+    "warningTextRecord": "You must set a text record on the ENS domain.",
+    "votingDelay": "Voting delay",
+    "votingPeriod": "Voting period",
+    "voting": "Voting",
+    "type": "Type",
+    "anyType": "Any"
   },
   "setup": {
     "example": "উদাহরণ. yam.eth",
@@ -215,8 +221,12 @@
     "youDidIt": "তুমি এটি করেছিলে!",
     "copied": "কপি করেছি!",
     "proposalDeleted": "প্রস্তাব মোছা হয়েছে",
-    "yourIsIn": "আপনার {0} রয়েছে!",
-    "somethingWentWrong": "উফ, কিছু ভুল হয়েছে!"
+    "somethingWentWrong": "উফ, কিছু ভুল হয়েছে!",
+    "saved": "Saved!",
+    "delegationSuccess": "Delegation successful",
+    "delegationRemoved": "Delegation removed",
+    "proposalCreated": "Proposal created",
+    "voteSuccessful": "Your vote is in!"
   },
   "explore": {
     "createStrategy": "স্ট্রাটেজি তৈরি",

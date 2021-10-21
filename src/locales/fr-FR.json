@@ -120,7 +120,8 @@
     "pattern": "Caractère non valide",
     "minItems": "Minimum {0} élément(s) requis",
     "minStrategy": "Au moins une stratégie est requise.",
-    "format": "Format invalide"
+    "format": "Format invalide",
+    "type": "Invalid type"
   },
   "create": {
     "question": "Question",
@@ -204,7 +205,12 @@
     "editValidation": "Edit validation",
     "selectValidation": "Select validation",
     "validationParameters": "Validation parameters",
-    "warningTextRecord": "You must set a text record on the ENS domain."
+    "warningTextRecord": "You must set a text record on the ENS domain.",
+    "votingDelay": "Voting delay",
+    "votingPeriod": "Voting period",
+    "voting": "Voting",
+    "type": "Type",
+    "anyType": "Any"
   },
   "setup": {
     "example": "ex : yam.eth",
@@ -215,8 +221,12 @@
     "youDidIt": "Tout est bon !",
     "copied": "Copié !",
     "proposalDeleted": "Proposition supprimée",
-    "yourIsIn": "Votre {0} est enregistré !",
-    "somethingWentWrong": "Oups, une erreur s'est produite!"
+    "somethingWentWrong": "Oups, une erreur s'est produite!",
+    "saved": "Saved!",
+    "delegationSuccess": "Delegation successful",
+    "delegationRemoved": "Delegation removed",
+    "proposalCreated": "Proposal created",
+    "voteSuccessful": "Your vote is in!"
   },
   "explore": {
     "createStrategy": "Créer une stratégie",

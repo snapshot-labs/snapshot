@@ -120,7 +120,8 @@
     "pattern": "Invalid character",
     "minItems": "Minimum {0} item(s) required",
     "minStrategy": "At least one strategy is required.",
-    "format": "Invalid format"
+    "format": "Invalid format",
+    "type": "Invalid type"
   },
   "create": {
     "question": "Tanong",
@@ -204,7 +205,12 @@
     "editValidation": "Edit validation",
     "selectValidation": "Select validation",
     "validationParameters": "Validation parameters",
-    "warningTextRecord": "You must set a text record on the ENS domain."
+    "warningTextRecord": "You must set a text record on the ENS domain.",
+    "votingDelay": "Voting delay",
+    "votingPeriod": "Voting period",
+    "voting": "Voting",
+    "type": "Type",
+    "anyType": "Any"
   },
   "setup": {
     "example": "e.g. yam.eth",
@@ -215,8 +221,12 @@
     "youDidIt": "You did it!",
     "copied": "Copied!",
     "proposalDeleted": "Proposal deleted",
-    "yourIsIn": "Your {0} is in!",
-    "somethingWentWrong": "Oops, may maling nangyari!"
+    "somethingWentWrong": "Oops, may maling nangyari!",
+    "saved": "Saved!",
+    "delegationSuccess": "Delegation successful",
+    "delegationRemoved": "Delegation removed",
+    "proposalCreated": "Proposal created",
+    "voteSuccessful": "Your vote is in!"
   },
   "explore": {
     "createStrategy": "Create strategy",
