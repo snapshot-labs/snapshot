@@ -266,16 +266,17 @@ const markdown = computed(() => {
 .markdown-body table th,
 .markdown-body table td {
   padding: 6px 13px;
-  border: 1px solid #dfe2e5;
+  border: 1px solid var(--border-color);
 }
 
-.markdown-body table tr {
-  background-color: #fff;
+.markdown-body table thead tr,
+.markdown-body table tbody tr:nth-child(2n) {
+  background-color: var(--bg-color);
   border-top: 1px solid #c6cbd1;
 }
 
-.markdown-body table tr:nth-child(2n) {
-  background-color: #f6f8fa;
+.markdown-body table tbody tr {
+  background-color: var(--bg-color);
 }
 
 .markdown-body table img {
