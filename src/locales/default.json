@@ -58,6 +58,7 @@
   "relayer": "Relayer",
   "verifyOnMycrypto": "Verify receipt on MyCrypto",
   "isCore": "Core",
+  "pleaseEnableBrowserNotifications": "You were subscribed to the space but you need enable browser push notifications to receive notifications",
   "seeInExplorer": "See on explorer",
   "learnMore": "Learn more",
   "logout": "Log out",
