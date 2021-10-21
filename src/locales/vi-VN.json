@@ -111,7 +111,7 @@
   "leave": "Leave",
   "copyLink": "Copy link",
   "duplicateProposal": "Duplicate proposal",
-  "joinedSpaces": "Joined spaces",
+  "joinedSpaces": "Các nhóm đã tham gia",
   "joinSpaces": "Join spaces",
   "errors": {
     "required": "Trường này là bắt buộc",
@@ -121,7 +121,7 @@
     "minItems": "Yêu cầu tối thiểu {0} mục(s)",
     "minStrategy": "Ít nhất một chiến lược là bắt buộc.",
     "format": "Định dạng không hợp lệ",
-    "type": "Invalid type"
+    "type": "Kiểu dữ liệu không hợp lệ"
   },
   "create": {
     "question": "Câu hỏi",
