@@ -35,7 +35,7 @@ const notify = inject('notify');
 const loading = ref(false);
 const choices = ref([]);
 const blockNumber = ref(-1);
-const bodyLimit = ref(6400);
+const bodyLimit = ref(4800);
 const form = ref({
   name: '',
   body: '',

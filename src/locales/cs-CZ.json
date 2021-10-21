@@ -120,7 +120,8 @@
     "pattern": "Nepovolené znaky",
     "minItems": "Minimálně {0} položek vyžadováno",
     "minStrategy": "Je vyžadována alespoň jedna kategorie.",
-    "format": "Nesprávný formát"
+    "format": "Nesprávný formát",
+    "type": "Invalid type"
   },
   "create": {
     "question": "Otázka",
@@ -204,7 +205,12 @@
     "editValidation": "Přidat/upravit ověření",
     "selectValidation": "Přidat/upravit ověření",
     "validationParameters": "Parametry ověření",
-    "warningTextRecord": "You must set a text record on the ENS domain."
+    "warningTextRecord": "You must set a text record on the ENS domain.",
+    "votingDelay": "Voting delay",
+    "votingPeriod": "Voting period",
+    "voting": "Voting",
+    "type": "Type",
+    "anyType": "Any"
   },
   "setup": {
     "example": "e.g. yam.eth",
@@ -215,8 +221,12 @@
     "youDidIt": "Dokázals to!",
     "copied": "Kopie",
     "proposalDeleted": "návrh vybrán",
-    "yourIsIn": "Tvůj {0} je za!",
-    "somethingWentWrong": "Ups, něco se pokazilo!"
+    "somethingWentWrong": "Ups, něco se pokazilo!",
+    "saved": "Saved!",
+    "delegationSuccess": "Delegation successful",
+    "delegationRemoved": "Delegation removed",
+    "proposalCreated": "Proposal created",
+    "voteSuccessful": "Your vote is in!"
   },
   "explore": {
     "createStrategy": "Vytvořit strategii",
