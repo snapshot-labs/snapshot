@@ -31,7 +31,7 @@
   "network": "Réseau",
   "networks": "Réseaux",
   "skins": "Thèmes",
-  "members": "No members | {count} member | {count} members",
+  "members": "Aucun membre | {count} membre | {count} membres",
   "editStrategy": "Modifier la stratégie",
   "invalidProposals": "Propositions incorrectes",
   "account": "Compte",
