@@ -2,7 +2,6 @@
 import { ref, computed, toRefs, watch } from 'vue';
 import { useSearchFilters } from '@/composables/useSearchFilters';
 import { clone } from '@/helpers/utils';
-import isEmpty from 'lodash/isEmpty';
 
 const defaultParams = {
   symbol: 'DAI',
