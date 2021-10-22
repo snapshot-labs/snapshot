@@ -19,6 +19,13 @@ const year = ref(yearNow);
 const month = ref(monthNow - 1);
 // const day = ref(dayNow);
 
+const fullYear = computed(() =>
+  new Date(year.value, month.value).getFullYear()
+);
+const days = computed(() => new Date(year.value, month.value + 1, 0).getDate());
+const emptyDays = computed(() => new Date(year.value, month.value, 1).getDay());
+const isFutureMonth = computed(() => month.value > new Date().getMonth());
+
 const today = computed(() => {
   return formatDate(
     new Date().getFullYear(),
@@ -26,6 +33,7 @@ const today = computed(() => {
     new Date().getDate()
   );
 });
+
 const daysOfWeek = computed(() => {
   const sunday = new Date(2017, 0, 0);
   return [...Array(7)].map(() => {
@@ -35,20 +43,12 @@ const daysOfWeek = computed(() => {
     });
   });
 });
+
 const monthName = computed(() => {
   const name = new Date(year.value, month.value).toLocaleString(locale, {
     month: 'long'
   });
   return `${name.charAt(0).toUpperCase()}${name.slice(1)}`;
-});
-const fullYear = computed(() => {
-  return new Date(year.value, month.value).getFullYear();
-});
-const days = computed(() => {
-  return new Date(year.value, month.value + 1, 0).getDate();
-});
-const emptyDays = computed(() => {
-  return new Date(year.value, month.value, 1).getDay();
 });
 
 function formatDate(year, month, day) {
@@ -57,35 +57,36 @@ function formatDate(year, month, day) {
   date = new Date(date.getTime() - offset * 60 * 1000);
   return date.toISOString().split('T')[0];
 }
+
 function toggleDay(year, month, day) {
   input.value = formatDate(year, month, day);
   emit('update:modelValue', input.value);
 }
-function isSelectable() {
-  return true;
-  /*
-      const in30Days = new Date();
-      in30Days.setDate(in30Days.getDate() + 30);
-      return (
-        new Date(year, month, day) > new Date() &&
-        new Date(year, month, day) < in30Days
-      );
-      */
+
+function isSelectable(year, month, day) {
+  const date = new Date(year, month, day);
+  const dateNow = new Date().setHours(0, 0, 0, 0);
+  return !(dateNow - date > 0);
 }
 </script>
 
 <template>
   <div class="calendar">
-    <div class="mb-2 flex">
-      <a
-        class="w-1/4 iconfont iconback text-left text-lg font-bold text-color"
-        @click="month--"
-      />
-      <h4 class="mb-3 flex-auto text-center">{{ monthName }} {{ fullYear }}</h4>
-      <a
-        class="w-1/4 iconfont icongo text-right text-lg font-bold text-color"
-        @click="month++"
-      />
+    <div class="mb-2 flex items-center">
+      <div class="w-1/4 text-left">
+        <a
+          v-show="isFutureMonth"
+          class="iconfont iconback text-lg font-bold text-color"
+          @click="month--"
+        />
+      </div>
+      <h4 class="h-full w-full text-center">{{ monthName }} {{ fullYear }}</h4>
+      <div class="w-1/4 text-right">
+        <a
+          class="iconfont icongo text-lg font-bold text-color"
+          @click="month++"
+        />
+      </div>
     </div>
     <div class="border-l border-t overflow-hidden">
       <div
