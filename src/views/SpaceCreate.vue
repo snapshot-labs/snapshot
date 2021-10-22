@@ -78,7 +78,7 @@ watchEffect(async () => {
 
 const dateStart = computed(() => {
   return props.space.voting?.delay
-    ? new Date().getTime() / 1000 + props.space.voting.delay
+    ? parseInt(new Date().getTime() / 1000) + props.space.voting.delay
     : form.value.start;
 });
 
@@ -136,7 +136,14 @@ async function handleSubmit() {
   let plugins = {};
   if (Object.keys(form.value.metadata?.plugins).length !== 0)
     plugins = form.value.metadata.plugins;
-
+  form.value.metadata.network = props.space.network;
+  form.value.metadata.strategies = props.space.strategies;
+  form.value.start = props.space.voting?.delay
+    ? parseInt(new Date().getTime() / 1000) + props.space.voting.delay
+    : dateStart.value;
+  form.value.end = props.space.voting?.period
+    ? form.value.start + props.space.voting.period
+    : dateEnd.value;
   try {
     const result = await client.proposal(auth.web3, web3Account.value, {
       space: props.space.id,
