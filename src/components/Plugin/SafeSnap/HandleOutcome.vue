@@ -16,11 +16,9 @@
       v-if="questionState === questionStates.waitingForQuestion"
       class="my-4"
     >
-      <UiButton
-        @click="performAction"
-        :loading="actionInProgress"
-        v-text="$t('safeSnap.labels.request')"
-      />
+      <UiButton @click="performAction" :loading="actionInProgress">
+        {{ $t('safeSnap.labels.request') }}
+      </UiButton>
     </div>
 
     <div
@@ -77,37 +75,40 @@
             class="w-full my-1"
             @click="performAction"
             :loading="actionInProgress"
-            v-text="$t('safeSnap.labels.setOutcome')"
-          />
+          >
+            {{ $t('safeSnap.labels.setOutcome') }}
+          </UiButton>
         </div>
         <div v-if="questionState === questionStates.questionNotResolved">
           <UiButton
             class="w-full my-1"
             @click="performAction"
             :loading="actionInProgress"
-            v-text="$t('safeSnap.labels.changeOutcome')"
-          />
+          >
+            {{ $t('safeSnap.labels.changeOutcome') }}
+          </UiButton>
         </div>
         <div v-if="bondData.canClaim">
           <UiButton
             class="w-full my-1"
             @click="claimBond"
-            v-text="$t('safeSnap.claimBond')"
-          />
+            :loading="actionInProgress"
+          >
+            {{ $t('safeSnap.claimBond') }}
+          </UiButton>
         </div>
       </div>
     </div>
 
     <div v-if="questionState === questionStates.proposalApproved" class="my-4">
-      <UiButton
-        @click="performAction"
-        v-text="
+      <UiButton @click="performAction" :loading="actionInProgress">
+        {{
           $t('safeSnap.labels.executeTxs', [
             questionDetails.nextTxIndex + 1,
             txs.length
           ])
-        "
-      />
+        }}
+      </UiButton>
     </div>
   </div>
   <div
