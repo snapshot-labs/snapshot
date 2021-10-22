@@ -136,8 +136,12 @@ async function handleSubmit() {
   form.value.choices = choices.value.map(choice => choice.text);
   form.value.metadata.network = props.space.network;
   form.value.metadata.strategies = props.space.strategies;
-  form.value.start = dateStart.value;
-  form.value.end = dateEnd.value;
+  form.value.start = props.space.voting?.delay
+    ? new Date().getTime() / 1000 + props.space.voting.delay
+    : dateStart.value;
+  form.value.end = props.space.voting?.period
+    ? form.value.start + props.space.voting.period
+    : dateEnd.value;
   try {
     const { ipfsHash } = await send(props.space.id, 'proposal', form.value);
     notify(['green', t('notify.proposalCreated')]);
