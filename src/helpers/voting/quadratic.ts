@@ -1,12 +1,29 @@
-export function percentageOfTotal(i, values, total) {
-  const reducedTotal: any = total.reduce((a: any, b: any) => a + b, 0);
+export function percentageOfTotal(
+  i: number,
+  values: { [k: string]: number },
+  total: number[]
+) {
+  const reducedTotal: any = total.reduce((a: number, b: number) => a + b, 0);
   const percent = (values[i] / reducedTotal) * 100;
   return isNaN(percent) ? 0 : percent;
 }
 
-export function quadraticMath(i, choice, balance) {
+export function quadraticMath(
+  i: number,
+  choice: { [k: number]: number },
+  balance: number
+) {
+  const filteredPosChoice: { [k: string]: number } = Object.fromEntries(
+    Object.entries(choice).filter((c: [string, number]) => c[1] > 0)
+  );
   return Math.sqrt(
-    (percentageOfTotal(i + 1, choice, Object.values(choice)) / 100) * balance
+    (percentageOfTotal(
+      i + 1,
+      filteredPosChoice,
+      Object.values(filteredPosChoice)
+    ) /
+      100) *
+      balance
   );
 }
 
@@ -28,7 +45,7 @@ export default class ApprovalVoting {
       .map((choice, i) =>
         this.votes
           .map(vote => quadraticMath(i, vote.choice, vote.balance))
-          .reduce((a, b: any) => a + b, 0)
+          .reduce((a, b: number) => a + b, 0)
       )
       .map(sqrt => sqrt * sqrt);
 
@@ -43,7 +60,7 @@ export default class ApprovalVoting {
         this.strategies.map((strategy, sI) =>
           this.votes
             .map(vote => quadraticMath(i, vote.choice, vote.scores[sI]))
-            .reduce((a, b: any) => a + b, 0)
+            .reduce((a, b: number) => a + b, 0)
         )
       )
       .map(arr => arr.map(sqrt => [sqrt * sqrt]));
@@ -58,7 +75,10 @@ export default class ApprovalVoting {
   }
 
   sumOfResultsBalance() {
-    return this.votes.reduce((a, b: any) => a + b.balance, 0);
+    return this.votes.reduce(
+      (a: number, b: { [k: string]: number }) => a + b.balance,
+      0
+    );
   }
 
   getChoiceString() {
