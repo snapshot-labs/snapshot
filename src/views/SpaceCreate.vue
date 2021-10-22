@@ -152,6 +152,7 @@ async function handleSubmit() {
         id: ipfsHash
       }
     });
+    loading.value = false;
   } catch (e) {
     console.error(e);
     loading.value = false;
