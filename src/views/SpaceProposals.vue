@@ -128,8 +128,7 @@ const proposalsCount = computed(() => {
       <NoResults
         :block="true"
         v-else-if="proposalsCount && proposals.length < 1"
-      >
-      </NoResults>
+      />
       <NoProposals v-else-if="!proposalsCount" class="mt-2" :space="space"/>
       <div v-else>
         <Block :slim="true" v-for="(proposal, i) in proposals" :key="i">
