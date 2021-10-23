@@ -16,13 +16,18 @@ const orderedSpaces = computed(() => {
   const q = route.query.q || '';
   const list = Object.keys(explore.value.spaces)
     .map(key => {
+      const following = followingSpaces.value.some(s => s === key);
+      const followers = explore.value.spaces[key].followers ?? 0;
+      const voters1d = explore.value.spaces[key].voters_1d ?? 0;
+      const followers1d = explore.value.spaces[key].followers_1d ?? 0;
+      // const proposals1d = explore.value.spaces[key].proposals_1d ?? 0;
+      const score = voters1d + followers1d / 4 + followers / 16;
       return {
         ...explore.value.spaces[key],
-        following: followingSpaces.value.some(s => s === key),
-        followers: explore.value.spaces[key].followers ?? 0,
-        voters_1d: explore.value.spaces[key].voters_1d ?? 0,
-        followers_1d: explore.value.spaces[key].followers_1d ?? 0,
-        private: explore.value.spaces[key].private ?? false
+        following,
+        followers,
+        private: explore.value.spaces[key].private ?? false,
+        score
       };
     })
     .filter(space => !space.private)
@@ -34,8 +39,8 @@ const orderedSpaces = computed(() => {
       }
     });
 
-  return orderBy(list, ['following', 'followers'], ['desc', 'desc']).filter(
-    space => JSON.stringify(space).toLowerCase().includes(q.toLowerCase())
+  return orderBy(list, ['following', 'score'], ['desc', 'desc']).filter(space =>
+    JSON.stringify(space).toLowerCase().includes(q.toLowerCase())
   );
 });
 
