@@ -86,6 +86,7 @@
   "marketSymbol": "{0} 市场",
   "twoChoicesRequired": "此插件需要两个选项。",
   "noResultsFound": "哎呀，我们找不到任何结果",
+  "createFirstProposal": "Let's create your first proposal",
   "noSpacesJoined": "哎呀，你还没有加入任何空格",
   "addFavorites": "添加收藏",
   "createdBy": "由 {0}",
@@ -166,6 +167,7 @@
     "header": "提案",
     "new": "新提案",
     "noProposals": "这里还没有任何提案！",
+    "createProposal": "Create proposal",
     "states": {
       "all": "所有",
       "core": "核心",
