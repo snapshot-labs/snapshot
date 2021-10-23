@@ -4,7 +4,7 @@
 <template>
   <div class="mb-3 text-center">
     <Block class="pt-1">
-      <p>{{ $t('createFirstProposal') }}</p>
+      <p v-text="$t('createFirstProposal')" class="mb-2"/>
       <router-link :to="{ name: 'spaceCreate', params: { key: space.id } }">
         <UiButton>
           {{ $t('proposals.createProposal') }}
