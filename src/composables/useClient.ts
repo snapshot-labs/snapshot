@@ -16,6 +16,7 @@ export function useClient() {
 
   async function send(space, type, payload) {
     loading.value = true;
+    let result;
     try {
       // TODO: Add trezor check
       if (web3.value?.walletConnectType !== 'unknown') {
@@ -25,17 +26,17 @@ export function useClient() {
           ? client.sign.bind(client)
           : client.broadcast.bind(client);
 
-        const result = await fn(
+        result = await fn(
           auth.web3,
           web3.value.account,
           space.id,
           type,
           payload
         );
-        return result;
       } else {
-        return await sendEIP712(space, type, payload);
+        result = await sendEIP712(space, type, payload);
       }
+      return result;
     } catch (e: any) {
       console.log('e');
       const errorMessage =
