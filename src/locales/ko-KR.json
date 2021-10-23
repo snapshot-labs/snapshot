@@ -120,7 +120,8 @@
     "pattern": "잘못된 문자",
     "minItems": "최소 {0} 개 항목 필요",
     "minStrategy": "적어도 하나 개의 전략이 필요합니다.",
-    "format": "잘못된 형식"
+    "format": "잘못된 형식",
+    "type": "Invalid type"
   },
   "create": {
     "question": "질문",
@@ -204,7 +205,12 @@
     "editValidation": "유효성 검사 편집",
     "selectValidation": "유효성 검사 선택",
     "validationParameters": "검증 매개변수",
-    "warningTextRecord": "ENS 도메인에 텍스트 레코드를 설정해야 합니다."
+    "warningTextRecord": "ENS 도메인에 텍스트 레코드를 설정해야 합니다.",
+    "votingDelay": "Voting delay",
+    "votingPeriod": "Voting period",
+    "voting": "Voting",
+    "type": "Type",
+    "anyType": "Any"
   },
   "setup": {
     "example": "예를 들어 얌.eth",
@@ -215,8 +221,12 @@
     "youDidIt": "해냈어!",
     "copied": "복사되었습니다!",
     "proposalDeleted": "제안이 삭제됨",
-    "yourIsIn": "귀하의 {0} 이다 안에!",
-    "somethingWentWrong": "아차, 뭔가 잘못!"
+    "somethingWentWrong": "아차, 뭔가 잘못!",
+    "saved": "Saved!",
+    "delegationSuccess": "Delegation successful",
+    "delegationRemoved": "Delegation removed",
+    "proposalCreated": "Proposal created",
+    "voteSuccessful": "Your vote is in!"
   },
   "explore": {
     "createStrategy": "전략 만들기",

@@ -54,17 +54,6 @@ watchEffect(() => {
               <Icon name="external-link" class="ml-1" />
             </UiButton>
           </a>
-          <a
-            v-if="profile?.name || profile?.image"
-            :href="`https://3box.io/${address}`"
-            target="_blank"
-            class="mb-2 block"
-          >
-            <UiButton class="button-outline w-full">
-              {{ $t('view3box') }}
-              <Icon name="external-link" class="ml-1" />
-            </UiButton>
-          </a>
         </div>
       </template>
     </UiPopover>

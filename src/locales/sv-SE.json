@@ -120,7 +120,8 @@
     "pattern": "Ogiltigt tecken",
     "minItems": "Minsta {0} objekt krävs",
     "minStrategy": "Minst en strategy krävs.",
-    "format": "Felaktigt format"
+    "format": "Felaktigt format",
+    "type": "Invalid type"
   },
   "create": {
     "question": "Fråga",
@@ -204,7 +205,12 @@
     "editValidation": "Edit validation",
     "selectValidation": "Select validation",
     "validationParameters": "Validation parameters",
-    "warningTextRecord": "You must set a text record on the ENS domain."
+    "warningTextRecord": "You must set a text record on the ENS domain.",
+    "votingDelay": "Voting delay",
+    "votingPeriod": "Voting period",
+    "voting": "Voting",
+    "type": "Type",
+    "anyType": "Any"
   },
   "setup": {
     "example": "e.g. yam.eth",
@@ -215,8 +221,12 @@
     "youDidIt": "Du har gjort det!",
     "copied": "Kopierar!",
     "proposalDeleted": "Förslag borttaget",
-    "yourIsIn": "Din {0} är i!",
-    "somethingWentWrong": "Oj! Något gick fel!"
+    "somethingWentWrong": "Oj! Något gick fel!",
+    "saved": "Saved!",
+    "delegationSuccess": "Delegation successful",
+    "delegationRemoved": "Delegation removed",
+    "proposalCreated": "Proposal created",
+    "voteSuccessful": "Your vote is in!"
   },
   "explore": {
     "createStrategy": "Skapa strategi",
