@@ -116,9 +116,10 @@ async function handleSubmit() {
     if (form.value.filters.invalids) delete form.value.filters.invalids;
     loading.value = true;
     try {
-      await send(props.spaceId, 'settings', form.value);
-      await props.loadExtentedSpaces([props.spaceId]);
-      notify(['green', t('notify.saved')]);
+      if (await send(props.spaceId, 'settings', form.value)) {
+        await props.loadExtentedSpaces([props.spaceId]);
+        notify(['green', t('notify.saved')]);
+      }
     } catch (e) {
       console.log(e);
     }
