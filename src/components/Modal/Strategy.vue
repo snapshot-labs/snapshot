@@ -39,6 +39,15 @@ function handleSubmit() {
   emit('close');
 }
 
+function handleClick(strategy) {
+  const params = strategy.examples[0]?.strategy?.params || defaultParams;
+
+  input.value = {
+    name: strategy.key,
+    params: JSON.stringify(params, null, 2)
+  };
+}
+
 watch(open, () => {
   if (props.strategy?.name) {
     const strategyObj = props.strategy;
@@ -76,7 +85,7 @@ watch(open, () => {
           <TextareaAutosize
             v-model="input.params"
             :placeholder="$t('strategyParameters')"
-            class="input text-left"
+            class="input text-left no-scrollbar"
             style="width: 560px"
           />
         </UiButton>
@@ -92,7 +101,7 @@ watch(open, () => {
         <a
           v-for="strategy in strategies"
           :key="strategy.key"
-          @click="input.name = strategy.key"
+          @click="handleClick(strategy)"
         >
           <BlockStrategy :strategy="strategy" />
         </a>

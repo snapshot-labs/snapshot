@@ -30,15 +30,23 @@ const symbols = computed(() =>
 
 async function handleSubmit() {
   loading.value = true;
-  await send(props.space.id, 'vote', {
-    proposal: props.proposal.id,
-    choice: props.selectedChoices,
-    metadata: {}
-  });
-  notify(['green', t('notify.voteSuccessful')]);
-  emit('reload');
-  emit('close');
-  loading.value = false;
+  try {
+    if (
+      await send(props.space.id, 'vote', {
+        proposal: props.proposal.id,
+        choice: props.selectedChoices,
+        metadata: {}
+      })
+    ) {
+      notify(['green', t('notify.voteSuccessful')]);
+      emit('reload');
+      emit('close');
+      loading.value = false;
+    }
+  } catch (e) {
+    console.log(e);
+    loading.value = false;
+  }
 }
 </script>
 
