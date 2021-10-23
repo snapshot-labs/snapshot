@@ -86,6 +86,7 @@
   "marketSymbol": "{0} の市場",
   "twoChoicesRequired": "このプラグインは２つ選択しないといけません",
   "noResultsFound": "おっと、何もみつかりませんでした。",
+  "createFirstProposal": "Let's create your first proposal",
   "noSpacesJoined": "Oops, you haven't joined any spaces yet",
   "addFavorites": "お気に入りを追加する",
   "createdBy": "{0} が作成",
@@ -166,6 +167,7 @@
     "header": "提案",
     "new": "新しい提案",
     "noProposals": "まだ提案はありません",
+    "createProposal": "Create proposal",
     "states": {
       "all": "すべて",
       "core": "コア",
