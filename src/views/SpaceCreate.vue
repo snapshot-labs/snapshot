@@ -11,11 +11,11 @@ import { useTerms } from '@/composables/useTerms';
 import { PROPOSAL_QUERY } from '@/helpers/queries';
 import validations from '@snapshot-labs/snapshot.js/src/validations';
 import { clone } from '@/helpers/utils';
-import client from '@/helpers/clientEIP712';
 import { useDomain } from '@/composables/useDomain';
 import { useApolloQuery } from '@/composables/useApolloQuery';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useExtendedSpaces } from '@/composables/useExtendedSpaces';
+import { useClient } from '@/composables/useClient';
 
 const props = defineProps({
   spaceId: String,
@@ -29,9 +29,9 @@ const auth = getInstance();
 const { domain } = useDomain();
 const { web3 } = useWeb3();
 const { spaceLoading } = useExtendedSpaces();
+const { send, clientLoading } = useClient();
 const notify = inject('notify');
 
-const loading = ref(false);
 const choices = ref([]);
 const blockNumber = ref(-1);
 const bodyLimit = ref(4800);
@@ -95,7 +95,7 @@ const isValid = computed(() => {
     : true;
 
   return (
-    !loading.value &&
+    !clientLoading.value &&
     form.value.name &&
     form.value.body.length <= bodyLimit.value &&
     dateStart.value &&
@@ -130,12 +130,8 @@ function setDate(ts) {
 }
 
 async function handleSubmit() {
-  loading.value = true;
   form.value.snapshot = parseInt(form.value.snapshot);
   form.value.choices = choices.value.map(choice => choice.text);
-  let plugins = {};
-  if (Object.keys(form.value.metadata?.plugins).length !== 0)
-    plugins = form.value.metadata.plugins;
   form.value.metadata.network = props.space.network;
   form.value.metadata.strategies = props.space.strategies;
   form.value.start = props.space.voting?.delay
@@ -144,24 +140,10 @@ async function handleSubmit() {
   form.value.end = props.space.voting?.period
     ? form.value.start + props.space.voting.period
     : dateEnd.value;
-  try {
-    const result = await client.proposal(auth.web3, web3Account.value, {
-      space: props.space.id,
-      type: form.value.type,
-      title: form.value.name,
-      body: form.value.body,
-      choices: form.value.choices,
-      start: form.value.start,
-      end: form.value.end,
-      snapshot: form.value.snapshot,
-      network: props.space.network,
-      strategies: JSON.stringify(props.space.strategies),
-      plugins: JSON.stringify(plugins),
-      metadata: JSON.stringify({})
-    });
-    console.log('Result', result);
+  const result = await send(props.space, 'proposal', form.value);
+  console.log('Result', result);
+  if (result.id) {
     notify(['green', t('notify.proposalCreated')]);
-
     router.push({
       name: 'spaceProposal',
       params: {
@@ -169,15 +151,6 @@ async function handleSubmit() {
         id: result.id
       }
     });
-  } catch (e) {
-    if (!e.code || e.code !== 4001) {
-      console.log('Oops!', e);
-      const errorMessage = e?.error_description
-        ? `Oops, ${e.error_description}`
-        : t('notify.somethingWentWrong');
-      notify(['red', errorMessage]);
-    }
-    loading.value = false;
   }
 }
 
@@ -385,7 +358,7 @@ watchEffect(async () => {
         <UiButton
           @click="clickSubmit"
           :disabled="!isValid"
-          :loading="loading || queryLoading"
+          :loading="clientLoading || queryLoading"
           class="block w-full button--submit"
         >
           {{ $t('create.publish') }}

@@ -2,7 +2,6 @@
 import { computed, ref, watchEffect, inject } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { getAddress } from '@ethersproject/address';
-import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { validateSchema } from '@snapshot-labs/snapshot.js/src/utils';
 import schemas from '@snapshot-labs/snapshot.js/src/schemas';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
@@ -10,10 +9,10 @@ import { useSearchFilters } from '@/composables/useSearchFilters';
 import { clone } from '@/helpers/utils';
 import { getSpaceUri } from '@/helpers/ens';
 import defaults from '@/locales/default';
-import client from '@/helpers/clientEIP712';
 import { useCopy } from '@/composables/useCopy';
 import { useWeb3 } from '@/composables/useWeb3';
 import { calcFromSeconds, calcToSeconds } from '@/helpers/utils';
+import { useClient } from '@/composables/useClient';
 
 const props = defineProps({
   spaceId: String,
@@ -26,10 +25,10 @@ const props = defineProps({
 
 const basicValidation = { name: 'basic', params: {} };
 
-const auth = getInstance();
 const { t } = useI18n();
 const { copyToClipboard } = useCopy();
 const { web3 } = useWeb3();
+const { send, clientLoading } = useClient();
 const notify = inject('notify');
 
 const currentSettings = ref({});
@@ -44,7 +43,6 @@ const modalVotingTypeOpen = ref(false);
 const modalPluginsOpen = ref(false);
 const modalValidationOpen = ref(false);
 const loaded = ref(false);
-const loading = ref(false);
 const uploadLoading = ref(false);
 const showErrors = ref(false);
 const delayUnit = ref('h');
@@ -65,7 +63,9 @@ const validate = computed(() => {
 });
 
 const isValid = computed(() => {
-  return !loading.value && validate.value === true && !uploadLoading.value;
+  return (
+    !clientLoading.value && validate.value === true && !uploadLoading.value
+  );
 });
 
 const textRecord = computed(() => {
@@ -115,24 +115,12 @@ function pluginName(key) {
 async function handleSubmit() {
   if (isValid.value) {
     if (form.value.filters.invalids) delete form.value.filters.invalids;
-    loading.value = true;
-    try {
-      const result = await client.space(auth.web3, web3Account.value, {
-        space: props.spaceId,
-        settings: JSON.stringify(form.value)
-      });
-      console.log('Result', result);
+    const result = await send(props.space, 'settings', form.value);
+    console.log('Result', result);
+    if (result.id) {
       notify(['green', t('notify.saved')]);
-    } catch (e) {
-      if (!e.code || e.code !== 4001) {
-        console.log('Oops!', e);
-        const errorMessage = e?.error_description
-          ? `Oops, ${e.error_description}`
-          : t('notify.somethingWentWrong');
-        notify(['red', errorMessage]);
-      }
+      props.loadExtentedSpaces([props.spaceId]);
     }
-    loading.value = false;
   } else {
     console.log('Invalid schema', validate.value);
     showErrors.value = true;
@@ -140,7 +128,7 @@ async function handleSubmit() {
 }
 
 function inputError(field) {
-  if (!isValid.value && !loading.value && showErrors.value) {
+  if (!isValid.value && !clientLoading.value && showErrors.value) {
     const errors = Object.keys(defaults.errors);
     const errorFound = validate.value.find(
       error =>
@@ -618,7 +606,7 @@ watchEffect(async () => {
         <UiButton
           :disabled="uploadLoading"
           @click="handleSubmit"
-          :loading="loading"
+          :loading="clientLoading"
           class="block w-full button--submit"
         >
           {{ $t('save') }}

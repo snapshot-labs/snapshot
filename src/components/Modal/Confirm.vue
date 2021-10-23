@@ -1,10 +1,8 @@
 <script setup>
-import { ref, computed, inject } from 'vue';
+import { computed, inject } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
-import client from '@/helpers/clientEIP712';
 import { getChoiceString } from '@/helpers/utils';
-import { useWeb3 } from '@/composables/useWeb3';
+import { useClient } from '@/composables/useClient';
 
 const props = defineProps({
   open: Boolean,
@@ -19,44 +17,27 @@ const props = defineProps({
 
 const emit = defineEmits(['reload', 'close']);
 
-const auth = getInstance();
 const { t } = useI18n();
-const { web3 } = useWeb3();
 const notify = inject('notify');
+const { send, clientLoading } = useClient();
 const format = getChoiceString;
-
-const loading = ref(false);
 
 const symbols = computed(() =>
   props.strategies.map(strategy => strategy.params.symbol)
 );
 
-const web3Account = computed(() => web3.value.account);
-
 async function handleSubmit() {
-  loading.value = true;
-  try {
-    const result = await client.vote(auth.web3, web3Account.value, {
-      space: props.space.id,
-      proposal: props.proposal.id,
-      type: props.proposal.type,
-      choice: props.selectedChoices,
-      metadata: JSON.stringify({})
-    });
-    console.log('Result', result);
+  const result = await send(props.space, 'vote', {
+    proposal: props.proposal,
+    choice: props.selectedChoices,
+    metadata: {}
+  });
+  console.log('Result', result);
+  if (result.id) {
     notify(['green', t('notify.voteSuccessful')]);
-  } catch (e) {
-    if (!e.code || e.code !== 4001) {
-      console.log('Oops!', e);
-      const errorMessage = e?.error_description
-        ? `Oops, ${e.error_description}`
-        : t('notify.somethingWentWrong');
-      notify(['red', errorMessage]);
-    }
+    emit('reload');
+    emit('close');
   }
-  emit('reload');
-  emit('close');
-  loading.value = false;
 }
 </script>
 
@@ -124,8 +105,8 @@ async function handleSubmit() {
       </div>
       <div class="w-2/4 float-left pl-2">
         <UiButton
-          :disabled="totalScore === 0 || loading"
-          :loading="loading"
+          :disabled="totalScore === 0 || clientLoading"
+          :loading="clientLoading"
           @click="handleSubmit"
           type="submit"
           class="w-full button--submit"

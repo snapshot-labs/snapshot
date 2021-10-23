@@ -2,15 +2,14 @@
 import { ref, computed, watch, onMounted, inject } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
-import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { getProposal, getResults, getPower } from '@/helpers/snapshot';
 import { useModal } from '@/composables/useModal';
 import { useTerms } from '@/composables/useTerms';
 import { useProfiles } from '@/composables/useProfiles';
-import client from '@/helpers/clientEIP712';
 import { useDomain } from '@/composables/useDomain';
 import { useSharing } from '@/composables/useSharing';
 import { useWeb3 } from '@/composables/useWeb3';
+import { useClient } from '@/composables/useClient';
 
 const props = defineProps({
   spaceId: String,
@@ -18,12 +17,12 @@ const props = defineProps({
   spaceLoading: Boolean
 });
 
-const auth = getInstance();
 const route = useRoute();
 const router = useRouter();
 const { domain } = useDomain();
 const { t } = useI18n();
 const { web3 } = useWeb3();
+const { send, clientLoading } = useClient();
 const notify = inject('notify');
 
 const id = route.params.id;
@@ -37,7 +36,6 @@ const votes = ref([]);
 const results = ref({});
 const totalScore = ref(0);
 const scores = ref([]);
-const dropdownLoading = ref(false);
 const modalStrategiesOpen = ref(false);
 const proposalObj = ref({});
 
@@ -115,26 +113,14 @@ async function loadPower() {
 }
 
 async function deleteProposal() {
-  dropdownLoading.value = true;
-  try {
-    const result = await client.cancelProposal(auth.web3, web3Account.value, {
-      space: props.space.id,
-      proposal: id
-    });
-    console.log('Result', result);
+  const result = await send(props.space, 'delete-proposal', {
+    proposal: id
+  });
+  console.log('Result', result);
+  if (result.id) {
     notify(['green', t('notify.proposalDeleted')]);
-    dropdownLoading.value = false;
     router.push({ name: 'spaceProposals' });
-  } catch (e) {
-    if (!e.code || e.code !== 4001) {
-      console.log('Oops!', e);
-      const errorMessage = e?.error_description
-        ? `Oops, ${e.error_description}`
-        : t('notify.somethingWentWrong');
-      notify(['red', errorMessage]);
-    }
   }
-  dropdownLoading.value = false;
 }
 
 const {
@@ -238,7 +224,7 @@ onMounted(async () => {
               :items="threeDotItems"
             >
               <div class="pr-3">
-                <UiLoading v-if="dropdownLoading" />
+                <UiLoading v-if="clientLoading" />
                 <Icon v-else name="threedots" size="25" />
               </div>
             </UiDropdown>
