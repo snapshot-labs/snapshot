@@ -86,6 +86,7 @@
   "marketSymbol": "{0} thị trường",
   "twoChoicesRequired": "Cần có hai lựa chọn cho plugin này.",
   "noResultsFound": "Rất tiếc, chúng tôi không thể tìm thấy bất kỳ kết quả nào",
+  "createFirstProposal": "Let's create your first proposal",
   "noSpacesJoined": "Bạn chưa tham gia một nhóm nào cả",
   "addFavorites": "Thêm yêu thích",
   "createdBy": "Bởi {0}",
@@ -166,6 +167,7 @@
     "header": "Đề xuất",
     "new": "Đề xuất mới",
     "noProposals": "Không có bất kỳ đề xuất nào ở đây!",
+    "createProposal": "Create proposal",
     "states": {
       "all": "Tất cả",
       "core": "Cốt lõi",
