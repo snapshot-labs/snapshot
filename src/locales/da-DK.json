@@ -120,7 +120,8 @@
     "pattern": "Ugyldigt tegn",
     "minItems": "Minimum {0} vare(r) kræves",
     "minStrategy": "Mindst én rolle er påkrævet.",
-    "format": "Ugyldigt format"
+    "format": "Ugyldigt format",
+    "type": "Invalid type"
   },
   "create": {
     "question": "Spørgsmål",
@@ -204,7 +205,12 @@
     "editValidation": "Rediger validering",
     "selectValidation": "Rediger validering",
     "validationParameters": "Valideringsparametre",
-    "warningTextRecord": "You must set a text record on the ENS domain."
+    "warningTextRecord": "You must set a text record on the ENS domain.",
+    "votingDelay": "Voting delay",
+    "votingPeriod": "Voting period",
+    "voting": "Voting",
+    "type": "Type",
+    "anyType": "Any"
   },
   "setup": {
     "example": "e.g. yam.eth",
@@ -215,8 +221,12 @@
     "youDidIt": "Du gjorde det!",
     "copied": "Kopieret",
     "proposalDeleted": "Forslag slettet",
-    "yourIsIn": "Din {0} er ind!",
-    "somethingWentWrong": "Ups, noget gik galt!"
+    "somethingWentWrong": "Ups, noget gik galt!",
+    "saved": "Saved!",
+    "delegationSuccess": "Delegation successful",
+    "delegationRemoved": "Delegation removed",
+    "proposalCreated": "Proposal created",
+    "voteSuccessful": "Your vote is in!"
   },
   "explore": {
     "createStrategy": "Opret strategi",

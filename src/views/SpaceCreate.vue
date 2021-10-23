@@ -37,7 +37,7 @@ const notify = inject('notify');
 const loading = ref(false);
 const choices = ref([]);
 const blockNumber = ref(-1);
-const bodyLimit = ref(6400);
+const bodyLimit = ref(4800);
 const form = ref({
   name: '',
   body: '',
@@ -81,7 +81,7 @@ watchEffect(async () => {
 
 const dateStart = computed(() => {
   return props.space.voting?.delay
-    ? new Date().getTime() / 1000 + props.space.voting.delay
+    ? parseInt(new Date().getTime() / 1000) + props.space.voting.delay
     : form.value.start;
 });
 
@@ -138,8 +138,12 @@ async function handleSubmit() {
   form.value.choices = choices.value.map(choice => choice.text);
   form.value.metadata.network = props.space.network;
   form.value.metadata.strategies = props.space.strategies;
-  form.value.start = dateStart.value;
-  form.value.end = dateEnd.value;
+  form.value.start = props.space.voting?.delay
+    ? parseInt(new Date().getTime() / 1000) + props.space.voting.delay
+    : dateStart.value;
+  form.value.end = props.space.voting?.period
+    ? form.value.start + props.space.voting.period
+    : dateEnd.value;
   try {
     const { ipfsHash } = await send(props.space.id, 'proposal', form.value);
     getExplore();
@@ -151,6 +155,7 @@ async function handleSubmit() {
         id: ipfsHash
       }
     });
+    loading.value = false;
   } catch (e) {
     console.error(e);
     loading.value = false;

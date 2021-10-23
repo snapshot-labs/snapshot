@@ -62,8 +62,8 @@
   "learnMore": "もっと見る",
   "logout": "ログアウト",
   "walletNotice": "Wallet not supported",
-  "gnosisSafeWalletNotice": "You are trying to use Gnosis Safe wallet, which doesn't support signing messages on Snapshot.",
-  "continue": "Continue",
+  "gnosisSafeWalletNotice": "スナップショットでの署名メッセージをサポートしていないGnosisセーフウォレットを使用しようとしています。",
+  "continue": "続ける",
   "add": "追加",
   "edit": "編集",
   "strategyParameters": "ストラテジーパラメータ",
@@ -99,11 +99,11 @@
   "defaultSkin": "デフォルトのスキン",
   "select": "選択する",
   "language": "言語",
-  "agree": "I agree",
+  "agree": "同意する",
   "mustAgreeToTerms": "Before you can complete this action, you must agree to {0} terms of service here:",
   "playground": "Playground",
   "strategyParams": "Strategy params",
-  "addresses": "Addresses",
+  "addresses": "アドレス",
   "networkErrorPlayground": "Network error - please open your browser console for more information",
   "upload": "Upload",
   "join": "Join",
@@ -120,7 +120,8 @@
     "pattern": "不正な文字です",
     "minItems": "最低でも {0} 個必要です",
     "minStrategy": "最低でも１ストラテジー必要です",
-    "format": "Invalid format"
+    "format": "Invalid format",
+    "type": "Invalid type"
   },
   "create": {
     "question": "質問",
@@ -186,12 +187,12 @@
     "network": "ネットワーク",
     "symbol": "シンボル",
     "skin": "スキン",
-    "customDomain": "Custom domain",
+    "customDomain": "独自ドメイン",
     "domain": "ドメイン名",
     "strategies": "ストラテジー",
     "hideSpace": "サイトからスペースを隠す",
     "addStrategy": "ストラテジーを追加する",
-    "authors": "Authors",
+    "authors": "作成者",
     "admins": "Admins",
     "defaultTab": "デフォルトのタブ",
     "proposalThreshold": "Proposal threshold",
@@ -204,7 +205,12 @@
     "editValidation": "Edit validation",
     "selectValidation": "Select validation",
     "validationParameters": "Validation parameters",
-    "warningTextRecord": "You must set a text record on the ENS domain."
+    "warningTextRecord": "You must set a text record on the ENS domain.",
+    "votingDelay": "Voting delay",
+    "votingPeriod": "Voting period",
+    "voting": "Voting",
+    "type": "Type",
+    "anyType": "Any"
   },
   "setup": {
     "example": "例 yam.eth",
@@ -215,8 +221,12 @@
     "youDidIt": "おつかれさまです！",
     "copied": "コピーしました！",
     "proposalDeleted": "提案を削除しました",
-    "yourIsIn": "あなたの {0} が来ました",
-    "somethingWentWrong": "おっと、何か異常があったようです"
+    "somethingWentWrong": "おっと、何か異常があったようです",
+    "saved": "Saved!",
+    "delegationSuccess": "Delegation successful",
+    "delegationRemoved": "Delegation removed",
+    "proposalCreated": "Proposal created",
+    "voteSuccessful": "Your vote is in!"
   },
   "explore": {
     "createStrategy": "Create strategy",

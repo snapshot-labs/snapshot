@@ -120,7 +120,8 @@
     "pattern": "अमान्य वर्ण",
     "minItems": "न्यूनतम {0} आइटम्स जरुरी है",
     "minStrategy": "कम से कम एक स्ट्रेटेजी की आवश्यकता है",
-    "format": "अवैध फॉर्मेट"
+    "format": "अवैध फॉर्मेट",
+    "type": "Invalid type"
   },
   "create": {
     "question": "प्रश्न",
@@ -204,7 +205,12 @@
     "editValidation": "प्रमाणीकरण जोड़ें/संपादित करें",
     "selectValidation": "मान्यता का चयन करें",
     "validationParameters": "इन मापदंडों को मान्य करें",
-    "warningTextRecord": "आपको ENS डोमेन पर एक टेक्स्ट रिकॉर्ड सेट करना होगा।"
+    "warningTextRecord": "आपको ENS डोमेन पर एक टेक्स्ट रिकॉर्ड सेट करना होगा।",
+    "votingDelay": "Voting delay",
+    "votingPeriod": "Voting period",
+    "voting": "Voting",
+    "type": "Type",
+    "anyType": "Any"
   },
   "setup": {
     "example": "उदाहरण. yam.eth",
@@ -215,8 +221,12 @@
     "youDidIt": "संपूर्ण हुआ",
     "copied": "कॉपी किया गया!",
     "proposalDeleted": "प्रपोजल मिटा दिया गया",
-    "yourIsIn": "आपका {0} आया है!",
-    "somethingWentWrong": "ओह! कुछ गलत हो गया है"
+    "somethingWentWrong": "ओह! कुछ गलत हो गया है",
+    "saved": "Saved!",
+    "delegationSuccess": "Delegation successful",
+    "delegationRemoved": "Delegation removed",
+    "proposalCreated": "Proposal created",
+    "voteSuccessful": "Your vote is in!"
   },
   "explore": {
     "createStrategy": "स्ट्रेटेजी बनाये",
