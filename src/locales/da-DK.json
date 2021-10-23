@@ -86,6 +86,7 @@
   "marketSymbol": "Tilføj marked",
   "twoChoicesRequired": "Emner er påkrævede for dette spørgsmål.",
   "noResultsFound": "Beklager, vi fandt ingen resultater!",
+  "createFirstProposal": "Let's create your first proposal",
   "noSpacesJoined": "Oops, you haven't joined any spaces yet",
   "addFavorites": "Tilføj favoritter",
   "createdBy": "By {0} (Automatic Copy)",
@@ -166,6 +167,7 @@
     "header": "Forslag",
     "new": "Nyt forslag",
     "noProposals": "Der er ikke noget forslag her endnu!",
+    "createProposal": "Create proposal",
     "states": {
       "all": "Alle",
       "core": "Kernefunktioner",
