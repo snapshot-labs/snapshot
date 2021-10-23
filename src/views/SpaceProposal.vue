@@ -10,6 +10,7 @@ import { useSharing } from '@/composables/useSharing';
 import { useI18n } from 'vue-i18n';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useClient } from '@/composables/useClient';
+import { useApp } from '@/composables/useApp';
 
 const props = defineProps({
   spaceId: String,
@@ -24,6 +25,7 @@ const { domain } = useDomain();
 const { t } = useI18n();
 const { web3 } = useWeb3();
 const { send } = useClient();
+const { getExplore } = useApp();
 const notify = inject('notify');
 
 const modalOpen = ref(false);
@@ -122,6 +124,7 @@ async function deleteProposal() {
     ) {
       notify(['green', t('notify.proposalDeleted')]);
       dropdownLoading.value = false;
+      getExplore();
       router.push({
         name: 'spaceProposals'
       });
