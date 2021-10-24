@@ -54,6 +54,7 @@ export function useApp() {
 
   return {
     init,
+    getExplore,
     app: computed(() => state),
     spaces: computed(() => spaces.value),
     strategies: computed(() => strategies.value),

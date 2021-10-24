@@ -28,7 +28,11 @@ function selectChoice(i) {
       :key="i"
       @click="selectChoice(i + 1)"
       class="block w-full mb-2"
-      :class="selectedChoices.includes(i + 1) && 'button--active'"
+      :class="{
+        'button--active': selectedChoices.includes(i + 1),
+        'hover:!border-skin-link !border-skin-border':
+          !selectedChoices.includes(i + 1)
+      }"
     >
       {{ _shorten(choice, 32) }}
 
