@@ -27,7 +27,7 @@ export function useApp() {
 
   async function getStrategies() {
     const strategiesObj: any = await fetch(
-      'https://score.snapshot.org/api/strategies'
+      `${import.meta.env.VITE_SCORES_URL}/api/strategies`
     ).then(res => res.json());
     strategies.value = strategiesObj;
     return;
@@ -54,6 +54,7 @@ export function useApp() {
 
   return {
     init,
+    getExplore,
     app: computed(() => state),
     spaces: computed(() => spaces.value),
     strategies: computed(() => strategies.value),
