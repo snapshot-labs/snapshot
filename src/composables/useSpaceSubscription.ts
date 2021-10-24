@@ -56,29 +56,19 @@ export function useSpaceSubscription(spaceId: any) {
     }
   }
 
-  const checkBrowserNotification = () => {
-    if (Notification.permission === 'denied') {
-      Notification.requestPermission().then(function (permission) {
-        if (permission === 'granted') {
-          return true;
-        }
-      });
-      return false;
-    } else if (Notification.permission === 'granted') {
+  const checkBrowserNotification = async () => {
+    if (Notification.permission === 'granted') {
       return true;
     } else {
-      Notification.requestPermission().then(function (permission) {
-        if (permission === 'granted') {
-          return true;
-        }
-      });
+      const permission = await Notification.requestPermission();
+      if (permission === 'granted') return true;
       return false;
     }
   };
 
   const configurePush = async () => {
     try {
-      const isNotificationsAllowed = checkBrowserNotification();
+      const isNotificationsAllowed = await checkBrowserNotification();
       if (isNotificationsAllowed) {
         await beams.start();
         await beams.addDeviceInterest(web3Account.value);
