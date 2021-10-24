@@ -722,10 +722,10 @@
   version "0.1.3"
   resolved "https://codeload.github.com/snapshot-labs/lock/tar.gz/master"
 
-"@snapshot-labs/snapshot.js@^0.2.14":
-  version "0.2.14"
-  resolved "https://registry.yarnpkg.com/@snapshot-labs/snapshot.js/-/snapshot.js-0.2.14.tgz#a2fd6f1d71d273a30b73b3b1866538bc37019766"
-  integrity sha512-U8WARiJcUjTK6aWG6yKYv248toNGncAdj+nC4i4PricQPWzu88kjU/7GhgrHn7oavaqUxA1DuleVIyz0w+BZWA==
+"@snapshot-labs/snapshot.js@^0.2.15":
+  version "0.2.15"
+  resolved "https://registry.yarnpkg.com/@snapshot-labs/snapshot.js/-/snapshot.js-0.2.15.tgz#67ddcd44d78d89590926e99da017852596b4d1c3"
+  integrity sha512-mALKdpb9JuWmNsa7ZmjhVdKgmwt4gfNzksUDE++VzvRekOh6G0G1afnRm/YLnF3q3fLWrt8jSvaQqqDGYNjhlg==
   dependencies:
     "@ethersproject/abi" "^5.0.4"
     "@ethersproject/address" "^5.0.4"
