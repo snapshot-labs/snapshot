@@ -10,6 +10,7 @@ import { useDomain } from '@/composables/useDomain';
 import { useSharing } from '@/composables/useSharing';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useClient } from '@/composables/useClient';
+import { useApp } from '@/composables/useApp';
 
 const props = defineProps({
   spaceId: String,
@@ -23,6 +24,7 @@ const { domain } = useDomain();
 const { t } = useI18n();
 const { web3 } = useWeb3();
 const { send, clientLoading } = useClient();
+const { getExplore } = useApp();
 const notify = inject('notify');
 
 const id = route.params.id;
@@ -118,6 +120,7 @@ async function deleteProposal() {
   });
   console.log('Result', result);
   if (result.id) {
+    getExplore();
     notify(['green', t('notify.proposalDeleted')]);
     router.push({ name: 'spaceProposals' });
   }

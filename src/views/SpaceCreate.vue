@@ -14,8 +14,9 @@ import { clone } from '@/helpers/utils';
 import { useDomain } from '@/composables/useDomain';
 import { useApolloQuery } from '@/composables/useApolloQuery';
 import { useWeb3 } from '@/composables/useWeb3';
-import { useExtendedSpaces } from '@/composables/useExtendedSpaces';
 import { useClient } from '@/composables/useClient';
+import { useApp } from '@/composables/useApp';
+import { useExtendedSpaces } from '@/composables/useExtendedSpaces';
 
 const props = defineProps({
   spaceId: String,
@@ -28,6 +29,7 @@ const { t } = useI18n();
 const auth = getInstance();
 const { domain } = useDomain();
 const { web3 } = useWeb3();
+const { getExplore } = useApp();
 const { spaceLoading } = useExtendedSpaces();
 const { send, clientLoading } = useClient();
 const notify = inject('notify');
@@ -143,6 +145,7 @@ async function handleSubmit() {
   const result = await send(props.space, 'proposal', form.value);
   console.log('Result', result);
   if (result.id) {
+    getExplore();
     notify(['green', t('notify.proposalCreated')]);
     router.push({
       name: 'spaceProposal',

@@ -8,6 +8,7 @@ import { useProfiles } from '@/composables/useProfiles';
 import { useUnseenProposals } from '@/composables/useUnseenProposals';
 import { lsSet } from '@/helpers/utils';
 import { useWeb3 } from '@/composables/useWeb3';
+import { useApp } from '@/composables/useApp';
 
 const props = defineProps({ space: Object, spaceId: String });
 
@@ -81,6 +82,12 @@ watch([proposals, web3Account], () => {
   }
   updateLastSeenProposal(web3Account.value);
 });
+
+const { explore } = useApp();
+const proposalsCount = computed(() => {
+  const count = explore.value.spaces[props.space.id].proposals;
+  return count ? count : 0;
+});
 </script>
 
 <template>
@@ -118,8 +125,11 @@ watch([proposals, web3Account], () => {
       <Block v-if="loading" :slim="true">
         <RowLoading class="my-2" />
       </Block>
-
-      <NoResults :block="true" v-else-if="proposals.length < 1" />
+      <NoResults
+        :block="true"
+        v-else-if="proposalsCount && proposals.length < 1"
+      />
+      <NoProposals v-else-if="!proposalsCount" class="mt-2" :space="space"/>
       <div v-else>
         <Block :slim="true" v-for="(proposal, i) in proposals" :key="i">
           <TimelineProposal :proposal="proposal" :profiles="profiles" />
