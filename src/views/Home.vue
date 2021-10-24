@@ -2,6 +2,7 @@
 import { ref, computed, watchEffect } from 'vue';
 import { useRoute } from 'vue-router';
 import orderBy from 'lodash/orderBy';
+import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { useUnseenProposals } from '@/composables/useUnseenProposals';
 import { useScrollMonitor } from '@/composables/useScrollMonitor';
 import { useApp } from '@/composables/useApp';
@@ -10,6 +11,10 @@ import { useFollowSpace } from '@/composables/useFollowSpace';
 const route = useRoute();
 const { explore } = useApp();
 const { followingSpaces } = useFollowSpace();
+
+const testnetNetworks = Object.entries(networks)
+  .filter(network => network[1].testnet)
+  .map(([id]) => id);
 
 const orderedSpaces = computed(() => {
   const network = route.query.network || '';
@@ -21,25 +26,27 @@ const orderedSpaces = computed(() => {
       const voters1d = explore.value.spaces[key].voters_1d ?? 0;
       const followers1d = explore.value.spaces[key].followers_1d ?? 0;
       // const proposals1d = explore.value.spaces[key].proposals_1d ?? 0;
-      const score = voters1d + followers1d / 4 + followers / 16;
+      const score = voters1d + followers1d + followers / 4;
+      const testnet = testnetNetworks.includes(
+        explore.value.spaces[key].network
+      );
       return {
         ...explore.value.spaces[key],
         following,
         followers,
         private: explore.value.spaces[key].private ?? false,
-        score
+        score,
+        testnet
       };
     })
     .filter(space => !space.private)
-    .filter(space => {
-      if (space.network === network) {
-        return space;
-      } else if (!network) {
-        return space;
-      }
-    });
+    .filter(space => space.network === network || !network);
 
-  return orderBy(list, ['following', 'score'], ['desc', 'desc']).filter(space =>
+  return orderBy(
+    list,
+    ['following', 'testnet', 'score'],
+    ['desc', 'asc', 'desc']
+  ).filter(space =>
     JSON.stringify(space).toLowerCase().includes(q.toLowerCase())
   );
 });
