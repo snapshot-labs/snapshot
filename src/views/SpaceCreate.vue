@@ -14,6 +14,7 @@ import { useDomain } from '@/composables/useDomain';
 import { useApolloQuery } from '@/composables/useApolloQuery';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useClient } from '@/composables/useClient';
+import { useApp } from '@/composables/useApp';
 import { useExtendedSpaces } from '@/composables/useExtendedSpaces';
 import { useI18n } from 'vue-i18n';
 
@@ -28,6 +29,7 @@ const auth = getInstance();
 const { domain } = useDomain();
 const { web3 } = useWeb3();
 const { send } = useClient();
+const { getExplore } = useApp();
 const { spaceLoading } = useExtendedSpaces();
 const { t } = useI18n();
 const notify = inject('notify');
@@ -79,7 +81,7 @@ watchEffect(async () => {
 
 const dateStart = computed(() => {
   return props.space.voting?.delay
-    ? parseInt(new Date().getTime() / 1000) + props.space.voting.delay
+    ? parseInt((Date.now() / 1e3).toFixed()) + props.space.voting.delay
     : form.value.start;
 });
 
@@ -137,13 +139,14 @@ async function handleSubmit() {
   form.value.metadata.network = props.space.network;
   form.value.metadata.strategies = props.space.strategies;
   form.value.start = props.space.voting?.delay
-    ? parseInt(new Date().getTime() / 1000) + props.space.voting.delay
+    ? parseInt((Date.now() / 1e3).toFixed()) + props.space.voting.delay
     : dateStart.value;
   form.value.end = props.space.voting?.period
     ? form.value.start + props.space.voting.period
     : dateEnd.value;
   try {
     const { ipfsHash } = await send(props.space.id, 'proposal', form.value);
+    getExplore();
     notify(['green', t('notify.proposalCreated')]);
     router.push({
       name: 'spaceProposal',
