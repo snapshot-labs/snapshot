@@ -14,13 +14,23 @@ export function useClient() {
 
   const loading = ref(false);
 
+  const usePersonalSign = computed(() => {
+    const connector = auth.provider.value?.connectorName;
+    return (
+      connector === 'walletlink' ||
+      connector === 'walletconnect' ||
+      connector === 'portis'
+    );
+  });
+
   async function send(space, type, payload) {
     loading.value = true;
     let result;
     try {
       // TODO: Add trezor check
-      if (web3.value?.walletConnectType !== 'unknown') {
+      if (usePersonalSign.value) {
         if (payload.proposal) payload.proposal = payload.proposal.id;
+
         const isSafe = web3.value?.walletConnectType === 'Gnosis Safe Multisig';
         const fn = isSafe
           ? client.sign.bind(client)
@@ -38,13 +48,12 @@ export function useClient() {
       }
       return result;
     } catch (e: any) {
-      console.log('e');
+      console.log(e);
       const errorMessage =
         e && e.error_description
           ? `Oops, ${e.error_description}`
           : t('notify.somethingWentWrong');
       notify(['red', errorMessage]);
-      loading.value = false;
       return e;
     } finally {
       loading.value = false;
@@ -81,7 +90,7 @@ export function useClient() {
     } else if (type === 'delete-proposal') {
       return await clientEIP712.cancelProposal(auth.web3, web3.value.account, {
         space: space.id,
-        proposal: payload.proposal
+        proposal: payload.proposal.id
       });
     } else if (type === 'settings') {
       return await clientEIP712.space(auth.web3, web3.value.account, {

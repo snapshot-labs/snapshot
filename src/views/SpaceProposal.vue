@@ -27,8 +27,6 @@ const { send, clientLoading } = useClient();
 const { getExplore } = useApp();
 const notify = inject('notify');
 
-const id = route.params.id;
-
 const modalOpen = ref(false);
 const selectedChoices = ref(null);
 const loading = ref(true);
@@ -78,7 +76,7 @@ function clickVote() {
 }
 
 async function loadProposal() {
-  proposalObj.value = await getProposal(id);
+  proposalObj.value = await getProposal(route.params.id);
   proposal.value = proposalObj.value.proposal;
   // Redirect to proposal spaceId if it doesn't match route key
   if (
@@ -116,7 +114,7 @@ async function loadPower() {
 
 async function deleteProposal() {
   const result = await send(props.space, 'delete-proposal', {
-    proposal: id
+    proposal: proposal.value
   });
   console.log('Result', result);
   if (result.id) {

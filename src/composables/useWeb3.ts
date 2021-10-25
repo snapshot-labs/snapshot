@@ -72,8 +72,7 @@ export function useWeb3() {
       const profiles = await getProfiles([acc]);
 
       state.account = acc;
-      state.walletConnectType =
-        auth.provider.value?.wc?.peerMeta?.name || 'unknown';
+      state.walletConnectType = auth.provider.value?.wc?.peerMeta?.name || null;
       state.profile = profiles[acc];
     } catch (e) {
       state.account = '';
