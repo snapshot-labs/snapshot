@@ -167,7 +167,7 @@
     "header": "Опросы",
     "new": "Новый опрос",
     "noProposals": "Здесь пока нет никаких опросов!",
-    "createProposal": "Create proposal",
+    "createProposal": "Создать опрос",
     "states": {
       "all": "Все",
       "core": "Основные",
