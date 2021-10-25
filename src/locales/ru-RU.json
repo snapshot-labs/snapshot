@@ -86,6 +86,7 @@
   "marketSymbol": "Рынок {0}",
   "twoChoicesRequired": "Для этого плагина необходимо выбрать два варианта.",
   "noResultsFound": "Упс, мы не можем найти результаты",
+  "createFirstProposal": "Let's create your first proposal",
   "noSpacesJoined": "К сожалению, вы еще не присоединились ни к одному пространству",
   "addFavorites": "Добавить закладки",
   "createdBy": "От: {0}",

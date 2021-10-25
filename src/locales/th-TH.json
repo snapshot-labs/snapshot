@@ -86,6 +86,7 @@
   "marketSymbol": "{0} ตลาด",
   "twoChoicesRequired": "ทางเลือกทั้งสองต้องการปลั๊กอินนี้",
   "noResultsFound": "เอ๊ะ, เราไม่พบผลลัพธ์ใด ๆ",
+  "createFirstProposal": "Let's create your first proposal",
   "noSpacesJoined": "Oops, you haven't joined any spaces yet",
   "addFavorites": "เพิ่มรายการโปรด",
   "createdBy": "โดย{0}",
@@ -166,6 +167,7 @@
     "header": "ข้อเสนอ",
     "new": "ข้อเสนอใหม่",
     "noProposals": "ที่นี่ยังไม่มีข้อเสนอ!",
+    "createProposal": "Create proposal",
     "states": {
       "all": "ทั้งหมด",
       "core": "ส่วนกลาง",
