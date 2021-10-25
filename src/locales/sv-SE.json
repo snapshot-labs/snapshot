@@ -86,6 +86,7 @@
   "marketSymbol": "{0} marknad",
   "twoChoicesRequired": "Två val krävs för denna plugin.",
   "noResultsFound": "Oj! Vi kan inte hitta några resultat",
+  "createFirstProposal": "Let's create your first proposal",
   "noSpacesJoined": "Oops, you haven't joined any spaces yet",
   "addFavorites": "Lägg till favoriter",
   "createdBy": "Av {0}",
@@ -166,6 +167,7 @@
     "header": "Förslagen",
     "new": "Nytt förslag",
     "noProposals": "Det finns inga förslag här ännu!",
+    "createProposal": "Create proposal",
     "states": {
       "all": "Alla",
       "core": "Core",

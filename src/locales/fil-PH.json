@@ -86,6 +86,7 @@
   "marketSymbol": "{0} market",
   "twoChoicesRequired": "Dalawang choice ang kailangan para sa plugin na ito.",
   "noResultsFound": "Oops, wala kaming makitang mga resulta",
+  "createFirstProposal": "Let's create your first proposal",
   "noSpacesJoined": "Oops, you haven't joined any spaces yet",
   "addFavorites": "Add favorites",
   "createdBy": "By {0}",
@@ -166,6 +167,7 @@
     "header": "Mga Panukala",
     "new": "Bagong panukala",
     "noProposals": "Wala pang masyadong kadaming mga panukala ang naririto!",
+    "createProposal": "Create proposal",
     "states": {
       "all": "Lahat",
       "core": "Core",
