@@ -14,7 +14,7 @@ export function quadraticMath(
   balance: number
 ) {
   const filteredPosChoice: { [k: string]: number } = Object.fromEntries(
-    Object.entries(choice).filter((c: [string, number]) => c[1] > 0)
+    Object.entries(choice).filter((c: any) => c[1] > 0)
   );
   return Math.sqrt(
     (percentageOfTotal(
