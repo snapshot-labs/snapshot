@@ -65,7 +65,7 @@ export function useClient() {
       let plugins = {};
       if (Object.keys(payload.metadata?.plugins).length !== 0)
         plugins = payload.metadata.plugins;
-      return await clientEIP712.proposal(auth.web3, web3.value.account, {
+      return clientEIP712.proposal(auth.web3, web3.value.account, {
         space: space.id,
         type: payload.type,
         title: payload.name,
@@ -80,7 +80,7 @@ export function useClient() {
         metadata: JSON.stringify({})
       });
     } else if (type === 'vote') {
-      return await clientEIP712.vote(auth.web3, web3.value.account, {
+      return clientEIP712.vote(auth.web3, web3.value.account, {
         space: space.id,
         proposal: payload.proposal.id,
         type: payload.proposal.type,
@@ -88,12 +88,12 @@ export function useClient() {
         metadata: JSON.stringify({})
       });
     } else if (type === 'delete-proposal') {
-      return await clientEIP712.cancelProposal(auth.web3, web3.value.account, {
+      return clientEIP712.cancelProposal(auth.web3, web3.value.account, {
         space: space.id,
         proposal: payload.proposal.id
       });
     } else if (type === 'settings') {
-      return await clientEIP712.space(auth.web3, web3.value.account, {
+      return clientEIP712.space(auth.web3, web3.value.account, {
         space: space.id,
         settings: JSON.stringify(payload)
       });
