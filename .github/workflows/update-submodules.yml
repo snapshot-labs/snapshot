@@ -7,6 +7,7 @@ on:
 jobs:
   update-submodule:
     runs-on: ubuntu-latest
+    if: ${{ github.repository_owner == 'snapshot-labs' }}
     steps:
       - uses: actions/checkout@v2
         with:
