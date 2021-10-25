@@ -86,6 +86,7 @@
   "marketSymbol": "{0} মার্কেট",
   "twoChoicesRequired": "এই প্লাগইনটির দুটি পছন্দ প্রয়োজন.",
   "noResultsFound": "ওফ, আমরা কোনও ফলাফল খুঁজে পাচ্ছি না",
+  "createFirstProposal": "Let's create your first proposal",
   "noSpacesJoined": "Oops, you haven't joined any spaces yet",
   "addFavorites": "পছন্দ যোগ করুন",
   "createdBy": "দ্বারা{0}",
@@ -166,6 +167,7 @@
     "header": "প্রস্তাব",
     "new": "নতুন প্রস্তাব",
     "noProposals": "এখানে এখনও কোনও প্রস্তাব নেই!",
+    "createProposal": "Create proposal",
     "states": {
       "all": "সব",
       "core": "কোর",

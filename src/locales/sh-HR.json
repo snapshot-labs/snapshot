@@ -86,6 +86,7 @@
   "marketSymbol": "{0} tržište",
   "twoChoicesRequired": "Dva izbora su obavezna za ovaj plugin.",
   "noResultsFound": "Ups, ne možemo pronaći rezultate",
+  "createFirstProposal": "Let's create your first proposal",
   "noSpacesJoined": "Oops, you haven't joined any spaces yet",
   "addFavorites": "Add favorites",
   "createdBy": "Od {0}",
@@ -166,6 +167,7 @@
     "header": "Predlozi",
     "new": "Novi predlog",
     "noProposals": "Još uvek nema nikakvih predloga!",
+    "createProposal": "Create proposal",
     "states": {
       "all": "Svi",
       "core": "Osnovni",
