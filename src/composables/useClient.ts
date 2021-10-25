@@ -19,7 +19,8 @@ export function useClient() {
     return (
       connector === 'walletlink' ||
       connector === 'walletconnect' ||
-      connector === 'portis'
+      connector === 'portis' ||
+      web3.value.isTrezor
     );
   });
 
@@ -27,7 +28,6 @@ export function useClient() {
     loading.value = true;
     let result;
     try {
-      // TODO: Add trezor check
       if (usePersonalSign.value) {
         if (payload.proposal) payload.proposal = payload.proposal.id;
 
