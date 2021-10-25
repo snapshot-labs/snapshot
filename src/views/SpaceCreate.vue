@@ -81,7 +81,7 @@ watchEffect(async () => {
 
 const dateStart = computed(() => {
   return props.space.voting?.delay
-    ? parseInt(new Date().getTime() / 1000) + props.space.voting.delay
+    ? parseInt((Date.now() / 1e3).toFixed()) + props.space.voting.delay
     : form.value.start;
 });
 
@@ -139,7 +139,7 @@ async function handleSubmit() {
   form.value.metadata.network = props.space.network;
   form.value.metadata.strategies = props.space.strategies;
   form.value.start = props.space.voting?.delay
-    ? parseInt(new Date().getTime() / 1000) + props.space.voting.delay
+    ? parseInt((Date.now() / 1e3).toFixed()) + props.space.voting.delay
     : dateStart.value;
   form.value.end = props.space.voting?.period
     ? form.value.start + props.space.voting.period
