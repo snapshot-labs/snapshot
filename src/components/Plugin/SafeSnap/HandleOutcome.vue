@@ -112,7 +112,7 @@
     <div v-if="questionState === questionStates.proposalApproved" class="my-4">
       <UiButton
         @click="executeProposal"
-        :loading="actionInProgress === 'execute-proposal'"
+        :loading="action2InProgress === 'execute-proposal'"
       >
         {{
           $t('safeSnap.labels.executeTxs', [
@@ -244,6 +244,7 @@ export default {
       loading: true,
       questionStates: QuestionStates,
       actionInProgress: false,
+      action2InProgress: false,
       questionDetails: undefined,
       modalApproveDecisionOpen: false,
       bondData: {
@@ -367,12 +368,12 @@ export default {
     },
     async executeProposal() {
       if (!this.$auth.isAuthenticated.value) return;
-      this.actionInProgress = 'execute-proposal';
+      this.action2InProgress = 'execute-proposal';
       try {
         await ensureRightNetwork(this.network);
       } catch (e) {
         console.error(e);
-        this.actionInProgress = null;
+        this.action2InProgress = null;
         return;
       }
 
@@ -386,14 +387,14 @@ export default {
           this.questionDetails.nextTxIndex
         );
         await executingProposal.next();
-        this.actionInProgress = null;
+        this.action2InProgress = null;
         pendingCount.value++;
         await executingProposal.next();
         notify(this.$i18n.t('notify.youDidIt'));
         pendingCount.value--;
       } catch (err) {
         pendingCount.value--;
-        this.actionInProgress = null;
+        this.action2InProgress = null;
         setBatchError(this.questionDetails.nextTxIndex, err.reason);
       }
     }
