@@ -56,14 +56,6 @@ function loadDailyChart(Chart) {
   const config = {
     type: 'bar',
     data,
-    options: {
-      plugins: {
-        title: {
-          display: true,
-          text: 'Votes added per day'
-        }
-      }
-    }
   };
 
   new Chart(canvasRef, config);
@@ -117,10 +109,6 @@ function loadShareOfVotingPowerChart(Chart) {
           display: true,
           position: 'right'
         },
-        title: {
-          display: true,
-          text: 'Share of voting power'
-        }
       }
     }
   };
@@ -171,12 +159,6 @@ function loadVotingPowerPerDayChart(Chart) {
         }
       }
     },
-    plugins: {
-      title: {
-        display: true,
-        text: 'Power used across time'
-      }
-    }
   };
 
   new Chart(canvasRef, { type: 'line', data, options });
@@ -231,7 +213,7 @@ watch(
         :class="currentTab === 'voting_power_per_day' && 'charts-selected-tab'"
         @click="currentTab = 'voting_power_per_day'"
       >
-        {{ $t('charts.totalVotesPerDay') }}
+        {{ $t('charts.votingPowerPerDay') }}
       </button>
     </div>
     <div v-if="votes.length > 0">
