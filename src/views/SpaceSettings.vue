@@ -37,6 +37,7 @@ const currentStrategyIndex = ref(false);
 const modalNetworksOpen = ref(false);
 const modalSkinsOpen = ref(false);
 const modalStrategyOpen = ref(false);
+const modalCategoryOpen = ref(false);
 const modalPluginsOpen = ref(false);
 const modalValidationOpen = ref(false);
 const loaded = ref(false);
@@ -45,6 +46,7 @@ const uploadLoading = ref(false);
 const showErrors = ref(false);
 const form = ref({
   strategies: [],
+  categories: [],
   plugins: {},
   filters: {},
   validation: basicValidation
@@ -128,6 +130,7 @@ function handleReset() {
   if (currentSettings.value) return (form.value = currentSettings.value);
   form.value = {
     strategies: [],
+    categories: [],
     plugins: {},
     filters: {}
   };
@@ -145,10 +148,18 @@ function handleRemoveStrategy(i) {
   );
 }
 
+function handleRemoveCategory(cat) {
+  form.value.categories = form.value.categories.filter(el => el !== cat);
+}
+
 function handleAddStrategy() {
   currentStrategyIndex.value = false;
   currentStrategy.value = {};
   modalStrategyOpen.value = true;
+}
+
+function handleAddCategory() {
+  modalCategoryOpen.value = true;
 }
 
 function handleSubmitAddStrategy(strategy) {
@@ -326,6 +337,38 @@ watchEffect(async () => {
                 </template>
                 <template v-slot:label>
                   {{ $t(`settings.network`) }}*
+                </template>
+              </UiInput>
+              <UiInput class="cursor-default">
+                <template v-slot:label>
+                  {{ $t(`settings.categories`) }}
+                </template>
+                <template v-slot:selected>
+                  <div class="flex items-center h-full space-x-2">
+                    <div
+                      v-for="(category, i) in form.categories"
+                      :key="i"
+                      class="h-5 px-2 flex items-center bg-gray-300 rounded-2xl"
+                    >
+                      <p class="mr-2">{{ category }}</p>
+                      <a @click="handleRemoveCategory(category)">
+                        <Icon name="close" size="12" />
+                      </a>
+                    </div>
+                    <a
+                      @click="handleAddCategory"
+                      class="
+                        bg-gray-300
+                        rounded-full
+                        h-5
+                        px-2
+                        flex
+                        items-center
+                      "
+                    >
+                      <Icon name="plus" size="16" />
+                    </a>
+                  </div>
                 </template>
               </UiInput>
               <UiInput
@@ -559,6 +602,11 @@ watchEffect(async () => {
       :strategy="currentStrategy"
       @close="modalStrategyOpen = false"
       @add="handleSubmitAddStrategy"
+    />
+    <ModalCategory
+      :open="modalCategoryOpen"
+      @close="modalCategoryOpen = false"
+      v-model="form.categories"
     />
     <ModalPlugins
       :open="modalPluginsOpen"
