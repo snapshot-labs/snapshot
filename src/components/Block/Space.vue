@@ -33,7 +33,6 @@ const {
   loading,
   toggleSubscription,
   isSubscribed,
-  configurePush,
   loadSubscriptions,
   subscriptions
 } = useSpaceSubscription(props.space.id);
@@ -51,7 +50,6 @@ watch(web3Account, () => {
 watchEffect(() => {
   if (isSubscribed.value) {
     notificationIcon.value = 'notifications-on';
-    configurePush();
   } else notificationIcon.value = 'notifications-off';
 });
 </script>

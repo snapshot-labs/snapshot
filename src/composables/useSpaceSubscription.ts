@@ -72,8 +72,12 @@ export function useSpaceSubscription(spaceId: any) {
       if (isNotificationsAllowed) {
         await beams.start();
         await beams.addDeviceInterest(web3Account.value);
+        await client.subscribe(aliasWallet.value, aliasWallet.value.address, {
+          from: web3Account.value,
+          space: spaceId
+        });
       } else {
-        notify(['red', t('pleaseEnableBrowserNotifications')]);
+        notify(['red', t('notificationsBlocked')]);
       }
     } catch (error) {
       console.log(error);
@@ -98,10 +102,7 @@ export function useSpaceSubscription(spaceId: any) {
           space: spaceId
         });
       } else {
-        await client.subscribe(aliasWallet.value, aliasWallet.value.address, {
-          from: web3Account.value,
-          space: spaceId
-        });
+        await configurePush();
       }
       await loadSubscriptions();
     } catch (e) {
@@ -116,7 +117,6 @@ export function useSpaceSubscription(spaceId: any) {
     loading,
     isSubscribed,
     subscriptions,
-    loadSubscriptions,
-    configurePush
+    loadSubscriptions
   };
 }
