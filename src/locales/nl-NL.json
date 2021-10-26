@@ -86,6 +86,7 @@
   "marketSymbol": "{0} markt",
   "twoChoicesRequired": "Twee keuzes zijn nodig voor deze plugin.",
   "noResultsFound": "Oeps, we kunnen geen resultaten vinden",
+  "createFirstProposal": "Let's create your first proposal",
   "noSpacesJoined": "Oops, you haven't joined any spaces yet",
   "addFavorites": "Favorieten toevoegen",
   "createdBy": "Door {0}",
@@ -120,7 +121,8 @@
     "pattern": "Ongeldige tekens",
     "minItems": "Minimaal {0} artikel(en) vereist",
     "minStrategy": "Ten minste één strategie is vereist.",
-    "format": "Ongeldig formaat"
+    "format": "Ongeldig formaat",
+    "type": "Invalid type"
   },
   "create": {
     "question": "Vraag",
@@ -165,6 +167,7 @@
     "header": "Voorstellen",
     "new": "Nieuw voorstel",
     "noProposals": "Er zijn hier nog geen voorstellen!",
+    "createProposal": "Create proposal",
     "states": {
       "all": "Alle",
       "core": "Core",
@@ -204,7 +207,12 @@
     "editValidation": "Edit validation",
     "selectValidation": "Select validation",
     "validationParameters": "Validation parameters",
-    "warningTextRecord": "You must set a text record on the ENS domain."
+    "warningTextRecord": "You must set a text record on the ENS domain.",
+    "votingDelay": "Voting delay",
+    "votingPeriod": "Voting period",
+    "voting": "Voting",
+    "type": "Type",
+    "anyType": "Any"
   },
   "setup": {
     "example": "b.v. yam.eth",
@@ -215,8 +223,12 @@
     "youDidIt": "Het is je gelukt!",
     "copied": "Gekopieerd!",
     "proposalDeleted": "Voorstel verwijderd",
-    "yourIsIn": "Uw {0} is geregistreerd!",
-    "somethingWentWrong": "Oeps, er ging iets mis!"
+    "somethingWentWrong": "Oeps, er ging iets mis!",
+    "saved": "Saved!",
+    "delegationSuccess": "Delegation successful",
+    "delegationRemoved": "Delegation removed",
+    "proposalCreated": "Proposal created",
+    "voteSuccessful": "Your vote is in!"
   },
   "explore": {
     "createStrategy": "Maak strategie",

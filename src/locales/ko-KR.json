@@ -86,6 +86,7 @@
   "marketSymbol": "{0} 시장",
   "twoChoicesRequired": "두 가지 선택이 플러그인이 필요합니다.",
   "noResultsFound": "아차, 우리는 어떤 결과를 찾을 수 없습니다",
+  "createFirstProposal": "Let's create your first proposal",
   "noSpacesJoined": "Oops, you haven't joined any spaces yet",
   "addFavorites": "즐겨찾기 추가",
   "createdBy": "에 의하여 {0}",
@@ -120,7 +121,8 @@
     "pattern": "잘못된 문자",
     "minItems": "최소 {0} 개 항목 필요",
     "minStrategy": "적어도 하나 개의 전략이 필요합니다.",
-    "format": "잘못된 형식"
+    "format": "잘못된 형식",
+    "type": "Invalid type"
   },
   "create": {
     "question": "질문",
@@ -165,6 +167,7 @@
     "header": "제안",
     "new": "새 제안",
     "noProposals": "아직 새로운 제안이 없어요!",
+    "createProposal": "Create proposal",
     "states": {
       "all": "모두",
       "core": "심",
@@ -204,7 +207,12 @@
     "editValidation": "유효성 검사 편집",
     "selectValidation": "유효성 검사 선택",
     "validationParameters": "검증 매개변수",
-    "warningTextRecord": "ENS 도메인에 텍스트 레코드를 설정해야 합니다."
+    "warningTextRecord": "ENS 도메인에 텍스트 레코드를 설정해야 합니다.",
+    "votingDelay": "Voting delay",
+    "votingPeriod": "Voting period",
+    "voting": "Voting",
+    "type": "Type",
+    "anyType": "Any"
   },
   "setup": {
     "example": "예를 들어 얌.eth",
@@ -215,8 +223,12 @@
     "youDidIt": "해냈어!",
     "copied": "복사되었습니다!",
     "proposalDeleted": "제안이 삭제됨",
-    "yourIsIn": "귀하의 {0} 이다 안에!",
-    "somethingWentWrong": "아차, 뭔가 잘못!"
+    "somethingWentWrong": "아차, 뭔가 잘못!",
+    "saved": "Saved!",
+    "delegationSuccess": "Delegation successful",
+    "delegationRemoved": "Delegation removed",
+    "proposalCreated": "Proposal created",
+    "voteSuccessful": "Your vote is in!"
   },
   "explore": {
     "createStrategy": "전략 만들기",
