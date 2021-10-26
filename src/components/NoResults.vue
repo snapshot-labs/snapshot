@@ -1,18 +1,9 @@
 <script setup>
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
-
 const { t } = useI18n();
-
-const props = defineProps({
-  block: Boolean,
-  text: {
-    type: String,
-    default: 'noResultsFound'
-  }
-});
-
-const text = computed(() => t(props.text));
+defineProps(['block']);
+const text = computed(() => t('noResultsFound'));
 </script>
 
 <template>

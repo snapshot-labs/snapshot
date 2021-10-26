@@ -86,6 +86,7 @@
   "marketSymbol": "{0} שוק",
   "twoChoicesRequired": "שתי אפשרויות נדרשות לפלאגין זה.",
   "noResultsFound": "אופס, לא מצאנו תוצאות",
+  "createFirstProposal": "Let's create your first proposal",
   "noSpacesJoined": "Oops, you haven't joined any spaces yet",
   "addFavorites": "הוסף מועדפים",
   "createdBy": "על ידי {0}",
@@ -120,7 +121,8 @@
     "pattern": "תו לא תקין",
     "minItems": "דרושים לפחות {0} פריטים",
     "minStrategy": "נדרשת לפחות אסטרטגיה אחת.",
-    "format": "פורמט לא חוקי"
+    "format": "פורמט לא חוקי",
+    "type": "Invalid type"
   },
   "create": {
     "question": "שאלה",
@@ -165,6 +167,7 @@
     "header": "הצעות",
     "new": "הצעה חדשה",
     "noProposals": "עדיין לא נוצרו הצעות למרחב זה!",
+    "createProposal": "Create proposal",
     "states": {
       "all": "הכל",
       "core": "ליבה",
@@ -204,7 +207,12 @@
     "editValidation": "ערוך אימות",
     "selectValidation": "בחר אימות",
     "validationParameters": "פרמטרים לאימות",
-    "warningTextRecord": "עליך לקבוע text record בדומיין ה-ENS."
+    "warningTextRecord": "עליך לקבוע text record בדומיין ה-ENS.",
+    "votingDelay": "Voting delay",
+    "votingPeriod": "Voting period",
+    "voting": "Voting",
+    "type": "Type",
+    "anyType": "Any"
   },
   "setup": {
     "example": "לדוגמא yam.eth",
@@ -215,8 +223,12 @@
     "youDidIt": "עשית זאת!",
     "copied": "הועתק!",
     "proposalDeleted": "הצעה נמחקה",
-    "yourIsIn": "ה{0} שלך בפנים!",
-    "somethingWentWrong": "אופס, משהו השתבש!"
+    "somethingWentWrong": "אופס, משהו השתבש!",
+    "saved": "Saved!",
+    "delegationSuccess": "Delegation successful",
+    "delegationRemoved": "Delegation removed",
+    "proposalCreated": "Proposal created",
+    "voteSuccessful": "Your vote is in!"
   },
   "explore": {
     "createStrategy": "צור אסטרטגיה",

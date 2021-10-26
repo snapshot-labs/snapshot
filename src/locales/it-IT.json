@@ -86,6 +86,7 @@
   "marketSymbol": "{0} mercati",
   "twoChoicesRequired": "Per questo plugin sono necessarie due scelte.",
   "noResultsFound": "Oops, non riusciamo a trovare alcun risultato",
+  "createFirstProposal": "Let's create your first proposal",
   "noSpacesJoined": "Oops, you haven't joined any spaces yet",
   "addFavorites": "Aggiungi preferiti",
   "createdBy": "Da {0}",
@@ -120,7 +121,8 @@
     "pattern": "Carattere non valido",
     "minItems": "Minimo {0} elementi richiesti",
     "minStrategy": "È necessaria almeno una strategia.",
-    "format": "Formato non valido"
+    "format": "Formato non valido",
+    "type": "Invalid type"
   },
   "create": {
     "question": "Domande",
@@ -165,6 +167,7 @@
     "header": "Proposte",
     "new": "Nuova proposta",
     "noProposals": "Non ci sono ancora proposte qui!",
+    "createProposal": "Create proposal",
     "states": {
       "all": "Tutte",
       "core": "Core",
@@ -204,7 +207,12 @@
     "editValidation": "Modifica validatore",
     "selectValidation": "Seleziona validazione",
     "validationParameters": "Parametri di validazione",
-    "warningTextRecord": "You must set a text record on the ENS domain."
+    "warningTextRecord": "You must set a text record on the ENS domain.",
+    "votingDelay": "Voting delay",
+    "votingPeriod": "Voting period",
+    "voting": "Voting",
+    "type": "Type",
+    "anyType": "Any"
   },
   "setup": {
     "example": "e.g. yam.eth",
@@ -215,8 +223,12 @@
     "youDidIt": "Ce l'hai fatta!",
     "copied": "Copiato!",
     "proposalDeleted": "Proposta eliminata",
-    "yourIsIn": "Il tuo {0} è dentro!",
-    "somethingWentWrong": "Oops, qualcosa è andato storto!"
+    "somethingWentWrong": "Oops, qualcosa è andato storto!",
+    "saved": "Saved!",
+    "delegationSuccess": "Delegation successful",
+    "delegationRemoved": "Delegation removed",
+    "proposalCreated": "Proposal created",
+    "voteSuccessful": "Your vote is in!"
   },
   "explore": {
     "createStrategy": "Creare strategia",

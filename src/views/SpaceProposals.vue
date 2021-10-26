@@ -65,10 +65,10 @@ function selectState(e) {
   load();
 }
 
-const { profiles, addressArray } = useProfiles();
+const { profiles, updateAddressArray } = useProfiles();
 
 watch(proposals, () => {
-  addressArray.value = proposals.value.map(proposal => proposal.author);
+  updateAddressArray(proposals.value.map(proposal => proposal.author));
 });
 
 watch([proposals, web3Account], () => {
@@ -84,15 +84,10 @@ watch([proposals, web3Account], () => {
 });
 
 const { explore } = useApp();
-const proposalsIs = computed(() => {
-  return Object.values(explore.value.spaces).find(
-    el => el.id === props.space.id
-  ).proposals;
+const proposalsCount = computed(() => {
+  const count = explore.value.spaces[props.space.id].proposals;
+  return count ? count : 0;
 });
-const noResultsText = computed(() => {
-  return !proposalsIs.value ? 'createFirstProposal' : undefined;
-});
-console.log(proposalsIs);
 </script>
 
 <template>
@@ -130,20 +125,11 @@ console.log(proposalsIs);
       <Block v-if="loading" :slim="true">
         <RowLoading class="my-2" />
       </Block>
-
       <NoResults
-        :text="noResultsText"
         :block="true"
-        v-else-if="proposals.length < 1"
-      >
-        <div v-if="!proposalsIs">
-          <router-link :to="{ name: 'spaceCreate', params: { key: space.id } }">
-            <UiButton class="mt-2">
-              {{ $t('proposals.createProposal') }}
-            </UiButton>
-          </router-link>
-        </div>
-      </NoResults>
+        v-else-if="proposalsCount && proposals.length < 1"
+      />
+      <NoProposals v-else-if="!proposalsCount" class="mt-2" :space="space" />
       <div v-else>
         <Block :slim="true" v-for="(proposal, i) in proposals" :key="i">
           <TimelineProposal :proposal="proposal" :profiles="profiles" />

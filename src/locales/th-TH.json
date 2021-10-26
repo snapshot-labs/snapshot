@@ -86,6 +86,7 @@
   "marketSymbol": "{0} ตลาด",
   "twoChoicesRequired": "ทางเลือกทั้งสองต้องการปลั๊กอินนี้",
   "noResultsFound": "เอ๊ะ, เราไม่พบผลลัพธ์ใด ๆ",
+  "createFirstProposal": "Let's create your first proposal",
   "noSpacesJoined": "Oops, you haven't joined any spaces yet",
   "addFavorites": "เพิ่มรายการโปรด",
   "createdBy": "โดย{0}",
@@ -120,7 +121,8 @@
     "pattern": "ตัวอักษรไม่ถูกต้อง",
     "minItems": "ขั้นต่ำ {0} รายการ(s) ที่ต้องการ",
     "minStrategy": "ต้องใช้อย่างน้อยหนึ่งอย่าง",
-    "format": "รูปแบบไม่ถูกต้อง"
+    "format": "รูปแบบไม่ถูกต้อง",
+    "type": "Invalid type"
   },
   "create": {
     "question": "คำถาม",
@@ -165,6 +167,7 @@
     "header": "ข้อเสนอ",
     "new": "ข้อเสนอใหม่",
     "noProposals": "ที่นี่ยังไม่มีข้อเสนอ!",
+    "createProposal": "Create proposal",
     "states": {
       "all": "ทั้งหมด",
       "core": "ส่วนกลาง",
@@ -204,7 +207,12 @@
     "editValidation": "Edit validation",
     "selectValidation": "Select validation",
     "validationParameters": "Validation parameters",
-    "warningTextRecord": "You must set a text record on the ENS domain."
+    "warningTextRecord": "You must set a text record on the ENS domain.",
+    "votingDelay": "Voting delay",
+    "votingPeriod": "Voting period",
+    "voting": "Voting",
+    "type": "Type",
+    "anyType": "Any"
   },
   "setup": {
     "example": "เช่น.แยมและอื่นๆ",
@@ -215,8 +223,12 @@
     "youDidIt": "คุณทำได้แล้ว!",
     "copied": "ดำเนินการคัดลอกเรียบร้อย!",
     "proposalDeleted": "ดำเนินการลบข้อเสนอเรียบร้อย",
-    "yourIsIn": "{0} ของคุณอยู่ข้างใน!",
-    "somethingWentWrong": "ขออภัย! มีความผิดพลาดบางอย่างเกิดขึ้น"
+    "somethingWentWrong": "ขออภัย! มีความผิดพลาดบางอย่างเกิดขึ้น",
+    "saved": "Saved!",
+    "delegationSuccess": "Delegation successful",
+    "delegationRemoved": "Delegation removed",
+    "proposalCreated": "Proposal created",
+    "voteSuccessful": "Your vote is in!"
   },
   "explore": {
     "createStrategy": "สร้างกลยุทธ์",

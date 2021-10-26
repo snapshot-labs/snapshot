@@ -6,6 +6,83 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "1410439",
+      "name": "notifications-none",
+      "font_class": "remind",
+      "unicode": "e69e",
+      "unicode_decimal": 59038
+    },
+    {
+      "icon_id": "2045201",
+      "name": "emoji",
+      "font_class": "emoji",
+      "unicode": "e709",
+      "unicode_decimal": 59145
+    },
+    {
+      "icon_id": "2045216",
+      "name": "flag_fill",
+      "font_class": "flag_fill",
+      "unicode": "e711",
+      "unicode_decimal": 59153
+    },
+    {
+      "icon_id": "2045276",
+      "name": "mine",
+      "font_class": "mine",
+      "unicode": "e732",
+      "unicode_decimal": 59186
+    },
+    {
+      "icon_id": "2045280",
+      "name": "more",
+      "font_class": "more",
+      "unicode": "e736",
+      "unicode_decimal": 59190
+    },
+    {
+      "icon_id": "2045289",
+      "name": "people",
+      "font_class": "people",
+      "unicode": "e73d",
+      "unicode_decimal": 59197
+    },
+    {
+      "icon_id": "2045337",
+      "name": "stealth_fill",
+      "font_class": "stealth_fill",
+      "unicode": "e75f",
+      "unicode_decimal": 59231
+    },
+    {
+      "icon_id": "490399",
+      "name": "notifications_active",
+      "font_class": "notifications-on",
+      "unicode": "ec64",
+      "unicode_decimal": 60516
+    },
+    {
+      "icon_id": "5226577",
+      "name": "notifications",
+      "font_class": "notifications",
+      "unicode": "e630",
+      "unicode_decimal": 58928
+    },
+    {
+      "icon_id": "7371992",
+      "name": "round-notifications_",
+      "font_class": "notifications-off",
+      "unicode": "e6e4",
+      "unicode_decimal": 59108
+    },
+    {
+      "icon_id": "24125360",
+      "name": "stamp",
+      "font_class": "stamp",
+      "unicode": "e6de",
+      "unicode_decimal": 59102
+    },
+    {
       "icon_id": "11931885",
       "name": "link",
       "font_class": "insertlink",

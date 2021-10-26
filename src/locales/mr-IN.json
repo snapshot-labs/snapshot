@@ -86,6 +86,7 @@
   "marketSymbol": "{0} मार्केट",
   "twoChoicesRequired": "या प्लगइनसाठी दोन निवडी आवश्यक आहेत.",
   "noResultsFound": "ओह, आम्हाला कोणतेही परिणाम सापडत नाहीत",
+  "createFirstProposal": "Let's create your first proposal",
   "noSpacesJoined": "Oops, you haven't joined any spaces yet",
   "addFavorites": "आवडते जोडा",
   "createdBy": "द्वारा{0}",
@@ -120,7 +121,8 @@
     "pattern": "अवैध वर्ण",
     "minItems": "किमान लांबी {0} चे आयटम आवयस्यक",
     "minStrategy": "कमीतकमी एक स्ट्रॅटेजि आवश्यक आहे.",
-    "format": "अवैध्य फॉरमॅट"
+    "format": "अवैध्य फॉरमॅट",
+    "type": "Invalid type"
   },
   "create": {
     "question": "प्रश्न",
@@ -165,6 +167,7 @@
     "header": "प्रोपोसलस",
     "new": "नवीन प्रोपोसलस",
     "noProposals": "आता पर्यंत इथे कोणतेच प्रोपोसलस नाही!",
+    "createProposal": "Create proposal",
     "states": {
       "all": "सर्व",
       "core": "कोर",
@@ -204,7 +207,12 @@
     "editValidation": "Edit validation",
     "selectValidation": "Select validation",
     "validationParameters": "Validation parameters",
-    "warningTextRecord": "You must set a text record on the ENS domain."
+    "warningTextRecord": "You must set a text record on the ENS domain.",
+    "votingDelay": "Voting delay",
+    "votingPeriod": "Voting period",
+    "voting": "Voting",
+    "type": "Type",
+    "anyType": "Any"
   },
   "setup": {
     "example": "उदा. yam.eth",
@@ -215,8 +223,12 @@
     "youDidIt": "आपण पूर्ण केले!",
     "copied": "कॉपी केले!",
     "proposalDeleted": "प्रोपोसलं हटले",
-    "yourIsIn": "आपले {0} येथे आहे!",
-    "somethingWentWrong": "उप्स, काहीतरी चुकले!"
+    "somethingWentWrong": "उप्स, काहीतरी चुकले!",
+    "saved": "Saved!",
+    "delegationSuccess": "Delegation successful",
+    "delegationRemoved": "Delegation removed",
+    "proposalCreated": "Proposal created",
+    "voteSuccessful": "Your vote is in!"
   },
   "explore": {
     "createStrategy": "स्ट्रॅटेजि बनवा",

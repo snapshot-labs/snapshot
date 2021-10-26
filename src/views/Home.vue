@@ -2,6 +2,7 @@
 import { ref, computed, watchEffect } from 'vue';
 import { useRoute } from 'vue-router';
 import orderBy from 'lodash/orderBy';
+import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { useUnseenProposals } from '@/composables/useUnseenProposals';
 import { useScrollMonitor } from '@/composables/useScrollMonitor';
 import { useApp } from '@/composables/useApp';
@@ -11,29 +12,42 @@ const route = useRoute();
 const { explore } = useApp();
 const { followingSpaces } = useFollowSpace();
 
+const testnetNetworks = Object.entries(networks)
+  .filter(network => network[1].testnet)
+  .map(([id]) => id);
+
 const orderedSpaces = computed(() => {
   const network = route.query.network || '';
   const q = route.query.q || '';
   const list = Object.keys(explore.value.spaces)
     .map(key => {
+      const following = followingSpaces.value.some(s => s === key);
+      const followers = explore.value.spaces[key].followers ?? 0;
+      const voters1d = explore.value.spaces[key].voters_1d ?? 0;
+      const followers1d = explore.value.spaces[key].followers_1d ?? 0;
+      // const proposals1d = explore.value.spaces[key].proposals_1d ?? 0;
+      const score = voters1d + followers1d + followers / 4;
+      const testnet = testnetNetworks.includes(
+        explore.value.spaces[key].network
+      );
       return {
         ...explore.value.spaces[key],
-        following: followingSpaces.value.some(s => s === key),
-        followers: explore.value.spaces[key].followers ?? 0,
-        private: explore.value.spaces[key].private ?? false
+        following,
+        followers,
+        private: explore.value.spaces[key].private ?? false,
+        score,
+        testnet
       };
     })
     .filter(space => !space.private)
-    .filter(space => {
-      if (space.network === network) {
-        return space;
-      } else if (!network) {
-        return space;
-      }
-    });
+    .filter(space => space.network === network || !network);
 
-  return orderBy(list, ['following', 'followers'], ['desc', 'desc']).filter(
-    space => JSON.stringify(space).toLowerCase().includes(q.toLowerCase())
+  return orderBy(
+    list,
+    ['following', 'testnet', 'score'],
+    ['desc', 'asc', 'desc']
+  ).filter(space =>
+    JSON.stringify(space).toLowerCase().includes(q.toLowerCase())
   );
 });
 
