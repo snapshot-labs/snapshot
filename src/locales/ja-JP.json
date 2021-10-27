@@ -57,6 +57,7 @@
   "receipt": "レシート",
   "relayer": "リレーヤー",
   "verifyOnMycrypto": "MyCryptoでレシートを検証する",
+  "verifyOnSignatorio": "Verify on Signator.io",
   "isCore": "コア",
   "seeInExplorer": "エクスプローラで閲覧する",
   "learnMore": "もっと詳しく知る",
