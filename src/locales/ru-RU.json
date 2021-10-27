@@ -57,6 +57,7 @@
   "receipt": "Квитанция",
   "relayer": "Передатчик",
   "verifyOnMycrypto": "Подтвердить получение в MyCrypto",
+  "verifyOnSignatorio": "Verify on Signator.io",
   "isCore": "Основные",
   "seeInExplorer": "Просмотр в обозревателе блоков",
   "learnMore": "Подробнее",
@@ -167,7 +168,7 @@
     "header": "Опросы",
     "new": "Новый опрос",
     "noProposals": "Здесь пока нет никаких опросов!",
-    "createProposal": "Создать опрос",
+    "createProposal": "Create proposal",
     "states": {
       "all": "Все",
       "core": "Основные",
