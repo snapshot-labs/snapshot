@@ -1,5 +1,8 @@
 <script>
 import plugins from '@/../snapshot-plugins/src/plugins';
+import { useNotifications } from '@/composables/useNotifications';
+
+const { notify } = useNotifications();
 
 export default {
   props: ['id', 'space', 'proposal', 'results', 'loaded'],
@@ -44,7 +47,7 @@ export default {
         );
         const receipt = await tx.wait();
         console.log('Receipt', receipt);
-        this.notify(['green', this.$t('notify.youDidIt')]);
+        notify(['green', this.$t('notify.youDidIt')]);
       } catch (e) {
         console.error(e);
       }

@@ -5,7 +5,7 @@ import { useApolloQuery } from '@/composables/useApolloQuery';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { FOLLOWS_QUERY } from '@/helpers/queries';
 import { useAliasAction } from '@/composables/useAliasAction';
-import client from '@/helpers/EIP712';
+import client from '@/helpers/clientEIP712';
 import { useSpaceSubscription } from './useSpaceSubscription';
 
 const following = ref([]);

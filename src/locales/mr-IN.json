@@ -86,6 +86,7 @@
   "marketSymbol": "{0} मार्केट",
   "twoChoicesRequired": "या प्लगइनसाठी दोन निवडी आवश्यक आहेत.",
   "noResultsFound": "ओह, आम्हाला कोणतेही परिणाम सापडत नाहीत",
+  "createFirstProposal": "Let's create your first proposal",
   "noSpacesJoined": "Oops, you haven't joined any spaces yet",
   "addFavorites": "आवडते जोडा",
   "createdBy": "द्वारा{0}",
@@ -166,6 +167,7 @@
     "header": "प्रोपोसलस",
     "new": "नवीन प्रोपोसलस",
     "noProposals": "आता पर्यंत इथे कोणतेच प्रोपोसलस नाही!",
+    "createProposal": "Create proposal",
     "states": {
       "all": "सर्व",
       "core": "कोर",

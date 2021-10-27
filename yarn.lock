@@ -720,7 +720,7 @@
 
 "@snapshot-labs/lock@github:snapshot-labs/lock#master":
   version "0.1.3"
-  resolved "https://codeload.github.com/snapshot-labs/lock/tar.gz/master"
+  resolved "https://codeload.github.com/snapshot-labs/lock/tar.gz/8b1ab986d7c28d045dfe673ec949b001b6c5f8de"
 
 "@snapshot-labs/snapshot.js@^0.2.15":
   version "0.2.15"
