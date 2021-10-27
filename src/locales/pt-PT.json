@@ -57,6 +57,7 @@
   "receipt": "Comprovativo",
   "relayer": "Retransmissor",
   "verifyOnMycrypto": "Verificar comprovativo no MyCrypto",
+  "verifyOnSignatorio": "Verify on Signator.io",
   "isCore": "Core",
   "seeInExplorer": "Ver no Explorer",
   "learnMore": "Saber mais",
