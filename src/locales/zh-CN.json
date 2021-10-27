@@ -57,6 +57,7 @@
   "receipt": "发票",
   "relayer": "中继器",
   "verifyOnMycrypto": "在 MyCrypto 上验证收款情况",
+  "verifyOnSignatorio": "Verify on Signator.io",
   "isCore": "核心",
   "seeInExplorer": "在浏览器上查看",
   "learnMore": "了解更多",
