@@ -57,6 +57,7 @@
   "receipt": "Receipt",
   "relayer": "Relayer",
   "verifyOnMycrypto": "Verify receipt on MyCrypto",
+  "verifyOnSignatorio": "Verify on Signator.io",
   "isCore": "Core",
   "seeInExplorer": "See on explorer",
   "learnMore": "Learn more",
