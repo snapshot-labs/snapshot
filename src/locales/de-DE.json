@@ -57,6 +57,7 @@
   "receipt": "Beleg",
   "relayer": "Übertrager",
   "verifyOnMycrypto": "Beleg auf MyCrypto überprüfen",
+  "verifyOnSignatorio": "Verify on Signator.io",
   "isCore": "Kern",
   "seeInExplorer": "Im Explorer ansehen",
   "learnMore": "Mehr erfahren",
