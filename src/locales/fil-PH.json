@@ -57,6 +57,7 @@
   "receipt": "Resibo",
   "relayer": "Taga relay",
   "verifyOnMycrypto": "I-verify ang receipt sa MyCrypto",
+  "verifyOnSignatorio": "Verify on Signator.io",
   "isCore": "Core",
   "seeInExplorer": "Tignan sa explorer",
   "learnMore": "Karagdagang impormasyon",
