@@ -28,6 +28,7 @@ export function useSearchFilters() {
   );
   const filteredStrategies = (q = '') =>
     minifiedStrategiesArray.value
+      .filter(s => !s.alias)
       .filter(s => s.key.toLowerCase().includes(q.toLowerCase()))
       .sort((a, b) => b.spaces - a.spaces);
 
