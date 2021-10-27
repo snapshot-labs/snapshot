@@ -57,6 +57,7 @@
   "receipt": "Dekont",
   "relayer": "Aktaran",
   "verifyOnMycrypto": "MyCrypto'da dekontu doğrulayın",
+  "verifyOnSignatorio": "Verify on Signator.io",
   "isCore": "Genel",
   "seeInExplorer": "İnternette gör",
   "learnMore": "Daha fazla bilgi edinin",
