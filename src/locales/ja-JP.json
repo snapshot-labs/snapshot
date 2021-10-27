@@ -31,7 +31,7 @@
   "network": "ネットワーク",
   "networks": "ネットワーク",
   "skins": "スキン",
-  "members": "No members | {count} member | {count} members",
+  "members": "メンバーなし | {count}メンバー | {count}メンバー",
   "editStrategy": "ストラテジーを編集",
   "invalidProposals": "無効な提案",
   "account": "アカウント",
@@ -161,7 +161,7 @@
     "vote": "投票",
     "startDate": "開始日",
     "endDate": "終了日",
-    "votingSystem": "Voting system"
+    "votingSystem": "投票システム"
   },
   "proposals": {
     "header": "提案",
@@ -224,20 +224,20 @@
     "copied": "コピーしました！",
     "proposalDeleted": "提案を削除しました",
     "somethingWentWrong": "おっと、何らかの問題が発生しました!",
-    "saved": "Saved!",
+    "saved": "保存しました！",
     "delegationSuccess": "Delegation successful",
     "delegationRemoved": "Delegation removed",
     "proposalCreated": "Proposal created",
     "voteSuccessful": "Your vote is in!"
   },
   "explore": {
-    "createStrategy": "Create strategy",
-    "createSkin": "Create skin",
-    "addNetwork": "Add network",
-    "createPlugin": "Create plugin",
-    "strategies": "strategie(s)",
-    "skins": "skin(s)",
-    "networks": "network(s)",
+    "createStrategy": "ストラテジーの作成",
+    "createSkin": "スキンを作成",
+    "addNetwork": "ネットワークを追加",
+    "createPlugin": "プラグインの作成",
+    "strategies": "ストラテジー",
+    "skins": "スキン",
+    "networks": "ネットワーク",
     "plugins": "プラグイン",
     "results": "結果"
   },
@@ -247,7 +247,7 @@
     "approval": "認定投票",
     "quadratic": "クアドラティックボーティング",
     "ranked-choice": "選好投票",
-    "weighted": "Weighted voting",
+    "weighted": "重み付き投票",
     "description": {
       "single-choice": "Each voter may select only one choice.",
       "approval": "Each voter may select any number of choices.",
@@ -257,7 +257,7 @@
     }
   },
   "safeSnap": {
-    "currentOutcome": "Current outcome",
+    "currentOutcome": "現在の結果",
     "currentBond": "Current bond",
     "finalizedIn": "Finalized {0}",
     "executableIn": "Executable {0}",
