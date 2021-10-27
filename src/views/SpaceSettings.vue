@@ -291,8 +291,8 @@ watchEffect(async () => {
             class="mb-2 block"
           >
             <UiButton
-              :class="{ 'button--submit': !isOwner && !isAdmin }"
               class="button-outline w-full"
+              :primary="!isOwner && !isAdmin"
             >
               {{
                 isOwner || isAdmin
@@ -614,7 +614,8 @@ watchEffect(async () => {
           :disabled="uploadLoading"
           @click="handleSubmit"
           :loading="clientLoading"
-          class="block w-full button--submit"
+          class="block w-full"
+          primary
         >
           {{ $t('save') }}
         </UiButton>
