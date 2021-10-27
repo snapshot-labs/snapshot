@@ -261,7 +261,7 @@ watchEffect(async () => {
           <input
             v-model="form.name"
             maxlength="128"
-            class="text-2xl font-bold mb-2 input"
+            class="text-2xl font-semibold mb-2 input"
             :placeholder="$t('create.question')"
             ref="nameForm"
           />

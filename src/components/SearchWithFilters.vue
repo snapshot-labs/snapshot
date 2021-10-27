@@ -9,7 +9,7 @@ const route = useRoute();
 const router = useRouter();
 const { t } = useI18n();
 
-const searchOptions = computed(() => [
+const searchOptions = [
   {
     text: t('spaces'),
     action: 'home'
@@ -30,12 +30,11 @@ const searchOptions = computed(() => [
     text: t('skins'),
     action: 'skins'
   }
-]);
+];
 
 const searchSelectedOption = computed(
   () =>
-    searchOptions.value.find(option => option.action === route.name)?.text ||
-    'home'
+    searchOptions.find(option => option.action === route.name)?.text || 'home'
 );
 
 const routeQuery = computed(() => route.query.q);
@@ -60,7 +59,7 @@ function redirectSearch(e) {
       <UiDropdown
         top="3.5rem"
         right="1.0rem"
-        class="text-left"
+        class="h-full flex items-center"
         style="z-index: 1"
         @select="redirectSearch"
         :items="searchOptions"

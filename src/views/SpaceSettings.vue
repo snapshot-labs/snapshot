@@ -267,7 +267,7 @@ watchEffect(async () => {
       </div>
       <template v-if="loaded">
         <Block title="ENS">
-          <UiButton class="flex w-full mb-2">
+          <UiButton class="flex items-center w-full mb-2">
             <input
               readonly
               v-model="textRecord"
@@ -533,7 +533,7 @@ watchEffect(async () => {
               <template v-slot:info>
                 <select
                   v-model="delayUnit"
-                  class="input text-center mr-[6px] pt-[3px] ml-2"
+                  class="input mr-[6px] pb-1 ml-2"
                   required
                 >
                   <option value="h" selected>hours</option>
@@ -548,7 +548,7 @@ watchEffect(async () => {
               <template v-slot:info>
                 <select
                   v-model="periodUnit"
-                  class="input text-center mr-[6px] pt-[3px] ml-2"
+                  class="input mr-[6px] pb-1 ml-2"
                   required
                 >
                   <option value="h" selected>hours</option>

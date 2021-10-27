@@ -114,6 +114,7 @@
   "duplicateProposal": "Duplicate proposal",
   "joinedSpaces": "Joined spaces",
   "joinSpaces": "Join spaces",
+  "share": "Share",
   "errors": {
     "required": "Field is required",
     "minLength": "Minimum length is {0}",

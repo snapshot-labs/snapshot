@@ -65,7 +65,7 @@ onMounted(() => setTitle());
             <router-link
               :to="{ path: '/' }"
               class="flex items-center"
-              style="font-size: 24px; padding-top: 4px"
+              style="font-size: 24px"
             >
               snapshot
             </router-link>

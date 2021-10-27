@@ -10,7 +10,7 @@ function getLogoUrl(key) {
   <Block>
     <div class="flex items-center mb-1">
       <UiAvatar
-        class="mr-2 mb-2"
+        class="mr-2"
         :imgsrc="getLogoUrl(network.key)"
         :seed="network.key"
         size="28"

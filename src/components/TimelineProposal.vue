@@ -33,12 +33,17 @@ watchEffect(() => {
     }"
   >
     <div>
-      <div class="mb-2">
-        <Token :space="proposal.space" size="28" />
-        <span class="ml-2" v-text="proposal.space.name" />
-        {{ $tc('proposalBy', [username]) }}
-        <Badges :address="proposal.author" :members="proposal.space.members" />
-        <UiState :state="proposal.state" class="inline-block float-right" />
+      <div class="mb-2 xs:flex">
+        <div class="flex items-center">
+          <Token :space="proposal.space" size="28" />
+          <span class="ml-2 mr-1" v-text="proposal.space.name" />
+          {{ $tc('proposalBy', [username]) }}
+          <Badges
+            :address="proposal.author"
+            :members="proposal.space.members"
+          />
+        </div>
+        <UiState :state="proposal.state" class="mr-0 ml-auto mt-2 xs:mt-0" />
       </div>
       <h3 v-text="_shorten(proposal.title, 124)" class="mt-1 mb-1" />
       <p v-text="_shorten(body, 140)" class="break-words mb-1 text-md" />

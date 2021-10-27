@@ -27,9 +27,7 @@ defineProps({
   color: var(--link-color);
   border-radius: 23px;
   outline: none;
-  line-height: 46px;
   height: 46px;
-  font-size: 18px;
 
   &.button--submit {
     color: white;

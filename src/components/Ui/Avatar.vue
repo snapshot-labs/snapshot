@@ -12,7 +12,7 @@ const error = ref(false);
 </script>
 
 <template>
-  <span class="flex-shrink-0">
+  <span class="flex-shrink-0 flex">
     <img
       v-if="imgsrc && !error"
       :src="imgsrc"
@@ -29,7 +29,7 @@ const error = ref(false);
     <UiBlockie
       v-else-if="!!address"
       :seed="address"
-      class="inline-block !align-middle rounded-full"
+      class="inline-block rounded-full"
       :style="{
         'line-height': 0,
         width: `${parseInt(size) || 22}px`,

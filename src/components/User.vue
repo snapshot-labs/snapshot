@@ -20,7 +20,7 @@ watchEffect(() => {
   <span>
     <UiPopover :options="{ offset: [0, 12], placement: 'bottom-start' }">
       <template v-slot:item>
-        <a class="flex flex-nowrap">
+        <a class="flex flex-nowrap items-center">
           <UiAvatar
             :imgsrc="_getUrl(profile?.image)"
             :address="address"
@@ -37,7 +37,7 @@ watchEffect(() => {
             :imgsrc="_getUrl(profile?.image)"
             :address="address"
             size="64"
-            class="mb-4"
+            class="mb-2 justify-center"
           />
           <h3 v-if="profile?.name" class="mt-3" v-text="profile.name" />
           <h3 v-else-if="profile?.ens" v-text="profile.ens" class="mt-3" />

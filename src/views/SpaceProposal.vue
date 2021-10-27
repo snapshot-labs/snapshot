@@ -212,34 +212,36 @@ onMounted(async () => {
       <div class="px-4 md:px-0">
         <template v-if="loaded">
           <h1 v-text="proposal.title" class="mb-2" />
-          <div class="mb-4">
+          <div class="mb-4 flex items-center justify-between">
             <UiState :state="proposal.state" class="inline-block" />
-            <UiDropdown
-              top="2.5rem"
-              right="1.5rem"
-              class="float-right mr-2"
-              @select="selectFromShareDropdown"
-              @clickedNoDropdown="startShare(space, proposal)"
-              :items="sharingItems"
-              :hideDropdown="sharingIsSupported"
-            >
-              <div class="pr-1 select-none">
-                <Icon name="upload" size="25" class="!align-text-bottom" />
-                Share
-              </div>
-            </UiDropdown>
-            <UiDropdown
-              top="2.5rem"
-              right="1.3rem"
-              class="float-right mr-2"
-              @select="selectFromThreedotDropdown"
-              :items="threeDotItems"
-            >
-              <div class="pr-3">
-                <UiLoading v-if="dropdownLoading" />
-                <Icon v-else name="threedots" size="25" />
-              </div>
-            </UiDropdown>
+            <div class="flex items-center">
+              <UiDropdown
+                top="2.5rem"
+                right="1.3rem"
+                class="mr-2"
+                @select="selectFromThreedotDropdown"
+                :items="threeDotItems"
+              >
+                <div class="pr-3 flex items-center">
+                  <UiLoading v-if="dropdownLoading" />
+                  <Icon v-else name="threedots" size="25" />
+                </div>
+              </UiDropdown>
+              <UiDropdown
+                top="2.5rem"
+                right="1.5rem"
+                class="mr-2"
+                @select="selectFromShareDropdown"
+                @clickedNoDropdown="startShare(space, proposal)"
+                :items="sharingItems"
+                :hideDropdown="sharingIsSupported"
+              >
+                <div class="pr-1 select-none flex items-center">
+                  <Icon name="upload" size="25" class="mr-1" />
+                  {{ $t('share') }}
+                </div>
+              </UiDropdown>
+            </div>
           </div>
           <UiMarkdown :body="proposal.body" class="mb-6" />
         </template>

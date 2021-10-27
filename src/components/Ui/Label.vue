@@ -1,19 +1,18 @@
 <template>
-  <span class="Label border !align-middle">
+  <div
+    class="
+      border
+      inline-block
+      px-[7px]
+      text-xs
+      h-[24px]
+      leading-[21px]
+      rounded-full
+      shadow-none
+      text-skin-text
+      align-middle
+    "
+  >
     <slot />
-  </span>
+  </div>
 </template>
-
-<style scoped lang="scss">
-.Label {
-  display: inline-block;
-  padding: 0 7px;
-  font-size: 14px;
-  font-weight: 500;
-  height: 22px;
-  line-height: 23px;
-  border-radius: 2em;
-  box-shadow: none;
-  color: var(--text-color);
-}
-</style>

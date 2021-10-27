@@ -149,7 +149,7 @@ onMounted(() => {
           "
         >
           <UiSidebarButton @click="modalAboutOpen = true">
-            <span class="mt-1 link-color">?</span>
+            <span class="link-color">?</span>
           </UiSidebarButton>
         </div>
       </div>
