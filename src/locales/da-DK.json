@@ -57,6 +57,7 @@
   "receipt": "Kvittering",
   "relayer": "Relæ",
   "verifyOnMycrypto": "Bekræft kvitteringen på MyCrypto",
+  "verifyOnSignatorio": "Verify on Signator.io",
   "isCore": "Kernefunktioner",
   "seeInExplorer": "Se på explorer",
   "learnMore": "Få mere at vide",
