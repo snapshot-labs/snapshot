@@ -115,7 +115,7 @@ function pluginName(key) {
 async function handleSubmit() {
   if (isValid.value) {
     if (form.value.filters.invalids) delete form.value.filters.invalids;
-    const result = await send(props.space, 'settings', form.value);
+    const result = await send({ id: props.spaceId }, 'settings', form.value);
     console.log('Result', result);
     if (result.id) {
       notify(['green', t('notify.saved')]);
@@ -211,38 +211,45 @@ function setAvatarUrl(url) {
   if (typeof url === 'string') form.value.avatar = url;
 }
 
+function formatSpace(spaceRaw) {
+  if (!spaceRaw) return;
+  const space = clone(spaceRaw);
+  if (!space) return;
+  delete space.id;
+  delete space._activeProposals;
+  Object.entries(space).forEach(([key, value]) => {
+    if (value === null) delete space[key];
+  });
+  space.strategies = space.strategies || [];
+  space.plugins = space.plugins || {};
+  space.validation = space.validation || basicValidation;
+  space.filters = space.filters || {};
+  space.voting = space.voting || {};
+  space.voting.delay = space.voting?.delay || undefined;
+  space.voting.period = space.voting?.period || undefined;
+  space.voting.type = space.voting?.type || undefined;
+  return space;
+}
+
 watchEffect(async () => {
   if (!props.spaceLoading) {
     try {
       const uri = await getSpaceUri(props.spaceId);
       console.log('URI', uri);
       currentTextRecord.value = uri;
-      const space = clone(props.space);
-      if (!space) return;
-      delete space.id;
-      delete space._activeProposals;
-      Object.entries(space).forEach(([key, value]) => {
-        if (value === null) delete space[key];
-      });
-      space.strategies = space.strategies || [];
-      space.plugins = space.plugins || {};
-      space.validation = space.validation || basicValidation;
-      space.filters = space.filters || {};
-      space.voting = space.voting || {};
-      space.voting.delay = space.voting?.delay || undefined;
-      space.voting.period = space.voting?.period || undefined;
-      space.voting.type = space.voting?.type || undefined;
-      currentSettings.value = clone(space);
-      form.value = space;
     } catch (e) {
       console.log(e);
     }
+    const spaceClone = formatSpace(props.space);
+    if (spaceClone) {
+      form.value = spaceClone;
+      currentSettings.value = clone(spaceClone);
+    }
     if (props.from) {
-      const fromClone = clone(props.spaceFrom);
-      fromClone.validation = fromClone.validation || basicValidation;
-      delete fromClone.id;
-      delete fromClone._activeProposals;
-      form.value = fromClone;
+      const fromClone = formatSpace(props.spaceFrom);
+      if (fromClone) {
+        form.value = fromClone;
+      }
     }
     loaded.value = true;
   }
