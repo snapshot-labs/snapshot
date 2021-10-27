@@ -57,6 +57,7 @@
   "receipt": "Kuitti",
   "relayer": "Relayer",
   "verifyOnMycrypto": "Vahvista kuitti MyCryptossa",
+  "verifyOnSignatorio": "Verify on Signator.io",
   "isCore": "Core",
   "seeInExplorer": "Katso Explorer",
   "learnMore": "Lue lisää",
