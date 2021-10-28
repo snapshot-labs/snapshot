@@ -23,11 +23,7 @@ export default {
     </div>
     <template v-slot:footer>
       <div>
-        <UiButton
-          @click="$emit('close')"
-          type="submit"
-          class="w-full button--submit"
-        >
+        <UiButton @click="$emit('close')" type="submit" class="w-full" primary>
           {{ $t('continue') }}
         </UiButton>
       </div>
