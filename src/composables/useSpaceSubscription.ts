@@ -3,10 +3,10 @@ import { useWeb3 } from '@/composables/useWeb3';
 import { useApolloQuery } from '@/composables/useApolloQuery';
 import { SUBSCRIPTIONS_QUERY } from '@/helpers/queries';
 import { useAliasAction } from '@/composables/useAliasAction';
-import client from '@/helpers/EIP712';
 import { beams } from '../helpers/beams';
 import { useNotifications } from './useNotifications';
 import { useI18n } from 'vue-i18n';
+import client from '@/helpers/clientEIP712';
 
 const subscriptions = ref<any[] | undefined>(undefined);
 
