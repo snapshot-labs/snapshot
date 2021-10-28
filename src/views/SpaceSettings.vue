@@ -228,6 +228,7 @@ function formatSpace(spaceRaw) {
   space.voting.delay = space.voting?.delay || undefined;
   space.voting.period = space.voting?.period || undefined;
   space.voting.type = space.voting?.type || undefined;
+  space.voting.quorum = space.voting?.quorum || undefined;
   return space;
 }
 
@@ -469,6 +470,7 @@ watchEffect(async () => {
               <a @click="handleRemoveStrategy(i)" class="absolute p-4 right-0">
                 <Icon name="close" size="12" />
               </a>
+
               <a
                 @click="handleEditStrategy(i)"
                 class="p-4 block border rounded-md"
@@ -572,6 +574,15 @@ watchEffect(async () => {
                       : $t('settings.anyType')
                   }}
                 </div>
+              </template>
+            </UiInput>
+            <UiInput
+              v-model="form.voting.quorum"
+              :number="true"
+              placeholder="1000"
+            >
+              <template v-slot:label>
+                {{ $t('settings.quorum') }}
               </template>
             </UiInput>
           </Block>
