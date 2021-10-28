@@ -171,6 +171,7 @@ export const SPACES_QUERY = gql`
         delay
         period
         type
+        quorum
       }
       strategies {
         name
