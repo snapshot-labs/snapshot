@@ -11,6 +11,7 @@
     "lib": ["esnext", "dom"],
     "importHelpers": true,
     "allowSyntheticDefaultImports": true,
+    "allowJs": true,
     "baseUrl": ".",
     "types": ["vite/client"],
     "paths": {

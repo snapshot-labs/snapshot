@@ -113,11 +113,7 @@ export default {
     <UiButton v-if="preview" @click="preview = false" class="w-full mb-2">
       {{ $t('back') }}
     </UiButton>
-    <UiButton
-      :disabled="!isValid"
-      @click="handleSubmit"
-      class="button--submit w-full"
-    >
+    <UiButton :disabled="!isValid" @click="handleSubmit" class="w-full" primary>
       {{ $t('confirm') }}
     </UiButton>
   </form>
