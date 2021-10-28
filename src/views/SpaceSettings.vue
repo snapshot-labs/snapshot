@@ -228,6 +228,7 @@ function formatSpace(spaceRaw) {
   space.voting.delay = space.voting?.delay || undefined;
   space.voting.period = space.voting?.period || undefined;
   space.voting.type = space.voting?.type || undefined;
+  space.voting.quorum = space.voting?.quorum || undefined;
   return space;
 }
 
