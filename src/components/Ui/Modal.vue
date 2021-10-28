@@ -18,32 +18,28 @@ watch(open, (val, prev) => {
 </script>
 
 <template>
-  <div v-if="open" class="modal mx-auto">
-    <div class="backdrop" @click="$emit('close')" />
-    <div
-      class="
-        shell
-        overflow-hidden
-        anim-scale-in
-        relative
-        rounded-none
-        md:rounded-md
-      "
-    >
-      <div v-if="$slots.header" class="border-b pt-4 pb-3 text-center">
-        <slot name="header" />
+  <transition name="fade">
+    <div v-if="open" class="modal mx-auto">
+      <div class="backdrop" @click="$emit('close')" />
+      <div class="shell overflow-hidden relative rounded-none md:rounded-lg">
+        <div v-if="$slots.header" class="border-b pt-4 pb-3 text-center">
+          <slot name="header" />
+        </div>
+        <div class="modal-body">
+          <slot />
+        </div>
+        <div v-if="$slots.footer" class="border-t p-4 text-center">
+          <slot name="footer" />
+        </div>
+        <a
+          @click="$emit('close')"
+          class="absolute right-0 top-1 p-4 text-color"
+        >
+          <Icon name="close" />
+        </a>
       </div>
-      <div class="modal-body">
-        <slot />
-      </div>
-      <div v-if="$slots.footer" class="border-t p-4 text-center">
-        <slot name="footer" />
-      </div>
-      <a @click="$emit('close')" class="absolute right-0 top-1 p-4 text-color">
-        <Icon name="close" />
-      </a>
     </div>
-  </div>
+  </transition>
 </template>
 
 <style lang="scss">

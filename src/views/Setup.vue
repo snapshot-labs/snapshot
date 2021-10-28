@@ -47,7 +47,8 @@ function handleSubmit() {
         <UiButton
           :disabled="!id.includes('.eth') && !id.includes('.xyz')"
           @click="handleSubmit"
-          class="button--submit w-full"
+          class="w-full"
+          primary
         >
           {{ $t('next') }}
         </UiButton>
