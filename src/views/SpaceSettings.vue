@@ -1,18 +1,18 @@
 <script setup>
 import { computed, ref, watchEffect, inject } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { useSearchFilters } from '@/composables/useSearchFilters';
 import { getAddress } from '@ethersproject/address';
 import { validateSchema } from '@snapshot-labs/snapshot.js/src/utils';
 import schemas from '@snapshot-labs/snapshot.js/src/schemas';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
+import { useSearchFilters } from '@/composables/useSearchFilters';
 import { clone } from '@/helpers/utils';
 import { getSpaceUri } from '@/helpers/ens';
 import defaults from '@/locales/default';
 import { useCopy } from '@/composables/useCopy';
 import { useWeb3 } from '@/composables/useWeb3';
-import { useClient } from '@/composables/useClient';
 import { calcFromSeconds, calcToSeconds } from '@/helpers/utils';
+import { useClient } from '@/composables/useClient';
 
 const props = defineProps({
   spaceId: String,
@@ -28,7 +28,7 @@ const basicValidation = { name: 'basic', params: {} };
 const { t } = useI18n();
 const { copyToClipboard } = useCopy();
 const { web3 } = useWeb3();
-const { send } = useClient();
+const { send, clientLoading } = useClient();
 const notify = inject('notify');
 
 const currentSettings = ref({});
@@ -43,7 +43,6 @@ const modalVotingTypeOpen = ref(false);
 const modalPluginsOpen = ref(false);
 const modalValidationOpen = ref(false);
 const loaded = ref(false);
-const loading = ref(false);
 const uploadLoading = ref(false);
 const showErrors = ref(false);
 const delayUnit = ref('h');
@@ -64,7 +63,9 @@ const validate = computed(() => {
 });
 
 const isValid = computed(() => {
-  return !loading.value && validate.value === true && !uploadLoading.value;
+  return (
+    !clientLoading.value && validate.value === true && !uploadLoading.value
+  );
 });
 
 const textRecord = computed(() => {
@@ -114,16 +115,12 @@ function pluginName(key) {
 async function handleSubmit() {
   if (isValid.value) {
     if (form.value.filters.invalids) delete form.value.filters.invalids;
-    loading.value = true;
-    try {
-      if (await send(props.spaceId, 'settings', form.value)) {
-        await props.loadExtentedSpaces([props.spaceId]);
-        notify(['green', t('notify.saved')]);
-      }
-    } catch (e) {
-      console.log(e);
+    const result = await send({ id: props.spaceId }, 'settings', form.value);
+    console.log('Result', result);
+    if (result.id) {
+      notify(['green', t('notify.saved')]);
+      props.loadExtentedSpaces([props.spaceId]);
     }
-    loading.value = false;
   } else {
     console.log('Invalid schema', validate.value);
     showErrors.value = true;
@@ -131,7 +128,7 @@ async function handleSubmit() {
 }
 
 function inputError(field) {
-  if (!isValid.value && !loading.value && showErrors.value) {
+  if (!isValid.value && !clientLoading.value && showErrors.value) {
     const errors = Object.keys(defaults.errors);
     const errorFound = validate.value.find(
       error =>
@@ -214,38 +211,45 @@ function setAvatarUrl(url) {
   if (typeof url === 'string') form.value.avatar = url;
 }
 
+function formatSpace(spaceRaw) {
+  if (!spaceRaw) return;
+  const space = clone(spaceRaw);
+  if (!space) return;
+  delete space.id;
+  delete space._activeProposals;
+  Object.entries(space).forEach(([key, value]) => {
+    if (value === null) delete space[key];
+  });
+  space.strategies = space.strategies || [];
+  space.plugins = space.plugins || {};
+  space.validation = space.validation || basicValidation;
+  space.filters = space.filters || {};
+  space.voting = space.voting || {};
+  space.voting.delay = space.voting?.delay || undefined;
+  space.voting.period = space.voting?.period || undefined;
+  space.voting.type = space.voting?.type || undefined;
+  return space;
+}
+
 watchEffect(async () => {
   if (!props.spaceLoading) {
     try {
       const uri = await getSpaceUri(props.spaceId);
       console.log('URI', uri);
       currentTextRecord.value = uri;
-      const space = clone(props.space);
-      if (!space) return;
-      delete space.id;
-      delete space._activeProposals;
-      Object.entries(space).forEach(([key, value]) => {
-        if (value === null) delete space[key];
-      });
-      space.strategies = space.strategies || [];
-      space.plugins = space.plugins || {};
-      space.validation = space.validation || basicValidation;
-      space.filters = space.filters || {};
-      space.voting = space.voting || {};
-      space.voting.delay = space.voting?.delay || undefined;
-      space.voting.period = space.voting?.period || undefined;
-      space.voting.type = space.voting?.type || undefined;
-      currentSettings.value = clone(space);
-      form.value = space;
     } catch (e) {
       console.log(e);
     }
+    const spaceClone = formatSpace(props.space);
+    if (spaceClone) {
+      form.value = spaceClone;
+      currentSettings.value = clone(spaceClone);
+    }
     if (props.from) {
-      const fromClone = clone(props.spaceFrom);
-      fromClone.validation = fromClone.validation || basicValidation;
-      delete fromClone.id;
-      delete fromClone._activeProposals;
-      form.value = fromClone;
+      const fromClone = formatSpace(props.spaceFrom);
+      if (fromClone) {
+        form.value = fromClone;
+      }
     }
     loaded.value = true;
   }
@@ -609,7 +613,7 @@ watchEffect(async () => {
         <UiButton
           :disabled="uploadLoading"
           @click="handleSubmit"
-          :loading="loading"
+          :loading="clientLoading"
           class="block w-full button--submit"
         >
           {{ $t('save') }}

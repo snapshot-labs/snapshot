@@ -2,6 +2,7 @@
 import { ref, watchEffect, computed, onMounted, inject } from 'vue';
 import { useRouter } from 'vue-router';
 import draggable from 'vuedraggable';
+import { useI18n } from 'vue-i18n';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import { getBlockNumber } from '@snapshot-labs/snapshot.js/src/utils/web3';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
@@ -14,8 +15,8 @@ import { useDomain } from '@/composables/useDomain';
 import { useApolloQuery } from '@/composables/useApolloQuery';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useClient } from '@/composables/useClient';
+import { useApp } from '@/composables/useApp';
 import { useExtendedSpaces } from '@/composables/useExtendedSpaces';
-import { useI18n } from 'vue-i18n';
 
 const props = defineProps({
   spaceId: String,
@@ -24,15 +25,15 @@ const props = defineProps({
 });
 
 const router = useRouter();
+const { t } = useI18n();
 const auth = getInstance();
 const { domain } = useDomain();
 const { web3 } = useWeb3();
-const { send } = useClient();
+const { getExplore } = useApp();
 const { spaceLoading } = useExtendedSpaces();
-const { t } = useI18n();
+const { send, clientLoading } = useClient();
 const notify = inject('notify');
 
-const loading = ref(false);
 const choices = ref([]);
 const blockNumber = ref(-1);
 const bodyLimit = ref(4800);
@@ -79,7 +80,7 @@ watchEffect(async () => {
 
 const dateStart = computed(() => {
   return props.space.voting?.delay
-    ? parseInt(new Date().getTime() / 1000) + props.space.voting.delay
+    ? parseInt((Date.now() / 1e3).toFixed()) + props.space.voting.delay
     : form.value.start;
 });
 
@@ -96,7 +97,7 @@ const isValid = computed(() => {
     : true;
 
   return (
-    !loading.value &&
+    !clientLoading.value &&
     form.value.name &&
     form.value.body.length <= bodyLimit.value &&
     dateStart.value &&
@@ -135,31 +136,28 @@ function setDate(ts) {
 }
 
 async function handleSubmit() {
-  loading.value = true;
   form.value.snapshot = parseInt(form.value.snapshot);
   form.value.choices = choices.value.map(choice => choice.text);
   form.value.metadata.network = props.space.network;
   form.value.metadata.strategies = props.space.strategies;
   form.value.start = props.space.voting?.delay
-    ? parseInt(new Date().getTime() / 1000) + props.space.voting.delay
+    ? parseInt((Date.now() / 1e3).toFixed()) + props.space.voting.delay
     : dateStart.value;
   form.value.end = props.space.voting?.period
     ? form.value.start + props.space.voting.period
     : dateEnd.value;
-  try {
-    const { ipfsHash } = await send(props.space.id, 'proposal', form.value);
+  const result = await send(props.space, 'proposal', form.value);
+  console.log('Result', result);
+  if (result.id) {
+    getExplore();
     notify(['green', t('notify.proposalCreated')]);
     router.push({
       name: 'spaceProposal',
       params: {
         key: props.spaceId,
-        id: ipfsHash
+        id: result.id
       }
     });
-    loading.value = false;
-  } catch (e) {
-    console.error(e);
-    loading.value = false;
   }
 }
 
@@ -389,7 +387,7 @@ watchEffect(() => {
         <UiButton
           @click="clickSubmit"
           :disabled="!isValid"
-          :loading="loading || queryLoading"
+          :loading="clientLoading || queryLoading"
           class="block w-full button--submit"
         >
           {{ $t('create.publish') }}
