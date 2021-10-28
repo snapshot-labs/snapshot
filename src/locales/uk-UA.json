@@ -84,6 +84,7 @@
   "marketSymbol": "{0} ринок",
   "twoChoicesRequired": "Потрібно два варіанти для цього плагіна.",
   "noResultsFound": "Ой! Нічого не знайдено",
+  "createFirstProposal": "Let's create your first proposal",
   "noSpacesJoined": "Oops, you haven't joined any spaces yet",
   "addFavorites": "Додати улюблені",
   "createdBy": "Від {0}",
@@ -164,6 +165,7 @@
     "header": "Пропозиції",
     "new": "Нова пропозиція",
     "noProposals": "Тут поки що немає пропозицій!",
+    "createProposal": "Create proposal",
     "states": {
       "all": "Всі",
       "core": "Ядро",

@@ -57,6 +57,7 @@
   "receipt": "Receipt",
   "relayer": "Relayer",
   "verifyOnMycrypto": "Verify receipt on MyCrypto",
+  "verifyOnSignatorio": "Verify on Signator.io",
   "isCore": "Core",
   "seeInExplorer": "See on explorer",
   "learnMore": "Learn more",
@@ -84,6 +85,7 @@
   "marketSymbol": "{0} market",
   "twoChoicesRequired": "Two choices are required for this plugin.",
   "noResultsFound": "Oops, we can't find any results",
+  "createFirstProposal": "Let's create your first proposal",
   "noSpacesJoined": "Oops, you haven't joined any spaces yet",
   "addFavorites": "Add favorites",
   "createdBy": "By {0}",
@@ -164,6 +166,7 @@
     "header": "Proposals",
     "new": "New proposal",
     "noProposals": "There aren't any proposals here yet!",
+    "createProposal": "Create proposal",
     "states": {
       "all": "All",
       "core": "Core",
@@ -207,6 +210,7 @@
     "votingDelay": "Voting delay",
     "votingPeriod": "Voting period",
     "voting": "Voting",
+    "quorum": "Quorum",
     "type": "Type",
     "anyType": "Any"
   },
