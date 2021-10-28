@@ -57,7 +57,7 @@
   "receipt": "Bukti penerimaan",
   "relayer": "Penyampai",
   "verifyOnMycrypto": "Verifikasi tanda terima di MyCrypto",
-  "verifyOnSignatorio": "Verify on Signator.io",
+  "verifyOnSignatorio": "Verifikasi di Signator.io",
   "isCore": "Inti",
   "seeInExplorer": "Lihat di Penelusuran",
   "learnMore": "Pelajari lebih lanjut",
@@ -87,7 +87,7 @@
   "marketSymbol": "{0} pasar",
   "twoChoicesRequired": "Dua pilihan diperlukan untuk plugin ini.",
   "noResultsFound": "Maaf, kami tidak dapat menemukan hasil apapun",
-  "createFirstProposal": "Let's create your first proposal",
+  "createFirstProposal": "Mari buat proposal pertama anda",
   "noSpacesJoined": "Oops, kamu belum tergabung dalam ruangan apapun",
   "addFavorites": "Tambahkan favorit",
   "createdBy": "Oleh {0}",
@@ -123,7 +123,7 @@
     "minItems": "Minimal {0} item diperlukan",
     "minStrategy": "Setidaknya satu strategi diperlukan.",
     "format": "Format tidak valid",
-    "type": "Invalid type"
+    "type": "Tipe tidak valid"
   },
   "create": {
     "question": "Pertanyaan",
@@ -155,7 +155,7 @@
     "allSpaces": "Untuk spasi",
     "delegated": "Diwakilkan kepada Anda",
     "pendingTransaction": "tidak ada transaksi yang tertunda | 1 transaksi yang tertunda | {count} transaksi yang tertunda",
-    "topDelegates": "Top delegates"
+    "topDelegates": "Delegasi teratas"
   },
   "proposal": {
     "castVote": "Berikan voting Anda",
@@ -168,7 +168,7 @@
     "header": "Proposal",
     "new": "Proposal baru",
     "noProposals": "Disini belum ada proposal apapun!",
-    "createProposal": "Create proposal",
+    "createProposal": "Buat proposal",
     "states": {
       "all": "Semua",
       "core": "Inti",
@@ -190,7 +190,7 @@
     "network": "Jaringan",
     "symbol": "Simbol",
     "skin": "Skin",
-    "customDomain": "Custom domain",
+    "customDomain": "Domain khusus",
     "domain": "Nama domain",
     "strategies": "Strategi",
     "hideSpace": "Sembunyikan ruang dari halaman beranda",
@@ -209,12 +209,12 @@
     "selectValidation": "Pilih validitas",
     "validationParameters": "Parameter validitas",
     "warningTextRecord": "Anda harus mengatur catatan teks pada domain ENS.",
-    "votingDelay": "Voting delay",
-    "votingPeriod": "Voting period",
-    "voting": "Voting",
-    "quorum": "Quorum",
-    "type": "Type",
-    "anyType": "Any"
+    "votingDelay": "Penundaan pemungutan suara",
+    "votingPeriod": "Periode pemungutan suara",
+    "voting": "Pemungutan suara",
+    "quorum": "Kuorum",
+    "type": "Tipe",
+    "anyType": "Apa saja"
   },
   "setup": {
     "example": "mis. yam.eth",
