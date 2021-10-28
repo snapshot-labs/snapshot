@@ -1,5 +1,6 @@
 <script setup>
 import { ref, toRefs, watch } from 'vue';
+import { getDateOutput, getTimestamp } from '@/helpers/utils';
 
 const props = defineProps({
   open: Boolean,
@@ -18,22 +19,16 @@ const form = ref({
 });
 
 function formatDate(date) {
-  const output = { h: '12', m: '00', dateString: '' };
-  if (!date) return output;
-  const dateObject = new Date(date * 1000);
-  const offset = dateObject.getTimezoneOffset();
-  const data = new Date(dateObject.getTime() - offset * 60 * 1000);
-  output.dateString = data.toISOString().split('T')[0];
-  output.h = ('0' + dateObject.getHours().toString()).slice(-2);
-  output.m = ('0' + dateObject.getMinutes().toString()).slice(-2);
+  const output = getDateOutput(date);
+
   return output;
 }
 
 function handleSubmit() {
   if (step.value === 0) return (step.value = 1);
-  const [year, month, day] = input.value.split('-');
-  let timestamp = new Date(year, month - 1, day, form.value.h, form.value.m, 0);
-  timestamp = new Date(timestamp).getTime() / (1e3).toFixed();
+
+  const timestamp = getTimestamp(input.value, form.value.h, form.value.m);
+
   emit('input', timestamp);
   emit('close');
 }

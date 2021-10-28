@@ -3,6 +3,7 @@ import { ref, watchEffect, computed, onMounted, inject } from 'vue';
 import { useRouter } from 'vue-router';
 import draggable from 'vuedraggable';
 import { useI18n } from 'vue-i18n';
+import dayjs from 'dayjs';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import { getBlockNumber } from '@snapshot-labs/snapshot.js/src/utils/web3';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
@@ -80,7 +81,7 @@ watchEffect(async () => {
 
 const dateStart = computed(() => {
   return props.space.voting?.delay
-    ? parseInt((Date.now() / 1e3).toFixed()) + props.space.voting.delay
+    ? dayjs().unix() + props.space.voting.delay
     : form.value.start;
 });
 
@@ -137,7 +138,7 @@ async function handleSubmit() {
   form.value.metadata.network = props.space.network;
   form.value.metadata.strategies = props.space.strategies;
   form.value.start = props.space.voting?.delay
-    ? parseInt((Date.now() / 1e3).toFixed()) + props.space.voting.delay
+    ? dayjs().unix() + props.space.voting.delay
     : dateStart.value;
   form.value.end = props.space.voting?.period
     ? form.value.start + props.space.voting.period
@@ -335,7 +336,6 @@ watchEffect(async () => {
           </UiButton>
           <UiButton
             @click="(modalOpen = true), (selectedDate = 'start')"
-            :disabled="props.space.voting?.delay"
             class="w-full mb-2"
           >
             <span v-if="!dateStart">{{ $t('create.startDate') }}</span>
@@ -343,7 +343,6 @@ watchEffect(async () => {
           </UiButton>
           <UiButton
             @click="(modalOpen = true), (selectedDate = 'end')"
-            :disabled="props.space.voting?.period"
             class="w-full mb-2"
           >
             <span v-if="!dateEnd">{{ $t('create.endDate') }}</span>
