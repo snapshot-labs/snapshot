@@ -31,7 +31,7 @@
   "network": "Mạng",
   "networks": "Mạng",
   "skins": "Giao diện",
-  "members": "No members | {count} member | {count} members",
+  "members": "Chưa có thành viên | {count} thành viên} | {count} thành viên",
   "editStrategy": "Chỉnh sửa chiến lược",
   "invalidProposals": "Đề xuất không hợp lệ",
   "account": "Tài khoản",
@@ -86,7 +86,8 @@
   "marketSymbol": "{0} thị trường",
   "twoChoicesRequired": "Cần có hai lựa chọn cho plugin này.",
   "noResultsFound": "Rất tiếc, chúng tôi không thể tìm thấy bất kỳ kết quả nào",
-  "noSpacesJoined": "Oops, you haven't joined any spaces yet",
+  "createFirstProposal": "Let's create your first proposal",
+  "noSpacesJoined": "Bạn chưa tham gia một nhóm nào cả",
   "addFavorites": "Thêm yêu thích",
   "createdBy": "Bởi {0}",
   "startToEnd": "bắt đầu {0} kết thúc {1}",
@@ -106,13 +107,13 @@
   "addresses": "Địa chỉ",
   "networkErrorPlayground": "Lỗi mạng - vui lòng mở bảng điều khiển trình duyệt của bạn để biết thêm thông tin",
   "upload": "Tải lên",
-  "join": "Join",
-  "joined": "Joined",
-  "leave": "Leave",
-  "copyLink": "Copy link",
-  "duplicateProposal": "Duplicate proposal",
-  "joinedSpaces": "Joined spaces",
-  "joinSpaces": "Join spaces",
+  "join": "Tham gia",
+  "joined": "Đã tham gia",
+  "leave": "Rời nhóm",
+  "copyLink": "Sao chép đường dẫn",
+  "duplicateProposal": "Sao chép đề xuất",
+  "joinedSpaces": "Các nhóm đã tham gia",
+  "joinSpaces": "Tham gia nhóm",
   "errors": {
     "required": "Trường này là bắt buộc",
     "minLength": "Độ dài tối thiểu là {0}",
@@ -121,7 +122,7 @@
     "minItems": "Yêu cầu tối thiểu {0} mục(s)",
     "minStrategy": "Ít nhất một chiến lược là bắt buộc.",
     "format": "Định dạng không hợp lệ",
-    "type": "Invalid type"
+    "type": "Kiểu dữ liệu không hợp lệ"
   },
   "create": {
     "question": "Câu hỏi",
@@ -138,7 +139,7 @@
     "validationWarning": {
       "basic": {
         "member": "You need to be an author of the space in order to submit a proposal.",
-        "minScore": "You need to have a minimum of {0} {1} in order to submit a proposal."
+        "minScore": "Bạn cần có ít nhất {0} {1} để khởi tạo một đề xuất."
       },
       "customValidation": "You need to pass the proposal validation in order to submit a proposal."
     }
@@ -166,6 +167,7 @@
     "header": "Đề xuất",
     "new": "Đề xuất mới",
     "noProposals": "Không có bất kỳ đề xuất nào ở đây!",
+    "createProposal": "Create proposal",
     "states": {
       "all": "Tất cả",
       "core": "Cốt lõi",
@@ -222,11 +224,11 @@
     "copied": "Đã sao chép!",
     "proposalDeleted": "Đề xuất bị xóa",
     "somethingWentWrong": "Rất tiếc, có gì đó không ổn!",
-    "saved": "Saved!",
+    "saved": "Đã lưu!",
     "delegationSuccess": "Delegation successful",
     "delegationRemoved": "Delegation removed",
-    "proposalCreated": "Proposal created",
-    "voteSuccessful": "Your vote is in!"
+    "proposalCreated": "Đề xuất đã được khởi tạo",
+    "voteSuccessful": "Phiếu bầu của bạn đã được lưu lại!"
   },
   "explore": {
     "createStrategy": "Tạo chiến lược",
@@ -265,9 +267,9 @@
     "claimBond": "Yêu cầu đặt cược",
     "addBatch": "Add transaction batch",
     "batch": "Transaction batch",
-    "transactions": "Transactions",
+    "transactions": "Các giao dịch",
     "to": "To (address)",
-    "invalidAddress": "Invalid address",
+    "invalidAddress": "Địa chỉ không hợp lệ",
     "invalidAmount": "Invalid amount",
     "invalidValue": "Invalid value",
     "invalidAbi": "Invalid ABI",
@@ -285,19 +287,19 @@
     "addTransaction": "Add transaction",
     "transactionLabels": {
       "contractInteraction": "{functionName}() - {amount} wei to {address}",
-      "transferFunds": "Transfer {amount} {tokenSymbol} to {address}",
-      "transferNFT": "Send {name} #{id} to {address}",
-      "raw": "Send {amount} wei to {address}"
+      "transferFunds": "Gửi {amount} {tokenSymbol} tới địa chỉ {address}",
+      "transferNFT": "Gửi {name} #{id} tới địa chỉ {address}",
+      "raw": "Gửi {amount} wei tới địa chỉ {address}"
     },
     "labels": {
       "request": "Yêu cầu thực hiện",
       "setOutcome": "Đặt kết quả",
       "changeOutcome": "Thay đổi kết quả",
-      "executeTxs": "Execute transaction batch {0} of {1}",
-      "executed": "All transactions have been executed",
-      "error": "Something went wrong",
-      "connectWallet": "Connect wallet to see execution details",
-      "switchChain": "Switch your wallet to {0} to request execution",
+      "executeTxs": "Thực hiện đa giao dịch {0} của {1}",
+      "executed": "Giao dịch thành công",
+      "error": "Đã xảy ra lỗi",
+      "connectWallet": "Kết nối ví",
+      "switchChain": "Vui lòng chọn mạng lưới {0} để thực hiện giao dịch",
       "question": "Đề xuất này có được thông qua không và nó có đáp ứng được",
       "criteria": "tiêu chí chấp nhận?"
     }
@@ -306,35 +308,35 @@
     "no_poap_header": "POAP chưa được thiết lập cho đề xuất này: '(",
     "no_voted_header": "Bỏ phiếu để nhận POAP này",
     "unclaimed_header": "Yêu cầu POAP tôi đã bình chọn của bạn",
-    "claimed_header": "Congratulations! The POAP has been minted to your account",
+    "claimed_header": "POAP đã được gửi vào ví của bạn",
     "loading_header": "POAP đang được thêm vào bộ sưu tập của bạn",
     "button_claim": "Yêu cầu",
-    "button_show": "Browse collection",
+    "button_show": "Bộ sưu tập",
     "success_claim": "POAP của bạn có trên địa chỉ của bạn",
     "error_claim": "Đã xảy ra sự cố khi in mã thông báo"
   },
   "comment_box": {
-    "title": "Comment box",
-    "add": "Add your comment here",
-    "submit": "Submit",
-    "preview": "Preview",
-    "continue_editing": "Continue editing",
-    "edit": "Edit your reply here",
-    "edit_button": "Edit",
-    "dismiss": "Dismiss",
-    "delete": "Delete",
-    "add_reply": "Add your reply here",
-    "edit_comment": "Edit comment",
-    "edit_modal": "Are you sure you want to edit?",
-    "yes": "Yes",
-    "no": "No",
-    "delete_comment": "Delete comment",
-    "delete_modal": "Are you sure you want to delete?",
-    "error": "Oops, something went wrong",
-    "replies": "replies",
-    "hide": "Hide",
-    "show": "Show",
-    "reply": "Reply",
-    "load_more": "Load more"
+    "title": "Khung bình luận",
+    "add": "Nhập bình luận",
+    "submit": "Gửi",
+    "preview": "Xem trước",
+    "continue_editing": "Tiếp tục chỉnh sửa",
+    "edit": "Sửa bình luận",
+    "edit_button": "Chỉnh sửa",
+    "dismiss": "Hủy",
+    "delete": "Xóa",
+    "add_reply": "Thêm bình luận",
+    "edit_comment": "Sửa bình luận",
+    "edit_modal": "Bạn có muốn chỉnh sửa bình luận không?",
+    "yes": "Đồng ý",
+    "no": "Không",
+    "delete_comment": "Xóa bình luận",
+    "delete_modal": "Xác nhận xóa bình luận?",
+    "error": "Đã xảy ra lỗi",
+    "replies": "các bình luận",
+    "hide": "Ẩn",
+    "show": "Hiển thị",
+    "reply": "Bình luận",
+    "load_more": "Hiển thị thêm"
   }
 }

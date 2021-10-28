@@ -86,6 +86,7 @@
   "marketSymbol": "Mercado {0}",
   "twoChoicesRequired": "Se requieren dos opciones para este plugin.",
   "noResultsFound": "Lo sentimos, no es posible encontrar ningún resultado",
+  "createFirstProposal": "Let's create your first proposal",
   "noSpacesJoined": "Oops, you haven't joined any spaces yet",
   "addFavorites": "Añadir favoritos",
   "createdBy": "Por {0}",
@@ -166,6 +167,7 @@
     "header": "Propuestas",
     "new": "Nueva propuesta",
     "noProposals": "No hay ninguna propuesta aquí todavía!",
+    "createProposal": "Create proposal",
     "states": {
       "all": "Todo",
       "core": "Core",

@@ -86,6 +86,7 @@
   "marketSymbol": "{0} rynek",
   "twoChoicesRequired": "Dla tej wtyczki wymagane są dwie opcje.",
   "noResultsFound": "Ups, nie możemy znaleźć żadnych wyników",
+  "createFirstProposal": "Let's create your first proposal",
   "noSpacesJoined": "Oops, you haven't joined any spaces yet",
   "addFavorites": "Add favorites",
   "createdBy": "Przez {0}",
@@ -166,6 +167,7 @@
     "header": "Propozycje",
     "new": "Nowa propozycja",
     "noProposals": "Nie ma jeszcze żadnych propozycji!",
+    "createProposal": "Create proposal",
     "states": {
       "all": "Wszystko",
       "core": "Główne",
