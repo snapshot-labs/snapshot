@@ -26,7 +26,7 @@ defineProps({
     />
     <PluginQuorumCustomBlock
       :loaded="loadedResults"
-      v-if="space.plugins?.quorum"
+      v-if="space.plugins?.quorum && !space?.voting?.quorum"
       :space="space"
       :proposal="proposal"
       :results="results"

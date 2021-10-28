@@ -38,9 +38,7 @@ const { userSkin } = useUserSkin();
       <a v-if="!searchInput" key="" @click="select(undefined)">
         <div :class="userSkin" class="bg-black rounded-none md:rounded-md">
           <Block>
-            <UiButton class="button--submit mb-2">{{
-              $t('defaultSkin')
-            }}</UiButton>
+            <UiButton class="mb-2" primary>{{ $t('defaultSkin') }}</UiButton>
           </Block>
         </div>
       </a>
