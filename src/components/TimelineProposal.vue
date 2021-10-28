@@ -25,26 +25,39 @@ watchEffect(() => {
 </script>
 
 <template>
-  <router-link
-    class="p-4 block text-color"
-    :to="{
-      name: 'spaceProposal',
-      params: { key: proposal.space.id, id: proposal.id }
-    }"
-  >
-    <div>
-      <div class="mb-2">
-        <Token :space="proposal.space" size="28" />
-        <span class="ml-2" v-text="proposal.space.name" />
-        {{ $tc('proposalBy', [username]) }}
-        <Badges :address="proposal.author" :members="proposal.space.members" />
-        <UiState :state="proposal.state" class="inline-block float-right" />
-      </div>
-      <h3 v-text="_shorten(proposal.title, 124)" class="mt-1 mb-1" />
-      <p v-text="_shorten(body, 140)" class="break-words mb-1 text-md" />
+  <Block slim class="timeline-proposal transition-colors">
+    <router-link
+      class="p-4 block text-color"
+      :to="{
+        name: 'spaceProposal',
+        params: { key: proposal.space.id, id: proposal.id }
+      }"
+    >
       <div>
-        {{ $tc(period, [_ms(proposal.start), _ms(proposal.end)]) }}
+        <div class="mb-2">
+          <Token :space="proposal.space" size="28" />
+          <span class="ml-2" v-text="proposal.space.name" />
+          {{ $tc('proposalBy', [username]) }}
+          <Badges
+            :address="proposal.author"
+            :members="proposal.space.members"
+          />
+          <UiState :state="proposal.state" class="inline-block float-right" />
+        </div>
+        <h3 v-text="_shorten(proposal.title, 124)" class="mt-1 mb-1" />
+        <p v-text="_shorten(body, 140)" class="break-words mb-1 text-md" />
+        <div>
+          {{ $tc(period, [_ms(proposal.start), _ms(proposal.end)]) }}
+        </div>
       </div>
-    </div>
-  </router-link>
+    </router-link>
+  </Block>
 </template>
+
+<style scoped lang="scss">
+.timeline-proposal {
+  &:hover {
+    border-color: var(--link-color) !important;
+  }
+}
+</style>

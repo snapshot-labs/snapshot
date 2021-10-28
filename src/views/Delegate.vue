@@ -311,7 +311,8 @@ onMounted(async () => {
           @click="handleSubmit"
           :disabled="!isValid || !$auth.isAuthenticated.value"
           :loading="loading"
-          class="block w-full button--submit"
+          class="block w-full"
+          primary
         >
           {{ $t('confirm') }}
         </UiButton>

@@ -16,7 +16,12 @@
       v-if="questionState === questionStates.waitingForQuestion"
       class="my-4"
     >
-      <UiButton @click="performAction" v-text="$t('safeSnap.labels.request')" />
+      <UiButton
+        @click="submitProposal"
+        :loading="actionInProgress === 'submit-proposal'"
+      >
+        {{ $t('safeSnap.labels.request') }}
+      </UiButton>
     </div>
 
     <div
@@ -71,37 +76,51 @@
         <div v-if="questionState === questionStates.questionNotSet">
           <UiButton
             class="w-full my-1"
-            @click="performAction"
-            v-text="$t('safeSnap.labels.setOutcome')"
-          />
+            @click="
+              modalApproveDecisionOpen = true;
+              actionInProgress = 'set-outcome';
+            "
+            :loading="actionInProgress === 'set-outcome'"
+          >
+            {{ $t('safeSnap.labels.setOutcome') }}
+          </UiButton>
         </div>
         <div v-if="questionState === questionStates.questionNotResolved">
           <UiButton
             class="w-full my-1"
-            @click="performAction"
-            v-text="$t('safeSnap.labels.changeOutcome')"
-          />
+            @click="
+              modalApproveDecisionOpen = true;
+              actionInProgress = 'set-outcome';
+            "
+            :loading="actionInProgress === 'set-outcome'"
+          >
+            {{ $t('safeSnap.labels.changeOutcome') }}
+          </UiButton>
         </div>
         <div v-if="bondData.canClaim">
           <UiButton
             class="w-full my-1"
             @click="claimBond"
-            v-text="$t('safeSnap.claimBond')"
-          />
+            :loading="actionInProgress === 'claim-bond'"
+          >
+            {{ $t('safeSnap.claimBond') }}
+          </UiButton>
         </div>
       </div>
     </div>
 
     <div v-if="questionState === questionStates.proposalApproved" class="my-4">
       <UiButton
-        @click="performAction"
-        v-text="
+        @click="executeProposal"
+        :loading="action2InProgress === 'execute-proposal'"
+      >
+        {{
           $t('safeSnap.labels.executeTxs', [
             questionDetails.nextTxIndex + 1,
             txs.length
           ])
-        "
-      />
+        }}
+      </UiButton>
     </div>
   </div>
   <div
@@ -143,9 +162,13 @@ import { formatBatchTransaction } from '@/helpers/abi/utils';
 import { formatUnits } from '@ethersproject/units';
 import { useSafesnap } from '@/composables/useSafesnap';
 import { useWeb3 } from '@/composables/useWeb3';
+import { useTxStatus } from '@/composables/useTxStatus';
+import { useNotifications } from '@/composables/useNotifications';
 
 const { clearBatchError, setBatchError } = useSafesnap();
 const { web3 } = useWeb3();
+const { pendingCount } = useTxStatus();
+const { notify } = useNotifications();
 
 const plugin = new Plugin();
 
@@ -221,6 +244,7 @@ export default {
       loading: true,
       questionStates: QuestionStates,
       actionInProgress: false,
+      action2InProgress: false,
       questionDetails: undefined,
       modalApproveDecisionOpen: false,
       bondData: {
@@ -260,61 +284,62 @@ export default {
     async claimBond() {
       if (!this.questionDetails.oracle) return;
       try {
-        this.actionInProgress = true;
+        this.actionInProgress = 'claim-bond';
 
         const params = Object.keys(this.bondData.data).map(
           key => new Array(...this.bondData.data[key])
         );
 
         await ensureRightNetwork(this.network);
-        await plugin.claimBond(
+        const clamingBond = plugin.claimBond(
           this.$auth.web3,
           this.questionDetails.oracle,
           this.questionDetails.questionId,
           params
         );
+        await clamingBond.next();
+        this.actionInProgress = null;
+        pendingCount.value++;
+        await clamingBond.next();
+        notify(this.$i18n.t('notify.youDidIt'));
+        pendingCount.value--;
         await sleep(3e3);
         await this.updateDetails();
       } catch (e) {
         console.error(e);
-      } finally {
-        this.actionInProgress = true;
+        this.actionInProgress = null;
       }
     },
-    async performAction() {
+    async submitProposal() {
       if (!this.$auth.isAuthenticated.value) return;
-      this.actionInProgress = true;
+      this.actionInProgress = 'submit-proposal';
       try {
-        switch (this.questionState) {
-          case QuestionStates.waitingForQuestion:
-            await ensureRightNetwork(this.network);
-            await plugin.submitProposal(
-              this.$auth.web3,
-              this.realityAddress,
-              this.questionDetails.proposalId,
-              this.questionDetails.transactions
-            );
-            break;
-          case QuestionStates.questionNotSet:
-          case QuestionStates.questionNotResolved:
-            this.modalApproveDecisionOpen = true;
-            return;
-          case QuestionStates.proposalApproved:
-            await this.executeProposal();
-            break;
-        }
+        await ensureRightNetwork(this.network);
+        const proposalSubmission = plugin.submitProposal(
+          this.$auth.web3,
+          this.realityAddress,
+          this.questionDetails.proposalId,
+          this.questionDetails.transactions
+        );
+        await proposalSubmission.next();
+        this.actionInProgress = null;
+        pendingCount.value++;
+        await proposalSubmission.next();
+        notify(this.$i18n.t('notify.youDidIt'));
+        pendingCount.value--;
         await sleep(3e3);
         await this.updateDetails();
       } catch (e) {
         console.error(e);
       } finally {
-        this.actionInProgress = false;
+        this.actionInProgress = null;
       }
     },
     async voteOnQuestion(option) {
+      if (!this.$auth.isAuthenticated.value) return;
       try {
         await ensureRightNetwork(this.network);
-        await plugin.voteForQuestion(
+        const voting = plugin.voteForQuestion(
           this.network,
           this.$auth.web3,
           this.questionDetails.oracle,
@@ -322,30 +347,54 @@ export default {
           this.questionDetails.minimumBond,
           option
         );
+        const step = await voting.next();
+        if (step.value == 'erc20-approval') {
+          this.actionInProgress = null;
+          pendingCount.value++;
+          await voting.next();
+          pendingCount.value--;
+          await voting.next();
+        }
+        this.actionInProgress = null;
+        pendingCount.value++;
+        await voting.next();
+        pendingCount.value--;
         await sleep(3e3);
         await this.updateDetails();
       } catch (e) {
         console.error(e);
+        this.actionInProgress = null;
       }
     },
     async executeProposal() {
+      if (!this.$auth.isAuthenticated.value) return;
+      this.action2InProgress = 'execute-proposal';
       try {
         await ensureRightNetwork(this.network);
       } catch (e) {
         console.error(e);
+        this.action2InProgress = null;
         return;
       }
 
       try {
         clearBatchError();
-        await plugin.executeProposal(
+        const executingProposal = plugin.executeProposal(
           this.$auth.web3,
           this.realityAddress,
           this.questionDetails.proposalId,
           this.questionDetails.transactions,
           this.questionDetails.nextTxIndex
         );
+        await executingProposal.next();
+        this.action2InProgress = null;
+        pendingCount.value++;
+        await executingProposal.next();
+        notify(this.$i18n.t('notify.youDidIt'));
+        pendingCount.value--;
       } catch (err) {
+        pendingCount.value--;
+        this.action2InProgress = null;
         setBatchError(this.questionDetails.nextTxIndex, err.reason);
       }
     }
