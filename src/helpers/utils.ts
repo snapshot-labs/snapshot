@@ -4,7 +4,12 @@ import { formatEther } from '@ethersproject/units';
 import { BigNumber } from '@ethersproject/bignumber';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import numeral from 'numeral';
-import { format } from 'timeago.js';
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
+import duration from 'dayjs/plugin/duration';
+
+dayjs.extend(duration);
+dayjs.extend(relativeTime);
 
 export function shortenAddress(str = '') {
   return `${str.slice(0, 6)}...${str.slice(str.length - 4)}`;
@@ -132,15 +137,17 @@ export function n(number, format = '(0.[00]a)') {
 }
 
 export function ms(number) {
-  return format(number * 1e3);
+  return dayjs.unix(number).fromNow();
 }
 
 export function calcFromSeconds(value, unit) {
-  if (unit === 'h') return Math.floor(value / (60 * 60));
-  if (unit === 'd') return Math.floor(value / (60 * 60 * 24));
+  if (unit === 'days') {
+    return dayjs.duration({ seconds: value }).asDays();
+  }
+
+  return dayjs.duration({ seconds: value }).asHours();
 }
 
 export function calcToSeconds(value, unit) {
-  if (unit === 'h') return value * 60 * 60;
-  if (unit === 'd') return value * 60 * 60 * 24;
+  return dayjs.duration({ [unit]: value }).asSeconds();
 }

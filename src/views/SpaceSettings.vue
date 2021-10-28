@@ -45,8 +45,8 @@ const modalValidationOpen = ref(false);
 const loaded = ref(false);
 const uploadLoading = ref(false);
 const showErrors = ref(false);
-const delayUnit = ref('h');
-const periodUnit = ref('h');
+const delayUnit = ref('hours');
+const periodUnit = ref('hours');
 const form = ref({
   strategies: [],
   plugins: {},
@@ -540,8 +540,8 @@ watchEffect(async () => {
                   class="input text-center mr-[6px] pt-[3px] ml-2"
                   required
                 >
-                  <option value="h" selected>hours</option>
-                  <option value="d">days</option>
+                  <option value="hours" selected>hours</option>
+                  <option value="days">days</option>
                 </select>
               </template>
             </UiInput>
@@ -555,8 +555,8 @@ watchEffect(async () => {
                   class="input text-center mr-[6px] pt-[3px] ml-2"
                   required
                 >
-                  <option value="h" selected>hours</option>
-                  <option value="d">days</option>
+                  <option value="hours" selected>hours</option>
+                  <option value="days">days</option>
                 </select>
               </template>
             </UiInput>
