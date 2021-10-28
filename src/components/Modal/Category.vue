@@ -79,7 +79,7 @@ function handleSubmit() {
         v-for="(category, i) in filteredCategories"
         :key="i"
         :class="[
-          { 'bg-gray-100': hasCategory(category) },
+          { 'bg-skin-border': hasCategory(category) },
           'cursor-pointer text-center'
         ]"
       >
