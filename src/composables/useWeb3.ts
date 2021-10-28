@@ -4,7 +4,6 @@ import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { formatUnits } from '@ethersproject/units';
 import { getProfiles } from '@/helpers/profile';
-import { SafeAppProvider } from '@gnosis.pm/safe-apps-provider';
 
 let auth;
 const defaultNetwork: any =
@@ -16,11 +15,14 @@ const state = reactive({
   authLoading: false,
   profile: null,
   walletConnectType: null,
-  isGnosisSafe: false
+  isTrezor: false
 });
 
 export function useWeb3() {
   async function login(connector = 'injected') {
+    if (connector === 'trezor') state.isTrezor = true;
+    else state.isTrezor = false;
+
     auth = getInstance();
     state.authLoading = true;
     await auth.login(connector);
@@ -74,9 +76,7 @@ export function useWeb3() {
       const profiles = await getProfiles([acc]);
 
       state.account = acc;
-      state.walletConnectType =
-        auth.provider.value?.wc?.peerMeta?.name || 'unknown';
-      state.isGnosisSafe = auth.provider.value instanceof SafeAppProvider;
+      state.walletConnectType = auth.provider.value?.wc?.peerMeta?.name || null;
       state.profile = profiles[acc];
     } catch (e) {
       state.account = '';

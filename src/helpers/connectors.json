@@ -49,5 +49,9 @@
   "gnosis": {
     "id": "gnosis",
     "name": "Gnosis Safe"
+  },
+  "trezor": {
+    "id": "trezor",
+    "name": "Trezor (with MetaMask)"
   }
 }

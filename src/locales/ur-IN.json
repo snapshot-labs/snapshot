@@ -86,6 +86,7 @@
   "marketSymbol": "مارکیٹ {0}",
   "twoChoicesRequired": "اس پلگ ان کو دو انتخاب کی ضرورت ہے۔",
   "noResultsFound": "ہمیں کوئی نتیجہ نہیں ملا",
+  "createFirstProposal": "Let's create your first proposal",
   "noSpacesJoined": "Oops, you haven't joined any spaces yet",
   "addFavorites": "پسندیدہ شامل کریں",
   "createdBy": "سے{0}",
@@ -166,6 +167,7 @@
     "header": "تجاویز",
     "new": "نئی تجاویز",
     "noProposals": "یہاں ابھی تک کوئی تجویز نہیں ہے!",
+    "createProposal": "Create proposal",
     "states": {
       "all": "سب",
       "core": "کور",

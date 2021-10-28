@@ -1,15 +1,16 @@
 <script setup>
 import { ref, computed, watch, onMounted, inject } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import { useI18n } from 'vue-i18n';
 import { getProposal, getResults, getPower } from '@/helpers/snapshot';
 import { useModal } from '@/composables/useModal';
 import { useTerms } from '@/composables/useTerms';
 import { useProfiles } from '@/composables/useProfiles';
 import { useDomain } from '@/composables/useDomain';
 import { useSharing } from '@/composables/useSharing';
-import { useI18n } from 'vue-i18n';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useClient } from '@/composables/useClient';
+import { useApp } from '@/composables/useApp';
 
 const props = defineProps({
   spaceId: String,
@@ -19,12 +20,14 @@ const props = defineProps({
 
 const route = useRoute();
 const router = useRouter();
-const id = route.params.id;
 const { domain } = useDomain();
 const { t } = useI18n();
 const { web3 } = useWeb3();
-const { send } = useClient();
+const { send, clientLoading } = useClient();
+const { getExplore } = useApp();
 const notify = inject('notify');
+
+const id = route.params.id;
 
 const modalOpen = ref(false);
 const selectedChoices = ref(null);
@@ -35,7 +38,6 @@ const votes = ref([]);
 const results = ref({});
 const totalScore = ref(0);
 const scores = ref([]);
-const dropdownLoading = ref(false);
 const modalStrategiesOpen = ref(false);
 const proposalObj = ref({});
 
@@ -113,23 +115,15 @@ async function loadPower() {
 }
 
 async function deleteProposal() {
-  dropdownLoading.value = true;
-  try {
-    if (
-      await send(props.space.id, 'delete-proposal', {
-        proposal: id
-      })
-    ) {
-      notify(['green', t('notify.proposalDeleted')]);
-      dropdownLoading.value = false;
-      router.push({
-        name: 'spaceProposals'
-      });
-    }
-  } catch (e) {
-    console.error(e);
+  const result = await send(props.space, 'delete-proposal', {
+    proposal: proposal.value
+  });
+  console.log('Result', result);
+  if (result.id) {
+    getExplore();
+    notify(['green', t('notify.proposalDeleted')]);
+    router.push({ name: 'spaceProposals' });
   }
-  dropdownLoading.value = false;
 }
 
 const {
@@ -233,7 +227,7 @@ onMounted(async () => {
               :items="threeDotItems"
             >
               <div class="pr-3">
-                <UiLoading v-if="dropdownLoading" />
+                <UiLoading v-if="clientLoading" />
                 <Icon v-else name="threedots" size="25" />
               </div>
             </UiDropdown>
@@ -296,8 +290,8 @@ onMounted(async () => {
         </div>
         <div class="mb-1">
           <b>IPFS</b>
-          <a :href="_getUrl(proposal.id)" target="_blank" class="float-right">
-            #{{ proposal.id.slice(0, 7) }}
+          <a :href="_getUrl(proposal.ipfs)" target="_blank" class="float-right">
+            #{{ proposal.ipfs.slice(0, 7) }}
             <Icon name="external-link" class="ml-1" />
           </a>
         </div>

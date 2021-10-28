@@ -1,8 +1,8 @@
 <script setup>
-import { ref, computed, inject } from 'vue';
+import { computed, inject } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { getChoiceString } from '@/helpers/utils';
 import { useClient } from '@/composables/useClient';
-import { useI18n } from 'vue-i18n';
 
 const props = defineProps({
   open: Boolean,
@@ -17,35 +17,26 @@ const props = defineProps({
 
 const emit = defineEmits(['reload', 'close']);
 
-const { send } = useClient();
 const { t } = useI18n();
 const notify = inject('notify');
+const { send, clientLoading } = useClient();
 const format = getChoiceString;
-
-const loading = ref(false);
 
 const symbols = computed(() =>
   props.strategies.map(strategy => strategy.params.symbol)
 );
 
 async function handleSubmit() {
-  loading.value = true;
-  try {
-    if (
-      await send(props.space.id, 'vote', {
-        proposal: props.proposal.id,
-        choice: props.selectedChoices,
-        metadata: {}
-      })
-    ) {
-      notify(['green', t('notify.voteSuccessful')]);
-      emit('reload');
-      emit('close');
-      loading.value = false;
-    }
-  } catch (e) {
-    console.log(e);
-    loading.value = false;
+  const result = await send(props.space, 'vote', {
+    proposal: props.proposal,
+    choice: props.selectedChoices,
+    metadata: {}
+  });
+  console.log('Result', result);
+  if (result.id) {
+    notify(['green', t('notify.voteSuccessful')]);
+    emit('reload');
+    emit('close');
   }
 }
 </script>
@@ -114,8 +105,8 @@ async function handleSubmit() {
       </div>
       <div class="w-2/4 float-left pl-2">
         <UiButton
-          :disabled="totalScore === 0 || loading"
-          :loading="loading"
+          :disabled="totalScore === 0 || clientLoading"
+          :loading="clientLoading"
           @click="handleSubmit"
           type="submit"
           class="w-full button--submit"
