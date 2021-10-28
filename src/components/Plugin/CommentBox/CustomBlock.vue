@@ -168,20 +168,23 @@ function deleteItem(key) {
       @click="clickSubmit"
       :disabled="comment.length === 0"
       :loading="loading"
-      class="mt-2 button--submit"
+      class="mt-2"
+      primary
     >
       {{ $t(`comment_box.submit`) }}
     </UiButton>
     <UiButton
       @click="togglePreview = !togglePreview"
-      class="ml-2 mt-2 button--primary"
+      class="ml-2 mt-2"
       :disabled="comment.length === 0"
-      >{{
+      primary
+    >
+      {{
         togglePreview
           ? $t(`comment_box.preview`)
           : $t(`comment_box.continue_editing`)
-      }}</UiButton
-    >
+      }}
+    </UiButton>
     <div :key="index" v-for="(item, index) in allData">
       <PluginCommentBoxCommentBlock
         :proposal="proposal"
