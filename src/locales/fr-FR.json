@@ -212,6 +212,7 @@
     "votingDelay": "Délai avant vote",
     "votingPeriod": "Période de vote",
     "voting": "Vote",
+    "quorum": "Quorum",
     "type": "Type",
     "anyType": "Tous"
   },
