@@ -114,8 +114,7 @@ const isValid = computed(() => {
   );
 });
 
-const disableChoiceInput = computed(() => form.value.type === 'basic');
-const disableNumberOfChoices = computed(() => form.value.type !== 'basic');
+const disableChoiceEdit = computed(() => form.value.type === 'basic');
 
 function addChoice(num) {
   for (let i = 1; i <= num; i++) {
@@ -297,7 +296,7 @@ watchEffect(() => {
           <draggable
             v-model="choices"
             :component-data="{ name: 'list' }"
-            :disabled="disableChoiceInput"
+            :disabled="disableChoiceEdit"
             item-key="id"
           >
             <template #item="{ element, index }">
@@ -305,18 +304,15 @@ watchEffect(() => {
                 v-model="element.text"
                 maxlength="32"
                 additionalInputClass="text-center"
-                :disabled="disableChoiceInput"
+                :disabled="disableChoiceEdit"
               >
                 <template v-slot:label>
-                  <span v-if="disableNumberOfChoices" class="text-skin-link">
+                  <span v-if="!disableChoiceEdit" class="text-skin-link">
                     {{ index + 1 }}
                   </span>
                 </template>
                 <template v-slot:info>
-                  <span
-                    v-if="disableNumberOfChoices"
-                    @click="removeChoice(index)"
-                  >
+                  <span v-if="!disableChoiceEdit" @click="removeChoice(index)">
                     <Icon name="close" size="12" />
                   </span>
                 </template>
@@ -325,7 +321,7 @@ watchEffect(() => {
           </draggable>
         </div>
         <UiButton
-          v-if="disableNumberOfChoices"
+          v-if="!disableChoiceEdit"
           @click="addChoice(1)"
           class="block w-full"
         >
