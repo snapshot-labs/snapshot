@@ -87,7 +87,8 @@ watch(open, () => {
           @click="handleSubmit"
           type="submit"
           :disabled="!input"
-          class="w-full button--submit"
+          class="w-full"
+          primary
         >
           <span v-if="step === 0">{{ $t('next') }}</span>
           <span v-else>{{ $t('select') }}</span>
