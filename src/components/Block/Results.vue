@@ -101,8 +101,15 @@ async function downloadReport() {
         class="mb-3"
       />
     </div>
+    <div v-if="props.space?.voting?.quorum" class="text-skin-link">
+      {{ $t('settings.quorum') }}
+      <span class="float-right">
+        {{ _n(results.sumOfResultsBalance) }} /
+        {{ _n(props.space.voting.quorum) }}
+      </span>
+    </div>
     <div v-if="ts >= proposal.end">
-      <UiButton @click="downloadReport" class="w-full mt-2">
+      <UiButton @click="downloadReport" class="w-full mt-4">
         {{ $t('downloadReport') }}
       </UiButton>
     </div>

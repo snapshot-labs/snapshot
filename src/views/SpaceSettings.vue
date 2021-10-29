@@ -228,6 +228,7 @@ function formatSpace(spaceRaw) {
   space.voting.delay = space.voting?.delay || undefined;
   space.voting.period = space.voting?.period || undefined;
   space.voting.type = space.voting?.type || undefined;
+  space.voting.quorum = space.voting?.quorum || undefined;
   return space;
 }
 
@@ -291,8 +292,8 @@ watchEffect(async () => {
             class="mb-2 block"
           >
             <UiButton
-              :class="{ 'button--submit': !isOwner && !isAdmin }"
               class="button-outline w-full"
+              :primary="!isOwner && !isAdmin"
             >
               {{
                 isOwner || isAdmin
@@ -469,6 +470,7 @@ watchEffect(async () => {
               <a @click="handleRemoveStrategy(i)" class="absolute p-4 right-0">
                 <Icon name="close" size="12" />
               </a>
+
               <a
                 @click="handleEditStrategy(i)"
                 class="p-4 block border rounded-md"
@@ -574,6 +576,15 @@ watchEffect(async () => {
                 </div>
               </template>
             </UiInput>
+            <UiInput
+              v-model="form.voting.quorum"
+              :number="true"
+              placeholder="1000"
+            >
+              <template v-slot:label>
+                {{ $t('settings.quorum') }}
+              </template>
+            </UiInput>
           </Block>
           <Block :title="$t('plugins')">
             <div v-if="form?.plugins">
@@ -614,7 +625,8 @@ watchEffect(async () => {
           :disabled="uploadLoading"
           @click="handleSubmit"
           :loading="clientLoading"
-          class="block w-full button--submit"
+          class="block w-full"
+          primary
         >
           {{ $t('save') }}
         </UiButton>
