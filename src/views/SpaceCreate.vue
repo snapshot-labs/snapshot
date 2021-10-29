@@ -114,9 +114,8 @@ const isValid = computed(() => {
   );
 });
 
-const enforceChoicePosition = computed(() => form.value.type === 'basic');
-const enforceChoiceText = computed(() => form.value.type === 'basic');
-const enforceNumberOfChoices = computed(() => form.value.type !== 'basic');
+const disableChoiceInput = computed(() => form.value.type === 'basic');
+const disableNumberOfChoices = computed(() => form.value.type !== 'basic');
 
 function addChoice(num) {
   for (let i = 1; i <= num; i++) {
@@ -298,7 +297,7 @@ watchEffect(() => {
           <draggable
             v-model="choices"
             :component-data="{ name: 'list' }"
-            :disabled="enforceChoicePosition"
+            :disabled="disableChoiceInput"
             item-key="id"
           >
             <template #item="{ element, index }">
@@ -306,13 +305,16 @@ watchEffect(() => {
                 v-model="element.text"
                 maxlength="32"
                 additionalInputClass="text-center"
-                :disabled="enforceChoiceText"
-                ><template v-slot:label
-                  ><span class="text-skin-link">{{ index + 1 }}</span></template
-                >
-                <template v-slot:info
-                  ><span
-                    v-if="enforceNumberOfChoices"
+                :disabled="disableChoiceInput"
+              >
+                <template v-slot:label>
+                  <span v-if="disableNumberOfChoices" class="text-skin-link">
+                    {{ index + 1 }}
+                  </span>
+                </template>
+                <template v-slot:info>
+                  <span
+                    v-if="disableNumberOfChoices"
                     @click="removeChoice(index)"
                   >
                     <Icon name="close" size="12" />
@@ -323,7 +325,7 @@ watchEffect(() => {
           </draggable>
         </div>
         <UiButton
-          v-if="enforceNumberOfChoices"
+          v-if="disableNumberOfChoices"
           @click="addChoice(1)"
           class="block w-full"
         >
