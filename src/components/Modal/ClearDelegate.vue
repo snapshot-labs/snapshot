@@ -83,7 +83,8 @@ async function handleSubmit() {
             :disabled="loading"
             :loading="loading"
             type="submit"
-            class="w-full button--submit"
+            class="w-full"
+            primary
           >
             {{ $t('confirm') }}
           </UiButton>
