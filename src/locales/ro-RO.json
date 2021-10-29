@@ -211,25 +211,25 @@
     "warningTextRecord": "Trebuie sa setezi o inrînregistrare de text pe domeniul ENS.",
     "votingDelay": "Intârziere vot",
     "votingPeriod": "Perioada de vot",
-    "voting": "Voting",
-    "quorum": "Quorum",
-    "type": "Type",
-    "anyType": "Any"
+    "voting": "Votare",
+    "quorum": "Cvorum",
+    "type": "Tip",
+    "anyType": "Oricare"
   },
   "setup": {
     "example": "e.g. yam.eth",
-    "useExistingEns": "Use an existing ENS name to create your space with.",
-    "createASpace": "Create a space"
+    "useExistingEns": "Utilizaţi un nume ENS existent pentru a crea spaţiul.",
+    "createASpace": "Crează un spațiu"
   },
   "notify": {
-    "youDidIt": "You did it!",
-    "copied": "Copied!",
-    "proposalDeleted": "Proposal deleted",
-    "somethingWentWrong": "Oops, something went wrong!",
-    "saved": "Saved!",
-    "delegationSuccess": "Delegation successful",
-    "delegationRemoved": "Delegation removed",
-    "proposalCreated": "Proposal created",
+    "youDidIt": "Ai reușit!",
+    "copied": "Copiat!",
+    "proposalDeleted": "Propunere ştearsă",
+    "somethingWentWrong": "Ups, ceva nu a mers bine!",
+    "saved": "Salvează!",
+    "delegationSuccess": "Delegare reușită",
+    "delegationRemoved": "Delegare eliminată",
+    "proposalCreated": "Propunere creată",
     "voteSuccessful": "Your vote is in!"
   },
   "explore": {
