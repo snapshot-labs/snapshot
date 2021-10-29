@@ -79,13 +79,25 @@ function handleSubmit() {
         v-for="(category, i) in filteredCategories"
         :key="i"
         :class="[
-          { 'bg-skin-border': hasCategory(category) },
-          'cursor-pointer text-center'
+          {
+            'hover:border-skin-link cursor-pointer':
+              !hasCategory(category) && categoriesCounter < 2,
+            '!border-skin-link': hasCategory(category)
+          },
+          'text-center relative'
         ]"
       >
         {{ category }}
-        <Icon v-if="hasCategory(category)" size="24" name="check" />
+        <Icon
+          v-if="hasCategory(category)"
+          size="16"
+          name="check"
+          class="absolute top-2 right-2"
+        />
       </Block>
+      <UiButton @click="handleSubmit">
+        {{ $t('add') }}
+      </UiButton>
     </div>
     <NoResults class="mt-3" v-if="!filteredCategories.length" />
   </UiModal>

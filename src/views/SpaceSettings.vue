@@ -372,11 +372,20 @@ watchEffect(async () => {
                   {{ $t(`settings.categories`) }}
                 </template>
                 <template v-slot:selected>
-                  <div class="flex items-center h-full space-x-2 text-skin-text">
+                  <div
+                    class="flex items-center h-full space-x-2 text-skin-text"
+                  >
                     <div
                       v-for="(category, i) in form.categories"
                       :key="i"
-                      class="h-5 px-2 flex items-center bg-skin-border rounded-2xl"
+                      class="
+                        h-5
+                        px-3
+                        flex
+                        items-center
+                        bg-skin-border
+                        rounded-2xl
+                      "
                     >
                       <p class="mr-2">{{ category }}</p>
                       <a @click="handleRemoveCategory(category)">
