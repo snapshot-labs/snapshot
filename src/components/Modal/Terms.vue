@@ -34,7 +34,7 @@ function accept() {
         </UiButton>
       </div>
       <div class="w-2/4 float-left pl-2">
-        <UiButton @click="accept" type="submit" class="w-full button--submit">
+        <UiButton @click="accept" type="submit" class="w-full" primary>
           {{ $t('agree') }}
         </UiButton>
       </div>
