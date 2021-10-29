@@ -362,7 +362,8 @@ watchEffect(async () => {
           @click="clickSubmit"
           :disabled="!isValid"
           :loading="clientLoading || queryLoading"
-          class="block w-full button--submit"
+          class="block w-full"
+          primary
         >
           {{ $t('create.publish') }}
         </UiButton>

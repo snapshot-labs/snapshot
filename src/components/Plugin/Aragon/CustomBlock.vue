@@ -70,7 +70,8 @@ export default {
         @click="execute(plugin)"
         :loading="loading"
         :disabled="!$auth.isAuthenticated.value"
-        class="w-full button--submit"
+        class="w-full"
+        primary
       >
         {{ $t('submitOnchain') }}
       </UiButton>

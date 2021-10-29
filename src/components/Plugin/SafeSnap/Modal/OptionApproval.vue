@@ -89,10 +89,7 @@ export default {
           <UiButton @click="handleSetApproval(0)" class="button vote-button">
             No
           </UiButton>
-          <UiButton
-            @click="handleSetApproval(1)"
-            class="button--submit vote-button"
-          >
+          <UiButton @click="handleSetApproval(1)" class="vote-button" primary>
             Yes
           </UiButton>
         </div>
