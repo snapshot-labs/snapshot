@@ -230,21 +230,21 @@
     "delegationSuccess": "Delegare reușită",
     "delegationRemoved": "Delegare eliminată",
     "proposalCreated": "Propunere creată",
-    "voteSuccessful": "Your vote is in!"
+    "voteSuccessful": "Ai votat cu succes!"
   },
   "explore": {
-    "createStrategy": "Create strategy",
-    "createSkin": "Create skin",
-    "addNetwork": "Add network",
-    "createPlugin": "Create plugin",
-    "strategies": "strategie(s)",
-    "skins": "skin(s)",
-    "networks": "network(s)",
-    "plugins": "plugin(s)",
-    "results": "result(s)"
+    "createStrategy": "Crează strategie",
+    "createSkin": "Crează skin",
+    "addNetwork": "Adaugă rețea",
+    "createPlugin": "Crează plugin",
+    "strategies": "strategie(i)",
+    "skins": "skin(uri)",
+    "networks": "rețea(le)",
+    "plugins": "plugin(uri)",
+    "results": "rezultat(e)"
   },
   "voting": {
-    "selectVoting": "Select voting system",
+    "selectVoting": "Selectează sistemul de votare",
     "single-choice": "Single choice voting",
     "approval": "Approval voting",
     "quadratic": "Quadratic voting",
