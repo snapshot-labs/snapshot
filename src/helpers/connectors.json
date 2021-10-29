@@ -3,10 +3,6 @@
     "id": "injected",
     "name": "MetaMask"
   },
-  "trezor": {
-    "id": "trezor",
-    "name": "Trezor (with MetaMask)"
-  },
   "walletconnect": {
     "id": "walletconnect",
     "name": "WalletConnect",
@@ -18,6 +14,10 @@
         "42": "https://eth-kovan.alchemyapi.io/v2/QCsM2iU0bQ49eGDmZ7-Y--Wpu0lVWXSO"
       }
     }
+  },
+  "trezor": {
+    "id": "trezor",
+    "name": "Trezor (with MetaMask)"
   },
   "torus": {
     "id": "torus",
