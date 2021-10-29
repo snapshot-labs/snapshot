@@ -58,6 +58,12 @@
   h4 {
     @apply text-md;
   }
+
+  a,
+  button,
+  input {
+    @apply transition-colors
+  }
 }
 
 @layer utilities {
