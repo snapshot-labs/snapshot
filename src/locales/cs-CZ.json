@@ -250,12 +250,19 @@
     "quadratic": "Kvadratické hlasování",
     "ranked-choice": "Možnost jediné volby",
     "weighted": "Vážené hlasování",
+    "basic": "Basic voting",
     "description": {
       "single-choice": "Každý volič může vybrat pouze jednu možnost.",
       "approval": "Každý volič může vybrat pouze jednu možnost.",
       "quadratic": "Každý volič může rozdělit hlasovací sílu na libovolný počet voleb. Výsledky jsou počítány čtyřnásobně.",
       "ranked-choice": "Každý volič může vybrat a hodit libovolný počet možností. Výsledky jsou počítány metodou okamžitého počítání runoff.",
-      "weighted": "Každý volič může rozdělit hlasovací sílu na libovolný počet možností."
+      "weighted": "Každý volič může rozdělit hlasovací sílu na libovolný počet možností.",
+      "basic": "Single choice voting with three choices: For, Against or Abstain"
+    },
+    "choices": {
+      "for": "For",
+      "against": "Against",
+      "abstain": "Abstain"
     }
   },
   "safeSnap": {
