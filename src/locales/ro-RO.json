@@ -250,12 +250,19 @@
     "quadratic": "Votare cuadratica",
     "ranked-choice": "Votare prin clasament",
     "weighted": "Votare cu pondere",
+    "basic": "Basic voting",
     "description": {
       "single-choice": "Fiecare votant poate selecta o singură alegere.",
       "approval": "Fiecare alegător poate selecta orice număr de alegeri.",
       "quadratic": "Fiecare alegător poate răspândi puterea de vot în orice număr de alegeri. Rezultatele sunt calculate cuadratic.",
       "ranked-choice": "Fiecare alegător poate selecta şi clasifica orice număr de alegeri. Rezultatele sunt calculate prin metoda de numărare cu balotaj instantaneu.",
-      "weighted": "Fiecare alegator poate raspândi puterea de vot la oricâte alegeri."
+      "weighted": "Fiecare alegator poate raspândi puterea de vot la oricâte alegeri.",
+      "basic": "Single choice voting with three choices: For, Against or Abstain"
+    },
+    "choices": {
+      "for": "For",
+      "against": "Against",
+      "abstain": "Abstain"
     }
   },
   "safeSnap": {
