@@ -250,12 +250,19 @@
     "quadratic": "চতুর্ভুজ ভোটদান",
     "ranked-choice": "র‌্যাঙ্কড-পছন্দের ভোটদান",
     "weighted": "ভারী ভোট",
+    "basic": "Basic voting",
     "description": {
       "single-choice": "প্রতিটি ভোটার কেবল একটি পছন্দ বেছে নিতে পারেন।",
       "approval": "প্রতিটি ভোটার যে কোনও পছন্দ বেছে নিতে পারেন",
       "quadratic": "Each voter may spread voting power across any number of choices. Results are calculated quadratically.",
       "ranked-choice": "Each voter may select and rank any number of choices. Results are calculated by instant-runoff counting method.",
-      "weighted": "প্রতিটি ভোটার যে কোনও পছন্দ অনুসারে ভোটের শক্তি ছড়িয়ে দিতে পারে."
+      "weighted": "প্রতিটি ভোটার যে কোনও পছন্দ অনুসারে ভোটের শক্তি ছড়িয়ে দিতে পারে.",
+      "basic": "Single choice voting with three choices: For, Against or Abstain"
+    },
+    "choices": {
+      "for": "For",
+      "against": "Against",
+      "abstain": "Abstain"
     }
   },
   "safeSnap": {
