@@ -9,5 +9,6 @@ export default {
   approval,
   quadratic,
   'ranked-choice': rankedChoice,
-  weighted
+  weighted,
+  basic: singleChoice
 };
