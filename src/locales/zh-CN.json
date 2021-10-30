@@ -250,12 +250,19 @@
     "quadratic": "二次投票",
     "ranked-choice": "排序选择投票",
     "weighted": "权重投票",
+    "basic": "Basic voting",
     "description": {
       "single-choice": "每个选民只能选择一个选项。",
       "approval": "每个选民可选择多个选项。",
       "quadratic": "每个选民都可以在任何数量的选择中分配投票权。结果按四舍五入计算。",
       "ranked-choice": "每个选民都可以选择和排列任何数目的选择。结果是通过即时计算的。",
-      "weighted": "每个选民都可以在任何选择中分散投票权。"
+      "weighted": "每个选民都可以在任何选择中分散投票权。",
+      "basic": "Single choice voting with three choices: For, Against or Abstain"
+    },
+    "choices": {
+      "for": "For",
+      "against": "Against",
+      "abstain": "Abstain"
     }
   },
   "safeSnap": {
