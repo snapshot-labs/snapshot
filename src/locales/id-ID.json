@@ -250,12 +250,19 @@
     "quadratic": "Pemungutan suara kuadrat",
     "ranked-choice": "Pilihan peringkat pemungutan suara",
     "weighted": "Suara yang berbobot",
+    "basic": "Basic voting",
     "description": {
       "single-choice": "Setiap pemilih hanya boleh memilih satu pilihan.",
       "approval": "Setiap pemilih dapat memilih sejumlah pilihan.",
       "quadratic": "Setiap pemilih dapat menyebarkan kekuatan suara di sejumlah pilihan. Hasil dihitung secara kuadrat.",
       "ranked-choice": "Setiap pemilih dapat memilih dan memberi peringkat ke sejumlah pilihan. Hasil dihitung dengan metode instant-runoff.",
-      "weighted": "Setiap pemilih dapat membagi hak suara di sejumlah pilihan."
+      "weighted": "Setiap pemilih dapat membagi hak suara di sejumlah pilihan.",
+      "basic": "Single choice voting with three choices: For, Against or Abstain"
+    },
+    "choices": {
+      "for": "For",
+      "against": "Against",
+      "abstain": "Abstain"
     }
   },
   "safeSnap": {
