@@ -250,12 +250,19 @@
     "quadratic": "Votazione quadratica",
     "ranked-choice": "Voto di scelta classificato",
     "weighted": "Votazioni ponderate",
+    "basic": "Basic voting",
     "description": {
       "single-choice": "Ogni elettore può selezionare una sola opzione.",
       "approval": "Ogni elettore può selezionare un numero qualsiasi di scelte.",
       "quadratic": "Each voter may spread voting power across any number of choices. Results are calculated quadratically.",
       "ranked-choice": "Each voter may select and rank any number of choices. Results are calculated by instant-runoff counting method.",
-      "weighted": "Ogni elettore può distribuire il potere di voto su qualsiasi numero di scelte."
+      "weighted": "Ogni elettore può distribuire il potere di voto su qualsiasi numero di scelte.",
+      "basic": "Single choice voting with three choices: For, Against or Abstain"
+    },
+    "choices": {
+      "for": "For",
+      "against": "Against",
+      "abstain": "Abstain"
     }
   },
   "safeSnap": {
