@@ -250,12 +250,19 @@
     "quadratic": "이차 투표권 행사",
     "ranked-choice": "순위 선택 투표",
     "weighted": "가중 투표",
+    "basic": "Basic voting",
     "description": {
       "single-choice": "각 유권자는 하나의 선택만 선택할 수 있습니다.",
       "approval": "각 유권자는 선택의 수를 선택할 수 있습니다.",
       "quadratic": "각 유권자는 선택의 수에 관계없이 투표권을 분산할 수 있습니다. 결과는 2차로 계산됩니다.",
       "ranked-choice": "각 유권자는 원하는 수만큼 선택하고 순위를 매길 수 있습니다. 결과는 인스턴트 유출 계산 방법에 의해 계산된다.",
-      "weighted": "각 유권자는 선택의 수를 통해 투표권을 확산 할 수있다."
+      "weighted": "각 유권자는 선택의 수를 통해 투표권을 확산 할 수있다.",
+      "basic": "Single choice voting with three choices: For, Against or Abstain"
+    },
+    "choices": {
+      "for": "For",
+      "against": "Against",
+      "abstain": "Abstain"
     }
   },
   "safeSnap": {
