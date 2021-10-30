@@ -250,12 +250,19 @@
     "quadratic": "چوکور ووٹنگ",
     "ranked-choice": "انتخاب میں ووٹنگ کی درجہ بندی",
     "weighted": "وزنی ووٹنگ",
+    "basic": "Basic voting",
     "description": {
       "single-choice": "ہر ووٹر صرف ایک ہی انتخاب کا انتخاب کرسکتا ہے۔.",
       "approval": "ہر ووٹر کسی بھی طرح کے انتخاب کا انتخاب کرسکتا ہے۔",
       "quadratic": "Each voter may spread voting power across any number of choices. Results are calculated quadratically.",
       "ranked-choice": "Each voter may select and rank any number of choices. Results are calculated by instant-runoff counting method.",
-      "weighted": "ہر ووٹر کسی بھی انتخاب میں ووٹ ڈالنے کی طاقت پھیل سکتا ہے۔"
+      "weighted": "ہر ووٹر کسی بھی انتخاب میں ووٹ ڈالنے کی طاقت پھیل سکتا ہے۔",
+      "basic": "Single choice voting with three choices: For, Against or Abstain"
+    },
+    "choices": {
+      "for": "For",
+      "against": "Against",
+      "abstain": "Abstain"
     }
   },
   "safeSnap": {
