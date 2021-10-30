@@ -250,12 +250,19 @@
     "quadratic": "הצבעה ריבועית",
     "ranked-choice": "הצבעת בחירה מדורגת",
     "weighted": "הצבעה משוקללת",
+    "basic": "Basic voting",
     "description": {
       "single-choice": "כל מצביע יכול לבחור אפשרות אחת בלבד.",
       "approval": "כל מבציע יכול לבחור מספר אפשרויות בלתי מוגבל.",
       "quadratic": "כל מבציע יכול לפזר את כוח ההצבעה שלו בין מספר בלתי מוגבל של אפשרויות. התוצאה מחושבת באופן ריבועי.",
       "ranked-choice": "כל מבציע יכול לבחור ולדרג מספר בלתי מוגבל של אפשרויות. התוצאות מחשובת בשיטת Instant-Runoff.",
-      "weighted": "כל מבציע יכול לפזר את כוח ההצבעה שלו בין מספר בלתי מוגבל של אפשרויות."
+      "weighted": "כל מבציע יכול לפזר את כוח ההצבעה שלו בין מספר בלתי מוגבל של אפשרויות.",
+      "basic": "Single choice voting with three choices: For, Against or Abstain"
+    },
+    "choices": {
+      "for": "For",
+      "against": "Against",
+      "abstain": "Abstain"
     }
   },
   "safeSnap": {
