@@ -250,12 +250,19 @@
     "quadratic": "चतुर्भुज मतदान",
     "ranked-choice": "निवड मतदान",
     "weighted": "भारित सरासरी मतदान",
+    "basic": "Basic voting",
     "description": {
       "single-choice": "प्रत्येक मतदार केवळ एक निवड निवडू शकतो.",
       "approval": "प्रत्येक मतदार कितीही निवडी निवडू शकतो.",
       "quadratic": "Each voter may spread voting power across any number of choices. Results are calculated quadratically.",
       "ranked-choice": "Each voter may select and rank any number of choices. Results are calculated by instant-runoff counting method.",
-      "weighted": "Each voter may spread voting power across any number of choices."
+      "weighted": "Each voter may spread voting power across any number of choices.",
+      "basic": "Single choice voting with three choices: For, Against or Abstain"
+    },
+    "choices": {
+      "for": "For",
+      "against": "Against",
+      "abstain": "Abstain"
     }
   },
   "safeSnap": {
