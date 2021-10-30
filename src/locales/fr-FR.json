@@ -250,12 +250,19 @@
     "quadratic": "Vote quadratique",
     "ranked-choice": "Vote préférentiel",
     "weighted": "Vote pondéré",
+    "basic": "Basic voting",
     "description": {
       "single-choice": "Chaque votant ne peut effectuer qu'un seul choix.",
       "approval": "Chaque votant peut effectuer un nombre indéfini de choix.",
       "quadratic": "Chaque votant peut répartir ses droits de vote entre les différents choix. Les résultats sont calculés de manière quadratique.",
       "ranked-choice": "Chaque votant peut effectuer plusieurs choix et les classer par préférence. Le système du second tour instantané est utilisé pour calculer les résultats.",
-      "weighted": "Chaque votant peut répartir ses droits de vote entre les différents choix."
+      "weighted": "Chaque votant peut répartir ses droits de vote entre les différents choix.",
+      "basic": "Single choice voting with three choices: For, Against or Abstain"
+    },
+    "choices": {
+      "for": "For",
+      "against": "Against",
+      "abstain": "Abstain"
     }
   },
   "safeSnap": {
