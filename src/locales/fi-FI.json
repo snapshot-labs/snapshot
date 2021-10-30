@@ -250,12 +250,19 @@
     "quadratic": "Quadraattinen äänestys",
     "ranked-choice": "Sijoittui äänestykseen",
     "weighted": "Painotettu äänestys",
+    "basic": "Basic voting",
     "description": {
       "single-choice": "Jokainen äänestäjä voi valita vain yhden vaihtoehdon.",
       "approval": "Jokainen äänestäjä voi valita minkä tahansa määrän vaihtoehtoja.",
       "quadratic": "Jokainen äänestäjä voi jakaa äänioikeutensa useisiin eri vaihtoehtoihin. Tulokset lasketaan kvadratiivisesti.",
       "ranked-choice": "Jokainen äänestäjä voi valita ja asettaa paremmuusjärjestykseen minkä tahansa määrän valintoja. Tulokset lasketaan instant-runoff laskentamenetelmällä.",
-      "weighted": "Jokainen äänestäjä voi jakaa äänivoimansa mihin tahansa määrään valintoja."
+      "weighted": "Jokainen äänestäjä voi jakaa äänivoimansa mihin tahansa määrään valintoja.",
+      "basic": "Single choice voting with three choices: For, Against or Abstain"
+    },
+    "choices": {
+      "for": "For",
+      "against": "Against",
+      "abstain": "Abstain"
     }
   },
   "safeSnap": {
