@@ -250,12 +250,19 @@
     "quadratic": "İkinci dereceden(quadratic) oylama",
     "ranked-choice": "Dereceli seçim oylaması",
     "weighted": "Ağırlıklı oylama",
+    "basic": "Basic voting",
     "description": {
       "single-choice": "Her seçmen sadece bir seçim yapabilir.",
       "approval": "Her seçmen istediği sayıda seçim yapabilir.",
       "quadratic": "Her seçmen, oy verme gücünü herhangi bir sayıda seçeneğe yayabilir. Sonuçlar kuadratik olarak hesaplanır.",
       "ranked-choice": "Her seçmen istediği sayıda seçeneği seçebilir ve sıralayabilir. Sonuçlar anlık akış sayma yöntemiyle hesaplanır.",
-      "weighted": "Her seçmen, oy verme gücünü herhangi bir sayıda seçeneğe yayabilir."
+      "weighted": "Her seçmen, oy verme gücünü herhangi bir sayıda seçeneğe yayabilir.",
+      "basic": "Single choice voting with three choices: For, Against or Abstain"
+    },
+    "choices": {
+      "for": "For",
+      "against": "Against",
+      "abstain": "Abstain"
     }
   },
   "safeSnap": {
