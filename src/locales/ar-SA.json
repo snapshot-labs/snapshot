@@ -250,12 +250,19 @@
     "quadratic": "التصويت الرباعي",
     "ranked-choice": "تصويت خيار التصنيف",
     "weighted": "التصويت المرجح",
+    "basic": "Basic voting",
     "description": {
       "single-choice": "ويجوز لكل ناخب أن يختار خيارا واحدا فقط.",
       "approval": "ويجوز لكل ناخب أن يختار أي عدد من الخيارات.",
       "quadratic": "يمكن لكل ناخب أن يوزع قوة التصويت على أي عدد من الخيارات. يتم حساب النتائج بالنظام الرباعي.",
       "ranked-choice": "يمكن لكل ناخب اختيار وترتيب أي عدد من الخيارات. يتم حساب النتائج بطريقة العد الفوري.",
-      "weighted": "ويمكن لكل ناخب أن يوزع قوة التصويت على أي عدد من الخيارات."
+      "weighted": "ويمكن لكل ناخب أن يوزع قوة التصويت على أي عدد من الخيارات.",
+      "basic": "Single choice voting with three choices: For, Against or Abstain"
+    },
+    "choices": {
+      "for": "For",
+      "against": "Against",
+      "abstain": "Abstain"
     }
   },
   "safeSnap": {
