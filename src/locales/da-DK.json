@@ -250,12 +250,19 @@
     "quadratic": "Kvadratisk afstemning",
     "ranked-choice": "Rangeret valg afstemning",
     "weighted": "Vægtet afstemning",
+    "basic": "Basic voting",
     "description": {
       "single-choice": "Hver vælger kan kun vælge ét valg.",
       "approval": "Hver vælger kan vælge et hvilket som helst antal valg.",
       "quadratic": "Hver vælger kan sprede stemmestyrken på tværs af et hvilket som helst antal valgmuligheder. Resultaterne beregnes kvadratisk.",
       "ranked-choice": "Hver vælger kan vælge og rangere et vilkårligt antal valg. Resultaterne beregnes ved instant-runoff tællingsmetode.",
-      "weighted": "Hver vælger kan sprede stemmeretten over et hvilket som helst antal valg."
+      "weighted": "Hver vælger kan sprede stemmeretten over et hvilket som helst antal valg.",
+      "basic": "Single choice voting with three choices: For, Against or Abstain"
+    },
+    "choices": {
+      "for": "For",
+      "against": "Against",
+      "abstain": "Abstain"
     }
   },
   "safeSnap": {
