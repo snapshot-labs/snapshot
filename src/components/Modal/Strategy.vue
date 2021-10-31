@@ -92,7 +92,8 @@ watch(open, () => {
         <UiButton
           @click="handleSubmit"
           :disabled="!isValid"
-          class="button--submit w-full"
+          class="w-full"
+          primary
         >
           {{ strategy.name ? $t('save') : $t('add') }}
         </UiButton>

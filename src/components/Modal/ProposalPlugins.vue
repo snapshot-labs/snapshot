@@ -91,7 +91,8 @@ watch(selected, value => {
         <UiButton
           @click="$emit('update:modelValue', form), $emit('close')"
           type="submit"
-          class="w-full button--submit"
+          class="w-full"
+          primary
         >
           {{ $t('save') }}
         </UiButton>

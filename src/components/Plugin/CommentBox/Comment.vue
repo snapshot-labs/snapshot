@@ -205,15 +205,17 @@ watch([modalOpen, closeModal], () => {
     <UiButton
       :disabled="comment.length === 0"
       :loading="loading"
-      class="mt-2 button--submit"
+      class="mt-2"
       @click="chooseMethod[method]"
+      primary
     >
       {{ buttonName }}
     </UiButton>
     <UiButton
       @click="togglePreview = !togglePreview"
       :disabled="comment.length === 0"
-      class="ml-2 mt-2 button--primary"
+      class="ml-2 mt-2"
+      primary
     >
       {{
         togglePreview

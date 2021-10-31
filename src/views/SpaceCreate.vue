@@ -2,6 +2,7 @@
 import { ref, watchEffect, computed, onMounted, inject } from 'vue';
 import { useRouter } from 'vue-router';
 import draggable from 'vuedraggable';
+import { useI18n } from 'vue-i18n';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import { getBlockNumber } from '@snapshot-labs/snapshot.js/src/utils/web3';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
@@ -16,7 +17,6 @@ import { useWeb3 } from '@/composables/useWeb3';
 import { useClient } from '@/composables/useClient';
 import { useApp } from '@/composables/useApp';
 import { useExtendedSpaces } from '@/composables/useExtendedSpaces';
-import { useI18n } from 'vue-i18n';
 
 const props = defineProps({
   spaceId: String,
@@ -25,16 +25,15 @@ const props = defineProps({
 });
 
 const router = useRouter();
+const { t } = useI18n();
 const auth = getInstance();
 const { domain } = useDomain();
 const { web3 } = useWeb3();
-const { send } = useClient();
 const { getExplore } = useApp();
 const { spaceLoading } = useExtendedSpaces();
-const { t } = useI18n();
+const { send, clientLoading } = useClient();
 const notify = inject('notify');
 
-const loading = ref(false);
 const choices = ref([]);
 const blockNumber = ref(-1);
 const bodyLimit = ref(4800);
@@ -81,7 +80,7 @@ watchEffect(async () => {
 
 const dateStart = computed(() => {
   return props.space.voting?.delay
-    ? parseInt(new Date().getTime() / 1000) + props.space.voting.delay
+    ? parseInt((Date.now() / 1e3).toFixed()) + props.space.voting.delay
     : form.value.start;
 });
 
@@ -98,7 +97,7 @@ const isValid = computed(() => {
     : true;
 
   return (
-    !loading.value &&
+    !clientLoading.value &&
     form.value.name &&
     form.value.body.length <= bodyLimit.value &&
     dateStart.value &&
@@ -114,6 +113,8 @@ const isValid = computed(() => {
     !web3.value.authLoading
   );
 });
+
+const disableChoiceEdit = computed(() => form.value.type === 'basic');
 
 function addChoice(num) {
   for (let i = 1; i <= num; i++) {
@@ -133,32 +134,28 @@ function setDate(ts) {
 }
 
 async function handleSubmit() {
-  loading.value = true;
   form.value.snapshot = parseInt(form.value.snapshot);
   form.value.choices = choices.value.map(choice => choice.text);
   form.value.metadata.network = props.space.network;
   form.value.metadata.strategies = props.space.strategies;
   form.value.start = props.space.voting?.delay
-    ? parseInt(new Date().getTime() / 1000) + props.space.voting.delay
+    ? parseInt((Date.now() / 1e3).toFixed()) + props.space.voting.delay
     : dateStart.value;
   form.value.end = props.space.voting?.period
     ? form.value.start + props.space.voting.period
     : dateEnd.value;
-  try {
-    const { ipfsHash } = await send(props.space.id, 'proposal', form.value);
+  const result = await send(props.space, 'proposal', form.value);
+  console.log('Result', result);
+  if (result.id) {
     getExplore();
     notify(['green', t('notify.proposalCreated')]);
     router.push({
       name: 'spaceProposal',
       params: {
         key: props.spaceId,
-        id: ipfsHash
+        id: result.id
       }
     });
-    loading.value = false;
-  } catch (e) {
-    console.error(e);
-    loading.value = false;
   }
 }
 
@@ -220,6 +217,19 @@ watchEffect(async () => {
     loadingSnapshot.value = false;
   }
   if (props.space.voting?.type) form.value.type = props.space.voting.type;
+});
+
+watchEffect(() => {
+  if (form.value.type === 'basic') {
+    choices.value = [
+      { key: 1, text: t('voting.choices.for') },
+      { key: 2, text: t('voting.choices.against') },
+      { key: 3, text: t('voting.choices.abstain') }
+    ];
+  } else {
+    choices.value = [];
+    addChoice(2);
+  }
 });
 </script>
 
@@ -286,6 +296,7 @@ watchEffect(async () => {
           <draggable
             v-model="choices"
             :component-data="{ name: 'list' }"
+            :disabled="disableChoiceEdit"
             item-key="id"
           >
             <template #item="{ element, index }">
@@ -293,11 +304,15 @@ watchEffect(async () => {
                 v-model="element.text"
                 maxlength="32"
                 additionalInputClass="text-center"
-                ><template v-slot:label
-                  ><span class="text-skin-link">{{ index + 1 }}</span></template
-                >
-                <template v-slot:info
-                  ><span @click="removeChoice(index)">
+                :disabled="disableChoiceEdit"
+              >
+                <template v-slot:label>
+                  <span v-if="!disableChoiceEdit" class="text-skin-link">
+                    {{ index + 1 }}
+                  </span>
+                </template>
+                <template v-slot:info>
+                  <span v-if="!disableChoiceEdit" @click="removeChoice(index)">
                     <Icon name="close" size="12" />
                   </span>
                 </template>
@@ -305,7 +320,11 @@ watchEffect(async () => {
             </template>
           </draggable>
         </div>
-        <UiButton @click="addChoice(1)" class="block w-full">
+        <UiButton
+          v-if="!disableChoiceEdit"
+          @click="addChoice(1)"
+          class="block w-full"
+        >
           {{ $t('create.addChoice') }}
         </UiButton>
       </Block>
@@ -366,8 +385,9 @@ watchEffect(async () => {
         <UiButton
           @click="clickSubmit"
           :disabled="!isValid"
-          :loading="loading || queryLoading"
-          class="block w-full button--submit"
+          :loading="clientLoading || queryLoading"
+          class="block w-full"
+          primary
         >
           {{ $t('create.publish') }}
         </UiButton>

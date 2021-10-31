@@ -86,7 +86,8 @@ watch(open, () => {
         <UiButton
           @click="handleSubmit"
           :disabled="!isValid"
-          class="button--submit w-full"
+          class="w-full"
+          primary
         >
           {{ validation.name ? $t('save') : $t('add') }}
         </UiButton>

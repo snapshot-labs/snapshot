@@ -1,5 +1,8 @@
 <script>
 import Plugin from '@/../snapshot-plugins/src/plugins/poap';
+import { useNotifications } from '@/composables/useNotifications';
+
+const { notify } = useNotifications();
 
 const STATES = {
   NO_POAP: {
@@ -128,10 +131,10 @@ export default {
           setTimeout(() => this.checkStateLoop(), 5000);
           break;
         case UNCLAIMED:
-          this.notify(['red', this.$t('poap.error_claim')]);
+          notify(['red', this.$t('poap.error_claim')]);
           break;
         case CLAIMED:
-          this.notify(['green', this.$t('poap.success_claim')]);
+          notify(['green', this.$t('poap.success_claim')]);
       }
     },
     async updateState() {

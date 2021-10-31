@@ -86,6 +86,7 @@
   "marketSymbol": "{0} मारकेट",
   "twoChoicesRequired": "इस प्लगइन के लिए २ विकल्प जरुरी है",
   "noResultsFound": "कोई परिणाम नहीं मिल पा रहा है",
+  "createFirstProposal": "Let's create your first proposal",
   "noSpacesJoined": "ओह, आप अभी तक किसी जगह से नही जुडे।",
   "addFavorites": "पसंदीदा में जोड़ें",
   "createdBy": "तक {0}",
@@ -166,6 +167,7 @@
     "header": "प्रपोजल्स",
     "new": "नए प्रपोजल्स",
     "noProposals": "यहाँ अभी प्रोपोज़ल्स नहीं है",
+    "createProposal": "Create proposal",
     "states": {
       "all": "सभी",
       "core": "कोर",
