@@ -1,8 +1,8 @@
 import pkg from '@/../package.json';
-import voting from '@/helpers/voting';
 import { formatEther } from '@ethersproject/units';
 import { BigNumber } from '@ethersproject/bignumber';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
+import voting from '@snapshot-labs/snapshot.js/src/voting';
 import numeral from 'numeral';
 import { format } from 'timeago.js';
 
@@ -115,12 +115,6 @@ export const parseValueInput = input => {
     return input;
   }
 };
-
-export function getNumberWithOrdinal(n) {
-  const s = ['th', 'st', 'nd', 'rd'],
-    v = n % 100;
-  return n + (s[(v - 20) % 10] || s[v] || s[0]);
-}
 
 export function explorerUrl(network, str: string, type = 'address'): string {
   return `${networks[network].explorer}/${type}/${str}`;
