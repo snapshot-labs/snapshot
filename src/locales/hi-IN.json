@@ -57,7 +57,7 @@
   "receipt": "रसीद",
   "relayer": "रिलेयर",
   "verifyOnMycrypto": "माइक्रिप्टो पर रसीद सत्यापित करें",
-  "verifyOnSignatorio": "Verify on Signator.io",
+  "verifyOnSignatorio": "Signator.io पर सत्यापित करें",
   "isCore": "कोर",
   "seeInExplorer": "एक्सप्लोरर पर देखें",
   "learnMore": "और पढ़ें",
@@ -87,7 +87,7 @@
   "marketSymbol": "{0} मारकेट",
   "twoChoicesRequired": "इस प्लगइन के लिए २ विकल्प जरुरी है",
   "noResultsFound": "कोई परिणाम नहीं मिल पा रहा है",
-  "createFirstProposal": "Let's create your first proposal",
+  "createFirstProposal": "आइए आपका पहला प्रस्ताव बनाएं |",
   "noSpacesJoined": "ओह, आप अभी तक किसी जगह से नही जुडे।",
   "addFavorites": "पसंदीदा में जोड़ें",
   "createdBy": "तक {0}",
@@ -123,7 +123,7 @@
     "minItems": "न्यूनतम {0} आइटम्स जरुरी है",
     "minStrategy": "कम से कम एक स्ट्रेटेजी की आवश्यकता है",
     "format": "अवैध फॉर्मेट",
-    "type": "Invalid type"
+    "type": "अमान्य प्रकार |"
   },
   "create": {
     "question": "प्रश्न",
@@ -155,7 +155,7 @@
     "allSpaces": "सब जगहों के लिए",
     "delegated": "आपको दिए गए डेलीगेशन",
     "pendingTransaction": "कोई लंबित लेनदेन नहीं | 1 लंबित लेनदेन | {count} लंबित लेनदेन",
-    "topDelegates": "Top delegates"
+    "topDelegates": "शीर्ष प्रतिनिधि"
   },
   "proposal": {
     "castVote": "अपना वोट दे",
@@ -168,7 +168,7 @@
     "header": "प्रपोजल्स",
     "new": "नए प्रपोजल्स",
     "noProposals": "यहाँ अभी प्रोपोज़ल्स नहीं है",
-    "createProposal": "Create proposal",
+    "createProposal": "प्रस्ताव बनाएं",
     "states": {
       "all": "सभी",
       "core": "कोर",
@@ -209,12 +209,12 @@
     "selectValidation": "मान्यता का चयन करें",
     "validationParameters": "इन मापदंडों को मान्य करें",
     "warningTextRecord": "आपको ENS डोमेन पर एक टेक्स्ट रिकॉर्ड सेट करना होगा।",
-    "votingDelay": "Voting delay",
-    "votingPeriod": "Voting period",
-    "voting": "Voting",
-    "quorum": "Quorum",
-    "type": "Type",
-    "anyType": "Any"
+    "votingDelay": "मतदान में देरी",
+    "votingPeriod": "मतदान की अवधि",
+    "voting": "मतदान",
+    "quorum": "गणपूर्ति",
+    "type": "प्रकार",
+    "anyType": "कोई भी"
   },
   "setup": {
     "example": "उदाहरण. yam.eth",
