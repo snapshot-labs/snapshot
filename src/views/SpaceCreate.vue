@@ -226,9 +226,6 @@ watchEffect(() => {
       { key: 2, text: t('voting.choices.against') },
       { key: 3, text: t('voting.choices.abstain') }
     ];
-  } else {
-    choices.value = [];
-    addChoice(2);
   }
 });
 </script>
