@@ -114,6 +114,8 @@ const isValid = computed(() => {
   );
 });
 
+const disableChoiceEdit = computed(() => form.value.type === 'basic');
+
 function addChoice(num) {
   for (let i = 1; i <= num; i++) {
     counter.value++;
@@ -216,6 +218,16 @@ watchEffect(async () => {
   }
   if (props.space.voting?.type) form.value.type = props.space.voting.type;
 });
+
+watchEffect(() => {
+  if (form.value.type === 'basic') {
+    choices.value = [
+      { key: 1, text: t('voting.choices.for') },
+      { key: 2, text: t('voting.choices.against') },
+      { key: 3, text: t('voting.choices.abstain') }
+    ];
+  }
+});
 </script>
 
 <template>
@@ -281,6 +293,7 @@ watchEffect(async () => {
           <draggable
             v-model="choices"
             :component-data="{ name: 'list' }"
+            :disabled="disableChoiceEdit"
             item-key="id"
           >
             <template #item="{ element, index }">
@@ -288,11 +301,15 @@ watchEffect(async () => {
                 v-model="element.text"
                 maxlength="32"
                 additionalInputClass="text-center"
-                ><template v-slot:label
-                  ><span class="text-skin-link">{{ index + 1 }}</span></template
-                >
-                <template v-slot:info
-                  ><span @click="removeChoice(index)">
+                :disabled="disableChoiceEdit"
+              >
+                <template v-slot:label>
+                  <span v-if="!disableChoiceEdit" class="text-skin-link">
+                    {{ index + 1 }}
+                  </span>
+                </template>
+                <template v-slot:info>
+                  <span v-if="!disableChoiceEdit" @click="removeChoice(index)">
                     <Icon name="close" size="12" />
                   </span>
                 </template>
@@ -300,7 +317,11 @@ watchEffect(async () => {
             </template>
           </draggable>
         </div>
-        <UiButton @click="addChoice(1)" class="block w-full">
+        <UiButton
+          v-if="!disableChoiceEdit"
+          @click="addChoice(1)"
+          class="block w-full"
+        >
           {{ $t('create.addChoice') }}
         </UiButton>
       </Block>
