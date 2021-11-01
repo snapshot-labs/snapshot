@@ -34,7 +34,6 @@ export function useClient() {
 
   async function send(space, type, payload) {
     loading.value = true;
-    let result;
     try {
       if (usePersonalSign.value) {
         if (payload.proposal) payload.proposal = payload.proposal.id;
@@ -43,17 +42,9 @@ export function useClient() {
           ? client.sign.bind(client)
           : client.broadcast.bind(client);
 
-        result = await fn(
-          auth.web3,
-          web3.value.account,
-          space.id,
-          type,
-          payload
-        );
-      } else {
-        result = await sendEIP712(space, type, payload);
+        return fn(auth.web3, web3.value.account, space.id, type, payload);
       }
-      return result;
+      return sendEIP712(space, type, payload);
     } catch (e: any) {
       console.log(e);
       const errorMessage =
