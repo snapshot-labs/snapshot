@@ -59,6 +59,7 @@
   "verifyOnMycrypto": "확인 영수증 에 MyCrypto",
   "verifyOnSignatorio": "Verify on Signator.io",
   "isCore": "응어리",
+  "notificationsBlocked": "Your browser is blocking notifications",
   "seeInExplorer": "탐색기에서 보기",
   "learnMore": "더 알아보기",
   "logout": "로그 아웃",
