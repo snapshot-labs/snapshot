@@ -59,6 +59,7 @@
   "verifyOnMycrypto": "Подтвердить получение в MyCrypto",
   "verifyOnSignatorio": "Верифицируйтесь на Signator.io",
   "isCore": "Основные",
+  "notificationsBlocked": "Your browser is blocking notifications",
   "seeInExplorer": "Просмотр в обозревателе блоков",
   "learnMore": "Подробнее",
   "logout": "Выход",
