@@ -35,18 +35,21 @@ export function useClient() {
   async function send(space, type, payload) {
     loading.value = true;
     try {
+      if (isSafe.value)
+        throw 'Error: Signing messages with Gnosis Safe is currently not supported';
       if (usePersonalSign.value) {
         if (payload.proposal) payload.proposal = payload.proposal.id;
 
-        const fn = isSafe.value
-          ? client.sign.bind(client)
-          : client.broadcast.bind(client);
-
-        return fn(auth.web3, web3.value.account, space.id, type, payload);
+        return client.broadcast(
+          auth.web3,
+          web3.value.account,
+          space.id,
+          type,
+          payload
+        );
       }
       return sendEIP712(space, type, payload);
     } catch (e: any) {
-      console.log(e);
       const errorMessage =
         e && e.error_description
           ? `Oops, ${e.error_description}`
@@ -98,5 +101,5 @@ export function useClient() {
     }
   }
 
-  return { send, clientLoading: computed(() => loading.value) };
+  return { send, clientLoading: computed(() => loading.value), isSafe };
 }
