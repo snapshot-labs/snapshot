@@ -138,12 +138,8 @@ async function handleSubmit() {
   form.value.choices = choices.value.map(choice => choice.text);
   form.value.metadata.network = props.space.network;
   form.value.metadata.strategies = props.space.strategies;
-  form.value.start = props.space.voting?.delay
-    ? parseInt((Date.now() / 1e3).toFixed()) + props.space.voting.delay
-    : dateStart.value;
-  form.value.end = props.space.voting?.period
-    ? form.value.start + props.space.voting.period
-    : dateEnd.value;
+  form.value.start = dateStart.value;
+  form.value.end = dateEnd.value;
   const result = await send(props.space, 'proposal', form.value);
   console.log('Result', result);
   if (result.id) {
