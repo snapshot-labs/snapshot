@@ -1,6 +1,6 @@
 {
   "searchPlaceholder": "Cari",
-  "spaceCount": "Pemisah",
+  "spaceCount": "{0} ruang(an)",
   "createSpace": "Buat ruang",
   "backToHome": "Beranda",
   "actions": "Aksi",
@@ -59,7 +59,7 @@
   "verifyOnMycrypto": "Verifikasi tanda terima di MyCrypto",
   "verifyOnSignatorio": "Verifikasi di Signator.io",
   "isCore": "Inti",
-  "notificationsBlocked": "Your browser is blocking notifications",
+  "notificationsBlocked": "Browser Anda memblokir notifikasi",
   "seeInExplorer": "Lihat di explorer",
   "learnMore": "Pelajari lebih lanjut",
   "logout": "Keluar",
@@ -251,18 +251,18 @@
     "quadratic": "Pemungutan suara kuadrat",
     "ranked-choice": "Pilihan peringkat pemungutan suara",
     "weighted": "Suara yang berbobot",
-    "basic": "Basic voting",
+    "basic": "Pemungutan suara dasar",
     "description": {
       "single-choice": "Setiap pemilih hanya boleh memilih satu pilihan.",
       "approval": "Setiap pemilih dapat memilih sejumlah pilihan.",
       "quadratic": "Setiap pemilih dapat menyebarkan kekuatan suara di sejumlah pilihan. Hasil dihitung secara kuadrat.",
       "ranked-choice": "Setiap pemilih dapat memilih dan memberi peringkat ke sejumlah pilihan. Hasil dihitung dengan metode instant-runoff.",
       "weighted": "Setiap pemilih dapat membagi hak suara di sejumlah pilihan.",
-      "basic": "Single choice voting with three choices: For, Against or Abstain"
+      "basic": "Voting pilihan tunggal dengan tiga pilihan: Untuk, Menentang atau Abstain"
     },
     "choices": {
-      "for": "For",
-      "against": "Against",
+      "for": "Untuk",
+      "against": "Menentang",
       "abstain": "Abstain"
     }
   },
