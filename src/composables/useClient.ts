@@ -26,7 +26,7 @@ export function useClient() {
     );
   });
 
-  const isSafe = computed(
+  const isGnosisSafe = computed(
     () =>
       web3.value?.walletConnectType === 'Gnosis Safe Multisig' ||
       connector.value === 'gnosis'
@@ -35,7 +35,7 @@ export function useClient() {
   async function send(space, type, payload) {
     loading.value = true;
     try {
-      if (isSafe.value)
+      if (isGnosisSafe.value)
         throw 'Error: Signing messages with Gnosis Safe is currently not supported';
       if (usePersonalSign.value) {
         if (payload.proposal) payload.proposal = payload.proposal.id;
@@ -101,5 +101,5 @@ export function useClient() {
     }
   }
 
-  return { send, clientLoading: computed(() => loading.value), isSafe };
+  return { send, clientLoading: computed(() => loading.value), isGnosisSafe };
 }

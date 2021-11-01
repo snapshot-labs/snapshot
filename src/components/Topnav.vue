@@ -17,7 +17,7 @@ const route = useRoute();
 const { explore } = useApp();
 const { login, web3 } = useWeb3();
 const { toggleSkin, getSkinIcon } = useUserSkin();
-const { isSafe } = useClient();
+const { isGnosisSafe } = useClient();
 
 const loading = ref(false);
 const modalNotice = ref(false);
@@ -42,8 +42,8 @@ watch(space, () => {
   setTitle();
 });
 
-watch(isSafe, () => {
-  if (isSafe.value) modalNotice.value = true;
+watch(isGnosisSafe, () => {
+  if (isGnosisSafe.value) modalNotice.value = true;
 });
 
 onMounted(() => setTitle());
