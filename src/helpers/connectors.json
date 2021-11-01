@@ -15,6 +15,10 @@
       }
     }
   },
+  "trezor": {
+    "id": "trezor",
+    "name": "Trezor (with MetaMask)"
+  },
   "torus": {
     "id": "torus",
     "name": "Torus"
@@ -45,9 +49,5 @@
     "options": {
       "apiKey": "pk_live_9CE8FD92E54684ED"
     }
-  },
-  "trezor": {
-    "id": "trezor",
-    "name": "Trezor (with MetaMask)"
   }
 }
