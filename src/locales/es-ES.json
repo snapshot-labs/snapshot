@@ -59,6 +59,7 @@
   "verifyOnMycrypto": "Verificar recibo en MyCrypto",
   "verifyOnSignatorio": "Verify on Signator.io",
   "isCore": "Core",
+  "notificationsBlocked": "Your browser is blocking notifications",
   "seeInExplorer": "Ver en el explorador",
   "learnMore": "Aprenda más",
   "logout": "Cerrar sesión",
