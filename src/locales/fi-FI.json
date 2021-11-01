@@ -59,6 +59,7 @@
   "verifyOnMycrypto": "Vahvista kuitti MyCryptossa",
   "verifyOnSignatorio": "Verify on Signator.io",
   "isCore": "Core",
+  "notificationsBlocked": "Your browser is blocking notifications",
   "seeInExplorer": "Katso Explorer",
   "learnMore": "Lue lisää",
   "logout": "Kirjaudu ulos",
