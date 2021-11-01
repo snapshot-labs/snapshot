@@ -59,6 +59,7 @@
   "verifyOnMycrypto": "Перевірити чек на MyCrypto",
   "verifyOnSignatorio": "Verify on Signator.io",
   "isCore": "Ядро",
+  "notificationsBlocked": "Your browser is blocking notifications",
   "seeInExplorer": "Дивитися в провіднику",
   "learnMore": "Дізнатися більше",
   "logout": "Вийти",
