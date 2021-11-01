@@ -62,6 +62,8 @@
   "seeInExplorer": "See on explorer",
   "learnMore": "Learn more",
   "logout": "Log out",
+  "walletNotice": "Wallet notice",
+  "gnosisSafeWalletNotice": "Gnosis Safe wallet doesn't support signing messages on Snapshot. Please use the link below to delegate your voting power.",
   "continue": "Continue",
   "add": "Add",
   "edit": "Edit",

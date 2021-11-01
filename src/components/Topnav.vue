@@ -18,6 +18,7 @@ const { login, web3 } = useWeb3();
 const { toggleSkin, getSkinIcon } = useUserSkin();
 
 const loading = ref(false);
+const modalNotice = ref(false);
 
 const space = computed(() => {
   const key = domain || route.params.key;
@@ -37,6 +38,12 @@ async function handleLogin(connector) {
 
 watch(space, () => {
   setTitle();
+});
+
+const walletConnectType = computed(() => web3.value.walletConnectType);
+
+watch(walletConnectType, val => {
+  if (val === 'Gnosis Safe Multisig') modalWalletNotice.value = true;
 });
 
 onMounted(() => setTitle());
@@ -123,6 +130,21 @@ onMounted(() => setTitle());
         @close="modalAccountOpen = false"
         @login="handleLogin"
       />
+      <ModalNotice
+        :open="modalNotice"
+        :title="$t('walletNotice')"
+        @close="modalNotice = false"
+      >
+       <h4>{{ $t('gnosisSafeWalletNotice') }}</h4>
+      <a
+        @click="$router.push({ name: 'delegate' })"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <UiText :text="$t('learnMore')" />
+        <Icon name="external-link" class="ml-1" />
+      </a>
+      </ModalNotice>
     </teleport>
   </Sticky>
 </template>
