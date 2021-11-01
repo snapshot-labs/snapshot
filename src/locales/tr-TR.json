@@ -59,6 +59,7 @@
   "verifyOnMycrypto": "MyCrypto'da dekontu doğrulayın",
   "verifyOnSignatorio": "Verify on Signator.io",
   "isCore": "Genel",
+  "notificationsBlocked": "Your browser is blocking notifications",
   "seeInExplorer": "İnternette gör",
   "learnMore": "Daha fazla bilgi edinin",
   "logout": "Çıkış",
