@@ -59,6 +59,7 @@
   "verifyOnMycrypto": "Verifikuj priznanicu na MyCrypto",
   "verifyOnSignatorio": "Verify on Signator.io",
   "isCore": "Osnovno",
+  "notificationsBlocked": "Your browser is blocking notifications",
   "seeInExplorer": "Pogledajte na explorer",
   "learnMore": "Više detalja",
   "logout": "Odjava",
