@@ -59,6 +59,7 @@
   "verifyOnMycrypto": "Bekræft kvitteringen på MyCrypto",
   "verifyOnSignatorio": "Verify on Signator.io",
   "isCore": "Kernefunktioner",
+  "notificationsBlocked": "Your browser is blocking notifications",
   "seeInExplorer": "Se på explorer",
   "learnMore": "Få mere at vide",
   "logout": "Log ud",
