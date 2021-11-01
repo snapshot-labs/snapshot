@@ -59,6 +59,7 @@
   "verifyOnMycrypto": "Beleg auf MyCrypto überprüfen",
   "verifyOnSignatorio": "Verify on Signator.io",
   "isCore": "Kern",
+  "notificationsBlocked": "Your browser is blocking notifications",
   "seeInExplorer": "Im Explorer ansehen",
   "learnMore": "Mehr erfahren",
   "logout": "Ausloggen",
