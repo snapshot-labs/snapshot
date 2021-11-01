@@ -7,7 +7,7 @@ export default {
 <template>
   <div :class="skin.key" class="bg-black rounded-none md:rounded-md">
     <Block>
-      <UiButton class="button--submit mb-2">{{ skin.key }}</UiButton>
+      <UiButton class="mb-2" primary>{{ skin.key }}</UiButton>
       <div class="text-color">
         {{ $tc('inSpaces', [_n(skin.spaces)]) }}
       </div>

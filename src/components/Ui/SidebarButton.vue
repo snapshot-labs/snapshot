@@ -1,5 +1,5 @@
 <template>
-  <div
+  <button
     class="
       border
       w-[44px]
@@ -14,5 +14,5 @@
     "
   >
     <slot />
-  </div>
+  </button>
 </template>
