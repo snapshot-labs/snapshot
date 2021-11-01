@@ -59,6 +59,7 @@
   "verifyOnMycrypto": "MyCryptoでレシートを検証する",
   "verifyOnSignatorio": "Verify on Signator.io",
   "isCore": "コア",
+  "notificationsBlocked": "Your browser is blocking notifications",
   "seeInExplorer": "エクスプローラで閲覧する",
   "learnMore": "もっと詳しく知る",
   "logout": "ログアウト",
