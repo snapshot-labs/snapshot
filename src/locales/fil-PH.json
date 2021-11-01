@@ -59,6 +59,7 @@
   "verifyOnMycrypto": "I-verify ang receipt sa MyCrypto",
   "verifyOnSignatorio": "Verify on Signator.io",
   "isCore": "Core",
+  "notificationsBlocked": "Your browser is blocking notifications",
   "seeInExplorer": "Tignan sa explorer",
   "learnMore": "Karagdagang impormasyon",
   "logout": "I-logout",
