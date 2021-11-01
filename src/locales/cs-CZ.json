@@ -59,6 +59,7 @@
   "verifyOnMycrypto": "Ověřit účtenku na MyCrypto",
   "verifyOnSignatorio": "Verify on Signator.io",
   "isCore": "Core",
+  "notificationsBlocked": "Your browser is blocking notifications",
   "seeInExplorer": "Zobrazit na Průzkumníku",
   "learnMore": "Přečtěte si více",
   "logout": "Odhlásit se",
