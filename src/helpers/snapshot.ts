@@ -1,5 +1,4 @@
 import { getScores } from '@snapshot-labs/snapshot.js/src/utils';
-import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import { apolloClient } from '@/helpers/apollo';
 import { PROPOSAL_VOTES_QUERY } from '@/helpers/queries';
 import cloneDeep from 'lodash/cloneDeep';
@@ -40,7 +39,6 @@ export async function getProposal(id) {
 export async function getResults(space, proposal, votes) {
   try {
     const voters = votes.map(vote => vote.voter);
-    const provider = getProvider(space.network);
     const strategies = proposal.strategies ?? space.strategies;
     /* Get scores */
     if (proposal.state !== 'pending') {
@@ -49,7 +47,6 @@ export async function getResults(space, proposal, votes) {
         space.id,
         strategies,
         space.network,
-        provider,
         voters,
         parseInt(proposal.snapshot)
       );
@@ -90,7 +87,6 @@ export async function getPower(space, address, proposal) {
       space.id,
       strategies,
       space.network,
-      getProvider(space.network),
       [address],
       parseInt(proposal.snapshot)
     );
