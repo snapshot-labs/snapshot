@@ -63,8 +63,8 @@
   "seeInExplorer": "Vizualizează pe explorer",
   "learnMore": "Află mai multe",
   "logout": "Deconectează-te",
-  "walletNotice": "Portofelul nu este suportat",
-  "gnosisSafeWalletNotice": "Încerci să utilizezi portofelul Gnosis Safe, care nu suportă semnarea de mesaje pe Snapshot.",
+  "walletNotice": "Wallet notice",
+  "gnosisSafeWalletNotice": "Gnosis Safe wallet doesn't support signing messages. You can delegate your voting power to a wallet of your choice on our delegation page.",
   "continue": "Continuă",
   "add": "Adaugă",
   "edit": "Modifică",
@@ -116,6 +116,7 @@
   "duplicateProposal": "Duplichează propunere",
   "joinedSpaces": "Spații alăturate",
   "joinSpaces": "Alătura-te la spații",
+  "delegateVotingPower": "Go to delegation page",
   "errors": {
     "required": "Câmp obligatoriu",
     "minLength": "Lungime minimă de {0}",
