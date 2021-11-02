@@ -61,8 +61,6 @@
   "seeInExplorer": "Pogledajte na explorer",
   "learnMore": "Više detalja",
   "logout": "Odjava",
-  "walletNotice": "Wallet not supported",
-  "gnosisSafeWalletNotice": "You are trying to use Gnosis Safe wallet, which doesn't support signing messages on Snapshot.",
   "continue": "Continue",
   "add": "Dodaj",
   "edit": "Uredi",

@@ -7,6 +7,7 @@ import { useApp } from '@/composables/useApp';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useTxStatus } from '@/composables/useTxStatus';
 import { useUserSkin } from '@/composables/useUserSkin';
+import { useClient } from '@/composables/useClient';
 
 const { pendingCount } = useTxStatus();
 const { modalAccountOpen } = useModal();
@@ -16,9 +17,10 @@ const route = useRoute();
 const { explore } = useApp();
 const { login, web3 } = useWeb3();
 const { toggleSkin, getSkinIcon } = useUserSkin();
+const { isGnosisSafe } = useClient();
 
 const loading = ref(false);
-const modalWalletNotice = ref(false);
+const modalNotice = ref(false);
 
 const space = computed(() => {
   const key = domain || route.params.key;
@@ -40,10 +42,8 @@ watch(space, () => {
   setTitle();
 });
 
-const walletConnectType = computed(() => web3.value.walletConnectType);
-
-watch(walletConnectType, val => {
-  if (val === 'Gnosis Safe Multisig') modalWalletNotice.value = true;
+watch(isGnosisSafe, () => {
+  if (isGnosisSafe.value) modalNotice.value = true;
 });
 
 onMounted(() => setTitle());
@@ -130,10 +130,21 @@ onMounted(() => setTitle());
         @close="modalAccountOpen = false"
         @login="handleLogin"
       />
-      <ModalWalletNotice
-        :open="modalWalletNotice"
-        @close="modalWalletNotice = false"
-      />
+      <ModalNotice
+        :open="modalNotice"
+        :title="$t('walletNotice')"
+        @close="modalNotice = false"
+      >
+        <h4 class="mb-3">{{ $t('gnosisSafeWalletNotice') }}</h4>
+        <a
+          @click="$router.push({ name: 'delegate' }), (modalNotice = false)"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="flex items-center justify-center"
+        >
+          <UiText class="mt-1" :text="$t('delegateVotingPower')" />
+        </a>
+      </ModalNotice>
     </teleport>
   </Sticky>
 </template>

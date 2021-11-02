@@ -61,8 +61,6 @@
   "seeInExplorer": "Se på explorer",
   "learnMore": "Läs mer",
   "logout": "Logga ut",
-  "walletNotice": "Plånbok stöds inte",
-  "gnosisSafeWalletNotice": "Du försöker använda Gnosis Safe plånbok, som inte stöder signering meddelanden på Snapshot.",
   "continue": "Fortsätt",
   "add": "Lägg till",
   "edit": "Redigera",
