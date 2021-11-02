@@ -43,7 +43,7 @@ function select(id) {
         >
           <i
             v-if="!selected"
-            class="iconfont iconcheck1 absolute top-2 right-2"
+            class="iconfont iconcheck1 absolute top-2 right-2 text-lg"
           />
           <h3>
             {{ $t('settings.anyType') }}
@@ -59,7 +59,7 @@ function select(id) {
         >
           <i
             v-if="type === selected"
-            class="iconfont iconcheck1 absolute top-2 right-2"
+            class="iconfont iconcheck1 absolute top-2 right-2 text-lg"
           />
           <h3 v-text="$t(`voting.${type}`)" class="mt-0" />
           <div v-text="$t(`voting.description.${type}`)" class="text-color" />
