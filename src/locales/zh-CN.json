@@ -63,8 +63,8 @@
   "seeInExplorer": "在浏览器上查看",
   "learnMore": "了解更多",
   "logout": "退出",
-  "walletNotice": "钱包未加密",
-  "gnosisSafeWalletNotice": "您正在尝试使用 Gnosis Safe 钱包，这不支持在 Snapshot 上签名消息。",
+  "walletNotice": "Wallet notice",
+  "gnosisSafeWalletNotice": "Gnosis Safe wallet doesn't support signing messages. You can delegate your voting power to a wallet of your choice on our delegation page.",
   "continue": "继续",
   "add": "添加",
   "edit": "编辑",
@@ -116,6 +116,7 @@
   "duplicateProposal": "复制提案",
   "joinedSpaces": "已加入的空间",
   "joinSpaces": "加入空间",
+  "delegateVotingPower": "Go to delegation page",
   "errors": {
     "required": "此项为必填项",
     "minLength": "最小长度为 {0}",
