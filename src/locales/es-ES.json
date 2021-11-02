@@ -61,8 +61,6 @@
   "seeInExplorer": "Ver en el explorador",
   "learnMore": "Aprenda más",
   "logout": "Cerrar sesión",
-  "walletNotice": "Monedero no soportado",
-  "gnosisSafeWalletNotice": "Está intentando utilizar Gnosis Safe wallet, que no admite la firma de mensajes en Snapshot.",
   "continue": "Continuar",
   "add": "Añadir",
   "edit": "Editar",

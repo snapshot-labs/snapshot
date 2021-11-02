@@ -1,5 +1,9 @@
 <script setup>
 defineProps({
+  primary: {
+    type: Boolean,
+    default: false
+  },
   loading: Boolean,
   type: String,
   disable: {
@@ -12,10 +16,13 @@ defineProps({
 <template>
   <button
     :type="type || 'button'"
-    class="button px-[24px] focus-within:border-skin-link"
+    :class="[
+      'button px-[24px] focus-within:border-skin-link',
+      { 'button--primary': primary }
+    ]"
     :disabled="disable ? loading : false"
   >
-    <UiLoading v-if="loading" />
+    <UiLoading v-if="loading" :fill-white="primary" />
     <slot v-else />
   </button>
 </template>
@@ -31,7 +38,7 @@ defineProps({
   height: 46px;
   font-size: 18px;
 
-  &.button--submit {
+  &.button--primary {
     color: white;
     background-color: var(--primary-color);
     border: 1px solid var(--primary-color);

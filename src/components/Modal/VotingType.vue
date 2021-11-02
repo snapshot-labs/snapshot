@@ -18,7 +18,8 @@ const types = [
   'approval',
   'quadratic',
   'ranked-choice',
-  'weighted'
+  'weighted',
+  'basic'
 ];
 
 function select(id) {

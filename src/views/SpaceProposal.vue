@@ -27,6 +27,8 @@ const { send, clientLoading } = useClient();
 const { getExplore } = useApp();
 const notify = inject('notify');
 
+const id = route.params.id;
+
 const modalOpen = ref(false);
 const selectedChoices = ref(null);
 const loading = ref(true);
@@ -76,7 +78,7 @@ function clickVote() {
 }
 
 async function loadProposal() {
-  proposalObj.value = await getProposal(route.params.id);
+  proposalObj.value = await getProposal(id);
   proposal.value = proposalObj.value.proposal;
   // Redirect to proposal spaceId if it doesn't match route key
   if (
