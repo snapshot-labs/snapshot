@@ -63,8 +63,8 @@
   "seeInExplorer": "এক্সপ্লোরার দেখুন",
   "learnMore": "আরও শিখুন",
   "logout": "লগ আউট",
-  "walletNotice": "ওয়ালেট সমর্থিত নয়",
-  "gnosisSafeWalletNotice": "আপনি জ্নোসিস সেফ ওয়ালেটটি ব্যবহার করার চেষ্টা করছেন যা স্ন্যাপশোতে বার্তাগুলি সাইন করা সমর্থন করে না.",
+  "walletNotice": "Wallet notice",
+  "gnosisSafeWalletNotice": "Gnosis Safe wallet doesn't support signing messages. You can delegate your voting power to a wallet of your choice on our delegation page.",
   "continue": "চালিয়ে যান",
   "add": "যোগ করুন",
   "edit": "সম্পাদনা করুন",
@@ -116,6 +116,7 @@
   "duplicateProposal": "Duplicate proposal",
   "joinedSpaces": "Joined spaces",
   "joinSpaces": "Join spaces",
+  "delegateVotingPower": "Go to delegation page",
   "errors": {
     "required": "ফিল্ড প্রয়োজন হয়",
     "minLength": "সর্বনিম্ন দৈর্ঘ্য {0}",
