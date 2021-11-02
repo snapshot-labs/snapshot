@@ -219,7 +219,7 @@
   },
   "setup": {
     "example": "misalnya yam.eth",
-    "useExistingEns": "Gunakan nama ENS yang ada untuk membuat ruang Anda.",
+    "useExistingEns": "Gunakan nama ENS yang sudah tersedia untuk membuat ruang Anda.",
     "createASpace": "Buat sebuah ruang"
   },
   "notify": {
@@ -257,7 +257,7 @@
       "approval": "Setiap pemilih dapat memilih sejumlah pilihan.",
       "quadratic": "Setiap pemilih dapat menyebarkan kekuatan suara di sejumlah pilihan. Hasil dihitung secara kuadrat.",
       "ranked-choice": "Setiap pemilih dapat memilih dan memberi peringkat ke sejumlah pilihan. Hasil dihitung dengan metode instant-runoff.",
-      "weighted": "Setiap pemilih dapat membagi hak suara di sejumlah pilihan.",
+      "weighted": "Setiap pemilih dapat menyebarkan hak suara di sejumlah pilihan.",
       "basic": "Voting pilihan tunggal dengan tiga pilihan: Untuk, Menentang atau Abstain"
     },
     "choices": {
@@ -306,8 +306,8 @@
       "setOutcome": "Tetapkan hasil",
       "changeOutcome": "Ubah hasil",
       "executeTxs": "Jalankan transaksi batch {0} dari {1}",
-      "executed": "Semua transaksi telah dieksekusi",
-      "error": "Ada yang salah",
+      "executed": "Semua transaksi telah dijalankan",
+      "error": "Terjadi suatu kesalahan",
       "connectWallet": "Hubungkan dompet untuk melihat detail eksekusi",
       "switchChain": "Alihkan dompet Anda ke {0} untuk meminta eksekusi",
       "question": "Apaka proposal ini lolos dan sesuai dengan",
