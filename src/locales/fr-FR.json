@@ -63,8 +63,8 @@
   "seeInExplorer": "Voir sur l'explorateur",
   "learnMore": "En savoir plus",
   "logout": "Se déconnecter",
-  "walletNotice": "Wallet non pris en charge",
-  "gnosisSafeWalletNotice": "Vous essayez d'utiliser le wallet Gnosis Safe, qui ne prend pas en charge la signature de messages sur Snapshot.",
+  "walletNotice": "Wallet notice",
+  "gnosisSafeWalletNotice": "Gnosis Safe wallet doesn't support signing messages. You can delegate your voting power to a wallet of your choice on our delegation page.",
   "continue": "Continuer",
   "add": "Ajouter",
   "edit": "Éditer",
@@ -116,6 +116,7 @@
   "duplicateProposal": "Dupliquer la proposition",
   "joinedSpaces": "Espaces rejoints",
   "joinSpaces": "Rejoindre un espace",
+  "delegateVotingPower": "Go to delegation page",
   "errors": {
     "required": "Le champ est requis",
     "minLength": "Longueur minimale de {0}",
