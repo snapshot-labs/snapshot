@@ -63,8 +63,8 @@
   "seeInExplorer": "Ver no Explorer",
   "learnMore": "Saber mais",
   "logout": "Terminar sessão",
-  "walletNotice": "Carteira não suportada",
-  "gnosisSafeWalletNotice": "Você está tentando usar a carteira Gnosis Seguro, que não suporta mensagens de assinatura no Snapshot.",
+  "walletNotice": "Wallet notice",
+  "gnosisSafeWalletNotice": "Gnosis Safe wallet doesn't support signing messages. You can delegate your voting power to a wallet of your choice on our delegation page.",
   "continue": "Continuar",
   "add": "Adicionar",
   "edit": "Editar",
@@ -116,6 +116,7 @@
   "duplicateProposal": "Duplicar proposta",
   "joinedSpaces": "Juntou espaços",
   "joinSpaces": "Juntar-se aos espaços",
+  "delegateVotingPower": "Go to delegation page",
   "errors": {
     "required": "O campo é obrigatório",
     "minLength": "O comprimento mínimo é {0}",
