@@ -20,6 +20,8 @@
     "@ethersproject/strings": "^5.4.0",
     "@ethersproject/units": "^5.4.0",
     "@ethersproject/wallet": "^5.4.0",
+    "@gnosis.pm/safe-apps-provider": "^0.8.0",
+    "@gnosis.pm/safe-apps-sdk": "^4.3.0",
     "@popperjs/core": "^2.8.3",
     "@portis/web3": "^4.0.5",
     "@pusher/push-notifications-web": "^1.1.0",
