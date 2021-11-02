@@ -63,8 +63,8 @@
   "seeInExplorer": "エクスプローラで閲覧する",
   "learnMore": "もっと詳しく知る",
   "logout": "ログアウト",
-  "walletNotice": "Wallet not supported",
-  "gnosisSafeWalletNotice": "スナップショットでの署名メッセージをサポートしていないGnosisセーフウォレットを使用しようとしています。",
+  "walletNotice": "Wallet notice",
+  "gnosisSafeWalletNotice": "Gnosis Safe wallet doesn't support signing messages. You can delegate your voting power to a wallet of your choice on our delegation page.",
   "continue": "続ける",
   "add": "追加",
   "edit": "編集",
@@ -116,6 +116,7 @@
   "duplicateProposal": "提案を複製する",
   "joinedSpaces": "Joined spaces",
   "joinSpaces": "スペースに入る",
+  "delegateVotingPower": "Go to delegation page",
   "errors": {
     "required": "フィールドが埋まってません",
     "minLength": "最小文字数は {0} です",
