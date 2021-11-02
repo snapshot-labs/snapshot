@@ -61,8 +61,6 @@
   "seeInExplorer": "Se på explorer",
   "learnMore": "Få mere at vide",
   "logout": "Log ud",
-  "walletNotice": "Tegnebog understøttes ikke",
-  "gnosisSafeWalletNotice": "Du forsøger at bruge Gnosis Safe wallet, som ikke understøtter signering af beskeder på Snapshot.",
   "continue": "Forsæt",
   "add": "Tilføje",
   "edit": "Edit",

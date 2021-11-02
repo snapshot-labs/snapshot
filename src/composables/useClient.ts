@@ -14,41 +14,42 @@ export function useClient() {
 
   const loading = ref(false);
 
+  const connector = computed(() => auth.provider.value?.connectorName);
+
   const usePersonalSign = computed(() => {
-    const connector = auth.provider.value?.connectorName;
     return (
-      connector === 'walletlink' ||
-      connector === 'walletconnect' ||
-      connector === 'portis' ||
+      connector.value === 'walletlink' ||
+      connector.value === 'walletconnect' ||
+      connector.value === 'portis' ||
+      connector.value === 'gnosis' ||
       web3.value.isTrezor
     );
   });
 
+  const isGnosisSafe = computed(
+    () =>
+      web3.value?.walletConnectType === 'Gnosis Safe Multisig' ||
+      connector.value === 'gnosis'
+  );
+
   async function send(space, type, payload) {
     loading.value = true;
-    let result;
     try {
+      if (isGnosisSafe.value)
+        throw 'Error: Signing messages with Gnosis Safe is currently not supported';
       if (usePersonalSign.value) {
         if (payload.proposal) payload.proposal = payload.proposal.id;
 
-        const isSafe = web3.value?.walletConnectType === 'Gnosis Safe Multisig';
-        const fn = isSafe
-          ? client.sign.bind(client)
-          : client.broadcast.bind(client);
-
-        result = await fn(
+        return client.broadcast(
           auth.web3,
           web3.value.account,
           space.id,
           type,
           payload
         );
-      } else {
-        result = await sendEIP712(space, type, payload);
       }
-      return result;
+      return sendEIP712(space, type, payload);
     } catch (e: any) {
-      console.log(e);
       const errorMessage =
         e && e.error_description
           ? `Oops, ${e.error_description}`
@@ -100,5 +101,5 @@ export function useClient() {
     }
   }
 
-  return { send, clientLoading: computed(() => loading.value) };
+  return { send, clientLoading: computed(() => loading.value), isGnosisSafe };
 }
