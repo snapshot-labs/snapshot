@@ -63,8 +63,8 @@
   "seeInExplorer": "Просмотр в обозревателе блоков",
   "learnMore": "Подробнее",
   "logout": "Выход",
-  "walletNotice": "Кошелек не поддерживается",
-  "gnosisSafeWalletNotice": "Вы пытаетесь использовать безопасный кошелек Gnosis, который не поддерживает подпись сообщений в Snapshot.",
+  "walletNotice": "Wallet notice",
+  "gnosisSafeWalletNotice": "Gnosis Safe wallet doesn't support signing messages. You can delegate your voting power to a wallet of your choice on our delegation page.",
   "continue": "Продолжение",
   "add": "Добавить",
   "edit": "Редактировать",
@@ -116,6 +116,7 @@
   "duplicateProposal": "Повторяющееся предложение",
   "joinedSpaces": "Вступившие сообщества",
   "joinSpaces": "Вступить в сообщества",
+  "delegateVotingPower": "Go to delegation page",
   "errors": {
     "required": "Обязательное поле",
     "minLength": "Минимальная длина {0}",
