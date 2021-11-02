@@ -63,8 +63,8 @@
   "seeInExplorer": "شاهد على المستكشف",
   "learnMore": "لمعرفة المزيد",
   "logout": "تسجيل خروج",
-  "walletNotice": "المحفظة غير مدعومة",
-  "gnosisSafeWalletNotice": "أنت تحاول استخدام محفظة Gnosis الآمنة، التي لا تدعم توقيع الرسائل على Snapshot.",
+  "walletNotice": "Wallet notice",
+  "gnosisSafeWalletNotice": "Gnosis Safe wallet doesn't support signing messages. You can delegate your voting power to a wallet of your choice on our delegation page.",
   "continue": "متابعة",
   "add": "إضافة",
   "edit": "تعديل",
@@ -116,6 +116,7 @@
   "duplicateProposal": "اقتراح مكرر",
   "joinedSpaces": "المساحات المشترك فيها",
   "joinSpaces": "الانضمام إلى المساحات",
+  "delegateVotingPower": "Go to delegation page",
   "errors": {
     "required": "حقل مطلوب",
     "minLength": "الحد الادنى لعدد الاحرف {0}",
