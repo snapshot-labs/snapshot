@@ -63,8 +63,8 @@
   "seeInExplorer": "एक्सप्लोरर वरती बघा",
   "learnMore": "अधिक जाणून घ्या",
   "logout": "लॉग आउट",
-  "walletNotice": "वॉलेट सपोरटेड नाही",
-  "gnosisSafeWalletNotice": "आपण जनोसीस सेफ वॉलेट वापरण्याचा प्रयत्न करीत आहात, जे स्नॅपशॉटवर संदेश साइन इन करण्यास समर्थन देत नाही.",
+  "walletNotice": "Wallet notice",
+  "gnosisSafeWalletNotice": "Gnosis Safe wallet doesn't support signing messages. You can delegate your voting power to a wallet of your choice on our delegation page.",
   "continue": "सुरू ठेवा",
   "add": "जोडा",
   "edit": "एडिट करा",
@@ -116,6 +116,7 @@
   "duplicateProposal": "Duplicate proposal",
   "joinedSpaces": "Joined spaces",
   "joinSpaces": "Join spaces",
+  "delegateVotingPower": "Go to delegation page",
   "errors": {
     "required": "फील्ड आवश्यक आहे",
     "minLength": "किमान लांबी {0}",
