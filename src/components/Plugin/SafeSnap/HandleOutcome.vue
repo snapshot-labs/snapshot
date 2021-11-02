@@ -156,7 +156,7 @@
 import Plugin from '@/../snapshot-plugins/src/plugins/safeSnap';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
-import { sleep } from '@/helpers/utils';
+import { sleep } from '@snapshot-labs/snapshot.js/src/utils';
 import { BigNumber } from '@ethersproject/bignumber';
 import { formatBatchTransaction } from '@/helpers/abi/utils';
 import { formatUnits } from '@ethersproject/units';

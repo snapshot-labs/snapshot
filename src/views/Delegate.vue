@@ -11,13 +11,13 @@ import {
   getScores
 } from '@snapshot-labs/snapshot.js/src/utils';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
+import { sleep } from '@snapshot-labs/snapshot.js/src/utils';
 import {
   getDelegates,
   getDelegators,
   getDelegatesBySpace,
   contractAddress
 } from '@/helpers/delegation';
-import { sleep } from '@/helpers/utils';
 import { useApp } from '@/composables/useApp';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useTxStatus } from '@/composables/useTxStatus';
