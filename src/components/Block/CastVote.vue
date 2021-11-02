@@ -30,7 +30,7 @@ function emitChoice(c) {
   <Block class="mb-4" :title="$t('proposal.castVote')">
     <div class="mb-3">
       <VotingSingleChoice
-        v-if="proposal.type === 'single-choice'"
+        v-if="proposal.type === 'single-choice' || proposal.type === 'basic'"
         :proposal="proposal"
         @selectChoice="emitChoice"
       />
@@ -53,7 +53,8 @@ function emitChoice(c) {
     <UiButton
       :disabled="web3.authLoading || selectedChoices < 1"
       @click="$emit('clickVote')"
-      class="block w-full button--submit"
+      class="block w-full"
+      primary
     >
       {{ $t('proposal.vote') }}
     </UiButton>

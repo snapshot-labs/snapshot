@@ -93,7 +93,7 @@ export default {
         </UiButton>
       </div>
     </div>
-    <UiButton @click="handleSubmit" class="button--submit w-full">
+    <UiButton @click="handleSubmit" class="w-full" primary>
       {{ choice === proposal.choices.length ? $t('confirm') : $t('next') }}
     </UiButton>
   </form>

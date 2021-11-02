@@ -2,8 +2,11 @@
 import { computed } from 'vue';
 import { useFollowSpace } from '@/composables/useFollowSpace';
 import { useTerms } from '@/composables/useTerms';
+import { useClient } from '@/composables/useClient';
 
 const props = defineProps({ space: Object });
+
+const { isGnosisSafe } = useClient();
 
 const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(props.space.id);
 
@@ -32,7 +35,7 @@ const canFollow = computed(() => {
     @mouseenter="hoverJoin = space.id"
     @mouseleave="hoverJoin = ''"
     :loading="loadingFollow === space.id"
-    :disable="false"
+    :disabled="isGnosisSafe"
     style="width: 120px"
     class="mb-4"
   >
