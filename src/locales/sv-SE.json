@@ -63,8 +63,8 @@
   "seeInExplorer": "Se på explorer",
   "learnMore": "Läs mer",
   "logout": "Logga ut",
-  "walletNotice": "Plånbok stöds inte",
-  "gnosisSafeWalletNotice": "Du försöker använda Gnosis Safe plånbok, som inte stöder signering meddelanden på Snapshot.",
+  "walletNotice": "Wallet notice",
+  "gnosisSafeWalletNotice": "Gnosis Safe wallet doesn't support signing messages. You can delegate your voting power to a wallet of your choice on our delegation page.",
   "continue": "Fortsätt",
   "add": "Lägg till",
   "edit": "Redigera",
@@ -116,6 +116,7 @@
   "duplicateProposal": "Duplicate proposal",
   "joinedSpaces": "Joined spaces",
   "joinSpaces": "Join spaces",
+  "delegateVotingPower": "Go to delegation page",
   "errors": {
     "required": "Fältet är obligatoriskt",
     "minLength": "Minsta längd är {0}",
