@@ -14,11 +14,15 @@ const state = reactive({
   network: networks[defaultNetwork],
   authLoading: false,
   profile: null,
-  walletConnectType: null
+  walletConnectType: null,
+  isTrezor: false
 });
 
 export function useWeb3() {
   async function login(connector = 'injected') {
+    if (connector === 'trezor') state.isTrezor = true;
+    else state.isTrezor = false;
+
     auth = getInstance();
     state.authLoading = true;
     await auth.login(connector);
@@ -72,8 +76,7 @@ export function useWeb3() {
       const profiles = await getProfiles([acc]);
 
       state.account = acc;
-      state.walletConnectType =
-        auth.provider.value?.wc?.peerMeta?.name || 'unknown';
+      state.walletConnectType = auth.provider.value?.wc?.peerMeta?.name || null;
       state.profile = profiles[acc];
     } catch (e) {
       state.account = '';

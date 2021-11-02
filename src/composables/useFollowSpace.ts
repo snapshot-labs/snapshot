@@ -5,7 +5,7 @@ import { useApolloQuery } from '@/composables/useApolloQuery';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { FOLLOWS_QUERY } from '@/helpers/queries';
 import { useAliasAction } from '@/composables/useAliasAction';
-import client from '@/helpers/EIP712';
+import client from '@/helpers/clientEIP712';
 import { useSpaceSubscription } from './useSpaceSubscription';
 
 const following = ref([]);
@@ -79,7 +79,7 @@ export function useFollowSpace(spaceObj: any = {}) {
       } else {
         if (isFollowing.value) {
           // Also unsubscribe to the notifications if the user leaves the space.
-          if (isSubscribed) {
+          if (isSubscribed.value) {
             await toggleSubscription();
           }
           await client.unfollow(aliasWallet.value, aliasWallet.value.address, {

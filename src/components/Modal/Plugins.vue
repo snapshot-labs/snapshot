@@ -92,7 +92,8 @@ watch(
         <UiButton
           @click="handleSubmit"
           :disabled="!isValid"
-          class="button--submit w-full"
+          class="w-full"
+          primary
         >
           {{ plugin.name ? $t('save') : $t('add') }}
         </UiButton>
