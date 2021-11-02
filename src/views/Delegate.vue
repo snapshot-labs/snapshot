@@ -137,12 +137,10 @@ async function getDelegatesWithScore() {
 
     const delegatesAddresses = uniqueDelegators.map(d => d.delegate);
 
-    const provider = getProvider(space.value.network);
     const scores = await getScores(
       space.value.id,
       delegationStrategy,
       space.value.network,
-      provider,
       delegatesAddresses,
       'latest'
     );
