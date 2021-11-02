@@ -63,8 +63,8 @@
   "seeInExplorer": "Katso Explorer",
   "learnMore": "Lue lisää",
   "logout": "Kirjaudu ulos",
-  "walletNotice": "Lompakkoa ei tueta",
-  "gnosisSafeWalletNotice": "Yrität käyttää Gnosis Safe -lompakkoa, joka ei tue viestien allekirjoittamista Snapshotissa.",
+  "walletNotice": "Wallet notice",
+  "gnosisSafeWalletNotice": "Gnosis Safe wallet doesn't support signing messages. You can delegate your voting power to a wallet of your choice on our delegation page.",
   "continue": "Jatka",
   "add": "Lisää",
   "edit": "Muokkaa",
@@ -116,6 +116,7 @@
   "duplicateProposal": "Ehdotuksen kaksoiskappale",
   "joinedSpaces": "Joined spaces",
   "joinSpaces": "Join spaces",
+  "delegateVotingPower": "Go to delegation page",
   "errors": {
     "required": "Pakollinen kenttä",
     "minLength": "Pienin pituus on {0}",
