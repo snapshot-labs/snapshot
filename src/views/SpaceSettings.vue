@@ -665,8 +665,8 @@ watchEffect(async () => {
     <ModalVotingType
       :open="modalVotingTypeOpen"
       @close="modalVotingTypeOpen = false"
-      v-model="form.voting.type"
-      :selected="form.voting?.type"
+      v-model:selected="form.voting.type"
+      allowAny
     />
   </teleport>
 </template>

@@ -69,7 +69,7 @@ export function useSpaceSubscription(spaceId: any) {
   const configurePush = async () => {
     try {
       const isNotificationsAllowed = await checkBrowserNotification();
-      if (isNotificationsAllowed) {
+      if (isNotificationsAllowed && beams) {
         await beams.start();
         await beams.addDeviceInterest(web3Account.value);
         await client.subscribe(aliasWallet.value, aliasWallet.value.address, {
