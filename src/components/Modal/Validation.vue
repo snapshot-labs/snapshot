@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed, toRefs, watch } from 'vue';
 import { useSearchFilters } from '@/composables/useSearchFilters';
-import { clone } from '@/helpers/utils';
+import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 
 const defaultParams = {};
 
@@ -86,7 +86,8 @@ watch(open, () => {
         <UiButton
           @click="handleSubmit"
           :disabled="!isValid"
-          class="button--submit w-full"
+          class="w-full"
+          primary
         >
           {{ validation.name ? $t('save') : $t('add') }}
         </UiButton>

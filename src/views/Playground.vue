@@ -78,7 +78,6 @@ async function loadScores() {
       '',
       [strategyParams],
       form.value.network.toString(),
-      provider,
       form.value.addresses,
       parseInt(form.value.snapshot)
     );
@@ -212,8 +211,9 @@ onMounted(async () => {
           @click="loadScores"
           :loading="loading"
           :disables="loading"
-          class="w-full button--submit"
+          class="w-full"
           :style="[loading ? '' : 'padding-top: 0.2rem']"
+          primary
         >
           <Icon name="play" size="18" />
         </UiButton>

@@ -6,12 +6,12 @@ import { useI18n } from 'vue-i18n';
 import dayjs from 'dayjs';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import { getBlockNumber } from '@snapshot-labs/snapshot.js/src/utils/web3';
+import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { useModal } from '@/composables/useModal';
 import { useTerms } from '@/composables/useTerms';
 import { PROPOSAL_QUERY } from '@/helpers/queries';
 import validations from '@snapshot-labs/snapshot.js/src/validations';
-import { clone } from '@/helpers/utils';
 import { useDomain } from '@/composables/useDomain';
 import { useApolloQuery } from '@/composables/useApolloQuery';
 import { useWeb3 } from '@/composables/useWeb3';
@@ -115,6 +115,8 @@ const isValid = computed(() => {
   );
 });
 
+const disableChoiceEdit = computed(() => form.value.type === 'basic');
+
 function addChoice(num) {
   for (let i = 1; i <= num; i++) {
     counter.value++;
@@ -217,6 +219,16 @@ watchEffect(async () => {
   }
   if (props.space.voting?.type) form.value.type = props.space.voting.type;
 });
+
+watchEffect(() => {
+  if (form.value.type === 'basic') {
+    choices.value = [
+      { key: 1, text: t('voting.choices.for') },
+      { key: 2, text: t('voting.choices.against') },
+      { key: 3, text: t('voting.choices.abstain') }
+    ];
+  }
+});
 </script>
 
 <template>
@@ -282,6 +294,7 @@ watchEffect(async () => {
           <draggable
             v-model="choices"
             :component-data="{ name: 'list' }"
+            :disabled="disableChoiceEdit"
             item-key="id"
           >
             <template #item="{ element, index }">
@@ -289,11 +302,15 @@ watchEffect(async () => {
                 v-model="element.text"
                 maxlength="32"
                 additionalInputClass="text-center"
-                ><template v-slot:label
-                  ><span class="text-skin-link">{{ index + 1 }}</span></template
-                >
-                <template v-slot:info
-                  ><span @click="removeChoice(index)">
+                :disabled="disableChoiceEdit"
+              >
+                <template v-slot:label>
+                  <span v-if="!disableChoiceEdit" class="text-skin-link">
+                    {{ index + 1 }}
+                  </span>
+                </template>
+                <template v-slot:info>
+                  <span v-if="!disableChoiceEdit" @click="removeChoice(index)">
                     <Icon name="close" size="12" />
                   </span>
                 </template>
@@ -301,7 +318,11 @@ watchEffect(async () => {
             </template>
           </draggable>
         </div>
-        <UiButton @click="addChoice(1)" class="block w-full">
+        <UiButton
+          v-if="!disableChoiceEdit"
+          @click="addChoice(1)"
+          class="block w-full"
+        >
           {{ $t('create.addChoice') }}
         </UiButton>
       </Block>
@@ -361,7 +382,8 @@ watchEffect(async () => {
           @click="clickSubmit"
           :disabled="!isValid"
           :loading="clientLoading || queryLoading"
-          class="block w-full button--submit"
+          class="block w-full"
+          primary
         >
           {{ $t('create.publish') }}
         </UiButton>
@@ -393,7 +415,7 @@ watchEffect(async () => {
     <ModalVotingType
       :open="modalVotingTypeOpen"
       @close="modalVotingTypeOpen = false"
-      v-model="form.type"
+      v-model:selected="form.type"
     />
   </teleport>
 </template>

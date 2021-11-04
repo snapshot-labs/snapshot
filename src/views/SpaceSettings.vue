@@ -2,12 +2,14 @@
 import { computed, ref, watchEffect, inject } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { getAddress } from '@ethersproject/address';
-import { validateSchema } from '@snapshot-labs/snapshot.js/src/utils';
+import {
+  validateSchema,
+  getSpaceUri,
+  clone
+} from '@snapshot-labs/snapshot.js/src/utils';
 import schemas from '@snapshot-labs/snapshot.js/src/schemas';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { useSearchFilters } from '@/composables/useSearchFilters';
-import { clone } from '@/helpers/utils';
-import { getSpaceUri } from '@/helpers/ens';
 import defaults from '@/locales/default';
 import { useCopy } from '@/composables/useCopy';
 import { useWeb3 } from '@/composables/useWeb3';
@@ -228,6 +230,7 @@ function formatSpace(spaceRaw) {
   space.voting.delay = space.voting?.delay || undefined;
   space.voting.period = space.voting?.period || undefined;
   space.voting.type = space.voting?.type || undefined;
+  space.voting.quorum = space.voting?.quorum || undefined;
   return space;
 }
 
@@ -291,8 +294,8 @@ watchEffect(async () => {
             class="mb-2 block"
           >
             <UiButton
-              :class="{ 'button--submit': !isOwner && !isAdmin }"
               class="button-outline w-full"
+              :primary="!isOwner && !isAdmin"
             >
               {{
                 isOwner || isAdmin
@@ -469,6 +472,7 @@ watchEffect(async () => {
               <a @click="handleRemoveStrategy(i)" class="absolute p-4 right-0">
                 <Icon name="close" size="12" />
               </a>
+
               <a
                 @click="handleEditStrategy(i)"
                 class="p-4 block border rounded-md"
@@ -574,6 +578,15 @@ watchEffect(async () => {
                 </div>
               </template>
             </UiInput>
+            <UiInput
+              v-model="form.voting.quorum"
+              :number="true"
+              placeholder="1000"
+            >
+              <template v-slot:label>
+                {{ $t('settings.quorum') }}
+              </template>
+            </UiInput>
           </Block>
           <Block :title="$t('plugins')">
             <div v-if="form?.plugins">
@@ -614,7 +627,8 @@ watchEffect(async () => {
           :disabled="uploadLoading"
           @click="handleSubmit"
           :loading="clientLoading"
-          class="block w-full button--submit"
+          class="block w-full"
+          primary
         >
           {{ $t('save') }}
         </UiButton>
@@ -653,8 +667,8 @@ watchEffect(async () => {
     <ModalVotingType
       :open="modalVotingTypeOpen"
       @close="modalVotingTypeOpen = false"
-      v-model="form.voting.type"
-      :selected="form.voting?.type"
+      v-model:selected="form.voting.type"
+      allowAny
     />
   </teleport>
 </template>

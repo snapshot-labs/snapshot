@@ -172,9 +172,12 @@ watch([proposals, web3Account], () => {
       <NoResults v-else-if="proposals.length < 1" :block="true" />
 
       <div v-else>
-        <Block :slim="true" v-for="(proposal, i) in proposals" :key="i">
-          <TimelineProposal :proposal="proposal" :profiles="profiles" />
-        </Block>
+        <TimelineProposal
+          v-for="(proposal, i) in proposals"
+          :key="i"
+          :proposal="proposal"
+          :profiles="profiles"
+        />
       </div>
       <div
         style="height: 10px; width: 10px; position: absolute"

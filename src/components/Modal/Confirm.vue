@@ -109,7 +109,8 @@ async function handleSubmit() {
           :loading="clientLoading"
           @click="handleSubmit"
           type="submit"
-          class="w-full button--submit"
+          class="w-full"
+          primary
         >
           {{ $t('proposal.vote') }}
         </UiButton>
