@@ -18,7 +18,6 @@ export function useClient() {
     const connector = auth.provider.value?.connectorName;
     return (
       connector === 'walletlink' ||
-      connector === 'walletconnect' ||
       connector === 'portis' ||
       web3.value.isTrezor
     );
