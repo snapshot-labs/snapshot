@@ -190,10 +190,10 @@ watch(
 
 <template>
   <Block :title="$t('charts.charts')">
-    <div class="py-3 flex flex-row">
+    <div class="flex flex-row justify-between -m-4 border-b">
       <button
         v-if="space.plugins?.charts.total_votes_per_day.enabled"
-        class="block px-4 py-2 sidenav-item"
+        class="block px-4 py-2 sidenav-item w-[150px]"
         :class="currentTab === 'total_votes_per_day' && 'charts-selected-tab'"
         @click="currentTab = 'total_votes_per_day'"
       >
@@ -201,7 +201,7 @@ watch(
       </button>
       <button
         v-if="space.plugins?.charts.voting_power_per_address.enabled"
-        class="block px-4 py-2 sidenav-item"
+        class="block px-4 py-2 sidenav-item w-[150px]"
         :class="currentTab === 'share_of_voting_power' && 'charts-selected-tab'"
         @click="currentTab = 'share_of_voting_power'"
       >
@@ -209,14 +209,14 @@ watch(
       </button>
       <button
         v-if="space.plugins?.charts.voting_power_per_day.enabled"
-        class="block px-4 py-2 sidenav-item"
+        class="block px-4 py-2 sidenav-item w-[150px]"
         :class="currentTab === 'voting_power_per_day' && 'charts-selected-tab'"
         @click="currentTab = 'voting_power_per_day'"
       >
         {{ $t('charts.votingPowerPerDay') }}
       </button>
     </div>
-    <div v-if="votes.length > 0">
+    <div v-if="votes.length > 0" class="mt-6">
       <div v-if="space.plugins?.charts.total_votes_per_day.enabled && currentTab === 'total_votes_per_day'">
         <canvas ref="totalVotesPerDayChart" />
       </div>
@@ -227,7 +227,7 @@ watch(
         <canvas ref="votingPowerPerDay" />
       </div>
     </div>
-    <div v-if="votes.length === 0">
+    <div v-if="votes.length === 0" class="mt-6">
       {{ $t('charts.noVotesYet') }}
     </div>
   </Block>
