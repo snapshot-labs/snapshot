@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, onMounted, watch, watchPostEffect } from 'vue';
+import { ref, computed, onMounted, watch } from 'vue';
 
 const props = defineProps({
   space: Object,
