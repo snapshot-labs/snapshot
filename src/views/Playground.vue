@@ -78,7 +78,6 @@ async function loadScores() {
       '',
       [strategyParams],
       form.value.network.toString(),
-      provider,
       form.value.addresses,
       parseInt(form.value.snapshot)
     );

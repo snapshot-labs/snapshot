@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed, watch, toRefs } from 'vue';
 import { useSearchFilters } from '@/composables/useSearchFilters';
-import { clone } from '@/helpers/utils';
+import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 
 const props = defineProps({ open: Boolean, plugin: Object });
 const emit = defineEmits(['add', 'close']);
