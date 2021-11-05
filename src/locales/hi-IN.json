@@ -57,7 +57,7 @@
   "receipt": "रसीद",
   "relayer": "रिलेयर",
   "verifyOnMycrypto": "माइक्रिप्टो पर रसीद सत्यापित करें",
-  "verifyOnSignatorio": "Signator.io पर सत्यापित करें",
+  "verifyOnSignatorio": "Verify on Signator.io",
   "isCore": "कोर",
   "notificationsBlocked": "Your browser is blocking notifications",
   "seeInExplorer": "एक्सप्लोरर पर देखें",
@@ -88,7 +88,7 @@
   "marketSymbol": "{0} मारकेट",
   "twoChoicesRequired": "इस प्लगइन के लिए २ विकल्प जरुरी है",
   "noResultsFound": "कोई परिणाम नहीं मिल पा रहा है",
-  "createFirstProposal": "आइए आपका पहला प्रस्ताव बनाएं |",
+  "createFirstProposal": "Let's create your first proposal",
   "noSpacesJoined": "ओह, आप अभी तक किसी जगह से नही जुडे।",
   "addFavorites": "पसंदीदा में जोड़ें",
   "createdBy": "तक {0}",
@@ -125,7 +125,7 @@
     "minItems": "न्यूनतम {0} आइटम्स जरुरी है",
     "minStrategy": "कम से कम एक स्ट्रेटेजी की आवश्यकता है",
     "format": "अवैध फॉर्मेट",
-    "type": "अमान्य प्रकार |"
+    "type": "Invalid type"
   },
   "create": {
     "question": "प्रश्न",
@@ -157,7 +157,7 @@
     "allSpaces": "सब जगहों के लिए",
     "delegated": "आपको दिए गए डेलीगेशन",
     "pendingTransaction": "कोई लंबित लेनदेन नहीं | 1 लंबित लेनदेन | {count} लंबित लेनदेन",
-    "topDelegates": "शीर्ष प्रतिनिधि"
+    "topDelegates": "Top delegates"
   },
   "proposal": {
     "castVote": "अपना वोट दे",
@@ -170,7 +170,7 @@
     "header": "प्रपोजल्स",
     "new": "नए प्रपोजल्स",
     "noProposals": "यहाँ अभी प्रोपोज़ल्स नहीं है",
-    "createProposal": "प्रस्ताव बनाएं",
+    "createProposal": "Create proposal",
     "states": {
       "all": "सभी",
       "core": "कोर",
@@ -211,12 +211,12 @@
     "selectValidation": "मान्यता का चयन करें",
     "validationParameters": "इन मापदंडों को मान्य करें",
     "warningTextRecord": "आपको ENS डोमेन पर एक टेक्स्ट रिकॉर्ड सेट करना होगा।",
-    "votingDelay": "मतदान में देरी",
-    "votingPeriod": "मतदान की अवधि",
-    "voting": "मतदान",
-    "quorum": "गणपूर्ति",
-    "type": "प्रकार",
-    "anyType": "कोई भी"
+    "votingDelay": "Voting delay",
+    "votingPeriod": "Voting period",
+    "voting": "Voting",
+    "quorum": "Quorum",
+    "type": "Type",
+    "anyType": "Any"
   },
   "setup": {
     "example": "उदाहरण. yam.eth",
@@ -228,11 +228,11 @@
     "copied": "कॉपी किया गया!",
     "proposalDeleted": "प्रपोजल मिटा दिया गया",
     "somethingWentWrong": "ओह! कुछ गलत हो गया है",
-    "saved": "सुरक्षित!",
-    "delegationSuccess": "प्रतिनिधिमंडल सफल",
-    "delegationRemoved": "प्रतिनिधिमंडल हटाया गया",
-    "proposalCreated": "प्रस्ताव बनाया",
-    "voteSuccessful": "आपका वोट सफल है!"
+    "saved": "Saved!",
+    "delegationSuccess": "Delegation successful",
+    "delegationRemoved": "Delegation removed",
+    "proposalCreated": "Proposal created",
+    "voteSuccessful": "Your vote is in!"
   },
   "explore": {
     "createStrategy": "स्ट्रेटेजी बनाये",
@@ -252,19 +252,19 @@
     "quadratic": "त्रैमासिक मतदान",
     "ranked-choice": "रैंकिंग विकल्प मतदान",
     "weighted": "भारित मतदान",
-    "basic": "बुनियादी मतदान",
+    "basic": "Basic voting",
     "description": {
       "single-choice": "प्रत्येक मतदाता केवल एक विकल्प का चयन कर सकता है",
       "approval": "प्रत्येक मतदाता किसी भी संख्या में विकल्पों का चयन कर सकता है",
       "quadratic": "प्रत्येक मतदाता किसी भी संख्या में विकल्पों में मतदान शक्ति का प्रसार कर सकता है। परिणामों की गणना त्रैमासिक रूप से की जाती है",
       "ranked-choice": "प्रत्येक मतदाता किसी भी विकल्प का चयन और रैंक कर सकता है। परिणामों की गणना तत्काल गणना पद्धति द्वारा की जाती है",
       "weighted": "प्रत्येक मतदाता किसी भी संख्या में विकल्पों में मतदान शक्ति का प्रसार कर सकता है",
-      "basic": "तीन विकल्पों के साथ सिंगल विकल्प वोटिंग: के लिये, के खिलाफ या दूर रहें"
+      "basic": "Single choice voting with three choices: For, Against or Abstain"
     },
     "choices": {
-      "for": "के लिये",
-      "against": "के खिलाफ",
-      "abstain": "दूर रहें"
+      "for": "For",
+      "against": "Against",
+      "abstain": "Abstain"
     }
   },
   "safeSnap": {
@@ -310,7 +310,7 @@
       "executed": "सभी लेनदेन निष्पादित किए गए हैं",
       "error": "कुछ गलत हो गया",
       "connectWallet": "निष्पादन विवरण देखने के लिए वॉलेट कनेक्ट करें",
-      "switchChain": "निष्पादन का अनुरोध करने के लिए अपने वॉलेट को {0} पर स्विच करें",
+      "switchChain": "Switch your wallet to {0} to request execution",
       "question": "क्या यह प्रस्ताव पारित हुआ और क्या यह पूरा करता है",
       "criteria": "स्वीकृति क्रिटेरिऑन?"
     }
@@ -319,10 +319,10 @@
     "no_poap_header": "इस प्रस्ताव के लिए अभी तक POAP सेटअप नहीं किया गया है :'(",
     "no_voted_header": "इस POAP को पाने के लिए वोट करें",
     "unclaimed_header": "दावा करें कि मैंने पीओएपी को वोट दिया है",
-    "claimed_header": "बधाई हो! POAP को आपके खाते में डाल दिया गया है |",
+    "claimed_header": "Congratulations! The POAP has been minted to your account",
     "loading_header": "POAP को आपके संग्रह में जोड़ा जा रहा है",
     "button_claim": "दावा करें",
-    "button_show": "संग्रह के चारों ओर देखो",
+    "button_show": "Browse collection",
     "success_claim": "आपका POAP आपके पते पर है",
     "error_claim": "टोकन बनाने में एक समस्या हुई"
   },
