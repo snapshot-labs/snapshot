@@ -1,5 +1,5 @@
 <script>
-import { clone } from '@/helpers/utils';
+import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import { useSafesnap } from '@/composables/useSafesnap';
 
 export default {

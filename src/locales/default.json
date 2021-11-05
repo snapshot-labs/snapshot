@@ -63,8 +63,8 @@
   "seeInExplorer": "See on explorer",
   "learnMore": "Learn more",
   "logout": "Log out",
-  "walletNotice": "Wallet not supported",
-  "gnosisSafeWalletNotice": "You are trying to use Gnosis Safe wallet, which doesn't support signing messages on Snapshot.",
+  "walletNotice": "Wallet notice",
+  "gnosisSafeWalletNotice": "Gnosis Safe wallet doesn't support signing messages. You can delegate your voting power to a wallet of your choice on our delegation page.",
   "continue": "Continue",
   "add": "Add",
   "edit": "Edit",
@@ -116,6 +116,7 @@
   "duplicateProposal": "Duplicate proposal",
   "joinedSpaces": "Joined spaces",
   "joinSpaces": "Join spaces",
+  "delegateVotingPower": "Go to delegation page",
   "errors": {
     "required": "Field is required",
     "minLength": "Minimum length is {0}",
