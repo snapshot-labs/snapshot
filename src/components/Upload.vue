@@ -12,6 +12,7 @@ async function handleFileChange(e) {
   const formData = new FormData();
   if (!['image/jpeg', 'image/jpg', 'image/png'].includes(file.type)) {
     console.log('File type not supported');
+    loading.value = false;
     return;
   }
   formData.append('file', file);
