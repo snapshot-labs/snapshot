@@ -24,7 +24,7 @@ watchEffect(() => {
           <UiAvatar
             :imgsrc="_getUrl(profile?.image)"
             :address="address"
-            size="16"
+            size="18"
             class="mr-2"
           />
           {{ username }}
