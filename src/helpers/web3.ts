@@ -34,7 +34,7 @@ export async function getTotalSupply(provider, address: string) {
     return res['result']['total_supply'];
   }
 
-  return '0';
+  throw new Error('cannot fetch total_supply');
 }
 
 export async function sendTransaction(
