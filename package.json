@@ -77,6 +77,10 @@
     "vite": "^2.6.0-beta.2",
     "walletlink": "^2.1.8"
   },
+  "resolutions": {
+    "ansi-regex" : "^5.0.1",
+    "axios": "^0.21.1"
+  },
   "license": "MIT",
   "repository": "snapshot-labs/snapshot"
 }
