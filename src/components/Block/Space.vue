@@ -41,13 +41,10 @@ const { isFollowing } = useFollowSpace(props.space);
 
 const notificationIcon = ref('notifications-off');
 
-watch(web3Account, () => {
+watchEffect(() => {
   if (subscriptions.value === undefined) {
     loadSubscriptions();
   }
-});
-
-watchEffect(() => {
   if (isSubscribed.value) {
     notificationIcon.value = 'notifications-on';
   } else notificationIcon.value = 'notifications-off';
