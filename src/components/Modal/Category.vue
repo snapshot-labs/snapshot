@@ -10,9 +10,17 @@ const props = defineProps({
 const emit = defineEmits(['update:modelValue', 'close']);
 
 const { open } = toRefs(props);
-const searchInput = ref('');
 
-const categories = ref(['Service', 'Social', 'Development']);
+const categories = ref([
+  'protocol',
+  'social',
+  'investment',
+  'grant',
+  'service',
+  'media',
+  'creator',
+  'collector'
+]);
 
 const checkedCategories = computed(() => props.modelValue);
 
@@ -22,12 +30,6 @@ watchEffect(() => {
     ? (selectedCategories.value = checkedCategories.value)
     : selectedCategories.value;
 });
-
-const filteredCategories = computed(() =>
-  categories.value.filter(el =>
-    el.toLowerCase().includes(searchInput.value.toLowerCase())
-  )
-);
 
 function hasCategory(category) {
   return checkedCategories.value
@@ -61,22 +63,23 @@ function handleSubmit() {
 <template>
   <UiModal :open="open" @close="handleSubmit">
     <template v-slot:header>
-      <h3>
-        {{ $t('settings.selectCategories') }}
-      </h3>
+      <div class="relative">
+        <h3>
+          {{ $t('settings.selectCategories') }}
+        </h3>
+        <div
+          v-if="!(categoriesCounter < 2)"
+          class="link-color absolute inset-x-0 -bottom-4"
+        >
+          {{ $t('errors.maxCategories') }}
+        </div>
+      </div>
     </template>
-    <Search
-      v-model="searchInput"
-      :placeholder="$t('searchPlaceholder')"
-      :modal="true"
-    />
-    <div
-      v-if="filteredCategories.length"
-      class="m-4 flex flex-col justify-between"
-    >
+
+    <div v-if="categories.length" class="m-4 flex flex-col justify-between">
       <Block
         @click="selectCategoriesHandler(category)"
-        v-for="(category, i) in filteredCategories"
+        v-for="(category, i) in categories"
         :key="i"
         :class="[
           {
@@ -95,10 +98,12 @@ function handleSubmit() {
           class="absolute top-2 right-2"
         />
       </Block>
-      <UiButton @click="handleSubmit">
-        {{ $t('add') }}
-      </UiButton>
     </div>
-    <NoResults class="mt-3" v-if="!filteredCategories.length" />
+    <template v-slot:footer>
+      <UiButton @click="handleSubmit">
+        {{ $t('confirm') }}
+      </UiButton>
+    </template>
+    <NoResults class="mt-3" v-if="!categories.length" />
   </UiModal>
 </template>

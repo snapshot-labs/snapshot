@@ -124,6 +124,7 @@
     "pattern": "Invalid character",
     "minItems": "Minimum {0} item(s) required",
     "minStrategy": "At least one strategy is required.",
+    "maxCategories": "No more than 2 categories are required.",
     "format": "Invalid format",
     "type": "Invalid type"
   },
