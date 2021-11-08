@@ -81,7 +81,7 @@ watch(open, () => (step.value = null));
             <UiAvatar
               :imgsrc="_getUrl(web3.profile?.image)"
               :address="web3.account"
-              size="16"
+              size="18"
               class="mr-2 -ml-1"
             />
             <span v-if="web3.profile.name" v-text="web3.profile.name" />
