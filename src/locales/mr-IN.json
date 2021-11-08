@@ -326,6 +326,13 @@
     "success_claim": "आपला पीओएपी आपल्या पत्त्यावर आहे",
     "error_claim": "टोकन मिंट करताना एक समस्या आली"
   },
+  "charts": {
+    "charts": "Charts",
+    "noVotesYet": "There are no votes to visualize yet.",
+    "totalVotesPerDay": "Total votes per day",
+    "shareOfVotingPower": "Share of voting power",
+    "votingPowerPerDay": "Voting power per day"
+  },
   "comment_box": {
     "title": "Comment box",
     "add": "Add your comment here",
