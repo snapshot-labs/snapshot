@@ -6,7 +6,7 @@ export default {
 
 <template>
   <Block class="transition-colors strategy">
-    <div class="flex items-baseline justify-between">
+    <div class="flex items-baseline">
       <h3 class="mt-0">{{ strategy.key }}</h3>
       <div class="ml-1 text-color">v{{ strategy.version }}</div>
     </div>
