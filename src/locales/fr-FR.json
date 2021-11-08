@@ -326,6 +326,13 @@
     "success_claim": "Votre POAP se trouve sur votre adresse",
     "error_claim": "Un problème est survenu lors de la création du jeton"
   },
+  "charts": {
+    "charts": "Charts",
+    "noVotesYet": "There are no votes to visualize yet.",
+    "totalVotesPerDay": "Total votes per day",
+    "shareOfVotingPower": "Share of voting power",
+    "votingPowerPerDay": "Voting power per day"
+  },
   "comment_box": {
     "title": "Boîte de commentaires",
     "add": "Ajoutez vos commentaires ici",
