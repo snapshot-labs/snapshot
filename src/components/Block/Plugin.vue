@@ -1,5 +1,5 @@
 <script setup>
-defineProps(['plugin']);
+defineProps(['plugin', 'selected']);
 
 function getLogoUrl(key) {
   return `https://raw.githubusercontent.com/snapshot-labs/snapshot-plugins/master/src/plugins/${key}/logo.png`;
@@ -7,7 +7,16 @@ function getLogoUrl(key) {
 </script>
 
 <template>
-  <Block>
+  <Block 
+    :class="[
+      'transition-colors relative plugin',
+      { 'plugin-active': selected }
+    ]"
+  >
+    <i
+      v-if="selected"
+      class="iconfont iconcheck1 absolute top-2 right-2 text-lg"
+    />
     <div class="flex items-center mb-1">
       <a
         :href="`https://github.com/snapshot-labs/snapshot-plugins/tree/master/src/plugins/${plugin.key}`"
@@ -22,7 +31,7 @@ function getLogoUrl(key) {
         />
         <h3 v-text="plugin.name" />
       </a>
-      <div class="ml-1">v{{ plugin.version }}</div>
+      <div class="ml-1 text-color">v{{ plugin.version }}</div>
     </div>
     <div class="text-color">
       <div>
@@ -39,3 +48,12 @@ function getLogoUrl(key) {
     </div>
   </Block>
 </template>
+
+<style scoped lang="scss">
+.plugin {
+  &:hover,
+  &.plugin-active {
+    border-color: var(--link-color);
+  }
+}
+</style>

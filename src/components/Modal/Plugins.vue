@@ -3,7 +3,14 @@ import { ref, computed, watch, toRefs } from 'vue';
 import { useSearchFilters } from '@/composables/useSearchFilters';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 
-const props = defineProps({ open: Boolean, plugin: Object });
+const props = defineProps({
+  open: Boolean,
+  plugin: Object,
+  selectedPlugins: {
+    type: Array,
+    default: () => []
+  }
+});
 const emit = defineEmits(['add', 'close']);
 
 const { open } = toRefs(props);
@@ -104,7 +111,7 @@ watch(
           :key="i"
           @click="selectedPlugin = plugin"
         >
-          <BlockPlugin :plugin="plugin" />
+          <BlockPlugin :plugin="plugin" :selected="selectedPlugins.includes(plugin.key)" />
         </a>
         <NoResults
           v-if="Object.keys(filteredPlugins(searchInput)).length < 1"
