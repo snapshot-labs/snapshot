@@ -114,7 +114,7 @@
   "leave": "떠나다",
   "copyLink": "링크 복사하기",
   "duplicateProposal": "제안서 중복하기.",
-  "joinedSpaces": "결합된 공간",
+  "joinedSpaces": "공간 가입",
   "joinSpaces": "공간 가입",
   "delegateVotingPower": "위임 페이지로 이동",
   "errors": {
@@ -325,6 +325,13 @@
     "button_show": "컬렉션 찾아보기",
     "success_claim": "너의 피영형에이피 귀하의 주소에 있습니다",
     "error_claim": "토큰을 조폐 문제가 발생했습니다"
+  },
+  "charts": {
+    "charts": "Charts",
+    "noVotesYet": "There are no votes to visualize yet.",
+    "totalVotesPerDay": "Total votes per day",
+    "shareOfVotingPower": "Share of voting power",
+    "votingPowerPerDay": "Voting power per day"
   },
   "comment_box": {
     "title": "주석 상자",
