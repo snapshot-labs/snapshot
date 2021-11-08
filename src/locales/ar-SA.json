@@ -326,6 +326,13 @@
     "success_claim": "POAP الخاص بك موجود على عنوانك",
     "error_claim": "حدثت مشكلة في سك العملة الرمزية"
   },
+  "charts": {
+    "charts": "Charts",
+    "noVotesYet": "There are no votes to visualize yet.",
+    "totalVotesPerDay": "Total votes per day",
+    "shareOfVotingPower": "Share of voting power",
+    "votingPowerPerDay": "Voting power per day"
+  },
   "comment_box": {
     "title": "صندوق التعليق",
     "add": "أضف تعليقك هنا",
