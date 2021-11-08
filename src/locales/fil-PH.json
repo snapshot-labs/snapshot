@@ -326,6 +326,13 @@
     "success_claim": "Ang iyong POAP ay nasa iyong address",
     "error_claim": "Nagkaroon ng problema sa pag-minting ng token"
   },
+  "charts": {
+    "charts": "Charts",
+    "noVotesYet": "There are no votes to visualize yet.",
+    "totalVotesPerDay": "Total votes per day",
+    "shareOfVotingPower": "Share of voting power",
+    "votingPowerPerDay": "Voting power per day"
+  },
   "comment_box": {
     "title": "Kahon ng komento",
     "add": "Magdagdag ng iyong mga komento dito",
