@@ -1,20 +1,30 @@
 import { ref } from 'vue';
 
 interface Notification {
+  id: number;
   message: string;
   type: string;
-  timestamp: number;
+  remove(): any;
 }
 
 const items = ref<Notification[]>([]);
 
 export function useNotifications() {
-  function notify(payload) {
-    const item = Array.isArray(payload)
-      ? { message: payload[1], type: payload[0], timestamp: Date.now() }
-      : { message: payload, type: 'green', timestamp: Date.now() };
+  function notify(payload: any, duration = 4000) {
+    const item: Notification = {
+      id: Math.floor(Date.now() * Math.random()),
+      message: Array.isArray(payload) ? payload[1] : payload,
+      type: Array.isArray(payload) ? payload[0] : 'green',
+      remove() {
+        items.value.splice(
+          items.value.findIndex(i => i.id === this.id),
+          1
+        );
+      }
+    };
 
     items.value.push(item);
+    setTimeout(() => item.remove(), duration);
   }
 
   return { notify, items };
