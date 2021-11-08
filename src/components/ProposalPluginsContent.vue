@@ -5,6 +5,7 @@ const props = defineProps({
   id: String,
   space: Object,
   proposal: Object,
+  votes: Object,
   loadedResults: Boolean
 });
 
@@ -70,6 +71,12 @@ const safeSnapInput = computed({
       :preview="true"
       :config="space.plugins?.safeSnap"
       :network="space.network"
+    />
+    <PluginChartsCustomBlock
+      v-if="loadedResults && space.plugins?.charts"
+      :space="space"
+      :proposal="proposal"
+      :votes="votes"
     />
     <PluginCommentBoxCustomBlock
       v-if="space.plugins?.commentBox"
