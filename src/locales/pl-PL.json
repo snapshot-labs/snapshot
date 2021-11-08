@@ -326,6 +326,13 @@
     "success_claim": "Your POAP is on your address",
     "error_claim": "There was a problem minting the token"
   },
+  "charts": {
+    "charts": "Charts",
+    "noVotesYet": "There are no votes to visualize yet.",
+    "totalVotesPerDay": "Total votes per day",
+    "shareOfVotingPower": "Share of voting power",
+    "votingPowerPerDay": "Voting power per day"
+  },
   "comment_box": {
     "title": "Comment box",
     "add": "Add your comment here",
