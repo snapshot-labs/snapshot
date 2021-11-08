@@ -326,6 +326,13 @@
     "success_claim": "Il tuo POAP è sul tuo indirizzo",
     "error_claim": "Ci sono stati errori durante la votazione del commento."
   },
+  "charts": {
+    "charts": "Charts",
+    "noVotesYet": "There are no votes to visualize yet.",
+    "totalVotesPerDay": "Total votes per day",
+    "shareOfVotingPower": "Share of voting power",
+    "votingPowerPerDay": "Voting power per day"
+  },
   "comment_box": {
     "title": "Casella dei commenti",
     "add": "Aggiungi i tuoi commenti qui",
