@@ -73,12 +73,8 @@ function lookupAddresses(addresses) {
 export async function getProfiles(addresses) {
   addresses = addresses.slice(0, 1000);
   let ensNames: any = {};
-  let _3BoxProfiles: any = {};
   try {
-    [ensNames, _3BoxProfiles] = await Promise.all([
-      lookupAddresses(addresses),
-      get3BoxProfiles(addresses)
-    ]);
+    ensNames = await lookupAddresses(addresses);
   } catch (e) {
     console.log(e);
   }
@@ -86,8 +82,12 @@ export async function getProfiles(addresses) {
   const profiles = Object.fromEntries(addresses.map(address => [address, {}]));
   return Object.fromEntries(
     Object.entries(profiles).map(([address, profile]) => {
-      profile = _3BoxProfiles[address.toLowerCase()] || {};
+      profile = {};
       profile.ens = ensNames[address.toLowerCase()] || '';
+      if (profile.ens) {
+        profile.name = profile.ens;
+        profile.image = `https://metadata.ens.domains/mainnet/avatar/${profile.ens}`;
+      }
       return [address, profile];
     })
   );
