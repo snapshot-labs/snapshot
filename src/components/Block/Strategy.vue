@@ -5,7 +5,7 @@ export default {
 </script>
 
 <template>
-  <Block>
+  <Block class="transition-colors strategy">
     <div class="flex items-baseline">
       <h3>
         {{ strategy.key }}
@@ -19,3 +19,11 @@ export default {
     <div>{{ $tc('inSpaces', [_n(strategy.spaces)]) }}</div>
   </Block>
 </template>
+
+<style scoped lang="scss">
+.strategy {
+  &:hover {
+    border-color: var(--link-color);
+  }
+}
+</style>
