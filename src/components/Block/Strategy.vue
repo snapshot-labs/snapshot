@@ -6,11 +6,9 @@ export default {
 
 <template>
   <Block class="transition-colors strategy">
-    <div class="flex items-baseline">
-      <h3>
-        {{ strategy.key }}
-      </h3>
-      <div class="ml-1">v{{ strategy.version }}</div>
+    <div class="flex items-baseline justify-between">
+      <h3 class="mt-0">{{ strategy.key }}</h3>
+      <div class="ml-1 text-color">v{{ strategy.version }}</div>
     </div>
     <div class="text-color">
       <Icon name="github" class="mr-1" />
