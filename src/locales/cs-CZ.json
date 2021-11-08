@@ -326,6 +326,13 @@
     "success_claim": "Váš POAP je na vaší adrese",
     "error_claim": "Při mazání tokenu nastal problém."
   },
+  "charts": {
+    "charts": "Charts",
+    "noVotesYet": "There are no votes to visualize yet.",
+    "totalVotesPerDay": "Total votes per day",
+    "shareOfVotingPower": "Share of voting power",
+    "votingPowerPerDay": "Voting power per day"
+  },
   "comment_box": {
     "title": "Comment box",
     "add": "Add your comment here",
