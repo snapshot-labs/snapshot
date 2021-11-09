@@ -7,7 +7,7 @@ function getLogoUrl(key) {
 </script>
 
 <template>
-  <Block>
+  <Block class="network transition-colors">
     <div class="flex items-center mb-1">
       <UiAvatar
         class="mr-2 mb-2"
@@ -23,3 +23,11 @@ function getLogoUrl(key) {
     </div>
   </Block>
 </template>
+
+<style scoped lang="scss">
+.network {
+  &:hover {
+    border-color: var(--link-color);
+  }
+}
+</style>
