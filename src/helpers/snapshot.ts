@@ -51,7 +51,7 @@ export async function getResults(space, proposal, votes) {
         parseInt(proposal.snapshot)
       );
       console.timeEnd('getProposal.scores');
-      console.log('Scores', scores);
+      console.log('Got scores');
 
       votes = votes
         .map((vote: any) => {
