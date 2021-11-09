@@ -87,7 +87,7 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
           <div>
             <!-- Added mb-0 to remove mb-4 added by block component -->
             <Block
-              class="text-center extra-icon-container mb-0"
+              class="text-center extra-icon-container mb-0 space transition-colors"
               style="height: 266px"
             >
               <div class="relative inline-block mb-2">
@@ -124,3 +124,11 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
     <div ref="endElement" />
   </div>
 </template>
+
+<style scoped lang="scss">
+.space {
+  &:hover {
+    border-color: var(--link-color) !important;
+  }
+}
+</style>
