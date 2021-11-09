@@ -91,12 +91,13 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
           </template>
         </template>
         <template v-if="route.name === 'plugins'">
-          <BlockPlugin
-            v-for="item in items.slice(0, limit)"
-            :key="item.key"
-            :plugin="item"
-            class="mb-3"
-          />
+          <Block v-for="item in items.slice(0, limit)">
+            <BlockPlugin
+              :key="item.key"
+              :plugin="item"
+              class="mb-3"
+            />
+          </Block>
         </template>
         <NoResults :block="true" v-if="Object.keys(items).length < 1" />
       </div>

@@ -111,7 +111,18 @@ watch(
           :key="i"
           @click="selectedPlugin = plugin"
         >
-          <BlockPlugin :plugin="plugin" :selected="selectedPlugins.includes(plugin.key)" />
+          <Block 
+            :class="[
+              'transition-colors relative plugin',
+              { 'plugin-active': selectedPlugins.includes(plugin.key) }
+            ]"
+          >
+            <i
+              v-if="selectedPlugins.includes(plugin.key)"
+              class="iconfont iconcheck1 absolute top-2 right-2 text-lg"
+            />
+            <BlockPlugin :plugin="plugin" />
+          </Block>
         </a>
         <NoResults
           v-if="Object.keys(filteredPlugins(searchInput)).length < 1"
@@ -120,3 +131,12 @@ watch(
     </div>
   </UiModal>
 </template>
+
+<style scoped lang="scss">
+.plugin {
+  &:hover,
+  &.plugin-active {
+    border-color: var(--link-color);
+  }
+}
+</style>
