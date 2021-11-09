@@ -52,7 +52,7 @@ export async function getResults(space, proposal, votes) {
         import.meta.env.VITE_SCORES_URL + '/api/scores',
       );
       console.timeEnd('getProposal.scores');
-      console.log('Scores', scores);
+      console.log('Got scores');
 
       votes = votes
         .map((vote: any) => {

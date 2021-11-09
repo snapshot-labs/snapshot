@@ -109,7 +109,7 @@ async function downloadReport() {
       </span>
     </div>
     <div v-if="ts >= proposal.start">
-      <UiButton @click="downloadReport" class="w-full mt-4">
+      <UiButton @click="downloadReport" class="w-full mt-2">
         {{ $t('downloadReport') }}
       </UiButton>
     </div>
