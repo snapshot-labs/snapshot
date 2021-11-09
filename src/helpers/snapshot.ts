@@ -53,6 +53,7 @@ export async function getResults(space, proposal, votes) {
       console.timeEnd('getProposal.scores');
       console.log('Got scores');
 
+
       votes = votes
         .map((vote: any) => {
           vote.scores = strategies.map(
