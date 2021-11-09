@@ -1,8 +1,8 @@
 import gql from 'graphql-tag';
 
 export const VOTES_QUERY = gql`
-  query Votes($id: String!) {
-    votes(first: 50000, where: { proposal: $id }) {
+  query Votes($id: String!, $first: Int!, $skip: Int!) {
+    votes(first: $first, skip: $skip, where: { proposal: $id }) {
       id
       ipfs
       voter
@@ -104,13 +104,6 @@ export const PROPOSAL_VOTES_QUERY = gql`
         id
         name
       }
-    }
-    votes(first: 50000, where: { proposal: $id }) {
-      id
-      ipfs
-      voter
-      created
-      choice
     }
   }
 `;
