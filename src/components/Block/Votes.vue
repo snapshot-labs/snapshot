@@ -60,7 +60,6 @@ watch(votes, () => {
         1
       )[0]
     );
-    sortedVotes.value = votes;
   }
   sortedVotes.value = votes;
 });
