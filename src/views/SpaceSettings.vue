@@ -654,6 +654,7 @@ watchEffect(async () => {
     <ModalPlugins
       :open="modalPluginsOpen"
       :plugin="currentPlugin"
+        :selectedPlugins="Object.keys(form.plugins)"
       @close="modalPluginsOpen = false"
       @add="handleSubmitAddPlugins"
     />
