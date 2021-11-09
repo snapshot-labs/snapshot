@@ -634,7 +634,6 @@ watchEffect(async () => {
         </UiButton>
       </Block>
     </template>
-  </Layout>
   <teleport to="#modal">
     <ModalNetworks
       v-model="form.network"
@@ -671,4 +670,5 @@ watchEffect(async () => {
       allowAny
     />
   </teleport>
+  </Layout>
 </template>

@@ -56,7 +56,11 @@ watch(modalOpen, val => {
       <div :class="{ 'sm:ml-[68px]': !domain }">
         <Topnav />
         <div class="pb-6">
-          <router-view :key="$route.path" class="flex-auto" />
+          <router-view v-slot="{ Component }">
+            <transition name="fade" mode="out-in">
+              <component :is="Component" />
+            </transition>
+          </router-view>
         </div>
       </div>
     </div>

@@ -236,7 +236,6 @@ onMounted(async () => {
         </div>
       </Block>
     </template>
-  </Layout>
   <teleport to="#modal">
     <ModalNetworks
       :open="modalNetworksOpen"
@@ -245,4 +244,5 @@ onMounted(async () => {
       @update:modelValue="event => handleURLUpdate(event, 'networkUpdate')"
     />
   </teleport>
+  </Layout>
 </template>

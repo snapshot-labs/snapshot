@@ -316,7 +316,6 @@ onMounted(async () => {
         </UiButton>
       </Block>
     </template>
-  </Layout>
   <teleport to="#modal">
     <ModalClearDelegate
       v-if="loaded"
@@ -328,4 +327,5 @@ onMounted(async () => {
       :profiles="profiles"
     />
   </teleport>
+  </Layout>
 </template>
