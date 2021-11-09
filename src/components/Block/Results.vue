@@ -108,7 +108,7 @@ async function downloadReport() {
         {{ _n(props.space.voting.quorum) }}
       </span>
     </div>
-    <div v-if="ts >= proposal.end">
+    <div v-if="ts >= proposal.start">
       <UiButton @click="downloadReport" class="w-full mt-4">
         {{ $t('downloadReport') }}
       </UiButton>
