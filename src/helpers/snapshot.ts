@@ -22,7 +22,6 @@ const retrieveAllVotes = async proposalId => {
         skip
       }
     });
-    console.log({ votes });
 
     const votesResClone = cloneDeep(votes);
     const _votes = votesResClone.data.votes;
