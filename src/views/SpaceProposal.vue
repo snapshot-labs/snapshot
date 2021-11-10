@@ -46,6 +46,9 @@ const scores = ref([]);
 const modalStrategiesOpen = ref(false);
 const proposalObj = ref({});
 
+const ens =
+  '0xd810c4cf2f09737a6f833f1ec51eaa5504cbc0afeeb883a21a7e1c91c8a597e4';
+
 const web3Account = computed(() => web3.value.account);
 const isCreator = computed(() => proposal.value.author === web3Account.value);
 const loaded = computed(() => !props.spaceLoading && !loading.value);
@@ -342,7 +345,12 @@ onMounted(async () => {
           </div>
         </div>
       </Block>
+      <Block v-if="id === ens && votes.length === 0">
+        <Icon name="info" size="24" class="text-color mr-1" />
+        <span class="mt-2">Results will appear in a moment</span>
+      </Block>
       <BlockResults
+        v-if="!id === ens || (loadedResults && votes.length > 0)"
         :id="id"
         :loaded="loadedResults"
         :space="space"
