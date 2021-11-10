@@ -350,7 +350,7 @@ onMounted(async () => {
         <span class="mt-2">Results will appear in a moment</span>
       </Block>
       <BlockResults
-        v-if="!id === ens || (loadedResults && votes.length > 0)"
+        v-if="!id === ens || votes.length > 0"
         :id="id"
         :loaded="loadedResults"
         :space="space"
