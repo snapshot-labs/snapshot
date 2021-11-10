@@ -71,7 +71,7 @@ function lookupAddresses(addresses) {
 }
 
 export async function getProfiles(addresses) {
-  addresses = addresses.slice(0, 1000);
+  addresses = addresses.slice(0, 250);
   let ensNames: any = {};
   try {
     ensNames = await lookupAddresses(addresses);
