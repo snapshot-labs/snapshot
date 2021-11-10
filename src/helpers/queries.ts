@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 
 export const VOTES_QUERY = gql`
   query Votes($id: String!) {
-    votes(first: 50000, where: { proposal: $id }) {
+    votes(first: 100000, where: { proposal: $id }) {
       id
       ipfs
       voter
@@ -105,7 +105,7 @@ export const PROPOSAL_VOTES_QUERY = gql`
         name
       }
     }
-    votes(first: 50000, where: { proposal: $id }) {
+    votes(first: 100000, where: { proposal: $id }) {
       id
       ipfs
       voter
