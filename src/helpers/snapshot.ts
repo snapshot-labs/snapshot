@@ -1,58 +1,43 @@
 import { getScores } from '@snapshot-labs/snapshot.js/src/utils';
 import { apolloClient } from '@/helpers/apollo';
-import { PROPOSAL_VOTES_QUERY, VOTES_QUERY } from '@/helpers/queries';
+import { PROPOSAL_QUERY, VOTES_QUERY } from '@/helpers/queries';
 import cloneDeep from 'lodash/cloneDeep';
 import voting from '@/helpers/voting';
 
-/**
- * Chunking the requests because few proposals could have a large number of votes
- * and we need all the votes to calculate the results.
- *
- * Fetching all the votes in one query causes a request timeout after 30 seconds.
- */
-const retrieveAllVotes = async proposalId => {
-  const PAGINATE_COUNT = 10000;
-
-  const fetchVotes = async (skip: number, allVotes: any[]): Promise<any[]> => {
-    const votes = await apolloClient.query({
+export async function getProposalVotes(proposalId: string) {
+  try {
+    console.time('getProposalVotes');
+    const response = await apolloClient.query({
       query: VOTES_QUERY,
       variables: {
-        id: proposalId,
-        first: PAGINATE_COUNT,
-        skip
+        id: proposalId
       }
     });
+    console.timeEnd('getProposalVotes');
 
-    const votesResClone = cloneDeep(votes);
-    const _votes = votesResClone.data.votes;
+    const votesResClone = cloneDeep(response);
+    const votes = votesResClone.data.votes;
 
-    allVotes = [...allVotes, ..._votes];
-    skip += PAGINATE_COUNT;
-
-    if (_votes.length === PAGINATE_COUNT) {
-      return fetchVotes(skip, allVotes);
-    }
-
-    return allVotes;
-  };
-
-  return fetchVotes(0, []);
-};
+    return votes;
+  } catch (e) {
+    console.log(e);
+    return e;
+  }
+}
 
 export async function getProposal(id) {
   try {
-    console.time('getProposal.data');
+    console.time('getProposal');
     const response = await apolloClient.query({
-      query: PROPOSAL_VOTES_QUERY,
+      query: PROPOSAL_QUERY,
       variables: {
         id
       }
     });
-    console.timeEnd('getProposal.data');
+    console.timeEnd('getProposal');
 
     const proposalResClone = cloneDeep(response);
     const proposal = proposalResClone.data.proposal;
-    const votes = await retrieveAllVotes(id);
 
     if (proposal?.plugins?.daoModule) {
       // The Dao Module has been renamed to SafeSnap
@@ -61,10 +46,7 @@ export async function getProposal(id) {
       delete proposal.plugins.daoModule;
     }
 
-    return {
-      proposal,
-      votes
-    };
+    return proposal;
   } catch (e) {
     console.log(e);
     return e;

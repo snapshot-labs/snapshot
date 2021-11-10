@@ -2,7 +2,12 @@
 import { ref, computed, watch, onMounted, inject } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
-import { getProposal, getResults, getPower } from '@/helpers/snapshot';
+import {
+  getProposal,
+  getResults,
+  getPower,
+  getProposalVotes
+} from '@/helpers/snapshot';
 import { useModal } from '@/composables/useModal';
 import { useTerms } from '@/composables/useTerms';
 import { useProfiles } from '@/composables/useProfiles';
@@ -78,7 +83,7 @@ function clickVote() {
 }
 
 async function loadProposal() {
-  proposalObj.value = await getProposal(id);
+  proposalObj.value.proposal = await getProposal(id);
   proposal.value = proposalObj.value.proposal;
   // Redirect to proposal spaceId if it doesn't match route key
   if (
@@ -93,6 +98,7 @@ async function loadProposal() {
 }
 
 async function loadResults() {
+  proposalObj.value.votes = await getProposalVotes(id);
   const resultsObj = await getResults(
     props.space,
     proposalObj.value.proposal,
