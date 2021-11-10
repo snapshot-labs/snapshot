@@ -1,10 +1,21 @@
 <script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { useEns } from '@/composables/useEns';
 
 const router = useRouter();
+const { getEnsNames } = useEns();
 
 const id = ref('');
+const domains = ref([]);
+
+function applyEns(ens) {
+  id.value = ens;
+}
+
+getEnsNames().then(res => {
+  domains.value = res.account.domains.slice(0, 5);
+});
 
 function handleSubmit() {
   router.push({
@@ -30,7 +41,7 @@ function handleSubmit() {
         <div class="mb-3">
           {{ $t('setup.useExistingEns') }}
         </div>
-        <UiButton class="text-left w-full mb-3 flex px-3">
+        <UiButton class="text-left w-full mb-1 flex px-3">
           <input
             v-model="id"
             class="input flex-auto"
@@ -44,6 +55,22 @@ function handleSubmit() {
             <Icon name="info" size="24" class="text-color p-1" />
           </a>
         </UiButton>
+        <div class="mb-3">
+          <span>Suggestions: </span>
+          <ul class="inline">
+            <li
+              class="inline cursor-pointer"
+              v-for="(ens, i) in domains"
+              :key="i"
+              @click="applyEns(ens.name)"
+              role="button"
+            >
+              <a>
+                {{ ens.name }}<span v-if="i + 1 < domains.length">, </span>
+              </a>
+            </li>
+          </ul>
+        </div>
         <UiButton
           :disabled="!id.includes('.eth') && !id.includes('.xyz')"
           @click="handleSubmit"
