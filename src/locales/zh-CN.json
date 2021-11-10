@@ -57,7 +57,7 @@
   "receipt": "发票",
   "relayer": "中继器",
   "verifyOnMycrypto": "在 MyCrypto 上验证收款情况",
-  "verifyOnSignatorio": "Verify on Signator.io",
+  "verifyOnSignatorio": "在 Signator.io 上验证",
   "isCore": "核心",
   "notificationsBlocked": "你的浏览器正在屏蔽通知",
   "seeInExplorer": "在浏览器上查看",
@@ -116,7 +116,7 @@
   "duplicateProposal": "复制提案",
   "joinedSpaces": "已加入的空间",
   "joinSpaces": "加入空间",
-  "delegateVotingPower": "Go to delegation page",
+  "delegateVotingPower": "前往委托页面",
   "errors": {
     "required": "此项为必填项",
     "minLength": "最小长度为 {0}",
@@ -125,7 +125,7 @@
     "minItems": "最少需要 {0} 个项目",
     "minStrategy": "至少需要一个策略。",
     "format": "格式无效",
-    "type": "Invalid type"
+    "type": "无效的类型"
   },
   "create": {
     "question": "问题",
