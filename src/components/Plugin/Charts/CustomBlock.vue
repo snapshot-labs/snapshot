@@ -55,7 +55,7 @@ function loadDailyChart(Chart) {
 
   const config = {
     type: 'bar',
-    data,
+    data
   };
 
   new Chart(canvasRef, config);
@@ -108,7 +108,7 @@ function loadShareOfVotingPowerChart(Chart) {
         legend: {
           display: true,
           position: 'right'
-        },
+        }
       }
     }
   };
@@ -158,7 +158,7 @@ function loadVotingPowerPerDayChart(Chart) {
           display: false
         }
       }
-    },
+    }
   };
 
   new Chart(canvasRef, { type: 'line', data, options });
@@ -197,7 +197,7 @@ watch(
         :class="currentTab === 'total_votes_per_day' && 'charts-selected-tab'"
         @click="currentTab = 'total_votes_per_day'"
       >
-      {{ $t('charts.totalVotesPerDay') }}
+        {{ $t('charts.totalVotesPerDay') }}
       </button>
       <button
         v-if="space.plugins?.charts.voting_power_per_address.enabled"
@@ -217,13 +217,28 @@ watch(
       </button>
     </div>
     <div v-if="votes.length > 0" class="mt-6">
-      <div v-if="space.plugins?.charts.total_votes_per_day.enabled && currentTab === 'total_votes_per_day'">
+      <div
+        v-if="
+          space.plugins?.charts.total_votes_per_day.enabled &&
+          currentTab === 'total_votes_per_day'
+        "
+      >
         <canvas ref="totalVotesPerDayChart" />
       </div>
-      <div v-if="space.plugins?.charts.voting_power_per_address.enabled && currentTab === 'share_of_voting_power'">
+      <div
+        v-if="
+          space.plugins?.charts.voting_power_per_address.enabled &&
+          currentTab === 'share_of_voting_power'
+        "
+      >
         <canvas ref="votingPowerPerAddress" />
       </div>
-      <div v-if="space.plugins?.charts.voting_power_per_day.enabled && currentTab === 'voting_power_per_day'">
+      <div
+        v-if="
+          space.plugins?.charts.voting_power_per_day.enabled &&
+          currentTab === 'voting_power_per_day'
+        "
+      >
         <canvas ref="votingPowerPerDay" />
       </div>
     </div>

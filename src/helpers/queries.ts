@@ -79,42 +79,6 @@ export const PROPOSALS_QUERY = gql`
   }
 `;
 
-export const PROPOSAL_VOTES_QUERY = gql`
-  query ($id: String!) {
-    proposal(id: $id) {
-      id
-      ipfs
-      title
-      body
-      choices
-      start
-      end
-      snapshot
-      state
-      author
-      created
-      plugins
-      network
-      type
-      strategies {
-        name
-        params
-      }
-      space {
-        id
-        name
-      }
-    }
-    votes(first: 100000, where: { proposal: $id }) {
-      id
-      ipfs
-      voter
-      created
-      choice
-    }
-  }
-`;
-
 export const FOLLOWS_QUERY = gql`
   query Follows($space_in: [String], $follower_in: [String]) {
     follows(where: { space_in: $space_in, follower_in: $follower_in }) {

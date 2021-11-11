@@ -2,7 +2,12 @@
 import { ref, computed, watch, onMounted, inject } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
-import { getProposal, getResults, getPower } from '@/helpers/snapshot';
+import {
+  getProposal,
+  getResults,
+  getPower,
+  getProposalVotes
+} from '@/helpers/snapshot';
 import { useModal } from '@/composables/useModal';
 import { useTerms } from '@/composables/useTerms';
 import { useProfiles } from '@/composables/useProfiles';
@@ -41,6 +46,9 @@ const scores = ref([]);
 const modalStrategiesOpen = ref(false);
 const proposalObj = ref({});
 
+const ens =
+  '0xd810c4cf2f09737a6f833f1ec51eaa5504cbc0afeeb883a21a7e1c91c8a597e4';
+
 const web3Account = computed(() => web3.value.account);
 const isCreator = computed(() => proposal.value.author === web3Account.value);
 const loaded = computed(() => !props.spaceLoading && !loading.value);
@@ -78,7 +86,7 @@ function clickVote() {
 }
 
 async function loadProposal() {
-  proposalObj.value = await getProposal(id);
+  proposalObj.value.proposal = await getProposal(id);
   proposal.value = proposalObj.value.proposal;
   // Redirect to proposal spaceId if it doesn't match route key
   if (
@@ -93,6 +101,7 @@ async function loadProposal() {
 }
 
 async function loadResults() {
+  proposalObj.value.votes = await getProposalVotes(id);
   const resultsObj = await getResults(
     props.space,
     proposalObj.value.proposal,
@@ -336,7 +345,12 @@ onMounted(async () => {
           </div>
         </div>
       </Block>
+      <Block v-if="id === ens && votes.length === 0">
+        <Icon name="info" size="24" class="text-color mr-1" />
+        <span class="mt-2">Results will appear in a moment</span>
+      </Block>
       <BlockResults
+        v-if="!id === ens || votes.length > 0"
         :id="id"
         :loaded="loadedResults"
         :space="space"
