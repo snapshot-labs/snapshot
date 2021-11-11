@@ -10,7 +10,6 @@ const text = computed(() => t('noResultsFound'));
   <div class="mb-3 text-center">
     <Block v-if="block" class="pt-1">
       <p>{{ text }}</p>
-      <slot />
     </Block>
     <div v-else>{{ text }}</div>
   </div>
