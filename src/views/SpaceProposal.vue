@@ -102,7 +102,7 @@ async function loadProposal() {
 }
 
 async function loadResults() {
-  if (proposal.value.scores_state !== '') {
+  if (proposal.value.scores_state === 'final' || id === ens) {
     results.value = {
       resultsByVoteBalance: proposal.value.scores,
       resultsByStrategyScore: proposal.value.scores_by_strategy,
