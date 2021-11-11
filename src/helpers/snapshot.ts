@@ -2,23 +2,43 @@ import { getScores } from '@snapshot-labs/snapshot.js/src/utils';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import voting from '@snapshot-labs/snapshot.js/src/voting';
 import { apolloClient } from '@/helpers/apollo';
-import { PROPOSAL_VOTES_QUERY } from '@/helpers/queries';
+import { PROPOSAL_QUERY, VOTES_QUERY } from '@/helpers/queries';
 import cloneDeep from 'lodash/cloneDeep';
+
+export async function getProposalVotes(proposalId: string) {
+  try {
+    console.time('getProposalVotes');
+    const response = await apolloClient.query({
+      query: VOTES_QUERY,
+      variables: {
+        id: proposalId
+      }
+    });
+    console.timeEnd('getProposalVotes');
+
+    const votesResClone = cloneDeep(response);
+    const votes = votesResClone.data.votes;
+
+    return votes;
+  } catch (e) {
+    console.log(e);
+    return e;
+  }
+}
 
 export async function getProposal(id) {
   try {
-    console.time('getProposal.data');
+    console.time('getProposal');
     const response = await apolloClient.query({
-      query: PROPOSAL_VOTES_QUERY,
+      query: PROPOSAL_QUERY,
       variables: {
         id
       }
     });
-    console.timeEnd('getProposal.data');
+    console.timeEnd('getProposal');
 
     const proposalResClone = cloneDeep(response);
     const proposal = proposalResClone.data.proposal;
-    const votes = proposalResClone.data.votes;
 
     if (proposal?.plugins?.daoModule) {
       // The Dao Module has been renamed to SafeSnap
@@ -27,10 +47,7 @@ export async function getProposal(id) {
       delete proposal.plugins.daoModule;
     }
 
-    return {
-      proposal,
-      votes
-    };
+    return proposal;
   } catch (e) {
     console.log(e);
     return e;
@@ -52,7 +69,7 @@ export async function getResults(space, proposal, votes) {
         parseInt(proposal.snapshot)
       );
       console.timeEnd('getProposal.scores');
-      console.log('Scores', scores);
+      console.log('Got scores');
 
       votes = votes
         .map((vote: any) => {

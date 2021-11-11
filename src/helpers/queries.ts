@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 
 export const VOTES_QUERY = gql`
   query Votes($id: String!) {
-    votes(first: 10000, where: { proposal: $id }) {
+    votes(first: 100000, where: { proposal: $id }) {
       id
       ipfs
       voter
@@ -75,42 +75,6 @@ export const PROPOSALS_QUERY = gql`
         members
         avatar
       }
-    }
-  }
-`;
-
-export const PROPOSAL_VOTES_QUERY = gql`
-  query ($id: String!) {
-    proposal(id: $id) {
-      id
-      ipfs
-      title
-      body
-      choices
-      start
-      end
-      snapshot
-      state
-      author
-      created
-      plugins
-      network
-      type
-      strategies {
-        name
-        params
-      }
-      space {
-        id
-        name
-      }
-    }
-    votes(first: 10000, where: { proposal: $id }) {
-      id
-      ipfs
-      voter
-      created
-      choice
     }
   }
 `;
