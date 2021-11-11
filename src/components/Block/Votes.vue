@@ -17,14 +17,22 @@ const format = getChoiceString;
 const { votes } = toRefs(props);
 const { web3 } = useWeb3();
 
-const showAllVotes = ref(false);
 const authorIpfsHash = ref('');
 const modalReceiptOpen = ref(false);
 
 const web3Account = computed(() => web3.value.account);
 
+const nbrVisibleVotes = ref(10);
+
+const displayMoreVotes = () => {
+  // 10 if there are more votes left in votes.length otherwise, the remaining votes
+  nbrVisibleVotes.value += 10;
+};
+
+const sortedVotes = ref([]);
+
 const visibleVotes = computed(() =>
-  showAllVotes.value ? sortVotesUserFirst() : sortVotesUserFirst().slice(0, 10)
+  sortedVotes.value.slice(0, nbrVisibleVotes.value)
 );
 const titles = computed(() =>
   props.strategies.map(strategy => strategy.params.symbol)
@@ -41,7 +49,9 @@ function openReceiptModal(vote) {
   modalReceiptOpen.value = true;
 }
 
-function sortVotesUserFirst() {
+const { profiles, updateAddressArray } = useProfiles();
+
+watch(votes, () => {
   const votes = props.votes;
   if (votes.map(vote => vote.voter).includes(web3Account.value)) {
     votes.unshift(
@@ -50,15 +60,14 @@ function sortVotesUserFirst() {
         1
       )[0]
     );
-    return votes;
   }
-  return votes;
-}
+  sortedVotes.value = votes;
+});
 
-const { profiles, updateAddressArray } = useProfiles();
-
-watch(votes, () => {
-  updateAddressArray(votes.value.map(vote => vote.voter));
+watch(nbrVisibleVotes, () => {
+  updateAddressArray(
+    sortedVotes.value.slice(0, nbrVisibleVotes.value).map(vote => vote.voter)
+  );
 });
 </script>
 
@@ -117,8 +126,8 @@ watch(votes, () => {
       </div>
     </div>
     <a
-      v-if="!showAllVotes && votes.length > 10"
-      @click="showAllVotes = true"
+      v-if="votes.length > 10 && nbrVisibleVotes < votes.length"
+      @click="displayMoreVotes()"
       class="
         px-4
         py-3
