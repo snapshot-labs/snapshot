@@ -15,6 +15,7 @@ import { useCopy } from '@/composables/useCopy';
 import { useWeb3 } from '@/composables/useWeb3';
 import { calcFromSeconds, calcToSeconds } from '@/helpers/utils';
 import { useClient } from '@/composables/useClient';
+import { useString } from '@/composables/useString';
 
 const props = defineProps({
   spaceId: String,
@@ -31,6 +32,7 @@ const { t } = useI18n();
 const { copyToClipboard } = useCopy();
 const { web3 } = useWeb3();
 const { send, clientLoading } = useClient();
+const { toFirstUpperCase } = useString();
 const notify = inject('notify');
 
 const currentSettings = ref({});
@@ -106,6 +108,12 @@ const votingPeriod = computed({
       : undefined)
 });
 
+const categoriesString = computed(() => {
+  return form.value.categories
+    ? toFirstUpperCase(form.value.categories).join(', ')
+    : '';
+});
+
 const { filteredPlugins } = useSearchFilters();
 const plugins = computed(() => filteredPlugins());
 
@@ -171,18 +179,14 @@ function handleRemoveStrategy(i) {
   );
 }
 
-function handleRemoveCategory(cat) {
-  form.value.categories = form.value.categories.filter(el => el !== cat);
+function handleSubmitAddCategories(categories) {
+  form.value.categories = categories;
 }
 
 function handleAddStrategy() {
   currentStrategyIndex.value = false;
   currentStrategy.value = {};
   modalStrategyOpen.value = true;
-}
-
-function handleAddCategory() {
-  modalCategoryOpen.value = true;
 }
 
 function handleSubmitAddStrategy(strategy) {
@@ -374,44 +378,13 @@ watchEffect(async () => {
                   {{ $t(`settings.network`) }}*
                 </template>
               </UiInput>
-              <UiInput class="cursor-default">
+              <UiInput @click="modalCategoryOpen = true">
                 <template v-slot:label>
                   {{ $t(`settings.categories`) }}
                 </template>
                 <template v-slot:selected>
-                  <div
-                    class="flex items-center h-full space-x-2 text-skin-text"
-                  >
-                    <div
-                      v-for="(category, i) in form.categories"
-                      :key="i"
-                      class="
-                        h-5
-                        px-3
-                        flex
-                        items-center
-                        bg-skin-border
-                        rounded-2xl
-                      "
-                    >
-                      <p class="mr-2">{{ category }}</p>
-                      <a @click="handleRemoveCategory(category)">
-                        <Icon name="close" size="12" />
-                      </a>
-                    </div>
-                    <a
-                      @click="handleAddCategory"
-                      class="
-                        bg-skin-border
-                        rounded-full
-                        h-5
-                        px-2
-                        flex
-                        items-center
-                      "
-                    >
-                      <Icon name="plus" size="16" />
-                    </a>
+                  <div>
+                    <p>{{ categoriesString }}</p>
                   </div>
                 </template>
               </UiInput>
@@ -706,8 +679,9 @@ watchEffect(async () => {
     />
     <ModalCategory
       :open="modalCategoryOpen"
+      :categories="form.categories"
       @close="modalCategoryOpen = false"
-      v-model="form.categories"
+      @add="handleSubmitAddCategories"
     />
     <ModalPlugins
       :open="modalPluginsOpen"

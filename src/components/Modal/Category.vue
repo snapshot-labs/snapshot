@@ -1,28 +1,33 @@
 <script setup>
 import { ref, computed, toRefs, watchEffect } from 'vue';
+import { useString } from '@/composables/useString';
 
 const props = defineProps({
   modelValue: Array,
   open: Boolean,
-  category: Array
+  categories: Array
 });
 
-const emit = defineEmits(['update:modelValue', 'close']);
+const emit = defineEmits(['add', 'close']);
 
 const { open } = toRefs(props);
 
-const categories = ref([
-  'protocol',
-  'social',
-  'investment',
-  'grant',
-  'service',
-  'media',
-  'creator',
-  'collector'
-]);
+const { toFirstUpperCase, toFirstLowerCase } = useString();
 
-const checkedCategories = computed(() => props.modelValue);
+const categories = computed(() => {
+  return toFirstUpperCase([
+    'protocol',
+    'social',
+    'investment',
+    'grant',
+    'service',
+    'media',
+    'creator',
+    'collector'
+  ]);
+});
+
+const checkedCategories = computed(() => props.categories);
 
 const selectedCategories = ref([]);
 watchEffect(() => {
@@ -32,9 +37,9 @@ watchEffect(() => {
 });
 
 function hasCategory(category) {
-  return checkedCategories.value
-    ? selectedCategories.value.find(el => el.includes(category))
-    : false;
+  return selectedCategories.value.find(el =>
+    el.includes(category.toLowerCase())
+  );
 }
 
 const categoriesCounter = computed(() => {
@@ -44,39 +49,38 @@ const categoriesCounter = computed(() => {
 function selectCategoriesHandler(category) {
   if (hasCategory(category)) {
     selectedCategories.value = selectedCategories.value.filter(
-      el => el !== category
+      el => el !== category.toLowerCase()
     );
-  } else {
-    if (categoriesCounter.value < 2) {
-      const sel = ref([]);
-      selectedCategories.value.push(category);
-    }
+  } else if (categoriesCounter.value < 2) {
+    selectedCategories.value.push(category.toLowerCase());
   }
-  emit('update:modelValue', selectedCategories.value);
 }
 
 function handleSubmit() {
+  emit('add', toFirstLowerCase(selectedCategories.value));
+  emit('close');
+}
+
+function handleClose() {
+  checkedCategories.value
+    ? (selectedCategories.value = checkedCategories.value)
+    : (selectedCategories.value = []);
   emit('close');
 }
 </script>
 
 <template>
-  <UiModal :open="open" @close="handleSubmit">
+  <UiModal :open="open" @close="handleClose">
     <template v-slot:header>
-      <div class="relative">
-        <h3>
-          {{ $t('settings.selectCategories') }}
-        </h3>
-        <div
-          v-if="!(categoriesCounter < 2)"
-          class="link-color absolute inset-x-0 -bottom-4"
-        >
-          {{ $t('errors.maxCategories') }}
-        </div>
-      </div>
+      <h3>
+        {{ $t('settings.selectCategories') }}
+      </h3>
     </template>
 
     <div v-if="categories.length" class="m-4 flex flex-col justify-between">
+      <div class="link-color mb-4">
+        {{ $t('create.categorie(s)') }}
+      </div>
       <Block
         @click="selectCategoriesHandler(category)"
         v-for="(category, i) in categories"
@@ -84,25 +88,30 @@ function handleSubmit() {
         :class="[
           {
             'hover:border-skin-link cursor-pointer':
-              !hasCategory(category) && categoriesCounter < 2,
+              hasCategory(category) || categoriesCounter < 2,
             '!border-skin-link': hasCategory(category)
           },
-          'text-center relative'
+          'relative'
         ]"
       >
         {{ category }}
         <Icon
           v-if="hasCategory(category)"
           size="16"
-          name="check"
+          name="check1"
           class="absolute top-2 right-2"
         />
       </Block>
     </div>
     <template v-slot:footer>
-      <UiButton @click="handleSubmit">
-        {{ $t('confirm') }}
-      </UiButton>
+      <div class="flex justify-around w-full">
+        <UiButton @click="handleClose">
+          {{ $t('cancel') }}
+        </UiButton>
+        <UiButton @click="handleSubmit">
+          {{ $t('confirm') }}
+        </UiButton>
+      </div>
     </template>
     <NoResults class="mt-3" v-if="!categories.length" />
   </UiModal>
