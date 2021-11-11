@@ -120,7 +120,6 @@ async function loadResults() {
   if (proposal.value.id !== ens) results.value = resultsObj.results;
   loadedResults.value = true;
   loadedVotes.value = true;
-  results.value = resultsObj.results;
   votes.value = resultsObj.votes;
 }
 
