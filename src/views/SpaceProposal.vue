@@ -106,12 +106,8 @@ async function loadResults() {
     results.value = {
       resultsByVoteBalance: proposal.value.scores,
       resultsByStrategyScore: proposal.value.scores_by_strategy,
-      // @TODO take this value from API
-      sumOfResultsBalance: proposal.value.scores_by_strategy
-        .flat()
-        .reduce((a, b) => a + b, 0)
+      sumOfResultsBalance: proposal.value.scores_total
     };
-    console.log(results.value.sumOfResultsBalance);
     loadedResults.value = true;
   }
   proposalObj.value.votes = await getProposalVotes(id);
