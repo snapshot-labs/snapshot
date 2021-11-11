@@ -37,6 +37,10 @@ export const PROPOSAL_QUERY = gql`
         id
         name
       }
+      scores_state
+      scores
+      scores_by_strategy
+      scores_total
     }
   }
 `;

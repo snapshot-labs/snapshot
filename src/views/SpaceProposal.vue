@@ -38,6 +38,7 @@ const modalOpen = ref(false);
 const selectedChoices = ref(null);
 const loading = ref(true);
 const loadedResults = ref(false);
+const loadedVotes = ref(false);
 const proposal = ref({});
 const votes = ref([]);
 const results = ref({});
@@ -101,15 +102,24 @@ async function loadProposal() {
 }
 
 async function loadResults() {
+  if (proposal.value.scores_state === 'final' || id === ens) {
+    results.value = {
+      resultsByVoteBalance: proposal.value.scores,
+      resultsByStrategyScore: proposal.value.scores_by_strategy,
+      sumOfResultsBalance: proposal.value.scores_total
+    };
+    loadedResults.value = true;
+  }
   proposalObj.value.votes = await getProposalVotes(id);
   const resultsObj = await getResults(
     props.space,
     proposalObj.value.proposal,
     proposalObj.value.votes
   );
-  results.value = resultsObj.results;
-  votes.value = resultsObj.votes;
+  if (proposal.value.id !== ens) results.value = resultsObj.results;
   loadedResults.value = true;
+  votes.value = resultsObj.votes;
+  loadedVotes.value = true;
 }
 
 async function loadPower() {
@@ -254,7 +264,7 @@ onMounted(async () => {
       />
       <BlockVotes
         v-if="loaded"
-        :loaded="loadedResults"
+        :loaded="loadedVotes"
         :space="space"
         :proposal="proposal"
         :votes="votes"
@@ -345,12 +355,7 @@ onMounted(async () => {
           </div>
         </div>
       </Block>
-      <Block v-if="id === ens && votes.length === 0">
-        <Icon name="info" size="24" class="text-color mr-1" />
-        <span class="mt-2">Results will appear in a moment</span>
-      </Block>
       <BlockResults
-        v-if="!id === ens || votes.length > 0"
         :id="id"
         :loaded="loadedResults"
         :space="space"
