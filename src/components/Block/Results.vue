@@ -2,6 +2,7 @@
 import { computed } from 'vue';
 import jsonexport from 'jsonexport/dist';
 import pkg from '@/../package.json';
+import { isEmpty } from 'lodash';
 
 const props = defineProps({
   id: String,
@@ -18,15 +19,16 @@ const ts = (Date.now() / 1e3).toFixed();
 const titles = computed(() =>
   props.strategies.map(strategy => strategy.params.symbol)
 );
-const choices = computed(() =>
-  props.proposal.choices
+const choices = computed(() => {
+  if (!props.results || isEmpty(props.results)) return [];
+  return props.proposal.choices
     .map((choice, i) => ({ i, choice }))
     .sort(
       (a, b) =>
         props.results.resultsByVoteBalance[b.i] -
         props.results.resultsByVoteBalance[a.i]
-    )
-);
+    );
+});
 
 async function downloadReport() {
   const obj = props.votes

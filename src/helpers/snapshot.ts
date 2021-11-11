@@ -93,7 +93,7 @@ export async function getResults(space, proposal, votes) {
     return { votes, results };
   } catch (e) {
     console.log(e);
-    return e;
+    throw e;
   }
 }
 

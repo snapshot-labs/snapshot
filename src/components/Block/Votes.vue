@@ -40,7 +40,7 @@ const titles = computed(() =>
 
 function isZero() {
   if (!props.loaded) return true;
-  if (props.votes.length > 0) return true;
+  if (props.votes?.length > 0) return true;
 }
 
 function openReceiptModal(vote) {
@@ -53,6 +53,10 @@ const { profiles, updateAddressArray } = useProfiles();
 
 watch(votes, () => {
   const votes = props.votes;
+  if (!votes) {
+    sortedVotes.value = [];
+    return;
+  }
   if (votes.map(vote => vote.voter).includes(web3Account.value)) {
     votes.unshift(
       votes.splice(

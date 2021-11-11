@@ -50,6 +50,7 @@ const proposalObj = ref({});
 const ens =
   '0xd810c4cf2f09737a6f833f1ec51eaa5504cbc0afeeb883a21a7e1c91c8a597e4';
 
+const strategyError = ref(null);
 const web3Account = computed(() => web3.value.account);
 const isCreator = computed(() => proposal.value.author === web3Account.value);
 const loaded = computed(() => !props.spaceLoading && !loading.value);
@@ -98,7 +99,6 @@ async function loadProposal() {
   }
 
   loading.value = false;
-  if (loaded.value) loadResults();
 }
 
 async function loadResults() {
@@ -110,6 +110,7 @@ async function loadResults() {
     };
     loadedResults.value = true;
   }
+  strategyError.value = null;
   proposalObj.value.votes = await getProposalVotes(id);
   const resultsObj = await getResults(
     props.space,
@@ -118,11 +119,13 @@ async function loadResults() {
   );
   if (proposal.value.id !== ens) results.value = resultsObj.results;
   loadedResults.value = true;
-  votes.value = resultsObj.votes;
   loadedVotes.value = true;
+  results.value = resultsObj.results;
+  votes.value = resultsObj.votes;
 }
 
 async function loadPower() {
+  strategyError.value = null;
   if (!web3Account.value || !proposal.value.author) return;
   const response = await getPower(
     props.space,
@@ -190,10 +193,17 @@ watch(web3Account, (val, prev) => {
   }
 });
 
-watch(loaded, () => {
+watch(loaded, async () => {
   if (loaded.value) {
-    loadResults();
-    loadPower();
+    try {
+      await loadResults();
+      loadPower();
+    } catch (error) {
+      console.log(error);
+      strategyError.value = t('resultsFailed');
+    } finally {
+      loadedResults.value = true;
+    }
   }
 });
 
@@ -255,6 +265,7 @@ onMounted(async () => {
         </template>
         <PageLoading v-else />
       </div>
+
       <BlockCastVote
         v-if="loaded && proposal.state === 'active'"
         :proposal="proposal"
@@ -355,7 +366,12 @@ onMounted(async () => {
           </div>
         </div>
       </Block>
+      <Block v-if="strategyError">
+        <Icon name="warning" class="mr-2" />
+        <span> {{ strategyError }}</span>
+      </Block>
       <BlockResults
+        v-if="!strategyError"
         :id="id"
         :loaded="loadedResults"
         :space="space"

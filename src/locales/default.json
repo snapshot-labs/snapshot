@@ -88,6 +88,7 @@
   "marketSymbol": "{0} market",
   "twoChoicesRequired": "Two choices are required for this plugin.",
   "noResultsFound": "Oops, we can't find any results",
+  "resultsFailed": "Oops, failed to load results",
   "createFirstProposal": "Let's create your first proposal",
   "noSpacesJoined": "Oops, you haven't joined any spaces yet",
   "addFavorites": "Add favorites",
