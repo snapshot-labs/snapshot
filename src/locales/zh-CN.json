@@ -232,7 +232,7 @@
     "delegationSuccess": "Delegation successful",
     "delegationRemoved": "Delegation removed",
     "proposalCreated": "Proposal created",
-    "voteSuccessful": "Your vote is in!"
+    "voteSuccessful": "您已经成功行使了投票权！"
   },
   "explore": {
     "createStrategy": "创建策略",
