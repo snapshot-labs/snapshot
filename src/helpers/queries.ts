@@ -73,12 +73,16 @@ export const PROPOSALS_QUERY = gql`
       state
       author
       created
+      choices
       space {
         id
         name
         members
         avatar
+        symbol
       }
+      scores_state
+      scores
     }
   }
 `;
