@@ -78,7 +78,7 @@ function handleClose() {
     </template>
 
     <div v-if="categories.length" class="m-4 flex flex-col justify-between">
-      <div class="link-color mb-4">
+      <div class="mb-4">
         {{ $t('create.categorie(s)') }}
       </div>
       <Block
@@ -91,13 +91,13 @@ function handleClose() {
               hasCategory(category) || categoriesCounter < 2,
             '!border-skin-link': hasCategory(category)
           },
-          'relative'
+          'relative font-bold link-color'
         ]"
       >
         {{ category }}
         <Icon
           v-if="hasCategory(category)"
-          size="16"
+          size="20"
           name="check1"
           class="absolute top-2 right-2"
         />
@@ -106,10 +106,10 @@ function handleClose() {
     <template v-slot:footer>
       <div class="flex justify-around w-full">
         <UiButton @click="handleClose">
-          {{ $t('cancel') }}
+          <p class="px-6">{{ $t('cancel') }}</p>
         </UiButton>
-        <UiButton @click="handleSubmit">
-          {{ $t('confirm') }}
+        <UiButton @click="handleSubmit" :primary="!(categoriesCounter < 2)">
+          <p class="px-6">{{ $t('confirm') }}</p>
         </UiButton>
       </div>
     </template>
