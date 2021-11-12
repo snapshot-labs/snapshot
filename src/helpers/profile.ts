@@ -1,31 +1,6 @@
 import namehash from 'eth-ens-namehash';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
-import { subgraphRequest, call } from '@snapshot-labs/snapshot.js/src/utils';
-
-function get3BoxProfiles(addresses) {
-  return new Promise((resolove, reject) => {
-    subgraphRequest('https://api.3box.io/graph', {
-      profiles: {
-        __args: {
-          ids: addresses
-        },
-        name: true,
-        eth_address: true,
-        image: true
-      }
-    })
-      .then(({ profiles }) => {
-        const _3BoxProfiles = {};
-        profiles.forEach(profile => {
-          _3BoxProfiles[profile.eth_address.toLowerCase()] = profile;
-        });
-        resolove(_3BoxProfiles);
-      })
-      .catch(error => {
-        reject(error);
-      });
-  });
-}
+import { call } from '@snapshot-labs/snapshot.js/src/utils';
 
 function ensReverseRecordRequest(addresses) {
   const network = '1';

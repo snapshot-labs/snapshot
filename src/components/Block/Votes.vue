@@ -29,8 +29,10 @@ const displayMoreVotes = () => {
   nbrVisibleVotes.value += 10;
 };
 
+const sortedVotes = ref([]);
+
 const visibleVotes = computed(() =>
-  sortVotesUserFirst().slice(0, nbrVisibleVotes.value)
+  sortedVotes.value.slice(0, nbrVisibleVotes.value)
 );
 const titles = computed(() =>
   props.strategies.map(strategy => strategy.params.symbol)
@@ -47,7 +49,9 @@ function openReceiptModal(vote) {
   modalReceiptOpen.value = true;
 }
 
-function sortVotesUserFirst() {
+const { profiles, updateAddressArray } = useProfiles();
+
+watch(votes, () => {
   const votes = props.votes;
   if (votes.map(vote => vote.voter).includes(web3Account.value)) {
     votes.unshift(
@@ -56,15 +60,14 @@ function sortVotesUserFirst() {
         1
       )[0]
     );
-    return votes;
   }
-  return votes;
-}
+  sortedVotes.value = votes;
+});
 
-const { profiles, updateAddressArray } = useProfiles();
-
-watch(votes, () => {
-  updateAddressArray(votes.value.map(vote => vote.voter));
+watch(nbrVisibleVotes, () => {
+  updateAddressArray(
+    sortedVotes.value.slice(0, nbrVisibleVotes.value).map(vote => vote.voter)
+  );
 });
 </script>
 

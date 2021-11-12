@@ -2,7 +2,12 @@
 import { ref, computed, watch, onMounted, inject } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
-import { getProposal, getResults, getPower } from '@/helpers/snapshot';
+import {
+  getProposal,
+  getResults,
+  getPower,
+  getProposalVotes
+} from '@/helpers/snapshot';
 import { useModal } from '@/composables/useModal';
 import { useTerms } from '@/composables/useTerms';
 import { useProfiles } from '@/composables/useProfiles';
@@ -33,6 +38,7 @@ const modalOpen = ref(false);
 const selectedChoices = ref(null);
 const loading = ref(true);
 const loadedResults = ref(false);
+const loadedVotes = ref(false);
 const proposal = ref({});
 const votes = ref([]);
 const results = ref({});
@@ -40,6 +46,9 @@ const totalScore = ref(0);
 const scores = ref([]);
 const modalStrategiesOpen = ref(false);
 const proposalObj = ref({});
+
+const ens =
+  '0xd810c4cf2f09737a6f833f1ec51eaa5504cbc0afeeb883a21a7e1c91c8a597e4';
 
 const web3Account = computed(() => web3.value.account);
 const isCreator = computed(() => proposal.value.author === web3Account.value);
@@ -78,7 +87,7 @@ function clickVote() {
 }
 
 async function loadProposal() {
-  proposalObj.value = await getProposal(id);
+  proposalObj.value.proposal = await getProposal(id);
   proposal.value = proposalObj.value.proposal;
   // Redirect to proposal spaceId if it doesn't match route key
   if (
@@ -93,14 +102,24 @@ async function loadProposal() {
 }
 
 async function loadResults() {
+  if (proposal.value.scores_state === 'final' || id === ens) {
+    results.value = {
+      resultsByVoteBalance: proposal.value.scores,
+      resultsByStrategyScore: proposal.value.scores_by_strategy,
+      sumOfResultsBalance: proposal.value.scores_total
+    };
+    loadedResults.value = true;
+  }
+  proposalObj.value.votes = await getProposalVotes(id);
   const resultsObj = await getResults(
     props.space,
     proposalObj.value.proposal,
     proposalObj.value.votes
   );
-  results.value = resultsObj.results;
-  votes.value = resultsObj.votes;
+  if (proposal.value.id !== ens) results.value = resultsObj.results;
   loadedResults.value = true;
+  votes.value = resultsObj.votes;
+  loadedVotes.value = true;
 }
 
 async function loadPower() {
@@ -245,7 +264,7 @@ onMounted(async () => {
       />
       <BlockVotes
         v-if="loaded"
-        :loaded="loadedResults"
+        :loaded="loadedVotes"
         :space="space"
         :proposal="proposal"
         :votes="votes"
