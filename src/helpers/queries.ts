@@ -37,6 +37,10 @@ export const PROPOSAL_QUERY = gql`
         id
         name
       }
+      scores_state
+      scores
+      scores_by_strategy
+      scores_total
     }
   }
 `;
@@ -69,48 +73,16 @@ export const PROPOSALS_QUERY = gql`
       state
       author
       created
+      choices
       space {
         id
         name
         members
         avatar
+        symbol
       }
-    }
-  }
-`;
-
-export const PROPOSAL_VOTES_QUERY = gql`
-  query ($id: String!) {
-    proposal(id: $id) {
-      id
-      ipfs
-      title
-      body
-      choices
-      start
-      end
-      snapshot
-      state
-      author
-      created
-      plugins
-      network
-      type
-      strategies {
-        name
-        params
-      }
-      space {
-        id
-        name
-      }
-    }
-    votes(first: 100000, where: { proposal: $id }) {
-      id
-      ipfs
-      voter
-      created
-      choice
+      scores_state
+      scores
     }
   }
 `;
