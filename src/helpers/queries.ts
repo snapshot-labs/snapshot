@@ -37,6 +37,10 @@ export const PROPOSAL_QUERY = gql`
         id
         name
       }
+      scores_state
+      scores
+      scores_by_strategy
+      scores_total
     }
   }
 `;
@@ -69,12 +73,16 @@ export const PROPOSALS_QUERY = gql`
       state
       author
       created
+      choices
       space {
         id
         name
         members
         avatar
+        symbol
       }
+      scores_state
+      scores
     }
   }
 `;

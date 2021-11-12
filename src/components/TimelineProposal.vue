@@ -10,6 +10,10 @@ const props = defineProps({
 
 const body = computed(() => removeMd(props.proposal.body));
 
+const winningChoice = computed(() =>
+  props.proposal.scores.indexOf(Math.max(...props.proposal.scores))
+);
+
 const period = computed(() => {
   if (props.proposal.state === 'closed') return 'endedAgo';
   if (props.proposal.state === 'active') return 'endIn';
@@ -44,10 +48,18 @@ watchEffect(() => {
           />
           <UiState :state="proposal.state" class="inline-block float-right" />
         </div>
-        <h3 v-text="_shorten(proposal.title, 124)" class="mt-1 mb-1" />
-        <p v-text="_shorten(body, 140)" class="break-words mb-1 text-md" />
+        <h3 v-text="proposal.title" class="mt-1 mb-1" />
+        <p v-text="_shorten(body, 140)" class="break-words mb-2 text-md" />
         <div>
-          {{ $tc(period, [_ms(proposal.start), _ms(proposal.end)]) }}
+          <span
+            v-if="proposal.scores_state !== 'final'"
+            v-text="$tc(period, [_ms(proposal.start), _ms(proposal.end)])"
+          />
+          <span v-if="proposal.scores_state === 'final'" class="mt-2">
+            <Icon size="20" name="check1" class="text-green" />
+            {{ _shorten(proposal.choices[winningChoice], 64) }} -
+            {{ _n(proposal.scores[winningChoice]) }} {{ proposal.space.symbol }}
+          </span>
         </div>
       </div>
     </router-link>
