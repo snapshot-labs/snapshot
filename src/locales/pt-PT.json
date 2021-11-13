@@ -57,10 +57,14 @@
   "receipt": "Comprovativo",
   "relayer": "Retransmissor",
   "verifyOnMycrypto": "Verificar comprovativo no MyCrypto",
+  "verifyOnSignatorio": "Verify on Signator.io",
   "isCore": "Core",
+  "notificationsBlocked": "Your browser is blocking notifications",
   "seeInExplorer": "Ver no Explorer",
   "learnMore": "Saber mais",
   "logout": "Terminar sessão",
+  "walletNotice": "Wallet notice",
+  "gnosisSafeWalletNotice": "Gnosis Safe wallet doesn't support signing messages. You can delegate your voting power to a wallet of your choice on our delegation page.",
   "continue": "Continuar",
   "add": "Adicionar",
   "edit": "Editar",
@@ -112,6 +116,7 @@
   "duplicateProposal": "Duplicar proposta",
   "joinedSpaces": "Juntou espaços",
   "joinSpaces": "Juntar-se aos espaços",
+  "delegateVotingPower": "Go to delegation page",
   "errors": {
     "required": "O campo é obrigatório",
     "minLength": "O comprimento mínimo é {0}",
@@ -123,8 +128,8 @@
     "type": "Contexto"
   },
   "create": {
-    "question": "Pergunta",
-    "content": "Qual é a sua proposta?",
+    "question": "Ask a question...",
+    "content": "Tell more about your proposal (optional)",
     "preview": "Pré-visualizar",
     "choices": "Opções",
     "addChoice": "Adicionar opção",
@@ -209,6 +214,7 @@
     "votingDelay": "Atraso na votação",
     "votingPeriod": "Período de votação",
     "voting": "Votar",
+    "quorum": "Quorum",
     "type": "Modelo",
     "anyType": "Qualquer"
   },
@@ -246,12 +252,19 @@
     "quadratic": "Voto em Quadrático",
     "ranked-choice": "Votação por escolha ranqueada",
     "weighted": "Votação ponderada",
+    "basic": "Basic voting",
     "description": {
       "single-choice": "Cada eleitor pode selecionar apenas uma opção.",
       "approval": "Cada eleitor pode selecionar qualquer número de opções.",
       "quadratic": "Cada eleitor pode distribuir o poder de voto por qualquer número de escolhas. Os resultados são calculados quadraticamente.",
       "ranked-choice": "Cada eleitor pode selecionar e classificar qualquer número de escolhas. Os resultados são calculados pelo método de contagem instantânea.",
-      "weighted": "Cada eleitor pode espalhar o poder de voto em qualquer número de escolhas."
+      "weighted": "Cada eleitor pode espalhar o poder de voto em qualquer número de escolhas.",
+      "basic": "Single choice voting with three choices: For, Against or Abstain"
+    },
+    "choices": {
+      "for": "For",
+      "against": "Against",
+      "abstain": "Abstain"
     }
   },
   "safeSnap": {
@@ -312,6 +325,13 @@
     "button_show": "Browse collection",
     "success_claim": "O seu POAP está no seu endereço",
     "error_claim": "Ocorreu um problema ao cunhar o token"
+  },
+  "charts": {
+    "charts": "Charts",
+    "noVotesYet": "There are no votes to visualize yet.",
+    "totalVotesPerDay": "Total votes per day",
+    "shareOfVotingPower": "Share of voting power",
+    "votingPowerPerDay": "Voting power per day"
   },
   "comment_box": {
     "title": "Comment box",
