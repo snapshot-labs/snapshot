@@ -65,7 +65,8 @@ export async function getResults(space, proposal, votes) {
         strategies,
         space.network,
         voters,
-        parseInt(proposal.snapshot)
+        parseInt(proposal.snapshot),
+        import.meta.env.VITE_SCORES_URL + '/api/scores',
       );
       console.timeEnd('getProposal.scores');
       console.log('Got scores');
@@ -105,7 +106,8 @@ export async function getPower(space, address, proposal) {
       strategies,
       space.network,
       [address],
-      parseInt(proposal.snapshot)
+      parseInt(proposal.snapshot),
+      import.meta.env.VITE_SCORES_URL + '/api/scores',
     );
     scores = scores.map((score: any) =>
       Object.values(score).reduce((a, b: any) => a + b, 0)
