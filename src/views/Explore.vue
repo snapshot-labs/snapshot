@@ -10,7 +10,6 @@ const route = useRoute();
 
 const buttonStr = computed(() => {
   if (route.name === 'strategies') return t('explore.createStrategy');
-  if (route.name === 'skins') return t('explore.createSkin');
   if (route.name === 'networks') return t('explore.addNetwork');
   if (route.name === 'plugins') return t('explore.createPlugin');
   return '';
@@ -18,19 +17,17 @@ const buttonStr = computed(() => {
 
 const resultsStr = computed(() => {
   if (route.name === 'strategies') return t('explore.strategies');
-  if (route.name === 'skins') return t('explore.skins');
   if (route.name === 'networks') return t('explore.networks');
   if (route.name === 'plugins') return t('explore.plugins');
   return t('explore.results');
 });
 
-const { filteredSkins, filteredStrategies, filteredNetworks, filteredPlugins } =
+const { filteredStrategies, filteredNetworks, filteredPlugins } =
   useSearchFilters();
 
 const items = computed(() => {
   const q = route.query.q || '';
   if (route.name === 'strategies') return filteredStrategies(q);
-  if (route.name === 'skins') return filteredSkins(q);
   if (route.name === 'networks') return filteredNetworks(q);
   if (route.name === 'plugins') return filteredPlugins(q);
   return [];
@@ -74,14 +71,6 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
               <BlockStrategy :strategy="item" class="mb-3" />
             </router-link>
           </template>
-        </template>
-        <template v-if="route.name === 'skins'">
-          <BlockSkin
-            v-for="item in items.slice(0, limit)"
-            :key="item.key"
-            :skin="item"
-            class="mb-3"
-          />
         </template>
         <template v-if="route.name === 'networks'">
           <template v-for="item in items.slice(0, limit)" :key="item.key">
