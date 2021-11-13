@@ -31,7 +31,7 @@
   "network": "الشبكة",
   "networks": "الشبكات",
   "skins": "المظاهر",
-  "members": "No members | {count} member | {count} members",
+  "members": "لا يوجد أعضاء <unk> {count} أعضاء <unk> {count} أعضاء",
   "editStrategy": "تعديل الاستراتيجية",
   "invalidProposals": "اقتراحات غير صالحة",
   "account": "الحساب",
@@ -57,10 +57,14 @@
   "receipt": "الإيصال",
   "relayer": "المرحّل",
   "verifyOnMycrypto": "تحقق من الإيصال على MyCrypto",
+  "verifyOnSignatorio": "تحقق على موقع",
   "isCore": "النواة",
+  "notificationsBlocked": "متصفحك يحظر الإشعارات",
   "seeInExplorer": "شاهد على المستكشف",
   "learnMore": "لمعرفة المزيد",
   "logout": "تسجيل خروج",
+  "walletNotice": "إشعار المحفظة",
+  "gnosisSafeWalletNotice": "محفظة التشخيص الآمنة لا تدعم توقيع الرسائل. يمكنك تفويض قوة التصويت الخاصة بك إلى محفظة من اختيارك على صفحة وفدنا.",
   "continue": "متابعة",
   "add": "إضافة",
   "edit": "تعديل",
@@ -84,7 +88,7 @@
   "marketSymbol": "سوق {0}",
   "twoChoicesRequired": "هناك خياران مطلوبان لهذه الإضافة.",
   "noResultsFound": "عفواً، لا يمكننا العثور على أي نتائج",
-  "createFirstProposal": "Let's create your first proposal",
+  "createFirstProposal": "دعنا نقوم بإنشاء المنتج الأول الخاص بك",
   "noSpacesJoined": "عفواً، لم تنضم إلى أي مساحات بعد",
   "addFavorites": "إضافة للمفضلة",
   "createdBy": "بواسطة: {0}",
@@ -112,6 +116,7 @@
   "duplicateProposal": "اقتراح مكرر",
   "joinedSpaces": "المساحات المشترك فيها",
   "joinSpaces": "الانضمام إلى المساحات",
+  "delegateVotingPower": "انتقل إلى مرحلة التفويض",
   "errors": {
     "required": "حقل مطلوب",
     "minLength": "الحد الادنى لعدد الاحرف {0}",
@@ -120,11 +125,11 @@
     "minItems": "الحد الأدنى {0} عنصر(ار) مطلوب",
     "minStrategy": "تلزم خطة واحدة على الأقل.",
     "format": "تنسيق غير صحيح",
-    "type": "Invalid type"
+    "type": "الرمز غير صحيح"
   },
   "create": {
-    "question": "سؤال",
-    "content": "ما هو اقتراحك؟",
+    "question": "Ask a question...",
+    "content": "Tell more about your proposal (optional)",
     "preview": "معاينة",
     "choices": "الخيارات",
     "addChoice": "إضافة اختيار",
@@ -136,7 +141,7 @@
     "snapshotBlock": "رقم القطعة (البلوك) في لمحة سلسلة البلوكشين",
     "validationWarning": {
       "basic": {
-        "member": "You need to be an author of the space in order to submit a proposal.",
+        "member": "يجب أن تكون عضوا في المساحة لتقديم اقتراح.",
         "minScore": "تحتاج إلى الحد الأدنى من {0} {1} لتقديم اقتراح."
       },
       "customValidation": "تحتاج إلى اجتياز المصادقة على الاقتراح من أجل تقديم اقتراح."
@@ -152,7 +157,7 @@
     "allSpaces": "لجميع المساحات",
     "delegated": "التفويض لنفسك",
     "pendingTransaction": "لا توجد معاملات معلقة | 1 معاملات معلقة | {count} معاملات معلقة",
-    "topDelegates": "Top delegates"
+    "topDelegates": "المندوب الأعلى"
   },
   "proposal": {
     "castVote": "سجل صوتك",
@@ -165,7 +170,7 @@
     "header": "المقترحات",
     "new": "اقتراح جديد",
     "noProposals": "لا توجد أي اقتراحات هنا حتى الآن!",
-    "createProposal": "Create proposal",
+    "createProposal": "إنشاء إقتراح",
     "states": {
       "all": "الكل",
       "core": "النواة",
@@ -187,7 +192,7 @@
     "network": "الشبكة",
     "symbol": "الرمز",
     "skin": "المظهر",
-    "customDomain": "Custom domain",
+    "customDomain": "نطاق مخصص",
     "domain": "إسم النطاق",
     "strategies": "استراتيجية (استراتيجيات)",
     "hideSpace": "إخفاء المساحة من الصفحة الرئيسية",
@@ -206,11 +211,12 @@
     "selectValidation": "اختر المصادقة",
     "validationParameters": "معايير المصادقة",
     "warningTextRecord": "يجب عليك تعيين سجل نصي على نطاق ENS.",
-    "votingDelay": "Voting delay",
-    "votingPeriod": "Voting period",
-    "voting": "Voting",
-    "type": "Type",
-    "anyType": "Any"
+    "votingDelay": "تأخير التصويت",
+    "votingPeriod": "فترة التصويت",
+    "voting": "التصويت",
+    "quorum": "لغة البرمجة \"Quorum\"",
+    "type": "النوع",
+    "anyType": "أيّما"
   },
   "setup": {
     "example": "مثال yam.eth",
@@ -222,11 +228,11 @@
     "copied": "تم النسخ!",
     "proposalDeleted": "تم حذف الاقتراح",
     "somethingWentWrong": "عفوا، حدث خطأ ما!",
-    "saved": "Saved!",
-    "delegationSuccess": "Delegation successful",
-    "delegationRemoved": "Delegation removed",
-    "proposalCreated": "Proposal created",
-    "voteSuccessful": "Your vote is in!"
+    "saved": "حفظ!",
+    "delegationSuccess": "تم التفويض بنجاح",
+    "delegationRemoved": "تمت إزالة التفويض",
+    "proposalCreated": "خلقت عمدا",
+    "voteSuccessful": "تم اعتماد{0} الخاص بك!"
   },
   "explore": {
     "createStrategy": "إنشاء استراتيجية",
@@ -246,12 +252,19 @@
     "quadratic": "التصويت الرباعي",
     "ranked-choice": "تصويت خيار التصنيف",
     "weighted": "التصويت المرجح",
+    "basic": "Basic voting",
     "description": {
       "single-choice": "ويجوز لكل ناخب أن يختار خيارا واحدا فقط.",
       "approval": "ويجوز لكل ناخب أن يختار أي عدد من الخيارات.",
       "quadratic": "يمكن لكل ناخب أن يوزع قوة التصويت على أي عدد من الخيارات. يتم حساب النتائج بالنظام الرباعي.",
       "ranked-choice": "يمكن لكل ناخب اختيار وترتيب أي عدد من الخيارات. يتم حساب النتائج بطريقة العد الفوري.",
-      "weighted": "ويمكن لكل ناخب أن يوزع قوة التصويت على أي عدد من الخيارات."
+      "weighted": "ويمكن لكل ناخب أن يوزع قوة التصويت على أي عدد من الخيارات.",
+      "basic": "Single choice voting with three choices: For, Against or Abstain"
+    },
+    "choices": {
+      "for": "For",
+      "against": "Against",
+      "abstain": "Abstain"
     }
   },
   "safeSnap": {
@@ -312,6 +325,13 @@
     "button_show": "تصفح المجموعة",
     "success_claim": "POAP الخاص بك موجود على عنوانك",
     "error_claim": "حدثت مشكلة في سك العملة الرمزية"
+  },
+  "charts": {
+    "charts": "Charts",
+    "noVotesYet": "There are no votes to visualize yet.",
+    "totalVotesPerDay": "Total votes per day",
+    "shareOfVotingPower": "Share of voting power",
+    "votingPowerPerDay": "Voting power per day"
   },
   "comment_box": {
     "title": "صندوق التعليق",
