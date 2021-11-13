@@ -1,9 +1,9 @@
 {
   "searchPlaceholder": "搜索",
-  "spaceCount": "{0} 空间 (s)",
+  "spaceCount": "{0} 个空间",
   "createSpace": "创建空间",
   "backToHome": "主页",
-  "actions": "行动",
+  "actions": "操作",
   "results": "结果",
   "currentResults": "当前结果",
   "reset": "重置",
@@ -20,8 +20,8 @@
   "space": "空间",
   "spaces": "空间",
   "version": "版本",
-  "timeline": "时间轴",
-  "filters": "过滤器",
+  "timeline": "时间线",
+  "filters": "筛选器",
   "allSpaces": "所有空间",
   "submitOnchain": "提交在链上",
   "inSpaces": "在 {0} 空间中",
@@ -31,7 +31,7 @@
   "network": "网络",
   "networks": "网络",
   "skins": "皮肤",
-  "members": "没有成员 | {count} 会员 | {count} 成员",
+  "members": "没有成员 | {count} 个成员 | {count} 个成员",
   "editStrategy": "编辑策略",
   "invalidProposals": "提案无效",
   "account": "账户",
@@ -50,7 +50,7 @@
   "confirmRemove": "您确认要移除您的授權嗎？",
   "removeSpace": "用于空间 {0}",
   "confirmVote": "确认投票",
-  "sureToVote": "您确定要投票 \"{0}\" 吗？",
+  "sureToVote": "您确定要给 \"{0}\" 投票吗吗？",
   "cannotBeUndone": "这个动作无法复原。",
   "options": "选项",
   "votingPower": "您的投票权",
@@ -259,12 +259,12 @@
       "quadratic": "每个选民都可以在任何数量的选择中分配投票权。结果按四舍五入计算。",
       "ranked-choice": "每个选民都可以选择和排列任何数目的选择。结果是通过即时计算的。",
       "weighted": "每个选民都可以在任何选择中分散投票权。",
-      "basic": "Single choice voting with three choices: For, Against or Abstain"
+      "basic": "有三种投票单选项：支持，反对，和弃权"
     },
     "choices": {
-      "for": "For",
-      "against": "Against",
-      "abstain": "Abstain"
+      "for": "支持",
+      "against": "反对",
+      "abstain": "弃权"
     }
   },
   "safeSnap": {
@@ -310,7 +310,7 @@
       "executed": "所有交易已执行",
       "error": "出了些问题",
       "connectWallet": "连接钱包以查看执行详情",
-      "switchChain": "Switch your wallet to {0} to request execution",
+      "switchChain": "将你的钱包切换到 {0} 以请求执行",
       "question": "这个建议是否通过并满足了这个建议",
       "criteria": "验收标准"
     }
@@ -327,11 +327,11 @@
     "error_claim": "创建令牌时出错"
   },
   "charts": {
-    "charts": "Charts",
-    "noVotesYet": "There are no votes to visualize yet.",
-    "totalVotesPerDay": "Total votes per day",
-    "shareOfVotingPower": "Share of voting power",
-    "votingPowerPerDay": "Voting power per day"
+    "charts": "图表",
+    "noVotesYet": "目前还没有投票可呈现",
+    "totalVotesPerDay": "每日总票数",
+    "shareOfVotingPower": "投票权重比例",
+    "votingPowerPerDay": "每日投票权"
   },
   "comment_box": {
     "title": "评论框",
