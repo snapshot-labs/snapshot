@@ -1,8 +1,8 @@
 import pkg from '@/../package.json';
-import voting from '@/helpers/voting';
 import { formatEther } from '@ethersproject/units';
 import { BigNumber } from '@ethersproject/bignumber';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
+import voting from '@snapshot-labs/snapshot.js/src/voting';
 import numeral from 'numeral';
 import { format } from 'timeago.js';
 
