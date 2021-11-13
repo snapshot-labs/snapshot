@@ -77,8 +77,8 @@ function handleClose() {
       </h3>
     </template>
 
-    <div v-if="categories.length" class="m-4 flex flex-col justify-between">
-      <div class="mb-4">
+    <div class="mt-4 mx-0 md:mx-4 flex flex-col justify-between">
+      <div class="ml-4 md:ml-0 mb-4">
         {{ $t('create.categorie(s)') }}
       </div>
       <Block
@@ -95,24 +95,29 @@ function handleClose() {
         ]"
       >
         {{ category }}
-        <Icon
+        <i
           v-if="hasCategory(category)"
-          size="20"
-          name="check1"
-          class="absolute top-2 right-2"
+          class="iconfont iconcheck1 absolute top-2 right-2 text-lg"
         />
       </Block>
     </div>
     <template v-slot:footer>
-      <div class="flex justify-around w-full">
-        <UiButton @click="handleClose">
-          <p class="px-6">{{ $t('cancel') }}</p>
+      <div class="w-2/4 float-left pr-2">
+        <UiButton @click="handleClose" type="button" class="w-full">
+          {{ $t('cancel') }}
         </UiButton>
-        <UiButton @click="handleSubmit" :primary="!(categoriesCounter < 2)">
-          <p class="px-6">{{ $t('confirm') }}</p>
+      </div>
+      <div class="w-2/4 float-left pl-2">
+        <UiButton
+          @click="handleSubmit"
+          :disabled="!selectedCategories.length"
+          type="submit"
+          class="w-full"
+          primary
+        >
+          {{ $t('confirm') }}
         </UiButton>
       </div>
     </template>
-    <NoResults class="mt-3" v-if="!categories.length" />
   </UiModal>
 </template>
