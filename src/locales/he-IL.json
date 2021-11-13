@@ -57,10 +57,14 @@
   "receipt": "קבלה",
   "relayer": "ממסר",
   "verifyOnMycrypto": "וודא קבלה ב-MyCrypto",
+  "verifyOnSignatorio": "Verify on Signator.io",
   "isCore": "ליבה",
+  "notificationsBlocked": "Your browser is blocking notifications",
   "seeInExplorer": "צפה ב-explorer",
   "learnMore": "מידע נוסף",
   "logout": "יציאה",
+  "walletNotice": "Wallet notice",
+  "gnosisSafeWalletNotice": "Gnosis Safe wallet doesn't support signing messages. You can delegate your voting power to a wallet of your choice on our delegation page.",
   "continue": "המשך",
   "add": "הוספה",
   "edit": "ערוך",
@@ -112,6 +116,7 @@
   "duplicateProposal": "שכפל הצעה",
   "joinedSpaces": "Joined spaces",
   "joinSpaces": "Join spaces",
+  "delegateVotingPower": "Go to delegation page",
   "errors": {
     "required": "שדה חובה",
     "minLength": "האורך המינימלי הוא {0}",
@@ -123,8 +128,8 @@
     "type": "Invalid type"
   },
   "create": {
-    "question": "שאלה",
-    "content": "מהי הצעתך?",
+    "question": "Ask a question...",
+    "content": "Tell more about your proposal (optional)",
     "preview": "תצוגה מקדימה",
     "choices": "אפשרויות",
     "addChoice": "הוסף אפשרות",
@@ -209,6 +214,7 @@
     "votingDelay": "Voting delay",
     "votingPeriod": "Voting period",
     "voting": "Voting",
+    "quorum": "Quorum",
     "type": "Type",
     "anyType": "Any"
   },
@@ -246,12 +252,19 @@
     "quadratic": "הצבעה ריבועית",
     "ranked-choice": "הצבעת בחירה מדורגת",
     "weighted": "הצבעה משוקללת",
+    "basic": "Basic voting",
     "description": {
       "single-choice": "כל מצביע יכול לבחור אפשרות אחת בלבד.",
       "approval": "כל מבציע יכול לבחור מספר אפשרויות בלתי מוגבל.",
       "quadratic": "כל מבציע יכול לפזר את כוח ההצבעה שלו בין מספר בלתי מוגבל של אפשרויות. התוצאה מחושבת באופן ריבועי.",
       "ranked-choice": "כל מבציע יכול לבחור ולדרג מספר בלתי מוגבל של אפשרויות. התוצאות מחשובת בשיטת Instant-Runoff.",
-      "weighted": "כל מבציע יכול לפזר את כוח ההצבעה שלו בין מספר בלתי מוגבל של אפשרויות."
+      "weighted": "כל מבציע יכול לפזר את כוח ההצבעה שלו בין מספר בלתי מוגבל של אפשרויות.",
+      "basic": "Single choice voting with three choices: For, Against or Abstain"
+    },
+    "choices": {
+      "for": "For",
+      "against": "Against",
+      "abstain": "Abstain"
     }
   },
   "safeSnap": {
@@ -312,6 +325,13 @@
     "button_show": "Browse collection",
     "success_claim": "ה-POAP נמצא על הכתובת שלך",
     "error_claim": "ארעה בעיה בעת יצירת המטבע"
+  },
+  "charts": {
+    "charts": "Charts",
+    "noVotesYet": "There are no votes to visualize yet.",
+    "totalVotesPerDay": "Total votes per day",
+    "shareOfVotingPower": "Share of voting power",
+    "votingPowerPerDay": "Voting power per day"
   },
   "comment_box": {
     "title": "Comment box",
