@@ -57,12 +57,14 @@
   "receipt": "Reçu",
   "relayer": "Relayeur",
   "verifyOnMycrypto": "Vérifier le reçu sur MyCrypto",
+  "verifyOnSignatorio": "Verify on Signator.io",
   "isCore": "Core",
+  "notificationsBlocked": "Your browser is blocking notifications",
   "seeInExplorer": "Voir sur l'explorateur",
   "learnMore": "En savoir plus",
   "logout": "Se déconnecter",
-  "walletNotice": "Wallet non pris en charge",
-  "gnosisSafeWalletNotice": "Vous essayez d'utiliser le wallet Gnosis Safe, qui ne prend pas en charge la signature de messages sur Snapshot.",
+  "walletNotice": "Wallet notice",
+  "gnosisSafeWalletNotice": "Gnosis Safe wallet doesn't support signing messages. You can delegate your voting power to a wallet of your choice on our delegation page.",
   "continue": "Continuer",
   "add": "Ajouter",
   "edit": "Éditer",
@@ -86,7 +88,7 @@
   "marketSymbol": "{0} marché",
   "twoChoicesRequired": "Deux choix sont requis pour ce plugin.",
   "noResultsFound": "Oups, nous n'avons trouvé aucun résultat",
-  "createFirstProposal": "Let's create your first proposal",
+  "createFirstProposal": "Créer votre première proposition",
   "noSpacesJoined": "Oups, vous n'avez pas encore rejoint d'espaces",
   "addFavorites": "Ajouter aux favoris",
   "createdBy": "Par {0}",
@@ -114,6 +116,7 @@
   "duplicateProposal": "Dupliquer la proposition",
   "joinedSpaces": "Espaces rejoints",
   "joinSpaces": "Rejoindre un espace",
+  "delegateVotingPower": "Go to delegation page",
   "errors": {
     "required": "Le champ est requis",
     "minLength": "Longueur minimale de {0}",
@@ -125,8 +128,8 @@
     "type": "Type invalide"
   },
   "create": {
-    "question": "Question",
-    "content": "Quelle est votre proposition ?",
+    "question": "Ask a question...",
+    "content": "Tell more about your proposal (optional)",
     "preview": "Aperçu",
     "choices": "Choix",
     "addChoice": "Ajouter un choix",
@@ -167,9 +170,9 @@
     "header": "Propositions",
     "new": "Nouvelle proposition",
     "noProposals": "Il n'y a pas encore de propositions ici !",
-    "createProposal": "Create proposal",
+    "createProposal": "Créer une proposition",
     "states": {
-      "all": "Tous",
+      "all": "Toutes",
       "core": "Officiel",
       "community": "Communauté",
       "active": "Actif",
@@ -211,6 +214,7 @@
     "votingDelay": "Délai avant vote",
     "votingPeriod": "Période de vote",
     "voting": "Vote",
+    "quorum": "Quorum",
     "type": "Type",
     "anyType": "Tous"
   },
@@ -248,12 +252,19 @@
     "quadratic": "Vote quadratique",
     "ranked-choice": "Vote préférentiel",
     "weighted": "Vote pondéré",
+    "basic": "Basic voting",
     "description": {
       "single-choice": "Chaque votant ne peut effectuer qu'un seul choix.",
       "approval": "Chaque votant peut effectuer un nombre indéfini de choix.",
       "quadratic": "Chaque votant peut répartir ses droits de vote entre les différents choix. Les résultats sont calculés de manière quadratique.",
       "ranked-choice": "Chaque votant peut effectuer plusieurs choix et les classer par préférence. Le système du second tour instantané est utilisé pour calculer les résultats.",
-      "weighted": "Chaque votant peut répartir ses droits de vote entre les différents choix."
+      "weighted": "Chaque votant peut répartir ses droits de vote entre les différents choix.",
+      "basic": "Single choice voting with three choices: For, Against or Abstain"
+    },
+    "choices": {
+      "for": "For",
+      "against": "Against",
+      "abstain": "Abstain"
     }
   },
   "safeSnap": {
@@ -314,6 +325,13 @@
     "button_show": "Parcourir la collection",
     "success_claim": "Votre POAP se trouve sur votre adresse",
     "error_claim": "Un problème est survenu lors de la création du jeton"
+  },
+  "charts": {
+    "charts": "Charts",
+    "noVotesYet": "There are no votes to visualize yet.",
+    "totalVotesPerDay": "Total votes per day",
+    "shareOfVotingPower": "Share of voting power",
+    "votingPowerPerDay": "Voting power per day"
   },
   "comment_box": {
     "title": "Boîte de commentaires",
