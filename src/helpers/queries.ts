@@ -1,13 +1,20 @@
 import gql from 'graphql-tag';
 
 export const VOTES_QUERY = gql`
-  query Votes($id: String!) {
-    votes(first: 100000, where: { proposal: $id }) {
+  query Votes($id: String!, $orderBy: String, $orderDirection: OrderDirection) {
+    votes(
+      first: 20000
+      where: { proposal: $id, vp_gt: 0 }
+      orderBy: $orderBy
+      orderDirection: $orderDirection
+    ) {
       id
       ipfs
       voter
       created
       choice
+      vp
+      vp_by_strategy
     }
   }
 `;
