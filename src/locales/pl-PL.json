@@ -57,10 +57,14 @@
   "receipt": "Potwierdzenie",
   "relayer": "Relayer",
   "verifyOnMycrypto": "Zweryfikuj potwierdzenie w MyCrypto",
+  "verifyOnSignatorio": "Verify on Signator.io",
   "isCore": "Główne",
+  "notificationsBlocked": "Your browser is blocking notifications",
   "seeInExplorer": "Zobacz w przeglądarce",
   "learnMore": "Dowiedz się więcej",
   "logout": "Wyloguj się",
+  "walletNotice": "Wallet notice",
+  "gnosisSafeWalletNotice": "Gnosis Safe wallet doesn't support signing messages. You can delegate your voting power to a wallet of your choice on our delegation page.",
   "continue": "Kontynuuj",
   "add": "Dodaj",
   "edit": "Edytuj",
@@ -112,6 +116,7 @@
   "duplicateProposal": "Duplikuj propozycję",
   "joinedSpaces": "Joined spaces",
   "joinSpaces": "Join spaces",
+  "delegateVotingPower": "Go to delegation page",
   "errors": {
     "required": "To pole jest wymagane",
     "minLength": "Minimalna długość wynosi {0}",
@@ -123,8 +128,8 @@
     "type": "Invalid type"
   },
   "create": {
-    "question": "Pytanie",
-    "content": "Jaka jest twoja propozycja?",
+    "question": "Ask a question...",
+    "content": "Tell more about your proposal (optional)",
     "preview": "Podgląd",
     "choices": "Opcje",
     "addChoice": "Dodaj opcję",
@@ -209,6 +214,7 @@
     "votingDelay": "Voting delay",
     "votingPeriod": "Voting period",
     "voting": "Voting",
+    "quorum": "Quorum",
     "type": "Type",
     "anyType": "Any"
   },
@@ -246,12 +252,19 @@
     "quadratic": "Quadratic voting",
     "ranked-choice": "Ranked choice voting",
     "weighted": "Weighted voting",
+    "basic": "Basic voting",
     "description": {
       "single-choice": "Each voter may select only one choice.",
       "approval": "Each voter may select any number of choices.",
       "quadratic": "Each voter may spread voting power across any number of choices. Results are calculated quadratically.",
       "ranked-choice": "Each voter may select and rank any number of choices. Results are calculated by instant-runoff counting method.",
-      "weighted": "Each voter may spread voting power across any number of choices."
+      "weighted": "Each voter may spread voting power across any number of choices.",
+      "basic": "Single choice voting with three choices: For, Against or Abstain"
+    },
+    "choices": {
+      "for": "For",
+      "against": "Against",
+      "abstain": "Abstain"
     }
   },
   "safeSnap": {
@@ -312,6 +325,13 @@
     "button_show": "Browse collection",
     "success_claim": "Your POAP is on your address",
     "error_claim": "There was a problem minting the token"
+  },
+  "charts": {
+    "charts": "Charts",
+    "noVotesYet": "There are no votes to visualize yet.",
+    "totalVotesPerDay": "Total votes per day",
+    "shareOfVotingPower": "Share of voting power",
+    "votingPowerPerDay": "Voting power per day"
   },
   "comment_box": {
     "title": "Comment box",
