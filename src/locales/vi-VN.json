@@ -57,10 +57,14 @@
   "receipt": "Nhận",
   "relayer": "Lặp lại",
   "verifyOnMycrypto": "Xác minh biên nhận trên MyCrypto",
+  "verifyOnSignatorio": "Verify on Signator.io",
   "isCore": "Cốt lõi",
+  "notificationsBlocked": "Your browser is blocking notifications",
   "seeInExplorer": "Xem trên trình duyệt",
   "learnMore": "Tìm hiểu thêm",
   "logout": "Đăng xuất",
+  "walletNotice": "Wallet notice",
+  "gnosisSafeWalletNotice": "Gnosis Safe wallet doesn't support signing messages. You can delegate your voting power to a wallet of your choice on our delegation page.",
   "continue": "Tiếp tục",
   "add": "Thêm vào",
   "edit": "Chỉnh sửa",
@@ -112,6 +116,7 @@
   "duplicateProposal": "Sao chép đề xuất",
   "joinedSpaces": "Các nhóm đã tham gia",
   "joinSpaces": "Tham gia nhóm",
+  "delegateVotingPower": "Go to delegation page",
   "errors": {
     "required": "Trường này là bắt buộc",
     "minLength": "Độ dài tối thiểu là {0}",
@@ -123,8 +128,8 @@
     "type": "Kiểu dữ liệu không hợp lệ"
   },
   "create": {
-    "question": "Câu hỏi",
-    "content": "Đề xuất của bạn là gì?",
+    "question": "Ask a question...",
+    "content": "Tell more about your proposal (optional)",
     "preview": "Xem trước",
     "choices": "Lựa chọn",
     "addChoice": "Thêm lựa chọn",
@@ -209,6 +214,7 @@
     "votingDelay": "Voting delay",
     "votingPeriod": "Voting period",
     "voting": "Voting",
+    "quorum": "Quorum",
     "type": "Type",
     "anyType": "Any"
   },
@@ -246,12 +252,19 @@
     "quadratic": "Biểu quyết bậc hai",
     "ranked-choice": "Ranked choice voting",
     "weighted": "Weighted voting",
+    "basic": "Basic voting",
     "description": {
       "single-choice": "Mỗi cử tri chỉ được chọn một sự lựa chọn.",
       "approval": "Mỗi cử tri có thể chọn bất kỳ số lượng lựa chọn nào.",
       "quadratic": "Each voter may spread voting power across any number of choices. Results are calculated quadratically.",
       "ranked-choice": "Each voter may select and rank any number of choices. Results are calculated by instant-runoff counting method.",
-      "weighted": "Each voter may spread voting power across any number of choices."
+      "weighted": "Each voter may spread voting power across any number of choices.",
+      "basic": "Single choice voting with three choices: For, Against or Abstain"
+    },
+    "choices": {
+      "for": "For",
+      "against": "Against",
+      "abstain": "Abstain"
     }
   },
   "safeSnap": {
@@ -312,6 +325,13 @@
     "button_show": "Bộ sưu tập",
     "success_claim": "POAP của bạn có trên địa chỉ của bạn",
     "error_claim": "Đã xảy ra sự cố khi in mã thông báo"
+  },
+  "charts": {
+    "charts": "Charts",
+    "noVotesYet": "There are no votes to visualize yet.",
+    "totalVotesPerDay": "Total votes per day",
+    "shareOfVotingPower": "Share of voting power",
+    "votingPowerPerDay": "Voting power per day"
   },
   "comment_box": {
     "title": "Khung bình luận",
