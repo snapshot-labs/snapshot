@@ -170,7 +170,7 @@
     "header": "提案",
     "new": "新提案",
     "noProposals": "这里还没有任何提案！",
-    "createProposal": "Create proposal",
+    "createProposal": "创建提案",
     "states": {
       "all": "所有",
       "core": "核心",
@@ -211,12 +211,12 @@
     "selectValidation": "选择验证",
     "validationParameters": "验证参数",
     "warningTextRecord": "您必须在 ENS 域上设置文本记录。",
-    "votingDelay": "Voting delay",
-    "votingPeriod": "Voting period",
-    "voting": "Voting",
-    "quorum": "Quorum",
-    "type": "Type",
-    "anyType": "Any"
+    "votingDelay": "投票延迟开始",
+    "votingPeriod": "投票时长",
+    "voting": "投票",
+    "quorum": "法定人数",
+    "type": "类型",
+    "anyType": "任意"
   },
   "setup": {
     "example": "例如 yam.eth",
@@ -228,10 +228,10 @@
     "copied": "已复制！",
     "proposalDeleted": "提案被删除",
     "somethingWentWrong": "哎呀，似乎出了点问题",
-    "saved": "Saved!",
-    "delegationSuccess": "Delegation successful",
-    "delegationRemoved": "Delegation removed",
-    "proposalCreated": "Proposal created",
+    "saved": "已保存！",
+    "delegationSuccess": "授权成功",
+    "delegationRemoved": "授权已移除",
+    "proposalCreated": "提案已创建",
     "voteSuccessful": "您已经成功行使了投票权！"
   },
   "explore": {
@@ -252,7 +252,7 @@
     "quadratic": "二次投票",
     "ranked-choice": "排序选择投票",
     "weighted": "权重投票",
-    "basic": "Basic voting",
+    "basic": "基本投票",
     "description": {
       "single-choice": "每个选民只能选择一个选项。",
       "approval": "每个选民可选择多个选项。",
