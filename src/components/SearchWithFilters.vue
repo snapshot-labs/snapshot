@@ -25,10 +25,6 @@ const searchOptions = computed(() => [
   {
     text: t('plugins'),
     action: 'plugins'
-  },
-  {
-    text: t('skins'),
-    action: 'skins'
   }
 ]);
 
