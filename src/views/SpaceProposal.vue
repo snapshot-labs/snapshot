@@ -102,24 +102,34 @@ async function loadProposal() {
 }
 
 async function loadResults() {
-  if (proposal.value.scores_state === 'final' || id === ens) {
+  const isFinal = proposal.value.scores_state === 'final' || id === ens;
+  if (isFinal) {
     results.value = {
       resultsByVoteBalance: proposal.value.scores,
       resultsByStrategyScore: proposal.value.scores_by_strategy,
       sumOfResultsBalance: proposal.value.scores_total
     };
     loadedResults.value = true;
+    proposalObj.value.votes = await getProposalVotes(id);
+    proposalObj.value.votes = proposalObj.value.votes.map(vote => {
+      vote.balance = vote.vp;
+      vote.scores = vote.vp_by_strategy;
+      return vote;
+    });
+    votes.value = proposalObj.value.votes;
+    loadedVotes.value = true;
+  } else {
+    proposalObj.value.votes = await getProposalVotes(id);
+    const resultsObj = await getResults(
+      props.space,
+      proposalObj.value.proposal,
+      proposalObj.value.votes
+    );
+    results.value = resultsObj.results;
+    loadedResults.value = true;
+    votes.value = resultsObj.votes;
+    loadedVotes.value = true;
   }
-  proposalObj.value.votes = await getProposalVotes(id);
-  const resultsObj = await getResults(
-    props.space,
-    proposalObj.value.proposal,
-    proposalObj.value.votes
-  );
-  if (proposal.value.id !== ens) results.value = resultsObj.results;
-  loadedResults.value = true;
-  votes.value = resultsObj.votes;
-  loadedVotes.value = true;
 }
 
 async function loadPower() {

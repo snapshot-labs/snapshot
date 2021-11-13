@@ -80,7 +80,7 @@ async function loadScores() {
       form.value.network.toString(),
       form.value.addresses,
       parseInt(form.value.snapshot),
-      import.meta.env.VITE_SCORES_URL + '/api/scores',
+      import.meta.env.VITE_SCORES_URL + '/api/scores'
     );
     console.log(scores.value);
     loading.value = false;

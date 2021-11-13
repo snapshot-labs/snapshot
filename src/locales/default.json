@@ -128,8 +128,8 @@
     "type": "Invalid type"
   },
   "create": {
-    "question": "Question",
-    "content": "What is your proposal?",
+    "question": "Ask a question...",
+    "content": "Tell more about your proposal (optional)",
     "preview": "Preview",
     "choices": "Choices",
     "addChoice": "Add choice",
