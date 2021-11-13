@@ -106,6 +106,12 @@ export const parseValueInput = input => {
   }
 };
 
+export function getNumberWithOrdinal(n) {
+  const s = ['th', 'st', 'nd', 'rd'],
+    v = n % 100;
+  return n + (s[(v - 20) % 10] || s[v] || s[0]);
+}
+
 export function explorerUrl(network, str: string, type = 'address'): string {
   return `${networks[network].explorer}/${type}/${str}`;
 }
