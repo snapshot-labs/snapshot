@@ -129,7 +129,12 @@ async function loadResults() {
 }
 
 async function loadPower() {
-  if (!web3Account.value || !proposal.value.author) return;
+  if (
+    !web3Account.value ||
+    !proposal.value.author ||
+    proposal.value.state === 'closed'
+  )
+    return;
   const response = await getPower(
     props.space,
     web3Account.value,
