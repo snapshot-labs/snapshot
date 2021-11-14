@@ -1,9 +1,7 @@
 <script setup>
 import { ref, computed, toRefs, watchEffect } from 'vue';
-import { useString } from '@/composables/useString';
 
 const props = defineProps({
-  modelValue: Array,
   open: Boolean,
   categories: Array
 });
@@ -12,10 +10,8 @@ const emit = defineEmits(['add', 'close']);
 
 const { open } = toRefs(props);
 
-const { toFirstUpperCase, toFirstLowerCase } = useString();
-
 const categories = computed(() => {
-  return toFirstUpperCase([
+  return [
     'protocol',
     'social',
     'investment',
@@ -24,7 +20,7 @@ const categories = computed(() => {
     'media',
     'creator',
     'collector'
-  ]);
+  ];
 });
 
 const checkedCategories = computed(() => props.categories);
@@ -37,9 +33,7 @@ watchEffect(() => {
 });
 
 function hasCategory(category) {
-  return selectedCategories.value.find(el =>
-    el.includes(category.toLowerCase())
-  );
+  return selectedCategories.value.find(el => el.includes(category));
 }
 
 const categoriesCounter = computed(() => {
@@ -49,15 +43,15 @@ const categoriesCounter = computed(() => {
 function selectCategoriesHandler(category) {
   if (hasCategory(category)) {
     selectedCategories.value = selectedCategories.value.filter(
-      el => el !== category.toLowerCase()
+      el => el !== category
     );
   } else if (categoriesCounter.value < 2) {
-    selectedCategories.value.push(category.toLowerCase());
+    selectedCategories.value.push(category);
   }
 }
 
 function handleSubmit() {
-  emit('add', toFirstLowerCase(selectedCategories.value));
+  emit('add', selectedCategories.value);
   emit('close');
 }
 
@@ -91,10 +85,10 @@ function handleClose() {
               hasCategory(category) || categoriesCounter < 2,
             '!border-skin-link': hasCategory(category)
           },
-          'relative font-bold link-color'
+          'relative capitalize'
         ]"
       >
-        {{ category }}
+        <h3 v-text="category" />
         <i
           v-if="hasCategory(category)"
           class="iconfont iconcheck1 absolute top-2 right-2 text-lg"

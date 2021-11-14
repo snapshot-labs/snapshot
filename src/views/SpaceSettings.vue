@@ -15,7 +15,6 @@ import { useCopy } from '@/composables/useCopy';
 import { useWeb3 } from '@/composables/useWeb3';
 import { calcFromSeconds, calcToSeconds } from '@/helpers/utils';
 import { useClient } from '@/composables/useClient';
-import { useString } from '@/composables/useString';
 
 const props = defineProps({
   spaceId: String,
@@ -32,13 +31,13 @@ const { t } = useI18n();
 const { copyToClipboard } = useCopy();
 const { web3 } = useWeb3();
 const { send, clientLoading } = useClient();
-const { toFirstUpperCase } = useString();
 const notify = inject('notify');
 
 const currentSettings = ref({});
 const currentTextRecord = ref('');
 const currentStrategy = ref({});
 const currentPlugin = ref({});
+const currentCategories = ref([]);
 const currentStrategyIndex = ref(false);
 const modalNetworksOpen = ref(false);
 const modalSkinsOpen = ref(false);
@@ -109,9 +108,7 @@ const votingPeriod = computed({
 });
 
 const categoriesString = computed(() => {
-  return form.value.categories
-    ? toFirstUpperCase(form.value.categories).join(', ')
-    : '';
+  return form.value.categories ? form.value.categories.join(', ') : '';
 });
 
 const { filteredPlugins } = useSearchFilters();
@@ -383,9 +380,9 @@ watchEffect(async () => {
                   {{ $t(`settings.categories`) }}
                 </template>
                 <template v-slot:selected>
-                  <div>
-                    <p>{{ categoriesString }}</p>
-                  </div>
+                  <p class="capitalize">
+                    {{ categoriesString }}
+                  </p>
                 </template>
               </UiInput>
               <UiInput
