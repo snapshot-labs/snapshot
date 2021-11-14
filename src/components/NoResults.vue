@@ -9,7 +9,7 @@ const text = computed(() => t('noResultsFound'));
 <template>
   <div class="mb-3 text-center">
     <Block v-if="block" class="pt-1">
-      <p>{{ text }}</p>
+      {{ text }}
     </Block>
     <div v-else>{{ text }}</div>
   </div>
