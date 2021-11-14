@@ -1,7 +1,5 @@
 <script setup>
 import { computed } from 'vue';
-import jsonexport from 'jsonexport/dist';
-import pkg from '@/../package.json';
 
 const props = defineProps({
   id: String,
@@ -27,32 +25,6 @@ const choices = computed(() =>
         props.results.resultsByVoteBalance[a.i]
     )
 );
-
-async function downloadReport() {
-  const obj = props.votes
-    .map(vote => {
-      return {
-        address: vote.voter,
-        choice: vote.choice,
-        balance: vote.balance,
-        timestamp: vote.created,
-        dateUtc: new Date(parseInt(vote.created) * 1e3).toUTCString(),
-        authorIpfsHash: vote.id
-        // relayerIpfsHash: vote[1].relayerIpfsHash
-      };
-    })
-    .sort((a, b) => a.timestamp - b.timestamp, 0);
-  try {
-    const csv = await jsonexport(obj);
-    const link = document.createElement('a');
-    link.setAttribute('href', `data:text/csv;charset=utf-8,${csv}`);
-    link.setAttribute('download', `${pkg.name}-report-${props.id}.csv`);
-    document.body.appendChild(link);
-    link.click();
-  } catch (e) {
-    console.error(e);
-  }
-}
 </script>
 
 <template>
@@ -107,11 +79,6 @@ async function downloadReport() {
         {{ _n(results.sumOfResultsBalance) }} /
         {{ _n(props.space.voting.quorum) }}
       </span>
-    </div>
-    <div v-if="ts >= proposal.start">
-      <UiButton @click="downloadReport" class="w-full mt-2">
-        {{ $t('downloadReport') }}
-      </UiButton>
     </div>
   </Block>
 </template>
