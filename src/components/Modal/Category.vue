@@ -10,18 +10,16 @@ const emit = defineEmits(['add', 'close']);
 
 const { open } = toRefs(props);
 
-const categories = computed(() => {
-  return [
-    'protocol',
-    'social',
-    'investment',
-    'grant',
-    'service',
-    'media',
-    'creator',
-    'collector'
-  ];
-});
+const categories = ref([
+  'protocol',
+  'social',
+  'investment',
+  'grant',
+  'service',
+  'media',
+  'creator',
+  'collector'
+]);
 
 const checkedCategories = computed(() => props.categories);
 
