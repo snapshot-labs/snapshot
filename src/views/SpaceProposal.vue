@@ -45,7 +45,6 @@ const results = ref({});
 const totalScore = ref(0);
 const scores = ref([]);
 const modalStrategiesOpen = ref(false);
-const proposalObj = ref({});
 
 const ens =
   '0xd810c4cf2f09737a6f833f1ec51eaa5504cbc0afeeb883a21a7e1c91c8a597e4';
@@ -87,8 +86,7 @@ function clickVote() {
 }
 
 async function loadProposal() {
-  proposalObj.value.proposal = await getProposal(id);
-  proposal.value = proposalObj.value.proposal;
+  proposal.value = await getProposal(id);
   // Redirect to proposal spaceId if it doesn't match route key
   if (
     route.name === 'spaceProposal' &&
@@ -110,20 +108,18 @@ async function loadResults() {
       sumOfResultsBalance: proposal.value.scores_total
     };
     loadedResults.value = true;
-    proposalObj.value.votes = await getProposalVotes(id);
-    proposalObj.value.votes = proposalObj.value.votes.map(vote => {
+    votes.value = (await getProposalVotes(id)).map(vote => {
       vote.balance = vote.vp;
       vote.scores = vote.vp_by_strategy;
       return vote;
     });
-    votes.value = proposalObj.value.votes;
     loadedVotes.value = true;
   } else {
-    proposalObj.value.votes = await getProposalVotes(id);
+    votes.value = await getProposalVotes(id);
     const resultsObj = await getResults(
       props.space,
-      proposalObj.value.proposal,
-      proposalObj.value.votes
+      proposal.value,
+      votes.value
     );
     results.value = resultsObj.results;
     loadedResults.value = true;
