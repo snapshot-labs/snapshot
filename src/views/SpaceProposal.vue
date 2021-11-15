@@ -316,6 +316,7 @@ onMounted(async () => {
             :address="proposal.author"
             :profile="profiles[proposal.author]"
             :space="space"
+            :proposal="proposal"
             class="float-right"
           />
         </div>
@@ -356,7 +357,7 @@ onMounted(async () => {
           <div class="mb-1">
             <b>{{ $t('snapshot') }}</b>
             <a
-              :href="_explorer(space.network, proposal.snapshot, 'block')"
+              :href="_explorer(proposal.network, proposal.snapshot, 'block')"
               target="_blank"
               class="float-right"
             >
@@ -406,6 +407,7 @@ onMounted(async () => {
       :open="modalStrategiesOpen"
       @close="modalStrategiesOpen = false"
       :space="space"
+      :proposal="proposal"
       :strategies="strategies"
     />
     <ModalTerms
