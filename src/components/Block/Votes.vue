@@ -14,14 +14,18 @@ const props = defineProps({
 
 const format = getChoiceString;
 
-const { votes } = toRefs(props);
+const { votes, proposal } = toRefs(props);
 const { web3 } = useWeb3();
 
 const authorIpfsHash = ref('');
 const modalReceiptOpen = ref(false);
 
 const web3Account = computed(() => web3.value.account);
-
+const voteCount = computed(() =>
+  proposal.value.scores_state === 'final'
+    ? proposal.value.votes
+    : votes.value.length
+);
 const nbrVisibleVotes = ref(10);
 
 const displayMoreVotes = () => {
@@ -75,7 +79,7 @@ watch(nbrVisibleVotes, () => {
   <Block
     v-if="isZero()"
     :title="$t('votes')"
-    :counter="votes.length"
+    :counter="voteCount"
     :slim="true"
     :loading="!loaded"
   >
