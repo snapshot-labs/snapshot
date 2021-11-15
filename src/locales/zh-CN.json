@@ -46,7 +46,7 @@
   "deleteProposal": "删除提案",
   "demoSite": "这是演示站点，请尝试！",
   "removeDelegation": "移除授权",
-  "confirmRemove": "您确认要移除您的授權嗎？",
+  "confirmRemove": "你确定要移除对{}的授权吗？",
   "removeSpace": "用于空间 {0}",
   "confirmVote": "确认投票",
   "sureToVote": "您确定要投票给 \"{0}\" 吗？",
