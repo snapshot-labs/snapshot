@@ -379,9 +379,9 @@ watchEffect(async () => {
                   {{ $t(`settings.categories`) }}
                 </template>
                 <template v-slot:selected>
-                  <p class="capitalize">
+                  <span class="capitalize">
                     {{ categoriesString }}
-                  </p>
+                  </span>
                 </template>
               </UiInput>
               <UiInput
