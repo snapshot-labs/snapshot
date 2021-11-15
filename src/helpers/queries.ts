@@ -48,6 +48,7 @@ export const PROPOSAL_QUERY = gql`
       scores
       scores_by_strategy
       scores_total
+      votes
     }
   }
 `;

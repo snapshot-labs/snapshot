@@ -89,7 +89,7 @@ async function handleSubmit() {
           <a
             v-if="totalScore === 0"
             target="_blank"
-            href="https://docs.snapshot.org/faq#why-i-cant-vote"
+            href="https://github.com/snapshot-labs/snapshot/discussions/1015#discussioncomment-1599447"
             class="inline-block -mt-1 ml-1"
           >
             <Icon name="info" size="24" class="text-color" />
