@@ -68,6 +68,12 @@ VITE_HUB_URL=https://testnet.snapshot.org
 VITE_VIEW_SPACE=fabien.eth
 ```
 
+#### ENS Domain
+
+To create a new space you need to have an ENS domain and set a `snapshot` TEXT record, pointing to a file on IPFS, containing your space settings.
+
+If you don't have an ENS domain on the Ethereum mainnet or you don't want to use it, you can also register one on Rinkeby and set `VITE_DEFAULT_NETWORK=4` in your `.env.local`. Open the [ENS web interface](https://app.ens.domains) and connect your wallet to Rinkeby, then register your test domain and use it to create a new space.
+
 ## License
 
 [MIT](LICENSE).
