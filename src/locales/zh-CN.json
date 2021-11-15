@@ -209,7 +209,7 @@
     "editValidation": "编辑验证",
     "selectValidation": "选择验证",
     "validationParameters": "验证参数",
-    "warningTextRecord": "您必须在ENS域名上设置一个文本记录。",
+    "warningTextRecord": "您必须给ENS域名设置TXT记录。",
     "votingDelay": "投票延迟开始",
     "votingPeriod": "投票时长",
     "voting": "投票",
@@ -250,11 +250,11 @@
     "approval": "批准表决",
     "quadratic": "二次投票",
     "ranked-choice": "排序选择投票",
-    "weighted": "权重投票",
+    "weighted": "加权投票",
     "basic": "基本投票",
     "description": {
-      "single-choice": "每个选民只能选择一个选项。",
-      "approval": "每个选民可选择多个选项。",
+      "single-choice": "每个投票人只能选择一个选项。",
+      "approval": "每个投票人只能选择一个或多个选项。",
       "quadratic": "每个选民都可以在任何数量的选择中分配投票权。结果按四舍五入计算。",
       "ranked-choice": "每个选民都可以选择和排列任何数目的选择。结果是通过即时计算的。",
       "weighted": "每个选民都可以在任何选择中分散投票权。",
@@ -310,7 +310,7 @@
       "error": "出了些问题",
       "connectWallet": "连接钱包以查看执行详情",
       "switchChain": "将你的钱包切换到 {0} 以请求执行",
-      "question": "这个建议是否通过并满足了这个建议",
+      "question": "该提案是否通过并且是否符合",
       "criteria": "验收标准"
     }
   },
