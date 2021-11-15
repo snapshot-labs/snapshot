@@ -406,7 +406,6 @@ onMounted(async () => {
     <ModalStrategies
       :open="modalStrategiesOpen"
       @close="modalStrategiesOpen = false"
-      :space="space"
       :proposal="proposal"
       :strategies="strategies"
     />
