@@ -25,6 +25,8 @@ const checkedCategories = computed(() => props.categories);
 
 const selectedCategories = ref([]);
 
+selectedCategories.value = checkedCategories.value;
+
 function hasCategory(category) {
   return selectedCategories.value.find(el => el.includes(category));
 }
