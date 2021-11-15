@@ -14,35 +14,59 @@ Snapshot is an off-chain gasless multi-governance client with easy to verify and
 
 **[Telegram](https://telegram.snapshot.org)**
 
-## Project setup
+## Development Guide
 
-```
+The UI is built with [Vue 3](https://v3.vuejs.org/) (using [composition API](https://v3.vuejs.org/api/composition-api.html)) and [Tailwind CSS](https://tailwindcss.com/).
+
+If you use vscode, you might want to install [Volar](https://marketplace.visualstudio.com/items?itemName=johnsoncodehk.volar), [Volar TypeScript Plugin](https://marketplace.visualstudio.com/items?itemName=johnsoncodehk.vscode-typescript-vue-plugin)  and [Tailwind CSS IntelliSense](https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss) extensions.
+
+### Setup
+
+Fork the repository and clone it:
+
+```sh
+git clone git@github.com:<YOUR_USERNAME>/snapshot.git
+cd snapshot
+
+# init submodules, install dependencies, install git hooks
 yarn
-```
 
-### Compiles and hot-reloads for development
-
-```
+# compile and run dev server with hot-reload
 yarn dev
-```
 
-### Compiles and minifies for production
-
-```
+# compile and minify for production
 yarn build
-```
 
-### Lints and fixes files
-
-```
+# fix linting issues
 yarn run lint
 ```
 
-### Development Guide
+By default your local instance will connect to the hub at `https://testnet.snapshot.org` and you can use `http://localhost:3000/#/fabien.eth` for testing.
 
-Use `http://localhost:3000/#/fabien.eth` for testing your code.
+You can create a `.env.local` and overwrite the values from `.env`, e.g. to connect to your own local [hub](https://github.com/snapshot-labs/snapshot-hub) and [score API](https://github.com/snapshot-labs/snapshot-score).
 
-By default your instance will connect to the hub at `https://testnet.snapshot.org`. To change that (or other values) you can create a `.env.local` and overwrite the values from `.env`.
+### Overview
+
+Here is a rough overview of our main repositories.
+
+![image](https://user-images.githubusercontent.com/6792578/141847491-13251979-457d-4f4d-8f2a-39516a45332d.png)
+
+#### Git Submodules
+
+Plugins for the proposal page and some configuration for spaces is split out into two submodules, [snapshot-plugins](https://github.com/snapshot-labs/snapshot-plugins) and [snapshot-spaces](https://github.com/snapshot-labs/snapshot-spaces). When updating these repositories, there will be an automated pull request in this repository to update these submodules.
+
+Git hooks will take care of pointing the submodules to the correct commit, whenever you do a `git pull/merge/checkout`.
+
+#### Space Explorer or single DAO instance
+
+By default, all spaces from the hub your frontend is connected too, are listed on the frontpage. But DAOs can also set their own custom domain to point to snapshot.org and get it listed [here](https://github.com/snapshot-labs/snapshot-spaces/blob/master/spaces/domains.json). If accessed via such a domain, the UI will be limited to this space only.
+
+You can test this by setting `VITE_VIEW_SPACE` in your `.env.local` to one of the spaces in your hub.
+
+```
+VITE_HUB_URL=https://testnet.snapshot.org
+VITE_VIEW_SPACE=fabien.eth
+```
 
 ## License
 
