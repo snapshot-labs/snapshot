@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, toRefs, watchEffect } from 'vue';
+import { ref, computed, toRefs } from 'vue';
 
 const props = defineProps({
   open: Boolean,
@@ -10,7 +10,7 @@ const emit = defineEmits(['add', 'close']);
 
 const { open } = toRefs(props);
 
-const categories = ref([
+const categories = [
   'protocol',
   'social',
   'investment',
@@ -19,32 +19,23 @@ const categories = ref([
   'media',
   'creator',
   'collector'
-]);
+];
 
 const checkedCategories = computed(() => props.categories);
 
 const selectedCategories = ref([]);
-watchEffect(() => {
-  checkedCategories.value
-    ? (selectedCategories.value = checkedCategories.value)
-    : selectedCategories.value;
-});
 
 function hasCategory(category) {
   return selectedCategories.value.find(el => el.includes(category));
 }
 
-const categoriesCounter = computed(() => {
-  return selectedCategories.value ? selectedCategories.value.length : 0;
-});
-
 function selectCategoriesHandler(category) {
   if (hasCategory(category)) {
     selectedCategories.value = selectedCategories.value.filter(
-      el => el !== category
+      el => !el.includes(category)
     );
-  } else if (categoriesCounter.value < 2) {
-    selectedCategories.value.push(category);
+  } else if (selectedCategories.value.length < 2) {
+    selectedCategories.value = [...selectedCategories.value, category];
   }
 }
 
@@ -54,9 +45,7 @@ function handleSubmit() {
 }
 
 function handleClose() {
-  checkedCategories.value
-    ? (selectedCategories.value = checkedCategories.value)
-    : (selectedCategories.value = []);
+  selectedCategories.value = checkedCategories.value;
   emit('close');
 }
 </script>
@@ -80,7 +69,7 @@ function handleClose() {
         :class="[
           {
             'hover:border-skin-link cursor-pointer':
-              hasCategory(category) || categoriesCounter < 2,
+              hasCategory(category) || selectedCategories.length < 2,
             '!border-skin-link': hasCategory(category)
           },
           'relative capitalize'

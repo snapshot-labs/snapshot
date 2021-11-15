@@ -37,7 +37,6 @@ const currentSettings = ref({});
 const currentTextRecord = ref('');
 const currentStrategy = ref({});
 const currentPlugin = ref({});
-const currentCategories = ref([]);
 const currentStrategyIndex = ref(false);
 const modalNetworksOpen = ref(false);
 const modalSkinsOpen = ref(false);
