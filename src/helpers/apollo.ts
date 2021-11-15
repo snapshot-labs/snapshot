@@ -1,3 +1,4 @@
+import gql from 'graphql-tag';
 import {
   ApolloClient,
   createHttpLink,
@@ -20,5 +21,11 @@ export const apolloClient = new ApolloClient({
     query: {
       fetchPolicy: 'no-cache'
     }
-  }
+  },
+  typeDefs: gql`
+    enum OrderDirection {
+      asc
+      desc
+    }
+  `
 });

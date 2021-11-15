@@ -2,7 +2,12 @@
 import { ref, computed, watch, onMounted, inject } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
-import { getProposal, getResults, getPower } from '@/helpers/snapshot';
+import {
+  getProposal,
+  getResults,
+  getPower,
+  getProposalVotes
+} from '@/helpers/snapshot';
 import { useModal } from '@/composables/useModal';
 import { useTerms } from '@/composables/useTerms';
 import { useProfiles } from '@/composables/useProfiles';
@@ -33,13 +38,16 @@ const modalOpen = ref(false);
 const selectedChoices = ref(null);
 const loading = ref(true);
 const loadedResults = ref(false);
+const loadedVotes = ref(false);
 const proposal = ref({});
 const votes = ref([]);
 const results = ref({});
 const totalScore = ref(0);
 const scores = ref([]);
 const modalStrategiesOpen = ref(false);
-const proposalObj = ref({});
+
+const ens =
+  '0xd810c4cf2f09737a6f833f1ec51eaa5504cbc0afeeb883a21a7e1c91c8a597e4';
 
 const web3Account = computed(() => web3.value.account);
 const isCreator = computed(() => proposal.value.author === web3Account.value);
@@ -78,8 +86,7 @@ function clickVote() {
 }
 
 async function loadProposal() {
-  proposalObj.value = await getProposal(id);
-  proposal.value = proposalObj.value.proposal;
+  proposal.value = await getProposal(id);
   // Redirect to proposal spaceId if it doesn't match route key
   if (
     route.name === 'spaceProposal' &&
@@ -93,18 +100,41 @@ async function loadProposal() {
 }
 
 async function loadResults() {
-  const resultsObj = await getResults(
-    props.space,
-    proposalObj.value.proposal,
-    proposalObj.value.votes
-  );
-  results.value = resultsObj.results;
-  votes.value = resultsObj.votes;
-  loadedResults.value = true;
+  const isFinal = proposal.value.scores_state === 'final' || id === ens;
+  if (isFinal) {
+    results.value = {
+      resultsByVoteBalance: proposal.value.scores,
+      resultsByStrategyScore: proposal.value.scores_by_strategy,
+      sumOfResultsBalance: proposal.value.scores_total
+    };
+    loadedResults.value = true;
+    votes.value = (await getProposalVotes(id)).map(vote => {
+      vote.balance = vote.vp;
+      vote.scores = vote.vp_by_strategy;
+      return vote;
+    });
+    loadedVotes.value = true;
+  } else {
+    votes.value = await getProposalVotes(id);
+    const resultsObj = await getResults(
+      props.space,
+      proposal.value,
+      votes.value
+    );
+    results.value = resultsObj.results;
+    loadedResults.value = true;
+    votes.value = resultsObj.votes;
+    loadedVotes.value = true;
+  }
 }
 
 async function loadPower() {
-  if (!web3Account.value || !proposal.value.author) return;
+  if (
+    !web3Account.value ||
+    !proposal.value.author ||
+    proposal.value.state === 'closed'
+  )
+    return;
   const response = await getPower(
     props.space,
     web3Account.value,
@@ -245,7 +275,7 @@ onMounted(async () => {
       />
       <BlockVotes
         v-if="loaded"
-        :loaded="loadedResults"
+        :loaded="loadedVotes"
         :space="space"
         :proposal="proposal"
         :votes="votes"
@@ -256,6 +286,7 @@ onMounted(async () => {
         :id="id"
         :space="space"
         :proposal="proposal"
+        :votes="votes"
         :loadedResults="loadedResults"
       />
     </template>
