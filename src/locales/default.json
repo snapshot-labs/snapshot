@@ -127,8 +127,6 @@
     "type": "Invalid type"
   },
   "create": {
-    "question": "Question",
-    "content": "What is your proposal?",
     "question": "Ask a question...",
     "content": "Tell more about your proposal (optional)",
     "categorie(s)": "Select up to 2 categorie(s)",
