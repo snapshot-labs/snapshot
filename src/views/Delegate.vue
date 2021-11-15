@@ -317,16 +317,16 @@ onMounted(async () => {
         </UiButton>
       </Block>
     </template>
+    <teleport to="#modal">
+      <ModalClearDelegate
+        v-if="loaded"
+        :open="modalOpen"
+        @close="modalOpen = false"
+        @reload="load"
+        :id="currentId"
+        :delegate="currentDelegate"
+        :profiles="profiles"
+      />
+    </teleport>
   </Layout>
-  <teleport to="#modal">
-    <ModalClearDelegate
-      v-if="loaded"
-      :open="modalOpen"
-      @close="modalOpen = false"
-      @reload="load"
-      :id="currentId"
-      :delegate="currentDelegate"
-      :profiles="profiles"
-    />
-  </teleport>
 </template>

@@ -411,35 +411,35 @@ watchEffect(() => {
         </UiButton>
       </Block>
     </template>
-  </Layout>
-  <teleport to="#modal">
-    <ModalSelectDate
-      :value="form[selectedDate]"
-      :selectedDate="selectedDate"
-      :open="modalOpen"
-      @close="modalOpen = false"
-      @input="setDate"
-    />
-    <ModalProposalPlugins
-      :space="space"
-      :proposal="proposal"
-      v-model="form.metadata.plugins"
-      :open="modalProposalPluginsOpen"
-      @close="modalProposalPluginsOpen = false"
-    />
-    <ModalTerms
-      :open="modalTermsOpen"
-      :space="space"
-      @close="modalTermsOpen = false"
-      @accept="acceptTerms(), handleSubmit()"
-    />
+    <teleport to="#modal">
+      <ModalSelectDate
+        :value="form[selectedDate]"
+        :selectedDate="selectedDate"
+        :open="modalOpen"
+        @close="modalOpen = false"
+        @input="setDate"
+      />
+      <ModalProposalPlugins
+        :space="space"
+        :proposal="proposal"
+        v-model="form.metadata.plugins"
+        :open="modalProposalPluginsOpen"
+        @close="modalProposalPluginsOpen = false"
+      />
+      <ModalTerms
+        :open="modalTermsOpen"
+        :space="space"
+        @close="modalTermsOpen = false"
+        @accept="acceptTerms(), handleSubmit()"
+      />
 
-    <ModalVotingType
-      :open="modalVotingTypeOpen"
-      @close="modalVotingTypeOpen = false"
-      v-model:selected="form.type"
-    />
-  </teleport>
+      <ModalVotingType
+        :open="modalVotingTypeOpen"
+        @close="modalVotingTypeOpen = false"
+        v-model:selected="form.type"
+      />
+    </teleport>
+  </Layout>
 </template>
 
 <style>

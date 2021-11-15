@@ -386,33 +386,33 @@ onMounted(async () => {
         :loadedResults="loadedResults"
       />
     </template>
+    <teleport to="#modal">
+      <ModalConfirm
+        v-if="loaded"
+        :open="modalOpen"
+        @close="modalOpen = false"
+        @reload="loadProposal"
+        :space="space"
+        :proposal="proposal"
+        :id="id"
+        :selectedChoices="selectedChoices"
+        :totalScore="totalScore"
+        :scores="scores"
+        :snapshot="proposal.snapshot"
+        :strategies="strategies"
+      />
+      <ModalStrategies
+        :open="modalStrategiesOpen"
+        @close="modalStrategiesOpen = false"
+        :space="space"
+        :strategies="strategies"
+      />
+      <ModalTerms
+        :open="modalTermsOpen"
+        :space="space"
+        @close="modalTermsOpen = false"
+        @accept="acceptTerms(), (modalOpen = true)"
+      />
+    </teleport>
   </Layout>
-  <teleport to="#modal">
-    <ModalConfirm
-      v-if="loaded"
-      :open="modalOpen"
-      @close="modalOpen = false"
-      @reload="loadProposal"
-      :space="space"
-      :proposal="proposal"
-      :id="id"
-      :selectedChoices="selectedChoices"
-      :totalScore="totalScore"
-      :scores="scores"
-      :snapshot="proposal.snapshot"
-      :strategies="strategies"
-    />
-    <ModalStrategies
-      :open="modalStrategiesOpen"
-      @close="modalStrategiesOpen = false"
-      :space="space"
-      :strategies="strategies"
-    />
-    <ModalTerms
-      :open="modalTermsOpen"
-      :space="space"
-      @close="modalTermsOpen = false"
-      @accept="acceptTerms(), (modalOpen = true)"
-    />
-  </teleport>
 </template>

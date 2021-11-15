@@ -634,41 +634,41 @@ watchEffect(async () => {
         </UiButton>
       </Block>
     </template>
+    <teleport to="#modal">
+      <ModalNetworks
+        v-model="form.network"
+        :open="modalNetworksOpen"
+        @close="modalNetworksOpen = false"
+      />
+      <ModalSkins
+        v-model="form.skin"
+        :open="modalSkinsOpen"
+        @close="modalSkinsOpen = false"
+      />
+      <ModalStrategy
+        :open="modalStrategyOpen"
+        :strategy="currentStrategy"
+        @close="modalStrategyOpen = false"
+        @add="handleSubmitAddStrategy"
+      />
+      <ModalPlugins
+        :open="modalPluginsOpen"
+        :plugin="currentPlugin"
+        @close="modalPluginsOpen = false"
+        @add="handleSubmitAddPlugins"
+      />
+      <ModalValidation
+        :open="modalValidationOpen"
+        :validation="clone(form.validation)"
+        @close="modalValidationOpen = false"
+        @add="handleSubmitAddValidation"
+      />
+      <ModalVotingType
+        :open="modalVotingTypeOpen"
+        @close="modalVotingTypeOpen = false"
+        v-model:selected="form.voting.type"
+        allowAny
+      />
+    </teleport>
   </Layout>
-  <teleport to="#modal">
-    <ModalNetworks
-      v-model="form.network"
-      :open="modalNetworksOpen"
-      @close="modalNetworksOpen = false"
-    />
-    <ModalSkins
-      v-model="form.skin"
-      :open="modalSkinsOpen"
-      @close="modalSkinsOpen = false"
-    />
-    <ModalStrategy
-      :open="modalStrategyOpen"
-      :strategy="currentStrategy"
-      @close="modalStrategyOpen = false"
-      @add="handleSubmitAddStrategy"
-    />
-    <ModalPlugins
-      :open="modalPluginsOpen"
-      :plugin="currentPlugin"
-      @close="modalPluginsOpen = false"
-      @add="handleSubmitAddPlugins"
-    />
-    <ModalValidation
-      :open="modalValidationOpen"
-      :validation="clone(form.validation)"
-      @close="modalValidationOpen = false"
-      @add="handleSubmitAddValidation"
-    />
-    <ModalVotingType
-      :open="modalVotingTypeOpen"
-      @close="modalVotingTypeOpen = false"
-      v-model:selected="form.voting.type"
-      allowAny
-    />
-  </teleport>
 </template>

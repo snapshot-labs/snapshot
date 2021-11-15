@@ -237,13 +237,13 @@ onMounted(async () => {
         </div>
       </Block>
     </template>
+    <teleport to="#modal">
+      <ModalNetworks
+        :open="modalNetworksOpen"
+        @close="modalNetworksOpen = false"
+        v-model="form.network"
+        @update:modelValue="event => handleURLUpdate(event, 'networkUpdate')"
+      />
+    </teleport>
   </Layout>
-  <teleport to="#modal">
-    <ModalNetworks
-      :open="modalNetworksOpen"
-      @close="modalNetworksOpen = false"
-      v-model="form.network"
-      @update:modelValue="event => handleURLUpdate(event, 'networkUpdate')"
-    />
-  </teleport>
 </template>
