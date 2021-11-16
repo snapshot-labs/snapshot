@@ -151,6 +151,7 @@ export const SPACES_QUERY = gql`
       domain
       members
       admins
+      categories
       plugins
       voting {
         delay
