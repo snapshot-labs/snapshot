@@ -128,6 +128,7 @@
   },
   "create": {
     "question": "Ask a question...",
+    "categorie(s)": "Select up to 2 categorie(s)",
     "content": "Tell more about your proposal (optional)",
     "preview": "Podgląd",
     "choices": "Opcje",
@@ -194,6 +195,8 @@
     "customDomain": "Custom domain",
     "domain": "Nazwa domeny",
     "strategies": "Strategie(s)",
+    "categories": "Categorie(s)",
+    "selectCategories": "Select categories",
     "hideSpace": "Ukryj sekcje na stronie głównej",
     "addStrategy": "Dodaj strategię",
     "authors": "Autorzy",
