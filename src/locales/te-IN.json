@@ -128,6 +128,7 @@
   },
   "create": {
     "question": "Ask a question...",
+    "categorie(s)": "Select up to 2 categorie(s)",
     "content": "Tell more about your proposal (optional)",
     "preview": "పరిదృశ్యం",
     "choices": "ఎంపికలు",
@@ -194,6 +195,8 @@
     "customDomain": "Custom domain",
     "domain": "డొమైన్ పేరు",
     "strategies": "Strategie(s)",
+    "categories": "Categorie(s)",
+    "selectCategories": "Select categories",
     "hideSpace": "హోమ్‌పేజీ నుండి స్పేస్ దాచండి",
     "addStrategy": "వ్యూహాన్ని జోడించండి",
     "authors": "Authors",
