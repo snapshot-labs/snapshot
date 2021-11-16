@@ -128,6 +128,7 @@
   },
   "create": {
     "question": "Ask a question...",
+    "categorie(s)": "Select up to 2 categorie(s)",
     "content": "Tell more about your proposal (optional)",
     "preview": "Uddrag",
     "choices": "Valgmuligheder",
@@ -194,6 +195,8 @@
     "customDomain": "Custom domain",
     "domain": "Domænenavn",
     "strategies": "Strategier",
+    "categories": "Categorie(s)",
+    "selectCategories": "Select categories",
     "hideSpace": "strategierSide)",
     "addStrategy": "Tilføj strategi",
     "authors": "Authors",
