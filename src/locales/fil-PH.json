@@ -128,6 +128,7 @@
   },
   "create": {
     "question": "Ask a question...",
+    "categorie(s)": "Select up to 2 categorie(s)",
     "content": "Tell more about your proposal (optional)",
     "preview": "Ipakita",
     "choices": "Mga pagpipilian",
@@ -194,6 +195,8 @@
     "customDomain": "Custom na domain",
     "domain": "Domain name",
     "strategies": "\t\nMga estratehiya",
+    "categories": "Categorie(s)",
+    "selectCategories": "Select categories",
     "hideSpace": "Itago ang espasyo sa homepage",
     "addStrategy": "Add strategy",
     "authors": "Mga may-akda",
