@@ -1,9 +1,14 @@
 import gql from 'graphql-tag';
 
 export const VOTES_QUERY = gql`
-  query Votes($id: String!, $orderBy: String, $orderDirection: OrderDirection) {
+  query Votes(
+    $id: String!
+    $first: Int
+    $orderBy: String
+    $orderDirection: OrderDirection
+  ) {
     votes(
-      first: 20000
+      first: $first
       where: { proposal: $id, vp_gt: 0 }
       orderBy: $orderBy
       orderDirection: $orderDirection
@@ -146,6 +151,7 @@ export const SPACES_QUERY = gql`
       domain
       members
       admins
+      categories
       plugins
       voting {
         delay

@@ -41,6 +41,7 @@ const currentStrategyIndex = ref(false);
 const modalNetworksOpen = ref(false);
 const modalSkinsOpen = ref(false);
 const modalStrategyOpen = ref(false);
+const modalCategoryOpen = ref(false);
 const modalVotingTypeOpen = ref(false);
 const modalPluginsOpen = ref(false);
 const modalValidationOpen = ref(false);
@@ -51,6 +52,7 @@ const delayUnit = ref('h');
 const periodUnit = ref('h');
 const form = ref({
   strategies: [],
+  categories: [],
   plugins: {},
   filters: {},
   voting: {},
@@ -104,6 +106,10 @@ const votingPeriod = computed({
       : undefined)
 });
 
+const categoriesString = computed(() => {
+  return form.value.categories ? form.value.categories.join(', ') : '';
+});
+
 const { filteredPlugins } = useSearchFilters();
 const plugins = computed(() => filteredPlugins());
 
@@ -151,6 +157,7 @@ function handleReset() {
   if (currentSettings.value) return (form.value = currentSettings.value);
   form.value = {
     strategies: [],
+    categories: [],
     plugins: {},
     filters: {}
   };
@@ -166,6 +173,10 @@ function handleRemoveStrategy(i) {
   form.value.strategies = form.value.strategies.filter(
     (strategy, index) => index !== i
   );
+}
+
+function handleSubmitAddCategories(categories) {
+  form.value.categories = categories;
 }
 
 function handleAddStrategy() {
@@ -361,6 +372,16 @@ watchEffect(async () => {
                 </template>
                 <template v-slot:label>
                   {{ $t(`settings.network`) }}*
+                </template>
+              </UiInput>
+              <UiInput @click="modalCategoryOpen = true">
+                <template v-slot:label>
+                  {{ $t(`settings.categories`) }}
+                </template>
+                <template v-slot:selected>
+                  <span class="capitalize">
+                    {{ categoriesString }}
+                  </span>
                 </template>
               </UiInput>
               <UiInput
@@ -651,6 +672,12 @@ watchEffect(async () => {
       :strategy="currentStrategy"
       @close="modalStrategyOpen = false"
       @add="handleSubmitAddStrategy"
+    />
+    <ModalCategory
+      :open="modalCategoryOpen"
+      :categories="form.categories"
+      @close="modalCategoryOpen = false"
+      @add="handleSubmitAddCategories"
     />
     <ModalPlugins
       :open="modalPluginsOpen"
