@@ -128,6 +128,7 @@
   },
   "create": {
     "question": "Ask a question...",
+    "categorie(s)": "Select up to 2 categorie(s)",
     "content": "Tell more about your proposal (optional)",
     "preview": "시사",
     "choices": "선택된 사람",
@@ -194,6 +195,8 @@
     "customDomain": "사용자 도메인",
     "domain": "도메인 이름",
     "strategies": "전략(에스)",
+    "categories": "Categorie(s)",
+    "selectCategories": "Select categories",
     "hideSpace": "숨기기 공간 부터 홈페이지",
     "addStrategy": "전략 추가",
     "authors": "작성자",
