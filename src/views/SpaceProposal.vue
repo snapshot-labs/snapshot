@@ -108,7 +108,7 @@ async function loadResults() {
       sumOfResultsBalance: proposal.value.scores_total
     };
     loadedResults.value = true;
-    votes.value = (await getProposalVotes(id)).map(vote => {
+    votes.value = (await getProposalVotes(id, 100)).map(vote => {
       vote.balance = vote.vp;
       vote.scores = vote.vp_by_strategy;
       return vote;
