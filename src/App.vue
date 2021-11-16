@@ -57,7 +57,7 @@ watch(modalOpen, val => {
         <Topnav />
         <div class="pb-6">
           <router-view v-slot="{ Component }">
-            <transition name="fade" mode="out-in">
+            <transition name="fade-page" mode="out-in">
               <component :is="Component" />
             </transition>
           </router-view>

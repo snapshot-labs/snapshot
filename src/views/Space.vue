@@ -50,7 +50,7 @@ onMounted(() => loadExtentedSpaces([spaceId.value, from.value]));
     :loadExtentedSpaces="loadExtentedSpaces"
     v-slot="{ Component }"
   >
-    <transition name="fade" mode="out-in">
+    <transition name="fade-page" mode="out-in">
       <component :is="Component" />
     </transition>
   </router-view>

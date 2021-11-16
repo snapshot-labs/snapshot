@@ -173,8 +173,15 @@ select {
   transition: opacity 0.2s ease;
 }
 
+.fade-page-enter-active,
+.fade-page-leave-active {
+  transition: opacity 0.1s ease;
+}
+
 .fade-enter-from,
-.fade-leave-to {
+.fade-leave-to,
+.fade-page-enter-from,
+.fade-page-leave-to {
   opacity: 0;
 }
 
