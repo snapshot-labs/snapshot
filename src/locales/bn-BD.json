@@ -128,6 +128,7 @@
   },
   "create": {
     "question": "Ask a question...",
+    "categorie(s)": "Select up to 2 categorie(s)",
     "content": "Tell more about your proposal (optional)",
     "preview": "পূর্বরূপ",
     "choices": "বিকল্প",
@@ -194,6 +195,8 @@
     "customDomain": "Custom domain",
     "domain": "ডোমেন নাম",
     "strategies": "স্ট্রাটেজি",
+    "categories": "Categorie(s)",
+    "selectCategories": "Select categories",
     "hideSpace": "হোমপৃষ্ঠা থেকে স্থান লুকান",
     "addStrategy": "স্ট্রাটেজি যুক্ত করুন",
     "authors": "Authors",
