@@ -128,6 +128,7 @@
   },
   "create": {
     "question": "Ask a question...",
+    "categorie(s)": "Select up to 2 categorie(s)",
     "content": "Tell more about your proposal (optional)",
     "preview": "Pratinjau",
     "choices": "Pilihan",
@@ -194,6 +195,8 @@
     "customDomain": "Domain khusus",
     "domain": "Nama domain",
     "strategies": "Strategi",
+    "categories": "Categorie(s)",
+    "selectCategories": "Select categories",
     "hideSpace": "Sembunyikan ruang dari halaman beranda",
     "addStrategy": "Tambahkan strategi",
     "authors": "Pengarang",
