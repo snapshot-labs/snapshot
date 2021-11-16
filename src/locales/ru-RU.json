@@ -128,6 +128,7 @@
   },
   "create": {
     "question": "Ask a question...",
+    "categorie(s)": "Select up to 2 categorie(s)",
     "content": "Tell more about your proposal (optional)",
     "preview": "Предварительный просмотр",
     "choices": "Варианты ответов",
@@ -194,6 +195,8 @@
     "customDomain": "Пользовательский домен",
     "domain": "Доменное имя",
     "strategies": "Стратегия(и)",
+    "categories": "Categorie(s)",
+    "selectCategories": "Select categories",
     "hideSpace": "Скрыть раздел на главной страницы",
     "addStrategy": "Добавить стратегию",
     "authors": "Авторы",
