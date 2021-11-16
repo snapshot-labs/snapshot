@@ -46,9 +46,6 @@ const totalScore = ref(0);
 const scores = ref([]);
 const modalStrategiesOpen = ref(false);
 
-const ens =
-  '0xd810c4cf2f09737a6f833f1ec51eaa5504cbc0afeeb883a21a7e1c91c8a597e4';
-
 const web3Account = computed(() => web3.value.account);
 const isCreator = computed(() => proposal.value.author === web3Account.value);
 const loaded = computed(() => !props.spaceLoading && !loading.value);
@@ -100,8 +97,7 @@ async function loadProposal() {
 }
 
 async function loadResults() {
-  const isFinal = proposal.value.scores_state === 'final' || id === ens;
-  if (isFinal) {
+  if (proposal.value.scores_state === 'final') {
     results.value = {
       resultsByVoteBalance: proposal.value.scores,
       resultsByStrategyScore: proposal.value.scores_by_strategy,
