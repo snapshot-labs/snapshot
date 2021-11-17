@@ -93,6 +93,7 @@ watch(nbrVisibleVotes, () => {
         :profile="profiles[vote.voter]"
         :address="vote.voter"
         :space="space"
+        :proposal="proposal"
         class="column"
       />
       <div class="flex-auto text-center link-color">
