@@ -5,6 +5,7 @@ import { useUsername } from '@/composables/useUsername';
 const props = defineProps({
   address: String,
   space: Object,
+  proposal: Object,
   profile: Object
 });
 
@@ -45,7 +46,9 @@ watchEffect(() => {
         </div>
         <div class="m-4">
           <a
-            :href="_explorer(space ? space.network : '1', address)"
+            :href="
+              _explorer(proposal?.network || space?.network || '1', address)
+            "
             target="_blank"
             class="mb-2 block"
           >
