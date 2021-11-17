@@ -36,6 +36,7 @@ watchEffect(() => {
         name: 'spaceProposal',
         params: { key: proposal.space.id, id: proposal.id }
       }"
+      target="_blank"
     >
       <div>
         <div class="mb-2">
