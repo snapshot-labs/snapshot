@@ -4,7 +4,7 @@ import { apolloClient } from '@/helpers/apollo';
 import { PROPOSAL_QUERY, VOTES_QUERY } from '@/helpers/queries';
 import cloneDeep from 'lodash/cloneDeep';
 
-export async function getProposalVotes(proposalId: string) {
+export async function getProposalVotes(proposalId: string, first = 20000) {
   try {
     console.time('getProposalVotes');
     const response = await apolloClient.query({
@@ -12,7 +12,8 @@ export async function getProposalVotes(proposalId: string) {
       variables: {
         id: proposalId,
         orderBy: 'vp',
-        orderDirection: 'desc'
+        orderDirection: 'desc',
+        first
       }
     });
     console.timeEnd('getProposalVotes');
@@ -62,7 +63,7 @@ export async function getResults(space, proposal, votes) {
       const scores = await getScores(
         space.id,
         strategies,
-        space.network,
+        proposal.network,
         voters,
         parseInt(proposal.snapshot),
         import.meta.env.VITE_SCORES_URL + '/api/scores'
@@ -103,7 +104,7 @@ export async function getPower(space, address, proposal) {
     let scores: any = await getScores(
       space.id,
       strategies,
-      space.network,
+      proposal.network,
       [address],
       parseInt(proposal.snapshot),
       import.meta.env.VITE_SCORES_URL + '/api/scores'
