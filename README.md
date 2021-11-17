@@ -61,11 +61,11 @@ Git hooks will take care of pointing the submodules to the correct commit, whene
 
 By default, all spaces from the hub your frontend is connected too, are listed on the frontpage. But DAOs can also set their own custom domain to point to snapshot.org and get it listed [here](https://github.com/snapshot-labs/snapshot-spaces/blob/master/spaces/domains.json). If accessed via such a domain, the UI will be limited to this space only.
 
-You can test this by setting `VITE_VIEW_SPACE` in your `.env.local` to one of the spaces in your hub.
+You can test this by setting `VITE_VIEW_AS_SPACE` in your `.env.local` to one of the spaces in your hub.
 
 ```
 VITE_HUB_URL=https://testnet.snapshot.org
-VITE_VIEW_SPACE=fabien.eth
+VITE_VIEW_AS_SPACE=fabien.eth
 ```
 
 #### ENS Domain
