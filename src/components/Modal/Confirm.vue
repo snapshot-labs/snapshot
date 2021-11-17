@@ -66,7 +66,7 @@ async function handleSubmit() {
         <div class="flex">
           <span v-text="$t('snapshot')" class="flex-auto text-color mr-1" />
           <a
-            :href="_explorer(space.network, proposal.snapshot, 'block')"
+            :href="_explorer(proposal.network, proposal.snapshot, 'block')"
             target="_blank"
             class="float-right"
           >

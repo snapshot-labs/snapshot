@@ -229,7 +229,7 @@ onMounted(async () => {
           v-for="score in Object.keys(scores[0])"
           :key="score"
         >
-          <User :address="score" />
+          <User :address="score" :space="form" />
           <span>
             {{ _n(scores[0][score]) }}
             {{ JSON.parse(form.params).symbol }}
