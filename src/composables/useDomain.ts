@@ -8,7 +8,7 @@ export function useDomain() {
   let domain = domains[domainName];
 
   if (env === 'local') {
-    domain = import.meta.env.VITE_VIEW_SPACE ?? domain;
+    domain = import.meta.env.VITE_VIEW_AS_SPACE ?? domain;
   }
 
   return { domain, env };
