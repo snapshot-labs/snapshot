@@ -63,7 +63,7 @@ export async function getResults(space, proposal, votes) {
       const scores = await getScores(
         space.id,
         strategies,
-        space.network,
+        proposal.network,
         voters,
         parseInt(proposal.snapshot),
         import.meta.env.VITE_SCORES_URL + '/api/scores'
@@ -104,7 +104,7 @@ export async function getPower(space, address, proposal) {
     let scores: any = await getScores(
       space.id,
       strategies,
-      space.network,
+      proposal.network,
       [address],
       parseInt(proposal.snapshot),
       import.meta.env.VITE_SCORES_URL + '/api/scores'
