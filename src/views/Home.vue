@@ -15,7 +15,7 @@ const { explore } = useApp();
 const { followingSpaces } = useFollowSpace();
 
 function selectCategory(c) {
-  category.value = c;
+  category.value = c === category.value ? '' : c;
 }
 
 const testnetNetworks = Object.entries(networks)
@@ -82,12 +82,13 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
           </UiButton>
           <div class="sliding ml-3">
             <UiButton
-              @click="selectCategory(category)"
-              v-for="(category, i) in categories"
+              @click="selectCategory(c)"
+              v-for="(c, i) in categories"
               :key="i"
               class="pl-3 pr-3 mr-2 capitalize"
+              :class="{ 'button--active': c === category }"
             >
-              {{ category }}
+              {{ c }}
             </UiButton>
           </div>
         </div>
