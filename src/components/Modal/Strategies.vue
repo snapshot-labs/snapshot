@@ -1,7 +1,11 @@
 <script setup>
 import { isAddress } from '@ethersproject/address';
 
-defineProps({ open: Boolean, strategies: Object, space: Object });
+defineProps({
+  open: Boolean,
+  strategies: Object,
+  proposal: Object
+});
 
 defineEmits(['close']);
 </script>
@@ -23,7 +27,7 @@ defineEmits(['close']);
             <span v-text="key" class="flex-auto text-color mr-1" />
             <a
               v-if="key === 'address' || isAddress(option)"
-              :href="_explorer(space.network, option)"
+              :href="_explorer(proposal.network, option)"
               target="_blank"
               class="block"
             >
