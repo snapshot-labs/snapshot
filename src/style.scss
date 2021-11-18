@@ -258,8 +258,14 @@ select {
 }
 
 .sliding {
-  overflow: auto;
   white-space: nowrap;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  overflow-y: scroll;
+}
+
+.sliding::-webkit-scrollbar {
+  display: none;
 }
 
 .border-color {

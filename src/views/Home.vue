@@ -7,10 +7,16 @@ import { useUnseenProposals } from '@/composables/useUnseenProposals';
 import { useScrollMonitor } from '@/composables/useScrollMonitor';
 import { useApp } from '@/composables/useApp';
 import { useFollowSpace } from '@/composables/useFollowSpace';
+import categories from '@/helpers/categories.json';
 
+const category = ref('');
 const route = useRoute();
 const { explore } = useApp();
 const { followingSpaces } = useFollowSpace();
+
+function selectCategory(c) {
+  category.value = c;
+}
 
 const testnetNetworks = Object.entries(networks)
   .filter(network => network[1].testnet)
@@ -40,15 +46,19 @@ const orderedSpaces = computed(() => {
         testnet
       };
     })
-    .filter(space => !space.private)
-    .filter(space => space.network === network || !network);
+    .filter(
+      space =>
+        !space.private &&
+        (!category.value ||
+          (space.categories && space.categories.includes(category.value))) &&
+        (space.network === network || !network) &&
+        JSON.stringify(space).toLowerCase().includes(q.toLowerCase())
+    );
 
   return orderBy(
     list,
     ['following', 'testnet', 'score'],
     ['desc', 'asc', 'desc']
-  ).filter(space =>
-    JSON.stringify(space).toLowerCase().includes(q.toLowerCase())
   );
 });
 
@@ -66,12 +76,22 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
   <div>
     <div class="text-center mb-4 mx-auto">
       <Container class="flex items-center">
-        <div class="flex-auto text-left flex">
-          <UiButton class="pl-3 pr-0 w-full md:w-7/12">
+        <div class="flex-auto text-left flex overflow-hidden">
+          <UiButton class="pl-3 pr-0 w-full md:w-8/12">
             <SearchWithFilters />
           </UiButton>
+          <div class="sliding ml-3">
+            <UiButton
+              @click="selectCategory(category)"
+              v-for="(category, i) in categories"
+              :key="i"
+              class="pl-3 pr-3 mr-2 capitalize"
+            >
+              {{ category }}
+            </UiButton>
+          </div>
         </div>
-        <div class="ml-3 text-right hidden sm:block lg:w-4/12">
+        <div class="ml-3 text-right hidden md:block lg:w-3/12">
           {{ $tc('spaceCount', [_n(orderedSpaces.length)]) }}
         </div>
       </Container>

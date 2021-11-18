@@ -1,5 +1,6 @@
 <script setup>
 import { ref, computed, toRefs, watchEffect } from 'vue';
+import categories from '@/helpers/categories.json';
 
 const props = defineProps({
   open: Boolean,
@@ -9,17 +10,6 @@ const props = defineProps({
 const emit = defineEmits(['add', 'close']);
 
 const { open } = toRefs(props);
-
-const categories = [
-  'protocol',
-  'social',
-  'investment',
-  'grant',
-  'service',
-  'media',
-  'creator',
-  'collector'
-];
 
 const checkedCategories = computed(() => props.categories);
 
