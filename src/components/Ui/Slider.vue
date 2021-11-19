@@ -2,14 +2,14 @@
 import SwiperCore, { FreeMode, Pagination, Navigation } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import 'swiper/css';
-import "swiper/css/free-mode"
-import "swiper/css/pagination"
-import "swiper/css/navigation"
+import 'swiper/css/free-mode';
+import 'swiper/css/pagination';
+import 'swiper/css/navigation';
 
 // install Swiper modules
-SwiperCore.use([ FreeMode, Pagination, Navigation ]);
+SwiperCore.use([FreeMode, Pagination, Navigation]);
 
-const props = defineProps({
+defineProps({
   items: Array,
   pagination: {
     type: [Object, Boolean],
@@ -31,7 +31,7 @@ const props = defineProps({
     type: Boolean,
     default: true
   }
-})
+});
 </script>
 
 <template>
@@ -43,7 +43,7 @@ const props = defineProps({
     :navigation="navigation"
     class="mySwiper overflow-hidden"
   >
-    <swiper-slide v-for="item in items">
+    <swiper-slide v-for="(item, i) in items" :key="i">
       <slot :item="item"></slot>
     </swiper-slide>
   </swiper>
@@ -53,7 +53,7 @@ const props = defineProps({
 .swiper {
   --swiper-navigation-size: 16px;
   --swiper-navigation-color: #666;
-  
+
   .swiper-button-prev,
   .swiper-button-next {
     top: 0;
@@ -77,24 +77,29 @@ const props = defineProps({
       cursor: pointer;
       color: var(--swiper-navigation-color, var(--swiper-theme-color));
       // some heave dropshadow to make the arrows stand out
-      filter: drop-shadow(0 0 5px #fff)
-              drop-shadow(0 0 5px #fff)
-              drop-shadow(0 0 5px #fff)
-              drop-shadow(0 0 10px #fff)
-              drop-shadow(0 0 10px #fff)
-              drop-shadow(0 0 10px #fff);
+      filter: drop-shadow(0 0 5px #fff) drop-shadow(0 0 5px #fff)
+        drop-shadow(0 0 5px #fff) drop-shadow(0 0 10px #fff)
+        drop-shadow(0 0 10px #fff) drop-shadow(0 0 10px #fff);
     }
   }
   .swiper-button-prev,
   .swiper-rtl .swiper-button-next {
     left: 0;
-    background: linear-gradient(90deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%);
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 1) 0%,
+      rgba(255, 255, 255, 0) 100%
+    );
     justify-content: start;
   }
   .swiper-button-next,
   .swiper-rtl .swiper-button-prev {
     right: 0;
-    background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 100%);
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 1) 100%
+    );
     justify-content: end;
   }
 
