@@ -78,19 +78,17 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
       <UiButton class="pl-3 pr-0 w-full md:w-8/12">
         <SearchWithFilters />
       </UiButton>
-      <div class="sliding ml-3 relative whitespace-nowrap overflow-x-hidden">
-        <div class="overflow-x-scroll overflow-y-hidden no-scrollbar">
+      <UiSlider :items="categories" class="ml-3" :navigation="true">
+        <template v-slot:default="props">
           <UiButton
-            @click="selectCategory(c)"
-            v-for="(c, i) in categories"
-            :key="i"
-            class="pl-3 pr-3 mr-2 capitalize"
-            :class="{ 'button--active': c === category }"
+            @click="selectCategory(props.item)"
+            class="px-3 capitalize"
+            :class="{ 'button--active': props.item === category }"
           >
-            {{ c }}
+            {{ props.item }}
           </UiButton>
-        </div>
-      </div>
+        </template>
+      </UiSlider>
       <div class="ml-3 text-right hidden md:block whitespace-nowrap">
         {{ $tc('spaceCount', [_n(orderedSpaces.length)]) }}
       </div>
