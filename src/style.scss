@@ -264,14 +264,23 @@ select {
 }
 
 .sliding {
-  white-space: nowrap;
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-  overflow-y: scroll;
-}
-
-.sliding::-webkit-scrollbar {
-  display: none;
+  &::before,
+  &::after {
+    position: absolute;
+    top: 0;
+    content: '';
+    width: 10%;
+    height: 100%;
+    background: rgba(255,255,255, 0);
+  }
+  &::before {
+    left: 0;
+    background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 100%);
+  }
+  &::after {
+    right: 0;
+    background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%);
+  }
 }
 
 .border-color {
