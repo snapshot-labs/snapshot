@@ -74,29 +74,25 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
 
 <template>
   <div>
-    <div class="text-center mb-4 mx-auto">
-      <Container class="flex items-center">
-        <div class="flex-auto text-left flex overflow-hidden">
-          <UiButton class="pl-3 pr-0 w-full md:w-8/12">
-            <SearchWithFilters />
-          </UiButton>
-          <div class="sliding ml-3">
-            <UiButton
-              @click="selectCategory(c)"
-              v-for="(c, i) in categories"
-              :key="i"
-              class="pl-3 pr-3 mr-2 capitalize"
-              :class="{ 'button--active': c === category }"
-            >
-              {{ c }}
-            </UiButton>
-          </div>
-        </div>
-        <div class="ml-3 text-right hidden md:block lg:w-3/12">
-          {{ $tc('spaceCount', [_n(orderedSpaces.length)]) }}
-        </div>
-      </Container>
-    </div>
+    <Container class="flex items-center mb-4">
+      <UiButton class="pl-3 pr-0 w-full md:w-8/12">
+        <SearchWithFilters />
+      </UiButton>
+      <div class="sliding ml-3">
+        <UiButton
+          @click="selectCategory(c)"
+          v-for="(c, i) in categories"
+          :key="i"
+          class="pl-3 pr-3 mr-2 capitalize"
+          :class="{ 'button--active': c === category }"
+        >
+          {{ c }}
+        </UiButton>
+      </div>
+      <div class="ml-3 text-right hidden md:block lg:w-3/12">
+        {{ $tc('spaceCount', [_n(orderedSpaces.length)]) }}
+      </div>
+    </Container>
     <Container :slim="true">
       <div class="grid lg:grid-cols-4 md:grid-cols-3 gap-4">
         <a
