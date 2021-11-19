@@ -89,7 +89,7 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
           {{ c }}
         </UiButton>
       </div>
-      <div class="ml-3 text-right hidden md:block lg:w-3/12">
+      <div class="ml-3 text-right hidden md:block whitespace-nowrap">
         {{ $tc('spaceCount', [_n(orderedSpaces.length)]) }}
       </div>
     </Container>
