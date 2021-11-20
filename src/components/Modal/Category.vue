@@ -1,5 +1,6 @@
 <script setup>
 import { ref, computed, toRefs, watchEffect } from 'vue';
+import { useCategories } from '@/composables/useCategories';
 
 const props = defineProps({
   open: Boolean,
