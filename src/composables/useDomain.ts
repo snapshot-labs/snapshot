@@ -5,7 +5,11 @@ export function useDomain() {
   let env = 'master';
   if (domainName.includes('localhost')) env = 'local';
   if (domainName === 'demo.snapshot.org') env = 'develop';
-  const domain = domains[domainName];
+  let domain = domains[domainName];
+
+  if (env === 'local') {
+    domain = import.meta.env.VITE_VIEW_AS_SPACE ?? domain;
+  }
 
   return { domain, env };
 }
