@@ -84,7 +84,7 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
           <UiButton
             @click="selectCategory(props.item)"
             class="px-3 capitalize"
-            :class="{ 'button--active': props.item === category }"
+            :class="{ 'button--secondary': props.item === category }"
           >
             {{ props.item }}
             <span class="text-gray-300 ml-1">
@@ -94,7 +94,7 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
         </template>
       </UiSlider>
       <div class="ml-3 text-right hidden md:block whitespace-nowrap">
-        {{ $tc('spaceCount', [_n(orderedSpaces.length)]) }}
+        {{ $tc('spaceCount', [_n(Object.keys(explore.spaces).length)]) }}
       </div>
     </Container>
     <Container :slim="true">
