@@ -43,8 +43,8 @@ defineProps({
     :navigation="navigation"
     class="mySwiper overflow-hidden"
   >
-    <swiper-slide v-for="(item, i) in items" :key="i">
-      <slot :item="item"></slot>
+    <swiper-slide v-for="(item, key) in items" :key="key">
+      <slot :item="item" :key="key"></slot>
     </swiper-slide>
   </swiper>
 </template>
