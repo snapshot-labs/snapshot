@@ -83,8 +83,11 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
         <template v-slot:default="props">
           <UiButton
             @click="selectCategory(props.item)"
-            class="px-3 capitalize"
-            :class="{ 'button--secondary': props.item === category }"
+            class="px-3 capitalize transition-opacity opacity-50 hover:opacity-100"
+            :class="{
+              'button--active': props.item === category,
+              'opacity-100': props.item === category || !category
+            }"
           >
             {{ props.item }}
             <span class="text-gray-300 ml-1">
