@@ -7,12 +7,13 @@ import { useUnseenProposals } from '@/composables/useUnseenProposals';
 import { useScrollMonitor } from '@/composables/useScrollMonitor';
 import { useApp } from '@/composables/useApp';
 import { useFollowSpace } from '@/composables/useFollowSpace';
-import categories from '@/helpers/categories.json';
+import { useCategories } from '@/composables/useCategories';
 
 const category = ref('');
 const route = useRoute();
 const { explore } = useApp();
 const { followingSpaces } = useFollowSpace();
+const { categories, spacesPerCategory } = useCategories();
 
 function selectCategory(c) {
   category.value = c === category.value ? '' : c;
@@ -86,6 +87,9 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
             :class="{ 'button--active': props.item === category }"
           >
             {{ props.item }}
+            <span class="text-gray-300 ml-1">
+              {{ spacesPerCategory[props.item] }}
+            </span>
           </UiButton>
         </template>
       </UiSlider>

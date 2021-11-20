@@ -1,11 +1,12 @@
 <script setup>
 import { ref, computed, toRefs, watchEffect } from 'vue';
-import categories from '@/helpers/categories.json';
 
 const props = defineProps({
   open: Boolean,
   categories: Array
 });
+
+const { categories } = useCategories();
 
 const emit = defineEmits(['add', 'close']);
 
