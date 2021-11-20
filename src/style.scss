@@ -248,6 +248,12 @@ select {
   }
 }
 
+.hover-border {
+  &:hover {
+    border-color: var(--link-color) !important;
+  }
+}
+
 .markdown-body blockquote {
   color: var(--text-color);
   border-left-color: var(--text-color);
