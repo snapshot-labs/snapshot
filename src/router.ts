@@ -1,5 +1,4 @@
 import { createRouter, createWebHashHistory, RouteLocation } from 'vue-router';
-import domains from '@/../snapshot-spaces/spaces/domains.json';
 import Home from '@/views/Home.vue';
 import SpaceProposal from '@/views/SpaceProposal.vue';
 import SpaceCreate from '@/views/SpaceCreate.vue';
@@ -14,8 +13,9 @@ import Space from '@/views/Space.vue';
 import SpaceAbout from '@/views/SpaceAbout.vue';
 import SpaceProposals from '@/views/SpaceProposals.vue';
 import aliases from '@/../snapshot-spaces/spaces/aliases.json';
+import { useDomain } from '@/composables/useDomain';
 
-const domainName = window.location.hostname;
+const { domain } = useDomain();
 
 const spaceChildrenRoutes = [
   {
@@ -46,7 +46,7 @@ const spaceChildrenRoutes = [
   }
 ];
 
-const homeRoutes = domains[domainName]
+const homeRoutes = domain
   ? [
       {
         path: '/',
@@ -63,7 +63,7 @@ const homeRoutes = domains[domainName]
       }
     ];
 
-const spaceRoutes = domains[domainName]
+const spaceRoutes = domain
   ? [
       /**
       Its quite hard to match /abc/pqr/abc without using a full pathMatch from vue router.
@@ -80,7 +80,7 @@ const spaceRoutes = domains[domainName]
           const isSpaceRoute =
             Object.keys(aliases).includes(to.params.pathMatch[0]) ||
             Object.values(aliases).includes(to.params.pathMatch[0]) ||
-            domains[domainName] === to.params.pathMatch[0];
+            domain === to.params.pathMatch[0];
 
           if (!isSpaceRoute) {
             return { path: '/' };

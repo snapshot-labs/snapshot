@@ -7,7 +7,7 @@ function getLogoUrl(key) {
 </script>
 
 <template>
-  <Block>
+  <Block class="hover-border">
     <div class="flex items-center mb-1">
       <a
         :href="`https://github.com/snapshot-labs/snapshot-plugins/tree/master/src/plugins/${plugin.key}`"
