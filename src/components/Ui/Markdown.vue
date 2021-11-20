@@ -9,7 +9,8 @@ const props = defineProps({ body: String });
 const remarkable = new Remarkable({
   html: false,
   breaks: true,
-  typographer: false
+  typographer: false,
+  linkTarget: '_blank'
 }).use(linkify);
 
 const markdown = computed(() => {
