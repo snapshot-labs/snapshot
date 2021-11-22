@@ -53,7 +53,7 @@ function openReceiptModal(vote) {
   modalReceiptOpen.value = true;
 }
 
-const { profiles, updateAddressArray } = useProfiles();
+const { profiles, loadProfiles } = useProfiles();
 
 watch(votes, () => {
   const votes = props.votes;
@@ -69,7 +69,7 @@ watch(votes, () => {
 });
 
 watch(visibleVotes, () => {
-  updateAddressArray(
+  loadProfiles(
     sortedVotes.value.slice(0, nbrVisibleVotes.value).map(vote => vote.voter)
   );
 });
