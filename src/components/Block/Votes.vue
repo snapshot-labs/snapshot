@@ -68,7 +68,7 @@ watch(votes, () => {
   sortedVotes.value = votes;
 });
 
-watch(nbrVisibleVotes, () => {
+watch([nbrVisibleVotes, sortedVotes], () => {
   updateAddressArray(
     sortedVotes.value.slice(0, nbrVisibleVotes.value).map(vote => vote.voter)
   );
