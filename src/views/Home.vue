@@ -23,10 +23,10 @@ const orderedSpaces = computed(() => {
     .map(key => {
       const following = followingSpaces.value.some(s => s === key);
       const followers = explore.value.spaces[key].followers ?? 0;
-      const voters1d = explore.value.spaces[key].voters_1d ?? 0;
+      // const voters1d = explore.value.spaces[key].voters_1d ?? 0;
       const followers1d = explore.value.spaces[key].followers_1d ?? 0;
       // const proposals1d = explore.value.spaces[key].proposals_1d ?? 0;
-      let score = voters1d + followers1d + followers / 4;
+      let score = followers1d + followers / 4;
       if (explore.value.spaces[key].network !== '1') score = score / 6;
       const testnet = testnetNetworks.includes(
         explore.value.spaces[key].network
