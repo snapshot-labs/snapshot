@@ -62,10 +62,17 @@ export function useWeb3() {
       console.log('Provider', auth.provider.value);
       let network, accounts;
       try {
-        [network, accounts] = await Promise.all([
-          auth.web3.getNetwork(),
-          auth.web3.listAccounts()
-        ]);
+        const connector = localStorage.getItem('_lock.connector');
+        if (connector === 'gnosis') {
+          const { chainId: safeChainId, safeAddress } = auth.web3.provider.safe;
+          network = { chainId: safeChainId };
+          accounts = [safeAddress];
+        } else {
+          [network, accounts] = await Promise.all([
+            auth.web3.getNetwork(),
+            auth.web3.listAccounts()
+          ]);
+        }
       } catch (e) {
         console.log(e);
       }
