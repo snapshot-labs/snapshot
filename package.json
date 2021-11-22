@@ -79,9 +79,7 @@
   },
   "resolutions": {
     "ansi-regex": "^5.0.1",
-    "axios": "^0.21.1",
-    "readable-stream": "2.3.7",
-    "keccak": "3.0.1"
+    "axios": "^0.21.1"
   },
   "license": "MIT",
   "repository": "snapshot-labs/snapshot"
