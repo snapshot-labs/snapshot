@@ -62,7 +62,7 @@ export function useWeb3() {
       console.log('Provider', auth.provider.value);
       let network, accounts;
       try {
-        const connector = localStorage.getItem('_lock.connector');
+        const connector = auth.provider.value?.connectorName;
         if (connector === 'gnosis') {
           const { chainId: safeChainId, safeAddress } = auth.web3.provider.safe;
           network = { chainId: safeChainId };
