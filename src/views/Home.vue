@@ -40,7 +40,7 @@ const orderedSpaces = computed(() => {
         testnet
       };
     })
-    .filter(space => !space.private)
+    .filter(space => !space.private && space.id !== '0xmetamask.eth')
     .filter(space => space.network === network || !network);
 
   return orderBy(
