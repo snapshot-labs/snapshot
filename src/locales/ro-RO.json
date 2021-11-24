@@ -59,6 +59,7 @@
   "verifyOnSignatorio": "Verifică pe Signator.io",
   "isCore": "Nucleu",
   "notificationsBlocked": "Your browser is blocking notifications",
+  "notificationsNotSupported": "Your browser does not support notifications",
   "seeInExplorer": "Vizualizează pe explorer",
   "learnMore": "Află mai multe",
   "logout": "Deconectează-te",
