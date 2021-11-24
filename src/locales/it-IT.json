@@ -321,12 +321,12 @@
   "poap": {
     "no_poap_header": "Non è stato ancora stabilito un POAP per questa proposta: '(",
     "no_voted_header": "Vota per ottenere questo POAP",
-    "unclaimed_header": "Rivendica il tuo voto POAP",
+    "unclaimed_header": "Mint",
     "claimed_header": "Congratulazioni! Il POAP è stato coniato sul tuo account",
-    "loading_header": "Il POAP è stato aggiunto alla tua raccolta",
+    "loading_header": "The POAP is being minted to your collection",
     "button_claim": "Rivendica",
     "button_show": "Sfoglia la nostra collezione",
-    "success_claim": "Il tuo POAP è sul tuo indirizzo",
+    "success_claim": "The POAP has been minted to your collection",
     "error_claim": "Ci sono stati errori durante la votazione del commento."
   },
   "charts": {
