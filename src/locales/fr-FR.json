@@ -321,12 +321,12 @@
   "poap": {
     "no_poap_header": "Il n'y a pas encore de POAP pour cette proposition :'(",
     "no_voted_header": "Votez pour obtenir ce POAP",
-    "unclaimed_header": "Réclamez votre badge POAP",
+    "unclaimed_header": "Mint",
     "claimed_header": "Félicitations ! Le POAP a été créé sur votre compte",
-    "loading_header": "Le POAP est en cours d'ajout à votre collection",
+    "loading_header": "The POAP is being minted to your collection",
     "button_claim": "Réclamer",
     "button_show": "Parcourir la collection",
-    "success_claim": "Votre POAP se trouve sur votre adresse",
+    "success_claim": "The POAP has been minted to your collection",
     "error_claim": "Un problème est survenu lors de la création du jeton"
   },
   "charts": {
