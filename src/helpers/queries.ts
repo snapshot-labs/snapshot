@@ -163,6 +163,10 @@ export const SPACES_QUERY = gql`
         name
         params
       }
+      validation {
+        name
+        params
+      }
       filters {
         minScore
         onlyMembers
