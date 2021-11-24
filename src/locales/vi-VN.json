@@ -59,6 +59,7 @@
   "verifyOnSignatorio": "Verify on Signator.io",
   "isCore": "Cốt lõi",
   "notificationsBlocked": "Your browser is blocking notifications",
+  "notificationsNotSupported": "Your browser does not support notifications",
   "seeInExplorer": "Xem trên trình duyệt",
   "learnMore": "Tìm hiểu thêm",
   "logout": "Đăng xuất",
