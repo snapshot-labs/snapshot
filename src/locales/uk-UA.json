@@ -321,12 +321,12 @@
   "poap": {
     "no_poap_header": "POAP ще не налаштований для цієї пропозиції :'(",
     "no_voted_header": "Проголосуйте, щоб отримати POAP",
-    "unclaimed_header": "Отримайте свій POAP за те що проголосували",
+    "unclaimed_header": "Mint",
     "claimed_header": "Congratulations! The POAP has been minted to your account",
-    "loading_header": "POAP в процесі додавання до вашої колекції",
+    "loading_header": "The POAP is being minted to your collection",
     "button_claim": "Забрати",
     "button_show": "Browse collection",
-    "success_claim": "Ваш POAP на вашій адресі",
+    "success_claim": "The POAP has been minted to your collection",
     "error_claim": "Під створюванні токену виникла проблема"
   },
   "charts": {
