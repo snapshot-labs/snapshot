@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref, watchEffect, watch } from 'vue';
+import { computed, ref, watchEffect } from 'vue';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useApp } from '@/composables/useApp';
@@ -41,13 +41,10 @@ const { isFollowing } = useFollowSpace(props.space);
 
 const notificationIcon = ref('notifications-off');
 
-watch(web3Account, () => {
+watchEffect(() => {
   if (subscriptions.value === undefined) {
     loadSubscriptions();
   }
-});
-
-watchEffect(() => {
   if (isSubscribed.value) {
     notificationIcon.value = 'notifications-on';
   } else notificationIcon.value = 'notifications-off';
