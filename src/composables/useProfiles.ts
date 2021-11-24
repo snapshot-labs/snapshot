@@ -5,7 +5,6 @@ import { ref } from 'vue';
 const profiles = ref({});
 
 export function useProfiles() {
-  
   /**
    * Populates global ref with profile data for batches of addresses.
    */
@@ -16,9 +15,7 @@ export function useProfiles() {
 
     console.time('getProfiles');
     const response =
-      addressesToAdd.length > 0
-        ? await getProfiles(addressesToAdd)
-        : {};
+      addressesToAdd.length > 0 ? await getProfiles(addressesToAdd) : {};
     console.timeEnd('getProfiles');
 
     profiles.value = { ...profiles.value, ...response };
