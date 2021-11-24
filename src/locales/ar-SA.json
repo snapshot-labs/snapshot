@@ -59,6 +59,7 @@
   "verifyOnSignatorio": "تحقق على موقع",
   "isCore": "النواة",
   "notificationsBlocked": "متصفحك يحظر الإشعارات",
+  "notificationsNotSupported": "Your browser does not support notifications",
   "seeInExplorer": "شاهد على المستكشف",
   "learnMore": "لمعرفة المزيد",
   "logout": "تسجيل خروج",
