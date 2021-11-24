@@ -321,12 +321,12 @@
   "poap": {
     "no_poap_header": "עוד לא נוצר POAP להצעה זו :'(",
     "no_voted_header": "הצבעה בכדי לקבל POAP זה",
-    "unclaimed_header": "קבל את ה-POAP שלך",
+    "unclaimed_header": "Mint",
     "claimed_header": "Congratulations! The POAP has been minted to your account",
-    "loading_header": "ה-POAP מתווסף לקולקציה שלך ברגע זה",
+    "loading_header": "The POAP is being minted to your collection",
     "button_claim": "תבע",
     "button_show": "Browse collection",
-    "success_claim": "ה-POAP נמצא על הכתובת שלך",
+    "success_claim": "The POAP has been minted to your collection",
     "error_claim": "ארעה בעיה בעת יצירת המטבע"
   },
   "charts": {
