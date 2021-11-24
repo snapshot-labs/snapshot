@@ -207,6 +207,7 @@ watch(loaded, () => {
 onMounted(async () => {
   await loadProposal();
   const choice = route.query.choice;
+  if (proposal.value.type === 'approval') selectedChoices.value = [];
   if (web3Account.value && choice) {
     selectedChoices.value = parseInt(choice);
     clickVote();
