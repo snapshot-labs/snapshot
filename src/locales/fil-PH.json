@@ -59,6 +59,7 @@
   "verifyOnSignatorio": "I-verify sa Signator.io",
   "isCore": "Core",
   "notificationsBlocked": "Bina-block ng iyong browser ang mga notification",
+  "notificationsNotSupported": "Your browser does not support notifications",
   "seeInExplorer": "Tignan sa explorer",
   "learnMore": "Karagdagang impormasyon",
   "logout": "I-logout",
