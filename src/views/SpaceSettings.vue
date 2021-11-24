@@ -248,7 +248,10 @@ function formatSpace(spaceRaw) {
 watchEffect(async () => {
   if (!props.spaceLoading) {
     try {
-      const uri = await getSpaceUri(props.spaceId);
+      const uri = await getSpaceUri(
+        props.spaceId,
+        import.meta.env.VITE_DEFAULT_NETWORK
+      );
       console.log('URI', uri);
       currentTextRecord.value = uri;
     } catch (e) {
