@@ -321,12 +321,12 @@
   "poap": {
     "no_poap_header": "لم يتم إعداد POAP لهذا الاقتراح بعد :'(",
     "no_voted_header": "التصويت للحصول على هذا POAP",
-    "unclaimed_header": "المطالبة بأنني صوتت على POAP",
+    "unclaimed_header": "Mint",
     "claimed_header": "Congratulations! The POAP has been minted to your account",
-    "loading_header": "تم إضافة POAP إلى مجموعتك",
+    "loading_header": "The POAP is being minted to your collection",
     "button_claim": "الحصول عليه",
     "button_show": "تصفح المجموعة",
-    "success_claim": "POAP الخاص بك موجود على عنوانك",
+    "success_claim": "The POAP has been minted to your collection",
     "error_claim": "حدثت مشكلة في سك العملة الرمزية"
   },
   "charts": {
