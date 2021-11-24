@@ -59,6 +59,7 @@
   "verifyOnSignatorio": "Verifikasi di Signator.io",
   "isCore": "Inti",
   "notificationsBlocked": "Browser Anda memblokir notifikasi",
+  "notificationsNotSupported": "Your browser does not support notifications",
   "seeInExplorer": "Lihat di explorer",
   "learnMore": "Pelajari lebih lanjut",
   "logout": "Keluar",
