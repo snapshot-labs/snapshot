@@ -59,6 +59,7 @@
   "verifyOnSignatorio": "Verify on Signator.io",
   "isCore": "కోర్",
   "notificationsBlocked": "Your browser is blocking notifications",
+  "notificationsNotSupported": "Your browser does not support notifications",
   "seeInExplorer": "ఎక్స్ ప్లోరర్ లో చూడండి",
   "learnMore": "మరింత నేర్చుకోండి",
   "logout": "లాగ్ అవుట్",
