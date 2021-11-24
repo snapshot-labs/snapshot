@@ -321,12 +321,12 @@
   "poap": {
     "no_poap_header": "Er is nog geen POAP ingesteld voor dit voorstel :'(",
     "no_voted_header": "Stem om deze POAP te krijgen",
-    "unclaimed_header": "Claim je stem op POAP",
+    "unclaimed_header": "Mint",
     "claimed_header": "Congratulations! The POAP has been minted to your account",
-    "loading_header": "De POAP wordt toegevoegd aan je collectie",
+    "loading_header": "The POAP is being minted to your collection",
     "button_claim": "Claimen",
     "button_show": "Browse collection",
-    "success_claim": "Uw POAP bevindt zich op uw adres",
+    "success_claim": "The POAP has been minted to your collection",
     "error_claim": "Er is een probleem opgetreden bij het minen van het token"
   },
   "charts": {
