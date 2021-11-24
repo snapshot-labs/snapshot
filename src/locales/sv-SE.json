@@ -321,12 +321,12 @@
   "poap": {
     "no_poap_header": "En POAP har inte installerats för detta förslag ännu :'(",
     "no_voted_header": "Rösta för att få denna POAP",
-    "unclaimed_header": "Gör anspråk på din jag röstade på POAP",
+    "unclaimed_header": "Mint",
     "claimed_header": "Congratulations! The POAP has been minted to your account",
-    "loading_header": "POAP läggs till i din kollektion",
+    "loading_header": "The POAP is being minted to your collection",
     "button_claim": "Anspråk",
     "button_show": "Browse collection",
-    "success_claim": "Din POAP är på din adress",
+    "success_claim": "The POAP has been minted to your collection",
     "error_claim": "Det gick inte att radera den token"
   },
   "charts": {
