@@ -16,7 +16,6 @@ import { useDomain } from '@/composables/useDomain';
 
 // The frontend shows all spaces or just a single one, when being accessed
 // through that space's custom domain.
-
 const { domain, alias } = useDomain();
 const routes: any[] = [];
 
