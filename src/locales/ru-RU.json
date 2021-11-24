@@ -321,12 +321,12 @@
   "poap": {
     "no_poap_header": "POAP еще не был настроен для этого предложения :'(",
     "no_voted_header": "Проголосуйте, чтобы получить этот POAP",
-    "unclaimed_header": "Я проголосовал, забрать свой POAP",
+    "unclaimed_header": "Mint",
     "claimed_header": "Congratulations! The POAP has been minted to your account",
-    "loading_header": "POAP добавляется в вашу коллекцию",
+    "loading_header": "The POAP is being minted to your collection",
     "button_claim": "Получить",
     "button_show": "Browse collection",
-    "success_claim": "Ваш POAP на вашем адресе ",
+    "success_claim": "The POAP has been minted to your collection",
     "error_claim": "При создании токена возникла проблема"
   },
   "charts": {
