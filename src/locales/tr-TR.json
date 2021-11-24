@@ -59,6 +59,7 @@
   "verifyOnSignatorio": "Signator.io'da doğrula",
   "isCore": "Genel",
   "notificationsBlocked": "Tarayıcın bildirimleri engelliyor",
+  "notificationsNotSupported": "Your browser does not support notifications",
   "seeInExplorer": "İnternette gör",
   "learnMore": "Daha fazla bilgi edinin",
   "logout": "Çıkış",
