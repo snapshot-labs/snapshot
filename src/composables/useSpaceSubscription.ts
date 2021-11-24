@@ -56,31 +56,24 @@ export function useSpaceSubscription(spaceId: any) {
     }
   }
 
-  const checkBrowserNotification = async () => {
-    if (Notification.permission === 'granted') {
-      return true;
-    } else {
-      const permission = await Notification.requestPermission();
-      if (permission === 'granted') return true;
-      return false;
-    }
-  };
-
   const configurePush = async () => {
     try {
-      const isNotificationsAllowed = await checkBrowserNotification();
-      if (isNotificationsAllowed && beams) {
-        await beams.start();
-        await beams.addDeviceInterest(web3Account.value);
-        await client.subscribe(aliasWallet.value, aliasWallet.value.address, {
-          from: web3Account.value,
-          space: spaceId
-        });
-      } else {
-        notify(['red', t('notificationsBlocked')]);
+      if (!beams) {
+        notify(['red', t('notificationsNotSupported')]);
+        return;
       }
-    } catch (error) {
-      console.log(error);
+
+      await beams.start();
+      await beams.addDeviceInterest(web3Account.value);
+      await client.subscribe(aliasWallet.value, aliasWallet.value.address, {
+        from: web3Account.value,
+        space: spaceId
+      });
+    } catch (error: any) {
+      // thrown by beams when the user denies the notification permission or browser doesn't support it
+      if (error.name === 'NotAllowedError')
+        notify(['red', t('notificationsBlocked')]);
+      console.error(error);
     }
   };
 
