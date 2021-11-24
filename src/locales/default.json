@@ -59,6 +59,7 @@
   "verifyOnSignatorio": "Verify on Signator.io",
   "isCore": "Core",
   "notificationsBlocked": "Your browser is blocking notifications",
+  "notificationsNotSupported": "Your browser does not support notifications",
   "seeInExplorer": "See on explorer",
   "learnMore": "Learn more",
   "logout": "Log out",
