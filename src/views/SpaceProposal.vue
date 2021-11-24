@@ -182,10 +182,10 @@ function selectFromShareDropdown(e) {
     shareToClipboard(props.space, proposal.value);
 }
 
-const { profiles, updateAddressArray } = useProfiles();
+const { profiles, loadProfiles } = useProfiles();
 
 watch(proposal, () => {
-  updateAddressArray([proposal.value.author]);
+  loadProfiles([proposal.value.author]);
 });
 
 watch(web3Account, (val, prev) => {
@@ -207,6 +207,7 @@ watch(loaded, () => {
 onMounted(async () => {
   await loadProposal();
   const choice = route.query.choice;
+  if (proposal.value.type === 'approval') selectedChoices.value = [];
   if (web3Account.value && choice) {
     selectedChoices.value = parseInt(choice);
     clickVote();
