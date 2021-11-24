@@ -182,10 +182,10 @@ function selectFromShareDropdown(e) {
     shareToClipboard(props.space, proposal.value);
 }
 
-const { profiles, updateAddressArray } = useProfiles();
+const { profiles, loadProfiles } = useProfiles();
 
 watch(proposal, () => {
-  updateAddressArray([proposal.value.author]);
+  loadProfiles([proposal.value.author]);
 });
 
 watch(web3Account, (val, prev) => {

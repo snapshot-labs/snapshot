@@ -49,7 +49,7 @@ const form = ref({
   id: route.params.key || ''
 });
 
-const { profiles, updateAddressArray } = useProfiles();
+const { profiles, loadProfiles } = useProfiles();
 
 const web3Account = computed(() => web3.value.account);
 const networkKey = computed(() => web3.value.network.key);
@@ -169,7 +169,7 @@ async function getDelegatesWithScore() {
 }
 
 watchEffect(() => {
-  updateAddressArray(
+  loadProfiles(
     delegates.value
       .map(delegate => delegate.delegate)
       .concat(delegators.value.map(delegator => delegator.delegator))
