@@ -59,6 +59,7 @@
   "verifyOnSignatorio": "Signator.io の検証",
   "isCore": "コア",
   "notificationsBlocked": "ブロック通知を無効にする",
+  "notificationsNotSupported": "Your browser does not support notifications",
   "seeInExplorer": "エクスプローラで閲覧する",
   "learnMore": "もっと詳しく知る",
   "logout": "ログアウト",
