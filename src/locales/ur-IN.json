@@ -321,12 +321,12 @@
   "poap": {
     "no_poap_header": "ابھی تک اس تجویز کے لئے ایک POAP ترتیب نہیں دیا گیا ہے: '(",
     "no_voted_header": "اس POAP کو حاصل کرنے کے لئے ووٹ دیں",
-    "unclaimed_header": "آپ کا دعوی کریں کہ میں نے پی او اے پی کو ووٹ دیا ہے",
+    "unclaimed_header": "Mint",
     "claimed_header": "Congratulations! The POAP has been minted to your account",
-    "loading_header": "POAP آپ کے جمع کرنے میں شامل کیا جارہا ہے",
+    "loading_header": "The POAP is being minted to your collection",
     "button_claim": "دعوی",
     "button_show": "Browse collection",
-    "success_claim": "آپ کا POAP آپ کے پتے پر ہے",
+    "success_claim": "The POAP has been minted to your collection",
     "error_claim": "ٹوکن کو نشان زد کرنے میں ایک دشواری تھی"
   },
   "charts": {
