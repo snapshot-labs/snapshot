@@ -59,6 +59,7 @@
   "verifyOnSignatorio": "Verify on Signator.io",
   "isCore": "ליבה",
   "notificationsBlocked": "Your browser is blocking notifications",
+  "notificationsNotSupported": "Your browser does not support notifications",
   "seeInExplorer": "צפה ב-explorer",
   "learnMore": "מידע נוסף",
   "logout": "יציאה",
