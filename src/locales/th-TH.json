@@ -59,6 +59,7 @@
   "verifyOnSignatorio": "Verify on Signator.io",
   "isCore": "ส่วนกลาง",
   "notificationsBlocked": "Your browser is blocking notifications",
+  "notificationsNotSupported": "Your browser does not support notifications",
   "seeInExplorer": "ดูในการสำรวจ",
   "learnMore": "เรียนรู้เพิ่มเติม",
   "logout": "ออกจากระบบ",
