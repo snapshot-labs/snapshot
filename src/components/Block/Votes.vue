@@ -110,7 +110,7 @@ watch(visibleVotes, () => {
         </span>
       </div>
 
-      <div class="column text-right link-color">
+      <div class="column text-right link-color" v-if="vote.scores">
         <span
           v-tippy="{
             content: vote.scores
