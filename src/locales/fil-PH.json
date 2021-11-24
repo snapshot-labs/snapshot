@@ -321,12 +321,12 @@
   "poap": {
     "no_poap_header": "Hindi pa nase-setup ang POAP para sa panukalang ito :'(",
     "no_voted_header": "Bumoto para makuha ang POAP na ito",
-    "unclaimed_header": "I-claim ang iyong I bumoto na POAP",
+    "unclaimed_header": "Mint",
     "claimed_header": "Congratulations! Ang POAP ay nai-minted sa iyong account",
-    "loading_header": "Ang POAP ay idinaragdag sa iyong koleksyon",
+    "loading_header": "The POAP is being minted to your collection",
     "button_claim": "Kunin",
     "button_show": "I-browse ang koleksyon",
-    "success_claim": "Ang iyong POAP ay nasa iyong address",
+    "success_claim": "The POAP has been minted to your collection",
     "error_claim": "Nagkaroon ng problema sa pag-minting ng token"
   },
   "charts": {
