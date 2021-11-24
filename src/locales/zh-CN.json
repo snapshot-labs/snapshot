@@ -59,7 +59,7 @@
   "verifyOnSignatorio": "在 Signator.io 上验证",
   "isCore": "核心",
   "notificationsBlocked": "你的浏览器正在屏蔽通知",
-  "notificationsNotSupported": "Your browser does not support notifications",
+  "notificationsNotSupported": "您的浏览器不支持通知功能",
   "seeInExplorer": "在浏览器上查看",
   "learnMore": "了解更多",
   "logout": "注销",
