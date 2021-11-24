@@ -78,7 +78,7 @@
     "walletlink": "^2.1.8"
   },
   "resolutions": {
-    "ansi-regex" : "^5.0.1",
+    "ansi-regex": "^5.0.1",
     "axios": "^0.21.1"
   },
   "license": "MIT",
