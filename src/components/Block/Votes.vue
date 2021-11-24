@@ -110,8 +110,9 @@ watch(visibleVotes, () => {
         </span>
       </div>
 
-      <div class="column text-right link-color" v-if="vote.scores">
+      <div class="column text-right link-color">
         <span
+          v-if="vote.scores"
           v-tippy="{
             content: vote.scores
               .map((score, index) => `${_n(score)} ${titles[index]}`)
