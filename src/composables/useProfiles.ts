@@ -1,37 +1,31 @@
 import { getProfiles } from '@/helpers/profile';
-import { ref, computed, watch } from 'vue';
+import { ref } from 'vue';
 
+// holds profile data (ENS name/images) for all addresses appearing in the frontend
 const profiles = ref({});
-const addressArray = ref<string[]>([]);
 
 export function useProfiles() {
-  const updateAddressArray = (addresses: string[]) => {
+  
+  /**
+   * Populates global ref with profile data for batches of addresses.
+   */
+  const loadProfiles = async (addresses: string[]) => {
     const addressesToAdd = addresses.filter(
-      address => !addressArray.value.includes(address)
+      address => !Object.keys(profiles.value).includes(address)
     );
 
-    addressArray.value = addressArray.value.concat(addressesToAdd);
-  };
-
-  const filteredArray = computed(() =>
-    addressArray.value.filter(address => {
-      return !Object.keys(profiles.value).includes(address);
-    })
-  );
-
-  watch(addressArray, async () => {
     console.time('getProfiles');
     const response =
-      filteredArray.value.length > 0
-        ? await getProfiles(filteredArray.value)
+      addressesToAdd.length > 0
+        ? await getProfiles(addressesToAdd)
         : {};
     console.timeEnd('getProfiles');
 
     profiles.value = { ...profiles.value, ...response };
-  });
+  };
 
   return {
     profiles,
-    updateAddressArray
+    loadProfiles
   };
 }

@@ -65,10 +65,10 @@ function selectState(e) {
   load();
 }
 
-const { profiles, updateAddressArray } = useProfiles();
+const { profiles, loadProfiles } = useProfiles();
 
 watch(proposals, () => {
-  updateAddressArray(proposals.value.map(proposal => proposal.author));
+  loadProfiles(proposals.value.map(proposal => proposal.author));
 });
 
 watch([proposals, web3Account], () => {
