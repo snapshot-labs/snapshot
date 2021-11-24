@@ -321,12 +321,12 @@
   "poap": {
     "no_poap_header": "Bu teklif için henüz bir POAP kurulmadı :'(",
     "no_voted_header": "Bu POAP'ı almak için oy verin",
-    "unclaimed_header": "Oy verdiğiniz POAP'ınızı talep edin",
+    "unclaimed_header": "Mint",
     "claimed_header": "Congratulations! The POAP has been minted to your account",
-    "loading_header": "POAP topladıklarınıza ekleniyor",
+    "loading_header": "The POAP is being minted to your collection",
     "button_claim": "Topla",
     "button_show": "Browse collection",
-    "success_claim": "POAP'ınız adresinizde",
+    "success_claim": "The POAP has been minted to your collection",
     "error_claim": "Jeton basılırken bir hata oluştu"
   },
   "charts": {
