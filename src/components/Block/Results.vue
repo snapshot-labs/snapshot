@@ -25,6 +25,11 @@ const choices = computed(() =>
         props.results.resultsByVoteBalance[a.i]
     )
 );
+
+const getPercentage = (n, of) => 100 / of * n / 1e2;
+
+// TODO: take from space settings
+const hideAbstain = true;
 </script>
 
 <template>
@@ -33,45 +38,64 @@ const choices = computed(() =>
     :title="ts >= proposal.end ? $t('results') : $t('currentResults')"
   >
     <div v-for="choice in choices" :key="choice.i">
-      <div class="link-color mb-1">
-        <span
-          v-tippy="{
-            content: choice.choice.length > 12 ? choice.choice : null
-          }"
-          class="mr-1"
-          v-text="_shorten(choice.choice, 'choice')"
-        />
+      <template v-if="!(proposal.type === 'basic' && hideAbstain && choice.i === 2)">
+        <div class="link-color mb-1">
+          <span
+            v-tippy="{
+              content: choice.choice.length > 12 ? choice.choice : null
+            }"
+            class="mr-1"
+            v-text="_shorten(choice.choice, 'choice')"
+          />
 
-        <span
-          class="inline-block"
-          v-tippy="{
-            content: results.resultsByStrategyScore[choice.i]
-              .map((score, index) => `${_n(score)} ${titles[index]}`)
-              .join(' + ')
-          }"
-        >
-          {{ _n(results.resultsByVoteBalance[choice.i]) }}
-          {{ _shorten(space.symbol, 'symbol') }}
-        </span>
-        <span
-          class="float-right"
-          v-text="
-            _n(
-              !results.sumOfResultsBalance
-                ? 0
-                : ((100 / results.sumOfResultsBalance) *
-                    results.resultsByVoteBalance[choice.i]) /
-                    1e2,
-              '0.[00]%'
-            )
-          "
+          <span
+            class="inline-block"
+            v-tippy="{
+              content: results.resultsByStrategyScore[choice.i]
+                .map((score, index) => `${_n(score)} ${titles[index]}`)
+                .join(' + ')
+            }"
+          >
+            {{ _n(results.resultsByVoteBalance[choice.i]) }}
+            {{ _shorten(space.symbol, 'symbol') }}
+          </span>
+          <span
+            v-if="proposal.type === 'basic' && hideAbstain && choice.i === 0"
+            class="float-right"
+            v-text="
+              _n(
+                getPercentage(results.resultsByVoteBalance[0], results.resultsByVoteBalance[0] + results.resultsByVoteBalance[1]),
+                '0.[00]%'
+              )
+            "
+          />
+          <span
+            v-else-if="proposal.type === 'basic' && hideAbstain && choice.i === 1"
+            class="float-right"
+            v-text="
+              _n(
+                getPercentage(results.resultsByVoteBalance[1], results.resultsByVoteBalance[0] + results.resultsByVoteBalance[1]),
+                '0.[00]%'
+              )
+            "
+          />
+          <span
+            v-else
+            class="float-right"
+            v-text="
+              _n(
+                getPercentage(results.resultsByVoteBalance[choice.i], results.sumOfResultsBalance),
+                '0.[00]%'
+              )
+            "
+          />
+        </div>
+        <UiProgress
+          :value="results.resultsByStrategyScore[choice.i]"
+          :max="proposal.type === 'basic' && hideAbstain ? results.resultsByVoteBalance[0] + results.resultsByVoteBalance[1] : results.sumOfResultsBalance"
+          class="mb-3"
         />
-      </div>
-      <UiProgress
-        :value="results.resultsByStrategyScore[choice.i]"
-        :max="results.sumOfResultsBalance"
-        class="mb-3"
-      />
+      </template>
     </div>
     <div v-if="props.space?.voting?.quorum" class="text-skin-link">
       {{ $t('settings.quorum') }}
