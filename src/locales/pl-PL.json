@@ -305,12 +305,12 @@
   "poap": {
     "no_poap_header": "A POAP hasn't been setup for this proposal yet :'(",
     "no_voted_header": "Vote to get this POAP",
-    "unclaimed_header": "Claim your I voted POAP",
+    "unclaimed_header": "Mint",
     "claimed_header": "Congratulations! The POAP has been minted to your account",
-    "loading_header": "The POAP is being added to your collection",
+    "loading_header": "The POAP is being minted to your collection",
     "button_claim": "Claim",
     "button_show": "Browse collection",
-    "success_claim": "Your POAP is on your address",
+    "success_claim": "The POAP has been minted to your collection",
     "error_claim": "There was a problem minting the token"
   },
   "comment_box": {
