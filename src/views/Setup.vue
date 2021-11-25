@@ -7,15 +7,23 @@ const router = useRouter();
 const { getEnsNames } = useEns();
 
 const id = ref('');
-const domains = ref([]);
+const loading = ref(false);
+const domains = ref(null);
 
 function applyEns(ens) {
   id.value = ens;
 }
 
-getEnsNames().then(res => {
-  domains.value = res.account.domains.slice(0, 5);
-});
+function loadEns() {
+  loading.value = true;
+  getEnsNames()
+    .then(res => {
+      domains.value = res.account?.domains.slice(0, 5);
+    })
+    .finally(() => (loading.value = false));
+}
+
+loadEns();
 
 function handleSubmit() {
   router.push({
@@ -41,7 +49,8 @@ function handleSubmit() {
         <div class="mb-3">
           {{ $t('setup.useExistingEns') }}
         </div>
-        <UiButton class="text-left w-full mb-1 flex px-3">
+
+        <UiButton class="text-left w-full mb-3 flex px-3">
           <input
             v-model="id"
             class="input flex-auto"
@@ -55,8 +64,9 @@ function handleSubmit() {
             <Icon name="info" size="24" class="text-color p-1" />
           </a>
         </UiButton>
-        <div class="mb-3">
-          <span>Suggestions: </span>
+        <RowLoading v-if="loading" />
+        <div v-if="domains && !loading">
+          <span>{{ $t('setup.suggestions') }}: </span>
           <ul class="inline">
             <li
               class="inline cursor-pointer"
@@ -71,10 +81,13 @@ function handleSubmit() {
             </li>
           </ul>
         </div>
+        <div v-else-if="!domains && !loading">
+          {{ $t('setup.noEns') }}
+        </div>
         <UiButton
           :disabled="!id.includes('.eth') && !id.includes('.xyz')"
           @click="handleSubmit"
-          class="w-full"
+          class="w-full mt-2"
           primary
         >
           {{ $t('next') }}

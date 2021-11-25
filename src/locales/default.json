@@ -221,6 +221,8 @@
   "setup": {
     "example": "e.g. yam.eth",
     "useExistingEns": "Use an existing ENS name to create your space with.",
+    "noEns": "It looks like your address does not own any ENS name",
+    "suggestions": "Suggestions",
     "createASpace": "Create a space"
   },
   "notify": {
