@@ -111,11 +111,11 @@ async function loadResults() {
     });
     loadedVotes.value = true;
   } else {
-    votes.value = await getProposalVotes(id);
+    const votesTmp = await getProposalVotes(id);
     const resultsObj = await getResults(
       props.space,
       proposal.value,
-      votes.value
+      votesTmp
     );
     results.value = resultsObj.results;
     loadedResults.value = true;
