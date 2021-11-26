@@ -99,8 +99,8 @@ watch([proposals, web3Account], () => {
 
 <template>
   <Layout>
-    <template #sidebar-left>
-      <div style="position: fixed; width: 240px">
+    <template #sidebar-right>
+      <div style="position: fixed; width: 320px" class="mt-4">
         <Block :slim="true" :title="$t('filters')" class="overflow-hidden">
           <div class="py-3">
             <router-link
@@ -117,75 +117,64 @@ watch([proposals, web3Account], () => {
         </Block>
       </div>
     </template>
-    <template #content-right>
-      <div class="px-4 md:px-0 mb-3 flex">
-        <div class="flex-auto">
-          <router-link :to="{ path: '/' }" class="text-color">
-            <Icon name="back" size="22" class="!align-middle" />
-            {{ $t('backToHome') }}
-          </router-link>
-          <div class="flex items-center flex-auto">
-            <h2>{{ $t('timeline') }}</h2>
+    <template #content-left>
+      <div class="border-r border-l">
+        <div class="p-4 mb-3 flex border-b">
+          <div class="flex-auto">
+            <div class="flex items-center flex-auto">
+              <h2>{{ $t('timeline') }}</h2>
+            </div>
           </div>
+          <UiDropdown
+            top="3.5rem"
+            right="1.25rem"
+            @select="selectState"
+            :items="[
+              { text: $t('proposals.states.all'), action: 'all' },
+              { text: $t('proposals.states.active'), action: 'active' },
+              { text: $t('proposals.states.pending'), action: 'pending' },
+              { text: $t('proposals.states.closed'), action: 'closed' }
+            ]"
+          >
+            <UiButton class="pr-3">
+              {{ $t(`proposals.states.${filterBy}`) }}
+              <Icon size="14" name="arrow-down" class="mt-1 mr-1" />
+            </UiButton>
+          </UiDropdown>
         </div>
-        <UiDropdown
-          top="3.5rem"
-          right="1.25rem"
-          @select="selectState"
-          :items="[
-            { text: $t('proposals.states.all'), action: 'all' },
-            { text: $t('proposals.states.active'), action: 'active' },
-            { text: $t('proposals.states.pending'), action: 'pending' },
-            { text: $t('proposals.states.closed'), action: 'closed' }
-          ]"
-        >
-          <UiButton class="pr-3">
-            {{ $t(`proposals.states.${filterBy}`) }}
-            <Icon size="14" name="arrow-down" class="mt-1 mr-1" />
-          </UiButton>
-        </UiDropdown>
-      </div>
-
-      <Block
-        v-if="
+        <RowLoading v-if="
           loading ||
           (web3.authLoading && isTimeline) ||
-          (loadingFollows && isTimeline)
-        "
-        :slim="true"
-      >
-        <RowLoading class="my-2" />
-      </Block>
-
-      <Block
-        v-else-if="
-          (isTimeline && following.length < 1) || (isTimeline && !web3.account)
-        "
-        class="text-center"
-      >
-        <div class="mb-3">{{ $t('noSpacesJoined') }}</div>
-        <router-link :to="{ path: '/' }">
-          <UiButton>{{ $t('joinSpaces') }}</UiButton>
-        </router-link>
-      </Block>
-
-      <NoResults v-else-if="proposals.length < 1" :block="true" />
-
-      <div v-else>
-        <TimelineProposal
-          v-for="(proposal, i) in proposals"
-          :key="i"
-          :proposal="proposal"
-          :profiles="profiles"
+          (loadingFollows && isTimeline)" class="my-2" />
+        <Block
+          v-else-if="
+            (isTimeline && following.length < 1) ||
+            (isTimeline && !web3.account)
+          "
+          class="text-center"
+        >
+          <div class="mb-3">{{ $t('noSpacesJoined') }}</div>
+          <router-link :to="{ path: '/' }">
+            <UiButton>{{ $t('joinSpaces') }}</UiButton>
+          </router-link>
+        </Block>
+        <NoResults v-else-if="proposals.length < 1" :block="true" />
+        <div v-else>
+          <TimelineProposalPreview
+            v-for="(proposal, i) in proposals"
+            :key="i"
+            :proposal="proposal"
+            :profiles="profiles"
+          />
+        </div>
+        <div
+          style="height: 10px; width: 10px; position: absolute"
+          ref="endElement"
         />
+        <div v-if="loadingMore && !loading" :slim="true">
+          <RowLoading class="my-2" />
+        </div>
       </div>
-      <div
-        style="height: 10px; width: 10px; position: absolute"
-        ref="endElement"
-      />
-      <Block v-if="loadingMore && !loading" :slim="true">
-        <RowLoading class="my-2" />
-      </Block>
     </template>
   </Layout>
 </template>
