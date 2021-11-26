@@ -26,7 +26,7 @@ const choices = computed(() =>
     )
 );
 
-const getPercentage = (n, of) => 100 / of * n / 1e2;
+const getPercentage = (n, max) => 100 / max * n / 1e2;
 
 const hideAbstain = props.space?.voting?.hideAbstain ?? false;
 </script>
