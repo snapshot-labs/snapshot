@@ -158,6 +158,7 @@ export const SPACES_QUERY = gql`
         period
         type
         quorum
+        hideAbstain
       }
       strategies {
         name
