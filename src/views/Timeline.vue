@@ -98,7 +98,7 @@ watch([proposals, web3Account], () => {
 </script>
 
 <template>
-  <Layout>
+  <Layout class="mt-0">
     <template #sidebar-right>
       <div style="position: fixed; width: 320px" class="mt-4">
         <Block :slim="true" :title="$t('filters')" class="overflow-hidden">
@@ -142,10 +142,14 @@ watch([proposals, web3Account], () => {
             </UiButton>
           </UiDropdown>
         </div>
-        <RowLoading v-if="
-          loading ||
-          (web3.authLoading && isTimeline) ||
-          (loadingFollows && isTimeline)" class="my-2" />
+        <RowLoading
+          v-if="
+            loading ||
+            (web3.authLoading && isTimeline) ||
+            (loadingFollows && isTimeline)
+          "
+          class="my-2"
+        />
         <Block
           v-else-if="
             (isTimeline && following.length < 1) ||
