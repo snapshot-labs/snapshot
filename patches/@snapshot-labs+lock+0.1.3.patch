@@ -1,5 +1,23 @@
+diff --git a/node_modules/@snapshot-labs/lock/connectors/gnosis.ts b/node_modules/@snapshot-labs/lock/connectors/gnosis.ts
+index b07d2d3..1533065 100644
+--- a/node_modules/@snapshot-labs/lock/connectors/gnosis.ts
++++ b/node_modules/@snapshot-labs/lock/connectors/gnosis.ts
+@@ -8,9 +8,11 @@ export default class Connector extends LockConnector {
+   async connect() {
+     let provider;
+     try {
++      let SafeAppsSDK = (await getSDK()).default;
+       // @ts-ignore
+-      const SafeAppsSDK = (await getSDK()).default.default;
+-      
++      if (SafeAppsSDK.default)
++      // @ts-ignore
++        SafeAppsSDK = SafeAppsSDK.default;
+       const sdk = new SafeAppsSDK();
+       const safe = await sdk.safe.getInfo();
+       
 diff --git a/node_modules/@snapshot-labs/lock/connectors/portis.ts b/node_modules/@snapshot-labs/lock/connectors/portis.ts
-index 27730c0..946dc45 100644
+index 8209bf2..9f30c36 100644
 --- a/node_modules/@snapshot-labs/lock/connectors/portis.ts
 +++ b/node_modules/@snapshot-labs/lock/connectors/portis.ts
 @@ -1,5 +1,5 @@
@@ -10,7 +28,7 @@ index 27730c0..946dc45 100644
  
  export default class Connector extends LockConnector {
 diff --git a/node_modules/@snapshot-labs/lock/connectors/walletconnect.ts b/node_modules/@snapshot-labs/lock/connectors/walletconnect.ts
-index ffedb9a..81c4ef7 100644
+index 9c88bd2..e80c953 100644
 --- a/node_modules/@snapshot-labs/lock/connectors/walletconnect.ts
 +++ b/node_modules/@snapshot-labs/lock/connectors/walletconnect.ts
 @@ -6,7 +6,9 @@ export default class Connector extends LockConnector {
@@ -25,7 +43,7 @@ index ffedb9a..81c4ef7 100644
        await provider.enable();
      } catch (e) {
 diff --git a/node_modules/@snapshot-labs/lock/connectors/walletlink.ts b/node_modules/@snapshot-labs/lock/connectors/walletlink.ts
-index 1964f8e..b3832d1 100644
+index d1cf343..56be65c 100644
 --- a/node_modules/@snapshot-labs/lock/connectors/walletlink.ts
 +++ b/node_modules/@snapshot-labs/lock/connectors/walletlink.ts
 @@ -6,9 +6,10 @@ export default class Connector extends LockConnector {

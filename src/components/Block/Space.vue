@@ -5,6 +5,7 @@ import { useWeb3 } from '@/composables/useWeb3';
 import { useApp } from '@/composables/useApp';
 import { useSpaceSubscription } from '@/composables/useSpaceSubscription';
 import { useFollowSpace } from '@/composables/useFollowSpace';
+import verified from '@/../snapshot-spaces/spaces/verified.json';
 
 const props = defineProps({
   space: Object
@@ -16,6 +17,7 @@ const { web3 } = useWeb3();
 const { explore } = useApp();
 
 const nbrMembers = explore.value.spaces[props.space.id].followers;
+const isVerified = verified[props.space.id] || 0;
 
 const web3Account = computed(() => web3.value.account);
 
@@ -56,7 +58,11 @@ watchEffect(() => {
     <Block :slim="true" class="overflow-hidden">
       <div class="text-center border-b bg-skin-header-bg">
         <Token :space="space" symbolIndex="space" size="80" class="mt-3 mb-2" />
-        <h3 class="mb-[2px]">{{ space.name }}</h3>
+        <h3 class="mb-[2px] mx-2">
+          {{ space.name }}
+          <Icon v-if="isVerified === 1" name="check" size="20" />
+          <Icon v-if="isVerified === -1" name="warning" size="20" />
+        </h3>
         <div class="mb-[12px] text-color">
           {{ $tc('members', nbrMembers, { count: _n(nbrMembers) }) }}
         </div>
