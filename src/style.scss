@@ -248,6 +248,12 @@ select {
   }
 }
 
+.hover-border {
+  &:hover {
+    border-color: var(--link-color) !important;
+  }
+}
+
 .markdown-body blockquote {
   color: var(--text-color);
   border-left-color: var(--text-color);
@@ -270,6 +276,12 @@ select {
   &.router-link-exact-active {
     border-left: 3px solid;
     padding-left: 21px !important;
+  }
+}
+
+.sidenav-item {
+  &.charts-selected-tab {
+    border-bottom: 3px solid;
   }
 }
 

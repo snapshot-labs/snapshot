@@ -23,10 +23,11 @@ const orderedSpaces = computed(() => {
     .map(key => {
       const following = followingSpaces.value.some(s => s === key);
       const followers = explore.value.spaces[key].followers ?? 0;
-      const voters1d = explore.value.spaces[key].voters_1d ?? 0;
+      // const voters1d = explore.value.spaces[key].voters_1d ?? 0;
       const followers1d = explore.value.spaces[key].followers_1d ?? 0;
       // const proposals1d = explore.value.spaces[key].proposals_1d ?? 0;
-      const score = voters1d + followers1d + followers / 4;
+      let score = followers1d + followers / 4;
+      if (explore.value.spaces[key].network !== '1') score = score / 6;
       const testnet = testnetNetworks.includes(
         explore.value.spaces[key].network
       );
@@ -39,7 +40,7 @@ const orderedSpaces = computed(() => {
         testnet
       };
     })
-    .filter(space => !space.private)
+    .filter(space => !space.private && space.id !== '0xmetamask.eth')
     .filter(space => space.network === network || !network);
 
   return orderBy(
@@ -87,7 +88,7 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
           <div>
             <!-- Added mb-0 to remove mb-4 added by block component -->
             <Block
-              class="text-center extra-icon-container mb-0"
+              class="text-center extra-icon-container mb-0 hover-border"
               style="height: 266px"
             >
               <div class="relative inline-block mb-2">

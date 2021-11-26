@@ -1,6 +1,6 @@
 <script setup>
 import { ref, watchEffect, computed, onMounted, inject } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import draggable from 'vuedraggable';
 import { useI18n } from 'vue-i18n';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
@@ -35,8 +35,10 @@ const { send, clientLoading } = useClient();
 const notify = inject('notify');
 
 const choices = ref([]);
+const route = useRoute();
 const blockNumber = ref(-1);
 const bodyLimit = ref(4800);
+const preview = ref(false);
 const form = ref({
   name: '',
   body: '',
@@ -233,15 +235,6 @@ watchEffect(() => {
 <template>
   <Layout v-bind="$attrs">
     <template #content-left>
-      <div class="px-4 md:px-0 mb-3">
-        <router-link
-          :to="domain ? { path: '/' } : { name: 'spaceProposals' }"
-          class="text-color"
-        >
-          <Icon name="back" size="22" class="!align-middle" />
-          {{ space.name }}
-        </router-link>
-      </div>
       <Block v-if="passValidation[0] === false">
         <Icon name="warning" class="mr-1" />
         <span v-if="passValidation[1] === 'basic'">
@@ -263,29 +256,53 @@ watchEffect(() => {
           }}
         </span>
       </Block>
+      <div class="px-4 md:px-0 overflow-hidden">
+        <router-link
+          :to="domain ? { path: '/' } : { name: 'spaceProposals' }"
+          class="text-color"
+        >
+          <Icon name="back" size="22" class="!align-middle" />
+          {{ space.name }}
+        </router-link>
+        <UiSidebarButton
+          v-if="!preview"
+          @click="preview = true"
+          class="float-right"
+        >
+          <Icon name="search" size="18" class="pb-1" />
+        </UiSidebarButton>
+        <UiSidebarButton
+          v-if="preview"
+          @click="preview = false"
+          class="float-right"
+        >
+          <Icon name="back" size="18" />
+        </UiSidebarButton>
+      </div>
       <div class="px-4 md:px-0">
         <div class="flex flex-col mb-6">
+          <h1 v-if="preview" v-text="form.name || 'Untitled'" class="mb-2" />
           <input
+            v-if="!preview"
             v-model="form.name"
             maxlength="128"
-            class="text-2xl font-bold mb-2 input"
+            class="text-2xl font-bold input mb-2"
             :placeholder="$t('create.question')"
             ref="nameForm"
           />
           <TextareaAutosize
+            v-if="!preview"
             v-model="form.body"
-            class="input pt-1"
+            class="input pt-0"
+            style="font-size: 22px"
             :placeholder="$t('create.content')"
           />
-          <div class="mb-6">
-            <p v-if="form.body.length > bodyLimit" class="!text-red mt-4">
-              -{{ _n(-(bodyLimit - form.body.length)) }}
-            </p>
-          </div>
-          <div v-if="form.body">
-            <h4 class="mb-4">{{ $t('create.preview') }}</h4>
+          <div v-if="form.body && preview" class="mb-4">
             <UiMarkdown :body="form.body" />
           </div>
+          <p v-if="form.body.length > bodyLimit" class="!text-red mt-4">
+            -{{ _n(-(bodyLimit - form.body.length)) }}
+          </p>
         </div>
       </div>
       <Block :title="$t('create.choices')">
@@ -333,7 +350,7 @@ watchEffect(() => {
         v-model="form.metadata.plugins.safeSnap"
       />
     </template>
-    <template #sidebar-right>
+    <template #sidebar-right v-if="!preview">
       <Block
         :title="$t('actions')"
         :icon="
@@ -370,7 +387,11 @@ watchEffect(() => {
             <span v-if="!dateEnd">{{ $t('create.endDate') }}</span>
             <span v-else v-text="$d(dateEnd * 1e3, 'short', 'en-US')" />
           </UiButton>
-          <UiButton :loading="loadingSnapshot" class="w-full mb-2">
+          <UiButton
+            v-if="route.query.snapshot"
+            :loading="loadingSnapshot"
+            class="w-full mb-2"
+          >
             <input
               v-model="form.snapshot"
               type="number"

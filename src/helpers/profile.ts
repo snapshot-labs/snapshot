@@ -1,31 +1,6 @@
 import namehash from 'eth-ens-namehash';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
-import { subgraphRequest, call } from '@snapshot-labs/snapshot.js/src/utils';
-
-function get3BoxProfiles(addresses) {
-  return new Promise((resolove, reject) => {
-    subgraphRequest('https://api.3box.io/graph', {
-      profiles: {
-        __args: {
-          ids: addresses
-        },
-        name: true,
-        eth_address: true,
-        image: true
-      }
-    })
-      .then(({ profiles }) => {
-        const _3BoxProfiles = {};
-        profiles.forEach(profile => {
-          _3BoxProfiles[profile.eth_address.toLowerCase()] = profile;
-        });
-        resolove(_3BoxProfiles);
-      })
-      .catch(error => {
-        reject(error);
-      });
-  });
-}
+import { call } from '@snapshot-labs/snapshot.js/src/utils';
 
 function ensReverseRecordRequest(addresses) {
   const network = '1';
@@ -71,14 +46,10 @@ function lookupAddresses(addresses) {
 }
 
 export async function getProfiles(addresses) {
-  addresses = addresses.slice(0, 1000);
+  addresses = addresses.slice(0, 250);
   let ensNames: any = {};
-  let _3BoxProfiles: any = {};
   try {
-    [ensNames, _3BoxProfiles] = await Promise.all([
-      lookupAddresses(addresses),
-      get3BoxProfiles(addresses)
-    ]);
+    ensNames = await lookupAddresses(addresses);
   } catch (e) {
     console.log(e);
   }
@@ -86,8 +57,12 @@ export async function getProfiles(addresses) {
   const profiles = Object.fromEntries(addresses.map(address => [address, {}]));
   return Object.fromEntries(
     Object.entries(profiles).map(([address, profile]) => {
-      profile = _3BoxProfiles[address.toLowerCase()] || {};
+      profile = {};
       profile.ens = ensNames[address.toLowerCase()] || '';
+      if (profile.ens) {
+        profile.name = profile.ens;
+        profile.image = `https://metadata.ens.domains/mainnet/avatar/${profile.ens}`;
+      }
       return [address, profile];
     })
   );

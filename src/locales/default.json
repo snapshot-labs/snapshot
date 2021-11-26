@@ -25,7 +25,6 @@
   "allSpaces": "All spaces",
   "submitOnchain": "Submit on-chain",
   "inSpaces": "In {0} space(s)",
-  "downloadReport": "Download report",
   "votes": "Votes",
   "seeMore": "See more",
   "network": "Network",
@@ -60,6 +59,7 @@
   "verifyOnSignatorio": "Verify on Signator.io",
   "isCore": "Core",
   "notificationsBlocked": "Your browser is blocking notifications",
+  "notificationsNotSupported": "Your browser does not support notifications",
   "seeInExplorer": "See on explorer",
   "learnMore": "Learn more",
   "logout": "Log out",
@@ -128,8 +128,9 @@
     "type": "Invalid type"
   },
   "create": {
-    "question": "Question",
-    "content": "What is your proposal?",
+    "question": "Ask a question...",
+    "categorie(s)": "Select up to 2 categorie(s)",
+    "content": "Tell more about your proposal (optional)",
     "preview": "Preview",
     "choices": "Choices",
     "addChoice": "Add choice",
@@ -195,6 +196,8 @@
     "customDomain": "Custom domain",
     "domain": "Domain name",
     "strategies": "Strategie(s)",
+    "categories": "Categorie(s)",
+    "selectCategories": "Select categories",
     "hideSpace": "Hide space from homepage",
     "addStrategy": "Add strategy",
     "authors": "Authors",
@@ -320,13 +323,20 @@
   "poap": {
     "no_poap_header": "A POAP hasn't been setup for this proposal yet :'(",
     "no_voted_header": "Vote to get this POAP",
-    "unclaimed_header": "Claim your I voted POAP",
+    "unclaimed_header": "Mint",
     "claimed_header": "Congratulations! The POAP has been minted to your account",
-    "loading_header": "The POAP is being added to your collection",
+    "loading_header": "The POAP is being minted to your collection",
     "button_claim": "Claim",
     "button_show": "Browse collection",
-    "success_claim": "Your POAP is on your address",
+    "success_claim": "The POAP has been minted to your collection",
     "error_claim": "There was a problem minting the token"
+  },
+  "charts": {
+    "charts": "Charts",
+    "noVotesYet": "There are no votes to visualize yet.",
+    "totalVotesPerDay": "Total votes per day",
+    "shareOfVotingPower": "Share of voting power",
+    "votingPowerPerDay": "Voting power per day"
   },
   "comment_box": {
     "title": "Comment box",

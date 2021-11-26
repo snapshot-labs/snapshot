@@ -1,5 +1,4 @@
 import { createRouter, createWebHashHistory, RouteLocation } from 'vue-router';
-import domains from '@/../snapshot-spaces/spaces/domains.json';
 import Home from '@/views/Home.vue';
 import SpaceProposal from '@/views/SpaceProposal.vue';
 import SpaceCreate from '@/views/SpaceCreate.vue';
@@ -14,8 +13,9 @@ import Space from '@/views/Space.vue';
 import SpaceAbout from '@/views/SpaceAbout.vue';
 import SpaceProposals from '@/views/SpaceProposals.vue';
 import aliases from '@/../snapshot-spaces/spaces/aliases.json';
+import { useDomain } from '@/composables/useDomain';
 
-const domainName = window.location.hostname;
+const { domain } = useDomain();
 
 const spaceChildrenRoutes = [
   {
@@ -46,7 +46,7 @@ const spaceChildrenRoutes = [
   }
 ];
 
-const homeRoutes = domains[domainName]
+const homeRoutes = domain
   ? [
       {
         path: '/',
@@ -63,14 +63,14 @@ const homeRoutes = domains[domainName]
       }
     ];
 
-const spaceRoutes = domains[domainName]
+const spaceRoutes = domain
   ? [
       /**
-      Its quite hard to match /abc/pqr/abc without using a full pathMatch from vue router. 
-      So I have used this, and also tried to handle the situations where the user has a link 
+      Its quite hard to match /abc/pqr/abc without using a full pathMatch from vue router.
+      So I have used this, and also tried to handle the situations where the user has a link
       like this. /balancer/proposals/:proposalId it will redirect the user to /proposals/:proposalId
-      Similarly, /balancer.eth will also be redirected. 
-      However if the user manually tries to change the space to something else `abc.eth` then the user 
+      Similarly, /balancer.eth will also be redirected.
+      However if the user manually tries to change the space to something else `abc.eth` then the user
       will be redirected to the homepage.
     */
       {
@@ -80,7 +80,7 @@ const spaceRoutes = domains[domainName]
           const isSpaceRoute =
             Object.keys(aliases).includes(to.params.pathMatch[0]) ||
             Object.values(aliases).includes(to.params.pathMatch[0]) ||
-            domains[domainName] === to.params.pathMatch[0];
+            domain === to.params.pathMatch[0];
 
           if (!isSpaceRoute) {
             return { path: '/' };
@@ -110,7 +110,6 @@ const routes: any[] = [
   { path: '/networks', name: 'networks', component: Explore },
   { path: '/strategies', name: 'strategies', component: Explore },
   { path: '/plugins', name: 'plugins', component: Explore },
-  { path: '/skins', name: 'skins', component: Explore },
   { path: '/delegate/:key?/:to?', name: 'delegate', component: Delegate },
   { path: '/timeline', name: 'timeline', component: Timeline },
   { path: '/explore', name: 'explore', component: Timeline },

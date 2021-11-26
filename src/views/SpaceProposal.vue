@@ -2,7 +2,12 @@
 import { ref, computed, watch, onMounted, inject } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
-import { getProposal, getResults, getPower } from '@/helpers/snapshot';
+import {
+  getProposal,
+  getResults,
+  getPower,
+  getProposalVotes
+} from '@/helpers/snapshot';
 import { useModal } from '@/composables/useModal';
 import { useTerms } from '@/composables/useTerms';
 import { useProfiles } from '@/composables/useProfiles';
@@ -33,13 +38,13 @@ const modalOpen = ref(false);
 const selectedChoices = ref(null);
 const loading = ref(true);
 const loadedResults = ref(false);
+const loadedVotes = ref(false);
 const proposal = ref({});
 const votes = ref([]);
 const results = ref({});
 const totalScore = ref(0);
 const scores = ref([]);
 const modalStrategiesOpen = ref(false);
-const proposalObj = ref({});
 
 const web3Account = computed(() => web3.value.account);
 const isCreator = computed(() => proposal.value.author === web3Account.value);
@@ -78,8 +83,7 @@ function clickVote() {
 }
 
 async function loadProposal() {
-  proposalObj.value = await getProposal(id);
-  proposal.value = proposalObj.value.proposal;
+  proposal.value = await getProposal(id);
   // Redirect to proposal spaceId if it doesn't match route key
   if (
     route.name === 'spaceProposal' &&
@@ -93,18 +97,40 @@ async function loadProposal() {
 }
 
 async function loadResults() {
-  const resultsObj = await getResults(
-    props.space,
-    proposalObj.value.proposal,
-    proposalObj.value.votes
-  );
-  results.value = resultsObj.results;
-  votes.value = resultsObj.votes;
-  loadedResults.value = true;
+  if (proposal.value.scores_state === 'final') {
+    results.value = {
+      resultsByVoteBalance: proposal.value.scores,
+      resultsByStrategyScore: proposal.value.scores_by_strategy,
+      sumOfResultsBalance: proposal.value.scores_total
+    };
+    loadedResults.value = true;
+    votes.value = (await getProposalVotes(id, 100)).map(vote => {
+      vote.balance = vote.vp;
+      vote.scores = vote.vp_by_strategy;
+      return vote;
+    });
+    loadedVotes.value = true;
+  } else {
+    const votesTmp = await getProposalVotes(id);
+    const resultsObj = await getResults(
+      props.space,
+      proposal.value,
+      votesTmp
+    );
+    results.value = resultsObj.results;
+    loadedResults.value = true;
+    votes.value = resultsObj.votes;
+    loadedVotes.value = true;
+  }
 }
 
 async function loadPower() {
-  if (!web3Account.value || !proposal.value.author) return;
+  if (
+    !web3Account.value ||
+    !proposal.value.author ||
+    proposal.value.state === 'closed'
+  )
+    return;
   const response = await getPower(
     props.space,
     web3Account.value,
@@ -156,10 +182,10 @@ function selectFromShareDropdown(e) {
     shareToClipboard(props.space, proposal.value);
 }
 
-const { profiles, updateAddressArray } = useProfiles();
+const { profiles, loadProfiles } = useProfiles();
 
 watch(proposal, () => {
-  updateAddressArray([proposal.value.author]);
+  loadProfiles([proposal.value.author]);
 });
 
 watch(web3Account, (val, prev) => {
@@ -181,6 +207,7 @@ watch(loaded, () => {
 onMounted(async () => {
   await loadProposal();
   const choice = route.query.choice;
+  if (proposal.value.type === 'approval') selectedChoices.value = [];
   if (web3Account.value && choice) {
     selectedChoices.value = parseInt(choice);
     clickVote();
@@ -245,7 +272,7 @@ onMounted(async () => {
       />
       <BlockVotes
         v-if="loaded"
-        :loaded="loadedResults"
+        :loaded="loadedVotes"
         :space="space"
         :proposal="proposal"
         :votes="votes"
@@ -256,6 +283,7 @@ onMounted(async () => {
         :id="id"
         :space="space"
         :proposal="proposal"
+        :votes="votes"
         :loadedResults="loadedResults"
       />
     </template>
@@ -285,6 +313,7 @@ onMounted(async () => {
             :address="proposal.author"
             :profile="profiles[proposal.author]"
             :space="space"
+            :proposal="proposal"
             class="float-right"
           />
         </div>
@@ -325,7 +354,7 @@ onMounted(async () => {
           <div class="mb-1">
             <b>{{ $t('snapshot') }}</b>
             <a
-              :href="_explorer(space.network, proposal.snapshot, 'block')"
+              :href="_explorer(proposal.network, proposal.snapshot, 'block')"
               target="_blank"
               class="float-right"
             >
@@ -374,7 +403,7 @@ onMounted(async () => {
     <ModalStrategies
       :open="modalStrategiesOpen"
       @close="modalStrategiesOpen = false"
-      :space="space"
+      :proposal="proposal"
       :strategies="strategies"
     />
     <ModalTerms
