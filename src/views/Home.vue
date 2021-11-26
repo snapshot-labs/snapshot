@@ -7,6 +7,7 @@ import { useUnseenProposals } from '@/composables/useUnseenProposals';
 import { useScrollMonitor } from '@/composables/useScrollMonitor';
 import { useApp } from '@/composables/useApp';
 import { useFollowSpace } from '@/composables/useFollowSpace';
+import verified from '@/../snapshot-spaces/spaces/verified.json';
 
 const route = useRoute();
 const { explore } = useApp();
@@ -26,8 +27,9 @@ const orderedSpaces = computed(() => {
       // const voters1d = explore.value.spaces[key].voters_1d ?? 0;
       const followers1d = explore.value.spaces[key].followers_1d ?? 0;
       // const proposals1d = explore.value.spaces[key].proposals_1d ?? 0;
+      const isVerified = verified[key] || 0;
       let score = followers1d + followers / 4;
-      if (explore.value.spaces[key].network !== '1') score = score / 6;
+      if (isVerified === 1) score = score * 2;
       const testnet = testnetNetworks.includes(
         explore.value.spaces[key].network
       );
@@ -40,7 +42,7 @@ const orderedSpaces = computed(() => {
         testnet
       };
     })
-    .filter(space => !space.private && space.id !== '0xmetamask.eth')
+    .filter(space => !space.private && verified[space.id] !== -1)
     .filter(space => space.network === network || !network);
 
   return orderBy(
