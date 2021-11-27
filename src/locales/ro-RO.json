@@ -95,6 +95,8 @@
   "startToEnd": "pornește {0} sfârșit {1}",
   "startIn": "pornește {0}",
   "endIn": "sfârșit {1}",
+  "proposalStartIn": "start in {0}",
+  "proposalToNow": "{0} left",
   "endedAgo": "sfârșit {1}",
   "proposalBy": "de către {0}",
   "endDate": "sfârșit {0}",
