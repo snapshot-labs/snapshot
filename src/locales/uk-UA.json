@@ -95,6 +95,8 @@
   "startToEnd": "початок {0} кінець {1}",
   "startIn": "початок {0}",
   "endIn": "кінець {1}",
+  "proposalStartIn": "start in {0}",
+  "proposalToNow": "{0} left",
   "endedAgo": "завершено {1}",
   "proposalBy": "від {0}",
   "endDate": "кінець {0}",
