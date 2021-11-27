@@ -95,6 +95,8 @@
   "startToEnd": "с {0} по {1}",
   "startIn": "начался {0}",
   "endIn": "по {1}",
+  "proposalStartIn": "start in {0}",
+  "proposalToNow": "{0} left",
   "endedAgo": "по {1}",
   "proposalBy": "от: {0}",
   "endDate": "по {0}",
