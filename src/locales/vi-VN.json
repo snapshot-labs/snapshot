@@ -95,6 +95,8 @@
   "startToEnd": "bắt đầu {0} kết thúc {1}",
   "startIn": "bắt đầu {0}",
   "endIn": "kết thúc {1}",
+  "proposalStartIn": "start in {0}",
+  "proposalToNow": "{0} left",
   "endedAgo": "kết thúc {1}",
   "proposalBy": "bởi {0}",
   "endDate": "kết thúc {0}",
