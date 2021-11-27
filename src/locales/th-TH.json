@@ -95,6 +95,8 @@
   "startToEnd": "เริ่มต้น {0} สินสุด {1}",
   "startIn": "เริ่มต้น {0}",
   "endIn": "สินสุด{1}",
+  "proposalStartIn": "start in {0}",
+  "proposalToNow": "{0} left",
   "endedAgo": "สิ้นสุด {1}",
   "proposalBy": "by {0}",
   "endDate": "สิ้นสุด{0}",
