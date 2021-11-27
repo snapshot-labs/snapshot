@@ -104,9 +104,9 @@ watch([proposals, web3Account], () => {
 </script>
 
 <template>
-  <Layout>
-    <template #sidebar-left>
-      <div style="position: fixed; width: 240px">
+  <Layout class="!mt-0">
+    <template #sidebar-right>
+      <div style="position: fixed; width: 320px" class="mt-4 hidden lg:block">
         <Block :slim="true" :title="$t('filters')" class="overflow-hidden">
           <div class="py-3">
             <router-link
@@ -123,18 +123,10 @@ watch([proposals, web3Account], () => {
         </Block>
       </div>
     </template>
-    <template #content-right>
-      <div class="px-4 md:px-0 mb-3 flex">
-        <div class="flex-auto">
-          <router-link :to="{ path: '/' }" class="text-color">
-            <Icon name="back" size="22" class="!align-middle" />
-            {{ $t('backToHome') }}
-          </router-link>
-          <div class="flex items-center flex-auto">
-            <h2>{{ $t('timeline') }}</h2>
-          </div>
-        </div>
+    <template #content-left>
+      <div class="py-4 px-4 md:px-0">
         <UiDropdown
+          class="float-right"
           top="3.5rem"
           right="1.25rem"
           @select="selectState"
@@ -150,48 +142,46 @@ watch([proposals, web3Account], () => {
             <Icon size="14" name="arrow-down" class="mt-1 mr-1" />
           </UiButton>
         </UiDropdown>
+        <h2 v-text="$t('timeline')" class="mt-1" />
       </div>
-
-      <Block
-        v-if="
-          loading ||
-          (web3.authLoading && isTimeline) ||
-          (loadingFollows && isTimeline)
-        "
-        :slim="true"
-      >
-        <RowLoading class="my-2" />
-      </Block>
-
-      <Block
-        v-else-if="
-          (isTimeline && following.length < 1) || (isTimeline && !web3.account)
-        "
-        class="text-center"
-      >
-        <div class="mb-3">{{ $t('noSpacesJoined') }}</div>
-        <router-link :to="{ path: '/' }">
-          <UiButton>{{ $t('joinSpaces') }}</UiButton>
-        </router-link>
-      </Block>
-
-      <NoResults v-else-if="proposals.length < 1" :block="true" />
-
-      <div v-else>
-        <TimelineProposal
-          v-for="(proposal, i) in proposals"
-          :key="i"
-          :proposal="proposal"
-          :profiles="profiles"
+      <div class="md:border-r md:border-l md:rounded-lg border-t border-b">
+        <RowLoading
+          v-if="
+            loading ||
+            (web3.authLoading && isTimeline) ||
+            (loadingFollows && isTimeline)
+          "
+          class="px-4 py-5"
         />
+        <div
+          v-else-if="
+            (isTimeline && following.length < 1) ||
+            (isTimeline && !web3.account)
+          "
+          class="text-center border-b p-4"
+        >
+          <div class="mb-3">{{ $t('noSpacesJoined') }}</div>
+          <router-link :to="{ path: '/' }">
+            <UiButton>{{ $t('joinSpaces') }}</UiButton>
+          </router-link>
+        </div>
+        <NoResults v-else-if="proposals.length < 1" :block="true" />
+        <div v-else>
+          <TimelineProposalPreview
+            v-for="(proposal, i) in proposals"
+            :key="i"
+            :proposal="proposal"
+            :profiles="profiles"
+          />
+        </div>
+        <div
+          style="height: 10px; width: 10px; position: absolute"
+          ref="endElement"
+        />
+        <div v-if="loadingMore && !loading" :slim="true">
+          <RowLoading class="border-t px-4 py-5" />
+        </div>
       </div>
-      <div
-        style="height: 10px; width: 10px; position: absolute"
-        ref="endElement"
-      />
-      <Block v-if="loadingMore && !loading" :slim="true">
-        <RowLoading class="my-2" />
-      </Block>
     </template>
   </Layout>
 </template>
