@@ -124,14 +124,10 @@ watch([proposals, web3Account], () => {
       </div>
     </template>
     <template #content-left>
-      <div class="md:border-r md:border-l">
-        <div class="p-4 flex border-b">
-          <div class="flex-auto">
-            <div class="flex items-center flex-auto">
-              <h2>{{ $t('timeline') }}</h2>
-            </div>
-          </div>
+      <div class="border-[color:var(--border-color)] md:border-r md:border-l">
+        <div class="p-4 border-b">
           <UiDropdown
+            class="float-right"
             top="3.5rem"
             right="1.25rem"
             @select="selectState"
@@ -147,6 +143,7 @@ watch([proposals, web3Account], () => {
               <Icon size="14" name="arrow-down" class="mt-1 mr-1" />
             </UiButton>
           </UiDropdown>
+          <h2 v-text="$t('timeline')" class="mt-1" />
         </div>
         <RowLoading
           v-if="
@@ -154,20 +151,20 @@ watch([proposals, web3Account], () => {
             (web3.authLoading && isTimeline) ||
             (loadingFollows && isTimeline)
           "
-          class="my-2"
+          class="border-b px-4 py-5"
         />
-        <Block
+        <div
           v-else-if="
             (isTimeline && following.length < 1) ||
             (isTimeline && !web3.account)
           "
-          class="text-center"
+          class="text-center border-b p-4"
         >
           <div class="mb-3">{{ $t('noSpacesJoined') }}</div>
           <router-link :to="{ path: '/' }">
             <UiButton>{{ $t('joinSpaces') }}</UiButton>
           </router-link>
-        </Block>
+        </div>
         <NoResults v-else-if="proposals.length < 1" :block="true" />
         <div v-else>
           <TimelineProposalPreview
@@ -182,7 +179,7 @@ watch([proposals, web3Account], () => {
           ref="endElement"
         />
         <div v-if="loadingMore && !loading" :slim="true">
-          <RowLoading class="my-2" />
+          <RowLoading class="border-b px-4 py-5" />
         </div>
       </div>
     </template>

@@ -191,6 +191,14 @@ select {
   border-radius: 14px;
 }
 
+.State.slim {
+  padding: 0;
+  height: 12px;
+  width: 12px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
 .notification {
   color: white !important;
 }

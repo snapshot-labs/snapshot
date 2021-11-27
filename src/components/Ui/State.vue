@@ -2,7 +2,8 @@
 import { computed } from 'vue';
 
 const props = defineProps({
-  state: String
+  state: String,
+  slim: Boolean
 });
 
 const stateClass = computed(() => {
@@ -14,6 +15,15 @@ const stateClass = computed(() => {
 
 <template>
   <span
+    v-if="slim"
+    :class="stateClass"
+    v-tippy="{
+      content: $t(`proposals.states.${state}`)
+    }"
+    class="State text-white slim"
+  />
+  <span
+    v-else
     :class="stateClass"
     v-text="$t(`proposals.states.${state}`)"
     class="State text-white"

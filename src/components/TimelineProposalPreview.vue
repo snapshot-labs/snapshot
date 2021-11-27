@@ -16,8 +16,8 @@ const winningChoice = computed(() =>
 
 const period = computed(() => {
   if (props.proposal.state === 'closed') return 'endedAgo';
-  if (props.proposal.state === 'active') return 'endIn';
-  return 'startIn';
+  if (props.proposal.state === 'active') return 'proposalToNow';
+  return 'proposalStartIn';
 });
 
 const { address, profile, username } = useUsername();
@@ -48,7 +48,7 @@ watchEffect(() => {
           />
         </div>
         <h3 v-text="proposal.title" class="mt-1 mb-1" />
-        <UiState :state="proposal.state" class="inline-block mb-3" />
+        <p v-text="_shorten(body, 120)" class="break-words mb-2 text-md" />
         <div
           v-if="
             proposal.scores_state === 'final' &&
@@ -62,10 +62,18 @@ watchEffect(() => {
             :key="i"
             class="mt-1 w-full relative"
           >
-            <div
-              v-text="_shorten(choice, 32)"
-              class="absolute leading-[42px] ml-3 link-color"
-            />
+            <div class="absolute leading-[42px] ml-3 link-color">
+              <Icon
+                name="check1"
+                size="20"
+                class="mr-1 -ml-1 align-middle"
+                v-if="i === winningChoice"
+              />
+              {{ _shorten(choice, 32) }}
+              <span class="text-color ml-1">
+                {{ _n(proposal.scores[i]) }} {{ proposal.space.symbol }}
+              </span>
+            </div>
             <div
               v-text="
                 _n((1 / proposal.scores_total) * proposal.scores[i], '0.[0]%')
@@ -81,9 +89,10 @@ watchEffect(() => {
           </div>
         </div>
         <div>
+          <UiState :state="proposal.state" slim class="mr-2" />
           <span
             v-if="proposal.scores_state !== 'final'"
-            v-text="$tc(period, [_ms(proposal.start), _ms(proposal.end)])"
+            v-text="$tc(period, [_toNow(proposal.start)])"
           />
           <span v-if="proposal.scores_state === 'final'" class="mt-2">
             {{ _n(proposal.votes, '0,00') }} votes
