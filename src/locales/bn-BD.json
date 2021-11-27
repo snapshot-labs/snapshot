@@ -95,6 +95,8 @@
   "startToEnd": "শুরু{0} শেষ{1}",
   "startIn": "শুরু {0}",
   "endIn": "শেষ{1}",
+  "proposalStartIn": "start in {0}",
+  "proposalToNow": "{0} left",
   "endedAgo": "শেষ{1}",
   "proposalBy": "দ্বারা{0}",
   "endDate": "শেষ{0}",
