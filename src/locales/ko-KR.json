@@ -95,6 +95,8 @@
   "startToEnd": "시작 {0} 끝 {1}",
   "startIn": "스타트 {0}",
   "endIn": "종료 {1}",
+  "proposalStartIn": "start in {0}",
+  "proposalToNow": "{0} left",
   "endedAgo": "종료 {1}",
   "proposalBy": "에 의하여 {0}",
   "endDate": "말단 {0}",
