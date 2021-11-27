@@ -95,6 +95,8 @@
   "startToEnd": "התחל {0} סיים {1}",
   "startIn": "התחל {0}",
   "endIn": "סיים {1}",
+  "proposalStartIn": "start in {0}",
+  "proposalToNow": "{0} left",
   "endedAgo": "הסתיים {1}",
   "proposalBy": "על ידי {0}",
   "endDate": "סיים {0}",
