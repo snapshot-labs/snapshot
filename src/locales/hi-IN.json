@@ -95,6 +95,8 @@
   "startToEnd": "शुरू {0} ख़त्म {1}",
   "startIn": "शुरू {0}",
   "endIn": "ख़त्म {1}",
+  "proposalStartIn": "start in {0}",
+  "proposalToNow": "{0} left",
   "endedAgo": "ख़त्म हुआ {1}",
   "proposalBy": "द्वारा{0}",
   "endDate": "ख़त्म {0}",
