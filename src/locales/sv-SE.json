@@ -95,6 +95,8 @@
   "startToEnd": "starta {0} slut {1}",
   "startIn": "starta {0}",
   "endIn": "avsluta {1}",
+  "proposalStartIn": "start in {0}",
+  "proposalToNow": "{0} left",
   "endedAgo": "avslutade {1}",
   "proposalBy": "av {0}",
   "endDate": "avsluta {0}",
