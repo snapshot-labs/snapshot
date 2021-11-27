@@ -29,7 +29,7 @@ watchEffect(() => {
 </script>
 
 <template>
-  <div class="transition-colors border-b">
+  <div class="transition-colors border-b last-child-border-0">
     <router-link
       class="p-4 block text-color"
       :to="{
@@ -53,7 +53,7 @@ watchEffect(() => {
           v-if="
             proposal.scores_state === 'final' &&
             proposal.scores_total > 0 &&
-            proposal.choices.length <= 4
+            proposal.choices.length <= 6
           "
           class="mb-3"
         >
@@ -62,7 +62,7 @@ watchEffect(() => {
             :key="i"
             class="mt-1 w-full relative"
           >
-            <div class="absolute leading-[42px] ml-3 link-color">
+            <div class="absolute leading-[43px] ml-3 link-color">
               <Icon
                 name="check1"
                 size="20"
@@ -89,7 +89,8 @@ watchEffect(() => {
           </div>
         </div>
         <div>
-          <UiState :state="proposal.state" slim class="mr-2" />
+          <UiState :state="proposal.state" slim class="mr-1" />
+          {{ $t(`proposals.states.${proposal.state}`) }},
           <span
             v-if="proposal.scores_state !== 'final'"
             v-text="$tc(period, [_toNow(proposal.start)])"

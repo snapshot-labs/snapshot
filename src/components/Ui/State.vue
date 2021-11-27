@@ -14,14 +14,7 @@ const stateClass = computed(() => {
 </script>
 
 <template>
-  <span
-    v-if="slim"
-    :class="stateClass"
-    v-tippy="{
-      content: $t(`proposals.states.${state}`)
-    }"
-    class="State text-white slim"
-  />
+  <span v-if="slim" :class="stateClass" class="State text-white slim" />
   <span
     v-else
     :class="stateClass"

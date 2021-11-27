@@ -124,34 +124,34 @@ watch([proposals, web3Account], () => {
       </div>
     </template>
     <template #content-left>
-      <div class="border-[color:var(--border-color)] md:border-r md:border-l">
-        <div class="p-4 border-b">
-          <UiDropdown
-            class="float-right"
-            top="3.5rem"
-            right="1.25rem"
-            @select="selectState"
-            :items="[
-              { text: $t('proposals.states.all'), action: 'all' },
-              { text: $t('proposals.states.active'), action: 'active' },
-              { text: $t('proposals.states.pending'), action: 'pending' },
-              { text: $t('proposals.states.closed'), action: 'closed' }
-            ]"
-          >
-            <UiButton class="pr-3">
-              {{ $t(`proposals.states.${filterBy}`) }}
-              <Icon size="14" name="arrow-down" class="mt-1 mr-1" />
-            </UiButton>
-          </UiDropdown>
-          <h2 v-text="$t('timeline')" class="mt-1" />
-        </div>
+      <div class="py-4 px-4 md:px-0">
+        <UiDropdown
+          class="float-right"
+          top="3.5rem"
+          right="1.25rem"
+          @select="selectState"
+          :items="[
+            { text: $t('proposals.states.all'), action: 'all' },
+            { text: $t('proposals.states.active'), action: 'active' },
+            { text: $t('proposals.states.pending'), action: 'pending' },
+            { text: $t('proposals.states.closed'), action: 'closed' }
+          ]"
+        >
+          <UiButton class="pr-3">
+            {{ $t(`proposals.states.${filterBy}`) }}
+            <Icon size="14" name="arrow-down" class="mt-1 mr-1" />
+          </UiButton>
+        </UiDropdown>
+        <h2 v-text="$t('timeline')" class="mt-1" />
+      </div>
+      <div class="md:border-r md:border-l md:rounded-lg border-t border-b">
         <RowLoading
           v-if="
             loading ||
             (web3.authLoading && isTimeline) ||
             (loadingFollows && isTimeline)
           "
-          class="border-b px-4 py-5"
+          class="px-4 py-5"
         />
         <div
           v-else-if="
@@ -179,7 +179,7 @@ watch([proposals, web3Account], () => {
           ref="endElement"
         />
         <div v-if="loadingMore && !loading" :slim="true">
-          <RowLoading class="border-b px-4 py-5" />
+          <RowLoading class="border-t px-4 py-5" />
         </div>
       </div>
     </template>
