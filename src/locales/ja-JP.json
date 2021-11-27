@@ -95,6 +95,8 @@
   "startToEnd": "{0} 開始 {1} 終了",
   "startIn": "{0} 開始",
   "endIn": "{1} 終了",
+  "proposalStartIn": "start in {0}",
+  "proposalToNow": "{0} left",
   "endedAgo": "{1} 前に終了",
   "proposalBy": "by {0}",
   "endDate": "{0} 終了",
