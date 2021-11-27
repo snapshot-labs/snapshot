@@ -95,6 +95,8 @@
   "startToEnd": "aloita {0} loppu {1}",
   "startIn": "aloita {0}",
   "endIn": "loppu {1}",
+  "proposalStartIn": "start in {0}",
+  "proposalToNow": "{0} left",
   "endedAgo": "loppui {1}",
   "proposalBy": "tekijältä {0}",
   "endDate": "loppu {0}",
