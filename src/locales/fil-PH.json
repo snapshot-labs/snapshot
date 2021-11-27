@@ -95,6 +95,8 @@
   "startToEnd": "simula {0} wakas {1}",
   "startIn": "simula {0}",
   "endIn": "pagtatapos {1}",
+  "proposalStartIn": "start in {0}",
+  "proposalToNow": "{0} left",
   "endedAgo": "natapos {1}",
   "proposalBy": "by {0}",
   "endDate": "pagtatapos {0}",
