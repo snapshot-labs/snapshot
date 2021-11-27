@@ -95,6 +95,8 @@
   "startToEnd": "başlangıç {0} bitiş {1}",
   "startIn": "başlangıç {0}",
   "endIn": "bitiş {1}",
+  "proposalStartIn": "start in {0}",
+  "proposalToNow": "{0} left",
   "endedAgo": "bitti {1}",
   "proposalBy": "{0} tarafından",
   "endDate": "bitiş {0}",
