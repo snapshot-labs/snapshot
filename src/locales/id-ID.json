@@ -95,6 +95,8 @@
   "startToEnd": "mulai {0} akhir {1}",
   "startIn": "mulai {0}",
   "endIn": "akhir {1}",
+  "proposalStartIn": "start in {0}",
+  "proposalToNow": "{0} left",
   "endedAgo": "berakhir {1}",
   "proposalBy": "oleh {0}",
   "endDate": "akhir {0}",
