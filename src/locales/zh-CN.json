@@ -95,6 +95,8 @@
   "startToEnd": "开始 {0} 结束 {1}",
   "startIn": "从 {0} 开始",
   "endIn": "结束 {1}",
+  "proposalStartIn": "start in {0}",
+  "proposalToNow": "{0} left",
   "endedAgo": "结束 {1}",
   "proposalBy": "由 {0}",
   "endDate": "结束 {0}",
