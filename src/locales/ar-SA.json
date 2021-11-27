@@ -95,6 +95,8 @@
   "startToEnd": "بدء {0} نهاية {1}",
   "startIn": "البدء {0}",
   "endIn": "إنهاء {1}",
+  "proposalStartIn": "start in {0}",
+  "proposalToNow": "{0} left",
   "endedAgo": "انتهى {1}",
   "proposalBy": "بواسطة: {0}",
   "endDate": "نهاية {0}",
