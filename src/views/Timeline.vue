@@ -10,6 +10,12 @@ import { PROPOSALS_QUERY } from '@/helpers/queries';
 import { useProfiles } from '@/composables/useProfiles';
 import { useFollowSpace } from '@/composables/useFollowSpace';
 import { useWeb3 } from '@/composables/useWeb3';
+import verified from '@/../snapshot-spaces/spaces/verified.json';
+
+const verifiedSpaces = Object.entries(verified)
+  .filter(space => space[1] === 1)
+  .map(space => space[0]);
+
 import zipObject from 'lodash/zipObject';
 const filterBy = ref('all');
 const loading = ref(false);
@@ -20,7 +26,7 @@ const { followingSpaces, loadingFollows } = useFollowSpace();
 const { web3 } = useWeb3();
 
 const following = computed(() => {
-  return route.name === 'timeline' ? followingSpaces.value : [];
+  return route.name === 'timeline' ? followingSpaces.value : verifiedSpaces;
 });
 
 const isTimeline = computed(() => route.name === 'timeline');
