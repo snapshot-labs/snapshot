@@ -29,7 +29,7 @@ watchEffect(() => {
 </script>
 
 <template>
-  <div slim class="transition-colors border-b">
+  <div class="transition-colors border-b">
     <router-link
       class="p-4 block text-color"
       :to="{
@@ -46,39 +46,37 @@ watchEffect(() => {
             :address="proposal.author"
             :members="proposal.space.members"
           />
-          <UiState :state="proposal.state" class="inline-block float-right" />
         </div>
         <h3 v-text="proposal.title" class="mt-1 mb-1" />
-        <div v-if="proposal.scores_state !== 'final'" class="my-3">
-          <UiButton
-            v-for="(choice, i) in proposal.choices"
-            :key="i"
-            class="mt-2 w-full"
-          >
-            {{ _shorten(choice, 32) }}
-          </UiButton>
-        </div>
-        <div v-else-if="proposal.scores_total > 0" class="my-3">
+        <UiState :state="proposal.state" class="inline-block mb-3" />
+        <div
+          v-if="
+            proposal.scores_state === 'final' &&
+            proposal.scores_total > 0 &&
+            proposal.choices.length <= 4
+          "
+          class="mb-3"
+        >
           <div
             v-for="(choice, i) in proposal.choices"
             :key="i"
-            class="mt-2 w-full relative"
+            class="mt-1 w-full relative"
           >
             <div
               v-text="_shorten(choice, 32)"
-              class="absolute leading-[46px] ml-3 link-color"
+              class="absolute leading-[42px] ml-3 link-color"
             />
             <div
               v-text="
                 _n((1 / proposal.scores_total) * proposal.scores[i], '0.[0]%')
               "
-              class="absolute right-0 leading-[46px] mr-3 link-color"
+              class="absolute right-0 leading-[40px] mr-3 link-color"
             />
             <div
               :style="`width: ${
                 (100 / proposal.scores_total) * proposal.scores[i]
               }%;`"
-              class="bg-[color:var(--border-color)] rounded-md h-[46px]"
+              class="bg-[color:var(--border-color)] rounded-md h-[40px]"
             />
           </div>
         </div>
