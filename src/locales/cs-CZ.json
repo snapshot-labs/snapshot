@@ -95,6 +95,8 @@
   "startToEnd": "začít {0} konec {1}",
   "startIn": "Start: {0}",
   "endIn": "konec {1}",
+  "proposalStartIn": "start in {0}",
+  "proposalToNow": "{0} left",
   "endedAgo": "konec {1}",
   "proposalBy": "od {0}",
   "endDate": "End: {0}",
