@@ -65,7 +65,7 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
 </script>
 
 <template>
-  <div>
+  <div class="mt-4">
     <div class="text-center mb-4 mx-auto">
       <Container class="flex items-center">
         <div class="flex-auto text-left flex">
