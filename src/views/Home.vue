@@ -8,6 +8,7 @@ import { useScrollMonitor } from '@/composables/useScrollMonitor';
 import { useApp } from '@/composables/useApp';
 import { useFollowSpace } from '@/composables/useFollowSpace';
 import { useCategories } from '@/composables/useCategories';
+import verified from '@/../snapshot-spaces/spaces/verified.json';
 
 const category = ref('');
 const route = useRoute();
@@ -33,8 +34,9 @@ const orderedSpaces = computed(() => {
       // const voters1d = explore.value.spaces[key].voters_1d ?? 0;
       const followers1d = explore.value.spaces[key].followers_1d ?? 0;
       // const proposals1d = explore.value.spaces[key].proposals_1d ?? 0;
+      const isVerified = verified[key] || 0;
       let score = followers1d + followers / 4;
-      if (explore.value.spaces[key].network !== '1') score = score / 6;
+      if (isVerified === 1) score = score * 2;
       const testnet = testnetNetworks.includes(
         explore.value.spaces[key].network
       );
@@ -47,15 +49,13 @@ const orderedSpaces = computed(() => {
         testnet
       };
     })
-    .filter(
-      space =>
-        !space.private &&
-        space.id !== '0xmetamask.eth' &&
-        (!category.value ||
-          (space.categories && space.categories.includes(category.value))) &&
-        (space.network === network || !network) &&
-        JSON.stringify(space).toLowerCase().includes(q.toLowerCase())
-    );
+    .filter(space => (
+      !category.value ||
+      (space.categories && space.categories.includes(category.value))
+    ))
+    .filter(space => !space.private && verified[space.id] !== -1)
+    .filter(space => space.network === network || !network)
+    .filter(space => JSON.stringify(space).toLowerCase().includes(q.toLowerCase()));
 
   return orderBy(
     list,
@@ -75,9 +75,9 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
 </script>
 
 <template>
-  <div>
+  <div class="mt-4">
     <Container class="flex items-center mb-4">
-      <UiButton class="pl-3 pr-0 w-full md:w-8/12">
+      <UiButton class="pl-3 pr-0 w-full md:w-7/12">
         <SearchWithFilters />
       </UiButton>
       <UiSlider :items="categories" class="ml-3" :navigation="true">

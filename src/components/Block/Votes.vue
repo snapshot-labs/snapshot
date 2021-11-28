@@ -69,9 +69,7 @@ watch(votes, () => {
 });
 
 watch(visibleVotes, () => {
-  loadProfiles(
-    sortedVotes.value.slice(0, nbrVisibleVotes.value).map(vote => vote.voter)
-  );
+  loadProfiles(visibleVotes.value.map(vote => vote.voter));
 });
 </script>
 

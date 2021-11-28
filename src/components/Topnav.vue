@@ -50,7 +50,7 @@ onMounted(() => setTitle());
 </script>
 
 <template>
-  <Sticky class="mb-4">
+  <Sticky>
     <div
       v-if="env === 'develop'"
       class="p-3 text-center bg-blue"

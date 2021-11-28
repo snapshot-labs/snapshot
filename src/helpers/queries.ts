@@ -95,7 +95,9 @@ export const PROPOSALS_QUERY = gql`
         symbol
       }
       scores_state
+      scores_total
       scores
+      votes
     }
   }
 `;
