@@ -323,10 +323,10 @@
   "poap": {
     "no_poap_header": "POAP-palvelua ei ole vielä perustettu tälle ehdotukselle: '(",
     "no_voted_header": "Äänestää saadaksesi tämän POAP: n",
-    "unclaimed_header": "Mint",
-    "claimed_header": "Congratulations! The POAP has been minted to your account",
+    "unclaimed_header": "Mint your I voted POAP",
+    "claimed_header": "Congratulations! The POAP has been minted to your collection",
     "loading_header": "The POAP is being minted to your collection",
-    "button_claim": "Lunasta",
+    "button_claim": "Mint",
     "button_show": "Browse collection",
     "success_claim": "The POAP has been minted to your collection",
     "error_claim": "Kirjoituksen tallentaminen epäonnistui"
