@@ -306,7 +306,7 @@
     "no_poap_header": "या प्रस्तावासाठी अद्याप एक पीओएपी सेट केला गेला नाही :'(",
     "no_voted_header": "हे पीओएपी मिळविण्यासाठी मतदान करा",
     "unclaimed_header": "आपला मी मत नोंदविलेला पीओएपी चा दावा करा",
-    "claimed_header": "Congratulations! The POAP has been minted to your account",
+    "claimed_header": "Congratulations! The POAP has been minted to your collection",
     "loading_header": "आपल्या संग्रहात पीओएपी जोडला जात आहे",
     "button_claim": "दावा करा",
     "button_show": "Browse collection",
