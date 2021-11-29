@@ -77,29 +77,38 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
 <template>
   <div class="mt-4">
     <Container class="flex items-center mb-4">
-      <UiButton class="pl-3 pr-0 w-full md:w-7/12">
+      <UiButton class="mr-auto pl-3 pr-0 w-full md:w-7/12">
         <SearchWithFilters />
       </UiButton>
-      <UiSlider :items="categories" class="ml-3" :navigation="true">
-        <template v-slot:default="props">
-          <UiButton
-            @click="selectCategory(props.item)"
-            class="px-3 capitalize transition-opacity opacity-50 hover:opacity-100"
-            :class="{
-              'button--active': props.item === category,
-              'opacity-100': props.item === category || !category
-            }"
-          >
-            {{ props.item }}
-            <span class="text-gray-300 ml-1">
-              {{ spacesPerCategory[props.item] }}
-            </span>
-          </UiButton>
-        </template>
-      </UiSlider>
       <div class="ml-3 text-right hidden md:block whitespace-nowrap">
-        {{ $tc('spaceCount', [_n(Object.keys(explore.spaces).length)]) }}
+        {{ $tc('spaceCount', [_n(category ? spacesPerCategory[category] : Object.keys(explore.spaces).length)]) }}
       </div>
+      <UiDropdown
+        class="ml-3 z-10"
+        top="3.5rem"
+        right="1.25rem"
+        @select="selectCategory($event)"
+        :items="[
+          { text: `All (${Object.keys(explore.spaces).length})`, action: '' }, // TODO: localize 'All'
+          ...categories.map(c => ({
+            text: `${c.charAt(0).toUpperCase() + c.slice(1)} (${spacesPerCategory[c]})`,
+            action: c,
+            // selected: category === c
+          }))
+        ]
+        "
+      >
+        <UiButton class="pr-3">
+          <Icon size="14" name="apps" class="mt-1 mr-2" />
+          <span v-if="category" class="capitalize">
+            {{ category }}
+          </span>
+          <span v-else>
+            All
+          </span>
+          <Icon size="14" name="arrow-down" class="mt-1 mx-1" />
+        </UiButton>
+      </UiDropdown>
     </Container>
     <Container :slim="true">
       <div class="grid lg:grid-cols-4 md:grid-cols-3 gap-4">
