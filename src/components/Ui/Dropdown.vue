@@ -45,13 +45,15 @@ onBeforeUnmount(() => window.removeEventListener('click', close));
     <div class="sub-menu-wrapper" :class="{ hidden: !open }" :style="cssVars">
       <ul class="sub-menu my-2">
         <li v-for="item in items" :key="item" @click="handleClick(item.action)" :class="{ selected: item.selected }">
-          <Icon
-            v-if="item.icon"
-            :name="item.icon"
-            size="21"
-            class="align-middle mr-2"
-          />
-          {{ item.text }}
+          <slot name="item" :item="item" :key="key">
+            <Icon
+              v-if="item.icon"
+              :name="item.icon"
+              size="21"
+              class="align-middle mr-2"
+            />
+            {{ item.text }}
+          </slot>
         </li>
       </ul>
     </div>
