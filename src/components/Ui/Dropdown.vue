@@ -44,7 +44,7 @@ onBeforeUnmount(() => window.removeEventListener('click', close));
     </div>
     <div class="sub-menu-wrapper" :class="{ hidden: !open }" :style="cssVars">
       <ul class="sub-menu my-2">
-        <li v-for="item in items" :key="item" @click="handleClick(item.action)">
+        <li v-for="item in items" :key="item" @click="handleClick(item.action)" :class="{ selected: item.selected }">
           <Icon
             v-if="item.icon"
             :name="item.icon"
@@ -82,6 +82,7 @@ li.disabled {
   cursor: not-allowed;
 }
 
+li.selected,
 li:hover {
   background-color: var(--border-color);
   color: var(--link-color);
