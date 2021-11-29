@@ -323,10 +323,10 @@
   "poap": {
     "no_poap_header": "POAP belum dipersiapkan untuk proposal ini :'(",
     "no_voted_header": "Pilih untuk menerima POAP",
-    "unclaimed_header": "Mint",
-    "claimed_header": "Selamat! POAP telah dicetak ke akun Anda",
+    "unclaimed_header": "Mint your I voted POAP",
+    "claimed_header": "Congratulations! The POAP has been minted to your collection",
     "loading_header": "POAP ini sedang ditambahkan ke koleksi anda",
-    "button_claim": "Klaim",
+    "button_claim": "Mint",
     "button_show": "Jelajahi koleksi",
     "success_claim": "POAP ini telah ditambahkan ke koleksi anda",
     "error_claim": "Ada masalah dalam pencetakaan token"
