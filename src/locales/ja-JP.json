@@ -323,10 +323,10 @@
   "poap": {
     "no_poap_header": "POAP はまだこの提案のためにセットアップされていません :(",
     "no_voted_header": "投票してこのポイントを獲得しましょう",
-    "unclaimed_header": "Mint",
-    "claimed_header": "おめでとうございます！POAP があなたのアカウントに割り当てられました。",
+    "unclaimed_header": "Mint your I voted POAP",
+    "claimed_header": "Congratulations! The POAP has been minted to your collection",
     "loading_header": "The POAP is being minted to your collection",
-    "button_claim": "クレーム",
+    "button_claim": "Mint",
     "button_show": "コレクションを閲覧する",
     "success_claim": "The POAP has been minted to your collection",
     "error_claim": "トークンを削除する際に問題が発生しました。"
