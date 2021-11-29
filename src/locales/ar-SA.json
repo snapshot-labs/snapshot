@@ -323,10 +323,10 @@
   "poap": {
     "no_poap_header": "لم يتم إعداد POAP لهذا الاقتراح بعد :'(",
     "no_voted_header": "التصويت للحصول على هذا POAP",
-    "unclaimed_header": "سك العملة",
-    "claimed_header": "تهانينا! لقد تم سك العملة POAP إلى حسابك",
+    "unclaimed_header": "Mint your I voted POAP",
+    "claimed_header": "Congratulations! The POAP has been minted to your collection",
     "loading_header": "يتم سك العملة POAP في مجموعتك",
-    "button_claim": "الحصول عليه",
+    "button_claim": "Mint",
     "button_show": "تصفح المجموعة",
     "success_claim": "تم سك العملة POAP إلى مجموعتك",
     "error_claim": "حدثت مشكلة في سك العملة الرمزية"
