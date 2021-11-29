@@ -323,10 +323,10 @@
   "poap": {
     "no_poap_header": "ㅏ피영형에이피 이 제안은 아직 설정되지 않았습니다:'(",
     "no_voted_header": "이것을 얻으려면 투표하십시오 피영형에이피",
-    "unclaimed_header": "Mint",
-    "claimed_header": "축하합니다! 귀하의 계정에 POAP가 발행되었습니다.",
+    "unclaimed_header": "Mint your I voted POAP",
+    "claimed_header": "Congratulations! The POAP has been minted to your collection",
     "loading_header": "The POAP is being minted to your collection",
-    "button_claim": "청구",
+    "button_claim": "Mint",
     "button_show": "컬렉션 찾아보기",
     "success_claim": "The POAP has been minted to your collection",
     "error_claim": "토큰을 조폐 문제가 발생했습니다"
