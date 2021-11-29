@@ -323,10 +323,10 @@
   "poap": {
     "no_poap_header": "या प्रस्तावासाठी अद्याप एक पीओएपी सेट केला गेला नाही :'(",
     "no_voted_header": "हे पीओएपी मिळविण्यासाठी मतदान करा",
-    "unclaimed_header": "Mint",
-    "claimed_header": "Congratulations! The POAP has been minted to your account",
+    "unclaimed_header": "Mint your I voted POAP",
+    "claimed_header": "Congratulations! The POAP has been minted to your collection",
     "loading_header": "The POAP is being minted to your collection",
-    "button_claim": "दावा करा",
+    "button_claim": "Mint",
     "button_show": "Browse collection",
     "success_claim": "The POAP has been minted to your collection",
     "error_claim": "टोकन मिंट करताना एक समस्या आली"
