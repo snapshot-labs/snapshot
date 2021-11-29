@@ -306,7 +306,7 @@
     "no_poap_header": "POAP еще не был настроен для этого предложения :'(",
     "no_voted_header": "Проголосуйте, чтобы получить этот POAP",
     "unclaimed_header": "Я проголосовал, забрать свой POAP",
-    "claimed_header": "Congratulations! The POAP has been minted to your account",
+    "claimed_header": "Congratulations! The POAP has been minted to your collection",
     "loading_header": "POAP добавляется в вашу коллекцию",
     "button_claim": "Получить",
     "button_show": "Browse collection",

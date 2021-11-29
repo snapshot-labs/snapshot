@@ -306,7 +306,7 @@
     "no_poap_header": "Ein POAP wurde für diesen Vorschlag noch nicht eingerichtet :'(",
     "no_voted_header": "Stimme ab um diesen POAP zu erhalten",
     "unclaimed_header": "Beanspruche deinen POAP",
-    "claimed_header": "Congratulations! The POAP has been minted to your account",
+    "claimed_header": "Congratulations! The POAP has been minted to your collection",
     "loading_header": "Der POAP wird Ihrer Sammlung hinzugefügt",
     "button_claim": "Beanspruchen",
     "button_show": "Browse collection",

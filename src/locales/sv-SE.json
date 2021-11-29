@@ -306,7 +306,7 @@
     "no_poap_header": "En POAP har inte installerats för detta förslag ännu :'(",
     "no_voted_header": "Rösta för att få denna POAP",
     "unclaimed_header": "Gör anspråk på din jag röstade på POAP",
-    "claimed_header": "Congratulations! The POAP has been minted to your account",
+    "claimed_header": "Congratulations! The POAP has been minted to your collection",
     "loading_header": "POAP läggs till i din kollektion",
     "button_claim": "Anspråk",
     "button_show": "Browse collection",
