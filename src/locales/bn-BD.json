@@ -323,10 +323,10 @@
   "poap": {
     "no_poap_header": "এই প্রস্তাবটির জন্য একটি POAPএখনও সেটআপ করা হয়নি: '(",
     "no_voted_header": "এই POAP পেতে ভোট দিন",
-    "unclaimed_header": "Mint",
-    "claimed_header": "Congratulations! The POAP has been minted to your account",
+    "unclaimed_header": "Mint your I voted POAP",
+    "claimed_header": "Congratulations! The POAP has been minted to your collection",
     "loading_header": "The POAP is being minted to your collection",
-    "button_claim": "দাবি",
+    "button_claim": "Mint",
     "button_show": "Browse collection",
     "success_claim": "The POAP has been minted to your collection",
     "error_claim": "টোকেনটি টানতে সমস্যা ছিল"
