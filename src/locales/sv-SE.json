@@ -323,10 +323,10 @@
   "poap": {
     "no_poap_header": "En POAP har inte installerats för detta förslag ännu :'(",
     "no_voted_header": "Rösta för att få denna POAP",
-    "unclaimed_header": "Mint",
-    "claimed_header": "Congratulations! The POAP has been minted to your account",
+    "unclaimed_header": "Mint your I voted POAP",
+    "claimed_header": "Congratulations! The POAP has been minted to your collection",
     "loading_header": "The POAP is being minted to your collection",
-    "button_claim": "Anspråk",
+    "button_claim": "Mint",
     "button_show": "Browse collection",
     "success_claim": "The POAP has been minted to your collection",
     "error_claim": "Det gick inte att radera den token"
