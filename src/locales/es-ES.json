@@ -305,8 +305,8 @@
   "poap": {
     "no_poap_header": "Aun no se ha creado un POAP para esta oferta :'(",
     "no_voted_header": "Vote para obtener este POAP",
-    "unclaimed_header": "Mint",
-    "claimed_header": "Congratulations! The POAP has been minted to your account",
+    "unclaimed_header": "Mint your I voted POAP",
+    "claimed_header": "Congratulations! The POAP has been minted to your collection",
     "loading_header": "The POAP is being minted to your collection",
     "button_claim": "Reclamar",
     "button_show": "Browse collection",

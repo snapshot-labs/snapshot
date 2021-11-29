@@ -306,7 +306,7 @@
     "no_poap_header": "ㅏ피영형에이피 이 제안은 아직 설정되지 않았습니다:'(",
     "no_voted_header": "이것을 얻으려면 투표하십시오 피영형에이피",
     "unclaimed_header": "내가 당신의 내가 투표를 요구했다 피영형에이피",
-    "claimed_header": "Congratulations! The POAP has been minted to your account",
+    "claimed_header": "Congratulations! The POAP has been minted to your collection",
     "loading_header": "그만큼 피영형에이피 컬렉션에 추가되고",
     "button_claim": "청구",
     "button_show": "Browse collection",
