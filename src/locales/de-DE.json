@@ -323,10 +323,10 @@
   "poap": {
     "no_poap_header": "Ein POAP wurde für diesen Vorschlag noch nicht eingerichtet :'(",
     "no_voted_header": "Stimme ab um diesen POAP zu erhalten",
-    "unclaimed_header": "Mint",
-    "claimed_header": "Congratulations! The POAP has been minted to your account",
+    "unclaimed_header": "Mint your I voted POAP",
+    "claimed_header": "Congratulations! The POAP has been minted to your collection",
     "loading_header": "The POAP is being minted to your collection",
-    "button_claim": "Beanspruchen",
+    "button_claim": "Mint",
     "button_show": "Browse collection",
     "success_claim": "The POAP has been minted to your collection",
     "error_claim": "There was a problem minting the token"
