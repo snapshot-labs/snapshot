@@ -323,10 +323,10 @@
   "poap": {
     "no_poap_header": "Un POAP nu a fost configurat pentru această propunere încă :'(",
     "no_voted_header": "Votează pentru a obține acest POAP",
-    "unclaimed_header": "Mint",
-    "claimed_header": "Felicitări! POAP-ul a fost mintat în contul tău",
+    "unclaimed_header": "Mint your I voted POAP",
+    "claimed_header": "Congratulations! The POAP has been minted to your collection",
     "loading_header": "The POAP is being minted to your collection",
-    "button_claim": "Revendică",
+    "button_claim": "Mint",
     "button_show": "Răsfoiește colecția",
     "success_claim": "The POAP has been minted to your collection",
     "error_claim": "A apărut o problemă la mintarea acestui token"
