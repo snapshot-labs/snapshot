@@ -11,30 +11,34 @@ import { useProfiles } from '@/composables/useProfiles';
 import { useFollowSpace } from '@/composables/useFollowSpace';
 import { useWeb3 } from '@/composables/useWeb3';
 import verified from '@/../snapshot-spaces/spaces/verified.json';
-
-const verifiedSpaces = Object.entries(verified)
-  .filter(space => space[1] === 1)
-  .map(space => space[0]);
-
 import zipObject from 'lodash/zipObject';
+import { useState } from '@/composables/useState';
+
+const { timelineProposals } = useState();
+
 const filterBy = ref('all');
 const loading = ref(false);
-const proposals = ref([]);
 
 const route = useRoute();
 const { followingSpaces, loadingFollows } = useFollowSpace();
 const { web3 } = useWeb3();
 
-const following = computed(() => {
-  return route.name === 'timeline' ? followingSpaces.value : verifiedSpaces;
+const spaces = computed(() => {
+  const verifiedSpaces = Object.entries(verified)
+    .filter(space => space[1] === 1)
+    .map(space => space[0]);
+  if (route.name === 'timeline') return followingSpaces.value;
+  if (route.name === 'explore') return verifiedSpaces;
+  else return null;
+});
+
+watch(spaces, () => {
+  if (spaces.value === null) return;
+  timelineProposals.value = [];
+  load();
 });
 
 const isTimeline = computed(() => route.name === 'timeline');
-
-watch(following, () => {
-  proposals.value = [];
-  load();
-});
 
 const { loadBy, limit, loadingMore, stopLoadingMore, loadMore } =
   useInfiniteLoader();
@@ -51,26 +55,28 @@ async function loadProposals(skip = 0) {
       variables: {
         first: loadBy,
         skip,
-        space_in: following.value,
+        space_in: spaces.value,
         state: filterBy.value
       }
     },
     'proposals'
   );
   stopLoadingMore.value = proposalsObj?.length < loadBy;
-  proposals.value = proposals.value.concat(proposalsObj);
+  timelineProposals.value = timelineProposals.value.concat(proposalsObj);
+  console.log(timelineProposals.value);
 }
 
 const { profiles, loadProfiles } = useProfiles();
 
-watch(proposals, () => {
-  loadProfiles(proposals.value.map(proposal => proposal.author));
+watch(timelineProposals, () => {
+  loadProfiles(timelineProposals.value.map(proposal => proposal.author));
 });
 
 // Initialize
 onMounted(load());
 
 async function load() {
+  if (timelineProposals.value.length > 0) return;
   loading.value = true;
   await loadProposals();
   loading.value = false;
@@ -79,7 +85,7 @@ async function load() {
 // Change filter
 function selectState(e) {
   filterBy.value = e;
-  proposals.value = [];
+  timelineProposals.value = [];
   limit.value = loadBy;
   load();
 }
@@ -89,7 +95,7 @@ const { updateLastSeenProposal } = useUnseenProposals();
 const web3Account = computed(() => web3.value.account);
 
 // Save the lastSeenProposal times for all spaces
-watch([proposals, web3Account], () => {
+watch([timelineProposals, web3Account], () => {
   if (web3Account.value) {
     lsSet(
       `lastSeenProposals.${web3Account.value.slice(0, 8).toLowerCase()}`,
@@ -155,8 +161,7 @@ watch([proposals, web3Account], () => {
         />
         <div
           v-else-if="
-            (isTimeline && following.length < 1) ||
-            (isTimeline && !web3.account)
+            (isTimeline && spaces.length < 1) || (isTimeline && !web3.account)
           "
           class="text-center border-b p-4"
         >
@@ -165,10 +170,10 @@ watch([proposals, web3Account], () => {
             <UiButton>{{ $t('joinSpaces') }}</UiButton>
           </router-link>
         </div>
-        <NoResults v-else-if="proposals.length < 1" :block="true" />
+        <NoResults v-else-if="timelineProposals.length < 1" :block="true" />
         <div v-else>
           <TimelineProposalPreview
-            v-for="(proposal, i) in proposals"
+            v-for="(proposal, i) in timelineProposals"
             :key="i"
             :proposal="proposal"
             :profiles="profiles"

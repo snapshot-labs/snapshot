@@ -9,14 +9,15 @@ import { useUnseenProposals } from '@/composables/useUnseenProposals';
 import { lsSet } from '@/helpers/utils';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useApp } from '@/composables/useApp';
+import { useState } from '@/composables/useState';
 
 const props = defineProps({ space: Object, spaceId: String });
 
 const { lastSeenProposals, updateLastSeenProposal } = useUnseenProposals();
 const { web3 } = useWeb3();
+const { spaceProposals } = useState();
 
 const loading = ref(false);
-const proposals = ref([]);
 const filterBy = ref('all');
 
 const spaceMembers = computed(() =>
@@ -47,12 +48,18 @@ async function loadProposals(skip = 0) {
     'proposals'
   );
   stopLoadingMore.value = proposalsObj?.length < loadBy;
-  proposals.value = proposals.value.concat(proposalsObj);
+  spaceProposals.value = spaceProposals.value.concat(proposalsObj);
 }
 
 onMounted(load());
 
 async function load() {
+  if (
+    spaceProposals.value.length > 0 &&
+    spaceProposals.value[0]?.space.id === props.space.id
+  )
+    return;
+  spaceProposals.value = [];
   loading.value = true;
   await loadProposals();
   loading.value = false;
@@ -60,18 +67,18 @@ async function load() {
 
 function selectState(e) {
   filterBy.value = e;
-  proposals.value = [];
+  spaceProposals.value = [];
   limit.value = loadBy;
   load();
 }
 
 const { profiles, loadProfiles } = useProfiles();
 
-watch(proposals, () => {
-  loadProfiles(proposals.value.map(proposal => proposal.author));
+watch(spaceProposals, () => {
+  loadProfiles(spaceProposals.value.map(proposal => proposal.author));
 });
 
-watch([proposals, web3Account], () => {
+watch([spaceProposals, web3Account], () => {
   if (web3Account.value) {
     lsSet(
       `lastSeenProposals.${web3Account.value.slice(0, 8).toLowerCase()}`,
@@ -127,12 +134,12 @@ const proposalsCount = computed(() => {
       </Block>
       <NoResults
         :block="true"
-        v-else-if="proposalsCount && proposals.length < 1"
+        v-else-if="proposalsCount && spaceProposals.length < 1"
       />
       <NoProposals v-else-if="!proposalsCount" class="mt-2" :space="space" />
       <div v-else>
         <TimelineProposal
-          v-for="(proposal, i) in proposals"
+          v-for="(proposal, i) in spaceProposals"
           :key="i"
           :proposal="proposal"
           :profiles="profiles"
