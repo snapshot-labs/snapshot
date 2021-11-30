@@ -55,9 +55,7 @@ watch(modalOpen, val => {
       <Scroller />
       <div :class="{ 'sm:ml-[68px]': !domain }">
         <Topnav />
-        <div class="pb-6">
-          <router-view :key="$route.path" class="flex-auto" />
-        </div>
+        <router-view :key="$route.path" class="flex-auto" />
       </div>
     </div>
     <div id="modal" />

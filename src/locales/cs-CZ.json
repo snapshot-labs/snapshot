@@ -306,7 +306,7 @@
     "no_poap_header": "POAP zatím nebylo nastaveno pro tento návrh :'(",
     "no_voted_header": "Hlasujte pro získání tohoto POAP",
     "unclaimed_header": "Požádejte o svůj hlas POAP",
-    "claimed_header": "Congratulations! The POAP has been minted to your account",
+    "claimed_header": "Congratulations! The POAP has been minted to your collection",
     "loading_header": "POAP je přidáváno do vaší kolekce",
     "button_claim": "Území",
     "button_show": "Browse collection",

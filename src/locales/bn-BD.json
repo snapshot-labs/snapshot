@@ -306,7 +306,7 @@
     "no_poap_header": "এই প্রস্তাবটির জন্য একটি POAPএখনও সেটআপ করা হয়নি: '(",
     "no_voted_header": "এই POAP পেতে ভোট দিন",
     "unclaimed_header": "আপনার দাবি করুন আমি ভোট দিয়েছি POAP",
-    "claimed_header": "Congratulations! The POAP has been minted to your account",
+    "claimed_header": "Congratulations! The POAP has been minted to your collection",
     "loading_header": "আপনার সংগ্রহে POAP যোগ করা হচ্ছে",
     "button_claim": "দাবি",
     "button_show": "Browse collection",
