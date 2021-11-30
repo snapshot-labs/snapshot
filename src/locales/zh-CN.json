@@ -323,10 +323,10 @@
   "poap": {
     "no_poap_header": "尚未为此提议设置POAP :'(",
     "no_voted_header": "投票以获取此POAP",
-    "unclaimed_header": "Mint your I voted POAP",
-    "claimed_header": "Congratulations! The POAP has been minted to your collection",
+    "unclaimed_header": "铸造您已投票的POAP",
+    "claimed_header": "恭喜！POAP 已被铸造到您的收藏中",
     "loading_header": "POAP正在被铸造到您的收藏中",
-    "button_claim": "Mint",
+    "button_claim": "铸造",
     "button_show": "浏览收藏",
     "success_claim": "POAP已被铸造到您的收藏中",
     "error_claim": "创建令牌时出错"
