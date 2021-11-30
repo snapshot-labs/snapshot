@@ -306,7 +306,7 @@
     "no_poap_header": "لم يتم إعداد POAP لهذا الاقتراح بعد :'(",
     "no_voted_header": "التصويت للحصول على هذا POAP",
     "unclaimed_header": "المطالبة بأنني صوتت على POAP",
-    "claimed_header": "Congratulations! The POAP has been minted to your account",
+    "claimed_header": "Congratulations! The POAP has been minted to your collection",
     "loading_header": "تم إضافة POAP إلى مجموعتك",
     "button_claim": "الحصول عليه",
     "button_show": "تصفح المجموعة",
