@@ -63,7 +63,6 @@ async function loadProposals(skip = 0) {
   );
   stopLoadingMore.value = proposalsObj?.length < loadBy;
   timelineProposals.value = timelineProposals.value.concat(proposalsObj);
-  console.log(timelineProposals.value);
 }
 
 const { profiles, loadProfiles } = useProfiles();
