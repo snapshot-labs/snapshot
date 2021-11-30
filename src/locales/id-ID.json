@@ -16,7 +16,7 @@
   "confirm": "Konfirmasi",
   "snapshot": "Snapshot",
   "strategies": "Strategi",
-  "strategiesPage": "Semua strategi",
+  "strategiesPage": "Strategi",
   "space": "Ruang",
   "spaces": "Ruang",
   "version": "Versi",
@@ -323,8 +323,8 @@
   "poap": {
     "no_poap_header": "POAP belum dipersiapkan untuk proposal ini :'(",
     "no_voted_header": "Pilih untuk menerima POAP",
-    "unclaimed_header": "Mint your I voted POAP",
-    "claimed_header": "Congratulations! The POAP has been minted to your collection",
+    "unclaimed_header": "Klaim POAP voting anda",
+    "claimed_header": "Selamat! POAP ini telah ditambahkan ke koleksi anda",
     "loading_header": "POAP ini sedang ditambahkan ke koleksi anda",
     "button_claim": "Mint",
     "button_show": "Jelajahi koleksi",
@@ -335,8 +335,8 @@
     "charts": "Grafik",
     "noVotesYet": "Belum ada pemilih untuk ditampilkan.",
     "totalVotesPerDay": "Total pemilih per hari",
-    "shareOfVotingPower": "Share of voting power",
-    "votingPowerPerDay": "Voting power per day"
+    "shareOfVotingPower": "Kekuatan voting",
+    "votingPowerPerDay": "Kekuatan voting per hari"
   },
   "comment_box": {
     "title": "Kotak komentar",
