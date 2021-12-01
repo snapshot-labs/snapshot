@@ -9,13 +9,13 @@ import { useUnseenProposals } from '@/composables/useUnseenProposals';
 import { lsSet } from '@/helpers/utils';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useApp } from '@/composables/useApp';
-import { useState } from '@/composables/useState';
+import { useStore } from '@/composables/useStore';
 
 const props = defineProps({ space: Object, spaceId: String });
 
 const { lastSeenProposals, updateLastSeenProposal } = useUnseenProposals();
 const { web3 } = useWeb3();
-const { spaceProposals } = useState();
+const { spaceProposals } = useStore();
 
 const loading = ref(false);
 const filterBy = ref('all');

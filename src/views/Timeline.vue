@@ -12,9 +12,9 @@ import { useFollowSpace } from '@/composables/useFollowSpace';
 import { useWeb3 } from '@/composables/useWeb3';
 import verified from '@/../snapshot-spaces/spaces/verified.json';
 import zipObject from 'lodash/zipObject';
-import { useState } from '@/composables/useState';
+import { useStore } from '@/composables/useStore';
 
-const { timelineProposals } = useState();
+const { timelineProposals } = useStore();
 
 const filterBy = ref('all');
 const loading = ref(false);
