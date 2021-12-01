@@ -1,8 +1,16 @@
-import { ref } from 'vue';
+import { reactive } from 'vue';
 
-const spaceProposals = ref([]);
-const timelineProposals = ref([]);
+const store = reactive({
+  space: {
+    proposals: [],
+    filterBy: 'all'
+  },
+  timeline: {
+    proposals: [],
+    filterBy: 'all'
+  }
+});
 
 export function useStore() {
-  return { spaceProposals, timelineProposals };
+  return { store };
 }

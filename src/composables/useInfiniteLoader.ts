@@ -1,7 +1,6 @@
 import { ref } from 'vue';
 
 export function useInfiniteLoader(loadBy = 6) {
-  const limit = ref(loadBy);
   const loadingMore = ref(false);
   const stopLoadingMore = ref(false);
 
@@ -9,10 +8,9 @@ export function useInfiniteLoader(loadBy = 6) {
     if (!stopLoadingMore.value && !loading) {
       loadingMore.value = true;
       await loadFn();
-      limit.value += loadBy;
       loadingMore.value = false;
     }
   }
 
-  return { loadBy, limit, loadingMore, stopLoadingMore, loadMore };
+  return { loadBy, loadingMore, stopLoadingMore, loadMore };
 }

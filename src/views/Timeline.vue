@@ -14,9 +14,8 @@ import verified from '@/../snapshot-spaces/spaces/verified.json';
 import zipObject from 'lodash/zipObject';
 import { useStore } from '@/composables/useStore';
 
-const { timelineProposals } = useStore();
+const { store } = useStore();
 
-const filterBy = ref('all');
 const loading = ref(false);
 
 const route = useRoute();
@@ -33,17 +32,18 @@ const spaces = computed(() => {
 });
 
 watch(spaces, () => {
-  if (spaces.value.length === 0) return;
-  load();
+  if (route.name === 'timeline' || route.name === 'explore') {
+    store.timeline.proposals = [];
+    load();
+  }
 });
 
 const isTimeline = computed(() => route.name === 'timeline');
 
-const { loadBy, limit, loadingMore, stopLoadingMore, loadMore } =
-  useInfiniteLoader();
+const { loadBy, loadingMore, stopLoadingMore, loadMore } = useInfiniteLoader();
 
 const { endElement } = useScrollMonitor(() =>
-  loadMore(() => loadProposals(limit.value), loading.value)
+  loadMore(() => loadProposals(store.timeline.proposals.length), loading.value)
 );
 
 const { apolloQuery } = useApolloQuery();
@@ -55,27 +55,26 @@ async function loadProposals(skip = 0) {
         first: loadBy,
         skip,
         space_in: spaces.value,
-        state: filterBy.value
+        state: store.timeline.filterBy
       }
     },
     'proposals'
   );
   stopLoadingMore.value = proposalsObj?.length < loadBy;
-  timelineProposals.value = timelineProposals.value.concat(proposalsObj);
+  store.timeline.proposals = store.timeline.proposals.concat(proposalsObj);
 }
 
 const { profiles, loadProfiles } = useProfiles();
 
-watch(timelineProposals, () => {
-  loadProfiles(timelineProposals.value.map(proposal => proposal.author));
+watch(store.timeline.proposals, () => {
+  loadProfiles(store.timeline.proposals.map(proposal => proposal.author));
 });
 
 // Initialize
 onMounted(load());
 
 async function load() {
-  if (timelineProposals.value.length > 0) return;
-  timelineProposals.value = [];
+  if (store.timeline.proposals.length > 0) return;
   loading.value = true;
   await loadProposals();
   loading.value = false;
@@ -83,9 +82,8 @@ async function load() {
 
 // Change filter
 function selectState(e) {
-  filterBy.value = e;
-  timelineProposals.value = [];
-  limit.value = loadBy;
+  store.timeline.filterBy = e;
+  store.timeline.proposals = [];
   load();
 }
 
@@ -94,7 +92,7 @@ const { updateLastSeenProposal } = useUnseenProposals();
 const web3Account = computed(() => web3.value.account);
 
 // Save the lastSeenProposal times for all spaces
-watch([timelineProposals, web3Account], () => {
+watch([store.timeline.proposals, web3Account], () => {
   if (web3Account.value) {
     lsSet(
       `lastSeenProposals.${web3Account.value.slice(0, 8).toLowerCase()}`,
@@ -143,7 +141,7 @@ watch([timelineProposals, web3Account], () => {
           ]"
         >
           <UiButton class="pr-3">
-            {{ $t(`proposals.states.${filterBy}`) }}
+            {{ $t(`proposals.states.${store.timeline.filterBy}`) }}
             <Icon size="14" name="arrow-down" class="mt-1 mr-1" />
           </UiButton>
         </UiDropdown>
@@ -169,10 +167,13 @@ watch([timelineProposals, web3Account], () => {
             <UiButton>{{ $t('joinSpaces') }}</UiButton>
           </router-link>
         </div>
-        <NoResults v-else-if="timelineProposals.length < 1" :block="true" />
+        <NoResults
+          v-else-if="store.timeline.proposals.length < 1"
+          :block="true"
+        />
         <div v-else>
           <TimelineProposalPreview
-            v-for="(proposal, i) in timelineProposals"
+            v-for="(proposal, i) in store.timeline.proposals"
             :key="i"
             :proposal="proposal"
             :profiles="profiles"
