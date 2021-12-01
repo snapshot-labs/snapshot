@@ -306,7 +306,7 @@
     "no_poap_header": "עוד לא נוצר POAP להצעה זו :'(",
     "no_voted_header": "הצבעה בכדי לקבל POAP זה",
     "unclaimed_header": "קבל את ה-POAP שלך",
-    "claimed_header": "Congratulations! The POAP has been minted to your account",
+    "claimed_header": "Congratulations! The POAP has been minted to your collection",
     "loading_header": "ה-POAP מתווסף לקולקציה שלך ברגע זה",
     "button_claim": "תבע",
     "button_show": "Browse collection",

@@ -306,7 +306,7 @@
     "no_poap_header": "En POAP er ikke blevet opsat til dette forslag endnu :' (",
     "no_voted_header": "Stem for at få denne POAP",
     "unclaimed_header": "Gør krav på din jeg stemte POAP",
-    "claimed_header": "Congratulations! The POAP has been minted to your account",
+    "claimed_header": "Congratulations! The POAP has been minted to your collection",
     "loading_header": "POAP'en bliver tilføjet til din samling",
     "button_claim": "Modtag",
     "button_show": "Browse collection",
