@@ -44,14 +44,21 @@ onBeforeUnmount(() => window.removeEventListener('click', close));
     </div>
     <div class="sub-menu-wrapper" :class="{ hidden: !open }" :style="cssVars">
       <ul class="sub-menu my-2">
-        <li v-for="item in items" :key="item" @click="handleClick(item.action)">
-          <Icon
-            v-if="item.icon"
-            :name="item.icon"
-            size="21"
-            class="align-middle mr-2"
-          />
-          {{ item.text }}
+        <li
+          v-for="item in items"
+          :key="item"
+          @click="handleClick(item.action)"
+          :class="{ selected: item.selected }"
+        >
+          <slot name="item" :item="item" :key="key">
+            <Icon
+              v-if="item.icon"
+              :name="item.icon"
+              size="21"
+              class="align-middle mr-2"
+            />
+            {{ item.text }}
+          </slot>
         </li>
       </ul>
     </div>
@@ -82,6 +89,7 @@ li.disabled {
   cursor: not-allowed;
 }
 
+li.selected,
 li:hover {
   background-color: var(--border-color);
   color: var(--link-color);
