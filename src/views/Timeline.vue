@@ -29,12 +29,11 @@ const spaces = computed(() => {
     .map(space => space[0]);
   if (route.name === 'timeline') return followingSpaces.value;
   if (route.name === 'explore') return verifiedSpaces;
-  else return null;
+  else return [];
 });
 
 watch(spaces, () => {
-  if (spaces.value === null) return;
-  timelineProposals.value = [];
+  if (spaces.value.length === 0) return;
   load();
 });
 
@@ -76,6 +75,7 @@ onMounted(load());
 
 async function load() {
   if (timelineProposals.value.length > 0) return;
+  timelineProposals.value = [];
   loading.value = true;
   await loadProposals();
   loading.value = false;
