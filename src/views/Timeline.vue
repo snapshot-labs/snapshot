@@ -158,14 +158,18 @@ watch([proposals, web3Account], () => {
             (isTimeline && following.length < 1) ||
             (isTimeline && !web3.account)
           "
-          class="text-center border-b p-4"
+          class="text-center p-4"
         >
           <div class="mb-3">{{ $t('noSpacesJoined') }}</div>
           <router-link :to="{ path: '/' }">
             <UiButton>{{ $t('joinSpaces') }}</UiButton>
           </router-link>
         </div>
-        <NoResults v-else-if="proposals.length < 1" :block="true" />
+        <NoResults
+          class="mt-4 mb-[24px]"
+          v-else-if="proposals.length < 1"
+          :block="false"
+        />
         <div v-else>
           <TimelineProposalPreview
             v-for="(proposal, i) in proposals"
