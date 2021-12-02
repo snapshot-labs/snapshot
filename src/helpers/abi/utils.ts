@@ -303,10 +303,7 @@ export const multiSendTransaction = (
       .map(encodePackageMultiSendTransaction)
       .map(removeHexPrefix)
       .join('');
-  const value: string = transactions.reduce(
-    (total, tx) => BigNumber.from(tx.value).add(total).toString(),
-    '0'
-  );
+  const value: string = '0';
   const data = multiSendContract.encodeFunctionData('multiSend', [
     transactionsEncoded
   ]);
