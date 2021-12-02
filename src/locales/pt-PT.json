@@ -306,7 +306,7 @@
     "no_poap_header": "Um POAP ainda não foi configurado para esta proposta :'(",
     "no_voted_header": "Vote para obter este POAP",
     "unclaimed_header": "Reivindique seu voto no POAP",
-    "claimed_header": "Congratulations! The POAP has been minted to your account",
+    "claimed_header": "Congratulations! The POAP has been minted to your collection",
     "loading_header": "O POAP está sendo adicionado à sua coleção",
     "button_claim": "Reivindicar",
     "button_show": "Browse collection",

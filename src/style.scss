@@ -119,7 +119,6 @@ a,
   color: var(--link-color);
 
   &:hover {
-    color: var(--link-color) !important;
     cursor: pointer;
     text-decoration: none !important;
   }
@@ -189,6 +188,14 @@ select {
   vertical-align: middle;
   padding: 0 12px;
   border-radius: 14px;
+}
+
+.State.slim {
+  padding: 0;
+  height: 12px;
+  width: 12px;
+  border-radius: 50%;
+  display: inline-block;
 }
 
 .notification {
