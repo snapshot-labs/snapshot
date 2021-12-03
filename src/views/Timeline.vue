@@ -160,7 +160,7 @@ watch([store.timeline.proposals, web3Account], () => {
           v-else-if="
             (isTimeline && spaces.length < 1) || (isTimeline && !web3.account)
           "
-          class="text-center border-b p-4"
+          class="text-center p-4"
         >
           <div class="mb-3">{{ $t('noSpacesJoined') }}</div>
           <router-link :to="{ path: '/' }">
@@ -168,8 +168,9 @@ watch([store.timeline.proposals, web3Account], () => {
           </router-link>
         </div>
         <NoResults
+          class="mt-4 mb-[24px]"
           v-else-if="store.timeline.proposals.length < 1"
-          :block="true"
+          :block="false"
         />
         <div v-else>
           <TimelineProposalPreview
