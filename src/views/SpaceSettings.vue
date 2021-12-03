@@ -24,6 +24,7 @@ const props = defineProps({
   spaceLoading: Boolean,
   loadExtentedSpaces: Function
 });
+ 
 
 const basicValidation = { name: 'basic', params: {} };
 
@@ -60,6 +61,10 @@ const form = ref({
 });
 
 const web3Account = computed(() => web3.value.account);
+
+// use the same network as the .env configuration, if available
+const DEFAULT_NETWORK = import.meta.env.VITE_DEFAULT_NETWORK  || '1';
+
 
 const validate = computed(() => {
   if (form.value.terms === '') delete form.value.terms;
@@ -248,7 +253,7 @@ function formatSpace(spaceRaw) {
 watchEffect(async () => {
   if (!props.spaceLoading) {
     try {
-      const uri = await getSpaceUri(props.spaceId);
+      const uri = await getSpaceUri(props.spaceId, DEFAULT_NETWORK);
       console.log('URI', uri);
       currentTextRecord.value = uri;
     } catch (e) {
