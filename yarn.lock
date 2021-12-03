@@ -1053,10 +1053,10 @@
   version "0.1.3"
   resolved "https://codeload.github.com/snapshot-labs/lock/tar.gz/0584e8d29dcfd9dba6d1f0b87456cf45f63f7baf"
 
-"@snapshot-labs/snapshot.js@^0.3.13":
-  version "0.3.13"
-  resolved "https://registry.yarnpkg.com/@snapshot-labs/snapshot.js/-/snapshot.js-0.3.13.tgz#46ce2d2efcce475d8be3e63a6bbfcbc90ea86e70"
-  integrity sha512-nYlaqJlN3hD4ORRtIDHdwkA3P9qFeqbGVSXiwKTM3Vdn3CwUOP3r+oJ8ImFg3dlYEps4GcSR+ZaL+3bSPFNhBQ==
+"@snapshot-labs/snapshot.js@^0.3.15":
+  version "0.3.15"
+  resolved "https://registry.yarnpkg.com/@snapshot-labs/snapshot.js/-/snapshot.js-0.3.15.tgz#44cd029da602b6f0a50cd85845d50338ed36d01e"
+  integrity sha512-GtNvCbb8ynNaDj1rzLk0HJ6mDpVzs36oy6pIn599BrNA8qj4nh9q5ggWc/eSd3PwKe8nDdpCaa0oeGCdMCFoKA==
   dependencies:
     "@ethersproject/abi" "^5.0.4"
     "@ethersproject/bytes" "^5.0.8"
@@ -2547,6 +2547,11 @@ dashdash@^1.12.0:
   dependencies:
     assert-plus "^1.0.0"
 
+dayjs@^1.10.7:
+  version "1.10.7"
+  resolved "https://registry.yarnpkg.com/dayjs/-/dayjs-1.10.7.tgz#2cf5f91add28116748440866a0a1d26f3a6ce468"
+  integrity sha512-P6twpd70BcPK34K26uJ1KT3wlhpuOAPoMwJzpsIWUxHZ7wpmbdZL/hQqBDfz7hGurYSa5PhzdhDHtt319hL3ig==
+
 debug@^2.2.0:
   version "2.6.9"
   resolved "https://registry.yarnpkg.com/debug/-/debug-2.6.9.tgz#5d128515df134ff327e90a4c93f4e077a536341f"
@@ -3940,6 +3945,11 @@ human-id@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/human-id/-/human-id-1.0.2.tgz#e654d4b2b0d8b07e45da9f6020d8af17ec0a5df3"
   integrity sha512-UNopramDEhHJD+VR+ehk8rOslwSfByxPIZyJRfV739NDhN5LF1fa1MqnzKm2lGTQRjNrjK19Q5fhkgIfjlVUKw==
+
+husky@^7.0.4:
+  version "7.0.4"
+  resolved "https://registry.yarnpkg.com/husky/-/husky-7.0.4.tgz#242048245dc49c8fb1bf0cc7cfb98dd722531535"
+  integrity sha512-vbaCKN2QLtP/vD4yvs6iz6hBEo6wkSzs8HpRah1Z6aGmF2KW5PdYuAd7uX5a+OyBZHBhd+TFLqgjUgytQr4RvQ==
 
 iconv-lite@^0.4.24:
   version "0.4.24"

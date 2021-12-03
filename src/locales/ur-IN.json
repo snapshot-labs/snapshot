@@ -306,7 +306,7 @@
     "no_poap_header": "ابھی تک اس تجویز کے لئے ایک POAP ترتیب نہیں دیا گیا ہے: '(",
     "no_voted_header": "اس POAP کو حاصل کرنے کے لئے ووٹ دیں",
     "unclaimed_header": "آپ کا دعوی کریں کہ میں نے پی او اے پی کو ووٹ دیا ہے",
-    "claimed_header": "Congratulations! The POAP has been minted to your account",
+    "claimed_header": "Congratulations! The POAP has been minted to your collection",
     "loading_header": "POAP آپ کے جمع کرنے میں شامل کیا جارہا ہے",
     "button_claim": "دعوی",
     "button_show": "Browse collection",

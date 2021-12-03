@@ -306,7 +306,7 @@
     "no_poap_header": "Bu teklif için henüz bir POAP kurulmadı :'(",
     "no_voted_header": "Bu POAP'ı almak için oy verin",
     "unclaimed_header": "Oy verdiğiniz POAP'ınızı talep edin",
-    "claimed_header": "Congratulations! The POAP has been minted to your account",
+    "claimed_header": "Congratulations! The POAP has been minted to your collection",
     "loading_header": "POAP topladıklarınıza ekleniyor",
     "button_claim": "Topla",
     "button_show": "Browse collection",
