@@ -51,12 +51,7 @@ watchEffect(() => {
             (!space.validation || space.validation?.name === 'basic') &&
             space.filters?.minScore
           "
-          :class="{
-            'mb-3':
-              space.terms ||
-              space.strategies ||
-              Object.keys(space.plugins || {}).length
-          }"
+          class="last:mb-0 mb-3"
         >
           <h4 class="link-color mb-2">
             {{ $t('settings.proposalThreshold') }}
@@ -64,12 +59,7 @@ watchEffect(() => {
           {{ _n(space.filters.minScore) }} {{ space.symbol }}
         </div>
 
-        <div
-          v-if="space.terms"
-          :class="{
-            'mb-3': space.strategies || Object.keys(space.plugins || {}).length
-          }"
-        >
+        <div v-if="space.terms" class="last:mb-0 mb-3">
           <h4 class="link-color mb-2">{{ $t('settings.terms') }}</h4>
           <a :href="space.terms" target="_blank" rel="noopener noreferrer">
             <UiText :text="getUrl(space.terms)" :truncate="35" />
@@ -77,10 +67,7 @@ watchEffect(() => {
           </a>
         </div>
 
-        <div
-          v-if="space.strategies"
-          :class="{ 'mb-3': Object.keys(space.plugins || {}).length }"
-        >
+        <div v-if="space.strategies" class="last:mb-0 mb-3">
           <h4 class="link-color mb-2">{{ $t('settings.strategies') }}</h4>
           <div v-for="(strategy, i) in space.strategies" :key="i">
             <div>{{ strategy.name }}</div>
