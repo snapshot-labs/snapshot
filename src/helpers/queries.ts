@@ -3,13 +3,14 @@ import gql from 'graphql-tag';
 export const VOTES_QUERY = gql`
   query Votes(
     $id: String!
+    $voter: String
     $first: Int
     $orderBy: String
     $orderDirection: OrderDirection
   ) {
     votes(
       first: $first
-      where: { proposal: $id, vp_gt: 0 }
+      where: { proposal: $id, voter: $voter, vp_gt: 0 }
       orderBy: $orderBy
       orderDirection: $orderDirection
     ) {

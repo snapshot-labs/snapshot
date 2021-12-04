@@ -3,13 +3,16 @@ import { ref, computed, watch, toRefs } from 'vue';
 import { getChoiceString } from '@/helpers/utils';
 import { useProfiles } from '@/composables/useProfiles';
 import { useWeb3 } from '@/composables/useWeb3';
+import { clone } from '@snapshot-labs/snapshot.js/src/utils';
+import uniqBy from 'lodash/uniqBy';
 
 const props = defineProps({
   space: Object,
   proposal: Object,
-  votes: Object,
+  votes: Array,
   loaded: Boolean,
-  strategies: Object
+  strategies: Object,
+  userVote: Array
 });
 
 const format = getChoiceString;
@@ -19,6 +22,7 @@ const { web3 } = useWeb3();
 
 const authorIpfsHash = ref('');
 const modalReceiptOpen = ref(false);
+const modalVotesOpen = ref(false);
 
 const web3Account = computed(() => web3.value.account);
 const voteCount = computed(() =>
@@ -26,18 +30,9 @@ const voteCount = computed(() =>
     ? proposal.value.votes
     : votes.value.length
 );
-const nbrVisibleVotes = ref(10);
-
-const displayMoreVotes = () => {
-  // 10 if there are more votes left in votes.length otherwise, the remaining votes
-  nbrVisibleVotes.value += 10;
-};
 
 const sortedVotes = ref([]);
 
-const visibleVotes = computed(() =>
-  sortedVotes.value.slice(0, nbrVisibleVotes.value)
-);
 const titles = computed(() =>
   props.strategies.map(strategy => strategy.params.symbol)
 );
@@ -56,20 +51,21 @@ function openReceiptModal(vote) {
 const { profiles, loadProfiles } = useProfiles();
 
 watch(votes, () => {
-  const votes = props.votes;
-  if (votes.map(vote => vote.voter).includes(web3Account.value)) {
-    votes.unshift(
-      votes.splice(
-        votes.findIndex(item => item.voter === web3Account.value),
+  const votesWithUser = uniqBy(clone(props.votes).concat(props.userVote), 'id');
+
+  if (votesWithUser.map(vote => vote.voter).includes(web3Account.value)) {
+    votesWithUser.unshift(
+      votesWithUser.splice(
+        votesWithUser.findIndex(item => item.voter === web3Account.value),
         1
       )[0]
     );
   }
-  sortedVotes.value = votes;
+  sortedVotes.value = votesWithUser;
 });
 
-watch(visibleVotes, () => {
-  loadProfiles(visibleVotes.value.map(vote => vote.voter));
+watch(sortedVotes, () => {
+  loadProfiles(sortedVotes.value.map(vote => vote.voter));
 });
 </script>
 
@@ -82,7 +78,7 @@ watch(visibleVotes, () => {
     :loading="!loaded"
   >
     <div
-      v-for="(vote, i) in visibleVotes"
+      v-for="(vote, i) in sortedVotes.slice(0, 10)"
       :key="i"
       :style="i === 0 && 'border: 0 !important;'"
       class="px-4 py-3 border-t flex"
@@ -129,8 +125,8 @@ watch(visibleVotes, () => {
       </div>
     </div>
     <a
-      v-if="votes.length > 10 && nbrVisibleVotes < votes.length"
-      @click="displayMoreVotes()"
+      v-if="votes.length > 5"
+      @click="modalVotesOpen = true"
       class="
         px-4
         py-3
@@ -142,13 +138,23 @@ watch(visibleVotes, () => {
         md:rounded-b-md
       "
     >
-      {{ $t('seeMore') }}
+      {{ $t('allVotes') }}
     </a>
     <teleport to="#modal">
       <ModalReceipt
         :open="modalReceiptOpen"
         @close="modalReceiptOpen = false"
         :authorIpfsHash="authorIpfsHash"
+      />
+      <ModalVotes
+        @close="modalVotesOpen = false"
+        @recipe="openReceiptModal"
+        :open="modalVotesOpen"
+        :votes="votes"
+        :proposal="proposal"
+        :space="space"
+        :titles="titles"
+        :voteCount="voteCount"
       />
     </teleport>
   </Block>

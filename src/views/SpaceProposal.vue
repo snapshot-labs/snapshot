@@ -41,6 +41,7 @@ const loadedResults = ref(false);
 const loadedVotes = ref(false);
 const proposal = ref({});
 const votes = ref([]);
+const userVote = ref([]);
 const results = ref({});
 const totalScore = ref(0);
 const scores = ref([]);
@@ -96,6 +97,14 @@ async function loadProposal() {
   if (loaded.value) loadResults();
 }
 
+function formatProposalVotes(votes) {
+  return votes.map(vote => {
+    vote.balance = vote.vp;
+    vote.scores = vote.vp_by_strategy;
+    return vote;
+  });
+}
+
 async function loadResults() {
   if (proposal.value.scores_state === 'final') {
     results.value = {
@@ -104,11 +113,12 @@ async function loadResults() {
       sumOfResultsBalance: proposal.value.scores_total
     };
     loadedResults.value = true;
-    votes.value = (await getProposalVotes(id, 100)).map(vote => {
-      vote.balance = vote.vp;
-      vote.scores = vote.vp_by_strategy;
-      return vote;
-    });
+    const [userVotesRes, votesRes] = await Promise.all([
+      await getProposalVotes(id, 1, web3Account.value),
+      await getProposalVotes(id, 100)
+    ]);
+    userVote.value = formatProposalVotes(userVotesRes);
+    votes.value = formatProposalVotes(votesRes);
     loadedVotes.value = true;
   } else {
     const votesTmp = await getProposalVotes(id);
@@ -193,7 +203,7 @@ watch(web3Account, (val, prev) => {
   }
 });
 
-watch(loaded, () => {
+watch([loaded, web3Account], () => {
   if (loaded.value) {
     loadResults();
     loadPower();
@@ -272,6 +282,7 @@ onMounted(async () => {
         :space="space"
         :proposal="proposal"
         :votes="votes"
+        :userVote="userVote"
         :strategies="strategies"
       />
       <ProposalPluginsContent

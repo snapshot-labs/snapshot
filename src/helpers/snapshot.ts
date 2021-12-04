@@ -4,13 +4,18 @@ import { apolloClient } from '@/helpers/apollo';
 import { PROPOSAL_QUERY, VOTES_QUERY } from '@/helpers/queries';
 import cloneDeep from 'lodash/cloneDeep';
 
-export async function getProposalVotes(proposalId: string, first = 20000) {
+export async function getProposalVotes(
+  proposalId: string,
+  first = 20000,
+  voter = ''
+) {
   try {
     console.time('getProposalVotes');
     const response = await apolloClient.query({
       query: VOTES_QUERY,
       variables: {
         id: proposalId,
+        voter,
         orderBy: 'vp',
         orderDirection: 'desc',
         first
