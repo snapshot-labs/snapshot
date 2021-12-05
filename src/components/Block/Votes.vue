@@ -1,6 +1,5 @@
 <script setup>
 import { ref, computed, watch, toRefs } from 'vue';
-import { getChoiceString } from '@/helpers/utils';
 import { useProfiles } from '@/composables/useProfiles';
 import { useWeb3 } from '@/composables/useWeb3';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
@@ -14,8 +13,6 @@ const props = defineProps({
   strategies: Object,
   userVote: Array
 });
-
-const format = getChoiceString;
 
 const { votes, proposal } = toRefs(props);
 const { web3 } = useWeb3();
@@ -50,7 +47,7 @@ function openReceiptModal(vote) {
 
 const { profiles, loadProfiles } = useProfiles();
 
-watch(votes, () => {
+watch([votes, web3Account], () => {
   const votesWithUser = uniqBy(clone(props.votes).concat(props.userVote), 'id');
 
   if (votesWithUser.map(vote => vote.voter).includes(web3Account.value)) {
@@ -60,6 +57,8 @@ watch(votes, () => {
         1
       )[0]
     );
+  } else {
+    votesWithUser.sort((a, b) => b.balance - a.balance);
   }
   sortedVotes.value = votesWithUser;
 });
@@ -77,53 +76,14 @@ watch(sortedVotes, () => {
     :slim="true"
     :loading="!loaded"
   >
-    <div
-      v-for="(vote, i) in sortedVotes.slice(0, 10)"
-      :key="i"
-      :style="i === 0 && 'border: 0 !important;'"
-      class="px-4 py-3 border-t flex"
-    >
-      <User
-        :profile="profiles[vote.voter]"
-        :address="vote.voter"
-        :space="space"
-        :proposal="proposal"
-        class="column"
-      />
-      <div class="flex-auto text-center link-color">
-        <span
-          class="text-center link-color"
-          v-tippy="{
-            content:
-              format(proposal, vote.choice).length > 24
-                ? format(proposal, vote.choice)
-                : null
-          }"
-        >
-          {{ _shorten(format(proposal, vote.choice), 24) }}
-        </span>
-      </div>
-
-      <div class="column text-right link-color">
-        <span
-          v-tippy="{
-            content: vote.scores
-              .map((score, index) => `${_n(score)} ${titles[index]}`)
-              .join(' + ')
-          }"
-        >
-          {{ `${_n(vote.balance)} ${_shorten(space.symbol, 'symbol')}` }}
-        </span>
-        <a
-          @click="openReceiptModal(vote)"
-          target="_blank"
-          class="ml-2 text-color"
-          title="Receipt"
-        >
-          <Icon name="signature" />
-        </a>
-      </div>
-    </div>
+    <VotesRow
+      @receipt="openReceiptModal"
+      :votes="sortedVotes.slice(0, 10)"
+      :proposal="proposal"
+      :space="space"
+      :titles="titles"
+      :profiles="profiles"
+    />
     <a
       v-if="votes.length > 5"
       @click="modalVotesOpen = true"
@@ -148,13 +108,12 @@ watch(sortedVotes, () => {
       />
       <ModalVotes
         @close="modalVotesOpen = false"
-        @recipe="openReceiptModal"
+        @receipt="openReceiptModal"
         :open="modalVotesOpen"
         :votes="votes"
         :proposal="proposal"
         :space="space"
         :titles="titles"
-        :voteCount="voteCount"
       />
     </teleport>
   </Block>

@@ -1,7 +1,6 @@
 <script setup>
 import { ref, computed, watch } from 'vue';
 import { useProfiles } from '@/composables/useProfiles';
-import { getChoiceString } from '@/helpers/utils';
 
 const props = defineProps({
   open: {
@@ -13,26 +12,20 @@ const props = defineProps({
     required: true
   },
   proposal: {
-    type: Object,
+    type: Array,
     required: true
   },
   space: {
-    type: Object,
+    type: Array,
     required: true
   },
   titles: {
-    type: Object,
-    required: true
-  },
-  voteCount: {
-    type: Number,
+    type: Array,
     required: true
   }
 });
 
-defineEmits(['recipe', 'close']);
-
-const format = getChoiceString;
+const emit = defineEmits(['receipt', 'close']);
 
 const nbrVisibleVotes = ref(10);
 
@@ -42,7 +35,6 @@ const visibleVotes = computed(() =>
 
 function displayMoreVotes() {
   nbrVisibleVotes.value += 10;
-  console.log('mroe');
 }
 
 const { profiles, loadProfiles } = useProfiles();
@@ -50,6 +42,11 @@ const { profiles, loadProfiles } = useProfiles();
 watch(visibleVotes, () => {
   loadProfiles(visibleVotes.value.map(vote => vote.voter));
 });
+
+function emitReceipt(vote) {
+  emit('receipt', vote);
+  emit('close');
+}
 
 // const searchInput = ref('');
 </script>
@@ -65,53 +62,14 @@ watch(visibleVotes, () => {
       :modal="true"
     /> -->
     <div class="mt-1">
-      <div
-        v-for="(vote, i) in votes.slice(0, nbrVisibleVotes)"
-        :key="i"
-        :style="i === 0 && 'border: 0 !important;'"
-        class="px-4 py-3 border-t flex"
-      >
-        <User
-          :profile="profiles[vote.voter]"
-          :address="vote.voter"
-          :space="space"
-          :proposal="proposal"
-          class="column"
-        />
-        <div class="flex-auto text-center link-color">
-          <span
-            class="text-center link-color"
-            v-tippy="{
-              content:
-                format(proposal, vote.choice).length > 24
-                  ? format(proposal, vote.choice)
-                  : null
-            }"
-          >
-            {{ _shorten(format(proposal, vote.choice), 24) }}
-          </span>
-        </div>
-
-        <div class="column text-right link-color">
-          <span
-            v-tippy="{
-              content: vote.scores
-                .map((score, index) => `${_n(score)} ${titles[index]}`)
-                .join(' + ')
-            }"
-          >
-            {{ `${_n(vote.balance)} ${_shorten(space.symbol, 'symbol')}` }}
-          </span>
-          <a
-            @click="$emit('recipe', vote), $emit('close')"
-            target="_blank"
-            class="ml-2 text-color"
-            title="Receipt"
-          >
-            <Icon name="signature" />
-          </a>
-        </div>
-      </div>
+      <VotesRow
+        @receipt="emitReceipt"
+        :votes="votes.slice(0, nbrVisibleVotes)"
+        :proposal="proposal"
+        :space="space"
+        :titles="titles"
+        :profiles="profiles"
+      />
       <a
         v-if="nbrVisibleVotes <= votes.length"
         @click="displayMoreVotes"
@@ -128,7 +86,7 @@ watch(visibleVotes, () => {
       >
         {{ $t('seeMore') }}
       </a>
-      <!-- <NoResults v-if="Object.keys(networks).length < 1" /> -->
     </div>
+    <!-- <NoResults v-if="Object.keys(networks).length < 1" /> -->
   </UiModal>
 </template>
