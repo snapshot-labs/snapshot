@@ -98,7 +98,7 @@ watch(sortedVotes, () => {
         md:rounded-b-md
       "
     >
-      {{ $t('allVotes') }}
+      {{ $t('showAll') }}
     </a>
     <teleport to="#modal">
       <ModalReceipt
