@@ -7,11 +7,11 @@ defineProps({
     required: true
   },
   proposal: {
-    type: Array,
+    type: Object,
     required: true
   },
   space: {
-    type: Array,
+    type: Object,
     required: true
   },
   titles: {
@@ -19,7 +19,7 @@ defineProps({
     required: true
   },
   profiles: {
-    type: Array,
+    type: Object,
     required: true
   }
 });

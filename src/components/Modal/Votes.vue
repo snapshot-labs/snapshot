@@ -12,11 +12,11 @@ const props = defineProps({
     required: true
   },
   proposal: {
-    type: Array,
+    type: Object,
     required: true
   },
   space: {
-    type: Array,
+    type: Object,
     required: true
   },
   titles: {
@@ -54,7 +54,7 @@ function emitReceipt(vote) {
 <template>
   <UiModal :open="open" @close="$emit('close')">
     <template v-slot:header>
-      <h3>{{ $t('Votes') }}</h3>
+      <h3>{{ $t('votes') }}</h3>
     </template>
     <!-- <Search
       v-model="searchInput"
