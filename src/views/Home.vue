@@ -80,14 +80,10 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
     </div>
     <Container :slim="true">
       <div class="grid lg:grid-cols-4 md:grid-cols-3 gap-4">
-        <a
-          @click="
-            $router.push({ name: 'spaceProposals', params: { key: space.id } })
-          "
-          v-for="space in orderedSpaces.slice(0, limit)"
-          :key="space.id"
-        >
-          <div>
+        <div v-for="space in orderedSpaces.slice(0, limit)" :key="space.id">
+          <router-link
+            :to="{ name: 'spaceProposals', params: { key: space.id } }"
+          >
             <!-- Added mb-0 to remove mb-4 added by block component -->
             <Block
               class="text-center extra-icon-container mb-0 hover-border"
@@ -117,10 +113,10 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
                   })
                 }}
               </div>
-              <FollowButton :space="space" />
+              <FollowButton class="!mb-0" :space="space" />
             </Block>
-          </div>
-        </a>
+          </router-link>
+        </div>
       </div>
       <NoResults :block="true" v-if="Object.keys(orderedSpaces).length < 1" />
     </Container>
