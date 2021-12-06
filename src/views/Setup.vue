@@ -27,6 +27,7 @@ function loadEns() {
     .finally(() => (loading.value = false));
 }
 
+loadEns();
 watch(web3Account, loadEns);
 
 function handleSubmit() {
