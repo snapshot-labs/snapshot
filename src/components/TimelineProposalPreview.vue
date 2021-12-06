@@ -93,7 +93,7 @@ watchEffect(() => {
           {{ $t(`proposals.states.${proposal.state}`) }},
           <span
             v-if="proposal.scores_state !== 'final'"
-            v-text="$tc(period, [_toNow(proposal.start)])"
+            v-text="$tc(period, [_toNow(proposal.end)])"
           />
           <span v-if="proposal.scores_state === 'final'" class="mt-2">
             {{ _n(proposal.votes, '0,00') }} votes
