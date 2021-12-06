@@ -1,7 +1,11 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, computed, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { useEns } from '@/composables/useEns';
+import { useWeb3 } from '@/composables/useWeb3';
+
+const { web3 } = useWeb3();
+const web3Account = computed(() => web3.value.account);
 
 const router = useRouter();
 const { getEnsNames } = useEns();
@@ -23,7 +27,7 @@ function loadEns() {
     .finally(() => (loading.value = false));
 }
 
-loadEns();
+watch(web3Account, loadEns);
 
 function handleSubmit() {
   router.push({
