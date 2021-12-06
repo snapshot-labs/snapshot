@@ -9,26 +9,25 @@ import { useUnseenProposals } from '@/composables/useUnseenProposals';
 import { lsSet } from '@/helpers/utils';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useApp } from '@/composables/useApp';
+import { useStore } from '@/composables/useStore';
 
 const props = defineProps({ space: Object, spaceId: String });
 
 const { lastSeenProposals, updateLastSeenProposal } = useUnseenProposals();
 const { web3 } = useWeb3();
+const { store } = useStore();
 
 const loading = ref(false);
-const proposals = ref([]);
-const filterBy = ref('all');
 
 const spaceMembers = computed(() =>
   props.space.members.length < 1 ? ['none'] : props.space.members
 );
 const web3Account = computed(() => web3.value.account);
 
-const { loadBy, limit, loadingMore, stopLoadingMore, loadMore } =
-  useInfiniteLoader();
+const { loadBy, loadingMore, stopLoadingMore, loadMore } = useInfiniteLoader();
 
 const { endElement } = useScrollMonitor(() =>
-  loadMore(() => loadProposals(limit.value), loading.value)
+  loadMore(() => loadProposals(store.space.proposals.length), loading.value)
 );
 
 const { apolloQuery } = useApolloQuery();
@@ -40,38 +39,43 @@ async function loadProposals(skip = 0) {
         first: loadBy,
         skip,
         space: props.spaceId,
-        state: filterBy.value === 'core' ? 'all' : filterBy.value,
-        author_in: filterBy.value === 'core' ? spaceMembers.value : []
+        state: store.space.filterBy === 'core' ? 'all' : store.space.filterBy,
+        author_in: store.space.filterBy === 'core' ? spaceMembers.value : []
       }
     },
     'proposals'
   );
   stopLoadingMore.value = proposalsObj?.length < loadBy;
-  proposals.value = proposals.value.concat(proposalsObj);
+  store.space.proposals = store.space.proposals.concat(proposalsObj);
 }
 
 onMounted(load());
 
 async function load() {
+  if (
+    store.space.proposals.length > 0 &&
+    store.space.proposals[0]?.space.id === props.space.id
+  )
+    return;
+  store.space.proposals = [];
   loading.value = true;
   await loadProposals();
   loading.value = false;
 }
 
 function selectState(e) {
-  filterBy.value = e;
-  proposals.value = [];
-  limit.value = loadBy;
+  store.space.filterBy = e;
+  store.space.proposals = [];
   load();
 }
 
 const { profiles, loadProfiles } = useProfiles();
 
-watch(proposals, () => {
-  loadProfiles(proposals.value.map(proposal => proposal.author));
+watch(store.space.proposals, () => {
+  loadProfiles(store.space.proposals.map(proposal => proposal.author));
 });
 
-watch([proposals, web3Account], () => {
+watch([store.space.proposals, web3Account], () => {
   if (web3Account.value) {
     lsSet(
       `lastSeenProposals.${web3Account.value.slice(0, 8).toLowerCase()}`,
@@ -116,7 +120,7 @@ const proposalsCount = computed(() => {
           ]"
         >
           <UiButton class="pr-3">
-            {{ $t(`proposals.states.${filterBy}`) }}
+            {{ $t(`proposals.states.${store.space.filterBy}`) }}
             <Icon size="14" name="arrow-down" class="mt-1 mr-1" />
           </UiButton>
         </UiDropdown>
@@ -127,12 +131,12 @@ const proposalsCount = computed(() => {
       </Block>
       <NoResults
         :block="true"
-        v-else-if="proposalsCount && proposals.length < 1"
+        v-else-if="proposalsCount && store.space.proposals.length < 1"
       />
       <NoProposals v-else-if="!proposalsCount" class="mt-2" :space="space" />
       <div v-else>
         <TimelineProposal
-          v-for="(proposal, i) in proposals"
+          v-for="(proposal, i) in store.space.proposals"
           :key="i"
           :proposal="proposal"
           :profiles="profiles"
