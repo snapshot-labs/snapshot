@@ -10,7 +10,7 @@ export function useEns() {
     const res = await ensApolloQuery({
       query: ENS_QUERY,
       variables: {
-        id: web3.value.account
+        id: web3.value.account.toLowerCase()
       }
     });
 
