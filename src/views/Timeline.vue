@@ -11,36 +11,39 @@ import { useProfiles } from '@/composables/useProfiles';
 import { useFollowSpace } from '@/composables/useFollowSpace';
 import { useWeb3 } from '@/composables/useWeb3';
 import verified from '@/../snapshot-spaces/spaces/verified.json';
-
-const verifiedSpaces = Object.entries(verified)
-  .filter(space => space[1] === 1)
-  .map(space => space[0]);
-
 import zipObject from 'lodash/zipObject';
-const filterBy = ref('all');
+import { useStore } from '@/composables/useStore';
+
+const { store } = useStore();
+
 const loading = ref(false);
-const proposals = ref([]);
 
 const route = useRoute();
 const { followingSpaces, loadingFollows } = useFollowSpace();
 const { web3 } = useWeb3();
 
-const following = computed(() => {
-  return route.name === 'timeline' ? followingSpaces.value : verifiedSpaces;
+const spaces = computed(() => {
+  const verifiedSpaces = Object.entries(verified)
+    .filter(space => space[1] === 1)
+    .map(space => space[0]);
+  if (route.name === 'timeline') return followingSpaces.value;
+  if (route.name === 'explore') return verifiedSpaces;
+  else return [];
+});
+
+watch(spaces, () => {
+  if (route.name === 'timeline' || route.name === 'explore') {
+    store.timeline.proposals = [];
+    load();
+  }
 });
 
 const isTimeline = computed(() => route.name === 'timeline');
 
-watch(following, () => {
-  proposals.value = [];
-  load();
-});
-
-const { loadBy, limit, loadingMore, stopLoadingMore, loadMore } =
-  useInfiniteLoader();
+const { loadBy, loadingMore, stopLoadingMore, loadMore } = useInfiniteLoader();
 
 const { endElement } = useScrollMonitor(() =>
-  loadMore(() => loadProposals(limit.value), loading.value)
+  loadMore(() => loadProposals(store.timeline.proposals.length), loading.value)
 );
 
 const { apolloQuery } = useApolloQuery();
@@ -51,26 +54,27 @@ async function loadProposals(skip = 0) {
       variables: {
         first: loadBy,
         skip,
-        space_in: following.value,
-        state: filterBy.value
+        space_in: spaces.value,
+        state: store.timeline.filterBy
       }
     },
     'proposals'
   );
   stopLoadingMore.value = proposalsObj?.length < loadBy;
-  proposals.value = proposals.value.concat(proposalsObj);
+  store.timeline.proposals = store.timeline.proposals.concat(proposalsObj);
 }
 
 const { profiles, loadProfiles } = useProfiles();
 
-watch(proposals, () => {
-  loadProfiles(proposals.value.map(proposal => proposal.author));
+watch(store.timeline.proposals, () => {
+  loadProfiles(store.timeline.proposals.map(proposal => proposal.author));
 });
 
 // Initialize
 onMounted(load());
 
 async function load() {
+  if (store.timeline.proposals.length > 0) return;
   loading.value = true;
   await loadProposals();
   loading.value = false;
@@ -78,9 +82,8 @@ async function load() {
 
 // Change filter
 function selectState(e) {
-  filterBy.value = e;
-  proposals.value = [];
-  limit.value = loadBy;
+  store.timeline.filterBy = e;
+  store.timeline.proposals = [];
   load();
 }
 
@@ -89,7 +92,7 @@ const { updateLastSeenProposal } = useUnseenProposals();
 const web3Account = computed(() => web3.value.account);
 
 // Save the lastSeenProposal times for all spaces
-watch([proposals, web3Account], () => {
+watch([store.timeline.proposals, web3Account], () => {
   if (web3Account.value) {
     lsSet(
       `lastSeenProposals.${web3Account.value.slice(0, 8).toLowerCase()}`,
@@ -138,7 +141,7 @@ watch([proposals, web3Account], () => {
           ]"
         >
           <UiButton class="pr-3">
-            {{ $t(`proposals.states.${filterBy}`) }}
+            {{ $t(`proposals.states.${store.timeline.filterBy}`) }}
             <Icon size="14" name="arrow-down" class="mt-1 mr-1" />
           </UiButton>
         </UiDropdown>
@@ -155,8 +158,7 @@ watch([proposals, web3Account], () => {
         />
         <div
           v-else-if="
-            (isTimeline && following.length < 1) ||
-            (isTimeline && !web3.account)
+            (isTimeline && spaces.length < 1) || (isTimeline && !web3.account)
           "
           class="text-center p-4"
         >
@@ -167,12 +169,12 @@ watch([proposals, web3Account], () => {
         </div>
         <NoResults
           class="mt-4 mb-[24px]"
-          v-else-if="proposals.length < 1"
+          v-else-if="store.timeline.proposals.length < 1"
           :block="false"
         />
         <div v-else>
           <TimelineProposalPreview
-            v-for="(proposal, i) in proposals"
+            v-for="(proposal, i) in store.timeline.proposals"
             :key="i"
             :proposal="proposal"
             :profiles="profiles"
