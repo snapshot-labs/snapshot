@@ -1,4 +1,5 @@
 import domains from '@/../snapshot-spaces/spaces/domains.json';
+import aliases from '@/../snapshot-spaces/spaces/aliases.json';
 
 export function useDomain() {
   const domainName = window.location.hostname;
@@ -11,5 +12,7 @@ export function useDomain() {
     domain = import.meta.env.VITE_VIEW_AS_SPACE ?? domain;
   }
 
-  return { domain, env };
+  const alias = Object.keys(aliases).find(alias => aliases[alias] === domain);
+
+  return { domain, alias, env };
 }
