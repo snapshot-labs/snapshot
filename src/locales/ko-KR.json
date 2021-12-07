@@ -221,7 +221,8 @@
     "voting": "투표",
     "quorum": "정족수",
     "type": "타입",
-    "anyType": "어떤"
+    "anyType": "어떤",
+    "hideAbstain": "Ignore abstain votes in basic voting results"
   },
   "setup": {
     "example": "예를 들어 얌.eth",
