@@ -221,7 +221,8 @@
     "voting": "Votare",
     "quorum": "Cvorum",
     "type": "Tip",
-    "anyType": "Oricare"
+    "anyType": "Oricare",
+    "hideAbstain": "Ignore abstain votes in basic voting results"
   },
   "setup": {
     "example": "e.g. yam.eth",
