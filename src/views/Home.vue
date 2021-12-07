@@ -14,7 +14,7 @@ const category = ref('');
 const route = useRoute();
 const { explore } = useApp();
 const { followingSpaces } = useFollowSpace();
-const { categories, spacesPerCategory } = useCategories();
+const { categoriesOrderedBySpaceCount, spacesPerCategory } = useCategories();
 
 function selectCategory(c) {
   category.value = c === category.value ? '' : c;
@@ -89,10 +89,16 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
         right="1.25rem"
         @select="selectCategory($event)"
         :items="[
-          { text: `All (${Object.keys(explore.spaces).length})`, action: '' }, // TODO: localize 'All'
-          ...categories.map(c => ({
-            text: `${c.charAt(0).toUpperCase() + c.slice(1)} (${spacesPerCategory[c]})`,
+          {
+            text: $tc('explore.categories.all'),
+            action: '',
+            count: Object.keys(explore.spaces).length,
+            selected: !category
+          },
+          ...categoriesOrderedBySpaceCount.map(c => ({
+            text: $tc('explore.categories.' + c),
             action: c,
+            count: spacesPerCategory[c],
             selected: category === c
           }))
         ]
@@ -100,14 +106,20 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
       >
         <UiButton class="pr-3 whitespace-nowrap">
           <Icon size="14" name="apps" class="mt-1 mr-2" />
-          <span v-if="category" class="capitalize">
-            {{ category }}
+          <span v-if="category">
+            {{ $tc('explore.categories.' + category) }}
           </span>
           <span v-else>
-            All
+            {{ $tc('explore.categories.all') }}
           </span>
           <Icon size="14" name="arrow-down" class="mt-1 mx-1" />
         </UiButton>
+        <template v-slot:item="{ item }">
+          <div class="flex">
+            <span class="mr-3">{{ item.text }}</span>
+            <span class="ml-auto dropdown-badge">{{ _n(item.count) }}</span>
+          </div>
+        </template>
       </UiDropdown>
     </Container>
     <Container :slim="true">
