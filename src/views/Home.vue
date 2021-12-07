@@ -95,7 +95,7 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
             count: Object.keys(explore.spaces).length,
             selected: !category
           },
-          ...categoriesOrderedBySpaceCount.map(c => ({
+          ...categoriesOrderedBySpaceCount.filter(c => spacesPerCategory[c]).map(c => ({
             text: $tc('explore.categories.' + c),
             action: c,
             count: spacesPerCategory[c],
