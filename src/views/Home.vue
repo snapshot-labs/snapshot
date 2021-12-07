@@ -6,7 +6,7 @@ import { useApp } from '@/composables/useApp';
 import { useFollowSpace } from '@/composables/useFollowSpace';
 import { useCategories } from '@/composables/useCategories';
 
-const { explore, selectedCategory, orderedSpaces } = useApp();
+const { selectedCategory, orderedSpaces } = useApp();
 const { followingSpaces } = useFollowSpace();
 const { spacesPerCategory, categoriesOrderedBySpaceCount } = useCategories();
 
