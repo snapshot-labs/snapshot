@@ -221,7 +221,8 @@
     "voting": "Голосование",
     "quorum": "Кворум",
     "type": "Тип",
-    "anyType": "Любой"
+    "anyType": "Любой",
+    "hideAbstain": "Ignore abstain votes in basic voting results"
   },
   "setup": {
     "example": "например, yam.eth",
