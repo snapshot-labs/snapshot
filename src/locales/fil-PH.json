@@ -221,7 +221,8 @@
     "voting": "Pagboto",
     "quorum": "Quorum",
     "type": "Uri",
-    "anyType": "Kahit Ano"
+    "anyType": "Kahit Ano",
+    "hideAbstain": "Ignore abstain votes in basic voting results"
   },
   "setup": {
     "example": "e.g. yam.eth",
