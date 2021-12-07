@@ -222,7 +222,7 @@
     "quorum": "Quorum",
     "type": "Type",
     "anyType": "Any",
-    "hideAbstain": "Ignore abstain votes in basic voting results."
+    "hideAbstain": "Ignore abstain votes in basic voting results"
   },
   "setup": {
     "example": "e.g. yam.eth",
