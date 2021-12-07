@@ -221,7 +221,8 @@
     "voting": "投票",
     "quorum": "法定人数",
     "type": "类型",
-    "anyType": "任意"
+    "anyType": "任意",
+    "hideAbstain": "忽略基本投票结果中的弃权票"
   },
   "setup": {
     "example": "例如 yam.eth",
