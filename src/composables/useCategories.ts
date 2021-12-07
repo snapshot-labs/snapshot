@@ -13,8 +13,11 @@ export function useCategories() {
     }
   });
 
+  const categoriesOrderedBySpaceCount = categories.sort((a, b) => spacesPerCategory[b] - spacesPerCategory[a])
+
   return {
     categories,
+    categoriesOrderedBySpaceCount,
     spacesPerCategory
   };
 }
