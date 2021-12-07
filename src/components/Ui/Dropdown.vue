@@ -37,7 +37,7 @@ onBeforeUnmount(() => window.removeEventListener('click', close));
   <div
     ref="dropdownEl"
     @click.capture="hideDropdown ? $emit('clickedNoDropdown') : (open = !open)"
-    class="relative"
+    class="relative dropdown"
   >
     <div class="button">
       <slot />
@@ -65,64 +65,79 @@ onBeforeUnmount(() => window.removeEventListener('click', close));
   </div>
 </template>
 
-<style scoped lang="scss">
-.button {
-  cursor: pointer;
-  color: var(--text-color);
-  &:hover {
-    color: var(--link-color);
+<style lang="scss">
+.dropdown {
+  button {
+    cursor: pointer;
+    color: var(--text-color);
+    &:hover {
+      color: var(--link-color);
+    }
   }
-}
-
-li {
-  list-style: none;
-  display: block;
-  white-space: nowrap;
-  padding-left: 18px;
-  padding-right: 18px;
-  padding-top: 3px;
-  line-height: 34px;
-  cursor: pointer;
-}
-
-li.disabled {
-  cursor: not-allowed;
-}
-
-li.selected,
-li:hover {
-  background-color: var(--border-color);
-  color: var(--link-color);
-}
-
-.sub-menu-wrapper {
-  position: absolute;
-  right: 0;
-  top: var(--top);
-  width: auto;
-  background-color: var(--header-bg);
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
-  box-shadow: 0 0 20px -6px var(--border-color);
-}
-
-.sub-menu-wrapper.hidden {
-  display: none;
-}
-
-.sub-menu::before {
-  content: '';
-  position: absolute;
-  top: -0.45rem;
-  right: var(--right);
-  height: 0.75rem;
-  width: 0.75rem;
-  background-color: var(--header-bg);
-  border-top: 1px solid var(--border-color);
-  border-left: 1px solid var(--border-color);
-  transform: rotate(45deg);
-  z-index: 10;
-  opacity: 1;
-  transition-delay: 0.3s;
+  
+  li {
+    list-style: none;
+    display: block;
+    white-space: nowrap;
+    padding-left: 18px;
+    padding-right: 18px;
+    padding-top: 3px;
+    line-height: 34px;
+    cursor: pointer;
+    &.disabled {
+      cursor: not-allowed;
+    }
+    
+    &.selected,
+    &:hover {
+      background-color: var(--border-color);
+      color: var(--link-color);
+      .dropdown-badge {
+        background-color: var(--bg-color);
+        color: var(--link-color);
+      }
+    }
+    .dropdown-badge {
+      font-size: 80%;
+      padding: 3px 0.5rem 0;
+      margin-top: auto;
+      margin-bottom: auto;
+      line-height: initial;
+      border-radius: 1rem;
+      color: var(--link-color);
+      background-color: var(--border-color);
+    }
+  }
+  
+  .sub-menu-wrapper {
+    position: absolute;
+    right: 0;
+    top: var(--top);
+    width: auto;
+    background-color: var(--header-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    box-shadow: 0 0 20px -6px var(--border-color);
+  }
+  
+  .sub-menu-wrapper.hidden {
+    display: none;
+  }
+  
+  .sub-menu::before {
+    content: '';
+    position: absolute;
+    top: -0.45rem;
+    right: var(--right);
+    height: 0.75rem;
+    width: 0.75rem;
+    background-color: var(--header-bg);
+    border-top: 1px solid var(--border-color);
+    border-left: 1px solid var(--border-color);
+    transform: rotate(45deg);
+    z-index: 10;
+    opacity: 1;
+    transition-delay: 0.3s;
+  }
 }
 </style>
