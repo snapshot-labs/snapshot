@@ -6,7 +6,7 @@ import { useApp } from '@/composables/useApp';
 import { useFollowSpace } from '@/composables/useFollowSpace';
 import { useCategories } from '@/composables/useCategories';
 
-const { selectedCategory, orderedSpaces } = useApp();
+const { selectedCategory, orderedSpaces, orderedSpacesByCategory } = useApp();
 const { followingSpaces } = useFollowSpace();
 const { spacesPerCategory, categoriesOrderedBySpaceCount } = useCategories();
 
@@ -31,7 +31,7 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
         <SearchWithFilters />
       </UiButton>
       <div class="ml-3 text-right hidden md:block whitespace-nowrap">
-        {{ $tc('spaceCount', [_n(orderedSpaces.length)]) }}
+        {{ $tc('spaceCount', [_n(orderedSpacesByCategory.length)]) }}
       </div>
       <UiDropdown
         class="ml-3 z-10"
@@ -74,7 +74,7 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
     </Container>
     <Container :slim="true">
       <div class="grid lg:grid-cols-4 md:grid-cols-3 gap-4">
-        <div v-for="space in orderedSpaces.slice(0, limit)" :key="space.id">
+        <div v-for="space in orderedSpacesByCategory.slice(0, limit)" :key="space.id">
           <router-link
             :to="{ name: 'spaceProposals', params: { key: space.id } }"
           >
@@ -112,7 +112,7 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
           </router-link>
         </div>
       </div>
-      <NoResults :block="true" v-if="Object.keys(orderedSpaces).length < 1" />
+      <NoResults :block="true" v-if="Object.keys(orderedSpacesByCategory).length < 1" />
     </Container>
     <div ref="endElement" />
   </div>

@@ -91,10 +91,6 @@ export function useApp() {
           testnet
         };
       })
-      .filter(space => (
-        !selectedCategory.value ||
-        (space.categories && space.categories.includes(selectedCategory.value))
-      ))
       .filter(space => !space.private && verified[space.id] !== -1)
       .filter(space => space.network === network || !network)
       .filter(space => JSON.stringify(space).toLowerCase().includes(q.toLowerCase()));
@@ -106,6 +102,11 @@ export function useApp() {
     );
   });
 
+  const orderedSpacesByCategory = computed(() => orderedSpaces.value.filter(space => (
+    !selectedCategory.value ||
+    (space.categories && space.categories.includes(selectedCategory.value))
+  )));
+
   return {
     init,
     getExplore,
@@ -114,6 +115,7 @@ export function useApp() {
     strategies: computed(() => strategies.value),
     explore: computed(() => explore.value),
     orderedSpaces,
+    orderedSpacesByCategory,
     selectedCategory
   };
 }
