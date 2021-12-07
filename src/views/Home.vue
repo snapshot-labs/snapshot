@@ -93,7 +93,7 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
           ...categories.map(c => ({
             text: `${c.charAt(0).toUpperCase() + c.slice(1)} (${spacesPerCategory[c]})`,
             action: c,
-            // selected: category === c
+            selected: category === c
           }))
         ]
         "
