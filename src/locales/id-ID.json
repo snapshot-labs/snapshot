@@ -221,7 +221,8 @@
     "voting": "Pemungutan suara",
     "quorum": "Kuorum",
     "type": "Tipe",
-    "anyType": "Apa saja"
+    "anyType": "Apa saja",
+    "hideAbstain": "Ignore abstain votes in basic voting results"
   },
   "setup": {
     "example": "misalnya yam.eth",
