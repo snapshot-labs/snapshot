@@ -221,7 +221,8 @@
     "voting": "投票",
     "quorum": "Quorum",
     "type": "タイプ",
-    "anyType": "すべて"
+    "anyType": "すべて",
+    "hideAbstain": "Ignore abstain votes in basic voting results"
   },
   "setup": {
     "example": "例 yam.eth",
