@@ -221,7 +221,8 @@
     "voting": "Votación",
     "quorum": "Quórum",
     "type": "Tipo",
-    "anyType": "Cualquiera"
+    "anyType": "Cualquiera",
+    "hideAbstain": "Ignore abstain votes in basic voting results"
   },
   "setup": {
     "example": "ej. yam.eth",
