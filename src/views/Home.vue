@@ -117,7 +117,7 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
         <template v-slot:item="{ item }">
           <div class="flex">
             <span class="mr-3">{{ item.text }}</span>
-            <span class="ml-auto dropdown-badge">{{ _n(item.count) }}</span>
+            <span class="flex ml-auto mt-[-3px]"><UiCounter :counter="item.count" class="my-auto" /></span>
           </div>
         </template>
       </UiDropdown>
