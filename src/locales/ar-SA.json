@@ -221,7 +221,8 @@
     "voting": "التصويت",
     "quorum": "لغة البرمجة \"Quorum\"",
     "type": "النوع",
-    "anyType": "أيّما"
+    "anyType": "أيّما",
+    "hideAbstain": "Ignore abstain votes in basic voting results"
   },
   "setup": {
     "example": "مثال yam.eth",
