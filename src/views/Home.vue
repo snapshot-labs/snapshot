@@ -98,7 +98,7 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
         ]
         "
       >
-        <UiButton class="pr-3">
+        <UiButton class="pr-3 whitespace-nowrap">
           <Icon size="14" name="apps" class="mt-1 mr-2" />
           <span v-if="category" class="capitalize">
             {{ category }}
