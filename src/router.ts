@@ -12,12 +12,16 @@ import Timeline from '@/views/Timeline.vue';
 import Space from '@/views/Space.vue';
 import SpaceAbout from '@/views/SpaceAbout.vue';
 import SpaceProposals from '@/views/SpaceProposals.vue';
-import aliases from '@/../snapshot-spaces/spaces/aliases.json';
 import { useDomain } from '@/composables/useDomain';
 
-const { domain } = useDomain();
+// The frontend shows all spaces or just a single one, when being accessed
+// through that space's custom domain.
+const { domain, alias } = useDomain();
+const routes: any[] = [];
 
-const spaceChildrenRoutes = [
+// These routes get prefixed with the respective space's ENS domain (/:key)
+// or they get mounted at "/" in the single space scenario.
+const spaceRoutes = [
   {
     path: '',
     name: 'spaceProposals',
@@ -46,90 +50,50 @@ const spaceChildrenRoutes = [
   }
 ];
 
-const homeRoutes = domain
-  ? [
-      {
-        path: '/',
-        name: 'home',
-        component: Space,
-        children: spaceChildrenRoutes
-      }
-    ]
-  : [
-      {
-        path: '/',
-        name: 'home',
-        component: Home
-      }
-    ];
+// If accessed through custom domain, mount space routes under /.
+// Requests starting with /:key will be redirected.
+// E.g. /balancer/proposal/:proposalId becomes /proposal/:proposalId
+if (domain) {
+  routes.push(
+    { path: '/', name: 'home', component: Space, children: spaceRoutes },
+    { path: '/delegate/:key?/:to?', name: 'delegate', component: Delegate },
+    {
+      path: `/${domain}`,
+      alias: `/${alias ?? domain}`,
+      name: 'home-redirect',
+      redirect: '/'
+    },
+    {
+      path: `/${domain}/:path(.*)`,
+      alias: `/${alias ?? domain}/:path(.*)`,
+      name: 'space-redirect',
+      redirect: (to: RouteLocation) => ({ path: `/${to.params.path}` })
+    }
+  );
+} else {
+  // If accessed through localhost or snapshot.org, add all routes and
+  // prefix space routes with space domain (/:key).
+  routes.push(
+    { path: '/', name: 'home', component: Home },
+    { path: '/setup', name: 'setup', component: Setup },
+    { path: '/networks', name: 'networks', component: Explore },
+    { path: '/strategies', name: 'strategies', component: Explore },
+    { path: '/plugins', name: 'plugins', component: Explore },
+    { path: '/delegate/:key?/:to?', name: 'delegate', component: Delegate },
+    { path: '/timeline', name: 'timeline', component: Timeline },
+    { path: '/explore', name: 'explore', component: Timeline },
+    { path: '/playground/:name', name: 'playground', component: Playground },
+    { path: '/strategy/:name', name: 'strategy', component: Strategy },
+    { path: '/:key', name: 'space', component: Space, children: spaceRoutes }
+  );
+}
 
-const spaceRoutes = domain
-  ? [
-      /**
-      Its quite hard to match /abc/pqr/abc without using a full pathMatch from vue router.
-      So I have used this, and also tried to handle the situations where the user has a link
-      like this. /balancer/proposals/:proposalId it will redirect the user to /proposals/:proposalId
-      Similarly, /balancer.eth will also be redirected.
-      However if the user manually tries to change the space to something else `abc.eth` then the user
-      will be redirected to the homepage.
-    */
-      {
-        path: `/:pathMatch(.*)*`,
-        name: 'space',
-        redirect: (to: RouteLocation) => {
-          const isSpaceRoute =
-            Object.keys(aliases).includes(to.params.pathMatch[0]) ||
-            Object.values(aliases).includes(to.params.pathMatch[0]) ||
-            domain === to.params.pathMatch[0];
-
-          if (!isSpaceRoute) {
-            return { path: '/' };
-          }
-
-          const updatedPath = to.fullPath.replace(
-            `/${to.params.pathMatch[0]}`,
-            ''
-          );
-
-          return { path: updatedPath };
-        }
-      }
-    ]
-  : [
-      {
-        path: '/:key',
-        name: 'space',
-        component: Space,
-        children: spaceChildrenRoutes
-      }
-    ];
-
-const routes: any[] = [
-  ...homeRoutes,
-  { path: '/setup', name: 'setup', component: Setup },
-  { path: '/networks', name: 'networks', component: Explore },
-  { path: '/strategies', name: 'strategies', component: Explore },
-  { path: '/plugins', name: 'plugins', component: Explore },
-  { path: '/delegate/:key?/:to?', name: 'delegate', component: Delegate },
-  { path: '/timeline', name: 'timeline', component: Timeline },
-  { path: '/explore', name: 'explore', component: Timeline },
-  {
-    path: '/playground/:name',
-    name: 'playground',
-    component: Playground
-  },
-  {
-    path: '/strategy/:name',
-    name: 'strategy',
-    component: Strategy
-  },
-  ...spaceRoutes,
-  {
-    path: '/:pathMatch(.*)*',
-    name: 'error-404',
-    redirect: '/'
-  }
-];
+// catch all
+routes.push({
+  path: '/:pathMatch(.*)*',
+  name: 'error-404',
+  redirect: '/'
+});
 
 const router = createRouter({
   history: createWebHashHistory(),

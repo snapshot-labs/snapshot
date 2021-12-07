@@ -12,7 +12,7 @@ import {
   Interface,
   ParamType
 } from '@ethersproject/abi';
-import { BigNumber, BigNumberish } from '@ethersproject/bignumber';
+import { BigNumberish } from '@ethersproject/bignumber';
 import { JsonFragment } from '@ethersproject/abi/src.ts/fragments';
 import { InterfaceDecoder } from '@/helpers/abi/decoder';
 import { parseAmount, parseValueInput } from '@/helpers/utils';
@@ -303,10 +303,7 @@ export const multiSendTransaction = (
       .map(encodePackageMultiSendTransaction)
       .map(removeHexPrefix)
       .join('');
-  const value: string = transactions.reduce(
-    (total, tx) => BigNumber.from(tx.value).add(total).toString(),
-    '0'
-  );
+  const value = '0';
   const data = multiSendContract.encodeFunctionData('multiSend', [
     transactionsEncoded
   ]);
