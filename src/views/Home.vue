@@ -81,7 +81,7 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
         <SearchWithFilters />
       </UiButton>
       <div class="ml-3 text-right hidden md:block whitespace-nowrap">
-        {{ $tc('spaceCount', [_n(category ? spacesPerCategory[category] : Object.keys(explore.spaces).length)]) }}
+        {{ $tc('spaceCount', [_n(category ? spacesPerCategory[category] : orderedSpaces.length)]) }}
       </div>
       <UiDropdown
         class="ml-3 z-10"
