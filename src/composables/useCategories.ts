@@ -7,9 +7,11 @@ export function useCategories() {
 
   // count spaces per category
   const spacesPerCategory = Object.fromEntries(categories.map(c => [c, 0]));
-  Object.keys(spaces).forEach(s =>
-    spaces[s].categories?.forEach((c: any) => spacesPerCategory[c]++)
-  );
+  Object.keys(spaces).forEach(s => {
+    if (!spaces[s].private) {
+      spaces[s].categories?.forEach((c: any) => spacesPerCategory[c]++)
+    }
+  });
 
   return {
     categories,
