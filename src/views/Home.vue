@@ -1,68 +1,18 @@
 <script setup>
-import { ref, computed, watchEffect } from 'vue';
-import { useRoute } from 'vue-router';
-import orderBy from 'lodash/orderBy';
-import networks from '@snapshot-labs/snapshot.js/src/networks.json';
+import { ref, watchEffect } from 'vue';
 import { useUnseenProposals } from '@/composables/useUnseenProposals';
 import { useScrollMonitor } from '@/composables/useScrollMonitor';
 import { useApp } from '@/composables/useApp';
 import { useFollowSpace } from '@/composables/useFollowSpace';
 import { useCategories } from '@/composables/useCategories';
-import verified from '@/../snapshot-spaces/spaces/verified.json';
 
-const category = ref('');
-const route = useRoute();
-const { explore } = useApp();
+const { explore, selectedCategory, orderedSpaces } = useApp();
 const { followingSpaces } = useFollowSpace();
-const { categoriesOrderedBySpaceCount, spacesPerCategory } = useCategories();
+const { spacesPerCategory, categoriesOrderedBySpaceCount } = useCategories();
 
 function selectCategory(c) {
-  category.value = c === category.value ? '' : c;
+  selectedCategory.value = c === selectedCategory.value ? '' : c;
 }
-
-const testnetNetworks = Object.entries(networks)
-  .filter(network => network[1].testnet)
-  .map(([id]) => id);
-
-const orderedSpaces = computed(() => {
-  const network = route.query.network || '';
-  const q = route.query.q || '';
-  const list = Object.keys(explore.value.spaces)
-    .map(key => {
-      const following = followingSpaces.value.some(s => s === key);
-      const followers = explore.value.spaces[key].followers ?? 0;
-      // const voters1d = explore.value.spaces[key].voters_1d ?? 0;
-      const followers1d = explore.value.spaces[key].followers_1d ?? 0;
-      // const proposals1d = explore.value.spaces[key].proposals_1d ?? 0;
-      const isVerified = verified[key] || 0;
-      let score = followers1d + followers / 4;
-      if (isVerified === 1) score = score * 2;
-      const testnet = testnetNetworks.includes(
-        explore.value.spaces[key].network
-      );
-      return {
-        ...explore.value.spaces[key],
-        following,
-        followers,
-        private: explore.value.spaces[key].private ?? false,
-        score,
-        testnet
-      };
-    })
-    .filter(space => (
-      !category.value ||
-      (space.categories && space.categories.includes(category.value))
-    ))
-    .filter(space => !space.private && verified[space.id] !== -1)
-    .filter(space => space.network === network || !network)
-    .filter(space => JSON.stringify(space).toLowerCase().includes(q.toLowerCase()));
-
-  return orderBy(
-    list,
-    ['following', 'testnet', 'score'],
-    ['desc', 'asc', 'desc']
-  );
-});
 
 const { getProposalIds } = useUnseenProposals();
 watchEffect(() => getProposalIds(followingSpaces.value));
@@ -81,7 +31,7 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
         <SearchWithFilters />
       </UiButton>
       <div class="ml-3 text-right hidden md:block whitespace-nowrap">
-        {{ $tc('spaceCount', [_n(category ? spacesPerCategory[category] : orderedSpaces.length)]) }}
+        {{ $tc('spaceCount', [_n(orderedSpaces.length)]) }}
       </div>
       <UiDropdown
         class="ml-3 z-10"
@@ -92,22 +42,22 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
           {
             text: $tc('explore.categories.all'),
             action: '',
-            count: Object.keys(explore.spaces).length,
-            selected: !category
+            count: orderedSpaces.length,
+            selected: !selectedCategory
           },
           ...categoriesOrderedBySpaceCount.filter(c => spacesPerCategory[c]).map(c => ({
             text: $tc('explore.categories.' + c),
             action: c,
             count: spacesPerCategory[c],
-            selected: category === c
+            selected: selectedCategory === c
           }))
         ]
         "
       >
-        <UiButton class="pr-3 whitespace-nowrap">
+        <UiButton class="pr-3 whitespace-nowrap" :disabled="!orderedSpaces.length">
           <Icon size="14" name="apps" class="mt-1 mr-2" />
-          <span v-if="category">
-            {{ $tc('explore.categories.' + category) }}
+          <span v-if="selectedCategory">
+            {{ $tc('explore.categories.' + selectedCategory) }}
           </span>
           <span v-else>
             {{ $tc('explore.categories.all') }}
