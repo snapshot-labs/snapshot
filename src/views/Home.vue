@@ -77,7 +77,7 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
 <template>
   <div class="mt-4">
     <Container class="flex items-center mb-4">
-      <UiButton class="mr-auto pl-3 pr-0 w-full md:w-7/12">
+      <UiButton class="mr-auto pl-3 pr-0 w-full max-w-[420px]">
         <SearchWithFilters />
       </UiButton>
       <div class="ml-3 text-right hidden md:block whitespace-nowrap">
