@@ -221,7 +221,8 @@
     "voting": "Oylama",
     "quorum": "Yetersayı (Quorum)",
     "type": "Tür",
-    "anyType": "Hiç"
+    "anyType": "Hiç",
+    "hideAbstain": "Ignore abstain votes in basic voting results"
   },
   "setup": {
     "example": "örneğin. yam.eth",
