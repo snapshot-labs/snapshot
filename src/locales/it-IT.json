@@ -221,7 +221,8 @@
     "voting": "Voti",
     "quorum": "Durata dibattito",
     "type": "Tipo",
-    "anyType": "Qualunque"
+    "anyType": "Qualunque",
+    "hideAbstain": "Ignore abstain votes in basic voting results"
   },
   "setup": {
     "example": "e.g. yam.eth",
