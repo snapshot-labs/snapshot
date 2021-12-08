@@ -398,7 +398,7 @@ const markdown = computed(() => {
   margin: 0;
   background-color: rgba(27, 31, 35, 0.05);
   border-radius: 3px;
-  font-size:18px;
+  font-size: 18px;
 }
 
 .markdown-body code br,
