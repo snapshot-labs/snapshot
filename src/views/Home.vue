@@ -31,7 +31,7 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
         <SearchWithFilters />
       </UiButton>
       <UiDropdown
-        class="ml-3 mr-auto z-10"
+        class="ml-2 mr-auto z-10"
         top="3.5rem"
         right="1.25rem"
         @select="selectCategory($event)"
