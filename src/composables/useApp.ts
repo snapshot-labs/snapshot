@@ -6,6 +6,7 @@ import { useWeb3 } from '@/composables/useWeb3';
 import { useFollowSpace } from '@/composables/useFollowSpace';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import verified from '@/../snapshot-spaces/spaces/verified.json';
+import verifiedSpacesCategories from '@/../snapshot-spaces/spaces/categories.json';
 
 const state = reactive({
   init: false,
@@ -47,13 +48,17 @@ export function useApp() {
     ).then(res => res.json());
 
     exploreObj.spaces = Object.fromEntries(
-      Object.entries(exploreObj.spaces).map((space: any) => [
-        space[0],
-        {
-          id: space[0],
-          ...space[1]
-        }
-      ])
+      Object.entries(exploreObj.spaces).map(([id, space]: any) => {
+        // map manually selected categories for verified spaces that don't have set their categories yet
+        // set to empty array if space.categories is missing
+        space.categories = space.categories?.length
+          ? space.categories
+          : verifiedSpacesCategories[id]?.length
+          ? verifiedSpacesCategories[id]
+          : [];
+
+        return [id, { id, ...space }];
+      })
     );
 
     explore.value = exploreObj;
