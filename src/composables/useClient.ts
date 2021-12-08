@@ -35,8 +35,6 @@ export function useClient() {
   async function send(space, type, payload) {
     loading.value = true;
     try {
-      if (isGnosisSafe.value)
-        throw 'Error: Signing messages with Gnosis Safe is currently not supported';
       if (usePersonalSign.value) {
         if (payload.proposal) payload.proposal = payload.proposal.id;
 
