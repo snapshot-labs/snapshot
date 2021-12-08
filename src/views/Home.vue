@@ -27,14 +27,11 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
 <template>
   <div class="mt-4">
     <Container class="flex items-center mb-4">
-      <UiButton class="mr-auto pl-3 pr-0 w-full max-w-[420px]">
+      <UiButton class="pl-3 pr-0 w-full max-w-[420px]">
         <SearchWithFilters />
       </UiButton>
-      <div class="ml-3 text-right hidden md:block whitespace-nowrap">
-        {{ $tc('spaceCount', [_n(orderedSpacesByCategory.length)]) }}
-      </div>
       <UiDropdown
-        class="ml-3 z-10"
+        class="ml-3 mr-auto z-10"
         top="3.5rem"
         right="1.25rem"
         @select="selectCategory($event)"
@@ -77,6 +74,9 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
           </div>
         </template>
       </UiDropdown>
+      <div class="ml-3 text-right hidden md:block whitespace-nowrap">
+        {{ $tc('spaceCount', [_n(orderedSpacesByCategory.length)]) }}
+      </div>
     </Container>
     <Container :slim="true">
       <div class="grid lg:grid-cols-4 md:grid-cols-3 gap-4">
