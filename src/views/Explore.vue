@@ -45,10 +45,10 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
       <UiButton class="mr-auto pl-3 pr-0 w-full max-w-[420px]">
         <SearchWithFilters />
       </UiButton>
-      <div class="ml-3 hidden sm:flex text-right items-center whitespace-nowrap">
-        <div class="flex flex-col">
-          {{ _n(items.length) }} {{ resultsStr }}
-        </div>
+      <div
+        class="ml-3 hidden sm:flex text-right items-center whitespace-nowrap"
+      >
+        <div class="flex flex-col">{{ _n(items.length) }} {{ resultsStr }}</div>
         <a
           v-if="buttonStr"
           href="https://discord.snapshot.org"

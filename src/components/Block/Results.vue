@@ -26,7 +26,7 @@ const choices = computed(() =>
     )
 );
 
-const getPercentage = (n, max) => 100 / max * n / 1e2;
+const getPercentage = (n, max) => ((100 / max) * n) / 1e2;
 
 const hideAbstain = props.space?.voting?.hideAbstain ?? false;
 </script>
@@ -37,7 +37,9 @@ const hideAbstain = props.space?.voting?.hideAbstain ?? false;
     :title="ts >= proposal.end ? $t('results') : $t('currentResults')"
   >
     <div v-for="choice in choices" :key="choice.i">
-      <template v-if="!(proposal.type === 'basic' && hideAbstain && choice.i === 2)">
+      <template
+        v-if="!(proposal.type === 'basic' && hideAbstain && choice.i === 2)"
+      >
         <div class="link-color mb-1">
           <span
             v-tippy="{
@@ -63,17 +65,27 @@ const hideAbstain = props.space?.voting?.hideAbstain ?? false;
             class="float-right"
             v-text="
               _n(
-                getPercentage(results.resultsByVoteBalance[0], results.resultsByVoteBalance[0] + results.resultsByVoteBalance[1]),
+                getPercentage(
+                  results.resultsByVoteBalance[0],
+                  results.resultsByVoteBalance[0] +
+                    results.resultsByVoteBalance[1]
+                ),
                 '0.[00]%'
               )
             "
           />
           <span
-            v-else-if="proposal.type === 'basic' && hideAbstain && choice.i === 1"
+            v-else-if="
+              proposal.type === 'basic' && hideAbstain && choice.i === 1
+            "
             class="float-right"
             v-text="
               _n(
-                getPercentage(results.resultsByVoteBalance[1], results.resultsByVoteBalance[0] + results.resultsByVoteBalance[1]),
+                getPercentage(
+                  results.resultsByVoteBalance[1],
+                  results.resultsByVoteBalance[0] +
+                    results.resultsByVoteBalance[1]
+                ),
                 '0.[00]%'
               )
             "
@@ -83,7 +95,10 @@ const hideAbstain = props.space?.voting?.hideAbstain ?? false;
             class="float-right"
             v-text="
               _n(
-                getPercentage(results.resultsByVoteBalance[choice.i], results.sumOfResultsBalance),
+                getPercentage(
+                  results.resultsByVoteBalance[choice.i],
+                  results.sumOfResultsBalance
+                ),
                 '0.[00]%'
               )
             "
@@ -91,7 +106,12 @@ const hideAbstain = props.space?.voting?.hideAbstain ?? false;
         </div>
         <UiProgress
           :value="results.resultsByStrategyScore[choice.i]"
-          :max="proposal.type === 'basic' && hideAbstain ? results.resultsByVoteBalance[0] + results.resultsByVoteBalance[1] : results.sumOfResultsBalance"
+          :max="
+            proposal.type === 'basic' && hideAbstain
+              ? results.resultsByVoteBalance[0] +
+                results.resultsByVoteBalance[1]
+              : results.sumOfResultsBalance
+          "
           class="mb-3"
         />
       </template>

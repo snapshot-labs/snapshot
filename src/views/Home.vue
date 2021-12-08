@@ -45,16 +45,20 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
             count: orderedSpaces.length,
             selected: !selectedCategory
           },
-          ...categoriesOrderedBySpaceCount.filter(c => spacesPerCategory[c]).map(c => ({
-            text: $tc('explore.categories.' + c),
-            action: c,
-            count: spacesPerCategory[c],
-            selected: selectedCategory === c
-          }))
-        ]
-        "
+          ...categoriesOrderedBySpaceCount
+            .filter(c => spacesPerCategory[c])
+            .map(c => ({
+              text: $tc('explore.categories.' + c),
+              action: c,
+              count: spacesPerCategory[c],
+              selected: selectedCategory === c
+            }))
+        ]"
       >
-        <UiButton class="pr-3 whitespace-nowrap" :disabled="!orderedSpaces.length">
+        <UiButton
+          class="pr-3 whitespace-nowrap"
+          :disabled="!orderedSpaces.length"
+        >
           <Icon size="14" name="apps" class="mt-1 mr-2" />
           <span v-if="selectedCategory">
             {{ $tc('explore.categories.' + selectedCategory) }}
@@ -67,14 +71,19 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
         <template v-slot:item="{ item }">
           <div class="flex">
             <span class="mr-3">{{ item.text }}</span>
-            <span class="flex ml-auto mt-[-3px]"><UiCounter :counter="item.count" class="my-auto" /></span>
+            <span class="flex ml-auto mt-[-3px]">
+              <UiCounter :counter="item.count" class="my-auto" />
+            </span>
           </div>
         </template>
       </UiDropdown>
     </Container>
     <Container :slim="true">
       <div class="grid lg:grid-cols-4 md:grid-cols-3 gap-4">
-        <div v-for="space in orderedSpacesByCategory.slice(0, limit)" :key="space.id">
+        <div
+          v-for="space in orderedSpacesByCategory.slice(0, limit)"
+          :key="space.id"
+        >
           <router-link
             :to="{ name: 'spaceProposals', params: { key: space.id } }"
           >
@@ -112,7 +121,10 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
           </router-link>
         </div>
       </div>
-      <NoResults :block="true" v-if="Object.keys(orderedSpacesByCategory).length < 1" />
+      <NoResults
+        :block="true"
+        v-if="Object.keys(orderedSpacesByCategory).length < 1"
+      />
     </Container>
     <div ref="endElement" />
   </div>

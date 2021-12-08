@@ -63,7 +63,7 @@ export function useApp() {
   const selectedCategory = ref('');
 
   const testnetNetworks = Object.entries(networks)
-    .filter((network:any) => network[1].testnet)
+    .filter((network: any) => network[1].testnet)
     .map(([id]) => id);
 
   const orderedSpaces = computed(() => {
@@ -93,7 +93,9 @@ export function useApp() {
       })
       .filter(space => !space.private && verified[space.id] !== -1)
       .filter(space => space.network === network || !network)
-      .filter(space => JSON.stringify(space).toLowerCase().includes(q.toLowerCase()));
+      .filter(space =>
+        JSON.stringify(space).toLowerCase().includes(q.toLowerCase())
+      );
 
     return orderBy(
       list,
@@ -102,10 +104,13 @@ export function useApp() {
     );
   });
 
-  const orderedSpacesByCategory = computed(() => orderedSpaces.value.filter(space => (
-    !selectedCategory.value ||
-    (space.categories && space.categories.includes(selectedCategory.value))
-  )));
+  const orderedSpacesByCategory = computed(() =>
+    orderedSpaces.value.filter(
+      space =>
+        !selectedCategory.value ||
+        (space.categories && space.categories.includes(selectedCategory.value))
+    )
+  );
 
   return {
     init,

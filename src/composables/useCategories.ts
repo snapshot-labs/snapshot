@@ -2,7 +2,6 @@ import { computed } from 'vue';
 import categories from '@/helpers/categories.json';
 import { useApp } from '@/composables/useApp';
 
-
 export function useCategories() {
   const { orderedSpaces } = useApp();
 
@@ -10,16 +9,17 @@ export function useCategories() {
   const spacesPerCategory = computed(() => {
     const spaces = orderedSpaces.value.reduce((counters, space) => {
       if (!space.private) {
-        space.categories?.forEach((c: any) => counters[c]++)
+        space.categories?.forEach((c: any) => counters[c]++);
         return counters;
       }
     }, Object.fromEntries(categories.map(c => [c, 0])));
-    console.log(spaces);
     return spaces;
   });
 
   const categoriesOrderedBySpaceCount = computed(() => {
-    return categories.sort((a, b) => spacesPerCategory.value[b] - spacesPerCategory.value[a])
+    return categories.sort(
+      (a, b) => spacesPerCategory.value[b] - spacesPerCategory.value[a]
+    );
   });
 
   return {
