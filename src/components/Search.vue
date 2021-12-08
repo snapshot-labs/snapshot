@@ -22,7 +22,7 @@ function handleInput(e) {
   emit('update:modelValue', input);
 }
 
-const handleInputDebounce = debounce(handleInput, 300);
+const handleInputDebounce = debounce(handleInput, 100);
 
 function clearInput() {
   if (!props.modal) {
