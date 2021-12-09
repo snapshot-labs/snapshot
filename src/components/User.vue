@@ -28,7 +28,7 @@ watchEffect(() => {
             size="18"
             class="mr-2"
           />
-          {{ username }}
+          <span class="truncate">{{ username }}</span>
           <Badges :address="address" :members="space?.members" />
         </a>
       </template>

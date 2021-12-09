@@ -1,12 +1,12 @@
 <script setup>
 import { ref, computed } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { useI18n } from '@/composables/useI18n';
 
 const props = defineProps({ modelValue: String });
 
 const emit = defineEmits(['update:modelValue']);
 
-const { locale } = useI18n();
+const { currentLocale: locale } = useI18n();
 
 const [
   yearNow = new Date().getFullYear(),

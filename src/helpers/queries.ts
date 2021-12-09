@@ -95,7 +95,9 @@ export const PROPOSALS_QUERY = gql`
         symbol
       }
       scores_state
+      scores_total
       scores
+      votes
     }
   }
 `;
@@ -158,6 +160,7 @@ export const SPACES_QUERY = gql`
         period
         type
         quorum
+        hideAbstain
       }
       strategies {
         name

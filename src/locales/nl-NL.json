@@ -306,7 +306,7 @@
     "no_poap_header": "Er is nog geen POAP ingesteld voor dit voorstel :'(",
     "no_voted_header": "Stem om deze POAP te krijgen",
     "unclaimed_header": "Claim je stem op POAP",
-    "claimed_header": "Congratulations! The POAP has been minted to your account",
+    "claimed_header": "Congratulations! The POAP has been minted to your collection",
     "loading_header": "De POAP wordt toegevoegd aan je collectie",
     "button_claim": "Claimen",
     "button_show": "Browse collection",

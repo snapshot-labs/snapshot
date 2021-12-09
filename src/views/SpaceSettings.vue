@@ -248,7 +248,10 @@ function formatSpace(spaceRaw) {
 watchEffect(async () => {
   if (!props.spaceLoading) {
     try {
-      const uri = await getSpaceUri(props.spaceId);
+      const uri = await getSpaceUri(
+        props.spaceId,
+        import.meta.env.VITE_DEFAULT_NETWORK
+      );
       console.log('URI', uri);
       currentTextRecord.value = uri;
     } catch (e) {
@@ -585,6 +588,15 @@ watchEffect(async () => {
                 </select>
               </template>
             </UiInput>
+            <UiInput
+              v-model="form.voting.quorum"
+              :number="true"
+              placeholder="1000"
+            >
+              <template v-slot:label>
+                {{ $t('settings.quorum') }}
+              </template>
+            </UiInput>
             <UiInput>
               <template v-slot:label>
                 {{ $t('settings.type') }}
@@ -599,15 +611,10 @@ watchEffect(async () => {
                 </div>
               </template>
             </UiInput>
-            <UiInput
-              v-model="form.voting.quorum"
-              :number="true"
-              placeholder="1000"
-            >
-              <template v-slot:label>
-                {{ $t('settings.quorum') }}
-              </template>
-            </UiInput>
+            <div class="flex items-center px-2 mb-2">
+              <Checkbox v-model="form.voting.hideAbstain" class="mr-2 mt-1" />
+              {{ $t('settings.hideAbstain') }}
+            </div>
           </Block>
           <Block :title="$t('plugins')">
             <div v-if="form?.plugins">

@@ -7,6 +7,7 @@ import { useUnseenProposals } from '@/composables/useUnseenProposals';
 import { useScrollMonitor } from '@/composables/useScrollMonitor';
 import { useApp } from '@/composables/useApp';
 import { useFollowSpace } from '@/composables/useFollowSpace';
+import verified from '@/../snapshot-spaces/spaces/verified.json';
 
 const route = useRoute();
 const { explore } = useApp();
@@ -26,8 +27,9 @@ const orderedSpaces = computed(() => {
       // const voters1d = explore.value.spaces[key].voters_1d ?? 0;
       const followers1d = explore.value.spaces[key].followers_1d ?? 0;
       // const proposals1d = explore.value.spaces[key].proposals_1d ?? 0;
+      const isVerified = verified[key] || 0;
       let score = followers1d + followers / 4;
-      if (explore.value.spaces[key].network !== '1') score = score / 6;
+      if (isVerified === 1) score = score * 2;
       const testnet = testnetNetworks.includes(
         explore.value.spaces[key].network
       );
@@ -40,7 +42,7 @@ const orderedSpaces = computed(() => {
         testnet
       };
     })
-    .filter(space => !space.private && space.id !== '0xmetamask.eth')
+    .filter(space => !space.private && verified[space.id] !== -1)
     .filter(space => space.network === network || !network);
 
   return orderBy(
@@ -63,7 +65,7 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
 </script>
 
 <template>
-  <div>
+  <div class="mt-4">
     <div class="text-center mb-4 mx-auto">
       <Container class="flex items-center">
         <div class="flex-auto text-left flex">
@@ -78,14 +80,10 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
     </div>
     <Container :slim="true">
       <div class="grid lg:grid-cols-4 md:grid-cols-3 gap-4">
-        <a
-          @click="
-            $router.push({ name: 'spaceProposals', params: { key: space.id } })
-          "
-          v-for="space in orderedSpaces.slice(0, limit)"
-          :key="space.id"
-        >
-          <div>
+        <div v-for="space in orderedSpaces.slice(0, limit)" :key="space.id">
+          <router-link
+            :to="{ name: 'spaceProposals', params: { key: space.id } }"
+          >
             <!-- Added mb-0 to remove mb-4 added by block component -->
             <Block
               class="text-center extra-icon-container mb-0 hover-border"
@@ -115,10 +113,10 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
                   })
                 }}
               </div>
-              <FollowButton :space="space" />
+              <FollowButton class="!mb-0" :space="space" />
             </Block>
-          </div>
-        </a>
+          </router-link>
+        </div>
       </div>
       <NoResults :block="true" v-if="Object.keys(orderedSpaces).length < 1" />
     </Container>
