@@ -295,7 +295,7 @@ onMounted(async () => {
         @clickVote="clickVote"
       />
       <BlockVotes
-        @loadVotes="loadMore(() => loadMoreVotes())"
+        @loadVotes="loadMore(loadMoreVotes)"
         v-if="loaded"
         :loaded="loadedVotes"
         :space="space"
