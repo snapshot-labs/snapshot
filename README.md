@@ -49,7 +49,7 @@ You can create a `.env.local` and overwrite the values from `.env`, e.g. to conn
 
 ### Overview
 
-Here is a rough overview of our main repositories.
+Here is an overview of our main repositories.
 
 ![image](https://user-images.githubusercontent.com/6792578/141847491-13251979-457d-4f4d-8f2a-39516a45332d.png)
 
@@ -70,11 +70,13 @@ VITE_HUB_URL=https://testnet.snapshot.org
 VITE_VIEW_AS_SPACE=fabien.eth
 ```
 
-#### ENS Domain
+#### Rinkeby ENS Domain
 
 To create a new space you need to have an ENS domain and set a `snapshot` TEXT record, pointing to a file on IPFS, containing your space settings.
 
-If you don't have an ENS domain on the Ethereum mainnet or you don't want to use it, you can also register one on Rinkeby and set `VITE_DEFAULT_NETWORK=4` in your `.env.local`. Open the [ENS web interface](https://app.ens.domains) and connect your wallet to Rinkeby, then register your test domain and use it to create a new space.
+If you don't have an ENS domain on the Ethereum mainnet or you don't want to use it for development, you can also register one on Rinkeby. Open the [ENS web interface](https://app.ens.domains), connect your wallet to Rinkeby and register your test domain.
+
+Set `VITE_DEFAULT_NETWORK=4` in your `.env.local`. You will also have to [run your own local hub](https://github.com/snapshot-labs/snapshot-hub) and configure it to check ENS domains on Rinkeby as well.
 
 ## License
 
