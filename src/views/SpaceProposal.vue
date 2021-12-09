@@ -140,7 +140,6 @@ const { loadBy, loadingMore, stopLoadingMore, loadMore } =
   useInfiniteLoader(10);
 
 async function loadMoreVotes() {
-  console.log('loadMORE');
   const votesObj = await getProposalVotes(id, {
     first: loadBy,
     skip: votes.value.length
