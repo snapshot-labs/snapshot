@@ -127,7 +127,7 @@ async function loadResults() {
     votes.value = formatProposalVotes(votesRes);
     loadedVotes.value = true;
   } else {
-    const votesTmp = await getProposalVotes(id, {});
+    const votesTmp = await getProposalVotes(id);
     const resultsObj = await getResults(props.space, proposal.value, votesTmp);
     results.value = resultsObj.results;
     loadedResults.value = true;
