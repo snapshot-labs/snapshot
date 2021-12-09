@@ -60,7 +60,16 @@ watchEffect(() => {
         <Token :space="space" symbolIndex="space" size="80" class="mt-3 mb-2" />
         <h3 class="mb-[2px] mx-2">
           {{ space.name }}
-          <Icon v-if="isVerified === 1" name="check" size="20" />
+           <template v-if="isVerified === 1">
+            <span
+              v-tippy="{
+                content: $t('verifiedSpace'),
+                placement: 'right'
+              }"
+            >
+              <Icon name="check" size="20" />
+            </span>
+          </template>
           <Icon v-if="isVerified === -1" name="warning" size="20" />
         </h3>
         <div class="mb-[12px] text-color">
