@@ -250,7 +250,18 @@
     "skins": "المظهر(المظاهر)",
     "networks": "شبكة (شبكات)",
     "plugins": "ملحق(ات)",
-    "results": "النتيجة (النتائج)"
+    "results": "النتيجة (النتائج)",
+    "categories": {
+      "all": "All",
+      "protocol": "Protocol",
+      "social": "Social",
+      "investment": "Investment",
+      "grant": "Grant",
+      "service": "Service",
+      "media": "Media",
+      "creator": "Creator",
+      "collector": "Collector"
+    }
   },
   "voting": {
     "selectVoting": "اختيار نظام التصويت",
