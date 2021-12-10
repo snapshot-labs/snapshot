@@ -250,7 +250,18 @@
     "skins": "سکنس",
     "networks": "نیٹ ورک",
     "plugins": "پلگیں",
-    "results": "نتائج"
+    "results": "نتائج",
+    "categories": {
+      "all": "All",
+      "protocol": "Protocol",
+      "social": "Social",
+      "investment": "Investment",
+      "grant": "Grant",
+      "service": "Service",
+      "media": "Media",
+      "creator": "Creator",
+      "collector": "Collector"
+    }
   },
   "voting": {
     "selectVoting": "ووٹنگ کا نظام منتخب کریں",
