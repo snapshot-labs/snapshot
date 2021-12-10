@@ -250,7 +250,18 @@
     "skins": "mga Skin",
     "networks": "mga network",
     "plugins": "mga plugin",
-    "results": "(mga) resulta"
+    "results": "(mga) resulta",
+    "categories": {
+      "all": "All",
+      "protocol": "Protocol",
+      "social": "Social",
+      "investment": "Investment",
+      "grant": "Grant",
+      "service": "Service",
+      "media": "Media",
+      "creator": "Creator",
+      "collector": "Collector"
+    }
   },
   "voting": {
     "selectVoting": "Piliin ang sistema ng pagboto",
