@@ -250,7 +250,18 @@
     "skins": "skin(s)",
     "networks": "network(s)",
     "plugins": "plugin(s)",
-    "results": "result(s)"
+    "results": "result(s)",
+    "categories": {
+      "all": "All",
+      "protocol": "Protocol",
+      "social": "Social",
+      "investment": "Investment",
+      "grant": "Grant",
+      "service": "Service",
+      "media": "Media",
+      "creator": "Creator",
+      "collector": "Collector"
+    }
   },
   "voting": {
     "selectVoting": "Select voting system",
