@@ -250,7 +250,18 @@
     "skins": "স্কীন",
     "networks": "নেটওয়ার্ক",
     "plugins": "প্লাগইন",
-    "results": "ফলাফল(সমূহ)"
+    "results": "ফলাফল(সমূহ)",
+    "categories": {
+      "all": "All",
+      "protocol": "Protocol",
+      "social": "Social",
+      "investment": "Investment",
+      "grant": "Grant",
+      "service": "Service",
+      "media": "Media",
+      "creator": "Creator",
+      "collector": "Collector"
+    }
   },
   "voting": {
     "selectVoting": "ভোটদানের ব্যবস্থা নির্বাচন করুন",
