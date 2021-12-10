@@ -71,11 +71,11 @@ watch(open, () => (step.value = null));
       </div>
     </div>
     <div v-else>
-      <div v-if="$auth.isAuthenticated.value" class="m-4">
+      <div v-if="$auth.isAuthenticated.value" class="m-4 space-y-2">
         <a
           :href="_explorer(web3.network.key, web3.account)"
           target="_blank"
-          class="mb-2 block"
+          class="block"
         >
           <UiButton class="button-outline w-full">
             <UiAvatar
@@ -90,13 +90,10 @@ watch(open, () => (step.value = null));
             <Icon name="external-link" class="ml-1" />
           </UiButton>
         </a>
-        <UiButton @click="step = 'connect'" class="button-outline w-full mb-2">
+        <UiButton @click="step = 'connect'" class="button-outline w-full">
           {{ $t('connectWallet') }}
         </UiButton>
-        <UiButton
-          @click="handleLogout"
-          class="button-outline w-full !text-red mb-2"
-        >
+        <UiButton @click="handleLogout" class="button-outline w-full !text-red">
           {{ $t('logout') }}
         </UiButton>
       </div>

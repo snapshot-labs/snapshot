@@ -71,6 +71,8 @@ const safeSnapInput = computed({
   set: value => (proposal.value.plugins.safeSnap = value)
 });
 
+const browserHasHistory = computed(() => window.history.state.back);
+
 const { modalAccountOpen } = useModal();
 const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(props.spaceId);
 
@@ -215,13 +217,19 @@ onMounted(async () => {
   <Layout v-bind="$attrs">
     <template #content-left>
       <div class="px-4 md:px-0 mb-3">
-        <router-link
-          :to="domain ? { path: '/' } : { name: 'spaceProposals' }"
+        <a
           class="text-color"
+          @click="
+            browserHasHistory
+              ? $router.go(-1)
+              : $router.push(
+                  domain ? { path: '/' } : { name: 'spaceProposals' }
+                )
+          "
         >
           <Icon name="back" size="22" class="!align-middle" />
-          {{ space.name }}
-        </router-link>
+          {{ browserHasHistory ? $t('back') : space.name }}
+        </a>
       </div>
       <div class="px-4 md:px-0">
         <template v-if="loaded">
