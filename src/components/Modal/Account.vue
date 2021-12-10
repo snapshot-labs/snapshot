@@ -93,10 +93,7 @@ watch(open, () => (step.value = null));
         <UiButton @click="step = 'connect'" class="button-outline w-full mb-2">
           {{ $t('connectWallet') }}
         </UiButton>
-        <UiButton
-          @click="handleLogout"
-          class="button-outline w-full !text-red mb-2"
-        >
+        <UiButton @click="handleLogout" class="button-outline w-full !text-red">
           {{ $t('logout') }}
         </UiButton>
       </div>
