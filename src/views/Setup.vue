@@ -45,7 +45,15 @@ function handleSubmit() {
           </a>
         </UiButton>
         <UiButton
-          :disabled="!id.includes('.eth') && !id.includes('.xyz')"
+          :disabled="
+            !id.includes('.eth') &&
+            !id.includes('.xyz') &&
+            !id.includes('.com') &&
+            !id.includes('.org') &&
+            !id.includes('.io') &&
+            !id.includes('.app') &&
+            !id.includes('.art')
+          "
           @click="handleSubmit"
           class="w-full"
           primary
