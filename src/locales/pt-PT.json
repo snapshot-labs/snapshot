@@ -19,6 +19,7 @@
   "strategiesPage": "Estratégias",
   "space": "Espaço",
   "spaces": "Espaços",
+  "verifiedSpace": "Verified space",
   "version": "Versão",
   "timeline": "Cronologia",
   "filters": "Filtros",
@@ -221,7 +222,8 @@
     "voting": "Votar",
     "quorum": "Quorum",
     "type": "Modelo",
-    "anyType": "Qualquer"
+    "anyType": "Qualquer",
+    "hideAbstain": "Ignore abstain votes in basic voting results"
   },
   "setup": {
     "example": "p. ex. yam.eth",
