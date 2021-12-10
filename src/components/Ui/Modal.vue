@@ -22,8 +22,14 @@ watch(open, (val, prev) => {
     <div v-if="open" class="modal mx-auto">
       <div class="backdrop" @click="$emit('close')" />
       <div class="shell overflow-hidden relative rounded-none md:rounded-lg">
-        <div v-if="$slots.header" class="border-b pt-4 pb-3 text-center">
+        <div
+          v-if="$slots.header"
+          class="border-b px-4 py-3 flex items-center justify-between"
+        >
           <slot name="header" />
+          <a @click="$emit('close')" class="text-color">
+            <Icon name="close" />
+          </a>
         </div>
         <div class="modal-body">
           <slot />
@@ -31,12 +37,6 @@ watch(open, (val, prev) => {
         <div v-if="$slots.footer" class="border-t p-4 text-center">
           <slot name="footer" />
         </div>
-        <a
-          @click="$emit('close')"
-          class="absolute right-0 top-1 p-4 text-color"
-        >
-          <Icon name="close" />
-        </a>
       </div>
     </div>
   </transition>
