@@ -250,7 +250,18 @@
     "skins": "スキン",
     "networks": "ネットワーク",
     "plugins": "プラグイン",
-    "results": "結果"
+    "results": "結果",
+    "categories": {
+      "all": "All",
+      "protocol": "Protocol",
+      "social": "Social",
+      "investment": "Investment",
+      "grant": "Grant",
+      "service": "Service",
+      "media": "Media",
+      "creator": "Creator",
+      "collector": "Collector"
+    }
   },
   "voting": {
     "selectVoting": "投票システムを選択",
