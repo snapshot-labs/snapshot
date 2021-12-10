@@ -250,7 +250,18 @@
     "skins": "skin(s)",
     "networks": "netwerk(en)",
     "plugins": "plugin(s)",
-    "results": "resultaat(en)"
+    "results": "resultaat(en)",
+    "categories": {
+      "all": "All",
+      "protocol": "Protocol",
+      "social": "Social",
+      "investment": "Investment",
+      "grant": "Grant",
+      "service": "Service",
+      "media": "Media",
+      "creator": "Creator",
+      "collector": "Collector"
+    }
   },
   "voting": {
     "selectVoting": "Selecteer stemsysteem",
