@@ -250,7 +250,18 @@
     "skins": "피부 (들)",
     "networks": "네트워크 (들)",
     "plugins": "플러그인 (들)",
-    "results": "결과(에스)"
+    "results": "결과(에스)",
+    "categories": {
+      "all": "All",
+      "protocol": "Protocol",
+      "social": "Social",
+      "investment": "Investment",
+      "grant": "Grant",
+      "service": "Service",
+      "media": "Media",
+      "creator": "Creator",
+      "collector": "Collector"
+    }
   },
   "voting": {
     "selectVoting": "투표 시스템 선택",
