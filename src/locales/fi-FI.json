@@ -250,7 +250,18 @@
     "skins": "skins(s)",
     "networks": "verkoissa",
     "plugins": "liitännäinen(s)",
-    "results": "tuloksia"
+    "results": "tuloksia",
+    "categories": {
+      "all": "All",
+      "protocol": "Protocol",
+      "social": "Social",
+      "investment": "Investment",
+      "grant": "Grant",
+      "service": "Service",
+      "media": "Media",
+      "creator": "Creator",
+      "collector": "Collector"
+    }
   },
   "voting": {
     "selectVoting": "Valitse äänestysjärjestelmä",
