@@ -250,7 +250,18 @@
     "skins": "סקינים",
     "networks": "רשתות",
     "plugins": "פלאגינים",
-    "results": "תוצאות"
+    "results": "תוצאות",
+    "categories": {
+      "all": "All",
+      "protocol": "Protocol",
+      "social": "Social",
+      "investment": "Investment",
+      "grant": "Grant",
+      "service": "Service",
+      "media": "Media",
+      "creator": "Creator",
+      "collector": "Collector"
+    }
   },
   "voting": {
     "selectVoting": "בחר מערכת הצבעה",
