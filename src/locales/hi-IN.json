@@ -250,7 +250,18 @@
     "skins": "स्किन",
     "networks": "नेटवर्क",
     "plugins": "प्लगइन्स",
-    "results": "परिणाम"
+    "results": "परिणाम",
+    "categories": {
+      "all": "All",
+      "protocol": "Protocol",
+      "social": "Social",
+      "investment": "Investment",
+      "grant": "Grant",
+      "service": "Service",
+      "media": "Media",
+      "creator": "Creator",
+      "collector": "Collector"
+    }
   },
   "voting": {
     "selectVoting": "मतदान प्रणाली का चयन करें",
