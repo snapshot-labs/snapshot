@@ -250,7 +250,18 @@
     "skins": "skin(uri)",
     "networks": "rețea(le)",
     "plugins": "plugin(uri)",
-    "results": "rezultat(e)"
+    "results": "rezultat(e)",
+    "categories": {
+      "all": "All",
+      "protocol": "Protocol",
+      "social": "Social",
+      "investment": "Investment",
+      "grant": "Grant",
+      "service": "Service",
+      "media": "Media",
+      "creator": "Creator",
+      "collector": "Collector"
+    }
   },
   "voting": {
     "selectVoting": "Selectează sistemul de votare",
