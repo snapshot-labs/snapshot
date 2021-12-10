@@ -250,7 +250,18 @@
     "skins": "skin",
     "networks": "jaringan",
     "plugins": "plugin",
-    "results": "hasil"
+    "results": "hasil",
+    "categories": {
+      "all": "All",
+      "protocol": "Protocol",
+      "social": "Social",
+      "investment": "Investment",
+      "grant": "Grant",
+      "service": "Service",
+      "media": "Media",
+      "creator": "Creator",
+      "collector": "Collector"
+    }
   },
   "voting": {
     "selectVoting": "Pilih sistem ambil suara",
