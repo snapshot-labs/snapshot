@@ -250,7 +250,18 @@
     "skins": "皮肤",
     "networks": "网络",
     "plugins": "插件",
-    "results": "结果"
+    "results": "结果",
+    "categories": {
+      "all": "All",
+      "protocol": "Protocol",
+      "social": "Social",
+      "investment": "Investment",
+      "grant": "Grant",
+      "service": "Service",
+      "media": "Media",
+      "creator": "Creator",
+      "collector": "Collector"
+    }
   },
   "voting": {
     "selectVoting": "选择投票系统",
