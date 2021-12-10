@@ -86,6 +86,7 @@ watch(visibleVotes, () => {
       :key="i"
       :style="i === 0 && 'border: 0 !important;'"
       class="px-4 py-3 border-t flex"
+      :class="{ 'bg-primary': web3Account === vote.voter }"
     >
       <User
         :profile="profiles[vote.voter]"
