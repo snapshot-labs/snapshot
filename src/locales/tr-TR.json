@@ -250,7 +250,18 @@
     "skins": "birim(ler)",
     "networks": "ağ(lar)",
     "plugins": "eklenti(ler)",
-    "results": "sonuç(lar)"
+    "results": "sonuç(lar)",
+    "categories": {
+      "all": "All",
+      "protocol": "Protocol",
+      "social": "Social",
+      "investment": "Investment",
+      "grant": "Grant",
+      "service": "Service",
+      "media": "Media",
+      "creator": "Creator",
+      "collector": "Collector"
+    }
   },
   "voting": {
     "selectVoting": "Oylama sistemini seçiniz",
