@@ -16,6 +16,7 @@ import { useSharing } from '@/composables/useSharing';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useClient } from '@/composables/useClient';
 import { useApp } from '@/composables/useApp';
+import { setPageTitle } from '@/helpers/utils';
 
 const props = defineProps({
   spaceId: String,
@@ -204,6 +205,7 @@ watch(loaded, () => {
 
 onMounted(async () => {
   await loadProposal();
+  setPageTitle('page.title.space.proposal', { proposal: proposal.value.title, space: props.space.name });
   const choice = route.query.choice;
   if (proposal.value.type === 'approval') selectedChoices.value = [];
   if (web3Account.value && choice) {

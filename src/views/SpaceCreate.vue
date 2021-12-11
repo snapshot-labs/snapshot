@@ -17,6 +17,7 @@ import { useWeb3 } from '@/composables/useWeb3';
 import { useClient } from '@/composables/useClient';
 import { useApp } from '@/composables/useApp';
 import { useExtendedSpaces } from '@/composables/useExtendedSpaces';
+import { setPageTitle } from '@/helpers/utils';
 
 const props = defineProps({
   spaceId: String,
@@ -205,6 +206,8 @@ async function loadProposal() {
 }
 
 onMounted(async () => {
+  setPageTitle("page.title.space.create", {space: props.space.name});
+
   nameForm.value.focus();
   addChoice(2);
 

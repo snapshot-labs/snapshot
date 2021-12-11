@@ -10,6 +10,7 @@ import { lsSet } from '@/helpers/utils';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useApp } from '@/composables/useApp';
 import { useStore } from '@/composables/useStore';
+import { setPageTitle } from '@/helpers/utils';
 
 const props = defineProps({ space: Object, spaceId: String });
 
@@ -49,7 +50,10 @@ async function loadProposals(skip = 0) {
   store.space.proposals = store.space.proposals.concat(proposalsObj);
 }
 
-onMounted(load());
+onMounted(() => {
+  setPageTitle('page.title.space.proposals', { space: props.space.name });
+  load();
+});
 
 async function load() {
   if (

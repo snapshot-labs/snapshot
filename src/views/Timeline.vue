@@ -13,6 +13,7 @@ import { useWeb3 } from '@/composables/useWeb3';
 import verified from '@/../snapshot-spaces/spaces/verified.json';
 import zipObject from 'lodash/zipObject';
 import { useStore } from '@/composables/useStore';
+import { setPageTitle } from '@/helpers/utils';
 
 const { store } = useStore();
 
@@ -71,7 +72,10 @@ watch(store.timeline.proposals, () => {
 });
 
 // Initialize
-onMounted(load());
+onMounted(() => {
+  setPageTitle('page.title.timeline');
+  load();
+});
 
 async function load() {
   if (store.timeline.proposals.length > 0) return;

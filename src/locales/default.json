@@ -374,5 +374,23 @@
     "show": "Show",
     "reply": "Reply",
     "load_more": "Load more"
+  },
+  "page": {
+    "title": {
+      "home": "Home",
+      "setup": "Create a space",
+      "timeline": "Timeline",
+      "explore": "Explore",
+      "playground": "Playground",
+      "space": {
+        "create": "New proposal - {space}",
+        "about": "{space}",
+        "proposals": "Proposals - {space}",
+        "proposal": "{proposal} - {space}",
+        "settings": "Settings - {space}"
+      },
+      "strategy": "Strategy",
+      "delegate": "Delegate"
+    }
   }
 }
