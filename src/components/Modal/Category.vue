@@ -1,25 +1,17 @@
 <script setup>
 import { ref, computed, toRefs, watchEffect } from 'vue';
+import { useCategories } from '@/composables/useCategories';
 
 const props = defineProps({
   open: Boolean,
   categories: Array
 });
 
+const { categories } = useCategories();
+
 const emit = defineEmits(['add', 'close']);
 
 const { open } = toRefs(props);
-
-const categories = [
-  'protocol',
-  'social',
-  'investment',
-  'grant',
-  'service',
-  'media',
-  'creator',
-  'collector'
-];
 
 const checkedCategories = computed(() => props.categories);
 
@@ -74,6 +66,7 @@ function handleClose() {
           {
             'hover:border-skin-link cursor-pointer':
               hasCategory(category) || selectedCategories.length < 2,
+            'opacity-50': !hasCategory(category) && selectedCategories.length === 2,
             '!border-skin-link': hasCategory(category)
           },
           'relative capitalize'
