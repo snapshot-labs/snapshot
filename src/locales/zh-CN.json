@@ -19,7 +19,7 @@
   "strategiesPage": "策略",
   "space": "空间",
   "spaces": "空间",
-  "verifiedSpace": "Verified space",
+  "verifiedSpace": "已认证的空间",
   "version": "版本",
   "timeline": "时间线",
   "filters": "筛选器",
@@ -254,13 +254,13 @@
     "categories": {
       "all": "所有",
       "protocol": "协议",
-      "social": "Social",
-      "investment": "Investment",
-      "grant": "Grant",
+      "social": "社群媒体",
+      "investment": "投资",
+      "grant": "拨款项目",
       "service": "服务",
       "media": "文化传媒",
-      "creator": "Creator",
-      "collector": "Collector"
+      "creator": "创作者",
+      "collector": "收藏家"
     }
   },
   "voting": {
