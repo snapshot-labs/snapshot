@@ -7,14 +7,10 @@ const tlds = ['.eth', '.xyz', '.com', '.org', '.io', '.app', '.art'];
 
 const id = ref('');
 
-function endsWithAny(suffixes, string) {
-  return suffixes.some(function (suffix) {
-    return string.endsWith(suffix);
-  });
-}
-
 function isDisabledTLD(id) {
-  return !endsWithAny(tlds, id);
+  return !tlds.some(function (tlds) {
+    return id.endsWith(tlds);
+  });
 }
 
 function handleSubmit() {
