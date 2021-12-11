@@ -58,6 +58,7 @@ const isAdmin = computed(() => {
 const strategies = computed(
   () => proposal.value.strategies ?? props.space.strategies
 );
+const space = computed(() => proposal.value.space ?? props.space);
 const symbols = computed(() =>
   strategies.value.map(strategy => strategy.params.symbol)
 );
@@ -323,6 +324,16 @@ onMounted(async () => {
     <template #sidebar-right v-if="loaded">
       <Block :title="$t('information')">
         <div class="space-y-1">
+          <div>
+            <b>{{ $t('space') }}</b>
+            <router-link
+              :to="{ name: 'spaceProposals', params: { key: space.id } }"
+            >
+              <span class="float-right link-color">
+                {{ space.name }}
+              </span>
+            </router-link>
+          </div>
           <div>
             <b>{{ $t('strategies') }}</b>
             <span
