@@ -7,7 +7,7 @@ const tlds = ['.eth', '.xyz', '.com', '.org', '.io', '.app', '.art'];
 
 const id = ref('');
 
-function isDisabledTLD(id) {
+function isValidTLD(id) {
   return tlds.some(tlds => id.endsWith(tlds));
 }
 
