@@ -252,13 +252,13 @@
     "plugins": "插件",
     "results": "结果",
     "categories": {
-      "all": "All",
-      "protocol": "Protocol",
+      "all": "所有",
+      "protocol": "协议",
       "social": "Social",
       "investment": "Investment",
       "grant": "Grant",
-      "service": "Service",
-      "media": "Media",
+      "service": "服务",
+      "media": "文化传媒",
       "creator": "Creator",
       "collector": "Collector"
     }
