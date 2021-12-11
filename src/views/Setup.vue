@@ -50,7 +50,7 @@ function handleSubmit() {
           </a>
         </UiButton>
         <UiButton
-          :disabled="isDisabledTLD(id)"
+          :disabled="isValidTLD(id)"
           @click="handleSubmit"
           class="w-full"
           primary
