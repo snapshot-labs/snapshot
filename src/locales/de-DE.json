@@ -234,10 +234,21 @@
     "addNetwork": "Netzwerk hinzufügen",
     "createPlugin": "Plugin erstellen",
     "strategies": "Strategie(n)",
-    "skins": "skin(s)",
+    "skins": "Skin(s)",
     "networks": "Netzwerk(e)",
     "plugins": "Plugin(s)",
-    "results": "Ergebnis(se)"
+    "results": "Ergebnis(se)",
+    "categories": {
+      "all": "Alle",
+      "protocol": "Protokoll",
+      "social": "Social",
+      "investment": "Investment",
+      "grant": "Förderung",
+      "service": "Dienstleistung",
+      "media": "Media",
+      "creator": "Creator",
+      "collector": "Sammler"
+    }
   },
   "voting": {
     "selectVoting": "Wähle das Abstimmungssystem aus",

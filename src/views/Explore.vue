@@ -41,28 +41,24 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
 
 <template>
   <div class="mt-4">
-    <div class="mb-4 mx-auto">
-      <Container class="flex items-center">
-        <div class="flex-auto text-left flex">
-          <UiButton class="pl-3 pr-0 w-full lg:w-7/12 md:w-10/12">
-            <SearchWithFilters />
-          </UiButton>
-        </div>
-        <div class="ml-3 hidden sm:flex text-right items-center">
-          <div class="flex flex-col">
-            {{ _n(items.length) }} {{ resultsStr }}
-          </div>
-          <a
-            v-if="buttonStr"
-            href="https://discord.snapshot.org"
-            target="_blank"
-            class="hidden md:block ml-3"
-          >
-            <UiButton>{{ buttonStr }}</UiButton>
-          </a>
-        </div>
-      </Container>
-    </div>
+    <Container class="flex items-center mb-4">
+      <UiButton class="mr-auto pl-3 pr-0 w-full max-w-[420px]">
+        <SearchWithFilters />
+      </UiButton>
+      <div
+        class="ml-3 hidden sm:flex text-right items-center whitespace-nowrap"
+      >
+        <div class="flex flex-col">{{ _n(items.length) }} {{ resultsStr }}</div>
+        <a
+          v-if="buttonStr"
+          href="https://discord.snapshot.org"
+          target="_blank"
+          class="hidden md:block ml-3"
+        >
+          <UiButton>{{ buttonStr }}</UiButton>
+        </a>
+      </div>
+    </Container>
     <Container :slim="true">
       <div class="overflow-hidden">
         <template v-if="route.name === 'strategies'">
