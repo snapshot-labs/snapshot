@@ -3,8 +3,19 @@ import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
+const tlds = ['.eth', '.xyz', '.com', '.org', '.io', '.app', '.art'];
 
 const id = ref('');
+
+function endsWithAny(suffixes, string) {
+  return suffixes.some(function (suffix) {
+    return string.endsWith(suffix);
+  });
+}
+
+function isDisabledTLD(id) {
+  return !endsWithAny(tlds, id);
+}
 
 function handleSubmit() {
   router.push({
@@ -45,15 +56,7 @@ function handleSubmit() {
           </a>
         </UiButton>
         <UiButton
-          :disabled="
-            !id.includes('.eth') &&
-            !id.includes('.xyz') &&
-            !id.includes('.com') &&
-            !id.includes('.org') &&
-            !id.includes('.io') &&
-            !id.includes('.app') &&
-            !id.includes('.art')
-          "
+          :disabled="isDisabledTLD(id)"
           @click="handleSubmit"
           class="w-full"
           primary
