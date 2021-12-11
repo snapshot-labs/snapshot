@@ -1,105 +1,105 @@
 {
   "en-US": {
-    "name": "English"
+    "name": "🇺🇸 English"
   },
   "da-DK": {
-    "name": "Danish",
+    "name": "🇩🇰 Danish",
     "nativeName": "Dansk"
   },
   "cs-CZ": {
-    "name": "Czech",
+    "name": "🇨🇿 Czech",
     "nativeName": "Čeština"
   },
   "de-DE": {
-    "name": "German",
+    "name": "🇩🇪 German",
     "nativeName": "Deutsch"
   },
   "es-ES": {
-    "name": "Spanish",
+    "name": "🇪🇸 Spanish",
     "nativeName": "Español"
   },
   "fil-PH": {
-    "name": "Filipino",
+    "name": "🇵🇭 Filipino",
     "nativeName": "Filipino"
   },
   "fr-FR": {
-    "name": "French",
+    "name": "🇫🇷 French",
     "nativeName": "Français"
   },
   "id-ID": {
-    "name": "Indonesian",
+    "name": "🇮🇩 Indonesian",
     "nativeName": "Behasa Indonesia"
   },
   "it-IT": {
-    "name": "Italian",
+    "name": "🇮🇹 Italian",
     "nativeName": "Italiano"
   },
   "nl-NL": {
-    "name": "Nederlands",
+    "name": "🇳🇱 Nederlands",
     "nativeName": "Nederlands"
   },
   "pl-PL": {
-    "name": "Polish",
+    "name": "🇵🇱 Polish",
     "nativeName": "Polski"
   },
   "pt-PT": {
-    "name": "Portuguese",
+    "name": "🇵🇹 Portuguese",
     "nativeName": "Português"
   },
   "sv-SE": {
-    "name": "Swedish",
+    "name": "🇸🇪 Swedish",
     "nativeName": "Svenska"
   },
   "tr-TR": {
-    "name": "Turkish",
+    "name": "🇹🇷 Turkish",
     "nativeName": "Türkçe"
   },
   "vi-VN": {
-    "name": "Vietnamese",
+    "name": "🇻🇳 Vietnamese",
     "nativeName": "Tiếng Việt"
   },
   "zh-CN": {
-    "name": "Chinese",
+    "name": "🇨🇳 Chinese",
     "nativeName": "简体中文"
   },
   "sh-HR": {
-    "name": "Serbian",
+    "name": "🇷🇸 Serbian",
     "nativeName": "Српски"
   },
   "ar-SA": {
-    "name": "Arabic",
+    "name": "🇸🇦 Arabic",
     "nativeName": "العربية"
   },
   "ru-RU": {
-    "name": "Russian",
+    "name": "🇷🇺 Russian",
     "nativeName": "Русский"
   },
   "te-IN": {
-    "name": "Telugu",
+    "name": "🇮🇳 Telugu",
     "nativeName": "తెలుగు"
   },
   "th-TH": {
-    "name": "Thai",
+    "name": "🇹🇭 Thai",
     "nativeName": "ไทย"
   },
   "ja-JP": {
-    "name": "Japanese",
+    "name": "🇯🇵 Japanese",
     "nativeName": "日本語"
   },
   "mr-IN": {
-    "name": "Marathi",
+    "name": "🇮🇳 Marathi",
     "nativeName": "मराठी"
   },
   "ko-KR": {
-    "name": "Korean",
+    "name": "🇰🇷 Korean",
     "nativeName": "한국어"
   },
   "uk-UA": {
-    "name": "Ukrainian",
+    "name": "🇺🇦 Ukrainian",
     "nativeName": "Українська мова"
   },
   "he-IL": {
-    "name": "Hebrew",
+    "name": "🇮🇱 Hebrew",
     "nativeName": "עִבְרִית"
   }
 }
