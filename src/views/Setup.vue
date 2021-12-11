@@ -8,9 +8,7 @@ const tlds = ['.eth', '.xyz', '.com', '.org', '.io', '.app', '.art'];
 const id = ref('');
 
 function isDisabledTLD(id) {
-  return !tlds.some(function (tlds) {
-    return id.endsWith(tlds);
-  });
+  return tlds.some(tlds => id.endsWith(tlds));
 }
 
 function handleSubmit() {
