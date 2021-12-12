@@ -101,6 +101,7 @@ onMounted(() => setTitle());
               v-if="!$auth.isAuthenticated.value"
               @click="modalAccountOpen = true"
               :loading="loading || web3.authLoading"
+              aria-label="Login"
             >
               <span class="hidden sm:block" v-text="$t('connectWallet')" />
               <Icon
@@ -123,6 +124,7 @@ onMounted(() => setTitle());
               v-if="!domain"
               @click="toggleSkin"
               class="float-right ml-2"
+              aria-label="Toggle Skin"
             >
               <Icon size="20" class="link-color" :name="getSkinIcon()" />
             </UiSidebarButton>
