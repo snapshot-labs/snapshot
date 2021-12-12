@@ -15,13 +15,16 @@ defineProps(['open']);
     </template>
     <div class="m-4">
       <div class="text-center px-4 w-full">
-        <UiButton
+        <router-link
           v-for="space in followingSpaces"
           :key="space.id"
-          class="w-full mb-2"
+          :to="{ name: 'spaceProposals', params: { key: space } }"
+          @click="$emit('close')"
         >
-          <TokenWithName :space="explore.spaces[space]" size="28" />
-        </UiButton>
+          <UiButton class="w-full mb-2">
+            <TokenWithName :space="explore.spaces[space]" size="28" />
+          </UiButton>
+        </router-link>
       </div>
     </div>
   </UiModal>
