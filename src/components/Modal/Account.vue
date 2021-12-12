@@ -52,6 +52,7 @@ watch(open, () => (step.value = null));
               height="28"
               width="28"
               class="mr-2 -mt-1"
+              :alt="connector.name"
             />
             {{ connector.name }}
           </UiButton>
@@ -64,6 +65,7 @@ watch(open, () => (step.value = null));
               height="28"
               width="28"
               class="mr-2 -mt-1"
+              :alt="injected.name"
             />
             {{ injected.name }}
           </UiButton>
