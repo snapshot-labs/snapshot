@@ -12,7 +12,7 @@ const error = ref(false);
 </script>
 
 <template>
-  <span class="flex-shrink-0">
+  <span class="shrink-0">
     <img
       v-if="imgsrc && !error"
       :src="imgsrc"
