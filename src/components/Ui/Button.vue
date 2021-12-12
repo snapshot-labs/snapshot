@@ -6,9 +6,9 @@ defineProps({
   },
   loading: Boolean,
   type: String,
-  disable: {
+  disabled: {
     type: Boolean,
-    default: true
+    default: false
   }
 });
 </script>
@@ -20,7 +20,7 @@ defineProps({
       'button px-[24px] focus-within:border-skin-link',
       { 'button--primary': primary }
     ]"
-    :disabled="disable ? loading : false"
+    :disabled="disabled || loading"
   >
     <UiLoading v-if="loading" :fill-white="primary" />
     <slot v-else />

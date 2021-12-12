@@ -1053,10 +1053,10 @@
   version "0.1.3"
   resolved "https://codeload.github.com/snapshot-labs/lock/tar.gz/0584e8d29dcfd9dba6d1f0b87456cf45f63f7baf"
 
-"@snapshot-labs/snapshot.js@^0.3.18":
-  version "0.3.18"
-  resolved "https://registry.yarnpkg.com/@snapshot-labs/snapshot.js/-/snapshot.js-0.3.18.tgz#8d5812fc30e341d0379099c2c360f83111d5f2ce"
-  integrity sha512-8RyE+HITlqtCbgLXOrF/j7HFEH8+OvwVxF2y+ZLB3vd7Kj1uzmer3K9obvyVSEf/5qca0rqqnvEp0A12yH83jw==
+"@snapshot-labs/snapshot.js@^0.3.19":
+  version "0.3.19"
+  resolved "https://registry.yarnpkg.com/@snapshot-labs/snapshot.js/-/snapshot.js-0.3.19.tgz#fc0e3c6e9c87c27962fb0a59ee0d7a50830038b9"
+  integrity sha512-+9Q279Bufi5HZX8FBgOKkPJhU9jm7NyPHmIO0XJqW7EkRQtgncMBjhtwtkVhKUcyPr0cr3jpL90uIBGyijiOug==
   dependencies:
     "@ethersproject/abi" "^5.0.4"
     "@ethersproject/bytes" "^5.0.8"
