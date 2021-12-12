@@ -21,6 +21,7 @@ const { isGnosisSafe } = useClient();
 
 const loading = ref(false);
 const modalNotice = ref(false);
+const modalSpacesOpen = ref(false);
 
 const space = computed(() => {
   const key = domain || route.params.key;
@@ -62,6 +63,13 @@ onMounted(() => setTitle());
       <Container>
         <div class="flex items-center" style="height: 78px">
           <div class="flex-auto flex items-center">
+            <UiSidebarButton
+              v-if="!domain"
+              @click="modalSpacesOpen = true"
+              class="mr-3 block sm:hidden"
+            >
+              <Icon size="20" class="link-color" name="plus" />
+            </UiSidebarButton>
             <router-link
               :to="{ path: '/' }"
               class="flex items-center"
@@ -155,6 +163,7 @@ onMounted(() => setTitle());
           <UiText class="mt-1" :text="$t('delegateVotingPower')" />
         </a>
       </ModalNotice>
+      <ModalSpaces :open="modalSpacesOpen" @close="modalSpacesOpen = false" />
     </teleport>
   </Sticky>
 </template>
