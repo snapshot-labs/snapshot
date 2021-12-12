@@ -77,7 +77,7 @@
     "sass-loader": "^8.0.2",
     "tailwindcss": "^2.2.9",
     "unplugin-vue-components": "^0.15.6",
-    "vite": "^2.6.0-beta.2",
+    "vite": "^2.6.0-beta.3",
     "walletlink": "^2.1.8"
   },
   "resolutions": {
