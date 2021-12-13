@@ -48,17 +48,23 @@ watchEffect(() => {
           />
           <UiState :state="proposal.state" class="inline-block float-right" />
         </div>
-        <h3 v-text="proposal.title" class="mt-1 mb-1" />
+        <h3 v-text="proposal.title" class="my-1" />
         <p v-text="_shorten(body, 140)" class="break-words mb-2 text-md" />
         <div>
           <span
             v-if="proposal.scores_state !== 'final'"
             v-text="$tc(period, [_ms(proposal.start), _ms(proposal.end)])"
           />
-          <span v-if="proposal.scores_state === 'final'" class="mt-2">
+          <span
+            v-if="proposal.scores_state === 'final'"
+            class="mt-2 flex space-x-1 items-center"
+          >
             <Icon size="20" name="check1" class="text-green" />
-            {{ _shorten(proposal.choices[winningChoice], 64) }} -
-            {{ _n(proposal.scores[winningChoice]) }} {{ proposal.space.symbol }}
+            <span class="mt-1"
+              >{{ _shorten(proposal.choices[winningChoice], 64) }} -
+              {{ _n(proposal.scores[winningChoice]) }}
+              {{ proposal.space.symbol }}</span
+            >
           </span>
         </div>
       </div>

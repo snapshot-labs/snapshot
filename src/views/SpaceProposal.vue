@@ -16,6 +16,7 @@ import { useSharing } from '@/composables/useSharing';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useClient } from '@/composables/useClient';
 import { useApp } from '@/composables/useApp';
+import { useInfiniteLoader } from '@/composables/useInfiniteLoader';
 
 const props = defineProps({
   spaceId: String,
@@ -41,6 +42,7 @@ const loadedResults = ref(false);
 const loadedVotes = ref(false);
 const proposal = ref({});
 const votes = ref([]);
+const userVote = ref([]);
 const results = ref({});
 const totalScore = ref(0);
 const scores = ref([]);
@@ -98,6 +100,14 @@ async function loadProposal() {
   if (loaded.value) loadResults();
 }
 
+function formatProposalVotes(votes) {
+  return votes.map(vote => {
+    vote.balance = vote.vp;
+    vote.scores = vote.vp_by_strategy;
+    return vote;
+  });
+}
+
 async function loadResults() {
   if (proposal.value.scores_state === 'final') {
     results.value = {
@@ -106,11 +116,17 @@ async function loadResults() {
       sumOfResultsBalance: proposal.value.scores_total
     };
     loadedResults.value = true;
-    votes.value = (await getProposalVotes(id, 100)).map(vote => {
-      vote.balance = vote.vp;
-      vote.scores = vote.vp_by_strategy;
-      return vote;
-    });
+    const [userVotesRes, votesRes] = await Promise.all([
+      await getProposalVotes(id, {
+        first: 1,
+        voter: web3Account.value
+      }),
+      await getProposalVotes(id, {
+        first: 10
+      })
+    ]);
+    userVote.value = formatProposalVotes(userVotesRes);
+    votes.value = formatProposalVotes(votesRes);
     loadedVotes.value = true;
   } else {
     const votesTmp = await getProposalVotes(id);
@@ -120,6 +136,16 @@ async function loadResults() {
     votes.value = resultsObj.votes;
     loadedVotes.value = true;
   }
+}
+
+const { loadBy, loadingMore, loadMore } = useInfiniteLoader(10);
+
+async function loadMoreVotes() {
+  const votesObj = await getProposalVotes(id, {
+    first: loadBy,
+    skip: votes.value.length
+  });
+  votes.value = votes.value.concat(formatProposalVotes(votesObj));
 }
 
 async function loadPower() {
@@ -195,11 +221,11 @@ watch(web3Account, (val, prev) => {
   }
 });
 
-watch(loaded, () => {
-  if (loaded.value) {
-    loadResults();
-    loadPower();
-  }
+watch([loaded, web3Account], () => {
+  if (web3.value.authLoading && !web3Account.value) return;
+  if (!loaded.value) return;
+  loadResults();
+  loadPower();
 });
 
 onMounted(async () => {
@@ -275,12 +301,15 @@ onMounted(async () => {
         @clickVote="clickVote"
       />
       <BlockVotes
+        @loadVotes="loadMore(loadMoreVotes)"
         v-if="loaded"
         :loaded="loadedVotes"
         :space="space"
         :proposal="proposal"
         :votes="votes"
         :strategies="strategies"
+        :userVote="userVote"
+        :loadingMore="loadingMore"
       />
       <ProposalPluginsContent
         v-model:safeSnapInput="safeSnapInput"

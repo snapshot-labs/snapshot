@@ -4,7 +4,10 @@ import { apolloClient } from '@/helpers/apollo';
 import { PROPOSAL_QUERY, VOTES_QUERY } from '@/helpers/queries';
 import cloneDeep from 'lodash/cloneDeep';
 
-export async function getProposalVotes(proposalId: string, first = 20000) {
+export async function getProposalVotes(
+  proposalId: string,
+  { first, voter, skip }: any = { first: 20000, voter: '', skip: 0 }
+) {
   try {
     console.time('getProposalVotes');
     const response = await apolloClient.query({
@@ -13,7 +16,9 @@ export async function getProposalVotes(proposalId: string, first = 20000) {
         id: proposalId,
         orderBy: 'vp',
         orderDirection: 'desc',
-        first
+        first,
+        voter,
+        skip
       }
     });
     console.timeEnd('getProposalVotes');
