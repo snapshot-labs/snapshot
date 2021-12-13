@@ -13,6 +13,7 @@ import { useWeb3 } from '@/composables/useWeb3';
 import verified from '@/../snapshot-spaces/spaces/verified.json';
 import zipObject from 'lodash/zipObject';
 import { useStore } from '@/composables/useStore';
+import { setPageTitle } from '@/helpers/utils';
 
 const { store } = useStore();
 
@@ -87,6 +88,7 @@ function emitUpdateLastSeenProposal() {
 // Initialize
 onMounted(() => {
   load();
+  setPageTitle('page.title.timeline');
   emitUpdateLastSeenProposal();
 });
 

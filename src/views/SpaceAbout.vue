@@ -1,8 +1,9 @@
 <script setup>
-import { computed, watchEffect } from 'vue';
+import { computed, watchEffect, onMounted } from 'vue';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { useProfiles } from '@/composables/useProfiles';
 import { getUrl } from '@snapshot-labs/snapshot.js/src/utils';
+import { setPageTitle } from '@/helpers/utils';
 
 const props = defineProps({
   space: Object,
@@ -16,6 +17,10 @@ const { profiles, loadProfiles } = useProfiles();
 watchEffect(() => {
   if (props.space.admins)
     loadProfiles(props.space.admins.concat(props.space.members));
+});
+
+onMounted(() => {
+  setPageTitle('page.title.space.about', { space: props.space.name });
 });
 </script>
 
