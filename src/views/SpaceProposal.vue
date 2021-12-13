@@ -8,7 +8,7 @@ import {
   getPower,
   getProposalVotes
 } from '@/helpers/snapshot';
-import { setPageTitle } from '@/helpers/utils';
+import { relativeTimeFromTimestamp, setPageTitle } from '@/helpers/utils';
 import { useModal } from '@/composables/useModal';
 import { useTerms } from '@/composables/useTerms';
 import { useProfiles } from '@/composables/useProfiles';
@@ -381,7 +381,7 @@ onMounted(async () => {
             <span
               v-text="$d(proposal.start * 1e3, 'short', 'en-US')"
               v-tippy="{
-                content: _ms(proposal.start)
+                content: relativeTimeFromTimestamp(proposal.start)
               }"
               class="float-right link-color"
             />
@@ -391,7 +391,7 @@ onMounted(async () => {
             <span
               v-text="$d(proposal.end * 1e3, 'short', 'en-US')"
               v-tippy="{
-                content: _ms(proposal.end)
+                content: relativeTimeFromTimestamp(proposal.end)
               }"
               class="link-color float-right"
             />

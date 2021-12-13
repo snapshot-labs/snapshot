@@ -159,6 +159,7 @@ import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { sleep } from '@snapshot-labs/snapshot.js/src/utils';
 import { BigNumber } from '@ethersproject/bignumber';
 import { formatBatchTransaction } from '@/helpers/abi/utils';
+import { relativeTimeFromTimestamp } from '@/helpers/utils';
 import { formatUnits } from '@ethersproject/units';
 import { useSafesnap } from '@/composables/useSafesnap';
 import { useWeb3 } from '@/composables/useWeb3';
@@ -469,7 +470,9 @@ export default {
             return {
               decision: 'Yes',
               timeLeft: this.$i18n.t('safeSnap.executableIn', [
-                this._ms(endTime + this.questionDetails.cooldown)
+                relativeTimeFromTimestamp(
+                  endTime + this.questionDetails.cooldown
+                )
               ])
             };
           }
@@ -481,7 +484,9 @@ export default {
 
         return {
           decision: isApproved ? 'Yes' : 'No',
-          timeLeft: this.$i18n.t('safeSnap.finalizedIn', [this._ms(endTime)]),
+          timeLeft: this.$i18n.t('safeSnap.finalizedIn', [
+            relativeTimeFromTimestamp(endTime)
+          ]),
           currentBond:
             formatUnits(currentBond, this.bondData.tokenDecimals) +
             ' ' +

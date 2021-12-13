@@ -6,6 +6,7 @@ import { useWeb3 } from '@/composables/useWeb3';
 import { signMessage } from '@snapshot-labs/snapshot.js/src/utils/web3';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { useI18n } from 'vue-i18n';
+import { relativeTimeFromTimestamp } from '@/helpers/utils';
 const { t } = useI18n();
 const auth = getInstance();
 const { modalOpen, modalAccountOpen } = useModal();
@@ -174,7 +175,7 @@ const isCreator = computed(() => props.proposal.author === web3Account.value);
         <span
           v-text="$d(item.timestamp, 'short', 'en-US')"
           v-tippy="{
-            content: _ms(item.timestamp / 1e3)
+            content: relativeTimeFromTimestamp(item.timestamp / 1e3)
           }"
           class="ml-1"
         />

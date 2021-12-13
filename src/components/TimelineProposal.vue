@@ -2,6 +2,7 @@
 import { watchEffect, computed } from 'vue';
 import { useUsername } from '@/composables/useUsername';
 import removeMd from 'remove-markdown';
+import { relativeTimeFromTimestamp } from '@/helpers/utils';
 
 const props = defineProps({
   proposal: Object,
@@ -53,7 +54,12 @@ watchEffect(() => {
         <div>
           <span
             v-if="proposal.scores_state !== 'final'"
-            v-text="$tc(period, [_ms(proposal.start), _ms(proposal.end)])"
+            v-text="
+              $tc(period, [
+                relativeTimeFromTimestamp(proposal.start),
+                relativeTimeFromTimestamp(proposal.end)
+              ])
+            "
           />
           <span
             v-if="proposal.scores_state === 'final'"

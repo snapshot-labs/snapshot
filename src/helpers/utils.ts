@@ -137,7 +137,7 @@ export function n(number, format = '(0.[00]a)') {
   return numeral(number).format(format);
 }
 
-export function ms(number) {
+export function relativeTimeFromTimestamp(number) {
   return dayjs.unix(number).fromNow();
 }
 
