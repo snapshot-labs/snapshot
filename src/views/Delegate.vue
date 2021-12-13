@@ -22,6 +22,7 @@ import { useApp } from '@/composables/useApp';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useTxStatus } from '@/composables/useTxStatus';
 import { useExtendedSpaces } from '@/composables/useExtendedSpaces';
+import { setPageTitle } from '@/helpers/utils';
 
 const abi = ['function setDelegate(bytes32 id, address delegate)'];
 
@@ -49,7 +50,7 @@ const form = ref({
   id: route.params.key || ''
 });
 
-const { profiles, updateAddressArray } = useProfiles();
+const { profiles, loadProfiles } = useProfiles();
 
 const web3Account = computed(() => web3.value.account);
 const networkKey = computed(() => web3.value.network.key);
@@ -142,7 +143,8 @@ async function getDelegatesWithScore() {
       delegationStrategy,
       space.value.network,
       delegatesAddresses,
-      'latest'
+      'latest',
+      import.meta.env.VITE_SCORES_URL + '/api/scores'
     );
 
     uniqueDelegators.forEach(delegate => {
@@ -168,7 +170,7 @@ async function getDelegatesWithScore() {
 }
 
 watchEffect(() => {
-  updateAddressArray(
+  loadProfiles(
     delegates.value
       .map(delegate => delegate.delegate)
       .concat(delegators.value.map(delegator => delegator.delegator))
@@ -193,6 +195,7 @@ watchEffect(async () => {
 });
 
 onMounted(async () => {
+  setPageTitle('page.title.delegate');
   await load();
   loaded.value = true;
 });

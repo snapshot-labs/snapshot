@@ -12,7 +12,7 @@ import {
   Interface,
   ParamType
 } from '@ethersproject/abi';
-import { BigNumber, BigNumberish } from '@ethersproject/bignumber';
+import { BigNumberish } from '@ethersproject/bignumber';
 import { JsonFragment } from '@ethersproject/abi/src.ts/fragments';
 import { InterfaceDecoder } from '@/helpers/abi/decoder';
 import { parseAmount, parseValueInput } from '@/helpers/utils';
@@ -66,12 +66,12 @@ const EXPLORER_API_URLS = {
 const GNOSIS_SAFE_TRANSACTION_API_URLS = {
   '1': 'https://safe-transaction.gnosis.io/api/v1/',
   '4': 'https://safe-transaction.rinkeby.gnosis.io/api/v1/',
-  '100': 'https://safe-transaction.xdai.gnosis-safe.io/api/v1/',
-  '73799': 'https://safe-transaction.volta.gnosis-safe.io/api/v1/',
-  '246': 'https://safe-transaction.ewc.gnosis-safe.io/api/v1/',
-  '137': 'https://safe-transaction.polygon.gnosis-safe.io/api/v1/',
-  '56': 'https://safe-transaction.bsc.gnosis-safe.io/api/v1/',
-  '42161': 'https://safe-transaction.arbitrum.gnosis-safe.io/api/v1/'
+  '100': 'https://safe-transaction.xdai.gnosis.io/api/v1/',
+  '73799': 'https://safe-transaction.volta.gnosis.io/api/v1/',
+  '246': 'https://safe-transaction.ewc.gnosis.io/api/v1/',
+  '137': 'https://safe-transaction.polygon.gnosis.io/api/v1/',
+  '56': 'https://safe-transaction.bsc.gnosis.io/api/v1/',
+  '42161': 'https://safe-transaction.arbitrum.gnosis.io/api/v1/'
 };
 
 const ERC20ContractABI = [
@@ -303,10 +303,7 @@ export const multiSendTransaction = (
       .map(encodePackageMultiSendTransaction)
       .map(removeHexPrefix)
       .join('');
-  const value: string = transactions.reduce(
-    (total, tx) => BigNumber.from(tx.value).add(total).toString(),
-    '0'
-  );
+  const value = '0';
   const data = multiSendContract.encodeFunctionData('multiSend', [
     transactionsEncoded
   ]);

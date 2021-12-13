@@ -24,6 +24,7 @@ const error = ref(false);
       :class="[
         space?.skin ? `${space?.skin} bg-[color:var(--bg-color)]` : 'bg-white'
       ]"
+      :alt="space?.name"
       class="rounded-full inline-block !align-middle leading-none"
     />
     <UiBlockie
@@ -35,6 +36,7 @@ const error = ref(false);
         width: `${parseInt(size) || 22}px`,
         height: `${parseInt(size) || 22}px`
       }"
+      :alt="space?.name"
     />
   </span>
 </template>

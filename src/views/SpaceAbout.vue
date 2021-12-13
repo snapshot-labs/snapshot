@@ -1,8 +1,9 @@
 <script setup>
-import { computed, watchEffect } from 'vue';
+import { computed, watchEffect, onMounted } from 'vue';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { useProfiles } from '@/composables/useProfiles';
 import { getUrl } from '@snapshot-labs/snapshot.js/src/utils';
+import { setPageTitle } from '@/helpers/utils';
 
 const props = defineProps({
   space: Object,
@@ -11,11 +12,15 @@ const props = defineProps({
 
 const network = computed(() => networks[props.space.network]);
 
-const { profiles, updateAddressArray } = useProfiles();
+const { profiles, loadProfiles } = useProfiles();
 
 watchEffect(() => {
   if (props.space.admins)
-    updateAddressArray(props.space.admins.concat(props.space.members));
+    loadProfiles(props.space.admins.concat(props.space.members));
+});
+
+onMounted(() => {
+  setPageTitle('page.title.space.about', { space: props.space.name });
 });
 </script>
 
@@ -51,7 +56,7 @@ watchEffect(() => {
             (!space.validation || space.validation?.name === 'basic') &&
             space.filters?.minScore
           "
-          class="mb-3"
+          class="last:mb-0 mb-3"
         >
           <h4 class="link-color mb-2">
             {{ $t('settings.proposalThreshold') }}
@@ -59,7 +64,7 @@ watchEffect(() => {
           {{ _n(space.filters.minScore) }} {{ space.symbol }}
         </div>
 
-        <div v-if="space.terms" class="mb-3">
+        <div v-if="space.terms" class="last:mb-0 mb-3">
           <h4 class="link-color mb-2">{{ $t('settings.terms') }}</h4>
           <a :href="space.terms" target="_blank" rel="noopener noreferrer">
             <UiText :text="getUrl(space.terms)" :truncate="35" />
@@ -67,14 +72,14 @@ watchEffect(() => {
           </a>
         </div>
 
-        <div v-if="space.strategies" class="mb-3">
+        <div v-if="space.strategies" class="last:mb-0 mb-3">
           <h4 class="link-color mb-2">{{ $t('settings.strategies') }}</h4>
           <div v-for="(strategy, i) in space.strategies" :key="i">
             <div>{{ strategy.name }}</div>
           </div>
         </div>
 
-        <div v-if="Object.keys(space.plugins || {}).length" class="mb-3">
+        <div v-if="Object.keys(space.plugins || {}).length">
           <h4 class="link-color mb-2">{{ $t('plugins') }}</h4>
           <div v-for="(plugin, i) in space.plugins" :key="i">
             <div>{{ i }}</div>

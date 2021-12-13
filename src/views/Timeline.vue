@@ -10,31 +10,41 @@ import { PROPOSALS_QUERY } from '@/helpers/queries';
 import { useProfiles } from '@/composables/useProfiles';
 import { useFollowSpace } from '@/composables/useFollowSpace';
 import { useWeb3 } from '@/composables/useWeb3';
+import verified from '@/../snapshot-spaces/spaces/verified.json';
 import zipObject from 'lodash/zipObject';
-const filterBy = ref('all');
+import { useStore } from '@/composables/useStore';
+import { setPageTitle } from '@/helpers/utils';
+
+const { store } = useStore();
+
 const loading = ref(false);
-const proposals = ref([]);
 
 const route = useRoute();
 const { followingSpaces, loadingFollows } = useFollowSpace();
 const { web3 } = useWeb3();
 
-const following = computed(() => {
-  return route.name === 'timeline' ? followingSpaces.value : [];
+const spaces = computed(() => {
+  const verifiedSpaces = Object.entries(verified)
+    .filter(space => space[1] === 1)
+    .map(space => space[0]);
+  if (route.name === 'timeline') return followingSpaces.value;
+  if (route.name === 'explore') return verifiedSpaces;
+  else return [];
+});
+
+watch(spaces, () => {
+  if (route.name === 'timeline' || route.name === 'explore') {
+    store.timeline.proposals = [];
+    load();
+  }
 });
 
 const isTimeline = computed(() => route.name === 'timeline');
 
-watch(following, () => {
-  proposals.value = [];
-  load();
-});
-
-const { loadBy, limit, loadingMore, stopLoadingMore, loadMore } =
-  useInfiniteLoader();
+const { loadBy, loadingMore, stopLoadingMore, loadMore } = useInfiniteLoader();
 
 const { endElement } = useScrollMonitor(() =>
-  loadMore(() => loadProposals(limit.value), loading.value)
+  loadMore(() => loadProposals(store.timeline.proposals.length), loading.value)
 );
 
 const { apolloQuery } = useApolloQuery();
@@ -45,45 +55,24 @@ async function loadProposals(skip = 0) {
       variables: {
         first: loadBy,
         skip,
-        space_in: following.value,
-        state: filterBy.value
+        space_in: spaces.value,
+        state: store.timeline.filterBy
       }
     },
     'proposals'
   );
   stopLoadingMore.value = proposalsObj?.length < loadBy;
-  proposals.value = proposals.value.concat(proposalsObj);
+  store.timeline.proposals = store.timeline.proposals.concat(proposalsObj);
 }
 
-const { profiles, updateAddressArray } = useProfiles();
+const { profiles, loadProfiles } = useProfiles();
 
-watch(proposals, () => {
-  updateAddressArray(proposals.value.map(proposal => proposal.author));
+watch(store.timeline.proposals, () => {
+  loadProfiles(store.timeline.proposals.map(proposal => proposal.author));
 });
 
-// Initialize
-onMounted(load());
-
-async function load() {
-  loading.value = true;
-  await loadProposals();
-  loading.value = false;
-}
-
-// Change filter
-function selectState(e) {
-  filterBy.value = e;
-  proposals.value = [];
-  limit.value = loadBy;
-  load();
-}
-
-const { updateLastSeenProposal } = useUnseenProposals();
-
-const web3Account = computed(() => web3.value.account);
-
 // Save the lastSeenProposal times for all spaces
-watch([proposals, web3Account], () => {
+function emitUpdateLastSeenProposal() {
   if (web3Account.value) {
     lsSet(
       `lastSeenProposals.${web3Account.value.slice(0, 8).toLowerCase()}`,
@@ -94,13 +83,38 @@ watch([proposals, web3Account], () => {
     );
   }
   updateLastSeenProposal(web3Account.value);
+}
+
+// Initialize
+onMounted(() => {
+  load();
+  setPageTitle('page.title.timeline');
+  emitUpdateLastSeenProposal();
 });
+
+async function load() {
+  if (store.timeline.proposals.length > 0) return;
+  loading.value = true;
+  await loadProposals();
+  loading.value = false;
+}
+
+// Change filter
+function selectState(e) {
+  store.timeline.filterBy = e;
+  store.timeline.proposals = [];
+  load();
+}
+
+const { updateLastSeenProposal } = useUnseenProposals();
+
+const web3Account = computed(() => web3.value.account);
 </script>
 
 <template>
-  <Layout>
-    <template #sidebar-left>
-      <div style="position: fixed; width: 240px">
+  <Layout class="!mt-0">
+    <template #sidebar-right>
+      <div style="position: fixed; width: 320px" class="mt-4 hidden lg:block">
         <Block :slim="true" :title="$t('filters')" class="overflow-hidden">
           <div class="py-3">
             <router-link
@@ -117,18 +131,10 @@ watch([proposals, web3Account], () => {
         </Block>
       </div>
     </template>
-    <template #content-right>
-      <div class="px-4 md:px-0 mb-3 flex">
-        <div class="flex-auto">
-          <router-link :to="{ path: '/' }" class="text-color">
-            <Icon name="back" size="22" class="!align-middle" />
-            {{ $t('backToHome') }}
-          </router-link>
-          <div class="flex items-center flex-auto">
-            <h2>{{ $t('timeline') }}</h2>
-          </div>
-        </div>
+    <template #content-left>
+      <div class="py-4 px-4 md:px-0">
         <UiDropdown
+          class="float-right"
           top="3.5rem"
           right="1.25rem"
           @select="selectState"
@@ -140,52 +146,53 @@ watch([proposals, web3Account], () => {
           ]"
         >
           <UiButton class="pr-3">
-            {{ $t(`proposals.states.${filterBy}`) }}
+            {{ $t(`proposals.states.${store.timeline.filterBy}`) }}
             <Icon size="14" name="arrow-down" class="mt-1 mr-1" />
           </UiButton>
         </UiDropdown>
+        <h2 v-text="$t('timeline')" class="mt-1" />
       </div>
-
-      <Block
-        v-if="
-          loading ||
-          (web3.authLoading && isTimeline) ||
-          (loadingFollows && isTimeline)
-        "
-        :slim="true"
-      >
-        <RowLoading class="my-2" />
-      </Block>
-
-      <Block
-        v-else-if="
-          (isTimeline && following.length < 1) || (isTimeline && !web3.account)
-        "
-        class="text-center"
-      >
-        <div class="mb-3">{{ $t('noSpacesJoined') }}</div>
-        <router-link :to="{ path: '/' }">
-          <UiButton>{{ $t('joinSpaces') }}</UiButton>
-        </router-link>
-      </Block>
-
-      <NoResults v-else-if="proposals.length < 1" :block="true" />
-
-      <div v-else>
-        <TimelineProposal
-          v-for="(proposal, i) in proposals"
-          :key="i"
-          :proposal="proposal"
-          :profiles="profiles"
+      <div class="md:border-r md:border-l md:rounded-lg border-t border-b">
+        <RowLoading
+          v-if="
+            loading ||
+            (web3.authLoading && isTimeline) ||
+            (loadingFollows && isTimeline)
+          "
+          class="px-4 py-5"
         />
+        <div
+          v-else-if="
+            (isTimeline && spaces.length < 1) || (isTimeline && !web3.account)
+          "
+          class="text-center p-4"
+        >
+          <div class="mb-3">{{ $t('noSpacesJoined') }}</div>
+          <router-link :to="{ path: '/' }">
+            <UiButton>{{ $t('joinSpaces') }}</UiButton>
+          </router-link>
+        </div>
+        <NoResults
+          class="mt-4 mb-[24px]"
+          v-else-if="store.timeline.proposals.length < 1"
+          :block="false"
+        />
+        <div v-else>
+          <TimelineProposalPreview
+            v-for="(proposal, i) in store.timeline.proposals"
+            :key="i"
+            :proposal="proposal"
+            :profiles="profiles"
+          />
+        </div>
+        <div
+          style="height: 10px; width: 10px; position: absolute"
+          ref="endElement"
+        />
+        <div v-if="loadingMore && !loading" :slim="true">
+          <RowLoading class="border-t px-4 py-5" />
+        </div>
       </div>
-      <div
-        style="height: 10px; width: 10px; position: absolute"
-        ref="endElement"
-      />
-      <Block v-if="loadingMore && !loading" :slim="true">
-        <RowLoading class="my-2" />
-      </Block>
     </template>
   </Layout>
 </template>

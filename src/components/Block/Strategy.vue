@@ -5,7 +5,7 @@ export default {
 </script>
 
 <template>
-  <Block>
+  <Block class="hover-border">
     <div class="flex items-baseline">
       <h3>
         {{ strategy.key }}

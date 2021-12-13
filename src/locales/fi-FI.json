@@ -306,7 +306,7 @@
     "no_poap_header": "POAP-palvelua ei ole vielä perustettu tälle ehdotukselle: '(",
     "no_voted_header": "Äänestää saadaksesi tämän POAP: n",
     "unclaimed_header": "Lunasta sinun äänestin POAP",
-    "claimed_header": "Congratulations! The POAP has been minted to your account",
+    "claimed_header": "Congratulations! The POAP has been minted to your collection",
     "loading_header": "POAP on lisätty kokoelmaasi",
     "button_claim": "Lunasta",
     "button_show": "Browse collection",

@@ -306,7 +306,7 @@
     "no_poap_header": "POAP belum dipersiapkan untuk proposal ini :'(",
     "no_voted_header": "Pilih untuk menerima POAP",
     "unclaimed_header": "Klaim POAP voting anda",
-    "claimed_header": "Congratulations! The POAP has been minted to your account",
+    "claimed_header": "Congratulations! The POAP has been minted to your collection",
     "loading_header": "POAP ini dimasukan kedalam koleksi anda",
     "button_claim": "Klaim",
     "button_show": "Browse collection",

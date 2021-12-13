@@ -1,5 +1,5 @@
 <template>
-  <Container :slim="true">
+  <Container :slim="true" class="mt-4">
     <slot />
     <div v-if="$slots['sidebar-left']" class="w-1/4 float-left hidden lg:block">
       <slot name="sidebar-left" />

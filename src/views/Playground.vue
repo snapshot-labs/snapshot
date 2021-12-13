@@ -8,6 +8,7 @@ import { getScores } from '@snapshot-labs/snapshot.js/src/utils';
 import { useApp } from '@/composables/useApp';
 import { useI18n } from 'vue-i18n';
 import { useCopy } from '@/composables/useCopy';
+import { setPageTitle } from '@/helpers/utils';
 
 const defaultParams = {
   symbol: 'BAL',
@@ -79,7 +80,8 @@ async function loadScores() {
       [strategyParams],
       form.value.network.toString(),
       form.value.addresses,
-      parseInt(form.value.snapshot)
+      parseInt(form.value.snapshot),
+      import.meta.env.VITE_SCORES_URL + '/api/scores'
     );
     console.log(scores.value);
     loading.value = false;
@@ -125,6 +127,8 @@ function copyURL() {
 }
 
 onMounted(async () => {
+  setPageTitle('page.title.playground');
+
   loading.value = true;
   scores.value = null;
   networkError.value = false;
@@ -228,7 +232,7 @@ onMounted(async () => {
           v-for="score in Object.keys(scores[0])"
           :key="score"
         >
-          <User :address="score" />
+          <User :address="score" :space="form" />
           <span>
             {{ _n(scores[0][score]) }}
             {{ JSON.parse(form.params).symbol }}
