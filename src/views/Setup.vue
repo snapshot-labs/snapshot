@@ -4,8 +4,13 @@ import { useRouter } from 'vue-router';
 import { setPageTitle } from '@/helpers/utils';
 
 const router = useRouter();
+const tlds = ['.eth', '.xyz', '.com', '.org', '.io', '.app', '.art'];
 
 const id = ref('');
+
+function isValidTLD(id) {
+  return tlds.some(tlds => id.endsWith(tlds));
+}
 
 function handleSubmit() {
   router.push({
@@ -50,7 +55,7 @@ onMounted(() => {
           </a>
         </UiButton>
         <UiButton
-          :disabled="!id.includes('.eth') && !id.includes('.xyz')"
+          :disabled="!isValidTLD(id)"
           @click="handleSubmit"
           class="w-full"
           primary

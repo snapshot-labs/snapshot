@@ -35,26 +35,25 @@ watch(open, () => (step.value = null));
       <h3 v-else>{{ $t('account') }}</h3>
     </template>
     <div v-if="!web3.account || step === 'connect'">
-      <div class="m-4 mb-5">
+      <div class="m-4 space-y-2">
         <a
           v-for="(connector, id, i) in connectors"
           :key="i"
           @click="$emit('login', connector.id)"
           target="_blank"
-          class="mb-2 block"
+          class="block"
         >
           <UiButton
             v-if="id !== 'injected'"
-            class="button-outline w-full flex justify-center items-center"
+            class="button-outline w-full flex justify-center items-center gap-2"
           >
             <img
               :src="`${path}/${connector.id}.png`"
-              height="28"
-              width="28"
-              class="mr-2 -mt-1"
+              height="25"
+              width="25"
               :alt="connector.name"
             />
-            {{ connector.name }}
+            <span class="mt-1">{{ connector.name }}</span>
           </UiButton>
           <UiButton
             v-else-if="injected"
