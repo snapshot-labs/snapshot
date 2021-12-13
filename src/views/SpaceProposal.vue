@@ -322,49 +322,56 @@ onMounted(async () => {
     </template>
     <template #sidebar-right v-if="loaded">
       <Block :title="$t('information')">
-        <div class="mb-1">
-          <b>{{ $t('strategies') }}</b>
-          <span
-            @click="modalStrategiesOpen = true"
-            class="float-right link-color a"
-          >
-            <span v-for="(symbol, symbolIndex) of symbols" :key="symbol">
-              <span
-                v-tippy="{
-                  content: symbol
-                }"
-              >
-                <Token :space="space" :symbolIndex="symbolIndex" />
+        <div class="space-y-1">
+          <div>
+            <b>{{ $t('strategies') }}</b>
+            <span
+              @click="modalStrategiesOpen = true"
+              class="float-right link-color a"
+            >
+              <span v-for="(symbol, symbolIndex) of symbols" :key="symbol">
+                <span
+                  v-tippy="{
+                    content: symbol
+                  }"
+                >
+                  <Token :space="space" :symbolIndex="symbolIndex" />
+                </span>
+                <span
+                  v-show="symbolIndex !== symbols.length - 1"
+                  class="ml-1"
+                />
               </span>
-              <span v-show="symbolIndex !== symbols.length - 1" class="ml-1" />
             </span>
-          </span>
-        </div>
-        <div class="mb-1">
-          <b>{{ $t('author') }}</b>
-          <User
-            :address="proposal.author"
-            :profile="profiles[proposal.author]"
-            :space="space"
-            :proposal="proposal"
-            class="float-right"
-          />
-        </div>
-        <div class="mb-1">
-          <b>IPFS</b>
-          <a :href="_getUrl(proposal.ipfs)" target="_blank" class="float-right">
-            #{{ proposal.ipfs.slice(0, 7) }}
-            <Icon name="external-link" class="ml-1" />
-          </a>
-        </div>
-        <div class="mb-1">
-          <b>{{ $t('proposal.votingSystem') }}</b>
-          <span class="float-right link-color">
-            {{ $t(`voting.${proposal.type}`) }}
-          </span>
-        </div>
-        <div>
-          <div class="mb-1">
+          </div>
+          <div>
+            <b>{{ $t('author') }}</b>
+            <User
+              :address="proposal.author"
+              :profile="profiles[proposal.author]"
+              :space="space"
+              :proposal="proposal"
+              class="float-right"
+            />
+          </div>
+          <div>
+            <b>IPFS</b>
+            <a
+              :href="_getUrl(proposal.ipfs)"
+              target="_blank"
+              class="float-right"
+            >
+              #{{ proposal.ipfs.slice(0, 7) }}
+              <Icon name="external-link" class="ml-1" />
+            </a>
+          </div>
+          <div>
+            <b>{{ $t('proposal.votingSystem') }}</b>
+            <span class="float-right link-color">
+              {{ $t(`voting.${proposal.type}`) }}
+            </span>
+          </div>
+          <div>
             <b>{{ $t('proposal.startDate') }}</b>
             <span
               v-text="$d(proposal.start * 1e3, 'short', 'en-US')"
@@ -374,7 +381,7 @@ onMounted(async () => {
               class="float-right link-color"
             />
           </div>
-          <div class="mb-1">
+          <div>
             <b>{{ $t('proposal.endDate') }}</b>
             <span
               v-text="$d(proposal.end * 1e3, 'short', 'en-US')"
@@ -384,7 +391,7 @@ onMounted(async () => {
               class="link-color float-right"
             />
           </div>
-          <div class="mb-1">
+          <div>
             <b>{{ $t('snapshot') }}</b>
             <a
               :href="_explorer(proposal.network, proposal.snapshot, 'block')"
