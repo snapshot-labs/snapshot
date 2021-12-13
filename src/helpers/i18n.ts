@@ -4,8 +4,6 @@ import en from '@/locales/en-US.json';
 import languages from '@/locales/languages.json';
 import { lsRemove } from '@/helpers/utils';
 
-export let defaultLocale = 'en-US';
-
 export function getBrowserLocale() {
   if (typeof navigator !== 'undefined') {
     return (
@@ -18,9 +16,14 @@ export function getBrowserLocale() {
 }
 
 const browserLocale = getBrowserLocale();
-Object.keys(languages).forEach(locale => {
-  if (locale.slice(0, 2) === browserLocale.slice(0, 2)) defaultLocale = locale;
-});
+
+// Look for exact match first (like de-AU), then only first 2 chars (de), then fallback to default.
+export let defaultLocale =
+  Object.keys(languages).find(l => l === browserLocale) ??
+  Object.keys(languages).find(
+    l => l.slice(0, 2) === browserLocale.slice(0, 2)
+  ) ??
+  'en-US';
 
 const datetimeFormats = {
   'en-US': {
