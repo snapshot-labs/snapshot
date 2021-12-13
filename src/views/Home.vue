@@ -1,10 +1,11 @@
 <script setup>
-import { ref, watchEffect } from 'vue';
+import { ref, watchEffect, onMounted } from 'vue';
 import { useUnseenProposals } from '@/composables/useUnseenProposals';
 import { useScrollMonitor } from '@/composables/useScrollMonitor';
 import { useApp } from '@/composables/useApp';
 import { useFollowSpace } from '@/composables/useFollowSpace';
 import { useCategories } from '@/composables/useCategories';
+import { setPageTitle } from '@/helpers/utils';
 
 const { selectedCategory, orderedSpaces, orderedSpacesByCategory } = useApp();
 const { followingSpaces } = useFollowSpace();
@@ -22,6 +23,10 @@ const loadBy = 16;
 const limit = ref(loadBy);
 
 const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
+
+onMounted(() => {
+  setPageTitle('page.title.home');
+});
 </script>
 
 <template>

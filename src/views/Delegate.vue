@@ -22,6 +22,7 @@ import { useApp } from '@/composables/useApp';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useTxStatus } from '@/composables/useTxStatus';
 import { useExtendedSpaces } from '@/composables/useExtendedSpaces';
+import { setPageTitle } from '@/helpers/utils';
 
 const abi = ['function setDelegate(bytes32 id, address delegate)'];
 
@@ -194,6 +195,7 @@ watchEffect(async () => {
 });
 
 onMounted(async () => {
+  setPageTitle('page.title.delegate');
   await load();
   loaded.value = true;
 });
