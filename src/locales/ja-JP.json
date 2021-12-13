@@ -19,7 +19,7 @@
   "strategiesPage": "ストラテジー",
   "space": "スペース",
   "spaces": "スペース",
-  "verifiedSpace": "Verified space",
+  "verifiedSpace": "認証済みのスペース",
   "version": "バージョン",
   "timeline": "タイムライン",
   "filters": "フィルター",
@@ -60,7 +60,7 @@
   "verifyOnSignatorio": "Signator.io の検証",
   "isCore": "コア",
   "notificationsBlocked": "ブロック通知を無効にする",
-  "notificationsNotSupported": "Your browser does not support notifications",
+  "notificationsNotSupported": "お使いのブラウザーは通知をサポートしていません",
   "seeInExplorer": "エクスプローラで閲覧する",
   "learnMore": "もっと詳しく知る",
   "logout": "ログアウト",
@@ -96,8 +96,8 @@
   "startToEnd": "{0} 開始 {1} 終了",
   "startIn": "{0} 開始",
   "endIn": "{1} 終了",
-  "proposalStartIn": "start in {0}",
-  "proposalToNow": "{0} left",
+  "proposalStartIn": "{0} で開始",
+  "proposalToNow": "残り{0}",
   "endedAgo": "{1} 前に終了",
   "proposalBy": "by {0}",
   "endDate": "{0} 終了",
@@ -132,7 +132,7 @@
   },
   "create": {
     "question": "質問する...",
-    "categorie(s)": "Select up to 2 categorie(s)",
+    "categorie(s)": "最大2つのカテゴリを選択してください",
     "content": "クルーについて教えてください (任意)",
     "preview": "プレビュー",
     "choices": "選択肢",
@@ -199,8 +199,8 @@
     "customDomain": "独自ドメイン",
     "domain": "ドメイン名",
     "strategies": "ストラテジー",
-    "categories": "Categorie(s)",
-    "selectCategories": "Select categories",
+    "categories": "カテゴリ",
+    "selectCategories": "カテゴリーを選択",
     "hideSpace": "サイトからスペースを隠す",
     "addStrategy": "ストラテジーを追加する",
     "authors": "作成者",
@@ -223,7 +223,7 @@
     "quorum": "Quorum",
     "type": "タイプ",
     "anyType": "すべて",
-    "hideAbstain": "Ignore abstain votes in basic voting results"
+    "hideAbstain": "基本的な投票結果に棄権投票を無視する"
   },
   "setup": {
     "example": "例 yam.eth",
@@ -255,12 +255,12 @@
       "all": "All",
       "protocol": "Protocol",
       "social": "Social",
-      "investment": "Investment",
-      "grant": "Grant",
-      "service": "Service",
+      "investment": "投資",
+      "grant": "グラント",
+      "service": "サービス",
       "media": "Media",
-      "creator": "Creator",
-      "collector": "Collector"
+      "creator": "作成者",
+      "collector": "コレクター"
     }
   },
   "voting": {
@@ -336,8 +336,8 @@
   "poap": {
     "no_poap_header": "POAP はまだこの提案のためにセットアップされていません :(",
     "no_voted_header": "投票してこのポイントを獲得しましょう",
-    "unclaimed_header": "Mint your I voted POAP",
-    "claimed_header": "Congratulations! The POAP has been minted to your collection",
+    "unclaimed_header": "投票の証にPOAPを発行する",
+    "claimed_header": "おめでとうございます！POAPがあなたのコレクションに追加されました。",
     "loading_header": "The POAP is being minted to your collection",
     "button_claim": "Mint",
     "button_show": "コレクションを閲覧する",
