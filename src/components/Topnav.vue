@@ -124,7 +124,7 @@ onMounted(() => setTitle());
               v-if="!domain"
               @click="toggleSkin"
               class="float-right ml-2"
-              aria-label="Toggle Skin"
+              :aria-label="$t('toggleSkin')"
             >
               <Icon size="20" class="link-color" :name="getSkinIcon()" />
             </UiSidebarButton>
