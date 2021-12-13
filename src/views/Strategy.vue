@@ -12,7 +12,7 @@ const { minifiedStrategiesArray } = useSearchFilters();
 const strategy = computed(() => strategies.value[route.params.name]);
 
 onMounted(() => {
-  setPageTitle('page.title.strategy');
+  setPageTitle('page.title.strategy', { key: strategy.value.key });
 });
 </script>
 

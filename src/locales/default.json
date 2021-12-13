@@ -384,13 +384,13 @@
       "explore": "Explore",
       "playground": "Playground",
       "space": {
-        "create": "New proposal - {space}",
-        "about": "{space}",
-        "proposals": "Proposals - {space}",
-        "proposal": "{proposal} - {space}",
-        "settings": "Settings - {space}"
+        "create": "Create {space} proposal",
+        "about": "About {space}",
+        "proposals": "{space} Proposals",
+        "proposal": "{space} proposal: {proposal}",
+        "settings": "{space} Settings"
       },
-      "strategy": "Strategy",
+      "strategy": "{key} strategy",
       "delegate": "Delegate"
     }
   }
