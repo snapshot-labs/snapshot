@@ -109,6 +109,7 @@ export default {
             <img
               class="inline-block !align-middle leading-none circle border"
               :src="baseTokenUrl"
+              :alt="baseToken.name"
               width="22"
               height="22"
             />

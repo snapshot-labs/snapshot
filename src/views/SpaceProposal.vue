@@ -16,6 +16,7 @@ import { useSharing } from '@/composables/useSharing';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useClient } from '@/composables/useClient';
 import { useApp } from '@/composables/useApp';
+import { useInfiniteLoader } from '@/composables/useInfiniteLoader';
 
 const props = defineProps({
   spaceId: String,
@@ -41,6 +42,7 @@ const loadedResults = ref(false);
 const loadedVotes = ref(false);
 const proposal = ref({});
 const votes = ref([]);
+const userVote = ref([]);
 const results = ref({});
 const totalScore = ref(0);
 const scores = ref([]);
@@ -71,6 +73,8 @@ const safeSnapInput = computed({
   set: value => (proposal.value.plugins.safeSnap = value)
 });
 
+const browserHasHistory = computed(() => window.history.state.back);
+
 const { modalAccountOpen } = useModal();
 const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(props.spaceId);
 
@@ -96,6 +100,14 @@ async function loadProposal() {
   if (loaded.value) loadResults();
 }
 
+function formatProposalVotes(votes) {
+  return votes.map(vote => {
+    vote.balance = vote.vp;
+    vote.scores = vote.vp_by_strategy;
+    return vote;
+  });
+}
+
 async function loadResults() {
   if (proposal.value.scores_state === 'final') {
     results.value = {
@@ -104,11 +116,17 @@ async function loadResults() {
       sumOfResultsBalance: proposal.value.scores_total
     };
     loadedResults.value = true;
-    votes.value = (await getProposalVotes(id, 100)).map(vote => {
-      vote.balance = vote.vp;
-      vote.scores = vote.vp_by_strategy;
-      return vote;
-    });
+    const [userVotesRes, votesRes] = await Promise.all([
+      await getProposalVotes(id, {
+        first: 1,
+        voter: web3Account.value
+      }),
+      await getProposalVotes(id, {
+        first: 10
+      })
+    ]);
+    userVote.value = formatProposalVotes(userVotesRes);
+    votes.value = formatProposalVotes(votesRes);
     loadedVotes.value = true;
   } else {
     const votesTmp = await getProposalVotes(id);
@@ -118,6 +136,16 @@ async function loadResults() {
     votes.value = resultsObj.votes;
     loadedVotes.value = true;
   }
+}
+
+const { loadBy, loadingMore, loadMore } = useInfiniteLoader(10);
+
+async function loadMoreVotes() {
+  const votesObj = await getProposalVotes(id, {
+    first: loadBy,
+    skip: votes.value.length
+  });
+  votes.value = votes.value.concat(formatProposalVotes(votesObj));
 }
 
 async function loadPower() {
@@ -193,11 +221,11 @@ watch(web3Account, (val, prev) => {
   }
 });
 
-watch(loaded, () => {
-  if (loaded.value) {
-    loadResults();
-    loadPower();
-  }
+watch([loaded, web3Account], () => {
+  if (web3.value.authLoading && !web3Account.value) return;
+  if (!loaded.value) return;
+  loadResults();
+  loadPower();
 });
 
 onMounted(async () => {
@@ -215,13 +243,19 @@ onMounted(async () => {
   <Layout v-bind="$attrs">
     <template #content-left>
       <div class="px-4 md:px-0 mb-3">
-        <router-link
-          :to="domain ? { path: '/' } : { name: 'spaceProposals' }"
+        <a
           class="text-color"
+          @click="
+            browserHasHistory
+              ? $router.go(-1)
+              : $router.push(
+                  domain ? { path: '/' } : { name: 'spaceProposals' }
+                )
+          "
         >
           <Icon name="back" size="22" class="!align-middle" />
-          {{ space.name }}
-        </router-link>
+          {{ browserHasHistory ? $t('back') : space.name }}
+        </a>
       </div>
       <div class="px-4 md:px-0">
         <template v-if="loaded">
@@ -267,12 +301,15 @@ onMounted(async () => {
         @clickVote="clickVote"
       />
       <BlockVotes
+        @loadVotes="loadMore(loadMoreVotes)"
         v-if="loaded"
         :loaded="loadedVotes"
         :space="space"
         :proposal="proposal"
         :votes="votes"
         :strategies="strategies"
+        :userVote="userVote"
+        :loadingMore="loadingMore"
       />
       <ProposalPluginsContent
         v-model:safeSnapInput="safeSnapInput"
@@ -285,49 +322,56 @@ onMounted(async () => {
     </template>
     <template #sidebar-right v-if="loaded">
       <Block :title="$t('information')">
-        <div class="mb-1">
-          <b>{{ $t('strategies') }}</b>
-          <span
-            @click="modalStrategiesOpen = true"
-            class="float-right link-color a"
-          >
-            <span v-for="(symbol, symbolIndex) of symbols" :key="symbol">
-              <span
-                v-tippy="{
-                  content: symbol
-                }"
-              >
-                <Token :space="space" :symbolIndex="symbolIndex" />
+        <div class="space-y-1">
+          <div>
+            <b>{{ $t('strategies') }}</b>
+            <span
+              @click="modalStrategiesOpen = true"
+              class="float-right link-color a"
+            >
+              <span v-for="(symbol, symbolIndex) of symbols" :key="symbol">
+                <span
+                  v-tippy="{
+                    content: symbol
+                  }"
+                >
+                  <Token :space="space" :symbolIndex="symbolIndex" />
+                </span>
+                <span
+                  v-show="symbolIndex !== symbols.length - 1"
+                  class="ml-1"
+                />
               </span>
-              <span v-show="symbolIndex !== symbols.length - 1" class="ml-1" />
             </span>
-          </span>
-        </div>
-        <div class="mb-1">
-          <b>{{ $t('author') }}</b>
-          <User
-            :address="proposal.author"
-            :profile="profiles[proposal.author]"
-            :space="space"
-            :proposal="proposal"
-            class="float-right"
-          />
-        </div>
-        <div class="mb-1">
-          <b>IPFS</b>
-          <a :href="_getUrl(proposal.ipfs)" target="_blank" class="float-right">
-            #{{ proposal.ipfs.slice(0, 7) }}
-            <Icon name="external-link" class="ml-1" />
-          </a>
-        </div>
-        <div class="mb-1">
-          <b>{{ $t('proposal.votingSystem') }}</b>
-          <span class="float-right link-color">
-            {{ $t(`voting.${proposal.type}`) }}
-          </span>
-        </div>
-        <div>
-          <div class="mb-1">
+          </div>
+          <div>
+            <b>{{ $t('author') }}</b>
+            <User
+              :address="proposal.author"
+              :profile="profiles[proposal.author]"
+              :space="space"
+              :proposal="proposal"
+              class="float-right"
+            />
+          </div>
+          <div>
+            <b>IPFS</b>
+            <a
+              :href="_getUrl(proposal.ipfs)"
+              target="_blank"
+              class="float-right"
+            >
+              #{{ proposal.ipfs.slice(0, 7) }}
+              <Icon name="external-link" class="ml-1" />
+            </a>
+          </div>
+          <div>
+            <b>{{ $t('proposal.votingSystem') }}</b>
+            <span class="float-right link-color">
+              {{ $t(`voting.${proposal.type}`) }}
+            </span>
+          </div>
+          <div>
             <b>{{ $t('proposal.startDate') }}</b>
             <span
               v-text="$d(proposal.start * 1e3, 'short', 'en-US')"
@@ -337,7 +381,7 @@ onMounted(async () => {
               class="float-right link-color"
             />
           </div>
-          <div class="mb-1">
+          <div>
             <b>{{ $t('proposal.endDate') }}</b>
             <span
               v-text="$d(proposal.end * 1e3, 'short', 'en-US')"
@@ -347,7 +391,7 @@ onMounted(async () => {
               class="link-color float-right"
             />
           </div>
-          <div class="mb-1">
+          <div>
             <b>{{ $t('snapshot') }}</b>
             <a
               :href="_explorer(proposal.network, proposal.snapshot, 'block')"
