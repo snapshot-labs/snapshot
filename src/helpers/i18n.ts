@@ -63,7 +63,7 @@ export async function loadLocaleMessages(i18n, locale) {
     );
 
     // set locale and locale message
-    i18n.global.setLocaleMessage(locale, messages.default);
+    i18n.global.setLocaleMessage(locale, messages);
   } catch (e) {
     console.log(e);
   }
