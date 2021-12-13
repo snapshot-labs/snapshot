@@ -18,7 +18,7 @@ export function getBrowserLocale() {
 const browserLocale = getBrowserLocale();
 
 // Look for exact match first (like de-AU), then only first 2 chars (de), then fallback to default.
-export let defaultLocale =
+export const defaultLocale =
   Object.keys(languages).find(l => l === browserLocale) ??
   Object.keys(languages).find(
     l => l.slice(0, 2) === browserLocale.slice(0, 2)
