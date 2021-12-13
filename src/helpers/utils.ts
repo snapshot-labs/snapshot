@@ -146,5 +146,5 @@ export function calcToSeconds(value, unit) {
 
 export function setPageTitle(message, params = {}) {
   const { t } = i18n.global;
-  document.title = t(message, params) + ' - Snapshot';
+  document.title = t(message, params);
 }
