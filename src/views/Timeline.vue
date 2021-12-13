@@ -71,10 +71,25 @@ watch(store.timeline.proposals, () => {
   loadProfiles(store.timeline.proposals.map(proposal => proposal.author));
 });
 
+// Save the lastSeenProposal times for all spaces
+function emitUpdateLastSeenProposal() {
+  if (web3Account.value) {
+    lsSet(
+      `lastSeenProposals.${web3Account.value.slice(0, 8).toLowerCase()}`,
+      zipObject(
+        followingSpaces.value,
+        Array(followingSpaces.value.length).fill(new Date().getTime())
+      )
+    );
+  }
+  updateLastSeenProposal(web3Account.value);
+}
+
 // Initialize
 onMounted(() => {
-  setPageTitle('page.title.timeline');
   load();
+  setPageTitle('page.title.timeline');
+  emitUpdateLastSeenProposal();
 });
 
 async function load() {
@@ -94,20 +109,6 @@ function selectState(e) {
 const { updateLastSeenProposal } = useUnseenProposals();
 
 const web3Account = computed(() => web3.value.account);
-
-// Save the lastSeenProposal times for all spaces
-watch([store.timeline.proposals, web3Account], () => {
-  if (web3Account.value) {
-    lsSet(
-      `lastSeenProposals.${web3Account.value.slice(0, 8).toLowerCase()}`,
-      zipObject(
-        followingSpaces.value,
-        Array(followingSpaces.value.length).fill(new Date().getTime())
-      )
-    );
-  }
-  updateLastSeenProposal(web3Account.value);
-});
 </script>
 
 <template>

@@ -50,6 +50,18 @@ async function loadProposals(skip = 0) {
   store.space.proposals = store.space.proposals.concat(proposalsObj);
 }
 
+function emitUpdateLastSeenProposal() {
+  if (web3Account.value) {
+    lsSet(
+      `lastSeenProposals.${web3Account.value.slice(0, 8).toLowerCase()}`,
+      Object.assign(lastSeenProposals.value, {
+        [props.spaceId]: new Date().getTime()
+      })
+    );
+  }
+  updateLastSeenProposal(web3Account.value);
+}
+
 onMounted(() => {
   setPageTitle('page.title.space.proposals', { space: props.space.name });
   load();
@@ -65,6 +77,7 @@ async function load() {
   loading.value = true;
   await loadProposals();
   loading.value = false;
+  emitUpdateLastSeenProposal();
 }
 
 function selectState(e) {
@@ -77,18 +90,6 @@ const { profiles, loadProfiles } = useProfiles();
 
 watch(store.space.proposals, () => {
   loadProfiles(store.space.proposals.map(proposal => proposal.author));
-});
-
-watch([store.space.proposals, web3Account], () => {
-  if (web3Account.value) {
-    lsSet(
-      `lastSeenProposals.${web3Account.value.slice(0, 8).toLowerCase()}`,
-      Object.assign(lastSeenProposals.value, {
-        [props.spaceId]: new Date().getTime()
-      })
-    );
-  }
-  updateLastSeenProposal(web3Account.value);
 });
 
 const { explore } = useApp();

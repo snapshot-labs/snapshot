@@ -424,9 +424,9 @@ onMounted(() => {
               >
                 <template v-slot:label> {{ $t(`settings.terms`) }} </template>
               </UiInput>
-              <div class="flex items-center px-2">
-                <Checkbox v-model="form.private" class="mr-2 mt-1" />
-                {{ $t('settings.hideSpace') }}
+              <div class="flex items-center space-x-2 px-2">
+                <Checkbox v-model="form.private" />
+                <span>{{ $t('settings.hideSpace') }}</span>
               </div>
             </div>
           </Block>
@@ -552,12 +552,9 @@ onMounted(() => {
                     $t('settings.proposalThreshold')
                   }}</template>
                 </UiInput>
-                <div class="mb-2 flex items-center px-2">
-                  <Checkbox
-                    v-model="form.filters.onlyMembers"
-                    class="mr-2 mt-1"
-                  />
-                  {{ $t('settings.allowOnlyAuthors') }}
+                <div class="flex items-center space-x-2 px-2">
+                  <Checkbox v-model="form.filters.onlyMembers" />
+                  <span>{{ $t('settings.allowOnlyAuthors') }}</span>
                 </div>
               </div>
             </div>
@@ -616,9 +613,9 @@ onMounted(() => {
                 </div>
               </template>
             </UiInput>
-            <div class="flex items-center px-2 mb-2">
-              <Checkbox v-model="form.voting.hideAbstain" class="mr-2 mt-1" />
-              {{ $t('settings.hideAbstain') }}
+            <div class="flex items-center space-x-2 px-2">
+              <Checkbox v-model="form.voting.hideAbstain" />
+              <span>{{ $t('settings.hideAbstain') }}</span>
             </div>
           </Block>
           <Block :title="$t('plugins')">
