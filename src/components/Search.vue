@@ -1,5 +1,6 @@
 <script setup>
 import { useRouter } from 'vue-router';
+import debounce from 'lodash/debounce';
 
 const props = defineProps({
   modelValue: String,
@@ -21,6 +22,8 @@ function handleInput(e) {
   emit('update:modelValue', input);
 }
 
+const handleInputDebounce = debounce(handleInput, 100);
+
 function clearInput() {
   if (!props.modal) {
     const { query } = router.currentRoute.value;
@@ -35,11 +38,11 @@ function clearInput() {
     class="flex items-center"
     :class="{ 'bg-skin-bg border-b py-3 px-4': modal }"
   >
-    <Icon name="search" size="22" class="mb-1 mr-2 text-color" />
+    <Icon name="search" size="22" class="mb-1 mr-2" />
     <input
       :value="modelValue"
       :placeholder="placeholder"
-      @input="handleInput"
+      @input="handleInputDebounce"
       type="text"
       autocorrect="off"
       autocapitalize="none"

@@ -326,7 +326,11 @@ watchEffect(() => {
                   </span>
                 </template>
                 <template v-slot:info>
-                  <span v-if="!disableChoiceEdit" @click="removeChoice(index)">
+                  <span
+                    v-if="!disableChoiceEdit"
+                    class="cursor-pointer"
+                    @click="removeChoice(index)"
+                  >
                     <Icon name="close" size="12" />
                   </span>
                 </template>

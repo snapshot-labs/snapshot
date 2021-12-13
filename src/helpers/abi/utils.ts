@@ -12,7 +12,7 @@ import {
   Interface,
   ParamType
 } from '@ethersproject/abi';
-import { BigNumber, BigNumberish } from '@ethersproject/bignumber';
+import { BigNumberish } from '@ethersproject/bignumber';
 import { JsonFragment } from '@ethersproject/abi/src.ts/fragments';
 import { InterfaceDecoder } from '@/helpers/abi/decoder';
 import { parseAmount, parseValueInput } from '@/helpers/utils';
@@ -303,7 +303,7 @@ export const multiSendTransaction = (
       .map(encodePackageMultiSendTransaction)
       .map(removeHexPrefix)
       .join('');
-  const value: string = '0';
+  const value = '0';
   const data = multiSendContract.encodeFunctionData('multiSend', [
     transactionsEncoded
   ]);

@@ -25,7 +25,7 @@ const canFollow = computed(() => {
 <template>
   <UiButton
     v-bind="$attrs"
-    @click.stop="
+    @click.stop.prevent="
       loadingFollow !== ''
         ? null
         : canFollow
