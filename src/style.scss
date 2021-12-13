@@ -4,6 +4,14 @@
 @tailwind components;
 @tailwind utilities;
 
+[data-color-scheme='dark'] {
+  color-scheme: dark;
+}
+
+[data-color-scheme='light'] {
+  color-scheme: light;
+}
+
 :root,
 .light-mode {
   --primary-color: #384aff;
@@ -62,7 +70,7 @@
   a,
   button,
   input {
-    @apply transition-colors
+    @apply transition-colors;
   }
 }
 
