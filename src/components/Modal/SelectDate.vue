@@ -18,12 +18,6 @@ const form = ref({
   m: '00'
 });
 
-function formatDate(date) {
-  const output = getDateOutput(date);
-
-  return output;
-}
-
 function handleSubmit() {
   if (step.value === 0) return (step.value = 1);
 
@@ -34,7 +28,7 @@ function handleSubmit() {
 }
 
 watch(open, () => {
-  const { dateString, h, m } = formatDate(props.value);
+  const { dateString, h, m } = getDateOutput(props.value);
   step.value = 0;
   form.value = { h, m };
   input.value = dateString;
