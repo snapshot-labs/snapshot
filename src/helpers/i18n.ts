@@ -1,6 +1,6 @@
 import { createI18n } from 'vue-i18n';
 import { nextTick } from 'vue';
-import en from '@/locales/default.json';
+import en from '@/locales/en-US.json';
 import languages from '@/locales/languages.json';
 import { lsRemove } from '@/helpers/utils';
 
@@ -53,9 +53,8 @@ export function setupI18n(options = { legacy: false, locale: defaultLocale }) {
 export async function loadLocaleMessages(i18n, locale) {
   if (!Object.keys(languages).includes(locale)) {
     lsRemove('locale');
-    locale = 'default';
+    locale = defaultLocale;
   }
-  if (locale === 'en-US') locale = 'default';
 
   try {
     // load locale messages with dynamic import

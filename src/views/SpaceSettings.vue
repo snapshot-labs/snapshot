@@ -10,7 +10,7 @@ import {
 import schemas from '@snapshot-labs/snapshot.js/src/schemas';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { useSearchFilters } from '@/composables/useSearchFilters';
-import { errors } from '@/locales/default';
+import { errors } from '@/locales/en-US';
 import { useCopy } from '@/composables/useCopy';
 import { useWeb3 } from '@/composables/useWeb3';
 import { calcFromSeconds, calcToSeconds } from '@/helpers/utils';
