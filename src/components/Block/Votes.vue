@@ -13,8 +13,7 @@ const props = defineProps({
   loaded: Boolean,
   strategies: Object,
   userVote: Array,
-  loadingMore: Boolean,
-  stopLoadingMore: Boolean
+  loadingMore: Boolean
 });
 
 defineEmits(['loadVotes']);
@@ -137,7 +136,7 @@ watch(visibleVotes, () => {
     <a
       v-if="
         isFinalProposal
-          ? !stopLoadingMore
+          ? sortedVotes.length < voteCount
           : sortedVotes.length > 10 && nbrVisibleVotes < sortedVotes.length
       "
       @click="isFinalProposal ? $emit('loadVotes') : (nbrVisibleVotes += 10)"

@@ -138,15 +138,13 @@ async function loadResults() {
   }
 }
 
-const { loadBy, loadingMore, stopLoadingMore, loadMore } =
-  useInfiniteLoader(10);
+const { loadBy, loadingMore, loadMore } = useInfiniteLoader(10);
 
 async function loadMoreVotes() {
   const votesObj = await getProposalVotes(id, {
     first: loadBy,
     skip: votes.value.length
   });
-  stopLoadingMore.value = votesObj?.length < loadBy;
   votes.value = votes.value.concat(formatProposalVotes(votesObj));
 }
 
@@ -312,7 +310,6 @@ onMounted(async () => {
         :strategies="strategies"
         :userVote="userVote"
         :loadingMore="loadingMore"
-        :stopLoadingMore="stopLoadingMore"
       />
       <ProposalPluginsContent
         v-model:safeSnapInput="safeSnapInput"
