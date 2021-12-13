@@ -9,7 +9,8 @@ const props = defineProps({ body: String });
 const remarkable = new Remarkable({
   html: false,
   breaks: true,
-  typographer: false
+  typographer: false,
+  linkTarget: '_blank'
 }).use(linkify);
 
 const markdown = computed(() => {
@@ -397,6 +398,7 @@ const markdown = computed(() => {
   margin: 0;
   background-color: rgba(27, 31, 35, 0.05);
   border-radius: 3px;
+  font-size: 16px;
 }
 
 .markdown-body code br,

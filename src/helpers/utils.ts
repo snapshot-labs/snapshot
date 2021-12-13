@@ -1,10 +1,18 @@
 import pkg from '@/../package.json';
-import voting from '@/helpers/voting';
 import { formatEther } from '@ethersproject/units';
 import { BigNumber } from '@ethersproject/bignumber';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
+import voting from '@snapshot-labs/snapshot.js/src/voting';
 import numeral from 'numeral';
 import { format } from 'timeago.js';
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
+
+dayjs.extend(relativeTime);
+
+export function toNow(period: number) {
+  return dayjs(period * 1e3).toNow(true);
+}
 
 export function shortenAddress(str = '') {
   return `${str.slice(0, 6)}...${str.slice(str.length - 4)}`;

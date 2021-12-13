@@ -3,28 +3,43 @@ import { ref, computed, watch, toRefs } from 'vue';
 import { getChoiceString } from '@/helpers/utils';
 import { useProfiles } from '@/composables/useProfiles';
 import { useWeb3 } from '@/composables/useWeb3';
+import { clone } from '@snapshot-labs/snapshot.js/src/utils';
+import uniqBy from 'lodash/uniqBy';
 
 const props = defineProps({
   space: Object,
   proposal: Object,
-  votes: Object,
+  votes: Array,
   loaded: Boolean,
-  strategies: Object
+  strategies: Object,
+  userVote: Array,
+  loadingMore: Boolean
 });
+
+defineEmits(['loadVotes']);
 
 const format = getChoiceString;
 
 const { votes } = toRefs(props);
 const { web3 } = useWeb3();
 
-const showAllVotes = ref(false);
 const authorIpfsHash = ref('');
 const modalReceiptOpen = ref(false);
 
 const web3Account = computed(() => web3.value.account);
+const isFinalProposal = computed(() => props.proposal.scores_state === 'final');
+
+const voteCount = computed(() =>
+  isFinalProposal.value ? props.proposal.votes : votes.value.length
+);
+const nbrVisibleVotes = ref(10);
+
+const sortedVotes = ref([]);
 
 const visibleVotes = computed(() =>
-  showAllVotes.value ? sortVotesUserFirst() : sortVotesUserFirst().slice(0, 10)
+  isFinalProposal.value
+    ? sortedVotes.value
+    : sortedVotes.value.slice(0, nbrVisibleVotes.value)
 );
 const titles = computed(() =>
   props.strategies.map(strategy => strategy.params.symbol)
@@ -32,7 +47,7 @@ const titles = computed(() =>
 
 function isZero() {
   if (!props.loaded) return true;
-  if (props.votes.length > 0) return true;
+  if (votes.value.length > 0) return true;
 }
 
 function openReceiptModal(vote) {
@@ -41,24 +56,25 @@ function openReceiptModal(vote) {
   modalReceiptOpen.value = true;
 }
 
-function sortVotesUserFirst() {
-  const votes = props.votes;
-  if (votes.map(vote => vote.voter).includes(web3Account.value)) {
-    votes.unshift(
-      votes.splice(
-        votes.findIndex(item => item.voter === web3Account.value),
+const { profiles, loadProfiles } = useProfiles();
+
+watch([votes, web3Account], () => {
+  const votesWithUser = uniqBy(clone(votes.value).concat(props.userVote), 'id');
+  if (votesWithUser.map(vote => vote.voter).includes(web3Account.value)) {
+    votesWithUser.unshift(
+      votesWithUser.splice(
+        votesWithUser.findIndex(item => item.voter === web3Account.value),
         1
       )[0]
     );
-    return votes;
+  } else {
+    votesWithUser.sort((a, b) => b.balance - a.balance);
   }
-  return votes;
-}
+  sortedVotes.value = votesWithUser;
+});
 
-const { profiles, updateAddressArray } = useProfiles();
-
-watch(votes, () => {
-  updateAddressArray(votes.value.map(vote => vote.voter));
+watch(visibleVotes, () => {
+  loadProfiles(visibleVotes.value.map(vote => vote.voter));
 });
 </script>
 
@@ -66,7 +82,7 @@ watch(votes, () => {
   <Block
     v-if="isZero()"
     :title="$t('votes')"
-    :counter="votes.length"
+    :counter="voteCount"
     :slim="true"
     :loading="!loaded"
   >
@@ -80,6 +96,7 @@ watch(votes, () => {
         :profile="profiles[vote.voter]"
         :address="vote.voter"
         :space="space"
+        :proposal="proposal"
         class="column"
       />
       <div class="flex-auto text-center link-color">
@@ -100,7 +117,7 @@ watch(votes, () => {
         <span
           v-tippy="{
             content: vote.scores
-              .map((score, index) => `${_n(score)} ${titles[index]}`)
+              ?.map((score, index) => `${_n(score)} ${titles[index]}`)
               .join(' + ')
           }"
         >
@@ -117,8 +134,12 @@ watch(votes, () => {
       </div>
     </div>
     <a
-      v-if="!showAllVotes && votes.length > 10"
-      @click="showAllVotes = true"
+      v-if="
+        isFinalProposal
+          ? sortedVotes.length < voteCount
+          : sortedVotes.length > 10 && nbrVisibleVotes < sortedVotes.length
+      "
+      @click="isFinalProposal ? $emit('loadVotes') : (nbrVisibleVotes += 10)"
       class="
         px-4
         py-3
@@ -130,7 +151,8 @@ watch(votes, () => {
         md:rounded-b-md
       "
     >
-      {{ $t('seeMore') }}
+      <UiLoading v-if="loadingMore" :fill-white="primary" />
+      <span v-else v-text="$t('seeMore')" />
     </a>
     <teleport to="#modal">
       <ModalReceipt

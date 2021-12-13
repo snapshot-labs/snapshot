@@ -21,5 +21,5 @@ export function useI18n() {
     setI18nLanguage(i18n, currentLocale.value);
   }
 
-  return { setLocale, loadLocale };
+  return { setLocale, loadLocale, currentLocale: currentLocale.value };
 }

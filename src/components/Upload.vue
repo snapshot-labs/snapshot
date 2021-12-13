@@ -10,6 +10,11 @@ async function handleFileChange(e) {
   emit('loading', loading.value);
   const file = e.target.files[0];
   const formData = new FormData();
+  if (!['image/jpeg', 'image/jpg', 'image/png'].includes(file.type)) {
+    console.log('File type not supported');
+    loading.value = false;
+    return;
+  }
   formData.append('file', file);
   try {
     const url = `${import.meta.env.VITE_HUB_URL}/api/upload`;
@@ -48,7 +53,11 @@ label {
 <template>
   <UiLoading v-if="loading" />
   <label v-else class="file-select">
-    <input type="file" @change="handleFileChange" accept="image/*" />
+    <input
+      type="file"
+      @change="handleFileChange"
+      accept="image/jpg, image/jpeg, image/png"
+    />
     <slot />
   </label>
 </template>
