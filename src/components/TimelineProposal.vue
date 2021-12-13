@@ -39,15 +39,18 @@ watchEffect(() => {
     >
       <div>
         <div class="mb-2">
-          <Token :space="proposal.space" size="28" />
           <router-link
-            class="text-color"
+            class="text-color group"
             :to="{
               name: 'spaceProposals',
               params: { key: proposal.space.id }
             }"
           >
-            <span class="ml-2" v-text="proposal.space.name" />
+            <Token :space="proposal.space" size="28" />
+            <span
+              class="ml-2 group-hover:text-skin-link"
+              v-text="proposal.space.name"
+            />
           </router-link>
           {{ $tc('proposalBy', [username]) }}
           <Badges
