@@ -338,10 +338,10 @@
     "no_voted_header": "投票してこのポイントを獲得しましょう",
     "unclaimed_header": "投票の証にPOAPを発行する",
     "claimed_header": "おめでとうございます！POAPがあなたのコレクションに追加されました。",
-    "loading_header": "The POAP is being minted to your collection",
-    "button_claim": "Mint",
+    "loading_header": "POAPをあなたのコレクションに追加しています",
+    "button_claim": "発行する",
     "button_show": "コレクションを閲覧する",
-    "success_claim": "The POAP has been minted to your collection",
+    "success_claim": "POAP があなたのコレクションに追加されました！",
     "error_claim": "トークンを削除する際に問題が発生しました。"
   },
   "charts": {
