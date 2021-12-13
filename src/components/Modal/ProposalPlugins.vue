@@ -66,6 +66,7 @@ watch(selected, value => {
         <img
           class="rounded-full border mx-auto mb-1"
           :src="getLogoUrl(key)"
+          :alt="plugin.name"
           width="64"
           height="64"
         />
