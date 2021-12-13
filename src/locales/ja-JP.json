@@ -39,6 +39,7 @@
   "view3box": "3Boxでプロフィールを表示する",
   "edit3box": "3Boxでプロフィールを編集する",
   "connectWallet": "ウォレットを接続",
+  "toggleSkin": "Toggle skin",
   "about": "Snapshotについて",
   "license": "ライセンス",
   "ipfsServer": "IPFSサーバ",
