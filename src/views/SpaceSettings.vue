@@ -10,7 +10,7 @@ import {
 import schemas from '@snapshot-labs/snapshot.js/src/schemas';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { useSearchFilters } from '@/composables/useSearchFilters';
-import defaults from '@/locales/default';
+import { errors } from '@/locales/default';
 import { useCopy } from '@/composables/useCopy';
 import { useWeb3 } from '@/composables/useWeb3';
 import { calcFromSeconds, calcToSeconds } from '@/helpers/utils';
@@ -138,12 +138,13 @@ async function handleSubmit() {
 
 function inputError(field) {
   if (!isValid.value && !clientLoading.value && showErrors.value) {
-    const errors = Object.keys(defaults.errors);
+    const errorKeywords = Object.keys(errors);
     const errorFound = validate.value.find(
       error =>
-        (errors.includes(error.keyword) &&
+        (errorKeywords.includes(error.keyword) &&
           error.params.missingProperty === field) ||
-        (errors.includes(error.keyword) && error.instancePath.includes(field))
+        (errorKeywords.includes(error.keyword) &&
+          error.instancePath.includes(field))
     );
 
     if (errorFound?.instancePath.includes('strategies'))
