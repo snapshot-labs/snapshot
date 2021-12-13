@@ -101,7 +101,7 @@ onMounted(() => setTitle());
               v-if="!$auth.isAuthenticated.value"
               @click="modalAccountOpen = true"
               :loading="loading || web3.authLoading"
-              aria-label="Login"
+              :aria-label="$t('connectWallet')"
             >
               <span class="hidden sm:block" v-text="$t('connectWallet')" />
               <Icon
