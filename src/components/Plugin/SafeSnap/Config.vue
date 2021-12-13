@@ -1,5 +1,5 @@
 <script>
-import { clone } from '@/helpers/utils';
+import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 
 const isValidInput = input => {
   return input.safes.every(

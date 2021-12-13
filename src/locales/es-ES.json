@@ -61,8 +61,6 @@
   "seeInExplorer": "Ver en el explorador",
   "learnMore": "Aprenda más",
   "logout": "Cerrar sesión",
-  "walletNotice": "Monedero no soportado",
-  "gnosisSafeWalletNotice": "Está intentando utilizar Gnosis Safe wallet, que no admite la firma de mensajes en Snapshot.",
   "continue": "Continuar",
   "add": "Añadir",
   "edit": "Editar",
@@ -307,12 +305,12 @@
   "poap": {
     "no_poap_header": "Aun no se ha creado un POAP para esta oferta :'(",
     "no_voted_header": "Vote para obtener este POAP",
-    "unclaimed_header": "Claim your I voted POAP",
-    "claimed_header": "Congratulations! The POAP has been minted to your account",
-    "loading_header": "The POAP is being added to your collection",
+    "unclaimed_header": "Mint your I voted POAP",
+    "claimed_header": "Congratulations! The POAP has been minted to your collection",
+    "loading_header": "The POAP is being minted to your collection",
     "button_claim": "Reclamar",
     "button_show": "Browse collection",
-    "success_claim": "Your POAP is on your address",
+    "success_claim": "The POAP has been minted to your collection",
     "error_claim": "Hubo un problema en la acuñación de esta token"
   },
   "comment_box": {

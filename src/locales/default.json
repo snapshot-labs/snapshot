@@ -19,13 +19,13 @@
   "strategiesPage": "Strategies",
   "space": "Space",
   "spaces": "Spaces",
+  "verifiedSpace": "Verified space",
   "version": "Version",
   "timeline": "Timeline",
   "filters": "Filters",
   "allSpaces": "All spaces",
   "submitOnchain": "Submit on-chain",
   "inSpaces": "In {0} space(s)",
-  "downloadReport": "Download report",
   "votes": "Votes",
   "seeMore": "See more",
   "network": "Network",
@@ -39,6 +39,7 @@
   "view3box": "View profile on 3Box",
   "edit3box": "Edit profile on 3Box",
   "connectWallet": "Connect wallet",
+  "toggleSkin": "Toggle skin",
   "about": "About",
   "license": "License",
   "ipfsServer": "IPFS server",
@@ -60,11 +61,12 @@
   "verifyOnSignatorio": "Verify on Signator.io",
   "isCore": "Core",
   "notificationsBlocked": "Your browser is blocking notifications",
+  "notificationsNotSupported": "Your browser does not support notifications",
   "seeInExplorer": "See on explorer",
   "learnMore": "Learn more",
   "logout": "Log out",
-  "walletNotice": "Wallet not supported",
-  "gnosisSafeWalletNotice": "You are trying to use Gnosis Safe wallet, which doesn't support signing messages on Snapshot.",
+  "walletNotice": "Wallet notice",
+  "gnosisSafeWalletNotice": "Gnosis Safe wallet doesn't support signing messages. You can delegate your voting power to a wallet of your choice on our delegation page.",
   "continue": "Continue",
   "add": "Add",
   "edit": "Edit",
@@ -95,6 +97,8 @@
   "startToEnd": "start {0} end {1}",
   "startIn": "start {0}",
   "endIn": "end {1}",
+  "proposalStartIn": "start in {0}",
+  "proposalToNow": "{0} left",
   "endedAgo": "ended {1}",
   "proposalBy": "by {0}",
   "endDate": "end {0}",
@@ -116,6 +120,7 @@
   "duplicateProposal": "Duplicate proposal",
   "joinedSpaces": "Joined spaces",
   "joinSpaces": "Join spaces",
+  "delegateVotingPower": "Go to delegation page",
   "errors": {
     "required": "Field is required",
     "minLength": "Minimum length is {0}",
@@ -127,8 +132,9 @@
     "type": "Invalid type"
   },
   "create": {
-    "question": "Question",
-    "content": "What is your proposal?",
+    "question": "Ask a question...",
+    "categorie(s)": "Select up to 2 categorie(s)",
+    "content": "Tell more about your proposal (optional)",
     "preview": "Preview",
     "choices": "Choices",
     "addChoice": "Add choice",
@@ -194,6 +200,8 @@
     "customDomain": "Custom domain",
     "domain": "Domain name",
     "strategies": "Strategie(s)",
+    "categories": "Categorie(s)",
+    "selectCategories": "Select categories",
     "hideSpace": "Hide space from homepage",
     "addStrategy": "Add strategy",
     "authors": "Authors",
@@ -215,7 +223,8 @@
     "voting": "Voting",
     "quorum": "Quorum",
     "type": "Type",
-    "anyType": "Any"
+    "anyType": "Any",
+    "hideAbstain": "Ignore abstain votes in basic voting results"
   },
   "setup": {
     "example": "e.g. yam.eth",
@@ -242,7 +251,18 @@
     "skins": "skin(s)",
     "networks": "network(s)",
     "plugins": "plugin(s)",
-    "results": "result(s)"
+    "results": "result(s)",
+    "categories": {
+      "all": "All",
+      "protocol": "Protocol",
+      "social": "Social",
+      "investment": "Investment",
+      "grant": "Grant",
+      "service": "Service",
+      "media": "Media",
+      "creator": "Creator",
+      "collector": "Collector"
+    }
   },
   "voting": {
     "selectVoting": "Select voting system",
@@ -317,13 +337,20 @@
   "poap": {
     "no_poap_header": "A POAP hasn't been setup for this proposal yet :'(",
     "no_voted_header": "Vote to get this POAP",
-    "unclaimed_header": "Claim your I voted POAP",
-    "claimed_header": "Congratulations! The POAP has been minted to your account",
-    "loading_header": "The POAP is being added to your collection",
-    "button_claim": "Claim",
+    "unclaimed_header": "Mint your I voted POAP",
+    "claimed_header": "Congratulations! The POAP has been minted to your collection",
+    "loading_header": "The POAP is being minted to your collection",
+    "button_claim": "Mint",
     "button_show": "Browse collection",
-    "success_claim": "Your POAP is on your address",
+    "success_claim": "The POAP has been minted to your collection",
     "error_claim": "There was a problem minting the token"
+  },
+  "charts": {
+    "charts": "Charts",
+    "noVotesYet": "There are no votes to visualize yet.",
+    "totalVotesPerDay": "Total votes per day",
+    "shareOfVotingPower": "Share of voting power",
+    "votingPowerPerDay": "Voting power per day"
   },
   "comment_box": {
     "title": "Comment box",

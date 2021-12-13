@@ -7,7 +7,7 @@ function getLogoUrl(key) {
 </script>
 
 <template>
-  <Block>
+  <Block class="hover-border">
     <div class="flex items-center mb-1">
       <UiAvatar
         class="mr-2 mb-2"

@@ -11,13 +11,13 @@ import {
   getScores
 } from '@snapshot-labs/snapshot.js/src/utils';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
+import { sleep } from '@snapshot-labs/snapshot.js/src/utils';
 import {
   getDelegates,
   getDelegators,
   getDelegatesBySpace,
   contractAddress
 } from '@/helpers/delegation';
-import { sleep } from '@/helpers/utils';
 import { useApp } from '@/composables/useApp';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useTxStatus } from '@/composables/useTxStatus';
@@ -49,7 +49,7 @@ const form = ref({
   id: route.params.key || ''
 });
 
-const { profiles, updateAddressArray } = useProfiles();
+const { profiles, loadProfiles } = useProfiles();
 
 const web3Account = computed(() => web3.value.account);
 const networkKey = computed(() => web3.value.network.key);
@@ -137,14 +137,13 @@ async function getDelegatesWithScore() {
 
     const delegatesAddresses = uniqueDelegators.map(d => d.delegate);
 
-    const provider = getProvider(space.value.network);
     const scores = await getScores(
       space.value.id,
       delegationStrategy,
       space.value.network,
-      provider,
       delegatesAddresses,
-      'latest'
+      'latest',
+      import.meta.env.VITE_SCORES_URL + '/api/scores'
     );
 
     uniqueDelegators.forEach(delegate => {
@@ -170,7 +169,7 @@ async function getDelegatesWithScore() {
 }
 
 watchEffect(() => {
-  updateAddressArray(
+  loadProfiles(
     delegates.value
       .map(delegate => delegate.delegate)
       .concat(delegators.value.map(delegator => delegator.delegator))

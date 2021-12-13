@@ -7,6 +7,7 @@ import { useApp } from '@/composables/useApp';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useTxStatus } from '@/composables/useTxStatus';
 import { useUserSkin } from '@/composables/useUserSkin';
+import { useClient } from '@/composables/useClient';
 
 const { pendingCount } = useTxStatus();
 const { modalAccountOpen } = useModal();
@@ -16,9 +17,10 @@ const route = useRoute();
 const { explore } = useApp();
 const { login, web3 } = useWeb3();
 const { toggleSkin, getSkinIcon } = useUserSkin();
+const { isGnosisSafe } = useClient();
 
 const loading = ref(false);
-const modalWalletNotice = ref(false);
+const modalNotice = ref(false);
 
 const space = computed(() => {
   const key = domain || route.params.key;
@@ -40,17 +42,15 @@ watch(space, () => {
   setTitle();
 });
 
-const walletConnectType = computed(() => web3.value.walletConnectType);
-
-watch(walletConnectType, val => {
-  if (val === 'Gnosis Safe Multisig') modalWalletNotice.value = true;
+watch(isGnosisSafe, () => {
+  if (isGnosisSafe.value) modalNotice.value = true;
 });
 
 onMounted(() => setTitle());
 </script>
 
 <template>
-  <Sticky class="mb-4">
+  <Sticky>
     <div
       v-if="env === 'develop'"
       class="p-3 text-center bg-blue"
@@ -82,7 +82,7 @@ onMounted(() => setTitle());
                     web3.profile?.image ? _getUrl(web3.profile.image) : ''
                   "
                   :address="web3.account"
-                  size="16"
+                  size="18"
                   class="-mr-1 sm:mr-2 md:mr-2 lg:mr-2 xl:mr-2 -ml-1"
                 />
                 <span
@@ -101,6 +101,7 @@ onMounted(() => setTitle());
               v-if="!$auth.isAuthenticated.value"
               @click="modalAccountOpen = true"
               :loading="loading || web3.authLoading"
+              :aria-label="$t('connectWallet')"
             >
               <span class="hidden sm:block" v-text="$t('connectWallet')" />
               <Icon
@@ -109,10 +110,21 @@ onMounted(() => setTitle());
                 class="sm:hidden -ml-2 -mr-2 block align-text-bottom"
               />
             </UiButton>
+            <a
+              v-if="!domain"
+              href="https://twitter.com/SnapshotLabs"
+              target="_blank"
+              class="float-right ml-2 hidden sm:block"
+            >
+              <UiSidebarButton>
+                <Icon size="20" class="link-color" name="twitter" />
+              </UiSidebarButton>
+            </a>
             <UiSidebarButton
               v-if="!domain"
               @click="toggleSkin"
               class="float-right ml-2"
+              :aria-label="$t('toggleSkin')"
             >
               <Icon size="20" class="link-color" :name="getSkinIcon()" />
             </UiSidebarButton>
@@ -130,10 +142,21 @@ onMounted(() => setTitle());
         @close="modalAccountOpen = false"
         @login="handleLogin"
       />
-      <ModalWalletNotice
-        :open="modalWalletNotice"
-        @close="modalWalletNotice = false"
-      />
+      <ModalNotice
+        :open="modalNotice"
+        :title="$t('walletNotice')"
+        @close="modalNotice = false"
+      >
+        <h4 class="mb-3">{{ $t('gnosisSafeWalletNotice') }}</h4>
+        <a
+          @click="$router.push({ name: 'delegate' }), (modalNotice = false)"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="flex items-center justify-center"
+        >
+          <UiText class="mt-1" :text="$t('delegateVotingPower')" />
+        </a>
+      </ModalNotice>
     </teleport>
   </Sticky>
 </template>

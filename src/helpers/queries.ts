@@ -1,13 +1,28 @@
 import gql from 'graphql-tag';
 
 export const VOTES_QUERY = gql`
-  query Votes($id: String!) {
-    votes(first: 10000, where: { proposal: $id }) {
+  query Votes(
+    $id: String!
+    $first: Int
+    $skip: Int
+    $orderBy: String
+    $orderDirection: OrderDirection
+    $voter: String
+  ) {
+    votes(
+      first: $first
+      skip: $skip
+      where: { proposal: $id, vp_gt: 0, voter: $voter }
+      orderBy: $orderBy
+      orderDirection: $orderDirection
+    ) {
       id
       ipfs
       voter
       created
       choice
+      vp
+      vp_by_strategy
     }
   }
 `;
@@ -37,6 +52,11 @@ export const PROPOSAL_QUERY = gql`
         id
         name
       }
+      scores_state
+      scores
+      scores_by_strategy
+      scores_total
+      votes
     }
   }
 `;
@@ -69,48 +89,18 @@ export const PROPOSALS_QUERY = gql`
       state
       author
       created
+      choices
       space {
         id
         name
         members
         avatar
+        symbol
       }
-    }
-  }
-`;
-
-export const PROPOSAL_VOTES_QUERY = gql`
-  query ($id: String!) {
-    proposal(id: $id) {
-      id
-      ipfs
-      title
-      body
-      choices
-      start
-      end
-      snapshot
-      state
-      author
-      created
-      plugins
-      network
-      type
-      strategies {
-        name
-        params
-      }
-      space {
-        id
-        name
-      }
-    }
-    votes(first: 10000, where: { proposal: $id }) {
-      id
-      ipfs
-      voter
-      created
-      choice
+      scores_state
+      scores_total
+      scores
+      votes
     }
   }
 `;
@@ -166,14 +156,20 @@ export const SPACES_QUERY = gql`
       domain
       members
       admins
+      categories
       plugins
       voting {
         delay
         period
         type
         quorum
+        hideAbstain
       }
       strategies {
+        name
+        params
+      }
+      validation {
         name
         params
       }

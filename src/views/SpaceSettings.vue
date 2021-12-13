@@ -2,12 +2,14 @@
 import { computed, ref, watchEffect, inject } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { getAddress } from '@ethersproject/address';
-import { validateSchema } from '@snapshot-labs/snapshot.js/src/utils';
+import {
+  validateSchema,
+  getSpaceUri,
+  clone
+} from '@snapshot-labs/snapshot.js/src/utils';
 import schemas from '@snapshot-labs/snapshot.js/src/schemas';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { useSearchFilters } from '@/composables/useSearchFilters';
-import { clone } from '@/helpers/utils';
-import { getSpaceUri } from '@/helpers/ens';
 import defaults from '@/locales/default';
 import { useCopy } from '@/composables/useCopy';
 import { useWeb3 } from '@/composables/useWeb3';
@@ -39,6 +41,7 @@ const currentStrategyIndex = ref(false);
 const modalNetworksOpen = ref(false);
 const modalSkinsOpen = ref(false);
 const modalStrategyOpen = ref(false);
+const modalCategoryOpen = ref(false);
 const modalVotingTypeOpen = ref(false);
 const modalPluginsOpen = ref(false);
 const modalValidationOpen = ref(false);
@@ -49,6 +52,7 @@ const delayUnit = ref('h');
 const periodUnit = ref('h');
 const form = ref({
   strategies: [],
+  categories: [],
   plugins: {},
   filters: {},
   voting: {},
@@ -102,6 +106,10 @@ const votingPeriod = computed({
       : undefined)
 });
 
+const categoriesString = computed(() => {
+  return form.value.categories ? form.value.categories.join(', ') : '';
+});
+
 const { filteredPlugins } = useSearchFilters();
 const plugins = computed(() => filteredPlugins());
 
@@ -149,6 +157,7 @@ function handleReset() {
   if (currentSettings.value) return (form.value = currentSettings.value);
   form.value = {
     strategies: [],
+    categories: [],
     plugins: {},
     filters: {}
   };
@@ -164,6 +173,10 @@ function handleRemoveStrategy(i) {
   form.value.strategies = form.value.strategies.filter(
     (strategy, index) => index !== i
   );
+}
+
+function handleSubmitAddCategories(categories) {
+  form.value.categories = categories;
 }
 
 function handleAddStrategy() {
@@ -235,7 +248,10 @@ function formatSpace(spaceRaw) {
 watchEffect(async () => {
   if (!props.spaceLoading) {
     try {
-      const uri = await getSpaceUri(props.spaceId);
+      const uri = await getSpaceUri(
+        props.spaceId,
+        import.meta.env.VITE_DEFAULT_NETWORK
+      );
       console.log('URI', uri);
       currentTextRecord.value = uri;
     } catch (e) {
@@ -361,6 +377,16 @@ watchEffect(async () => {
                   {{ $t(`settings.network`) }}*
                 </template>
               </UiInput>
+              <UiInput @click="modalCategoryOpen = true">
+                <template v-slot:label>
+                  {{ $t(`settings.categories`) }}
+                </template>
+                <template v-slot:selected>
+                  <span class="capitalize">
+                    {{ categoriesString }}
+                  </span>
+                </template>
+              </UiInput>
               <UiInput
                 v-model="form.symbol"
                 placeholder="e.g. BAL"
@@ -393,9 +419,9 @@ watchEffect(async () => {
               >
                 <template v-slot:label> {{ $t(`settings.terms`) }} </template>
               </UiInput>
-              <div class="flex items-center px-2">
-                <Checkbox v-model="form.private" class="mr-2 mt-1" />
-                {{ $t('settings.hideSpace') }}
+              <div class="flex items-center space-x-2 px-2">
+                <Checkbox v-model="form.private" />
+                <span>{{ $t('settings.hideSpace') }}</span>
               </div>
             </div>
           </Block>
@@ -521,12 +547,9 @@ watchEffect(async () => {
                     $t('settings.proposalThreshold')
                   }}</template>
                 </UiInput>
-                <div class="mb-2 flex items-center px-2">
-                  <Checkbox
-                    v-model="form.filters.onlyMembers"
-                    class="mr-2 mt-1"
-                  />
-                  {{ $t('settings.allowOnlyAuthors') }}
+                <div class="flex items-center space-x-2 px-2">
+                  <Checkbox v-model="form.filters.onlyMembers" />
+                  <span>{{ $t('settings.allowOnlyAuthors') }}</span>
                 </div>
               </div>
             </div>
@@ -562,6 +585,15 @@ watchEffect(async () => {
                 </select>
               </template>
             </UiInput>
+            <UiInput
+              v-model="form.voting.quorum"
+              :number="true"
+              placeholder="1000"
+            >
+              <template v-slot:label>
+                {{ $t('settings.quorum') }}
+              </template>
+            </UiInput>
             <UiInput>
               <template v-slot:label>
                 {{ $t('settings.type') }}
@@ -576,15 +608,10 @@ watchEffect(async () => {
                 </div>
               </template>
             </UiInput>
-            <UiInput
-              v-model="form.voting.quorum"
-              :number="true"
-              placeholder="1000"
-            >
-              <template v-slot:label>
-                {{ $t('settings.quorum') }}
-              </template>
-            </UiInput>
+            <div class="flex items-center space-x-2 px-2">
+              <Checkbox v-model="form.voting.hideAbstain" />
+              <span>{{ $t('settings.hideAbstain') }}</span>
+            </div>
           </Block>
           <Block :title="$t('plugins')">
             <div v-if="form?.plugins">
@@ -650,6 +677,12 @@ watchEffect(async () => {
       @close="modalStrategyOpen = false"
       @add="handleSubmitAddStrategy"
     />
+    <ModalCategory
+      :open="modalCategoryOpen"
+      :categories="form.categories"
+      @close="modalCategoryOpen = false"
+      @add="handleSubmitAddCategories"
+    />
     <ModalPlugins
       :open="modalPluginsOpen"
       :plugin="currentPlugin"
@@ -665,8 +698,8 @@ watchEffect(async () => {
     <ModalVotingType
       :open="modalVotingTypeOpen"
       @close="modalVotingTypeOpen = false"
-      v-model="form.voting.type"
-      :selected="form.voting?.type"
+      v-model:selected="form.voting.type"
+      allowAny
     />
   </teleport>
 </template>

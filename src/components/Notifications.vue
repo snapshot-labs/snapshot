@@ -1,32 +1,34 @@
 <script setup>
 import { useNotifications } from '@/composables/useNotifications';
 
-const duration = 4000;
-
 const { items } = useNotifications();
-
-let now = $ref(Date.now());
-
-setInterval(() => (now = Date.now()), 1000);
 </script>
 
 <template>
   <div
-    v-if="items.some(i => now < i.timestamp + duration && !i.hide)"
-    class="fixed left-0 right-0 bottom-0 text-center"
-    style="z-index: 99999"
+    class="
+      fixed
+      left-0
+      right-0
+      bottom-0
+      z-50
+      flex flex-col
+      items-center
+      mb-4
+      space-y-2
+      pointer-events-none
+    "
   >
-    <div class="mb-4">
-      <div v-for="(item, key) in items" :key="key" class="mb-2">
+    <transition-group name="fade">
+      <div v-for="item in items" :key="item.id" class="pointer-events-auto">
         <UiButton
-          class="notification inline-block anim-scale-in !border-none !bg-red"
+          class="notification inline-block !border-none !bg-red"
           :class="`!bg-${item.type}`"
-          v-if="now < item.timestamp + duration && !item.hide"
-          @click="item.hide = true"
+          @click="item.remove()"
         >
           {{ item.message }}
         </UiButton>
       </div>
-    </div>
+    </transition-group>
   </div>
 </template>
