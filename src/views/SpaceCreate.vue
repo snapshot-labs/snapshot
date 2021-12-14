@@ -109,7 +109,7 @@ const isValid = computed(() => {
     dateEnd.value > dateStart.value &&
     form.value.snapshot &&
     form.value.snapshot > blockNumber.value / 2 &&
-    choices.value.length >= 2 &&
+    choices.value.length >= 1 &&
     !choices.value.some(a => a.text === '') &&
     passValidation.value[0] &&
     isSafeSnapPluginValid &&
@@ -206,7 +206,7 @@ async function loadProposal() {
 }
 
 onMounted(async () => {
-  setPageTitle("page.title.space.create", { space: props.space.name });
+  setPageTitle('page.title.space.create', { space: props.space.name });
   nameForm.value.focus();
   addChoice(2);
 

@@ -12,12 +12,13 @@ export default {
   props: ['modelValue', 'nonce', 'config'],
   emits: ['update:modelValue'],
   data() {
+    const { amount = '0' } = this.modelValue || {};
     return {
       plugin: new Plugin(),
       tokens: [ETHEREUM_COIN],
 
       to: '',
-      value: '0',
+      value: amount,
       tokenAddress: 'main',
 
       validValue: true
