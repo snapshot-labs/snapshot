@@ -48,7 +48,7 @@
   "deleteProposal": "删除提案",
   "demoSite": "这是演示网站，请试试看！",
   "removeDelegation": "移除授权",
-  "confirmRemove": "你确定要移除对{}的授权吗？",
+  "confirmRemove": "您确定要移除对{}的委托吗？",
   "removeSpace": "用于空间 {0}",
   "confirmVote": "确认投票",
   "sureToVote": "您确定要选 \"{0}\" 吗？",
@@ -158,11 +158,11 @@
     "to": "给",
     "addressPlaceholder": "地址或ENS域名",
     "spacePlaceholder": "空间 (可选)",
-    "delegations": "您的委托",
+    "delegations": "您的授权",
     "allSpaces": "用于所有空间",
     "delegated": "已委托给您",
     "pendingTransaction": "没有待处理交易 | 1 个待处理交易 | {count} 个待处理交易",
-    "topDelegates": "顶级代表"
+    "topDelegates": "顶级委托"
   },
   "proposal": {
     "castVote": "投出您的票",
@@ -221,7 +221,7 @@
     "votingDelay": "投票延迟开始",
     "votingPeriod": "投票时长",
     "voting": "投票",
-    "quorum": "法定人数",
+    "quorum": "裁决者人数",
     "type": "类型",
     "anyType": "任意",
     "hideAbstain": "忽略基本投票结果中的弃权票"
@@ -232,15 +232,15 @@
     "createASpace": "创建空间"
   },
   "notify": {
-    "youDidIt": "你成功了!",
+    "youDidIt": "您成功了!",
     "copied": "已复制！",
     "proposalDeleted": "提案被删除",
-    "somethingWentWrong": "哎呀，似乎出了点问题",
+    "somethingWentWrong": "哎呀，似乎出了点问题！",
     "saved": "已保存！",
     "delegationSuccess": "授权成功",
     "delegationRemoved": "授权已移除",
     "proposalCreated": "提案已创建",
-    "voteSuccessful": "您已经成功行使了投票权！"
+    "voteSuccessful": "投票成功！"
   },
   "explore": {
     "createStrategy": "创建策略",
