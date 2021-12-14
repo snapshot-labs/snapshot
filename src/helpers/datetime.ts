@@ -11,6 +11,14 @@ dayjs.extend(timezone);
 dayjs.extend(toObject);
 dayjs.extend(customParseFormat);
 
+export async function setDayjsLocale(locale: string) {
+  locale = locale.toLowerCase().slice(0, 2);
+  console.log(locale);
+  import(`../../node_modules/dayjs/esm/locale/${locale}.js`).then(conf => {
+    dayjs.locale(locale, conf.default);
+  });
+}
+
 export function toNow(period: number) {
   return dayjs(period * 1e3).toNow(true);
 }

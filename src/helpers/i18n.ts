@@ -3,6 +3,7 @@ import { nextTick } from 'vue';
 import en from '@/locales/default.json';
 import languages from '@/locales/languages.json';
 import { lsRemove } from '@/helpers/utils';
+import { setDayjsLocale } from '@/helpers/datetime';
 
 export function getBrowserLocale() {
   if (typeof navigator !== 'undefined') {
@@ -68,6 +69,7 @@ export async function loadLocaleMessages(i18n, locale) {
 
     // set locale and locale message
     i18n.global.setLocaleMessage(locale, messages);
+    await setDayjsLocale(locale);
   } catch (e) {
     console.log(e);
   }
