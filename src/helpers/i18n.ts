@@ -1,6 +1,6 @@
 import { createI18n } from 'vue-i18n';
 import { nextTick } from 'vue';
-import en from '@/locales/en-US.json';
+import en from '@/locales/default.json';
 import languages from '@/locales/languages.json';
 import { lsRemove } from '@/helpers/utils';
 
@@ -17,7 +17,7 @@ export function getBrowserLocale() {
 
 const browserLocale = getBrowserLocale();
 
-// Look for exact match first (like de-AU), then only first 2 chars (de), then fallback to default.
+// Look for exact match first (like de-AU), then only first 2 chars (de), then fallback to default (en-US).
 export const defaultLocale =
   Object.keys(languages).find(l => l === browserLocale) ??
   Object.keys(languages).find(
@@ -61,8 +61,9 @@ export async function loadLocaleMessages(i18n, locale) {
 
   try {
     // load locale messages with dynamic import
+    const filename = locale === 'en-US' ? 'default' : locale;
     const messages = await import(
-      /* webpackChunkName: "locale-[request]" */ `../locales/${locale}.json`
+      /* webpackChunkName: "locale-[request]" */ `../locales/${filename}.json`
     );
 
     // set locale and locale message
