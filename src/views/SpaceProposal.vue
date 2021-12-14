@@ -231,7 +231,10 @@ watch([loaded, web3Account], () => {
 
 onMounted(async () => {
   await loadProposal();
-  setPageTitle('page.title.space.proposal', { proposal: proposal.value.title, space: props.space.name });
+  setPageTitle('page.title.space.proposal', {
+    proposal: proposal.value.title,
+    space: props.space.name
+  });
   const choice = route.query.choice;
   if (proposal.value.type === 'approval') selectedChoices.value = [];
   if (web3Account.value && choice) {

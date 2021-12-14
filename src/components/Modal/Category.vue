@@ -66,7 +66,8 @@ function handleClose() {
           {
             'hover:border-skin-link cursor-pointer':
               hasCategory(category) || selectedCategories.length < 2,
-            'opacity-50': !hasCategory(category) && selectedCategories.length === 2,
+            'opacity-50':
+              !hasCategory(category) && selectedCategories.length === 2,
             '!border-skin-link': hasCategory(category)
           },
           'relative capitalize'
