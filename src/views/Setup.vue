@@ -1,6 +1,7 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
+import { setPageTitle } from '@/helpers/utils';
 
 const router = useRouter();
 const tlds = ['.eth', '.xyz', '.com', '.org', '.io', '.app', '.art'];
@@ -17,6 +18,10 @@ function handleSubmit() {
     params: { key: id.value.toLowerCase() }
   });
 }
+
+onMounted(() => {
+  setPageTitle('page.title.setup');
+});
 </script>
 
 <template>
