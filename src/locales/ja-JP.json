@@ -39,7 +39,7 @@
   "view3box": "3Boxでプロフィールを表示する",
   "edit3box": "3Boxでプロフィールを編集する",
   "connectWallet": "ウォレットを接続",
-  "toggleSkin": "Toggle skin",
+  "toggleSkin": "スキンの切り替え",
   "about": "Snapshotについて",
   "license": "ライセンス",
   "ipfsServer": "IPFSサーバ",
@@ -379,19 +379,19 @@
   "page": {
     "title": {
       "home": "Snapshot",
-      "setup": "Create a space",
-      "timeline": "Timeline",
-      "explore": "Explore",
-      "playground": "Playground",
+      "setup": "スペースを作成",
+      "timeline": "タイムライン",
+      "explore": "探す",
+      "playground": "プレイグラウンド",
       "space": {
-        "create": "Create {space} proposal",
-        "about": "About {space}",
-        "proposals": "{space} Proposals",
-        "proposal": "{space} proposal: {proposal}",
-        "settings": "{space} Settings"
+        "create": "{space} の提案を作成",
+        "about": "{space} について",
+        "proposals": "{space} の提案",
+        "proposal": "{space} の提案: {proposal}",
+        "settings": "{space} の設定"
       },
-      "strategy": "{key} strategy",
-      "delegate": "Delegate"
+      "strategy": "{key} の戦略",
+      "delegate": "デリゲート（委任）"
     }
   }
 }
