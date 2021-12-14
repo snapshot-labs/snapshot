@@ -57,6 +57,7 @@ export default {
       transactionConfig: {
         preview: this.preview,
         gnosisSafeAddress: undefined,
+        realityAddress: this.realityAddress,
         network: this.network,
         tokens: [],
         collectables: []
@@ -119,6 +120,10 @@ export default {
     updateTransactionBatch(index, batch) {
       this.input[index] = batch;
       this.$emit('update:modelValue', this.input);
+    },
+    handleImport(txs) {
+      this.input.push(txs);
+      this.$emit('update:modelValue', this.input);
     }
   }
 };
@@ -164,6 +169,11 @@ export default {
         <UiButton class="my-3" v-if="!preview" @click="addTransactionBatch">
           {{ $t('safeSnap.addBatch') }}
         </UiButton>
+
+        <PluginSafeSnapFormImportTransactionsButton
+          v-if="!preview"
+          @import="handleImport($event)"
+        />
 
         <PluginSafeSnapHandleOutcome
           v-if="preview && proposalResolved"
