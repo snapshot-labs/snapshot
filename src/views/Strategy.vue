@@ -1,14 +1,19 @@
 <script setup>
-import { computed } from 'vue';
+import { computed, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { useApp } from '@/composables/useApp';
 import { useSearchFilters } from '@/composables/useSearchFilters';
+import { setPageTitle } from '@/helpers/utils';
 
 const route = useRoute();
 const { strategies } = useApp();
 const { minifiedStrategiesArray } = useSearchFilters();
 
 const strategy = computed(() => strategies.value[route.params.name]);
+
+onMounted(() => {
+  setPageTitle('page.title.strategy', { key: strategy.value.key });
+});
 </script>
 
 <template>
