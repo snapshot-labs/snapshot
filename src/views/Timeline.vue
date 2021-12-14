@@ -73,10 +73,6 @@ watch(store.timeline.proposals, () => {
   loadProfiles(store.timeline.proposals.map(proposal => proposal.author));
 });
 
-const { updateLastSeenProposal } = useUnseenProposals();
-
-const web3Account = computed(() => web3.value.account);
-
 // Save the lastSeenProposal times for all spaces
 function emitUpdateLastSeenProposal() {
   if (web3Account.value) {
