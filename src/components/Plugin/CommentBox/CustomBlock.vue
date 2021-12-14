@@ -16,9 +16,8 @@ const props = defineProps({
 });
 const { notify } = useNotifications();
 const auth = getInstance();
-const { web3 } = useWeb3();
+const { web3Account } = useWeb3();
 const { profiles } = useProfiles();
-const web3Account = computed(() => web3.value.account);
 const { modalAccountOpen } = useModal();
 const loading = ref(false);
 const comment = ref('');
