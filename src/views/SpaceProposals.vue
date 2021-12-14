@@ -27,11 +27,8 @@ const web3Account = computed(() => web3.value.account);
 
 const { loadBy, loadingMore, stopLoadingMore, loadMore } = useInfiniteLoader();
 
-const { endElement } = useScrollMonitor(() =>
-  loadMore(() => loadProposals(store.space.proposals.length), loading.value)
-);
-
 const { apolloQuery } = useApolloQuery();
+
 async function loadProposals(skip = 0) {
   const proposalsObj = await apolloQuery(
     {
@@ -85,6 +82,10 @@ function selectState(e) {
   store.space.proposals = [];
   load();
 }
+
+const { endElement } = useScrollMonitor(() =>
+  loadMore(() => loadProposals(store.space.proposals.length), loading.value)
+);
 
 const { profiles, loadProfiles } = useProfiles();
 
