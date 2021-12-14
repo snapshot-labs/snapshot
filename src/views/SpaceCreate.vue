@@ -109,7 +109,7 @@ const isValid = computed(() => {
     dateEnd.value > dateStart.value &&
     form.value.snapshot &&
     form.value.snapshot > blockNumber.value / 2 &&
-    choices.value.length >= 2 &&
+    choices.value.length >= 1 &&
     !choices.value.some(a => a.text === '') &&
     passValidation.value[0] &&
     isSafeSnapPluginValid &&
