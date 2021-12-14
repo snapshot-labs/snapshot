@@ -40,7 +40,9 @@ watch(spaces, () => {
 });
 
 const isTimeline = computed(() => route.name === 'timeline');
+const web3Account = computed(() => web3.value.account);
 
+const { updateLastSeenProposal } = useUnseenProposals();
 const { loadBy, loadingMore, stopLoadingMore, loadMore } = useInfiniteLoader();
 
 const { endElement } = useScrollMonitor(() =>

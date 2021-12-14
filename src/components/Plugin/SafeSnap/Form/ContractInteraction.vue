@@ -15,19 +15,48 @@ export default {
   props: ['modelValue', 'nonce', 'config'],
   emits: ['update:modelValue'],
   data() {
+    let to = '';
+    let abi = '';
+    let value = '0';
+    let selectedMethod = undefined;
+    let methods = [];
+    let parameters = [];
+
+    if (this.modelValue) {
+      try {
+        const {
+          to: _to = '',
+          abi: _abi = '',
+          value: _value = '0',
+          data
+        } = this.modelValue;
+
+        to = _to;
+        abi = typeof _abi === 'object' ? JSON.stringify(_abi) : _abi;
+        value = _value;
+
+        const transactionDecoder = new InterfaceDecoder(abi);
+        selectedMethod = transactionDecoder.getMethodFragment(data);
+        parameters = transactionDecoder.decodeFunction(data, selectedMethod);
+        methods = [selectedMethod];
+      } catch (err) {
+        console.error('error decoding contract interaction tx', err);
+      }
+    }
+
     return {
       plugin: new Plugin(),
 
-      to: '',
-      abi: '',
-      value: '0',
+      to,
+      abi,
+      value,
 
       validAbi: true,
       validValue: true,
-      selectedMethod: undefined,
-      methods: [],
       methodIndex: 0,
-      parameters: []
+      selectedMethod,
+      methods,
+      parameters
     };
   },
   mounted() {
@@ -43,14 +72,13 @@ export default {
           this.selectedMethod
         );
 
-        this.abi = JSON.stringify(abi);
-        this.value = value;
         this.methods = [this.selectedMethod];
-      } else {
         this.handleValueChange(value);
         this.handleABIChanged(
           typeof abi === 'object' ? JSON.stringify(abi) : abi
         );
+      } else {
+        setTimeout(() => this.updateTransaction(), 1000);
       }
     }
   },
