@@ -13,6 +13,7 @@ import { useWeb3 } from '@/composables/useWeb3';
 import verified from '@/../snapshot-spaces/spaces/verified.json';
 import zipObject from 'lodash/zipObject';
 import { useStore } from '@/composables/useStore';
+import { setPageTitle } from '@/helpers/utils';
 
 const { store } = useStore();
 
@@ -39,7 +40,9 @@ watch(spaces, () => {
 });
 
 const isTimeline = computed(() => route.name === 'timeline');
+const web3Account = computed(() => web3.value.account);
 
+const { updateLastSeenProposal } = useUnseenProposals();
 const { loadBy, loadingMore, stopLoadingMore, loadMore } = useInfiniteLoader();
 
 const { endElement } = useScrollMonitor(() =>
@@ -87,6 +90,7 @@ function emitUpdateLastSeenProposal() {
 // Initialize
 onMounted(() => {
   load();
+  setPageTitle('page.title.timeline');
   emitUpdateLastSeenProposal();
 });
 
@@ -103,10 +107,6 @@ function selectState(e) {
   store.timeline.proposals = [];
   load();
 }
-
-const { updateLastSeenProposal } = useUnseenProposals();
-
-const web3Account = computed(() => web3.value.account);
 </script>
 
 <template>
