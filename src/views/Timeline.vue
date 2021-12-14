@@ -66,6 +66,9 @@ async function loadProposals(skip = 0) {
 }
 
 const { profiles, loadProfiles } = useProfiles();
+const { updateLastSeenProposal } = useUnseenProposals();
+
+const web3Account = computed(() => web3.value.account);
 
 watch(store.timeline.proposals, () => {
   loadProfiles(store.timeline.proposals.map(proposal => proposal.author));
@@ -105,10 +108,6 @@ function selectState(e) {
   store.timeline.proposals = [];
   load();
 }
-
-const { updateLastSeenProposal } = useUnseenProposals();
-
-const web3Account = computed(() => web3.value.account);
 </script>
 
 <template>
