@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref, watchEffect, inject } from 'vue';
+import { computed, ref, watchEffect, inject, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { getAddress } from '@ethersproject/address';
 import {
@@ -15,6 +15,7 @@ import { useCopy } from '@/composables/useCopy';
 import { useWeb3 } from '@/composables/useWeb3';
 import { calcFromSeconds, calcToSeconds } from '@/helpers/utils';
 import { useClient } from '@/composables/useClient';
+import { setPageTitle } from '@/helpers/utils';
 
 const props = defineProps({
   spaceId: String,
@@ -271,6 +272,10 @@ watchEffect(async () => {
     loaded.value = true;
   }
 });
+
+onMounted(() => {
+  setPageTitle('page.title.space.settings', { space: props.space.name });
+});
 </script>
 
 <template>
@@ -419,9 +424,9 @@ watchEffect(async () => {
               >
                 <template v-slot:label> {{ $t(`settings.terms`) }} </template>
               </UiInput>
-              <div class="flex items-center px-2">
-                <Checkbox v-model="form.private" class="mr-2 mt-1" />
-                {{ $t('settings.hideSpace') }}
+              <div class="flex items-center space-x-2 px-2">
+                <Checkbox v-model="form.private" />
+                <span>{{ $t('settings.hideSpace') }}</span>
               </div>
             </div>
           </Block>
@@ -547,12 +552,9 @@ watchEffect(async () => {
                     $t('settings.proposalThreshold')
                   }}</template>
                 </UiInput>
-                <div class="mb-2 flex items-center px-2">
-                  <Checkbox
-                    v-model="form.filters.onlyMembers"
-                    class="mr-2 mt-1"
-                  />
-                  {{ $t('settings.allowOnlyAuthors') }}
+                <div class="flex items-center space-x-2 px-2">
+                  <Checkbox v-model="form.filters.onlyMembers" />
+                  <span>{{ $t('settings.allowOnlyAuthors') }}</span>
                 </div>
               </div>
             </div>
@@ -611,9 +613,9 @@ watchEffect(async () => {
                 </div>
               </template>
             </UiInput>
-            <div class="flex items-center px-2 mb-2">
-              <Checkbox v-model="form.voting.hideAbstain" class="mr-2 mt-1" />
-              {{ $t('settings.hideAbstain') }}
+            <div class="flex items-center space-x-2 px-2">
+              <Checkbox v-model="form.voting.hideAbstain" />
+              <span>{{ $t('settings.hideAbstain') }}</span>
             </div>
           </Block>
           <Block :title="$t('plugins')">
