@@ -2,7 +2,7 @@
 import { watchEffect, computed } from 'vue';
 import { useUsername } from '@/composables/useUsername';
 import removeMd from 'remove-markdown';
-import { relativeTimeFromTimestamp } from '@/helpers/utils';
+import { relativeTimeFromTimestamp } from '@/helpers/datetime';
 
 const props = defineProps({
   proposal: Object,

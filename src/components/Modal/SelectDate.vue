@@ -1,6 +1,6 @@
 <script setup>
 import { ref, toRefs, watch } from 'vue';
-import { getDateOutput, getTimestamp } from '@/helpers/utils';
+import { getDateOutput, getTimestamp } from '@/helpers/datetime';
 
 const props = defineProps({
   open: Boolean,

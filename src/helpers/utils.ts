@@ -5,22 +5,6 @@ import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import voting from '@snapshot-labs/snapshot.js/src/voting';
 import numeral from 'numeral';
 import i18n from '@/helpers/i18n';
-import dayjs from 'dayjs';
-import relativeTime from 'dayjs/plugin/relativeTime';
-import duration from 'dayjs/plugin/duration';
-import timezone from 'dayjs/plugin/timezone';
-import toObject from 'dayjs/plugin/toObject';
-import customParseFormat from 'dayjs/plugin/customParseFormat';
-
-dayjs.extend(duration);
-dayjs.extend(relativeTime);
-dayjs.extend(timezone);
-dayjs.extend(toObject);
-dayjs.extend(customParseFormat);
-
-export function toNow(period: number) {
-  return dayjs(period * 1e3).toNow(true);
-}
 
 export function shortenAddress(str = '') {
   return `${str.slice(0, 6)}...${str.slice(str.length - 4)}`;
@@ -135,42 +119,6 @@ export function explorerUrl(network, str: string, type = 'address'): string {
 export function n(number, format = '(0.[00]a)') {
   if (number < 0.00001) return format.includes('%') ? '0%' : 0;
   return numeral(number).format(format);
-}
-
-export function relativeTimeFromTimestamp(number) {
-  return dayjs.unix(number).fromNow();
-}
-
-export function calcFromSeconds(value, unit) {
-  if (unit === 'days') {
-    return dayjs.duration({ seconds: value }).asDays();
-  }
-
-  return dayjs.duration({ seconds: value }).asHours();
-}
-
-export function calcToSeconds(value, unit) {
-  return dayjs.duration({ [unit]: value }).asSeconds();
-}
-
-export function getDateOutput(date) {
-  const output = { h: '12', m: '00', dateString: '' };
-  if (!date) return output;
-
-  const format = dayjs.unix(date);
-
-  output.dateString = format.format('YYYY-MM-DD');
-  output.h = format.hour().toString();
-  output.m = String(format.minute()).padStart(2, '0');
-
-  return output;
-}
-
-export function getTimestamp(startingDate, hour, minute) {
-  const initialDate = dayjs(startingDate, 'YYYY-MM-DD');
-  const formatDate = initialDate.hour(hour).minute(minute);
-
-  return formatDate.unix();
 }
 
 export function setPageTitle(message, params = {}) {

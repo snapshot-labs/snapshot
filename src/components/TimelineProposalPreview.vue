@@ -1,5 +1,6 @@
 <script setup>
 import { watchEffect, computed } from 'vue';
+import { toNow } from '@/helpers/datetime';
 import { useUsername } from '@/composables/useUsername';
 import removeMd from 'remove-markdown';
 
@@ -93,7 +94,7 @@ watchEffect(() => {
           {{ $t(`proposals.states.${proposal.state}`) }},
           <span
             v-if="proposal.scores_state !== 'final'"
-            v-text="$tc(period, [_toNow(proposal.end)])"
+            v-text="$tc(period, [toNow(proposal.end)])"
           />
           <span v-if="proposal.scores_state === 'final'" class="mt-2">
             {{ _n(proposal.votes, '0,00') }} votes

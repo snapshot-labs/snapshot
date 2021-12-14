@@ -8,7 +8,8 @@ import {
   getPower,
   getProposalVotes
 } from '@/helpers/snapshot';
-import { relativeTimeFromTimestamp, setPageTitle } from '@/helpers/utils';
+import { setPageTitle } from '@/helpers/utils';
+import { relativeTimeFromTimestamp } from '@/helpers/datetime';
 import { useModal } from '@/composables/useModal';
 import { useTerms } from '@/composables/useTerms';
 import { useProfiles } from '@/composables/useProfiles';

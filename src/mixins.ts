@@ -1,11 +1,10 @@
-import { shorten, explorerUrl, n, toNow } from '@/helpers/utils';
+import { shorten, explorerUrl, n } from '@/helpers/utils';
 import { getUrl } from '@snapshot-labs/snapshot.js/src/utils';
 
 export default {
   methods: {
     _explorer: explorerUrl,
     _shorten: shorten,
-    _toNow: toNow,
     _n: n,
     _getUrl(url) {
       const gateway: any =

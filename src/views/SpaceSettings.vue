@@ -13,7 +13,7 @@ import { useSearchFilters } from '@/composables/useSearchFilters';
 import { errors } from '@/locales/en-US';
 import { useCopy } from '@/composables/useCopy';
 import { useWeb3 } from '@/composables/useWeb3';
-import { calcFromSeconds, calcToSeconds } from '@/helpers/utils';
+import { calcFromSeconds, calcToSeconds } from '@/helpers/datetime';
 import { useClient } from '@/composables/useClient';
 import { setPageTitle } from '@/helpers/utils';
 
