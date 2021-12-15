@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, toRef, watch } from 'vue';
+import { ref, toRef, watch } from 'vue';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import { useNotifications } from '@/composables/useNotifications';
 import { useModal } from '@/composables/useModal';

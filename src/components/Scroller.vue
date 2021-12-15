@@ -1,5 +1,5 @@
 <script setup>
-import { computed, watch, onMounted, ref, watchEffect } from 'vue';
+import { watch, onMounted, ref, watchEffect } from 'vue';
 import draggable from 'vuedraggable';
 import { useFollowSpace } from '@/composables/useFollowSpace';
 import { useWeb3 } from '@/composables/useWeb3';
