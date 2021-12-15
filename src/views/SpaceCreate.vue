@@ -29,7 +29,7 @@ const router = useRouter();
 const { t } = useI18n();
 const auth = getInstance();
 const { domain } = useDomain();
-const { web3 } = useWeb3();
+const { web3, web3Account } = useWeb3();
 const { getExplore } = useApp();
 const { spaceLoading } = useExtendedSpaces();
 const { send, clientLoading } = useClient();
@@ -59,7 +59,6 @@ const nameForm = ref(null);
 const passValidation = ref([true]);
 const loadingSnapshot = ref(true);
 
-const web3Account = computed(() => web3.value.account);
 const proposal = computed(() =>
   Object.assign(form.value, { choices: choices.value })
 );
