@@ -15,7 +15,7 @@ import { setPageTitle } from '@/helpers/utils';
 const props = defineProps({ space: Object, spaceId: String });
 
 const { lastSeenProposals, updateLastSeenProposal } = useUnseenProposals();
-const { web3 } = useWeb3();
+const { web3Account } = useWeb3();
 const { store } = useStore();
 
 const loading = ref(false);
@@ -23,7 +23,6 @@ const loading = ref(false);
 const spaceMembers = computed(() =>
   props.space.members.length < 1 ? ['none'] : props.space.members
 );
-const web3Account = computed(() => web3.value.account);
 
 const { loadBy, loadingMore, stopLoadingMore, loadMore } = useInfiniteLoader();
 
