@@ -41,6 +41,7 @@ watchEffect(() => {
         <div class="mb-2">
           <router-link
             class="text-color group"
+            :class="$route.name === 'spaceProposals' && 'pointer-events-none'"
             :to="{
               name: 'spaceProposals',
               params: { key: proposal.space.id }
