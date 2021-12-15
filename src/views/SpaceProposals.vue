@@ -10,6 +10,7 @@ import { lsSet } from '@/helpers/utils';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useApp } from '@/composables/useApp';
 import { useStore } from '@/composables/useStore';
+import { setPageTitle } from '@/helpers/utils';
 
 const props = defineProps({ space: Object, spaceId: String });
 
@@ -26,11 +27,8 @@ const web3Account = computed(() => web3.value.account);
 
 const { loadBy, loadingMore, stopLoadingMore, loadMore } = useInfiniteLoader();
 
-const { endElement } = useScrollMonitor(() =>
-  loadMore(() => loadProposals(store.space.proposals.length), loading.value)
-);
-
 const { apolloQuery } = useApolloQuery();
+
 async function loadProposals(skip = 0) {
   const proposalsObj = await apolloQuery(
     {
@@ -61,7 +59,10 @@ function emitUpdateLastSeenProposal() {
   updateLastSeenProposal(web3Account.value);
 }
 
-onMounted(load());
+onMounted(() => {
+  setPageTitle('page.title.space.proposals', { space: props.space.name });
+  load();
+});
 
 async function load() {
   if (
@@ -81,6 +82,10 @@ function selectState(e) {
   store.space.proposals = [];
   load();
 }
+
+const { endElement } = useScrollMonitor(() =>
+  loadMore(() => loadProposals(store.space.proposals.length), loading.value)
+);
 
 const { profiles, loadProfiles } = useProfiles();
 
