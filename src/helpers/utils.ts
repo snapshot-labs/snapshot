@@ -7,6 +7,7 @@ import numeral from 'numeral';
 import { format } from 'timeago.js';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
+import i18n from '@/helpers/i18n';
 
 dayjs.extend(relativeTime);
 
@@ -141,4 +142,9 @@ export function calcFromSeconds(value, unit) {
 export function calcToSeconds(value, unit) {
   if (unit === 'h') return value * 60 * 60;
   if (unit === 'd') return value * 60 * 60 * 24;
+}
+
+export function setPageTitle(message, params = {}) {
+  const { t } = i18n.global;
+  document.title = t(message, params);
 }
