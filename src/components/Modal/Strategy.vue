@@ -16,20 +16,10 @@ const emit = defineEmits(['add', 'close']);
 
 const { open } = toRefs(props);
 const searchInput = ref('');
+const isValid = ref(true);
 const input = ref({
   name: '',
-  params: JSON.stringify(defaultParams, null, 2)
-});
-
-const form = ref({});
-
-const isValid = computed(() => {
-  try {
-    const params = JSON.parse(input.value.params);
-    return !!params.symbol;
-  } catch (e) {
-    return false;
-  }
+  params: {}
 });
 
 const { strategies } = useApp();
@@ -45,28 +35,23 @@ const strategiesResults = computed(() => filteredStrategies(searchInput.value));
 
 function handleSubmit() {
   const strategyObj = clone(input.value);
-  strategyObj.params = JSON.parse(strategyObj.params);
   emit('add', strategyObj);
   emit('close');
 }
 
 function handleClick(strategy) {
   const params = strategy.examples[0]?.strategy?.params || defaultParams;
-  input.value = {
-    name: strategy.key,
-    params: JSON.stringify(params, null, 2)
-  };
+  input.value.name = strategy.key;
+  input.value.params = definition.value ? {} : params;
 }
 
 watch(open, () => {
   if (props.strategy?.name) {
-    const strategyObj = props.strategy;
-    strategyObj.params = JSON.stringify(strategyObj.params, null, 2);
     input.value = props.strategy;
   } else {
     input.value = {
       name: '',
-      params: JSON.stringify(defaultParams, null, 2)
+      params: defaultParams
     };
   }
 });
@@ -84,14 +69,19 @@ watch(open, () => {
       :modal="true"
     />
     <div v-if="input.name" class="m-4">
-      <SObject v-if="definition" v-model="form" :definition="definition" />
+      <SObject
+        v-if="definition"
+        v-model="input.params"
+        :definition="definition"
+      />
       <UiButton
         v-else
         class="block w-full mb-3 overflow-x-auto"
         style="height: auto"
       >
-        <TextareaAutosize
+        <TextareaJson
           v-model="input.params"
+          v-model:is-valid="isValid"
           :placeholder="$t('strategyParameters')"
           class="input text-left no-scrollbar"
           style="width: 560px"
