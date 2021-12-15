@@ -12,9 +12,8 @@ const input = ref('');
 
 function handleInput() {
   try {
-    const inputObj = JSON.parse(input.value);
-    emit('update:modelValue', inputObj);
-    emit('update:isValid', !!inputObj.symbol);
+    emit('update:modelValue', JSON.parse(input.value));
+    emit('update:isValid', true);
   } catch (e) {
     emit('update:isValid', false);
   }

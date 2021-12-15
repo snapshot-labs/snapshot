@@ -101,7 +101,7 @@ watch(open, () => {
     <template v-if="input.name" v-slot:footer>
       <UiButton
         @click="handleSubmit"
-        :disabled="!isValid"
+        :disabled="!isValid || !input.params.symbol"
         class="w-full"
         primary
       >
