@@ -12,14 +12,12 @@ const props = defineProps({
 });
 
 const auth = getInstance();
-const { web3 } = useWeb3();
+const { web3Account } = useWeb3();
 
 const { explore } = useApp();
 
 const nbrMembers = explore.value.spaces[props.space.id].followers;
 const isVerified = verified[props.space.id] || 0;
-
-const web3Account = computed(() => web3.value.account);
 
 const isAdmin = computed(() => {
   const admins = props.space?.admins?.map(address => address.toLowerCase());

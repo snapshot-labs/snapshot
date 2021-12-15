@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useModal } from '@/composables/useModal';
 import { useWeb3 } from '@/composables/useWeb3';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
@@ -16,9 +16,8 @@ const props = defineProps({
 });
 const { notify } = useNotifications();
 const auth = getInstance();
-const { web3 } = useWeb3();
+const { web3Account } = useWeb3();
 const { profiles } = useProfiles();
-const web3Account = computed(() => web3.value.account);
 const { modalAccountOpen } = useModal();
 const loading = ref(false);
 const comment = ref('');

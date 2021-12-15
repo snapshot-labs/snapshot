@@ -29,7 +29,7 @@ const route = useRoute();
 const router = useRouter();
 const { domain } = useDomain();
 const { t } = useI18n();
-const { web3 } = useWeb3();
+const { web3, web3Account } = useWeb3();
 const { send, clientLoading } = useClient();
 const { getExplore } = useApp();
 const notify = inject('notify');
@@ -49,7 +49,6 @@ const totalScore = ref(0);
 const scores = ref([]);
 const modalStrategiesOpen = ref(false);
 
-const web3Account = computed(() => web3.value.account);
 const isCreator = computed(() => proposal.value.author === web3Account.value);
 const loaded = computed(() => !props.spaceLoading && !loading.value);
 const isAdmin = computed(() => {
