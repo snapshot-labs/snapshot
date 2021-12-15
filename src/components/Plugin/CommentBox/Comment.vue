@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, toRef, watch } from 'vue';
+import { ref, toRef, watch } from 'vue';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import { useNotifications } from '@/composables/useNotifications';
 import { useModal } from '@/composables/useModal';
@@ -18,14 +18,13 @@ const props = defineProps({
   mainThread: String,
   space: Object
 });
-const { web3 } = useWeb3();
+const { web3Account } = useWeb3();
 const item2 = toRef(props, 'item');
 const comment = ref(
   props.method === 'edit' && item2.value?.markdown
     ? clone(item2.value?.markdown)
     : ''
 );
-const web3Account = computed(() => web3.value.account);
 const loading = ref(false);
 const togglePreview = ref(true);
 const closeModal = ref(false);

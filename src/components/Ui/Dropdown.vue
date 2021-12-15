@@ -68,7 +68,6 @@ onBeforeUnmount(() => window.removeEventListener('click', close));
 <style scoped lang="scss">
 .button {
   cursor: pointer;
-  color: var(--text-color);
   &:hover {
     color: var(--link-color);
   }

@@ -1,14 +1,16 @@
 <script setup>
-import { ref, computed, watch } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { useEns } from '@/composables/useEns';
 import { useWeb3 } from '@/composables/useWeb3';
+import { setPageTitle } from '@/helpers/utils';
 
-const { web3 } = useWeb3();
-const web3Account = computed(() => web3.value.account);
+const { web3Account } = useWeb3();
 
 const router = useRouter();
 const { getEnsNames } = useEns();
+
+const tlds = ['.eth', '.xyz', '.com', '.org', '.io', '.app', '.art'];
 
 const id = ref('');
 const loading = ref(false);
@@ -30,12 +32,20 @@ function loadEns() {
 loadEns();
 watch(web3Account, loadEns);
 
+function isValidTLD(id) {
+  return tlds.some(tlds => id.endsWith(tlds));
+}
+
 function handleSubmit() {
   router.push({
     name: 'spaceSettings',
     params: { key: id.value.toLowerCase() }
   });
 }
+
+onMounted(() => {
+  setPageTitle('page.title.setup');
+});
 </script>
 
 <template>
@@ -90,7 +100,7 @@ function handleSubmit() {
           {{ $t('setup.noEns') }}
         </div>
         <UiButton
-          :disabled="!id.includes('.eth') && !id.includes('.xyz')"
+          :disabled="!isValidTLD(id)"
           @click="handleSubmit"
           class="w-full mt-2"
           primary
