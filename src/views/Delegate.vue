@@ -31,7 +31,7 @@ const { t } = useI18n();
 const auth = getInstance();
 const notify = inject('notify');
 const { explore } = useApp();
-const { web3 } = useWeb3();
+const { web3, web3Account } = useWeb3();
 const { pendingCount } = useTxStatus();
 const { loadExtentedSpaces, extentedSpaces, spaceLoading } =
   useExtendedSpaces();
@@ -52,7 +52,6 @@ const form = ref({
 
 const { profiles, loadProfiles } = useProfiles();
 
-const web3Account = computed(() => web3.value.account);
 const networkKey = computed(() => web3.value.network.key);
 const space = computed(() => explore.value.spaces[form.value.id]);
 
