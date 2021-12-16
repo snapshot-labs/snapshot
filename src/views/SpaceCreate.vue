@@ -270,7 +270,7 @@ watchEffect(() => {
           @click="preview = true"
           class="float-right"
         >
-          <Icon name="preview" size="18" class="pb-1" />
+          <Icon name="preview" size="18" />
         </UiSidebarButton>
         <UiSidebarButton
           v-if="preview"
