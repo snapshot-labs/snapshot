@@ -39,20 +39,8 @@ watchEffect(() => {
     >
       <div>
         <div class="mb-2">
-          <router-link
-            class="text-color group"
-            :class="$route.name === 'spaceProposals' && 'pointer-events-none'"
-            :to="{
-              name: 'spaceProposals',
-              params: { key: proposal.space.id }
-            }"
-          >
-            <Token :space="proposal.space" size="28" />
-            <span
-              class="ml-2 group-hover:text-skin-link"
-              v-text="proposal.space.name"
-            />
-          </router-link>
+          <Token :space="proposal.space" size="28" />
+          <span class="ml-2" v-text="proposal.space.name" />
           {{ $tc('proposalBy', [username]) }}
           <Badges
             :address="proposal.author"
