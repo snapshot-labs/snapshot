@@ -1,51 +1,64 @@
 <script setup>
-import { ref, onMounted, watch } from 'vue';
+import { ref, reactive, watch, onMounted, onUnmounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useEns } from '@/composables/useEns';
 import { useWeb3 } from '@/composables/useWeb3';
+import { useModal } from '@/composables/useModal';
 import { setPageTitle } from '@/helpers/utils';
-
-const { web3Account } = useWeb3();
+import RegisterENS from '@/components/RegisterENS.vue';
 
 const router = useRouter();
-const { getEnsNames } = useEns();
-
-const tlds = ['.eth', '.xyz', '.com', '.org', '.io', '.app', '.art'];
-
-const id = ref('');
-const loading = ref(false);
-const domains = ref(null);
-
-function applyEns(ens) {
-  id.value = ens;
-}
-
-function loadEns() {
-  loading.value = true;
-  getEnsNames()
-    .then(res => {
-      domains.value = res.account?.domains.slice(0, 5);
-    })
-    .finally(() => (loading.value = false));
-}
-
-loadEns();
-watch(web3Account, loadEns);
-
-function isValidTLD(id) {
-  return tlds.some(tlds => id.endsWith(tlds));
-}
-
-function handleSubmit() {
-  router.push({
-    name: 'spaceSettings',
-    params: { key: id.value.toLowerCase() }
-  });
-}
+const { web3, web3Account } = useWeb3();
+const { validEnsTlds, ownedEnsDomains, loadOwnedEnsDomains } = useEns();
+const { modalAccountOpen } = useModal();
 
 onMounted(() => {
   setPageTitle('page.title.setup');
 });
+
+// used either on click on existing owned domain OR once a newly registered
+// domain is returned by the ENS subgraph.
+const goToSettings = (key) => {
+  router.push({ name: 'spaceSettings', params: { key } })
+}
+
+// input for new domain registration
+const newDomain = reactive({
+  name: '',
+  tld: validEnsTlds[0]
+});
+
+// load domains initially and update on account change
+const loadingOwnedEnsDomains = ref(true);
+loadOwnedEnsDomains().finally(() => loadingOwnedEnsDomains.value = false);
+watch(web3Account, () => {
+  loadOwnedEnsDomains();
+  waitingForRegistration.value = false;
+});
+
+// indicates whether to periodically check for new domains
+// (after clicking on "Register")
+const waitingForRegistration = ref(false);
+// handle periodic lookup (every 10s) while registering new domain
+let waitingForRegistrationInterval;
+const waitForRegistration = () => {
+  waitingForRegistration.value = true;
+  clearInterval(waitingForRegistrationInterval);
+  waitingForRegistrationInterval = setInterval(loadOwnedEnsDomains, 10000);
+}
+// If after loading domains, we have more than before, there was a new registration.
+// If the new domain matches the one that was input, directly jump to settings page.
+watch(ownedEnsDomains, (newVal, oldVal) => {
+  if (newVal.length > oldVal.length) {
+    waitingForRegistration.value = false;
+    clearInterval(waitingForRegistrationInterval);
+    if (newVal.find(d => d.name === `${newDomain.name}.${newDomain.tld}`)) {
+      goToSettings(`${newDomain.name}.${newDomain.tld}`);
+    }
+  }
+});
+// stop lookup when leaving page
+onUnmounted(() => clearInterval(waitingForRegistrationInterval));
 </script>
 
 <template>
@@ -58,56 +71,75 @@ onMounted(() => {
         </router-link>
       </div>
       <div class="px-4 md:px-0">
-        <h1 v-text="$t('setup.createASpace')" class="mb-4" />
-      </div>
-      <Block>
-        <div class="mb-3">
-          {{ $t('setup.useExistingEns') }}
-        </div>
-
-        <UiButton class="text-left w-full mb-3 flex px-3">
-          <input
-            v-model="id"
-            class="input flex-auto"
-            :placeholder="$t('setup.example')"
-          />
+        <h1 class="mb-4">
+          {{ $t('setup.createASpace') }}
           <a
-            class="block py-1 -mr-2"
             target="_blank"
             href="https://docs.snapshot.org/spaces/create"
           >
             <Icon name="info" size="24" class="text-color p-1" />
           </a>
-        </UiButton>
-        <RowLoading v-if="loading" />
-        <div v-if="domains && !loading">
-          <span>{{ $t('setup.suggestions') }}: </span>
-          <ul class="inline">
-            <li
-              class="inline cursor-pointer"
-              v-for="(ens, i) in domains"
-              :key="i"
-              @click="applyEns(ens.name)"
-              role="button"
-            >
-              <a>
-                {{ ens.name }}<span v-if="i + 1 < domains.length">, </span>
-              </a>
-            </li>
-          </ul>
+        </h1>
+      </div>
+      <div v-if="web3Account" class="px-4 md:px-0">
+        <UiLoading v-if="loadingOwnedEnsDomains" />
+        <div v-else>
+          <div v-if="ownedEnsDomains.length">
+            <div class="mb-3">
+              {{ $t(ownedEnsDomains.length > 1 ? 'setup.chooseExistingEns' : 'setup.useSingleExistingEns') }}
+            </div>
+            <div class="space-y-3">
+              <UiButton
+                v-for="(ens, i) in ownedEnsDomains"
+                :key="i"
+                @click="goToSettings(ens.name)"
+                class="w-full flex items-center justify-between"
+                primary
+              >
+                {{ ens.name }}
+                <Icon name="go" size="22" class="text-white" />
+              </UiButton>
+            </div>
+            <div v-if="waitingForRegistration" class="w-full rounded-3xl border px-3 py-2 text-center text-color opacity-30 animate-pulse mt-3">
+              {{ $t('setup.waitingForRegistration') }}
+            </div>
+            <div class="my-3">
+              {{ $t('setup.orReigsterNewEns') }}
+            </div>
+            <RegisterENS
+              v-model:name="newDomain.name"
+              v-model:tld="newDomain.tld"
+              @waitForRegistration="waitForRegistration"
+            />
+          </div>
+          <div v-else>
+            <div class="mb-3">
+              {{ $t('setup.toCreateASpace') }}
+            </div>
+            <div v-if="waitingForRegistration" class="w-full rounded-3xl border px-3 py-2 text-center text-color opacity-30 animate-pulse mb-3">
+              {{ $t('setup.waitingForRegistration') }}
+            </div>
+            <RegisterENS
+              v-model:name="newDomain.name"
+              v-model:tld="newDomain.tld"
+              @waitForRegistration="waitForRegistration"
+            />
+            <div class="mt-3">
+              {{ $t('setup.correctAccountNote') }}
+            </div>
+          </div>
         </div>
-        <div v-else-if="!domains && !loading">
-          {{ $t('setup.noEns') }}
-        </div>
+      </div>
+      <div v-else class="px-4 md:px-0">
         <UiButton
-          :disabled="!isValidTLD(id)"
-          @click="handleSubmit"
+          @click="modalAccountOpen = true"
+          :loading="web3.authLoading"
           class="w-full mt-2"
           primary
         >
-          {{ $t('next') }}
+          {{ $t('connectWallet') }}
         </UiButton>
-      </Block>
+      </div>
     </template>
   </Layout>
 </template>
