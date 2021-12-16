@@ -19,7 +19,7 @@ defineEmits(['update:name', 'update:tld', 'waitForRegistration']);
   <UiButton class="text-left w-full mb-3 flex px-3">
     <input
       :value="name"
-      @input="$emit('update:name', $event.target.value)"
+      @input="$emit('update:name', $event.target.value.toLowerCase().replaceAll(/\s/g, ''))"
       class="input flex-auto"
       :placeholder="$t('setup.example')"
     />
