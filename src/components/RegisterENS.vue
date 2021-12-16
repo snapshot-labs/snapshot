@@ -12,11 +12,7 @@ defineProps({
   tld: String
 });
 
-defineEmits([
-  'update:name',
-  'update:tld',
-  'waitForRegistration'
-])
+defineEmits(['update:name', 'update:tld', 'waitForRegistration']);
 </script>
 
 <template>
@@ -48,9 +44,7 @@ defineEmits([
   >
     <UiButton :disabled="!name" class="w-full mt-2" primary>
       {{ $t('setup.registerEnsButton') }}
-      <span v-if="name">
-      {{ name }}.{{ tld }}
-      </span>
+      <span v-if="name"> {{ name }}.{{ tld }} </span>
     </UiButton>
   </a>
 </template>

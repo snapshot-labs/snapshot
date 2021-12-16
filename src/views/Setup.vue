@@ -18,22 +18,14 @@ onMounted(() => {
 
 // used either on click on existing owned domain OR once a newly registered
 // domain is returned by the ENS subgraph.
-const goToSettings = (key) => {
-  router.push({ name: 'spaceSettings', params: { key } })
-}
+const goToSettings = key => {
+  router.push({ name: 'spaceSettings', params: { key } });
+};
 
 // input for new domain registration
 const newDomain = reactive({
   name: '',
   tld: validEnsTlds[0]
-});
-
-// load domains initially and update on account change
-const loadingOwnedEnsDomains = ref(true);
-loadOwnedEnsDomains().finally(() => loadingOwnedEnsDomains.value = false);
-watch(web3Account, () => {
-  loadOwnedEnsDomains();
-  waitingForRegistration.value = false;
 });
 
 // indicates whether to periodically check for new domains
@@ -45,7 +37,8 @@ const waitForRegistration = () => {
   waitingForRegistration.value = true;
   clearInterval(waitingForRegistrationInterval);
   waitingForRegistrationInterval = setInterval(loadOwnedEnsDomains, 10000);
-}
+};
+
 // If after loading domains, we have more than before, there was a new registration.
 // If the new domain matches the one that was input, directly jump to settings page.
 watch(ownedEnsDomains, (newVal, oldVal) => {
@@ -57,6 +50,15 @@ watch(ownedEnsDomains, (newVal, oldVal) => {
     }
   }
 });
+
+// load domains initially and update on account change
+const loadingOwnedEnsDomains = ref(true);
+loadOwnedEnsDomains().finally(() => (loadingOwnedEnsDomains.value = false));
+watch(web3Account, () => {
+  loadOwnedEnsDomains();
+  waitingForRegistration.value = false;
+});
+
 // stop lookup when leaving page
 onUnmounted(() => clearInterval(waitingForRegistrationInterval));
 </script>
@@ -73,10 +75,7 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
       <div class="px-4 md:px-0">
         <h1 class="mb-4">
           {{ $t('setup.createASpace') }}
-          <a
-            target="_blank"
-            href="https://docs.snapshot.org/spaces/create"
-          >
+          <a target="_blank" href="https://docs.snapshot.org/spaces/create">
             <Icon name="info" size="24" class="text-color p-1" />
           </a>
         </h1>
@@ -86,7 +85,13 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
         <div v-else>
           <div v-if="ownedEnsDomains.length">
             <div class="mb-3">
-              {{ $t(ownedEnsDomains.length > 1 ? 'setup.chooseExistingEns' : 'setup.useSingleExistingEns') }}
+              {{
+                $t(
+                  ownedEnsDomains.length > 1
+                    ? 'setup.chooseExistingEns'
+                    : 'setup.useSingleExistingEns'
+                )
+              }}
             </div>
             <div class="space-y-3">
               <UiButton
@@ -100,7 +105,20 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
                 <Icon name="go" size="22" class="text-white" />
               </UiButton>
             </div>
-            <div v-if="waitingForRegistration" class="w-full rounded-3xl border px-3 py-2 text-center text-color opacity-30 animate-pulse mt-3">
+            <div
+              v-if="waitingForRegistration"
+              class="
+                w-full
+                rounded-3xl
+                border
+                px-3
+                py-2
+                text-center text-color
+                opacity-30
+                animate-pulse
+                mt-3
+              "
+            >
               {{ $t('setup.waitingForRegistration') }}
             </div>
             <div class="my-3">
@@ -116,7 +134,20 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
             <div class="mb-3">
               {{ $t('setup.toCreateASpace') }}
             </div>
-            <div v-if="waitingForRegistration" class="w-full rounded-3xl border px-3 py-2 text-center text-color opacity-30 animate-pulse mb-3">
+            <div
+              v-if="waitingForRegistration"
+              class="
+                w-full
+                rounded-3xl
+                border
+                px-3
+                py-2
+                text-center text-color
+                opacity-30
+                animate-pulse
+                mb-3
+              "
+            >
               {{ $t('setup.waitingForRegistration') }}
             </div>
             <RegisterENS

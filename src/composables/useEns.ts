@@ -23,11 +23,11 @@ export function useEns() {
       });
       ownedEnsDomains.value = res.account?.domains || [];
     }
-  }
+  };
 
   return {
     validEnsTlds,
     ownedEnsDomains,
-    loadOwnedEnsDomains,
+    loadOwnedEnsDomains
   };
 }
