@@ -69,7 +69,7 @@ watch(open, () => {
       :modal="true"
     />
     <div v-if="input.name" class="m-4">
-      <SObject
+      <SDefaultObject
         v-if="definition"
         v-model="input.params"
         :definition="definition"
