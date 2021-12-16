@@ -3,15 +3,13 @@ import { shorten } from '@/helpers/utils';
 import { useWeb3 } from '@/composables/useWeb3';
 
 export function useUsername() {
-  const { web3 } = useWeb3();
+  const { web3Account } = useWeb3();
 
   const address = ref('');
   const profile = ref({
     name: '',
     ens: ''
   });
-
-  const web3Account = computed(() => web3.value.account);
 
   const username = computed(() => {
     if (

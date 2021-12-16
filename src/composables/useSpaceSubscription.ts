@@ -11,13 +11,12 @@ import client from '@/helpers/clientEIP712';
 const subscriptions = ref<any[] | undefined>(undefined);
 
 export function useSpaceSubscription(spaceId: any) {
-  const { web3 } = useWeb3();
+  const { web3, web3Account } = useWeb3();
   const { apolloQuery } = useApolloQuery();
   const { setAlias, aliasWallet, isValidAlias, checkAlias } = useAliasAction();
   const { notify } = useNotifications();
   const { t } = useI18n();
   const loading = ref(false);
-  const web3Account = computed(() => web3.value.account);
   const isSubscribed = computed(() => {
     return (
       subscriptions.value?.some((subscription: any) => {
