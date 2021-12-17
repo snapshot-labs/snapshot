@@ -8,7 +8,7 @@ updates:
       prefix: '⬆️ deps:'
       prefix-development: '⬆️ deps(dev):'
     assignees:
-      - bonustrack
+      - mktcode
       - samuveth
     reviewers:
       - bonustrack
