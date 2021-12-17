@@ -17,6 +17,7 @@ import { useWeb3 } from '@/composables/useWeb3';
 import { useClient } from '@/composables/useClient';
 import { useApp } from '@/composables/useApp';
 import { useExtendedSpaces } from '@/composables/useExtendedSpaces';
+import { useStore } from '@/composables/useStore';
 import { setPageTitle } from '@/helpers/utils';
 
 const props = defineProps({
@@ -29,10 +30,11 @@ const router = useRouter();
 const { t } = useI18n();
 const auth = getInstance();
 const { domain } = useDomain();
-const { web3 } = useWeb3();
+const { web3, web3Account } = useWeb3();
 const { getExplore } = useApp();
 const { spaceLoading } = useExtendedSpaces();
 const { send, clientLoading } = useClient();
+const { store } = useStore();
 const notify = inject('notify');
 
 const choices = ref([]);
@@ -59,7 +61,6 @@ const nameForm = ref(null);
 const passValidation = ref([true]);
 const loadingSnapshot = ref(true);
 
-const web3Account = computed(() => web3.value.account);
 const proposal = computed(() =>
   Object.assign(form.value, { choices: choices.value })
 );
@@ -151,6 +152,7 @@ async function handleSubmit() {
   console.log('Result', result);
   if (result.id) {
     getExplore();
+    store.space.proposals = [];
     notify(['green', t('notify.proposalCreated')]);
     router.push({
       name: 'spaceProposal',

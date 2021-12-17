@@ -30,7 +30,7 @@ const basicValidation = { name: 'basic', params: {} };
 
 const { t } = useI18n();
 const { copyToClipboard } = useCopy();
-const { web3 } = useWeb3();
+const { web3Account } = useWeb3();
 const { send, clientLoading } = useClient();
 const notify = inject('notify');
 
@@ -59,8 +59,6 @@ const form = ref({
   voting: {},
   validation: basicValidation
 });
-
-const web3Account = computed(() => web3.value.account);
 
 const validate = computed(() => {
   if (form.value.terms === '') delete form.value.terms;
