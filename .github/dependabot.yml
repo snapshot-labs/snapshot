@@ -11,7 +11,7 @@ updates:
       - mktcode
       - samuveth
     reviewers:
-      - bonustrack
+      - mktcode
       - samuveth
     open-pull-requests-limit: 20
     rebase-strategy: auto
