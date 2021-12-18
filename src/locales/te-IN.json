@@ -393,5 +393,9 @@
       "strategy": "{key} strategy",
       "delegate": "Delegate"
     }
+  },
+  "hal": {
+    "title": "Track proposals for {spaceName}",
+    "text": "Receive notifications every time a new proposal is created or ends"
   }
 }
