@@ -52,7 +52,7 @@
     "vue": "^3.2.26",
     "vue-i18n": "^9.1.9",
     "vue-router": "^4.0.9",
-    "vue-tippy": "^6.0.0-alpha.32",
+    "vue-tippy": "^6.0.0-alpha.39",
     "vuedraggable": "^4.0.2"
   },
   "devDependencies": {
