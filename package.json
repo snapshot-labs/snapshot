@@ -39,7 +39,7 @@
     "ethereum-blockies-base64": "^1.0.2",
     "fortmatic": "^2.2.1",
     "graphql": "^15.8.0",
-    "graphql-tag": "^2.12.4",
+    "graphql-tag": "^2.12.6",
     "lodash": "^4.17.21",
     "numeral": "^2.0.6",
     "patch-package": "^6.4.7",
