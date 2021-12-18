@@ -393,5 +393,9 @@
       "strategy": "{key} の戦略",
       "delegate": "デリゲート（委任）"
     }
+  },
+  "hal": {
+    "title": "Track proposals for {spaceName}",
+    "text": "Receive notifications every time a new proposal is created or ends"
   }
 }
