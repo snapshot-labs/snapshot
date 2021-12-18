@@ -9,8 +9,7 @@ import { useI18n } from 'vue-i18n';
 const { t } = useI18n();
 const auth = getInstance();
 const { modalOpen, modalAccountOpen } = useModal();
-const { web3 } = useWeb3();
-const web3Account = computed(() => web3.value.account);
+const { web3Account } = useWeb3();
 const props = defineProps({
   profiles: Object,
   space: Object,

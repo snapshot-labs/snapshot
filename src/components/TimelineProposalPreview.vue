@@ -39,8 +39,19 @@ watchEffect(() => {
     >
       <div>
         <div class="mb-2">
-          <Token :space="proposal.space" size="28" />
-          <span class="ml-2" v-text="proposal.space.name" />
+          <router-link
+            class="text-color group"
+            :to="{
+              name: 'spaceProposals',
+              params: { key: proposal.space.id }
+            }"
+          >
+            <Token :space="proposal.space" size="28" />
+            <span
+              class="ml-2 group-hover:text-skin-link"
+              v-text="proposal.space.name"
+            />
+          </router-link>
           {{ $tc('proposalBy', [username]) }}
           <Badges
             :address="proposal.author"
@@ -93,7 +104,7 @@ watchEffect(() => {
           {{ $t(`proposals.states.${proposal.state}`) }},
           <span
             v-if="proposal.scores_state !== 'final'"
-            v-text="$tc(period, [_toNow(proposal.start)])"
+            v-text="$tc(period, [_toNow(proposal.end)])"
           />
           <span v-if="proposal.scores_state === 'final'" class="mt-2">
             {{ _n(proposal.votes, '0,00') }} votes
