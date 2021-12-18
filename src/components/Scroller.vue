@@ -1,5 +1,5 @@
 <script setup>
-import { computed, watch, onMounted, ref, watchEffect } from 'vue';
+import { watch, onMounted, ref, watchEffect } from 'vue';
 import draggable from 'vuedraggable';
 import { useFollowSpace } from '@/composables/useFollowSpace';
 import { useWeb3 } from '@/composables/useWeb3';
@@ -9,7 +9,7 @@ import { useUnseenProposals } from '@/composables/useUnseenProposals';
 import { lsSet, lsGet } from '@/helpers/utils';
 
 const { explore } = useApp();
-const { web3 } = useWeb3();
+const { web3Account } = useWeb3();
 const { loadFollows, followingSpaces } = useFollowSpace();
 const { domain } = useDomain();
 const {
@@ -22,8 +22,6 @@ const {
 const modalAboutOpen = ref(false);
 const modalLangOpen = ref(false);
 const draggableSpaces = ref([]);
-
-const web3Account = computed(() => web3.value.account);
 
 function saveSpaceOrder() {
   if (web3Account.value)
