@@ -18,7 +18,7 @@
     "@ethersproject/providers": "^5.5.1",
     "@ethersproject/solidity": "^5.4.0",
     "@ethersproject/strings": "^5.5.0",
-    "@ethersproject/units": "^5.4.0",
+    "@ethersproject/units": "^5.5.0",
     "@ethersproject/wallet": "^5.4.0",
     "@gnosis.pm/safe-apps-provider": "^0.8.0",
     "@gnosis.pm/safe-apps-sdk": "^4.3.0",
