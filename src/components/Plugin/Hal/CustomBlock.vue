@@ -1,36 +1,22 @@
 <script setup>
+import { computed } from 'vue';
 const props = defineProps({
   space: Object
 });
-
-const getSpaceId = () => {
-  const spaceId = props.space.id;
-  return spaceId;
-};
-
-const getSpaceName = () => {
-  const spaceName = props.space.name;
-  return spaceName;
-};
-
-const getHalUrl = () => {
-  const spaceId = getSpaceId();
-  return `https://9000.staging.hal.xyz/recipes/snapshot-follow-new-proposals?space-id=${spaceId}&status=end`;
-};
-
-const getLogoUrl = () => {
-  return `https://hal-snapshot-plugin.s3.eu-west-1.amazonaws.com/hal_bell.svg`;
-};
+const halUrl = computed(
+  () =>
+    `https://9000.hal.xyz/recipes/snapshot-follow-new-proposals?space-id=${props.space.id}&status=end`
+);
+const halLogoUrl = computed(
+  () => 'https://hal-snapshot-plugin.s3.eu-west-1.amazonaws.com/hal_bell.svg'
+);
 </script>
 
 <template>
-  <Block
-    :title="$t('hal.title', { spaceName: getSpaceName() })"
-    :loading="loading"
-  >
+  <Block :title="$t('hal.title', { spaceName: space.name })" :loading="loading">
     <div class="flex flex-col items-center">
       <div>
-        <a :href="getHalUrl()" target="_blank">
+        <a :href="halUrl" target="_blank">
           <img
             class="
               rounded-full
@@ -39,7 +25,7 @@ const getLogoUrl = () => {
               mx-auto
               mb-2
             "
-            :src="getLogoUrl()"
+            :src="halLogoUrl"
             alt="Hal"
             width="100"
             height="100"
@@ -47,7 +33,7 @@ const getLogoUrl = () => {
         </a>
       </div>
       <div class="link-color text-center mb-2">{{ $t('hal.text') }}</div>
-      <a :href="getHalUrl()" target="_blank">
+      <a :href="halUrl" target="_blank">
         <UiButton>Be notified</UiButton>
       </a>
     </div>
