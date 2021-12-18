@@ -10,7 +10,7 @@
     "init-submodules": "git submodule update --init"
   },
   "dependencies": {
-    "@apollo/client": "^3.3.21",
+    "@apollo/client": "^3.5.6",
     "@ethersproject/abi": "^5.4.0",
     "@ethersproject/address": "^5.4.0",
     "@ethersproject/bignumber": "^5.4.1",
@@ -21,7 +21,7 @@
     "@ethersproject/units": "^5.5.0",
     "@ethersproject/wallet": "^5.4.0",
     "@gnosis.pm/safe-apps-provider": "^0.8.0",
-    "@gnosis.pm/safe-apps-sdk": "^4.3.0",
+    "@gnosis.pm/safe-apps-sdk": "^6.1.1",
     "@popperjs/core": "^2.8.3",
     "@portis/web3": "^4.0.6",
     "@pusher/push-notifications-web": "^1.1.0",
@@ -67,7 +67,7 @@
     "eslint-plugin-vue": "^7.15.1",
     "husky": "^7.0.4",
     "postcss": "^8.4.5",
-    "prettier": "^2.3.2",
+    "prettier": "^2.5.1",
     "rollup-plugin-visualizer": "^5.5.2",
     "sass": "~1.45.0",
     "sass-loader": "^8.0.2",
