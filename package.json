@@ -71,7 +71,7 @@
     "rollup-plugin-visualizer": "^5.5.2",
     "sass": "~1.45.0",
     "sass-loader": "^8.0.2",
-    "tailwindcss": "^2.2.9",
+    "tailwindcss": "^3.0.7",
     "unplugin-vue-components": "^0.15.6",
     "vite": "^2.7.2",
     "walletlink": "^2.3.0"
