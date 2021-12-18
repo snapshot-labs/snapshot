@@ -50,7 +50,7 @@
     "timeago.js": "^4.0.2",
     "typescript": "^4.3.5",
     "vue": "^3.2.26",
-    "vue-i18n": "^9.1.7",
+    "vue-i18n": "^9.1.9",
     "vue-router": "^4.0.9",
     "vue-tippy": "^6.0.0-alpha.32",
     "vuedraggable": "^4.0.2"
@@ -74,7 +74,7 @@
     "tailwindcss": "^2.2.9",
     "unplugin-vue-components": "^0.15.6",
     "vite": "^2.7.2",
-    "walletlink": "^2.1.8"
+    "walletlink": "^2.3.0"
   },
   "resolutions": {
     "ansi-regex": "^5.0.1",
