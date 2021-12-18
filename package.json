@@ -74,7 +74,7 @@
     "tailwindcss": "^2.2.9",
     "unplugin-vue-components": "^0.15.6",
     "vite": "^2.7.2",
-    "walletlink": "^2.1.8"
+    "walletlink": "^2.3.0"
   },
   "resolutions": {
     "ansi-regex": "^5.0.1",
