@@ -9,11 +9,7 @@ export default defineConfig({
     'process.env': process.env
   },
   plugins: [
-    vue({
-      script: {
-        refSugar: true
-      }
-    }),
+    vue({ reactivityTransform: true }),
     ViteComponents({ directoryAsNamespace: true }),
     visualizer({
       filename: './dist/stats.html',

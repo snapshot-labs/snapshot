@@ -1,0 +1,17 @@
+version: 2
+updates:
+  - package-ecosystem: 'npm'
+    directory: '/'
+    schedule:
+      interval: 'daily'
+    commit-message:
+      prefix: '⬆️ deps:'
+      prefix-development: '⬆️ deps(dev):'
+    assignees:
+      - mktcode
+      - samuveth
+    reviewers:
+      - mktcode
+      - samuveth
+    open-pull-requests-limit: 20
+    rebase-strategy: auto

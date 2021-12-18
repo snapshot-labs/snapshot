@@ -12,7 +12,7 @@ const following = ref([]);
 const loadingFollows = ref(false);
 
 export function useFollowSpace(spaceObj: any = {}) {
-  const { web3 } = useWeb3();
+  const { web3, web3Account } = useWeb3();
   const { modalAccountOpen } = useModal();
   const { apolloQuery } = useApolloQuery();
   const { setAlias, aliasWallet, isValidAlias, checkAlias } = useAliasAction();
@@ -22,8 +22,6 @@ export function useFollowSpace(spaceObj: any = {}) {
 
   const loadingFollow = ref('');
   const hoverJoin = ref('');
-
-  const web3Account = computed(() => web3.value.account);
 
   const followingSpaces = computed(() =>
     following.value.map((f: any) => f.space.id)

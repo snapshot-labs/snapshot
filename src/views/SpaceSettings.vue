@@ -30,7 +30,7 @@ const basicValidation = { name: 'basic', params: {} };
 
 const { t } = useI18n();
 const { copyToClipboard } = useCopy();
-const { web3 } = useWeb3();
+const { web3Account } = useWeb3();
 const { send, clientLoading } = useClient();
 const notify = inject('notify');
 
@@ -59,8 +59,6 @@ const form = ref({
   voting: {},
   validation: basicValidation
 });
-
-const web3Account = computed(() => web3.value.account);
 
 const validate = computed(() => {
   if (form.value.terms === '') delete form.value.terms;
@@ -210,11 +208,11 @@ function handleAddPlugins() {
 }
 
 function handleSubmitAddPlugins(payload) {
-  form.value.plugins[payload.key] = payload.inputClone;
+  form.value.plugins[payload.key] = payload.input;
 }
 
 function handleSubmitAddValidation(validation) {
-  form.value.validation = validation;
+  form.value.validation = clone(validation);
 }
 
 function setUploadLoading(s) {
@@ -696,7 +694,7 @@ onMounted(() => {
     />
     <ModalValidation
       :open="modalValidationOpen"
-      :validation="clone(form.validation)"
+      :validation="form.validation"
       @close="modalValidationOpen = false"
       @add="handleSubmitAddValidation"
     />
