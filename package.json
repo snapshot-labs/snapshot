@@ -64,7 +64,7 @@
     "@vue/eslint-config-typescript": "^7.0.0",
     "autoprefixer": "^10.4.0",
     "eslint-plugin-prettier": "^3.4.0",
-    "eslint-plugin-vue": "^7.15.1",
+    "eslint-plugin-vue": "^7.20.0",
     "husky": "^7.0.4",
     "postcss": "^8.4.5",
     "prettier": "^2.3.2",
