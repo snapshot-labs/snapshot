@@ -53,7 +53,7 @@
     "vue-i18n": "^9.1.9",
     "vue-router": "^4.0.9",
     "vue-tippy": "^6.0.0-alpha.32",
-    "vuedraggable": "^4.0.2"
+    "vuedraggable": "^4.1.0"
   },
   "devDependencies": {
     "@types/node": "^16.4.10",

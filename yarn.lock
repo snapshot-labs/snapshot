@@ -6061,10 +6061,10 @@ smartwrap@^1.2.3:
     wcwidth "^1.0.1"
     yargs "^15.1.0"
 
-sortablejs@1.10.2:
-  version "1.10.2"
-  resolved "https://registry.yarnpkg.com/sortablejs/-/sortablejs-1.10.2.tgz#6e40364d913f98b85a14f6678f92b5c1221f5290"
-  integrity sha512-YkPGufevysvfwn5rfdlGyrGjt7/CRHwvRPogD/lC+TnvcN29jDpCifKP+rBqf+LRldfXSTh+0CGLcSg0VIxq3A==
+sortablejs@1.14.0:
+  version "1.14.0"
+  resolved "https://registry.yarnpkg.com/sortablejs/-/sortablejs-1.14.0.tgz#6d2e17ccbdb25f464734df621d4f35d4ab35b3d8"
+  integrity sha512-pBXvQCs5/33fdN1/39pPL0NZF20LeRbLQ5jtnheIPN9JQAaufGjKdWduZn4U7wCtVuzKhmRkI0DFYHYRbB2H1w==
 
 "source-map-js@>=0.6.2 <2.0.0", source-map-js@^1.0.1:
   version "1.0.1"
@@ -6730,12 +6730,12 @@ vue@^3.2.26:
     "@vue/server-renderer" "3.2.26"
     "@vue/shared" "3.2.26"
 
-vuedraggable@^4.0.2:
-  version "4.0.3"
-  resolved "https://registry.yarnpkg.com/vuedraggable/-/vuedraggable-4.0.3.tgz#98832a3562d44c73bbe4e205cc2dafce07b6ca14"
-  integrity sha512-NkJYk+UyxgEoSQcgvVZtqY6dYpdXkBHS8aq6CqoJAfXVM9ZRYT0WPdlBbTttG4nCwllU2M5JGGgo9Drt/L0a7w==
+vuedraggable@^4.1.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/vuedraggable/-/vuedraggable-4.1.0.tgz#edece68adb8a4d9e06accff9dfc9040e66852270"
+  integrity sha512-FU5HCWBmsf20GpP3eudURW3WdWTKIbEIQxh9/8GE806hydR9qZqRRxRE3RjqX7PkuLuMQG/A7n3cfj9rCEchww==
   dependencies:
-    sortablejs "1.10.2"
+    sortablejs "1.14.0"
 
 walletlink@^2.3.0:
   version "2.3.0"
