@@ -5877,10 +5877,10 @@ schema-utils@^2.6.1:
     ajv "^6.12.4"
     ajv-keywords "^3.5.2"
 
-scrollmonitor@^1.2.4:
-  version "1.2.4"
-  resolved "https://registry.yarnpkg.com/scrollmonitor/-/scrollmonitor-1.2.4.tgz#823d04cc1574aa3b71de7cc70ef91ebe633344a0"
-  integrity sha512-HBQpeZVAYETbNk0DAmi+X4hdTQMk5WRa/Udez9o8yC8GcRiPDgBxyEdV9g9Su/TWOuUeVfVGfNcyboEyzkte4Q==
+scrollmonitor@^1.2.8:
+  version "1.2.8"
+  resolved "https://registry.yarnpkg.com/scrollmonitor/-/scrollmonitor-1.2.8.tgz#1a581069d1df9449b312f1d197081cb53320bc20"
+  integrity sha512-hp/GWKUm5Wzcy6oROA6dfApzdfSs4pWiMEfWw7jpb0Hf6lkjBP8ZBfZd/JApICXWXPgqmD1jei7BP40eJ2+MiQ==
 
 scrypt-js@3.0.1, scrypt-js@^3.0.0:
   version "3.0.1"
