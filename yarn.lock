@@ -1400,13 +1400,13 @@
   resolved "https://registry.yarnpkg.com/@vitejs/plugin-vue/-/plugin-vue-2.0.1.tgz#db0e5eacf96358e04cc501c9008079b25a70a4ac"
   integrity sha512-wtdMnGVvys9K8tg+DxowU1ytTrdVveXr3LzdhaKakysgGXyrsfaeds2cDywtvujEASjWOwWL/OgWM+qoeM8Plg==
 
-"@vue/apollo-composable@4.0.0-alpha.12":
-  version "4.0.0-alpha.12"
-  resolved "https://registry.yarnpkg.com/@vue/apollo-composable/-/apollo-composable-4.0.0-alpha.12.tgz#5aab61bf9703a039e95ef60ecb2293e1da80c87f"
-  integrity sha512-BhCHhDgcDPkKOE3ILb7xIGI98dAsX2Ao3TvOjcMlr89IOK3TuD5B9xgPTsFdctTbupWIVdR/n0FDVXjha7g5iA==
+"@vue/apollo-composable@4.0.0-alpha.14":
+  version "4.0.0-alpha.14"
+  resolved "https://registry.yarnpkg.com/@vue/apollo-composable/-/apollo-composable-4.0.0-alpha.14.tgz#6e3358fa9b815b38384d3da59b5c2b77b2b229d3"
+  integrity sha512-bIOWRGk1j+b2ebsLfwQkzqvJd1tCpHZiBF2Qe88RTLUxtypdkdSW6YpLxwJgNoRv5W55sM9WI+nP2ziv2nqBZg==
   dependencies:
     throttle-debounce "^2.3.0"
-    vue-demi "^0.4.0"
+    vue-demi "^0.9.1"
 
 "@vue/compiler-core@3.2.26":
   version "3.2.26"
@@ -3904,10 +3904,10 @@ grapheme-splitter@^1.0.4:
   resolved "https://registry.yarnpkg.com/grapheme-splitter/-/grapheme-splitter-1.0.4.tgz#9cf3a665c6247479896834af35cf1dbb4400767e"
   integrity sha512-bzh50DW9kTPM00T8y4o8vQg89Di9oLJVLW/KaOGIXJWP/iqCN6WKYkbNOF04vFLJhwcpYUh9ydh/+5vpOqV4YQ==
 
-graphql-tag@^2.12.3, graphql-tag@^2.12.4:
-  version "2.12.5"
-  resolved "https://registry.yarnpkg.com/graphql-tag/-/graphql-tag-2.12.5.tgz#5cff974a67b417747d05c8d9f5f3cb4495d0db8f"
-  integrity sha512-5xNhP4063d16Pz3HBtKprutsPrmHZi5IdUGOWRxA2B6VF7BIRGOHZ5WQvDmJXZuPcBg7rYwaFxvQYjqkSdR3TQ==
+graphql-tag@^2.12.3, graphql-tag@^2.12.6:
+  version "2.12.6"
+  resolved "https://registry.yarnpkg.com/graphql-tag/-/graphql-tag-2.12.6.tgz#d441a569c1d2537ef10ca3d1633b48725329b5f1"
+  integrity sha512-FdSNcu2QQcWnM2VNvSCCDCVS5PpPqpzgFT8+GXzqJuoDd0CBncxCY278u4mhRO7tMgo2JjgJA5aZ+nWSQ/Z+xg==
   dependencies:
     tslib "^2.1.0"
 
@@ -6678,10 +6678,10 @@ vue-demi@*:
   resolved "https://registry.yarnpkg.com/vue-demi/-/vue-demi-0.11.3.tgz#dd7495b92b495ecfa35675bf024b1358a7add150"
   integrity sha512-DpM0TTMpclRZDV6AIacgg837zrim/C9Zn+2ztXBs9hsESJN9vC83ztjTe4KC4HgJuVle8YUjPp7HTwWtwOHfmg==
 
-vue-demi@^0.4.0:
-  version "0.4.5"
-  resolved "https://registry.yarnpkg.com/vue-demi/-/vue-demi-0.4.5.tgz#ea422a4468cb6321a746826a368a770607f87791"
-  integrity sha512-51xf1B6hV2PfjnzYHO/yUForFCRQ49KS8ngQb5T6l1HDEmfghTFtsxtRa5tbx4eqQsH76ll/0gIxuf1gei0ubw==
+vue-demi@^0.9.1:
+  version "0.9.1"
+  resolved "https://registry.yarnpkg.com/vue-demi/-/vue-demi-0.9.1.tgz#25d6e1ebd4d4010757ff3571e2bf6a1d7bf3de82"
+  integrity sha512-7s1lufRD2l369eFWPjgLvhqCRk0XzGWJsQc7K4q+0mZtixyGIvsK1Cg88P4NcaRIEiBuuN4q1NN4SZKFKwQswA==
 
 vue-eslint-parser@^7.0.0, vue-eslint-parser@^7.10.0:
   version "7.10.0"
