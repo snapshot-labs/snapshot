@@ -14,7 +14,7 @@
     "@ethersproject/abi": "^5.4.0",
     "@ethersproject/address": "^5.4.0",
     "@ethersproject/bignumber": "^5.4.1",
-    "@ethersproject/bytes": "^5.4.0",
+    "@ethersproject/bytes": "^5.5.0",
     "@ethersproject/providers": "^5.4.3",
     "@ethersproject/solidity": "^5.4.0",
     "@ethersproject/strings": "^5.5.0",
