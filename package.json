@@ -23,7 +23,7 @@
     "@gnosis.pm/safe-apps-provider": "^0.8.0",
     "@gnosis.pm/safe-apps-sdk": "^4.3.0",
     "@popperjs/core": "^2.8.3",
-    "@portis/web3": "^4.0.5",
+    "@portis/web3": "^4.0.6",
     "@pusher/push-notifications-web": "^1.1.0",
     "@snapshot-labs/lock": "github:snapshot-labs/lock#master",
     "@snapshot-labs/snapshot.js": "^0.3.23",
