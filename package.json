@@ -62,7 +62,7 @@
     "@vitejs/plugin-vue": "^2.0.1",
     "@vue/eslint-config-prettier": "^6.0.0",
     "@vue/eslint-config-typescript": "^7.0.0",
-    "autoprefixer": "^10.3.3",
+    "autoprefixer": "^10.4.0",
     "eslint-plugin-prettier": "^3.4.0",
     "eslint-plugin-vue": "^7.15.1",
     "husky": "^7.0.4",
