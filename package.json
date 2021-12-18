@@ -38,7 +38,7 @@
     "eth-ens-namehash": "^2.0.8",
     "ethereum-blockies-base64": "^1.0.2",
     "fortmatic": "^2.2.1",
-    "graphql": "^15.5.1",
+    "graphql": "^15.8.0",
     "graphql-tag": "^2.12.4",
     "lodash": "^4.17.21",
     "numeral": "^2.0.6",
