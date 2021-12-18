@@ -31,7 +31,7 @@
   "network": "الشبكة",
   "networks": "الشبكات",
   "skins": "المظاهر",
-  "members": "لا يوجد أعضاء <unk> {count} أعضاء <unk> {count} أعضاء",
+  "members": "لا يوجد أعضاء | {count} أعضاء | {count} أعضاء",
   "editStrategy": "تعديل الاستراتيجية",
   "invalidProposals": "اقتراحات غير صالحة",
   "account": "الحساب",
