@@ -21,7 +21,7 @@
     "@ethersproject/units": "^5.5.0",
     "@ethersproject/wallet": "^5.4.0",
     "@gnosis.pm/safe-apps-provider": "^0.8.0",
-    "@gnosis.pm/safe-apps-sdk": "^4.3.0",
+    "@gnosis.pm/safe-apps-sdk": "^6.1.1",
     "@popperjs/core": "^2.8.3",
     "@portis/web3": "^4.0.6",
     "@pusher/push-notifications-web": "^1.1.0",
