@@ -8,6 +8,9 @@
   "gnosis": {
     "proposalParams": true
   },
+  "hal": {
+    "proposalParams": false
+  },
   "poap": {
     "proposalParams": false
   },
