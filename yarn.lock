@@ -6588,10 +6588,10 @@ verror@1.10.0:
     core-util-is "1.0.2"
     extsprintf "^1.2.0"
 
-vite@^2.7.2:
-  version "2.7.2"
-  resolved "https://registry.yarnpkg.com/vite/-/vite-2.7.2.tgz#f9937114cf2e730a7e2e4c4f8c26ed0ed1c3bb6b"
-  integrity sha512-wMffVVdKZRZP/HwW3yttKL8X+IJePz7bUcnGm0vqljffpVwHpjWC3duZtJQHAGvy+wrTjmwU7vkULpZ1dVXY6w==
+vite@^2.7.3:
+  version "2.7.3"
+  resolved "https://registry.yarnpkg.com/vite/-/vite-2.7.3.tgz#e983cf4f71f42c192436bfcad1b75932642da293"
+  integrity sha512-GAY1P+9fLJOju1SRm8+hykVnEXog+E+KXuqqyMBQDriKCUIKzWnPn142yNNhSdf/ixYGYdUa5ce3A8WaEajzGw==
   dependencies:
     esbuild "^0.13.12"
     postcss "^8.3.11"
