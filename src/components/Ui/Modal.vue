@@ -22,7 +22,7 @@ watch(open, (val, prev) => {
     <div v-if="open" class="modal mx-auto">
       <div class="backdrop" @click="$emit('close')" />
       <div class="shell overflow-hidden relative rounded-none md:rounded-lg">
-        <div v-if="$slots.header" class="border-b pt-4 pb-3 text-center">
+        <div v-if="$slots.header" class="border-b pt-3 pb-2 text-center">
           <slot name="header" />
         </div>
         <div class="modal-body">

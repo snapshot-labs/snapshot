@@ -1,7 +1,6 @@
 <script setup>
 import { ref, computed, toRefs, watch } from 'vue';
 import { useSearchFilters } from '@/composables/useSearchFilters';
-import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 
 const defaultParams = {};
 
@@ -12,42 +11,32 @@ const emit = defineEmits(['add', 'close']);
 const { open } = toRefs(props);
 
 const searchInput = ref('');
+const isValid = ref(true);
 const input = ref({
   name: '',
-  params: JSON.stringify(defaultParams, null, 2)
+  params: defaultParams
 });
 
 const { filteredValidations } = useSearchFilters();
 const validations = computed(() => filteredValidations(searchInput.value));
-
-const isValid = computed(() => {
-  try {
-    const params = JSON.parse(input.value.params);
-    return !!params;
-  } catch (e) {
-    return false;
-  }
-});
 
 function select(n) {
   input.value.name = n;
 }
 
 function handleSubmit() {
-  const validation = clone(input.value);
-  validation.params = JSON.parse(validation.params);
-  emit('add', validation);
+  emit('add', input.value);
   emit('close');
 }
 
 watch(open, () => {
   input.value.name = '';
   if (props.validation?.params) {
-    input.value.params = JSON.stringify(props.validation.params, null, 2);
+    input.value.params = props.validation.params;
   } else {
     input.value = {
       name: '',
-      params: JSON.stringify(defaultParams, null, 2)
+      params: defaultParams
     };
   }
 });
@@ -76,8 +65,9 @@ watch(open, () => {
           class="block w-full mb-3 overflow-x-auto"
           style="height: auto"
         >
-          <TextareaAutosize
+          <TextareaJson
             v-model="input.params"
+            v-model:is-valid="isValid"
             :placeholder="$t('settings.validationParameters')"
             class="input text-left"
             style="width: 560px"
