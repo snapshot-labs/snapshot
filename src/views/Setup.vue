@@ -1,5 +1,5 @@
 <script setup>
-import { ref, reactive, watch, onMounted, onUnmounted } from 'vue';
+import { ref, watch, onMounted, onUnmounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useEns } from '@/composables/useEns';
 import { useWeb3 } from '@/composables/useWeb3';
@@ -23,10 +23,7 @@ const goToSettings = key => {
 };
 
 // input for new domain registration
-const newDomain = reactive({
-  name: '',
-  tld: validEnsTlds[0]
-});
+const newDomain = ref('');
 
 // indicates whether to periodically check for new domains
 // (after clicking on "Register")
@@ -45,8 +42,8 @@ watch(ownedEnsDomains, (newVal, oldVal) => {
   if (newVal.length > oldVal.length) {
     waitingForRegistration.value = false;
     clearInterval(waitingForRegistrationInterval);
-    if (newVal.find(d => d.name === `${newDomain.name}.${newDomain.tld}`)) {
-      goToSettings(`${newDomain.name}.${newDomain.tld}`);
+    if (newVal.find(d => d.name === newDomain.value)) {
+      goToSettings(newDomain.value);
     }
   }
 });
@@ -110,8 +107,7 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
                 {{ $t('setup.orReigsterNewEns') }}
               </div>
               <RegisterENS
-                v-model:name="newDomain.name"
-                v-model:tld="newDomain.tld"
+                v-model="newDomain"
                 @waitForRegistration="waitForRegistration"
               />
             </div>
@@ -120,8 +116,7 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
                 {{ $t('setup.toCreateASpace') }}
               </div>
               <RegisterENS
-                v-model:name="newDomain.name"
-                v-model:tld="newDomain.tld"
+                v-model="newDomain"
                 @waitForRegistration="waitForRegistration"
               />
               <div class="mt-3">

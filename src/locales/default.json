@@ -234,7 +234,8 @@
     "toCreateASpace": "To create a space, you first need an ENS domain. Enter one below and follow the ENS registration instructions.",
     "correctAccountNote": "(If you already own an ENS domain that you want to use, make sure you are connected to the correct account on the Ethereum mainnet.)",
     "createASpace": "Create a space",
-    "registerEnsButton": "Register"
+    "registerEnsButton": "Register",
+    "supportedEnsTLDs": "Supported domain endings"
   },
   "notify": {
     "youDidIt": "You did it!",

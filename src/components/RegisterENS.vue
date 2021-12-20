@@ -1,50 +1,47 @@
 <script setup>
 /**
- * A combo-input, text and dropdown with available TLDs.
+ * An input with ENS TLD validation and a register button, forwarding to app.ens.domains.
  */
 
+import { computed } from 'vue';
 import { useEns } from '@/composables/useEns';
 
+const props = defineProps({ modelValue: String });
+defineEmits(['update:modelValue', 'waitForRegistration']);
+
 const { validEnsTlds } = useEns();
+const isValidDomain = computed(() => {
+  if (!props.modelValue.includes('.')) return false;
 
-defineProps({
-  name: String,
-  tld: String
+  return validEnsTlds.includes(props.modelValue.split('.').pop());
 });
-
-defineEmits(['update:name', 'update:tld', 'waitForRegistration']);
 </script>
 
 <template>
-  <UiButton class="text-left w-full mb-3 flex px-3">
+  <UiButton class="text-left w-full mb-1 flex px-3">
     <input
-      :value="name"
-      @input="$emit('update:name', $event.target.value.toLowerCase().replaceAll(/\s/g, ''))"
+      :value="modelValue"
+      @input="$emit('update:modelValue', $event.target.value.toLowerCase().replaceAll(/\s/g, ''))"
       class="input flex-auto"
       :placeholder="$t('setup.example')"
     />
-    <div class="border-l" style="height: 44px">
-      <UiDropdown
-        top="3.5rem"
-        right="1.0rem"
-        class="text-left"
-        style="z-index: 1"
-        @select="$emit('update:tld', $event)"
-        :items="validEnsTlds.map(tld => ({ text: '.' + tld, action: tld }))"
-      >
-        <span class="ml-3">.{{ tld }}</span>
-        <Icon name="arrow-down" class="ml-1" />
-      </UiDropdown>
-    </div>
+    <span
+      class="block py-1 -mr-2"
+      target="_blank"
+      v-tippy="{
+        content: `${$t('setup.supportedEnsTLDs')}: ${validEnsTlds.join(', ')}`
+      }"
+    >
+      <Icon name="info" size="24" class="text-color p-1" />
+    </span>
   </UiButton>
   <a
-    :href="`https://app.ens.domains/name/${name}.${tld}/register`"
+    :href="`https://app.ens.domains/name/${modelValue}/register`"
     @click="$emit('waitForRegistration')"
     target="_blank"
   >
-    <UiButton :disabled="!name" class="w-full mt-2" primary>
+    <UiButton :disabled="!isValidDomain" class="w-full mt-2" primary>
       {{ $t('setup.registerEnsButton') }}
-      <span v-if="name"> {{ name }}.{{ tld }} </span>
     </UiButton>
   </a>
 </template>
