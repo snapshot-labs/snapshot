@@ -19,7 +19,6 @@ export async function setDayjsLocale(locale: string) {
   // E.g. import(`dayjs/locale/${locale}`) does not work while import(`../locales/dayjs/${locale}.js`) does.
   // See: https://github.com/vitejs/vite/issues/772
   import(`../locales/dayjs/${locale}.js`).then(conf => {
-    console.log(conf)
     dayjs.locale(locale, conf.default);
   });
 }
