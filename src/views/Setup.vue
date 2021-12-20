@@ -94,16 +94,16 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
                   )
                 }}
               </div>
-              <div class="space-y-3">
+              <div class="space-y-2">
                 <UiButton
                   v-for="(ens, i) in ownedEnsDomains"
                   :key="i"
                   @click="goToSettings(ens.name)"
                   class="w-full flex items-center justify-between"
-                  primary
+                  :primary="ownedEnsDomains.length === 1"
                 >
                   {{ ens.name }}
-                  <Icon name="go" size="22" class="text-white" />
+                  <Icon name="go" size="22" :class="ownedEnsDomains.length === 1 ? 'text-white' : 'text-color'" />
                 </UiButton>
               </div>
               <div
