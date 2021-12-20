@@ -9,7 +9,7 @@ import RegisterENS from '@/components/RegisterENS.vue';
 
 const router = useRouter();
 const { web3, web3Account } = useWeb3();
-const { validEnsTlds, ownedEnsDomains, loadOwnedEnsDomains } = useEns();
+const { ownedEnsDomains, loadOwnedEnsDomains } = useEns();
 const { modalAccountOpen } = useModal();
 
 onMounted(() => {
