@@ -60,7 +60,6 @@ function emitUpdateLastSeenProposal() {
 
 onMounted(() => {
   setPageTitle('page.title.space.proposals', { space: props.space.name });
-  load();
 });
 
 async function load() {
