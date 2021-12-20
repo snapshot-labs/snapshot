@@ -232,7 +232,7 @@
     "useSingleExistingEns": "Use your existing ENS domain:",
     "orReigsterNewEns": "Or register a new domain:",
     "toCreateASpace": "To create a space, you first need an ENS domain. Enter one below and follow the ENS registration instructions.",
-    "correctAccountNote": "(If you already own an ENS domain that you want to use, make sure you are connected to the correct account on the Ethereum mainnet.)",
+    "correctAccountNote": "You already have an ENS domain? Make sure you have connected the correct account on the Ethereum mainnet.",
     "createASpace": "Create a space",
     "registerEnsButton": "Register",
     "supportedEnsTLDs": "Supported domain endings"
