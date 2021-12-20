@@ -25,27 +25,27 @@ function changeLang() {
     <template v-slot:header>
       <h3>{{ $t('about') }}</h3>
     </template>
-    <div class="text-center mt-4">
+    <div class="text-center mt-4 space-x-3">
       <a href="https://twitter.com/SnapshotLabs" target="_blank">
-        <Icon size="32" name="twitter" class="mr-1 mx-2" />
+        <Icon size="32" name="twitter" class="hover:opacity-80" />
       </a>
       <a href="https://discord.snapshot.org" target="_blank">
-        <Icon size="32" name="discord" class="mr-1 mx-2" />
+        <Icon size="32" name="discord" class="hover:opacity-80" />
       </a>
       <a href="https://t.me/snapshotlabs" target="_blank">
-        <Icon size="32" name="telegram" class="mr-1 mx-2" />
+        <Icon size="32" name="telegram" class="hover:opacity-80" />
       </a>
       <a :href="`https://github.com/${pkg.repository}`" target="_blank">
-        <Icon size="32" name="github" class="mr-1 mx-2" />
+        <Icon size="32" name="github" class="hover:opacity-80" />
       </a>
       <a href="https://docs.snapshot.org/" target="_blank">
-        <Icon size="32" name="gitbook" class="mr-1 mx-2" />
+        <Icon size="32" name="gitbook" class="hover:opacity-80" />
       </a>
       <a href="https://gitcoin.co/grants/1093/snapshot" target="_blank">
-        <Icon size="32" name="loveit" class="mr-1 mx-2" />
+        <Icon size="32" name="loveit" class="hover:opacity-80" />
       </a>
     </div>
-    <div class="m-4 p-4 mt-3 border rounded-md link-color">
+    <div class="m-4 p-4 mt-3 space-y-1 border rounded-md link-color">
       <div class="flex">
         <span v-text="$t('language')" class="flex-auto text-color mr-1" />
         <a @click="changeLang()">{{ languages[$i18n.locale]?.name }}</a>

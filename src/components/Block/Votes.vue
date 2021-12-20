@@ -21,12 +21,11 @@ defineEmits(['loadVotes']);
 const format = getChoiceString;
 
 const { votes } = toRefs(props);
-const { web3 } = useWeb3();
+const { web3Account } = useWeb3();
 
 const authorIpfsHash = ref('');
 const modalReceiptOpen = ref(false);
 
-const web3Account = computed(() => web3.value.account);
 const isFinalProposal = computed(() => props.proposal.scores_state === 'final');
 
 const voteCount = computed(() =>

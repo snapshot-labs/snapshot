@@ -21,7 +21,7 @@ const loading = ref(false);
 
 const route = useRoute();
 const { followingSpaces, loadingFollows } = useFollowSpace();
-const { web3 } = useWeb3();
+const { web3, web3Account } = useWeb3();
 
 const spaces = computed(() => {
   const verifiedSpaces = Object.entries(verified)
@@ -40,7 +40,6 @@ watch(spaces, () => {
 });
 
 const isTimeline = computed(() => route.name === 'timeline');
-const web3Account = computed(() => web3.value.account);
 
 const { updateLastSeenProposal } = useUnseenProposals();
 const { loadBy, loadingMore, stopLoadingMore, loadMore } = useInfiniteLoader();
