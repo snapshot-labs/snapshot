@@ -35,25 +35,25 @@ watch(open, () => (step.value = null));
       <h3 v-else>{{ $t('account') }}</h3>
     </template>
     <div v-if="!web3.account || step === 'connect'">
-      <div class="m-4 mb-5">
+      <div class="m-4 space-y-2">
         <a
           v-for="(connector, id, i) in connectors"
           :key="i"
           @click="$emit('login', connector.id)"
           target="_blank"
-          class="mb-2 block"
+          class="block"
         >
           <UiButton
             v-if="id !== 'injected'"
-            class="button-outline w-full flex justify-center items-center"
+            class="button-outline w-full flex justify-center items-center gap-2"
           >
             <img
               :src="`${path}/${connector.id}.png`"
-              height="28"
-              width="28"
-              class="mr-2 -mt-1"
+              height="25"
+              width="25"
+              :alt="connector.name"
             />
-            {{ connector.name }}
+            <span class="mt-1">{{ connector.name }}</span>
           </UiButton>
           <UiButton
             v-else-if="injected"
@@ -64,6 +64,7 @@ watch(open, () => (step.value = null));
               height="28"
               width="28"
               class="mr-2 -mt-1"
+              :alt="injected.name"
             />
             {{ injected.name }}
           </UiButton>
@@ -71,11 +72,11 @@ watch(open, () => (step.value = null));
       </div>
     </div>
     <div v-else>
-      <div v-if="$auth.isAuthenticated.value" class="m-4">
+      <div v-if="$auth.isAuthenticated.value" class="m-4 space-y-2">
         <a
           :href="_explorer(web3.network.key, web3.account)"
           target="_blank"
-          class="mb-2 block"
+          class="block"
         >
           <UiButton class="button-outline w-full">
             <UiAvatar
@@ -90,13 +91,10 @@ watch(open, () => (step.value = null));
             <Icon name="external-link" class="ml-1" />
           </UiButton>
         </a>
-        <UiButton @click="step = 'connect'" class="button-outline w-full mb-2">
+        <UiButton @click="step = 'connect'" class="button-outline w-full">
           {{ $t('connectWallet') }}
         </UiButton>
-        <UiButton
-          @click="handleLogout"
-          class="button-outline w-full !text-red mb-2"
-        >
+        <UiButton @click="handleLogout" class="button-outline w-full !text-red">
           {{ $t('logout') }}
         </UiButton>
       </div>

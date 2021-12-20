@@ -68,7 +68,6 @@ onBeforeUnmount(() => window.removeEventListener('click', close));
 <style scoped lang="scss">
 .button {
   cursor: pointer;
-  color: var(--text-color);
   &:hover {
     color: var(--link-color);
   }
@@ -104,6 +103,7 @@ li:hover {
   border: 1px solid var(--border-color);
   border-radius: 8px;
   box-shadow: 0 0 20px -6px var(--border-color);
+  z-index: 1;
 }
 
 .sub-menu-wrapper.hidden {

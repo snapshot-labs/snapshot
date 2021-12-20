@@ -1,18 +1,37 @@
-# Snapshot
-
-Snapshot is an off-chain gasless multi-governance client with easy to verify and hard to contest results.
-
-## Links
-
-**[Documentation](https://docs.snapshot.org)**
-
-**[Feature requests](https://features.snapshot.org/feature-requests)**
-
-**[Translate](https://translate.snapshot.org)**
-
-**[Discord](https://discord.snapshot.org)**
-
-**[Telegram](https://telegram.snapshot.org)**
+<div align="center">
+    <img src="public/icon.svg" height="70" alt="Snapshot Logo">
+    <h1>Snapshot</h1>
+    <strong>Snapshot is an off-chain gasless multi-governance client with easy to verify and hard to contest results.</strong>
+</div>
+<br>
+<div align="center">
+    <a href="https://github.com/snapshot-labs/snapshot/actions/workflows/nodejs.yml">
+        <img src="https://github.com/snapshot-labs/snapshot/actions/workflows/nodejs.yml/badge.svg" alt="Node CI">
+    </a>
+    <img src="https://img.shields.io/github/commit-activity/w/snapshot-labs/snapshot" alt="GitHub commit activity">
+    <a href="https://github.com/snapshot-labs/snapshot/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22">
+        <img src="https://img.shields.io/github/issues/snapshot-labs/snapshot/help wanted" alt="GitHub issues help wanted">
+    </a>
+    <a href="https://telegram.snapshot.org">
+        <img src="https://img.shields.io/badge/Telegram-white?logo=telegram" alt="Telegram">
+    </a>
+    <a href="https://discord.snapshot.org">
+        <img src="https://img.shields.io/discord/707079246388133940.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2" alt="Discord">
+    </a>
+    <a href="https://twitter.com/SnapshotLabs">
+        <img src="https://img.shields.io/twitter/follow/SnapshotLabs?label=SnapshotLabs&style=flat&logo=twitter&color=1DA1F2" alt="Twitter">
+    </a>
+</div>
+<div align="center">
+    <br>
+    <a href="https://snapshot.org"><b>snapshot.org »</b></a>
+    <br><br>
+    <a href="https://docs.snapshot.org"><b>Documentation</b></a>
+    •
+    <a href="https://features.snapshot.org/feature-requests"><b>Feature requests</b></a>
+    •
+    <a href="https://translate.snapshot.org"><b>Translate</b></a>
+</div>
 
 ## Development Guide
 
@@ -80,4 +99,4 @@ Set `VITE_DEFAULT_NETWORK=4` in your `.env.local`. You will also have to [run yo
 
 ## License
 
-[MIT](LICENSE).
+Snapshot is open-sourced software licensed under the © [MIT license](LICENSE).
