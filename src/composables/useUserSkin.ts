@@ -1,4 +1,4 @@
-import { ref } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import { lsGet, lsSet } from '@/helpers/utils';
 
 const NOT_SET = 'not-set';
@@ -34,6 +34,19 @@ export function useUserSkin() {
       _toggleSkin(currentSkin);
     }
   }
+
+  function toggleScrollSkin() {
+    document.documentElement.setAttribute(
+      'data-color-scheme',
+      userSkin.value === LIGHT_MODE ? 'light' : 'dark'
+    );
+  }
+
+  watch(userSkin, () => {
+    toggleScrollSkin();
+  });
+
+  onMounted(() => toggleScrollSkin());
 
   return {
     userSkin,
