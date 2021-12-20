@@ -6,12 +6,12 @@ updates:
       interval: 'daily'
     commit-message:
       prefix: '⬆️ deps:'
-      prefix-development: '⬆️ deps(dev):'
-    assignees:
-      - mktcode
-      - samuveth
-    reviewers:
-      - mktcode
-      - samuveth
-    open-pull-requests-limit: 20
+    open-pull-requests-limit: 5
+    rebase-strategy: auto
+  - package-ecosystem: 'gitsubmodule'
+    directory: '/'
+    schedule:
+      interval: 'daily'
+    commit-message:
+      prefix: '⬆️ subs:'
     rebase-strategy: auto
