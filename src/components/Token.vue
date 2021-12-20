@@ -12,16 +12,8 @@ const props = defineProps({
 const spaceId = computed(() => props.space.id);
 
 const url = computed(() => {
-  const file = props.symbolIndex
-    ? props.symbolIndex === 'space'
-      ? 'space'
-      : `logo${props.symbolIndex}`
-    : 'logo';
-
-  const url =
-    getUrl(props.space.avatar) ??
-    `https://raw.githubusercontent.com/snapshot-labs/snapshot-spaces/master/spaces/${spaceId.value}/${file}.png`;
-
+  const url = getUrl(props.space.avatar);
+  if (!url) return '';
   return `https://worker.snapshot.org/mirror?img=${encodeURIComponent(url)}`;
 });
 
