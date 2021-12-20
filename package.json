@@ -38,7 +38,7 @@
     "eth-ens-namehash": "^2.0.8",
     "ethereum-blockies-base64": "^1.0.2",
     "fortmatic": "^2.2.1",
-    "graphql": "^15.8.0",
+    "graphql": "^16.2.0",
     "graphql-tag": "^2.12.6",
     "lodash": "^4.17.21",
     "numeral": "^2.0.6",
@@ -56,7 +56,7 @@
     "vuedraggable": "^4.0.2"
   },
   "devDependencies": {
-    "@types/node": "^16.4.10",
+    "@types/node": "^17.0.1",
     "@typescript-eslint/eslint-plugin": "^2.34.0",
     "@typescript-eslint/parser": "^2.34.0",
     "@vitejs/plugin-vue": "^2.0.1",
@@ -73,7 +73,7 @@
     "sass-loader": "^8.0.2",
     "tailwindcss": "^2.2.9",
     "unplugin-vue-components": "^0.15.6",
-    "vite": "^2.7.2",
+    "vite": "^2.7.4",
     "walletlink": "^2.3.0"
   },
   "resolutions": {
