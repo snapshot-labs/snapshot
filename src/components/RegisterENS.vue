@@ -4,16 +4,17 @@
  */
 
 import { computed } from 'vue';
-import { useEns } from '@/composables/useEns';
 
-const props = defineProps({ modelValue: String });
+const props = defineProps({
+  modelValue: String,
+  validTlds: Array
+});
 defineEmits(['update:modelValue', 'waitForRegistration']);
 
-const { validEnsTlds } = useEns();
 const isValidDomain = computed(() => {
   if (!props.modelValue.includes('.')) return false;
 
-  return validEnsTlds.includes(props.modelValue.split('.').pop());
+  return props.validTlds.includes(props.modelValue.split('.').pop());
 });
 </script>
 
@@ -29,7 +30,7 @@ const isValidDomain = computed(() => {
       class="block py-1 -mr-2"
       target="_blank"
       v-tippy="{
-        content: `${$t('setup.supportedEnsTLDs')}: ${validEnsTlds.join(', ')}`
+        content: `${$t('setup.supportedEnsTLDs')}: ${validTlds.join(', ')}`
       }"
     >
       <Icon name="info" size="24" class="text-color p-1" />

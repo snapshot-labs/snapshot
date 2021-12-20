@@ -1,20 +1,41 @@
 <script setup>
 import { ref, watch, onMounted, onUnmounted } from 'vue';
 import { useRouter } from 'vue-router';
-import { useEns } from '@/composables/useEns';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useModal } from '@/composables/useModal';
 import { setPageTitle } from '@/helpers/utils';
 import RegisterENS from '@/components/RegisterENS.vue';
+import { useApolloQuery } from '@/composables/useApolloQuery';
+import { ENS_QUERY } from '@/helpers/queries';
 
 const router = useRouter();
 const { web3, web3Account } = useWeb3();
-const { ownedEnsDomains, loadOwnedEnsDomains } = useEns();
+const { ensApolloQuery } = useApolloQuery();
 const { modalAccountOpen } = useModal();
 
 onMounted(() => {
   setPageTitle('page.title.setup');
 });
+
+const validTlds = ['eth', 'xyz', 'com', 'org', 'io', 'app', 'art'];
+const ownedEnsDomains = ref([]);
+
+const loadingOwnedEnsDomains = ref(false);
+const loadOwnedEnsDomains = async () => {
+  if (web3Account.value) {
+    loadingOwnedEnsDomains.value = true;
+    const res = await ensApolloQuery({
+      query: ENS_QUERY,
+      variables: {
+        id: web3Account.value.toLowerCase()
+      }
+    });
+    ownedEnsDomains.value = res.account?.domains || [];
+    loadingOwnedEnsDomains.value = false;
+  } else {
+    ownedEnsDomains.value = [];
+  }
+};
 
 // used either on click on existing owned domain OR once a newly registered
 // domain is returned by the ENS subgraph.
@@ -49,8 +70,7 @@ watch(ownedEnsDomains, (newVal, oldVal) => {
 });
 
 // load domains initially and update on account change
-const loadingOwnedEnsDomains = ref(true);
-loadOwnedEnsDomains().finally(() => (loadingOwnedEnsDomains.value = false));
+loadOwnedEnsDomains();
 watch(web3Account, () => {
   loadOwnedEnsDomains();
   waitingForRegistration.value = false;
@@ -79,7 +99,7 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
       </div>
       <Block>
         <div v-if="web3Account" class="px-4 md:px-0">
-          <UiLoading v-if="loadingOwnedEnsDomains" />
+          <RowLoading v-if="loadingOwnedEnsDomains" />
           <div v-else>
             <div v-if="ownedEnsDomains.length">
               <div class="mb-3">
@@ -108,6 +128,7 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
               </div>
               <RegisterENS
                 v-model="newDomain"
+                :valid-tlds="validTlds"
                 @waitForRegistration="waitForRegistration"
               />
             </div>
@@ -117,6 +138,7 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
               </div>
               <RegisterENS
                 v-model="newDomain"
+                :valid-tlds="validTlds"
                 @waitForRegistration="waitForRegistration"
               />
               <div class="mt-3">
