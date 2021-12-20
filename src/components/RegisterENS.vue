@@ -1,6 +1,7 @@
 <script setup>
 /**
  * An input with ENS TLD validation and a register button, forwarding to app.ens.domains.
+ * Emits waitForRegistration event when Register button is clicked, to trigger domain lookup in background.
  */
 
 import { computed } from 'vue';
