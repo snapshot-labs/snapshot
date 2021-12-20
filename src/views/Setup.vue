@@ -80,97 +80,99 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
           </a>
         </h1>
       </div>
-      <div v-if="web3Account" class="px-4 md:px-0">
-        <UiLoading v-if="loadingOwnedEnsDomains" />
-        <div v-else>
-          <div v-if="ownedEnsDomains.length">
-            <div class="mb-3">
-              {{
-                $t(
-                  ownedEnsDomains.length > 1
-                    ? 'setup.chooseExistingEns'
-                    : 'setup.useSingleExistingEns'
-                )
-              }}
-            </div>
-            <div class="space-y-3">
-              <UiButton
-                v-for="(ens, i) in ownedEnsDomains"
-                :key="i"
-                @click="goToSettings(ens.name)"
-                class="w-full flex items-center justify-between"
-                primary
-              >
-                {{ ens.name }}
-                <Icon name="go" size="22" class="text-white" />
-              </UiButton>
-            </div>
-            <div
-              v-if="waitingForRegistration"
-              class="
-                w-full
-                rounded-3xl
-                border
-                px-3
-                py-2
-                text-center text-color
-                opacity-30
-                animate-pulse
-                mt-3
-              "
-            >
-              {{ $t('setup.waitingForRegistration') }}
-            </div>
-            <div class="my-3">
-              {{ $t('setup.orReigsterNewEns') }}
-            </div>
-            <RegisterENS
-              v-model:name="newDomain.name"
-              v-model:tld="newDomain.tld"
-              @waitForRegistration="waitForRegistration"
-            />
-          </div>
+      <Block>
+        <div v-if="web3Account" class="px-4 md:px-0">
+          <UiLoading v-if="loadingOwnedEnsDomains" />
           <div v-else>
-            <div class="mb-3">
-              {{ $t('setup.toCreateASpace') }}
+            <div v-if="ownedEnsDomains.length">
+              <div class="mb-3">
+                {{
+                  $t(
+                    ownedEnsDomains.length > 1
+                      ? 'setup.chooseExistingEns'
+                      : 'setup.useSingleExistingEns'
+                  )
+                }}
+              </div>
+              <div class="space-y-3">
+                <UiButton
+                  v-for="(ens, i) in ownedEnsDomains"
+                  :key="i"
+                  @click="goToSettings(ens.name)"
+                  class="w-full flex items-center justify-between"
+                  primary
+                >
+                  {{ ens.name }}
+                  <Icon name="go" size="22" class="text-white" />
+                </UiButton>
+              </div>
+              <div
+                v-if="waitingForRegistration"
+                class="
+                  w-full
+                  rounded-3xl
+                  border
+                  px-3
+                  py-2
+                  text-center text-color
+                  opacity-30
+                  animate-pulse
+                  mt-3
+                "
+              >
+                {{ $t('setup.waitingForRegistration') }}
+              </div>
+              <div class="my-3">
+                {{ $t('setup.orReigsterNewEns') }}
+              </div>
+              <RegisterENS
+                v-model:name="newDomain.name"
+                v-model:tld="newDomain.tld"
+                @waitForRegistration="waitForRegistration"
+              />
             </div>
-            <div
-              v-if="waitingForRegistration"
-              class="
-                w-full
-                rounded-3xl
-                border
-                px-3
-                py-2
-                text-center text-color
-                opacity-30
-                animate-pulse
-                mb-3
-              "
-            >
-              {{ $t('setup.waitingForRegistration') }}
-            </div>
-            <RegisterENS
-              v-model:name="newDomain.name"
-              v-model:tld="newDomain.tld"
-              @waitForRegistration="waitForRegistration"
-            />
-            <div class="mt-3">
-              {{ $t('setup.correctAccountNote') }}
+            <div v-else>
+              <div class="mb-3">
+                {{ $t('setup.toCreateASpace') }}
+              </div>
+              <div
+                v-if="waitingForRegistration"
+                class="
+                  w-full
+                  rounded-3xl
+                  border
+                  px-3
+                  py-2
+                  text-center text-color
+                  opacity-30
+                  animate-pulse
+                  mb-3
+                "
+              >
+                {{ $t('setup.waitingForRegistration') }}
+              </div>
+              <RegisterENS
+                v-model:name="newDomain.name"
+                v-model:tld="newDomain.tld"
+                @waitForRegistration="waitForRegistration"
+              />
+              <div class="mt-3">
+                {{ $t('setup.correctAccountNote') }}
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <div v-else class="px-4 md:px-0">
-        <UiButton
-          @click="modalAccountOpen = true"
-          :loading="web3.authLoading"
-          class="w-full mt-2"
-          primary
-        >
-          {{ $t('connectWallet') }}
-        </UiButton>
-      </div>
+        <div v-else class="px-4 md:px-0">
+          <UiButton
+            @click="modalAccountOpen = true"
+            :loading="web3.authLoading"
+            class="w-full mt-2"
+            primary
+          >
+            {{ $t('connectWallet') }}
+          </UiButton>
+        </div>
+      </Block>
     </template>
   </Layout>
 </template>
