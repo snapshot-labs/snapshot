@@ -13,8 +13,13 @@ dayjs.extend(customParseFormat);
 
 export async function setDayjsLocale(locale: string) {
   locale = locale.toLowerCase().slice(0, 2);
-  console.log(locale);
-  import(`../../node_modules/dayjs/esm/locale/${locale}.js`).then(conf => {
+  
+  // This is a symlink (src/helpers/locales/dayjs -> node_modules/dayjs/esm/locale)
+  // Currently not supported by Vite: Dynamic imports from installed package, when the path contains variables.
+  // E.g. import(`dayjs/locale/${locale}`) does not work while import(`../locales/dayjs/${locale}.js`) does.
+  // See: https://github.com/vitejs/vite/issues/772
+  import(`../locales/dayjs/${locale}.js`).then(conf => {
+    console.log(conf)
     dayjs.locale(locale, conf.default);
   });
 }
