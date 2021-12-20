@@ -208,11 +208,11 @@ function handleAddPlugins() {
 }
 
 function handleSubmitAddPlugins(payload) {
-  form.value.plugins[payload.key] = payload.inputClone;
+  form.value.plugins[payload.key] = payload.input;
 }
 
 function handleSubmitAddValidation(validation) {
-  form.value.validation = validation;
+  form.value.validation = clone(validation);
 }
 
 function setUploadLoading(s) {
@@ -694,7 +694,7 @@ onMounted(() => {
     />
     <ModalValidation
       :open="modalValidationOpen"
-      :validation="clone(form.validation)"
+      :validation="form.validation"
       @close="modalValidationOpen = false"
       @add="handleSubmitAddValidation"
     />

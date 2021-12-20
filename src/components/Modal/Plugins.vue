@@ -1,58 +1,42 @@
 <script setup>
 import { ref, computed, watch, toRefs } from 'vue';
 import { useSearchFilters } from '@/composables/useSearchFilters';
-import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 
 const props = defineProps({ open: Boolean, plugin: Object });
 const emit = defineEmits(['add', 'close']);
 
 const { open } = toRefs(props);
 const searchInput = ref('');
-const input = ref('');
+const input = ref({});
+const isValid = ref(true);
 const selectedPlugin = ref({});
 
 const { filteredPlugins } = useSearchFilters();
 const plugins = computed(() => filteredPlugins());
 
-const isValid = computed(() => {
-  try {
-    const params = JSON.parse(input.value);
-    return !!params;
-  } catch (e) {
-    return false;
-  }
-});
-
 function handleSubmit() {
-  let inputClone = clone(input.value);
-  inputClone = JSON.parse(inputClone);
   const key = selectedPlugin.value.key;
-  emit('add', { inputClone, key });
+  emit('add', { input: input.value, key });
   emit('close');
+}
+
+function selectPlugin(plugin) {
+  selectedPlugin.value = plugin;
+  input.value = selectedPlugin.value?.defaultParams ?? {};
 }
 
 watch(open, () => {
   if (Object.keys(props.plugin).length > 0) {
     const key = Object.keys(props.plugin)[0];
-    input.value = JSON.stringify(props.plugin[key], null, 2);
+    input.value = props.plugin[key];
     selectedPlugin.value = plugins.value.find(obj => {
       return obj.key === key;
     });
   } else {
-    input.value = JSON.stringify({}, null, 2);
+    input.value = {};
     selectedPlugin.value = {};
   }
 });
-
-watch(
-  selectedPlugin,
-  () =>
-    (input.value = JSON.stringify(
-      selectedPlugin.value?.defaultParams ?? {},
-      null,
-      2
-    ))
-);
 </script>
 
 <template>
@@ -82,8 +66,9 @@ watch(
           class="block w-full mb-3 overflow-x-auto"
           style="height: auto"
         >
-          <TextareaAutosize
+          <TextareaJson
             v-model="input"
+            v-model:is-valid="isValid"
             :placeholder="$t('settings.pluginParameters')"
             class="input text-left"
             style="width: 560px"
@@ -102,7 +87,7 @@ watch(
         <a
           v-for="(plugin, i) in filteredPlugins(searchInput)"
           :key="i"
-          @click="selectedPlugin = plugin"
+          @click="selectPlugin(plugin)"
         >
           <BlockPlugin :plugin="plugin" />
         </a>
