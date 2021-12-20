@@ -106,22 +106,6 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
                   <Icon name="go" size="22" :class="ownedEnsDomains.length === 1 ? 'text-white' : 'text-color'" />
                 </UiButton>
               </div>
-              <div
-                v-if="waitingForRegistration"
-                class="
-                  w-full
-                  rounded-3xl
-                  border
-                  px-3
-                  py-2
-                  text-center text-color
-                  opacity-30
-                  animate-pulse
-                  mt-3
-                "
-              >
-                {{ $t('setup.waitingForRegistration') }}
-              </div>
               <div class="my-3">
                 {{ $t('setup.orReigsterNewEns') }}
               </div>
@@ -134,22 +118,6 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
             <div v-else>
               <div class="mb-3">
                 {{ $t('setup.toCreateASpace') }}
-              </div>
-              <div
-                v-if="waitingForRegistration"
-                class="
-                  w-full
-                  rounded-3xl
-                  border
-                  px-3
-                  py-2
-                  text-center text-color
-                  opacity-30
-                  animate-pulse
-                  mb-3
-                "
-              >
-                {{ $t('setup.waitingForRegistration') }}
               </div>
               <RegisterENS
                 v-model:name="newDomain.name"
