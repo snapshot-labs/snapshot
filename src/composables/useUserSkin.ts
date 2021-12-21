@@ -35,18 +35,16 @@ export function useUserSkin() {
     }
   }
 
-  function toggleScrollSkin() {
-    document.documentElement.setAttribute(
-      'data-color-scheme',
-      userSkin.value === LIGHT_MODE ? 'light' : 'dark'
-    );
-  }
-
-  watch(userSkin, () => {
-    toggleScrollSkin();
-  });
-
-  onMounted(() => toggleScrollSkin());
+  watch(
+    userSkin,
+    () => {
+      document.documentElement.setAttribute(
+        'data-color-scheme',
+        userSkin.value === LIGHT_MODE ? 'light' : 'dark'
+      );
+    },
+    { immediate: true }
+  );
 
   return {
     userSkin,
