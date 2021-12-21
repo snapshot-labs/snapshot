@@ -4,16 +4,6 @@
 @tailwind components;
 @tailwind utilities;
 
-[data-color-scheme='dark'] {
-  color-scheme: dark;
-  background-color: #121212;
-}
-
-[data-color-scheme='light'] {
-  color-scheme: light;
-  background-color: white;
-}
-
 :root,
 .light-mode {
   --primary-color: #384aff;
