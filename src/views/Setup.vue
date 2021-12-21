@@ -97,66 +97,66 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
           </a>
         </h1>
       </div>
-      <Block>
-        <div v-if="web3Account" class="px-4 md:px-0">
-          <RowLoading v-if="loadingOwnedEnsDomains" />
-          <div v-else>
-            <div v-if="ownedEnsDomains.length">
-              <div class="mb-3">
-                {{
-                  $t(
-                    ownedEnsDomains.length > 1
-                      ? 'setup.chooseExistingEns'
-                      : 'setup.useSingleExistingEns'
-                  )
-                }}
-              </div>
-              <div class="space-y-2">
-                <UiButton
-                  v-for="(ens, i) in ownedEnsDomains"
-                  :key="i"
-                  @click="goToSettings(ens.name)"
-                  class="w-full flex items-center justify-between"
-                  :primary="ownedEnsDomains.length === 1"
-                >
-                  {{ ens.name }}
-                  <Icon name="go" size="22" :class="ownedEnsDomains.length === 1 ? 'text-white' : 'text-color'" />
-                </UiButton>
-              </div>
-              <div class="my-3">
-                {{ $t('setup.orReigsterNewEns') }}
-              </div>
-              <RegisterENS
-                v-model="newDomain"
-                :valid-tlds="validTlds"
-                @waitForRegistration="waitForRegistration"
-              />
+      <template v-if="web3Account">
+        <Block v-if="loadingOwnedEnsDomains" slim>
+          <RowLoading class="my-2" />
+        </Block>
+        <Block v-else>
+          <div v-if="ownedEnsDomains.length">
+            <div class="mb-3">
+              {{
+                $t(
+                  ownedEnsDomains.length > 1
+                    ? 'setup.chooseExistingEns'
+                    : 'setup.useSingleExistingEns'
+                )
+              }}
             </div>
-            <div v-else>
-              <div class="mb-3">
-                {{ $t('setup.toCreateASpace') }}
-              </div>
-              <RegisterENS
-                v-model="newDomain"
-                :valid-tlds="validTlds"
-                @waitForRegistration="waitForRegistration"
-              />
-              <div class="mt-3">
-                {{ $t('setup.correctAccountNote') }}
-              </div>
+            <div class="space-y-2">
+              <UiButton
+                v-for="(ens, i) in ownedEnsDomains"
+                :key="i"
+                @click="goToSettings(ens.name)"
+                class="w-full flex items-center justify-between"
+                :primary="ownedEnsDomains.length === 1"
+              >
+                {{ ens.name }}
+                <Icon name="go" size="22" :class="ownedEnsDomains.length === 1 ? 'text-white' : 'text-color'" />
+              </UiButton>
+            </div>
+            <div class="my-3">
+              {{ $t('setup.orReigsterNewEns') }}
+            </div>
+            <RegisterENS
+              v-model="newDomain"
+              :valid-tlds="validTlds"
+              @waitForRegistration="waitForRegistration"
+            />
+          </div>
+          <div v-else>
+            <div class="mb-3">
+              {{ $t('setup.toCreateASpace') }}
+            </div>
+            <RegisterENS
+              v-model="newDomain"
+              :valid-tlds="validTlds"
+              @waitForRegistration="waitForRegistration"
+            />
+            <div class="mt-3">
+              {{ $t('setup.correctAccountNote') }}
             </div>
           </div>
-        </div>
-        <div v-else class="px-4 md:px-0">
-          <UiButton
-            @click="modalAccountOpen = true"
-            :loading="web3.authLoading"
-            class="w-full mt-2"
-            primary
-          >
-            {{ $t('connectWallet') }}
-          </UiButton>
-        </div>
+        </Block>
+      </template>
+      <Block v-else class="px-4 md:px-0">
+        <UiButton
+          @click="modalAccountOpen = true"
+          :loading="web3.authLoading"
+          class="w-full"
+          primary
+        >
+          {{ $t('connectWallet') }}
+        </UiButton>
       </Block>
     </template>
   </Layout>
