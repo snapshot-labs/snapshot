@@ -44,9 +44,10 @@ const isTimeline = computed(() => route.name === 'timeline');
 const { updateLastSeenProposal } = useUnseenProposals();
 const { loadBy, loadingMore, stopLoadingMore, loadMore } = useInfiniteLoader();
 
-const { endElement } = useScrollMonitor(() =>
+const { endElement } = useScrollMonitor(() => {
+  if (!web3Account.value && route.name === 'timeline') return;
   loadMore(() => loadProposals(store.timeline.proposals.length), loading.value)
-);
+});
 
 const { apolloQuery } = useApolloQuery();
 async function loadProposals(skip = 0) {
@@ -95,6 +96,7 @@ onMounted(() => {
 
 async function load() {
   if (store.timeline.proposals.length > 0) return;
+  if (!web3Account.value && route.name === 'timeline') return;
   loading.value = true;
   await loadProposals();
   loading.value = false;
