@@ -4,6 +4,16 @@
 @tailwind components;
 @tailwind utilities;
 
+[data-color-scheme='dark'] {
+  color-scheme: dark;
+  background-color: black;
+}
+
+[data-color-scheme='light'] {
+  color-scheme: light;
+  background-color: white;
+}
+
 :root,
 .light-mode {
   --primary-color: #384aff;
@@ -88,10 +98,6 @@ body,
   color: var(--text-color);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-
-body {
-  overscroll-behavior-y: none;
 }
 
 * {
