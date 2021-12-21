@@ -1,4 +1,4 @@
-import { onMounted, ref, watch } from 'vue';
+import { ref, watch } from 'vue';
 import { lsGet, lsSet } from '@/helpers/utils';
 
 const NOT_SET = 'not-set';
