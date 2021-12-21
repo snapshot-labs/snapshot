@@ -35,7 +35,7 @@ export function useUserSkin() {
     }
   }
 
-  function toggleScrollSkin() {
+  function toggleColorScheme() {
     document.documentElement.setAttribute(
       'data-color-scheme',
       userSkin.value === LIGHT_MODE ? 'light' : 'dark'
@@ -43,10 +43,10 @@ export function useUserSkin() {
   }
 
   watch(userSkin, () => {
-    toggleScrollSkin();
+    toggleColorScheme();
   });
 
-  onMounted(() => toggleScrollSkin());
+  onMounted(() => toggleColorScheme());
 
   return {
     userSkin,
