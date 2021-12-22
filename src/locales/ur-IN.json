@@ -19,13 +19,13 @@
   "strategiesPage": "سٹریٹیجیز",
   "space": "جگہ",
   "spaces": "جگہ",
+  "verifiedSpace": "Verified space",
   "version": "Version",
   "timeline": "ٹائم لائن",
   "filters": "فلٹرز",
   "allSpaces": "تمام مقامات",
   "submitOnchain": "آن لائن جمع کروائیں",
   "inSpaces": "جگہ{0}",
-  "downloadReport": "رپورٹ ڈاؤن لوڈ کریں",
   "votes": "ووٹ",
   "seeMore": "اور دیکھے",
   "network": "نیٹ ورک",
@@ -39,6 +39,7 @@
   "view3box": "3Box پر پروفائل دیکھیں",
   "edit3box": "3Box پر پروفائل میں ترمیم کریں",
   "connectWallet": "بٹوے سے رابطہ کریں",
+  "toggleSkin": "Toggle skin",
   "about": "کے بارے میں",
   "license": "لائسنس",
   "ipfsServer": "آئی پی ایف ایس سرور",
@@ -57,10 +58,15 @@
   "receipt": "رسید",
   "relayer": "ریلے",
   "verifyOnMycrypto": "MyCrypto پر رسید کی تصدیق کریں",
+  "verifyOnSignatorio": "Verify on Signator.io",
   "isCore": "کور",
+  "notificationsBlocked": "Your browser is blocking notifications",
+  "notificationsNotSupported": "Your browser does not support notifications",
   "seeInExplorer": "ایکسپلورر پر دیکھیں",
   "learnMore": "اور جانئے",
   "logout": "لاگ آوٹ",
+  "walletNotice": "Wallet notice",
+  "gnosisSafeWalletNotice": "Gnosis Safe wallet doesn't support signing messages. You can delegate your voting power to a wallet of your choice on our delegation page.",
   "continue": "جاری رہے",
   "add": "شامل کریں",
   "edit": "ترمیم",
@@ -91,6 +97,8 @@
   "startToEnd": "شروع {0} اختتام {1}",
   "startIn": "شروع {0}",
   "endIn": "اختتام {1}",
+  "proposalStartIn": "start in {0}",
+  "proposalToNow": "{0} left",
   "endedAgo": "ختم{1}",
   "proposalBy": "سے{0}",
   "endDate": "اختتام{0}",
@@ -112,6 +120,7 @@
   "duplicateProposal": "Duplicate proposal",
   "joinedSpaces": "Joined spaces",
   "joinSpaces": "Join spaces",
+  "delegateVotingPower": "Go to delegation page",
   "errors": {
     "required": "فیلڈ کی ضرورت ہے",
     "minLength": "کم سے کم لمبائی {0} ہے",
@@ -123,8 +132,9 @@
     "type": "Invalid type"
   },
   "create": {
-    "question": "سوال",
-    "content": "آپ کا کیا طریقہ ہے?",
+    "question": "Ask a question...",
+    "categorie(s)": "Select up to 2 categorie(s)",
+    "content": "Tell more about your proposal (optional)",
     "preview": "پریویو",
     "choices": "انتخاب",
     "addChoice": "انتخاب شامل کریں",
@@ -190,6 +200,8 @@
     "customDomain": "Custom domain",
     "domain": "ڈومین نام",
     "strategies": "سٹریٹیجیز",
+    "categories": "Categorie(s)",
+    "selectCategories": "Select categories",
     "hideSpace": "ہوم پیج سے جگہ چھپائیں",
     "addStrategy": "سٹریٹیجیز شامل کریں",
     "authors": "Authors",
@@ -209,13 +221,21 @@
     "votingDelay": "Voting delay",
     "votingPeriod": "Voting period",
     "voting": "Voting",
+    "quorum": "Quorum",
     "type": "Type",
-    "anyType": "Any"
+    "anyType": "Any",
+    "hideAbstain": "Ignore abstain votes in basic voting results"
   },
   "setup": {
     "example": "مثال. yam.eth",
-    "useExistingEns": "اپنی جگہ بنانے کے لئے موجودہ ENS نام کا استعمال کریں۔",
-    "createASpace": "جگہ پیدا کریں"
+    "chooseExistingEns": "Choose one of your existing ENS domains to create a space with:",
+    "useSingleExistingEns": "Use your existing ENS domain:",
+    "orReigsterNewEns": "Or register a new domain:",
+    "toCreateASpace": "To create a space, you first need an ENS domain. Enter one below and follow the ENS registration instructions.",
+    "correctAccountNote": "You already have an ENS domain? Make sure you have connected the correct account on the Ethereum mainnet.",
+    "createASpace": "جگہ پیدا کریں",
+    "registerEnsButton": "Register",
+    "supportedEnsTLDs": "Supported domain endings"
   },
   "notify": {
     "youDidIt": "تم نے یہ کیا!",
@@ -237,7 +257,18 @@
     "skins": "سکنس",
     "networks": "نیٹ ورک",
     "plugins": "پلگیں",
-    "results": "نتائج"
+    "results": "نتائج",
+    "categories": {
+      "all": "All",
+      "protocol": "Protocol",
+      "social": "Social",
+      "investment": "Investment",
+      "grant": "Grant",
+      "service": "Service",
+      "media": "Media",
+      "creator": "Creator",
+      "collector": "Collector"
+    }
   },
   "voting": {
     "selectVoting": "ووٹنگ کا نظام منتخب کریں",
@@ -246,12 +277,19 @@
     "quadratic": "چوکور ووٹنگ",
     "ranked-choice": "انتخاب میں ووٹنگ کی درجہ بندی",
     "weighted": "وزنی ووٹنگ",
+    "basic": "Basic voting",
     "description": {
       "single-choice": "ہر ووٹر صرف ایک ہی انتخاب کا انتخاب کرسکتا ہے۔.",
       "approval": "ہر ووٹر کسی بھی طرح کے انتخاب کا انتخاب کرسکتا ہے۔",
       "quadratic": "Each voter may spread voting power across any number of choices. Results are calculated quadratically.",
       "ranked-choice": "Each voter may select and rank any number of choices. Results are calculated by instant-runoff counting method.",
-      "weighted": "ہر ووٹر کسی بھی انتخاب میں ووٹ ڈالنے کی طاقت پھیل سکتا ہے۔"
+      "weighted": "ہر ووٹر کسی بھی انتخاب میں ووٹ ڈالنے کی طاقت پھیل سکتا ہے۔",
+      "basic": "Single choice voting with three choices: For, Against or Abstain"
+    },
+    "choices": {
+      "for": "For",
+      "against": "Against",
+      "abstain": "Abstain"
     }
   },
   "safeSnap": {
@@ -305,13 +343,20 @@
   "poap": {
     "no_poap_header": "ابھی تک اس تجویز کے لئے ایک POAP ترتیب نہیں دیا گیا ہے: '(",
     "no_voted_header": "اس POAP کو حاصل کرنے کے لئے ووٹ دیں",
-    "unclaimed_header": "آپ کا دعوی کریں کہ میں نے پی او اے پی کو ووٹ دیا ہے",
+    "unclaimed_header": "Mint your I voted POAP",
     "claimed_header": "Congratulations! The POAP has been minted to your collection",
-    "loading_header": "POAP آپ کے جمع کرنے میں شامل کیا جارہا ہے",
-    "button_claim": "دعوی",
+    "loading_header": "The POAP is being minted to your collection",
+    "button_claim": "Mint",
     "button_show": "Browse collection",
-    "success_claim": "آپ کا POAP آپ کے پتے پر ہے",
+    "success_claim": "The POAP has been minted to your collection",
     "error_claim": "ٹوکن کو نشان زد کرنے میں ایک دشواری تھی"
+  },
+  "charts": {
+    "charts": "Charts",
+    "noVotesYet": "There are no votes to visualize yet.",
+    "totalVotesPerDay": "Total votes per day",
+    "shareOfVotingPower": "Share of voting power",
+    "votingPowerPerDay": "Voting power per day"
   },
   "comment_box": {
     "title": "Comment box",
@@ -336,5 +381,27 @@
     "show": "Show",
     "reply": "Reply",
     "load_more": "Load more"
+  },
+  "page": {
+    "title": {
+      "home": "Snapshot",
+      "setup": "Create a space",
+      "timeline": "Timeline",
+      "explore": "Explore",
+      "playground": "Playground",
+      "space": {
+        "create": "Create {space} proposal",
+        "about": "About {space}",
+        "proposals": "{space} Proposals",
+        "proposal": "{space} proposal: {proposal}",
+        "settings": "{space} Settings"
+      },
+      "strategy": "{key} strategy",
+      "delegate": "Delegate"
+    }
+  },
+  "hal": {
+    "title": "Track proposals for {spaceName}",
+    "text": "Receive notifications every time a new proposal is created or ends"
   }
 }
