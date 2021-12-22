@@ -19,13 +19,13 @@
   "strategiesPage": "Strategier",
   "space": "Utrymme",
   "spaces": "Utrymmen",
+  "verifiedSpace": "Verified space",
   "version": "Version",
   "timeline": "Tidslinje",
   "filters": "Filter",
   "allSpaces": "Alla spaces",
   "submitOnchain": "Skicka on-chain",
   "inSpaces": "I {0} space{0}",
-  "downloadReport": "Ladda ner rapport",
   "votes": "Röster",
   "seeMore": "Se mer",
   "network": "Nätverk",
@@ -39,6 +39,7 @@
   "view3box": "Visa profilen på 3Box",
   "edit3box": "Redigera profilen på 3Box",
   "connectWallet": "Anslut plånboken",
+  "toggleSkin": "Toggle skin",
   "about": "Om",
   "license": "Licens",
   "ipfsServer": "IPFS server",
@@ -57,10 +58,15 @@
   "receipt": "Kvitto",
   "relayer": "Reläer",
   "verifyOnMycrypto": "Verifiera kvitto på MyCrypto",
+  "verifyOnSignatorio": "Verify on Signator.io",
   "isCore": "Core",
+  "notificationsBlocked": "Your browser is blocking notifications",
+  "notificationsNotSupported": "Your browser does not support notifications",
   "seeInExplorer": "Se på explorer",
   "learnMore": "Läs mer",
   "logout": "Logga ut",
+  "walletNotice": "Wallet notice",
+  "gnosisSafeWalletNotice": "Gnosis Safe wallet doesn't support signing messages. You can delegate your voting power to a wallet of your choice on our delegation page.",
   "continue": "Fortsätt",
   "add": "Lägg till",
   "edit": "Redigera",
@@ -91,6 +97,8 @@
   "startToEnd": "starta {0} slut {1}",
   "startIn": "starta {0}",
   "endIn": "avsluta {1}",
+  "proposalStartIn": "start in {0}",
+  "proposalToNow": "{0} left",
   "endedAgo": "avslutade {1}",
   "proposalBy": "av {0}",
   "endDate": "avsluta {0}",
@@ -112,6 +120,7 @@
   "duplicateProposal": "Duplicate proposal",
   "joinedSpaces": "Joined spaces",
   "joinSpaces": "Join spaces",
+  "delegateVotingPower": "Go to delegation page",
   "errors": {
     "required": "Fältet är obligatoriskt",
     "minLength": "Minsta längd är {0}",
@@ -123,8 +132,9 @@
     "type": "Invalid type"
   },
   "create": {
-    "question": "Fråga",
-    "content": "Vad har ni för förslag?",
+    "question": "Ask a question...",
+    "categorie(s)": "Select up to 2 categorie(s)",
+    "content": "Tell more about your proposal (optional)",
     "preview": "Förhandsgranska",
     "choices": "Val",
     "addChoice": "Lägga till val",
@@ -190,6 +200,8 @@
     "customDomain": "Custom domain",
     "domain": "Domain namn",
     "strategies": "Strategi(er)",
+    "categories": "Categorie(s)",
+    "selectCategories": "Select categories",
     "hideSpace": "Dölj space från hemsida",
     "addStrategy": "Lägg till strategi",
     "authors": "Authors",
@@ -209,13 +221,21 @@
     "votingDelay": "Voting delay",
     "votingPeriod": "Voting period",
     "voting": "Voting",
+    "quorum": "Quorum",
     "type": "Type",
-    "anyType": "Any"
+    "anyType": "Any",
+    "hideAbstain": "Ignore abstain votes in basic voting results"
   },
   "setup": {
     "example": "e.g. yam.eth",
-    "useExistingEns": "Använd ett befintligt ENS-namn för att skapa ditt space med.",
-    "createASpace": "Skapa space"
+    "chooseExistingEns": "Choose one of your existing ENS domains to create a space with:",
+    "useSingleExistingEns": "Use your existing ENS domain:",
+    "orReigsterNewEns": "Or register a new domain:",
+    "toCreateASpace": "To create a space, you first need an ENS domain. Enter one below and follow the ENS registration instructions.",
+    "correctAccountNote": "You already have an ENS domain? Make sure you have connected the correct account on the Ethereum mainnet.",
+    "createASpace": "Skapa space",
+    "registerEnsButton": "Register",
+    "supportedEnsTLDs": "Supported domain endings"
   },
   "notify": {
     "youDidIt": "Du har gjort det!",
@@ -237,7 +257,18 @@
     "skins": "skin(er)",
     "networks": "nätverk(er)",
     "plugins": "plugin(er)",
-    "results": "resultat (er)"
+    "results": "resultat (er)",
+    "categories": {
+      "all": "All",
+      "protocol": "Protocol",
+      "social": "Social",
+      "investment": "Investment",
+      "grant": "Grant",
+      "service": "Service",
+      "media": "Media",
+      "creator": "Creator",
+      "collector": "Collector"
+    }
   },
   "voting": {
     "selectVoting": "Välj röstsystem",
@@ -246,12 +277,19 @@
     "quadratic": "Kvadratisk röstning",
     "ranked-choice": "Rankad röstning",
     "weighted": "Vägd röstning",
+    "basic": "Basic voting",
     "description": {
       "single-choice": "Varje väljare kan välja endast ett val.",
       "approval": "Varje väljare kan välja valfritt antal val.",
       "quadratic": "Each voter may spread voting power across any number of choices. Results are calculated quadratically.",
       "ranked-choice": "Each voter may select and rank any number of choices. Results are calculated by instant-runoff counting method.",
-      "weighted": "Varje väljare kan sprida rösträtt över valfritt antal val."
+      "weighted": "Varje väljare kan sprida rösträtt över valfritt antal val.",
+      "basic": "Single choice voting with three choices: For, Against or Abstain"
+    },
+    "choices": {
+      "for": "For",
+      "against": "Against",
+      "abstain": "Abstain"
     }
   },
   "safeSnap": {
@@ -305,13 +343,20 @@
   "poap": {
     "no_poap_header": "En POAP har inte installerats för detta förslag ännu :'(",
     "no_voted_header": "Rösta för att få denna POAP",
-    "unclaimed_header": "Gör anspråk på din jag röstade på POAP",
+    "unclaimed_header": "Mint your I voted POAP",
     "claimed_header": "Congratulations! The POAP has been minted to your collection",
-    "loading_header": "POAP läggs till i din kollektion",
-    "button_claim": "Anspråk",
+    "loading_header": "The POAP is being minted to your collection",
+    "button_claim": "Mint",
     "button_show": "Browse collection",
-    "success_claim": "Din POAP är på din adress",
+    "success_claim": "The POAP has been minted to your collection",
     "error_claim": "Det gick inte att radera den token"
+  },
+  "charts": {
+    "charts": "Charts",
+    "noVotesYet": "There are no votes to visualize yet.",
+    "totalVotesPerDay": "Total votes per day",
+    "shareOfVotingPower": "Share of voting power",
+    "votingPowerPerDay": "Voting power per day"
   },
   "comment_box": {
     "title": "Comment box",
@@ -336,5 +381,27 @@
     "show": "Show",
     "reply": "Reply",
     "load_more": "Load more"
+  },
+  "page": {
+    "title": {
+      "home": "Snapshot",
+      "setup": "Create a space",
+      "timeline": "Timeline",
+      "explore": "Explore",
+      "playground": "Playground",
+      "space": {
+        "create": "Create {space} proposal",
+        "about": "About {space}",
+        "proposals": "{space} Proposals",
+        "proposal": "{space} proposal: {proposal}",
+        "settings": "{space} Settings"
+      },
+      "strategy": "{key} strategy",
+      "delegate": "Delegate"
+    }
+  },
+  "hal": {
+    "title": "Track proposals for {spaceName}",
+    "text": "Receive notifications every time a new proposal is created or ends"
   }
 }
