@@ -19,13 +19,13 @@
   "strategiesPage": "Strategie:",
   "space": "Mezerník",
   "spaces": "Skupina",
+  "verifiedSpace": "Verified space",
   "version": "Verze",
   "timeline": "Časové",
   "filters": "Filtrovat",
   "allSpaces": "Všechny skupiny",
   "submitOnchain": "Odeslat on-chain",
   "inSpaces": "{0} skupin(y)",
-  "downloadReport": "Stáhněte si zprávu",
   "votes": "Hlasování",
   "seeMore": "Zobrazit více",
   "network": "WiFi a mobilních sítí",
@@ -39,6 +39,7 @@
   "view3box": "Vytvořit profil na 3Box",
   "edit3box": "Upravit profil na 3Box",
   "connectWallet": "Připojit peněženku",
+  "toggleSkin": "Toggle skin",
   "about": "O programu",
   "license": "Licence",
   "ipfsServer": "IPFS server",
@@ -57,10 +58,15 @@
   "receipt": "Doručenka",
   "relayer": "Relé",
   "verifyOnMycrypto": "Ověřit účtenku na MyCrypto",
+  "verifyOnSignatorio": "Verify on Signator.io",
   "isCore": "Core",
+  "notificationsBlocked": "Your browser is blocking notifications",
+  "notificationsNotSupported": "Your browser does not support notifications",
   "seeInExplorer": "Zobrazit na Průzkumníku",
   "learnMore": "Přečtěte si více",
   "logout": "Odhlásit se",
+  "walletNotice": "Wallet notice",
+  "gnosisSafeWalletNotice": "Gnosis Safe wallet doesn't support signing messages. You can delegate your voting power to a wallet of your choice on our delegation page.",
   "continue": "Pokračovat",
   "add": "Přidat",
   "edit": "Upravit",
@@ -91,6 +97,8 @@
   "startToEnd": "začít {0} konec {1}",
   "startIn": "Start: {0}",
   "endIn": "konec {1}",
+  "proposalStartIn": "start in {0}",
+  "proposalToNow": "{0} left",
   "endedAgo": "konec {1}",
   "proposalBy": "od {0}",
   "endDate": "End: {0}",
@@ -112,6 +120,7 @@
   "duplicateProposal": "Duplicate proposal",
   "joinedSpaces": "Joined spaces",
   "joinSpaces": "Join spaces",
+  "delegateVotingPower": "Go to delegation page",
   "errors": {
     "required": "Pole je povinné.",
     "minLength": "Minimální délka je {0}",
@@ -123,8 +132,9 @@
     "type": "Invalid type"
   },
   "create": {
-    "question": "Otázka",
-    "content": "Jaký je váš návrh?",
+    "question": "Ask a question...",
+    "categorie(s)": "Select up to 2 categorie(s)",
+    "content": "Tell more about your proposal (optional)",
     "preview": "Použít",
     "choices": "Volby",
     "addChoice": "Přidat volbu",
@@ -190,6 +200,8 @@
     "customDomain": "Custom domain",
     "domain": "Název domény",
     "strategies": "Strategie (strategie)",
+    "categories": "Categorie(s)",
+    "selectCategories": "Select categories",
     "hideSpace": "Skrýt místo z domovské stránky",
     "addStrategy": "Upravit strategii",
     "authors": "Authors",
@@ -209,13 +221,21 @@
     "votingDelay": "Voting delay",
     "votingPeriod": "Voting period",
     "voting": "Voting",
+    "quorum": "Quorum",
     "type": "Type",
-    "anyType": "Any"
+    "anyType": "Any",
+    "hideAbstain": "Ignore abstain votes in basic voting results"
   },
   "setup": {
     "example": "e.g. yam.eth",
-    "useExistingEns": "Použijte existující ENS název k vytvoření vašeho prostoru.",
-    "createASpace": "Create spaces"
+    "chooseExistingEns": "Choose one of your existing ENS domains to create a space with:",
+    "useSingleExistingEns": "Use your existing ENS domain:",
+    "orReigsterNewEns": "Or register a new domain:",
+    "toCreateASpace": "To create a space, you first need an ENS domain. Enter one below and follow the ENS registration instructions.",
+    "correctAccountNote": "You already have an ENS domain? Make sure you have connected the correct account on the Ethereum mainnet.",
+    "createASpace": "Create spaces",
+    "registerEnsButton": "Register",
+    "supportedEnsTLDs": "Supported domain endings"
   },
   "notify": {
     "youDidIt": "Dokázals to!",
@@ -237,7 +257,18 @@
     "skins": "vzhledy)",
     "networks": "sítě)",
     "plugins": "zásuvné moduly)",
-    "results": "výsledků"
+    "results": "výsledků",
+    "categories": {
+      "all": "All",
+      "protocol": "Protocol",
+      "social": "Social",
+      "investment": "Investment",
+      "grant": "Grant",
+      "service": "Service",
+      "media": "Media",
+      "creator": "Creator",
+      "collector": "Collector"
+    }
   },
   "voting": {
     "selectVoting": "Vyberte hlasovací systém",
@@ -246,12 +277,19 @@
     "quadratic": "Kvadratické hlasování",
     "ranked-choice": "Možnost jediné volby",
     "weighted": "Vážené hlasování",
+    "basic": "Basic voting",
     "description": {
       "single-choice": "Každý volič může vybrat pouze jednu možnost.",
       "approval": "Každý volič může vybrat pouze jednu možnost.",
       "quadratic": "Každý volič může rozdělit hlasovací sílu na libovolný počet voleb. Výsledky jsou počítány čtyřnásobně.",
       "ranked-choice": "Každý volič může vybrat a hodit libovolný počet možností. Výsledky jsou počítány metodou okamžitého počítání runoff.",
-      "weighted": "Každý volič může rozdělit hlasovací sílu na libovolný počet možností."
+      "weighted": "Každý volič může rozdělit hlasovací sílu na libovolný počet možností.",
+      "basic": "Single choice voting with three choices: For, Against or Abstain"
+    },
+    "choices": {
+      "for": "For",
+      "against": "Against",
+      "abstain": "Abstain"
     }
   },
   "safeSnap": {
@@ -305,13 +343,20 @@
   "poap": {
     "no_poap_header": "POAP zatím nebylo nastaveno pro tento návrh :'(",
     "no_voted_header": "Hlasujte pro získání tohoto POAP",
-    "unclaimed_header": "Požádejte o svůj hlas POAP",
+    "unclaimed_header": "Mint your I voted POAP",
     "claimed_header": "Congratulations! The POAP has been minted to your collection",
-    "loading_header": "POAP je přidáváno do vaší kolekce",
-    "button_claim": "Území",
+    "loading_header": "The POAP is being minted to your collection",
+    "button_claim": "Mint",
     "button_show": "Browse collection",
-    "success_claim": "Váš POAP je na vaší adrese",
+    "success_claim": "The POAP has been minted to your collection",
     "error_claim": "Při mazání tokenu nastal problém."
+  },
+  "charts": {
+    "charts": "Charts",
+    "noVotesYet": "There are no votes to visualize yet.",
+    "totalVotesPerDay": "Total votes per day",
+    "shareOfVotingPower": "Share of voting power",
+    "votingPowerPerDay": "Voting power per day"
   },
   "comment_box": {
     "title": "Comment box",
@@ -336,5 +381,27 @@
     "show": "Show",
     "reply": "Reply",
     "load_more": "Load more"
+  },
+  "page": {
+    "title": {
+      "home": "Snapshot",
+      "setup": "Create a space",
+      "timeline": "Timeline",
+      "explore": "Explore",
+      "playground": "Playground",
+      "space": {
+        "create": "Create {space} proposal",
+        "about": "About {space}",
+        "proposals": "{space} Proposals",
+        "proposal": "{space} proposal: {proposal}",
+        "settings": "{space} Settings"
+      },
+      "strategy": "{key} strategy",
+      "delegate": "Delegate"
+    }
+  },
+  "hal": {
+    "title": "Track proposals for {spaceName}",
+    "text": "Receive notifications every time a new proposal is created or ends"
   }
 }
