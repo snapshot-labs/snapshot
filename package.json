@@ -26,7 +26,7 @@
     "@portis/web3": "^4.0.6",
     "@pusher/push-notifications-web": "^1.1.0",
     "@snapshot-labs/lock": "github:snapshot-labs/lock#master",
-    "@snapshot-labs/snapshot.js": "^0.3.23",
+    "@snapshot-labs/snapshot.js": "^0.3.24",
     "@toruslabs/torus-embed": "^1.12.1",
     "@vue/apollo-composable": "4.0.0-alpha.16",
     "@vueuse/core": "^7.4.0",
