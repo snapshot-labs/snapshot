@@ -20,10 +20,8 @@ onMounted(() => {
 const validTlds = ['eth', 'xyz', 'com', 'org', 'io', 'app', 'art'];
 const ownedEnsDomains = ref([]);
 
-const loadingOwnedEnsDomains = ref(false);
 const loadOwnedEnsDomains = async () => {
   if (web3Account.value) {
-    loadingOwnedEnsDomains.value = true;
     const res = await ensApolloQuery({
       query: ENS_QUERY,
       variables: {
@@ -31,7 +29,6 @@ const loadOwnedEnsDomains = async () => {
       }
     });
     ownedEnsDomains.value = res.account?.domains || [];
-    loadingOwnedEnsDomains.value = false;
   } else {
     ownedEnsDomains.value = [];
   }
@@ -70,9 +67,14 @@ watch(ownedEnsDomains, (newVal, oldVal) => {
 });
 
 // load domains initially and update on account change
-loadOwnedEnsDomains();
-watch(web3Account, () => {
-  loadOwnedEnsDomains();
+// using finally() here because await at top level would require the component to be inside a <Suspense> block
+// https://v3.vuejs.org/guide/migration/suspense.html#introduction
+const loadingOwnedEnsDomains = ref(true);
+loadOwnedEnsDomains().finally(() => loadingOwnedEnsDomains.value = false);
+watch(web3Account, async () => {
+  loadingOwnedEnsDomains.value = true;
+  await loadOwnedEnsDomains();
+  loadingOwnedEnsDomains.value = false;
   waitingForRegistration.value = false;
 });
 
