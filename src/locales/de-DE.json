@@ -19,13 +19,13 @@
   "strategiesPage": "Strategien",
   "space": "Bereiche",
   "spaces": "Bereiche",
+  "verifiedSpace": "Verified space",
   "version": "Version",
   "timeline": "Timeline",
   "filters": "Filter",
   "allSpaces": "Alle Bereiche",
   "submitOnchain": "On-chain senden",
   "inSpaces": "In {0} Bereich(en)",
-  "downloadReport": "Bericht herunterladen",
   "votes": "Stimmen",
   "seeMore": "Mehr anzeigen",
   "network": "Netzwerk",
@@ -39,6 +39,7 @@
   "view3box": "Profil auf 3Box ansehen",
   "edit3box": "Profil auf 3Box bearbeiten",
   "connectWallet": "Wallet verbinden",
+  "toggleSkin": "Toggle skin",
   "about": "About",
   "license": "Lizenz",
   "ipfsServer": "IPFS server",
@@ -57,10 +58,15 @@
   "receipt": "Beleg",
   "relayer": "Übertrager",
   "verifyOnMycrypto": "Beleg auf MyCrypto überprüfen",
+  "verifyOnSignatorio": "Verify on Signator.io",
   "isCore": "Kern",
+  "notificationsBlocked": "Your browser is blocking notifications",
+  "notificationsNotSupported": "Your browser does not support notifications",
   "seeInExplorer": "Im Explorer ansehen",
   "learnMore": "Mehr erfahren",
   "logout": "Ausloggen",
+  "walletNotice": "Wallet notice",
+  "gnosisSafeWalletNotice": "Gnosis Safe wallet doesn't support signing messages. You can delegate your voting power to a wallet of your choice on our delegation page.",
   "continue": "Weiter",
   "add": "Hinzufügen",
   "edit": "Bearbeiten",
@@ -91,6 +97,8 @@
   "startToEnd": "begin {0} ende {1}",
   "startIn": "start {0}",
   "endIn": "ende {1}",
+  "proposalStartIn": "start in {0}",
+  "proposalToNow": "{0} left",
   "endedAgo": "endete {1}",
   "proposalBy": "von {0}",
   "endDate": "ende {0}",
@@ -112,6 +120,7 @@
   "duplicateProposal": "Vorschlag duplizieren",
   "joinedSpaces": "Beigetretene Bereiche",
   "joinSpaces": "Bereiche beitreten",
+  "delegateVotingPower": "Go to delegation page",
   "errors": {
     "required": "Dieses Feld ist ein Pflichtfeld",
     "minLength": "Mindestlänge ist {0}",
@@ -123,8 +132,9 @@
     "type": "Invalid type"
   },
   "create": {
-    "question": "Frage",
-    "content": "Was ist Ihr Vorschlag?",
+    "question": "Ask a question...",
+    "categorie(s)": "Select up to 2 categorie(s)",
+    "content": "Tell more about your proposal (optional)",
     "preview": "Vorschau",
     "choices": "Auswahl",
     "addChoice": "Auswahl hinzufügen",
@@ -190,6 +200,8 @@
     "customDomain": "Custom domain",
     "domain": "Domain-Name",
     "strategies": "Strategie(n)",
+    "categories": "Categorie(s)",
+    "selectCategories": "Select categories",
     "hideSpace": "Raum auf der Startseite ausblenden",
     "addStrategy": "Strategie hinzufügen",
     "authors": "Autoren",
@@ -209,13 +221,21 @@
     "votingDelay": "Voting delay",
     "votingPeriod": "Voting period",
     "voting": "Voting",
+    "quorum": "Quorum",
     "type": "Type",
-    "anyType": "Any"
+    "anyType": "Any",
+    "hideAbstain": "Ignore abstain votes in basic voting results"
   },
   "setup": {
     "example": "z.B. yam.eth",
-    "useExistingEns": "Verwenden Sie einen bestehenden ENS-Namen, um Ihren Bereich zu erstellen.",
-    "createASpace": "Bereich erstellen"
+    "chooseExistingEns": "Choose one of your existing ENS domains to create a space with:",
+    "useSingleExistingEns": "Use your existing ENS domain:",
+    "orReigsterNewEns": "Or register a new domain:",
+    "toCreateASpace": "To create a space, you first need an ENS domain. Enter one below and follow the ENS registration instructions.",
+    "correctAccountNote": "You already have an ENS domain? Make sure you have connected the correct account on the Ethereum mainnet.",
+    "createASpace": "Bereich erstellen",
+    "registerEnsButton": "Register",
+    "supportedEnsTLDs": "Supported domain endings"
   },
   "notify": {
     "youDidIt": "Du hast es geschafft!",
@@ -234,20 +254,20 @@
     "addNetwork": "Netzwerk hinzufügen",
     "createPlugin": "Plugin erstellen",
     "strategies": "Strategie(n)",
-    "skins": "Skin(s)",
+    "skins": "skin(s)",
     "networks": "Netzwerk(e)",
     "plugins": "Plugin(s)",
     "results": "Ergebnis(se)",
     "categories": {
-      "all": "Alle",
-      "protocol": "Protokoll",
+      "all": "All",
+      "protocol": "Protocol",
       "social": "Social",
       "investment": "Investment",
-      "grant": "Förderung",
-      "service": "Dienstleistung",
+      "grant": "Grant",
+      "service": "Service",
       "media": "Media",
       "creator": "Creator",
-      "collector": "Sammler"
+      "collector": "Collector"
     }
   },
   "voting": {
@@ -257,12 +277,19 @@
     "quadratic": "Quadratische Abstimmung",
     "ranked-choice": "Einzelwahl-Abstimmung",
     "weighted": "Gewichtete Abstimmung",
+    "basic": "Basic voting",
     "description": {
       "single-choice": "Jeder Wähler kann nur eine Wahlmöglichkeit wählen.",
       "approval": "Jeder Wähler kann eine beliebige Anzahl von Wahlmöglichkeiten wählen.",
       "quadratic": "Jeder Wähler kann seine Stimmrechte auf eine beliebige Anzahl von Wahlmöglichkeiten verteilen.",
       "ranked-choice": "Jeder Wähler kann eine beliebige Anzahl von Wahlmöglichkeiten auswählen und platzieren.",
-      "weighted": "Jeder Wähler kann die Stimmrechte auf eine beliebige Anzahl von Wahlmöglichkeiten verteilen."
+      "weighted": "Jeder Wähler kann die Stimmrechte auf eine beliebige Anzahl von Wahlmöglichkeiten verteilen.",
+      "basic": "Single choice voting with three choices: For, Against or Abstain"
+    },
+    "choices": {
+      "for": "For",
+      "against": "Against",
+      "abstain": "Abstain"
     }
   },
   "safeSnap": {
@@ -316,13 +343,20 @@
   "poap": {
     "no_poap_header": "Ein POAP wurde für diesen Vorschlag noch nicht eingerichtet :'(",
     "no_voted_header": "Stimme ab um diesen POAP zu erhalten",
-    "unclaimed_header": "Beanspruche deinen POAP",
+    "unclaimed_header": "Mint your I voted POAP",
     "claimed_header": "Congratulations! The POAP has been minted to your collection",
-    "loading_header": "Der POAP wird Ihrer Sammlung hinzugefügt",
-    "button_claim": "Beanspruchen",
+    "loading_header": "The POAP is being minted to your collection",
+    "button_claim": "Mint",
     "button_show": "Browse collection",
-    "success_claim": "Dein POAP ist auf deiner Adresse",
+    "success_claim": "The POAP has been minted to your collection",
     "error_claim": "There was a problem minting the token"
+  },
+  "charts": {
+    "charts": "Charts",
+    "noVotesYet": "There are no votes to visualize yet.",
+    "totalVotesPerDay": "Total votes per day",
+    "shareOfVotingPower": "Share of voting power",
+    "votingPowerPerDay": "Voting power per day"
   },
   "comment_box": {
     "title": "Comment box",
@@ -347,5 +381,27 @@
     "show": "Show",
     "reply": "Reply",
     "load_more": "Load more"
+  },
+  "page": {
+    "title": {
+      "home": "Snapshot",
+      "setup": "Create a space",
+      "timeline": "Timeline",
+      "explore": "Explore",
+      "playground": "Playground",
+      "space": {
+        "create": "Create {space} proposal",
+        "about": "About {space}",
+        "proposals": "{space} Proposals",
+        "proposal": "{space} proposal: {proposal}",
+        "settings": "{space} Settings"
+      },
+      "strategy": "{key} strategy",
+      "delegate": "Delegate"
+    }
+  },
+  "hal": {
+    "title": "Track proposals for {spaceName}",
+    "text": "Receive notifications every time a new proposal is created or ends"
   }
 }
