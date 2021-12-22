@@ -19,13 +19,13 @@
   "strategiesPage": "स्ट्रॅटेजि",
   "space": "स्पेस",
   "spaces": "स्पेस",
+  "verifiedSpace": "Verified space",
   "version": "वरशन",
   "timeline": "टाइमलाइन",
   "filters": "फिल्टर",
   "allSpaces": "सर्व जागा",
   "submitOnchain": "ओन चैन सबमिट करा",
   "inSpaces": "{0} जागा",
-  "downloadReport": "रिपोर्ट डाउनलोड करा",
   "votes": "मत द्या",
   "seeMore": "आणखी पहा",
   "network": "नेटवर्क",
@@ -39,6 +39,7 @@
   "view3box": "३बॉक्स वर प्रोफिले बघा",
   "edit3box": "३बॉक्स वर प्रोफिले एडिट करा",
   "connectWallet": "व्हालेट कनेक्ट करा",
+  "toggleSkin": "Toggle skin",
   "about": "याबद्दल",
   "license": "परवाना",
   "ipfsServer": "आय पी एफ एस सर्वर",
@@ -57,10 +58,15 @@
   "receipt": "पावती",
   "relayer": "रीलेयर",
   "verifyOnMycrypto": "माय क्रीपटो वर पावती सत्यापित करा",
+  "verifyOnSignatorio": "Verify on Signator.io",
   "isCore": "कोर",
+  "notificationsBlocked": "Your browser is blocking notifications",
+  "notificationsNotSupported": "Your browser does not support notifications",
   "seeInExplorer": "एक्सप्लोरर वरती बघा",
   "learnMore": "अधिक जाणून घ्या",
   "logout": "लॉग आउट",
+  "walletNotice": "Wallet notice",
+  "gnosisSafeWalletNotice": "Gnosis Safe wallet doesn't support signing messages. You can delegate your voting power to a wallet of your choice on our delegation page.",
   "continue": "सुरू ठेवा",
   "add": "जोडा",
   "edit": "एडिट करा",
@@ -91,6 +97,8 @@
   "startToEnd": "सुरुवात {0} शेवट {1}",
   "startIn": "सुरुवात {0}",
   "endIn": "शेवट{1}",
+  "proposalStartIn": "start in {0}",
+  "proposalToNow": "{0} left",
   "endedAgo": "संपले {1}",
   "proposalBy": "द्वारा{0}",
   "endDate": "शेवट{0}",
@@ -112,6 +120,7 @@
   "duplicateProposal": "Duplicate proposal",
   "joinedSpaces": "Joined spaces",
   "joinSpaces": "Join spaces",
+  "delegateVotingPower": "Go to delegation page",
   "errors": {
     "required": "फील्ड आवश्यक आहे",
     "minLength": "किमान लांबी {0}",
@@ -123,8 +132,9 @@
     "type": "Invalid type"
   },
   "create": {
-    "question": "प्रश्न",
-    "content": "तुमचा प्रोपोसलं काय आहे?",
+    "question": "Ask a question...",
+    "categorie(s)": "Select up to 2 categorie(s)",
+    "content": "Tell more about your proposal (optional)",
     "preview": "पूर्वावलोकन",
     "choices": "पर्याय",
     "addChoice": "पर्याय जोडा",
@@ -190,6 +200,8 @@
     "customDomain": "Custom domain",
     "domain": "डोमेन चे नाव",
     "strategies": "स्ट्रॅटेजि",
+    "categories": "Categorie(s)",
+    "selectCategories": "Select categories",
     "hideSpace": "मुख्यपृष्ठावरून जागा लपवा",
     "addStrategy": "स्ट्रॅटेजि जोडा",
     "authors": "Authors",
@@ -209,13 +221,21 @@
     "votingDelay": "Voting delay",
     "votingPeriod": "Voting period",
     "voting": "Voting",
+    "quorum": "Quorum",
     "type": "Type",
-    "anyType": "Any"
+    "anyType": "Any",
+    "hideAbstain": "Ignore abstain votes in basic voting results"
   },
   "setup": {
     "example": "उदा. yam.eth",
-    "useExistingEns": "आपली जागा तयार करण्यासाठी विद्यमान ईएनएस नाव वापरा.",
-    "createASpace": "जागा बनवा"
+    "chooseExistingEns": "Choose one of your existing ENS domains to create a space with:",
+    "useSingleExistingEns": "Use your existing ENS domain:",
+    "orReigsterNewEns": "Or register a new domain:",
+    "toCreateASpace": "To create a space, you first need an ENS domain. Enter one below and follow the ENS registration instructions.",
+    "correctAccountNote": "You already have an ENS domain? Make sure you have connected the correct account on the Ethereum mainnet.",
+    "createASpace": "जागा बनवा",
+    "registerEnsButton": "Register",
+    "supportedEnsTLDs": "Supported domain endings"
   },
   "notify": {
     "youDidIt": "आपण पूर्ण केले!",
@@ -237,7 +257,18 @@
     "skins": "स्कीन",
     "networks": "नेटवर्क",
     "plugins": "प्लगइन",
-    "results": "परिणाम"
+    "results": "परिणाम",
+    "categories": {
+      "all": "All",
+      "protocol": "Protocol",
+      "social": "Social",
+      "investment": "Investment",
+      "grant": "Grant",
+      "service": "Service",
+      "media": "Media",
+      "creator": "Creator",
+      "collector": "Collector"
+    }
   },
   "voting": {
     "selectVoting": "मतदान प्रणाली निवडा",
@@ -246,12 +277,19 @@
     "quadratic": "चतुर्भुज मतदान",
     "ranked-choice": "निवड मतदान",
     "weighted": "भारित सरासरी मतदान",
+    "basic": "Basic voting",
     "description": {
       "single-choice": "प्रत्येक मतदार केवळ एक निवड निवडू शकतो.",
       "approval": "प्रत्येक मतदार कितीही निवडी निवडू शकतो.",
       "quadratic": "Each voter may spread voting power across any number of choices. Results are calculated quadratically.",
       "ranked-choice": "Each voter may select and rank any number of choices. Results are calculated by instant-runoff counting method.",
-      "weighted": "Each voter may spread voting power across any number of choices."
+      "weighted": "Each voter may spread voting power across any number of choices.",
+      "basic": "Single choice voting with three choices: For, Against or Abstain"
+    },
+    "choices": {
+      "for": "For",
+      "against": "Against",
+      "abstain": "Abstain"
     }
   },
   "safeSnap": {
@@ -305,13 +343,20 @@
   "poap": {
     "no_poap_header": "या प्रस्तावासाठी अद्याप एक पीओएपी सेट केला गेला नाही :'(",
     "no_voted_header": "हे पीओएपी मिळविण्यासाठी मतदान करा",
-    "unclaimed_header": "आपला मी मत नोंदविलेला पीओएपी चा दावा करा",
+    "unclaimed_header": "Mint your I voted POAP",
     "claimed_header": "Congratulations! The POAP has been minted to your collection",
-    "loading_header": "आपल्या संग्रहात पीओएपी जोडला जात आहे",
-    "button_claim": "दावा करा",
+    "loading_header": "The POAP is being minted to your collection",
+    "button_claim": "Mint",
     "button_show": "Browse collection",
-    "success_claim": "आपला पीओएपी आपल्या पत्त्यावर आहे",
+    "success_claim": "The POAP has been minted to your collection",
     "error_claim": "टोकन मिंट करताना एक समस्या आली"
+  },
+  "charts": {
+    "charts": "Charts",
+    "noVotesYet": "There are no votes to visualize yet.",
+    "totalVotesPerDay": "Total votes per day",
+    "shareOfVotingPower": "Share of voting power",
+    "votingPowerPerDay": "Voting power per day"
   },
   "comment_box": {
     "title": "Comment box",
@@ -336,5 +381,27 @@
     "show": "Show",
     "reply": "Reply",
     "load_more": "Load more"
+  },
+  "page": {
+    "title": {
+      "home": "Snapshot",
+      "setup": "Create a space",
+      "timeline": "Timeline",
+      "explore": "Explore",
+      "playground": "Playground",
+      "space": {
+        "create": "Create {space} proposal",
+        "about": "About {space}",
+        "proposals": "{space} Proposals",
+        "proposal": "{space} proposal: {proposal}",
+        "settings": "{space} Settings"
+      },
+      "strategy": "{key} strategy",
+      "delegate": "Delegate"
+    }
+  },
+  "hal": {
+    "title": "Track proposals for {spaceName}",
+    "text": "Receive notifications every time a new proposal is created or ends"
   }
 }
