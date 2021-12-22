@@ -20,7 +20,6 @@ const _toggleSkin = skin => {
   } else {
     lsSet('skin', LIGHT_MODE);
     userSkin.value = LIGHT_MODE;
-    document.documentElement.setAttribute('data-color-scheme', 'light');
   }
 };
 
