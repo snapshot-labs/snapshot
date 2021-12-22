@@ -1,5 +1,5 @@
 <script setup>
-import { computed, onMounted, ref, watch } from 'vue';
+import { computed, onMounted, ref, watch, watchEffect } from 'vue';
 import { useInfiniteLoader } from '@/composables/useInfiniteLoader';
 import { useScrollMonitor } from '@/composables/useScrollMonitor';
 import { useApolloQuery } from '@/composables/useApolloQuery';
@@ -60,21 +60,22 @@ function emitUpdateLastSeenProposal() {
 
 onMounted(() => {
   setPageTitle('page.title.space.proposals', { space: props.space.name });
-  load();
 });
 
 async function load() {
-  if (
-    store.space.proposals.length > 0 &&
-    store.space.proposals[0]?.space.id === props.space.id
-  )
-    return;
-  store.space.proposals = [];
+  if (store.space.proposals.length > 0) return;
   loading.value = true;
   await loadProposals();
   loading.value = false;
   emitUpdateLastSeenProposal();
 }
+
+watchEffect(() => {
+  if (store.space.proposals[0]?.space.id !== props.spaceId) {
+    store.space.proposals = [];
+    load();
+  }
+});
 
 function selectState(e) {
   store.space.filterBy = e;
