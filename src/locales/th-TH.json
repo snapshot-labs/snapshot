@@ -19,13 +19,13 @@
   "strategiesPage": "กลยุทธ์",
   "space": "พื้นที่",
   "spaces": "พื้นที่",
+  "verifiedSpace": "Verified space",
   "version": "รุ่น",
   "timeline": "ระยะเวลา",
   "filters": "ตัวกรอง",
   "allSpaces": "พื้นที่ว่างทั้งหมด",
   "submitOnchain": "ส่งแบบออนไลน์",
   "inSpaces": "ใน {0} พื้นที่(s)",
-  "downloadReport": "ดาวน์โหลดรายงาน",
   "votes": "โหวต",
   "seeMore": "ดูเพิ่มเติม",
   "network": "เครือข่าย",
@@ -39,6 +39,7 @@
   "view3box": "ดูโปรไฟล์บน 3Box",
   "edit3box": "แก้ไขโปรไฟล์บน 3Box",
   "connectWallet": "เชื่อมต่อกระเป๋าเงิน",
+  "toggleSkin": "Toggle skin",
   "about": "เกี่ยวกับเรา",
   "license": "ใบอนุญาต",
   "ipfsServer": "เซิร์ฟเวอร์ IPFS",
@@ -57,10 +58,15 @@
   "receipt": "ใบเสร็จ",
   "relayer": "ผู้จัด",
   "verifyOnMycrypto": "การตรวจสอบใบเสร็จใน MyCrypto",
+  "verifyOnSignatorio": "Verify on Signator.io",
   "isCore": "ส่วนกลาง",
+  "notificationsBlocked": "Your browser is blocking notifications",
+  "notificationsNotSupported": "Your browser does not support notifications",
   "seeInExplorer": "ดูในการสำรวจ",
   "learnMore": "เรียนรู้เพิ่มเติม",
   "logout": "ออกจากระบบ",
+  "walletNotice": "Wallet notice",
+  "gnosisSafeWalletNotice": "Gnosis Safe wallet doesn't support signing messages. You can delegate your voting power to a wallet of your choice on our delegation page.",
   "continue": "ต่อไป",
   "add": "เพิ่ม",
   "edit": "แก้ไข",
@@ -91,6 +97,8 @@
   "startToEnd": "เริ่มต้น {0} สินสุด {1}",
   "startIn": "เริ่มต้น {0}",
   "endIn": "สินสุด{1}",
+  "proposalStartIn": "start in {0}",
+  "proposalToNow": "{0} left",
   "endedAgo": "สิ้นสุด {1}",
   "proposalBy": "by {0}",
   "endDate": "สิ้นสุด{0}",
@@ -112,6 +120,7 @@
   "duplicateProposal": "Duplicate proposal",
   "joinedSpaces": "Joined spaces",
   "joinSpaces": "Join spaces",
+  "delegateVotingPower": "Go to delegation page",
   "errors": {
     "required": "ต้องระบุข้อมูลในช่อง",
     "minLength": "ความยาวต่ำสุดคือ {0}",
@@ -123,8 +132,9 @@
     "type": "Invalid type"
   },
   "create": {
-    "question": "คำถาม",
-    "content": "ข้อเสนอของคุณคืออะไร?",
+    "question": "Ask a question...",
+    "categorie(s)": "Select up to 2 categorie(s)",
+    "content": "Tell more about your proposal (optional)",
     "preview": "แสดงตัวอย่าง",
     "choices": "ตัวเลือก",
     "addChoice": "เพิ่มตัวเลือก",
@@ -190,6 +200,8 @@
     "customDomain": "Custom domain",
     "domain": "ชื่อโดเมน",
     "strategies": "กลยุทธ์(s)",
+    "categories": "Categorie(s)",
+    "selectCategories": "Select categories",
     "hideSpace": "ซ่อนจากหน้าหลัก",
     "addStrategy": "แก้ไขกลยุทธ์",
     "authors": "Authors",
@@ -209,13 +221,21 @@
     "votingDelay": "Voting delay",
     "votingPeriod": "Voting period",
     "voting": "Voting",
+    "quorum": "Quorum",
     "type": "Type",
-    "anyType": "Any"
+    "anyType": "Any",
+    "hideAbstain": "Ignore abstain votes in basic voting results"
   },
   "setup": {
     "example": "เช่น.แยมและอื่นๆ",
-    "useExistingEns": "ใช้ชื่อ ENS ที่มีอยู่เพื่อสร้าง Space ของคุณ",
-    "createASpace": "ดำเนินการสร้างพื้นที่ใช้งาน"
+    "chooseExistingEns": "Choose one of your existing ENS domains to create a space with:",
+    "useSingleExistingEns": "Use your existing ENS domain:",
+    "orReigsterNewEns": "Or register a new domain:",
+    "toCreateASpace": "To create a space, you first need an ENS domain. Enter one below and follow the ENS registration instructions.",
+    "correctAccountNote": "You already have an ENS domain? Make sure you have connected the correct account on the Ethereum mainnet.",
+    "createASpace": "ดำเนินการสร้างพื้นที่ใช้งาน",
+    "registerEnsButton": "Register",
+    "supportedEnsTLDs": "Supported domain endings"
   },
   "notify": {
     "youDidIt": "คุณทำได้แล้ว!",
@@ -237,7 +257,18 @@
     "skins": "ผิว(s)",
     "networks": "เครือข่าย(s)",
     "plugins": "ปลั๊กอิน(s)",
-    "results": "ผลลัพธ์(s)"
+    "results": "ผลลัพธ์(s)",
+    "categories": {
+      "all": "All",
+      "protocol": "Protocol",
+      "social": "Social",
+      "investment": "Investment",
+      "grant": "Grant",
+      "service": "Service",
+      "media": "Media",
+      "creator": "Creator",
+      "collector": "Collector"
+    }
   },
   "voting": {
     "selectVoting": "Select voting system",
@@ -246,12 +277,19 @@
     "quadratic": "Quadratic voting",
     "ranked-choice": "Ranked choice voting",
     "weighted": "Weighted voting",
+    "basic": "Basic voting",
     "description": {
       "single-choice": "Each voter may select only one choice.",
       "approval": "Each voter may select any number of choices.",
       "quadratic": "Each voter may spread voting power across any number of choices. Results are calculated quadratically.",
       "ranked-choice": "Each voter may select and rank any number of choices. Results are calculated by instant-runoff counting method.",
-      "weighted": "Each voter may spread voting power across any number of choices."
+      "weighted": "Each voter may spread voting power across any number of choices.",
+      "basic": "Single choice voting with three choices: For, Against or Abstain"
+    },
+    "choices": {
+      "for": "For",
+      "against": "Against",
+      "abstain": "Abstain"
     }
   },
   "safeSnap": {
@@ -313,6 +351,13 @@
     "success_claim": "The POAP has been minted to your collection",
     "error_claim": "There was a problem minting the token"
   },
+  "charts": {
+    "charts": "Charts",
+    "noVotesYet": "There are no votes to visualize yet.",
+    "totalVotesPerDay": "Total votes per day",
+    "shareOfVotingPower": "Share of voting power",
+    "votingPowerPerDay": "Voting power per day"
+  },
   "comment_box": {
     "title": "Comment box",
     "add": "Add your comment here",
@@ -336,5 +381,27 @@
     "show": "Show",
     "reply": "Reply",
     "load_more": "Load more"
+  },
+  "page": {
+    "title": {
+      "home": "Snapshot",
+      "setup": "Create a space",
+      "timeline": "Timeline",
+      "explore": "Explore",
+      "playground": "Playground",
+      "space": {
+        "create": "Create {space} proposal",
+        "about": "About {space}",
+        "proposals": "{space} Proposals",
+        "proposal": "{space} proposal: {proposal}",
+        "settings": "{space} Settings"
+      },
+      "strategy": "{key} strategy",
+      "delegate": "Delegate"
+    }
+  },
+  "hal": {
+    "title": "Track proposals for {spaceName}",
+    "text": "Receive notifications every time a new proposal is created or ends"
   }
 }
