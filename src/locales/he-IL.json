@@ -19,13 +19,13 @@
   "strategiesPage": "אסטרטגיות",
   "space": "מרחב",
   "spaces": "מרחבים",
+  "verifiedSpace": "Verified space",
   "version": "גירסא",
   "timeline": "ציר זמן",
   "filters": "פילטרים",
   "allSpaces": "כל המרחבים",
   "submitOnchain": "שלח לבלוקצ'יין",
   "inSpaces": "ב{0} מרחבים",
-  "downloadReport": "הורד דו\"ח",
   "votes": "הצבעות",
   "seeMore": "הצג עוד",
   "network": "רשת",
@@ -39,6 +39,7 @@
   "view3box": "צפה בפרופיל ב-3Box",
   "edit3box": "ערוך פרופיל ב-3Box",
   "connectWallet": "חבר ארנק",
+  "toggleSkin": "Toggle skin",
   "about": "אודות",
   "license": "רשיון",
   "ipfsServer": "שרת IPFS",
@@ -57,10 +58,15 @@
   "receipt": "קבלה",
   "relayer": "ממסר",
   "verifyOnMycrypto": "וודא קבלה ב-MyCrypto",
+  "verifyOnSignatorio": "Verify on Signator.io",
   "isCore": "ליבה",
+  "notificationsBlocked": "Your browser is blocking notifications",
+  "notificationsNotSupported": "Your browser does not support notifications",
   "seeInExplorer": "צפה ב-explorer",
   "learnMore": "מידע נוסף",
   "logout": "יציאה",
+  "walletNotice": "Wallet notice",
+  "gnosisSafeWalletNotice": "Gnosis Safe wallet doesn't support signing messages. You can delegate your voting power to a wallet of your choice on our delegation page.",
   "continue": "המשך",
   "add": "הוספה",
   "edit": "ערוך",
@@ -91,6 +97,8 @@
   "startToEnd": "התחל {0} סיים {1}",
   "startIn": "התחל {0}",
   "endIn": "סיים {1}",
+  "proposalStartIn": "start in {0}",
+  "proposalToNow": "{0} left",
   "endedAgo": "הסתיים {1}",
   "proposalBy": "על ידי {0}",
   "endDate": "סיים {0}",
@@ -112,6 +120,7 @@
   "duplicateProposal": "שכפל הצעה",
   "joinedSpaces": "Joined spaces",
   "joinSpaces": "Join spaces",
+  "delegateVotingPower": "Go to delegation page",
   "errors": {
     "required": "שדה חובה",
     "minLength": "האורך המינימלי הוא {0}",
@@ -123,8 +132,9 @@
     "type": "Invalid type"
   },
   "create": {
-    "question": "שאלה",
-    "content": "מהי הצעתך?",
+    "question": "Ask a question...",
+    "categorie(s)": "Select up to 2 categorie(s)",
+    "content": "Tell more about your proposal (optional)",
     "preview": "תצוגה מקדימה",
     "choices": "אפשרויות",
     "addChoice": "הוסף אפשרות",
@@ -190,6 +200,8 @@
     "customDomain": "Custom domain",
     "domain": "שם דומיין",
     "strategies": "אסטרטגיות",
+    "categories": "Categorie(s)",
+    "selectCategories": "Select categories",
     "hideSpace": "הסתר מרחב מדף הבית",
     "addStrategy": "הוסף אסטרטגיה",
     "authors": "Authors",
@@ -209,13 +221,21 @@
     "votingDelay": "Voting delay",
     "votingPeriod": "Voting period",
     "voting": "Voting",
+    "quorum": "Quorum",
     "type": "Type",
-    "anyType": "Any"
+    "anyType": "Any",
+    "hideAbstain": "Ignore abstain votes in basic voting results"
   },
   "setup": {
     "example": "לדוגמא yam.eth",
-    "useExistingEns": "השתמש בשם ENS כדי ליצור מרחב חדש.",
-    "createASpace": "צור מרחב"
+    "chooseExistingEns": "Choose one of your existing ENS domains to create a space with:",
+    "useSingleExistingEns": "Use your existing ENS domain:",
+    "orReigsterNewEns": "Or register a new domain:",
+    "toCreateASpace": "To create a space, you first need an ENS domain. Enter one below and follow the ENS registration instructions.",
+    "correctAccountNote": "You already have an ENS domain? Make sure you have connected the correct account on the Ethereum mainnet.",
+    "createASpace": "צור מרחב",
+    "registerEnsButton": "Register",
+    "supportedEnsTLDs": "Supported domain endings"
   },
   "notify": {
     "youDidIt": "עשית זאת!",
@@ -237,7 +257,18 @@
     "skins": "סקינים",
     "networks": "רשתות",
     "plugins": "פלאגינים",
-    "results": "תוצאות"
+    "results": "תוצאות",
+    "categories": {
+      "all": "All",
+      "protocol": "Protocol",
+      "social": "Social",
+      "investment": "Investment",
+      "grant": "Grant",
+      "service": "Service",
+      "media": "Media",
+      "creator": "Creator",
+      "collector": "Collector"
+    }
   },
   "voting": {
     "selectVoting": "בחר מערכת הצבעה",
@@ -246,12 +277,19 @@
     "quadratic": "הצבעה ריבועית",
     "ranked-choice": "הצבעת בחירה מדורגת",
     "weighted": "הצבעה משוקללת",
+    "basic": "Basic voting",
     "description": {
       "single-choice": "כל מצביע יכול לבחור אפשרות אחת בלבד.",
       "approval": "כל מבציע יכול לבחור מספר אפשרויות בלתי מוגבל.",
       "quadratic": "כל מבציע יכול לפזר את כוח ההצבעה שלו בין מספר בלתי מוגבל של אפשרויות. התוצאה מחושבת באופן ריבועי.",
       "ranked-choice": "כל מבציע יכול לבחור ולדרג מספר בלתי מוגבל של אפשרויות. התוצאות מחשובת בשיטת Instant-Runoff.",
-      "weighted": "כל מבציע יכול לפזר את כוח ההצבעה שלו בין מספר בלתי מוגבל של אפשרויות."
+      "weighted": "כל מבציע יכול לפזר את כוח ההצבעה שלו בין מספר בלתי מוגבל של אפשרויות.",
+      "basic": "Single choice voting with three choices: For, Against or Abstain"
+    },
+    "choices": {
+      "for": "For",
+      "against": "Against",
+      "abstain": "Abstain"
     }
   },
   "safeSnap": {
@@ -305,13 +343,20 @@
   "poap": {
     "no_poap_header": "עוד לא נוצר POAP להצעה זו :'(",
     "no_voted_header": "הצבעה בכדי לקבל POAP זה",
-    "unclaimed_header": "קבל את ה-POAP שלך",
+    "unclaimed_header": "Mint your I voted POAP",
     "claimed_header": "Congratulations! The POAP has been minted to your collection",
-    "loading_header": "ה-POAP מתווסף לקולקציה שלך ברגע זה",
-    "button_claim": "תבע",
+    "loading_header": "The POAP is being minted to your collection",
+    "button_claim": "Mint",
     "button_show": "Browse collection",
-    "success_claim": "ה-POAP נמצא על הכתובת שלך",
+    "success_claim": "The POAP has been minted to your collection",
     "error_claim": "ארעה בעיה בעת יצירת המטבע"
+  },
+  "charts": {
+    "charts": "Charts",
+    "noVotesYet": "There are no votes to visualize yet.",
+    "totalVotesPerDay": "Total votes per day",
+    "shareOfVotingPower": "Share of voting power",
+    "votingPowerPerDay": "Voting power per day"
   },
   "comment_box": {
     "title": "Comment box",
@@ -336,5 +381,27 @@
     "show": "Show",
     "reply": "Reply",
     "load_more": "Load more"
+  },
+  "page": {
+    "title": {
+      "home": "Snapshot",
+      "setup": "Create a space",
+      "timeline": "Timeline",
+      "explore": "Explore",
+      "playground": "Playground",
+      "space": {
+        "create": "Create {space} proposal",
+        "about": "About {space}",
+        "proposals": "{space} Proposals",
+        "proposal": "{space} proposal: {proposal}",
+        "settings": "{space} Settings"
+      },
+      "strategy": "{key} strategy",
+      "delegate": "Delegate"
+    }
+  },
+  "hal": {
+    "title": "Track proposals for {spaceName}",
+    "text": "Receive notifications every time a new proposal is created or ends"
   }
 }
