@@ -9,7 +9,6 @@ import { useApp } from '@/composables/useApp';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useNotifications } from '@/composables/useNotifications';
 import aliases from '@/../snapshot-spaces/spaces/aliases.json';
-import { useDetectInput } from '@/composables/useDetectInput';
 
 const { domain } = useDomain();
 const { loadLocale } = useI18n();
@@ -19,7 +18,6 @@ const { userSkin } = useUserSkin();
 const { init, explore, app } = useApp();
 const { web3 } = useWeb3();
 const { notify } = useNotifications();
-const { isTouchScreen } = useDetectInput();
 
 provide('web3', web3);
 provide('notify', notify);
@@ -42,8 +40,6 @@ const skin = computed(() => {
 onMounted(async () => {
   await loadLocale();
   init();
-  if (!isTouchScreen())
-    document.querySelector('body').style.overscrollBehaviorY = 'none';
 });
 
 watch(modalOpen, val => {
