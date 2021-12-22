@@ -17,7 +17,6 @@ const _toggleSkin = skin => {
   if (skin === LIGHT_MODE) {
     lsSet('skin', DARK_MODE);
     userSkin.value = DARK_MODE;
-    document.documentElement.setAttribute('data-color-scheme', 'dark');
   } else {
     lsSet('skin', LIGHT_MODE);
     userSkin.value = LIGHT_MODE;
