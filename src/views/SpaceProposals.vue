@@ -1,5 +1,5 @@
 <script setup>
-import { computed, onMounted, ref, watch, watchEffect } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 import { useInfiniteLoader } from '@/composables/useInfiniteLoader';
 import { useScrollMonitor } from '@/composables/useScrollMonitor';
 import { useApolloQuery } from '@/composables/useApolloQuery';
@@ -70,12 +70,16 @@ async function load() {
   emitUpdateLastSeenProposal();
 }
 
-watchEffect(() => {
-  if (store.space.proposals[0]?.space.id !== props.spaceId) {
-    store.space.proposals = [];
-    load();
-  }
-});
+watch(
+  props.spaceId,
+  () => {
+    if (store.space.proposals[0]?.space.id !== props.spaceId) {
+      store.space.proposals = [];
+      load();
+    }
+  },
+  { immediate: true }
+);
 
 function selectState(e) {
   store.space.filterBy = e;
