@@ -19,13 +19,13 @@
   "strategiesPage": "Strategier",
   "space": "Rummet",
   "spaces": "Rum",
+  "verifiedSpace": "Verified space",
   "version": "Version",
   "timeline": "Tidslinje",
   "filters": "Filtrèr",
   "allSpaces": "allspace",
   "submitOnchain": "indsend kæde",
   "inSpaces": "i mellemrum",
-  "downloadReport": "download rapport",
   "votes": "stemmer",
   "seeMore": "se mere",
   "network": "netværk",
@@ -39,6 +39,7 @@
   "view3box": "Opret profil på 3Box",
   "edit3box": "Opret profil på 3Box",
   "connectWallet": "Forbind tegnebog",
+  "toggleSkin": "Toggle skin",
   "about": "Om",
   "license": "Licens",
   "ipfsServer": "ipfsServer",
@@ -57,10 +58,15 @@
   "receipt": "Kvittering",
   "relayer": "Relæ",
   "verifyOnMycrypto": "Bekræft kvitteringen på MyCrypto",
+  "verifyOnSignatorio": "Verify on Signator.io",
   "isCore": "Kernefunktioner",
+  "notificationsBlocked": "Your browser is blocking notifications",
+  "notificationsNotSupported": "Your browser does not support notifications",
   "seeInExplorer": "Se på explorer",
   "learnMore": "Få mere at vide",
   "logout": "Log ud",
+  "walletNotice": "Wallet notice",
+  "gnosisSafeWalletNotice": "Gnosis Safe wallet doesn't support signing messages. You can delegate your voting power to a wallet of your choice on our delegation page.",
   "continue": "Forsæt",
   "add": "Tilføje",
   "edit": "Edit",
@@ -91,6 +97,8 @@
   "startToEnd": "start {0} slutter {1}",
   "startIn": "start {0}",
   "endIn": "afslut {1}",
+  "proposalStartIn": "start in {0}",
+  "proposalToNow": "{0} left",
   "endedAgo": "afslut {1}",
   "proposalBy": "by {0} (Automatic Copy)",
   "endDate": "afslut {0}",
@@ -112,6 +120,7 @@
   "duplicateProposal": "Duplicate proposal",
   "joinedSpaces": "Joined spaces",
   "joinSpaces": "Join spaces",
+  "delegateVotingPower": "Go to delegation page",
   "errors": {
     "required": "Feltet er obligatorisk",
     "minLength": "Minimumslængde på {0}",
@@ -123,8 +132,9 @@
     "type": "Invalid type"
   },
   "create": {
-    "question": "Spørgsmål",
-    "content": "Hvad er Deres forslag?",
+    "question": "Ask a question...",
+    "categorie(s)": "Select up to 2 categorie(s)",
+    "content": "Tell more about your proposal (optional)",
     "preview": "Uddrag",
     "choices": "Valgmuligheder",
     "addChoice": "Tilføj valg",
@@ -190,6 +200,8 @@
     "customDomain": "Custom domain",
     "domain": "Domænenavn",
     "strategies": "Strategier",
+    "categories": "Categorie(s)",
+    "selectCategories": "Select categories",
     "hideSpace": "strategierSide)",
     "addStrategy": "Tilføj strategi",
     "authors": "Authors",
@@ -209,13 +221,21 @@
     "votingDelay": "Voting delay",
     "votingPeriod": "Voting period",
     "voting": "Voting",
+    "quorum": "Quorum",
     "type": "Type",
-    "anyType": "Any"
+    "anyType": "Any",
+    "hideAbstain": "Ignore abstain votes in basic voting results"
   },
   "setup": {
     "example": "e.g. yam.eth",
-    "useExistingEns": "Brug et eksisterende ENS navn til at oprette din plads med.",
-    "createASpace": "skabe plads"
+    "chooseExistingEns": "Choose one of your existing ENS domains to create a space with:",
+    "useSingleExistingEns": "Use your existing ENS domain:",
+    "orReigsterNewEns": "Or register a new domain:",
+    "toCreateASpace": "To create a space, you first need an ENS domain. Enter one below and follow the ENS registration instructions.",
+    "correctAccountNote": "You already have an ENS domain? Make sure you have connected the correct account on the Ethereum mainnet.",
+    "createASpace": "skabe plads",
+    "registerEnsButton": "Register",
+    "supportedEnsTLDs": "Supported domain endings"
   },
   "notify": {
     "youDidIt": "Du gjorde det!",
@@ -237,7 +257,18 @@
     "skins": "skind)",
     "networks": "netværk)",
     "plugins": "plugins)",
-    "results": "resultat(er)"
+    "results": "resultat(er)",
+    "categories": {
+      "all": "All",
+      "protocol": "Protocol",
+      "social": "Social",
+      "investment": "Investment",
+      "grant": "Grant",
+      "service": "Service",
+      "media": "Media",
+      "creator": "Creator",
+      "collector": "Collector"
+    }
   },
   "voting": {
     "selectVoting": "Opret retail bestilling",
@@ -246,12 +277,19 @@
     "quadratic": "Kvadratisk afstemning",
     "ranked-choice": "Rangeret valg afstemning",
     "weighted": "Vægtet afstemning",
+    "basic": "Basic voting",
     "description": {
       "single-choice": "Hver vælger kan kun vælge ét valg.",
       "approval": "Hver vælger kan vælge et hvilket som helst antal valg.",
       "quadratic": "Hver vælger kan sprede stemmestyrken på tværs af et hvilket som helst antal valgmuligheder. Resultaterne beregnes kvadratisk.",
       "ranked-choice": "Hver vælger kan vælge og rangere et vilkårligt antal valg. Resultaterne beregnes ved instant-runoff tællingsmetode.",
-      "weighted": "Hver vælger kan sprede stemmeretten over et hvilket som helst antal valg."
+      "weighted": "Hver vælger kan sprede stemmeretten over et hvilket som helst antal valg.",
+      "basic": "Single choice voting with three choices: For, Against or Abstain"
+    },
+    "choices": {
+      "for": "For",
+      "against": "Against",
+      "abstain": "Abstain"
     }
   },
   "safeSnap": {
@@ -305,13 +343,20 @@
   "poap": {
     "no_poap_header": "En POAP er ikke blevet opsat til dette forslag endnu :' (",
     "no_voted_header": "Stem for at få denne POAP",
-    "unclaimed_header": "Gør krav på din jeg stemte POAP",
+    "unclaimed_header": "Mint your I voted POAP",
     "claimed_header": "Congratulations! The POAP has been minted to your collection",
-    "loading_header": "POAP'en bliver tilføjet til din samling",
-    "button_claim": "Modtag",
+    "loading_header": "The POAP is being minted to your collection",
+    "button_claim": "Mint",
     "button_show": "Browse collection",
-    "success_claim": "Din POAP er på din adresse",
+    "success_claim": "The POAP has been minted to your collection",
     "error_claim": "Der var et problem med at slette denne token."
+  },
+  "charts": {
+    "charts": "Charts",
+    "noVotesYet": "There are no votes to visualize yet.",
+    "totalVotesPerDay": "Total votes per day",
+    "shareOfVotingPower": "Share of voting power",
+    "votingPowerPerDay": "Voting power per day"
   },
   "comment_box": {
     "title": "Comment box",
@@ -336,5 +381,27 @@
     "show": "Show",
     "reply": "Reply",
     "load_more": "Load more"
+  },
+  "page": {
+    "title": {
+      "home": "Snapshot",
+      "setup": "Create a space",
+      "timeline": "Timeline",
+      "explore": "Explore",
+      "playground": "Playground",
+      "space": {
+        "create": "Create {space} proposal",
+        "about": "About {space}",
+        "proposals": "{space} Proposals",
+        "proposal": "{space} proposal: {proposal}",
+        "settings": "{space} Settings"
+      },
+      "strategy": "{key} strategy",
+      "delegate": "Delegate"
+    }
+  },
+  "hal": {
+    "title": "Track proposals for {spaceName}",
+    "text": "Receive notifications every time a new proposal is created or ends"
   }
 }
