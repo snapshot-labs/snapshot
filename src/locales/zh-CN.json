@@ -39,7 +39,7 @@
   "view3box": "在 3Box 上查看个人资料",
   "edit3box": "在 3Box 上编辑个人资料",
   "connectWallet": "连接钱包",
-  "toggleSkin": "Toggle skin",
+  "toggleSkin": "切换皮肤",
   "about": "关于",
   "license": "许可证",
   "ipfsServer": "IPFS 服务器",
@@ -228,7 +228,7 @@
   },
   "setup": {
     "example": "例如 yam.eth",
-    "useExistingEns": "Use an existing ENS name to create your space with.",
+    "useExistingEns": "使用现有的ENS域名来创建您的空间。",
     "createASpace": "创建空间"
   },
   "notify": {
@@ -379,16 +379,16 @@
   "page": {
     "title": {
       "home": "Snapshot",
-      "setup": "Create a space",
-      "timeline": "Timeline",
-      "explore": "Explore",
-      "playground": "Playground",
+      "setup": "创建空间",
+      "timeline": "时间线",
+      "explore": "浏览",
+      "playground": "练习场",
       "space": {
-        "create": "Create {space} proposal",
-        "about": "About {space}",
-        "proposals": "{space} Proposals",
-        "proposal": "{space} proposal: {proposal}",
-        "settings": "{space} Settings"
+        "create": "创建 {space} 提案",
+        "about": "关于 {space}",
+        "proposals": "{space} 提案",
+        "proposal": "{space} 提案： {proposal}",
+        "settings": "{space} 设置"
       },
       "strategy": "{key} strategy",
       "delegate": "Delegate"
