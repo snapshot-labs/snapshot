@@ -390,12 +390,12 @@
         "proposal": "{space} 提案： {proposal}",
         "settings": "{space} 设置"
       },
-      "strategy": "{key} strategy",
-      "delegate": "Delegate"
+      "strategy": "{key} 策略",
+      "delegate": "委托"
     }
   },
   "hal": {
-    "title": "Track proposals for {spaceName}",
-    "text": "Receive notifications every time a new proposal is created or ends"
+    "title": "追踪 {spaceName} 的提案",
+    "text": "每次创建新提案或提案结束时都接收通知"
   }
 }
