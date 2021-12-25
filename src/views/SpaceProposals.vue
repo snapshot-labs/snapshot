@@ -1,5 +1,5 @@
 <script setup>
-import { computed, onMounted, ref, watch } from 'vue';
+import { computed, onMounted, ref, watch, watchEffect } from 'vue';
 import { useInfiniteLoader } from '@/composables/useInfiniteLoader';
 import { useScrollMonitor } from '@/composables/useScrollMonitor';
 import { useApolloQuery } from '@/composables/useApolloQuery';
@@ -10,11 +10,12 @@ import { lsSet } from '@/helpers/utils';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useApp } from '@/composables/useApp';
 import { useStore } from '@/composables/useStore';
+import { setPageTitle } from '@/helpers/utils';
 
 const props = defineProps({ space: Object, spaceId: String });
 
 const { lastSeenProposals, updateLastSeenProposal } = useUnseenProposals();
-const { web3 } = useWeb3();
+const { web3Account } = useWeb3();
 const { store } = useStore();
 
 const loading = ref(false);
@@ -22,15 +23,11 @@ const loading = ref(false);
 const spaceMembers = computed(() =>
   props.space.members.length < 1 ? ['none'] : props.space.members
 );
-const web3Account = computed(() => web3.value.account);
 
 const { loadBy, loadingMore, stopLoadingMore, loadMore } = useInfiniteLoader();
 
-const { endElement } = useScrollMonitor(() =>
-  loadMore(() => loadProposals(store.space.proposals.length), loading.value)
-);
-
 const { apolloQuery } = useApolloQuery();
+
 async function loadProposals(skip = 0) {
   const proposalsObj = await apolloQuery(
     {
@@ -49,33 +46,7 @@ async function loadProposals(skip = 0) {
   store.space.proposals = store.space.proposals.concat(proposalsObj);
 }
 
-onMounted(load());
-
-async function load() {
-  if (
-    store.space.proposals.length > 0 &&
-    store.space.proposals[0]?.space.id === props.space.id
-  )
-    return;
-  store.space.proposals = [];
-  loading.value = true;
-  await loadProposals();
-  loading.value = false;
-}
-
-function selectState(e) {
-  store.space.filterBy = e;
-  store.space.proposals = [];
-  load();
-}
-
-const { profiles, loadProfiles } = useProfiles();
-
-watch(store.space.proposals, () => {
-  loadProfiles(store.space.proposals.map(proposal => proposal.author));
-});
-
-watch([store.space.proposals, web3Account], () => {
+function emitUpdateLastSeenProposal() {
   if (web3Account.value) {
     lsSet(
       `lastSeenProposals.${web3Account.value.slice(0, 8).toLowerCase()}`,
@@ -85,6 +56,41 @@ watch([store.space.proposals, web3Account], () => {
     );
   }
   updateLastSeenProposal(web3Account.value);
+}
+
+onMounted(() => {
+  setPageTitle('page.title.space.proposals', { space: props.space.name });
+});
+
+async function load() {
+  if (store.space.proposals.length > 0) return;
+  loading.value = true;
+  await loadProposals();
+  loading.value = false;
+  emitUpdateLastSeenProposal();
+}
+
+watchEffect(() => {
+  if (store.space.proposals[0]?.space.id !== props.spaceId) {
+    store.space.proposals = [];
+    load();
+  }
+});
+
+function selectState(e) {
+  store.space.filterBy = e;
+  store.space.proposals = [];
+  load();
+}
+
+const { endElement } = useScrollMonitor(() =>
+  loadMore(() => loadProposals(store.space.proposals.length), loading.value)
+);
+
+const { profiles, loadProfiles } = useProfiles();
+
+watch(store.space.proposals, () => {
+  loadProfiles(store.space.proposals.map(proposal => proposal.author));
 });
 
 const { explore } = useApp();

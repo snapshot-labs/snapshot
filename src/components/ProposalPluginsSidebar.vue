@@ -41,5 +41,6 @@ defineProps({
       :votes="votes"
       :strategies="strategies"
     />
+    <PluginHalCustomBlock v-if="space.plugins?.hal" :space="space" />
   </div>
 </template>

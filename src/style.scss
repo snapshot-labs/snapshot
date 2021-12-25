@@ -62,7 +62,7 @@
   a,
   button,
   input {
-    @apply transition-colors
+    @apply transition-colors;
   }
 }
 
@@ -270,6 +270,11 @@ select {
   border: 0 !important;
 }
 
+.sliding {
+  overflow: auto;
+  white-space: nowrap;
+}
+
 .border-color {
   color: var(--border-color);
 }
@@ -375,4 +380,14 @@ input[type='number']::-webkit-outer-spin-button {
   position: relative;
   padding: 5px 9px;
   z-index: 1;
+}
+
+// Shot UI kit
+
+.s-input {
+  @apply text-skin-heading border border-skin-border focus-within:border-skin-link block rounded-full py-2 px-3 w-full bg-transparent;
+}
+
+.s-label {
+  @apply block mb-1;
 }

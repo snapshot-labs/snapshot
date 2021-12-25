@@ -8,6 +8,7 @@ import { getScores } from '@snapshot-labs/snapshot.js/src/utils';
 import { useApp } from '@/composables/useApp';
 import { useI18n } from 'vue-i18n';
 import { useCopy } from '@/composables/useCopy';
+import { setPageTitle } from '@/helpers/utils';
 
 const defaultParams = {
   symbol: 'BAL',
@@ -126,6 +127,8 @@ function copyURL() {
 }
 
 onMounted(async () => {
+  setPageTitle('page.title.playground');
+
   loading.value = true;
   scores.value = null;
   networkError.value = false;

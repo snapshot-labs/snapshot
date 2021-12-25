@@ -4,7 +4,7 @@ import { useNotifications } from '@/composables/useNotifications';
 
 export function useCopy() {
   const { t } = useI18n();
-  const { copy, copied } = useClipboard({ read: false });
+  const { copy, copied } = useClipboard();
   const { notify } = useNotifications();
 
   function copyToClipboard(text) {
