@@ -74,16 +74,7 @@ onMounted(() => {
 <template>
   <div
     v-if="!domain"
-    class="
-      w-[68px]
-      h-screen
-      hidden
-      sm:block
-      fixed
-      m-0
-      border-r
-      bg-skin-block-bg
-    "
+    class="w-[68px] h-screen hidden sm:block fixed m-0 border-r bg-skin-block-bg"
   >
     <div class="flex flex-col h-full overflow-auto no-scrollbar">
       <div class="min-h-[78px] h-[78px] flex items-center justify-center">
@@ -136,15 +127,7 @@ onMounted(() => {
           <UiSidebarButton><Icon size="20" name="plus" /></UiSidebarButton>
         </router-link>
         <div
-          class="
-            flex flex-col
-            items-center
-            space-y-2
-            justify-center
-            !mb-2
-            !mt-auto
-            py-2
-          "
+          class="flex flex-col items-center space-y-2 justify-center !mb-2 !mt-auto py-2"
         >
           <UiSidebarButton @click="modalAboutOpen = true">
             <span class="mt-1 link-color">?</span>
