@@ -35,11 +35,11 @@
 
 ## Development Guide
 
-You need to have Node.js >= 14 installed. If you use [nvm](https://github.com/nvm-sh/nvm), run `nvm install` to instal and/or switch to the recommended version.
+You need to have Node.js >= 14 installed. If you use [nvm](https://github.com/nvm-sh/nvm), run `nvm install` to install and/or switch to the recommended version.
 
 The UI is built with [Vue 3](https://v3.vuejs.org/) (using [composition API](https://v3.vuejs.org/api/composition-api.html)) and [Tailwind CSS](https://tailwindcss.com/).
 
-If you use vscode, you might want to install [Volar](https://marketplace.visualstudio.com/items?itemName=johnsoncodehk.volar), [Volar TypeScript Plugin](https://marketplace.visualstudio.com/items?itemName=johnsoncodehk.vscode-typescript-vue-plugin)  and [Tailwind CSS IntelliSense](https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss) extensions.
+If you use VSCode, you might want to install [Volar](https://marketplace.visualstudio.com/items?itemName=johnsoncodehk.volar), [Volar TypeScript Plugin](https://marketplace.visualstudio.com/items?itemName=johnsoncodehk.vscode-typescript-vue-plugin)  and [Tailwind CSS IntelliSense](https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss) extensions.
 
 ### Setup
 
@@ -74,7 +74,7 @@ Here is an overview of our main repositories.
 
 #### Git Submodules
 
-Plugins for the proposal page and some configuration for spaces is split out into two submodules, [snapshot-plugins](https://github.com/snapshot-labs/snapshot-plugins) and [snapshot-spaces](https://github.com/snapshot-labs/snapshot-spaces). When updating these repositories, there will be an automated pull request in this repository to update these submodules.
+Plugins for the proposal page and some configuration for spaces are split out into two submodules, [snapshot-plugins](https://github.com/snapshot-labs/snapshot-plugins) and [snapshot-spaces](https://github.com/snapshot-labs/snapshot-spaces). When updating these repositories, there will be an automated pull request in this repository to update these submodules.
 
 Git hooks will take care of pointing the submodules to the correct commit, whenever you do a `git pull/merge/checkout`.
 
