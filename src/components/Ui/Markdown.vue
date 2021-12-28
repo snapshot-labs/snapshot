@@ -28,6 +28,7 @@ onMounted(() => {
     .querySelector('.markdown-body')
     .querySelectorAll('pre>code')
     .forEach(function (code) {
+      code.parentElement.classList.add('rounded-lg');
       const copyButton = document.createElement('a');
       const icon = document.createElement('i');
       icon.classList.add('copy');
