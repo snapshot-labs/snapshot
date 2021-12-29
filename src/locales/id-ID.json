@@ -260,8 +260,8 @@
       "grant": "Grant",
       "service": "Service",
       "media": "Media",
-      "creator": "Creator",
-      "collector": "Collector"
+      "creator": "Pembuat",
+      "collector": "Kolektor"
     }
   },
   "voting": {
@@ -379,19 +379,19 @@
   "page": {
     "title": {
       "home": "Snapshot",
-      "setup": "Create a space",
-      "timeline": "Timeline",
+      "setup": "Buat sebuah ruang",
+      "timeline": "Lini masa",
       "explore": "Telusuri",
       "playground": "Playground",
       "space": {
-        "create": "Create {space} proposal",
-        "about": "About {space}",
-        "proposals": "{space} Proposals",
-        "proposal": "{space} proposal: {proposal}",
-        "settings": "{space} Settings"
+        "create": "Buat proposal {space}",
+        "about": "Tentang {space}",
+        "proposals": "Proposal {space}",
+        "proposal": "Proposal {space}: {proposal}",
+        "settings": "{space} Pengaturan"
       },
-      "strategy": "{key} strategy",
-      "delegate": "Delegate"
+      "strategy": "Strategi {key}",
+      "delegate": "Delegasikan"
     }
   },
   "hal": {
