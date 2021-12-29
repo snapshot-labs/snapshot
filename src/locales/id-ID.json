@@ -39,7 +39,7 @@
   "view3box": "Lihat profil di 3Box",
   "edit3box": "Edit profil di 3Box",
   "connectWallet": "Hubungkan dompet",
-  "toggleSkin": "Toggle skin",
+  "toggleSkin": "Atur skin",
   "about": "Tentang",
   "license": "Lisensi",
   "ipfsServer": "Server IPFS",
@@ -97,8 +97,8 @@
   "startToEnd": "mulai {0} akhir {1}",
   "startIn": "mulai {0}",
   "endIn": "akhir {1}",
-  "proposalStartIn": "start in {0}",
-  "proposalToNow": "{0} left",
+  "proposalStartIn": "dimulai dalam {0}",
+  "proposalToNow": "{0} tersisa",
   "endedAgo": "berakhir {1}",
   "proposalBy": "oleh {0}",
   "endDate": "akhir {0}",
@@ -255,10 +255,10 @@
     "categories": {
       "all": "Semua",
       "protocol": "Protokol",
-      "social": "Social",
-      "investment": "Investment",
-      "grant": "Grant",
-      "service": "Service",
+      "social": "Sosial",
+      "investment": "Investasi",
+      "grant": "Izinkan",
+      "service": "Layanan",
       "media": "Media",
       "creator": "Pembuat",
       "collector": "Kolektor"
@@ -395,7 +395,7 @@
     }
   },
   "hal": {
-    "title": "Track proposals for {spaceName}",
+    "title": "Lacak proposal untuk {spaceName}",
     "text": "Dapatkan pemeberitahuan setiap propoaal baru dibuat atau berakhir"
   }
 }
