@@ -224,11 +224,11 @@
     "quorum": "Kuorum",
     "type": "Tipe",
     "anyType": "Apa saja",
-    "hideAbstain": "Ignore abstain votes in basic voting results"
+    "hideAbstain": "Abaikan suara abstain pada hasil pemungutan suara"
   },
   "setup": {
     "example": "misalnya yam.eth",
-    "useExistingEns": "Use an existing ENS name to create your space with.",
+    "useExistingEns": "Gunakan nama ENS yang ada untuk membuat ruang anda.",
     "createASpace": "Buat sebuah ruang"
   },
   "notify": {
@@ -253,8 +253,8 @@
     "plugins": "plugin",
     "results": "hasil",
     "categories": {
-      "all": "All",
-      "protocol": "Protocol",
+      "all": "Semua",
+      "protocol": "Protokol",
       "social": "Social",
       "investment": "Investment",
       "grant": "Grant",
@@ -381,7 +381,7 @@
       "home": "Snapshot",
       "setup": "Create a space",
       "timeline": "Timeline",
-      "explore": "Explore",
+      "explore": "Telusuri",
       "playground": "Playground",
       "space": {
         "create": "Create {space} proposal",
@@ -396,6 +396,6 @@
   },
   "hal": {
     "title": "Track proposals for {spaceName}",
-    "text": "Receive notifications every time a new proposal is created or ends"
+    "text": "Dapatkan pemeberitahuan setiap propoaal baru dibuat atau berakhir"
   }
 }
