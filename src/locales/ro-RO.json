@@ -19,7 +19,7 @@
   "strategiesPage": "Strategii",
   "space": "Spaţiu",
   "spaces": "Spaţii",
-  "verifiedSpace": "Verified space",
+  "verifiedSpace": "Spațiu verificat",
   "version": "Versiune",
   "timeline": "Cronologie",
   "filters": "Filtre",
@@ -39,7 +39,7 @@
   "view3box": "Vezi profilul în 3Box",
   "edit3box": "Modifică profilul în 3Box",
   "connectWallet": "Conectează portofel",
-  "toggleSkin": "Toggle skin",
+  "toggleSkin": "Comută skin",
   "about": "Despre",
   "license": "Licență",
   "ipfsServer": "Server IPFS",
@@ -60,13 +60,13 @@
   "verifyOnMycrypto": "Verifică chitanța pe MyCrypto",
   "verifyOnSignatorio": "Verifică pe Signator.io",
   "isCore": "Nucleu",
-  "notificationsBlocked": "Your browser is blocking notifications",
-  "notificationsNotSupported": "Your browser does not support notifications",
+  "notificationsBlocked": "Browserul tău blochează notificările",
+  "notificationsNotSupported": "Browserul tău nu acceptă notificări",
   "seeInExplorer": "Vizualizează pe explorer",
   "learnMore": "Află mai multe",
   "logout": "Deconectează-te",
-  "walletNotice": "Wallet notice",
-  "gnosisSafeWalletNotice": "Gnosis Safe wallet doesn't support signing messages. You can delegate your voting power to a wallet of your choice on our delegation page.",
+  "walletNotice": "Notificare portofel",
+  "gnosisSafeWalletNotice": "Portofelul Gnosis Safe nu acceptă semnarea mesajelor. Puteți delega puterea de vot unui portofel la alegerea dumneavoastră pe pagina noastră de delegare.",
   "continue": "Continuă",
   "add": "Adaugă",
   "edit": "Modifică",
@@ -97,8 +97,8 @@
   "startToEnd": "pornește {0} sfârșit {1}",
   "startIn": "pornește {0}",
   "endIn": "sfârșit {1}",
-  "proposalStartIn": "start in {0}",
-  "proposalToNow": "{0} left",
+  "proposalStartIn": "începe în {0}",
+  "proposalToNow": "{0} rămas",
   "endedAgo": "sfârșit {1}",
   "proposalBy": "de către {0}",
   "endDate": "sfârșit {0}",
@@ -120,7 +120,7 @@
   "duplicateProposal": "Duplichează propunere",
   "joinedSpaces": "Spații alăturate",
   "joinSpaces": "Alătura-te la spații",
-  "delegateVotingPower": "Go to delegation page",
+  "delegateVotingPower": "Mergi la pagina de delegare",
   "errors": {
     "required": "Câmp obligatoriu",
     "minLength": "Lungime minimă de {0}",
@@ -132,9 +132,9 @@
     "type": "Tipul fişierului nu ese valid"
   },
   "create": {
-    "question": "Ask a question...",
-    "categorie(s)": "Select up to 2 categorie(s)",
-    "content": "Tell more about your proposal (optional)",
+    "question": "Pune o întrebare...",
+    "categorie(s)": "Selectează până la 2 categorii(e)",
+    "content": "Spune mai multe despre propunerea ta (opţional)",
     "preview": "Previzualizează",
     "choices": "Alegeri",
     "addChoice": "Adaugă alegere",
@@ -200,8 +200,8 @@
     "customDomain": "Domeniu personalizat",
     "domain": "Nume de domeniu",
     "strategies": "Strategie(i)",
-    "categories": "Categorie(s)",
-    "selectCategories": "Select categories",
+    "categories": "Categorii(e)",
+    "selectCategories": "Selectează categorii",
     "hideSpace": "Ascunde spațiu de pe pagina principală",
     "addStrategy": "Adaugă strategie",
     "authors": "Autori",
@@ -224,11 +224,11 @@
     "quorum": "Cvorum",
     "type": "Tip",
     "anyType": "Oricare",
-    "hideAbstain": "Ignore abstain votes in basic voting results"
+    "hideAbstain": "Ignoră voturile de abținere în rezultatele votului de bază"
   },
   "setup": {
     "example": "e.g. yam.eth",
-    "useExistingEns": "Use an existing ENS name to create your space with.",
+    "useExistingEns": "Utilizează un nume ENS existent pentru a crea spaţiul.",
     "createASpace": "Crează un spațiu"
   },
   "notify": {
@@ -253,15 +253,15 @@
     "plugins": "plugin(uri)",
     "results": "rezultat(e)",
     "categories": {
-      "all": "All",
+      "all": "Toate",
       "protocol": "Protocol",
       "social": "Social",
-      "investment": "Investment",
-      "grant": "Grant",
-      "service": "Service",
+      "investment": "Investiţie",
+      "grant": "Subvenție",
+      "service": "Serviciu",
       "media": "Media",
-      "creator": "Creator",
-      "collector": "Collector"
+      "creator": "Autorul",
+      "collector": "Colecționar"
     }
   },
   "voting": {
@@ -271,19 +271,19 @@
     "quadratic": "Votare cuadratica",
     "ranked-choice": "Votare prin clasament",
     "weighted": "Votare cu pondere",
-    "basic": "Basic voting",
+    "basic": "Votare de bază",
     "description": {
       "single-choice": "Fiecare votant poate selecta o singură alegere.",
       "approval": "Fiecare alegător poate selecta orice număr de alegeri.",
       "quadratic": "Fiecare alegător poate răspândi puterea de vot în orice număr de alegeri. Rezultatele sunt calculate cuadratic.",
       "ranked-choice": "Fiecare alegător poate selecta şi clasifica orice număr de alegeri. Rezultatele sunt calculate prin metoda de numărare cu balotaj instantaneu.",
       "weighted": "Fiecare alegator poate raspândi puterea de vot la oricâte alegeri.",
-      "basic": "Single choice voting with three choices: For, Against or Abstain"
+      "basic": "Votul unic cu trei opțiuni: Pentru, Împotriva sau Abținere"
     },
     "choices": {
-      "for": "For",
-      "against": "Against",
-      "abstain": "Abstain"
+      "for": "Pentru",
+      "against": "Împotrivă",
+      "abstain": "Abținere"
     }
   },
   "safeSnap": {
