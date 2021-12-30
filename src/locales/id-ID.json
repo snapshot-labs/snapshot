@@ -65,8 +65,6 @@
   "seeInExplorer": "Lihat di explorer",
   "learnMore": "Pelajari lebih lanjut",
   "logout": "Keluar",
-  "walletNotice": "Peringatan dompet",
-  "gnosisSafeWalletNotice": "Dompet Gnosis Safe tidak mendukung pesan penandatanganan. Anda dapat mendelegasikan hak suara Anda ke dompet pilihan Anda di halaman delegasi.",
   "continue": "Lanjut",
   "add": "Tambah",
   "edit": "Edit",
@@ -120,7 +118,6 @@
   "duplicateProposal": "Duplikat proposal",
   "joinedSpaces": "Ruangan yang diikuti",
   "joinSpaces": "Gabung ke ruang",
-  "delegateVotingPower": "Pergi ke halaman delegasi",
   "errors": {
     "required": "Baris diperlukan",
     "minLength": "Panjang minimum adalah {0}",
