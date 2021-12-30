@@ -65,8 +65,6 @@
   "seeInExplorer": "탐색기에서 보기",
   "learnMore": "더 알아보기",
   "logout": "로그 아웃",
-  "walletNotice": "지갑 공지",
-  "gnosisSafeWalletNotice": "Gnosis Safe 지갑은 메시지 서명을 지원하지 않습니다. 위임 페이지에서 선택한 지갑에 투표권을 위임할 수 있습니다.",
   "continue": "계속하다",
   "add": "더하다",
   "edit": "편집하다",
@@ -120,7 +118,6 @@
   "duplicateProposal": "제안서 중복하기.",
   "joinedSpaces": "공간 가입",
   "joinSpaces": "공간 가입",
-  "delegateVotingPower": "위임 페이지로 이동",
   "errors": {
     "required": "필드가 필요합니다",
     "minLength": "최소 길이는 {0}",
