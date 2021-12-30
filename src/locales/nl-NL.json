@@ -65,8 +65,6 @@
   "seeInExplorer": "Zie op verkenner",
   "learnMore": "Zie meer",
   "logout": "Log-uit",
-  "walletNotice": "Wallet notice",
-  "gnosisSafeWalletNotice": "Gnosis Safe wallet doesn't support signing messages. You can delegate your voting power to a wallet of your choice on our delegation page.",
   "continue": "Doorgaan",
   "add": "Toevoegen",
   "edit": "Bewerken",
@@ -120,7 +118,6 @@
   "duplicateProposal": "Duplicate proposal",
   "joinedSpaces": "Joined spaces",
   "joinSpaces": "Join spaces",
-  "delegateVotingPower": "Go to delegation page",
   "errors": {
     "required": "Veld is verplicht",
     "minLength": "Minimale lengte is {0}",
