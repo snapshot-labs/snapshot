@@ -129,15 +129,7 @@ const isCreator = computed(() => props.proposal.author === web3Account.value);
       <p>{{ $t('comment_box.delete_modal') }}</p>
     </div>
     <div
-      class="
-        mb-2
-        mt-3
-        text-center
-        flex
-        items-center
-        content-center
-        justify-center
-      "
+      class="mb-2 mt-3 text-center flex items-center content-center justify-center"
     >
       <UiButton
         @click="deleteItem"
