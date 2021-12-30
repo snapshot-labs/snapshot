@@ -144,9 +144,6 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
               :valid-tlds="validTlds"
               @waitForRegistration="waitForRegistration"
             />
-            <div class="mt-3">
-              {{ $t('setup.correctAccountNote') }}
-            </div>
           </div>
         </Block>
       </template>
