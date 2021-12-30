@@ -65,8 +65,6 @@
   "seeInExplorer": "Дивитися в провіднику",
   "learnMore": "Дізнатися більше",
   "logout": "Вийти",
-  "walletNotice": "Wallet notice",
-  "gnosisSafeWalletNotice": "Gnosis Safe wallet doesn't support signing messages. You can delegate your voting power to a wallet of your choice on our delegation page.",
   "continue": "Продовжити",
   "add": "Додати",
   "edit": "Редагувати",
@@ -120,7 +118,6 @@
   "duplicateProposal": "Дублювати пропозицію",
   "joinedSpaces": "Joined spaces",
   "joinSpaces": "Join spaces",
-  "delegateVotingPower": "Go to delegation page",
   "errors": {
     "required": "Обов'язкове поле",
     "minLength": "Мінімальна довжина: {0}",
