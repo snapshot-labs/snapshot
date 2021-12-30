@@ -27,7 +27,7 @@
     "@pusher/push-notifications-web": "^1.1.0",
     "@snapshot-labs/lock": "github:snapshot-labs/lock#master",
     "@snapshot-labs/snapshot.js": "^0.3.25",
-    "@toruslabs/torus-embed": "^1.12.1",
+    "@toruslabs/torus-embed": "^1.19.0",
     "@vue/apollo-composable": "4.0.0-alpha.16",
     "@vueuse/core": "^7.4.0",
     "@walletconnect/web3-provider": "1.4.1",
