@@ -65,8 +65,6 @@
   "seeInExplorer": "Xem trên trình duyệt",
   "learnMore": "Tìm hiểu thêm",
   "logout": "Đăng xuất",
-  "walletNotice": "Wallet notice",
-  "gnosisSafeWalletNotice": "Gnosis Safe wallet doesn't support signing messages. You can delegate your voting power to a wallet of your choice on our delegation page.",
   "continue": "Tiếp tục",
   "add": "Thêm vào",
   "edit": "Chỉnh sửa",
@@ -120,7 +118,6 @@
   "duplicateProposal": "Sao chép đề xuất",
   "joinedSpaces": "Các nhóm đã tham gia",
   "joinSpaces": "Tham gia nhóm",
-  "delegateVotingPower": "Go to delegation page",
   "errors": {
     "required": "Trường này là bắt buộc",
     "minLength": "Độ dài tối thiểu là {0}",
