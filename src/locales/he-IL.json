@@ -65,8 +65,6 @@
   "seeInExplorer": "צפה ב-explorer",
   "learnMore": "מידע נוסף",
   "logout": "יציאה",
-  "walletNotice": "Wallet notice",
-  "gnosisSafeWalletNotice": "Gnosis Safe wallet doesn't support signing messages. You can delegate your voting power to a wallet of your choice on our delegation page.",
   "continue": "המשך",
   "add": "הוספה",
   "edit": "ערוך",
@@ -120,7 +118,6 @@
   "duplicateProposal": "שכפל הצעה",
   "joinedSpaces": "Joined spaces",
   "joinSpaces": "Join spaces",
-  "delegateVotingPower": "Go to delegation page",
   "errors": {
     "required": "שדה חובה",
     "minLength": "האורך המינימלי הוא {0}",
