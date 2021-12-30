@@ -65,8 +65,6 @@
   "seeInExplorer": "エクスプローラで閲覧する",
   "learnMore": "もっと詳しく知る",
   "logout": "ログアウト",
-  "walletNotice": "ウォレット通知",
-  "gnosisSafeWalletNotice": "Gnosis Safe Walletは署名メッセージをサポートしていません。委任ページであなたの選択したウォレットに投票力を委任できます。",
   "continue": "続ける",
   "add": "追加",
   "edit": "編集",
@@ -120,7 +118,6 @@
   "duplicateProposal": "提案を複製する",
   "joinedSpaces": "Joined spaces",
   "joinSpaces": "スペースに入る",
-  "delegateVotingPower": "連携機能のページに移動",
   "errors": {
     "required": "フィールドが埋まってません",
     "minLength": "最小文字数は {0} です",
