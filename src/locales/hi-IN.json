@@ -65,8 +65,6 @@
   "seeInExplorer": "एक्सप्लोरर पर देखें",
   "learnMore": "और पढ़ें",
   "logout": "लॉग आउट",
-  "walletNotice": "Wallet notice",
-  "gnosisSafeWalletNotice": "Gnosis Safe wallet doesn't support signing messages. You can delegate your voting power to a wallet of your choice on our delegation page.",
   "continue": "जारी रखें",
   "add": "जोड़ें",
   "edit": "संपादित करें",
@@ -120,7 +118,6 @@
   "duplicateProposal": "डुप्लीकेट प्रस्ताव",
   "joinedSpaces": "स्पेस में शामिल हों",
   "joinSpaces": "स्पेस में शामिल हों",
-  "delegateVotingPower": "Go to delegation page",
   "errors": {
     "required": "यह जानकारी जरुरी है",
     "minLength": "न्यूनतम लंबाई {0}",
