@@ -65,8 +65,6 @@
   "seeInExplorer": "在浏览器上查看",
   "learnMore": "了解更多",
   "logout": "登出",
-  "walletNotice": "钱包通知",
-  "gnosisSafeWalletNotice": "Gnosis Safe钱包不支持签名信息。您可以在我们的委托页面上将您的投票权委托给您所选择的钱包。",
   "continue": "继续",
   "add": "添加",
   "edit": "编辑",
@@ -120,7 +118,6 @@
   "duplicateProposal": "复制提案",
   "joinedSpaces": "已加入的空间",
   "joinSpaces": "加入空间",
-  "delegateVotingPower": "前往委托页面",
   "errors": {
     "required": "此项为必填项",
     "minLength": "最小长度为 {0}",
