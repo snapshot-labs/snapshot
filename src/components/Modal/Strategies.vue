@@ -1,5 +1,6 @@
 <script setup>
 import { isAddress } from '@ethersproject/address';
+import { shorten, explorerUrl } from '@/helpers/utils';
 
 defineProps({
   open: Boolean,
@@ -27,11 +28,11 @@ defineEmits(['close']);
             <span v-text="key" class="flex-auto text-color mr-1" />
             <a
               v-if="key === 'address' || isAddress(option)"
-              :href="_explorer(proposal.network, option)"
+              :href="explorerUrl(proposal.network, option)"
               target="_blank"
               class="block"
             >
-              <span v-text="_shorten(option)" />
+              <span v-text="shorten(option)" />
               <Icon name="external-link" class="ml-1" />
             </a>
             <span

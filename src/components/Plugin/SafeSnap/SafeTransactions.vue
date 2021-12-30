@@ -5,6 +5,7 @@ import {
   getGnosisSafeBalances,
   getGnosisSafeCollectibles
 } from '@/helpers/abi/utils';
+import { shorten } from '@/helpers/utils';
 
 const plugin = new Plugin();
 
@@ -48,6 +49,9 @@ async function fetchCollectibles(network, gnosisSafeAddress) {
 }
 
 export default {
+  setup() {
+    return { shorten };
+  },
   props: ['modelValue', 'proposal', 'network', 'realityAddress', 'preview'],
   emits: ['update:modelValue'],
   data() {
@@ -149,7 +153,7 @@ export default {
         style="font-weight: normal"
         target="_blank"
       >
-        {{ _shorten(gnosisSafeAddress) }}
+        {{ shorten(gnosisSafeAddress) }}
         <i class="iconfont iconexternal-link" />
       </a>
     </h4>
