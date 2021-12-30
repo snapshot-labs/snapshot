@@ -65,8 +65,6 @@
   "seeInExplorer": "Tignan sa explorer",
   "learnMore": "Karagdagang impormasyon",
   "logout": "I-logout",
-  "walletNotice": "Abiso sa pitaka",
-  "gnosisSafeWalletNotice": "Ang Gnosis Safe wallet ay hindi sumusuporta sa pag-sign ng mga mensahe. Maaari mong italaga ang iyong kapangyarihan sa pagboto sa isang pitaka na iyong pinili sa aming pahina ng delegasyon.",
   "continue": "Ipagpatuloy",
   "add": "Idagdag",
   "edit": "I-Edit",
@@ -120,7 +118,6 @@
   "duplicateProposal": "Duplicate na proposal",
   "joinedSpaces": "Pinagsamang mga puwang",
   "joinSpaces": "Sumali sa mga puwang",
-  "delegateVotingPower": "Pumunta sa pahina ng delegasyon",
   "errors": {
     "required": "Kailangang punan ang patlang",
     "minLength": "Ang minimum na haba ay {0}",
