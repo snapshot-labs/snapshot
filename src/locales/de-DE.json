@@ -65,8 +65,6 @@
   "seeInExplorer": "Im Explorer ansehen",
   "learnMore": "Mehr erfahren",
   "logout": "Ausloggen",
-  "walletNotice": "Wallet notice",
-  "gnosisSafeWalletNotice": "Gnosis Safe wallet doesn't support signing messages. You can delegate your voting power to a wallet of your choice on our delegation page.",
   "continue": "Weiter",
   "add": "Hinzufügen",
   "edit": "Bearbeiten",
@@ -120,7 +118,6 @@
   "duplicateProposal": "Vorschlag duplizieren",
   "joinedSpaces": "Beigetretene Bereiche",
   "joinSpaces": "Bereiche beitreten",
-  "delegateVotingPower": "Go to delegation page",
   "errors": {
     "required": "Dieses Feld ist ein Pflichtfeld",
     "minLength": "Mindestlänge ist {0}",
