@@ -65,8 +65,6 @@
   "seeInExplorer": "İnternette gör",
   "learnMore": "Daha fazla bilgi edinin",
   "logout": "Çıkış",
-  "walletNotice": "Cüzdan bildirimi",
-  "gnosisSafeWalletNotice": "Gnosis Güvenli Cüzdan, mesajları imzalamayı desteklemez. Oy verme gücünü, yetkilendirme sayfamızda seçtiğin bir cüzdana devredebilirsin.",
   "continue": "Devam et",
   "add": "Ekle",
   "edit": "Düzenle",
@@ -120,7 +118,6 @@
   "duplicateProposal": "Teklifi yinele",
   "joinedSpaces": "Alana katıldın",
   "joinSpaces": "Alanlara katıl",
-  "delegateVotingPower": "Yetkilendirme sayfasına git",
   "errors": {
     "required": "Bu alan zorunludur",
     "minLength": "Minimum uzunluk: {0}",
