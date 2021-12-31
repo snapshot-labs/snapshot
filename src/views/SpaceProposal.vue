@@ -19,6 +19,8 @@ import { useClient } from '@/composables/useClient';
 import { useApp } from '@/composables/useApp';
 import { useInfiniteLoader } from '@/composables/useInfiniteLoader';
 import { useStore } from '@/composables/useStore';
+import PluginsProposal from '@/plugins/Proposal.vue'
+import PluginsProposalSidebar from '@/plugins/ProposalSidebar.vue'
 
 const props = defineProps({
   spaceId: String,
@@ -318,6 +320,10 @@ onMounted(async () => {
         :userVote="userVote"
         :loadingMore="loadingMore"
       />
+      <PluginsProposal
+        :proposal="proposal"
+        :space="space"
+      />
       <ProposalPluginsContent
         v-model:safeSnapInput="safeSnapInput"
         :id="id"
@@ -419,6 +425,10 @@ onMounted(async () => {
         :results="results"
         :votes="votes"
         :strategies="strategies"
+      />
+      <PluginsProposalSidebar
+        :proposal="proposal"
+        :space="space"
       />
       <ProposalPluginsSidebar
         v-if="loadedResults"
