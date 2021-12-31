@@ -160,15 +160,7 @@ watch([modalOpen, closeModal], () => {
       <p>{{ $t('comment_box.edit_modal') }}</p>
     </div>
     <div
-      class="
-        mb-2
-        mt-3
-        text-center
-        flex
-        items-center
-        content-center
-        justify-center
-      "
+      class="mb-2 mt-3 text-center flex items-center content-center justify-center"
     >
       <UiButton
         class="!bg-primary !text-white"
