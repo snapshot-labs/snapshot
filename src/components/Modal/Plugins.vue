@@ -22,7 +22,7 @@ function handleSubmit() {
 
 function selectPlugin(plugin) {
   selectedPlugin.value = plugin;
-  input.value = selectedPlugin.value?.defaultParams ?? {};
+  input.value = selectedPlugin.value?.defaults?.space ?? {};
 }
 
 watch(open, () => {
