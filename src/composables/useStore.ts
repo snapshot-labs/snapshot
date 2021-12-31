@@ -8,6 +8,10 @@ const store = reactive({
   timeline: {
     proposals: [],
     filterBy: 'all'
+  },
+  notifications: {
+    proposals: [],
+    filterBy: 'all'
   }
 });
 

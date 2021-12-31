@@ -97,6 +97,11 @@ onMounted(() => {
             </UiSidebarButton>
           </router-link>
         </div>
+        <router-link :to="{ name: 'notifications' }">
+          <UiSidebarButton>
+            <Icon size="20" name="notifications-none" />
+          </UiSidebarButton>
+        </router-link>
         <draggable
           v-if="draggableSpaces.length > 0"
           v-model="draggableSpaces"

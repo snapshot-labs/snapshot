@@ -22,6 +22,8 @@
   "verifiedSpace": "Verified space",
   "version": "Version",
   "timeline": "Timeline",
+  "ended": "ended",
+  "started": "started",
   "filters": "Filters",
   "allSpaces": "All spaces",
   "submitOnchain": "Submit on-chain",
@@ -181,6 +183,12 @@
       "pending": "Pending",
       "closed": "Closed"
     }
+  },
+  "notifications": {
+    "header": "Notifications",
+    "started": "started",
+    "ended": "ended",
+    "proposalTo": "Proposal to"
   },
   "settings": {
     "header": "Settings",
@@ -378,6 +386,7 @@
       "home": "Snapshot",
       "setup": "Create a space",
       "timeline": "Timeline",
+      "notifications": "Notifications",
       "explore": "Explore",
       "playground": "Playground",
       "space": {

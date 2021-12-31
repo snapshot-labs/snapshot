@@ -69,6 +69,10 @@
   content: "\e630";
 }
 
+.iconnotifications-none:before {
+  content: "\e69e";
+}
+
 .iconnotifications-off:before {
   content: "\e6e4";
 }
