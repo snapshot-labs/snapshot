@@ -80,7 +80,7 @@ watch(open, () => {
           class="w-full"
           primary
         >
-          {{ plugin.name ? $t('save') : $t('add') }}
+          {{ Object.keys(plugin).length ? $t('save') : $t('add') }}
         </UiButton>
       </div>
       <div v-if="!selectedPlugin?.key">

@@ -9,13 +9,15 @@ import {
 } from '@snapshot-labs/snapshot.js/src/utils';
 import schemas from '@snapshot-labs/snapshot.js/src/schemas';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
-import { useSearchFilters } from '@/composables/useSearchFilters';
 import defaults from '@/locales/default';
 import { useCopy } from '@/composables/useCopy';
 import { useWeb3 } from '@/composables/useWeb3';
 import { calcFromSeconds, calcToSeconds } from '@/helpers/utils';
 import { useClient } from '@/composables/useClient';
 import { setPageTitle } from '@/helpers/utils';
+import { usePlugins } from '@/composables/usePlugins';
+
+const { pluginName } = usePlugins();
 
 const props = defineProps({
   spaceId: String,
@@ -108,16 +110,6 @@ const votingPeriod = computed({
 const categoriesString = computed(() => {
   return form.value.categories ? form.value.categories.join(', ') : '';
 });
-
-const { filteredPlugins } = useSearchFilters();
-const plugins = computed(() => filteredPlugins());
-
-function pluginName(key) {
-  const plugin = plugins.value.find(obj => {
-    return obj.key === key;
-  });
-  return plugin?.name;
-}
 
 async function handleSubmit() {
   if (isValid.value) {
