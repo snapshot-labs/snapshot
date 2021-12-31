@@ -19,6 +19,7 @@ import { useApp } from '@/composables/useApp';
 import { useExtendedSpaces } from '@/composables/useExtendedSpaces';
 import { useStore } from '@/composables/useStore';
 import { setPageTitle } from '@/helpers/utils';
+import PluginsCreate from '@/plugins/Create.vue'
 
 const props = defineProps({
   spaceId: String,
@@ -350,6 +351,12 @@ watchEffect(() => {
           {{ $t('create.addChoice') }}
         </UiButton>
       </Block>
+      <PluginsCreate
+        :proposal="proposal"
+        :space="space"
+        :preview="preview"
+        v-model="form.metadata.plugins"
+      />
       <PluginSafeSnapConfig
         v-if="space?.plugins?.safeSnap"
         :proposal="proposal"
