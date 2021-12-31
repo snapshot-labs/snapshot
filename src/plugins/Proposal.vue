@@ -1,5 +1,5 @@
 <script setup>
-import ChainlinkProposal from './Chainlink/Proposal.vue';
+// import ChainlinkProposal from './Chainlink/Proposal.vue';
 
 const props = defineProps({
   proposal: Object,
@@ -8,5 +8,5 @@ const props = defineProps({
 </script>
 
 <template>
-  <ChainlinkProposal v-bind="props" />
+  <!-- <ChainlinkProposal v-bind="props" /> -->
 </template>
