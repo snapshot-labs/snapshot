@@ -225,8 +225,13 @@
   },
   "setup": {
     "example": "misalnya yam.eth",
-    "useExistingEns": "Gunakan nama ENS yang ada untuk membuat ruang anda.",
-    "createASpace": "Buat sebuah ruang"
+    "chooseExistingEns": "Choose one of your existing ENS domains to create a space with:",
+    "useSingleExistingEns": "Use your existing ENS domain:",
+    "orReigsterNewEns": "Or register a new domain:",
+    "toCreateASpace": "To create a space, you first need an ENS domain. Enter one below and follow the ENS registration instructions.",
+    "createASpace": "Buat sebuah ruang",
+    "registerEnsButton": "Register",
+    "supportedEnsTLDs": "Supported domain endings"
   },
   "notify": {
     "youDidIt": "Anda berhasil!",
