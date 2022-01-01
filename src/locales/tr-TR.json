@@ -230,7 +230,7 @@
     "orReigsterNewEns": "Or register a new domain:",
     "toCreateASpace": "To create a space, you first need an ENS domain. Enter one below and follow the ENS registration instructions.",
     "createASpace": "Oluştur",
-    "registerEnsButton": "Register",
+    "registerEnsButton": "Kaydol",
     "supportedEnsTLDs": "Supported domain endings"
   },
   "notify": {
