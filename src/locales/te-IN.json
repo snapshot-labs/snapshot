@@ -225,8 +225,13 @@
   },
   "setup": {
     "example": "ఉదాహరణ. yarn.eth",
-    "useExistingEns": "Use an existing ENS name to create your space with.",
-    "createASpace": "స్పేస్ సృష్టించండి"
+    "chooseExistingEns": "Choose one of your existing ENS domains to create a space with:",
+    "useSingleExistingEns": "Use your existing ENS domain:",
+    "orReigsterNewEns": "Or register a new domain:",
+    "toCreateASpace": "To create a space, you first need an ENS domain. Enter one below and follow the ENS registration instructions.",
+    "createASpace": "స్పేస్ సృష్టించండి",
+    "registerEnsButton": "Register",
+    "supportedEnsTLDs": "Supported domain endings"
   },
   "notify": {
     "youDidIt": "మీరు సాధించారు!",
