@@ -90,7 +90,8 @@ export const ETHEREUM_COIN: Token = {
   name: 'Ethereum',
   decimals: 18,
   symbol: 'ETH',
-  logoUri: 'https://gnosis-safe.io/app/static/media/token_eth.bc98bd46.svg',
+  logoUri:
+    'https://safe-transaction-assets.gnosis-safe.io/chains/1/currency_logo.png',
   address: 'main'
 };
 
