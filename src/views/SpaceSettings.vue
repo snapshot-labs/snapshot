@@ -272,9 +272,9 @@ watchEffect(async () => {
 });
 
 onMounted(() => {
-  if (props.space) {
-    setPageTitle('page.title.space.settings', { space: props.space.name });
-  }
+  props.space
+    ? setPageTitle('page.title.space.settings', { space: props.space.name })
+    : setPageTitle('page.title.setup');
 });
 </script>
 
