@@ -213,3 +213,13 @@ export const SPACES_QUERY = gql`
     }
   }
 `;
+
+export const ENS_QUERY = gql`
+  query Domain($id: String!) {
+    account(id: $id) {
+      domains {
+        name
+      }
+    }
+  }
+`;

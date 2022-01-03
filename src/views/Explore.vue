@@ -56,7 +56,7 @@ onMounted(() => {
         <div class="flex flex-col">{{ _n(items.length) }} {{ resultsStr }}</div>
         <a
           v-if="buttonStr"
-          href="https://discord.snapshot.org"
+          href="https://discord.gg/snapshot"
           target="_blank"
           class="hidden md:block ml-3"
         >
