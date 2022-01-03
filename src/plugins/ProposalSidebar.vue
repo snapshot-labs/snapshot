@@ -8,5 +8,7 @@ const props = defineProps({
 </script>
 
 <template>
-  <ChainlinkProposalSidebar v-bind="props" />
+  <template v-if="proposal.plugins">
+    <ChainlinkProposalSidebar v-bind="props" />
+  </template>>
 </template>
