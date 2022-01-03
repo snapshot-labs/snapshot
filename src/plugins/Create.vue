@@ -16,5 +16,7 @@ const update = (event) => {
 </script>
 
 <template>
-  <ChainlinkCreate v-bind="props" @update="update" />
+  <template v-if="space.plugins">
+    <ChainlinkCreate v-bind="props" @update="update" />
+  </template>
 </template>
