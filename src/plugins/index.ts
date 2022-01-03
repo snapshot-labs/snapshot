@@ -18,10 +18,12 @@ export default {
     icon: 'https://...',
     defaults: {
       space: {
-        registry: '0x123'
-      },
-      proposal: {
-        oracles: ['0xAbc']
+        network: 4,
+        registry: '0xb6055D3054E8FA8CD3E622ff54D6364ce5970E31',
+        oracle: {
+          address: '0x443271BdE48D70118E30A4867F1A549CE23F25b9',
+          job: '77e02209-5347-4f75-a61d-068a3b84c8dd'
+        }
       }
     }
   },

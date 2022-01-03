@@ -1,5 +1,5 @@
 <script setup>
-import { ref, reactive } from 'vue';
+import { ref } from 'vue';
 import { usePlugin } from './';
 
 const props = defineProps({
@@ -7,25 +7,43 @@ const props = defineProps({
   proposal: Object
 });
 
-const { getCurrentResults } = usePlugin();
+const { requestResult, getCurrentResult } = usePlugin();
 
 const loading = ref(false);
-const result = reactive({});
+const requesting = ref(false);
+const passed = ref(false);
 
-const loadResults = async () => {
+const load = async () => {
   loading.value = true;
-  result.value = await getCurrentResults(
+  passed.value = await getCurrentResult(
     props.space.plugins.Chainlink.registry,
     props.proposal.id
   );
   loading.value = false;
 }
+
+const request = async () => {
+  requesting.value = true;
+  await requestResult(
+    props.space.plugins.Chainlink.registry,
+    props.space.plugins.Chainlink.oracle.address,
+    props.space.plugins.Chainlink.oracle.job.replace(/-/g, ''),
+    props.proposal.id
+  );
+  requesting.value = false;
+}
+
+load();
 </script>
 
 <template>
   <Block v-if="proposal.plugins.Chainlink">
-    Result: {{ result }}
-    <UiButton class="flex items-center justify-center space-x-2 w-full" @click="loadResults">
+    <div class="text-center mb-3">
+      <Icon v-if="passed" name="check1" size="48" class="text-green" />
+      <Icon v-else name="close" size="48" class="text-red" />
+    </div>
+    <UiButton class="flex items-center justify-center space-x-2 w-full" @click="request" :disabled="loading || requesting">
+      <UiLoading v-if="loading || requesting" class="mr-2" />
       <svg class="w-[20px] h-[20px] -mt-1" viewBox="0 0 24 24">
         <path fill="#2a5ada" d="M21,16.5C21,16.88 20.79,17.21 20.47,17.38L12.57,21.82C12.41,21.94 12.21,22 12,22C11.79,22 11.59,21.94 11.43,21.82L3.53,17.38C3.21,17.21 3,16.88 3,16.5V7.5C3,7.12 3.21,6.79 3.53,6.62L11.43,2.18C11.59,2.06 11.79,2 12,2C12.21,2 12.41,2.06 12.57,2.18L20.47,6.62C20.79,6.79 21,7.12 21,7.5V16.5M12,7A5,5 0 0,0 7,12A5,5 0 0,0 12,17A5,5 0 0,0 17,12A5,5 0 0,0 12,7Z" />
       </svg>
