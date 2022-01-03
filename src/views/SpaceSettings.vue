@@ -15,9 +15,7 @@ import { useWeb3 } from '@/composables/useWeb3';
 import { calcFromSeconds, calcToSeconds } from '@/helpers/utils';
 import { useClient } from '@/composables/useClient';
 import { setPageTitle } from '@/helpers/utils';
-import { usePlugins } from '@/composables/usePlugins';
-
-const { pluginName } = usePlugins();
+import pluginIndex from '@/plugins';
 
 const props = defineProps({
   spaceId: String,
@@ -617,7 +615,7 @@ onMounted(() => {
                 :key="index"
                 class="mb-3 relative"
               >
-                <div v-if="pluginName(name)">
+                <div v-if="pluginIndex[name].name">
                   <a
                     @click="handleRemovePlugins(name)"
                     class="absolute p-4 right-0"
@@ -628,7 +626,7 @@ onMounted(() => {
                     @click="handleEditPlugins(name)"
                     class="p-4 block border rounded-md"
                   >
-                    <h4 v-text="pluginName(name)" />
+                    <h4 v-text="pluginIndex[name].name" />
                   </a>
                 </div>
               </div>
