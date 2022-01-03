@@ -1,8 +1,7 @@
 <script setup>
 import { ref, watch, toRefs } from 'vue';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
-import pluginsObj from '@/../snapshot-plugins/src/plugins';
-import pluginsConfig from '@/components/Plugin/config.json';
+import pluginIndex from '@/plugins';
 
 const props = defineProps({
   open: Boolean,
@@ -18,25 +17,7 @@ const plugins = ref([]);
 const selected = ref(false);
 const form = ref({});
 
-function getLogoUrl(plugin) {
-  return `https://raw.githubusercontent.com/snapshot-labs/snapshot-plugins/master/src/plugins/${plugin}/logo.png`;
-}
-
-function showButton(key) {
-  const pluginsWithParams = Object.keys(props.space.plugins).filter(
-    plugin => pluginsConfig[plugin].proposalParams
-  );
-  return pluginsWithParams.map(plugin => plugin).includes(key);
-}
-
-if (props.space.plugins) {
-  plugins.value = Object.fromEntries(
-    Object.keys(props.space.plugins).map(plugin => {
-      const instance = new pluginsObj[plugin]();
-      return [plugin, instance];
-    })
-  );
-}
+const showButton = (key) => !!pluginIndex[key]?.defaults?.proposal;
 
 watch(open, () => {
   if (props.modelValue && props.open) form.value = clone(props.modelValue);
@@ -59,20 +40,20 @@ watch(selected, value => {
     </template>
     <div class="m-4 mt-4" v-if="selected === false">
       <div
-        v-for="(plugin, key) in plugins"
+        v-for="(plugin, key) in props.space.plugins"
         :key="key"
         class="mb-3 p-4 border rounded-md link-color text-center"
       >
         <img
           class="rounded-full border mx-auto mb-1"
-          :src="getLogoUrl(key)"
-          :alt="plugin.name"
+          :src="pluginIndex[key].icon"
+          :alt="pluginIndex[key].name"
           width="64"
           height="64"
         />
-        <h3 v-text="plugin.name" />
-        <div v-if="plugin.website" class="mb-2">
-          <a :href="plugin.website" target="_blank" class="link-color">
+        <h3 v-text="pluginIndex[key].name" />
+        <div v-if="pluginIndex[key].website" class="mb-2">
+          <a :href="pluginIndex[key].website" target="_blank" class="link-color">
             {{ $t('learnMore') }}
             <Icon name="external-link" />
           </a>
