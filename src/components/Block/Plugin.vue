@@ -1,9 +1,5 @@
 <script setup>
 defineProps(['plugin']);
-
-function getLogoUrl(key) {
-  return `https://raw.githubusercontent.com/snapshot-labs/snapshot-plugins/master/src/plugins/${key}/logo.png`;
-}
 </script>
 
 <template>
@@ -16,7 +12,7 @@ function getLogoUrl(key) {
       >
         <UiAvatar
           class="mr-2 mb-2"
-          :imgsrc="getLogoUrl(plugin.key)"
+          :imgsrc="plugin.icon"
           :seed="plugin.name.charCodeAt()"
           size="28"
         />
