@@ -71,7 +71,8 @@ async function load() {
 }
 
 watchEffect(() => {
-  if (store.space.proposals[0]?.space.id !== props.spaceId) {
+  const firstProposal = store.space.proposals[0]
+  if (firstProposal && firstProposal?.space.id !== props.spaceId) {
     store.space.proposals = [];
     load();
   }
