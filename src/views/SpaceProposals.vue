@@ -71,7 +71,7 @@ async function load() {
 }
 
 watchEffect(() => {
-  if (store.space.proposals[0]?.space.id !== props.spaceId) {
+  if (store.space.proposals.length && store.space.proposals[0].space.id !== props.spaceId) {
     store.space.proposals = [];
     load();
   }
