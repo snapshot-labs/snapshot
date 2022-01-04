@@ -15,13 +15,7 @@ defineEmits(['remove', 'toggle']);
     <div class="px-2 collapsible-header flex">
       <div class="mr-4 header-number">{{ number }}</div>
       <span
-        class="
-          flex-auto
-          text-center
-          flex flex-nowrap
-          justify-center
-          overflow-hidden
-        "
+        class="flex-auto text-center flex flex-nowrap justify-center overflow-hidden"
         @click="$emit('toggle')"
       >
         {{ title }}

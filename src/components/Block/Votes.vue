@@ -139,16 +139,7 @@ watch(visibleVotes, () => {
           : sortedVotes.length > 10 && nbrVisibleVotes < sortedVotes.length
       "
       @click="isFinalProposal ? $emit('loadVotes') : (nbrVisibleVotes += 10)"
-      class="
-        px-4
-        py-3
-        border-t
-        text-center
-        block
-        header-bg
-        rounded-b-none
-        md:rounded-b-md
-      "
+      class="px-4 py-3 border-t text-center block header-bg rounded-b-none md:rounded-b-md"
     >
       <UiLoading v-if="loadingMore" :fill-white="primary" />
       <span v-else v-text="$t('seeMore')" />
