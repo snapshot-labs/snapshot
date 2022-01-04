@@ -5,7 +5,7 @@ import { shorten, n } from '@/helpers/utils';
 
 export default {
   setup() {
-    return { shorten, n }
+    return { shorten, n };
   },
   props: ['space', 'proposal', 'results', 'loaded', 'strategies'],
   data() {

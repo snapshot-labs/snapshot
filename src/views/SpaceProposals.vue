@@ -71,7 +71,7 @@ async function load() {
 }
 
 watchEffect(() => {
-  const firstProposal = store.space.proposals[0]
+  const firstProposal = store.space.proposals[0];
   if (firstProposal && firstProposal?.space.id !== props.spaceId) {
     store.space.proposals = [];
     load();
@@ -103,7 +103,6 @@ const proposalsCount = computed(() => {
 const loadingData = computed(() => {
   return loading.value || loadingMore.value;
 });
-
 </script>
 
 <template>
@@ -140,9 +139,15 @@ const loadingData = computed(() => {
 
       <NoResults
         :block="true"
-        v-if="!loadingData && proposalsCount && store.space.proposals.length < 1"
+        v-if="
+          !loadingData && proposalsCount && store.space.proposals.length < 1
+        "
       />
-      <NoProposals v-else-if="!proposalsCount && !loadingData" class="mt-2" :space="space" />
+      <NoProposals
+        v-else-if="!proposalsCount && !loadingData"
+        class="mt-2"
+        :space="space"
+      />
       <div v-else>
         <TimelineProposal
           v-for="(proposal, i) in store.space.proposals"

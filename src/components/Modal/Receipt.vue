@@ -18,7 +18,11 @@ defineEmits(['close']);
       <div class="p-4 border rounded-md link-color">
         <div class="flex">
           <span v-text="$t('author')" class="flex-auto text-color mr-1" />
-          <a :href="getIpfsUrl(authorIpfsHash)" target="_blank" class="link-color">
+          <a
+            :href="getIpfsUrl(authorIpfsHash)"
+            target="_blank"
+            class="link-color"
+          >
             #{{ authorIpfsHash.slice(0, 7) }}
             <Icon name="external-link" class="ml-1" />
           </a>
