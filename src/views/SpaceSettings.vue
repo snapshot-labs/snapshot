@@ -15,7 +15,7 @@ import { useWeb3 } from '@/composables/useWeb3';
 import { calcFromSeconds, calcToSeconds } from '@/helpers/utils';
 import { useClient } from '@/composables/useClient';
 import { setPageTitle } from '@/helpers/utils';
-import pluginIndex from '@/plugins';
+import pluginIndex from '@/plugins/index.json';
 
 const props = defineProps({
   spaceId: String,
