@@ -11,7 +11,7 @@ const labels = {
 };
 
 export default {
-  props: ['modelValue', 'index', 'nonce', 'config'],
+  props: ['modelValue', 'nonce', 'config'],
   emits: ['update:modelValue', 'remove'],
   data() {
     let type = 'transferFunds';
@@ -71,7 +71,7 @@ export default {
                 address: recipientAddr
               });
             case 'raw':
-              return this.$t('safeSnap.transactionLabels.transferNFT', {
+              return this.$t('safeSnap.transactionLabels.raw', {
                 amount: this.modelValue.value,
                 address: recipientAddr
               });
@@ -98,7 +98,7 @@ export default {
 <template>
   <UiCollapsible
     :hideRemove="config.preview"
-    :number="index + 1"
+    :number="nonce + 1"
     :open="open"
     :title="title"
     @remove="$emit('remove')"
