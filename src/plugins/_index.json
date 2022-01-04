@@ -17,8 +17,8 @@
       }
     }
   },
-  "SafeSnap": {
-    "key": "SafeSnap",
+  "safeSnap": {
+    "key": "safeSnap",
     "name": "Gnosis SafeSnap",
     "version": "1.0.0",
     "author": "Gnosis",

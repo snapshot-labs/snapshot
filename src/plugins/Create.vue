@@ -1,5 +1,6 @@
 <script setup>
 import ChainlinkCreate from './Chainlink/Create.vue';
+import SafeSnapCreate from './safeSnap/Create.vue';
 
 const props = defineProps({
   proposal: Object,
@@ -8,9 +9,9 @@ const props = defineProps({
   modelValue: Object
 });
 const emit = defineEmits(['update:modelValue']);
-const update = (event) => {
+const update = (data) => {
   const allConfig = props.modelValue;
-  allConfig[event.key] = event.form;
+  allConfig[data.key] = data.form;
   emit('update:modelValue', allConfig);
 }
 </script>
@@ -18,5 +19,6 @@ const update = (event) => {
 <template>
   <template v-if="space.plugins">
     <ChainlinkCreate v-bind="props" @update="update" />
+    <SafeSnapCreate v-bind="props" @update="update" />
   </template>
 </template>
