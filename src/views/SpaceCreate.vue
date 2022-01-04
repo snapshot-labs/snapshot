@@ -351,7 +351,6 @@ watchEffect(() => {
           {{ $t('create.addChoice') }}
         </UiButton>
       </Block>
-      {{ form.metadata.plugins }}
       <PluginsCreate
         :proposal="proposal"
         :space="space"
