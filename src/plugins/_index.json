@@ -4,7 +4,7 @@
     "version": "0.0.1",
     "author": "mktcode",
     "website": "https://...",
-    "icon": "https://...",
+    "icon": "https://s2.coinmarketcap.com/static/img/coins/64x64/1975.png",
     "defaults": {
       "space": {
         "network": 4,
