@@ -12,14 +12,13 @@ const update = form => {
 </script>
 
 <template>
-  <Block v-if="space.plugins.safeSnap">
-    <PluginSafeSnapConfig
-      :proposal="proposal"
-      :config="space.plugins.safeSnap"
-      :network="space.network"
-      :preview="preview"
-      @update:modelValue="update"
-      :modelValue="modelValue"
-    />
-  </Block>
+  <PluginSafeSnapConfig
+    v-if="space.plugins.safeSnap"
+    :proposal="proposal"
+    :config="space.plugins.safeSnap"
+    :network="space.network"
+    :preview="preview"
+    @update:modelValue="update"
+    :modelValue="modelValue"
+  />
 </template>
