@@ -46,7 +46,7 @@ const { loadBy, loadingMore, stopLoadingMore, loadMore } = useInfiniteLoader();
 
 const { endElement } = useScrollMonitor(() => {
   if (!web3Account.value && route.name === 'timeline') return;
-  loadMore(() => loadProposals(store.timeline.proposals.length), loading.value)
+  loadMore(() => loadProposals(store.timeline.proposals.length), loading.value);
 });
 
 const { apolloQuery } = useApolloQuery();

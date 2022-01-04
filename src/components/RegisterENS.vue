@@ -7,15 +7,16 @@
 import { computed } from 'vue';
 
 const props = defineProps({
-  modelValue: String,
-  validTlds: Array
+  modelValue: String
 });
+
+const validTlds = ['eth', 'xyz', 'com', 'org', 'io', 'app', 'art'];
+
 defineEmits(['update:modelValue', 'waitForRegistration']);
 
 const isValidDomain = computed(() => {
   if (!props.modelValue.includes('.')) return false;
-
-  return props.validTlds.includes(props.modelValue.split('.').pop());
+  return validTlds.includes(props.modelValue.split('.').pop());
 });
 </script>
 
@@ -23,7 +24,12 @@ const isValidDomain = computed(() => {
   <UiButton class="text-left w-full mb-1 flex px-3">
     <input
       :value="modelValue"
-      @input="$emit('update:modelValue', $event.target.value.toLowerCase().replaceAll(/\s/g, ''))"
+      @input="
+        $emit(
+          'update:modelValue',
+          $event.target.value.toLowerCase().replaceAll(/\s/g, '')
+        )
+      "
       class="input flex-auto"
       :placeholder="$t('setup.example')"
     />
@@ -34,7 +40,7 @@ const isValidDomain = computed(() => {
         content: `${$t('setup.supportedEnsTLDs')}: ${validTlds.join(', ')}`
       }"
     >
-      <Icon name="info" size="24" class="text-color p-1" />
+      <Icon name="info" size="24" class="text-color p-1 -mr-1" />
     </span>
   </UiButton>
   <a

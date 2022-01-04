@@ -65,8 +65,6 @@
   "seeInExplorer": "See on explorer",
   "learnMore": "Learn more",
   "logout": "Log out",
-  "walletNotice": "Wallet notice",
-  "gnosisSafeWalletNotice": "Gnosis Safe wallet doesn't support signing messages. You can delegate your voting power to a wallet of your choice on our delegation page.",
   "continue": "Continue",
   "add": "Add",
   "edit": "Edit",
@@ -120,7 +118,6 @@
   "duplicateProposal": "Duplicate proposal",
   "joinedSpaces": "Joined spaces",
   "joinSpaces": "Join spaces",
-  "delegateVotingPower": "Go to delegation page",
   "errors": {
     "required": "Field is required",
     "minLength": "Minimum length is {0}",
@@ -232,7 +229,6 @@
     "useSingleExistingEns": "Use your existing ENS domain:",
     "orReigsterNewEns": "Or register a new domain:",
     "toCreateASpace": "To create a space, you first need an ENS domain. Enter one below and follow the ENS registration instructions.",
-    "correctAccountNote": "You already have an ENS domain? Make sure you have connected the correct account on the Ethereum mainnet.",
     "createASpace": "Create a space",
     "registerEnsButton": "Register",
     "supportedEnsTLDs": "Supported domain endings"
