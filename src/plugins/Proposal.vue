@@ -1,12 +1,15 @@
 <script setup>
-// import ChainlinkProposal from './Chainlink/Proposal.vue';
+import SafeSnapProposal from './safeSnap/Proposal.vue';
 
 const props = defineProps({
   proposal: Object,
-  space: Object
+  space: Object,
+  loadedResults: Object
 });
 </script>
 
 <template>
-  <!-- <ChainlinkProposal v-bind="props" /> -->
+  <template v-if="proposal.plugins">
+    <SafeSnapProposal v-bind="props" />
+  </template>
 </template>
