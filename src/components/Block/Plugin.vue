@@ -6,7 +6,6 @@ defineProps(['plugin']);
   <Block class="hover-border">
     <div class="flex items-center mb-1">
       <a
-        :href="`https://github.com/snapshot-labs/snapshot-plugins/tree/master/src/plugins/${plugin.key}`"
         target="_blank"
         class="flex items-center"
       >
@@ -20,8 +19,8 @@ defineProps(['plugin']);
       </a>
       <div class="ml-1">v{{ plugin.version }}</div>
     </div>
-    <div class="text-color">
-      <div>
+    <div class="flex justify-between items-end text-color">
+      <div class="flex flex-col">
         <a
           :href="`https://github.com/${plugin.author}`"
           target="_blank"
@@ -30,8 +29,17 @@ defineProps(['plugin']);
           <Icon name="github" class="mr-1" />
           {{ plugin.author }}
         </a>
+        {{ $tc('inSpaces', [_n(plugin.spaces)]) }}
       </div>
-      {{ $tc('inSpaces', [_n(plugin.spaces)]) }}
+      <UiButton slim>
+        <a
+          @click.stop
+          target="_blank"
+          :href="`https://github.com/snapshot-labs/snapshot-plugins/tree/master/src/plugins/${plugin.key}`">
+          {{ $t('learnMore') }}
+          <Icon name="external-link" class="text-color" />
+        </a>
+      </UiButton>
     </div>
   </Block>
 </template>
