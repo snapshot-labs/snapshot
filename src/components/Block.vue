@@ -12,26 +12,11 @@ defineEmits(['submit']);
 
 <template>
   <div
-    class="
-      border-t border-b
-      md:border
-      rounded-none
-      md:rounded-lg
-      mb-4
-      bg-skin-block-bg
-    "
+    class="border-t border-b md:border rounded-none md:rounded-lg mb-4 bg-skin-block-bg"
   >
     <h4
       v-if="title"
-      class="
-        px-4
-        pt-3
-        border-b
-        block
-        bg-skin-header-bg
-        rounded-t-none
-        md:rounded-t-lg
-      "
+      class="px-4 pt-3 border-b block bg-skin-header-bg rounded-t-none md:rounded-t-lg"
       style="padding-bottom: 12px"
     >
       {{ title }}
