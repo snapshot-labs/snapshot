@@ -71,7 +71,8 @@ async function load() {
 }
 
 watchEffect(() => {
-  if (store.space.proposals[0]?.space.id !== props.spaceId) {
+  const firstProposal = store.space.proposals[0]
+  if (firstProposal && firstProposal?.space.id !== props.spaceId) {
     store.space.proposals = [];
     load();
   }
@@ -98,6 +99,11 @@ const proposalsCount = computed(() => {
   const count = explore.value.spaces[props.space.id].proposals;
   return count ? count : 0;
 });
+
+const loadingData = computed(() => {
+  return loading.value || loadingMore.value;
+});
+
 </script>
 
 <template>
@@ -132,14 +138,11 @@ const proposalsCount = computed(() => {
         </UiDropdown>
       </div>
 
-      <Block v-if="loading" :slim="true">
-        <RowLoading class="my-2" />
-      </Block>
       <NoResults
         :block="true"
-        v-else-if="proposalsCount && store.space.proposals.length < 1"
+        v-if="!loadingData && proposalsCount && store.space.proposals.length < 1"
       />
-      <NoProposals v-else-if="!proposalsCount" class="mt-2" :space="space" />
+      <NoProposals v-else-if="!proposalsCount && !loadingData" class="mt-2" :space="space" />
       <div v-else>
         <TimelineProposal
           v-for="(proposal, i) in store.space.proposals"
@@ -152,7 +155,7 @@ const proposalsCount = computed(() => {
         style="height: 10px; width: 10px; position: absolute"
         ref="endElement"
       />
-      <Block v-if="loadingMore && !loading" :slim="true">
+      <Block v-if="loadingData" :slim="true">
         <RowLoading class="my-2" />
       </Block>
     </template>
