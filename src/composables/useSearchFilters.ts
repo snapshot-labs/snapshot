@@ -1,12 +1,13 @@
 import { computed } from 'vue';
 import skins from '@/../snapshot-spaces/skins';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
-import pluginIndex from '@/plugins/index.json';
 import validations from '@snapshot-labs/snapshot.js/src/validations';
 import { useApp } from '@/composables/useApp';
+import { usePlugins } from '@/composables/usePlugins';
 
 export function useSearchFilters() {
   const { strategies, explore } = useApp();
+  const { pluginIndex } = usePlugins();
 
   const minifiedSkinsArray = computed(() =>
     Object.keys(skins).map(s => ({

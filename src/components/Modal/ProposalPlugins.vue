@@ -1,7 +1,7 @@
 <script setup>
 import { ref, watch, toRefs } from 'vue';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
-import pluginIndex from '@/plugins/index.json';
+import { usePlugins } from '@/composables/usePlugins';
 
 const props = defineProps({
   open: Boolean,
@@ -12,6 +12,7 @@ const props = defineProps({
 
 const emit = defineEmits(['close', 'update:modelValue']);
 
+const { pluginIndex } = usePlugins();
 const { open } = toRefs(props);
 const selected = ref(false);
 const form = ref({});

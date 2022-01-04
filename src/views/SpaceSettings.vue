@@ -15,7 +15,7 @@ import { useWeb3 } from '@/composables/useWeb3';
 import { calcFromSeconds, calcToSeconds } from '@/helpers/utils';
 import { useClient } from '@/composables/useClient';
 import { setPageTitle } from '@/helpers/utils';
-import pluginIndex from '@/plugins/index.json';
+import { usePlugins } from '@/composables/usePlugins';
 
 const props = defineProps({
   spaceId: String,
@@ -28,6 +28,7 @@ const props = defineProps({
 
 const basicValidation = { name: 'basic', params: {} };
 
+const { pluginIndex } = usePlugins();
 const { t } = useI18n();
 const { copyToClipboard } = useCopy();
 const { web3Account } = useWeb3();
