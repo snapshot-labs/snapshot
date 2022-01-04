@@ -1,9 +1,11 @@
 import memoize from 'lodash/memoize';
 import { isAddress } from '@ethersproject/address';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
-import { ModuleTransaction } from '@/../snapshot-plugins/src/plugins/safeSnap';
+import SafeSnapPlugin, {
+  ModuleTransaction
+} from '@/../snapshot-plugins/src/plugins/safeSnap';
 import { JsonRpcProvider } from '@ethersproject/providers';
-import { pack } from '@ethersproject/solidity';
+import { keccak256, pack } from '@ethersproject/solidity';
 import { hexDataLength, isHexString } from '@ethersproject/bytes';
 import {
   FormatTypes,
@@ -74,11 +76,11 @@ const GNOSIS_SAFE_TRANSACTION_API_URLS = {
   '42161': 'https://safe-transaction.arbitrum.gnosis.io/api/v1/'
 };
 
-const ERC20ContractABI = [
+export const ERC20ContractABI = [
   'function transfer(address recipient, uint256 amount) public virtual override returns (bool)'
 ];
 
-const ERC721ContractABI = [
+export const ERC721ContractABI = [
   'function safeTransferFrom(address _from, address _to, uint256 _tokenId) external payable'
 ];
 
@@ -273,7 +275,8 @@ export const getGnosisSafeToken = memoize(
   (tokenAddress, network) => `${tokenAddress}_${network}`
 );
 
-export const removeHexPrefix = (hexString: string) => {
+export const removeHexPrefix = (hexString?: string) => {
+  if (!hexString) return hexString;
   return hexString.startsWith('0x') ? hexString.substr(2) : hexString;
 };
 
@@ -539,3 +542,65 @@ export const decodeTransactionData = async (
 
   return decodeContractTransaction(network, transaction);
 };
+
+export function createBatch(
+  module: string,
+  chainId: number,
+  nonce: number,
+  txs: ModuleTransaction[]
+) {
+  return {
+    nonce,
+    hash: getBatchHash(module, chainId, nonce, txs),
+    transactions: txs
+  };
+}
+
+export function getBatchHash(
+  module: string,
+  chainId: number,
+  nonce: number,
+  txs: ModuleTransaction[]
+) {
+  const valid = txs.every(tx => tx);
+  if (!valid || !txs.length) return null;
+  try {
+    const safeSnap = new SafeSnapPlugin();
+    const hashes = safeSnap.calcTransactionHashes(chainId, module, [
+      formatBatchTransaction(txs, nonce)
+    ]);
+    return hashes[0];
+  } catch (err) {
+    console.warn('invalid batch hash', err);
+    return null;
+  }
+}
+
+interface Batch {
+  hash: string;
+  transactions: ModuleTransaction[];
+}
+
+interface SafeData {
+  hash: string | null;
+  txs: Batch[];
+  network: string;
+  realityModule: string;
+}
+
+export function getSafeHash(safe: SafeData) {
+  const hashes = safe.txs.map(batch => batch.hash);
+  const valid = hashes.every(hash => hash);
+  if (!valid) return null;
+  return keccak256(['bytes32[]'], [hashes]);
+}
+
+export function validateSafeData(safe) {
+  return (
+    safe.txs.length === 0 ||
+    safe.txs
+      .map(batch => batch.transactions)
+      .flat()
+      .every(tx => tx)
+  );
+}

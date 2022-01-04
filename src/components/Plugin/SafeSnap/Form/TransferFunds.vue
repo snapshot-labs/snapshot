@@ -79,7 +79,7 @@ export default {
           }
         }
       } catch (error) {
-        console.warn('invalid transaction');
+        console.warn('invalid transaction', error);
       }
       this.$emit('update:modelValue', undefined);
     },
