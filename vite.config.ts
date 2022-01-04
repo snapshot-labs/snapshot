@@ -3,6 +3,7 @@ import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import ViteComponents from 'unplugin-vue-components/vite';
 import visualizer from 'rollup-plugin-visualizer';
+import buildPluginIndex from './src/plugins/build';
 
 export default defineConfig({
   define: {
@@ -15,7 +16,8 @@ export default defineConfig({
       filename: './dist/stats.html',
       template: 'sunburst',
       gzipSize: true
-    })
+    }),
+    buildPluginIndex
   ],
   resolve: {
     alias: {
