@@ -323,6 +323,7 @@ onMounted(async () => {
       <PluginsProposal
         :proposal="proposal"
         :space="space"
+        :loadedResults="loadedResults"
       />
       <ProposalPluginsContent
         v-model:safeSnapInput="safeSnapInput"
