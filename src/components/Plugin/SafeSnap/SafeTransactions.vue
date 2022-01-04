@@ -65,7 +65,7 @@ function formatBatches(network, realityModule, batches) {
 
 export default {
   setup() {
-    return { shorten };
+    return { shorten, removeHexPrefix };
   },
   props: [
     'modelValue',
@@ -76,9 +76,6 @@ export default {
     'hash'
   ],
   emits: ['update:modelValue'],
-  setup() {
-    return { removeHexPrefix };
-  },
   data() {
     return {
       input: formatBatches(this.network, this.realityAddress, this.modelValue),
