@@ -6,7 +6,12 @@
   "icon": "https://raw.githubusercontent.com/snapshot-labs/snapshot-plugins/master/src/plugins/safeSnap/logo.png",
   "defaults": {
     "space": {
-      "safes": []
+      "safes": [
+        {
+          "network": "CHAIN_ID",
+          "realityAddress": "0xSWITCH_WITH_REALITY_MODULE_ADDRESS"
+        }
+      ]
     }
   }
 }
