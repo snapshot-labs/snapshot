@@ -29,7 +29,7 @@
     "@snapshot-labs/snapshot.js": "^0.3.25",
     "@toruslabs/torus-embed": "^1.12.1",
     "@vue/apollo-composable": "4.0.0-alpha.16",
-    "@vueuse/core": "^7.4.0",
+    "@vueuse/core": "^7.5.1",
     "@walletconnect/web3-provider": "1.4.1",
     "autolinker": "^3.14.3",
     "chart.js": "^3.5.1",
