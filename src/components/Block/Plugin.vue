@@ -1,5 +1,11 @@
 <script setup>
-defineProps(['plugin']);
+import { useApp } from '@/composables/useApp';
+
+const { explore } = useApp();
+
+defineProps({
+  plugin: Object
+});
 </script>
 
 <template>
@@ -29,7 +35,7 @@ defineProps(['plugin']);
           <Icon name="github" class="mr-1" />
           {{ plugin.author }}
         </a>
-        {{ $tc('inSpaces', [_n(plugin.spaces)]) }}
+        {{ $tc('inSpaces', [_n(explore.plugins[plugin.key])]) }}
       </div>
       <UiButton slim>
         <a

@@ -44,19 +44,10 @@ export function useSearchFilters() {
       .filter(n => JSON.stringify(n).toLowerCase().includes(q.toLowerCase()))
       .sort((a, b) => b.spaces - a.spaces);
 
-  const minifiedPluginsArray = computed(() =>
-    Object.entries(pluginIndex).map(([key, plugin]: any) => {
-      plugin.key = key;
-      plugin.spaceCount = explore.value.plugins[key] ?? 0;
-      return plugin;
-    })
-  );
   const filteredPlugins = (q = '') =>
-    minifiedPluginsArray.value
-      .filter(plugin =>
-        JSON.stringify(plugin).toLowerCase().includes(q.toLowerCase())
-      )
-      .sort((a, b) => b.spaces - a.spaces);
+    Object.values(pluginIndex)
+      .filter(plugin => JSON.stringify(plugin).toLowerCase().includes(q.toLowerCase()))
+      .sort((a, b) => explore.value.plugins[a.key] - explore.value.plugins[b.key]);
 
   const minifiedValidationsArray = computed(() =>
     Object.keys(validations).map((key: any) => ({
