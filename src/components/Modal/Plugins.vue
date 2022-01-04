@@ -29,9 +29,7 @@ watch(open, () => {
   if (Object.keys(props.plugin).length > 0) {
     const key = Object.keys(props.plugin)[0];
     input.value = props.plugin[key];
-    selectedPlugin.value = plugins.value.find(obj => {
-      return obj.key === key;
-    });
+    selectedPlugin.value = plugins.value.find(obj => obj.key === key);
   } else {
     input.value = {};
     selectedPlugin.value = {};
