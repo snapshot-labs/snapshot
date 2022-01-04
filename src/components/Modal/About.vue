@@ -29,7 +29,7 @@ function changeLang() {
       <a href="https://twitter.com/SnapshotLabs" target="_blank">
         <Icon size="32" name="twitter" class="hover:opacity-80" />
       </a>
-      <a href="https://discord.snapshot.org" target="_blank">
+      <a href="https://discord.gg/snapshot" target="_blank">
         <Icon size="32" name="discord" class="hover:opacity-80" />
       </a>
       <a href="https://t.me/snapshotlabs" target="_blank">
