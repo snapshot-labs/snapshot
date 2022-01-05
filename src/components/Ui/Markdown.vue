@@ -3,8 +3,11 @@ import { computed } from 'vue';
 import { Remarkable } from 'remarkable';
 import { linkify } from 'remarkable/linkify';
 // import sanitizeHtml from 'sanitize-html';
+import { onMounted } from 'vue';
+import { useCopy } from '@/composables/useCopy';
 
 const props = defineProps({ body: String });
+const { copyToClipboard } = useCopy();
 
 const remarkable = new Remarkable({
   html: false,
@@ -18,6 +21,27 @@ const markdown = computed(() => {
   body = remarkable.render(body);
   // body = sanitizeHtml(body);
   return body;
+});
+
+onMounted(() => {
+  document
+    .querySelector('.markdown-body')
+    .querySelectorAll('pre>code')
+    .forEach(function (code) {
+      code.parentElement.classList.add('rounded-lg');
+      const copyButton = document.createElement('a');
+      const icon = document.createElement('i');
+      icon.classList.add('copy');
+      icon.classList.add('text-color');
+      icon.classList.add('iconcopy');
+      icon.classList.add('iconfont');
+      copyButton.appendChild(icon);
+      copyButton.addEventListener('click', function () {
+        const codeText = code.innerText.trim();
+        copyToClipboard(codeText);
+      });
+      code.appendChild(copyButton);
+    });
 });
 </script>
 
@@ -418,6 +442,17 @@ const markdown = computed(() => {
 .markdown-body pre {
   color: var(--link-color);
   background-color: var(--border-color);
+  position: relative;
+}
+
+.markdown-body pre>code {
+  .copy {
+    font-size: 24px;
+    line-height: 24px;
+    position: absolute;
+    right: 1.2rem;
+    top: 1.2rem;
+  }
 }
 
 .markdown-body pre > code {
