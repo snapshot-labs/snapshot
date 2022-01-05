@@ -269,23 +269,23 @@
   "voting": {
     "selectVoting": "Wähle das Abstimmungssystem aus",
     "single-choice": "Einzelwahl-Abstimmung",
-    "approval": "Zustimmungsabstimmung",
+    "approval": "Zustimmungswahl",
     "quadratic": "Quadratische Abstimmung",
-    "ranked-choice": "Einzelwahl-Abstimmung",
+    "ranked-choice": "Rangfolgewahl",
     "weighted": "Gewichtete Abstimmung",
-    "basic": "Basic voting",
+    "basic": "Einfache Abstimmung",
     "description": {
       "single-choice": "Jeder Wähler kann nur eine Wahlmöglichkeit wählen.",
       "approval": "Jeder Wähler kann eine beliebige Anzahl von Wahlmöglichkeiten wählen.",
-      "quadratic": "Jeder Wähler kann seine Stimmrechte auf eine beliebige Anzahl von Wahlmöglichkeiten verteilen.",
-      "ranked-choice": "Jeder Wähler kann eine beliebige Anzahl von Wahlmöglichkeiten auswählen und platzieren.",
+      "quadratic": "Jeder Wähler kann seine Stimmrechte auf eine beliebige Anzahl von Wahlmöglichkeiten verteilen. Das Ergebnis wird quadratisch berechnet.",
+      "ranked-choice": "Jeder Wähler kann eine beliebige Anzahl von Wahlmöglichkeiten auswählen und ihnen eine Priorität zuordnen. Das Ergebnis wird mit der Methode \"sofortige Stichwahl\" ermittelt.",
       "weighted": "Jeder Wähler kann die Stimmrechte auf eine beliebige Anzahl von Wahlmöglichkeiten verteilen.",
       "basic": "Single choice voting with three choices: For, Against or Abstain"
     },
     "choices": {
-      "for": "For",
-      "against": "Against",
-      "abstain": "Abstain"
+      "for": "Dafür",
+      "against": "Dagegen",
+      "abstain": "Enthalten"
     }
   },
   "safeSnap": {
