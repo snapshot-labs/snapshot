@@ -9,7 +9,5 @@ const props = defineProps({
 </script>
 
 <template>
-  <template v-if="proposal.plugins">
-    <SafeSnapProposal v-bind="props" />
-  </template>
+  <SafeSnapProposal v-bind="props" />
 </template>

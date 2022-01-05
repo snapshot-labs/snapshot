@@ -321,6 +321,7 @@ onMounted(async () => {
         :loadingMore="loadingMore"
       />
       <PluginsProposal
+        v-if="proposal.plugins"
         :proposal="proposal"
         :space="space"
         :loadedResults="loadedResults"
@@ -428,6 +429,7 @@ onMounted(async () => {
         :strategies="strategies"
       />
       <PluginsProposalSidebar
+        v-if="proposal.plugins"
         :proposal="proposal"
         :space="space"
       />

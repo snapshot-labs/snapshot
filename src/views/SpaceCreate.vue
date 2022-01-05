@@ -352,6 +352,7 @@ watchEffect(() => {
         </UiButton>
       </Block>
       <PluginsCreate
+        v-if="space.plugins"
         :proposal="proposal"
         :space="space"
         :preview="preview"

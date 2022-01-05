@@ -17,8 +17,6 @@ const update = (data) => {
 </script>
 
 <template>
-  <template v-if="space.plugins">
-    <ChainlinkCreate v-bind="props" @update="update" />
-    <SafeSnapCreate v-bind="props" @update="update" />
-  </template>
+  <ChainlinkCreate v-bind="props" @update="update" />
+  <SafeSnapCreate v-bind="props" @update="update" />
 </template>
