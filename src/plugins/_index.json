@@ -17,6 +17,27 @@
       }
     }
   },
+  "charts": {
+    "key": "charts",
+    "name": "Charts",
+    "version": "0.1.0",
+    "author": "zerquix18",
+    "website": "https://...",
+    "icon": "https://raw.githubusercontent.com/snapshot-labs/snapshot-plugins/master/src/plugins/charts/logo.png",
+    "defaults": {
+      "space": {
+        "total_votes_per_day": {
+          "enabled": true
+        },
+        "voting_power_per_day": {
+          "enabled": true
+        },
+        "voting_power_per_address": {
+          "enabled": true
+        }
+      }
+    }
+  },
   "safeSnap": {
     "key": "safeSnap",
     "name": "Gnosis SafeSnap",
