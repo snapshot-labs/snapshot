@@ -1,6 +1,6 @@
 <script setup>
 import { ref, computed, watch, toRefs } from 'vue';
-import { getChoiceString } from '@/helpers/utils';
+import { shorten, getChoiceString, n } from '@/helpers/utils';
 import { useProfiles } from '@/composables/useProfiles';
 import { useWeb3 } from '@/composables/useWeb3';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
@@ -108,7 +108,7 @@ watch(visibleVotes, () => {
                 : null
           }"
         >
-          {{ _shorten(format(proposal, vote.choice), 24) }}
+          {{ shorten(format(proposal, vote.choice), 24) }}
         </span>
       </div>
 
@@ -116,11 +116,11 @@ watch(visibleVotes, () => {
         <span
           v-tippy="{
             content: vote.scores
-              ?.map((score, index) => `${_n(score)} ${titles[index]}`)
+              ?.map((score, index) => `${n(score)} ${titles[index]}`)
               .join(' + ')
           }"
         >
-          {{ `${_n(vote.balance)} ${_shorten(space.symbol, 'symbol')}` }}
+          {{ `${n(vote.balance)} ${shorten(space.symbol, 'symbol')}` }}
         </span>
         <a
           @click="openReceiptModal(vote)"

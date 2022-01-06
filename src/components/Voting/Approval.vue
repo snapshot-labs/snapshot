@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from 'vue';
+import { shorten } from '@/helpers/utils';
 
 defineProps({
   proposal: {
@@ -34,7 +35,7 @@ function selectChoice(i) {
           !selectedChoices.includes(i + 1)
       }"
     >
-      {{ _shorten(choice, 32) }}
+      {{ shorten(choice, 32) }}
 
       <PluginAragonGovern :proposal="proposal" />
     </UiButton>
