@@ -4,7 +4,6 @@ const props = defineProps({
   space: Object,
   loadedResults: Object
 });
-console.log('props.proposal', props.proposal);
 </script>
 
 <template>
