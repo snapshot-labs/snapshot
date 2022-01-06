@@ -6,19 +6,17 @@ const { components, addComponents } = usePlugins('Proposal');
 
 addComponents(['safeSnap', 'charts', 'commentBox']);
 
-const props = defineProps({
+defineProps({
   proposal: Object,
   space: Object,
   votes: Object,
   loadedResults: Object
 });
-
-const plugins = computed(() => Object.assign(props.space.plugins || {}, props.proposal.plugins || {}))
 </script>
 
 <template>
   <component
-    v-for="(plugin, key) in plugins"
+    v-for="(plugin, key) in space.plugins"
     :key="key"
     :is="components[key]"
     v-bind="props"

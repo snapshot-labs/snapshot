@@ -1,11 +1,12 @@
 <script setup>
+import { computed } from 'vue';
 import { usePlugins } from '@/composables/usePlugins';
 
 const { components, addComponents } = usePlugins('ProposalSidebar');
 
-addComponents(['chainlink']);
+addComponents(['chainlink', 'hal']);
 
-const props = defineProps({
+defineProps({
   proposal: Object,
   space: Object
 });
@@ -13,7 +14,7 @@ const props = defineProps({
 
 <template>
   <component
-    v-for="(plugin, key) in proposal.plugins"
+    v-for="(plugin, key) in space.plugins"
     :key="key"
     :is="components[key]"
     v-bind="props"
