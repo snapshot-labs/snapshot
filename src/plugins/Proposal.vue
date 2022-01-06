@@ -1,5 +1,11 @@
 <script setup>
-import SafeSnapProposal from './safeSnap/Proposal.vue';
+import { usePlugins } from '@/composables/usePlugins';
+
+const { components, addComponents } = usePlugins('Proposal');
+
+addComponents([
+  'safeSnap'
+]);
 
 const props = defineProps({
   proposal: Object,
@@ -9,5 +15,5 @@ const props = defineProps({
 </script>
 
 <template>
-  <SafeSnapProposal v-bind="props" />
+  <component v-for="(plugin, key) in proposal.plugins" :is="components[key]" v-bind="props" />
 </template>

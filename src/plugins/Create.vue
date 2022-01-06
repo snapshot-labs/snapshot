@@ -1,6 +1,12 @@
 <script setup>
-import ChainlinkCreate from './Chainlink/Create.vue';
-import SafeSnapCreate from './safeSnap/Create.vue';
+import { usePlugins } from '@/composables/usePlugins';
+
+const { components, addComponents } = usePlugins('Create');
+
+addComponents([
+  'safeSnap',
+  'Chainlink'
+]);
 
 const props = defineProps({
   proposal: Object,
@@ -17,6 +23,5 @@ const update = (data) => {
 </script>
 
 <template>
-  <ChainlinkCreate v-bind="props" @update="update" />
-  <SafeSnapCreate v-bind="props" @update="update" />
+  <component v-for="(plugin, key) in space.plugins" :is="components[key]" v-bind="props" @update="update" />
 </template>

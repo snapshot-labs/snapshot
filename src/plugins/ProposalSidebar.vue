@@ -1,5 +1,11 @@
 <script setup>
-import ChainlinkProposalSidebar from './Chainlink/ProposalSidebar.vue';
+import { usePlugins } from '@/composables/usePlugins';
+
+const { components, addComponents } = usePlugins('ProposalSidebar');
+
+addComponents([
+  'Chainlink'
+]);
 
 const props = defineProps({
   proposal: Object,
@@ -8,5 +14,5 @@ const props = defineProps({
 </script>
 
 <template>
-  <ChainlinkProposalSidebar v-bind="props" />
+  <component v-for="(plugin, key) in proposal.plugins" :is="components[key]" v-bind="props" />
 </template>
