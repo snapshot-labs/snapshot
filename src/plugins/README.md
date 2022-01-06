@@ -3,7 +3,7 @@
 To create a plugin start by creating a new (camelCase) directory in `src/plugins`.
 
 ```shell
-mkdir src/plugins/MyPlugin
+mkdir src/plugins/myPlugin
 ```
 
 Now create a `plugin.json` inside of that directory and describe your plugin.
@@ -36,7 +36,7 @@ Now add your component to the list in `src/plugins/Proposal.vue`.
 <script setup>
 // ...
 addComponents([
-  'MyPlugin',
+  'myPlugin',
   // ...
 ])
 // ...
