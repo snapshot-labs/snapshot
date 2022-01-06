@@ -32,14 +32,5 @@ defineProps({
       :results="results"
       :strategies="strategies"
     />
-    <PluginPOAPCustomBlock
-      v-if="space.plugins?.poap"
-      :loaded="loadedResults"
-      :space="space"
-      :proposal="proposal"
-      :results="results"
-      :votes="votes"
-      :strategies="strategies"
-    />
   </div>
 </template>

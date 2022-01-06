@@ -3,11 +3,15 @@ import { usePlugins } from '@/composables/usePlugins';
 
 const { components, addComponents } = usePlugins('ProposalSidebar');
 
-addComponents(['chainlink', 'hal']);
+addComponents(['chainlink', 'hal', 'poap']);
 
 const props = defineProps({
   proposal: Object,
-  space: Object
+  space: Object,
+  results: Object,
+  loadedResults: Object,
+  votes: Object,
+  strategies: Object
 });
 </script>
 
