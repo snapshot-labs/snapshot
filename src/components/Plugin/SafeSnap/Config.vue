@@ -1,10 +1,9 @@
 <script>
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
+import { validateSafeData, getSafeHash } from '@/helpers/abi/utils';
 
 const isValidInput = input => {
-  return input.safes.every(
-    safe => safe.txs.length === 0 || safe.txs.flat().every(tx => tx)
-  );
+  return input.safes.every(validateSafeData);
 };
 
 const coerceConfig = (config, network) => {
@@ -29,6 +28,7 @@ export default {
     const initialValue = {
       safes: coerceConfig(this.config, this.network).safes.map(safe => ({
         ...safe,
+        hash: null,
         txs: []
       })),
       valid: true
@@ -38,10 +38,15 @@ export default {
     };
   },
   methods: {
-    updateSafeTransactions(safeIndex) {
+    updateSafeTransactions() {
       if (this.preview) return;
-      this.input.safes[safeIndex].txs;
       this.input.valid = isValidInput(this.input);
+      this.input.safes = this.input.safes.map(safe => {
+        return {
+          ...safe,
+          hash: getSafeHash(safe)
+        };
+      });
       this.$emit('update:modelValue', this.input);
     }
   }
@@ -65,6 +70,7 @@ export default {
           v-if="!preview || safe.txs.length > 0"
           :preview="preview"
           :proposal="proposal"
+          :hash="safe.hash"
           :network="safe.network"
           :realityAddress="safe.realityAddress"
           :modelValue="safe.txs"
