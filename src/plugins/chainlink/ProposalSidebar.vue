@@ -14,10 +14,10 @@ const requesting = ref(false);
 const passed = ref(false);
 
 const load = async () => {
-  if (props.space.plugins.Chainlink) {
+  if (props.space.plugins.chainlink) {
     loading.value = true;
     passed.value = await getCurrentResult(
-      props.space.plugins.Chainlink.registry,
+      props.space.plugins.chainlink.registry,
       props.proposal.id
     );
     loading.value = false;
@@ -27,9 +27,9 @@ const load = async () => {
 const request = async () => {
   requesting.value = true;
   await requestResult(
-    props.space.plugins.Chainlink.registry,
-    props.space.plugins.Chainlink.oracle.address,
-    props.space.plugins.Chainlink.oracle.job.replace(/-/g, ''),
+    props.space.plugins.chainlink.registry,
+    props.space.plugins.chainlink.oracle.address,
+    props.space.plugins.chainlink.oracle.job.replace(/-/g, ''),
     props.proposal.id
   );
   requesting.value = false;
@@ -39,7 +39,7 @@ load();
 </script>
 
 <template>
-  <Block v-if="proposal.plugins.Chainlink">
+  <Block v-if="proposal.plugins.chainlink">
     <div class="text-center mb-3">
       <Icon v-if="passed" name="check1" size="48" class="text-green" />
       <Icon v-else name="close" size="48" class="text-red" />
@@ -58,7 +58,7 @@ load();
       </svg>
       <span
         class="hidden sm:block"
-        v-text="$t('_plugins.Chainlink.bringOnChain')"
+        v-text="$t('_plugins.chainlink.bringOnChain')"
       />
     </UiButton>
   </Block>

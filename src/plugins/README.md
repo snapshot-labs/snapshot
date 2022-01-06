@@ -1,6 +1,6 @@
 # Plugins
 
-To create a plugin start by creating a new (camelcased) directory in `src/plugins`.
+To create a plugin start by creating a new (camelCase) directory in `src/plugins`.
 
 ```shell
 mkdir src/plugins/MyPlugin

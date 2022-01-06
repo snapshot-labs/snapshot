@@ -8,11 +8,11 @@ defineProps({
 
 const emit = defineEmits(['update']);
 const form = reactive({});
-watch(form, form => emit('update', { key: 'Chainlink', form }));
+watch(form, form => emit('update', { key: 'chainlink', form }));
 </script>
 
 <template>
-  <Block v-if="space.plugins.Chainlink">
+  <Block v-if="space.plugins.chainlink">
     <div>Chainlink oracle:</div>
     <div v-if="preview">{{ form.oracle }}</div>
     <UiButton class="w-full" v-else>

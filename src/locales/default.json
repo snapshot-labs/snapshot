@@ -401,7 +401,7 @@
     "text": "Receive notifications every time a new proposal is created or ends"
   },
   "_plugins": {
-    "Chainlink": {
+    "chainlink": {
       "currentResult": "Current result:",
       "bringOnChain": "Bring on chain!",
       "updateOnChain": "Update on chain!"

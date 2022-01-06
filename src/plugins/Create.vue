@@ -3,7 +3,7 @@ import { usePlugins } from '@/composables/usePlugins';
 
 const { components, addComponents } = usePlugins('Create');
 
-addComponents(['safeSnap', 'Chainlink']);
+addComponents(['safeSnap', 'chainlink']);
 
 const props = defineProps({
   proposal: Object,
