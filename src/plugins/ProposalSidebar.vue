@@ -3,7 +3,7 @@ import { usePlugins } from '@/composables/usePlugins';
 
 const { components, addComponents } = usePlugins('ProposalSidebar');
 
-addComponents(['chainlink', 'hal', 'poap']);
+addComponents(['chainlink', 'hal', 'poap', 'quorum']);
 
 const props = defineProps({
   proposal: Object,

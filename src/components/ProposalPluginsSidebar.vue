@@ -24,13 +24,5 @@ defineProps({
       :proposalConfig="proposal.plugins.gnosis"
       :choices="proposal.choices"
     />
-    <PluginQuorumCustomBlock
-      :loaded="loadedResults"
-      v-if="space.plugins?.quorum && !space?.voting?.quorum"
-      :space="space"
-      :proposal="proposal"
-      :results="results"
-      :strategies="strategies"
-    />
   </div>
 </template>
