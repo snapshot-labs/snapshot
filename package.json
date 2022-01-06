@@ -69,7 +69,7 @@
     "postcss": "^8.4.5",
     "prettier": "^2.5.1",
     "rollup-plugin-visualizer": "^5.5.2",
-    "sass": "~1.45.2",
+    "sass": "~1.46.0",
     "sass-loader": "^8.0.2",
     "tailwindcss": "^2.2.9",
     "unplugin-vue-components": "^0.17.11",
