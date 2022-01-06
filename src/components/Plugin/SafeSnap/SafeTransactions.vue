@@ -7,6 +7,7 @@ import {
   getGnosisSafeCollectibles,
   removeHexPrefix
 } from '@/helpers/abi/utils';
+import { shorten } from '@/helpers/utils';
 
 const plugin = new Plugin();
 
@@ -63,6 +64,9 @@ function formatBatches(network, realityModule, batches) {
 }
 
 export default {
+  setup() {
+    return { shorten, removeHexPrefix };
+  },
   props: [
     'modelValue',
     'proposal',
@@ -72,9 +76,6 @@ export default {
     'hash'
   ],
   emits: ['update:modelValue'],
-  setup() {
-    return { removeHexPrefix };
-  },
   data() {
     return {
       input: formatBatches(this.network, this.realityAddress, this.modelValue),
@@ -177,7 +178,7 @@ export default {
         style="font-weight: normal"
         target="_blank"
       >
-        {{ _shorten(gnosisSafeAddress) }}
+        {{ shorten(gnosisSafeAddress) }}
         <i class="iconfont iconexternal-link" />
       </a>
     </h4>

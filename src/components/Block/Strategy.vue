@@ -1,7 +1,7 @@
-<script>
-export default {
-  props: ['strategy']
-};
+<script setup>
+import { n } from '@/helpers/utils';
+
+defineProps(['strategy']);
 </script>
 
 <template>
@@ -16,6 +16,6 @@ export default {
       <Icon name="github" class="mr-1" />
       {{ strategy.author }}
     </div>
-    <div>{{ $tc('inSpaces', [_n(strategy.spaces)]) }}</div>
+    <div>{{ $tc('inSpaces', [n(strategy.spaces)]) }}</div>
   </Block>
 </template>

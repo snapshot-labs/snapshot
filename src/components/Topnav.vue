@@ -1,6 +1,7 @@
 <script setup>
 import { ref, computed, watch, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
+import { shorten, getIpfsUrl } from '@/helpers/utils';
 import { useModal } from '@/composables/useModal';
 import { useDomain } from '@/composables/useDomain';
 import { useApp } from '@/composables/useApp';
@@ -72,7 +73,7 @@ onMounted(() => setTitle());
               >
                 <UiAvatar
                   :imgsrc="
-                    web3.profile?.image ? _getUrl(web3.profile.image) : ''
+                    web3.profile?.image ? getIpfsUrl(web3.profile.image) : ''
                   "
                   :address="web3.account"
                   size="18"
@@ -85,7 +86,7 @@ onMounted(() => setTitle());
                 />
                 <span
                   v-else
-                  v-text="_shorten(web3.account)"
+                  v-text="shorten(web3.account)"
                   class="hidden sm:block"
                 />
               </UiButton>

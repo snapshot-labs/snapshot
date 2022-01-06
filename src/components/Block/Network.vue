@@ -1,4 +1,6 @@
 <script setup>
+import { n } from '@/helpers/utils';
+
 defineProps(['network']);
 
 function getLogoUrl(key) {
@@ -19,7 +21,7 @@ function getLogoUrl(key) {
       <div v-text="network.key" class="ml-1 text-color" />
     </div>
     <div class="text-color">
-      {{ $tc('inSpaces', [_n(network.spaces)]) }}
+      {{ $tc('inSpaces', [n(network.spaces)]) }}
     </div>
   </Block>
 </template>
