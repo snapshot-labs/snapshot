@@ -1,5 +1,6 @@
 <script setup>
 import { watch, computed, ref } from 'vue';
+import { ms } from '@/helpers/utils';
 import { useNotifications } from '@/composables/useNotifications';
 import { useModal } from '@/composables/useModal';
 import { useWeb3 } from '@/composables/useWeb3';
@@ -165,7 +166,7 @@ const isCreator = computed(() => props.proposal.author === web3Account.value);
         <span
           v-text="$d(item.timestamp, 'short', 'en-US')"
           v-tippy="{
-            content: _ms(item.timestamp / 1e3)
+            content: ms(item.timestamp / 1e3)
           }"
           class="ml-1"
         />

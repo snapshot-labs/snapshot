@@ -3,7 +3,7 @@ import { computed, watchEffect, onMounted } from 'vue';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { useProfiles } from '@/composables/useProfiles';
 import { getUrl } from '@snapshot-labs/snapshot.js/src/utils';
-import { setPageTitle } from '@/helpers/utils';
+import { setPageTitle, n } from '@/helpers/utils';
 
 const props = defineProps({
   space: Object,
@@ -61,7 +61,7 @@ onMounted(() => {
           <h4 class="link-color mb-2">
             {{ $t('settings.proposalThreshold') }}
           </h4>
-          {{ _n(space.filters.minScore) }} {{ space.symbol }}
+          {{ n(space.filters.minScore) }} {{ space.symbol }}
         </div>
 
         <div v-if="space.terms" class="last:mb-0 mb-3">

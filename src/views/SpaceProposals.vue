@@ -1,5 +1,5 @@
 <script setup>
-import { computed, onMounted, ref, watch, watchEffect } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 import { useInfiniteLoader } from '@/composables/useInfiniteLoader';
 import { useScrollMonitor } from '@/composables/useScrollMonitor';
 import { useApolloQuery } from '@/composables/useApolloQuery';
@@ -70,13 +70,17 @@ async function load() {
   emitUpdateLastSeenProposal();
 }
 
-watchEffect(() => {
-  const firstProposal = store.space.proposals[0]
-  if (firstProposal && firstProposal?.space.id !== props.spaceId) {
-    store.space.proposals = [];
-    load();
-  }
-});
+watch(
+  props.spaceId,
+  () => {
+    const firstProposal = store.space.proposals[0]
+    if (firstProposal && firstProposal?.space.id !== props.spaceId) {
+      store.space.proposals = [];
+      load();
+    }
+  },
+  { immediate: true }
+);
 
 function selectState(e) {
   store.space.filterBy = e;
@@ -103,7 +107,6 @@ const proposalsCount = computed(() => {
 const loadingData = computed(() => {
   return loading.value || loadingMore.value;
 });
-
 </script>
 
 <template>
@@ -140,9 +143,15 @@ const loadingData = computed(() => {
 
       <NoResults
         :block="true"
-        v-if="!loadingData && proposalsCount && store.space.proposals.length < 1"
+        v-if="
+          !loadingData && proposalsCount && store.space.proposals.length < 1
+        "
       />
-      <NoProposals v-else-if="!proposalsCount && !loadingData" class="mt-2" :space="space" />
+      <NoProposals
+        v-else-if="!proposalsCount && !loadingData"
+        class="mt-2"
+        :space="space"
+      />
       <div v-else>
         <TimelineProposal
           v-for="(proposal, i) in store.space.proposals"

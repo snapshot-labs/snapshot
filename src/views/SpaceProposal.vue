@@ -8,7 +8,7 @@ import {
   getPower,
   getProposalVotes
 } from '@/helpers/snapshot';
-import { setPageTitle } from '@/helpers/utils';
+import { setPageTitle, explorerUrl, ms, n, getIpfsUrl } from '@/helpers/utils';
 import { useModal } from '@/composables/useModal';
 import { useTerms } from '@/composables/useTerms';
 import { useProfiles } from '@/composables/useProfiles';
@@ -372,7 +372,7 @@ onMounted(async () => {
           <div>
             <b>IPFS</b>
             <a
-              :href="_getUrl(proposal.ipfs)"
+              :href="getIpfsUrl(proposal.ipfs)"
               target="_blank"
               class="float-right"
             >
@@ -391,7 +391,7 @@ onMounted(async () => {
             <span
               v-text="$d(proposal.start * 1e3, 'short', 'en-US')"
               v-tippy="{
-                content: _ms(proposal.start)
+                content: ms(proposal.start)
               }"
               class="float-right link-color"
             />
@@ -401,7 +401,7 @@ onMounted(async () => {
             <span
               v-text="$d(proposal.end * 1e3, 'short', 'en-US')"
               v-tippy="{
-                content: _ms(proposal.end)
+                content: ms(proposal.end)
               }"
               class="link-color float-right"
             />
@@ -409,11 +409,11 @@ onMounted(async () => {
           <div>
             <b>{{ $t('snapshot') }}</b>
             <a
-              :href="_explorer(proposal.network, proposal.snapshot, 'block')"
+              :href="explorerUrl(proposal.network, proposal.snapshot, 'block')"
               target="_blank"
               class="float-right"
             >
-              {{ _n(proposal.snapshot, '0,0') }}
+              {{ n(proposal.snapshot, '0,0') }}
               <Icon name="external-link" class="ml-1" />
             </a>
           </div>
