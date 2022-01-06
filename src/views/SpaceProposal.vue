@@ -19,8 +19,8 @@ import { useClient } from '@/composables/useClient';
 import { useApp } from '@/composables/useApp';
 import { useInfiniteLoader } from '@/composables/useInfiniteLoader';
 import { useStore } from '@/composables/useStore';
-import PluginsProposal from '@/plugins/Proposal.vue'
-import PluginsProposalSidebar from '@/plugins/ProposalSidebar.vue'
+import PluginsProposal from '@/plugins/Proposal.vue';
+import PluginsProposalSidebar from '@/plugins/ProposalSidebar.vue';
 
 const props = defineProps({
   spaceId: String,

@@ -3,10 +3,7 @@ import { usePlugins } from '@/composables/usePlugins';
 
 const { components, addComponents } = usePlugins('Create');
 
-addComponents([
-  'safeSnap',
-  'Chainlink'
-]);
+addComponents(['safeSnap', 'Chainlink']);
 
 const props = defineProps({
   proposal: Object,
@@ -15,13 +12,19 @@ const props = defineProps({
   modelValue: Object
 });
 const emit = defineEmits(['update:modelValue']);
-const update = (data) => {
+const update = data => {
   const allConfig = props.modelValue;
   allConfig[data.key] = data.form;
   emit('update:modelValue', allConfig);
-}
+};
 </script>
 
 <template>
-  <component v-for="(plugin, key) in space.plugins" :is="components[key]" v-bind="props" @update="update" />
+  <component
+    v-for="(plugin, key) in space.plugins"
+    :key="key"
+    :is="components[key]"
+    v-bind="props"
+    @update="update"
+  />
 </template>

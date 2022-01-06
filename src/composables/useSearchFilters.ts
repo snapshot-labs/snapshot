@@ -46,8 +46,12 @@ export function useSearchFilters() {
 
   const filteredPlugins = (q = '') =>
     Object.values(pluginIndex)
-      .filter(plugin => JSON.stringify(plugin).toLowerCase().includes(q.toLowerCase()))
-      .sort((a, b) => explore.value.plugins[a.key] - explore.value.plugins[b.key]);
+      .filter(plugin =>
+        JSON.stringify(plugin).toLowerCase().includes(q.toLowerCase())
+      )
+      .sort(
+        (a, b) => explore.value.plugins[a.key] - explore.value.plugins[b.key]
+      );
 
   const minifiedValidationsArray = computed(() =>
     Object.keys(validations).map((key: any) => ({

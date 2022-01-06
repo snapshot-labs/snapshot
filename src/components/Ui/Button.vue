@@ -40,7 +40,7 @@ defineProps({
   font-size: 18px;
   padding-left: 24px;
   padding-right: 24px;
-  
+
   &.slim {
     line-height: 38px;
     height: 38px;

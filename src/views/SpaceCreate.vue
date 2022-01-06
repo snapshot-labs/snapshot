@@ -19,7 +19,7 @@ import { useApp } from '@/composables/useApp';
 import { useExtendedSpaces } from '@/composables/useExtendedSpaces';
 import { useStore } from '@/composables/useStore';
 import { setPageTitle, n } from '@/helpers/utils';
-import PluginsCreate from '@/plugins/Create.vue'
+import PluginsCreate from '@/plugins/Create.vue';
 
 const props = defineProps({
   spaceId: String,

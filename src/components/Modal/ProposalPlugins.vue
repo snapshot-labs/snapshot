@@ -17,7 +17,7 @@ const { open } = toRefs(props);
 const selected = ref(false);
 const form = ref({});
 
-const showButton = (key) => !!pluginIndex[key]?.defaults?.proposal;
+const showButton = key => !!pluginIndex[key]?.defaults?.proposal;
 
 watch(open, () => {
   if (props.modelValue && props.open) form.value = clone(props.modelValue);
@@ -53,7 +53,11 @@ watch(selected, value => {
         />
         <h3 v-text="pluginIndex[key].name" />
         <div v-if="pluginIndex[key].website" class="mb-2">
-          <a :href="pluginIndex[key].website" target="_blank" class="link-color">
+          <a
+            :href="pluginIndex[key].website"
+            target="_blank"
+            class="link-color"
+          >
             {{ $t('learnMore') }}
             <Icon name="external-link" />
           </a>

@@ -11,10 +11,7 @@ defineProps({
 <template>
   <Block class="hover-border">
     <div class="flex items-center mb-1">
-      <a
-        target="_blank"
-        class="flex items-center"
-      >
+      <a target="_blank" class="flex items-center">
         <UiAvatar
           class="mr-2 mb-2"
           :imgsrc="plugin.icon"
@@ -41,7 +38,8 @@ defineProps({
         <a
           @click.stop
           target="_blank"
-          :href="`https://github.com/snapshot-labs/snapshot-plugins/tree/master/src/plugins/${plugin.key}`">
+          :href="`https://github.com/snapshot-labs/snapshot-plugins/tree/master/src/plugins/${plugin.key}`"
+        >
           {{ $t('learnMore') }}
           <Icon name="external-link" class="text-color" />
         </a>

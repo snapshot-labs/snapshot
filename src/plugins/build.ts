@@ -7,7 +7,8 @@ export default () => {
   const oldContent = fs.readFileSync(indexFile, 'utf-8');
   const newContent = JSON.stringify(
     Object.fromEntries(
-      fs.readdirSync(__dirname, { withFileTypes: true })
+      fs
+        .readdirSync(__dirname, { withFileTypes: true })
         .filter(file => file.isDirectory() && file.name !== 'template')
         .map(dir => {
           try {
@@ -36,4 +37,4 @@ export default () => {
   if (oldContent !== newContent) {
     fs.writeFileSync(indexFile, newContent);
   }
-}
+};

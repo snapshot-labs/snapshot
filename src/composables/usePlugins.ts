@@ -6,9 +6,11 @@ export function usePlugins(slotTemplate: string) {
 
   const addComponents = (pluginKeys: string[]) => {
     pluginKeys.forEach(key => {
-      components[key] = defineAsyncComponent(() => import(`../plugins/${key}/${slotTemplate}.vue`));
+      components[key] = defineAsyncComponent(
+        () => import(`../plugins/${key}/${slotTemplate}.vue`)
+      );
     });
-  }
+  };
 
   return {
     pluginIndex,

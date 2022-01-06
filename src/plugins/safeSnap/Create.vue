@@ -7,8 +7,8 @@ defineProps({
 
 const emit = defineEmits(['update']);
 const update = form => {
-  emit('update', { key: 'safeSnap', form })
-}
+  emit('update', { key: 'safeSnap', form });
+};
 </script>
 
 <template>

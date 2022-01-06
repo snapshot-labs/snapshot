@@ -34,7 +34,9 @@ export default {
       valid: true
     };
     return {
-      input: Object.keys(this.modelValue).length ? clone(this.modelValue) : initialValue
+      input: Object.keys(this.modelValue).length
+        ? clone(this.modelValue)
+        : initialValue
     };
   },
   methods: {

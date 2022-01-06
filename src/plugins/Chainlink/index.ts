@@ -2,9 +2,14 @@ import snapshot from '@snapshot-labs/snapshot.js';
 import { useWeb3 } from '@/composables/useWeb3';
 
 export const usePlugin = () => {
-  const { getAuth, web3Account } = useWeb3();
+  const { getAuth } = useWeb3();
 
-  const requestResult = async (registryAddress: string, oracle: string, job: string, proposalId: string) => {
+  const requestResult = async (
+    registryAddress: string,
+    oracle: string,
+    job: string,
+    proposalId: string
+  ) => {
     try {
       const result = await snapshot.utils.sendTransaction(
         getAuth().web3,
@@ -13,7 +18,7 @@ export const usePlugin = () => {
         'requestResult',
         [oracle, job, proposalId]
       );
-  
+
       return result;
     } catch (e) {
       console.log('Chainlink Plugin:', e);
@@ -21,7 +26,10 @@ export const usePlugin = () => {
     }
   };
 
-  const getCurrentResult = async (registryAddress: string, proposalId: string) => {
+  const getCurrentResult = async (
+    registryAddress: string,
+    proposalId: string
+  ) => {
     try {
       const result = await snapshot.utils.sendTransaction(
         getAuth().web3,
@@ -30,17 +38,16 @@ export const usePlugin = () => {
         'results',
         [proposalId]
       );
-      
+
       return result;
     } catch (e) {
       console.log('Chainlink Plugin:', e);
       return false;
     }
-
   };
 
   return {
     requestResult,
     getCurrentResult
-  }
-}
+  };
+};
