@@ -30,19 +30,17 @@ const date = new Date()
 </template>
 ```
 
-Now add your component in `src/plugins/Proposal.vue`.
+Now add your component to the list in `src/plugins/Proposal.vue`.
 
 ```html
 <script setup>
-// import your component
-import MyPluginProposal from './MyPlugin/Proposal.vue';
+// ...
+addComponents([
+  'MyPlugin',
+  // ...
+])
 // ...
 </script>
-
-<template>
-  <MyPluginProposal /> <!-- add your component -->
-  <!-- ... -->
-</template>
 ```
 
 The component is now being rendered below the proposal content. From here, you can do everything you can do in any other Vue 3 component. You only need to be familiar with the composition API and the `<script setup>` syntax and you should be fine.
