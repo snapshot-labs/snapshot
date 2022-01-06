@@ -10,12 +10,6 @@ defineProps({
 
 <template>
   <div>
-    <PluginChartsCustomBlock
-      v-if="loadedResults && space.plugins?.charts"
-      :space="space"
-      :proposal="proposal"
-      :votes="votes"
-    />
     <PluginCommentBoxCustomBlock
       v-if="space.plugins?.commentBox"
       :proposalId="id"

@@ -324,6 +324,7 @@ onMounted(async () => {
         v-if="proposal.plugins"
         :proposal="proposal"
         :space="space"
+        :votes="votes"
         :loadedResults="loadedResults"
       />
       <ProposalPluginsContent
