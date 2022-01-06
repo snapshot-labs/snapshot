@@ -15,8 +15,6 @@ const step = ref(null);
 
 const injected = computed(() => getInjected());
 
-const isSafeApp = computed(() => (window?.parent === window ? false : true));
-
 async function handleLogout() {
   await logout();
   emit('close');
@@ -59,7 +57,7 @@ watch(open, () => (step.value = null));
             {{ injected.name }}
           </UiButton>
           <UiButton
-            v-else-if="isSafeApp ? true : id !== 'gnosis'"
+            v-else-if="id !== 'gnosis'"
             class="button-outline w-full flex justify-center items-center gap-2"
           >
             <img
