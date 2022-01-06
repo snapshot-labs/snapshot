@@ -1,12 +1,11 @@
 <script setup>
-import { computed } from 'vue';
 import { usePlugins } from '@/composables/usePlugins';
 
 const { components, addComponents } = usePlugins('ProposalSidebar');
 
 addComponents(['chainlink', 'hal']);
 
-defineProps({
+const props = defineProps({
   proposal: Object,
   space: Object
 });

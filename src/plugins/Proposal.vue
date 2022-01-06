@@ -6,7 +6,7 @@ const { components, addComponents } = usePlugins('Proposal');
 
 addComponents(['safeSnap', 'charts', 'commentBox']);
 
-defineProps({
+const props = defineProps({
   proposal: Object,
   space: Object,
   votes: Object,
