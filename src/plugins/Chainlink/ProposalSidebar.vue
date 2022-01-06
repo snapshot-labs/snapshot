@@ -14,12 +14,14 @@ const requesting = ref(false);
 const passed = ref(false);
 
 const load = async () => {
-  loading.value = true;
-  passed.value = await getCurrentResult(
-    props.space.plugins.Chainlink.registry,
-    props.proposal.id
-  );
-  loading.value = false;
+  if (props.space.plugins.Chainlink) {
+    loading.value = true;
+    passed.value = await getCurrentResult(
+      props.space.plugins.Chainlink.registry,
+      props.proposal.id
+    );
+    loading.value = false;
+  }
 }
 
 const request = async () => {
