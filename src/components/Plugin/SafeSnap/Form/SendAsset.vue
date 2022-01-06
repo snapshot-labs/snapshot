@@ -5,8 +5,12 @@ import {
   getERC721TokenTransferTransactionData,
   sendAssetToModuleTransaction
 } from '@/helpers/abi/utils';
+import { shorten } from '@/helpers/utils';
 
 export default {
+  setup() {
+    return { shorten };
+  },
   props: ['modelValue', 'nonce', 'config'],
   emits: ['update:modelValue'],
   data() {
@@ -106,7 +110,7 @@ export default {
       :key="index"
       :value="collectable.address"
     >
-      {{ collectable.name }} #{{ _shorten(collectable.id, 10) }}
+      {{ collectable.name }} #{{ shorten(collectable.id, 10) }}
     </option>
   </UiSelect>
 

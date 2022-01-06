@@ -1,5 +1,6 @@
 <script setup>
 import { watchEffect, computed } from 'vue';
+import { shorten, ms, n } from '@/helpers/utils';
 import { useUsername } from '@/composables/useUsername';
 import removeMd from 'remove-markdown';
 
@@ -49,11 +50,11 @@ watchEffect(() => {
           <UiState :state="proposal.state" class="inline-block float-right" />
         </div>
         <h3 v-text="proposal.title" class="my-1" />
-        <p v-text="_shorten(body, 140)" class="break-words mb-2 text-md" />
+        <p v-text="shorten(body, 140)" class="break-words mb-2 text-md" />
         <div>
           <span
             v-if="proposal.scores_state !== 'final'"
-            v-text="$tc(period, [_ms(proposal.start), _ms(proposal.end)])"
+            v-text="$tc(period, [ms(proposal.start), ms(proposal.end)])"
           />
           <span
             v-if="proposal.scores_state === 'final'"
@@ -61,8 +62,8 @@ watchEffect(() => {
           >
             <Icon size="20" name="check1" class="text-green" />
             <span class="mt-1"
-              >{{ _shorten(proposal.choices[winningChoice], 64) }} -
-              {{ _n(proposal.scores[winningChoice]) }}
+              >{{ shorten(proposal.choices[winningChoice], 64) }} -
+              {{ n(proposal.scores[winningChoice]) }}
               {{ proposal.space.symbol }}</span
             >
           </span>
