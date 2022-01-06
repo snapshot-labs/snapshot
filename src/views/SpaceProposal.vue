@@ -327,14 +327,6 @@ onMounted(async () => {
         :votes="votes"
         :loadedResults="loadedResults"
       />
-      <ProposalPluginsContent
-        v-model:safeSnapInput="safeSnapInput"
-        :id="id"
-        :space="space"
-        :proposal="proposal"
-        :votes="votes"
-        :loadedResults="loadedResults"
-      />
     </template>
     <template #sidebar-right v-if="loaded">
       <Block :title="$t('information')">

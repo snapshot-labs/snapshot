@@ -4,7 +4,7 @@ import { usePlugins } from '@/composables/usePlugins';
 
 const { components, addComponents } = usePlugins('Proposal');
 
-addComponents(['safeSnap', 'charts']);
+addComponents(['safeSnap', 'charts', 'commentBox']);
 
 const props = defineProps({
   proposal: Object,
