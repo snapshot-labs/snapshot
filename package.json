@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.5.6",
+    "@ensdomains/eth-ens-namehash": "^2.0.15",
     "@ethersproject/abi": "^5.4.0",
     "@ethersproject/address": "^5.4.0",
     "@ethersproject/bignumber": "^5.4.1",
@@ -35,7 +36,6 @@
     "chart.js": "^3.5.1",
     "dayjs": "^1.10.7",
     "eslint": "^7.32.0",
-    "eth-ens-namehash": "^2.0.8",
     "ethereum-blockies-base64": "^1.0.2",
     "fortmatic": "^2.2.1",
     "graphql": "^16.2.0",
