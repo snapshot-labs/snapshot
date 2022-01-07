@@ -1,3 +1,7 @@
+/**
+ * Send messages to the hub (create/delete proposal, vote, settings, ...)
+ * with clients for EIP712/personal sign and Gnosis Safe (through relayer)
+ */
 import { ref, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import client from '@/helpers/client';
