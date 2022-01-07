@@ -1,6 +1,7 @@
 import { ref, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import client from '@/helpers/client';
+import clientGnosisSafe from '@/helpers/clientGnosisSafe';
 import clientEIP712 from '@/helpers/clientEIP712';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useNotifications } from '@/composables/useNotifications';
@@ -37,8 +38,10 @@ export function useClient() {
     try {
       if (usePersonalSign.value) {
         if (payload.proposal) payload.proposal = payload.proposal.id;
-
-        return await client.broadcast(
+        const clientPersonalSign = isGnosisSafe.value
+          ? clientGnosisSafe
+          : client;
+        return await clientPersonalSign.broadcast(
           auth.web3,
           web3.value.account,
           space.id,
@@ -99,5 +102,5 @@ export function useClient() {
     }
   }
 
-  return { send, clientLoading: computed(() => loading.value), isGnosisSafe };
+  return { send, clientLoading: computed(() => loading.value) };
 }

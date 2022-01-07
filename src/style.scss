@@ -90,8 +90,10 @@ body,
   -moz-osx-font-smoothing: grayscale;
 }
 
-body {
-  overscroll-behavior-y: none;
+@media (pointer: fine) {
+  body {
+    overscroll-behavior-y: none;
+  }
 }
 
 * {
