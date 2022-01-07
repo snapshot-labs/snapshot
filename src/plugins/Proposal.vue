@@ -1,5 +1,4 @@
 <script setup>
-import { computed } from 'vue';
 import { usePlugins } from '@/composables/usePlugins';
 
 const { components, addComponents } = usePlugins('Proposal');
