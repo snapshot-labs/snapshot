@@ -1,7 +1,8 @@
 <script setup>
 import { usePlugins } from '@/composables/usePlugins';
 
-const { components, addComponents } = usePlugins('ProposalSidebar');
+const { components, addComponents, setTemplateName } = usePlugins();
+setTemplateName('ProposalSidebar');
 
 addComponents(['chainlink', 'hal', 'poap', 'quorum']);
 

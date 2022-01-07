@@ -1,7 +1,8 @@
 <script setup>
 import { usePlugins } from '@/composables/usePlugins';
 
-const { components, addComponents } = usePlugins('Create');
+const { components, addComponents, setTemplateName } = usePlugins();
+setTemplateName('Create');
 
 addComponents(['safeSnap', 'chainlink']);
 

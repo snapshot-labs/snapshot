@@ -11,13 +11,18 @@ const pluginIndex = Object.fromEntries(
   )
 );
 
-export function usePlugins(slotTemplate: string) {
+export function usePlugins() {
+  let slotTemplateName: string;
   const components = {};
+
+  const setTemplateName = (name: string) => {
+    slotTemplateName = name;
+  }
 
   const addComponents = (pluginKeys: string[]) => {
     pluginKeys.forEach(key => {
       components[key] = defineAsyncComponent(
-        () => import(`../plugins/${key}/${slotTemplate}.vue`)
+        () => import(`../plugins/${key}/${slotTemplateName}.vue`)
       );
     });
   };
@@ -25,6 +30,7 @@ export function usePlugins(slotTemplate: string) {
   return {
     pluginIndex,
     addComponents,
+    setTemplateName,
     components
   };
 }

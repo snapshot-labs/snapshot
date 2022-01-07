@@ -1,7 +1,8 @@
 <script setup>
 import { usePlugins } from '@/composables/usePlugins';
 
-const { components, addComponents } = usePlugins('Proposal');
+const { components, addComponents, setTemplateName } = usePlugins();
+setTemplateName('Proposal');
 
 addComponents(['safeSnap', 'charts', 'commentBox']);
 
