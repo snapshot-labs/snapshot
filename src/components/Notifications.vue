@@ -11,11 +11,23 @@ const { items } = useNotifications();
     <transition-group name="fade">
       <div v-for="item in items" :key="item.id" class="pointer-events-auto">
         <UiButton
-          class="notification inline-block !border-none !bg-red"
+          class="notification flex items-center space-x-2 !border-none !bg-red"
           :class="`!bg-${item.type}`"
           @click="item.remove()"
         >
-          {{ item.message }}
+          <Icon
+            v-if="item.type === 'red'"
+            name="close1"
+            size="20"
+            class="align-middle"
+          />
+          <Icon
+            v-if="item.type === 'green'"
+            name="check1"
+            size="20"
+            class="align-middle"
+          />
+          <span class="mt-1">{{ item.message }}</span>
         </UiButton>
       </div>
     </transition-group>

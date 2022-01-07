@@ -1,6 +1,7 @@
 <script>
 import { formatUnits } from '@ethersproject/units';
 import { getAbiFirstFunctionName } from '@/helpers/abi/utils';
+import { shorten } from '@/helpers/utils';
 
 const labels = {
   contractInteraction: 'Contract Interaction',
@@ -44,8 +45,8 @@ export default {
 
       if (this.modelValue) {
         try {
-          const recipientAddr = this._shorten(this.modelValue.recipient);
-          const toAddr = this._shorten(this.modelValue.to);
+          const recipientAddr = shorten(this.modelValue.recipient);
+          const toAddr = shorten(this.modelValue.to);
           const type = this.modelValue.type || this.type;
           switch (type) {
             case 'contractInteraction':
@@ -66,7 +67,7 @@ export default {
             case 'transferNFT':
               return this.$t('safeSnap.transactionLabels.transferNFT', {
                 name: this.modelValue.collectable.name,
-                id: this._shorten(this.modelValue.collectable.id, 10),
+                id: shorten(this.modelValue.collectable.id, 10),
                 address: recipientAddr
               });
             case 'raw':

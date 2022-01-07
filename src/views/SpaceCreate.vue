@@ -18,7 +18,7 @@ import { useClient } from '@/composables/useClient';
 import { useApp } from '@/composables/useApp';
 import { useExtendedSpaces } from '@/composables/useExtendedSpaces';
 import { useStore } from '@/composables/useStore';
-import { setPageTitle } from '@/helpers/utils';
+import { setPageTitle, n } from '@/helpers/utils';
 
 const props = defineProps({
   spaceId: String,
@@ -245,7 +245,7 @@ watchEffect(() => {
           {{
             space.validation?.params.minScore || space?.filters.minScore
               ? $tc('create.validationWarning.basic.minScore', [
-                  _n(space.filters.minScore),
+                  n(space.filters.minScore),
                   space.symbol
                 ])
               : $t('create.validationWarning.basic.member')
@@ -305,7 +305,7 @@ watchEffect(() => {
             <UiMarkdown :body="form.body" />
           </div>
           <p v-if="form.body.length > bodyLimit" class="!text-red mt-4">
-            -{{ _n(-(bodyLimit - form.body.length)) }}
+            -{{ n(-(bodyLimit - form.body.length)) }}
           </p>
         </div>
       </div>
