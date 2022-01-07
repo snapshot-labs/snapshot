@@ -1,5 +1,5 @@
 <script setup>
-const props = defineProps({
+defineProps({
   proposal: Object,
   space: Object,
   loadedResults: Object

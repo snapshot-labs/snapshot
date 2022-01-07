@@ -72,11 +72,6 @@ const threeDotItems = computed(() => {
   return items;
 });
 
-const safeSnapInput = computed({
-  get: () => proposal.value?.plugins?.safeSnap,
-  set: value => (proposal.value.plugins.safeSnap = value)
-});
-
 const browserHasHistory = computed(() => window.history.state.back);
 
 const { modalAccountOpen } = useModal();

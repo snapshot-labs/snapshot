@@ -17,7 +17,7 @@ export function usePlugins() {
 
   const setTemplateName = (name: string) => {
     slotTemplateName = name;
-  }
+  };
 
   const addComponents = (pluginKeys: string[]) => {
     pluginKeys.forEach(key => {
