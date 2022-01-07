@@ -35,7 +35,7 @@ const canFollow = computed(() => {
     @mouseenter="hoverJoin = space.id"
     @mouseleave="hoverJoin = ''"
     :loading="loadingFollow === space.id"
-    :disabled="web3.value.isGnosis"
+    :disabled="web3.isGnosis"
     style="width: 120px"
     class="mb-4"
   >
