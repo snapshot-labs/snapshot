@@ -26,6 +26,11 @@ const load = async () => {
 
 const request = async () => {
   requesting.value = true;
+  console.log(
+    props.space.plugins.chainlink.registry,
+    props.space.plugins.chainlink.oracle.address,
+    props.space.plugins.chainlink.oracle.job.replace(/-/g, '')
+  );
   await requestResult(
     props.space.plugins.chainlink.registry,
     props.space.plugins.chainlink.oracle.address,
@@ -39,7 +44,7 @@ load();
 </script>
 
 <template>
-  <Block v-if="proposal.plugins.chainlink">
+  <Block v-if="space.plugins.chainlink">
     <div class="text-center mb-3">
       <Icon v-if="passed" name="check1" size="48" class="text-green" />
       <Icon v-else name="close" size="48" class="text-red" />
