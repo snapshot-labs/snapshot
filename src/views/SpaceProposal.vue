@@ -8,8 +8,8 @@ import {
   getPower,
   getProposalVotes
 } from '@/helpers/snapshot';
-import { setPageTitle } from '@/helpers/utils';
 import { relativeTimeFromTimestamp } from '@/helpers/datetime';
+import { setPageTitle, explorerUrl, n, getIpfsUrl } from '@/helpers/utils';
 import { useModal } from '@/composables/useModal';
 import { useTerms } from '@/composables/useTerms';
 import { useProfiles } from '@/composables/useProfiles';
@@ -365,7 +365,7 @@ onMounted(async () => {
           <div>
             <b>IPFS</b>
             <a
-              :href="_getUrl(proposal.ipfs)"
+              :href="getIpfsUrl(proposal.ipfs)"
               target="_blank"
               class="float-right"
             >
@@ -402,11 +402,11 @@ onMounted(async () => {
           <div>
             <b>{{ $t('snapshot') }}</b>
             <a
-              :href="_explorer(proposal.network, proposal.snapshot, 'block')"
+              :href="explorerUrl(proposal.network, proposal.snapshot, 'block')"
               target="_blank"
               class="float-right"
             >
-              {{ _n(proposal.snapshot, '0,0') }}
+              {{ n(proposal.snapshot, '0,0') }}
               <Icon name="external-link" class="ml-1" />
             </a>
           </div>

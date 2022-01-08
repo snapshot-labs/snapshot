@@ -8,7 +8,7 @@ import { getScores } from '@snapshot-labs/snapshot.js/src/utils';
 import { useApp } from '@/composables/useApp';
 import { useI18n } from 'vue-i18n';
 import { useCopy } from '@/composables/useCopy';
-import { setPageTitle } from '@/helpers/utils';
+import { setPageTitle, n } from '@/helpers/utils';
 
 const defaultParams = {
   symbol: 'BAL',
@@ -234,7 +234,7 @@ onMounted(async () => {
         >
           <User :address="score" :space="form" />
           <span>
-            {{ _n(scores[0][score]) }}
+            {{ n(scores[0][score]) }}
             {{ JSON.parse(form.params).symbol }}
           </span>
         </div>

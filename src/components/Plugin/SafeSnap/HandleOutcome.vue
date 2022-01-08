@@ -117,7 +117,7 @@
         {{
           $t('safeSnap.labels.executeTxs', [
             questionDetails.nextTxIndex + 1,
-            txs.length
+            batches.length
           ])
         }}
       </UiButton>
@@ -239,7 +239,7 @@ const ensureRightNetwork = async chainId => {
 };
 
 export default {
-  props: ['txs', 'proposalId', 'network', 'realityAddress'],
+  props: ['batches', 'proposalId', 'network', 'realityAddress'],
   data() {
     return {
       loading: true,
@@ -266,7 +266,9 @@ export default {
           this.network,
           this.realityAddress,
           this.proposalId,
-          this.txs.map(formatBatchTransaction)
+          this.batches.map((batch, nonce) =>
+            formatBatchTransaction(batch.transactions, nonce)
+          )
         );
         if (this.questionDetails.questionId && this.$auth.web3) {
           this.bondData = await plugin.loadClaimBondData(

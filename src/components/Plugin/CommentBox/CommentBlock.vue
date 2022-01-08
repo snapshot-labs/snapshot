@@ -1,5 +1,6 @@
 <script setup>
 import { ref, onMounted, computed, watch } from 'vue';
+import { ms } from '@/helpers/utils';
 import { useNotifications } from '@/composables/useNotifications';
 import { useModal } from '@/composables/useModal';
 import { useWeb3 } from '@/composables/useWeb3';
@@ -208,15 +209,7 @@ function deleteItemReply(key) {
       <p>{{ $t('comment_box.delete_modal') }}</p>
     </div>
     <div
-      class="
-        mb-2
-        mt-3
-        text-center
-        flex
-        items-center
-        content-center
-        justify-center
-      "
+      class="mb-2 mt-3 text-center flex items-center content-center justify-center"
     >
       <UiButton
         class="!bg-primary !text-white"

@@ -3,6 +3,7 @@ import { formatEther } from '@ethersproject/units';
 import { BigNumber } from '@ethersproject/bignumber';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import voting from '@snapshot-labs/snapshot.js/src/voting';
+import { getUrl } from '@snapshot-labs/snapshot.js/src/utils';
 import numeral from 'numeral';
 import i18n from '@/helpers/i18n';
 
@@ -124,4 +125,10 @@ export function n(number, format = '(0.[00]a)') {
 export function setPageTitle(message, params = {}) {
   const { t } = i18n.global;
   document.title = t(message, params);
+}
+
+export function getIpfsUrl(url) {
+  const gateway: any =
+    import.meta.env.VITE_IPFS_GATEWAY || 'cloudflare-ipfs.com';
+  return getUrl(url, gateway);
 }

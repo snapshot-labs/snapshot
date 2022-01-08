@@ -18,13 +18,7 @@ const halLogoUrl = computed(
       <div>
         <a :href="halUrl" target="_blank">
           <img
-            class="
-              rounded-full
-              border-2 border-transparent
-              hover:border-white
-              mx-auto
-              mb-2
-            "
+            class="rounded-full border-2 border-transparent hover:border-white mx-auto mb-2"
             :src="halLogoUrl"
             alt="Hal"
             width="100"
