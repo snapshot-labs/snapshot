@@ -15,12 +15,14 @@ const state = reactive({
   authLoading: false,
   profile: null,
   walletConnectType: null,
-  isTrezor: false
+  isTrezor: false,
+  isGnosis: false
 });
 
 export function useWeb3() {
   async function login(connector = 'injected') {
     if (connector === 'trezor') state.isTrezor = true;
+    if (connector === 'gnosis') state.isGnosis = true;
     else state.isTrezor = false;
 
     auth = getInstance();
