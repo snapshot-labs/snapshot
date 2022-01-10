@@ -27,9 +27,14 @@ export function useApp() {
     const auth = getInstance();
     state.loading = true;
     await Promise.all([getStrategies(), getExplore()]);
-    auth.getConnector().then(connector => {
-      if (connector) login(connector);
-    });
+
+    // Auto connect with gnosis-connector when inside gnosis-safe iframe
+    if (window?.parent === window)
+      auth.getConnector().then(connector => {
+        if (connector) login(connector);
+      });
+    else login('gnosis');
+
     state.init = true;
     state.loading = false;
   }
