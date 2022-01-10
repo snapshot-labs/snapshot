@@ -62,6 +62,7 @@
   "isCore": "Cốt lõi",
   "notificationsBlocked": "Your browser is blocking notifications",
   "notificationsNotSupported": "Your browser does not support notifications",
+  "walletNotSupported": "Wallet is not supported",
   "seeInExplorer": "Xem trên trình duyệt",
   "learnMore": "Tìm hiểu thêm",
   "logout": "Đăng xuất",
