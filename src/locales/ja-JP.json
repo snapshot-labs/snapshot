@@ -62,6 +62,7 @@
   "isCore": "コア",
   "notificationsBlocked": "ブロック通知を無効にする",
   "notificationsNotSupported": "お使いのブラウザーは通知をサポートしていません",
+  "walletNotSupported": "Wallet is not supported",
   "seeInExplorer": "エクスプローラで閲覧する",
   "learnMore": "もっと詳しく知る",
   "logout": "ログアウト",
