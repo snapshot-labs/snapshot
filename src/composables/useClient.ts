@@ -15,14 +15,14 @@ export function useClient() {
 
   const loading = ref(false);
 
-  const connector = computed(() => auth.provider.value?.connectorName);
+  const connectorName = computed(() => auth.provider.value?.connectorName);
 
   const usePersonalSign = computed(() => {
     return (
-      connector.value === 'walletlink' ||
-      connector.value === 'walletconnect' ||
-      connector.value === 'portis' ||
-      connector.value === 'gnosis' ||
+      connectorName.value === 'walletlink' ||
+      connectorName.value === 'walletconnect' ||
+      connectorName.value === 'portis' ||
+      connectorName.value === 'gnosis' ||
       web3.value.isTrezor
     );
   });
@@ -30,7 +30,7 @@ export function useClient() {
   const isGnosisSafe = computed(
     () =>
       web3.value?.walletConnectType === 'Gnosis Safe Multisig' ||
-      connector.value === 'gnosis'
+      connectorName.value === 'gnosis'
   );
 
   async function send(space, type, payload) {
@@ -102,5 +102,5 @@ export function useClient() {
     }
   }
 
-  return { send, clientLoading: computed(() => loading.value) };
+  return { send, clientLoading: computed(() => loading.value), isGnosisSafe };
 }
