@@ -62,6 +62,7 @@
   "isCore": "Inti",
   "notificationsBlocked": "Browser Anda memblokir notifikasi",
   "notificationsNotSupported": "Browser anda tidak mendukung pemberitahuan",
+  "walletNotSupported": "Wallet is not supported",
   "seeInExplorer": "Lihat di explorer",
   "learnMore": "Pelajari lebih lanjut",
   "logout": "Keluar",
