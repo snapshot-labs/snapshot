@@ -62,6 +62,7 @@
   "isCore": "Core",
   "notificationsBlocked": "Votre navigateur bloque les notifications",
   "notificationsNotSupported": "Votre navigateur ne prend pas en charge les notifications",
+  "walletNotSupported": "Wallet is not supported",
   "seeInExplorer": "Voir sur l'explorateur",
   "learnMore": "En savoir plus",
   "logout": "Se déconnecter",
