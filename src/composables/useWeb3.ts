@@ -20,7 +20,7 @@ const state = reactive({
 
 export function useWeb3() {
   async function login(connector = 'injected') {
-    state.isTrezor = connector === 'trezor' ? true : false;
+    state.isTrezor = connector === 'trezor';
     auth = getInstance();
     state.authLoading = true;
     await auth.login(connector);
