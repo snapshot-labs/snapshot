@@ -62,6 +62,7 @@
   "isCore": "Основные",
   "notificationsBlocked": "Your browser is blocking notifications",
   "notificationsNotSupported": "Your browser does not support notifications",
+  "walletNotSupported": "Wallet is not supported",
   "seeInExplorer": "Просмотр в обозревателе блоков",
   "learnMore": "Подробнее",
   "logout": "Выход",
