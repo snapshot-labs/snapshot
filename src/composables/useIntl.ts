@@ -20,26 +20,26 @@ import { useI18n } from '@/composables/useI18n';
  * catalogues of strings like "second", "seconds", "minute", "minutes", etc.
  */
 const getTimeDiffAndUnit = (seconds: number) => {
-  let unit = 'seconds';
+  let unit = 'second';
   let diff = seconds;
   const abs = Math.abs(seconds);
 
-  if (abs > 60) {
+  if (abs >= 60) {
     unit = 'minute';
     diff = diff / 60;
-    if (abs > 60 * 60) {
+    if (abs >= 60 * 60) {
       unit = 'hour';
       diff = diff / 60;
-      if (abs > 60 * 60 * 24) {
+      if (abs >= 60 * 60 * 24) {
         unit = 'day';
         diff = diff / 24;
-        if (abs > 60 * 60 * 24 * 365) {
+        if (abs >= 60 * 60 * 24 * 365) {
           unit = 'year';
           diff = diff / 365;
-        } else if (abs > 60 * 60 * 24 * 30) {
+        } else if (abs >= 60 * 60 * 24 * 30) {
           unit = 'month';
           diff = diff / 30;
-        } else if (abs > 60 * 60 * 24 * 7) {
+        } else if (abs >= 60 * 60 * 24 * 7) {
           unit = 'week';
           diff = diff / 7;
         }
