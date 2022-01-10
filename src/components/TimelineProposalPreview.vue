@@ -5,7 +5,12 @@ import { useUsername } from '@/composables/useUsername';
 import removeMd from 'remove-markdown';
 import { useIntl } from '@/composables/useIntl';
 
-const { relativeTime, formattedNumber, formattedCompactNumber,  formattedPercentNumber } = useIntl();
+const {
+  relativeTime,
+  formattedNumber,
+  formattedCompactNumber,
+  formattedPercentNumber
+} = useIntl();
 
 const props = defineProps({
   proposal: Object,
@@ -86,12 +91,15 @@ watchEffect(() => {
               />
               {{ shorten(choice, 32) }}
               <span class="text-color ml-1">
-                {{ formattedCompactNumber(proposal.scores[i]) }} {{ proposal.space.symbol }}
+                {{ formattedCompactNumber(proposal.scores[i]) }}
+                {{ proposal.space.symbol }}
               </span>
             </div>
             <div
               v-text="
-                formattedPercentNumber((1 / proposal.scores_total) * proposal.scores[i])
+                formattedPercentNumber(
+                  (1 / proposal.scores_total) * proposal.scores[i]
+                )
               "
               class="absolute right-0 leading-[40px] mr-3 link-color"
             />

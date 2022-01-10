@@ -8,7 +8,7 @@ import {
   getPower,
   getProposalVotes
 } from '@/helpers/snapshot';
-import { setPageTitle, explorerUrl, n, getIpfsUrl } from '@/helpers/utils';
+import { setPageTitle, explorerUrl, getIpfsUrl } from '@/helpers/utils';
 import { useModal } from '@/composables/useModal';
 import { useTerms } from '@/composables/useTerms';
 import { useProfiles } from '@/composables/useProfiles';

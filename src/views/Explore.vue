@@ -55,7 +55,9 @@ onMounted(() => {
       <div
         class="ml-3 hidden sm:flex text-right items-center whitespace-nowrap"
       >
-        <div class="flex flex-col">{{ formattedCompactNumber(items.length) }} {{ resultsStr }}</div>
+        <div class="flex flex-col">
+          {{ formattedCompactNumber(items.length) }} {{ resultsStr }}
+        </div>
         <a
           v-if="buttonStr"
           href="https://discord.gg/snapshot"

@@ -81,7 +81,10 @@ async function handleSubmit() {
           <span
             v-tippy="{
               content: scores
-                .map((score, index) => `${formattedCompactNumber(score)} ${symbols[index]}`)
+                .map(
+                  (score, index) =>
+                    `${formattedCompactNumber(score)} ${symbols[index]}`
+                )
                 .join(' + ')
             }"
           >

@@ -47,7 +47,8 @@ export default {
   <Block title="Quorum" :loading="!loaded">
     <div class="link-color mb-1">
       <span class="mr-1">
-        {{ formattedCompactNumber(totalScore) }} / {{ formattedCompactNumber(totalVotingPower) }}
+        {{ formattedCompactNumber(totalScore) }} /
+        {{ formattedCompactNumber(totalVotingPower) }}
         {{ shorten(space.symbol, 'symbol') }}
       </span>
       <span class="float-right" v-text="formattedPercentNumber(quorum)" />

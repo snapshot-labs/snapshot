@@ -73,7 +73,9 @@ watchEffect(() => {
           <Icon v-if="isVerified === -1" name="warning" size="20" />
         </h3>
         <div class="mb-[12px] text-color">
-          {{ $tc('members', nbrMembers, { count: formattedNumber(nbrMembers) }) }}
+          {{
+            $tc('members', nbrMembers, { count: formattedNumber(nbrMembers) })
+          }}
         </div>
         <div class="flex justify-center gap-x-2">
           <FollowButton :space="space" />

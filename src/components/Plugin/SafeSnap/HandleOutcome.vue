@@ -486,7 +486,9 @@ export default {
 
         return {
           decision: isApproved ? 'Yes' : 'No',
-          timeLeft: this.$i18n.t('safeSnap.finalizedIn', [relativeTime(endTime)]),
+          timeLeft: this.$i18n.t('safeSnap.finalizedIn', [
+            relativeTime(endTime)
+          ]),
           currentBond:
             formatUnits(currentBond, this.bondData.tokenDecimals) +
             ' ' +

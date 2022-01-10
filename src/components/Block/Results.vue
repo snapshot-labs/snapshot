@@ -57,7 +57,10 @@ const hideAbstain = props.space?.voting?.hideAbstain ?? false;
             class="inline-block"
             v-tippy="{
               content: results.resultsByStrategyScore[choice.i]
-                .map((score, index) => `${formattedCompactNumber(score)} ${titles[index]}`)
+                .map(
+                  (score, index) =>
+                    `${formattedCompactNumber(score)} ${titles[index]}`
+                )
                 .join(' + ')
             }"
           >

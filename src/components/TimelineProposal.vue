@@ -57,7 +57,12 @@ watchEffect(() => {
         <div>
           <span
             v-if="proposal.scores_state !== 'final'"
-            v-text="$tc(period, [relativeTime(proposal.start), relativeTime(proposal.end)])"
+            v-text="
+              $tc(period, [
+                relativeTime(proposal.start),
+                relativeTime(proposal.end)
+              ])
+            "
           />
           <span
             v-if="proposal.scores_state === 'final'"

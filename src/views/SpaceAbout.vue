@@ -63,7 +63,8 @@ onMounted(() => {
           <h4 class="link-color mb-2">
             {{ $t('settings.proposalThreshold') }}
           </h4>
-          {{ formattedCompactNumber(space.filters.minScore) }} {{ space.symbol }}
+          {{ formattedCompactNumber(space.filters.minScore) }}
+          {{ space.symbol }}
         </div>
 
         <div v-if="space.terms" class="last:mb-0 mb-3">
