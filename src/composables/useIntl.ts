@@ -1,3 +1,8 @@
+/**
+ * Wrapper functions for Intl.RelativeTimeFormat/NumberFormat
+ * returning computed properties based on current locale from i18n
+ */
+
 import { computed } from 'vue';
 import { useI18n } from '@/composables/useI18n';
 
