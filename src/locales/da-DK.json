@@ -62,6 +62,7 @@
   "isCore": "Kernefunktioner",
   "notificationsBlocked": "Your browser is blocking notifications",
   "notificationsNotSupported": "Your browser does not support notifications",
+  "walletNotSupported": "Wallet is not supported",
   "seeInExplorer": "Se på explorer",
   "learnMore": "Få mere at vide",
   "logout": "Log ud",
