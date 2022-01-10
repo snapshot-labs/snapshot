@@ -62,6 +62,7 @@
   "isCore": "Nucleu",
   "notificationsBlocked": "Browserul tău blochează notificările",
   "notificationsNotSupported": "Browserul tău nu acceptă notificări",
+  "walletNotSupported": "Wallet is not supported",
   "seeInExplorer": "Vizualizează pe explorer",
   "learnMore": "Află mai multe",
   "logout": "Deconectează-te",
