@@ -62,6 +62,7 @@
   "isCore": "Ядро",
   "notificationsBlocked": "Your browser is blocking notifications",
   "notificationsNotSupported": "Your browser does not support notifications",
+  "walletNotSupported": "Wallet is not supported",
   "seeInExplorer": "Дивитися в провіднику",
   "learnMore": "Дізнатися більше",
   "logout": "Вийти",
