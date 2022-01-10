@@ -2,10 +2,12 @@
 import { computed } from 'vue';
 import { useFollowSpace } from '@/composables/useFollowSpace';
 import { useTerms } from '@/composables/useTerms';
+import { useClient } from '@/composables/useClient';
 import { useWeb3 } from '@/composables/useWeb3';
 
 const props = defineProps({ space: Object });
 
+const { isGnosisSafe } = useClient();
 const { web3 } = useWeb3();
 
 const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(props.space.id);
@@ -35,7 +37,7 @@ const canFollow = computed(() => {
     @mouseenter="hoverJoin = space.id"
     @mouseleave="hoverJoin = ''"
     :loading="loadingFollow === space.id"
-    :disabled="web3.isGnosis"
+    :disabled="isGnosisSafe || web3.isTrezor"
     style="width: 120px"
     class="mb-4"
   >
