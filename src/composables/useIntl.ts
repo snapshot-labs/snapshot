@@ -15,9 +15,9 @@ import { useI18n } from '@/composables/useI18n';
  * differently, e.g. we also use "12 hours left" instead of "(ends) in 12 hours". For that you need
  * a simple duration formatter, that turns 3600 into "1 hour" and 180000 into "2 days". More granular
  * formats are possible like "1 hour, 30 minutes" (which will be covered by Intl.Duration).
- * For now, this functions just returns the biggest/closest unit and the resulting number from an integer
- * of seconds. This is accompanied by manual translations in our message catalogues of strings like
- * "second", "seconds", "minute", "minutes", etc.
+ * For now, this function just returns the biggest/closest unit and the resulting number from an integer
+ * of seconds. (3678 => { diff: 1, unit: 'hour'}) This is accompanied by manual translations in our message
+ * catalogues of strings like "second", "seconds", "minute", "minutes", etc.
  */
 const getTimeDiffAndUnit = (seconds: number) => {
   let unit = 'seconds';
