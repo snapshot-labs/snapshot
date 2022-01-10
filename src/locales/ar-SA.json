@@ -62,6 +62,7 @@
   "isCore": "النواة",
   "notificationsBlocked": "متصفحك يحظر الإشعارات",
   "notificationsNotSupported": "المتصفح الخاص بك لا يدعم الإشعارات",
+  "walletNotSupported": "Wallet is not supported",
   "seeInExplorer": "شاهد على المستكشف",
   "learnMore": "لمعرفة المزيد",
   "logout": "تسجيل خروج",
