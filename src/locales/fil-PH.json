@@ -62,6 +62,7 @@
   "isCore": "Core",
   "notificationsBlocked": "Bina-block ng iyong browser ang mga notification",
   "notificationsNotSupported": "Your browser does not support notifications",
+  "walletNotSupported": "Wallet is not supported",
   "seeInExplorer": "Tignan sa explorer",
   "learnMore": "Karagdagang impormasyon",
   "logout": "I-logout",
