@@ -62,6 +62,7 @@
   "isCore": "응어리",
   "notificationsBlocked": "브라우저가 알림을 차단하고 있습니다",
   "notificationsNotSupported": "Your browser does not support notifications",
+  "walletNotSupported": "Wallet is not supported",
   "seeInExplorer": "탐색기에서 보기",
   "learnMore": "더 알아보기",
   "logout": "로그 아웃",
