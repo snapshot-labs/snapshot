@@ -62,6 +62,7 @@
   "isCore": "कोर",
   "notificationsBlocked": "Your browser is blocking notifications",
   "notificationsNotSupported": "Your browser does not support notifications",
+  "walletNotSupported": "Wallet is not supported",
   "seeInExplorer": "एक्सप्लोरर पर देखें",
   "learnMore": "और पढ़ें",
   "logout": "लॉग आउट",
