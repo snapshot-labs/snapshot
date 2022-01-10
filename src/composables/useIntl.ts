@@ -6,6 +6,19 @@
 import { computed } from 'vue';
 import { useI18n } from '@/composables/useI18n';
 
+/**
+ * This is needed since Intl still doesn't support durations:
+ * https://github.com/tc39/proposal-intl-duration-format (hopefully soon!)
+ * 
+ * The Intl.relativeTimeFormat API (same as basically all libraries like day.js, timeago.js)
+ * only supports phrases like "5 hours ago" or "in 35 minutes". But these time durations can be phrased
+ * differently, e.g. we also use "12 hours left" instead of "(ends) in 12 hours". For that you need
+ * a simple duration formatter, that turns 3600 into "1 hour" and 180000 into "2 days". More granular
+ * formats are possible like "1 hour, 30 minutes" (which will be covered by Intl.Duration).
+ * For now, this functions just returns the biggest/closest unit and the resulting number from an integer
+ * of seconds. This is accompanied by manual translations in our message catalogues of strings like
+ * "second", "seconds", "minute", "minutes", etc.
+ */
 const getTimeDiffAndUnit = (seconds: number) => {
   let unit = 'seconds';
   let diff = seconds;
@@ -42,6 +55,7 @@ const getTimeDiffAndUnit = (seconds: number) => {
 export function useIntl() {
   const { currentLocale } = useI18n();
 
+  // functions to created computed formatters based on locale
   const getRelativeTimeFormatter = (options?: object) =>
     computed(
       () =>
@@ -60,6 +74,7 @@ export function useIntl() {
         )
     );
 
+  // predefined formatters
   const defaultRelativeTimeFormatter = getRelativeTimeFormatter();
   const defaultNumberFormatter = getNumberFormatter();
   const compactNumberFormatter = getNumberFormatter({
@@ -71,6 +86,7 @@ export function useIntl() {
     minimumFractionDigits: 2
   });
 
+  // formatting functions
   const relativeTime = (
     timestamp: number,
     formatter?: Intl.RelativeTimeFormat
