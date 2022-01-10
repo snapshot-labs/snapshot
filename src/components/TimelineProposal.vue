@@ -1,8 +1,11 @@
 <script setup>
 import { watchEffect, computed } from 'vue';
-import { shorten, ms, n } from '@/helpers/utils';
+import { shorten } from '@/helpers/utils';
 import { useUsername } from '@/composables/useUsername';
 import removeMd from 'remove-markdown';
+import { useIntl } from '@/composables/useIntl';
+
+const { relativeTime, formattedCompactNumber } = useIntl();
 
 const props = defineProps({
   proposal: Object,
@@ -54,7 +57,7 @@ watchEffect(() => {
         <div>
           <span
             v-if="proposal.scores_state !== 'final'"
-            v-text="$tc(period, [ms(proposal.start), ms(proposal.end)])"
+            v-text="$tc(period, [relativeTime(proposal.start), relativeTime(proposal.end)])"
           />
           <span
             v-if="proposal.scores_state === 'final'"
@@ -63,7 +66,7 @@ watchEffect(() => {
             <Icon size="20" name="check1" class="text-green" />
             <span class="mt-1"
               >{{ shorten(proposal.choices[winningChoice], 64) }} -
-              {{ n(proposal.scores[winningChoice]) }}
+              {{ formattedCompactNumber(proposal.scores[winningChoice]) }}
               {{ proposal.space.symbol }}</span
             >
           </span>

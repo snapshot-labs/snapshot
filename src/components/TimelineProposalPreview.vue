@@ -1,8 +1,11 @@
 <script setup>
 import { watchEffect, computed } from 'vue';
-import { shorten, toNow, n } from '@/helpers/utils';
+import { shorten } from '@/helpers/utils';
 import { useUsername } from '@/composables/useUsername';
 import removeMd from 'remove-markdown';
+import { useIntl } from '@/composables/useIntl';
+
+const { relativeTime, formattedNumber, formattedCompactNumber,  formattedPercentNumber } = useIntl();
 
 const props = defineProps({
   proposal: Object,
@@ -83,12 +86,12 @@ watchEffect(() => {
               />
               {{ shorten(choice, 32) }}
               <span class="text-color ml-1">
-                {{ n(proposal.scores[i]) }} {{ proposal.space.symbol }}
+                {{ formattedCompactNumber(proposal.scores[i]) }} {{ proposal.space.symbol }}
               </span>
             </div>
             <div
               v-text="
-                n((1 / proposal.scores_total) * proposal.scores[i], '0.[0]%')
+                formattedPercentNumber((1 / proposal.scores_total) * proposal.scores[i])
               "
               class="absolute right-0 leading-[40px] mr-3 link-color"
             />
@@ -103,12 +106,13 @@ watchEffect(() => {
         <div>
           <UiState :state="proposal.state" slim class="mr-1" />
           {{ $t(`proposals.states.${proposal.state}`) }},
+          <!-- TODO: relativeTime alternative mode: "2 hours left" instead of "in 2 hours" -->
           <span
             v-if="proposal.scores_state !== 'final'"
-            v-text="$tc(period, [toNow(proposal.end)])"
+            v-text="$tc(period, [relativeTime(proposal.end)])"
           />
           <span v-if="proposal.scores_state === 'final'" class="mt-2">
-            {{ n(proposal.votes, '0,00') }} votes
+            {{ formattedNumber(proposal.votes) }} votes
           </span>
         </div>
       </div>

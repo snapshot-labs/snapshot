@@ -1,6 +1,9 @@
 <script setup>
 import { computed } from 'vue';
-import { shorten, n } from '@/helpers/utils';
+import { shorten } from '@/helpers/utils';
+import { useIntl } from '@/composables/useIntl';
+
+const { formattedCompactNumber, formattedPercentNumber } = useIntl();
 
 const props = defineProps({
   id: String,
@@ -54,24 +57,23 @@ const hideAbstain = props.space?.voting?.hideAbstain ?? false;
             class="inline-block"
             v-tippy="{
               content: results.resultsByStrategyScore[choice.i]
-                .map((score, index) => `${n(score)} ${titles[index]}`)
+                .map((score, index) => `${formattedCompactNumber(score)} ${titles[index]}`)
                 .join(' + ')
             }"
           >
-            {{ n(results.resultsByVoteBalance[choice.i]) }}
+            {{ formattedCompactNumber(results.resultsByVoteBalance[choice.i]) }}
             {{ shorten(space.symbol, 'symbol') }}
           </span>
           <span
             v-if="proposal.type === 'basic' && hideAbstain && choice.i === 0"
             class="float-right"
             v-text="
-              n(
+              formattedPercentNumber(
                 getPercentage(
                   results.resultsByVoteBalance[0],
                   results.resultsByVoteBalance[0] +
                     results.resultsByVoteBalance[1]
-                ),
-                '0.[00]%'
+                )
               )
             "
           />
@@ -81,13 +83,12 @@ const hideAbstain = props.space?.voting?.hideAbstain ?? false;
             "
             class="float-right"
             v-text="
-              n(
+              formattedPercentNumber(
                 getPercentage(
                   results.resultsByVoteBalance[1],
                   results.resultsByVoteBalance[0] +
                     results.resultsByVoteBalance[1]
-                ),
-                '0.[00]%'
+                )
               )
             "
           />
@@ -95,12 +96,11 @@ const hideAbstain = props.space?.voting?.hideAbstain ?? false;
             v-else
             class="float-right"
             v-text="
-              n(
+              formattedPercentNumber(
                 getPercentage(
                   results.resultsByVoteBalance[choice.i],
                   results.sumOfResultsBalance
-                ),
-                '0.[00]%'
+                )
               )
             "
           />
@@ -120,8 +120,8 @@ const hideAbstain = props.space?.voting?.hideAbstain ?? false;
     <div v-if="props.space?.voting?.quorum" class="text-skin-link">
       {{ $t('settings.quorum') }}
       <span class="float-right">
-        {{ n(results.sumOfResultsBalance) }} /
-        {{ n(props.space.voting.quorum) }}
+        {{ formattedCompactNumber(results.sumOfResultsBalance) }} /
+        {{ formattedCompactNumber(props.space.voting.quorum) }}
       </span>
     </div>
   </Block>
