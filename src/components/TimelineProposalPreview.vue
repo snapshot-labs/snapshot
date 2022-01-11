@@ -122,10 +122,11 @@ watchEffect(() => {
         </div>
         <div>
           <UiState :state="proposal.state" slim class="mr-1" />
-          {{ $t(`proposals.states.${proposal.state}`) }}<span
-            v-if="proposal.scores_state !== 'final'"
-          >, {{ relativePeriod }}</span><span v-if="proposal.scores_state === 'final'" class="mt-2">,
-            {{ formattedNumber(proposal.votes) }} votes
+          {{ $t(`proposals.states.${proposal.state}`)
+          }}<span v-if="proposal.scores_state !== 'final'"
+            >, {{ relativePeriod }}</span
+          ><span v-if="proposal.scores_state === 'final'" class="mt-2"
+            >, {{ formattedNumber(proposal.votes) }} votes
           </span>
         </div>
       </div>

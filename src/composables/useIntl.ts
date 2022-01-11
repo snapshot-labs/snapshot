@@ -10,7 +10,7 @@ import { useI18n as useI18nSnapshot } from '@/composables/useI18n';
 /**
  * This is needed since Intl still doesn't support durations:
  * https://github.com/tc39/proposal-intl-duration-format (hopefully soon!)
- * 
+ *
  * The Intl.relativeTimeFormat API (same as basically all libraries like day.js, timeago.js)
  * only supports phrases like "5 hours ago" or "in 35 minutes". But these time durations can be phrased
  * differently, e.g. we also use "12 hours left" instead of "(ends) in 12 hours". For that you need
@@ -115,7 +115,7 @@ export function useIntl() {
     const { diff, unit } = getTimeDiffAndUnit(duration);
 
     return t(`timeUnits.${unit}`, { n: diff }, diff);
-  }
+  };
 
   const formattedNumber = (number: number, formatter?: Intl.NumberFormat) => {
     if (number < 0.00001) number = 0;

@@ -74,7 +74,9 @@ watchEffect(() => {
         </h3>
         <div class="mb-[12px] text-color">
           {{
-            $tc('members', nbrMembers, { count: formattedCompactNumber(nbrMembers) })
+            $tc('members', nbrMembers, {
+              count: formattedCompactNumber(nbrMembers)
+            })
           }}
         </div>
         <div class="flex justify-center gap-x-2">
