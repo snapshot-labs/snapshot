@@ -4,8 +4,19 @@
 @tailwind components;
 @tailwind utilities;
 
-:root,
-.light-mode {
+[data-color-scheme='dark'] {
+  color-scheme: dark;
+  --primary-color: #384aff;
+  --bg-color: #121212;
+  --text-color: #8b949e;
+  --link-color: #ffffff;
+  --heading-color: #ffffff;
+  --border-color: #424242;
+  --header-bg: #121212;
+}
+
+[data-color-scheme='light'] {
+  color-scheme: light;
   --primary-color: #384aff;
   --bg-color: white;
   --text-color: #57606a;
@@ -14,17 +25,6 @@
   --border-color: #d0d7de;
   --header-bg: white;
   --block-bg: transparent;
-}
-
-.dark-mode,
-.eth-dark-mode {
-  --primary-color: #384aff;
-  --bg-color: #121212;
-  --text-color: #8b949e;
-  --link-color: #ffffff;
-  --heading-color: #ffffff;
-  --border-color: #424242;
-  --header-bg: #121212;
 }
 
 @layer base {
@@ -88,6 +88,7 @@ body,
   color: var(--text-color);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
 }
 
 @media (pointer: fine) {
@@ -110,10 +111,6 @@ h4 {
 
 b {
   font-weight: 600;
-}
-
-#app {
-  min-height: 100vh;
 }
 
 a,
