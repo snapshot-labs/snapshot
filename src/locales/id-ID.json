@@ -62,7 +62,7 @@
   "isCore": "Inti",
   "notificationsBlocked": "Browser Anda memblokir notifikasi",
   "notificationsNotSupported": "Browser anda tidak mendukung pemberitahuan",
-  "walletNotSupported": "Wallet is not supported",
+  "walletNotSupported": "Wallet tidak didukung",
   "seeInExplorer": "Lihat di explorer",
   "learnMore": "Pelajari lebih lanjut",
   "logout": "Keluar",
@@ -226,12 +226,12 @@
   },
   "setup": {
     "example": "misalnya yam.eth",
-    "chooseExistingEns": "Choose one of your existing ENS domains to create a space with:",
-    "useSingleExistingEns": "Use your existing ENS domain:",
-    "orReigsterNewEns": "Or register a new domain:",
-    "toCreateASpace": "To create a space, you first need an ENS domain. Enter one below and follow the ENS registration instructions.",
+    "chooseExistingEns": "Pilih satu domain ENS anda untuk membuat ruang:",
+    "useSingleExistingEns": "Pakai domain ENS anda:",
+    "orReigsterNewEns": "Atau daftarkan domain yang baru:",
+    "toCreateASpace": "Untuk membuat ruang, anda harus punya ENS domain. Masukan satu dibawah dan ikuti instruksi pendaftaran ENS.",
     "createASpace": "Buat sebuah ruang",
-    "registerEnsButton": "Register",
+    "registerEnsButton": "Daftar",
     "supportedEnsTLDs": "Supported domain endings"
   },
   "notify": {
