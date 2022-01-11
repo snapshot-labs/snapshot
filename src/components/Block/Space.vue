@@ -17,7 +17,7 @@ const { web3Account } = useWeb3();
 
 const { explore } = useApp();
 
-const { formattedNumber } = useIntl();
+const { formattedCompactNumber } = useIntl();
 
 const nbrMembers = explore.value.spaces[props.space.id].followers;
 const isVerified = verified[props.space.id] || 0;
@@ -74,7 +74,7 @@ watchEffect(() => {
         </h3>
         <div class="mb-[12px] text-color">
           {{
-            $tc('members', nbrMembers, { count: formattedNumber(nbrMembers) })
+            $tc('members', nbrMembers, { count: formattedCompactNumber(nbrMembers) })
           }}
         </div>
         <div class="flex justify-center gap-x-2">
