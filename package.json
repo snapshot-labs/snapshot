@@ -32,6 +32,7 @@
     "dayjs": "^1.10.7",
     "eslint": "^7.32.0",
     "ethereum-blockies-base64": "^1.0.2",
+    "fortmatic": "^2.2.1",
     "graphql": "^16.2.0",
     "graphql-tag": "^2.12.6",
     "lodash": "^4.17.21",
