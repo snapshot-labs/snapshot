@@ -4,9 +4,13 @@ import { shorten } from '@/helpers/utils';
 import { useUsername } from '@/composables/useUsername';
 import removeMd from 'remove-markdown';
 import { useIntl } from '@/composables/useIntl';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 const {
   relativeTime,
+  duration,
   formattedNumber,
   formattedCompactNumber,
   formattedPercentNumber
@@ -23,10 +27,15 @@ const winningChoice = computed(() =>
   props.proposal.scores.indexOf(Math.max(...props.proposal.scores))
 );
 
-const period = computed(() => {
-  if (props.proposal.state === 'closed') return 'endedAgo';
-  if (props.proposal.state === 'active') return 'proposalToNow';
-  return 'proposalStartIn';
+const relativePeriod = computed(() => {
+  const now = new Date() / 1e3;
+  if (props.proposal.state === 'closed') {
+    return t('endedAgo', [relativeTime(props.proposal.end)]);
+  }
+  if (props.proposal.state === 'active') {
+    return t('proposalTimeLeft', [duration(props.proposal.end - now, t)]);
+  }
+  return t('startIn', [relativeTime(props.proposal.start)]);
 });
 
 const { address, profile, username } = useUsername();
@@ -113,13 +122,9 @@ watchEffect(() => {
         </div>
         <div>
           <UiState :state="proposal.state" slim class="mr-1" />
-          {{ $t(`proposals.states.${proposal.state}`) }},
-          <!-- TODO: relativeTime alternative mode: "2 hours left" instead of "in 2 hours" -->
-          <span
+          {{ $t(`proposals.states.${proposal.state}`) }}<span
             v-if="proposal.scores_state !== 'final'"
-            v-text="$tc(period, [relativeTime(proposal.end)])"
-          />
-          <span v-if="proposal.scores_state === 'final'" class="mt-2">
+          >, {{ relativePeriod }}</span><span v-if="proposal.scores_state === 'final'" class="mt-2">,
             {{ formattedNumber(proposal.votes) }} votes
           </span>
         </div>

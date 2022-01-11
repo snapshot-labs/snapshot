@@ -4,7 +4,8 @@
  */
 
 import { computed } from 'vue';
-import { useI18n } from '@/composables/useI18n';
+import { useI18n as useI18nSnapshot } from '@/composables/useI18n';
+// TODO: Resolve name conflict
 
 /**
  * This is needed since Intl still doesn't support durations:
@@ -53,9 +54,12 @@ const getTimeDiffAndUnit = (seconds: number) => {
 };
 
 export function useIntl() {
-  const { currentLocale } = useI18n();
+  const { currentLocale } = useI18nSnapshot();
 
-  // functions to created computed formatters based on locale
+  /**
+   * functions to create computed formatters based on locale
+   */
+
   const getRelativeTimeFormatter = (options?: object) =>
     computed(
       () =>
@@ -74,7 +78,10 @@ export function useIntl() {
         )
     );
 
-  // predefined formatters
+  /**
+   * predefined formatters
+   */
+
   const defaultRelativeTimeFormatter = getRelativeTimeFormatter();
   const defaultNumberFormatter = getNumberFormatter();
   const compactNumberFormatter = getNumberFormatter({
@@ -86,7 +93,10 @@ export function useIntl() {
     minimumFractionDigits: 2
   });
 
-  // formatting functions
+  /**
+   * formatting functions
+   */
+
   const relativeTime = (
     timestamp: number,
     formatter?: Intl.RelativeTimeFormat
@@ -99,6 +109,13 @@ export function useIntl() {
 
     return formatter.format(diff, unit);
   };
+
+  // needs the t function, to translate the unit
+  const duration = (duration: number, t: Function) => {
+    const { diff, unit } = getTimeDiffAndUnit(duration);
+
+    return t(`timeUnits.${unit}`, { n: diff }, diff);
+  }
 
   const formattedNumber = (number: number, formatter?: Intl.NumberFormat) => {
     if (number < 0.00001) number = 0;
@@ -118,6 +135,7 @@ export function useIntl() {
     getRelativeTimeFormatter,
     getNumberFormatter,
     relativeTime,
+    duration,
     formattedNumber,
     formattedCompactNumber,
     formattedPercentNumber
