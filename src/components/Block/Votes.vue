@@ -21,7 +21,7 @@ defineEmits(['loadVotes']);
 
 const format = getChoiceString;
 
-const { formattedCompactNumber } = useIntl();
+const { formatCompactNumber } = useIntl();
 const { votes } = toRefs(props);
 const { web3Account } = useWeb3();
 
@@ -120,13 +120,13 @@ watch(visibleVotes, () => {
             content: vote.scores
               ?.map(
                 (score, index) =>
-                  `${formattedCompactNumber(score)} ${titles[index]}`
+                  `${formatCompactNumber(score)} ${titles[index]}`
               )
               .join(' + ')
           }"
         >
           {{
-            `${formattedCompactNumber(vote.balance)} ${shorten(
+            `${formatCompactNumber(vote.balance)} ${shorten(
               space.symbol,
               'symbol'
             )}`

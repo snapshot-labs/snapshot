@@ -5,7 +5,7 @@ import { useUsername } from '@/composables/useUsername';
 import removeMd from 'remove-markdown';
 import { useIntl } from '@/composables/useIntl';
 
-const { relativeTime, formattedCompactNumber } = useIntl();
+const { formatRelativeTime, formatCompactNumber } = useIntl();
 
 const props = defineProps({
   proposal: Object,
@@ -59,8 +59,8 @@ watchEffect(() => {
             v-if="proposal.scores_state !== 'final'"
             v-text="
               $tc(period, [
-                relativeTime(proposal.start),
-                relativeTime(proposal.end)
+                formatRelativeTime(proposal.start),
+                formatRelativeTime(proposal.end)
               ])
             "
           />
@@ -71,7 +71,7 @@ watchEffect(() => {
             <Icon size="20" name="check1" class="text-green" />
             <span class="mt-1"
               >{{ shorten(proposal.choices[winningChoice], 64) }} -
-              {{ formattedCompactNumber(proposal.scores[winningChoice]) }}
+              {{ formatCompactNumber(proposal.scores[winningChoice]) }}
               {{ proposal.space.symbol }}</span
             >
           </span>

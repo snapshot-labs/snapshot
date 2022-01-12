@@ -1,7 +1,7 @@
 <script setup>
 import { useIntl } from '@/composables/useIntl';
 
-const { formattedCompactNumber } = useIntl();
+const { formatCompactNumber } = useIntl();
 
 defineProps(['validation']);
 </script>
@@ -12,7 +12,7 @@ defineProps(['validation']);
       <h3 v-text="validation.name" />
     </div>
     <div class="text-color">
-      {{ $tc('inSpaces', [formattedCompactNumber(validation.spaces)]) }}
+      {{ $tc('inSpaces', [formatCompactNumber(validation.spaces)]) }}
     </div>
   </Block>
 </template>

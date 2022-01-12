@@ -9,11 +9,11 @@ import { useI18n } from 'vue-i18n';
 const { t } = useI18n();
 
 const {
-  relativeTime,
-  duration,
-  formattedNumber,
-  formattedCompactNumber,
-  formattedPercentNumber
+  formatRelativeTime,
+  formatDuration,
+  formatNumber,
+  formatCompactNumber,
+  formatPercentNumber
 } = useIntl();
 
 const props = defineProps({
@@ -30,12 +30,12 @@ const winningChoice = computed(() =>
 const relativePeriod = computed(() => {
   const now = new Date() / 1e3;
   if (props.proposal.state === 'closed') {
-    return t('endedAgo', [relativeTime(props.proposal.end)]);
+    return t('endedAgo', [formatRelativeTime(props.proposal.end)]);
   }
   if (props.proposal.state === 'active') {
-    return t('proposalTimeLeft', [duration(props.proposal.end - now, t)]);
+    return t('proposalTimeLeft', [formatDuration(props.proposal.end - now, t)]);
   }
-  return t('startIn', [relativeTime(props.proposal.start)]);
+  return t('startIn', [formatRelativeTime(props.proposal.start)]);
 });
 
 const { address, profile, username } = useUsername();
@@ -100,13 +100,13 @@ watchEffect(() => {
               />
               {{ shorten(choice, 32) }}
               <span class="text-color ml-1">
-                {{ formattedCompactNumber(proposal.scores[i]) }}
+                {{ formatCompactNumber(proposal.scores[i]) }}
                 {{ proposal.space.symbol }}
               </span>
             </div>
             <div
               v-text="
-                formattedPercentNumber(
+                formatPercentNumber(
                   (1 / proposal.scores_total) * proposal.scores[i]
                 )
               "
@@ -126,7 +126,7 @@ watchEffect(() => {
           }}<span v-if="proposal.scores_state !== 'final'"
             >, {{ relativePeriod }}</span
           ><span v-if="proposal.scores_state === 'final'" class="mt-2"
-            >, {{ formattedNumber(proposal.votes) }} votes
+            >, {{ formatNumber(proposal.votes) }} votes
           </span>
         </div>
       </div>

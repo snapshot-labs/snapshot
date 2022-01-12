@@ -17,40 +17,40 @@ import { useI18n as useI18nSnapshot } from '@/composables/useI18n';
  * a simple duration formatter, that turns 3600 into "1 hour" and 180000 into "2 days". More granular
  * formats are possible like "1 hour, 30 minutes" (which will be covered by Intl.Duration).
  * For now, this function just returns the biggest/closest unit and the resulting number from an integer
- * of seconds. (3678 => { diff: 1, unit: 'hour'}) This is accompanied by manual translations in our message
+ * of seconds. (3678 => { duration: 1, unit: 'hour'}) This is accompanied by manual translations in our message
  * catalogues of strings like "second", "seconds", "minute", "minutes", etc.
  */
-const getTimeDiffAndUnit = (seconds: number) => {
+const getDurationAndUnit = (seconds: number) => {
   let unit = 'second';
-  let diff = seconds;
+  let duration = seconds;
   const abs = Math.abs(seconds);
 
   if (abs >= 60) {
     unit = 'minute';
-    diff = diff / 60;
+    duration = duration / 60;
     if (abs >= 60 * 60) {
       unit = 'hour';
-      diff = diff / 60;
+      duration = duration / 60;
       if (abs >= 60 * 60 * 24) {
         unit = 'day';
-        diff = diff / 24;
+        duration = duration / 24;
         if (abs >= 60 * 60 * 24 * 365) {
           unit = 'year';
-          diff = diff / 365;
+          duration = duration / 365;
         } else if (abs >= 60 * 60 * 24 * 30) {
           unit = 'month';
-          diff = diff / 30;
+          duration = duration / 30;
         } else if (abs >= 60 * 60 * 24 * 7) {
           unit = 'week';
-          diff = diff / 7;
+          duration = duration / 7;
         }
       }
     }
   }
 
-  diff = Math.round(diff);
+  duration = Math.round(duration);
 
-  return { diff, unit };
+  return { duration, unit };
 };
 
 export function useIntl() {
@@ -58,6 +58,12 @@ export function useIntl() {
 
   /**
    * functions to create computed formatters based on locale
+   * 
+   * If you need a custom format in only one component, you can import these
+   * functions to create a custom formatter locally in that component, to use
+   * it as the formatting functions' 2nd argument.
+   * Otherwise you can add a predefined formatter and a formatting function
+   * below and add them to the return list.
    */
 
   const getRelativeTimeFormatter = (options?: object) =>
@@ -97,27 +103,27 @@ export function useIntl() {
    * formatting functions
    */
 
-  const relativeTime = (
+  const formatRelativeTime = (
     timestamp: number,
     formatter?: Intl.RelativeTimeFormat
   ) => {
     const relativeTo = new Date().getTime() / 1e3;
 
-    const { diff, unit } = getTimeDiffAndUnit(timestamp - relativeTo);
+    const { duration, unit } = getDurationAndUnit(timestamp - relativeTo);
 
     formatter = formatter || defaultRelativeTimeFormatter.value;
 
-    return formatter.format(diff, unit);
+    return formatter.format(duration, unit);
   };
 
-  // needs the t function, to translate the unit
-  const duration = (duration: number, t: Function) => {
-    const { diff, unit } = getTimeDiffAndUnit(duration);
+  // doesn't use Intl (yet), needs useI18n's t function, to translate the unit
+  const formatDuration = (seconds: number, t: Function) => {
+    const { duration, unit } = getDurationAndUnit(seconds);
 
-    return t(`timeUnits.${unit}`, { n: diff }, diff);
+    return t(`timeUnits.${unit}`, { n: duration }, duration);
   };
 
-  const formattedNumber = (number: number, formatter?: Intl.NumberFormat) => {
+  const formatNumber = (number: number, formatter?: Intl.NumberFormat) => {
     if (number < 0.00001) number = 0;
 
     formatter = formatter || defaultNumberFormatter.value;
@@ -125,19 +131,19 @@ export function useIntl() {
     return formatter.format(number);
   };
 
-  const formattedCompactNumber = (number: number) =>
-    formattedNumber(number, compactNumberFormatter.value);
+  const formatCompactNumber = (number: number) =>
+    formatNumber(number, compactNumberFormatter.value);
 
-  const formattedPercentNumber = (number: number) =>
-    formattedNumber(number, percentNumberFormatter.value);
+  const formatPercentNumber = (number: number) =>
+    formatNumber(number, percentNumberFormatter.value);
 
   return {
     getRelativeTimeFormatter,
     getNumberFormatter,
-    relativeTime,
-    duration,
-    formattedNumber,
-    formattedCompactNumber,
-    formattedPercentNumber
+    formatRelativeTime,
+    formatDuration,
+    formatNumber,
+    formatCompactNumber,
+    formatPercentNumber
   };
 }

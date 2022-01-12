@@ -23,7 +23,7 @@ const { query: queryParams } = useRoute();
 const { strategies } = useApp();
 const { copyToClipboard } = useCopy();
 const { t } = useI18n();
-const { formattedCompactNumber } = useIntl();
+const { formatCompactNumber } = useIntl();
 
 let provider;
 
@@ -236,7 +236,7 @@ onMounted(async () => {
         >
           <User :address="score" :space="form" />
           <span>
-            {{ formattedCompactNumber(scores[0][score]) }}
+            {{ formatCompactNumber(scores[0][score]) }}
             {{ JSON.parse(form.params).symbol }}
           </span>
         </div>

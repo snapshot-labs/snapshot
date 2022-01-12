@@ -22,7 +22,7 @@ const { t } = useI18n();
 const notify = inject('notify');
 const { send, clientLoading } = useClient();
 const format = getChoiceString;
-const { formattedNumber, formattedCompactNumber } = useIntl();
+const { formatNumber, formatCompactNumber } = useIntl();
 
 const symbols = computed(() =>
   props.strategies.map(strategy => strategy.params.symbol)
@@ -72,7 +72,7 @@ async function handleSubmit() {
             target="_blank"
             class="float-right"
           >
-            {{ formattedNumber(proposal.snapshot) }}
+            {{ formatNumber(proposal.snapshot) }}
             <Icon name="external-link" class="ml-1" />
           </a>
         </div>
@@ -83,12 +83,12 @@ async function handleSubmit() {
               content: scores
                 .map(
                   (score, index) =>
-                    `${formattedCompactNumber(score)} ${symbols[index]}`
+                    `${formatCompactNumber(score)} ${symbols[index]}`
                 )
                 .join(' + ')
             }"
           >
-            {{ formattedCompactNumber(totalScore) }}
+            {{ formatCompactNumber(totalScore) }}
             {{ shorten(space.symbol, 'symbol') }}
           </span>
           <a

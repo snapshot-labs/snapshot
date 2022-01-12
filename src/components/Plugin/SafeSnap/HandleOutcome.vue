@@ -166,7 +166,7 @@ import { useTxStatus } from '@/composables/useTxStatus';
 import { useNotifications } from '@/composables/useNotifications';
 import { useIntl } from '@/composables/useIntl';
 
-const { relativeTime } = useIntl();
+const { formatRelativeTime } = useIntl();
 
 const { clearBatchError, setBatchError } = useSafesnap();
 const { web3 } = useWeb3();
@@ -474,7 +474,7 @@ export default {
             return {
               decision: 'Yes',
               timeLeft: this.$i18n.t('safeSnap.executableIn', [
-                relativeTime(endTime + this.questionDetails.cooldown)
+                formatRelativeTime(endTime + this.questionDetails.cooldown)
               ])
             };
           }
@@ -487,7 +487,7 @@ export default {
         return {
           decision: isApproved ? 'Yes' : 'No',
           timeLeft: this.$i18n.t('safeSnap.finalizedIn', [
-            relativeTime(endTime)
+            formatRelativeTime(endTime)
           ]),
           currentBond:
             formatUnits(currentBond, this.bondData.tokenDecimals) +

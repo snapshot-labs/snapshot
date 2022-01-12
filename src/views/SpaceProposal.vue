@@ -36,7 +36,7 @@ const { send, clientLoading } = useClient();
 const { getExplore } = useApp();
 const { store } = useStore();
 const notify = inject('notify');
-const { relativeTime, formattedNumber } = useIntl();
+const { formatRelativeTime, formatNumber } = useIntl();
 
 const id = route.params.id;
 
@@ -385,7 +385,7 @@ onMounted(async () => {
             <span
               v-text="$d(proposal.start * 1e3, 'short', 'en-US')"
               v-tippy="{
-                content: relativeTime(proposal.start)
+                content: formatRelativeTime(proposal.start)
               }"
               class="float-right link-color"
             />
@@ -395,7 +395,7 @@ onMounted(async () => {
             <span
               v-text="$d(proposal.end * 1e3, 'short', 'en-US')"
               v-tippy="{
-                content: relativeTime(proposal.end)
+                content: formatRelativeTime(proposal.end)
               }"
               class="link-color float-right"
             />
@@ -407,7 +407,7 @@ onMounted(async () => {
               target="_blank"
               class="float-right"
             >
-              {{ formattedNumber(proposal.snapshot) }}
+              {{ formatNumber(proposal.snapshot) }}
               <Icon name="external-link" class="ml-1" />
             </a>
           </div>

@@ -11,7 +11,7 @@ import { useIntl } from '@/composables/useIntl';
 const { selectedCategory, orderedSpaces, orderedSpacesByCategory } = useApp();
 const { followingSpaces } = useFollowSpace();
 const { spacesPerCategory, categoriesOrderedBySpaceCount } = useCategories();
-const { formattedCompactNumber } = useIntl();
+const { formatCompactNumber } = useIntl();
 
 function selectCategory(c) {
   selectedCategory.value = c === selectedCategory.value ? '' : c;
@@ -84,7 +84,7 @@ onMounted(() => {
       <div class="ml-3 text-right hidden md:block whitespace-nowrap">
         {{
           $tc('spaceCount', [
-            formattedCompactNumber(orderedSpacesByCategory.length)
+            formatCompactNumber(orderedSpacesByCategory.length)
           ])
         }}
       </div>
@@ -123,7 +123,7 @@ onMounted(() => {
               <div class="mb-[12px] text-color">
                 {{
                   $tc('members', space.followers, {
-                    count: formattedCompactNumber(space.followers)
+                    count: formatCompactNumber(space.followers)
                   })
                 }}
               </div>

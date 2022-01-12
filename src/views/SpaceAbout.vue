@@ -13,7 +13,7 @@ const props = defineProps({
 
 const network = computed(() => networks[props.space.network]);
 
-const { formattedCompactNumber } = useIntl();
+const { formatCompactNumber } = useIntl();
 const { profiles, loadProfiles } = useProfiles();
 
 watchEffect(() => {
@@ -63,7 +63,7 @@ onMounted(() => {
           <h4 class="link-color mb-2">
             {{ $t('settings.proposalThreshold') }}
           </h4>
-          {{ formattedCompactNumber(space.filters.minScore) }}
+          {{ formatCompactNumber(space.filters.minScore) }}
           {{ space.symbol }}
         </div>
 

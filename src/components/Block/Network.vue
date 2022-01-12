@@ -1,7 +1,7 @@
 <script setup>
 import { useIntl } from '@/composables/useIntl';
 
-const { formattedCompactNumber } = useIntl();
+const { formatCompactNumber } = useIntl();
 
 defineProps(['network']);
 
@@ -23,7 +23,7 @@ function getLogoUrl(key) {
       <div v-text="network.key" class="ml-1 text-color" />
     </div>
     <div class="text-color">
-      {{ $tc('inSpaces', [formattedCompactNumber(network.spaces)]) }}
+      {{ $tc('inSpaces', [formatCompactNumber(network.spaces)]) }}
     </div>
   </Block>
 </template>

@@ -8,7 +8,7 @@ import { setPageTitle } from '@/helpers/utils';
 import { useIntl } from '@/composables/useIntl';
 
 const { t } = useI18n();
-const { formattedCompactNumber } = useIntl();
+const { formatCompactNumber } = useIntl();
 const route = useRoute();
 
 const buttonStr = computed(() => {
@@ -56,7 +56,7 @@ onMounted(() => {
         class="ml-3 hidden sm:flex text-right items-center whitespace-nowrap"
       >
         <div class="flex flex-col">
-          {{ formattedCompactNumber(items.length) }} {{ resultsStr }}
+          {{ formatCompactNumber(items.length) }} {{ resultsStr }}
         </div>
         <a
           v-if="buttonStr"

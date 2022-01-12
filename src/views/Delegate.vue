@@ -36,7 +36,7 @@ const { web3, web3Account } = useWeb3();
 const { pendingCount } = useTxStatus();
 const { loadExtentedSpaces, extentedSpaces, spaceLoading } =
   useExtendedSpaces();
-const { formattedCompactNumber } = useIntl();
+const { formatCompactNumber } = useIntl();
 
 const modalOpen = ref(false);
 const currentId = ref('');
@@ -303,7 +303,7 @@ onMounted(async () => {
               v-text="
                 `${
                   delegate.score >= 0.005
-                    ? formattedCompactNumber(delegate.score)
+                    ? formatCompactNumber(delegate.score)
                     : '< 0.01'
                 } ${extentedSpaces.find(s => s.id === form.id).symbol}`
               "
