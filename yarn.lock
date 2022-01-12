@@ -1042,6 +1042,14 @@
 "@snapshot-labs/lock@github:snapshot-labs/lock#master":
   version "0.1.3"
   resolved "https://codeload.github.com/snapshot-labs/lock/tar.gz/d1a5ceaa18141f5d496b1fa9be62175b6f99f32e"
+  dependencies:
+    "@gnosis.pm/safe-apps-provider" "^0.8.0"
+    "@gnosis.pm/safe-apps-sdk" "^6.1.1"
+    "@portis/web3" "^4.0.6"
+    "@toruslabs/torus-embed" "^1.12.1"
+    "@walletconnect/web3-provider" "1.4.1"
+    fortmatic "^2.2.1"
+    walletlink "^2.4.0"
 
 "@snapshot-labs/snapshot.js@^0.3.26":
   version "0.3.26"
