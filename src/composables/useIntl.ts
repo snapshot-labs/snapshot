@@ -58,7 +58,7 @@ export function useIntl() {
 
   /**
    * functions to create computed formatters based on locale
-   * 
+   *
    * If you need a custom format in only one component, you can import these
    * functions to create a custom formatter locally in that component, to use
    * it as the formatting functions' 2nd argument.
