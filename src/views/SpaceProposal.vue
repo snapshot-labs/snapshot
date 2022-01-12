@@ -407,7 +407,7 @@ onMounted(async () => {
               target="_blank"
               class="float-right"
             >
-              {{ formattedNumber(proposal.snapshot, '0,0') }}
+              {{ formattedNumber(proposal.snapshot) }}
               <Icon name="external-link" class="ml-1" />
             </a>
           </div>
