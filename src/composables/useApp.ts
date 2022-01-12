@@ -13,7 +13,6 @@ const state = reactive({
   loading: false
 });
 
-const spaces = ref({});
 const strategies = ref({});
 const explore: any = ref({});
 
@@ -126,7 +125,6 @@ export function useApp() {
     init,
     getExplore,
     app: computed(() => state),
-    spaces: computed(() => spaces.value),
     strategies: computed(() => strategies.value),
     explore: computed(() => explore.value),
     orderedSpaces,
