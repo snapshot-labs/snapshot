@@ -302,7 +302,7 @@ onMounted(async () => {
               {{
                 delegate.score >= 0.005
                   ? formattedCompactNumber(delegate.score)
-                  : '> 0.01'
+                  : '< 0.01'
               }}
               {{ extentedSpaces.find(s => s.id === form.id).symbol }}
             </div>
