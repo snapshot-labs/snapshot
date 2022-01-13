@@ -232,7 +232,7 @@
     "toCreateASpace": "Untuk membuat ruang, anda harus punya ENS domain. Masukan satu dibawah dan ikuti instruksi pendaftaran ENS.",
     "createASpace": "Buat sebuah ruang",
     "registerEnsButton": "Daftar",
-    "supportedEnsTLDs": "Supported domain endings"
+    "supportedEnsTLDs": "Akhiran domain yang didukung"
   },
   "notify": {
     "youDidIt": "Anda berhasil!",
