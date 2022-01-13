@@ -81,23 +81,16 @@ export function useApp() {
   async function getSkin() {
     const key = aliases[domain] || domain;
     if (key) {
-      try {
-        const spaceObj = await apolloQuery(
-          {
-            query: SPACE_SKIN_QUERY,
-            variables: {
-              id: key
-            }
-          },
-          'space'
-        );
-        skin.value = spaceObj?.skin ?? 'default';
-      } catch (e) {
-        console.error(e);
-        skin.value = 'default';
-      }
-    } else {
-      skin.value = 'default';
+      const spaceObj = await apolloQuery(
+        {
+          query: SPACE_SKIN_QUERY,
+          variables: {
+            id: key
+          }
+        },
+        'space'
+      );
+      skin.value = spaceObj?.skin;
     }
   }
 
