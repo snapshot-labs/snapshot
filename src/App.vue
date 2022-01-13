@@ -42,6 +42,7 @@ watch(modalOpen, val => {
 
 <template>
   <div
+    v-if="skinName"
     :class="skin"
     class="overflow-hidden pb-6 font-serif text-base min-h-screen bg-skin-bg text-skin-text antialiased"
   >
