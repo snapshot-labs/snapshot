@@ -96,7 +96,7 @@ export function useIntl() {
   });
   const percentNumberFormatter = getNumberFormatter({
     style: 'percent',
-    minimumFractionDigits: 2
+    maximumFractionDigits: 2
   });
 
   /**
