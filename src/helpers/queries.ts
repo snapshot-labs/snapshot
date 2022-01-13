@@ -190,3 +190,11 @@ export const ENS_QUERY = gql`
     }
   }
 `;
+
+export const SPACE_SKIN_QUERY = gql`
+  query Space($id: String!) {
+    space(id: $id) {
+      skin
+    }
+  }
+`;
