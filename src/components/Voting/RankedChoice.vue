@@ -61,7 +61,7 @@ function updateChoices() {
       >
         <span class="truncated">{{ choice }}</span>
 
-        <PluginAragonGovern :proposal="proposal" />
+        <PluginAragonGovern :proposal="proposal" :i="i" />
       </UiButton>
     </div>
   </div>
