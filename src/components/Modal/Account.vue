@@ -45,19 +45,7 @@ watch(open, () => (step.value = null));
           class="block"
         >
           <UiButton
-            v-if="id !== 'injected'"
-            class="button-outline w-full flex justify-center items-center gap-2"
-          >
-            <img
-              :src="`${path}/${connector.id}.png`"
-              height="25"
-              width="25"
-              :alt="connector.name"
-            />
-            <span class="mt-1">{{ connector.name }}</span>
-          </UiButton>
-          <UiButton
-            v-else-if="injected"
+            v-if="id === 'injected' && injected"
             class="button-outline w-full flex justify-center items-center"
           >
             <img
@@ -68,6 +56,18 @@ watch(open, () => (step.value = null));
               :alt="injected.name"
             />
             {{ injected.name }}
+          </UiButton>
+          <UiButton
+            v-else-if="id !== 'gnosis'"
+            class="button-outline w-full flex justify-center items-center gap-2"
+          >
+            <img
+              :src="`${path}/${connector.id}.png`"
+              height="25"
+              width="25"
+              :alt="connector.name"
+            />
+            <span class="mt-1">{{ connector.name }}</span>
           </UiButton>
         </a>
       </div>
