@@ -29,7 +29,7 @@ function selectChoice(i) {
       :class="selectedChoice === i + 1 && 'button--active'"
     >
       {{ shorten(choice, 32) }}
-      <PluginAragonGovern :proposal="proposal" :i="i" />
+      <PluginAragonGovern :proposal="proposal" :choiceIndex="i" />
     </UiButton>
   </div>
 </template>
