@@ -26,10 +26,8 @@ if (aliasedSpace) {
 }
 
 const spaceId = computed(() => aliasedSpace || domain || route.params.key);
-const space = computed(
-  () =>
-    formatSpace(extentedSpaces.value?.find(s => s.id === spaceId.value)) ??
-    explore.value.spaces[spaceId.value]
+const space = computed(() =>
+  formatSpace(extentedSpaces.value?.find(s => s.id === spaceId.value))
 );
 
 const from = computed(() => route.params.from);
