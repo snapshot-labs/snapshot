@@ -25,22 +25,12 @@ const space = computed(() => {
   return explore.value.space?.[key];
 });
 
-function setTitle() {
-  document.title = space.value?.name ?? 'Snapshot';
-}
-
 async function handleLogin(connector) {
   modalAccountOpen.value = false;
   loading.value = true;
   await login(connector);
   loading.value = false;
 }
-
-watch(space, () => {
-  setTitle();
-});
-
-onMounted(() => setTitle());
 </script>
 
 <template>
