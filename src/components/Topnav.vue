@@ -1,13 +1,13 @@
 <script setup>
 import { ref, computed, watch, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
+import { shorten, getIpfsUrl } from '@/helpers/utils';
 import { useModal } from '@/composables/useModal';
 import { useDomain } from '@/composables/useDomain';
 import { useApp } from '@/composables/useApp';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useTxStatus } from '@/composables/useTxStatus';
 import { useUserSkin } from '@/composables/useUserSkin';
-import { useClient } from '@/composables/useClient';
 
 const { pendingCount } = useTxStatus();
 const { modalAccountOpen } = useModal();
@@ -17,19 +17,13 @@ const route = useRoute();
 const { explore } = useApp();
 const { login, web3 } = useWeb3();
 const { toggleSkin, getSkinIcon } = useUserSkin();
-const { isGnosisSafe } = useClient();
 
 const loading = ref(false);
-const modalNotice = ref(false);
 
 const space = computed(() => {
   const key = domain || route.params.key;
   return explore.value.space?.[key];
 });
-
-function setTitle() {
-  document.title = space.value?.name ?? 'Snapshot';
-}
 
 async function handleLogin(connector) {
   modalAccountOpen.value = false;
@@ -37,16 +31,6 @@ async function handleLogin(connector) {
   await login(connector);
   loading.value = false;
 }
-
-watch(space, () => {
-  setTitle();
-});
-
-watch(isGnosisSafe, () => {
-  if (isGnosisSafe.value) modalNotice.value = true;
-});
-
-onMounted(() => setTitle());
 </script>
 
 <template>
@@ -79,7 +63,7 @@ onMounted(() => setTitle());
               >
                 <UiAvatar
                   :imgsrc="
-                    web3.profile?.image ? _getUrl(web3.profile.image) : ''
+                    web3.profile?.image ? getIpfsUrl(web3.profile.image) : ''
                   "
                   :address="web3.account"
                   size="18"
@@ -92,7 +76,7 @@ onMounted(() => setTitle());
                 />
                 <span
                   v-else
-                  v-text="_shorten(web3.account)"
+                  v-text="shorten(web3.account)"
                   class="hidden sm:block"
                 />
               </UiButton>
@@ -142,21 +126,6 @@ onMounted(() => setTitle());
         @close="modalAccountOpen = false"
         @login="handleLogin"
       />
-      <ModalNotice
-        :open="modalNotice"
-        :title="$t('walletNotice')"
-        @close="modalNotice = false"
-      >
-        <h4 class="mb-3">{{ $t('gnosisSafeWalletNotice') }}</h4>
-        <a
-          @click="$router.push({ name: 'delegate' }), (modalNotice = false)"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="flex items-center justify-center"
-        >
-          <UiText class="mt-1" :text="$t('delegateVotingPower')" />
-        </a>
-      </ModalNotice>
     </teleport>
   </Sticky>
 </template>

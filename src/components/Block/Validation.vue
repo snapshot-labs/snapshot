@@ -1,7 +1,7 @@
-<script>
-export default {
-  props: ['validation']
-};
+<script setup>
+import { n } from '@/helpers/utils';
+
+defineProps(['validation']);
 </script>
 
 <template>
@@ -10,7 +10,7 @@ export default {
       <h3 v-text="validation.name" />
     </div>
     <div class="text-color">
-      {{ $tc('inSpaces', [_n(validation.spaces)]) }}
+      {{ $tc('inSpaces', [n(validation.spaces)]) }}
     </div>
   </Block>
 </template>

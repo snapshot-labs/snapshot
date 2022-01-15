@@ -117,7 +117,7 @@
         {{
           $t('safeSnap.labels.executeTxs', [
             questionDetails.nextTxIndex + 1,
-            txs.length
+            batches.length
           ])
         }}
       </UiButton>
@@ -164,6 +164,7 @@ import { useSafesnap } from '@/composables/useSafesnap';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useTxStatus } from '@/composables/useTxStatus';
 import { useNotifications } from '@/composables/useNotifications';
+import { ms } from '@/helpers/utils';
 
 const { clearBatchError, setBatchError } = useSafesnap();
 const { web3 } = useWeb3();
@@ -238,7 +239,7 @@ const ensureRightNetwork = async chainId => {
 };
 
 export default {
-  props: ['txs', 'proposalId', 'network', 'realityAddress'],
+  props: ['batches', 'proposalId', 'network', 'realityAddress'],
   data() {
     return {
       loading: true,
@@ -265,7 +266,9 @@ export default {
           this.network,
           this.realityAddress,
           this.proposalId,
-          this.txs.map(formatBatchTransaction)
+          this.batches.map((batch, nonce) =>
+            formatBatchTransaction(batch.transactions, nonce)
+          )
         );
         if (this.questionDetails.questionId && this.$auth.web3) {
           this.bondData = await plugin.loadClaimBondData(
@@ -469,7 +472,7 @@ export default {
             return {
               decision: 'Yes',
               timeLeft: this.$i18n.t('safeSnap.executableIn', [
-                this._ms(endTime + this.questionDetails.cooldown)
+                ms(endTime + this.questionDetails.cooldown)
               ])
             };
           }
@@ -481,7 +484,7 @@ export default {
 
         return {
           decision: isApproved ? 'Yes' : 'No',
-          timeLeft: this.$i18n.t('safeSnap.finalizedIn', [this._ms(endTime)]),
+          timeLeft: this.$i18n.t('safeSnap.finalizedIn', [ms(endTime)]),
           currentBond:
             formatUnits(currentBond, this.bondData.tokenDecimals) +
             ' ' +

@@ -26,22 +26,7 @@ function handleInput(e) {
 
 <template>
   <div
-    class="
-      border border-skin-border
-      transition-colors
-      bg-transparent
-      text-skin-link
-      rounded-3xl
-      outline-none
-      leading-[46px]
-      text-left
-      w-full
-      mb-2
-      flex
-      px-3
-      focus-within:border-skin-link
-      hover:border-skin-link
-    "
+    class="border border-skin-border transition-colors bg-transparent text-skin-link rounded-3xl outline-none leading-[46px] text-left w-full mb-2 flex px-3 focus-within:border-skin-link hover:border-skin-link"
     :class="{ '!border-red': error, 'cursor-pointer': $slots.selected }"
   >
     <div class="text-color mr-2 whitespace-nowrap">

@@ -1,4 +1,4 @@
-import namehash from 'eth-ens-namehash';
+import namehash from '@ensdomains/eth-ens-namehash';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import { call } from '@snapshot-labs/snapshot.js/src/utils';
 

@@ -1,7 +1,7 @@
-<script>
-export default {
-  props: ['skin']
-};
+<script setup>
+import { n } from '@/helpers/utils';
+
+defineProps(['skin']);
 </script>
 
 <template>
@@ -9,7 +9,7 @@ export default {
     <Block>
       <UiButton class="mb-2" primary>{{ skin.key }}</UiButton>
       <div class="text-color">
-        {{ $tc('inSpaces', [_n(skin.spaces)]) }}
+        {{ $tc('inSpaces', [n(skin.spaces)]) }}
       </div>
     </Block>
   </div>

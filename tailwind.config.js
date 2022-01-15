@@ -58,6 +58,5 @@ module.exports = {
       sm: ['16px', '22px'],
       xs: ['14px', '20px']
     }
-  },
-  plugins: []
+  }
 };
