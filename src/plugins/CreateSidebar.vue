@@ -2,9 +2,9 @@
 import { usePlugins } from '@/composables/usePlugins';
 
 const { components, addComponents, setTemplateName } = usePlugins();
-setTemplateName('Create');
+setTemplateName('CreateSidebar');
 
-addComponents(['safeSnap', 'chainlink']);
+addComponents(['aragon']);
 
 const props = defineProps({
   proposal: Object,
