@@ -376,16 +376,14 @@ watchEffect(() => {
         <div class="mb-2">
           <UiButton
             class="w-full mb-2"
-            :disabled="props.space.voting?.type"
+            :disabled="space.voting?.type"
             @click="modalVotingTypeOpen = true"
           >
-            <span>{{
-              $t(`voting.${props.space.voting?.type ?? form.type}`)
-            }}</span>
+            <span>{{ $t(`voting.${space.voting?.type ?? form.type}`) }}</span>
           </UiButton>
           <UiButton
             @click="(modalOpen = true), (selectedDate = 'start')"
-            :disabled="props.space.voting?.delay"
+            :disabled="space.voting?.delay"
             class="w-full mb-2"
           >
             <span v-if="!dateStart">{{ $t('create.startDate') }}</span>
@@ -393,7 +391,7 @@ watchEffect(() => {
           </UiButton>
           <UiButton
             @click="(modalOpen = true), (selectedDate = 'end')"
-            :disabled="props.space.voting?.period"
+            :disabled="space.voting?.period"
             class="w-full mb-2"
           >
             <span v-if="!dateEnd">{{ $t('create.endDate') }}</span>
