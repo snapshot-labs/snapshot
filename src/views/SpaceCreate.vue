@@ -369,9 +369,9 @@ watchEffect(() => {
         :loading="spaceLoading"
         @submit="modalProposalPluginsOpen = true"
       >
-        <div class="mb-2">
+        <div class="mb-2 space-y-2">
           <UiButton
-            class="w-full mb-2"
+            class="w-full"
             :disabled="props.space.voting?.type"
             @click="modalVotingTypeOpen = true"
           >
@@ -382,7 +382,7 @@ watchEffect(() => {
           <UiButton
             @click="(modalOpen = true), (selectedDate = 'start')"
             :disabled="props.space.voting?.delay"
-            class="w-full mb-2"
+            class="w-full"
           >
             <span v-if="!dateStart">{{ $t('create.startDate') }}</span>
             <span v-else v-text="$d(dateStart * 1e3, 'short', 'en-US')" />
@@ -390,7 +390,7 @@ watchEffect(() => {
           <UiButton
             @click="(modalOpen = true), (selectedDate = 'end')"
             :disabled="props.space.voting?.period"
-            class="w-full mb-2"
+            class="w-full"
           >
             <span v-if="!dateEnd">{{ $t('create.endDate') }}</span>
             <span v-else v-text="$d(dateEnd * 1e3, 'short', 'en-US')" />
@@ -398,7 +398,7 @@ watchEffect(() => {
           <UiButton
             v-if="route.query.snapshot"
             :loading="loadingSnapshot"
-            class="w-full mb-2"
+            class="w-full"
           >
             <input
               v-model="form.snapshot"
