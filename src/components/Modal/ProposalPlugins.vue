@@ -85,12 +85,6 @@ watch(selected, value => {
       </div>
     </template>
     <div v-if="selected !== false" class="m-4 p-4 border rounded-md link-color">
-      <PluginAragonConfig
-        :proposal="proposal"
-        v-model="form.aragon"
-        @close="selected = false"
-        v-if="selected === 'aragon'"
-      />
       <PluginGnosisConfig
         :proposal="proposal"
         :network="space.network"

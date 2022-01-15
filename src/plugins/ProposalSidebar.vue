@@ -4,9 +4,10 @@ import { usePlugins } from '@/composables/usePlugins';
 const { components, addComponents, setTemplateName } = usePlugins();
 setTemplateName('ProposalSidebar');
 
-addComponents(['chainlink', 'hal', 'poap', 'quorum']);
+addComponents(['chainlink', 'hal', 'poap', 'quorum', 'aragon']);
 
 const props = defineProps({
+  id: String,
   proposal: Object,
   space: Object,
   results: Object,

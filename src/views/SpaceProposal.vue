@@ -418,6 +418,7 @@ onMounted(async () => {
       />
       <PluginsProposalSidebar
         v-if="proposal.plugins"
+        :id="id"
         :space="space"
         :proposal="proposal"
         :results="results"

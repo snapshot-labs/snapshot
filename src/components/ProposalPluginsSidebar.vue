@@ -12,13 +12,6 @@ defineProps({
 
 <template>
   <div>
-    <PluginAragonCustomBlock
-      :loaded="loadedResults"
-      :id="id"
-      :space="space"
-      :proposal="proposal"
-      :results="results"
-    />
     <PluginGnosisCustomBlock
       v-if="proposal.plugins?.gnosis?.baseTokenAddress"
       :proposalConfig="proposal.plugins.gnosis"
