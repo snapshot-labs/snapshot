@@ -1,4 +1,4 @@
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { lsGet, lsSet } from '@/helpers/utils';
 
 const NOT_SET = 'not-set';
@@ -32,6 +32,17 @@ export function useUserSkin() {
       _toggleSkin(currentSkin);
     }
   }
+
+  watch(
+    userSkin,
+    () => {
+      document.documentElement.setAttribute(
+        'data-color-scheme',
+        userSkin.value === LIGHT_MODE ? 'light' : 'dark'
+      );
+    },
+    { immediate: true }
+  );
 
   return {
     userSkin,
