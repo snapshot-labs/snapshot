@@ -26,6 +26,7 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
 
 onMounted(() => {
   setPageTitle('page.title.home');
+  console.log('sdfsdf');
 });
 </script>
 

@@ -7,7 +7,8 @@ import { setPageTitle, n } from '@/helpers/utils';
 
 const props = defineProps({
   space: Object,
-  spaceLoading: Boolean
+  spaceLoading: Boolean,
+  spaceId: String
 });
 
 const network = computed(() => networks[props.space.network]);
@@ -27,11 +28,11 @@ onMounted(() => {
 <template>
   <Layout>
     <template #sidebar-left>
-      <BlockSpace :space="space" />
+      <SpaceSidebar :space="space" :spaceId="spaceId" />
     </template>
     <template #content-right>
       <div class="px-4 md:px-0 mb-3 flex">
-        <h2>{{ space.name }}</h2>
+        <h2>{{ $t('about') }}</h2>
       </div>
       <Block :loading="spaceLoading">
         <div v-if="space.about" class="mb-3">
