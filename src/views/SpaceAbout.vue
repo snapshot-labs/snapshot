@@ -20,8 +20,9 @@ watchEffect(() => {
     loadProfiles(props.space.admins.concat(props.space.members));
 });
 
-onMounted(() => {
-  setPageTitle('page.title.space.about', { space: props.space.name });
+watchEffect(() => {
+  if (props.space?.name)
+    setPageTitle('page.title.space.about', { space: props.space.name });
 });
 </script>
 

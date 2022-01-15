@@ -93,6 +93,7 @@ watch(store.space.proposals, () => {
   loadProfiles(store.space.proposals.map(proposal => proposal.author));
 });
 
+// TODO: Use space query instead of explore, to get total number of proposals
 const { explore } = useApp();
 const proposalsCount = computed(() => {
   const count = explore.value.spaces[props.space.id].proposals;

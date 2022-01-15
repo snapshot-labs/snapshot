@@ -12,6 +12,7 @@ const props = defineProps({
 
 const { explore } = useApp();
 
+// TODO: Use space.followers instead of explore
 const nbrMembers = explore.value.spaces[props.space.id].followers;
 const isVerified = verified[props.space.id] || 0;
 

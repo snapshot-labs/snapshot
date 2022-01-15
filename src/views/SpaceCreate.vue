@@ -209,11 +209,14 @@ async function loadProposal() {
 }
 
 onMounted(async () => {
-  setPageTitle('page.title.space.create', { space: props.space.name });
   nameForm.value.focus();
   addChoice(2);
-
   if (props.from) loadProposal();
+});
+
+watchEffect(() => {
+  if (props.space?.name)
+    setPageTitle('page.title.space.create', { space: props.space.name });
 });
 
 watchEffect(async () => {

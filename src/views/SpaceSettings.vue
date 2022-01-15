@@ -271,8 +271,8 @@ watchEffect(async () => {
   }
 });
 
-onMounted(() => {
-  props.space
+watchEffect(() => {
+  props.space && props.space?.name
     ? setPageTitle('page.title.space.settings', { space: props.space.name })
     : setPageTitle('page.title.setup');
 });

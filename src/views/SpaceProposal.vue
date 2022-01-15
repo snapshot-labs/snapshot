@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, watch, onMounted, inject } from 'vue';
+import { ref, computed, watch, onMounted, inject, watchEffect } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import {
@@ -232,12 +232,16 @@ watch([loaded, web3Account], () => {
   loadPower();
 });
 
+watchEffect(() => {
+  if (props.space?.name && proposal.value?.title)
+    setPageTitle('page.title.space.proposal', {
+      proposal: proposal.value.title,
+      space: props.space.name
+    });
+});
+
 onMounted(async () => {
   await loadProposal();
-  setPageTitle('page.title.space.proposal', {
-    proposal: proposal.value.title,
-    space: props.space.name
-  });
   const choice = route.query.choice;
   if (proposal.value.type === 'approval') selectedChoices.value = [];
   if (web3Account.value && choice) {
