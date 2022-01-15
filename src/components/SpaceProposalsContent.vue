@@ -128,7 +128,7 @@ const loadingData = computed(() => {
       style="height: 10px; width: 10px; position: absolute"
       ref="endElement"
     />
-    <Block v-if="loadingData" :slim="true">
+    <Block v-if="loadingData && store.space.proposals.length < 1" :slim="true">
       <RowLoading class="my-2" />
     </Block>
   </div>
