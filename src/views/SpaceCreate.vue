@@ -16,7 +16,6 @@ import { useApolloQuery } from '@/composables/useApolloQuery';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useClient } from '@/composables/useClient';
 import { useApp } from '@/composables/useApp';
-import { useExtendedSpaces } from '@/composables/useExtendedSpaces';
 import { useStore } from '@/composables/useStore';
 import { setPageTitle, n } from '@/helpers/utils';
 
@@ -32,7 +31,6 @@ const auth = getInstance();
 const { domain } = useDomain();
 const { web3, web3Account } = useWeb3();
 const { getExplore } = useApp();
-const { spaceLoading } = useExtendedSpaces();
 const { send, clientLoading } = useClient();
 const { store } = useStore();
 const notify = inject('notify');
@@ -67,7 +65,7 @@ const proposal = computed(() =>
 
 // Check if account passes space validation
 watchEffect(async () => {
-  if (web3Account.value && auth.isAuthenticated.value) {
+  if (props.space && web3Account.value && auth.isAuthenticated.value) {
     const validationName = props.space.validation?.name ?? 'basic';
     const validationParams = props.space.validation?.params ?? {};
     const isValid = await validations[validationName](
@@ -221,12 +219,12 @@ watchEffect(() => {
 
 watchEffect(async () => {
   loadingSnapshot.value = true;
-  if (props.space.network) {
+  if (props.space?.network) {
     blockNumber.value = await getBlockNumber(getProvider(props.space.network));
     form.value.snapshot = blockNumber.value;
     loadingSnapshot.value = false;
   }
-  if (props.space.voting?.type) form.value.type = props.space.voting.type;
+  if (props.space?.voting?.type) form.value.type = props.space.voting.type;
 });
 
 watchEffect(() => {
@@ -243,20 +241,20 @@ watchEffect(() => {
 <template>
   <Layout v-bind="$attrs">
     <template #content-left>
-      <div class="px-4 md:px-0 overflow-hidden">
+      <div class="px-4 md:px-0 overflow-hidden mb-3">
         <router-link
           :to="domain ? { path: '/' } : { name: 'spaceProposals' }"
           class="text-color"
         >
           <Icon name="back" size="22" class="!align-middle" />
-          {{ space.name }}
+          {{ $t('back') }}
         </router-link>
       </div>
-      <Block v-if="passValidation[0] === false && space" class="mt-3">
+      <Block v-if="space && passValidation[0] === false">
         <Icon name="warning" class="mr-1" />
         <span v-if="passValidation[1] === 'basic'">
           {{
-            space.validation?.params.minScore || space?.filters.minScore
+            space?.validation?.params.minScore || space?.filters.minScore
               ? $tc('create.validationWarning.basic.minScore', [
                   n(space.filters.minScore),
                   space.symbol
@@ -352,6 +350,7 @@ watchEffect(() => {
           {{ $t('create.addChoice') }}
         </UiButton>
       </Block>
+
       <PluginSafeSnapConfig
         v-if="space?.plugins?.safeSnap"
         :proposal="proposal"
@@ -364,11 +363,11 @@ watchEffect(() => {
       <Block
         :title="$t('actions')"
         :icon="
-          space.plugins && Object.keys(space.plugins).length > 0
+          space?.plugins && Object.keys(space.plugins).length > 0
             ? 'stars'
             : undefined
         "
-        :loading="spaceLoading"
+        :loading="!space"
         @submit="modalProposalPluginsOpen = true"
       >
         <div class="mb-2">
@@ -420,7 +419,7 @@ watchEffect(() => {
       </Block>
     </template>
   </Layout>
-  <teleport to="#modal">
+  <teleport to="#modal" v-if="space">
     <ModalSelectDate
       :value="form[selectedDate]"
       :selectedDate="selectedDate"
