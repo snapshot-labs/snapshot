@@ -243,7 +243,16 @@ watchEffect(() => {
 <template>
   <Layout v-bind="$attrs">
     <template #content-left>
-      <Block v-if="passValidation[0] === false">
+      <div class="px-4 md:px-0 overflow-hidden">
+        <router-link
+          :to="domain ? { path: '/' } : { name: 'spaceProposals' }"
+          class="text-color"
+        >
+          <Icon name="back" size="22" class="!align-middle" />
+          {{ space.name }}
+        </router-link>
+      </div>
+      <Block v-if="passValidation[0] === false && space" class="mt-3">
         <Icon name="warning" class="mr-1" />
         <span v-if="passValidation[1] === 'basic'">
           {{
@@ -264,30 +273,29 @@ watchEffect(() => {
           }}
         </span>
       </Block>
-      <div class="px-4 md:px-0 overflow-hidden">
-        <router-link
-          :to="domain ? { path: '/' } : { name: 'spaceProposals' }"
-          class="text-color"
-        >
-          <Icon name="back" size="22" class="!align-middle" />
-          {{ space.name }}
-        </router-link>
-        <UiSidebarButton @click="preview = !preview" class="float-right">
-          <Icon v-if="!preview" name="preview" size="18" />
-          <Icon v-else name="back" size="18" />
-        </UiSidebarButton>
-      </div>
       <div class="px-4 md:px-0">
         <div class="flex flex-col mb-6">
-          <h1 v-if="preview" v-text="form.name || 'Untitled'" class="mb-2" />
-          <input
-            v-if="!preview"
-            v-model="form.name"
-            maxlength="128"
-            class="text-2xl font-bold input mb-2"
-            :placeholder="$t('create.question')"
-            ref="nameForm"
-          />
+          <div class="w-full flex justify-between">
+            <div class="w-11/12">
+              <h1
+                v-if="preview"
+                v-text="form.name || 'Untitled'"
+                class="mb-2 w-full break-all"
+              />
+              <input
+                v-if="!preview"
+                v-model="form.name"
+                maxlength="128"
+                class="text-2xl font-bold input mb-2 w-full"
+                :placeholder="$t('create.question')"
+                ref="nameForm"
+              />
+            </div>
+            <UiSidebarButton @click="preview = !preview" class="w-[44px]">
+              <Icon v-if="!preview" name="preview" size="18" />
+              <Icon v-else name="back" size="18" />
+            </UiSidebarButton>
+          </div>
           <TextareaAutosize
             v-if="!preview"
             v-model="form.body"
