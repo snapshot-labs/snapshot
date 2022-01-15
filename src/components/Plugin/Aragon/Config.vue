@@ -63,8 +63,8 @@ export default {
       >
         {{ $t('addAction') }}
       </UiButton>
-      <div v-else>
-        <UiButton class="w-full mb-2">
+      <div v-else class="space-y-2">
+        <UiButton class="w-full">
           <input
             v-model="input[`choice${choice}`].actions[0].to"
             class="input w-full text-center"
@@ -72,7 +72,7 @@ export default {
             required
           />
         </UiButton>
-        <UiButton class="w-full mb-2">
+        <UiButton class="w-full">
           <input
             v-model="input[`choice${choice}`].actions[0].value"
             class="input w-full text-center"
@@ -80,7 +80,7 @@ export default {
             required
           />
         </UiButton>
-        <UiButton class="w-full mb-2">
+        <UiButton class="w-full">
           <input
             v-model="input[`choice${choice}`].actions[0].data"
             class="input w-full text-center"
@@ -88,7 +88,7 @@ export default {
             required
           />
         </UiButton>
-        <UiButton @click="removeAction" class="w-full mb-2">
+        <UiButton @click="removeAction" class="w-full">
           {{ $t('removeAction') }}
         </UiButton>
       </div>
