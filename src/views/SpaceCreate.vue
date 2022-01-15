@@ -272,19 +272,9 @@ watchEffect(() => {
           <Icon name="back" size="22" class="!align-middle" />
           {{ space.name }}
         </router-link>
-        <UiSidebarButton
-          v-if="!preview"
-          @click="preview = true"
-          class="float-right"
-        >
-          <Icon name="preview" size="18" />
-        </UiSidebarButton>
-        <UiSidebarButton
-          v-if="preview"
-          @click="preview = false"
-          class="float-right"
-        >
-          <Icon name="back" size="18" />
+        <UiSidebarButton @click="preview = !preview" class="float-right">
+          <Icon v-if="!preview" name="preview" size="18" />
+          <Icon v-else name="back" size="18" />
         </UiSidebarButton>
       </div>
       <div class="px-4 md:px-0">
