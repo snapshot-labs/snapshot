@@ -172,6 +172,7 @@ async function deleteProposal() {
   });
   console.log('Result', result);
   if (result.id) {
+    // TODO: Use space query instead of explore, to get total number of proposals
     getExplore();
     store.space.proposals = [];
     notify(['green', t('notify.proposalDeleted')]);

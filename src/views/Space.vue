@@ -1,6 +1,5 @@
 <script setup>
 import { computed, onMounted } from 'vue';
-import { useApp } from '@/composables/useApp';
 import { useRoute } from 'vue-router';
 import { useDomain } from '@/composables/useDomain';
 import aliases from '@/../snapshot-spaces/spaces/aliases.json';
@@ -11,7 +10,6 @@ import { useExtendedSpaces } from '@/composables/useExtendedSpaces';
 const route = useRoute();
 const router = useRouter();
 const { domain } = useDomain();
-const { explore } = useApp();
 const aliasedSpace = aliases[domain] || aliases[route.params.key];
 const { loadExtentedSpaces, extentedSpaces, spaceLoading } =
   useExtendedSpaces();
@@ -26,10 +24,8 @@ if (aliasedSpace) {
 }
 
 const spaceId = computed(() => aliasedSpace || domain || route.params.key);
-const space = computed(
-  () =>
-    formatSpace(extentedSpaces.value?.find(s => s.id === spaceId.value)) ??
-    explore.value.spaces[spaceId.value]
+const space = computed(() =>
+  formatSpace(extentedSpaces.value?.find(s => s.id === spaceId.value))
 );
 
 const from = computed(() => route.params.from);

@@ -73,7 +73,7 @@ async function load() {
 watch(
   props.spaceId,
   () => {
-    const firstProposal = store.space.proposals[0]
+    const firstProposal = store.space.proposals[0];
     if (firstProposal && firstProposal?.space.id !== props.spaceId) {
       store.space.proposals = [];
       load();
@@ -98,6 +98,7 @@ watch(store.space.proposals, () => {
   loadProfiles(store.space.proposals.map(proposal => proposal.author));
 });
 
+// TODO: Use space query instead of explore, to get total number of proposals
 const { explore } = useApp();
 const proposalsCount = computed(() => {
   const count = explore.value.spaces[props.space.id].proposals;

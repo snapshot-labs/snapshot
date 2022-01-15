@@ -151,6 +151,7 @@ async function handleSubmit() {
   const result = await send(props.space, 'proposal', form.value);
   console.log('Result', result);
   if (result.id) {
+    // TODO: Use space query instead of explore, to get total number of proposals
     getExplore();
     store.space.proposals = [];
     notify(['green', t('notify.proposalCreated')]);
