@@ -11,12 +11,12 @@ const props = defineProps({
   spaceId: String
 });
 
-const network = computed(() => networks[props.space.network]);
+const network = computed(() => networks[props.space?.network]);
 
 const { profiles, loadProfiles } = useProfiles();
 
 watchEffect(() => {
-  if (props.space.admins)
+  if (props.space?.admins)
     loadProfiles(props.space.admins.concat(props.space.members));
 });
 
@@ -35,7 +35,7 @@ watchEffect(() => {
       <div class="px-4 md:px-0 mb-3 flex">
         <h2>{{ $t('about') }}</h2>
       </div>
-      <Block :loading="spaceLoading">
+      <Block :loading="!space">
         <div v-if="space.about" class="mb-3">
           <h4 class="link-color mb-2">{{ $t('settings.about') }}</h4>
           <UiText :text="space.about" />
@@ -90,7 +90,7 @@ watchEffect(() => {
       </Block>
       <Block
         :title="$t('settings.admins')"
-        v-if="space.admins?.length"
+        v-if="space && space.admins?.length"
         :slim="true"
         class="mb-3"
       >
@@ -105,7 +105,7 @@ watchEffect(() => {
       </Block>
       <Block
         :title="$t('settings.authors')"
-        v-if="space.members?.length"
+        v-if="space && space.members?.length"
         :slim="true"
         class="mb-3"
       >
