@@ -1,6 +1,7 @@
 <script setup>
 import { toRefs, ref, watch, computed } from 'vue';
 import { getInjected } from '@snapshot-labs/lock/src/utils';
+import { shorten, explorerUrl, getIpfsUrl } from '@/helpers/utils';
 import connectors from '@/helpers/connectors.json';
 import { useWeb3 } from '@/composables/useWeb3';
 
@@ -44,19 +45,7 @@ watch(open, () => (step.value = null));
           class="block"
         >
           <UiButton
-            v-if="id !== 'injected'"
-            class="button-outline w-full flex justify-center items-center gap-2"
-          >
-            <img
-              :src="`${path}/${connector.id}.png`"
-              height="25"
-              width="25"
-              :alt="connector.name"
-            />
-            <span class="mt-1">{{ connector.name }}</span>
-          </UiButton>
-          <UiButton
-            v-else-if="injected"
+            v-if="id === 'injected' && injected"
             class="button-outline w-full flex justify-center items-center"
           >
             <img
@@ -68,26 +57,38 @@ watch(open, () => (step.value = null));
             />
             {{ injected.name }}
           </UiButton>
+          <UiButton
+            v-else-if="id !== 'gnosis'"
+            class="button-outline w-full flex justify-center items-center gap-2"
+          >
+            <img
+              :src="`${path}/${connector.id}.png`"
+              height="25"
+              width="25"
+              :alt="connector.name"
+            />
+            <span class="mt-1">{{ connector.name }}</span>
+          </UiButton>
         </a>
       </div>
     </div>
     <div v-else>
       <div v-if="$auth.isAuthenticated.value" class="m-4 space-y-2">
         <a
-          :href="_explorer(web3.network.key, web3.account)"
+          :href="explorerUrl(web3.network.key, web3.account)"
           target="_blank"
           class="block"
         >
           <UiButton class="button-outline w-full">
             <UiAvatar
-              :imgsrc="_getUrl(web3.profile?.image)"
+              :imgsrc="getIpfsUrl(web3.profile?.image)"
               :address="web3.account"
               size="18"
               class="mr-2 -ml-1"
             />
             <span v-if="web3.profile.name" v-text="web3.profile.name" />
             <span v-else-if="web3.profile.ens" v-text="web3.profile.ens" />
-            <span v-else v-text="_shorten(web3.account)" />
+            <span v-else v-text="shorten(web3.account)" />
             <Icon name="external-link" class="ml-1" />
           </UiButton>
         </a>

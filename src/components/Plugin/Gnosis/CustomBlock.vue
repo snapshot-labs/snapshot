@@ -1,8 +1,12 @@
 <script>
 import Plugin from '@/../snapshot-plugins/src/plugins/gnosis';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
+import { shorten } from '@/helpers/utils';
 
 export default {
+  setup() {
+    return { shorten };
+  },
   props: ['proposalConfig', 'choices'],
   data() {
     return {
@@ -118,7 +122,7 @@ export default {
         </div>
       </div>
       <div class="mb-1" :title="choices[0]">
-        <b>{{ _shorten(choices[0], 'name') }}</b>
+        <b>{{ shorten(choices[0], 'name') }}</b>
         <span class="float-right">
           1
           {{ baseToken.symbol }}
@@ -132,7 +136,7 @@ export default {
         class="mb-1 border-b header-bg rounded-t-none md:rounded-t-md"
         style="padding-bottom: 12px"
       >
-        <b>{{ _shorten(choices[1], 'name') }}</b>
+        <b>{{ shorten(choices[1], 'name') }}</b>
         <span class="float-right">
           1
           {{ baseToken.symbol }}

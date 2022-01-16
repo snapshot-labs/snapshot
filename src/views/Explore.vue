@@ -4,7 +4,7 @@ import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 import { useSearchFilters } from '@/composables/useSearchFilters';
 import { useScrollMonitor } from '@/composables/useScrollMonitor';
-import { setPageTitle } from '@/helpers/utils';
+import { setPageTitle, n } from '@/helpers/utils';
 
 const { t } = useI18n();
 const route = useRoute();
@@ -53,7 +53,7 @@ onMounted(() => {
       <div
         class="ml-3 hidden sm:flex text-right items-center whitespace-nowrap"
       >
-        <div class="flex flex-col">{{ _n(items.length) }} {{ resultsStr }}</div>
+        <div class="flex flex-col">{{ n(items.length) }} {{ resultsStr }}</div>
         <a
           v-if="buttonStr"
           href="https://discord.gg/snapshot"
