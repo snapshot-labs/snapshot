@@ -1,4 +1,8 @@
 <script setup>
+import { usePlugins } from '@/composables/usePlugins';
+
+const { pluginIndex } = usePlugins();
+
 defineProps({
   space: Object,
   proposal: Object,
@@ -13,7 +17,7 @@ const update = form => {
 </script>
 
 <template>
-  <Block title="Aragon">
+  <Block :title="pluginIndex.aragon.name">
     <PluginAragonConfig
       v-if="space.plugins.aragon"
       :proposal="proposal"
