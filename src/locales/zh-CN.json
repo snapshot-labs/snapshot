@@ -61,8 +61,8 @@
   "verifyOnSignatorio": "在 Signator.io 上验证",
   "isCore": "核心",
   "notificationsBlocked": "你的浏览器正在屏蔽通知",
-  "notificationsNotSupported": "您的浏览器不支持通知功能",
-  "walletNotSupported": "Wallet is not supported",
+  "notificationsNotSupported": "你的浏览器不支持接收通知",
+  "walletNotSupported": "不支持该钱包",
   "seeInExplorer": "在浏览器上查看",
   "learnMore": "了解更多",
   "logout": "登出",
@@ -226,13 +226,13 @@
   },
   "setup": {
     "example": "例如 yam.eth",
-    "chooseExistingEns": "Choose one of your existing ENS domains to create a space with:",
-    "useSingleExistingEns": "Use your existing ENS domain:",
-    "orReigsterNewEns": "Or register a new domain:",
-    "toCreateASpace": "To create a space, you first need an ENS domain. Enter one below and follow the ENS registration instructions.",
+    "chooseExistingEns": "择你现有的一个ENS域名来创建空间：",
+    "useSingleExistingEns": "使用你现有的ENS域名：",
+    "orReigsterNewEns": "或者注册一个新的域名：",
+    "toCreateASpace": "要创建空间，你首先需要一个ENS域名。在下面输入一个，并按照ENS的注册说明进行操作。",
     "createASpace": "创建空间",
-    "registerEnsButton": "Register",
-    "supportedEnsTLDs": "Supported domain endings"
+    "registerEnsButton": "注册",
+    "supportedEnsTLDs": "支持的域名结尾"
   },
   "notify": {
     "youDidIt": "您成功了!",
