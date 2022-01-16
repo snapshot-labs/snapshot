@@ -1,21 +1,17 @@
 <script setup>
-defineProps({
-  id: String,
-  space: Object,
-  proposal: Object,
-  results: Object,
-  votes: Object,
-  strategies: Object,
-  loadedResults: Boolean
-});
+import { usePlugins } from '@/composables/usePlugins';
+
+const { pluginIndex } = usePlugins();
+
+defineProps({ proposal: Object });
 </script>
 
 <template>
-  <div>
+  <Block :title="pluginIndex.gnosis.name">
     <PluginGnosisCustomBlock
       v-if="proposal.plugins?.gnosis?.baseTokenAddress"
       :proposalConfig="proposal.plugins.gnosis"
       :choices="proposal.choices"
     />
-  </div>
+  </Block>
 </template>

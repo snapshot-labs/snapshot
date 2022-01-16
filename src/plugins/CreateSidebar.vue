@@ -4,7 +4,7 @@ import { usePlugins } from '@/composables/usePlugins';
 const { components, addComponents, setTemplateName } = usePlugins();
 setTemplateName('CreateSidebar');
 
-addComponents(['aragon']);
+addComponents(['aragon', 'gnosis']);
 
 const props = defineProps({
   proposal: Object,

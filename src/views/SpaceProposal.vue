@@ -426,16 +426,6 @@ onMounted(async () => {
         :votes="votes"
         :strategies="strategies"
       />
-      <ProposalPluginsSidebar
-        v-if="loadedResults"
-        :id="id"
-        :space="space"
-        :proposal="proposal"
-        :results="results"
-        :votes="votes"
-        :strategies="strategies"
-        :loadedResults="loadedResults"
-      />
     </template>
   </Layout>
   <teleport to="#modal">
