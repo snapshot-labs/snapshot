@@ -93,12 +93,10 @@
   "noSpacesJoined": "Ups, nu te-ai alăturat încă niciunui spațiu",
   "addFavorites": "Adaugă la favorite",
   "createdBy": "De către {0}",
-  "startToEnd": "pornește {0} sfârșit {1}",
   "startIn": "pornește {0}",
   "endIn": "sfârșit {1}",
-  "proposalStartIn": "începe în {0}",
-  "proposalToNow": "{0} rămas",
-  "endedAgo": "sfârșit {1}",
+  "proposalTimeLeft": "{0} left",
+  "endedAgo": "ended {0}",
   "proposalBy": "de către {0}",
   "endDate": "sfârșit {0}",
   "contectHash": "Hash conținut",
@@ -400,5 +398,14 @@
   "hal": {
     "title": "Urmărește propuneri pentru {spaceName}",
     "text": "Primește notificări de fiecare dată când o nouă propunere este creată sau se termină"
+  },
+  "timeUnits": {
+    "second": "1 second | {n} seconds",
+    "minute": "1 minute | {n} minutes",
+    "hour": "1 hour | {n} hours",
+    "day": "1 day | {n} days",
+    "week": "1 week | {n} weeks",
+    "month": "1 month | {n} months",
+    "year": "1 year | {n} years"
   }
 }
