@@ -93,12 +93,10 @@
   "noSpacesJoined": "Oops, 아직 어떤 공간에도 가입하지 않은 경우",
   "addFavorites": "즐겨찾기 추가",
   "createdBy": "에 의하여 {0}",
-  "startToEnd": "시작 {0} 끝 {1}",
   "startIn": "스타트 {0}",
   "endIn": "종료 {1}",
-  "proposalStartIn": "start in {0}",
-  "proposalToNow": "{0} left",
-  "endedAgo": "종료 {1}",
+  "proposalTimeLeft": "{0} left",
+  "endedAgo": "ended {0}",
   "proposalBy": "에 의하여 {0}",
   "endDate": "말단 {0}",
   "contectHash": "콘텐츠 해시",
@@ -400,5 +398,14 @@
   "hal": {
     "title": "Track proposals for {spaceName}",
     "text": "Receive notifications every time a new proposal is created or ends"
+  },
+  "timeUnits": {
+    "second": "1 second | {n} seconds",
+    "minute": "1 minute | {n} minutes",
+    "hour": "1 hour | {n} hours",
+    "day": "1 day | {n} days",
+    "week": "1 week | {n} weeks",
+    "month": "1 month | {n} months",
+    "year": "1 year | {n} years"
   }
 }
