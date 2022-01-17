@@ -93,12 +93,10 @@
   "noSpacesJoined": "Ups, Anda belum bergabung dengan ruang apa pun",
   "addFavorites": "Tambahkan favorit",
   "createdBy": "Oleh {0}",
-  "startToEnd": "mulai {0} akhir {1}",
   "startIn": "mulai {0}",
   "endIn": "akhir {1}",
-  "proposalStartIn": "dimulai dalam {0}",
-  "proposalToNow": "{0} tersisa",
-  "endedAgo": "berakhir {1}",
+  "proposalTimeLeft": "{0} left",
+  "endedAgo": "ended {0}",
   "proposalBy": "oleh {0}",
   "endDate": "akhir {0}",
   "contectHash": "Hash konten",
@@ -400,5 +398,14 @@
   "hal": {
     "title": "Lacak proposal untuk {spaceName}",
     "text": "Dapatkan pemeberitahuan setiap propoaal baru dibuat atau berakhir"
+  },
+  "timeUnits": {
+    "second": "1 second | {n} seconds",
+    "minute": "1 minute | {n} minutes",
+    "hour": "1 hour | {n} hours",
+    "day": "1 day | {n} days",
+    "week": "1 week | {n} weeks",
+    "month": "1 month | {n} months",
+    "year": "1 year | {n} years"
   }
 }
