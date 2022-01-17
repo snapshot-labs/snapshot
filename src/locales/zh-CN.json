@@ -93,12 +93,10 @@
   "noSpacesJoined": "哎呀，您还没有加入任何空间",
   "addFavorites": "添加收藏",
   "createdBy": "由 {0}",
-  "startToEnd": "开始 {0} 结束 {1}",
   "startIn": "从 {0} 开始",
   "endIn": "结束 {1}",
-  "proposalStartIn": "从{0}开始",
-  "proposalToNow": "还剩 {0}",
-  "endedAgo": "结束 {1}",
+  "proposalTimeLeft": "{0} left",
+  "endedAgo": "ended {0}",
   "proposalBy": "由 {0}",
   "endDate": "结束 {0}",
   "contectHash": "内容哈希",
@@ -400,5 +398,14 @@
   "hal": {
     "title": "追踪 {spaceName} 的提案",
     "text": "每次创建新提案或提案结束时都接收通知"
+  },
+  "timeUnits": {
+    "second": "1 second | {n} seconds",
+    "minute": "1 minute | {n} minutes",
+    "hour": "1 hour | {n} hours",
+    "day": "1 day | {n} days",
+    "week": "1 week | {n} weeks",
+    "month": "1 month | {n} months",
+    "year": "1 year | {n} years"
   }
 }
