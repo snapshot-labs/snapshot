@@ -93,12 +93,10 @@
   "noSpacesJoined": "Oops, you haven't joined any spaces yet",
   "addFavorites": "เพิ่มรายการโปรด",
   "createdBy": "โดย{0}",
-  "startToEnd": "เริ่มต้น {0} สินสุด {1}",
   "startIn": "เริ่มต้น {0}",
   "endIn": "สินสุด{1}",
-  "proposalStartIn": "start in {0}",
-  "proposalToNow": "{0} left",
-  "endedAgo": "สิ้นสุด {1}",
+  "proposalTimeLeft": "{0} left",
+  "endedAgo": "ended {0}",
   "proposalBy": "by {0}",
   "endDate": "สิ้นสุด{0}",
   "contectHash": "เนื้อหายุ่งเหยิง",
@@ -400,5 +398,14 @@
   "hal": {
     "title": "Track proposals for {spaceName}",
     "text": "Receive notifications every time a new proposal is created or ends"
+  },
+  "timeUnits": {
+    "second": "1 second | {n} seconds",
+    "minute": "1 minute | {n} minutes",
+    "hour": "1 hour | {n} hours",
+    "day": "1 day | {n} days",
+    "week": "1 week | {n} weeks",
+    "month": "1 month | {n} months",
+    "year": "1 year | {n} years"
   }
 }
