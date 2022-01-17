@@ -1,5 +1,5 @@
 <script setup>
-import { computed, watchEffect, onMounted } from 'vue';
+import { computed, watchEffect } from 'vue';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { useProfiles } from '@/composables/useProfiles';
 import { getUrl } from '@snapshot-labs/snapshot.js/src/utils';

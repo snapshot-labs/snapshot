@@ -15,7 +15,6 @@ import { useDomain } from '@/composables/useDomain';
 import { useApolloQuery } from '@/composables/useApolloQuery';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useClient } from '@/composables/useClient';
-import { useApp } from '@/composables/useApp';
 import { useStore } from '@/composables/useStore';
 import { setPageTitle, n } from '@/helpers/utils';
 
@@ -30,7 +29,6 @@ const { t } = useI18n();
 const auth = getInstance();
 const { domain } = useDomain();
 const { web3, web3Account } = useWeb3();
-const { getExplore } = useApp();
 const { send, clientLoading } = useClient();
 const { store } = useStore();
 const notify = inject('notify');
@@ -149,8 +147,6 @@ async function handleSubmit() {
   const result = await send(props.space, 'proposal', form.value);
   console.log('Result', result);
   if (result.id) {
-    // TODO: Use space query instead of explore, to get total number of proposals
-    getExplore();
     store.space.proposals = [];
     notify(['green', t('notify.proposalCreated')]);
     router.push({

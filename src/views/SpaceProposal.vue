@@ -16,7 +16,6 @@ import { useDomain } from '@/composables/useDomain';
 import { useSharing } from '@/composables/useSharing';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useClient } from '@/composables/useClient';
-import { useApp } from '@/composables/useApp';
 import { useInfiniteLoader } from '@/composables/useInfiniteLoader';
 import { useStore } from '@/composables/useStore';
 
@@ -32,7 +31,6 @@ const { domain } = useDomain();
 const { t } = useI18n();
 const { web3, web3Account } = useWeb3();
 const { send, clientLoading } = useClient();
-const { getExplore } = useApp();
 const { store } = useStore();
 const notify = inject('notify');
 
@@ -172,8 +170,6 @@ async function deleteProposal() {
   });
   console.log('Result', result);
   if (result.id) {
-    // TODO: Use space query instead of explore, to get total number of proposals
-    getExplore();
     store.space.proposals = [];
     notify(['green', t('notify.proposalDeleted')]);
     router.push({ name: 'spaceProposals' });
