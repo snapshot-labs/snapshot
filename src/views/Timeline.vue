@@ -13,6 +13,7 @@ import { useWeb3 } from '@/composables/useWeb3';
 import verified from '@/../snapshot-spaces/spaces/verified.json';
 import zipObject from 'lodash/zipObject';
 import { useStore } from '@/composables/useStore';
+import { setPageTitle } from '@/helpers/utils';
 
 const { store } = useStore();
 
@@ -20,7 +21,7 @@ const loading = ref(false);
 
 const route = useRoute();
 const { followingSpaces, loadingFollows } = useFollowSpace();
-const { web3 } = useWeb3();
+const { web3, web3Account } = useWeb3();
 
 const spaces = computed(() => {
   const verifiedSpaces = Object.entries(verified)
@@ -40,11 +41,13 @@ watch(spaces, () => {
 
 const isTimeline = computed(() => route.name === 'timeline');
 
+const { updateLastSeenProposal } = useUnseenProposals();
 const { loadBy, loadingMore, stopLoadingMore, loadMore } = useInfiniteLoader();
 
-const { endElement } = useScrollMonitor(() =>
-  loadMore(() => loadProposals(store.timeline.proposals.length), loading.value)
-);
+const { endElement } = useScrollMonitor(() => {
+  if (!web3Account.value && route.name === 'timeline') return;
+  loadMore(() => loadProposals(store.timeline.proposals.length), loading.value);
+});
 
 const { apolloQuery } = useApolloQuery();
 async function loadProposals(skip = 0) {
@@ -87,11 +90,13 @@ function emitUpdateLastSeenProposal() {
 // Initialize
 onMounted(() => {
   load();
+  setPageTitle('page.title.timeline');
   emitUpdateLastSeenProposal();
 });
 
 async function load() {
   if (store.timeline.proposals.length > 0) return;
+  if (!web3Account.value && route.name === 'timeline') return;
   loading.value = true;
   await loadProposals();
   loading.value = false;
@@ -103,10 +108,6 @@ function selectState(e) {
   store.timeline.proposals = [];
   load();
 }
-
-const { updateLastSeenProposal } = useUnseenProposals();
-
-const web3Account = computed(() => web3.value.account);
 </script>
 
 <template>

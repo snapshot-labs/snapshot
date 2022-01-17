@@ -1,10 +1,11 @@
 <script setup>
-import { ref, watchEffect } from 'vue';
+import { ref, watchEffect, onMounted } from 'vue';
 import { useUnseenProposals } from '@/composables/useUnseenProposals';
 import { useScrollMonitor } from '@/composables/useScrollMonitor';
 import { useApp } from '@/composables/useApp';
 import { useFollowSpace } from '@/composables/useFollowSpace';
 import { useCategories } from '@/composables/useCategories';
+import { shorten, setPageTitle, n } from '@/helpers/utils';
 
 const { selectedCategory, orderedSpaces, orderedSpacesByCategory } = useApp();
 const { followingSpaces } = useFollowSpace();
@@ -22,6 +23,10 @@ const loadBy = 16;
 const limit = ref(loadBy);
 
 const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
+
+onMounted(() => {
+  setPageTitle('page.title.home');
+});
 </script>
 
 <template>
@@ -75,7 +80,7 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
         </template>
       </UiDropdown>
       <div class="ml-3 text-right hidden md:block whitespace-nowrap">
-        {{ $tc('spaceCount', [_n(orderedSpacesByCategory.length)]) }}
+        {{ $tc('spaceCount', [n(orderedSpacesByCategory.length)]) }}
       </div>
     </Container>
     <Container :slim="true">
@@ -106,13 +111,13 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
                 />
               </div>
               <h3
-                v-text="_shorten(space.name, 16)"
+                v-text="shorten(space.name, 16)"
                 class="mb-0 pb-0 mt-0 text-[22px] !h-[32px] overflow-hidden"
               />
               <div class="mb-[12px] text-color">
                 {{
                   $tc('members', space.followers, {
-                    count: _n(space.followers)
+                    count: n(space.followers)
                   })
                 }}
               </div>

@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from 'vue';
+import { shorten } from '@/helpers/utils';
 
 defineProps({
   proposal: {
@@ -27,7 +28,7 @@ function selectChoice(i) {
       class="block w-full mb-2"
       :class="selectedChoice === i + 1 && 'button--active'"
     >
-      {{ _shorten(choice, 32) }}
+      {{ shorten(choice, 32) }}
       <PluginAragonGovern :proposal="proposal" />
     </UiButton>
   </div>

@@ -1,5 +1,6 @@
 <script setup>
 import { watch, computed, ref } from 'vue';
+import { ms } from '@/helpers/utils';
 import { useNotifications } from '@/composables/useNotifications';
 import { useModal } from '@/composables/useModal';
 import { useWeb3 } from '@/composables/useWeb3';
@@ -9,8 +10,7 @@ import { useI18n } from 'vue-i18n';
 const { t } = useI18n();
 const auth = getInstance();
 const { modalOpen, modalAccountOpen } = useModal();
-const { web3 } = useWeb3();
-const web3Account = computed(() => web3.value.account);
+const { web3Account } = useWeb3();
 const props = defineProps({
   item: Object,
   space: Object,
@@ -130,15 +130,7 @@ const isCreator = computed(() => props.proposal.author === web3Account.value);
       <p>{{ $t('comment_box.delete_modal') }}</p>
     </div>
     <div
-      class="
-        mb-2
-        mt-3
-        text-center
-        flex
-        items-center
-        content-center
-        justify-center
-      "
+      class="mb-2 mt-3 text-center flex items-center content-center justify-center"
     >
       <UiButton
         @click="deleteItem"
@@ -174,7 +166,7 @@ const isCreator = computed(() => props.proposal.author === web3Account.value);
         <span
           v-text="$d(item.timestamp, 'short', 'en-US')"
           v-tippy="{
-            content: _ms(item.timestamp / 1e3)
+            content: ms(item.timestamp / 1e3)
           }"
           class="ml-1"
         />

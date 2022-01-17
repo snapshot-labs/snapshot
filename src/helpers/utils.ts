@@ -3,10 +3,12 @@ import { formatEther } from '@ethersproject/units';
 import { BigNumber } from '@ethersproject/bignumber';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import voting from '@snapshot-labs/snapshot.js/src/voting';
+import { getUrl } from '@snapshot-labs/snapshot.js/src/utils';
 import numeral from 'numeral';
 import { format } from 'timeago.js';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
+import i18n from '@/helpers/i18n';
 
 dayjs.extend(relativeTime);
 
@@ -141,4 +143,15 @@ export function calcFromSeconds(value, unit) {
 export function calcToSeconds(value, unit) {
   if (unit === 'h') return value * 60 * 60;
   if (unit === 'd') return value * 60 * 60 * 24;
+}
+
+export function setPageTitle(message, params = {}) {
+  const { t } = i18n.global;
+  document.title = t(message, params);
+}
+
+export function getIpfsUrl(url) {
+  const gateway: any =
+    import.meta.env.VITE_IPFS_GATEWAY || 'cloudflare-ipfs.com';
+  return getUrl(url, gateway);
 }

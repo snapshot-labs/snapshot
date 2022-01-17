@@ -2,9 +2,12 @@
 import Plugin from '@/../snapshot-plugins/src/plugins/safeSnap';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import {
+  createBatch,
   getGnosisSafeBalances,
-  getGnosisSafeCollectibles
+  getGnosisSafeCollectibles,
+  removeHexPrefix
 } from '@/helpers/abi/utils';
+import { shorten } from '@/helpers/utils';
 
 const plugin = new Plugin();
 
@@ -47,16 +50,41 @@ async function fetchCollectibles(network, gnosisSafeAddress) {
   return [];
 }
 
+function formatBatches(network, realityModule, batches) {
+  if (batches.length) {
+    const batchSample = batches[0];
+    if (Array.isArray(batchSample)) {
+      const chainId = parseInt(network);
+      return batches.map((txs, index) =>
+        createBatch(realityModule, chainId, index, txs)
+      );
+    }
+  }
+  return batches;
+}
+
 export default {
-  props: ['modelValue', 'proposal', 'network', 'realityAddress', 'preview'],
+  setup() {
+    return { shorten, removeHexPrefix };
+  },
+  props: [
+    'modelValue',
+    'proposal',
+    'network',
+    'realityAddress',
+    'preview',
+    'hash'
+  ],
   emits: ['update:modelValue'],
   data() {
     return {
-      input: this.modelValue,
+      input: formatBatches(this.network, this.realityAddress, this.modelValue),
       gnosisSafeAddress: undefined,
+      showHash: false,
       transactionConfig: {
         preview: this.preview,
         gnosisSafeAddress: undefined,
+        realityAddress: this.realityAddress,
         network: this.network,
         tokens: [],
         collectables: []
@@ -104,20 +132,26 @@ export default {
   },
   methods: {
     addTransactionBatch() {
-      this.input.push([]);
+      this.input.push(
+        createBatch(
+          this.realityAddress,
+          parseInt(this.network),
+          this.input.length,
+          []
+        )
+      );
       this.$emit('update:modelValue', this.input);
     },
     removeBatch(index) {
       this.input.splice(index, 1);
       this.$emit('update:modelValue', this.input);
     },
-    getBatchNonce(index) {
-      return this.input
-        .slice(0, index)
-        .reduce((acc, transactions) => acc + transactions.length, 0);
-    },
     updateTransactionBatch(index, batch) {
       this.input[index] = batch;
+      this.$emit('update:modelValue', this.input);
+    },
+    handleImport(txs) {
+      this.input.push(txs);
       this.$emit('update:modelValue', this.input);
     }
   }
@@ -144,17 +178,27 @@ export default {
         style="font-weight: normal"
         target="_blank"
       >
-        {{ _shorten(gnosisSafeAddress) }}
+        {{ shorten(gnosisSafeAddress) }}
         <i class="iconfont iconexternal-link" />
       </a>
     </h4>
+    <UiCollapsibleText
+      v-if="hash"
+      :showArrow="true"
+      :open="!showHash"
+      class="border-b"
+      style="border-width: 0 0 1px 0 !important"
+      title="Complete Transaction Hash"
+      @toggle="showHash = !showHash"
+    >
+      {{ removeHexPrefix(hash) }}
+    </UiCollapsibleText>
     <div class="text-center">
       <div v-for="(batch, index) in input" v-bind:key="index" class="border-b">
         <PluginSafeSnapFormTransactionBatch
           :config="transactionConfig"
-          :index="index"
           :modelValue="batch"
-          :nonce="getBatchNonce(index)"
+          :nonce="index"
           @remove="removeBatch(index)"
           @update:modelValue="updateTransactionBatch(index, $event)"
         />
@@ -165,9 +209,14 @@ export default {
           {{ $t('safeSnap.addBatch') }}
         </UiButton>
 
+        <PluginSafeSnapFormImportTransactionsButton
+          v-if="!preview"
+          @import="handleImport($event)"
+        />
+
         <PluginSafeSnapHandleOutcome
           v-if="preview && proposalResolved"
-          :txs="input"
+          :batches="input"
           :proposalId="proposal.id"
           :realityAddress="realityAddress"
           :network="transactionConfig.network"

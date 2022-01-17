@@ -1,0 +1,9 @@
+tasks:
+  - name: Setup
+    init: |
+      yarn install --frozen-lockfile --silent --network-timeout 100000
+    command: yarn dev
+
+ports:
+  - port: 3000
+    onOpen: open-preview

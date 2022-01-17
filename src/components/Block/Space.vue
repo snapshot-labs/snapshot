@@ -1,6 +1,7 @@
 <script setup>
 import { computed, ref, watchEffect } from 'vue';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
+import { n } from '@/helpers/utils';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useApp } from '@/composables/useApp';
 import { useSpaceSubscription } from '@/composables/useSpaceSubscription';
@@ -12,14 +13,12 @@ const props = defineProps({
 });
 
 const auth = getInstance();
-const { web3 } = useWeb3();
+const { web3Account } = useWeb3();
 
 const { explore } = useApp();
 
 const nbrMembers = explore.value.spaces[props.space.id].followers;
 const isVerified = verified[props.space.id] || 0;
-
-const web3Account = computed(() => web3.value.account);
 
 const isAdmin = computed(() => {
   const admins = props.space?.admins?.map(address => address.toLowerCase());
@@ -72,7 +71,7 @@ watchEffect(() => {
           <Icon v-if="isVerified === -1" name="warning" size="20" />
         </h3>
         <div class="mb-[12px] text-color">
-          {{ $tc('members', nbrMembers, { count: _n(nbrMembers) }) }}
+          {{ $tc('members', nbrMembers, { count: n(nbrMembers) }) }}
         </div>
         <div class="flex justify-center gap-x-2">
           <FollowButton :space="space" />

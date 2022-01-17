@@ -1,9 +1,10 @@
 <script setup>
-import { computed, ref } from 'vue';
+import { computed, ref, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 import { useSearchFilters } from '@/composables/useSearchFilters';
 import { useScrollMonitor } from '@/composables/useScrollMonitor';
+import { setPageTitle, n } from '@/helpers/utils';
 
 const { t } = useI18n();
 const route = useRoute();
@@ -37,6 +38,10 @@ const loadBy = 8;
 const limit = ref(loadBy);
 
 const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
+
+onMounted(() => {
+  setPageTitle('page.title.explore');
+});
 </script>
 
 <template>
@@ -48,10 +53,10 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
       <div
         class="ml-3 hidden sm:flex text-right items-center whitespace-nowrap"
       >
-        <div class="flex flex-col">{{ _n(items.length) }} {{ resultsStr }}</div>
+        <div class="flex flex-col">{{ n(items.length) }} {{ resultsStr }}</div>
         <a
           v-if="buttonStr"
-          href="https://discord.snapshot.org"
+          href="https://discord.gg/snapshot"
           target="_blank"
           class="hidden md:block ml-3"
         >

@@ -1,5 +1,6 @@
 <script setup>
 import { computed } from 'vue';
+import { shorten, n } from '@/helpers/utils';
 
 const props = defineProps({
   id: String,
@@ -46,25 +47,25 @@ const hideAbstain = props.space?.voting?.hideAbstain ?? false;
               content: choice.choice.length > 12 ? choice.choice : null
             }"
             class="mr-1"
-            v-text="_shorten(choice.choice, 'choice')"
+            v-text="shorten(choice.choice, 'choice')"
           />
 
           <span
             class="inline-block"
             v-tippy="{
               content: results.resultsByStrategyScore[choice.i]
-                .map((score, index) => `${_n(score)} ${titles[index]}`)
+                .map((score, index) => `${n(score)} ${titles[index]}`)
                 .join(' + ')
             }"
           >
-            {{ _n(results.resultsByVoteBalance[choice.i]) }}
-            {{ _shorten(space.symbol, 'symbol') }}
+            {{ n(results.resultsByVoteBalance[choice.i]) }}
+            {{ shorten(space.symbol, 'symbol') }}
           </span>
           <span
             v-if="proposal.type === 'basic' && hideAbstain && choice.i === 0"
             class="float-right"
             v-text="
-              _n(
+              n(
                 getPercentage(
                   results.resultsByVoteBalance[0],
                   results.resultsByVoteBalance[0] +
@@ -80,7 +81,7 @@ const hideAbstain = props.space?.voting?.hideAbstain ?? false;
             "
             class="float-right"
             v-text="
-              _n(
+              n(
                 getPercentage(
                   results.resultsByVoteBalance[1],
                   results.resultsByVoteBalance[0] +
@@ -94,7 +95,7 @@ const hideAbstain = props.space?.voting?.hideAbstain ?? false;
             v-else
             class="float-right"
             v-text="
-              _n(
+              n(
                 getPercentage(
                   results.resultsByVoteBalance[choice.i],
                   results.sumOfResultsBalance
@@ -119,8 +120,8 @@ const hideAbstain = props.space?.voting?.hideAbstain ?? false;
     <div v-if="props.space?.voting?.quorum" class="text-skin-link">
       {{ $t('settings.quorum') }}
       <span class="float-right">
-        {{ _n(results.sumOfResultsBalance) }} /
-        {{ _n(props.space.voting.quorum) }}
+        {{ n(results.sumOfResultsBalance) }} /
+        {{ n(props.space.voting.quorum) }}
       </span>
     </div>
   </Block>

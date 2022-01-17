@@ -7,7 +7,6 @@ import options from '@/helpers/auth';
 import '../snapshot-spaces/skins';
 import App from '@/App.vue';
 import router from '@/router';
-import mixins from '@/mixins';
 import i18n from '@/helpers/i18n';
 import '@/helpers/auth';
 import '@/style.scss';
@@ -27,9 +26,7 @@ const app = createApp({
   .use(VueTippy, {
     defaultProps: { delay: [400, null] },
     directive: 'tippy' // => v-tippy
-  })
-
-  .mixin(mixins);
+  });
 
 app.mount('#app');
 

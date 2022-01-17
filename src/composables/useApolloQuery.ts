@@ -1,6 +1,7 @@
 import { computed, ref } from 'vue';
 import cloneDeep from 'lodash/cloneDeep';
 import { apolloClient } from '@/helpers/apollo';
+import { ensApolloClient } from '@/helpers/ens';
 
 export function useApolloQuery() {
   const loading = ref(false);
@@ -18,5 +19,22 @@ export function useApolloQuery() {
     }
   }
 
-  return { apolloQuery, queryLoading: computed(() => loading.value) };
+  async function ensApolloQuery(options) {
+    try {
+      loading.value = true;
+      const response = await ensApolloClient.query(options);
+      loading.value = false;
+
+      return response.data;
+    } catch (error) {
+      loading.value = false;
+      console.log(error);
+    }
+  }
+
+  return {
+    apolloQuery,
+    ensApolloQuery,
+    queryLoading: computed(() => loading.value)
+  };
 }

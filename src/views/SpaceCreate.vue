@@ -17,6 +17,8 @@ import { useWeb3 } from '@/composables/useWeb3';
 import { useClient } from '@/composables/useClient';
 import { useApp } from '@/composables/useApp';
 import { useExtendedSpaces } from '@/composables/useExtendedSpaces';
+import { useStore } from '@/composables/useStore';
+import { setPageTitle, n } from '@/helpers/utils';
 
 const props = defineProps({
   spaceId: String,
@@ -28,16 +30,17 @@ const router = useRouter();
 const { t } = useI18n();
 const auth = getInstance();
 const { domain } = useDomain();
-const { web3 } = useWeb3();
+const { web3, web3Account } = useWeb3();
 const { getExplore } = useApp();
 const { spaceLoading } = useExtendedSpaces();
 const { send, clientLoading } = useClient();
+const { store } = useStore();
 const notify = inject('notify');
 
 const choices = ref([]);
 const route = useRoute();
 const blockNumber = ref(-1);
-const bodyLimit = ref(4800);
+const bodyLimit = ref(14400);
 const preview = ref(false);
 const form = ref({
   name: '',
@@ -58,7 +61,6 @@ const nameForm = ref(null);
 const passValidation = ref([true]);
 const loadingSnapshot = ref(true);
 
-const web3Account = computed(() => web3.value.account);
 const proposal = computed(() =>
   Object.assign(form.value, { choices: choices.value })
 );
@@ -108,7 +110,7 @@ const isValid = computed(() => {
     dateEnd.value > dateStart.value &&
     form.value.snapshot &&
     form.value.snapshot > blockNumber.value / 2 &&
-    choices.value.length >= 2 &&
+    choices.value.length >= 1 &&
     !choices.value.some(a => a.text === '') &&
     passValidation.value[0] &&
     isSafeSnapPluginValid &&
@@ -150,6 +152,7 @@ async function handleSubmit() {
   console.log('Result', result);
   if (result.id) {
     getExplore();
+    store.space.proposals = [];
     notify(['green', t('notify.proposalCreated')]);
     router.push({
       name: 'spaceProposal',
@@ -205,6 +208,7 @@ async function loadProposal() {
 }
 
 onMounted(async () => {
+  setPageTitle('page.title.space.create', { space: props.space.name });
   nameForm.value.focus();
   addChoice(2);
 
@@ -241,7 +245,7 @@ watchEffect(() => {
           {{
             space.validation?.params.minScore || space?.filters.minScore
               ? $tc('create.validationWarning.basic.minScore', [
-                  _n(space.filters.minScore),
+                  n(space.filters.minScore),
                   space.symbol
                 ])
               : $t('create.validationWarning.basic.member')
@@ -269,7 +273,7 @@ watchEffect(() => {
           @click="preview = true"
           class="float-right"
         >
-          <Icon name="search" size="18" class="pb-1" />
+          <Icon name="preview" size="18" />
         </UiSidebarButton>
         <UiSidebarButton
           v-if="preview"
@@ -301,7 +305,7 @@ watchEffect(() => {
             <UiMarkdown :body="form.body" />
           </div>
           <p v-if="form.body.length > bodyLimit" class="!text-red mt-4">
-            -{{ _n(-(bodyLimit - form.body.length)) }}
+            -{{ n(-(bodyLimit - form.body.length)) }}
           </p>
         </div>
       </div>

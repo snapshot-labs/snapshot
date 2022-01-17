@@ -10,11 +10,12 @@ import { lsSet } from '@/helpers/utils';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useApp } from '@/composables/useApp';
 import { useStore } from '@/composables/useStore';
+import { setPageTitle } from '@/helpers/utils';
 
 const props = defineProps({ space: Object, spaceId: String });
 
 const { lastSeenProposals, updateLastSeenProposal } = useUnseenProposals();
-const { web3 } = useWeb3();
+const { web3Account } = useWeb3();
 const { store } = useStore();
 
 const loading = ref(false);
@@ -22,15 +23,11 @@ const loading = ref(false);
 const spaceMembers = computed(() =>
   props.space.members.length < 1 ? ['none'] : props.space.members
 );
-const web3Account = computed(() => web3.value.account);
 
 const { loadBy, loadingMore, stopLoadingMore, loadMore } = useInfiniteLoader();
 
-const { endElement } = useScrollMonitor(() =>
-  loadMore(() => loadProposals(store.space.proposals.length), loading.value)
-);
-
 const { apolloQuery } = useApolloQuery();
+
 async function loadProposals(skip = 0) {
   const proposalsObj = await apolloQuery(
     {
@@ -61,26 +58,39 @@ function emitUpdateLastSeenProposal() {
   updateLastSeenProposal(web3Account.value);
 }
 
-onMounted(load());
+onMounted(() => {
+  setPageTitle('page.title.space.proposals', { space: props.space.name });
+});
 
 async function load() {
-  if (
-    store.space.proposals.length > 0 &&
-    store.space.proposals[0]?.space.id === props.space.id
-  )
-    return;
-  store.space.proposals = [];
+  if (store.space.proposals.length > 0) return;
   loading.value = true;
   await loadProposals();
   loading.value = false;
   emitUpdateLastSeenProposal();
 }
 
+watch(
+  props.spaceId,
+  () => {
+    const firstProposal = store.space.proposals[0]
+    if (firstProposal && firstProposal?.space.id !== props.spaceId) {
+      store.space.proposals = [];
+      load();
+    }
+  },
+  { immediate: true }
+);
+
 function selectState(e) {
   store.space.filterBy = e;
   store.space.proposals = [];
   load();
 }
+
+const { endElement } = useScrollMonitor(() =>
+  loadMore(() => loadProposals(store.space.proposals.length), loading.value)
+);
 
 const { profiles, loadProfiles } = useProfiles();
 
@@ -92,6 +102,10 @@ const { explore } = useApp();
 const proposalsCount = computed(() => {
   const count = explore.value.spaces[props.space.id].proposals;
   return count ? count : 0;
+});
+
+const loadingData = computed(() => {
+  return loading.value || loadingMore.value;
 });
 </script>
 
@@ -127,14 +141,17 @@ const proposalsCount = computed(() => {
         </UiDropdown>
       </div>
 
-      <Block v-if="loading" :slim="true">
-        <RowLoading class="my-2" />
-      </Block>
       <NoResults
         :block="true"
-        v-else-if="proposalsCount && store.space.proposals.length < 1"
+        v-if="
+          !loadingData && proposalsCount && store.space.proposals.length < 1
+        "
       />
-      <NoProposals v-else-if="!proposalsCount" class="mt-2" :space="space" />
+      <NoProposals
+        v-else-if="!proposalsCount && !loadingData"
+        class="mt-2"
+        :space="space"
+      />
       <div v-else>
         <TimelineProposal
           v-for="(proposal, i) in store.space.proposals"
@@ -147,7 +164,7 @@ const proposalsCount = computed(() => {
         style="height: 10px; width: 10px; position: absolute"
         ref="endElement"
       />
-      <Block v-if="loadingMore && !loading" :slim="true">
+      <Block v-if="loadingData" :slim="true">
         <RowLoading class="my-2" />
       </Block>
     </template>

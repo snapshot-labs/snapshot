@@ -20,9 +20,7 @@ const state = reactive({
 
 export function useWeb3() {
   async function login(connector = 'injected') {
-    if (connector === 'trezor') state.isTrezor = true;
-    else state.isTrezor = false;
-
+    state.isTrezor = connector === 'trezor';
     auth = getInstance();
     state.authLoading = true;
     await auth.login(connector);
@@ -38,6 +36,7 @@ export function useWeb3() {
     auth.logout();
     state.account = '';
     state.profile = null;
+    state.isTrezor = false;
   }
 
   async function loadProvider() {
@@ -110,6 +109,7 @@ export function useWeb3() {
     logout,
     loadProvider,
     handleChainChanged,
-    web3: computed(() => state)
+    web3: computed(() => state),
+    web3Account: computed(() => state.account)
   };
 }

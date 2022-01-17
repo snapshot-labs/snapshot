@@ -1,5 +1,6 @@
 <script setup>
 import { watchEffect, computed } from 'vue';
+import { shorten, toNow, n } from '@/helpers/utils';
 import { useUsername } from '@/composables/useUsername';
 import removeMd from 'remove-markdown';
 
@@ -39,8 +40,19 @@ watchEffect(() => {
     >
       <div>
         <div class="mb-2">
-          <Token :space="proposal.space" size="28" />
-          <span class="ml-2" v-text="proposal.space.name" />
+          <router-link
+            class="text-color group"
+            :to="{
+              name: 'spaceProposals',
+              params: { key: proposal.space.id }
+            }"
+          >
+            <Token :space="proposal.space" size="28" />
+            <span
+              class="ml-2 group-hover:text-skin-link"
+              v-text="proposal.space.name"
+            />
+          </router-link>
           {{ $tc('proposalBy', [username]) }}
           <Badges
             :address="proposal.author"
@@ -48,7 +60,7 @@ watchEffect(() => {
           />
         </div>
         <h3 v-text="proposal.title" class="mt-1 mb-1" />
-        <p v-text="_shorten(body, 120)" class="break-words mb-2 text-md" />
+        <p v-text="shorten(body, 120)" class="break-words mb-2 text-md" />
         <div
           v-if="
             proposal.scores_state === 'final' &&
@@ -69,14 +81,14 @@ watchEffect(() => {
                 class="mr-1 -ml-1 align-middle"
                 v-if="i === winningChoice"
               />
-              {{ _shorten(choice, 32) }}
+              {{ shorten(choice, 32) }}
               <span class="text-color ml-1">
-                {{ _n(proposal.scores[i]) }} {{ proposal.space.symbol }}
+                {{ n(proposal.scores[i]) }} {{ proposal.space.symbol }}
               </span>
             </div>
             <div
               v-text="
-                _n((1 / proposal.scores_total) * proposal.scores[i], '0.[0]%')
+                n((1 / proposal.scores_total) * proposal.scores[i], '0.[0]%')
               "
               class="absolute right-0 leading-[40px] mr-3 link-color"
             />
@@ -93,10 +105,10 @@ watchEffect(() => {
           {{ $t(`proposals.states.${proposal.state}`) }},
           <span
             v-if="proposal.scores_state !== 'final'"
-            v-text="$tc(period, [_toNow(proposal.end)])"
+            v-text="$tc(period, [toNow(proposal.end)])"
           />
           <span v-if="proposal.scores_state === 'final'" class="mt-2">
-            {{ _n(proposal.votes, '0,00') }} votes
+            {{ n(proposal.votes, '0,00') }} votes
           </span>
         </div>
       </div>

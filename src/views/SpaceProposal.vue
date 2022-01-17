@@ -8,6 +8,7 @@ import {
   getPower,
   getProposalVotes
 } from '@/helpers/snapshot';
+import { setPageTitle, explorerUrl, ms, n, getIpfsUrl } from '@/helpers/utils';
 import { useModal } from '@/composables/useModal';
 import { useTerms } from '@/composables/useTerms';
 import { useProfiles } from '@/composables/useProfiles';
@@ -17,6 +18,7 @@ import { useWeb3 } from '@/composables/useWeb3';
 import { useClient } from '@/composables/useClient';
 import { useApp } from '@/composables/useApp';
 import { useInfiniteLoader } from '@/composables/useInfiniteLoader';
+import { useStore } from '@/composables/useStore';
 
 const props = defineProps({
   spaceId: String,
@@ -28,9 +30,10 @@ const route = useRoute();
 const router = useRouter();
 const { domain } = useDomain();
 const { t } = useI18n();
-const { web3 } = useWeb3();
+const { web3, web3Account } = useWeb3();
 const { send, clientLoading } = useClient();
 const { getExplore } = useApp();
+const { store } = useStore();
 const notify = inject('notify');
 
 const id = route.params.id;
@@ -48,7 +51,6 @@ const totalScore = ref(0);
 const scores = ref([]);
 const modalStrategiesOpen = ref(false);
 
-const web3Account = computed(() => web3.value.account);
 const isCreator = computed(() => proposal.value.author === web3Account.value);
 const loaded = computed(() => !props.spaceLoading && !loading.value);
 const isAdmin = computed(() => {
@@ -171,6 +173,7 @@ async function deleteProposal() {
   console.log('Result', result);
   if (result.id) {
     getExplore();
+    store.space.proposals = [];
     notify(['green', t('notify.proposalDeleted')]);
     router.push({ name: 'spaceProposals' });
   }
@@ -230,6 +233,10 @@ watch([loaded, web3Account], () => {
 
 onMounted(async () => {
   await loadProposal();
+  setPageTitle('page.title.space.proposal', {
+    proposal: proposal.value.title,
+    space: props.space.name
+  });
   const choice = route.query.choice;
   if (proposal.value.type === 'approval') selectedChoices.value = [];
   if (web3Account.value && choice) {
@@ -357,7 +364,7 @@ onMounted(async () => {
           <div>
             <b>IPFS</b>
             <a
-              :href="_getUrl(proposal.ipfs)"
+              :href="getIpfsUrl(proposal.ipfs)"
               target="_blank"
               class="float-right"
             >
@@ -376,7 +383,7 @@ onMounted(async () => {
             <span
               v-text="$d(proposal.start * 1e3, 'short', 'en-US')"
               v-tippy="{
-                content: _ms(proposal.start)
+                content: ms(proposal.start)
               }"
               class="float-right link-color"
             />
@@ -386,7 +393,7 @@ onMounted(async () => {
             <span
               v-text="$d(proposal.end * 1e3, 'short', 'en-US')"
               v-tippy="{
-                content: _ms(proposal.end)
+                content: ms(proposal.end)
               }"
               class="link-color float-right"
             />
@@ -394,11 +401,11 @@ onMounted(async () => {
           <div>
             <b>{{ $t('snapshot') }}</b>
             <a
-              :href="_explorer(proposal.network, proposal.snapshot, 'block')"
+              :href="explorerUrl(proposal.network, proposal.snapshot, 'block')"
               target="_blank"
               class="float-right"
             >
-              {{ _n(proposal.snapshot, '0,0') }}
+              {{ n(proposal.snapshot, '0,0') }}
               <Icon name="external-link" class="ml-1" />
             </a>
           </div>
