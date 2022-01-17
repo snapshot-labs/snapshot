@@ -79,7 +79,10 @@ export function useIntl() {
     computed(
       () =>
         new Intl.NumberFormat(
-          currentLocale.value,
+          // currently we are using only english number formatting because other
+          // languages can result in very different string length, which we need to deal with.
+          // (en: 10.2k, de: 10.200)
+          'en', // currentLocale.value,
           options || { notation: 'standard' }
         )
     );
