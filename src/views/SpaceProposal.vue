@@ -58,7 +58,7 @@ const isAdmin = computed(() => {
   return admins.includes(web3Account.value?.toLowerCase());
 });
 const strategies = computed(
-  () => proposal.value.strategies ?? props.space.strategies
+  () => proposal.value.strategies ?? props.space?.strategies
 );
 const symbols = computed(() =>
   strategies.value.map(strategy => strategy.params.symbol)
@@ -324,6 +324,7 @@ onMounted(async () => {
         :loadingMore="loadingMore"
       />
       <ProposalPluginsContent
+        v-if="space"
         v-model:safeSnapInput="safeSnapInput"
         :id="id"
         :space="space"
@@ -437,9 +438,8 @@ onMounted(async () => {
       />
     </template>
   </Layout>
-  <teleport to="#modal">
+  <teleport to="#modal" v-if="loaded">
     <ModalConfirm
-      v-if="loaded"
       :open="modalOpen"
       @close="modalOpen = false"
       @reload="loadProposal"
