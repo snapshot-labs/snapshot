@@ -19,6 +19,7 @@ export function useClient() {
 
   const usePersonalSign = computed(() => {
     return (
+      connectorName.value === 'walletlink' ||
       connectorName.value === 'walletconnect' ||
       connectorName.value === 'portis' ||
       connectorName.value === 'gnosis' ||
