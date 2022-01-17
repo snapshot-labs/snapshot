@@ -72,10 +72,6 @@ async function load() {
   emitUpdateLastSeenProposal();
 }
 
-watch(spaceFilterBy, () => {
-  load();
-});
-
 watch(
   props.spaceId,
   () => {
@@ -112,6 +108,7 @@ const loadingData = computed(() => {
 function selectState(e) {
   store.space.filterBy = e;
   store.space.proposals = [];
+  load();
 }
 
 watchEffect(() => {
