@@ -93,12 +93,10 @@
   "noSpacesJoined": "عفواً، لم تنضم إلى أي مساحات بعد",
   "addFavorites": "إضافة للمفضلة",
   "createdBy": "بواسطة: {0}",
-  "startToEnd": "بدء {0} نهاية {1}",
   "startIn": "البدء {0}",
   "endIn": "إنهاء {1}",
-  "proposalStartIn": "البدء في {0}",
-  "proposalToNow": "متبقي {0}",
-  "endedAgo": "انتهى {1}",
+  "proposalTimeLeft": "{0} left",
+  "endedAgo": "ended {0}",
   "proposalBy": "بواسطة: {0}",
   "endDate": "نهاية {0}",
   "contectHash": "تجزئة المحتوى",
@@ -400,5 +398,14 @@
   "hal": {
     "title": "Track proposals for {spaceName}",
     "text": "Receive notifications every time a new proposal is created or ends"
+  },
+  "timeUnits": {
+    "second": "1 second | {n} seconds",
+    "minute": "1 minute | {n} minutes",
+    "hour": "1 hour | {n} hours",
+    "day": "1 day | {n} days",
+    "week": "1 week | {n} weeks",
+    "month": "1 month | {n} months",
+    "year": "1 year | {n} years"
   }
 }
