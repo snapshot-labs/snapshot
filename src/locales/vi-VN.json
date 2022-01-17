@@ -93,12 +93,10 @@
   "noSpacesJoined": "Bạn chưa tham gia một nhóm nào cả",
   "addFavorites": "Thêm yêu thích",
   "createdBy": "Bởi {0}",
-  "startToEnd": "bắt đầu {0} kết thúc {1}",
   "startIn": "bắt đầu {0}",
   "endIn": "kết thúc {1}",
-  "proposalStartIn": "start in {0}",
-  "proposalToNow": "{0} left",
-  "endedAgo": "kết thúc {1}",
+  "proposalTimeLeft": "{0} left",
+  "endedAgo": "ended {0}",
   "proposalBy": "bởi {0}",
   "endDate": "kết thúc {0}",
   "contectHash": "Nội dung băm",
@@ -400,5 +398,14 @@
   "hal": {
     "title": "Track proposals for {spaceName}",
     "text": "Receive notifications every time a new proposal is created or ends"
+  },
+  "timeUnits": {
+    "second": "1 second | {n} seconds",
+    "minute": "1 minute | {n} minutes",
+    "hour": "1 hour | {n} hours",
+    "day": "1 day | {n} days",
+    "week": "1 week | {n} weeks",
+    "month": "1 month | {n} months",
+    "year": "1 year | {n} years"
   }
 }
