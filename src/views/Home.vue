@@ -5,11 +5,13 @@ import { useScrollMonitor } from '@/composables/useScrollMonitor';
 import { useApp } from '@/composables/useApp';
 import { useFollowSpace } from '@/composables/useFollowSpace';
 import { useCategories } from '@/composables/useCategories';
-import { shorten, setPageTitle, n } from '@/helpers/utils';
+import { shorten, setPageTitle } from '@/helpers/utils';
+import { useIntl } from '@/composables/useIntl';
 
 const { selectedCategory, orderedSpaces, orderedSpacesByCategory } = useApp();
 const { followingSpaces } = useFollowSpace();
 const { spacesPerCategory, categoriesOrderedBySpaceCount } = useCategories();
+const { formatCompactNumber } = useIntl();
 
 function selectCategory(c) {
   selectedCategory.value = c === selectedCategory.value ? '' : c;
@@ -80,7 +82,11 @@ onMounted(() => {
         </template>
       </UiDropdown>
       <div class="ml-3 text-right hidden md:block whitespace-nowrap">
-        {{ $tc('spaceCount', [n(orderedSpacesByCategory.length)]) }}
+        {{
+          $tc('spaceCount', [
+            formatCompactNumber(orderedSpacesByCategory.length)
+          ])
+        }}
       </div>
     </Container>
     <Container :slim="true">
@@ -117,7 +123,7 @@ onMounted(() => {
               <div class="mb-[12px] text-color">
                 {{
                   $tc('members', space.followers, {
-                    count: n(space.followers)
+                    count: formatCompactNumber(space.followers)
                   })
                 }}
               </div>

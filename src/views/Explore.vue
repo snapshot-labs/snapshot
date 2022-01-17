@@ -4,9 +4,11 @@ import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 import { useSearchFilters } from '@/composables/useSearchFilters';
 import { useScrollMonitor } from '@/composables/useScrollMonitor';
-import { setPageTitle, n } from '@/helpers/utils';
+import { setPageTitle } from '@/helpers/utils';
+import { useIntl } from '@/composables/useIntl';
 
 const { t } = useI18n();
+const { formatCompactNumber } = useIntl();
 const route = useRoute();
 
 const buttonStr = computed(() => {
@@ -53,7 +55,9 @@ onMounted(() => {
       <div
         class="ml-3 hidden sm:flex text-right items-center whitespace-nowrap"
       >
-        <div class="flex flex-col">{{ n(items.length) }} {{ resultsStr }}</div>
+        <div class="flex flex-col">
+          {{ formatCompactNumber(items.length) }} {{ resultsStr }}
+        </div>
         <a
           v-if="buttonStr"
           href="https://discord.gg/snapshot"

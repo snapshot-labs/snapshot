@@ -4,17 +4,7 @@ import { BigNumber } from '@ethersproject/bignumber';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import voting from '@snapshot-labs/snapshot.js/src/voting';
 import { getUrl } from '@snapshot-labs/snapshot.js/src/utils';
-import numeral from 'numeral';
-import { format } from 'timeago.js';
-import dayjs from 'dayjs';
-import relativeTime from 'dayjs/plugin/relativeTime';
 import i18n from '@/helpers/i18n';
-
-dayjs.extend(relativeTime);
-
-export function toNow(period: number) {
-  return dayjs(period * 1e3).toNow(true);
-}
 
 export function shortenAddress(str = '') {
   return `${str.slice(0, 6)}...${str.slice(str.length - 4)}`;
@@ -124,15 +114,6 @@ export function getNumberWithOrdinal(n) {
 
 export function explorerUrl(network, str: string, type = 'address'): string {
   return `${networks[network].explorer}/${type}/${str}`;
-}
-
-export function n(number, format = '(0.[00]a)') {
-  if (number < 0.00001) return format.includes('%') ? '0%' : 0;
-  return numeral(number).format(format);
-}
-
-export function ms(number) {
-  return format(number * 1e3);
 }
 
 export function calcFromSeconds(value, unit) {

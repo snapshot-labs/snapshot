@@ -1,11 +1,11 @@
 <script setup>
 import { computed, ref, watchEffect } from 'vue';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
-import { n } from '@/helpers/utils';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useApp } from '@/composables/useApp';
 import { useSpaceSubscription } from '@/composables/useSpaceSubscription';
 import { useFollowSpace } from '@/composables/useFollowSpace';
+import { useIntl } from '@/composables/useIntl';
 import verified from '@/../snapshot-spaces/spaces/verified.json';
 
 const props = defineProps({
@@ -16,6 +16,8 @@ const auth = getInstance();
 const { web3Account } = useWeb3();
 
 const { explore } = useApp();
+
+const { formatCompactNumber } = useIntl();
 
 const nbrMembers = explore.value.spaces[props.space.id].followers;
 const isVerified = verified[props.space.id] || 0;
@@ -71,7 +73,11 @@ watchEffect(() => {
           <Icon v-if="isVerified === -1" name="warning" size="20" />
         </h3>
         <div class="mb-[12px] text-color">
-          {{ $tc('members', nbrMembers, { count: n(nbrMembers) }) }}
+          {{
+            $tc('members', nbrMembers, {
+              count: formatCompactNumber(nbrMembers)
+            })
+          }}
         </div>
         <div class="flex justify-center gap-x-2">
           <FollowButton :space="space" />

@@ -8,7 +8,7 @@ import {
   getPower,
   getProposalVotes
 } from '@/helpers/snapshot';
-import { setPageTitle, explorerUrl, ms, n, getIpfsUrl } from '@/helpers/utils';
+import { setPageTitle, explorerUrl, getIpfsUrl } from '@/helpers/utils';
 import { useModal } from '@/composables/useModal';
 import { useTerms } from '@/composables/useTerms';
 import { useProfiles } from '@/composables/useProfiles';
@@ -19,6 +19,7 @@ import { useClient } from '@/composables/useClient';
 import { useApp } from '@/composables/useApp';
 import { useInfiniteLoader } from '@/composables/useInfiniteLoader';
 import { useStore } from '@/composables/useStore';
+import { useIntl } from '@/composables/useIntl';
 
 const props = defineProps({
   spaceId: String,
@@ -35,6 +36,7 @@ const { send, clientLoading } = useClient();
 const { getExplore } = useApp();
 const { store } = useStore();
 const notify = inject('notify');
+const { formatRelativeTime, formatNumber } = useIntl();
 
 const id = route.params.id;
 
@@ -383,7 +385,7 @@ onMounted(async () => {
             <span
               v-text="$d(proposal.start * 1e3, 'short', 'en-US')"
               v-tippy="{
-                content: ms(proposal.start)
+                content: formatRelativeTime(proposal.start)
               }"
               class="float-right link-color"
             />
@@ -393,7 +395,7 @@ onMounted(async () => {
             <span
               v-text="$d(proposal.end * 1e3, 'short', 'en-US')"
               v-tippy="{
-                content: ms(proposal.end)
+                content: formatRelativeTime(proposal.end)
               }"
               class="link-color float-right"
             />
@@ -405,7 +407,7 @@ onMounted(async () => {
               target="_blank"
               class="float-right"
             >
-              {{ n(proposal.snapshot, '0,0') }}
+              {{ formatNumber(proposal.snapshot) }}
               <Icon name="external-link" class="ml-1" />
             </a>
           </div>
