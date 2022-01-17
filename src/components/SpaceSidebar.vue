@@ -25,17 +25,7 @@ const isAdmin = computed(() => {
 <template>
   <div style="position: fixed; width: 240px">
     <Block :slim="true" class="overflow-hidden">
-      <SpaceSidebarHeader v-if="space" :space="space" />
-      <div v-else class="text-center border-b bg-skin-header-bg h-[238px]">
-        <div class="mt-3 h-[80px] w-[80px] mx-auto lazy-loading rounded-full" />
-
-        <div
-          class="bg-skin-text h-[28px] rounded-md lazy-loading mb-2 mt-3 w-[130px] mx-auto"
-        />
-        <div
-          class="bg-skin-text h-[28px] rounded-md lazy-loading w-[100px] mb-4 mx-auto"
-        />
-      </div>
+      <SpaceSidebarHeader :space="space" :spaceId="spaceId" />
       <div class="py-3">
         <router-link
           :to="{ name: 'spaceProposals', params: { key: spaceId } }"
