@@ -93,12 +93,10 @@
   "noSpacesJoined": "Oups, vous n'avez pas encore rejoint d'espaces",
   "addFavorites": "Ajouter aux favoris",
   "createdBy": "Par {0}",
-  "startToEnd": "début {0} fin {1}",
   "startIn": "début {0}",
   "endIn": "fin {1}",
-  "proposalStartIn": "start in {0}",
-  "proposalToNow": "{0} left",
-  "endedAgo": "a terminé {1}",
+  "proposalTimeLeft": "{0} left",
+  "endedAgo": "ended {0}",
   "proposalBy": "par {0}",
   "endDate": "fin {0}",
   "contectHash": "Hash du contenu",
@@ -400,5 +398,14 @@
   "hal": {
     "title": "Track proposals for {spaceName}",
     "text": "Receive notifications every time a new proposal is created or ends"
+  },
+  "timeUnits": {
+    "second": "1 second | {n} seconds",
+    "minute": "1 minute | {n} minutes",
+    "hour": "1 hour | {n} hours",
+    "day": "1 day | {n} days",
+    "week": "1 week | {n} weeks",
+    "month": "1 month | {n} months",
+    "year": "1 year | {n} years"
   }
 }
