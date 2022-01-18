@@ -30,18 +30,14 @@
 @layer base {
   @font-face {
     font-family: 'Calibre';
-    src: url('./assets/fonts/Calibre-Medium.woff2') format('woff2'),
-      url('./assets/fonts/Calibre-Medium.woff') format('woff'),
-      url('./assets/fonts/Calibre-Medium.ttf') format('truetype');
+    src: url('./assets/fonts/Calibre-Medium-Custom.woff2') format('woff2');
     font-weight: 500;
     font-style: normal;
   }
 
   @font-face {
     font-family: 'Calibre';
-    src: url('./assets/fonts/Calibre-Semibold.woff2') format('woff2'),
-      url('./assets/fonts/Calibre-Semibold.woff') format('woff'),
-      url('./assets/fonts/Calibre-Semibold.ttf') format('truetype');
+    src: url('./assets/fonts/Calibre-Semibold-Custom.woff2') format('woff2');
     font-weight: 600;
     font-style: normal;
   }
@@ -168,23 +164,6 @@ select {
 
 .bg-black {
   background-color: var(--bg-color);
-}
-
-.State {
-  font-size: 16px;
-  line-height: 30px;
-  height: 28px;
-  vertical-align: middle;
-  padding: 0 12px;
-  border-radius: 14px;
-}
-
-.State.slim {
-  padding: 0;
-  height: 12px;
-  width: 12px;
-  border-radius: 50%;
-  display: inline-block;
 }
 
 .notification {

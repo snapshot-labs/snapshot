@@ -52,7 +52,7 @@ function redirectSearch(e) {
       :placeholder="$t('searchPlaceholder')"
       class="flex-auto pr-2"
     />
-    <div class="border-l" style="height: 44px">
+    <div class="border-l flex items-center" style="height: 44px">
       <UiDropdown
         top="3.5rem"
         right="1.0rem"

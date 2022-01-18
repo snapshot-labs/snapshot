@@ -291,7 +291,7 @@ watchEffect(() => {
         <h1 v-text="$t('settings.header')" class="mb-4" />
       </div>
       <Block title="ENS">
-        <UiButton class="flex w-full mb-2">
+        <UiButton class="flex w-full mb-2 items-center">
           <input
             readonly
             v-model="textRecord"
@@ -559,7 +559,7 @@ watchEffect(() => {
             <template v-slot:info>
               <select
                 v-model="delayUnit"
-                class="input text-center mr-[6px] pt-[3px] ml-2"
+                class="input text-center mr-[6px] ml-2"
                 required
               >
                 <option value="h" selected>hours</option>
@@ -574,7 +574,7 @@ watchEffect(() => {
             <template v-slot:info>
               <select
                 v-model="periodUnit"
-                class="input text-center mr-[6px] pt-[3px] ml-2"
+                class="input text-center mr-[6px] ml-2"
                 required
               >
                 <option value="h" selected>hours</option>

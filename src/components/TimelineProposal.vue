@@ -42,15 +42,17 @@ watchEffect(() => {
       }"
     >
       <div>
-        <div class="mb-2">
-          <Token :space="proposal.space" size="28" />
-          <span class="ml-2" v-text="proposal.space.name" />
-          {{ $tc('proposalBy', [username]) }}
-          <Badges
-            :address="proposal.author"
-            :members="proposal.space.members"
-          />
-          <UiState :state="proposal.state" class="inline-block float-right" />
+        <div class="mb-2 flex justify-between items-center">
+          <div class="flex items-center space-x-1">
+            <Token :space="proposal.space" size="28" />
+            <span class="!ml-2" v-text="proposal.space.name" />
+            <span v-text="$tc('proposalBy', [username])" />
+            <Badges
+              :address="proposal.author"
+              :members="proposal.space.members"
+            />
+          </div>
+          <UiState :state="proposal.state" />
         </div>
         <h3 v-text="proposal.title" class="my-1" />
         <p v-text="shorten(body, 140)" class="break-words mb-2 text-md" />
@@ -69,7 +71,7 @@ watchEffect(() => {
             class="mt-2 flex space-x-1 items-center"
           >
             <Icon size="20" name="check1" class="text-green" />
-            <span class="mt-1"
+            <span
               >{{ shorten(proposal.choices[winningChoice], 64) }} -
               {{ formatCompactNumber(proposal.scores[winningChoice]) }}
               {{ proposal.space.symbol }}</span
