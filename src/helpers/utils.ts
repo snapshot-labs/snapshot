@@ -126,7 +126,7 @@ export function calcToSeconds(value, unit) {
   if (unit === 'd') return value * 60 * 60 * 24;
 }
 
-export function setPageTitle(message, params = {}) {
+export function setPageTitle(message, params: any = {}) {
   const { t } = i18n.global;
   document.title = t(message, params);
 }

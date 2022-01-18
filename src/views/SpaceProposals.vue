@@ -1,5 +1,7 @@
 <script setup>
-import { computed, onMounted, ref, watch } from 'vue';
+import { watchEffect, computed, ref, watch } from 'vue';
+import { useStore } from '@/composables/useStore';
+import { setPageTitle } from '@/helpers/utils';
 import { useInfiniteLoader } from '@/composables/useInfiniteLoader';
 import { useScrollMonitor } from '@/composables/useScrollMonitor';
 import { useApolloQuery } from '@/composables/useApolloQuery';
@@ -9,24 +11,25 @@ import { useUnseenProposals } from '@/composables/useUnseenProposals';
 import { lsSet } from '@/helpers/utils';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useApp } from '@/composables/useApp';
-import { useStore } from '@/composables/useStore';
-import { setPageTitle } from '@/helpers/utils';
 
 const props = defineProps({ space: Object, spaceId: String });
 
-const { lastSeenProposals, updateLastSeenProposal } = useUnseenProposals();
-const { web3Account } = useWeb3();
 const { store } = useStore();
 
 const loading = ref(false);
 
+const { loadBy, loadingMore, stopLoadingMore, loadMore } = useInfiniteLoader();
+const { apolloQuery } = useApolloQuery();
+
 const spaceMembers = computed(() =>
-  props.space.members.length < 1 ? ['none'] : props.space.members
+  props.space?.members
+    ? props.space.members.length < 1
+      ? ['none']
+      : props.space.members
+    : null
 );
 
-const { loadBy, loadingMore, stopLoadingMore, loadMore } = useInfiniteLoader();
-
-const { apolloQuery } = useApolloQuery();
+const spaceFilterBy = computed(() => store.space.filterBy);
 
 async function loadProposals(skip = 0) {
   const proposalsObj = await apolloQuery(
@@ -36,8 +39,8 @@ async function loadProposals(skip = 0) {
         first: loadBy,
         skip,
         space: props.spaceId,
-        state: store.space.filterBy === 'core' ? 'all' : store.space.filterBy,
-        author_in: store.space.filterBy === 'core' ? spaceMembers.value : []
+        state: spaceFilterBy.value === 'core' ? 'all' : spaceFilterBy.value,
+        author_in: spaceFilterBy.value === 'core' ? spaceMembers.value : []
       }
     },
     'proposals'
@@ -45,6 +48,9 @@ async function loadProposals(skip = 0) {
   stopLoadingMore.value = proposalsObj?.length < loadBy;
   store.space.proposals = store.space.proposals.concat(proposalsObj);
 }
+
+const { lastSeenProposals, updateLastSeenProposal } = useUnseenProposals();
+const { web3Account } = useWeb3();
 
 function emitUpdateLastSeenProposal() {
   if (web3Account.value) {
@@ -57,10 +63,6 @@ function emitUpdateLastSeenProposal() {
   }
   updateLastSeenProposal(web3Account.value);
 }
-
-onMounted(() => {
-  setPageTitle('page.title.space.proposals', { space: props.space.name });
-});
 
 async function load() {
   if (store.space.proposals.length > 0) return;
@@ -82,12 +84,6 @@ watch(
   { immediate: true }
 );
 
-function selectState(e) {
-  store.space.filterBy = e;
-  store.space.proposals = [];
-  load();
-}
-
 const { endElement } = useScrollMonitor(() =>
   loadMore(() => loadProposals(store.space.proposals.length), loading.value)
 );
@@ -98,26 +94,37 @@ watch(store.space.proposals, () => {
   loadProfiles(store.space.proposals.map(proposal => proposal.author));
 });
 
+// TODO: Use space query instead of explore, to get total number of proposals
 const { explore } = useApp();
 const proposalsCount = computed(() => {
-  const count = explore.value.spaces[props.space.id].proposals;
+  const count = explore.value.spaces[props.spaceId].proposals;
   return count ? count : 0;
 });
 
 const loadingData = computed(() => {
   return loading.value || loadingMore.value;
 });
+
+function selectState(e) {
+  store.space.filterBy = e;
+  store.space.proposals = [];
+  load();
+}
+
+watchEffect(() => {
+  if (props.space?.name)
+    setPageTitle('page.title.space.proposals', { space: props.space.name });
+});
 </script>
 
 <template>
   <Layout>
     <template #sidebar-left>
-      <BlockSpace :space="space" />
+      <SpaceSidebar :space="space" :spaceId="spaceId" />
     </template>
     <template #content-right>
       <div class="px-4 md:px-0 mb-3 flex">
         <div class="flex-auto">
-          <div v-text="space.name" />
           <div class="flex items-center flex-auto">
             <h2>{{ $t('proposals.header') }}</h2>
           </div>
@@ -140,7 +147,6 @@ const loadingData = computed(() => {
           </UiButton>
         </UiDropdown>
       </div>
-
       <NoResults
         :block="true"
         v-if="

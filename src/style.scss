@@ -359,3 +359,7 @@ input[type='number']::-webkit-outer-spin-button {
 .s-label {
   @apply block mb-1;
 }
+
+.lazy-loading {
+  @apply bg-skin-text animate-pulse-fast;
+}

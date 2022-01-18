@@ -11,14 +11,12 @@ import { useSpaceSubscription } from './useSpaceSubscription';
 const following = ref([]);
 const loadingFollows = ref(false);
 
-export function useFollowSpace(spaceObj: any = {}) {
+export function useFollowSpace(spaceId: any = {}) {
   const { web3, web3Account } = useWeb3();
   const { modalAccountOpen } = useModal();
   const { apolloQuery } = useApolloQuery();
   const { setAlias, aliasWallet, isValidAlias, checkAlias } = useAliasAction();
-  const { toggleSubscription, isSubscribed } = useSpaceSubscription(
-    spaceObj?.id
-  );
+  const { toggleSubscription, isSubscribed } = useSpaceSubscription(spaceId);
 
   const loadingFollow = ref('');
   const hoverJoin = ref('');
@@ -29,8 +27,7 @@ export function useFollowSpace(spaceObj: any = {}) {
 
   const isFollowing = computed(() =>
     following.value.some(
-      (f: any) =>
-        f.space.id === spaceObj?.id && f.follower === web3Account.value
+      (f: any) => f.space.id === spaceId && f.follower === web3Account.value
     )
   );
 
@@ -68,7 +65,7 @@ export function useFollowSpace(spaceObj: any = {}) {
   }
 
   async function follow(space) {
-    loadingFollow.value = spaceObj.id;
+    loadingFollow.value = spaceId;
     try {
       await checkAlias();
       if (!aliasWallet.value || !isValidAlias.value) {

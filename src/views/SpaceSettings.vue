@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref, watchEffect, inject, onMounted } from 'vue';
+import { computed, ref, watchEffect, inject } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { getAddress } from '@ethersproject/address';
 import {
@@ -271,8 +271,8 @@ watchEffect(async () => {
   }
 });
 
-onMounted(() => {
-  props.space
+watchEffect(() => {
+  props.space && props.space?.name
     ? setPageTitle('page.title.space.settings', { space: props.space.name })
     : setPageTitle('page.title.setup');
 });
@@ -281,371 +281,362 @@ onMounted(() => {
 <template>
   <Layout v-bind="$attrs">
     <template #content-left>
-      <div v-if="space?.name" class="px-4 md:px-0 mb-3">
+      <div class="px-4 md:px-0 mb-3">
         <router-link :to="{ name: 'spaceProposals' }" class="text-color">
           <Icon name="back" size="22" class="!align-middle" />
-          {{ space.name }}
+          {{ $t('back') }}
         </router-link>
       </div>
       <div class="px-4 md:px-0">
-        <h1 v-if="loaded" v-text="$t('settings.header')" class="mb-4" />
-        <PageLoading v-else />
+        <h1 v-text="$t('settings.header')" class="mb-4" />
       </div>
-      <template v-if="loaded">
-        <Block title="ENS">
-          <UiButton class="flex w-full mb-2 items-center">
-            <input
-              readonly
-              v-model="textRecord"
-              class="input w-full"
-              :placeholder="$t('contectHash')"
-            />
-            <Icon
-              @click="copyToClipboard(textRecord)"
-              name="copy"
-              size="24"
-              class="text-color p-2 -mr-3"
-            />
+      <Block title="ENS">
+        <UiButton class="flex w-full mb-2 items-center">
+          <input
+            readonly
+            v-model="textRecord"
+            class="input w-full"
+            :placeholder="$t('contectHash')"
+          />
+          <Icon
+            @click="copyToClipboard(textRecord)"
+            name="copy"
+            size="24"
+            class="text-color p-2 -mr-3"
+          />
+        </UiButton>
+        <a
+          :href="`https://app.ens.domains/name/${spaceId}`"
+          target="_blank"
+          class="mb-2 block"
+        >
+          <UiButton
+            class="button-outline w-full"
+            :primary="!isOwner && !isAdmin"
+          >
+            {{
+              isOwner || isAdmin ? $t('settings.seeENS') : $t('settings.setENS')
+            }}
+            <Icon name="external-link" class="ml-1" />
           </UiButton>
-          <a
-            :href="`https://app.ens.domains/name/${spaceId}`"
-            target="_blank"
-            class="mb-2 block"
-          >
-            <UiButton
-              class="button-outline w-full"
-              :primary="!isOwner && !isAdmin"
-            >
-              {{
-                isOwner || isAdmin
-                  ? $t('settings.seeENS')
-                  : $t('settings.setENS')
-              }}
-              <Icon name="external-link" class="ml-1" />
-            </UiButton>
-          </a>
-          <Block
-            v-if="currentSettings?.name && !currentTextRecord"
-            :style="'border-color: red !important; margin-bottom: 0 !important;'"
-            class="mb-0 mt-3"
-          >
-            <Icon name="warning" class="mr-2 !text-red" />
-            <span class="!text-red">
-              {{ $t('settings.warningTextRecord') }}
-              <a
-                v-text="$t('learnMore')"
-                href="https://docs.snapshot.org/spaces/create"
-                target="_blank"
-              />
-            </span>
-          </Block>
+        </a>
+        <Block
+          v-if="currentSettings?.name && !currentTextRecord"
+          :style="'border-color: red !important; margin-bottom: 0 !important;'"
+          class="mb-0 mt-3"
+        >
+          <Icon name="warning" class="mr-2 !text-red" />
+          <span class="!text-red">
+            {{ $t('settings.warningTextRecord') }}
+            <a
+              v-text="$t('learnMore')"
+              href="https://docs.snapshot.org/spaces/create"
+              target="_blank"
+            />
+          </span>
         </Block>
-        <div v-if="space || isOwner">
-          <Block :title="$t('settings.profile')">
-            <div class="mb-2">
-              <UiInput v-model="form.name" :error="inputError('name')">
-                <template v-slot:label>{{ $t(`settings.name`) }}*</template>
-              </UiInput>
-              <UiInput v-model="form.about" :error="inputError('about')">
-                <template v-slot:label> {{ $t(`settings.about`) }} </template>
-              </UiInput>
-              <UiInput
-                v-model="form.avatar"
-                placeholder="e.g. https://example.com/space.png"
-                :error="inputError('avatar')"
-              >
-                <template v-slot:label>
-                  {{ $t(`settings.avatar`) }}
-                </template>
-                <template v-slot:info>
-                  <Upload
-                    class="!ml-2"
-                    @input="setAvatarUrl"
-                    @loading="setUploadLoading"
-                  >
-                    {{ $t('upload') }}
-                  </Upload>
-                </template>
-              </UiInput>
-              <UiInput
-                @click="modalNetworksOpen = true"
-                :error="inputError('network')"
-              >
-                <template v-slot:selected>
-                  {{
-                    form.network
-                      ? networks[form.network].name
-                      : $t('selectNetwork')
-                  }}
-                </template>
-                <template v-slot:label>
-                  {{ $t(`settings.network`) }}*
-                </template>
-              </UiInput>
-              <UiInput @click="modalCategoryOpen = true">
-                <template v-slot:label>
-                  {{ $t(`settings.categories`) }}
-                </template>
-                <template v-slot:selected>
-                  <span class="capitalize">
-                    {{ categoriesString }}
-                  </span>
-                </template>
-              </UiInput>
-              <UiInput
-                v-model="form.symbol"
-                placeholder="e.g. BAL"
-                :error="inputError('symbol')"
-              >
-                <template v-slot:label> {{ $t(`settings.symbol`) }}* </template>
-              </UiInput>
-              <UiInput
-                v-model="form.twitter"
-                placeholder="e.g. elonmusk"
-                :error="inputError('twitter')"
-              >
-                <template v-slot:label>
-                  <Icon name="twitter" />
-                </template>
-              </UiInput>
-              <UiInput
-                v-model="form.github"
-                placeholder="e.g. vbuterin"
-                :error="inputError('github')"
-              >
-                <template v-slot:label>
-                  <Icon name="github" />
-                </template>
-              </UiInput>
-              <UiInput
-                v-model="form.terms"
-                placeholder="e.g. https://example.com/terms"
-                :error="inputError('terms')"
-              >
-                <template v-slot:label> {{ $t(`settings.terms`) }} </template>
-              </UiInput>
-              <div class="flex items-center space-x-2 px-2">
-                <Checkbox v-model="form.private" />
-                <span>{{ $t('settings.hideSpace') }}</span>
-              </div>
-            </div>
-          </Block>
-          <Block :title="$t('settings.customDomain')">
+      </Block>
+      <template v-if="space">
+        <Block :title="$t('settings.profile')">
+          <div class="mb-2">
+            <UiInput v-model="form.name" :error="inputError('name')">
+              <template v-slot:label>{{ $t(`settings.name`) }}*</template>
+            </UiInput>
+            <UiInput v-model="form.about" :error="inputError('about')">
+              <template v-slot:label> {{ $t(`settings.about`) }} </template>
+            </UiInput>
             <UiInput
-              v-model="form.domain"
-              placeholder="e.g. vote.balancer.fi"
-              :error="inputError('domain')"
+              v-model="form.avatar"
+              placeholder="e.g. https://example.com/space.png"
+              :error="inputError('avatar')"
             >
               <template v-slot:label>
-                {{ $t('settings.domain') }}
+                {{ $t(`settings.avatar`) }}
               </template>
               <template v-slot:info>
-                <a
-                  class="flex items-center -mr-1"
-                  target="_blank"
-                  href="https://docs.snapshot.org/spaces/add-custom-domain"
+                <Upload
+                  class="!ml-2"
+                  @input="setAvatarUrl"
+                  @loading="setUploadLoading"
                 >
-                  <Icon name="info" size="24" class="text-color" />
-                </a>
-              </template>
-            </UiInput>
-            <UiInput @click="modalSkinsOpen = true" :error="inputError('skin')">
-              <template v-slot:selected>
-                {{ form.skin ? form.skin : $t('defaultSkin') }}
-              </template>
-              <template v-slot:label>
-                {{ $t(`settings.skin`) }}
-              </template>
-            </UiInput>
-          </Block>
-          <Block :title="$t('settings.admins')" v-if="isOwner">
-            <Block
-              :style="`border-color: red !important`"
-              v-if="inputError('admins')"
-            >
-              <Icon name="warning" class="mr-2 !text-red" />
-              <span class="!text-red"> {{ inputError('admins') }}&nbsp;</span>
-            </Block>
-            <UiButton class="block w-full px-3" style="height: auto">
-              <TextareaArray
-                v-model="form.admins"
-                :placeholder="`0x8C28Cf33d9Fd3D0293f963b1cd27e3FF422B425c\n0xeF8305E140ac520225DAf050e2f71d5fBcC543e7`"
-                class="input w-full text-left"
-                style="font-size: 18px"
-              />
-            </UiButton>
-          </Block>
-          <Block :title="$t('settings.authors')">
-            <Block
-              :style="`border-color: red !important`"
-              v-if="inputError('members')"
-            >
-              <Icon name="warning" class="mr-2 !text-red" />
-              <span class="!text-red"> {{ inputError('members') }}&nbsp;</span>
-            </Block>
-            <UiButton class="block w-full px-3" style="height: auto">
-              <TextareaArray
-                v-model="form.members"
-                :placeholder="`0x8C28Cf33d9Fd3D0293f963b1cd27e3FF422B425c\n0xeF8305E140ac520225DAf050e2f71d5fBcC543e7`"
-                class="input w-full text-left"
-                style="font-size: 18px"
-              />
-            </UiButton>
-          </Block>
-          <Block :title="$t('settings.strategies') + '*'">
-            <div
-              v-for="(strategy, i) in form.strategies"
-              :key="i"
-              class="mb-3 relative"
-            >
-              <a @click="handleRemoveStrategy(i)" class="absolute p-4 right-0">
-                <Icon name="close" size="12" />
-              </a>
-
-              <a
-                @click="handleEditStrategy(i)"
-                class="p-4 block border rounded-md"
-              >
-                <h4 v-text="strategy.name" />
-              </a>
-            </div>
-            <Block
-              :style="`border-color: red !important`"
-              v-if="inputError('strategies')"
-            >
-              <Icon name="warning" class="mr-2 !text-red" />
-              <span class="!text-red">
-                {{ inputError('strategies') }}&nbsp;</span
-              >
-              <a
-                href="https://docs.snapshot.org/spaces/create#strategies"
-                target="_blank"
-                rel="noopener noreferrer"
-                >{{ $t('learnMore') }}
-                <Icon name="external-link" />
-              </a>
-            </Block>
-            <UiButton @click="handleAddStrategy" class="block w-full">
-              {{ $t('settings.addStrategy') }}
-            </UiButton>
-          </Block>
-          <Block :title="$t('settings.proposalValidation')">
-            <div class="mb-2">
-              <UiInput
-                @click="modalValidationOpen = true"
-                :error="inputError('settings.validation')"
-              >
-                <template v-slot:selected>
-                  {{ form.validation.name }}
-                </template>
-                <template v-slot:label>
-                  {{ $t(`settings.validation`) }}
-                </template>
-              </UiInput>
-              <div v-if="form.validation.name === 'basic'">
-                <UiInput
-                  v-model="form.filters.minScore"
-                  :error="inputError('minScore')"
-                  :number="true"
-                >
-                  <template v-slot:label>{{
-                    $t('settings.proposalThreshold')
-                  }}</template>
-                </UiInput>
-                <div class="flex items-center space-x-2 px-2">
-                  <Checkbox v-model="form.filters.onlyMembers" />
-                  <span>{{ $t('settings.allowOnlyAuthors') }}</span>
-                </div>
-              </div>
-            </div>
-          </Block>
-          <Block :title="$t('settings.voting')">
-            <UiInput v-model="votingDelay" :number="true" placeholder="e.g. 1">
-              <template v-slot:label>
-                {{ $t('settings.votingDelay') }}
-              </template>
-              <template v-slot:info>
-                <select
-                  v-model="delayUnit"
-                  class="input text-center mr-[6px] ml-2"
-                  required
-                >
-                  <option value="h" selected>hours</option>
-                  <option value="d">days</option>
-                </select>
-              </template>
-            </UiInput>
-            <UiInput v-model="votingPeriod" :number="true" placeholder="e.g. 5">
-              <template v-slot:label>
-                {{ $t('settings.votingPeriod') }}
-              </template>
-              <template v-slot:info>
-                <select
-                  v-model="periodUnit"
-                  class="input text-center mr-[6px] ml-2"
-                  required
-                >
-                  <option value="h" selected>hours</option>
-                  <option value="d">days</option>
-                </select>
+                  {{ $t('upload') }}
+                </Upload>
               </template>
             </UiInput>
             <UiInput
-              v-model="form.voting.quorum"
-              :number="true"
-              placeholder="1000"
+              @click="modalNetworksOpen = true"
+              :error="inputError('network')"
             >
-              <template v-slot:label>
-                {{ $t('settings.quorum') }}
+              <template v-slot:selected>
+                {{
+                  form.network
+                    ? networks[form.network].name
+                    : $t('selectNetwork')
+                }}
               </template>
+              <template v-slot:label> {{ $t(`settings.network`) }}* </template>
             </UiInput>
-            <UiInput>
+            <UiInput @click="modalCategoryOpen = true">
               <template v-slot:label>
-                {{ $t('settings.type') }}
+                {{ $t(`settings.categories`) }}
               </template>
               <template v-slot:selected>
-                <div @click="modalVotingTypeOpen = true" class="w-full">
-                  {{
-                    form.voting?.type
-                      ? $t(`voting.${form.voting?.type}`)
-                      : $t('settings.anyType')
-                  }}
-                </div>
+                <span class="capitalize">
+                  {{ categoriesString }}
+                </span>
               </template>
+            </UiInput>
+            <UiInput
+              v-model="form.symbol"
+              placeholder="e.g. BAL"
+              :error="inputError('symbol')"
+            >
+              <template v-slot:label> {{ $t(`settings.symbol`) }}* </template>
+            </UiInput>
+            <UiInput
+              v-model="form.twitter"
+              placeholder="e.g. elonmusk"
+              :error="inputError('twitter')"
+            >
+              <template v-slot:label>
+                <Icon name="twitter" />
+              </template>
+            </UiInput>
+            <UiInput
+              v-model="form.github"
+              placeholder="e.g. vbuterin"
+              :error="inputError('github')"
+            >
+              <template v-slot:label>
+                <Icon name="github" />
+              </template>
+            </UiInput>
+            <UiInput
+              v-model="form.terms"
+              placeholder="e.g. https://example.com/terms"
+              :error="inputError('terms')"
+            >
+              <template v-slot:label> {{ $t(`settings.terms`) }} </template>
             </UiInput>
             <div class="flex items-center space-x-2 px-2">
-              <Checkbox v-model="form.voting.hideAbstain" />
-              <span>{{ $t('settings.hideAbstain') }}</span>
+              <Checkbox v-model="form.private" />
+              <span>{{ $t('settings.hideSpace') }}</span>
             </div>
-          </Block>
-          <Block :title="$t('plugins')">
-            <div v-if="form?.plugins">
-              <div
-                v-for="(plugin, name, index) in form.plugins"
-                :key="index"
-                class="mb-3 relative"
+          </div>
+        </Block>
+        <Block :title="$t('settings.customDomain')">
+          <UiInput
+            v-model="form.domain"
+            placeholder="e.g. vote.balancer.fi"
+            :error="inputError('domain')"
+          >
+            <template v-slot:label>
+              {{ $t('settings.domain') }}
+            </template>
+            <template v-slot:info>
+              <a
+                class="flex items-center -mr-1"
+                target="_blank"
+                href="https://docs.snapshot.org/spaces/add-custom-domain"
               >
-                <div v-if="pluginName(name)">
-                  <a
-                    @click="handleRemovePlugins(name)"
-                    class="absolute p-4 right-0"
-                  >
-                    <Icon name="close" size="12" />
-                  </a>
-                  <a
-                    @click="handleEditPlugins(name)"
-                    class="p-4 block border rounded-md"
-                  >
-                    <h4 v-text="pluginName(name)" />
-                  </a>
-                </div>
+                <Icon name="info" size="24" class="text-color" />
+              </a>
+            </template>
+          </UiInput>
+          <UiInput @click="modalSkinsOpen = true" :error="inputError('skin')">
+            <template v-slot:selected>
+              {{ form.skin ? form.skin : $t('defaultSkin') }}
+            </template>
+            <template v-slot:label>
+              {{ $t(`settings.skin`) }}
+            </template>
+          </UiInput>
+        </Block>
+        <Block :title="$t('settings.admins')" v-if="isOwner">
+          <Block
+            :style="`border-color: red !important`"
+            v-if="inputError('admins')"
+          >
+            <Icon name="warning" class="mr-2 !text-red" />
+            <span class="!text-red"> {{ inputError('admins') }}&nbsp;</span>
+          </Block>
+          <UiButton class="block w-full px-3" style="height: auto">
+            <TextareaArray
+              v-model="form.admins"
+              :placeholder="`0x8C28Cf33d9Fd3D0293f963b1cd27e3FF422B425c\n0xeF8305E140ac520225DAf050e2f71d5fBcC543e7`"
+              class="input w-full text-left"
+              style="font-size: 18px"
+            />
+          </UiButton>
+        </Block>
+        <Block :title="$t('settings.authors')">
+          <Block
+            :style="`border-color: red !important`"
+            v-if="inputError('members')"
+          >
+            <Icon name="warning" class="mr-2 !text-red" />
+            <span class="!text-red"> {{ inputError('members') }}&nbsp;</span>
+          </Block>
+          <UiButton class="block w-full px-3" style="height: auto">
+            <TextareaArray
+              v-model="form.members"
+              :placeholder="`0x8C28Cf33d9Fd3D0293f963b1cd27e3FF422B425c\n0xeF8305E140ac520225DAf050e2f71d5fBcC543e7`"
+              class="input w-full text-left"
+              style="font-size: 18px"
+            />
+          </UiButton>
+        </Block>
+        <Block :title="$t('settings.strategies') + '*'">
+          <div
+            v-for="(strategy, i) in form.strategies"
+            :key="i"
+            class="mb-3 relative"
+          >
+            <a @click="handleRemoveStrategy(i)" class="absolute p-4 right-0">
+              <Icon name="close" size="12" />
+            </a>
+
+            <a
+              @click="handleEditStrategy(i)"
+              class="p-4 block border rounded-md"
+            >
+              <h4 v-text="strategy.name" />
+            </a>
+          </div>
+          <Block
+            :style="`border-color: red !important`"
+            v-if="inputError('strategies')"
+          >
+            <Icon name="warning" class="mr-2 !text-red" />
+            <span class="!text-red"> {{ inputError('strategies') }}&nbsp;</span>
+            <a
+              href="https://docs.snapshot.org/spaces/create#strategies"
+              target="_blank"
+              rel="noopener noreferrer"
+              >{{ $t('learnMore') }}
+              <Icon name="external-link" />
+            </a>
+          </Block>
+          <UiButton @click="handleAddStrategy" class="block w-full">
+            {{ $t('settings.addStrategy') }}
+          </UiButton>
+        </Block>
+        <Block :title="$t('settings.proposalValidation')">
+          <div class="mb-2">
+            <UiInput
+              @click="modalValidationOpen = true"
+              :error="inputError('settings.validation')"
+            >
+              <template v-slot:selected>
+                {{ form.validation.name }}
+              </template>
+              <template v-slot:label>
+                {{ $t(`settings.validation`) }}
+              </template>
+            </UiInput>
+            <div v-if="form.validation.name === 'basic'">
+              <UiInput
+                v-model="form.filters.minScore"
+                :error="inputError('minScore')"
+                :number="true"
+              >
+                <template v-slot:label>{{
+                  $t('settings.proposalThreshold')
+                }}</template>
+              </UiInput>
+              <div class="flex items-center space-x-2 px-2">
+                <Checkbox v-model="form.filters.onlyMembers" />
+                <span>{{ $t('settings.allowOnlyAuthors') }}</span>
               </div>
             </div>
-            <UiButton @click="handleAddPlugins" class="block w-full">
-              {{ $t('settings.addPlugin') }}
-            </UiButton>
-          </Block>
-        </div>
+          </div>
+        </Block>
+        <Block :title="$t('settings.voting')">
+          <UiInput v-model="votingDelay" :number="true" placeholder="e.g. 1">
+            <template v-slot:label>
+              {{ $t('settings.votingDelay') }}
+            </template>
+            <template v-slot:info>
+              <select
+                v-model="delayUnit"
+                class="input text-center mr-[6px] ml-2"
+                required
+              >
+                <option value="h" selected>hours</option>
+                <option value="d">days</option>
+              </select>
+            </template>
+          </UiInput>
+          <UiInput v-model="votingPeriod" :number="true" placeholder="e.g. 5">
+            <template v-slot:label>
+              {{ $t('settings.votingPeriod') }}
+            </template>
+            <template v-slot:info>
+              <select
+                v-model="periodUnit"
+                class="input text-center mr-[6px] ml-2"
+                required
+              >
+                <option value="h" selected>hours</option>
+                <option value="d">days</option>
+              </select>
+            </template>
+          </UiInput>
+          <UiInput
+            v-model="form.voting.quorum"
+            :number="true"
+            placeholder="1000"
+          >
+            <template v-slot:label>
+              {{ $t('settings.quorum') }}
+            </template>
+          </UiInput>
+          <UiInput>
+            <template v-slot:label>
+              {{ $t('settings.type') }}
+            </template>
+            <template v-slot:selected>
+              <div @click="modalVotingTypeOpen = true" class="w-full">
+                {{
+                  form.voting?.type
+                    ? $t(`voting.${form.voting?.type}`)
+                    : $t('settings.anyType')
+                }}
+              </div>
+            </template>
+          </UiInput>
+          <div class="flex items-center space-x-2 px-2">
+            <Checkbox v-model="form.voting.hideAbstain" />
+            <span>{{ $t('settings.hideAbstain') }}</span>
+          </div>
+        </Block>
+        <Block :title="$t('plugins')">
+          <div v-if="form?.plugins">
+            <div
+              v-for="(plugin, name, index) in form.plugins"
+              :key="index"
+              class="mb-3 relative"
+            >
+              <div v-if="pluginName(name)">
+                <a
+                  @click="handleRemovePlugins(name)"
+                  class="absolute p-4 right-0"
+                >
+                  <Icon name="close" size="12" />
+                </a>
+                <a
+                  @click="handleEditPlugins(name)"
+                  class="p-4 block border rounded-md"
+                >
+                  <h4 v-text="pluginName(name)" />
+                </a>
+              </div>
+            </div>
+          </div>
+          <UiButton @click="handleAddPlugins" class="block w-full">
+            {{ $t('settings.addPlugin') }}
+          </UiButton>
+        </Block>
       </template>
     </template>
     <template v-if="(loaded && isOwner) || (loaded && isAdmin)" #sidebar-right>

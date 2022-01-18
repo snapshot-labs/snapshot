@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, watch, onMounted, inject } from 'vue';
+import { ref, computed, watch, onMounted, inject, watchEffect } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import {
@@ -16,7 +16,6 @@ import { useDomain } from '@/composables/useDomain';
 import { useSharing } from '@/composables/useSharing';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useClient } from '@/composables/useClient';
-import { useApp } from '@/composables/useApp';
 import { useInfiniteLoader } from '@/composables/useInfiniteLoader';
 import { useStore } from '@/composables/useStore';
 import { useIntl } from '@/composables/useIntl';
@@ -33,7 +32,6 @@ const { domain } = useDomain();
 const { t } = useI18n();
 const { web3, web3Account } = useWeb3();
 const { send, clientLoading } = useClient();
-const { getExplore } = useApp();
 const { store } = useStore();
 const notify = inject('notify');
 const { formatRelativeTime, formatNumber } = useIntl();
@@ -60,7 +58,8 @@ const isAdmin = computed(() => {
   return admins.includes(web3Account.value?.toLowerCase());
 });
 const strategies = computed(
-  () => proposal.value.strategies ?? props.space.strategies
+  // Needed for older proposal that are missing strategies
+  () => proposal.value.strategies ?? props.space?.strategies
 );
 const symbols = computed(() =>
   strategies.value.map(strategy => strategy.params.symbol)
@@ -174,7 +173,6 @@ async function deleteProposal() {
   });
   console.log('Result', result);
   if (result.id) {
-    getExplore();
     store.space.proposals = [];
     notify(['green', t('notify.proposalDeleted')]);
     router.push({ name: 'spaceProposals' });
@@ -233,12 +231,16 @@ watch([loaded, web3Account], () => {
   loadPower();
 });
 
+watchEffect(() => {
+  if (props.space?.name && proposal.value?.title)
+    setPageTitle('page.title.space.proposal', {
+      proposal: proposal.value.title,
+      space: props.space.name
+    });
+});
+
 onMounted(async () => {
   await loadProposal();
-  setPageTitle('page.title.space.proposal', {
-    proposal: proposal.value.title,
-    space: props.space.name
-  });
   const choice = route.query.choice;
   if (proposal.value.type === 'approval') selectedChoices.value = [];
   if (web3Account.value && choice) {
@@ -321,6 +323,7 @@ onMounted(async () => {
         :loadingMore="loadingMore"
       />
       <ProposalPluginsContent
+        v-if="space"
         v-model:safeSnapInput="safeSnapInput"
         :id="id"
         :space="space"
@@ -434,9 +437,8 @@ onMounted(async () => {
       />
     </template>
   </Layout>
-  <teleport to="#modal">
+  <teleport to="#modal" v-if="loaded">
     <ModalConfirm
-      v-if="loaded"
       :open="modalOpen"
       @close="modalOpen = false"
       @reload="loadProposal"
