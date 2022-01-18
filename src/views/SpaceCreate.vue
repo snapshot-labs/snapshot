@@ -16,7 +16,8 @@ import { useApolloQuery } from '@/composables/useApolloQuery';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useClient } from '@/composables/useClient';
 import { useStore } from '@/composables/useStore';
-import { setPageTitle, n } from '@/helpers/utils';
+import { setPageTitle } from '@/helpers/utils';
+import { useIntl } from '@/composables/useIntl';
 
 const props = defineProps({
   spaceId: String,
@@ -26,6 +27,7 @@ const props = defineProps({
 
 const router = useRouter();
 const { t } = useI18n();
+const { formatCompactNumber } = useIntl();
 const auth = getInstance();
 const { domain } = useDomain();
 const { web3, web3Account } = useWeb3();
@@ -252,7 +254,7 @@ watchEffect(() => {
           {{
             space?.validation?.params.minScore || space?.filters.minScore
               ? $tc('create.validationWarning.basic.minScore', [
-                  n(space.filters.minScore),
+                  formatCompactNumber(space.filters.minScore),
                   space.symbol
                 ])
               : $t('create.validationWarning.basic.member')
@@ -301,7 +303,7 @@ watchEffect(() => {
             <UiMarkdown :body="form.body" />
           </div>
           <p v-if="form.body.length > bodyLimit" class="!text-red mt-4">
-            -{{ n(-(bodyLimit - form.body.length)) }}
+            -{{ formatCompactNumber(-(bodyLimit - form.body.length)) }}
           </p>
         </div>
       </div>

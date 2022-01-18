@@ -445,7 +445,7 @@ onMounted(() => {
   position: relative;
 }
 
-.markdown-body pre>code {
+.markdown-body pre > code {
   .copy {
     font-size: 24px;
     line-height: 24px;

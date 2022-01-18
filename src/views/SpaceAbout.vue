@@ -3,7 +3,8 @@ import { computed, watchEffect } from 'vue';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { useProfiles } from '@/composables/useProfiles';
 import { getUrl } from '@snapshot-labs/snapshot.js/src/utils';
-import { setPageTitle, n } from '@/helpers/utils';
+import { setPageTitle } from '@/helpers/utils';
+import { useIntl } from '@/composables/useIntl';
 
 const props = defineProps({
   space: Object,
@@ -13,6 +14,7 @@ const props = defineProps({
 
 const network = computed(() => networks[props.space?.network]);
 
+const { formatCompactNumber } = useIntl();
 const { profiles, loadProfiles } = useProfiles();
 
 watchEffect(() => {
@@ -63,7 +65,8 @@ watchEffect(() => {
           <h4 class="link-color mb-2">
             {{ $t('settings.proposalThreshold') }}
           </h4>
-          {{ n(space.filters.minScore) }} {{ space.symbol }}
+          {{ formatCompactNumber(space.filters.minScore) }}
+          {{ space.symbol }}
         </div>
 
         <div v-if="space.terms" class="last:mb-0 mb-3">
