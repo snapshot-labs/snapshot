@@ -58,6 +58,7 @@ const isAdmin = computed(() => {
   return admins.includes(web3Account.value?.toLowerCase());
 });
 const strategies = computed(
+  // Needed for older proposal that are missing strategies
   () => proposal.value.strategies ?? props.space?.strategies
 );
 const symbols = computed(() =>
