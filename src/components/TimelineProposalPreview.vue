@@ -127,7 +127,7 @@ watchEffect(() => {
           {{ $t(`proposals.states.${proposal.state}`)
           }}<span v-if="proposal.scores_state !== 'final'"
             >, {{ relativePeriod }}</span
-          ><span v-if="proposal.scores_state === 'final'" class="mt-2"
+          ><span v-if="proposal.scores_state === 'final'"
             >, {{ formatNumber(proposal.votes) }} votes
           </span>
         </div>
