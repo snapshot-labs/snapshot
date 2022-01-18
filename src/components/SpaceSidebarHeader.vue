@@ -1,10 +1,10 @@
 <script setup>
 import { ref, watchEffect } from 'vue';
 import { useApp } from '@/composables/useApp';
-import { n } from '@/helpers/utils';
 import { useSpaceSubscription } from '@/composables/useSpaceSubscription';
 import { useFollowSpace } from '@/composables/useFollowSpace';
 import verified from '@/../snapshot-spaces/spaces/verified.json';
+import { useIntl } from '@/composables/useIntl';
 
 const props = defineProps({
   space: Object,
@@ -12,6 +12,7 @@ const props = defineProps({
 });
 
 const { explore } = useApp();
+const { formatCompactNumber } = useIntl();
 
 // TODO: Use space.followers instead of explore
 const nbrMembers = explore.value.spaces[props.spaceId].followers;
@@ -64,7 +65,9 @@ watchEffect(() => {
         <Icon v-if="isVerified === -1" name="warning" size="20" />
       </h3>
       <div class="mb-[12px] text-color">
-        {{ $tc('members', nbrMembers, { count: n(nbrMembers) }) }}
+        {{
+          $tc('members', nbrMembers, { count: formatCompactNumber(nbrMembers) })
+        }}
       </div>
     </div>
     <div v-else class="pt-3 mb-2">
