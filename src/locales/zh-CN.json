@@ -95,8 +95,8 @@
   "createdBy": "由 {0}",
   "startIn": "从 {0} 开始",
   "endIn": "结束 {1}",
-  "proposalTimeLeft": "{0} left",
-  "endedAgo": "ended {0}",
+  "proposalTimeLeft": "还剩 {0}",
+  "endedAgo": "结束 {0}",
   "proposalBy": "由 {0}",
   "endDate": "结束 {0}",
   "contectHash": "内容哈希",
@@ -400,12 +400,12 @@
     "text": "每次创建新提案或提案结束时都接收通知"
   },
   "timeUnits": {
-    "second": "1 second | {n} seconds",
-    "minute": "1 minute | {n} minutes",
-    "hour": "1 hour | {n} hours",
-    "day": "1 day | {n} days",
-    "week": "1 week | {n} weeks",
-    "month": "1 month | {n} months",
-    "year": "1 year | {n} years"
+    "second": "1 秒 | {n} 秒",
+    "minute": "1 分钟 | {n} 分钟",
+    "hour": "1 小时 | {n} 小时",
+    "day": "1 天 | {n} 天",
+    "week": "1周 | {n} 周",
+    "month": "1 个月 | {n} 个月",
+    "year": "1 年 | {n} 年"
   }
 }
