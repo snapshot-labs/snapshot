@@ -93,7 +93,7 @@ watchEffect(() => {
       </Block>
       <Block
         :title="$t('settings.admins')"
-        v-if="space && space.admins?.length"
+        v-if="space?.admins?.length"
         :slim="true"
         class="mb-3"
       >
@@ -108,7 +108,7 @@ watchEffect(() => {
       </Block>
       <Block
         :title="$t('settings.authors')"
-        v-if="space && space.members?.length"
+        v-if="space?.members?.length"
         :slim="true"
         class="mb-3"
       >
