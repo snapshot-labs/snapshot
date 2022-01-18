@@ -27,7 +27,7 @@ const { items } = useNotifications();
             size="20"
             class="align-middle"
           />
-          <span class="mt-1">{{ item.message }}</span>
+          <span>{{ item.message }}</span>
         </UiButton>
       </div>
     </transition-group>
