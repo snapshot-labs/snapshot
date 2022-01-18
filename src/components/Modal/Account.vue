@@ -67,7 +67,7 @@ watch(open, () => (step.value = null));
               width="25"
               :alt="connector.name"
             />
-            <span class="mt-1">{{ connector.name }}</span>
+            <span>{{ connector.name }}</span>
           </UiButton>
         </a>
       </div>
