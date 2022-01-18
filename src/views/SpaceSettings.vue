@@ -293,7 +293,7 @@ onMounted(() => {
       </div>
       <template v-if="loaded">
         <Block title="ENS">
-          <UiButton class="flex w-full mb-2">
+          <UiButton class="flex w-full mb-2 items-center">
             <input
               readonly
               v-model="textRecord"
@@ -567,7 +567,7 @@ onMounted(() => {
               <template v-slot:info>
                 <select
                   v-model="delayUnit"
-                  class="input text-center mr-[6px] pt-[3px] ml-2"
+                  class="input text-center mr-[6px] ml-2"
                   required
                 >
                   <option value="h" selected>hours</option>
@@ -582,7 +582,7 @@ onMounted(() => {
               <template v-slot:info>
                 <select
                   v-model="periodUnit"
-                  class="input text-center mr-[6px] pt-[3px] ml-2"
+                  class="input text-center mr-[6px] ml-2"
                   required
                 >
                   <option value="h" selected>hours</option>

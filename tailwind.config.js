@@ -54,8 +54,8 @@ module.exports = {
       lg: ['24px', '32px'],
       md: ['20px', '28px'],
       base: ['18px', '24px'],
-      sm: ['16px', '22px'],
-      xs: ['14px', '20px']
+      sm: ['16px'],
+      xs: ['14px']
     }
   },
   variants: {

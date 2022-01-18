@@ -332,13 +332,13 @@ watchEffect(() => {
                   </span>
                 </template>
                 <template v-slot:info>
-                  <span
+                  <div
                     v-if="!disableChoiceEdit"
-                    class="cursor-pointer"
+                    class="cursor-pointer flex items-center"
                     @click="removeChoice(index)"
                   >
                     <Icon name="close" size="12" />
-                  </span>
+                  </div>
                 </template>
               </UiInput>
             </template>
