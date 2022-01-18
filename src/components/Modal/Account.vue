@@ -79,7 +79,9 @@ watch(open, () => (step.value = null));
           target="_blank"
           class="block"
         >
-          <UiButton class="button-outline w-full">
+          <UiButton
+            class="button-outline w-full flex justify-center items-center"
+          >
             <UiAvatar
               :imgsrc="getIpfsUrl(web3.profile?.image)"
               :address="web3.account"

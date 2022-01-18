@@ -49,6 +49,7 @@ onBeforeUnmount(() => window.removeEventListener('click', close));
           :key="item"
           @click="handleClick(item.action)"
           :class="{ selected: item.selected }"
+          class="list-none block whitespace-nowrap px-[18px] py-[2px]"
         >
           <slot name="item" :item="item" :key="key">
             <Icon
@@ -74,12 +75,6 @@ onBeforeUnmount(() => window.removeEventListener('click', close));
 }
 
 li {
-  list-style: none;
-  display: block;
-  white-space: nowrap;
-  padding-left: 18px;
-  padding-right: 18px;
-  padding-top: 3px;
   line-height: 34px;
   cursor: pointer;
 }

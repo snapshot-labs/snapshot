@@ -268,7 +268,7 @@ onMounted(async () => {
       </div>
       <div class="px-4 md:px-0">
         <template v-if="loaded">
-          <h1 v-text="proposal.title" class="mb-2" />
+          <h1 v-text="proposal.title" class="mb-3" />
           <div class="mb-4">
             <UiState :state="proposal.state" class="inline-block" />
             <UiDropdown
@@ -280,9 +280,9 @@ onMounted(async () => {
               :items="sharingItems"
               :hideDropdown="sharingIsSupported"
             >
-              <div class="pr-1 select-none">
-                <Icon name="upload" size="25" class="!align-text-bottom" />
-                Share
+              <div class="pr-1 select-none flex">
+                <Icon name="upload" size="25" />
+                <span class="ml-1">Share</span>
               </div>
             </UiDropdown>
             <UiDropdown
