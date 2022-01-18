@@ -127,7 +127,7 @@ onMounted(() => {
                   })
                 }}
               </div>
-              <FollowButton class="!mb-0" :space="space" />
+              <FollowButton class="!mb-0" :space="space" :spaceId="space.id" />
             </Block>
           </router-link>
         </div>
