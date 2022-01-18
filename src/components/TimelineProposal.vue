@@ -71,7 +71,7 @@ watchEffect(() => {
             class="mt-2 flex space-x-1 items-center"
           >
             <Icon size="20" name="check1" class="text-green" />
-            <span class="mt-1"
+            <span
               >{{ shorten(proposal.choices[winningChoice], 64) }} -
               {{ formatCompactNumber(proposal.scores[winningChoice]) }}
               {{ proposal.space.symbol }}</span
