@@ -158,7 +158,7 @@ export const SPACES_QUERY = gql`
       admins
       categories
       plugins
-      followerCount
+      followersCount
       voting {
         delay
         period

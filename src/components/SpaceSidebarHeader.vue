@@ -62,8 +62,8 @@ watchEffect(() => {
       </h3>
       <div class="mb-[12px] text-color">
         {{
-          $tc('members', space.followerCount, {
-            count: formatCompactNumber(space.followerCount)
+          $tc('members', space.followersCount, {
+            count: formatCompactNumber(space.followersCount)
           })
         }}
       </div>
