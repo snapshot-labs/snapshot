@@ -336,7 +336,7 @@ watchEffect(() => {
           </span>
         </Block>
       </Block>
-      <template v-if="space">
+      <template v-if="space || isOwner">
         <Block :title="$t('settings.profile')">
           <div class="mb-2">
             <UiInput v-model="form.name" :error="inputError('name')">
