@@ -107,7 +107,7 @@ export default {
       :key="index"
       :value="token.address"
     >
-      {{ token.name }}
+      {{ token.symbol }}
     </option>
   </UiSelect>
 
