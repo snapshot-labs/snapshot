@@ -132,7 +132,7 @@ export default {
       title="Batch Transaction Hash"
       @toggle="hashHidden = !hashHidden"
     >
-      {{ removeHexPrefix(this.modelValue.hash) }}
+      {{ this.modelValue.hash }}
     </UiCollapsibleText>
     <UiCollapsibleText
       v-if="this.modelValue.hash"

@@ -190,7 +190,7 @@ export default {
       title="Complete Transaction Hash"
       @toggle="showHash = !showHash"
     >
-      {{ removeHexPrefix(hash) }}
+      {{ hash }}
     </UiCollapsibleText>
     <div class="text-center">
       <div v-for="(batch, index) in input" v-bind:key="index" class="border-b">
