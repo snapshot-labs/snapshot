@@ -1,12 +1,14 @@
 <script setup>
 import { ref, onMounted, computed, watch } from 'vue';
-import { ms } from '@/helpers/utils';
 import { useNotifications } from '@/composables/useNotifications';
 import { useModal } from '@/composables/useModal';
 import { useWeb3 } from '@/composables/useWeb3';
 import { signMessage } from '@snapshot-labs/snapshot.js/src/utils/web3';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { useI18n } from 'vue-i18n';
+import { useIntl } from '@/composables/useIntl';
+
+const { formatRelativeTime } = useIntl();
 const { t } = useI18n();
 const auth = getInstance();
 const { modalOpen, modalAccountOpen } = useModal();
@@ -243,7 +245,7 @@ function deleteItemReply(key) {
         /><span
           v-text="$d(item.timestamp, 'short', 'en-US')"
           v-tippy="{
-            content: ms(item.timestamp / 1e3)
+            content: formatRelativeTime(item.timestamp / 1e3)
           }"
           class="ml-1"
         />

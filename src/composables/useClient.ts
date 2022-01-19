@@ -19,7 +19,6 @@ export function useClient() {
 
   const usePersonalSign = computed(() => {
     return (
-      connectorName.value === 'portis' ||
       connectorName.value === 'gnosis' ||
       web3.value.isTrezor
     );

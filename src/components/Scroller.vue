@@ -130,7 +130,7 @@ onMounted(() => {
           class="flex flex-col items-center space-y-2 justify-center !mb-2 !mt-auto py-2"
         >
           <UiSidebarButton @click="modalAboutOpen = true">
-            <span class="mt-1 link-color">?</span>
+            <span class="link-color">?</span>
           </UiSidebarButton>
         </div>
       </div>
