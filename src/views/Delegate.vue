@@ -18,12 +18,13 @@ import {
   getDelegatesBySpace,
   contractAddress
 } from '@/helpers/delegation';
-import { useApp } from '@/composables/useApp';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useTxStatus } from '@/composables/useTxStatus';
-import { useExtendedSpaces } from '@/composables/useExtendedSpaces';
 import { shorten, setPageTitle } from '@/helpers/utils';
 import { useIntl } from '@/composables/useIntl';
+import { debouncedWatch } from '@vueuse/core';
+import { SPACE_DELEGATE_QUERY } from '@/helpers/queries';
+import { useApolloQuery } from '@/composables/useApolloQuery';
 
 const abi = ['function setDelegate(bytes32 id, address delegate)'];
 
@@ -31,11 +32,8 @@ const route = useRoute();
 const { t } = useI18n();
 const auth = getInstance();
 const notify = inject('notify');
-const { explore } = useApp();
 const { web3, web3Account } = useWeb3();
 const { pendingCount } = useTxStatus();
-const { loadExtentedSpaces, extentedSpaces, spaceLoading } =
-  useExtendedSpaces();
 const { formatCompactNumber } = useIntl();
 
 const modalOpen = ref(false);
@@ -47,6 +45,7 @@ const delegatesLoading = ref(false);
 const delegates = ref([]);
 const delegatesWithScore = ref([]);
 const delegators = ref([]);
+const space = ref(null);
 const form = ref({
   address: route.params.to || '',
   id: route.params.key || ''
@@ -55,7 +54,10 @@ const form = ref({
 const { profiles, loadProfiles } = useProfiles();
 
 const networkKey = computed(() => web3.value.network.key);
-const space = computed(() => explore.value.spaces[form.value.id]);
+
+watch(networkKey, (val, prev) => {
+  if (val !== prev) load();
+});
 
 const isValid = computed(() => {
   const address = form.value.address;
@@ -64,7 +66,7 @@ const isValid = computed(() => {
     web3Account.value &&
     (address.includes('.eth') || isAddress(address)) &&
     address.toLowerCase() !== web3Account.value.toLowerCase() &&
-    (form.value.id === '' || explore.value.spaces[form.value.id])
+    (form.value.id === '' || space.value?.id)
   );
 });
 
@@ -114,9 +116,9 @@ function clearDelegate(id, delegate) {
 }
 
 async function getDelegatesWithScore() {
-  const delegationStrategy = extentedSpaces.value
-    .find(s => s.id === form.value.id)
-    .strategies.filter(strategy => strategy.name === 'delegation');
+  const delegationStrategy = space.value.strategies.filter(
+    strategy => strategy.name === 'delegation'
+  );
   if (delegationStrategy.length === 0) return;
 
   delegatesLoading.value = true;
@@ -183,17 +185,27 @@ watch(web3Account, (val, prev) => {
   if (val?.toLowerCase() !== prev) load();
 });
 
-watch(networkKey, (val, prev) => {
-  if (val !== prev) load();
-});
+const { apolloQuery, queryLoading: spaceLoading } = useApolloQuery();
 
-watchEffect(async () => {
-  if (explore.value.spaces[form.value.id]) {
-    await loadExtentedSpaces([form.value.id]);
-    if (extentedSpaces.value.some(s => s.id === form.value.id))
+debouncedWatch(
+  () => form.value.id,
+  async () => {
+    space.value = await apolloQuery(
+      {
+        query: SPACE_DELEGATE_QUERY,
+        variables: {
+          id: form.value.id
+        }
+      },
+      'space'
+    );
+    if (space.value?.id === form.value?.id) {
+      delegatesWithScore.value = [];
       getDelegatesWithScore();
-  } else delegatesWithScore.value = [];
-});
+    } else delegatesWithScore.value = [];
+  },
+  { immediate: true, debounce: 500 }
+);
 
 onMounted(async () => {
   setPageTitle('page.title.delegate');
@@ -305,7 +317,7 @@ onMounted(async () => {
                   delegate.score >= 0.005
                     ? formatCompactNumber(delegate.score)
                     : '< 0.01'
-                } ${extentedSpaces.find(s => s.id === form.id).symbol}`
+                } ${space.symbol}`
               "
             />
           </div>
@@ -318,7 +330,7 @@ onMounted(async () => {
         <UiButton
           @click="handleSubmit"
           :disabled="!isValid || !$auth.isAuthenticated.value"
-          :loading="loading"
+          :loading="loading || networkQueryLoading"
           class="block w-full"
           primary
         >
