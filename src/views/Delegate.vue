@@ -11,13 +11,13 @@ import {
   getScores
 } from '@snapshot-labs/snapshot.js/src/utils';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
-import { sleep } from '@snapshot-labs/snapshot.js/src/utils';
 import {
   getDelegates,
   getDelegators,
   getDelegatesBySpace,
   contractAddress
 } from '@/helpers/delegation';
+import { sleep } from '@snapshot-labs/snapshot.js/src/utils';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useTxStatus } from '@/composables/useTxStatus';
 import { shorten, setPageTitle } from '@/helpers/utils';
@@ -25,6 +25,7 @@ import { useIntl } from '@/composables/useIntl';
 import { debouncedWatch } from '@vueuse/core';
 import { SPACE_DELEGATE_QUERY } from '@/helpers/queries';
 import { useApolloQuery } from '@/composables/useApolloQuery';
+import { useModal } from '@/composables/useModal';
 
 const abi = ['function setDelegate(bytes32 id, address delegate)'];
 
@@ -35,6 +36,7 @@ const notify = inject('notify');
 const { web3, web3Account } = useWeb3();
 const { pendingCount } = useTxStatus();
 const { formatCompactNumber } = useIntl();
+const { modalAccountOpen } = useModal();
 
 const modalOpen = ref(false);
 const currentId = ref('');
@@ -45,7 +47,8 @@ const delegatesLoading = ref(false);
 const delegates = ref([]);
 const delegatesWithScore = ref([]);
 const delegators = ref([]);
-const space = ref(null);
+const specifySpaceChecked = ref(false);
+const space = ref({});
 const form = ref({
   address: route.params.to || '',
   id: route.params.key || ''
@@ -55,22 +58,42 @@ const { profiles, loadProfiles } = useProfiles();
 
 const networkKey = computed(() => web3.value.network.key);
 
-watch(networkKey, (val, prev) => {
-  if (val !== prev) load();
+const notValidSpaceId = computed(() => {
+  if (space.value === null) return 'Not a valid space ID';
+  return false;
+});
+
+const notValidAddress = computed(() => {
+  if (form.value.address === '') return false;
+  const address = form.value.address;
+  if (!address.includes('.eth') && !isAddress(address))
+    return 'Not a valid address or ENS name';
+  if (address.toLowerCase() === web3Account.value.toLowerCase())
+    return 'Address must not match your account';
+  return false;
+});
+
+watch([networkKey, web3Account], ([valN, prevN], [valA, prevA]) => {
+  if (valN !== prevN) getDelegatesAndDelegators();
+  if (valA?.toLowerCase() !== prevA) getDelegatesAndDelegators();
 });
 
 const isValid = computed(() => {
   const address = form.value.address;
   return (
-    auth.isAuthenticated.value &&
-    web3Account.value &&
     (address.includes('.eth') || isAddress(address)) &&
     address.toLowerCase() !== web3Account.value.toLowerCase() &&
-    (form.value.id === '' || space.value?.id)
+    (form.value.id === '' || !specifySpaceChecked.value || space.value?.id)
   );
 });
 
-async function load() {
+function clearDelegate(id, delegate) {
+  currentId.value = id;
+  currentDelegate.value = delegate;
+  modalOpen.value = true;
+}
+
+async function getDelegatesAndDelegators() {
   if (web3Account.value) {
     const [delegatesObj, delegatorsObj] = await Promise.all([
       getDelegates(networkKey.value, web3Account.value),
@@ -79,40 +102,6 @@ async function load() {
     delegates.value = delegatesObj.delegations;
     delegators.value = delegatorsObj.delegations;
   }
-}
-
-async function handleSubmit() {
-  loading.value = true;
-  try {
-    let address = form.value.address;
-    if (address.includes('.eth'))
-      address = await getProvider('1').resolveName(address);
-    const tx = await sendTransaction(
-      auth.web3,
-      contractAddress,
-      abi,
-      'setDelegate',
-      [formatBytes32String(form.value.id), address]
-    );
-    pendingCount.value++;
-    loading.value = false;
-    const receipt = await tx.wait();
-    console.log('Receipt', receipt);
-    await sleep(3e3);
-    notify(t('notify.delegationSuccess'));
-    pendingCount.value--;
-    await load();
-  } catch (e) {
-    pendingCount.value--;
-    console.log(e);
-  }
-  loading.value = false;
-}
-
-function clearDelegate(id, delegate) {
-  currentId.value = id;
-  currentDelegate.value = delegate;
-  modalOpen.value = true;
 }
 
 async function getDelegatesWithScore() {
@@ -172,6 +161,36 @@ async function getDelegatesWithScore() {
   }
 }
 
+async function handleSubmit() {
+  loading.value = true;
+  try {
+    let address = form.value.address;
+    if (address.includes('.eth'))
+      address = await getProvider('1').resolveName(address);
+    let spaceId = form.value.id;
+    if (!specifySpaceChecked.value) spaceId = '';
+    const tx = await sendTransaction(
+      auth.web3,
+      contractAddress,
+      abi,
+      'setDelegate',
+      [formatBytes32String(spaceId), address]
+    );
+    pendingCount.value++;
+    loading.value = false;
+    const receipt = await tx.wait();
+    console.log('Receipt', receipt);
+    await sleep(3e3);
+    notify(t('notify.delegationSuccess'));
+    pendingCount.value--;
+    getDelegatesAndDelegators();
+  } catch (e) {
+    pendingCount.value--;
+    console.log(e);
+  }
+  loading.value = false;
+}
+
 watchEffect(() => {
   loadProfiles(
     delegates.value
@@ -181,15 +200,12 @@ watchEffect(() => {
   );
 });
 
-watch(web3Account, (val, prev) => {
-  if (val?.toLowerCase() !== prev) load();
-});
-
 const { apolloQuery, queryLoading: spaceLoading } = useApolloQuery();
 
 debouncedWatch(
   () => form.value.id,
   async () => {
+    if (!form.value.id) return;
     space.value = await apolloQuery(
       {
         query: SPACE_DELEGATE_QUERY,
@@ -199,6 +215,7 @@ debouncedWatch(
       },
       'space'
     );
+    console.log(space.value);
     if (space.value?.id === form.value?.id) {
       delegatesWithScore.value = [];
       getDelegatesWithScore();
@@ -208,8 +225,9 @@ debouncedWatch(
 );
 
 onMounted(async () => {
+  if (route.params.key) specifySpaceChecked.value = true;
   setPageTitle('page.title.delegate');
-  await load();
+  await getDelegatesAndDelegators();
   loaded.value = true;
 });
 </script>
@@ -229,13 +247,20 @@ onMounted(async () => {
           <UiInput
             v-model.trim="form.address"
             :placeholder="$t('delegate.addressPlaceholder')"
+            :error="notValidAddress"
             class="mt-2"
           >
             <template v-slot:label>{{ $t('delegate.to') }}</template>
           </UiInput>
+          <div class="flex items-center space-x-2 px-2">
+            <Checkbox v-model="specifySpaceChecked" />
+            <span>{{ $t('setDelegationToSpace') }}</span>
+          </div>
           <UiInput
+            v-show="specifySpaceChecked"
             v-model.trim="form.id"
-            :placeholder="$t('delegate.spacePlaceholder')"
+            placeholder="e.g. balancer.eth"
+            :error="notValidSpaceId"
           >
             <template v-slot:label>{{ $t('space') }}</template>
           </UiInput>
@@ -291,12 +316,10 @@ onMounted(async () => {
           </div>
         </Block>
         <Block
-          v-if="
-            delegatesLoading || spaceLoading || delegatesWithScore.length > 0
-          "
-          :title="$t('delegate.topDelegates')"
-          :slim="true"
-          :loading="delegatesLoading || spaceLoading"
+          v-if="space?.id && specifySpaceChecked"
+          :title="$tc('delegate.topDelegates')"
+          :loading="delegatesLoading"
+          slim
         >
           <div
             v-for="(delegate, i) in delegatesWithScore"
@@ -321,6 +344,12 @@ onMounted(async () => {
               "
             />
           </div>
+          <div
+            v-if="!delegatesLoading && delegatesWithScore.length < 1"
+            class="mx-4 py-3 flex items-center"
+          >
+            {{ $tc('delegate.noDelegatesFoundFor', [space.id]) }}
+          </div>
         </Block>
       </template>
       <PageLoading v-else />
@@ -328,9 +357,9 @@ onMounted(async () => {
     <template #sidebar-right>
       <Block :title="$t('actions')">
         <UiButton
-          @click="handleSubmit"
-          :disabled="!isValid || !$auth.isAuthenticated.value"
-          :loading="loading || networkQueryLoading"
+          @click="web3Account ? handleSubmit() : (modalAccountOpen = true)"
+          :disabled="!isValid && !!web3Account"
+          :loading="loading || spaceLoading"
           class="block w-full"
           primary
         >
@@ -344,7 +373,7 @@ onMounted(async () => {
       v-if="loaded"
       :open="modalOpen"
       @close="modalOpen = false"
-      @reload="load"
+      @reload="getDelegatesAndDelegators"
       :id="currentId"
       :delegate="currentDelegate"
       :profiles="profiles"
