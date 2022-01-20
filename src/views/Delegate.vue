@@ -215,7 +215,6 @@ debouncedWatch(
       },
       'space'
     );
-    console.log(space.value);
     if (space.value?.id === form.value?.id) {
       delegatesWithScore.value = [];
       getDelegatesWithScore();
