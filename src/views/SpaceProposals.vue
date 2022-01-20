@@ -154,7 +154,7 @@ watchEffect(() => {
         "
       />
       <NoProposals
-        v-else-if="!proposalsCount && !loadingData"
+        v-else-if="space && !proposalsCount && !loadingData"
         class="mt-2"
         :space="space"
       />
