@@ -27,6 +27,7 @@ import { SPACE_DELEGATE_QUERY } from '@/helpers/queries';
 import { useApolloQuery } from '@/composables/useApolloQuery';
 import { useModal } from '@/composables/useModal';
 import { useEns } from '@/composables/useEns';
+import Icon from '@/components/Icon.vue';
 
 const abi = ['function setDelegate(bytes32 id, address delegate)'];
 
@@ -112,16 +113,20 @@ function clearDelegate(id, delegate) {
 }
 
 watch([networkKey, web3Account], ([valN, prevN], [valA, prevA]) => {
-  if (valN !== prevN) getDelegatesAndDelegators();
-  if (valA?.toLowerCase() !== prevA) getDelegatesAndDelegators();
+  if (valN !== prevN) getDelegationsAndDelegates();
+  if (valA?.toLowerCase() !== prevA) getDelegationsAndDelegates();
 });
 
-async function getDelegatesAndDelegators() {
+const getDelegationsAndDelegatesLoading = ref(false);
+
+async function getDelegationsAndDelegates() {
   if (web3Account.value) {
+    getDelegationsAndDelegatesLoading.value = true;
     const [delegatesObj, delegatorsObj] = await Promise.all([
       getDelegates(networkKey.value, web3Account.value),
       getDelegators(networkKey.value, web3Account.value)
     ]);
+    getDelegationsAndDelegatesLoading.value = false;
     delegates.value = delegatesObj.delegations;
     delegators.value = delegatorsObj.delegations;
   }
@@ -206,7 +211,7 @@ async function handleSubmit() {
     await sleep(3e3);
     notify(t('notify.delegationSuccess'));
     pendingCount.value--;
-    getDelegatesAndDelegators();
+    getDelegationsAndDelegates();
   } catch (e) {
     pendingCount.value--;
     console.log(e);
@@ -249,7 +254,7 @@ debouncedWatch(
 onMounted(async () => {
   if (route.params.key) specifySpaceChecked.value = true;
   setPageTitle('page.title.delegate');
-  await getDelegatesAndDelegators();
+  await getDelegationsAndDelegates();
   loaded.value = true;
 });
 </script>
@@ -286,6 +291,17 @@ onMounted(async () => {
           >
             <template v-slot:label>{{ $t('space') }}</template>
           </UiInput>
+        </Block>
+        <Block
+          v-if="
+            delegates.length < 1 &&
+            delegators.length < 1 &&
+            !getDelegationsAndDelegatesLoading &&
+            web3Account
+          "
+        >
+          <Icon name="warning" class="mr-1" />
+          {{ $t('delegate.noDelegationsAndDelegates') }}
         </Block>
         <Block
           v-if="delegates.length > 0"
@@ -395,7 +411,7 @@ onMounted(async () => {
       v-if="loaded"
       :open="modalOpen"
       @close="modalOpen = false"
-      @reload="getDelegatesAndDelegators"
+      @reload="getDelegationsAndDelegates"
       :id="currentId"
       :delegate="currentDelegate"
       :profiles="profiles"

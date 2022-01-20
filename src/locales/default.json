@@ -164,7 +164,8 @@
     "noValidAddress": "Not a valid address",
     "delegateToSelf": "You cannot delegate to yourself",
     "delegateToSelfAddress": "You cannot delegate to your own ENS address",
-    "noValidSpaceId": "Not a valid space ID"
+    "noValidSpaceId": "Not a valid space ID",
+    "noDelegationsAndDelegates": "Can't find your delegations and delegates? Make sure you are connected to the correct network."
   },
   "proposal": {
     "castVote": "Cast your vote",
