@@ -83,7 +83,7 @@ const isValid = computed(() => {
   return (
     (address.includes('.eth') || isAddress(address)) &&
     address.toLowerCase() !== web3Account.value.toLowerCase() &&
-    (form.value.id === '' || !specifySpaceChecked.value || space.value?.id)
+    (!specifySpaceChecked.value || space.value?.id === form.value.id)
   );
 });
 
