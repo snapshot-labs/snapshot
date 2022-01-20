@@ -351,7 +351,7 @@ watchEffect(() => {
         </UiButton>
       </Block>
       <PluginsCreate
-        v-if="space.plugins"
+        v-if="space?.plugins"
         :proposal="proposal"
         :space="space"
         :preview="preview"
@@ -417,7 +417,7 @@ watchEffect(() => {
         </UiButton>
       </Block>
       <PluginsCreateSidebar
-        v-if="space.plugins"
+        v-if="space?.plugins"
         :proposal="proposal"
         :space="space"
         :preview="preview"
