@@ -4,7 +4,7 @@ import { usePlugins } from '@/composables/usePlugins';
 const { components, addComponents, setTemplateName } = usePlugins();
 setTemplateName('Create');
 
-addComponents(['safeSnap', 'chainlink']);
+addComponents(['safeSnap']);
 
 const props = defineProps({
   proposal: Object,
