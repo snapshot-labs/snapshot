@@ -228,7 +228,7 @@ function formatSpace(spaceRaw) {
   const space = clone(spaceRaw);
   if (!space) return;
   delete space.id;
-  delete space._activeProposals;
+  delete space.followersCount;
   Object.entries(space).forEach(([key, value]) => {
     if (value === null) delete space[key];
   });
