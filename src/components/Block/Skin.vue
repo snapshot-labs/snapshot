@@ -1,5 +1,7 @@
 <script setup>
-import { n } from '@/helpers/utils';
+import { useIntl } from '@/composables/useIntl';
+
+const { formatCompactNumber } = useIntl();
 
 defineProps(['skin']);
 </script>
@@ -9,7 +11,7 @@ defineProps(['skin']);
     <Block>
       <UiButton class="mb-2" primary>{{ skin.key }}</UiButton>
       <div class="text-color">
-        {{ $tc('inSpaces', [n(skin.spaces)]) }}
+        {{ $tc('inSpaces', [formatCompactNumber(skin.spaces)]) }}
       </div>
     </Block>
   </div>

@@ -22,7 +22,8 @@ import { useApp } from '@/composables/useApp';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useTxStatus } from '@/composables/useTxStatus';
 import { useExtendedSpaces } from '@/composables/useExtendedSpaces';
-import { shorten, setPageTitle, n } from '@/helpers/utils';
+import { shorten, setPageTitle } from '@/helpers/utils';
+import { useIntl } from '@/composables/useIntl';
 
 const abi = ['function setDelegate(bytes32 id, address delegate)'];
 
@@ -35,6 +36,7 @@ const { web3, web3Account } = useWeb3();
 const { pendingCount } = useTxStatus();
 const { loadExtentedSpaces, extentedSpaces, spaceLoading } =
   useExtendedSpaces();
+const { formatCompactNumber } = useIntl();
 
 const modalOpen = ref(false);
 const currentId = ref('');
@@ -296,10 +298,16 @@ onMounted(async () => {
               :space="{ network: web3.network.key }"
               class="column"
             />
-            <div class="flex-auto column text-right link-color">
-              {{ delegate.score >= 0.005 ? n(delegate.score) : '> 0.01' }}
-              {{ extentedSpaces.find(s => s.id === form.id).symbol }}
-            </div>
+            <div
+              class="flex-auto column text-right link-color"
+              v-text="
+                `${
+                  delegate.score >= 0.005
+                    ? formatCompactNumber(delegate.score)
+                    : '< 0.01'
+                } ${extentedSpaces.find(s => s.id === form.id).symbol}`
+              "
+            />
           </div>
         </Block>
       </template>

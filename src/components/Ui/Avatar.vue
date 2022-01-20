@@ -12,7 +12,7 @@ const error = ref(false);
 </script>
 
 <template>
-  <span class="flex-shrink-0">
+  <span class="flex flex-shrink-0 items-center justify-center">
     <img
       v-if="imgsrc && !error"
       :src="imgsrc"
@@ -25,14 +25,13 @@ const error = ref(false);
         space?.skin ? `${space?.skin} bg-[color:var(--bg-color)]` : 'bg-white'
       ]"
       :alt="space?.name"
-      class="rounded-full inline-block !align-middle leading-none"
+      class="rounded-full"
     />
     <UiBlockie
       v-else-if="!!address"
       :seed="address"
-      class="inline-block !align-middle rounded-full"
+      class="rounded-full"
       :style="{
-        'line-height': 0,
         width: `${parseInt(size) || 22}px`,
         height: `${parseInt(size) || 22}px`
       }"
