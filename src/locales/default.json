@@ -159,7 +159,12 @@
     "delegated": "Delegated to you",
     "pendingTransaction": "no pending transaction | 1 pending transaction | {count} pending transactions",
     "topDelegates": "Top delegates",
-    "noDelegatesFoundFor": "No delegates found for {0}"
+    "noDelegatesFoundFor": "No delegates found for {0}",
+    "noValidEns": "Not a valid ENS address.",
+    "noValidAddress": "Not a valid address",
+    "delegateToSelf": "You cannot delegate to yourself",
+    "delegateToSelfAddress": "You cannot delegate to your own ENS address",
+    "noValidSpaceId": "Not a valid space ID"
   },
   "proposal": {
     "castVote": "Cast your vote",

@@ -25,5 +25,15 @@ export function useEns() {
     }
   };
 
-  return { loadOwnedEnsDomains, ownedEnsDomains, validEnsTlds };
+  function isValidEnsDomain(domain) {
+    if (!domain.includes('.')) return false;
+    return validEnsTlds.includes(domain.split('.').pop());
+  }
+
+  return {
+    loadOwnedEnsDomains,
+    ownedEnsDomains,
+    validEnsTlds,
+    isValidEnsDomain
+  };
 }

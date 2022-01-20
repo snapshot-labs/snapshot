@@ -26,6 +26,7 @@ import { debouncedWatch } from '@vueuse/core';
 import { SPACE_DELEGATE_QUERY } from '@/helpers/queries';
 import { useApolloQuery } from '@/composables/useApolloQuery';
 import { useModal } from '@/composables/useModal';
+import { useEns } from '@/composables/useEns';
 
 const abi = ['function setDelegate(bytes32 id, address delegate)'];
 
@@ -58,32 +59,49 @@ const { profiles, loadProfiles } = useProfiles();
 
 const networkKey = computed(() => web3.value.network.key);
 
-const notValidSpaceId = computed(() => {
-  if (space.value === null) return 'Not a valid space ID';
+const { loadOwnedEnsDomains, ownedEnsDomains, validEnsTlds, isValidEnsDomain } =
+  useEns();
+
+const isEnsOwnedByWeb3Account = computed(() =>
+  ownedEnsDomains.value.map(d => d.name).includes(form.value.address)
+);
+
+const validateSpaceInput = computed(() => {
+  if (space.value === null) return t('delegate.noValidSpaceId');
   return false;
 });
 
-const notValidAddress = computed(() => {
+const validateToInput = computed(() => {
   if (form.value.address === '') return false;
   const address = form.value.address;
-  if (!address.includes('.eth') && !isAddress(address))
-    return 'Not a valid address or ENS name';
+  if (!isValidEnsDomain(address) && !isAddress(address)) {
+    if (address.includes('.'))
+      return `${t('delegate.noValidEns')} ${t(
+        'setup.supportedEnsTLDs'
+      )}: ${validEnsTlds.join(', ')}`;
+    else return t('delegate.noValidAddress');
+  }
   if (address.toLowerCase() === web3Account.value.toLowerCase())
-    return 'Address must not match your account';
+    return t('delegate.delegateToSelf');
+  if (isEnsOwnedByWeb3Account.value) return t('delegate.delegateToSelfAddress');
   return false;
 });
 
-watch([networkKey, web3Account], ([valN, prevN], [valA, prevA]) => {
-  if (valN !== prevN) getDelegatesAndDelegators();
-  if (valA?.toLowerCase() !== prevA) getDelegatesAndDelegators();
-});
+watch(
+  web3Account,
+  () => {
+    loadOwnedEnsDomains();
+  },
+  { immediate: true }
+);
 
-const isValid = computed(() => {
+const isValidForm = computed(() => {
   const address = form.value.address;
   return (
-    (address.includes('.eth') || isAddress(address)) &&
+    (isValidEnsDomain(address) || isAddress(address)) &&
     address.toLowerCase() !== web3Account.value.toLowerCase() &&
-    (!specifySpaceChecked.value || space.value?.id === form.value.id)
+    (!specifySpaceChecked.value || space.value?.id === form.value.id) &&
+    !isEnsOwnedByWeb3Account.value
   );
 });
 
@@ -92,6 +110,11 @@ function clearDelegate(id, delegate) {
   currentDelegate.value = delegate;
   modalOpen.value = true;
 }
+
+watch([networkKey, web3Account], ([valN, prevN], [valA, prevA]) => {
+  if (valN !== prevN) getDelegatesAndDelegators();
+  if (valA?.toLowerCase() !== prevA) getDelegatesAndDelegators();
+});
 
 async function getDelegatesAndDelegators() {
   if (web3Account.value) {
@@ -246,7 +269,7 @@ onMounted(async () => {
           <UiInput
             v-model.trim="form.address"
             :placeholder="$t('delegate.addressPlaceholder')"
-            :error="notValidAddress"
+            :error="validateToInput"
             class="mt-2"
           >
             <template v-slot:label>{{ $t('delegate.to') }}</template>
@@ -259,7 +282,7 @@ onMounted(async () => {
             v-show="specifySpaceChecked"
             v-model.trim="form.id"
             placeholder="e.g. balancer.eth"
-            :error="notValidSpaceId"
+            :error="validateSpaceInput"
           >
             <template v-slot:label>{{ $t('space') }}</template>
           </UiInput>
@@ -277,7 +300,7 @@ onMounted(async () => {
           >
             <User
               :address="delegate.delegate"
-              :space="{ network: web3.network.key }"
+              :space="{ network: networkKey }"
               :profile="profiles[delegate.delegate]"
             />
             <div
@@ -305,7 +328,7 @@ onMounted(async () => {
           >
             <User
               :address="delegator.delegator"
-              :space="{ network: web3.network.key }"
+              :space="{ network: networkKey }"
               :profile="profiles[delegator.delegator]"
             />
             <div
@@ -329,7 +352,7 @@ onMounted(async () => {
             <User
               :profile="profiles[delegate.delegate]"
               :address="delegate.delegate"
-              :space="{ network: web3.network.key }"
+              :space="{ network: networkKey }"
               class="column"
             />
             <div
@@ -357,7 +380,7 @@ onMounted(async () => {
       <Block :title="$t('actions')">
         <UiButton
           @click="web3Account ? handleSubmit() : (modalAccountOpen = true)"
-          :disabled="!isValid && !!web3Account"
+          :disabled="!isValidForm && !!web3Account"
           :loading="loading || spaceLoading"
           class="block w-full"
           primary
