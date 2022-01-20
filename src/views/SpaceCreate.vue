@@ -16,7 +16,7 @@ import { useApolloQuery } from '@/composables/useApolloQuery';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useClient } from '@/composables/useClient';
 import { useStore } from '@/composables/useStore';
-import { setPageTitle, n } from '@/helpers/utils';
+import { setPageTitle } from '@/helpers/utils';
 import PluginsCreate from '@/plugins/Create.vue';
 import PluginsCreateSidebar from '@/plugins/CreateSidebar.vue';
 import { useIntl } from '@/composables/useIntl';
