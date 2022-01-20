@@ -38,14 +38,14 @@ const daysOfWeek = computed(() => {
   const sunday = new Date(2017, 0, 0);
   return [...Array(7)].map(() => {
     sunday.setDate(sunday.getDate() + 1);
-    return sunday.toLocaleDateString(locale, {
+    return sunday.toLocaleDateString(locale.value, {
       weekday: 'short'
     });
   });
 });
 
 const monthName = computed(() => {
-  const name = new Date(year.value, month.value).toLocaleString(locale, {
+  const name = new Date(year.value, month.value).toLocaleString(locale.value, {
     month: 'long'
   });
   return `${name.charAt(0).toUpperCase()}${name.slice(1)}`;
