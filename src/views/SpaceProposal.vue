@@ -264,8 +264,8 @@ onMounted(async () => {
                 )
           "
         >
-          <Icon name="back" size="22" class="!align-middle" />
-          {{ browserHasHistory ? $t('back') : space.name }}
+          <Icon name="back" size="22" class="align-middle" />
+          {{ $t('back') }}
         </a>
       </div>
       <div class="px-4 md:px-0">
