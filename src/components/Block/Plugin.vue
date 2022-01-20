@@ -35,7 +35,7 @@ defineProps({
           <Icon name="github" class="mr-1" />
           {{ plugin.author }}
         </a>
-        {{ $tc('inSpaces', [formatCompactNumber(explore.plugins[plugin.key])]) }}
+        {{ $tc('inSpaces', [formatCompactNumber(explore.plugins[plugin.key] || 0)]) }}
       </div>
       <UiButton slim>
         <a
