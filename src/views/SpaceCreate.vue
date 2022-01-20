@@ -361,13 +361,7 @@ watchEffect(() => {
     <template #sidebar-right v-if="!preview">
       <Block
         :title="$t('actions')"
-        :icon="
-          space?.plugins && Object.keys(space.plugins).length > 0
-            ? 'stars'
-            : undefined
-        "
         :loading="!space"
-        @submit="modalProposalPluginsOpen = true"
       >
         <div class="mb-2">
           <UiButton
