@@ -11,30 +11,79 @@ export default {
     return {
       json: '',
       error: '',
-      open: false
+      open: false,
+      dropping: false
     };
   },
   methods: {
-    async importTxs(event) {
-      const json = await this.readFile(event);
+    async handleFileUpload(event) {
+      const [file] = event.target?.files || [];
+      if (!file) {
+        this.error = 'Uploading file';
+        return;
+      }
+      event.target.value = '';
+      return this.importFromFile(file);
+    },
+    async importFromFile(file) {
+      let json;
+      try {
+        json = await this.readFile(file);
+      } catch (err) {
+        console.warn('err', err);
+        this.error = 'Uploading file';
+        return;
+      }
+      this.importTxs(json);
+    },
+    importFromText() {
+      let json;
+      try {
+        json = JSON.parse(this.json);
+      } catch (err) {
+        console.warn('err', err);
+        this.error = 'JSON is not valid';
+        return;
+      }
+      const successful = this.importTxs(json);
+      if (successful) {
+        // Clear textarea
+        this.json = '';
+      }
+    },
+    importTxs(json) {
       this.error = '';
       if (!Array.isArray(json)) {
         this.error = 'JSON must be an array';
-        return;
+        return false;
       }
       try {
-        // const txs = json.map(this.importTx);
-        // this.$emit('import', txs);
-        console.log('json', json);
-        this.json = JSON.stringify(json, null, '\t');
+        const txs = json.map(this.importTx);
+        this.$emit('import', txs);
+        return true;
       } catch (err) {
-        console.log('err', err);
+        console.warn('err', err);
         this.error = err.message;
+        return false;
       }
+    },
+    toggleDropping() {
+      this.dropping = !this.dropping;
+    },
+    drop(event) {
+      this.toggleDropping();
+      const file = event.dataTransfer.files[0];
+      this.importFromFile(file);
     },
     importTx(tx, index) {
       if (tx.to && tx.value && isAddress(tx.to)) {
-        const value = parseEther(tx.value).toString();
+        let value, data;
+        try {
+          value = parseEther(tx.value).toString();
+          data = tx.data?.toString().trim();
+        } catch (err) {
+          throw new Error(`transaction #${index + 1} is invalid`);
+        }
         const base = {
           to: tx.to,
           value,
@@ -61,6 +110,12 @@ export default {
               'invalid function params for transaction #' + (index + 1)
             );
           }
+        } else if (data && data !== '0x') {
+          return {
+            type: 'raw',
+            data,
+            ...base
+          };
         }
 
         return {
@@ -74,23 +129,19 @@ export default {
       }
       throw new Error(`transaction #${index + 1} is invalid`);
     },
-    readFile(event) {
+    readFile(file) {
       return new Promise((resolve, reject) => {
-        const [file] = event.target?.files || [];
-        if (file) {
-          const reader = new FileReader();
-          reader.addEventListener('load', e => {
-            event.target.value = '';
-            try {
-              resolve(JSON.parse(e.target.result));
-            } catch (e) {
-              reject(new Error('JSON is not valid'));
-            }
-          });
-          reader.addEventListener('error', reject);
-          reader.addEventListener('abort', reject);
-          reader.readAsBinaryString(file);
-        }
+        const reader = new FileReader();
+        reader.addEventListener('load', e => {
+          try {
+            resolve(JSON.parse(e.target.result));
+          } catch (e) {
+            reject(new Error('JSON is not valid'));
+          }
+        });
+        reader.addEventListener('error', reject);
+        reader.addEventListener('abort', reject);
+        reader.readAsBinaryString(file);
       });
     }
   }
@@ -109,18 +160,32 @@ export default {
       @remove="$emit('remove')"
     >
       <div style="padding: 8px 16px">
-        <label for="files" class="mb-3 box file-import">
+        <label
+          for="files"
+          @dragenter.prevent="toggleDropping"
+          @dragleave.prevent="toggleDropping"
+          @drop.prevent="drop"
+          @dragover.prevent
+          :class="{
+            box: true,
+            'file-import': true,
+            'active-dropzone': dropping
+          }"
+          class="box file-import"
+        >
           Click to select file <br />
           or drag and drop
         </label>
         <input
           id="files"
+          ref="files"
           accept="application/json, text/plain"
-          @change="importTxs"
+          @change="handleFileUpload"
           style="display: none"
           type="file"
         />
-        <div class="box tx-content">
+        <div v-if="error" class="error mt-3">Error: {{ error }}.</div>
+        <div class="box tx-content mt-3">
           <label for="tx_json"><h5>Transaction JSON</h5></label>
           <textarea
             id="tx_json"
@@ -129,9 +194,11 @@ export default {
             class="tx-textarea"
           ></textarea>
         </div>
+        <div class="mt-3 flex justify-center">
+          <UiButton @click="importFromText">Parse JSON</UiButton>
+        </div>
       </div>
     </UiCollapsibleContent>
-    <div v-if="error" class="error mb-3">Error: {{ error }}.</div>
   </div>
 </template>
 
@@ -154,7 +221,8 @@ export default {
   align-items: center;
   justify-content: center;
   text-align: center;
-  background-color: rgba(244, 246, 246, 1);
+  background-color: rgba(244, 246, 246, 0.3);
+  cursor: pointer;
 
   font-size: 16px;
   font-weight: 400;
@@ -167,14 +235,17 @@ export default {
   padding: 0;
   min-height: 80px;
   font-size: 14px;
+  background: transparent;
 }
 .error {
-  display: inline-block;
   background: rgba(255, 0, 0, 0.1);
   color: rgba(255, 48, 48, 1);
   border-radius: 24px;
   padding: 16px;
   font-size: 14px;
   font-weight: 100;
+}
+.active-dropzone {
+  background: red;
 }
 </style>

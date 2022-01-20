@@ -33,12 +33,12 @@ export default {
           :src="chevronIcon"
           alt="arrow"
           class="arrow"
-          v-bind:class="{ rotate: open }"
+          v-bind:class="{ rotate: !open }"
         />
       </div>
       <slot name="icons"></slot>
     </div>
-    <div :class="{ hide: open }">
+    <div :class="{ hide: !open }">
       <slot />
     </div>
   </div>

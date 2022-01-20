@@ -150,7 +150,14 @@ export default {
       this.$emit('update:modelValue', this.input);
     },
     handleImport(txs) {
-      this.input.push(txs);
+      this.input.push(
+        createBatch(
+          this.realityAddress,
+          parseInt(this.network),
+          this.input.length,
+          txs
+        )
+      );
       this.$emit('update:modelValue', this.input);
     }
   }
@@ -184,7 +191,7 @@ export default {
     <UiCollapsibleText
       v-if="hash"
       :showArrow="true"
-      :open="!showHash"
+      :open="showHash"
       class="border-b"
       style="border-width: 0 0 1px 0 !important"
       title="Complete Transaction Hash"

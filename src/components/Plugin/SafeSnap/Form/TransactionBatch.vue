@@ -21,8 +21,8 @@ export default {
   data() {
     return {
       open: true,
-      hashHidden: false,
-      jsonHidden: false,
+      hashHidden: true,
+      jsonHidden: true,
       batch: this.modelValue,
       transactions: this.modelValue ? clone(this.modelValue.transactions) : [],
       chevronIcon
