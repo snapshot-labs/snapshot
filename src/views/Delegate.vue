@@ -112,9 +112,9 @@ function clearDelegate(id, delegate) {
   modalOpen.value = true;
 }
 
-watch([networkKey, web3Account], ([valN, prevN], [valA, prevA]) => {
-  if (valN !== prevN) getDelegationsAndDelegates();
-  if (valA?.toLowerCase() !== prevA) getDelegationsAndDelegates();
+watch([networkKey, web3Account], ([valN, valA], [prevN, prevA]) => {
+  if (valN !== prevN || valA?.toLowerCase() !== prevA)
+    getDelegationsAndDelegates();
 });
 
 const getDelegationsAndDelegatesLoading = ref(false);
@@ -129,6 +129,10 @@ async function getDelegationsAndDelegates() {
     getDelegationsAndDelegatesLoading.value = false;
     delegates.value = delegatesObj.delegations;
     delegators.value = delegatorsObj.delegations;
+  } else {
+    // user logged out
+    delegates.value = [];
+    delegators.value = [];
   }
 }
 
