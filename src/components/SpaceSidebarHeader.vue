@@ -1,6 +1,5 @@
 <script setup>
-import { ref, watchEffect } from 'vue';
-import { useApp } from '@/composables/useApp';
+import { ref, watchEffect, computed } from 'vue';
 import { useSpaceSubscription } from '@/composables/useSpaceSubscription';
 import { useFollowSpace } from '@/composables/useFollowSpace';
 import verified from '@/../snapshot-spaces/spaces/verified.json';
@@ -11,12 +10,9 @@ const props = defineProps({
   spaceId: String
 });
 
-const { explore } = useApp();
 const { formatCompactNumber } = useIntl();
 
-// TODO: Use space.followers instead of explore
-const nbrMembers = explore.value.spaces[props.spaceId].followers;
-const isVerified = verified[props.spaceId] || 0;
+const isVerified = computed(() => verified[props.spaceId] || 0);
 
 const {
   loading,
@@ -66,7 +62,9 @@ watchEffect(() => {
       </h3>
       <div class="mb-[12px] text-color">
         {{
-          $tc('members', nbrMembers, { count: formatCompactNumber(nbrMembers) })
+          $tc('members', space.followersCount, {
+            count: formatCompactNumber(space.followersCount)
+          })
         }}
       </div>
     </div>

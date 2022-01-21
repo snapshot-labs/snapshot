@@ -627,7 +627,7 @@ interface SafeData {
 export function getSafeHash(safe: SafeData) {
   const hashes = safe.txs.map(batch => batch.hash);
   const valid = hashes.every(hash => hash);
-  if (!valid) return null;
+  if (!valid || !hashes.length) return null;
   return keccak256(['bytes32[]'], [hashes]);
 }
 

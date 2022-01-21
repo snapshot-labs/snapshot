@@ -13,7 +13,9 @@ defineEmits(['remove', 'toggle']);
 <template>
   <div class="w-full collapsible-container" v-bind:class="{ borderless }">
     <div class="px-2 collapsible-header flex items-center">
-      <div class="mr-4 header-number">{{ number }}</div>
+      <div class="mr-4 header-number" v-if="number !== undefined">
+        {{ number }}
+      </div>
       <span
         class="flex-auto text-center flex flex-nowrap justify-center overflow-hidden"
         @click="$emit('toggle')"

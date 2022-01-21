@@ -21,8 +21,8 @@ export default {
   data() {
     return {
       open: true,
-      hashHidden: false,
-      jsonHidden: false,
+      hashHidden: true,
+      jsonHidden: true,
       batch: this.modelValue,
       transactions: this.modelValue ? clone(this.modelValue.transactions) : [],
       chevronIcon
@@ -132,7 +132,7 @@ export default {
       title="Batch Transaction Hash"
       @toggle="hashHidden = !hashHidden"
     >
-      {{ removeHexPrefix(this.modelValue.hash) }}
+      {{ this.modelValue.hash }}
     </UiCollapsibleText>
     <UiCollapsibleText
       v-if="this.modelValue.hash"
