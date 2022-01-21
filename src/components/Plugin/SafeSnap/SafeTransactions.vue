@@ -1,7 +1,5 @@
 <script>
-import Plugin, {
-  getMultiSend
-} from '@/../snapshot-plugins/src/plugins/safeSnap';
+import Plugin from '@/../snapshot-plugins/src/plugins/safeSnap';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import {
   createBatch,
@@ -79,11 +77,6 @@ export default {
   ],
   emits: ['update:modelValue'],
   data() {
-    let multiSendAddress = this.multiSendAddress;
-    if (!multiSendAddress) {
-      multiSendAddress = getMultiSend(this.network);
-    }
-
     return {
       input: formatBatches(
         this.network,
@@ -98,7 +91,7 @@ export default {
         gnosisSafeAddress: undefined,
         realityAddress: this.realityAddress,
         network: this.network,
-        multiSendAddress,
+        multiSendAddress: this.multiSendAddress,
         tokens: [],
         collectables: []
       }

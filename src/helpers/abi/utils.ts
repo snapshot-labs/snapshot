@@ -3,9 +3,6 @@ import { isAddress } from '@ethersproject/address';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import SafeSnapPlugin, {
   createMultiSendTx,
-  getMultiSend
-} from '@/../snapshot-plugins/src/plugins/safeSnap';
-import SafeSnap, {
   ModuleTransaction
 } from '@/../snapshot-plugins/src/plugins/safeSnap';
 import { JsonRpcProvider } from '@ethersproject/providers';
