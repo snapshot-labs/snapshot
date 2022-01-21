@@ -30,7 +30,8 @@ export default {
         try {
           const transaction = await decodeTransactionData(
             this.config.network,
-            this.modelValue
+            this.modelValue,
+            this.config.multiSendAddress
           );
           if (this.plugin.validateTransaction(transaction)) {
             this.$emit('update:modelValue', transaction);

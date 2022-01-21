@@ -241,7 +241,13 @@ const ensureRightNetwork = async chainId => {
 };
 
 export default {
-  props: ['batches', 'proposalId', 'network', 'realityAddress'],
+  props: [
+    'batches',
+    'proposalId',
+    'network',
+    'realityAddress',
+    'multiSendAddress'
+  ],
   data() {
     return {
       loading: true,
@@ -261,7 +267,7 @@ export default {
   },
   methods: {
     async updateDetails() {
-      if (!this.realityAddress) return;
+      if (!this.realityAddress || !this.multiSendAddress) return;
       this.loading = true;
       try {
         this.questionDetails = await plugin.getExecutionDetails(
@@ -269,7 +275,11 @@ export default {
           this.realityAddress,
           this.proposalId,
           this.batches.map((batch, nonce) =>
-            formatBatchTransaction(batch.transactions, nonce)
+            formatBatchTransaction(
+              batch.transactions,
+              nonce,
+              this.multiSendAddress
+            )
           )
         );
         if (this.questionDetails.questionId && this.$auth.web3) {

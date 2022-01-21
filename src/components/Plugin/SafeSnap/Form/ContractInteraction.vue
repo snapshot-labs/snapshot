@@ -113,13 +113,16 @@ export default {
             this.parameters
           );
 
-          const transaction = contractInteractionToModuleTransaction({
-            data,
-            to: this.to,
-            value: this.value,
-            nonce: this.nonce,
-            method: this.selectedMethod
-          });
+          const transaction = contractInteractionToModuleTransaction(
+            {
+              data,
+              to: this.to,
+              value: this.value,
+              nonce: this.nonce,
+              method: this.selectedMethod
+            },
+            this.config.multiSendAddress
+          );
 
           if (this.plugin.validateTransaction(transaction)) {
             this.$emit('update:modelValue', transaction);

@@ -5,8 +5,7 @@ import chevronIcon from '@/assets/icons/chevron.svg';
 import {
   createBatch,
   ERC20ContractABI,
-  ERC721ContractABI,
-  removeHexPrefix
+  ERC721ContractABI
 } from '@/helpers/abi/utils';
 import { formatEther } from '@ethersproject/units';
 import { FunctionFragment, Interface } from '@ethersproject/abi';
@@ -16,7 +15,7 @@ export default {
   emits: ['update:modelValue', 'remove'],
   setup() {
     const { safesnap } = useSafesnap();
-    return { safesnap, removeHexPrefix };
+    return { safesnap };
   },
   data() {
     return {
@@ -55,7 +54,13 @@ export default {
     },
     createBatch(nonce, txs) {
       const chainId = parseInt(this.config.network);
-      return createBatch(this.config.realityAddress, chainId, nonce, txs);
+      return createBatch(
+        this.config.realityAddress,
+        chainId,
+        nonce,
+        txs,
+        this.config.multiSendAddress
+      );
     },
     formatBatchJson(txs) {
       const valid = txs.every(tx => tx);

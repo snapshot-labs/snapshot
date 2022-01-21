@@ -1,5 +1,7 @@
 <script>
-import Plugin from '@/../snapshot-plugins/src/plugins/safeSnap';
+import Plugin, {
+  getMultiSend
+} from '@/../snapshot-plugins/src/plugins/safeSnap';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import {
   createBatch,
@@ -49,13 +51,13 @@ async function fetchCollectibles(network, gnosisSafeAddress) {
   return [];
 }
 
-function formatBatches(network, realityModule, batches) {
+function formatBatches(network, realityModule, batches, multiSend) {
   if (batches.length) {
     const batchSample = batches[0];
     if (Array.isArray(batchSample)) {
       const chainId = parseInt(network);
       return batches.map((txs, index) =>
-        createBatch(realityModule, chainId, index, txs)
+        createBatch(realityModule, chainId, index, txs, multiSend)
       );
     }
   }
@@ -71,13 +73,24 @@ export default {
     'proposal',
     'network',
     'realityAddress',
+    'multiSendAddress',
     'preview',
     'hash'
   ],
   emits: ['update:modelValue'],
   data() {
+    let multiSendAddress = this.multiSendAddress;
+    if (!multiSendAddress) {
+      multiSendAddress = getMultiSend(this.network);
+    }
+
     return {
-      input: formatBatches(this.network, this.realityAddress, this.modelValue),
+      input: formatBatches(
+        this.network,
+        this.realityAddress,
+        this.modelValue,
+        this.multiSendAddress
+      ),
       gnosisSafeAddress: undefined,
       showHash: false,
       transactionConfig: {
@@ -85,6 +98,7 @@ export default {
         gnosisSafeAddress: undefined,
         realityAddress: this.realityAddress,
         network: this.network,
+        multiSendAddress,
         tokens: [],
         collectables: []
       }
@@ -136,7 +150,8 @@ export default {
           this.realityAddress,
           parseInt(this.network),
           this.input.length,
-          []
+          [],
+          this.multiSendAddress
         )
       );
       this.$emit('update:modelValue', this.input);
@@ -155,7 +170,8 @@ export default {
           this.realityAddress,
           parseInt(this.network),
           this.input.length,
-          txs
+          txs,
+          this.multiSendAddress
         )
       );
       this.$emit('update:modelValue', this.input);
@@ -226,6 +242,7 @@ export default {
           :batches="input"
           :proposalId="proposal.id"
           :realityAddress="realityAddress"
+          :multiSendAddress="transactionConfig.multiSendAddress"
           :network="transactionConfig.network"
         />
       </div>

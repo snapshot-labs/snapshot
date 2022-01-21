@@ -2,20 +2,24 @@ import memoize from 'lodash/memoize';
 import { isAddress } from '@ethersproject/address';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import SafeSnapPlugin, {
+  createMultiSendTx,
+  getMultiSend
+} from '@/../snapshot-plugins/src/plugins/safeSnap';
+import SafeSnap, {
   ModuleTransaction
 } from '@/../snapshot-plugins/src/plugins/safeSnap';
 import { JsonRpcProvider } from '@ethersproject/providers';
-import { keccak256, pack } from '@ethersproject/solidity';
-import { hexDataLength, isHexString } from '@ethersproject/bytes';
+import { keccak256 } from '@ethersproject/solidity';
+import { isHexString } from '@ethersproject/bytes';
 import {
   FormatTypes,
   Fragment,
   FunctionFragment,
   Interface,
+  JsonFragment,
   ParamType
 } from '@ethersproject/abi';
 import { BigNumberish } from '@ethersproject/bignumber';
-import { JsonFragment } from '@ethersproject/abi/src.ts/fragments';
 import { InterfaceDecoder } from '@/helpers/abi/decoder';
 import { parseAmount, parseValueInput } from '@/helpers/utils';
 
@@ -83,10 +87,6 @@ export const ERC20ContractABI = [
 export const ERC721ContractABI = [
   'function safeTransferFrom(address _from, address _to, uint256 _tokenId) external payable'
 ];
-
-const MultiSendABI = ['function multiSend(bytes memory transactions)'];
-
-const MULTISEND_CONTRACT_ADDRESS = '0x8D29bE29923b68abfDD21e541b9374737B49cdAD';
 
 export const ETHEREUM_COIN: Token = {
   name: 'Ether',
@@ -272,8 +272,8 @@ export const getERC721TokenTransferTransactionData = (
   ]);
 };
 
-export const getOperation = to => {
-  if (to === MULTISEND_CONTRACT_ADDRESS) return '1';
+export const getOperation = (to: string, multiSendAddress: string) => {
+  if (to === multiSendAddress) return '1';
   return '0';
 };
 
@@ -311,60 +311,15 @@ export const getGnosisSafeToken = memoize(
   (tokenAddress, network) => `${tokenAddress}_${network}`
 );
 
-export const removeHexPrefix = (hexString?: string) => {
-  if (!hexString) return hexString;
-  return hexString.startsWith('0x') ? hexString.substr(2) : hexString;
-};
-
-const encodePackageMultiSendTransaction = (transaction: ModuleTransaction) => {
-  const data = transaction.data || '0x';
-  return pack(
-    ['uint8', 'address', 'uint256', 'uint256', 'bytes'],
-    [
-      transaction.operation,
-      transaction.to,
-      transaction.value,
-      hexDataLength(data),
-      data
-    ]
-  );
-};
-
-export const multiSendTransaction = (
-  transactions: ModuleTransaction[] | ModuleTransaction,
-  nonce: number
-): ModuleTransaction => {
-  if (!Array.isArray(transactions)) return transactions;
-
-  const multiSendContract = new Interface(MultiSendABI);
-  const transactionsEncoded =
-    '0x' +
-    transactions
-      .map(encodePackageMultiSendTransaction)
-      .map(removeHexPrefix)
-      .join('');
-  const value = '0';
-  const data = multiSendContract.encodeFunctionData('multiSend', [
-    transactionsEncoded
-  ]);
-
-  return {
-    to: MULTISEND_CONTRACT_ADDRESS,
-    operation: '1',
-    value,
-    nonce: nonce.toString(),
-    data
-  };
-};
-
 export const formatBatchTransaction = (
   batch: ModuleTransaction[],
-  nonce = 0
+  nonce: number,
+  multiSendAddress: string
 ): ModuleTransaction => {
   if (batch.length === 1) {
     return { ...batch[0], nonce: nonce.toString() };
   }
-  return multiSendTransaction(batch, nonce);
+  return createMultiSendTx(batch, nonce, multiSendAddress);
 };
 
 const shrinkCollectableData = (collectable): Collectable => {
@@ -443,18 +398,15 @@ export const transferFundsToModuleTransaction = ({
   };
 };
 
-export const contractInteractionToModuleTransaction = ({
-  to,
-  value,
-  data,
-  nonce,
-  method
-}): ContractInteractionModuleTransaction => {
+export const contractInteractionToModuleTransaction = (
+  { to, value, data, nonce, method },
+  multiSendAddress: string
+): ContractInteractionModuleTransaction => {
   return {
     to,
     data,
     nonce,
-    operation: getOperation(to),
+    operation: getOperation(to, multiSendAddress),
     type: 'contractInteraction',
     value: parseValueInput(value),
     abi: parseMethodToABI(method)
@@ -482,19 +434,23 @@ const getMethodSignature = (data: string) => {
 
 export const decodeContractTransaction = async (
   network: string,
-  transaction: ModuleTransaction
+  transaction: ModuleTransaction,
+  multiSendAddress: string
 ): Promise<ContractInteractionModuleTransaction> => {
   const decode = (abi: string | FunctionFragment[]) => {
     const contractInterface = new InterfaceDecoder(abi);
     const method = contractInterface.getMethodFragment(transaction.data);
     contractInterface.decodeFunction(transaction.data, method); // Validate data can be decode by method.
-    return contractInteractionToModuleTransaction({
-      data: transaction.data,
-      nonce: 0,
-      to: transaction.to,
-      value: transaction.value,
-      method
-    });
+    return contractInteractionToModuleTransaction(
+      {
+        data: transaction.data,
+        nonce: 0,
+        to: transaction.to,
+        value: transaction.value,
+        method
+      },
+      multiSendAddress
+    );
   };
 
   const contractAbi = await getContractABI(network, transaction.to);
@@ -532,7 +488,8 @@ export const decodeERC721TransferTransaction = (
 
 export const decodeTransactionData = async (
   network: string,
-  transaction: ModuleTransaction
+  transaction: ModuleTransaction,
+  multiSendAddress: string
 ) => {
   if (!transaction.data || transaction.data === '0x') {
     return transferFundsToModuleTransaction({
@@ -576,18 +533,19 @@ export const decodeTransactionData = async (
     });
   }
 
-  return decodeContractTransaction(network, transaction);
+  return decodeContractTransaction(network, transaction, multiSendAddress);
 };
 
 export function createBatch(
   module: string,
   chainId: number,
   nonce: number,
-  txs: ModuleTransaction[]
+  txs: ModuleTransaction[],
+  multiSendAddress: string
 ) {
   return {
     nonce,
-    hash: getBatchHash(module, chainId, nonce, txs),
+    hash: getBatchHash(module, chainId, nonce, txs, multiSendAddress),
     transactions: txs
   };
 }
@@ -596,14 +554,15 @@ export function getBatchHash(
   module: string,
   chainId: number,
   nonce: number,
-  txs: ModuleTransaction[]
+  txs: ModuleTransaction[],
+  multiSendAddress: string
 ) {
   const valid = txs.every(tx => tx);
   if (!valid || !txs.length) return null;
   try {
     const safeSnap = new SafeSnapPlugin();
     const hashes = safeSnap.calcTransactionHashes(chainId, module, [
-      formatBatchTransaction(txs, nonce)
+      formatBatchTransaction(txs, nonce, multiSendAddress)
     ]);
     return hashes[0];
   } catch (err) {
