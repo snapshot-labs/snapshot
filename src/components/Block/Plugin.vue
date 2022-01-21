@@ -1,4 +1,8 @@
 <script setup>
+import { useIntl } from '@/composables/useIntl';
+
+const { formatCompactNumber } = useIntl();
+
 defineProps(['plugin']);
 
 function getLogoUrl(key) {
@@ -35,7 +39,7 @@ function getLogoUrl(key) {
           {{ plugin.author }}
         </a>
       </div>
-      {{ $tc('inSpaces', [_n(plugin.spaces)]) }}
+      {{ $tc('inSpaces', [formatCompactNumber(plugin.spaces)]) }}
     </div>
   </Block>
 </template>

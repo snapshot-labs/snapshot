@@ -5,11 +5,13 @@ import { useScrollMonitor } from '@/composables/useScrollMonitor';
 import { useApp } from '@/composables/useApp';
 import { useFollowSpace } from '@/composables/useFollowSpace';
 import { useCategories } from '@/composables/useCategories';
-import { setPageTitle } from '@/helpers/utils';
+import { shorten, setPageTitle } from '@/helpers/utils';
+import { useIntl } from '@/composables/useIntl';
 
 const { selectedCategory, orderedSpaces, orderedSpacesByCategory } = useApp();
 const { followingSpaces } = useFollowSpace();
 const { spacesPerCategory, categoriesOrderedBySpaceCount } = useCategories();
+const { formatCompactNumber } = useIntl();
 
 function selectCategory(c) {
   selectedCategory.value = c === selectedCategory.value ? '' : c;
@@ -80,7 +82,11 @@ onMounted(() => {
         </template>
       </UiDropdown>
       <div class="ml-3 text-right hidden md:block whitespace-nowrap">
-        {{ $tc('spaceCount', [_n(orderedSpacesByCategory.length)]) }}
+        {{
+          $tc('spaceCount', [
+            formatCompactNumber(orderedSpacesByCategory.length)
+          ])
+        }}
       </div>
     </Container>
     <Container :slim="true">
@@ -111,17 +117,17 @@ onMounted(() => {
                 />
               </div>
               <h3
-                v-text="_shorten(space.name, 16)"
+                v-text="shorten(space.name, 16)"
                 class="mb-0 pb-0 mt-0 text-[22px] !h-[32px] overflow-hidden"
               />
               <div class="mb-[12px] text-color">
                 {{
                   $tc('members', space.followers, {
-                    count: _n(space.followers)
+                    count: formatCompactNumber(space.followers)
                   })
                 }}
               </div>
-              <FollowButton class="!mb-0" :space="space" />
+              <FollowButton class="!mb-0" :space="space" :spaceId="space.id" />
             </Block>
           </router-link>
         </div>

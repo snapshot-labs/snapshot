@@ -1,7 +1,9 @@
-<script>
-export default {
-  props: ['strategy']
-};
+<script setup>
+import { useIntl } from '@/composables/useIntl';
+
+const { formatCompactNumber } = useIntl();
+
+defineProps(['strategy']);
 </script>
 
 <template>
@@ -16,6 +18,6 @@ export default {
       <Icon name="github" class="mr-1" />
       {{ strategy.author }}
     </div>
-    <div>{{ $tc('inSpaces', [_n(strategy.spaces)]) }}</div>
+    <div>{{ $tc('inSpaces', [formatCompactNumber(strategy.spaces)]) }}</div>
   </Block>
 </template>

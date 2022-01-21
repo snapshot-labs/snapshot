@@ -2,13 +2,18 @@
 import { computed } from 'vue';
 import { useFollowSpace } from '@/composables/useFollowSpace';
 import { useTerms } from '@/composables/useTerms';
+import { useClient } from '@/composables/useClient';
+import { useWeb3 } from '@/composables/useWeb3';
 
-const props = defineProps({ space: Object });
+const props = defineProps({ space: Object, spaceId: String });
 
-const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(props.space.id);
+const { isGnosisSafe } = useClient();
+const { web3 } = useWeb3();
+
+const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(props.spaceId);
 
 const { clickFollow, loadingFollow, isFollowing, hoverJoin } = useFollowSpace(
-  props.space
+  props.spaceId
 );
 
 const canFollow = computed(() => {
@@ -20,29 +25,37 @@ const canFollow = computed(() => {
 </script>
 
 <template>
-  <UiButton
-    v-bind="$attrs"
-    @click.stop.prevent="
-      loadingFollow !== ''
-        ? null
-        : canFollow
-        ? clickFollow(space.id)
-        : (modalTermsOpen = true)
-    "
-    @mouseenter="hoverJoin = space.id"
-    @mouseleave="hoverJoin = ''"
-    :loading="loadingFollow === space.id"
-    style="width: 120px"
-    class="mb-4"
+  <div
+    v-tippy="{
+      content: isGnosisSafe || web3.isTrezor ? $t('walletNotSupported') : null
+    }"
   >
-    {{ isFollowing ? (hoverJoin ? $t('leave') : $t('joined')) : $t('join') }}
-  </UiButton>
+    <UiButton
+      v-bind="$attrs"
+      @click.stop.prevent="
+        loadingFollow !== ''
+          ? null
+          : canFollow
+          ? clickFollow(spaceId)
+          : (modalTermsOpen = true)
+      "
+      @mouseenter="hoverJoin = spaceId"
+      @mouseleave="hoverJoin = ''"
+      :loading="loadingFollow === spaceId"
+      :disabled="isGnosisSafe || web3.isTrezor"
+      style="width: 120px"
+      class="mb-4"
+    >
+      {{ isFollowing ? (hoverJoin ? $t('leave') : $t('joined')) : $t('join') }}
+    </UiButton>
+  </div>
   <teleport to="#modal">
     <ModalTerms
+      v-if="space"
       :open="modalTermsOpen"
       :space="space"
       @close="modalTermsOpen = false"
-      @accept="acceptTerms(), clickFollow(space.id)"
+      @accept="acceptTerms(), clickFollow(spaceId)"
     />
   </teleport>
 </template>

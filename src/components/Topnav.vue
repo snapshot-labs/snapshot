@@ -1,9 +1,8 @@
 <script setup>
-import { ref, computed, watch, onMounted } from 'vue';
-import { useRoute } from 'vue-router';
+import { ref } from 'vue';
+import { shorten, getIpfsUrl } from '@/helpers/utils';
 import { useModal } from '@/composables/useModal';
 import { useDomain } from '@/composables/useDomain';
-import { useApp } from '@/composables/useApp';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useTxStatus } from '@/composables/useTxStatus';
 import { useUserSkin } from '@/composables/useUserSkin';
@@ -11,22 +10,11 @@ import { useUserSkin } from '@/composables/useUserSkin';
 const { pendingCount } = useTxStatus();
 const { modalAccountOpen } = useModal();
 const { env, domain } = useDomain();
-const route = useRoute();
 
-const { explore } = useApp();
 const { login, web3 } = useWeb3();
 const { toggleSkin, getSkinIcon } = useUserSkin();
 
 const loading = ref(false);
-
-const space = computed(() => {
-  const key = domain || route.params.key;
-  return explore.value.space?.[key];
-});
-
-function setTitle() {
-  document.title = space.value?.name ?? 'Snapshot';
-}
 
 async function handleLogin(connector) {
   modalAccountOpen.value = false;
@@ -34,12 +22,6 @@ async function handleLogin(connector) {
   await login(connector);
   loading.value = false;
 }
-
-watch(space, () => {
-  setTitle();
-});
-
-onMounted(() => setTitle());
 </script>
 
 <template>
@@ -58,7 +40,7 @@ onMounted(() => setTitle());
             <router-link
               :to="{ path: '/' }"
               class="flex items-center"
-              style="font-size: 24px; padding-top: 4px"
+              style="font-size: 24px"
             >
               snapshot
             </router-link>
@@ -72,7 +54,7 @@ onMounted(() => setTitle());
               >
                 <UiAvatar
                   :imgsrc="
-                    web3.profile?.image ? _getUrl(web3.profile.image) : ''
+                    web3.profile?.image ? getIpfsUrl(web3.profile.image) : ''
                   "
                   :address="web3.account"
                   size="18"
@@ -85,7 +67,7 @@ onMounted(() => setTitle());
                 />
                 <span
                   v-else
-                  v-text="_shorten(web3.account)"
+                  v-text="shorten(web3.account)"
                   class="hidden sm:block"
                 />
               </UiButton>

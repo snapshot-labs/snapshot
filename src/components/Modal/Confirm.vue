@@ -1,8 +1,9 @@
 <script setup>
 import { computed, inject } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { getChoiceString } from '@/helpers/utils';
+import { shorten, getChoiceString, explorerUrl } from '@/helpers/utils';
 import { useClient } from '@/composables/useClient';
+import { useIntl } from '@/composables/useIntl';
 
 const props = defineProps({
   open: Boolean,
@@ -21,6 +22,7 @@ const { t } = useI18n();
 const notify = inject('notify');
 const { send, clientLoading } = useClient();
 const format = getChoiceString;
+const { formatNumber, formatCompactNumber } = useIntl();
 
 const symbols = computed(() =>
   props.strategies.map(strategy => strategy.params.symbol)
@@ -50,7 +52,7 @@ async function handleSubmit() {
       <h4 class="m-4 mb-0 text-center">
         {{
           $tc('sureToVote', [
-            _shorten(format(proposal, selectedChoices), 'choice')
+            shorten(format(proposal, selectedChoices), 'choice')
           ])
         }}
         <br />
@@ -66,11 +68,11 @@ async function handleSubmit() {
         <div class="flex">
           <span v-text="$t('snapshot')" class="flex-auto text-color mr-1" />
           <a
-            :href="_explorer(proposal.network, proposal.snapshot, 'block')"
+            :href="explorerUrl(proposal.network, proposal.snapshot, 'block')"
             target="_blank"
             class="float-right"
           >
-            {{ _n(proposal.snapshot, '0,0') }}
+            {{ formatNumber(proposal.snapshot) }}
             <Icon name="external-link" class="ml-1" />
           </a>
         </div>
@@ -79,12 +81,15 @@ async function handleSubmit() {
           <span
             v-tippy="{
               content: scores
-                .map((score, index) => `${_n(score)} ${symbols[index]}`)
+                .map(
+                  (score, index) =>
+                    `${formatCompactNumber(score)} ${symbols[index]}`
+                )
                 .join(' + ')
             }"
           >
-            {{ _n(totalScore) }}
-            {{ _shorten(space.symbol, 'symbol') }}
+            {{ formatCompactNumber(totalScore) }}
+            {{ shorten(space.symbol, 'symbol') }}
           </span>
           <a
             v-if="totalScore === 0"

@@ -15,10 +15,9 @@ import { useDomain } from '@/composables/useDomain';
 import { useApolloQuery } from '@/composables/useApolloQuery';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useClient } from '@/composables/useClient';
-import { useApp } from '@/composables/useApp';
-import { useExtendedSpaces } from '@/composables/useExtendedSpaces';
 import { useStore } from '@/composables/useStore';
 import { setPageTitle } from '@/helpers/utils';
+import { useIntl } from '@/composables/useIntl';
 
 const props = defineProps({
   spaceId: String,
@@ -28,11 +27,10 @@ const props = defineProps({
 
 const router = useRouter();
 const { t } = useI18n();
+const { formatCompactNumber } = useIntl();
 const auth = getInstance();
 const { domain } = useDomain();
 const { web3, web3Account } = useWeb3();
-const { getExplore } = useApp();
-const { spaceLoading } = useExtendedSpaces();
 const { send, clientLoading } = useClient();
 const { store } = useStore();
 const notify = inject('notify');
@@ -67,7 +65,7 @@ const proposal = computed(() =>
 
 // Check if account passes space validation
 watchEffect(async () => {
-  if (web3Account.value && auth.isAuthenticated.value) {
+  if (props.space && web3Account.value && auth.isAuthenticated.value) {
     const validationName = props.space.validation?.name ?? 'basic';
     const validationParams = props.space.validation?.params ?? {};
     const isValid = await validations[validationName](
@@ -151,7 +149,6 @@ async function handleSubmit() {
   const result = await send(props.space, 'proposal', form.value);
   console.log('Result', result);
   if (result.id) {
-    getExplore();
     store.space.proposals = [];
     notify(['green', t('notify.proposalCreated')]);
     router.push({
@@ -208,21 +205,24 @@ async function loadProposal() {
 }
 
 onMounted(async () => {
-  setPageTitle('page.title.space.create', { space: props.space.name });
   nameForm.value.focus();
   addChoice(2);
-
   if (props.from) loadProposal();
+});
+
+watchEffect(() => {
+  if (props.space?.name)
+    setPageTitle('page.title.space.create', { space: props.space.name });
 });
 
 watchEffect(async () => {
   loadingSnapshot.value = true;
-  if (props.space.network) {
+  if (props.space?.network) {
     blockNumber.value = await getBlockNumber(getProvider(props.space.network));
     form.value.snapshot = blockNumber.value;
     loadingSnapshot.value = false;
   }
-  if (props.space.voting?.type) form.value.type = props.space.voting.type;
+  if (props.space?.voting?.type) form.value.type = props.space.voting.type;
 });
 
 watchEffect(() => {
@@ -239,13 +239,22 @@ watchEffect(() => {
 <template>
   <Layout v-bind="$attrs">
     <template #content-left>
-      <Block v-if="passValidation[0] === false">
+      <div class="px-4 md:px-0 overflow-hidden mb-3">
+        <router-link
+          :to="domain ? { path: '/' } : { name: 'spaceProposals' }"
+          class="text-color"
+        >
+          <Icon name="back" size="22" class="!align-middle" />
+          {{ $t('back') }}
+        </router-link>
+      </div>
+      <Block v-if="space && passValidation[0] === false">
         <Icon name="warning" class="mr-1" />
         <span v-if="passValidation[1] === 'basic'">
           {{
-            space.validation?.params.minScore || space?.filters.minScore
+            space?.validation?.params.minScore || space?.filters.minScore
               ? $tc('create.validationWarning.basic.minScore', [
-                  _n(space.filters.minScore),
+                  formatCompactNumber(space.filters.minScore),
                   space.symbol
                 ])
               : $t('create.validationWarning.basic.member')
@@ -260,40 +269,29 @@ watchEffect(() => {
           }}
         </span>
       </Block>
-      <div class="px-4 md:px-0 overflow-hidden">
-        <router-link
-          :to="domain ? { path: '/' } : { name: 'spaceProposals' }"
-          class="text-color"
-        >
-          <Icon name="back" size="22" class="!align-middle" />
-          {{ space.name }}
-        </router-link>
-        <UiSidebarButton
-          v-if="!preview"
-          @click="preview = true"
-          class="float-right"
-        >
-          <Icon name="preview" size="18" />
-        </UiSidebarButton>
-        <UiSidebarButton
-          v-if="preview"
-          @click="preview = false"
-          class="float-right"
-        >
-          <Icon name="back" size="18" />
-        </UiSidebarButton>
-      </div>
       <div class="px-4 md:px-0">
         <div class="flex flex-col mb-6">
-          <h1 v-if="preview" v-text="form.name || 'Untitled'" class="mb-2" />
-          <input
-            v-if="!preview"
-            v-model="form.name"
-            maxlength="128"
-            class="text-2xl font-bold input mb-2"
-            :placeholder="$t('create.question')"
-            ref="nameForm"
-          />
+          <div class="w-full flex justify-between">
+            <div class="w-11/12">
+              <h1
+                v-if="preview"
+                v-text="form.name || 'Untitled'"
+                class="mb-2 w-full break-all"
+              />
+              <input
+                v-if="!preview"
+                v-model="form.name"
+                maxlength="128"
+                class="text-2xl font-bold input mb-2 w-full"
+                :placeholder="$t('create.question')"
+                ref="nameForm"
+              />
+            </div>
+            <UiSidebarButton @click="preview = !preview" class="w-[44px]">
+              <Icon v-if="!preview" name="preview" size="18" />
+              <Icon v-else name="back" size="18" />
+            </UiSidebarButton>
+          </div>
           <TextareaAutosize
             v-if="!preview"
             v-model="form.body"
@@ -305,7 +303,7 @@ watchEffect(() => {
             <UiMarkdown :body="form.body" />
           </div>
           <p v-if="form.body.length > bodyLimit" class="!text-red mt-4">
-            -{{ _n(-(bodyLimit - form.body.length)) }}
+            -{{ formatCompactNumber(-(bodyLimit - form.body.length)) }}
           </p>
         </div>
       </div>
@@ -330,13 +328,13 @@ watchEffect(() => {
                   </span>
                 </template>
                 <template v-slot:info>
-                  <span
+                  <div
                     v-if="!disableChoiceEdit"
-                    class="cursor-pointer"
+                    class="cursor-pointer flex items-center"
                     @click="removeChoice(index)"
                   >
                     <Icon name="close" size="12" />
-                  </span>
+                  </div>
                 </template>
               </UiInput>
             </template>
@@ -350,6 +348,7 @@ watchEffect(() => {
           {{ $t('create.addChoice') }}
         </UiButton>
       </Block>
+
       <PluginSafeSnapConfig
         v-if="space?.plugins?.safeSnap"
         :proposal="proposal"
@@ -362,26 +361,24 @@ watchEffect(() => {
       <Block
         :title="$t('actions')"
         :icon="
-          space.plugins && Object.keys(space.plugins).length > 0
+          space?.plugins && Object.keys(space.plugins).length > 0
             ? 'stars'
             : undefined
         "
-        :loading="spaceLoading"
+        :loading="!space"
         @submit="modalProposalPluginsOpen = true"
       >
         <div class="mb-2">
           <UiButton
             class="w-full mb-2"
-            :disabled="props.space.voting?.type"
+            :disabled="space.voting?.type"
             @click="modalVotingTypeOpen = true"
           >
-            <span>{{
-              $t(`voting.${props.space.voting?.type ?? form.type}`)
-            }}</span>
+            <span>{{ $t(`voting.${space.voting?.type ?? form.type}`) }}</span>
           </UiButton>
           <UiButton
             @click="(modalOpen = true), (selectedDate = 'start')"
-            :disabled="props.space.voting?.delay"
+            :disabled="space.voting?.delay"
             class="w-full mb-2"
           >
             <span v-if="!dateStart">{{ $t('create.startDate') }}</span>
@@ -389,7 +386,7 @@ watchEffect(() => {
           </UiButton>
           <UiButton
             @click="(modalOpen = true), (selectedDate = 'end')"
-            :disabled="props.space.voting?.period"
+            :disabled="space.voting?.period"
             class="w-full mb-2"
           >
             <span v-if="!dateEnd">{{ $t('create.endDate') }}</span>
@@ -420,7 +417,7 @@ watchEffect(() => {
       </Block>
     </template>
   </Layout>
-  <teleport to="#modal">
+  <teleport to="#modal" v-if="space">
     <ModalSelectDate
       :value="form[selectedDate]"
       :selectedDate="selectedDate"

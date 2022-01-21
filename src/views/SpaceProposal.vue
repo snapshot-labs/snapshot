@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, watch, onMounted, inject } from 'vue';
+import { ref, computed, watch, onMounted, inject, watchEffect } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import {
@@ -8,7 +8,7 @@ import {
   getPower,
   getProposalVotes
 } from '@/helpers/snapshot';
-import { setPageTitle } from '@/helpers/utils';
+import { setPageTitle, explorerUrl, getIpfsUrl } from '@/helpers/utils';
 import { useModal } from '@/composables/useModal';
 import { useTerms } from '@/composables/useTerms';
 import { useProfiles } from '@/composables/useProfiles';
@@ -16,9 +16,9 @@ import { useDomain } from '@/composables/useDomain';
 import { useSharing } from '@/composables/useSharing';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useClient } from '@/composables/useClient';
-import { useApp } from '@/composables/useApp';
 import { useInfiniteLoader } from '@/composables/useInfiniteLoader';
 import { useStore } from '@/composables/useStore';
+import { useIntl } from '@/composables/useIntl';
 
 const props = defineProps({
   spaceId: String,
@@ -32,9 +32,9 @@ const { domain } = useDomain();
 const { t } = useI18n();
 const { web3, web3Account } = useWeb3();
 const { send, clientLoading } = useClient();
-const { getExplore } = useApp();
 const { store } = useStore();
 const notify = inject('notify');
+const { formatRelativeTime, formatNumber } = useIntl();
 
 const id = route.params.id;
 
@@ -58,7 +58,8 @@ const isAdmin = computed(() => {
   return admins.includes(web3Account.value?.toLowerCase());
 });
 const strategies = computed(
-  () => proposal.value.strategies ?? props.space.strategies
+  // Needed for older proposal that are missing strategies
+  () => proposal.value.strategies ?? props.space?.strategies
 );
 const symbols = computed(() =>
   strategies.value.map(strategy => strategy.params.symbol)
@@ -172,7 +173,6 @@ async function deleteProposal() {
   });
   console.log('Result', result);
   if (result.id) {
-    getExplore();
     store.space.proposals = [];
     notify(['green', t('notify.proposalDeleted')]);
     router.push({ name: 'spaceProposals' });
@@ -231,12 +231,16 @@ watch([loaded, web3Account], () => {
   loadPower();
 });
 
+watchEffect(() => {
+  if (props.space?.name && proposal.value?.title)
+    setPageTitle('page.title.space.proposal', {
+      proposal: proposal.value.title,
+      space: props.space.name
+    });
+});
+
 onMounted(async () => {
   await loadProposal();
-  setPageTitle('page.title.space.proposal', {
-    proposal: proposal.value.title,
-    space: props.space.name
-  });
   const choice = route.query.choice;
   if (proposal.value.type === 'approval') selectedChoices.value = [];
   if (web3Account.value && choice) {
@@ -260,13 +264,13 @@ onMounted(async () => {
                 )
           "
         >
-          <Icon name="back" size="22" class="!align-middle" />
-          {{ browserHasHistory ? $t('back') : space.name }}
+          <Icon name="back" size="22" class="align-middle" />
+          {{ $t('back') }}
         </a>
       </div>
       <div class="px-4 md:px-0">
         <template v-if="loaded">
-          <h1 v-text="proposal.title" class="mb-2" />
+          <h1 v-text="proposal.title" class="mb-3" />
           <div class="mb-4">
             <UiState :state="proposal.state" class="inline-block" />
             <UiDropdown
@@ -278,9 +282,9 @@ onMounted(async () => {
               :items="sharingItems"
               :hideDropdown="sharingIsSupported"
             >
-              <div class="pr-1 select-none">
-                <Icon name="upload" size="25" class="!align-text-bottom" />
-                Share
+              <div class="pr-1 select-none flex">
+                <Icon name="upload" size="25" />
+                <span class="ml-1">Share</span>
               </div>
             </UiDropdown>
             <UiDropdown
@@ -319,6 +323,7 @@ onMounted(async () => {
         :loadingMore="loadingMore"
       />
       <ProposalPluginsContent
+        v-if="space"
         v-model:safeSnapInput="safeSnapInput"
         :id="id"
         :space="space"
@@ -364,7 +369,7 @@ onMounted(async () => {
           <div>
             <b>IPFS</b>
             <a
-              :href="_getUrl(proposal.ipfs)"
+              :href="getIpfsUrl(proposal.ipfs)"
               target="_blank"
               class="float-right"
             >
@@ -383,7 +388,7 @@ onMounted(async () => {
             <span
               v-text="$d(proposal.start * 1e3, 'short', 'en-US')"
               v-tippy="{
-                content: _ms(proposal.start)
+                content: formatRelativeTime(proposal.start)
               }"
               class="float-right link-color"
             />
@@ -393,7 +398,7 @@ onMounted(async () => {
             <span
               v-text="$d(proposal.end * 1e3, 'short', 'en-US')"
               v-tippy="{
-                content: _ms(proposal.end)
+                content: formatRelativeTime(proposal.end)
               }"
               class="link-color float-right"
             />
@@ -401,11 +406,11 @@ onMounted(async () => {
           <div>
             <b>{{ $t('snapshot') }}</b>
             <a
-              :href="_explorer(proposal.network, proposal.snapshot, 'block')"
+              :href="explorerUrl(proposal.network, proposal.snapshot, 'block')"
               target="_blank"
               class="float-right"
             >
-              {{ _n(proposal.snapshot, '0,0') }}
+              {{ formatNumber(proposal.snapshot) }}
               <Icon name="external-link" class="ml-1" />
             </a>
           </div>
@@ -432,9 +437,8 @@ onMounted(async () => {
       />
     </template>
   </Layout>
-  <teleport to="#modal">
+  <teleport to="#modal" v-if="loaded">
     <ModalConfirm
-      v-if="loaded"
       :open="modalOpen"
       @close="modalOpen = false"
       @reload="loadProposal"

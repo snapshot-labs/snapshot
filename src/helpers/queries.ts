@@ -158,6 +158,7 @@ export const SPACES_QUERY = gql`
       admins
       categories
       plugins
+      followersCount
       voting {
         delay
         period
@@ -187,6 +188,14 @@ export const ENS_QUERY = gql`
       domains {
         name
       }
+    }
+  }
+`;
+
+export const SPACE_SKIN_QUERY = gql`
+  query Space($id: String!) {
+    space(id: $id) {
+      skin
     }
   }
 `;

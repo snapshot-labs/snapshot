@@ -1,8 +1,12 @@
-<script>
-export default {
-  props: { open: Boolean, authorIpfsHash: String, relayerIpfsHash: Object },
-  emits: ['close']
-};
+<script setup>
+import { getIpfsUrl } from '@/helpers/utils';
+
+defineProps({
+  open: Boolean,
+  authorIpfsHash: String,
+  relayerIpfsHash: Object
+});
+defineEmits(['close']);
 </script>
 
 <template>
@@ -14,7 +18,11 @@ export default {
       <div class="p-4 border rounded-md link-color">
         <div class="flex">
           <span v-text="$t('author')" class="flex-auto text-color mr-1" />
-          <a :href="_getUrl(authorIpfsHash)" target="_blank" class="link-color">
+          <a
+            :href="getIpfsUrl(authorIpfsHash)"
+            target="_blank"
+            class="link-color"
+          >
             #{{ authorIpfsHash.slice(0, 7) }}
             <Icon name="external-link" class="ml-1" />
           </a>
@@ -22,7 +30,7 @@ export default {
         <div v-if="relayerIpfsHash" class="flex">
           <span v-text="$t('relayer')" class="flex-auto text-color mr-1" />
           <a
-            :href="_getUrl(relayerIpfsHash)"
+            :href="getIpfsUrl(relayerIpfsHash)"
             target="_blank"
             class="link-color"
           >
