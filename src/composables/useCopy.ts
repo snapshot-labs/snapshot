@@ -1,6 +1,3 @@
-/**
- * Copy to clipboard and show notification
- */
 import { useI18n } from 'vue-i18n';
 import { useClipboard } from '@vueuse/core';
 import { useNotifications } from '@/composables/useNotifications';

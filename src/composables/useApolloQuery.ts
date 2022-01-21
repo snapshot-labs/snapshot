@@ -1,6 +1,3 @@
-/**
- * Apollo client wrapper functions for GraphQL queries.
- */
 import { computed, ref } from 'vue';
 import cloneDeep from 'lodash/cloneDeep';
 import { apolloClient } from '@/helpers/apollo';

@@ -1,6 +1,3 @@
-/**
- * List of available categories and ordered list by space count.
- */
 import { computed } from 'vue';
 import categories from '@/helpers/categories.json';
 import { useApp } from '@/composables/useApp';

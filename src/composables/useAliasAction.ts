@@ -1,6 +1,3 @@
-/**
- * TODO: Breifly describe file content/purpose.
- */
 import { computed, ref } from 'vue';
 import { lsGet, lsSet } from '@/helpers/utils';
 import { useWeb3 } from '@/composables/useWeb3';
