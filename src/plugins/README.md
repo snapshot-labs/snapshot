@@ -1,7 +1,7 @@
 # Plugins
 
 Plugins in Snapshot extend proposal functionality, like visualizing results in a chart or on-chain setteling.
-In essence, a plugin can add additional, custom data to a proposal, which can be used when rendering it.
+In essence, a plugin can add additional, custom data to a proposal, which can be used when rendering it or processing the results.
 
 # Plugin development
 
