@@ -106,7 +106,7 @@ const isValidForm = computed(() => {
   );
 });
 
-function clearDelegate(id, delegate) {
+function revokeDelegate(id, delegate) {
   currentId.value = id;
   currentDelegate.value = delegate;
   modalOpen.value = true;
@@ -328,7 +328,7 @@ onMounted(async () => {
               class="flex-auto text-right link-color"
             />
             <a
-              @click="clearDelegate(delegate.space, delegate.delegate)"
+              @click="revokeDelegate(delegate.space, delegate.delegate)"
               class="px-2 -mr-2 ml-2"
             >
               <Icon name="close" size="12" class="mb-1" />
@@ -411,7 +411,7 @@ onMounted(async () => {
     </template>
   </Layout>
   <teleport to="#modal">
-    <ModalClearDelegate
+    <ModalRevokeDelegate
       v-if="loaded"
       :open="modalOpen"
       @close="modalOpen = false"
