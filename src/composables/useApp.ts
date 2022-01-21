@@ -1,3 +1,6 @@
+/**
+ * Init app (lock.js auth, strategies, explore object, spaces)
+ */
 import { ref, computed, reactive } from 'vue';
 import { useRoute } from 'vue-router';
 import orderBy from 'lodash/orderBy';

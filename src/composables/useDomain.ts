@@ -1,3 +1,8 @@
+/**
+ * Domain the app is accessed through, lookup for registered custom domain/alias
+ * to show single space view
+ * TODO: Can be moved to @/helpers
+ */
 import domains from '@/../snapshot-spaces/spaces/domains.json';
 import aliases from '@/../snapshot-spaces/spaces/aliases.json';
 
