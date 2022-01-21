@@ -10,8 +10,7 @@ import { useEns } from '@/composables/useEns';
 const { validEnsTlds } = useEns();
 
 const props = defineProps({
-  modelValue: String,
-  validEnsTlds: Array
+  modelValue: String
 });
 
 defineEmits(['update:modelValue', 'waitForRegistration']);
