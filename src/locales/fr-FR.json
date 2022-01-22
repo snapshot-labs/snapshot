@@ -117,6 +117,7 @@
   "duplicateProposal": "Dupliquer la proposition",
   "joinedSpaces": "Espaces rejoints",
   "joinSpaces": "Rejoindre un espace",
+  "setDelegationToSpace": "Limit delegation to a specific space",
   "errors": {
     "required": "Le champ est requis",
     "minLength": "Longueur minimale de {0}",
@@ -153,12 +154,18 @@
     "selectDelegate": "Sélectionner une délégation",
     "to": "Vers",
     "addressPlaceholder": "Adresse ou ENS",
-    "spacePlaceholder": "Espace (facultatif)",
     "delegations": "Vos délégation(s)",
     "allSpaces": "Pour tous les espaces",
     "delegated": "Vous délègue",
     "pendingTransaction": "aucune transaction en attente | 1 transaction en attente | {count} transactions en attente",
-    "topDelegates": "Meilleurs délégués"
+    "topDelegates": "Meilleurs délégués",
+    "noDelegatesFoundFor": "No delegates found for {0}",
+    "noValidEns": "Not a valid ENS address.",
+    "noValidAddress": "Not a valid address",
+    "delegateToSelf": "You cannot delegate to yourself",
+    "delegateToSelfAddress": "You cannot delegate to your own ENS address",
+    "noValidSpaceId": "Not a valid space ID",
+    "noDelegationsAndDelegates": "Can't find your delegations and delegates? Make sure you are connected to the correct network."
   },
   "proposal": {
     "castVote": "Votez",
