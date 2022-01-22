@@ -1,11 +1,12 @@
 <script>
-import { ETHEREUM_COIN } from '@/helpers/abi/utils';
+import { getNativeAsset } from '@/helpers/abi/utils';
 import { parseEther } from '@ethersproject/units';
 import { isAddress } from '@ethersproject/address';
 import { FunctionFragment, Interface } from '@ethersproject/abi';
 
 export default {
   name: 'ImportTransactionsButton',
+  props: ['network'],
   emits: ['import'],
   data() {
     return {
@@ -121,7 +122,7 @@ export default {
         return {
           type: 'transferFunds',
           data: '0x',
-          token: ETHEREUM_COIN,
+          token: getNativeAsset(this.network),
           recipient: tx.to,
           amount: value,
           ...base

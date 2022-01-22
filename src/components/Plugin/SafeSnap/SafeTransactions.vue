@@ -217,6 +217,7 @@ export default {
 
         <PluginSafeSnapFormImportTransactionsButton
           v-if="!preview"
+          :network="this.network"
           @import="handleImport($event)"
         />
 
