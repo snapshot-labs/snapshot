@@ -4,33 +4,16 @@ import { useRouter } from 'vue-router';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useModal } from '@/composables/useModal';
 import { setPageTitle } from '@/helpers/utils';
-import { useApolloQuery } from '@/composables/useApolloQuery';
-import { ENS_QUERY } from '@/helpers/queries';
+import { useEns } from '@/composables/useEns';
 
 const router = useRouter();
 const { web3, web3Account } = useWeb3();
-const { ensApolloQuery } = useApolloQuery();
 const { modalAccountOpen } = useModal();
+const { loadOwnedEnsDomains, ownedEnsDomains } = useEns();
 
 onMounted(() => {
   setPageTitle('page.title.setup');
 });
-
-const ownedEnsDomains = ref([]);
-
-const loadOwnedEnsDomains = async () => {
-  if (web3Account.value) {
-    const res = await ensApolloQuery({
-      query: ENS_QUERY,
-      variables: {
-        id: web3Account.value.toLowerCase()
-      }
-    });
-    ownedEnsDomains.value = res.account?.domains || [];
-  } else {
-    ownedEnsDomains.value = [];
-  }
-};
 
 // used either on click on existing owned domain OR once a newly registered
 // domain is returned by the ENS subgraph.
