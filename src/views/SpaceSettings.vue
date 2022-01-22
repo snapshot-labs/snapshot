@@ -62,6 +62,8 @@ const form = ref({
 
 const validate = computed(() => {
   if (form.value.terms === '') delete form.value.terms;
+  if (form.value.avatar === '') delete form.value.avatar;
+  
   return validateSchema(schemas.space, form.value);
 });
 
