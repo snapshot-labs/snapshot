@@ -3,8 +3,8 @@ import Plugin from '@/../snapshot-plugins/src/plugins/safeSnap';
 import { isBigNumberish } from '@ethersproject/bignumber/lib/bignumber';
 import { isAddress } from '@ethersproject/address';
 import {
-  ETHEREUM_COIN,
   getERC20TokenTransferTransactionData,
+  getNativeAsset,
   transferFundsToModuleTransaction
 } from '@/helpers/abi/utils';
 
@@ -13,9 +13,10 @@ export default {
   emits: ['update:modelValue'],
   data() {
     const { amount = '0' } = this.modelValue || {};
+    const nativeAsset = getNativeAsset(this.config.network);
     return {
       plugin: new Plugin(),
-      tokens: [ETHEREUM_COIN],
+      tokens: [nativeAsset],
 
       to: '',
       value: amount,
@@ -85,7 +86,10 @@ export default {
     },
     setTokens() {
       if (!this.config.preview && this.config.tokens) {
-        this.tokens = [ETHEREUM_COIN, ...this.config.tokens];
+        this.tokens = [
+          getNativeAsset(this.config.network),
+          ...this.config.tokens
+        ];
       }
     }
   }
@@ -103,7 +107,7 @@ export default {
       :key="index"
       :value="token.address"
     >
-      {{ token.name }}
+      {{ token.symbol }}
     </option>
   </UiSelect>
 
