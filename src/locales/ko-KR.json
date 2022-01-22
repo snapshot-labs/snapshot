@@ -117,6 +117,7 @@
   "duplicateProposal": "제안서 중복하기.",
   "joinedSpaces": "공간 가입",
   "joinSpaces": "공간 가입",
+  "setDelegationToSpace": "Limit delegation to a specific space",
   "errors": {
     "required": "필드가 필요합니다",
     "minLength": "최소 길이는 {0}",
@@ -153,12 +154,18 @@
     "selectDelegate": "고르다 대리자",
     "to": "으로",
     "addressPlaceholder": "주소 또는 이자형열네번째에스 평점 이름",
-    "spacePlaceholder": "공간(선택 사항)",
     "delegations": "너의\n대표단 (에스)",
     "allSpaces": "모든 공간에 대해",
     "delegated": "당신에게 위임",
     "pendingTransaction": "보류 중인 트랜잭션 없음 | 1 보류 중인 트랜잭션 | {count} 보류 중인 트랜잭션",
-    "topDelegates": "최고 대의원"
+    "topDelegates": "최고 대의원",
+    "noDelegatesFoundFor": "No delegates found for {0}",
+    "noValidEns": "Not a valid ENS address.",
+    "noValidAddress": "Not a valid address",
+    "delegateToSelf": "You cannot delegate to yourself",
+    "delegateToSelfAddress": "You cannot delegate to your own ENS address",
+    "noValidSpaceId": "Not a valid space ID",
+    "noDelegationsAndDelegates": "Can't find your delegations and delegates? Make sure you are connected to the correct network."
   },
   "proposal": {
     "castVote": "캐스트 너의 투표",
