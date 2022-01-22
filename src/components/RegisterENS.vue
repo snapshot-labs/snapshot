@@ -5,18 +5,19 @@
  */
 
 import { computed } from 'vue';
+import { useEns } from '@/composables/useEns';
+
+const { validEnsTlds } = useEns();
 
 const props = defineProps({
   modelValue: String
 });
 
-const validTlds = ['eth', 'xyz', 'com', 'org', 'io', 'app', 'art'];
-
 defineEmits(['update:modelValue', 'waitForRegistration']);
 
 const isValidDomain = computed(() => {
   if (!props.modelValue.includes('.')) return false;
-  return validTlds.includes(props.modelValue.split('.').pop());
+  return validEnsTlds.includes(props.modelValue.split('.').pop());
 });
 </script>
 
@@ -37,7 +38,7 @@ const isValidDomain = computed(() => {
       class="block py-1 -mr-2"
       target="_blank"
       v-tippy="{
-        content: `${$t('setup.supportedEnsTLDs')}: ${validTlds.join(', ')}`
+        content: `${$t('setup.supportedEnsTLDs')}: ${validEnsTlds.join(', ')}`
       }"
     >
       <Icon name="info" size="24" class="text-color p-1 -mr-1" />
