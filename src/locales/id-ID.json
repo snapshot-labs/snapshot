@@ -117,6 +117,7 @@
   "duplicateProposal": "Duplikat proposal",
   "joinedSpaces": "Ruangan yang diikuti",
   "joinSpaces": "Gabung ke ruang",
+  "setDelegationToSpace": "Limit delegation to a specific space",
   "errors": {
     "required": "Baris diperlukan",
     "minLength": "Panjang minimum adalah {0}",
@@ -153,12 +154,18 @@
     "selectDelegate": "Pilih delegasi",
     "to": "Kepada",
     "addressPlaceholder": "Alamat atau nama ENS",
-    "spacePlaceholder": "Ruang (opsional)",
     "delegations": "Perwakilan Anda(s)",
     "allSpaces": "Untuk semua ruang",
     "delegated": "Diwakilkan kepada Anda",
     "pendingTransaction": "tidak ada transaksi yang tertunda | 1 transaksi yang tertunda | {count} transaksi yang tertunda",
-    "topDelegates": "Delegasi teratas"
+    "topDelegates": "Delegasi teratas",
+    "noDelegatesFoundFor": "No delegates found for {0}",
+    "noValidEns": "Not a valid ENS address.",
+    "noValidAddress": "Not a valid address",
+    "delegateToSelf": "You cannot delegate to yourself",
+    "delegateToSelfAddress": "You cannot delegate to your own ENS address",
+    "noValidSpaceId": "Not a valid space ID",
+    "noDelegationsAndDelegates": "Can't find your delegations and delegates? Make sure you are connected to the correct network."
   },
   "proposal": {
     "castVote": "Berikan voting Anda",
