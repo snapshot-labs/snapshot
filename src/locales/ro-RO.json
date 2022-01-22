@@ -117,6 +117,7 @@
   "duplicateProposal": "Duplichează propunere",
   "joinedSpaces": "Spații alăturate",
   "joinSpaces": "Alătura-te la spații",
+  "setDelegationToSpace": "Limit delegation to a specific space",
   "errors": {
     "required": "Câmp obligatoriu",
     "minLength": "Lungime minimă de {0}",
@@ -153,12 +154,18 @@
     "selectDelegate": "Selectează delegat",
     "to": "Către",
     "addressPlaceholder": "Adresă sau nume ENS",
-    "spacePlaceholder": "Spațiu (opțional)",
     "delegations": "Delegațiile tale",
     "allSpaces": "Pentru toate spațiile",
     "delegated": "Delegat ție",
     "pendingTransaction": "nicio tranzacție în așteptare | 1 tranzacție în așteptare | {count} tranzacții în așteptare",
-    "topDelegates": "Cei mai buni delegați"
+    "topDelegates": "Cei mai buni delegați",
+    "noDelegatesFoundFor": "No delegates found for {0}",
+    "noValidEns": "Not a valid ENS address.",
+    "noValidAddress": "Not a valid address",
+    "delegateToSelf": "You cannot delegate to yourself",
+    "delegateToSelfAddress": "You cannot delegate to your own ENS address",
+    "noValidSpaceId": "Not a valid space ID",
+    "noDelegationsAndDelegates": "Can't find your delegations and delegates? Make sure you are connected to the correct network."
   },
   "proposal": {
     "castVote": "Votează",
