@@ -117,6 +117,7 @@
   "duplicateProposal": "שכפל הצעה",
   "joinedSpaces": "Joined spaces",
   "joinSpaces": "Join spaces",
+  "setDelegationToSpace": "Limit delegation to a specific space",
   "errors": {
     "required": "שדה חובה",
     "minLength": "האורך המינימלי הוא {0}",
@@ -153,12 +154,18 @@
     "selectDelegate": "בחר למי להאציל",
     "to": "ל",
     "addressPlaceholder": "כתובת או שם ENS",
-    "spacePlaceholder": "מרחב (אופציונלי)",
     "delegations": "ההאצלות שלך",
     "allSpaces": "לכל המרחבים",
     "delegated": "מואצל אליך",
     "pendingTransaction": "no pending transaction | 1 pending transaction | {count} pending transactions",
-    "topDelegates": "Top delegates"
+    "topDelegates": "Top delegates",
+    "noDelegatesFoundFor": "No delegates found for {0}",
+    "noValidEns": "Not a valid ENS address.",
+    "noValidAddress": "Not a valid address",
+    "delegateToSelf": "You cannot delegate to yourself",
+    "delegateToSelfAddress": "You cannot delegate to your own ENS address",
+    "noValidSpaceId": "Not a valid space ID",
+    "noDelegationsAndDelegates": "Can't find your delegations and delegates? Make sure you are connected to the correct network."
   },
   "proposal": {
     "castVote": "הצבע",
