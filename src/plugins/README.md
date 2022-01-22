@@ -35,7 +35,7 @@ const msg = 'Hello world!'
 </template>
 ```
 
-Now add the component to the list in `src/plugins/Proposal.vue`.
+Now add your plugin to the list in `src/plugins/Proposal.vue`.
 
 ```html
 <script setup>
@@ -50,7 +50,15 @@ addComponents([
 
 The component is now being rendered below the proposal content. From here, you can do everything you can do in any other Vue 3 component. It's technically not required but it's recommended to go with Vue 3's composition API and `<script setup>`.
 
-# Other slots
+Currently you can add components to the content area or the sidebar of a proposal.
+
+| Plugin component | needs to be listed here | and will be rendered here. |
+| --- | --- | --- |
+| `plugins/myPlugin/Proposal.vue` | `plugins/Proposal.vue` | below proposal content |
+| `plugins/myPlugin/ProposalSidebar.vue` | `plugins/ProposalSidebar.vue` | proposal sidebar |
+| Proposal form: |||
+| `plugins/myPlugin/Create.vue` | `plugins/Create.vue` | below proposal content |
+| `plugins/myPlugin/CreateSidebar.vue` | `plugins/CreateSidebar.vue` | below proposal content |
 
 # Config defaults
 
