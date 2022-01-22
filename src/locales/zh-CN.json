@@ -117,7 +117,7 @@
   "duplicateProposal": "复制提案",
   "joinedSpaces": "已加入的空间",
   "joinSpaces": "加入空间",
-  "setDelegationToSpace": "Limit delegation to a specific space",
+  "setDelegationToSpace": "将委托限制在一个指定空间内",
   "errors": {
     "required": "此项为必填项",
     "minLength": "最小长度为 {0}",
@@ -159,13 +159,13 @@
     "delegated": "已委托给您",
     "pendingTransaction": "没有待处理交易 | 1 个待处理交易 | {count} 个待处理交易",
     "topDelegates": "顶级委托",
-    "noDelegatesFoundFor": "No delegates found for {0}",
-    "noValidEns": "Not a valid ENS address.",
-    "noValidAddress": "Not a valid address",
-    "delegateToSelf": "You cannot delegate to yourself",
-    "delegateToSelfAddress": "You cannot delegate to your own ENS address",
-    "noValidSpaceId": "Not a valid space ID",
-    "noDelegationsAndDelegates": "Can't find your delegations and delegates? Make sure you are connected to the correct network."
+    "noDelegatesFoundFor": "没有找到 {0} 的委托",
+    "noValidEns": "此ENS地址无效",
+    "noValidAddress": "此地址无效",
+    "delegateToSelf": "不能将自己选为委托人",
+    "delegateToSelfAddress": "您不能委托给您自己的ENS地址",
+    "noValidSpaceId": "此空间ID无效",
+    "noDelegationsAndDelegates": "找不到您的委托人和代委托？请确保您已经连接到正确的网络。"
   },
   "proposal": {
     "castVote": "投出您的票",
