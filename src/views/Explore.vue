@@ -6,6 +6,7 @@ import { useSearchFilters } from '@/composables/useSearchFilters';
 import { useScrollMonitor } from '@/composables/useScrollMonitor';
 import { setPageTitle } from '@/helpers/utils';
 import { useIntl } from '@/composables/useIntl';
+import { useStrategies } from '@/composables/useStrategies';
 
 const { t } = useI18n();
 const { formatCompactNumber } = useIntl();
@@ -25,8 +26,9 @@ const resultsStr = computed(() => {
   return t('explore.results');
 });
 
-const { filteredStrategies, filteredNetworks, filteredPlugins } =
-  useSearchFilters();
+const { filteredNetworks, filteredPlugins } = useSearchFilters();
+
+const { filteredStrategies } = useStrategies();
 
 const items = computed(() => {
   const q = route.query.q || '';

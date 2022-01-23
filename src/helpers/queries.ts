@@ -213,3 +213,12 @@ export const SPACE_DELEGATE_QUERY = gql`
     }
   }
 `;
+
+export const STRATEGIES_COUNT_QUERY = gql`
+  query Strategies {
+    strategies {
+      id
+      spacesCount
+    }
+  }
+`;

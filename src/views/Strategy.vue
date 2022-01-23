@@ -2,12 +2,12 @@
 import { computed, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { useApp } from '@/composables/useApp';
-import { useSearchFilters } from '@/composables/useSearchFilters';
 import { setPageTitle } from '@/helpers/utils';
+import { useStrategies } from '@/composables/useStrategies';
 
 const route = useRoute();
 const { strategies } = useApp();
-const { minifiedStrategiesArray } = useSearchFilters();
+const { minifiedStrategiesArray } = useStrategies();
 
 const strategy = computed(() => strategies.value[route.params.name]);
 
@@ -33,7 +33,7 @@ onMounted(() => {
           v-text="
             `In ${
               minifiedStrategiesArray.find(st => st.key === route.params.name)
-                .spaces
+                .spacesCount
             } space(s)`
           "
           class="text-color"

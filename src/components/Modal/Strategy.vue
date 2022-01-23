@@ -1,8 +1,8 @@
 <script setup>
 import { ref, computed, toRefs, watch } from 'vue';
-import { useSearchFilters } from '@/composables/useSearchFilters';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import { useApp } from '../../composables/useApp';
+import { useStrategies } from '@/composables/useStrategies';
 
 const defaultParams = {
   symbol: 'DAI',
@@ -30,7 +30,7 @@ const definition = computed(() => {
     : false;
 });
 
-const { filteredStrategies } = useSearchFilters();
+const { filteredStrategies } = useStrategies();
 const strategiesResults = computed(() => filteredStrategies(searchInput.value));
 
 function handleSubmit() {
@@ -92,7 +92,7 @@ watch(open, () => {
       <a
         v-for="strategy in strategiesResults"
         :key="strategy.key"
-        @click="handleClick(strategy)"
+        @click="handleClick(strategies[strategy.key])"
       >
         <BlockStrategy :strategy="strategy" />
       </a>
