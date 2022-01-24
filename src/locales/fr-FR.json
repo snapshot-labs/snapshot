@@ -19,7 +19,7 @@
   "strategiesPage": "Stratégies",
   "space": "Espace",
   "spaces": "Espaces",
-  "verifiedSpace": "Verified space",
+  "verifiedSpace": "Espace vérifié",
   "version": "Version",
   "timeline": "Timeline",
   "filters": "Filtres",
@@ -291,7 +291,7 @@
     "choices": {
       "for": "Pour",
       "against": "Contre",
-      "abstain": "Abstain"
+      "abstain": "S’abstenir"
     }
   },
   "safeSnap": {
@@ -387,7 +387,7 @@
   "page": {
     "title": {
       "home": "Snapshot",
-      "setup": "Create a space",
+      "setup": "Créer un espace",
       "timeline": "Timeline",
       "explore": "Explore",
       "playground": "Playground",
