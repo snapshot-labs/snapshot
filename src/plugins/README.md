@@ -56,7 +56,7 @@ Currently you can add components to the content area or the sidebar of a proposa
 | --- | --- | --- |
 | `plugins/myPlugin/Proposal.vue` | `plugins/Proposal.vue` | below proposal content |
 | `plugins/myPlugin/ProposalSidebar.vue` | `plugins/ProposalSidebar.vue` | proposal sidebar |
-| `plugins/myPlugin/Create.vue` | `plugins/Create.vue` | below proposal content |
+| `plugins/myPlugin/Create.vue` | `plugins/Create.vue` | below create proposal content |
 | `plugins/myPlugin/CreateSidebar.vue` | `plugins/CreateSidebar.vue` | create proposal sidebar |
 
 # Config defaults
