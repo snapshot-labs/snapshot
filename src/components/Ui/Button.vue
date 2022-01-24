@@ -4,7 +4,6 @@ defineProps({
     type: Boolean,
     default: false
   },
-  slim: Boolean,
   loading: Boolean,
   type: String,
   disabled: {
@@ -19,7 +18,7 @@ defineProps({
     :type="type || 'button'"
     :class="[
       'button px-[24px] focus-within:border-skin-link',
-      { 'button--primary': primary, slim }
+      { 'button--primary': primary }
     ]"
     :disabled="disabled || loading"
   >
@@ -37,16 +36,6 @@ defineProps({
   outline: none;
   height: 46px;
   font-size: 18px;
-  padding-left: 24px;
-  padding-right: 24px;
-
-  &.slim {
-    line-height: 38px;
-    height: 38px;
-    font-size: 16px;
-    padding-left: 18px;
-    padding-right: 18px;
-  }
 
   &.button--primary {
     color: white;

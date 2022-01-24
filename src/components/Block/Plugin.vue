@@ -37,16 +37,14 @@ defineProps({
         </a>
         {{ $tc('inSpaces', [formatCompactNumber(explore.plugins[plugin.key] || 0)]) }}
       </div>
-      <UiButton slim>
-        <a
-          @click.stop
-          target="_blank"
-          :href="`https://github.com/snapshot-labs/snapshot-plugins/tree/master/src/plugins/${plugin.key}`"
-        >
-          {{ $t('learnMore') }}
-          <Icon name="external-link" class="text-color" />
-        </a>
-      </UiButton>
+      <a
+        @click.stop
+        target="_blank"
+        :href="`https://github.com/snapshot-labs/snapshot-plugins/tree/master/src/plugins/${plugin.key}`"
+      >
+        {{ $t('learnMore') }}
+        <Icon name="external-link" class="text-color" />
+      </a>
     </div>
   </Block>
 </template>
