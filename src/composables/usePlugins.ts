@@ -43,7 +43,7 @@ export function usePlugins() {
       const hookPath = pluginIndex[pluginKeys[i]].hooks?.[hookName]?.replace(/\.ts$/i, '').replace(/^\.\//, '');
       if (hookPath) {
         const { default: hook } = await import(`../plugins/${pluginKeys[i]}/${hookPath}.ts`);
-        hook(payload);
+        await hook(payload);
       }
     }
   };
