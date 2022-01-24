@@ -53,7 +53,6 @@ const form = ref({
   type: 'single-choice'
 });
 const modalOpen = ref(false);
-const modalProposalPluginsOpen = ref(false);
 const modalVotingTypeOpen = ref(false);
 const selectedDate = ref('');
 const counter = ref(0);
@@ -426,13 +425,6 @@ watchEffect(() => {
       :open="modalOpen"
       @close="modalOpen = false"
       @input="setDate"
-    />
-    <ModalProposalPlugins
-      :space="space"
-      :proposal="proposal"
-      v-model="form.metadata.plugins"
-      :open="modalProposalPluginsOpen"
-      @close="modalProposalPluginsOpen = false"
     />
     <ModalTerms
       :open="modalTermsOpen"
