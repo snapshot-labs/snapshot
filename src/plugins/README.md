@@ -3,7 +3,7 @@
 Plugins in Snapshot extend proposal functionality, like visualizing results in a chart or on-chain setteling.
 In essence, a plugin can add additional, custom data to a proposal, which can be used when rendering it or processing the results.
 
-# Plugin development
+## Plugin development
 
 To create a plugin start by creating a new (camelCase) directory in `src/plugins`.
 
@@ -59,7 +59,24 @@ Currently you can add components to the content area or the sidebar of a proposa
 | `plugins/myPlugin/Create.vue` | `plugins/Create.vue` | below create proposal content |
 | `plugins/myPlugin/CreateSidebar.vue` | `plugins/CreateSidebar.vue` | create proposal sidebar |
 
-# Config defaults
+## Existing components/composables
+
+Any of the existing UI components in `src/components` or composables in `src/composables` can be used.
+
+```html
+<script setup>
+import { useWeb3 } from '@/composables/useWeb3'
+const { web3Account } = useWeb3();
+</script>
+
+<template>
+  <Block title='My Plugin'>
+    <h2>Your Account: {{ web3Account }}</h1>
+  </Block>
+</template>
+```
+
+## Config defaults
 
 Most plugins will require some configuration options, so that the a space admin can enter their token address, API endpoints,... and so on. Defaults can be defined in the `plugin.json` as follows:
 
@@ -80,19 +97,40 @@ Most plugins will require some configuration options, so that the a space admin 
 
 Under the `"space"` key you can define global config options for all proposals. The `"proposal"` key let's you define options specific to a single proposal. 
 
-# Existing components/composables
+## Hooks
 
-Any of the existing UI components in `src/components` or composables in `src/composables` can be used.
+Hooks allow a plugin to execute a custom function when a certain action is performed on snapshot.org. Currently two hooks are available:
 
-```html
-<script setup>
-import { useWeb3 } from '@/composables/useWeb3'
-const { web3Account } = useWeb3();
-</script>
+| hook name | executed | payload |
+| --- | --- | --- |
+| `precreate` | when clicking the publish button, before signing the message | the proposal form content |
+| `postcreate` | once the proposal has been successfully saved | the stored proposal content |
 
-<template>
-  <Block title='My Plugin'>
-    <h2>Your Account: {{ web3Account }}</h1>
-  </Block>
-</template>
+To use these hooks, you need to specify a path in the `plugin.json` to a file exporting a single function:
+
+```json
+{
+  "name": "My Snapshot Plugin",
+  "description": "A plugin that uses hooks.",
+  "hooks": {
+    "precreate": "./hooks/precreate.ts",
+    "postcreate": "hooks/postcreate"
+  }
+}
+```
+
+The path must be relative to the plugin's directory and the file must be inside of that directory. (`./` and `.ts` can be omitted.)
+
+Now create the function:
+
+```ts
+// src/plugins/MyPlugin/hooks/precreate.ts
+export default (proposalForm) => {
+  console.log('My precreate hook:', proposalForm);
+}
+
+// src/plugins/MyPlugin/hooks/postcreate.ts
+export default (storedProposal) => {
+  console.log('My precreate hook:', storedProposal);
+}
 ```
