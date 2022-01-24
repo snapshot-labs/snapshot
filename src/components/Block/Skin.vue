@@ -11,7 +11,7 @@ defineProps(['skin']);
     <Block>
       <UiButton class="mb-2" primary>{{ skin.key }}</UiButton>
       <div class="text-color">
-        {{ $tc('inSpaces', [formatCompactNumber(skin.spaces)]) }}
+        {{ $tc('inSpaces', [formatCompactNumber(skin.spacesCount)]) }}
       </div>
     </Block>
   </div>
