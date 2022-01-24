@@ -176,7 +176,7 @@ export default {
 <template>
   <div class="border-t border-b md:border rounded-none md:rounded-md mb-4">
     <h4
-      class="px-4 pt-3 border-b block rounded-t-none md:rounded-t-md"
+      class="px-4 pt-3 border-b block rounded-t-none md:rounded-t-md flex"
       style="padding-bottom: 12px"
     >
       <UiAvatar
@@ -189,13 +189,18 @@ export default {
       <a
         v-if="gnosisSafeAddress"
         :href="safeLink"
-        class="text-color"
+        class="text-color ml-2"
         style="font-weight: normal"
         target="_blank"
       >
         {{ shorten(gnosisSafeAddress) }}
         <i class="iconfont iconexternal-link" />
       </a>
+      <div class="flex-grow"></div>
+      <PluginSafeSnapTooltip
+        :realityAddress="this.realityAddress"
+        :multiSendAddress="this.multiSendAddress"
+      ></PluginSafeSnapTooltip>
     </h4>
     <UiCollapsibleText
       v-if="hash"
