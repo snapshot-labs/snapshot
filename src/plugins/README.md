@@ -121,16 +121,18 @@ To use these hooks, you need to specify a path in the `plugin.json` to a file ex
 
 The path must be relative to the plugin's directory and the file must be inside of that directory. (`./` and `.ts` can be omitted.)
 
-Now create the function:
+Now the functions can be created like this:
 
 ```ts
 // src/plugins/MyPlugin/hooks/precreate.ts
-export default (proposalForm) => {
+export default (proposalForm): void => {
   console.log('My precreate hook:', proposalForm);
 }
 
 // src/plugins/MyPlugin/hooks/postcreate.ts
-export default (storedProposal) => {
+export default (storedProposal): void => {
   console.log('My precreate hook:', storedProposal);
 }
 ```
+
+Any existing libraries/packages/composables can be imported normally. When hook functions are executed, they will be `await`ed, so the workflow in the UI can be intercepted.
