@@ -8,8 +8,9 @@ import { getScores } from '@snapshot-labs/snapshot.js/src/utils';
 import { useApp } from '@/composables/useApp';
 import { useI18n } from 'vue-i18n';
 import { useCopy } from '@/composables/useCopy';
-import { setPageTitle, n } from '@/helpers/utils';
 import { decode, encode } from '@/helpers/b64';
+import { setPageTitle } from '@/helpers/utils';
+import { useIntl } from '@/composables/useIntl';
 
 const defaultParams = {
   symbol: 'BAL',
@@ -23,6 +24,7 @@ const { query: queryParams } = useRoute();
 const { strategies } = useApp();
 const { copyToClipboard } = useCopy();
 const { t } = useI18n();
+const { formatCompactNumber } = useIntl();
 
 let provider;
 
@@ -228,7 +230,7 @@ onMounted(async () => {
         >
           <User :address="score" :space="form" />
           <span>
-            {{ n(scores[0][score]) }}
+            {{ formatCompactNumber(scores[0][score]) }}
             {{ form.params.symbol }}
           </span>
         </div>

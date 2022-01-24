@@ -93,12 +93,10 @@
   "noSpacesJoined": "Oops, you haven't joined any spaces yet",
   "addFavorites": "Add favorites",
   "createdBy": "By {0}",
-  "startToEnd": "start {0} end {1}",
   "startIn": "start {0}",
   "endIn": "end {1}",
-  "proposalStartIn": "start in {0}",
-  "proposalToNow": "{0} left",
-  "endedAgo": "ended {1}",
+  "proposalTimeLeft": "{0} left",
+  "endedAgo": "ended {0}",
   "proposalBy": "by {0}",
   "endDate": "end {0}",
   "contectHash": "Content hash",
@@ -119,6 +117,7 @@
   "duplicateProposal": "Duplicate proposal",
   "joinedSpaces": "Joined spaces",
   "joinSpaces": "Join spaces",
+  "setDelegationToSpace": "Limit delegation to a specific space",
   "errors": {
     "required": "Field is required",
     "minLength": "Minimum length is {0}",
@@ -155,12 +154,18 @@
     "selectDelegate": "Select delegate",
     "to": "To",
     "addressPlaceholder": "Address or ENS name",
-    "spacePlaceholder": "Space (optional)",
     "delegations": "Your delegation(s)",
     "allSpaces": "For all spaces",
     "delegated": "Delegated to you",
     "pendingTransaction": "no pending transaction | 1 pending transaction | {count} pending transactions",
-    "topDelegates": "Top delegates"
+    "topDelegates": "Top delegates",
+    "noDelegatesFoundFor": "No delegates found for {0}",
+    "noValidEns": "Not a valid ENS address.",
+    "noValidAddress": "Not a valid address",
+    "delegateToSelf": "You cannot delegate to yourself",
+    "delegateToSelfAddress": "You cannot delegate to your own ENS address",
+    "noValidSpaceId": "Not a valid space ID",
+    "noDelegationsAndDelegates": "Can't find your delegations and delegates? Make sure you are connected to the correct network."
   },
   "proposal": {
     "castVote": "Cast your vote",
@@ -400,5 +405,14 @@
   "hal": {
     "title": "Track proposals for {spaceName}",
     "text": "Receive notifications every time a new proposal is created or ends"
+  },
+  "timeUnits": {
+    "second": "1 second | {n} seconds",
+    "minute": "1 minute | {n} minutes",
+    "hour": "1 hour | {n} hours",
+    "day": "1 day | {n} days",
+    "week": "1 week | {n} weeks",
+    "month": "1 month | {n} months",
+    "year": "1 year | {n} years"
   }
 }
