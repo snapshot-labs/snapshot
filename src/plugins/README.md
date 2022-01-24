@@ -131,7 +131,7 @@ export default (proposalForm): void => {
 
 // src/plugins/MyPlugin/hooks/postcreate.ts
 export default (storedProposal): void => {
-  console.log('My precreate hook:', storedProposal);
+  console.log('My postcreate hook:', storedProposal);
 }
 ```
 
