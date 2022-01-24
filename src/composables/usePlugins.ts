@@ -41,7 +41,6 @@ export function usePlugins() {
   const executePluginHooks = async (hookName, pluginKeys, payload) => {
     for (let i = 0; i < pluginKeys.length; i++) {
       const hookPath = pluginIndex[pluginKeys[i]].hooks?.[hookName]?.replace(/\.ts$/i, '').replace(/^\.\//, '');
-      console.log(hookPath)
       if (hookPath) {
         const { default: hook } = await import(`../plugins/${pluginKeys[i]}/${hookPath}.ts`);
         hook(payload);
