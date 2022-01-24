@@ -262,7 +262,7 @@
     "results": "résultat(s)",
     "categories": {
       "all": "All",
-      "protocol": "Protocol",
+      "protocol": "Protocole",
       "social": "Social",
       "investment": "Investment",
       "grant": "Grant",
@@ -289,8 +289,8 @@
       "basic": "Single choice voting with three choices: For, Against or Abstain"
     },
     "choices": {
-      "for": "For",
-      "against": "Against",
+      "for": "Pour",
+      "against": "Contre",
       "abstain": "Abstain"
     }
   },
@@ -399,20 +399,20 @@
         "settings": "{space} Settings"
       },
       "strategy": "{key} strategy",
-      "delegate": "Delegate"
+      "delegate": "Déléguer"
     }
   },
   "hal": {
-    "title": "Track proposals for {spaceName}",
+    "title": "Suivre les propositions pour {spaceName}",
     "text": "Receive notifications every time a new proposal is created or ends"
   },
   "timeUnits": {
-    "second": "1 second | {n} seconds",
+    "second": "1 seconde | {n} secondes",
     "minute": "1 minute | {n} minutes",
-    "hour": "1 hour | {n} hours",
-    "day": "1 day | {n} days",
-    "week": "1 week | {n} weeks",
-    "month": "1 month | {n} months",
-    "year": "1 year | {n} years"
+    "hour": "1 heure | {n} heures",
+    "day": "1 jour | {n} jours",
+    "week": "1 semaine | {n} semaines",
+    "month": "1 mois | {n} mois",
+    "year": "1 an | {n} ans"
   }
 }
