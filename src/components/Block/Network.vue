@@ -23,7 +23,7 @@ function getLogoUrl(key) {
       <div v-text="network.key" class="ml-1 text-color" />
     </div>
     <div class="text-color">
-      {{ $tc('inSpaces', [formatCompactNumber(network.spaces)]) }}
+      {{ $tc('inSpaces', [formatCompactNumber(network.spacesCount)]) }}
     </div>
   </Block>
 </template>

@@ -19,9 +19,7 @@ const filteredSkins = computed(() => filtereSkins(searchInput.value));
 watch(
   () => props.open,
   () => {
-    if (props.open) {
-      getSkinsSpacesCount();
-    }
+    if (props.open) getSkinsSpacesCount();
   }
 );
 

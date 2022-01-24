@@ -222,3 +222,12 @@ export const SKINS_COUNT_QUERY = gql`
     }
   }
 `;
+
+export const NETWORKS_COUNT_QUERY = gql`
+  query Networks {
+    networks {
+      id
+      spacesCount
+    }
+  }
+`;
