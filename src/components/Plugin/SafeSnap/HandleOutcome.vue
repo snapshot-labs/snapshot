@@ -36,7 +36,7 @@
           Reality oracle
           <a
             @click="updateDetails"
-            class="float-right text-color"
+            class="ml-2 float-right text-color"
             style="padding-top: 2px"
           >
             <Icon name="refresh" size="16" />
