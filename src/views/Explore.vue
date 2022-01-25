@@ -28,13 +28,13 @@ const resultsStr = computed(() => {
 
 const { filteredStrategies, filteredPlugins } = useSearchFilters();
 
-const { filtereNetworks, getNetworksSpacesCount, loadingNetworks } =
+const { filterNetworks, getNetworksSpacesCount, loadingNetworks } =
   useNetworks();
 
 const items = computed(() => {
   const q = route.query.q || '';
   if (route.name === 'strategies') return filteredStrategies(q);
-  if (route.name === 'networks') return filtereNetworks(q);
+  if (route.name === 'networks') return filterNetworks(q);
   if (route.name === 'plugins') return filteredPlugins(q);
   return [];
 });

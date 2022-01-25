@@ -12,9 +12,9 @@ const props = defineProps({
 const emit = defineEmits(['update:modelValue', 'close']);
 
 const searchInput = ref('');
-const { filtereNetworks, getNetworksSpacesCount, loadingNetworks } =
+const { filterNetworks, getNetworksSpacesCount, loadingNetworks } =
   useNetworks();
-const networks = computed(() => filtereNetworks(searchInput.value));
+const networks = computed(() => filterNetworks(searchInput.value));
 
 watch(
   () => props.open,
