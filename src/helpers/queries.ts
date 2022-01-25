@@ -231,3 +231,12 @@ export const NETWORKS_COUNT_QUERY = gql`
     }
   }
 `;
+
+export const PLUGINS_COUNT_QUERY = gql`
+  query Plugins {
+    plugins {
+      id
+      spacesCount
+    }
+  }
+`;

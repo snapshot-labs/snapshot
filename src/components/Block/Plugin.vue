@@ -39,7 +39,7 @@ function getLogoUrl(key) {
           {{ plugin.author }}
         </a>
       </div>
-      {{ $tc('inSpaces', [formatCompactNumber(plugin.spaces)]) }}
+      {{ $tc('inSpaces', [formatCompactNumber(plugin.spacesCount)]) }}
     </div>
   </Block>
 </template>
