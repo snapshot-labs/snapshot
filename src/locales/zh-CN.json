@@ -131,7 +131,7 @@
   "create": {
     "question": "提案标题",
     "categorie(s)": "最多选择2个类别",
-    "content": "Tell us more about your proposal (optional)",
+    "content": "告诉我们更多关于您的提案(可选)",
     "preview": "预览",
     "choices": "选项",
     "addChoice": "添加选项",
