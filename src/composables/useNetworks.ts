@@ -1,5 +1,5 @@
 /**
- * Orders networks by spaces count and returns a list of skins
+ * Orders networks by spaces count and returns a list of networks
  * filtered by the search string (case insensitive).
  */
 
