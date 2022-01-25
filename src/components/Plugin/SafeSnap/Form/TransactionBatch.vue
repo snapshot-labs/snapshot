@@ -4,9 +4,9 @@ import { useSafesnap } from '@/composables/useSafesnap';
 import chevronIcon from '@/assets/icons/chevron.svg';
 import {
   createBatch,
-  ERC20ContractABI,
-  ERC721ContractABI
-} from '@/helpers/abi/utils';
+  ERC20_ABI,
+  ERC721_ABI
+} from '@/../snapshot-plugins/src/plugins/safeSnap';
 import { formatEther } from '@ethersproject/units';
 import { FunctionFragment, Interface } from '@ethersproject/abi';
 
@@ -78,10 +78,10 @@ export default {
         if (tx.data.length > 2) {
           switch (tx.type) {
             case 'transferFunds':
-              abi = ERC20ContractABI;
+              abi = ERC20_ABI;
               break;
             case 'transferNFT':
-              abi = ERC721ContractABI;
+              abi = ERC721_ABI;
               break;
             default:
               base.data = tx.data;
@@ -90,8 +90,12 @@ export default {
         }
 
         if (abi) {
+          const signHash = tx.data.substr(0, 10);
           const contractInterface = new Interface(abi);
-          const func = FunctionFragment.from(contractInterface.fragments[0]);
+          const functionFragment = contractInterface.fragments
+            .filter(frag => FunctionFragment.isFunctionFragment(frag))
+            .find(frag => contractInterface.getSighash(frag) === signHash);
+          const func = FunctionFragment.from(functionFragment);
           const params = contractInterface.decodeFunctionData(func, tx.data);
           return {
             ...base,

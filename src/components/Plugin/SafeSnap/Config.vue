@@ -1,7 +1,10 @@
 <script>
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
-import { getSafeHash } from '@/helpers/abi/utils';
-import { coerceConfig, isValidInput } from '@/helpers/abi/safesnap';
+import {
+  coerceConfig,
+  isValidInput,
+  getSafeHash
+} from '@/../snapshot-plugins/src/plugins/safeSnap';
 
 export default {
   props: [

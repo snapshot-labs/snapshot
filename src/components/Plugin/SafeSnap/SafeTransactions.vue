@@ -1,11 +1,10 @@
 <script>
-import Plugin from '@/../snapshot-plugins/src/plugins/safeSnap';
-import networks from '@snapshot-labs/snapshot.js/src/networks.json';
-import {
+import Plugin, {
   createBatch,
   getGnosisSafeBalances,
   getGnosisSafeCollectibles
-} from '@/helpers/abi/utils';
+} from '@/../snapshot-plugins/src/plugins/safeSnap';
+import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { shorten } from '@/helpers/utils';
 
 const plugin = new Plugin();

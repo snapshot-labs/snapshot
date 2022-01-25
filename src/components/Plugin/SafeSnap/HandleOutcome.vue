@@ -153,12 +153,13 @@
 </template>
 
 <script>
-import Plugin from '@/../snapshot-plugins/src/plugins/safeSnap';
+import Plugin, {
+  formatBatchTransaction
+} from '@/../snapshot-plugins/src/plugins/safeSnap';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { sleep } from '@snapshot-labs/snapshot.js/src/utils';
 import { BigNumber } from '@ethersproject/bignumber';
-import { formatBatchTransaction } from '@/helpers/abi/utils';
 import { formatUnits } from '@ethersproject/units';
 import { useSafesnap } from '@/composables/useSafesnap';
 import { useWeb3 } from '@/composables/useWeb3';

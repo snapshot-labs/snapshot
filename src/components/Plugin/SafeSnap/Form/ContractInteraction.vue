@@ -1,15 +1,14 @@
 <script>
-import Plugin from '@/../snapshot-plugins/src/plugins/safeSnap';
-import {
+import Plugin, {
   contractInteractionToModuleTransaction,
   getABIWriteFunctions,
   getContractABI,
-  getContractTransactionData
-} from '@/helpers/abi/utils';
+  getContractTransactionData,
+  InterfaceDecoder
+} from '@/../snapshot-plugins/src/plugins/safeSnap';
 import { isBigNumberish } from '@ethersproject/bignumber/lib/bignumber';
 import { isAddress } from '@ethersproject/address';
 import { parseAmount } from '@/helpers/utils';
-import { InterfaceDecoder } from '@/helpers/abi/decoder';
 
 export default {
   props: ['modelValue', 'nonce', 'config'],

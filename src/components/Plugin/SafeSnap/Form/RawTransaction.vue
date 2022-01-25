@@ -1,11 +1,10 @@
 <script>
-import Plugin from '@/../snapshot-plugins/src/plugins/safeSnap';
-import { isHexString } from '@ethersproject/bytes';
-import { parseAmount } from '@/helpers/utils';
-import {
+import Plugin, {
   decodeTransactionData,
   rawToModuleTransaction
-} from '@/helpers/abi/utils';
+} from '@/../snapshot-plugins/src/plugins/safeSnap';
+import { isHexString } from '@ethersproject/bytes';
+import { parseAmount } from '@/helpers/utils';
 
 export default {
   props: ['modelValue', 'nonce', 'config'],
