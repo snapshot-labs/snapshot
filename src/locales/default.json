@@ -131,7 +131,7 @@
   "create": {
     "question": "Ask a question...",
     "categorie(s)": "Select up to 2 categorie(s)",
-    "content": "Tell more about your proposal (optional)",
+    "content": "Tell us more about your proposal (optional)",
     "preview": "Preview",
     "choices": "Choices",
     "addChoice": "Add choice",
