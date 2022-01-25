@@ -91,7 +91,7 @@ export default {
             required
           />
         </UiButton>
-        <UiButton v-if="input" @click="removeAction" class="w-full mb-2">
+        <UiButton v-if="input" @click="removeAction" class="w-full">
           {{ $t('removeMarket') }}
         </UiButton>
       </div>
@@ -110,7 +110,7 @@ export default {
     >
       {{ $t('create.preview') }}
     </UiButton>
-    <UiButton v-if="preview" @click="preview = false" class="w-full mb-2">
+    <UiButton v-if="preview" @click="preview = false" class="w-full mb-2 mt-2">
       {{ $t('back') }}
     </UiButton>
     <UiButton :disabled="!isValid" @click="handleSubmit" class="w-full" primary>
