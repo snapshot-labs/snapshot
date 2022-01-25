@@ -117,7 +117,7 @@
   "duplicateProposal": "Vorschlag duplizieren",
   "joinedSpaces": "Beigetretene Bereiche",
   "joinSpaces": "Bereiche beitreten",
-  "setDelegationToSpace": "Limit delegation to a specific space",
+  "setDelegationToSpace": "Delegation auf einen bestimmten Space beschränken",
   "errors": {
     "required": "Dieses Feld ist ein Pflichtfeld",
     "minLength": "Mindestlänge ist {0}",
@@ -131,7 +131,7 @@
   "create": {
     "question": "Ask a question...",
     "categorie(s)": "Select up to 2 categorie(s)",
-    "content": "Tell us more about your proposal (optional)",
+    "content": "Erzähl uns mehr über deinen Vorschlag (optional)",
     "preview": "Vorschau",
     "choices": "Auswahl",
     "addChoice": "Auswahl hinzufügen",
@@ -159,13 +159,13 @@
     "delegated": "An dich delegiert",
     "pendingTransaction": "keine ausstehende Transaktion | 1 ausstehende Transaktion | {count} ausstehende Transaktionen",
     "topDelegates": "Top delegates",
-    "noDelegatesFoundFor": "No delegates found for {0}",
-    "noValidEns": "Not a valid ENS address.",
-    "noValidAddress": "Not a valid address",
+    "noDelegatesFoundFor": "Keine Delegierten für {0} gefunden",
+    "noValidEns": "Keine gültige ENS Adresse.",
+    "noValidAddress": "Keine gültige Adresse",
     "delegateToSelf": "You cannot delegate to yourself",
     "delegateToSelfAddress": "You cannot delegate to your own ENS address",
-    "noValidSpaceId": "Not a valid space ID",
-    "noDelegationsAndDelegates": "Can't find your delegations and delegates? Make sure you are connected to the correct network."
+    "noValidSpaceId": "Keine gültige Space ID",
+    "noDelegationsAndDelegates": "Du kannst keine Delegationen und Delegierten finden? Stelle sicher, dass du mit dem richtigen Netzwerk verbunden bist."
   },
   "proposal": {
     "castVote": "Deine Stimme abgeben",
@@ -238,7 +238,7 @@
     "createASpace": "Bereich erstellen",
     "registerEnsButton": "Register",
     "supportedEnsTLDs": "Supported domain endings",
-    "helpDocsAndDiscordLinks": "Not sure how to create a space? Learn more in the <a target='_blank' href='https://docs.snapshot.org/spaces/create'> documentation </a> or join Snapshot <a target='_blank' href='https://discord.gg/snapshot'>Discord</a>."
+    "helpDocsAndDiscordLinks": "Nicht sicher, wie man einen Space erstellt? Erfahre mehr in der <a target='_blank' href='https://docs.snapshot.org/spaces/create'>Dokumentation</a> oder tritt dem Snapshot <a target='_blank' href='https://discord.gg/snapshot'>Discord</a> bei."
   },
   "notify": {
     "youDidIt": "Du hast es geschafft!",
