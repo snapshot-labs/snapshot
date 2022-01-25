@@ -162,8 +162,8 @@
     "noDelegatesFoundFor": "Keine Delegierten für {0} gefunden",
     "noValidEns": "Keine gültige ENS Adresse.",
     "noValidAddress": "Keine gültige Adresse",
-    "delegateToSelf": "You cannot delegate to yourself",
-    "delegateToSelfAddress": "You cannot delegate to your own ENS address",
+    "delegateToSelf": "Du kannst nicht an dich selbst delegieren",
+    "delegateToSelfAddress": "Du kannst nicht an deine eigene ENS Adresse delegieren",
     "noValidSpaceId": "Keine gültige Space ID",
     "noDelegationsAndDelegates": "Du kannst keine Delegationen und Delegierten finden? Stelle sicher, dass du mit dem richtigen Netzwerk verbunden bist."
   },
