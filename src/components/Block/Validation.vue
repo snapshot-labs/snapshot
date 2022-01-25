@@ -12,7 +12,7 @@ defineProps(['validation']);
       <h3 v-text="validation.name" />
     </div>
     <div class="text-color">
-      {{ $tc('inSpaces', [formatCompactNumber(validation.spaces)]) }}
+      {{ $tc('inSpaces', [formatCompactNumber(validation.spacesCount)]) }}
     </div>
   </Block>
 </template>

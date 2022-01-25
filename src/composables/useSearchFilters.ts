@@ -1,5 +1,4 @@
 import { computed } from 'vue';
-import validations from '@snapshot-labs/snapshot.js/src/validations';
 import { useApp } from '@/composables/useApp';
 
 export function useSearchFilters() {
@@ -17,20 +16,8 @@ export function useSearchFilters() {
       .filter(s => s.key.toLowerCase().includes(q.toLowerCase()))
       .sort((a, b) => b.spaces - a.spaces);
 
-  const minifiedValidationsArray = computed(() =>
-    Object.keys(validations).map((key: any) => ({
-      name: key,
-      spaces: explore.value.validations[key]
-    }))
-  );
-  const filteredValidations = (q = '') =>
-    minifiedValidationsArray.value
-      .filter(v => JSON.stringify(v).toLowerCase().includes(q.toLowerCase()))
-      .sort((a, b) => b.spaces - a.spaces);
-
   return {
     filteredStrategies,
-    filteredValidations,
     minifiedStrategiesArray
   };
 }

@@ -240,3 +240,12 @@ export const PLUGINS_COUNT_QUERY = gql`
     }
   }
 `;
+
+export const VALIDATIONS_COUNT_QUERY = gql`
+  query Validations {
+    validations {
+      id
+      spacesCount
+    }
+  }
+`;
