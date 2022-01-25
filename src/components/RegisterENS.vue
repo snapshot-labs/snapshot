@@ -5,23 +5,24 @@
  */
 
 import { computed } from 'vue';
+import { useEns } from '@/composables/useEns';
+
+const { validEnsTlds } = useEns();
 
 const props = defineProps({
   modelValue: String
 });
 
-const validTlds = ['eth', 'xyz', 'com', 'org', 'io', 'app', 'art'];
-
 defineEmits(['update:modelValue', 'waitForRegistration']);
 
 const isValidDomain = computed(() => {
   if (!props.modelValue.includes('.')) return false;
-  return validTlds.includes(props.modelValue.split('.').pop());
+  return validEnsTlds.includes(props.modelValue.split('.').pop());
 });
 </script>
 
 <template>
-  <UiButton class="text-left w-full mb-1 flex px-3">
+  <UiButton class="text-left w-full mb-1 flex px-3 items-center">
     <input
       :value="modelValue"
       @input="
@@ -34,13 +35,13 @@ const isValidDomain = computed(() => {
       :placeholder="$t('setup.example')"
     />
     <span
-      class="block py-1 -mr-2"
+      class="-mr-2 flex items-center"
       target="_blank"
       v-tippy="{
-        content: `${$t('setup.supportedEnsTLDs')}: ${validTlds.join(', ')}`
+        content: `${$t('setup.supportedEnsTLDs')}: ${validEnsTlds.join(', ')}`
       }"
     >
-      <Icon name="info" size="24" class="text-color p-1 -mr-1" />
+      <Icon name="info" size="24" class="text-color -mr-1" />
     </span>
   </UiButton>
   <a

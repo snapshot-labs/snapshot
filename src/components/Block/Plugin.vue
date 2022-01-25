@@ -1,5 +1,7 @@
 <script setup>
-import { n } from '@/helpers/utils';
+import { useIntl } from '@/composables/useIntl';
+
+const { formatCompactNumber } = useIntl();
 
 defineProps(['plugin']);
 
@@ -17,7 +19,7 @@ function getLogoUrl(key) {
         class="flex items-center"
       >
         <UiAvatar
-          class="mr-2 mb-2"
+          class="mr-2"
           :imgsrc="getLogoUrl(plugin.key)"
           :seed="plugin.name.charCodeAt()"
           size="28"
@@ -37,7 +39,7 @@ function getLogoUrl(key) {
           {{ plugin.author }}
         </a>
       </div>
-      {{ $tc('inSpaces', [n(plugin.spaces)]) }}
+      {{ $tc('inSpaces', [formatCompactNumber(plugin.spaces)]) }}
     </div>
   </Block>
 </template>

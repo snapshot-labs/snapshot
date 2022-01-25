@@ -4,8 +4,7 @@ import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import {
   createBatch,
   getGnosisSafeBalances,
-  getGnosisSafeCollectibles,
-  removeHexPrefix
+  getGnosisSafeCollectibles
 } from '@/helpers/abi/utils';
 import { shorten } from '@/helpers/utils';
 
@@ -65,7 +64,7 @@ function formatBatches(network, realityModule, batches) {
 
 export default {
   setup() {
-    return { shorten, removeHexPrefix };
+    return { shorten };
   },
   props: [
     'modelValue',
@@ -151,7 +150,14 @@ export default {
       this.$emit('update:modelValue', this.input);
     },
     handleImport(txs) {
-      this.input.push(txs);
+      this.input.push(
+        createBatch(
+          this.realityAddress,
+          parseInt(this.network),
+          this.input.length,
+          txs
+        )
+      );
       this.$emit('update:modelValue', this.input);
     }
   }
@@ -185,13 +191,13 @@ export default {
     <UiCollapsibleText
       v-if="hash"
       :showArrow="true"
-      :open="!showHash"
+      :open="showHash"
       class="border-b"
       style="border-width: 0 0 1px 0 !important"
       title="Complete Transaction Hash"
       @toggle="showHash = !showHash"
     >
-      {{ removeHexPrefix(hash) }}
+      {{ hash }}
     </UiCollapsibleText>
     <div class="text-center">
       <div v-for="(batch, index) in input" v-bind:key="index" class="border-b">
@@ -211,6 +217,7 @@ export default {
 
         <PluginSafeSnapFormImportTransactionsButton
           v-if="!preview"
+          :network="this.network"
           @import="handleImport($event)"
         />
 
