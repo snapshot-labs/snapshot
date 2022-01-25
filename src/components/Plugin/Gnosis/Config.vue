@@ -106,11 +106,11 @@ export default {
       v-if="!preview && input"
       :disabled="!isValid && input !== false"
       @click="preview = true"
-      class="w-full mb-2"
+      class="w-full mb-2 mt-2"
     >
       {{ $t('create.preview') }}
     </UiButton>
-    <UiButton v-if="preview" @click="preview = false" class="w-full mb-2 mt-2">
+    <UiButton v-if="preview" @click="preview = false" class="w-full mb-2">
       {{ $t('back') }}
     </UiButton>
     <UiButton :disabled="!isValid" @click="handleSubmit" class="w-full" primary>
