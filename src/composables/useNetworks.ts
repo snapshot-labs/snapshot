@@ -1,6 +1,6 @@
 /**
- * Get list of networks and order them by popularity
- * Filter list of networks by a search string
+ * Orders networks by spaces count and returns a list of skins
+ * filtered by the search string (case insensitive).
  */
 
 import { ref } from 'vue';
