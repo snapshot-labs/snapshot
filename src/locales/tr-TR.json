@@ -131,7 +131,7 @@
   "create": {
     "question": "Soru sor...",
     "categorie(s)": "Select up to 2 categorie(s)",
-    "content": "Teklifin hakkında daha fazla bilgi ver (opsiyonel)",
+    "content": "Tell us more about your proposal (optional)",
     "preview": "Önizleme",
     "choices": "Seçenekler",
     "addChoice": "Seçim ekle",
