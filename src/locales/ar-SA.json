@@ -131,7 +131,7 @@
   "create": {
     "question": "اطرح سؤالًا...",
     "categorie(s)": "حدد حتى 2 فئة (فئات)",
-    "content": "أخبر المزيد عن اقتراحك (اختياري)",
+    "content": "Tell us more about your proposal (optional)",
     "preview": "معاينة",
     "choices": "الخيارات",
     "addChoice": "إضافة اختيار",
