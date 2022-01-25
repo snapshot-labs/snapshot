@@ -95,7 +95,7 @@ Most plugins will require some configuration options, so that the a space admin 
 }
 ```
 
-Under the `"space"` key you can define global config options for all proposals. The `"proposal"` key let's you define options specific to a single proposal. 
+Under the `"space"` key you can define global config options for all proposals. The `"proposal"` key let's you define options specific to a single proposal.
 
 ## Hooks
 
@@ -105,6 +105,8 @@ Hooks allow a plugin to execute a custom function when a certain action is perfo
 | --- | --- | --- |
 | `precreate` | when clicking the publish button, before signing the message | the proposal form content |
 | `postcreate` | once the proposal has been successfully saved | the stored proposal content |
+| `prevote` | before confirming a vote | vote object |
+| `postvote` | once the vote has been successfully saved | the id of the stored vote, the ipfs hash and relayer information |
 
 To use these hooks, you need to specify a path in the `plugin.json` to a file exporting a single function:
 
