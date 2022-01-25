@@ -16,7 +16,7 @@ defineProps({
     <div class="flex items-center mb-1">
       <a target="_blank" class="flex items-center">
         <UiAvatar
-          class="mr-2 mb-2"
+          class="mr-2"
           :imgsrc="plugin.icon"
           :seed="plugin.name.charCodeAt()"
           size="28"
