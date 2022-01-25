@@ -8,9 +8,10 @@ import { useApolloQuery } from '@/composables/useApolloQuery';
 import { NETWORKS_COUNT_QUERY } from '@/helpers/queries';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 
+const networksSpacesCount: any = ref(null);
+
 export function useNetworks() {
   const loading = ref(false);
-  const networksSpacesCount: any = ref(null);
 
   const minifiedNetworksArray = computed(() =>
     Object.keys(networks).map(s => ({

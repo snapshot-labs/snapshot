@@ -8,9 +8,10 @@ import { useApolloQuery } from '@/composables/useApolloQuery';
 import { SKINS_COUNT_QUERY } from '@/helpers/queries';
 import skins from '@/../snapshot-spaces/skins';
 
+const skinsSpacesCount: any = ref(null);
+
 export function useSkins() {
   const loading = ref(false);
-  const skinsSpacesCount: any = ref(null);
 
   const minifiedSkinsArray = computed(() =>
     Object.keys(skins).map(s => ({
