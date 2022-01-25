@@ -42,9 +42,7 @@ const { userSkin } = useUserSkin();
       :modal="true"
     />
     <div class="mt-4 mx-0 md:mx-4 min-h-[339px]">
-      <Block slim v-if="loadingSkins">
-        <RowLoading class="my-2" />
-      </Block>
+      <RowLoadingBlock v-if="loadingSkins" />
       <div v-else>
         <a v-if="!searchInput" key="" @click="select(undefined)">
           <div :class="userSkin" class="bg-black rounded-none md:rounded-md">

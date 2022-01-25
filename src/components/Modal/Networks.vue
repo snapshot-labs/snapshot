@@ -41,9 +41,7 @@ function select(key) {
     />
 
     <div class="mt-4 mx-0 md:mx-4 min-h-[339px]">
-      <Block slim v-if="loadingNetworks">
-        <RowLoading class="my-2" />
-      </Block>
+      <RowLoadingBlock v-if="loadingNetworks" />
       <div v-else>
         <a
           v-for="network in networks"
