@@ -22,7 +22,7 @@ const isValidDomain = computed(() => {
 </script>
 
 <template>
-  <UiButton class="text-left w-full mb-1 flex px-3">
+  <UiButton class="text-left w-full mb-1 flex px-3 items-center">
     <input
       :value="modelValue"
       @input="
@@ -35,13 +35,13 @@ const isValidDomain = computed(() => {
       :placeholder="$t('setup.example')"
     />
     <span
-      class="block py-1 -mr-2"
+      class="-mr-2 flex items-center"
       target="_blank"
       v-tippy="{
         content: `${$t('setup.supportedEnsTLDs')}: ${validEnsTlds.join(', ')}`
       }"
     >
-      <Icon name="info" size="24" class="text-color p-1 -mr-1" />
+      <Icon name="info" size="24" class="text-color -mr-1" />
     </span>
   </UiButton>
   <a
