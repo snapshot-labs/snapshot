@@ -8,6 +8,7 @@ import { getScores } from '@snapshot-labs/snapshot.js/src/utils';
 import { useApp } from '@/composables/useApp';
 import { useI18n } from 'vue-i18n';
 import { useCopy } from '@/composables/useCopy';
+import { decode, encode } from '@/helpers/b64';
 import { setPageTitle } from '@/helpers/utils';
 import { useIntl } from '@/composables/useIntl';
 
@@ -32,16 +33,14 @@ const strategyExample = computed(() => {
   if (queryParams.query) {
     try {
       const { params, network, snapshot, addresses } = JSON.parse(
-        decodeURIComponent(queryParams.query)
+        decode(queryParams.query)
       );
       return {
         ...strategy.value.examples?.[0],
         addresses,
         network,
         snapshot,
-        strategy: {
-          params: JSON.parse(params)
-        }
+        strategy: { params }
       };
     } catch (e) {
       return strategy.value.examples?.[0];
@@ -56,11 +55,7 @@ const strategyError = ref(null);
 const networkError = ref(null);
 const scores = ref(null);
 const form = ref({
-  params: JSON.stringify(
-    strategyExample.value?.strategy.params ?? defaultParams,
-    null,
-    2
-  ),
+  params: strategyExample.value?.strategy.params ?? defaultParams,
   network: strategyExample.value?.network ?? 1,
   snapshot: '',
   addresses: strategyExample.value?.addresses ?? []
@@ -73,9 +68,8 @@ async function loadScores() {
 
   try {
     const strategyParams = {
-      __typename: 'Strategy',
       name: strategy.value.key,
-      params: JSON.parse(form.value.params)
+      params: form.value.params
     };
     scores.value = await getScores(
       '',
@@ -108,7 +102,7 @@ async function loadSnapshotBlockNumber() {
 
 async function handleURLUpdate(_, paramName) {
   router.replace({
-    query: { query: encodeURIComponent(JSON.stringify(form.value)) },
+    query: { query: encode(JSON.stringify(form.value)) },
     params: { retainScrollPosition: true }
   });
 
@@ -122,7 +116,7 @@ async function handleURLUpdate(_, paramName) {
 
 function copyURL() {
   copyToClipboard(
-    `${window.location.origin}/#${route.path}?query=${encodeURIComponent(
+    `${window.location.origin}/#${route.path}?query=${encode(
       JSON.stringify(form.value)
     )}`
   );
@@ -185,7 +179,7 @@ onMounted(async () => {
             class="block w-full mb-3 overflow-x-auto"
             style="height: auto"
           >
-            <TextareaAutosize
+            <TextareaJson
               v-model="form.params"
               @update:modelValue="handleURLUpdate"
               :placeholder="$t('strategyParameters')"
@@ -237,7 +231,7 @@ onMounted(async () => {
           <User :address="score" :space="form" />
           <span>
             {{ formatCompactNumber(scores[0][score]) }}
-            {{ JSON.parse(form.params).symbol }}
+            {{ form.params.symbol }}
           </span>
         </div>
       </Block>
