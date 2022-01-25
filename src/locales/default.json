@@ -237,7 +237,8 @@
     "toCreateASpace": "To create a space, you first need an ENS domain. Enter one below and follow the ENS registration instructions.",
     "createASpace": "Create a space",
     "registerEnsButton": "Register",
-    "supportedEnsTLDs": "Supported domain endings"
+    "supportedEnsTLDs": "Supported domain endings",
+    "helpDocsAndDiscordLinks": "Not sure how to create a space? Learn more in the <a target='_blank' href='https://docs.snapshot.org/spaces/create'> documentation </a> or join Snapshot <a target='_blank' href='https://discord.gg/snapshot'>Discord</a>."
   },
   "notify": {
     "youDidIt": "You did it!",
