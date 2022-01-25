@@ -19,7 +19,7 @@ function getLogoUrl(key) {
         :seed="network.key"
         size="28"
       />
-      <div class="max-w-[85%]">
+      <div class="overflow-hidden">
         <h3 class="truncated my-0 leading-5" v-text="network.name" />
         <div
           v-text="'Chain #' + network.key"
