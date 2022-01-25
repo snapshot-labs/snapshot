@@ -38,6 +38,7 @@ export default {
       this.transactions.push(undefined);
     },
     updateTransaction(index, transaction) {
+      if (this.config.preview) return;
       this.transactions[index] = transaction;
       this.updateBatch(this.transactions);
     },
