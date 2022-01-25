@@ -47,7 +47,7 @@
   "cancel": "取消",
   "deleteProposal": "删除提案",
   "demoSite": "这是演示网站，请试试看！",
-  "removeDelegation": "移除授权",
+  "removeDelegation": "移除委托",
   "confirmRemove": "您确定要移除对{}的委托吗？",
   "removeSpace": "用于空间 {0}",
   "confirmVote": "确认投票",
@@ -131,7 +131,7 @@
   "create": {
     "question": "提案标题",
     "categorie(s)": "最多选择2个类别",
-    "content": "详细介绍您的提案 (可选)",
+    "content": "Tell us more about your proposal (optional)",
     "preview": "预览",
     "choices": "选项",
     "addChoice": "添加选项",
@@ -245,8 +245,8 @@
     "proposalDeleted": "提案被删除",
     "somethingWentWrong": "哎呀，似乎出了点问题！",
     "saved": "已保存！",
-    "delegationSuccess": "授权成功",
-    "delegationRemoved": "授权已移除",
+    "delegationSuccess": "委托成功",
+    "delegationRemoved": "委托已移除",
     "proposalCreated": "提案已创建",
     "voteSuccessful": "投票成功！"
   },
