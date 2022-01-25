@@ -1,5 +1,7 @@
 <script setup>
-import { n } from '@/helpers/utils';
+import { useIntl } from '@/composables/useIntl';
+
+const { formatNumber } = useIntl();
 
 defineProps({
   counter: [Number, String]
@@ -9,17 +11,7 @@ defineProps({
 <template>
   <div
     v-if="counter > 0 || typeof counter === 'string'"
-    v-text="n(counter, '0,0')"
-    class="count h-[20px] min-w-[20px] leading-6 px-1 rounded-full"
+    v-text="formatNumber(counter)"
+    class="h-[20px] min-w-[20px] rounded-full leading-normal text-xs text-white bg-skin-text text-center px-1"
   />
 </template>
-
-<style scoped lang="scss">
-.count {
-  color: white;
-  text-align: center;
-  background-color: var(--text-color);
-  vertical-align: middle;
-  font-size: 13px;
-}
-</style>

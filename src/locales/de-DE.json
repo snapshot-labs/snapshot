@@ -88,8 +88,8 @@
   "noSpacesJoined": "Hoppla, du bist noch keinem Bereich beigetreten",
   "addFavorites": "Favoriten hinzufügen",
   "createdBy": "Von {0}",
-  "startToEnd": "begin {0} ende {1}",
-  "startIn": "start {0}",
+  "startIn": "beginnt {0}",
+  "proposalTimeLeft": "{0} verbleibend",
   "endIn": "ende {1}",
   "endedAgo": "endete {1}",
   "proposalBy": "von {0}",
@@ -347,5 +347,14 @@
     "show": "Show",
     "reply": "Reply",
     "load_more": "Load more"
+  },
+  "timeUnits": {
+    "second": "1 Sekunde | {n} Sekunden",
+    "minute": "1 Minute | {n} Minuten",
+    "hour": "1 Stunde | {n} Stunden",
+    "day": "1 Tag | {n} Tage",
+    "week": "1 Woche | {n} Wochen",
+    "month": "1 Monat | {n} Monate",
+    "year": "1 Jahr | {n} Jahre"
   }
 }

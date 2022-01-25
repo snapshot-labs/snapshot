@@ -1,10 +1,11 @@
 <script setup>
 import { ref, computed, watch, toRefs } from 'vue';
-import { shorten, getChoiceString, n } from '@/helpers/utils';
+import { shorten, getChoiceString } from '@/helpers/utils';
 import { useProfiles } from '@/composables/useProfiles';
 import { useWeb3 } from '@/composables/useWeb3';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import uniqBy from 'lodash/uniqBy';
+import { useIntl } from '@/composables/useIntl';
 
 const props = defineProps({
   space: Object,
@@ -20,6 +21,7 @@ defineEmits(['loadVotes']);
 
 const format = getChoiceString;
 
+const { formatCompactNumber } = useIntl();
 const { votes } = toRefs(props);
 const { web3Account } = useWeb3();
 
@@ -116,11 +118,19 @@ watch(visibleVotes, () => {
         <span
           v-tippy="{
             content: vote.scores
-              ?.map((score, index) => `${n(score)} ${titles[index]}`)
+              ?.map(
+                (score, index) =>
+                  `${formatCompactNumber(score)} ${titles[index]}`
+              )
               .join(' + ')
           }"
         >
-          {{ `${n(vote.balance)} ${shorten(space.symbol, 'symbol')}` }}
+          {{
+            `${formatCompactNumber(vote.balance)} ${shorten(
+              space.symbol,
+              'symbol'
+            )}`
+          }}
         </span>
         <a
           @click="openReceiptModal(vote)"

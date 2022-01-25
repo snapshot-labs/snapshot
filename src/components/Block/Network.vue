@@ -1,5 +1,7 @@
 <script setup>
-import { n } from '@/helpers/utils';
+import { useIntl } from '@/composables/useIntl';
+
+const { formatCompactNumber } = useIntl();
 
 defineProps(['network']);
 
@@ -10,18 +12,23 @@ function getLogoUrl(key) {
 
 <template>
   <Block class="hover-border">
-    <div class="flex items-center mb-1">
+    <div class="flex items-start mb-3">
       <UiAvatar
-        class="mr-2 mb-2"
+        class="mr-2"
         :imgsrc="getLogoUrl(network.key)"
         :seed="network.key"
         size="28"
       />
-      <h3 v-text="network.name" />
-      <div v-text="network.key" class="ml-1 text-color" />
+      <div class="overflow-hidden">
+        <h3 class="truncated my-0 leading-5" v-text="network.name" />
+        <div
+          v-text="'Chain #' + network.key"
+          class="text-color text-xs leading-4"
+        />
+      </div>
     </div>
     <div class="text-color">
-      {{ $tc('inSpaces', [n(network.spaces)]) }}
+      {{ $tc('inSpaces', [formatCompactNumber(network.spaces)]) }}
     </div>
   </Block>
 </template>

@@ -1,8 +1,9 @@
 <script setup>
 import { computed, inject } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { shorten, getChoiceString, explorerUrl, n } from '@/helpers/utils';
+import { shorten, getChoiceString, explorerUrl } from '@/helpers/utils';
 import { useClient } from '@/composables/useClient';
+import { useIntl } from '@/composables/useIntl';
 
 const props = defineProps({
   open: Boolean,
@@ -21,6 +22,7 @@ const { t } = useI18n();
 const notify = inject('notify');
 const { send, clientLoading } = useClient();
 const format = getChoiceString;
+const { formatNumber, formatCompactNumber } = useIntl();
 
 const symbols = computed(() =>
   props.strategies.map(strategy => strategy.params.symbol)
@@ -70,7 +72,7 @@ async function handleSubmit() {
             target="_blank"
             class="float-right"
           >
-            {{ n(proposal.snapshot, '0,0') }}
+            {{ formatNumber(proposal.snapshot) }}
             <Icon name="external-link" class="ml-1" />
           </a>
         </div>
@@ -79,11 +81,14 @@ async function handleSubmit() {
           <span
             v-tippy="{
               content: scores
-                .map((score, index) => `${n(score)} ${symbols[index]}`)
+                .map(
+                  (score, index) =>
+                    `${formatCompactNumber(score)} ${symbols[index]}`
+                )
                 .join(' + ')
             }"
           >
-            {{ n(totalScore) }}
+            {{ formatCompactNumber(totalScore) }}
             {{ shorten(space.symbol, 'symbol') }}
           </span>
           <a
