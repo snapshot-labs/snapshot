@@ -1,6 +1,7 @@
 <script setup>
 import { isAddress } from '@ethersproject/address';
 import { shorten, explorerUrl } from '@/helpers/utils';
+import { encode } from '@/helpers/b64';
 
 defineProps({
   open: Boolean,
@@ -22,6 +23,25 @@ defineEmits(['close']);
         :key="i"
         class="p-4 mb-3 border rounded-md link-color"
       >
+        <router-link
+          class="float-right mt-2 pt-1"
+          target="_blank"
+          :to="{
+            name: 'playground',
+            params: { name: strategy.name },
+            query: {
+              query: encode(
+                JSON.stringify({
+                  network: proposal.network,
+                  snapshot: proposal.snapshot,
+                  params: strategy.params
+                })
+              )
+            }
+          }"
+        >
+          <Icon name="play" size="18" />
+        </router-link>
         <h3 v-text="strategy.name" />
         <div>
           <div v-for="(option, key) in strategy.params" :key="key" class="flex">
