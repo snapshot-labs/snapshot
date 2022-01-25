@@ -237,7 +237,8 @@
     "toCreateASpace": "要创建空间，你首先需要一个ENS域名。在下面输入一个，并按照ENS的注册说明进行操作。",
     "createASpace": "创建空间",
     "registerEnsButton": "注册",
-    "supportedEnsTLDs": "支持的域名结尾"
+    "supportedEnsTLDs": "支持的域名结尾",
+    "helpDocsAndDiscordLinks": "Not sure how to create a space? Learn more in the <a target='_blank' href='https://docs.snapshot.org/spaces/create'> documentation </a> or join Snapshot <a target='_blank' href='https://discord.gg/snapshot'>Discord</a>."
   },
   "notify": {
     "youDidIt": "您成功了!",
