@@ -18,6 +18,7 @@ defineEmits(['remove', 'toggle']);
       </div>
       <span
         class="flex-auto text-center flex flex-nowrap justify-center overflow-hidden"
+        style="min-height: 24px"
         @click="$emit('toggle')"
       >
         {{ title }}
@@ -62,6 +63,5 @@ defineEmits(['remove', 'toggle']);
   width: 32px;
   height: 32px;
   border-radius: 16px;
-  margin-top: 7px; // (46px header height - 32px element height) / 2
 }
 </style>
