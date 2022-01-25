@@ -131,7 +131,7 @@
   "create": {
     "question": "質問する...",
     "categorie(s)": "最大2つのカテゴリを選択してください",
-    "content": "クルーについて教えてください (任意)",
+    "content": "Tell us more about your proposal (optional)",
     "preview": "プレビュー",
     "choices": "選択肢",
     "addChoice": "選択肢を追加する",
