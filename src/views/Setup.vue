@@ -134,13 +134,8 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
     </template>
     <template #sidebar-right>
       <Block>
-        <Icon name="gitbook" size="24" class="text-color pr-1 !align-middle" />
-        Not sure how to create a space? Learn more in the
-        <a target="_blank" href="https://docs.snapshot.org/spaces/create">
-          documentation
-        </a>
-        or join Snapshot
-        <a target="_blank" href="https://discord.gg/snapshot">Discord</a>.
+        <Icon name="gitbook" size="24" class="text-color pr-2 !align-middle" />
+        <span v-html="$t('setup.helpDocsAndDiscordLinks')" />
       </Block>
     </template>
   </Layout>
