@@ -91,7 +91,7 @@ export default {
             required
           />
         </UiButton>
-        <UiButton v-if="input" @click="removeAction" class="w-full">
+        <UiButton v-if="input" @click="removeAction" class="w-full mb-2">
           {{ $t('removeMarket') }}
         </UiButton>
       </div>
