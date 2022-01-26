@@ -51,7 +51,7 @@
   "confirmRemove": "Bạn chắc chắn muốn xóa ủy quyền cho",
   "removeSpace": "cho khoảng trống {0}",
   "confirmVote": "Xác nhận phiếu bầu",
-  "sureToVote": "Bạn chắc chắn muốn bầu \"{0}\"?",
+  "sureToVote": "Are you sure you want to cast this vote?",
   "cannotBeUndone": "Hành động này không thể hoàn tác.",
   "options": "Các lựa chọn(s)",
   "votingPower": "Quyền biểu quyết của bạn",
