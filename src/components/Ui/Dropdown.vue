@@ -51,7 +51,7 @@ onBeforeUnmount(() => window.removeEventListener('click', close));
           :class="{ selected: item.selected }"
           class="list-none block whitespace-nowrap px-[18px] py-[2px]"
         >
-          <slot name="item" :item="item" :key="key">
+          <slot name="item" :item="item" :key="item">
             <Icon
               v-if="item.icon"
               :name="item.icon"
