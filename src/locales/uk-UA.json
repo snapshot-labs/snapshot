@@ -51,7 +51,7 @@
   "confirmRemove": "Ви впевнені, що хочете видалити делегування?",
   "removeSpace": "для простору {0}",
   "confirmVote": "Підтвердити свій голос",
-  "sureToVote": "Ви впевнені, що хочете проголосувати за {0}?",
+  "sureToVote": "Are you sure you want to cast this vote?",
   "cannotBeUndone": "Цю дію не можна скасувати.",
   "options": "Параметри",
   "votingPower": "Ваша сила голосу",
