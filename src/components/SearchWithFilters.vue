@@ -9,22 +9,27 @@ const route = useRoute();
 const router = useRouter();
 const { t } = useI18n();
 
+const routeQuery = computed(() => route.query.q);
 const searchOptions = computed(() => [
   {
     text: t('spaces'),
-    action: 'home'
+    action: 'home',
+    selected: route.name === 'home'
   },
   {
     text: t('networks'),
-    action: 'networks'
+    action: 'networks',
+    selected: route.name === 'networks'
   },
   {
     text: t('strategiesPage'),
-    action: 'strategies'
+    action: 'strategies',
+    selected: route.name === 'strategies'
   },
   {
     text: t('plugins'),
-    action: 'plugins'
+    action: 'plugins',
+    selected: route.name === 'plugins'
   }
 ]);
 
@@ -33,8 +38,6 @@ const searchSelectedOption = computed(
     searchOptions.value.find(option => option.action === route.name)?.text ||
     'home'
 );
-
-const routeQuery = computed(() => route.query.q);
 
 function redirectSearch(e) {
   router.push({
