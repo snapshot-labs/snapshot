@@ -1,10 +1,9 @@
 <script setup>
-import { useApp } from '@/composables/useApp';
 import { useIntl } from '@/composables/useIntl';
+import { usePlugins } from '@/composables/usePlugins';
 
 const { formatCompactNumber } = useIntl();
-
-const { explore } = useApp();
+const { pluginsSpacesCount } = usePlugins();
 
 defineProps({
   plugin: Object
@@ -35,7 +34,11 @@ defineProps({
           <Icon name="github" class="mr-1" />
           {{ plugin.author }}
         </a>
-        {{ $tc('inSpaces', [formatCompactNumber(explore.plugins[plugin.key] || 0)]) }}
+        {{
+          $tc('inSpaces', [
+            formatCompactNumber(pluginsSpacesCount?.[plugin.key] ?? 0)
+          ])
+        }}
       </div>
       <a
         @click.stop

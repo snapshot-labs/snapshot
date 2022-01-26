@@ -1,6 +1,6 @@
 <script setup>
-import { ref, computed, watch, toRefs } from 'vue';
-import { useSearchFilters } from '@/composables/useSearchFilters';
+import { ref, watch, toRefs } from 'vue';
+import { usePlugins } from '@/composables/usePlugins';
 
 const props = defineProps({ open: Boolean, plugin: Object });
 const emit = defineEmits(['add', 'close']);
@@ -11,8 +11,8 @@ const input = ref({});
 const isValid = ref(true);
 const selectedPlugin = ref({});
 
-const { filteredPlugins } = useSearchFilters();
-const plugins = computed(() => filteredPlugins());
+const { filterPlugins, pluginIndex, loadingPluginsSpaceCount, getPluginsSpacesCount } =
+  usePlugins();
 
 function handleSubmit() {
   const key = selectedPlugin.value.key;
@@ -26,10 +26,11 @@ function selectPlugin(plugin) {
 }
 
 watch(open, () => {
+  if (props.open) getPluginsSpacesCount();
   if (Object.keys(props.plugin).length > 0) {
     const key = Object.keys(props.plugin)[0];
     input.value = props.plugin[key];
-    selectedPlugin.value = plugins.value.find(obj => obj.key === key);
+    selectedPlugin.value = Object.values(pluginIndex).find(p => p.key === key);
   } else {
     input.value = {};
     selectedPlugin.value = {};
@@ -54,8 +55,11 @@ watch(open, () => {
       :placeholder="$t('searchPlaceholder')"
       :modal="true"
     />
-    <div class="mt-4 mx-0 md:mx-4">
-      <div v-if="selectedPlugin?.key" class="mb-4 link-color">
+    <div class="mt-4 mx-0 md:mx-4 min-h-[339px]">
+      <div
+        v-if="selectedPlugin?.key"
+        class="p-4 mb-4 border rounded-md link-color"
+      >
         <h4 v-text="selectedPlugin.name" class="mb-3 text-center" />
         <UiButton
           class="block w-full mb-3 overflow-x-auto"
@@ -79,16 +83,19 @@ watch(open, () => {
         </UiButton>
       </div>
       <div v-if="!selectedPlugin?.key">
-        <a
-          v-for="(plugin, i) in filteredPlugins(searchInput)"
-          :key="i"
-          @click="selectPlugin(plugin)"
-        >
-          <BlockPlugin :plugin="plugin" />
-        </a>
-        <NoResults
-          v-if="Object.keys(filteredPlugins(searchInput)).length < 1"
-        />
+        <RowLoadingBlock v-if="loadingPluginsSpaceCount" />
+        <div v-else>
+          <a
+            v-for="(plugin, i) in filterPlugins(searchInput)"
+            :key="i"
+            @click="selectPlugin(plugin)"
+          >
+            <BlockPlugin :plugin="plugin" />
+          </a>
+          <NoResults
+            v-if="Object.keys(filterPlugins(searchInput)).length < 1"
+          />
+        </div>
       </div>
     </div>
   </UiModal>

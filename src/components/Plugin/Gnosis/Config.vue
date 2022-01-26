@@ -53,8 +53,8 @@ export default {
     <UiButton @click="addAction" v-if="!input" class="w-full mb-2">
       {{ $t('addMarket') }}
     </UiButton>
-    <div v-else-if="!preview">
-      <UiButton class="w-full mb-2">
+    <div v-else-if="!preview" class="space-y-2">
+      <UiButton class="w-full">
         <select
           v-model="input.network"
           class="input w-full text-center"
@@ -65,7 +65,7 @@ export default {
           <option value="100">xDai</option>
         </select>
       </UiButton>
-      <UiButton class="w-full mb-2">
+      <UiButton class="w-full">
         <input
           v-model="input.conditionId"
           class="input w-full text-center"
@@ -73,7 +73,7 @@ export default {
           required
         />
       </UiButton>
-      <UiButton class="w-full mb-2">
+      <UiButton class="w-full">
         <input
           v-model="input.baseTokenAddress"
           class="input w-full text-center"
@@ -81,7 +81,7 @@ export default {
           required
         />
       </UiButton>
-      <UiButton class="w-full mb-2">
+      <UiButton class="w-full">
         <input
           v-model="input.quoteCurrencyAddress"
           class="input w-full text-center"
@@ -89,7 +89,7 @@ export default {
           required
         />
       </UiButton>
-      <UiButton v-if="input" @click="removeAction" class="w-full mb-2">
+      <UiButton v-if="input" @click="removeAction" class="w-full">
         {{ $t('removeMarket') }}
       </UiButton>
     </div>
@@ -104,7 +104,7 @@ export default {
     v-if="!preview && input"
     :disabled="!isValid && input !== false"
     @click="preview = true"
-    class="w-full mb-2"
+    class="w-full my-2"
   >
     {{ $t('create.preview') }}
   </UiButton>
