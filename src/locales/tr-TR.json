@@ -51,7 +51,7 @@
   "confirmRemove": "Yetkilendirmenizi kaldırmak istediğinizden emin misiniz",
   "removeSpace": "{0} alanı için",
   "confirmVote": "Oyu Onayla",
-  "sureToVote": "{0}'ı oylama istediğinize emin misiniz?",
+  "sureToVote": "Are you sure you want to cast this vote?",
   "cannotBeUndone": "Bu işlem geri alınamaz.",
   "options": "Seçenekler",
   "votingPower": "Oy Verme Gücünüz",
