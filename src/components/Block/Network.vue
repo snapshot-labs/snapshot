@@ -1,7 +1,10 @@
 <script setup>
 import { useIntl } from '@/composables/useIntl';
+import { useNetworks } from '@/composables/useNetworks';
 
 const { formatCompactNumber } = useIntl();
+
+const { networksSpacesCount } = useNetworks();
 
 defineProps(['network']);
 
@@ -28,7 +31,11 @@ function getLogoUrl(key) {
       </div>
     </div>
     <div class="text-color">
-      {{ $tc('inSpaces', [formatCompactNumber(network.spaces)]) }}
+      {{
+        $tc('inSpaces', [
+          formatCompactNumber(networksSpacesCount[network.key] ?? 0)
+        ])
+      }}
     </div>
   </Block>
 </template>
