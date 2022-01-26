@@ -51,7 +51,7 @@
   "confirmRemove": "আপনি কি নিশ্চিত আপনার ডেলিগেশন সরাতে চান",
   "removeSpace": "স্থান জন্য {0}",
   "confirmVote": "ভোট নিশ্চিত করুন",
-  "sureToVote": "আরে, আপনি ভোট দিতে চান \"{0}\"?",
+  "sureToVote": "Are you sure you want to cast this vote?",
   "cannotBeUndone": "এই ক্রিয়াটি পূর্বাবস্থায় ফেরানো যাবে না.",
   "options": "বিকল্পসমূহ",
   "votingPower": "আপনার ভোট দেওয়ার শক্তি",
