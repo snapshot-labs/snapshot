@@ -51,7 +51,7 @@
   "confirmRemove": "هل انت متأكد من رغبتك بالغاء التفويض",
   "removeSpace": "للمساحة {0}",
   "confirmVote": "تأكيد التصويت",
-  "sureToVote": "هل أنت متأكد أنك تريد التصويت <i>\"{0}\"</i>؟",
+  "sureToVote": "Are you sure you want to cast this vote?",
   "cannotBeUndone": "لا يمكن التراجع عن هذا الإجراء.",
   "options": "خيار(ات)",
   "votingPower": "قوة التصويت الخاصة بك",
