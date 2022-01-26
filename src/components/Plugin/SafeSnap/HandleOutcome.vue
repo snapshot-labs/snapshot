@@ -408,6 +408,8 @@ export default {
         await executingProposal.next();
         notify(this.$i18n.t('notify.youDidIt'));
         pendingCount.value--;
+        await sleep(3e3);
+        await this.updateDetails();
       } catch (err) {
         pendingCount.value--;
         this.action2InProgress = null;
