@@ -51,7 +51,7 @@
   "confirmRemove": "Jste si jisti, že chcete odstranit vaše hodnocení?",
   "removeSpace": "pro skupinu {0}",
   "confirmVote": "Potvrďte hlasování",
-  "sureToVote": "Žádně definované atributy",
+  "sureToVote": "Are you sure you want to cast this vote?",
   "cannotBeUndone": "Tuto akci nelze vrátit zpět",
   "options": "Možnosti",
   "votingPower": "Vaše hlasovací práva",
