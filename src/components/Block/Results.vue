@@ -44,69 +44,71 @@ const hideAbstain = props.space?.voting?.hideAbstain ?? false;
       <template
         v-if="!(proposal.type === 'basic' && hideAbstain && choice.i === 2)"
       >
-        <div class="link-color mb-1">
-          <span
-            v-tippy="{
-              content: choice.choice.length > 12 ? choice.choice : null
-            }"
-            class="mr-1"
-            v-text="shorten(choice.choice, 'choice')"
-          />
+        <div class="link-color mb-1 flex justify-between">
+          <div class="flex overflow-hidden">
+            <span
+              v-tippy="{
+                content: choice.choice.length > 24 ? choice.choice : null
+              }"
+              class="mr-1 truncated"
+              v-text="choice.choice"
+            />
 
-          <span
-            class="inline-block"
-            v-tippy="{
-              content: results.resultsByStrategyScore[choice.i]
-                .map(
-                  (score, index) =>
-                    `${formatCompactNumber(score)} ${titles[index]}`
+            <span
+              class="whitespace-nowrap"
+              v-tippy="{
+                content: results.resultsByStrategyScore[choice.i]
+                  .map(
+                    (score, index) =>
+                      `${formatCompactNumber(score)} ${titles[index]}`
+                  )
+                  .join(' + ')
+              }"
+            >
+              {{ formatCompactNumber(results.resultsByVoteBalance[choice.i]) }}
+              {{ shorten(space.symbol, 'symbol') }}
+            </span>
+          </div>
+
+          <div class="ml-2">
+            <span
+              v-if="proposal.type === 'basic' && hideAbstain && choice.i === 0"
+              v-text="
+                formatPercentNumber(
+                  getPercentage(
+                    results.resultsByVoteBalance[0],
+                    results.resultsByVoteBalance[0] +
+                      results.resultsByVoteBalance[1]
+                  )
                 )
-                .join(' + ')
-            }"
-          >
-            {{ formatCompactNumber(results.resultsByVoteBalance[choice.i]) }}
-            {{ shorten(space.symbol, 'symbol') }}
-          </span>
-          <span
-            v-if="proposal.type === 'basic' && hideAbstain && choice.i === 0"
-            class="float-right"
-            v-text="
-              formatPercentNumber(
-                getPercentage(
-                  results.resultsByVoteBalance[0],
-                  results.resultsByVoteBalance[0] +
-                    results.resultsByVoteBalance[1]
+              "
+            />
+            <span
+              v-else-if="
+                proposal.type === 'basic' && hideAbstain && choice.i === 1
+              "
+              v-text="
+                formatPercentNumber(
+                  getPercentage(
+                    results.resultsByVoteBalance[1],
+                    results.resultsByVoteBalance[0] +
+                      results.resultsByVoteBalance[1]
+                  )
                 )
-              )
-            "
-          />
-          <span
-            v-else-if="
-              proposal.type === 'basic' && hideAbstain && choice.i === 1
-            "
-            class="float-right"
-            v-text="
-              formatPercentNumber(
-                getPercentage(
-                  results.resultsByVoteBalance[1],
-                  results.resultsByVoteBalance[0] +
-                    results.resultsByVoteBalance[1]
+              "
+            />
+            <span
+              v-else
+              v-text="
+                formatPercentNumber(
+                  getPercentage(
+                    results.resultsByVoteBalance[choice.i],
+                    results.sumOfResultsBalance
+                  )
                 )
-              )
-            "
-          />
-          <span
-            v-else
-            class="float-right"
-            v-text="
-              formatPercentNumber(
-                getPercentage(
-                  results.resultsByVoteBalance[choice.i],
-                  results.sumOfResultsBalance
-                )
-              )
-            "
-          />
+              "
+            />
+          </div>
         </div>
         <UiProgress
           :value="results.resultsByStrategyScore[choice.i]"
