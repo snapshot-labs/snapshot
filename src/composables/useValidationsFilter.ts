@@ -3,27 +3,24 @@
  * Filter list of validations by a search string
  */
 
-import { computed, ref } from 'vue';
+import { ref } from 'vue';
 import { useApolloQuery } from '@/composables/useApolloQuery';
 import { VALIDATIONS_COUNT_QUERY } from '@/helpers/queries';
 import validations from '@snapshot-labs/snapshot.js/src/validations';
 
 const validationsSpacesCount: any = ref(null);
 
-export function useValidations() {
+export function useValidationsFilter() {
   const loading = ref(false);
 
-  const minifiedValidationsArray = computed(() =>
-    Object.keys(validations).map((key: any) => ({
-      name: key,
-      spacesCount: validationsSpacesCount.value?.[key]
-    }))
-  );
-
-  const filtereValidations = (q = '') =>
-    minifiedValidationsArray.value
+  const filterValidations = (q = '') =>
+    Object.keys(validations)
       .filter(v => JSON.stringify(v).toLowerCase().includes(q.toLowerCase()))
-      .sort((a, b) => b.spacesCount - a.spacesCount);
+      .sort(
+        (a, b) =>
+          (validationsSpacesCount.value?.[b] ?? 0) -
+          (validationsSpacesCount.value?.[a] ?? 0)
+      );
 
   const { apolloQuery } = useApolloQuery();
 
@@ -44,9 +41,9 @@ export function useValidations() {
     return;
   }
   return {
-    minifiedValidationsArray,
-    filtereValidations,
+    filterValidations,
     getValidationsSpacesCount,
+    validationsSpacesCount,
     loadingValidations: loading
   };
 }

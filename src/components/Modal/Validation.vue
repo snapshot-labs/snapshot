@@ -1,6 +1,6 @@
 <script setup>
 import { ref, computed, toRefs, watch } from 'vue';
-import { useValidations } from '@/composables/useValidations';
+import { useValidationsFilter } from '@/composables/useValidationsFilter';
 
 const defaultParams = {};
 
@@ -17,9 +17,9 @@ const input = ref({
   params: defaultParams
 });
 
-const { filtereValidations, getValidationsSpacesCount, loadingValidations } =
-  useValidations();
-const validations = computed(() => filtereValidations(searchInput.value));
+const { filterValidations, getValidationsSpacesCount, loadingValidations } =
+  useValidationsFilter();
+const validations = computed(() => filterValidations(searchInput.value));
 
 watch(
   () => props.open,
