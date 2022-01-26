@@ -51,7 +51,7 @@
   "confirmRemove": "위임을 제거하시겠습니까",
   "removeSpace": "공간을 위해 {0}",
   "confirmVote": "투표 확인",
-  "sureToVote": "투표하시겠습니까? \"{0}\"?",
+  "sureToVote": "Are you sure you want to cast this vote?",
   "cannotBeUndone": "이 작업은 취소할 수 없습니다.",
   "options": "옵션 (들)",
   "votingPower": "당신의 투표 힘",
