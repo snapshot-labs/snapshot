@@ -51,7 +51,7 @@
   "confirmRemove": "האם אתם בטוחים שברצונכם להסיר את האצלתכם ל",
   "removeSpace": "למרחב {0}",
   "confirmVote": "אשר הצבעה",
-  "sureToVote": "האם אתה בטוח שברצונך להצביע \"{0}\"?",
+  "sureToVote": "Are you sure you want to cast this vote?",
   "cannotBeUndone": "פעולה זו אינה הפיכה.",
   "options": "אפשרויות",
   "votingPower": "כוח ההצבעה שלך",
