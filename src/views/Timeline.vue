@@ -87,11 +87,18 @@ function emitUpdateLastSeenProposal() {
   updateLastSeenProposal(web3Account.value);
 }
 
+watch(
+  [web3Account, followingSpaces],
+  () => {
+    emitUpdateLastSeenProposal();
+  },
+  { immediate: true }
+);
+
 // Initialize
 onMounted(() => {
   load();
   setPageTitle('page.title.timeline');
-  emitUpdateLastSeenProposal();
 });
 
 async function load() {

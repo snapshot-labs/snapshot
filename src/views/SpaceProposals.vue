@@ -64,6 +64,8 @@ function emitUpdateLastSeenProposal() {
   updateLastSeenProposal(web3Account.value);
 }
 
+watch(web3Account, () => emitUpdateLastSeenProposal());
+
 async function load() {
   if (store.space.proposals.length > 0) return;
   loading.value = true;
