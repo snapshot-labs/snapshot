@@ -61,7 +61,15 @@ async function handleSubmit() {
       <div class="m-4 p-4 border rounded-md link-color">
         <div class="flex">
           <span v-text="$t('options')" class="flex-auto text-color mr-1" />
-          <span class="text-right ml-4">
+          <span
+            v-tippy="{
+              content:
+                format(proposal, selectedChoices).length > 30
+                  ? format(proposal, selectedChoices)
+                  : null
+            }"
+            class="text-right ml-4 truncated"
+          >
             {{ format(proposal, selectedChoices) }}
           </span>
         </div>

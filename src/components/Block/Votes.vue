@@ -98,9 +98,9 @@ watch(visibleVotes, () => {
         :address="vote.voter"
         :space="space"
         :proposal="proposal"
-        class="column"
+        class="min-w-[90px]"
       />
-      <div class="flex-auto text-center link-color">
+      <div class="flex-auto text-center link-color truncated px-3">
         <span
           class="text-center link-color"
           v-tippy="{
@@ -110,11 +110,11 @@ watch(visibleVotes, () => {
                 : null
           }"
         >
-          {{ shorten(format(proposal, vote.choice), 24) }}
+          {{ format(proposal, vote.choice) }}
         </span>
       </div>
 
-      <div class="column text-right link-color">
+      <div class="min-w-[80px] text-right link-color whitespace-nowrap">
         <span
           v-tippy="{
             content: vote.scores
