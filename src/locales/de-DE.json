@@ -51,7 +51,7 @@
   "confirmRemove": "Sind Sie sicher, dass Sie Ihre Delegation entfernen möchten zu",
   "removeSpace": "für den Bereich {0}",
   "confirmVote": "Abstimmung bestätigen",
-  "sureToVote": "Bist du sicher, dass du \"{0}\" abstimmen möchtest?",
+  "sureToVote": "Are you sure you want to cast this vote?",
   "cannotBeUndone": "Diese Aktion kann nicht rückgängig gemacht werden.",
   "options": "Option(en)",
   "votingPower": "Deine Stimmmacht",
