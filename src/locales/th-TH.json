@@ -51,7 +51,7 @@
   "confirmRemove": "คุณแน่ใจไหมว่าต้องการใช้สิทธิ์ในการลบ",
   "removeSpace": "สำหรับพื้นที่ {0}",
   "confirmVote": "ยืนยันการโหวต",
-  "sureToVote": "คุณแน่ใจไหมว่าต้องการโหวต \"{0}\"",
+  "sureToVote": "Are you sure you want to cast this vote?",
   "cannotBeUndone": "ไม่สามารถยกเลิกการดำเนินการนี้ได้",
   "options": "ตัวเลือก",
   "votingPower": "การโหวตของคุณ",
