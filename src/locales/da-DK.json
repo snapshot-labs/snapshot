@@ -51,7 +51,7 @@
   "confirmRemove": "Er du sikker på du vil fjerne dit billede?",
   "removeSpace": "for pladsen {0}",
   "confirmVote": "Bekræft stemme",
-  "sureToVote": "Er du sikker på at du vil slette {0}?",
+  "sureToVote": "Are you sure you want to cast this vote?",
   "cannotBeUndone": "Denne handling kan ikke fortrydes.",
   "options": "Instillinger:",
   "votingPower": "Din stemmekraft",
