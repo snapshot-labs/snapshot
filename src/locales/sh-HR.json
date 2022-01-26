@@ -51,7 +51,7 @@
   "confirmRemove": "Jeste li sigurni da želite da uklonite vašu delegaciju za",
   "removeSpace": "za prostor {0}",
   "confirmVote": "Potvrdi glas",
-  "sureToVote": "Jeste li sigurni da želite da glasate \"{0}\"?",
+  "sureToVote": "Are you sure you want to cast this vote?",
   "cannotBeUndone": "Ova radnja se ne može opozvati.",
   "options": "Option(s)",
   "votingPower": "Vaša glasačka moć",
