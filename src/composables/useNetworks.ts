@@ -1,9 +1,9 @@
 /**
- * Get list of networks and order them by popularity
- * Filter list of networks by a search string
+ * Orders networks by spaces count and returns a list of networks
+ * filtered by the search string (case insensitive).
  */
 
-import { computed, ref } from 'vue';
+import { ref } from 'vue';
 import { useApolloQuery } from '@/composables/useApolloQuery';
 import { NETWORKS_COUNT_QUERY } from '@/helpers/queries';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
@@ -13,18 +13,16 @@ const networksSpacesCount: any = ref(null);
 export function useNetworks() {
   const loading = ref(false);
 
-  const minifiedNetworksArray = computed(() =>
-    Object.keys(networks).map(s => ({
-      spacesCount: networksSpacesCount.value?.[s] ?? 0,
-      ...networks[s]
-    }))
-  );
-
-  const filtereNetworks = (q = '') =>
-    minifiedNetworksArray.value
+  const filterNetworks = (q = '') =>
+    Object.keys(networks)
+      .map(s => ({ ...networks[s] }))
       .filter(n => !n.disabled)
       .filter(n => JSON.stringify(n).toLowerCase().includes(q.toLowerCase()))
-      .sort((a, b) => b.spacesCount - a.spacesCount);
+      .sort(
+        (a, b) =>
+          (networksSpacesCount.value?.[b.key] ?? 0) -
+          (networksSpacesCount.value?.[a.key] ?? 0)
+      );
 
   const { apolloQuery } = useApolloQuery();
 
@@ -45,9 +43,9 @@ export function useNetworks() {
     loading.value = false;
   }
   return {
-    minifiedNetworksArray,
-    filtereNetworks,
+    filterNetworks,
     getNetworksSpacesCount,
+    networksSpacesCount,
     loadingNetworks: loading
   };
 }

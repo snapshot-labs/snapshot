@@ -19,7 +19,7 @@ function getLogoUrl(key) {
         class="flex items-center"
       >
         <UiAvatar
-          class="mr-2 mb-2"
+          class="mr-2"
           :imgsrc="getLogoUrl(plugin.key)"
           :seed="plugin.name.charCodeAt()"
           size="28"

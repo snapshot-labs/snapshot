@@ -29,16 +29,16 @@ const resultsStr = computed(() => {
 
 const { filteredStrategies } = useSearchFilters();
 
-const { filtereNetworks, getNetworksSpacesCount, loadingNetworks } =
+const { filterNetworks, getNetworksSpacesCount, loadingNetworks } =
   useNetworks();
 
-const { filterePlugins, getPluginsSpacesCount, loadingPlugins } = usePlugins();
+const { filterPlugins, getPluginsSpacesCount, loadingPlugins } = usePlugins();
 
 const items = computed(() => {
   const q = route.query.q || '';
   if (route.name === 'strategies') return filteredStrategies(q);
-  if (route.name === 'networks') return filtereNetworks(q);
-  if (route.name === 'plugins') return filterePlugins(q);
+  if (route.name === 'networks') return filterNetworks(q);
+  if (route.name === 'plugins') return filterPlugins(q);
   return [];
 });
 

@@ -13,8 +13,8 @@ const props = defineProps({
 const emit = defineEmits(['close', 'update:modelValue']);
 
 const searchInput = ref('');
-const { filtereSkins, getSkinsSpacesCount, loadingSkins } = useSkins();
-const filteredSkins = computed(() => filtereSkins(searchInput.value));
+const { filterSkins, getSkinsSpacesCount, loadingSkins } = useSkins();
+const filteredSkins = computed(() => filterSkins(searchInput.value));
 
 watch(
   () => props.open,
@@ -51,11 +51,7 @@ const { userSkin } = useUserSkin();
             </Block>
           </div>
         </a>
-        <a
-          v-for="skin in filteredSkins"
-          :key="skin.key"
-          @click="select(skin.key)"
-        >
+        <a v-for="skin in filteredSkins" :key="skin" @click="select(skin)">
           <BlockSkin :skin="skin" />
         </a>
         <NoResults v-if="Object.keys(filteredSkins).length < 1" />

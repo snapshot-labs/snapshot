@@ -1,9 +1,9 @@
 /**
- * Get list of skins and order them by popularity
- * Filter list of skins by a search string
+ * Orders skins by spaces count and returns a list of skins
+ * filtered by the search string (case insensitive).
  */
 
-import { computed, ref } from 'vue';
+import { ref } from 'vue';
 import { useApolloQuery } from '@/composables/useApolloQuery';
 import { SKINS_COUNT_QUERY } from '@/helpers/queries';
 import skins from '@/../snapshot-spaces/skins';
@@ -13,17 +13,13 @@ const skinsSpacesCount: any = ref(null);
 export function useSkins() {
   const loading = ref(false);
 
-  const minifiedSkinsArray = computed(() =>
-    Object.keys(skins).map(s => ({
-      key: s,
-      spacesCount: skinsSpacesCount.value?.[s] ?? 0
-    }))
-  );
-
-  const filtereSkins = (q = '') =>
-    minifiedSkinsArray.value
-      .filter(s => s.key.toLowerCase().includes(q.toLowerCase()))
-      .sort((a, b) => b.spacesCount - a.spacesCount);
+  const filterSkins = (q = '') =>
+    Object.keys(skins)
+      .filter(s => s.toLowerCase().includes(q.toLowerCase()))
+      .sort(
+        (a, b) =>
+          (skinsSpacesCount.value[b] ?? 0) - (skinsSpacesCount.value[a] ?? 0)
+      );
 
   const { apolloQuery } = useApolloQuery();
 
@@ -43,10 +39,11 @@ export function useSkins() {
 
     loading.value = false;
   }
+
   return {
-    minifiedSkinsArray,
-    filtereSkins,
+    filterSkins,
     getSkinsSpacesCount,
+    skinsSpacesCount,
     loadingSkins: loading
   };
 }
