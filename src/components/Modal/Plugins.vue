@@ -1,6 +1,6 @@
 <script setup>
 import { ref, watch, toRefs } from 'vue';
-import { usePlugins } from '@/composables/usePlugins';
+import { usePluginsFilter } from '@/composables/usePluginsFilter';
 
 const props = defineProps({ open: Boolean, plugin: Object });
 const emit = defineEmits(['add', 'close']);
@@ -11,12 +11,8 @@ const input = ref({});
 const isValid = ref(true);
 const selectedPlugin = ref({});
 
-const {
-  filterePlugins,
-  minifiedPluginsArray,
-  loadingPlugins,
-  getPluginsSpacesCount
-} = usePlugins();
+const { filterPlugins, pluginsArray, loadingPlugins, getPluginsSpacesCount } =
+  usePluginsFilter();
 
 function handleSubmit() {
   const key = selectedPlugin.value.key;
@@ -34,9 +30,7 @@ watch(open, () => {
   if (Object.keys(props.plugin).length > 0) {
     const key = Object.keys(props.plugin)[0];
     input.value = props.plugin[key];
-    selectedPlugin.value = minifiedPluginsArray.value.find(obj => {
-      return obj.key === key;
-    });
+    selectedPlugin.value = pluginsArray.value.find(p => p.key === key);
   } else {
     input.value = {};
     selectedPlugin.value = {};
@@ -92,14 +86,14 @@ watch(open, () => {
         <RowLoadingBlock v-if="loadingPlugins" />
         <div v-else>
           <a
-            v-for="(plugin, i) in filterePlugins(searchInput)"
+            v-for="(plugin, i) in filterPlugins(searchInput)"
             :key="i"
             @click="selectPlugin(plugin)"
           >
             <BlockPlugin :plugin="plugin" />
           </a>
           <NoResults
-            v-if="Object.keys(filterePlugins(searchInput)).length < 1"
+            v-if="Object.keys(filterPlugins(searchInput)).length < 1"
           />
         </div>
       </div>

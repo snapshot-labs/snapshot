@@ -1,6 +1,6 @@
 /**
- * Get list of plugins and order them by popularity
- * Filter list of plugins by a search string
+ * Orders plugins by spaces count and returns a list of plugins
+ * filtered by the search string (case insensitive).
  */
 
 import { computed, ref } from 'vue';
@@ -10,24 +10,27 @@ import plugins from '@/../snapshot-plugins/src/plugins';
 
 const pluginsSpacesCount: any = ref(null);
 
-export function usePlugins() {
+export function usePluginsFilter() {
   const loading = ref(false);
 
-  const minifiedPluginsArray = computed(() =>
+  const pluginsArray = computed(() =>
     Object.entries(plugins).map(([key, pluginClass]: any) => {
       const plugin = new pluginClass();
       plugin.key = key;
-      plugin.spacesCount = pluginsSpacesCount.value?.[key] ?? 0;
       return plugin;
     })
   );
 
-  const filterePlugins = (q = '') =>
-    minifiedPluginsArray.value
+  const filterPlugins = (q = '') =>
+    pluginsArray.value
       .filter(plugin =>
         JSON.stringify(plugin).toLowerCase().includes(q.toLowerCase())
       )
-      .sort((a, b) => b.spacesCount - a.spacesCount);
+      .sort(
+        (a, b) =>
+          (pluginsSpacesCount.value?.[b.key] ?? 0) -
+          (pluginsSpacesCount.value?.[a.key] ?? 0)
+      );
 
   const { apolloQuery } = useApolloQuery();
 
@@ -48,9 +51,10 @@ export function usePlugins() {
     return;
   }
   return {
-    minifiedPluginsArray,
-    filterePlugins,
+    pluginsArray,
+    filterPlugins,
     getPluginsSpacesCount,
+    pluginsSpacesCount,
     loadingPlugins: loading
   };
 }

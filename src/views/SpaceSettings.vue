@@ -15,7 +15,7 @@ import { useWeb3 } from '@/composables/useWeb3';
 import { calcFromSeconds, calcToSeconds } from '@/helpers/utils';
 import { useClient } from '@/composables/useClient';
 import { setPageTitle } from '@/helpers/utils';
-import { usePlugins } from '@/composables/usePlugins';
+import { usePluginsFilter } from '@/composables/usePluginsFilter';
 
 const props = defineProps({
   spaceId: String,
@@ -111,12 +111,10 @@ const categoriesString = computed(() => {
   return form.value.categories ? form.value.categories.join(', ') : '';
 });
 
-const { minifiedPluginsArray } = usePlugins();
+const { pluginsArray } = usePluginsFilter();
 
 function pluginName(key) {
-  const plugin = minifiedPluginsArray.value.find(obj => {
-    return obj.key === key;
-  });
+  const plugin = pluginsArray.value.find(p => p.key === key);
   return plugin?.name;
 }
 

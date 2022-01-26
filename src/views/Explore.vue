@@ -7,7 +7,7 @@ import { useScrollMonitor } from '@/composables/useScrollMonitor';
 import { setPageTitle } from '@/helpers/utils';
 import { useIntl } from '@/composables/useIntl';
 import { useNetworks } from '@/composables/useNetworks';
-import { usePlugins } from '@/composables/usePlugins';
+import { usePluginsFilter } from '@/composables/usePluginsFilter';
 
 const { t } = useI18n();
 const { formatCompactNumber } = useIntl();
@@ -32,7 +32,8 @@ const { filteredStrategies } = useSearchFilters();
 const { filterNetworks, getNetworksSpacesCount, loadingNetworks } =
   useNetworks();
 
-const { filterPlugins, getPluginsSpacesCount, loadingPlugins } = usePlugins();
+const { filterPlugins, getPluginsSpacesCount, loadingPlugins } =
+  usePluginsFilter();
 
 const items = computed(() => {
   const q = route.query.q || '';
