@@ -51,7 +51,7 @@
   "confirmRemove": "کیا آپ واقعی اپنے وفد کو ہٹانا چاہتے ہیں",
   "removeSpace": "جگاہو کیے{0}",
   "confirmVote": "ووٹ کی تصدیق کریں",
-  "sureToVote": "کیا آپ واقعی \"{0}\" کو ووٹ دینا چاہتے ہیں?",
+  "sureToVote": "Are you sure you want to cast this vote?",
   "cannotBeUndone": "اس کارروائی کو کالعدم نہیں کیا جاسکتا۔.",
   "options": "اختیارات",
   "votingPower": "آپ کی ووٹنگ کی طاقت",
