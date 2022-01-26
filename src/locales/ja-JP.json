@@ -51,7 +51,7 @@
   "confirmRemove": "投票権の委任を削除してもよろしいですか？",
   "removeSpace": "スペース {0}",
   "confirmVote": "投票内容の確認",
-  "sureToVote": "本当に \"{0}\"　に投票しますか？",
+  "sureToVote": "Are you sure you want to cast this vote?",
   "cannotBeUndone": "この操作は取り消すことができません",
   "options": "Option(s)",
   "votingPower": "あなたの投票力",
