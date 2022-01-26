@@ -51,7 +51,7 @@
   "confirmRemove": "काय तुम्ही डेलिगेशन काढण्या बद्धल निश्चित आहे",
   "removeSpace": "जागा साठी{0}",
   "confirmVote": "मत कन्फर्म करा",
-  "sureToVote": "आपणास खात्री आहे की आपण \"{0}\" मतदान करू इच्छिता?",
+  "sureToVote": "Are you sure you want to cast this vote?",
   "cannotBeUndone": "ही कृती रद्द करता येणार नाही.",
   "options": "पर्याय",
   "votingPower": "आपली मतदानाची शक्ती",
