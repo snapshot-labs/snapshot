@@ -54,22 +54,19 @@ watch(selectedChoices.value, currentValue => {
   <div class="mb-3">
     <div v-for="(choice, i) in proposal.choices" :key="i">
       <UiButton
-        class="block w-full mb-2"
+        class="mb-2 flex justify-between items-center w-full overflow-hidden"
         :class="selectedChoices[i + 1] > 0 && 'button--active'"
       >
         <div
-          class="inline-block w-7/12 sm:w-8/12 float-left text-left pr-3"
+          class="text-left pr-3 truncated"
           v-tippy="{
-            content: choice
+            content: choice.length > 20 && isSmallScreen ? choice : null
           }"
         >
-          <span class="truncated w-full">
-            {{ choice }}
-          </span>
+          {{ choice }}
         </div>
-        <div class="w-4/12 flex items-center justify-end float-right">
+        <div class="flex items-center justify-end">
           <button
-            v-if="!isSmallScreen"
             :disabled="!selectedChoices[i + 1]"
             class="btn-choice"
             @click="removeVote(i + 1)"
@@ -77,6 +74,7 @@ watch(selectedChoices.value, currentValue => {
             -
           </button>
           <input
+            v-if="!isSmallScreen"
             class="input text-center"
             :class="{ 'btn-choice': isSmallScreen }"
             style="width: 40px; height: 44px"
@@ -84,14 +82,15 @@ watch(selectedChoices.value, currentValue => {
             type="number"
             v-model.number="selectedChoices[i + 1]"
           />
-          <button
+          <div v-if="isSmallScreen" style="min-width: 56px">
+            {{ percentage(i) }}%
+          </div>
+          <button class="btn-choice" @click="addVote(i + 1)">+</button>
+          <div
             v-if="!isSmallScreen"
-            class="btn-choice"
-            @click="addVote(i + 1)"
+            style="min-width: 52px; margin-right: -5px"
+            class="text-right"
           >
-            +
-          </button>
-          <div style="min-width: 52px; margin-right: -5px" class="text-right">
             {{ percentage(i) }}%
           </div>
         </div>

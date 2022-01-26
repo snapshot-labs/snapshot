@@ -1,12 +1,11 @@
 <script>
-import Plugin from '@/../snapshot-plugins/src/plugins/safeSnap';
-import { isBigNumberish } from '@ethersproject/bignumber/lib/bignumber';
-import { isAddress } from '@ethersproject/address';
-import {
+import Plugin, {
   getERC20TokenTransferTransactionData,
   getNativeAsset,
   transferFundsToModuleTransaction
-} from '@/helpers/abi/utils';
+} from '@/../snapshot-plugins/src/plugins/safeSnap';
+import { isBigNumberish } from '@ethersproject/bignumber/lib/bignumber';
+import { isAddress } from '@ethersproject/address';
 
 export default {
   props: ['modelValue', 'nonce', 'config'],
