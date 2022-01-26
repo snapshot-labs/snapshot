@@ -4,10 +4,9 @@ import { useSafesnap } from '@/composables/useSafesnap';
 import chevronIcon from '@/assets/icons/chevron.svg';
 import {
   createBatch,
-  ERC20ContractABI,
-  ERC721ContractABI,
-  removeHexPrefix
-} from '@/helpers/abi/utils';
+  ERC20_ABI,
+  ERC721_ABI
+} from '@/../snapshot-plugins/src/plugins/safeSnap';
 import { formatEther } from '@ethersproject/units';
 import { FunctionFragment, Interface } from '@ethersproject/abi';
 
@@ -16,7 +15,7 @@ export default {
   emits: ['update:modelValue', 'remove'],
   setup() {
     const { safesnap } = useSafesnap();
-    return { safesnap, removeHexPrefix };
+    return { safesnap };
   },
   data() {
     return {
@@ -39,6 +38,7 @@ export default {
       this.transactions.push(undefined);
     },
     updateTransaction(index, transaction) {
+      if (this.config.preview) return;
       this.transactions[index] = transaction;
       this.updateBatch(this.transactions);
     },
@@ -55,7 +55,13 @@ export default {
     },
     createBatch(nonce, txs) {
       const chainId = parseInt(this.config.network);
-      return createBatch(this.config.realityAddress, chainId, nonce, txs);
+      return createBatch(
+        this.config.realityAddress,
+        chainId,
+        nonce,
+        txs,
+        this.config.multiSendAddress
+      );
     },
     formatBatchJson(txs) {
       const valid = txs.every(tx => tx);
@@ -73,10 +79,10 @@ export default {
         if (tx.data.length > 2) {
           switch (tx.type) {
             case 'transferFunds':
-              abi = ERC20ContractABI;
+              abi = ERC20_ABI;
               break;
             case 'transferNFT':
-              abi = ERC721ContractABI;
+              abi = ERC721_ABI;
               break;
             default:
               base.data = tx.data;
@@ -85,8 +91,12 @@ export default {
         }
 
         if (abi) {
+          const signHash = tx.data.substr(0, 10);
           const contractInterface = new Interface(abi);
-          const func = FunctionFragment.from(contractInterface.fragments[0]);
+          const functionFragment = contractInterface.fragments
+            .filter(frag => FunctionFragment.isFunctionFragment(frag))
+            .find(frag => contractInterface.getSighash(frag) === signHash);
+          const func = FunctionFragment.from(functionFragment);
           const params = contractInterface.decodeFunctionData(func, tx.data);
           return {
             ...base,

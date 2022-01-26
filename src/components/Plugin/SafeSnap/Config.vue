@@ -1,19 +1,10 @@
 <script>
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
-import { validateSafeData, getSafeHash } from '@/helpers/abi/utils';
-
-const isValidInput = input => {
-  return input.safes.every(validateSafeData);
-};
-
-const coerceConfig = (config, network) => {
-  if (config.safes) return config;
-
-  // map legacy config to new format
-  return {
-    safes: [{ network, realityAddress: config.address }]
-  };
-};
+import {
+  coerceConfig,
+  isValidInput,
+  getSafeHash
+} from '@/../snapshot-plugins/src/plugins/safeSnap';
 
 export default {
   props: [
@@ -34,7 +25,9 @@ export default {
       valid: true
     };
     return {
-      input: this.modelValue ? clone(this.modelValue) : initialValue
+      input: this.modelValue
+        ? coerceConfig(clone(this.modelValue), this.network)
+        : initialValue
     };
   },
   methods: {
@@ -73,6 +66,7 @@ export default {
           :hash="safe.hash"
           :network="safe.network"
           :realityAddress="safe.realityAddress"
+          :multiSendAddress="safe.multiSendAddress"
           :modelValue="safe.txs"
           @update:modelValue="updateSafeTransactions(index, $event)"
         />

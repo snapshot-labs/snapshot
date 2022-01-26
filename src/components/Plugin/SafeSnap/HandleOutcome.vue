@@ -153,12 +153,13 @@
 </template>
 
 <script>
-import Plugin from '@/../snapshot-plugins/src/plugins/safeSnap';
+import Plugin, {
+  formatBatchTransaction
+} from '@/../snapshot-plugins/src/plugins/safeSnap';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { sleep } from '@snapshot-labs/snapshot.js/src/utils';
 import { BigNumber } from '@ethersproject/bignumber';
-import { formatBatchTransaction } from '@/helpers/abi/utils';
 import { formatUnits } from '@ethersproject/units';
 import { useSafesnap } from '@/composables/useSafesnap';
 import { useWeb3 } from '@/composables/useWeb3';
@@ -241,7 +242,13 @@ const ensureRightNetwork = async chainId => {
 };
 
 export default {
-  props: ['batches', 'proposalId', 'network', 'realityAddress'],
+  props: [
+    'batches',
+    'proposalId',
+    'network',
+    'realityAddress',
+    'multiSendAddress'
+  ],
   data() {
     return {
       loading: true,
@@ -261,7 +268,7 @@ export default {
   },
   methods: {
     async updateDetails() {
-      if (!this.realityAddress) return;
+      if (!this.realityAddress || !this.multiSendAddress) return;
       this.loading = true;
       try {
         this.questionDetails = await plugin.getExecutionDetails(
@@ -269,7 +276,11 @@ export default {
           this.realityAddress,
           this.proposalId,
           this.batches.map((batch, nonce) =>
-            formatBatchTransaction(batch.transactions, nonce)
+            formatBatchTransaction(
+              batch.transactions,
+              nonce,
+              this.multiSendAddress
+            )
           )
         );
         if (this.questionDetails.questionId && this.$auth.web3) {
@@ -397,6 +408,8 @@ export default {
         await executingProposal.next();
         notify(this.$i18n.t('notify.youDidIt'));
         pendingCount.value--;
+        await sleep(3e3);
+        await this.updateDetails();
       } catch (err) {
         pendingCount.value--;
         this.action2InProgress = null;
