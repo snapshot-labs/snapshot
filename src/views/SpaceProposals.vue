@@ -64,6 +64,8 @@ function emitUpdateLastSeenProposal() {
   updateLastSeenProposal(web3Account.value);
 }
 
+watch(web3Account, () => emitUpdateLastSeenProposal());
+
 async function load() {
   if (store.space.proposals.length > 0) return;
   loading.value = true;
@@ -73,7 +75,7 @@ async function load() {
 }
 
 watch(
-  props.spaceId,
+  () => props.spaceId,
   () => {
     const firstProposal = store.space.proposals[0];
     if (firstProposal && firstProposal?.space.id !== props.spaceId) {
@@ -134,11 +136,31 @@ watchEffect(() => {
           right="1.25rem"
           @select="selectState"
           :items="[
-            { text: $t('proposals.states.all'), action: 'all' },
-            { text: $t('proposals.states.active'), action: 'active' },
-            { text: $t('proposals.states.pending'), action: 'pending' },
-            { text: $t('proposals.states.closed'), action: 'closed' },
-            { text: $t('proposals.states.core'), action: 'core' }
+            {
+              text: $t('proposals.states.all'),
+              action: 'all',
+              selected: spaceFilterBy === 'all'
+            },
+            {
+              text: $t('proposals.states.active'),
+              action: 'active',
+              selected: spaceFilterBy === 'active'
+            },
+            {
+              text: $t('proposals.states.pending'),
+              action: 'pending',
+              selected: spaceFilterBy === 'pending'
+            },
+            {
+              text: $t('proposals.states.closed'),
+              action: 'closed',
+              selected: spaceFilterBy === 'closed'
+            },
+            {
+              text: $t('proposals.states.core'),
+              action: 'core',
+              selected: spaceFilterBy === 'core'
+            }
           ]"
         >
           <UiButton class="pr-3">
