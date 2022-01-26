@@ -51,7 +51,7 @@
   "confirmRemove": "Вы уверены, что хотите отозвать делегированные полномочия",
   "removeSpace": "для раздела {0}",
   "confirmVote": "Подтвердить волеизъявление",
-  "sureToVote": "Вы уверены, что хотите проголосовать за \"{0}\"?",
+  "sureToVote": "Are you sure you want to cast this vote?",
   "cannotBeUndone": "Это действие нельзя будет отменить.",
   "options": "Параметр(ы)",
   "votingPower": "Ваша сила голоса",
