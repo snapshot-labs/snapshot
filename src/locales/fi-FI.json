@@ -51,7 +51,7 @@
   "confirmRemove": "Haluatko poistaa tämän valtuuskunnan",
   "removeSpace": "välilyönnille {0}",
   "confirmVote": "Vahvista äänestys",
-  "sureToVote": "Haluatko varmasti äänestää \"{0}\" puolesta?",
+  "sureToVote": "Are you sure you want to cast this vote?",
   "cannotBeUndone": "Tätä toimintoa ei voi kumota.",
   "options": "Vaihtoehtoja",
   "votingPower": "Sinun äänioikeutesi",
