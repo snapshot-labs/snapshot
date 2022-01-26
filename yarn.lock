@@ -959,7 +959,7 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@popperjs/core@^2.11.2", "@popperjs/core@^2.8.3":
+"@popperjs/core@^2.11.2", "@popperjs/core@^2.9.0":
   version "2.11.2"
   resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.11.2.tgz#830beaec4b4091a9e9398ac50f865ddea52186b9"
   integrity sha512-92FRmppjjqz29VMJ2dn+xdyXZBrMlE42AV6Kq6BwjWV7CNUW1hs2FtxSNLQE+gJhaZ6AAmYuO9y8dshhcBl7vA==
@@ -6135,12 +6135,12 @@ through2@^2.0.3:
     readable-stream "~2.3.6"
     xtend "~4.0.1"
 
-tippy.js@^6.3.1:
-  version "6.3.1"
-  resolved "https://registry.yarnpkg.com/tippy.js/-/tippy.js-6.3.1.tgz#3788a007be7015eee0fd589a66b98fb3f8f10181"
-  integrity sha512-JnFncCq+rF1dTURupoJ4yPie5Cof978inW6/4S6kmWV7LL9YOSEVMifED3KdrVPEG+Z/TFH2CDNJcQEfaeuQww==
+tippy.js@^6.3.7:
+  version "6.3.7"
+  resolved "https://registry.yarnpkg.com/tippy.js/-/tippy.js-6.3.7.tgz#8ccfb651d642010ed9a32ff29b0e9e19c5b8c61c"
+  integrity sha512-E1d3oP2emgJ9dRQZdf3Kkn0qJgI6ZLpyS5z6ZkY1DF3kaQaBsGZsndEpHwx+eC+tYM41HaSNvNtLx8tU57FzTQ==
   dependencies:
-    "@popperjs/core" "^2.8.3"
+    "@popperjs/core" "^2.9.0"
 
 tmp@^0.0.33:
   version "0.0.33"
@@ -6451,12 +6451,12 @@ vue-router@^4.0.9:
   dependencies:
     "@vue/devtools-api" "^6.0.0-beta.14"
 
-vue-tippy@^6.0.0-alpha.39:
-  version "6.0.0-alpha.39"
-  resolved "https://registry.yarnpkg.com/vue-tippy/-/vue-tippy-6.0.0-alpha.39.tgz#50b2cd4de745fd06cad3e41e087e1fe52509a3f2"
-  integrity sha512-o8QaoJ8+HRWNw//8mQuZlqSHCZ9jPis9Exl9EHVGRN0GV7SEazJZ5mW1CmYEBlH88/DPampPVwY6WlwCJ+G6iQ==
+vue-tippy@^6.0.0-alpha.44:
+  version "6.0.0-alpha.44"
+  resolved "https://registry.yarnpkg.com/vue-tippy/-/vue-tippy-6.0.0-alpha.44.tgz#1232a0f423232f36f9cda13b759f57e0cfb01363"
+  integrity sha512-qOa/LSRkwyepArQipHybZ2TD77gfADA5z88PhRv3nTQZ/0O86fsTmzxaAFfE2ePDA2uyhPqhWWvkiVoxGgysNQ==
   dependencies:
-    tippy.js "^6.3.1"
+    tippy.js "^6.3.7"
 
 vue@^3.2.29:
   version "3.2.29"
