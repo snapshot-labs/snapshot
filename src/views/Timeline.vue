@@ -87,11 +87,18 @@ function emitUpdateLastSeenProposal() {
   updateLastSeenProposal(web3Account.value);
 }
 
+watch(
+  [web3Account, followingSpaces],
+  () => {
+    emitUpdateLastSeenProposal();
+  },
+  { immediate: true }
+);
+
 // Initialize
 onMounted(() => {
   load();
   setPageTitle('page.title.timeline');
-  emitUpdateLastSeenProposal();
 });
 
 async function load() {
@@ -101,6 +108,8 @@ async function load() {
   await loadProposals();
   loading.value = false;
 }
+
+const timelineFilterBy = computed(() => store.timeline.filterBy);
 
 // Change filter
 function selectState(e) {
@@ -138,10 +147,26 @@ function selectState(e) {
           right="1.25rem"
           @select="selectState"
           :items="[
-            { text: $t('proposals.states.all'), action: 'all' },
-            { text: $t('proposals.states.active'), action: 'active' },
-            { text: $t('proposals.states.pending'), action: 'pending' },
-            { text: $t('proposals.states.closed'), action: 'closed' }
+            {
+              text: $t('proposals.states.all'),
+              action: 'all',
+              selected: timelineFilterBy === 'all'
+            },
+            {
+              text: $t('proposals.states.active'),
+              action: 'active',
+              selected: timelineFilterBy === 'active'
+            },
+            {
+              text: $t('proposals.states.pending'),
+              action: 'pending',
+              selected: timelineFilterBy === 'pending'
+            },
+            {
+              text: $t('proposals.states.closed'),
+              action: 'closed',
+              selected: timelineFilterBy === 'closed'
+            }
           ]"
         >
           <UiButton class="pr-3">
