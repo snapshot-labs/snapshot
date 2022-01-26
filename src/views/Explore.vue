@@ -1,11 +1,12 @@
 <script setup>
-import { computed, ref, onMounted } from 'vue';
+import { computed, ref, onMounted, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 import { useSearchFilters } from '@/composables/useSearchFilters';
 import { useScrollMonitor } from '@/composables/useScrollMonitor';
 import { setPageTitle } from '@/helpers/utils';
 import { useIntl } from '@/composables/useIntl';
+import { useNetworks } from '@/composables/useNetworks';
 
 const { t } = useI18n();
 const { formatCompactNumber } = useIntl();
@@ -25,16 +26,26 @@ const resultsStr = computed(() => {
   return t('explore.results');
 });
 
-const { filteredStrategies, filteredNetworks, filteredPlugins } =
-  useSearchFilters();
+const { filteredStrategies, filteredPlugins } = useSearchFilters();
+
+const { filterNetworks, getNetworksSpacesCount, loadingNetworks } =
+  useNetworks();
 
 const items = computed(() => {
   const q = route.query.q || '';
   if (route.name === 'strategies') return filteredStrategies(q);
-  if (route.name === 'networks') return filteredNetworks(q);
+  if (route.name === 'networks') return filterNetworks(q);
   if (route.name === 'plugins') return filteredPlugins(q);
   return [];
 });
+
+watch(
+  route.name,
+  () => {
+    if (route.name === 'networks') getNetworksSpacesCount();
+  },
+  { immediate: true }
+);
 
 const loadBy = 8;
 const limit = ref(loadBy);
@@ -78,11 +89,14 @@ onMounted(() => {
           </template>
         </template>
         <template v-if="route.name === 'networks'">
-          <template v-for="item in items.slice(0, limit)" :key="item.key">
-            <router-link :to="`/?network=${item.key}`">
-              <BlockNetwork :network="item" class="mb-3" />
-            </router-link>
-          </template>
+          <RowLoadingBlock v-if="loadingNetworks" />
+          <div v-else>
+            <template v-for="item in items.slice(0, limit)" :key="item.key">
+              <router-link :to="`/?network=${item.key}`">
+                <BlockNetwork :network="item" class="mb-3" />
+              </router-link>
+            </template>
+          </div>
         </template>
         <template v-if="route.name === 'plugins'">
           <BlockPlugin

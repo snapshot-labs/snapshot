@@ -1,9 +1,9 @@
 <script setup>
-import { ref, computed } from 'vue';
-import { useSearchFilters } from '@/composables/useSearchFilters';
+import { ref, computed, watch } from 'vue';
 import { useUserSkin } from '@/composables/useUserSkin';
+import { useSkins } from '@/composables/useSkins';
 
-defineProps({
+const props = defineProps({
   open: {
     type: Boolean,
     required: true
@@ -13,8 +13,15 @@ defineProps({
 const emit = defineEmits(['close', 'update:modelValue']);
 
 const searchInput = ref('');
-const { filteredSkins } = useSearchFilters();
-const skins = computed(() => filteredSkins(searchInput.value));
+const { filterSkins, getSkinsSpacesCount, loadingSkins } = useSkins();
+const filteredSkins = computed(() => filterSkins(searchInput.value));
+
+watch(
+  () => props.open,
+  () => {
+    if (props.open) getSkinsSpacesCount();
+  }
+);
 
 function select(key) {
   emit('update:modelValue', key);
@@ -34,18 +41,21 @@ const { userSkin } = useUserSkin();
       :placeholder="$t('searchPlaceholder')"
       :modal="true"
     />
-    <div class="mt-4 mx-0 md:mx-4">
-      <a v-if="!searchInput" key="" @click="select(undefined)">
-        <div :class="userSkin" class="bg-black rounded-none md:rounded-md">
-          <Block>
-            <UiButton class="mb-2" primary>{{ $t('defaultSkin') }}</UiButton>
-          </Block>
-        </div>
-      </a>
-      <a v-for="skin in skins" :key="skin.key" @click="select(skin.key)">
-        <BlockSkin :skin="skin" />
-      </a>
-      <NoResults v-if="Object.keys(skins).length < 1" />
+    <div class="mt-4 mx-0 md:mx-4 min-h-[339px]">
+      <RowLoadingBlock v-if="loadingSkins" />
+      <div v-else>
+        <a v-if="!searchInput" key="" @click="select(undefined)">
+          <div :class="userSkin" class="bg-black rounded-none md:rounded-md">
+            <Block>
+              <UiButton class="mb-2" primary>{{ $t('defaultSkin') }}</UiButton>
+            </Block>
+          </div>
+        </a>
+        <a v-for="skin in filteredSkins" :key="skin" @click="select(skin)">
+          <BlockSkin :skin="skin" />
+        </a>
+        <NoResults v-if="Object.keys(filteredSkins).length < 1" />
+      </div>
     </div>
   </UiModal>
 </template>
