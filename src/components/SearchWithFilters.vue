@@ -55,7 +55,7 @@ function redirectSearch(e) {
     <div class="border-l flex items-center" style="height: 44px">
       <UiDropdown
         top="3.5rem"
-        right="1.0rem"
+        right="0.8rem"
         class="text-left"
         style="z-index: 1"
         @select="redirectSearch"

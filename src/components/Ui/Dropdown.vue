@@ -37,9 +37,9 @@ onBeforeUnmount(() => window.removeEventListener('click', close));
   <div
     ref="dropdownEl"
     @click.capture="hideDropdown ? $emit('clickedNoDropdown') : (open = !open)"
-    class="relative"
+    class="relative h-full"
   >
-    <div class="button">
+    <div class="button flex items-center h-full">
       <slot />
     </div>
     <div class="sub-menu-wrapper" :class="{ hidden: !open }" :style="cssVars">
