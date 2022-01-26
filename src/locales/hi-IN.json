@@ -51,7 +51,7 @@
   "confirmRemove": "क्या आप वाकई अपना डेलिगेशन हटाना चाहते हैं?",
   "removeSpace": "अंतर के लिए {0}",
   "confirmVote": "वोट की पुष्टी करें",
-  "sureToVote": "क्या आप वाकई अपना वोट {0} को देना चाहते है?",
+  "sureToVote": "Are you sure you want to cast this vote?",
   "cannotBeUndone": "इस क्रिया को पूर्ववत नहीं किया जा सकता है।",
   "options": "विकल्प",
   "votingPower": "आपकी वोटिंग पावर:",
