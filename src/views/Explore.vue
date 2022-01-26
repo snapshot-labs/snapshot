@@ -6,7 +6,7 @@ import { useSearchFilters } from '@/composables/useSearchFilters';
 import { useScrollMonitor } from '@/composables/useScrollMonitor';
 import { setPageTitle } from '@/helpers/utils';
 import { useIntl } from '@/composables/useIntl';
-import { useNetworks } from '@/composables/useNetworks';
+import { useNetworksFilter } from '@/composables/useNetworksFilter';
 import { usePluginsFilter } from '@/composables/usePluginsFilter';
 
 const { t } = useI18n();
@@ -30,7 +30,7 @@ const resultsStr = computed(() => {
 const { filteredStrategies } = useSearchFilters();
 
 const { filterNetworks, getNetworksSpacesCount, loadingNetworks } =
-  useNetworks();
+  useNetworksFilter();
 
 const { filterPlugins, getPluginsSpacesCount, loadingPlugins } =
   usePluginsFilter();
