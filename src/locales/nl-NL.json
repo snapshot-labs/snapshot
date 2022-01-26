@@ -51,7 +51,7 @@
   "confirmRemove": "Weet u zeker dat u uw delegatie wilt verwijderen naar",
   "removeSpace": "voor ruimte {0}",
   "confirmVote": "Bevestig de stem",
-  "sureToVote": "Weet u zeker dat u \"{0}\" wilt stemmen?",
+  "sureToVote": "Are you sure you want to cast this vote?",
   "cannotBeUndone": "Deze actie is definitief.",
   "options": "Optie(s)",
   "votingPower": "Uw kracht om stemmen",
