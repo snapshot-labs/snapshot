@@ -51,7 +51,7 @@
   "confirmRemove": "Apakah anda yakin untuk menghapus delegasi",
   "removeSpace": "untuk ruang {0}",
   "confirmVote": "Konfirmasi suara",
-  "sureToVote": "Apakah anda yakin ingin memilih \"{0}\"?",
+  "sureToVote": "Are you sure you want to cast this vote?",
   "cannotBeUndone": "Tindakan ini tidak bisa dibatalkan.",
   "options": "Pilihan",
   "votingPower": "Kekuatan voting anda",
