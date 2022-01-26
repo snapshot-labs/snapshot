@@ -51,7 +51,7 @@
   "confirmRemove": "Czy na pewno chcesz usunąć przekazanie do",
   "removeSpace": "za sekcje {0}",
   "confirmVote": "Potwierdź głos",
-  "sureToVote": "Czy na pewno chcesz zagłosować \"{0}\"?",
+  "sureToVote": "Are you sure you want to cast this vote?",
   "cannotBeUndone": "Ta operacja nie może być cofnięta.",
   "options": "Option(s)",
   "votingPower": "Siła Twojego głosu",
