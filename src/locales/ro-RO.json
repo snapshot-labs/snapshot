@@ -51,7 +51,7 @@
   "confirmRemove": "Ești sigur că vrei să elimini delegația către",
   "removeSpace": "pentru spațiul {0}",
   "confirmVote": "Confirmă votul",
-  "sureToVote": "Ești sigur că vrei să votezi \"{0}\"?",
+  "sureToVote": "Are you sure you want to cast this vote?",
   "cannotBeUndone": "Această acțiune nu poate fi refăcută.",
   "options": "Opțiunea(i)",
   "votingPower": "Puterea ta de vot",
