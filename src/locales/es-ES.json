@@ -51,7 +51,7 @@
   "confirmRemove": "¿Está seguro de que desea eliminar su delegación a",
   "removeSpace": "para el espacio {0}",
   "confirmVote": "Confirmar voto",
-  "sureToVote": "¿Está seguro que desea votar \"{0}\"?",
+  "sureToVote": "Are you sure you want to cast this vote?",
   "cannotBeUndone": "Esta acción no se puede deshacer posteriormente.",
   "options": "Opción(es)",
   "votingPower": "Tu poder de voto",
