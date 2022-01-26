@@ -109,6 +109,8 @@ async function load() {
   loading.value = false;
 }
 
+const timelineFilterBy = computed(() => store.timeline.filterBy);
+
 // Change filter
 function selectState(e) {
   store.timeline.filterBy = e;
@@ -145,10 +147,26 @@ function selectState(e) {
           right="1.25rem"
           @select="selectState"
           :items="[
-            { text: $t('proposals.states.all'), action: 'all' },
-            { text: $t('proposals.states.active'), action: 'active' },
-            { text: $t('proposals.states.pending'), action: 'pending' },
-            { text: $t('proposals.states.closed'), action: 'closed' }
+            {
+              text: $t('proposals.states.all'),
+              action: 'all',
+              selected: timelineFilterBy === 'all'
+            },
+            {
+              text: $t('proposals.states.active'),
+              action: 'active',
+              selected: timelineFilterBy === 'active'
+            },
+            {
+              text: $t('proposals.states.pending'),
+              action: 'pending',
+              selected: timelineFilterBy === 'pending'
+            },
+            {
+              text: $t('proposals.states.closed'),
+              action: 'closed',
+              selected: timelineFilterBy === 'closed'
+            }
           ]"
         >
           <UiButton class="pr-3">
