@@ -231,3 +231,21 @@ export const NETWORKS_COUNT_QUERY = gql`
     }
   }
 `;
+
+export const PLUGINS_COUNT_QUERY = gql`
+  query Plugins {
+    plugins {
+      id
+      spacesCount
+    }
+  }
+`;
+
+export const VALIDATIONS_COUNT_QUERY = gql`
+  query Validations {
+    validations {
+      id
+      spacesCount
+    }
+  }
+`;

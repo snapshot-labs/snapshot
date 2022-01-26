@@ -1,8 +1,8 @@
 <script setup>
 import { useIntl } from '@/composables/useIntl';
-import { useSkins } from '@/composables/useSkins';
+import { useSkinsFilter } from '@/composables/useSkinsFilter';
 
-const { skinsSpacesCount } = useSkins();
+const { skinsSpacesCount } = useSkinsFilter();
 
 const { formatCompactNumber } = useIntl();
 

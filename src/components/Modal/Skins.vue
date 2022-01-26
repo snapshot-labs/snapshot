@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed, watch } from 'vue';
 import { useUserSkin } from '@/composables/useUserSkin';
-import { useSkins } from '@/composables/useSkins';
+import { useSkinsFilter } from '@/composables/useSkinsFilter';
 
 const props = defineProps({
   open: {
@@ -13,7 +13,7 @@ const props = defineProps({
 const emit = defineEmits(['close', 'update:modelValue']);
 
 const searchInput = ref('');
-const { filterSkins, getSkinsSpacesCount, loadingSkins } = useSkins();
+const { filterSkins, getSkinsSpacesCount, loadingSkins } = useSkinsFilter();
 const filteredSkins = computed(() => filterSkins(searchInput.value));
 
 watch(

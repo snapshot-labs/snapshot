@@ -6,7 +6,8 @@ import { useSearchFilters } from '@/composables/useSearchFilters';
 import { useScrollMonitor } from '@/composables/useScrollMonitor';
 import { setPageTitle } from '@/helpers/utils';
 import { useIntl } from '@/composables/useIntl';
-import { useNetworks } from '@/composables/useNetworks';
+import { useNetworksFilter } from '@/composables/useNetworksFilter';
+import { usePluginsFilter } from '@/composables/usePluginsFilter';
 
 const { t } = useI18n();
 const { formatCompactNumber } = useIntl();
@@ -26,16 +27,19 @@ const resultsStr = computed(() => {
   return t('explore.results');
 });
 
-const { filteredStrategies, filteredPlugins } = useSearchFilters();
+const { filteredStrategies } = useSearchFilters();
 
 const { filterNetworks, getNetworksSpacesCount, loadingNetworks } =
-  useNetworks();
+  useNetworksFilter();
+
+const { filterPlugins, getPluginsSpacesCount, loadingPlugins } =
+  usePluginsFilter();
 
 const items = computed(() => {
   const q = route.query.q || '';
   if (route.name === 'strategies') return filteredStrategies(q);
   if (route.name === 'networks') return filterNetworks(q);
-  if (route.name === 'plugins') return filteredPlugins(q);
+  if (route.name === 'plugins') return filterPlugins(q);
   return [];
 });
 
@@ -43,6 +47,7 @@ watch(
   () => route.name,
   () => {
     if (route.name === 'networks') getNetworksSpacesCount();
+    if (route.name === 'plugins') getPluginsSpacesCount();
   },
   { immediate: true }
 );
@@ -99,12 +104,15 @@ onMounted(() => {
           </div>
         </template>
         <template v-if="route.name === 'plugins'">
-          <BlockPlugin
-            v-for="item in items.slice(0, limit)"
-            :key="item.key"
-            :plugin="item"
-            class="mb-3"
-          />
+          <RowLoadingBlock v-if="loadingPlugins" />
+          <div v-else>
+            <BlockPlugin
+              v-for="item in items.slice(0, limit)"
+              :key="item.key"
+              :plugin="item"
+              class="mb-3"
+            />
+          </div>
         </template>
         <NoResults :block="true" v-if="Object.keys(items).length < 1" />
       </div>

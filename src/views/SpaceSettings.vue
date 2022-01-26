@@ -9,13 +9,13 @@ import {
 } from '@snapshot-labs/snapshot.js/src/utils';
 import schemas from '@snapshot-labs/snapshot.js/src/schemas';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
-import { useSearchFilters } from '@/composables/useSearchFilters';
 import defaults from '@/locales/default';
 import { useCopy } from '@/composables/useCopy';
 import { useWeb3 } from '@/composables/useWeb3';
 import { calcFromSeconds, calcToSeconds } from '@/helpers/utils';
 import { useClient } from '@/composables/useClient';
 import { setPageTitle } from '@/helpers/utils';
+import { usePluginsFilter } from '@/composables/usePluginsFilter';
 
 const props = defineProps({
   spaceId: String,
@@ -63,7 +63,7 @@ const form = ref({
 const validate = computed(() => {
   if (form.value.terms === '') delete form.value.terms;
   if (form.value.avatar === '') delete form.value.avatar;
-  
+
   return validateSchema(schemas.space, form.value);
 });
 
@@ -111,13 +111,10 @@ const categoriesString = computed(() => {
   return form.value.categories ? form.value.categories.join(', ') : '';
 });
 
-const { filteredPlugins } = useSearchFilters();
-const plugins = computed(() => filteredPlugins());
+const { pluginsArray } = usePluginsFilter();
 
 function pluginName(key) {
-  const plugin = plugins.value.find(obj => {
-    return obj.key === key;
-  });
+  const plugin = pluginsArray.value.find(p => p.key === key);
   return plugin?.name;
 }
 

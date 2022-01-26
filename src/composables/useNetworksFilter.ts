@@ -10,7 +10,7 @@ import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 
 const networksSpacesCount: any = ref(null);
 
-export function useNetworks() {
+export function useNetworksFilter() {
   const loading = ref(false);
 
   const filterNetworks = (q = '') =>
