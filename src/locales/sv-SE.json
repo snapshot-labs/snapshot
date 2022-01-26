@@ -51,7 +51,7 @@
   "confirmRemove": "Är du säker på att du vill ta bort din delegation till",
   "removeSpace": "för spaces {0}",
   "confirmVote": "Bekräfta röst",
-  "sureToVote": "Är du säker att du vill ta bort \"{0}\"?",
+  "sureToVote": "Are you sure you want to cast this vote?",
   "cannotBeUndone": "Denna åtgärd kan inte ångras.",
   "options": "Alternativ(er)",
   "votingPower": "Din röststyrka",
