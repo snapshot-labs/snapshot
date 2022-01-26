@@ -10,7 +10,7 @@ import skins from '@/../snapshot-spaces/skins';
 
 const skinsSpacesCount: any = ref(null);
 
-export function useSkins() {
+export function useSkinsFilter() {
   const loading = ref(false);
 
   const filterSkins = (q = '') =>
