@@ -51,7 +51,7 @@
   "confirmRemove": "మీరు ఖచ్చితంగా మీ ప్రతినిధి బృందాన్ని తొలగించాలనుకుంటున్నారా",
   "removeSpace": "స్పేస్ కోసం {0}",
   "confirmVote": "ఓటును నిర్ధారించండి",
-  "sureToVote": "మీరు ఖచ్చితంగా \"{0}\" ఓటు వేయాలనుకుంటున్నారా?",
+  "sureToVote": "Are you sure you want to cast this vote?",
   "cannotBeUndone": "ఈ చర్య రద్దు చేయబడదు.",
   "options": "Option(s)",
   "votingPower": "మీ ఓటింగ్ శక్తి",
