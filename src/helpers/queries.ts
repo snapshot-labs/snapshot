@@ -213,3 +213,21 @@ export const SPACE_DELEGATE_QUERY = gql`
     }
   }
 `;
+
+export const SKINS_COUNT_QUERY = gql`
+  query Skins {
+    skins {
+      id
+      spacesCount
+    }
+  }
+`;
+
+export const NETWORKS_COUNT_QUERY = gql`
+  query Networks {
+    networks {
+      id
+      spacesCount
+    }
+  }
+`;
