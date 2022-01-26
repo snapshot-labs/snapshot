@@ -40,7 +40,7 @@ const items = computed(() => {
 });
 
 watch(
-  route.name,
+  () => route.name,
   () => {
     if (route.name === 'networks') getNetworksSpacesCount();
   },

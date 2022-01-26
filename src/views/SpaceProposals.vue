@@ -73,7 +73,7 @@ async function load() {
 }
 
 watch(
-  props.spaceId,
+  () => props.spaceId,
   () => {
     const firstProposal = store.space.proposals[0];
     if (firstProposal && firstProposal?.space.id !== props.spaceId) {
