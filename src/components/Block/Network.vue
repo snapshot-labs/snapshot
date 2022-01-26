@@ -1,10 +1,10 @@
 <script setup>
 import { useIntl } from '@/composables/useIntl';
-import { useNetworks } from '@/composables/useNetworks';
+import { useNetworksFilter } from '@/composables/useNetworksFilter';
 
 const { formatCompactNumber } = useIntl();
 
-const { networksSpacesCount } = useNetworks();
+const { networksSpacesCount } = useNetworksFilter();
 
 defineProps(['network']);
 

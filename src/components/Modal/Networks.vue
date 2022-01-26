@@ -1,6 +1,6 @@
 <script setup>
 import { ref, computed, watch } from 'vue';
-import { useNetworks } from '@/composables/useNetworks';
+import { useNetworksFilter } from '@/composables/useNetworksFilter';
 
 const props = defineProps({
   open: {
@@ -13,7 +13,7 @@ const emit = defineEmits(['update:modelValue', 'close']);
 
 const searchInput = ref('');
 const { filterNetworks, getNetworksSpacesCount, loadingNetworks } =
-  useNetworks();
+  useNetworksFilter();
 const networks = computed(() => filterNetworks(searchInput.value));
 
 watch(
