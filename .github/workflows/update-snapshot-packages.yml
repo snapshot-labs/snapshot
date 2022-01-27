@@ -16,6 +16,9 @@ jobs:
       - name: Update snapshot.js
         run: |
           yarn upgrade @snapshot-labs/snapshot.js --latest
+      - name: Update lock.js
+        run: |
+          yarn upgrade @snapshot-labs/lock --latest
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v3
         with:
