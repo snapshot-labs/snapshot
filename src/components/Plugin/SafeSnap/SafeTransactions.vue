@@ -1,11 +1,10 @@
 <script>
-import Plugin from '@/../snapshot-plugins/src/plugins/safeSnap';
-import networks from '@snapshot-labs/snapshot.js/src/networks.json';
-import {
+import Plugin, {
   createBatch,
   getGnosisSafeBalances,
   getGnosisSafeCollectibles
-} from '@/helpers/abi/utils';
+} from '@/../snapshot-plugins/src/plugins/safeSnap';
+import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { shorten } from '@/helpers/utils';
 
 const plugin = new Plugin();
@@ -49,13 +48,13 @@ async function fetchCollectibles(network, gnosisSafeAddress) {
   return [];
 }
 
-function formatBatches(network, realityModule, batches) {
+function formatBatches(network, realityModule, batches, multiSend) {
   if (batches.length) {
     const batchSample = batches[0];
     if (Array.isArray(batchSample)) {
       const chainId = parseInt(network);
       return batches.map((txs, index) =>
-        createBatch(realityModule, chainId, index, txs)
+        createBatch(realityModule, chainId, index, txs, multiSend)
       );
     }
   }
@@ -71,13 +70,19 @@ export default {
     'proposal',
     'network',
     'realityAddress',
+    'multiSendAddress',
     'preview',
     'hash'
   ],
   emits: ['update:modelValue'],
   data() {
     return {
-      input: formatBatches(this.network, this.realityAddress, this.modelValue),
+      input: formatBatches(
+        this.network,
+        this.realityAddress,
+        this.modelValue,
+        this.multiSendAddress
+      ),
       gnosisSafeAddress: undefined,
       showHash: false,
       transactionConfig: {
@@ -85,6 +90,7 @@ export default {
         gnosisSafeAddress: undefined,
         realityAddress: this.realityAddress,
         network: this.network,
+        multiSendAddress: this.multiSendAddress,
         tokens: [],
         collectables: []
       }
@@ -136,7 +142,8 @@ export default {
           this.realityAddress,
           parseInt(this.network),
           this.input.length,
-          []
+          [],
+          this.multiSendAddress
         )
       );
       this.$emit('update:modelValue', this.input);
@@ -155,7 +162,8 @@ export default {
           this.realityAddress,
           parseInt(this.network),
           this.input.length,
-          txs
+          txs,
+          this.multiSendAddress
         )
       );
       this.$emit('update:modelValue', this.input);
@@ -167,7 +175,7 @@ export default {
 <template>
   <div class="border-t border-b md:border rounded-none md:rounded-md mb-4">
     <h4
-      class="px-4 pt-3 border-b block rounded-t-none md:rounded-t-md"
+      class="px-4 pt-3 border-b block rounded-t-none md:rounded-t-md flex"
       style="padding-bottom: 12px"
     >
       <UiAvatar
@@ -180,13 +188,18 @@ export default {
       <a
         v-if="gnosisSafeAddress"
         :href="safeLink"
-        class="text-color"
+        class="text-color ml-2"
         style="font-weight: normal"
         target="_blank"
       >
         {{ shorten(gnosisSafeAddress) }}
         <i class="iconfont iconexternal-link" />
       </a>
+      <div class="flex-grow"></div>
+      <PluginSafeSnapTooltip
+        :realityAddress="this.realityAddress"
+        :multiSendAddress="this.multiSendAddress"
+      ></PluginSafeSnapTooltip>
     </h4>
     <UiCollapsibleText
       v-if="hash"
@@ -226,6 +239,7 @@ export default {
           :batches="input"
           :proposalId="proposal.id"
           :realityAddress="realityAddress"
+          :multiSendAddress="transactionConfig.multiSendAddress"
           :network="transactionConfig.network"
         />
       </div>

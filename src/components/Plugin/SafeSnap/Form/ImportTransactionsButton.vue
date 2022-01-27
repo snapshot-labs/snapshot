@@ -1,5 +1,5 @@
 <script>
-import { getNativeAsset } from '@/helpers/abi/utils';
+import { getNativeAsset } from '@/../snapshot-plugins/src/plugins/safeSnap';
 import { parseEther } from '@ethersproject/units';
 import { isAddress } from '@ethersproject/address';
 import { FunctionFragment, Interface } from '@ethersproject/abi';

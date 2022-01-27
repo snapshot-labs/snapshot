@@ -1,4 +1,4 @@
-import { mustBeEthereumAddress } from '@/helpers/abi/utils';
+import { mustBeEthereumAddress } from '@/../snapshot-plugins/src/plugins/safeSnap';
 
 export const isAddress = (type: string): boolean =>
   type.indexOf('address') === 0;
