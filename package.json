@@ -23,7 +23,7 @@
     "@ethersproject/wallet": "^5.4.0",
     "@popperjs/core": "^2.11.2",
     "@pusher/push-notifications-web": "^1.1.0",
-    "@snapshot-labs/lock": "github:snapshot-labs/lock#master",
+    "@snapshot-labs/lock": "^0.1.4",
     "@snapshot-labs/snapshot.js": "^0.3.31",
     "@vue/apollo-composable": "4.0.0-alpha.16",
     "@vueuse/core": "^7.5.1",
@@ -62,7 +62,7 @@
     "rollup-plugin-visualizer": "^5.5.2",
     "sass": "~1.46.0",
     "sass-loader": "^8.0.2",
-    "tailwindcss": "^2.2.9",
+    "tailwindcss": "^3.0.17",
     "unplugin-vue-components": "^0.17.14",
     "vite": "^2.7.10"
   },
