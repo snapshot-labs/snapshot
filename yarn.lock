@@ -987,9 +987,10 @@
     estree-walker "^2.0.1"
     picomatch "^2.2.2"
 
-"@snapshot-labs/lock@github:snapshot-labs/lock#master":
-  version "0.1.3"
-  resolved "https://codeload.github.com/snapshot-labs/lock/tar.gz/c1a14fbaa3c0ced0eedc6eeb4aedcd9689b6a3da"
+"@snapshot-labs/lock@^0.1.4":
+  version "0.1.4"
+  resolved "https://registry.yarnpkg.com/@snapshot-labs/lock/-/lock-0.1.4.tgz#052eab1ee14273e44f7e3ef50254114b5a8a0152"
+  integrity sha512-xwtnjcRuAdg3JRFZKvriwZ8s2qbvHJPNN1yo8JcOES2PuusXaBan/JgcSc9378EiZKkf92ECP5LTcxxvGI1BiQ==
   dependencies:
     "@gnosis.pm/safe-apps-provider" "^0.8.0"
     "@gnosis.pm/safe-apps-sdk" "^6.1.1"
