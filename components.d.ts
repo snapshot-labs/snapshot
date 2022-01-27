@@ -71,7 +71,6 @@ declare module 'vue' {
     PluginSafeSnapInputMethodParameter: typeof import('./src/components/Plugin/SafeSnap/Input/MethodParameter.vue')['default']
     PluginSafeSnapModalOptionApproval: typeof import('./src/components/Plugin/SafeSnap/Modal/OptionApproval.vue')['default']
     PluginSafeSnapSafeTransactions: typeof import('./src/components/Plugin/SafeSnap/SafeTransactions.vue')['default']
-    PluginSafeSnapTooltip: typeof import('./src/components/Plugin/SafeSnap/Tooltip.vue')['default']
     ProposalPluginsContent: typeof import('./src/components/ProposalPluginsContent.vue')['default']
     ProposalPluginsSidebar: typeof import('./src/components/ProposalPluginsSidebar.vue')['default']
     RegisterENS: typeof import('./src/components/RegisterENS.vue')['default']
