@@ -51,7 +51,7 @@
   "confirmRemove": "您确定要移除对{}的委托吗？",
   "removeSpace": "用于空间 {0}",
   "confirmVote": "确认投票",
-  "sureToVote": "Are you sure you want to cast this vote?",
+  "sureToVote": "您确定要投票吗？",
   "cannotBeUndone": "此操作无法撤消。",
   "options": "选项",
   "votingPower": "您的投票权",
