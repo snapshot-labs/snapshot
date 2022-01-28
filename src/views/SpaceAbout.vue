@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { computed, watchEffect } from 'vue';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { useProfiles } from '@/composables/useProfiles';

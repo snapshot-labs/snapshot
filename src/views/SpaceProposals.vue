@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { watchEffect, computed, ref, watch } from 'vue';
 import { useStore } from '@/composables/useStore';
 import { setPageTitle } from '@/helpers/utils';

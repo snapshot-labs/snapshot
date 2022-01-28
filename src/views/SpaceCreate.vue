@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { ref, watchEffect, computed, onMounted, inject } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import draggable from 'vuedraggable';
