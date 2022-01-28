@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { ref, watchEffect, computed } from 'vue';
 import { useSpaceSubscription } from '@/composables/useSpaceSubscription';
 import { useFollowSpace } from '@/composables/useFollowSpace';

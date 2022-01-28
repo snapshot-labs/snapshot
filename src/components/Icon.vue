@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 defineProps({
   name: String,
   size: String

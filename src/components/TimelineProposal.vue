@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { watchEffect, computed } from 'vue';
 import { shorten } from '@/helpers/utils';
 import { useUsername } from '@/composables/useUsername';

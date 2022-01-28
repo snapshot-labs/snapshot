@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 defineProps(['space']);
 </script>
 <template>

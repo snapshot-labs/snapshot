@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue';
 import { shorten, getIpfsUrl } from '@/helpers/utils';
 import { useModal } from '@/composables/useModal';

@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { watch, onMounted, ref, watchEffect } from 'vue';
 import draggable from 'vuedraggable';
 import { useFollowSpace } from '@/composables/useFollowSpace';

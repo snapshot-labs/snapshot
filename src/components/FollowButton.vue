@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { computed } from 'vue';
 import { useFollowSpace } from '@/composables/useFollowSpace';
 import { useTerms } from '@/composables/useTerms';

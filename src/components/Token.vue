@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { computed } from 'vue';
 import { formatBytes32String } from '@ethersproject/strings';
 import { getUrl } from '@snapshot-labs/snapshot.js/src/utils.ts';

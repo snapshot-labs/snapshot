@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { ref, onBeforeUnmount, onMounted } from 'vue';
 import { watchTxStatus } from '@/composables/useTxStatus';
 import { useDomain } from '@/composables/useDomain';

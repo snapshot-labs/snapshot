@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { watchEffect } from 'vue';
 import { shorten, explorerUrl, getIpfsUrl } from '@/helpers/utils';
 import { useUsername } from '@/composables/useUsername';
