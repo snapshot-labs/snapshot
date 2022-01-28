@@ -62,6 +62,9 @@ const filterPlugins = (q = '') =>
         (pluginsSpacesCount.value?.[a.key] ?? 0)
     );
 
+/**
+ * Composable
+ */
 export function usePlugins() {
   let slotTemplateName: string;
   const components = {};
