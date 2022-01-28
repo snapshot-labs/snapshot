@@ -64,7 +64,7 @@
 
 @layer utilities {
   // This allows us to use 'no-scrollbar' with Tailwind breakpoints like this 'md:no-scrollbar'
-  @variants responsive {
+  @responsive {
     /* Chrome, Safari and Opera */
     .no-scrollbar::-webkit-scrollbar {
       display: none;
