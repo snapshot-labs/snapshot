@@ -74,7 +74,11 @@ export function usePlugins() {
   // used in the template slot files (e.g. src/plugins/Proposal.vue)
   // by plugin devs to register their plugin's components
   const addComponents = (pluginKeys: string[]) => {
-    pluginKeys.forEach(key => {
+    pluginKeys
+      // remove any old plugin keys that don't exist in the index anymore and
+      // don't try to load such components
+      .filter(key => pluginIndex[key])
+      .forEach(key => {
       components[key] = defineAsyncComponent(
         () => import(`../plugins/${key}/${slotTemplateName}.vue`)
       );
