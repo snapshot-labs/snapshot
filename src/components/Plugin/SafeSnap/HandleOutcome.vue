@@ -153,9 +153,7 @@
 </template>
 
 <script>
-import Plugin, {
-  formatBatchTransaction
-} from '@/../snapshot-plugins/src/plugins/safeSnap';
+import Plugin from '@/../snapshot-plugins/src/plugins/safeSnap';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { sleep } from '@snapshot-labs/snapshot.js/src/utils';
@@ -268,20 +266,13 @@ export default {
   },
   methods: {
     async updateDetails() {
-      if (!this.realityAddress || !this.multiSendAddress) return;
       this.loading = true;
       try {
-        this.questionDetails = await plugin.getExecutionDetails(
+        this.questionDetails = await plugin.getExecutionDetailsWithHashes(
           this.network,
           this.realityAddress,
           this.proposalId,
-          this.batches.map((batch, nonce) =>
-            formatBatchTransaction(
-              batch.transactions,
-              nonce,
-              this.multiSendAddress
-            )
-          )
+          this.getTxHashes()
         );
         if (this.questionDetails.questionId && this.$auth.web3) {
           this.bondData = await plugin.loadClaimBondData(
@@ -331,11 +322,11 @@ export default {
       this.actionInProgress = 'submit-proposal';
       try {
         await ensureRightNetwork(this.network);
-        const proposalSubmission = plugin.submitProposal(
+        const proposalSubmission = plugin.submitProposalWithHashes(
           this.$auth.web3,
           this.realityAddress,
           this.questionDetails.proposalId,
-          this.questionDetails.transactions
+          this.getTxHashes()
         );
         await proposalSubmission.next();
         this.actionInProgress = null;
@@ -364,7 +355,7 @@ export default {
           option
         );
         const step = await voting.next();
-        if (step.value == 'erc20-approval') {
+        if (step.value === 'erc20-approval') {
           this.actionInProgress = null;
           pendingCount.value++;
           await voting.next();
@@ -395,11 +386,14 @@ export default {
 
       try {
         clearBatchError();
-        const executingProposal = plugin.executeProposal(
+        const transaction =
+          this.batches[this.questionDetails.nextTxIndex].mainTransaction;
+        const executingProposal = plugin.executeProposalWithHashes(
           this.$auth.web3,
           this.realityAddress,
           this.questionDetails.proposalId,
-          this.questionDetails.transactions,
+          this.getTxHashes(),
+          transaction,
           this.questionDetails.nextTxIndex
         );
         await executingProposal.next();
@@ -415,6 +409,9 @@ export default {
         this.action2InProgress = null;
         setBatchError(this.questionDetails.nextTxIndex, err.reason);
       }
+    },
+    getTxHashes() {
+      return this.batches.map(batch => batch.hash);
     }
   },
   computed: {
