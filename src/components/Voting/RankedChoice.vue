@@ -39,12 +39,19 @@ function updateChoices() {
       >
         <template #item="{ element, index }">
           <div class="mb-2">
-            <UiButton class="flex justify-between w-full button--active !px-3">
-              <div>({{ getNumberWithOrdinal(index + 1) }})</div>
-              <div class="truncated w-full mx-2">
+            <UiButton
+              class="flex justify-between items-center w-full button--active !px-3"
+            >
+              <div class="min-w-[60px] text-left">
+                ({{ getNumberWithOrdinal(index + 1) }})
+              </div>
+              <div class="truncated w-full mx-2 text-center">
                 {{ proposal.choices[element - 1] }}
               </div>
-              <div @click="removeChoice(index)">
+              <div
+                @click="removeChoice(index)"
+                class="min-w-[20px] ml-[40px] text-right"
+              >
                 <Icon name="close" size="12" />
               </div>
             </UiButton>

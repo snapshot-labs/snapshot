@@ -16,19 +16,28 @@ export default {
   ],
   emits: ['update:modelValue'],
   data() {
-    const initialValue = {
-      safes: coerceConfig(this.config, this.network).safes.map(safe => ({
-        ...safe,
-        hash: null,
-        txs: []
-      })),
-      valid: true
-    };
-    return {
-      input: Object.keys(this.modelValue).length
-        ? coerceConfig(clone(this.modelValue), this.network)
-        : initialValue
-    };
+    let input;
+    if (!Object.keys(this.modelValue).length) {
+      input = {
+        safes: coerceConfig(this.config, this.network).safes.map(safe => ({
+          ...safe,
+          hash: null,
+          txs: []
+        })),
+        valid: true
+      };
+    } else {
+      const value = clone(this.modelValue);
+      if (value.safes && this.config && Array.isArray(this.config.safes)) {
+        value.safes = value.safes.map((safe, index) => ({
+          ...this.config.safes[index],
+          ...safe
+        }));
+      }
+      input = coerceConfig(value, this.network);
+    }
+
+    return { input };
   },
   methods: {
     updateSafeTransactions() {
