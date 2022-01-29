@@ -10,7 +10,7 @@
     "init-submodules": "git submodule update --init"
   },
   "dependencies": {
-    "@apollo/client": "^3.5.6",
+    "@apollo/client": "^3.5.8",
     "@ensdomains/eth-ens-namehash": "^2.0.15",
     "@ethersproject/abi": "^5.4.0",
     "@ethersproject/address": "^5.4.0",
