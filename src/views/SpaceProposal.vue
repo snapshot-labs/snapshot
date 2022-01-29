@@ -123,7 +123,6 @@ async function loadResults() {
     votes.value = formatProposalVotes(votesRes);
     loadedVotes.value = true;
   } else {
-    console.log('[score] loadResults');
     const votesTmp = await getProposalVotes(id);
     const resultsObj = await getResults(props.space, proposal.value, votesTmp);
     results.value = resultsObj.results;
@@ -200,10 +199,7 @@ watch(web3Account, () => {
 });
 
 watch(loaded, () => {
-  if (loaded.value === true) {
-    console.log('[score] Hum!');
-    loadResults();
-  }
+  if (loaded.value === true) loadResults();
 });
 
 watchEffect(() => {

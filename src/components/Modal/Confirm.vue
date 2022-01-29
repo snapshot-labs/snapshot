@@ -53,7 +53,6 @@ watch(
   () => [props.open, web3Account.value],
   async () => {
     if (props.open === false) return;
-    console.log('[score] loadPower');
     vpLoading.value = true;
     const response = await getPower(
       props.space,
