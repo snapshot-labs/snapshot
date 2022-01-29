@@ -370,10 +370,7 @@ watchEffect(() => {
       />
     </template>
     <template #sidebar-right v-if="!preview">
-      <Block
-        :title="$t('actions')"
-        :loading="!space"
-      >
+      <Block :title="$t('actions')" :loading="!space">
         <div class="mb-2">
           <UiButton
             class="w-full mb-2"

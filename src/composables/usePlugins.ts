@@ -10,7 +10,7 @@ import { useApolloQuery } from '@/composables/useApolloQuery';
 import { PLUGINS_COUNT_QUERY } from '@/helpers/queries';
 
 // aggregate all plugin.json files in src/plugins
-const pluginIndex: Object = Object.fromEntries(
+const pluginIndex: Record<string, any> = Object.fromEntries(
   Object.entries(import.meta.globEager('../plugins/*/plugin.json')).map(
     ([path, config]) => {
       const pluginKey = path
@@ -49,7 +49,7 @@ const getPluginsSpacesCount = async () => {
     {}
   );
   loadingPluginsSpaceCount.value = false;
-}
+};
 
 const filterPlugins = (q = '') =>
   Object.values(pluginIndex)

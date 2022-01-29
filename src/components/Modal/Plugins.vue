@@ -11,8 +11,12 @@ const input = ref({});
 const isValid = ref(true);
 const selectedPlugin = ref({});
 
-const { filterPlugins, pluginIndex, loadingPluginsSpaceCount, getPluginsSpacesCount } =
-  usePlugins();
+const {
+  filterPlugins,
+  pluginIndex,
+  loadingPluginsSpaceCount,
+  getPluginsSpacesCount
+} = usePlugins();
 
 function handleSubmit() {
   const key = selectedPlugin.value.key;

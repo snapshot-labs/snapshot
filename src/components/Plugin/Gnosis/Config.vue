@@ -19,7 +19,8 @@ export default {
     }
   },
   mounted() {
-    if (Object.keys(this.modelValue).length) return (this.input = this.modelValue);
+    if (Object.keys(this.modelValue).length)
+      return (this.input = this.modelValue);
   },
   methods: {
     getLogoUrl() {
@@ -95,10 +96,7 @@ export default {
     </div>
   </div>
   <div v-if="preview">
-    <PluginGnosisCustomBlock
-      :proposalConfig="input"
-      :choices="getChoices()"
-    />
+    <PluginGnosisCustomBlock :proposalConfig="input" :choices="getChoices()" />
   </div>
   <UiButton
     v-if="!preview && input"

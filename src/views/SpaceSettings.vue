@@ -606,7 +606,9 @@ watchEffect(() => {
         <Block :title="$t('plugins')">
           <div v-if="form?.plugins">
             <div
-              v-for="(name, index) in Object.keys(form.plugins).filter(key => pluginIndex[key])"
+              v-for="(name, index) in Object.keys(form.plugins).filter(
+                key => pluginIndex[key]
+              )"
               :key="index"
               class="mb-3 relative"
             >

@@ -37,11 +37,7 @@ async function handleSubmit() {
     metadata: {}
   };
 
-  await executePluginHooks(
-    'prevote',
-    Object.keys(props.space.plugins),
-    vote
-  );
+  await executePluginHooks('prevote', Object.keys(props.space.plugins), vote);
 
   const result = await send(props.space, 'vote', vote);
 
