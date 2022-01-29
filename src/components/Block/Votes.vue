@@ -98,7 +98,7 @@ watch(visibleVotes, () => {
         :address="vote.voter"
         :space="space"
         :proposal="proposal"
-        class="min-w-[90px]"
+        class="w-[110px] xs:w-[130px] min-w-[110px] xs:min-w-[130px]"
       />
       <div class="flex-auto text-center link-color truncated px-3">
         <span
@@ -114,7 +114,9 @@ watch(visibleVotes, () => {
         </span>
       </div>
 
-      <div class="min-w-[80px] text-right link-color whitespace-nowrap">
+      <div
+        class="min-w-[110px] xs:min-w-[130px] text-right link-color whitespace-nowrap"
+      >
         <span
           v-tippy="{
             content: vote.scores
