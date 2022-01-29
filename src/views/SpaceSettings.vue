@@ -639,20 +639,22 @@ watchEffect(() => {
       </template>
     </template>
     <template v-if="(loaded && isOwner) || (loaded && isAdmin)" #sidebar-right>
-      <Block :title="$t('actions')">
-        <UiButton @click="handleReset" class="block w-full mb-2">
-          {{ $t('reset') }}
-        </UiButton>
-        <UiButton
-          :disabled="uploadLoading"
-          @click="handleSubmit"
-          :loading="clientLoading"
-          class="block w-full"
-          primary
-        >
-          {{ $t('save') }}
-        </UiButton>
-      </Block>
+      <div class="lg:fixed lg:w-[300px]">
+        <Block :title="$t('actions')">
+          <UiButton @click="handleReset" class="block w-full mb-2">
+            {{ $t('reset') }}
+          </UiButton>
+          <UiButton
+            :disabled="uploadLoading"
+            @click="handleSubmit"
+            :loading="clientLoading"
+            class="block w-full"
+            primary
+          >
+            {{ $t('save') }}
+          </UiButton>
+        </Block>
+      </div>
     </template>
   </Layout>
   <teleport to="#modal">
