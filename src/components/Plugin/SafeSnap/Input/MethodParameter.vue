@@ -1,17 +1,20 @@
 <script>
-import { isArrayParameter, isParameterValue } from '@/helpers/validator';
+import { isParameterValue } from '@/helpers/validator';
+import { isArrayParameter } from '@/../snapshot-plugins/src/plugins/safeSnap';
 
 export default {
-  props: ['modelValue', 'name', 'type', 'disabled'],
+  props: ['modelValue', 'disabled', 'parameter'],
   emits: ['update:modelValue', 'isValid'],
   mounted() {
     if (this.modelValue) this.value = this.modelValue;
   },
   data() {
-    const placeholder = this.name ? `${this.name} (${this.type})` : this.type;
+    const placeholder = this.parameter.name
+      ? `${this.parameter.name} (${this.parameter.type})`
+      : this.parameter.type;
 
     let value;
-    if (this.type === 'bool') value = false;
+    if (this.parameter.type === 'bool') value = false;
 
     return {
       placeholder,
@@ -29,7 +32,7 @@ export default {
   },
   computed: {
     isValid() {
-      return isParameterValue(this.type, this.value);
+      return isParameterValue(this.parameter.baseType, this.value);
     }
   },
   methods: {
@@ -40,7 +43,7 @@ export default {
       this.$emit('isValid', this.isValid);
     },
     isArrayType() {
-      return isArrayParameter(this.type);
+      return isArrayParameter(this.parameter.baseType);
     }
   }
 };
@@ -48,7 +51,7 @@ export default {
 
 <template>
   <UiSelect
-    v-if="type === 'bool'"
+    v-if="parameter.type === 'bool'"
     :disabled="disabled"
     :modelValue="value"
     @update:modelValue="handleInput($event)"
@@ -60,11 +63,9 @@ export default {
 
   <!-- ADDRESS -->
   <PluginSafeSnapInputAddress
-    v-else-if="type === 'address'"
+    v-else-if="parameter.type === 'address'"
     :disabled="disabled"
-    :inputProps="{
-      required: true
-    }"
+    :inputProps="{ required: true }"
     :label="this.placeholder"
     :modelValue="value"
     @update:modelValue="handleInput($event)"
@@ -74,15 +75,14 @@ export default {
     v-else-if="isArrayType()"
     :disabled="disabled"
     :modelValue="value"
-    :name="name"
-    :type="type"
+    :parameter="parameter"
     @update:modelValue="handleInput($event)"
   />
   <!-- Text input -->
   <UiInput
     v-else
     :disabled="disabled"
-    :error="dirty && !isValid && `Invalid ${type}`"
+    :error="dirty && !isValid && `Invalid ${parameter.type}`"
     :modelValue="value"
     @update:modelValue="handleInput($event)"
   >
