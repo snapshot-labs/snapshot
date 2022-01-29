@@ -62,7 +62,7 @@
     "rollup-plugin-visualizer": "^5.5.4",
     "sass": "~1.46.0",
     "sass-loader": "^8.0.2",
-    "tailwindcss": "^2.2.9",
+    "tailwindcss": "^3.0.17",
     "unplugin-vue-components": "^0.17.15",
     "vite": "^2.7.10"
   },
