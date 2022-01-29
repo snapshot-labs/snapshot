@@ -1,24 +1,25 @@
 <script setup>
 import { usePlugins } from '@/composables/usePlugins';
 
-const { components, addComponents, setTemplateName } = usePlugins();
-setTemplateName('Proposal');
-
-addComponents(['safeSnap', 'charts', 'commentBox']);
-
 const props = defineProps({
   proposal: Object,
   space: Object,
   votes: Object,
   loadedResults: Object
 });
+
+const { getPluginComponents } = usePlugins();
+const components = getPluginComponents(
+  'Proposal',
+  Object.keys(props.space.plugins)
+);
 </script>
 
 <template>
   <component
-    v-for="(plugin, key) in space.plugins"
+    v-for="(component, key) in components"
     :key="key"
-    :is="components[key]"
+    :is="component"
     v-bind="props"
   />
 </template>

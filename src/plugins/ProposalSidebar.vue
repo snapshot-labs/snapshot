@@ -1,11 +1,6 @@
 <script setup>
 import { usePlugins } from '@/composables/usePlugins';
 
-const { components, addComponents, setTemplateName } = usePlugins();
-setTemplateName('ProposalSidebar');
-
-addComponents(['hal', 'poap', 'quorum', 'aragon', 'gnosis']);
-
 const props = defineProps({
   id: String,
   proposal: Object,
@@ -15,13 +10,19 @@ const props = defineProps({
   votes: Object,
   strategies: Object
 });
+
+const { getPluginComponents } = usePlugins();
+const components = getPluginComponents(
+  'ProposalSidebar',
+  Object.keys(props.space.plugins)
+);
 </script>
 
 <template>
   <component
-    v-for="(plugin, key) in space.plugins"
+    v-for="(component, key) in components"
     :key="key"
-    :is="components[key]"
+    :is="component"
     v-bind="props"
   />
 </template>

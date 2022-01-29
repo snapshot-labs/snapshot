@@ -1,17 +1,19 @@
 <script setup>
 import { usePlugins } from '@/composables/usePlugins';
 
-const { components, addComponents, setTemplateName } = usePlugins();
-setTemplateName('Create');
-
-addComponents(['safeSnap']);
-
 const props = defineProps({
   proposal: Object,
   space: Object,
   preview: Boolean,
   modelValue: Object
 });
+
+const { getPluginComponents } = usePlugins();
+const components = getPluginComponents(
+  'Create',
+  Object.keys(props.space.plugins)
+);
+
 const emit = defineEmits(['update:modelValue']);
 const update = data => {
   const allConfig = props.modelValue;
@@ -22,9 +24,9 @@ const update = data => {
 
 <template>
   <component
-    v-for="(plugin, key) in space.plugins"
+    v-for="(component, key) in components"
     :key="key"
-    :is="components[key]"
+    :is="component"
     v-bind="props"
     @update="update"
   />

@@ -21,13 +21,39 @@ const pluginIndex: Record<string, any> = Object.fromEntries(
   )
 );
 
+// prepare all plugin's main components imports (Create.vue, Proposal.vue, etc.)
+const allPluginComponents = import.meta.glob(`../plugins/*/*.vue`);
+
+// get required components for specific location (componentName) and list of active plugins
+const getPluginComponents = (componentName: string, pluginKeys) => {
+  pluginKeys = pluginKeys.filter(key => !!pluginIndex[key]); // remove old/non-existent plugins
+
+  return Object.entries(allPluginComponents)
+    .filter(([path]) => {
+      if (path.endsWith(componentName + '.vue')) {
+        const pluginKey = path
+          .replace('../plugins/', '')
+          .replace(`/${componentName}.vue`, '');
+        return pluginKeys.includes(pluginKey);
+      }
+      return false;
+    })
+    .map(comp => defineAsyncComponent(comp[1]));
+};
+
 // takes the space's enabled plugins (pluginKeys), checks if they have the
 // specified hook (hookName) in their plugin.json, imports and executes them
 const executePluginHooks = async (hookName, pluginKeys, payload) => {
+  pluginKeys = pluginKeys.filter(key => !!pluginIndex[key]); // remove old/non-existent plugins
+
   for (let i = 0; i < pluginKeys.length; i++) {
-    const hookPath = pluginIndex[pluginKeys[i]].hooks?.[hookName]?.replace(/\.ts$/i, '').replace(/^\.\//, '');
+    const hookPath = pluginIndex[pluginKeys[i]].hooks?.[hookName]
+      ?.replace(/\.ts$/i, '')
+      .replace(/^\.\//, '');
     if (hookPath) {
-      const { default: hook } = await import(`../plugins/${pluginKeys[i]}/${hookPath}.ts`);
+      const { default: hook } = await import(
+        `../plugins/${pluginKeys[i]}/${hookPath}.ts`
+      );
       await hook(payload);
     }
   }
@@ -64,35 +90,14 @@ const filterPlugins = (q = '') =>
 
 /**
  * Composable
+ *
+ * Does it really make sense to use the composable pattern here? Most of it can
+ * be normal imports.
  */
 export function usePlugins() {
-  let slotTemplateName: string;
-  const components = {};
-
-  // needs to be called before addComponents
-  const setTemplateName = (name: string) => {
-    slotTemplateName = name;
-  };
-
-  // used in the template slot files (e.g. src/plugins/Proposal.vue)
-  // by plugin devs to register their plugin's components
-  const addComponents = (pluginKeys: string[]) => {
-    pluginKeys
-      // remove any old plugin keys that don't exist in the index anymore and
-      // don't try to load such components
-      .filter(key => pluginIndex[key])
-      .forEach(key => {
-      components[key] = defineAsyncComponent(
-        () => import(`../plugins/${key}/${slotTemplateName}.vue`)
-      );
-    });
-  };
-
   return {
     pluginIndex,
-    components,
-    addComponents,
-    setTemplateName,
+    getPluginComponents,
     executePluginHooks,
     filterPlugins,
     getPluginsSpacesCount,
