@@ -100,7 +100,11 @@ async function loadProposal() {
   }
 
   loading.value = false;
-  if (loaded.value) loadResults();
+}
+
+async function userVoteHandler() {
+  await loadProposal();
+  loadResults();
 }
 
 function formatProposalVotes(votes) {
@@ -216,7 +220,7 @@ watch(proposal, () => {
 });
 
 watch(web3Account, (val, prev) => {
-  if (val?.toLowerCase() !== prev) loadPower();
+  if (prev && val?.toLowerCase() !== prev) loadPower();
   const choice = route.query.choice;
   if (proposal.value && choice) {
     selectedChoices.value = parseInt(choice);
@@ -441,7 +445,7 @@ onMounted(async () => {
     <ModalConfirm
       :open="modalOpen"
       @close="modalOpen = false"
-      @reload="loadProposal"
+      @reload="userVoteHandler"
       :space="space"
       :proposal="proposal"
       :id="id"
