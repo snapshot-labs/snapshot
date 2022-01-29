@@ -225,8 +225,7 @@ export default {
         :key="input.name"
         :disabled="config.preview"
         :modelValue="parameters[index]"
-        :name="input.name"
-        :type="input.type"
+        :parameter="input"
         @update:modelValue="handleParameterChanged(index, $event)"
       />
     </div>
