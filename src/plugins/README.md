@@ -35,29 +35,20 @@ const msg = 'Hello world!'
 </template>
 ```
 
-Now add your plugin to the list in `src/plugins/Proposal.vue`.
+For spaces that enable the plugin, the component is now automatically being rendered below the proposal content.
 
-```html
-<script setup>
-// ...
-addComponents([
-  'myPlugin',
-  // ...
-])
-// ...
-</script>
-```
+Here's the current list of possible plugin components:
 
-The component is now being rendered below the proposal content. From here, you can do everything you can do in any other Vue 3 component. It's technically not required but it's recommended to go with Vue 3's composition API and `<script setup>`.
+| Plugin component | will be rendered here: |
+| --- | --- |
+| `myPlugin/Proposal.vue` | below proposal content |
+| `myPlugin/ProposalSidebar.vue` | proposal sidebar |
+| `myPlugin/Create.vue` | below create proposal content |
+| `myPlugin/CreateSidebar.vue` | create proposal sidebar |
 
-Currently you can add components to the content area or the sidebar of a proposal.
+In those components you can do everything you can do in any other Vue 3 component. You can split the code across multiple components and import them in one of the above, as well as create your own composables or other helper files to structure your code as you like.
 
-| Plugin component | needs to be listed here | and will be rendered here. |
-| --- | --- | --- |
-| `plugins/myPlugin/Proposal.vue` | `plugins/Proposal.vue` | below proposal content |
-| `plugins/myPlugin/ProposalSidebar.vue` | `plugins/ProposalSidebar.vue` | proposal sidebar |
-| `plugins/myPlugin/Create.vue` | `plugins/Create.vue` | below create proposal content |
-| `plugins/myPlugin/CreateSidebar.vue` | `plugins/CreateSidebar.vue` | create proposal sidebar |
+It's technically not required but recommended to use Vue 3's composition API and the `<script setup>` syntax.
 
 ## Existing components/composables
 
