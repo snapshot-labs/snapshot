@@ -18,8 +18,6 @@ import { useWeb3 } from '@/composables/useWeb3';
 import { useClient } from '@/composables/useClient';
 import { useInfiniteLoader } from '@/composables/useInfiniteLoader';
 import { useStore } from '@/composables/useStore';
-import PluginsProposal from '@/plugins/Proposal.vue';
-import PluginsProposalSidebar from '@/plugins/ProposalSidebar.vue';
 import { useIntl } from '@/composables/useIntl';
 
 const props = defineProps({
@@ -319,7 +317,7 @@ onMounted(async () => {
         :userVote="userVote"
         :loadingMore="loadingMore"
       />
-      <PluginsProposal
+      <PluginProposal
         v-if="space && proposal.plugins && loadedResults"
         :proposal="proposal"
         :space="space"
@@ -420,7 +418,7 @@ onMounted(async () => {
         :votes="votes"
         :strategies="strategies"
       />
-      <PluginsProposalSidebar
+      <PluginProposalSidebar
         v-if="space && proposal.plugins && loadedResults"
         :id="id"
         :space="space"

@@ -17,8 +17,6 @@ import { useWeb3 } from '@/composables/useWeb3';
 import { useClient } from '@/composables/useClient';
 import { useStore } from '@/composables/useStore';
 import { setPageTitle } from '@/helpers/utils';
-import PluginsCreate from '@/plugins/Create.vue';
-import PluginsCreateSidebar from '@/plugins/CreateSidebar.vue';
 import { usePlugins } from '@/composables/usePlugins';
 import { useIntl } from '@/composables/useIntl';
 
@@ -361,7 +359,7 @@ watchEffect(() => {
           {{ $t('create.addChoice') }}
         </UiButton>
       </Block>
-      <PluginsCreate
+      <PluginCreate
         v-if="space?.plugins"
         :proposal="proposal"
         :space="space"
@@ -418,7 +416,7 @@ watchEffect(() => {
           {{ $t('create.publish') }}
         </UiButton>
       </Block>
-      <PluginsCreateSidebar
+      <PluginCreateSidebar
         v-if="space?.plugins"
         :proposal="proposal"
         :space="space"
