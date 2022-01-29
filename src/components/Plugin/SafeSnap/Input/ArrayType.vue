@@ -10,7 +10,7 @@ import {
 
 const getPlaceholder = (name, type) => {
   if (isAddress(type)) {
-    return 'E.g.: ["0xACa94ef8bD5ffEE41947b4585a84BdA5a3d3DA6E","0x1dF62f291b2E969fB0849d99D9Ce41e2F137006e"]';
+    return 'E.g.: ["0xACa9...DA6E","0x1dF6...006e"]';
   }
 
   if (isBoolean(type)) {
@@ -32,12 +32,25 @@ const getPlaceholder = (name, type) => {
   return 'E.g.: ["first value", "second value", "third value"]';
 };
 
+function getLabel(parameter) {
+  let type = parameter.type;
+  if (parameter.baseType === 'tuple') {
+    const components = parameter.components.map(param => param.type).join(', ');
+    type = `${type}(${components})`;
+  }
+  if (parameter.name) return `${parameter.name} (${type})`;
+  return type;
+}
+
 export default {
-  props: ['name', 'type', 'disabled'],
+  props: ['parameter', 'disabled'],
   emits: [],
   data() {
-    const label = `${this.name} (${this.type})`;
-    const placeholder = getPlaceholder(this.name, this.type);
+    const label = getLabel(this.parameter);
+    const placeholder = getPlaceholder(
+      this.parameter.name,
+      this.parameter.type
+    );
     return {
       input: '',
       dirty: false,

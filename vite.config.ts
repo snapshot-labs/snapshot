@@ -24,7 +24,6 @@ export default defineConfig({
     dedupe: ['@popperjs/core']
   },
   optimizeDeps: {
-    include: ['color'],
     // @ts-ignore
     allowNodeBuiltins: ['stream']
   }
