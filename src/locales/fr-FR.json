@@ -51,7 +51,7 @@
   "confirmRemove": "Êtes-vous sûr de vouloir supprimer votre délégation à",
   "removeSpace": "pour l'espace {0}",
   "confirmVote": "Confirmez votre vote",
-  "sureToVote": "Are you sure you want to cast this vote?",
+  "sureToVote": "Êtes-vous sûr de vouloir voter ceci ?",
   "cannotBeUndone": "Cette action est irréversible.",
   "options": "Option(s)",
   "votingPower": "Votre pouvoir de vote",
