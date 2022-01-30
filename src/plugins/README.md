@@ -67,6 +67,10 @@ const { web3Account } = useWeb3();
 </template>
 ```
 
+### Snapshot.js
+
+TODO
+
 ## Config defaults
 
 Most plugins will require some configuration options, so that the a space admin can enter their token address, API endpoints,... and so on. Defaults can be defined in the `plugin.json` as follows:
@@ -129,3 +133,7 @@ export default (storedProposal): void => {
 ```
 
 Any existing libraries/packages/composables can be imported normally. When hook functions are executed, they will be `await`ed, so the workflow in the UI can be intercepted.
+
+## Translations
+
+TODO
