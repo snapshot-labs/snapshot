@@ -51,10 +51,7 @@ function emitChoice(c) {
       />
     </div>
     <UiButton
-      :disabled="
-        web3.authLoading ||
-        (selectedChoices < 1 && proposal.type !== 'approval')
-      "
+      :disabled="web3.authLoading || selectedChoices < 1"
       @click="$emit('clickVote')"
       class="block w-full"
       primary
