@@ -2,12 +2,7 @@
 import { ref, computed, watch, onMounted, inject, watchEffect } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
-import {
-  getProposal,
-  getResults,
-  getPower,
-  getProposalVotes
-} from '@/helpers/snapshot';
+import { getProposal, getResults, getProposalVotes } from '@/helpers/snapshot';
 import { setPageTitle, explorerUrl, getIpfsUrl } from '@/helpers/utils';
 import { useModal } from '@/composables/useModal';
 import { useTerms } from '@/composables/useTerms';
@@ -47,8 +42,6 @@ const proposal = ref({});
 const votes = ref([]);
 const userVote = ref([]);
 const results = ref({});
-const totalScore = ref(0);
-const scores = ref([]);
 const modalStrategiesOpen = ref(false);
 
 const isCreator = computed(() => proposal.value.author === web3Account.value);
@@ -93,9 +86,7 @@ async function loadProposal() {
   ) {
     router.push({ name: 'error-404' });
   }
-
   loading.value = false;
-  if (loaded.value) loadResults();
 }
 
 function formatProposalVotes(votes) {
@@ -146,22 +137,6 @@ async function loadMoreVotes() {
   votes.value = votes.value.concat(formatProposalVotes(votesObj));
 }
 
-async function loadPower() {
-  if (
-    !web3Account.value ||
-    !proposal.value.author ||
-    proposal.value.state === 'closed'
-  )
-    return;
-  const response = await getPower(
-    props.space,
-    web3Account.value,
-    proposal.value
-  );
-  totalScore.value = response.totalScore;
-  scores.value = response.scores;
-}
-
 async function deleteProposal() {
   const result = await send(props.space, 'delete-proposal', {
     proposal: proposal.value
@@ -210,8 +185,7 @@ watch(proposal, () => {
   loadProfiles([proposal.value.author]);
 });
 
-watch(web3Account, (val, prev) => {
-  if (val?.toLowerCase() !== prev) loadPower();
+watch(web3Account, () => {
   const choice = route.query.choice;
   if (proposal.value && choice) {
     selectedChoices.value = parseInt(choice);
@@ -219,11 +193,8 @@ watch(web3Account, (val, prev) => {
   }
 });
 
-watch([loaded, web3Account], () => {
-  if (web3.value.authLoading && !web3Account.value) return;
-  if (!loaded.value) return;
-  loadResults();
-  loadPower();
+watch(loaded, () => {
+  if (loaded.value === true) loadResults();
 });
 
 watchEffect(() => {
@@ -434,13 +405,11 @@ onMounted(async () => {
     <ModalConfirm
       :open="modalOpen"
       @close="modalOpen = false"
-      @reload="loadProposal"
+      @reload="[loadProposal, loadResults]"
       :space="space"
       :proposal="proposal"
       :id="id"
       :selectedChoices="selectedChoices"
-      :totalScore="totalScore"
-      :scores="scores"
       :snapshot="proposal.snapshot"
       :strategies="strategies"
     />
