@@ -91,7 +91,9 @@ async function handleSubmit() {
   if (loading.value) return;
   try {
     loading.value = true;
-    const token = localStorage.getItem('_commentBox.token');
+    const token = localStorage.getItem(
+      `_commentBox.token-${web3Account.value}`
+    );
     let sig;
     const msg = {
       author: web3Account.value,
@@ -117,11 +119,12 @@ async function handleSubmit() {
     if (res.refresh) throw new Error('refresh');
     if (!res.status) return notify(['primary', t('comment_box.error')]);
     comment.value = '';
-    if (res.token) localStorage.setItem('_commentBox.token', res.token);
+    if (res.token)
+      localStorage.setItem(`_commentBox.token-${web3Account.value}`, res.token);
     allData.value.push(res.data);
   } catch (e) {
     if (e.message === 'refresh') {
-      localStorage.removeItem('_commentBox.token');
+      localStorage.removeItem(`_commentBox.token-${web3Account.value}`);
       handleSubmit();
       return;
     }
