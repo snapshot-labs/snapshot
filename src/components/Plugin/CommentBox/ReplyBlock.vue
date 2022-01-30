@@ -65,7 +65,9 @@ async function deleteItem() {
   if (loading.value) return;
   try {
     loading.value = true;
-    const token = localStorage.getItem('_commentBox.token');
+    const token = localStorage.getItem(
+      `_commentBox.token-${web3Account.value}`
+    );
     let sig;
     const msg = { key: props.item.key };
     if (!token)
@@ -87,14 +89,15 @@ async function deleteItem() {
     loading.value = false;
     if (res.refresh) throw new Error('refresh');
     if (!res.status) return notify(['primary', t('comment_box.error')]);
-    if (res.token) localStorage.setItem('_commentBox.token', res.token);
+    if (res.token)
+      localStorage.setItem(`_commentBox.token-${web3Account.value}`, res.token);
     emit('deleteItem', props.item.key);
     closeModal.value = false;
 
     return;
   } catch (e) {
     if (e.message === 'refresh') {
-      localStorage.removeItem('_commentBox.token');
+      localStorage.removeItem(`_commentBox.token-${web3Account.value}`);
       deleteItem();
       return;
     }
