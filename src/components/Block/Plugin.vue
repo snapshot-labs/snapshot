@@ -6,7 +6,7 @@ const { formatCompactNumber } = useIntl();
 const { pluginsSpacesCount } = usePlugins();
 
 defineProps({
-  plugin: Object
+  plugin: Object // src/plugins/**/plugin.json
 });
 </script>
 
