@@ -191,6 +191,7 @@ export const SPACES_QUERY = gql`
       admins
       categories
       plugins
+      followersCount
       voting {
         delay
         period
@@ -228,6 +229,56 @@ export const SPACE_SKIN_QUERY = gql`
   query Space($id: String!) {
     space(id: $id) {
       skin
+    }
+  }
+`;
+
+export const SPACE_DELEGATE_QUERY = gql`
+  query Space($id: String!) {
+    space(id: $id) {
+      id
+      symbol
+      network
+      strategies {
+        name
+        params
+      }
+    }
+  }
+`;
+
+export const SKINS_COUNT_QUERY = gql`
+  query Skins {
+    skins {
+      id
+      spacesCount
+    }
+  }
+`;
+
+export const NETWORKS_COUNT_QUERY = gql`
+  query Networks {
+    networks {
+      id
+      spacesCount
+    }
+  }
+`;
+
+export const PLUGINS_COUNT_QUERY = gql`
+  query Plugins {
+    plugins {
+      id
+      spacesCount
+    }
+  }
+`;
+
+export const VALIDATIONS_COUNT_QUERY = gql`
+  query Validations {
+    validations {
+      id
+      spacesCount
     }
   }
 `;

@@ -37,9 +37,9 @@ onBeforeUnmount(() => window.removeEventListener('click', close));
   <div
     ref="dropdownEl"
     @click.capture="hideDropdown ? $emit('clickedNoDropdown') : (open = !open)"
-    class="relative"
+    class="relative h-full"
   >
-    <div class="button">
+    <div class="button flex items-center h-full">
       <slot />
     </div>
     <div class="sub-menu-wrapper" :class="{ hidden: !open }" :style="cssVars">
@@ -49,8 +49,9 @@ onBeforeUnmount(() => window.removeEventListener('click', close));
           :key="item"
           @click="handleClick(item.action)"
           :class="{ selected: item.selected }"
+          class="list-none block whitespace-nowrap px-[18px] py-[2px]"
         >
-          <slot name="item" :item="item" :key="key">
+          <slot name="item" :item="item" :key="item">
             <Icon
               v-if="item.icon"
               :name="item.icon"
@@ -74,12 +75,6 @@ onBeforeUnmount(() => window.removeEventListener('click', close));
 }
 
 li {
-  list-style: none;
-  display: block;
-  white-space: nowrap;
-  padding-left: 18px;
-  padding-right: 18px;
-  padding-top: 3px;
   line-height: 34px;
   cursor: pointer;
 }

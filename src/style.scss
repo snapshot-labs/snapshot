@@ -30,18 +30,14 @@
 @layer base {
   @font-face {
     font-family: 'Calibre';
-    src: url('./assets/fonts/Calibre-Medium.woff2') format('woff2'),
-      url('./assets/fonts/Calibre-Medium.woff') format('woff'),
-      url('./assets/fonts/Calibre-Medium.ttf') format('truetype');
+    src: url('./assets/fonts/Calibre-Medium-Custom.woff2') format('woff2');
     font-weight: 500;
     font-style: normal;
   }
 
   @font-face {
     font-family: 'Calibre';
-    src: url('./assets/fonts/Calibre-Semibold.woff2') format('woff2'),
-      url('./assets/fonts/Calibre-Semibold.woff') format('woff'),
-      url('./assets/fonts/Calibre-Semibold.ttf') format('truetype');
+    src: url('./assets/fonts/Calibre-Semibold-Custom.woff2') format('woff2');
     font-weight: 600;
     font-style: normal;
   }
@@ -68,16 +64,14 @@
 
 @layer utilities {
   // This allows us to use 'no-scrollbar' with Tailwind breakpoints like this 'md:no-scrollbar'
-  @variants responsive {
-    /* Chrome, Safari and Opera */
-    .no-scrollbar::-webkit-scrollbar {
-      display: none;
-    }
+  /* Chrome, Safari and Opera */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
 
-    .no-scrollbar {
-      -ms-overflow-style: none; /* IE and Edge */
-      scrollbar-width: none; /* Firefox */
-    }
+  .no-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
   }
 }
 
@@ -168,23 +162,6 @@ select {
 
 .bg-black {
   background-color: var(--bg-color);
-}
-
-.State {
-  font-size: 16px;
-  line-height: 30px;
-  height: 28px;
-  vertical-align: middle;
-  padding: 0 12px;
-  border-radius: 14px;
-}
-
-.State.slim {
-  padding: 0;
-  height: 12px;
-  width: 12px;
-  border-radius: 50%;
-  display: inline-block;
 }
 
 .notification {
@@ -294,6 +271,10 @@ input[type='number']::-webkit-outer-spin-button {
   margin: 0;
 }
 
+input[type='number'] {
+  -moz-appearance: textfield;
+}
+
 .tippy-box[data-animation='fade'][data-state='hidden'] {
   opacity: 0;
 }
@@ -379,4 +360,8 @@ input[type='number']::-webkit-outer-spin-button {
 
 .s-label {
   @apply block mb-1;
+}
+
+.lazy-loading {
+  @apply bg-skin-text animate-pulse-fast;
 }

@@ -1,19 +1,10 @@
 <script>
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
-import { validateSafeData, getSafeHash } from '@/helpers/abi/utils';
-
-const isValidInput = input => {
-  return input.safes.every(validateSafeData);
-};
-
-const coerceConfig = (config, network) => {
-  if (config.safes) return config;
-
-  // map legacy config to new format
-  return {
-    safes: [{ network, realityAddress: config.address }]
-  };
-};
+import {
+  coerceConfig,
+  isValidInput,
+  getSafeHash
+} from '@/../snapshot-plugins/src/plugins/safeSnap';
 
 export default {
   props: [
@@ -25,17 +16,28 @@ export default {
   ],
   emits: ['update:modelValue'],
   data() {
-    const initialValue = {
-      safes: coerceConfig(this.config, this.network).safes.map(safe => ({
-        ...safe,
-        hash: null,
-        txs: []
-      })),
-      valid: true
-    };
-    return {
-      input: this.modelValue ? clone(this.modelValue) : initialValue
-    };
+    let input;
+    if (!this.modelValue) {
+      input = {
+        safes: coerceConfig(this.config, this.network).safes.map(safe => ({
+          ...safe,
+          hash: null,
+          txs: []
+        })),
+        valid: true
+      };
+    } else {
+      const value = clone(this.modelValue);
+      if (value.safes && this.config && Array.isArray(this.config.safes)) {
+        value.safes = value.safes.map((safe, index) => ({
+          ...this.config.safes[index],
+          ...safe
+        }));
+      }
+      input = coerceConfig(value, this.network);
+    }
+
+    return { input };
   },
   methods: {
     updateSafeTransactions() {
@@ -73,6 +75,7 @@ export default {
           :hash="safe.hash"
           :network="safe.network"
           :realityAddress="safe.realityAddress"
+          :multiSendAddress="safe.multiSendAddress"
           :modelValue="safe.txs"
           @update:modelValue="updateSafeTransactions(index, $event)"
         />

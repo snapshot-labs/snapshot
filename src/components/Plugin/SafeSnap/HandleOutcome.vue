@@ -36,7 +36,7 @@
           Reality oracle
           <a
             @click="updateDetails"
-            class="float-right text-color"
+            class="ml-2 float-right text-color"
             style="padding-top: 2px"
           >
             <Icon name="refresh" size="16" />
@@ -158,13 +158,14 @@ import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { sleep } from '@snapshot-labs/snapshot.js/src/utils';
 import { BigNumber } from '@ethersproject/bignumber';
-import { formatBatchTransaction } from '@/helpers/abi/utils';
 import { formatUnits } from '@ethersproject/units';
 import { useSafesnap } from '@/composables/useSafesnap';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useTxStatus } from '@/composables/useTxStatus';
 import { useNotifications } from '@/composables/useNotifications';
-import { ms } from '@/helpers/utils';
+import { useIntl } from '@/composables/useIntl';
+
+const { formatRelativeTime } = useIntl();
 
 const { clearBatchError, setBatchError } = useSafesnap();
 const { web3 } = useWeb3();
@@ -239,7 +240,13 @@ const ensureRightNetwork = async chainId => {
 };
 
 export default {
-  props: ['batches', 'proposalId', 'network', 'realityAddress'],
+  props: [
+    'batches',
+    'proposalId',
+    'network',
+    'realityAddress',
+    'multiSendAddress'
+  ],
   data() {
     return {
       loading: true,
@@ -259,16 +266,13 @@ export default {
   },
   methods: {
     async updateDetails() {
-      if (!this.realityAddress) return;
       this.loading = true;
       try {
-        this.questionDetails = await plugin.getExecutionDetails(
+        this.questionDetails = await plugin.getExecutionDetailsWithHashes(
           this.network,
           this.realityAddress,
           this.proposalId,
-          this.batches.map((batch, nonce) =>
-            formatBatchTransaction(batch.transactions, nonce)
-          )
+          this.getTxHashes()
         );
         if (this.questionDetails.questionId && this.$auth.web3) {
           this.bondData = await plugin.loadClaimBondData(
@@ -318,11 +322,11 @@ export default {
       this.actionInProgress = 'submit-proposal';
       try {
         await ensureRightNetwork(this.network);
-        const proposalSubmission = plugin.submitProposal(
+        const proposalSubmission = plugin.submitProposalWithHashes(
           this.$auth.web3,
           this.realityAddress,
           this.questionDetails.proposalId,
-          this.questionDetails.transactions
+          this.getTxHashes()
         );
         await proposalSubmission.next();
         this.actionInProgress = null;
@@ -351,7 +355,7 @@ export default {
           option
         );
         const step = await voting.next();
-        if (step.value == 'erc20-approval') {
+        if (step.value === 'erc20-approval') {
           this.actionInProgress = null;
           pendingCount.value++;
           await voting.next();
@@ -382,11 +386,14 @@ export default {
 
       try {
         clearBatchError();
-        const executingProposal = plugin.executeProposal(
+        const transaction =
+          this.batches[this.questionDetails.nextTxIndex].mainTransaction;
+        const executingProposal = plugin.executeProposalWithHashes(
           this.$auth.web3,
           this.realityAddress,
           this.questionDetails.proposalId,
-          this.questionDetails.transactions,
+          this.getTxHashes(),
+          transaction,
           this.questionDetails.nextTxIndex
         );
         await executingProposal.next();
@@ -395,11 +402,16 @@ export default {
         await executingProposal.next();
         notify(this.$i18n.t('notify.youDidIt'));
         pendingCount.value--;
+        await sleep(3e3);
+        await this.updateDetails();
       } catch (err) {
         pendingCount.value--;
         this.action2InProgress = null;
         setBatchError(this.questionDetails.nextTxIndex, err.reason);
       }
+    },
+    getTxHashes() {
+      return this.batches.map(batch => batch.hash);
     }
   },
   computed: {
@@ -472,7 +484,7 @@ export default {
             return {
               decision: 'Yes',
               timeLeft: this.$i18n.t('safeSnap.executableIn', [
-                ms(endTime + this.questionDetails.cooldown)
+                formatRelativeTime(endTime + this.questionDetails.cooldown)
               ])
             };
           }
@@ -484,7 +496,9 @@ export default {
 
         return {
           decision: isApproved ? 'Yes' : 'No',
-          timeLeft: this.$i18n.t('safeSnap.finalizedIn', [ms(endTime)]),
+          timeLeft: this.$i18n.t('safeSnap.finalizedIn', [
+            formatRelativeTime(endTime)
+          ]),
           currentBond:
             formatUnits(currentBond, this.bondData.tokenDecimals) +
             ' ' +

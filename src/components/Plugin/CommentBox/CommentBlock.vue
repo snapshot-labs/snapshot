@@ -1,12 +1,14 @@
 <script setup>
 import { ref, onMounted, computed, watch } from 'vue';
-import { ms } from '@/helpers/utils';
 import { useNotifications } from '@/composables/useNotifications';
 import { useModal } from '@/composables/useModal';
 import { useWeb3 } from '@/composables/useWeb3';
 import { signMessage } from '@snapshot-labs/snapshot.js/src/utils/web3';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { useI18n } from 'vue-i18n';
+import { useIntl } from '@/composables/useIntl';
+
+const { formatRelativeTime } = useIntl();
 const { t } = useI18n();
 const auth = getInstance();
 const { modalOpen, modalAccountOpen } = useModal();
@@ -74,7 +76,9 @@ async function deleteItem() {
   try {
     console.log(props.space);
     loading.value = true;
-    const token = localStorage.getItem('_commentBox.token');
+    const token = localStorage.getItem(
+      `_commentBox.token-${web3Account.value}`
+    );
     let sig;
     const msg = { key: props.item.key };
     if (!token)
@@ -96,14 +100,15 @@ async function deleteItem() {
     loading.value = false;
     if (res.refresh) throw new Error('refresh');
     if (!res.status) return notify(['primary', t('comment_box.error')]);
-    if (res.token) localStorage.setItem('_commentBox.token', res.token);
+    if (res.token)
+      localStorage.setItem(`_commentBox.token-${web3Account.value}`, res.token);
     allReply.value = 0;
     emit('deleteItem', props.item.key);
     closeModal.value = false;
     return;
   } catch (e) {
     if (e.message === 'refresh') {
-      localStorage.removeItem('_commentBox.token');
+      localStorage.removeItem(`_commentBox.token-${web3Account.value}`);
       deleteItem();
       return;
     }
@@ -243,7 +248,7 @@ function deleteItemReply(key) {
         /><span
           v-text="$d(item.timestamp, 'short', 'en-US')"
           v-tippy="{
-            content: ms(item.timestamp / 1e3)
+            content: formatRelativeTime(item.timestamp / 1e3)
           }"
           class="ml-1"
         />
