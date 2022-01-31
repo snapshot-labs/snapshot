@@ -6,6 +6,8 @@ In essence, a plugin can add additional, custom data to a proposal, which can be
 > To avoid confusion, it is worth mentioning here that the plugin system is not meant to support and make available any arbitrary plugin out of the box.
 Rather, it is a curated list of reviewed plugins. Development of new plugins should be coordinated with the core team.
 
+## Create new plugin
+
 To create a plugin start by creating a `plugin.json` inside of a new (camelCased) directory in `src/plugins`.
 
 ```shell
@@ -16,6 +18,8 @@ mkdir src/plugins/myPlugin && echo '{
 ```
 
 The plugin is now available in the space settings and can be enabled. But so far, it doesn't do anything. Next we will add a component for the proposal page.
+
+## Components
 
 In the plugin directory add a `Proposal.vue` and start with a basic single file component.
 
@@ -44,6 +48,35 @@ Here's the current list of possible plugin components:
 In those components you can do everything you can do in any other Vue 3 component. You can split the code across multiple components and import them in one of the above, as well as create your own composables or other helper files to structure your code as you like.
 
 It's technically not required but recommended to use Vue 3's composition API and the `<script setup>` syntax.
+
+### Properties
+
+To do something meaningful, a plugin will probably need some awareness of the current context (space, proposal, etc). This information is passed down to the plugin components as properties. A component on the proposal page, that needs the proposal's id can receive like this:
+
+```vue
+<script setup>
+defineProps({
+  id: Object
+});
+</script>
+
+<template>
+  <a :href="'https://...' + id"> ...
+</template>
+```
+
+Here are all properties passed down to plugin components:
+
+|  | Create form | Proposal page |
+| --- | --- | --- |
+| **proposal** | form content | current proposal |
+| **space** | space settings | space settings |
+| **preview** | preview enabled | - |
+| **id** | - | proposal id route parameter |
+| **results** | - | current voting results |
+| **loadedResults** | - | whether voting results finished loading |
+| **votes** | - | list of individual votes |
+| **strategies** | - | used strategies |
 
 ## Existing components/composables
 
