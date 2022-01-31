@@ -91,7 +91,7 @@ Under the `"space"` key you can define global config options for all proposals. 
 
 ## Hooks
 
-> Hooks are experimental and might be removed if there isn't enough demand to justify the extra bit of complexity. Make sure to share your plugin idea with the community and the core team before putting too much work in it.
+> Hooks are experimental and might be removed if there isn't enough demand to justify the extra bit of complexity. Make sure to share your plugin idea with the community and the core team before putting too much work into it.
 
 Hooks allow a plugin to execute a custom function when a certain action is performed on snapshot.org. Currently two hooks are available:
 
