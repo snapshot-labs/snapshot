@@ -1,8 +1,8 @@
 /**
  * Creates a plugin index from each individual plugin.json and provides
- * functions to register and load plugin components, execute hooks and filter
- * plugins by a search string (case insensitive), ordered by space count
- * fetched from backend.
+ * functions to register and load plugin components and filter plugins by a
+ * search string (case insensitive), ordered by space count fetched from
+ * backend.
  */
 
 import { ref, defineAsyncComponent } from 'vue';
@@ -39,24 +39,6 @@ const getPluginComponents = (componentName: string, pluginKeys) => {
       return false;
     })
     .map(comp => defineAsyncComponent(comp[1]));
-};
-
-// takes the space's enabled plugins (pluginKeys), checks if they have the
-// specified hook (hookName) in their plugin.json, imports and executes them
-const executePluginHooks = async (hookName, pluginKeys, payload) => {
-  pluginKeys = pluginKeys.filter(key => !!pluginIndex[key]); // remove old/non-existent plugins
-
-  for (let i = 0; i < pluginKeys.length; i++) {
-    const hookPath = pluginIndex[pluginKeys[i]].hooks?.[hookName]
-      ?.replace(/\.ts$/i, '')
-      .replace(/^\.\//, '');
-    if (hookPath) {
-      const { default: hook } = await import(
-        `../plugins/${pluginKeys[i]}/${hookPath}.ts`
-      );
-      await hook(payload);
-    }
-  }
 };
 
 // space count and filter function
@@ -98,7 +80,6 @@ export function usePlugins() {
   return {
     pluginIndex,
     getPluginComponents,
-    executePluginHooks,
     filterPlugins,
     getPluginsSpacesCount,
     pluginsSpacesCount,

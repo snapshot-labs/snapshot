@@ -4,7 +4,6 @@ import { useI18n } from 'vue-i18n';
 import { shorten, getChoiceString, explorerUrl } from '@/helpers/utils';
 import { useClient } from '@/composables/useClient';
 import { useIntl } from '@/composables/useIntl';
-import { usePlugins } from '@/composables/usePlugins';
 import { getPower } from '../../helpers/snapshot';
 import { useWeb3 } from '../../composables/useWeb3';
 
@@ -31,29 +30,17 @@ const notify = inject('notify');
 const { send, clientLoading } = useClient();
 const format = getChoiceString;
 const { formatNumber, formatCompactNumber } = useIntl();
-const { executePluginHooks } = usePlugins();
 
 const symbols = computed(() =>
   props.strategies.map(strategy => strategy.params.symbol)
 );
 
 async function handleSubmit() {
-  const vote = {
+  const result = await send(props.space, 'vote', {
     proposal: props.proposal,
     choice: props.selectedChoices,
     metadata: {}
-  };
-
-  await executePluginHooks('prevote', Object.keys(props.space.plugins), vote);
-
-  const result = await send(props.space, 'vote', vote);
-
-  await executePluginHooks(
-    'postvote',
-    Object.keys(props.space.plugins),
-    result
-  );
-
+  });
   console.log('Result', result);
   if (result.id) {
     notify(['green', t('notify.voteSuccessful')]);

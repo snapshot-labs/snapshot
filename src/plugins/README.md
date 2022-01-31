@@ -166,46 +166,6 @@ const {
 </template>
 ```
 
-## Hooks
+## Hooks (experimental)
 
-> Hooks are experimental and might be removed if there isn't enough demand to justify the extra bit of complexity. In general, always make sure to share your plugin idea with the community and the core team before putting too much work into it.
-
-Hooks allow a plugin to execute a custom function when a certain action is performed on snapshot.org. Currently four hooks are available:
-
-| hook name | executed | payload |
-| --- | --- | --- |
-| `precreate` | when clicking the publish button, before signing the message | the proposal form content |
-| `postcreate` | once the proposal has been successfully saved | the stored proposal content |
-| `prevote` | before confirming a vote | vote object |
-| `postvote` | once the vote has been successfully saved | the id of the stored vote, the ipfs hash and relayer information |
-
-To use these hooks, you need to specify a path in the `plugin.json` to a file exporting a single function:
-
-```json
-{
-  "name": "My Snapshot Plugin",
-  "description": "A plugin that uses hooks.",
-  "hooks": {
-    "precreate": "./hooks/precreate.ts",
-    "postcreate": "hooks/postcreate"
-  }
-}
-```
-
-The path must be relative to the plugin's directory and the file must be inside of that directory. (`./` and `.ts` can be omitted.)
-
-Now the functions can be created like this:
-
-```ts
-// src/plugins/MyPlugin/hooks/precreate.ts
-export default (proposalForm): void => {
-  console.log('My precreate hook:', proposalForm);
-}
-
-// src/plugins/MyPlugin/hooks/postcreate.ts
-export default (storedProposal): void => {
-  console.log('My postcreate hook:', storedProposal);
-}
-```
-
-Any existing libraries/packages/composables can be imported normally. When hook functions are executed, they will be `await`ed, so the workflow in the UI can be intercepted.
+Hooks are experimental and are not available in the live environment. If you think you have a good use case for such a feature, feel free to check out the [`experimental/plugin-hooks`](https://github.com/snapshot-labs/snapshot/tree/experimental/plugin-hooks) branch and [read here](https://github.com/snapshot-labs/snapshot/blob/experimental/plugin-hooks/src/plugins/README.md#hooks).

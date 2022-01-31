@@ -17,7 +17,6 @@ import { useWeb3 } from '@/composables/useWeb3';
 import { useClient } from '@/composables/useClient';
 import { useStore } from '@/composables/useStore';
 import { setPageTitle } from '@/helpers/utils';
-import { usePlugins } from '@/composables/usePlugins';
 import { useIntl } from '@/composables/useIntl';
 
 const props = defineProps({
@@ -28,7 +27,6 @@ const props = defineProps({
 
 const router = useRouter();
 const { t } = useI18n();
-const { executePluginHooks } = usePlugins();
 const { formatCompactNumber } = useIntl();
 const auth = getInstance();
 const { domain } = useDomain();
@@ -147,11 +145,6 @@ async function handleSubmit() {
   form.value.end = props.space.voting?.period
     ? form.value.start + props.space.voting.period
     : dateEnd.value;
-  await executePluginHooks(
-    'precreate',
-    Object.keys(props.space.plugins),
-    form.value
-  );
   const result = await send(props.space, 'proposal', form.value);
   console.log('Result', result);
   if (result.id) {
@@ -164,11 +157,6 @@ async function handleSubmit() {
         id: result.id
       }
     });
-    await executePluginHooks(
-      'postcreate',
-      Object.keys(props.space.plugins),
-      result
-    );
   }
 }
 
