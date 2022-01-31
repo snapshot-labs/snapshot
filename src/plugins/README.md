@@ -6,22 +6,16 @@ In essence, a plugin can add additional, custom data to a proposal, which can be
 > To avoid confusion, it is worth mentioning here that the plugin system is not meant to support and make available any arbitrary plugin out of the box.
 Rather, it is a curated list of reviewed plugins. Development of new plugins should be coordinated with the core team.
 
-To create a plugin start by creating a new (camelCase) directory in `src/plugins`.
+To create a plugin start by creating a `plugin.json` inside of a new (camelCased) directory in `src/plugins`.
 
 ```shell
-mkdir src/plugins/myPlugin
-```
-
-Now create a `plugin.json` inside of that directory and describe your plugin.
-
-```json
-{
+mkdir src/plugins/myPlugin && echo '{
   "name": "My Snapshot Plugin",
   "description": "A plugin to show how plugins are built."
-}
+}' > src/plugins/myPlugin/plugin.json
 ```
 
-The plugin is now available in the space settings and can be enabled. But so far, it doesn't do anything. So next we will add a component for the proposal page.
+The plugin is now available in the space settings and can be enabled. But so far, it doesn't do anything. Next we will add a component for the proposal page.
 
 In the plugin directory add a `Proposal.vue` and start with a basic single file component.
 
