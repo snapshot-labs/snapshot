@@ -3,7 +3,8 @@
 Plugins in Snapshot extend proposal functionality, like visualizing results in a chart or on-chain setteling.
 In essence, a plugin can add additional, custom data to a proposal, which can be used when rendering it or processing the results.
 
-## Plugin development
+> To avoid confusion, it is worth mentioning here that the plugin system is not meant to support and make available any arbitrary plugin out of the box.
+Rather, it is a curated list of reviewed plugins. Development of new plugins should be coordinated with the core team.
 
 To create a plugin start by creating a new (camelCase) directory in `src/plugins`.
 
@@ -24,7 +25,7 @@ The plugin is now available in the space settings and can be enabled. But so far
 
 In the plugin directory add a `Proposal.vue` and start with a basic single file component.
 
-```html
+```vue
 <script setup>
 const msg = 'Hello world!'
 </script>
@@ -52,9 +53,9 @@ It's technically not required but recommended to use Vue 3's composition API and
 
 ## Existing components/composables
 
-Any of the existing UI components in `src/components` or composables in `src/composables` can be used.
+Any of the existing UI components in `src/components`, composables in `src/composables` or installed packages (like [snapshot.js](https://docs.snapshot.org/snapshot.js)) can be used normally.
 
-```html
+```vue
 <script setup>
 import { useWeb3 } from '@/composables/useWeb3'
 const { web3Account } = useWeb3();
@@ -66,10 +67,6 @@ const { web3Account } = useWeb3();
   </Block>
 </template>
 ```
-
-### Snapshot.js
-
-TODO
 
 ## Config defaults
 
@@ -93,6 +90,8 @@ Most plugins will require some configuration options, so that the a space admin 
 Under the `"space"` key you can define global config options for all proposals. The `"proposal"` key let's you define options specific to a single proposal.
 
 ## Hooks
+
+> Hooks are experimental and might be removed if there isn't enough demand to justify the extra bit of complexity. Make sure to share your plugin idea with the community and the core team before putting too much work in it.
 
 Hooks allow a plugin to execute a custom function when a certain action is performed on snapshot.org. Currently two hooks are available:
 
@@ -134,6 +133,52 @@ export default (storedProposal): void => {
 
 Any existing libraries/packages/composables can be imported normally. When hook functions are executed, they will be `await`ed, so the workflow in the UI can be intercepted.
 
-## Translations
+## Localization
 
-TODO
+The snapshot.org interface supports multiple languages and new plugins should be built with that in mind. Don't use raw text strings in your plugin's components directly but use the `t` function instead:
+
+```vue
+<template>
+  <h1>{{ $t('myPlugin.hello') }}</h1>
+</template>
+```
+
+The actual text needs to be added in `src/locales/default.json` (only!) to be available for translators.
+
+```json
+{
+  "myPlugin": {
+    "hello": "Hello World!"
+  }
+}
+```
+
+Learn more about localization in Vue [here](https://vue-i18n.intlify.dev/).
+
+### Numbers and relative time
+
+Apart from `vue-i18n`, there are custom number and time formatters available in the `useIntl` composable.
+
+```vue
+<script setup>
+import { useIntl } from '@/composables/useIntl';
+
+const {
+  formatRelativeTime,
+  formatDuration,
+  formatNumber,
+  formatCompactNumber,
+  formatPercentNumber
+} = useIntl();
+</script>
+
+<template>
+  <div>
+    {{ formatRelativeTime(1643350286) }} <!-- "5 minutes ago" -->
+    {{ formatDuration(654) }}            <!-- "11 minutes" --> 
+    {{ formatNumber(1643350) }}          <!-- "1,643,350" -->
+    {{ formatCompactNumber(1643350) }}   <!-- "1.6M" -->
+    {{ formatPercentNumber(0.86543) }}   <!-- "86.54%" -->
+  </div>
+</template>
+```
