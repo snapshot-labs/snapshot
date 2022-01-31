@@ -2,10 +2,13 @@
 import { usePlugins } from '@/composables/usePlugins';
 
 const props = defineProps({
+  id: String,
   proposal: Object,
   space: Object,
+  results: Object,
+  loadedResults: Object,
   votes: Object,
-  loadedResults: Object
+  strategies: Object
 });
 
 const { getPluginComponents } = usePlugins();

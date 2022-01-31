@@ -290,10 +290,13 @@ onMounted(async () => {
       />
       <PluginProposal
         v-if="space && proposal.plugins && loadedResults"
-        :proposal="proposal"
+        :id="id"
         :space="space"
-        :votes="votes"
+        :proposal="proposal"
+        :results="results"
         :loadedResults="loadedResults"
+        :votes="votes"
+        :strategies="strategies"
       />
     </template>
     <template #sidebar-right v-if="loaded">
