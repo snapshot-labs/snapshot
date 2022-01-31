@@ -22,6 +22,8 @@ const pluginIndex: Record<string, any> = Object.fromEntries(
 );
 
 // prepare all plugin's main components imports (Create.vue, Proposal.vue, etc.)
+// doesn't actually import anything but prepares functions to use with
+// defineAsyncComponent below
 const allPluginComponents = import.meta.glob(`../plugins/*/*.vue`);
 
 // get required components for specific location (componentName) and list of active plugins
