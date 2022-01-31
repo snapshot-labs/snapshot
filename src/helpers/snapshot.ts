@@ -6,7 +6,7 @@ import cloneDeep from 'lodash/cloneDeep';
 
 export async function getProposalVotes(
   proposalId: string,
-  { first, voter, skip }: any = { first: 20000, voter: '', skip: 0 }
+  { first, voter, skip }: any = { first: 30000, voter: '', skip: 0 }
 ) {
   try {
     console.time('getProposalVotes');
