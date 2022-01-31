@@ -109,7 +109,6 @@ export function useWeb3() {
     logout,
     loadProvider,
     handleChainChanged,
-    getAuth: getInstance,
     web3: computed(() => state),
     web3Account: computed(() => state.account)
   };
