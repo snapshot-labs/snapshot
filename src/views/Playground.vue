@@ -78,7 +78,6 @@ async function loadScores() {
       parseInt(form.value.snapshot),
       import.meta.env.VITE_SCORES_URL + '/api/scores'
     );
-    console.log(scores.value);
     loading.value = false;
   } catch (e) {
     loading.value = false;
