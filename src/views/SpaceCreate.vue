@@ -51,7 +51,6 @@ const form = ref({
   type: 'single-choice'
 });
 const modalOpen = ref(false);
-const modalProposalPluginsOpen = ref(false);
 const modalVotingTypeOpen = ref(false);
 const selectedDate = ref('');
 const counter = ref(0);
@@ -348,26 +347,16 @@ watchEffect(() => {
           {{ $t('create.addChoice') }}
         </UiButton>
       </Block>
-
-      <PluginSafeSnapConfig
-        v-if="space?.plugins?.safeSnap"
+      <PluginCreate
+        v-if="space?.plugins"
         :proposal="proposal"
-        :config="space.plugins?.safeSnap"
-        :network="space.network"
-        v-model="form.metadata.plugins.safeSnap"
+        :space="space"
+        :preview="preview"
+        v-model="form.metadata.plugins"
       />
     </template>
     <template #sidebar-right v-if="!preview">
-      <Block
-        :title="$t('actions')"
-        :icon="
-          space?.plugins && Object.keys(space.plugins).length > 0
-            ? 'stars'
-            : undefined
-        "
-        :loading="!space"
-        @submit="modalProposalPluginsOpen = true"
-      >
+      <Block :title="$t('actions')" :loading="!space">
         <div class="mb-2">
           <UiButton
             class="w-full mb-2"
@@ -415,6 +404,13 @@ watchEffect(() => {
           {{ $t('create.publish') }}
         </UiButton>
       </Block>
+      <PluginCreateSidebar
+        v-if="space?.plugins"
+        :proposal="proposal"
+        :space="space"
+        :preview="preview"
+        v-model="form.metadata.plugins"
+      />
     </template>
   </Layout>
   <teleport to="#modal" v-if="space">
@@ -424,13 +420,6 @@ watchEffect(() => {
       :open="modalOpen"
       @close="modalOpen = false"
       @input="setDate"
-    />
-    <ModalProposalPlugins
-      :space="space"
-      :proposal="proposal"
-      v-model="form.metadata.plugins"
-      :open="modalProposalPluginsOpen"
-      @close="modalProposalPluginsOpen = false"
     />
     <ModalTerms
       :open="modalTermsOpen"

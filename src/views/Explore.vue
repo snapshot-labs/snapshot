@@ -6,8 +6,8 @@ import { useScrollMonitor } from '@/composables/useScrollMonitor';
 import { setPageTitle } from '@/helpers/utils';
 import { useIntl } from '@/composables/useIntl';
 import { useNetworksFilter } from '@/composables/useNetworksFilter';
-import { usePluginsFilter } from '@/composables/usePluginsFilter';
 import { useStrategies } from '@/composables/useStrategies';
+import { usePlugins } from '@/composables/usePlugins';
 
 const { t } = useI18n();
 const { formatCompactNumber } = useIntl();
@@ -30,8 +30,8 @@ const resultsStr = computed(() => {
 const { filterNetworks, getNetworksSpacesCount, loadingNetworks } =
   useNetworksFilter();
 
-const { filterPlugins, getPluginsSpacesCount, loadingPlugins } =
-  usePluginsFilter();
+const { filterPlugins, getPluginsSpacesCount, loadingPluginsSpaceCount } =
+  usePlugins();
 
 const { filterStrategies, getStrategies, loadingStrategies } = useStrategies();
 
@@ -115,7 +115,7 @@ onMounted(() => {
           </div>
         </template>
         <template v-if="route.name === 'plugins'">
-          <RowLoadingBlock v-if="loadingPlugins" />
+          <RowLoadingBlock v-if="loadingPluginsSpaceCount" />
           <div v-else>
             <BlockPlugin
               v-for="item in items.slice(0, limit)"
