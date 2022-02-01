@@ -54,9 +54,11 @@ export function useStrategies() {
       },
       'strategy'
     );
-    extendedStrategies.value = extendedStrategies.value.concat([strategyObj]);
-    extendedStrategy.value =
-      extendedStrategies.value.find(st => st?.id === id) ?? null;
+
+    if (strategyObj) {
+      extendedStrategies.value.push(strategyObj);
+      extendedStrategy.value = strategyObj;
+    }
 
     loadingExtendedStrategy.value = false;
     return;
