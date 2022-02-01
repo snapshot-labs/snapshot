@@ -2,12 +2,12 @@
 import { computed, ref, onMounted, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
-import { useSearchFilters } from '@/composables/useSearchFilters';
 import { useScrollMonitor } from '@/composables/useScrollMonitor';
 import { setPageTitle } from '@/helpers/utils';
 import { useIntl } from '@/composables/useIntl';
 import { useNetworksFilter } from '@/composables/useNetworksFilter';
 import { usePluginsFilter } from '@/composables/usePluginsFilter';
+import { useStrategies } from '@/composables/useStrategies';
 
 const { t } = useI18n();
 const { formatCompactNumber } = useIntl();
@@ -27,17 +27,17 @@ const resultsStr = computed(() => {
   return t('explore.results');
 });
 
-const { filteredStrategies } = useSearchFilters();
-
 const { filterNetworks, getNetworksSpacesCount, loadingNetworks } =
   useNetworksFilter();
 
 const { filterPlugins, getPluginsSpacesCount, loadingPlugins } =
   usePluginsFilter();
 
+const { filterStrategies, getStrategies, loadingStrategies } = useStrategies();
+
 const items = computed(() => {
   const q = route.query.q || '';
-  if (route.name === 'strategies') return filteredStrategies(q);
+  if (route.name === 'strategies') return filterStrategies(q);
   if (route.name === 'networks') return filterNetworks(q);
   if (route.name === 'plugins') return filterPlugins(q);
   return [];
@@ -48,9 +48,17 @@ watch(
   () => {
     if (route.name === 'networks') getNetworksSpacesCount();
     if (route.name === 'plugins') getPluginsSpacesCount();
+    if (route.name === 'strategies') getStrategies();
   },
   { immediate: true }
 );
+
+const loading = computed(() => {
+  if (route.name === 'strategies') return loadingStrategies;
+  if (route.name === 'networks') return loadingNetworks;
+  if (route.name === 'plugins') return loadingPlugins;
+  return false;
+});
 
 const loadBy = 8;
 const limit = ref(loadBy);
@@ -87,11 +95,14 @@ onMounted(() => {
     <Container :slim="true">
       <div class="overflow-hidden">
         <template v-if="route.name === 'strategies'">
-          <template v-for="item in items.slice(0, limit)" :key="item.key">
-            <router-link :to="`/strategy/${item.key}`">
-              <BlockStrategy :strategy="item" class="mb-3" />
-            </router-link>
-          </template>
+          <RowLoadingBlock v-if="loadingStrategies" />
+          <div v-else>
+            <template v-for="item in items.slice(0, limit)" :key="item.key">
+              <router-link :to="`/strategy/${item.id}`">
+                <BlockStrategy :strategy="item" class="mb-3" />
+              </router-link>
+            </template>
+          </div>
         </template>
         <template v-if="route.name === 'networks'">
           <RowLoadingBlock v-if="loadingNetworks" />
@@ -114,7 +125,7 @@ onMounted(() => {
             />
           </div>
         </template>
-        <NoResults :block="true" v-if="Object.keys(items).length < 1" />
+        <NoResults :block="true" v-if="items.length < 1 && !loading" />
       </div>
     </Container>
     <div ref="endElement" />
