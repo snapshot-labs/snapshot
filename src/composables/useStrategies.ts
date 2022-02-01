@@ -8,8 +8,8 @@ import { useApolloQuery } from '@/composables/useApolloQuery';
 import { STRATEGIES_QUERY, EXTENDED_STRATEGIES_QUERY } from '@/helpers/queries';
 import { Strategy } from '@/helpers/interfaces';
 
-const strategies = ref<Strategy[] | []>([]);
-const extendedStrategies = ref<Strategy[] | []>([]);
+const strategies = ref<Strategy[]>([]);
+const extendedStrategies = ref<Strategy[]>([]);
 
 export function useStrategies() {
   const loadingStrategies = ref(false);
