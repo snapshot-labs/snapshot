@@ -12,7 +12,7 @@ const props = defineProps({
 const emit = defineEmits(['update:modelValue', 'close']);
 
 const searchInput = ref('');
-const { filterNetworks, getNetworksSpacesCount, loadingNetworks } =
+const { filterNetworks, getNetworksSpacesCount, loadingNetworksSpacesCount } =
   useNetworksFilter();
 const networks = computed(() => filterNetworks(searchInput.value));
 
@@ -41,7 +41,7 @@ function select(key) {
     />
 
     <div class="mt-4 mx-0 md:mx-4 min-h-[339px]">
-      <RowLoadingBlock v-if="loadingNetworks" />
+      <RowLoadingBlock v-if="loadingNetworksSpacesCount" />
       <div v-else>
         <a
           v-for="network in networks"

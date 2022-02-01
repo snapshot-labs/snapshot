@@ -249,3 +249,28 @@ export const VALIDATIONS_COUNT_QUERY = gql`
     }
   }
 `;
+
+export const STRATEGIES_QUERY = gql`
+  query Strategies {
+    strategies {
+      id
+      author
+      version
+      spacesCount
+    }
+  }
+`;
+
+export const EXTENDED_STRATEGY_QUERY = gql`
+  query Strategy($id: String!) {
+    strategy(id: $id) {
+      id
+      author
+      version
+      spacesCount
+      about
+      schema
+      examples
+    }
+  }
+`;

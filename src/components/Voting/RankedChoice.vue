@@ -67,8 +67,6 @@ function updateChoices() {
         :class="selectedChoices.includes(i + 1) && 'button--active'"
       >
         <span class="truncated">{{ choice }}</span>
-
-        <PluginAragonGovern :proposal="proposal" />
       </UiButton>
     </div>
   </div>
