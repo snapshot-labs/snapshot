@@ -261,9 +261,9 @@ export const STRATEGIES_QUERY = gql`
   }
 `;
 
-export const EXTENDED_STRATEGIES_QUERY = gql`
-  query Strategies {
-    strategies {
+export const EXTENDED_STRATEGY_QUERY = gql`
+  query Strategy($id: String!) {
+    strategy(id: $id) {
       id
       author
       version
