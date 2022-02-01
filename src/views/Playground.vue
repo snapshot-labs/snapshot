@@ -124,7 +124,6 @@ function copyURL() {
 watch(
   strategyExample,
   () => {
-    console.log(strategyExample.value);
     form.value.params = strategyExample.value?.strategy.params ?? defaultParams;
     form.value.network = strategyExample.value?.network ?? 1;
     form.value.addresses = strategyExample.value?.addresses ?? [];
