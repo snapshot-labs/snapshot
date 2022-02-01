@@ -8,7 +8,6 @@ import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import verified from '@/../snapshot-spaces/spaces/verified.json';
 import verifiedSpacesCategories from '@/../snapshot-spaces/spaces/categories.json';
 import { useDomain } from '@/composables/useDomain';
-import aliases from '@/../snapshot-spaces/spaces/aliases.json';
 import { useApolloQuery } from '@/composables/useApolloQuery';
 import { SPACE_SKIN_QUERY } from '@/helpers/queries';
 
@@ -41,7 +40,10 @@ export function useApp() {
     state.loading = false;
   }
 
+  const { domain } = useDomain();
+
   async function getExplore() {
+    if (domain) return;
     const exploreObj: any = await fetch(
       `${import.meta.env.VITE_HUB_URL}/api/explore`
     ).then(res => res.json());
@@ -64,13 +66,12 @@ export function useApp() {
     return;
   }
 
-  const { domain } = useDomain();
   const { apolloQuery } = useApolloQuery();
 
   const skin = ref('');
 
   async function getSkin() {
-    const key = aliases[domain] || domain;
+    const key = domain;
     if (key) {
       const spaceObj = await apolloQuery(
         {
