@@ -46,6 +46,6 @@ export function useNetworksFilter() {
     filterNetworks,
     getNetworksSpacesCount,
     networksSpacesCount,
-    loadingNetworks: loading
+    loadingNetworksSpacesCount: loading
   };
 }

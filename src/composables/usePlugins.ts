@@ -45,20 +45,20 @@ const getPluginComponents = (componentName: string, pluginKeys) => {
 
 // space count and filter function
 const pluginsSpacesCount: any = ref(null);
-const loadingPluginsSpaceCount = ref(false);
+const loadingPluginsSpacesCount = ref(false);
 
 const { apolloQuery } = useApolloQuery();
 const getPluginsSpacesCount = async () => {
   if (pluginsSpacesCount.value) return; // run only once
 
-  loadingPluginsSpaceCount.value = true;
+  loadingPluginsSpacesCount.value = true;
   const res = await apolloQuery({ query: PLUGINS_COUNT_QUERY }, 'plugins');
   // turn [{ id: "myPlugin", spaceCount: 1 }, ...] to { myPlugin: 1, ... }
   pluginsSpacesCount.value = res.reduce(
     (obj: any, item: any) => ({ ...obj, [item.id]: item.spacesCount }),
     {}
   );
-  loadingPluginsSpaceCount.value = false;
+  loadingPluginsSpacesCount.value = false;
 };
 
 const filterPlugins = (q = '') =>
@@ -85,6 +85,6 @@ export function usePlugins() {
     filterPlugins,
     getPluginsSpacesCount,
     pluginsSpacesCount,
-    loadingPluginsSpaceCount
+    loadingPluginsSpacesCount
   };
 }

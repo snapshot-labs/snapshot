@@ -27,10 +27,10 @@ const resultsStr = computed(() => {
   return t('explore.results');
 });
 
-const { filterNetworks, getNetworksSpacesCount, loadingNetworks } =
+const { filterNetworks, getNetworksSpacesCount, loadingNetworksSpacesCount } =
   useNetworksFilter();
 
-const { filterPlugins, getPluginsSpacesCount, loadingPluginsSpaceCount } =
+const { filterPlugins, getPluginsSpacesCount, loadingPluginsSpacesCount } =
   usePlugins();
 
 const { filterStrategies, getStrategies, loadingStrategies } = useStrategies();
@@ -54,9 +54,9 @@ watch(
 );
 
 const loading = computed(() => {
-  if (route.name === 'strategies') return loadingStrategies;
-  if (route.name === 'networks') return loadingNetworks;
-  if (route.name === 'plugins') return loadingPlugins;
+  if (route.name === 'strategies') return loadingStrategies.value;
+  if (route.name === 'networks') return loadingNetworksSpacesCount.value;
+  if (route.name === 'plugins') return loadingPluginsSpacesCount.value;
   return false;
 });
 
@@ -105,7 +105,7 @@ onMounted(() => {
           </div>
         </template>
         <template v-if="route.name === 'networks'">
-          <RowLoadingBlock v-if="loadingNetworks" />
+          <RowLoadingBlock v-if="loadingNetworksSpacesCount" />
           <div v-else>
             <template v-for="item in items.slice(0, limit)" :key="item.key">
               <router-link :to="`/?network=${item.key}`">
@@ -115,7 +115,7 @@ onMounted(() => {
           </div>
         </template>
         <template v-if="route.name === 'plugins'">
-          <RowLoadingBlock v-if="loadingPluginsSpaceCount" />
+          <RowLoadingBlock v-if="loadingPluginsSpacesCount" />
           <div v-else>
             <BlockPlugin
               v-for="item in items.slice(0, limit)"

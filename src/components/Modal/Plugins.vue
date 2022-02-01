@@ -14,7 +14,7 @@ const selectedPlugin = ref({});
 const {
   filterPlugins,
   pluginIndex,
-  loadingPluginsSpaceCount,
+  loadingPluginsSpacesCount,
   getPluginsSpacesCount
 } = usePlugins();
 
@@ -87,7 +87,7 @@ watch(open, () => {
         </UiButton>
       </div>
       <div v-if="!selectedPlugin?.key">
-        <RowLoadingBlock v-if="loadingPluginsSpaceCount" />
+        <RowLoadingBlock v-if="loadingPluginsSpacesCount" />
         <div v-else>
           <a
             v-for="(plugin, i) in filterPlugins(searchInput)"
