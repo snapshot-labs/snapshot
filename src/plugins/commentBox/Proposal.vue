@@ -2,7 +2,7 @@
 defineProps({
   proposal: Object,
   space: Object,
-  loadedResults: Object
+  loadedResults: Boolean
 });
 </script>
 
