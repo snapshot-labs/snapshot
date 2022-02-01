@@ -13,6 +13,8 @@ const extendedStrategies = ref<Strategy[]>([]);
 
 export function useStrategies() {
   const loadingStrategies = ref(false);
+  const extendedStrategy = ref<Strategy | null>(null);
+  const loadingExtendedStrategy = ref(false);
 
   const filterStrategies = (q = '') =>
     strategies.value
@@ -36,9 +38,12 @@ export function useStrategies() {
   }
 
   async function getExtendedStrategy(id: string) {
-    if (extendedStrategies.value.some(st => st?.id === id))
-      return extendedStrategies.value.find(st => st?.id === id);
-
+    if (extendedStrategies.value.some(st => st?.id === id)) {
+      extendedStrategy.value =
+        extendedStrategies.value.find(st => st?.id === id) ?? null;
+      return;
+    }
+    loadingExtendedStrategy.value = true;
     const strategyObj = await apolloQuery(
       {
         query: EXTENDED_STRATEGIES_QUERY
@@ -46,8 +51,11 @@ export function useStrategies() {
       'strategies'
     );
     extendedStrategies.value = extendedStrategies.value.concat(strategyObj);
+    extendedStrategy.value =
+      extendedStrategies.value.find(st => st?.id === id) ?? null;
 
-    return extendedStrategies.value.find(st => st?.id === id);
+    loadingExtendedStrategy.value = false;
+    return;
   }
 
   return {
@@ -55,7 +63,7 @@ export function useStrategies() {
     getStrategies,
     getExtendedStrategy,
     strategies,
-    extendedStrategies,
-    loadingStrategies
+    loadingStrategies,
+    extendedStrategy
   };
 }

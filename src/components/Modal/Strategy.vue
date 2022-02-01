@@ -21,13 +21,13 @@ const input = ref({
   params: {}
 });
 const loading = ref(false);
-const extendedStrategy = ref(null);
 
 const {
   filterStrategies,
   getStrategies,
   loadingStrategies,
-  getExtendedStrategy
+  getExtendedStrategy,
+  extendedStrategy
 } = useStrategies();
 const strategiesResults = computed(() => filterStrategies(searchInput.value));
 
@@ -45,7 +45,7 @@ function handleSubmit() {
 
 async function initStrategy(strategyName) {
   loading.value = true;
-  extendedStrategy.value = await getExtendedStrategy(strategyName);
+  await getExtendedStrategy(strategyName);
 }
 
 async function selectStrategy(strategyName) {
@@ -128,8 +128,7 @@ watch(open, () => {
     <template v-if="input.name" v-slot:footer>
       <UiButton
         @click="handleSubmit"
-        :disabled="!isValid || !input.params.symbol"
-        :loading="loading"
+        :disabled="!isValid || !input.params.symbol || loading"
         class="w-full"
         primary
       >
