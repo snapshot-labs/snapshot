@@ -5,7 +5,7 @@
 
 import { ref } from 'vue';
 import { useApolloQuery } from '@/composables/useApolloQuery';
-import { STRATEGIES_QUERY, EXTENDED_STRATEGIES_QUERY } from '@/helpers/queries';
+import { STRATEGIES_QUERY, EXTENDED_STRATEGY_QUERY } from '@/helpers/queries';
 import { Strategy } from '@/helpers/interfaces';
 
 const strategies = ref<Strategy[]>([]);
@@ -23,6 +23,7 @@ export function useStrategies() {
 
   const { apolloQuery } = useApolloQuery();
 
+  // Get full list of strategies without about, schema and examples
   async function getStrategies() {
     if (strategies.value.length > 0) return;
     loadingStrategies.value = true;
@@ -37,6 +38,8 @@ export function useStrategies() {
     return;
   }
 
+  // Get extended strategy by Id and save it in extendedStrategies
+  // don't load strategy if it's already loaded
   async function getExtendedStrategy(id: string) {
     if (extendedStrategies.value.some(st => st?.id === id)) {
       extendedStrategy.value =
@@ -46,11 +49,12 @@ export function useStrategies() {
     loadingExtendedStrategy.value = true;
     const strategyObj = await apolloQuery(
       {
-        query: EXTENDED_STRATEGIES_QUERY
+        query: EXTENDED_STRATEGY_QUERY,
+        variables: { id }
       },
-      'strategies'
+      'strategy'
     );
-    extendedStrategies.value = extendedStrategies.value.concat(strategyObj);
+    extendedStrategies.value = extendedStrategies.value.concat([strategyObj]);
     extendedStrategy.value =
       extendedStrategies.value.find(st => st?.id === id) ?? null;
 
