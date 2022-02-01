@@ -1,16 +1,16 @@
 <script setup>
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, onMounted, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import { getBlockNumber } from '@snapshot-labs/snapshot.js/src/utils/web3';
 import { getScores } from '@snapshot-labs/snapshot.js/src/utils';
-import { useApp } from '@/composables/useApp';
 import { useI18n } from 'vue-i18n';
 import { useCopy } from '@/composables/useCopy';
 import { decode, encode } from '@/helpers/b64';
 import { setPageTitle } from '@/helpers/utils';
 import { useIntl } from '@/composables/useIntl';
+import { useStrategies } from '@/composables/useStrategies';
 
 const defaultParams = {
   symbol: 'BAL',
@@ -21,14 +21,13 @@ const defaultParams = {
 const router = useRouter();
 const route = useRoute();
 const { query: queryParams } = useRoute();
-const { strategies } = useApp();
 const { copyToClipboard } = useCopy();
 const { t } = useI18n();
 const { formatCompactNumber } = useIntl();
+const { getExtendedStrategy, extendedStrategy: strategy } = useStrategies();
 
 let provider;
 
-const strategy = computed(() => strategies.value[route.params.name]);
 const strategyExample = computed(() => {
   if (queryParams.query) {
     try {
@@ -36,17 +35,17 @@ const strategyExample = computed(() => {
         decode(queryParams.query)
       );
       return {
-        ...strategy.value.examples?.[0],
+        ...strategy.value?.examples?.[0],
         addresses,
         network,
         snapshot,
         strategy: { params }
       };
     } catch (e) {
-      return strategy.value.examples?.[0];
+      return strategy.value?.examples?.[0];
     }
   }
-  return strategy.value.examples?.[0];
+  return strategy.value?.examples?.[0];
 });
 
 const modalNetworksOpen = ref(false);
@@ -55,10 +54,10 @@ const strategyError = ref(null);
 const networkError = ref(null);
 const scores = ref(null);
 const form = ref({
-  params: strategyExample.value?.strategy.params ?? defaultParams,
-  network: strategyExample.value?.network ?? 1,
+  params: {},
+  network: 1,
   snapshot: '',
-  addresses: strategyExample.value?.addresses ?? []
+  addresses: []
 });
 
 async function loadScores() {
@@ -68,7 +67,7 @@ async function loadScores() {
 
   try {
     const strategyParams = {
-      name: strategy.value.key,
+      name: strategy.value.id,
       params: form.value.params
     };
     scores.value = await getScores(
@@ -79,7 +78,6 @@ async function loadScores() {
       parseInt(form.value.snapshot),
       import.meta.env.VITE_SCORES_URL + '/api/scores'
     );
-    console.log(scores.value);
     loading.value = false;
   } catch (e) {
     loading.value = false;
@@ -122,7 +120,18 @@ function copyURL() {
   );
 }
 
+watch(
+  strategyExample,
+  () => {
+    form.value.params = strategyExample.value?.strategy.params ?? defaultParams;
+    form.value.network = strategyExample.value?.network ?? 1;
+    form.value.addresses = strategyExample.value?.addresses ?? [];
+  },
+  { immediate: true }
+);
+
 onMounted(async () => {
+  getExtendedStrategy(route.params.name);
   setPageTitle('page.title.playground');
 
   loading.value = true;
@@ -141,68 +150,79 @@ onMounted(async () => {
 <template>
   <Layout v-bind="$attrs">
     <template #content-left>
-      <div class="px-4 md:px-0 mb-3">
-        <router-link :to="`/strategy/${$route.params.name}`" class="text-color">
-          <Icon name="back" size="22" class="!align-middle" />
-          {{ $t('back') }}
-        </router-link>
-      </div>
-      <div class="">
-        <h1 class="mb-2 px-4 md:px-0">
-          {{ strategy.key }}
-        </h1>
-        <Block :title="$t('settings.header')">
-          <UiInput @click="modalNetworksOpen = true">
-            <template v-slot:selected>
-              {{
-                form.network ? networks[form.network].name : $t('selectNetwork')
-              }}
-            </template>
-            <template v-slot:label> {{ $t(`settings.network`) }} </template>
-          </UiInput>
-          <UiInput v-model="form.snapshot" @update:modelValue="handleURLUpdate">
-            <template v-slot:label>
-              {{ $t('snapshot') }}
-            </template>
-          </UiInput>
-          <Block
-            v-if="networkError"
-            class="mt-4"
-            style="border-color: red !important"
+      <PageLoading v-if="!strategy" />
+      <div v-else>
+        <div class="px-4 md:px-0 mb-3">
+          <router-link
+            :to="`/strategy/${$route.params.name}`"
+            class="text-color"
           >
-            <Icon name="warning" class="mr-2 !text-red" />
-            <span class="!text-red">{{ $t('networkErrorPlayground') }}</span>
-          </Block>
-        </Block>
-        <Block :title="$t('strategyParams')">
-          <UiButton
-            class="block w-full mb-3 overflow-x-auto"
-            style="height: auto"
-          >
-            <TextareaJson
-              v-model="form.params"
+            <Icon name="back" size="22" class="!align-middle" />
+            {{ $t('back') }}
+          </router-link>
+        </div>
+        <div class="">
+          <h1 class="mb-2 px-4 md:px-0">
+            {{ strategy.id }}
+          </h1>
+          <Block :title="$t('settings.header')">
+            <UiInput @click="modalNetworksOpen = true">
+              <template v-slot:selected>
+                {{
+                  form.network
+                    ? networks[form.network].name
+                    : $t('selectNetwork')
+                }}
+              </template>
+              <template v-slot:label> {{ $t(`settings.network`) }} </template>
+            </UiInput>
+            <UiInput
+              v-model="form.snapshot"
               @update:modelValue="handleURLUpdate"
-              :placeholder="$t('strategyParameters')"
-              class="input text-left"
-              style="width: 560px"
-            />
-          </UiButton>
-          <Block v-if="strategyError" style="border-color: red !important">
-            <Icon name="warning" class="mr-2 !text-red" />
-            <span class="!text-red"> {{ strategyError }}</span>
+            >
+              <template v-slot:label>
+                {{ $t('snapshot') }}
+              </template>
+            </UiInput>
+            <Block
+              v-if="networkError"
+              class="mt-4"
+              style="border-color: red !important"
+            >
+              <Icon name="warning" class="mr-2 !text-red" />
+              <span class="!text-red">{{ $t('networkErrorPlayground') }}</span>
+            </Block>
           </Block>
-        </Block>
-        <Block :title="$t('addresses')">
-          <UiButton class="block w-full px-3" style="height: auto">
-            <TextareaArray
-              v-model="form.addresses"
-              @change:modelValue="handleURLUpdate"
-              :placeholder="`0x8C28Cf33d9Fd3D0293f963b1cd27e3FF422B425c\n0xeF8305E140ac520225DAf050e2f71d5fBcC543e7`"
-              class="input w-full text-left"
-              style="font-size: 18px"
-            />
-          </UiButton>
-        </Block>
+          <Block :title="$t('strategyParams')">
+            <UiButton
+              class="block w-full mb-3 overflow-x-auto"
+              style="height: auto"
+            >
+              <TextareaJson
+                v-model="form.params"
+                @update:modelValue="handleURLUpdate"
+                :placeholder="$t('strategyParameters')"
+                class="input text-left"
+                style="width: 560px"
+              />
+            </UiButton>
+            <Block v-if="strategyError" style="border-color: red !important">
+              <Icon name="warning" class="mr-2 !text-red" />
+              <span class="!text-red"> {{ strategyError }}</span>
+            </Block>
+          </Block>
+          <Block :title="$t('addresses')">
+            <UiButton class="block w-full px-3" style="height: auto">
+              <TextareaArray
+                v-model="form.addresses"
+                @change:modelValue="handleURLUpdate"
+                :placeholder="`0x8C28Cf33d9Fd3D0293f963b1cd27e3FF422B425c\n0xeF8305E140ac520225DAf050e2f71d5fBcC543e7`"
+                class="input w-full text-left"
+                style="font-size: 18px"
+              />
+            </UiButton>
+          </Block>
+        </div>
       </div>
     </template>
     <template #sidebar-right>
@@ -210,7 +230,7 @@ onMounted(async () => {
         <UiButton
           @click="loadScores"
           :loading="loading"
-          :disables="loading"
+          :disabled="loading || !strategy"
           class="w-full"
           :style="[loading ? '' : 'padding-top: 0.2rem']"
           primary

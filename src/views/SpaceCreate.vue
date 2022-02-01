@@ -367,7 +367,7 @@ watchEffect(() => {
           </UiButton>
           <UiButton
             @click="(modalOpen = true), (selectedDate = 'start')"
-            :disabled="space.voting?.delay"
+            :disabled="!!space.voting?.delay"
             class="w-full mb-2"
           >
             <span v-if="!dateStart">{{ $t('create.startDate') }}</span>
@@ -375,7 +375,7 @@ watchEffect(() => {
           </UiButton>
           <UiButton
             @click="(modalOpen = true), (selectedDate = 'end')"
-            :disabled="space.voting?.period"
+            :disabled="!!space.voting?.period"
             class="w-full mb-2"
           >
             <span v-if="!dateEnd">{{ $t('create.endDate') }}</span>
