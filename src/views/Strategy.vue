@@ -1,18 +1,15 @@
 <script setup>
-import { computed, onMounted } from 'vue';
+import { onMounted } from 'vue';
 import { useRoute } from 'vue-router';
-import { useApp } from '@/composables/useApp';
-import { useSearchFilters } from '@/composables/useSearchFilters';
 import { setPageTitle } from '@/helpers/utils';
+import { useStrategies } from '@/composables/useStrategies';
 
 const route = useRoute();
-const { strategies } = useApp();
-const { minifiedStrategiesArray } = useSearchFilters();
+const { getExtendedStrategy, extendedStrategy: strategy } = useStrategies();
 
-const strategy = computed(() => strategies.value[route.params.name]);
-
-onMounted(() => {
-  setPageTitle('page.title.strategy', { key: strategy.value.key });
+onMounted(async () => {
+  setPageTitle('page.title.strategy', { key: route.params.name });
+  getExtendedStrategy(route.params.name);
 });
 </script>
 
@@ -25,24 +22,20 @@ onMounted(() => {
           {{ $t('strategiesPage') }}
         </router-link>
       </div>
-      <div class="px-4 md:px-0">
+      <PageLoading v-if="!strategy" />
+      <div class="px-4 md:px-0" v-else>
         <h1 class="mb-2">
-          {{ strategy.key }}
+          {{ strategy.id }}
         </h1>
         <span
-          v-text="
-            `In ${
-              minifiedStrategiesArray.find(st => st.key === route.params.name)
-                .spaces
-            } space(s)`
-          "
+          v-text="`In ${strategy.spacesCount} space(s)`"
           class="text-color"
         />
         <UiMarkdown :body="strategy.about" class="mb-6 mt-4" />
       </div>
     </template>
     <template #sidebar-right>
-      <Block :title="$t('information')">
+      <Block :title="$t('information')" v-if="strategy">
         <div class="mb-1">
           <b>{{ $t('author') }}</b>
           <a
@@ -60,7 +53,7 @@ onMounted(() => {
             <a
               target="_blank"
               class="float-right"
-              :href="`https://github.com/snapshot-labs/snapshot-strategies/tree/master/src/strategies/${strategy.key}`"
+              :href="`https://github.com/snapshot-labs/snapshot-strategies/tree/master/src/strategies/${strategy.id}`"
             >
               {{ strategy.version }}
               <Icon name="external-link" class="ml-1" />
