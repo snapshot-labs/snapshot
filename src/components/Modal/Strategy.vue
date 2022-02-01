@@ -122,7 +122,7 @@ watch(open, () => {
         >
           <BlockStrategy :strategy="strategy" />
         </a>
-        <NoResults v-if="Object.keys(strategiesResults).length < 1" />
+        <NoResults v-if="strategiesResults.length < 1" />
       </div>
     </div>
     <template v-if="input.name" v-slot:footer>
