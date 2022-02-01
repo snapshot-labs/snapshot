@@ -1,28 +1,22 @@
 <script setup>
 import { useIntl } from '@/composables/useIntl';
-import { usePluginsFilter } from '@/composables/usePluginsFilter';
+import { usePlugins } from '@/composables/usePlugins';
 
 const { formatCompactNumber } = useIntl();
-const { pluginsSpacesCount } = usePluginsFilter();
+const { pluginsSpacesCount } = usePlugins();
 
-defineProps(['plugin']);
-
-function getLogoUrl(key) {
-  return `https://raw.githubusercontent.com/snapshot-labs/snapshot-plugins/master/src/plugins/${key}/logo.png`;
-}
+defineProps({
+  plugin: Object // src/plugins/**/plugin.json
+});
 </script>
 
 <template>
   <Block class="hover-border">
     <div class="flex items-center mb-1">
-      <a
-        :href="`https://github.com/snapshot-labs/snapshot-plugins/tree/master/src/plugins/${plugin.key}`"
-        target="_blank"
-        class="flex items-center"
-      >
+      <a target="_blank" class="flex items-center">
         <UiAvatar
           class="mr-2"
-          :imgsrc="getLogoUrl(plugin.key)"
+          :imgsrc="plugin.icon"
           :seed="plugin.name.charCodeAt()"
           size="28"
         />
@@ -30,8 +24,8 @@ function getLogoUrl(key) {
       </a>
       <div class="ml-1">v{{ plugin.version }}</div>
     </div>
-    <div class="text-color">
-      <div>
+    <div class="flex justify-between items-end text-color">
+      <div class="flex flex-col">
         <a
           :href="`https://github.com/${plugin.author}`"
           target="_blank"
@@ -40,12 +34,21 @@ function getLogoUrl(key) {
           <Icon name="github" class="mr-1" />
           {{ plugin.author }}
         </a>
+        {{
+          $tc('inSpaces', [
+            formatCompactNumber(pluginsSpacesCount?.[plugin.key] ?? 0)
+          ])
+        }}
       </div>
-      {{
-        $tc('inSpaces', [
-          formatCompactNumber(pluginsSpacesCount?.[plugin.key] ?? 0)
-        ])
-      }}
+      <a
+        class="flex items-center"
+        @click.stop
+        target="_blank"
+        :href="`https://github.com/snapshot-labs/snapshot-plugins/tree/master/src/plugins/${plugin.key}`"
+      >
+        {{ $t('learnMore') }}
+        <Icon size="16" name="external-link" class="text-color ml-1" />
+      </a>
     </div>
   </Block>
 </template>

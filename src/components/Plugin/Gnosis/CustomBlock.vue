@@ -98,78 +98,76 @@ export default {
 </script>
 
 <template>
-  <Block title="Gnosis Impact">
-    <div v-if="choices.length > 1">
-      <div v-if="loading" class="loading">
-        {{ $t('loading') }}
-      </div>
-      <div class="mb-1">
-        <b>
-          {{ $t('predictedImpact') }}
-        </b>
-        <div class="float-right">
-          <!-- TODO: use tooltip component -->
-          <span :aria-label="baseToken.name" class="tooltipped tooltipped-n">
-            <img
-              class="inline-block !align-middle leading-none circle border"
-              :src="baseTokenUrl"
-              :alt="baseToken.name"
-              width="22"
-              height="22"
-            />
-          </span>
-          {{ predictPriceImpact.toFixed(2) }}%
-        </div>
-      </div>
-      <div class="mb-1" :title="choices[0]">
-        <b>{{ shorten(choices[0], 'name') }}</b>
-        <span class="float-right">
-          1
-          {{ baseToken.symbol }}
-          =
-          {{ priceFirstOption.toFixed(2) }}
-          {{ quoteToken.symbol }}
+  <div v-if="choices.length > 1">
+    <div v-if="loading" class="loading">
+      {{ $t('loading') }}
+    </div>
+    <div class="mb-1">
+      <b>
+        {{ $t('predictedImpact') }}
+      </b>
+      <div class="float-right">
+        <!-- TODO: use tooltip component -->
+        <span :aria-label="baseToken.name" class="tooltipped tooltipped-n">
+          <img
+            class="inline-block !align-middle leading-none circle border"
+            :src="baseTokenUrl"
+            :alt="baseToken.name"
+            width="22"
+            height="22"
+          />
         </span>
+        {{ predictPriceImpact.toFixed(2) }}%
       </div>
-      <div
-        :title="choices[1]"
-        class="mb-1 border-b header-bg rounded-t-none md:rounded-t-md"
-        style="padding-bottom: 12px"
+    </div>
+    <div class="mb-1" :title="choices[0]">
+      <b>{{ shorten(choices[0], 'name') }}</b>
+      <span class="float-right">
+        1
+        {{ baseToken.symbol }}
+        =
+        {{ priceFirstOption.toFixed(2) }}
+        {{ quoteToken.symbol }}
+      </span>
+    </div>
+    <div
+      :title="choices[1]"
+      class="mb-1 border-b header-bg rounded-t-none md:rounded-t-md"
+      style="padding-bottom: 12px"
+    >
+      <b>{{ shorten(choices[1], 'name') }}</b>
+      <span class="float-right">
+        1
+        {{ baseToken.symbol }}
+        =
+        {{ priceSecondOption.toFixed(2) }}
+        {{ quoteToken.symbol }}
+      </span>
+    </div>
+    <div class="mb-1" style="padding-top: 12px">
+      <b>{{ $tc('marketSymbol', [baseToken.symbol]) }}</b>
+      <a
+        :href="getMarketUrl(baseProductMarketMaker)"
+        target="_blank"
+        class="float-right"
       >
-        <b>{{ shorten(choices[1], 'name') }}</b>
-        <span class="float-right">
-          1
-          {{ baseToken.symbol }}
-          =
-          {{ priceSecondOption.toFixed(2) }}
-          {{ quoteToken.symbol }}
-        </span>
-      </div>
-      <div class="mb-1" style="padding-top: 12px">
+        <Icon name="external-link" class="ml-1" />
+      </a>
+    </div>
+    <div>
+      <div class="mb-1">
         <b>{{ $tc('marketSymbol', [baseToken.symbol]) }}</b>
         <a
-          :href="getMarketUrl(baseProductMarketMaker)"
+          :href="getMarketUrl(quoteProductMarketMaker)"
           target="_blank"
           class="float-right"
         >
           <Icon name="external-link" class="ml-1" />
         </a>
       </div>
-      <div>
-        <div class="mb-1">
-          <b>{{ $tc('marketSymbol', [baseToken.symbol]) }}</b>
-          <a
-            :href="getMarketUrl(quoteProductMarketMaker)"
-            target="_blank"
-            class="float-right"
-          >
-            <Icon name="external-link" class="ml-1" />
-          </a>
-        </div>
-      </div>
     </div>
-    <div v-else>
-      {{ $t('twoChoicesRequired') }}
-    </div>
-  </Block>
+  </div>
+  <div v-else>
+    {{ $t('twoChoicesRequired') }}
+  </div>
 </template>
