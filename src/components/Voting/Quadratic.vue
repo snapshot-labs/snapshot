@@ -95,8 +95,6 @@ watch(selectedChoices.value, currentValue => {
           </div>
         </div>
       </UiButton>
-
-      <PluginAragonGovern :proposal="proposal" />
     </div>
   </div>
 </template>

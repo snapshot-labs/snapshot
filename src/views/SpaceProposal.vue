@@ -64,11 +64,6 @@ const threeDotItems = computed(() => {
   return items;
 });
 
-const safeSnapInput = computed({
-  get: () => proposal.value?.plugins?.safeSnap,
-  set: value => (proposal.value.plugins.safeSnap = value)
-});
-
 const browserHasHistory = computed(() => window.history.state.back);
 
 const { modalAccountOpen } = useModal();
@@ -293,14 +288,15 @@ onMounted(async () => {
         :userVote="userVote"
         :loadingMore="loadingMore"
       />
-      <ProposalPluginsContent
-        v-if="space"
-        v-model:safeSnapInput="safeSnapInput"
+      <PluginProposal
+        v-if="space && proposal.plugins && loadedResults"
         :id="id"
         :space="space"
         :proposal="proposal"
-        :votes="votes"
+        :results="results"
         :loadedResults="loadedResults"
+        :votes="votes"
+        :strategies="strategies"
       />
     </template>
     <template #sidebar-right v-if="loaded">
@@ -396,15 +392,15 @@ onMounted(async () => {
         :votes="votes"
         :strategies="strategies"
       />
-      <ProposalPluginsSidebar
-        v-if="loadedResults"
+      <PluginProposalSidebar
+        v-if="space && proposal.plugins && loadedResults"
         :id="id"
         :space="space"
         :proposal="proposal"
         :results="results"
+        :loadedResults="loadedResults"
         :votes="votes"
         :strategies="strategies"
-        :loadedResults="loadedResults"
       />
     </template>
   </Layout>

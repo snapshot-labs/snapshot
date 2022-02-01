@@ -17,7 +17,7 @@ export default {
   emits: ['update:modelValue'],
   data() {
     let input;
-    if (!this.modelValue) {
+    if (!Object.keys(this.modelValue).length) {
       input = {
         safes: coerceConfig(this.config, this.network).safes.map(safe => ({
           ...safe,
