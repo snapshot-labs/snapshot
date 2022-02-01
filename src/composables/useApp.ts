@@ -17,7 +17,6 @@ const state = reactive({
   loading: false
 });
 
-const strategies = ref({});
 const explore: any = ref({});
 
 const { login } = useWeb3();
@@ -29,7 +28,7 @@ export function useApp() {
   async function init() {
     const auth = getInstance();
     state.loading = true;
-    await Promise.all([getStrategies(), getExplore(), getSkin()]);
+    await Promise.all([getExplore(), getSkin()]);
 
     // Auto connect with gnosis-connector when inside gnosis-safe iframe
     if (window?.parent === window)
@@ -40,14 +39,6 @@ export function useApp() {
 
     state.init = true;
     state.loading = false;
-  }
-
-  async function getStrategies() {
-    const strategiesObj: any = await fetch(
-      `${import.meta.env.VITE_SCORES_URL}/api/strategies`
-    ).then(res => res.json());
-    strategies.value = strategiesObj;
-    return;
   }
 
   async function getExplore() {
@@ -150,7 +141,6 @@ export function useApp() {
     init,
     getExplore,
     app: computed(() => state),
-    strategies: computed(() => strategies.value),
     explore: computed(() => explore.value),
     skinName: computed(() => skin.value),
     orderedSpaces,
