@@ -3,7 +3,7 @@
  * filtered by the search string (case insensitive).
  */
 
-import { computed, ref } from 'vue';
+import { ref } from 'vue';
 import { useApolloQuery } from '@/composables/useApolloQuery';
 import { STRATEGIES_QUERY, EXTENDED_STRATEGIES_QUERY } from '@/helpers/queries';
 import { Strategy } from '@/helpers/interfaces';
