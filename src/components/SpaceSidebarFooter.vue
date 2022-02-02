@@ -1,38 +1,7 @@
 <script setup>
-import { ref, watchEffect, computed } from 'vue';
-import { useSpaceSubscription } from '@/composables/useSpaceSubscription';
-import { useFollowSpace } from '@/composables/useFollowSpace';
-import verified from '@/../snapshot-spaces/spaces/verified.json';
-import { useIntl } from '@/composables/useIntl';
-
-const props = defineProps({
+defineProps({
   space: Object,
   spaceId: String
-});
-
-const { formatCompactNumber } = useIntl();
-
-const isVerified = computed(() => verified[props.spaceId] || 0);
-
-const {
-  loading,
-  toggleSubscription,
-  isSubscribed,
-  loadSubscriptions,
-  subscriptions
-} = useSpaceSubscription(props.spaceId);
-
-const { isFollowing } = useFollowSpace(props.space);
-
-const notificationIcon = ref('notifications-off');
-
-watchEffect(() => {
-  if (subscriptions.value === undefined) {
-    loadSubscriptions();
-  }
-  if (isSubscribed.value) {
-    notificationIcon.value = 'notifications-on';
-  } else notificationIcon.value = 'notifications-off';
 });
 </script>
 

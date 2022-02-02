@@ -84,6 +84,7 @@ declare module 'vue' {
     Search: typeof import('./src/components/Search.vue')['default']
     SearchWithFilters: typeof import('./src/components/SearchWithFilters.vue')['default']
     SpaceSidebar: typeof import('./src/components/SpaceSidebar.vue')['default']
+    SpaceSidebarFooter: typeof import('./src/components/SpaceSidebarFooter.vue')['default']
     SpaceSidebarHeader: typeof import('./src/components/SpaceSidebarHeader.vue')['default']
     StatefulIcon: typeof import('./src/components/StatefulIcon.vue')['default']
     Sticky: typeof import('./src/components/Sticky.vue')['default']
