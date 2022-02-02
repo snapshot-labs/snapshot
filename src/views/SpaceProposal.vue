@@ -408,7 +408,7 @@ onMounted(async () => {
     <ModalConfirm
       :open="modalOpen"
       @close="modalOpen = false"
-      @reload="[loadProposal, loadResults]"
+      @reload="loadProposal(), loadResults()"
       :space="space"
       :proposal="proposal"
       :id="id"

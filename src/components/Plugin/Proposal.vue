@@ -6,7 +6,7 @@ const props = defineProps({
   proposal: Object,
   space: Object,
   results: Object,
-  loadedResults: Object,
+  loadedResults: Boolean,
   votes: Object,
   strategies: Object
 });
