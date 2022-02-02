@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref, watchEffect, inject } from 'vue';
+import { computed, ref, watchEffect, inject, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { getAddress } from '@ethersproject/address';
 import {
@@ -84,6 +84,16 @@ const textRecord = computed(() => {
 
 const isOwner = computed(() => {
   return currentTextRecord.value === textRecord.value;
+});
+
+watch([currentTextRecord, textRecord], () => {
+  // Check if the connected wallet is the space owner and add address to admins
+  // if not already present
+  if (isOwner.value) {
+    if (!form.value.admins.includes(web3Account.value)) {
+      form.value.admins.push(web3Account.value);
+    }
+  }
 });
 
 const isAdmin = computed(() => {
