@@ -1,0 +1,17 @@
+{
+  "name": "Gnosis SafeSnap",
+  "version": "1.0.0",
+  "author": "Gnosis",
+  "website": "https://safe.gnosis.io",
+  "icon": "https://raw.githubusercontent.com/snapshot-labs/snapshot-plugins/master/src/plugins/safeSnap/logo.png",
+  "defaults": {
+    "space": {
+      "safes": [
+        {
+          "network": "CHAIN_ID",
+          "realityAddress": "0xSWITCH_WITH_REALITY_MODULE_ADDRESS"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "name": "Gnosis Impact",
+  "version": "0.0.1",
+  "author": "davidalbela",
+  "website": "https://...",
+  "icon": "https://s2.coinmarketcap.com/static/img/coins/64x64/1659.png",
+  "defaults": {
+    "space": {}
+  }
+}

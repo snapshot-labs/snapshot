@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref, watchEffect, inject } from 'vue';
+import { computed, ref, watchEffect, inject, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { getAddress } from '@ethersproject/address';
 import {
@@ -15,7 +15,7 @@ import { useWeb3 } from '@/composables/useWeb3';
 import { calcFromSeconds, calcToSeconds } from '@/helpers/utils';
 import { useClient } from '@/composables/useClient';
 import { setPageTitle } from '@/helpers/utils';
-import { usePluginsFilter } from '@/composables/usePluginsFilter';
+import { usePlugins } from '@/composables/usePlugins';
 
 const props = defineProps({
   spaceId: String,
@@ -28,6 +28,7 @@ const props = defineProps({
 
 const basicValidation = { name: 'basic', params: {} };
 
+const { pluginIndex } = usePlugins();
 const { t } = useI18n();
 const { copyToClipboard } = useCopy();
 const { web3Account } = useWeb3();
@@ -85,6 +86,16 @@ const isOwner = computed(() => {
   return currentTextRecord.value === textRecord.value;
 });
 
+watch([currentTextRecord, textRecord], () => {
+  // Check if the connected wallet is the space owner and add address to admins
+  // if not already present
+  if (isOwner.value) {
+    if (!form.value.admins.includes(web3Account.value)) {
+      form.value.admins.push(web3Account.value);
+    }
+  }
+});
+
 const isAdmin = computed(() => {
   if (!props.space || !currentTextRecord.value) return false;
   const admins = (props.space.admins || []).map(admin => admin.toLowerCase());
@@ -110,13 +121,6 @@ const votingPeriod = computed({
 const categoriesString = computed(() => {
   return form.value.categories ? form.value.categories.join(', ') : '';
 });
-
-const { pluginsArray } = usePluginsFilter();
-
-function pluginName(key) {
-  const plugin = pluginsArray.value.find(p => p.key === key);
-  return plugin?.name;
-}
 
 async function handleSubmit() {
   if (isValid.value) {
@@ -612,11 +616,13 @@ watchEffect(() => {
         <Block :title="$t('plugins')">
           <div v-if="form?.plugins">
             <div
-              v-for="(plugin, name, index) in form.plugins"
+              v-for="(name, index) in Object.keys(form.plugins).filter(
+                key => pluginIndex[key]
+              )"
               :key="index"
               class="mb-3 relative"
             >
-              <div v-if="pluginName(name)">
+              <div v-if="pluginIndex[name].name">
                 <a
                   @click="handleRemovePlugins(name)"
                   class="absolute p-4 right-0"
@@ -627,7 +633,7 @@ watchEffect(() => {
                   @click="handleEditPlugins(name)"
                   class="p-4 block border rounded-md"
                 >
-                  <h4 v-text="pluginName(name)" />
+                  <h4 v-text="pluginIndex[name].name" />
                 </a>
               </div>
             </div>

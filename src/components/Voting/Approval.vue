@@ -36,8 +36,6 @@ function selectChoice(i) {
       }"
     >
       {{ shorten(choice, 32) }}
-
-      <PluginAragonGovern :proposal="proposal" />
     </UiButton>
   </div>
 </template>
