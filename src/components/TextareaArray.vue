@@ -20,7 +20,6 @@ function handleInput() {
     .filter((item, index, array) => {
       return array.indexOf(item) == index;
     });
-  console.log(inputString);
   emit('update:modelValue', inputString);
 }
 
