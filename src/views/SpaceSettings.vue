@@ -89,7 +89,7 @@ const isOwner = computed(() => {
 watch([currentTextRecord, textRecord], () => {
   // Check if the connected wallet is the space owner and add address to admins
   // if not already present
-  if (currentTextRecord.value === textRecord.value) {
+  if (isOwner.value) {
     if (!form.value.admins.includes(web3Account.value)) {
       form.value.admins.push(web3Account.value);
     }
