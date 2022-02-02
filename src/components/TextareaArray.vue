@@ -16,7 +16,11 @@ function handleInput() {
     .replace(/;/g, ' ')
     .split(' ')
     .map(item => item.trim())
-    .filter(item => !!item);
+    .filter(item => !!item)
+    .filter((item, index, array) => {
+      return array.indexOf(item) == index;
+    });
+  console.log(inputString);
   emit('update:modelValue', inputString);
 }
 
