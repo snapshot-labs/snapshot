@@ -40,7 +40,7 @@ const getPluginComponents = (componentName: string, pluginKeys) => {
         if (pluginKeys.includes(pluginKey)) {
           return defineAsyncComponent(async () => {
             const { default: component } = await importComponent();
-            component.name = 'Plugins' + pluginKey + componentName;
+            component.name = 'Plugins' + pluginKey[0].toUpperCase() + pluginKey.substring(1) + componentName;
             return component
           })
         }
