@@ -72,7 +72,7 @@ export default {
         const base = {
           to: tx.to,
           operation: tx.operation,
-          value: formatEther(tx.value)
+          value: tx.value.toString()
         };
 
         let abi = tx.abi;
