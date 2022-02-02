@@ -283,7 +283,7 @@ onMounted(async () => {
           >
             <template v-slot:label>{{ $t('delegate.to') }}</template>
           </UiInput>
-          <div class="flex items-center space-x-2 px-2">
+          <div class="flex items-center space-x-2 pr-2 mb-2">
             <Checkbox v-model="specifySpaceChecked" />
             <span>{{ $t('setDelegationToSpace') }}</span>
           </div>
