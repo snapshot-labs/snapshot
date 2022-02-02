@@ -17,9 +17,7 @@ function handleInput() {
     .split(' ')
     .map(item => item.trim())
     .filter(item => !!item)
-    .filter((item, index, array) => {
-      return array.indexOf(item) == index;
-    });
+    .filter((item, index, array) => array.indexOf(item) === index);
   emit('update:modelValue', inputString);
 }
 
