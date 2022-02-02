@@ -147,7 +147,7 @@
       :tokenSymbol="bondData?.tokenSymbol"
       :tokenDecimals="bondData?.tokenDecimals"
       @setApproval="voteOnQuestion"
-      @close="modalApproveDecisionOpen = false"
+      @close="modalApproveDecisionOpen = actionInProgress = false"
     />
   </teleport>
 </template>

@@ -1,6 +1,10 @@
 <script>
 import { BigNumber } from '@ethersproject/bignumber';
 import { formatUnits } from '@ethersproject/units';
+import { ensTextRecord } from '../../../../helpers/profile';
+import { useEns } from '@/composables/useEns';
+import { useSafesnap } from '@/composables/useSafesnap';
+import { useDebounce } from '@/composables/useDebounce';
 
 export default {
   props: [
@@ -13,10 +17,35 @@ export default {
     'tokenDecimals'
   ],
   emits: ['close', 'setApproval'],
+  setup() {
+    const { safesnap } = useSafesnap();
+    const { isValidEnsDomain } = useEns();
+    const debounce = useDebounce();
+    return { safesnap, debounce, isValidEnsDomain };
+  },
+  data() {
+    return { criteriaLink: '' };
+  },
+  mounted() {
+    this.debounce(this.getCriteriaLink);
+  },
   methods: {
     async handleSetApproval(option) {
       await this.$emit('setApproval', option);
       this.$emit('close');
+    },
+    async getCriteriaLink() {
+      const { spaceId } = this.safesnap.config;
+      if (this.isValidEnsDomain(spaceId)) {
+        try {
+          this.criteriaLink = await ensTextRecord(spaceId, 'daorequirements');
+          console.log('criteria', this.criteriaLink);
+        } catch (err) {
+          console.warn(
+            '[safesnap] failed to get the "daorequirements" text record'
+          );
+        }
+      }
     }
   },
   computed: {
@@ -34,9 +63,6 @@ export default {
         current: bondNotSet ? '--' : formatUnits(this.bond, this.tokenDecimals),
         tokenSymbol: this.tokenSymbol
       };
-    },
-    questionLink() {
-      return 'https://reality.eth.link/app/#!/question/' + this.questionId;
     }
   }
 };
@@ -54,7 +80,7 @@ export default {
           class="question-link"
           rel="noreferrer noopener"
           target="_blank"
-          :href="questionLink"
+          :href="criteriaLink"
         >
           {{ $t('safeSnap.labels.criteria') }}
         </a>
