@@ -14,7 +14,8 @@ export default {
     'questionId',
     'minimumBond',
     'tokenSymbol',
-    'tokenDecimals'
+    'tokenDecimals',
+    'oracle'
   ],
   emits: ['close', 'setApproval'],
   setup() {
@@ -39,7 +40,6 @@ export default {
       if (this.isValidEnsDomain(spaceId)) {
         try {
           this.criteriaLink = await ensTextRecord(spaceId, 'daorequirements');
-          console.log('criteria', this.criteriaLink);
         } catch (err) {
           console.warn(
             '[safesnap] failed to get the "daorequirements" text record'
@@ -63,6 +63,12 @@ export default {
         current: bondNotSet ? '--' : formatUnits(this.bond, this.tokenDecimals),
         tokenSymbol: this.tokenSymbol
       };
+    },
+    questionLink() {
+      if (this.tokenSymbol && this.tokenSymbol !== 'ETH') {
+        return `https://reality.eth.link/app/#!/token/${this.tokenSymbol}/question/${this.oracle}-${this.questionId}`;
+      }
+      return `https://reality.eth.link/app/#!/question/${this.oracle}-${this.questionId}`;
     }
   }
 };
@@ -85,6 +91,18 @@ export default {
           {{ $t('safeSnap.labels.criteria') }}
         </a>
       </p>
+      <div style="text-align: right">
+        <a
+          :href="questionLink"
+          class="text-color"
+          rel="noreferrer noopener"
+          target="_blank"
+          style="font-size: 16px"
+        >
+          Question
+          <i style="font-size: 14px" class="iconfont iconexternal-link" />
+        </a>
+      </div>
 
       <div class="border rounded-lg p-3 my-3">
         <div>

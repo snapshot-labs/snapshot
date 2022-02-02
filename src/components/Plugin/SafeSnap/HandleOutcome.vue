@@ -146,6 +146,7 @@
       :questionId="questionDetails?.questionId"
       :tokenSymbol="bondData?.tokenSymbol"
       :tokenDecimals="bondData?.tokenDecimals"
+      :oracle="questionDetails?.oracle"
       @setApproval="voteOnQuestion"
       @close="modalApproveDecisionOpen = actionInProgress = false"
     />
@@ -256,6 +257,7 @@ export default {
       questionDetails: undefined,
       modalApproveDecisionOpen: false,
       bondData: {
+        tokenSymbol: 'ETH',
         canClaim: undefined,
         data: undefined
       }
