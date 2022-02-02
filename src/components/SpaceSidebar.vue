@@ -62,7 +62,7 @@ const isAdmin = computed(() => {
           class="block px-4 py-2 sidenav-item"
         />
       </div>
-      <SpaceSidebarFooter :space="space" :spaceId="spaceId" />
+      <SpaceSidebarFooter :space="space" />
     </Block>
   </div>
 </template>

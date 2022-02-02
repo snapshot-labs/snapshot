@@ -1,13 +1,15 @@
 <script setup>
 defineProps({
-  space: Object,
-  spaceId: String
+  space: Object
 });
 </script>
 
 <template>
-  <div class="text-center border-t bg-skin-header-bg mt-3">
-    <div v-if="space">
+  <div
+    v-if="space && (space.twitter || space.discord)"
+    class="text-center border-t bg-skin-header-bg mt-3"
+  >
+    <div>
       <h3 class="my-3 mx-2 flex justify-center items-center space-x-3">
         <a
           v-if="space.twitter"
