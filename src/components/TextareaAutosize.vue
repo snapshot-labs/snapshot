@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, nextTick, toRefs, watch, onMounted } from 'vue';
+import { ref, computed, nextTick, toRefs, watch } from 'vue';
 
 const props = defineProps({
   modelValue: {
@@ -26,11 +26,8 @@ const props = defineProps({
 
 const emit = defineEmits(['update:modelValue']);
 
-const { modelValue, minHeight, maxHeight } = toRefs(props);
+const { minHeight, maxHeight } = toRefs(props);
 
-// data property for v-model binding with real textarea tag
-const val = ref(props.modelValue);
-// works when content height becomes more then value of the maxHeight property
 const maxHeightScroll = ref(false);
 const height = ref('auto');
 const textarea = ref(null);
@@ -86,28 +83,32 @@ function resize() {
   return this;
 }
 
-watch(modelValue, v => {
-  val.value = v;
+const input = computed({
+  get: () => (props.modelValue ? props.modelValue : ''),
+  set: newVal => {
+    nextTick(resize);
+    emit('update:modelValue', newVal);
+  }
 });
 
-watch(val, v => {
-  nextTick(resize);
-  emit('update:modelValue', v);
-  if (v) resize();
-});
+watch(
+  input,
+  () => {
+    resize();
+  },
+  { immediate: true }
+);
 
 watch([minHeight, maxHeight], () => {
   nextTick(resize);
 });
-
-onMounted(() => resize());
 </script>
 
 <template>
   <textarea
     ref="textarea"
     :style="computedStyles"
-    v-model="val"
+    v-model="input"
     @focus="resize"
   ></textarea>
 </template>

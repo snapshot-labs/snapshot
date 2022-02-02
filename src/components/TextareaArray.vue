@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch } from 'vue';
+import { computed } from 'vue';
 
 const props = defineProps({
   modelValue: Array
@@ -7,22 +7,19 @@ const props = defineProps({
 
 const emit = defineEmits(['update:modelValue']);
 
-const input = ref('');
-
-function handleInput() {
-  const inputString = input.value
-    .replace(/\n/g, ' ')
-    .replace(/,/g, ' ')
-    .replace(/;/g, ' ')
-    .split(' ')
-    .map(item => item.trim())
-    .filter(item => !!item);
-  emit('update:modelValue', inputString);
-}
-
-watch(input, () => handleInput());
-
-if (props.modelValue) input.value = props.modelValue.join('\n');
+const input = computed({
+  get: () => (props.modelValue ? props.modelValue.join('\n') : ''),
+  set: newVal => {
+    const inputString = newVal
+      .replace(/\n/g, ' ')
+      .replace(/,/g, ' ')
+      .replace(/;/g, ' ')
+      .split(' ')
+      .map(item => item.trim())
+      .filter(item => !!item);
+    emit('update:modelValue', inputString);
+  }
+});
 </script>
 
 <template>
