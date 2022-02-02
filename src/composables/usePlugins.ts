@@ -36,17 +36,22 @@ const getPluginComponents = (componentName: string, pluginKeys) => {
         const pluginKey = path
           .replace('../plugins/', '')
           .replace(`/${componentName}.vue`, '');
-        
+
         if (pluginKeys.includes(pluginKey)) {
           return defineAsyncComponent(async () => {
             const { default: component } = await importComponent();
-            component.name = 'Plugins' + pluginKey[0].toUpperCase() + pluginKey.substring(1) + componentName;
-            return component
-          })
+            component.name =
+              'Plugins' +
+              pluginKey[0].toUpperCase() +
+              pluginKey.substring(1) +
+              componentName;
+            return component;
+          });
         }
       }
-      return null
-    }).filter(c => c);
+      return null;
+    })
+    .filter(c => c);
 };
 
 // space count and filter function
