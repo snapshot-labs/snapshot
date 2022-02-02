@@ -77,8 +77,7 @@ watch(open, () => {
             v-model="input.params"
             v-model:is-valid="isValid"
             :placeholder="$t('settings.validationParameters')"
-            class="input text-left"
-            style="width: 560px"
+            class="input text-left w-full"
           />
         </UiButton>
         <UiButton
