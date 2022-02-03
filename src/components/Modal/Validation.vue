@@ -69,10 +69,9 @@ watch(open, () => {
     />
     <div class="mt-4 mx-0 md:mx-4 min-h-[339px]">
       <div v-if="input.name" class="p-4 mb-4 border rounded-md link-color">
-        <UiButton
-          class="block w-full mb-3 overflow-x-auto"
-          style="height: auto"
-        >
+        <h4 v-text="input.name" class="mb-3 text-center" />
+
+        <UiButton class="block w-full overflow-x-auto" style="height: auto">
           <TextareaJson
             v-model="input.params"
             v-model:is-valid="isValid"
@@ -81,28 +80,26 @@ watch(open, () => {
             style="width: 560px"
           />
         </UiButton>
-        <UiButton
-          @click="handleSubmit"
-          :disabled="!isValid"
-          class="w-full"
-          primary
-        >
-          {{ validation.name ? $t('save') : $t('add') }}
-        </UiButton>
       </div>
       <div v-if="!input.name">
         <RowLoadingBlock v-if="loadingValidations" />
         <div v-else>
-          <a
-            v-for="validation in validations"
-            :key="validation.name"
-            @click="select(validation.name)"
-          >
-            <BlockValidation :validation="validation" />
+          <a v-for="valId in validations" :key="valId" @click="select(valId)">
+            <BlockValidation :validation="valId" />
           </a>
           <NoResults v-if="Object.keys(validations).length < 1" />
         </div>
       </div>
     </div>
+    <template v-if="input.name" v-slot:footer>
+      <UiButton
+        @click="handleSubmit"
+        :disabled="!isValid"
+        class="w-full"
+        primary
+      >
+        {{ validation.name ? $t('save') : $t('add') }}
+      </UiButton>
+    </template>
   </UiModal>
 </template>
