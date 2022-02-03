@@ -100,9 +100,9 @@ watch(visibleVotes, () => {
         :proposal="proposal"
         class="w-[110px] xs:w-[130px] min-w-[110px] xs:min-w-[130px]"
       />
-      <div class="flex-auto text-center link-color truncated px-3">
-        <span
-          class="text-center link-color"
+      <div class="flex-auto text-center link-color truncate px-3">
+        <div
+          class="text-center link-color truncate"
           v-tippy="{
             content:
               format(proposal, vote.choice).length > 24
@@ -111,7 +111,7 @@ watch(visibleVotes, () => {
           }"
         >
           {{ format(proposal, vote.choice) }}
-        </span>
+        </div>
       </div>
 
       <div
