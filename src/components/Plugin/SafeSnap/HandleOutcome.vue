@@ -152,7 +152,8 @@
   </teleport>
 </template>
 
-<script>
+<script setup>
+import { onMounted, ref, computed } from 'vue';
 import Plugin from '@/../snapshot-plugins/src/plugins/safeSnap';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
@@ -164,13 +165,22 @@ import { useWeb3 } from '@/composables/useWeb3';
 import { useTxStatus } from '@/composables/useTxStatus';
 import { useNotifications } from '@/composables/useNotifications';
 import { useIntl } from '@/composables/useIntl';
+import { useI18n } from 'vue-i18n';
 
 const { formatRelativeTime } = useIntl();
+const { t } = useI18n();
 
 const { clearBatchError, setBatchError } = useSafesnap();
 const { web3 } = useWeb3();
 const { pendingCount } = useTxStatus();
 const { notify } = useNotifications();
+
+const props = defineProps([
+  'batches',
+  'proposalId',
+  'network',
+  'realityAddress'
+]);
 
 const plugin = new Plugin();
 
@@ -239,278 +249,272 @@ const ensureRightNetwork = async chainId => {
   }
 };
 
-export default {
-  props: [
-    'batches',
-    'proposalId',
-    'network',
-    'realityAddress',
-    'multiSendAddress'
-  ],
-  data() {
-    return {
-      loading: true,
-      questionStates: QuestionStates,
-      actionInProgress: false,
-      action2InProgress: false,
-      questionDetails: undefined,
-      modalApproveDecisionOpen: false,
-      bondData: {
-        canClaim: undefined,
-        data: undefined
-      }
-    };
-  },
-  async created() {
-    await this.updateDetails();
-  },
-  methods: {
-    async updateDetails() {
-      this.loading = true;
-      try {
-        this.questionDetails = await plugin.getExecutionDetailsWithHashes(
-          this.network,
-          this.realityAddress,
-          this.proposalId,
-          this.getTxHashes()
-        );
-        if (this.questionDetails.questionId && this.$auth.web3) {
-          this.bondData = await plugin.loadClaimBondData(
-            this.$auth.web3,
-            this.network,
-            this.questionDetails.questionId,
-            this.questionDetails.oracle
-          );
-        }
-      } catch (e) {
-        console.error(e);
-      } finally {
-        this.loading = false;
-      }
-    },
-    async claimBond() {
-      if (!this.questionDetails.oracle) return;
-      try {
-        this.actionInProgress = 'claim-bond';
+const loading = ref(true);
+const questionStates = ref(QuestionStates);
+const actionInProgress = ref(false);
+const action2InProgress = ref(false);
+const questionDetails = ref(undefined);
+const modalApproveDecisionOpen = ref(false);
+const bondData = ref({
+  canClaim: undefined,
+  data: undefined
+});
 
-        const params = Object.keys(this.bondData.data).map(
-          key => new Array(...this.bondData.data[key])
-        );
+const getTxHashes = () => {
+  return props.batches.map(batch => batch.hash);
+};
 
-        await ensureRightNetwork(this.network);
-        const clamingBond = plugin.claimBond(
-          this.$auth.web3,
-          this.questionDetails.oracle,
-          this.questionDetails.questionId,
-          params
-        );
-        await clamingBond.next();
-        this.actionInProgress = null;
-        pendingCount.value++;
-        await clamingBond.next();
-        notify(this.$i18n.t('notify.youDidIt'));
-        pendingCount.value--;
-        await sleep(3e3);
-        await this.updateDetails();
-      } catch (e) {
-        console.error(e);
-        this.actionInProgress = null;
-      }
-    },
-    async submitProposal() {
-      if (!this.$auth.isAuthenticated.value) return;
-      this.actionInProgress = 'submit-proposal';
-      try {
-        await ensureRightNetwork(this.network);
-        const proposalSubmission = plugin.submitProposalWithHashes(
-          this.$auth.web3,
-          this.realityAddress,
-          this.questionDetails.proposalId,
-          this.getTxHashes()
-        );
-        await proposalSubmission.next();
-        this.actionInProgress = null;
-        pendingCount.value++;
-        await proposalSubmission.next();
-        notify(this.$i18n.t('notify.youDidIt'));
-        pendingCount.value--;
-        await sleep(3e3);
-        await this.updateDetails();
-      } catch (e) {
-        console.error(e);
-      } finally {
-        this.actionInProgress = null;
-      }
-    },
-    async voteOnQuestion(option) {
-      if (!this.$auth.isAuthenticated.value) return;
-      try {
-        await ensureRightNetwork(this.network);
-        const voting = plugin.voteForQuestion(
-          this.network,
-          this.$auth.web3,
-          this.questionDetails.oracle,
-          this.questionDetails.questionId,
-          this.questionDetails.minimumBond,
-          option
-        );
-        const step = await voting.next();
-        if (step.value === 'erc20-approval') {
-          this.actionInProgress = null;
-          pendingCount.value++;
-          await voting.next();
-          pendingCount.value--;
-          await voting.next();
-        }
-        this.actionInProgress = null;
-        pendingCount.value++;
-        await voting.next();
-        pendingCount.value--;
-        await sleep(3e3);
-        await this.updateDetails();
-      } catch (e) {
-        console.error(e);
-        this.actionInProgress = null;
-      }
-    },
-    async executeProposal() {
-      if (!this.$auth.isAuthenticated.value) return;
-      this.action2InProgress = 'execute-proposal';
-      try {
-        await ensureRightNetwork(this.network);
-      } catch (e) {
-        console.error(e);
-        this.action2InProgress = null;
-        return;
-      }
-
-      try {
-        clearBatchError();
-        const transaction =
-          this.batches[this.questionDetails.nextTxIndex].mainTransaction;
-        const executingProposal = plugin.executeProposalWithHashes(
-          this.$auth.web3,
-          this.realityAddress,
-          this.questionDetails.proposalId,
-          this.getTxHashes(),
-          transaction,
-          this.questionDetails.nextTxIndex
-        );
-        await executingProposal.next();
-        this.action2InProgress = null;
-        pendingCount.value++;
-        await executingProposal.next();
-        notify(this.$i18n.t('notify.youDidIt'));
-        pendingCount.value--;
-        await sleep(3e3);
-        await this.updateDetails();
-      } catch (err) {
-        pendingCount.value--;
-        this.action2InProgress = null;
-        setBatchError(this.questionDetails.nextTxIndex, err.reason);
-      }
-    },
-    getTxHashes() {
-      return this.batches.map(batch => batch.hash);
-    }
-  },
-  computed: {
-    usingMetaMask() {
-      return window.ethereum && getInstance().provider.value?.isMetaMask;
-    },
-    connectedToRightChain() {
-      return getInstance().provider.value?.chainId === parseInt(this.network);
-    },
-    networkName() {
-      return networks[this.network].name;
-    },
-    questionState() {
-      if (!web3.value.account) return QuestionStates.noWalletConnection;
-
-      if (this.loading) return QuestionStates.loading;
-
-      if (!this.questionDetails) return QuestionStates.error;
-
-      if (!this.questionDetails.questionId)
-        return QuestionStates.waitingForQuestion;
-
-      if (this.questionDetails.currentBond.isZero())
-        return QuestionStates.questionNotSet;
-
-      if (!this.questionDetails.finalizedAt)
-        return QuestionStates.questionNotResolved;
-
-      const ts = (Date.now() / 1e3).toFixed();
-      if (this.questionDetails.executionApproved) {
-        if (
-          this.questionDetails.finalizedAt + this.questionDetails.cooldown >
-          ts
-        ) {
-          return QuestionStates.waitingForCooldown;
-        }
-        if (!Number.isInteger(this.questionDetails.nextTxIndex))
-          return QuestionStates.completelyExecuted;
-        return QuestionStates.proposalApproved;
-      } else {
-        if (this.questionDetails.finalizedAt < ts) {
-          return QuestionStates.proposalRejected;
-        }
-      }
-
-      return QuestionStates.error;
-    },
-    showOracleInfo() {
-      return (
-        this.questionState === this.questionStates.questionNotSet ||
-        this.questionState === this.questionStates.questionNotResolved ||
-        this.questionState === this.questionStates.waitingForCooldown
+const updateDetails = async () => {
+  loading.value = true;
+  try {
+    questionDetails.value = await plugin.getExecutionDetailsWithHashes(
+      props.network,
+      props.realityAddress,
+      props.proposalId,
+      getTxHashes()
+    );
+    if (questionDetails.value.questionId && getInstance().web3) {
+      bondData.value = await plugin.loadClaimBondData(
+        getInstance().web3,
+        props.network,
+        questionDetails.value.questionId,
+        questionDetails.value.oracle
       );
-    },
-    approvalData() {
-      if (this.questionDetails) {
-        const { currentBond, finalizedAt, isApproved, endTime } =
-          this.questionDetails;
+    }
+  } catch (e) {
+    console.error(e);
+  } finally {
+    loading.value = false;
+  }
+};
 
-        if (currentBond === undefined || BigNumber.from(currentBond).eq(0)) {
-          return {
-            decision: '--',
-            timeLeft: '--',
-            currentBond: '--'
-          };
-        }
+const claimBond = async () => {
+  if (!questionDetails.value.oracle) return;
+  try {
+    actionInProgress.value = 'claim-bond';
 
-        if (finalizedAt) {
-          if (isApproved) {
-            return {
-              decision: 'Yes',
-              timeLeft: this.$i18n.t('safeSnap.executableIn', [
-                formatRelativeTime(endTime + this.questionDetails.cooldown)
-              ])
-            };
-          }
+    const params = Object.keys(bondData.value.data).map(
+      key => new Array(...bondData.value.data[key])
+    );
 
-          return {
-            decision: 'No'
-          };
-        }
+    await ensureRightNetwork(props.network);
+    const clamingBond = plugin.claimBond(
+      getInstance().web3,
+      questionDetails.value.oracle,
+      questionDetails.value.questionId,
+      params
+    );
+    await clamingBond.next();
+    actionInProgress.value = null;
+    pendingCount.value++;
+    await clamingBond.next();
+    notify(t('notify.youDidIt'));
+    pendingCount.value--;
+    await sleep(3e3);
+    await updateDetails();
+  } catch (e) {
+    console.error(e);
+    actionInProgress.value = null;
+  }
+};
 
-        return {
-          decision: isApproved ? 'Yes' : 'No',
-          timeLeft: this.$i18n.t('safeSnap.finalizedIn', [
-            formatRelativeTime(endTime)
-          ]),
-          currentBond:
-            formatUnits(currentBond, this.bondData.tokenDecimals) +
-            ' ' +
-            this.bondData.tokenSymbol
-        };
-      }
+const submitProposal = async () => {
+  if (!getInstance().isAuthenticated.value) return;
+  actionInProgress.value = 'submit-proposal';
+  try {
+    await ensureRightNetwork(props.network);
+    const proposalSubmission = plugin.submitProposalWithHashes(
+      getInstance().web3,
+      props.realityAddress,
+      questionDetails.value.proposalId,
+      getTxHashes()
+    );
+    await proposalSubmission.next();
+    actionInProgress.value = null;
+    pendingCount.value++;
+    await proposalSubmission.next();
+    notify(t('notify.youDidIt'));
+    pendingCount.value--;
+    await sleep(3e3);
+    await updateDetails();
+  } catch (e) {
+    console.error(e);
+  } finally {
+    actionInProgress.value = null;
+  }
+};
+
+const voteOnQuestion = async option => {
+  if (!getInstance().isAuthenticated.value) return;
+  try {
+    await ensureRightNetwork(props.network);
+    const voting = plugin.voteForQuestion(
+      props.network,
+      getInstance().web3,
+      questionDetails.value.oracle,
+      questionDetails.value.questionId,
+      questionDetails.value.minimumBond,
+      option
+    );
+    const step = await voting.next();
+    if (step.value === 'erc20-approval') {
+      actionInProgress.value = null;
+      pendingCount.value++;
+      await voting.next();
+      pendingCount.value--;
+      await voting.next();
+    }
+    actionInProgress.value = null;
+    pendingCount.value++;
+    await voting.next();
+    pendingCount.value--;
+    await sleep(3e3);
+    await updateDetails();
+  } catch (e) {
+    console.error(e);
+    actionInProgress.value = null;
+  }
+};
+
+const executeProposal = async () => {
+  if (!getInstance().isAuthenticated.value) return;
+  action2InProgress.value = 'execute-proposal';
+  try {
+    await ensureRightNetwork(props.network);
+  } catch (e) {
+    console.error(e);
+    action2InProgress.value = null;
+    return;
+  }
+
+  try {
+    clearBatchError();
+    const transaction =
+      props.batches[questionDetails.value.nextTxIndex].mainTransaction;
+    const executingProposal = plugin.executeProposalWithHashes(
+      getInstance().web3,
+      props.realityAddress,
+      questionDetails.value.proposalId,
+      getTxHashes(),
+      transaction,
+      questionDetails.value.nextTxIndex
+    );
+    await executingProposal.next();
+    action2InProgress.value = null;
+    pendingCount.value++;
+    await executingProposal.next();
+    notify(t('notify.youDidIt'));
+    pendingCount.value--;
+    await sleep(3e3);
+    await updateDetails();
+  } catch (err) {
+    pendingCount.value--;
+    action2InProgress.value = null;
+    setBatchError(questionDetails.value.nextTxIndex, err.reason);
+  }
+};
+
+const usingMetaMask = computed(() => {
+  return window.ethereum && getInstance().provider.value?.isMetaMask;
+});
+
+const connectedToRightChain = computed(() => {
+  return getInstance().provider.value?.chainId === parseInt(props.network);
+});
+
+const networkName = computed(() => {
+  return networks[props.network].name;
+});
+
+const questionState = computed(() => {
+  if (!web3.value.account) return QuestionStates.noWalletConnection;
+
+  if (loading.value) return QuestionStates.loading;
+
+  if (!questionDetails.value) return QuestionStates.error;
+
+  if (!questionDetails.value.questionId)
+    return QuestionStates.waitingForQuestion;
+
+  if (questionDetails.value.currentBond.isZero())
+    return QuestionStates.questionNotSet;
+
+  if (!questionDetails.value.finalizedAt)
+    return QuestionStates.questionNotResolved;
+
+  const ts = (Date.now() / 1e3).toFixed();
+  if (questionDetails.value.executionApproved) {
+    if (
+      questionDetails.value.finalizedAt + questionDetails.value.cooldown >
+      ts
+    ) {
+      return QuestionStates.waitingForCooldown;
+    }
+    if (!Number.isInteger(questionDetails.value.nextTxIndex))
+      return QuestionStates.completelyExecuted;
+    return QuestionStates.proposalApproved;
+  } else {
+    if (questionDetails.value.finalizedAt < ts) {
+      return QuestionStates.proposalRejected;
+    }
+  }
+
+  return QuestionStates.error;
+});
+
+const showOracleInfo = computed(() => {
+  return (
+    questionState.value === questionStates.value.questionNotSet ||
+    questionState.value === questionStates.value.questionNotResolved ||
+    questionState.value === questionStates.value.waitingForCooldown
+  );
+});
+
+const approvalData = computed(() => {
+  if (questionDetails.value) {
+    const { currentBond, finalizedAt, isApproved, endTime } =
+      questionDetails.value;
+
+    if (currentBond === undefined || BigNumber.from(currentBond).eq(0)) {
       return {
         decision: '--',
         timeLeft: '--',
         currentBond: '--'
       };
     }
+
+    if (finalizedAt) {
+      if (isApproved) {
+        return {
+          decision: 'Yes',
+          timeLeft: t('safeSnap.executableIn', [
+            formatRelativeTime(endTime + questionDetails.value.cooldown)
+          ])
+        };
+      }
+
+      return {
+        decision: 'No'
+      };
+    }
+
+    return {
+      decision: isApproved ? 'Yes' : 'No',
+      timeLeft: t('safeSnap.finalizedIn', [formatRelativeTime(endTime)]),
+      currentBond:
+        formatUnits(currentBond, bondData.value.tokenDecimals) +
+        ' ' +
+        bondData.value.tokenSymbol
+    };
   }
-};
+  return {
+    decision: '--',
+    timeLeft: '--',
+    currentBond: '--'
+  };
+});
+
+onMounted(async () => {
+  await updateDetails();
+});
 </script>
