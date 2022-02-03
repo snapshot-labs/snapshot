@@ -138,7 +138,7 @@ watch(visibleVotes, () => {
           @click="openReceiptModal(vote)"
           target="_blank"
           class="ml-2 text-color"
-          title="Receipt"
+          :title="$t('receipt')"
         >
           <Icon name="signature" />
         </a>
