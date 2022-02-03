@@ -247,17 +247,27 @@ watchEffect(() => {
           {{ $t('back') }}
         </router-link>
       </div>
-      <Block v-if="space && passValidation[0] === false">
+      <Block
+        v-if="space && passValidation[0] === false"
+        class="!border-skin-link text-skin-link"
+      >
         <Icon name="warning" class="mr-1" />
         <span v-if="passValidation[1] === 'basic'">
-          {{
-            space?.validation?.params.minScore || space?.filters.minScore
-              ? $tc('create.validationWarning.basic.minScore', [
-                  formatCompactNumber(space.filters.minScore),
-                  space.symbol
-                ])
-              : $t('create.validationWarning.basic.member')
-          }}
+          <span v-if="space?.filters.onlyMembers">
+            {{ $t('create.validationWarning.basic.member') }}
+          </span>
+          <span
+            v-else-if="
+              space?.validation?.params.minScore || space?.filters.minScore
+            "
+          >
+            {{
+              $tc('create.validationWarning.basic.minScore', [
+                formatCompactNumber(space.filters.minScore),
+                space.symbol
+              ])
+            }}
+          </span>
         </span>
         <span v-else>
           {{
