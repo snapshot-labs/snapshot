@@ -247,32 +247,36 @@ function formatSpace(spaceRaw) {
   return space;
 }
 
-watchEffect(async () => {
-  if (!props.spaceLoading) {
-    try {
-      const uri = await getSpaceUri(
-        props.spaceId,
-        import.meta.env.VITE_DEFAULT_NETWORK
-      );
-      console.log('URI', uri);
-      currentTextRecord.value = uri;
-    } catch (e) {
-      console.log(e);
-    }
-    const spaceClone = formatSpace(props.space);
-    if (spaceClone) {
-      form.value = spaceClone;
-      currentSettings.value = clone(spaceClone);
-    }
-    if (props.from) {
-      const fromClone = formatSpace(props.spaceFrom);
-      if (fromClone) {
-        form.value = fromClone;
+watch(
+  () => props.spaceLoading,
+  async () => {
+    if (!props.spaceLoading) {
+      const spaceClone = formatSpace(props.space);
+      if (spaceClone) {
+        form.value = spaceClone;
+        currentSettings.value = clone(spaceClone);
       }
+      if (props.from) {
+        const fromClone = formatSpace(props.spaceFrom);
+        if (fromClone) {
+          form.value = fromClone;
+        }
+      }
+      try {
+        const uri = await getSpaceUri(
+          props.spaceId,
+          import.meta.env.VITE_DEFAULT_NETWORK
+        );
+        console.log('URI', uri);
+        currentTextRecord.value = uri;
+      } catch (e) {
+        console.log(e);
+      }
+
+      loaded.value = true;
     }
-    loaded.value = true;
   }
-});
+);
 
 watchEffect(() => {
   props.space && props.space?.name
@@ -324,7 +328,7 @@ watchEffect(() => {
           </UiButton>
         </a>
         <Block
-          v-if="currentSettings?.name && !currentTextRecord"
+          v-if="currentSettings?.name && !currentTextRecord && loaded"
           :style="'border-color: red !important; margin-bottom: 0 !important;'"
           class="mb-0 mt-3"
         >
