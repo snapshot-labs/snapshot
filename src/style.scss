@@ -221,10 +221,6 @@ select {
   }
 }
 
-.font-mono {
-  font-family: monospace;
-}
-
 .hover-border {
   &:hover {
     border-color: var(--link-color) !important;
