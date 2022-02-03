@@ -1,7 +1,7 @@
 <script setup>
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 
-defineProps({
+const props = defineProps({
   address: String,
   size: String,
   imgsrc: String,
@@ -9,18 +9,29 @@ defineProps({
 });
 
 const error = ref(false);
+const loadedImg = ref(null);
+
+onMounted(() => {
+  const img = new Image();
+  img.src = props.imgsrc;
+  img.onload = () => {
+    loadedImg.value = img.src;
+  };
+  img.onerror = () => {
+    error.value = true;
+  };
+});
 </script>
 
 <template>
   <span class="flex shrink-0 items-center justify-center">
     <img
-      v-if="imgsrc && !error"
-      :src="imgsrc"
+      v-if="loadedImg && !error"
+      :src="loadedImg"
       :style="{
         width: `${parseInt(size) || 22}px`,
         height: `${parseInt(size) || 22}px`
       }"
-      @error="error = true"
       :class="[
         space?.skin ? `${space?.skin} bg-[color:var(--bg-color)]` : 'bg-white'
       ]"
