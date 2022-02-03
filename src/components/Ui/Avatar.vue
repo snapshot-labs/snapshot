@@ -8,22 +8,24 @@ const props = defineProps({
   space: Object
 });
 
-const loadedImg = ref(null);
+const imgUrl = ref(null);
+const showImg = ref(false);
 
 onMounted(() => {
   const img = new Image();
-  img.src = props.imgsrc;
   img.onload = () => {
-    loadedImg.value = img.src;
+    imgUrl.value = img.src;
+    showImg.value = true;
   };
+  img.src = props.imgsrc;
 });
 </script>
 
 <template>
   <span class="flex shrink-0 items-center justify-center">
     <img
-      v-if="loadedImg"
-      :src="loadedImg"
+      v-if="showImg"
+      :src="imgUrl"
       :style="{
         width: `${parseInt(size) || 22}px`,
         height: `${parseInt(size) || 22}px`
