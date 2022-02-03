@@ -23,24 +23,35 @@ const pluginIndex: Record<string, any> = Object.fromEntries(
 
 // prepare all plugin's main components imports (Create.vue, Proposal.vue, etc.)
 // doesn't actually import anything but prepares functions to use with
-// defineAsyncComponent below
+// defineAsyncComponent below (importComponent())
 const allPluginComponents = import.meta.glob(`../plugins/*/*.vue`);
 
-// get required components for specific location (componentName) and list of active plugins
+// get required components for specific location (componentName) and a list of active plugins
 const getPluginComponents = (componentName: string, pluginKeys) => {
   pluginKeys = pluginKeys.filter(key => !!pluginIndex[key]); // remove old/non-existent plugins
 
   return Object.entries(allPluginComponents)
-    .filter(([path]) => {
+    .map(([path, importComponent]) => {
       if (path.endsWith(componentName + '.vue')) {
         const pluginKey = path
           .replace('../plugins/', '')
           .replace(`/${componentName}.vue`, '');
-        return pluginKeys.includes(pluginKey);
+
+        if (pluginKeys.includes(pluginKey)) {
+          return defineAsyncComponent(async () => {
+            const { default: component } = await importComponent();
+            component.name =
+              'Plugins' +
+              pluginKey[0].toUpperCase() +
+              pluginKey.substring(1) +
+              componentName;
+            return component;
+          });
+        }
       }
-      return false;
+      return null;
     })
-    .map(comp => defineAsyncComponent(comp[1]));
+    .filter(c => c);
 };
 
 // space count and filter function

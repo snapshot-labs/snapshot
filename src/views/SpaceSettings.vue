@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref, watchEffect, inject } from 'vue';
+import { computed, ref, watchEffect, inject, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { getAddress } from '@ethersproject/address';
 import {
@@ -84,6 +84,16 @@ const textRecord = computed(() => {
 
 const isOwner = computed(() => {
   return currentTextRecord.value === textRecord.value;
+});
+
+watch([currentTextRecord, textRecord], () => {
+  // Check if the connected wallet is the space owner and add address to admins
+  // if not already present
+  if (isOwner.value) {
+    if (!form.value.admins.includes(web3Account.value)) {
+      form.value.admins.push(web3Account.value);
+    }
+  }
 });
 
 const isAdmin = computed(() => {
@@ -411,7 +421,7 @@ watchEffect(() => {
             >
               <template v-slot:label> {{ $t(`settings.terms`) }} </template>
             </UiInput>
-            <div class="flex items-center space-x-2 px-2">
+            <div class="flex items-center space-x-2 pr-2">
               <Checkbox v-model="form.private" />
               <span>{{ $t('settings.hideSpace') }}</span>
             </div>
@@ -515,7 +525,14 @@ watchEffect(() => {
           </UiButton>
         </Block>
         <Block :title="$t('settings.proposalValidation')">
-          <div class="mb-2">
+          <div
+            class="flex items-center space-x-2 pr-2"
+            :class="{ 'mb-1': !form.filters.onlyMembers }"
+          >
+            <Checkbox v-model="form.filters.onlyMembers" class="mt-1" />
+            <span>{{ $t('settings.allowOnlyAuthors') }}</span>
+          </div>
+          <div v-if="!form.filters.onlyMembers">
             <UiInput
               @click="modalValidationOpen = true"
               :error="inputError('settings.validation')"
@@ -537,10 +554,6 @@ watchEffect(() => {
                   $t('settings.proposalThreshold')
                 }}</template>
               </UiInput>
-              <div class="flex items-center space-x-2 px-2">
-                <Checkbox v-model="form.filters.onlyMembers" />
-                <span>{{ $t('settings.allowOnlyAuthors') }}</span>
-              </div>
             </div>
           </div>
         </Block>
@@ -598,7 +611,7 @@ watchEffect(() => {
               </div>
             </template>
           </UiInput>
-          <div class="flex items-center space-x-2 px-2">
+          <div class="flex items-center space-x-2 pr-2">
             <Checkbox v-model="form.voting.hideAbstain" />
             <span>{{ $t('settings.hideAbstain') }}</span>
           </div>
