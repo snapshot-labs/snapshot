@@ -65,24 +65,13 @@ watch(open, () => {
         class="p-4 mb-4 border rounded-md link-color"
       >
         <h4 v-text="selectedPlugin.name" class="mb-3 text-center" />
-        <UiButton
-          class="block w-full mb-3 overflow-x-auto"
-          style="height: auto"
-        >
+        <UiButton class="block w-full overflow-x-auto" style="height: auto">
           <TextareaJson
             v-model="input"
             v-model:is-valid="isValid"
             :placeholder="$t('settings.pluginParameters')"
             class="input text-left w-full"
           />
-        </UiButton>
-        <UiButton
-          @click="handleSubmit"
-          :disabled="!isValid"
-          class="w-full"
-          primary
-        >
-          {{ Object.keys(plugin).length ? $t('save') : $t('add') }}
         </UiButton>
       </div>
       <div v-if="!selectedPlugin?.key">
@@ -101,5 +90,15 @@ watch(open, () => {
         </div>
       </div>
     </div>
+    <template v-if="selectedPlugin?.key" v-slot:footer>
+      <UiButton
+        @click="handleSubmit"
+        :disabled="!isValid"
+        class="w-full"
+        primary
+      >
+        {{ Object.keys(plugin).length ? $t('save') : $t('add') }}
+      </UiButton>
+    </template>
   </UiModal>
 </template>
