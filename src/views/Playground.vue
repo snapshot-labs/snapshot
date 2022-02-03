@@ -202,7 +202,7 @@ onMounted(async () => {
                 v-model="form.params"
                 @update:modelValue="handleURLUpdate"
                 :placeholder="$t('strategyParameters')"
-                class="input text-left w-full"
+                class="input text-left"
               />
             </UiButton>
             <Block v-if="strategyError" style="border-color: red !important">
