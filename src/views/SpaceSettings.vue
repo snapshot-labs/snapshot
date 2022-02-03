@@ -525,7 +525,14 @@ watchEffect(() => {
           </UiButton>
         </Block>
         <Block :title="$t('settings.proposalValidation')">
-          <div class="mb-2">
+          <div
+            class="flex items-center space-x-2 pr-2"
+            :class="{ 'mb-1': !form.filters.onlyMembers }"
+          >
+            <Checkbox v-model="form.filters.onlyMembers" class="mt-1" />
+            <span>{{ $t('settings.allowOnlyAuthors') }}</span>
+          </div>
+          <div v-if="!form.filters.onlyMembers">
             <UiInput
               @click="modalValidationOpen = true"
               :error="inputError('settings.validation')"
@@ -547,10 +554,6 @@ watchEffect(() => {
                   $t('settings.proposalThreshold')
                 }}</template>
               </UiInput>
-              <div class="flex items-center space-x-2 pr-2">
-                <Checkbox v-model="form.filters.onlyMembers" />
-                <span>{{ $t('settings.allowOnlyAuthors') }}</span>
-              </div>
             </div>
           </div>
         </Block>
