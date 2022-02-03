@@ -56,7 +56,7 @@ onBeforeUnmount(() => window.removeEventListener('click', close));
               v-if="item.icon"
               :name="item.icon"
               size="21"
-              class="align-middle mr-3"
+              class="align-middle mr-[15px]"
             />
             {{ item.text }}
           </slot>
