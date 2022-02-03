@@ -79,6 +79,8 @@ watch(selectedChoices.value, currentValue => {
             :class="{ 'btn-choice': isSmallScreen }"
             style="width: 40px; height: 44px"
             placeholder="0"
+            min="0"
+            oninput="validity.valid || (value='');"
             type="number"
             v-model.number="selectedChoices[i + 1]"
           />
