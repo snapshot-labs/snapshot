@@ -8,7 +8,6 @@ const props = defineProps({
   space: Object
 });
 
-const error = ref(false);
 const loadedImg = ref(null);
 
 onMounted(() => {
@@ -17,16 +16,13 @@ onMounted(() => {
   img.onload = () => {
     loadedImg.value = img.src;
   };
-  img.onerror = () => {
-    error.value = true;
-  };
 });
 </script>
 
 <template>
   <span class="flex shrink-0 items-center justify-center">
     <img
-      v-if="loadedImg && !error"
+      v-if="loadedImg"
       :src="loadedImg"
       :style="{
         width: `${parseInt(size) || 22}px`,
