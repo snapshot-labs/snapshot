@@ -51,8 +51,8 @@ function isZero() {
   if (votes.value.length > 0) return true;
 }
 
-function openReceiptModal(vote) {
-  authorIpfsHash.value = vote.ipfs;
+function openReceiptModal(iphsHash) {
+  authorIpfsHash.value = iphsHash;
   // this.relayerIpfsHash = vote.relayerIpfsHash;
   modalReceiptOpen.value = true;
 }
@@ -60,7 +60,10 @@ function openReceiptModal(vote) {
 const { profiles, loadProfiles } = useProfiles();
 
 watch([votes, web3Account], () => {
-  const votesWithUser = uniqBy(clone(votes.value).concat(props.userVote), 'id');
+  const votesWithUser = uniqBy(
+    clone(votes.value).concat(props.userVote),
+    'ipfs'
+  );
   if (votesWithUser.map(vote => vote.voter).includes(web3Account.value)) {
     votesWithUser.unshift(
       votesWithUser.splice(
@@ -135,7 +138,7 @@ watch(visibleVotes, () => {
           }}
         </span>
         <a
-          @click="openReceiptModal(vote)"
+          @click="openReceiptModal(vote.ipfs)"
           target="_blank"
           class="ml-2 text-color"
           title="Receipt"
@@ -153,7 +156,7 @@ watch(visibleVotes, () => {
       @click="isFinalProposal ? $emit('loadVotes') : (nbrVisibleVotes += 10)"
       class="px-4 py-3 border-t text-center block header-bg rounded-b-none md:rounded-b-md"
     >
-      <UiLoading v-if="loadingMore" :fill-white="primary" />
+      <UiLoading v-if="loadingMore" />
       <span v-else v-text="$t('seeMore')" />
     </a>
     <teleport to="#modal">
