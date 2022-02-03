@@ -17,5 +17,9 @@
   "ko-KR": {
     "name": "Korean",
     "nativeName": "한국어"
+  },
+  "ar-SA": {
+    "name": "Arabic",
+    "nativeName": "العربية"
   }
 }
