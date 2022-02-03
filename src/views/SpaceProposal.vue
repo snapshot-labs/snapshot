@@ -230,7 +230,7 @@ const truncateMarkdownBody = computed(() => {
   const markdownBodyHeight = markdownBody.value?.clientHeight
     ? markdownBody.value.clientHeight
     : 0;
-  return markdownBodyHeight > 280 ? true : false;
+  return markdownBodyHeight > 360 ? true : false;
 });
 </script>
 
@@ -312,7 +312,7 @@ const truncateMarkdownBody = computed(() => {
             <div
               class="overflow-hidden"
               :class="{
-                'h-[280px]': !showFullMarkdownBody && truncateMarkdownBody,
+                'h-[360px]': !showFullMarkdownBody && truncateMarkdownBody,
                 'mb-[92px]': showFullMarkdownBody,
                 'mb-[56px]': !showFullMarkdownBody
               }"
