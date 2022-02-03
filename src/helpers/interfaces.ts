@@ -19,5 +19,7 @@ interface StrategyExample {
 interface StrategySchema {
   $schema: string;
   $ref: string;
-  definitions: {};
+  definitions: {
+    Strategy: {};
+  };
 }

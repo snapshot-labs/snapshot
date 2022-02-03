@@ -24,7 +24,11 @@ const { query: queryParams } = useRoute();
 const { copyToClipboard } = useCopy();
 const { t } = useI18n();
 const { formatCompactNumber } = useIntl();
-const { getExtendedStrategy, extendedStrategy: strategy } = useStrategies();
+const {
+  getExtendedStrategy,
+  extendedStrategy: strategy,
+  strategyDefinition
+} = useStrategies();
 
 let provider;
 
@@ -194,7 +198,13 @@ onMounted(async () => {
             </Block>
           </Block>
           <Block :title="$t('strategyParams')">
+            <SDefaultObject
+              v-if="strategyDefinition"
+              v-model="form.params"
+              :definition="strategyDefinition"
+            />
             <UiButton
+              v-else
               class="block w-full mb-3 overflow-x-auto"
               style="height: auto"
             >
