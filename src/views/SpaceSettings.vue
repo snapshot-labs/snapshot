@@ -421,7 +421,7 @@ watchEffect(() => {
             >
               <template v-slot:label> {{ $t(`settings.terms`) }} </template>
             </UiInput>
-            <div class="flex items-center space-x-2 px-2">
+            <div class="flex items-center space-x-2 pr-2">
               <Checkbox v-model="form.private" />
               <span>{{ $t('settings.hideSpace') }}</span>
             </div>
@@ -547,7 +547,7 @@ watchEffect(() => {
                   $t('settings.proposalThreshold')
                 }}</template>
               </UiInput>
-              <div class="flex items-center space-x-2 px-2">
+              <div class="flex items-center space-x-2 pr-2">
                 <Checkbox v-model="form.filters.onlyMembers" />
                 <span>{{ $t('settings.allowOnlyAuthors') }}</span>
               </div>
@@ -608,7 +608,7 @@ watchEffect(() => {
               </div>
             </template>
           </UiInput>
-          <div class="flex items-center space-x-2 px-2">
+          <div class="flex items-center space-x-2 pr-2">
             <Checkbox v-model="form.voting.hideAbstain" />
             <span>{{ $t('settings.hideAbstain') }}</span>
           </div>
