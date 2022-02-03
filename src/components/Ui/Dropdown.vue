@@ -49,14 +49,14 @@ onBeforeUnmount(() => window.removeEventListener('click', close));
           :key="item"
           @click="handleClick(item.action)"
           :class="{ selected: item.selected }"
-          class="list-none flex items-center whitespace-nowrap px-[18px] py-[3px]"
+          class="list-none block whitespace-nowrap px-[18px] py-[2px]"
         >
           <slot name="item" :item="item" :key="item">
             <Icon
               v-if="item.icon"
               :name="item.icon"
               size="21"
-              class="align-middle mr-[15px]"
+              class="align-middle mr-2 !leading-[0]"
             />
             {{ item.text }}
           </slot>
