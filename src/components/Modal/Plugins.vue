@@ -71,7 +71,6 @@ watch(open, () => {
             v-model:is-valid="isValid"
             :placeholder="$t('settings.pluginParameters')"
             class="input text-left"
-            style="width: 560px"
           />
         </UiButton>
       </div>
