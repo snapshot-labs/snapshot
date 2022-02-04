@@ -165,6 +165,7 @@ function handleReset() {
       plugins: {},
       filters: {}
     };
+    // Rerenders the form, because Textarea components are not reactive
   } finally {
     loaded.value = false;
     nextTick().then(() => {
