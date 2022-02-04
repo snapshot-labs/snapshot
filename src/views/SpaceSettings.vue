@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref, watchEffect, inject, watch } from 'vue';
+import { computed, ref, watchEffect, inject, watch, nextTick } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { getAddress } from '@ethersproject/address';
 import {
@@ -155,14 +155,22 @@ function inputError(field) {
 }
 
 function handleReset() {
-  if (props.from) return (form.value = clone(props.spaceFrom));
-  if (currentSettings.value) return (form.value = currentSettings.value);
-  form.value = {
-    strategies: [],
-    categories: [],
-    plugins: {},
-    filters: {}
-  };
+  try {
+    if (props.from) return (form.value = clone(props.spaceFrom));
+    if (currentSettings.value)
+      return (form.value = clone(currentSettings.value));
+    form.value = {
+      strategies: [],
+      categories: [],
+      plugins: {},
+      filters: {}
+    };
+  } finally {
+    loaded.value = false;
+    nextTick().then(() => {
+      loaded.value = true;
+    });
+  }
 }
 
 function handleEditStrategy(i) {
@@ -343,7 +351,8 @@ watchEffect(() => {
           </span>
         </Block>
       </Block>
-      <template v-if="space || isOwner">
+      <RowLoadingBlock v-if="!loaded" />
+      <template v-else>
         <Block :title="$t('settings.profile')">
           <div class="mb-2">
             <UiInput v-model="form.name" :error="inputError('name')">
