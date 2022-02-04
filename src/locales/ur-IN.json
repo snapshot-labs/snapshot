@@ -340,7 +340,8 @@
       "connectWallet": "Connect wallet to see execution details",
       "switchChain": "Switch your wallet to {0} to request execution",
       "question": "کیا اس تجویز کو منظور کیا گیا اور کیا اس سے ملاقات ہوتی ہے",
-      "criteria": "قبولیت کا معیار?"
+      "criteria": "قبولیت کا معیار?",
+      "proposalPassed": "Did the proposal pass?"
     }
   },
   "poap": {
