@@ -485,23 +485,6 @@ watchEffect(() => {
             />
           </UiButton>
         </Block>
-        <Block :title="$t('settings.authors')">
-          <Block
-            :style="`border-color: red !important`"
-            v-if="inputError('members')"
-          >
-            <Icon name="warning" class="mr-2 !text-red" />
-            <span class="!text-red"> {{ inputError('members') }}&nbsp;</span>
-          </Block>
-          <UiButton class="block w-full px-3" style="height: auto">
-            <TextareaArray
-              v-model="form.members"
-              :placeholder="`0x8C28Cf33d9Fd3D0293f963b1cd27e3FF422B425c\n0xeF8305E140ac520225DAf050e2f71d5fBcC543e7`"
-              class="input w-full text-left"
-              style="font-size: 18px"
-            />
-          </UiButton>
-        </Block>
         <Block :title="$t('settings.strategies') + '*'">
           <div
             v-for="(strategy, i) in form.strategies"
@@ -538,14 +521,25 @@ watchEffect(() => {
           </UiButton>
         </Block>
         <Block :title="$t('settings.proposalValidation')">
-          <div
-            class="flex items-center space-x-2 pr-2"
-            :class="{ 'mb-1': !form.filters.onlyMembers }"
-          >
-            <Checkbox v-model="form.filters.onlyMembers" class="mt-1" />
+          <div class="flex items-center space-x-2 pr-2 mb-2">
+            <Checkbox v-model="form.filters.onlyMembers" />
             <span>{{ $t('settings.allowOnlyAuthors') }}</span>
           </div>
-          <div v-if="!form.filters.onlyMembers">
+          <div v-if="form.filters.onlyMembers">
+            <Block class="!border-red" v-if="inputError('members')">
+              <Icon name="warning" class="mr-2 !text-red" />
+              <span class="!text-red"> {{ inputError('members') }}&nbsp;</span>
+            </Block>
+            <UiButton class="block w-full px-3" style="height: auto">
+              <TextareaArray
+                v-model="form.members"
+                :placeholder="`0x8C28Cf33d9Fd3D0293f963b1cd27e3FF422B425c\n0xeF8305E140ac520225DAf050e2f71d5fBcC543e7`"
+                class="input w-full text-left"
+                style="font-size: 18px"
+              />
+            </UiButton>
+          </div>
+          <template v-else>
             <UiInput
               @click="modalValidationOpen = true"
               :error="inputError('settings.validation')"
@@ -568,7 +562,7 @@ watchEffect(() => {
                 }}</template>
               </UiInput>
             </div>
-          </div>
+          </template>
         </Block>
         <Block :title="$t('settings.voting')">
           <UiInput v-model="votingDelay" :number="true" placeholder="e.g. 1">
