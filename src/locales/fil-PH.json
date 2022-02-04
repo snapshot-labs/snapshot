@@ -340,7 +340,8 @@
       "connectWallet": "Ikonekta ang wallet upang makita ang mga detalye ng pagpapatupad",
       "switchChain": "Ilipat ang iyong wallet sa {0} upang humiling ng pagpapatupad",
       "question": "Pumasa ba ang panukala ito at natutugunan ba nito ang",
-      "criteria": "pamantayan sa pagtanggap?"
+      "criteria": "pamantayan sa pagtanggap?",
+      "proposalPassed": "Did the proposal pass?"
     }
   },
   "poap": {
