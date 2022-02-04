@@ -213,7 +213,6 @@ onMounted(async () => {
                 @update:modelValue="handleURLUpdate"
                 :placeholder="$t('strategyParameters')"
                 class="input text-left"
-                style="width: 560px"
               />
             </UiButton>
             <Block v-if="strategyError" style="border-color: red !important">

@@ -101,8 +101,7 @@ watch(open, () => {
             v-model="input.params"
             v-model:is-valid="isValid"
             :placeholder="$t('strategyParameters')"
-            class="input text-left no-scrollbar"
-            style="width: 560px"
+            class="input text-left"
           />
         </UiButton>
       </div>
