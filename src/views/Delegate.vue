@@ -258,7 +258,11 @@ debouncedWatch(
 onMounted(async () => {
   if (route.params.key) specifySpaceChecked.value = true;
   setPageTitle('page.title.delegate');
-  await getDelegationsAndDelegates();
+  try {
+    await getDelegationsAndDelegates();
+  } catch (error) {
+    console.log(error);
+  }
   loaded.value = true;
 });
 </script>
