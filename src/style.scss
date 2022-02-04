@@ -77,7 +77,7 @@
 
 @media (pointer: fine) {
   body {
-    overscroll-behavior-y: none;
+    overflow: overlay;
   }
 }
 
