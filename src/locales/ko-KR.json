@@ -340,7 +340,8 @@
       "connectWallet": "실행 세부 정보를 보려면 지갑을 연결합니다.",
       "switchChain": "실행을 요청하기 위해 지갑을 {0} 전환",
       "question": "이 제안서가 지나갔을 때 그것을 만난다",
-      "criteria": "허용 기준?"
+      "criteria": "허용 기준?",
+      "proposalPassed": "Did the proposal pass?"
     }
   },
   "poap": {
