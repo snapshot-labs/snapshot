@@ -1,8 +1,8 @@
 /**
  * Creates a plugin index from each individual plugin.json and provides
- * functions to register and load plugin components, execute hooks and filter
- * plugins by a search string (case insensitive), ordered by space count
- * fetched from backend.
+ * functions to register and load plugin components and filter plugins by a
+ * search string (case insensitive), ordered by space count fetched from
+ * backend.
  */
 
 import { ref, defineAsyncComponent } from 'vue';
@@ -22,23 +22,36 @@ const pluginIndex: Record<string, any> = Object.fromEntries(
 );
 
 // prepare all plugin's main components imports (Create.vue, Proposal.vue, etc.)
+// doesn't actually import anything but prepares functions to use with
+// defineAsyncComponent below (importComponent())
 const allPluginComponents = import.meta.glob(`../plugins/*/*.vue`);
 
-// get required components for specific location (componentName) and list of active plugins
+// get required components for specific location (componentName) and a list of active plugins
 const getPluginComponents = (componentName: string, pluginKeys) => {
   pluginKeys = pluginKeys.filter(key => !!pluginIndex[key]); // remove old/non-existent plugins
 
   return Object.entries(allPluginComponents)
-    .filter(([path]) => {
+    .map(([path, importComponent]) => {
       if (path.endsWith(componentName + '.vue')) {
         const pluginKey = path
           .replace('../plugins/', '')
           .replace(`/${componentName}.vue`, '');
-        return pluginKeys.includes(pluginKey);
+
+        if (pluginKeys.includes(pluginKey)) {
+          return defineAsyncComponent(async () => {
+            const { default: component } = await importComponent();
+            component.name =
+              'Plugins' +
+              pluginKey[0].toUpperCase() +
+              pluginKey.substring(1) +
+              componentName;
+            return component;
+          });
+        }
       }
-      return false;
+      return null;
     })
-    .map(comp => defineAsyncComponent(comp[1]));
+    .filter(c => c);
 };
 
 // takes the space's enabled plugins (pluginKeys), checks if they have the
@@ -61,20 +74,20 @@ const executePluginHooks = async (hookName, pluginKeys, payload) => {
 
 // space count and filter function
 const pluginsSpacesCount: any = ref(null);
-const loadingPluginsSpaceCount = ref(false);
+const loadingPluginsSpacesCount = ref(false);
 
 const { apolloQuery } = useApolloQuery();
 const getPluginsSpacesCount = async () => {
   if (pluginsSpacesCount.value) return; // run only once
 
-  loadingPluginsSpaceCount.value = true;
+  loadingPluginsSpacesCount.value = true;
   const res = await apolloQuery({ query: PLUGINS_COUNT_QUERY }, 'plugins');
   // turn [{ id: "myPlugin", spaceCount: 1 }, ...] to { myPlugin: 1, ... }
   pluginsSpacesCount.value = res.reduce(
     (obj: any, item: any) => ({ ...obj, [item.id]: item.spacesCount }),
     {}
   );
-  loadingPluginsSpaceCount.value = false;
+  loadingPluginsSpacesCount.value = false;
 };
 
 const filterPlugins = (q = '') =>
@@ -97,11 +110,11 @@ const filterPlugins = (q = '') =>
 export function usePlugins() {
   return {
     pluginIndex,
-    getPluginComponents,
     executePluginHooks,
+    getPluginComponents,
     filterPlugins,
     getPluginsSpacesCount,
     pluginsSpacesCount,
-    loadingPluginsSpaceCount
+    loadingPluginsSpacesCount
   };
 }

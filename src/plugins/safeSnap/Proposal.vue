@@ -4,7 +4,7 @@ import { computed } from 'vue';
 const props = defineProps({
   proposal: Object,
   space: Object,
-  loadedResults: Object
+  loadedResults: Boolean
 });
 
 const safeSnapInput = computed(() => {
@@ -39,5 +39,6 @@ const safeSnapInput = computed(() => {
     :preview="true"
     :config="space.plugins?.safeSnap"
     :network="space.network"
+    :spaceId="space.id"
   />
 </template>

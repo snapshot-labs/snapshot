@@ -41,12 +41,13 @@ defineProps({
         }}
       </div>
       <a
+        class="flex items-center"
         @click.stop
         target="_blank"
         :href="`https://github.com/snapshot-labs/snapshot-plugins/tree/master/src/plugins/${plugin.key}`"
       >
         {{ $t('learnMore') }}
-        <Icon name="external-link" class="text-color" />
+        <Icon size="16" name="external-link" class="text-color ml-1" />
       </a>
     </div>
   </Block>

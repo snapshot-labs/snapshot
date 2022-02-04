@@ -185,6 +185,7 @@ function clickSubmit() {
 
 const { apolloQuery, queryLoading } = useApolloQuery();
 
+const sourceProposalLoaded = ref(false);
 async function loadProposal() {
   const proposal = await apolloQuery(
     {
@@ -213,6 +214,8 @@ async function loadProposal() {
     key,
     text
   }));
+
+  sourceProposalLoaded.value = true;
 }
 
 onMounted(async () => {
@@ -259,17 +262,27 @@ watchEffect(() => {
           {{ $t('back') }}
         </router-link>
       </div>
-      <Block v-if="space && passValidation[0] === false">
+      <Block
+        v-if="space && passValidation[0] === false"
+        class="!border-skin-link text-skin-link"
+      >
         <Icon name="warning" class="mr-1" />
         <span v-if="passValidation[1] === 'basic'">
-          {{
-            space?.validation?.params.minScore || space?.filters.minScore
-              ? $tc('create.validationWarning.basic.minScore', [
-                  formatCompactNumber(space.filters.minScore),
-                  space.symbol
-                ])
-              : $t('create.validationWarning.basic.member')
-          }}
+          <span v-if="space?.filters.onlyMembers">
+            {{ $t('create.validationWarning.basic.member') }}
+          </span>
+          <span
+            v-else-if="
+              space?.validation?.params.minScore || space?.filters.minScore
+            "
+          >
+            {{
+              $tc('create.validationWarning.basic.minScore', [
+                formatCompactNumber(space.filters.minScore),
+                space.symbol
+              ])
+            }}
+          </span>
         </span>
         <span v-else>
           {{
@@ -360,7 +373,7 @@ watchEffect(() => {
         </UiButton>
       </Block>
       <PluginCreate
-        v-if="space?.plugins"
+        v-if="space?.plugins && (!from || sourceProposalLoaded)"
         :proposal="proposal"
         :space="space"
         :preview="preview"
@@ -379,7 +392,7 @@ watchEffect(() => {
           </UiButton>
           <UiButton
             @click="(modalOpen = true), (selectedDate = 'start')"
-            :disabled="space.voting?.delay"
+            :disabled="!!space.voting?.delay"
             class="w-full mb-2"
           >
             <span v-if="!dateStart">{{ $t('create.startDate') }}</span>
@@ -387,7 +400,7 @@ watchEffect(() => {
           </UiButton>
           <UiButton
             @click="(modalOpen = true), (selectedDate = 'end')"
-            :disabled="space.voting?.period"
+            :disabled="!!space.voting?.period"
             class="w-full mb-2"
           >
             <span v-if="!dateEnd">{{ $t('create.endDate') }}</span>
@@ -417,7 +430,7 @@ watchEffect(() => {
         </UiButton>
       </Block>
       <PluginCreateSidebar
-        v-if="space?.plugins"
+        v-if="space?.plugins && (!from || sourceProposalLoaded)"
         :proposal="proposal"
         :space="space"
         :preview="preview"
