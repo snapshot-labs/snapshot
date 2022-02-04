@@ -43,7 +43,7 @@ function removeVote(i) {
 // Delete choice if empty string or 0
 watch(selectedChoices.value, currentValue => {
   Object.entries(currentValue).forEach(choice => {
-    if (choice[1] === '' || choice[1] === 0)
+    if (choice[1] === '' || choice[1] <= 0)
       delete selectedChoices.value[choice[0]];
   });
   emit('selectChoice', selectedChoices.value);

@@ -19,6 +19,6 @@ const update = form => {
     :network="space.network"
     :preview="preview"
     @update:modelValue="update"
-    :modelValue="modelValue"
+    :modelValue="modelValue?.safeSnap || {}"
   />
 </template>
