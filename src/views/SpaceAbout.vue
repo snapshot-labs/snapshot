@@ -1,4 +1,8 @@
 <script setup>
+/**
+ * Space's about page:
+ * - show summary of space settings, admins, authors, etc.
+ */
 import { computed, watchEffect } from 'vue';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { useProfiles } from '@/composables/useProfiles';

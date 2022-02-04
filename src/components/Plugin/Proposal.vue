@@ -1,4 +1,10 @@
 <script setup>
+/**
+ * Proposal page's plugin components:
+ * - renders Proposal.vue components from plugins enabled for the space
+ * - rendered below other proposal content
+ * - passes relevant properties down to components
+ */
 import { usePlugins } from '@/composables/usePlugins';
 
 const props = defineProps({

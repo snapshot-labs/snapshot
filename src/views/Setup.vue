@@ -1,4 +1,10 @@
 <script setup>
+/**
+ * ENS space setup:
+ * - shows user's existing domains
+ * - let's them enter a new one and forwards to ens app
+ * - forwards to settings form when selecting domain
+ */
 import { ref, watch, onMounted, onUnmounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useWeb3 } from '@/composables/useWeb3';

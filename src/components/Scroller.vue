@@ -1,4 +1,10 @@
 <script setup>
+/**
+ * Followed spaces list/selector:
+ * - scrollable/sortable
+ * - also shows links to timeline, new space setup and snapshot info modal
+ * - not shown when app accessed through custom domain
+ */
 import { watch, onMounted, ref, watchEffect } from 'vue';
 import draggable from 'vuedraggable';
 import { useFollowSpace } from '@/composables/useFollowSpace';

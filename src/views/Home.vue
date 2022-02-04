@@ -1,4 +1,9 @@
 <script setup>
+/**
+ * Space explorer:
+ * - search bar and categories
+ * - not used on custom domains (Space.vue instead)
+ */
 import { ref, watchEffect, onMounted } from 'vue';
 import { useUnseenProposals } from '@/composables/useUnseenProposals';
 import { useScrollMonitor } from '@/composables/useScrollMonitor';

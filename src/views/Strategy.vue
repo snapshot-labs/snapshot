@@ -1,4 +1,7 @@
 <script setup>
+/**
+ * Strategy info page
+ */
 import { onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { setPageTitle } from '@/helpers/utils';

@@ -1,4 +1,9 @@
 <script setup>
+/**
+ * Space's settings form:
+ * - requires ENS text record ("snapshot") with IPNS url to store settings at
+ * - shows required IPNS url, if not found
+ */
 import { computed, ref, watchEffect, inject, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { getAddress } from '@ethersproject/address';

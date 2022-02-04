@@ -1,4 +1,10 @@
 <script setup>
+/**
+ * The main app frame:
+ * - contains Topnav, Scroller (followed spaces), Notifications
+ * - renders router view
+ * - applies space skins
+ */
 import { computed, onMounted, provide, watch } from 'vue';
 import { useModal } from '@/composables/useModal';
 import { useI18n } from '@/composables/useI18n';

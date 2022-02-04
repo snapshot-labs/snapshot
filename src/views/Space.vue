@@ -1,4 +1,10 @@
 <script setup>
+/**
+ * Wrapper for space pages:
+ * - loads space data
+ * - renders space pages as child router view
+ * - used as home page when accessed through custom domain
+ */
 import { computed, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { useDomain } from '@/composables/useDomain';

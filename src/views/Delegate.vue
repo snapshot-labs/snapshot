@@ -1,4 +1,8 @@
 <script setup>
+/**
+ * Delegation page:
+ * - linked in space menu for spaces using 'delegation' strategy
+ */
 import { ref, computed, watch, onMounted, watchEffect, inject } from 'vue';
 import { useRoute } from 'vue-router';
 import { useI18n } from 'vue-i18n';

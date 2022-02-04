@@ -1,4 +1,8 @@
 <script setup>
+/**
+ * Connected user's timeline:
+ * - lists proposals from followed spaces
+ */
 import { onMounted, ref, computed, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { useInfiniteLoader } from '@/composables/useInfiniteLoader';

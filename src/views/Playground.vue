@@ -1,4 +1,8 @@
 <script setup>
+/**
+ * Strategy playground:
+ * - can be populated from base64 string in url
+ */
 import { ref, computed, onMounted, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';

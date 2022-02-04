@@ -1,4 +1,9 @@
 <script setup>
+/**
+ * Proposal form:
+ * - can be prefilled with existing proposal data (duplicate proposal)
+ * - renders components from plugin enabled in the space
+ */
 import { ref, watchEffect, computed, onMounted, inject } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import draggable from 'vuedraggable';

@@ -1,4 +1,11 @@
 <script setup>
+/**
+ * Proposal form's plugin components:
+ * - renders CreateSidebar.vue components from plugins enabled for the space
+ * - rendered in sidebar
+ * - passes relevant properties down to components
+ * - "proxying" form updates
+ */
 import { usePlugins } from '@/composables/usePlugins';
 
 const props = defineProps({

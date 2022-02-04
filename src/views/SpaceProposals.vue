@@ -1,4 +1,7 @@
 <script setup>
+/**
+ * Spaces proposal list
+ */
 import { watchEffect, computed, ref, watch } from 'vue';
 import { useStore } from '@/composables/useStore';
 import { setPageTitle } from '@/helpers/utils';
