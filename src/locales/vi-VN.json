@@ -340,7 +340,8 @@
       "connectWallet": "Kết nối ví",
       "switchChain": "Vui lòng chọn mạng lưới {0} để thực hiện giao dịch",
       "question": "Đề xuất này có được thông qua không và nó có đáp ứng được",
-      "criteria": "tiêu chí chấp nhận?"
+      "criteria": "tiêu chí chấp nhận?",
+      "proposalPassed": "Did the proposal pass?"
     }
   },
   "poap": {
