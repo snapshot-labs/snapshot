@@ -340,7 +340,8 @@
       "connectWallet": "Conectează portofelul pentru a vedea detaliile de execuție",
       "switchChain": "Comută portofelul la {0} pentru a solicita execuția",
       "question": "A trecut această propunere si îndeplinește",
-      "criteria": "criterii de acceptare?"
+      "criteria": "criterii de acceptare?",
+      "proposalPassed": "Did the proposal pass?"
     }
   },
   "poap": {
