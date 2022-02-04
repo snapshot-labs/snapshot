@@ -3,7 +3,7 @@
  * filtered by the search string (case insensitive).
  */
 
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { useApolloQuery } from '@/composables/useApolloQuery';
 import { STRATEGIES_QUERY, EXTENDED_STRATEGY_QUERY } from '@/helpers/queries';
 import { Strategy } from '@/helpers/interfaces';
@@ -15,6 +15,12 @@ export function useStrategies() {
   const loadingStrategies = ref(false);
   const extendedStrategy = ref<Strategy | null>(null);
   const loadingExtendedStrategy = ref(false);
+
+  const strategyDefinition = computed(() =>
+    extendedStrategy.value?.schema?.$ref
+      ? extendedStrategy.value.schema.definitions.Strategy
+      : false
+  );
 
   const filterStrategies = (q = '') =>
     strategies.value
@@ -70,6 +76,7 @@ export function useStrategies() {
     getExtendedStrategy,
     strategies,
     loadingStrategies,
-    extendedStrategy
+    extendedStrategy,
+    strategyDefinition
   };
 }

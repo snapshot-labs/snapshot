@@ -252,6 +252,15 @@ onMounted(async () => {
                 <Icon name="upload" size="25" />
                 <span class="ml-1">Share</span>
               </div>
+              <template v-slot:item="{ item }">
+                <Icon
+                  v-if="item.icon"
+                  :name="item.icon"
+                  size="21"
+                  class="align-middle mr-2 !leading-[0]"
+                />
+                {{ item.text }}
+              </template>
             </UiDropdown>
             <UiDropdown
               top="2.5rem"
