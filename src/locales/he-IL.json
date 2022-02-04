@@ -340,7 +340,8 @@
       "connectWallet": "Connect wallet to see execution details",
       "switchChain": "Switch your wallet to {0} to request execution",
       "question": "האם ההצעה הזו עברה והאם היא עומדת",
-      "criteria": "בקריטריונים?"
+      "criteria": "בקריטריונים?",
+      "proposalPassed": "Did the proposal pass?"
     }
   },
   "poap": {
