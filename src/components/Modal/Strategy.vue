@@ -27,15 +27,11 @@ const {
   getStrategies,
   loadingStrategies,
   getExtendedStrategy,
-  extendedStrategy
+  extendedStrategy,
+  strategyDefinition
 } = useStrategies();
-const strategiesResults = computed(() => filterStrategies(searchInput.value));
 
-const definition = computed(() =>
-  extendedStrategy.value?.schema?.$ref
-    ? extendedStrategy.value.schema.definitions.Strategy
-    : false
-);
+const strategiesResults = computed(() => filterStrategies(searchInput.value));
 
 function handleSubmit() {
   const strategyObj = clone(input.value);
@@ -53,7 +49,7 @@ async function selectStrategy(strategyName) {
   await initStrategy(strategyName);
   const params =
     extendedStrategy.value?.examples[0]?.strategy?.params || defaultParams;
-  input.value.params = definition.value ? {} : params;
+  input.value.params = strategyDefinition.value ? {} : params;
   loading.value = false;
 }
 
@@ -92,9 +88,9 @@ watch(open, () => {
       <RowLoading v-if="loading" class="px-0" />
       <div v-else>
         <SDefaultObject
-          v-if="definition"
+          v-if="strategyDefinition"
           v-model="input.params"
-          :definition="definition"
+          :definition="strategyDefinition"
         />
         <UiButton
           v-else
