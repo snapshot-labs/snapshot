@@ -340,7 +340,8 @@
       "connectWallet": "Connect wallet to see execution details",
       "switchChain": "Switch your wallet to {0} to request execution",
       "question": "Byl tento návrh schválen a splňuje",
-      "criteria": "kritéria pro přijetí?"
+      "criteria": "kritéria pro přijetí?",
+      "proposalPassed": "Did the proposal pass?"
     }
   },
   "poap": {
