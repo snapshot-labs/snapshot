@@ -340,7 +340,8 @@
       "connectWallet": "连接钱包以查看执行详情",
       "switchChain": "将你的钱包切换到 {0} 以请求执行",
       "question": "该提案是否通过并且是否符合",
-      "criteria": "接收标准？"
+      "criteria": "接收标准？",
+      "proposalPassed": "Did the proposal pass?"
     }
   },
   "poap": {
