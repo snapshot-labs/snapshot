@@ -340,7 +340,8 @@
       "connectWallet": "Connect wallet to see execution details",
       "switchChain": "Switch your wallet to {0} to request execution",
       "question": "हा प्रस्ताव पास झाला आणि तो पूर्ण करतो का",
-      "criteria": "स्वीकृती निकष?"
+      "criteria": "स्वीकृती निकष?",
+      "proposalPassed": "Did the proposal pass?"
     }
   },
   "poap": {
