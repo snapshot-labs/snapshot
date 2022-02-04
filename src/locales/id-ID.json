@@ -340,7 +340,8 @@
       "connectWallet": "Hubungkan dompet untuk melihat detail pelaksanaan",
       "switchChain": "Alihkan dompet Anda ke {0} untuk mengajukan pelaksanaan",
       "question": "Apaka proposal ini lolos dan sesuai dengan",
-      "criteria": "kriteria penerimaan?"
+      "criteria": "kriteria penerimaan?",
+      "proposalPassed": "Did the proposal pass?"
     }
   },
   "poap": {
