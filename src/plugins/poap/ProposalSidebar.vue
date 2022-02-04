@@ -3,7 +3,7 @@ defineProps({
   space: Object,
   proposal: Object,
   results: Object,
-  loadedResults: Object,
+  loadedResults: Boolean,
   votes: Object,
   strategies: Object
 });

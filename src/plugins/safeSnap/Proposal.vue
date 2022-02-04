@@ -4,7 +4,7 @@ import { computed } from 'vue';
 const props = defineProps({
   proposal: Object,
   space: Object,
-  loadedResults: Object
+  loadedResults: Boolean
 });
 
 const safeSnapInput = computed(() => {
