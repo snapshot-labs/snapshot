@@ -1,11 +1,10 @@
 <script>
-import Plugin from '@/../snapshot-plugins/src/plugins/safeSnap';
-import { isHexString } from '@ethersproject/bytes';
-import { parseAmount } from '@/helpers/utils';
-import {
+import Plugin, {
   decodeTransactionData,
   rawToModuleTransaction
-} from '@/helpers/abi/utils';
+} from '@/../snapshot-plugins/src/plugins/safeSnap';
+import { isHexString } from '@ethersproject/bytes';
+import { parseAmount } from '@/helpers/utils';
 
 export default {
   props: ['modelValue', 'nonce', 'config'],
@@ -30,7 +29,8 @@ export default {
         try {
           const transaction = await decodeTransactionData(
             this.config.network,
-            this.modelValue
+            this.modelValue,
+            this.config.multiSendAddress
           );
           if (this.plugin.validateTransaction(transaction)) {
             this.$emit('update:modelValue', transaction);

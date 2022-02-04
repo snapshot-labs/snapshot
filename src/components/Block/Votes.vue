@@ -51,8 +51,8 @@ function isZero() {
   if (votes.value.length > 0) return true;
 }
 
-function openReceiptModal(vote) {
-  authorIpfsHash.value = vote.ipfs;
+function openReceiptModal(iphsHash) {
+  authorIpfsHash.value = iphsHash;
   // this.relayerIpfsHash = vote.relayerIpfsHash;
   modalReceiptOpen.value = true;
 }
@@ -60,7 +60,10 @@ function openReceiptModal(vote) {
 const { profiles, loadProfiles } = useProfiles();
 
 watch([votes, web3Account], () => {
-  const votesWithUser = uniqBy(clone(votes.value).concat(props.userVote), 'id');
+  const votesWithUser = uniqBy(
+    clone(votes.value).concat(props.userVote),
+    'ipfs'
+  );
   if (votesWithUser.map(vote => vote.voter).includes(web3Account.value)) {
     votesWithUser.unshift(
       votesWithUser.splice(
@@ -98,11 +101,11 @@ watch(visibleVotes, () => {
         :address="vote.voter"
         :space="space"
         :proposal="proposal"
-        class="column"
+        class="w-[110px] xs:w-[130px] min-w-[110px] xs:min-w-[130px]"
       />
-      <div class="flex-auto text-center link-color">
-        <span
-          class="text-center link-color"
+      <div class="flex-auto text-center link-color truncate px-3">
+        <div
+          class="text-center link-color truncate"
           v-tippy="{
             content:
               format(proposal, vote.choice).length > 24
@@ -110,11 +113,13 @@ watch(visibleVotes, () => {
                 : null
           }"
         >
-          {{ shorten(format(proposal, vote.choice), 24) }}
-        </span>
+          {{ format(proposal, vote.choice) }}
+        </div>
       </div>
 
-      <div class="column text-right link-color">
+      <div
+        class="min-w-[110px] xs:min-w-[130px] text-right link-color whitespace-nowrap"
+      >
         <span
           v-tippy="{
             content: vote.scores
@@ -133,7 +138,7 @@ watch(visibleVotes, () => {
           }}
         </span>
         <a
-          @click="openReceiptModal(vote)"
+          @click="openReceiptModal(vote.ipfs)"
           target="_blank"
           class="ml-2 text-color"
           title="Receipt"
@@ -151,7 +156,7 @@ watch(visibleVotes, () => {
       @click="isFinalProposal ? $emit('loadVotes') : (nbrVisibleVotes += 10)"
       class="px-4 py-3 border-t text-center block header-bg rounded-b-none md:rounded-b-md"
     >
-      <UiLoading v-if="loadingMore" :fill-white="primary" />
+      <UiLoading v-if="loadingMore" />
       <span v-else v-text="$t('seeMore')" />
     </a>
     <teleport to="#modal">

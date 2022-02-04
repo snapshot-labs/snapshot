@@ -6,7 +6,7 @@ import cloneDeep from 'lodash/cloneDeep';
 
 export async function getProposalVotes(
   proposalId: string,
-  { first, voter, skip }: any = { first: 20000, voter: '', skip: 0 }
+  { first, voter, skip }: any = { first: 30000, voter: '', skip: 0 }
 ) {
   try {
     console.time('getProposalVotes');
@@ -59,6 +59,7 @@ export async function getProposal(id) {
 }
 
 export async function getResults(space, proposal, votes) {
+  console.log('[score] getResults');
   try {
     const voters = votes.map(vote => vote.voter);
     const strategies = proposal.strategies ?? space.strategies;
@@ -104,6 +105,7 @@ export async function getResults(space, proposal, votes) {
 }
 
 export async function getPower(space, address, proposal) {
+  console.log('[score] getPower');
   try {
     const strategies = proposal.strategies ?? space.strategies;
     let scores: any = await getScores(

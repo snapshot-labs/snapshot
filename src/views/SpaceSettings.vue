@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref, watchEffect, inject } from 'vue';
+import { computed, ref, watchEffect, inject, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { getAddress } from '@ethersproject/address';
 import {
@@ -9,13 +9,13 @@ import {
 } from '@snapshot-labs/snapshot.js/src/utils';
 import schemas from '@snapshot-labs/snapshot.js/src/schemas';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
-import { useSearchFilters } from '@/composables/useSearchFilters';
 import defaults from '@/locales/default';
 import { useCopy } from '@/composables/useCopy';
 import { useWeb3 } from '@/composables/useWeb3';
 import { calcFromSeconds, calcToSeconds } from '@/helpers/utils';
 import { useClient } from '@/composables/useClient';
 import { setPageTitle } from '@/helpers/utils';
+import { usePlugins } from '@/composables/usePlugins';
 
 const props = defineProps({
   spaceId: String,
@@ -28,6 +28,7 @@ const props = defineProps({
 
 const basicValidation = { name: 'basic', params: {} };
 
+const { pluginIndex } = usePlugins();
 const { t } = useI18n();
 const { copyToClipboard } = useCopy();
 const { web3Account } = useWeb3();
@@ -62,6 +63,8 @@ const form = ref({
 
 const validate = computed(() => {
   if (form.value.terms === '') delete form.value.terms;
+  if (form.value.avatar === '') delete form.value.avatar;
+
   return validateSchema(schemas.space, form.value);
 });
 
@@ -81,6 +84,16 @@ const textRecord = computed(() => {
 
 const isOwner = computed(() => {
   return currentTextRecord.value === textRecord.value;
+});
+
+watch([currentTextRecord, textRecord], () => {
+  // Check if the connected wallet is the space owner and add address to admins
+  // if not already present
+  if (isOwner.value) {
+    if (!form.value.admins.includes(web3Account.value)) {
+      form.value.admins.push(web3Account.value);
+    }
+  }
 });
 
 const isAdmin = computed(() => {
@@ -108,16 +121,6 @@ const votingPeriod = computed({
 const categoriesString = computed(() => {
   return form.value.categories ? form.value.categories.join(', ') : '';
 });
-
-const { filteredPlugins } = useSearchFilters();
-const plugins = computed(() => filteredPlugins());
-
-function pluginName(key) {
-  const plugin = plugins.value.find(obj => {
-    return obj.key === key;
-  });
-  return plugin?.name;
-}
 
 async function handleSubmit() {
   if (isValid.value) {
@@ -418,7 +421,7 @@ watchEffect(() => {
             >
               <template v-slot:label> {{ $t(`settings.terms`) }} </template>
             </UiInput>
-            <div class="flex items-center space-x-2 px-2">
+            <div class="flex items-center space-x-2 pr-2">
               <Checkbox v-model="form.private" />
               <span>{{ $t('settings.hideSpace') }}</span>
             </div>
@@ -522,7 +525,14 @@ watchEffect(() => {
           </UiButton>
         </Block>
         <Block :title="$t('settings.proposalValidation')">
-          <div class="mb-2">
+          <div
+            class="flex items-center space-x-2 pr-2"
+            :class="{ 'mb-1': !form.filters.onlyMembers }"
+          >
+            <Checkbox v-model="form.filters.onlyMembers" class="mt-1" />
+            <span>{{ $t('settings.allowOnlyAuthors') }}</span>
+          </div>
+          <div v-if="!form.filters.onlyMembers">
             <UiInput
               @click="modalValidationOpen = true"
               :error="inputError('settings.validation')"
@@ -544,10 +554,6 @@ watchEffect(() => {
                   $t('settings.proposalThreshold')
                 }}</template>
               </UiInput>
-              <div class="flex items-center space-x-2 px-2">
-                <Checkbox v-model="form.filters.onlyMembers" />
-                <span>{{ $t('settings.allowOnlyAuthors') }}</span>
-              </div>
             </div>
           </div>
         </Block>
@@ -605,7 +611,7 @@ watchEffect(() => {
               </div>
             </template>
           </UiInput>
-          <div class="flex items-center space-x-2 px-2">
+          <div class="flex items-center space-x-2 pr-2">
             <Checkbox v-model="form.voting.hideAbstain" />
             <span>{{ $t('settings.hideAbstain') }}</span>
           </div>
@@ -613,11 +619,13 @@ watchEffect(() => {
         <Block :title="$t('plugins')">
           <div v-if="form?.plugins">
             <div
-              v-for="(plugin, name, index) in form.plugins"
+              v-for="(name, index) in Object.keys(form.plugins).filter(
+                key => pluginIndex[key]
+              )"
               :key="index"
               class="mb-3 relative"
             >
-              <div v-if="pluginName(name)">
+              <div v-if="pluginIndex[name].name">
                 <a
                   @click="handleRemovePlugins(name)"
                   class="absolute p-4 right-0"
@@ -628,7 +636,7 @@ watchEffect(() => {
                   @click="handleEditPlugins(name)"
                   class="p-4 block border rounded-md"
                 >
-                  <h4 v-text="pluginName(name)" />
+                  <h4 v-text="pluginIndex[name].name" />
                 </a>
               </div>
             </div>
@@ -640,20 +648,22 @@ watchEffect(() => {
       </template>
     </template>
     <template v-if="(loaded && isOwner) || (loaded && isAdmin)" #sidebar-right>
-      <Block :title="$t('actions')">
-        <UiButton @click="handleReset" class="block w-full mb-2">
-          {{ $t('reset') }}
-        </UiButton>
-        <UiButton
-          :disabled="uploadLoading"
-          @click="handleSubmit"
-          :loading="clientLoading"
-          class="block w-full"
-          primary
-        >
-          {{ $t('save') }}
-        </UiButton>
-      </Block>
+      <div class="lg:fixed lg:w-[300px]">
+        <Block :title="$t('actions')">
+          <UiButton @click="handleReset" class="block w-full mb-2">
+            {{ $t('reset') }}
+          </UiButton>
+          <UiButton
+            :disabled="uploadLoading"
+            @click="handleSubmit"
+            :loading="clientLoading"
+            class="block w-full"
+            primary
+          >
+            {{ $t('save') }}
+          </UiButton>
+        </Block>
+      </div>
     </template>
   </Layout>
   <teleport to="#modal">

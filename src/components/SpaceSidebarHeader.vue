@@ -42,7 +42,7 @@ watchEffect(() => {
       <Token :space="space" symbolIndex="space" size="80" class="mt-3 mb-2" />
       <h3 class="mb-[2px] mx-2 flex justify-center items-center">
         <div
-          class="max-w-[70%] truncate mr-1"
+          class="truncated mr-1"
           v-tippy="{
             content: space.name.length > 16 ? space.name : null
           }"

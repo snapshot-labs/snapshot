@@ -10,7 +10,6 @@ import { useProfiles } from '@/composables/useProfiles';
 import { useUnseenProposals } from '@/composables/useUnseenProposals';
 import { lsSet } from '@/helpers/utils';
 import { useWeb3 } from '@/composables/useWeb3';
-import { useApp } from '@/composables/useApp';
 
 const props = defineProps({ space: Object, spaceId: String });
 
@@ -64,6 +63,8 @@ function emitUpdateLastSeenProposal() {
   updateLastSeenProposal(web3Account.value);
 }
 
+watch(web3Account, () => emitUpdateLastSeenProposal());
+
 async function load() {
   if (store.space.proposals.length > 0) return;
   loading.value = true;
@@ -73,7 +74,7 @@ async function load() {
 }
 
 watch(
-  props.spaceId,
+  () => props.spaceId,
   () => {
     const firstProposal = store.space.proposals[0];
     if (firstProposal && firstProposal?.space.id !== props.spaceId) {
@@ -95,10 +96,10 @@ watch(store.space.proposals, () => {
 });
 
 // TODO: Use space query instead of explore, to get total number of proposals
-const { explore } = useApp();
 const proposalsCount = computed(() => {
-  const count = explore.value.spaces[props.spaceId].proposals;
-  return count ? count : 0;
+  return 1;
+  // const count = explore.value.spaces[props.spaceId].proposals;
+  // return count ? count : 0;
 });
 
 const loadingData = computed(() => {
@@ -134,11 +135,31 @@ watchEffect(() => {
           right="1.25rem"
           @select="selectState"
           :items="[
-            { text: $t('proposals.states.all'), action: 'all' },
-            { text: $t('proposals.states.active'), action: 'active' },
-            { text: $t('proposals.states.pending'), action: 'pending' },
-            { text: $t('proposals.states.closed'), action: 'closed' },
-            { text: $t('proposals.states.core'), action: 'core' }
+            {
+              text: $t('proposals.states.all'),
+              action: 'all',
+              selected: spaceFilterBy === 'all'
+            },
+            {
+              text: $t('proposals.states.active'),
+              action: 'active',
+              selected: spaceFilterBy === 'active'
+            },
+            {
+              text: $t('proposals.states.pending'),
+              action: 'pending',
+              selected: spaceFilterBy === 'pending'
+            },
+            {
+              text: $t('proposals.states.closed'),
+              action: 'closed',
+              selected: spaceFilterBy === 'closed'
+            },
+            {
+              text: $t('proposals.states.core'),
+              action: 'core',
+              selected: spaceFilterBy === 'core'
+            }
           ]"
         >
           <UiButton class="pr-3">

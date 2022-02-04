@@ -1,7 +1,9 @@
 <script setup>
 import { useIntl } from '@/composables/useIntl';
+import { useValidationsFilter } from '@/composables/useValidationsFilter';
 
 const { formatCompactNumber } = useIntl();
+const { validationsSpacesCount } = useValidationsFilter();
 
 defineProps(['validation']);
 </script>
@@ -9,10 +11,14 @@ defineProps(['validation']);
 <template>
   <Block>
     <div class="flex items-center mb-1">
-      <h3 v-text="validation.name" />
+      <h3 v-text="validation" />
     </div>
     <div class="text-color">
-      {{ $tc('inSpaces', [formatCompactNumber(validation.spaces)]) }}
+      {{
+        $tc('inSpaces', [
+          formatCompactNumber(validationsSpacesCount?.[validation] ?? 0)
+        ])
+      }}
     </div>
   </Block>
 </template>

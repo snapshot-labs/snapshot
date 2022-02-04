@@ -1,6 +1,9 @@
 <script>
 import { BigNumber } from '@ethersproject/bignumber';
 import { formatUnits } from '@ethersproject/units';
+import { useEns } from '@/composables/useEns';
+import { useSafesnap } from '@/composables/useSafesnap';
+import { getEnsTextRecord } from '@snapshot-labs/snapshot.js/src/utils';
 
 export default {
   props: [
@@ -10,13 +13,40 @@ export default {
     'questionId',
     'minimumBond',
     'tokenSymbol',
-    'tokenDecimals'
+    'tokenDecimals',
+    'oracle'
   ],
   emits: ['close', 'setApproval'],
+  setup() {
+    const { safesnap } = useSafesnap();
+    const { isValidEnsDomain } = useEns();
+    return { safesnap, isValidEnsDomain };
+  },
+  data() {
+    return { criteriaLink: '' };
+  },
+  mounted() {
+    setTimeout(this.getCriteriaLink, 800);
+  },
   methods: {
     async handleSetApproval(option) {
       await this.$emit('setApproval', option);
       this.$emit('close');
+    },
+    async getCriteriaLink() {
+      const { spaceId } = this.safesnap.config;
+      if (this.isValidEnsDomain(spaceId)) {
+        try {
+          this.criteriaLink = await getEnsTextRecord(
+            spaceId,
+            'daorequirements'
+          );
+        } catch (err) {
+          console.warn(
+            '[safesnap] failed to get the "daorequirements" text record'
+          );
+        }
+      }
     }
   },
   computed: {
@@ -36,7 +66,10 @@ export default {
       };
     },
     questionLink() {
-      return 'https://reality.eth.link/app/#!/question/' + this.questionId;
+      if (this.tokenSymbol && this.tokenSymbol !== 'ETH') {
+        return `https://reality.eth.link/app/#!/token/${this.tokenSymbol}/question/${this.oracle}-${this.questionId}`;
+      }
+      return `https://reality.eth.link/app/#!/question/${this.oracle}-${this.questionId}`;
     }
   }
 };
@@ -48,17 +81,30 @@ export default {
       <h3 class="title">SafeSnap</h3>
     </template>
     <div class="m-4 mb-5">
-      <p>
+      <p v-if="criteriaLink">
         {{ $t('safeSnap.labels.question') }}
         <a
           class="question-link"
           rel="noreferrer noopener"
           target="_blank"
-          :href="questionLink"
+          :href="criteriaLink"
         >
           {{ $t('safeSnap.labels.criteria') }}
         </a>
       </p>
+      <p v-if="!criteriaLink">{{ $t('safeSnap.labels.proposalPassed') }}</p>
+      <div style="text-align: right">
+        <a
+          :href="questionLink"
+          class="text-color"
+          rel="noreferrer noopener"
+          target="_blank"
+          style="font-size: 16px"
+        >
+          Question
+          <i style="font-size: 14px" class="iconfont iconexternal-link" />
+        </a>
+      </div>
 
       <div class="border rounded-lg p-3 my-3">
         <div>
