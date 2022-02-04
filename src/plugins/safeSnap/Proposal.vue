@@ -39,5 +39,6 @@ const safeSnapInput = computed(() => {
     :preview="true"
     :config="space.plugins?.safeSnap"
     :network="space.network"
+    :spaceId="space.id"
   />
 </template>
