@@ -340,7 +340,8 @@
       "connectWallet": "قم بتوصيل المحفظة لرؤية تفاصيل التنفيذ",
       "switchChain": "قم بتغيير محفظتك إلى {0} لطلب التنفيذ",
       "question": "هل تم إقرار هذا الاقتراح وهل استوفى",
-      "criteria": "معايير القبول؟"
+      "criteria": "معايير القبول؟",
+      "proposalPassed": "Did the proposal pass?"
     }
   },
   "poap": {
