@@ -67,28 +67,3 @@ export async function getProfiles(addresses) {
     })
   );
 }
-
-export async function ensTextRecord(ens: string, record: string) {
-  const hash = namehash.hash(ens);
-  const provider = getProvider('1');
-  const abi = [
-    {
-      constant: true,
-      inputs: [
-        { internalType: 'bytes32', name: 'node', type: 'bytes32' },
-        { internalType: 'string', name: 'key', type: 'string' }
-      ],
-      name: 'text',
-      outputs: [{ internalType: 'string', name: '', type: 'string' }],
-      payable: false,
-      stateMutability: 'view',
-      type: 'function'
-    }
-  ];
-  return call(
-    provider,
-    abi,
-    ['0x4976fb03C32e5B8cfe2b6cCB31c09Ba78EBaBa41', 'text', [hash, record]],
-    { blockTag: 'latest' }
-  );
-}

@@ -1,10 +1,9 @@
 <script>
 import { BigNumber } from '@ethersproject/bignumber';
 import { formatUnits } from '@ethersproject/units';
-import { ensTextRecord } from '../../../../helpers/profile';
 import { useEns } from '@/composables/useEns';
 import { useSafesnap } from '@/composables/useSafesnap';
-import { useDebounce } from '@/composables/useDebounce';
+import { getEnsTextRecord } from '@snapshot-labs/snapshot.js/src/utils';
 
 export default {
   props: [
@@ -21,14 +20,13 @@ export default {
   setup() {
     const { safesnap } = useSafesnap();
     const { isValidEnsDomain } = useEns();
-    const debounce = useDebounce();
-    return { safesnap, debounce, isValidEnsDomain };
+    return { safesnap, isValidEnsDomain };
   },
   data() {
     return { criteriaLink: '' };
   },
   mounted() {
-    this.debounce(this.getCriteriaLink);
+    setTimeout(this.getCriteriaLink, 800);
   },
   methods: {
     async handleSetApproval(option) {
@@ -39,7 +37,10 @@ export default {
       const { spaceId } = this.safesnap.config;
       if (this.isValidEnsDomain(spaceId)) {
         try {
-          this.criteriaLink = await ensTextRecord(spaceId, 'daorequirements');
+          this.criteriaLink = await getEnsTextRecord(
+            spaceId,
+            'daorequirements'
+          );
         } catch (err) {
           console.warn(
             '[safesnap] failed to get the "daorequirements" text record'
@@ -80,7 +81,7 @@ export default {
       <h3 class="title">SafeSnap</h3>
     </template>
     <div class="m-4 mb-5">
-      <p>
+      <p v-if="criteriaLink">
         {{ $t('safeSnap.labels.question') }}
         <a
           class="question-link"
@@ -91,6 +92,7 @@ export default {
           {{ $t('safeSnap.labels.criteria') }}
         </a>
       </p>
+      <p v-if="!criteriaLink">{{ $t('safeSnap.labels.proposalPassed') }}</p>
       <div style="text-align: right">
         <a
           :href="questionLink"
