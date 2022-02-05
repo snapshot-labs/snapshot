@@ -179,6 +179,8 @@
     "new": "Đề xuất mới",
     "noProposals": "Không có bất kỳ đề xuất nào ở đây!",
     "createProposal": "Create proposal",
+    "showMore": "Show more",
+    "showLess": "Show less",
     "states": {
       "all": "Tất cả",
       "core": "Cốt lõi",
