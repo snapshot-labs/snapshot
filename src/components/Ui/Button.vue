@@ -9,6 +9,10 @@ defineProps({
   disabled: {
     type: Boolean,
     default: false
+  },
+  noFocus: {
+    type: Boolean,
+    default: false
   }
 });
 </script>
@@ -17,12 +21,16 @@ defineProps({
   <button
     :type="type || 'button'"
     :class="[
-      'button px-[24px] focus-within:border-skin-link',
-      { 'button--primary': primary }
+      'button px-[24px] ',
+      {
+        'button--primary': primary,
+        'focus-within:border-skin-border': noFocus,
+        'focus-within:border-skin-link': !noFocus
+      }
     ]"
     :disabled="disabled || loading"
   >
-    <UiLoading v-if="loading" :fill-white="primary" />
+    <UiLoading v-if="loading" />
     <slot v-else />
   </button>
 </template>

@@ -173,6 +173,7 @@ function clickSubmit() {
 
 const { apolloQuery, queryLoading } = useApolloQuery();
 
+const sourceProposalLoaded = ref(false);
 async function loadProposal() {
   const proposal = await apolloQuery(
     {
@@ -201,6 +202,8 @@ async function loadProposal() {
     key,
     text
   }));
+
+  sourceProposalLoaded.value = true;
 }
 
 onMounted(async () => {
@@ -358,7 +361,7 @@ watchEffect(() => {
         </UiButton>
       </Block>
       <PluginCreate
-        v-if="space?.plugins"
+        v-if="space?.plugins && (!from || sourceProposalLoaded)"
         :proposal="proposal"
         :space="space"
         :preview="preview"
@@ -415,7 +418,7 @@ watchEffect(() => {
         </UiButton>
       </Block>
       <PluginCreateSidebar
-        v-if="space?.plugins"
+        v-if="space?.plugins && (!from || sourceProposalLoaded)"
         :proposal="proposal"
         :space="space"
         :preview="preview"

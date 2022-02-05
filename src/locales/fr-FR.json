@@ -19,13 +19,13 @@
   "strategiesPage": "Stratégies",
   "space": "Espace",
   "spaces": "Espaces",
+  "verifiedSpace": "Espace vérifié",
   "version": "Version",
   "timeline": "Timeline",
   "filters": "Filtres",
   "allSpaces": "Tous les espaces",
   "submitOnchain": "Envoyer sur la chaîne",
   "inSpaces": "Dans {0} espace(s)",
-  "downloadReport": "Télécharger le rapport",
   "votes": "Votes",
   "seeMore": "Voir plus",
   "network": "Réseau",
@@ -39,6 +39,7 @@
   "view3box": "Voir le profil sur 3Box",
   "edit3box": "Éditer le profil sur 3Box",
   "connectWallet": "Connexion",
+  "toggleSkin": "Toggle skin",
   "about": "À propos",
   "license": "Licence",
   "ipfsServer": "Serveur IPFS",
@@ -50,19 +51,21 @@
   "confirmRemove": "Êtes-vous sûr de vouloir supprimer votre délégation à",
   "removeSpace": "pour l'espace {0}",
   "confirmVote": "Confirmez votre vote",
-  "sureToVote": "Êtes-vous sûr de vouloir voter \"{0}\" ?",
+  "sureToVote": "Êtes-vous sûr de vouloir voter ceci ?",
   "cannotBeUndone": "Cette action est irréversible.",
   "options": "Option(s)",
   "votingPower": "Votre pouvoir de vote",
   "receipt": "Reçu",
   "relayer": "Relayeur",
   "verifyOnMycrypto": "Vérifier le reçu sur MyCrypto",
+  "verifyOnSignatorio": "Vérifier sur Signator.io",
   "isCore": "Core",
+  "notificationsBlocked": "Votre navigateur bloque les notifications",
+  "notificationsNotSupported": "Votre navigateur ne prend pas en charge les notifications",
+  "walletNotSupported": "Wallet is not supported",
   "seeInExplorer": "Voir sur l'explorateur",
   "learnMore": "En savoir plus",
   "logout": "Se déconnecter",
-  "walletNotice": "Wallet non pris en charge",
-  "gnosisSafeWalletNotice": "Vous essayez d'utiliser le wallet Gnosis Safe, qui ne prend pas en charge la signature de messages sur Snapshot.",
   "continue": "Continuer",
   "add": "Ajouter",
   "edit": "Éditer",
@@ -86,14 +89,14 @@
   "marketSymbol": "{0} marché",
   "twoChoicesRequired": "Deux choix sont requis pour ce plugin.",
   "noResultsFound": "Oups, nous n'avons trouvé aucun résultat",
-  "createFirstProposal": "Let's create your first proposal",
+  "createFirstProposal": "Créer votre première proposition",
   "noSpacesJoined": "Oups, vous n'avez pas encore rejoint d'espaces",
   "addFavorites": "Ajouter aux favoris",
   "createdBy": "Par {0}",
-  "startToEnd": "début {0} fin {1}",
   "startIn": "début {0}",
   "endIn": "fin {1}",
-  "endedAgo": "a terminé {1}",
+  "proposalTimeLeft": "{0} left",
+  "endedAgo": "ended {0}",
   "proposalBy": "par {0}",
   "endDate": "fin {0}",
   "contectHash": "Hash du contenu",
@@ -108,12 +111,13 @@
   "networkErrorPlayground": "Erreur réseau - veuillez ouvrir la console de votre navigateur pour plus d'informations",
   "upload": "Upload",
   "join": "Rejoindre",
-  "joined": "Membre",
+  "joined": "Abonné",
   "leave": "Quitter",
   "copyLink": "Copier le lien",
   "duplicateProposal": "Dupliquer la proposition",
   "joinedSpaces": "Espaces rejoints",
   "joinSpaces": "Rejoindre un espace",
+  "setDelegationToSpace": "Limit delegation to a specific space",
   "errors": {
     "required": "Le champ est requis",
     "minLength": "Longueur minimale de {0}",
@@ -125,8 +129,9 @@
     "type": "Type invalide"
   },
   "create": {
-    "question": "Question",
-    "content": "Quelle est votre proposition ?",
+    "question": "Ask a question...",
+    "categorie(s)": "Select up to 2 categorie(s)",
+    "content": "Tell us more about your proposal (optional)",
     "preview": "Aperçu",
     "choices": "Choix",
     "addChoice": "Ajouter un choix",
@@ -149,12 +154,18 @@
     "selectDelegate": "Sélectionner une délégation",
     "to": "Vers",
     "addressPlaceholder": "Adresse ou ENS",
-    "spacePlaceholder": "Espace (facultatif)",
     "delegations": "Vos délégation(s)",
     "allSpaces": "Pour tous les espaces",
     "delegated": "Vous délègue",
     "pendingTransaction": "aucune transaction en attente | 1 transaction en attente | {count} transactions en attente",
-    "topDelegates": "Meilleurs délégués"
+    "topDelegates": "Meilleurs délégués",
+    "noDelegatesFoundFor": "No delegates found for {0}",
+    "noValidEns": "Not a valid ENS address.",
+    "noValidAddress": "Not a valid address",
+    "delegateToSelf": "You cannot delegate to yourself",
+    "delegateToSelfAddress": "You cannot delegate to your own ENS address",
+    "noValidSpaceId": "Not a valid space ID",
+    "noDelegationsAndDelegates": "Can't find your delegations and delegates? Make sure you are connected to the correct network."
   },
   "proposal": {
     "castVote": "Votez",
@@ -167,9 +178,11 @@
     "header": "Propositions",
     "new": "Nouvelle proposition",
     "noProposals": "Il n'y a pas encore de propositions ici !",
-    "createProposal": "Create proposal",
+    "createProposal": "Créer une proposition",
+    "showMore": "Show more",
+    "showLess": "Show less",
     "states": {
-      "all": "Tous",
+      "all": "Toutes",
       "core": "Officiel",
       "community": "Communauté",
       "active": "Actif",
@@ -192,6 +205,8 @@
     "customDomain": "Nom de domaine personnalisé",
     "domain": "Nom de domaine",
     "strategies": "Stratégie(s)",
+    "categories": "Categorie(s)",
+    "selectCategories": "Select categories",
     "hideSpace": "Cacher l'espace de la page d'accueil",
     "addStrategy": "Ajouter une stratégie",
     "authors": "Auteurs",
@@ -211,13 +226,21 @@
     "votingDelay": "Délai avant vote",
     "votingPeriod": "Période de vote",
     "voting": "Vote",
+    "quorum": "Quorum",
     "type": "Type",
-    "anyType": "Tous"
+    "anyType": "Tous",
+    "hideAbstain": "Ignore abstain votes in basic voting results"
   },
   "setup": {
     "example": "ex : yam.eth",
-    "useExistingEns": "Utilisez un nom ENS existant pour créer votre espace.",
-    "createASpace": "Créer un espace"
+    "chooseExistingEns": "Choose one of your existing ENS domains to create a space with:",
+    "useSingleExistingEns": "Use your existing ENS domain:",
+    "orReigsterNewEns": "Or register a new domain:",
+    "toCreateASpace": "To create a space, you first need an ENS domain. Enter one below and follow the ENS registration instructions.",
+    "createASpace": "Créer un espace",
+    "registerEnsButton": "Register",
+    "supportedEnsTLDs": "Supported domain endings",
+    "helpDocsAndDiscordLinks": "Not sure how to create a space? Learn more in the <a target='_blank' href='https://docs.snapshot.org/spaces/create'> documentation </a> or join Snapshot <a target='_blank' href='https://discord.gg/snapshot'>Discord</a>."
   },
   "notify": {
     "youDidIt": "Tout est bon !",
@@ -239,7 +262,18 @@
     "skins": "thème(s)",
     "networks": "réseau(x)",
     "plugins": "plugin(s)",
-    "results": "résultat(s)"
+    "results": "résultat(s)",
+    "categories": {
+      "all": "All",
+      "protocol": "Protocole",
+      "social": "Social",
+      "investment": "Investment",
+      "grant": "Grant",
+      "service": "Service",
+      "media": "Media",
+      "creator": "Creator",
+      "collector": "Collector"
+    }
   },
   "voting": {
     "selectVoting": "Sélectionner le système de vote",
@@ -248,12 +282,19 @@
     "quadratic": "Vote quadratique",
     "ranked-choice": "Vote préférentiel",
     "weighted": "Vote pondéré",
+    "basic": "Basic voting",
     "description": {
       "single-choice": "Chaque votant ne peut effectuer qu'un seul choix.",
       "approval": "Chaque votant peut effectuer un nombre indéfini de choix.",
       "quadratic": "Chaque votant peut répartir ses droits de vote entre les différents choix. Les résultats sont calculés de manière quadratique.",
       "ranked-choice": "Chaque votant peut effectuer plusieurs choix et les classer par préférence. Le système du second tour instantané est utilisé pour calculer les résultats.",
-      "weighted": "Chaque votant peut répartir ses droits de vote entre les différents choix."
+      "weighted": "Chaque votant peut répartir ses droits de vote entre les différents choix.",
+      "basic": "Single choice voting with three choices: For, Against or Abstain"
+    },
+    "choices": {
+      "for": "Pour",
+      "against": "Contre",
+      "abstain": "S’abstenir"
     }
   },
   "safeSnap": {
@@ -301,19 +342,27 @@
       "connectWallet": "Connectez le portefeuille pour voir les détails de l'exécution",
       "switchChain": "Passez au wallet {0} pour demander l'exécution",
       "question": "Cette proposition a-t-elle été adoptée et satisfait-elle aux",
-      "criteria": "critères d'acceptation ?"
+      "criteria": "critères d'acceptation ?",
+      "proposalPassed": "Did the proposal pass?"
     }
   },
   "poap": {
     "no_poap_header": "Il n'y a pas encore de POAP pour cette proposition :'(",
     "no_voted_header": "Votez pour obtenir ce POAP",
-    "unclaimed_header": "Réclamez votre badge POAP",
-    "claimed_header": "Félicitations ! Le POAP a été créé sur votre compte",
-    "loading_header": "Le POAP est en cours d'ajout à votre collection",
-    "button_claim": "Réclamer",
+    "unclaimed_header": "Mint your I voted POAP",
+    "claimed_header": "Congratulations! The POAP has been minted to your collection",
+    "loading_header": "The POAP is being minted to your collection",
+    "button_claim": "Mint",
     "button_show": "Parcourir la collection",
-    "success_claim": "Votre POAP se trouve sur votre adresse",
+    "success_claim": "The POAP has been minted to your collection",
     "error_claim": "Un problème est survenu lors de la création du jeton"
+  },
+  "charts": {
+    "charts": "Charts",
+    "noVotesYet": "There are no votes to visualize yet.",
+    "totalVotesPerDay": "Total votes per day",
+    "shareOfVotingPower": "Share of voting power",
+    "votingPowerPerDay": "Voting power per day"
   },
   "comment_box": {
     "title": "Boîte de commentaires",
@@ -338,5 +387,36 @@
     "show": "Voir",
     "reply": "Répondre",
     "load_more": "Afficher plus"
+  },
+  "page": {
+    "title": {
+      "home": "Snapshot",
+      "setup": "Créer un espace",
+      "timeline": "Timeline",
+      "explore": "Explore",
+      "playground": "Playground",
+      "space": {
+        "create": "Create {space} proposal",
+        "about": "About {space}",
+        "proposals": "{space} Proposals",
+        "proposal": "{space} proposal: {proposal}",
+        "settings": "{space} Settings"
+      },
+      "strategy": "{key} strategy",
+      "delegate": "Déléguer"
+    }
+  },
+  "hal": {
+    "title": "Suivre les propositions pour {spaceName}",
+    "text": "Receive notifications every time a new proposal is created or ends"
+  },
+  "timeUnits": {
+    "second": "1 seconde | {n} secondes",
+    "minute": "1 minute | {n} minutes",
+    "hour": "1 heure | {n} heures",
+    "day": "1 jour | {n} jours",
+    "week": "1 semaine | {n} semaines",
+    "month": "1 mois | {n} mois",
+    "year": "1 an | {n} ans"
   }
 }
