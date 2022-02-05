@@ -179,6 +179,8 @@
     "new": "Yeni teklif",
     "noProposals": "Henüz yeni bir teklif yok!",
     "createProposal": "Teklif oluştur",
+    "showMore": "Show more",
+    "showLess": "Show less",
     "states": {
       "all": "Tümü",
       "core": "Genel",
