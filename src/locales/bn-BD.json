@@ -179,6 +179,8 @@
     "new": "নতুন প্রস্তাব",
     "noProposals": "এখানে এখনও কোনও প্রস্তাব নেই!",
     "createProposal": "Create proposal",
+    "showMore": "Show more",
+    "showLess": "Show less",
     "states": {
       "all": "সব",
       "core": "কোর",
