@@ -179,6 +179,8 @@
     "new": "కొత్త ప్రతిపాదన",
     "noProposals": "ఇక్కడ ఇంకా ప్రతిపాదనలు లేవు!",
     "createProposal": "Create proposal",
+    "showMore": "Show more",
+    "showLess": "Show less",
     "states": {
       "all": "అన్నీ",
       "core": "కోర్",
