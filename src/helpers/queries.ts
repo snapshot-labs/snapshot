@@ -16,10 +16,8 @@ export const VOTES_QUERY = gql`
       orderBy: $orderBy
       orderDirection: $orderDirection
     ) {
-      id
       ipfs
       voter
-      created
       choice
       vp
       vp_by_strategy
