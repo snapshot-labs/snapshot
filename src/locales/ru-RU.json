@@ -179,6 +179,8 @@
     "new": "Новый опрос",
     "noProposals": "Здесь пока нет никаких опросов!",
     "createProposal": "Создать предложение",
+    "showMore": "Show more",
+    "showLess": "Show less",
     "states": {
       "all": "Все",
       "core": "Основные",
