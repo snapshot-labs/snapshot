@@ -179,6 +179,8 @@
     "new": "Uusi ehdotus",
     "noProposals": "Täällä ei ole vielä ehdotuksia!",
     "createProposal": "Create proposal",
+    "showMore": "Show more",
+    "showLess": "Show less",
     "states": {
       "all": "Kaikki",
       "core": "Core",
