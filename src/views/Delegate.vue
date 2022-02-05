@@ -58,7 +58,6 @@ const form = ref({
   id: route.params.key || ''
 });
 
-const networkSupportsDelegate = ref(true);
 const { profiles, loadProfiles } = useProfiles();
 
 const networkKey = computed(() => web3.value.network.key);
@@ -120,13 +119,8 @@ watch([networkKey, web3Account], ([valN, valA], [prevN, prevA]) => {
     getDelegationsAndDelegates();
 });
 
-watch(
-  [networkKey],
-  () => {
-    networkSupportsDelegate.value =
-      SNAPSHOT_SUBGRAPH_URL[networkKey.value] !== undefined;
-  },
-  { immediate: true }
+const networkSupportsDelegate = computed(
+  () => SNAPSHOT_SUBGRAPH_URL[networkKey.value] !== undefined
 );
 
 const getDelegationsAndDelegatesLoading = ref(false);
@@ -301,17 +295,15 @@ onMounted(async () => {
               networks?.[networkKey]?.shortName ?? $t('theCurrentNetwork')
           })
         }}
-        <div>
-          <a
-            class="flex items-center mt-1"
-            @click.stop
-            target="_blank"
-            :href="`https://docs.snapshot.org/guides/delegation#supported-networks`"
-          >
-            {{ $t('learnMore') }}
-            <Icon size="16" name="external-link" class="text-color ml-1" />
-          </a>
-        </div>
+        <a
+          class="whitespace-nowrap"
+          @click.stop
+          target="_blank"
+          :href="`https://docs.snapshot.org/guides/delegation#supported-networks`"
+        >
+          {{ $t('learnMore') }}
+          <Icon size="16" name="external-link" class="text-color ml-1" />
+        </a>
       </Block>
       <template v-else>
         <Block :title="$t('delegate.selectDelegate')">
