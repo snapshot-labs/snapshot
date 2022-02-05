@@ -179,6 +179,8 @@
     "new": "새 제안",
     "noProposals": "아직 새로운 제안이 없어요!",
     "createProposal": "제안서 만들기",
+    "showMore": "Show more",
+    "showLess": "Show less",
     "states": {
       "all": "모두",
       "core": "심",
