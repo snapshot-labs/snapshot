@@ -179,6 +179,8 @@
     "new": "Proposal baru",
     "noProposals": "Belum ada proposal di sini!",
     "createProposal": "Buat proposal",
+    "showMore": "Show more",
+    "showLess": "Show less",
     "states": {
       "all": "Semua",
       "core": "Inti",
