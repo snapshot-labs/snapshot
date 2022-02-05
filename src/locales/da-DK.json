@@ -179,6 +179,8 @@
     "new": "Nyt forslag",
     "noProposals": "Der er ikke noget forslag her endnu!",
     "createProposal": "Create proposal",
+    "showMore": "Show more",
+    "showLess": "Show less",
     "states": {
       "all": "Alle",
       "core": "Kernefunktioner",
