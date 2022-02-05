@@ -214,6 +214,24 @@ onMounted(async () => {
     clickVote();
   }
 });
+
+const showFullMarkdownBody = ref(false);
+
+// Scroll to top of the page after clicking "Show less" button
+watch(showFullMarkdownBody, () => {
+  if (!showFullMarkdownBody.value) window.scrollTo(0, 0);
+});
+
+// Ref to the proposal body element
+const markdownBody = ref(null);
+
+// Detect if the proposal body is too long and should be shortened
+const truncateMarkdownBody = computed(() => {
+  const markdownBodyHeight = markdownBody.value?.clientHeight
+    ? markdownBody.value.clientHeight
+    : 0;
+  return markdownBodyHeight > 400 ? true : false;
+});
 </script>
 
 <template>
@@ -275,7 +293,44 @@ onMounted(async () => {
               </div>
             </UiDropdown>
           </div>
-          <UiMarkdown :body="proposal.body" class="mb-6" />
+          <div class="relative">
+            <div
+              v-if="!showFullMarkdownBody && truncateMarkdownBody"
+              class="absolute w-full h-[80px] bottom-0 bg-gradient-to-t from-skin-bg"
+            />
+            <div
+              v-if="truncateMarkdownBody"
+              class="absolute w-full flex justify-center"
+              :class="{
+                '-bottom-[64px]': showFullMarkdownBody,
+                '-bottom-[14px]': !showFullMarkdownBody
+              }"
+            >
+              <UiButton
+                no-focus
+                @click="showFullMarkdownBody = !showFullMarkdownBody"
+                class="!bg-skin-bg"
+              >
+                {{
+                  showFullMarkdownBody
+                    ? $t('proposals.showLess')
+                    : $t('proposals.showMore')
+                }}
+              </UiButton>
+            </div>
+            <div
+              class="overflow-hidden"
+              :class="{
+                'h-[360px]': !showFullMarkdownBody && truncateMarkdownBody,
+                'mb-[92px]': showFullMarkdownBody,
+                'mb-[56px]': !showFullMarkdownBody
+              }"
+            >
+              <div ref="markdownBody">
+                <UiMarkdown :body="proposal.body" />
+              </div>
+            </div>
+          </div>
         </template>
         <PageLoading v-else />
       </div>
