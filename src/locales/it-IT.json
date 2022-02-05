@@ -179,6 +179,8 @@
     "new": "Nuova proposta",
     "noProposals": "Non ci sono ancora proposte qui!",
     "createProposal": "Crea proposta",
+    "showMore": "Show more",
+    "showLess": "Show less",
     "states": {
       "all": "Tutte",
       "core": "Core",
