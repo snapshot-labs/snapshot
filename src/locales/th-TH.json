@@ -179,6 +179,8 @@
     "new": "ข้อเสนอใหม่",
     "noProposals": "ที่นี่ยังไม่มีข้อเสนอ!",
     "createProposal": "Create proposal",
+    "showMore": "Show more",
+    "showLess": "Show less",
     "states": {
       "all": "ทั้งหมด",
       "core": "ส่วนกลาง",
