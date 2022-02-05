@@ -313,6 +313,17 @@ onMounted(async () => {
         >
           <Icon name="warning" class="mr-1" />
           {{ $t('delegate.noDelegationsAndDelegates') }}
+          <div>
+            <a
+              class="flex items-center mt-1"
+              @click.stop
+              target="_blank"
+              :href="`https://docs.snapshot.org/guides/delegation#supported-networks`"
+            >
+              {{ $t('learnMore') }}
+              <Icon size="16" name="external-link" class="text-color ml-1" />
+            </a>
+          </div>
         </Block>
         <Block
           v-if="delegates.length > 0"
