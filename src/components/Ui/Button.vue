@@ -9,6 +9,10 @@ defineProps({
   disabled: {
     type: Boolean,
     default: false
+  },
+  noFocus: {
+    type: Boolean,
+    default: false
   }
 });
 </script>
@@ -17,8 +21,12 @@ defineProps({
   <button
     :type="type || 'button'"
     :class="[
-      'button px-[24px] focus-within:border-skin-link',
-      { 'button--primary': primary }
+      'button px-[24px] ',
+      {
+        'button--primary': primary,
+        'focus-within:border-skin-border': noFocus,
+        'focus-within:border-skin-link': !noFocus
+      }
     ]"
     :disabled="disabled || loading"
   >
