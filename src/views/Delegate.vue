@@ -121,14 +121,21 @@ const getDelegationsAndDelegatesLoading = ref(false);
 
 async function getDelegationsAndDelegates() {
   if (web3Account.value) {
-    getDelegationsAndDelegatesLoading.value = true;
-    const [delegatesObj, delegatorsObj] = await Promise.all([
-      getDelegates(networkKey.value, web3Account.value),
-      getDelegators(networkKey.value, web3Account.value)
-    ]);
-    getDelegationsAndDelegatesLoading.value = false;
-    delegates.value = delegatesObj.delegations;
-    delegators.value = delegatorsObj.delegations;
+    try {
+      getDelegationsAndDelegatesLoading.value = true;
+      const [delegatesObj, delegatorsObj] = await Promise.all([
+        getDelegates(networkKey.value, web3Account.value),
+        getDelegators(networkKey.value, web3Account.value)
+      ]);
+      delegates.value = delegatesObj.delegations;
+      delegators.value = delegatorsObj.delegations;
+    } catch (error) {
+      delegates.value = [];
+      delegators.value = [];
+      console.log(error);
+    } finally {
+      getDelegationsAndDelegatesLoading.value = false;
+    }
   } else {
     // user logged out
     delegates.value = [];
@@ -258,11 +265,7 @@ debouncedWatch(
 onMounted(async () => {
   if (route.params.key) specifySpaceChecked.value = true;
   setPageTitle('page.title.delegate');
-  try {
-    await getDelegationsAndDelegates();
-  } catch (error) {
-    console.log(error);
-  }
+  await getDelegationsAndDelegates();
   loaded.value = true;
 });
 </script>
