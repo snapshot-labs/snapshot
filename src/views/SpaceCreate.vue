@@ -448,17 +448,3 @@ watchEffect(() => {
     />
   </teleport>
 </template>
-
-<style>
-.list-leave-active,
-.list-enter-active {
-  transition: all 0.3s;
-}
-.list-move {
-  transition: transform 0.3s;
-}
-.list-enter,
-.list-leave-to {
-  opacity: 0;
-}
-</style>
