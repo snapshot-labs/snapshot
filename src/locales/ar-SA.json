@@ -179,6 +179,8 @@
     "new": "اقتراح جديد",
     "noProposals": "لا توجد أي اقتراحات هنا حتى الآن!",
     "createProposal": "إنشاء إقتراح",
+    "showMore": "Show more",
+    "showLess": "Show less",
     "states": {
       "all": "الكل",
       "core": "النواة",
