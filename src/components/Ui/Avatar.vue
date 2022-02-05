@@ -1,38 +1,46 @@
 <script setup>
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 
-defineProps({
+const props = defineProps({
   address: String,
   size: String,
   imgsrc: String,
   space: Object
 });
 
-const error = ref(false);
+const imgUrl = ref(null);
+const showImg = ref(false);
+
+onMounted(() => {
+  const img = new Image();
+  img.onload = () => {
+    imgUrl.value = img.src;
+    showImg.value = true;
+  };
+  img.src = props.imgsrc;
+});
 </script>
 
 <template>
-  <span class="flex-shrink-0">
+  <span class="flex shrink-0 items-center justify-center">
     <img
-      v-if="imgsrc && !error"
-      :src="imgsrc"
+      v-if="showImg"
+      :src="imgUrl"
       :style="{
         width: `${parseInt(size) || 22}px`,
         height: `${parseInt(size) || 22}px`
       }"
-      @error="error = true"
       :class="[
         space?.skin ? `${space?.skin} bg-[color:var(--bg-color)]` : 'bg-white'
       ]"
       :alt="space?.name"
-      class="rounded-full inline-block !align-middle leading-none"
+      class="rounded-full"
     />
     <UiBlockie
       v-else-if="!!address"
       :seed="address"
-      class="inline-block !align-middle rounded-full"
+      class="rounded-full"
       :style="{
-        'line-height': 0,
         width: `${parseInt(size) || 22}px`,
         height: `${parseInt(size) || 22}px`
       }"

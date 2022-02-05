@@ -93,9 +93,9 @@
   "noSpacesJoined": "Hoppla, du bist noch keinem Bereich beigetreten",
   "addFavorites": "Favoriten hinzufügen",
   "createdBy": "Von {0}",
-  "startIn": "start {0}",
+  "startIn": "beginnt {0}",
   "endIn": "ende {1}",
-  "proposalTimeLeft": "{0} left",
+  "proposalTimeLeft": "{0} verbleibend",
   "endedAgo": "ended {0}",
   "proposalBy": "von {0}",
   "endDate": "ende {0}",
@@ -411,12 +411,12 @@
     "text": "Receive notifications every time a new proposal is created or ends"
   },
   "timeUnits": {
-    "second": "1 second | {n} seconds",
-    "minute": "1 minute | {n} minutes",
-    "hour": "1 hour | {n} hours",
-    "day": "1 day | {n} days",
-    "week": "1 week | {n} weeks",
-    "month": "1 month | {n} months",
-    "year": "1 year | {n} years"
+    "second": "1 Sekunde | {n} Sekunden",
+    "minute": "1 Minute | {n} Minuten",
+    "hour": "1 Stunde | {n} Stunden",
+    "day": "1 Tag | {n} Tage",
+    "week": "1 Woche | {n} Wochen",
+    "month": "1 Monat | {n} Monate",
+    "year": "1 Jahr | {n} Jahre"
   }
 }

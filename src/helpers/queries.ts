@@ -16,10 +16,8 @@ export const VOTES_QUERY = gql`
       orderBy: $orderBy
       orderDirection: $orderDirection
     ) {
-      id
       ipfs
       voter
-      created
       choice
       vp
       vp_by_strategy
@@ -158,6 +156,7 @@ export const SPACES_QUERY = gql`
       admins
       categories
       plugins
+      followersCount
       voting {
         delay
         period
@@ -187,6 +186,89 @@ export const ENS_QUERY = gql`
       domains {
         name
       }
+    }
+  }
+`;
+
+export const SPACE_SKIN_QUERY = gql`
+  query Space($id: String!) {
+    space(id: $id) {
+      skin
+    }
+  }
+`;
+
+export const SPACE_DELEGATE_QUERY = gql`
+  query Space($id: String!) {
+    space(id: $id) {
+      id
+      symbol
+      network
+      strategies {
+        name
+        params
+      }
+    }
+  }
+`;
+
+export const SKINS_COUNT_QUERY = gql`
+  query Skins {
+    skins {
+      id
+      spacesCount
+    }
+  }
+`;
+
+export const NETWORKS_COUNT_QUERY = gql`
+  query Networks {
+    networks {
+      id
+      spacesCount
+    }
+  }
+`;
+
+export const PLUGINS_COUNT_QUERY = gql`
+  query Plugins {
+    plugins {
+      id
+      spacesCount
+    }
+  }
+`;
+
+export const VALIDATIONS_COUNT_QUERY = gql`
+  query Validations {
+    validations {
+      id
+      spacesCount
+    }
+  }
+`;
+
+export const STRATEGIES_QUERY = gql`
+  query Strategies {
+    strategies {
+      id
+      author
+      version
+      spacesCount
+    }
+  }
+`;
+
+export const EXTENDED_STRATEGY_QUERY = gql`
+  query Strategy($id: String!) {
+    strategy(id: $id) {
+      id
+      author
+      version
+      spacesCount
+      about
+      schema
+      examples
     }
   }
 `;

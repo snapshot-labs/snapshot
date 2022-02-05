@@ -4,35 +4,16 @@ import { useRouter } from 'vue-router';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useModal } from '@/composables/useModal';
 import { setPageTitle } from '@/helpers/utils';
-import RegisterENS from '@/components/RegisterENS.vue';
-import { useApolloQuery } from '@/composables/useApolloQuery';
-import { ENS_QUERY } from '@/helpers/queries';
+import { useEns } from '@/composables/useEns';
 
 const router = useRouter();
 const { web3, web3Account } = useWeb3();
-const { ensApolloQuery } = useApolloQuery();
 const { modalAccountOpen } = useModal();
+const { loadOwnedEnsDomains, ownedEnsDomains } = useEns();
 
 onMounted(() => {
   setPageTitle('page.title.setup');
 });
-
-const validTlds = ['eth', 'xyz', 'com', 'org', 'io', 'app', 'art'];
-const ownedEnsDomains = ref([]);
-
-const loadOwnedEnsDomains = async () => {
-  if (web3Account.value) {
-    const res = await ensApolloQuery({
-      query: ENS_QUERY,
-      variables: {
-        id: web3Account.value.toLowerCase()
-      }
-    });
-    ownedEnsDomains.value = res.account?.domains || [];
-  } else {
-    ownedEnsDomains.value = [];
-  }
-};
 
 // used either on click on existing owned domain OR once a newly registered
 // domain is returned by the ENS subgraph.
@@ -70,7 +51,7 @@ watch(ownedEnsDomains, (newVal, oldVal) => {
 // using finally() here because await at top level would require the component to be inside a <Suspense> block
 // https://v3.vuejs.org/guide/migration/suspense.html#introduction
 const loadingOwnedEnsDomains = ref(true);
-loadOwnedEnsDomains().finally(() => loadingOwnedEnsDomains.value = false);
+loadOwnedEnsDomains().finally(() => (loadingOwnedEnsDomains.value = false));
 watch(web3Account, async () => {
   loadingOwnedEnsDomains.value = true;
   await loadOwnedEnsDomains();
@@ -92,12 +73,7 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
         </router-link>
       </div>
       <div class="px-4 md:px-0">
-        <h1 class="mb-4">
-          {{ $t('setup.createASpace') }}
-          <a target="_blank" href="https://docs.snapshot.org/spaces/create">
-            <Icon name="info" size="24" class="text-color p-1" />
-          </a>
-        </h1>
+        <h1 v-text="$t('setup.createASpace')" class="mb-4" />
       </div>
       <template v-if="web3Account">
         <Block v-if="loadingOwnedEnsDomains" slim>
@@ -123,7 +99,7 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
                 :primary="ownedEnsDomains.length === 1"
               >
                 {{ ens.name }}
-                <Icon name="go" size="22" :class="ownedEnsDomains.length === 1 ? 'text-white' : 'text-color'" />
+                <Icon name="go" size="22" class="-mr-2" />
               </UiButton>
             </div>
             <div class="my-3">
@@ -131,7 +107,6 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
             </div>
             <RegisterENS
               v-model="newDomain"
-              :valid-tlds="validTlds"
               @waitForRegistration="waitForRegistration"
             />
           </div>
@@ -141,12 +116,8 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
             </div>
             <RegisterENS
               v-model="newDomain"
-              :valid-tlds="validTlds"
               @waitForRegistration="waitForRegistration"
             />
-            <div class="mt-3">
-              {{ $t('setup.correctAccountNote') }}
-            </div>
           </div>
         </Block>
       </template>
@@ -159,6 +130,12 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
         >
           {{ $t('connectWallet') }}
         </UiButton>
+      </Block>
+    </template>
+    <template #sidebar-right>
+      <Block>
+        <Icon name="gitbook" size="24" class="text-color pr-2 !align-middle" />
+        <span v-html="$t('setup.helpDocsAndDiscordLinks')" />
       </Block>
     </template>
   </Layout>

@@ -1,7 +1,20 @@
 <script setup>
 import { watchEffect, computed } from 'vue';
+import { shorten } from '@/helpers/utils';
 import { useUsername } from '@/composables/useUsername';
 import removeMd from 'remove-markdown';
+import { useIntl } from '@/composables/useIntl';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
+
+const {
+  formatRelativeTime,
+  formatDuration,
+  formatNumber,
+  formatCompactNumber,
+  formatPercentNumber
+} = useIntl();
 
 const props = defineProps({
   proposal: Object,
@@ -14,10 +27,15 @@ const winningChoice = computed(() =>
   props.proposal.scores.indexOf(Math.max(...props.proposal.scores))
 );
 
-const period = computed(() => {
-  if (props.proposal.state === 'closed') return 'endedAgo';
-  if (props.proposal.state === 'active') return 'proposalToNow';
-  return 'proposalStartIn';
+const relativePeriod = computed(() => {
+  const now = new Date() / 1e3;
+  if (props.proposal.state === 'closed') {
+    return t('endedAgo', [formatRelativeTime(props.proposal.end)]);
+  }
+  if (props.proposal.state === 'active') {
+    return t('proposalTimeLeft', [formatDuration(props.proposal.end - now, t)]);
+  }
+  return t('startIn', [formatRelativeTime(props.proposal.start)]);
 });
 
 const { address, profile, username } = useUsername();
@@ -38,7 +56,7 @@ watchEffect(() => {
       }"
     >
       <div>
-        <div class="mb-2">
+        <div class="mb-2 flex items-center space-x-1">
           <router-link
             class="text-color group"
             :to="{
@@ -46,20 +64,22 @@ watchEffect(() => {
               params: { key: proposal.space.id }
             }"
           >
-            <Token :space="proposal.space" size="28" />
-            <span
-              class="ml-2 group-hover:text-skin-link"
-              v-text="proposal.space.name"
-            />
+            <div class="flex items-center">
+              <Token :space="proposal.space" size="28" />
+              <span
+                class="ml-2 group-hover:text-skin-link"
+                v-text="proposal.space.name"
+              />
+            </div>
           </router-link>
-          {{ $tc('proposalBy', [username]) }}
+          <span v-text="$tc('proposalBy', [username])" />
           <Badges
             :address="proposal.author"
             :members="proposal.space.members"
           />
         </div>
         <h3 v-text="proposal.title" class="mt-1 mb-1" />
-        <p v-text="_shorten(body, 120)" class="break-words mb-2 text-md" />
+        <p v-text="shorten(body, 120)" class="break-words mb-2 text-md" />
         <div
           v-if="
             proposal.scores_state === 'final' &&
@@ -80,14 +100,17 @@ watchEffect(() => {
                 class="mr-1 -ml-1 align-middle"
                 v-if="i === winningChoice"
               />
-              {{ _shorten(choice, 32) }}
+              {{ shorten(choice, 32) }}
               <span class="text-color ml-1">
-                {{ _n(proposal.scores[i]) }} {{ proposal.space.symbol }}
+                {{ formatCompactNumber(proposal.scores[i]) }}
+                {{ proposal.space.symbol }}
               </span>
             </div>
             <div
               v-text="
-                _n((1 / proposal.scores_total) * proposal.scores[i], '0.[0]%')
+                formatPercentNumber(
+                  (1 / proposal.scores_total) * proposal.scores[i]
+                )
               "
               class="absolute right-0 leading-[40px] mr-3 link-color"
             />
@@ -99,15 +122,13 @@ watchEffect(() => {
             />
           </div>
         </div>
-        <div>
-          <UiState :state="proposal.state" slim class="mr-1" />
-          {{ $t(`proposals.states.${proposal.state}`) }},
-          <span
-            v-if="proposal.scores_state !== 'final'"
-            v-text="$tc(period, [_toNow(proposal.end)])"
-          />
-          <span v-if="proposal.scores_state === 'final'" class="mt-2">
-            {{ _n(proposal.votes, '0,00') }} votes
+        <div class="flex items-center">
+          <UiState :state="proposal.state" slim class="mr-2" />
+          {{ $t(`proposals.states.${proposal.state}`)
+          }}<span v-if="proposal.scores_state !== 'final'"
+            >, {{ relativePeriod }}</span
+          ><span v-if="proposal.scores_state === 'final'"
+            >, {{ formatNumber(proposal.votes) }} votes
           </span>
         </div>
       </div>

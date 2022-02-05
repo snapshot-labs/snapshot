@@ -1,20 +1,12 @@
 <script>
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
-
-const isValidInput = input => {
-  return input.safes.every(
-    safe => safe.txs.length === 0 || safe.txs.flat().every(tx => tx)
-  );
-};
-
-const coerceConfig = (config, network) => {
-  if (config.safes) return config;
-
-  // map legacy config to new format
-  return {
-    safes: [{ network, realityAddress: config.address }]
-  };
-};
+import {
+  coerceConfig,
+  isValidInput,
+  getSafeHash
+} from '@/../snapshot-plugins/src/plugins/safeSnap';
+import { useSafesnap } from '@/composables/useSafesnap';
+const { setConfig } = useSafesnap();
 
 export default {
   props: [
@@ -22,26 +14,47 @@ export default {
     'config', // the safeSnap plugin config of the current space
     'network', // network of the space (needed when mapping legacy plugin configs)
     'proposal',
-    'preview' // if true, renders a read-only view
+    'preview', // if true, renders a read-only view
+    'spaceId'
   ],
   emits: ['update:modelValue'],
   data() {
-    const initialValue = {
-      safes: coerceConfig(this.config, this.network).safes.map(safe => ({
-        ...safe,
-        txs: []
-      })),
-      valid: true
-    };
-    return {
-      input: this.modelValue ? clone(this.modelValue) : initialValue
-    };
+    let input;
+    if (!Object.keys(this.modelValue).length) {
+      input = {
+        safes: coerceConfig(this.config, this.network).safes.map(safe => ({
+          ...safe,
+          hash: null,
+          txs: []
+        })),
+        valid: true
+      };
+    } else {
+      const value = clone(this.modelValue);
+      if (value.safes && this.config && Array.isArray(this.config.safes)) {
+        value.safes = value.safes.map((safe, index) => ({
+          ...this.config.safes[index],
+          ...safe
+        }));
+      }
+      input = coerceConfig(value, this.network);
+    }
+
+    return { input };
+  },
+  mounted() {
+    setConfig({ spaceId: this.spaceId });
   },
   methods: {
-    updateSafeTransactions(safeIndex) {
+    updateSafeTransactions() {
       if (this.preview) return;
-      this.input.safes[safeIndex].txs;
       this.input.valid = isValidInput(this.input);
+      this.input.safes = this.input.safes.map(safe => {
+        return {
+          ...safe,
+          hash: getSafeHash(safe)
+        };
+      });
       this.$emit('update:modelValue', this.input);
     }
   }
@@ -65,8 +78,10 @@ export default {
           v-if="!preview || safe.txs.length > 0"
           :preview="preview"
           :proposal="proposal"
+          :hash="safe.hash"
           :network="safe.network"
           :realityAddress="safe.realityAddress"
+          :multiSendAddress="safe.multiSendAddress"
           :modelValue="safe.txs"
           @update:modelValue="updateSafeTransactions(index, $event)"
         />

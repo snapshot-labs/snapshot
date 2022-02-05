@@ -1,6 +1,7 @@
 <script>
 import { formatUnits } from '@ethersproject/units';
-import { getAbiFirstFunctionName } from '@/helpers/abi/utils';
+import { getAbiFirstFunctionName } from '@/../snapshot-plugins/src/plugins/safeSnap';
+import { shorten } from '@/helpers/utils';
 
 const labels = {
   contractInteraction: 'Contract Interaction',
@@ -10,7 +11,7 @@ const labels = {
 };
 
 export default {
-  props: ['modelValue', 'index', 'nonce', 'config'],
+  props: ['modelValue', 'nonce', 'config'],
   emits: ['update:modelValue', 'remove'],
   data() {
     let type = 'transferFunds';
@@ -44,8 +45,8 @@ export default {
 
       if (this.modelValue) {
         try {
-          const recipientAddr = this._shorten(this.modelValue.recipient);
-          const toAddr = this._shorten(this.modelValue.to);
+          const recipientAddr = shorten(this.modelValue.recipient);
+          const toAddr = shorten(this.modelValue.to);
           const type = this.modelValue.type || this.type;
           switch (type) {
             case 'contractInteraction':
@@ -66,11 +67,11 @@ export default {
             case 'transferNFT':
               return this.$t('safeSnap.transactionLabels.transferNFT', {
                 name: this.modelValue.collectable.name,
-                id: this._shorten(this.modelValue.collectable.id, 10),
+                id: shorten(this.modelValue.collectable.id, 10),
                 address: recipientAddr
               });
             case 'raw':
-              return this.$t('safeSnap.transactionLabels.transferNFT', {
+              return this.$t('safeSnap.transactionLabels.raw', {
                 amount: this.modelValue.value,
                 address: recipientAddr
               });
@@ -97,7 +98,7 @@ export default {
 <template>
   <UiCollapsible
     :hideRemove="config.preview"
-    :number="index + 1"
+    :number="nonce + 1"
     :open="open"
     :title="title"
     @remove="$emit('remove')"

@@ -1,5 +1,5 @@
 <script>
-import { mustBeEthereumAddress } from '@/helpers/abi/utils';
+import { mustBeEthereumAddress } from '@/../snapshot-plugins/src/plugins/safeSnap';
 
 export default {
   props: ['modelValue', 'inputProps', 'label', 'disabled'],
