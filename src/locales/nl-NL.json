@@ -179,6 +179,8 @@
     "new": "Nieuw voorstel",
     "noProposals": "Er zijn hier nog geen voorstellen!",
     "createProposal": "Create proposal",
+    "showMore": "Show more",
+    "showLess": "Show less",
     "states": {
       "all": "Alle",
       "core": "Core",
