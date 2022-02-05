@@ -179,6 +179,8 @@
     "new": "新提案",
     "noProposals": "这里还没有任何提案！",
     "createProposal": "创建提案",
+    "showMore": "Show more",
+    "showLess": "Show less",
     "states": {
       "all": "所有",
       "core": "核心",
