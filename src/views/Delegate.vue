@@ -120,10 +120,14 @@ watch([networkKey, web3Account], ([valN, valA], [prevN, prevA]) => {
     getDelegationsAndDelegates();
 });
 
-watch([networkKey, web3Account], () => {
-  networkSupportsDelegate.value =
-    SNAPSHOT_SUBGRAPH_URL[networkKey.value] !== undefined;
-});
+watch(
+  [networkKey],
+  () => {
+    networkSupportsDelegate.value =
+      SNAPSHOT_SUBGRAPH_URL[networkKey.value] !== undefined;
+  },
+  { immediate: true }
+);
 
 const getDelegationsAndDelegatesLoading = ref(false);
 
@@ -273,8 +277,6 @@ debouncedWatch(
 onMounted(async () => {
   if (route.params.key) specifySpaceChecked.value = true;
   setPageTitle('page.title.delegate');
-  networkSupportsDelegate.value =
-    SNAPSHOT_SUBGRAPH_URL[networkKey.value] !== undefined;
   await getDelegationsAndDelegates();
   loaded.value = true;
 });
