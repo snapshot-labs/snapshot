@@ -179,6 +179,8 @@
     "new": "Nový návrh",
     "noProposals": "Zatím zde nejsou žádné návrhy!",
     "createProposal": "Create proposal",
+    "showMore": "Show more",
+    "showLess": "Show less",
     "states": {
       "all": "Všechny",
       "core": "Core",
