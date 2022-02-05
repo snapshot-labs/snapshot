@@ -1,7 +1,7 @@
 {
   "searchPlaceholder": "खोजें",
   "spaceCount": "{0} स्पेसेस",
-  "createSpace": "स्पेस बनाएं",
+  "createSpace": "स्थान बनाएं",
   "backToHome": "होम",
   "actions": "एक्शन",
   "results": "परिणाम",
@@ -19,13 +19,13 @@
   "strategiesPage": "स्ट्रेटेजीज",
   "space": "जगह",
   "spaces": "जगह",
+  "verifiedSpace": "Verified space",
   "version": "संस्करण",
   "timeline": "टाइमलाइन",
   "filters": "छांटे",
-  "allSpaces": "सभी स्पेसेस",
+  "allSpaces": "सभी जगहें",
   "submitOnchain": "चेन पर जमा करें",
   "inSpaces": "रिक्त स्थान में",
-  "downloadReport": "रिपोर्ट डाउनलोड करें",
   "votes": "वोट",
   "seeMore": "और देखें",
   "network": "नेटवर्क",
@@ -39,6 +39,7 @@
   "view3box": "3 बॉक्स का प्रोफ़ाइल देखें",
   "edit3box": "3 बॉक्स का प्रोफाइल संपादित करें",
   "connectWallet": "खता जोड़े",
+  "toggleSkin": "Toggle skin",
   "about": "विवरण",
   "license": "लाइसेंस",
   "ipfsServer": "आईपीएफएस सर्वर",
@@ -50,14 +51,18 @@
   "confirmRemove": "क्या आप वाकई अपना डेलिगेशन हटाना चाहते हैं?",
   "removeSpace": "अंतर के लिए {0}",
   "confirmVote": "वोट की पुष्टी करें",
-  "sureToVote": "क्या आप वाकई अपना वोट {0} को देना चाहते है?",
+  "sureToVote": "Are you sure you want to cast this vote?",
   "cannotBeUndone": "इस क्रिया को पूर्ववत नहीं किया जा सकता है।",
   "options": "विकल्प",
   "votingPower": "आपकी वोटिंग पावर:",
   "receipt": "रसीद",
   "relayer": "रिलेयर",
   "verifyOnMycrypto": "माइक्रिप्टो पर रसीद सत्यापित करें",
+  "verifyOnSignatorio": "Verify on Signator.io",
   "isCore": "कोर",
+  "notificationsBlocked": "Your browser is blocking notifications",
+  "notificationsNotSupported": "Your browser does not support notifications",
+  "walletNotSupported": "Wallet is not supported",
   "seeInExplorer": "एक्सप्लोरर पर देखें",
   "learnMore": "और पढ़ें",
   "logout": "लॉग आउट",
@@ -88,10 +93,10 @@
   "noSpacesJoined": "ओह, आप अभी तक किसी जगह से नही जुडे।",
   "addFavorites": "पसंदीदा में जोड़ें",
   "createdBy": "तक {0}",
-  "startToEnd": "शुरू {0} ख़त्म {1}",
   "startIn": "शुरू {0}",
   "endIn": "ख़त्म {1}",
-  "endedAgo": "ख़त्म हुआ {1}",
+  "proposalTimeLeft": "{0} left",
+  "endedAgo": "ended {0}",
   "proposalBy": "द्वारा{0}",
   "endDate": "ख़त्म {0}",
   "contectHash": "कंटेंट हैश",
@@ -112,6 +117,7 @@
   "duplicateProposal": "डुप्लीकेट प्रस्ताव",
   "joinedSpaces": "स्पेस में शामिल हों",
   "joinSpaces": "स्पेस में शामिल हों",
+  "setDelegationToSpace": "Limit delegation to a specific space",
   "errors": {
     "required": "यह जानकारी जरुरी है",
     "minLength": "न्यूनतम लंबाई {0}",
@@ -123,8 +129,9 @@
     "type": "Invalid type"
   },
   "create": {
-    "question": "प्रश्न",
-    "content": "आपकी प्रपोजल क्या है?",
+    "question": "Ask a question...",
+    "categorie(s)": "Select up to 2 categorie(s)",
+    "content": "Tell us more about your proposal (optional)",
     "preview": "पूर्वावलोकन/पूर्वदर्शन",
     "choices": "विकल्प",
     "addChoice": "विकल्प जोड़े",
@@ -147,12 +154,18 @@
     "selectDelegate": "प्रतिनिधि चुनें",
     "to": "को",
     "addressPlaceholder": "पता या ईएनएस नाम",
-    "spacePlaceholder": "स्पेस (वैकल्पिक)",
     "delegations": "आपके डेलीगेशन",
     "allSpaces": "सब जगहों के लिए",
     "delegated": "आपको दिए गए डेलीगेशन",
     "pendingTransaction": "कोई लंबित लेनदेन नहीं | 1 लंबित लेनदेन | {count} लंबित लेनदेन",
-    "topDelegates": "Top delegates"
+    "topDelegates": "Top delegates",
+    "noDelegatesFoundFor": "No delegates found for {0}",
+    "noValidEns": "Not a valid ENS address.",
+    "noValidAddress": "Not a valid address",
+    "delegateToSelf": "You cannot delegate to yourself",
+    "delegateToSelfAddress": "You cannot delegate to your own ENS address",
+    "noValidSpaceId": "Not a valid space ID",
+    "noDelegationsAndDelegates": "Can't find your delegations and delegates? Make sure you are connected to the correct network."
   },
   "proposal": {
     "castVote": "अपना वोट दे",
@@ -166,6 +179,8 @@
     "new": "नए प्रपोजल्स",
     "noProposals": "यहाँ अभी प्रोपोज़ल्स नहीं है",
     "createProposal": "Create proposal",
+    "showMore": "Show more",
+    "showLess": "Show less",
     "states": {
       "all": "सभी",
       "core": "कोर",
@@ -190,6 +205,8 @@
     "customDomain": "कस्टम डोमेन",
     "domain": "डोमेन नाम",
     "strategies": "स्ट्रेटेजीज",
+    "categories": "Categorie(s)",
+    "selectCategories": "Select categories",
     "hideSpace": "होमपेज से स्पेस छुपाये",
     "addStrategy": "स्ट्रेटेजी जोड़े",
     "authors": "लेखक",
@@ -209,13 +226,21 @@
     "votingDelay": "Voting delay",
     "votingPeriod": "Voting period",
     "voting": "Voting",
+    "quorum": "Quorum",
     "type": "Type",
-    "anyType": "Any"
+    "anyType": "Any",
+    "hideAbstain": "Ignore abstain votes in basic voting results"
   },
   "setup": {
     "example": "उदाहरण. yam.eth",
-    "useExistingEns": "स्पेस बनाने के लिए मौजूदा इ एन ऐस नाम का उपयोग करे",
-    "createASpace": "स्पेस तैयार करे"
+    "chooseExistingEns": "Choose one of your existing ENS domains to create a space with:",
+    "useSingleExistingEns": "Use your existing ENS domain:",
+    "orReigsterNewEns": "Or register a new domain:",
+    "toCreateASpace": "To create a space, you first need an ENS domain. Enter one below and follow the ENS registration instructions.",
+    "createASpace": "स्पेस तैयार करे",
+    "registerEnsButton": "Register",
+    "supportedEnsTLDs": "Supported domain endings",
+    "helpDocsAndDiscordLinks": "Not sure how to create a space? Learn more in the <a target='_blank' href='https://docs.snapshot.org/spaces/create'> documentation </a> or join Snapshot <a target='_blank' href='https://discord.gg/snapshot'>Discord</a>."
   },
   "notify": {
     "youDidIt": "संपूर्ण हुआ",
@@ -237,7 +262,18 @@
     "skins": "स्किन",
     "networks": "नेटवर्क",
     "plugins": "प्लगइन्स",
-    "results": "परिणाम"
+    "results": "परिणाम",
+    "categories": {
+      "all": "All",
+      "protocol": "Protocol",
+      "social": "Social",
+      "investment": "Investment",
+      "grant": "Grant",
+      "service": "Service",
+      "media": "Media",
+      "creator": "Creator",
+      "collector": "Collector"
+    }
   },
   "voting": {
     "selectVoting": "मतदान प्रणाली का चयन करें",
@@ -246,12 +282,19 @@
     "quadratic": "त्रैमासिक मतदान",
     "ranked-choice": "रैंकिंग विकल्प मतदान",
     "weighted": "भारित मतदान",
+    "basic": "Basic voting",
     "description": {
       "single-choice": "प्रत्येक मतदाता केवल एक विकल्प का चयन कर सकता है",
       "approval": "प्रत्येक मतदाता किसी भी संख्या में विकल्पों का चयन कर सकता है",
       "quadratic": "प्रत्येक मतदाता किसी भी संख्या में विकल्पों में मतदान शक्ति का प्रसार कर सकता है। परिणामों की गणना त्रैमासिक रूप से की जाती है",
       "ranked-choice": "प्रत्येक मतदाता किसी भी विकल्प का चयन और रैंक कर सकता है। परिणामों की गणना तत्काल गणना पद्धति द्वारा की जाती है",
-      "weighted": "प्रत्येक मतदाता किसी भी संख्या में विकल्पों में मतदान शक्ति का प्रसार कर सकता है"
+      "weighted": "प्रत्येक मतदाता किसी भी संख्या में विकल्पों में मतदान शक्ति का प्रसार कर सकता है",
+      "basic": "Single choice voting with three choices: For, Against or Abstain"
+    },
+    "choices": {
+      "for": "For",
+      "against": "Against",
+      "abstain": "Abstain"
     }
   },
   "safeSnap": {
@@ -299,19 +342,27 @@
       "connectWallet": "निष्पादन विवरण देखने के लिए वॉलेट कनेक्ट करें",
       "switchChain": "Switch your wallet to {0} to request execution",
       "question": "क्या यह प्रस्ताव पारित हुआ और क्या यह पूरा करता है",
-      "criteria": "स्वीकृति क्रिटेरिऑन?"
+      "criteria": "स्वीकृति क्रिटेरिऑन?",
+      "proposalPassed": "Did the proposal pass?"
     }
   },
   "poap": {
     "no_poap_header": "इस प्रस्ताव के लिए अभी तक POAP सेटअप नहीं किया गया है :'(",
     "no_voted_header": "इस POAP को पाने के लिए वोट करें",
-    "unclaimed_header": "दावा करें कि मैंने पीओएपी को वोट दिया है",
+    "unclaimed_header": "Mint your I voted POAP",
     "claimed_header": "Congratulations! The POAP has been minted to your collection",
-    "loading_header": "POAP को आपके संग्रह में जोड़ा जा रहा है",
-    "button_claim": "दावा करें",
+    "loading_header": "The POAP is being minted to your collection",
+    "button_claim": "Mint",
     "button_show": "Browse collection",
-    "success_claim": "आपका POAP आपके पते पर है",
+    "success_claim": "The POAP has been minted to your collection",
     "error_claim": "टोकन बनाने में एक समस्या हुई"
+  },
+  "charts": {
+    "charts": "Charts",
+    "noVotesYet": "There are no votes to visualize yet.",
+    "totalVotesPerDay": "Total votes per day",
+    "shareOfVotingPower": "Share of voting power",
+    "votingPowerPerDay": "Voting power per day"
   },
   "comment_box": {
     "title": "टिप्पणी बॉक्स",
@@ -336,5 +387,36 @@
     "show": "दिखाएँ",
     "reply": "जवाब दें",
     "load_more": "अधिक लोड करें"
+  },
+  "page": {
+    "title": {
+      "home": "Snapshot",
+      "setup": "Create a space",
+      "timeline": "Timeline",
+      "explore": "Explore",
+      "playground": "Playground",
+      "space": {
+        "create": "Create {space} proposal",
+        "about": "About {space}",
+        "proposals": "{space} Proposals",
+        "proposal": "{space} proposal: {proposal}",
+        "settings": "{space} Settings"
+      },
+      "strategy": "{key} strategy",
+      "delegate": "Delegate"
+    }
+  },
+  "hal": {
+    "title": "Track proposals for {spaceName}",
+    "text": "Receive notifications every time a new proposal is created or ends"
+  },
+  "timeUnits": {
+    "second": "1 second | {n} seconds",
+    "minute": "1 minute | {n} minutes",
+    "hour": "1 hour | {n} hours",
+    "day": "1 day | {n} days",
+    "week": "1 week | {n} weeks",
+    "month": "1 month | {n} months",
+    "year": "1 year | {n} years"
   }
 }
