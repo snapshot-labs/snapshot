@@ -179,6 +179,8 @@
     "new": "Nytt förslag",
     "noProposals": "Det finns inga förslag här ännu!",
     "createProposal": "Create proposal",
+    "showMore": "Show more",
+    "showLess": "Show less",
     "states": {
       "all": "Alla",
       "core": "Core",
