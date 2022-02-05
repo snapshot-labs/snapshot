@@ -179,6 +179,8 @@
     "new": "新しい提案",
     "noProposals": "まだ提案はありません",
     "createProposal": "Create proposal",
+    "showMore": "Show more",
+    "showLess": "Show less",
     "states": {
       "all": "すべて",
       "core": "コア",
