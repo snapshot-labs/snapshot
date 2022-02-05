@@ -1,6 +1,9 @@
 import { computed, reactive } from 'vue';
 
 interface SafesnapState {
+  config: {
+    spaceId: string;
+  };
   batchError:
     | undefined
     | {
@@ -10,6 +13,9 @@ interface SafesnapState {
 }
 
 const state = reactive<SafesnapState>({
+  config: {
+    spaceId: ''
+  },
   batchError: undefined
 });
 
@@ -22,9 +28,14 @@ export function useSafesnap() {
     state.batchError = undefined;
   }
 
+  function setConfig(config: SafesnapState['config']) {
+    state.config = config;
+  }
+
   return {
     setBatchError,
     clearBatchError,
+    setConfig,
     safesnap: computed(() => state)
   };
 }

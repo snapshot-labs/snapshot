@@ -5,6 +5,8 @@ import {
   isValidInput,
   getSafeHash
 } from '@/../snapshot-plugins/src/plugins/safeSnap';
+import { useSafesnap } from '@/composables/useSafesnap';
+const { setConfig } = useSafesnap();
 
 export default {
   props: [
@@ -12,7 +14,8 @@ export default {
     'config', // the safeSnap plugin config of the current space
     'network', // network of the space (needed when mapping legacy plugin configs)
     'proposal',
-    'preview' // if true, renders a read-only view
+    'preview', // if true, renders a read-only view
+    'spaceId'
   ],
   emits: ['update:modelValue'],
   data() {
@@ -38,6 +41,9 @@ export default {
     }
 
     return { input };
+  },
+  mounted() {
+    setConfig({ spaceId: this.spaceId });
   },
   methods: {
     updateSafeTransactions() {

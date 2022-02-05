@@ -30,7 +30,7 @@ defineProps({
     ]"
     :disabled="disabled || loading"
   >
-    <UiLoading v-if="loading" :fill-white="primary" />
+    <UiLoading v-if="loading" />
     <slot v-else />
   </button>
 </template>
