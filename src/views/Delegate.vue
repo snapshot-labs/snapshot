@@ -6,6 +6,7 @@ import { useProfiles } from '@/composables/useProfiles';
 import { isAddress } from '@ethersproject/address';
 import { formatBytes32String } from '@ethersproject/strings';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
+import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import {
   sendTransaction,
   getScores
@@ -28,6 +29,7 @@ import { useApolloQuery } from '@/composables/useApolloQuery';
 import { useModal } from '@/composables/useModal';
 import { useEns } from '@/composables/useEns';
 import Icon from '@/components/Icon.vue';
+import { SNAPSHOT_SUBGRAPH_URL } from '@snapshot-labs/snapshot.js/src/utils';
 
 const abi = ['function setDelegate(bytes32 id, address delegate)'];
 
@@ -56,6 +58,7 @@ const form = ref({
   id: route.params.key || ''
 });
 
+const networkSupportsDelegate = ref(true);
 const { profiles, loadProfiles } = useProfiles();
 
 const networkKey = computed(() => web3.value.network.key);
@@ -115,6 +118,11 @@ function revokeDelegate(id, delegate) {
 watch([networkKey, web3Account], ([valN, valA], [prevN, prevA]) => {
   if (valN !== prevN || valA?.toLowerCase() !== prevA)
     getDelegationsAndDelegates();
+});
+
+watch([networkKey, web3Account], () => {
+  networkSupportsDelegate.value =
+    SNAPSHOT_SUBGRAPH_URL[networkKey.value] !== undefined;
 });
 
 const getDelegationsAndDelegatesLoading = ref(false);
@@ -265,6 +273,8 @@ debouncedWatch(
 onMounted(async () => {
   if (route.params.key) specifySpaceChecked.value = true;
   setPageTitle('page.title.delegate');
+  networkSupportsDelegate.value =
+    SNAPSHOT_SUBGRAPH_URL[networkKey.value] !== undefined;
   await getDelegationsAndDelegates();
   loaded.value = true;
 });
@@ -280,7 +290,28 @@ onMounted(async () => {
         </router-link>
         <h1 v-if="loaded" v-text="$t('delegate.header')" />
       </div>
-      <template v-if="loaded">
+      <PageLoading v-if="!loaded" />
+      <Block v-if="!networkSupportsDelegate">
+        <Icon name="warning" class="mr-1" />
+        {{
+          $t('delegate.delegateNotSupported', {
+            network:
+              networks?.[networkKey]?.shortName ?? $t('theCurrentNetwork')
+          })
+        }}
+        <div>
+          <a
+            class="flex items-center mt-1"
+            @click.stop
+            target="_blank"
+            :href="`https://docs.snapshot.org/guides/delegation#supported-networks`"
+          >
+            {{ $t('learnMore') }}
+            <Icon size="16" name="external-link" class="text-color ml-1" />
+          </a>
+        </div>
+      </Block>
+      <template v-else>
         <Block :title="$t('delegate.selectDelegate')">
           <UiInput
             v-model.trim="form.address"
@@ -313,17 +344,7 @@ onMounted(async () => {
         >
           <Icon name="warning" class="mr-1" />
           {{ $t('delegate.noDelegationsAndDelegates') }}
-          <div>
-            <a
-              class="flex items-center mt-1"
-              @click.stop
-              target="_blank"
-              :href="`https://docs.snapshot.org/guides/delegation#supported-networks`"
-            >
-              {{ $t('learnMore') }}
-              <Icon size="16" name="external-link" class="text-color ml-1" />
-            </a>
-          </div>
+          <div></div>
         </Block>
         <Block
           v-if="delegates.length > 0"
@@ -412,9 +433,8 @@ onMounted(async () => {
           </div>
         </Block>
       </template>
-      <PageLoading v-else />
     </template>
-    <template #sidebar-right>
+    <template #sidebar-right v-if="networkSupportsDelegate">
       <Block :title="$t('actions')">
         <UiButton
           @click="web3Account ? handleSubmit() : (modalAccountOpen = true)"
@@ -428,7 +448,7 @@ onMounted(async () => {
       </Block>
     </template>
   </Layout>
-  <teleport to="#modal">
+  <teleport to="#modal" v-if="networkSupportsDelegate">
     <ModalRevokeDelegate
       v-if="loaded"
       :open="modalOpen"
