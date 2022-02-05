@@ -179,6 +179,8 @@
     "new": "Нова пропозиція",
     "noProposals": "Тут поки що немає пропозицій!",
     "createProposal": "Create proposal",
+    "showMore": "Show more",
+    "showLess": "Show less",
     "states": {
       "all": "Всі",
       "core": "Ядро",
