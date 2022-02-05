@@ -1025,10 +1025,10 @@
     fortmatic "^2.2.1"
     walletlink "^2.4.0"
 
-"@snapshot-labs/snapshot.js@^0.3.39":
-  version "0.3.39"
-  resolved "https://registry.yarnpkg.com/@snapshot-labs/snapshot.js/-/snapshot.js-0.3.39.tgz#260018e0cc166bef5c75f4be34215f342b351ffd"
-  integrity sha512-eVBUUnAE0V8LeZ5HY1mhPJFremGrFJMezzNpYQGipD2bJalMle0pkzZdN0/2+cVQafv3T0up9linmEXvNuJ1Mw==
+"@snapshot-labs/snapshot.js@^0.3.40":
+  version "0.3.40"
+  resolved "https://registry.yarnpkg.com/@snapshot-labs/snapshot.js/-/snapshot.js-0.3.40.tgz#1b595869c168872a89ebac2a15d095844c2bcf47"
+  integrity sha512-INTaNybS+I3fQxtmldKLi50qs3GR8XyCINEePU8D8C00WETGUSeJ1TRTCM2vYaVal7yX9ZXW1QWQG6r6QVKWiw==
   dependencies:
     "@ethersproject/abi" "^5.0.4"
     "@ethersproject/bytes" "^5.0.8"
