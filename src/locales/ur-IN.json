@@ -179,6 +179,8 @@
     "new": "نئی تجاویز",
     "noProposals": "یہاں ابھی تک کوئی تجویز نہیں ہے!",
     "createProposal": "Create proposal",
+    "showMore": "Show more",
+    "showLess": "Show less",
     "states": {
       "all": "سب",
       "core": "کور",
