@@ -338,7 +338,6 @@ onMounted(async () => {
         >
           <Icon name="warning" class="mr-1" />
           {{ $t('delegate.noDelegationsAndDelegates') }}
-          <div></div>
         </Block>
         <Block
           v-if="delegates.length > 0"
