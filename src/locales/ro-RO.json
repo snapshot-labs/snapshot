@@ -179,6 +179,8 @@
     "new": "Propunere nouă",
     "noProposals": "Incă nu sunt propuneri!",
     "createProposal": "Crează propunere",
+    "showMore": "Show more",
+    "showLess": "Show less",
     "states": {
       "all": "Toate",
       "core": "Nucleu",
