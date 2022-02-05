@@ -179,6 +179,8 @@
     "new": "הצעה חדשה",
     "noProposals": "עדיין לא נוצרו הצעות למרחב זה!",
     "createProposal": "Create proposal",
+    "showMore": "Show more",
+    "showLess": "Show less",
     "states": {
       "all": "הכל",
       "core": "ליבה",
