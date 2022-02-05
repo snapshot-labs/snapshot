@@ -179,6 +179,8 @@
     "new": "Novi predlog",
     "noProposals": "Još uvek nema nikakvih predloga!",
     "createProposal": "Create proposal",
+    "showMore": "Show more",
+    "showLess": "Show less",
     "states": {
       "all": "Svi",
       "core": "Osnovni",
