@@ -179,6 +179,8 @@
     "new": "Bagong panukala",
     "noProposals": "Wala pang masyadong kadaming mga panukala ang naririto!",
     "createProposal": "Gumawa ng panukala",
+    "showMore": "Show more",
+    "showLess": "Show less",
     "states": {
       "all": "Lahat",
       "core": "Core",
