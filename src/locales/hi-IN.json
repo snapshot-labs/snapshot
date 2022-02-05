@@ -179,6 +179,8 @@
     "new": "नए प्रपोजल्स",
     "noProposals": "यहाँ अभी प्रोपोज़ल्स नहीं है",
     "createProposal": "Create proposal",
+    "showMore": "Show more",
+    "showLess": "Show less",
     "states": {
       "all": "सभी",
       "core": "कोर",
