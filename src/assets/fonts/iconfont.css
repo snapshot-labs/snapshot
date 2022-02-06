@@ -13,6 +13,10 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.iconearth:before {
+  content: "\e7dc";
+}
+
 .iconpreview:before {
   content: "\e637";
 }

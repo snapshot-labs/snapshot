@@ -24,7 +24,18 @@ watchEffect(() => getProposalIds(followingSpaces.value));
 const loadBy = 16;
 const limit = ref(loadBy);
 
-const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
+const enableInfiniteScroll = ref(false);
+
+const loadMoreSpaces = () => {
+  enableInfiniteScroll.value = true;
+  limit.value += loadBy;
+};
+
+const { endElement } = useScrollMonitor(() => {
+  if (enableInfiniteScroll.value) {
+    limit.value += loadBy;
+  }
+});
 
 onMounted(() => {
   setPageTitle('page.title.home');
@@ -136,7 +147,13 @@ onMounted(() => {
         :block="true"
         v-if="Object.keys(orderedSpacesByCategory).length < 1"
       />
+      <LoadMoreButton
+        v-if="!enableInfiniteScroll"
+        class="mt-4"
+        @click="loadMoreSpaces()"
+      />
     </Container>
     <div ref="endElement" />
+    <Footer />
   </div>
 </template>
