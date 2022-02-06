@@ -1,6 +1,6 @@
 <script setup>
-import { ref, watchEffect, computed, onMounted, inject } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import { ref, watchEffect, computed, onMounted, inject, watch } from 'vue';
+import { useRouter } from 'vue-router';
 import draggable from 'vuedraggable';
 import { useI18n } from 'vue-i18n';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
@@ -36,10 +36,8 @@ const { store } = useStore();
 const notify = inject('notify');
 
 const choices = ref([]);
-const route = useRoute();
 const blockNumber = ref(-1);
 const bodyLimit = ref(14400);
-const preview = ref(false);
 const form = ref({
   name: '',
   body: '',
@@ -56,6 +54,7 @@ const selectedDate = ref('');
 const counter = ref(0);
 const nameForm = ref(null);
 const passValidation = ref([true]);
+const validationLoading = ref(false);
 const loadingSnapshot = ref(true);
 
 const proposal = computed(() =>
@@ -63,21 +62,27 @@ const proposal = computed(() =>
 );
 
 // Check if account passes space validation
-watchEffect(async () => {
-  if (props.space && web3Account.value && auth.isAuthenticated.value) {
-    const validationName = props.space.validation?.name ?? 'basic';
-    const validationParams = props.space.validation?.params ?? {};
-    const isValid = await validations[validationName](
-      web3Account.value,
-      clone(props.space),
-      '',
-      clone(validationParams)
-    );
+watch(
+  () => [props.space, web3Account.value],
+  async () => {
+    validationLoading.value = true;
+    if (props.space && web3Account.value && auth.isAuthenticated.value) {
+      const validationName = props.space.validation?.name ?? 'basic';
+      const validationParams = props.space.validation?.params ?? {};
+      const isValid = await validations[validationName](
+        web3Account.value,
+        clone(props.space),
+        '',
+        clone(validationParams)
+      );
 
-    passValidation.value = [isValid, validationName];
-    console.log('Pass validation?', isValid, validationName);
-  }
-});
+      passValidation.value = [isValid, validationName];
+      console.log('Pass validation?', isValid, validationName);
+      validationLoading.value = false;
+    }
+  },
+  { immediate: true }
+);
 
 const dateStart = computed(() => {
   return props.space.voting?.delay
@@ -206,8 +211,10 @@ async function loadProposal() {
   sourceProposalLoaded.value = true;
 }
 
+// Focus proposal name field when page loads
+watch(nameForm, () => nameForm?.value?.focus());
+
 onMounted(async () => {
-  nameForm.value.focus();
   addChoice(2);
   if (props.from) loadProposal();
 });
@@ -236,12 +243,71 @@ watchEffect(() => {
     ];
   }
 });
+
+const stepTwoIsValid = computed(() => {
+  return (
+    dateStart.value &&
+    dateEnd.value &&
+    dateEnd.value > dateStart.value &&
+    form.value.snapshot &&
+    form.value.snapshot > blockNumber.value / 2 &&
+    choices.value.length >= 1 &&
+    !choices.value.some(a => a.text === '')
+  );
+});
+
+const currentStep = ref(1);
+
+function nextStep() {
+  if (currentStep.value === 1 && !web3Account.value)
+    modalAccountOpen.value = true;
+  else if (currentStep.value === 1) {
+    if (form.value.name && form.value.body.length <= bodyLimit.value) {
+      currentStep.value = 2;
+    } else {
+      nameForm?.value?.focus();
+      if (!passValidation.value[0])
+        notify(['red', t('Wallet does not pass validation')]);
+      else if (!form.value.name) notify(['red', t('Missing proposal title')]);
+      else if (form.value.body.length > bodyLimit.value)
+        notify(['red', t('Proposal too is long')]);
+    }
+  } else if (currentStep.value === 2) {
+    if (stepTwoIsValid.value) {
+      currentStep.value = 3;
+    } else {
+      console.log(choices.value.length);
+      if (!dateStart.value || !dateEnd.value)
+        notify(['red', t('Missing start or end date')]);
+      else if (dateEnd.value < dateStart.value)
+        notify(['red', t('End date must be after start date')]);
+      else if (choices.value.length < 1)
+        notify(['red', t('You must add at least one choice')]);
+      else if (choices.value.some(a => a.text === ''))
+        notify(['red', t('Missing choice text')]);
+    }
+  }
+}
+
+const preview = ref(false);
+
+watch(preview, () => {
+  window.scrollTo(0, 0);
+});
+
+function openDatePicker(date) {
+  if (date === 'start' && !!props.space.voting?.delay) return;
+  if (date === 'end' && !!props.space.voting?.period) return;
+
+  modalOpen.value = true;
+  selectedDate.value = date;
+}
 </script>
 
 <template>
   <Layout v-bind="$attrs">
     <template #content-left>
-      <div class="px-4 md:px-0 overflow-hidden mb-3">
+      <div v-if="currentStep === 1" class="px-4 md:px-0 overflow-hidden mb-3">
         <router-link
           :to="domain ? { path: '/' } : { name: 'spaceProposals' }"
           class="text-color"
@@ -250,8 +316,9 @@ watchEffect(() => {
           {{ $t('back') }}
         </router-link>
       </div>
+      <PageLoading v-if="!space || (validationLoading && web3Account)" />
       <Block
-        v-if="space && passValidation[0] === false"
+        v-else-if="passValidation[0] === false"
         class="!border-skin-link text-skin-link"
       >
         <Icon name="warning" class="mr-1" />
@@ -280,11 +347,23 @@ watchEffect(() => {
             )
           }}
         </span>
+        <div>
+          <a
+            @click="
+              router.push({ name: 'spaceAbout', params: { key: space.id } })
+            "
+            target="_blank"
+            class="whitespace-nowrap"
+            rel="noopener noreferrer"
+            >{{ $t('learnMore') }}
+            <Icon name="external-link" />
+          </a>
+        </div>
       </Block>
-      <div class="px-4 md:px-0">
-        <div class="flex flex-col mb-6">
-          <div class="w-full flex justify-between">
-            <div class="w-11/12">
+      <template v-else>
+        <template v-if="currentStep === 1">
+          <div class="px-4 md:px-0">
+            <div class="flex flex-col mb-6">
               <h1
                 v-if="preview"
                 v-text="form.name || 'Untitled'"
@@ -298,123 +377,166 @@ watchEffect(() => {
                 :placeholder="$t('create.question')"
                 ref="nameForm"
               />
+              <TextareaAutosize
+                v-if="!preview"
+                v-model="form.body"
+                class="input pt-0"
+                style="font-size: 22px"
+                :placeholder="$t('create.content')"
+              />
+              <div v-if="form.body && preview" class="mb-4">
+                <UiMarkdown :body="form.body" />
+              </div>
+              <p v-if="form.body.length > bodyLimit" class="!text-red mt-4">
+                -{{ formatCompactNumber(-(bodyLimit - form.body.length)) }}
+              </p>
             </div>
-            <UiSidebarButton @click="preview = !preview" class="w-[44px]">
-              <Icon v-if="!preview" name="preview" size="18" />
-              <Icon v-else name="back" size="18" />
-            </UiSidebarButton>
           </div>
-          <TextareaAutosize
-            v-if="!preview"
-            v-model="form.body"
-            class="input pt-0"
-            style="font-size: 22px"
-            :placeholder="$t('create.content')"
-          />
-          <div v-if="form.body && preview" class="mb-4">
-            <UiMarkdown :body="form.body" />
-          </div>
-          <p v-if="form.body.length > bodyLimit" class="!text-red mt-4">
-            -{{ formatCompactNumber(-(bodyLimit - form.body.length)) }}
-          </p>
-        </div>
-      </div>
-      <Block :title="$t('create.choices')">
-        <div v-if="choices.length > 0" class="overflow-hidden mb-2">
-          <draggable
-            v-model="choices"
-            :component-data="{ name: 'list' }"
-            :disabled="disableChoiceEdit"
-            item-key="id"
-          >
-            <template #item="{ element, index }">
-              <UiInput
-                v-model="element.text"
-                maxlength="32"
-                additionalInputClass="text-center"
+        </template>
+        <template v-else-if="currentStep === 2">
+          <Block title="Proposal duration">
+            <UiInput
+              class="mb-3"
+              @click="openDatePicker('start')"
+              :disabled="!!space.voting?.delay"
+            >
+              <template v-slot:selected>
+                <span v-if="!dateStart">{{ $t('create.startDate') }}</span>
+                <span
+                  v-else
+                  v-text="$d(dateStart * 1e3, 'short', 'en-US')"
+                  v-tippy="{
+                    content: !!space.voting?.delay
+                      ? $t('Delay is enforced by the space')
+                      : null
+                  }"
+                />
+              </template>
+              <template v-slot:label> {{ $t(`Start`) }} </template>
+            </UiInput>
+
+            <UiInput
+              @click="openDatePicker('end')"
+              :disabled="!!space.voting?.period"
+              v-tippy="{
+                content: !!space.voting?.period
+                  ? $t('Period is enforced by the space')
+                  : null
+              }"
+            >
+              <template v-slot:selected>
+                <span v-if="!dateEnd">{{ $t('create.endDate') }}</span>
+                <span v-else v-text="$d(dateEnd * 1e3, 'short', 'en-US')" />
+              </template>
+              <template v-slot:label> {{ $t(`End`) }} </template>
+            </UiInput>
+          </Block>
+          <Block :title="$t('Voting')">
+            <UiInput class="mb-3" @click="modalVotingTypeOpen = true">
+              <template v-slot:selected>
+                <span class="w-full">
+                  {{ $t(`voting.${form.type}`) }}
+                </span>
+              </template>
+              <template v-slot:label> {{ $t(`Voting system`) }} </template>
+            </UiInput>
+
+            <h5 class="mb-1">Choises</h5>
+            <div v-if="choices.length > 0" class="overflow-hidden mb-2">
+              <draggable
+                v-model="choices"
+                :component-data="{ name: 'list' }"
                 :disabled="disableChoiceEdit"
+                item-key="id"
               >
-                <template v-slot:label>
-                  <span v-if="!disableChoiceEdit" class="text-skin-link">
-                    {{ index + 1 }}
-                  </span>
-                </template>
-                <template v-slot:info>
-                  <div
-                    v-if="!disableChoiceEdit"
-                    class="cursor-pointer flex items-center"
-                    @click="removeChoice(index)"
+                <template #item="{ element, index }">
+                  <UiInput
+                    v-model="element.text"
+                    maxlength="32"
+                    additionalInputClass="text-center"
+                    :disabled="disableChoiceEdit"
                   >
-                    <Icon name="close" size="12" />
-                  </div>
+                    <template v-slot:label>
+                      <span v-if="!disableChoiceEdit" class="text-skin-link">
+                        {{ index + 1 }}
+                      </span>
+                    </template>
+                    <template v-slot:info>
+                      <div
+                        v-if="!disableChoiceEdit"
+                        class="cursor-pointer flex items-center"
+                        @click="removeChoice(index)"
+                      >
+                        <Icon name="close" size="12" />
+                      </div>
+                    </template>
+                  </UiInput>
                 </template>
-              </UiInput>
-            </template>
-          </draggable>
-        </div>
-        <UiButton
-          v-if="!disableChoiceEdit"
-          @click="addChoice(1)"
-          class="block w-full"
-        >
-          {{ $t('create.addChoice') }}
-        </UiButton>
-      </Block>
-      <PluginCreate
-        v-if="space?.plugins && (!from || sourceProposalLoaded)"
-        :proposal="proposal"
-        :space="space"
-        :preview="preview"
-        v-model="form.metadata.plugins"
-      />
-    </template>
-    <template #sidebar-right v-if="!preview">
-      <Block :title="$t('actions')" :loading="!space">
-        <div class="mb-2">
-          <UiButton
-            class="w-full mb-2"
-            :disabled="space.voting?.type"
-            @click="modalVotingTypeOpen = true"
-          >
-            <span>{{ $t(`voting.${space.voting?.type ?? form.type}`) }}</span>
-          </UiButton>
-          <UiButton
-            @click="(modalOpen = true), (selectedDate = 'start')"
-            :disabled="!!space.voting?.delay"
-            class="w-full mb-2"
-          >
-            <span v-if="!dateStart">{{ $t('create.startDate') }}</span>
-            <span v-else v-text="$d(dateStart * 1e3, 'short', 'en-US')" />
-          </UiButton>
-          <UiButton
-            @click="(modalOpen = true), (selectedDate = 'end')"
-            :disabled="!!space.voting?.period"
-            class="w-full mb-2"
-          >
-            <span v-if="!dateEnd">{{ $t('create.endDate') }}</span>
-            <span v-else v-text="$d(dateEnd * 1e3, 'short', 'en-US')" />
-          </UiButton>
-          <UiButton
-            v-if="route.query.snapshot"
-            :loading="loadingSnapshot"
-            class="w-full mb-2"
-          >
-            <input
+              </draggable>
+            </div>
+            <UiButton
+              v-if="!disableChoiceEdit"
+              @click="addChoice(1)"
+              class="block w-full"
+              no-focus
+            >
+              {{ $t('create.addChoice') }}
+            </UiButton>
+          </Block>
+          <Block v-if="$route.query.snapshot" title="Snapshot">
+            <UiInput
               v-model="form.snapshot"
-              type="number"
-              class="input w-full text-center"
+              :number="true"
               :placeholder="$t('create.snapshotBlock')"
-            />
-          </UiButton>
-        </div>
+            >
+              <template v-slot:label>
+                {{ $t('Block number') }}
+              </template>
+            </UiInput>
+          </Block>
+        </template>
+        <template v-else>
+          <PluginCreate
+            v-if="space?.plugins && (!from || sourceProposalLoaded)"
+            :proposal="proposal"
+            :space="space"
+            :preview="preview"
+            v-model="form.metadata.plugins"
+          />
+        </template>
+      </template>
+    </template>
+    <template #sidebar-right>
+      <Block :title="$t('actions')" class="lg:fixed lg:w-[320px]">
         <UiButton
+          v-if="currentStep === 1"
+          @click="preview = !preview"
+          :loading="clientLoading || queryLoading"
+          class="block w-full mb-3"
+          no-focus
+        >
+          {{ preview ? $t('Edit') : $t('Preview') }}
+        </UiButton>
+        <UiButton
+          v-else
+          @click="currentStep -= 1"
+          class="block w-full mb-3"
+          no-focus
+        >
+          {{ $t('Back') }}
+        </UiButton>
+        <UiButton
+          v-if="currentStep === 3"
           @click="clickSubmit"
           :disabled="!isValid"
           :loading="clientLoading || queryLoading"
           class="block w-full"
           primary
         >
-          {{ $t('create.publish') }}
+          {{ $t('Publish proposal') }}
+        </UiButton>
+        <UiButton v-else @click="nextStep" class="block w-full" primary>
+          {{ web3Account ? $t('Next') : $t('Connect wallet') }}
         </UiButton>
       </Block>
       <PluginCreateSidebar

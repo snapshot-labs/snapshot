@@ -35,6 +35,7 @@ function handleInput(e) {
     <div
       v-if="$slots.selected"
       class="flex-auto whitespace-nowrap overflow-x-auto"
+      :class="{ 'cursor-not-allowed text-skin-border': disabled }"
     >
       <slot name="selected" />
     </div>
