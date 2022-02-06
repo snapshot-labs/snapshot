@@ -118,6 +118,7 @@
   "joinedSpaces": "已加入的空间",
   "joinSpaces": "加入空间",
   "setDelegationToSpace": "将委托限制在一个指定空间内",
+  "theCurrentNetwork": "the current network",
   "errors": {
     "required": "此项为必填项",
     "minLength": "最小长度为 {0}",
@@ -165,7 +166,8 @@
     "delegateToSelf": "不能将自己选为委托人",
     "delegateToSelfAddress": "您不能委托给您自己的ENS地址",
     "noValidSpaceId": "此空间ID无效",
-    "noDelegationsAndDelegates": "找不到您的委托人和代委托？请确保您已经连接到正确的网络。"
+    "noDelegationsAndDelegates": "找不到您的委托人和代委托？请确保您已经连接到正确的网络。",
+    "delegateNotSupported": "Delegation is currently not supported for {network}."
   },
   "proposal": {
     "castVote": "投出您的票",
