@@ -19,13 +19,13 @@
   "strategiesPage": "Chiến lược",
   "space": "Khoảng trống",
   "spaces": "Những khoảng trống",
+  "verifiedSpace": "Verified space",
   "version": "Phiên bản",
   "timeline": "Mốc thời gian",
   "filters": "Bộ lọc",
   "allSpaces": "Tất cả các khoảng trống",
   "submitOnchain": "Nộp on chain",
   "inSpaces": "Trong {0} khoảng trống(s)",
-  "downloadReport": "Tải báo cáo",
   "votes": "Bầu",
   "seeMore": "Xem nhiều hơn",
   "network": "Mạng",
@@ -39,6 +39,7 @@
   "view3box": "Xem hồ sơ trên 3Box",
   "edit3box": "Chỉnh sửa hồ sơ trên 3Box",
   "connectWallet": "Kết nối ví",
+  "toggleSkin": "Toggle skin",
   "about": "Về",
   "license": "Giấy phép",
   "ipfsServer": "Máy chủ IPFS",
@@ -50,14 +51,18 @@
   "confirmRemove": "Bạn chắc chắn muốn xóa ủy quyền cho",
   "removeSpace": "cho khoảng trống {0}",
   "confirmVote": "Xác nhận phiếu bầu",
-  "sureToVote": "Bạn chắc chắn muốn bầu \"{0}\"?",
+  "sureToVote": "Are you sure you want to cast this vote?",
   "cannotBeUndone": "Hành động này không thể hoàn tác.",
   "options": "Các lựa chọn(s)",
   "votingPower": "Quyền biểu quyết của bạn",
   "receipt": "Nhận",
   "relayer": "Lặp lại",
   "verifyOnMycrypto": "Xác minh biên nhận trên MyCrypto",
+  "verifyOnSignatorio": "Verify on Signator.io",
   "isCore": "Cốt lõi",
+  "notificationsBlocked": "Your browser is blocking notifications",
+  "notificationsNotSupported": "Your browser does not support notifications",
+  "walletNotSupported": "Wallet is not supported",
   "seeInExplorer": "Xem trên trình duyệt",
   "learnMore": "Tìm hiểu thêm",
   "logout": "Đăng xuất",
@@ -88,10 +93,10 @@
   "noSpacesJoined": "Bạn chưa tham gia một nhóm nào cả",
   "addFavorites": "Thêm yêu thích",
   "createdBy": "Bởi {0}",
-  "startToEnd": "bắt đầu {0} kết thúc {1}",
   "startIn": "bắt đầu {0}",
   "endIn": "kết thúc {1}",
-  "endedAgo": "kết thúc {1}",
+  "proposalTimeLeft": "{0} left",
+  "endedAgo": "ended {0}",
   "proposalBy": "bởi {0}",
   "endDate": "kết thúc {0}",
   "contectHash": "Nội dung băm",
@@ -112,6 +117,7 @@
   "duplicateProposal": "Sao chép đề xuất",
   "joinedSpaces": "Các nhóm đã tham gia",
   "joinSpaces": "Tham gia nhóm",
+  "setDelegationToSpace": "Limit delegation to a specific space",
   "errors": {
     "required": "Trường này là bắt buộc",
     "minLength": "Độ dài tối thiểu là {0}",
@@ -123,8 +129,9 @@
     "type": "Kiểu dữ liệu không hợp lệ"
   },
   "create": {
-    "question": "Câu hỏi",
-    "content": "Đề xuất của bạn là gì?",
+    "question": "Ask a question...",
+    "categorie(s)": "Select up to 2 categorie(s)",
+    "content": "Tell us more about your proposal (optional)",
     "preview": "Xem trước",
     "choices": "Lựa chọn",
     "addChoice": "Thêm lựa chọn",
@@ -147,12 +154,18 @@
     "selectDelegate": "Select delegate",
     "to": "Đến",
     "addressPlaceholder": "Địa chỉ hay ENS",
-    "spacePlaceholder": "Không gian (không bắt buộc)",
     "delegations": "Ủy quyền của bạn(s)",
     "allSpaces": "Cho tất cả không gian",
     "delegated": "Ủy quyền cho bạn",
     "pendingTransaction": "no pending transaction | 1 pending transaction | {count} pending transactions",
-    "topDelegates": "Top delegates"
+    "topDelegates": "Top delegates",
+    "noDelegatesFoundFor": "No delegates found for {0}",
+    "noValidEns": "Not a valid ENS address.",
+    "noValidAddress": "Not a valid address",
+    "delegateToSelf": "You cannot delegate to yourself",
+    "delegateToSelfAddress": "You cannot delegate to your own ENS address",
+    "noValidSpaceId": "Not a valid space ID",
+    "noDelegationsAndDelegates": "Can't find your delegations and delegates? Make sure you are connected to the correct network."
   },
   "proposal": {
     "castVote": "Hãy bình chọn",
@@ -166,6 +179,8 @@
     "new": "Đề xuất mới",
     "noProposals": "Không có bất kỳ đề xuất nào ở đây!",
     "createProposal": "Create proposal",
+    "showMore": "Show more",
+    "showLess": "Show less",
     "states": {
       "all": "Tất cả",
       "core": "Cốt lõi",
@@ -190,6 +205,8 @@
     "customDomain": "Custom domain",
     "domain": "Tên miền",
     "strategies": "Chiến lược(s)",
+    "categories": "Categorie(s)",
+    "selectCategories": "Select categories",
     "hideSpace": "Ẩn không gian khỏi trang chủ",
     "addStrategy": "Thêm chiến lược",
     "authors": "Authors",
@@ -209,13 +226,21 @@
     "votingDelay": "Voting delay",
     "votingPeriod": "Voting period",
     "voting": "Voting",
+    "quorum": "Quorum",
     "type": "Type",
-    "anyType": "Any"
+    "anyType": "Any",
+    "hideAbstain": "Ignore abstain votes in basic voting results"
   },
   "setup": {
     "example": "e.g.yam.eth",
-    "useExistingEns": "Sử dụng tên ENS hiện có để tạo không gian của bạn với.",
-    "createASpace": "Tạo một không gian"
+    "chooseExistingEns": "Choose one of your existing ENS domains to create a space with:",
+    "useSingleExistingEns": "Use your existing ENS domain:",
+    "orReigsterNewEns": "Or register a new domain:",
+    "toCreateASpace": "To create a space, you first need an ENS domain. Enter one below and follow the ENS registration instructions.",
+    "createASpace": "Tạo một không gian",
+    "registerEnsButton": "Register",
+    "supportedEnsTLDs": "Supported domain endings",
+    "helpDocsAndDiscordLinks": "Not sure how to create a space? Learn more in the <a target='_blank' href='https://docs.snapshot.org/spaces/create'> documentation </a> or join Snapshot <a target='_blank' href='https://discord.gg/snapshot'>Discord</a>."
   },
   "notify": {
     "youDidIt": "Bạn đã thực hiện nó!",
@@ -237,7 +262,18 @@
     "skins": "skin(s)",
     "networks": "mạng(s)",
     "plugins": "plugin(s)",
-    "results": "kết quả(s)"
+    "results": "kết quả(s)",
+    "categories": {
+      "all": "All",
+      "protocol": "Protocol",
+      "social": "Social",
+      "investment": "Investment",
+      "grant": "Grant",
+      "service": "Service",
+      "media": "Media",
+      "creator": "Creator",
+      "collector": "Collector"
+    }
   },
   "voting": {
     "selectVoting": "Chọn hệ thống bầu cử",
@@ -246,12 +282,19 @@
     "quadratic": "Biểu quyết bậc hai",
     "ranked-choice": "Ranked choice voting",
     "weighted": "Weighted voting",
+    "basic": "Basic voting",
     "description": {
       "single-choice": "Mỗi cử tri chỉ được chọn một sự lựa chọn.",
       "approval": "Mỗi cử tri có thể chọn bất kỳ số lượng lựa chọn nào.",
       "quadratic": "Each voter may spread voting power across any number of choices. Results are calculated quadratically.",
       "ranked-choice": "Each voter may select and rank any number of choices. Results are calculated by instant-runoff counting method.",
-      "weighted": "Each voter may spread voting power across any number of choices."
+      "weighted": "Each voter may spread voting power across any number of choices.",
+      "basic": "Single choice voting with three choices: For, Against or Abstain"
+    },
+    "choices": {
+      "for": "For",
+      "against": "Against",
+      "abstain": "Abstain"
     }
   },
   "safeSnap": {
@@ -299,19 +342,27 @@
       "connectWallet": "Kết nối ví",
       "switchChain": "Vui lòng chọn mạng lưới {0} để thực hiện giao dịch",
       "question": "Đề xuất này có được thông qua không và nó có đáp ứng được",
-      "criteria": "tiêu chí chấp nhận?"
+      "criteria": "tiêu chí chấp nhận?",
+      "proposalPassed": "Did the proposal pass?"
     }
   },
   "poap": {
     "no_poap_header": "POAP chưa được thiết lập cho đề xuất này: '(",
     "no_voted_header": "Bỏ phiếu để nhận POAP này",
-    "unclaimed_header": "Yêu cầu POAP tôi đã bình chọn của bạn",
-    "claimed_header": "POAP đã được gửi vào ví của bạn",
-    "loading_header": "POAP đang được thêm vào bộ sưu tập của bạn",
-    "button_claim": "Yêu cầu",
+    "unclaimed_header": "Mint your I voted POAP",
+    "claimed_header": "Congratulations! The POAP has been minted to your collection",
+    "loading_header": "The POAP is being minted to your collection",
+    "button_claim": "Mint",
     "button_show": "Bộ sưu tập",
-    "success_claim": "POAP của bạn có trên địa chỉ của bạn",
+    "success_claim": "The POAP has been minted to your collection",
     "error_claim": "Đã xảy ra sự cố khi in mã thông báo"
+  },
+  "charts": {
+    "charts": "Charts",
+    "noVotesYet": "There are no votes to visualize yet.",
+    "totalVotesPerDay": "Total votes per day",
+    "shareOfVotingPower": "Share of voting power",
+    "votingPowerPerDay": "Voting power per day"
   },
   "comment_box": {
     "title": "Khung bình luận",
@@ -336,5 +387,36 @@
     "show": "Hiển thị",
     "reply": "Bình luận",
     "load_more": "Hiển thị thêm"
+  },
+  "page": {
+    "title": {
+      "home": "Snapshot",
+      "setup": "Create a space",
+      "timeline": "Timeline",
+      "explore": "Explore",
+      "playground": "Playground",
+      "space": {
+        "create": "Create {space} proposal",
+        "about": "About {space}",
+        "proposals": "{space} Proposals",
+        "proposal": "{space} proposal: {proposal}",
+        "settings": "{space} Settings"
+      },
+      "strategy": "{key} strategy",
+      "delegate": "Delegate"
+    }
+  },
+  "hal": {
+    "title": "Track proposals for {spaceName}",
+    "text": "Receive notifications every time a new proposal is created or ends"
+  },
+  "timeUnits": {
+    "second": "1 second | {n} seconds",
+    "minute": "1 minute | {n} minutes",
+    "hour": "1 hour | {n} hours",
+    "day": "1 day | {n} days",
+    "week": "1 week | {n} weeks",
+    "month": "1 month | {n} months",
+    "year": "1 year | {n} years"
   }
 }

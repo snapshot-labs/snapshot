@@ -19,13 +19,13 @@
   "strategiesPage": "Strategije",
   "space": "Space",
   "spaces": "Spaces",
+  "verifiedSpace": "Verified space",
   "version": "Verzija",
   "timeline": "Vremenska linija",
   "filters": "Filters",
   "allSpaces": "All spaces",
   "submitOnchain": "Podnesi on-chain",
   "inSpaces": "U {0} prostor(a)",
-  "downloadReport": "Preuzmi izveštaj",
   "votes": "Glasovi",
   "seeMore": "Vidi više",
   "network": "Mreža",
@@ -39,6 +39,7 @@
   "view3box": "Pogledaj profil na 3Box",
   "edit3box": "Uredi profil na 3Box",
   "connectWallet": "Poveži novčanik",
+  "toggleSkin": "Toggle skin",
   "about": "O nama",
   "license": "Licenca",
   "ipfsServer": "IPFS server",
@@ -50,14 +51,18 @@
   "confirmRemove": "Jeste li sigurni da želite da uklonite vašu delegaciju za",
   "removeSpace": "za prostor {0}",
   "confirmVote": "Potvrdi glas",
-  "sureToVote": "Jeste li sigurni da želite da glasate \"{0}\"?",
+  "sureToVote": "Are you sure you want to cast this vote?",
   "cannotBeUndone": "Ova radnja se ne može opozvati.",
   "options": "Option(s)",
   "votingPower": "Vaša glasačka moć",
   "receipt": "Priznanica",
   "relayer": "Relej",
   "verifyOnMycrypto": "Verifikuj priznanicu na MyCrypto",
+  "verifyOnSignatorio": "Verify on Signator.io",
   "isCore": "Osnovno",
+  "notificationsBlocked": "Your browser is blocking notifications",
+  "notificationsNotSupported": "Your browser does not support notifications",
+  "walletNotSupported": "Wallet is not supported",
   "seeInExplorer": "Pogledajte na explorer",
   "learnMore": "Više detalja",
   "logout": "Odjava",
@@ -88,10 +93,10 @@
   "noSpacesJoined": "Oops, you haven't joined any spaces yet",
   "addFavorites": "Add favorites",
   "createdBy": "Od {0}",
-  "startToEnd": "početak {0} kraj {1}",
   "startIn": "start {0}",
   "endIn": "end {1}",
-  "endedAgo": "ended {1}",
+  "proposalTimeLeft": "{0} left",
+  "endedAgo": "ended {0}",
   "proposalBy": "by {0}",
   "endDate": "kraj {0}",
   "contectHash": "Heš sadržaja",
@@ -112,6 +117,7 @@
   "duplicateProposal": "Duplicate proposal",
   "joinedSpaces": "Joined spaces",
   "joinSpaces": "Join spaces",
+  "setDelegationToSpace": "Limit delegation to a specific space",
   "errors": {
     "required": "Field is required",
     "minLength": "Minimum length is {0}",
@@ -123,8 +129,9 @@
     "type": "Invalid type"
   },
   "create": {
-    "question": "Pitanje",
-    "content": "Šta je vaš predlog?",
+    "question": "Ask a question...",
+    "categorie(s)": "Select up to 2 categorie(s)",
+    "content": "Tell us more about your proposal (optional)",
     "preview": "Pregled",
     "choices": "Izbori",
     "addChoice": "Dodaj izbor",
@@ -147,12 +154,18 @@
     "selectDelegate": "Select delegate",
     "to": "To",
     "addressPlaceholder": "Address or ENS name",
-    "spacePlaceholder": "Prostor (opciono)",
     "delegations": "Vaša delegacija(e)",
     "allSpaces": "For all spaces",
     "delegated": "Delegirano vama",
     "pendingTransaction": "no pending transaction | 1 pending transaction | {count} pending transactions",
-    "topDelegates": "Top delegates"
+    "topDelegates": "Top delegates",
+    "noDelegatesFoundFor": "No delegates found for {0}",
+    "noValidEns": "Not a valid ENS address.",
+    "noValidAddress": "Not a valid address",
+    "delegateToSelf": "You cannot delegate to yourself",
+    "delegateToSelfAddress": "You cannot delegate to your own ENS address",
+    "noValidSpaceId": "Not a valid space ID",
+    "noDelegationsAndDelegates": "Can't find your delegations and delegates? Make sure you are connected to the correct network."
   },
   "proposal": {
     "castVote": "Dajte svoj glas",
@@ -166,6 +179,8 @@
     "new": "Novi predlog",
     "noProposals": "Još uvek nema nikakvih predloga!",
     "createProposal": "Create proposal",
+    "showMore": "Show more",
+    "showLess": "Show less",
     "states": {
       "all": "Svi",
       "core": "Osnovni",
@@ -190,6 +205,8 @@
     "customDomain": "Custom domain",
     "domain": "Naziv domena",
     "strategies": "Strategie(s)",
+    "categories": "Categorie(s)",
+    "selectCategories": "Select categories",
     "hideSpace": "Sakrij prostor sa početne stranice",
     "addStrategy": "Dodaj strategiju",
     "authors": "Authors",
@@ -209,13 +226,21 @@
     "votingDelay": "Voting delay",
     "votingPeriod": "Voting period",
     "voting": "Voting",
+    "quorum": "Quorum",
     "type": "Type",
-    "anyType": "Any"
+    "anyType": "Any",
+    "hideAbstain": "Ignore abstain votes in basic voting results"
   },
   "setup": {
     "example": "npr. yam.eth",
-    "useExistingEns": "Koristite postojeće ENS ime za kreaciju vašeg prostora.",
-    "createASpace": "Napravi prostor"
+    "chooseExistingEns": "Choose one of your existing ENS domains to create a space with:",
+    "useSingleExistingEns": "Use your existing ENS domain:",
+    "orReigsterNewEns": "Or register a new domain:",
+    "toCreateASpace": "To create a space, you first need an ENS domain. Enter one below and follow the ENS registration instructions.",
+    "createASpace": "Napravi prostor",
+    "registerEnsButton": "Register",
+    "supportedEnsTLDs": "Supported domain endings",
+    "helpDocsAndDiscordLinks": "Not sure how to create a space? Learn more in the <a target='_blank' href='https://docs.snapshot.org/spaces/create'> documentation </a> or join Snapshot <a target='_blank' href='https://discord.gg/snapshot'>Discord</a>."
   },
   "notify": {
     "youDidIt": "Uspjeh!",
@@ -237,7 +262,18 @@
     "skins": "skin(s)",
     "networks": "network(s)",
     "plugins": "plugin(s)",
-    "results": "result(s)"
+    "results": "result(s)",
+    "categories": {
+      "all": "All",
+      "protocol": "Protocol",
+      "social": "Social",
+      "investment": "Investment",
+      "grant": "Grant",
+      "service": "Service",
+      "media": "Media",
+      "creator": "Creator",
+      "collector": "Collector"
+    }
   },
   "voting": {
     "selectVoting": "Select voting system",
@@ -246,12 +282,19 @@
     "quadratic": "Quadratic voting",
     "ranked-choice": "Ranked choice voting",
     "weighted": "Weighted voting",
+    "basic": "Basic voting",
     "description": {
       "single-choice": "Each voter may select only one choice.",
       "approval": "Each voter may select any number of choices.",
       "quadratic": "Each voter may spread voting power across any number of choices. Results are calculated quadratically.",
       "ranked-choice": "Each voter may select and rank any number of choices. Results are calculated by instant-runoff counting method.",
-      "weighted": "Each voter may spread voting power across any number of choices."
+      "weighted": "Each voter may spread voting power across any number of choices.",
+      "basic": "Single choice voting with three choices: For, Against or Abstain"
+    },
+    "choices": {
+      "for": "For",
+      "against": "Against",
+      "abstain": "Abstain"
     }
   },
   "safeSnap": {
@@ -299,7 +342,8 @@
       "connectWallet": "Connect wallet to see execution details",
       "switchChain": "Switch your wallet to {0} to request execution",
       "question": "Did this proposal pass and does it meet the",
-      "criteria": "acceptance criteria?"
+      "criteria": "acceptance criteria?",
+      "proposalPassed": "Did the proposal pass?"
     }
   },
   "poap": {
@@ -312,6 +356,13 @@
     "button_show": "Browse collection",
     "success_claim": "The POAP has been minted to your collection",
     "error_claim": "There was a problem minting the token"
+  },
+  "charts": {
+    "charts": "Charts",
+    "noVotesYet": "There are no votes to visualize yet.",
+    "totalVotesPerDay": "Total votes per day",
+    "shareOfVotingPower": "Share of voting power",
+    "votingPowerPerDay": "Voting power per day"
   },
   "comment_box": {
     "title": "Comment box",
@@ -336,5 +387,36 @@
     "show": "Show",
     "reply": "Reply",
     "load_more": "Load more"
+  },
+  "page": {
+    "title": {
+      "home": "Snapshot",
+      "setup": "Create a space",
+      "timeline": "Timeline",
+      "explore": "Explore",
+      "playground": "Playground",
+      "space": {
+        "create": "Create {space} proposal",
+        "about": "About {space}",
+        "proposals": "{space} Proposals",
+        "proposal": "{space} proposal: {proposal}",
+        "settings": "{space} Settings"
+      },
+      "strategy": "{key} strategy",
+      "delegate": "Delegate"
+    }
+  },
+  "hal": {
+    "title": "Track proposals for {spaceName}",
+    "text": "Receive notifications every time a new proposal is created or ends"
+  },
+  "timeUnits": {
+    "second": "1 second | {n} seconds",
+    "minute": "1 minute | {n} minutes",
+    "hour": "1 hour | {n} hours",
+    "day": "1 day | {n} days",
+    "week": "1 week | {n} weeks",
+    "month": "1 month | {n} months",
+    "year": "1 year | {n} years"
   }
 }

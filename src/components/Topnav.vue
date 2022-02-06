@@ -108,7 +108,7 @@ async function handleLogin(connector) {
       </Container>
     </nav>
     <div class="bg-blue text-white text-center py-2" v-if="pendingCount > 0">
-      <UiLoading :fill-white="true" class="mr-2" />
+      <UiLoading fill-white class="mr-2" />
       {{ $tc('delegate.pendingTransaction', pendingCount) }}
     </div>
     <teleport to="#modal">
