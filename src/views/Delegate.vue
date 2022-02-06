@@ -296,13 +296,13 @@ onMounted(async () => {
           })
         }}
         <a
-          class="whitespace-nowrap"
+          class="whitespace-nowrap ml-1"
           @click.stop
           target="_blank"
           :href="`https://docs.snapshot.org/guides/delegation#supported-networks`"
         >
           {{ $t('learnMore') }}
-          <Icon size="16" name="external-link" class="text-color ml-1" />
+          <Icon size="16" name="external-link" class="text-color" />
         </a>
       </Block>
       <template v-else>
