@@ -19,13 +19,13 @@
   "strategiesPage": "Estratégias",
   "space": "Espaço",
   "spaces": "Espaços",
+  "verifiedSpace": "Verified space",
   "version": "Versão",
   "timeline": "Cronologia",
   "filters": "Filtros",
   "allSpaces": "Todos os espaços",
   "submitOnchain": "Enviar na cadeia",
   "inSpaces": "Em {0} comunidade(s)",
-  "downloadReport": "Descarregar relatório",
   "votes": "Votos",
   "seeMore": "Ver mais",
   "network": "Rede",
@@ -39,6 +39,7 @@
   "view3box": "Ver perfil no 3Box",
   "edit3box": "Editar perfil no 3Box",
   "connectWallet": "Conectar carteira",
+  "toggleSkin": "Toggle skin",
   "about": "Sobre nós",
   "license": "Licença",
   "ipfsServer": "Protocolo IPFS",
@@ -50,14 +51,18 @@
   "confirmRemove": "Tem certeza que deseja remover sua delegação a",
   "removeSpace": "para a comunidade {0}",
   "confirmVote": "Confirmar voto",
-  "sureToVote": "Tem certeza que deseja votar \"{0}\"?",
+  "sureToVote": "Are you sure you want to cast this vote?",
   "cannotBeUndone": "Esta ação é irreversível.",
   "options": "Opções",
   "votingPower": "Seu poder de voto",
   "receipt": "Comprovativo",
   "relayer": "Retransmissor",
   "verifyOnMycrypto": "Verificar comprovativo no MyCrypto",
+  "verifyOnSignatorio": "Verify on Signator.io",
   "isCore": "Core",
+  "notificationsBlocked": "Your browser is blocking notifications",
+  "notificationsNotSupported": "Your browser does not support notifications",
+  "walletNotSupported": "Wallet is not supported",
   "seeInExplorer": "Ver no Explorer",
   "learnMore": "Saber mais",
   "logout": "Terminar sessão",
@@ -88,10 +93,10 @@
   "noSpacesJoined": "Ops, você ainda não entrou em nenhuma comunidade",
   "addFavorites": "Adicionar favoritos",
   "createdBy": "Por {0}",
-  "startToEnd": "iniciar {0} fim {1}",
   "startIn": "iniciar: {0}",
   "endIn": "terminar {1}",
-  "endedAgo": "finalizado {1}",
+  "proposalTimeLeft": "{0} esquerda",
+  "endedAgo": "finalizado {0}",
   "proposalBy": "por {0}",
   "endDate": "termina {0}",
   "contectHash": "Hash do conteúdo",
@@ -112,6 +117,7 @@
   "duplicateProposal": "Duplicar proposta",
   "joinedSpaces": "Juntou espaços",
   "joinSpaces": "Juntar-se aos espaços",
+  "setDelegationToSpace": "Limit delegation to a specific space",
   "errors": {
     "required": "O campo é obrigatório",
     "minLength": "O comprimento mínimo é {0}",
@@ -123,8 +129,9 @@
     "type": "Contexto"
   },
   "create": {
-    "question": "Pergunta",
-    "content": "Qual é a sua proposta?",
+    "question": "Ask a question...",
+    "categorie(s)": "Select up to 2 categorie(s)",
+    "content": "Tell us more about your proposal (optional)",
     "preview": "Pré-visualizar",
     "choices": "Opções",
     "addChoice": "Adicionar opção",
@@ -147,12 +154,18 @@
     "selectDelegate": "Selecionar delegado",
     "to": "Para",
     "addressPlaceholder": "Nome do endereço ou ENS",
-    "spacePlaceholder": "Comunidade (opcional)",
     "delegations": "Sua(s) delegação(ões)",
     "allSpaces": "Para todos os espaços",
     "delegated": "Delegado a você",
     "pendingTransaction": "sem transações pendentes | 1 transação pendente | {count} transações pendentes",
-    "topDelegates": "Principais delegados"
+    "topDelegates": "Principais delegados",
+    "noDelegatesFoundFor": "No delegates found for {0}",
+    "noValidEns": "Not a valid ENS address.",
+    "noValidAddress": "Not a valid address",
+    "delegateToSelf": "You cannot delegate to yourself",
+    "delegateToSelfAddress": "You cannot delegate to your own ENS address",
+    "noValidSpaceId": "Not a valid space ID",
+    "noDelegationsAndDelegates": "Can't find your delegations and delegates? Make sure you are connected to the correct network."
   },
   "proposal": {
     "castVote": "Votar",
@@ -166,6 +179,8 @@
     "new": "Nova proposta",
     "noProposals": "Ainda não há nenhuma proposta aqui!",
     "createProposal": "Create proposal",
+    "showMore": "Show more",
+    "showLess": "Show less",
     "states": {
       "all": "Todas",
       "core": "Core",
@@ -190,6 +205,8 @@
     "customDomain": "Domínio Personalizado",
     "domain": "Nome do domínio",
     "strategies": "Estratégia(s)",
+    "categories": "Categorie(s)",
+    "selectCategories": "Select categories",
     "hideSpace": "Ocultar comunidade da página inicial",
     "addStrategy": "Adicionar estratégia",
     "authors": "Autores",
@@ -209,13 +226,21 @@
     "votingDelay": "Atraso na votação",
     "votingPeriod": "Período de votação",
     "voting": "Votar",
+    "quorum": "Quorum",
     "type": "Modelo",
-    "anyType": "Qualquer"
+    "anyType": "Qualquer",
+    "hideAbstain": "Ignore abstain votes in basic voting results"
   },
   "setup": {
     "example": "p. ex. yam.eth",
-    "useExistingEns": "Use um nome ENS existente para criar a sua comunidade.",
-    "createASpace": "Criar comunidade"
+    "chooseExistingEns": "Choose one of your existing ENS domains to create a space with:",
+    "useSingleExistingEns": "Use your existing ENS domain:",
+    "orReigsterNewEns": "Or register a new domain:",
+    "toCreateASpace": "To create a space, you first need an ENS domain. Enter one below and follow the ENS registration instructions.",
+    "createASpace": "Criar comunidade",
+    "registerEnsButton": "Register",
+    "supportedEnsTLDs": "Supported domain endings",
+    "helpDocsAndDiscordLinks": "Not sure how to create a space? Learn more in the <a target='_blank' href='https://docs.snapshot.org/spaces/create'> documentation </a> or join Snapshot <a target='_blank' href='https://discord.gg/snapshot'>Discord</a>."
   },
   "notify": {
     "youDidIt": "Conseguiu!",
@@ -237,7 +262,18 @@
     "skins": "skin(s)",
     "networks": "rede(s)",
     "plugins": "plugin(s)",
-    "results": "resultado(s)"
+    "results": "resultado(s)",
+    "categories": {
+      "all": "All",
+      "protocol": "Protocol",
+      "social": "Social",
+      "investment": "Investment",
+      "grant": "Grant",
+      "service": "Service",
+      "media": "Media",
+      "creator": "Creator",
+      "collector": "Collector"
+    }
   },
   "voting": {
     "selectVoting": "Selecionar sistema de votação",
@@ -246,12 +282,19 @@
     "quadratic": "Voto em Quadrático",
     "ranked-choice": "Votação por escolha ranqueada",
     "weighted": "Votação ponderada",
+    "basic": "Basic voting",
     "description": {
       "single-choice": "Cada eleitor pode selecionar apenas uma opção.",
       "approval": "Cada eleitor pode selecionar qualquer número de opções.",
       "quadratic": "Cada eleitor pode distribuir o poder de voto por qualquer número de escolhas. Os resultados são calculados quadraticamente.",
       "ranked-choice": "Cada eleitor pode selecionar e classificar qualquer número de escolhas. Os resultados são calculados pelo método de contagem instantânea.",
-      "weighted": "Cada eleitor pode espalhar o poder de voto em qualquer número de escolhas."
+      "weighted": "Cada eleitor pode espalhar o poder de voto em qualquer número de escolhas.",
+      "basic": "Single choice voting with three choices: For, Against or Abstain"
+    },
+    "choices": {
+      "for": "For",
+      "against": "Against",
+      "abstain": "Abstain"
     }
   },
   "safeSnap": {
@@ -299,19 +342,27 @@
       "connectWallet": "Connect wallet to see execution details",
       "switchChain": "Switch your wallet to {0} to request execution",
       "question": "Esta proposta foi aprovada e atende aos",
-      "criteria": "Critérios de Aceitação?"
+      "criteria": "Critérios de Aceitação?",
+      "proposalPassed": "Did the proposal pass?"
     }
   },
   "poap": {
     "no_poap_header": "Um POAP ainda não foi configurado para esta proposta :'(",
     "no_voted_header": "Vote para obter este POAP",
-    "unclaimed_header": "Reivindique seu voto no POAP",
+    "unclaimed_header": "Mint your I voted POAP",
     "claimed_header": "Congratulations! The POAP has been minted to your collection",
-    "loading_header": "O POAP está sendo adicionado à sua coleção",
-    "button_claim": "Reivindicar",
+    "loading_header": "The POAP is being minted to your collection",
+    "button_claim": "Mint",
     "button_show": "Browse collection",
-    "success_claim": "O seu POAP está no seu endereço",
+    "success_claim": "The POAP has been minted to your collection",
     "error_claim": "Ocorreu um problema ao cunhar o token"
+  },
+  "charts": {
+    "charts": "Charts",
+    "noVotesYet": "There are no votes to visualize yet.",
+    "totalVotesPerDay": "Total votes per day",
+    "shareOfVotingPower": "Share of voting power",
+    "votingPowerPerDay": "Voting power per day"
   },
   "comment_box": {
     "title": "Comment box",
@@ -336,5 +387,36 @@
     "show": "Show",
     "reply": "Reply",
     "load_more": "Load more"
+  },
+  "page": {
+    "title": {
+      "home": "Snapshot",
+      "setup": "Create a space",
+      "timeline": "Timeline",
+      "explore": "Explore",
+      "playground": "Playground",
+      "space": {
+        "create": "Create {space} proposal",
+        "about": "About {space}",
+        "proposals": "{space} Proposals",
+        "proposal": "{space} proposal: {proposal}",
+        "settings": "{space} Settings"
+      },
+      "strategy": "{key} strategy",
+      "delegate": "Delegate"
+    }
+  },
+  "hal": {
+    "title": "Track proposals for {spaceName}",
+    "text": "Receive notifications every time a new proposal is created or ends"
+  },
+  "timeUnits": {
+    "second": "1 segundo | {n} segundos",
+    "minute": "1 minuto | {n} minutos",
+    "hour": "1 hour | {n} horas",
+    "day": "1 dia | {n} dias",
+    "week": "1 semana | {n} semanas",
+    "month": "1 mês | {n} meses",
+    "year": "1 ano | {n} anos"
   }
 }

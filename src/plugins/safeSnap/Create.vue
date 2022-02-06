@@ -20,5 +20,6 @@ const update = form => {
     :preview="preview"
     @update:modelValue="update"
     :modelValue="modelValue?.safeSnap || {}"
+    :spaceId="space.id"
   />
 </template>

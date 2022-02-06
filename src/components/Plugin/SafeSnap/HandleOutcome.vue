@@ -146,8 +146,9 @@
       :questionId="questionDetails?.questionId"
       :tokenSymbol="bondData?.tokenSymbol"
       :tokenDecimals="bondData?.tokenDecimals"
+      :oracle="questionDetails?.oracle"
       @setApproval="voteOnQuestion"
-      @close="modalApproveDecisionOpen = false"
+      @close="modalApproveDecisionOpen = actionInProgress = false"
     />
   </teleport>
 </template>
@@ -256,6 +257,7 @@ const action2InProgress = ref(false);
 const questionDetails = ref(undefined);
 const modalApproveDecisionOpen = ref(false);
 const bondData = ref({
+  tokenSymbol: 'ETH',
   canClaim: undefined,
   data: undefined
 });
