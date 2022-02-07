@@ -9,15 +9,15 @@ import { shorten } from '@/helpers/utils';
 
 const plugin = new Plugin();
 
-const GNOSIS_SAFE_DEPLOYMENTS = {
-  1: 'https://gnosis-safe.io',
-  4: 'https://rinkeby.gnosis-safe.io',
-  100: 'https://xdai.gnosis-safe.io',
-  73799: 'https://volta.gnosis-safe.io',
-  246: 'https://ewc.gnosis-safe.io',
-  137: 'https://polygon.gnosis-safe.io',
-  56: 'https://bsc.gnosis-safe.io',
-  42161: 'https://arbitrum.gnosis-safe.io'
+const EIP3770_PREFIXES = {
+  1: 'eth',
+  56: 'bnb',
+  4: 'rin',
+  100: 'gno',
+  246: 'ewt',
+  73799: 'vt',
+  42161: 'arb1',
+  137: 'MATIC'
 };
 
 async function fetchBalances(network, gnosisSafeAddress) {
@@ -118,9 +118,8 @@ export default {
   },
   computed: {
     safeLink() {
-      const baseUrl =
-        GNOSIS_SAFE_DEPLOYMENTS[this.network] || 'https://gnosis-safe.io';
-      return `${baseUrl}/app/#/safes/${this.gnosisSafeAddress}`;
+      const prefix = EIP3770_PREFIXES[this.network];
+      return `https://gnosis-safe.io/app/${prefix}:${this.gnosisSafeAddress}`;
     },
     networkName() {
       if (this.network === '1') return 'Mainnet';

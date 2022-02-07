@@ -16,10 +16,8 @@ export const VOTES_QUERY = gql`
       orderBy: $orderBy
       orderDirection: $orderDirection
     ) {
-      id
       ipfs
       voter
-      created
       choice
       vp
       vp_by_strategy
@@ -279,6 +277,31 @@ export const VALIDATIONS_COUNT_QUERY = gql`
     validations {
       id
       spacesCount
+    }
+  }
+`;
+
+export const STRATEGIES_QUERY = gql`
+  query Strategies {
+    strategies {
+      id
+      author
+      version
+      spacesCount
+    }
+  }
+`;
+
+export const EXTENDED_STRATEGY_QUERY = gql`
+  query Strategy($id: String!) {
+    strategy(id: $id) {
+      id
+      author
+      version
+      spacesCount
+      about
+      schema
+      examples
     }
   }
 `;

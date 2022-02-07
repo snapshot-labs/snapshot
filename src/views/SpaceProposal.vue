@@ -64,11 +64,6 @@ const threeDotItems = computed(() => {
   return items;
 });
 
-const safeSnapInput = computed({
-  get: () => proposal.value?.plugins?.safeSnap,
-  set: value => (proposal.value.plugins.safeSnap = value)
-});
-
 const browserHasHistory = computed(() => window.history.state.back);
 
 const { modalAccountOpen } = useModal();
@@ -219,6 +214,24 @@ onMounted(async () => {
     clickVote();
   }
 });
+
+const showFullMarkdownBody = ref(false);
+
+// Scroll to top of the page after clicking "Show less" button
+watch(showFullMarkdownBody, () => {
+  if (!showFullMarkdownBody.value) window.scrollTo(0, 0);
+});
+
+// Ref to the proposal body element
+const markdownBody = ref(null);
+
+// Detect if the proposal body is too long and should be shortened
+const truncateMarkdownBody = computed(() => {
+  const markdownBodyHeight = markdownBody.value?.clientHeight
+    ? markdownBody.value.clientHeight
+    : 0;
+  return markdownBodyHeight > 400 ? true : false;
+});
 </script>
 
 <template>
@@ -257,6 +270,15 @@ onMounted(async () => {
                 <Icon name="upload" size="25" />
                 <span class="ml-1">Share</span>
               </div>
+              <template v-slot:item="{ item }">
+                <Icon
+                  v-if="item.icon"
+                  :name="item.icon"
+                  size="21"
+                  class="align-middle mr-2 !leading-[0]"
+                />
+                {{ item.text }}
+              </template>
             </UiDropdown>
             <UiDropdown
               top="2.5rem"
@@ -271,7 +293,44 @@ onMounted(async () => {
               </div>
             </UiDropdown>
           </div>
-          <UiMarkdown :body="proposal.body" class="mb-6" />
+          <div class="relative">
+            <div
+              v-if="!showFullMarkdownBody && truncateMarkdownBody"
+              class="absolute w-full h-[80px] bottom-0 bg-gradient-to-t from-skin-bg"
+            />
+            <div
+              v-if="truncateMarkdownBody"
+              class="absolute w-full flex justify-center"
+              :class="{
+                '-bottom-[64px]': showFullMarkdownBody,
+                '-bottom-[14px]': !showFullMarkdownBody
+              }"
+            >
+              <UiButton
+                no-focus
+                @click="showFullMarkdownBody = !showFullMarkdownBody"
+                class="!bg-skin-bg"
+              >
+                {{
+                  showFullMarkdownBody
+                    ? $t('proposals.showLess')
+                    : $t('proposals.showMore')
+                }}
+              </UiButton>
+            </div>
+            <div
+              class="overflow-hidden"
+              :class="{
+                'h-[360px]': !showFullMarkdownBody && truncateMarkdownBody,
+                'mb-[92px]': showFullMarkdownBody,
+                'mb-[56px]': !showFullMarkdownBody
+              }"
+            >
+              <div ref="markdownBody">
+                <UiMarkdown :body="proposal.body" />
+              </div>
+            </div>
+          </div>
         </template>
         <PageLoading v-else />
       </div>
@@ -293,14 +352,15 @@ onMounted(async () => {
         :userVote="userVote"
         :loadingMore="loadingMore"
       />
-      <ProposalPluginsContent
-        v-if="space"
-        v-model:safeSnapInput="safeSnapInput"
+      <PluginProposal
+        v-if="space && proposal.plugins && loadedResults"
         :id="id"
         :space="space"
         :proposal="proposal"
-        :votes="votes"
+        :results="results"
         :loadedResults="loadedResults"
+        :votes="votes"
+        :strategies="strategies"
       />
     </template>
     <template #sidebar-right v-if="loaded">
@@ -396,15 +456,15 @@ onMounted(async () => {
         :votes="votes"
         :strategies="strategies"
       />
-      <ProposalPluginsSidebar
-        v-if="loadedResults"
+      <PluginProposalSidebar
+        v-if="space && proposal.plugins && loadedResults"
         :id="id"
         :space="space"
         :proposal="proposal"
         :results="results"
+        :loadedResults="loadedResults"
         :votes="votes"
         :strategies="strategies"
-        :loadedResults="loadedResults"
       />
     </template>
   </Layout>
@@ -412,7 +472,7 @@ onMounted(async () => {
     <ModalConfirm
       :open="modalOpen"
       @close="modalOpen = false"
-      @reload="[loadProposal, loadResults]"
+      @reload="loadProposal(), loadResults()"
       :space="space"
       :proposal="proposal"
       :id="id"

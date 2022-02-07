@@ -10,7 +10,6 @@ import { useProfiles } from '@/composables/useProfiles';
 import { useUnseenProposals } from '@/composables/useUnseenProposals';
 import { lsSet } from '@/helpers/utils';
 import { useWeb3 } from '@/composables/useWeb3';
-import { useApp } from '@/composables/useApp';
 
 const props = defineProps({ space: Object, spaceId: String });
 
@@ -97,10 +96,10 @@ watch(store.space.proposals, () => {
 });
 
 // TODO: Use space query instead of explore, to get total number of proposals
-const { explore } = useApp();
 const proposalsCount = computed(() => {
-  const count = explore.value.spaces[props.spaceId].proposals;
-  return count ? count : 0;
+  return 1;
+  // const count = explore.value.spaces[props.spaceId].proposals;
+  // return count ? count : 0;
 });
 
 const loadingData = computed(() => {

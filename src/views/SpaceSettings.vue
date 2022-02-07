@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref, watchEffect, inject } from 'vue';
+import { computed, ref, watchEffect, inject, watch, nextTick } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { getAddress } from '@ethersproject/address';
 import {
@@ -15,7 +15,7 @@ import { useWeb3 } from '@/composables/useWeb3';
 import { calcFromSeconds, calcToSeconds } from '@/helpers/utils';
 import { useClient } from '@/composables/useClient';
 import { setPageTitle } from '@/helpers/utils';
-import { usePluginsFilter } from '@/composables/usePluginsFilter';
+import { usePlugins } from '@/composables/usePlugins';
 
 const props = defineProps({
   spaceId: String,
@@ -28,6 +28,7 @@ const props = defineProps({
 
 const basicValidation = { name: 'basic', params: {} };
 
+const { pluginIndex } = usePlugins();
 const { t } = useI18n();
 const { copyToClipboard } = useCopy();
 const { web3Account } = useWeb3();
@@ -85,6 +86,16 @@ const isOwner = computed(() => {
   return currentTextRecord.value === textRecord.value;
 });
 
+watch([currentTextRecord, textRecord], () => {
+  // Check if the connected wallet is the space owner and add address to admins
+  // if not already present
+  if (isOwner.value) {
+    if (!form.value.admins.includes(web3Account.value)) {
+      form.value.admins.push(web3Account.value);
+    }
+  }
+});
+
 const isAdmin = computed(() => {
   if (!props.space || !currentTextRecord.value) return false;
   const admins = (props.space.admins || []).map(admin => admin.toLowerCase());
@@ -110,13 +121,6 @@ const votingPeriod = computed({
 const categoriesString = computed(() => {
   return form.value.categories ? form.value.categories.join(', ') : '';
 });
-
-const { pluginsArray } = usePluginsFilter();
-
-function pluginName(key) {
-  const plugin = pluginsArray.value.find(p => p.key === key);
-  return plugin?.name;
-}
 
 async function handleSubmit() {
   if (isValid.value) {
@@ -151,14 +155,23 @@ function inputError(field) {
 }
 
 function handleReset() {
-  if (props.from) return (form.value = clone(props.spaceFrom));
-  if (currentSettings.value) return (form.value = currentSettings.value);
-  form.value = {
-    strategies: [],
-    categories: [],
-    plugins: {},
-    filters: {}
-  };
+  try {
+    if (props.from) return (form.value = clone(props.spaceFrom));
+    if (currentSettings.value)
+      return (form.value = clone(currentSettings.value));
+    form.value = {
+      strategies: [],
+      categories: [],
+      plugins: {},
+      filters: {}
+    };
+    // Rerenders the form, because Textarea components are not reactive
+  } finally {
+    loaded.value = false;
+    nextTick().then(() => {
+      loaded.value = true;
+    });
+  }
 }
 
 function handleEditStrategy(i) {
@@ -243,32 +256,36 @@ function formatSpace(spaceRaw) {
   return space;
 }
 
-watchEffect(async () => {
-  if (!props.spaceLoading) {
-    try {
-      const uri = await getSpaceUri(
-        props.spaceId,
-        import.meta.env.VITE_DEFAULT_NETWORK
-      );
-      console.log('URI', uri);
-      currentTextRecord.value = uri;
-    } catch (e) {
-      console.log(e);
-    }
-    const spaceClone = formatSpace(props.space);
-    if (spaceClone) {
-      form.value = spaceClone;
-      currentSettings.value = clone(spaceClone);
-    }
-    if (props.from) {
-      const fromClone = formatSpace(props.spaceFrom);
-      if (fromClone) {
-        form.value = fromClone;
+watch(
+  () => props.spaceLoading,
+  async () => {
+    if (!props.spaceLoading) {
+      const spaceClone = formatSpace(props.space);
+      if (spaceClone) {
+        form.value = spaceClone;
+        currentSettings.value = clone(spaceClone);
       }
+      if (props.from) {
+        const fromClone = formatSpace(props.spaceFrom);
+        if (fromClone) {
+          form.value = fromClone;
+        }
+      }
+      try {
+        const uri = await getSpaceUri(
+          props.spaceId,
+          import.meta.env.VITE_DEFAULT_NETWORK
+        );
+        console.log('URI', uri);
+        currentTextRecord.value = uri;
+      } catch (e) {
+        console.log(e);
+      }
+
+      loaded.value = true;
     }
-    loaded.value = true;
   }
-});
+);
 
 watchEffect(() => {
   props.space && props.space?.name
@@ -320,7 +337,7 @@ watchEffect(() => {
           </UiButton>
         </a>
         <Block
-          v-if="currentSettings?.name && !currentTextRecord"
+          v-if="currentSettings?.name && !currentTextRecord && loaded"
           :style="'border-color: red !important; margin-bottom: 0 !important;'"
           class="mb-0 mt-3"
         >
@@ -335,7 +352,8 @@ watchEffect(() => {
           </span>
         </Block>
       </Block>
-      <template v-if="space || isOwner">
+      <RowLoadingBlock v-if="!loaded" />
+      <template v-else>
         <Block :title="$t('settings.profile')">
           <div class="mb-2">
             <UiInput v-model="form.name" :error="inputError('name')">
@@ -417,7 +435,7 @@ watchEffect(() => {
             >
               <template v-slot:label> {{ $t(`settings.terms`) }} </template>
             </UiInput>
-            <div class="flex items-center space-x-2 px-2">
+            <div class="flex items-center space-x-2 pr-2">
               <Checkbox v-model="form.private" />
               <span>{{ $t('settings.hideSpace') }}</span>
             </div>
@@ -468,23 +486,6 @@ watchEffect(() => {
             />
           </UiButton>
         </Block>
-        <Block :title="$t('settings.authors')">
-          <Block
-            :style="`border-color: red !important`"
-            v-if="inputError('members')"
-          >
-            <Icon name="warning" class="mr-2 !text-red" />
-            <span class="!text-red"> {{ inputError('members') }}&nbsp;</span>
-          </Block>
-          <UiButton class="block w-full px-3" style="height: auto">
-            <TextareaArray
-              v-model="form.members"
-              :placeholder="`0x8C28Cf33d9Fd3D0293f963b1cd27e3FF422B425c\n0xeF8305E140ac520225DAf050e2f71d5fBcC543e7`"
-              class="input w-full text-left"
-              style="font-size: 18px"
-            />
-          </UiButton>
-        </Block>
         <Block :title="$t('settings.strategies') + '*'">
           <div
             v-for="(strategy, i) in form.strategies"
@@ -521,7 +522,25 @@ watchEffect(() => {
           </UiButton>
         </Block>
         <Block :title="$t('settings.proposalValidation')">
-          <div class="mb-2">
+          <div class="flex items-center space-x-2 pr-2 mb-2">
+            <Checkbox v-model="form.filters.onlyMembers" />
+            <span>{{ $t('settings.allowOnlyAuthors') }}</span>
+          </div>
+          <div v-if="form.filters.onlyMembers">
+            <Block class="!border-red" v-if="inputError('members')">
+              <Icon name="warning" class="mr-2 !text-red" />
+              <span class="!text-red"> {{ inputError('members') }}&nbsp;</span>
+            </Block>
+            <UiButton class="block w-full px-3" style="height: auto">
+              <TextareaArray
+                v-model="form.members"
+                :placeholder="`0x8C28Cf33d9Fd3D0293f963b1cd27e3FF422B425c\n0xeF8305E140ac520225DAf050e2f71d5fBcC543e7`"
+                class="input w-full text-left"
+                style="font-size: 18px"
+              />
+            </UiButton>
+          </div>
+          <template v-else>
             <UiInput
               @click="modalValidationOpen = true"
               :error="inputError('settings.validation')"
@@ -543,12 +562,8 @@ watchEffect(() => {
                   $t('settings.proposalThreshold')
                 }}</template>
               </UiInput>
-              <div class="flex items-center space-x-2 px-2">
-                <Checkbox v-model="form.filters.onlyMembers" />
-                <span>{{ $t('settings.allowOnlyAuthors') }}</span>
-              </div>
             </div>
-          </div>
+          </template>
         </Block>
         <Block :title="$t('settings.voting')">
           <UiInput v-model="votingDelay" :number="true" placeholder="e.g. 1">
@@ -604,7 +619,7 @@ watchEffect(() => {
               </div>
             </template>
           </UiInput>
-          <div class="flex items-center space-x-2 px-2">
+          <div class="flex items-center space-x-2 pr-2">
             <Checkbox v-model="form.voting.hideAbstain" />
             <span>{{ $t('settings.hideAbstain') }}</span>
           </div>
@@ -612,11 +627,13 @@ watchEffect(() => {
         <Block :title="$t('plugins')">
           <div v-if="form?.plugins">
             <div
-              v-for="(plugin, name, index) in form.plugins"
+              v-for="(name, index) in Object.keys(form.plugins).filter(
+                key => pluginIndex[key]
+              )"
               :key="index"
               class="mb-3 relative"
             >
-              <div v-if="pluginName(name)">
+              <div v-if="pluginIndex[name].name">
                 <a
                   @click="handleRemovePlugins(name)"
                   class="absolute p-4 right-0"
@@ -627,7 +644,7 @@ watchEffect(() => {
                   @click="handleEditPlugins(name)"
                   class="p-4 block border rounded-md"
                 >
-                  <h4 v-text="pluginName(name)" />
+                  <h4 v-text="pluginIndex[name].name" />
                 </a>
               </div>
             </div>

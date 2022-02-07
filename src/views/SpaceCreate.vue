@@ -51,7 +51,6 @@ const form = ref({
   type: 'single-choice'
 });
 const modalOpen = ref(false);
-const modalProposalPluginsOpen = ref(false);
 const modalVotingTypeOpen = ref(false);
 const selectedDate = ref('');
 const counter = ref(0);
@@ -174,6 +173,7 @@ function clickSubmit() {
 
 const { apolloQuery, queryLoading } = useApolloQuery();
 
+const sourceProposalLoaded = ref(false);
 async function loadProposal() {
   const proposal = await apolloQuery(
     {
@@ -202,6 +202,8 @@ async function loadProposal() {
     key,
     text
   }));
+
+  sourceProposalLoaded.value = true;
 }
 
 onMounted(async () => {
@@ -248,17 +250,27 @@ watchEffect(() => {
           {{ $t('back') }}
         </router-link>
       </div>
-      <Block v-if="space && passValidation[0] === false">
+      <Block
+        v-if="space && passValidation[0] === false"
+        class="!border-skin-link text-skin-link"
+      >
         <Icon name="warning" class="mr-1" />
         <span v-if="passValidation[1] === 'basic'">
-          {{
-            space?.validation?.params.minScore || space?.filters.minScore
-              ? $tc('create.validationWarning.basic.minScore', [
-                  formatCompactNumber(space.filters.minScore),
-                  space.symbol
-                ])
-              : $t('create.validationWarning.basic.member')
-          }}
+          <span v-if="space?.filters.onlyMembers">
+            {{ $t('create.validationWarning.basic.member') }}
+          </span>
+          <span
+            v-else-if="
+              space?.validation?.params.minScore || space?.filters.minScore
+            "
+          >
+            {{
+              $tc('create.validationWarning.basic.minScore', [
+                formatCompactNumber(space.filters.minScore),
+                space.symbol
+              ])
+            }}
+          </span>
         </span>
         <span v-else>
           {{
@@ -348,26 +360,16 @@ watchEffect(() => {
           {{ $t('create.addChoice') }}
         </UiButton>
       </Block>
-
-      <PluginSafeSnapConfig
-        v-if="space?.plugins?.safeSnap"
+      <PluginCreate
+        v-if="space?.plugins && (!from || sourceProposalLoaded)"
         :proposal="proposal"
-        :config="space.plugins?.safeSnap"
-        :network="space.network"
-        v-model="form.metadata.plugins.safeSnap"
+        :space="space"
+        :preview="preview"
+        v-model="form.metadata.plugins"
       />
     </template>
     <template #sidebar-right v-if="!preview">
-      <Block
-        :title="$t('actions')"
-        :icon="
-          space?.plugins && Object.keys(space.plugins).length > 0
-            ? 'stars'
-            : undefined
-        "
-        :loading="!space"
-        @submit="modalProposalPluginsOpen = true"
-      >
+      <Block :title="$t('actions')" :loading="!space">
         <div class="mb-2">
           <UiButton
             class="w-full mb-2"
@@ -378,7 +380,7 @@ watchEffect(() => {
           </UiButton>
           <UiButton
             @click="(modalOpen = true), (selectedDate = 'start')"
-            :disabled="space.voting?.delay"
+            :disabled="!!space.voting?.delay"
             class="w-full mb-2"
           >
             <span v-if="!dateStart">{{ $t('create.startDate') }}</span>
@@ -386,7 +388,7 @@ watchEffect(() => {
           </UiButton>
           <UiButton
             @click="(modalOpen = true), (selectedDate = 'end')"
-            :disabled="space.voting?.period"
+            :disabled="!!space.voting?.period"
             class="w-full mb-2"
           >
             <span v-if="!dateEnd">{{ $t('create.endDate') }}</span>
@@ -415,6 +417,13 @@ watchEffect(() => {
           {{ $t('create.publish') }}
         </UiButton>
       </Block>
+      <PluginCreateSidebar
+        v-if="space?.plugins && (!from || sourceProposalLoaded)"
+        :proposal="proposal"
+        :space="space"
+        :preview="preview"
+        v-model="form.metadata.plugins"
+      />
     </template>
   </Layout>
   <teleport to="#modal" v-if="space">
@@ -424,13 +433,6 @@ watchEffect(() => {
       :open="modalOpen"
       @close="modalOpen = false"
       @input="setDate"
-    />
-    <ModalProposalPlugins
-      :space="space"
-      :proposal="proposal"
-      v-model="form.metadata.plugins"
-      :open="modalProposalPluginsOpen"
-      @close="modalProposalPluginsOpen = false"
     />
     <ModalTerms
       :open="modalTermsOpen"
