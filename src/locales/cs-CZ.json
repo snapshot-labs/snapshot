@@ -19,13 +19,13 @@
   "strategiesPage": "Strategie:",
   "space": "Mezerník",
   "spaces": "Skupina",
+  "verifiedSpace": "Verified space",
   "version": "Verze",
   "timeline": "Časové",
   "filters": "Filtrovat",
   "allSpaces": "Všechny skupiny",
   "submitOnchain": "Odeslat on-chain",
   "inSpaces": "{0} skupin(y)",
-  "downloadReport": "Stáhněte si zprávu",
   "votes": "Hlasování",
   "seeMore": "Zobrazit více",
   "network": "WiFi a mobilních sítí",
@@ -39,6 +39,7 @@
   "view3box": "Vytvořit profil na 3Box",
   "edit3box": "Upravit profil na 3Box",
   "connectWallet": "Připojit peněženku",
+  "toggleSkin": "Toggle skin",
   "about": "O programu",
   "license": "Licence",
   "ipfsServer": "IPFS server",
@@ -50,14 +51,18 @@
   "confirmRemove": "Jste si jisti, že chcete odstranit vaše hodnocení?",
   "removeSpace": "pro skupinu {0}",
   "confirmVote": "Potvrďte hlasování",
-  "sureToVote": "Žádně definované atributy",
+  "sureToVote": "Are you sure you want to cast this vote?",
   "cannotBeUndone": "Tuto akci nelze vrátit zpět",
   "options": "Možnosti",
   "votingPower": "Vaše hlasovací práva",
   "receipt": "Doručenka",
   "relayer": "Relé",
   "verifyOnMycrypto": "Ověřit účtenku na MyCrypto",
+  "verifyOnSignatorio": "Verify on Signator.io",
   "isCore": "Core",
+  "notificationsBlocked": "Your browser is blocking notifications",
+  "notificationsNotSupported": "Your browser does not support notifications",
+  "walletNotSupported": "Wallet is not supported",
   "seeInExplorer": "Zobrazit na Průzkumníku",
   "learnMore": "Přečtěte si více",
   "logout": "Odhlásit se",
@@ -88,10 +93,10 @@
   "noSpacesJoined": "Oops, you haven't joined any spaces yet",
   "addFavorites": "Přidat oblíbené",
   "createdBy": "Od {0}",
-  "startToEnd": "začít {0} konec {1}",
   "startIn": "Start: {0}",
   "endIn": "konec {1}",
-  "endedAgo": "konec {1}",
+  "proposalTimeLeft": "{0} left",
+  "endedAgo": "ended {0}",
   "proposalBy": "od {0}",
   "endDate": "End: {0}",
   "contectHash": "Hash obsahu",
@@ -112,6 +117,7 @@
   "duplicateProposal": "Duplicate proposal",
   "joinedSpaces": "Joined spaces",
   "joinSpaces": "Join spaces",
+  "setDelegationToSpace": "Limit delegation to a specific space",
   "errors": {
     "required": "Pole je povinné.",
     "minLength": "Minimální délka je {0}",
@@ -123,8 +129,9 @@
     "type": "Invalid type"
   },
   "create": {
-    "question": "Otázka",
-    "content": "Jaký je váš návrh?",
+    "question": "Ask a question...",
+    "categorie(s)": "Select up to 2 categorie(s)",
+    "content": "Tell us more about your proposal (optional)",
     "preview": "Použít",
     "choices": "Volby",
     "addChoice": "Přidat volbu",
@@ -147,12 +154,18 @@
     "selectDelegate": "Vyberte delegáta",
     "to": "Příjemce zprávy (Komu)",
     "addressPlaceholder": "Příjemce zprávy (Komu)",
-    "spacePlaceholder": "Mezera (volitelné)",
     "delegations": "Vaše delegace",
     "allSpaces": "Pro všechny mezery",
     "delegated": "Delegován:",
     "pendingTransaction": "no pending transaction | 1 pending transaction | {count} pending transactions",
-    "topDelegates": "Top delegates"
+    "topDelegates": "Top delegates",
+    "noDelegatesFoundFor": "No delegates found for {0}",
+    "noValidEns": "Not a valid ENS address.",
+    "noValidAddress": "Not a valid address",
+    "delegateToSelf": "You cannot delegate to yourself",
+    "delegateToSelfAddress": "You cannot delegate to your own ENS address",
+    "noValidSpaceId": "Not a valid space ID",
+    "noDelegationsAndDelegates": "Can't find your delegations and delegates? Make sure you are connected to the correct network."
   },
   "proposal": {
     "castVote": "Hlasujte",
@@ -166,6 +179,8 @@
     "new": "Nový návrh",
     "noProposals": "Zatím zde nejsou žádné návrhy!",
     "createProposal": "Create proposal",
+    "showMore": "Show more",
+    "showLess": "Show less",
     "states": {
       "all": "Všechny",
       "core": "Core",
@@ -190,6 +205,8 @@
     "customDomain": "Custom domain",
     "domain": "Název domény",
     "strategies": "Strategie (strategie)",
+    "categories": "Categorie(s)",
+    "selectCategories": "Select categories",
     "hideSpace": "Skrýt místo z domovské stránky",
     "addStrategy": "Upravit strategii",
     "authors": "Authors",
@@ -209,13 +226,21 @@
     "votingDelay": "Voting delay",
     "votingPeriod": "Voting period",
     "voting": "Voting",
+    "quorum": "Quorum",
     "type": "Type",
-    "anyType": "Any"
+    "anyType": "Any",
+    "hideAbstain": "Ignore abstain votes in basic voting results"
   },
   "setup": {
     "example": "e.g. yam.eth",
-    "useExistingEns": "Použijte existující ENS název k vytvoření vašeho prostoru.",
-    "createASpace": "Create spaces"
+    "chooseExistingEns": "Choose one of your existing ENS domains to create a space with:",
+    "useSingleExistingEns": "Use your existing ENS domain:",
+    "orReigsterNewEns": "Or register a new domain:",
+    "toCreateASpace": "To create a space, you first need an ENS domain. Enter one below and follow the ENS registration instructions.",
+    "createASpace": "Create spaces",
+    "registerEnsButton": "Register",
+    "supportedEnsTLDs": "Supported domain endings",
+    "helpDocsAndDiscordLinks": "Not sure how to create a space? Learn more in the <a target='_blank' href='https://docs.snapshot.org/spaces/create'> documentation </a> or join Snapshot <a target='_blank' href='https://discord.gg/snapshot'>Discord</a>."
   },
   "notify": {
     "youDidIt": "Dokázals to!",
@@ -237,7 +262,18 @@
     "skins": "vzhledy)",
     "networks": "sítě)",
     "plugins": "zásuvné moduly)",
-    "results": "výsledků"
+    "results": "výsledků",
+    "categories": {
+      "all": "All",
+      "protocol": "Protocol",
+      "social": "Social",
+      "investment": "Investment",
+      "grant": "Grant",
+      "service": "Service",
+      "media": "Media",
+      "creator": "Creator",
+      "collector": "Collector"
+    }
   },
   "voting": {
     "selectVoting": "Vyberte hlasovací systém",
@@ -246,12 +282,19 @@
     "quadratic": "Kvadratické hlasování",
     "ranked-choice": "Možnost jediné volby",
     "weighted": "Vážené hlasování",
+    "basic": "Basic voting",
     "description": {
       "single-choice": "Každý volič může vybrat pouze jednu možnost.",
       "approval": "Každý volič může vybrat pouze jednu možnost.",
       "quadratic": "Každý volič může rozdělit hlasovací sílu na libovolný počet voleb. Výsledky jsou počítány čtyřnásobně.",
       "ranked-choice": "Každý volič může vybrat a hodit libovolný počet možností. Výsledky jsou počítány metodou okamžitého počítání runoff.",
-      "weighted": "Každý volič může rozdělit hlasovací sílu na libovolný počet možností."
+      "weighted": "Každý volič může rozdělit hlasovací sílu na libovolný počet možností.",
+      "basic": "Single choice voting with three choices: For, Against or Abstain"
+    },
+    "choices": {
+      "for": "For",
+      "against": "Against",
+      "abstain": "Abstain"
     }
   },
   "safeSnap": {
@@ -299,19 +342,27 @@
       "connectWallet": "Connect wallet to see execution details",
       "switchChain": "Switch your wallet to {0} to request execution",
       "question": "Byl tento návrh schválen a splňuje",
-      "criteria": "kritéria pro přijetí?"
+      "criteria": "kritéria pro přijetí?",
+      "proposalPassed": "Did the proposal pass?"
     }
   },
   "poap": {
     "no_poap_header": "POAP zatím nebylo nastaveno pro tento návrh :'(",
     "no_voted_header": "Hlasujte pro získání tohoto POAP",
-    "unclaimed_header": "Požádejte o svůj hlas POAP",
+    "unclaimed_header": "Mint your I voted POAP",
     "claimed_header": "Congratulations! The POAP has been minted to your collection",
-    "loading_header": "POAP je přidáváno do vaší kolekce",
-    "button_claim": "Území",
+    "loading_header": "The POAP is being minted to your collection",
+    "button_claim": "Mint",
     "button_show": "Browse collection",
-    "success_claim": "Váš POAP je na vaší adrese",
+    "success_claim": "The POAP has been minted to your collection",
     "error_claim": "Při mazání tokenu nastal problém."
+  },
+  "charts": {
+    "charts": "Charts",
+    "noVotesYet": "There are no votes to visualize yet.",
+    "totalVotesPerDay": "Total votes per day",
+    "shareOfVotingPower": "Share of voting power",
+    "votingPowerPerDay": "Voting power per day"
   },
   "comment_box": {
     "title": "Comment box",
@@ -336,5 +387,36 @@
     "show": "Show",
     "reply": "Reply",
     "load_more": "Load more"
+  },
+  "page": {
+    "title": {
+      "home": "Snapshot",
+      "setup": "Create a space",
+      "timeline": "Timeline",
+      "explore": "Explore",
+      "playground": "Playground",
+      "space": {
+        "create": "Create {space} proposal",
+        "about": "About {space}",
+        "proposals": "{space} Proposals",
+        "proposal": "{space} proposal: {proposal}",
+        "settings": "{space} Settings"
+      },
+      "strategy": "{key} strategy",
+      "delegate": "Delegate"
+    }
+  },
+  "hal": {
+    "title": "Track proposals for {spaceName}",
+    "text": "Receive notifications every time a new proposal is created or ends"
+  },
+  "timeUnits": {
+    "second": "1 second | {n} seconds",
+    "minute": "1 minute | {n} minutes",
+    "hour": "1 hour | {n} hours",
+    "day": "1 day | {n} days",
+    "week": "1 week | {n} weeks",
+    "month": "1 month | {n} months",
+    "year": "1 year | {n} years"
   }
 }
