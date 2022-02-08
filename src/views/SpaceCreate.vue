@@ -457,7 +457,7 @@ function selectStartDate() {
                     <UiSidebarButton
                       @click="addChoice(1)"
                       v-if="!disableChoiceEdit && choices.length === index + 1"
-                      class="w-[48px] h-[48px] flex-none"
+                      class="!w-[48px] !h-[48px] flex-none"
                     >
                       <Icon size="20" name="plus" class="text-skin-link" />
                     </UiSidebarButton>
@@ -471,7 +471,7 @@ function selectStartDate() {
           <Block title="Proposal duration">
             <div class="flex items-center space-x-2 pr-2 mb-2">
               <Checkbox v-model="chooseStartDate" />
-              <span>{{ $t('Choose start date') }}</span>
+              <span>{{ $t('Pick a start date') }}</span>
             </div>
             <UiInput
               v-if="chooseStartDate"
