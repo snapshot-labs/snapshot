@@ -472,28 +472,6 @@ function selectStartDate() {
           </Block>
 
           <Block title="Proposal duration">
-            <div class="flex items-center space-x-2 pr-2 mb-2">
-              <Checkbox v-model="chooseStartDate" />
-              <span>{{ $t('Pick a start date') }}</span>
-            </div>
-            <UiInput
-              v-if="chooseStartDate"
-              class="mb-3"
-              @click="selectStartDate"
-              :disabled="!!space.voting?.delay"
-              v-tippy="{
-                content: !!space.voting?.delay
-                  ? $t('Delay is enforced by the space')
-                  : null
-              }"
-            >
-              <template v-slot:selected>
-                <span v-text="$d(dateStart * 1e3, 'short', 'en-US')" />
-              </template>
-              <template v-slot:label> {{ $t(`Start`) }} </template>
-            </UiInput>
-
-            {{ $t(`Voting period`) }}
             <div class="flex space-x-3 mt-1">
               <UiInput>
                 <template v-slot:selected>
@@ -523,6 +501,26 @@ function selectStartDate() {
                 <template v-slot:label>Minutes</template>
               </UiInput>
             </div>
+            <div class="flex items-center space-x-2 pr-2 mb-2">
+              <Checkbox v-model="chooseStartDate" />
+              <span>{{ $t('Pick a start date') }}</span>
+            </div>
+            <UiInput
+              v-if="chooseStartDate"
+              class="mb-3"
+              @click="selectStartDate"
+              :disabled="!!space.voting?.delay"
+              v-tippy="{
+                content: !!space.voting?.delay
+                  ? $t('Delay is enforced by the space')
+                  : null
+              }"
+            >
+              <template v-slot:selected>
+                <span v-text="$d(dateStart * 1e3, 'short', 'en-US')" />
+              </template>
+              <template v-slot:label> {{ $t(`Start`) }} </template>
+            </UiInput>
           </Block>
 
           <Block v-if="$route.query.snapshot" title="Snapshot">
