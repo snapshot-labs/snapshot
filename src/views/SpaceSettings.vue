@@ -322,7 +322,7 @@ async function handleSetRecord() {
       'setText',
       [node, 'snapshot', textRecord.value]
     );
-    const receipt = await tx.wait(2);
+    const receipt = await tx.wait();
     console.log('Receipt', receipt);
     const uri = await getSpaceUri(
       props.spaceId,
