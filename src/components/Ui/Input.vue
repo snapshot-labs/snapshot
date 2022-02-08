@@ -47,7 +47,7 @@ function handleInput(e) {
       :type="number ? 'number' : 'text'"
       :disabled="disabled"
       class="input flex-auto w-full"
-      :class="{ additionalInputClass, 'cursor-not-allowed': disabled }"
+      :class="[additionalInputClass, { 'cursor-not-allowed': disabled }]"
       :required="required"
       :maxlength="maxlength"
     />
