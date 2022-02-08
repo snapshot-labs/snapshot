@@ -59,6 +59,9 @@ const loadingSnapshot = ref(true);
 const chooseStartDate = ref(false);
 const periodUnit = ref('d');
 const votingPeriodSeconds = ref(259200);
+const durationSelectorDays = ref(3);
+const durationSelectorHours = ref(0);
+const durationSelectorMinutes = ref(0);
 
 const proposal = computed(() =>
   Object.assign(form.value, { choices: choices.value })
@@ -490,29 +493,36 @@ function selectStartDate() {
               <template v-slot:label> {{ $t(`Start`) }} </template>
             </UiInput>
 
-            <UiInput
-              v-model="votingPeriod"
-              :disabled="!!space.voting?.period"
-              v-tippy="{
-                content: !!space.voting?.period
-                  ? $t('Period is enforced by the space')
-                  : null
-              }"
-              number
-            >
-              <template v-slot:label> {{ $t(`Voting period`) }} </template>
-
-              <template v-slot:info>
-                <select
-                  v-model="periodUnit"
-                  class="input text-center mr-[6px] ml-2"
-                  required
-                >
-                  <option value="h">hours</option>
-                  <option value="d" selected>days</option>
-                </select>
-              </template>
-            </UiInput>
+            {{ $t(`Voting period`) }}
+            <div class="flex space-x-3 mt-1">
+              <UiInput>
+                <template v-slot:selected>
+                  <BaseNumberSelector
+                    v-model="durationSelectorDays"
+                    :dropdownRange="8"
+                  />
+                </template>
+                <template v-slot:label>days</template>
+              </UiInput>
+              <UiInput>
+                <template v-slot:selected>
+                  <BaseNumberSelector
+                    v-model="durationSelectorHours"
+                    :dropdownRange="24"
+                  />
+                </template>
+                <template v-slot:label>hours</template>
+              </UiInput>
+              <UiInput>
+                <template v-slot:selected>
+                  <BaseNumberSelector
+                    v-model="durationSelectorMinutes"
+                    :dropdownRange="60"
+                  />
+                </template>
+                <template v-slot:label>Minutes</template>
+              </UiInput>
+            </div>
           </Block>
 
           <Block v-if="$route.query.snapshot" title="Snapshot">

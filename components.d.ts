@@ -5,6 +5,7 @@
 declare module 'vue' {
   export interface GlobalComponents {
     Badges: typeof import('./src/components/Badges.vue')['default']
+    BaseNumberSelector: typeof import('./src/components/BaseNumberSelector.vue')['default']
     Block: typeof import('./src/components/Block.vue')['default']
     BlockCastVote: typeof import('./src/components/Block/CastVote.vue')['default']
     BlockNetwork: typeof import('./src/components/Block/Network.vue')['default']
