@@ -253,7 +253,8 @@
     "delegationSuccess": "Delegation successful",
     "delegationRemoved": "Delegation removed",
     "proposalCreated": "Proposal created",
-    "voteSuccessful": "Your vote is in!"
+    "voteSuccessful": "Your vote is in!",
+    "ensSet": "ENS text record was successfully set"
   },
   "explore": {
     "createStrategy": "Create strategy",

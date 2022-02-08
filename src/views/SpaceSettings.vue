@@ -5,7 +5,8 @@ import { getAddress } from '@ethersproject/address';
 import {
   validateSchema,
   getSpaceUri,
-  clone
+  clone,
+  sendTransaction
 } from '@snapshot-labs/snapshot.js/src/utils';
 import schemas from '@snapshot-labs/snapshot.js/src/schemas';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
@@ -16,6 +17,8 @@ import { calcFromSeconds, calcToSeconds } from '@/helpers/utils';
 import { useClient } from '@/composables/useClient';
 import { setPageTitle } from '@/helpers/utils';
 import { usePlugins } from '@/composables/usePlugins';
+import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
+import namehash from '@ensdomains/eth-ens-namehash';
 
 const props = defineProps({
   spaceId: String,
@@ -31,9 +34,12 @@ const basicValidation = { name: 'basic', params: {} };
 const { pluginIndex } = usePlugins();
 const { t } = useI18n();
 const { copyToClipboard } = useCopy();
-const { web3Account } = useWeb3();
+const { web3, web3Account } = useWeb3();
 const { send, clientLoading } = useClient();
+const auth = getInstance();
 const notify = inject('notify');
+
+const abi = ['function setText(bytes32 node, string key, string value)'];
 
 const currentSettings = ref({});
 const currentTextRecord = ref('');
@@ -48,6 +54,7 @@ const modalVotingTypeOpen = ref(false);
 const modalPluginsOpen = ref(false);
 const modalValidationOpen = ref(false);
 const loaded = ref(false);
+const settingENSRecord = ref(false);
 const uploadLoading = ref(false);
 const showErrors = ref(false);
 const delayUnit = ref('h');
@@ -57,9 +64,12 @@ const form = ref({
   categories: [],
   plugins: {},
   filters: {},
+  admins: [],
   voting: {},
   validation: basicValidation
 });
+
+const networkKey = computed(() => web3.value.network.key);
 
 const validate = computed(() => {
   if (form.value.terms === '') delete form.value.terms;
@@ -287,6 +297,48 @@ watch(
   }
 );
 
+function handleEnsButtonClick() {
+  if (isOwner.value || isAdmin.value) {
+    window.open(`https://app.ens.domains/name/${props.spaceId}`, '_blank');
+    return;
+  }
+
+  handleSetRecord();
+}
+
+async function handleSetRecord() {
+  settingENSRecord.value = true;
+  try {
+    const ensPublicResolverAddress = networks[networkKey.value].ensResolver;
+    if (!ensPublicResolverAddress) {
+      throw new Error('No ENS resolver address for this network');
+    }
+    const ensname = props.spaceId;
+    const node = namehash.hash(ensname);
+    const tx = await sendTransaction(
+      auth.web3,
+      ensPublicResolverAddress,
+      abi,
+      'setText',
+      [node, 'snapshot', textRecord.value]
+    );
+    const receipt = await tx.wait(2);
+    console.log('Receipt', receipt);
+    const uri = await getSpaceUri(
+      props.spaceId,
+      import.meta.env.VITE_DEFAULT_NETWORK
+    );
+    console.log('URI', uri);
+    currentTextRecord.value = uri;
+    notify(t('notify.ensSet'));
+  } catch (e) {
+    notify(['red', t('notify.somethingWentWrong')]);
+    console.log(e);
+  } finally {
+    settingENSRecord.value = false;
+  }
+}
+
 watchEffect(() => {
   props.space && props.space?.name
     ? setPageTitle('page.title.space.settings', { space: props.space.name })
@@ -321,21 +373,19 @@ watchEffect(() => {
             class="text-color p-2 -mr-3"
           />
         </UiButton>
-        <a
-          :href="`https://app.ens.domains/name/${spaceId}`"
-          target="_blank"
-          class="mb-2 block"
+
+        <UiButton
+          class="button-outline w-full mb-2"
+          :primary="!isOwner && !isAdmin"
+          @click="handleEnsButtonClick"
+          :loading="settingENSRecord"
         >
-          <UiButton
-            class="button-outline w-full"
-            :primary="!isOwner && !isAdmin"
-          >
-            {{
-              isOwner || isAdmin ? $t('settings.seeENS') : $t('settings.setENS')
-            }}
-            <Icon name="external-link" class="ml-1" />
-          </UiButton>
-        </a>
+          {{
+            isOwner || isAdmin ? $t('settings.seeENS') : $t('settings.setENS')
+          }}
+          <Icon name="external-link" class="ml-1" />
+        </UiButton>
+
         <Block
           v-if="currentSettings?.name && !currentTextRecord && loaded"
           :style="'border-color: red !important; margin-bottom: 0 !important;'"
