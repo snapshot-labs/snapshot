@@ -1,6 +1,6 @@
 <script setup>
 import { ref, computed, toRefs, watch } from 'vue';
-import { useSearchFilters } from '@/composables/useSearchFilters';
+import { useValidationsFilter } from '@/composables/useValidationsFilter';
 
 const defaultParams = {};
 
@@ -17,8 +17,16 @@ const input = ref({
   params: defaultParams
 });
 
-const { filteredValidations } = useSearchFilters();
-const validations = computed(() => filteredValidations(searchInput.value));
+const { filterValidations, getValidationsSpacesCount, loadingValidations } =
+  useValidationsFilter();
+const validations = computed(() => filterValidations(searchInput.value));
+
+watch(
+  () => props.open,
+  () => {
+    if (props.open) getValidationsSpacesCount();
+  }
+);
 
 function select(n) {
   input.value.name = n;
@@ -59,39 +67,38 @@ watch(open, () => {
       :placeholder="$t('searchPlaceholder')"
       :modal="true"
     />
-    <div class="mt-4 mx-0 md:mx-4">
+    <div class="mt-4 mx-0 md:mx-4 min-h-[339px]">
       <div v-if="input.name" class="p-4 mb-4 border rounded-md link-color">
-        <UiButton
-          class="block w-full mb-3 overflow-x-auto"
-          style="height: auto"
-        >
+        <h4 v-text="input.name" class="mb-3 text-center" />
+
+        <UiButton class="block w-full overflow-x-auto" style="height: auto">
           <TextareaJson
             v-model="input.params"
             v-model:is-valid="isValid"
             :placeholder="$t('settings.validationParameters')"
             class="input text-left"
-            style="width: 560px"
           />
-        </UiButton>
-        <UiButton
-          @click="handleSubmit"
-          :disabled="!isValid"
-          class="w-full"
-          primary
-        >
-          {{ validation.name ? $t('save') : $t('add') }}
         </UiButton>
       </div>
       <div v-if="!input.name">
-        <a
-          v-for="validation in validations"
-          :key="validation.name"
-          @click="select(validation.name)"
-        >
-          <BlockValidation :validation="validation" />
-        </a>
-        <NoResults v-if="Object.keys(validations).length < 1" />
+        <RowLoadingBlock v-if="loadingValidations" />
+        <div v-else>
+          <a v-for="valId in validations" :key="valId" @click="select(valId)">
+            <BlockValidation :validation="valId" />
+          </a>
+          <NoResults v-if="Object.keys(validations).length < 1" />
+        </div>
       </div>
     </div>
+    <template v-if="input.name" v-slot:footer>
+      <UiButton
+        @click="handleSubmit"
+        :disabled="!isValid"
+        class="w-full"
+        primary
+      >
+        {{ validation.name ? $t('save') : $t('add') }}
+      </UiButton>
+    </template>
   </UiModal>
 </template>

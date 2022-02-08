@@ -44,9 +44,10 @@ const isTimeline = computed(() => route.name === 'timeline');
 const { updateLastSeenProposal } = useUnseenProposals();
 const { loadBy, loadingMore, stopLoadingMore, loadMore } = useInfiniteLoader();
 
-const { endElement } = useScrollMonitor(() =>
-  loadMore(() => loadProposals(store.timeline.proposals.length), loading.value)
-);
+const { endElement } = useScrollMonitor(() => {
+  if (!web3Account.value && route.name === 'timeline') return;
+  loadMore(() => loadProposals(store.timeline.proposals.length), loading.value);
+});
 
 const { apolloQuery } = useApolloQuery();
 async function loadProposals(skip = 0) {
@@ -86,19 +87,29 @@ function emitUpdateLastSeenProposal() {
   updateLastSeenProposal(web3Account.value);
 }
 
+watch(
+  [web3Account, followingSpaces],
+  () => {
+    emitUpdateLastSeenProposal();
+  },
+  { immediate: true }
+);
+
 // Initialize
 onMounted(() => {
   load();
   setPageTitle('page.title.timeline');
-  emitUpdateLastSeenProposal();
 });
 
 async function load() {
   if (store.timeline.proposals.length > 0) return;
+  if (!web3Account.value && route.name === 'timeline') return;
   loading.value = true;
   await loadProposals();
   loading.value = false;
 }
+
+const timelineFilterBy = computed(() => store.timeline.filterBy);
 
 // Change filter
 function selectState(e) {
@@ -136,10 +147,26 @@ function selectState(e) {
           right="1.25rem"
           @select="selectState"
           :items="[
-            { text: $t('proposals.states.all'), action: 'all' },
-            { text: $t('proposals.states.active'), action: 'active' },
-            { text: $t('proposals.states.pending'), action: 'pending' },
-            { text: $t('proposals.states.closed'), action: 'closed' }
+            {
+              text: $t('proposals.states.all'),
+              action: 'all',
+              selected: timelineFilterBy === 'all'
+            },
+            {
+              text: $t('proposals.states.active'),
+              action: 'active',
+              selected: timelineFilterBy === 'active'
+            },
+            {
+              text: $t('proposals.states.pending'),
+              action: 'pending',
+              selected: timelineFilterBy === 'pending'
+            },
+            {
+              text: $t('proposals.states.closed'),
+              action: 'closed',
+              selected: timelineFilterBy === 'closed'
+            }
           ]"
         >
           <UiButton class="pr-3">

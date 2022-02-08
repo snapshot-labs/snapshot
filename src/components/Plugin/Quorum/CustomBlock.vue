@@ -1,8 +1,15 @@
 <script>
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import Plugin from '@/../snapshot-plugins/src/plugins/quorum';
+import { shorten } from '@/helpers/utils';
+import { useIntl } from '@/composables/useIntl';
+
+const { formatCompactNumber, formatPercentNumber } = useIntl();
 
 export default {
+  setup() {
+    return { shorten, formatCompactNumber, formatPercentNumber };
+  },
   props: ['space', 'proposal', 'results', 'loaded', 'strategies'],
   data() {
     return {
@@ -40,10 +47,11 @@ export default {
   <Block title="Quorum" :loading="!loaded">
     <div class="link-color mb-1">
       <span class="mr-1">
-        {{ _n(totalScore) }} / {{ _n(totalVotingPower) }}
-        {{ _shorten(space.symbol, 'symbol') }}
+        {{ formatCompactNumber(totalScore) }} /
+        {{ formatCompactNumber(totalVotingPower) }}
+        {{ shorten(space.symbol, 'symbol') }}
       </span>
-      <span class="float-right" v-text="_n(quorum, '0.[00]%')" />
+      <span class="float-right" v-text="formatPercentNumber(quorum)" />
     </div>
     <UiProgress :value="quorum" :max="1" class="mb-3" />
   </Block>

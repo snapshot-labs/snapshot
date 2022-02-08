@@ -1,22 +1,23 @@
 <script>
-import Plugin from '@/../snapshot-plugins/src/plugins/safeSnap';
-import networks from '@snapshot-labs/snapshot.js/src/networks.json';
-import {
+import Plugin, {
+  createBatch,
   getGnosisSafeBalances,
   getGnosisSafeCollectibles
-} from '@/helpers/abi/utils';
+} from '@/../snapshot-plugins/src/plugins/safeSnap';
+import networks from '@snapshot-labs/snapshot.js/src/networks.json';
+import { shorten } from '@/helpers/utils';
 
 const plugin = new Plugin();
 
-const GNOSIS_SAFE_DEPLOYMENTS = {
-  1: 'https://gnosis-safe.io',
-  4: 'https://rinkeby.gnosis-safe.io',
-  100: 'https://xdai.gnosis-safe.io',
-  73799: 'https://volta.gnosis-safe.io',
-  246: 'https://ewc.gnosis-safe.io',
-  137: 'https://polygon.gnosis-safe.io',
-  56: 'https://bsc.gnosis-safe.io',
-  42161: 'https://arbitrum.gnosis-safe.io'
+const EIP3770_PREFIXES = {
+  1: 'eth',
+  56: 'bnb',
+  4: 'rin',
+  100: 'gno',
+  246: 'ewt',
+  73799: 'vt',
+  42161: 'arb1',
+  137: 'MATIC'
 };
 
 async function fetchBalances(network, gnosisSafeAddress) {
@@ -47,18 +48,49 @@ async function fetchCollectibles(network, gnosisSafeAddress) {
   return [];
 }
 
+function formatBatches(network, realityModule, batches, multiSend) {
+  if (batches.length) {
+    const batchSample = batches[0];
+    if (Array.isArray(batchSample)) {
+      const chainId = parseInt(network);
+      return batches.map((txs, index) =>
+        createBatch(realityModule, chainId, index, txs, multiSend)
+      );
+    }
+  }
+  return batches;
+}
+
 export default {
-  props: ['modelValue', 'proposal', 'network', 'realityAddress', 'preview'],
+  setup() {
+    return { shorten };
+  },
+  props: [
+    'modelValue',
+    'proposal',
+    'network',
+    'realityAddress',
+    'multiSendAddress',
+    'preview',
+    'hash'
+  ],
   emits: ['update:modelValue'],
   data() {
     return {
-      input: this.modelValue,
+      input: formatBatches(
+        this.network,
+        this.realityAddress,
+        this.modelValue,
+        this.multiSendAddress
+      ),
       gnosisSafeAddress: undefined,
+      showHash: false,
       transactionConfig: {
         preview: this.preview,
         gnosisSafeAddress: undefined,
         realityAddress: this.realityAddress,
         network: this.network,
+        multiSendAddress: this.multiSendAddress,
         tokens: [],
         collectables: []
       }
@@ -86,9 +118,8 @@ export default {
   },
   computed: {
     safeLink() {
-      const baseUrl =
-        GNOSIS_SAFE_DEPLOYMENTS[this.network] || 'https://gnosis-safe.io';
-      return `${baseUrl}/app/#/safes/${this.gnosisSafeAddress}`;
+      const prefix = EIP3770_PREFIXES[this.network];
+      return `https://gnosis-safe.io/app/${prefix}:${this.gnosisSafeAddress}`;
     },
     networkName() {
       if (this.network === '1') return 'Mainnet';
@@ -105,24 +136,35 @@ export default {
   },
   methods: {
     addTransactionBatch() {
-      this.input.push([]);
+      this.input.push(
+        createBatch(
+          this.realityAddress,
+          parseInt(this.network),
+          this.input.length,
+          [],
+          this.multiSendAddress
+        )
+      );
       this.$emit('update:modelValue', this.input);
     },
     removeBatch(index) {
       this.input.splice(index, 1);
       this.$emit('update:modelValue', this.input);
     },
-    getBatchNonce(index) {
-      return this.input
-        .slice(0, index)
-        .reduce((acc, transactions) => acc + transactions.length, 0);
-    },
     updateTransactionBatch(index, batch) {
       this.input[index] = batch;
       this.$emit('update:modelValue', this.input);
     },
     handleImport(txs) {
-      this.input.push(txs);
+      this.input.push(
+        createBatch(
+          this.realityAddress,
+          parseInt(this.network),
+          this.input.length,
+          txs,
+          this.multiSendAddress
+        )
+      );
       this.$emit('update:modelValue', this.input);
     }
   }
@@ -132,7 +174,7 @@ export default {
 <template>
   <div class="border-t border-b md:border rounded-none md:rounded-md mb-4">
     <h4
-      class="px-4 pt-3 border-b block rounded-t-none md:rounded-t-md"
+      class="px-4 pt-3 border-b block rounded-t-none md:rounded-t-md flex"
       style="padding-bottom: 12px"
     >
       <UiAvatar
@@ -145,21 +187,36 @@ export default {
       <a
         v-if="gnosisSafeAddress"
         :href="safeLink"
-        class="text-color"
+        class="text-color ml-2"
         style="font-weight: normal"
         target="_blank"
       >
-        {{ _shorten(gnosisSafeAddress) }}
+        {{ shorten(gnosisSafeAddress) }}
         <i class="iconfont iconexternal-link" />
       </a>
+      <div class="flex-grow"></div>
+      <PluginSafeSnapTooltip
+        :realityAddress="this.realityAddress"
+        :multiSendAddress="this.multiSendAddress"
+      ></PluginSafeSnapTooltip>
     </h4>
+    <UiCollapsibleText
+      v-if="hash"
+      :showArrow="true"
+      :open="showHash"
+      class="border-b"
+      style="border-width: 0 0 1px 0 !important"
+      title="Complete Transaction Hash"
+      @toggle="showHash = !showHash"
+    >
+      {{ hash }}
+    </UiCollapsibleText>
     <div class="text-center">
       <div v-for="(batch, index) in input" v-bind:key="index" class="border-b">
         <PluginSafeSnapFormTransactionBatch
           :config="transactionConfig"
-          :index="index"
           :modelValue="batch"
-          :nonce="getBatchNonce(index)"
+          :nonce="index"
           @remove="removeBatch(index)"
           @update:modelValue="updateTransactionBatch(index, $event)"
         />
@@ -172,14 +229,16 @@ export default {
 
         <PluginSafeSnapFormImportTransactionsButton
           v-if="!preview"
+          :network="this.network"
           @import="handleImport($event)"
         />
 
         <PluginSafeSnapHandleOutcome
           v-if="preview && proposalResolved"
-          :txs="input"
+          :batches="input"
           :proposalId="proposal.id"
           :realityAddress="realityAddress"
+          :multiSendAddress="transactionConfig.multiSendAddress"
           :network="transactionConfig.network"
         />
       </div>

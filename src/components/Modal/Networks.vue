@@ -1,8 +1,8 @@
 <script setup>
-import { ref, computed } from 'vue';
-import { useSearchFilters } from '@/composables/useSearchFilters';
+import { ref, computed, watch } from 'vue';
+import { useNetworksFilter } from '@/composables/useNetworksFilter';
 
-defineProps({
+const props = defineProps({
   open: {
     type: Boolean,
     required: true
@@ -12,8 +12,16 @@ defineProps({
 const emit = defineEmits(['update:modelValue', 'close']);
 
 const searchInput = ref('');
-const { filteredNetworks } = useSearchFilters();
-const networks = computed(() => filteredNetworks(searchInput.value));
+const { filterNetworks, getNetworksSpacesCount, loadingNetworksSpacesCount } =
+  useNetworksFilter();
+const networks = computed(() => filterNetworks(searchInput.value));
+
+watch(
+  () => props.open,
+  () => {
+    if (props.open) getNetworksSpacesCount();
+  }
+);
 
 function select(key) {
   emit('update:modelValue', key);
@@ -31,15 +39,19 @@ function select(key) {
       :placeholder="$t('searchPlaceholder')"
       :modal="true"
     />
-    <div class="mt-4 mx-0 md:mx-4">
-      <a
-        v-for="network in networks"
-        :key="network.key"
-        @click="select(network.key)"
-      >
-        <BlockNetwork :network="network" />
-      </a>
-      <NoResults v-if="Object.keys(networks).length < 1" />
+
+    <div class="mt-4 mx-0 md:mx-4 min-h-[339px]">
+      <RowLoadingBlock v-if="loadingNetworksSpacesCount" />
+      <div v-else>
+        <a
+          v-for="network in networks"
+          :key="network.key"
+          @click="select(network.key)"
+        >
+          <BlockNetwork :network="network" />
+        </a>
+        <NoResults v-if="Object.keys(networks).length < 1" />
+      </div>
     </div>
   </UiModal>
 </template>

@@ -1,6 +1,7 @@
 import { ref, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import client from '@/helpers/client';
+import clientGnosisSafe from '@/helpers/clientGnosisSafe';
 import clientEIP712 from '@/helpers/clientEIP712';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useNotifications } from '@/composables/useNotifications';
@@ -14,14 +15,14 @@ export function useClient() {
 
   const loading = ref(false);
 
-  const connector = computed(() => auth.provider.value?.connectorName);
+  const connectorName = computed(() => auth.provider.value?.connectorName);
 
   const usePersonalSign = computed(() => {
     return (
-      connector.value === 'walletlink' ||
-      connector.value === 'walletconnect' ||
-      connector.value === 'portis' ||
-      connector.value === 'gnosis' ||
+      connectorName.value === 'walletlink' ||
+      connectorName.value === 'walletconnect' ||
+      connectorName.value === 'portis' ||
+      connectorName.value === 'gnosis' ||
       web3.value.isTrezor
     );
   });
@@ -29,7 +30,7 @@ export function useClient() {
   const isGnosisSafe = computed(
     () =>
       web3.value?.walletConnectType === 'Gnosis Safe Multisig' ||
-      connector.value === 'gnosis'
+      connectorName.value === 'gnosis'
   );
 
   async function send(space, type, payload) {
@@ -37,8 +38,10 @@ export function useClient() {
     try {
       if (usePersonalSign.value) {
         if (payload.proposal) payload.proposal = payload.proposal.id;
-
-        return await client.broadcast(
+        const clientPersonalSign = isGnosisSafe.value
+          ? clientGnosisSafe
+          : client;
+        return await clientPersonalSign.broadcast(
           auth.web3,
           web3.value.account,
           space.id,
