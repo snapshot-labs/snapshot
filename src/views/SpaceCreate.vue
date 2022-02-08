@@ -18,6 +18,7 @@ import { useClient } from '@/composables/useClient';
 import { useStore } from '@/composables/useStore';
 import { setPageTitle } from '@/helpers/utils';
 import { useIntl } from '@/composables/useIntl';
+import { calcFromSeconds, calcToSeconds } from '@/helpers/utils';
 
 const props = defineProps({
   spaceId: String,
@@ -42,13 +43,13 @@ const form = ref({
   name: '',
   body: '',
   choices: [],
-  start: 0,
+  start: parseInt((Date.now() / 1e3).toFixed()),
   end: 0,
   snapshot: '',
   metadata: { plugins: {} },
   type: 'single-choice'
 });
-const modalOpen = ref(false);
+const modalDateSelectOpen = ref(false);
 const modalVotingTypeOpen = ref(false);
 const selectedDate = ref('');
 const counter = ref(0);
@@ -56,6 +57,9 @@ const nameForm = ref(null);
 const passValidation = ref([true]);
 const validationLoading = ref(false);
 const loadingSnapshot = ref(true);
+const chooseStartDate = ref(false);
+const periodUnit = ref('d');
+const votingPeriodSeconds = ref(259200);
 
 const proposal = computed(() =>
   Object.assign(form.value, { choices: choices.value })
@@ -84,6 +88,14 @@ watch(
   { immediate: true }
 );
 
+const votingPeriod = computed({
+  get: () => calcFromSeconds(votingPeriodSeconds.value, periodUnit.value),
+  set: newVal =>
+    (votingPeriodSeconds.value = newVal
+      ? calcToSeconds(newVal, periodUnit.value)
+      : undefined)
+});
+
 const dateStart = computed(() => {
   return props.space.voting?.delay
     ? parseInt((Date.now() / 1e3).toFixed()) + props.space.voting.delay
@@ -91,9 +103,9 @@ const dateStart = computed(() => {
 });
 
 const dateEnd = computed(() => {
-  return props.space.voting?.period && dateStart.value
+  return props.space.voting?.period
     ? dateStart.value + props.space.voting.period
-    : form.value.end;
+    : form.value.start + votingPeriodSeconds.value;
 });
 
 const isValid = computed(() => {
@@ -295,12 +307,11 @@ watch(preview, () => {
   window.scrollTo(0, 0);
 });
 
-function openDatePicker(date) {
-  if (date === 'start' && !!props.space.voting?.delay) return;
-  if (date === 'end' && !!props.space.voting?.period) return;
+function selectStartDate() {
+  if (props.space.voting?.delay) return;
 
-  modalOpen.value = true;
-  selectedDate.value = date;
+  modalDateSelectOpen.value = true;
+  selectedDate.value = 'start';
 }
 </script>
 
@@ -395,42 +406,52 @@ function openDatePicker(date) {
         </template>
         <template v-else-if="currentStep === 2">
           <Block title="Proposal duration">
+            <div class="flex items-center space-x-2 pr-2 mb-2">
+              <Checkbox v-model="chooseStartDate" />
+              <span>{{ $t('Choose start date') }}</span>
+            </div>
             <UiInput
+              v-if="chooseStartDate"
               class="mb-3"
-              @click="openDatePicker('start')"
+              @click="selectStartDate"
               :disabled="!!space.voting?.delay"
+              v-tippy="{
+                content: !!space.voting?.delay
+                  ? $t('Delay is enforced by the space')
+                  : null
+              }"
             >
               <template v-slot:selected>
-                <span v-if="!dateStart">{{ $t('create.startDate') }}</span>
-                <span
-                  v-else
-                  v-text="$d(dateStart * 1e3, 'short', 'en-US')"
-                  v-tippy="{
-                    content: !!space.voting?.delay
-                      ? $t('Delay is enforced by the space')
-                      : null
-                  }"
-                />
+                <span v-text="$d(dateStart * 1e3, 'short', 'en-US')" />
               </template>
               <template v-slot:label> {{ $t(`Start`) }} </template>
             </UiInput>
 
             <UiInput
-              @click="openDatePicker('end')"
+              v-model="votingPeriod"
               :disabled="!!space.voting?.period"
               v-tippy="{
                 content: !!space.voting?.period
                   ? $t('Period is enforced by the space')
                   : null
               }"
+              number
             >
-              <template v-slot:selected>
-                <span v-if="!dateEnd">{{ $t('create.endDate') }}</span>
-                <span v-else v-text="$d(dateEnd * 1e3, 'short', 'en-US')" />
+              <template v-slot:label> {{ $t(`Voting period`) }} </template>
+
+              <template v-slot:info>
+                <select
+                  v-model="periodUnit"
+                  class="input text-center mr-[6px] ml-2"
+                  required
+                >
+                  <option value="h">hours</option>
+                  <option value="d" selected>days</option>
+                </select>
               </template>
-              <template v-slot:label> {{ $t(`End`) }} </template>
             </UiInput>
           </Block>
+
           <Block :title="$t('Voting')">
             <UiInput class="mb-3" @click="modalVotingTypeOpen = true">
               <template v-slot:selected>
@@ -440,7 +461,6 @@ function openDatePicker(date) {
               </template>
               <template v-slot:label> {{ $t(`Voting system`) }} </template>
             </UiInput>
-
             <h5 class="mb-1">Choises</h5>
             <div v-if="choices.length > 0" class="overflow-hidden mb-2">
               <draggable
@@ -552,8 +572,8 @@ function openDatePicker(date) {
     <ModalSelectDate
       :value="form[selectedDate]"
       :selectedDate="selectedDate"
-      :open="modalOpen"
-      @close="modalOpen = false"
+      :open="modalDateSelectOpen"
+      @close="modalDateSelectOpen = false"
       @input="setDate"
     />
     <ModalTerms
