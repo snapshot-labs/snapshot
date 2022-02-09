@@ -118,7 +118,7 @@
   "joinedSpaces": "Beigetretene Bereiche",
   "joinSpaces": "Bereiche beitreten",
   "setDelegationToSpace": "Delegation auf einen bestimmten Space beschränken",
-  "theCurrentNetwork": "the current network",
+  "theCurrentNetwork": "aktuelles Netzwerk",
   "errors": {
     "required": "Dieses Feld ist ein Pflichtfeld",
     "minLength": "Mindestlänge ist {0}",
@@ -167,7 +167,7 @@
     "delegateToSelfAddress": "Du kannst nicht an deine eigene ENS Adresse delegieren",
     "noValidSpaceId": "Keine gültige Space ID",
     "noDelegationsAndDelegates": "Du kannst keine Delegationen und Delegierten finden? Stelle sicher, dass du mit dem richtigen Netzwerk verbunden bist.",
-    "delegateNotSupported": "Delegation is currently not supported for {network}."
+    "delegateNotSupported": "Auf {network} wird Delegation derzeit nicht unterstützt."
   },
   "proposal": {
     "castVote": "Deine Stimme abgeben",
@@ -181,8 +181,8 @@
     "new": "Neuer Vorschlag",
     "noProposals": "Es gibt noch keine Vorschläge!",
     "createProposal": "Create proposal",
-    "showMore": "Show more",
-    "showLess": "Show less",
+    "showMore": "Mehr",
+    "showLess": "Weniger",
     "states": {
       "all": "Alle",
       "core": "Kern",
@@ -345,7 +345,7 @@
       "switchChain": "Switch your wallet to {0} to request execution",
       "question": "Ist dieser Vorschlag durchgegangen und erfüllt er die",
       "criteria": "Akzeptanzkriterien?",
-      "proposalPassed": "Did the proposal pass?"
+      "proposalPassed": "Wurde der Vorschlag angenommen?"
     }
   },
   "poap": {
