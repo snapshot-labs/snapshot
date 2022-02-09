@@ -530,6 +530,7 @@ function selectStartDate() {
           </Block>
         </template>
         <template v-else>
+          <div class="h-[1px] w-full" />
           <PluginCreate
             v-if="space?.plugins && (!from || sourceProposalLoaded)"
             :proposal="proposal"
@@ -583,13 +584,6 @@ function selectStartDate() {
           {{ $t('next') }}
         </UiButton>
       </Block>
-      <PluginCreateSidebar
-        v-if="space?.plugins && (!from || sourceProposalLoaded)"
-        :proposal="proposal"
-        :space="space"
-        :preview="preview"
-        v-model="form.metadata.plugins"
-      />
     </template>
   </Layout>
   <teleport to="#modal" v-if="space">
