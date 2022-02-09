@@ -18,7 +18,7 @@ import { useClient } from '@/composables/useClient';
 import { useStore } from '@/composables/useStore';
 import { setPageTitle } from '@/helpers/utils';
 import { useIntl } from '@/composables/useIntl';
-import { calcFromSeconds, calcToSeconds } from '@/helpers/utils';
+import { calcToSeconds } from '@/helpers/utils';
 
 const props = defineProps({
   spaceId: String,
@@ -227,8 +227,11 @@ async function loadProposal() {
 watch(nameInput, () => nameInput?.value?.focus());
 
 onMounted(async () => {
-  addChoice(2);
+  addChoice(1);
   if (props.from) loadProposal();
+  if (!web3Account.value && !web3.authLoading) {
+    modalAccountOpen.value = true;
+  }
 });
 
 watchEffect(() => {
@@ -305,7 +308,9 @@ function selectStartDate() {
           {{ $t('back') }}
         </router-link>
       </div>
-      <PageLoading v-if="!space || (validationLoading && web3Account)" />
+      <PageLoading
+        v-if="!space || (validationLoading && web3Account) || web3.authLoading"
+      />
       <Block v-else-if="!web3Account">
         <Icon name="warning" class="mr-1" />
         <span v-if="!web3Account">
@@ -529,58 +534,47 @@ function selectStartDate() {
       </template>
     </template>
     <template #sidebar-right>
-      <Block class="lg:fixed lg:w-[320px]">
+      <Block v-if="web3Account" class="lg:fixed lg:w-[320px]">
         <UiButton
-          v-if="!web3Account"
-          @click="modalAccountOpen = true"
+          v-if="currentStep === 1"
+          @click="preview = !preview"
+          :loading="clientLoading || queryLoading"
+          class="block w-full mb-3"
+          no-focus
+        >
+          {{ preview ? $t('Edit') : $t('Preview') }}
+        </UiButton>
+        <UiButton
+          v-else
+          @click="currentStep--"
+          class="block w-full mb-3"
+          no-focus
+        >
+          {{ $t('back') }}
+        </UiButton>
+        <UiButton
+          v-if="currentStep === 3"
+          @click="
+            !termsAccepted && space.terms
+              ? (modalTermsOpen = true)
+              : handleSubmit()
+          "
+          :disabled="!isValid"
+          :loading="clientLoading || queryLoading"
           class="block w-full"
-          :disabled="web3.authLoading"
           primary
         >
-          {{ $t('Connect wallet') }}
+          {{ $t('Publish proposal') }}
         </UiButton>
-        <template v-else>
-          <UiButton
-            v-if="currentStep === 1"
-            @click="preview = !preview"
-            :loading="clientLoading || queryLoading"
-            class="block w-full mb-3"
-            no-focus
-          >
-            {{ preview ? $t('Edit') : $t('Preview') }}
-          </UiButton>
-          <UiButton
-            v-else
-            @click="currentStep--"
-            class="block w-full mb-3"
-            no-focus
-          >
-            {{ $t('back') }}
-          </UiButton>
-          <UiButton
-            v-if="currentStep === 3"
-            @click="
-              !termsAccepted && space.terms
-                ? (modalTermsOpen = true)
-                : handleSubmit()
-            "
-            :disabled="!isValid"
-            :loading="clientLoading || queryLoading"
-            class="block w-full"
-            primary
-          >
-            {{ $t('Publish proposal') }}
-          </UiButton>
-          <UiButton
-            v-else
-            @click="currentStep++"
-            class="block w-full"
-            :disabled="!stepIsValid"
-            primary
-          >
-            {{ $t('next') }}
-          </UiButton>
-        </template>
+        <UiButton
+          v-else
+          @click="currentStep++"
+          class="block w-full"
+          :disabled="!stepIsValid"
+          primary
+        >
+          {{ $t('next') }}
+        </UiButton>
       </Block>
       <PluginCreateSidebar
         v-if="space?.plugins && (!from || sourceProposalLoaded)"
