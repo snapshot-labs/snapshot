@@ -454,6 +454,7 @@ function selectStartDate() {
                         >
                           {{ `${element.text.length}/32` }}
                         </span>
+                        {{ index }}
                       </template>
                     </UiInput>
                     <UiSidebarButton
@@ -463,6 +464,7 @@ function selectStartDate() {
                     >
                       <Icon size="20" name="plus" class="text-skin-link" />
                     </UiSidebarButton>
+
                     <div v-else-if="!disableChoiceEdit" class="w-[54px]"></div>
                   </div>
                 </template>
