@@ -57,11 +57,9 @@ const passValidation = ref([true]);
 const validationLoading = ref(false);
 const loadingSnapshot = ref(true);
 const chooseStartDate = ref(false);
-const periodUnit = ref('d');
-const votingPeriodSeconds = ref(259200);
-const durationSelectorDays = ref(3);
-const durationSelectorHours = ref(0);
-const durationSelectorMinutes = ref(0);
+const periodSelectorDays = ref(3);
+const periodSelectorHours = ref(0);
+const periodSelectorMinutes = ref(0);
 
 const proposal = computed(() =>
   Object.assign(form.value, { choices: choices.value })
@@ -90,13 +88,20 @@ watch(
   { immediate: true }
 );
 
-const votingPeriod = computed({
-  get: () => calcFromSeconds(votingPeriodSeconds.value, periodUnit.value),
-  set: newVal =>
-    (votingPeriodSeconds.value = newVal
-      ? calcToSeconds(newVal, periodUnit.value)
-      : undefined)
-});
+// const votingPeriod = computed({
+//   get: () => calcFromSeconds(votingPeriodSeconds.value, periodUnit.value),
+//   set: newVal =>
+//     (votingPeriodSeconds.value = newVal
+//       ? calcToSeconds(newVal, periodUnit.value)
+//       : undefined)
+// });
+
+const votingPeriodSeconds = computed(
+  () =>
+    calcToSeconds(periodSelectorDays.value, 'd') +
+    calcToSeconds(periodSelectorHours.value, 'h') +
+    calcToSeconds(periodSelectorMinutes.value, 'm')
+);
 
 const dateStart = computed(() => {
   return props.space?.voting?.delay
@@ -111,7 +116,6 @@ const dateEnd = computed(() => {
 });
 
 const isValid = computed(() => {
-  // const ts = (Date.now() / 1e3).toFixed();
   const isSafeSnapPluginValid = form.value.metadata.plugins?.safeSnap
     ? form.value.metadata.plugins.safeSnap.valid
     : true;
@@ -119,7 +123,6 @@ const isValid = computed(() => {
   return (
     !clientLoading.value &&
     form.value.body.length <= bodyLimit.value &&
-    // form.value.start >= ts &&
     dateEnd.value &&
     dateEnd.value > dateStart.value &&
     form.value.snapshot &&
@@ -255,27 +258,13 @@ const stepTwoIsValid = computed(() => {
   return (
     dateEnd.value &&
     dateEnd.value > dateStart.value &&
-    !choices.value.some((a, i) => a.text === '' && i === 0) &&
     form.value.snapshot &&
-    form.value.snapshot > blockNumber.value / 2
+    form.value.snapshot > blockNumber.value / 2 &&
+    !choices.value.some((a, i) => a.text === '' && i === 0)
   );
 });
 
 const currentStep = ref(1);
-
-function nextStep() {
-  if (currentStep.value === 1 && !web3Account.value)
-    modalAccountOpen.value = true;
-  else if (currentStep.value === 1) {
-    if (form.value.name && form.value.body.length <= bodyLimit.value) {
-      currentStep.value = 2;
-    }
-  } else if (currentStep.value === 2) {
-    if (stepTwoIsValid.value) {
-      currentStep.value = 3;
-    }
-  }
-}
 
 const stepIsValid = computed(() => {
   if (
@@ -284,7 +273,7 @@ const stepIsValid = computed(() => {
     form.value.body.length <= bodyLimit.value
   )
     return true;
-  else if (stepTwoIsValid.value) return true;
+  else if (currentStep.value === 2 && stepTwoIsValid.value) return true;
   else return false;
 });
 
@@ -315,11 +304,20 @@ function selectStartDate() {
         </router-link>
       </div>
       <PageLoading v-if="!space || (validationLoading && web3Account)" />
+      <Block v-else-if="!web3Account">
+        <Icon name="warning" class="mr-1" />
+        <span v-if="!web3Account">
+          {{
+            $t('You need to connect a wallet in order to create a proposal.')
+          }}
+        </span>
+      </Block>
       <Block
         v-else-if="passValidation[0] === false"
         class="!border-skin-link text-skin-link"
       >
         <Icon name="warning" class="mr-1" />
+
         <span v-if="passValidation[1] === 'basic'">
           <span v-if="space?.filters.onlyMembers">
             {{ $t('create.validationWarning.basic.member') }}
@@ -420,11 +418,16 @@ function selectStartDate() {
               >
                 <template #item="{ element, index }">
                   <div class="flex space-x-2">
-                    <UiInput class="group" :focusOnMount="index === 0">
+                    <UiInput
+                      v-model="element.text"
+                      maxlength="32"
+                      :disabled="disableChoiceEdit"
+                      :placeholder="index > 0 ? $t('(optional)') : ''"
+                      class="group"
+                      :focusOnMount="index === 0"
+                    >
                       <template v-slot:label>
-                        <span>
-                          {{ 'Choice ' + (index + 1) }}
-                        </span>
+                        {{ 'Choice ' + (index + 1) }}
                       </template>
                       <template v-slot:info>
                         <span
@@ -435,13 +438,12 @@ function selectStartDate() {
                       </template>
                     </UiInput>
                     <UiSidebarButton
-                      @click="addChoice(1)"
                       v-if="!disableChoiceEdit && choices.length === index + 1"
+                      @click="addChoice(1)"
                       class="!w-[48px] !h-[48px] flex-none"
                     >
                       <Icon size="20" name="plus" class="text-skin-link" />
                     </UiSidebarButton>
-
                     <div v-else-if="!disableChoiceEdit" class="w-[54px]"></div>
                   </div>
                 </template>
@@ -449,48 +451,39 @@ function selectStartDate() {
             </div>
           </Block>
 
-          <Block title="Proposal duration">
-            <div class="flex space-x-3 mt-1">
+          <Block title="Proposal period">
+            <div class="flex space-x-[28px] mt-1">
               <UiInput>
                 <template v-slot:selected>
                   <BaseNumberSelector
-                    class="mr-1"
-                    v-model="durationSelectorDays"
+                    v-model="periodSelectorDays"
                     :dropdownRange="8"
                   />
                 </template>
-                <template v-slot:label>
-                  <span class="ml-2">Days</span>
-                </template>
+                <template v-slot:label> Days </template>
               </UiInput>
               <UiInput>
                 <template v-slot:selected>
                   <BaseNumberSelector
-                    class="mr-1"
-                    v-model="durationSelectorHours"
+                    v-model="periodSelectorHours"
                     :dropdownRange="24"
                   />
                 </template>
-                <template v-slot:label>
-                  <span class="ml-2">Hours</span>
-                </template>
+                <template v-slot:label> Hours </template>
               </UiInput>
               <UiInput>
                 <template v-slot:selected>
                   <BaseNumberSelector
-                    class="mr-1"
-                    v-model="durationSelectorMinutes"
+                    v-model="periodSelectorMinutes"
                     :dropdownRange="60"
                   />
                 </template>
-                <template v-slot:label>
-                  <span class="ml-2">Minutes</span>
-                </template>
+                <template v-slot:label> Minutes </template>
               </UiInput>
             </div>
-            <div class="flex items-center space-x-2 pr-2 mb-2">
+            <div class="flex items-center space-x-2 pr-2 mb-1">
               <Checkbox v-model="chooseStartDate" />
-              <span>{{ $t('Pick a start date') }}</span>
+              <span>{{ $t('Schedule proposal') }}</span>
             </div>
             <UiInput
               v-if="chooseStartDate"
@@ -536,43 +529,52 @@ function selectStartDate() {
     <template #sidebar-right>
       <Block class="lg:fixed lg:w-[320px]">
         <UiButton
-          v-if="currentStep === 1"
-          @click="preview = !preview"
-          :loading="clientLoading || queryLoading"
-          class="block w-full mb-3"
-          no-focus
-        >
-          {{ preview ? $t('Edit') : $t('Preview') }}
-        </UiButton>
-        <UiButton
-          v-else
-          @click="currentStep -= 1"
-          class="block w-full mb-3"
-          no-focus
-        >
-          {{ $t('Back') }}
-        </UiButton>
-        <UiButton
-          v-if="currentStep === 3"
-          @click="clickSubmit"
-          :disabled="!isValid"
-          :loading="clientLoading || queryLoading"
+          v-if="!web3Account"
+          @click="modalAccountOpen = true"
           class="block w-full"
+          :disabled="web3.authLoading"
           primary
         >
-          {{ $t('Publish proposal') }}
+          {{ $t('Connect wallet') }}
         </UiButton>
-        <UiButton
-          v-else
-          @click="nextStep"
-          class="block w-full"
-          :disabled="(!stepIsValid && !!web3Account) || web3.authLoading"
-          primary
-        >
-          {{
-            web3Account || web3.authLoading ? $t('Next') : $t('Connect wallet')
-          }}
-        </UiButton>
+        <template v-else>
+          <UiButton
+            v-if="currentStep === 1"
+            @click="preview = !preview"
+            :loading="clientLoading || queryLoading"
+            class="block w-full mb-3"
+            no-focus
+          >
+            {{ preview ? $t('Edit') : $t('Preview') }}
+          </UiButton>
+          <UiButton
+            v-else
+            @click="currentStep--"
+            class="block w-full mb-3"
+            no-focus
+          >
+            {{ $t('back') }}
+          </UiButton>
+          <UiButton
+            v-if="currentStep === 3"
+            @click="clickSubmit"
+            :disabled="!isValid"
+            :loading="clientLoading || queryLoading"
+            class="block w-full"
+            primary
+          >
+            {{ $t('Publish proposal') }}
+          </UiButton>
+          <UiButton
+            v-else
+            @click="currentStep++"
+            class="block w-full"
+            :disabled="!stepIsValid"
+            primary
+          >
+            {{ $t('next') }}
+          </UiButton>
+        </template>
       </Block>
       <PluginCreateSidebar
         v-if="space?.plugins && (!from || sourceProposalLoaded)"

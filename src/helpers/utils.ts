@@ -122,6 +122,7 @@ export function calcFromSeconds(value, unit) {
 }
 
 export function calcToSeconds(value, unit) {
+  if (unit === 'm') return value * 60;
   if (unit === 'h') return value * 60 * 60;
   if (unit === 'd') return value * 60 * 60 * 24;
 }
