@@ -19,6 +19,7 @@ import { setPageTitle } from '@/helpers/utils';
 import { usePlugins } from '@/composables/usePlugins';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import namehash from '@ensdomains/eth-ens-namehash';
+import { useTxStatus } from '../composables/useTxStatus';
 
 const props = defineProps({
   spaceId: String,
@@ -35,6 +36,7 @@ const { pluginIndex } = usePlugins();
 const { t } = useI18n();
 const { copyToClipboard } = useCopy();
 const { web3, web3Account } = useWeb3();
+const { pendingCount } = useTxStatus();
 const { send, clientLoading } = useClient();
 const auth = getInstance();
 const notify = inject('notify');
@@ -322,6 +324,7 @@ async function handleSetRecord() {
       'setText',
       [node, 'snapshot', textRecord.value]
     );
+    pendingCount.value++;
     const receipt = await tx.wait();
     console.log('Receipt', receipt);
     const uri = await getSpaceUri(
@@ -335,6 +338,7 @@ async function handleSetRecord() {
     notify(['red', t('notify.somethingWentWrong')]);
     console.log(e);
   } finally {
+    pendingCount.value--;
     settingENSRecord.value = false;
   }
 }
