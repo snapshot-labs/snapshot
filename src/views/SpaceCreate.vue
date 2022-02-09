@@ -52,7 +52,7 @@ const form = ref({
 const modalDateSelectOpen = ref(false);
 const modalVotingTypeOpen = ref(false);
 const selectedDate = ref('');
-const nameForm = ref(null);
+const nameInput = ref(null);
 const passValidation = ref([true]);
 const validationLoading = ref(false);
 const loadingSnapshot = ref(true);
@@ -219,7 +219,11 @@ async function loadProposal() {
 }
 
 // Focus proposal name field when page loads
-watch(nameForm, () => nameForm?.value?.focus());
+watch(nameInput, () => nameInput?.value?.focus());
+
+// Focus first choice field when going to step two
+const choiceInput0 = ref(null);
+watch(choiceInput0, () => choiceInput0?.value?.focus());
 
 onMounted(async () => {
   addChoice(2);
@@ -269,27 +273,10 @@ function nextStep() {
   else if (currentStep.value === 1) {
     if (form.value.name && form.value.body.length <= bodyLimit.value) {
       currentStep.value = 2;
-    } else {
-      nameForm?.value?.focus();
-      if (!passValidation.value[0])
-        notify(['red', t('Wallet does not pass validation')]);
-      else if (!form.value.name) notify(['red', t('Missing proposal title')]);
-      else if (form.value.body.length > bodyLimit.value)
-        notify(['red', t('Proposal too is long')]);
     }
   } else if (currentStep.value === 2) {
     if (stepTwoIsValid.value) {
       currentStep.value = 3;
-    } else {
-      console.log(choices.value.length);
-      if (!dateStart.value || !dateEnd.value)
-        notify(['red', t('Missing start or end date')]);
-      else if (dateEnd.value < dateStart.value)
-        notify(['red', t('End date must be after start date')]);
-      else if (choices.value.length < 1)
-        notify(['red', t('You must add at least one choice')]);
-      else if (choices.value.some(a => a.text === ''))
-        notify(['red', t('Missing choice text')]);
     }
   }
 }
@@ -390,7 +377,7 @@ function selectStartDate() {
                 maxlength="128"
                 class="text-2xl font-bold input mb-2 w-full"
                 :placeholder="$t('create.question')"
-                ref="nameForm"
+                ref="nameInput"
               />
               <div class="relative group">
                 <TextareaAutosize
@@ -437,17 +424,22 @@ function selectStartDate() {
               >
                 <template #item="{ element, index }">
                   <div class="flex space-x-2">
-                    <UiInput
-                      v-model="element.text"
-                      maxlength="32"
-                      :disabled="disableChoiceEdit"
-                      :placeholder="index > 0 ? $t('(optional)') : ''"
-                      class="group"
-                    >
+                    <UiInput class="group">
                       <template v-slot:label>
                         <span>
                           {{ 'Choice ' + (index + 1) }}
                         </span>
+                      </template>
+                      <template v-slot:input>
+                        <input
+                          v-model="element.text"
+                          :ref="`choiceInput${index}`"
+                          maxlength="32"
+                          :disabled="disableChoiceEdit"
+                          :placeholder="index > 0 ? $t('(optional)') : ''"
+                          :type="number ? 'number' : 'text'"
+                          class="input flex-auto w-full"
+                        />
                       </template>
                       <template v-slot:info>
                         <span
@@ -579,10 +571,12 @@ function selectStartDate() {
           v-else
           @click="nextStep"
           class="block w-full"
-          :disabled="!stepIsValid"
+          :disabled="(!stepIsValid && !!web3Account) || web3.authLoading"
           primary
         >
-          {{ web3Account ? $t('Next') : $t('Connect wallet') }}
+          {{
+            web3Account || web3.authLoading ? $t('Next') : $t('Connect wallet')
+          }}
         </UiButton>
       </Block>
       <PluginCreateSidebar

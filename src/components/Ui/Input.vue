@@ -39,6 +39,9 @@ function handleInput(e) {
     >
       <slot name="selected" />
     </div>
+    <div v-else-if="$slots.input" class="w-full">
+      <slot name="input" />
+    </div>
     <input
       v-else
       :value="modelValue"
