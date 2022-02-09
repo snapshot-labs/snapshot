@@ -23,7 +23,7 @@ defineProps({
       </option>
     </select>
     <div class="absolute right-0 h-full flex items-center">
-      <Icon size="14" name="arrow-down" />
+      <Icon size="14" name="arrow-down text-skin-text" />
     </div>
   </div>
 </template>

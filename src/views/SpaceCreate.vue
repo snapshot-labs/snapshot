@@ -468,29 +468,38 @@ function selectStartDate() {
               <UiInput>
                 <template v-slot:selected>
                   <BaseNumberSelector
+                    class="mr-1"
                     v-model="durationSelectorDays"
                     :dropdownRange="8"
                   />
                 </template>
-                <template v-slot:label>days</template>
+                <template v-slot:label>
+                  <span class="ml-2">Days</span>
+                </template>
               </UiInput>
               <UiInput>
                 <template v-slot:selected>
                   <BaseNumberSelector
+                    class="mr-1"
                     v-model="durationSelectorHours"
                     :dropdownRange="24"
                   />
                 </template>
-                <template v-slot:label>hours</template>
+                <template v-slot:label>
+                  <span class="ml-2">Hours</span>
+                </template>
               </UiInput>
               <UiInput>
                 <template v-slot:selected>
                   <BaseNumberSelector
+                    class="mr-1"
                     v-model="durationSelectorMinutes"
                     :dropdownRange="60"
                   />
                 </template>
-                <template v-slot:label>Minutes</template>
+                <template v-slot:label>
+                  <span class="ml-2">Minutes</span>
+                </template>
               </UiInput>
             </div>
             <div class="flex items-center space-x-2 pr-2 mb-2">
