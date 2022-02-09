@@ -151,7 +151,9 @@ function setDate(ts) {
 
 async function handleSubmit() {
   form.value.snapshot = parseInt(form.value.snapshot);
-  form.value.choices = choices.value.map(choice => choice.text);
+  form.value.choices = choices.value
+    .map(choice => choice.text)
+    .filter(choiceText => choiceText.length > 0);
   form.value.metadata.network = props.space.network;
   form.value.metadata.strategies = props.space.strategies;
   form.value.start = props.space.voting?.delay
