@@ -161,7 +161,8 @@ function inputError(field) {
 
 function handleReset() {
   if (props.from) return (form.value = clone(props.spaceFrom));
-  if (currentSettings.value) return (form.value = currentSettings.value);
+  if (currentSettings.value)
+    return (form.value = clone(currentSettings.value));
   form.value = {
     strategies: [],
     categories: [],
@@ -252,32 +253,36 @@ function formatSpace(spaceRaw) {
   return space;
 }
 
-watchEffect(async () => {
-  if (!props.spaceLoading) {
-    try {
-      const uri = await getSpaceUri(
-        props.spaceId,
-        import.meta.env.VITE_DEFAULT_NETWORK
-      );
-      console.log('URI', uri);
-      currentTextRecord.value = uri;
-    } catch (e) {
-      console.log(e);
-    }
-    const spaceClone = formatSpace(props.space);
-    if (spaceClone) {
-      form.value = spaceClone;
-      currentSettings.value = clone(spaceClone);
-    }
-    if (props.from) {
-      const fromClone = formatSpace(props.spaceFrom);
-      if (fromClone) {
-        form.value = fromClone;
+watch(
+  () => props.spaceLoading,
+  async () => {
+    if (!props.spaceLoading) {
+      const spaceClone = formatSpace(props.space);
+      if (spaceClone) {
+        form.value = spaceClone;
+        currentSettings.value = clone(spaceClone);
       }
+      if (props.from) {
+        const fromClone = formatSpace(props.spaceFrom);
+        if (fromClone) {
+          form.value = fromClone;
+        }
+      }
+      try {
+        const uri = await getSpaceUri(
+          props.spaceId,
+          import.meta.env.VITE_DEFAULT_NETWORK
+        );
+        console.log('URI', uri);
+        currentTextRecord.value = uri;
+      } catch (e) {
+        console.log(e);
+      }
+
+      loaded.value = true;
     }
-    loaded.value = true;
   }
-});
+);
 
 watchEffect(() => {
   props.space && props.space?.name
@@ -329,7 +334,7 @@ watchEffect(() => {
           </UiButton>
         </a>
         <Block
-          v-if="currentSettings?.name && !currentTextRecord"
+          v-if="currentSettings?.name && !currentTextRecord && loaded"
           :style="'border-color: red !important; margin-bottom: 0 !important;'"
           class="mb-0 mt-3"
         >
@@ -344,7 +349,8 @@ watchEffect(() => {
           </span>
         </Block>
       </Block>
-      <template v-if="space || isOwner">
+      <RowLoadingBlock v-if="!loaded" />
+      <template v-else>
         <Block :title="$t('settings.profile')">
           <div class="mb-2">
             <UiInput v-model="form.name" :error="inputError('name')">
@@ -477,23 +483,6 @@ watchEffect(() => {
             />
           </UiButton>
         </Block>
-        <Block :title="$t('settings.authors')">
-          <Block
-            :style="`border-color: red !important`"
-            v-if="inputError('members')"
-          >
-            <Icon name="warning" class="mr-2 !text-red" />
-            <span class="!text-red"> {{ inputError('members') }}&nbsp;</span>
-          </Block>
-          <UiButton class="block w-full px-3" style="height: auto">
-            <TextareaArray
-              v-model="form.members"
-              :placeholder="`0x8C28Cf33d9Fd3D0293f963b1cd27e3FF422B425c\n0xeF8305E140ac520225DAf050e2f71d5fBcC543e7`"
-              class="input w-full text-left"
-              style="font-size: 18px"
-            />
-          </UiButton>
-        </Block>
         <Block :title="$t('settings.strategies') + '*'">
           <div
             v-for="(strategy, i) in form.strategies"
@@ -530,14 +519,25 @@ watchEffect(() => {
           </UiButton>
         </Block>
         <Block :title="$t('settings.proposalValidation')">
-          <div
-            class="flex items-center space-x-2 pr-2"
-            :class="{ 'mb-1': !form.filters.onlyMembers }"
-          >
-            <Checkbox v-model="form.filters.onlyMembers" class="mt-1" />
+          <div class="flex items-center space-x-2 pr-2 mb-2">
+            <Checkbox v-model="form.filters.onlyMembers" />
             <span>{{ $t('settings.allowOnlyAuthors') }}</span>
           </div>
-          <div v-if="!form.filters.onlyMembers">
+          <div v-if="form.filters.onlyMembers">
+            <Block class="!border-red" v-if="inputError('members')">
+              <Icon name="warning" class="mr-2 !text-red" />
+              <span class="!text-red"> {{ inputError('members') }}&nbsp;</span>
+            </Block>
+            <UiButton class="block w-full px-3" style="height: auto">
+              <TextareaArray
+                v-model="form.members"
+                :placeholder="`0x8C28Cf33d9Fd3D0293f963b1cd27e3FF422B425c\n0xeF8305E140ac520225DAf050e2f71d5fBcC543e7`"
+                class="input w-full text-left"
+                style="font-size: 18px"
+              />
+            </UiButton>
+          </div>
+          <template v-else>
             <UiInput
               @click="modalValidationOpen = true"
               :error="inputError('settings.validation')"
@@ -560,7 +560,7 @@ watchEffect(() => {
                 }}</template>
               </UiInput>
             </div>
-          </div>
+          </template>
         </Block>
         <Block :title="$t('settings.voting')">
           <UiInput v-model="votingDelay" :number="true" placeholder="e.g. 1">

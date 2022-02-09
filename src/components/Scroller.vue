@@ -122,6 +122,7 @@ onMounted(() => {
               >
                 <Token
                   :space="explore.spaces[element]"
+                  :key="element"
                   symbolIndex="space"
                   size="44"
                 />
