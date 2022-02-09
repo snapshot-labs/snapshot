@@ -8,7 +8,7 @@ const { t } = useI18n();
     <div>{{ t('resultsError') }}</div>
     <UiButton class="w-full mt-3">
       <a href="https://discord.gg/snapshot" target="_blank">
-        {{ t('contactSupport') }}
+        {{ t('getHelp') }}
       </a>
     </UiButton>
   </Block>
