@@ -600,7 +600,6 @@ function selectStartDate() {
       @close="modalTermsOpen = false"
       @accept="acceptTerms(), handleSubmit()"
     />
-
     <ModalVotingType
       :open="modalVotingTypeOpen"
       @close="modalVotingTypeOpen = false"
