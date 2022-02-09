@@ -26,7 +26,7 @@
     "@snapshot-labs/lock": "^0.1.4",
     "@snapshot-labs/snapshot.js": "^0.3.40",
     "@vue/apollo-composable": "4.0.0-alpha.16",
-    "@vueuse/core": "^7.5.5",
+    "@vueuse/core": "^7.6.0",
     "autolinker": "^3.14.3",
     "chart.js": "^3.5.1",
     "eslint": "^7.32.0",
