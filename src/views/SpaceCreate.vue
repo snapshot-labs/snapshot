@@ -223,7 +223,13 @@ watch(nameInput, () => nameInput?.value?.focus());
 
 // Focus first choice field when going to step two
 const choiceInput0 = ref(null);
-watch(choiceInput0, () => choiceInput0?.value?.focus());
+watch(
+  choiceInput0,
+  () => {
+    choiceInput0?.value?.focus();
+  },
+  { immediate: true }
+);
 
 onMounted(async () => {
   addChoice(2);
