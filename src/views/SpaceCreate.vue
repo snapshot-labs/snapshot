@@ -226,6 +226,7 @@ const choiceInput0 = ref(null);
 watch(
   choiceInput0,
   () => {
+    console.log(choiceInput0?.value);
     choiceInput0?.value?.focus();
   },
   { immediate: true }
