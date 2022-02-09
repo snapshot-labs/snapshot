@@ -1,12 +1,13 @@
 <script setup>
 import pkg from '@/../package.json';
+const yearNow = new Date().getFullYear();
 </script>
 
 <template>
   <footer id="footer" class="border-t w-full mt-6 -mb-6 absolute bottom-0">
     <Container>
       <div class="flex items-center justify-between h-[120px]">
-        <div>© Snapshot Labs., All rights reserved.</div>
+        <div>© {{ yearNow }} Snapshot Labs.</div>
         <div class="flex items-center">
           <div class="text-center space-x-3">
             <a href="https://twitter.com/SnapshotLabs" target="_blank">

@@ -25,7 +25,7 @@ function changeLang() {
     <template v-slot:header>
       <h3>{{ $t('about') }}</h3>
     </template>
-    <div class="m-4 p-4 mt-3 space-y-1 border rounded-md link-color">
+    <div class="m-4 p-4 space-y-1 border rounded-md link-color">
       <div class="flex">
         <span v-text="$t('version')" class="flex-auto text-color mr-1" />
         <a
