@@ -199,10 +199,18 @@ async function loadProposal() {
     body: proposal.body,
     choices: proposal.choices,
     start: proposal.start,
-    end: proposal.end,
     snapshot: proposal.snapshot,
     type: proposal.type
   };
+
+  // Set the period selectors days, hours and minutes
+  const seconds = proposal.end - proposal.start;
+  periodSelectorDays.value =
+    Math.floor(seconds / (3600 * 24)) <= 14
+      ? Math.floor(seconds / (3600 * 24))
+      : 14;
+  periodSelectorHours.value = Math.floor((seconds % (3600 * 24)) / 3600);
+  periodSelectorMinutes.value = Math.floor((seconds % 3600) / 60);
 
   const { network, strategies, plugins } = proposal;
   form.value.metadata = { network, strategies, plugins };
@@ -451,7 +459,7 @@ function selectStartDate() {
                 <template v-slot:selected>
                   <BaseNumberSelector
                     v-model="periodSelectorDays"
-                    :dropdownRange="8"
+                    :dropdownRange="15"
                   />
                 </template>
                 <template v-slot:label> Days </template>
