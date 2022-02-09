@@ -227,12 +227,19 @@ async function loadProposal() {
 watch(nameInput, () => nameInput?.value?.focus());
 
 onMounted(async () => {
-  addChoice(1);
+  addChoice(2);
   if (props.from) loadProposal();
-  if (!web3Account.value && !web3.authLoading) {
-    modalAccountOpen.value = true;
-  }
 });
+
+// Prompt user to connect wallet if they haven't already
+watch(
+  () => props.space,
+  () => {
+    if (!web3Account.value && !web3.value.authLoading && props.space) {
+      modalAccountOpen.value = true;
+    }
+  }
+);
 
 watchEffect(() => {
   if (props.space?.name)
