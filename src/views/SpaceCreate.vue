@@ -454,7 +454,6 @@ function selectStartDate() {
                         >
                           {{ `${element.text.length}/32` }}
                         </span>
-                        {{ index }}
                       </template>
                     </UiInput>
                     <UiSidebarButton
