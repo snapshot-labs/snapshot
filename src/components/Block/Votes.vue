@@ -100,6 +100,7 @@ watch(visibleVotes, () => {
         :profile="profiles[vote.voter]"
         :address="vote.voter"
         :space="space"
+        :key="vote.voter"
         :proposal="proposal"
         class="w-[110px] xs:w-[130px] min-w-[110px] xs:min-w-[130px]"
       />

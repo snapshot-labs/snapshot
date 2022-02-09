@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref, watchEffect, inject, watch, nextTick } from 'vue';
+import { computed, ref, watchEffect, inject, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { getAddress } from '@ethersproject/address';
 import {
@@ -155,23 +155,15 @@ function inputError(field) {
 }
 
 function handleReset() {
-  try {
-    if (props.from) return (form.value = clone(props.spaceFrom));
-    if (currentSettings.value)
-      return (form.value = clone(currentSettings.value));
-    form.value = {
-      strategies: [],
-      categories: [],
-      plugins: {},
-      filters: {}
-    };
-    // Rerenders the form, because Textarea components are not reactive
-  } finally {
-    loaded.value = false;
-    nextTick().then(() => {
-      loaded.value = true;
-    });
-  }
+  if (props.from) return (form.value = clone(props.spaceFrom));
+  if (currentSettings.value)
+    return (form.value = clone(currentSettings.value));
+  form.value = {
+    strategies: [],
+    categories: [],
+    plugins: {},
+    filters: {}
+  };
 }
 
 function handleEditStrategy(i) {
