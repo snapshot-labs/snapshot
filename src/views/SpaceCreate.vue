@@ -178,14 +178,6 @@ async function handleSubmit() {
 const { modalAccountOpen } = useModal();
 const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(props.spaceId);
 
-function clickSubmit() {
-  !web3Account.value
-    ? (modalAccountOpen.value = true)
-    : !termsAccepted.value && props.space.terms
-    ? (modalTermsOpen.value = true)
-    : handleSubmit();
-}
-
 const { apolloQuery, queryLoading } = useApolloQuery();
 
 const sourceProposalLoaded = ref(false);
@@ -557,7 +549,11 @@ function selectStartDate() {
           </UiButton>
           <UiButton
             v-if="currentStep === 3"
-            @click="clickSubmit"
+            @click="
+              !termsAccepted && space.terms
+                ? (modalTermsOpen = true)
+                : handleSubmit()
+            "
             :disabled="!isValid"
             :loading="clientLoading || queryLoading"
             class="block w-full"
