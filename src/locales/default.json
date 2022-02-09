@@ -6,6 +6,7 @@
   "actions": "Actions",
   "results": "Results",
   "resultsError": "Results could not be processed. This is most likely due to a misconfigured strategy or a performance issue with an involved contract.",
+  "vpError": "Your voting power could not be calculated. Please inform an admin of this space about this issue.",
   "getHelp": "Get help",
   "currentResults": "Current results",
   "reset": "Reset",

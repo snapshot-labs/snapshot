@@ -101,25 +101,20 @@ export async function getResults(space, proposal, votes) {
 
 export async function getPower(space, address, proposal) {
   console.log('[score] getPower');
-  try {
-    const strategies = proposal.strategies ?? space.strategies;
-    let scores: any = await getScores(
-      space.id,
-      strategies,
-      proposal.network,
-      [address],
-      parseInt(proposal.snapshot),
-      import.meta.env.VITE_SCORES_URL + '/api/scores'
-    );
-    scores = scores.map((score: any) =>
-      Object.values(score).reduce((a, b: any) => a + b, 0)
-    );
-    return {
-      scores,
-      totalScore: scores.reduce((a, b: any) => a + b, 0)
-    };
-  } catch (e) {
-    console.log(e);
-    return e;
-  }
+  const strategies = proposal.strategies ?? space.strategies;
+  let scores: any = await getScores(
+    space.id,
+    strategies,
+    proposal.network,
+    [address],
+    parseInt(proposal.snapshot),
+    import.meta.env.VITE_SCORES_URL + '/api/scores'
+  );
+  scores = scores.map((score: any) =>
+    Object.values(score).reduce((a, b: any) => a + b, 0)
+  );
+  return {
+    scores,
+    totalScore: scores.reduce((a, b: any) => a + b, 0)
+  };
 }
