@@ -21,7 +21,6 @@ declare module 'vue' {
     Icon: typeof import('./src/components/Icon.vue')['default']
     InputNumber: typeof import('./src/components/InputNumber.vue')['default']
     Layout: typeof import('./src/components/Layout.vue')['default']
-    LoadMoreButton: typeof import('./src/components/LoadMoreButton.vue')['default']
     ModalAbout: typeof import('./src/components/Modal/About.vue')['default']
     ModalAccount: typeof import('./src/components/Modal/Account.vue')['default']
     ModalCategory: typeof import('./src/components/Modal/Category.vue')['default']

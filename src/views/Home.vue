@@ -43,7 +43,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="mt-4">
+  <div class="mt-4 min-h-[calc(100vh-145px)] relative pb-[130px]">
     <Container class="flex items-center mb-4">
       <UiButton class="pl-3 pr-0 w-full max-w-[420px]">
         <SearchWithFilters />
@@ -147,13 +147,15 @@ onMounted(() => {
         :block="true"
         v-if="Object.keys(orderedSpacesByCategory).length < 1"
       />
-      <LoadMoreButton
-        v-if="!enableInfiniteScroll"
-        class="mt-4"
+      <UiButton
+        v-if="!enableInfiniteScroll && orderedSpacesByCategory.length > limit"
+        class="w-full mt-4"
         @click="loadMoreSpaces()"
-      />
+      >
+        {{ $t('comment_box.load_more') }}
+      </UiButton>
     </Container>
-    <div ref="endElement" />
     <Footer />
+    <div ref="endElement" />
   </div>
 </template>
