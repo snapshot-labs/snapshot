@@ -1,4 +1,6 @@
 <script setup>
+import { onMounted, ref } from 'vue';
+
 const props = defineProps({
   modelValue: [String, Number],
   placeholder: String,
@@ -10,6 +12,10 @@ const props = defineProps({
   required: {
     type: Boolean,
     default: true
+  },
+  focusOnMount: {
+    type: Boolean,
+    default: false
   }
 });
 
@@ -22,6 +28,14 @@ function handleInput(e) {
   }
   emit('update:modelValue', input);
 }
+
+const inputRef = ref(null);
+
+onMounted(() => {
+  if (props.focusOnMount) {
+    inputRef?.value?.focus();
+  }
+});
 </script>
 
 <template>
@@ -39,13 +53,11 @@ function handleInput(e) {
     >
       <slot name="selected" />
     </div>
-    <div v-else-if="$slots.input" class="w-full">
-      <slot name="input" />
-    </div>
     <input
       v-else
       :value="modelValue"
       @input="handleInput"
+      ref="inputRef"
       :placeholder="placeholder"
       :type="number ? 'number' : 'text'"
       :disabled="disabled"

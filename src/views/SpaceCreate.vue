@@ -221,17 +221,6 @@ async function loadProposal() {
 // Focus proposal name field when page loads
 watch(nameInput, () => nameInput?.value?.focus());
 
-// Focus first choice field when going to step two
-const choiceInput0 = ref(null);
-watch(
-  choiceInput0,
-  () => {
-    console.log(choiceInput0?.value);
-    choiceInput0?.value?.focus();
-  },
-  { immediate: true }
-);
-
 onMounted(async () => {
   addChoice(2);
   if (props.from) loadProposal();
@@ -422,7 +411,7 @@ function selectStartDate() {
               </template>
               <template v-slot:label> {{ $t(`Voting system`) }} </template>
             </UiInput>
-            <div v-if="choices.length > 0" class="overflow-hidden mb-2">
+            <div class="overflow-hidden mb-2">
               <draggable
                 v-model="choices"
                 :component-data="{ name: 'list' }"
@@ -431,22 +420,11 @@ function selectStartDate() {
               >
                 <template #item="{ element, index }">
                   <div class="flex space-x-2">
-                    <UiInput class="group">
+                    <UiInput class="group" :focusOnMount="index === 0">
                       <template v-slot:label>
                         <span>
                           {{ 'Choice ' + (index + 1) }}
                         </span>
-                      </template>
-                      <template v-slot:input>
-                        <input
-                          v-model="element.text"
-                          :ref="`choiceInput${index}`"
-                          maxlength="32"
-                          :disabled="disableChoiceEdit"
-                          :placeholder="index > 0 ? $t('(optional)') : ''"
-                          :type="number ? 'number' : 'text'"
-                          class="input flex-auto w-full"
-                        />
                       </template>
                       <template v-slot:info>
                         <span
