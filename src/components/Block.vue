@@ -4,6 +4,7 @@ defineProps({
   counter: Number,
   slim: Boolean,
   icon: String,
+  iconClass: String,
   loading: Boolean
 });
 
@@ -24,7 +25,7 @@ defineEmits(['submit']);
       <a
         v-if="icon"
         @click="$emit('submit')"
-        class="float-right text-color"
+        :class="['float-right', iconClass]"
         style="padding-top: 2px"
       >
         <Icon :name="icon" size="22" />

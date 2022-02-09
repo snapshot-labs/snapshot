@@ -60,48 +60,43 @@ export async function getProposal(id) {
 
 export async function getResults(space, proposal, votes) {
   console.log('[score] getResults');
-  try {
-    const voters = votes.map(vote => vote.voter);
-    const strategies = proposal.strategies ?? space.strategies;
-    /* Get scores */
-    if (proposal.state !== 'pending') {
-      console.time('getProposal.scores');
-      const scores = await getScores(
-        space.id,
-        strategies,
-        proposal.network,
-        voters,
-        parseInt(proposal.snapshot),
-        import.meta.env.VITE_SCORES_URL + '/api/scores'
-      );
-      console.timeEnd('getProposal.scores');
-      console.log('Got scores');
+  const voters = votes.map(vote => vote.voter);
+  const strategies = proposal.strategies ?? space.strategies;
+  /* Get scores */
+  if (proposal.state !== 'pending') {
+    console.time('getProposal.scores');
+    const scores = await getScores(
+      space.id,
+      strategies,
+      proposal.network,
+      voters,
+      parseInt(proposal.snapshot),
+      import.meta.env.VITE_SCORES_URL + '/api/scores'
+    );
+    console.timeEnd('getProposal.scores');
+    console.log('Got scores');
 
-      votes = votes
-        .map((vote: any) => {
-          vote.scores = strategies.map(
-            (strategy, i) => scores[i][vote.voter] || 0
-          );
-          vote.balance = vote.scores.reduce((a, b: any) => a + b, 0);
-          return vote;
-        })
-        .sort((a, b) => b.balance - a.balance)
-        .filter(vote => vote.balance > 0);
-    }
-
-    /* Get results */
-    const votingClass = new voting[proposal.type](proposal, votes, strategies);
-    const results = {
-      resultsByVoteBalance: votingClass.resultsByVoteBalance(),
-      resultsByStrategyScore: votingClass.resultsByStrategyScore(),
-      sumOfResultsBalance: votingClass.sumOfResultsBalance()
-    };
-
-    return { votes, results };
-  } catch (e) {
-    console.log(e);
-    return e;
+    votes = votes
+      .map((vote: any) => {
+        vote.scores = strategies.map(
+          (strategy, i) => scores[i][vote.voter] || 0
+        );
+        vote.balance = vote.scores.reduce((a, b: any) => a + b, 0);
+        return vote;
+      })
+      .sort((a, b) => b.balance - a.balance)
+      .filter(vote => vote.balance > 0);
   }
+
+  /* Get results */
+  const votingClass = new voting[proposal.type](proposal, votes, strategies);
+  const results = {
+    resultsByVoteBalance: votingClass.resultsByVoteBalance(),
+    resultsByStrategyScore: votingClass.resultsByStrategyScore(),
+    sumOfResultsBalance: votingClass.sumOfResultsBalance()
+  };
+
+  return { votes, results };
 }
 
 export async function getPower(space, address, proposal) {
