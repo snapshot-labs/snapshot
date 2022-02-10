@@ -308,15 +308,6 @@ watch(
   }
 );
 
-function handleEnsButtonClick() {
-  if (isOwner.value || isAdmin.value) {
-    window.open(`https://app.ens.domains/name/${props.spaceId}`, '_blank');
-    return;
-  }
-
-  handleSetRecord();
-}
-
 async function handleSetRecord() {
   settingENSRecord.value = true;
   try {
@@ -387,21 +378,27 @@ watchEffect(() => {
           />
         </UiButton>
 
-        <UiButton
+        <a
           v-if="isOwner || isAdmin"
-          class="button-outline w-full mb-2"
-          :loading="settingENSRecord"
+          :href="`https://app.ens.domains/name/${spaceId}`"
+          target="_blank"
+          class="mb-2 block"
         >
-          {{ $t('settings.seeENS') }}
-          <Icon name="external-link" class="ml-1" />
-        </UiButton>
+          <UiButton
+            class="button-outline w-full mb-2"
+            :loading="settingENSRecord"
+          >
+            {{ $t('settings.seeENS') }}
+            <Icon name="external-link" class="ml-1" />
+          </UiButton>
+        </a>
 
         <UiButton
           v-else
           class="button-outline w-full mb-2"
           :primary="true"
           :disabled="!ensOwner"
-          @click="handleEnsButtonClick"
+          @click="handleSetRecord"
           :loading="!loaded || settingENSRecord || loadingEnsDomains"
         >
           {{
