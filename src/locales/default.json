@@ -231,7 +231,8 @@
     "quorum": "Quorum",
     "type": "Type",
     "anyType": "Any",
-    "hideAbstain": "Ignore abstain votes in basic voting results"
+    "hideAbstain": "Ignore abstain votes in basic voting results",
+    "connectToOwnerOfEns": "Connect with the wallet that owns {ens}"
   },
   "setup": {
     "example": "e.g. yam.eth",

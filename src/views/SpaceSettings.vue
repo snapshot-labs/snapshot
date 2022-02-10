@@ -20,6 +20,7 @@ import { usePlugins } from '@/composables/usePlugins';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import namehash from '@ensdomains/eth-ens-namehash';
 import { useTxStatus } from '../composables/useTxStatus';
+import { useEns } from '../composables/useEns';
 
 const props = defineProps({
   spaceId: String,
@@ -39,6 +40,7 @@ const { web3, web3Account } = useWeb3();
 const { pendingCount } = useTxStatus();
 const { send, clientLoading } = useClient();
 const auth = getInstance();
+const { loadOwnedEnsDomains, ownedEnsDomains } = useEns();
 const notify = inject('notify');
 
 const abi = ['function setText(bytes32 node, string key, string value)'];
@@ -61,6 +63,8 @@ const uploadLoading = ref(false);
 const showErrors = ref(false);
 const delayUnit = ref('h');
 const periodUnit = ref('h');
+const loadingEnsDomains = ref(false);
+
 const form = ref({
   strategies: [],
   categories: [],
@@ -86,6 +90,10 @@ const isValid = computed(() => {
   );
 });
 
+const ensOwner = computed(() => {
+  return ownedEnsDomains.value.map(d => d.name).includes(props.spaceId);
+});
+
 const textRecord = computed(() => {
   const keyURI = encodeURIComponent(props.spaceId);
   const address = web3Account.value
@@ -98,13 +106,23 @@ const isOwner = computed(() => {
   return currentTextRecord.value === textRecord.value;
 });
 
-watch([currentTextRecord, textRecord], () => {
+watch([currentTextRecord, textRecord], async () => {
   // Check if the connected wallet is the space owner and add address to admins
   // if not already present
   if (isOwner.value) {
     if (!form.value.admins.includes(web3Account.value)) {
       form.value.admins.push(web3Account.value);
     }
+  }
+
+  loadingEnsDomains.value = true;
+  try {
+    console.log('loading ens');
+    await loadOwnedEnsDomains();
+  } catch (e) {
+    console.error(e);
+  } finally {
+    loadingEnsDomains.value = false;
   }
 });
 
@@ -168,8 +186,7 @@ function inputError(field) {
 
 function handleReset() {
   if (props.from) return (form.value = clone(props.spaceFrom));
-  if (currentSettings.value)
-    return (form.value = clone(currentSettings.value));
+  if (currentSettings.value) return (form.value = clone(currentSettings.value));
   form.value = {
     strategies: [],
     categories: [],
@@ -371,15 +388,27 @@ watchEffect(() => {
         </UiButton>
 
         <UiButton
+          v-if="isOwner || isAdmin"
           class="button-outline w-full mb-2"
-          :primary="!isOwner && !isAdmin"
-          @click="handleEnsButtonClick"
           :loading="settingENSRecord"
         >
-          {{
-            isOwner || isAdmin ? $t('settings.seeENS') : $t('settings.setENS')
-          }}
+          {{ $t('settings.seeENS') }}
           <Icon name="external-link" class="ml-1" />
+        </UiButton>
+
+        <UiButton
+          v-else
+          class="button-outline w-full mb-2"
+          :primary="true"
+          :disabled="!ensOwner"
+          @click="handleEnsButtonClick"
+          :loading="!loaded || settingENSRecord || loadingEnsDomains"
+        >
+          {{
+            ensOwner
+              ? $t('settings.setENS')
+              : $t('settings.connectToOwnerOfEns', { ens: props.spaceId })
+          }}
         </UiButton>
 
         <Block
@@ -399,7 +428,7 @@ watchEffect(() => {
         </Block>
       </Block>
       <RowLoadingBlock v-if="!loaded" />
-      <template v-else>
+      <template v-if="currentTextRecord">
         <Block :title="$t('settings.profile')">
           <div class="mb-2">
             <UiInput v-model="form.name" :error="inputError('name')">
