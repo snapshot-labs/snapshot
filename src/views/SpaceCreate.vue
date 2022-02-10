@@ -93,14 +93,6 @@ watch(
   { immediate: true }
 );
 
-// const votingPeriod = computed({
-//   get: () => calcFromSeconds(votingPeriodSeconds.value, periodUnit.value),
-//   set: newVal =>
-//     (votingPeriodSeconds.value = newVal
-//       ? calcToSeconds(newVal, periodUnit.value)
-//       : undefined)
-// });
-
 const votingPeriodSeconds = computed(
   () =>
     calcToSeconds(periodSelectorDays.value, 'd') +
@@ -309,7 +301,7 @@ function selectStartDate() {
 
 import { usePlugins } from '@/composables/usePlugins';
 
-// Check if has plugins than can be confirgured on proposal creation
+// Check if has plugins that can be confirgured on proposal creation
 const { getPluginComponents } = usePlugins();
 const createPluginComponents = computed(() =>
   getPluginComponents('Create', Object.keys(props.space?.plugins))
@@ -438,11 +430,15 @@ const createPluginComponents = computed(() =>
               </template>
             </UiInput>
             <div class="overflow-hidden mb-2">
+              {{ choices }}
               <draggable
                 v-model="choices"
-                :component-data="{ name: 'list' }"
+                tag="transition-group"
+                :component-data="{
+                  type: 'transition-group'
+                }"
+                v-bind="{ animation: 200 }"
                 :disabled="disableChoiceEdit"
-                item-key="id"
               >
                 <template #item="{ element, index }">
                   <div class="flex space-x-2">
