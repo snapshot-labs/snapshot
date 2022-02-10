@@ -596,14 +596,13 @@ function selectStartDate() {
           :disabled="!stepIsValid"
           primary
         >
-          {{ $t('next') }}
+          {{ $t('create.continue') }}
         </UiButton>
       </Block>
     </template>
   </Layout>
   <teleport to="#modal" v-if="space">
     <ModalSelectDate
-      :value="form[selectedDate]"
       :selectedDate="selectedDate"
       :open="modalDateSelectOpen"
       @close="modalDateSelectOpen = false"
