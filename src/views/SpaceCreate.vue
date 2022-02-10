@@ -554,7 +554,10 @@ function selectStartDate() {
       </template>
     </template>
     <template #sidebar-right>
-      <Block v-if="web3Account" class="lg:fixed lg:w-[320px]">
+      <Block
+        v-if="web3Account && passValidation[0] === true"
+        class="lg:fixed lg:w-[320px]"
+      >
         <UiButton
           v-if="currentStep === 1"
           @click="preview = !preview"

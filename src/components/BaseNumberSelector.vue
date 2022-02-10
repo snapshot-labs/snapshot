@@ -19,7 +19,7 @@ defineProps({
     <select
       :value="modelValue"
       @change="$emit('update:modelValue', $event.target.value)"
-      class="appearance-none bg-transparent w-full pl-[28px] !pt-[22px] cursor-pointer text-lg border rounded-full text-skin-link group-hover:border-skin-link"
+      class="appearance-none bg-transparent w-full pl-[28px] !pt-[22px] cursor-pointer text-md border rounded-full text-skin-link group-hover:border-skin-link"
       required
     >
       <option v-for="n in [...Array(dropdownRange).keys()]" :key="n" :value="n">
@@ -27,7 +27,7 @@ defineProps({
       </option>
     </select>
     <div
-      class="absolute h-full left-[28px] top-[6px] pointer-events-none text-sm"
+      class="absolute h-full left-[28px] top-[8px] pointer-events-none text-sm"
     >
       <span>{{ label }}</span>
     </div>
