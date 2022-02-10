@@ -6,10 +6,10 @@ const { t } = useI18n();
 <template>
   <Block :title="$t('results')" icon="warning" iconClass="text-red">
     <div>{{ t('resultsError') }}</div>
-    <UiButton class="w-full mt-3">
-      <a href="https://discord.gg/snapshot" target="_blank">
+    <a href="https://discord.gg/snapshot" target="_blank">
+      <UiButton class="w-full mt-3">
         {{ t('getHelp') }}
-      </a>
-    </UiButton>
+      </UiButton>
+    </a>
   </Block>
 </template>
