@@ -119,7 +119,6 @@
   "joinSpaces": "Join spaces",
   "setDelegationToSpace": "Limit delegation to a specific space",
   "theCurrentNetwork": "the current network",
-  "connectWalletMessage": "You need to connect a wallet in order to create a proposal.",
   "optional": "(optional)",
   "errors": {
     "required": "Field is required",
