@@ -316,14 +316,13 @@ function selectStartDate() {
         </router-link>
       </div>
       <PageLoading
+        class="md:px-0 px-4"
         v-if="!space || (validationLoading && web3Account) || web3.authLoading"
       />
       <Block v-else-if="!web3Account">
         <Icon name="warning" class="mr-1" />
         <span v-if="!web3Account">
-          {{
-            $t('You need to connect a wallet in order to create a proposal.')
-          }}
+          {{ $t('connectWalletMessage') }}
         </span>
       </Block>
       <Block
@@ -376,7 +375,7 @@ function selectStartDate() {
             <div class="flex flex-col mb-6">
               <h1
                 v-if="preview"
-                v-text="form.name || 'Untitled'"
+                v-text="form.name || $t('create.untitled')"
                 class="mb-2 w-full break-all"
               />
               <input
@@ -414,14 +413,16 @@ function selectStartDate() {
           </div>
         </template>
         <template v-else-if="currentStep === 2">
-          <Block :title="$t('Voting')">
+          <Block :title="$t('create.voting')">
             <UiInput class="!mb-4" @click="modalVotingTypeOpen = true">
               <template v-slot:selected>
                 <span class="w-full">
                   {{ $t(`voting.${form.type}`) }}
                 </span>
               </template>
-              <template v-slot:label> {{ $t(`Voting system`) }} </template>
+              <template v-slot:label>
+                {{ $t(`create.votingSystem`) }}
+              </template>
             </UiInput>
             <div class="overflow-hidden mb-2">
               <draggable
@@ -436,12 +437,12 @@ function selectStartDate() {
                       v-model="element.text"
                       maxlength="32"
                       :disabled="disableChoiceEdit"
-                      :placeholder="index > 0 ? $t('(optional)') : ''"
+                      :placeholder="index > 0 ? $t('optional') : ''"
                       class="group"
                       :focusOnMount="index === 0"
                     >
                       <template v-slot:label>
-                        {{ 'Choice ' + (index + 1) }}
+                        {{ $tc('create.choice', [index + 1]) }}
                       </template>
                       <template v-slot:info>
                         <span
@@ -465,59 +466,70 @@ function selectStartDate() {
             </div>
           </Block>
 
-          <Block title="Proposal period">
-            <div class="flex space-x-[28px] mt-1">
-              <UiInput>
-                <template v-slot:selected>
-                  <BaseNumberSelector
-                    v-model="periodSelectorDays"
-                    :dropdownRange="15"
-                  />
-                </template>
-                <template v-slot:label> Days </template>
-              </UiInput>
-              <UiInput>
-                <template v-slot:selected>
-                  <BaseNumberSelector
-                    v-model="periodSelectorHours"
-                    :dropdownRange="24"
-                  />
-                </template>
-                <template v-slot:label> Hours </template>
-              </UiInput>
-              <UiInput>
-                <template v-slot:selected>
-                  <BaseNumberSelector
-                    v-model="periodSelectorMinutes"
-                    :dropdownRange="60"
-                  />
-                </template>
-                <template v-slot:label> Minutes </template>
-              </UiInput>
+          <Block :title="$t('create.period')">
+            <div
+              v-if="!space.voting?.period"
+              class="flex space-x-[18px] mb-3"
+              :class="{ 'mb-1': !space.voting?.delay }"
+            >
+              <BaseNumberSelector
+                v-model="periodSelectorDays"
+                :label="$t('create.days')"
+                :dropdownRange="15"
+              />
+
+              <BaseNumberSelector
+                v-model="periodSelectorHours"
+                :label="$t('create.hours')"
+                :dropdownRange="24"
+              />
+
+              <BaseNumberSelector
+                v-model="periodSelectorMinutes"
+                :label="$t('create.minutes')"
+                :dropdownRange="60"
+              />
             </div>
-            <div class="flex items-center space-x-2 pr-2 mb-1">
+            <div
+              class="flex items-center space-x-2 pr-2 mb-1"
+              v-if="!space.voting?.delay"
+            >
               <Checkbox v-model="chooseStartDate" />
-              <span>{{ $t('Schedule proposal') }}</span>
+              <span>{{ $t('create.schedule') }}</span>
             </div>
             <UiInput
-              v-if="chooseStartDate"
+              v-if="chooseStartDate || space.voting?.delay"
               class="mb-3"
               @click="selectStartDate"
               :disabled="!!space.voting?.delay"
               v-tippy="{
                 content: !!space.voting?.delay
-                  ? $t('Delay is enforced by the space')
+                  ? $t('create.delayEnforced')
                   : null
               }"
             >
               <template v-slot:selected>
                 <span v-text="$d(dateStart * 1e3, 'short', 'en-US')" />
               </template>
-              <template v-slot:label> {{ $t(`Start`) }} </template>
+              <template v-slot:label> {{ $t(`create.start`) }} </template>
+            </UiInput>
+
+            <UiInput
+              v-if="space.voting?.period"
+              class="mb-3"
+              disabled
+              v-tippy="{
+                content: $t('create.periodEnforced')
+              }"
+            >
+              <template v-slot:selected>
+                <span v-text="$d(dateEnd * 1e3, 'short', 'en-US')" />
+              </template>
+              <template v-slot:label> {{ $t(`create.end`) }} </template>
             </UiInput>
           </Block>
 
-          <Block v-if="$route.query.snapshot" title="Snapshot">
+          <Block v-if="$route.query.snapshot" :title="$t('snapshot')">
             <UiInput
               v-model="form.snapshot"
               :number="true"
@@ -550,7 +562,7 @@ function selectStartDate() {
           class="block w-full mb-3"
           no-focus
         >
-          {{ preview ? $t('Edit') : $t('Preview') }}
+          {{ preview ? $t('create.edit') : $t('create.preview') }}
         </UiButton>
         <UiButton
           v-else
@@ -572,7 +584,7 @@ function selectStartDate() {
           class="block w-full"
           primary
         >
-          {{ $t('Publish proposal') }}
+          {{ $t('create.publish') }}
         </UiButton>
         <UiButton
           v-else
