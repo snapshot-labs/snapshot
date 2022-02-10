@@ -1025,10 +1025,10 @@
     fortmatic "^2.2.1"
     walletlink "^2.4.0"
 
-"@snapshot-labs/snapshot.js@^0.3.40":
-  version "0.3.40"
-  resolved "https://registry.yarnpkg.com/@snapshot-labs/snapshot.js/-/snapshot.js-0.3.40.tgz#1b595869c168872a89ebac2a15d095844c2bcf47"
-  integrity sha512-INTaNybS+I3fQxtmldKLi50qs3GR8XyCINEePU8D8C00WETGUSeJ1TRTCM2vYaVal7yX9ZXW1QWQG6r6QVKWiw==
+"@snapshot-labs/snapshot.js@^0.3.41":
+  version "0.3.41"
+  resolved "https://registry.yarnpkg.com/@snapshot-labs/snapshot.js/-/snapshot.js-0.3.41.tgz#9dbf2b0849128b65ffe01a1dcaefc7eb7fdb3e88"
+  integrity sha512-uCJgkdQn6Fx4ZCOB+yY9wMJjTOSsbyIGZYlU4QlQmkqH8sW9BApQYdGWEhBzqWxcZ8W9RHdSHT7tUZkM7xzq2A==
   dependencies:
     "@ethersproject/abi" "^5.0.4"
     "@ethersproject/bytes" "^5.0.8"
@@ -6211,10 +6211,10 @@ universalify@^0.1.0:
   resolved "https://registry.yarnpkg.com/universalify/-/universalify-0.1.2.tgz#b646f69be3942dabcecc9d6639c80dc105efaa66"
   integrity sha512-rBJeI5CXAlmy1pV+617WB9J63U6XcazHHF2f2dbJix4XzpUF0RS3Zbj0FGIOCAva5P/d/GBOYaACQ1w+0azUkg==
 
-unplugin-vue-components@^0.17.17:
-  version "0.17.17"
-  resolved "https://registry.yarnpkg.com/unplugin-vue-components/-/unplugin-vue-components-0.17.17.tgz#360174a12aa28dac26bdb2310e248fca1999f9c8"
-  integrity sha512-XaaCbsdXGazTOl0nH4+PVsuGOXmYcrqLT8B8vO9Jzz9OaUq+S9Tz4KjzUNs7bhkp83SQWaKKF0+noAynYDa/Cg==
+unplugin-vue-components@^0.17.18:
+  version "0.17.18"
+  resolved "https://registry.yarnpkg.com/unplugin-vue-components/-/unplugin-vue-components-0.17.18.tgz#d647f85940d78f2be66620b9f1ac1ea232edbfc5"
+  integrity sha512-4wvJnSShTXCnZpO1G6h0DlHjBXap0JqzFyU84guMT6EH0shUZZ3TAta4pDa8nNeWAtcJVTF9uQswePq1elhpKQ==
   dependencies:
     "@antfu/utils" "^0.4.0"
     "@rollup/pluginutils" "^4.1.2"
