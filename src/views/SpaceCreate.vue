@@ -430,7 +430,6 @@ const createPluginComponents = computed(() =>
               </template>
             </UiInput>
             <div class="overflow-hidden mb-2">
-              {{ choices }}
               <draggable
                 v-model="choices"
                 tag="transition-group"
