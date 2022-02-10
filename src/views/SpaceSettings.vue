@@ -106,25 +106,29 @@ const isOwner = computed(() => {
   return currentTextRecord.value === textRecord.value;
 });
 
-watch([currentTextRecord, textRecord], async () => {
-  // Check if the connected wallet is the space owner and add address to admins
-  // if not already present
-  if (isOwner.value) {
-    if (!form.value.admins.includes(web3Account.value)) {
-      form.value.admins.push(web3Account.value);
+watch(
+  [currentTextRecord, textRecord],
+  async () => {
+    // Check if the connected wallet is the space owner and add address to admins
+    // if not already present
+    if (isOwner.value) {
+      if (!form.value.admins.includes(web3Account.value)) {
+        form.value.admins.push(web3Account.value);
+      }
     }
-  }
 
-  loadingEnsDomains.value = true;
-  try {
-    console.log('loading ens');
-    await loadOwnedEnsDomains();
-  } catch (e) {
-    console.error(e);
-  } finally {
-    loadingEnsDomains.value = false;
-  }
-});
+    loadingEnsDomains.value = true;
+    try {
+      console.log('loading ens');
+      await loadOwnedEnsDomains();
+    } catch (e) {
+      console.error(e);
+    } finally {
+      loadingEnsDomains.value = false;
+    }
+  },
+  { immediate: true }
+);
 
 const isAdmin = computed(() => {
   if (!props.space || !currentTextRecord.value) return false;
