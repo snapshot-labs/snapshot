@@ -429,24 +429,24 @@ const createPluginComponents = computed(() =>
                 {{ $t(`create.votingSystem`) }}
               </template>
             </UiInput>
-            <div class="overflow-hidden mb-2">
-              <draggable
-                v-model="choices"
-                tag="transition-group"
-                :component-data="{
-                  type: 'transition-group'
-                }"
-                v-bind="{ animation: 200 }"
-                :disabled="disableChoiceEdit"
-              >
-                <template #item="{ element, index }">
-                  <div class="flex space-x-2">
+            <div class="flex">
+              <div class="overflow-hidden w-full space-y-2">
+                <draggable
+                  v-model="choices"
+                  tag="transition-group"
+                  :component-data="{
+                    type: 'transition-group'
+                  }"
+                  v-bind="{ animation: 200 }"
+                  :disabled="disableChoiceEdit"
+                >
+                  <template #item="{ element, index }">
                     <UiInput
                       v-model="element.text"
                       maxlength="32"
                       :disabled="disableChoiceEdit"
                       :placeholder="index > 0 ? $t('optional') : ''"
-                      class="group"
+                      class="group mb-0"
                       :focusOnMount="index === 0"
                     >
                       <template v-slot:label>
@@ -460,17 +460,18 @@ const createPluginComponents = computed(() =>
                         </span>
                       </template>
                     </UiInput>
-                    <UiSidebarButton
-                      v-if="!disableChoiceEdit && choices.length === index + 1"
-                      @click="addChoice(1)"
-                      class="!w-[48px] !h-[48px] flex-none"
-                    >
-                      <Icon size="20" name="plus" class="text-skin-link" />
-                    </UiSidebarButton>
-                    <div v-else-if="!disableChoiceEdit" class="w-[54px]"></div>
-                  </div>
-                </template>
-              </draggable>
+                  </template>
+                </draggable>
+              </div>
+              <div class="w-[48px] flex items-end ml-2">
+                <UiSidebarButton
+                  v-if="!disableChoiceEdit"
+                  @click="addChoice(1)"
+                  class="!w-[48px] !h-[48px]"
+                >
+                  <Icon size="20" name="plus" class="text-skin-link" />
+                </UiSidebarButton>
+              </div>
             </div>
           </Block>
 
