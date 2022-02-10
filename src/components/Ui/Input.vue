@@ -26,7 +26,9 @@ function handleInput(e) {
 
 <template>
   <div class="min-h-[48px] rounded-3xl overflow-hidden">
-    <div class="border border-skin-border transition-colors rounded-3xl outline-none leading-[46px] text-left w-full flex px-3 focus-within:border-skin-link hover:border-skin-link bg-white relative z-10">
+    <div
+      class="border border-skin-border transition-colors rounded-3xl outline-none leading-[46px] text-left w-full flex px-3 focus-within:border-skin-link hover:border-skin-link bg-white relative z-10"
+    >
       <div class="text-color mr-2 whitespace-nowrap">
         <slot name="label" />
       </div>
@@ -51,9 +53,15 @@ function handleInput(e) {
       />
       <slot name="info" />
     </div>
-    <div :class="['bg-pink-100 text-rose-500 text-sm relative z-0 transition-all flex items-center px-3 pb-2 pt-4 rounded-b-3xl', !!error ? '-mt-[20px] opacity-100' : '-mt-[48px] opacity-0']">
+    <div
+      :class="[
+        'bg-pink-100 text-rose-500 text-sm relative z-0 transition-all flex items-center px-3 pb-2 pt-4 rounded-b-3xl',
+        !!error ? '-mt-[20px] opacity-100' : '-mt-[48px] opacity-0'
+      ]"
+    >
       <Icon name="warning" class="text-red-500 mr-2" />
-      {{ error || '' }} <!-- The fact that error can be bool or string makes this necessary -->
+      {{ error || '' }}
+      <!-- The fact that error can be bool or string makes this necessary -->
     </div>
   </div>
 </template>

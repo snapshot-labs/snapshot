@@ -140,7 +140,11 @@ async function handleSubmit() {
 }
 
 function inputError(field) {
-  if (!isValid.value && !clientLoading.value && (visitedFields.value.includes(field) || validateAllFields.value)) {
+  if (
+    !isValid.value &&
+    !clientLoading.value &&
+    (visitedFields.value.includes(field) || validateAllFields.value)
+  ) {
     const errors = Object.keys(defaults.errors);
     const errorFound = validate.value.find(
       error =>
@@ -159,8 +163,7 @@ function inputError(field) {
 
 function handleReset() {
   if (props.from) return (form.value = clone(props.spaceFrom));
-  if (currentSettings.value)
-    return (form.value = clone(currentSettings.value));
+  if (currentSettings.value) return (form.value = clone(currentSettings.value));
   form.value = {
     strategies: [],
     categories: [],
@@ -351,10 +354,18 @@ watchEffect(() => {
       <template v-else>
         <Block :title="$t('settings.profile')">
           <div class="space-y-2 mb-2">
-            <UiInput v-model="form.name" :error="inputError('name')" @blur="visitedFields.push('name')">
+            <UiInput
+              v-model="form.name"
+              :error="inputError('name')"
+              @blur="visitedFields.push('name')"
+            >
               <template v-slot:label>{{ $t(`settings.name`) }}*</template>
             </UiInput>
-            <UiInput v-model="form.about" :error="inputError('about')" @blur="visitedFields.push('about')">
+            <UiInput
+              v-model="form.about"
+              :error="inputError('about')"
+              @blur="visitedFields.push('about')"
+            >
               <template v-slot:label> {{ $t(`settings.about`) }} </template>
             </UiInput>
             <UiInput
