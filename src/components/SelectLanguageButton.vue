@@ -16,7 +16,7 @@ const modalLangOpen = ref(false);
     @click="modalLangOpen = true"
   >
     <Icon size="24" name="earth" class="hover:opacity-80 mr-2" />
-    {{ languages[$i18n.locale]?.name }}
+    {{ languages[$i18n.locale]?.nativeName ?? languages[$i18n.locale]?.name }}
   </UiButton>
   <teleport to="#modal">
     <ModalSelectLanguage :open="modalLangOpen" @close="modalLangOpen = false" />
