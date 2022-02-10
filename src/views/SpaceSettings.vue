@@ -384,10 +384,7 @@ watchEffect(() => {
           target="_blank"
           class="mb-2 block"
         >
-          <UiButton
-            class="button-outline w-full mb-2"
-            :loading="settingENSRecord"
-          >
+          <UiButton class="button-outline w-full" :loading="settingENSRecord">
             {{ $t('settings.seeENS') }}
             <Icon name="external-link" class="ml-1" />
           </UiButton>
