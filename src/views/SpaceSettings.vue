@@ -49,7 +49,8 @@ const modalPluginsOpen = ref(false);
 const modalValidationOpen = ref(false);
 const loaded = ref(false);
 const uploadLoading = ref(false);
-const showErrors = ref(false);
+const visitedFields = ref([]);
+const validateAllFields = ref(false);
 const delayUnit = ref('h');
 const periodUnit = ref('h');
 const form = ref({
@@ -57,6 +58,7 @@ const form = ref({
   categories: [],
   plugins: {},
   filters: {},
+  admins: [],
   voting: {},
   validation: basicValidation
 });
@@ -133,12 +135,12 @@ async function handleSubmit() {
     }
   } else {
     console.log('Invalid schema', validate.value);
-    showErrors.value = true;
+    validateAllFields.value = true;
   }
 }
 
 function inputError(field) {
-  if (!isValid.value && !clientLoading.value && showErrors.value) {
+  if (!isValid.value && !clientLoading.value && (visitedFields.value.includes(field) || validateAllFields.value)) {
     const errors = Object.keys(defaults.errors);
     const errorFound = validate.value.find(
       error =>
@@ -152,6 +154,7 @@ function inputError(field) {
     else if (errorFound)
       return t(`errors.${errorFound.keyword}`, [errorFound?.params.limit]);
   }
+  return false;
 }
 
 function handleReset() {
@@ -347,17 +350,18 @@ watchEffect(() => {
       <RowLoadingBlock v-if="!loaded" />
       <template v-else>
         <Block :title="$t('settings.profile')">
-          <div class="mb-2">
-            <UiInput v-model="form.name" :error="inputError('name')">
+          <div class="space-y-2 mb-2">
+            <UiInput v-model="form.name" :error="inputError('name')" @blur="visitedFields.push('name')">
               <template v-slot:label>{{ $t(`settings.name`) }}*</template>
             </UiInput>
-            <UiInput v-model="form.about" :error="inputError('about')">
+            <UiInput v-model="form.about" :error="inputError('about')" @blur="visitedFields.push('about')">
               <template v-slot:label> {{ $t(`settings.about`) }} </template>
             </UiInput>
             <UiInput
               v-model="form.avatar"
               placeholder="e.g. https://example.com/space.png"
               :error="inputError('avatar')"
+              @blur="visitedFields.push('avatar')"
             >
               <template v-slot:label>
                 {{ $t(`settings.avatar`) }}
@@ -375,6 +379,7 @@ watchEffect(() => {
             <UiInput
               @click="modalNetworksOpen = true"
               :error="inputError('network')"
+              @blur="visitedFields.push('network')"
             >
               <template v-slot:selected>
                 {{
@@ -399,6 +404,7 @@ watchEffect(() => {
               v-model="form.symbol"
               placeholder="e.g. BAL"
               :error="inputError('symbol')"
+              @blur="visitedFields.push('symbol')"
             >
               <template v-slot:label> {{ $t(`settings.symbol`) }}* </template>
             </UiInput>
@@ -406,6 +412,7 @@ watchEffect(() => {
               v-model="form.twitter"
               placeholder="e.g. elonmusk"
               :error="inputError('twitter')"
+              @blur="visitedFields.push('twitter')"
             >
               <template v-slot:label>
                 <Icon name="twitter" />
@@ -415,6 +422,7 @@ watchEffect(() => {
               v-model="form.github"
               placeholder="e.g. vbuterin"
               :error="inputError('github')"
+              @blur="visitedFields.push('github')"
             >
               <template v-slot:label>
                 <Icon name="github" />
@@ -424,6 +432,7 @@ watchEffect(() => {
               v-model="form.terms"
               placeholder="e.g. https://example.com/terms"
               :error="inputError('terms')"
+              @blur="visitedFields.push('terms')"
             >
               <template v-slot:label> {{ $t(`settings.terms`) }} </template>
             </UiInput>
@@ -434,32 +443,35 @@ watchEffect(() => {
           </div>
         </Block>
         <Block :title="$t('settings.customDomain')">
-          <UiInput
-            v-model="form.domain"
-            placeholder="e.g. vote.balancer.fi"
-            :error="inputError('domain')"
-          >
-            <template v-slot:label>
-              {{ $t('settings.domain') }}
-            </template>
-            <template v-slot:info>
-              <a
-                class="flex items-center -mr-1"
-                target="_blank"
-                href="https://docs.snapshot.org/spaces/add-custom-domain"
-              >
-                <Icon name="info" size="24" class="text-color" />
-              </a>
-            </template>
-          </UiInput>
-          <UiInput @click="modalSkinsOpen = true" :error="inputError('skin')">
-            <template v-slot:selected>
-              {{ form.skin ? form.skin : $t('defaultSkin') }}
-            </template>
-            <template v-slot:label>
-              {{ $t(`settings.skin`) }}
-            </template>
-          </UiInput>
+          <div class="space-y-2">
+            <UiInput
+              v-model="form.domain"
+              placeholder="e.g. vote.balancer.fi"
+              :error="inputError('domain')"
+              @blur="visitedFields.push('domain')"
+            >
+              <template v-slot:label>
+                {{ $t('settings.domain') }}
+              </template>
+              <template v-slot:info>
+                <a
+                  class="flex items-center -mr-1"
+                  target="_blank"
+                  href="https://docs.snapshot.org/spaces/add-custom-domain"
+                >
+                  <Icon name="info" size="24" class="text-color" />
+                </a>
+              </template>
+            </UiInput>
+            <UiInput @click="modalSkinsOpen = true" :error="inputError('skin')">
+              <template v-slot:selected>
+                {{ form.skin ? form.skin : $t('defaultSkin') }}
+              </template>
+              <template v-slot:label>
+                {{ $t(`settings.skin`) }}
+              </template>
+            </UiInput>
+          </div>
         </Block>
         <Block :title="$t('settings.admins')" v-if="isOwner">
           <Block
@@ -532,7 +544,7 @@ watchEffect(() => {
               />
             </UiButton>
           </div>
-          <template v-else>
+          <div v-else class="space-y-2">
             <UiInput
               @click="modalValidationOpen = true"
               :error="inputError('settings.validation')"
@@ -555,65 +567,67 @@ watchEffect(() => {
                 }}</template>
               </UiInput>
             </div>
-          </template>
+          </div>
         </Block>
         <Block :title="$t('settings.voting')">
-          <UiInput v-model="votingDelay" :number="true" placeholder="e.g. 1">
-            <template v-slot:label>
-              {{ $t('settings.votingDelay') }}
-            </template>
-            <template v-slot:info>
-              <select
-                v-model="delayUnit"
-                class="input text-center mr-[6px] ml-2"
-                required
-              >
-                <option value="h" selected>hours</option>
-                <option value="d">days</option>
-              </select>
-            </template>
-          </UiInput>
-          <UiInput v-model="votingPeriod" :number="true" placeholder="e.g. 5">
-            <template v-slot:label>
-              {{ $t('settings.votingPeriod') }}
-            </template>
-            <template v-slot:info>
-              <select
-                v-model="periodUnit"
-                class="input text-center mr-[6px] ml-2"
-                required
-              >
-                <option value="h" selected>hours</option>
-                <option value="d">days</option>
-              </select>
-            </template>
-          </UiInput>
-          <UiInput
-            v-model="form.voting.quorum"
-            :number="true"
-            placeholder="1000"
-          >
-            <template v-slot:label>
-              {{ $t('settings.quorum') }}
-            </template>
-          </UiInput>
-          <UiInput>
-            <template v-slot:label>
-              {{ $t('settings.type') }}
-            </template>
-            <template v-slot:selected>
-              <div @click="modalVotingTypeOpen = true" class="w-full">
-                {{
-                  form.voting?.type
-                    ? $t(`voting.${form.voting?.type}`)
-                    : $t('settings.anyType')
-                }}
-              </div>
-            </template>
-          </UiInput>
-          <div class="flex items-center space-x-2 pr-2">
-            <Checkbox v-model="form.voting.hideAbstain" />
-            <span>{{ $t('settings.hideAbstain') }}</span>
+          <div class="space-y-2">
+            <UiInput v-model="votingDelay" :number="true" placeholder="e.g. 1">
+              <template v-slot:label>
+                {{ $t('settings.votingDelay') }}
+              </template>
+              <template v-slot:info>
+                <select
+                  v-model="delayUnit"
+                  class="input text-center mr-[6px] ml-2"
+                  required
+                >
+                  <option value="h" selected>hours</option>
+                  <option value="d">days</option>
+                </select>
+              </template>
+            </UiInput>
+            <UiInput v-model="votingPeriod" :number="true" placeholder="e.g. 5">
+              <template v-slot:label>
+                {{ $t('settings.votingPeriod') }}
+              </template>
+              <template v-slot:info>
+                <select
+                  v-model="periodUnit"
+                  class="input text-center mr-[6px] ml-2"
+                  required
+                >
+                  <option value="h" selected>hours</option>
+                  <option value="d">days</option>
+                </select>
+              </template>
+            </UiInput>
+            <UiInput
+              v-model="form.voting.quorum"
+              :number="true"
+              placeholder="1000"
+            >
+              <template v-slot:label>
+                {{ $t('settings.quorum') }}
+              </template>
+            </UiInput>
+            <UiInput>
+              <template v-slot:label>
+                {{ $t('settings.type') }}
+              </template>
+              <template v-slot:selected>
+                <div @click="modalVotingTypeOpen = true" class="w-full">
+                  {{
+                    form.voting?.type
+                      ? $t(`voting.${form.voting?.type}`)
+                      : $t('settings.anyType')
+                  }}
+                </div>
+              </template>
+            </UiInput>
+            <div class="flex items-center space-x-2 pr-2">
+              <Checkbox v-model="form.voting.hideAbstain" />
+              <span>{{ $t('settings.hideAbstain') }}</span>
+            </div>
           </div>
         </Block>
         <Block :title="$t('plugins')">
