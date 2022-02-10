@@ -56,7 +56,7 @@ const nameInput = ref(null);
 const passValidation = ref([true]);
 const validationLoading = ref(false);
 const loadingSnapshot = ref(true);
-const chooseStartDate = ref(false);
+const scheduleProposal = ref(false);
 const periodSelectorDays = ref(3);
 const periodSelectorHours = ref(0);
 const periodSelectorMinutes = ref(0);
@@ -64,6 +64,11 @@ const periodSelectorMinutes = ref(0);
 const proposal = computed(() =>
   Object.assign(form.value, { choices: choices.value })
 );
+
+// Update form start date when toggeling schedule proposal
+watch(scheduleProposal, () => {
+  form.value.start = parseInt((Date.now() / 1e3).toFixed());
+});
 
 // Check if account passes space validation
 watch(
@@ -301,6 +306,14 @@ function selectStartDate() {
   modalDateSelectOpen.value = true;
   selectedDate.value = 'start';
 }
+
+import { usePlugins } from '@/composables/usePlugins';
+
+// Check if has plugins than can be confirgured on proposal creation
+const { getPluginComponents } = usePlugins();
+const createPluginComponents = computed(() =>
+  getPluginComponents('Create', Object.keys(props.space?.plugins))
+);
 </script>
 
 <template>
@@ -494,11 +507,11 @@ function selectStartDate() {
               class="flex items-center space-x-2 pr-2 mb-1"
               v-if="!space.voting?.delay"
             >
-              <Checkbox v-model="chooseStartDate" />
+              <Checkbox v-model="scheduleProposal" />
               <span>{{ $t('create.schedule') }}</span>
             </div>
             <UiInput
-              v-if="chooseStartDate || space.voting?.delay"
+              v-if="scheduleProposal || space.voting?.delay"
               class="mb-3"
               @click="selectStartDate"
               :disabled="!!space.voting?.delay"
@@ -575,8 +588,12 @@ function selectStartDate() {
         >
           {{ $t('back') }}
         </UiButton>
+
         <UiButton
-          v-if="currentStep === 3"
+          v-if="
+            currentStep === 3 ||
+            (!createPluginComponents.length && currentStep === 2)
+          "
           @click="
             !termsAccepted && space.terms
               ? (modalTermsOpen = true)
