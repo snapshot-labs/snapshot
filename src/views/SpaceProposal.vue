@@ -455,7 +455,7 @@ const truncateMarkdownBody = computed(() => {
           </div>
         </div>
       </Block>
-      <BlockResultsError v-if="loadingResultsFailed" />
+      <BlockResultsError :isAdmin="isAdmin" v-if="loadingResultsFailed" />
       <BlockResults
         v-else
         :id="id"
