@@ -5,6 +5,9 @@
   "backToHome": "Inicio",
   "actions": "Acciones",
   "results": "Resultados",
+  "resultsError": "Results could not be calculated. This is often due to a misconfigured strategy or a scaling issue in a smart contract.",
+  "vpError": "Your voting power could not be calculated. This is often due to a misconfigured strategy or a scaling issue in a smart contract.",
+  "getHelp": "Get help",
   "currentResults": "Resultados actuales",
   "reset": "Restablecer",
   "save": "Guardar",
@@ -118,6 +121,7 @@
   "joinedSpaces": "Espacios a los que te has unido",
   "joinSpaces": "Únete a los espacios",
   "setDelegationToSpace": "Limit delegation to a specific space",
+  "theCurrentNetwork": "the current network",
   "errors": {
     "required": "Este campo es obligatorio",
     "minLength": "La cantidad mínima es {0}",
@@ -165,7 +169,8 @@
     "delegateToSelf": "You cannot delegate to yourself",
     "delegateToSelfAddress": "You cannot delegate to your own ENS address",
     "noValidSpaceId": "Not a valid space ID",
-    "noDelegationsAndDelegates": "Can't find your delegations and delegates? Make sure you are connected to the correct network."
+    "noDelegationsAndDelegates": "Can't find your delegations and delegates? Make sure you are connected to the correct network.",
+    "delegateNotSupported": "Delegation is currently not supported for {network}."
   },
   "proposal": {
     "castVote": "Emite tu voto",

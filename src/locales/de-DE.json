@@ -5,6 +5,9 @@
   "backToHome": "Startseite",
   "actions": "Aktionen",
   "results": "Resultate",
+  "resultsError": "Die Ergebnisse konnten nicht berechnet werden. Dies liegt oft an einer falsch konfigurierten Strategie oder einem Skalierungsproblem in einem Smart Contract.",
+  "vpError": "Dein Stimmrecht konnte nicht berechnet werden. Das liegt oft an einer falsch konfigurierten Strategie oder einem Skalierungsproblem in einem Smart Contract.",
+  "getHelp": "Hilfe",
   "currentResults": "Aktuelle Ergebnisse",
   "reset": "Zurücksetzen",
   "save": "Speichern",
@@ -93,9 +96,9 @@
   "noSpacesJoined": "Hoppla, du bist noch keinem Bereich beigetreten",
   "addFavorites": "Favoriten hinzufügen",
   "createdBy": "Von {0}",
-  "startIn": "beginnt {0}",
+  "startIn": "start {0}",
   "endIn": "ende {1}",
-  "proposalTimeLeft": "{0} verbleibend",
+  "proposalTimeLeft": "{0} left",
   "endedAgo": "ended {0}",
   "proposalBy": "von {0}",
   "endDate": "ende {0}",
@@ -118,6 +121,7 @@
   "joinedSpaces": "Beigetretene Bereiche",
   "joinSpaces": "Bereiche beitreten",
   "setDelegationToSpace": "Delegation auf einen bestimmten Space beschränken",
+  "theCurrentNetwork": "aktuelles Netzwerk",
   "errors": {
     "required": "Dieses Feld ist ein Pflichtfeld",
     "minLength": "Mindestlänge ist {0}",
@@ -165,7 +169,8 @@
     "delegateToSelf": "Du kannst nicht an dich selbst delegieren",
     "delegateToSelfAddress": "Du kannst nicht an deine eigene ENS Adresse delegieren",
     "noValidSpaceId": "Keine gültige Space ID",
-    "noDelegationsAndDelegates": "Du kannst keine Delegationen und Delegierten finden? Stelle sicher, dass du mit dem richtigen Netzwerk verbunden bist."
+    "noDelegationsAndDelegates": "Du kannst keine Delegationen und Delegierten finden? Stelle sicher, dass du mit dem richtigen Netzwerk verbunden bist.",
+    "delegateNotSupported": "Auf {network} wird Delegation derzeit nicht unterstützt."
   },
   "proposal": {
     "castVote": "Deine Stimme abgeben",
@@ -179,8 +184,8 @@
     "new": "Neuer Vorschlag",
     "noProposals": "Es gibt noch keine Vorschläge!",
     "createProposal": "Create proposal",
-    "showMore": "Show more",
-    "showLess": "Show less",
+    "showMore": "Mehr",
+    "showLess": "Weniger",
     "states": {
       "all": "Alle",
       "core": "Kern",
@@ -343,7 +348,7 @@
       "switchChain": "Switch your wallet to {0} to request execution",
       "question": "Ist dieser Vorschlag durchgegangen und erfüllt er die",
       "criteria": "Akzeptanzkriterien?",
-      "proposalPassed": "Did the proposal pass?"
+      "proposalPassed": "Wurde der Vorschlag angenommen?"
     }
   },
   "poap": {
@@ -411,12 +416,12 @@
     "text": "Receive notifications every time a new proposal is created or ends"
   },
   "timeUnits": {
-    "second": "1 Sekunde | {n} Sekunden",
-    "minute": "1 Minute | {n} Minuten",
-    "hour": "1 Stunde | {n} Stunden",
-    "day": "1 Tag | {n} Tage",
-    "week": "1 Woche | {n} Wochen",
-    "month": "1 Monat | {n} Monate",
-    "year": "1 Jahr | {n} Jahre"
+    "second": "1 second | {n} seconds",
+    "minute": "1 minute | {n} minutes",
+    "hour": "1 hour | {n} hours",
+    "day": "1 day | {n} days",
+    "week": "1 week | {n} weeks",
+    "month": "1 month | {n} months",
+    "year": "1 year | {n} years"
   }
 }
