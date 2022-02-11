@@ -7,7 +7,7 @@ import { useProfiles } from '@/composables/useProfiles';
 import { useNotifications } from '@/composables/useNotifications';
 import { useScrollMonitor } from '@/composables/useScrollMonitor';
 import { signMessage } from '@snapshot-labs/snapshot.js/src/utils/web3';
-import { useI18n } from 'vue-i18n';
+import { useI18n } from '@/composables/useI18n';
 const { t } = useI18n();
 const props = defineProps({
   proposalId: String,

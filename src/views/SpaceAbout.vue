@@ -3,7 +3,7 @@ import { computed, watchEffect } from 'vue';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { useProfiles } from '@/composables/useProfiles';
 import { getUrl } from '@snapshot-labs/snapshot.js/src/utils';
-import { setPageTitle } from '@/helpers/utils';
+import { useI18n } from '@/composables/useI18n';
 import { useIntl } from '@/composables/useIntl';
 
 const props = defineProps({
@@ -15,6 +15,7 @@ const props = defineProps({
 const network = computed(() => networks[props.space?.network]);
 
 const { formatCompactNumber } = useIntl();
+const { setPageTitle } = useI18n();
 const { profiles, loadProfiles } = useProfiles();
 
 watchEffect(() => {

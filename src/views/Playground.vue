@@ -5,10 +5,9 @@ import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import { getBlockNumber } from '@snapshot-labs/snapshot.js/src/utils/web3';
 import { getScores } from '@snapshot-labs/snapshot.js/src/utils';
-import { useI18n } from 'vue-i18n';
+import { useI18n } from '@/composables/useI18n';
 import { useCopy } from '@/composables/useCopy';
 import { decode, encode } from '@/helpers/b64';
-import { setPageTitle } from '@/helpers/utils';
 import { useIntl } from '@/composables/useIntl';
 import { useStrategies } from '@/composables/useStrategies';
 
@@ -22,7 +21,7 @@ const router = useRouter();
 const route = useRoute();
 const { query: queryParams } = useRoute();
 const { copyToClipboard } = useCopy();
-const { t } = useI18n();
+const { t, setPageTitle } = useI18n();
 const { formatCompactNumber } = useIntl();
 const {
   getExtendedStrategy,
