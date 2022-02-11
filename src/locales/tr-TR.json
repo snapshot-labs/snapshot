@@ -5,6 +5,9 @@
   "backToHome": "Anasayfa",
   "actions": "İşlemler",
   "results": "Sonuçlar",
+  "resultsError": "Results could not be calculated. This is often due to a misconfigured strategy or a scaling issue in a smart contract.",
+  "vpError": "Your voting power could not be calculated. This is often due to a misconfigured strategy or a scaling issue in a smart contract.",
+  "getHelp": "Get help",
   "currentResults": "Güncel Sonuçlar",
   "reset": "Sıfırla",
   "save": "Kaydet",
@@ -118,6 +121,7 @@
   "joinedSpaces": "Alana katıldın",
   "joinSpaces": "Alanlara katıl",
   "setDelegationToSpace": "Limit delegation to a specific space",
+  "theCurrentNetwork": "the current network",
   "errors": {
     "required": "Bu alan zorunludur",
     "minLength": "Minimum uzunluk: {0}",
@@ -165,7 +169,8 @@
     "delegateToSelf": "You cannot delegate to yourself",
     "delegateToSelfAddress": "You cannot delegate to your own ENS address",
     "noValidSpaceId": "Not a valid space ID",
-    "noDelegationsAndDelegates": "Can't find your delegations and delegates? Make sure you are connected to the correct network."
+    "noDelegationsAndDelegates": "Can't find your delegations and delegates? Make sure you are connected to the correct network.",
+    "delegateNotSupported": "Delegation is currently not supported for {network}."
   },
   "proposal": {
     "castVote": "Oyunu kullan",
