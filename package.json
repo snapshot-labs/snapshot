@@ -7,7 +7,9 @@
     "build": "vite build",
     "lint": "eslint \"./src/*/**/*.{ts,vue,json}\" --fix",
     "postinstall": "patch-package && husky install",
-    "init-submodules": "git submodule update --init"
+    "init-submodules": "git submodule update --init",
+    "test": "vitest",
+    "coverage": "vitest run --coverage"
   },
   "dependencies": {
     "@apollo/client": "^3.5.8",
@@ -54,6 +56,7 @@
     "@vue/eslint-config-prettier": "^6.0.0",
     "@vue/eslint-config-typescript": "^7.0.0",
     "autoprefixer": "^10.4.2",
+    "c8": "^7.11.0",
     "eslint-plugin-prettier": "^3.4.0",
     "eslint-plugin-vue": "^7.15.1",
     "husky": "^7.0.4",
@@ -64,7 +67,8 @@
     "sass-loader": "^8.0.2",
     "tailwindcss": "^3.0.19",
     "unplugin-vue-components": "^0.17.18",
-    "vite": "^2.8.0"
+    "vite": "^2.8.0",
+    "vitest": "^0.3.2"
   },
   "resolutions": {
     "ansi-regex": "^5.0.1",
