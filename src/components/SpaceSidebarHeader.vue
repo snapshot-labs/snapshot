@@ -22,7 +22,7 @@ const {
   subscriptions
 } = useSpaceSubscription(props.spaceId);
 
-const { isFollowing } = useFollowSpace(props.space);
+const { isFollowing } = useFollowSpace(props.spaceId);
 
 const notificationIcon = ref('notifications-off');
 
