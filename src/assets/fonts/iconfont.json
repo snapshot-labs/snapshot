@@ -6,6 +6,13 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "7239657",
+      "name": "calendar",
+      "font_class": "calendar",
+      "unicode": "e71f",
+      "unicode_decimal": 59167
+    },
+    {
       "icon_id": "27154983",
       "name": "draggable",
       "font_class": "draggable",

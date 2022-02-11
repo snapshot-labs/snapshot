@@ -18,7 +18,6 @@ import { useClient } from '@/composables/useClient';
 import { useStore } from '@/composables/useStore';
 import { setPageTitle } from '@/helpers/utils';
 import { useIntl } from '@/composables/useIntl';
-import { calcToSeconds } from '@/helpers/utils';
 
 const props = defineProps({
   spaceId: String,
@@ -56,19 +55,10 @@ const nameInput = ref(null);
 const passValidation = ref([true]);
 const validationLoading = ref(false);
 const loadingSnapshot = ref(true);
-const scheduleProposal = ref(false);
-const periodSelectorDays = ref(3);
-const periodSelectorHours = ref(0);
-const periodSelectorMinutes = ref(0);
 
 const proposal = computed(() =>
   Object.assign(form.value, { choices: choices.value })
 );
-
-// Update form start date when toggeling schedule proposal
-watch(scheduleProposal, () => {
-  form.value.start = parseInt((Date.now() / 1e3).toFixed());
-});
 
 // Check if account passes space validation
 watch(
@@ -93,13 +83,6 @@ watch(
   { immediate: true }
 );
 
-const votingPeriodSeconds = computed(
-  () =>
-    calcToSeconds(periodSelectorDays.value, 'd') +
-    calcToSeconds(periodSelectorHours.value, 'h') +
-    calcToSeconds(periodSelectorMinutes.value, 'm')
-);
-
 const dateStart = computed(() => {
   return props.space?.voting?.delay
     ? parseInt((Date.now() / 1e3).toFixed()) + props.space.voting.delay
@@ -109,7 +92,7 @@ const dateStart = computed(() => {
 const dateEnd = computed(() => {
   return props.space?.voting?.period
     ? dateStart.value + props.space.voting.period
-    : form.value.start + votingPeriodSeconds.value;
+    : form.value.start + 259200;
 });
 
 const isValid = computed(() => {
@@ -140,9 +123,12 @@ function addChoice(num) {
   }
 }
 
+const userSetStartDate = ref(false);
+
 function setDate(ts) {
   if (selectedDate.value) {
     form.value[selectedDate.value] = ts;
+    userSetStartDate.value = true;
   }
 }
 
@@ -199,15 +185,6 @@ async function loadProposal() {
     snapshot: proposal.snapshot,
     type: proposal.type
   };
-
-  // Set the period selectors days, hours and minutes
-  const seconds = proposal.end - proposal.start;
-  periodSelectorDays.value =
-    Math.floor(seconds / (3600 * 24)) <= 14
-      ? Math.floor(seconds / (3600 * 24))
-      : 14;
-  periodSelectorHours.value = Math.floor((seconds % (3600 * 24)) / 3600);
-  periodSelectorMinutes.value = Math.floor((seconds % 3600) / 60);
 
   const { network, strategies, plugins } = proposal;
   form.value.metadata = { network, strategies, plugins };
@@ -283,12 +260,19 @@ watch(preview, () => {
   window.scrollTo(0, 0);
 });
 
-function selectStartDate() {
+function selectDate(date) {
   if (props.space.voting?.delay) return;
+  if (props.space.voting?.period) return;
 
+  selectedDate.value = date;
   modalDateSelectOpen.value = true;
-  selectedDate.value = 'start';
 }
+
+// Update form start date when going to step two
+watch(currentStep, () => {
+  if (!userSetStartDate.value)
+    form.value.start = parseInt((Date.now() / 1e3).toFixed());
+});
 
 import { usePlugins } from '@/composables/usePlugins';
 
@@ -482,64 +466,62 @@ function nextStep() {
         </Block>
 
         <Block :title="$t('create.period')">
-          <div
-            v-if="!space.voting?.period"
-            class="flex space-x-[18px] mb-3"
-            :class="{ 'mb-1': !space.voting?.delay }"
-          >
-            <BaseNumberSelector
-              v-model="periodSelectorDays"
-              :label="$t('create.days')"
-              :dropdownRange="15"
-            />
+          <div class="flex space-x-3">
+            <UiInput
+              @click="selectDate('start')"
+              :disabled="!!space.voting?.delay"
+              v-tippy="{
+                content: !!space.voting?.delay
+                  ? $t('create.delayEnforced')
+                  : null
+              }"
+            >
+              <template v-slot:selected>
+                <span
+                  v-text="
+                    Math.round(dateStart / 10) ===
+                    Math.round(parseInt((Date.now() / 1e3).toFixed()) / 10)
+                      ? $t('create.now')
+                      : $d(dateStart * 1e3, 'short', 'en-US')
+                  "
+                />
+              </template>
+              <template v-slot:label>
+                {{ $t(`create.start`) }}
+              </template>
+              <template v-slot:info>
+                <Icon
+                  name="calendar"
+                  size="18"
+                  class="flex items-center text-skin-text"
+                />
+              </template>
+            </UiInput>
 
-            <BaseNumberSelector
-              v-model="periodSelectorHours"
-              :label="$t('create.hours')"
-              :dropdownRange="24"
-            />
-
-            <BaseNumberSelector
-              v-model="periodSelectorMinutes"
-              :label="$t('create.minutes')"
-              :dropdownRange="60"
-            />
+            <UiInput
+              @click="selectDate('end')"
+              :disabled="space.voting?.period"
+              v-tippy="{
+                content: space.voting?.period
+                  ? $t('create.periodEnforced')
+                  : null
+              }"
+            >
+              <template v-slot:selected>
+                <span v-text="$d(dateEnd * 1e3, 'short', 'en-US')" />
+              </template>
+              <template v-slot:label>
+                {{ $t(`create.end`) }}
+              </template>
+              <template v-slot:info>
+                <Icon
+                  name="calendar"
+                  size="18"
+                  class="flex items-center text-skin-text"
+                />
+              </template>
+            </UiInput>
           </div>
-          <div
-            class="flex items-center space-x-2 pr-2 mb-1"
-            v-if="!space.voting?.delay"
-          >
-            <Checkbox v-model="scheduleProposal" />
-            <span>{{ $t('create.schedule') }}</span>
-          </div>
-          <UiInput
-            v-if="scheduleProposal || space.voting?.delay"
-            class="mb-3"
-            @click="selectStartDate"
-            :disabled="!!space.voting?.delay"
-            v-tippy="{
-              content: !!space.voting?.delay ? $t('create.delayEnforced') : null
-            }"
-          >
-            <template v-slot:selected>
-              <span v-text="$d(dateStart * 1e3, 'short', 'en-US')" />
-            </template>
-            <template v-slot:label> {{ $t(`create.start`) }} </template>
-          </UiInput>
-
-          <UiInput
-            v-if="space.voting?.period"
-            class="mb-3"
-            disabled
-            v-tippy="{
-              content: $t('create.periodEnforced')
-            }"
-          >
-            <template v-slot:selected>
-              <span v-text="$d(dateEnd * 1e3, 'short', 'en-US')" />
-            </template>
-            <template v-slot:label> {{ $t(`create.end`) }} </template>
-          </UiInput>
         </Block>
 
         <Block v-if="$route.query.snapshot" :title="$t('snapshot')">
@@ -549,7 +531,7 @@ function nextStep() {
             :placeholder="$t('create.snapshotBlock')"
           >
             <template v-slot:label>
-              {{ $t('Block number') }}
+              {{ $t('snapshot') }}
             </template>
           </UiInput>
         </Block>
@@ -606,7 +588,7 @@ function nextStep() {
           v-else
           @click="web3Account ? nextStep() : (modalAccountOpen = true)"
           class="block w-full"
-          :disabled="!stepIsValid && !!web3Account"
+          :disabled="(!stepIsValid && !!web3Account) || web3.authLoading"
           primary
         >
           {{ web3Account ? $t('create.continue') : $t('connectWallet') }}

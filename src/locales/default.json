@@ -161,6 +161,7 @@
     "periodEnforced": "Period is enforced by the space",
     "edit": "Edit",
     "continue": "Continue",
+    "now": "Now",
     "validationWarning": {
       "basic": {
         "member": "You need to be an author of the space in order to submit a proposal.",
