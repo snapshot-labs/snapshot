@@ -297,6 +297,13 @@ const { getPluginComponents } = usePlugins();
 const createPluginComponents = computed(() =>
   getPluginComponents('Create', Object.keys(props.space?.plugins ?? {}))
 );
+
+function nextStep() {
+  currentStep.value++;
+  // router.push({
+  //   query: { step: currentStep.value }
+  // });
+}
 </script>
 
 <template>
@@ -444,7 +451,12 @@ const createPluginComponents = computed(() =>
                     :focusOnMount="index === 0"
                   >
                     <template v-slot:label>
-                      {{ $tc('create.choice', [index + 1]) }}
+                      <div
+                        class="flex items-center cursor-grab active:cursor-grabbing"
+                      >
+                        <Icon name="draggable" size="16" class="mr-[12px]" />
+                        {{ $tc('create.choice', [index + 1]) }}
+                      </div>
                     </template>
                     <template v-slot:info>
                       <span
@@ -592,7 +604,7 @@ const createPluginComponents = computed(() =>
         </UiButton>
         <UiButton
           v-else
-          @click="web3Account ? currentStep++ : (modalAccountOpen = true)"
+          @click="web3Account ? nextStep() : (modalAccountOpen = true)"
           class="block w-full"
           :disabled="!stepIsValid && !!web3Account"
           primary
