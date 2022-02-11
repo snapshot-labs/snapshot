@@ -10,14 +10,13 @@
     >
       <slot name="content-right" />
     </div>
-    <div
-      v-if="$slots['content-left']"
-      class="w-full float-left pr-0 lg:w-8/12 lg:pr-5"
-    >
-      <slot name="content-left" />
-    </div>
-    <div v-if="$slots['sidebar-right']" class="w-full lg:w-4/12 float-left">
-      <slot name="sidebar-right" />
+    <div class="md:flex">
+      <div v-if="$slots['content-left']" class="w-full lg:w-8/12 lg:pr-5">
+        <slot name="content-left" />
+      </div>
+      <div v-if="$slots['sidebar-right']" class="w-full lg:w-4/12">
+        <slot name="sidebar-right" />
+      </div>
     </div>
   </Container>
 </template>
