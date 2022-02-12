@@ -469,7 +469,11 @@ const createPluginComponents = computed(() =>
           </div>
         </Block>
 
-        <Block :title="$t('create.period')">
+        <Block
+          :title="$t('create.period')"
+          icon="info"
+          :iconTooltip="$t('create.votingPeriodExplainer')"
+        >
           <div class="flex space-x-3">
             <UiInput
               @click="selectDate('start')"
