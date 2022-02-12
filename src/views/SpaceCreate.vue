@@ -91,6 +91,8 @@ const dateStart = computed(() => {
 const dateEnd = computed(() => {
   return props.space?.voting?.period
     ? dateStart.value + props.space.voting.period
+    : form.value.end
+    ? form.value.end
     : form.value.start + 259200;
 });
 
@@ -176,11 +178,14 @@ async function loadProposal() {
     'proposal'
   );
 
+  userSetStartDate.value = true;
+
   form.value = {
     name: proposal.title,
     body: proposal.body,
     choices: proposal.choices,
     start: proposal.start,
+    end: proposal.end,
     snapshot: proposal.snapshot,
     type: proposal.type
   };
