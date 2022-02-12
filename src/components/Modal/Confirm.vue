@@ -1,6 +1,6 @@
 <script setup>
 import { computed, inject, ref, watch } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { useI18n } from '@/composables/useI18n';
 import { shorten, getChoiceString, explorerUrl } from '@/helpers/utils';
 import { useClient } from '@/composables/useClient';
 import { useIntl } from '@/composables/useIntl';

@@ -1,9 +1,9 @@
 <script setup>
 import { ref, computed, watch, onMounted, inject, watchEffect } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { useI18n } from 'vue-i18n';
+import { useI18n } from '@/composables/useI18n';
 import { getProposal, getResults, getProposalVotes } from '@/helpers/snapshot';
-import { setPageTitle, explorerUrl, getIpfsUrl } from '@/helpers/utils';
+import { explorerUrl, getIpfsUrl } from '@/helpers/utils';
 import { useModal } from '@/composables/useModal';
 import { useTerms } from '@/composables/useTerms';
 import { useProfiles } from '@/composables/useProfiles';
@@ -24,7 +24,7 @@ const props = defineProps({
 const route = useRoute();
 const router = useRouter();
 const { domain } = useDomain();
-const { t } = useI18n();
+const { t, setPageTitle } = useI18n();
 const { web3, web3Account } = useWeb3();
 const { send, clientLoading } = useClient();
 const { store } = useStore();
