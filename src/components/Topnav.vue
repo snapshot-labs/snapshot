@@ -25,7 +25,11 @@ async function handleLogin(connector) {
 </script>
 
 <template>
-  <Sticky>
+  <div class="h-[78px]" />
+  <div
+    class="fixed w-screen top-0 left-0 z-20"
+    :class="{ 'sm:ml-[67px] sm:w-[calc(100vw-67px)]': !domain }"
+  >
     <div
       v-if="env === 'develop'"
       class="p-3 text-center bg-blue"
@@ -118,5 +122,5 @@ async function handleLogin(connector) {
         @login="handleLogin"
       />
     </teleport>
-  </Sticky>
+  </div>
 </template>
