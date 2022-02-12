@@ -12,6 +12,7 @@ const { web3Account } = useWeb3();
 const vp = ref(0);
 const vpByStrategy = ref([]);
 const vpLoading = ref(false);
+const vpLoadingFailed = ref(false);
 const vpLoaded = ref(false);
 
 const props = defineProps({
@@ -54,15 +55,22 @@ watch(
   async () => {
     if (props.open === false) return;
     vpLoading.value = true;
-    const response = await getPower(
-      props.space,
-      web3Account.value,
-      props.proposal
-    );
-    vp.value = response.totalScore;
-    vpByStrategy.value = response.scores;
-    vpLoading.value = false;
-    vpLoaded.value = true;
+    vpLoadingFailed.value = false;
+    try {
+      const response = await getPower(
+        props.space,
+        web3Account.value,
+        props.proposal
+      );
+      vp.value = response.totalScore;
+      vpByStrategy.value = response.scores;
+    } catch (e) {
+      vpLoadingFailed.value = true;
+      console.log(e);
+    } finally {
+      vpLoaded.value = true;
+      vpLoading.value = false;
+    }
   }
 );
 </script>
@@ -110,8 +118,11 @@ watch(
         </div>
         <div class="flex">
           <span v-text="$t('votingPower')" class="flex-auto text-color mr-1" />
+          <span v-if="vpLoadingFailed" class="flex item-center">
+            <Icon name="warning" size="22" class="text-red" />
+          </span>
           <span
-            v-if="vpLoaded && !vpLoading"
+            v-else-if="vpLoaded && !vpLoading"
             v-tippy="{
               content: vpByStrategy
                 .map(
@@ -126,7 +137,7 @@ watch(
           </span>
           <span v-else><UiLoading /></span>
           <a
-            v-if="vp === 0 && vpLoaded && !vpLoading"
+            v-if="vp === 0 && vpLoaded && !vpLoading && !vpLoadingFailed"
             target="_blank"
             href="https://github.com/snapshot-labs/snapshot/discussions/1015#discussioncomment-1599447"
             class="inline-block ml-1"
@@ -134,6 +145,7 @@ watch(
             <Icon name="info" size="24" class="text-color" />
           </a>
         </div>
+        <div v-if="vpLoadingFailed" class="mt-3">{{ t('vpError') }}</div>
       </div>
     </div>
     <template v-slot:footer>
