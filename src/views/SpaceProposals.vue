@@ -1,7 +1,7 @@
 <script setup>
 import { watchEffect, computed, ref, watch } from 'vue';
 import { useStore } from '@/composables/useStore';
-import { setPageTitle } from '@/helpers/utils';
+import { useI18n } from '@/composables/useI18n';
 import { useInfiniteLoader } from '@/composables/useInfiniteLoader';
 import { useScrollMonitor } from '@/composables/useScrollMonitor';
 import { useApolloQuery } from '@/composables/useApolloQuery';
@@ -14,6 +14,7 @@ import { useWeb3 } from '@/composables/useWeb3';
 const props = defineProps({ space: Object, spaceId: String });
 
 const { store } = useStore();
+const { setPageTitle } = useI18n();
 
 const loading = ref(false);
 

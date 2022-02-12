@@ -13,7 +13,7 @@ import { useWeb3 } from '@/composables/useWeb3';
 import verified from '@/../snapshot-spaces/spaces/verified.json';
 import zipObject from 'lodash/zipObject';
 import { useStore } from '@/composables/useStore';
-import { setPageTitle } from '@/helpers/utils';
+import { useI18n } from '@/composables/useI18n';
 
 const { store } = useStore();
 
@@ -22,6 +22,7 @@ const loading = ref(false);
 const route = useRoute();
 const { followingSpaces, loadingFollows } = useFollowSpace();
 const { web3, web3Account } = useWeb3();
+const { setPageTitle } = useI18n();
 
 const spaces = computed(() => {
   const verifiedSpaces = Object.entries(verified)

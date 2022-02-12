@@ -2,7 +2,7 @@
 import { ref, watchEffect, computed, onMounted, inject } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import draggable from 'vuedraggable';
-import { useI18n } from 'vue-i18n';
+import { useI18n } from '@/composables/useI18n';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import { getBlockNumber } from '@snapshot-labs/snapshot.js/src/utils/web3';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
@@ -16,7 +16,6 @@ import { useApolloQuery } from '@/composables/useApolloQuery';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useClient } from '@/composables/useClient';
 import { useStore } from '@/composables/useStore';
-import { setPageTitle } from '@/helpers/utils';
 import { useIntl } from '@/composables/useIntl';
 
 const props = defineProps({
@@ -26,7 +25,7 @@ const props = defineProps({
 });
 
 const router = useRouter();
-const { t } = useI18n();
+const { t, setPageTitle } = useI18n();
 const { formatCompactNumber } = useIntl();
 const auth = getInstance();
 const { domain } = useDomain();
