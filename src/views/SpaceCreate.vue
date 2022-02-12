@@ -82,6 +82,21 @@ watch(
   { immediate: true }
 );
 
+const userSelectedDateStart = ref(false);
+const userSelectedDateEnd = ref(false);
+
+function setDate(ts) {
+  if (selectedDate.value) {
+    form.value[selectedDate.value] = ts;
+    if (selectedDate.value === 'start') {
+      userSelectedDateStart.value = true;
+    }
+    if (selectedDate.value === 'end') {
+      userSelectedDateEnd.value = true;
+    }
+  }
+}
+
 const dateStart = computed(() => {
   return props.space?.voting?.delay
     ? parseInt((Date.now() / 1e3).toFixed()) + props.space.voting.delay
@@ -91,9 +106,9 @@ const dateStart = computed(() => {
 const dateEnd = computed(() => {
   return props.space?.voting?.period
     ? dateStart.value + props.space.voting.period
-    : form.value.end
+    : userSelectedDateEnd.value
     ? form.value.end
-    : form.value.start + 259200;
+    : dateStart.value + 259200;
 });
 
 const isValid = computed(() => {
@@ -120,16 +135,7 @@ const disableChoiceEdit = computed(() => form.value.type === 'basic');
 
 function addChoice(num) {
   for (let i = 1; i <= num; i++) {
-    choices.value.push({ text: '' });
-  }
-}
-
-const userSetStartDate = ref(false);
-
-function setDate(ts) {
-  if (selectedDate.value) {
-    form.value[selectedDate.value] = ts;
-    userSetStartDate.value = true;
+    choices.value.push({ id: choices.value.length, text: '' });
   }
 }
 
@@ -178,7 +184,7 @@ async function loadProposal() {
     'proposal'
   );
 
-  userSetStartDate.value = true;
+  userSelectedDateEnd.value = true;
 
   form.value = {
     name: proposal.title,
@@ -265,16 +271,13 @@ watch(preview, () => {
 });
 
 function selectDate(date) {
-  if (props.space.voting?.delay) return;
-  if (props.space.voting?.period) return;
-
   selectedDate.value = date;
   modalDateSelectOpen.value = true;
 }
 
 // Update form start date when going to step two
 watch(currentStep, () => {
-  if (!userSetStartDate.value)
+  if (!userSelectedDateEnd.value)
     form.value.start = parseInt((Date.now() / 1e3).toFixed());
 });
 
@@ -285,13 +288,6 @@ const { getPluginComponents } = usePlugins();
 const createPluginComponents = computed(() =>
   getPluginComponents('Create', Object.keys(props.space?.plugins ?? {}))
 );
-
-function nextStep() {
-  currentStep.value++;
-  // router.push({
-  //   query: { step: currentStep.value }
-  // });
-}
 </script>
 
 <template>
@@ -310,9 +306,11 @@ function nextStep() {
       <!-- Shows when no wallet is connected and the space has any sort of validation set -->
       <BaseWarningBlock
         v-if="
-          (!web3Account && space?.validation?.params.minScore) ||
-          (!web3Account && space?.filters.minScore) ||
-          (!web3Account && space?.filters.onlyMembers)
+          (!web3Account &&
+            !web3.authLoading &&
+            space?.validation?.params.minScore) ||
+          (!web3Account && !web3.authLoading && space?.filters.minScore) ||
+          (!web3Account && !web3.authLoading && space?.filters.onlyMembers)
         "
         :routeObject="{ name: 'spaceAbout', params: { key: space.id } }"
       >
@@ -428,7 +426,9 @@ function nextStep() {
                 }"
                 v-bind="{ animation: 200 }"
                 :disabled="disableChoiceEdit"
+                item-key="id"
               >
+                >
                 <template #item="{ element, index }">
                   <UiInput
                     v-model="element.text"
@@ -590,7 +590,7 @@ function nextStep() {
         </UiButton>
         <UiButton
           v-else
-          @click="web3Account ? nextStep() : (modalAccountOpen = true)"
+          @click="web3Account ? currentStep++ : (modalAccountOpen = true)"
           class="block w-full"
           :disabled="(!stepIsValid && !!web3Account) || web3.authLoading"
           primary
