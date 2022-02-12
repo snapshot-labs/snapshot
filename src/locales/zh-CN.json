@@ -5,6 +5,9 @@
   "backToHome": "主页",
   "actions": "操作",
   "results": "结果",
+  "resultsError": "无法计算结果。这通常是由于策略配置错误或智能合约的可伸缩性问题造成的。",
+  "vpError": "您的投票权无法计算。这通常是由于策略配置错误或智能合约的可伸缩性问题造成的。",
+  "getHelp": "获得帮助",
   "currentResults": "当前结果",
   "reset": "重置",
   "save": "保存",
@@ -118,6 +121,7 @@
   "joinedSpaces": "已加入的空间",
   "joinSpaces": "加入空间",
   "setDelegationToSpace": "将委托限制在一个指定空间内",
+  "theCurrentNetwork": "当前网络",
   "errors": {
     "required": "此项为必填项",
     "minLength": "最小长度为 {0}",
@@ -165,7 +169,8 @@
     "delegateToSelf": "不能将自己选为委托人",
     "delegateToSelfAddress": "您不能委托给您自己的ENS地址",
     "noValidSpaceId": "此空间ID无效",
-    "noDelegationsAndDelegates": "找不到您的委托人和代委托？请确保您已经连接到正确的网络。"
+    "noDelegationsAndDelegates": "找不到您的委托人和代委托？请确保您已经连接到正确的网络。",
+    "delegateNotSupported": "目前 {network} 不支持委托。"
   },
   "proposal": {
     "castVote": "投出您的票",

@@ -5,6 +5,9 @@
   "backToHome": "Nhà",
   "actions": "Hành động",
   "results": "Kết quả",
+  "resultsError": "Results could not be calculated. This is often due to a misconfigured strategy or a scaling issue in a smart contract.",
+  "vpError": "Your voting power could not be calculated. This is often due to a misconfigured strategy or a scaling issue in a smart contract.",
+  "getHelp": "Get help",
   "currentResults": "Kết quả hiện tại",
   "reset": "Cài lại",
   "save": "Lưu lại",
@@ -31,7 +34,7 @@
   "network": "Mạng",
   "networks": "Mạng",
   "skins": "Giao diện",
-  "members": "Chưa có thành viên | {count} thành viên | {count} thành viên",
+  "members": "Chưa có thành viên | {count} thành viên} | {count} thành viên",
   "editStrategy": "Chỉnh sửa chiến lược",
   "invalidProposals": "Đề xuất không hợp lệ",
   "account": "Tài khoản",
@@ -118,6 +121,7 @@
   "joinedSpaces": "Các nhóm đã tham gia",
   "joinSpaces": "Tham gia nhóm",
   "setDelegationToSpace": "Limit delegation to a specific space",
+  "theCurrentNetwork": "the current network",
   "errors": {
     "required": "Trường này là bắt buộc",
     "minLength": "Độ dài tối thiểu là {0}",
@@ -165,7 +169,8 @@
     "delegateToSelf": "You cannot delegate to yourself",
     "delegateToSelfAddress": "You cannot delegate to your own ENS address",
     "noValidSpaceId": "Not a valid space ID",
-    "noDelegationsAndDelegates": "Can't find your delegations and delegates? Make sure you are connected to the correct network."
+    "noDelegationsAndDelegates": "Can't find your delegations and delegates? Make sure you are connected to the correct network.",
+    "delegateNotSupported": "Delegation is currently not supported for {network}."
   },
   "proposal": {
     "castVote": "Hãy bình chọn",

@@ -50,7 +50,7 @@
     "@types/node": "^17.0.16",
     "@typescript-eslint/eslint-plugin": "^2.34.0",
     "@typescript-eslint/parser": "^2.34.0",
-    "@vitejs/plugin-vue": "^2.1.0",
+    "@vitejs/plugin-vue": "^2.2.0",
     "@vue/eslint-config-prettier": "^6.0.0",
     "@vue/eslint-config-typescript": "^7.0.0",
     "autoprefixer": "^10.4.2",
@@ -62,7 +62,7 @@
     "rollup-plugin-visualizer": "^5.5.4",
     "sass": "~1.49.7",
     "sass-loader": "^8.0.2",
-    "tailwindcss": "^3.0.19",
+    "tailwindcss": "^3.0.21",
     "unplugin-vue-components": "^0.17.18",
     "vite": "^2.8.0"
   },
