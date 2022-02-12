@@ -476,7 +476,7 @@ const createPluginComponents = computed(() =>
         >
           <div class="flex space-x-3">
             <UiInput
-              @click="selectDate('start')"
+              @click="!space.voting?.delay ? selectDate('start') : null"
               :disabled="!!space.voting?.delay"
               v-tippy="{
                 content: !!space.voting?.delay
@@ -507,7 +507,7 @@ const createPluginComponents = computed(() =>
             </UiInput>
 
             <UiInput
-              @click="selectDate('end')"
+              @click="!space.voting?.period ? selectDate('end') : null"
               :disabled="space.voting?.period"
               v-tippy="{
                 content: space.voting?.period
