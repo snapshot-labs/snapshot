@@ -28,6 +28,7 @@ export default defineConfig({
     allowNodeBuiltins: ['stream']
   },
   test: {
-    open: true
+    open: true,
+    environment: 'happy-dom'
   }
 });
