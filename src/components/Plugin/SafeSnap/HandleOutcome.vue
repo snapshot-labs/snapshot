@@ -166,7 +166,7 @@ import { useWeb3 } from '@/composables/useWeb3';
 import { useTxStatus } from '@/composables/useTxStatus';
 import { useNotifications } from '@/composables/useNotifications';
 import { useIntl } from '@/composables/useIntl';
-import { useI18n } from 'vue-i18n';
+import { useI18n } from '@/composables/useI18n';
 
 const { formatRelativeTime } = useIntl();
 const { t } = useI18n();

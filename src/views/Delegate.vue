@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed, watch, onMounted, watchEffect, inject } from 'vue';
 import { useRoute } from 'vue-router';
-import { useI18n } from 'vue-i18n';
+import { useI18n } from '@/composables/useI18n';
 import { useProfiles } from '@/composables/useProfiles';
 import { isAddress } from '@ethersproject/address';
 import { formatBytes32String } from '@ethersproject/strings';
@@ -21,7 +21,7 @@ import {
 import { sleep } from '@snapshot-labs/snapshot.js/src/utils';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useTxStatus } from '@/composables/useTxStatus';
-import { shorten, setPageTitle } from '@/helpers/utils';
+import { shorten } from '@/helpers/utils';
 import { useIntl } from '@/composables/useIntl';
 import { debouncedWatch } from '@vueuse/core';
 import { SPACE_DELEGATE_QUERY } from '@/helpers/queries';
@@ -34,7 +34,7 @@ import { SNAPSHOT_SUBGRAPH_URL } from '@snapshot-labs/snapshot.js/src/utils';
 const abi = ['function setDelegate(bytes32 id, address delegate)'];
 
 const route = useRoute();
-const { t } = useI18n();
+const { t, setPageTitle } = useI18n();
 const auth = getInstance();
 const notify = inject('notify');
 const { web3, web3Account } = useWeb3();
