@@ -28,7 +28,7 @@ async function handleLogin(connector) {
   <div class="h-[78px]" />
   <div
     class="fixed w-screen top-0 left-0 z-20"
-    :class="{ 'md:ml-[67px] md:w-[calc(100vw-67px)]': !domain }"
+    :class="{ 'sm:ml-[67px] sm:w-[calc(100vw-67px)]': !domain }"
   >
     <div
       v-if="env === 'develop'"
