@@ -9,6 +9,7 @@
     "postinstall": "patch-package && husky install",
     "init-submodules": "git submodule update --init",
     "test": "vitest",
+    "test:ui": "vitest --ui",
     "coverage": "vitest run --coverage"
   },
   "dependencies": {
@@ -53,6 +54,7 @@
     "@typescript-eslint/eslint-plugin": "^2.34.0",
     "@typescript-eslint/parser": "^2.34.0",
     "@vitejs/plugin-vue": "^2.1.0",
+    "@vitest/ui": "^0.3.2",
     "@vue/eslint-config-prettier": "^6.0.0",
     "@vue/eslint-config-typescript": "^7.0.0",
     "autoprefixer": "^10.4.2",

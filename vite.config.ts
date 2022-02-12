@@ -26,5 +26,8 @@ export default defineConfig({
   optimizeDeps: {
     // @ts-ignore
     allowNodeBuiltins: ['stream']
+  },
+  test: {
+    open: true
   }
 });
