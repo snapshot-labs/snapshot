@@ -155,8 +155,7 @@ function inputError(field) {
 
 function handleReset() {
   if (props.from) return (form.value = clone(props.spaceFrom));
-  if (currentSettings.value)
-    return (form.value = clone(currentSettings.value));
+  if (currentSettings.value) return (form.value = clone(currentSettings.value));
   form.value = {
     strategies: [],
     categories: [],
@@ -647,7 +646,7 @@ watchEffect(() => {
       </template>
     </template>
     <template v-if="(loaded && isOwner) || (loaded && isAdmin)" #sidebar-right>
-      <div class="lg:fixed lg:w-[300px]">
+      <div class="lg:fixed lg:w-[321px]">
         <Block :title="$t('actions')">
           <UiButton @click="handleReset" class="block w-full mb-2">
             {{ $t('reset') }}
