@@ -5,6 +5,9 @@
   "backToHome": "Beranda",
   "actions": "Aksi",
   "results": "Hasil",
+  "resultsError": "Results could not be calculated. This is often due to a misconfigured strategy or a scaling issue in a smart contract.",
+  "vpError": "Your voting power could not be calculated. This is often due to a misconfigured strategy or a scaling issue in a smart contract.",
+  "getHelp": "Get help",
   "currentResults": "Hasil saat ini",
   "reset": "Atur ulang",
   "save": "Simpan",
@@ -118,6 +121,7 @@
   "joinedSpaces": "Ruangan yang diikuti",
   "joinSpaces": "Gabung ke ruang",
   "setDelegationToSpace": "Limit delegation to a specific space",
+  "theCurrentNetwork": "the current network",
   "errors": {
     "required": "Baris diperlukan",
     "minLength": "Panjang minimum adalah {0}",
@@ -165,7 +169,8 @@
     "delegateToSelf": "Anda tidak bisa mendelegasikan diri sendiri",
     "delegateToSelfAddress": "You cannot delegate to your own ENS address",
     "noValidSpaceId": "Not a valid space ID",
-    "noDelegationsAndDelegates": "Can't find your delegations and delegates? Make sure you are connected to the correct network."
+    "noDelegationsAndDelegates": "Can't find your delegations and delegates? Make sure you are connected to the correct network.",
+    "delegateNotSupported": "Delegation is currently not supported for {network}."
   },
   "proposal": {
     "castVote": "Berikan voting Anda",

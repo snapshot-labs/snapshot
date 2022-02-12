@@ -1,15 +1,14 @@
 <script setup>
 import { computed, ref, onMounted, watch } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { useI18n } from '@/composables/useI18n';
 import { useRoute } from 'vue-router';
 import { useScrollMonitor } from '@/composables/useScrollMonitor';
-import { setPageTitle } from '@/helpers/utils';
 import { useIntl } from '@/composables/useIntl';
 import { useNetworksFilter } from '@/composables/useNetworksFilter';
 import { useStrategies } from '@/composables/useStrategies';
 import { usePlugins } from '@/composables/usePlugins';
 
-const { t } = useI18n();
+const { t, setPageTitle } = useI18n();
 const { formatCompactNumber } = useIntl();
 const route = useRoute();
 

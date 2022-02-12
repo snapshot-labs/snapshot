@@ -1,10 +1,11 @@
 <script setup>
 import { onMounted } from 'vue';
 import { useRoute } from 'vue-router';
-import { setPageTitle } from '@/helpers/utils';
+import { useI18n } from '@/composables/useI18n';
 import { useStrategies } from '@/composables/useStrategies';
 
 const route = useRoute();
+const { setPageTitle } = useI18n();
 const { getExtendedStrategy, extendedStrategy: strategy } = useStrategies();
 
 onMounted(async () => {
