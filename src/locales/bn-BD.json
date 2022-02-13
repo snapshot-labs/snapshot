@@ -122,6 +122,7 @@
   "joinSpaces": "Join spaces",
   "setDelegationToSpace": "Limit delegation to a specific space",
   "theCurrentNetwork": "the current network",
+  "homeLoadmore": "Load more",
   "errors": {
     "required": "ফিল্ড প্রয়োজন হয়",
     "minLength": "সর্বনিম্ন দৈর্ঘ্য {0}",

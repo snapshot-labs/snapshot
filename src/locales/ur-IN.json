@@ -122,6 +122,7 @@
   "joinSpaces": "Join spaces",
   "setDelegationToSpace": "Limit delegation to a specific space",
   "theCurrentNetwork": "the current network",
+  "homeLoadmore": "Load more",
   "errors": {
     "required": "فیلڈ کی ضرورت ہے",
     "minLength": "کم سے کم لمبائی {0} ہے",
