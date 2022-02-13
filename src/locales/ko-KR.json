@@ -122,6 +122,7 @@
   "joinSpaces": "공간 가입",
   "setDelegationToSpace": "Limit delegation to a specific space",
   "theCurrentNetwork": "the current network",
+  "homeLoadmore": "Load more",
   "errors": {
     "required": "필드가 필요합니다",
     "minLength": "최소 길이는 {0}",
