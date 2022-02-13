@@ -89,16 +89,6 @@ async function handleLogin(connector) {
                 class="sm:hidden -ml-2 -mr-2 block align-text-bottom"
               />
             </UiButton>
-            <a
-              v-if="!domain"
-              href="https://twitter.com/SnapshotLabs"
-              target="_blank"
-              class="float-right ml-2 hidden sm:block"
-            >
-              <UiSidebarButton>
-                <Icon size="20" class="link-color" name="twitter" />
-              </UiSidebarButton>
-            </a>
             <UiSidebarButton
               v-if="!domain"
               @click="toggleSkin"
