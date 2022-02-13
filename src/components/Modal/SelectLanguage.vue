@@ -34,8 +34,12 @@ function selectLang(locale) {
         @click="selectLang(locale)"
         class="w-full mb-2"
       >
-        {{ locale === 'en-US' ? '' : languages[locale].nativeName + ' - ' }}
-        {{ languages[locale].name }}
+        {{
+          locale === 'en-US'
+            ? languages[locale].name
+            : languages[locale].nativeName
+        }}
+        {{}}
       </UiButton>
     </div>
   </UiModal>
