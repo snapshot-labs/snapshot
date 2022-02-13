@@ -122,6 +122,7 @@
   "joinSpaces": "加入空间",
   "setDelegationToSpace": "将委托限制在一个指定空间内",
   "theCurrentNetwork": "当前网络",
+  "homeLoadmore": "加载更多",
   "errors": {
     "required": "此项为必填项",
     "minLength": "最小长度为 {0}",

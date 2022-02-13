@@ -122,6 +122,7 @@
   "joinSpaces": "Iscritto a uno spazio",
   "setDelegationToSpace": "Limit delegation to a specific space",
   "theCurrentNetwork": "the current network",
+  "homeLoadmore": "Load more",
   "errors": {
     "required": "Campo necessario",
     "minLength": "La lunghezza minima è {0}",
