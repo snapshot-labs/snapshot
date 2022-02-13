@@ -450,6 +450,7 @@ onMounted(async () => {
       :id="currentId"
       :delegate="currentDelegate"
       :profiles="profiles"
+      :space="space"
     />
   </teleport>
 </template>

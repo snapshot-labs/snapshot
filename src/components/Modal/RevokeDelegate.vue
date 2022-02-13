@@ -1,7 +1,6 @@
 <script setup>
-import { ref, watchEffect, inject } from 'vue';
+import { ref, inject } from 'vue';
 import { useI18n } from '@/composables/useI18n';
-import { useUsername } from '@/composables/useUsername';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { sendTransaction, sleep } from '@snapshot-labs/snapshot.js/src/utils';
 import { formatBytes32String } from '@ethersproject/strings';
@@ -12,7 +11,8 @@ const props = defineProps({
   open: Boolean,
   id: String,
   delegate: String,
-  profiles: Object
+  profiles: Object,
+  space: Object
 });
 
 const abi = ['function clearDelegate(bytes32 id)'];
@@ -21,16 +21,10 @@ const emit = defineEmits(['close', 'reload']);
 
 const auth = getInstance();
 const { t } = useI18n();
-const { address, profile, username } = useUsername();
 const notify = inject('notify');
 
 const loading = ref(false);
 const { pendingCount } = useTxStatus();
-
-watchEffect(() => {
-  address.value = props.delegate;
-  profile.value = props.profiles[props.delegate];
-});
 
 async function handleSubmit() {
   loading.value = true;
@@ -67,7 +61,13 @@ async function handleSubmit() {
     <form @submit.prevent="handleSubmit" class="flex flex-col flex-auto">
       <h4 class="m-4 text-center">
         {{ $t('confirmRemove') }}
-        {{ username }}
+        <User
+          :address="proposal.author"
+          :profile="profiles[proposal.author]"
+          :space="space"
+          :proposal="proposal"
+          only-username
+        />
         <template v-if="id">{{ $tc('removeSpace', [id]) }}</template
         >?
       </h4>

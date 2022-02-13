@@ -1,7 +1,6 @@
 <script setup>
-import { watchEffect, computed } from 'vue';
+import { computed } from 'vue';
 import { shorten } from '@/helpers/utils';
-import { useUsername } from '@/composables/useUsername';
 import removeMd from 'remove-markdown';
 import { useIntl } from '@/composables/useIntl';
 import { useI18n } from '@/composables/useI18n';
@@ -18,7 +17,8 @@ const {
 
 const props = defineProps({
   proposal: Object,
-  profiles: Object
+  profiles: Object,
+  space: Object
 });
 
 const body = computed(() => removeMd(props.proposal.body));
@@ -36,13 +36,6 @@ const relativePeriod = computed(() => {
     return t('proposalTimeLeft', [formatDuration(props.proposal.end - now, t)]);
   }
   return t('startIn', [formatRelativeTime(props.proposal.start)]);
-});
-
-const { address, profile, username } = useUsername();
-
-watchEffect(() => {
-  address.value = props.proposal.author;
-  profile.value = props.profiles[props.proposal.author];
 });
 </script>
 
@@ -72,6 +65,13 @@ watchEffect(() => {
               />
             </div>
           </router-link>
+          <User
+            :address="proposal.author"
+            :profile="profiles[proposal.author]"
+            :space="space"
+            :proposal="proposal"
+            only-username
+          />
           <span v-text="$tc('proposalBy', [username])" />
           <Badges
             :address="proposal.author"

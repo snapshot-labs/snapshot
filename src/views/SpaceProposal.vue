@@ -55,7 +55,7 @@ const strategies = computed(
   // Needed for older proposal that are missing strategies
   () => proposal.value.strategies ?? props.space?.strategies
 );
-const space = computed(() => proposal.value.space ?? props.space);
+
 const symbols = computed(() =>
   strategies.value.map(strategy => strategy.params.symbol)
 );
@@ -124,7 +124,11 @@ async function loadResults() {
   } else {
     const votesTmp = await getProposalVotes(id);
     try {
-      const resultsObj = await getResults(props.space, proposal.value, votesTmp);
+      const resultsObj = await getResults(
+        props.space,
+        proposal.value,
+        votesTmp
+      );
       results.value = resultsObj.results;
       votes.value = resultsObj.votes;
       loadedResults.value = true;
@@ -264,44 +268,75 @@ const truncateMarkdownBody = computed(() => {
       <div class="px-4 md:px-0">
         <template v-if="loaded">
           <h1 v-text="proposal.title" class="mb-3" />
-          <div class="mb-4">
-            <UiState :state="proposal.state" class="inline-block" />
-            <UiDropdown
-              top="2.5rem"
-              right="1.5rem"
-              class="float-right mr-2"
-              @select="selectFromShareDropdown"
-              @clickedNoDropdown="startShare(space, proposal)"
-              :items="sharingItems"
-              :hideDropdown="sharingIsSupported"
-            >
-              <div class="pr-1 select-none flex">
-                <Icon name="upload" size="25" />
-                <span class="ml-1">Share</span>
-              </div>
-              <template v-slot:item="{ item }">
-                <Icon
-                  v-if="item.icon"
-                  :name="item.icon"
-                  size="21"
-                  class="align-middle mr-2 !leading-[0]"
-                />
-                {{ item.text }}
-              </template>
-            </UiDropdown>
-            <UiDropdown
-              top="2.5rem"
-              right="1.3rem"
-              class="float-right mr-2"
-              @select="selectFromThreedotDropdown"
-              :items="threeDotItems"
-            >
-              <div class="pr-3">
-                <UiLoading v-if="clientLoading" />
-                <Icon v-else name="threedots" size="25" />
-              </div>
-            </UiDropdown>
+
+          <div class="flex items-center justify-between mb-4">
+            <div class="flex space-x-1 items-center">
+              <router-link
+                class="text-color group"
+                :to="{
+                  name: 'spaceProposals',
+                  params: { key: spaceId }
+                }"
+              >
+                <div class="flex items-center">
+                  <Token :space="space" size="28" />
+                  <span
+                    class="ml-2 group-hover:text-skin-link"
+                    v-text="space.name"
+                  />
+                </div>
+              </router-link>
+
+              <span v-text="$t('proposalBy')" />
+              <User
+                :address="proposal.author"
+                :profile="profiles[proposal.author]"
+                :space="space"
+                :proposal="proposal"
+                only-username
+              />
+              <Badges :address="proposal.author" :members="space.members" />
+              <UiState :state="proposal.state" class="inline-block" />
+            </div>
+            <div class="flex justify-end">
+              <UiDropdown
+                top="2.5rem"
+                right="1.5rem"
+                class="ml-2"
+                @select="selectFromShareDropdown"
+                @clickedNoDropdown="startShare(space, proposal)"
+                :items="sharingItems"
+                :hideDropdown="sharingIsSupported"
+              >
+                <div class="pr-1 select-none flex">
+                  <Icon name="upload" size="25" />
+                  <span class="ml-1">Share</span>
+                </div>
+                <template v-slot:item="{ item }">
+                  <Icon
+                    v-if="item.icon"
+                    :name="item.icon"
+                    size="21"
+                    class="align-middle mr-2 !leading-[0]"
+                  />
+                  {{ item.text }}
+                </template>
+              </UiDropdown>
+              <UiDropdown
+                top="2.5rem"
+                right="1.3rem"
+                class="ml-2"
+                @select="selectFromThreedotDropdown"
+                :items="threeDotItems"
+              >
+                <div class="pl-1">
+                  <UiLoading v-if="clientLoading" />
+                  <Icon v-else name="threedots" size="25" />
+                </div>
+              </UiDropdown>
+            </div>
           </div>
+
           <div class="relative">
             <div
               v-if="!showFullMarkdownBody && truncateMarkdownBody"
@@ -376,16 +411,6 @@ const truncateMarkdownBody = computed(() => {
       <Block :title="$t('information')">
         <div class="space-y-1">
           <div>
-            <b>{{ $t('space') }}</b>
-            <router-link
-              :to="{ name: 'spaceProposals', params: { key: space.id } }"
-            >
-              <span class="float-right link-color">
-                {{ space.name }}
-              </span>
-            </router-link>
-          </div>
-          <div>
             <b>{{ $t('strategies') }}</b>
             <span
               @click="modalStrategiesOpen = true"
@@ -406,16 +431,7 @@ const truncateMarkdownBody = computed(() => {
               </span>
             </span>
           </div>
-          <div>
-            <b>{{ $t('author') }}</b>
-            <User
-              :address="proposal.author"
-              :profile="profiles[proposal.author]"
-              :space="space"
-              :proposal="proposal"
-              class="float-right"
-            />
-          </div>
+
           <div>
             <b>IPFS</b>
             <a
