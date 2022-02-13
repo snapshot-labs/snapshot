@@ -483,6 +483,7 @@ const createPluginComponents = computed(() =>
                   ? $t('create.delayEnforced')
                   : null
               }"
+              :class="{ 'cursor-not-allowed': space.voting?.delay }"
             >
               <template v-slot:selected>
                 <span
@@ -514,6 +515,7 @@ const createPluginComponents = computed(() =>
                   ? $t('create.periodEnforced')
                   : null
               }"
+              :class="{ 'cursor-not-allowed': space.voting?.period }"
             >
               <template v-slot:selected>
                 <span v-text="$d(dateEnd * 1e3, 'short', 'en-US')" />
@@ -526,6 +528,7 @@ const createPluginComponents = computed(() =>
                   name="calendar"
                   size="18"
                   class="flex items-center text-skin-text"
+                  :class="{ 'cursor-not-allowed': space.voting?.period }"
                 />
               </template>
             </UiInput>
