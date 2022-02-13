@@ -1,9 +1,9 @@
 <script setup>
 import { ref, computed, watch, onMounted, inject, watchEffect } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { useI18n } from 'vue-i18n';
+import { useI18n } from '@/composables/useI18n';
 import { getProposal, getResults, getProposalVotes } from '@/helpers/snapshot';
-import { setPageTitle, explorerUrl, getIpfsUrl } from '@/helpers/utils';
+import { explorerUrl, getIpfsUrl } from '@/helpers/utils';
 import { useModal } from '@/composables/useModal';
 import { useTerms } from '@/composables/useTerms';
 import { useProfiles } from '@/composables/useProfiles';
@@ -24,7 +24,7 @@ const props = defineProps({
 const route = useRoute();
 const router = useRouter();
 const { domain } = useDomain();
-const { t } = useI18n();
+const { t, setPageTitle } = useI18n();
 const { web3, web3Account } = useWeb3();
 const { send, clientLoading } = useClient();
 const { store } = useStore();
@@ -37,6 +37,7 @@ const modalOpen = ref(false);
 const selectedChoices = ref(null);
 const loading = ref(true);
 const loadedResults = ref(false);
+const loadingResultsFailed = ref(false);
 const loadedVotes = ref(false);
 const proposal = ref({});
 const votes = ref([]);
@@ -98,7 +99,9 @@ function formatProposalVotes(votes) {
 }
 
 async function loadResults() {
-  if (proposal.value.scores_state === 'final') {
+  if (proposal.value.scores_state === 'invalid') {
+    loadingResultsFailed.value = true;
+  } else if (proposal.value.scores_state === 'final') {
     results.value = {
       resultsByVoteBalance: proposal.value.scores,
       resultsByStrategyScore: proposal.value.scores_by_strategy,
@@ -119,11 +122,16 @@ async function loadResults() {
     loadedVotes.value = true;
   } else {
     const votesTmp = await getProposalVotes(id);
-    const resultsObj = await getResults(props.space, proposal.value, votesTmp);
-    results.value = resultsObj.results;
-    loadedResults.value = true;
-    votes.value = resultsObj.votes;
-    loadedVotes.value = true;
+    try {
+      const resultsObj = await getResults(props.space, proposal.value, votesTmp);
+      results.value = resultsObj.results;
+      votes.value = resultsObj.votes;
+      loadedResults.value = true;
+      loadedVotes.value = true;
+    } catch (e) {
+      console.log(e);
+      loadingResultsFailed.value = true;
+    }
   }
 }
 
@@ -343,7 +351,7 @@ const truncateMarkdownBody = computed(() => {
       />
       <BlockVotes
         @loadVotes="loadMore(loadMoreVotes)"
-        v-if="loaded"
+        v-if="loaded && !loadingResultsFailed"
         :loaded="loadedVotes"
         :space="space"
         :proposal="proposal"
@@ -447,7 +455,9 @@ const truncateMarkdownBody = computed(() => {
           </div>
         </div>
       </Block>
+      <BlockResultsError :isAdmin="isAdmin" v-if="loadingResultsFailed" />
       <BlockResults
+        v-else
         :id="id"
         :loaded="loadedResults"
         :space="space"

@@ -5,13 +5,15 @@ import { useScrollMonitor } from '@/composables/useScrollMonitor';
 import { useApp } from '@/composables/useApp';
 import { useFollowSpace } from '@/composables/useFollowSpace';
 import { useCategories } from '@/composables/useCategories';
-import { shorten, setPageTitle } from '@/helpers/utils';
+import { shorten } from '@/helpers/utils';
 import { useIntl } from '@/composables/useIntl';
+import { useI18n } from '@/composables/useI18n';
 
 const { selectedCategory, orderedSpaces, orderedSpacesByCategory } = useApp();
 const { followingSpaces } = useFollowSpace();
 const { spacesPerCategory, categoriesOrderedBySpaceCount } = useCategories();
 const { formatCompactNumber } = useIntl();
+const { setPageTitle } = useI18n();
 
 function selectCategory(c) {
   selectedCategory.value = c === selectedCategory.value ? '' : c;

@@ -1,5 +1,5 @@
 import { ref, computed } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { useI18n } from '@/composables/useI18n';
 import client from '@/helpers/client';
 import clientGnosisSafe from '@/helpers/clientGnosisSafe';
 import clientEIP712 from '@/helpers/clientEIP712';

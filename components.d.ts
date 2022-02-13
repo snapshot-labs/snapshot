@@ -10,6 +10,7 @@ declare module 'vue' {
     BlockNetwork: typeof import('./src/components/Block/Network.vue')['default']
     BlockPlugin: typeof import('./src/components/Block/Plugin.vue')['default']
     BlockResults: typeof import('./src/components/Block/Results.vue')['default']
+    BlockResultsError: typeof import('./src/components/Block/ResultsError.vue')['default']
     BlockSkin: typeof import('./src/components/Block/Skin.vue')['default']
     BlockStrategy: typeof import('./src/components/Block/Strategy.vue')['default']
     BlockValidation: typeof import('./src/components/Block/Validation.vue')['default']
