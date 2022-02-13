@@ -122,6 +122,7 @@
   "joinSpaces": "Join spaces",
   "setDelegationToSpace": "Limit delegation to a specific space",
   "theCurrentNetwork": "the current network",
+  "homeLoadmore": "Load more",
   "errors": {
     "required": "Обов'язкове поле",
     "minLength": "Мінімальна довжина: {0}",
