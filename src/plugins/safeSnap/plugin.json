@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "author": "Gnosis",
   "website": "https://safe.gnosis.io",
-  "icon": "https://raw.githubusercontent.com/snapshot-labs/snapshot-plugins/master/src/plugins/safeSnap/logo.png",
+  "icon": "ipfs://QmQjZaheMTLRrk22mrGCkGk2LNoNqqYMR8Bxtwa8mBHyc9",
   "defaults": {
     "space": {
       "safes": [
