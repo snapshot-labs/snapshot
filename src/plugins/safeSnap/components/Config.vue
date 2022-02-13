@@ -4,8 +4,11 @@ import {
   coerceConfig,
   isValidInput,
   getSafeHash
-} from '@/../snapshot-plugins/src/plugins/safeSnap';
+} from '../index';
 import { useSafesnap } from '@/composables/useSafesnap';
+
+import SafeTransactions from './SafeTransactions.vue';
+
 const { setConfig } = useSafesnap();
 
 export default {
@@ -74,7 +77,7 @@ export default {
     </h4>
     <div class="p-4">
       <div v-for="(safe, index) in input.safes" v-bind:key="index">
-        <PluginSafeSnapSafeTransactions
+        <SafeTransactions
           v-if="!preview || safe.txs.length > 0"
           :preview="preview"
           :proposal="proposal"

@@ -3,9 +3,14 @@ import Plugin, {
   createBatch,
   getGnosisSafeBalances,
   getGnosisSafeCollectibles
-} from '@/../snapshot-plugins/src/plugins/safeSnap';
+} from '../index';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { shorten } from '@/helpers/utils';
+
+import SafeSnapTooltip from './Tooltip.vue';
+import SafeSnapHandleOutcome from './HandleOutcome.vue';
+import SafeSnapFormImportTransactionsButton from './Form/ImportTransactionsButton.vue';
+import SafeSnapFormTransactionBatch from './Form/TransactionBatch.vue';
 
 const plugin = new Plugin();
 
@@ -62,6 +67,12 @@ function formatBatches(network, realityModule, batches, multiSend) {
 }
 
 export default {
+  components: {
+    SafeSnapTooltip,
+    SafeSnapFormImportTransactionsButton,
+    SafeSnapHandleOutcome,
+    SafeSnapFormTransactionBatch
+  },
   setup() {
     return { shorten };
   },
@@ -195,10 +206,10 @@ export default {
         <i class="iconfont iconexternal-link" />
       </a>
       <div class="flex-grow"></div>
-      <PluginSafeSnapTooltip
+      <SafeSnapTooltip
         :realityAddress="this.realityAddress"
         :multiSendAddress="this.multiSendAddress"
-      ></PluginSafeSnapTooltip>
+      />
     </h4>
     <UiCollapsibleText
       v-if="hash"
@@ -213,7 +224,7 @@ export default {
     </UiCollapsibleText>
     <div class="text-center">
       <div v-for="(batch, index) in input" v-bind:key="index" class="border-b">
-        <PluginSafeSnapFormTransactionBatch
+        <SafeSnapFormTransactionBatch
           :config="transactionConfig"
           :modelValue="batch"
           :nonce="index"
@@ -227,13 +238,13 @@ export default {
           {{ $t('safeSnap.addBatch') }}
         </UiButton>
 
-        <PluginSafeSnapFormImportTransactionsButton
+        <SafeSnapFormImportTransactionsButton
           v-if="!preview"
           :network="this.network"
           @import="handleImport($event)"
         />
 
-        <PluginSafeSnapHandleOutcome
+        <SafeSnapHandleOutcome
           v-if="preview && proposalResolved"
           :batches="input"
           :proposalId="proposal.id"
