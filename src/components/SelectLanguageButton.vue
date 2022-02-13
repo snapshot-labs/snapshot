@@ -13,7 +13,7 @@ const modalLangOpen = ref(false);
     class="flex items-center"
     @click="modalLangOpen = true"
   >
-    <Icon size="24" name="earth" class="hover:opacity-80 mr-2" />
+    <Icon size="24" name="earth" class="mr-2" />
     {{ languages[$i18n.locale]?.nativeName ?? languages[$i18n.locale]?.name }}
   </UiButton>
   <teleport to="#modal">
