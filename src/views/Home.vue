@@ -154,7 +154,7 @@ onMounted(() => {
         class="w-full mt-4"
         @click="loadMoreSpaces()"
       >
-        {{ $t('comment_box.load_more') }}
+        {{ $t('homeLoadmore') }}
       </UiButton>
     </Container>
     <Footer />
