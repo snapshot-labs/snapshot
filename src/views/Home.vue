@@ -26,7 +26,18 @@ watchEffect(() => getProposalIds(followingSpaces.value));
 const loadBy = 16;
 const limit = ref(loadBy);
 
-const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
+const enableInfiniteScroll = ref(false);
+
+const loadMoreSpaces = () => {
+  enableInfiniteScroll.value = true;
+  limit.value += loadBy;
+};
+
+const { endElement } = useScrollMonitor(() => {
+  if (enableInfiniteScroll.value) {
+    limit.value += loadBy;
+  }
+});
 
 onMounted(() => {
   setPageTitle('page.title.home');
@@ -34,7 +45,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="mt-4">
+  <div class="mt-4 min-h-[calc(100vh-145px)] relative pb-[130px]">
     <Container class="flex items-center mb-4">
       <UiButton class="pl-3 pr-0 w-full max-w-[420px]">
         <SearchWithFilters />
@@ -138,7 +149,15 @@ onMounted(() => {
         :block="true"
         v-if="Object.keys(orderedSpacesByCategory).length < 1"
       />
+      <UiButton
+        v-if="!enableInfiniteScroll && orderedSpacesByCategory.length > limit"
+        class="w-full mt-4"
+        @click="loadMoreSpaces()"
+      >
+        {{ $t('homeLoadmore') }}
+      </UiButton>
     </Container>
+    <Footer />
     <div ref="endElement" />
   </div>
 </template>
