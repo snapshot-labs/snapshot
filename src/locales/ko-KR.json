@@ -5,6 +5,9 @@
   "backToHome": "홈",
   "actions": "액션",
   "results": "결과",
+  "resultsError": "Results could not be calculated. This is often due to a misconfigured strategy or a scaling issue in a smart contract.",
+  "vpError": "Your voting power could not be calculated. This is often due to a misconfigured strategy or a scaling issue in a smart contract.",
+  "getHelp": "Get help",
   "currentResults": "현재 결과",
   "reset": "초기화",
   "save": "저장",
@@ -118,6 +121,7 @@
   "joinedSpaces": "공간 가입",
   "joinSpaces": "공간 가입",
   "setDelegationToSpace": "Limit delegation to a specific space",
+  "theCurrentNetwork": "the current network",
   "errors": {
     "required": "필드가 필요합니다",
     "minLength": "최소 길이는 {0}",
@@ -165,7 +169,8 @@
     "delegateToSelf": "You cannot delegate to yourself",
     "delegateToSelfAddress": "You cannot delegate to your own ENS address",
     "noValidSpaceId": "Not a valid space ID",
-    "noDelegationsAndDelegates": "Can't find your delegations and delegates? Make sure you are connected to the correct network."
+    "noDelegationsAndDelegates": "Can't find your delegations and delegates? Make sure you are connected to the correct network.",
+    "delegateNotSupported": "Delegation is currently not supported for {network}."
   },
   "proposal": {
     "castVote": "캐스트 너의 투표",

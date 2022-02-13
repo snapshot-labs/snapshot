@@ -1,6 +1,6 @@
 <script setup>
-import { computed, ref, watchEffect, inject, watch, nextTick } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { computed, ref, watchEffect, inject, watch } from 'vue';
+import { useI18n } from '@/composables/useI18n';
 import { getAddress } from '@ethersproject/address';
 import {
   validateSchema,
@@ -14,7 +14,6 @@ import { useCopy } from '@/composables/useCopy';
 import { useWeb3 } from '@/composables/useWeb3';
 import { calcFromSeconds, calcToSeconds } from '@/helpers/utils';
 import { useClient } from '@/composables/useClient';
-import { setPageTitle } from '@/helpers/utils';
 import { usePlugins } from '@/composables/usePlugins';
 
 const props = defineProps({
@@ -29,7 +28,7 @@ const props = defineProps({
 const basicValidation = { name: 'basic', params: {} };
 
 const { pluginIndex } = usePlugins();
-const { t } = useI18n();
+const { t, setPageTitle } = useI18n();
 const { copyToClipboard } = useCopy();
 const { web3Account } = useWeb3();
 const { send, clientLoading } = useClient();
@@ -155,23 +154,14 @@ function inputError(field) {
 }
 
 function handleReset() {
-  try {
-    if (props.from) return (form.value = clone(props.spaceFrom));
-    if (currentSettings.value)
-      return (form.value = clone(currentSettings.value));
-    form.value = {
-      strategies: [],
-      categories: [],
-      plugins: {},
-      filters: {}
-    };
-    // Rerenders the form, because Textarea components are not reactive
-  } finally {
-    loaded.value = false;
-    nextTick().then(() => {
-      loaded.value = true;
-    });
-  }
+  if (props.from) return (form.value = clone(props.spaceFrom));
+  if (currentSettings.value) return (form.value = clone(currentSettings.value));
+  form.value = {
+    strategies: [],
+    categories: [],
+    plugins: {},
+    filters: {}
+  };
 }
 
 function handleEditStrategy(i) {
@@ -656,7 +646,7 @@ watchEffect(() => {
       </template>
     </template>
     <template v-if="(loaded && isOwner) || (loaded && isAdmin)" #sidebar-right>
-      <div class="lg:fixed lg:w-[300px]">
+      <div class="lg:fixed lg:w-[321px]">
         <Block :title="$t('actions')">
           <UiButton @click="handleReset" class="block w-full mb-2">
             {{ $t('reset') }}

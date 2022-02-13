@@ -4,10 +4,9 @@ defineProps({
   counter: Number,
   slim: Boolean,
   icon: String,
+  iconClass: String,
   loading: Boolean
 });
-
-defineEmits(['submit']);
 </script>
 
 <template>
@@ -21,14 +20,12 @@ defineEmits(['submit']);
     >
       {{ title }}
       <UiCounter v-if="counter" :counter="counter" class="ml-1 inline-block" />
-      <a
+      <Icon
         v-if="icon"
-        @click="$emit('submit')"
-        class="float-right text-color"
-        style="padding-top: 2px"
-      >
-        <Icon :name="icon" size="22" />
-      </a>
+        :name="icon"
+        size="22"
+        :class="['float-right pt-1', iconClass]"
+      />
     </h4>
     <div v-if="loading" class="block px-4 py-4">
       <div
