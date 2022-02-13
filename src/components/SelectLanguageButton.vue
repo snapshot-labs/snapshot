@@ -1,11 +1,9 @@
 <script setup>
 import { ref } from 'vue';
-import { useWeb3 } from '@/composables/useWeb3';
 import languages from '@/locales/languages.json';
 
-const props = defineProps({ space: Object, spaceId: String });
+defineProps({ space: Object, spaceId: String });
 
-const { web3 } = useWeb3();
 const modalLangOpen = ref(false);
 </script>
 
