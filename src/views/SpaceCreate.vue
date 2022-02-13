@@ -133,7 +133,7 @@ const isValid = computed(() => {
 
 const disableChoiceEdit = computed(() => form.value.type === 'basic');
 
-function addChoice(num) {
+function addChoices(num) {
   for (let i = 1; i <= num; i++) {
     choices.value.push({ id: choices.value.length, text: '' });
   }
@@ -211,7 +211,7 @@ async function loadProposal() {
 watch(nameInput, () => nameInput?.value?.focus());
 
 onMounted(async () => {
-  addChoice(2);
+  addChoices(2);
   if (props.from) loadProposal();
 });
 
@@ -460,7 +460,7 @@ const createPluginComponents = computed(() =>
             <div class="w-[48px] flex items-end ml-2">
               <UiSidebarButton
                 v-if="!disableChoiceEdit"
-                @click="addChoice(1)"
+                @click="addChoices(1)"
                 class="!w-[48px] !h-[48px]"
               >
                 <Icon size="20" name="plus" class="text-skin-link" />
