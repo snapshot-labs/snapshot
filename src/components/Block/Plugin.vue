@@ -1,6 +1,7 @@
 <script setup>
 import { useIntl } from '@/composables/useIntl';
 import { usePlugins } from '@/composables/usePlugins';
+import { getIpfsUrl } from '@/helpers/utils';
 
 const { formatCompactNumber } = useIntl();
 const { pluginsSpacesCount } = usePlugins();
@@ -16,7 +17,7 @@ defineProps({
       <a target="_blank" class="flex items-center">
         <UiAvatar
           class="mr-2"
-          :imgsrc="plugin.icon"
+          :imgsrc="getIpfsUrl(plugin.icon)"
           :seed="plugin.name.charCodeAt()"
           size="28"
         />
