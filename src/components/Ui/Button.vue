@@ -23,7 +23,7 @@ defineProps({
     :class="[
       'button px-[24px] ',
       {
-        'button--primary': primary,
+        'button--primary hover:brightness-95': primary,
         'focus-within:border-skin-border': noFocus,
         'focus-within:border-skin-link': !noFocus
       }
