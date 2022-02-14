@@ -282,11 +282,13 @@ watch(currentStep, () => {
 });
 
 import { usePlugins } from '@/composables/usePlugins';
+const { pluginIndex } = usePlugins();
 
 // Check if has plugins that can be confirgured on proposal creation
-const { getPluginComponents } = usePlugins();
-const createPluginComponents = computed(() =>
-  getPluginComponents('Create', Object.keys(props.space?.plugins ?? {}))
+const needsPluginConfigs = computed(() =>
+  Object.keys(props.space?.plugins ?? {}).some(
+    pluginKey => pluginIndex[pluginKey]?.defaults?.proposal
+  )
 );
 </script>
 
@@ -586,7 +588,7 @@ const createPluginComponents = computed(() =>
         <UiButton
           v-if="
             currentStep === 3 ||
-            (!createPluginComponents.length && currentStep === 2)
+            (!needsPluginConfigs && currentStep === 2)
           "
           @click="
             !termsAccepted && space.terms

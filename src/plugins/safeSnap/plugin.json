@@ -12,6 +12,14 @@
           "realityAddress": "0xSWITCH_WITH_REALITY_MODULE_ADDRESS"
         }
       ]
+    },
+    "proposal": {
+      "safes": [
+        {
+          "network": "CHAIN_ID",
+          "realityAddress": "0xSWITCH_WITH_REALITY_MODULE_ADDRESS"
+        }
+      ]
     }
   }
 }
