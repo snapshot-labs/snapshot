@@ -427,6 +427,7 @@ const createPluginComponents = computed(() =>
                 v-bind="{ animation: 200 }"
                 :disabled="disableChoiceEdit"
                 item-key="id"
+                handle=".drag-handle"
               >
                 >
                 <template #item="{ element, index }">
@@ -440,7 +441,7 @@ const createPluginComponents = computed(() =>
                   >
                     <template v-slot:label>
                       <div
-                        class="flex items-center cursor-grab active:cursor-grabbing"
+                        class="flex items-center cursor-grab active:cursor-grabbing drag-handle"
                         :class="{
                           'cursor-not-allowed active:cursor-not-allowed':
                             disableChoiceEdit
