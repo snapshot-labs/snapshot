@@ -7,7 +7,7 @@
   "results": "Rezultate",
   "resultsError": "Rezultatele nu au putut fi calculate. Acest lucru se datorează adesea unei strategii configurate greșit sau unei probleme de scalare în cadrul unui contract inteligent.",
   "vpError": "Puterea de vot nu a putut fi calculată. Acest lucru se datorează adesea unei strategii configurate greșit sau unei probleme de scalare într-un contract inteligent.",
-  "getHelp": "Get help",
+  "getHelp": "Solicită ajutor",
   "currentResults": "Rezultatele actuale",
   "reset": "Resetează",
   "save": "Salvează",
@@ -54,7 +54,7 @@
   "confirmRemove": "Ești sigur că vrei să elimini delegația către",
   "removeSpace": "pentru spațiul {0}",
   "confirmVote": "Confirmă votul",
-  "sureToVote": "Are you sure you want to cast this vote?",
+  "sureToVote": "Sigur dorești să anulezi votul?",
   "cannotBeUndone": "Această acțiune nu poate fi refăcută.",
   "options": "Opțiunea(i)",
   "votingPower": "Puterea ta de vot",
@@ -65,7 +65,7 @@
   "isCore": "Nucleu",
   "notificationsBlocked": "Browserul tău blochează notificările",
   "notificationsNotSupported": "Browserul tău nu acceptă notificări",
-  "walletNotSupported": "Wallet is not supported",
+  "walletNotSupported": "Portofelul nu este suportat",
   "seeInExplorer": "Vizualizează pe explorer",
   "learnMore": "Află mai multe",
   "logout": "Deconectează-te",
@@ -98,8 +98,8 @@
   "createdBy": "De către {0}",
   "startIn": "pornește {0}",
   "endIn": "sfârșit {1}",
-  "proposalTimeLeft": "{0} left",
-  "endedAgo": "ended {0}",
+  "proposalTimeLeft": "{0} rămas",
+  "endedAgo": "încheiat {0}",
   "proposalBy": "de către {0}",
   "endDate": "sfârșit {0}",
   "contectHash": "Hash conținut",
@@ -120,9 +120,9 @@
   "duplicateProposal": "Duplichează propunere",
   "joinedSpaces": "Spații alăturate",
   "joinSpaces": "Alătura-te la spații",
-  "setDelegationToSpace": "Limit delegation to a specific space",
-  "theCurrentNetwork": "the current network",
-  "homeLoadmore": "Load more",
+  "setDelegationToSpace": "Limitarea delegării către un anumit spațiu",
+  "theCurrentNetwork": "rețeaua actuală",
+  "homeLoadmore": "Încarcă mai multe",
   "errors": {
     "required": "Câmp obligatoriu",
     "minLength": "Lungime minimă de {0}",
@@ -136,7 +136,7 @@
   "create": {
     "question": "Pune o întrebare...",
     "categorie(s)": "Selectează până la 2 categorii(e)",
-    "content": "Tell us more about your proposal (optional)",
+    "content": "Spune-ne mai multe despre propunerea ta (opţional)",
     "preview": "Previzualizează",
     "choices": "Alegeri",
     "addChoice": "Adaugă alegere",
@@ -164,14 +164,14 @@
     "delegated": "Delegat ție",
     "pendingTransaction": "nicio tranzacție în așteptare | 1 tranzacție în așteptare | {count} tranzacții în așteptare",
     "topDelegates": "Cei mai buni delegați",
-    "noDelegatesFoundFor": "No delegates found for {0}",
-    "noValidEns": "Not a valid ENS address.",
-    "noValidAddress": "Not a valid address",
-    "delegateToSelf": "You cannot delegate to yourself",
-    "delegateToSelfAddress": "You cannot delegate to your own ENS address",
-    "noValidSpaceId": "Not a valid space ID",
-    "noDelegationsAndDelegates": "Can't find your delegations and delegates? Make sure you are connected to the correct network.",
-    "delegateNotSupported": "Delegation is currently not supported for {network}."
+    "noDelegatesFoundFor": "Nici un delegat găsit pentru {0}",
+    "noValidEns": "Nu este o adresă ENS validă.",
+    "noValidAddress": "Nu este o adresă validă",
+    "delegateToSelf": "Nu poți delega către tine însuți",
+    "delegateToSelfAddress": "Nu poți delega la propria adresă ENS",
+    "noValidSpaceId": "Nu este un ID de spațiu valid",
+    "noDelegationsAndDelegates": "Nu iți găsești delegațiile și delegații? Asigură-te că ești conectat la rețeaua corectă.",
+    "delegateNotSupported": "Delegația nu este acceptată în prezent pentru {network}."
   },
   "proposal": {
     "castVote": "Votează",
@@ -185,8 +185,8 @@
     "new": "Propunere nouă",
     "noProposals": "Incă nu sunt propuneri!",
     "createProposal": "Crează propunere",
-    "showMore": "Show more",
-    "showLess": "Show less",
+    "showMore": "Arată mai multe",
+    "showLess": "Arată mai puține",
     "states": {
       "all": "Toate",
       "core": "Nucleu",
@@ -239,14 +239,14 @@
   },
   "setup": {
     "example": "e.g. yam.eth",
-    "chooseExistingEns": "Choose one of your existing ENS domains to create a space with:",
-    "useSingleExistingEns": "Use your existing ENS domain:",
-    "orReigsterNewEns": "Or register a new domain:",
-    "toCreateASpace": "To create a space, you first need an ENS domain. Enter one below and follow the ENS registration instructions.",
+    "chooseExistingEns": "Alege unul dintre domeniile tale ENS existente pentru a crea un spațiu:",
+    "useSingleExistingEns": "Utilizează domeniul tău ENS existent:",
+    "orReigsterNewEns": "Sau înregistrează un nou domeniu:",
+    "toCreateASpace": "Pentru a crea un spațiu, ai nevoie mai întâi de un domeniu ENS. Introdu unul mai jos și urmează instrucțiunile de înregistrare ENS.",
     "createASpace": "Crează un spațiu",
-    "registerEnsButton": "Register",
-    "supportedEnsTLDs": "Supported domain endings",
-    "helpDocsAndDiscordLinks": "Not sure how to create a space? Learn more in the <a target='_blank' href='https://docs.snapshot.org/spaces/create'> documentation </a> or join Snapshot <a target='_blank' href='https://discord.gg/snapshot'>Discord</a>."
+    "registerEnsButton": "Înregistrează-te",
+    "supportedEnsTLDs": "Sufix domenii suportate",
+    "helpDocsAndDiscordLinks": "Nu ești sigur cum să creezi un spațiu? Află mai multe în documentația <a target='_blank' href='https://docs.snapshot.org/spaces/create'> </a> sau alătură-te la Snapshot <a target='_blank' href='https://discord.gg/snapshot'>Discord</a>."
   },
   "notify": {
     "youDidIt": "Ai reușit!",
@@ -349,7 +349,7 @@
       "switchChain": "Comută portofelul la {0} pentru a solicita execuția",
       "question": "A trecut această propunere si îndeplinește",
       "criteria": "criterii de acceptare?",
-      "proposalPassed": "Did the proposal pass?"
+      "proposalPassed": "Propunerea a fost aprobată?"
     }
   },
   "poap": {
@@ -417,12 +417,12 @@
     "text": "Primește notificări de fiecare dată când o nouă propunere este creată sau se termină"
   },
   "timeUnits": {
-    "second": "1 second | {n} seconds",
-    "minute": "1 minute | {n} minutes",
-    "hour": "1 hour | {n} hours",
-    "day": "1 day | {n} days",
-    "week": "1 week | {n} weeks",
-    "month": "1 month | {n} months",
-    "year": "1 year | {n} years"
+    "second": "1 secundă | {n} secunde",
+    "minute": "1 minut | {n} minute",
+    "hour": "1 oră | {n} ore",
+    "day": "1 zi | {n} zile",
+    "week": "1 săptămână | {n} săptămâni",
+    "month": "1 lună | {n} luni",
+    "year": "1 an | {n} ani"
   }
 }
