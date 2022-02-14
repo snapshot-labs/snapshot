@@ -293,6 +293,8 @@ const needsPluginConfigs = computed(() =>
 <template>
   <Layout v-bind="$attrs">
     <template #content-left>
+      <h2 class="mb-2">Create proposal</h2>
+
       <div v-if="currentStep === 1" class="px-4 md:px-0 overflow-hidden mb-3">
         <router-link
           :to="domain ? { path: '/' } : { name: 'spaceProposals' }"
