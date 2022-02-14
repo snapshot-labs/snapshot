@@ -5,7 +5,7 @@
  * backend.
  */
 
-import { ref, defineAsyncComponent } from 'vue';
+import { ref } from 'vue';
 import { useApolloQuery } from '@/composables/useApolloQuery';
 import { PLUGINS_COUNT_QUERY } from '@/helpers/queries';
 
@@ -21,12 +21,13 @@ const pluginIndex: Record<string, any> = Object.fromEntries(
   )
 );
 
-// prepare all plugin's main components imports (Create.vue, Proposal.vue, etc.)
-// doesn't actually import anything but prepares functions to use with
-// defineAsyncComponent below (importComponent())
+// import all plugin's main components (Create.vue, Proposal.vue, etc.)
 const allPluginComponents = import.meta.globEager(`../plugins/*/*.vue`);
 
-// get required components for specific location (componentName) and a list of active plugins
+// Based on list of active plugins in a space (pluginKeys) returns a list of
+// required component objects for a specific location (componentName, e.g.
+// Create) to then mount them with the built-in <component>... component. (e.g.
+// in src/components/Plugin/Create.vue)
 const getPluginComponents = (componentName: string, pluginKeys) => {
   pluginKeys = pluginKeys.filter(key => !!pluginIndex[key]); // remove old/non-existent plugins
 
@@ -38,6 +39,7 @@ const getPluginComponents = (componentName: string, pluginKeys) => {
           .replace(`/${componentName}.vue`, '');
 
         if (pluginKeys.includes(pluginKey)) {
+          // prefix component name for better debugging, e.g. in console warnings
           componentModule.default.name =
             'Plugins' +
             pluginKey[0].toUpperCase() +
