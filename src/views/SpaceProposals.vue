@@ -186,6 +186,7 @@ watchEffect(() => {
           :key="i"
           :proposal="proposal"
           :profiles="profiles"
+          :space="space"
         />
       </div>
       <div
