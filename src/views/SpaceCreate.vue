@@ -513,7 +513,7 @@ const createPluginComponents = computed(() =>
 
             <UiInput
               @click="!space.voting?.period ? selectDate('end') : null"
-              :disabled="space.voting?.period"
+              :disabled="!!space.voting?.period"
               v-tippy="{
                 content: space.voting?.period
                   ? $t('create.periodEnforced')
