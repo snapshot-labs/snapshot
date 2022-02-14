@@ -5,6 +5,7 @@
   "website": "https://...",
   "icon": "ipfs://QmPhmL1jPjaYKeKeEzyetAueNHCsGgrUVqSJasiTrcPWvx",
   "defaults": {
-    "space": {}
+    "space": {},
+    "proposal": {}
   }
 }
