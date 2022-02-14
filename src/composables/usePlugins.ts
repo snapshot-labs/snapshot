@@ -22,6 +22,7 @@ const pluginIndex: Record<string, any> = Object.fromEntries(
 );
 
 // import all plugin's main components (Create.vue, Proposal.vue, etc.)
+// (plugin root directories should not contain any other components)
 const allPluginComponents = import.meta.globEager(`../plugins/*/*.vue`);
 
 // Based on list of active plugins in a space (pluginKeys) returns a list of
