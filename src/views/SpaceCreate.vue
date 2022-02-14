@@ -464,7 +464,7 @@ const needsPluginConfigs = computed(() =>
                 </template>
               </draggable>
             </div>
-            <div class="w-[48px] flex items-end ml-2">
+            <div v-if="!disableChoiceEdit" class="w-[48px] flex items-end ml-2">
               <UiSidebarButton
                 v-if="!disableChoiceEdit"
                 @click="addChoices(1)"
