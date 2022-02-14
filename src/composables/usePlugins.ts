@@ -24,29 +24,26 @@ const pluginIndex: Record<string, any> = Object.fromEntries(
 // prepare all plugin's main components imports (Create.vue, Proposal.vue, etc.)
 // doesn't actually import anything but prepares functions to use with
 // defineAsyncComponent below (importComponent())
-const allPluginComponents = import.meta.glob(`../plugins/*/*.vue`);
+const allPluginComponents = import.meta.globEager(`../plugins/*/*.vue`);
 
 // get required components for specific location (componentName) and a list of active plugins
 const getPluginComponents = (componentName: string, pluginKeys) => {
   pluginKeys = pluginKeys.filter(key => !!pluginIndex[key]); // remove old/non-existent plugins
 
   return Object.entries(allPluginComponents)
-    .map(([path, importComponent]) => {
+    .map(([path, componentModule]) => {
       if (path.endsWith(componentName + '.vue')) {
         const pluginKey = path
           .replace('../plugins/', '')
           .replace(`/${componentName}.vue`, '');
 
         if (pluginKeys.includes(pluginKey)) {
-          return defineAsyncComponent(async () => {
-            const { default: component } = await importComponent();
-            component.name =
-              'Plugins' +
-              pluginKey[0].toUpperCase() +
-              pluginKey.substring(1) +
-              componentName;
-            return component;
-          });
+          componentModule.default.name =
+            'Plugins' +
+            pluginKey[0].toUpperCase() +
+            pluginKey.substring(1) +
+            componentName;
+          return componentModule.default;
         }
       }
       return null;
