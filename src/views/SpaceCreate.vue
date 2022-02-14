@@ -481,7 +481,7 @@ const needsPluginConfigs = computed(() =>
           icon="info"
           :iconTooltip="$t('create.votingPeriodExplainer')"
         >
-          <div class="flex space-x-3">
+          <div class="md:flex md:space-x-3">
             <UiInput
               @click="!space.voting?.delay ? selectDate('start') : null"
               :disabled="!!space.voting?.delay"
@@ -522,6 +522,7 @@ const needsPluginConfigs = computed(() =>
                   ? $t('create.periodEnforced')
                   : null
               }"
+              class="mb-0 md:mb-2"
               :class="{ 'cursor-not-allowed': space.voting?.period }"
             >
               <template v-slot:selected>
@@ -586,10 +587,7 @@ const needsPluginConfigs = computed(() =>
         </UiButton>
 
         <UiButton
-          v-if="
-            currentStep === 3 ||
-            (!needsPluginConfigs && currentStep === 2)
-          "
+          v-if="currentStep === 3 || (!needsPluginConfigs && currentStep === 2)"
           @click="
             !termsAccepted && space.terms
               ? (modalTermsOpen = true)
