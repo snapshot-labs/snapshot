@@ -303,14 +303,15 @@ const needsPluginConfigs = computed(() =>
         </router-link>
       </div>
 
-      <!-- Shows when no wallet is connected and the space has any sort of validation set -->
+      <!-- Shows when no wallet is connected and the space has any sort 
+      of validation set -->
       <BaseWarningBlock
         v-if="
-          (!web3Account &&
-            !web3.authLoading &&
-            space?.validation?.params.minScore) ||
-          (!web3Account && !web3.authLoading && space?.filters.minScore) ||
-          (!web3Account && !web3.authLoading && space?.filters.onlyMembers)
+          !web3Account &&
+          !web3.authLoading &&
+          (space?.validation?.params.minScore ||
+            space?.filters.minScore ||
+            space?.filters.onlyMembers)
         "
         :routeObject="{ name: 'spaceAbout', params: { key: space.id } }"
       >
