@@ -122,7 +122,7 @@
   "joinSpaces": "Bereiche beitreten",
   "setDelegationToSpace": "Delegation auf einen bestimmten Space beschränken",
   "theCurrentNetwork": "aktuelles Netzwerk",
-  "homeLoadmore": "Load more",
+  "homeLoadmore": "Mehr",
   "errors": {
     "required": "Dieses Feld ist ein Pflichtfeld",
     "minLength": "Mindestlänge ist {0}",
