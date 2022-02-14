@@ -372,7 +372,7 @@ const needsPluginConfigs = computed(() =>
               class="mb-2 w-full break-all"
             />
             <input
-              v-if="!preview"
+              v-else
               v-model="form.name"
               maxlength="128"
               class="text-2xl font-bold input mb-2 w-full"
@@ -388,6 +388,8 @@ const needsPluginConfigs = computed(() =>
                 :placeholder="$t('create.content')"
                 :max-length="bodyLimit"
               />
+
+              <!-- Indicator for number of available characters in body -->
               <div
                 class="absolute right-0 bottom-2 hidden group-focus-within:block p-1 bg-skin-bg"
                 :class="{ 'text-red': form.body.length === bodyLimit }"
