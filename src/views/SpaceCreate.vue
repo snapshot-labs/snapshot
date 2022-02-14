@@ -441,6 +441,10 @@ const createPluginComponents = computed(() =>
                     <template v-slot:label>
                       <div
                         class="flex items-center cursor-grab active:cursor-grabbing"
+                        :class="{
+                          'cursor-not-allowed active:cursor-not-allowed':
+                            disableChoiceEdit
+                        }"
                       >
                         <Icon name="draggable" size="16" class="mr-[12px]" />
                         {{ $tc('create.choice', [index + 1]) }}
