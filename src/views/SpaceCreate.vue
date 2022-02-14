@@ -240,16 +240,6 @@ watchEffect(() => {
   }
 });
 
-const stepTwoIsValid = computed(() => {
-  return (
-    dateEnd.value &&
-    dateEnd.value > dateStart.value &&
-    form.value.snapshot &&
-    form.value.snapshot > blockNumber.value / 2 &&
-    !choices.value.some((a, i) => a.text === '' && i === 0)
-  );
-});
-
 const currentStep = ref(1);
 
 const stepIsValid = computed(() => {
@@ -260,7 +250,15 @@ const stepIsValid = computed(() => {
     passValidation.value[0] === true
   )
     return true;
-  else if (currentStep.value === 2 && stepTwoIsValid.value) return true;
+  else if (
+    currentStep.value === 2 &&
+    dateEnd.value &&
+    dateEnd.value > dateStart.value &&
+    form.value.snapshot &&
+    form.value.snapshot > blockNumber.value / 2 &&
+    !choices.value.some((a, i) => a.text === '' && i === 0)
+  )
+    return true;
   else return false;
 });
 
