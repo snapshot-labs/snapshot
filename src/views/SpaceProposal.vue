@@ -296,13 +296,14 @@ const truncateMarkdownBody = computed(() => {
                 only-username
               />
               <Badges :address="proposal.author" :members="space.members" />
-              <UiState :state="proposal.state" class="inline-block" />
             </div>
+
             <div class="flex justify-end">
+              <UiState :state="proposal.state" class="inline-block" />
               <UiDropdown
                 top="2.5rem"
                 right="1.5rem"
-                class="ml-2"
+                class="ml-3"
                 @select="selectFromShareDropdown"
                 @clickedNoDropdown="startShare(space, proposal)"
                 :items="sharingItems"
