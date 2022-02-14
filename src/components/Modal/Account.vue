@@ -62,7 +62,7 @@ watch(open, () => (step.value = null));
             class="button-outline w-full flex justify-center items-center gap-2"
           >
             <img
-              :src="getIpfsUrl(injected.icon)"
+              :src="getIpfsUrl(connector.icon)"
               height="25"
               width="25"
               :alt="connector.name"
