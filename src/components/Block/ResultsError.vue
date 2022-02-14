@@ -3,7 +3,7 @@ import { useI18n } from '@/composables/useI18n';
 const { t } = useI18n();
 
 defineProps<{
-  isAdmin: Boolean
+  isAdmin: boolean;
 }>();
 </script>
 
