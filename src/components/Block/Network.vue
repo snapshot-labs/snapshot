@@ -1,16 +1,13 @@
 <script setup>
 import { useIntl } from '@/composables/useIntl';
 import { useNetworksFilter } from '@/composables/useNetworksFilter';
+import { getIpfsUrl } from '@/helpers/utils';
 
 const { formatCompactNumber } = useIntl();
 
 const { networksSpacesCount } = useNetworksFilter();
 
 defineProps(['network']);
-
-function getLogoUrl(key) {
-  return `https://raw.githubusercontent.com/snapshot-labs/snapshot.js/master/src/networks/${key}.png`;
-}
 </script>
 
 <template>
@@ -18,7 +15,7 @@ function getLogoUrl(key) {
     <div class="flex items-start mb-3">
       <UiAvatar
         class="mr-2"
-        :imgsrc="getLogoUrl(network.key)"
+        :imgsrc="getIpfsUrl(network.imageIPFS)"
         :seed="network.key"
         size="28"
       />
