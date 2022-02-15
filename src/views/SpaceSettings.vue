@@ -19,6 +19,7 @@ import { usePlugins } from '@/composables/usePlugins';
 const props = defineProps({
   space: Object,
   sourceSpace: Object,
+  spaceKey: String,
   loadExtentedSpaces: Function
 });
 
@@ -71,7 +72,7 @@ const isValid = computed(() => {
 });
 
 const textRecord = computed(() => {
-  const keyURI = encodeURIComponent(props.space.id);
+  const keyURI = encodeURIComponent(props.spaceKey);
   const address = web3Account.value
     ? getAddress(web3Account.value)
     : '<your-address>';
@@ -244,10 +245,12 @@ function formatSpace(spaceRaw) {
 }
 
 onMounted(async () => {
-  const spaceClone = formatSpace(props.space);
-  if (spaceClone) {
-    form.value = spaceClone;
-    currentSettings.value = clone(spaceClone);
+  if (props.space) {
+    const spaceClone = formatSpace(props.space);
+    if (spaceClone) {
+      form.value = spaceClone;
+      currentSettings.value = clone(spaceClone);
+    }
   }
   if (props.sourceSpace) {
     const fromClone = formatSpace(props.sourceSpace);
@@ -257,7 +260,7 @@ onMounted(async () => {
   }
   try {
     const uri = await getSpaceUri(
-      props.space.id,
+      props.spaceKey,
       import.meta.env.VITE_DEFAULT_NETWORK
     );
     console.log('URI', uri);
@@ -304,7 +307,7 @@ onMounted(() => {
           />
         </UiButton>
         <a
-          :href="`https://app.ens.domains/name/${space.id}`"
+          :href="`https://app.ens.domains/name/${space?.id}`"
           target="_blank"
           class="mb-2 block"
         >
