@@ -37,19 +37,16 @@ const {
   form,
   bodyLimit,
   choices,
-  dateStart,
-  dateEnd,
   userSelectedDateStart,
   userSelectedDateEnd,
   sourceProposal,
-  sourceProposalLoaded
-} = useSpaceCreateForm(props.space);
-
-const blockNumber = ref(-1);
+  sourceProposalLoaded,
+  updateDateStart,
+  updateDateEnd
+} = useSpaceCreateForm();
 
 const passValidation = ref([true]);
 const validationLoading = ref(false);
-const loadingSnapshot = ref(true);
 
 // Check if account passes space validation
 watch(
@@ -82,10 +79,9 @@ const isValid = computed(() => {
   return (
     !clientLoading.value &&
     form.value.body.length <= bodyLimit &&
-    dateEnd.value &&
-    dateEnd.value > dateStart.value &&
+    form.value.end &&
+    form.value.end > form.value.start &&
     form.value.snapshot &&
-    form.value.snapshot > blockNumber.value / 2 &&
     choices.value.length >= 1 &&
     !choices.value.some((a, i) => a.text === '' && i === 0) &&
     passValidation.value[0] &&
@@ -99,14 +95,8 @@ async function handleSubmit() {
   form.value.choices = choices.value
     .map(choice => choice.text)
     .filter(choiceText => choiceText.length > 0);
-  form.value.metadata.network = props.space.network;
-  form.value.metadata.strategies = props.space.strategies;
-  form.value.start = props.space.voting?.delay
-    ? parseInt((Date.now() / 1e3).toFixed()) + props.space.voting.delay
-    : dateStart.value;
-  form.value.end = props.space.voting?.period
-    ? form.value.start + props.space.voting.period
-    : dateEnd.value;
+  updateDateStart(props.space);
+  updateDateEnd(props.space);
 
   const result = await send(props.space, 'proposal', form.value);
   console.log('Result', result);
@@ -142,7 +132,6 @@ async function loadProposal() {
   userSelectedDateStart.value = true;
   userSelectedDateEnd.value = true;
 
-  console.log(proposal);
   form.value = {
     name: proposal.title,
     body: proposal.body,
@@ -172,13 +161,9 @@ onMounted(() =>
   setPageTitle('page.title.space.create', { space: props.space.name })
 );
 
-watchEffect(async () => {
-  loadingSnapshot.value = true;
-  if (props.space?.network) {
-    blockNumber.value = await getBlockNumber(getProvider(props.space.network));
-    form.value.snapshot = blockNumber.value;
-    loadingSnapshot.value = false;
-  }
+onMounted(async () => {
+  form.value.snapshot = await getBlockNumber(getProvider(props.space.network));
+
   if (props.space?.voting?.type) form.value.type = props.space.voting.type;
 });
 
@@ -202,10 +187,9 @@ const stepIsValid = computed(() => {
     return true;
   else if (
     route.name === 'spaceCreateStepTwo' &&
-    dateEnd.value &&
-    dateEnd.value > dateStart.value &&
+    form.value.end &&
+    form.value.end > form.value.start &&
     form.value.snapshot &&
-    form.value.snapshot > blockNumber.value / 2 &&
     !choices.value.some((a, i) => a.text === '' && i === 0)
   )
     return true;
@@ -215,15 +199,6 @@ const stepIsValid = computed(() => {
 watch(preview, () => {
   window.scrollTo(0, 0);
 });
-
-// Update form start date when going to step two
-watch(
-  () => route.name,
-  () => {
-    if (!userSelectedDateStart.value)
-      form.value.start = parseInt((Date.now() / 1e3).toFixed());
-  }
-);
 
 import { usePlugins } from '@/composables/usePlugins';
 const { pluginIndex } = usePlugins();

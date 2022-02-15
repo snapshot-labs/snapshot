@@ -15,44 +15,44 @@ const form = ref({
   name: '',
   body: '',
   choices: [],
-  start: parseInt((Date.now() / 1e3).toFixed()),
+  start: 0,
   end: 0,
-  snapshot: '',
+  snapshot: 0,
   metadata: { plugins: {} },
   type: 'single-choice'
 });
 
-export function useSpaceCreateForm(space) {
+export function useSpaceCreateForm() {
   const route = useRoute();
 
   const bodyLimit = 14400;
 
-  const dateStart = computed(() => {
-    return space?.voting?.delay
+  const sourceProposal = computed(() => route.params.sourceProposal);
+
+  function updateDateStart(space) {
+    space.voting?.delay
       ? parseInt((Date.now() / 1e3).toFixed()) + space.voting.delay
       : form.value.start;
-  });
+  }
 
-  const dateEnd = computed(() => {
-    return space?.voting?.period
-      ? dateStart.value + space.voting.period
+  function updateDateEnd(space) {
+    form.value.end = space?.voting?.period
+      ? form.value.start + space.voting.period
       : userSelectedDateEnd.value
       ? form.value.end
-      : dateStart.value + 259200;
-  });
-
-  const sourceProposal = computed(() => route.params.sourceProposal);
+      : form.value.start + 259200;
+  }
 
   return {
     preview,
     form,
     bodyLimit,
     choices,
-    dateStart,
-    dateEnd,
     userSelectedDateStart,
     userSelectedDateEnd,
     sourceProposal,
-    sourceProposalLoaded
+    sourceProposalLoaded,
+    updateDateStart,
+    updateDateEnd
   };
 }

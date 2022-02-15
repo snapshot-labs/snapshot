@@ -1,9 +1,9 @@
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { useSpaceCreateForm } from '@/composables/useSpaceCreateForm';
 import draggable from 'vuedraggable';
 
-defineProps({
+const props = defineProps({
   space: {
     type: Object,
     required: true
@@ -15,8 +15,8 @@ const {
   choices,
   userSelectedDateStart,
   userSelectedDateEnd,
-  dateStart,
-  dateEnd
+  updateDateStart,
+  updateDateEnd
 } = useSpaceCreateForm();
 
 const modalDateSelectOpen = ref(false);
@@ -35,12 +35,21 @@ function setDate(ts) {
     form.value[selectedDate.value] = ts;
     if (selectedDate.value === 'start') {
       userSelectedDateStart.value = true;
+      updateDateEnd(props.space);
     }
     if (selectedDate.value === 'end') {
       userSelectedDateEnd.value = true;
     }
   }
 }
+
+onMounted(() => {
+  if (!userSelectedDateStart.value)
+    form.value.start = parseInt((Date.now() / 1e3).toFixed());
+
+  updateDateStart(props.space);
+  updateDateEnd(props.space);
+});
 </script>
 
 <template>
@@ -131,10 +140,10 @@ function setDate(ts) {
           <template v-slot:selected>
             <span
               v-text="
-                Math.round(dateStart / 10) ===
+                Math.round(form.start / 10) ===
                 Math.round(parseInt((Date.now() / 1e3).toFixed()) / 10)
                   ? $t('create.now')
-                  : $d(dateStart * 1e3, 'short', 'en-US')
+                  : $d(form.start * 1e3, 'short', 'en-US')
               "
             />
           </template>
@@ -160,7 +169,7 @@ function setDate(ts) {
           :class="{ 'cursor-not-allowed': space.voting?.period }"
         >
           <template v-slot:selected>
-            <span v-text="$d(dateEnd * 1e3, 'short', 'en-US')" />
+            <span v-text="$d(form.end * 1e3, 'short', 'en-US')" />
           </template>
           <template v-slot:label>
             {{ $t(`create.end`) }}
