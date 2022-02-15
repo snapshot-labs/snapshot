@@ -140,7 +140,7 @@ onMounted(() => {
                   })
                 }}
               </div>
-              <FollowButton class="!mb-0" :space="space" :spaceId="space.id" />
+              <FollowButton class="!mb-0" :space="space" />
             </Block>
           </router-link>
         </div>

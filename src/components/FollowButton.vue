@@ -5,15 +5,15 @@ import { useTerms } from '@/composables/useTerms';
 import { useClient } from '@/composables/useClient';
 import { useWeb3 } from '@/composables/useWeb3';
 
-const props = defineProps({ space: Object, spaceId: String });
+const props = defineProps({ space: Object });
 
 const { isGnosisSafe } = useClient();
 const { web3 } = useWeb3();
 
-const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(props.spaceId);
+const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(props.space.id);
 
 const { clickFollow, loadingFollow, isFollowing, hoverJoin } = useFollowSpace(
-  props.spaceId
+  props.space.id
 );
 
 const canFollow = computed(() => {
@@ -36,12 +36,12 @@ const canFollow = computed(() => {
         loadingFollow !== ''
           ? null
           : canFollow
-          ? clickFollow(spaceId)
+          ? clickFollow(space.id)
           : (modalTermsOpen = true)
       "
-      @mouseenter="hoverJoin = spaceId"
+      @mouseenter="hoverJoin = space.id"
       @mouseleave="hoverJoin = ''"
-      :loading="loadingFollow === spaceId"
+      :loading="loadingFollow === space.id"
       :disabled="isGnosisSafe || web3.isTrezor"
       style="width: 120px"
       class="mb-4"
@@ -55,7 +55,7 @@ const canFollow = computed(() => {
       :open="modalTermsOpen"
       :space="space"
       @close="modalTermsOpen = false"
-      @accept="acceptTerms(), clickFollow(spaceId)"
+      @accept="acceptTerms(), clickFollow(space.id)"
     />
   </teleport>
 </template>
