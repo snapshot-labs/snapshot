@@ -1,5 +1,5 @@
 <script setup>
-import { watchEffect, computed, ref, watch } from 'vue';
+import { onMounted, computed, ref, watch } from 'vue';
 import { useStore } from '@/composables/useStore';
 import { useI18n } from '@/composables/useI18n';
 import { useInfiniteLoader } from '@/composables/useInfiniteLoader';
@@ -74,18 +74,6 @@ async function load() {
   emitUpdateLastSeenProposal();
 }
 
-watch(
-  () => props.space.id,
-  () => {
-    const firstProposal = store.space.proposals[0];
-    if (firstProposal && firstProposal?.space.id !== props.space.id) {
-      store.space.proposals = [];
-      load();
-    }
-  },
-  { immediate: true }
-);
-
 const { endElement } = useScrollMonitor(() =>
   loadMore(() => loadProposals(store.space.proposals.length), loading.value)
 );
@@ -113,9 +101,15 @@ function selectState(e) {
   load();
 }
 
-watchEffect(() => {
+onMounted(() => {
   if (props.space?.name)
     setPageTitle('page.title.space.proposals', { space: props.space.name });
+
+  const firstProposal = store.space.proposals[0];
+  if (firstProposal && firstProposal?.space.id !== props.space.id) {
+    store.space.proposals = [];
+    load();
+  }
 });
 </script>
 
@@ -176,7 +170,7 @@ watchEffect(() => {
         "
       />
       <NoProposals
-        v-else-if="space && !proposalsCount && !loadingData"
+        v-else-if="!proposalsCount && !loadingData"
         class="mt-2"
         :space="space"
       />
