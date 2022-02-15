@@ -18,8 +18,7 @@ import { usePlugins } from '@/composables/usePlugins';
 
 const props = defineProps({
   space: Object,
-  from: String,
-  spaceFrom: Object,
+  sourceSpace: Object,
   spaceLoading: Boolean,
   loadExtentedSpaces: Function
 });
@@ -153,7 +152,7 @@ function inputError(field) {
 }
 
 function handleReset() {
-  if (props.from) return (form.value = clone(props.spaceFrom));
+  if (props.sourceSpace) return (form.value = clone(props.sourceSpace));
   if (currentSettings.value) return (form.value = clone(currentSettings.value));
   form.value = {
     strategies: [],
@@ -254,8 +253,8 @@ watch(
         form.value = spaceClone;
         currentSettings.value = clone(spaceClone);
       }
-      if (props.from) {
-        const fromClone = formatSpace(props.spaceFrom);
+      if (props.sourceSpace) {
+        const fromClone = formatSpace(props.sourceSpace);
         if (fromClone) {
           form.value = fromClone;
         }
@@ -273,7 +272,8 @@ watch(
 
       loaded.value = true;
     }
-  }
+  },
+  { immediate: true }
 );
 
 watchEffect(() => {

@@ -1,6 +1,6 @@
 <script setup>
 import { ref, watchEffect, computed, onMounted, inject, watch } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 import draggable from 'vuedraggable';
 import { useI18n } from '@/composables/useI18n';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
@@ -19,11 +19,11 @@ import { useStore } from '@/composables/useStore';
 import { useIntl } from '@/composables/useIntl';
 
 const props = defineProps({
-  space: Object,
-  from: String
+  space: Object
 });
 
 const router = useRouter();
+const route = useRoute();
 const { t, setPageTitle } = useI18n();
 const { formatCompactNumber } = useIntl();
 const auth = getInstance();
@@ -57,6 +57,8 @@ const loadingSnapshot = ref(true);
 const proposal = computed(() =>
   Object.assign(form.value, { choices: choices.value })
 );
+
+const sourceProposal = computed(() => route.params.sourceProposal);
 
 // Check if account passes space validation
 watch(
@@ -177,7 +179,7 @@ async function loadProposal() {
     {
       query: PROPOSAL_QUERY,
       variables: {
-        id: props.from
+        id: sourceProposal.value
       }
     },
     'proposal'
@@ -211,7 +213,7 @@ watch(nameInput, () => nameInput?.value?.focus());
 
 onMounted(async () => {
   addChoices(2);
-  if (props.from) loadProposal();
+  if (sourceProposal.value) loadProposal();
 });
 
 watchEffect(() => {
@@ -558,7 +560,7 @@ const needsPluginConfigs = computed(() =>
       <template v-else>
         <div class="h-[1px] w-full" />
         <PluginCreate
-          v-if="space?.plugins && (!from || sourceProposalLoaded)"
+          v-if="space?.plugins && (!sourceProposal || sourceProposalLoaded)"
           :proposal="proposal"
           :space="space"
           :preview="preview"

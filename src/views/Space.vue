@@ -1,9 +1,8 @@
 <script setup>
 import { computed, onMounted } from 'vue';
-import { useRoute } from 'vue-router';
 import { useDomain } from '@/composables/useDomain';
 import aliases from '@/../snapshot-spaces/spaces/aliases.json';
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 import { formatSpace } from '@/helpers/utils';
 import { useExtendedSpaces } from '@/composables/useExtendedSpaces';
 
@@ -28,12 +27,12 @@ const space = computed(() =>
   formatSpace(extentedSpaces.value?.find(s => s.id === spaceRoute.value))
 );
 
-const from = computed(() => route.params.from);
-const spaceFrom = computed(() =>
-  formatSpace(extentedSpaces.value?.find(s => s.id === from.value))
+const sourceSpaceRoute = computed(() => route.params.sourceSpace);
+const sourceSpace = computed(() =>
+  formatSpace(extentedSpaces.value?.find(s => s.id === sourceSpaceRoute.value))
 );
 
-onMounted(() => loadExtentedSpaces([spaceRoute.value, from.value]));
+onMounted(() => loadExtentedSpaces([spaceRoute.value, sourceSpaceRoute.value]));
 </script>
 
 <template>
@@ -64,8 +63,7 @@ onMounted(() => loadExtentedSpaces([spaceRoute.value, from.value]));
     <router-view
       v-if="space"
       :space="space"
-      :from="from"
-      :spaceFrom="spaceFrom"
+      :sourceSpace="sourceSpace"
       :spaceLoading="spaceLoading"
       :loadExtentedSpaces="loadExtentedSpaces"
     />
