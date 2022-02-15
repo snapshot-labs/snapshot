@@ -116,11 +116,13 @@ export function explorerUrl(network, str: string, type = 'address'): string {
 }
 
 export function calcFromSeconds(value, unit) {
+  if (unit === 'm') return Math.floor(value / 60);
   if (unit === 'h') return Math.floor(value / (60 * 60));
   if (unit === 'd') return Math.floor(value / (60 * 60 * 24));
 }
 
 export function calcToSeconds(value, unit) {
+  if (unit === 'm') return value * 60;
   if (unit === 'h') return value * 60 * 60;
   if (unit === 'd') return value * 60 * 60 * 24;
 }

@@ -6,11 +6,46 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "7239657",
+      "name": "calendar",
+      "font_class": "calendar",
+      "unicode": "e71f",
+      "unicode_decimal": 59167
+    },
+    {
+      "icon_id": "27154983",
+      "name": "draggable",
+      "font_class": "draggable",
+      "unicode": "e617",
+      "unicode_decimal": 58903
+    },
+    {
       "icon_id": "702320",
       "name": "earth",
       "font_class": "earth",
       "unicode": "e7dc",
       "unicode_decimal": 59356
+    },
+    {
+      "icon_id": "20997029",
+      "name": "preview",
+      "font_class": "preview",
+      "unicode": "e637",
+      "unicode_decimal": 58935
+    },
+    {
+      "icon_id": "8555524",
+      "name": "filter-3-fill",
+      "font_class": "filter",
+      "unicode": "e74f",
+      "unicode_decimal": 59215
+    },
+    {
+      "icon_id": "14401724",
+      "name": "home",
+      "font_class": "home",
+      "unicode": "e673",
+      "unicode_decimal": 58995
     },
     {
       "icon_id": "7988769",
