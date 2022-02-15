@@ -8,8 +8,7 @@ import { useIntl } from '@/composables/useIntl';
 
 const props = defineProps({
   space: Object,
-  spaceLoading: Boolean,
-  spaceId: String
+  spaceLoading: Boolean
 });
 
 const network = computed(() => networks[props.space?.network]);
@@ -32,7 +31,7 @@ watchEffect(() => {
 <template>
   <Layout>
     <template #sidebar-left>
-      <SpaceSidebar :space="space" :spaceId="spaceId" />
+      <SpaceSidebar :space="space" />
     </template>
     <template #content-right>
       <div class="px-4 md:px-0 mb-3 flex">

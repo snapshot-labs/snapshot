@@ -17,7 +17,6 @@ import { useClient } from '@/composables/useClient';
 import { usePlugins } from '@/composables/usePlugins';
 
 const props = defineProps({
-  spaceId: String,
   space: Object,
   from: String,
   spaceFrom: Object,
@@ -74,7 +73,7 @@ const isValid = computed(() => {
 });
 
 const textRecord = computed(() => {
-  const keyURI = encodeURIComponent(props.spaceId);
+  const keyURI = encodeURIComponent(props.space.id);
   const address = web3Account.value
     ? getAddress(web3Account.value)
     : '<your-address>';
@@ -124,11 +123,11 @@ const categoriesString = computed(() => {
 async function handleSubmit() {
   if (isValid.value) {
     if (form.value.filters.invalids) delete form.value.filters.invalids;
-    const result = await send({ id: props.spaceId }, 'settings', form.value);
+    const result = await send({ id: props.space.id }, 'settings', form.value);
     console.log('Result', result);
     if (result.id) {
       notify(['green', t('notify.saved')]);
-      props.loadExtentedSpaces([props.spaceId]);
+      props.loadExtentedSpaces([props.space.id]);
     }
   } else {
     console.log('Invalid schema', validate.value);
@@ -263,7 +262,7 @@ watch(
       }
       try {
         const uri = await getSpaceUri(
-          props.spaceId,
+          props.space.id,
           import.meta.env.VITE_DEFAULT_NETWORK
         );
         console.log('URI', uri);
@@ -312,7 +311,7 @@ watchEffect(() => {
           />
         </UiButton>
         <a
-          :href="`https://app.ens.domains/name/${spaceId}`"
+          :href="`https://app.ens.domains/name/${space.id}`"
           target="_blank"
           class="mb-2 block"
         >

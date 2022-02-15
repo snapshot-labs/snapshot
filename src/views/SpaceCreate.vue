@@ -19,7 +19,6 @@ import { useStore } from '@/composables/useStore';
 import { useIntl } from '@/composables/useIntl';
 
 const props = defineProps({
-  spaceId: String,
   space: Object,
   from: String
 });
@@ -160,7 +159,7 @@ async function handleSubmit() {
     router.push({
       name: 'spaceProposal',
       params: {
-        key: props.spaceId,
+        key: props.space.id,
         id: result.id
       }
     });
@@ -168,7 +167,7 @@ async function handleSubmit() {
 }
 
 const { modalAccountOpen } = useModal();
-const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(props.spaceId);
+const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(props.space.id);
 
 const { apolloQuery, queryLoading } = useApolloQuery();
 

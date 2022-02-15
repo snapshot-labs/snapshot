@@ -23,9 +23,9 @@ if (aliasedSpace) {
   router.replace({ path: updatedPath });
 }
 
-const spaceId = computed(() => aliasedSpace || domain || route.params.key);
+const spaceRoute = computed(() => aliasedSpace || domain || route.params.key);
 const space = computed(() =>
-  formatSpace(extentedSpaces.value?.find(s => s.id === spaceId.value))
+  formatSpace(extentedSpaces.value?.find(s => s.id === spaceRoute.value))
 );
 
 const from = computed(() => route.params.from);
@@ -33,16 +33,41 @@ const spaceFrom = computed(() =>
   formatSpace(extentedSpaces.value?.find(s => s.id === from.value))
 );
 
-onMounted(() => loadExtentedSpaces([spaceId.value, from.value]));
+onMounted(() => loadExtentedSpaces([spaceRoute.value, from.value]));
 </script>
 
 <template>
-  <router-view
-    :spaceId="spaceId"
-    :space="space"
-    :from="from"
-    :spaceFrom="spaceFrom"
-    :spaceLoading="spaceLoading"
-    :loadExtentedSpaces="loadExtentedSpaces"
-  />
+  <div>
+    <!-- Lazy loading skeleton for space page with left sidebar layout -->
+    <Layout
+      v-if="
+        !space &&
+        ($route.name === 'spaceProposals' || $route.name === 'spaceAbout')
+      "
+    >
+      <template #sidebar-left>
+        <SpaceSidebarSkeleton />
+      </template>
+      <template #content-right>
+        <RowLoadingBlock />
+      </template>
+    </Layout>
+
+    <!-- Default page loading for none sidebar left layout space pages -->
+    <Layout v-else-if="!space">
+      <template #content-left>
+        <PageLoading />
+      </template>
+    </Layout>
+
+    <!-- Only loaded after space is available -->
+    <router-view
+      v-if="space"
+      :space="space"
+      :from="from"
+      :spaceFrom="spaceFrom"
+      :spaceLoading="spaceLoading"
+      :loadExtentedSpaces="loadExtentedSpaces"
+    />
+  </div>
 </template>

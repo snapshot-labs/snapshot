@@ -11,7 +11,7 @@ import { useUnseenProposals } from '@/composables/useUnseenProposals';
 import { lsSet } from '@/helpers/utils';
 import { useWeb3 } from '@/composables/useWeb3';
 
-const props = defineProps({ space: Object, spaceId: String });
+const props = defineProps({ space: Object });
 
 const { store } = useStore();
 const { setPageTitle } = useI18n();
@@ -38,7 +38,7 @@ async function loadProposals(skip = 0) {
       variables: {
         first: loadBy,
         skip,
-        space: props.spaceId,
+        space: props.space.id,
         state: spaceFilterBy.value === 'core' ? 'all' : spaceFilterBy.value,
         author_in: spaceFilterBy.value === 'core' ? spaceMembers.value : []
       }
@@ -57,7 +57,7 @@ function emitUpdateLastSeenProposal() {
     lsSet(
       `lastSeenProposals.${web3Account.value.slice(0, 8).toLowerCase()}`,
       Object.assign(lastSeenProposals.value, {
-        [props.spaceId]: new Date().getTime()
+        [props.space.id]: new Date().getTime()
       })
     );
   }
@@ -75,10 +75,10 @@ async function load() {
 }
 
 watch(
-  () => props.spaceId,
+  () => props.space.id,
   () => {
     const firstProposal = store.space.proposals[0];
-    if (firstProposal && firstProposal?.space.id !== props.spaceId) {
+    if (firstProposal && firstProposal?.space.id !== props.space.id) {
       store.space.proposals = [];
       load();
     }
@@ -99,7 +99,7 @@ watch(store.space.proposals, () => {
 // TODO: Use space query instead of explore, to get total number of proposals
 const proposalsCount = computed(() => {
   return 1;
-  // const count = explore.value.spaces[props.spaceId].proposals;
+  // const count = explore.value.spaces[props.space.id].proposals;
   // return count ? count : 0;
 });
 
@@ -122,7 +122,7 @@ watchEffect(() => {
 <template>
   <Layout>
     <template #sidebar-left>
-      <SpaceSidebar :space="space" :spaceId="spaceId" />
+      <SpaceSidebar :space="space" />
     </template>
     <template #content-right>
       <div class="px-4 md:px-0 mb-3 flex">

@@ -16,7 +16,6 @@ import { useStore } from '@/composables/useStore';
 import { useIntl } from '@/composables/useIntl';
 
 const props = defineProps({
-  spaceId: String,
   space: Object,
   spaceLoading: Boolean
 });
@@ -69,7 +68,7 @@ const threeDotItems = computed(() => {
 const browserHasHistory = computed(() => window.history.state.back);
 
 const { modalAccountOpen } = useModal();
-const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(props.spaceId);
+const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(props.space.id);
 
 function clickVote() {
   !web3.value.account
@@ -81,10 +80,10 @@ function clickVote() {
 
 async function loadProposal() {
   proposal.value = await getProposal(id);
-  // Redirect to proposal spaceId if it doesn't match route key
+  // Redirect to proposal space.id if it doesn't match route key
   if (
     route.name === 'spaceProposal' &&
-    props.spaceId !== proposal.value.space.id
+    props.space.id !== proposal.value.space.id
   ) {
     router.push({ name: 'error-404' });
   }
@@ -275,7 +274,7 @@ const truncateMarkdownBody = computed(() => {
                 class="text-color group"
                 :to="{
                   name: 'spaceProposals',
-                  params: { key: spaceId }
+                  params: { key: space.id }
                 }"
               >
                 <div class="flex items-center">

@@ -5,7 +5,7 @@
 declare module 'vue' {
   export interface GlobalComponents {
     Badges: typeof import('./src/components/Badges.vue')['default']
-    BaseNumberSelector: typeof import('./src/components/BaseNumberSelector.vue')['default']
+    BaseNumberSelector: typeof import('./src/components/BaseNumberSelector.vue')['default'];
     BaseWarningBlock: typeof import('./src/components/BaseWarningBlock.vue')['default']
     Block: typeof import('./src/components/Block.vue')['default']
     BlockCastVote: typeof import('./src/components/Block/CastVote.vue')['default']
@@ -89,8 +89,10 @@ declare module 'vue' {
     SelectLanguageButton: typeof import('./src/components/SelectLanguageButton.vue')['default']
     SpaceSidebar: typeof import('./src/components/SpaceSidebar.vue')['default']
     SpaceSidebarHeader: typeof import('./src/components/SpaceSidebarHeader.vue')['default']
+    SpaceSidebarNavigation: typeof import('./src/components/SpaceSidebarNavigation.vue')['default']
+    SpaceSidebarSkeleton: typeof import('./src/components/SpaceSidebarSkeleton.vue')['default']
     StatefulIcon: typeof import('./src/components/StatefulIcon.vue')['default']
-    Sticky: typeof import('./src/components/Sticky.vue')['default']
+    Sticky: typeof import('./src/components/Sticky.vue')['default'];
     TextareaArray: typeof import('./src/components/TextareaArray.vue')['default']
     TextareaAutosize: typeof import('./src/components/TextareaAutosize.vue')['default']
     TextareaJson: typeof import('./src/components/TextareaJson.vue')['default']
