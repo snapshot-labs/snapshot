@@ -62,10 +62,10 @@ const sourceProposal = computed(() => route.params.sourceProposal);
 
 // Check if account passes space validation
 watch(
-  () => [props.space, web3Account.value],
+  () => web3Account.value,
   async () => {
     validationLoading.value = true;
-    if (props.space && web3Account.value && auth.isAuthenticated.value) {
+    if (web3Account.value && auth.isAuthenticated.value) {
       const validationName = props.space.validation?.name ?? 'basic';
       const validationParams = props.space.validation?.params ?? {};
       const isValid = await validations[validationName](
@@ -216,10 +216,9 @@ onMounted(async () => {
   if (sourceProposal.value) loadProposal();
 });
 
-watchEffect(() => {
-  if (props.space?.name)
-    setPageTitle('page.title.space.create', { space: props.space.name });
-});
+onMounted(() =>
+  setPageTitle('page.title.space.create', { space: props.space.name })
+);
 
 watchEffect(async () => {
   loadingSnapshot.value = true;
@@ -614,7 +613,7 @@ const needsPluginConfigs = computed(() =>
       </Block>
     </template>
   </Layout>
-  <teleport to="#modal" v-if="space">
+  <teleport to="#modal">
     <ModalSelectDate
       :selectedDate="selectedDate"
       :open="modalDateSelectOpen"
