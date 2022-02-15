@@ -2,8 +2,6 @@
 import { ref } from 'vue';
 import languages from '@/locales/languages.json';
 
-defineProps({ space: Object, spaceId: String });
-
 const modalLangOpen = ref(false);
 </script>
 
