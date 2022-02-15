@@ -3,13 +3,14 @@ import { ref, watch, onMounted, onUnmounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useModal } from '@/composables/useModal';
-import { setPageTitle } from '@/helpers/utils';
+import { useI18n } from '@/composables/useI18n';
 import { useEns } from '@/composables/useEns';
 
 const router = useRouter();
 const { web3, web3Account } = useWeb3();
 const { modalAccountOpen } = useModal();
 const { loadOwnedEnsDomains, ownedEnsDomains } = useEns();
+const { setPageTitle } = useI18n();
 
 onMounted(() => {
   setPageTitle('page.title.setup');

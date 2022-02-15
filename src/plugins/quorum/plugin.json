@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "author": "lbeder",
   "website": "https://github.com/snapshot-labs/snapshot-plugins/tree/master/src/plugins/quorum",
-  "icon": "https://raw.githubusercontent.com/snapshot-labs/snapshot-plugins/master/src/plugins/quorum/logo.png",
+  "icon": "ipfs://Qmbyq2emXpjv1oFFJnhS3jL8aXZAqnya7zmNtKYXEs8jXa",
   "defaults": {
     "space": {
       "strategy": "static",

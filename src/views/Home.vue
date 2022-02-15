@@ -5,13 +5,15 @@ import { useScrollMonitor } from '@/composables/useScrollMonitor';
 import { useApp } from '@/composables/useApp';
 import { useFollowSpace } from '@/composables/useFollowSpace';
 import { useCategories } from '@/composables/useCategories';
-import { shorten, setPageTitle } from '@/helpers/utils';
+import { shorten } from '@/helpers/utils';
 import { useIntl } from '@/composables/useIntl';
+import { useI18n } from '@/composables/useI18n';
 
 const { selectedCategory, orderedSpaces, orderedSpacesByCategory } = useApp();
 const { followingSpaces } = useFollowSpace();
 const { spacesPerCategory, categoriesOrderedBySpaceCount } = useCategories();
 const { formatCompactNumber } = useIntl();
+const { setPageTitle } = useI18n();
 
 function selectCategory(c) {
   selectedCategory.value = c === selectedCategory.value ? '' : c;
@@ -24,7 +26,18 @@ watchEffect(() => getProposalIds(followingSpaces.value));
 const loadBy = 16;
 const limit = ref(loadBy);
 
-const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
+const enableInfiniteScroll = ref(false);
+
+const loadMoreSpaces = () => {
+  enableInfiniteScroll.value = true;
+  limit.value += loadBy;
+};
+
+const { endElement } = useScrollMonitor(() => {
+  if (enableInfiniteScroll.value) {
+    limit.value += loadBy;
+  }
+});
 
 onMounted(() => {
   setPageTitle('page.title.home');
@@ -32,7 +45,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="mt-4">
+  <div class="mt-4 min-h-[calc(100vh-145px)] relative pb-[130px]">
     <Container class="flex items-center mb-4">
       <UiButton class="pl-3 pr-0 w-full max-w-[420px]">
         <SearchWithFilters />
@@ -136,7 +149,15 @@ onMounted(() => {
         :block="true"
         v-if="Object.keys(orderedSpacesByCategory).length < 1"
       />
+      <UiButton
+        v-if="!enableInfiniteScroll && orderedSpacesByCategory.length > limit"
+        class="w-full mt-4"
+        @click="loadMoreSpaces()"
+      >
+        {{ $t('homeLoadmore') }}
+      </UiButton>
     </Container>
+    <Footer />
     <div ref="endElement" />
   </div>
 </template>
