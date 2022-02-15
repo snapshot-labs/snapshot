@@ -395,7 +395,7 @@ const truncateMarkdownBody = computed(() => {
         :loadingMore="loadingMore"
       />
       <PluginProposal
-        v-if="space && proposal.plugins && loadedResults"
+        v-if="proposal.plugins && loadedResults"
         :id="id"
         :space="space"
         :proposal="proposal"
@@ -492,7 +492,7 @@ const truncateMarkdownBody = computed(() => {
         :strategies="strategies"
       />
       <PluginProposalSidebar
-        v-if="space && proposal.plugins && loadedResults"
+        v-if="proposal.plugins && loadedResults"
         :id="id"
         :space="space"
         :proposal="proposal"
