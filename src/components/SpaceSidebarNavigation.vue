@@ -33,7 +33,7 @@ const isAdmin = computed(() => {
       class="block px-4 py-2 sidenav-item"
     />
     <router-link
-      :to="{ name: 'spaceCreate' }"
+      :to="{ name: 'spaceCreateStepOne' }"
       v-text="$t('proposals.new')"
       class="block px-4 py-2 sidenav-item"
     />

@@ -1,7 +1,6 @@
 <script setup>
 import { ref, watchEffect, computed, onMounted, inject, watch } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
-import draggable from 'vuedraggable';
 import { useI18n } from '@/composables/useI18n';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import { getBlockNumber } from '@snapshot-labs/snapshot.js/src/utils/web3';
@@ -17,6 +16,7 @@ import { useWeb3 } from '@/composables/useWeb3';
 import { useClient } from '@/composables/useClient';
 import { useStore } from '@/composables/useStore';
 import { useIntl } from '@/composables/useIntl';
+import { useSpaceCreateForm } from '@/composables/useSpaceCreateForm';
 
 const props = defineProps({
   space: Object
@@ -32,33 +32,24 @@ const { web3, web3Account } = useWeb3();
 const { send, clientLoading } = useClient();
 const { store } = useStore();
 const notify = inject('notify');
+const {
+  preview,
+  form,
+  bodyLimit,
+  choices,
+  dateStart,
+  dateEnd,
+  userSelectedDateStart,
+  userSelectedDateEnd,
+  sourceProposal,
+  sourceProposalLoaded
+} = useSpaceCreateForm(props.space);
 
-const choices = ref([]);
 const blockNumber = ref(-1);
-const bodyLimit = ref(14400);
-const form = ref({
-  name: '',
-  body: '',
-  choices: [],
-  start: parseInt((Date.now() / 1e3).toFixed()),
-  end: 0,
-  snapshot: '',
-  metadata: { plugins: {} },
-  type: 'single-choice'
-});
-const modalDateSelectOpen = ref(false);
-const modalVotingTypeOpen = ref(false);
-const selectedDate = ref('');
-const nameInput = ref(null);
+
 const passValidation = ref([true]);
 const validationLoading = ref(false);
 const loadingSnapshot = ref(true);
-
-const proposal = computed(() =>
-  Object.assign(form.value, { choices: choices.value })
-);
-
-const sourceProposal = computed(() => route.params.sourceProposal);
 
 // Check if account passes space validation
 watch(
@@ -83,35 +74,6 @@ watch(
   { immediate: true }
 );
 
-const userSelectedDateStart = ref(false);
-const userSelectedDateEnd = ref(false);
-
-function setDate(ts) {
-  if (selectedDate.value) {
-    form.value[selectedDate.value] = ts;
-    if (selectedDate.value === 'start') {
-      userSelectedDateStart.value = true;
-    }
-    if (selectedDate.value === 'end') {
-      userSelectedDateEnd.value = true;
-    }
-  }
-}
-
-const dateStart = computed(() => {
-  return props.space?.voting?.delay
-    ? parseInt((Date.now() / 1e3).toFixed()) + props.space.voting.delay
-    : form.value.start;
-});
-
-const dateEnd = computed(() => {
-  return props.space?.voting?.period
-    ? dateStart.value + props.space.voting.period
-    : userSelectedDateEnd.value
-    ? form.value.end
-    : dateStart.value + 259200;
-});
-
 const isValid = computed(() => {
   const isSafeSnapPluginValid = form.value.metadata.plugins?.safeSnap
     ? form.value.metadata.plugins.safeSnap.valid
@@ -119,7 +81,7 @@ const isValid = computed(() => {
 
   return (
     !clientLoading.value &&
-    form.value.body.length <= bodyLimit.value &&
+    form.value.body.length <= bodyLimit &&
     dateEnd.value &&
     dateEnd.value > dateStart.value &&
     form.value.snapshot &&
@@ -131,14 +93,6 @@ const isValid = computed(() => {
     !web3.value.authLoading
   );
 });
-
-const disableChoiceEdit = computed(() => form.value.type === 'basic');
-
-function addChoices(num) {
-  for (let i = 1; i <= num; i++) {
-    choices.value.push({ id: choices.value.length, text: '' });
-  }
-}
 
 async function handleSubmit() {
   form.value.snapshot = parseInt(form.value.snapshot);
@@ -153,6 +107,7 @@ async function handleSubmit() {
   form.value.end = props.space.voting?.period
     ? form.value.start + props.space.voting.period
     : dateEnd.value;
+
   const result = await send(props.space, 'proposal', form.value);
   console.log('Result', result);
   if (result.id) {
@@ -173,7 +128,6 @@ const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(props.space.id);
 
 const { apolloQuery, queryLoading } = useApolloQuery();
 
-const sourceProposalLoaded = ref(false);
 async function loadProposal() {
   const proposal = await apolloQuery(
     {
@@ -185,8 +139,10 @@ async function loadProposal() {
     'proposal'
   );
 
+  userSelectedDateStart.value = true;
   userSelectedDateEnd.value = true;
 
+  console.log(proposal);
   form.value = {
     name: proposal.title,
     body: proposal.body,
@@ -208,11 +164,7 @@ async function loadProposal() {
   sourceProposalLoaded.value = true;
 }
 
-// Focus proposal name field when page loads
-watch(nameInput, () => nameInput?.value?.focus());
-
 onMounted(async () => {
-  addChoices(2);
   if (sourceProposal.value) loadProposal();
 });
 
@@ -240,18 +192,16 @@ watchEffect(() => {
   }
 });
 
-const currentStep = ref(1);
-
 const stepIsValid = computed(() => {
   if (
-    currentStep.value === 1 &&
+    route.name === 'spaceCreateStepOne' &&
     form.value.name &&
-    form.value.body.length <= bodyLimit.value &&
+    form.value.body.length <= bodyLimit &&
     passValidation.value[0] === true
   )
     return true;
   else if (
-    currentStep.value === 2 &&
+    route.name === 'spaceCreateStepTwo' &&
     dateEnd.value &&
     dateEnd.value > dateStart.value &&
     form.value.snapshot &&
@@ -262,22 +212,18 @@ const stepIsValid = computed(() => {
   else return false;
 });
 
-const preview = ref(false);
-
 watch(preview, () => {
   window.scrollTo(0, 0);
 });
 
-function selectDate(date) {
-  selectedDate.value = date;
-  modalDateSelectOpen.value = true;
-}
-
 // Update form start date when going to step two
-watch(currentStep, () => {
-  if (!userSelectedDateEnd.value)
-    form.value.start = parseInt((Date.now() / 1e3).toFixed());
-});
+watch(
+  () => route.name,
+  () => {
+    if (!userSelectedDateStart.value)
+      form.value.start = parseInt((Date.now() / 1e3).toFixed());
+  }
+);
 
 import { usePlugins } from '@/composables/usePlugins';
 const { pluginIndex } = usePlugins();
@@ -288,12 +234,29 @@ const needsPluginConfigs = computed(() =>
     pluginKey => pluginIndex[pluginKey]?.defaults?.proposal
   )
 );
+
+function nextStep() {
+  if (route.name === 'spaceCreateStepOne' && stepIsValid.value)
+    router.push({ name: 'spaceCreateStepTwo' });
+  else if (route.name === 'spaceCreateStepTwo' && stepIsValid.value)
+    router.push({ name: 'spaceCreateStepThree' });
+}
+
+function prevStep() {
+  if (route.name === 'spaceCreateStepTwo')
+    router.push({ name: 'spaceCreateStepOne' });
+  else if (route.name === 'spaceCreateStepThree')
+    router.push({ name: 'spaceCreateStepTwo' });
+}
 </script>
 
 <template>
   <Layout v-bind="$attrs">
     <template #content-left>
-      <div v-if="currentStep === 1" class="px-4 md:px-0 overflow-hidden mb-3">
+      <div
+        v-if="$route.name === 'spaceCreateStepOne'"
+        class="px-4 md:px-0 overflow-hidden mb-3"
+      >
         <router-link
           :to="domain ? { path: '/' } : { name: 'spaceProposals' }"
           class="text-color"
@@ -363,214 +326,12 @@ const needsPluginConfigs = computed(() =>
           }}
         </span>
       </BaseWarningBlock>
-      <template v-if="currentStep === 1">
-        <div class="px-4 md:px-0">
-          <div class="flex flex-col mb-6">
-            <h1
-              v-if="preview"
-              v-text="form.name || $t('create.untitled')"
-              class="mb-2 w-full break-all"
-            />
-            <input
-              v-else
-              v-model="form.name"
-              maxlength="128"
-              class="text-2xl font-bold input mb-2 w-full"
-              :placeholder="$t('create.question')"
-              ref="nameInput"
-            />
-            <div class="relative group">
-              <TextareaAutosize
-                v-if="!preview"
-                v-model="form.body"
-                class="input pt-0 w-full"
-                style="font-size: 22px"
-                :placeholder="$t('create.content')"
-                :max-length="bodyLimit"
-              />
-
-              <!-- Indicator for number of available characters in body -->
-              <div
-                class="absolute right-0 bottom-2 hidden group-focus-within:block p-1 bg-skin-bg"
-                :class="{ 'text-red': form.body.length === bodyLimit }"
-              >
-                {{ `${form.body.length} / ${bodyLimit}` }}
-              </div>
-            </div>
-
-            <div v-if="form.body && preview" class="mb-4">
-              <UiMarkdown :body="form.body" />
-            </div>
-            <p v-if="form.body.length > bodyLimit" class="!text-red mt-4">
-              -{{ formatCompactNumber(-(bodyLimit - form.body.length)) }}
-            </p>
-          </div>
-        </div>
-      </template>
-      <template v-else-if="currentStep === 2">
-        <Block :title="$t('create.voting')">
-          <UiInput class="!mb-4" @click="modalVotingTypeOpen = true">
-            <template v-slot:selected>
-              <span class="w-full">
-                {{ $t(`voting.${form.type}`) }}
-              </span>
-            </template>
-            <template v-slot:label>
-              {{ $t(`create.votingSystem`) }}
-            </template>
-          </UiInput>
-          <div class="flex">
-            <div class="overflow-hidden w-full space-y-2">
-              <draggable
-                v-model="choices"
-                tag="transition-group"
-                :component-data="{
-                  type: 'transition-group'
-                }"
-                v-bind="{ animation: 200 }"
-                :disabled="disableChoiceEdit"
-                item-key="id"
-                handle=".drag-handle"
-              >
-                >
-                <template #item="{ element, index }">
-                  <UiInput
-                    v-model="element.text"
-                    maxlength="32"
-                    :disabled="disableChoiceEdit"
-                    :placeholder="index > 0 ? $t('optional') : ''"
-                    class="group mb-0"
-                    :focusOnMount="index === 0"
-                  >
-                    <template v-slot:label>
-                      <div
-                        class="flex items-center cursor-grab active:cursor-grabbing drag-handle"
-                        :class="{
-                          'cursor-not-allowed active:cursor-not-allowed':
-                            disableChoiceEdit
-                        }"
-                      >
-                        <Icon name="draggable" size="16" class="mr-[12px]" />
-                        {{ $tc('create.choice', [index + 1]) }}
-                      </div>
-                    </template>
-                    <template v-slot:info>
-                      <span
-                        class="text-skin-text text-xs hidden group-focus-within:block"
-                      >
-                        {{ `${element.text.length}/32` }}
-                      </span>
-                    </template>
-                  </UiInput>
-                </template>
-              </draggable>
-            </div>
-            <div v-if="!disableChoiceEdit" class="w-[48px] flex items-end ml-2">
-              <UiSidebarButton
-                v-if="!disableChoiceEdit"
-                @click="addChoices(1)"
-                class="!w-[48px] !h-[48px]"
-              >
-                <Icon size="20" name="plus" class="text-skin-link" />
-              </UiSidebarButton>
-            </div>
-          </div>
-        </Block>
-
-        <Block
-          :title="$t('create.period')"
-          icon="info"
-          :iconTooltip="$t('create.votingPeriodExplainer')"
-        >
-          <div class="md:flex md:space-x-3">
-            <UiInput
-              @click="!space.voting?.delay ? selectDate('start') : null"
-              :disabled="!!space.voting?.delay"
-              v-tippy="{
-                content: !!space.voting?.delay
-                  ? $t('create.delayEnforced')
-                  : null
-              }"
-              :class="{ 'cursor-not-allowed': space.voting?.delay }"
-            >
-              <template v-slot:selected>
-                <span
-                  v-text="
-                    Math.round(dateStart / 10) ===
-                    Math.round(parseInt((Date.now() / 1e3).toFixed()) / 10)
-                      ? $t('create.now')
-                      : $d(dateStart * 1e3, 'short', 'en-US')
-                  "
-                />
-              </template>
-              <template v-slot:label>
-                {{ $t(`create.start`) }}
-              </template>
-              <template v-slot:info>
-                <Icon
-                  name="calendar"
-                  size="18"
-                  class="flex items-center text-skin-text"
-                />
-              </template>
-            </UiInput>
-
-            <UiInput
-              @click="!space.voting?.period ? selectDate('end') : null"
-              :disabled="!!space.voting?.period"
-              v-tippy="{
-                content: space.voting?.period
-                  ? $t('create.periodEnforced')
-                  : null
-              }"
-              class="mb-0 md:mb-2"
-              :class="{ 'cursor-not-allowed': space.voting?.period }"
-            >
-              <template v-slot:selected>
-                <span v-text="$d(dateEnd * 1e3, 'short', 'en-US')" />
-              </template>
-              <template v-slot:label>
-                {{ $t(`create.end`) }}
-              </template>
-              <template v-slot:info>
-                <Icon
-                  name="calendar"
-                  size="18"
-                  class="flex items-center text-skin-text"
-                  :class="{ 'cursor-not-allowed': space.voting?.period }"
-                />
-              </template>
-            </UiInput>
-          </div>
-        </Block>
-
-        <Block v-if="$route.query.snapshot" :title="$t('snapshot')">
-          <UiInput
-            v-model="form.snapshot"
-            :number="true"
-            :placeholder="$t('create.snapshotBlock')"
-          >
-            <template v-slot:label>
-              {{ $t('snapshot') }}
-            </template>
-          </UiInput>
-        </Block>
-      </template>
-      <template v-else>
-        <div class="h-[1px] w-full" />
-        <PluginCreate
-          v-if="space?.plugins && (!sourceProposal || sourceProposalLoaded)"
-          :proposal="proposal"
-          :space="space"
-          :preview="preview"
-          v-model="form.metadata.plugins"
-        />
-      </template>
+      <router-view :space="space" />
     </template>
     <template #sidebar-right>
       <Block class="lg:fixed lg:w-[320px]">
         <UiButton
-          v-if="currentStep === 1"
+          v-if="$route.name === 'spaceCreateStepOne'"
           @click="preview = !preview"
           :loading="clientLoading || queryLoading"
           class="block w-full mb-3"
@@ -578,17 +339,15 @@ const needsPluginConfigs = computed(() =>
         >
           {{ preview ? $t('create.edit') : $t('create.preview') }}
         </UiButton>
-        <UiButton
-          v-else
-          @click="currentStep--"
-          class="block w-full mb-3"
-          no-focus
-        >
+        <UiButton v-else @click="prevStep" class="block w-full mb-3" no-focus>
           {{ $t('back') }}
         </UiButton>
 
         <UiButton
-          v-if="currentStep === 3 || (!needsPluginConfigs && currentStep === 2)"
+          v-if="
+            $route.name === 'spaceCreateStepThree' ||
+            (!needsPluginConfigs && $route.name === 'spaceCreateStepTwo')
+          "
           @click="
             !termsAccepted && space.terms
               ? (modalTermsOpen = true)
@@ -603,7 +362,7 @@ const needsPluginConfigs = computed(() =>
         </UiButton>
         <UiButton
           v-else
-          @click="web3Account ? currentStep++ : (modalAccountOpen = true)"
+          @click="web3Account ? nextStep() : (modalAccountOpen = true)"
           class="block w-full"
           :disabled="(!stepIsValid && !!web3Account) || web3.authLoading"
           primary
@@ -613,23 +372,13 @@ const needsPluginConfigs = computed(() =>
       </Block>
     </template>
   </Layout>
+
   <teleport to="#modal">
-    <ModalSelectDate
-      :selectedDate="selectedDate"
-      :open="modalDateSelectOpen"
-      @close="modalDateSelectOpen = false"
-      @input="setDate"
-    />
     <ModalTerms
       :open="modalTermsOpen"
       :space="space"
       @close="modalTermsOpen = false"
       @accept="acceptTerms(), handleSubmit()"
-    />
-    <ModalVotingType
-      :open="modalVotingTypeOpen"
-      @close="modalVotingTypeOpen = false"
-      v-model:selected="form.type"
     />
   </teleport>
 </template>

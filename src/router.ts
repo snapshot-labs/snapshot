@@ -12,12 +12,33 @@ import Timeline from '@/views/Timeline.vue';
 import Space from '@/views/Space.vue';
 import SpaceAbout from '@/views/SpaceAbout.vue';
 import SpaceProposals from '@/views/SpaceProposals.vue';
+import SpaceCreateStepOne from '@/components/SpaceCreateStepOne.vue';
+import SpaceCreateStepTwo from '@/components/SpaceCreateStepTwo.vue';
+import SpaceCreateStepThree from '@/components/SpaceCreateStepThree.vue';
 import { useDomain } from '@/composables/useDomain';
 
 // The frontend shows all spaces or just a single one, when being accessed
 // through that space's custom domain.
 const { domain, alias } = useDomain();
 const routes: any[] = [];
+
+const spaceCreateSteps = [
+  {
+    path: '',
+    name: 'spaceCreateStepOne',
+    component: SpaceCreateStepOne
+  },
+  {
+    path: '2/',
+    name: 'spaceCreateStepTwo',
+    component: SpaceCreateStepTwo
+  },
+  {
+    path: '3/',
+    name: 'spaceCreateStepThree',
+    component: SpaceCreateStepThree
+  }
+];
 
 // These routes get prefixed with the respective space's ENS domain (/:key)
 // or they get mounted at "/" in the single space scenario.
@@ -35,7 +56,8 @@ const spaceRoutes = [
   {
     path: 'create/:sourceProposal?',
     name: 'spaceCreate',
-    component: SpaceCreate
+    component: SpaceCreate,
+    children: spaceCreateSteps
   },
 
   {

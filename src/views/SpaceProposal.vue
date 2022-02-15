@@ -172,7 +172,7 @@ function selectFromThreedotDropdown(e) {
   if (e === 'delete') deleteProposal();
   if (e === 'duplicate')
     router.push({
-      name: 'spaceCreate',
+      name: 'spaceCreateStepOne',
       params: {
         key: proposal.value.space.id,
         sourceProposal: proposal.value.id
