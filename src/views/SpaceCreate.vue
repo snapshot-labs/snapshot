@@ -41,6 +41,7 @@ const {
   userSelectedDateEnd,
   sourceProposal,
   sourceProposalLoaded,
+  defaultForm,
   updateDateStart,
   updateDateEnd
 } = useSpaceCreateForm();
@@ -91,16 +92,22 @@ const isValid = computed(() => {
 });
 
 async function handleSubmit() {
+  // Make sure snapshot is a number
   form.value.snapshot = parseInt(form.value.snapshot);
+
+  // Filter out empty choices
   form.value.choices = choices.value
     .map(choice => choice.text)
     .filter(choiceText => choiceText.length > 0);
+
+  // Update the date start and date end according to settings
   updateDateStart(props.space);
   updateDateEnd(props.space);
 
   const result = await send(props.space, 'proposal', form.value);
   console.log('Result', result);
   if (result.id) {
+    form.value = defaultForm;
     store.space.proposals = [];
     notify(['green', t('notify.proposalCreated')]);
     router.push({

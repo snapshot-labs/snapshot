@@ -1,5 +1,6 @@
 import { ref, computed } from 'vue';
 import { useRoute } from 'vue-router';
+import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 
 const preview = ref(false);
 const userSelectedDateStart = ref(false);
@@ -11,7 +12,7 @@ const choices = ref<{ id: number; text: string }[]>([
   { id: 1, text: '' }
 ]);
 
-const form = ref({
+const defaultForm = {
   name: '',
   body: '',
   choices: [],
@@ -20,7 +21,9 @@ const form = ref({
   snapshot: 0,
   metadata: { plugins: {} },
   type: 'single-choice'
-});
+};
+
+const form = ref(clone(defaultForm));
 
 export function useSpaceCreateForm() {
   const route = useRoute();
@@ -52,6 +55,7 @@ export function useSpaceCreateForm() {
     userSelectedDateEnd,
     sourceProposal,
     sourceProposalLoaded,
+    defaultForm,
     updateDateStart,
     updateDateEnd
   };
