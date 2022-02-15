@@ -42,7 +42,7 @@ const isAdmin = computed(() => {
         space &&
         space.strategies?.find(strategy => strategy.name === 'delegation')
       "
-      :to="{ name: 'delegate' }"
+      :to="{ name: 'delegate', params: { key: space.id } }"
       v-text="$t('delegate.header')"
       class="block px-4 py-2 sidenav-item"
     />
