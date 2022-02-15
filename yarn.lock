@@ -1012,10 +1012,10 @@
     estree-walker "^2.0.1"
     picomatch "^2.2.2"
 
-"@snapshot-labs/lock@^0.1.4":
-  version "0.1.4"
-  resolved "https://registry.yarnpkg.com/@snapshot-labs/lock/-/lock-0.1.4.tgz#052eab1ee14273e44f7e3ef50254114b5a8a0152"
-  integrity sha512-xwtnjcRuAdg3JRFZKvriwZ8s2qbvHJPNN1yo8JcOES2PuusXaBan/JgcSc9378EiZKkf92ECP5LTcxxvGI1BiQ==
+"@snapshot-labs/lock@^0.1.5":
+  version "0.1.5"
+  resolved "https://registry.yarnpkg.com/@snapshot-labs/lock/-/lock-0.1.5.tgz#1d8c256871f8ad5ccbdb375202932524dbb587bd"
+  integrity sha512-99vFVDU+KcHxSRHRbqCGIeKXzxom3h1hkfcB/TeUFnv79LuYAg0bBRfYzNR0/ZkcwTc73eJXpAfXwTLoT7FPSQ==
   dependencies:
     "@gnosis.pm/safe-apps-provider" "^0.8.0"
     "@gnosis.pm/safe-apps-sdk" "^6.1.1"
@@ -2161,11 +2161,6 @@ chardet@^0.7.0:
   version "0.7.0"
   resolved "https://registry.yarnpkg.com/chardet/-/chardet-0.7.0.tgz#90094849f0937f2eedc2425d0d28a9e5f0cbad9e"
   integrity sha512-mT8iDcrh03qDGRRmoA2hmBJnxpllMR+0/0qlzjqZES6NdiWDcZkCNAk4rPFZ9Q85r27unkiNNg8ZOiwZXBHwcA==
-
-chart.js@^3.5.1:
-  version "3.5.1"
-  resolved "https://registry.yarnpkg.com/chart.js/-/chart.js-3.5.1.tgz#73e24d23a4134a70ccdb5e79a917f156b6f3644a"
-  integrity sha512-m5kzt72I1WQ9LILwQC4syla/LD/N413RYv2Dx2nnTkRS9iv/ey1xLTt0DnPc/eWV4zI+BgEgDYBIzbQhZHc/PQ==
 
 checkpoint-store@^1.1.0:
   version "1.1.0"

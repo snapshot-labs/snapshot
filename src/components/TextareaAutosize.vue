@@ -21,6 +21,10 @@ const props = defineProps({
   important: {
     type: [Boolean, Array],
     default: false
+  },
+  maxLength: {
+    type: Number,
+    default: null
   }
 });
 
@@ -107,6 +111,7 @@ onMounted(() => resize());
   <textarea
     ref="textarea"
     :style="computedStyles"
+    :maxLength="maxLength"
     v-model="val"
     @focus="resize"
   ></textarea>

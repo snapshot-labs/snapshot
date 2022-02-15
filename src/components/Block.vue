@@ -5,6 +5,7 @@ defineProps({
   slim: Boolean,
   icon: String,
   iconClass: String,
+  iconTooltip: String,
   loading: Boolean
 });
 </script>
@@ -25,6 +26,7 @@ defineProps({
         :name="icon"
         size="22"
         :class="['float-right pt-1', iconClass]"
+        v-tippy="{ content: iconTooltip ? iconTooltip : null }"
       />
     </h4>
     <div v-if="loading" class="block px-4 py-4">

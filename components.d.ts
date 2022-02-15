@@ -5,6 +5,8 @@
 declare module 'vue' {
   export interface GlobalComponents {
     Badges: typeof import('./src/components/Badges.vue')['default']
+    BaseNumberSelector: typeof import('./src/components/BaseNumberSelector.vue')['default']
+    BaseWarningBlock: typeof import('./src/components/BaseWarningBlock.vue')['default']
     Block: typeof import('./src/components/Block.vue')['default']
     BlockCastVote: typeof import('./src/components/Block/CastVote.vue')['default']
     BlockNetwork: typeof import('./src/components/Block/Network.vue')['default']
@@ -49,7 +51,6 @@ declare module 'vue' {
     PluginCommentBoxListReply: typeof import('./src/components/Plugin/CommentBox/ListReply.vue')['default']
     PluginCommentBoxReplyBlock: typeof import('./src/components/Plugin/CommentBox/ReplyBlock.vue')['default']
     PluginCreate: typeof import('./src/components/Plugin/Create.vue')['default']
-    PluginCreateSidebar: typeof import('./src/components/Plugin/CreateSidebar.vue')['default']
     PluginGnosisConfig: typeof import('./src/components/Plugin/Gnosis/Config.vue')['default']
     PluginGnosisCustomBlock: typeof import('./src/components/Plugin/Gnosis/CustomBlock.vue')['default']
     PluginHalCustomBlock: typeof import('./src/components/Plugin/Hal/CustomBlock.vue')['default']
