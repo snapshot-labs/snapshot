@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref, watchEffect, inject, watch, onMounted } from 'vue';
+import { computed, ref, inject, watch, onMounted } from 'vue';
 import { useI18n } from '@/composables/useI18n';
 import { getAddress } from '@ethersproject/address';
 import {
@@ -93,7 +93,7 @@ watch([currentTextRecord, textRecord], () => {
 });
 
 const isAdmin = computed(() => {
-  if (!props.space || !currentTextRecord.value) return false;
+  if (!currentTextRecord.value) return false;
   const admins = (props.space.admins || []).map(admin => admin.toLowerCase());
   return admins.includes(web3Account.value?.toLowerCase());
 });
@@ -269,8 +269,8 @@ onMounted(async () => {
   loaded.value = true;
 });
 
-watchEffect(() => {
-  props.space && props.space?.name
+onMounted(() => {
+  props.space?.name
     ? setPageTitle('page.title.space.settings', { space: props.space.name })
     : setPageTitle('page.title.setup');
 });
