@@ -10,8 +10,7 @@ const route = useRoute();
 const router = useRouter();
 const { domain } = useDomain();
 const aliasedSpace = aliases[domain] || aliases[route.params.key];
-const { loadExtentedSpaces, extentedSpaces, spaceLoading } =
-  useExtendedSpaces();
+const { loadExtentedSpaces, extentedSpaces } = useExtendedSpaces();
 
 // Redirect the user to the ENS address if the space is aliased.
 if (aliasedSpace) {
@@ -64,7 +63,6 @@ onMounted(() => loadExtentedSpaces([spaceRoute.value, sourceSpaceRoute.value]));
       v-if="space"
       :space="space"
       :sourceSpace="sourceSpace"
-      :spaceLoading="spaceLoading"
       :loadExtentedSpaces="loadExtentedSpaces"
     />
   </div>

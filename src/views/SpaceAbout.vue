@@ -7,8 +7,7 @@ import { useI18n } from '@/composables/useI18n';
 import { useIntl } from '@/composables/useIntl';
 
 const props = defineProps({
-  space: Object,
-  spaceLoading: Boolean
+  space: Object
 });
 
 const network = computed(() => networks[props.space?.network]);

@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref, watchEffect, inject, watch } from 'vue';
+import { computed, ref, watchEffect, inject, watch, onMounted } from 'vue';
 import { useI18n } from '@/composables/useI18n';
 import { getAddress } from '@ethersproject/address';
 import {
@@ -19,7 +19,6 @@ import { usePlugins } from '@/composables/usePlugins';
 const props = defineProps({
   space: Object,
   sourceSpace: Object,
-  spaceLoading: Boolean,
   loadExtentedSpaces: Function
 });
 
@@ -244,37 +243,31 @@ function formatSpace(spaceRaw) {
   return space;
 }
 
-watch(
-  () => props.spaceLoading,
-  async () => {
-    if (!props.spaceLoading) {
-      const spaceClone = formatSpace(props.space);
-      if (spaceClone) {
-        form.value = spaceClone;
-        currentSettings.value = clone(spaceClone);
-      }
-      if (props.sourceSpace) {
-        const fromClone = formatSpace(props.sourceSpace);
-        if (fromClone) {
-          form.value = fromClone;
-        }
-      }
-      try {
-        const uri = await getSpaceUri(
-          props.space.id,
-          import.meta.env.VITE_DEFAULT_NETWORK
-        );
-        console.log('URI', uri);
-        currentTextRecord.value = uri;
-      } catch (e) {
-        console.log(e);
-      }
-
-      loaded.value = true;
+onMounted(async () => {
+  const spaceClone = formatSpace(props.space);
+  if (spaceClone) {
+    form.value = spaceClone;
+    currentSettings.value = clone(spaceClone);
+  }
+  if (props.sourceSpace) {
+    const fromClone = formatSpace(props.sourceSpace);
+    if (fromClone) {
+      form.value = fromClone;
     }
-  },
-  { immediate: true }
-);
+  }
+  try {
+    const uri = await getSpaceUri(
+      props.space.id,
+      import.meta.env.VITE_DEFAULT_NETWORK
+    );
+    console.log('URI', uri);
+    currentTextRecord.value = uri;
+  } catch (e) {
+    console.log(e);
+  }
+
+  loaded.value = true;
+});
 
 watchEffect(() => {
   props.space && props.space?.name
