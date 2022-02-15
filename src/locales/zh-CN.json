@@ -154,7 +154,7 @@
     "period": "投票时长",
     "start": "开始",
     "end": "结束",
-    "days": "日",
+    "days": "天",
     "hours": "小时",
     "minutes": "分",
     "schedule": "计划提案",
@@ -163,7 +163,7 @@
     "edit": "编辑",
     "continue": "继续",
     "now": "当前",
-    "votingPeriodExplainer": "这是用户可以投票的时间。 该提案将在表决期开始前表现为可见并待定的状态。",
+    "votingPeriodExplainer": "这是用户可以投票的时间段。 该提案将在投票期开始之前可见并处于待定状态。",
     "validationWarning": {
       "basic": {
         "member": "您需要成为空间的作者才能提交提案。",
