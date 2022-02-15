@@ -21,9 +21,9 @@ if (aliasedSpace) {
   router.replace({ path: updatedPath });
 }
 
-const spaceRoute = computed(() => aliasedSpace || domain || route.params.key);
+const spaceKey = computed(() => aliasedSpace || domain || route.params.key);
 const space = computed(() =>
-  formatSpace(extentedSpaces.value?.find(s => s.id === spaceRoute.value))
+  formatSpace(extentedSpaces.value?.find(s => s.id === spaceKey.value))
 );
 
 const sourceSpaceRoute = computed(() => route.params.sourceSpace);
@@ -31,11 +31,20 @@ const sourceSpace = computed(() =>
   formatSpace(extentedSpaces.value?.find(s => s.id === sourceSpaceRoute.value))
 );
 
-onMounted(() => loadExtentedSpaces([spaceRoute.value, sourceSpaceRoute.value]));
+onMounted(() => loadExtentedSpaces([spaceKey.value, sourceSpaceRoute.value]));
 </script>
 
 <template>
-  <div>
+  <!-- Only loaded after space is available -->
+  <router-view
+    v-if="space || $route.name === 'spaceSettings'"
+    :space="space"
+    :sourceSpace="sourceSpace"
+    :spaceKey="spaceKey"
+    :loadExtentedSpaces="loadExtentedSpaces"
+  />
+
+  <div v-else>
     <!-- Lazy loading skeleton for space page with left sidebar layout -->
     <Layout
       v-if="
@@ -57,13 +66,5 @@ onMounted(() => loadExtentedSpaces([spaceRoute.value, sourceSpaceRoute.value]));
         <PageLoading />
       </template>
     </Layout>
-
-    <!-- Only loaded after space is available -->
-    <router-view
-      v-if="space"
-      :space="space"
-      :sourceSpace="sourceSpace"
-      :loadExtentedSpaces="loadExtentedSpaces"
-    />
   </div>
 </template>
