@@ -1,12 +1,13 @@
 <script setup>
-import { ref, watch, onMounted, onUnmounted } from 'vue';
-import { useRouter } from 'vue-router';
+import { ref, watch, onMounted, onUnmounted, computed } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useModal } from '@/composables/useModal';
 import { useI18n } from '@/composables/useI18n';
 import { useEns } from '@/composables/useEns';
 
 const router = useRouter();
+const route = useRoute();
 const { web3, web3Account } = useWeb3();
 const { modalAccountOpen } = useModal();
 const { loadOwnedEnsDomains, ownedEnsDomains } = useEns();
@@ -16,10 +17,12 @@ onMounted(() => {
   setPageTitle('page.title.setup');
 });
 
+const ensAddress = computed(() => route.params.ensAddress);
+
 // used either on click on existing owned domain OR once a newly registered
 // domain is returned by the ENS subgraph.
 const goToSettings = key => {
-  router.push({ name: 'spaceSettings', params: { key } });
+  router.push({ name: 'setup', params: { ensAddress: key } });
 };
 
 // input for new domain registration
@@ -77,7 +80,9 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
         <h1 v-text="$t('setup.createASpace')" class="mb-4" />
       </div>
       <template v-if="web3Account">
-        <Block v-if="loadingOwnedEnsDomains" slim>
+        <SpaceSetupController v-if="ensAddress" :ensAddress="ensAddress" />
+
+        <Block v-else-if="loadingOwnedEnsDomains" slim>
           <RowLoading class="my-2" />
         </Block>
         <Block v-else>

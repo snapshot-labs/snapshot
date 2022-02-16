@@ -88,6 +88,7 @@ declare module 'vue' {
     Search: typeof import('./src/components/Search.vue')['default']
     SearchWithFilters: typeof import('./src/components/SearchWithFilters.vue')['default']
     SelectLanguageButton: typeof import('./src/components/SelectLanguageButton.vue')['default']
+    SpaceSetupController: typeof import('./src/components/SpaceSetupController.vue')['default']
     SpaceSidebar: typeof import('./src/components/SpaceSidebar.vue')['default']
     SpaceSidebarHeader: typeof import('./src/components/SpaceSidebarHeader.vue')['default']
     SpaceSidebarNavigation: typeof import('./src/components/SpaceSidebarNavigation.vue')['default']

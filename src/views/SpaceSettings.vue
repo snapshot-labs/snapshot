@@ -5,22 +5,15 @@ import { getAddress } from '@ethersproject/address';
 import {
   validateSchema,
   getSpaceUri,
-  clone,
-  sendTransaction
+  clone
 } from '@snapshot-labs/snapshot.js/src/utils';
 import schemas from '@snapshot-labs/snapshot.js/src/schemas';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import defaults from '@/locales/default';
-import { useCopy } from '@/composables/useCopy';
 import { useWeb3 } from '@/composables/useWeb3';
 import { calcFromSeconds, calcToSeconds } from '@/helpers/utils';
 import { useClient } from '@/composables/useClient';
 import { usePlugins } from '@/composables/usePlugins';
-import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
-import namehash from '@ensdomains/eth-ens-namehash';
-import { useTxStatus } from '../composables/useTxStatus';
-import { useEns } from '../composables/useEns';
-import { isAddress } from '@ethersproject/address';
 
 const props = defineProps({
   space: Object,
@@ -33,15 +26,9 @@ const basicValidation = { name: 'basic', params: {} };
 
 const { pluginIndex } = usePlugins();
 const { t, setPageTitle } = useI18n();
-const { copyToClipboard } = useCopy();
-const { web3, web3Account } = useWeb3();
-const { pendingCount } = useTxStatus();
+const { web3Account } = useWeb3();
 const { send, clientLoading } = useClient();
-const auth = getInstance();
-const { loadOwnedEnsDomains, ownedEnsDomains } = useEns();
 const notify = inject('notify');
-
-const abi = ['function setText(bytes32 node, string key, string value)'];
 
 const currentSettings = ref({});
 const currentTextRecord = ref('');
@@ -55,14 +42,11 @@ const modalCategoryOpen = ref(false);
 const modalVotingTypeOpen = ref(false);
 const modalPluginsOpen = ref(false);
 const modalValidationOpen = ref(false);
-const modalUnsupportedNetworkOpen = ref(false);
 const loaded = ref(false);
-const settingENSRecord = ref(false);
 const uploadLoading = ref(false);
 const showErrors = ref(false);
 const delayUnit = ref('h');
 const periodUnit = ref('h');
-const loadingEnsDomains = ref(false);
 
 const form = ref({
   strategies: [],
@@ -73,12 +57,6 @@ const form = ref({
   voting: {},
   validation: basicValidation
 });
-
-const spaceOwnerForm = ref({
-  address: ''
-});
-
-const networkKey = computed(() => web3.value.network.key);
 
 const validate = computed(() => {
   if (form.value.terms === '') delete form.value.terms;
@@ -93,10 +71,6 @@ const isValid = computed(() => {
   );
 });
 
-const ensOwner = computed(() => {
-  return ownedEnsDomains.value.map(d => d.name).includes(props.spaceKey);
-});
-
 const textRecord = computed(() => {
   const keyURI = encodeURIComponent(props.spaceKey);
   const address = web3Account.value
@@ -109,9 +83,6 @@ const isSpaceOwner = computed(() => {
   return currentTextRecord.value === textRecord.value;
 });
 
-const spaceOwnerAddress = computed(() => {
-  return currentTextRecord.value?.split('/')[4] ?? '';
-});
 watch(
   [currentTextRecord, textRecord],
   async () => {
@@ -121,20 +92,6 @@ watch(
       if (!form.value.admins.includes(web3Account.value)) {
         form.value.admins.push(web3Account.value);
       }
-    }
-
-    // Set the space owner address
-    spaceOwnerForm.value.address =
-      spaceOwnerAddress.value || web3Account.value || '';
-
-    loadingEnsDomains.value = true;
-    try {
-      console.log('loading ens');
-      await loadOwnedEnsDomains();
-    } catch (e) {
-      console.error(e);
-    } finally {
-      loadingEnsDomains.value = false;
     }
   },
   { immediate: true }
@@ -323,46 +280,6 @@ watch(
   { immediate: true }
 );
 
-async function handleSetRecord() {
-  if (networkKey.value !== '1') {
-    modalUnsupportedNetworkOpen.value = true;
-    return;
-  }
-  settingENSRecord.value = true;
-  try {
-    const ensPublicResolverAddress = networks[networkKey.value].ensResolver;
-    if (!ensPublicResolverAddress) {
-      throw new Error('No ENS resolver address for this network');
-    }
-    const ensname = props.spaceKey;
-    const node = namehash.hash(ensname);
-    const tx = await sendTransaction(
-      auth.web3,
-      ensPublicResolverAddress,
-      abi,
-      'setText',
-      [node, 'snapshot', textRecord.value]
-    );
-    settingENSRecord.value = false;
-    pendingCount.value++;
-    const receipt = await tx.wait();
-    console.log('Receipt', receipt);
-    const uri = await getSpaceUri(
-      props.spaceKey,
-      import.meta.env.VITE_DEFAULT_NETWORK
-    );
-    console.log('URI', uri);
-    currentTextRecord.value = uri;
-    notify(t('notify.ensSet'));
-  } catch (e) {
-    notify(['red', t('notify.somethingWentWrong')]);
-    console.log(e);
-  } finally {
-    pendingCount.value--;
-    settingENSRecord.value = false;
-  }
-}
-
 onMounted(() => {
   props.space?.name
     ? setPageTitle('page.title.space.settings', { space: props.space.name })
@@ -382,68 +299,18 @@ onMounted(() => {
       <div class="px-4 md:px-0">
         <h1 v-text="$t('settings.header')" class="mb-4" />
       </div>
-      <Block title="ENS">
-        <UiInput
-          v-if="(web3Account && ensOwner) || spaceOwnerAddress"
-          v-model.trim="spaceOwnerForm.address"
-          :placeholder="$t('settings.spaceOwnerAddressPlaceHolder')"
-          class="mt-2"
-        >
-          <template v-slot:label>{{ $t('settings.spaceOwner') }}</template>
-        </UiInput>
-        <UiButton
-          v-if="loadingEnsDomains"
-          class="button-outline w-full"
-          loading="loadingEnsDomains"
-        />
-        <div v-else>
-          <Block v-if="!web3Account" class="mb-0">
-            <Icon name="warning" class="mr-1" />
-            {{ $t('settings.connectWithEnsOwner', { ens: spaceKey }) }}
-          </Block>
-          <div v-else>
-            <div v-if="currentTextRecord && (isSpaceOwner || isSpaceAdmin)">
-              <UiButton
-                class="button-outline w-full mb-2"
-                :primary="true"
-                :disabled="
-                  spaceOwnerForm.address === '' ||
-                  spaceOwnerForm.address === spaceOwnerAddress ||
-                  !isAddress(spaceOwnerForm.address)
-                "
-                @click="handleSetRecord"
-                :loading="!loaded || settingENSRecord"
-              >
-                {{ $t('settings.updateENS') }}
-              </UiButton>
-            </div>
-            <div v-else-if="currentTextRecord">
-              <Block class="mb-0">
-                <Icon name="warning" class="mr-1" />
-                {{ $t('settings.connectWithEnsOwner', { ens: spaceKey }) }}
-              </Block>
-            </div>
-            <div v-else-if="!currentTextRecord && ensOwner">
-              <UiButton
-                class="button-outline w-full mb-2"
-                :primary="true"
-                @click="handleSetRecord"
-                :loading="!loaded || settingENSRecord"
-              >
-                {{ $t('settings.setENS') }}
-              </UiButton>
-            </div>
-            <div v-else-if="!currentTextRecord">
-              <Block class="mb-0">
-                <Icon name="warning" class="mr-1" />
-                {{ $t('settings.connectWithEnsOwner', { ens: spaceKey }) }}
-              </Block>
-            </div>
-          </div>
-        </div>
+      <RowLoadingBlock v-if="!loaded" />
+      <Block v-else-if="!currentTextRecord">
+        <BaseWarningBlock>
+          {{ $t('settings.needToSetEnsText') }}
+        </BaseWarningBlock>
+        <router-link :to="{ name: 'setup', params: { ensAddress: spaceKey } }">
+          <UiButton no-focus primary class="w-full">
+            {{ $t('settings.setEnsTextRecord') }}
+          </UiButton>
+        </router-link>
       </Block>
-      <RowLoadingBlock v-if="!loaded && !loadingEnsDomains" />
-      <template v-if="currentTextRecord">
+      <template v-else-if="currentTextRecord">
         <Block :title="$t('settings.profile')">
           <div class="mb-2">
             <UiInput v-model="form.name" :error="inputError('name')">
@@ -745,12 +612,19 @@ onMounted(() => {
         </Block>
       </template>
     </template>
-    <template
-      v-if="(loaded && isSpaceOwner) || (loaded && isSpaceAdmin)"
-      #sidebar-right
-    >
-      <div class="lg:fixed lg:w-[300px]">
+    <template #sidebar-right>
+      <div
+        v-if="(loaded && isSpaceOwner) || (loaded && isSpaceAdmin)"
+        class="lg:fixed lg:w-[300px]"
+      >
         <Block :title="$t('actions')">
+          <router-link
+            :to="{ name: 'setup', params: { ensAddress: spaceKey } }"
+          >
+            <UiButton class="block w-full mb-2">
+              {{ $t('settings.editController') }}
+            </UiButton>
+          </router-link>
           <UiButton @click="handleReset" class="block w-full mb-2">
             {{ $t('reset') }}
           </UiButton>
@@ -814,10 +688,6 @@ onMounted(() => {
       @close="modalVotingTypeOpen = false"
       v-model:selected="form.voting.type"
       allowAny
-    />
-    <ModalUnsupportedNetwork
-      :open="modalUnsupportedNetworkOpen"
-      @close="modalUnsupportedNetworkOpen = false"
     />
   </teleport>
 </template>

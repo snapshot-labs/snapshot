@@ -216,8 +216,11 @@
   },
   "settings": {
     "header": "Settings",
-    "setENS": "Set space owner",
-    "updateENS": "Update space owner",
+    "setENS": "Set space controller",
+    "updateENS": "Update space controller",
+    "setEnsTextRecord": "Set ENS text record",
+    "editController": "Edit controller",
+    "needToSetEnsText": "Before you can edit your space settings you need to set a ENS text record.",
     "profile": "Profile",
     "avatar": "Avatar",
     "name": "Name",
@@ -254,10 +257,11 @@
     "type": "Type",
     "anyType": "Any",
     "hideAbstain": "Ignore abstain votes in basic voting results",
-    "connectWithEnsOwner": "To modify space owner, connect with the wallet that owns {ens}",
-    "connectWithSpaceOwner": "To modify space settings, connect with the wallet that is a space owner or admin.",
-    "spaceOwnerAddressPlaceHolder": "Address",
-    "spaceOwner": "Space owner"
+    "connectWithEnsController": "To modify the space owner you need to connect with the wallet that owns {ens}",
+    "connectWithSpaceOwner": "To modify space settings, connect with a owner or admin wallet.",
+    "spaceOwnerAddressPlaceHolder": "e.g. 0xF78108c9BBaF466dd96BE41be728Fe3220b37119",
+    "spaceController": "Current space controller",
+    "controllerAddress": "Controller address"
   },
   "setup": {
     "example": "e.g. yam.eth",
