@@ -52,6 +52,7 @@ const periodUnit = ref('h');
 const form = ref({
   strategies: [],
   categories: [],
+  admins: [],
   plugins: {},
   filters: {},
   voting: {},
