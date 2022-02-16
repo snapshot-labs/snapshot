@@ -102,7 +102,8 @@ onMounted(() => {
         <draggable
           v-if="draggableSpaces.length > 0"
           v-model="draggableSpaces"
-          :component-data="{ name: 'list' }"
+          :component-data="{ type: 'transition-group' }"
+          v-bind="{ animation: 200 }"
           item-key="id"
           @update="saveSpaceOrder"
           class="w-full space-y-2"
