@@ -2,6 +2,7 @@
 import { ref, computed, toRefs, watch } from 'vue';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import { useStrategies } from '@/composables/useStrategies';
+import { validateSchema } from '@snapshot-labs/snapshot.js/src/utils';
 
 const defaultParams = {
   symbol: 'DAI',
@@ -15,7 +16,7 @@ const emit = defineEmits(['add', 'close']);
 
 const { open } = toRefs(props);
 const searchInput = ref('');
-const isValid = ref(true);
+const textAreaJsonIsValid = ref(true);
 const input = ref({
   name: '',
   params: {}
@@ -70,6 +71,12 @@ watch(open, () => {
     };
   }
 });
+
+const strategyIsValid = computed(() =>
+  validateSchema(strategyDefinition.value, input.value.params) === true
+    ? true
+    : false
+);
 </script>
 
 <template>
@@ -83,7 +90,6 @@ watch(open, () => {
       :placeholder="$t('searchPlaceholder')"
       :modal="true"
     />
-
     <div v-if="input.name" class="m-4">
       <RowLoading v-if="loading" class="px-0" />
       <div v-else>
@@ -99,7 +105,7 @@ watch(open, () => {
         >
           <TextareaJson
             v-model="input.params"
-            v-model:is-valid="isValid"
+            v-model:is-valid="textAreaJsonIsValid"
             :placeholder="$t('strategyParameters')"
             class="input text-left"
           />
@@ -123,7 +129,11 @@ watch(open, () => {
     <template v-if="input.name" v-slot:footer>
       <UiButton
         @click="handleSubmit"
-        :disabled="!isValid || !input.params.symbol || loading"
+        :disabled="
+          !textAreaJsonIsValid ||
+          (strategyDefinition && !strategyIsValid) ||
+          loading
+        "
         class="w-full"
         primary
       >

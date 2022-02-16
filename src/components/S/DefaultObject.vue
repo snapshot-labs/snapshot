@@ -37,11 +37,13 @@ watch(input, () => emit('update:modelValue', input.value));
 </script>
 
 <template>
-  <component
-    v-for="(property, i) in definition.properties"
-    :key="i"
-    :is="getComponent(property.type)"
-    :definition="property"
-    v-model="input[i]"
-  />
+  <div class="space-y-2">
+    <component
+      v-for="(property, i) in definition.properties"
+      :key="i"
+      :is="getComponent(property.type)"
+      :definition="property"
+      v-model="input[i]"
+    />
+  </div>
 </template>
