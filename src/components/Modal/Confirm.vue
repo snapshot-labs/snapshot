@@ -139,7 +139,7 @@ watch(
           <a
             v-if="vp === 0 && vpLoaded && !vpLoading && !vpLoadingFailed"
             target="_blank"
-            href="https://github.com/snapshot-labs/snapshot/discussions/1015#discussioncomment-1599447"
+            href="https://github.com/snapshot-labs/snapshot/discussions/767#discussioncomment-1400614"
             class="inline-block ml-1"
           >
             <Icon name="info" size="24" class="text-color" />
