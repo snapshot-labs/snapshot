@@ -122,11 +122,11 @@ const categoriesString = computed(() => {
 async function handleSubmit() {
   if (isValid.value) {
     if (form.value.filters.invalids) delete form.value.filters.invalids;
-    const result = await send({ id: props.space.id }, 'settings', form.value);
+    const result = await send({ id: props.spaceKey }, 'settings', form.value);
     console.log('Result', result);
     if (result.id) {
       notify(['green', t('notify.saved')]);
-      props.loadExtentedSpaces([props.space.id]);
+      props.loadExtentedSpaces([props.spaceKey]);
     }
   } else {
     console.log('Invalid schema', validate.value);
@@ -307,7 +307,7 @@ onMounted(() => {
           />
         </UiButton>
         <a
-          :href="`https://app.ens.domains/name/${space?.id}`"
+          :href="`https://app.ens.domains/name/${spaceKey}`"
           target="_blank"
           class="mb-2 block"
         >
