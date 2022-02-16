@@ -39,6 +39,7 @@ declare module 'vue' {
     ModalStrategies: typeof import('./src/components/Modal/Strategies.vue')['default']
     ModalStrategy: typeof import('./src/components/Modal/Strategy.vue')['default']
     ModalTerms: typeof import('./src/components/Modal/Terms.vue')['default']
+    ModalUnsupportedNetwork: typeof import('./src/components/Modal/UnsupportedNetwork.vue')['default']
     ModalValidation: typeof import('./src/components/Modal/Validation.vue')['default']
     ModalVotingType: typeof import('./src/components/Modal/VotingType.vue')['default']
     NoProposals: typeof import('./src/components/NoProposals.vue')['default']

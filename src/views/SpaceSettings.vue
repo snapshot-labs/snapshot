@@ -20,6 +20,7 @@ import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import namehash from '@ensdomains/eth-ens-namehash';
 import { useTxStatus } from '../composables/useTxStatus';
 import { useEns } from '../composables/useEns';
+import { isAddress } from '@ethersproject/address';
 
 const props = defineProps({
   spaceId: String,
@@ -56,6 +57,7 @@ const modalCategoryOpen = ref(false);
 const modalVotingTypeOpen = ref(false);
 const modalPluginsOpen = ref(false);
 const modalValidationOpen = ref(false);
+const modalUnsupportedNetworkOpen = ref(false);
 const loaded = ref(false);
 const settingENSRecord = ref(false);
 const uploadLoading = ref(false);
@@ -72,6 +74,10 @@ const form = ref({
   admins: [],
   voting: {},
   validation: basicValidation
+});
+
+const spaceOwnerForm = ref({
+  address: ''
 });
 
 const networkKey = computed(() => web3.value.network.key);
@@ -101,20 +107,27 @@ const textRecord = computed(() => {
   return `ipns://storage.snapshot.page/registry/${address}/${keyURI}`;
 });
 
-const isOwner = computed(() => {
+const isSpaceOwner = computed(() => {
   return currentTextRecord.value === textRecord.value;
 });
 
+const spaceOwnerAddress = computed(() => {
+  return currentTextRecord.value?.split('/')[4] ?? '';
+});
 watch(
   [currentTextRecord, textRecord],
   async () => {
     // Check if the connected wallet is the space owner and add address to admins
     // if not already present
-    if (isOwner.value) {
+    if (isSpaceOwner.value) {
       if (!form.value.admins.includes(web3Account.value)) {
         form.value.admins.push(web3Account.value);
       }
     }
+
+    // Set the space owner address
+    spaceOwnerForm.value.address =
+      spaceOwnerAddress.value || web3Account.value || '';
 
     loadingEnsDomains.value = true;
     try {
@@ -129,7 +142,7 @@ watch(
   { immediate: true }
 );
 
-const isAdmin = computed(() => {
+const isSpaceAdmin = computed(() => {
   if (!props.space || !currentTextRecord.value) return false;
   const admins = (props.space.admins || []).map(admin => admin.toLowerCase());
   return admins.includes(web3Account.value?.toLowerCase());
@@ -312,6 +325,10 @@ watch(
 );
 
 async function handleSetRecord() {
+  if (networkKey.value !== '1') {
+    modalUnsupportedNetworkOpen.value = true;
+    return;
+  }
   settingENSRecord.value = true;
   try {
     const ensPublicResolverAddress = networks[networkKey.value].ensResolver;
@@ -327,6 +344,7 @@ async function handleSetRecord() {
       'setText',
       [node, 'snapshot', textRecord.value]
     );
+    settingENSRecord.value = false;
     pendingCount.value++;
     const receipt = await tx.wait();
     console.log('Receipt', receipt);
@@ -366,65 +384,66 @@ watchEffect(() => {
         <h1 v-text="$t('settings.header')" class="mb-4" />
       </div>
       <Block title="ENS">
-        <UiButton class="flex w-full mb-2 items-center">
-          <input
-            readonly
-            v-model="textRecord"
-            class="input w-full"
-            :placeholder="$t('contectHash')"
-          />
-          <Icon
-            @click="copyToClipboard(textRecord)"
-            name="copy"
-            size="24"
-            class="text-color p-2 -mr-3"
-          />
-        </UiButton>
-
-        <a
-          v-if="isOwner || isAdmin"
-          :href="`https://app.ens.domains/name/${spaceId}`"
-          target="_blank"
-          class="mb-2 block"
+        <UiInput
+          v-if="(web3Account && ensOwner) || spaceOwnerAddress"
+          v-model.trim="spaceOwnerForm.address"
+          :placeholder="$t('settings.spaceOwnerAddressPlaceHolder')"
+          class="mt-2"
         >
-          <UiButton class="button-outline w-full" :loading="settingENSRecord">
-            {{ $t('settings.seeENS') }}
-            <Icon name="external-link" class="ml-1" />
-          </UiButton>
-        </a>
-
+          <template v-slot:label>{{ $t('settings.spaceOwner') }}</template>
+        </UiInput>
         <UiButton
-          v-else
-          class="button-outline w-full mb-2"
-          :primary="true"
-          :disabled="!ensOwner"
-          @click="handleSetRecord"
-          :loading="!loaded || settingENSRecord || loadingEnsDomains"
-        >
-          {{
-            ensOwner
-              ? $t('settings.setENS')
-              : $t('settings.connectToOwnerOfEns', { ens: props.spaceId })
-          }}
-        </UiButton>
-
-        <Block
-          v-if="currentSettings?.name && !currentTextRecord && loaded"
-          :style="'border-color: red !important; margin-bottom: 0 !important;'"
-          class="mb-0 mt-3"
-        >
-          <Icon name="warning" class="mr-2 !text-red" />
-          <span class="!text-red">
-            {{ $t('settings.warningTextRecord') }}
-            <a
-              v-text="$t('learnMore')"
-              href="https://docs.snapshot.org/spaces/create"
-              target="_blank"
-            />
-          </span>
-        </Block>
+          v-if="loadingEnsDomains"
+          class="button-outline w-full"
+          loading="loadingEnsDomains"
+        />
+        <div v-else>
+          <Block v-if="!web3Account" class="mb-0">
+            <Icon name="warning" class="mr-1" />
+            {{ $t('settings.connectWithEnsOwner', { ens: spaceId }) }}
+          </Block>
+          <div v-else>
+            <div v-if="currentTextRecord && (isSpaceOwner || isSpaceAdmin)">
+              <UiButton
+                class="button-outline w-full mb-2"
+                :primary="true"
+                :disabled="
+                  spaceOwnerForm.address === '' ||
+                  spaceOwnerForm.address === spaceOwnerAddress ||
+                  !isAddress(spaceOwnerForm.address)
+                "
+                @click="handleSetRecord"
+                :loading="!loaded || settingENSRecord"
+              >
+                {{ $t('settings.updateENS') }}
+              </UiButton>
+            </div>
+            <div v-else-if="currentTextRecord">
+              <Block class="mb-0">
+                <Icon name="warning" class="mr-1" />
+                {{ $t('settings.connectWithEnsOwner', { ens: spaceId }) }}
+              </Block>
+            </div>
+            <div v-else-if="!currentTextRecord && ensOwner">
+              <UiButton
+                class="button-outline w-full mb-2"
+                :primary="true"
+                @click="handleSetRecord"
+                :loading="!loaded || settingENSRecord"
+              >
+                {{ $t('settings.setENS') }}
+              </UiButton>
+            </div>
+            <div v-else-if="!currentTextRecord">
+              <Block class="mb-0">
+                <Icon name="warning" class="mr-1" />
+                {{ $t('settings.connectWithEnsOwner', { ens: spaceId }) }}
+              </Block>
+            </div>
+          </div>
+        </div>
       </Block>
-      <RowLoadingBlock v-if="!loaded" />
+      <RowLoadingBlock v-if="!loaded && !loadingEnsDomains" />
       <template v-if="currentTextRecord">
         <Block :title="$t('settings.profile')">
           <div class="mb-2">
@@ -541,7 +560,7 @@ watchEffect(() => {
             </template>
           </UiInput>
         </Block>
-        <Block :title="$t('settings.admins')" v-if="isOwner">
+        <Block :title="$t('settings.admins')" v-if="isSpaceOwner">
           <Block
             :style="`border-color: red !important`"
             v-if="inputError('admins')"
@@ -728,7 +747,7 @@ watchEffect(() => {
       </template>
     </template>
     <template v-if="(loaded && isOwner) || (loaded && isAdmin)" #sidebar-right>
-      <div class="lg:fixed lg:w-[321px]">
+      <div class="lg:fixed lg:w-[300px]">
         <Block :title="$t('actions')">
           <UiButton @click="handleReset" class="block w-full mb-2">
             {{ $t('reset') }}
@@ -744,6 +763,13 @@ watchEffect(() => {
           </UiButton>
         </Block>
       </div>
+      <Block
+        v-if="!(isSpaceOwner || isSpaceAdmin) && currentTextRecord"
+        class="mb-0"
+      >
+        <Icon name="warning" class="mr-1" />
+        {{ $t('settings.connectWithSpaceOwner') }}
+      </Block>
     </template>
   </Layout>
   <teleport to="#modal">
@@ -786,6 +812,10 @@ watchEffect(() => {
       @close="modalVotingTypeOpen = false"
       v-model:selected="form.voting.type"
       allowAny
+    />
+    <ModalUnsupportedNetwork
+      :open="modalUnsupportedNetworkOpen"
+      @close="modalUnsupportedNetworkOpen = false"
     />
   </teleport>
 </template>

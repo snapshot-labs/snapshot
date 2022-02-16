@@ -216,8 +216,8 @@
   },
   "settings": {
     "header": "Settings",
-    "seeENS": "See on ENS",
-    "setENS": "Set record on ENS",
+    "setENS": "Set space owner",
+    "updateENS": "Update space owner",
     "profile": "Profile",
     "avatar": "Avatar",
     "name": "Name",
@@ -254,7 +254,11 @@
     "type": "Type",
     "anyType": "Any",
     "hideAbstain": "Ignore abstain votes in basic voting results",
-    "connectToOwnerOfEns": "Connect with the wallet that owns {ens}"
+    "connectWithEnsOwner": "To modify space owner, connect with the wallet that owns {ens}",
+    "connectWithSpaceOwner": "To modify space settings, connect with the wallet that is a space owner or admin.",
+    "spaceOwnerAddressPlaceHolder": "Address",
+    "spaceOwner": "Space owner",
+    "unsupportedNetwork": "Unsupported network"
   },
   "setup": {
     "example": "e.g. yam.eth",
