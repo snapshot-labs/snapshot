@@ -639,13 +639,11 @@ onMounted(() => {
           </UiButton>
         </Block>
       </div>
-      <Block
+      <BaseWarningBlock
         v-if="!(isSpaceOwner || isSpaceAdmin) && currentTextRecord"
-        class="mb-0"
       >
-        <Icon name="warning" class="mr-1" />
         {{ $t('settings.connectWithSpaceOwner') }}
-      </Block>
+      </BaseWarningBlock>
     </template>
   </Layout>
   <teleport to="#modal">
