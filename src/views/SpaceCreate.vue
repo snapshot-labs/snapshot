@@ -1,6 +1,6 @@
 <script setup>
 import { ref, watchEffect, computed, onMounted, inject, watch } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 import draggable from 'vuedraggable';
 import { useI18n } from '@/composables/useI18n';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
@@ -19,12 +19,11 @@ import { useStore } from '@/composables/useStore';
 import { useIntl } from '@/composables/useIntl';
 
 const props = defineProps({
-  spaceId: String,
-  space: Object,
-  from: String
+  space: Object
 });
 
 const router = useRouter();
+const route = useRoute();
 const { t, setPageTitle } = useI18n();
 const { formatCompactNumber } = useIntl();
 const auth = getInstance();
@@ -59,12 +58,14 @@ const proposal = computed(() =>
   Object.assign(form.value, { choices: choices.value })
 );
 
+const sourceProposal = computed(() => route.params.sourceProposal);
+
 // Check if account passes space validation
 watch(
-  () => [props.space, web3Account.value],
+  () => web3Account.value,
   async () => {
     validationLoading.value = true;
-    if (props.space && web3Account.value && auth.isAuthenticated.value) {
+    if (web3Account.value && auth.isAuthenticated.value) {
       const validationName = props.space.validation?.name ?? 'basic';
       const validationParams = props.space.validation?.params ?? {};
       const isValid = await validations[validationName](
@@ -160,7 +161,7 @@ async function handleSubmit() {
     router.push({
       name: 'spaceProposal',
       params: {
-        key: props.spaceId,
+        key: props.space.id,
         id: result.id
       }
     });
@@ -168,7 +169,7 @@ async function handleSubmit() {
 }
 
 const { modalAccountOpen } = useModal();
-const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(props.spaceId);
+const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(props.space.id);
 
 const { apolloQuery, queryLoading } = useApolloQuery();
 
@@ -178,7 +179,7 @@ async function loadProposal() {
     {
       query: PROPOSAL_QUERY,
       variables: {
-        id: props.from
+        id: sourceProposal.value
       }
     },
     'proposal'
@@ -212,13 +213,12 @@ watch(nameInput, () => nameInput?.value?.focus());
 
 onMounted(async () => {
   addChoices(2);
-  if (props.from) loadProposal();
+  if (sourceProposal.value) loadProposal();
 });
 
-watchEffect(() => {
-  if (props.space?.name)
-    setPageTitle('page.title.space.create', { space: props.space.name });
-});
+onMounted(() =>
+  setPageTitle('page.title.space.create', { space: props.space.name })
+);
 
 watchEffect(async () => {
   loadingSnapshot.value = true;
@@ -559,7 +559,7 @@ const needsPluginConfigs = computed(() =>
       <template v-else>
         <div class="h-[1px] w-full" />
         <PluginCreate
-          v-if="space?.plugins && (!from || sourceProposalLoaded)"
+          v-if="space?.plugins && (!sourceProposal || sourceProposalLoaded)"
           :proposal="proposal"
           :space="space"
           :preview="preview"
@@ -613,7 +613,7 @@ const needsPluginConfigs = computed(() =>
       </Block>
     </template>
   </Layout>
-  <teleport to="#modal" v-if="space">
+  <teleport to="#modal">
     <ModalSelectDate
       :selectedDate="selectedDate"
       :open="modalDateSelectOpen"
