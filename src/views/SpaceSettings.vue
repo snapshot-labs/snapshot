@@ -245,33 +245,37 @@ function formatSpace(spaceRaw) {
   return space;
 }
 
-onMounted(async () => {
-  if (props.space) {
-    const spaceClone = formatSpace(props.space);
-    if (spaceClone) {
-      form.value = spaceClone;
-      currentSettings.value = clone(spaceClone);
+watch(
+  () => props.space,
+  async () => {
+    if (props.space) {
+      const spaceClone = formatSpace(props.space);
+      if (spaceClone) {
+        form.value = spaceClone;
+        currentSettings.value = clone(spaceClone);
+      }
     }
-  }
-  if (props.sourceSpace) {
-    const fromClone = formatSpace(props.sourceSpace);
-    if (fromClone) {
-      form.value = fromClone;
+    if (props.sourceSpace) {
+      const fromClone = formatSpace(props.sourceSpace);
+      if (fromClone) {
+        form.value = fromClone;
+      }
     }
-  }
-  try {
-    const uri = await getSpaceUri(
-      props.spaceKey,
-      import.meta.env.VITE_DEFAULT_NETWORK
-    );
-    console.log('URI', uri);
-    currentTextRecord.value = uri;
-  } catch (e) {
-    console.log(e);
-  }
+    try {
+      const uri = await getSpaceUri(
+        props.spaceKey,
+        import.meta.env.VITE_DEFAULT_NETWORK
+      );
+      console.log('URI', uri);
+      currentTextRecord.value = uri;
+    } catch (e) {
+      console.log(e);
+    }
 
-  loaded.value = true;
-});
+    loaded.value = true;
+  },
+  { immediate: true }
+);
 
 onMounted(() => {
   props.space?.name
