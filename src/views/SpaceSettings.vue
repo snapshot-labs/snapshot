@@ -52,6 +52,7 @@ const periodUnit = ref('h');
 const form = ref({
   strategies: [],
   categories: [],
+  admins: [],
   plugins: {},
   filters: {},
   voting: {},
@@ -95,7 +96,7 @@ watch([currentTextRecord, textRecord], () => {
 
 const isAdmin = computed(() => {
   if (!currentTextRecord.value) return false;
-  const admins = (props.space.admins || []).map(admin => admin.toLowerCase());
+  const admins = (props.space?.admins || []).map(admin => admin.toLowerCase());
   return admins.includes(web3Account.value?.toLowerCase());
 });
 
@@ -122,11 +123,11 @@ const categoriesString = computed(() => {
 async function handleSubmit() {
   if (isValid.value) {
     if (form.value.filters.invalids) delete form.value.filters.invalids;
-    const result = await send({ id: props.space.id }, 'settings', form.value);
+    const result = await send({ id: props.spaceKey }, 'settings', form.value);
     console.log('Result', result);
     if (result.id) {
       notify(['green', t('notify.saved')]);
-      props.loadExtentedSpaces([props.space.id]);
+      props.loadExtentedSpaces([props.spaceKey]);
     }
   } else {
     console.log('Invalid schema', validate.value);
@@ -307,7 +308,7 @@ onMounted(() => {
           />
         </UiButton>
         <a
-          :href="`https://app.ens.domains/name/${space?.id}`"
+          :href="`https://app.ens.domains/name/${spaceKey}`"
           target="_blank"
           class="mb-2 block"
         >
