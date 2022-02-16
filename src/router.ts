@@ -33,7 +33,7 @@ const spaceRoutes = [
     component: SpaceProposal
   },
   {
-    path: 'create/:from?',
+    path: 'create/:sourceProposal?',
     name: 'spaceCreate',
     component: SpaceCreate
   },
@@ -44,7 +44,7 @@ const spaceRoutes = [
     component: SpaceAbout
   },
   {
-    path: 'settings/:from?',
+    path: 'settings/:sourceSpace?',
     name: 'spaceSettings',
     component: SpaceSettings
   }

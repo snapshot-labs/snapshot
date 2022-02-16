@@ -287,7 +287,7 @@ onMounted(async () => {
         <h1 v-if="loaded" v-text="$t('delegate.header')" />
       </div>
       <PageLoading v-if="!loaded" />
-      <Block v-if="!networkSupportsDelegate">
+      <Block v-else-if="!networkSupportsDelegate">
         <Icon name="warning" class="mr-1" />
         {{
           $t('delegate.delegateNotSupported', {

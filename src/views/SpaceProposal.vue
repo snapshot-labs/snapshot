@@ -16,9 +16,7 @@ import { useStore } from '@/composables/useStore';
 import { useIntl } from '@/composables/useIntl';
 
 const props = defineProps({
-  spaceId: String,
-  space: Object,
-  spaceLoading: Boolean
+  space: Object
 });
 
 const route = useRoute();
@@ -46,7 +44,6 @@ const results = ref({});
 const modalStrategiesOpen = ref(false);
 
 const isCreator = computed(() => proposal.value.author === web3Account.value);
-const loaded = computed(() => !props.spaceLoading && !loading.value);
 const isAdmin = computed(() => {
   const admins = (props.space.admins || []).map(admin => admin.toLowerCase());
   return admins.includes(web3Account.value?.toLowerCase());
@@ -69,7 +66,7 @@ const threeDotItems = computed(() => {
 const browserHasHistory = computed(() => window.history.state.back);
 
 const { modalAccountOpen } = useModal();
-const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(props.spaceId);
+const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(props.space.id);
 
 function clickVote() {
   !web3.value.account
@@ -81,10 +78,10 @@ function clickVote() {
 
 async function loadProposal() {
   proposal.value = await getProposal(id);
-  // Redirect to proposal spaceId if it doesn't match route key
+  // Redirect to proposal space.id if it doesn't match route key
   if (
     route.name === 'spaceProposal' &&
-    props.spaceId !== proposal.value.space.id
+    props.space.id !== proposal.value.space.id
   ) {
     router.push({ name: 'error-404' });
   }
@@ -178,7 +175,7 @@ function selectFromThreedotDropdown(e) {
       name: 'spaceCreate',
       params: {
         key: proposal.value.space.id,
-        from: proposal.value.id
+        sourceProposal: proposal.value.id
       }
     });
 }
@@ -206,8 +203,8 @@ watch(web3Account, () => {
   }
 });
 
-watch(loaded, () => {
-  if (loaded.value === true) loadResults();
+watch(loading, () => {
+  if (!loading.value) loadResults();
 });
 
 watchEffect(() => {
@@ -266,7 +263,7 @@ const truncateMarkdownBody = computed(() => {
         </a>
       </div>
       <div class="px-4 md:px-0">
-        <template v-if="loaded">
+        <template v-if="!loading">
           <h1 v-text="proposal.title" class="mb-3" />
 
           <div class="flex items-center justify-between mb-4">
@@ -275,7 +272,7 @@ const truncateMarkdownBody = computed(() => {
                 class="text-color group"
                 :to="{
                   name: 'spaceProposals',
-                  params: { key: spaceId }
+                  params: { key: space.id }
                 }"
               >
                 <div class="flex items-center">
@@ -380,7 +377,7 @@ const truncateMarkdownBody = computed(() => {
         <PageLoading v-else />
       </div>
       <BlockCastVote
-        v-if="loaded && proposal.state === 'active'"
+        v-if="!loading && proposal.state === 'active'"
         :proposal="proposal"
         v-model="selectedChoices"
         @open="modalOpen = true"
@@ -388,7 +385,7 @@ const truncateMarkdownBody = computed(() => {
       />
       <BlockVotes
         @loadVotes="loadMore(loadMoreVotes)"
-        v-if="loaded && !loadingResultsFailed"
+        v-if="!loading && !loadingResultsFailed"
         :loaded="loadedVotes"
         :space="space"
         :proposal="proposal"
@@ -398,7 +395,7 @@ const truncateMarkdownBody = computed(() => {
         :loadingMore="loadingMore"
       />
       <PluginProposal
-        v-if="space && proposal.plugins && loadedResults"
+        v-if="proposal.plugins && loadedResults"
         :id="id"
         :space="space"
         :proposal="proposal"
@@ -408,7 +405,7 @@ const truncateMarkdownBody = computed(() => {
         :strategies="strategies"
       />
     </template>
-    <template #sidebar-right v-if="loaded">
+    <template #sidebar-right v-if="!loading">
       <Block :title="$t('information')">
         <div class="space-y-1">
           <div>
@@ -495,7 +492,7 @@ const truncateMarkdownBody = computed(() => {
         :strategies="strategies"
       />
       <PluginProposalSidebar
-        v-if="space && proposal.plugins && loadedResults"
+        v-if="proposal.plugins && loadedResults"
         :id="id"
         :space="space"
         :proposal="proposal"
@@ -506,7 +503,7 @@ const truncateMarkdownBody = computed(() => {
       />
     </template>
   </Layout>
-  <teleport to="#modal" v-if="loaded">
+  <teleport to="#modal" v-if="!loading">
     <ModalConfirm
       :open="modalOpen"
       @close="modalOpen = false"
