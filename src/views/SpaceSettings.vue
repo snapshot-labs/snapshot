@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref, watchEffect, inject, watch } from 'vue';
+import { computed, ref, inject, watch, onMounted } from 'vue';
 import { useI18n } from '@/composables/useI18n';
 import { getAddress } from '@ethersproject/address';
 import {
@@ -17,11 +17,9 @@ import { useClient } from '@/composables/useClient';
 import { usePlugins } from '@/composables/usePlugins';
 
 const props = defineProps({
-  spaceId: String,
   space: Object,
-  from: String,
-  spaceFrom: Object,
-  spaceLoading: Boolean,
+  sourceSpace: Object,
+  spaceKey: String,
   loadExtentedSpaces: Function
 });
 
@@ -54,6 +52,7 @@ const periodUnit = ref('h');
 const form = ref({
   strategies: [],
   categories: [],
+  admins: [],
   plugins: {},
   filters: {},
   voting: {},
@@ -74,7 +73,7 @@ const isValid = computed(() => {
 });
 
 const textRecord = computed(() => {
-  const keyURI = encodeURIComponent(props.spaceId);
+  const keyURI = encodeURIComponent(props.spaceKey);
   const address = web3Account.value
     ? getAddress(web3Account.value)
     : '<your-address>';
@@ -96,8 +95,8 @@ watch([currentTextRecord, textRecord], () => {
 });
 
 const isAdmin = computed(() => {
-  if (!props.space || !currentTextRecord.value) return false;
-  const admins = (props.space.admins || []).map(admin => admin.toLowerCase());
+  if (!currentTextRecord.value) return false;
+  const admins = (props.space?.admins || []).map(admin => admin.toLowerCase());
   return admins.includes(web3Account.value?.toLowerCase());
 });
 
@@ -124,11 +123,11 @@ const categoriesString = computed(() => {
 async function handleSubmit() {
   if (isValid.value) {
     if (form.value.filters.invalids) delete form.value.filters.invalids;
-    const result = await send({ id: props.spaceId }, 'settings', form.value);
+    const result = await send({ id: props.spaceKey }, 'settings', form.value);
     console.log('Result', result);
     if (result.id) {
       notify(['green', t('notify.saved')]);
-      props.loadExtentedSpaces([props.spaceId]);
+      props.loadExtentedSpaces([props.spaceKey]);
     }
   } else {
     console.log('Invalid schema', validate.value);
@@ -154,7 +153,7 @@ function inputError(field) {
 }
 
 function handleReset() {
-  if (props.from) return (form.value = clone(props.spaceFrom));
+  if (props.sourceSpace) return (form.value = clone(props.sourceSpace));
   if (currentSettings.value) return (form.value = clone(currentSettings.value));
   form.value = {
     strategies: [],
@@ -246,39 +245,36 @@ function formatSpace(spaceRaw) {
   return space;
 }
 
-watch(
-  () => props.spaceLoading,
-  async () => {
-    if (!props.spaceLoading) {
-      const spaceClone = formatSpace(props.space);
-      if (spaceClone) {
-        form.value = spaceClone;
-        currentSettings.value = clone(spaceClone);
-      }
-      if (props.from) {
-        const fromClone = formatSpace(props.spaceFrom);
-        if (fromClone) {
-          form.value = fromClone;
-        }
-      }
-      try {
-        const uri = await getSpaceUri(
-          props.spaceId,
-          import.meta.env.VITE_DEFAULT_NETWORK
-        );
-        console.log('URI', uri);
-        currentTextRecord.value = uri;
-      } catch (e) {
-        console.log(e);
-      }
-
-      loaded.value = true;
+onMounted(async () => {
+  if (props.space) {
+    const spaceClone = formatSpace(props.space);
+    if (spaceClone) {
+      form.value = spaceClone;
+      currentSettings.value = clone(spaceClone);
     }
   }
-);
+  if (props.sourceSpace) {
+    const fromClone = formatSpace(props.sourceSpace);
+    if (fromClone) {
+      form.value = fromClone;
+    }
+  }
+  try {
+    const uri = await getSpaceUri(
+      props.spaceKey,
+      import.meta.env.VITE_DEFAULT_NETWORK
+    );
+    console.log('URI', uri);
+    currentTextRecord.value = uri;
+  } catch (e) {
+    console.log(e);
+  }
 
-watchEffect(() => {
-  props.space && props.space?.name
+  loaded.value = true;
+});
+
+onMounted(() => {
+  props.space?.name
     ? setPageTitle('page.title.space.settings', { space: props.space.name })
     : setPageTitle('page.title.setup');
 });
@@ -312,7 +308,7 @@ watchEffect(() => {
           />
         </UiButton>
         <a
-          :href="`https://app.ens.domains/name/${spaceId}`"
+          :href="`https://app.ens.domains/name/${spaceKey}`"
           target="_blank"
           class="mb-2 block"
         >
