@@ -257,8 +257,7 @@
     "connectWithEnsOwner": "To modify space owner, connect with the wallet that owns {ens}",
     "connectWithSpaceOwner": "To modify space settings, connect with the wallet that is a space owner or admin.",
     "spaceOwnerAddressPlaceHolder": "Address",
-    "spaceOwner": "Space owner",
-    "unsupportedNetwork": "Unsupported network"
+    "spaceOwner": "Space owner"
   },
   "setup": {
     "example": "e.g. yam.eth",
@@ -448,5 +447,11 @@
     "week": "1 week | {n} weeks",
     "month": "1 month | {n} months",
     "year": "1 year | {n} years"
+  },
+  "unsupportedNetwork": {
+    "unsupportedNetwork": "Unsupported network",
+    "ensOnlyMainnet": "Snapshot only supports ENS on the ethereum mainnet. Once the space is created, you can use it across multiple chains.",
+    "switchNetworkToMainnet": "To continue, you need to change the network in your wallet to Ethereum Mainnet.",
+    "switchToMainnet": "Switch to Mainnet"
   }
 }

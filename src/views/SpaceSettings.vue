@@ -94,7 +94,7 @@ const isValid = computed(() => {
 });
 
 const ensOwner = computed(() => {
-  return ownedEnsDomains.value.map(d => d.name).includes(props.spaceId);
+  return ownedEnsDomains.value.map(d => d.name).includes(props.spaceKey);
 });
 
 const textRecord = computed(() => {
@@ -330,7 +330,7 @@ async function handleSetRecord() {
     if (!ensPublicResolverAddress) {
       throw new Error('No ENS resolver address for this network');
     }
-    const ensname = props.spaceId;
+    const ensname = props.spaceKey;
     const node = namehash.hash(ensname);
     const tx = await sendTransaction(
       auth.web3,
@@ -344,7 +344,7 @@ async function handleSetRecord() {
     const receipt = await tx.wait();
     console.log('Receipt', receipt);
     const uri = await getSpaceUri(
-      props.spaceId,
+      props.spaceKey,
       import.meta.env.VITE_DEFAULT_NETWORK
     );
     console.log('URI', uri);
@@ -395,7 +395,7 @@ onMounted(() => {
         <div v-else>
           <Block v-if="!web3Account" class="mb-0">
             <Icon name="warning" class="mr-1" />
-            {{ $t('settings.connectWithEnsOwner', { ens: spaceId }) }}
+            {{ $t('settings.connectWithEnsOwner', { ens: spaceKey }) }}
           </Block>
           <div v-else>
             <div v-if="currentTextRecord && (isSpaceOwner || isSpaceAdmin)">
@@ -416,7 +416,7 @@ onMounted(() => {
             <div v-else-if="currentTextRecord">
               <Block class="mb-0">
                 <Icon name="warning" class="mr-1" />
-                {{ $t('settings.connectWithEnsOwner', { ens: spaceId }) }}
+                {{ $t('settings.connectWithEnsOwner', { ens: spaceKey }) }}
               </Block>
             </div>
             <div v-else-if="!currentTextRecord && ensOwner">
@@ -432,7 +432,7 @@ onMounted(() => {
             <div v-else-if="!currentTextRecord">
               <Block class="mb-0">
                 <Icon name="warning" class="mr-1" />
-                {{ $t('settings.connectWithEnsOwner', { ens: spaceId }) }}
+                {{ $t('settings.connectWithEnsOwner', { ens: spaceKey }) }}
               </Block>
             </div>
           </div>
@@ -741,7 +741,10 @@ onMounted(() => {
         </Block>
       </template>
     </template>
-    <template v-if="(loaded && isOwner) || (loaded && isAdmin)" #sidebar-right>
+    <template
+      v-if="(loaded && isSpaceOwner) || (loaded && isSpaceAdmin)"
+      #sidebar-right
+    >
       <div class="lg:fixed lg:w-[300px]">
         <Block :title="$t('actions')">
           <UiButton @click="handleReset" class="block w-full mb-2">
