@@ -95,7 +95,7 @@ watch([currentTextRecord, textRecord], () => {
 
 const isAdmin = computed(() => {
   if (!currentTextRecord.value) return false;
-  const admins = (props.space.admins || []).map(admin => admin.toLowerCase());
+  const admins = (props.space?.admins || []).map(admin => admin.toLowerCase());
   return admins.includes(web3Account.value?.toLowerCase());
 });
 
