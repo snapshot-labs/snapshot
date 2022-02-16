@@ -155,7 +155,7 @@
 
 <script setup>
 import { onMounted, ref, computed } from 'vue';
-import Plugin from '@/../snapshot-plugins/src/plugins/safeSnap';
+import Plugin from '../index';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { sleep } from '@snapshot-labs/snapshot.js/src/utils';

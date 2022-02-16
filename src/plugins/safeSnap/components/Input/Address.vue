@@ -1,5 +1,5 @@
 <script>
-import { mustBeEthereumAddress } from '@/../snapshot-plugins/src/plugins/safeSnap';
+import { mustBeEthereumAddress } from '../../index';
 
 export default {
   props: ['modelValue', 'inputProps', 'label', 'disabled'],

@@ -3,7 +3,7 @@ import Plugin, {
   getERC20TokenTransferTransactionData,
   getNativeAsset,
   transferFundsToModuleTransaction
-} from '@/../snapshot-plugins/src/plugins/safeSnap';
+} from '../../index';
 import { isBigNumberish } from '@ethersproject/bignumber/lib/bignumber';
 import { isAddress } from '@ethersproject/address';
 

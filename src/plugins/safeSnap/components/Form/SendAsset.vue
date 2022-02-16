@@ -2,7 +2,7 @@
 import Plugin, {
   getERC721TokenTransferTransactionData,
   sendAssetToModuleTransaction
-} from '@/../snapshot-plugins/src/plugins/safeSnap';
+} from '../../index';
 import { isAddress } from '@ethersproject/address';
 import { shorten } from '@/helpers/utils';
 

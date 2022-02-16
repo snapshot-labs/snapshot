@@ -1,6 +1,6 @@
 <script>
 import { formatUnits } from '@ethersproject/units';
-import { getAbiFirstFunctionName } from '@/../snapshot-plugins/src/plugins/safeSnap';
+import { getAbiFirstFunctionName } from '../../index';
 import { shorten } from '@/helpers/utils';
 
 const labels = {

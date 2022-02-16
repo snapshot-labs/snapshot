@@ -6,7 +6,7 @@ import {
   createBatch,
   ERC20_ABI,
   ERC721_ABI
-} from '@/../snapshot-plugins/src/plugins/safeSnap';
+} from '../../index';
 import { formatEther } from '@ethersproject/units';
 import { FunctionFragment, Interface } from '@ethersproject/abi';
 

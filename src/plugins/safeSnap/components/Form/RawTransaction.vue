@@ -2,7 +2,7 @@
 import Plugin, {
   decodeTransactionData,
   rawToModuleTransaction
-} from '@/../snapshot-plugins/src/plugins/safeSnap';
+} from '../../index';
 import { isHexString } from '@ethersproject/bytes';
 import { parseAmount } from '@/helpers/utils';
 

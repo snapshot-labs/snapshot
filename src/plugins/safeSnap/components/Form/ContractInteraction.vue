@@ -5,7 +5,7 @@ import Plugin, {
   getContractABI,
   getContractTransactionData,
   InterfaceDecoder
-} from '@/../snapshot-plugins/src/plugins/safeSnap';
+} from '../../index';
 import { isBigNumberish } from '@ethersproject/bignumber/lib/bignumber';
 import { isAddress } from '@ethersproject/address';
 import { parseAmount } from '@/helpers/utils';

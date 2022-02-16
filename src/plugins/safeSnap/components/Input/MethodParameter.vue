@@ -1,6 +1,6 @@
 <script>
 import { isParameterValue } from '@/helpers/validator';
-import { isArrayParameter } from '@/../snapshot-plugins/src/plugins/safeSnap';
+import { isArrayParameter } from '../../index';
 
 export default {
   props: ['modelValue', 'disabled', 'parameter'],
