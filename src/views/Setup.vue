@@ -85,7 +85,7 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
         />
       </div>
       <template v-if="web3Account">
-        <SpaceSetupController
+        <SetupController
           v-if="ensAddress"
           :ensAddress="ensAddress"
           :ownedEnsDomains="ownedEnsDomains"
