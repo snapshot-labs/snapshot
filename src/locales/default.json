@@ -274,7 +274,7 @@
     "setSpaceController": "Set controller on ENS",
     "editSpaceController": "Edit controller on ENS",
     "setController": "Set controller",
-    "explainControllerAndEns": "This action requires a transaction on the Ethreum Mainnet which will add a \"snapshot\" TEXT record to your ENS domain.",
+    "explainControllerAndEns": "This action requires a transaction on the Ethereum Mainnet which will add a \"snapshot\" TEXT record to your ENS domain.",
     "confirmToSetAddress": "Are you sure you want to set {address} as the controller of the space?",
     "controllerHasAuthority": "The controller has full authority over the space settings",
     "controller": "Controller",
