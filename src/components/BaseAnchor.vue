@@ -22,6 +22,5 @@ defineProps<{
   </a>
   <router-link v-else :to="link" class="whitespace-nowrap">
     <slot />
-    <Icon v-if="!hideExternalIcon" name="external-link" />
   </router-link>
 </template>
