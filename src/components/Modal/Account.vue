@@ -22,7 +22,8 @@ async function handleLogout() {
 }
 
 const path =
-  'https://raw.githubusercontent.com/snapshot-labs/lock/master/connectors/assets';
+    // TODO make this an environment variable
+  './assets';
 
 watch(open, () => (step.value = null));
 </script>
@@ -75,7 +76,7 @@ watch(open, () => (step.value = null));
     <div v-else>
       <div v-if="$auth.isAuthenticated.value" class="m-4 space-y-2">
         <a
-          :href="explorerUrl(web3.network.key, web3.account)"
+          :href="explorerUrl(web3.network.key, web3.account, /*klaytn's scope wants the string 'account' in the URL*/ 'account')"
           target="_blank"
           class="block"
         >

@@ -69,7 +69,11 @@ export function useWeb3() {
         } else {
           [network, accounts] = await Promise.all([
             auth.web3.getNetwork(),
-            auth.web3.listAccounts()
+            // auth.web3.listAccounts()
+            // The klaytn provider doesn't return accounts with listAccounts, so this will do for now
+            // According to the docs, the only way to get an account list on demand is to call enable() https://docs.kaikas.io/02_api_reference/01_klaytn_provider
+            // This can also be done [auth.web3.provider.selectedAccount],
+            auth.web3.provider.enable()
           ]);
         }
       } catch (e) {

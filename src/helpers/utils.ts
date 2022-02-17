@@ -5,6 +5,19 @@ import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import voting from '@snapshot-labs/snapshot.js/src/voting';
 import { getUrl } from '@snapshot-labs/snapshot.js/src/utils';
 
+networks['1001'] = {
+  "key": "1001",
+      "name": "Baobab",
+      "chainId": 1001,
+      "network": "baobab",
+      "multicall": "",
+      "rpc": [],
+      "ws": [],
+      "explorer": "https://baobab.scope.klaytn.com",
+      "start": -1,
+      "imageIPFS": "TODO"
+}
+
 export function shortenAddress(str = '') {
   return `${str.slice(0, 6)}...${str.slice(str.length - 4)}`;
 }

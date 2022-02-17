@@ -3,6 +3,10 @@
     "id": "injected",
     "name": "MetaMask"
   },
+  "kaikas": {
+    "id": "kaikas",
+    "name": "Kaikas"
+  },
   "walletconnect": {
     "id": "walletconnect",
     "name": "WalletConnect",
