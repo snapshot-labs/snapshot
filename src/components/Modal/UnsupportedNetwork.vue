@@ -1,15 +1,12 @@
-<script setup>
+<script setup lang="ts">
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { computed, ref } from 'vue';
 import { useI18n } from '../../composables/useI18n';
 import { useNotifications } from '../../composables/useNotifications';
 
-defineProps({
-  open: {
-    type: Boolean,
-    required: true
-  }
-});
+defineProps<{
+  open: boolean;
+}>();
 const emit = defineEmits(['close', 'setTextrecord']);
 
 const { notify } = useNotifications();
@@ -24,7 +21,7 @@ const switchingChain = ref(false);
 const switchToMainnet = async () => {
   try {
     switchingChain.value = true;
-    await window.ethereum.request({
+    await window.ethereum?.request({
       method: 'wallet_switchEthereumChain',
       params: [
         {
