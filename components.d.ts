@@ -5,8 +5,10 @@
 declare module 'vue' {
   export interface GlobalComponents {
     Badges: typeof import('./src/components/Badges.vue')['default']
+    BaseAnchor: typeof import('./src/components/BaseAnchor.vue')['default']
+    BaseMessageBlock: typeof import('./src/components/BaseMessageBlock.vue')['default']
     BaseNumberSelector: typeof import('./src/components/BaseNumberSelector.vue')['default'];
-    BaseWarningBlock: typeof import('./src/components/BaseWarningBlock.vue')['default']
+    BaseWarningBlock: typeof import('./src/components/BaseWarningBlock.vue')['default'];
     Block: typeof import('./src/components/Block.vue')['default']
     BlockCastVote: typeof import('./src/components/Block/CastVote.vue')['default']
     BlockNetwork: typeof import('./src/components/Block/Network.vue')['default']
@@ -28,6 +30,7 @@ declare module 'vue' {
     ModalAccount: typeof import('./src/components/Modal/Account.vue')['default']
     ModalCategory: typeof import('./src/components/Modal/Category.vue')['default']
     ModalConfirm: typeof import('./src/components/Modal/Confirm.vue')['default']
+    ModalConfirmAction: typeof import('./src/components/Modal/ConfirmAction.vue')['default']
     ModalNetworks: typeof import('./src/components/Modal/Networks.vue')['default']
     ModalNotice: typeof import('./src/components/Modal/Notice.vue')['default']
     ModalPlugins: typeof import('./src/components/Modal/Plugins.vue')['default']
@@ -39,6 +42,7 @@ declare module 'vue' {
     ModalStrategies: typeof import('./src/components/Modal/Strategies.vue')['default']
     ModalStrategy: typeof import('./src/components/Modal/Strategy.vue')['default']
     ModalTerms: typeof import('./src/components/Modal/Terms.vue')['default']
+    ModalUnsupportedNetwork: typeof import('./src/components/Modal/UnsupportedNetwork.vue')['default']
     ModalValidation: typeof import('./src/components/Modal/Validation.vue')['default']
     ModalVotingType: typeof import('./src/components/Modal/VotingType.vue')['default']
     NoProposals: typeof import('./src/components/NoProposals.vue')['default']
@@ -87,6 +91,7 @@ declare module 'vue' {
     Search: typeof import('./src/components/Search.vue')['default']
     SearchWithFilters: typeof import('./src/components/SearchWithFilters.vue')['default']
     SelectLanguageButton: typeof import('./src/components/SelectLanguageButton.vue')['default']
+    SetupController: typeof import('./src/components/SetupController.vue')['default']
     SpaceSidebar: typeof import('./src/components/SpaceSidebar.vue')['default']
     SpaceSidebarHeader: typeof import('./src/components/SpaceSidebarHeader.vue')['default']
     SpaceSidebarNavigation: typeof import('./src/components/SpaceSidebarNavigation.vue')['default']
