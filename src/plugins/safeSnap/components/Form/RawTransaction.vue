@@ -5,8 +5,10 @@ import Plugin, {
 } from '../../index';
 import { isHexString } from '@ethersproject/bytes';
 import { parseAmount } from '@/helpers/utils';
+import SafeSnapInputAddress from '../Input/Address.vue';
 
 export default {
+  components: { SafeSnapInputAddress },
   props: ['modelValue', 'nonce', 'config'],
   emits: ['update:modelValue'],
   data() {
@@ -88,7 +90,7 @@ export default {
 </script>
 
 <template>
-  <PluginSafeSnapInputAddress
+  <SafeSnapInputAddress
     v-model="to"
     :disabled="config.preview"
     :inputProps="{ required: false }"

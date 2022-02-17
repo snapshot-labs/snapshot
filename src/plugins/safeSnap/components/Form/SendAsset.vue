@@ -5,8 +5,10 @@ import Plugin, {
 } from '../../index';
 import { isAddress } from '@ethersproject/address';
 import { shorten } from '@/helpers/utils';
+import SafeSnapInputAddress from '../Input/Address.vue';
 
 export default {
+  components: { SafeSnapInputAddress },
   setup() {
     return { shorten };
   },
@@ -113,7 +115,7 @@ export default {
     </option>
   </UiSelect>
 
-  <PluginSafeSnapInputAddress
+  <SafeSnapInputAddress
     v-model="to"
     :disabled="config.preview"
     :inputProps="{

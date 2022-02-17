@@ -9,8 +9,10 @@ import {
 } from '../../index';
 import { formatEther } from '@ethersproject/units';
 import { FunctionFragment, Interface } from '@ethersproject/abi';
+import SafeSnapFormTransaction from './Transaction.vue';
 
 export default {
+  components: { SafeSnapFormTransaction },
   props: ['modelValue', 'nonce', 'config'],
   emits: ['update:modelValue', 'remove'],
   setup() {
@@ -126,7 +128,7 @@ export default {
       v-bind:key="index"
       class="mb-2"
     >
-      <PluginSafeSnapFormTransaction
+      <SafeSnapFormTransaction
         :modelValue="transaction"
         :config="config"
         :nonce="index"

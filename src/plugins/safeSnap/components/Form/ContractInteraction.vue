@@ -9,8 +9,11 @@ import Plugin, {
 import { isBigNumberish } from '@ethersproject/bignumber/lib/bignumber';
 import { isAddress } from '@ethersproject/address';
 import { parseAmount } from '@/helpers/utils';
+import SafeSnapInputAddress from '../Input/Address.vue';
+import SafeSnapInputMethodParameter from '../Input/MethodParameter.vue';
 
 export default {
+  components: { SafeSnapInputAddress, SafeSnapInputMethodParameter},
   props: ['modelValue', 'nonce', 'config'],
   emits: ['update:modelValue'],
   data() {
@@ -177,7 +180,7 @@ export default {
 </script>
 
 <template>
-  <PluginSafeSnapInputAddress
+  <SafeSnapInputAddress
     v-model="to"
     :disabled="config.preview"
     :inputProps="{
@@ -220,7 +223,7 @@ export default {
     <div v-if="selectedMethod && selectedMethod.inputs.length">
       <div class="divider"></div>
 
-      <PluginSafeSnapInputMethodParameter
+      <SafeSnapInputMethodParameter
         v-for="(input, index) in selectedMethod.inputs"
         :key="input.name"
         :disabled="config.preview"

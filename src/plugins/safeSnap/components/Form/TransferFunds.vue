@@ -6,8 +6,11 @@ import Plugin, {
 } from '../../index';
 import { isBigNumberish } from '@ethersproject/bignumber/lib/bignumber';
 import { isAddress } from '@ethersproject/address';
+import SafeSnapInputAddress from '../Input/Address.vue';
+import SafeSnapInputAmount from '../Input/Amount.vue';
 
 export default {
+  components: { SafeSnapInputAddress, SafeSnapInputAmount },
   props: ['modelValue', 'nonce', 'config'],
   emits: ['update:modelValue'],
   data() {
@@ -110,7 +113,7 @@ export default {
     </option>
   </UiSelect>
 
-  <PluginSafeSnapInputAddress
+  <SafeSnapInputAddress
     v-model="to"
     :disabled="config.preview"
     :inputProps="{
@@ -118,7 +121,7 @@ export default {
     }"
     :label="$t('safeSnap.to')"
   />
-  <PluginSafeSnapInputAmount
+  <SafeSnapInputAmount
     :label="$t('safeSnap.amount')"
     v-model="value"
     :decimals="selectedToken?.decimals"

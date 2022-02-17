@@ -12,6 +12,7 @@ import SafeTransactions from './SafeTransactions.vue';
 const { setConfig } = useSafesnap();
 
 export default {
+  components: { SafeTransactions },
   props: [
     'modelValue', // proposal's plugins.safeSnap field or undefined when creating a new proposal
     'config', // the safeSnap plugin config of the current space

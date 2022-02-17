@@ -185,7 +185,7 @@ export default {
 <template>
   <div class="border-t border-b md:border rounded-none md:rounded-md mb-4">
     <h4
-      class="px-4 pt-3 border-b block rounded-t-none md:rounded-t-md flex"
+      class="px-4 pt-3 border-b rounded-t-none md:rounded-t-md flex"
       style="padding-bottom: 12px"
     >
       <UiAvatar

@@ -1,8 +1,11 @@
 <script>
 import { isParameterValue } from '@/helpers/validator';
 import { isArrayParameter } from '../../index';
+import SafeSnapInputAddress from './Address.vue';
+import SafeSnapInputArrayType from './ArrayType.vue';
 
 export default {
+  components: { SafeSnapInputAddress, SafeSnapInputArrayType },
   props: ['modelValue', 'disabled', 'parameter'],
   emits: ['update:modelValue', 'isValid'],
   mounted() {
@@ -62,7 +65,7 @@ export default {
   </UiSelect>
 
   <!-- ADDRESS -->
-  <PluginSafeSnapInputAddress
+  <SafeSnapInputAddress
     v-else-if="parameter.type === 'address'"
     :disabled="disabled"
     :inputProps="{ required: true }"
@@ -71,7 +74,7 @@ export default {
     @update:modelValue="handleInput($event)"
   />
   <!-- Array of X type -->
-  <PluginSafeSnapInputArrayType
+  <SafeSnapInputArrayType
     v-else-if="isArrayType()"
     :disabled="disabled"
     :modelValue="value"

@@ -2,6 +2,10 @@
 import { formatUnits } from '@ethersproject/units';
 import { getAbiFirstFunctionName } from '../../index';
 import { shorten } from '@/helpers/utils';
+import SafeSnapFormContractInteraction from './ContractInteraction.vue';
+import SafeSnapFormTransferFunds from './TransferFunds.vue';
+import SafeSnapFormSendAsset from './SendAsset.vue';
+import SafeSnapFormRawTransaction from './RawTransaction.vue';
 
 const labels = {
   contractInteraction: 'Contract Interaction',
@@ -11,6 +15,12 @@ const labels = {
 };
 
 export default {
+  components: {
+    SafeSnapFormContractInteraction,
+    SafeSnapFormTransferFunds,
+    SafeSnapFormSendAsset,
+    SafeSnapFormRawTransaction
+  },
   props: ['modelValue', 'nonce', 'config'],
   emits: ['update:modelValue', 'remove'],
   data() {
@@ -118,7 +128,7 @@ export default {
       <option value="raw">{{ $t('safeSnap.rawTransaction') }}</option>
     </UiSelect>
 
-    <PluginSafeSnapFormContractInteraction
+    <SafeSnapFormContractInteraction
       v-if="type === 'contractInteraction'"
       :config="config"
       :modelValue="modelValue"
@@ -126,7 +136,7 @@ export default {
       @update:modelValue="$emit('update:modelValue', $event)"
     />
 
-    <PluginSafeSnapFormTransferFunds
+    <SafeSnapFormTransferFunds
       v-if="type === 'transferFunds'"
       :config="config"
       :modelValue="modelValue"
@@ -134,7 +144,7 @@ export default {
       @update:modelValue="$emit('update:modelValue', $event)"
     />
 
-    <PluginSafeSnapFormSendAsset
+    <SafeSnapFormSendAsset
       v-if="type === 'transferNFT'"
       :config="config"
       :modelValue="modelValue"
@@ -142,7 +152,7 @@ export default {
       @update:modelValue="$emit('update:modelValue', $event)"
     />
 
-    <PluginSafeSnapFormRawTransaction
+    <SafeSnapFormRawTransaction
       v-if="type === 'raw'"
       :modelValue="modelValue"
       :nonce="nonce"
