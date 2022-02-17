@@ -1012,10 +1012,10 @@
     estree-walker "^2.0.1"
     picomatch "^2.2.2"
 
-"@snapshot-labs/lock@^0.1.5":
-  version "0.1.5"
-  resolved "https://registry.yarnpkg.com/@snapshot-labs/lock/-/lock-0.1.5.tgz#1d8c256871f8ad5ccbdb375202932524dbb587bd"
-  integrity sha512-99vFVDU+KcHxSRHRbqCGIeKXzxom3h1hkfcB/TeUFnv79LuYAg0bBRfYzNR0/ZkcwTc73eJXpAfXwTLoT7FPSQ==
+"@snapshot-labs/lock@^0.1.6":
+  version "0.1.6"
+  resolved "https://registry.yarnpkg.com/@snapshot-labs/lock/-/lock-0.1.6.tgz#3ace3089f954e76643fc0876be29cfd64ca234ea"
+  integrity sha512-EC1meQuS/CTh5KiH7yPH0+GeFZakKGDuy9Rixv/oc7WADVztaUOFTtwZJ3xIc1UIEhhXCqXVR9ESO34cCO2qwQ==
   dependencies:
     "@gnosis.pm/safe-apps-provider" "^0.8.0"
     "@gnosis.pm/safe-apps-sdk" "^6.1.1"
