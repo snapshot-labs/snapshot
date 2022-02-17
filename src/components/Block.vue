@@ -6,6 +6,7 @@ defineProps({
   icon: String,
   iconClass: String,
   iconTooltip: String,
+  iconHref: String,
   loading: Boolean
 });
 </script>
@@ -22,12 +23,21 @@ defineProps({
       {{ title }}
       <UiCounter v-if="counter" :counter="counter" class="ml-1 inline-block" />
       <Icon
-        v-if="icon"
+        v-if="icon && !iconHref"
         :name="icon"
         size="22"
         :class="['float-right pt-1', iconClass]"
         v-tippy="{ content: iconTooltip ? iconTooltip : null }"
       />
+      <BaseAnchor v-else-if="iconHref" :link="iconHref" hideExternalIcon>
+        <Icon
+          v-if="icon"
+          :name="icon"
+          size="22"
+          :class="['float-right pt-1', iconClass]"
+          v-tippy="{ content: iconTooltip ? iconTooltip : null }"
+        />
+      </BaseAnchor>
     </h4>
     <div v-if="loading" class="block px-4 py-4">
       <div
