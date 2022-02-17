@@ -94,15 +94,14 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
         />
       </div>
       <template v-if="web3Account">
+        <Block v-if="loadingOwnedEnsDomains" slim>
+          <RowLoading class="my-2" />
+        </Block>
         <SetupController
-          v-if="ensAddress"
+          v-else-if="ensAddress"
           :ensAddress="ensAddress"
           :ownedEnsDomains="ownedEnsDomains"
         />
-
-        <Block v-else-if="loadingOwnedEnsDomains" slim>
-          <RowLoading class="my-2" />
-        </Block>
         <Block
           v-else
           :title="$t('setup.selectEnsForSpace')"
