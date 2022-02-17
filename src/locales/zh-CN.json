@@ -124,6 +124,7 @@
   "theCurrentNetwork": "当前网络",
   "optional": "(选填)",
   "homeLoadmore": "加载更多",
+  "confirmAction": "确认操作",
   "errors": {
     "required": "此项为必填项",
     "minLength": "最小长度为 {0}",
@@ -216,8 +217,9 @@
   },
   "settings": {
     "header": "设置",
-    "seeENS": "在 ENS 上查看",
-    "setENS": "在 ENS 上设置记录",
+    "setEnsTextRecord": "设置 ENS 文本记录",
+    "editController": "编辑控制栏",
+    "needToSetEnsText": "您的空间设置将保存在IPFS文件中。 在您可以编辑他们之前，您需要设置一个 ENS 文本记录指向该文件。",
     "profile": "用户信息",
     "avatar": "头像",
     "name": "名称",
@@ -253,7 +255,8 @@
     "quorum": "裁决者人数",
     "type": "类型",
     "anyType": "任意",
-    "hideAbstain": "忽略基本投票结果中的弃权票"
+    "hideAbstain": "忽略基本投票结果中的弃权票",
+    "connectWithSpaceOwner": "要修改空间设置，请与管理员或管理员钱包连接。"
   },
   "setup": {
     "example": "例如 yam.eth",
@@ -264,7 +267,22 @@
     "createASpace": "创建空间",
     "registerEnsButton": "注册",
     "supportedEnsTLDs": "支持的域名结尾",
-    "helpDocsAndDiscordLinks": "不知道如何创建空间？ 在 <a target='_blank' href='https://docs.snapshot.org/spaces/create'> 文档中了解更多信息</a> 或加入 Snapshot <a target='_blank' href='https:// /discord.gg/snapshot'>Discord</a>。"
+    "helpDocsAndDiscordLinks": "不知道如何创建空间？ 在 <a target='_blank' href='https://docs.snapshot.org/spaces/create'> 文档中了解更多信息</a> 或加入 Snapshot <a target='_blank' href='https:// /discord.gg/snapshot'>Discord</a>。",
+    "setSpaceController": "在 ENS 上设置管理员",
+    "editSpaceController": "在 ENS 上设置管理员",
+    "setController": "设置管理员",
+    "explainControllerAndEns": "此操作需要在以太坊主网上交易，它将向您的 ENS 域添加一个“快照”文本记录。",
+    "confirmToSetAddress": "您确定要设置 {address} 作为空间的管理员吗？",
+    "controllerHasAuthority": "The controller has full authority over the space settings",
+    "controller": "Controller",
+    "selectEnsForSpace": "Choose ENS address",
+    "spaceNeedsEnsAddress": "To setup a space on snapshot you need a ENS address on the Ethereum Mainnet",
+    "textRecordExists": "Currently the space controller is {address}. You can update the space controller by using the form below.",
+    "spaceOwnerAddressPlaceHolder": "e.g. 0xF78108c9BBaF466dd96BE41be728Fe3220b37119",
+    "controllerAddress": "Controller address",
+    "updateENS": "Update space controller",
+    "connectWithEnsController": "To modify the space controller you need to connect with the wallet that owns {ens}",
+    "seeOnEns": "See on ENS"
   },
   "notify": {
     "youDidIt": "您成功了!",
@@ -275,7 +293,8 @@
     "delegationSuccess": "委托成功",
     "delegationRemoved": "委托已移除",
     "proposalCreated": "提案已创建",
-    "voteSuccessful": "投票成功！"
+    "voteSuccessful": "投票成功！",
+    "ensSet": "ENS text record was successfully set"
   },
   "explore": {
     "createStrategy": "创建策略",
@@ -442,5 +461,11 @@
     "week": "1周 | {n} 周",
     "month": "1 个月 | {n} 个月",
     "year": "1 年 | {n} 年"
+  },
+  "unsupportedNetwork": {
+    "unsupportedNetwork": "Unsupported network",
+    "ensOnlyMainnet": "Snapshot only supports ENS on the ethereum mainnet. Once the space is created, you can use it across multiple chains.",
+    "switchNetworkToMainnet": "To continue, you need to change the network in your wallet to Ethereum Mainnet.",
+    "switchToMainnet": "Switch to Mainnet"
   }
 }
