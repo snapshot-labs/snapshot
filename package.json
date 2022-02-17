@@ -29,7 +29,6 @@
     "@vueuse/core": "^7.6.2",
     "autolinker": "^3.14.3",
     "eslint": "^7.32.0",
-    "ethereum-blockies-base64": "^1.0.2",
     "graphql": "^16.3.0",
     "graphql-tag": "^2.12.6",
     "lodash": "^4.17.21",
