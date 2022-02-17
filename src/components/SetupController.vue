@@ -136,9 +136,9 @@ onMounted(async () => {
         $t('setup.textRecordExists', { address: shorten(spaceOwnerAddress) })
       }}
       <div>
-        <BaseAnchor :link="`https://app.ens.domains/name/${ensAddress}`">{{
-          $t('setup.seeOnEns')
-        }}</BaseAnchor>
+        <BaseAnchor :link="`https://app.ens.domains/name/${ensAddress}`">
+          {{ $t('setup.seeOnEns') }}
+        </BaseAnchor>
       </div>
     </BaseMessageBlock>
     <Block

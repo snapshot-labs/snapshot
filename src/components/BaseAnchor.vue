@@ -18,7 +18,7 @@ defineProps<{
     rel="noopener noreferrer"
   >
     <slot />
-    <Icon v-if="!hideExternalIcon" name="external-link" />
+    <Icon v-if="!hideExternalIcon" name="external-link ml-1" />
   </a>
   <router-link v-else :to="link" class="whitespace-nowrap">
     <slot />
