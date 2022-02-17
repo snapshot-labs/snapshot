@@ -147,9 +147,6 @@ onMounted(async () => {
           ? $t('setup.editSpaceController')
           : $t('setup.setSpaceController')
       "
-      icon="info"
-      iconHref="https://docs.snapshot.org/spaces/create"
-      :iconTooltip="$t('linkToDocs')"
     >
       <UiInput
         v-if="ensOwner"
@@ -184,25 +181,6 @@ onMounted(async () => {
             >
               {{ $t('setup.setController') }}
             </UiButton>
-          </div>
-          <div v-if="currentTextRecord">
-            <div class="w-full text-center mb-[10px] mt-1">
-              {{ $t('or') }}
-            </div>
-            <div>
-              <router-link
-                :to="{
-                  name: 'spaceSettings',
-                  params: {
-                    key: ensAddress
-                  }
-                }"
-              >
-                <UiButton no-focus class="w-full">
-                  {{ $t('goToSettings') }}
-                </UiButton>
-              </router-link>
-            </div>
           </div>
         </div>
       </div>
