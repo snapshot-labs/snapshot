@@ -74,10 +74,12 @@ onMounted(() => {
 <template>
   <div
     v-if="!domain"
-    class="w-[68px] h-screen hidden sm:block fixed m-0 border-r bg-skin-block-bg"
+    class="w-[68px] h-screen hidden sm:block fixed m-0 border-r bg-skin-block-bg z-40"
   >
     <div class="flex flex-col h-full overflow-auto no-scrollbar">
-      <div class="min-h-[78px] h-[78px] flex items-center justify-center">
+      <div
+        class="min-h-[78px] h-[78px] flex items-center justify-center bg-skin-bg"
+      >
         <router-link :to="{ path: '/' }">
           <Icon
             size="36"
@@ -87,7 +89,7 @@ onMounted(() => {
         </router-link>
       </div>
       <div
-        class="flex flex-col h-[calc(100%-78px)] items-center space-y-2 pt-2"
+        class="flex flex-col h-[calc(100%-78px)] items-center space-y-2 pt-2 bg-skin-bg"
       >
         <div class="flex items-center justify-center relative w-full">
           <UiUnreadIndicator v-if="hasUnseenProposals()" />
@@ -105,7 +107,8 @@ onMounted(() => {
         <draggable
           v-if="draggableSpaces.length > 0"
           v-model="draggableSpaces"
-          :component-data="{ name: 'list' }"
+          :component-data="{ type: 'transition-group' }"
+          v-bind="{ animation: 200 }"
           item-key="id"
           @update="saveSpaceOrder"
           class="w-full space-y-2"
@@ -121,6 +124,7 @@ onMounted(() => {
               >
                 <Token
                   :space="explore.spaces[element]"
+                  :key="element"
                   symbolIndex="space"
                   size="44"
                 />

@@ -1,7 +1,7 @@
 <script setup>
-import { watchEffect, computed, ref, watch } from 'vue';
+import { onMounted, computed, ref, watch } from 'vue';
 import { useStore } from '@/composables/useStore';
-import { setPageTitle } from '@/helpers/utils';
+import { useI18n } from '@/composables/useI18n';
 import { useInfiniteLoader } from '@/composables/useInfiniteLoader';
 import { useScrollMonitor } from '@/composables/useScrollMonitor';
 import { useApolloQuery } from '@/composables/useApolloQuery';
@@ -11,9 +11,10 @@ import { useUnseenProposals } from '@/composables/useUnseenProposals';
 import { lsSet } from '@/helpers/utils';
 import { useWeb3 } from '@/composables/useWeb3';
 
-const props = defineProps({ space: Object, spaceId: String });
+const props = defineProps({ space: Object });
 
 const { store } = useStore();
+const { setPageTitle } = useI18n();
 
 const loading = ref(false);
 
@@ -37,7 +38,7 @@ async function loadProposals(skip = 0) {
       variables: {
         first: loadBy,
         skip,
-        space: props.spaceId,
+        space: props.space.id,
         state: spaceFilterBy.value === 'core' ? 'all' : spaceFilterBy.value,
         author_in: spaceFilterBy.value === 'core' ? spaceMembers.value : []
       }
@@ -56,7 +57,7 @@ function emitUpdateLastSeenProposal() {
     lsSet(
       `lastSeenProposals.${web3Account.value.slice(0, 8).toLowerCase()}`,
       Object.assign(lastSeenProposals.value, {
-        [props.spaceId]: new Date().getTime()
+        [props.space.id]: new Date().getTime()
       })
     );
   }
@@ -73,18 +74,6 @@ async function load() {
   emitUpdateLastSeenProposal();
 }
 
-watch(
-  () => props.spaceId,
-  () => {
-    const firstProposal = store.space.proposals[0];
-    if (firstProposal && firstProposal?.space.id !== props.spaceId) {
-      store.space.proposals = [];
-      load();
-    }
-  },
-  { immediate: true }
-);
-
 const { endElement } = useScrollMonitor(() =>
   loadMore(() => loadProposals(store.space.proposals.length), loading.value)
 );
@@ -98,7 +87,7 @@ watch(store.space.proposals, () => {
 // TODO: Use space query instead of explore, to get total number of proposals
 const proposalsCount = computed(() => {
   return 1;
-  // const count = explore.value.spaces[props.spaceId].proposals;
+  // const count = explore.value.spaces[props.space.id].proposals;
   // return count ? count : 0;
 });
 
@@ -112,16 +101,22 @@ function selectState(e) {
   load();
 }
 
-watchEffect(() => {
+onMounted(() => {
   if (props.space?.name)
     setPageTitle('page.title.space.proposals', { space: props.space.name });
+
+  const firstProposal = store.space.proposals[0];
+  if (firstProposal && firstProposal?.space.id !== props.space.id) {
+    store.space.proposals = [];
+    load();
+  }
 });
 </script>
 
 <template>
   <Layout>
     <template #sidebar-left>
-      <SpaceSidebar :space="space" :spaceId="spaceId" />
+      <SpaceSidebar :space="space" />
     </template>
     <template #content-right>
       <div class="px-4 md:px-0 mb-3 flex">
@@ -175,7 +170,7 @@ watchEffect(() => {
         "
       />
       <NoProposals
-        v-else-if="space && !proposalsCount && !loadingData"
+        v-else-if="!proposalsCount && !loadingData"
         class="mt-2"
         :space="space"
       />
@@ -185,6 +180,7 @@ watchEffect(() => {
           :key="i"
           :proposal="proposal"
           :profiles="profiles"
+          :space="space"
         />
       </div>
       <div

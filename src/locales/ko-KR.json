@@ -5,6 +5,9 @@
   "backToHome": "홈",
   "actions": "액션",
   "results": "결과",
+  "resultsError": "Results could not be calculated. This is often due to a misconfigured strategy or a scaling issue in a smart contract.",
+  "vpError": "Your voting power could not be calculated. This is often due to a misconfigured strategy or a scaling issue in a smart contract.",
+  "getHelp": "Get help",
   "currentResults": "현재 결과",
   "reset": "초기화",
   "save": "저장",
@@ -118,6 +121,10 @@
   "joinedSpaces": "공간 가입",
   "joinSpaces": "공간 가입",
   "setDelegationToSpace": "Limit delegation to a specific space",
+  "theCurrentNetwork": "the current network",
+  "optional": "(optional)",
+  "homeLoadmore": "Load more",
+  "confirmAction": "Confirm action",
   "errors": {
     "required": "필드가 필요합니다",
     "minLength": "최소 길이는 {0}",
@@ -140,7 +147,24 @@
     "startTime": "시작 시간 선택",
     "endTime": "종료 시간 선택",
     "publish": "출판하다",
+    "untitled": "Untitled",
     "snapshotBlock": "스냅샷 블록 번호",
+    "voting": "Voting",
+    "votingSystem": "Voting system",
+    "choice": "Choice {0}",
+    "period": "Voting period",
+    "start": "Start",
+    "end": "End",
+    "days": "Days",
+    "hours": "Hours",
+    "minutes": "Minutes",
+    "schedule": "Schedule proposal",
+    "delayEnforced": "The space enforces a delay until voting can start",
+    "periodEnforced": "The space enforces the duration of the voting period",
+    "edit": "Edit",
+    "continue": "Continue",
+    "now": "Now",
+    "votingPeriodExplainer": "This is the time period in which users will be able to vote. The proposal will be visible and pending before the start of the voting period.",
     "validationWarning": {
       "basic": {
         "member": "제안서를 제출하려면 공간의 저자여야 합니다.",
@@ -165,7 +189,8 @@
     "delegateToSelf": "You cannot delegate to yourself",
     "delegateToSelfAddress": "You cannot delegate to your own ENS address",
     "noValidSpaceId": "Not a valid space ID",
-    "noDelegationsAndDelegates": "Can't find your delegations and delegates? Make sure you are connected to the correct network."
+    "noDelegationsAndDelegates": "Can't find your delegations and delegates? Make sure you are connected to the correct network.",
+    "delegateNotSupported": "Delegation is currently not supported for {network}."
   },
   "proposal": {
     "castVote": "캐스트 너의 투표",
@@ -192,8 +217,9 @@
   },
   "settings": {
     "header": "놓음",
-    "seeENS": "에 참조 이자형열네번째에스 평점",
-    "setENS": "기록 설정 이자형열네번째에스 평점",
+    "setEnsTextRecord": "Set ENS text record",
+    "editController": "Edit controller",
+    "needToSetEnsText": "Your space settings will be stored in a file on IPFS. Before you can edit them, you need to set an ENS text record pointing to that file.",
     "profile": "프로필",
     "avatar": "화신",
     "name": "이름",
@@ -229,7 +255,8 @@
     "quorum": "정족수",
     "type": "타입",
     "anyType": "어떤",
-    "hideAbstain": "Ignore abstain votes in basic voting results"
+    "hideAbstain": "Ignore abstain votes in basic voting results",
+    "connectWithSpaceOwner": "To modify space settings, connect with a controller or admin wallet."
   },
   "setup": {
     "example": "예를 들어 얌.eth",
@@ -240,7 +267,22 @@
     "createASpace": "공간 만들기",
     "registerEnsButton": "Register",
     "supportedEnsTLDs": "Supported domain endings",
-    "helpDocsAndDiscordLinks": "Not sure how to create a space? Learn more in the <a target='_blank' href='https://docs.snapshot.org/spaces/create'> documentation </a> or join Snapshot <a target='_blank' href='https://discord.gg/snapshot'>Discord</a>."
+    "helpDocsAndDiscordLinks": "Not sure how to create a space? Learn more in the <a target='_blank' href='https://docs.snapshot.org/spaces/create'> documentation </a> or join Snapshot <a target='_blank' href='https://discord.gg/snapshot'>Discord</a>.",
+    "setSpaceController": "Set controller on ENS",
+    "editSpaceController": "Edit controller on ENS",
+    "setController": "Set controller",
+    "explainControllerAndEns": "This action requires a transaction on the Ethereum Mainnet which will add a \"snapshot\" TEXT record to your ENS domain.",
+    "confirmToSetAddress": "Are you sure you want to set {address} as the controller of the space?",
+    "controllerHasAuthority": "The controller has full authority over the space settings",
+    "controller": "Controller",
+    "selectEnsForSpace": "Choose ENS address",
+    "spaceNeedsEnsAddress": "To setup a space on snapshot you need a ENS address on the Ethereum Mainnet",
+    "textRecordExists": "Currently the space controller is {address}. You can update the space controller by using the form below.",
+    "spaceOwnerAddressPlaceHolder": "e.g. 0xF78108c9BBaF466dd96BE41be728Fe3220b37119",
+    "controllerAddress": "Controller address",
+    "updateENS": "Update space controller",
+    "connectWithEnsController": "To modify the space controller you need to connect with the wallet that owns {ens}",
+    "seeOnEns": "See on ENS"
   },
   "notify": {
     "youDidIt": "해냈어!",
@@ -251,7 +293,8 @@
     "delegationSuccess": "위임 성공",
     "delegationRemoved": "위임 제거됨",
     "proposalCreated": "제안 생성됨",
-    "voteSuccessful": "당신의 투표는에!"
+    "voteSuccessful": "당신의 투표는에!",
+    "ensSet": "ENS text record was successfully set"
   },
   "explore": {
     "createStrategy": "전략 만들기",
@@ -418,5 +461,11 @@
     "week": "1 week | {n} weeks",
     "month": "1 month | {n} months",
     "year": "1 year | {n} years"
+  },
+  "unsupportedNetwork": {
+    "unsupportedNetwork": "Unsupported network",
+    "ensOnlyMainnet": "Snapshot only supports ENS on the ethereum mainnet. Once the space is created, you can use it across multiple chains.",
+    "switchNetworkToMainnet": "To continue, you need to change the network in your wallet to Ethereum Mainnet.",
+    "switchToMainnet": "Switch to Mainnet"
   }
 }

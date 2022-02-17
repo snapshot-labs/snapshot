@@ -1,6 +1,6 @@
 <script setup>
-import { computed, ref, watchEffect, inject, watch, nextTick } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { computed, ref, inject, watch, onMounted } from 'vue';
+import { useI18n } from '@/composables/useI18n';
 import { getAddress } from '@ethersproject/address';
 import {
   validateSchema,
@@ -10,27 +10,22 @@ import {
 import schemas from '@snapshot-labs/snapshot.js/src/schemas';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import defaults from '@/locales/default';
-import { useCopy } from '@/composables/useCopy';
 import { useWeb3 } from '@/composables/useWeb3';
 import { calcFromSeconds, calcToSeconds } from '@/helpers/utils';
 import { useClient } from '@/composables/useClient';
-import { setPageTitle } from '@/helpers/utils';
 import { usePlugins } from '@/composables/usePlugins';
 
 const props = defineProps({
-  spaceId: String,
   space: Object,
-  from: String,
-  spaceFrom: Object,
-  spaceLoading: Boolean,
+  sourceSpace: Object,
+  spaceKey: String,
   loadExtentedSpaces: Function
 });
 
 const basicValidation = { name: 'basic', params: {} };
 
 const { pluginIndex } = usePlugins();
-const { t } = useI18n();
-const { copyToClipboard } = useCopy();
+const { t, setPageTitle } = useI18n();
 const { web3Account } = useWeb3();
 const { send, clientLoading } = useClient();
 const notify = inject('notify');
@@ -52,9 +47,11 @@ const uploadLoading = ref(false);
 const showErrors = ref(false);
 const delayUnit = ref('h');
 const periodUnit = ref('h');
+
 const form = ref({
   strategies: [],
   categories: [],
+  admins: [],
   plugins: {},
   filters: {},
   voting: {},
@@ -75,30 +72,34 @@ const isValid = computed(() => {
 });
 
 const textRecord = computed(() => {
-  const keyURI = encodeURIComponent(props.spaceId);
+  const keyURI = encodeURIComponent(props.spaceKey);
   const address = web3Account.value
     ? getAddress(web3Account.value)
     : '<your-address>';
   return `ipns://storage.snapshot.page/registry/${address}/${keyURI}`;
 });
 
-const isOwner = computed(() => {
+const isSpaceController = computed(() => {
   return currentTextRecord.value === textRecord.value;
 });
 
-watch([currentTextRecord, textRecord], () => {
-  // Check if the connected wallet is the space owner and add address to admins
-  // if not already present
-  if (isOwner.value) {
-    if (!form.value.admins.includes(web3Account.value)) {
-      form.value.admins.push(web3Account.value);
+watch(
+  [currentTextRecord, textRecord],
+  async () => {
+    // Check if the connected wallet is the space owner and add address to admins
+    // if not already present
+    if (isSpaceController.value) {
+      if (!form.value.admins.includes(web3Account.value)) {
+        form.value.admins.push(web3Account.value);
+      }
     }
-  }
-});
+  },
+  { immediate: true }
+);
 
-const isAdmin = computed(() => {
+const isSpaceAdmin = computed(() => {
   if (!props.space || !currentTextRecord.value) return false;
-  const admins = (props.space.admins || []).map(admin => admin.toLowerCase());
+  const admins = (props.space?.admins || []).map(admin => admin.toLowerCase());
   return admins.includes(web3Account.value?.toLowerCase());
 });
 
@@ -125,11 +126,11 @@ const categoriesString = computed(() => {
 async function handleSubmit() {
   if (isValid.value) {
     if (form.value.filters.invalids) delete form.value.filters.invalids;
-    const result = await send({ id: props.spaceId }, 'settings', form.value);
+    const result = await send({ id: props.spaceKey }, 'settings', form.value);
     console.log('Result', result);
     if (result.id) {
       notify(['green', t('notify.saved')]);
-      props.loadExtentedSpaces([props.spaceId]);
+      props.loadExtentedSpaces([props.spaceKey]);
     }
   } else {
     console.log('Invalid schema', validate.value);
@@ -155,23 +156,14 @@ function inputError(field) {
 }
 
 function handleReset() {
-  try {
-    if (props.from) return (form.value = clone(props.spaceFrom));
-    if (currentSettings.value)
-      return (form.value = clone(currentSettings.value));
-    form.value = {
-      strategies: [],
-      categories: [],
-      plugins: {},
-      filters: {}
-    };
-    // Rerenders the form, because Textarea components are not reactive
-  } finally {
-    loaded.value = false;
-    nextTick().then(() => {
-      loaded.value = true;
-    });
-  }
+  if (props.sourceSpace) return (form.value = clone(props.sourceSpace));
+  if (currentSettings.value) return (form.value = clone(currentSettings.value));
+  form.value = {
+    strategies: [],
+    categories: [],
+    plugins: {},
+    filters: {}
+  };
 }
 
 function handleEditStrategy(i) {
@@ -257,38 +249,39 @@ function formatSpace(spaceRaw) {
 }
 
 watch(
-  () => props.spaceLoading,
+  () => props.space,
   async () => {
-    if (!props.spaceLoading) {
+    if (props.space) {
       const spaceClone = formatSpace(props.space);
       if (spaceClone) {
         form.value = spaceClone;
         currentSettings.value = clone(spaceClone);
       }
-      if (props.from) {
-        const fromClone = formatSpace(props.spaceFrom);
-        if (fromClone) {
-          form.value = fromClone;
-        }
-      }
-      try {
-        const uri = await getSpaceUri(
-          props.spaceId,
-          import.meta.env.VITE_DEFAULT_NETWORK
-        );
-        console.log('URI', uri);
-        currentTextRecord.value = uri;
-      } catch (e) {
-        console.log(e);
-      }
-
-      loaded.value = true;
     }
-  }
+    if (props.sourceSpace) {
+      const fromClone = formatSpace(props.sourceSpace);
+      if (fromClone) {
+        form.value = fromClone;
+      }
+    }
+    try {
+      const uri = await getSpaceUri(
+        props.spaceKey,
+        import.meta.env.VITE_DEFAULT_NETWORK
+      );
+      console.log('URI', uri);
+      currentTextRecord.value = uri;
+    } catch (e) {
+      console.log(e);
+    }
+
+    loaded.value = true;
+  },
+  { immediate: true }
 );
 
-watchEffect(() => {
-  props.space && props.space?.name
+onMounted(() => {
+  props.space?.name
     ? setPageTitle('page.title.space.settings', { space: props.space.name })
     : setPageTitle('page.title.setup');
 });
@@ -306,54 +299,18 @@ watchEffect(() => {
       <div class="px-4 md:px-0">
         <h1 v-text="$t('settings.header')" class="mb-4" />
       </div>
-      <Block title="ENS">
-        <UiButton class="flex w-full mb-2 items-center">
-          <input
-            readonly
-            v-model="textRecord"
-            class="input w-full"
-            :placeholder="$t('contectHash')"
-          />
-          <Icon
-            @click="copyToClipboard(textRecord)"
-            name="copy"
-            size="24"
-            class="text-color p-2 -mr-3"
-          />
-        </UiButton>
-        <a
-          :href="`https://app.ens.domains/name/${spaceId}`"
-          target="_blank"
-          class="mb-2 block"
-        >
-          <UiButton
-            class="button-outline w-full"
-            :primary="!isOwner && !isAdmin"
-          >
-            {{
-              isOwner || isAdmin ? $t('settings.seeENS') : $t('settings.setENS')
-            }}
-            <Icon name="external-link" class="ml-1" />
-          </UiButton>
-        </a>
-        <Block
-          v-if="currentSettings?.name && !currentTextRecord && loaded"
-          :style="'border-color: red !important; margin-bottom: 0 !important;'"
-          class="mb-0 mt-3"
-        >
-          <Icon name="warning" class="mr-2 !text-red" />
-          <span class="!text-red">
-            {{ $t('settings.warningTextRecord') }}
-            <a
-              v-text="$t('learnMore')"
-              href="https://docs.snapshot.org/spaces/create"
-              target="_blank"
-            />
-          </span>
-        </Block>
-      </Block>
       <RowLoadingBlock v-if="!loaded" />
-      <template v-else>
+      <Block v-else-if="!currentTextRecord">
+        <BaseMessageBlock level="warning">
+          {{ $t('settings.needToSetEnsText') }}
+        </BaseMessageBlock>
+        <router-link :to="{ name: 'setup', params: { ensAddress: spaceKey } }">
+          <UiButton no-focus primary class="w-full">
+            {{ $t('settings.setEnsTextRecord') }}
+          </UiButton>
+        </router-link>
+      </Block>
+      <template v-else-if="currentTextRecord">
         <Block :title="$t('settings.profile')">
           <div class="mb-2">
             <UiInput v-model="form.name" :error="inputError('name')">
@@ -469,7 +426,7 @@ watchEffect(() => {
             </template>
           </UiInput>
         </Block>
-        <Block :title="$t('settings.admins')" v-if="isOwner">
+        <Block :title="$t('settings.admins')" v-if="isSpaceController">
           <Block
             :style="`border-color: red !important`"
             v-if="inputError('admins')"
@@ -655,9 +612,19 @@ watchEffect(() => {
         </Block>
       </template>
     </template>
-    <template v-if="(loaded && isOwner) || (loaded && isAdmin)" #sidebar-right>
-      <div class="lg:fixed lg:w-[300px]">
+    <template #sidebar-right>
+      <div
+        v-if="(loaded && isSpaceController) || (loaded && isSpaceAdmin)"
+        class="lg:fixed lg:w-[300px]"
+      >
         <Block :title="$t('actions')">
+          <router-link
+            :to="{ name: 'setup', params: { ensAddress: spaceKey } }"
+          >
+            <UiButton class="block w-full mb-2">
+              {{ $t('settings.editController') }}
+            </UiButton>
+          </router-link>
           <UiButton @click="handleReset" class="block w-full mb-2">
             {{ $t('reset') }}
           </UiButton>
@@ -672,6 +639,12 @@ watchEffect(() => {
           </UiButton>
         </Block>
       </div>
+      <BaseMessageBlock
+        level="warning"
+        v-if="!(isSpaceController || isSpaceAdmin) && currentTextRecord"
+      >
+        {{ $t('settings.connectWithSpaceOwner') }}
+      </BaseMessageBlock>
     </template>
   </Layout>
   <teleport to="#modal">
