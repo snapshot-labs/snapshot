@@ -1,8 +1,7 @@
 <script setup>
 import { toRefs, ref, watch, computed } from 'vue';
-import { getInjected } from '@snapshot-labs/lock/src/utils';
+import { getInjected, connectors } from '@snapshot-labs/lock/src/utils';
 import { shorten, explorerUrl, getIpfsUrl } from '@/helpers/utils';
-import connectors from '@/helpers/connectors.json';
 import { useWeb3 } from '@/composables/useWeb3';
 
 const props = defineProps(['open']);
@@ -20,9 +19,6 @@ async function handleLogout() {
   await logout();
   emit('close');
 }
-
-const path =
-  'https://raw.githubusercontent.com/snapshot-labs/lock/master/connectors/assets';
 
 watch(open, () => (step.value = null));
 </script>
