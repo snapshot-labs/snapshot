@@ -46,7 +46,6 @@ const switchToMainnet = async () => {
   <UiModal :open="open" @close="$emit('close')">
     <template v-slot:header>
       <div class="flex flex-row justify-center items-center">
-        <Icon size="24" name="warning1" class="mr-3 text-white" />
         <h3>{{ $t('unsupportedNetwork.unsupportedNetwork') }}</h3>
       </div>
     </template>
