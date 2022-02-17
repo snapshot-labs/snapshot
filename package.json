@@ -63,7 +63,7 @@
     "sass-loader": "^12.6.0",
     "tailwindcss": "^3.0.22",
     "unplugin-vue-components": "^0.17.18",
-    "vite": "^2.8.2"
+    "vite": "^2.8.3"
   },
   "resolutions": {
     "ansi-regex": "^5.0.1",
