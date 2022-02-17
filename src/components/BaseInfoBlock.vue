@@ -13,8 +13,9 @@ defineProps({
 </script>
 
 <template>
-  <Block class="!border-skin-link text-skin-link">
-    <Icon name="warning" class="mr-1" />
+  <Block>
+    <Icon name="info" size="18" class="mr-1" />
+
     <slot />
     <div>
       <a

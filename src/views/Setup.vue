@@ -63,6 +63,10 @@ watch(web3Account, async () => {
   waitingForRegistration.value = false;
 });
 
+const cameFromSettings = computed(() =>
+  window.history.state.back?.includes('settings')
+);
+
 // stop lookup when leaving page
 onUnmounted(() => clearInterval(waitingForRegistrationInterval));
 </script>
@@ -70,22 +74,32 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
 <template>
   <Layout>
     <template #content-left>
-      <div class="px-4 md:px-0 mb-3">
-        <router-link :to="{ path: '/' }" class="text-color">
-          <Icon name="back" size="22" class="!align-middle" />
-          {{ $t('backToHome') }}
-        </router-link>
-      </div>
       <div class="px-4 md:px-0">
-        <h1 v-text="$t('setup.createASpace')" class="mb-4" />
+        <h1
+          v-text="
+            ensAddress && cameFromSettings
+              ? $t('setup.controller')
+              : $t('setup.createASpace')
+          "
+          class="mb-4"
+        />
       </div>
       <template v-if="web3Account">
-        <SpaceSetupController v-if="ensAddress" :ensAddress="ensAddress" />
+        <SpaceSetupController
+          v-if="ensAddress"
+          :ensAddress="ensAddress"
+          :ownedEnsDomains="ownedEnsDomains"
+        />
 
         <Block v-else-if="loadingOwnedEnsDomains" slim>
           <RowLoading class="my-2" />
         </Block>
-        <Block v-else>
+        <Block
+          v-else
+          :title="$t('setup.selectEnsForSpace')"
+          icon="info"
+          :iconTooltip="$t('setup.spaceNeedsEnsAddress')"
+        >
           <div v-if="ownedEnsDomains.length">
             <div class="mb-3">
               {{

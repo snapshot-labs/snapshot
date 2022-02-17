@@ -10,7 +10,7 @@ defineProps({
     required: true
   }
 });
-const emit = defineEmits(['close']);
+const emit = defineEmits(['close', 'setTextrecord']);
 
 const { notify } = useNotifications();
 const { t } = useI18n();
@@ -34,6 +34,7 @@ const switchToMainnet = async () => {
     });
     switchingChain.value = false;
     emit('close');
+    emit('setTextrecord');
   } catch (e) {
     notify(['red', t('notify.somethingWentWrong')]);
     console.error(e);
@@ -52,10 +53,10 @@ const switchToMainnet = async () => {
 
     <div class="space-y-4 m-4">
       <p>
-        {{ t('unsupportedNetwork.ensOnlyMainnet') }}
+        {{ $t('unsupportedNetwork.ensOnlyMainnet') }}
       </p>
       <p>
-        {{ t('unsupportedNetwork.switchNetworkToMainnet') }}
+        {{ $t('unsupportedNetwork.switchNetworkToMainnet') }}
       </p>
     </div>
     <template v-if="usingMetaMask" v-slot:footer>
@@ -65,7 +66,7 @@ const switchToMainnet = async () => {
         :primary="true"
         @click="switchToMainnet"
       >
-        {{ t('unsupportedNetwork.switchToMainnet') }}
+        {{ $t('unsupportedNetwork.switchToMainnet') }}
       </UiButton>
     </template>
   </UiModal>

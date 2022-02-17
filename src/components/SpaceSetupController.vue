@@ -1,14 +1,14 @@
 <script setup>
-import { computed, ref, inject, watch, onMounted } from 'vue';
+import { computed, ref, inject, onMounted } from 'vue';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import namehash from '@ensdomains/eth-ens-namehash';
 import { useTxStatus } from '../composables/useTxStatus';
-import { useEns } from '../composables/useEns';
 import { useWeb3 } from '@/composables/useWeb3';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { getAddress } from '@ethersproject/address';
 import { useI18n } from '@/composables/useI18n';
 import { isAddress } from '@ethersproject/address';
+import { shorten } from '@/helpers/utils';
 import { useRouter } from 'vue-router';
 import {
   getSpaceUri,
@@ -16,38 +16,38 @@ import {
 } from '@snapshot-labs/snapshot.js/src/utils';
 
 const props = defineProps({
-  ensAddress: String
+  ensAddress: String,
+  ownedEnsDomains: Array
 });
 
 const router = useRouter();
-const { web3, web3Account } = useWeb3();
+const { web3 } = useWeb3();
 const { pendingCount } = useTxStatus();
 const auth = getInstance();
-const { loadOwnedEnsDomains, ownedEnsDomains } = useEns();
 const { t } = useI18n();
 
 const notify = inject('notify');
 
-const abi = ['function setText(bytes32 node, string key, string value)'];
+const ensAbi = ['function setText(bytes32 node, string key, string value)'];
 
 const spaceOwnerInput = ref('');
 const settingENSRecord = ref(false);
 const modalUnsupportedNetworkOpen = ref(false);
 const currentTextRecord = ref('');
-const loadingEnsDomains = ref(false);
 const loaded = ref(false);
+const modalConfirmSetTextRecordOpen = ref(false);
 
 const networkKey = computed(() => web3.value.network.key);
 
 const ensOwner = computed(() => {
-  return ownedEnsDomains.value.map(d => d.name).includes(props.ensAddress);
+  return props.ownedEnsDomains.map(d => d.name).includes(props.ensAddress);
 });
 
 const textRecord = computed(() => {
   const keyURI = encodeURIComponent(props.ensAddress);
-  const address = web3Account.value
-    ? getAddress(web3Account.value)
-    : '<your-address>';
+  const address = spaceOwnerInput.value
+    ? getAddress(spaceOwnerInput.value)
+    : null;
   return `ipns://storage.snapshot.page/registry/${address}/${keyURI}`;
 });
 
@@ -76,10 +76,6 @@ async function loadSpaceUri() {
 }
 
 async function handleSetRecord() {
-  if (networkKey.value !== '1') {
-    modalUnsupportedNetworkOpen.value = true;
-    return;
-  }
   settingENSRecord.value = true;
   try {
     const ensPublicResolverAddress = networks[networkKey.value].ensResolver;
@@ -91,7 +87,7 @@ async function handleSetRecord() {
     const tx = await sendTransaction(
       auth.web3,
       ensPublicResolverAddress,
-      abi,
+      ensAbi,
       'setText',
       [node, 'snapshot', textRecord.value]
     );
@@ -115,21 +111,10 @@ async function handleSetRecord() {
   }
 }
 
-watch(
-  [currentTextRecord, textRecord],
-  async () => {
-    loadingEnsDomains.value = true;
-    try {
-      console.log('loading ens');
-      await loadOwnedEnsDomains();
-    } catch (e) {
-      console.error(e);
-    } finally {
-      loadingEnsDomains.value = false;
-    }
-  },
-  { immediate: true }
-);
+function clickSetRecord() {
+  if (networkKey.value !== '1') modalUnsupportedNetworkOpen.value = true;
+  else modalConfirmSetTextRecordOpen.value = true;
+}
 
 onMounted(async () => {
   await loadSpaceUri();
@@ -138,37 +123,40 @@ onMounted(async () => {
 </script>
 
 <template>
-  <Block v-if="!loaded || loadingEnsDomains" slim>
+  <Block v-if="!loaded" slim>
     <RowLoading class="my-2" />
   </Block>
   <BaseWarningBlock v-else-if="!ensOwner" class="mb-0">
-    {{ $t('settings.connectWithEnsController', { ens: ensAddress }) }}
+    {{ $t('setup.connectWithEnsController', { ens: ensAddress }) }}
   </BaseWarningBlock>
   <template v-else>
-    <BaseWarningBlock
+    <BaseInfoBlock
       v-if="spaceOwnerAddress && ensOwner"
       :externalHref="`https://app.ens.domains/name/${ensAddress}`"
+      :linkText="$t('setup.seeOnEns')"
     >
-      There is already a "snapshot" text record set for this ENS domain.
-    </BaseWarningBlock>
-    <Block title="Set controller">
-      <!-- <div v-if="currentSpaceOwner" class="mb-3">
-          <div>
-            {{ $t('settings.spaceController') }}
-          </div>
-          <a :href="`https://app.ens.domains/name/${ensAddress}`"
-            >{{ currentSpaceOwner }}
-            <Icon name="external-link" />
-          </a>
-        </div> -->
-
+      {{
+        $t('setup.textRecordExists', { address: shorten(spaceOwnerAddress) })
+      }}
+    </BaseInfoBlock>
+    <Block
+      :title="
+        currentTextRecord
+          ? $t('setup.editSpaceController')
+          : $t('setup.setSpaceController')
+      "
+      icon="info"
+      iconHref="https://docs.snapshot.org/spaces/create"
+      :iconTooltip="$t('linkToDocs')"
+    >
       <UiInput
         v-if="ensOwner"
         v-model.trim="spaceOwnerInput"
-        :placeholder="$t('settings.spaceOwnerAddressPlaceHolder')"
+        :placeholder="$t('setup.spaceOwnerAddressPlaceHolder')"
         class="mt-2"
+        focus-on-mount
       >
-        <template v-slot:label>{{ $t('settings.controllerAddress') }}</template>
+        <template v-slot:label>{{ $t('setup.controllerAddress') }}</template>
       </UiInput>
 
       <div>
@@ -178,10 +166,10 @@ onMounted(async () => {
               class="button-outline w-full mb-2"
               primary
               :disabled="spaceOwnerInputIsValid"
-              @click="handleSetRecord"
+              @click="clickSetRecord"
               :loading="settingENSRecord"
             >
-              {{ $t('settings.updateENS') }}
+              {{ $t('setup.updateENS') }}
             </UiButton>
           </div>
           <div v-else-if="!currentTextRecord && ensOwner">
@@ -189,10 +177,10 @@ onMounted(async () => {
               class="button-outline w-full mb-2"
               primary
               :disabled="spaceOwnerInputIsValid"
-              @click="handleSetRecord"
+              @click="clickSetRecord"
               :loading="settingENSRecord"
             >
-              {{ $t('settings.setENS') }}
+              {{ $t('setup.setController') }}
             </UiButton>
           </div>
           <div v-if="currentTextRecord">
@@ -208,7 +196,9 @@ onMounted(async () => {
                   }
                 }"
               >
-                <UiButton no-focus class="w-full"> Go to settings </UiButton>
+                <UiButton no-focus class="w-full">
+                  {{ $t('goToSettings') }}
+                </UiButton>
               </router-link>
             </div>
           </div>
@@ -220,6 +210,26 @@ onMounted(async () => {
     <ModalUnsupportedNetwork
       :open="modalUnsupportedNetworkOpen"
       @close="modalUnsupportedNetworkOpen = false"
+      @setTextrecord="modalConfirmSetTextRecordOpen = true"
     />
+    <ModalConfirmAction
+      :open="modalConfirmSetTextRecordOpen"
+      @close="modalConfirmSetTextRecordOpen = false"
+      @confirm="handleSetRecord"
+    >
+      <div class="space-y-4 m-4 text-skin-link">
+        <p>
+          {{ $t('setup.explainControllerAndEns') }}
+        </p>
+        <p>
+          {{
+            $t('setup.confirmToSetAddress', {
+              address: shorten(spaceOwnerInput)
+            })
+          }}
+          {{ $t('setup.controllerHasAuthority') + '.' }}
+        </p>
+      </div>
+    </ModalConfirmAction>
   </teleport>
 </template>
