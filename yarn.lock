@@ -1012,10 +1012,10 @@
     estree-walker "^2.0.1"
     picomatch "^2.2.2"
 
-"@snapshot-labs/lock@^0.1.5":
-  version "0.1.5"
-  resolved "https://registry.yarnpkg.com/@snapshot-labs/lock/-/lock-0.1.5.tgz#1d8c256871f8ad5ccbdb375202932524dbb587bd"
-  integrity sha512-99vFVDU+KcHxSRHRbqCGIeKXzxom3h1hkfcB/TeUFnv79LuYAg0bBRfYzNR0/ZkcwTc73eJXpAfXwTLoT7FPSQ==
+"@snapshot-labs/lock@^0.1.6":
+  version "0.1.6"
+  resolved "https://registry.yarnpkg.com/@snapshot-labs/lock/-/lock-0.1.6.tgz#3ace3089f954e76643fc0876be29cfd64ca234ea"
+  integrity sha512-EC1meQuS/CTh5KiH7yPH0+GeFZakKGDuy9Rixv/oc7WADVztaUOFTtwZJ3xIc1UIEhhXCqXVR9ESO34cCO2qwQ==
   dependencies:
     "@gnosis.pm/safe-apps-provider" "^0.8.0"
     "@gnosis.pm/safe-apps-sdk" "^6.1.1"
@@ -1025,10 +1025,10 @@
     fortmatic "^2.2.1"
     walletlink "^2.4.0"
 
-"@snapshot-labs/snapshot.js@^0.3.44":
-  version "0.3.44"
-  resolved "https://registry.yarnpkg.com/@snapshot-labs/snapshot.js/-/snapshot.js-0.3.44.tgz#123fa7b5b648bd8d0afc410e40986952b4d77671"
-  integrity sha512-11y+vcS5Uwa9YH+gFllNEHPTKngX/I48+HsgTig3tESu0IyfxwdyfNhTxKv5JNOsXL4X9XsozmW0Kbrpvkvm1w==
+"@snapshot-labs/snapshot.js@^0.3.47":
+  version "0.3.47"
+  resolved "https://registry.yarnpkg.com/@snapshot-labs/snapshot.js/-/snapshot.js-0.3.47.tgz#d8698e82b5cd30cab215065dae3b5761367c2a61"
+  integrity sha512-CEaBTa4LvdlCRzLdZKQtYxR0T38TV3sQKRH6E7SjLgwFOHIfABiPG34KQkiVhMWkcVCFIzlcI+eL2WlGna0IuQ==
   dependencies:
     "@ethersproject/abi" "^5.0.4"
     "@ethersproject/bytes" "^5.0.8"
