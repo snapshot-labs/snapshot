@@ -124,6 +124,7 @@
   "theCurrentNetwork": "rețeaua actuală",
   "optional": "(optional)",
   "homeLoadmore": "Încarcă mai multe",
+  "confirmAction": "Confirm action",
   "errors": {
     "required": "Câmp obligatoriu",
     "minLength": "Lungime minimă de {0}",
@@ -216,8 +217,9 @@
   },
   "settings": {
     "header": "Setări",
-    "seeENS": "Vezi pe ENS",
-    "setENS": "Setează înregistrare pe ENS",
+    "setEnsTextRecord": "Set ENS text record",
+    "editController": "Edit controller",
+    "needToSetEnsText": "Your space settings will be stored in a file on IPFS. Before you can edit them, you need to set an ENS text record pointing to that file.",
     "profile": "Profil",
     "avatar": "Avatar",
     "name": "Nume",
@@ -253,7 +255,8 @@
     "quorum": "Cvorum",
     "type": "Tip",
     "anyType": "Oricare",
-    "hideAbstain": "Ignoră voturile de abținere în rezultatele votului de bază"
+    "hideAbstain": "Ignoră voturile de abținere în rezultatele votului de bază",
+    "connectWithSpaceOwner": "To modify space settings, connect with a controller or admin wallet."
   },
   "setup": {
     "example": "e.g. yam.eth",
@@ -264,7 +267,22 @@
     "createASpace": "Crează un spațiu",
     "registerEnsButton": "Înregistrează-te",
     "supportedEnsTLDs": "Sufix domenii suportate",
-    "helpDocsAndDiscordLinks": "Nu ești sigur cum să creezi un spațiu? Află mai multe în documentația <a target='_blank' href='https://docs.snapshot.org/spaces/create'> </a> sau alătură-te la Snapshot <a target='_blank' href='https://discord.gg/snapshot'>Discord</a>."
+    "helpDocsAndDiscordLinks": "Nu ești sigur cum să creezi un spațiu? Află mai multe în documentația <a target='_blank' href='https://docs.snapshot.org/spaces/create'> </a> sau alătură-te la Snapshot <a target='_blank' href='https://discord.gg/snapshot'>Discord</a>.",
+    "setSpaceController": "Set controller on ENS",
+    "editSpaceController": "Edit controller on ENS",
+    "setController": "Set controller",
+    "explainControllerAndEns": "This action requires a transaction on the Ethereum Mainnet which will add a \"snapshot\" TEXT record to your ENS domain.",
+    "confirmToSetAddress": "Are you sure you want to set {address} as the controller of the space?",
+    "controllerHasAuthority": "The controller has full authority over the space settings",
+    "controller": "Controller",
+    "selectEnsForSpace": "Choose ENS address",
+    "spaceNeedsEnsAddress": "To setup a space on snapshot you need a ENS address on the Ethereum Mainnet",
+    "textRecordExists": "Currently the space controller is {address}. You can update the space controller by using the form below.",
+    "spaceOwnerAddressPlaceHolder": "e.g. 0xF78108c9BBaF466dd96BE41be728Fe3220b37119",
+    "controllerAddress": "Controller address",
+    "updateENS": "Update space controller",
+    "connectWithEnsController": "To modify the space controller you need to connect with the wallet that owns {ens}",
+    "seeOnEns": "See on ENS"
   },
   "notify": {
     "youDidIt": "Ai reușit!",
@@ -275,7 +293,8 @@
     "delegationSuccess": "Delegare reușită",
     "delegationRemoved": "Delegare eliminată",
     "proposalCreated": "Propunere creată",
-    "voteSuccessful": "Ai votat cu succes!"
+    "voteSuccessful": "Ai votat cu succes!",
+    "ensSet": "ENS text record was successfully set"
   },
   "explore": {
     "createStrategy": "Crează strategie",
@@ -442,5 +461,11 @@
     "week": "1 săptămână | {n} săptămâni",
     "month": "1 lună | {n} luni",
     "year": "1 an | {n} ani"
+  },
+  "unsupportedNetwork": {
+    "unsupportedNetwork": "Unsupported network",
+    "ensOnlyMainnet": "Snapshot only supports ENS on the ethereum mainnet. Once the space is created, you can use it across multiple chains.",
+    "switchNetworkToMainnet": "To continue, you need to change the network in your wallet to Ethereum Mainnet.",
+    "switchToMainnet": "Switch to Mainnet"
   }
 }
