@@ -126,19 +126,20 @@ onMounted(async () => {
   <Block v-if="!loaded" slim>
     <RowLoading class="my-2" />
   </Block>
-  <BaseWarningBlock v-else-if="!ensOwner" class="mb-0">
+  <BaseMessageBlock level="warning" v-else-if="!ensOwner" class="mb-0">
     {{ $t('setup.connectWithEnsController', { ens: ensAddress }) }}
-  </BaseWarningBlock>
+  </BaseMessageBlock>
   <template v-else>
-    <BaseInfoBlock
-      v-if="spaceOwnerAddress && ensOwner"
-      :externalHref="`https://app.ens.domains/name/${ensAddress}`"
-      :linkText="$t('setup.seeOnEns')"
-    >
+    <BaseMessageBlock v-if="spaceOwnerAddress && ensOwner" level="info">
       {{
         $t('setup.textRecordExists', { address: shorten(spaceOwnerAddress) })
       }}
-    </BaseInfoBlock>
+      <div>
+        <BaseAnchor link="`https://app.ens.domains/name/${ensAddress}`">{{
+          $t('setup.seeOnEns')
+        }}</BaseAnchor>
+      </div>
+    </BaseMessageBlock>
     <Block
       :title="
         currentTextRecord

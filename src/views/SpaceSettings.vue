@@ -301,9 +301,9 @@ onMounted(() => {
       </div>
       <RowLoadingBlock v-if="!loaded" />
       <Block v-else-if="!currentTextRecord">
-        <BaseWarningBlock>
+        <BaseMessageBlock level="warning">
           {{ $t('settings.needToSetEnsText') }}
-        </BaseWarningBlock>
+        </BaseMessageBlock>
         <router-link :to="{ name: 'setup', params: { ensAddress: spaceKey } }">
           <UiButton no-focus primary class="w-full">
             {{ $t('settings.setEnsTextRecord') }}
@@ -639,11 +639,12 @@ onMounted(() => {
           </UiButton>
         </Block>
       </div>
-      <BaseWarningBlock
+      <BaseMessageBlock
+        level="warning"
         v-if="!(isSpaceOwner || isSpaceAdmin) && currentTextRecord"
       >
         {{ $t('settings.connectWithSpaceOwner') }}
-      </BaseWarningBlock>
+      </BaseMessageBlock>
     </template>
   </Layout>
   <teleport to="#modal">

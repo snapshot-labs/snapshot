@@ -1,13 +1,18 @@
-<script setup>
-defineProps({
-  externalHref: String,
-  hideExternalIcon: Boolean
-});
+<script setup lang="ts">
+import { RouteLocationRaw } from 'vue-router';
+
+type Link = RouteLocationRaw | string;
+
+defineProps<{
+  link: Link;
+  hideExternalIcon?: boolean;
+}>();
 </script>
 
 <template>
   <a
-    :href="externalHref"
+    v-if="typeof link === 'string'"
+    :href="link"
     target="_blank"
     class="whitespace-nowrap"
     rel="noopener noreferrer"
@@ -15,4 +20,8 @@ defineProps({
     <slot />
     <Icon v-if="!hideExternalIcon" name="external-link" />
   </a>
+  <router-link v-else :to="link" class="whitespace-nowrap">
+    <slot />
+    <Icon v-if="!hideExternalIcon" name="external-link" />
+  </router-link>
 </template>
