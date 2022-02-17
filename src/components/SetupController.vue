@@ -112,7 +112,8 @@ async function handleSetRecord() {
 }
 
 function clickSetRecord() {
-  if (networkKey.value !== import.meta.env.VITE_DEFAULT_NETWORK) modalUnsupportedNetworkOpen.value = true;
+  if (networkKey.value !== import.meta.env.VITE_DEFAULT_NETWORK)
+    modalUnsupportedNetworkOpen.value = true;
   else modalConfirmSetTextRecordOpen.value = true;
 }
 

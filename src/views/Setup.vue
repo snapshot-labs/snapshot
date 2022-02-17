@@ -5,6 +5,7 @@ import { useWeb3 } from '@/composables/useWeb3';
 import { useModal } from '@/composables/useModal';
 import { useI18n } from '@/composables/useI18n';
 import { useEns } from '@/composables/useEns';
+import { useApp } from '@/composables/useApp';
 
 const router = useRouter();
 const route = useRoute();
@@ -12,12 +13,20 @@ const { web3, web3Account } = useWeb3();
 const { modalAccountOpen } = useModal();
 const { loadOwnedEnsDomains, ownedEnsDomains } = useEns();
 const { setPageTitle } = useI18n();
+const { explore } = useApp();
 
 onMounted(() => {
   setPageTitle('page.title.setup');
 });
 
 const ensAddress = computed(() => route.params.ensAddress);
+
+const ownedEnsDomainsNoExistingSpace = computed(() => {
+  //  filter ownedEnsDomains with explore.spaces
+  return ownedEnsDomains.value.filter(
+    d => !Object.keys(explore.value.spaces).includes(d.name)
+  );
+});
 
 // used either on click on existing owned domain OR once a newly registered
 // domain is returned by the ENS subgraph.
@@ -100,11 +109,11 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
           icon="info"
           :iconTooltip="$t('setup.spaceNeedsEnsAddress')"
         >
-          <div v-if="ownedEnsDomains.length">
+          <div v-if="ownedEnsDomainsNoExistingSpace.length">
             <div class="mb-3">
               {{
                 $t(
-                  ownedEnsDomains.length > 1
+                  ownedEnsDomainsNoExistingSpace.length > 1
                     ? 'setup.chooseExistingEns'
                     : 'setup.useSingleExistingEns'
                 )
@@ -112,11 +121,11 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
             </div>
             <div class="space-y-2">
               <UiButton
-                v-for="(ens, i) in ownedEnsDomains"
+                v-for="(ens, i) in ownedEnsDomainsNoExistingSpace"
                 :key="i"
                 @click="goToSettings(ens.name)"
                 class="w-full flex items-center justify-between"
-                :primary="ownedEnsDomains.length === 1"
+                :primary="ownedEnsDomainsNoExistingSpace.length === 1"
               >
                 {{ ens.name }}
                 <Icon name="go" size="22" class="-mr-2" />
