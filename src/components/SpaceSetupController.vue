@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { computed, ref, inject, onMounted } from 'vue';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import namehash from '@ensdomains/eth-ens-namehash';
@@ -15,10 +15,10 @@ import {
   sendTransaction
 } from '@snapshot-labs/snapshot.js/src/utils';
 
-const props = defineProps({
-  ensAddress: String,
-  ownedEnsDomains: Array
-});
+const props = defineProps<{
+  ensAddress: string;
+  ownedEnsDomains: { name: string }[];
+}>();
 
 const router = useRouter();
 const { web3 } = useWeb3();
@@ -26,7 +26,7 @@ const { pendingCount } = useTxStatus();
 const auth = getInstance();
 const { t } = useI18n();
 
-const notify = inject('notify');
+const notify: any = inject('notify');
 
 const ensAbi = ['function setText(bytes32 node, string key, string value)'];
 

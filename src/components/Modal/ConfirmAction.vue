@@ -1,12 +1,9 @@
-<script setup>
-defineProps({
-  open: {
-    type: Boolean,
-    required: true
-  }
-});
+<script setup lang="ts">
+defineProps<{
+  open: boolean;
+}>();
 
-defineEmits(['close', 'confirmSetTextRecord']);
+defineEmits(['close', 'confirm']);
 </script>
 
 <template>
