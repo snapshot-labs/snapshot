@@ -2,11 +2,6 @@
 import { computed, ref, inject, watch, onMounted } from 'vue';
 import { useI18n } from '@/composables/useI18n';
 import { getAddress } from '@ethersproject/address';
-import {
-  validateSchema,
-  getSpaceUri,
-  clone
-} from '@snapshot-labs/snapshot.js/src/utils';
 import schemas from '@snapshot-labs/snapshot.js/src/schemas';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import defaults from '@/locales/default';
@@ -14,6 +9,12 @@ import { useWeb3 } from '@/composables/useWeb3';
 import { calcFromSeconds, calcToSeconds } from '@/helpers/utils';
 import { useClient } from '@/composables/useClient';
 import { usePlugins } from '@/composables/usePlugins';
+import { useEns } from '@/composables/useEns';
+import {
+  validateSchema,
+  getSpaceUri,
+  clone
+} from '@snapshot-labs/snapshot.js/src/utils';
 
 const props = defineProps({
   space: Object,
@@ -83,9 +84,12 @@ const isSpaceController = computed(() => {
   return currentTextRecord.value === textRecord.value;
 });
 
+const { loadOwnedEnsDomains, ownedEnsDomains } = useEns();
+
 watch(
   [currentTextRecord, textRecord],
   async () => {
+    loadOwnedEnsDomains();
     // Check if the connected wallet is the space owner and add address to admins
     // if not already present
     if (isSpaceController.value) {
@@ -95,6 +99,10 @@ watch(
     }
   },
   { immediate: true }
+);
+
+const ensOwner = computed(() =>
+  ownedEnsDomains.value?.map(d => d.name).includes(props.spaceKey)
 );
 
 const isSpaceAdmin = computed(() => {
@@ -619,6 +627,7 @@ onMounted(() => {
       >
         <Block :title="$t('actions')">
           <router-link
+            v-if="ensOwner"
             :to="{ name: 'setup', params: { ensAddress: spaceKey } }"
           >
             <UiButton class="block w-full mb-2">
