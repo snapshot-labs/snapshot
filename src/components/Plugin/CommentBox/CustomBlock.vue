@@ -7,7 +7,7 @@ import { useProfiles } from '@/composables/useProfiles';
 import { useNotifications } from '@/composables/useNotifications';
 import { useScrollMonitor } from '@/composables/useScrollMonitor';
 import { signMessage } from '@snapshot-labs/snapshot.js/src/utils/web3';
-import { useI18n } from 'vue-i18n';
+import { useI18n } from '@/composables/useI18n';
 const { t } = useI18n();
 const props = defineProps({
   proposalId: String,
@@ -91,7 +91,9 @@ async function handleSubmit() {
   if (loading.value) return;
   try {
     loading.value = true;
-    const token = localStorage.getItem('_commentBox.token');
+    const token = localStorage.getItem(
+      `_commentBox.token-${web3Account.value}`
+    );
     let sig;
     const msg = {
       author: web3Account.value,
@@ -117,11 +119,12 @@ async function handleSubmit() {
     if (res.refresh) throw new Error('refresh');
     if (!res.status) return notify(['primary', t('comment_box.error')]);
     comment.value = '';
-    if (res.token) localStorage.setItem('_commentBox.token', res.token);
+    if (res.token)
+      localStorage.setItem(`_commentBox.token-${web3Account.value}`, res.token);
     allData.value.push(res.data);
   } catch (e) {
     if (e.message === 'refresh') {
-      localStorage.removeItem('_commentBox.token');
+      localStorage.removeItem(`_commentBox.token-${web3Account.value}`);
       handleSubmit();
       return;
     }

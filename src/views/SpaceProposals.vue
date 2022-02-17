@@ -1,7 +1,7 @@
 <script setup>
-import { watchEffect, computed, ref, watch } from 'vue';
+import { onMounted, computed, ref, watch } from 'vue';
 import { useStore } from '@/composables/useStore';
-import { setPageTitle } from '@/helpers/utils';
+import { useI18n } from '@/composables/useI18n';
 import { useInfiniteLoader } from '@/composables/useInfiniteLoader';
 import { useScrollMonitor } from '@/composables/useScrollMonitor';
 import { useApolloQuery } from '@/composables/useApolloQuery';
@@ -10,11 +10,11 @@ import { useProfiles } from '@/composables/useProfiles';
 import { useUnseenProposals } from '@/composables/useUnseenProposals';
 import { lsSet } from '@/helpers/utils';
 import { useWeb3 } from '@/composables/useWeb3';
-import { useApp } from '@/composables/useApp';
 
-const props = defineProps({ space: Object, spaceId: String });
+const props = defineProps({ space: Object });
 
 const { store } = useStore();
+const { setPageTitle } = useI18n();
 
 const loading = ref(false);
 
@@ -38,7 +38,7 @@ async function loadProposals(skip = 0) {
       variables: {
         first: loadBy,
         skip,
-        space: props.spaceId,
+        space: props.space.id,
         state: spaceFilterBy.value === 'core' ? 'all' : spaceFilterBy.value,
         author_in: spaceFilterBy.value === 'core' ? spaceMembers.value : []
       }
@@ -57,12 +57,14 @@ function emitUpdateLastSeenProposal() {
     lsSet(
       `lastSeenProposals.${web3Account.value.slice(0, 8).toLowerCase()}`,
       Object.assign(lastSeenProposals.value, {
-        [props.spaceId]: new Date().getTime()
+        [props.space.id]: new Date().getTime()
       })
     );
   }
   updateLastSeenProposal(web3Account.value);
 }
+
+watch(web3Account, () => emitUpdateLastSeenProposal());
 
 async function load() {
   if (store.space.proposals.length > 0) return;
@@ -71,18 +73,6 @@ async function load() {
   loading.value = false;
   emitUpdateLastSeenProposal();
 }
-
-watch(
-  props.spaceId,
-  () => {
-    const firstProposal = store.space.proposals[0];
-    if (firstProposal && firstProposal?.space.id !== props.spaceId) {
-      store.space.proposals = [];
-      load();
-    }
-  },
-  { immediate: true }
-);
 
 const { endElement } = useScrollMonitor(() =>
   loadMore(() => loadProposals(store.space.proposals.length), loading.value)
@@ -95,10 +85,10 @@ watch(store.space.proposals, () => {
 });
 
 // TODO: Use space query instead of explore, to get total number of proposals
-const { explore } = useApp();
 const proposalsCount = computed(() => {
-  const count = explore.value.spaces[props.spaceId].proposals;
-  return count ? count : 0;
+  return 1;
+  // const count = explore.value.spaces[props.space.id].proposals;
+  // return count ? count : 0;
 });
 
 const loadingData = computed(() => {
@@ -111,16 +101,22 @@ function selectState(e) {
   load();
 }
 
-watchEffect(() => {
+onMounted(() => {
   if (props.space?.name)
     setPageTitle('page.title.space.proposals', { space: props.space.name });
+
+  const firstProposal = store.space.proposals[0];
+  if (firstProposal && firstProposal?.space.id !== props.space.id) {
+    store.space.proposals = [];
+    load();
+  }
 });
 </script>
 
 <template>
   <Layout>
     <template #sidebar-left>
-      <SpaceSidebar :space="space" :spaceId="spaceId" />
+      <SpaceSidebar :space="space" />
     </template>
     <template #content-right>
       <div class="px-4 md:px-0 mb-3 flex">
@@ -134,11 +130,31 @@ watchEffect(() => {
           right="1.25rem"
           @select="selectState"
           :items="[
-            { text: $t('proposals.states.all'), action: 'all' },
-            { text: $t('proposals.states.active'), action: 'active' },
-            { text: $t('proposals.states.pending'), action: 'pending' },
-            { text: $t('proposals.states.closed'), action: 'closed' },
-            { text: $t('proposals.states.core'), action: 'core' }
+            {
+              text: $t('proposals.states.all'),
+              action: 'all',
+              selected: spaceFilterBy === 'all'
+            },
+            {
+              text: $t('proposals.states.active'),
+              action: 'active',
+              selected: spaceFilterBy === 'active'
+            },
+            {
+              text: $t('proposals.states.pending'),
+              action: 'pending',
+              selected: spaceFilterBy === 'pending'
+            },
+            {
+              text: $t('proposals.states.closed'),
+              action: 'closed',
+              selected: spaceFilterBy === 'closed'
+            },
+            {
+              text: $t('proposals.states.core'),
+              action: 'core',
+              selected: spaceFilterBy === 'core'
+            }
           ]"
         >
           <UiButton class="pr-3">
@@ -164,6 +180,7 @@ watchEffect(() => {
           :key="i"
           :proposal="proposal"
           :profiles="profiles"
+          :space="space"
         />
       </div>
       <div

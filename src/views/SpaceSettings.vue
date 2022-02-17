@@ -1,6 +1,6 @@
 <script setup>
-import { computed, ref, watchEffect, inject } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { computed, ref, inject, watch, onMounted } from 'vue';
+import { useI18n } from '@/composables/useI18n';
 import { getAddress } from '@ethersproject/address';
 import {
   validateSchema,
@@ -9,26 +9,24 @@ import {
 } from '@snapshot-labs/snapshot.js/src/utils';
 import schemas from '@snapshot-labs/snapshot.js/src/schemas';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
-import { useSearchFilters } from '@/composables/useSearchFilters';
 import defaults from '@/locales/default';
 import { useCopy } from '@/composables/useCopy';
 import { useWeb3 } from '@/composables/useWeb3';
 import { calcFromSeconds, calcToSeconds } from '@/helpers/utils';
 import { useClient } from '@/composables/useClient';
-import { setPageTitle } from '@/helpers/utils';
+import { usePlugins } from '@/composables/usePlugins';
 
 const props = defineProps({
-  spaceId: String,
   space: Object,
-  from: String,
-  spaceFrom: Object,
-  spaceLoading: Boolean,
+  sourceSpace: Object,
+  spaceKey: String,
   loadExtentedSpaces: Function
 });
 
 const basicValidation = { name: 'basic', params: {} };
 
-const { t } = useI18n();
+const { pluginIndex } = usePlugins();
+const { t, setPageTitle } = useI18n();
 const { copyToClipboard } = useCopy();
 const { web3Account } = useWeb3();
 const { send, clientLoading } = useClient();
@@ -54,6 +52,7 @@ const periodUnit = ref('h');
 const form = ref({
   strategies: [],
   categories: [],
+  admins: [],
   plugins: {},
   filters: {},
   voting: {},
@@ -62,6 +61,8 @@ const form = ref({
 
 const validate = computed(() => {
   if (form.value.terms === '') delete form.value.terms;
+  if (form.value.avatar === '') delete form.value.avatar;
+
   return validateSchema(schemas.space, form.value);
 });
 
@@ -72,7 +73,7 @@ const isValid = computed(() => {
 });
 
 const textRecord = computed(() => {
-  const keyURI = encodeURIComponent(props.spaceId);
+  const keyURI = encodeURIComponent(props.spaceKey);
   const address = web3Account.value
     ? getAddress(web3Account.value)
     : '<your-address>';
@@ -83,9 +84,19 @@ const isOwner = computed(() => {
   return currentTextRecord.value === textRecord.value;
 });
 
+watch([currentTextRecord, textRecord], () => {
+  // Check if the connected wallet is the space owner and add address to admins
+  // if not already present
+  if (isOwner.value) {
+    if (!form.value.admins.includes(web3Account.value)) {
+      form.value.admins.push(web3Account.value);
+    }
+  }
+});
+
 const isAdmin = computed(() => {
-  if (!props.space || !currentTextRecord.value) return false;
-  const admins = (props.space.admins || []).map(admin => admin.toLowerCase());
+  if (!currentTextRecord.value) return false;
+  const admins = (props.space?.admins || []).map(admin => admin.toLowerCase());
   return admins.includes(web3Account.value?.toLowerCase());
 });
 
@@ -109,24 +120,14 @@ const categoriesString = computed(() => {
   return form.value.categories ? form.value.categories.join(', ') : '';
 });
 
-const { filteredPlugins } = useSearchFilters();
-const plugins = computed(() => filteredPlugins());
-
-function pluginName(key) {
-  const plugin = plugins.value.find(obj => {
-    return obj.key === key;
-  });
-  return plugin?.name;
-}
-
 async function handleSubmit() {
   if (isValid.value) {
     if (form.value.filters.invalids) delete form.value.filters.invalids;
-    const result = await send({ id: props.spaceId }, 'settings', form.value);
+    const result = await send({ id: props.spaceKey }, 'settings', form.value);
     console.log('Result', result);
     if (result.id) {
       notify(['green', t('notify.saved')]);
-      props.loadExtentedSpaces([props.spaceId]);
+      props.loadExtentedSpaces([props.spaceKey]);
     }
   } else {
     console.log('Invalid schema', validate.value);
@@ -152,8 +153,8 @@ function inputError(field) {
 }
 
 function handleReset() {
-  if (props.from) return (form.value = clone(props.spaceFrom));
-  if (currentSettings.value) return (form.value = currentSettings.value);
+  if (props.sourceSpace) return (form.value = clone(props.sourceSpace));
+  if (currentSettings.value) return (form.value = clone(currentSettings.value));
   form.value = {
     strategies: [],
     categories: [],
@@ -228,7 +229,7 @@ function formatSpace(spaceRaw) {
   const space = clone(spaceRaw);
   if (!space) return;
   delete space.id;
-  delete space._activeProposals;
+  delete space.followersCount;
   Object.entries(space).forEach(([key, value]) => {
     if (value === null) delete space[key];
   });
@@ -244,11 +245,25 @@ function formatSpace(spaceRaw) {
   return space;
 }
 
-watchEffect(async () => {
-  if (!props.spaceLoading) {
+watch(
+  () => props.space,
+  async () => {
+    if (props.space) {
+      const spaceClone = formatSpace(props.space);
+      if (spaceClone) {
+        form.value = spaceClone;
+        currentSettings.value = clone(spaceClone);
+      }
+    }
+    if (props.sourceSpace) {
+      const fromClone = formatSpace(props.sourceSpace);
+      if (fromClone) {
+        form.value = fromClone;
+      }
+    }
     try {
       const uri = await getSpaceUri(
-        props.spaceId,
+        props.spaceKey,
         import.meta.env.VITE_DEFAULT_NETWORK
       );
       console.log('URI', uri);
@@ -256,23 +271,14 @@ watchEffect(async () => {
     } catch (e) {
       console.log(e);
     }
-    const spaceClone = formatSpace(props.space);
-    if (spaceClone) {
-      form.value = spaceClone;
-      currentSettings.value = clone(spaceClone);
-    }
-    if (props.from) {
-      const fromClone = formatSpace(props.spaceFrom);
-      if (fromClone) {
-        form.value = fromClone;
-      }
-    }
-    loaded.value = true;
-  }
-});
 
-watchEffect(() => {
-  props.space && props.space?.name
+    loaded.value = true;
+  },
+  { immediate: true }
+);
+
+onMounted(() => {
+  props.space?.name
     ? setPageTitle('page.title.space.settings', { space: props.space.name })
     : setPageTitle('page.title.setup');
 });
@@ -306,7 +312,7 @@ watchEffect(() => {
           />
         </UiButton>
         <a
-          :href="`https://app.ens.domains/name/${spaceId}`"
+          :href="`https://app.ens.domains/name/${spaceKey}`"
           target="_blank"
           class="mb-2 block"
         >
@@ -321,7 +327,7 @@ watchEffect(() => {
           </UiButton>
         </a>
         <Block
-          v-if="currentSettings?.name && !currentTextRecord"
+          v-if="currentSettings?.name && !currentTextRecord && loaded"
           :style="'border-color: red !important; margin-bottom: 0 !important;'"
           class="mb-0 mt-3"
         >
@@ -336,7 +342,8 @@ watchEffect(() => {
           </span>
         </Block>
       </Block>
-      <template v-if="space || isOwner">
+      <RowLoadingBlock v-if="!loaded" />
+      <template v-else>
         <Block :title="$t('settings.profile')">
           <div class="mb-2">
             <UiInput v-model="form.name" :error="inputError('name')">
@@ -418,7 +425,7 @@ watchEffect(() => {
             >
               <template v-slot:label> {{ $t(`settings.terms`) }} </template>
             </UiInput>
-            <div class="flex items-center space-x-2 px-2">
+            <div class="flex items-center space-x-2 pr-2">
               <Checkbox v-model="form.private" />
               <span>{{ $t('settings.hideSpace') }}</span>
             </div>
@@ -469,23 +476,6 @@ watchEffect(() => {
             />
           </UiButton>
         </Block>
-        <Block :title="$t('settings.authors')">
-          <Block
-            :style="`border-color: red !important`"
-            v-if="inputError('members')"
-          >
-            <Icon name="warning" class="mr-2 !text-red" />
-            <span class="!text-red"> {{ inputError('members') }}&nbsp;</span>
-          </Block>
-          <UiButton class="block w-full px-3" style="height: auto">
-            <TextareaArray
-              v-model="form.members"
-              :placeholder="`0x8C28Cf33d9Fd3D0293f963b1cd27e3FF422B425c\n0xeF8305E140ac520225DAf050e2f71d5fBcC543e7`"
-              class="input w-full text-left"
-              style="font-size: 18px"
-            />
-          </UiButton>
-        </Block>
         <Block :title="$t('settings.strategies') + '*'">
           <div
             v-for="(strategy, i) in form.strategies"
@@ -522,7 +512,25 @@ watchEffect(() => {
           </UiButton>
         </Block>
         <Block :title="$t('settings.proposalValidation')">
-          <div class="mb-2">
+          <div class="flex items-center space-x-2 pr-2 mb-2">
+            <Checkbox v-model="form.filters.onlyMembers" />
+            <span>{{ $t('settings.allowOnlyAuthors') }}</span>
+          </div>
+          <div v-if="form.filters.onlyMembers">
+            <Block class="!border-red" v-if="inputError('members')">
+              <Icon name="warning" class="mr-2 !text-red" />
+              <span class="!text-red"> {{ inputError('members') }}&nbsp;</span>
+            </Block>
+            <UiButton class="block w-full px-3" style="height: auto">
+              <TextareaArray
+                v-model="form.members"
+                :placeholder="`0x8C28Cf33d9Fd3D0293f963b1cd27e3FF422B425c\n0xeF8305E140ac520225DAf050e2f71d5fBcC543e7`"
+                class="input w-full text-left"
+                style="font-size: 18px"
+              />
+            </UiButton>
+          </div>
+          <template v-else>
             <UiInput
               @click="modalValidationOpen = true"
               :error="inputError('settings.validation')"
@@ -544,12 +552,8 @@ watchEffect(() => {
                   $t('settings.proposalThreshold')
                 }}</template>
               </UiInput>
-              <div class="flex items-center space-x-2 px-2">
-                <Checkbox v-model="form.filters.onlyMembers" />
-                <span>{{ $t('settings.allowOnlyAuthors') }}</span>
-              </div>
             </div>
-          </div>
+          </template>
         </Block>
         <Block :title="$t('settings.voting')">
           <UiInput v-model="votingDelay" :number="true" placeholder="e.g. 1">
@@ -605,7 +609,7 @@ watchEffect(() => {
               </div>
             </template>
           </UiInput>
-          <div class="flex items-center space-x-2 px-2">
+          <div class="flex items-center space-x-2 pr-2">
             <Checkbox v-model="form.voting.hideAbstain" />
             <span>{{ $t('settings.hideAbstain') }}</span>
           </div>
@@ -613,11 +617,13 @@ watchEffect(() => {
         <Block :title="$t('plugins')">
           <div v-if="form?.plugins">
             <div
-              v-for="(plugin, name, index) in form.plugins"
+              v-for="(name, index) in Object.keys(form.plugins).filter(
+                key => pluginIndex[key]
+              )"
               :key="index"
               class="mb-3 relative"
             >
-              <div v-if="pluginName(name)">
+              <div v-if="pluginIndex[name].name">
                 <a
                   @click="handleRemovePlugins(name)"
                   class="absolute p-4 right-0"
@@ -628,7 +634,7 @@ watchEffect(() => {
                   @click="handleEditPlugins(name)"
                   class="p-4 block border rounded-md"
                 >
-                  <h4 v-text="pluginName(name)" />
+                  <h4 v-text="pluginIndex[name].name" />
                 </a>
               </div>
             </div>
@@ -640,20 +646,22 @@ watchEffect(() => {
       </template>
     </template>
     <template v-if="(loaded && isOwner) || (loaded && isAdmin)" #sidebar-right>
-      <Block :title="$t('actions')">
-        <UiButton @click="handleReset" class="block w-full mb-2">
-          {{ $t('reset') }}
-        </UiButton>
-        <UiButton
-          :disabled="uploadLoading"
-          @click="handleSubmit"
-          :loading="clientLoading"
-          class="block w-full"
-          primary
-        >
-          {{ $t('save') }}
-        </UiButton>
-      </Block>
+      <div class="lg:fixed lg:w-[321px]">
+        <Block :title="$t('actions')">
+          <UiButton @click="handleReset" class="block w-full mb-2">
+            {{ $t('reset') }}
+          </UiButton>
+          <UiButton
+            :disabled="uploadLoading"
+            @click="handleSubmit"
+            :loading="clientLoading"
+            class="block w-full"
+            primary
+          >
+            {{ $t('save') }}
+          </UiButton>
+        </Block>
+      </div>
     </template>
   </Layout>
   <teleport to="#modal">

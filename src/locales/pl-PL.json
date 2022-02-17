@@ -5,6 +5,9 @@
   "backToHome": "Strona główna",
   "actions": "Akcje",
   "results": "Wyniki",
+  "resultsError": "Results could not be calculated. This is often due to a misconfigured strategy or a scaling issue in a smart contract.",
+  "vpError": "Your voting power could not be calculated. This is often due to a misconfigured strategy or a scaling issue in a smart contract.",
+  "getHelp": "Get help",
   "currentResults": "Aktualne wyniki",
   "reset": "Wyczyść",
   "save": "Zapisz",
@@ -19,13 +22,13 @@
   "strategiesPage": "Strategie",
   "space": "Space",
   "spaces": "Spaces",
+  "verifiedSpace": "Verified space",
   "version": "Wersja",
   "timeline": "Oś czasu",
   "filters": "Filtry",
   "allSpaces": "All spaces",
   "submitOnchain": "Wyślij na blockchain",
   "inSpaces": "W {0} sekcji (-cjach)",
-  "downloadReport": "Pobierz raport",
   "votes": "Głosy",
   "seeMore": "Pokaż więcej",
   "network": "Sieć",
@@ -39,6 +42,7 @@
   "view3box": "Wyświetl profil na 3Box",
   "edit3box": "Edytuj profil na 3Box",
   "connectWallet": "Połącz portfel",
+  "toggleSkin": "Toggle skin",
   "about": "O nas",
   "license": "Licencja",
   "ipfsServer": "Serwer IPFS",
@@ -50,14 +54,18 @@
   "confirmRemove": "Czy na pewno chcesz usunąć przekazanie do",
   "removeSpace": "za sekcje {0}",
   "confirmVote": "Potwierdź głos",
-  "sureToVote": "Czy na pewno chcesz zagłosować \"{0}\"?",
+  "sureToVote": "Are you sure you want to cast this vote?",
   "cannotBeUndone": "Ta operacja nie może być cofnięta.",
   "options": "Option(s)",
   "votingPower": "Siła Twojego głosu",
   "receipt": "Potwierdzenie",
   "relayer": "Relayer",
   "verifyOnMycrypto": "Zweryfikuj potwierdzenie w MyCrypto",
+  "verifyOnSignatorio": "Verify on Signator.io",
   "isCore": "Główne",
+  "notificationsBlocked": "Your browser is blocking notifications",
+  "notificationsNotSupported": "Your browser does not support notifications",
+  "walletNotSupported": "Wallet is not supported",
   "seeInExplorer": "Zobacz w przeglądarce",
   "learnMore": "Dowiedz się więcej",
   "logout": "Wyloguj się",
@@ -88,10 +96,10 @@
   "noSpacesJoined": "Oops, you haven't joined any spaces yet",
   "addFavorites": "Add favorites",
   "createdBy": "Przez {0}",
-  "startToEnd": "początek {0} koniec {1}",
   "startIn": "start {0}",
   "endIn": "end {1}",
-  "endedAgo": "ended {1}",
+  "proposalTimeLeft": "{0} left",
+  "endedAgo": "ended {0}",
   "proposalBy": "by {0}",
   "endDate": "koniec {0}",
   "contectHash": "Hash zawartości",
@@ -112,6 +120,10 @@
   "duplicateProposal": "Duplikuj propozycję",
   "joinedSpaces": "Joined spaces",
   "joinSpaces": "Join spaces",
+  "setDelegationToSpace": "Limit delegation to a specific space",
+  "theCurrentNetwork": "the current network",
+  "optional": "(optional)",
+  "homeLoadmore": "Load more",
   "errors": {
     "required": "To pole jest wymagane",
     "minLength": "Minimalna długość wynosi {0}",
@@ -123,8 +135,9 @@
     "type": "Invalid type"
   },
   "create": {
-    "question": "Pytanie",
-    "content": "Jaka jest twoja propozycja?",
+    "question": "Ask a question...",
+    "categorie(s)": "Select up to 2 categorie(s)",
+    "content": "Tell us more about your proposal (optional)",
     "preview": "Podgląd",
     "choices": "Opcje",
     "addChoice": "Dodaj opcję",
@@ -133,7 +146,24 @@
     "startTime": "Wybierz godzinę rozpoczęcia",
     "endTime": "Ustaw godzinę zakończenia",
     "publish": "Opublikuj",
+    "untitled": "Untitled",
     "snapshotBlock": "Numer bloku Snapshot",
+    "voting": "Voting",
+    "votingSystem": "Voting system",
+    "choice": "Choice {0}",
+    "period": "Voting period",
+    "start": "Start",
+    "end": "End",
+    "days": "Days",
+    "hours": "Hours",
+    "minutes": "Minutes",
+    "schedule": "Schedule proposal",
+    "delayEnforced": "The space enforces a delay until voting can start",
+    "periodEnforced": "The space enforces the duration of the voting period",
+    "edit": "Edit",
+    "continue": "Continue",
+    "now": "Now",
+    "votingPeriodExplainer": "This is the time period in which users will be able to vote. The proposal will be visible and pending before the start of the voting period.",
     "validationWarning": {
       "basic": {
         "member": "You need to be an author of the space in order to submit a proposal.",
@@ -147,12 +177,19 @@
     "selectDelegate": "Select delegate",
     "to": "Do",
     "addressPlaceholder": "Adres lub nazwa ENS",
-    "spacePlaceholder": "Sekcja (opcjonalnie)",
     "delegations": "Oddelegowano",
     "allSpaces": "For all spaces",
     "delegated": "Zdelegowano dla Ciebie",
     "pendingTransaction": "brak oczekującej transakcji | 1 oczekująca transakcja | {count} oczekujące transakcje",
-    "topDelegates": "Top delegates"
+    "topDelegates": "Top delegates",
+    "noDelegatesFoundFor": "No delegates found for {0}",
+    "noValidEns": "Not a valid ENS address.",
+    "noValidAddress": "Not a valid address",
+    "delegateToSelf": "You cannot delegate to yourself",
+    "delegateToSelfAddress": "You cannot delegate to your own ENS address",
+    "noValidSpaceId": "Not a valid space ID",
+    "noDelegationsAndDelegates": "Can't find your delegations and delegates? Make sure you are connected to the correct network.",
+    "delegateNotSupported": "Delegation is currently not supported for {network}."
   },
   "proposal": {
     "castVote": "Oddaj swój głos",
@@ -166,6 +203,8 @@
     "new": "Nowa propozycja",
     "noProposals": "Nie ma jeszcze żadnych propozycji!",
     "createProposal": "Create proposal",
+    "showMore": "Show more",
+    "showLess": "Show less",
     "states": {
       "all": "Wszystko",
       "core": "Główne",
@@ -190,6 +229,8 @@
     "customDomain": "Custom domain",
     "domain": "Nazwa domeny",
     "strategies": "Strategie(s)",
+    "categories": "Categorie(s)",
+    "selectCategories": "Select categories",
     "hideSpace": "Ukryj sekcje na stronie głównej",
     "addStrategy": "Dodaj strategię",
     "authors": "Autorzy",
@@ -209,13 +250,21 @@
     "votingDelay": "Voting delay",
     "votingPeriod": "Voting period",
     "voting": "Voting",
+    "quorum": "Quorum",
     "type": "Type",
-    "anyType": "Any"
+    "anyType": "Any",
+    "hideAbstain": "Ignore abstain votes in basic voting results"
   },
   "setup": {
     "example": "np. yam.eth",
-    "useExistingEns": "Użyj istniejącej nazwy ENS, aby utworzyć swoją sekcję.",
-    "createASpace": "Utwórz sekcję"
+    "chooseExistingEns": "Choose one of your existing ENS domains to create a space with:",
+    "useSingleExistingEns": "Use your existing ENS domain:",
+    "orReigsterNewEns": "Or register a new domain:",
+    "toCreateASpace": "To create a space, you first need an ENS domain. Enter one below and follow the ENS registration instructions.",
+    "createASpace": "Utwórz sekcję",
+    "registerEnsButton": "Register",
+    "supportedEnsTLDs": "Supported domain endings",
+    "helpDocsAndDiscordLinks": "Not sure how to create a space? Learn more in the <a target='_blank' href='https://docs.snapshot.org/spaces/create'> documentation </a> or join Snapshot <a target='_blank' href='https://discord.gg/snapshot'>Discord</a>."
   },
   "notify": {
     "youDidIt": "Udało ci się!",
@@ -237,7 +286,18 @@
     "skins": "skin(s)",
     "networks": "network(s)",
     "plugins": "plugin(s)",
-    "results": "result(s)"
+    "results": "result(s)",
+    "categories": {
+      "all": "All",
+      "protocol": "Protocol",
+      "social": "Social",
+      "investment": "Investment",
+      "grant": "Grant",
+      "service": "Service",
+      "media": "Media",
+      "creator": "Creator",
+      "collector": "Collector"
+    }
   },
   "voting": {
     "selectVoting": "Select voting system",
@@ -246,12 +306,19 @@
     "quadratic": "Quadratic voting",
     "ranked-choice": "Ranked choice voting",
     "weighted": "Weighted voting",
+    "basic": "Basic voting",
     "description": {
       "single-choice": "Each voter may select only one choice.",
       "approval": "Each voter may select any number of choices.",
       "quadratic": "Each voter may spread voting power across any number of choices. Results are calculated quadratically.",
       "ranked-choice": "Each voter may select and rank any number of choices. Results are calculated by instant-runoff counting method.",
-      "weighted": "Each voter may spread voting power across any number of choices."
+      "weighted": "Each voter may spread voting power across any number of choices.",
+      "basic": "Single choice voting with three choices: For, Against or Abstain"
+    },
+    "choices": {
+      "for": "For",
+      "against": "Against",
+      "abstain": "Abstain"
     }
   },
   "safeSnap": {
@@ -299,7 +366,8 @@
       "connectWallet": "Connect wallet to see execution details",
       "switchChain": "Switch your wallet to {0} to request execution",
       "question": "Did this proposal pass and does it meet the",
-      "criteria": "acceptance criteria?"
+      "criteria": "acceptance criteria?",
+      "proposalPassed": "Did the proposal pass?"
     }
   },
   "poap": {
@@ -312,6 +380,13 @@
     "button_show": "Browse collection",
     "success_claim": "The POAP has been minted to your collection",
     "error_claim": "There was a problem minting the token"
+  },
+  "charts": {
+    "charts": "Charts",
+    "noVotesYet": "There are no votes to visualize yet.",
+    "totalVotesPerDay": "Total votes per day",
+    "shareOfVotingPower": "Share of voting power",
+    "votingPowerPerDay": "Voting power per day"
   },
   "comment_box": {
     "title": "Comment box",
@@ -336,5 +411,36 @@
     "show": "Show",
     "reply": "Reply",
     "load_more": "Load more"
+  },
+  "page": {
+    "title": {
+      "home": "Snapshot",
+      "setup": "Create a space",
+      "timeline": "Timeline",
+      "explore": "Explore",
+      "playground": "Playground",
+      "space": {
+        "create": "Create {space} proposal",
+        "about": "About {space}",
+        "proposals": "{space} Proposals",
+        "proposal": "{space} proposal: {proposal}",
+        "settings": "{space} Settings"
+      },
+      "strategy": "{key} strategy",
+      "delegate": "Delegate"
+    }
+  },
+  "hal": {
+    "title": "Track proposals for {spaceName}",
+    "text": "Receive notifications every time a new proposal is created or ends"
+  },
+  "timeUnits": {
+    "second": "1 second | {n} seconds",
+    "minute": "1 minute | {n} minutes",
+    "hour": "1 hour | {n} hours",
+    "day": "1 day | {n} days",
+    "week": "1 week | {n} weeks",
+    "month": "1 month | {n} months",
+    "year": "1 year | {n} years"
   }
 }

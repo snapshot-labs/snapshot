@@ -7,7 +7,8 @@ const props = defineProps({
   address: String,
   space: Object,
   proposal: Object,
-  profile: Object
+  profile: Object,
+  onlyUsername: Boolean
 });
 
 const { address, profile, username } = useUsername();
@@ -24,13 +25,18 @@ watchEffect(() => {
       <template v-slot:item>
         <a class="flex flex-nowrap">
           <UiAvatar
+            v-if="!onlyUsername"
             :imgsrc="getIpfsUrl(profile?.image)"
             :address="address"
             size="18"
             class="mr-2"
           />
           <span class="truncate">{{ username }}</span>
-          <Badges :address="address" :members="space?.members" />
+          <Badges
+            v-if="!onlyUsername"
+            :address="address"
+            :members="space?.members"
+          />
         </a>
       </template>
       <template v-slot:content>

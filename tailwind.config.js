@@ -1,7 +1,5 @@
 module.exports = {
-  mode: 'jit',
-  purge: ['./index.html', './src/**/*.{js,ts,vue}'],
-  darkMode: false, // or 'media' or 'class'
+  content: ['./index.html', './src/**/*.{js,ts,vue}'],
   theme: {
     extend: {
       colors: {
@@ -42,7 +40,8 @@ module.exports = {
     fontFamily: {
       serif: [
         'Calibre, -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji'
-      ]
+      ],
+      mono: ['monospace']
     },
     fontWeight: {
       'font-normal': 500,
@@ -57,9 +56,5 @@ module.exports = {
       sm: ['16px'],
       xs: ['14px']
     }
-  },
-  variants: {
-    extend: {}
-  },
-  plugins: []
+  }
 };

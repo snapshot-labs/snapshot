@@ -1,14 +1,9 @@
 <script setup>
 import { ref, computed, watch, onMounted, inject, watchEffect } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { useI18n } from 'vue-i18n';
-import {
-  getProposal,
-  getResults,
-  getPower,
-  getProposalVotes
-} from '@/helpers/snapshot';
-import { setPageTitle, explorerUrl, getIpfsUrl } from '@/helpers/utils';
+import { useI18n } from '@/composables/useI18n';
+import { getProposal, getResults, getProposalVotes } from '@/helpers/snapshot';
+import { explorerUrl, getIpfsUrl } from '@/helpers/utils';
 import { useModal } from '@/composables/useModal';
 import { useTerms } from '@/composables/useTerms';
 import { useProfiles } from '@/composables/useProfiles';
@@ -21,15 +16,13 @@ import { useStore } from '@/composables/useStore';
 import { useIntl } from '@/composables/useIntl';
 
 const props = defineProps({
-  spaceId: String,
-  space: Object,
-  spaceLoading: Boolean
+  space: Object
 });
 
 const route = useRoute();
 const router = useRouter();
 const { domain } = useDomain();
-const { t } = useI18n();
+const { t, setPageTitle } = useI18n();
 const { web3, web3Account } = useWeb3();
 const { send, clientLoading } = useClient();
 const { store } = useStore();
@@ -42,17 +35,15 @@ const modalOpen = ref(false);
 const selectedChoices = ref(null);
 const loading = ref(true);
 const loadedResults = ref(false);
+const loadingResultsFailed = ref(false);
 const loadedVotes = ref(false);
 const proposal = ref({});
 const votes = ref([]);
 const userVote = ref([]);
 const results = ref({});
-const totalScore = ref(0);
-const scores = ref([]);
 const modalStrategiesOpen = ref(false);
 
 const isCreator = computed(() => proposal.value.author === web3Account.value);
-const loaded = computed(() => !props.spaceLoading && !loading.value);
 const isAdmin = computed(() => {
   const admins = (props.space.admins || []).map(admin => admin.toLowerCase());
   return admins.includes(web3Account.value?.toLowerCase());
@@ -61,6 +52,7 @@ const strategies = computed(
   // Needed for older proposal that are missing strategies
   () => proposal.value.strategies ?? props.space?.strategies
 );
+
 const symbols = computed(() =>
   strategies.value.map(strategy => strategy.params.symbol)
 );
@@ -71,15 +63,10 @@ const threeDotItems = computed(() => {
   return items;
 });
 
-const safeSnapInput = computed({
-  get: () => proposal.value?.plugins?.safeSnap,
-  set: value => (proposal.value.plugins.safeSnap = value)
-});
-
 const browserHasHistory = computed(() => window.history.state.back);
 
 const { modalAccountOpen } = useModal();
-const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(props.spaceId);
+const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(props.space.id);
 
 function clickVote() {
   !web3.value.account
@@ -91,16 +78,14 @@ function clickVote() {
 
 async function loadProposal() {
   proposal.value = await getProposal(id);
-  // Redirect to proposal spaceId if it doesn't match route key
+  // Redirect to proposal space.id if it doesn't match route key
   if (
     route.name === 'spaceProposal' &&
-    props.spaceId !== proposal.value.space.id
+    props.space.id !== proposal.value.space.id
   ) {
     router.push({ name: 'error-404' });
   }
-
   loading.value = false;
-  if (loaded.value) loadResults();
 }
 
 function formatProposalVotes(votes) {
@@ -112,7 +97,9 @@ function formatProposalVotes(votes) {
 }
 
 async function loadResults() {
-  if (proposal.value.scores_state === 'final') {
+  if (proposal.value.scores_state === 'invalid') {
+    loadingResultsFailed.value = true;
+  } else if (proposal.value.scores_state === 'final') {
     results.value = {
       resultsByVoteBalance: proposal.value.scores,
       resultsByStrategyScore: proposal.value.scores_by_strategy,
@@ -133,11 +120,20 @@ async function loadResults() {
     loadedVotes.value = true;
   } else {
     const votesTmp = await getProposalVotes(id);
-    const resultsObj = await getResults(props.space, proposal.value, votesTmp);
-    results.value = resultsObj.results;
-    loadedResults.value = true;
-    votes.value = resultsObj.votes;
-    loadedVotes.value = true;
+    try {
+      const resultsObj = await getResults(
+        props.space,
+        proposal.value,
+        votesTmp
+      );
+      results.value = resultsObj.results;
+      votes.value = resultsObj.votes;
+      loadedResults.value = true;
+      loadedVotes.value = true;
+    } catch (e) {
+      console.log(e);
+      loadingResultsFailed.value = true;
+    }
   }
 }
 
@@ -149,22 +145,6 @@ async function loadMoreVotes() {
     skip: votes.value.length
   });
   votes.value = votes.value.concat(formatProposalVotes(votesObj));
-}
-
-async function loadPower() {
-  if (
-    !web3Account.value ||
-    !proposal.value.author ||
-    proposal.value.state === 'closed'
-  )
-    return;
-  const response = await getPower(
-    props.space,
-    web3Account.value,
-    proposal.value
-  );
-  totalScore.value = response.totalScore;
-  scores.value = response.scores;
 }
 
 async function deleteProposal() {
@@ -195,7 +175,7 @@ function selectFromThreedotDropdown(e) {
       name: 'spaceCreate',
       params: {
         key: proposal.value.space.id,
-        from: proposal.value.id
+        sourceProposal: proposal.value.id
       }
     });
 }
@@ -215,8 +195,7 @@ watch(proposal, () => {
   loadProfiles([proposal.value.author]);
 });
 
-watch(web3Account, (val, prev) => {
-  if (val?.toLowerCase() !== prev) loadPower();
+watch(web3Account, () => {
   const choice = route.query.choice;
   if (proposal.value && choice) {
     selectedChoices.value = parseInt(choice);
@@ -224,11 +203,8 @@ watch(web3Account, (val, prev) => {
   }
 });
 
-watch([loaded, web3Account], () => {
-  if (web3.value.authLoading && !web3Account.value) return;
-  if (!loaded.value) return;
-  loadResults();
-  loadPower();
+watch(loading, () => {
+  if (!loading.value) loadResults();
 });
 
 watchEffect(() => {
@@ -248,6 +224,24 @@ onMounted(async () => {
     clickVote();
   }
 });
+
+const showFullMarkdownBody = ref(false);
+
+// Scroll to top of the page after clicking "Show less" button
+watch(showFullMarkdownBody, () => {
+  if (!showFullMarkdownBody.value) window.scrollTo(0, 0);
+});
+
+// Ref to the proposal body element
+const markdownBody = ref(null);
+
+// Detect if the proposal body is too long and should be shortened
+const truncateMarkdownBody = computed(() => {
+  const markdownBodyHeight = markdownBody.value?.clientHeight
+    ? markdownBody.value.clientHeight
+    : 0;
+  return markdownBodyHeight > 400 ? true : false;
+});
 </script>
 
 <template>
@@ -264,48 +258,126 @@ onMounted(async () => {
                 )
           "
         >
-          <Icon name="back" size="22" class="!align-middle" />
-          {{ browserHasHistory ? $t('back') : space.name }}
+          <Icon name="back" size="22" class="align-middle" />
+          {{ $t('back') }}
         </a>
       </div>
       <div class="px-4 md:px-0">
-        <template v-if="loaded">
+        <template v-if="!loading">
           <h1 v-text="proposal.title" class="mb-3" />
-          <div class="mb-4">
-            <UiState :state="proposal.state" class="inline-block" />
-            <UiDropdown
-              top="2.5rem"
-              right="1.5rem"
-              class="float-right mr-2"
-              @select="selectFromShareDropdown"
-              @clickedNoDropdown="startShare(space, proposal)"
-              :items="sharingItems"
-              :hideDropdown="sharingIsSupported"
-            >
-              <div class="pr-1 select-none flex">
-                <Icon name="upload" size="25" />
-                <span class="ml-1">Share</span>
-              </div>
-            </UiDropdown>
-            <UiDropdown
-              top="2.5rem"
-              right="1.3rem"
-              class="float-right mr-2"
-              @select="selectFromThreedotDropdown"
-              :items="threeDotItems"
-            >
-              <div class="pr-3">
-                <UiLoading v-if="clientLoading" />
-                <Icon v-else name="threedots" size="25" />
-              </div>
-            </UiDropdown>
+
+          <div class="flex items-center justify-between mb-4">
+            <div class="flex space-x-1 items-center">
+              <router-link
+                class="text-color group"
+                :to="{
+                  name: 'spaceProposals',
+                  params: { key: space.id }
+                }"
+              >
+                <div class="flex items-center">
+                  <Token :space="space" size="28" />
+                  <span
+                    class="ml-2 group-hover:text-skin-link"
+                    v-text="space.name"
+                  />
+                </div>
+              </router-link>
+
+              <span v-text="$t('proposalBy')" />
+              <User
+                :address="proposal.author"
+                :profile="profiles[proposal.author]"
+                :space="space"
+                :proposal="proposal"
+                only-username
+              />
+              <Badges :address="proposal.author" :members="space.members" />
+            </div>
+
+            <div class="flex justify-end">
+              <UiState :state="proposal.state" class="inline-block" />
+              <UiDropdown
+                top="2.5rem"
+                right="1.5rem"
+                class="ml-3"
+                @select="selectFromShareDropdown"
+                @clickedNoDropdown="startShare(space, proposal)"
+                :items="sharingItems"
+                :hideDropdown="sharingIsSupported"
+              >
+                <div class="pr-1 select-none flex">
+                  <Icon name="upload" size="25" />
+                  <span class="ml-1">Share</span>
+                </div>
+                <template v-slot:item="{ item }">
+                  <Icon
+                    v-if="item.icon"
+                    :name="item.icon"
+                    size="21"
+                    class="align-middle mr-2 !leading-[0]"
+                  />
+                  {{ item.text }}
+                </template>
+              </UiDropdown>
+              <UiDropdown
+                top="2.5rem"
+                right="1.3rem"
+                class="ml-2"
+                @select="selectFromThreedotDropdown"
+                :items="threeDotItems"
+              >
+                <div class="pl-1">
+                  <UiLoading v-if="clientLoading" />
+                  <Icon v-else name="threedots" size="25" />
+                </div>
+              </UiDropdown>
+            </div>
           </div>
-          <UiMarkdown :body="proposal.body" class="mb-6" />
+
+          <div class="relative">
+            <div
+              v-if="!showFullMarkdownBody && truncateMarkdownBody"
+              class="absolute w-full h-[80px] bottom-0 bg-gradient-to-t from-skin-bg"
+            />
+            <div
+              v-if="truncateMarkdownBody"
+              class="absolute w-full flex justify-center"
+              :class="{
+                '-bottom-[64px]': showFullMarkdownBody,
+                '-bottom-[14px]': !showFullMarkdownBody
+              }"
+            >
+              <UiButton
+                no-focus
+                @click="showFullMarkdownBody = !showFullMarkdownBody"
+                class="!bg-skin-bg"
+              >
+                {{
+                  showFullMarkdownBody
+                    ? $t('proposals.showLess')
+                    : $t('proposals.showMore')
+                }}
+              </UiButton>
+            </div>
+            <div
+              class="overflow-hidden"
+              :class="{
+                'h-[360px]': !showFullMarkdownBody && truncateMarkdownBody,
+                'mb-[92px]': showFullMarkdownBody,
+                'mb-[56px]': !showFullMarkdownBody
+              }"
+            >
+              <div ref="markdownBody">
+                <UiMarkdown :body="proposal.body" />
+              </div>
+            </div>
+          </div>
         </template>
         <PageLoading v-else />
       </div>
       <BlockCastVote
-        v-if="loaded && proposal.state === 'active'"
+        v-if="!loading && proposal.state === 'active'"
         :proposal="proposal"
         v-model="selectedChoices"
         @open="modalOpen = true"
@@ -313,7 +385,7 @@ onMounted(async () => {
       />
       <BlockVotes
         @loadVotes="loadMore(loadMoreVotes)"
-        v-if="loaded"
+        v-if="!loading && !loadingResultsFailed"
         :loaded="loadedVotes"
         :space="space"
         :proposal="proposal"
@@ -322,17 +394,18 @@ onMounted(async () => {
         :userVote="userVote"
         :loadingMore="loadingMore"
       />
-      <ProposalPluginsContent
-        v-if="space"
-        v-model:safeSnapInput="safeSnapInput"
+      <PluginProposal
+        v-if="proposal.plugins && loadedResults"
         :id="id"
         :space="space"
         :proposal="proposal"
-        :votes="votes"
+        :results="results"
         :loadedResults="loadedResults"
+        :votes="votes"
+        :strategies="strategies"
       />
     </template>
-    <template #sidebar-right v-if="loaded">
+    <template #sidebar-right v-if="!loading">
       <Block :title="$t('information')">
         <div class="space-y-1">
           <div>
@@ -356,16 +429,7 @@ onMounted(async () => {
               </span>
             </span>
           </div>
-          <div>
-            <b>{{ $t('author') }}</b>
-            <User
-              :address="proposal.author"
-              :profile="profiles[proposal.author]"
-              :space="space"
-              :proposal="proposal"
-              class="float-right"
-            />
-          </div>
+
           <div>
             <b>IPFS</b>
             <a
@@ -416,7 +480,9 @@ onMounted(async () => {
           </div>
         </div>
       </Block>
+      <BlockResultsError :isAdmin="isAdmin" v-if="loadingResultsFailed" />
       <BlockResults
+        v-else
         :id="id"
         :loaded="loadedResults"
         :space="space"
@@ -425,29 +491,27 @@ onMounted(async () => {
         :votes="votes"
         :strategies="strategies"
       />
-      <ProposalPluginsSidebar
-        v-if="loadedResults"
+      <PluginProposalSidebar
+        v-if="proposal.plugins && loadedResults"
         :id="id"
         :space="space"
         :proposal="proposal"
         :results="results"
+        :loadedResults="loadedResults"
         :votes="votes"
         :strategies="strategies"
-        :loadedResults="loadedResults"
       />
     </template>
   </Layout>
-  <teleport to="#modal" v-if="loaded">
+  <teleport to="#modal" v-if="!loading">
     <ModalConfirm
       :open="modalOpen"
       @close="modalOpen = false"
-      @reload="loadProposal"
+      @reload="loadProposal(), loadResults()"
       :space="space"
       :proposal="proposal"
       :id="id"
       :selectedChoices="selectedChoices"
-      :totalScore="totalScore"
-      :scores="scores"
       :snapshot="proposal.snapshot"
       :strategies="strategies"
     />

@@ -1,0 +1,11 @@
+{
+  "name": "Gnosis Impact",
+  "version": "0.0.1",
+  "author": "davidalbela",
+  "website": "https://...",
+  "icon": "ipfs://QmPhmL1jPjaYKeKeEzyetAueNHCsGgrUVqSJasiTrcPWvx",
+  "defaults": {
+    "space": {},
+    "proposal": {}
+  }
+}

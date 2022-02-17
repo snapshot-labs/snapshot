@@ -6,7 +6,8 @@ import { useModal } from '@/composables/useModal';
 import { useWeb3 } from '@/composables/useWeb3';
 import { signMessage } from '@snapshot-labs/snapshot.js/src/utils/web3';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
-import { useI18n } from 'vue-i18n';
+import { useI18n } from '@/composables/useI18n';
+
 const { t } = useI18n();
 const auth = getInstance();
 const { modalOpen, modalAccountOpen } = useModal();
@@ -46,7 +47,9 @@ async function updateItems() {
   if (loading.value) return;
   try {
     loading.value = true;
-    const token = localStorage.getItem('_commentBox.token');
+    const token = localStorage.getItem(
+      `_commentBox.token-${web3Account.value}`
+    );
     let sig;
     const msg = { markdown: comment.value };
     if (!token)
@@ -68,7 +71,8 @@ async function updateItems() {
     loading.value = false;
     if (res.refresh) throw new Error('refresh');
     if (!res.status) return notify(['primary', t('comment_box.error')]);
-    if (res.token) localStorage.setItem('_commentBox.token', res.token);
+    if (res.token)
+      localStorage.setItem(`_commentBox.token-${web3Account.value}`, res.token);
     emit('updateItem', res.data);
     emit('dismissComment');
     closeModal.value = false;
@@ -76,7 +80,7 @@ async function updateItems() {
     return;
   } catch (e) {
     if (e.message === 'refresh') {
-      localStorage.removeItem('_commentBox.token');
+      localStorage.removeItem(`_commentBox.token-${web3Account.value}`);
       updateItems();
       return;
     }
@@ -94,7 +98,9 @@ const chooseMethod = {
     if (loading.value) return;
     try {
       loading.value = true;
-      const token = localStorage.getItem('_commentBox.token');
+      const token = localStorage.getItem(
+        `_commentBox.token-${web3Account.value}`
+      );
       let sig;
       const msg = {
         author: web3Account.value,
@@ -123,13 +129,17 @@ const chooseMethod = {
       loading.value = false;
       if (res.refresh) throw new Error('refresh');
       if (!res.status) return notify(['primary', t('comment_box.error')]);
-      if (res.token) localStorage.setItem('_commentBox.token', res.token);
+      if (res.token)
+        localStorage.setItem(
+          `_commentBox.token-${web3Account.value}`,
+          res.token
+        );
       emit('dismissComment');
       emit('replyComment', res.data);
       return;
     } catch (e) {
       if (e.message === 'refresh') {
-        localStorage.removeItem('_commentBox.token');
+        localStorage.removeItem(`_commentBox.token-${web3Account.value}`);
         replyComment();
         return;
       }

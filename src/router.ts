@@ -33,7 +33,7 @@ const spaceRoutes = [
     component: SpaceProposal
   },
   {
-    path: 'create/:from?',
+    path: 'create/:sourceProposal?',
     name: 'spaceCreate',
     component: SpaceCreate
   },
@@ -44,7 +44,7 @@ const spaceRoutes = [
     component: SpaceAbout
   },
   {
-    path: 'settings/:from?',
+    path: 'settings/:sourceSpace?',
     name: 'spaceSettings',
     component: SpaceSettings
   }
@@ -57,6 +57,7 @@ if (domain) {
   routes.push(
     { path: '/', name: 'home', component: Space, children: spaceRoutes },
     { path: '/delegate/:key?/:to?', name: 'delegate', component: Delegate },
+    { path: '/playground/:name', name: 'playground', component: Playground },
     {
       path: `/${domain}`,
       alias: `/${alias ?? domain}`,

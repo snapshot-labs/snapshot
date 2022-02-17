@@ -1,9 +1,19 @@
 <script setup>
-import { computed, inject } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { computed, inject, ref, watch } from 'vue';
+import { useI18n } from '@/composables/useI18n';
 import { shorten, getChoiceString, explorerUrl } from '@/helpers/utils';
 import { useClient } from '@/composables/useClient';
 import { useIntl } from '@/composables/useIntl';
+import { getPower } from '../../helpers/snapshot';
+import { useWeb3 } from '../../composables/useWeb3';
+
+const { web3Account } = useWeb3();
+
+const vp = ref(0);
+const vpByStrategy = ref([]);
+const vpLoading = ref(false);
+const vpLoadingFailed = ref(false);
+const vpLoaded = ref(false);
 
 const props = defineProps({
   open: Boolean,
@@ -11,8 +21,6 @@ const props = defineProps({
   proposal: Object,
   selectedChoices: [Object, Number],
   snapshot: String,
-  totalScore: Number,
-  scores: Object,
   strategies: Object
 });
 
@@ -41,6 +49,30 @@ async function handleSubmit() {
     emit('close');
   }
 }
+
+watch(
+  () => [props.open, web3Account.value],
+  async () => {
+    if (props.open === false) return;
+    vpLoading.value = true;
+    vpLoadingFailed.value = false;
+    try {
+      const response = await getPower(
+        props.space,
+        web3Account.value,
+        props.proposal
+      );
+      vp.value = response.totalScore;
+      vpByStrategy.value = response.scores;
+    } catch (e) {
+      vpLoadingFailed.value = true;
+      console.log(e);
+    } finally {
+      vpLoaded.value = true;
+      vpLoading.value = false;
+    }
+  }
+);
 </script>
 
 <template>
@@ -61,7 +93,15 @@ async function handleSubmit() {
       <div class="m-4 p-4 border rounded-md link-color">
         <div class="flex">
           <span v-text="$t('options')" class="flex-auto text-color mr-1" />
-          <span class="text-right ml-4">
+          <span
+            v-tippy="{
+              content:
+                format(proposal, selectedChoices).length > 30
+                  ? format(proposal, selectedChoices)
+                  : null
+            }"
+            class="text-right ml-4 truncated"
+          >
             {{ format(proposal, selectedChoices) }}
           </span>
         </div>
@@ -78,9 +118,13 @@ async function handleSubmit() {
         </div>
         <div class="flex">
           <span v-text="$t('votingPower')" class="flex-auto text-color mr-1" />
+          <span v-if="vpLoadingFailed" class="flex item-center">
+            <Icon name="warning" size="22" class="text-red" />
+          </span>
           <span
+            v-else-if="vpLoaded && !vpLoading"
             v-tippy="{
-              content: scores
+              content: vpByStrategy
                 .map(
                   (score, index) =>
                     `${formatCompactNumber(score)} ${symbols[index]}`
@@ -88,18 +132,20 @@ async function handleSubmit() {
                 .join(' + ')
             }"
           >
-            {{ formatCompactNumber(totalScore) }}
+            {{ formatCompactNumber(vp) }}
             {{ shorten(space.symbol, 'symbol') }}
           </span>
+          <span v-else><UiLoading /></span>
           <a
-            v-if="totalScore === 0"
+            v-if="vp === 0 && vpLoaded && !vpLoading && !vpLoadingFailed"
             target="_blank"
-            href="https://github.com/snapshot-labs/snapshot/discussions/1015#discussioncomment-1599447"
-            class="inline-block -mt-1 ml-1"
+            href="https://github.com/snapshot-labs/snapshot/discussions/767#discussioncomment-1400614"
+            class="inline-block ml-1"
           >
             <Icon name="info" size="24" class="text-color" />
           </a>
         </div>
+        <div v-if="vpLoadingFailed" class="mt-3">{{ t('vpError') }}</div>
       </div>
     </div>
     <template v-slot:footer>
@@ -110,7 +156,7 @@ async function handleSubmit() {
       </div>
       <div class="w-2/4 float-left pl-2">
         <UiButton
-          :disabled="totalScore === 0 || clientLoading"
+          :disabled="vp === 0 || clientLoading"
           :loading="clientLoading"
           @click="handleSubmit"
           type="submit"

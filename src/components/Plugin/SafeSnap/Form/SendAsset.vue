@@ -1,10 +1,9 @@
 <script>
-import Plugin from '@/../snapshot-plugins/src/plugins/safeSnap';
-import { isAddress } from '@ethersproject/address';
-import {
+import Plugin, {
   getERC721TokenTransferTransactionData,
   sendAssetToModuleTransaction
-} from '@/helpers/abi/utils';
+} from '@/../snapshot-plugins/src/plugins/safeSnap';
+import { isAddress } from '@ethersproject/address';
 import { shorten } from '@/helpers/utils';
 
 export default {

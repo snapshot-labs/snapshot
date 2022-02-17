@@ -5,6 +5,9 @@
   "backToHome": "Home",
   "actions": "Actions",
   "results": "Results",
+  "resultsError": "Results could not be calculated. This is often due to a misconfigured strategy or a scaling issue in a smart contract.",
+  "vpError": "Your voting power could not be calculated. This is often due to a misconfigured strategy or a scaling issue in a smart contract.",
+  "getHelp": "Get help",
   "currentResults": "Current results",
   "reset": "Reset",
   "save": "Save",
@@ -51,7 +54,7 @@
   "confirmRemove": "Are you sure you want to remove your delegation to",
   "removeSpace": "for the space {0}",
   "confirmVote": "Confirm vote",
-  "sureToVote": "Are you sure you want to vote \"{0}\"?",
+  "sureToVote": "Are you sure you want to cast this vote?",
   "cannotBeUndone": "This action cannot be undone.",
   "options": "Option(s)",
   "votingPower": "Your voting power",
@@ -117,6 +120,10 @@
   "duplicateProposal": "Duplicate proposal",
   "joinedSpaces": "Joined spaces",
   "joinSpaces": "Join spaces",
+  "setDelegationToSpace": "Limit delegation to a specific space",
+  "theCurrentNetwork": "the current network",
+  "optional": "(optional)",
+  "homeLoadmore": "Load more",
   "errors": {
     "required": "Field is required",
     "minLength": "Minimum length is {0}",
@@ -130,7 +137,7 @@
   "create": {
     "question": "Ask a question...",
     "categorie(s)": "Select up to 2 categorie(s)",
-    "content": "Tell more about your proposal (optional)",
+    "content": "Tell us more about your proposal (optional)",
     "preview": "Preview",
     "choices": "Choices",
     "addChoice": "Add choice",
@@ -139,7 +146,24 @@
     "startTime": "Select start time",
     "endTime": "Select end time",
     "publish": "Publish",
+    "untitled": "Untitled",
     "snapshotBlock": "Snapshot block number",
+    "voting": "Voting",
+    "votingSystem": "Voting system",
+    "choice": "Choice {0}",
+    "period": "Voting period",
+    "start": "Start",
+    "end": "End",
+    "days": "Days",
+    "hours": "Hours",
+    "minutes": "Minutes",
+    "schedule": "Schedule proposal",
+    "delayEnforced": "The space enforces a delay until voting can start",
+    "periodEnforced": "The space enforces the duration of the voting period",
+    "edit": "Edit",
+    "continue": "Continue",
+    "now": "Now",
+    "votingPeriodExplainer": "This is the time period in which users will be able to vote. The proposal will be visible and pending before the start of the voting period.",
     "validationWarning": {
       "basic": {
         "member": "You need to be an author of the space in order to submit a proposal.",
@@ -153,12 +177,19 @@
     "selectDelegate": "Select delegate",
     "to": "To",
     "addressPlaceholder": "Address or ENS name",
-    "spacePlaceholder": "Space (optional)",
     "delegations": "Your delegation(s)",
     "allSpaces": "For all spaces",
     "delegated": "Delegated to you",
     "pendingTransaction": "no pending transaction | 1 pending transaction | {count} pending transactions",
-    "topDelegates": "Top delegates"
+    "topDelegates": "Top delegates",
+    "noDelegatesFoundFor": "No delegates found for {0}",
+    "noValidEns": "Not a valid ENS address.",
+    "noValidAddress": "Not a valid address",
+    "delegateToSelf": "You cannot delegate to yourself",
+    "delegateToSelfAddress": "You cannot delegate to your own ENS address",
+    "noValidSpaceId": "Not a valid space ID",
+    "noDelegationsAndDelegates": "Can't find your delegations and delegates? Make sure you are connected to the correct network.",
+    "delegateNotSupported": "Delegation is currently not supported for {network}."
   },
   "proposal": {
     "castVote": "Cast your vote",
@@ -172,6 +203,8 @@
     "new": "New proposal",
     "noProposals": "There aren't any proposals here yet!",
     "createProposal": "Create proposal",
+    "showMore": "Show more",
+    "showLess": "Show less",
     "states": {
       "all": "All",
       "core": "Core",
@@ -230,7 +263,8 @@
     "toCreateASpace": "To create a space, you first need an ENS domain. Enter one below and follow the ENS registration instructions.",
     "createASpace": "Create a space",
     "registerEnsButton": "Register",
-    "supportedEnsTLDs": "Supported domain endings"
+    "supportedEnsTLDs": "Supported domain endings",
+    "helpDocsAndDiscordLinks": "Not sure how to create a space? Learn more in the <a target='_blank' href='https://docs.snapshot.org/spaces/create'> documentation </a> or join Snapshot <a target='_blank' href='https://discord.gg/snapshot'>Discord</a>."
   },
   "notify": {
     "youDidIt": "You did it!",
@@ -332,7 +366,8 @@
       "connectWallet": "Connect wallet to see execution details",
       "switchChain": "Switch your wallet to {0} to request execution",
       "question": "Did this proposal pass and does it meet the",
-      "criteria": "acceptance criteria?"
+      "criteria": "acceptance criteria?",
+      "proposalPassed": "Did the proposal pass?"
     }
   },
   "poap": {

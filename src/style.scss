@@ -64,16 +64,14 @@
 
 @layer utilities {
   // This allows us to use 'no-scrollbar' with Tailwind breakpoints like this 'md:no-scrollbar'
-  @variants responsive {
-    /* Chrome, Safari and Opera */
-    .no-scrollbar::-webkit-scrollbar {
-      display: none;
-    }
+  /* Chrome, Safari and Opera */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
 
-    .no-scrollbar {
-      -ms-overflow-style: none; /* IE and Edge */
-      scrollbar-width: none; /* Firefox */
-    }
+  .no-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
   }
 }
 
@@ -271,6 +269,10 @@ input[type='number']::-webkit-inner-spin-button,
 input[type='number']::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
+}
+
+input[type='number'] {
+  -moz-appearance: textfield;
 }
 
 .tippy-box[data-animation='fade'][data-state='hidden'] {
