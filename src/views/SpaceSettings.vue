@@ -79,7 +79,7 @@ const textRecord = computed(() => {
   return `ipns://storage.snapshot.page/registry/${address}/${keyURI}`;
 });
 
-const isSpaceOwner = computed(() => {
+const isSpaceController = computed(() => {
   return currentTextRecord.value === textRecord.value;
 });
 
@@ -88,7 +88,7 @@ watch(
   async () => {
     // Check if the connected wallet is the space owner and add address to admins
     // if not already present
-    if (isSpaceOwner.value) {
+    if (isSpaceController.value) {
       if (!form.value.admins.includes(web3Account.value)) {
         form.value.admins.push(web3Account.value);
       }
@@ -426,7 +426,7 @@ onMounted(() => {
             </template>
           </UiInput>
         </Block>
-        <Block :title="$t('settings.admins')" v-if="isSpaceOwner">
+        <Block :title="$t('settings.admins')" v-if="isSpaceController">
           <Block
             :style="`border-color: red !important`"
             v-if="inputError('admins')"
@@ -614,7 +614,7 @@ onMounted(() => {
     </template>
     <template #sidebar-right>
       <div
-        v-if="(loaded && isSpaceOwner) || (loaded && isSpaceAdmin)"
+        v-if="(loaded && isSpaceController) || (loaded && isSpaceAdmin)"
         class="lg:fixed lg:w-[300px]"
       >
         <Block :title="$t('actions')">
@@ -641,7 +641,7 @@ onMounted(() => {
       </div>
       <BaseMessageBlock
         level="warning"
-        v-if="!(isSpaceOwner || isSpaceAdmin) && currentTextRecord"
+        v-if="!(isSpaceController || isSpaceAdmin) && currentTextRecord"
       >
         {{ $t('settings.connectWithSpaceOwner') }}
       </BaseMessageBlock>
