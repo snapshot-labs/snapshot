@@ -222,7 +222,7 @@
     "header": "Settings",
     "setEnsTextRecord": "Set ENS text record",
     "editController": "Edit controller",
-    "needToSetEnsText": "Before you can edit your space settings you need to set a ENS text record.",
+    "needToSetEnsText": "Your space settings will be stored in a file on IPFS. Before you can edit them, you need to set an ENS text record pointing to that file.",
     "profile": "Profile",
     "avatar": "Avatar",
     "name": "Name",
