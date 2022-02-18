@@ -10,7 +10,7 @@
     "init-submodules": "git submodule update --init"
   },
   "dependencies": {
-    "@apollo/client": "^3.5.8",
+    "@apollo/client": "^3.5.9",
     "@ensdomains/eth-ens-namehash": "^2.0.15",
     "@ethersproject/abi": "^5.4.0",
     "@ethersproject/address": "^5.4.0",
@@ -61,9 +61,9 @@
     "rollup-plugin-visualizer": "^5.5.4",
     "sass": "~1.49.7",
     "sass-loader": "^12.6.0",
-    "tailwindcss": "^3.0.22",
+    "tailwindcss": "^3.0.23",
     "unplugin-vue-components": "^0.17.18",
-    "vite": "^2.8.2"
+    "vite": "^2.8.3"
   },
   "resolutions": {
     "ansi-regex": "^5.0.1",
