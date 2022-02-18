@@ -280,7 +280,7 @@
     "textRecordExists": "当前空间管理员是 {address}。您可以使用下面的表单更新空间管理员。",
     "spaceOwnerAddressPlaceHolder": "例如：0xF78108c9BAF466dd96BE41be728Fe3220b37119",
     "controllerAddress": "管理员地址",
-    "updateENS": "更新空间管理员",
+    "updateController": "Update controller",
     "connectWithEnsController": "要修改空间管理员，您需要连接拥有 {ens} 的钱包",
     "seeOnEns": "在 ENS 上查看"
   },
