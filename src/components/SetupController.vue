@@ -168,7 +168,7 @@ onMounted(async () => {
               @click="clickSetRecord"
               :loading="settingENSRecord"
             >
-              {{ $t('setup.updateENS') }}
+              {{ $t('setup.updateController') }}
             </UiButton>
           </div>
           <div v-else-if="!currentTextRecord && ensOwner">
