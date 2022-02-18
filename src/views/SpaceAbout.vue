@@ -1,5 +1,5 @@
 <script setup>
-import { computed, watchEffect } from 'vue';
+import { computed, onMounted } from 'vue';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { useProfiles } from '@/composables/useProfiles';
 import { getUrl } from '@snapshot-labs/snapshot.js/src/utils';
@@ -7,9 +7,7 @@ import { useI18n } from '@/composables/useI18n';
 import { useIntl } from '@/composables/useIntl';
 
 const props = defineProps({
-  space: Object,
-  spaceLoading: Boolean,
-  spaceId: String
+  space: Object
 });
 
 const network = computed(() => networks[props.space?.network]);
@@ -18,12 +16,9 @@ const { formatCompactNumber } = useIntl();
 const { setPageTitle } = useI18n();
 const { profiles, loadProfiles } = useProfiles();
 
-watchEffect(() => {
+onMounted(() => {
   if (props.space?.admins)
     loadProfiles(props.space.admins.concat(props.space.members));
-});
-
-watchEffect(() => {
   if (props.space?.name)
     setPageTitle('page.title.space.about', { space: props.space.name });
 });
@@ -32,13 +27,13 @@ watchEffect(() => {
 <template>
   <Layout>
     <template #sidebar-left>
-      <SpaceSidebar :space="space" :spaceId="spaceId" />
+      <SpaceSidebar :space="space" />
     </template>
     <template #content-right>
       <div class="px-4 md:px-0 mb-3 flex">
         <h2>{{ $t('about') }}</h2>
       </div>
-      <Block :loading="!space">
+      <Block>
         <div v-if="space.about" class="mb-3">
           <h4 class="link-color mb-2">{{ $t('settings.about') }}</h4>
           <UiText :text="space.about" />
