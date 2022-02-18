@@ -17,7 +17,7 @@ watch(input, () => emit('update:modelValue', Number(input.value)));
   <SBase :definition="definition" :input="input">
     <input
       type="number"
-      v-model.number="input"
+      v-model="input"
       class="s-input"
       :placeholder="definition.examples && definition.examples[0]"
     />
