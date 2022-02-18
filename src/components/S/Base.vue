@@ -33,11 +33,11 @@ const error = computed(() => {
       <slot />
       <div
         :class="[
-          'bg-pink-100 text-red text-sm relative -z-10 transition-all duration-200 flex items-center px-3 pb-1 pt-4 rounded-b-3xl',
+          's-error',
           !!error ? '-mt-[21px] opacity-100' : '-mt-[52px] opacity-0'
         ]"
       >
-        <Icon name="warning" class="text-red-500 mr-2" />
+        <Icon name="warning" class="text-red mr-2" />
         {{ error || 'Not valid' }}
       </div>
     </div>
