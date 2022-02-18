@@ -280,7 +280,7 @@
     "textRecordExists": "Currently the space controller is {address}. You can update the space controller by using the form below.",
     "spaceOwnerAddressPlaceHolder": "e.g. 0xF78108c9BBaF466dd96BE41be728Fe3220b37119",
     "controllerAddress": "Controller address",
-    "updateENS": "Update space controller",
+    "updateController": "Update controller",
     "connectWithEnsController": "To modify the space controller you need to connect with the wallet that owns {ens}",
     "seeOnEns": "See on ENS"
   },
