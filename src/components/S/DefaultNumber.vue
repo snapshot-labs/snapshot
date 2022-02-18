@@ -2,13 +2,13 @@
 import { ref, watch } from 'vue';
 
 const props = defineProps<{
-  modelValue: number;
+  modelValue?: number;
   definition: any;
 }>();
 
 const emit = defineEmits(['update:modelValue']);
 
-const input = ref<number>(props.modelValue || props.definition.default);
+const input = ref(props.modelValue || props.definition.default);
 
 watch(input, () => emit('update:modelValue', Number(input.value)));
 </script>

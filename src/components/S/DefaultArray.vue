@@ -2,13 +2,13 @@
 import { onMounted, ref, watch } from 'vue';
 
 const props = defineProps<{
-  modelValue: string[];
+  modelValue?: string[];
   definition: any;
 }>();
 
 const emit = defineEmits(['update:modelValue']);
 
-const input = ref<string[]>(props.modelValue || props.definition.default || []);
+const input = ref(props.modelValue || props.definition.default || []);
 
 onMounted(() => emit('update:modelValue', input.value));
 

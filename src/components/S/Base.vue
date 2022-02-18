@@ -4,7 +4,7 @@ import { useValidationErrors } from '@/composables/useValidationErrors';
 
 const props = defineProps<{
   definition: any;
-  input: boolean | number | string | string[];
+  input?: boolean | number | string | string[];
 }>();
 
 const showError = ref(false);
