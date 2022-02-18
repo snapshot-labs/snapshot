@@ -33,7 +33,7 @@ const spaceRoutes = [
     component: SpaceProposal
   },
   {
-    path: 'create/:from?',
+    path: 'create/:sourceProposal?',
     name: 'spaceCreate',
     component: SpaceCreate
   },
@@ -44,7 +44,7 @@ const spaceRoutes = [
     component: SpaceAbout
   },
   {
-    path: 'settings/:from?',
+    path: 'settings/:sourceSpace?',
     name: 'spaceSettings',
     component: SpaceSettings
   }
@@ -76,7 +76,7 @@ if (domain) {
   // prefix space routes with space domain (/:key).
   routes.push(
     { path: '/', name: 'home', component: Home },
-    { path: '/setup', name: 'setup', component: Setup },
+    { path: '/setup/:ensAddress?', name: 'setup', component: Setup },
     { path: '/networks', name: 'networks', component: Explore },
     { path: '/strategies', name: 'strategies', component: Explore },
     { path: '/plugins', name: 'plugins', component: Explore },

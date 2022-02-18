@@ -1,6 +1,6 @@
 <script setup>
 import { ref, watchEffect, computed, onMounted, inject, watch } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 import draggable from 'vuedraggable';
 import { useI18n } from '@/composables/useI18n';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
@@ -17,14 +17,14 @@ import { useWeb3 } from '@/composables/useWeb3';
 import { useClient } from '@/composables/useClient';
 import { useStore } from '@/composables/useStore';
 import { useIntl } from '@/composables/useIntl';
+import { usePlugins } from '@/composables/usePlugins';
 
 const props = defineProps({
-  spaceId: String,
-  space: Object,
-  from: String
+  space: Object
 });
 
 const router = useRouter();
+const route = useRoute();
 const { t, setPageTitle } = useI18n();
 const { formatCompactNumber } = useIntl();
 const auth = getInstance();
@@ -32,6 +32,8 @@ const { domain } = useDomain();
 const { web3, web3Account } = useWeb3();
 const { send, clientLoading } = useClient();
 const { store } = useStore();
+const { pluginIndex } = usePlugins();
+
 const notify = inject('notify');
 
 const choices = ref([]);
@@ -59,12 +61,14 @@ const proposal = computed(() =>
   Object.assign(form.value, { choices: choices.value })
 );
 
+const sourceProposal = computed(() => route.params.sourceProposal);
+
 // Check if account passes space validation
 watch(
-  () => [props.space, web3Account.value],
+  () => web3Account.value,
   async () => {
     validationLoading.value = true;
-    if (props.space && web3Account.value && auth.isAuthenticated.value) {
+    if (web3Account.value && auth.isAuthenticated.value) {
       const validationName = props.space.validation?.name ?? 'basic';
       const validationParams = props.space.validation?.params ?? {};
       const isValid = await validations[validationName](
@@ -160,7 +164,7 @@ async function handleSubmit() {
     router.push({
       name: 'spaceProposal',
       params: {
-        key: props.spaceId,
+        key: props.space.id,
         id: result.id
       }
     });
@@ -168,7 +172,7 @@ async function handleSubmit() {
 }
 
 const { modalAccountOpen } = useModal();
-const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(props.spaceId);
+const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(props.space.id);
 
 const { apolloQuery, queryLoading } = useApolloQuery();
 
@@ -178,7 +182,7 @@ async function loadProposal() {
     {
       query: PROPOSAL_QUERY,
       variables: {
-        id: props.from
+        id: sourceProposal.value
       }
     },
     'proposal'
@@ -212,13 +216,12 @@ watch(nameInput, () => nameInput?.value?.focus());
 
 onMounted(async () => {
   addChoices(2);
-  if (props.from) loadProposal();
+  if (sourceProposal.value) loadProposal();
 });
 
-watchEffect(() => {
-  if (props.space?.name)
-    setPageTitle('page.title.space.create', { space: props.space.name });
-});
+onMounted(() =>
+  setPageTitle('page.title.space.create', { space: props.space.name })
+);
 
 watchEffect(async () => {
   loadingSnapshot.value = true;
@@ -279,9 +282,6 @@ watch(currentStep, () => {
     form.value.start = parseInt((Date.now() / 1e3).toFixed());
 });
 
-import { usePlugins } from '@/composables/usePlugins';
-const { pluginIndex } = usePlugins();
-
 // Check if has plugins that can be confirgured on proposal creation
 const needsPluginConfigs = computed(() =>
   Object.keys(props.space?.plugins ?? {}).some(
@@ -305,7 +305,8 @@ const needsPluginConfigs = computed(() =>
 
       <!-- Shows when no wallet is connected and the space has any sort 
       of validation set -->
-      <BaseWarningBlock
+      <BaseMessageBlock
+        level="warning"
         v-if="
           !web3Account &&
           !web3.authLoading &&
@@ -313,7 +314,6 @@ const needsPluginConfigs = computed(() =>
             space?.filters.minScore ||
             space?.filters.onlyMembers)
         "
-        :routeObject="{ name: 'spaceAbout', params: { key: space.id } }"
       >
         <span v-if="space?.filters.onlyMembers">
           {{ $t('create.validationWarning.basic.member') }}
@@ -330,13 +330,16 @@ const needsPluginConfigs = computed(() =>
             ])
           }}
         </span>
-      </BaseWarningBlock>
+        <div>
+          <BaseAnchor
+            :link="{ name: 'spaceAbout', params: { key: space.id } }"
+            >{{ t('learnMore') }}</BaseAnchor
+          >
+        </div>
+      </BaseMessageBlock>
 
       <!-- Shows when wallet is connected and doesn't pass validaion -->
-      <BaseWarningBlock
-        v-else-if="passValidation[0] === false"
-        :routeObject="{ name: 'spaceAbout', params: { key: space.id } }"
-      >
+      <BaseMessageBlock level="warning" v-else-if="passValidation[0] === false">
         <span v-if="passValidation[1] === 'basic'">
           <span v-if="space?.filters.onlyMembers">
             {{ $t('create.validationWarning.basic.member') }}
@@ -362,7 +365,13 @@ const needsPluginConfigs = computed(() =>
             )
           }}
         </span>
-      </BaseWarningBlock>
+        <div>
+          <BaseAnchor
+            :link="{ name: 'spaceAbout', params: { key: space.id } }"
+            >{{ t('learnMore') }}</BaseAnchor
+          >
+        </div>
+      </BaseMessageBlock>
       <template v-if="currentStep === 1">
         <div class="px-4 md:px-0">
           <div class="flex flex-col mb-6">
@@ -559,7 +568,7 @@ const needsPluginConfigs = computed(() =>
       <template v-else>
         <div class="h-[1px] w-full" />
         <PluginCreate
-          v-if="space?.plugins && (!from || sourceProposalLoaded)"
+          v-if="space?.plugins && (!sourceProposal || sourceProposalLoaded)"
           :proposal="proposal"
           :space="space"
           :preview="preview"
@@ -613,7 +622,7 @@ const needsPluginConfigs = computed(() =>
       </Block>
     </template>
   </Layout>
-  <teleport to="#modal" v-if="space">
+  <teleport to="#modal">
     <ModalSelectDate
       :selectedDate="selectedDate"
       :open="modalDateSelectOpen"
