@@ -3,8 +3,8 @@ import { ref, watch, computed } from 'vue';
 import { useValidationErrors } from '@/composables/useValidationErrors';
 
 const props = defineProps<{
-  definition: { title: string; description?: string };
-  input: string;
+  definition: any;
+  input: boolean | number | string | string[];
 }>();
 
 const showError = ref(false);

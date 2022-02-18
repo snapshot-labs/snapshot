@@ -1,20 +1,20 @@
-<script setup>
+<script setup lang="ts">
 import { ref, watch } from 'vue';
 
-import DefaultObject from './DefaultObject.vue';
+import * as DefaultObject from './DefaultObject.vue';
 import DefaultArray from './DefaultArray.vue';
 import DefaultString from './DefaultString.vue';
 import DefaultNumber from './DefaultNumber.vue';
 import DefaultBoolean from './DefaultBoolean.vue';
 
-const props = defineProps({
-  modelValue: Object,
-  definition: Object
-});
+const props = defineProps<{
+  modelValue: {};
+  definition: any;
+}>();
 
 const emit = defineEmits(['update:modelValue']);
 
-const input = ref(props.modelValue || props.definition.default || {});
+const input = ref<{}>(props.modelValue || props.definition.default || {});
 
 const getComponent = name => {
   switch (name) {
