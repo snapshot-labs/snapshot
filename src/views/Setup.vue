@@ -149,7 +149,7 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
           </div>
         </Block>
       </template>
-      <Block v-else class="px-4 md:px-0">
+      <Block v-else>
         <UiButton
           @click="modalAccountOpen = true"
           :loading="web3.authLoading"
