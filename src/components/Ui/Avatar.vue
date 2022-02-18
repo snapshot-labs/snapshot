@@ -14,12 +14,14 @@ const showImg = ref(false);
 watch(
   () => props.imgsrc,
   () => {
-    const img = new Image();
-    img.onload = () => {
-      imgUrl.value = img.src;
-      showImg.value = true;
-    };
-    img.src = props.imgsrc;
+    if (props.space) {
+      const img = new Image();
+      img.onload = () => {
+        imgUrl.value = img.src;
+        showImg.value = true;
+      };
+      img.src = props.imgsrc;
+    }
   },
   { immediate: true }
 );
