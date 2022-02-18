@@ -63,7 +63,7 @@ watch(
         props.proposal
       );
       vp.value = response.totalScore;
-      vpByStrategy.value = response.scores;
+      vpByStrategy.value = response.scoresByStrategy;
     } catch (e) {
       vpLoadingFailed.value = true;
       console.log(e);

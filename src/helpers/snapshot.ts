@@ -102,7 +102,7 @@ export async function getResults(space, proposal, votes) {
 export async function getPower(space, address, proposal) {
   console.log('[score] getPower');
   const strategies = proposal.strategies ?? space.strategies;
-  let scores: any = await getScores(
+  const scores: any = await getScores(
     space.id,
     strategies,
     proposal.network,
@@ -110,11 +110,12 @@ export async function getPower(space, address, proposal) {
     parseInt(proposal.snapshot),
     import.meta.env.VITE_SCORES_URL + '/api/scores'
   );
-  scores = scores.map((score: any) =>
-    Object.values(score).reduce((a, b: any) => a + b, 0)
+  const scoresByStrategy = strategies.map(
+    (strategy, i) => scores[i][address] || 0
   );
+
   return {
-    scores,
-    totalScore: scores.reduce((a, b: any) => a + b, 0)
+    scoresByStrategy,
+    totalScore: scoresByStrategy.reduce((a, b: any) => a + b, 0)
   };
 }
