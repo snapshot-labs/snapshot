@@ -9,10 +9,10 @@
   dependencies:
     "@types/throttle-debounce" "^2.1.0"
 
-"@apollo/client@^3.5.8":
-  version "3.5.8"
-  resolved "https://registry.yarnpkg.com/@apollo/client/-/client-3.5.8.tgz#7215b974c5988b6157530eb69369209210349fe0"
-  integrity sha512-MAm05+I1ullr64VLpZwon/ISnkMuNLf6vDqgo9wiMhHYBGT4yOAbAIseRdjCHZwfSx/7AUuBgaTNOssZPIr6FQ==
+"@apollo/client@^3.5.9":
+  version "3.5.9"
+  resolved "https://registry.yarnpkg.com/@apollo/client/-/client-3.5.9.tgz#306c1f8453d56dbb4ff1afaaaf16b3b719db696c"
+  integrity sha512-Qq3OE3GpyPG2fYXBzi1n4QXcKZ11c6jHdrXK2Kkn9SD+vUymSrllXsldqnKUK9tslxKqkKzNrkCXkLv7PxwfSQ==
   dependencies:
     "@graphql-typed-document-node/core" "^3.0.0"
     "@wry/context" "^0.6.0"
@@ -1012,10 +1012,10 @@
     estree-walker "^2.0.1"
     picomatch "^2.2.2"
 
-"@snapshot-labs/lock@^0.1.5":
-  version "0.1.5"
-  resolved "https://registry.yarnpkg.com/@snapshot-labs/lock/-/lock-0.1.5.tgz#1d8c256871f8ad5ccbdb375202932524dbb587bd"
-  integrity sha512-99vFVDU+KcHxSRHRbqCGIeKXzxom3h1hkfcB/TeUFnv79LuYAg0bBRfYzNR0/ZkcwTc73eJXpAfXwTLoT7FPSQ==
+"@snapshot-labs/lock@^0.1.6":
+  version "0.1.6"
+  resolved "https://registry.yarnpkg.com/@snapshot-labs/lock/-/lock-0.1.6.tgz#3ace3089f954e76643fc0876be29cfd64ca234ea"
+  integrity sha512-EC1meQuS/CTh5KiH7yPH0+GeFZakKGDuy9Rixv/oc7WADVztaUOFTtwZJ3xIc1UIEhhXCqXVR9ESO34cCO2qwQ==
   dependencies:
     "@gnosis.pm/safe-apps-provider" "^0.8.0"
     "@gnosis.pm/safe-apps-sdk" "^6.1.1"
@@ -1025,10 +1025,10 @@
     fortmatic "^2.2.1"
     walletlink "^2.4.0"
 
-"@snapshot-labs/snapshot.js@^0.3.44":
-  version "0.3.44"
-  resolved "https://registry.yarnpkg.com/@snapshot-labs/snapshot.js/-/snapshot.js-0.3.44.tgz#123fa7b5b648bd8d0afc410e40986952b4d77671"
-  integrity sha512-11y+vcS5Uwa9YH+gFllNEHPTKngX/I48+HsgTig3tESu0IyfxwdyfNhTxKv5JNOsXL4X9XsozmW0Kbrpvkvm1w==
+"@snapshot-labs/snapshot.js@^0.3.48":
+  version "0.3.48"
+  resolved "https://registry.yarnpkg.com/@snapshot-labs/snapshot.js/-/snapshot.js-0.3.48.tgz#136a68d1e99a457ff4d709a08e2cc54a713b0ae4"
+  integrity sha512-2kjS1EROT8QmuWPVYFsSfl9BYET/iIvwsP0gT7ltg++8pOcSJTUUGTFpToP+z+K+OKoBpsihKC5xuN9sK/NycA==
   dependencies:
     "@ethersproject/abi" "^5.0.4"
     "@ethersproject/bytes" "^5.0.8"
@@ -5925,10 +5925,10 @@ table@^6.0.9:
     string-width "^4.2.0"
     strip-ansi "^6.0.0"
 
-tailwindcss@^3.0.22:
-  version "3.0.22"
-  resolved "https://registry.yarnpkg.com/tailwindcss/-/tailwindcss-3.0.22.tgz#5f1aac83810261300ae5b2f98fd4a2fa2ded2c42"
-  integrity sha512-F8lt74RlNZirnkaSk310+vGQta7c0/hgx7/bqxruM4wS9lp8oqV93lzavajC3VT0Lp4UUtUVIt8ifKcmGzkr0A==
+tailwindcss@^3.0.23:
+  version "3.0.23"
+  resolved "https://registry.yarnpkg.com/tailwindcss/-/tailwindcss-3.0.23.tgz#c620521d53a289650872a66adfcb4129d2200d10"
+  integrity sha512-+OZOV9ubyQ6oI2BXEhzw4HrqvgcARY38xv3zKcjnWtMIZstEsXdI9xftd1iB7+RbOnj2HOEzkA0OyB5BaSxPQA==
   dependencies:
     arg "^5.0.1"
     chalk "^4.1.2"
@@ -6239,10 +6239,10 @@ verror@1.10.0:
     core-util-is "1.0.2"
     extsprintf "^1.2.0"
 
-vite@^2.8.2:
-  version "2.8.2"
-  resolved "https://registry.yarnpkg.com/vite/-/vite-2.8.2.tgz#6bced4a0a8b0db24636f5159c3f371c156521a58"
-  integrity sha512-zawfykcPVPYva4KusIWORNLr324Qx86/3NpfQSIOJdjnL5pYhwDoImLYMOh4lFLcP/7//tNuWM2vx2F5OSVC9w==
+vite@^2.8.3:
+  version "2.8.3"
+  resolved "https://registry.yarnpkg.com/vite/-/vite-2.8.3.tgz#bb9b7f1f1446d2e538e81026f48d2fe9f1926963"
+  integrity sha512-967klrEiG7HEsN7fQYYVETs5495Iu6GpI7YyxoO5yVTJCRxjV8HhWgNWKgrbazjoOB9DQuztL53/nUoNqHNsWg==
   dependencies:
     esbuild "^0.14.14"
     postcss "^8.4.6"
