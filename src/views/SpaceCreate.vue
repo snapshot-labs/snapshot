@@ -392,19 +392,11 @@ const needsPluginConfigs = computed(() =>
               <TextareaAutosize
                 v-if="!preview"
                 v-model="form.body"
-                class="input pt-0 w-full"
+                class="input w-full"
                 style="font-size: 22px"
                 :placeholder="$t('create.content')"
                 :max-length="bodyLimit"
               />
-
-              <!-- Indicator for number of available characters in body -->
-              <div
-                class="absolute right-0 bottom-2 hidden group-focus-within:block p-1 bg-skin-bg"
-                :class="{ 'text-red': form.body.length === bodyLimit }"
-              >
-                {{ `${form.body.length} / ${bodyLimit}` }}
-              </div>
             </div>
 
             <div v-if="form.body && preview" class="mb-4">
