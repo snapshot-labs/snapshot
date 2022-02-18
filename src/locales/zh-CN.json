@@ -218,7 +218,7 @@
   "settings": {
     "header": "设置",
     "setEnsTextRecord": "设置 ENS 文本记录",
-    "editController": "编辑控制栏",
+    "editController": "编辑管理员",
     "needToSetEnsText": "您的空间设置将保存在IPFS文件中。 在您可以编辑他们之前，您需要设置一个 ENS 文本记录指向该文件。",
     "profile": "用户信息",
     "avatar": "头像",
@@ -271,12 +271,12 @@
     "setSpaceController": "在 ENS 上设置管理员",
     "editSpaceController": "在 ENS 上设置管理员",
     "setController": "设置管理员",
-    "explainControllerAndEns": "此操作需要在以太坊主网上交易，它将向您的 ENS 域添加一个“快照”文本记录。",
+    "explainControllerAndEns": "此操作需要在Ethereum Mainnet上进行交易，该交易会将“snapshot”文本记录添加到您的 ENS 域。",
     "confirmToSetAddress": "您确定要设置 {address} 作为空间的管理员吗？",
     "controllerHasAuthority": "管理员对空间设置拥有所有权限",
     "controller": "管理员",
     "selectEnsForSpace": "选择ENS地址",
-    "spaceNeedsEnsAddress": "若要在快照上设置空间，您需要一个以太坊主网上的 ENS 地址",
+    "spaceNeedsEnsAddress": "要在Snapshot上设置空间，您需要一个Ethereum Mainnet上的ENS地址",
     "textRecordExists": "当前空间管理员是 {address}。您可以使用下面的表单更新空间管理员。",
     "spaceOwnerAddressPlaceHolder": "例如：0xF78108c9BAF466dd96BE41be728Fe3220b37119",
     "controllerAddress": "管理员地址",
@@ -463,9 +463,9 @@
     "year": "1 年 | {n} 年"
   },
   "unsupportedNetwork": {
-    "unsupportedNetwork": "此网络尚不支持",
-    "ensOnlyMainnet": "快照仅支持以太坊主网的网络环境。创建空间后，您可以在多个链中使用它。",
+    "unsupportedNetwork": "不支持的网络",
+    "ensOnlyMainnet": "Snapshot仅支持以太坊主网上的 ENS。 创建空间后，您可以跨链使用它。",
     "switchNetworkToMainnet": "若要继续，您需要将你钱包中的网络更改为Ethereum Mainnet。",
-    "switchToMainnet": "切换到主网"
+    "switchToMainnet": "切换到Mainnet"
   }
 }
