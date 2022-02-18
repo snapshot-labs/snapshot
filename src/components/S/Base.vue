@@ -1,5 +1,29 @@
-<script setup>
-defineProps({ definition: Object, error: String });
+<script setup lang="ts">
+import { ref, watch, computed } from 'vue';
+import { useValidationErrors } from '@/composables/useValidationErrors';
+
+const props = defineProps<{
+  definition: { title: string; description?: string };
+  input: string;
+}>();
+
+const showError = ref(false);
+
+watch(
+  () => props.input,
+  () => {
+    showError.value = true;
+  }
+);
+
+const { getValidationErrors } = useValidationErrors();
+
+const error = computed(() => {
+  if (showError.value) {
+    return getValidationErrors(props.definition, props.input);
+  }
+  return '';
+});
 </script>
 
 <template>

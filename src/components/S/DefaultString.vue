@@ -1,6 +1,5 @@
 <script setup>
-import { ref, watch, computed } from 'vue';
-import { useValidationErrors } from '@/composables/useValidationErrors';
+import { ref, watch } from 'vue';
 
 const props = defineProps({
   modelValue: String,
@@ -11,25 +10,13 @@ const emit = defineEmits(['update:modelValue']);
 
 const input = ref(props.modelValue || props.definition.default || undefined);
 
-const showError = ref(false);
-
 watch(input, () => {
-  showError.value = true;
   emit('update:modelValue', input.value);
-});
-
-const { getValidationErrors } = useValidationErrors();
-
-const error = computed(() => {
-  if (showError.value) {
-    return getValidationErrors(props.definition, input.value);
-  }
-  return '';
 });
 </script>
 
 <template>
-  <SBase :definition="definition" :error="error">
+  <SBase :definition="definition" :input="input">
     <input
       type="text"
       v-model="input"
