@@ -12,7 +12,7 @@ const { web3 } = useWeb3();
 
 const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(props.space.id);
 
-const { clickFollow, loadingFollow, isFollowing, hoverJoin } = useFollowSpace(
+const { clickFollow, loadingFollow, isFollowing } = useFollowSpace(
   props.space.id
 );
 
@@ -39,17 +39,28 @@ const canFollow = computed(() => {
           ? clickFollow(space.id)
           : (modalTermsOpen = true)
       "
-      @mouseenter="hoverJoin = space.id"
-      @mouseleave="hoverJoin = ''"
       :loading="loadingFollow === space.id"
       :disabled="isGnosisSafe || web3.isTrezor"
       style="width: 120px"
-      class="mb-4"
+      no-focus
+      class="mb-4 group"
       :class="{
-        '!border-red !text-red !bg-opacity-5 !bg-red': isFollowing && hoverJoin
+        'hover:!border-red hover:!text-red hover:!bg-opacity-5 hover:!bg-red':
+          isFollowing
       }"
     >
-      {{ isFollowing ? (hoverJoin ? $t('leave') : $t('joined')) : $t('join') }}
+      <span :class="[{ 'group-hover:block': isFollowing }, 'hidden']">
+        {{ $t('leave') }}
+      </span>
+      <span
+        :class="[
+          { 'group-hover:hidden': isFollowing },
+          { hidden: !isFollowing }
+        ]"
+      >
+        {{ $t('joined') }}
+      </span>
+      <span :class="{ hidden: !!isFollowing }"> {{ $t('join') }} </span>
     </UiButton>
   </div>
   <teleport to="#modal">
