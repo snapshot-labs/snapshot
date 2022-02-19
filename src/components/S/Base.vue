@@ -37,7 +37,10 @@ const error = computed(() => {
           !!error ? '-mt-[21px] opacity-100' : '-mt-[52px] opacity-0'
         ]"
       >
-        <Icon name="warning" class="text-red mr-2" />
+        <Icon
+          name="warning"
+          class="text-red dark:text-white dark:text-opacity-90 mr-2"
+        />
         {{ error || 'Not valid' }}
       </div>
     </div>
