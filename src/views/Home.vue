@@ -123,11 +123,6 @@ onMounted(() => {
                   size="82"
                   class="mb-1"
                 />
-                <UiCounter
-                  v-if="space.activeProposals"
-                  :counter="space.activeProposals"
-                  class="absolute top-0 right-0 !bg-green"
-                />
               </div>
               <h3
                 v-text="shorten(space.name, 16)"
