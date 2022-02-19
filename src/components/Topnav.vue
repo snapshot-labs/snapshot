@@ -25,7 +25,7 @@ async function handleLogin(connector) {
 </script>
 
 <template>
-  <div class="h-[78px]" />
+  <div :class="pendingCount ? 'h-[118px]' : 'h-[78px]'" />
   <div
     class="fixed w-screen top-0 left-0 z-20"
     :class="{ 'sm:ml-[67px] sm:w-[calc(100vw-67px)]': !domain }"
@@ -57,9 +57,6 @@ async function handleLogin(connector) {
                 class="flex items-center float-left"
               >
                 <UiAvatar
-                  :imgsrc="
-                    web3.profile?.image ? getIpfsUrl(web3.profile.image) : ''
-                  "
                   :address="web3.account"
                   size="18"
                   class="-mr-1 sm:mr-2 md:mr-2 lg:mr-2 xl:mr-2 -ml-1"
