@@ -17,8 +17,7 @@ const {
 
 const props = defineProps({
   proposal: Object,
-  profiles: Object,
-  space: Object
+  profiles: Object
 });
 
 const body = computed(() => removeMd(props.proposal.body));
@@ -69,7 +68,6 @@ const relativePeriod = computed(() => {
           <User
             :address="proposal.author"
             :profile="profiles[proposal.author]"
-            :space="space"
             :proposal="proposal"
             only-username
           />
