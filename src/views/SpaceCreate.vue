@@ -392,7 +392,7 @@ const needsPluginConfigs = computed(() =>
               <TextareaAutosize
                 v-if="!preview"
                 v-model="form.body"
-                class="input w-full"
+                class="input pt-0 w-full"
                 style="font-size: 22px"
                 :placeholder="$t('create.content')"
                 :max-length="bodyLimit"
