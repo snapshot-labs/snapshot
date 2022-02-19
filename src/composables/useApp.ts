@@ -97,7 +97,6 @@ export function useApp() {
     const q = route.query.q?.toString() || '';
     const list = Object.keys(explore.value.spaces)
       .map(key => {
-        const following = followingSpaces.value.some(s => s === key);
         const followers = explore.value.spaces[key].followers ?? 0;
         // const voters1d = explore.value.spaces[key].voters_1d ?? 0;
         const followers1d = explore.value.spaces[key].followers_1d ?? 0;
@@ -110,7 +109,6 @@ export function useApp() {
         );
         return {
           ...explore.value.spaces[key],
-          following,
           followers,
           private: explore.value.spaces[key].private ?? false,
           score,
@@ -123,11 +121,7 @@ export function useApp() {
         JSON.stringify(space).toLowerCase().includes(q.toLowerCase())
       );
 
-    return orderBy(
-      list,
-      ['following', 'testnet', 'score'],
-      ['desc', 'asc', 'desc']
-    );
+    return orderBy(list, ['score', 'testnet'], ['desc', 'asc', 'desc']);
   });
 
   const orderedSpacesByCategory = computed(() =>
