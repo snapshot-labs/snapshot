@@ -3,7 +3,6 @@ import { useRoute } from 'vue-router';
 import orderBy from 'lodash/orderBy';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { useWeb3 } from '@/composables/useWeb3';
-import { useFollowSpace } from '@/composables/useFollowSpace';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import verified from '@/../snapshot-spaces/spaces/verified.json';
 import verifiedSpacesCategories from '@/../snapshot-spaces/spaces/categories.json';
@@ -22,7 +21,6 @@ const { login } = useWeb3();
 
 export function useApp() {
   const route = useRoute();
-  const { followingSpaces } = useFollowSpace();
 
   async function init() {
     const auth = getInstance();

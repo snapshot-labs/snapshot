@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue';
-import { shorten, getIpfsUrl } from '@/helpers/utils';
+import { shorten } from '@/helpers/utils';
 import { useModal } from '@/composables/useModal';
 import { useDomain } from '@/composables/useDomain';
 import { useWeb3 } from '@/composables/useWeb3';

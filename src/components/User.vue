@@ -1,6 +1,6 @@
 <script setup>
 import { watchEffect } from 'vue';
-import { shorten, explorerUrl, getIpfsUrl } from '@/helpers/utils';
+import { shorten, explorerUrl } from '@/helpers/utils';
 import { useUsername } from '@/composables/useUsername';
 
 const props = defineProps({
