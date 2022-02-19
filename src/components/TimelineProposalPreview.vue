@@ -65,6 +65,7 @@ const relativePeriod = computed(() => {
               />
             </div>
           </router-link>
+          <span v-text="$tc('proposalBy')" />
           <User
             :address="proposal.author"
             :profile="profiles[proposal.author]"
@@ -72,7 +73,6 @@ const relativePeriod = computed(() => {
             :proposal="proposal"
             only-username
           />
-          <span v-text="$tc('proposalBy', [username])" />
           <Badges
             :address="proposal.author"
             :members="proposal.space.members"
