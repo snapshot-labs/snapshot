@@ -19,8 +19,8 @@ function selectCategory(c) {
   selectedCategory.value = c === selectedCategory.value ? '' : c;
 }
 
-const { getProposalIds } = useUnseenProposals();
-watchEffect(() => getProposalIds(followingSpaces.value));
+const { getProposals } = useUnseenProposals();
+watchEffect(() => getProposals(followingSpaces.value));
 
 // Scroll
 const loadBy = 16;
