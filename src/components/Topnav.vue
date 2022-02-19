@@ -57,9 +57,6 @@ async function handleLogin(connector) {
                 class="flex items-center float-left"
               >
                 <UiAvatar
-                  :imgsrc="
-                    web3.profile?.image ? getIpfsUrl(web3.profile.image) : ''
-                  "
                   :address="web3.account"
                   size="18"
                   class="-mr-1 sm:mr-2 md:mr-2 lg:mr-2 xl:mr-2 -ml-1"
