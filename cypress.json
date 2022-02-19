@@ -1,0 +1,5 @@
+{
+  "integrationFolder": "e2e/tests",
+  "downloadsFolder": "e2e/downloads",
+  "fixturesFolder": "e2e/fixtures"
+}

@@ -10,7 +10,8 @@
     "init-submodules": "git submodule update --init",
     "test": "vitest",
     "test:ui": "vitest --ui",
-    "coverage": "vitest run --coverage"
+    "coverage": "vitest run --coverage",
+    "cypress:open": "cypress open"
   },
   "dependencies": {
     "@apollo/client": "^3.5.9",
@@ -59,6 +60,7 @@
     "@vue/test-utils": "^2.0.0-rc.17",
     "autoprefixer": "^10.4.2",
     "c8": "^7.11.0",
+    "cypress": "^9.5.0",
     "eslint-plugin-prettier": "^3.4.0",
     "eslint-plugin-vue": "^7.15.1",
     "happy-dom": "^2.31.1",
