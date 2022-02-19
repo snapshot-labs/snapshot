@@ -45,6 +45,9 @@ const canFollow = computed(() => {
       :disabled="isGnosisSafe || web3.isTrezor"
       style="width: 120px"
       class="mb-4"
+      :class="{
+        '!border-red !text-red !bg-opacity-5 !bg-red': isFollowing && hoverJoin
+      }"
     >
       {{ isFollowing ? (hoverJoin ? $t('leave') : $t('joined')) : $t('join') }}
     </UiButton>
