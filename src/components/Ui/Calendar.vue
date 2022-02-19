@@ -76,21 +76,21 @@ function isSelectable(year, month, day) {
       <div class="w-1/4 text-left">
         <a
           v-show="isFutureMonth"
-          class="iconfont iconback text-lg font-bold text-color"
+          class="iconfont iconback text-lg font-bold text-skin-text"
           @click="month--"
         />
       </div>
       <h4 class="h-full w-full text-center">{{ monthName }} {{ fullYear }}</h4>
       <div class="w-1/4 text-right">
         <a
-          class="iconfont icongo text-lg font-bold text-color"
+          class="iconfont icongo text-lg font-bold text-skin-text"
           @click="month++"
         />
       </div>
     </div>
     <div class="border-l border-t overflow-hidden">
       <div
-        class="day border-b border-r link-color"
+        class="day border-b border-r text-skin-link"
         v-for="dayOfWeek in daysOfWeek"
         v-text="dayOfWeek"
         :key="dayOfWeek"
@@ -104,7 +104,7 @@ function isSelectable(year, month, day) {
         <a
           class="day border-b border-r selectable"
           :class="{
-            'header-bg': formatDate(year, month, day) === today,
+            'bg-skin-header-bg': formatDate(year, month, day) === today,
             selected: input.includes(formatDate(year, month, day))
           }"
           v-if="isSelectable(year, month, day)"

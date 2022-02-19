@@ -11,7 +11,7 @@ const { items } = useNotifications();
     <transition-group name="fade">
       <div v-for="item in items" :key="item.id" class="pointer-events-auto">
         <UiButton
-          class="notification flex items-center space-x-2 !border-none !bg-red"
+          class="flex items-center space-x-2 !border-none !bg-red text-white"
           :class="`!bg-${item.type}`"
           @click="item.remove()"
         >

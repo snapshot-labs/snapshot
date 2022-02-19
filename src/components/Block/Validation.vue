@@ -13,7 +13,7 @@ defineProps(['validation']);
     <div class="flex items-center mb-1">
       <h3 v-text="validation" />
     </div>
-    <div class="text-color">
+    <div class="text-skin-text">
       {{
         $tc('inSpaces', [
           formatCompactNumber(validationsSpacesCount?.[validation] ?? 0)

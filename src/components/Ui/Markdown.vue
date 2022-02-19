@@ -32,7 +32,7 @@ onMounted(() => {
       const copyButton = document.createElement('a');
       const icon = document.createElement('i');
       icon.classList.add('copy');
-      icon.classList.add('text-color');
+      icon.classList.add('text-skin-text');
       icon.classList.add('iconcopy');
       icon.classList.add('iconfont');
       copyButton.appendChild(icon);

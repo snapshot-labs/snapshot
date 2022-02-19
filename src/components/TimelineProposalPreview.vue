@@ -40,9 +40,9 @@ const relativePeriod = computed(() => {
 </script>
 
 <template>
-  <div class="transition-colors border-b last-child-border-0">
+  <div class="transition-colors border-b last:border-b-0">
     <router-link
-      class="p-4 block text-color"
+      class="p-4 block text-skin-text"
       :to="{
         name: 'spaceProposal',
         params: { key: proposal.space.id, id: proposal.id }
@@ -51,7 +51,7 @@ const relativePeriod = computed(() => {
       <div>
         <div class="mb-2 flex items-center space-x-1">
           <router-link
-            class="text-color group"
+            class="text-skin-text group"
             :to="{
               name: 'spaceProposals',
               params: { key: proposal.space.id }
@@ -93,7 +93,7 @@ const relativePeriod = computed(() => {
             :key="i"
             class="mt-1 w-full relative"
           >
-            <div class="absolute leading-[43px] ml-3 link-color">
+            <div class="absolute leading-[43px] ml-3 text-skin-link">
               <Icon
                 name="check1"
                 size="20"
@@ -101,7 +101,7 @@ const relativePeriod = computed(() => {
                 v-if="i === winningChoice"
               />
               {{ shorten(choice, 32) }}
-              <span class="text-color ml-1">
+              <span class="text-skin-text ml-1">
                 {{ formatCompactNumber(proposal.scores[i]) }}
                 {{ proposal.space.symbol }}
               </span>
@@ -112,7 +112,7 @@ const relativePeriod = computed(() => {
                   (1 / proposal.scores_total) * proposal.scores[i]
                 )
               "
-              class="absolute right-0 leading-[40px] mr-3 link-color"
+              class="absolute right-0 leading-[40px] mr-3 text-skin-link"
             />
             <div
               :style="`width: ${
