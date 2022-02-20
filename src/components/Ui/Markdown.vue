@@ -61,6 +61,11 @@ onMounted(() => {
   content: '';
 }
 
+.markdown-body blockquote {
+  color: var(--text-color);
+  border-left-color: var(--text-color);
+}
+
 .markdown-body::after {
   display: table;
   clear: both;

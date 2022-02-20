@@ -144,11 +144,6 @@ textarea {
   @apply border-skin-border;
 }
 
-.markdown-body blockquote {
-  color: var(--text-color);
-  border-left-color: var(--text-color);
-}
-
 .sidenav-item {
   &.router-link-exact-active {
     border-left: 3px solid;
