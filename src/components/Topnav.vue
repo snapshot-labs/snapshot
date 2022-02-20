@@ -25,7 +25,7 @@ async function handleLogin(connector) {
 </script>
 
 <template>
-  <div class="h-[78px]" />
+  <div :class="pendingCount ? 'h-[118px]' : 'h-[78px]'" />
   <div
     class="fixed w-screen top-0 left-0 z-20"
     :class="{ 'sm:ml-[67px] sm:w-[calc(100vw-67px)]': !domain }"
