@@ -384,7 +384,7 @@ const needsPluginConfigs = computed(() =>
               v-else
               v-model="form.name"
               maxlength="128"
-              class="text-2xl font-bold input mb-2 w-full"
+              class="text-2xl font-semibold input mb-2 w-full"
               :placeholder="$t('create.question')"
               ref="nameInput"
             />

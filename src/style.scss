@@ -42,6 +42,10 @@
     font-style: normal;
   }
 
+  * {
+    @apply outline-none;
+  }
+
   h1 {
     @apply text-2xl;
   }
@@ -55,10 +59,25 @@
     @apply text-md;
   }
 
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-semibold text-skin-heading;
+  }
+
   a,
   button,
   input {
     @apply transition-colors;
+  }
+
+  b {
+    @apply font-semibold;
+  }
+
+  select {
+    @apply bg-skin-bg;
   }
 }
 
@@ -75,77 +94,14 @@
   }
 }
 
+// Don't prevent overscroll on touch devices
 @media (pointer: fine) {
   body {
     overscroll-behavior-y: none;
   }
 }
 
-* {
-  outline: none;
-}
-
-h1,
-h2,
-h3,
-h4 {
-  color: var(--heading-color);
-  font-weight: 600;
-}
-
-b {
-  font-weight: 600;
-}
-
-a,
-.a {
-  color: var(--link-color);
-
-  &:hover {
-    cursor: pointer;
-    text-decoration: none;
-  }
-}
-
-::placeholder {
-  color: var(--text-color);
-  opacity: 0.6 !important;
-}
-
-.input {
-  outline: none;
-  color: var(--link-color);
-  background-color: transparent;
-  border: none;
-}
-
-textarea {
-  padding-top: 16px;
-  font-size: 20px;
-  line-height: 1.4em;
-}
-
-::-webkit-scrollbar-thumb {
-  background-color: var(--border-color);
-  background-clip: padding-box;
-  border: 0;
-  border-radius: 0;
-
-  &:hover {
-    background-color: var(--border-color);
-  }
-}
-
-.eyebrow {
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  font-size: 16px;
-}
-
-select {
-  background-color: var(--bg-color) !important;
-}
-
+// Fade transition for Vue's transition and transition-group
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.2s ease;
@@ -156,6 +112,35 @@ select {
   opacity: 0;
 }
 
+// TODO: Move this to BaseAnchor components
+a,
+.a {
+  color: var(--link-color);
+
+  &:hover {
+    cursor: pointer;
+    text-decoration: none;
+  }
+}
+
+// TODO: Move this and ::placeholder to a new BaseInput component
+.input {
+  @apply text-skin-link bg-transparent border-none;
+}
+
+::placeholder {
+  color: var(--text-color);
+  opacity: 0.6 !important;
+}
+
+// TODO: Move this to a new BaseTextarea component
+textarea {
+  padding-top: 16px;
+  font-size: 20px;
+  line-height: 1.4em;
+}
+
+// This seems to be needed for coin.scss skin, maybe it can be removed?
 .bg-black {
   background-color: var(--bg-color);
 }
@@ -167,24 +152,13 @@ select {
 .border-t,
 .border-r,
 .border-l {
-  border-color: var(--border-color);
-}
-
-.markdown-body blockquote {
-  color: var(--text-color);
-  border-left-color: var(--text-color);
+  @apply border-skin-border;
 }
 
 .sidenav-item {
   &.router-link-exact-active {
     border-left: 3px solid;
     padding-left: 21px;
-  }
-}
-
-.sidenav-item {
-  &.charts-selected-tab {
-    border-bottom: 3px solid;
   }
 }
 
@@ -198,6 +172,7 @@ input[type='number'] {
   -moz-appearance: textfield;
 }
 
+// V-Tippy tooltip package styling - could be moved somewhere else?
 .tippy-box[data-animation='fade'][data-state='hidden'] {
   opacity: 0;
 }

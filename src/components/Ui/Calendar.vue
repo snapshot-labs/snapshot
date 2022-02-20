@@ -76,14 +76,14 @@ function isSelectable(year, month, day) {
       <div class="w-1/4 text-left">
         <a
           v-show="isFutureMonth"
-          class="iconfont iconback text-lg font-bold text-skin-text"
+          class="iconfont iconback text-lg font-semibold text-skin-text"
           @click="month--"
         />
       </div>
       <h4 class="h-full w-full text-center">{{ monthName }} {{ fullYear }}</h4>
       <div class="w-1/4 text-right">
         <a
-          class="iconfont icongo text-lg font-bold text-skin-text"
+          class="iconfont icongo text-lg font-semibold text-skin-text"
           @click="month++"
         />
       </div>
