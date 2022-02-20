@@ -101,6 +101,17 @@
   }
 }
 
+// Fade transition for Vue's transition and transition-group
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.2s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
 // TODO: Move this to BaseAnchor components
 a,
 .a {
