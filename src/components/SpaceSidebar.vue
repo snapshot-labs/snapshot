@@ -9,6 +9,7 @@ defineProps({
     <Block :slim="true" class="overflow-hidden">
       <SpaceSidebarHeader :space="space" />
       <SpaceSidebarNavigation :space="space" />
+      <SpaceSidebarFooter :space="space" />
     </Block>
   </div>
 </template>
