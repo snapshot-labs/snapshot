@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { ref, watchEffect, computed, onMounted, inject, watch } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { useI18n } from '@/composables/useI18n';
@@ -16,12 +16,13 @@ import { useWeb3 } from '@/composables/useWeb3';
 import { useClient } from '@/composables/useClient';
 import { useStore } from '@/composables/useStore';
 import { useIntl } from '@/composables/useIntl';
-import { useSpaceCreateForm } from '@/composables/useSpaceCreateForm';
+import { useCreateProposal } from '@/composables/useCreateProposal';
 import { usePlugins } from '@/composables/usePlugins';
+import { Space } from '@/helpers/interfaces';
 
-const props = defineProps({
-  space: Object
-});
+const props = defineProps<{
+  space: Space;
+}>();
 
 const router = useRouter();
 const route = useRoute();
@@ -33,8 +34,8 @@ const { web3, web3Account } = useWeb3();
 const { send, clientLoading } = useClient();
 const { store } = useStore();
 const { pluginIndex } = usePlugins();
+const notify: any = inject('notify');
 
-const notify = inject('notify');
 const {
   preview,
   form,
@@ -47,9 +48,9 @@ const {
   defaultForm,
   updateDateStart,
   updateDateEnd
-} = useSpaceCreateForm();
+} = useCreateProposal();
 
-const passValidation = ref([true]);
+const passValidation = ref([true, 'basic']);
 const validationLoading = ref(false);
 
 // Check if account passes space validation
@@ -180,9 +181,9 @@ onMounted(async () => {
 watchEffect(() => {
   if (form.value.type === 'basic') {
     choices.value = [
-      { key: 1, text: t('voting.choices.for') },
-      { key: 2, text: t('voting.choices.against') },
-      { key: 3, text: t('voting.choices.abstain') }
+      { id: 1, text: t('voting.choices.for') },
+      { id: 2, text: t('voting.choices.against') },
+      { id: 3, text: t('voting.choices.abstain') }
     ];
   }
 });

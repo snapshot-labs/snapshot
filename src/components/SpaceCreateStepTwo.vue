@@ -2,9 +2,10 @@
 import { ref, computed, onMounted } from 'vue';
 import { useCreateProposal } from '@/composables/useCreateProposal';
 import draggable from 'vuedraggable';
+import { Space } from '@/helpers/interfaces';
 
 const props = defineProps<{
-  space: { voting: { delay?: number; period?: number } };
+  space: Space;
 }>();
 
 const {
