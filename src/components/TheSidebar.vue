@@ -1,5 +1,5 @@
-<script setup>
-import { watch, onMounted, ref, watchEffect } from 'vue';
+<script setup lang="ts">
+import { watch, onMounted, ref, watchEffect, computed } from 'vue';
 import draggable from 'vuedraggable';
 import { useFollowSpace } from '@/composables/useFollowSpace';
 import { useWeb3 } from '@/composables/useWeb3';
@@ -12,16 +12,12 @@ const { explore } = useApp();
 const { web3Account } = useWeb3();
 const { loadFollows, followingSpaces } = useFollowSpace();
 const { domain } = useDomain();
-const {
-  proposalIds,
-  getProposalIds,
-  lastSeenProposals,
-  updateLastSeenProposal
-} = useUnseenProposals();
+const { proposals, getProposals, lastSeenProposals, updateLastSeenProposal } =
+  useUnseenProposals();
 
 const modalAboutOpen = ref(false);
 const modalLangOpen = ref(false);
-const draggableSpaces = ref([]);
+const draggableSpaces = ref<string[]>([]);
 
 function saveSpaceOrder() {
   if (web3Account.value)
@@ -31,15 +27,16 @@ function saveSpaceOrder() {
     );
 }
 const hasUnseenProposalsBySpace = space => {
-  return proposalIds.value.some(p => {
+  return proposals.value.some(p => {
     return (
       p.space.id === space && p.created > (lastSeenProposals.value[space] || 0)
     );
   });
 };
 
-const hasUnseenProposals = () =>
-  followingSpaces.value.some(fs => hasUnseenProposalsBySpace(fs));
+const hasUnseenProposals = computed(() =>
+  followingSpaces.value.some(fs => hasUnseenProposalsBySpace(fs))
+);
 
 watch(web3Account, () => {
   loadFollows();
@@ -64,7 +61,7 @@ watch(followingSpaces, () => {
   saveSpaceOrder();
 });
 
-watchEffect(() => getProposalIds(followingSpaces.value));
+watchEffect(() => getProposals(followingSpaces.value));
 
 onMounted(() => {
   loadFollows();
@@ -92,7 +89,7 @@ onMounted(() => {
         class="flex flex-col h-[calc(100%-78px)] items-center space-y-2 pt-2 bg-skin-bg"
       >
         <div class="flex items-center justify-center relative w-full">
-          <UiUnreadIndicator v-if="hasUnseenProposals()" />
+          <UiUnreadIndicator v-if="hasUnseenProposals" />
           <router-link :to="{ name: 'timeline' }">
             <UiSidebarButton>
               <Icon size="20" name="feed" />
@@ -122,6 +119,11 @@ onMounted(() => {
                   :key="element"
                   symbolIndex="space"
                   size="44"
+                />
+                <UiCounter
+                  v-if="explore.spaces[element].activeProposals"
+                  :counter="explore.spaces[element].activeProposals"
+                  class="absolute -top-[1px] right-[9px] !bg-green !h-[16px] !leading-[16px] !min-w-[16px]"
                 />
               </router-link>
             </div>

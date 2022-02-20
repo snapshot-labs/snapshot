@@ -19,8 +19,8 @@ function selectCategory(c) {
   selectedCategory.value = c === selectedCategory.value ? '' : c;
 }
 
-const { getProposalIds } = useUnseenProposals();
-watchEffect(() => getProposalIds(followingSpaces.value));
+const { getProposals } = useUnseenProposals();
+watchEffect(() => getProposals(followingSpaces.value));
 
 // Scroll
 const loadBy = 16;
@@ -122,11 +122,6 @@ onMounted(() => {
                   symbolIndex="space"
                   size="82"
                   class="mb-1"
-                />
-                <UiCounter
-                  v-if="space.activeProposals"
-                  :counter="space.activeProposals"
-                  class="absolute top-0 right-0 !bg-green"
                 />
               </div>
               <h3

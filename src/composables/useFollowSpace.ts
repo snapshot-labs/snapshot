@@ -19,7 +19,6 @@ export function useFollowSpace(spaceId: any = {}) {
   const { toggleSubscription, isSubscribed } = useSpaceSubscription(spaceId);
 
   const loadingFollow = ref('');
-  const hoverJoin = ref('');
 
   const followingSpaces = computed(() =>
     following.value.map((f: any) => f.space.id)
@@ -96,21 +95,12 @@ export function useFollowSpace(spaceId: any = {}) {
     }
   }
 
-  // watchEffect(async () => {
-  //   (isFollowing.value = (following.value ?? []).some(
-  //     (f: any) =>
-  //       f.space.id === spaceObj?.id && f.follower === web3Account.value
-  //   )),
-  //     { deep: true };
-  // });
-
   return {
     clickFollow,
     loadFollows,
     loadingFollow: computed(() => loadingFollow.value),
     loadingFollows: computed(() => loadingFollows.value),
     isFollowing,
-    followingSpaces,
-    hoverJoin
+    followingSpaces
   };
 }
