@@ -160,7 +160,7 @@ const isCreator = computed(() => props.proposal.author === web3Account.value);
     />
   </div>
   <div v-if="toggleEditComment">
-    <Block :slim="true" class="p-4 text-color mt-2 mb-0">
+    <Block :slim="true" class="p-4 text-skin-text mt-2 mb-0">
       <div>
         <User
           :address="item.author"

@@ -299,7 +299,7 @@ onMounted(() => {
   <Layout v-bind="$attrs">
     <template #content-left>
       <div class="px-4 md:px-0 mb-3">
-        <router-link :to="{ name: 'spaceProposals' }" class="text-color">
+        <router-link :to="{ name: 'spaceProposals' }" class="text-skin-text">
           <Icon name="back" size="22" class="!align-middle" />
           {{ $t('back') }}
         </router-link>
@@ -421,7 +421,7 @@ onMounted(() => {
                 target="_blank"
                 href="https://docs.snapshot.org/spaces/add-custom-domain"
               >
-                <Icon name="info" size="24" class="text-color" />
+                <Icon name="info" size="24" class="text-skin-text" />
               </a>
             </template>
           </UiInput>

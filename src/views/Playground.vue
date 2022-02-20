@@ -158,7 +158,7 @@ onMounted(async () => {
         <div class="px-4 md:px-0 mb-3">
           <router-link
             :to="`/strategy/${$route.params.name}`"
-            class="text-color"
+            class="text-skin-text"
           >
             <Icon name="back" size="22" class="!align-middle" />
             {{ $t('back') }}

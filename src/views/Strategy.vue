@@ -18,7 +18,7 @@ onMounted(async () => {
   <Layout>
     <template #content-left>
       <div class="px-4 md:px-0 mb-3">
-        <router-link :to="{ path: '/strategies' }" class="text-color">
+        <router-link :to="{ path: '/strategies' }" class="text-skin-text">
           <Icon name="back" size="22" class="!align-middle" />
           {{ $t('strategiesPage') }}
         </router-link>
@@ -30,7 +30,7 @@ onMounted(async () => {
         </h1>
         <span
           v-text="`In ${strategy.spacesCount} space(s)`"
-          class="text-color"
+          class="text-skin-text"
         />
         <UiMarkdown :body="strategy.about" class="mb-6 mt-4" />
       </div>
