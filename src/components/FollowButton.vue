@@ -50,11 +50,11 @@ const canFollow = computed(() => {
       }"
     >
       <span v-if="!isFollowing"> {{ $t('join') }} </span>
-      <span v-else :class="[{ 'group-hover:hidden': isFollowing }]">
-        {{ $t('joined') }}
-      </span>
-      <span :class="[{ 'group-hover:block': isFollowing }, 'hidden']">
-        {{ $t('leave') }}
+      <span v-else>
+        <span class="group-hover:hidden"> {{ $t('joined') }} </span>
+        <span class="group-hover:block hidden">
+          {{ $t('leave') }}
+        </span>
       </span>
     </UiButton>
   </div>
