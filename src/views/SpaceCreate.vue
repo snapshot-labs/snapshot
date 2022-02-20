@@ -26,6 +26,7 @@ const props = defineProps<{
 
 const router = useRouter();
 const route = useRoute();
+const notify: any = inject('notify');
 const { t, setPageTitle } = useI18n();
 const { formatCompactNumber } = useIntl();
 const auth = getInstance();
@@ -34,7 +35,8 @@ const { web3, web3Account } = useWeb3();
 const { send, clientLoading } = useClient();
 const { store } = useStore();
 const { pluginIndex } = usePlugins();
-const notify: any = inject('notify');
+const { modalAccountOpen } = useModal();
+const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(props.space.id);
 
 const {
   preview,
@@ -124,9 +126,6 @@ async function handleSubmit() {
   }
 }
 
-const { modalAccountOpen } = useModal();
-const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(props.space.id);
-
 const { apolloQuery, queryLoading } = useApolloQuery();
 
 async function loadProposal() {
@@ -164,30 +163,6 @@ async function loadProposal() {
   sourceProposalLoaded.value = true;
 }
 
-onMounted(async () => {
-  if (sourceProposal.value) loadProposal();
-});
-
-onMounted(() =>
-  setPageTitle('page.title.space.create', { space: props.space.name })
-);
-
-onMounted(async () => {
-  form.value.snapshot = await getBlockNumber(getProvider(props.space.network));
-
-  if (props.space?.voting?.type) form.value.type = props.space.voting.type;
-});
-
-watchEffect(() => {
-  if (form.value.type === 'basic') {
-    choices.value = [
-      { id: 1, text: t('voting.choices.for') },
-      { id: 2, text: t('voting.choices.against') },
-      { id: 3, text: t('voting.choices.abstain') }
-    ];
-  }
-});
-
 const stepIsValid = computed(() => {
   if (
     route.name === 'spaceCreateStepOne' &&
@@ -209,6 +184,33 @@ const stepIsValid = computed(() => {
 
 watch(preview, () => {
   window.scrollTo(0, 0);
+});
+
+watch(
+  () => form.value.type,
+  () => {
+    if (form.value.type === 'basic') {
+      choices.value = [
+        { key: 1, text: t('voting.choices.for') },
+        { key: 2, text: t('voting.choices.against') },
+        { key: 3, text: t('voting.choices.abstain') }
+      ];
+    }
+  }
+);
+
+onMounted(async () => {
+  if (sourceProposal.value) loadProposal();
+});
+
+onMounted(() =>
+  setPageTitle('page.title.space.create', { space: props.space.name })
+);
+
+onMounted(async () => {
+  form.value.snapshot = await getBlockNumber(getProvider(props.space.network));
+
+  if (props.space?.voting?.type) form.value.type = props.space.voting.type;
 });
 
 // Check if has plugins that can be confirgured on proposal creation

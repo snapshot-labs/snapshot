@@ -7,9 +7,9 @@ const userSelectedDateStart = ref(false);
 const userSelectedDateEnd = ref(false);
 const sourceProposalLoaded = ref(false);
 
-const choices = ref<{ id: number; text: string }[]>([
-  { id: 0, text: '' },
-  { id: 1, text: '' }
+const choices = ref<{ key: number; text: string }[]>([
+  { key: 0, text: '' },
+  { key: 1, text: '' }
 ]);
 
 const defaultForm = {
