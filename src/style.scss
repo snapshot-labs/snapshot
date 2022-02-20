@@ -94,7 +94,7 @@
   }
 }
 
-// Don't prevent overscroll on desktop devices
+// Don't prevent overscroll on touch devices
 @media (pointer: fine) {
   body {
     overscroll-behavior-y: none;
