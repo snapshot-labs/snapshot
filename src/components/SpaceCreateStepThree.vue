@@ -1,16 +1,13 @@
-<script setup>
+<script setup lang="ts">
 import { computed } from 'vue';
-import { useSpaceCreateForm } from '@/composables/useSpaceCreateForm';
+import { useCreateProposal } from '@/composables/useCreateProposal';
 
-defineProps({
-  space: {
-    type: Object,
-    required: true
-  }
-});
+defineProps<{
+  space: { plugins? };
+}>();
 
 const { form, choices, preview, sourceProposal, sourceProposalLoaded } =
-  useSpaceCreateForm();
+  useCreateProposal();
 
 const proposal = computed(() =>
   Object.assign(form.value, { choices: choices.value })

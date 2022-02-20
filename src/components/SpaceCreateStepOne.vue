@@ -1,12 +1,12 @@
-<script setup>
+<script setup lang="ts">
 import { ref, watch } from 'vue';
-import { useSpaceCreateForm } from '@/composables/useSpaceCreateForm';
+import { useCreateProposal } from '@/composables/useCreateProposal';
 import { useIntl } from '@/composables/useIntl';
 
 const { formatCompactNumber } = useIntl();
-const { preview, form, bodyLimit } = useSpaceCreateForm();
+const { preview, form, bodyLimit } = useCreateProposal();
 
-const nameInput = ref(null);
+const nameInput = ref<any>(null);
 
 // Focus proposal name field when page loads
 watch(nameInput, () => nameInput?.value?.focus());

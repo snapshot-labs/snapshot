@@ -25,7 +25,7 @@ const defaultForm = {
 
 const form = ref(clone(defaultForm));
 
-export function useSpaceCreateForm() {
+export function useCreateProposal() {
   const route = useRoute();
 
   const bodyLimit = 14400;

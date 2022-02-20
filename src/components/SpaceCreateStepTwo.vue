@@ -1,14 +1,11 @@
-<script setup>
+<script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
-import { useSpaceCreateForm } from '@/composables/useSpaceCreateForm';
+import { useCreateProposal } from '@/composables/useCreateProposal';
 import draggable from 'vuedraggable';
 
-const props = defineProps({
-  space: {
-    type: Object,
-    required: true
-  }
-});
+const props = defineProps<{
+  space: { voting: { delay?: number; period?: number } };
+}>();
 
 const {
   form,
@@ -17,7 +14,7 @@ const {
   userSelectedDateEnd,
   updateDateStart,
   updateDateEnd
-} = useSpaceCreateForm();
+} = useCreateProposal();
 
 const modalDateSelectOpen = ref(false);
 const modalVotingTypeOpen = ref(false);
