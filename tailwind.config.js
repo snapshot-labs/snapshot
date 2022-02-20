@@ -43,10 +43,6 @@ module.exports = {
       ],
       mono: ['monospace']
     },
-    fontWeight: {
-      'font-normal': 500,
-      bold: 600
-    },
     fontSize: {
       '2xl': ['36px', '50px'],
       xl: ['28px', '44px'],
