@@ -24,7 +24,7 @@ interface StrategySchema {
   };
 }
 
-export interface Space {
+export interface ExtendedSpace {
   id: string;
   name: string;
   about: string;

@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useCreateProposal } from '@/composables/useCreateProposal';
-import { Space } from '@/helpers/interfaces';
+import { ExtendedSpace } from '@/helpers/interfaces';
 
 defineProps<{
-  space: Space;
+  space: ExtendedSpace;
 }>();
 
 const { form, choices, preview, sourceProposal, sourceProposalLoaded } =

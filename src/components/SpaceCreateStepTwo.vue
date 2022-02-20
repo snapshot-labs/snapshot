@@ -2,10 +2,10 @@
 import { ref, computed, onMounted } from 'vue';
 import { useCreateProposal } from '@/composables/useCreateProposal';
 import draggable from 'vuedraggable';
-import { Space } from '@/helpers/interfaces';
+import { ExtendedSpace } from '@/helpers/interfaces';
 
 const props = defineProps<{
-  space: Space;
+  space: ExtendedSpace;
 }>();
 
 const {

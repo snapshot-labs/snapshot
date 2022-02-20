@@ -18,10 +18,10 @@ import { useStore } from '@/composables/useStore';
 import { useIntl } from '@/composables/useIntl';
 import { useCreateProposal } from '@/composables/useCreateProposal';
 import { usePlugins } from '@/composables/usePlugins';
-import { Space } from '@/helpers/interfaces';
+import { ExtendedSpace } from '@/helpers/interfaces';
 
 const props = defineProps<{
-  space: Space;
+  space: ExtendedSpace;
 }>();
 
 const router = useRouter();
