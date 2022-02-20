@@ -296,7 +296,7 @@ const needsPluginConfigs = computed(() =>
       <div v-if="currentStep === 1" class="px-4 md:px-0 overflow-hidden mb-3">
         <router-link
           :to="domain ? { path: '/' } : { name: 'spaceProposals' }"
-          class="text-color"
+          class="text-skin-text"
         >
           <Icon name="back" size="22" class="!align-middle" />
           {{ $t('back') }}
@@ -384,7 +384,7 @@ const needsPluginConfigs = computed(() =>
               v-else
               v-model="form.name"
               maxlength="128"
-              class="text-2xl font-bold input mb-2 w-full"
+              class="text-2xl font-semibold input mb-2 w-full"
               :placeholder="$t('create.question')"
               ref="nameInput"
             />
@@ -397,14 +397,6 @@ const needsPluginConfigs = computed(() =>
                 :placeholder="$t('create.content')"
                 :max-length="bodyLimit"
               />
-
-              <!-- Indicator for number of available characters in body -->
-              <div
-                class="absolute right-0 bottom-2 hidden group-focus-within:block p-1 bg-skin-bg"
-                :class="{ 'text-red': form.body.length === bodyLimit }"
-              >
-                {{ `${form.body.length} / ${bodyLimit}` }}
-              </div>
             </div>
 
             <div v-if="form.body && preview" class="mb-4">

@@ -14,35 +14,35 @@ const yearNow = new Date().getFullYear();
               <Icon
                 size="30"
                 name="twitter"
-                class="hover:opacity-80 text-color"
+                class="hover:opacity-80 text-skin-text"
               />
             </a>
             <a href="https://discord.gg/snapshot" target="_blank">
               <Icon
                 size="30"
                 name="discord"
-                class="hover:opacity-80 text-color"
+                class="hover:opacity-80 text-skin-text"
               />
             </a>
             <a href="https://t.me/snapshotlabs" target="_blank">
               <Icon
                 size="30"
                 name="telegram"
-                class="hover:opacity-80 text-color"
+                class="hover:opacity-80 text-skin-text"
               />
             </a>
             <a :href="`https://github.com/${pkg.repository}`" target="_blank">
               <Icon
                 size="30"
                 name="github"
-                class="hover:opacity-80 text-color"
+                class="hover:opacity-80 text-skin-text"
               />
             </a>
             <a href="https://docs.snapshot.org/" target="_blank">
               <Icon
                 size="30"
                 name="gitbook"
-                class="hover:opacity-80 text-color"
+                class="hover:opacity-80 text-skin-text"
               />
             </a>
           </div>

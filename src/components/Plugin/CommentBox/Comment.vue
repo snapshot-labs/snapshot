@@ -199,7 +199,7 @@ watch([modalOpen, closeModal], () => {
     <Block
       v-if="!togglePreview"
       slim="true"
-      class="p-4 h6 text-color mt-2 mb-0"
+      class="p-4 h6 text-skin-text mt-2 mb-0"
     >
       <div>{{ comment }}</div>
     </Block>
