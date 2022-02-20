@@ -59,10 +59,7 @@ export async function getProfiles(addresses) {
     Object.entries(profiles).map(([address, profile]) => {
       profile = {};
       profile.ens = ensNames[address.toLowerCase()] || '';
-      if (profile.ens) {
-        profile.name = profile.ens;
-        profile.image = `https://metadata.ens.domains/mainnet/avatar/${profile.ens}`;
-      }
+      if (profile.ens) profile.name = profile.ens;
       return [address, profile];
     })
   );

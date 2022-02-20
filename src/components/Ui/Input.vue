@@ -43,7 +43,7 @@ onMounted(() => {
     class="border border-skin-border transition-colors bg-transparent text-skin-link rounded-3xl outline-none leading-[46px] text-left w-full mb-2 flex px-3 focus-within:border-skin-link hover:border-skin-link"
     :class="{ '!border-red': error, 'cursor-pointer': $slots.selected }"
   >
-    <div class="text-color mr-2 whitespace-nowrap">
+    <div class="text-skin-text mr-2 whitespace-nowrap">
       <slot name="label" />
     </div>
     <div
@@ -72,7 +72,7 @@ onMounted(() => {
       v-tippy="{
         content: error
       }"
-      class="float-right link-color"
+      class="float-right text-skin-link"
     >
       <Icon name="warning" class="!text-red p-1 block pt-2 mt-[6px] -mr-1" />
     </span>

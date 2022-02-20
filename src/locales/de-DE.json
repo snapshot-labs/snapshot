@@ -124,6 +124,7 @@
   "theCurrentNetwork": "aktuelles Netzwerk",
   "optional": "(optional)",
   "homeLoadmore": "Mehr",
+  "confirmAction": "Bestätigen",
   "errors": {
     "required": "Dieses Feld ist ein Pflichtfeld",
     "minLength": "Mindestlänge ist {0}",
@@ -216,8 +217,9 @@
   },
   "settings": {
     "header": "Einstellungen",
-    "seeENS": "Auf ENS ansehen",
-    "setENS": "Eintrag auf ENS setzen",
+    "setEnsTextRecord": "ENS Text-Eintrag setzen",
+    "editController": "Edit controller",
+    "needToSetEnsText": "Ihre Space-Einstellungen werden in einer Datei auf IPFS gespeichert. Bevor Sie diese bearbeiten können, müssen Sie einen ENS-Text-Eintrag setzen, der auf diese Datei zeigt.",
     "profile": "Profil",
     "avatar": "Avatar",
     "name": "Name",
@@ -253,7 +255,8 @@
     "quorum": "Quorum",
     "type": "Type",
     "anyType": "Any",
-    "hideAbstain": "Ignore abstain votes in basic voting results"
+    "hideAbstain": "Ignore abstain votes in basic voting results",
+    "connectWithSpaceOwner": "Um die Space-Einstellungen zu ändern, verbinden Sie sich mit einem Controller- oder Admin-Wallet."
   },
   "setup": {
     "example": "z.B. yam.eth",
@@ -264,7 +267,22 @@
     "createASpace": "Bereich erstellen",
     "registerEnsButton": "Register",
     "supportedEnsTLDs": "Supported domain endings",
-    "helpDocsAndDiscordLinks": "Nicht sicher, wie man einen Space erstellt? Erfahre mehr in der <a target='_blank' href='https://docs.snapshot.org/spaces/create'>Dokumentation</a> oder tritt dem Snapshot <a target='_blank' href='https://discord.gg/snapshot'>Discord</a> bei."
+    "helpDocsAndDiscordLinks": "Nicht sicher, wie man einen Space erstellt? Erfahre mehr in der <a target='_blank' href='https://docs.snapshot.org/spaces/create'>Dokumentation</a> oder tritt dem Snapshot <a target='_blank' href='https://discord.gg/snapshot'>Discord</a> bei.",
+    "setSpaceController": "Controller auf ENS setzen",
+    "editSpaceController": "Edit controller on ENS",
+    "setController": "Set controller",
+    "explainControllerAndEns": "Diese Aktion erfordert eine Transaktion im Ethereum Mainnet, die einen \"snapshot\" TEXT Eintrag zu Ihrer ENS Domain hinzufügt.",
+    "confirmToSetAddress": "Are you sure you want to set {address} as the controller of the space?",
+    "controllerHasAuthority": "The controller has full authority over the space settings",
+    "controller": "Controller",
+    "selectEnsForSpace": "END Adresse auswählen",
+    "spaceNeedsEnsAddress": "Um einen Space auf snapshot einzurichten, benötigen Sie eine ENS-Adresse im Ethereum Mainnet",
+    "textRecordExists": "Derzeit ist der Space Controller {address}. Sie können den Space Controller über das untenstehende Formular aktualisieren.",
+    "spaceOwnerAddressPlaceHolder": "z.B. 0xF78108c9BBaF466dd96BE41be728Fe3220b37119",
+    "controllerAddress": "Controller-Adresse",
+    "updateController": "Update controller",
+    "connectWithEnsController": "Um den Space-Controller zu ändern, müssen Sie sich mit der Wallet verbinden, die {ens} besitzt",
+    "seeOnEns": "Auf ENS ansehen"
   },
   "notify": {
     "youDidIt": "Du hast es geschafft!",
@@ -275,7 +293,8 @@
     "delegationSuccess": "Delegation successful",
     "delegationRemoved": "Delegation removed",
     "proposalCreated": "Proposal created",
-    "voteSuccessful": "Your vote is in!"
+    "voteSuccessful": "Your vote is in!",
+    "ensSet": "ENS Text Eintrag wurde erfolgreich gesetzt"
   },
   "explore": {
     "createStrategy": "Strategie erstellen",
@@ -442,5 +461,11 @@
     "week": "1 week | {n} weeks",
     "month": "1 month | {n} months",
     "year": "1 year | {n} years"
+  },
+  "unsupportedNetwork": {
+    "unsupportedNetwork": "Nicht unterstütztes Netzwerk",
+    "ensOnlyMainnet": "Snapshot unterstützt nur ENS im Ethereum mainnet. Sobald der Space erstellt wurde, können Sie ihn über mehrere Chains hinweg nutzen.",
+    "switchNetworkToMainnet": "Um fortzufahren, müssen Sie in Ihrem Wallet auf Ethereum Mainnet wechseln.",
+    "switchToMainnet": "Zu Mainnet wechseln"
   }
 }

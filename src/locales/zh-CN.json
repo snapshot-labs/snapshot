@@ -122,8 +122,9 @@
   "joinSpaces": "加入空间",
   "setDelegationToSpace": "将委托限制在一个指定空间内",
   "theCurrentNetwork": "当前网络",
-  "optional": "（可选！）",
+  "optional": "(选填)",
   "homeLoadmore": "加载更多",
+  "confirmAction": "确认操作",
   "errors": {
     "required": "此项为必填项",
     "minLength": "最小长度为 {0}",
@@ -216,8 +217,9 @@
   },
   "settings": {
     "header": "设置",
-    "seeENS": "在 ENS 上查看",
-    "setENS": "在 ENS 上设置记录",
+    "setEnsTextRecord": "设置 ENS 文本记录",
+    "editController": "编辑控制人",
+    "needToSetEnsText": "您的空间设置将保存在IPFS文件中。 在您可以编辑他们之前，您需要设置一个 ENS 文本记录指向该文件。",
     "profile": "用户信息",
     "avatar": "头像",
     "name": "名称",
@@ -253,7 +255,8 @@
     "quorum": "裁决者人数",
     "type": "类型",
     "anyType": "任意",
-    "hideAbstain": "忽略基本投票结果中的弃权票"
+    "hideAbstain": "忽略基本投票结果中的弃权票",
+    "connectWithSpaceOwner": "要修改空间设置，请连接控制人或管理员钱包。"
   },
   "setup": {
     "example": "例如 yam.eth",
@@ -264,7 +267,22 @@
     "createASpace": "创建空间",
     "registerEnsButton": "注册",
     "supportedEnsTLDs": "支持的域名结尾",
-    "helpDocsAndDiscordLinks": "不知道如何创建空间？ 在 <a target='_blank' href='https://docs.snapshot.org/spaces/create'> 文档中了解更多信息</a> 或加入 Snapshot <a target='_blank' href='https:// /discord.gg/snapshot'>Discord</a>。"
+    "helpDocsAndDiscordLinks": "不知道如何创建空间？ 在 <a target='_blank' href='https://docs.snapshot.org/spaces/create'> 文档中了解更多信息</a> 或加入 Snapshot <a target='_blank' href='https:// /discord.gg/snapshot'>Discord</a>。",
+    "setSpaceController": "在 ENS 上设置控制人",
+    "editSpaceController": "在 ENS 上编辑控制人",
+    "setController": "设置控制人",
+    "explainControllerAndEns": "此操作需要在Ethereum Mainnet上进行交易，该交易会将“snapshot”文本记录添加到您的 ENS 域。",
+    "confirmToSetAddress": "您确定要设置 {address} 作为空间的控制人吗？",
+    "controllerHasAuthority": "管理员对空间设置拥有所有权限",
+    "controller": "控制人",
+    "selectEnsForSpace": "选择ENS地址",
+    "spaceNeedsEnsAddress": "要在Snapshot上设置空间，您需要一个Ethereum Mainnet上的ENS地址",
+    "textRecordExists": "当前空间控制人是 {address}。您可以使用下面的表单更新空间控制人。",
+    "spaceOwnerAddressPlaceHolder": "例如：0xF78108c9BAF466dd96BE41be728Fe3220b37119",
+    "controllerAddress": "控制人地址",
+    "updateController": "更新管理员",
+    "connectWithEnsController": "要修改空间控制人，您需要连接拥有 {ens} 的钱包",
+    "seeOnEns": "在 ENS 上查看"
   },
   "notify": {
     "youDidIt": "您成功了!",
@@ -275,7 +293,8 @@
     "delegationSuccess": "委托成功",
     "delegationRemoved": "委托已移除",
     "proposalCreated": "提案已创建",
-    "voteSuccessful": "投票成功！"
+    "voteSuccessful": "投票成功！",
+    "ensSet": "ENS 文本记录已成功设置"
   },
   "explore": {
     "createStrategy": "创建策略",
@@ -442,5 +461,11 @@
     "week": "1周 | {n} 周",
     "month": "1 个月 | {n} 个月",
     "year": "1 年 | {n} 年"
+  },
+  "unsupportedNetwork": {
+    "unsupportedNetwork": "不支持的网络",
+    "ensOnlyMainnet": "Snapshot仅支持以太坊主网上的 ENS。 创建空间后，您可以跨链使用它。",
+    "switchNetworkToMainnet": "若要继续，您需要将你钱包中的网络更改为Ethereum Mainnet。",
+    "switchToMainnet": "切换到Mainnet"
   }
 }

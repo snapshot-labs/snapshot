@@ -102,7 +102,8 @@ onMounted(() => {
         <draggable
           v-if="draggableSpaces.length > 0"
           v-model="draggableSpaces"
-          :component-data="{ name: 'list' }"
+          :component-data="{ type: 'transition-group' }"
+          v-bind="{ animation: 200 }"
           item-key="id"
           @update="saveSpaceOrder"
           class="w-full space-y-2"
@@ -133,7 +134,7 @@ onMounted(() => {
           class="flex flex-col items-center space-y-2 justify-center !mb-2 !mt-auto py-2"
         >
           <UiSidebarButton @click="modalAboutOpen = true">
-            <span class="link-color">?</span>
+            <span class="text-skin-link">?</span>
           </UiSidebarButton>
         </div>
       </div>

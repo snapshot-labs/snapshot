@@ -82,7 +82,7 @@
 }
 
 * {
-  outline: none !important;
+  outline: none;
 }
 
 h1,
@@ -103,12 +103,12 @@ a,
 
   &:hover {
     cursor: pointer;
-    text-decoration: none !important;
+    text-decoration: none;
   }
 }
 
 ::placeholder {
-  color: var(--text-color) !important;
+  color: var(--text-color);
   opacity: 0.6 !important;
 }
 
@@ -146,10 +146,6 @@ select {
   background-color: var(--bg-color) !important;
 }
 
-.column {
-  width: 160px;
-}
-
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.2s ease;
@@ -164,10 +160,6 @@ select {
   background-color: var(--bg-color);
 }
 
-.notification {
-  color: white !important;
-}
-
 .border,
 .border-md,
 .border-lg,
@@ -178,77 +170,15 @@ select {
   border-color: var(--border-color);
 }
 
-.header-bg {
-  background-color: var(--header-bg) !important;
-}
-
-.bg-gray-9 {
-  background-color: var(--text-color) !important;
-}
-
-.primary-color {
-  color: var(--primary-color) !important;
-}
-
-.text-color {
-  color: var(--text-color) !important;
-}
-
-.link-color {
-  color: var(--link-color) !important;
-}
-
-.block-bg {
-  background-color: var(--block-bg) !important;
-}
-
-.bg-blue {
-  background-color: var(--primary-color) !important;
-}
-
-.tab {
-  display: inline-block;
-  &:first-letter {
-    text-transform: capitalize;
-  }
-}
-
-.extra-icon-container {
-  position: relative;
-
-  .extra-icon-off {
-    display: none;
-  }
-}
-
-.hover-border {
-  &:hover {
-    border-color: var(--link-color) !important;
-  }
-}
-
 .markdown-body blockquote {
   color: var(--text-color);
   border-left-color: var(--text-color);
 }
 
-.last-child-border-0:last-child {
-  border: 0 !important;
-}
-
-.sliding {
-  overflow: auto;
-  white-space: nowrap;
-}
-
-.border-color {
-  color: var(--border-color);
-}
-
 .sidenav-item {
   &.router-link-exact-active {
     border-left: 3px solid;
-    padding-left: 21px !important;
+    padding-left: 21px;
   }
 }
 
@@ -256,13 +186,6 @@ select {
   &.charts-selected-tab {
     border-bottom: 3px solid;
   }
-}
-
-.truncated {
-  display: block;
-  white-space: nowrap; /* forces text to single line */
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 input[type='number']::-webkit-inner-spin-button,

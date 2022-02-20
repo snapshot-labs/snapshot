@@ -249,7 +249,7 @@ const truncateMarkdownBody = computed(() => {
     <template #content-left>
       <div class="px-4 md:px-0 mb-3">
         <a
-          class="text-color"
+          class="text-skin-text"
           @click="
             browserHasHistory
               ? $router.go(-1)
@@ -269,7 +269,7 @@ const truncateMarkdownBody = computed(() => {
           <div class="flex items-center justify-between mb-4">
             <div class="flex space-x-1 items-center">
               <router-link
-                class="text-color group"
+                class="text-skin-text group"
                 :to="{
                   name: 'spaceProposals',
                   params: { key: space.id }
@@ -412,7 +412,7 @@ const truncateMarkdownBody = computed(() => {
             <b>{{ $t('strategies') }}</b>
             <span
               @click="modalStrategiesOpen = true"
-              class="float-right link-color a"
+              class="float-right text-skin-link a"
             >
               <span v-for="(symbol, symbolIndex) of symbols" :key="symbol">
                 <span
@@ -443,7 +443,7 @@ const truncateMarkdownBody = computed(() => {
           </div>
           <div>
             <b>{{ $t('proposal.votingSystem') }}</b>
-            <span class="float-right link-color">
+            <span class="float-right text-skin-link">
               {{ $t(`voting.${proposal.type}`) }}
             </span>
           </div>
@@ -454,7 +454,7 @@ const truncateMarkdownBody = computed(() => {
               v-tippy="{
                 content: formatRelativeTime(proposal.start)
               }"
-              class="float-right link-color"
+              class="float-right text-skin-link"
             />
           </div>
           <div>
@@ -464,7 +464,7 @@ const truncateMarkdownBody = computed(() => {
               v-tippy="{
                 content: formatRelativeTime(proposal.end)
               }"
-              class="link-color float-right"
+              class="text-skin-link float-right"
             />
           </div>
           <div>

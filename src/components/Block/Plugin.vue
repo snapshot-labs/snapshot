@@ -12,7 +12,7 @@ defineProps({
 </script>
 
 <template>
-  <Block class="hover-border">
+  <Block class="hover:border-skin-link">
     <div class="flex items-center mb-1">
       <a target="_blank" class="flex items-center">
         <UiAvatar
@@ -25,12 +25,12 @@ defineProps({
       </a>
       <div class="ml-1">v{{ plugin.version }}</div>
     </div>
-    <div class="flex justify-between items-end text-color">
+    <div class="flex justify-between items-end text-skin-text">
       <div class="flex flex-col">
         <a
           :href="`https://github.com/${plugin.author}`"
           target="_blank"
-          class="text-color"
+          class="text-skin-text"
         >
           <Icon name="github" class="mr-1" />
           {{ plugin.author }}
@@ -48,7 +48,7 @@ defineProps({
         :href="`https://github.com/snapshot-labs/snapshot-plugins/tree/master/src/plugins/${plugin.key}`"
       >
         {{ $t('learnMore') }}
-        <Icon size="16" name="external-link" class="text-color ml-1" />
+        <Icon size="16" name="external-link" class="text-skin-text ml-1" />
       </a>
     </div>
   </Block>

@@ -132,7 +132,7 @@ export default {
     </div>
     <div
       :title="choices[1]"
-      class="mb-1 border-b header-bg rounded-t-none md:rounded-t-md"
+      class="mb-1 border-b bg-skin-header-bg rounded-t-none md:rounded-t-md"
       style="padding-bottom: 12px"
     >
       <b>{{ shorten(choices[1], 'name') }}</b>

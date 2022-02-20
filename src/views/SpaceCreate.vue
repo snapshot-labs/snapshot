@@ -17,6 +17,7 @@ import { useClient } from '@/composables/useClient';
 import { useStore } from '@/composables/useStore';
 import { useIntl } from '@/composables/useIntl';
 import { useSpaceCreateForm } from '@/composables/useSpaceCreateForm';
+import { usePlugins } from '@/composables/usePlugins';
 
 const props = defineProps({
   space: Object
@@ -31,6 +32,8 @@ const { domain } = useDomain();
 const { web3, web3Account } = useWeb3();
 const { send, clientLoading } = useClient();
 const { store } = useStore();
+const { pluginIndex } = usePlugins();
+
 const notify = inject('notify');
 const {
   preview,
@@ -207,9 +210,6 @@ watch(preview, () => {
   window.scrollTo(0, 0);
 });
 
-import { usePlugins } from '@/composables/usePlugins';
-const { pluginIndex } = usePlugins();
-
 // Check if has plugins that can be confirgured on proposal creation
 const needsPluginConfigs = computed(() =>
   Object.keys(props.space?.plugins ?? {}).some(
@@ -241,7 +241,7 @@ function prevStep() {
       >
         <router-link
           :to="domain ? { path: '/' } : { name: 'spaceProposals' }"
-          class="text-color"
+          class="text-skin-text"
         >
           <Icon name="back" size="22" class="!align-middle" />
           {{ $t('back') }}
@@ -250,7 +250,8 @@ function prevStep() {
 
       <!-- Shows when no wallet is connected and the space has any sort 
       of validation set -->
-      <BaseWarningBlock
+      <BaseMessageBlock
+        level="warning"
         v-if="
           !web3Account &&
           !web3.authLoading &&
@@ -258,7 +259,6 @@ function prevStep() {
             space?.filters.minScore ||
             space?.filters.onlyMembers)
         "
-        :routeObject="{ name: 'spaceAbout', params: { key: space.id } }"
       >
         <span v-if="space?.filters.onlyMembers">
           {{ $t('create.validationWarning.basic.member') }}
@@ -275,13 +275,16 @@ function prevStep() {
             ])
           }}
         </span>
-      </BaseWarningBlock>
+        <div>
+          <BaseAnchor
+            :link="{ name: 'spaceAbout', params: { key: space.id } }"
+            >{{ t('learnMore') }}</BaseAnchor
+          >
+        </div>
+      </BaseMessageBlock>
 
       <!-- Shows when wallet is connected and doesn't pass validaion -->
-      <BaseWarningBlock
-        v-else-if="passValidation[0] === false"
-        :routeObject="{ name: 'spaceAbout', params: { key: space.id } }"
-      >
+      <BaseMessageBlock level="warning" v-else-if="passValidation[0] === false">
         <span v-if="passValidation[1] === 'basic'">
           <span v-if="space?.filters.onlyMembers">
             {{ $t('create.validationWarning.basic.member') }}
@@ -307,7 +310,7 @@ function prevStep() {
             )
           }}
         </span>
-      </BaseWarningBlock>
+      </BaseMessageBlock>
       <router-view :space="space" />
     </template>
     <template #sidebar-right>

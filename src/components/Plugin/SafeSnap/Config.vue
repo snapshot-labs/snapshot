@@ -64,10 +64,10 @@ export default {
 <template>
   <div
     v-if="!preview || input.safes.length > 0"
-    class="border-t border-b md:border rounded-none md:rounded-md mb-4 block-bg"
+    class="border-t border-b md:border rounded-none md:rounded-md mb-4 bg-skin-block-bg"
   >
     <h4
-      class="px-4 pt-3 border-b block header-bg rounded-t-none md:rounded-t-md"
+      class="px-4 pt-3 border-b block bg-skin-header-bg rounded-t-none md:rounded-t-md"
       style="padding-bottom: 12px"
     >
       {{ $t('safeSnap.transactions') }}
