@@ -55,6 +55,13 @@
     @apply text-md;
   }
 
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-semibold text-skin-heading;
+  }
+
   a,
   button,
   input {
@@ -85,18 +92,11 @@
   outline: none;
 }
 
-h1,
-h2,
-h3,
-h4 {
-  color: var(--heading-color);
-  font-weight: 600;
-}
-
 b {
   font-weight: 600;
 }
 
+// TODO: Move this to BaseAnchor components
 a,
 .a {
   color: var(--link-color);
@@ -136,24 +136,8 @@ textarea {
   }
 }
 
-.eyebrow {
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  font-size: 16px;
-}
-
 select {
   background-color: var(--bg-color) !important;
-}
-
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.2s ease;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
 }
 
 .bg-black {
