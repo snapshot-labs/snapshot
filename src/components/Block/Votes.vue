@@ -104,9 +104,9 @@ watch(visibleVotes, () => {
         :proposal="proposal"
         class="w-[110px] xs:w-[130px] min-w-[110px] xs:min-w-[130px]"
       />
-      <div class="flex-auto text-center link-color truncate px-3">
+      <div class="flex-auto text-center text-skin-link truncate px-3">
         <div
-          class="text-center link-color truncate"
+          class="text-center text-skin-link truncate"
           v-tippy="{
             content:
               format(proposal, vote.choice).length > 24
@@ -119,7 +119,7 @@ watch(visibleVotes, () => {
       </div>
 
       <div
-        class="min-w-[110px] xs:min-w-[130px] text-right link-color whitespace-nowrap"
+        class="min-w-[110px] xs:min-w-[130px] text-right text-skin-link whitespace-nowrap"
       >
         <span
           v-tippy="{
@@ -141,7 +141,7 @@ watch(visibleVotes, () => {
         <a
           @click="openReceiptModal(vote.ipfs)"
           target="_blank"
-          class="ml-2 text-color"
+          class="ml-2 text-skin-text"
           title="Receipt"
         >
           <Icon name="signature" />
@@ -155,7 +155,7 @@ watch(visibleVotes, () => {
           : sortedVotes.length > 10 && nbrVisibleVotes < sortedVotes.length
       "
       @click="isFinalProposal ? $emit('loadVotes') : (nbrVisibleVotes += 10)"
-      class="px-4 py-3 border-t text-center block header-bg rounded-b-none md:rounded-b-md"
+      class="px-4 py-3 border-t text-center block bg-skin-header-bg rounded-b-none md:rounded-b-md"
     >
       <UiLoading v-if="loadingMore" />
       <span v-else v-text="$t('seeMore')" />

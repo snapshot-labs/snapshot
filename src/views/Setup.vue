@@ -162,7 +162,11 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
     </template>
     <template #sidebar-right>
       <Block>
-        <Icon name="gitbook" size="24" class="text-color pr-2 !align-middle" />
+        <Icon
+          name="gitbook"
+          size="24"
+          class="text-skin-text pr-2 !align-middle"
+        />
         <span v-html="$t('setup.helpDocsAndDiscordLinks')" />
       </Block>
     </template>

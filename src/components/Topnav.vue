@@ -32,7 +32,7 @@ async function handleLogin(connector) {
   >
     <div
       v-if="env === 'develop'"
-      class="p-3 text-center bg-blue"
+      class="p-3 text-center bg-primary"
       style="color: white; font-size: 20px"
     >
       {{ $t('demoSite') }}
@@ -92,13 +92,13 @@ async function handleLogin(connector) {
               class="float-right ml-2"
               :aria-label="$t('toggleSkin')"
             >
-              <Icon size="20" class="link-color" :name="getSkinIcon()" />
+              <Icon size="20" class="text-skin-link" :name="getSkinIcon()" />
             </UiSidebarButton>
           </div>
         </div>
       </Container>
     </nav>
-    <div class="bg-blue text-white text-center py-2" v-if="pendingCount > 0">
+    <div class="bg-primary text-white text-center py-2" v-if="pendingCount > 0">
       <UiLoading fill-white class="mr-2" />
       {{ $tc('delegate.pendingTransaction', pendingCount) }}
     </div>

@@ -20,13 +20,13 @@ function goto(index) {
     console.log('dsa');
     const element = listReply.value[index];
     const child = element.querySelector('div > div > div > div.border-t');
-    child.classList.remove('block-bg');
+    child.classList.remove('bg-skin-block-bg');
     child.classList.add('goto');
     const top = element.offsetTop;
     window.scrollTo(0, top - 79);
     setTimeout(() => {
       child.classList.remove('goto');
-      child.classList.add('block-bg');
+      child.classList.add('bg-skin-block-bg');
     }, 1000);
   } catch (e) {
     console.log(e.message);

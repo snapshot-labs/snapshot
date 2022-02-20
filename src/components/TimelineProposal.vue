@@ -28,7 +28,7 @@ const period = computed(() => {
 <template>
   <Block slim class="timeline-proposal transition-colors">
     <router-link
-      class="p-4 block text-color"
+      class="p-4 block text-skin-text"
       :to="{
         name: 'spaceProposal',
         params: { key: proposal.space.id, id: proposal.id }

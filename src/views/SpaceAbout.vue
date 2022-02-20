@@ -35,17 +35,17 @@ onMounted(() => {
       </div>
       <Block>
         <div v-if="space.about" class="mb-3">
-          <h4 class="link-color mb-2">{{ $t('settings.about') }}</h4>
+          <h4 class="text-skin-link mb-2">{{ $t('settings.about') }}</h4>
           <UiText :text="space.about" />
         </div>
 
         <div class="mb-3">
-          <h4 class="link-color mb-2">{{ $t('settings.network') }}</h4>
+          <h4 class="text-skin-link mb-2">{{ $t('settings.network') }}</h4>
           <div>{{ network.name }}</div>
         </div>
 
         <div class="mb-3">
-          <h4 class="link-color mb-2">
+          <h4 class="text-skin-link mb-2">
             {{ $t('settings.proposalValidation') }}
           </h4>
           {{ space.validation?.name || 'basic' }}
@@ -58,7 +58,7 @@ onMounted(() => {
           "
           class="last:mb-0 mb-3"
         >
-          <h4 class="link-color mb-2">
+          <h4 class="text-skin-link mb-2">
             {{ $t('settings.proposalThreshold') }}
           </h4>
           {{ formatCompactNumber(space.filters.minScore) }}
@@ -66,7 +66,7 @@ onMounted(() => {
         </div>
 
         <div v-if="space.terms" class="last:mb-0 mb-3">
-          <h4 class="link-color mb-2">{{ $t('settings.terms') }}</h4>
+          <h4 class="text-skin-link mb-2">{{ $t('settings.terms') }}</h4>
           <a :href="space.terms" target="_blank" rel="noopener noreferrer">
             <UiText :text="getUrl(space.terms)" :truncate="35" />
             <Icon name="external-link" class="ml-1" />
@@ -74,14 +74,14 @@ onMounted(() => {
         </div>
 
         <div v-if="space.strategies" class="last:mb-0 mb-3">
-          <h4 class="link-color mb-2">{{ $t('settings.strategies') }}</h4>
+          <h4 class="text-skin-link mb-2">{{ $t('settings.strategies') }}</h4>
           <div v-for="(strategy, i) in space.strategies" :key="i">
             <div>{{ strategy.name }}</div>
           </div>
         </div>
 
         <div v-if="Object.keys(space.plugins || {}).length">
-          <h4 class="link-color mb-2">{{ $t('plugins') }}</h4>
+          <h4 class="text-skin-link mb-2">{{ $t('plugins') }}</h4>
           <div v-for="(plugin, i) in space.plugins" :key="i">
             <div>{{ i }}</div>
           </div>

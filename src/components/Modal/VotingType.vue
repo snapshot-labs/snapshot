@@ -62,7 +62,10 @@ function select(id) {
             class="iconfont iconcheck1 absolute top-2 right-2 text-lg"
           />
           <h3 v-text="$t(`voting.${type}`)" class="mt-0" />
-          <div v-text="$t(`voting.description.${type}`)" class="text-color" />
+          <div
+            v-text="$t(`voting.description.${type}`)"
+            class="text-skin-text"
+          />
         </Block>
       </a>
     </div>

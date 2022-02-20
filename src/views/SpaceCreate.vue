@@ -296,7 +296,7 @@ const needsPluginConfigs = computed(() =>
       <div v-if="currentStep === 1" class="px-4 md:px-0 overflow-hidden mb-3">
         <router-link
           :to="domain ? { path: '/' } : { name: 'spaceProposals' }"
-          class="text-color"
+          class="text-skin-text"
         >
           <Icon name="back" size="22" class="!align-middle" />
           {{ $t('back') }}

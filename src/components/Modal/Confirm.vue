@@ -90,9 +90,9 @@ watch(
         <br />
         {{ $t('cannotBeUndone') }}
       </h4>
-      <div class="m-4 p-4 border rounded-md link-color">
+      <div class="m-4 p-4 border rounded-md text-skin-link">
         <div class="flex">
-          <span v-text="$t('options')" class="flex-auto text-color mr-1" />
+          <span v-text="$t('options')" class="flex-auto text-skin-text mr-1" />
           <span
             v-tippy="{
               content:
@@ -100,13 +100,13 @@ watch(
                   ? format(proposal, selectedChoices)
                   : null
             }"
-            class="text-right ml-4 truncated"
+            class="text-right ml-4 truncate"
           >
             {{ format(proposal, selectedChoices) }}
           </span>
         </div>
         <div class="flex">
-          <span v-text="$t('snapshot')" class="flex-auto text-color mr-1" />
+          <span v-text="$t('snapshot')" class="flex-auto text-skin-text mr-1" />
           <a
             :href="explorerUrl(proposal.network, proposal.snapshot, 'block')"
             target="_blank"
@@ -117,7 +117,10 @@ watch(
           </a>
         </div>
         <div class="flex">
-          <span v-text="$t('votingPower')" class="flex-auto text-color mr-1" />
+          <span
+            v-text="$t('votingPower')"
+            class="flex-auto text-skin-text mr-1"
+          />
           <span v-if="vpLoadingFailed" class="flex item-center">
             <Icon name="warning" size="22" class="text-red" />
           </span>
@@ -142,7 +145,7 @@ watch(
             href="https://github.com/snapshot-labs/snapshot/discussions/767#discussioncomment-1400614"
             class="inline-block ml-1"
           >
-            <Icon name="info" size="24" class="text-color" />
+            <Icon name="info" size="24" class="text-skin-text" />
           </a>
         </div>
         <div v-if="vpLoadingFailed" class="mt-3">{{ t('vpError') }}</div>
