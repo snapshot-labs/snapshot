@@ -125,7 +125,7 @@ a,
 
 // TODO: Move this and ::placeholder to a new BaseInput component
 .input {
-  @apply outline-none text-skin-link bg-transparent border-none;
+  @apply text-skin-link bg-transparent border-none;
 }
 
 ::placeholder {
