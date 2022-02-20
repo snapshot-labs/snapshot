@@ -42,6 +42,10 @@
     font-style: normal;
   }
 
+  * {
+    @apply outline-none;
+  }
+
   h1 {
     @apply text-2xl;
   }
@@ -67,6 +71,14 @@
   input {
     @apply transition-colors;
   }
+
+  b {
+    @apply font-semibold;
+  }
+
+  select {
+    @apply bg-skin-bg;
+  }
 }
 
 @layer utilities {
@@ -82,18 +94,11 @@
   }
 }
 
+// Don't prevent overscroll on desktop devices
 @media (pointer: fine) {
   body {
     overscroll-behavior-y: none;
   }
-}
-
-* {
-  outline: none;
-}
-
-b {
-  font-weight: 600;
 }
 
 // TODO: Move this to BaseAnchor components
@@ -107,39 +112,24 @@ a,
   }
 }
 
+// TODO: Move this and ::placeholder to a new BaseInput component
+.input {
+  @apply outline-none text-skin-link bg-transparent border-none;
+}
+
 ::placeholder {
   color: var(--text-color);
   opacity: 0.6 !important;
 }
 
-.input {
-  outline: none;
-  color: var(--link-color);
-  background-color: transparent;
-  border: none;
-}
-
+// TODO: Move this to a new BaseTextarea component
 textarea {
   padding-top: 16px;
   font-size: 20px;
   line-height: 1.4em;
 }
 
-::-webkit-scrollbar-thumb {
-  background-color: var(--border-color);
-  background-clip: padding-box;
-  border: 0;
-  border-radius: 0;
-
-  &:hover {
-    background-color: var(--border-color);
-  }
-}
-
-select {
-  background-color: var(--bg-color) !important;
-}
-
+// This seems to be needed for coin.scss skin, maybe it can be removed?
 .bg-black {
   background-color: var(--bg-color);
 }
@@ -151,7 +141,7 @@ select {
 .border-t,
 .border-r,
 .border-l {
-  border-color: var(--border-color);
+  @apply border-skin-border;
 }
 
 .markdown-body blockquote {
@@ -166,12 +156,6 @@ select {
   }
 }
 
-.sidenav-item {
-  &.charts-selected-tab {
-    border-bottom: 3px solid;
-  }
-}
-
 input[type='number']::-webkit-inner-spin-button,
 input[type='number']::-webkit-outer-spin-button {
   -webkit-appearance: none;
@@ -182,6 +166,7 @@ input[type='number'] {
   -moz-appearance: textfield;
 }
 
+// V-Tippy tooltip package styling - could be moved somewhere else?
 .tippy-box[data-animation='fade'][data-state='hidden'] {
   opacity: 0;
 }
