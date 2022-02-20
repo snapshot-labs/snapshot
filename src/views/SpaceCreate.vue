@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watchEffect, computed, onMounted, inject, watch } from 'vue';
+import { ref, computed, onMounted, inject, watch } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { useI18n } from '@/composables/useI18n';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
