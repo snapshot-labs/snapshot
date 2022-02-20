@@ -24,7 +24,7 @@ const routes: any[] = [];
 
 const spaceCreateSteps = [
   {
-    path: '',
+    path: '1/',
     name: 'spaceCreateStepOne',
     component: SpaceCreateStepOne
   },
