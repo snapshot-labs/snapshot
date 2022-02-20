@@ -257,7 +257,6 @@ function prevStep() {
         level="warning"
         v-if="
           !web3Account &&
-          !web3.authLoading &&
           (space?.validation?.params.minScore ||
             space?.filters.minScore ||
             space?.filters.onlyMembers)
@@ -314,6 +313,8 @@ function prevStep() {
           }}
         </span>
       </BaseMessageBlock>
+
+      <!-- Router view for proposal creation steps -->
       <router-view :space="space" />
     </template>
     <template #sidebar-right>
