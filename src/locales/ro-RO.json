@@ -170,7 +170,8 @@
         "member": "Trebuie sa fii autor al spațiu-lui pentru a înregistra o propunere.",
         "minScore": "Trebuie sa ai un minim de {0} {1} pentru a înscrie o propunere."
       },
-      "customValidation": "Trebuie sa treci de validarea propunerii pentru a o înscrie."
+      "customValidation": "Trebuie sa treci de validarea propunerii pentru a o înscrie.",
+      "executionError": "Verifying your eligibility to create proposals in this space has failed. This is likely due to a misconfigured strategy."
     }
   },
   "delegate": {

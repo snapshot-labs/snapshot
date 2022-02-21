@@ -170,7 +170,8 @@
         "member": "You need to be an author of the space in order to submit a proposal.",
         "minScore": "בכדי לפרסם הצעה צריך להיות ברשותך לפחות {0}{1}."
       },
-      "customValidation": "עליך לעבור אישור לפני שתוכל לפרסם הצעה."
+      "customValidation": "עליך לעבור אישור לפני שתוכל לפרסם הצעה.",
+      "executionError": "Verifying your eligibility to create proposals in this space has failed. This is likely due to a misconfigured strategy."
     }
   },
   "delegate": {

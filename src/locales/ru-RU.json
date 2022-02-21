@@ -170,7 +170,8 @@
         "member": "Вы должны быть автором пространства для того, чтобы представить предложение.",
         "minScore": "Вам нужно иметь минимум {0} {1} для того, чтобы отправить предложение."
       },
-      "customValidation": "Вам необходимо пройти проверку предложения, чтобы подать предложение"
+      "customValidation": "Вам необходимо пройти проверку предложения, чтобы подать предложение",
+      "executionError": "Verifying your eligibility to create proposals in this space has failed. This is likely due to a misconfigured strategy."
     }
   },
   "delegate": {

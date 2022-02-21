@@ -170,7 +170,8 @@
         "member": "You need to be an author of the space in order to submit a proposal.",
         "minScore": "আপনার কাছে প্রপোসাল জমা দেওয়ার ন্যূনতম {0}{1} থাকতে হবে."
       },
-      "customValidation": "প্রস্তাব জমা দেওয়ার জন্য আপনাকে প্রস্তাবের বৈধতাটি পাস করতে হবে।."
+      "customValidation": "প্রস্তাব জমা দেওয়ার জন্য আপনাকে প্রস্তাবের বৈধতাটি পাস করতে হবে।.",
+      "executionError": "Verifying your eligibility to create proposals in this space has failed. This is likely due to a misconfigured strategy."
     }
   },
   "delegate": {
