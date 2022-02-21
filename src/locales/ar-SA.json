@@ -170,7 +170,8 @@
         "member": "يجب أن تكون عضوا في المساحة لتقديم اقتراح.",
         "minScore": "تحتاج إلى الحد الأدنى من {0} {1} لتقديم اقتراح."
       },
-      "customValidation": "تحتاج إلى اجتياز المصادقة على الاقتراح من أجل تقديم اقتراح."
+      "customValidation": "تحتاج إلى اجتياز المصادقة على الاقتراح من أجل تقديم اقتراح.",
+      "executionError": "Verifying your eligibility to create proposals in this space has failed. This is likely due to a misconfigured strategy."
     }
   },
   "delegate": {

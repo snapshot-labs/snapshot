@@ -170,7 +170,8 @@
         "member": "提案を送信するため、スペースのメンバーである必要がある。",
         "minScore": "提案を作成するためには、最低でも {0} {1} 所有していなければなりません。"
       },
-      "customValidation": "提案を提出するには、提案検証に合格する必要があります。"
+      "customValidation": "提案を提出するには、提案検証に合格する必要があります。",
+      "executionError": "Verifying your eligibility to create proposals in this space has failed. This is likely due to a misconfigured strategy."
     }
   },
   "delegate": {

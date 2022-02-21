@@ -170,7 +170,8 @@
         "member": "You need to be an author of the space in order to submit a proposal.",
         "minScore": "Bạn cần có ít nhất {0} {1} để khởi tạo một đề xuất."
       },
-      "customValidation": "You need to pass the proposal validation in order to submit a proposal."
+      "customValidation": "You need to pass the proposal validation in order to submit a proposal.",
+      "executionError": "Verifying your eligibility to create proposals in this space has failed. This is likely due to a misconfigured strategy."
     }
   },
   "delegate": {
