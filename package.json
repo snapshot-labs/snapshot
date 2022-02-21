@@ -8,10 +8,11 @@
     "lint": "eslint \"./src/*/**/*.{ts,vue,json}\" --fix",
     "postinstall": "patch-package && husky install",
     "init-submodules": "git submodule update --init",
-    "test": "vitest",
-    "test:ui": "vitest --ui",
-    "coverage": "vitest run --coverage",
-    "cypress:open": "cypress open"
+    "test:unit": "vitest run",
+    "test:unit:coverage": "vitest run --coverage",
+    "test:e2e": "cypress run",
+    "test:e2e:mobile": "cypress run --config viewportWidth=375,viewportHeight=667",
+    "test:e2e:debug": "cypress open"
   },
   "dependencies": {
     "@apollo/client": "^3.5.9",
@@ -52,8 +53,8 @@
     "@types/node": "^17.0.19",
     "@typescript-eslint/eslint-plugin": "^2.34.0",
     "@typescript-eslint/parser": "^2.34.0",
-    "@vitest/ui": "^0.3.2",
     "@vitejs/plugin-vue": "^2.2.2",
+    "@vitest/ui": "^0.3.2",
     "@vue/eslint-config-prettier": "^6.0.0",
     "@vue/eslint-config-typescript": "^7.0.0",
     "@vue/test-utils": "^2.0.0-rc.17",

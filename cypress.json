@@ -1,5 +1,8 @@
 {
-  "integrationFolder": "e2e/tests",
-  "downloadsFolder": "e2e/downloads",
-  "fixturesFolder": "e2e/fixtures"
+  "baseUrl": "http://localhost:3000",
+  "viewportHeight": 900,
+  "viewportWidth": 1280,
+  "screenshotOnRunFailure": false,
+  "video": false,
+  "defaultCommandTimeout": 10000
 }

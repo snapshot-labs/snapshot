@@ -1,8 +1,11 @@
 /// <reference types="cypress" />
 
+/**
+ * This test assumes the operating system's theme is light.
+ */
 describe('darkmode', () => {
   beforeEach(() => {
-    cy.visit('http://localhost:3000')
+    cy.visit('/')
   })
 
   it('displays a button that toggles dark mode', () => {
