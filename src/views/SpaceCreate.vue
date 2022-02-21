@@ -349,7 +349,7 @@ const needsPluginConfigs = computed(() =>
       due to misconfigured strategy)  -->
       <BaseMessageBlock
         level="warning"
-        v-else-if="true"
+        v-else-if="executingValidationFailed"
         :routeObject="{ name: 'spaceAbout', params: { key: space.id } }"
       >
         {{ $t('create.validationWarning.executionError') }}
