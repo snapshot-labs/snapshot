@@ -170,7 +170,8 @@
         "member": "You need to be an author of the space in order to submit a proposal.",
         "minScore": "Вам потрібно мати мінімум {0} {1} для того, щоб зробити пропозицію."
       },
-      "customValidation": "Вам необхідно пройти перевірку пропозиції, щоб запропонувати пропозицію."
+      "customValidation": "Вам необхідно пройти перевірку пропозиції, щоб запропонувати пропозицію.",
+      "executionError": "Verifying your eligibility to create proposals in this space has failed. This is likely due to a misconfigured strategy."
     }
   },
   "delegate": {
@@ -280,7 +281,7 @@
     "textRecordExists": "Currently the space controller is {address}. You can update the space controller by using the form below.",
     "spaceOwnerAddressPlaceHolder": "e.g. 0xF78108c9BBaF466dd96BE41be728Fe3220b37119",
     "controllerAddress": "Controller address",
-    "updateENS": "Update space controller",
+    "updateController": "Update controller",
     "connectWithEnsController": "To modify the space controller you need to connect with the wallet that owns {ens}",
     "seeOnEns": "See on ENS"
   },

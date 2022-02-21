@@ -28,7 +28,7 @@ const period = computed(() => {
 <template>
   <Block slim class="timeline-proposal transition-colors">
     <router-link
-      class="p-4 block text-color"
+      class="p-4 block text-skin-text"
       :to="{
         name: 'spaceProposal',
         params: { key: proposal.space.id, id: proposal.id }
@@ -39,6 +39,8 @@ const period = computed(() => {
           <div class="flex items-center space-x-1">
             <Token :space="proposal.space" size="28" />
             <span class="!ml-2" v-text="proposal.space.name" />
+            <span v-text="$tc('proposalBy')" />
+
             <User
               :address="proposal.author"
               :profile="profiles[proposal.author]"

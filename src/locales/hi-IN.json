@@ -170,7 +170,8 @@
         "member": "प्रस्ताव सबमिट करने के लिए आपको स्पेस का लेखक होना आवश्यक है।",
         "minScore": "प्रपोजल सबमिट करने के लिए काम से काम {0} {1} होना जरुरी है"
       },
-      "customValidation": "प्रस्ताव जमा करने के लिए आपको प्रस्ताव सत्यापन पास करना होगा"
+      "customValidation": "प्रस्ताव जमा करने के लिए आपको प्रस्ताव सत्यापन पास करना होगा",
+      "executionError": "Verifying your eligibility to create proposals in this space has failed. This is likely due to a misconfigured strategy."
     }
   },
   "delegate": {
@@ -280,7 +281,7 @@
     "textRecordExists": "Currently the space controller is {address}. You can update the space controller by using the form below.",
     "spaceOwnerAddressPlaceHolder": "e.g. 0xF78108c9BBaF466dd96BE41be728Fe3220b37119",
     "controllerAddress": "Controller address",
-    "updateENS": "Update space controller",
+    "updateController": "Update controller",
     "connectWithEnsController": "To modify the space controller you need to connect with the wallet that owns {ens}",
     "seeOnEns": "See on ENS"
   },

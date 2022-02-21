@@ -170,7 +170,8 @@
         "member": "يجب أن تكون عضوا في المساحة لتقديم اقتراح.",
         "minScore": "تحتاج إلى الحد الأدنى من {0} {1} لتقديم اقتراح."
       },
-      "customValidation": "تحتاج إلى اجتياز المصادقة على الاقتراح من أجل تقديم اقتراح."
+      "customValidation": "تحتاج إلى اجتياز المصادقة على الاقتراح من أجل تقديم اقتراح.",
+      "executionError": "Verifying your eligibility to create proposals in this space has failed. This is likely due to a misconfigured strategy."
     }
   },
   "delegate": {
@@ -280,7 +281,7 @@
     "textRecordExists": "Currently the space controller is {address}. You can update the space controller by using the form below.",
     "spaceOwnerAddressPlaceHolder": "e.g. 0xF78108c9BBaF466dd96BE41be728Fe3220b37119",
     "controllerAddress": "Controller address",
-    "updateENS": "Update space controller",
+    "updateController": "Update controller",
     "connectWithEnsController": "To modify the space controller you need to connect with the wallet that owns {ens}",
     "seeOnEns": "See on ENS"
   },

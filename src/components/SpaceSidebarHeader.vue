@@ -43,7 +43,7 @@ watchEffect(() => {
     <Token :space="space" symbolIndex="space" size="80" class="mt-3 mb-2" />
     <h3 class="mb-[2px] mx-2 flex justify-center items-center">
       <div
-        class="truncated mr-1"
+        class="truncate mr-1"
         v-tippy="{
           content: space.name.length > 16 ? space.name : null
         }"
@@ -61,7 +61,7 @@ watchEffect(() => {
       />
       <Icon v-if="isVerified === -1" name="warning" size="20" />
     </h3>
-    <div class="mb-[12px] text-color">
+    <div class="mb-[12px] text-skin-text">
       {{
         $tc('members', space.followersCount, {
           count: formatCompactNumber(space.followersCount)
@@ -77,7 +77,12 @@ watchEffect(() => {
         @click="toggleSubscription()"
       >
         <UiLoading v-if="loading" />
-        <Icon v-else size="20" class="link-color" :name="notificationIcon" />
+        <Icon
+          v-else
+          size="20"
+          class="text-skin-link"
+          :name="notificationIcon"
+        />
       </UiSidebarButton>
     </div>
   </div>

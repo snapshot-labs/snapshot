@@ -19,8 +19,8 @@ function selectCategory(c) {
   selectedCategory.value = c === selectedCategory.value ? '' : c;
 }
 
-const { getProposalIds } = useUnseenProposals();
-watchEffect(() => getProposalIds(followingSpaces.value));
+const { getProposals } = useUnseenProposals();
+watchEffect(() => getProposals(followingSpaces.value));
 
 // Scroll
 const loadBy = 16;
@@ -113,7 +113,7 @@ onMounted(() => {
           >
             <!-- Added mb-0 to remove mb-4 added by block component -->
             <Block
-              class="text-center extra-icon-container mb-0 hover-border"
+              class="text-center mb-0 hover:border-skin-link"
               style="height: 266px"
             >
               <div class="relative inline-block mb-2">
@@ -123,17 +123,12 @@ onMounted(() => {
                   size="82"
                   class="mb-1"
                 />
-                <UiCounter
-                  v-if="space.activeProposals"
-                  :counter="space.activeProposals"
-                  class="absolute top-0 right-0 !bg-green"
-                />
               </div>
               <h3
                 v-text="shorten(space.name, 16)"
                 class="mb-0 pb-0 mt-0 text-[22px] !h-[32px] overflow-hidden"
               />
-              <div class="mb-[12px] text-color">
+              <div class="mb-[12px] text-skin-text">
                 {{
                   $tc('members', space.followers, {
                     count: formatCompactNumber(space.followers)

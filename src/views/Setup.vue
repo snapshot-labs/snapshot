@@ -149,7 +149,7 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
           </div>
         </Block>
       </template>
-      <Block v-else class="px-4 md:px-0">
+      <Block v-else>
         <UiButton
           @click="modalAccountOpen = true"
           :loading="web3.authLoading"
@@ -162,7 +162,11 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
     </template>
     <template #sidebar-right>
       <Block>
-        <Icon name="gitbook" size="24" class="text-color pr-2 !align-middle" />
+        <Icon
+          name="gitbook"
+          size="24"
+          class="text-skin-text pr-2 !align-middle"
+        />
         <span v-html="$t('setup.helpDocsAndDiscordLinks')" />
       </Block>
     </template>
