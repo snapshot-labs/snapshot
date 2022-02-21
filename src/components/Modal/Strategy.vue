@@ -1,7 +1,8 @@
-<script setup>
+<script setup lang="ts">
 import { ref, computed, toRefs, watch } from 'vue';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import { useStrategies } from '@/composables/useStrategies';
+import { useNetworksFilter } from '../../composables/useNetworksFilter';
 
 const defaultParams = {
   symbol: 'DAI',
@@ -9,7 +10,15 @@ const defaultParams = {
   decimals: 18
 };
 
-const props = defineProps({ open: Boolean, strategy: Object });
+const props = defineProps<{
+  open: boolean;
+  strategy: {
+    name: string;
+    network: string;
+    params: Record<string, any>;
+  };
+  defaultNetwork?: string;
+}>();
 
 const emit = defineEmits(['add', 'close']);
 
@@ -18,7 +27,8 @@ const searchInput = ref('');
 const isValid = ref(true);
 const input = ref({
   name: '',
-  params: {}
+  network: '',
+  params: {} as Record<string, any>
 });
 const loading = ref(false);
 
@@ -32,6 +42,15 @@ const {
 } = useStrategies();
 
 const strategiesResults = computed(() => filterStrategies(searchInput.value));
+const { filterNetworks } = useNetworksFilter();
+
+const networks = computed(() => {
+  return filterNetworks().map(_n => ({
+    label: _n.name,
+    value: _n.key,
+    option: _n
+  }));
+});
 
 function handleSubmit() {
   const strategyObj = clone(input.value);
@@ -48,7 +67,7 @@ async function selectStrategy(strategyName) {
   input.value.name = strategyName;
   await initStrategy(strategyName);
   const params =
-    extendedStrategy.value?.examples[0]?.strategy?.params || defaultParams;
+    extendedStrategy.value?.examples?.[0]?.strategy?.params || defaultParams;
   input.value.params = strategyDefinition.value ? {} : params;
   loading.value = false;
 }
@@ -60,12 +79,15 @@ async function editStrategy(strategyName) {
 }
 
 watch(open, () => {
+  input.value.network = props.defaultNetwork ?? '';
+
   if (props.open && !props.strategy?.name) getStrategies();
   if (props.strategy?.name) {
     editStrategy(props.strategy.name);
   } else {
     input.value = {
       name: '',
+      network: props.defaultNetwork ?? '',
       params: defaultParams
     };
   }
@@ -87,23 +109,32 @@ watch(open, () => {
     <div v-if="input.name" class="m-4">
       <RowLoading v-if="loading" class="px-0" />
       <div v-else>
-        <SDefaultObject
-          v-if="strategyDefinition"
-          v-model="input.params"
-          :definition="strategyDefinition"
-        />
-        <UiButton
-          v-else
-          class="block w-full mb-3 overflow-x-auto"
-          style="height: auto"
-        >
-          <TextareaJson
-            v-model="input.params"
-            v-model:is-valid="isValid"
-            :placeholder="$t('strategyParameters')"
-            class="input text-left"
+        <div class="min-h-[280px]">
+          <BaseAutocomplete
+            :options="networks"
+            v-model="input.network"
+            title="Network"
+            class="mb-3"
           />
-        </UiButton>
+
+          <SDefaultObject
+            v-if="strategyDefinition"
+            v-model="input.params"
+            :definition="strategyDefinition"
+          />
+          <UiButton
+            v-else
+            class="block w-full mb-3 overflow-x-auto"
+            style="height: auto"
+          >
+            <TextareaJson
+              v-model="input.params"
+              v-model:is-valid="isValid"
+              :placeholder="$t('strategyParameters')"
+              class="input text-left"
+            />
+          </UiButton>
+        </div>
       </div>
     </div>
 

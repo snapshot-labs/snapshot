@@ -166,6 +166,7 @@ export const SPACES_QUERY = gql`
       }
       strategies {
         name
+        network
         params
       }
       validation {

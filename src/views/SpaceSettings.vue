@@ -670,6 +670,7 @@ onMounted(() => {
     <ModalStrategy
       :open="modalStrategyOpen"
       :strategy="currentStrategy"
+      :defaultNetwork="form.network"
       @close="modalStrategyOpen = false"
       @add="handleSubmitAddStrategy"
     />
