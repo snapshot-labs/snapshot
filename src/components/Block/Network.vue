@@ -11,7 +11,7 @@ defineProps(['network']);
 </script>
 
 <template>
-  <Block class="hover-border">
+  <Block class="hover:border-skin-link">
     <div class="flex items-start mb-3">
       <UiAvatar
         class="mr-2"
@@ -20,14 +20,14 @@ defineProps(['network']);
         size="28"
       />
       <div class="overflow-hidden">
-        <h3 class="truncated my-0 leading-5" v-text="network.name" />
+        <h3 class="truncate my-0 leading-5" v-text="network.name" />
         <div
           v-text="'Chain #' + network.key"
-          class="text-color text-xs leading-4"
+          class="text-skin-text text-xs leading-4"
         />
       </div>
     </div>
-    <div class="text-color">
+    <div class="text-skin-text">
       {{
         $tc('inSpaces', [
           formatCompactNumber(networksSpacesCount[network.key] ?? 0)

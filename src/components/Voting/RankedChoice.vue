@@ -45,7 +45,7 @@ function updateChoices() {
               <div class="min-w-[60px] text-left">
                 ({{ getNumberWithOrdinal(index + 1) }})
               </div>
-              <div class="truncated w-full mx-2 text-center">
+              <div class="truncate w-full mx-2 text-center">
                 {{ proposal.choices[element - 1] }}
               </div>
               <div
@@ -66,7 +66,7 @@ function updateChoices() {
         class="block w-full mb-2"
         :class="selectedChoices.includes(i + 1) && 'button--active'"
       >
-        <span class="truncated">{{ choice }}</span>
+        <span class="truncate">{{ choice }}</span>
       </UiButton>
     </div>
   </div>

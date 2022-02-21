@@ -187,7 +187,7 @@ export default {
       <a
         v-if="gnosisSafeAddress"
         :href="safeLink"
-        class="text-color ml-2"
+        class="text-skin-text ml-2"
         style="font-weight: normal"
         target="_blank"
       >

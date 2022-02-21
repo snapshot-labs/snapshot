@@ -10,7 +10,7 @@
     "init-submodules": "git submodule update --init"
   },
   "dependencies": {
-    "@apollo/client": "^3.5.8",
+    "@apollo/client": "^3.5.9",
     "@ensdomains/eth-ens-namehash": "^2.0.15",
     "@ethersproject/abi": "^5.4.0",
     "@ethersproject/address": "^5.4.0",
@@ -24,12 +24,11 @@
     "@popperjs/core": "^2.11.2",
     "@pusher/push-notifications-web": "^1.1.0",
     "@snapshot-labs/lock": "^0.1.6",
-    "@snapshot-labs/snapshot.js": "^0.3.47",
+    "@snapshot-labs/snapshot.js": "^0.3.48",
     "@vue/apollo-composable": "4.0.0-alpha.16",
     "@vueuse/core": "^7.6.2",
     "autolinker": "^3.14.3",
     "eslint": "^7.32.0",
-    "ethereum-blockies-base64": "^1.0.2",
     "graphql": "^16.3.0",
     "graphql-tag": "^2.12.6",
     "lodash": "^4.17.21",
@@ -42,7 +41,7 @@
     "vue": "^3.2.31",
     "vue-i18n": "^9.1.9",
     "vue-router": "^4.0.9",
-    "vue-tippy": "^6.0.0-alpha.48",
+    "vue-tippy": "^6.0.0-alpha.51",
     "vuedraggable": "^4.0.2"
   },
   "devDependencies": {
@@ -59,11 +58,11 @@
     "postcss": "^8.4.6",
     "prettier": "^2.5.1",
     "rollup-plugin-visualizer": "^5.5.4",
-    "sass": "~1.49.7",
+    "sass": "~1.49.8",
     "sass-loader": "^12.6.0",
-    "tailwindcss": "^3.0.22",
+    "tailwindcss": "^3.0.23",
     "unplugin-vue-components": "^0.17.18",
-    "vite": "^2.8.2"
+    "vite": "^2.8.4"
   },
   "resolutions": {
     "ansi-regex": "^5.0.1",

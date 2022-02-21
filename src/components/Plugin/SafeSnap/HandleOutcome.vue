@@ -31,12 +31,14 @@
       "
       class="my-4"
     >
-      <div class="text-base block-bg p-3 rounded-3xl border inline-block">
-        <h5 class="text-center link-color">
+      <div
+        class="text-base bg-skin-block-bg p-3 rounded-3xl border inline-block"
+      >
+        <h5 class="text-center text-skin-link">
           Reality oracle
           <a
             @click="updateDetails"
-            class="ml-2 float-right text-color"
+            class="ml-2 float-right text-skin-text"
             style="padding-top: 2px"
           >
             <Icon name="refresh" size="16" />
@@ -56,19 +58,19 @@
                     : $t('safeSnap.currentOutcome')
                 }}:</b
               >
-              <span class="float-right link-color">
+              <span class="float-right text-skin-link">
                 {{ approvalData?.decision }}
               </span>
             </div>
             <div v-if="!questionDetails?.finalizedAt" mt-3>
               <b class="pr-3">{{ $t('safeSnap.currentBond') }}:</b>
-              <span class="float-right link-color">
+              <span class="float-right text-skin-link">
                 {{ approvalData?.currentBond }}
               </span>
             </div>
           </div>
 
-          <div class="border rounded-lg p-3 link-color">
+          <div class="border rounded-lg p-3 text-skin-link">
             <b>{{ approvalData?.timeLeft }}</b>
           </div>
         </div>
