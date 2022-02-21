@@ -170,7 +170,8 @@
         "member": "Bir teklif göndermek için alanın yazarı olman gerekir.",
         "minScore": "Bir teklif gönderebilmek için minimum {0} {1} sahip olunması gerekir."
       },
-      "customValidation": "Bir teklif göndermek için teklif doğrulamasını geçmeniz gerekir."
+      "customValidation": "Bir teklif göndermek için teklif doğrulamasını geçmeniz gerekir.",
+      "executionError": "Verifying your eligibility to create proposals in this space has failed. This is likely due to a misconfigured strategy."
     }
   },
   "delegate": {

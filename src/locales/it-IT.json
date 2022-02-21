@@ -170,7 +170,8 @@
         "member": "Devi essere un membro dello spazio per inviare una proposta.",
         "minScore": "Devi avere un minimo di {0} {1} per inviare una proposta."
       },
-      "customValidation": "È necessario superare la convalida della proposta per inviare una proposta."
+      "customValidation": "È necessario superare la convalida della proposta per inviare una proposta.",
+      "executionError": "Verifying your eligibility to create proposals in this space has failed. This is likely due to a misconfigured strategy."
     }
   },
   "delegate": {

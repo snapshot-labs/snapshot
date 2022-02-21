@@ -170,7 +170,8 @@
         "member": "You need to be an author of the space in order to submit a proposal.",
         "minScore": "Sie müssen mindestens {0} {1} haben, um einen Vorschlag einzureichen."
       },
-      "customValidation": "Sie müssen Zugang haben, um einen Vorschlag einzureichen."
+      "customValidation": "Sie müssen Zugang haben, um einen Vorschlag einzureichen.",
+      "executionError": "Verifying your eligibility to create proposals in this space has failed. This is likely due to a misconfigured strategy."
     }
   },
   "delegate": {

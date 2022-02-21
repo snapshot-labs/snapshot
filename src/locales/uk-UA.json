@@ -170,7 +170,8 @@
         "member": "You need to be an author of the space in order to submit a proposal.",
         "minScore": "Вам потрібно мати мінімум {0} {1} для того, щоб зробити пропозицію."
       },
-      "customValidation": "Вам необхідно пройти перевірку пропозиції, щоб запропонувати пропозицію."
+      "customValidation": "Вам необхідно пройти перевірку пропозиції, щоб запропонувати пропозицію.",
+      "executionError": "Verifying your eligibility to create proposals in this space has failed. This is likely due to a misconfigured strategy."
     }
   },
   "delegate": {

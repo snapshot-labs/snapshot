@@ -170,7 +170,8 @@
         "member": "You need to be an author of the space in order to submit a proposal.",
         "minScore": "Musíte být členem prostoru, abyste mohli podat návrh."
       },
-      "customValidation": "Pro předložení návrhu musíte schválit validaci návrhu."
+      "customValidation": "Pro předložení návrhu musíte schválit validaci návrhu.",
+      "executionError": "Verifying your eligibility to create proposals in this space has failed. This is likely due to a misconfigured strategy."
     }
   },
   "delegate": {

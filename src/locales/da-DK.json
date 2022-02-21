@@ -170,7 +170,8 @@
         "member": "You need to be an author of the space in order to submit a proposal.",
         "minScore": "Du skal være medlem af pladsen for at kunne indsende et forslag."
       },
-      "customValidation": "Du skal bestå forslaget validering for at kunne fremlægge et forslag."
+      "customValidation": "Du skal bestå forslaget validering for at kunne fremlægge et forslag.",
+      "executionError": "Verifying your eligibility to create proposals in this space has failed. This is likely due to a misconfigured strategy."
     }
   },
   "delegate": {
