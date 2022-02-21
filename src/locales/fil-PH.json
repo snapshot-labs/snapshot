@@ -170,7 +170,8 @@
         "member": "Kailangan mo maging miyembro ng ispasyo para makapag sumite ng proposal.",
         "minScore": "Kailangan mong magkaroon ng minimum na {0} {1} upang makapagsumite ng panukala."
       },
-      "customValidation": "Kailangan mong ipasa ang pagpapatunay ng panukala upang makapagsumite ng isang panukala."
+      "customValidation": "Kailangan mong ipasa ang pagpapatunay ng panukala upang makapagsumite ng isang panukala.",
+      "executionError": "Verifying your eligibility to create proposals in this space has failed. This is likely due to a misconfigured strategy."
     }
   },
   "delegate": {

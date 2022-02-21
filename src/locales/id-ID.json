@@ -170,7 +170,8 @@
         "member": "Anda harus menjadi penulis di ruangan ini untuk bisa menulis proposal.",
         "minScore": "Anda harus memiliki setidaknya minimal {0} {1} untuk mengajukan sebuah proposal."
       },
-      "customValidation": "Anda harus lulus validasi proposal untuk mengajukan proposal."
+      "customValidation": "Anda harus lulus validasi proposal untuk mengajukan proposal.",
+      "executionError": "Verifying your eligibility to create proposals in this space has failed. This is likely due to a misconfigured strategy."
     }
   },
   "delegate": {

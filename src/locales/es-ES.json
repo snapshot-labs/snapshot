@@ -170,7 +170,8 @@
         "member": "Necesitas ser un autor del espacio para poder presentar una propuesta.",
         "minScore": "Necesitas tener un mínimo de {0} {1} para poder presentar una propuesta."
       },
-      "customValidation": "Es necesario aprobar la validación de la propuesta para presentarla."
+      "customValidation": "Es necesario aprobar la validación de la propuesta para presentarla.",
+      "executionError": "Verifying your eligibility to create proposals in this space has failed. This is likely due to a misconfigured strategy."
     }
   },
   "delegate": {

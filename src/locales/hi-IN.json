@@ -170,7 +170,8 @@
         "member": "प्रस्ताव सबमिट करने के लिए आपको स्पेस का लेखक होना आवश्यक है।",
         "minScore": "प्रपोजल सबमिट करने के लिए काम से काम {0} {1} होना जरुरी है"
       },
-      "customValidation": "प्रस्ताव जमा करने के लिए आपको प्रस्ताव सत्यापन पास करना होगा"
+      "customValidation": "प्रस्ताव जमा करने के लिए आपको प्रस्ताव सत्यापन पास करना होगा",
+      "executionError": "Verifying your eligibility to create proposals in this space has failed. This is likely due to a misconfigured strategy."
     }
   },
   "delegate": {

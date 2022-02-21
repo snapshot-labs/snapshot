@@ -170,7 +170,8 @@
         "member": "Vous devez être auteur dans cet espace pour soumettre une proposition.",
         "minScore": "Vous devez posséder un minimum de {0} {1} pour soumettre une proposition."
       },
-      "customValidation": "Vous devez approuver la validation de la proposition pour soumettre une proposition."
+      "customValidation": "Vous devez approuver la validation de la proposition pour soumettre une proposition.",
+      "executionError": "Verifying your eligibility to create proposals in this space has failed. This is likely due to a misconfigured strategy."
     }
   },
   "delegate": {

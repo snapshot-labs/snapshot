@@ -1161,10 +1161,10 @@
   resolved "https://registry.yarnpkg.com/@types/minimist/-/minimist-1.2.2.tgz#ee771e2ba4b3dc5b372935d549fd9617bf345b8c"
   integrity sha512-jhuKLIRrhvCPLqwPcx6INqmKeiA5EWrsCOPhrlFSrbrmU4ZMPjj5Ul/oLCMDO98XRUIwVm78xICz4EPCektzeQ==
 
-"@types/node@*", "@types/node@^17.0.18":
-  version "17.0.18"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-17.0.18.tgz#3b4fed5cfb58010e3a2be4b6e74615e4847f1074"
-  integrity sha512-eKj4f/BsN/qcculZiRSujogjvp5O/k4lOW5m35NopjZM/QwLOR075a8pJW5hD+Rtdm2DaCVPENS6KtSQnUD6BA==
+"@types/node@*", "@types/node@^17.0.19":
+  version "17.0.19"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-17.0.19.tgz#726171367f404bfbe8512ba608a09ebad810c7e6"
+  integrity sha512-PfeQhvcMR4cPFVuYfBN4ifG7p9c+Dlh3yUZR6k+5yQK7wX3gDgVxBly4/WkBRs9x4dmcy1TVl08SY67wwtEvmA==
 
 "@types/node@^12.12.6", "@types/node@^12.7.1":
   version "12.20.42"
@@ -1248,10 +1248,10 @@
     semver "^7.3.2"
     tsutils "^3.17.1"
 
-"@vitejs/plugin-vue@^2.2.0":
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/@vitejs/plugin-vue/-/plugin-vue-2.2.0.tgz#a0affe3ee09f70a9a1415bd39c0f8a58fa78b419"
-  integrity sha512-wXigM1EwN2G7rZcwG6kLk9ivvIMhx2363tCEvMBiXcTu5nePM/12hUPVzPb83Uugt6U+zom1gTpJopi/Ow/jwg==
+"@vitejs/plugin-vue@^2.2.2":
+  version "2.2.2"
+  resolved "https://registry.yarnpkg.com/@vitejs/plugin-vue/-/plugin-vue-2.2.2.tgz#df5d4464ad8cb97c9fb7407a1e5a3a34f716febb"
+  integrity sha512-3C0s45VOwIFEDU+2ownJOpb0zD5fnjXWaHVOLID2R1mYOlAx3doNBFnNbVjaZvpke/L7IdPJXjpyYpXZToDKig==
 
 "@vue/apollo-composable@4.0.0-alpha.16":
   version "4.0.0-alpha.16"
@@ -6274,10 +6274,10 @@ vue-router@^4.0.9:
   dependencies:
     "@vue/devtools-api" "^6.0.0-beta.14"
 
-vue-tippy@^6.0.0-alpha.51:
-  version "6.0.0-alpha.51"
-  resolved "https://registry.yarnpkg.com/vue-tippy/-/vue-tippy-6.0.0-alpha.51.tgz#173deb6a2dfd54aa8807df7c36e009f50e783bda"
-  integrity sha512-6p4XyFiUNn9zPwmYioh9Su0DcSReMa3rAXwnJfPbEEw4mSShCA4cFXPFR1UsTaWenMOHMDpSfn5NrtANoFQP6Q==
+vue-tippy@^6.0.0-alpha.52:
+  version "6.0.0-alpha.52"
+  resolved "https://registry.yarnpkg.com/vue-tippy/-/vue-tippy-6.0.0-alpha.52.tgz#7fd78d20634903786c3713ee9c5364d8f1fc13d9"
+  integrity sha512-P6BYXqk56diNw/NN5OIXYT31+dmCB0oS0mCvV/waNbQtJDzpWT3qSCo/COi0mrvOdtcqdj++G7VE3jjcGt0mLw==
   dependencies:
     tippy.js "^6.3.7"
 
