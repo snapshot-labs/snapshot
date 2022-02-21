@@ -64,23 +64,30 @@ const proposal = computed(() =>
 const sourceProposal = computed(() => route.params.sourceProposal);
 
 // Check if account passes space validation
+// (catch errors to show confiuration error message)
+const executingValidationFailed = ref(false);
 watch(
   () => web3Account.value,
   async () => {
     validationLoading.value = true;
     if (web3Account.value && auth.isAuthenticated.value) {
-      const validationName = props.space.validation?.name ?? 'basic';
-      const validationParams = props.space.validation?.params ?? {};
-      const isValid = await validations[validationName](
-        web3Account.value,
-        clone(props.space),
-        '',
-        clone(validationParams)
-      );
+      try {
+        const validationName = props.space.validation?.name ?? 'basic';
+        const validationParams = props.space.validation?.params ?? {};
+        const isValid = await validations[validationName](
+          web3Account.value,
+          clone(props.space),
+          '',
+          clone(validationParams)
+        );
 
-      passValidation.value = [isValid, validationName];
-      console.log('Pass validation?', isValid, validationName);
-      validationLoading.value = false;
+        passValidation.value = [isValid, validationName];
+        console.log('Pass validation?', isValid, validationName);
+        validationLoading.value = false;
+      } catch (e) {
+        executingValidationFailed.value = true;
+        console.log(e);
+      }
     }
   },
   { immediate: true }
@@ -338,6 +345,16 @@ const needsPluginConfigs = computed(() =>
         </div>
       </BaseMessageBlock>
 
+      <!-- Shows when wallet is connected and executing validation fails (e.g.
+      due to misconfigured strategy)  -->
+      <BaseMessageBlock
+        level="warning"
+        v-else-if="true"
+        :routeObject="{ name: 'spaceAbout', params: { key: space.id } }"
+      >
+        {{ $t('create.validationWarning.executionError') }}
+      </BaseMessageBlock>
+
       <!-- Shows when wallet is connected and doesn't pass validaion -->
       <BaseMessageBlock level="warning" v-else-if="passValidation[0] === false">
         <span v-if="passValidation[1] === 'basic'">
@@ -366,12 +383,12 @@ const needsPluginConfigs = computed(() =>
           }}
         </span>
         <div>
-          <BaseAnchor
-            :link="{ name: 'spaceAbout', params: { key: space.id } }"
-            >{{ t('learnMore') }}</BaseAnchor
-          >
+          <BaseAnchor :link="{ name: 'spaceAbout', params: { key: space.id } }">
+            {{ t('learnMore') }}
+          </BaseAnchor>
         </div>
       </BaseMessageBlock>
+
       <template v-if="currentStep === 1">
         <div class="px-4 md:px-0">
           <div class="flex flex-col mb-6">
@@ -606,7 +623,11 @@ const needsPluginConfigs = computed(() =>
           v-else
           @click="web3Account ? currentStep++ : (modalAccountOpen = true)"
           class="block w-full"
-          :disabled="(!stepIsValid && !!web3Account) || web3.authLoading"
+          :disabled="
+            (!stepIsValid && !!web3Account) ||
+            web3.authLoading ||
+            executingValidationFailed
+          "
           primary
         >
           {{ web3Account ? $t('create.continue') : $t('connectWallet') }}
