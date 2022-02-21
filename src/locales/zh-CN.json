@@ -252,7 +252,7 @@
     "votingDelay": "投票延迟开始",
     "votingPeriod": "投票时长",
     "voting": "投票",
-    "quorum": "裁决者人数",
+    "quorum": "Quorum",
     "type": "类型",
     "anyType": "任意",
     "hideAbstain": "忽略基本投票结果中的弃权票",
