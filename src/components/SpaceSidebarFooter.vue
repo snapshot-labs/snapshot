@@ -4,59 +4,60 @@ defineProps({
 });
 </script>
 
-<script>
-export default {
-  data () {
-    return {
-      socials: [
-        {
-          url: 'https://github.com/',
-          spaceAttribute: 'github',
-          icon: 'github',
-        },
-        {
-          url: 'https://twitter.com/',
-          spaceAttribute: 'twitter',
-          icon: 'twitter',
-        },
-        {
-          url: 'https://discord.gg/',
-          spaceAttribute: 'discord',
-          icon: 'discord',
-        },
-      ]
-    }
-  },
-  computed: {
-    spaceSocials() {
-      return this.socials.filter(social => this.space[social.spaceAttribute])
-    }
-  }
-}
-</script>
-
 <template>
   <div
-    v-if="space && spaceSocials.length"
-    class="text-center border-t bg-skin-header-bg mt-3"
+    v-if="space.twitter || space.github || space.discord || space.website"
+    class="border-t bg-skin-header-bg mt-3"
   >
-    <div>
-      <h3 class="my-2 mx-2 flex justify-center items-center space-x-3">
-        <a 
-          v-for="(social, i) in spaceSocials" 
-          :key="i"
-          :href="`${social.url}${space[social.spaceAttribute]}`"
-          target="_blank"
-        >
-          <Icon
-            size="22"
-            :name="`${social.icon}`"
-            class="text-skin-text"
-            @mouseover="$event.target.classList.remove('text-skin-text')"
-            @mouseout="$event.target.classList.add('text-skin-text')"
-          />
-        </a>
-      </h3>
+    <div class="py-3">
+      <a 
+        v-if="space.twitter"
+        :href="`https://twitter.com/${space.twitter}`" 
+        class="flex align-middle px-4 py-2 sidenav-item"
+      >
+        <Icon
+          size="22"
+          name="twitter"
+          class="text-skin-text mr-1 hover:opacity-80"
+        />
+        <span v-text="`Twitter`"/>
+      </a>
+      <a 
+        v-if="space.github"
+        :href="`https://github.com/${space.github}`" 
+        class="flex align-middle px-4 py-2 sidenav-item"
+      >
+        <Icon
+          size="22"
+          name="github"
+          class="text-skin-text mr-1 hover:opacity-80"
+        />
+        <span v-text="`Github`"/>
+      </a>
+      <a 
+        v-if="space.discord"
+        :href="`https://discord.gg/${space.discord}`" 
+        class="flex align-middle px-4 py-2 sidenav-item"
+      >
+        <Icon
+          size="22"
+          name="discord"
+          class="text-skin-text mr-1 hover:opacity-80"
+        />
+        <span v-text="`Discord`"/>
+      </a>
+      <a 
+        v-if="space.website"
+        :href="`${space.website}`" 
+        class="flex align-middle px-4 py-2 sidenav-item"
+      >
+        <Icon
+          size="22"
+          name="earth"
+          class="text-skin-text mr-1 hover:opacity-80"
+        />
+        <span v-text="`Website`"/>
+      </a>
     </div>
   </div>
 </template>
