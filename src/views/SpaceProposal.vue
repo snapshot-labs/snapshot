@@ -99,6 +99,7 @@ function formatProposalVotes(votes) {
 }
 
 async function loadResults() {
+  loadingResultsFailed.value = false;
   if (proposal.value.scores_state === 'invalid') {
     loadingResultsFailed.value = true;
   } else if (proposal.value.scores_state === 'final') {
@@ -484,6 +485,7 @@ const truncateMarkdownBody = computed(() => {
         v-if="loadingResultsFailed"
         :isAdmin="isAdmin"
         :proposalId="proposal.id"
+        :proposalState="proposal.scores_state"
         @retry="loadProposal()"
       />
       <BlockResults

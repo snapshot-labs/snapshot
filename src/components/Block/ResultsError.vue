@@ -1,9 +1,11 @@
 <script setup lang="ts">
 /**
- * Shown on proposal page when proposal.state is invalid or live calculation of
+ * Shown on proposal page when proposalState is invalid or live calculation of
  * scores failed. It shows a descriptive error message and a retry button,
- * which triggers recalculation. It also shows a "Get help" button for space
- * admins, pointing to discord.
+ * which triggers recalculation. When proposalState is invalid (meaning the
+ * proposal is closed) the endpoint to update the db is triggered. Otherwise
+ * live (re)calculation in SpaceProposal.vue kicks in.
+ * It also shows a "Get help" button for space admins, pointing to discord.
  */
 
 import { ref } from 'vue';
@@ -13,6 +15,7 @@ const { t } = useI18n();
 const props = defineProps<{
   isAdmin: boolean;
   proposalId: string;
+  proposalState: string;
 }>();
 
 const emit = defineEmits<{
@@ -21,9 +24,11 @@ const emit = defineEmits<{
 
 const retrying = ref(false);
 const retry = async () => {
-  retrying.value = true;
-  await fetch(`${import.meta.env.VITE_HUB_URL}/api/scores/${props.proposalId}`);
-  retrying.value = false;
+  if (props.proposalState === 'invalid') {
+    retrying.value = true;
+    await fetch(`${import.meta.env.VITE_HUB_URL}/api/scores/${props.proposalId}`);
+    retrying.value = false;
+  }
   emit('retry');
 }
 </script>
