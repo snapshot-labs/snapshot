@@ -179,7 +179,7 @@ onMounted(async () => {
                   params: { key: ensAddress }
                 })
               "
-              :loading="settingENSRecord"
+              :disabled="settingENSRecord"
             >
               {{ $t('setup.goToSettings') }}
             </UiButton>
