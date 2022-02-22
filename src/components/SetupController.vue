@@ -169,6 +169,20 @@ onMounted(async () => {
             >
               {{ $t('setup.updateController') }}
             </UiButton>
+            <div class="w-full text-center mb-2">{{ $t('or') }}</div>
+
+            <UiButton
+              class="button-outline w-full mb-2"
+              @click="
+                $router.push({
+                  name: 'spaceSettings',
+                  params: { key: ensAddress }
+                })
+              "
+              :loading="settingENSRecord"
+            >
+              {{ $t('setup.goToSettings') }}
+            </UiButton>
           </div>
           <div v-else-if="!currentTextRecord && ensOwner">
             <UiButton

@@ -125,6 +125,7 @@
   "optional": "(optional)",
   "homeLoadmore": "Load more",
   "confirmAction": "Confirm action",
+  "or": "or",
   "errors": {
     "required": "Field is required",
     "minLength": "Minimum length is {0}",
@@ -282,7 +283,8 @@
     "controllerAddress": "Controller address",
     "updateController": "Update controller",
     "connectWithEnsController": "To modify the space controller you need to connect with the wallet that owns {ens}",
-    "seeOnEns": "See on ENS"
+    "seeOnEns": "See on ENS",
+    "goToSettings": "Go to settings"
   },
   "notify": {
     "youDidIt": "You did it!",
