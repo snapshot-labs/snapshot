@@ -155,7 +155,6 @@ onMounted(async () => {
         class="mt-2"
         focus-on-mount
       >
-        <template v-slot:label>{{ $t('setup.controllerAddress') }}</template>
       </UiInput>
 
       <div>
@@ -169,6 +168,20 @@ onMounted(async () => {
               :loading="settingENSRecord"
             >
               {{ $t('setup.updateController') }}
+            </UiButton>
+            <div class="w-full text-center mb-2">{{ $t('or') }}</div>
+
+            <UiButton
+              class="button-outline w-full mb-2"
+              @click="
+                $router.push({
+                  name: 'spaceSettings',
+                  params: { key: ensAddress }
+                })
+              "
+              :disabled="settingENSRecord"
+            >
+              {{ $t('setup.goToSettings') }}
             </UiButton>
           </div>
           <div v-else-if="!currentTextRecord && ensOwner">
