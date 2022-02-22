@@ -155,7 +155,6 @@ onMounted(async () => {
         class="mt-2"
         focus-on-mount
       >
-        <template v-slot:label>{{ $t('setup.controllerAddress') }}</template>
       </UiInput>
 
       <div>
