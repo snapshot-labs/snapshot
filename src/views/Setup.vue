@@ -106,7 +106,7 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
           v-else
           :title="$t('setup.selectEnsForSpace')"
           icon="info"
-          :iconTooltip="$t('setup.spaceNeedsEnsAddress')"
+          iconHref="https://docs.snapshot.org/spaces/before-creating-your-space"
         >
           <div v-if="ownedEnsDomainsNoExistingSpace.length">
             <div class="mb-3">
