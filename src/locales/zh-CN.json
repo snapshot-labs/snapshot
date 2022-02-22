@@ -125,6 +125,7 @@
   "optional": "(选填)",
   "homeLoadmore": "加载更多",
   "confirmAction": "确认操作",
+  "or": "or",
   "errors": {
     "required": "此项为必填项",
     "minLength": "最小长度为 {0}",
@@ -269,7 +270,7 @@
     "registerEnsButton": "注册",
     "supportedEnsTLDs": "支持的域名结尾",
     "helpDocsAndDiscordLinks": "不知道如何创建空间？ 在 <a target='_blank' href='https://docs.snapshot.org/spaces/create'> 文档中了解更多信息</a> 或加入 Snapshot <a target='_blank' href='https:// /discord.gg/snapshot'>Discord</a>。",
-    "setSpaceController": "在 ENS 上设置控制人",
+    "setSpaceController": "Set space controller address on ENS",
     "editSpaceController": "在 ENS 上编辑控制人",
     "setController": "设置控制人",
     "explainControllerAndEns": "此操作需要在Ethereum Mainnet上进行交易，该交易会将“snapshot”文本记录添加到您的 ENS 域。",
@@ -277,13 +278,13 @@
     "controllerHasAuthority": "管理员对空间设置拥有所有权限",
     "controller": "控制人",
     "selectEnsForSpace": "选择ENS地址",
-    "spaceNeedsEnsAddress": "要在Snapshot上设置空间，您需要一个Ethereum Mainnet上的ENS地址",
     "textRecordExists": "当前空间控制人是 {address}。您可以使用下面的表单更新空间控制人。",
     "spaceOwnerAddressPlaceHolder": "例如：0xF78108c9BAF466dd96BE41be728Fe3220b37119",
     "controllerAddress": "控制人地址",
     "updateController": "更新管理员",
     "connectWithEnsController": "要修改空间控制人，您需要连接拥有 {ens} 的钱包",
-    "seeOnEns": "在 ENS 上查看"
+    "seeOnEns": "在 ENS 上查看",
+    "goToSettings": "Go to settings"
   },
   "notify": {
     "youDidIt": "您成功了!",
