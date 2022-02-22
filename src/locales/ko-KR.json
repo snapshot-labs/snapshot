@@ -171,7 +171,7 @@
         "minScore": "당신은 제안서를 제출하기 위해 {0} {1} 의 최소가 필요합니다."
       },
       "customValidation": "당신은 제안서를 제출하기 위해 제안의 유효성 검사를 통과해야합니다.",
-      "executionError": "Verifying your eligibility to create proposals in this space has failed. This is likely due to a misconfigured strategy."
+      "executionError": "제안 생성에 대한 자격이 있는지 확인하는 데 실패했습니다. 이는 잘못 구성된 전략 때문일 수 있습니다."
     }
   },
   "delegate": {
