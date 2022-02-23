@@ -14,7 +14,7 @@ defineProps({
 <template>
   <Block class="hover:border-skin-link">
     <div class="flex items-center mb-1">
-      <a target="_blank" class="flex items-center">
+      <a class="flex items-center">
         <UiAvatar
           class="mr-2"
           :imgsrc="getIpfsUrl(plugin.icon)"
