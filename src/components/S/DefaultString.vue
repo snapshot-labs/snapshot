@@ -22,6 +22,7 @@ watch(input, () => {
       type="text"
       v-model="input"
       class="s-input"
+      :maxlength="definition.maxLength"
       :placeholder="definition.examples && definition.examples[0]"
     />
   </SBase>
