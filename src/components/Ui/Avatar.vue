@@ -28,7 +28,10 @@ watch(
 </script>
 
 <template>
-  <span class="flex shrink-0 items-center justify-center">
+  <span
+    class="flex shrink-0 items-center justify-center"
+    :style="{ width: `${parseInt(size) || 22}px` }"
+  >
     <img
       :src="
         imgUrl ||

@@ -11,6 +11,21 @@ export function useUsername() {
     ens: ''
   });
 
+  const fullName = computed(() => {
+    if (
+      web3Account.value &&
+      address.value.toLowerCase() === web3Account.value.toLowerCase()
+    ) {
+      return 'You';
+    }
+    if (profile.value?.name) {
+      return profile.value.name;
+    } else if (profile.value?.ens) {
+      return profile.value.ens;
+    }
+    return address.value;
+  });
+
   const username = computed(() => {
     if (
       web3Account.value &&
@@ -26,5 +41,5 @@ export function useUsername() {
     return shorten(address.value);
   });
 
-  return { address, profile, username };
+  return { address, profile, username, fullName };
 }
