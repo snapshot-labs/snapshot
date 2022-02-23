@@ -47,7 +47,7 @@ watch(modalOpen, val => {
   >
     <UiLoading v-if="app.loading || !app.init" class="overlay big" />
     <div v-else class="w-screen">
-      <Scroller />
+      <TheSidebar />
       <div :class="{ 'sm:ml-[68px]': !domain }">
         <Topnav />
         <router-view :key="$route.path" class="flex-auto" />

@@ -2,6 +2,7 @@
 node_modules
 /dist
 .yalc
+components.d.ts
 
 # local env files
 .env.local
@@ -21,3 +22,7 @@ pnpm-debug.log*
 *.njsproj
 *.sln
 *.sw?
+
+# Vitest
+
+/coverage

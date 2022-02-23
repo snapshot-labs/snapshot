@@ -1,6 +1,7 @@
 <script setup>
 import { toRefs, ref, watch, computed } from 'vue';
-import { getInjected, connectors } from '@snapshot-labs/lock/src/utils';
+import { getInjected } from '@snapshot-labs/lock/src/utils';
+import connectors from '@/helpers/connectors.json';
 import { shorten, explorerUrl, getIpfsUrl } from '@/helpers/utils';
 import { useWeb3 } from '@/composables/useWeb3';
 
@@ -78,12 +79,7 @@ watch(open, () => (step.value = null));
           <UiButton
             class="button-outline w-full flex justify-center items-center"
           >
-            <UiAvatar
-              :imgsrc="getIpfsUrl(web3.profile?.image)"
-              :address="web3.account"
-              size="18"
-              class="mr-2 -ml-1"
-            />
+            <UiAvatar :address="web3.account" size="18" class="mr-2 -ml-1" />
             <span v-if="web3.profile.name" v-text="web3.profile.name" />
             <span v-else-if="web3.profile.ens" v-text="web3.profile.ens" />
             <span v-else v-text="shorten(web3.account)" />

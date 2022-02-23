@@ -20,19 +20,3 @@ const textWithLinks = computed(() =>
 <template>
   <span v-html="textWithLinks" />
 </template>
-
-<style lang="scss">
-@import '../../vars';
-
-.markdown-body {
-  h1,
-  h2 {
-    font-size: 28px;
-    border-bottom: 0;
-  }
-
-  img {
-    border-radius: 8px;
-  }
-}
-</style>

@@ -280,7 +280,7 @@ onMounted(async () => {
   <Layout v-bind="$attrs">
     <template #content-left>
       <div class="px-4 md:px-0 mb-3">
-        <router-link :to="{ path: '/' }" class="text-color">
+        <router-link :to="{ path: '/' }" class="text-skin-text">
           <Icon name="back" size="22" class="!align-middle" />
           {{ $t('backToHome') }}
         </router-link>
@@ -302,7 +302,7 @@ onMounted(async () => {
           :href="`https://docs.snapshot.org/guides/delegation#supported-networks`"
         >
           {{ $t('learnMore') }}
-          <Icon size="16" name="external-link" class="text-color" />
+          <Icon size="16" name="external-link" class="text-skin-text" />
         </a>
       </Block>
       <template v-else>
@@ -357,7 +357,7 @@ onMounted(async () => {
             />
             <div
               v-text="shorten(delegate.space || $t('allSpaces'), 'choice')"
-              class="flex-auto text-right link-color"
+              class="flex-auto text-right text-skin-link"
             />
             <a
               @click="revokeDelegate(delegate.space, delegate.delegate)"
@@ -385,7 +385,7 @@ onMounted(async () => {
             />
             <div
               v-text="shorten(delegator.space || '-', 'choice')"
-              class="flex-auto text-right link-color"
+              class="flex-auto text-right text-skin-link"
             />
           </div>
         </Block>
@@ -405,10 +405,10 @@ onMounted(async () => {
               :profile="profiles[delegate.delegate]"
               :address="delegate.delegate"
               :space="{ network: networkKey }"
-              class="column"
+              class="w-[160px]"
             />
             <div
-              class="flex-auto column text-right link-color"
+              class="flex-auto w-[160px] text-right text-skin-link"
               v-text="
                 `${
                   delegate.score >= 0.005

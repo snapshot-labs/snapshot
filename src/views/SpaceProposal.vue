@@ -77,6 +77,7 @@ function clickVote() {
 }
 
 async function loadProposal() {
+  loading.value = true;
   proposal.value = await getProposal(id);
   // Redirect to proposal space.id if it doesn't match route key
   if (
@@ -86,6 +87,7 @@ async function loadProposal() {
     router.push({ name: 'error-404' });
   }
   loading.value = false;
+  loadResults();
 }
 
 function formatProposalVotes(votes) {
@@ -97,6 +99,7 @@ function formatProposalVotes(votes) {
 }
 
 async function loadResults() {
+  loadingResultsFailed.value = false;
   if (proposal.value.scores_state === 'invalid') {
     loadingResultsFailed.value = true;
   } else if (proposal.value.scores_state === 'final') {
@@ -106,6 +109,7 @@ async function loadResults() {
       sumOfResultsBalance: proposal.value.scores_total
     };
     loadedResults.value = true;
+    loadingResultsFailed.value = false;
     const [userVotesRes, votesRes] = await Promise.all([
       await getProposalVotes(id, {
         first: 1,
@@ -129,6 +133,7 @@ async function loadResults() {
       results.value = resultsObj.results;
       votes.value = resultsObj.votes;
       loadedResults.value = true;
+      loadingResultsFailed.value = false;
       loadedVotes.value = true;
     } catch (e) {
       console.log(e);
@@ -203,10 +208,6 @@ watch(web3Account, () => {
   }
 });
 
-watch(loading, () => {
-  if (!loading.value) loadResults();
-});
-
 watchEffect(() => {
   if (props.space?.name && proposal.value?.title)
     setPageTitle('page.title.space.proposal', {
@@ -249,7 +250,7 @@ const truncateMarkdownBody = computed(() => {
     <template #content-left>
       <div class="px-4 md:px-0 mb-3">
         <a
-          class="text-color"
+          class="text-skin-text"
           @click="
             browserHasHistory
               ? $router.go(-1)
@@ -269,7 +270,7 @@ const truncateMarkdownBody = computed(() => {
           <div class="flex items-center justify-between mb-4">
             <div class="flex space-x-1 items-center">
               <router-link
-                class="text-color group"
+                class="text-skin-text group"
                 :to="{
                   name: 'spaceProposals',
                   params: { key: space.id }
@@ -412,7 +413,7 @@ const truncateMarkdownBody = computed(() => {
             <b>{{ $t('strategies') }}</b>
             <span
               @click="modalStrategiesOpen = true"
-              class="float-right link-color a"
+              class="float-right text-skin-link a"
             >
               <span v-for="(symbol, symbolIndex) of symbols" :key="symbol">
                 <span
@@ -443,7 +444,7 @@ const truncateMarkdownBody = computed(() => {
           </div>
           <div>
             <b>{{ $t('proposal.votingSystem') }}</b>
-            <span class="float-right link-color">
+            <span class="float-right text-skin-link">
               {{ $t(`voting.${proposal.type}`) }}
             </span>
           </div>
@@ -454,7 +455,7 @@ const truncateMarkdownBody = computed(() => {
               v-tippy="{
                 content: formatRelativeTime(proposal.start)
               }"
-              class="float-right link-color"
+              class="float-right text-skin-link"
             />
           </div>
           <div>
@@ -464,7 +465,7 @@ const truncateMarkdownBody = computed(() => {
               v-tippy="{
                 content: formatRelativeTime(proposal.end)
               }"
-              class="link-color float-right"
+              class="text-skin-link float-right"
             />
           </div>
           <div>
@@ -480,7 +481,13 @@ const truncateMarkdownBody = computed(() => {
           </div>
         </div>
       </Block>
-      <BlockResultsError :isAdmin="isAdmin" v-if="loadingResultsFailed" />
+      <BlockResultsError
+        v-if="loadingResultsFailed"
+        :isAdmin="isAdmin"
+        :proposalId="proposal.id"
+        :proposalState="proposal.scores_state"
+        @retry="loadProposal()"
+      />
       <BlockResults
         v-else
         :id="id"
@@ -507,7 +514,7 @@ const truncateMarkdownBody = computed(() => {
     <ModalConfirm
       :open="modalOpen"
       @close="modalOpen = false"
-      @reload="loadProposal(), loadResults()"
+      @reload="loadProposal()"
       :space="space"
       :proposal="proposal"
       :id="id"

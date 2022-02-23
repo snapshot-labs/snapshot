@@ -3,7 +3,6 @@ import { useRoute } from 'vue-router';
 import orderBy from 'lodash/orderBy';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { useWeb3 } from '@/composables/useWeb3';
-import { useFollowSpace } from '@/composables/useFollowSpace';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import verified from '@/../snapshot-spaces/spaces/verified.json';
 import verifiedSpacesCategories from '@/../snapshot-spaces/spaces/categories.json';
@@ -22,7 +21,6 @@ const { login } = useWeb3();
 
 export function useApp() {
   const route = useRoute();
-  const { followingSpaces } = useFollowSpace();
 
   async function init() {
     const auth = getInstance();
@@ -97,7 +95,6 @@ export function useApp() {
     const q = route.query.q?.toString() || '';
     const list = Object.keys(explore.value.spaces)
       .map(key => {
-        const following = followingSpaces.value.some(s => s === key);
         const followers = explore.value.spaces[key].followers ?? 0;
         // const voters1d = explore.value.spaces[key].voters_1d ?? 0;
         const followers1d = explore.value.spaces[key].followers_1d ?? 0;
@@ -110,7 +107,6 @@ export function useApp() {
         );
         return {
           ...explore.value.spaces[key],
-          following,
           followers,
           private: explore.value.spaces[key].private ?? false,
           score,
@@ -123,11 +119,7 @@ export function useApp() {
         JSON.stringify(space).toLowerCase().includes(q.toLowerCase())
       );
 
-    return orderBy(
-      list,
-      ['following', 'testnet', 'score'],
-      ['desc', 'asc', 'desc']
-    );
+    return orderBy(list, ['score', 'testnet'], ['desc', 'asc', 'desc']);
   });
 
   const orderedSpacesByCategory = computed(() =>
