@@ -3,7 +3,7 @@ import { ref, watch } from 'vue';
 
 const props = defineProps<{
   definition: any;
-  input: boolean | number | string | string[];
+  input?: boolean | number | string | string[];
   error: string;
 }>();
 
