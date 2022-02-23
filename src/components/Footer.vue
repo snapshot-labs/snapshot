@@ -35,13 +35,13 @@ const socials = [
         <div class="flex items-center">
           <div class="text-center space-x-3">
             <span v-for="social in socials" :key="social">
-              <BaseAnchor :link="social.link" hide-external-icon>
+              <BaseLink :link="social.link" hide-external-icon>
                 <Icon
                   size="30"
                   class="hover:opacity-80 text-skin-text"
                   :name="social.icon"
                 />
-              </BaseAnchor>
+              </BaseLink>
             </span>
           </div>
           <SelectLanguageButton class="ml-4" />

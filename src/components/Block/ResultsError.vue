@@ -42,7 +42,7 @@ const retry = async () => {
       <Icon name="refresh" />
       {{ t('retry') }}
     </UiButton>
-    <BaseAnchor
+    <BaseLink
       v-if="isAdmin"
       link="https://discord.gg/snapshot"
       class="mt-3 block"
@@ -51,6 +51,6 @@ const retry = async () => {
       <UiButton class="w-full">
         {{ t('getHelp') }}
       </UiButton>
-    </BaseAnchor>
+    </BaseLink>
   </Block>
 </template>

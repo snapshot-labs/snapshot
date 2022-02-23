@@ -22,9 +22,9 @@ function accept() {
       <h4 class="mb-3">
         {{ $tc('mustAgreeToTerms', [space.name]) }}
       </h4>
-      <BaseAnchor :link="space.terms">
+      <BaseLink :link="space.terms">
         <UiText :text="getIpfsUrl" :truncate="35" />
-      </BaseAnchor>
+      </BaseLink>
     </div>
     <template v-slot:footer>
       <div class="w-2/4 float-left pr-2">

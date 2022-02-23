@@ -39,24 +39,24 @@ onMounted(async () => {
       <Block :title="$t('information')" v-if="strategy">
         <div class="mb-1">
           <b>{{ $t('author') }}</b>
-          <BaseAnchor
+          <BaseLink
             class="float-right"
             :link="`https://github.com/${strategy.author}`"
             hide-external-icon
           >
             <Icon name="github" class="ml-1" />
             {{ strategy.author }}
-          </BaseAnchor>
+          </BaseLink>
         </div>
         <div>
           <div class="mb-1">
             <b>{{ $t('version') }}</b>
-            <BaseAnchor
+            <BaseLink
               class="float-right"
               :link="`https://github.com/snapshot-labs/snapshot-strategies/tree/master/src/strategies/${strategy.id}`"
             >
               {{ strategy.version }}
-            </BaseAnchor>
+            </BaseLink>
           </div>
         </div>
         <router-link :to="`/playground/${$route.params.name}`">

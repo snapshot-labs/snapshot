@@ -70,7 +70,7 @@ watch(open, () => (step.value = null));
     </div>
     <div v-else>
       <div v-if="$auth.isAuthenticated.value" class="m-4 space-y-2">
-        <BaseAnchor
+        <BaseLink
           :link="explorerUrl(web3.network.key, web3.account)"
           class="block"
           hide-external-icon
@@ -84,7 +84,7 @@ watch(open, () => (step.value = null));
             <span v-else v-text="shorten(web3.account)" />
             <Icon name="external-link" class="ml-1" />
           </UiButton>
-        </BaseAnchor>
+        </BaseLink>
 
         <UiButton @click="step = 'connect'" class="button-outline w-full">
           {{ $t('connectWallet') }}

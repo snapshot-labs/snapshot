@@ -18,21 +18,18 @@ defineEmits(['close']);
       <div class="p-4 border rounded-md text-skin-link">
         <div class="flex">
           <span v-text="$t('author')" class="flex-auto text-skin-text mr-1" />
-          <BaseAnchor :link="getIpfsUrl(authorIpfsHash)" class="text-skin-link">
+          <BaseLink :link="getIpfsUrl(authorIpfsHash)" class="text-skin-link">
             #{{ authorIpfsHash.slice(0, 7) }}
-          </BaseAnchor>
+          </BaseLink>
         </div>
         <div v-if="relayerIpfsHash" class="flex">
           <span v-text="$t('relayer')" class="flex-auto text-skin-text mr-1" />
-          <BaseAnchor
-            :link="getIpfsUrl(relayerIpfsHash)"
-            class="text-skin-link"
-          >
+          <BaseLink :link="getIpfsUrl(relayerIpfsHash)" class="text-skin-link">
             #{{ relayerIpfsHash.slice(0, 7) }}
-          </BaseAnchor>
+          </BaseLink>
         </div>
       </div>
-      <BaseAnchor
+      <BaseLink
         :link="`https://signator.io/view?ipfs=${authorIpfsHash}`"
         class="mb-2 block"
         hide-external-icon
@@ -41,7 +38,7 @@ defineEmits(['close']);
           {{ $t('verifyOnSignatorio') }}
           <Icon name="external-link" class="ml-1" />
         </UiButton>
-      </BaseAnchor>
+      </BaseLink>
     </div>
   </UiModal>
 </template>

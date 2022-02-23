@@ -295,13 +295,13 @@ onMounted(async () => {
               networks?.[networkKey]?.shortName ?? $t('theCurrentNetwork')
           })
         }}
-        <BaseAnchor
+        <BaseLink
           class="whitespace-nowrap ml-1"
           @click.stop
           :link="`https://docs.snapshot.org/guides/delegation#supported-networks`"
         >
           {{ $t('learnMore') }}
-        </BaseAnchor>
+        </BaseLink>
       </Block>
       <template v-else>
         <Block :title="$t('delegate.selectDelegate')">

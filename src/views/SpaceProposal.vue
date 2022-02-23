@@ -433,9 +433,9 @@ const truncateMarkdownBody = computed(() => {
 
           <div>
             <b>IPFS</b>
-            <BaseAnchor :link="getIpfsUrl(proposal.ipfs)" class="float-right">
+            <BaseLink :link="getIpfsUrl(proposal.ipfs)" class="float-right">
               #{{ proposal.ipfs.slice(0, 7) }}
-            </BaseAnchor>
+            </BaseLink>
           </div>
           <div>
             <b>{{ $t('proposal.votingSystem') }}</b>
@@ -465,12 +465,12 @@ const truncateMarkdownBody = computed(() => {
           </div>
           <div>
             <b>{{ $t('snapshot') }}</b>
-            <BaseAnchor
+            <BaseLink
               :link="explorerUrl(proposal.network, proposal.snapshot, 'block')"
               class="float-right"
             >
               {{ formatNumber(proposal.snapshot) }}
-            </BaseAnchor>
+            </BaseLink>
           </div>
         </div>
       </Block>

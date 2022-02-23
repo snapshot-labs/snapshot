@@ -27,14 +27,14 @@ defineProps({
     </div>
     <div class="flex justify-between items-end text-skin-text">
       <div class="flex flex-col">
-        <BaseAnchor
+        <BaseLink
           class="text-skin-text"
           :link="`https://github.com/${plugin.author}`"
           hide-external-icon
         >
           <Icon name="github" class="mr-1" />
           {{ plugin.author }}
-        </BaseAnchor>
+        </BaseLink>
         {{
           $tc('inSpaces', [
             formatCompactNumber(pluginsSpacesCount?.[plugin.key] ?? 0)
@@ -42,13 +42,13 @@ defineProps({
         }}
       </div>
 
-      <BaseAnchor
+      <BaseLink
         class="flex items-center"
         @click.stop
         :link="`https://github.com/snapshot-labs/snapshot-plugins/tree/master/src/plugins/${plugin.key}`"
       >
         {{ $t('learnMore') }}
-      </BaseAnchor>
+      </BaseLink>
     </div>
   </Block>
 </template>

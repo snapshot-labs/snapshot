@@ -82,7 +82,7 @@ onMounted(() => {
           {{ formatCompactNumber(items.length) }} {{ resultsStr }}
         </div>
 
-        <BaseAnchor
+        <BaseLink
           v-if="buttonStr"
           link="https://discord.gg/snapshot"
           class="hidden md:block ml-3"
@@ -91,7 +91,7 @@ onMounted(() => {
           <UiButton>
             {{ buttonStr }}
           </UiButton>
-        </BaseAnchor>
+        </BaseLink>
       </div>
     </Container>
     <Container :slim="true">

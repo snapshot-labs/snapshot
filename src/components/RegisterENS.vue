@@ -44,7 +44,7 @@ const isValidDomain = computed(() => {
       <Icon name="info" size="24" class="text-skin-text -mr-1" />
     </span>
   </UiButton>
-  <BaseAnchor
+  <BaseLink
     @click="$emit('waitForRegistration')"
     :link="`https://app.ens.domains/name/${modelValue}/register`"
     hide-external-icon
@@ -52,5 +52,5 @@ const isValidDomain = computed(() => {
     <UiButton :disabled="!isValidDomain" class="w-full mt-2" primary>
       {{ $t('setup.registerEnsButton') }}
     </UiButton>
-  </BaseAnchor>
+  </BaseLink>
 </template>

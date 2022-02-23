@@ -107,12 +107,12 @@ watch(
         </div>
         <div class="flex">
           <span v-text="$t('snapshot')" class="flex-auto text-skin-text mr-1" />
-          <BaseAnchor
+          <BaseLink
             :link="explorerUrl(proposal.network, proposal.snapshot, 'block')"
             class="float-right"
           >
             {{ formatNumber(proposal.snapshot) }}
-          </BaseAnchor>
+          </BaseLink>
         </div>
         <div class="flex">
           <span
@@ -137,13 +137,13 @@ watch(
             {{ shorten(space.symbol, 'symbol') }}
           </span>
           <UiLoading v-else />
-          <BaseAnchor
+          <BaseLink
             v-if="vp === 0 && vpLoaded && !vpLoading && !vpLoadingFailed"
             link="https://github.com/snapshot-labs/snapshot/discussions/767#discussioncomment-1400614"
             class="inline-block ml-1"
           >
             <Icon name="info" size="24" class="text-skin-text" />
-          </BaseAnchor>
+          </BaseLink>
         </div>
         <div v-if="vpLoadingFailed" class="mt-3">{{ t('vpError') }}</div>
       </div>

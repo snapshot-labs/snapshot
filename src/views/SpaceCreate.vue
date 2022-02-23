@@ -338,10 +338,9 @@ const needsPluginConfigs = computed(() =>
           }}
         </span>
         <div>
-          <BaseAnchor
-            :link="{ name: 'spaceAbout', params: { key: space.id } }"
-            >{{ t('learnMore') }}</BaseAnchor
-          >
+          <BaseLink :link="{ name: 'spaceAbout', params: { key: space.id } }">{{
+            t('learnMore')
+          }}</BaseLink>
         </div>
       </BaseMessageBlock>
 
@@ -383,9 +382,9 @@ const needsPluginConfigs = computed(() =>
           }}
         </span>
         <div>
-          <BaseAnchor :link="{ name: 'spaceAbout', params: { key: space.id } }">
+          <BaseLink :link="{ name: 'spaceAbout', params: { key: space.id } }">
             {{ t('learnMore') }}
-          </BaseAnchor>
+          </BaseLink>
         </div>
       </BaseMessageBlock>
 

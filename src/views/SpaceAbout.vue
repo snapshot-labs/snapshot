@@ -67,9 +67,9 @@ onMounted(() => {
 
         <div v-if="space.terms" class="last:mb-0 mb-3">
           <h4 class="text-skin-link mb-2">{{ $t('settings.terms') }}</h4>
-          <BaseAnchor :link="space.terms">
+          <BaseLink :link="space.terms">
             <UiText :text="getUrl(space.terms)" :truncate="35" />
-          </BaseAnchor>
+          </BaseLink>
         </div>
 
         <div v-if="space.strategies" class="last:mb-0 mb-3">
