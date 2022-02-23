@@ -8,13 +8,13 @@ import DefaultNumber from './DefaultNumber.vue';
 import DefaultBoolean from './DefaultBoolean.vue';
 
 const props = defineProps<{
-  modelValue: {};
+  modelValue: Record<string, any>;
   definition: any;
 }>();
 
 const emit = defineEmits(['update:modelValue']);
 
-const input = ref<{}>(props.modelValue || props.definition.default || {});
+const input = ref(props.modelValue || props.definition.default || {});
 
 const getComponent = name => {
   switch (name) {
