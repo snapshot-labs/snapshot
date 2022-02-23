@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import options from '@/helpers/auth';
-import { computed, ref } from 'vue';
+import { computed, onBeforeUnmount, ref } from 'vue';
 
 type Option = { label: string; value: string; option?: Record<string, any> };
 
@@ -10,11 +9,16 @@ const props = defineProps<{
   modelValue?: string;
 }>();
 
+const optionsEl = ref<Node | undefined>(undefined);
+const inputEl = ref<Node | undefined>(undefined);
 const displayDropdown = ref(false);
 
-const inputValue = ref(
-  props.options?.find(option => option.value === props.modelValue)?.label ?? ''
-);
+const getInputLabel = (value?: string) => {
+  const option = props.options.find(option => option.value === value);
+  return option ? option.label : '';
+};
+
+const inputValue = ref(getInputLabel(props.modelValue));
 
 const displayedOptions = computed(() => {
   if (!props.options) return [];
@@ -25,41 +29,74 @@ const displayedOptions = computed(() => {
 
 const emit = defineEmits(['update:modelValue']);
 
-function handleChange(option: Option) {
+function handleOptionSelect(e: MouseEvent, option: Option) {
+  // The click should not bubble up to the rest of the DOM that causes click outside.
+  e.stopPropagation();
+
   inputValue.value = option.label;
   displayDropdown.value = false;
   emit('update:modelValue', option.value);
 }
+
+/**
+ * Open the options dropdown
+ * Also set input value to blank so that user can type to search options
+ */
+function openOptions() {
+  displayDropdown.value = true;
+  inputValue.value = '';
+}
+
+/**
+ * Close the options dropdown when clicking outside of it.
+ * Also reset the input to previously selected value.
+ */
+function closeOptions(e) {
+  const clickedOptions = optionsEl.value?.contains(e.target);
+  const clickedInput = inputEl.value?.contains(e.target);
+  const clickedOutside = !clickedOptions && !clickedInput;
+  if (clickedOutside) {
+    displayDropdown.value = false;
+    inputValue.value = getInputLabel(props.modelValue);
+  }
+}
+window.addEventListener('click', closeOptions);
+onBeforeUnmount(() => window.removeEventListener('click', closeOptions));
 </script>
 
 <template>
   <div class="relative">
     <SBase :definition="{ title: title }">
       <input
+        ref="inputEl"
         type="text"
         v-model="inputValue"
         class="s-input"
-        :placeholder="options[0]?.option?.label"
-        @focus="
-          {
-            displayDropdown = true;
-            inputValue = ''; // so that all the options show up
-          }
-        "
+        :placeholder="$t('selectNetwork')"
+        @focus="openOptions"
       />
     </SBase>
-    <ul
-      v-if="displayDropdown"
-      class="z-10 max-h-[200px] mt-1 overflow-y-auto absolute w-full rounded-lg border border-skin-border bg-skin-bg"
+    <div
+      ref="optionsEl"
+      v-if="displayDropdown && displayedOptions.length"
+      class="py-2 border border-skin-link rounded-lg z-10 mt-1 absolute w-full bg-skin-bg"
     >
-      <li
-        class="hover:bg-skin-link hover:text-skin-bg p-2 bg-skin-bg"
-        v-for="option in displayedOptions"
-        :key="option.value"
-        @click="() => handleChange(option)"
-      >
-        {{ option.label }}
-      </li>
-    </ul>
+      <ul class="max-h-[170px] overflow-y-auto snap-y snap-proximity">
+        <li
+          class="hover:bg-skin-border hover:text-skin-link py-2 px-3 bg-skin-bg cursor-pointer snap-start"
+          v-for="option in displayedOptions"
+          :key="option.value"
+          @click="
+            e => {
+              handleOptionSelect(e, option);
+            }
+          "
+        >
+          <slot name="option" :option="option.option">
+            {{ option.label }}
+          </slot>
+        </li>
+      </ul>
+    </div>
   </div>
 </template>

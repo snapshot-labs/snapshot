@@ -2,7 +2,8 @@
 import { ref, computed, toRefs, watch } from 'vue';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import { useStrategies } from '@/composables/useStrategies';
-import { useNetworksFilter } from '../../composables/useNetworksFilter';
+import { useNetworksFilter } from '@/composables/useNetworksFilter';
+import { getIpfsUrl } from '@/helpers/utils';
 
 const defaultParams = {
   symbol: 'DAI',
@@ -115,7 +116,26 @@ watch(open, () => {
             v-model="input.network"
             title="Network"
             class="mb-3"
-          />
+          >
+            <template v-slot:option="{ option }">
+              <div class="group flex items-center justify-between">
+                <div class="flex items-center">
+                  <UiAvatar
+                    class="mr-2"
+                    :imgsrc="getIpfsUrl(option?.imageIPFS)"
+                    :seed="option?.key"
+                    size="28"
+                  />
+                  <span v-text="option?.name" />
+                </div>
+                <span
+                  class="h-[20px] rounded-full leading-normal text-xs text-white bg-skin-text text-center px-2"
+                >
+                  # {{ option?.chainId }}
+                </span>
+              </div>
+            </template>
+          </BaseAutocomplete>
 
           <SDefaultObject
             v-if="strategyDefinition"
