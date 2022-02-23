@@ -10,15 +10,15 @@ defineProps<{
 <template>
   <Block :title="$t('results')" icon="warning" iconClass="text-red">
     <div>{{ t('resultsError') }}</div>
-    <a
+    <BaseAnchor
       v-if="isAdmin"
-      href="https://discord.gg/snapshot"
-      target="_blank"
+      link="https://discord.gg/snapshot"
       class="mt-3 block"
+      hide-external-icon
     >
       <UiButton class="w-full">
         {{ t('getHelp') }}
       </UiButton>
-    </a>
+    </BaseAnchor>
   </Block>
 </template>
