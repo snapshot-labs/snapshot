@@ -77,6 +77,7 @@ function clickVote() {
 }
 
 async function loadProposal() {
+  loading.value = true;
   proposal.value = await getProposal(id);
   // Redirect to proposal space.id if it doesn't match route key
   if (
@@ -86,6 +87,7 @@ async function loadProposal() {
     router.push({ name: 'error-404' });
   }
   loading.value = false;
+  loadResults();
 }
 
 function formatProposalVotes(votes) {
@@ -97,6 +99,7 @@ function formatProposalVotes(votes) {
 }
 
 async function loadResults() {
+  loadingResultsFailed.value = false;
   if (proposal.value.scores_state === 'invalid') {
     loadingResultsFailed.value = true;
   } else if (proposal.value.scores_state === 'final') {
@@ -106,6 +109,7 @@ async function loadResults() {
       sumOfResultsBalance: proposal.value.scores_total
     };
     loadedResults.value = true;
+    loadingResultsFailed.value = false;
     const [userVotesRes, votesRes] = await Promise.all([
       await getProposalVotes(id, {
         first: 1,
@@ -129,6 +133,7 @@ async function loadResults() {
       results.value = resultsObj.results;
       votes.value = resultsObj.votes;
       loadedResults.value = true;
+      loadingResultsFailed.value = false;
       loadedVotes.value = true;
     } catch (e) {
       console.log(e);
@@ -201,10 +206,6 @@ watch(web3Account, () => {
     selectedChoices.value = parseInt(choice);
     clickVote();
   }
-});
-
-watch(loading, () => {
-  if (!loading.value) loadResults();
 });
 
 watchEffect(() => {
@@ -480,7 +481,13 @@ const truncateMarkdownBody = computed(() => {
           </div>
         </div>
       </Block>
-      <BlockResultsError :isAdmin="isAdmin" v-if="loadingResultsFailed" />
+      <BlockResultsError
+        v-if="loadingResultsFailed"
+        :isAdmin="isAdmin"
+        :proposalId="proposal.id"
+        :proposalState="proposal.scores_state"
+        @retry="loadProposal()"
+      />
       <BlockResults
         v-else
         :id="id"
@@ -507,7 +514,7 @@ const truncateMarkdownBody = computed(() => {
     <ModalConfirm
       :open="modalOpen"
       @close="modalOpen = false"
-      @reload="loadProposal(), loadResults()"
+      @reload="loadProposal()"
       :space="space"
       :proposal="proposal"
       :id="id"
