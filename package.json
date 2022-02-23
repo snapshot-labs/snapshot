@@ -7,7 +7,12 @@
     "build": "vite build",
     "lint": "eslint \"./src/*/**/*.{ts,vue,json}\" --fix",
     "postinstall": "patch-package && husky install",
-    "init-submodules": "git submodule update --init"
+    "init-submodules": "git submodule update --init",
+    "test:unit": "vitest run",
+    "test:unit:coverage": "vitest run --coverage",
+    "test:e2e": "cypress run",
+    "test:e2e:mobile": "cypress run --config viewportWidth=375,viewportHeight=667",
+    "test:e2e:debug": "cypress open"
   },
   "dependencies": {
     "@apollo/client": "^3.5.9",
@@ -49,11 +54,16 @@
     "@typescript-eslint/eslint-plugin": "^2.34.0",
     "@typescript-eslint/parser": "^2.34.0",
     "@vitejs/plugin-vue": "^2.2.2",
+    "@vitest/ui": "^0.3.2",
     "@vue/eslint-config-prettier": "^6.0.0",
     "@vue/eslint-config-typescript": "^7.0.0",
+    "@vue/test-utils": "^2.0.0-rc.17",
     "autoprefixer": "^10.4.2",
+    "c8": "^7.11.0",
+    "cypress": "^9.5.0",
     "eslint-plugin-prettier": "^3.4.0",
     "eslint-plugin-vue": "^7.15.1",
+    "happy-dom": "^2.31.1",
     "husky": "^7.0.4",
     "postcss": "^8.4.6",
     "prettier": "^2.5.1",
@@ -62,7 +72,8 @@
     "sass-loader": "^12.6.0",
     "tailwindcss": "^3.0.23",
     "unplugin-vue-components": "^0.17.19",
-    "vite": "^2.8.4"
+    "vite": "^2.8.4",
+    "vitest": "^0.3.2"
   },
   "resolutions": {
     "ansi-regex": "^5.0.1",
