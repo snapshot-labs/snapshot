@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
+import { useValidationErrors } from '@/composables/useValidationErrors';
 
 import * as DefaultObject from './DefaultObject.vue';
 import DefaultArray from './DefaultArray.vue';
@@ -10,6 +11,7 @@ import DefaultBoolean from './DefaultBoolean.vue';
 const props = defineProps<{
   modelValue: Record<string, any>;
   definition: any;
+  errors: boolean | Record<string, any>[];
 }>();
 
 const emit = defineEmits(['update:modelValue']);
@@ -34,16 +36,19 @@ const getComponent = name => {
 };
 
 watch(input, () => emit('update:modelValue', input.value));
+
+const { validationErrorMessage } = useValidationErrors();
 </script>
 
 <template>
   <div class="space-y-2">
     <component
-      v-for="(property, i) in definition.properties"
-      :key="i"
+      v-for="(property, key) in definition.properties"
+      :key="key"
       :is="getComponent(property.type)"
       :definition="property"
-      v-model="input[i]"
+      :error="validationErrorMessage(key, props.errors)"
+      v-model="input[key]"
     />
   </div>
 </template>

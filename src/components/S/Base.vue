@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { ref, watch, computed } from 'vue';
-import { useValidationErrors } from '@/composables/useValidationErrors';
+import { ref, watch } from 'vue';
 
 const props = defineProps<{
   definition: any;
-  input?: boolean | number | string | string[];
+  input: boolean | number | string | string[];
+  error: string;
 }>();
 
 const showError = ref(false);
@@ -15,15 +15,6 @@ watch(
     showError.value = true;
   }
 );
-
-const { getValidationErrors } = useValidationErrors();
-
-const error = computed(() => {
-  if (showError.value) {
-    return getValidationErrors(props.definition, props.input);
-  }
-  return '';
-});
 </script>
 
 <template>
@@ -34,14 +25,17 @@ const error = computed(() => {
       <div
         :class="[
           's-error',
-          !!error ? '-mt-[21px] opacity-100' : '-mt-[52px] opacity-0'
+          !!error && showError
+            ? '-mt-[21px] opacity-100'
+            : '-mt-[38px] opacity-0 h-6'
         ]"
       >
         <Icon
+          v-if="error && showError"
           name="warning"
           class="text-red dark:text-white dark:text-opacity-90 mr-2"
         />
-        {{ error || 'Not valid' }}
+        {{ error }}
       </div>
     </div>
     <span v-if="definition.description" v-text="definition.description" />

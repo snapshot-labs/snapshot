@@ -72,10 +72,12 @@ watch(open, () => {
   }
 });
 
+const strategyValidationErrors = computed(() =>
+  validateSchema(strategyDefinition.value, input.value.params)
+);
+
 const strategyIsValid = computed(() =>
-  validateSchema(strategyDefinition.value, input.value.params) === true
-    ? true
-    : false
+  strategyValidationErrors.value === true ? true : false
 );
 </script>
 
@@ -97,6 +99,7 @@ const strategyIsValid = computed(() =>
           v-if="strategyDefinition"
           v-model="input.params"
           :definition="strategyDefinition"
+          :errors="strategyValidationErrors"
         />
         <UiButton
           v-else
