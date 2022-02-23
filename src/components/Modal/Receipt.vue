@@ -18,37 +18,30 @@ defineEmits(['close']);
       <div class="p-4 border rounded-md text-skin-link">
         <div class="flex">
           <span v-text="$t('author')" class="flex-auto text-skin-text mr-1" />
-          <a
-            :href="getIpfsUrl(authorIpfsHash)"
-            target="_blank"
-            class="text-skin-link"
-          >
+          <BaseAnchor :link="getIpfsUrl(authorIpfsHash)" class="text-skin-link">
             #{{ authorIpfsHash.slice(0, 7) }}
-            <Icon name="external-link" class="ml-1" />
-          </a>
+          </BaseAnchor>
         </div>
         <div v-if="relayerIpfsHash" class="flex">
           <span v-text="$t('relayer')" class="flex-auto text-skin-text mr-1" />
-          <a
-            :href="getIpfsUrl(relayerIpfsHash)"
-            target="_blank"
+          <BaseAnchor
+            :link="getIpfsUrl(relayerIpfsHash)"
             class="text-skin-link"
           >
             #{{ relayerIpfsHash.slice(0, 7) }}
-            <Icon name="external-link" class="ml-1" />
-          </a>
+          </BaseAnchor>
         </div>
       </div>
-      <a
-        :href="`https://signator.io/view?ipfs=${authorIpfsHash}`"
-        target="_blank"
+      <BaseAnchor
+        :link="`https://signator.io/view?ipfs=${authorIpfsHash}`"
         class="mb-2 block"
+        hide-external-icon
       >
         <UiButton class="button-outline w-full">
           {{ $t('verifyOnSignatorio') }}
           <Icon name="external-link" class="ml-1" />
         </UiButton>
-      </a>
+      </BaseAnchor>
     </div>
   </UiModal>
 </template>
