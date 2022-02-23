@@ -254,7 +254,7 @@
     "votingDelay": "投票延迟开始",
     "votingPeriod": "投票时长",
     "voting": "投票",
-    "quorum": "Quorum",
+    "quorum": "通过阈值",
     "type": "类型",
     "anyType": "任意",
     "hideAbstain": "忽略基本投票结果中的弃权票",
@@ -281,7 +281,7 @@
     "textRecordExists": "当前空间控制人是 {address}。您可以使用下面的表单更新空间控制人。",
     "spaceOwnerAddressPlaceHolder": "例如：0xF78108c9BAF466dd96BE41be728Fe3220b37119",
     "controllerAddress": "控制人地址",
-    "updateController": "更新管理员",
+    "updateController": "更新控制人",
     "connectWithEnsController": "要修改空间控制人，您需要连接拥有 {ens} 的钱包",
     "seeOnEns": "在 ENS 上查看",
     "goToSettings": "前往设置"
