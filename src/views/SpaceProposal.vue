@@ -503,7 +503,7 @@ const truncateMarkdownBody = computed(() => {
       />
     </template>
   </Layout>
-  <teleport to="#modal" v-if="proposal && strategies">
+  <teleport to="#modal" v-if="proposal">
     <ModalConfirm
       :open="modalOpen"
       @close="modalOpen = false"
