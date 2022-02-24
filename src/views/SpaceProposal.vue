@@ -299,7 +299,8 @@ const truncateMarkdownBody = computed(() => {
             <div class="flex justify-end">
               <UiDropdown
                 top="2.5rem"
-                right="1.5rem"
+                right="1rem"
+                subMenuWrapperRight="-7px"
                 class="ml-3"
                 @select="selectFromShareDropdown"
                 @clickedNoDropdown="startShare(space, proposal)"
@@ -323,6 +324,7 @@ const truncateMarkdownBody = computed(() => {
               <UiDropdown
                 top="2.5rem"
                 right="0.8rem"
+                subMenuWrapperRight="-6px"
                 class="md:ml-2"
                 @select="selectFromThreedotDropdown"
                 :items="threeDotItems"

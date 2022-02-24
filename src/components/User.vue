@@ -11,7 +11,7 @@ const props = defineProps({
   onlyUsername: Boolean
 });
 
-const { address, profile, username, fullName } = useUsername();
+const { address, profile, username, fullUserName } = useUsername();
 
 watchEffect(() => {
   address.value = props.address;
@@ -30,8 +30,8 @@ watchEffect(() => {
             size="18"
             class="mr-2"
           />
-          <span class="w-[50px] truncate md:hidden">{{ fullName }}</span>
-          <span class="truncate hidden md:block">{{ username }}</span>
+          <span class="w-[50px] truncate sm:hidden">{{ fullUserName }}</span>
+          <span class="truncate hidden sm:block">{{ username }}</span>
           <Badges
             v-if="!onlyUsername"
             :address="address"
