@@ -29,7 +29,7 @@
     "@popperjs/core": "^2.11.2",
     "@pusher/push-notifications-web": "^1.1.0",
     "@snapshot-labs/lock": "^0.1.7",
-    "@snapshot-labs/snapshot.js": "^0.3.50",
+    "@snapshot-labs/snapshot.js": "^0.3.52",
     "@vue/apollo-composable": "4.0.0-alpha.16",
     "@vueuse/core": "^7.6.2",
     "autolinker": "^3.14.3",
