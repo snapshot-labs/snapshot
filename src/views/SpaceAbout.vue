@@ -67,10 +67,9 @@ onMounted(() => {
 
         <div v-if="space.terms" class="last:mb-0 mb-3">
           <h4 class="text-skin-link mb-2">{{ $t('settings.terms') }}</h4>
-          <a :href="space.terms" target="_blank" rel="noopener noreferrer">
+          <BaseLink :link="space.terms">
             <UiText :text="getUrl(space.terms)" :truncate="35" />
-            <Icon name="external-link" class="ml-1" />
-          </a>
+          </BaseLink>
         </div>
 
         <div v-if="space.strategies" class="last:mb-0 mb-3">

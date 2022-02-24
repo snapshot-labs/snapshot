@@ -107,14 +107,12 @@ watch(
         </div>
         <div class="flex">
           <span v-text="$t('snapshot')" class="flex-auto text-skin-text mr-1" />
-          <a
-            :href="explorerUrl(proposal.network, proposal.snapshot, 'block')"
-            target="_blank"
+          <BaseLink
+            :link="explorerUrl(proposal.network, proposal.snapshot, 'block')"
             class="float-right"
           >
             {{ formatNumber(proposal.snapshot) }}
-            <Icon name="external-link" class="ml-1" />
-          </a>
+          </BaseLink>
         </div>
         <div class="flex">
           <span
@@ -138,15 +136,14 @@ watch(
             {{ formatCompactNumber(vp) }}
             {{ shorten(space.symbol, 'symbol') }}
           </span>
-          <span v-else><UiLoading /></span>
-          <a
+          <UiLoading v-else />
+          <BaseLink
             v-if="vp === 0 && vpLoaded && !vpLoading && !vpLoadingFailed"
-            target="_blank"
-            href="https://github.com/snapshot-labs/snapshot/discussions/767#discussioncomment-1400614"
+            link="https://github.com/snapshot-labs/snapshot/discussions/767#discussioncomment-1400614"
             class="inline-block ml-1"
           >
             <Icon name="info" size="24" class="text-skin-text" />
-          </a>
+          </BaseLink>
         </div>
         <div v-if="vpLoadingFailed" class="mt-3">{{ t('vpError') }}</div>
       </div>
