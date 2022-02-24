@@ -76,20 +76,18 @@ export default {
     >
       {{ $t('safeSnap.transactions') }}
     </h4>
-    <div class="p-4">
-      <div v-for="(safe, index) in input.safes" v-bind:key="index">
-        <SafeTransactions
-          v-if="!preview || safe.txs.length > 0"
-          :preview="preview"
-          :proposal="proposal"
-          :hash="safe.hash"
-          :network="safe.network"
-          :realityAddress="safe.realityAddress"
-          :multiSendAddress="safe.multiSendAddress"
-          :modelValue="safe.txs"
-          @update:modelValue="updateSafeTransactions(index, $event)"
-        />
-      </div>
+    <div v-for="(safe, index) in input.safes" :key="index" class="border-b-4 last:border-b-0">
+      <SafeTransactions
+        v-if="!preview || safe.txs.length > 0"
+        :preview="preview"
+        :proposal="proposal"
+        :hash="safe.hash"
+        :network="safe.network"
+        :realityAddress="safe.realityAddress"
+        :multiSendAddress="safe.multiSendAddress"
+        :modelValue="safe.txs"
+        @update:modelValue="updateSafeTransactions(index, $event)"
+      />
     </div>
   </div>
 </template>

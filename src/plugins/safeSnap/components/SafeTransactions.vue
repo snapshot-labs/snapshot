@@ -184,7 +184,7 @@ export default {
 </script>
 
 <template>
-  <div class="border-t border-b md:border rounded-none md:rounded-md mb-4">
+  <div>
     <h4
       class="px-4 pt-3 border-b rounded-t-none md:rounded-t-md flex"
       style="padding-bottom: 12px"
@@ -224,7 +224,7 @@ export default {
       {{ hash }}
     </UiCollapsibleText>
     <div class="text-center">
-      <div v-for="(batch, index) in input" v-bind:key="index" class="border-b">
+      <div v-for="(batch, index) in input" v-bind:key="index" class="border-b last:border-b-0">
         <SafeSnapFormTransactionBatch
           :config="transactionConfig"
           :modelValue="batch"

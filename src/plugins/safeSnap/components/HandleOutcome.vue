@@ -32,24 +32,23 @@
       class="my-4"
     >
       <div
-        class="text-base bg-skin-block-bg p-3 rounded-3xl border inline-block"
+        class="text-base inline-block"
       >
-        <h5 class="text-center text-skin-link">
+        <h4 class="text-center text-skin-link">
           Reality oracle
           <a
             @click="updateDetails"
-            class="ml-2 float-right text-skin-text"
-            style="padding-top: 2px"
+            class="ml-2 text-skin-text"
           >
-            <Icon name="refresh" size="16" />
+            <Icon name="refresh" size="22" />
           </a>
-        </h5>
+        </h4>
         <div
           v-if="questionState !== questionStates.questionNotSet"
-          class="flex items-center my-3"
+          class="flex items-center my-3 space-x-3"
           style="text-align: left"
         >
-          <div class="border rounded-lg p-3 mr-3">
+          <div class="border rounded-lg p-3 self-stretch">
             <div>
               <b class="pr-3"
                 >{{
@@ -70,14 +69,17 @@
             </div>
           </div>
 
-          <div class="border rounded-lg p-3 text-skin-link">
+          <div
+            v-if="approvalData?.timeLeft"
+            class="border rounded-lg p-3 text-skin-link self-stretch items-center justify-center flex"
+          >
             <b>{{ approvalData?.timeLeft }}</b>
           </div>
         </div>
 
         <div v-if="questionState === questionStates.questionNotSet">
           <UiButton
-            class="w-full my-1"
+            class="w-full mb-1 mt-3"
             @click="
               modalApproveDecisionOpen = true;
               actionInProgress = 'set-outcome';
@@ -137,6 +139,10 @@
 
   <div v-if="questionState === questionStates.completelyExecuted" class="my-4">
     {{ $t('safeSnap.labels.executed') }}
+  </div>
+
+  <div v-if="questionState === questionStates.proposalRejected" class="my-4">
+    {{ $t('safeSnap.labels.rejected') }}
   </div>
 
   <teleport to="#modal">
