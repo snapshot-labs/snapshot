@@ -38,7 +38,6 @@ watch(open, () => (step.value = null));
           v-for="(connector, id, i) in connectors"
           :key="i"
           @click="$emit('login', connector.id)"
-          target="_blank"
           class="block"
         >
           <UiButton
@@ -71,10 +70,10 @@ watch(open, () => (step.value = null));
     </div>
     <div v-else>
       <div v-if="$auth.isAuthenticated.value" class="m-4 space-y-2">
-        <a
-          :href="explorerUrl(web3.network.key, web3.account)"
-          target="_blank"
+        <BaseLink
+          :link="explorerUrl(web3.network.key, web3.account)"
           class="block"
+          hide-external-icon
         >
           <UiButton
             class="button-outline w-full flex justify-center items-center"
@@ -85,7 +84,8 @@ watch(open, () => (step.value = null));
             <span v-else v-text="shorten(web3.account)" />
             <Icon name="external-link" class="ml-1" />
           </UiButton>
-        </a>
+        </BaseLink>
+
         <UiButton @click="step = 'connect'" class="button-outline w-full">
           {{ $t('connectWallet') }}
         </UiButton>

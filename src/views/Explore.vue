@@ -81,14 +81,17 @@ onMounted(() => {
         <div class="flex flex-col">
           {{ formatCompactNumber(items.length) }} {{ resultsStr }}
         </div>
-        <a
+
+        <BaseLink
           v-if="buttonStr"
-          href="https://discord.gg/snapshot"
-          target="_blank"
+          link="https://discord.gg/snapshot"
           class="hidden md:block ml-3"
+          hide-external-icon
         >
-          <UiButton>{{ buttonStr }}</UiButton>
-        </a>
+          <UiButton>
+            {{ buttonStr }}
+          </UiButton>
+        </BaseLink>
       </div>
     </Container>
     <Container :slim="true">
