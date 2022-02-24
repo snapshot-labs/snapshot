@@ -5,7 +5,7 @@ import Plugin, {
   getGnosisSafeCollectibles
 } from '../index';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
-import { shorten } from '@/helpers/utils';
+import { getIpfsUrl, shorten } from '@/helpers/utils';
 
 import SafeSnapTooltip from './Tooltip.vue';
 import SafeSnapHandleOutcome from './HandleOutcome.vue';
@@ -138,7 +138,8 @@ export default {
       return shortName || name || `#${this.network}`;
     },
     networkIcon() {
-      return `https://raw.githubusercontent.com/snapshot-labs/snapshot.js/master/src/networks/${this.network}.png`;
+      const { imageIPFS } = networks[this.network];
+      return getIpfsUrl(imageIPFS);
     },
     proposalResolved() {
       const ts = (Date.now() / 1e3).toFixed();
