@@ -1,5 +1,5 @@
 <script>
-import Plugin from '@/../snapshot-plugins/src/plugins/poap';
+import Plugin from '../index';
 import { useNotifications } from '@/composables/useNotifications';
 
 const { notify } = useNotifications();

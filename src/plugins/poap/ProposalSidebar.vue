@@ -1,4 +1,6 @@
 <script setup>
+import POAPCustomBlock from './components/CustomBlock.vue';
+
 defineProps({
   space: Object,
   proposal: Object,
@@ -10,7 +12,7 @@ defineProps({
 </script>
 
 <template>
-  <PluginPOAPCustomBlock
+  <POAPCustomBlock
     v-if="space.plugins?.poap"
     :space="space"
     :proposal="proposal"
