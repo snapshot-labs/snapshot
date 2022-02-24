@@ -269,6 +269,7 @@ const truncateMarkdownBody = computed(() => {
 
           <div class="flex items-center justify-between mb-4">
             <div class="flex space-x-1 items-center">
+              <UiState :state="proposal.state" class="mr-1" />
               <router-link
                 class="text-skin-text group"
                 :to="{
@@ -297,10 +298,10 @@ const truncateMarkdownBody = computed(() => {
             </div>
 
             <div class="flex justify-end">
-              <UiState :state="proposal.state" class="inline-block" />
               <UiDropdown
                 top="2.5rem"
-                right="1.5rem"
+                right="1rem"
+                subMenuWrapperRight="-7px"
                 class="ml-3"
                 @select="selectFromShareDropdown"
                 @clickedNoDropdown="startShare(space, proposal)"
@@ -309,7 +310,7 @@ const truncateMarkdownBody = computed(() => {
               >
                 <div class="pr-1 select-none flex">
                   <Icon name="upload" size="25" />
-                  <span class="ml-1">Share</span>
+                  <span class="ml-1 hidden md:block">Share</span>
                 </div>
                 <template v-slot:item="{ item }">
                   <Icon
@@ -323,8 +324,9 @@ const truncateMarkdownBody = computed(() => {
               </UiDropdown>
               <UiDropdown
                 top="2.5rem"
-                right="1.3rem"
-                class="ml-2"
+                right="0.8rem"
+                subMenuWrapperRight="-6px"
+                class="md:ml-2"
                 @select="selectFromThreedotDropdown"
                 :items="threeDotItems"
               >
