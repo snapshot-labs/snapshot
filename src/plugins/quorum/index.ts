@@ -14,38 +14,34 @@ export default class Plugin {
     quorumOptions: any,
     snapshot: string | number
   ) {
-    try {
-      const { strategy } = quorumOptions;
+    const { strategy } = quorumOptions;
 
-      switch (strategy) {
-        case 'static': {
-          return quorumOptions.total;
-        }
-
-        case 'balance': {
-          const { address, methodABI, decimals } = quorumOptions;
-
-          const blockTag =
-            // @ts-ignore
-            snapshot === 'latest' ? snapshot : parseInt(snapshot);
-
-          const totalVotingPower = await call(
-            web3,
-            [methodABI],
-            [address, methodABI.name],
-            { blockTag }
-          );
-
-          return BigNumber.from(totalVotingPower)
-            .div(BigNumber.from(10).pow(decimals))
-            .toNumber();
-        }
-
-        default:
-          throw new Error(`Unsupported quorum strategy: ${strategy}`);
+    switch (strategy) {
+      case 'static': {
+        return quorumOptions.total;
       }
-    } catch (e) {
-      throw new Error(e);
+
+      case 'balance': {
+        const { address, methodABI, decimals } = quorumOptions;
+
+        const blockTag =
+          // @ts-ignore
+          snapshot === 'latest' ? snapshot : parseInt(snapshot);
+
+        const totalVotingPower = await call(
+          web3,
+          [methodABI],
+          [address, methodABI.name],
+          { blockTag }
+        );
+
+        return BigNumber.from(totalVotingPower)
+          .div(BigNumber.from(10).pow(decimals))
+          .toNumber();
+      }
+
+      default:
+        throw new Error(`Unsupported quorum strategy: ${strategy}`);
     }
   }
 }
