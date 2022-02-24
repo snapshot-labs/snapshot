@@ -4,9 +4,12 @@ import {
   InMemoryCache
 } from '@apollo/client/core';
 
-const httpLink = createHttpLink({
-  uri: 'https://api.thegraph.com/subgraphs/name/ensdomains/ens'
-});
+const uri =
+  import.meta.env.VITE_DEFAULT_NETWORK === '4'
+    ? 'https://api.thegraph.com/subgraphs/name/ensdomains/ensrinkeby'
+    : 'https://api.thegraph.com/subgraphs/name/ensdomains/ens';
+
+const httpLink = createHttpLink({ uri });
 
 export const ensApolloClient = new ApolloClient({
   link: httpLink,
