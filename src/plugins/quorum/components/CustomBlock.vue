@@ -1,6 +1,6 @@
 <script>
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
-import Plugin from '@/../snapshot-plugins/src/plugins/quorum';
+import Plugin from '../index';
 import { shorten } from '@/helpers/utils';
 import { useIntl } from '@/composables/useIntl';
 
