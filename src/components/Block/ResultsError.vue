@@ -19,18 +19,20 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits<{
-  (e: 'retry'): void
+  (e: 'retry'): void;
 }>();
 
 const retrying = ref(false);
 const retry = async () => {
   if (props.proposalState === 'invalid') {
     retrying.value = true;
-    await fetch(`${import.meta.env.VITE_HUB_URL}/api/scores/${props.proposalId}`);
+    await fetch(
+      `${import.meta.env.VITE_HUB_URL}/api/scores/${props.proposalId}`
+    );
     retrying.value = false;
   }
   emit('retry');
-}
+};
 </script>
 
 <template>
@@ -40,15 +42,15 @@ const retry = async () => {
       <Icon name="refresh" />
       {{ t('retry') }}
     </UiButton>
-    <a
+    <BaseLink
       v-if="isAdmin"
-      href="https://discord.gg/snapshot"
-      target="_blank"
+      link="https://discord.gg/snapshot"
       class="mt-3 block"
+      hide-external-icon
     >
       <UiButton class="w-full">
         {{ t('getHelp') }}
       </UiButton>
-    </a>
+    </BaseLink>
   </Block>
 </template>
