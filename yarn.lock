@@ -1021,10 +1021,10 @@
     fortmatic "^2.2.1"
     walletlink "^2.4.0"
 
-"@snapshot-labs/snapshot.js@^0.3.50":
-  version "0.3.50"
-  resolved "https://registry.yarnpkg.com/@snapshot-labs/snapshot.js/-/snapshot.js-0.3.50.tgz#10e422bb93f6fae875efd71563aee673b59d1f59"
-  integrity sha512-qSoyiaM2v2WzWB+Mjts+6aL2fYMmIuWZE4DU0/8uyDgLoZ57JhqcOLWdngXjr2+Tq0aoCiAMt+Pux7LEVTkaEA==
+"@snapshot-labs/snapshot.js@^0.3.52":
+  version "0.3.52"
+  resolved "https://registry.yarnpkg.com/@snapshot-labs/snapshot.js/-/snapshot.js-0.3.52.tgz#abf10ffffd3941a213f544425387fa15efe571df"
+  integrity sha512-xobE9mJ8PA/7Ax1uU9AYbga3yjjjbTJfWwcLxez8JQFjef02NLrRH1NEohkB/2DomG6KBD6sMBSI2eUu7Tkc5w==
   dependencies:
     "@ensdomains/eth-ens-namehash" "^2.0.15"
     "@ethersproject/abi" "^5.0.4"
@@ -1319,10 +1319,10 @@
   resolved "https://registry.yarnpkg.com/@vitejs/plugin-vue/-/plugin-vue-2.2.2.tgz#df5d4464ad8cb97c9fb7407a1e5a3a34f716febb"
   integrity sha512-3C0s45VOwIFEDU+2ownJOpb0zD5fnjXWaHVOLID2R1mYOlAx3doNBFnNbVjaZvpke/L7IdPJXjpyYpXZToDKig==
 
-"@vitest/ui@^0.3.2":
-  version "0.3.6"
-  resolved "https://registry.yarnpkg.com/@vitest/ui/-/ui-0.3.6.tgz#3218e89fe7156582fcbd472b840268eaf3a46f74"
-  integrity sha512-xnU6TJAdvMNQ0GVIxZT4GmlZ3FzgysgpzT93Ym+BKGCJGClzwCl5OwOa9MVLBcB0dC/syZ22wZHxXqJQkMh9/g==
+"@vitest/ui@^0.5.5":
+  version "0.5.5"
+  resolved "https://registry.yarnpkg.com/@vitest/ui/-/ui-0.5.5.tgz#cdc67ecf25d712fe42f219c7c142c700d77b7c66"
+  integrity sha512-zPM+a9EHPR+nSXYJ8KaG8LGe5wwpq1cGZ3LcALFD5Q043rgK7xoTyqXnjgnw7rRbg2IixMyExpQ2X6WkBYxi0A==
   dependencies:
     sirv "^2.0.2"
 
