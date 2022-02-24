@@ -140,7 +140,7 @@
   </div>
 
   <teleport to="#modal">
-    <PluginSafeSnapModalOptionApproval
+    <SafeSnapModalOptionApproval
       :minimumBond="questionDetails?.minimumBond"
       :open="modalApproveDecisionOpen"
       :isApproved="questionDetails?.isApproved"
@@ -169,6 +169,8 @@ import { useTxStatus } from '@/composables/useTxStatus';
 import { useNotifications } from '@/composables/useNotifications';
 import { useIntl } from '@/composables/useIntl';
 import { useI18n } from '@/composables/useI18n';
+
+import SafeSnapModalOptionApproval from './Modal/OptionApproval.vue';
 
 const { formatRelativeTime } = useIntl();
 const { t } = useI18n();
