@@ -2,7 +2,6 @@
 import dayjs from 'dayjs';
 import { useRoute } from 'vue-router';
 import { onMounted, ref, computed, watch } from 'vue';
-
 import { useInfiniteLoader } from '@/composables/useInfiniteLoader';
 import { useScrollMonitor } from '@/composables/useScrollMonitor';
 import { useApolloQuery } from '@/composables/useApolloQuery';
@@ -10,17 +9,16 @@ import { NOTIFICATION_PROPOSALS_QUERY } from '@/helpers/queries';
 import { useFollowSpace } from '@/composables/useFollowSpace';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useStore } from '@/composables/useStore';
-import { setPageTitle } from '@/helpers/utils';
-import { useI18n } from 'vue-i18n';
+import { useI18n } from '@/composables/useI18n';
 import { getProposalPeriod } from '@/helpers/proposals';
-
-const { store } = useStore();
-
-const { t } = useI18n();
+import { useIntl } from '@/composables/useIntl';
 
 const loading = ref(false);
 
 const route = useRoute();
+const { formatRelativeTime } = useIntl();
+const { store } = useStore();
+const { t, setPageTitle } = useI18n();
 const { followingSpaces, loadingFollows } = useFollowSpace();
 const { web3, web3Account } = useWeb3();
 
@@ -166,7 +164,7 @@ function selectState(filter) {
           <div
             v-for="proposal in store.notifications.proposals"
             :key="proposal.id"
-            class="transition-colors border-b last-child-border-0"
+            class="transition-colors border-b last:!border-b-0"
           >
             <router-link
               class="p-4 block text-color"
@@ -187,8 +185,8 @@ function selectState(filter) {
                 <span
                   v-text="
                     $tc(getProposalPeriod(proposal), [
-                      _toNow(proposal.end),
-                      _ms(proposal.end)
+                      formatRelativeTime(proposal.end),
+                      formatRelativeTime(proposal.end)
                     ])
                   "
                 />
