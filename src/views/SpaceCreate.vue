@@ -64,23 +64,30 @@ const proposal = computed(() =>
 const sourceProposal = computed(() => route.params.sourceProposal);
 
 // Check if account passes space validation
+// (catch errors to show confiuration error message)
+const executingValidationFailed = ref(false);
 watch(
   () => web3Account.value,
   async () => {
     validationLoading.value = true;
     if (web3Account.value && auth.isAuthenticated.value) {
-      const validationName = props.space.validation?.name ?? 'basic';
-      const validationParams = props.space.validation?.params ?? {};
-      const isValid = await validations[validationName](
-        web3Account.value,
-        clone(props.space),
-        '',
-        clone(validationParams)
-      );
+      try {
+        const validationName = props.space.validation?.name ?? 'basic';
+        const validationParams = props.space.validation?.params ?? {};
+        const isValid = await validations[validationName](
+          web3Account.value,
+          clone(props.space),
+          '',
+          clone(validationParams)
+        );
 
-      passValidation.value = [isValid, validationName];
-      console.log('Pass validation?', isValid, validationName);
-      validationLoading.value = false;
+        passValidation.value = [isValid, validationName];
+        console.log('Pass validation?', isValid, validationName);
+        validationLoading.value = false;
+      } catch (e) {
+        executingValidationFailed.value = true;
+        console.log(e);
+      }
     }
   },
   { immediate: true }
@@ -296,7 +303,7 @@ const needsPluginConfigs = computed(() =>
       <div v-if="currentStep === 1" class="px-4 md:px-0 overflow-hidden mb-3">
         <router-link
           :to="domain ? { path: '/' } : { name: 'spaceProposals' }"
-          class="text-color"
+          class="text-skin-text"
         >
           <Icon name="back" size="22" class="!align-middle" />
           {{ $t('back') }}
@@ -331,11 +338,20 @@ const needsPluginConfigs = computed(() =>
           }}
         </span>
         <div>
-          <BaseAnchor
-            :link="{ name: 'spaceAbout', params: { key: space.id } }"
-            >{{ t('learnMore') }}</BaseAnchor
-          >
+          <BaseLink :link="{ name: 'spaceAbout', params: { key: space.id } }">{{
+            t('learnMore')
+          }}</BaseLink>
         </div>
+      </BaseMessageBlock>
+
+      <!-- Shows when wallet is connected and executing validation fails (e.g.
+      due to misconfigured strategy)  -->
+      <BaseMessageBlock
+        level="warning"
+        v-else-if="executingValidationFailed"
+        :routeObject="{ name: 'spaceAbout', params: { key: space.id } }"
+      >
+        {{ $t('create.validationWarning.executionError') }}
       </BaseMessageBlock>
 
       <!-- Shows when wallet is connected and doesn't pass validaion -->
@@ -366,12 +382,12 @@ const needsPluginConfigs = computed(() =>
           }}
         </span>
         <div>
-          <BaseAnchor
-            :link="{ name: 'spaceAbout', params: { key: space.id } }"
-            >{{ t('learnMore') }}</BaseAnchor
-          >
+          <BaseLink :link="{ name: 'spaceAbout', params: { key: space.id } }">
+            {{ t('learnMore') }}
+          </BaseLink>
         </div>
       </BaseMessageBlock>
+
       <template v-if="currentStep === 1">
         <div class="px-4 md:px-0">
           <div class="flex flex-col mb-6">
@@ -384,7 +400,7 @@ const needsPluginConfigs = computed(() =>
               v-else
               v-model="form.name"
               maxlength="128"
-              class="text-2xl font-bold input mb-2 w-full"
+              class="text-2xl font-semibold input mb-2 w-full"
               :placeholder="$t('create.question')"
               ref="nameInput"
             />
@@ -397,14 +413,6 @@ const needsPluginConfigs = computed(() =>
                 :placeholder="$t('create.content')"
                 :max-length="bodyLimit"
               />
-
-              <!-- Indicator for number of available characters in body -->
-              <div
-                class="absolute right-0 bottom-2 hidden group-focus-within:block p-1 bg-skin-bg"
-                :class="{ 'text-red': form.body.length === bodyLimit }"
-              >
-                {{ `${form.body.length} / ${bodyLimit}` }}
-              </div>
             </div>
 
             <div v-if="form.body && preview" class="mb-4">
@@ -614,7 +622,11 @@ const needsPluginConfigs = computed(() =>
           v-else
           @click="web3Account ? currentStep++ : (modalAccountOpen = true)"
           class="block w-full"
-          :disabled="(!stepIsValid && !!web3Account) || web3.authLoading"
+          :disabled="
+            (!stepIsValid && !!web3Account) ||
+            web3.authLoading ||
+            executingValidationFailed
+          "
           primary
         >
           {{ web3Account ? $t('create.continue') : $t('connectWallet') }}

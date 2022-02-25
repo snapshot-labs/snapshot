@@ -15,40 +15,30 @@ defineEmits(['close']);
       <h3>{{ $t('receipt') }}</h3>
     </template>
     <div class="m-4 space-y-4">
-      <div class="p-4 border rounded-md link-color">
+      <div class="p-4 border rounded-md text-skin-link">
         <div class="flex">
-          <span v-text="$t('author')" class="flex-auto text-color mr-1" />
-          <a
-            :href="getIpfsUrl(authorIpfsHash)"
-            target="_blank"
-            class="link-color"
-          >
+          <span v-text="$t('author')" class="flex-auto text-skin-text mr-1" />
+          <BaseLink :link="getIpfsUrl(authorIpfsHash)" class="text-skin-link">
             #{{ authorIpfsHash.slice(0, 7) }}
-            <Icon name="external-link" class="ml-1" />
-          </a>
+          </BaseLink>
         </div>
         <div v-if="relayerIpfsHash" class="flex">
-          <span v-text="$t('relayer')" class="flex-auto text-color mr-1" />
-          <a
-            :href="getIpfsUrl(relayerIpfsHash)"
-            target="_blank"
-            class="link-color"
-          >
+          <span v-text="$t('relayer')" class="flex-auto text-skin-text mr-1" />
+          <BaseLink :link="getIpfsUrl(relayerIpfsHash)" class="text-skin-link">
             #{{ relayerIpfsHash.slice(0, 7) }}
-            <Icon name="external-link" class="ml-1" />
-          </a>
+          </BaseLink>
         </div>
       </div>
-      <a
-        :href="`https://signator.io/view?ipfs=${authorIpfsHash}`"
-        target="_blank"
+      <BaseLink
+        :link="`https://signator.io/view?ipfs=${authorIpfsHash}`"
         class="mb-2 block"
+        hide-external-icon
       >
         <UiButton class="button-outline w-full">
           {{ $t('verifyOnSignatorio') }}
           <Icon name="external-link" class="ml-1" />
         </UiButton>
-      </a>
+      </BaseLink>
     </div>
   </UiModal>
 </template>

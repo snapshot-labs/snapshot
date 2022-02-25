@@ -66,7 +66,7 @@ const { copyToClipboard } = useCopy();
     </svg>
     <div v-if="hovered" class="tooltip bg-skin-bg p-3 border md:rounded-lg">
       <span class="tooltip-text">Multisend address</span>
-      <span class="tooltip-text mt-1 text-color">
+      <span class="tooltip-text mt-1 text-skin-text">
         {{ shorten(multiSendAddress) }}
         <Icon
           class="ml-1"
@@ -76,7 +76,7 @@ const { copyToClipboard } = useCopy();
         />
       </span>
       <span class="tooltip-text mt-3">Reality Module address</span>
-      <span class="tooltip-text mt-1 text-color">
+      <span class="tooltip-text mt-1 text-skin-text">
         {{ shorten(realityAddress) }}
         <Icon
           class="ml-1"

@@ -58,7 +58,7 @@ watch(selectedChoices.value, currentValue => {
         :class="selectedChoices[i + 1] > 0 && 'button--active'"
       >
         <div
-          class="text-left pr-3 truncated"
+          class="text-left pr-3 truncate"
           v-tippy="{
             content: choice.length > 20 && isSmallScreen ? choice : null
           }"

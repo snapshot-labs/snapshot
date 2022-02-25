@@ -136,9 +136,9 @@ onMounted(async () => {
         $t('setup.textRecordExists', { address: shorten(spaceOwnerAddress) })
       }}
       <div>
-        <BaseAnchor :link="`https://app.ens.domains/name/${ensAddress}`">
+        <BaseLink :link="`https://app.ens.domains/name/${ensAddress}`">
           {{ $t('setup.seeOnEns') }}
-        </BaseAnchor>
+        </BaseLink>
       </div>
     </BaseMessageBlock>
     <Block
@@ -155,7 +155,6 @@ onMounted(async () => {
         class="mt-2"
         focus-on-mount
       >
-        <template v-slot:label>{{ $t('setup.controllerAddress') }}</template>
       </UiInput>
 
       <div>
@@ -168,7 +167,21 @@ onMounted(async () => {
               @click="clickSetRecord"
               :loading="settingENSRecord"
             >
-              {{ $t('setup.updateENS') }}
+              {{ $t('setup.updateController') }}
+            </UiButton>
+            <div class="w-full text-center mb-2">{{ $t('or') }}</div>
+
+            <UiButton
+              class="button-outline w-full mb-2"
+              @click="
+                $router.push({
+                  name: 'spaceSettings',
+                  params: { key: ensAddress }
+                })
+              "
+              :disabled="settingENSRecord"
+            >
+              {{ $t('setup.goToSettings') }}
             </UiButton>
           </div>
           <div v-else-if="!currentTextRecord && ensOwner">

@@ -2,11 +2,6 @@
 import { computed, ref, inject, watch, onMounted } from 'vue';
 import { useI18n } from '@/composables/useI18n';
 import { getAddress } from '@ethersproject/address';
-import {
-  validateSchema,
-  getSpaceUri,
-  clone
-} from '@snapshot-labs/snapshot.js/src/utils';
 import schemas from '@snapshot-labs/snapshot.js/src/schemas';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import defaults from '@/locales/default';
@@ -14,6 +9,12 @@ import { useWeb3 } from '@/composables/useWeb3';
 import { calcFromSeconds, calcToSeconds } from '@/helpers/utils';
 import { useClient } from '@/composables/useClient';
 import { usePlugins } from '@/composables/usePlugins';
+import { useEns } from '@/composables/useEns';
+import {
+  validateSchema,
+  getSpaceUri,
+  clone
+} from '@snapshot-labs/snapshot.js/src/utils';
 
 const props = defineProps({
   space: Object,
@@ -83,9 +84,12 @@ const isSpaceController = computed(() => {
   return currentTextRecord.value === textRecord.value;
 });
 
+const { loadOwnedEnsDomains, ownedEnsDomains } = useEns();
+
 watch(
   [currentTextRecord, textRecord],
   async () => {
+    loadOwnedEnsDomains();
     // Check if the connected wallet is the space owner and add address to admins
     // if not already present
     if (isSpaceController.value) {
@@ -95,6 +99,10 @@ watch(
     }
   },
   { immediate: true }
+);
+
+const ensOwner = computed(() =>
+  ownedEnsDomains.value?.map(d => d.name).includes(props.spaceKey)
 );
 
 const isSpaceAdmin = computed(() => {
@@ -291,7 +299,7 @@ onMounted(() => {
   <Layout v-bind="$attrs">
     <template #content-left>
       <div class="px-4 md:px-0 mb-3">
-        <router-link :to="{ name: 'spaceProposals' }" class="text-color">
+        <router-link :to="{ name: 'spaceProposals' }" class="text-skin-text">
           <Icon name="back" size="22" class="!align-middle" />
           {{ $t('back') }}
         </router-link>
@@ -408,13 +416,13 @@ onMounted(() => {
               {{ $t('settings.domain') }}
             </template>
             <template v-slot:info>
-              <a
+              <BaseLink
                 class="flex items-center -mr-1"
-                target="_blank"
-                href="https://docs.snapshot.org/spaces/add-custom-domain"
+                link="https://docs.snapshot.org/spaces/add-custom-domain"
+                hide-external-icon
               >
-                <Icon name="info" size="24" class="text-color" />
-              </a>
+                <Icon name="info" size="24" class="text-skin-text" />
+              </BaseLink>
             </template>
           </UiInput>
           <UiInput @click="modalSkinsOpen = true" :error="inputError('skin')">
@@ -466,13 +474,9 @@ onMounted(() => {
           >
             <Icon name="warning" class="mr-2 !text-red" />
             <span class="!text-red"> {{ inputError('strategies') }}&nbsp;</span>
-            <a
-              href="https://docs.snapshot.org/spaces/create#strategies"
-              target="_blank"
-              rel="noopener noreferrer"
-              >{{ $t('learnMore') }}
-              <Icon name="external-link" />
-            </a>
+            <BaseLink link="https://docs.snapshot.org/spaces/create#strategies">
+              {{ $t('learnMore') }}
+            </BaseLink>
           </Block>
           <UiButton @click="handleAddStrategy" class="block w-full">
             {{ $t('settings.addStrategy') }}
@@ -619,6 +623,7 @@ onMounted(() => {
       >
         <Block :title="$t('actions')">
           <router-link
+            v-if="ensOwner"
             :to="{ name: 'setup', params: { ensAddress: spaceKey } }"
           >
             <UiButton class="block w-full mb-2">
