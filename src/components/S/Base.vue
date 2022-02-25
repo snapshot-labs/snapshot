@@ -21,7 +21,9 @@ watch(
   <div>
     <label v-if="definition.title" v-text="definition.title" class="s-label" />
     <div>
-      <slot />
+      <div class="z-10 relative">
+        <slot />
+      </div>
       <div
         :class="[
           's-error',

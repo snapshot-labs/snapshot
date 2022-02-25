@@ -10,6 +10,7 @@ import { useCopy } from '@/composables/useCopy';
 import { decode, encode } from '@/helpers/b64';
 import { useIntl } from '@/composables/useIntl';
 import { useStrategies } from '@/composables/useStrategies';
+import { validateSchema } from '@snapshot-labs/snapshot.js/src/utils';
 
 const defaultParams = {
   symbol: 'BAL',
@@ -62,6 +63,10 @@ const form = ref({
   snapshot: '',
   addresses: []
 });
+
+const strategyValidationErrors = computed(
+  () => validateSchema(strategyDefinition.value, form.value.params) ?? []
+);
 
 async function loadScores() {
   scores.value = null;
@@ -201,6 +206,7 @@ onMounted(async () => {
               v-if="strategyDefinition"
               v-model="form.params"
               :definition="strategyDefinition"
+              :errors="strategyValidationErrors"
             />
             <UiButton
               v-else
