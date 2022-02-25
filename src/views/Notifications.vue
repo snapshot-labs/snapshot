@@ -1,112 +1,100 @@
-<script setup>
-import dayjs from 'dayjs';
+<script setup lang="ts">
 import { useRoute } from 'vue-router';
 import { onMounted, ref, computed, watch } from 'vue';
-import { useInfiniteLoader } from '@/composables/useInfiniteLoader';
-import { useScrollMonitor } from '@/composables/useScrollMonitor';
 import { useApolloQuery } from '@/composables/useApolloQuery';
 import { NOTIFICATION_PROPOSALS_QUERY } from '@/helpers/queries';
 import { useFollowSpace } from '@/composables/useFollowSpace';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useStore } from '@/composables/useStore';
 import { useI18n } from '@/composables/useI18n';
-import { relativePeriod } from '@/helpers/proposals';
 
 const loading = ref(false);
 
 const route = useRoute();
-const { store } = useStore();
-const { t, setPageTitle } = useI18n();
+const { notifications } = useStore();
+const { setPageTitle } = useI18n();
 const { followingSpaces, loadingFollows } = useFollowSpace();
 const { web3, web3Account } = useWeb3();
-
-const spaces = computed(() => {
-  return followingSpaces.value;
-});
 
 const NotificationEvents = {
   ProposalStart: 'proposal/start',
   ProposalEnd: 'proposal/end'
 };
 
-watch(spaces, () => {
-  if (route.name === 'notifications') {
-    store.notifications.proposals = [];
-    load();
-  }
+const spaces = computed(() => {
+  return followingSpaces.value;
 });
 
-const { loadBy, loadingMore, stopLoadingMore, loadMore } = useInfiniteLoader();
-
-const { endElement } = useScrollMonitor(() => {
-  if (!web3Account.value && route.name === 'notifications') return;
-  loadMore(
-    () => loadRecentProposals(store.notifications.proposals.length),
-    loading.value
-  );
-});
+const notificationsSortedByEventTime = computed(() =>
+  notifications.value?.sort((a, b) => b.time - a.time)
+);
 
 const { apolloQuery } = useApolloQuery();
 
-async function loadRecentProposals(skip = 0) {
-  const oneWeekAgo = dayjs().subtract(7, 'day').unix();
-  const proposalsObj = await apolloQuery(
-    {
-      query: NOTIFICATION_PROPOSALS_QUERY,
-      variables: {
-        first: loadBy,
-        skip,
-        space_in: spaces.value,
-        state: store.notifications.filterBy,
-        start_gte: oneWeekAgo
-      }
-    },
-    'proposals'
+async function loadProposals(state, date) {
+  return (
+    (await apolloQuery(
+      {
+        query: NOTIFICATION_PROPOSALS_QUERY,
+        variables: {
+          first: 100,
+          state,
+          space_in: spaces.value,
+          start_gte: date
+        }
+      },
+      'proposals'
+    )) ?? []
   );
-  stopLoadingMore.value = proposalsObj?.length < loadBy;
-  const newNotifications = mapProposalToNotifications(proposalsObj);
-  store.notifications.proposals =
-    store.notifications.proposals.concat(newNotifications);
 }
 
 function mapProposalToNotifications(proposals) {
-  const notifications = [];
-  const now = dayjs().unix();
+  if (proposals.length === 0) return;
+  const now = Number(new Date().getTime() / 1000).toFixed(0);
   proposals.forEach(proposal => {
-    notifications.push({
-      ...proposal,
-      event: NotificationEvents.ProposalStart,
-      title: `${t('notifications.proposalTo')} ${proposal.title} ${t(
-        'notifications.started'
-      )}`
+    notifications.value.push({
+      id: proposal.id,
+      event:
+        proposal.end <= now
+          ? NotificationEvents.ProposalEnd
+          : NotificationEvents.ProposalStart,
+      time: proposal.end <= now ? proposal.end : proposal.start,
+      title: proposal.title,
+      spaceId: proposal.space.id
     });
-
-    if (proposal.end <= now) {
-      notifications.push({
-        ...proposal,
-        event: NotificationEvents.ProposalEnd,
-        title: `${t('notifications.proposalTo')} ${proposal.title} ${t(
-          'notifications.ended'
-        )}`
-      });
-    }
   });
-  return notifications;
 }
+
+async function loadRecentProposals() {
+  const oneWeekAgo = Number((new Date().getTime() / 1000 - 604800).toFixed(0));
+  const proposalsObj = await Promise.all([
+    loadProposals('active', oneWeekAgo),
+    loadProposals('closed', oneWeekAgo)
+  ]);
+
+  mapProposalToNotifications(proposalsObj.flat());
+}
+
+async function load() {
+  if (notifications.value.length > 0) return;
+  if (!web3Account.value) return;
+  loading.value = true;
+  await loadRecentProposals();
+  loading.value = false;
+}
+
+watch(spaces, () => {
+  if (route.name === 'notifications') {
+    notifications.value = [];
+    load();
+  }
+});
 
 // Initialize
 onMounted(() => {
   load();
   setPageTitle('page.title.notifications');
 });
-
-async function load() {
-  if (store.notifications.proposals.length > 0) return;
-  if (!web3Account.value) return;
-  loading.value = true;
-  await loadRecentProposals();
-  loading.value = false;
-}
 </script>
 
 <template>
@@ -131,36 +119,37 @@ async function load() {
         </div>
         <NoResults
           class="mt-4 mb-[24px]"
-          v-else-if="store.notifications.proposals.length < 1"
+          v-else-if="notifications.length < 1"
           :block="false"
         />
         <div v-else>
           <div
-            v-for="proposal in store.notifications.proposals"
-            :key="proposal.id"
+            v-for="notification in notificationsSortedByEventTime"
+            :key="notification.id"
             class="transition-colors border-b last:!border-b-0"
           >
             <router-link
-              class="p-4 block text-color"
+              class="p-3 block text-color"
               :to="{
                 name: 'spaceProposal',
-                params: { key: proposal.space.id, id: proposal.id }
+                params: { key: notification.spaceId, id: notification.id }
               }"
             >
-              <Token :space="proposal.space" size="28" />
-              <span
-                class="ml-2 group-hover:text-skin-link"
-                v-text="proposal.space.name"
-              />
-              <h3 v-text="proposal.title" class="mt-2 mb-1" />
-              <div>
-                <UiState :state="proposal.state" slim class="mr-1" />
-                {{ t(`proposals.states.${proposal.state}`) }},
+              <div class="text-skin-text">
                 <span
-                  v-text="
-                    relativePeriod(proposal.state, proposal.start, proposal.end)
-                  "
-                />
+                  v-if="notification.event === NotificationEvents.ProposalStart"
+                  >Proposal started</span
+                >
+                <span
+                  v-if="notification.event === NotificationEvents.ProposalEnd"
+                  >Proposal ended</span
+                >
+              </div>
+              <h3 v-text="notification.title" class="m-0" />
+              <div class="text-skin-text mt-2">
+                <span>
+                  {{ $d(notification.time * 1e3, 'short', 'en-US') }}
+                </span>
               </div>
             </router-link>
           </div>
@@ -169,9 +158,6 @@ async function load() {
           style="height: 10px; width: 10px; position: absolute"
           ref="endElement"
         />
-        <div v-if="loadingMore && !loading" :slim="true">
-          <RowLoading class="border-t px-4 py-5" />
-        </div>
       </div>
     </template>
   </Layout>

@@ -106,21 +106,13 @@ export const PROPOSALS_QUERY = gql`
 export const NOTIFICATION_PROPOSALS_QUERY = gql`
   query Proposals(
     $first: Int!
-    $skip: Int!
     $state: String!
-    $space: String
-    $space_in: [String],
-    $start_gte: Int,
+    $space_in: [String]
+    $start_gte: Int
   ) {
     proposals(
       first: $first
-      skip: $skip
-      where: {
-        space: $space
-        state: $state
-        space_in: $space_in,
-        start_gte: $start_gte
-      }
+      where: { state: $state, space_in: $space_in, start_gte: $start_gte }
     ) {
       id
       title
@@ -134,7 +126,6 @@ export const NOTIFICATION_PROPOSALS_QUERY = gql`
     }
   }
 `;
-
 
 export const FOLLOWS_QUERY = gql`
   query Follows($space_in: [String], $follower_in: [String]) {

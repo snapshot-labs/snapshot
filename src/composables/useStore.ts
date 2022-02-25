@@ -1,4 +1,4 @@
-import { reactive } from 'vue';
+import { reactive, ref } from 'vue';
 
 const store = reactive({
   space: {
@@ -8,13 +8,19 @@ const store = reactive({
   timeline: {
     proposals: [],
     filterBy: 'all'
-  },
-  notifications: {
-    proposals: [],
-    filterBy: 'all'
   }
 });
 
+const notifications = ref<
+  {
+    id: string;
+    event: string;
+    time: number;
+    title: string;
+    spaceId?: string;
+  }[]
+>([]);
+
 export function useStore() {
-  return { store };
+  return { store, notifications };
 }
