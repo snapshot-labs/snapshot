@@ -295,15 +295,13 @@ onMounted(async () => {
               networks?.[networkKey]?.shortName ?? $t('theCurrentNetwork')
           })
         }}
-        <a
+        <BaseLink
           class="whitespace-nowrap ml-1"
           @click.stop
-          target="_blank"
-          :href="`https://docs.snapshot.org/guides/delegation#supported-networks`"
+          :link="`https://docs.snapshot.org/guides/delegation#supported-networks`"
         >
           {{ $t('learnMore') }}
-          <Icon size="16" name="external-link" class="text-skin-text" />
-        </a>
+        </BaseLink>
       </Block>
       <template v-else>
         <Block :title="$t('delegate.selectDelegate')">
