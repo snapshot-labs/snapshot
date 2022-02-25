@@ -416,13 +416,13 @@ onMounted(() => {
               {{ $t('settings.domain') }}
             </template>
             <template v-slot:info>
-              <a
+              <BaseLink
                 class="flex items-center -mr-1"
-                target="_blank"
-                href="https://docs.snapshot.org/spaces/add-custom-domain"
+                link="https://docs.snapshot.org/spaces/add-custom-domain"
+                hide-external-icon
               >
                 <Icon name="info" size="24" class="text-skin-text" />
-              </a>
+              </BaseLink>
             </template>
           </UiInput>
           <UiInput @click="modalSkinsOpen = true" :error="inputError('skin')">
@@ -474,13 +474,9 @@ onMounted(() => {
           >
             <Icon name="warning" class="mr-2 !text-red" />
             <span class="!text-red"> {{ inputError('strategies') }}&nbsp;</span>
-            <a
-              href="https://docs.snapshot.org/spaces/create#strategies"
-              target="_blank"
-              rel="noopener noreferrer"
-              >{{ $t('learnMore') }}
-              <Icon name="external-link" />
-            </a>
+            <BaseLink link="https://docs.snapshot.org/spaces/create#strategies">
+              {{ $t('learnMore') }}
+            </BaseLink>
           </Block>
           <UiButton @click="handleAddStrategy" class="block w-full">
             {{ $t('settings.addStrategy') }}

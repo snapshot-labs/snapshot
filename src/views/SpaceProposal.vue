@@ -33,24 +33,24 @@ const id = route.params.id;
 
 const modalOpen = ref(false);
 const selectedChoices = ref(null);
-const loading = ref(true);
+const loadingProposal = ref(true);
 const loadedResults = ref(false);
 const loadingResultsFailed = ref(false);
 const loadedVotes = ref(false);
-const proposal = ref({});
+const proposal = ref(null);
 const votes = ref([]);
 const userVote = ref([]);
 const results = ref({});
 const modalStrategiesOpen = ref(false);
 
-const isCreator = computed(() => proposal.value.author === web3Account.value);
+const isCreator = computed(() => proposal.value?.author === web3Account.value);
 const isAdmin = computed(() => {
   const admins = (props.space.admins || []).map(admin => admin.toLowerCase());
   return admins.includes(web3Account.value?.toLowerCase());
 });
 const strategies = computed(
   // Needed for older proposal that are missing strategies
-  () => proposal.value.strategies ?? props.space?.strategies
+  () => proposal.value?.strategies ?? props.space?.strategies
 );
 
 const symbols = computed(() =>
@@ -77,7 +77,7 @@ function clickVote() {
 }
 
 async function loadProposal() {
-  loading.value = true;
+  loadingProposal.value = true;
   proposal.value = await getProposal(id);
   // Redirect to proposal space.id if it doesn't match route key
   if (
@@ -86,7 +86,7 @@ async function loadProposal() {
   ) {
     router.push({ name: 'error-404' });
   }
-  loading.value = false;
+  loadingProposal.value = false;
   loadResults();
 }
 
@@ -264,11 +264,12 @@ const truncateMarkdownBody = computed(() => {
         </a>
       </div>
       <div class="px-4 md:px-0">
-        <template v-if="!loading">
+        <template v-if="proposal">
           <h1 v-text="proposal.title" class="mb-3" />
 
           <div class="flex items-center justify-between mb-4">
             <div class="flex space-x-1 items-center">
+              <UiState :state="proposal.state" class="mr-1" />
               <router-link
                 class="text-skin-text group"
                 :to="{
@@ -297,10 +298,10 @@ const truncateMarkdownBody = computed(() => {
             </div>
 
             <div class="flex justify-end">
-              <UiState :state="proposal.state" class="inline-block" />
               <UiDropdown
                 top="2.5rem"
-                right="1.5rem"
+                right="1rem"
+                subMenuWrapperRight="-7px"
                 class="ml-3"
                 @select="selectFromShareDropdown"
                 @clickedNoDropdown="startShare(space, proposal)"
@@ -309,7 +310,7 @@ const truncateMarkdownBody = computed(() => {
               >
                 <div class="pr-1 select-none flex">
                   <Icon name="upload" size="25" />
-                  <span class="ml-1">Share</span>
+                  <span class="ml-1 hidden md:block">Share</span>
                 </div>
                 <template v-slot:item="{ item }">
                   <Icon
@@ -323,8 +324,9 @@ const truncateMarkdownBody = computed(() => {
               </UiDropdown>
               <UiDropdown
                 top="2.5rem"
-                right="1.3rem"
-                class="ml-2"
+                right="0.8rem"
+                subMenuWrapperRight="-6px"
+                class="md:ml-2"
                 @select="selectFromThreedotDropdown"
                 :items="threeDotItems"
               >
@@ -378,7 +380,7 @@ const truncateMarkdownBody = computed(() => {
         <PageLoading v-else />
       </div>
       <BlockCastVote
-        v-if="!loading && proposal.state === 'active'"
+        v-if="proposal?.state === 'active'"
         :proposal="proposal"
         v-model="selectedChoices"
         @open="modalOpen = true"
@@ -386,7 +388,7 @@ const truncateMarkdownBody = computed(() => {
       />
       <BlockVotes
         @loadVotes="loadMore(loadMoreVotes)"
-        v-if="!loading && !loadingResultsFailed"
+        v-if="proposal && !loadingResultsFailed"
         :loaded="loadedVotes"
         :space="space"
         :proposal="proposal"
@@ -396,7 +398,7 @@ const truncateMarkdownBody = computed(() => {
         :loadingMore="loadingMore"
       />
       <PluginProposal
-        v-if="proposal.plugins && loadedResults"
+        v-if="proposal?.plugins && loadedResults"
         :id="id"
         :space="space"
         :proposal="proposal"
@@ -406,7 +408,7 @@ const truncateMarkdownBody = computed(() => {
         :strategies="strategies"
       />
     </template>
-    <template #sidebar-right v-if="!loading">
+    <template #sidebar-right v-if="proposal">
       <Block :title="$t('information')">
         <div class="space-y-1">
           <div>
@@ -433,14 +435,9 @@ const truncateMarkdownBody = computed(() => {
 
           <div>
             <b>IPFS</b>
-            <a
-              :href="getIpfsUrl(proposal.ipfs)"
-              target="_blank"
-              class="float-right"
-            >
+            <BaseLink :link="getIpfsUrl(proposal.ipfs)" class="float-right">
               #{{ proposal.ipfs.slice(0, 7) }}
-              <Icon name="external-link" class="ml-1" />
-            </a>
+            </BaseLink>
           </div>
           <div>
             <b>{{ $t('proposal.votingSystem') }}</b>
@@ -470,14 +467,12 @@ const truncateMarkdownBody = computed(() => {
           </div>
           <div>
             <b>{{ $t('snapshot') }}</b>
-            <a
-              :href="explorerUrl(proposal.network, proposal.snapshot, 'block')"
-              target="_blank"
+            <BaseLink
+              :link="explorerUrl(proposal.network, proposal.snapshot, 'block')"
               class="float-right"
             >
               {{ formatNumber(proposal.snapshot) }}
-              <Icon name="external-link" class="ml-1" />
-            </a>
+            </BaseLink>
           </div>
         </div>
       </Block>
@@ -510,7 +505,7 @@ const truncateMarkdownBody = computed(() => {
       />
     </template>
   </Layout>
-  <teleport to="#modal" v-if="!loading">
+  <teleport to="#modal" v-if="proposal">
     <ModalConfirm
       :open="modalOpen"
       @close="modalOpen = false"
