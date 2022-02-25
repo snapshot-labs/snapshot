@@ -195,8 +195,20 @@ export default {
             class="tx-textarea"
           ></textarea>
         </div>
-        <div class="mt-3 flex justify-center">
+        <div
+          class="mt-3 flex justify-center items-center"
+          style="flex-direction: column"
+        >
           <UiButton @click="importFromText">Parse JSON</UiButton>
+          <a
+            class="mt-2 mb-1"
+            style="text-decoration: underline; font-size: 14px"
+            target="_blank"
+            rel="noreferrer"
+            href="https://github.com/gnosis/safe-tasks/blob/c9c52f76d16d43b0682950f3411ef283871acb5f/tx_input.sample.json"
+          >
+            JSON transaction example
+          </a>
         </div>
       </div>
     </UiCollapsibleContent>
@@ -245,8 +257,5 @@ export default {
   padding: 16px;
   font-size: 14px;
   font-weight: 100;
-}
-.active-dropzone {
-  background: red;
 }
 </style>
