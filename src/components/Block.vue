@@ -29,7 +29,7 @@ defineProps({
         :class="['float-right pt-1', iconClass]"
         v-tippy="{ content: iconTooltip ? iconTooltip : null }"
       />
-      <BaseAnchor v-else-if="iconHref" :link="iconHref" hideExternalIcon>
+      <BaseLink v-else-if="iconHref" :link="iconHref" hideExternalIcon>
         <Icon
           v-if="icon"
           :name="icon"
@@ -37,7 +37,7 @@ defineProps({
           :class="['float-right pt-1', iconClass]"
           v-tippy="{ content: iconTooltip ? iconTooltip : null }"
         />
-      </BaseAnchor>
+      </BaseLink>
     </h4>
     <div v-if="loading" class="block px-4 py-4">
       <div

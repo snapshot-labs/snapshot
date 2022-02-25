@@ -22,13 +22,12 @@ const hubUrl = import.meta.env.VITE_HUB_URL;
     <div class="m-4 space-y-1 text-skin-link">
       <div class="flex">
         <span v-text="$t('version')" class="flex-auto text-skin-text mr-1" />
-        <a
+        <BaseLink
           v-if="commitSha"
-          :href="`https://github.com/${pkg.repository}/tree/${commitSha}`"
-          target="_blank"
+          :link="`https://github.com/${pkg.repository}/tree/${commitSha}`"
         >
           {{ pkg.version }}#{{ commitSha.slice(0, 7) }}
-        </a>
+        </BaseLink>
         <span v-else v-text="pkg.version" />
       </div>
       <div class="flex">
@@ -37,9 +36,9 @@ const hubUrl = import.meta.env.VITE_HUB_URL;
       </div>
       <div class="flex">
         <span v-text="$t('network')" class="flex-auto text-skin-text mr-1" />
-        <a :href="web3.network.explorer" target="_blank">
+        <BaseLink :link="web3.network.explorer" hide-external-icon>
           {{ web3.network.network }} ({{ web3.network.key }})
-        </a>
+        </BaseLink>
       </div>
       <div class="flex">
         <span v-text="$t('ipfsServer')" class="flex-auto text-skin-text mr-1" />
