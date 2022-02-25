@@ -96,7 +96,7 @@ onMounted(() => {
             </UiSidebarButton>
           </router-link>
         </div>
-        <router-link :to="{ name: 'notifications' }">
+        <router-link v-if="web3Account" :to="{ name: 'notifications' }">
           <UiSidebarButton>
             <Icon size="20" name="notifications-none" />
           </UiSidebarButton>

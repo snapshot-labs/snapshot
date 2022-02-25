@@ -10,13 +10,11 @@ import { useFollowSpace } from '@/composables/useFollowSpace';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useStore } from '@/composables/useStore';
 import { useI18n } from '@/composables/useI18n';
-import { getProposalPeriod } from '@/helpers/proposals';
-import { useIntl } from '@/composables/useIntl';
+import { relativePeriod } from '@/helpers/proposals';
 
 const loading = ref(false);
 
 const route = useRoute();
-const { formatRelativeTime } = useIntl();
 const { store } = useStore();
 const { t, setPageTitle } = useI18n();
 const { followingSpaces, loadingFollows } = useFollowSpace();
@@ -109,36 +107,12 @@ async function load() {
   await loadRecentProposals();
   loading.value = false;
 }
-
-// Change filter
-function selectState(filter) {
-  store.notifications.filterBy = filter;
-  store.notifications.proposals = [];
-  load();
-}
 </script>
 
 <template>
   <Layout class="!mt-0">
     <template #content-left>
       <div class="py-4 px-4 md:px-0">
-        <UiDropdown
-          class="float-right"
-          top="3.5rem"
-          right="1.25rem"
-          @select="selectState"
-          :items="[
-            { text: $t('proposals.states.all'), action: 'all' },
-            { text: $t('proposals.states.active'), action: 'active' },
-            { text: $t('proposals.states.pending'), action: 'pending' },
-            { text: $t('proposals.states.closed'), action: 'closed' }
-          ]"
-        >
-          <UiButton class="pr-3">
-            {{ $t(`proposals.states.${store.notifications.filterBy}`) }}
-            <Icon size="14" name="arrow-down" class="mt-1 mr-1" />
-          </UiButton>
-        </UiDropdown>
         <h2 v-text="$t('notifications.header')" class="mt-1" />
       </div>
       <div class="md:border-r md:border-l md:rounded-lg border-t border-b">
@@ -181,13 +155,10 @@ function selectState(filter) {
               <h3 v-text="proposal.title" class="mt-2 mb-1" />
               <div>
                 <UiState :state="proposal.state" slim class="mr-1" />
-                {{ $t(`proposals.states.${proposal.state}`) }},
+                {{ t(`proposals.states.${proposal.state}`) }},
                 <span
                   v-text="
-                    $tc(getProposalPeriod(proposal), [
-                      formatRelativeTime(proposal.end),
-                      formatRelativeTime(proposal.end)
-                    ])
+                    relativePeriod(proposal.state, proposal.start, proposal.end)
                   "
                 />
               </div>
