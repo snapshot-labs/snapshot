@@ -207,7 +207,7 @@ export default {
             rel="noreferrer"
             href="https://github.com/gnosis/safe-tasks/blob/c9c52f76d16d43b0682950f3411ef283871acb5f/tx_input.sample.json"
           >
-            JSON transaction example
+            Transaction JSON example
           </a>
         </div>
       </div>
