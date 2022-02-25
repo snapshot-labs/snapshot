@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { ref, computed, toRefs, watch } from 'vue';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import { useStrategies } from '@/composables/useStrategies';
@@ -10,7 +10,10 @@ const defaultParams = {
   decimals: 18
 };
 
-const props = defineProps({ open: Boolean, strategy: Object });
+const props = defineProps<{
+  open: boolean;
+  strategy: { name: string; params: Record<string, any> };
+}>();
 
 const emit = defineEmits(['add', 'close']);
 
@@ -49,7 +52,7 @@ async function selectStrategy(strategyName) {
   input.value.name = strategyName;
   await initStrategy(strategyName);
   const params =
-    extendedStrategy.value?.examples[0]?.strategy?.params || defaultParams;
+    extendedStrategy.value?.examples?.[0].strategy?.params || defaultParams;
   input.value.params = strategyDefinition.value ? {} : params;
   loading.value = false;
 }
@@ -72,8 +75,8 @@ watch(open, () => {
   }
 });
 
-const strategyValidationErrors = computed(() =>
-  validateSchema(strategyDefinition.value, input.value.params)
+const strategyValidationErrors = computed(
+  () => validateSchema(strategyDefinition.value, input.value.params) ?? []
 );
 
 const strategyIsValid = computed(() =>
