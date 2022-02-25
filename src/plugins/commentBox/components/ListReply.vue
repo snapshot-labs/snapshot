@@ -1,5 +1,6 @@
 <script setup>
 import { ref, onBeforeUpdate, watch } from 'vue';
+import CommentBoxReplyBlock from './ReplyBlock.vue';
 
 const props = defineProps({
   space: Object,
@@ -17,7 +18,6 @@ onBeforeUpdate(() => {
 });
 function goto(index) {
   try {
-    console.log('dsa');
     const element = listReply.value[index];
     const child = element.querySelector('div > div > div > div.border-t');
     child.classList.remove('bg-skin-block-bg');
@@ -78,7 +78,7 @@ watch(
     :key="index"
     v-for="(item, index) in allReply"
   >
-    <PluginCommentBoxReplyBlock
+    <CommentBoxReplyBlock
       :proposal="proposal"
       :item="item"
       :profiles="profiles"

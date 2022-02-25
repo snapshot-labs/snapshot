@@ -8,6 +8,8 @@ import { useNotifications } from '@/composables/useNotifications';
 import { useScrollMonitor } from '@/composables/useScrollMonitor';
 import { signMessage } from '@snapshot-labs/snapshot.js/src/utils/web3';
 import { useI18n } from '@/composables/useI18n';
+import CommentBoxCommentBlock from './CommentBlock.vue';
+
 const { t } = useI18n();
 const props = defineProps({
   proposalId: String,
@@ -137,7 +139,6 @@ function updateItem(data) {
   allData.value[allData.value.findIndex(a => a.key === data.key)] = data;
 }
 function deleteItem(key) {
-  // console.log(allData.value.findIndex(a=>a.key===key))
   allData.value.splice(
     allData.value.findIndex(a => a.key === key),
     1
@@ -188,7 +189,7 @@ function deleteItem(key) {
       }}
     </UiButton>
     <div :key="index" v-for="(item, index) in allData">
-      <PluginCommentBoxCommentBlock
+      <CommentBoxCommentBlock
         :proposal="proposal"
         :item="item"
         :profiles="profiles"

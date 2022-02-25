@@ -7,6 +7,8 @@ import { signMessage } from '@snapshot-labs/snapshot.js/src/utils/web3';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { useI18n } from '@/composables/useI18n';
 import { useIntl } from '@/composables/useIntl';
+import CommentBoxComment from './Comment.vue';
+import CommentBoxListReply from './ListReply.vue';
 
 const { formatRelativeTime } = useIntl();
 const { t } = useI18n();
@@ -74,7 +76,6 @@ const { notify } = useNotifications();
 async function deleteItem() {
   if (loading.value) return;
   try {
-    console.log(props.space);
     loading.value = true;
     const token = localStorage.getItem(
       `_commentBox.token-${web3Account.value}`
@@ -127,7 +128,6 @@ async function updateItem(e) {
 }
 watch([modalOpen, closeModal, () => props.item], (oldVal, newVal) => {
   if (oldVal[2].key !== newVal[2].key) {
-    // console.log(newVal[2].markdown)
     getDataAfterDelete(props.item.key);
   }
 
@@ -227,7 +227,7 @@ function deleteItemReply(key) {
     </div>
   </UiModal>
   <div v-if="!toggleEditComment">
-    <PluginCommentBoxComment
+    <CommentBoxComment
       :space="space"
       :item="item"
       :buttonName="$t('comment_box.edit_button')"
@@ -277,7 +277,7 @@ function deleteItemReply(key) {
       <Icon :name="'receipt-outlined'" class="v-align-middle" size="15" />
       <span class="ml-1">{{ $t('comment_box.reply') }}</span>
     </UiButton>
-    <PluginCommentBoxComment
+    <CommentBoxComment
       v-if="!toggleComment"
       buttonName="Reply"
       :space="space"
@@ -289,7 +289,7 @@ function deleteItemReply(key) {
       :placeholder="$t('comment_box.add_reply')"
     />
   </div>
-  <PluginCommentBoxListReply
+  <CommentBoxListReply
     :proposal="proposal"
     :profiles="profiles"
     :space="space"
