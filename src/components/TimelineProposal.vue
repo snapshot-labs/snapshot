@@ -3,8 +3,9 @@ import { computed } from 'vue';
 import { shorten } from '@/helpers/utils';
 import removeMd from 'remove-markdown';
 import { useIntl } from '@/composables/useIntl';
+import { relativePeriod } from '@/helpers/proposals';
 
-const { formatRelativeTime, formatCompactNumber } = useIntl();
+const { formatCompactNumber } = useIntl();
 
 const props = defineProps({
   proposal: Object,
@@ -65,10 +66,7 @@ const period = computed(() => {
           <span
             v-if="proposal.scores_state !== 'final'"
             v-text="
-              $tc(period, [
-                formatRelativeTime(proposal.start),
-                formatRelativeTime(proposal.end)
-              ])
+              relativePeriod(proposal.state, proposal.start, proposal.end)
             "
           />
           <span
