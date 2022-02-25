@@ -33,24 +33,24 @@ const id = route.params.id;
 
 const modalOpen = ref(false);
 const selectedChoices = ref(null);
-const loading = ref(true);
+const loadingProposal = ref(true);
 const loadedResults = ref(false);
 const loadingResultsFailed = ref(false);
 const loadedVotes = ref(false);
-const proposal = ref({});
+const proposal = ref(null);
 const votes = ref([]);
 const userVote = ref([]);
 const results = ref({});
 const modalStrategiesOpen = ref(false);
 
-const isCreator = computed(() => proposal.value.author === web3Account.value);
+const isCreator = computed(() => proposal.value?.author === web3Account.value);
 const isAdmin = computed(() => {
   const admins = (props.space.admins || []).map(admin => admin.toLowerCase());
   return admins.includes(web3Account.value?.toLowerCase());
 });
 const strategies = computed(
   // Needed for older proposal that are missing strategies
-  () => proposal.value.strategies ?? props.space?.strategies
+  () => proposal.value?.strategies ?? props.space?.strategies
 );
 
 const symbols = computed(() =>
@@ -77,7 +77,7 @@ function clickVote() {
 }
 
 async function loadProposal() {
-  loading.value = true;
+  loadingProposal.value = true;
   proposal.value = await getProposal(id);
   // Redirect to proposal space.id if it doesn't match route key
   if (
@@ -86,7 +86,7 @@ async function loadProposal() {
   ) {
     router.push({ name: 'error-404' });
   }
-  loading.value = false;
+  loadingProposal.value = false;
   loadResults();
 }
 
@@ -264,7 +264,7 @@ const truncateMarkdownBody = computed(() => {
         </a>
       </div>
       <div class="px-4 md:px-0">
-        <template v-if="!loading">
+        <template v-if="proposal">
           <h1 v-text="proposal.title" class="mb-3" />
 
           <div class="flex items-center justify-between mb-4">
@@ -380,7 +380,7 @@ const truncateMarkdownBody = computed(() => {
         <PageLoading v-else />
       </div>
       <BlockCastVote
-        v-if="!loading && proposal.state === 'active'"
+        v-if="proposal?.state === 'active'"
         :proposal="proposal"
         v-model="selectedChoices"
         @open="modalOpen = true"
@@ -388,7 +388,7 @@ const truncateMarkdownBody = computed(() => {
       />
       <BlockVotes
         @loadVotes="loadMore(loadMoreVotes)"
-        v-if="!loading && !loadingResultsFailed"
+        v-if="proposal && !loadingResultsFailed"
         :loaded="loadedVotes"
         :space="space"
         :proposal="proposal"
@@ -398,7 +398,7 @@ const truncateMarkdownBody = computed(() => {
         :loadingMore="loadingMore"
       />
       <PluginProposal
-        v-if="proposal.plugins && loadedResults"
+        v-if="proposal?.plugins && loadedResults"
         :id="id"
         :space="space"
         :proposal="proposal"
@@ -408,7 +408,7 @@ const truncateMarkdownBody = computed(() => {
         :strategies="strategies"
       />
     </template>
-    <template #sidebar-right v-if="!loading">
+    <template #sidebar-right v-if="proposal">
       <Block :title="$t('information')">
         <div class="space-y-1">
           <div>
@@ -505,7 +505,7 @@ const truncateMarkdownBody = computed(() => {
       />
     </template>
   </Layout>
-  <teleport to="#modal" v-if="!loading">
+  <teleport to="#modal" v-if="proposal">
     <ModalConfirm
       :open="modalOpen"
       @close="modalOpen = false"
