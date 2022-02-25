@@ -1,5 +1,5 @@
 <script>
-import Plugin from '@/../snapshot-plugins/src/plugins/gnosis';
+import Plugin from '../index';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import { shorten } from '@/helpers/utils';
 
