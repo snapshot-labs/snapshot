@@ -1,3 +1,9 @@
+/**
+ * A composable hook that returns the validation errors of the form as
+ * a string or returns an empty string if there are no errors.
+ * TODO: Extent and use this hook to validate the settings form and all future forms.
+ */
+
 import defaults from '@/locales/default.json';
 import { useI18n } from '@/composables/useI18n';
 
