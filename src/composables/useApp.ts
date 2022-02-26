@@ -108,7 +108,12 @@ export function useApp() {
         return {
           ...explore.value.spaces[key],
           followers,
-          private: explore.value.spaces[key].private ?? false,
+          // Hide private spaces, unless the search query exactly matches
+          // the space key
+          private:
+            route.query.q?.toString() === key
+              ? false
+              : explore.value.spaces[key].private ?? false,
           score,
           testnet
         };
