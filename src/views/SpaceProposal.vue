@@ -252,9 +252,9 @@ const truncateMarkdownBody = computed(() => {
         <a
           class="text-skin-text"
           @click="
-            browserHasHistory
+            browserHasHistory?.includes('timeline')
               ? $router.go(-1)
-              : $router.push(
+              : $router.replace(
                   domain ? { path: '/' } : { name: 'spaceProposals' }
                 )
           "
