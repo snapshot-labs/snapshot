@@ -52,7 +52,7 @@ function openOptions() {
  */
 function closeOptions(e) {
   const clickedOptions = optionsEl.value?.contains(e.target);
-  const clickedInput = inputEl.value?.contains(e.target);
+  const clickedInput = inputEl.value === e.target;
   const clickedOutside = !clickedOptions && !clickedInput;
   if (clickedOutside) {
     displayDropdown.value = false;
@@ -85,18 +85,18 @@ function handleChange(e) {
     <div
       ref="optionsEl"
       class="border border-skin-link rounded-lg z-0 mt-2 absolute w-full bg-skin-bg transition-all pt-[19px] overflow-hidden shadow-lg"
-      :class="displayDropdown && options.length ? '-mt-[19px] opacity-100' : '-mt-[48px] opacity-0 pointer-events-none'"
+      :class="
+        displayDropdown && options.length
+          ? '-mt-[19px] opacity-100'
+          : '-mt-[48px] opacity-0 pointer-events-none'
+      "
     >
       <ul class="max-h-[200px] overflow-y-auto">
         <li
           class="hover:bg-skin-border hover:text-skin-link py-2 px-3 bg-skin-bg cursor-pointer"
           v-for="option in options"
           :key="option.value"
-          @click="
-            e => {
-              handleOptionSelect(e, option);
-            }
-          "
+          @click.stop="handleOptionSelect($event, option)"
         >
           <slot name="option" :option="option.option">
             {{ option.label }}
