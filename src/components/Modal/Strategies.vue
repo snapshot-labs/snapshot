@@ -46,15 +46,13 @@ defineEmits(['close']);
         <div>
           <div v-for="(option, key) in strategy.params" :key="key" class="flex">
             <span v-text="key" class="flex-auto text-skin-text mr-1" />
-            <a
+            <BaseLink
               v-if="key === 'address' || isAddress(option)"
-              :href="explorerUrl(proposal.network, option)"
-              target="_blank"
+              :link="explorerUrl(proposal.network, option)"
               class="block"
             >
               <span v-text="shorten(option)" />
-              <Icon name="external-link" class="ml-1" />
-            </a>
+            </BaseLink>
             <span
               v-else
               v-text="

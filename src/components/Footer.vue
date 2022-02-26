@@ -1,6 +1,30 @@
 <script setup>
 import pkg from '@/../package.json';
+
 const yearNow = new Date().getFullYear();
+
+const socials = [
+  {
+    icon: 'twitter',
+    link: 'https://twitter.com/SnapshotLabs'
+  },
+  {
+    icon: 'discord',
+    link: 'https://discord.gg/snapshot'
+  },
+  {
+    icon: 'telegram',
+    link: 'https://t.me/snapshotlabs'
+  },
+  {
+    icon: 'github',
+    link: `https://github.com/${pkg.repository}`
+  },
+  {
+    icon: 'gitbook',
+    link: 'https://docs.snapshot.org/'
+  }
+];
 </script>
 
 <template>
@@ -10,41 +34,15 @@ const yearNow = new Date().getFullYear();
         <div>© {{ yearNow }} Snapshot Labs.</div>
         <div class="flex items-center">
           <div class="text-center space-x-3">
-            <a href="https://twitter.com/SnapshotLabs" target="_blank">
-              <Icon
-                size="30"
-                name="twitter"
-                class="hover:opacity-80 text-skin-text"
-              />
-            </a>
-            <a href="https://discord.gg/snapshot" target="_blank">
-              <Icon
-                size="30"
-                name="discord"
-                class="hover:opacity-80 text-skin-text"
-              />
-            </a>
-            <a href="https://t.me/snapshotlabs" target="_blank">
-              <Icon
-                size="30"
-                name="telegram"
-                class="hover:opacity-80 text-skin-text"
-              />
-            </a>
-            <a :href="`https://github.com/${pkg.repository}`" target="_blank">
-              <Icon
-                size="30"
-                name="github"
-                class="hover:opacity-80 text-skin-text"
-              />
-            </a>
-            <a href="https://docs.snapshot.org/" target="_blank">
-              <Icon
-                size="30"
-                name="gitbook"
-                class="hover:opacity-80 text-skin-text"
-              />
-            </a>
+            <span v-for="social in socials" :key="social">
+              <BaseLink :link="social.link" hide-external-icon>
+                <Icon
+                  size="30"
+                  class="hover:opacity-80 text-skin-text"
+                  :name="social.icon"
+                />
+              </BaseLink>
+            </span>
           </div>
           <SelectLanguageButton class="ml-4" />
         </div>
