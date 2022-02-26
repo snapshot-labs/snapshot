@@ -71,23 +71,23 @@ function handleChange(e) {
 
 <template>
   <div class="relative">
-    <SBase :definition="{ title: title }">
+    <SBase :definition="{ title: title }" class="relative z-10">
       <input
         ref="inputEl"
         type="text"
         :value="searchInput"
         @input="handleChange"
-        class="s-input"
+        class="s-input !bg-skin-bg"
         :placeholder="$t('selectNetwork')"
         @focus="openOptions"
       />
     </SBase>
     <div
       ref="optionsEl"
-      v-if="displayDropdown && options.length"
-      class="py-2 border border-skin-link rounded-lg z-10 mt-2 absolute w-full bg-skin-bg"
+      class="border border-skin-link rounded-lg z-0 mt-2 absolute w-full bg-skin-bg transition-all pt-[19px] overflow-hidden shadow-lg"
+      :class="displayDropdown && options.length ? '-mt-[19px] opacity-100' : '-mt-[48px] opacity-0'"
     >
-      <ul class="max-h-[170px] overflow-y-auto">
+      <ul class="max-h-[200px] overflow-y-auto">
         <li
           class="hover:bg-skin-border hover:text-skin-link py-2 px-3 bg-skin-bg cursor-pointer"
           v-for="option in options"
