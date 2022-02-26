@@ -7,6 +7,7 @@ import { useFollowSpace } from '@/composables/useFollowSpace';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useStore } from '@/composables/useStore';
 import { useI18n } from '@/composables/useI18n';
+import { useIntl } from '@/composables/useIntl';
 
 const loading = ref(false);
 
@@ -14,6 +15,7 @@ const route = useRoute();
 const { notifications } = useStore();
 const { setPageTitle } = useI18n();
 const { followingSpaces, loadingFollows } = useFollowSpace();
+const { formatRelativeTime, longRelativeTimeFormatter } = useIntl();
 const { web3, web3Account } = useWeb3();
 
 const NotificationEvents = {
@@ -148,7 +150,12 @@ onMounted(() => {
               <h3 v-text="notification.title" class="m-0" />
               <div class="text-skin-text mt-2">
                 <span>
-                  {{ $d(notification.time * 1e3, 'short', 'en-US') }}
+                  {{
+                    formatRelativeTime(
+                      notification.time,
+                      longRelativeTimeFormatter
+                    )
+                  }}
                 </span>
               </div>
             </router-link>

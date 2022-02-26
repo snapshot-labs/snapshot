@@ -92,6 +92,10 @@ export function useIntl() {
    */
 
   const defaultRelativeTimeFormatter = getRelativeTimeFormatter();
+  const longRelativeTimeFormatter = getRelativeTimeFormatter({
+    style: 'long',
+    numeric: 'always'
+  });
   const defaultNumberFormatter = getNumberFormatter();
   const compactNumberFormatter = getNumberFormatter({
     notation: 'compact',
@@ -147,6 +151,7 @@ export function useIntl() {
     formatDuration,
     formatNumber,
     formatCompactNumber,
-    formatPercentNumber
+    formatPercentNumber,
+    longRelativeTimeFormatter
   };
 }
