@@ -85,7 +85,7 @@ function handleChange(e) {
     <div
       ref="optionsEl"
       class="border border-skin-link rounded-lg z-0 mt-2 absolute w-full bg-skin-bg transition-all pt-[19px] overflow-hidden shadow-lg"
-      :class="displayDropdown && options.length ? '-mt-[19px] opacity-100' : '-mt-[48px] opacity-0'"
+      :class="displayDropdown && options.length ? '-mt-[19px] opacity-100' : '-mt-[48px] opacity-0 pointer-events-none'"
     >
       <ul class="max-h-[200px] overflow-y-auto">
         <li
