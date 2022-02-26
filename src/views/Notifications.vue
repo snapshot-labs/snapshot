@@ -68,10 +68,12 @@ function mapProposalToNotifications(proposals) {
 }
 
 async function loadRecentProposals() {
-  const oneWeekAgo = Number((new Date().getTime() / 1000 - 604800).toFixed(0));
+  const unixTimestampTwoWeeksAgo = Number(
+    (new Date().getTime() / 1000 - 604800 * 2).toFixed(0)
+  );
   const proposalsObj = await Promise.all([
-    loadProposals('active', oneWeekAgo),
-    loadProposals('closed', oneWeekAgo)
+    loadProposals('active', unixTimestampTwoWeeksAgo),
+    loadProposals('closed', unixTimestampTwoWeeksAgo)
   ]);
 
   mapProposalToNotifications(proposalsObj.flat());
