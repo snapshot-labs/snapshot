@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { ref, computed, toRefs, watch } from 'vue';
-import { clone } from '@snapshot-labs/snapshot.js/src/utils';
-import { useStrategies } from '@/composables/useStrategies';
 import { useNetworksFilter } from '@/composables/useNetworksFilter';
+import { useStrategies } from '@/composables/useStrategies';
+import { clone } from '@snapshot-labs/snapshot.js/src/utils';
+import { computed, ref, toRefs, watch } from 'vue';
 import { getIpfsUrl } from '@/helpers/utils';
 
 const defaultParams = {
@@ -43,10 +43,12 @@ const {
 } = useStrategies();
 
 const strategiesResults = computed(() => filterStrategies(searchInput.value));
-const { filterNetworks } = useNetworksFilter();
+const { filterNetworks, getNetworksSpacesCount } = useNetworksFilter();
+
+const searchNetwork = ref('');
 
 const networks = computed(() => {
-  return filterNetworks().map(_n => ({
+  return filterNetworks(searchNetwork.value).map(_n => ({
     label: _n.name,
     value: _n.key,
     option: _n
@@ -82,6 +84,9 @@ async function editStrategy(strategyName) {
 watch(open, () => {
   input.value.network = props.defaultNetwork ?? '';
 
+  // compute the spaces count for network ordering.
+  getNetworksSpacesCount();
+
   if (props.open && !props.strategy?.name) getStrategies();
   if (props.strategy?.name) {
     editStrategy(props.strategy.name);
@@ -116,22 +121,21 @@ watch(open, () => {
             v-model="input.network"
             title="Network"
             class="mb-3"
+            @change-search-input="value => (searchNetwork = value)"
           >
             <template v-slot:option="{ option }">
               <div class="group flex items-center justify-between">
                 <div class="flex items-center">
-                  <UiAvatar
-                    class="mr-2"
-                    :imgsrc="getIpfsUrl(option?.imageIPFS)"
-                    :seed="option?.key"
-                    size="28"
+                  <img
+                    class="mr-2 w-4 h-4 rounded-full"
+                    :src="getIpfsUrl(option?.imageIPFS)"
                   />
                   <span v-text="option?.name" />
                 </div>
                 <span
                   class="h-[20px] rounded-full leading-normal text-xs text-white bg-skin-text text-center px-2"
                 >
-                  # {{ option?.chainId }}
+                  #{{ option?.chainId }}
                 </span>
               </div>
             </template>

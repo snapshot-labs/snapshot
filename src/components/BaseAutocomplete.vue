@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, ref } from 'vue';
+import { onBeforeUnmount, ref } from 'vue';
 
 type Option = { label: string; value: string; option?: Record<string, any> };
 
 const props = defineProps<{
-  options: Option[];
   title: string;
+  options: Option[];
   modelValue?: string;
 }>();
 
@@ -13,29 +13,28 @@ const optionsEl = ref<Node | undefined>(undefined);
 const inputEl = ref<Node | undefined>(undefined);
 const displayDropdown = ref(false);
 
-const getInputLabel = (value?: string) => {
+const getOptionLabel = (value?: string) => {
   const option = props.options.find(option => option.value === value);
   return option ? option.label : '';
 };
 
-const inputValue = ref(getInputLabel(props.modelValue));
+const searchInput = ref(getOptionLabel(props.modelValue));
 
-const displayedOptions = computed(() => {
-  if (!props.options) return [];
-  return props.options.filter(option =>
-    option.label.toLowerCase().includes(inputValue.value.toLowerCase())
-  );
-});
+const emit = defineEmits(['update:modelValue', 'changeSearchInput']);
 
-const emit = defineEmits(['update:modelValue']);
+function resetOptions() {
+  // reset the options list
+  emit('changeSearchInput', '');
+}
 
 function handleOptionSelect(e: MouseEvent, option: Option) {
   // The click should not bubble up to the rest of the DOM that causes click outside.
   e.stopPropagation();
 
-  inputValue.value = option.label;
+  searchInput.value = option.label;
   displayDropdown.value = false;
   emit('update:modelValue', option.value);
+  resetOptions();
 }
 
 /**
@@ -44,7 +43,7 @@ function handleOptionSelect(e: MouseEvent, option: Option) {
  */
 function openOptions() {
   displayDropdown.value = true;
-  inputValue.value = '';
+  searchInput.value = '';
 }
 
 /**
@@ -57,11 +56,17 @@ function closeOptions(e) {
   const clickedOutside = !clickedOptions && !clickedInput;
   if (clickedOutside) {
     displayDropdown.value = false;
-    inputValue.value = getInputLabel(props.modelValue);
+    searchInput.value = getOptionLabel(props.modelValue);
   }
+  resetOptions();
 }
 window.addEventListener('click', closeOptions);
 onBeforeUnmount(() => window.removeEventListener('click', closeOptions));
+
+function handleChange(e) {
+  searchInput.value = e.target.value;
+  emit('changeSearchInput', e.target.value);
+}
 </script>
 
 <template>
@@ -70,7 +75,8 @@ onBeforeUnmount(() => window.removeEventListener('click', closeOptions));
       <input
         ref="inputEl"
         type="text"
-        v-model="inputValue"
+        :value="searchInput"
+        @input="handleChange"
         class="s-input"
         :placeholder="$t('selectNetwork')"
         @focus="openOptions"
@@ -78,13 +84,13 @@ onBeforeUnmount(() => window.removeEventListener('click', closeOptions));
     </SBase>
     <div
       ref="optionsEl"
-      v-if="displayDropdown && displayedOptions.length"
-      class="py-2 border border-skin-link rounded-lg z-10 mt-1 absolute w-full bg-skin-bg"
+      v-if="displayDropdown && options.length"
+      class="py-2 border border-skin-link rounded-lg z-10 mt-2 absolute w-full bg-skin-bg"
     >
-      <ul class="max-h-[170px] overflow-y-auto snap-y snap-proximity">
+      <ul class="max-h-[170px] overflow-y-auto">
         <li
-          class="hover:bg-skin-border hover:text-skin-link py-2 px-3 bg-skin-bg cursor-pointer snap-start"
-          v-for="option in displayedOptions"
+          class="hover:bg-skin-border hover:text-skin-link py-2 px-3 bg-skin-bg cursor-pointer"
+          v-for="option in options"
           :key="option.value"
           @click="
             e => {
