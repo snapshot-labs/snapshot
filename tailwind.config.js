@@ -12,7 +12,6 @@ module.exports = {
         'skin-block-bg': 'var(--block-bg)',
         'skin-header-bg': 'var(--header-bg)',
         'skin-heading': 'var(--heading-color)',
-
         blue: '#384aff',
         green: '#21b66f',
         red: '#ff3856'
@@ -52,5 +51,6 @@ module.exports = {
       sm: ['16px'],
       xs: ['14px']
     }
-  }
+  },
+  darkMode: 'class'
 };
