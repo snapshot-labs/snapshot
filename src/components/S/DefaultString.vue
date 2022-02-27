@@ -21,7 +21,7 @@ watch(input, () => {
     <input
       type="text"
       v-model="input"
-      class="s-input"
+      :class="['s-input', { '!border-red': error }]"
       :maxlength="definition.maxLength"
       :placeholder="definition.examples && definition.examples[0]"
     />

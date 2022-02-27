@@ -19,7 +19,7 @@ watch(input, () => emit('update:modelValue', Number(input.value)));
     <input
       type="number"
       v-model="input"
-      class="s-input"
+      :class="['s-input', { '!border-red': error }]"
       :placeholder="definition.examples && definition.examples[0]"
     />
   </SBase>

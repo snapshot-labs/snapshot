@@ -35,7 +35,7 @@ watch(
         <Icon
           v-if="error && showError"
           name="warning"
-          class="text-red dark:text-white dark:text-opacity-90 mr-2"
+          class="text-white mr-2"
         />
         {{ error }}
       </div>
