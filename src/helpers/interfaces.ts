@@ -23,3 +23,23 @@ interface StrategySchema {
     Strategy: {};
   };
 }
+
+export interface StrategyDefinitionProperties {
+  type: string;
+  title: string;
+  default?: any;
+  examples?: string[];
+  description?: string;
+  minLength?: number;
+  maxLength?: number;
+  pattern?: string;
+}
+export interface StrategyDefinition {
+  title: string;
+  type: string;
+  default?: any;
+  description?: string;
+  required?: string[];
+  additionalProperties?: boolean;
+  properties?: StrategyDefinitionProperties;
+}

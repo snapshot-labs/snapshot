@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onBeforeUnmount, ref } from 'vue';
+import { nextTick, onBeforeUnmount, ref } from 'vue';
 
 type Option = { label: string; value: string; option?: Record<string, any> };
 
@@ -9,16 +9,17 @@ const props = defineProps<{
   modelValue?: string;
 }>();
 
-const optionsEl = ref<Node | undefined>(undefined);
-const inputEl = ref<Node | undefined>(undefined);
+const optionsEl = ref<HTMLDivElement | undefined>(undefined);
+const inputEl = ref<HTMLInputElement | undefined>(undefined);
+const selectedInputEl = ref<HTMLDivElement | undefined>(undefined);
 const displayDropdown = ref(false);
 
-const getOptionLabel = (value?: string) => {
+const getOption = (value?: string) => {
   const option = props.options.find(option => option.value === value);
-  return option ? option.label : '';
+  return option;
 };
 
-const searchInput = ref(getOptionLabel(props.modelValue));
+const searchInput = ref(getOption(props.modelValue)?.label || '');
 
 const emit = defineEmits(['update:modelValue', 'changeSearchInput']);
 
@@ -44,6 +45,10 @@ function handleOptionSelect(e: MouseEvent, option: Option) {
 function openOptions() {
   displayDropdown.value = true;
   searchInput.value = '';
+  // needed to focus the input correctly. https://developer.mozilla.org/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_refs_focus_management#vues_nexttick_method
+  nextTick(() => {
+    inputEl.value?.focus();
+  });
 }
 
 /**
@@ -52,11 +57,14 @@ function openOptions() {
  */
 function closeOptions(e) {
   const clickedOptions = optionsEl.value?.contains(e.target);
+  const clickedSelectedInput = selectedInputEl.value?.contains(e.target);
   const clickedInput = inputEl.value === e.target;
-  const clickedOutside = !clickedOptions && !clickedInput;
+  const clickedOutside =
+    !clickedOptions && !clickedInput && !clickedSelectedInput;
+
   if (clickedOutside) {
     displayDropdown.value = false;
-    searchInput.value = getOptionLabel(props.modelValue);
+    searchInput.value = getOption(props.modelValue)?.label || '';
   }
   resetOptions();
 }
@@ -71,20 +79,32 @@ function handleChange(e) {
 
 <template>
   <div class="relative">
-    <SBase :definition="{ title: title }" class="relative z-10">
+    <SBase :definition="{ title: title }" class="relative z-30">
       <input
+        v-show="displayDropdown"
         ref="inputEl"
         type="text"
         :value="searchInput"
         @input="handleChange"
         class="s-input !bg-skin-bg"
         :placeholder="$t('selectNetwork')"
-        @focus="openOptions"
       />
+      <!-- Fake Input to display the selected value -->
+      <div
+        ref="selectedInputEl"
+        @click="openOptions"
+        v-show="!displayDropdown"
+        class="s-input !bg-skin-bg"
+      >
+        <slot name="option" :option="getOption(modelValue)?.option">
+          {{ getOption(modelValue)?.label ?? '' }}
+        </slot>
+      </div>
     </SBase>
+
     <div
       ref="optionsEl"
-      class="border border-skin-link rounded-lg z-0 mt-2 absolute w-full bg-skin-bg transition-all pt-[19px] overflow-hidden shadow-lg"
+      class="border border-skin-link rounded-lg z-20 mt-2 absolute w-full bg-skin-bg transition-all pt-[19px] overflow-hidden shadow-lg"
       :class="
         displayDropdown && options.length
           ? '-mt-[19px] opacity-100'
