@@ -109,10 +109,11 @@ const strategyIsValid = computed(() =>
         <div class="min-h-[280px]">
           <BaseAutocomplete
             :options="networks"
-            v-model="input.network"
-            title="Network"
+            v-model:value="input.network"
+            v-model:search="searchNetwork"
+            label="Network"
+            :placeholder="$t('selectNetwork')"
             class="mb-3"
-            @change-search-input="value => (searchNetwork = value)"
           >
             <template v-slot:option="{ option }">
               <div class="group flex items-center justify-between">

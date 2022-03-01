@@ -4,9 +4,11 @@ import { nextTick, onBeforeUnmount, ref } from 'vue';
 type Option = { label: string; value: string; option?: Record<string, any> };
 
 const props = defineProps<{
-  title: string;
+  label: string;
   options: Option[];
-  modelValue?: string;
+  value?: string;
+  search?: string;
+  placeholder?: string;
 }>();
 
 const optionsEl = ref<HTMLDivElement | undefined>(undefined);
@@ -19,13 +21,13 @@ const getOption = (value?: string) => {
   return option;
 };
 
-const searchInput = ref(getOption(props.modelValue)?.label || '');
+const searchInput = ref(getOption(props.value)?.label || '');
 
-const emit = defineEmits(['update:modelValue', 'changeSearchInput']);
+const emit = defineEmits(['update:value', 'update:search']);
 
 function resetOptions() {
   // reset the options list
-  emit('changeSearchInput', '');
+  emit('update:search', '');
 }
 
 function handleOptionSelect(e: MouseEvent, option: Option) {
@@ -34,7 +36,7 @@ function handleOptionSelect(e: MouseEvent, option: Option) {
 
   searchInput.value = option.label;
   displayDropdown.value = false;
-  emit('update:modelValue', option.value);
+  emit('update:value', option.value);
   resetOptions();
 }
 
@@ -64,7 +66,7 @@ function closeOptions(e) {
 
   if (clickedOutside) {
     displayDropdown.value = false;
-    searchInput.value = getOption(props.modelValue)?.label || '';
+    searchInput.value = getOption(props.value)?.label || '';
   }
   resetOptions();
 }
@@ -73,13 +75,13 @@ onBeforeUnmount(() => window.removeEventListener('click', closeOptions));
 
 function handleChange(e) {
   searchInput.value = e.target.value;
-  emit('changeSearchInput', e.target.value);
+  emit('update:search', e.target.value);
 }
 </script>
 
 <template>
   <div class="relative">
-    <SBase :definition="{ title: title }" class="relative z-30">
+    <SBase :definition="{ title: label }" class="relative z-30">
       <input
         v-show="displayDropdown"
         ref="inputEl"
@@ -87,7 +89,7 @@ function handleChange(e) {
         :value="searchInput"
         @input="handleChange"
         class="s-input !bg-skin-bg"
-        :placeholder="$t('selectNetwork')"
+        :placeholder="placeholder ?? $t('select')"
       />
       <!-- Fake Input to display the selected value -->
       <div
@@ -96,8 +98,8 @@ function handleChange(e) {
         v-show="!displayDropdown"
         class="s-input !bg-skin-bg"
       >
-        <slot name="option" :option="getOption(modelValue)?.option">
-          {{ getOption(modelValue)?.label ?? '' }}
+        <slot name="option" :option="getOption(value)?.option">
+          {{ getOption(value)?.label ?? '' }}
         </slot>
       </div>
     </SBase>
