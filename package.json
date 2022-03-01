@@ -65,7 +65,7 @@
     "eslint-plugin-vue": "^7.15.1",
     "happy-dom": "^2.31.1",
     "husky": "^7.0.4",
-    "postcss": "^8.4.6",
+    "postcss": "^8.4.7",
     "prettier": "^2.5.1",
     "rollup-plugin-visualizer": "^5.5.4",
     "sass": "~1.49.8",
