@@ -2633,10 +2633,10 @@ csv@^5.3.1:
     csv-stringify "^5.6.5"
     stream-transform "^2.1.3"
 
-cypress@^9.5.0:
-  version "9.5.0"
-  resolved "https://registry.yarnpkg.com/cypress/-/cypress-9.5.0.tgz#704a79f0d3d4e775f433334eb8f5ae065e3bea31"
-  integrity sha512-rC5QPolKsVjJ8QJZ7IeZ6HlKM4gswBGZc0XvoAJNL8urQCSL8zTX0A/ai/h35WfF47NQ0iSZnwIXBlHX3MOUIQ==
+cypress@^9.5.1:
+  version "9.5.1"
+  resolved "https://registry.yarnpkg.com/cypress/-/cypress-9.5.1.tgz#51162f3688cedf5ffce311b914ef49a7c1ece076"
+  integrity sha512-H7lUWB3Svr44gz1rNnj941xmdsCljXoJa2cDneAltjI9leKLMQLm30x6jLlpQ730tiVtIbW5HdUmBzPzwzfUQg==
   dependencies:
     "@cypress/request" "^2.88.10"
     "@cypress/xvfb" "^1.2.4"
@@ -7020,10 +7020,10 @@ vue-router@^4.0.9:
   dependencies:
     "@vue/devtools-api" "^6.0.0-beta.18"
 
-vue-tippy@^6.0.0-alpha.52:
-  version "6.0.0-alpha.52"
-  resolved "https://registry.yarnpkg.com/vue-tippy/-/vue-tippy-6.0.0-alpha.52.tgz#7fd78d20634903786c3713ee9c5364d8f1fc13d9"
-  integrity sha512-P6BYXqk56diNw/NN5OIXYT31+dmCB0oS0mCvV/waNbQtJDzpWT3qSCo/COi0mrvOdtcqdj++G7VE3jjcGt0mLw==
+vue-tippy@^6.0.0-alpha.54:
+  version "6.0.0-alpha.54"
+  resolved "https://registry.yarnpkg.com/vue-tippy/-/vue-tippy-6.0.0-alpha.54.tgz#d0e79f88710acfc9738aad095af4abd2a162c8e3"
+  integrity sha512-748HqtG+jBzfDs2lt/Wg93YD7dshMS4VLz5HHVHZ6CENws0axLeuPHByiSH6V36g6PHwppg2nmD2Tu4TPIhzVA==
   dependencies:
     tippy.js "^6.3.7"
 
