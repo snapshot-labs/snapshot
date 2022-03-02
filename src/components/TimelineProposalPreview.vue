@@ -61,7 +61,7 @@ const winningChoice = computed(() =>
             :members="proposal.space.members"
           />
         </div>
-        <h3 v-text="proposal.title" class="mt-1 mb-1" />
+        <h3 v-text="proposal.title" class="mt-1 mb-1 break-words" />
         <p v-text="shorten(body, 120)" class="break-words mb-2 text-md" />
         <div
           v-if="

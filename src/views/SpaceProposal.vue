@@ -265,7 +265,7 @@ const truncateMarkdownBody = computed(() => {
       </div>
       <div class="px-4 md:px-0">
         <template v-if="proposal">
-          <h1 v-text="proposal.title" class="mb-3" />
+          <h1 v-text="proposal.title" class="mb-3 break-words" />
 
           <div class="flex items-center justify-between mb-4">
             <div class="flex space-x-1 items-center">
