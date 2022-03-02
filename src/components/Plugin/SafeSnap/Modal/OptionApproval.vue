@@ -96,7 +96,7 @@ export default {
       <div style="text-align: right">
         <a
           :href="questionLink"
-          class="text-color"
+          class="text-skin-text"
           rel="noreferrer noopener"
           target="_blank"
           style="font-size: 16px"
@@ -109,19 +109,19 @@ export default {
       <div class="border rounded-lg p-3 my-3">
         <div>
           <b class="pr-3">{{ $t('safeSnap.currentOutcome') }}:</b>
-          <span class="float-right link-color">
+          <span class="float-right text-skin-link">
             {{ answer }}
           </span>
         </div>
         <div>
           <b class="pr-3">{{ $t('safeSnap.currentBond') }}:</b>
-          <span class="float-right link-color">
+          <span class="float-right text-skin-link">
             {{ bondData.current + ' ' + tokenSymbol }}
           </span>
         </div>
         <div>
           <b class="pr-3">{{ $t('safeSnap.nextBond') }}:</b>
-          <span class="float-right link-color">
+          <span class="float-right text-skin-link">
             {{ bondData.toSet + ' ' + bondData.tokenSymbol }}
           </span>
         </div>

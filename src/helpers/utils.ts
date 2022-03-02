@@ -4,7 +4,6 @@ import { BigNumber } from '@ethersproject/bignumber';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import voting from '@snapshot-labs/snapshot.js/src/voting';
 import { getUrl } from '@snapshot-labs/snapshot.js/src/utils';
-import i18n from '@/helpers/i18n';
 
 export function shortenAddress(str = '') {
   return `${str.slice(0, 6)}...${str.slice(str.length - 4)}`;
@@ -117,18 +116,15 @@ export function explorerUrl(network, str: string, type = 'address'): string {
 }
 
 export function calcFromSeconds(value, unit) {
+  if (unit === 'm') return Math.floor(value / 60);
   if (unit === 'h') return Math.floor(value / (60 * 60));
   if (unit === 'd') return Math.floor(value / (60 * 60 * 24));
 }
 
 export function calcToSeconds(value, unit) {
+  if (unit === 'm') return value * 60;
   if (unit === 'h') return value * 60 * 60;
   if (unit === 'd') return value * 60 * 60 * 24;
-}
-
-export function setPageTitle(message, params: any = {}) {
-  const { t } = i18n.global;
-  document.title = t(message, params);
 }
 
 export function getIpfsUrl(url) {

@@ -5,7 +5,7 @@ import { useModal } from '@/composables/useModal';
 import { useWeb3 } from '@/composables/useWeb3';
 import { signMessage } from '@snapshot-labs/snapshot.js/src/utils/web3';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
-import { useI18n } from 'vue-i18n';
+import { useI18n } from '@/composables/useI18n';
 import { useIntl } from '@/composables/useIntl';
 
 const { formatRelativeTime } = useIntl();
@@ -160,7 +160,7 @@ const isCreator = computed(() => props.proposal.author === web3Account.value);
     />
   </div>
   <div v-if="toggleEditComment">
-    <Block :slim="true" class="p-4 text-color mt-2 mb-0">
+    <Block :slim="true" class="p-4 text-skin-text mt-2 mb-0">
       <div>
         <User
           :address="item.author"

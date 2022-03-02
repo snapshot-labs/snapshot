@@ -5,26 +5,39 @@ import { useScrollMonitor } from '@/composables/useScrollMonitor';
 import { useApp } from '@/composables/useApp';
 import { useFollowSpace } from '@/composables/useFollowSpace';
 import { useCategories } from '@/composables/useCategories';
-import { shorten, setPageTitle } from '@/helpers/utils';
+import { shorten } from '@/helpers/utils';
 import { useIntl } from '@/composables/useIntl';
+import { useI18n } from '@/composables/useI18n';
 
 const { selectedCategory, orderedSpaces, orderedSpacesByCategory } = useApp();
 const { followingSpaces } = useFollowSpace();
 const { spacesPerCategory, categoriesOrderedBySpaceCount } = useCategories();
 const { formatCompactNumber } = useIntl();
+const { setPageTitle } = useI18n();
 
 function selectCategory(c) {
   selectedCategory.value = c === selectedCategory.value ? '' : c;
 }
 
-const { getProposalIds } = useUnseenProposals();
-watchEffect(() => getProposalIds(followingSpaces.value));
+const { getProposals } = useUnseenProposals();
+watchEffect(() => getProposals(followingSpaces.value));
 
 // Scroll
 const loadBy = 16;
 const limit = ref(loadBy);
 
-const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
+const enableInfiniteScroll = ref(false);
+
+const loadMoreSpaces = () => {
+  enableInfiniteScroll.value = true;
+  limit.value += loadBy;
+};
+
+const { endElement } = useScrollMonitor(() => {
+  if (enableInfiniteScroll.value) {
+    limit.value += loadBy;
+  }
+});
 
 onMounted(() => {
   setPageTitle('page.title.home');
@@ -32,7 +45,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="mt-4">
+  <div class="mt-4 min-h-[calc(100vh-145px)] relative pb-[130px]">
     <Container class="flex items-center mb-4">
       <UiButton class="pl-3 pr-0 w-full max-w-[420px]">
         <SearchWithFilters />
@@ -100,7 +113,7 @@ onMounted(() => {
           >
             <!-- Added mb-0 to remove mb-4 added by block component -->
             <Block
-              class="text-center extra-icon-container mb-0 hover-border"
+              class="text-center mb-0 hover:border-skin-link"
               style="height: 266px"
             >
               <div class="relative inline-block mb-2">
@@ -110,24 +123,19 @@ onMounted(() => {
                   size="82"
                   class="mb-1"
                 />
-                <UiCounter
-                  v-if="space.activeProposals"
-                  :counter="space.activeProposals"
-                  class="absolute top-0 right-0 !bg-green"
-                />
               </div>
               <h3
                 v-text="shorten(space.name, 16)"
                 class="mb-0 pb-0 mt-0 text-[22px] !h-[32px] overflow-hidden"
               />
-              <div class="mb-[12px] text-color">
+              <div class="mb-[12px] text-skin-text">
                 {{
                   $tc('members', space.followers, {
                     count: formatCompactNumber(space.followers)
                   })
                 }}
               </div>
-              <FollowButton class="!mb-0" :space="space" :spaceId="space.id" />
+              <FollowButton class="!mb-0" :space="space" />
             </Block>
           </router-link>
         </div>
@@ -136,7 +144,15 @@ onMounted(() => {
         :block="true"
         v-if="Object.keys(orderedSpacesByCategory).length < 1"
       />
+      <UiButton
+        v-if="!enableInfiniteScroll && orderedSpacesByCategory.length > limit"
+        class="w-full mt-4"
+        @click="loadMoreSpaces()"
+      >
+        {{ $t('homeLoadmore') }}
+      </UiButton>
     </Container>
+    <Footer />
     <div ref="endElement" />
   </div>
 </template>

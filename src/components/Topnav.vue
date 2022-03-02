@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue';
-import { shorten, getIpfsUrl } from '@/helpers/utils';
+import { shorten } from '@/helpers/utils';
 import { useModal } from '@/composables/useModal';
 import { useDomain } from '@/composables/useDomain';
 import { useWeb3 } from '@/composables/useWeb3';
@@ -25,10 +25,14 @@ async function handleLogin(connector) {
 </script>
 
 <template>
-  <Sticky>
+  <div :class="pendingCount ? 'h-[118px]' : 'h-[78px]'" />
+  <div
+    class="fixed w-screen top-0 left-0 z-20"
+    :class="{ 'sm:ml-[67px] sm:w-[calc(100vw-67px)]': !domain }"
+  >
     <div
       v-if="env === 'develop'"
-      class="p-3 text-center bg-blue"
+      class="p-3 text-center bg-primary"
       style="color: white; font-size: 20px"
     >
       {{ $t('demoSite') }}
@@ -53,9 +57,6 @@ async function handleLogin(connector) {
                 class="flex items-center float-left"
               >
                 <UiAvatar
-                  :imgsrc="
-                    web3.profile?.image ? getIpfsUrl(web3.profile.image) : ''
-                  "
                   :address="web3.account"
                   size="18"
                   class="-mr-1 sm:mr-2 md:mr-2 lg:mr-2 xl:mr-2 -ml-1"
@@ -85,29 +86,19 @@ async function handleLogin(connector) {
                 class="sm:hidden -ml-2 -mr-2 block align-text-bottom"
               />
             </UiButton>
-            <a
-              v-if="!domain"
-              href="https://twitter.com/SnapshotLabs"
-              target="_blank"
-              class="float-right ml-2 hidden sm:block"
-            >
-              <UiSidebarButton>
-                <Icon size="20" class="link-color" name="twitter" />
-              </UiSidebarButton>
-            </a>
             <UiSidebarButton
               v-if="!domain"
               @click="toggleSkin"
               class="float-right ml-2"
               :aria-label="$t('toggleSkin')"
             >
-              <Icon size="20" class="link-color" :name="getSkinIcon()" />
+              <Icon size="20" class="text-skin-link" :name="getSkinIcon()" />
             </UiSidebarButton>
           </div>
         </div>
       </Container>
     </nav>
-    <div class="bg-blue text-white text-center py-2" v-if="pendingCount > 0">
+    <div class="bg-primary text-white text-center py-2" v-if="pendingCount > 0">
       <UiLoading fill-white class="mr-2" />
       {{ $tc('delegate.pendingTransaction', pendingCount) }}
     </div>
@@ -118,5 +109,5 @@ async function handleLogin(connector) {
         @login="handleLogin"
       />
     </teleport>
-  </Sticky>
+  </div>
 </template>

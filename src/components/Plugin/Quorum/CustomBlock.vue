@@ -20,6 +20,12 @@ export default {
   },
   computed: {
     totalScore() {
+      const basicCount = this.space.plugins?.quorum?.basicCount;
+      if (basicCount && this.proposal.type === 'basic') {
+        return this.results.resultsByVoteBalance
+          .filter((score, i) => basicCount.includes(i))
+          .reduce((a, b) => a + b, 0);
+      }
       return this.results.resultsByVoteBalance.reduce((a, b) => a + b, 0);
     },
     quorum() {
@@ -45,7 +51,7 @@ export default {
 
 <template>
   <Block title="Quorum" :loading="!loaded">
-    <div class="link-color mb-1">
+    <div class="text-skin-link mb-1">
       <span class="mr-1">
         {{ formatCompactNumber(totalScore) }} /
         {{ formatCompactNumber(totalVotingPower) }}

@@ -6,7 +6,8 @@ import { useModal } from '@/composables/useModal';
 import { useWeb3 } from '@/composables/useWeb3';
 import { signMessage } from '@snapshot-labs/snapshot.js/src/utils/web3';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
-import { useI18n } from 'vue-i18n';
+import { useI18n } from '@/composables/useI18n';
+
 const { t } = useI18n();
 const auth = getInstance();
 const { modalOpen, modalAccountOpen } = useModal();
@@ -198,7 +199,7 @@ watch([modalOpen, closeModal], () => {
     <Block
       v-if="!togglePreview"
       slim="true"
-      class="p-4 h6 text-color mt-2 mb-0"
+      class="p-4 h6 text-skin-text mt-2 mb-0"
     >
       <div>{{ comment }}</div>
     </Block>

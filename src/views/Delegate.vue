@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed, watch, onMounted, watchEffect, inject } from 'vue';
 import { useRoute } from 'vue-router';
-import { useI18n } from 'vue-i18n';
+import { useI18n } from '@/composables/useI18n';
 import { useProfiles } from '@/composables/useProfiles';
 import { isAddress } from '@ethersproject/address';
 import { formatBytes32String } from '@ethersproject/strings';
@@ -21,7 +21,7 @@ import {
 import { sleep } from '@snapshot-labs/snapshot.js/src/utils';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useTxStatus } from '@/composables/useTxStatus';
-import { shorten, setPageTitle } from '@/helpers/utils';
+import { shorten } from '@/helpers/utils';
 import { useIntl } from '@/composables/useIntl';
 import { debouncedWatch } from '@vueuse/core';
 import { SPACE_DELEGATE_QUERY } from '@/helpers/queries';
@@ -34,7 +34,7 @@ import { SNAPSHOT_SUBGRAPH_URL } from '@snapshot-labs/snapshot.js/src/utils';
 const abi = ['function setDelegate(bytes32 id, address delegate)'];
 
 const route = useRoute();
-const { t } = useI18n();
+const { t, setPageTitle } = useI18n();
 const auth = getInstance();
 const notify = inject('notify');
 const { web3, web3Account } = useWeb3();
@@ -280,14 +280,14 @@ onMounted(async () => {
   <Layout v-bind="$attrs">
     <template #content-left>
       <div class="px-4 md:px-0 mb-3">
-        <router-link :to="{ path: '/' }" class="text-color">
+        <router-link :to="{ path: '/' }" class="text-skin-text">
           <Icon name="back" size="22" class="!align-middle" />
           {{ $t('backToHome') }}
         </router-link>
         <h1 v-if="loaded" v-text="$t('delegate.header')" />
       </div>
       <PageLoading v-if="!loaded" />
-      <Block v-if="!networkSupportsDelegate">
+      <Block v-else-if="!networkSupportsDelegate">
         <Icon name="warning" class="mr-1" />
         {{
           $t('delegate.delegateNotSupported', {
@@ -295,15 +295,13 @@ onMounted(async () => {
               networks?.[networkKey]?.shortName ?? $t('theCurrentNetwork')
           })
         }}
-        <a
+        <BaseLink
           class="whitespace-nowrap ml-1"
           @click.stop
-          target="_blank"
-          :href="`https://docs.snapshot.org/guides/delegation#supported-networks`"
+          :link="`https://docs.snapshot.org/guides/delegation#supported-networks`"
         >
           {{ $t('learnMore') }}
-          <Icon size="16" name="external-link" class="text-color" />
-        </a>
+        </BaseLink>
       </Block>
       <template v-else>
         <Block :title="$t('delegate.selectDelegate')">
@@ -357,7 +355,7 @@ onMounted(async () => {
             />
             <div
               v-text="shorten(delegate.space || $t('allSpaces'), 'choice')"
-              class="flex-auto text-right link-color"
+              class="flex-auto text-right text-skin-link"
             />
             <a
               @click="revokeDelegate(delegate.space, delegate.delegate)"
@@ -385,7 +383,7 @@ onMounted(async () => {
             />
             <div
               v-text="shorten(delegator.space || '-', 'choice')"
-              class="flex-auto text-right link-color"
+              class="flex-auto text-right text-skin-link"
             />
           </div>
         </Block>
@@ -405,10 +403,10 @@ onMounted(async () => {
               :profile="profiles[delegate.delegate]"
               :address="delegate.delegate"
               :space="{ network: networkKey }"
-              class="column"
+              class="w-[160px]"
             />
             <div
-              class="flex-auto column text-right link-color"
+              class="flex-auto w-[160px] text-right text-skin-link"
               v-text="
                 `${
                   delegate.score >= 0.005

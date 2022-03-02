@@ -5,15 +5,15 @@ import { useTerms } from '@/composables/useTerms';
 import { useClient } from '@/composables/useClient';
 import { useWeb3 } from '@/composables/useWeb3';
 
-const props = defineProps({ space: Object, spaceId: String });
+const props = defineProps({ space: Object });
 
 const { isGnosisSafe } = useClient();
 const { web3 } = useWeb3();
 
-const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(props.spaceId);
+const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(props.space.id);
 
-const { clickFollow, loadingFollow, isFollowing, hoverJoin } = useFollowSpace(
-  props.spaceId
+const { clickFollow, loadingFollow, isFollowing } = useFollowSpace(
+  props.space.id
 );
 
 const canFollow = computed(() => {
@@ -36,17 +36,26 @@ const canFollow = computed(() => {
         loadingFollow !== ''
           ? null
           : canFollow
-          ? clickFollow(spaceId)
+          ? clickFollow(space.id)
           : (modalTermsOpen = true)
       "
-      @mouseenter="hoverJoin = spaceId"
-      @mouseleave="hoverJoin = ''"
-      :loading="loadingFollow === spaceId"
+      :loading="loadingFollow === space.id"
       :disabled="isGnosisSafe || web3.isTrezor"
       style="width: 120px"
-      class="mb-4"
+      no-focus
+      class="mb-4 group"
+      :class="{
+        'hover:!border-red hover:!text-red hover:!bg-opacity-5 hover:!bg-red':
+          isFollowing
+      }"
     >
-      {{ isFollowing ? (hoverJoin ? $t('leave') : $t('joined')) : $t('join') }}
+      <span v-if="!isFollowing"> {{ $t('join') }} </span>
+      <span v-else>
+        <span class="group-hover:hidden"> {{ $t('joined') }} </span>
+        <span class="group-hover:block hidden">
+          {{ $t('leave') }}
+        </span>
+      </span>
     </UiButton>
   </div>
   <teleport to="#modal">
@@ -55,7 +64,7 @@ const canFollow = computed(() => {
       :open="modalTermsOpen"
       :space="space"
       @close="modalTermsOpen = false"
-      @accept="acceptTerms(), clickFollow(spaceId)"
+      @accept="acceptTerms(), clickFollow(space.id)"
     />
   </teleport>
 </template>

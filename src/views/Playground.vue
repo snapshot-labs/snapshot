@@ -5,12 +5,12 @@ import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import { getBlockNumber } from '@snapshot-labs/snapshot.js/src/utils/web3';
 import { getScores } from '@snapshot-labs/snapshot.js/src/utils';
-import { useI18n } from 'vue-i18n';
+import { useI18n } from '@/composables/useI18n';
 import { useCopy } from '@/composables/useCopy';
 import { decode, encode } from '@/helpers/b64';
-import { setPageTitle } from '@/helpers/utils';
 import { useIntl } from '@/composables/useIntl';
 import { useStrategies } from '@/composables/useStrategies';
+import { validateSchema } from '@snapshot-labs/snapshot.js/src/utils';
 
 const defaultParams = {
   symbol: 'BAL',
@@ -22,7 +22,7 @@ const router = useRouter();
 const route = useRoute();
 const { query: queryParams } = useRoute();
 const { copyToClipboard } = useCopy();
-const { t } = useI18n();
+const { t, setPageTitle } = useI18n();
 const { formatCompactNumber } = useIntl();
 const {
   getExtendedStrategy,
@@ -63,6 +63,10 @@ const form = ref({
   snapshot: '',
   addresses: []
 });
+
+const strategyValidationErrors = computed(
+  () => validateSchema(strategyDefinition.value, form.value.params) ?? []
+);
 
 async function loadScores() {
   scores.value = null;
@@ -159,7 +163,7 @@ onMounted(async () => {
         <div class="px-4 md:px-0 mb-3">
           <router-link
             :to="`/strategy/${$route.params.name}`"
-            class="text-color"
+            class="text-skin-text"
           >
             <Icon name="back" size="22" class="!align-middle" />
             {{ $t('back') }}
@@ -202,6 +206,7 @@ onMounted(async () => {
               v-if="strategyDefinition"
               v-model="form.params"
               :definition="strategyDefinition"
+              :errors="strategyValidationErrors"
             />
             <UiButton
               v-else

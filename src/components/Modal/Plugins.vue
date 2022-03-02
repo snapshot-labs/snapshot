@@ -62,7 +62,7 @@ watch(open, () => {
     <div class="mt-4 mx-0 md:mx-4 min-h-[339px]">
       <div
         v-if="selectedPlugin?.key"
-        class="p-4 mb-4 border rounded-md link-color"
+        class="p-4 mb-4 border rounded-md text-skin-link"
       >
         <h4 v-text="selectedPlugin.name" class="mb-3 text-center" />
         <UiButton class="block w-full overflow-x-auto" style="height: auto">

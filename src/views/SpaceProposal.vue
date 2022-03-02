@@ -1,9 +1,9 @@
 <script setup>
 import { ref, computed, watch, onMounted, inject, watchEffect } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { useI18n } from 'vue-i18n';
+import { useI18n } from '@/composables/useI18n';
 import { getProposal, getResults, getProposalVotes } from '@/helpers/snapshot';
-import { setPageTitle, explorerUrl, getIpfsUrl } from '@/helpers/utils';
+import { explorerUrl, getIpfsUrl } from '@/helpers/utils';
 import { useModal } from '@/composables/useModal';
 import { useTerms } from '@/composables/useTerms';
 import { useProfiles } from '@/composables/useProfiles';
@@ -16,15 +16,13 @@ import { useStore } from '@/composables/useStore';
 import { useIntl } from '@/composables/useIntl';
 
 const props = defineProps({
-  spaceId: String,
-  space: Object,
-  spaceLoading: Boolean
+  space: Object
 });
 
 const route = useRoute();
 const router = useRouter();
 const { domain } = useDomain();
-const { t } = useI18n();
+const { t, setPageTitle } = useI18n();
 const { web3, web3Account } = useWeb3();
 const { send, clientLoading } = useClient();
 const { store } = useStore();
@@ -35,25 +33,26 @@ const id = route.params.id;
 
 const modalOpen = ref(false);
 const selectedChoices = ref(null);
-const loading = ref(true);
+const loadingProposal = ref(true);
 const loadedResults = ref(false);
+const loadingResultsFailed = ref(false);
 const loadedVotes = ref(false);
-const proposal = ref({});
+const proposal = ref(null);
 const votes = ref([]);
 const userVote = ref([]);
 const results = ref({});
 const modalStrategiesOpen = ref(false);
 
-const isCreator = computed(() => proposal.value.author === web3Account.value);
-const loaded = computed(() => !props.spaceLoading && !loading.value);
+const isCreator = computed(() => proposal.value?.author === web3Account.value);
 const isAdmin = computed(() => {
   const admins = (props.space.admins || []).map(admin => admin.toLowerCase());
   return admins.includes(web3Account.value?.toLowerCase());
 });
 const strategies = computed(
   // Needed for older proposal that are missing strategies
-  () => proposal.value.strategies ?? props.space?.strategies
+  () => proposal.value?.strategies ?? props.space?.strategies
 );
+
 const symbols = computed(() =>
   strategies.value.map(strategy => strategy.params.symbol)
 );
@@ -67,7 +66,7 @@ const threeDotItems = computed(() => {
 const browserHasHistory = computed(() => window.history.state.back);
 
 const { modalAccountOpen } = useModal();
-const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(props.spaceId);
+const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(props.space.id);
 
 function clickVote() {
   !web3.value.account
@@ -78,15 +77,17 @@ function clickVote() {
 }
 
 async function loadProposal() {
+  loadingProposal.value = true;
   proposal.value = await getProposal(id);
-  // Redirect to proposal spaceId if it doesn't match route key
+  // Redirect to proposal space.id if it doesn't match route key
   if (
     route.name === 'spaceProposal' &&
-    props.spaceId !== proposal.value.space.id
+    props.space.id !== proposal.value.space.id
   ) {
     router.push({ name: 'error-404' });
   }
-  loading.value = false;
+  loadingProposal.value = false;
+  loadResults();
 }
 
 function formatProposalVotes(votes) {
@@ -98,13 +99,17 @@ function formatProposalVotes(votes) {
 }
 
 async function loadResults() {
-  if (proposal.value.scores_state === 'final') {
+  loadingResultsFailed.value = false;
+  if (proposal.value.scores_state === 'invalid') {
+    loadingResultsFailed.value = true;
+  } else if (proposal.value.scores_state === 'final') {
     results.value = {
       resultsByVoteBalance: proposal.value.scores,
       resultsByStrategyScore: proposal.value.scores_by_strategy,
       sumOfResultsBalance: proposal.value.scores_total
     };
     loadedResults.value = true;
+    loadingResultsFailed.value = false;
     const [userVotesRes, votesRes] = await Promise.all([
       await getProposalVotes(id, {
         first: 1,
@@ -119,11 +124,21 @@ async function loadResults() {
     loadedVotes.value = true;
   } else {
     const votesTmp = await getProposalVotes(id);
-    const resultsObj = await getResults(props.space, proposal.value, votesTmp);
-    results.value = resultsObj.results;
-    loadedResults.value = true;
-    votes.value = resultsObj.votes;
-    loadedVotes.value = true;
+    try {
+      const resultsObj = await getResults(
+        props.space,
+        proposal.value,
+        votesTmp
+      );
+      results.value = resultsObj.results;
+      votes.value = resultsObj.votes;
+      loadedResults.value = true;
+      loadingResultsFailed.value = false;
+      loadedVotes.value = true;
+    } catch (e) {
+      console.log(e);
+      loadingResultsFailed.value = true;
+    }
   }
 }
 
@@ -165,7 +180,7 @@ function selectFromThreedotDropdown(e) {
       name: 'spaceCreate',
       params: {
         key: proposal.value.space.id,
-        from: proposal.value.id
+        sourceProposal: proposal.value.id
       }
     });
 }
@@ -191,10 +206,6 @@ watch(web3Account, () => {
     selectedChoices.value = parseInt(choice);
     clickVote();
   }
-});
-
-watch(loaded, () => {
-  if (loaded.value === true) loadResults();
 });
 
 watchEffect(() => {
@@ -239,9 +250,9 @@ const truncateMarkdownBody = computed(() => {
     <template #content-left>
       <div class="px-4 md:px-0 mb-3">
         <a
-          class="text-color"
+          class="text-skin-text"
           @click="
-            browserHasHistory
+            browserHasHistory?.includes('timeline')
               ? $router.go(-1)
               : $router.push(
                   domain ? { path: '/' } : { name: 'spaceProposals' }
@@ -253,46 +264,80 @@ const truncateMarkdownBody = computed(() => {
         </a>
       </div>
       <div class="px-4 md:px-0">
-        <template v-if="loaded">
+        <template v-if="proposal">
           <h1 v-text="proposal.title" class="mb-3" />
-          <div class="mb-4">
-            <UiState :state="proposal.state" class="inline-block" />
-            <UiDropdown
-              top="2.5rem"
-              right="1.5rem"
-              class="float-right mr-2"
-              @select="selectFromShareDropdown"
-              @clickedNoDropdown="startShare(space, proposal)"
-              :items="sharingItems"
-              :hideDropdown="sharingIsSupported"
-            >
-              <div class="pr-1 select-none flex">
-                <Icon name="upload" size="25" />
-                <span class="ml-1">Share</span>
-              </div>
-              <template v-slot:item="{ item }">
-                <Icon
-                  v-if="item.icon"
-                  :name="item.icon"
-                  size="21"
-                  class="align-middle mr-2 !leading-[0]"
-                />
-                {{ item.text }}
-              </template>
-            </UiDropdown>
-            <UiDropdown
-              top="2.5rem"
-              right="1.3rem"
-              class="float-right mr-2"
-              @select="selectFromThreedotDropdown"
-              :items="threeDotItems"
-            >
-              <div class="pr-3">
-                <UiLoading v-if="clientLoading" />
-                <Icon v-else name="threedots" size="25" />
-              </div>
-            </UiDropdown>
+
+          <div class="flex items-center justify-between mb-4">
+            <div class="flex space-x-1 items-center">
+              <UiState :state="proposal.state" class="mr-1" />
+              <router-link
+                class="text-skin-text group"
+                :to="{
+                  name: 'spaceProposals',
+                  params: { key: space.id }
+                }"
+              >
+                <div class="flex items-center">
+                  <Token :space="space" size="28" />
+                  <span
+                    class="ml-2 group-hover:text-skin-link"
+                    v-text="space.name"
+                  />
+                </div>
+              </router-link>
+
+              <span v-text="$t('proposalBy')" />
+              <User
+                :address="proposal.author"
+                :profile="profiles[proposal.author]"
+                :space="space"
+                :proposal="proposal"
+                only-username
+              />
+              <Badges :address="proposal.author" :members="space.members" />
+            </div>
+
+            <div class="flex justify-end">
+              <UiDropdown
+                top="2.5rem"
+                right="1rem"
+                subMenuWrapperRight="-7px"
+                class="ml-3"
+                @select="selectFromShareDropdown"
+                @clickedNoDropdown="startShare(space, proposal)"
+                :items="sharingItems"
+                :hideDropdown="sharingIsSupported"
+              >
+                <div class="pr-1 select-none flex">
+                  <Icon name="upload" size="25" />
+                  <span class="ml-1 hidden md:block">Share</span>
+                </div>
+                <template v-slot:item="{ item }">
+                  <Icon
+                    v-if="item.icon"
+                    :name="item.icon"
+                    size="21"
+                    class="align-middle mr-2 !leading-[0]"
+                  />
+                  {{ item.text }}
+                </template>
+              </UiDropdown>
+              <UiDropdown
+                top="2.5rem"
+                right="0.8rem"
+                subMenuWrapperRight="-6px"
+                class="md:ml-2"
+                @select="selectFromThreedotDropdown"
+                :items="threeDotItems"
+              >
+                <div class="pl-1">
+                  <UiLoading v-if="clientLoading" />
+                  <Icon v-else name="threedots" size="25" />
+                </div>
+              </UiDropdown>
+            </div>
           </div>
+
           <div class="relative">
             <div
               v-if="!showFullMarkdownBody && truncateMarkdownBody"
@@ -335,7 +380,7 @@ const truncateMarkdownBody = computed(() => {
         <PageLoading v-else />
       </div>
       <BlockCastVote
-        v-if="loaded && proposal.state === 'active'"
+        v-if="proposal?.state === 'active'"
         :proposal="proposal"
         v-model="selectedChoices"
         @open="modalOpen = true"
@@ -343,7 +388,7 @@ const truncateMarkdownBody = computed(() => {
       />
       <BlockVotes
         @loadVotes="loadMore(loadMoreVotes)"
-        v-if="loaded"
+        v-if="proposal && !loadingResultsFailed"
         :loaded="loadedVotes"
         :space="space"
         :proposal="proposal"
@@ -353,7 +398,7 @@ const truncateMarkdownBody = computed(() => {
         :loadingMore="loadingMore"
       />
       <PluginProposal
-        v-if="space && proposal.plugins && loadedResults"
+        v-if="proposal?.plugins && loadedResults"
         :id="id"
         :space="space"
         :proposal="proposal"
@@ -363,14 +408,14 @@ const truncateMarkdownBody = computed(() => {
         :strategies="strategies"
       />
     </template>
-    <template #sidebar-right v-if="loaded">
+    <template #sidebar-right v-if="proposal">
       <Block :title="$t('information')">
         <div class="space-y-1">
           <div>
             <b>{{ $t('strategies') }}</b>
             <span
               @click="modalStrategiesOpen = true"
-              class="float-right link-color a"
+              class="float-right text-skin-link a"
             >
               <span v-for="(symbol, symbolIndex) of symbols" :key="symbol">
                 <span
@@ -387,30 +432,16 @@ const truncateMarkdownBody = computed(() => {
               </span>
             </span>
           </div>
-          <div>
-            <b>{{ $t('author') }}</b>
-            <User
-              :address="proposal.author"
-              :profile="profiles[proposal.author]"
-              :space="space"
-              :proposal="proposal"
-              class="float-right"
-            />
-          </div>
+
           <div>
             <b>IPFS</b>
-            <a
-              :href="getIpfsUrl(proposal.ipfs)"
-              target="_blank"
-              class="float-right"
-            >
+            <BaseLink :link="getIpfsUrl(proposal.ipfs)" class="float-right">
               #{{ proposal.ipfs.slice(0, 7) }}
-              <Icon name="external-link" class="ml-1" />
-            </a>
+            </BaseLink>
           </div>
           <div>
             <b>{{ $t('proposal.votingSystem') }}</b>
-            <span class="float-right link-color">
+            <span class="float-right text-skin-link">
               {{ $t(`voting.${proposal.type}`) }}
             </span>
           </div>
@@ -421,7 +452,7 @@ const truncateMarkdownBody = computed(() => {
               v-tippy="{
                 content: formatRelativeTime(proposal.start)
               }"
-              class="float-right link-color"
+              class="float-right text-skin-link"
             />
           </div>
           <div>
@@ -431,23 +462,29 @@ const truncateMarkdownBody = computed(() => {
               v-tippy="{
                 content: formatRelativeTime(proposal.end)
               }"
-              class="link-color float-right"
+              class="text-skin-link float-right"
             />
           </div>
           <div>
             <b>{{ $t('snapshot') }}</b>
-            <a
-              :href="explorerUrl(proposal.network, proposal.snapshot, 'block')"
-              target="_blank"
+            <BaseLink
+              :link="explorerUrl(proposal.network, proposal.snapshot, 'block')"
               class="float-right"
             >
               {{ formatNumber(proposal.snapshot) }}
-              <Icon name="external-link" class="ml-1" />
-            </a>
+            </BaseLink>
           </div>
         </div>
       </Block>
+      <BlockResultsError
+        v-if="loadingResultsFailed"
+        :isAdmin="isAdmin"
+        :proposalId="proposal.id"
+        :proposalState="proposal.scores_state"
+        @retry="loadProposal()"
+      />
       <BlockResults
+        v-else
         :id="id"
         :loaded="loadedResults"
         :space="space"
@@ -457,7 +494,7 @@ const truncateMarkdownBody = computed(() => {
         :strategies="strategies"
       />
       <PluginProposalSidebar
-        v-if="space && proposal.plugins && loadedResults"
+        v-if="proposal.plugins && loadedResults"
         :id="id"
         :space="space"
         :proposal="proposal"
@@ -468,11 +505,11 @@ const truncateMarkdownBody = computed(() => {
       />
     </template>
   </Layout>
-  <teleport to="#modal" v-if="loaded">
+  <teleport to="#modal" v-if="proposal">
     <ModalConfirm
       :open="modalOpen"
       @close="modalOpen = false"
-      @reload="loadProposal(), loadResults()"
+      @reload="loadProposal()"
       :space="space"
       :proposal="proposal"
       :id="id"

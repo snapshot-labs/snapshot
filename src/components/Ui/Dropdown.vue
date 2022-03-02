@@ -5,6 +5,7 @@ const props = defineProps({
   items: Array,
   top: String,
   right: String,
+  subMenuWrapperRight: String,
   hideDropdown: Boolean
 });
 
@@ -14,7 +15,7 @@ const open = ref(false);
 const dropdownEl = ref(null);
 
 const cssVars = computed(() => {
-  return { '--top': props.top, '--right': props.right };
+  return { '--top': props.top, '--right': props.right, '--submenu-wrapper-right': props.subMenuWrapperRight || 0 };
 });
 
 function handleClick(action) {
@@ -85,7 +86,7 @@ li:hover {
 
 .sub-menu-wrapper {
   position: absolute;
-  right: 0;
+  right: var(--submenu-wrapper-right);
   top: var(--top);
   width: auto;
   background-color: var(--header-bg);

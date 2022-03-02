@@ -1,10 +1,9 @@
 <script setup>
-import { watchEffect, computed } from 'vue';
+import { computed } from 'vue';
 import { shorten } from '@/helpers/utils';
-import { useUsername } from '@/composables/useUsername';
 import removeMd from 'remove-markdown';
 import { useIntl } from '@/composables/useIntl';
-import { useI18n } from 'vue-i18n';
+import { useI18n } from '@/composables/useI18n';
 
 const { t } = useI18n();
 
@@ -21,7 +20,11 @@ const props = defineProps({
   profiles: Object
 });
 
-const body = computed(() => removeMd(props.proposal.body));
+// shortening to twice the allowed character limit (140*2) before removing markdown
+// due to a bug in remove-markdown: https://github.com/stiang/remove-markdown/issues/52
+// until this is fixed we need to avoid applying that function to very long texts with a lot of markdown
+// see also: TimelineProposal.vue
+const body = computed(() => removeMd(shorten(props.proposal.body, 280)));
 
 const winningChoice = computed(() =>
   props.proposal.scores.indexOf(Math.max(...props.proposal.scores))
@@ -37,19 +40,12 @@ const relativePeriod = computed(() => {
   }
   return t('startIn', [formatRelativeTime(props.proposal.start)]);
 });
-
-const { address, profile, username } = useUsername();
-
-watchEffect(() => {
-  address.value = props.proposal.author;
-  profile.value = props.profiles[props.proposal.author];
-});
 </script>
 
 <template>
-  <div class="transition-colors border-b last-child-border-0">
+  <div class="transition-colors border-b last:border-b-0">
     <router-link
-      class="p-4 block text-color"
+      class="p-4 block text-skin-text"
       :to="{
         name: 'spaceProposal',
         params: { key: proposal.space.id, id: proposal.id }
@@ -58,7 +54,7 @@ watchEffect(() => {
       <div>
         <div class="mb-2 flex items-center space-x-1">
           <router-link
-            class="text-color group"
+            class="text-skin-text group"
             :to="{
               name: 'spaceProposals',
               params: { key: proposal.space.id }
@@ -72,7 +68,13 @@ watchEffect(() => {
               />
             </div>
           </router-link>
-          <span v-text="$tc('proposalBy', [username])" />
+          <span v-text="$tc('proposalBy')" />
+          <User
+            :address="proposal.author"
+            :profile="profiles[proposal.author]"
+            :proposal="proposal"
+            only-username
+          />
           <Badges
             :address="proposal.author"
             :members="proposal.space.members"
@@ -93,7 +95,7 @@ watchEffect(() => {
             :key="i"
             class="mt-1 w-full relative"
           >
-            <div class="absolute leading-[43px] ml-3 link-color">
+            <div class="absolute leading-[43px] ml-3 text-skin-link">
               <Icon
                 name="check1"
                 size="20"
@@ -101,7 +103,7 @@ watchEffect(() => {
                 v-if="i === winningChoice"
               />
               {{ shorten(choice, 32) }}
-              <span class="text-color ml-1">
+              <span class="text-skin-text ml-1">
                 {{ formatCompactNumber(proposal.scores[i]) }}
                 {{ proposal.space.symbol }}
               </span>
@@ -112,7 +114,7 @@ watchEffect(() => {
                   (1 / proposal.scores_total) * proposal.scores[i]
                 )
               "
-              class="absolute right-0 leading-[40px] mr-3 link-color"
+              class="absolute right-0 leading-[40px] mr-3 text-skin-link"
             />
             <div
               :style="`width: ${

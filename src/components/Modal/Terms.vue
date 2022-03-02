@@ -22,10 +22,9 @@ function accept() {
       <h4 class="mb-3">
         {{ $tc('mustAgreeToTerms', [space.name]) }}
       </h4>
-      <a :href="space.terms" target="_blank" rel="noopener noreferrer">
+      <BaseLink :link="space.terms">
         <UiText :text="getIpfsUrl" :truncate="35" />
-        <Icon name="external-link" class="ml-1" />
-      </a>
+      </BaseLink>
     </div>
     <template v-slot:footer>
       <div class="w-2/4 float-left pr-2">

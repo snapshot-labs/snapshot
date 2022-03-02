@@ -7,7 +7,7 @@ import { useProfiles } from '@/composables/useProfiles';
 import { useNotifications } from '@/composables/useNotifications';
 import { useScrollMonitor } from '@/composables/useScrollMonitor';
 import { signMessage } from '@snapshot-labs/snapshot.js/src/utils/web3';
-import { useI18n } from 'vue-i18n';
+import { useI18n } from '@/composables/useI18n';
 const { t } = useI18n();
 const props = defineProps({
   proposalId: String,
@@ -161,7 +161,7 @@ function deleteItem(key) {
     <Block
       v-if="!togglePreview"
       slim="true"
-      class="p-4 h6 text-color mt-2 mb-0"
+      class="p-4 h6 text-skin-text mt-2 mb-0"
     >
       <div>{{ comment }}</div>
     </Block>

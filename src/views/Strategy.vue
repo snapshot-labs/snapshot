@@ -1,10 +1,11 @@
 <script setup>
 import { onMounted } from 'vue';
 import { useRoute } from 'vue-router';
-import { setPageTitle } from '@/helpers/utils';
+import { useI18n } from '@/composables/useI18n';
 import { useStrategies } from '@/composables/useStrategies';
 
 const route = useRoute();
+const { setPageTitle } = useI18n();
 const { getExtendedStrategy, extendedStrategy: strategy } = useStrategies();
 
 onMounted(async () => {
@@ -17,7 +18,7 @@ onMounted(async () => {
   <Layout>
     <template #content-left>
       <div class="px-4 md:px-0 mb-3">
-        <router-link :to="{ path: '/strategies' }" class="text-color">
+        <router-link :to="{ path: '/strategies' }" class="text-skin-text">
           <Icon name="back" size="22" class="!align-middle" />
           {{ $t('strategiesPage') }}
         </router-link>
@@ -29,7 +30,7 @@ onMounted(async () => {
         </h1>
         <span
           v-text="`In ${strategy.spacesCount} space(s)`"
-          class="text-color"
+          class="text-skin-text"
         />
         <UiMarkdown :body="strategy.about" class="mb-6 mt-4" />
       </div>
@@ -38,26 +39,24 @@ onMounted(async () => {
       <Block :title="$t('information')" v-if="strategy">
         <div class="mb-1">
           <b>{{ $t('author') }}</b>
-          <a
-            target="_blank"
+          <BaseLink
             class="float-right"
-            :href="`https://github.com/${strategy.author}`"
+            :link="`https://github.com/${strategy.author}`"
+            hide-external-icon
           >
             <Icon name="github" class="ml-1" />
             {{ strategy.author }}
-          </a>
+          </BaseLink>
         </div>
         <div>
           <div class="mb-1">
             <b>{{ $t('version') }}</b>
-            <a
-              target="_blank"
+            <BaseLink
               class="float-right"
-              :href="`https://github.com/snapshot-labs/snapshot-strategies/tree/master/src/strategies/${strategy.id}`"
+              :link="`https://github.com/snapshot-labs/snapshot-strategies/tree/master/src/strategies/${strategy.id}`"
             >
               {{ strategy.version }}
-              <Icon name="external-link" class="ml-1" />
-            </a>
+            </BaseLink>
           </div>
         </div>
         <router-link :to="`/playground/${$route.params.name}`">
