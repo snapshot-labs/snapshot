@@ -200,7 +200,7 @@ export default class Plugin {
       tokenSymbol = symbol;
       tokenDecimals = decimals;
     } catch (e) {
-      console.log('[Realitio] Info: Oracle is not ERC20 based.')
+      console.log('[Realitio] Info: Oracle is not ERC20 based.');
     }
 
     const answersFilter = contract.filters.LogNewAnswer(null, questionId);
