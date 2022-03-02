@@ -41,7 +41,8 @@ onMounted(() => {
 <template>
   <div class="min-h-[48px] rounded-3xl overflow-hidden">
     <div
-      class="border border-skin-border transition-colors rounded-3xl outline-none leading-[46px] text-left w-full flex px-3 focus-within:border-skin-link hover:border-skin-link bg-white relative z-10"
+      class="border border-skin-border transition-colors rounded-3xl outline-none leading-[46px] text-left w-full flex px-3 focus-within:border-skin-link hover:border-skin-link bg-skin-bg relative z-10"
+      :class="{ '!border-red': !!error }"
     >
       <div class="text-skin-text mr-2 whitespace-nowrap">
         <slot name="label" />
@@ -71,7 +72,7 @@ onMounted(() => {
     </div>
     <div
       :class="[
-        'bg-pink-100 text-rose-500 text-sm relative z-0 transition-all flex items-center px-3 pb-2 pt-4 rounded-b-3xl',
+        'bg-red text-white text-sm relative z-0 transition-all flex items-center px-3 pb-2 pt-4 rounded-b-3xl',
         !!error ? '-mt-[20px] opacity-100' : '-mt-[48px] opacity-0'
       ]"
     >
