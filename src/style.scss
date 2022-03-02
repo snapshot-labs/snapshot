@@ -253,7 +253,11 @@ input[type='number'] {
 // Shot UI kit
 
 .s-input {
-  @apply outline-none text-skin-heading border border-skin-border focus-within:border-skin-link block rounded-full py-2 px-3 w-full bg-transparent;
+  @apply outline-none text-skin-heading border border-skin-border focus-within:border-skin-link block rounded-full py-2 px-3 w-full bg-skin-bg;
+}
+
+.s-error {
+  @apply bg-red text-white text-sm transition-all duration-200 flex items-center px-3 pb-1 pt-4 rounded-b-3xl;
 }
 
 .s-label {
