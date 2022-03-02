@@ -56,7 +56,6 @@ const form = ref({
   admins: [],
   plugins: {},
   filters: {},
-  admins: [],
   voting: {},
   validation: basicValidation
 });
