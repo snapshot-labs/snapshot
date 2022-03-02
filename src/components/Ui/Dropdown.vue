@@ -15,7 +15,11 @@ const open = ref(false);
 const dropdownEl = ref(null);
 
 const cssVars = computed(() => {
-  return { '--top': props.top, '--right': props.right, '--submenu-wrapper-right': props.subMenuWrapperRight || 0 };
+  return {
+    '--top': props.top,
+    '--right': props.right,
+    '--submenu-wrapper-right': props.subMenuWrapperRight || 0
+  };
 });
 
 function handleClick(action) {
