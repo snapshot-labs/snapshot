@@ -22,12 +22,6 @@ const body = computed(() => removeMd(shorten(props.proposal.body, 280)));
 const winningChoice = computed(() =>
   props.proposal.scores.indexOf(Math.max(...props.proposal.scores))
 );
-
-const period = computed(() => {
-  if (props.proposal.state === 'closed') return 'endedAgo';
-  if (props.proposal.state === 'active') return 'endIn';
-  return 'startIn';
-});
 </script>
 
 <template>
