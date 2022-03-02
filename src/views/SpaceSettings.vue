@@ -433,6 +433,7 @@ onMounted(() => {
             placeholder="e.g. vote.balancer.fi"
             :error="inputError('domain')"
             @blur="visitedFields.push('domain')"
+            class="mb-2"
           >
             <template v-slot:label>
               {{ $t('settings.domain') }}
