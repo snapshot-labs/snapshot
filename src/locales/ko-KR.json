@@ -5,10 +5,10 @@
   "backToHome": "홈",
   "actions": "액션",
   "results": "결과",
-  "resultsError": "Results could not be calculated. This is often due to a misconfigured strategy or an unresponsive RPC node involved in the strategy.",
-  "vpError": "Your voting power could not be calculated. This is often due to a misconfigured strategy or an unresponsive RPC node involved in the strategy.",
+  "resultsError": "결과를 계산할 수 없습니다. 이는 종종 잘못 구성된 전략이나 전략에 포함된 RPC 노드가 응답하지 않아서 일 수 있습니다.",
+  "vpError": "투표권을 계산할 수 없습니다. 이는 종종 잘못 구성된 전략이나 전략에 포함된 RPC 노드가 응답하지 않아서 일 수 있습니다.",
   "getHelp": "도움 받기",
-  "retry": "Retry",
+  "retry": "다시하기",
   "currentResults": "현재 결과",
   "reset": "초기화",
   "save": "저장",
@@ -126,7 +126,7 @@
   "optional": "(선택 사항)",
   "homeLoadmore": "더 불러오기",
   "confirmAction": "액션 확인",
-  "or": "or",
+  "or": "또는",
   "errors": {
     "required": "필드가 필요합니다",
     "minLength": "최소 길이는 {0}",
@@ -271,7 +271,7 @@
     "registerEnsButton": "등록",
     "supportedEnsTLDs": "지원되는 도메인 끝자리",
     "helpDocsAndDiscordLinks": "공간을 만드는 방법을 잘 모르신다면, 다음 <a target='_blank' href='https://docs.snapshot.org/spaces/create'>문서</a>를 참조하거나 스냅샷 <a target='_blank' href='https://discord.gg/snapshot'>디스코드</a>에 조인하세요.",
-    "setSpaceController": "Set space controller address on ENS",
+    "setSpaceController": "ENS에서 공간 컨트롤러를 설정",
     "editSpaceController": "ENS 관리자 수정",
     "setController": "관리자 설정",
     "explainControllerAndEns": "이 액션은 ENS 도메인을 스냅샷 TEXT 레코드에 추가할 이더리움 메인넷 상의 트랜잭션을 요구한다.",
@@ -285,7 +285,7 @@
     "updateController": "관리자 업데이트",
     "connectWithEnsController": "공간 관리자를 수정하기 위해서는 {ens} 를 소유한 지갑을 연결해야 합니다.",
     "seeOnEns": "ENS 보기",
-    "goToSettings": "Go to settings"
+    "goToSettings": "설정으로 이동"
   },
   "notify": {
     "youDidIt": "해냈어요!",

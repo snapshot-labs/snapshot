@@ -28,9 +28,7 @@ watch(
 </script>
 
 <template>
-  <span
-    class="flex shrink-0 items-center justify-center"
-  >
+  <span class="flex shrink-0 items-center justify-center">
     <img
       :src="
         imgUrl ||
@@ -41,7 +39,7 @@ watch(
       :style="{
         width: `${parseInt(size) || 22}px`,
         height: `${parseInt(size) || 22}px`,
-        minWidth: `${parseInt(size) || 22}px`,
+        minWidth: `${parseInt(size) || 22}px`
       }"
       :alt="space?.name"
     />
