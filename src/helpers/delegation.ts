@@ -5,7 +5,7 @@ import {
 
 export const contractAddress = '0x469788fE6E9E9681C6ebF3bF78e7Fd26Fc015446';
 
-export async function getDelegates(network, address, snapshot = 'latest') {
+export async function getDelegates(network: string, address: string) {
   const params = {
     delegations: {
       __args: {
@@ -18,14 +18,10 @@ export async function getDelegates(network, address, snapshot = 'latest') {
       delegate: true
     }
   };
-  if (snapshot !== 'latest') {
-    // @ts-ignore
-    params.delegations.__args.block = { number: snapshot };
-  }
   return await subgraphRequest(SNAPSHOT_SUBGRAPH_URL[network], params);
 }
 
-export async function getDelegators(network, address, snapshot = 'latest') {
+export async function getDelegators(network: string, address: string) {
   const params = {
     delegations: {
       __args: {
@@ -38,14 +34,10 @@ export async function getDelegators(network, address, snapshot = 'latest') {
       space: true
     }
   };
-  if (snapshot !== 'latest') {
-    // @ts-ignore
-    params.delegations.__args.block = { number: snapshot };
-  }
   return await subgraphRequest(SNAPSHOT_SUBGRAPH_URL[network], params);
 }
 
-export async function getDelegatesBySpace(network, space, snapshot = 'latest') {
+export async function getDelegatesBySpace(network: string, space: string) {
   const params = {
     delegations: {
       __args: {
@@ -58,9 +50,5 @@ export async function getDelegatesBySpace(network, space, snapshot = 'latest') {
       delegator: true
     }
   };
-  if (snapshot !== 'latest') {
-    // @ts-ignore
-    params.delegations.__args.block = { number: snapshot };
-  }
   return await subgraphRequest(SNAPSHOT_SUBGRAPH_URL[network], params);
 }
