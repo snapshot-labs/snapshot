@@ -8,7 +8,8 @@ import { StaticJsonRpcProvider } from '@ethersproject/providers';
 import { keccak256 as solidityKeccak256 } from '@ethersproject/solidity';
 import { isBigNumberish } from '@ethersproject/bignumber/lib/bignumber';
 
-import { call, getProvider, multicall, sendTransaction } from '@snapshot-labs/snapshot.js/src/utils';
+import { call, multicall, sendTransaction } from '@snapshot-labs/snapshot.js/src/utils';
+import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import { ModuleTransaction, ProposalDetails } from './models';
 import {
   EIP712_TYPES,
