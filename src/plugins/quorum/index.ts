@@ -9,11 +9,7 @@ export default class Plugin {
   /**
    * Returns the total voting power at specific snapshot
    */
-  async getTotalVotingPower(
-    web3: any,
-    quorumOptions: any,
-    snapshot: string | number
-  ) {
+  async getTotalVotingPower(web3: any, quorumOptions: any, snapshot: string) {
     const { strategy } = quorumOptions;
 
     switch (strategy) {
@@ -24,9 +20,7 @@ export default class Plugin {
       case 'balance': {
         const { address, methodABI, decimals } = quorumOptions;
 
-        const blockTag =
-          // @ts-ignore
-          snapshot === 'latest' ? snapshot : parseInt(snapshot);
+        const blockTag = snapshot === 'latest' ? snapshot : parseInt(snapshot);
 
         const totalVotingPower = await call(
           web3,
