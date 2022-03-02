@@ -13,7 +13,7 @@ import SafeSnapInputAddress from '../Input/Address.vue';
 import SafeSnapInputMethodParameter from '../Input/MethodParameter.vue';
 
 export default {
-  components: { SafeSnapInputAddress, SafeSnapInputMethodParameter},
+  components: { SafeSnapInputAddress, SafeSnapInputMethodParameter },
   props: ['modelValue', 'nonce', 'config'],
   emits: ['update:modelValue'],
   data() {

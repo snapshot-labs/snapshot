@@ -19,7 +19,7 @@ export function getMultiSend(
 }
 
 export function encodeTransactions(transactions: ModuleTransaction[]) {
-  const values = transactions.map((tx) => [
+  const values = transactions.map(tx => [
     tx.operation,
     tx.to,
     tx.value,

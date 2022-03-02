@@ -224,7 +224,11 @@ export default {
       {{ hash }}
     </UiCollapsibleText>
     <div class="text-center">
-      <div v-for="(batch, index) in input" v-bind:key="index" class="border-b last:border-b-0">
+      <div
+        v-for="(batch, index) in input"
+        v-bind:key="index"
+        class="border-b last:border-b-0"
+      >
         <SafeSnapFormTransactionBatch
           :config="transactionConfig"
           :modelValue="batch"

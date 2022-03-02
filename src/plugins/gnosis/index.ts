@@ -1,5 +1,8 @@
 import { getAddress } from '@ethersproject/address';
-import { multicall, subgraphRequest } from '@snapshot-labs/snapshot.js/src/utils';
+import {
+  multicall,
+  subgraphRequest
+} from '@snapshot-labs/snapshot.js/src/utils';
 
 const UNISWAP_V2_SUBGRAPH_URL = {
   '1': 'https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v2',

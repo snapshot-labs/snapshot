@@ -8,7 +8,11 @@ import { StaticJsonRpcProvider } from '@ethersproject/providers';
 import { keccak256 as solidityKeccak256 } from '@ethersproject/solidity';
 import { isBigNumberish } from '@ethersproject/bignumber/lib/bignumber';
 
-import { call, multicall, sendTransaction } from '@snapshot-labs/snapshot.js/src/utils';
+import {
+  call,
+  multicall,
+  sendTransaction
+} from '@snapshot-labs/snapshot.js/src/utils';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import { ModuleTransaction, ProposalDetails } from './models';
 import {
@@ -80,7 +84,7 @@ export default class Plugin {
       chainId: chainId,
       verifyingContract: moduleAddress
     };
-    return transactions.map((tx) => {
+    return transactions.map(tx => {
       return _TypedDataEncoder.hash(domain, EIP712_TYPES, {
         ...tx,
         nonce: tx.nonce || '0',
@@ -166,17 +170,13 @@ export default class Plugin {
     const provider: StaticJsonRpcProvider = getProvider(network);
     const account = (await web3.listAccounts())[0];
 
-    const [
-      [userBalance],
-      [bestAnswer],
-      [historyHash],
-      [isFinalized]
-    ] = await multicall(network, provider, ORACLE_ABI, [
-      [oracleAddress, 'balanceOf', [account]],
-      [oracleAddress, 'getBestAnswer', [questionId]],
-      [oracleAddress, 'getHistoryHash', [questionId]],
-      [oracleAddress, 'isFinalized', [questionId]]
-    ]);
+    const [[userBalance], [bestAnswer], [historyHash], [isFinalized]] =
+      await multicall(network, provider, ORACLE_ABI, [
+        [oracleAddress, 'balanceOf', [account]],
+        [oracleAddress, 'getBestAnswer', [questionId]],
+        [oracleAddress, 'getHistoryHash', [questionId]],
+        [oracleAddress, 'isFinalized', [questionId]]
+      ]);
 
     let tokenSymbol = 'ETH';
     let tokenDecimals = 18;
@@ -230,7 +230,7 @@ export default class Plugin {
 
     // If the user has answers, check if one of them is the winner
     const votedForCorrectQuestion =
-      currentUserAnswers.some((answer) => {
+      currentUserAnswers.some(answer => {
         if (answer) {
           return BigNumber.from(answer).eq(bestAnswer);
         }
@@ -242,7 +242,8 @@ export default class Plugin {
     // Remove the first history and add an empty one
     // More info: https://github.com/realitio/realitio-contracts/blob/master/truffle/contracts/Realitio.sol#L502
     historyHashes.shift();
-    const firstHash = '0x0000000000000000000000000000000000000000000000000000000000000000' as unknown;
+    const firstHash =
+      '0x0000000000000000000000000000000000000000000000000000000000000000' as unknown;
     historyHashes.push(firstHash as Result);
 
     return {

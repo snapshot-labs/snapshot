@@ -2,11 +2,7 @@
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import { useSafesnap } from '@/composables/useSafesnap';
 import chevronIcon from '@/assets/icons/chevron.svg';
-import {
-  createBatch,
-  ERC20_ABI,
-  ERC721_ABI
-} from '../../index';
+import { createBatch, ERC20_ABI, ERC721_ABI } from '../../index';
 import { formatEther } from '@ethersproject/units';
 import { FunctionFragment, Interface } from '@ethersproject/abi';
 import SafeSnapFormTransaction from './Transaction.vue';

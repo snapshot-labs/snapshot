@@ -31,7 +31,7 @@ export function formatBatchTransaction(
   nonce: number,
   multiSendAddress: string
 ): ModuleTransaction | null {
-  if (!batch.every((x) => x)) return null;
+  if (!batch.every(x => x)) return null;
   if (batch.length === 1) {
     return { ...batch[0], nonce: nonce.toString() };
   }
@@ -76,8 +76,8 @@ export function getBatchHash(
 }
 
 export function getSafeHash(safe: SafeData) {
-  const hashes = safe.txs.map((batch) => batch.hash);
-  const valid = hashes.every((hash) => hash);
+  const hashes = safe.txs.map(batch => batch.hash);
+  const valid = hashes.every(hash => hash);
   if (!valid || !hashes.length) return null;
   return keccak256(['bytes32[]'], [hashes]);
 }
@@ -86,9 +86,9 @@ export function validateSafeData(safe) {
   return (
     safe.txs.length === 0 ||
     safe.txs
-      .map((batch) => batch.transactions)
+      .map(batch => batch.transactions)
       .flat()
-      .every((tx) => tx)
+      .every(tx => tx)
   );
 }
 
@@ -100,7 +100,7 @@ export function coerceConfig(config, network) {
   if (config.safes) {
     return {
       ...config,
-      safes: config.safes.map((safe) => {
+      safes: config.safes.map(safe => {
         const _network = safe.network || network;
         const multiSendAddress =
           safe.multiSendAddress || getMultiSend(_network);
@@ -164,5 +164,5 @@ export async function fetchTextSignatures(
   url.searchParams.set('ordering', 'created_at');
   const response = await fetch(url.toString());
   const { results } = await response.json();
-  return results.map((signature) => signature.text_signature);
+  return results.map(signature => signature.text_signature);
 }

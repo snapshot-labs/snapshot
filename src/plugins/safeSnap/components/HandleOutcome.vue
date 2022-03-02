@@ -31,15 +31,10 @@
       "
       class="my-4"
     >
-      <div
-        class="text-base inline-block"
-      >
+      <div class="text-base inline-block">
         <h4 class="text-center text-skin-link">
           Reality oracle
-          <a
-            @click="updateDetails"
-            class="ml-2 text-skin-text"
-          >
+          <a @click="updateDetails" class="ml-2 text-skin-text">
             <Icon name="refresh" size="22" />
           </a>
         </h4>

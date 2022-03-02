@@ -23,14 +23,14 @@ export const getProposalDetails = async (
       provider,
       REALITY_MODULE_ABI,
       [[moduleAddress, 'questionIds', [questionHash]]].concat(
-        txHashes.map((txHash) => [
+        txHashes.map(txHash => [
           moduleAddress,
           'executedProposalTransactions',
           [questionHash, txHash]
         ])
       )
     )
-  ).map((res) => res[0]);
+  ).map(res => res[0]);
   const questionId = proposalInfo[0];
   // We need to offset the index by -1 the first element is the questionId
   const nextIndexToExecute = proposalInfo.indexOf(false, 1) - 1;

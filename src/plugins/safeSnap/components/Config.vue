@@ -1,10 +1,6 @@
 <script>
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
-import {
-  coerceConfig,
-  isValidInput,
-  getSafeHash
-} from '../index';
+import { coerceConfig, isValidInput, getSafeHash } from '../index';
 import { useSafesnap } from '@/composables/useSafesnap';
 
 import SafeTransactions from './SafeTransactions.vue';
@@ -76,7 +72,11 @@ export default {
     >
       {{ $t('safeSnap.transactions') }}
     </h4>
-    <div v-for="(safe, index) in input.safes" :key="index" class="border-b-4 last:border-b-0">
+    <div
+      v-for="(safe, index) in input.safes"
+      :key="index"
+      class="border-b-4 last:border-b-0"
+    >
       <SafeTransactions
         v-if="!preview || safe.txs.length > 0"
         :preview="preview"

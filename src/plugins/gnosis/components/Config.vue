@@ -18,7 +18,7 @@ const isValid = computed(() => {
 });
 
 watch(input, () => {
-  emit('update:modelValue', input)
+  emit('update:modelValue', input);
 });
 
 const getChoices = () => {
@@ -79,12 +79,7 @@ const getChoices = () => {
   >
     {{ $t('create.preview') }}
   </UiButton>
-  <UiButton
-    v-if="preview"
-    @click="preview = false"
-    class="w-full mb-2"
-    primary
-  >
+  <UiButton v-if="preview" @click="preview = false" class="w-full mb-2" primary>
     {{ $t('back') }}
   </UiButton>
 </template>

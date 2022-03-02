@@ -52,7 +52,7 @@ export class InterfaceDecoder extends Interface {
   }
 
   private formatArrayValue(paramType, value, deep = 0) {
-    const formattedValues = value.map((paramValue) =>
+    const formattedValues = value.map(paramValue =>
       this.formatParameter(paramType, paramValue, deep + 1)
     );
     if (deep) return formattedValues;
