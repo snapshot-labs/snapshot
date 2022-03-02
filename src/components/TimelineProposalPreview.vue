@@ -3,7 +3,7 @@ import { computed } from 'vue';
 import { shorten } from '@/helpers/utils';
 import removeMd from 'remove-markdown';
 import { useIntl } from '@/composables/useIntl';
-import { relativePeriod } from '@/helpers/proposals';
+import { relativePeriod } from '@/helpers/utils';
 
 const { formatNumber, formatCompactNumber, formatPercentNumber } = useIntl();
 
