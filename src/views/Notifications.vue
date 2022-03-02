@@ -23,14 +23,6 @@ const NotificationEvents = {
   ProposalEnd: 'proposal/end'
 };
 
-const spaces = computed(() => {
-  return followingSpaces.value;
-});
-
-const notificationsSortedByEventTime = computed(() =>
-  notifications.value?.sort((a, b) => b.time - a.time)
-);
-
 const { apolloQuery } = useApolloQuery();
 
 async function loadProposals(state, date) {
@@ -41,7 +33,7 @@ async function loadProposals(state, date) {
         variables: {
           first: 100,
           state,
-          space_in: spaces.value,
+          space_in: followingSpaces.value,
           start_gte: date
         }
       },
@@ -87,7 +79,7 @@ async function load() {
   loading.value = false;
 }
 
-watch(spaces, () => {
+watch(followingSpaces, () => {
   if (route.name === 'notifications') {
     notifications.value = [];
     load();
@@ -113,7 +105,7 @@ onMounted(() => {
           class="px-4 py-5"
         />
         <div
-          v-else-if="spaces.length < 1 || !web3.account"
+          v-else-if="followingSpaces.length < 1 || !web3.account"
           class="text-center p-4"
         >
           <div class="mb-3">{{ $t('noSpacesJoined') }}</div>
@@ -128,7 +120,7 @@ onMounted(() => {
         />
         <div v-else>
           <div
-            v-for="notification in notificationsSortedByEventTime"
+            v-for="notification in notifications"
             :key="notification.id"
             class="transition-colors border-b last:!border-b-0"
           >
