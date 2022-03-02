@@ -1,16 +1,17 @@
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue';
 import { shorten } from '@/helpers/utils';
 import { useModal } from '@/composables/useModal';
 import { useDomain } from '@/composables/useDomain';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useTxStatus } from '@/composables/useTxStatus';
+import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { useUserSkin } from '@/composables/useUserSkin';
 
 const { pendingCount } = useTxStatus();
 const { modalAccountOpen } = useModal();
 const { env, domain } = useDomain();
-
+const auth = getInstance();
 const { login, web3 } = useWeb3();
 const { toggleSkin, getSkinIcon } = useUserSkin();
 
@@ -50,7 +51,7 @@ async function handleLogin(connector) {
             </router-link>
           </div>
           <div :key="web3.account">
-            <template v-if="$auth.isAuthenticated.value">
+            <template v-if="auth.isAuthenticated.value">
               <UiButton
                 @click="modalAccountOpen = true"
                 :loading="web3.authLoading"
@@ -74,7 +75,7 @@ async function handleLogin(connector) {
               </UiButton>
             </template>
             <UiButton
-              v-if="!$auth.isAuthenticated.value"
+              v-if="!auth.isAuthenticated.value"
               @click="modalAccountOpen = true"
               :loading="loading || web3.authLoading"
               :aria-label="$t('connectWallet')"
