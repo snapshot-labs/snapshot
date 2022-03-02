@@ -196,7 +196,7 @@ export default {
           ></textarea>
         </div>
         <div
-          class="mt-3 flex flex-column justify-center items-center"
+          class="mt-3 flex flex-col justify-center items-center"
         >
           <UiButton @click="importFromText">Parse JSON</UiButton>
           <a
