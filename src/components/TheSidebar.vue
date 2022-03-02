@@ -7,6 +7,7 @@ import { useApp } from '@/composables/useApp';
 import { useDomain } from '@/composables/useDomain';
 import { useUnseenProposals } from '@/composables/useUnseenProposals';
 import { lsSet, lsGet } from '@/helpers/utils';
+import { useUserSkin } from '@/composables/useUserSkin';
 
 const { explore } = useApp();
 const { web3Account } = useWeb3();
@@ -14,6 +15,7 @@ const { loadFollows, followingSpaces } = useFollowSpace();
 const { domain } = useDomain();
 const { proposals, getProposals, lastSeenProposals, updateLastSeenProposal } =
   useUnseenProposals();
+const { toggleSkin, getSkinIcon } = useUserSkin();
 
 const modalAboutOpen = ref(false);
 const modalLangOpen = ref(false);
@@ -96,11 +98,6 @@ onMounted(() => {
             </UiSidebarButton>
           </router-link>
         </div>
-        <router-link v-if="web3Account" :to="{ name: 'notifications' }">
-          <UiSidebarButton>
-            <Icon size="20" name="notifications-none" />
-          </UiSidebarButton>
-        </router-link>
         <draggable
           v-if="draggableSpaces.length > 0"
           v-model="draggableSpaces"
@@ -143,6 +140,13 @@ onMounted(() => {
           <UiSidebarButton @click="modalAboutOpen = true">
             <span class="text-skin-link">?</span>
           </UiSidebarButton>
+          <UiSidebarButton
+            v-if="!domain"
+            @click="toggleSkin"
+            :aria-label="$t('toggleSkin')"
+          >
+            <Icon size="20" class="text-skin-link" :name="getSkinIcon()" />
+          </UiSidebarButton>
         </div>
       </div>
     </div>
@@ -151,7 +155,8 @@ onMounted(() => {
     <ModalAbout
       :open="modalAboutOpen"
       @close="modalAboutOpen = false"
-      @openLang="modalLangOpen = true" />
-    <ModalSelectLanguage :open="modalLangOpen" @close="modalLangOpen = false"
-  /></teleport>
+      @openLang="modalLangOpen = true"
+    />
+    <ModalSelectLanguage :open="modalLangOpen" @close="modalLangOpen = false" />
+  </teleport>
 </template>

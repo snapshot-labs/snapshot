@@ -6,14 +6,12 @@ import { useDomain } from '@/composables/useDomain';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useTxStatus } from '@/composables/useTxStatus';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
-import { useUserSkin } from '@/composables/useUserSkin';
 
 const { pendingCount } = useTxStatus();
 const { modalAccountOpen } = useModal();
 const { env, domain } = useDomain();
 const auth = getInstance();
 const { login, web3 } = useWeb3();
-const { toggleSkin, getSkinIcon } = useUserSkin();
 
 const loading = ref(false);
 
@@ -50,12 +48,17 @@ async function handleLogin(connector) {
               snapshot
             </router-link>
           </div>
-          <div :key="web3.account">
+          <div :key="web3.account" class="flex space-x-2">
+            <router-link v-if="web3.account" :to="{ name: 'notifications' }">
+              <UiSidebarButton class="w-[46px] h-[46px]">
+                <Icon size="20" name="notifications-none" />
+              </UiSidebarButton>
+            </router-link>
             <template v-if="auth.isAuthenticated.value">
               <UiButton
                 @click="modalAccountOpen = true"
                 :loading="web3.authLoading"
-                class="flex items-center float-left"
+                class="flex items-center"
               >
                 <UiAvatar
                   :address="web3.account"
@@ -74,6 +77,7 @@ async function handleLogin(connector) {
                 />
               </UiButton>
             </template>
+
             <UiButton
               v-if="!auth.isAuthenticated.value"
               @click="modalAccountOpen = true"
@@ -87,14 +91,6 @@ async function handleLogin(connector) {
                 class="sm:hidden -ml-2 -mr-2 block align-text-bottom"
               />
             </UiButton>
-            <UiSidebarButton
-              v-if="!domain"
-              @click="toggleSkin"
-              class="float-right ml-2"
-              :aria-label="$t('toggleSkin')"
-            >
-              <Icon size="20" class="text-skin-link" :name="getSkinIcon()" />
-            </UiSidebarButton>
           </div>
         </div>
       </Container>
