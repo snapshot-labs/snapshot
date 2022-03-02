@@ -20,6 +20,12 @@ export default {
   },
   computed: {
     totalScore() {
+      const basicCount = this.space.plugins?.quorum?.basicCount;
+      if (basicCount && this.proposal.type === 'basic') {
+        return this.results.resultsByVoteBalance
+          .filter((score, i) => basicCount.includes(i))
+          .reduce((a, b) => a + b, 0);
+      }
       return this.results.resultsByVoteBalance.reduce((a, b) => a + b, 0);
     },
     quorum() {
