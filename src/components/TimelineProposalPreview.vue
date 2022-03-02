@@ -36,7 +36,7 @@ const relativePeriod = computed(() => {
     return t('endedAgo', [formatRelativeTime(props.proposal.end)]);
   }
   if (props.proposal.state === 'active') {
-    return t('proposalTimeLeft', [formatDuration(props.proposal.end - now, t)]);
+    return t('proposalTimeLeft', [formatDuration(props.proposal.end - now)]);
   }
   return t('startIn', [formatRelativeTime(props.proposal.start)]);
 });
