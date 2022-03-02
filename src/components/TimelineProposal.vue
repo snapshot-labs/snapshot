@@ -59,7 +59,7 @@ const period = computed(() => {
           </div>
           <UiState :state="proposal.state" />
         </div>
-        <h3 v-text="proposal.title" class="my-1" />
+        <h3 v-text="proposal.title" class="my-1 break-words" />
         <p v-text="shorten(body, 140)" class="break-words mb-2 text-md" />
         <div>
           <span
