@@ -257,4 +257,7 @@ export default {
   font-size: 14px;
   font-weight: 100;
 }
+.active-dropzone {
+  background: green;
+}
 </style>
