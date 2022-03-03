@@ -11,7 +11,7 @@ const { pendingCount } = useTxStatus();
 const { modalAccountOpen } = useModal();
 const { env, domain } = useDomain();
 const auth = getInstance();
-const { login, web3 } = useWeb3();
+const { login, web3, web3Account } = useWeb3();
 
 const loading = ref(false);
 
@@ -48,7 +48,7 @@ async function handleLogin(connector) {
               snapshot
             </router-link>
           </div>
-          <div :key="web3.account" class="flex space-x-2">
+          <div :key="web3Account" class="flex space-x-2">
             <template v-if="auth.isAuthenticated.value">
               <UiButton
                 @click="modalAccountOpen = true"
@@ -56,7 +56,7 @@ async function handleLogin(connector) {
                 class="flex items-center"
               >
                 <UiAvatar
-                  :address="web3.account"
+                  :address="web3Account"
                   size="18"
                   class="-mr-1 sm:mr-2 md:mr-2 lg:mr-2 xl:mr-2 -ml-1"
                 />
@@ -67,7 +67,7 @@ async function handleLogin(connector) {
                 />
                 <span
                   v-else
-                  v-text="shorten(web3.account)"
+                  v-text="shorten(web3Account)"
                   class="hidden sm:block"
                 />
               </UiButton>
@@ -86,6 +86,11 @@ async function handleLogin(connector) {
                 class="sm:hidden -ml-2 -mr-2 block align-text-bottom"
               />
             </UiButton>
+            <router-link v-if="web3Account" :to="{ name: 'notifications' }">
+              <UiSidebarButton>
+                <Icon size="20" name="notifications-none" />
+              </UiSidebarButton>
+            </router-link>
           </div>
         </div>
       </Container>
