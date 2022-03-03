@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router';
-import { onMounted, ref, computed, watch } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import { useApolloQuery } from '@/composables/useApolloQuery';
 import { NOTIFICATION_PROPOSALS_QUERY } from '@/helpers/queries';
 import { useFollowSpace } from '@/composables/useFollowSpace';
