@@ -58,12 +58,12 @@ onMounted(() => {
                 <span
                   v-if="notification.event === NotificationEvents.ProposalStart"
                 >
-                  {{ $t('Proposal started') }}
+                  {{ $t('notifications.proposalStarted') }}
                 </span>
                 <span
                   v-if="notification.event === NotificationEvents.ProposalEnd"
                 >
-                  {{ $t('Proposal ended') }}
+                  {{ $t('notifications.proposalEnded') }}
                 </span>
               </div>
               <h3 v-text="notification.title" class="m-0" />

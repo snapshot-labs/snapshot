@@ -222,9 +222,8 @@
   },
   "notifications": {
     "header": "Notifications",
-    "started": "started",
-    "ended": "ended",
-    "proposalTo": "Proposal to"
+    "proposalStarted": "Proposal started",
+    "proposalEnded": "Proposal ended"
   },
   "settings": {
     "header": "Settings",
