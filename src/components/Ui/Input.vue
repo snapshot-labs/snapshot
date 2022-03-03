@@ -72,7 +72,7 @@ onMounted(() => {
     </div>
     <div
       :class="[
-        'bg-red text-white text-sm relative z-0 transition-all flex items-center px-3 pb-2 pt-4 rounded-b-3xl',
+        's-error relative z-0',
         !!error ? '-mt-[20px] opacity-100' : '-mt-[48px] opacity-0'
       ]"
     >
