@@ -49,7 +49,7 @@ onMounted(() => {
       </div>
       <div
         v-if="$slots.selected"
-        class="flex-auto whitespace-nowrap overflow-x-auto"
+        class="flex-auto whitespace-nowrap overflow-x-auto text-skin-link"
         :class="{ 'cursor-not-allowed text-skin-border': disabled }"
       >
         <slot name="selected" />
