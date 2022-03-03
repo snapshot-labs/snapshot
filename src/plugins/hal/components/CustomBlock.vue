@@ -13,7 +13,7 @@ const halLogoUrl = computed(
 </script>
 
 <template>
-  <Block :title="$t('hal.title', { spaceName: space.name })" :loading="loading">
+  <Block :title="$t('hal.title', { spaceName: space.name })">
     <div class="flex flex-col items-center">
       <div>
         <a :href="halUrl" target="_blank">
