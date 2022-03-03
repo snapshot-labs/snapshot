@@ -7,6 +7,8 @@ import { useUserSkin } from '@/composables/useUserSkin';
 import { useApp } from '@/composables/useApp';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useFlashNotification } from '@/composables/useFlashNotification';
+import { useNotifications } from '@/composables/useNotifications';
+const { loadNotifications } = useNotifications();
 
 const { domain } = useDomain();
 const { loadLocale } = useI18n();
@@ -31,6 +33,7 @@ const skin = computed(() => {
 
 onMounted(async () => {
   await loadLocale();
+  loadNotifications();
   init();
 });
 

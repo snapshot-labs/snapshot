@@ -1,4 +1,4 @@
-import { reactive, ref, watch } from 'vue';
+import { reactive } from 'vue';
 
 const store = reactive({
   space: {
@@ -11,19 +11,6 @@ const store = reactive({
   }
 });
 
-const notifications = ref<
-  {
-    id: string;
-    event: string;
-    time: number;
-    title: string;
-    spaceId?: string;
-  }[]
->([]);
-
 export function useStore() {
-  watch(notifications, () =>
-    notifications.value?.sort((a, b) => b.time - a.time)
-  );
-  return { store, notifications };
+  return { store };
 }

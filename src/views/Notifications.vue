@@ -1,94 +1,20 @@
 <script setup lang="ts">
-import { useRoute } from 'vue-router';
-import { onMounted, ref, watch } from 'vue';
-import { useApolloQuery } from '@/composables/useApolloQuery';
-import { NOTIFICATION_PROPOSALS_QUERY } from '@/helpers/queries';
+import { onMounted } from 'vue';
 import { useFollowSpace } from '@/composables/useFollowSpace';
 import { useWeb3 } from '@/composables/useWeb3';
-import { useStore } from '@/composables/useStore';
+import { useNotifications } from '@/composables/useNotifications';
 import { useI18n } from '@/composables/useI18n';
 import { useIntl } from '@/composables/useIntl';
 
-const loading = ref(false);
-
-const route = useRoute();
-const { notifications } = useStore();
+const { notifications, notificationsLoading, NotificationEvents } =
+  useNotifications();
 const { setPageTitle } = useI18n();
-const { followingSpaces, loadingFollows } = useFollowSpace();
+const { followingSpaces } = useFollowSpace();
 const { formatRelativeTime, longRelativeTimeFormatter } = useIntl();
-const { web3, web3Account } = useWeb3();
-
-const NotificationEvents = {
-  ProposalStart: 'proposal/start',
-  ProposalEnd: 'proposal/end'
-};
-
-const { apolloQuery } = useApolloQuery();
-
-async function loadProposals(state, date) {
-  return (
-    (await apolloQuery(
-      {
-        query: NOTIFICATION_PROPOSALS_QUERY,
-        variables: {
-          first: 100,
-          state,
-          space_in: followingSpaces.value,
-          start_gte: date
-        }
-      },
-      'proposals'
-    )) ?? []
-  );
-}
-
-function mapProposalToNotifications(proposals) {
-  if (proposals.length === 0) return;
-  const now = Number(new Date().getTime() / 1000).toFixed(0);
-  proposals.forEach(proposal => {
-    notifications.value.push({
-      id: proposal.id,
-      event:
-        proposal.end <= now
-          ? NotificationEvents.ProposalEnd
-          : NotificationEvents.ProposalStart,
-      time: proposal.end <= now ? proposal.end : proposal.start,
-      title: proposal.title,
-      spaceId: proposal.space.id
-    });
-  });
-}
-
-async function loadRecentProposals() {
-  const unixTimestampTwoWeeksAgo = Number(
-    (new Date().getTime() / 1000 - 604800 * 2).toFixed(0)
-  );
-  const proposalsObj = await Promise.all([
-    loadProposals('active', unixTimestampTwoWeeksAgo),
-    loadProposals('closed', unixTimestampTwoWeeksAgo)
-  ]);
-
-  mapProposalToNotifications(proposalsObj.flat());
-}
-
-async function load() {
-  if (notifications.value.length > 0) return;
-  if (!web3Account.value) return;
-  loading.value = true;
-  await loadRecentProposals();
-  loading.value = false;
-}
-
-watch(followingSpaces, () => {
-  if (route.name === 'notifications') {
-    notifications.value = [];
-    load();
-  }
-});
+const { web3Account } = useWeb3();
 
 // Initialize
 onMounted(() => {
-  load();
   setPageTitle('page.title.notifications');
 });
 </script>
@@ -100,12 +26,9 @@ onMounted(() => {
         <h2 v-text="$t('notifications.header')" class="mt-1" />
       </div>
       <div class="md:border-r md:border-l md:rounded-lg border-t border-b">
-        <RowLoading
-          v-if="loading || web3.authLoading || loadingFollows"
-          class="px-4 py-5"
-        />
+        <RowLoading v-if="notificationsLoading" class="px-4 py-5" />
         <div
-          v-else-if="followingSpaces.length < 1 || !web3.account"
+          v-else-if="followingSpaces.length < 1 || !web3Account"
           class="text-center p-4"
         >
           <div class="mb-3">{{ $t('noSpacesJoined') }}</div>
@@ -134,12 +57,14 @@ onMounted(() => {
               <div class="text-skin-text">
                 <span
                   v-if="notification.event === NotificationEvents.ProposalStart"
-                  >Proposal started</span
                 >
+                  {{ $t('Proposal started') }}
+                </span>
                 <span
                   v-if="notification.event === NotificationEvents.ProposalEnd"
-                  >Proposal ended</span
                 >
+                  {{ $t('Proposal ended') }}
+                </span>
               </div>
               <h3 v-text="notification.title" class="m-0" />
               <div class="text-skin-text mt-2">
