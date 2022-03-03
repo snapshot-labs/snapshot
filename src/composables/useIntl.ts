@@ -4,8 +4,7 @@
  */
 
 import { computed } from 'vue';
-import { useI18n as useI18nSnapshot } from '@/composables/useI18n';
-// TODO: Resolve name conflict
+import { useI18n } from '@/composables/useI18n';
 
 /**
  * This is needed since Intl still doesn't support durations:
@@ -54,7 +53,7 @@ const getDurationAndUnit = (seconds: number) => {
 };
 
 export function useIntl() {
-  const { currentLocale } = useI18nSnapshot();
+  const { currentLocale, t } = useI18n();
 
   /**
    * functions to create computed formatters based on locale
@@ -120,10 +119,10 @@ export function useIntl() {
   };
 
   // doesn't use Intl (yet), needs useI18n's t function, to translate the unit
-  const formatDuration = (seconds: number, t: Function) => {
+  const formatDuration = (seconds: number) => {
     const { duration, unit } = getDurationAndUnit(seconds);
 
-    return t(`timeUnits.${unit}`, { n: duration }, duration);
+    return t(`timeUnits.${unit}`, { n: duration });
   };
 
   const formatNumber = (number: number, formatter?: Intl.NumberFormat) => {

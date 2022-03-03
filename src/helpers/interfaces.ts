@@ -20,7 +20,7 @@ interface StrategySchema {
   $schema: string;
   $ref: string;
   definitions: {
-    Strategy: {};
+    Strategy: Record<string, unknown>;
   };
 }
 
