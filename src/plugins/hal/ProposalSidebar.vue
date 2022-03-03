@@ -1,9 +1,11 @@
 <script setup>
+import HalCustomBlock from './components/CustomBlock.vue';
+
 defineProps({
   space: Object
 });
 </script>
 
 <template>
-  <PluginHalCustomBlock v-if="space.plugins.hal" :space="space" />
+  <HalCustomBlock v-if="space.plugins.hal" :space="space" />
 </template>

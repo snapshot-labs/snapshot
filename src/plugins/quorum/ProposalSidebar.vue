@@ -1,4 +1,6 @@
 <script setup>
+import QuorumCustomBlock from './components/CustomBlock.vue';
+
 defineProps({
   space: Object,
   proposal: Object,
@@ -10,7 +12,7 @@ defineProps({
 </script>
 
 <template>
-  <PluginQuorumCustomBlock
+  <QuorumCustomBlock
     :loaded="loadedResults"
     v-if="space.plugins.quorum && !space.voting?.quorum"
     :space="space"

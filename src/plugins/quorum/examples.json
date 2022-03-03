@@ -1,0 +1,24 @@
+[
+  {
+    "strategy": "static",
+    "total": 1234
+  },
+  {
+    "strategy": "balance",
+    "address": "0x892f481BD6E9d7D26aE365211D9B45175d5D00e4",
+    "decimals": 18,
+    "methodABI": {
+      "inputs": [],
+      "name": "totalVotes",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  }
+]
