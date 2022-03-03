@@ -185,7 +185,8 @@ const props = defineProps([
   'batches',
   'proposalId',
   'network',
-  'realityAddress'
+  'realityAddress',
+  'multiSendAddress'
 ]);
 
 const plugin = new Plugin();
