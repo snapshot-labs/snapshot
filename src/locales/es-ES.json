@@ -384,6 +384,7 @@
       "changeOutcome": "Cambiar resultado",
       "executeTxs": "Ejecutar transacción de lote {0} a {1}",
       "executed": "Todas las transacciones han sido ejecutadas",
+      "rejected": "Proposal rejected",
       "error": "Algo salió mal",
       "connectWallet": "Conecta tu cartera para ver los detalles de la ejecución",
       "switchChain": "Cambia tu cartera a {0} para solicitar la ejecución",
