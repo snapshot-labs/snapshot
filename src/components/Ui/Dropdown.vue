@@ -1,20 +1,23 @@
-<script setup>
+<script setup lang="ts">
 import { ref, onBeforeUnmount, computed } from 'vue';
 
-const props = defineProps({
-  items: Array,
-  top: String,
-  right: String,
-  subMenuWrapperRight: String,
-  hideDropdown: Boolean
-});
+const props = defineProps<{
+  items: {
+    action: string;
+    selected?: boolean;
+    text: string;
+  }[];
+  top?: string;
+  right?: string;
+  subMenuWrapperRight?: string;
+}>();
 
-const emit = defineEmits(['select', 'clickedNoDropdown']);
+const emit = defineEmits(['select']);
 
 const open = ref(false);
-const dropdownEl = ref(null);
+const dropdownEl = ref<any>(null);
 
-const cssVars = computed(() => {
+const cssVars = computed<any>(() => {
   return {
     '--top': props.top,
     '--right': props.right,
@@ -28,7 +31,7 @@ function handleClick(action) {
 }
 
 function close(e) {
-  if (!dropdownEl.value.contains(e.target)) {
+  if (!dropdownEl.value?.contains(e.target)) {
     open.value = false;
   }
 }
@@ -39,11 +42,7 @@ onBeforeUnmount(() => window.removeEventListener('click', close));
 </script>
 
 <template>
-  <div
-    ref="dropdownEl"
-    @click.capture="hideDropdown ? $emit('clickedNoDropdown') : (open = !open)"
-    class="relative h-full"
-  >
+  <div ref="dropdownEl" @click.capture="open = !open" class="relative h-full">
     <div class="button flex items-center h-full">
       <slot />
     </div>
@@ -51,7 +50,7 @@ onBeforeUnmount(() => window.removeEventListener('click', close));
       <ul class="sub-menu my-2">
         <li
           v-for="item in items"
-          :key="item"
+          :key="item.text"
           @click="handleClick(item.action)"
           :class="{ selected: item.selected }"
           class="list-none block whitespace-nowrap px-[18px] py-[2px]"

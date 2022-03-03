@@ -298,15 +298,24 @@ const truncateMarkdownBody = computed(() => {
             </div>
 
             <div class="flex justify-end">
+              <div
+                class="button flex items-center h-full"
+                v-if="sharingIsSupported"
+                @click="startShare(space, proposal)"
+              >
+                <div class="pr-1 select-none flex">
+                  <Icon name="upload" size="25" />
+                  <span class="ml-1 hidden md:block">Share</span>
+                </div>
+              </div>
               <UiDropdown
+                v-else
                 top="2.5rem"
                 right="1rem"
                 subMenuWrapperRight="-7px"
                 class="ml-3"
                 @select="selectFromShareDropdown"
-                @clickedNoDropdown="startShare(space, proposal)"
                 :items="sharingItems"
-                :hideDropdown="sharingIsSupported"
               >
                 <div class="pr-1 select-none flex">
                   <Icon name="upload" size="25" />
