@@ -1,4 +1,6 @@
 <script setup>
+import Config from './components/Config.vue';
+
 defineProps({
   space: Object,
   preview: Boolean,
@@ -12,7 +14,7 @@ const update = form => {
 </script>
 
 <template>
-  <PluginSafeSnapConfig
+  <Config
     v-if="space.plugins.safeSnap"
     :proposal="proposal"
     :config="space.plugins.safeSnap"
