@@ -52,7 +52,7 @@ watch(modalOpen, val => {
     <div v-else class="w-screen">
       <TheSidebar />
       <div :class="{ 'sm:ml-[68px]': !domain }">
-        <Topnav />
+        <TheNavbar />
         <router-view :key="$route.path" class="flex-auto" />
       </div>
     </div>

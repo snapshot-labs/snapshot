@@ -49,11 +49,6 @@ async function handleLogin(connector) {
             </router-link>
           </div>
           <div :key="web3.account" class="flex space-x-2">
-            <router-link v-if="web3.account" :to="{ name: 'notifications' }">
-              <UiSidebarButton class="w-[46px] h-[46px]">
-                <Icon size="20" name="notifications-none" />
-              </UiSidebarButton>
-            </router-link>
             <template v-if="auth.isAuthenticated.value">
               <UiButton
                 @click="modalAccountOpen = true"
