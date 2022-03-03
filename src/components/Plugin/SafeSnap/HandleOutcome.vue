@@ -166,7 +166,7 @@ import { formatUnits } from '@ethersproject/units';
 import { useSafesnap } from '@/composables/useSafesnap';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useTxStatus } from '@/composables/useTxStatus';
-import { useNotifications } from '@/composables/useNotifications';
+import { useFlashNotification } from '@/composables/useFlashNotification';
 import { useIntl } from '@/composables/useIntl';
 import { useI18n } from '@/composables/useI18n';
 
@@ -176,7 +176,7 @@ const { t } = useI18n();
 const { clearBatchError, setBatchError } = useSafesnap();
 const { web3 } = useWeb3();
 const { pendingCount } = useTxStatus();
-const { notify } = useNotifications();
+const { notify } = useFlashNotification();
 
 const props = defineProps([
   'batches',

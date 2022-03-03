@@ -9,7 +9,7 @@ interface Notification {
 
 const items = ref<Notification[]>([]);
 
-export function useNotifications() {
+export function useFlashNotification() {
   function notify(payload: any, duration = 4000) {
     const item: Notification = {
       id: Math.floor(Date.now() * Math.random()),

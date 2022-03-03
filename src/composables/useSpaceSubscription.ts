@@ -4,7 +4,7 @@ import { useApolloQuery } from '@/composables/useApolloQuery';
 import { SUBSCRIPTIONS_QUERY } from '@/helpers/queries';
 import { useAliasAction } from '@/composables/useAliasAction';
 import { beams } from '../helpers/beams';
-import { useNotifications } from './useNotifications';
+import { useFlashNotification } from './useFlashNotification';
 import { useI18n } from '@/composables/useI18n';
 import client from '@/helpers/clientEIP712';
 
@@ -14,7 +14,7 @@ export function useSpaceSubscription(spaceId: any) {
   const { web3, web3Account } = useWeb3();
   const { apolloQuery } = useApolloQuery();
   const { setAlias, aliasWallet, isValidAlias, checkAlias } = useAliasAction();
-  const { notify } = useNotifications();
+  const { notify } = useFlashNotification();
   const { t } = useI18n();
   const loading = ref(false);
   const isSubscribed = computed(() => {

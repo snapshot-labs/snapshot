@@ -6,7 +6,7 @@ import { useDomain } from '@/composables/useDomain';
 import { useUserSkin } from '@/composables/useUserSkin';
 import { useApp } from '@/composables/useApp';
 import { useWeb3 } from '@/composables/useWeb3';
-import { useNotifications } from '@/composables/useNotifications';
+import { useFlashNotification } from '@/composables/useFlashNotification';
 
 const { domain } = useDomain();
 const { loadLocale } = useI18n();
@@ -14,7 +14,7 @@ const { modalOpen } = useModal();
 const { userSkin } = useUserSkin();
 const { init, skinName, app } = useApp();
 const { web3 } = useWeb3();
-const { notify } = useNotifications();
+const { notify } = useFlashNotification();
 
 provide('web3', web3);
 provide('notify', notify);
