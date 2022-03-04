@@ -39,7 +39,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="min-h-[48px] rounded-3xl overflow-hidden">
+  <div class="min-h-[48px] rounded-3xl overflow-hidden w-full">
     <div
       class="border border-skin-border transition-colors rounded-3xl outline-none leading-[46px] text-left w-full flex px-3 focus-within:border-skin-link hover:border-skin-link bg-skin-bg relative z-10"
       :class="{ '!border-red': !!error }"
