@@ -1,12 +1,12 @@
-<script setup>
+<script setup lang="ts">
 import { computed } from 'vue';
 import { formatBytes32String } from '@ethersproject/strings';
-import { getUrl } from '@snapshot-labs/snapshot.js/src/utils.ts';
+import { getUrl } from '@snapshot-labs/snapshot.js/src/utils';
 
-const props = defineProps({
-  space: Object,
-  size: String
-});
+const props = defineProps<{
+  space: Record<string, any>;
+  size: string;
+}>();
 
 const spaceId = computed(() => props.space.id);
 

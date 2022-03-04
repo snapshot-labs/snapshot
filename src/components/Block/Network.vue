@@ -16,7 +16,6 @@ defineProps(['network']);
       <UiAvatar
         class="mr-2"
         :imgsrc="getIpfsUrl(network.imageIPFS)"
-        :seed="network.key"
         size="28"
       />
       <div class="overflow-hidden">

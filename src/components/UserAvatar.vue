@@ -1,15 +1,15 @@
-<script setup>
+<script setup lang="ts">
 import { watchEffect } from 'vue';
 import { shorten, explorerUrl } from '@/helpers/utils';
 import { useUsername } from '@/composables/useUsername';
 
-const props = defineProps({
-  address: String,
-  space: Object,
-  proposal: Object,
-  profile: Object,
-  onlyUsername: Boolean
-});
+const props = defineProps<{
+  address: string;
+  space: Record<string, any>;
+  proposal: Record<string, any>;
+  profile: { name: string; ens: string };
+  onlyUsername: boolean;
+}>();
 
 const { address, profile, username, fullUserName } = useUsername();
 

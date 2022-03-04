@@ -1,26 +1,26 @@
-<script setup>
+<script setup lang="ts">
 import { watch, ref } from 'vue';
 
-const props = defineProps({
-  address: String,
-  size: String,
-  imgsrc: String,
-  space: Object
-});
+const props = defineProps<{
+  address?: string;
+  size?: string;
+  imgsrc?: string;
+  space?: Record<string, any>;
+}>();
 
-const imgUrl = ref(null);
+const imgUrl = ref<string>('');
 const showImg = ref(false);
 
 watch(
   () => props.imgsrc,
   () => {
-    if (props.space) {
+    if (props.imgsrc) {
       const img = new Image();
       img.onload = () => {
         imgUrl.value = img.src;
         showImg.value = true;
       };
-      img.src = props.imgsrc;
+      img.src = props.imgsrc as string;
     }
   },
   { immediate: true }
@@ -32,14 +32,14 @@ watch(
     <img
       :src="
         imgUrl ||
-        `https://stamp.fyi/avatar/eth:${address}?s=${parseInt(size) * 2}`
+        `https://stamp.fyi/avatar/eth:${address}?s=${parseInt(size as string) * 2}`
       "
       class="rounded-full"
       :class="!space && 'bg-[color:var(--border-color)]'"
       :style="{
-        width: `${parseInt(size) || 22}px`,
-        height: `${parseInt(size) || 22}px`,
-        minWidth: `${parseInt(size) || 22}px`
+        width: `${parseInt(size as string) || 22}px`,
+        height: `${parseInt(size as string) || 22}px`,
+        minWidth: `${parseInt(size as string) || 22}px`
       }"
       :alt="space?.name"
     />
