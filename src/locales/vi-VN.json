@@ -384,6 +384,7 @@
       "changeOutcome": "Thay đổi kết quả",
       "executeTxs": "Thực hiện đa giao dịch {0} của {1}",
       "executed": "Giao dịch thành công",
+      "rejected": "Proposal rejected",
       "error": "Đã xảy ra lỗi",
       "connectWallet": "Kết nối ví",
       "switchChain": "Vui lòng chọn mạng lưới {0} để thực hiện giao dịch",

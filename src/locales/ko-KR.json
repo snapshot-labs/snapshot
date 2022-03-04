@@ -384,6 +384,7 @@
       "changeOutcome": "결과 변경",
       "executeTxs": "{1} 의 트랜잭션 배치 {0} 실행",
       "executed": "모든 트랜잭션이 실행되었습니다.",
+      "rejected": "Proposal rejected",
       "error": "뭔가 잘못되었습니다.",
       "connectWallet": "실행 세부 정보를 보려면 지갑을 연결합니다.",
       "switchChain": "실행 요청을 위해 지갑을 {0} 로 바꾸세요.",
