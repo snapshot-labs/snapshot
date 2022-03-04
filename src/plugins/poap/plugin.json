@@ -2,6 +2,6 @@
   "name": "Poap Module",
   "version": "1.0.0",
   "author": "Poap-xyz",
-  "website": "https://github.com/snapshot-labs/snapshot-plugins/tree/master/src/plugins/poap",
+  "website": "https://github.com/snapshot-labs/snapshot/tree/develop/src/plugins/poap",
   "icon": "ipfs://QmSH2PsJUSpHUwS9XAoqLKRvF7qibrsqmBTdmM9Mmyv5fb"
 }
