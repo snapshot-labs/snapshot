@@ -253,18 +253,16 @@ function deleteItemReply(key) {
           class="ml-1"
         />
 
-        <UiDropdown
+        <BaseDropdown
           v-if="isAdmin || isOwner || isCreator"
-          top="2.5rem"
-          right="1.3rem"
           class="float-right"
           @select="selectFromThreedotDropdown"
           :items="threeDotItems"
         >
-          <div>
+          <template v-slot:button>
             <Icon name="threedots" size="25" class="v-align-text-bottom" />
-          </div>
-        </UiDropdown>
+          </template>
+        </BaseDropdown>
       </div>
       <div class="mt-2">{{ item.markdown }}</div>
     </Block>
