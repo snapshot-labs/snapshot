@@ -8,6 +8,7 @@ import { useCategories } from '@/composables/useCategories';
 import { shorten } from '@/helpers/utils';
 import { useIntl } from '@/composables/useIntl';
 import { useI18n } from '@/composables/useI18n';
+import SpaceExplorer from '@snapshot-labs/space-explorer';
 
 const { selectedCategory, orderedSpaces, orderedSpacesByCategory } = useApp();
 const { followingSpaces } = useFollowSpace();
@@ -45,6 +46,7 @@ onMounted(() => {
 </script>
 
 <template>
+  <SpaceExplorer />
   <div class="mt-4 min-h-[calc(100vh-145px)] relative pb-[130px]">
     <Container class="flex items-center mb-4">
       <UiButton class="pl-3 pr-0 w-full max-w-[420px]">

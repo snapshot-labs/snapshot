@@ -1,6 +1,10 @@
 {
   "name": "snapshot",
   "version": "0.1.4",
+  "private": true,
+  "workspaces": [
+    "src/packages/*"
+  ],
   "scripts": {
     "preinstall": "yarn run init-submodules",
     "dev": "vite",
@@ -30,6 +34,7 @@
     "@pusher/push-notifications-web": "^1.1.0",
     "@snapshot-labs/lock": "^0.1.7",
     "@snapshot-labs/snapshot.js": "^0.3.54",
+    "@snapshot-labs/space-explorer": "^1.0.0",
     "@vue/apollo-composable": "4.0.0-alpha.16",
     "@vueuse/core": "^7.7.0",
     "autolinker": "^3.14.3",
@@ -65,6 +70,7 @@
     "eslint-plugin-vue": "^7.15.1",
     "happy-dom": "^2.31.1",
     "husky": "^7.0.4",
+    "lerna": "^4.0.0",
     "postcss": "^8.4.7",
     "prettier": "^2.5.1",
     "rollup-plugin-visualizer": "^5.6.0",
