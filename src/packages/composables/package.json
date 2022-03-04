@@ -3,9 +3,6 @@
   "version": "1.0.0",
   "main": "index.ts",
   "license": "MIT",
-  "dependencies": {
-    "@snapshot-labs/composables": "^1.0.0"
-  },
   "peerDependencies": {
     "vue": "^3.2.31"
   }
