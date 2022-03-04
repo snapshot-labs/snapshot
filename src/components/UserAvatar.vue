@@ -24,7 +24,7 @@ watchEffect(() => {
     <UiPopover :options="{ offset: [0, 12], placement: 'bottom-start' }">
       <template v-slot:item>
         <a class="flex flex-nowrap">
-          <UiAvatar
+          <BaseAvatar
             v-if="!onlyUsername"
             :address="address"
             size="18"
@@ -41,7 +41,7 @@ watchEffect(() => {
       </template>
       <template v-slot:content>
         <div class="m-4 mb-0 text-center">
-          <UiAvatar :address="address" size="64" class="mb-4" />
+          <BaseAvatar :address="address" size="64" class="mb-4" />
           <h3 v-if="profile?.name" class="mt-3" v-text="profile.name" />
           <h3 v-else-if="profile?.ens" v-text="profile.ens" class="mt-3" />
           <h3 v-else v-text="shorten(address)" class="mt-3" />

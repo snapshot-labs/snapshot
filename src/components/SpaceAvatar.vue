@@ -24,7 +24,7 @@ const spaceAddress = computed(() => {
 
 <template>
   <span class="inline-block align-middle leading-none">
-    <UiAvatar
+    <BaseAvatar
       :space="space"
       :imgsrc="url"
       :address="spaceAddress"

@@ -56,7 +56,7 @@ async function handleLogin(connector) {
                 :loading="web3.authLoading"
                 class="flex items-center float-left"
               >
-                <UiAvatar
+                <BaseAvatar
                   :address="web3.account"
                   size="18"
                   class="-mr-1 sm:mr-2 md:mr-2 lg:mr-2 xl:mr-2 -ml-1"
