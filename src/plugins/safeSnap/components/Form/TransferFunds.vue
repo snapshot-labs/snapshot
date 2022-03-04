@@ -112,21 +112,22 @@ export default {
       {{ token.symbol }}
     </option>
   </UiSelect>
-
-  <SafeSnapInputAddress
-    v-model="to"
-    :disabled="config.preview"
-    :inputProps="{
-      required: true
-    }"
-    :label="$t('safeSnap.to')"
-  />
-  <SafeSnapInputAmount
-    :label="$t('safeSnap.amount')"
-    v-model="value"
-    :decimals="selectedToken?.decimals"
-    :disabled="config.preview"
-  />
+  <div class="space-y-2">
+    <SafeSnapInputAddress
+      v-model="to"
+      :disabled="config.preview"
+      :inputProps="{
+        required: true
+      }"
+      :label="$t('safeSnap.to')"
+    />
+    <SafeSnapInputAmount
+      :label="$t('safeSnap.amount')"
+      v-model="value"
+      :decimals="selectedToken?.decimals"
+      :disabled="config.preview"
+    />
+  </div>
 </template>
 
 <style scoped>
