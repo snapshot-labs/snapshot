@@ -1,5 +1,5 @@
 {
-  "name": "@snapshot-labs/components",
+  "name": "@snapshot-labs/composables",
   "version": "1.0.0",
   "main": "index.ts",
   "license": "MIT",
