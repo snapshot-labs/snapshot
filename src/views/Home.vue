@@ -8,7 +8,7 @@ import { useCategories } from '@/composables/useCategories';
 import { shorten } from '@/helpers/utils';
 import { useIntl } from '@/composables/useIntl';
 import { useI18n } from '@/composables/useI18n';
-import SpaceExplorer from '@snapshot-labs/space-explorer';
+import { SpaceExplorer } from '@snapshot-labs/components';
 
 const { selectedCategory, orderedSpaces, orderedSpacesByCategory } = useApp();
 const { followingSpaces } = useFollowSpace();
