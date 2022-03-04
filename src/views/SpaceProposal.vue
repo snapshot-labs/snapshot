@@ -287,7 +287,7 @@ const truncateMarkdownBody = computed(() => {
               </router-link>
 
               <span v-text="$t('proposalBy')" />
-              <User
+              <BaseUser
                 :address="proposal.author"
                 :profile="profiles[proposal.author]"
                 :space="space"

@@ -45,7 +45,7 @@ const period = computed(() => {
             <span class="!ml-2" v-text="proposal.space.name" />
             <span v-text="$tc('proposalBy')" />
 
-            <User
+            <BaseUser
               :address="proposal.author"
               :profile="profiles[proposal.author]"
               :space="space"
