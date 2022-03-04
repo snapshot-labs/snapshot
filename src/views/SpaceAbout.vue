@@ -25,7 +25,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <Layout>
+  <TheLayout>
     <template #sidebar-left>
       <SpaceSidebar :space="space" />
     </template>
@@ -117,5 +117,5 @@ onMounted(() => {
         </div>
       </Block>
     </template>
-  </Layout>
+  </TheLayout>
 </template>

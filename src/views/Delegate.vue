@@ -277,7 +277,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <Layout v-bind="$attrs">
+  <TheLayout v-bind="$attrs">
     <template #content-left>
       <div class="px-4 md:px-0 mb-3">
         <router-link :to="{ path: '/' }" class="text-skin-text">
@@ -438,7 +438,7 @@ onMounted(async () => {
         </UiButton>
       </Block>
     </template>
-  </Layout>
+  </TheLayout>
   <teleport to="#modal" v-if="networkSupportsDelegate">
     <ModalRevokeDelegate
       v-if="loaded"

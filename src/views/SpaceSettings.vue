@@ -302,7 +302,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <Layout v-bind="$attrs">
+  <TheLayout v-bind="$attrs">
     <template #content-left>
       <div class="px-4 md:px-0 mb-3">
         <router-link :to="{ name: 'spaceProposals' }" class="text-skin-text">
@@ -675,7 +675,7 @@ onMounted(() => {
         {{ $t('settings.connectWithSpaceOwner') }}
       </BaseMessageBlock>
     </template>
-  </Layout>
+  </TheLayout>
   <teleport to="#modal">
     <ModalNetworks
       v-model="form.network"

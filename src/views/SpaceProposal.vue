@@ -246,7 +246,7 @@ const truncateMarkdownBody = computed(() => {
 </script>
 
 <template>
-  <Layout v-bind="$attrs">
+  <TheLayout v-bind="$attrs">
     <template #content-left>
       <div class="px-4 md:px-0 mb-3">
         <a
@@ -504,7 +504,7 @@ const truncateMarkdownBody = computed(() => {
         :strategies="strategies"
       />
     </template>
-  </Layout>
+  </TheLayout>
   <teleport to="#modal" v-if="proposal">
     <ModalConfirm
       :open="modalOpen"
