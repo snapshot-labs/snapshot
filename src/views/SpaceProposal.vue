@@ -278,7 +278,7 @@ const truncateMarkdownBody = computed(() => {
                 }"
               >
                 <div class="flex items-center">
-                  <Token :space="space" size="28" />
+                  <BaseToken :space="space" size="28" />
                   <span
                     class="ml-2 group-hover:text-skin-link"
                     v-text="space.name"
@@ -423,7 +423,7 @@ const truncateMarkdownBody = computed(() => {
                     content: symbol
                   }"
                 >
-                  <Token :space="space" :symbolIndex="symbolIndex" />
+                  <BaseToken :space="space" :symbolIndex="symbolIndex" />
                 </span>
                 <span
                   v-show="symbolIndex !== symbols.length - 1"

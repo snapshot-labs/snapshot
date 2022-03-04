@@ -41,7 +41,7 @@ const period = computed(() => {
       <div>
         <div class="mb-2 flex justify-between items-center">
           <div class="flex items-center space-x-1">
-            <Token :space="proposal.space" size="28" />
+            <BaseToken :space="proposal.space" size="28" />
             <span class="!ml-2" v-text="proposal.space.name" />
             <span v-text="$tc('proposalBy')" />
 

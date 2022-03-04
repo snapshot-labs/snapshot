@@ -61,7 +61,7 @@ const relativePeriod = computed(() => {
             }"
           >
             <div class="flex items-center">
-              <Token :space="proposal.space" size="28" />
+              <BaseToken :space="proposal.space" size="28" />
               <span
                 class="ml-2 group-hover:text-skin-link"
                 v-text="proposal.space.name"

@@ -114,7 +114,7 @@ onMounted(() => {
               <router-link
                 :to="{ name: 'spaceProposals', params: { key: element } }"
               >
-                <Token
+                <BaseToken
                   :space="explore.spaces[element]"
                   :key="element"
                   symbolIndex="space"
