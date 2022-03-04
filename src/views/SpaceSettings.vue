@@ -351,13 +351,13 @@ onMounted(() => {
                 {{ $t(`settings.avatar`) }}
               </template>
               <template v-slot:info>
-                <Upload
+                <ImageUpload
                   class="!ml-2"
                   @input="setAvatarUrl"
                   @loading="setUploadLoading"
                 >
                   {{ $t('upload') }}
-                </Upload>
+                </ImageUpload>
               </template>
             </UiInput>
             <UiInput
