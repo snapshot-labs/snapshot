@@ -117,7 +117,7 @@ onMounted(() => {
               style="height: 266px"
             >
               <div class="relative inline-block mb-2">
-                <BaseToken
+                <SpaceAvatar
                   :space="space"
                   symbolIndex="space"
                   size="82"

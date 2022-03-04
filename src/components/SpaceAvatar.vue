@@ -5,8 +5,7 @@ import { getUrl } from '@snapshot-labs/snapshot.js/src/utils.ts';
 
 const props = defineProps({
   space: Object,
-  size: String,
-  symbolIndex: [String, Number]
+  size: String
 });
 
 const spaceId = computed(() => props.space.id);

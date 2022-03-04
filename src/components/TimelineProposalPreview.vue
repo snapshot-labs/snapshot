@@ -61,7 +61,7 @@ const relativePeriod = computed(() => {
             }"
           >
             <div class="flex items-center">
-              <BaseToken :space="proposal.space" size="28" />
+              <SpaceAvatar :space="proposal.space" size="28" />
               <span
                 class="ml-2 group-hover:text-skin-link"
                 v-text="proposal.space.name"
@@ -69,7 +69,7 @@ const relativePeriod = computed(() => {
             </div>
           </router-link>
           <span v-text="$tc('proposalBy')" />
-          <BaseUser
+          <UserAvatar
             :address="proposal.author"
             :profile="profiles[proposal.author]"
             :proposal="proposal"
