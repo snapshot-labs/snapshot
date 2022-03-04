@@ -180,57 +180,59 @@ export default {
 </script>
 
 <template>
-  <SafeSnapInputAddress
-    v-model="to"
-    :disabled="config.preview"
-    :inputProps="{
-      required: true
-    }"
-    :label="$t('safeSnap.to')"
-    @validAddress="handleAddressChanged()"
-  />
-
-  <UiInput
-    :disabled="config.preview"
-    :error="!validValue && $t('safeSnap.invalidValue')"
-    :modelValue="value"
-    @update:modelValue="handleValueChange($event)"
-  >
-    <template v-slot:label>{{ $t('safeSnap.value') }}</template>
-  </UiInput>
-
-  <UiInput
-    :disabled="config.preview"
-    :error="!validAbi && $t('safeSnap.invalidAbi')"
-    :modelValue="abi"
-    @update:modelValue="handleABIChanged($event)"
-  >
-    <template v-slot:label>ABI</template>
-  </UiInput>
-
-  <div v-if="methods.length">
-    <UiSelect
-      v-model="methodIndex"
+  <div class="space-y-2">
+    <SafeSnapInputAddress
+      v-model="to"
       :disabled="config.preview"
-      @change="handleMethodChanged()"
+      :inputProps="{
+        required: true
+      }"
+      :label="$t('safeSnap.to')"
+      @validAddress="handleAddressChanged()"
+    />
+
+    <UiInput
+      :disabled="config.preview"
+      :error="!validValue && $t('safeSnap.invalidValue')"
+      :modelValue="value"
+      @update:modelValue="handleValueChange($event)"
     >
-      <template v-slot:label>function</template>
-      <option v-for="(method, i) in methods" :key="i" :value="i">
-        {{ method.name }}()
-      </option>
-    </UiSelect>
+      <template v-slot:label>{{ $t('safeSnap.value') }}</template>
+    </UiInput>
 
-    <div v-if="selectedMethod && selectedMethod.inputs.length">
-      <div class="divider"></div>
+    <UiInput
+      :disabled="config.preview"
+      :error="!validAbi && $t('safeSnap.invalidAbi')"
+      :modelValue="abi"
+      @update:modelValue="handleABIChanged($event)"
+    >
+      <template v-slot:label>ABI</template>
+    </UiInput>
 
-      <SafeSnapInputMethodParameter
-        v-for="(input, index) in selectedMethod.inputs"
-        :key="input.name"
+    <div v-if="methods.length">
+      <UiSelect
+        v-model="methodIndex"
         :disabled="config.preview"
-        :modelValue="parameters[index]"
-        :parameter="input"
-        @update:modelValue="handleParameterChanged(index, $event)"
-      />
+        @change="handleMethodChanged()"
+      >
+        <template v-slot:label>function</template>
+        <option v-for="(method, i) in methods" :key="i" :value="i">
+          {{ method.name }}()
+        </option>
+      </UiSelect>
+
+      <div v-if="selectedMethod && selectedMethod.inputs.length">
+        <div class="divider"></div>
+
+        <SafeSnapInputMethodParameter
+          v-for="(input, index) in selectedMethod.inputs"
+          :key="input.name"
+          :disabled="config.preview"
+          :modelValue="parameters[index]"
+          :parameter="input"
+          @update:modelValue="handleParameterChanged(index, $event)"
+        />
+      </div>
     </div>
   </div>
 </template>
