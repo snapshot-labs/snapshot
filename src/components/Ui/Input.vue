@@ -19,7 +19,7 @@ const props = defineProps({
   }
 });
 
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits(['update:modelValue', 'blur']);
 
 function handleInput(e) {
   const input = e.target.value;
@@ -39,42 +39,46 @@ onMounted(() => {
 </script>
 
 <template>
-  <div
-    class="border border-skin-border transition-colors bg-transparent text-skin-link rounded-3xl outline-none leading-[46px] text-left w-full mb-2 flex px-3 focus-within:border-skin-link hover:border-skin-link"
-    :class="{ '!border-red': error, 'cursor-pointer': $slots.selected }"
-  >
-    <div class="text-skin-text mr-2 whitespace-nowrap">
-      <slot name="label" />
+  <div class="min-h-[48px] rounded-3xl overflow-hidden">
+    <div
+      class="border border-skin-border transition-colors rounded-3xl outline-none leading-[46px] text-left w-full flex px-3 focus-within:border-skin-link hover:border-skin-link bg-skin-bg relative z-10"
+      :class="{ '!border-red': !!error }"
+    >
+      <div class="text-skin-text mr-2 whitespace-nowrap">
+        <slot name="label" />
+      </div>
+      <div
+        v-if="$slots.selected"
+        class="flex-auto whitespace-nowrap overflow-x-auto text-skin-link"
+        :class="{ 'cursor-not-allowed text-skin-border': disabled }"
+      >
+        <slot name="selected" />
+      </div>
+      <input
+        v-else
+        :value="modelValue"
+        @input="handleInput"
+        ref="inputRef"
+        :placeholder="placeholder"
+        :type="number ? 'number' : 'text'"
+        :disabled="disabled"
+        class="input flex-auto w-full"
+        :class="[additionalInputClass, { 'cursor-not-allowed': disabled }]"
+        :required="required"
+        :maxlength="maxlength"
+        @blur="emit('blur')"
+      />
+      <slot name="info" />
     </div>
     <div
-      v-if="$slots.selected"
-      class="flex-auto whitespace-nowrap overflow-x-auto"
-      :class="{ 'cursor-not-allowed text-skin-border': disabled }"
+      :class="[
+        's-error relative z-0',
+        !!error ? '-mt-[20px] opacity-100' : '-mt-[48px] opacity-0'
+      ]"
     >
-      <slot name="selected" />
+      <Icon name="warning" class="text-red-500 mr-2" />
+      {{ error || '' }}
+      <!-- The fact that error can be bool or string makes this necessary -->
     </div>
-    <input
-      v-else
-      :value="modelValue"
-      @input="handleInput"
-      ref="inputRef"
-      :placeholder="placeholder"
-      :type="number ? 'number' : 'text'"
-      :disabled="disabled"
-      class="input flex-auto w-full"
-      :class="[additionalInputClass, { 'cursor-not-allowed': disabled }]"
-      :required="required"
-      :maxlength="maxlength"
-    />
-    <slot name="info" />
-    <span
-      v-if="error"
-      v-tippy="{
-        content: error
-      }"
-      class="float-right text-skin-link"
-    >
-      <Icon name="warning" class="!text-red p-1 block pt-2 mt-[6px] -mr-1" />
-    </span>
   </div>
 </template>

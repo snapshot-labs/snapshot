@@ -384,6 +384,7 @@
       "changeOutcome": "परिणाम बदले",
       "executeTxs": "निष्पादित करें लेनदेन बैच {0} का {1}",
       "executed": "सभी लेनदेन निष्पादित किए गए हैं",
+      "rejected": "Proposal rejected",
       "error": "कुछ गलत हो गया",
       "connectWallet": "निष्पादन विवरण देखने के लिए वॉलेट कनेक्ट करें",
       "switchChain": "Switch your wallet to {0} to request execution",

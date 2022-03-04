@@ -384,6 +384,7 @@
       "changeOutcome": "Modifică rezultat",
       "executeTxs": "Execută manunchiul de tranzacții {0} din {1}",
       "executed": "Toate tranzacțiile au fost executate",
+      "rejected": "Proposal rejected",
       "error": "Ceva nu a funcţionat",
       "connectWallet": "Conectează portofelul pentru a vedea detaliile de execuție",
       "switchChain": "Comută portofelul la {0} pentru a solicita execuția",

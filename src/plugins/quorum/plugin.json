@@ -2,7 +2,7 @@
   "name": "Quorum",
   "version": "0.1.0",
   "author": "lbeder",
-  "website": "https://github.com/snapshot-labs/snapshot-plugins/tree/master/src/plugins/quorum",
+  "website": "https://github.com/snapshot-labs/snapshot/tree/develop/src/plugins/quorum",
   "icon": "ipfs://Qmbyq2emXpjv1oFFJnhS3jL8aXZAqnya7zmNtKYXEs8jXa",
   "defaults": {
     "space": {
