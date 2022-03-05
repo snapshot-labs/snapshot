@@ -384,6 +384,7 @@
       "changeOutcome": "Muuta tulos",
       "executeTxs": "Execute transaction batch {0} of {1}",
       "executed": "All transactions have been executed",
+      "rejected": "Proposal rejected",
       "error": "Something went wrong",
       "connectWallet": "Connect wallet to see execution details",
       "switchChain": "Switch your wallet to {0} to request execution",
