@@ -86,22 +86,26 @@ function selectThreedotItem(e) {
           v-if="!notificationsSortedByTime.length"
           class="text-center pb-3 pt-4"
         >
-          <h3 class="text-skin-text">You have no notifications</h3>
+          <h3 class="text-skin-text">
+            {{ $t('notifications.noNotifications') }}
+          </h3>
         </div>
       </div>
     </template>
     <template v-slot:item="{ item }">
       <div class="flex pt-2 pb-1">
-        <div class="flex">
+        <div class="flex w-full">
           <div class="pr-2 -ml-1">
             <Token :space="item.space" size="45" />
           </div>
-          <div class="w-[210px] md:w-[270px]">
-            <div class="leading-tight w-full flex">
-              <div class="text-skin-link max-w-5/12 truncate">
+          <div class="w-full">
+            <div class="leading-tight flex">
+              <div
+                class="text-skin-link max-w-[60px] md:max-w-[120px] truncate"
+              >
                 {{ item.space.name }}
               </div>
-              <div class="text-skin-text ml-1 min-w-7/12">
+              <div class="text-skin-text ml-1">
                 <span v-if="item.event === NotificationEvents.ProposalStart">
                   {{ $t('notifications.proposalStarted') }}
                 </span>
@@ -121,10 +125,9 @@ function selectThreedotItem(e) {
               </span>
             </div>
           </div>
-        </div>
-        <div class="flex items-center">
-          <span v-if="!item.seen" class="s-indicator bg-primary"></span>
-          <span v-else class="w-[12px]"></span>
+          <div class="flex items-center w-[12px] ml-2">
+            <span v-if="!item.seen" class="s-indicator bg-primary"></span>
+          </div>
         </div>
       </div>
     </template>

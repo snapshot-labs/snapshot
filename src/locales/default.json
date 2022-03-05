@@ -223,6 +223,7 @@
   },
   "notifications": {
     "header": "Notifications",
+    "noNotifications": "You have no notifications",
     "proposalStarted": "proposal has started:",
     "proposalEnded": "proposal has ended:",
     "markAllAsRead": "Mark all as read"
