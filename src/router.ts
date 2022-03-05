@@ -9,7 +9,6 @@ import Strategy from '@/views/Strategy.vue';
 import Playground from '@/views/Playground.vue';
 import Delegate from '@/views/Delegate.vue';
 import Timeline from '@/views/Timeline.vue';
-import Notifications from '@/views/Notifications.vue';
 import Space from '@/views/Space.vue';
 import SpaceAbout from '@/views/SpaceAbout.vue';
 import SpaceProposals from '@/views/SpaceProposals.vue';
@@ -83,7 +82,6 @@ if (domain) {
     { path: '/plugins', name: 'plugins', component: Explore },
     { path: '/delegate/:key?/:to?', name: 'delegate', component: Delegate },
     { path: '/timeline', name: 'timeline', component: Timeline },
-    { path: '/notifications', name: 'notifications', component: Notifications },
     { path: '/explore', name: 'explore', component: Timeline },
     { path: '/playground/:name', name: 'playground', component: Playground },
     { path: '/strategy/:name', name: 'strategy', component: Strategy },
