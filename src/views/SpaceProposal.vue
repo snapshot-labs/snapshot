@@ -296,31 +296,20 @@ const truncateMarkdownBody = computed(() => {
               />
               <Badges :address="proposal.author" :members="space.members" />
             </div>
-
             <div class="flex justify-end">
-              <div
-                class="button flex items-center h-full"
+              <TheShareButton
                 v-if="sharingIsSupported"
                 @click="startShare(space, proposal)"
-              >
-                <div class="pr-1 select-none flex">
-                  <Icon name="upload" size="25" />
-                  <span class="ml-1 hidden md:block">Share</span>
-                </div>
-              </div>
-              <UiDropdown
+              />
+              <BaseDropdown
                 v-else
-                top="2.5rem"
-                right="1rem"
-                subMenuWrapperRight="-7px"
                 class="ml-3"
                 @select="selectFromShareDropdown"
                 :items="sharingItems"
               >
-                <div class="pr-1 select-none flex">
-                  <Icon name="upload" size="25" />
-                  <span class="ml-1 hidden md:block">Share</span>
-                </div>
+                <template v-slot:button>
+                  <TheShareButton />
+                </template>
                 <template v-slot:item="{ item }">
                   <Icon
                     v-if="item.icon"
@@ -330,20 +319,19 @@ const truncateMarkdownBody = computed(() => {
                   />
                   {{ item.text }}
                 </template>
-              </UiDropdown>
-              <UiDropdown
-                top="2.5rem"
-                right="0.8rem"
-                subMenuWrapperRight="-6px"
+              </BaseDropdown>
+              <BaseDropdown
                 class="md:ml-2"
                 @select="selectFromThreedotDropdown"
                 :items="threeDotItems"
               >
-                <div class="pl-1">
-                  <UiLoading v-if="clientLoading" />
-                  <Icon v-else name="threedots" size="25" />
-                </div>
-              </UiDropdown>
+                <template v-slot:button>
+                  <div class="pl-1">
+                    <UiLoading v-if="clientLoading" />
+                    <Icon v-else name="threedots" size="25" />
+                  </div>
+                </template>
+              </BaseDropdown>
             </div>
           </div>
 
