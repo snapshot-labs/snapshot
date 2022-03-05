@@ -1,35 +1,47 @@
+/**
+ * A componsable for handling proposal notifications and possibly more.
+ * Seen proposals are stored in the local storage.
+ */
+
 import { watch, ref, computed } from 'vue';
 import { NOTIFICATION_PROPOSALS_QUERY } from '@/helpers/queries';
 import { useApolloQuery } from '@/composables/useApolloQuery';
 import { useFollowSpace } from '@/composables/useFollowSpace';
 import { useWeb3 } from '@/composables/useWeb3';
-
-const { web3, web3Account } = useWeb3();
-const { followingSpaces, loadingFollows } = useFollowSpace();
-const { apolloQuery } = useApolloQuery();
+import { useStorage } from '@vueuse/core';
+import { useRouter } from 'vue-router';
+import uniqBy from 'lodash/uniqBy';
 
 interface Notification {
   id: string;
   event: string;
   time: number;
   title: string;
-  spaceId?: string;
+  space?: { id: string; name: string; avatar: string };
 }
 
 const notifications = ref<Notification[]>([]);
 const loading = ref(false);
+const selectedFilter = ref('all');
 
-const notificationsLoading = computed(
-  () => loading.value || web3.value.authLoading || loadingFollows.value
-);
+const NotificationEvents = {
+  ProposalStart: 'proposal/start',
+  ProposalEnd: 'proposal/end'
+};
+const filters = ['all', 'unread'];
 
 export function useNotifications() {
-  const NotificationEvents = {
-    ProposalStart: 'proposal/start',
-    ProposalEnd: 'proposal/end'
-  };
+  const router = useRouter();
+  const { web3, web3Account } = useWeb3();
+  const { followingSpaces, loadingFollows } = useFollowSpace();
+  const { apolloQuery } = useApolloQuery();
+
+  const notificationsLoading = computed(
+    () => loading.value || web3.value.authLoading || loadingFollows.value
+  );
 
   async function loadProposals(state, date) {
+    if (followingSpaces.value.length === 0) return [];
     return (
       (await apolloQuery(
         {
@@ -50,6 +62,7 @@ export function useNotifications() {
     if (proposals.length === 0) return;
     const now = Number(new Date().getTime() / 1000).toFixed(0);
     proposals.forEach(proposal => {
+      if (notifications.value.some(n => n.id === proposal.id)) return;
       notifications.value.push({
         id: proposal.id,
         event:
@@ -58,7 +71,7 @@ export function useNotifications() {
             : NotificationEvents.ProposalStart,
         time: proposal.end <= now ? proposal.end : proposal.start,
         title: proposal.title,
-        spaceId: proposal.space.id
+        space: proposal.space
       });
     });
   }
@@ -75,10 +88,6 @@ export function useNotifications() {
     mapProposalToNotifications(proposalsObj.flat());
   }
 
-  watch(notifications, () =>
-    notifications.value?.sort((a, b) => b.time - a.time)
-  );
-
   async function loadNotifications() {
     if (notifications.value.length > 0) return;
     if (!web3Account.value) return;
@@ -87,15 +96,55 @@ export function useNotifications() {
     loading.value = false;
   }
 
+  // Reactive local storage with help from vueuse package
+  const readNotificationsStorage = useStorage(
+    `snapshot.unread.${web3Account.value.slice(0, 8).toLowerCase()}`,
+    ['initialValue']
+  );
+
+  function selectNotification(n: { id: string; spaceId: string }) {
+    router.push({
+      name: 'spaceProposal',
+      params: { key: n.spaceId, id: n.id }
+    });
+    readNotificationsStorage.value.push(n.id);
+  }
+
+  // Mark all notifications as read and remove duplicates from local storage
+  function markAllAsRead() {
+    readNotificationsStorage.value = readNotificationsStorage.value.concat(
+      notifications.value.map(n => n.id)
+    );
+    readNotificationsStorage.value = uniqBy(readNotificationsStorage.value);
+  }
+
+  const notificationsSortedByTime = computed(() =>
+    [
+      ...notifications.value.map(n => ({
+        text: n.title,
+        action: { spaceId: n.space?.id, id: n.id },
+        seen: readNotificationsStorage.value.includes(n.id),
+        ...n
+      }))
+    ]
+      .sort((a, b) => b.time - a.time)
+      .filter(n => (selectedFilter.value === 'unread' ? !n.seen : true))
+  );
+
   watch(followingSpaces, () => {
     notifications.value = [];
     loadNotifications();
   });
 
   return {
-    notifications,
+    notifications: computed(() => notifications.value),
+    notificationsSortedByTime,
     notificationsLoading,
     NotificationEvents,
-    loadNotifications
+    selectedFilter,
+    filters,
+    loadNotifications,
+    selectNotification,
+    markAllAsRead
   };
 }

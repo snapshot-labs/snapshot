@@ -75,7 +75,9 @@ onMounted(() => {
     v-if="!domain"
     class="w-[68px] h-screen hidden sm:block fixed m-0 border-r bg-skin-block-bg z-40"
   >
-    <div class="flex flex-col h-full overflow-auto no-scrollbar">
+    <div
+      class="flex flex-col h-full overflow-auto no-scrollbar overscroll-contain"
+    >
       <div
         class="min-h-[78px] h-[78px] flex items-center justify-center bg-skin-bg"
       >

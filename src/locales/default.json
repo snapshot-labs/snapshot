@@ -223,8 +223,9 @@
   },
   "notifications": {
     "header": "Notifications",
-    "proposalStarted": "Proposal started",
-    "proposalEnded": "Proposal ended"
+    "proposalStarted": "proposal has started:",
+    "proposalEnded": "proposal has ended:",
+    "markAllAsRead": "Mark all as read"
   },
   "settings": {
     "header": "Settings",

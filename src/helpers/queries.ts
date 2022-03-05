@@ -122,6 +122,7 @@ export const NOTIFICATION_PROPOSALS_QUERY = gql`
       space {
         id
         name
+        avatar
       }
     }
   }

@@ -86,11 +86,7 @@ async function handleLogin(connector) {
                 class="sm:hidden -ml-2 -mr-2 block align-text-bottom"
               />
             </UiButton>
-            <router-link v-if="web3Account" :to="{ name: 'notifications' }">
-              <UiSidebarButton>
-                <Icon size="20" name="notifications-none" />
-              </UiSidebarButton>
-            </router-link>
+            <NavbarNotifications v-if="web3Account" />
           </div>
         </div>
       </Container>
