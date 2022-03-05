@@ -57,6 +57,6 @@ watch(modalOpen, val => {
       </div>
     </div>
     <div id="modal" />
-    <Notifications />
+    <FlashNotification />
   </div>
 </template>
