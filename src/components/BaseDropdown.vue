@@ -54,7 +54,7 @@ watch(open, () => emit('openChange'));
         v-if="open"
       >
         <ul
-          class="max-h-[80vh] overflow-y-auto no-scrollbar overscroll-contain"
+          class="max-h-[85vh] overflow-y-auto no-scrollbar overscroll-contain"
         >
           <slot name="header" />
           <li
