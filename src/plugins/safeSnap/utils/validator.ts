@@ -1,7 +1,7 @@
 import {
   mustBeEthereumAddress,
   isArrayParameter
-} from '@/../snapshot-plugins/src/plugins/safeSnap';
+} from '../index';
 
 export const isAddress = (type: string): boolean =>
   type.indexOf('address') === 0;

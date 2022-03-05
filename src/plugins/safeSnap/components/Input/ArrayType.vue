@@ -6,7 +6,7 @@ import {
   isInt,
   isStringArray,
   isUint
-} from '@/helpers/validator';
+} from '../../utils/validator';
 
 const getPlaceholder = (name, type) => {
   if (isAddress(type)) {
