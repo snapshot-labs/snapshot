@@ -127,6 +127,7 @@
   "homeLoadmore": "Load more",
   "confirmAction": "Confirm action",
   "or": "or",
+  "share": "Share",
   "errors": {
     "required": "Обов'язкове поле",
     "minLength": "Мінімальна довжина: {0}",
