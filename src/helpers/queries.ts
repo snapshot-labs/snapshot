@@ -44,6 +44,7 @@ export const PROPOSAL_QUERY = gql`
       type
       strategies {
         name
+        network
         params
       }
       space {
@@ -166,6 +167,7 @@ export const SPACES_QUERY = gql`
       }
       strategies {
         name
+        network
         params
       }
       validation {
@@ -206,6 +208,7 @@ export const SPACE_DELEGATE_QUERY = gql`
       network
       strategies {
         name
+        network
         params
       }
     }
