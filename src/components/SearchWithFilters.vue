@@ -56,17 +56,12 @@ function redirectSearch(e) {
       class="flex-auto pr-2"
     />
     <div class="border-l flex items-center" style="height: 44px">
-      <UiDropdown
-        top="3.5rem"
-        right="0.8rem"
-        class="text-left"
-        style="z-index: 1"
-        @select="redirectSearch"
-        :items="searchOptions"
-      >
-        <span v-text="searchSelectedOption" class="ml-3" />
-        <Icon name="arrow-down" class="ml-1 mr-2 pr-1" />
-      </UiDropdown>
+      <BaseDropdown @select="redirectSearch" :items="searchOptions">
+        <template v-slot:button>
+          <span v-text="searchSelectedOption" class="ml-3" />
+          <Icon name="arrow-down" class="ml-1 mr-2 pr-1" />
+        </template>
+      </BaseDropdown>
     </div>
   </div>
 </template>
