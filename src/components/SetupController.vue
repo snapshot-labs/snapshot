@@ -186,7 +186,7 @@ onMounted(async () => {
           </div>
           <div v-else-if="!currentTextRecord && ensOwner">
             <UiButton
-              class="button-outline w-full mb-2"
+              class="button-outline w-full my-2"
               primary
               :disabled="spaceOwnerInputIsValid"
               @click="clickSetRecord"
