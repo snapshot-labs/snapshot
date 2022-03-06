@@ -1919,12 +1919,12 @@ at-least-node@^1.0.0:
   resolved "https://registry.yarnpkg.com/at-least-node/-/at-least-node-1.0.0.tgz#602cd4b46e844ad4effc92a8011a3c46e0238dc2"
   integrity sha512-+q/t7Ekv1EDY2l6Gda6LLiX14rU9TV20Wa3ofeQmwPFZbOMo9DXrLbOjFaaclkXKWidIaopwAObQDqwWtGUjqg==
 
-autolinker@^3.11.0, autolinker@^3.14.3:
-  version "3.14.3"
-  resolved "https://registry.yarnpkg.com/autolinker/-/autolinker-3.14.3.tgz#c61c424bc6077bcf2fc62803803ec2f58e15a7ec"
-  integrity sha512-t81i2bCpS+s+5FIhatoww9DmpjhbdiimuU9ATEuLxtZMQ7jLv9fyFn7SWNG8IkEfD4AmYyirL1ss9k1aqVWRvg==
+autolinker@^3.11.0, autolinker@^3.15.0:
+  version "3.15.0"
+  resolved "https://registry.yarnpkg.com/autolinker/-/autolinker-3.15.0.tgz#03956088648f236642a5783612f9ca16adbbed38"
+  integrity sha512-N/5Dk5AZnqL9k6kkHdFIGLm/0/rRuSnJwqYYhLCJjU7ZtiaJwCBzNTvjzy1zzJADngv/wvtHYcrPHytPnASeFA==
   dependencies:
-    tslib "^1.9.3"
+    tslib "^2.3.0"
 
 autoprefixer@^10.4.2:
   version "10.4.2"
@@ -6769,7 +6769,7 @@ ts-invariant@^0.9.4:
   dependencies:
     tslib "^2.1.0"
 
-tslib@^1.8.1, tslib@^1.9.0, tslib@^1.9.3:
+tslib@^1.8.1, tslib@^1.9.0:
   version "1.14.1"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.14.1.tgz#cf2d38bdc34a134bcaf1091c41f6619e2f672d00"
   integrity sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==
