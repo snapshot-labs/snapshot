@@ -1,0 +1,77 @@
+<script setup lang="ts">
+import { ref, onBeforeUnmount } from 'vue';
+
+defineProps<{
+  items: {
+    action: string;
+    selected: boolean;
+    text: string;
+  }[];
+}>();
+
+const emit = defineEmits(['select']);
+
+const open = ref(false);
+const dropdownEl = ref<any>(null);
+
+function handleClick(action) {
+  emit('select', action);
+  open.value = false;
+}
+
+function close(e) {
+  if (!dropdownEl.value.contains(e.target)) {
+    open.value = false;
+  }
+}
+
+window.addEventListener('click', close);
+
+onBeforeUnmount(() => window.removeEventListener('click', close));
+</script>
+
+<template>
+  <div ref="dropdownEl" class="relative inline-block text-left h-full">
+    <div
+      @click="open = !open"
+      class="button inline-flex items-center h-full cursor-pointer"
+    >
+      <slot name="button" />
+    </div>
+
+    <Transition
+      enter-active-class="transition ease-out duration-100"
+      enter-from-class="transform opacity-0 scale-95"
+      enter-to-class="transform opacity-100 scale-100"
+      leave-active-class="transition ease-in duration-75"
+      leave-from-class="transform opacity-100 scale-100"
+      leave-to-class="transform opacity-0 scale-95"
+    >
+      <div
+        class="origin-top-right border border-skin-border z-10 absolute right-0 mt-2 min-w-[150px] max-w-[400px] rounded-lg bg-skin-header-bg overflow-hidden shadow-lg"
+        v-if="open"
+      >
+        <ul class="overflow-y-auto">
+          <li
+            v-for="item in items"
+            :key="item.text"
+            @click="handleClick(item.action)"
+            :class="{ selected: item.selected }"
+            class="list-none block whitespace-nowrap px-[18px] leading-[38px] cursor-pointer"
+          >
+            <slot name="item" :item="item" :key="item">
+              {{ item.text }}
+            </slot>
+          </li>
+        </ul>
+      </div>
+    </Transition>
+  </div>
+</template>
+
+<style>
+li.selected,
+li:hover {
+  @apply bg-skin-border text-skin-link;
+}
+</style>

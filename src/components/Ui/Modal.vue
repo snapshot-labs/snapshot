@@ -18,7 +18,7 @@ watch(open, (val, prev) => {
 </script>
 
 <template>
-  <transition name="fade">
+  <Transition name="fade">
     <div v-if="open" class="modal mx-auto w-screen">
       <div class="backdrop" @click="$emit('close')" />
       <div class="shell overflow-hidden relative rounded-none md:rounded-lg">
@@ -39,7 +39,7 @@ watch(open, (val, prev) => {
         </a>
       </div>
     </div>
-  </transition>
+  </Transition>
 </template>
 
 <style lang="scss">
