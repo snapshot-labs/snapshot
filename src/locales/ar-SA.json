@@ -384,6 +384,7 @@
       "changeOutcome": "تغيير النتيجة",
       "executeTxs": "تنفيذ دفعة المعاملات {0} من {1}",
       "executed": "تم تنفيذ جميع المعاملات",
+      "rejected": "Proposal rejected",
       "error": "حدث خطأ ما",
       "connectWallet": "قم بتوصيل المحفظة لرؤية تفاصيل التنفيذ",
       "switchChain": "قم بتغيير محفظتك إلى {0} لطلب التنفيذ",

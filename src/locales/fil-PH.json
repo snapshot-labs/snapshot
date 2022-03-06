@@ -384,6 +384,7 @@
       "changeOutcome": "Baguhin ang kinalabasan",
       "executeTxs": "Isagawa ang batch ng transaksyon {0} ng {1}",
       "executed": "Ang lahat ng mga transaksyon ay naisakatuparan",
+      "rejected": "Proposal rejected",
       "error": "May nangyaring mali",
       "connectWallet": "Ikonekta ang wallet upang makita ang mga detalye ng pagpapatupad",
       "switchChain": "Ilipat ang iyong wallet sa {0} upang humiling ng pagpapatupad",

@@ -1,4 +1,5 @@
 <script setup>
+import Config from './components/Config.vue';
 import { computed } from 'vue';
 
 const props = defineProps({
@@ -32,7 +33,7 @@ const safeSnapInput = computed(() => {
 </script>
 
 <template>
-  <PluginSafeSnapConfig
+  <Config
     v-if="proposal.plugins.safeSnap && loadedResults && safeSnapInput.safes"
     :modelValue="safeSnapInput"
     :proposal="proposal"

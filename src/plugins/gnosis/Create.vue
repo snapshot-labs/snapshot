@@ -1,4 +1,5 @@
 <script setup>
+import GnosisConfig from './components/Config.vue';
 import { usePlugins } from '@/composables/usePlugins';
 
 const { pluginIndex } = usePlugins();
@@ -6,7 +7,6 @@ const { pluginIndex } = usePlugins();
 defineProps({
   space: Object,
   proposal: Object,
-  preview: Boolean,
   modelValue: Object
 });
 
@@ -18,11 +18,18 @@ const update = form => {
 
 <template>
   <Block :title="pluginIndex.gnosis.name">
-    <PluginGnosisConfig
+    <GnosisConfig
       v-if="space.plugins.gnosis"
       :proposal="proposal"
       :network="space.network"
-      :modelValue="modelValue?.gnosis || {}"
+      :modelValue="
+        modelValue?.gnosis || {
+          network: '1',
+          conditionId: '',
+          baseTokenAddress: '',
+          quoteCurrencyAddress: ''
+        }
+      "
       @update:modelValue="update"
     />
   </Block>

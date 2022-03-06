@@ -384,6 +384,7 @@
       "changeOutcome": "Cambiare risultato",
       "executeTxs": "Esegui il batch di transazione {0} di {1}",
       "executed": "Tutti gli ordini sono stati eseguiti",
+      "rejected": "Proposal rejected",
       "error": "Qualcosa è andato storto",
       "connectWallet": "Connetti il portafoglio per vedere i dettagli dell'esecuzione",
       "switchChain": "Passa il tuo portafoglio a {0} per richiedere l'esecuzione",

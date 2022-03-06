@@ -1,4 +1,6 @@
 <script setup>
+import CommentBoxCustomBlock from './components/CustomBlock.vue';
+
 defineProps({
   proposal: Object,
   space: Object,
@@ -7,7 +9,7 @@ defineProps({
 </script>
 
 <template>
-  <PluginCommentBoxCustomBlock
+  <CommentBoxCustomBlock
     :proposalId="proposal.id"
     :proposal="proposal"
     :space="space"

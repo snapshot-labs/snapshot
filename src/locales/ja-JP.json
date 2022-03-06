@@ -384,6 +384,7 @@
       "changeOutcome": "Change case outcome",
       "executeTxs": "Execute transaction batch {0} of {1}",
       "executed": "すべてのトランザクションが実行されました",
+      "rejected": "Proposal rejected",
       "error": "何らかの問題が発生しました",
       "connectWallet": "実行の詳細を表示するにはウォレットに接続してください",
       "switchChain": "Switch your wallet to {0} to request execution",

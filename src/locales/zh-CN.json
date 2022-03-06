@@ -384,6 +384,7 @@
       "changeOutcome": "修改结果",
       "executeTxs": "执行交易批处理 {0} / {1}",
       "executed": "所有交易已执行",
+      "rejected": "提案被否决",
       "error": "出了些问题",
       "connectWallet": "连接钱包以查看执行详情",
       "switchChain": "将你的钱包切换到 {0} 以请求执行",

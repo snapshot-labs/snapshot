@@ -384,6 +384,7 @@
       "changeOutcome": "Ubah hasil",
       "executeTxs": "Jalankan transaksi batch {0} dari {1}",
       "executed": "Semua transaksi telah dilaksanakan",
+      "rejected": "Proposal rejected",
       "error": "Terjadi suatu kesalahan",
       "connectWallet": "Hubungkan dompet untuk melihat detail pelaksanaan",
       "switchChain": "Alihkan dompet Anda ke {0} untuk mengajukan pelaksanaan",
