@@ -174,24 +174,26 @@ onMounted(async () => {
             {{ strategy.id }}
           </h1>
           <Block :title="$t('settings.header')">
-            <UiInput @click="modalNetworksOpen = true">
-              <template v-slot:selected>
-                {{
-                  form.network
-                    ? networks[form.network].name
-                    : $t('selectNetwork')
-                }}
-              </template>
-              <template v-slot:label> {{ $t(`settings.network`) }} </template>
-            </UiInput>
-            <UiInput
-              v-model="form.snapshot"
-              @update:modelValue="handleURLUpdate"
-            >
-              <template v-slot:label>
-                {{ $t('snapshot') }}
-              </template>
-            </UiInput>
+            <div class="space-y-2">
+              <UiInput @click="modalNetworksOpen = true">
+                <template v-slot:selected>
+                  {{
+                    form.network
+                      ? networks[form.network].name
+                      : $t('selectNetwork')
+                  }}
+                </template>
+                <template v-slot:label> {{ $t(`settings.network`) }} </template>
+              </UiInput>
+              <UiInput
+                v-model="form.snapshot"
+                @update:modelValue="handleURLUpdate"
+              >
+                <template v-slot:label>
+                  {{ $t('snapshot') }}
+                </template>
+              </UiInput>
+            </div>
             <Block
               v-if="networkError"
               class="mt-4"

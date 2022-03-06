@@ -125,9 +125,7 @@ onMounted(() => {
             <h2>{{ $t('proposals.header') }}</h2>
           </div>
         </div>
-        <UiDropdown
-          top="3.5rem"
-          right="1.25rem"
+        <BaseDropdown
           @select="selectState"
           :items="[
             {
@@ -157,11 +155,13 @@ onMounted(() => {
             }
           ]"
         >
-          <UiButton class="pr-3">
-            {{ $t(`proposals.states.${store.space.filterBy}`) }}
-            <Icon size="14" name="arrow-down" class="mt-1 mr-1" />
-          </UiButton>
-        </UiDropdown>
+          <template v-slot:button>
+            <UiButton class="pr-3">
+              {{ $t(`proposals.states.${store.space.filterBy}`) }}
+              <Icon size="14" name="arrow-down" class="mt-1 mr-1" />
+            </UiButton>
+          </template>
+        </BaseDropdown>
       </div>
       <NoResults
         :block="true"
