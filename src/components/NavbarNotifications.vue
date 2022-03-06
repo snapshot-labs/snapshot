@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useNotifications } from '@/composables/useNotifications';
 import { useIntl } from '@/composables/useIntl';
 
@@ -11,7 +11,8 @@ const {
   selectedFilter,
   filters,
   selectNotification,
-  markAllAsRead
+  markAllAsRead,
+  loadNotifications
 } = useNotifications();
 
 const { formatRelativeTime, longRelativeTimeFormatter } = useIntl();
@@ -21,6 +22,8 @@ const dropdownOpen = ref(false);
 function selectThreedotItem(e) {
   if (e === 'markAllAsRead') markAllAsRead();
 }
+
+onMounted(() => loadNotifications());
 </script>
 
 <template>
