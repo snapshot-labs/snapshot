@@ -63,6 +63,7 @@ const form = ref({
 const validate = computed(() => {
   if (form.value.terms === '') delete form.value.terms;
   if (form.value.avatar === '') delete form.value.avatar;
+  if (form.value.website === '') delete form.value.website;
 
   return validateSchema(schemas.space, form.value);
 });
@@ -410,6 +411,16 @@ onMounted(() => {
             >
               <template v-slot:label>
                 <Icon name="github" />
+              </template>
+            </UiInput>
+            <UiInput
+              v-model="form.website"
+              placeholder="e.g. https://example.com"
+              :error="inputError('website')"
+              @blur="visitedFields.push('website')"
+            >
+              <template v-slot:label>
+                <Icon name="earth" />
               </template>
             </UiInput>
             <UiInput
