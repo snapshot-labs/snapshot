@@ -24,13 +24,11 @@ export function useUsername() {
   });
 
   function setAddress(a) {
-    if (a) address.value = a;
-    else address.value = '';
+    address.value = a ? a : '';
   }
 
   function setProfile(p) {
-    if (p) profile.value = p;
-    else profile.value = null;
+    profile.value = p ? p : null;
   }
 
   return {
