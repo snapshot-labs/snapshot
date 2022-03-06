@@ -86,9 +86,9 @@ function selectThreedotItem(e) {
           v-if="!notificationsSortedByTime.length"
           class="text-center pb-3 pt-4"
         >
-          <h3 class="text-skin-text">
+          <h4 class="text-skin-text">
             {{ $t('notifications.noNotifications') }}
-          </h3>
+          </h4>
         </div>
       </div>
     </template>
