@@ -298,7 +298,7 @@ const truncateMarkdownBody = computed(() => {
             </div>
 
             <div class="flex justify-end">
-              <TheShareButton
+              <ButtonShare
                 v-if="sharingIsSupported"
                 @click="startShare(space, proposal)"
               />
@@ -309,7 +309,7 @@ const truncateMarkdownBody = computed(() => {
                 :items="sharingItems"
               >
                 <template v-slot:button>
-                  <TheShareButton />
+                  <ButtonShare />
                 </template>
                 <template v-slot:item="{ item }">
                   <Icon
