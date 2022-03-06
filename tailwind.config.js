@@ -50,6 +50,9 @@ module.exports = {
       base: ['18px', '24px'],
       sm: ['16px'],
       xs: ['14px']
+    },
+    boxShadow: {
+      lg: '0 0 20px -6px var(--border-color)'
     }
   },
   darkMode: 'class'

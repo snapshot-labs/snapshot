@@ -50,10 +50,8 @@ onMounted(() => {
       <UiButton class="pl-3 pr-0 w-full max-w-[420px]">
         <SearchWithFilters />
       </UiButton>
-      <UiDropdown
-        class="ml-2 mr-auto z-10"
-        top="3.5rem"
-        right="1.25rem"
+      <BaseDropdown
+        class="ml-2 mr-auto"
         @select="selectCategory($event)"
         :items="[
           {
@@ -72,19 +70,21 @@ onMounted(() => {
             }))
         ]"
       >
-        <UiButton
-          class="pr-3 whitespace-nowrap"
-          :disabled="!orderedSpaces.length"
-        >
-          <Icon size="14" name="apps" class="mt-1 mr-2" />
-          <span v-if="selectedCategory">
-            {{ $tc('explore.categories.' + selectedCategory) }}
-          </span>
-          <span v-else>
-            {{ $tc('explore.categories.all') }}
-          </span>
-          <Icon size="14" name="arrow-down" class="mt-1 mx-1" />
-        </UiButton>
+        <template v-slot:button>
+          <UiButton
+            class="pr-3 whitespace-nowrap"
+            :disabled="!orderedSpaces.length"
+          >
+            <Icon size="14" name="apps" class="mt-1 mr-2" />
+            <span v-if="selectedCategory">
+              {{ $tc('explore.categories.' + selectedCategory) }}
+            </span>
+            <span v-else>
+              {{ $tc('explore.categories.all') }}
+            </span>
+            <Icon size="14" name="arrow-down" class="mt-1 mx-1" />
+          </UiButton>
+        </template>
         <template v-slot:item="{ item }">
           <div class="flex">
             <span class="mr-3">{{ item.text }}</span>
@@ -93,7 +93,7 @@ onMounted(() => {
             </span>
           </div>
         </template>
-      </UiDropdown>
+      </BaseDropdown>
       <div class="ml-3 text-right hidden md:block whitespace-nowrap">
         {{
           $tc('spaceCount', [
