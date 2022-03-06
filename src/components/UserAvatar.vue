@@ -5,17 +5,17 @@ import { useUsername } from '@/composables/useUsername';
 
 const props = defineProps<{
   address: string;
-  space: Record<string, any>;
-  proposal: Record<string, any>;
-  profile: { name: string; ens: string };
-  onlyUsername: boolean;
+  space?: { members: string[]; network: string };
+  proposal?: { network: string };
+  profile?: { name: string; ens: string };
+  onlyUsername?: boolean;
 }>();
 
-const { address, profile, username, fullUserName } = useUsername();
+const { username, setProfile, setAddress } = useUsername();
 
 watchEffect(() => {
-  address.value = props.address;
-  profile.value = props.profile;
+  setProfile(props.profile);
+  setAddress(props.address);
 });
 </script>
 
@@ -30,8 +30,7 @@ watchEffect(() => {
             size="18"
             class="mr-2"
           />
-          <span class="w-[50px] truncate sm:hidden">{{ fullUserName }}</span>
-          <span class="truncate hidden sm:block">{{ username }}</span>
+          <span class="truncate w-[50px] sm:w-full">{{ username }}</span>
           <Badges
             v-if="!onlyUsername"
             :address="address"
