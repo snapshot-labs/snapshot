@@ -10,7 +10,7 @@ export interface Strategy {
 
 interface StrategyExample {
   name: string;
-  strategy: { params: any };
+  strategy: Record<string, any>;
   network: string;
   addresses: string[];
   snapshot: number;
