@@ -90,28 +90,30 @@ export default {
 </script>
 
 <template>
-  <SafeSnapInputAddress
-    v-model="to"
-    :disabled="config.preview"
-    :inputProps="{ required: false }"
-    :label="$t('safeSnap.to')"
-  />
+  <div class="space-y-2">
+    <SafeSnapInputAddress
+      v-model="to"
+      :disabled="config.preview"
+      :inputProps="{ required: false }"
+      :label="$t('safeSnap.to')"
+    />
 
-  <UiInput
-    v-model="value"
-    :disabled="config.preview"
-    :error="!isValidValue && $t('safeSnap.invalidValue')"
-  >
-    <template v-slot:label>{{ $t('safeSnap.value') }}</template>
-  </UiInput>
+    <UiInput
+      v-model="value"
+      :disabled="config.preview"
+      :error="!isValidValue && $t('safeSnap.invalidValue')"
+    >
+      <template v-slot:label>{{ $t('safeSnap.value') }}</template>
+    </UiInput>
 
-  <UiInput
-    v-model="data"
-    :disabled="config.preview"
-    :error="!isValidData && $t('safeSnap.invalidData')"
-  >
-    <template v-slot:label>{{ $t('safeSnap.data') }}</template>
-  </UiInput>
+    <UiInput
+      v-model="data"
+      :disabled="config.preview"
+      :error="!isValidData && $t('safeSnap.invalidData')"
+    >
+      <template v-slot:label>{{ $t('safeSnap.data') }}</template>
+    </UiInput>
+  </div>
 </template>
 
 <style lang="scss" scoped>
