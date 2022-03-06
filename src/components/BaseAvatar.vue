@@ -32,7 +32,7 @@ watch(
     <img
       :src="
         imgUrl ||
-        `https://stamp.fyi/avatar/eth:${address}?s=${parseInt(size as string) * 2}`
+        `https://stamp.fyi/avatar/eth:${address}?s=${(parseInt(size as string) || 22) * 2}`
       "
       class="rounded-full"
       :class="!space && 'bg-[color:var(--border-color)]'"
