@@ -127,6 +127,7 @@
   "homeLoadmore": "Mehr",
   "confirmAction": "Bestätigen",
   "or": "or",
+  "share": "Share",
   "errors": {
     "required": "Dieses Feld ist ein Pflichtfeld",
     "minLength": "Mindestlänge ist {0}",
