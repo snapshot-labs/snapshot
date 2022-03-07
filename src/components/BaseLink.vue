@@ -15,7 +15,7 @@ defineProps<{
     v-if="typeof link === 'string'"
     :href="link"
     target="_blank"
-    :class="`whitespace-nowrap ${disabled ? 'pointer-events-none' : ''}`"
+    :class="['whitespace-nowrap', { 'pointer-events-none': disabled }]"
     rel="noopener noreferrer"
   >
     <slot />
@@ -24,7 +24,7 @@ defineProps<{
   <router-link
     v-else
     :to="link"
-    :class="`whitespace-nowrap ${disabled ? 'pointer-events-none' : ''}`"
+    :class="['whitespace-nowrap', { 'pointer-events-none': disabled }]"
   >
     <slot />
   </router-link>
