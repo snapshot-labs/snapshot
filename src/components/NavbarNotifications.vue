@@ -4,7 +4,6 @@ import { useNotifications } from '@/composables/useNotifications';
 import { useIntl } from '@/composables/useIntl';
 
 const {
-  notifications,
   notificationsLoading,
   NotificationEvents,
   notificationsSortedByTime,
@@ -34,7 +33,6 @@ onMounted(() => loadNotifications());
   >
     <template v-slot:button>
       <UiSidebarButton
-        v-if="!notificationsLoading && notifications.length > 0"
         class="!h-[46px] !w-[46px] relative"
         :class="{ '!border-skin-link': dropdownOpen }"
       >
@@ -85,8 +83,11 @@ onMounted(() => loadNotifications());
             {{ filter }}
           </UiButton>
         </div>
+        <div v-if="!notificationsSortedByTime.length && !notificationsLoading">
+          <RowLoading class="!px-0" />
+        </div>
         <div
-          v-if="!notificationsSortedByTime.length"
+          v-else-if="!notificationsSortedByTime.length"
           class="text-center pb-3 pt-4"
         >
           <h4 class="text-skin-text">
