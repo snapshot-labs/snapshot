@@ -106,7 +106,7 @@ function handleChange(e) {
 
     <div
       ref="optionsEl"
-      class="border border-skin-link rounded-lg z-20 mt-2 absolute w-full bg-skin-bg transition-all pt-[19px] overflow-hidden shadow-lg"
+      class="border border-skin-link rounded-b-lg z-20 mt-2 absolute w-full bg-skin-bg transition-all pt-[19px] overflow-hidden shadow-lg"
       :class="
         displayDropdown && options.length
           ? '-mt-[19px] opacity-100'

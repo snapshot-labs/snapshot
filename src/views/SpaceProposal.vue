@@ -54,7 +54,7 @@ const strategies = computed(
 );
 
 const symbols = computed(() =>
-  strategies.value.map(strategy => strategy.params.symbol)
+  strategies.value.map(strategy => strategy.params.symbol || '')
 );
 const threeDotItems = computed(() => {
   const items = [{ text: t('duplicateProposal'), action: 'duplicate' }];

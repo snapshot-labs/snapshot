@@ -127,6 +127,7 @@
   "homeLoadmore": "Încarcă mai multe",
   "confirmAction": "Confirm action",
   "or": "or",
+  "share": "Share",
   "errors": {
     "required": "Câmp obligatoriu",
     "minLength": "Lungime minimă de {0}",
