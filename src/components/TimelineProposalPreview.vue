@@ -3,9 +3,13 @@ import { computed } from 'vue';
 import { shorten } from '@/helpers/utils';
 import removeMd from 'remove-markdown';
 import { useIntl } from '@/composables/useIntl';
-import { relativePeriod } from '@/helpers/utils';
 
-const { formatNumber, formatCompactNumber, formatPercentNumber } = useIntl();
+const {
+  formatNumber,
+  formatCompactNumber,
+  formatPercentNumber,
+  getRelativeProposalPeriod
+} = useIntl();
 
 const props = defineProps({
   proposal: Object,
@@ -111,7 +115,11 @@ const winningChoice = computed(() =>
           }}<span v-if="proposal.scores_state !== 'final'"
             >,
             {{
-              relativePeriod(proposal.state, proposal.start, proposal.end)
+              getRelativeProposalPeriod(
+                proposal.state,
+                proposal.start,
+                proposal.end
+              )
             }}</span
           ><span v-if="proposal.scores_state === 'final'"
             >, {{ formatNumber(proposal.votes) }} votes
