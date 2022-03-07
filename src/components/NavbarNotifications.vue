@@ -83,7 +83,7 @@ onMounted(() => loadNotifications());
             {{ filter }}
           </UiButton>
         </div>
-        <div v-if="!notificationsSortedByTime.length && !notificationsLoading">
+        <div v-if="!notificationsSortedByTime.length && notificationsLoading">
           <RowLoading class="!px-0" />
         </div>
         <div
