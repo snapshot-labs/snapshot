@@ -54,7 +54,7 @@ const strategies = computed(
 );
 
 const symbols = computed(() =>
-  strategies.value.map(strategy => strategy.params.symbol)
+  strategies.value.map(strategy => strategy.params.symbol || '')
 );
 const threeDotItems = computed(() => {
   const items = [{ text: t('duplicateProposal'), action: 'duplicate' }];
@@ -297,7 +297,7 @@ const truncateMarkdownBody = computed(() => {
               <Badges :address="proposal.author" :members="space.members" />
             </div>
             <div class="flex justify-end">
-              <TheShareButton
+              <ShareButton
                 v-if="sharingIsSupported"
                 @click="startShare(space, proposal)"
               />
@@ -308,7 +308,7 @@ const truncateMarkdownBody = computed(() => {
                 :items="sharingItems"
               >
                 <template v-slot:button>
-                  <TheShareButton />
+                  <ShareButton />
                 </template>
                 <template v-slot:item="{ item }">
                   <Icon

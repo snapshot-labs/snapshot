@@ -127,6 +127,7 @@
   "homeLoadmore": "더 불러오기",
   "confirmAction": "액션 확인",
   "or": "또는",
+  "share": "Share",
   "errors": {
     "required": "필드가 필요합니다",
     "minLength": "최소 길이는 {0}",

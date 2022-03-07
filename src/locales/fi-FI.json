@@ -127,6 +127,7 @@
   "homeLoadmore": "Load more",
   "confirmAction": "Confirm action",
   "or": "or",
+  "share": "Share",
   "errors": {
     "required": "Pakollinen kenttä",
     "minLength": "Pienin pituus on {0}",

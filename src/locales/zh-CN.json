@@ -127,6 +127,7 @@
   "homeLoadmore": "加载更多",
   "confirmAction": "确认操作",
   "or": "或者",
+  "share": "Share",
   "errors": {
     "required": "此项为必填项",
     "minLength": "最小长度为 {0}",
