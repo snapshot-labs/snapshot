@@ -1,10 +1,10 @@
 # Plugins
 
-Plugins in Snapshot extend proposal functionality, like visualizing results in a chart or on-chain setteling.
+Plugins in Snapshot extend proposal functionality, like adding extra information or on-chain setteling.
 In essence, a plugin can add additional, custom data to a proposal, which can be used when rendering it or processing the results.
 
 > To avoid confusion, it is worth mentioning here that the plugin system is not meant to support and make available any arbitrary plugin out of the box.
-Rather, it is a curated list of reviewed plugins. Development of new plugins should be coordinated with the core team.
+Rather, it is a curated list of optional core functionality, following a common pattern. Development of new plugins should be coordinated with the snapshot team.
 
 ## Create new plugin
 
@@ -42,8 +42,7 @@ Here's the current list of possible plugin components:
 | --- | --- |
 | `myPlugin/Proposal.vue` | below proposal content |
 | `myPlugin/ProposalSidebar.vue` | proposal sidebar |
-| `myPlugin/Create.vue` | below create proposal content |
-| `myPlugin/CreateSidebar.vue` | create proposal sidebar |
+| `myPlugin/Create.vue` | proposal creation, plugins step  |
 
 In those components you can do everything you can do in any other Vue 3 component. You can split the code across multiple components and import them in one of the above, as well as create your own composables or other helper files to structure your code as you like.
 
@@ -56,7 +55,7 @@ To do something meaningful, a plugin will probably need some awareness of the cu
 ```vue
 <script setup>
 defineProps({
-  id: Object
+  id: Object // the current proposal's id
 });
 </script>
 
@@ -97,7 +96,7 @@ const { web3Account } = useWeb3();
 
 ## Config defaults
 
-Most plugins will require some configuration options, so that the a space admin can enter their token address, API endpoints,... and so on. Defaults can be defined in the `plugin.json` as follows:
+Most plugins will require some configuration options, so that the a space admin can enter their token address, API endpoints and so on. Defaults can be defined in the `plugin.json` as follows:
 
 ```json
 {
@@ -114,7 +113,9 @@ Most plugins will require some configuration options, so that the a space admin 
 }
 ```
 
-Under the `"space"` key you can define global config options for all proposals. The `"proposal"` key let's you define options specific to a single proposal.
+Under the `"space"` key you can define global config options. They can then be set in the plugin section on a space's settings page.
+
+The `"proposal"` key let's you define options specific to a single proposal. This key must be set in order for the `Create.vue` component to be shown in the proposal creation process.
 
 ## Localization
 
@@ -126,7 +127,7 @@ The snapshot.org interface supports multiple languages and new plugins should be
 </template>
 ```
 
-The actual text needs to be added in `src/locales/default.json` (only!) to be available for translators.
+The actual strings needs to be added in `src/locales/default.json` to be available for translators, in order to update the language specific files, like `de-DE.json`. You can add your strings on the highest level in `default.json`, under a unique key, e.g. your plugin's directory name.
 
 ```json
 {
@@ -165,7 +166,3 @@ const {
   </div>
 </template>
 ```
-
-## Hooks (experimental)
-
-Hooks are experimental and are not available in the live environment. If you think you have a good use case for such a feature, feel free to check out the [`experimental/plugin-hooks`](https://github.com/snapshot-labs/snapshot/tree/experimental/plugin-hooks) branch and [read here](https://github.com/snapshot-labs/snapshot/blob/experimental/plugin-hooks/src/plugins/README.md#hooks).

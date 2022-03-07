@@ -2,19 +2,19 @@
 import { computed, ref, inject, watch, onMounted } from 'vue';
 import { useI18n } from '@/composables/useI18n';
 import { getAddress } from '@ethersproject/address';
+import schemas from '@snapshot-labs/snapshot.js/src/schemas';
+import networks from '@snapshot-labs/snapshot.js/src/networks.json';
+import defaults from '@/locales/default';
+import { useWeb3 } from '@/composables/useWeb3';
+import { calcFromSeconds, calcToSeconds } from '@/helpers/utils';
+import { useClient } from '@/composables/useClient';
+import { usePlugins } from '@/composables/usePlugins';
+import { useEns } from '@/composables/useEns';
 import {
   validateSchema,
   getSpaceUri,
   clone
 } from '@snapshot-labs/snapshot.js/src/utils';
-import schemas from '@snapshot-labs/snapshot.js/src/schemas';
-import networks from '@snapshot-labs/snapshot.js/src/networks.json';
-import defaults from '@/locales/default';
-import { useCopy } from '@/composables/useCopy';
-import { useWeb3 } from '@/composables/useWeb3';
-import { calcFromSeconds, calcToSeconds } from '@/helpers/utils';
-import { useClient } from '@/composables/useClient';
-import { usePlugins } from '@/composables/usePlugins';
 
 const props = defineProps({
   space: Object,
@@ -27,7 +27,6 @@ const basicValidation = { name: 'basic', params: {} };
 
 const { pluginIndex } = usePlugins();
 const { t, setPageTitle } = useI18n();
-const { copyToClipboard } = useCopy();
 const { web3Account } = useWeb3();
 const { send, clientLoading } = useClient();
 const notify = inject('notify');
@@ -46,9 +45,11 @@ const modalPluginsOpen = ref(false);
 const modalValidationOpen = ref(false);
 const loaded = ref(false);
 const uploadLoading = ref(false);
-const showErrors = ref(false);
+const visitedFields = ref([]);
+const validateAllFields = ref(false);
 const delayUnit = ref('h');
 const periodUnit = ref('h');
+
 const form = ref({
   strategies: [],
   categories: [],
@@ -80,22 +81,33 @@ const textRecord = computed(() => {
   return `ipns://storage.snapshot.page/registry/${address}/${keyURI}`;
 });
 
-const isOwner = computed(() => {
+const isSpaceController = computed(() => {
   return currentTextRecord.value === textRecord.value;
 });
 
-watch([currentTextRecord, textRecord], () => {
-  // Check if the connected wallet is the space owner and add address to admins
-  // if not already present
-  if (isOwner.value) {
-    if (!form.value.admins.includes(web3Account.value)) {
-      form.value.admins.push(web3Account.value);
-    }
-  }
-});
+const { loadOwnedEnsDomains, ownedEnsDomains } = useEns();
 
-const isAdmin = computed(() => {
-  if (!currentTextRecord.value) return false;
+watch(
+  [currentTextRecord, textRecord],
+  async () => {
+    loadOwnedEnsDomains();
+    // Check if the connected wallet is the space owner and add address to admins
+    // if not already present
+    if (isSpaceController.value) {
+      if (!form.value.admins.includes(web3Account.value)) {
+        form.value.admins.push(web3Account.value);
+      }
+    }
+  },
+  { immediate: true }
+);
+
+const ensOwner = computed(() =>
+  ownedEnsDomains.value?.map(d => d.name).includes(props.spaceKey)
+);
+
+const isSpaceAdmin = computed(() => {
+  if (!props.space || !currentTextRecord.value) return false;
   const admins = (props.space?.admins || []).map(admin => admin.toLowerCase());
   return admins.includes(web3Account.value?.toLowerCase());
 });
@@ -131,12 +143,16 @@ async function handleSubmit() {
     }
   } else {
     console.log('Invalid schema', validate.value);
-    showErrors.value = true;
+    validateAllFields.value = true;
   }
 }
 
 function inputError(field) {
-  if (!isValid.value && !clientLoading.value && showErrors.value) {
+  if (
+    !isValid.value &&
+    !clientLoading.value &&
+    (visitedFields.value.includes(field) || validateAllFields.value)
+  ) {
     const errors = Object.keys(defaults.errors);
     const errorFound = validate.value.find(
       error =>
@@ -150,6 +166,7 @@ function inputError(field) {
     else if (errorFound)
       return t(`errors.${errorFound.keyword}`, [errorFound?.params.limit]);
   }
+  return false;
 }
 
 function handleReset() {
@@ -288,7 +305,7 @@ onMounted(() => {
   <Layout v-bind="$attrs">
     <template #content-left>
       <div class="px-4 md:px-0 mb-3">
-        <router-link :to="{ name: 'spaceProposals' }" class="text-color">
+        <router-link :to="{ name: 'spaceProposals' }" class="text-skin-text">
           <Icon name="back" size="22" class="!align-middle" />
           {{ $t('back') }}
         </router-link>
@@ -296,66 +313,39 @@ onMounted(() => {
       <div class="px-4 md:px-0">
         <h1 v-text="$t('settings.header')" class="mb-4" />
       </div>
-      <Block title="ENS">
-        <UiButton class="flex w-full mb-2 items-center">
-          <input
-            readonly
-            v-model="textRecord"
-            class="input w-full"
-            :placeholder="$t('contectHash')"
-          />
-          <Icon
-            @click="copyToClipboard(textRecord)"
-            name="copy"
-            size="24"
-            class="text-color p-2 -mr-3"
-          />
-        </UiButton>
-        <a
-          :href="`https://app.ens.domains/name/${spaceKey}`"
-          target="_blank"
-          class="mb-2 block"
-        >
-          <UiButton
-            class="button-outline w-full"
-            :primary="!isOwner && !isAdmin"
-          >
-            {{
-              isOwner || isAdmin ? $t('settings.seeENS') : $t('settings.setENS')
-            }}
-            <Icon name="external-link" class="ml-1" />
-          </UiButton>
-        </a>
-        <Block
-          v-if="currentSettings?.name && !currentTextRecord && loaded"
-          :style="'border-color: red !important; margin-bottom: 0 !important;'"
-          class="mb-0 mt-3"
-        >
-          <Icon name="warning" class="mr-2 !text-red" />
-          <span class="!text-red">
-            {{ $t('settings.warningTextRecord') }}
-            <a
-              v-text="$t('learnMore')"
-              href="https://docs.snapshot.org/spaces/create"
-              target="_blank"
-            />
-          </span>
-        </Block>
-      </Block>
       <RowLoadingBlock v-if="!loaded" />
-      <template v-else>
+      <Block v-else-if="!currentTextRecord">
+        <BaseMessageBlock level="warning">
+          {{ $t('settings.needToSetEnsText') }}
+        </BaseMessageBlock>
+        <router-link :to="{ name: 'setup', params: { ensAddress: spaceKey } }">
+          <UiButton no-focus primary class="w-full">
+            {{ $t('settings.setEnsTextRecord') }}
+          </UiButton>
+        </router-link>
+      </Block>
+      <template v-else-if="currentTextRecord">
         <Block :title="$t('settings.profile')">
-          <div class="mb-2">
-            <UiInput v-model="form.name" :error="inputError('name')">
+          <div class="space-y-2 mb-2">
+            <UiInput
+              v-model="form.name"
+              :error="inputError('name')"
+              @blur="visitedFields.push('name')"
+            >
               <template v-slot:label>{{ $t(`settings.name`) }}*</template>
             </UiInput>
-            <UiInput v-model="form.about" :error="inputError('about')">
+            <UiInput
+              v-model="form.about"
+              :error="inputError('about')"
+              @blur="visitedFields.push('about')"
+            >
               <template v-slot:label> {{ $t(`settings.about`) }} </template>
             </UiInput>
             <UiInput
               v-model="form.avatar"
               placeholder="e.g. https://example.com/space.png"
               :error="inputError('avatar')"
+              @blur="visitedFields.push('avatar')"
             >
               <template v-slot:label>
                 {{ $t(`settings.avatar`) }}
@@ -373,6 +363,7 @@ onMounted(() => {
             <UiInput
               @click="modalNetworksOpen = true"
               :error="inputError('network')"
+              @blur="visitedFields.push('network')"
             >
               <template v-slot:selected>
                 {{
@@ -397,6 +388,7 @@ onMounted(() => {
               v-model="form.symbol"
               placeholder="e.g. BAL"
               :error="inputError('symbol')"
+              @blur="visitedFields.push('symbol')"
             >
               <template v-slot:label> {{ $t(`settings.symbol`) }}* </template>
             </UiInput>
@@ -404,6 +396,7 @@ onMounted(() => {
               v-model="form.twitter"
               placeholder="e.g. elonmusk"
               :error="inputError('twitter')"
+              @blur="visitedFields.push('twitter')"
             >
               <template v-slot:label>
                 <Icon name="twitter" />
@@ -413,6 +406,7 @@ onMounted(() => {
               v-model="form.github"
               placeholder="e.g. vbuterin"
               :error="inputError('github')"
+              @blur="visitedFields.push('github')"
             >
               <template v-slot:label>
                 <Icon name="github" />
@@ -422,6 +416,7 @@ onMounted(() => {
               v-model="form.terms"
               placeholder="e.g. https://example.com/terms"
               :error="inputError('terms')"
+              @blur="visitedFields.push('terms')"
             >
               <template v-slot:label> {{ $t(`settings.terms`) }} </template>
             </UiInput>
@@ -436,18 +431,20 @@ onMounted(() => {
             v-model="form.domain"
             placeholder="e.g. vote.balancer.fi"
             :error="inputError('domain')"
+            @blur="visitedFields.push('domain')"
+            class="mb-2"
           >
             <template v-slot:label>
               {{ $t('settings.domain') }}
             </template>
             <template v-slot:info>
-              <a
+              <BaseLink
                 class="flex items-center -mr-1"
-                target="_blank"
-                href="https://docs.snapshot.org/spaces/add-custom-domain"
+                link="https://docs.snapshot.org/spaces/add-custom-domain"
+                hide-external-icon
               >
-                <Icon name="info" size="24" class="text-color" />
-              </a>
+                <Icon name="info" size="24" class="text-skin-text" />
+              </BaseLink>
             </template>
           </UiInput>
           <UiInput @click="modalSkinsOpen = true" :error="inputError('skin')">
@@ -459,7 +456,7 @@ onMounted(() => {
             </template>
           </UiInput>
         </Block>
-        <Block :title="$t('settings.admins')" v-if="isOwner">
+        <Block :title="$t('settings.admins')" v-if="isSpaceController">
           <Block
             :style="`border-color: red !important`"
             v-if="inputError('admins')"
@@ -499,13 +496,9 @@ onMounted(() => {
           >
             <Icon name="warning" class="mr-2 !text-red" />
             <span class="!text-red"> {{ inputError('strategies') }}&nbsp;</span>
-            <a
-              href="https://docs.snapshot.org/spaces/create#strategies"
-              target="_blank"
-              rel="noopener noreferrer"
-              >{{ $t('learnMore') }}
-              <Icon name="external-link" />
-            </a>
+            <BaseLink link="https://docs.snapshot.org/spaces/create#strategies">
+              {{ $t('learnMore') }}
+            </BaseLink>
           </Block>
           <UiButton @click="handleAddStrategy" class="block w-full">
             {{ $t('settings.addStrategy') }}
@@ -530,7 +523,7 @@ onMounted(() => {
               />
             </UiButton>
           </div>
-          <template v-else>
+          <div v-else class="space-y-2">
             <UiInput
               @click="modalValidationOpen = true"
               :error="inputError('settings.validation')"
@@ -553,65 +546,67 @@ onMounted(() => {
                 }}</template>
               </UiInput>
             </div>
-          </template>
+          </div>
         </Block>
         <Block :title="$t('settings.voting')">
-          <UiInput v-model="votingDelay" :number="true" placeholder="e.g. 1">
-            <template v-slot:label>
-              {{ $t('settings.votingDelay') }}
-            </template>
-            <template v-slot:info>
-              <select
-                v-model="delayUnit"
-                class="input text-center mr-[6px] ml-2"
-                required
-              >
-                <option value="h" selected>hours</option>
-                <option value="d">days</option>
-              </select>
-            </template>
-          </UiInput>
-          <UiInput v-model="votingPeriod" :number="true" placeholder="e.g. 5">
-            <template v-slot:label>
-              {{ $t('settings.votingPeriod') }}
-            </template>
-            <template v-slot:info>
-              <select
-                v-model="periodUnit"
-                class="input text-center mr-[6px] ml-2"
-                required
-              >
-                <option value="h" selected>hours</option>
-                <option value="d">days</option>
-              </select>
-            </template>
-          </UiInput>
-          <UiInput
-            v-model="form.voting.quorum"
-            :number="true"
-            placeholder="1000"
-          >
-            <template v-slot:label>
-              {{ $t('settings.quorum') }}
-            </template>
-          </UiInput>
-          <UiInput>
-            <template v-slot:label>
-              {{ $t('settings.type') }}
-            </template>
-            <template v-slot:selected>
-              <div @click="modalVotingTypeOpen = true" class="w-full">
-                {{
-                  form.voting?.type
-                    ? $t(`voting.${form.voting?.type}`)
-                    : $t('settings.anyType')
-                }}
-              </div>
-            </template>
-          </UiInput>
-          <div class="flex items-center space-x-2 pr-2">
-            <Checkbox v-model="form.voting.hideAbstain" />
-            <span>{{ $t('settings.hideAbstain') }}</span>
+          <div class="space-y-2">
+            <UiInput v-model="votingDelay" :number="true" placeholder="e.g. 1">
+              <template v-slot:label>
+                {{ $t('settings.votingDelay') }}
+              </template>
+              <template v-slot:info>
+                <select
+                  v-model="delayUnit"
+                  class="input text-center mr-[6px] ml-2"
+                  required
+                >
+                  <option value="h" selected>hours</option>
+                  <option value="d">days</option>
+                </select>
+              </template>
+            </UiInput>
+            <UiInput v-model="votingPeriod" :number="true" placeholder="e.g. 5">
+              <template v-slot:label>
+                {{ $t('settings.votingPeriod') }}
+              </template>
+              <template v-slot:info>
+                <select
+                  v-model="periodUnit"
+                  class="input text-center mr-[6px] ml-2"
+                  required
+                >
+                  <option value="h" selected>hours</option>
+                  <option value="d">days</option>
+                </select>
+              </template>
+            </UiInput>
+            <UiInput
+              v-model="form.voting.quorum"
+              :number="true"
+              placeholder="1000"
+            >
+              <template v-slot:label>
+                {{ $t('settings.quorum') }}
+              </template>
+            </UiInput>
+            <UiInput>
+              <template v-slot:label>
+                {{ $t('settings.type') }}
+              </template>
+              <template v-slot:selected>
+                <div @click="modalVotingTypeOpen = true" class="w-full">
+                  {{
+                    form.voting?.type
+                      ? $t(`voting.${form.voting?.type}`)
+                      : $t('settings.anyType')
+                  }}
+                </div>
+              </template>
+            </UiInput>
+            <div class="flex items-center space-x-2 pr-2">
+              <Checkbox v-model="form.voting.hideAbstain" />
+              <span>{{ $t('settings.hideAbstain') }}</span>
+            </div>
           </div>
         </Block>
         <Block :title="$t('plugins')">
@@ -645,9 +640,20 @@ onMounted(() => {
         </Block>
       </template>
     </template>
-    <template v-if="(loaded && isOwner) || (loaded && isAdmin)" #sidebar-right>
-      <div class="lg:fixed lg:w-[321px]">
+    <template #sidebar-right>
+      <div
+        v-if="(loaded && isSpaceController) || (loaded && isSpaceAdmin)"
+        class="lg:fixed lg:w-[300px]"
+      >
         <Block :title="$t('actions')">
+          <router-link
+            v-if="ensOwner"
+            :to="{ name: 'setup', params: { ensAddress: spaceKey } }"
+          >
+            <UiButton class="block w-full mb-2">
+              {{ $t('settings.editController') }}
+            </UiButton>
+          </router-link>
           <UiButton @click="handleReset" class="block w-full mb-2">
             {{ $t('reset') }}
           </UiButton>
@@ -662,6 +668,12 @@ onMounted(() => {
           </UiButton>
         </Block>
       </div>
+      <BaseMessageBlock
+        level="warning"
+        v-if="!(isSpaceController || isSpaceAdmin) && currentTextRecord"
+      >
+        {{ $t('settings.connectWithSpaceOwner') }}
+      </BaseMessageBlock>
     </template>
   </Layout>
   <teleport to="#modal">
@@ -678,6 +690,7 @@ onMounted(() => {
     <ModalStrategy
       :open="modalStrategyOpen"
       :strategy="currentStrategy"
+      :defaultNetwork="form.network"
       @close="modalStrategyOpen = false"
       @add="handleSubmitAddStrategy"
     />

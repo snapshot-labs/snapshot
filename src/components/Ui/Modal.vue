@@ -18,7 +18,7 @@ watch(open, (val, prev) => {
 </script>
 
 <template>
-  <transition name="fade">
+  <Transition name="fade">
     <div v-if="open" class="modal mx-auto w-screen">
       <div class="backdrop" @click="$emit('close')" />
       <div class="shell overflow-hidden relative rounded-none md:rounded-lg">
@@ -33,13 +33,13 @@ watch(open, (val, prev) => {
         </div>
         <a
           @click="$emit('close')"
-          class="absolute right-0 top-1 p-4 text-color"
+          class="absolute right-0 top-1 p-4 text-skin-text"
         >
           <Icon name="close" />
         </a>
       </div>
     </div>
-  </transition>
+  </Transition>
 </template>
 
 <style lang="scss">

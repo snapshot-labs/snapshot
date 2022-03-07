@@ -12,7 +12,6 @@ module.exports = {
         'skin-block-bg': 'var(--block-bg)',
         'skin-header-bg': 'var(--header-bg)',
         'skin-heading': 'var(--heading-color)',
-
         blue: '#384aff',
         green: '#21b66f',
         red: '#ff3856'
@@ -43,10 +42,6 @@ module.exports = {
       ],
       mono: ['monospace']
     },
-    fontWeight: {
-      'font-normal': 500,
-      bold: 600
-    },
     fontSize: {
       '2xl': ['36px', '50px'],
       xl: ['28px', '44px'],
@@ -55,6 +50,10 @@ module.exports = {
       base: ['18px', '24px'],
       sm: ['16px'],
       xs: ['14px']
+    },
+    boxShadow: {
+      lg: '0 0 20px -6px var(--border-color)'
     }
-  }
+  },
+  darkMode: 'class'
 };

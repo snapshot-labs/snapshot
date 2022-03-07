@@ -1,10 +1,11 @@
-<script setup>
+<script setup lang="ts">
 import { onMounted, ref, watch } from 'vue';
 
-const props = defineProps({
-  modelValue: Array,
-  definition: Object
-});
+const props = defineProps<{
+  modelValue?: string[];
+  definition: any;
+  error: string;
+}>();
 
 const emit = defineEmits(['update:modelValue']);
 
@@ -20,9 +21,13 @@ function addItem() {
 </script>
 
 <template>
-  <SBase :definition="definition">
+  <SBase :definition="definition" :input="input" :error="error">
     <div v-for="(item, i) in input" :key="i">
-      <SString :definition="{ title: '' }" v-model="input[i]" />
+      <SDefaultString
+        :definition="{ title: '' }"
+        v-model="input[i]"
+        :error="error"
+      />
     </div>
     <a @click="addItem">Add</a>
   </SBase>

@@ -18,7 +18,7 @@ const props = defineProps({
 const ts = (Date.now() / 1e3).toFixed();
 
 const titles = computed(() =>
-  props.strategies.map(strategy => strategy.params.symbol)
+  props.strategies.map(strategy => strategy.params.symbol || '')
 );
 const choices = computed(() =>
   props.proposal.choices
@@ -44,13 +44,13 @@ const hideAbstain = props.space?.voting?.hideAbstain ?? false;
       <template
         v-if="!(proposal.type === 'basic' && hideAbstain && choice.i === 2)"
       >
-        <div class="link-color mb-1 flex justify-between">
+        <div class="text-skin-link mb-1 flex justify-between">
           <div class="flex overflow-hidden">
             <span
               v-tippy="{
                 content: choice.choice.length > 24 ? choice.choice : null
               }"
-              class="mr-1 truncated"
+              class="mr-1 truncate"
               v-text="choice.choice"
             />
 

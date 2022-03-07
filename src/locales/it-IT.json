@@ -5,9 +5,10 @@
   "backToHome": "Inizio",
   "actions": "Azioni",
   "results": "Risultati",
-  "resultsError": "Results could not be calculated. This is often due to a misconfigured strategy or a scaling issue in a smart contract.",
-  "vpError": "Your voting power could not be calculated. This is often due to a misconfigured strategy or a scaling issue in a smart contract.",
+  "resultsError": "Results could not be calculated. This is often due to a misconfigured strategy or an unresponsive RPC node involved in the strategy.",
+  "vpError": "Your voting power could not be calculated. This is often due to a misconfigured strategy or an unresponsive RPC node involved in the strategy.",
   "getHelp": "Get help",
+  "retry": "Retry",
   "currentResults": "Risultati Correnti",
   "reset": "Ripristina predefiniti",
   "save": "Salva",
@@ -124,6 +125,9 @@
   "theCurrentNetwork": "the current network",
   "optional": "(optional)",
   "homeLoadmore": "Load more",
+  "confirmAction": "Confirm action",
+  "or": "or",
+  "share": "Share",
   "errors": {
     "required": "Campo necessario",
     "minLength": "La lunghezza minima è {0}",
@@ -169,7 +173,8 @@
         "member": "Devi essere un membro dello spazio per inviare una proposta.",
         "minScore": "Devi avere un minimo di {0} {1} per inviare una proposta."
       },
-      "customValidation": "È necessario superare la convalida della proposta per inviare una proposta."
+      "customValidation": "È necessario superare la convalida della proposta per inviare una proposta.",
+      "executionError": "Verifying your eligibility to create proposals in this space has failed. This is likely due to a misconfigured strategy."
     }
   },
   "delegate": {
@@ -216,8 +221,9 @@
   },
   "settings": {
     "header": "Impostazioni",
-    "seeENS": "Vedi su ENS",
-    "setENS": "Imposta il record su ENS",
+    "setEnsTextRecord": "Set ENS text record",
+    "editController": "Edit controller",
+    "needToSetEnsText": "Your space settings will be stored in a file on IPFS. Before you can edit them, you need to set an ENS text record pointing to that file.",
     "profile": "Profilo",
     "avatar": "Avatar",
     "name": "Nome",
@@ -253,7 +259,8 @@
     "quorum": "Durata dibattito",
     "type": "Tipo",
     "anyType": "Qualunque",
-    "hideAbstain": "Ignore abstain votes in basic voting results"
+    "hideAbstain": "Ignore abstain votes in basic voting results",
+    "connectWithSpaceOwner": "To modify space settings, connect with a controller or admin wallet."
   },
   "setup": {
     "example": "e.g. yam.eth",
@@ -264,7 +271,22 @@
     "createASpace": "Crea uno spazio",
     "registerEnsButton": "Register",
     "supportedEnsTLDs": "Supported domain endings",
-    "helpDocsAndDiscordLinks": "Not sure how to create a space? Learn more in the <a target='_blank' href='https://docs.snapshot.org/spaces/create'> documentation </a> or join Snapshot <a target='_blank' href='https://discord.gg/snapshot'>Discord</a>."
+    "helpDocsAndDiscordLinks": "Not sure how to create a space? Learn more in the <a target='_blank' href='https://docs.snapshot.org/spaces/create'> documentation </a> or join Snapshot <a target='_blank' href='https://discord.gg/snapshot'>Discord</a>.",
+    "setSpaceController": "Set space controller address on ENS",
+    "editSpaceController": "Edit controller on ENS",
+    "setController": "Set controller",
+    "explainControllerAndEns": "This action requires a transaction on the Ethereum Mainnet which will add a \"snapshot\" TEXT record to your ENS domain.",
+    "confirmToSetAddress": "Are you sure you want to set {address} as the controller of the space?",
+    "controllerHasAuthority": "The controller has full authority over the space settings",
+    "controller": "Controller",
+    "selectEnsForSpace": "Choose ENS address",
+    "textRecordExists": "Currently the space controller is {address}. You can update the space controller by using the form below.",
+    "spaceOwnerAddressPlaceHolder": "e.g. 0xF78108c9BBaF466dd96BE41be728Fe3220b37119",
+    "controllerAddress": "Controller address",
+    "updateController": "Update controller",
+    "connectWithEnsController": "To modify the space controller you need to connect with the wallet that owns {ens}",
+    "seeOnEns": "See on ENS",
+    "goToSettings": "Go to settings"
   },
   "notify": {
     "youDidIt": "Hai finito!",
@@ -275,7 +297,8 @@
     "delegationSuccess": "Delega riuscita",
     "delegationRemoved": "Delega rimossa",
     "proposalCreated": "Proposta creata",
-    "voteSuccessful": "Il tuo voto è dentro!"
+    "voteSuccessful": "Il tuo voto è dentro!",
+    "ensSet": "ENS text record was successfully set"
   },
   "explore": {
     "createStrategy": "Creare strategia",
@@ -362,6 +385,7 @@
       "changeOutcome": "Cambiare risultato",
       "executeTxs": "Esegui il batch di transazione {0} di {1}",
       "executed": "Tutti gli ordini sono stati eseguiti",
+      "rejected": "Proposal rejected",
       "error": "Qualcosa è andato storto",
       "connectWallet": "Connetti il portafoglio per vedere i dettagli dell'esecuzione",
       "switchChain": "Passa il tuo portafoglio a {0} per richiedere l'esecuzione",
@@ -442,5 +466,11 @@
     "week": "1 week | {n} weeks",
     "month": "1 month | {n} months",
     "year": "1 year | {n} years"
+  },
+  "unsupportedNetwork": {
+    "unsupportedNetwork": "Unsupported network",
+    "ensOnlyMainnet": "Snapshot only supports ENS on the ethereum mainnet. Once the space is created, you can use it across multiple chains.",
+    "switchNetworkToMainnet": "To continue, you need to change the network in your wallet to Ethereum Mainnet.",
+    "switchToMainnet": "Switch to Mainnet"
   }
 }

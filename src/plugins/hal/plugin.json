@@ -2,6 +2,6 @@
   "name": "HAL",
   "version": "1.0.0",
   "author": "hal.xyz",
-  "website": "https://github.com/snapshot-labs/snapshot-plugins/tree/master/src/plugins/hal",
+  "website": "https://github.com/snapshot-labs/snapshot/tree/develop/src/plugins/hal",
   "icon": "ipfs://QmUjiGPfzTUT6KZJe2iDNtca9XnuVw9iXwQUB2ncCLSoMK"
 }

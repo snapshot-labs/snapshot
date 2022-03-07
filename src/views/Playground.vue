@@ -10,6 +10,7 @@ import { useCopy } from '@/composables/useCopy';
 import { decode, encode } from '@/helpers/b64';
 import { useIntl } from '@/composables/useIntl';
 import { useStrategies } from '@/composables/useStrategies';
+import { validateSchema } from '@snapshot-labs/snapshot.js/src/utils';
 
 const defaultParams = {
   symbol: 'BAL',
@@ -62,6 +63,10 @@ const form = ref({
   snapshot: '',
   addresses: []
 });
+
+const strategyValidationErrors = computed(
+  () => validateSchema(strategyDefinition.value, form.value.params) ?? []
+);
 
 async function loadScores() {
   scores.value = null;
@@ -158,7 +163,7 @@ onMounted(async () => {
         <div class="px-4 md:px-0 mb-3">
           <router-link
             :to="`/strategy/${$route.params.name}`"
-            class="text-color"
+            class="text-skin-text"
           >
             <Icon name="back" size="22" class="!align-middle" />
             {{ $t('back') }}
@@ -169,24 +174,26 @@ onMounted(async () => {
             {{ strategy.id }}
           </h1>
           <Block :title="$t('settings.header')">
-            <UiInput @click="modalNetworksOpen = true">
-              <template v-slot:selected>
-                {{
-                  form.network
-                    ? networks[form.network].name
-                    : $t('selectNetwork')
-                }}
-              </template>
-              <template v-slot:label> {{ $t(`settings.network`) }} </template>
-            </UiInput>
-            <UiInput
-              v-model="form.snapshot"
-              @update:modelValue="handleURLUpdate"
-            >
-              <template v-slot:label>
-                {{ $t('snapshot') }}
-              </template>
-            </UiInput>
+            <div class="space-y-2">
+              <UiInput @click="modalNetworksOpen = true">
+                <template v-slot:selected>
+                  {{
+                    form.network
+                      ? networks[form.network].name
+                      : $t('selectNetwork')
+                  }}
+                </template>
+                <template v-slot:label> {{ $t(`settings.network`) }} </template>
+              </UiInput>
+              <UiInput
+                v-model="form.snapshot"
+                @update:modelValue="handleURLUpdate"
+              >
+                <template v-slot:label>
+                  {{ $t('snapshot') }}
+                </template>
+              </UiInput>
+            </div>
             <Block
               v-if="networkError"
               class="mt-4"
@@ -201,6 +208,7 @@ onMounted(async () => {
               v-if="strategyDefinition"
               v-model="form.params"
               :definition="strategyDefinition"
+              :errors="strategyValidationErrors"
             />
             <UiButton
               v-else

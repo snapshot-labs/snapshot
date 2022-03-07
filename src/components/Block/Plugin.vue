@@ -12,9 +12,9 @@ defineProps({
 </script>
 
 <template>
-  <Block class="hover-border">
+  <Block class="hover:border-skin-link">
     <div class="flex items-center mb-1">
-      <a target="_blank" class="flex items-center">
+      <a class="flex items-center">
         <UiAvatar
           class="mr-2"
           :imgsrc="getIpfsUrl(plugin.icon)"
@@ -25,31 +25,30 @@ defineProps({
       </a>
       <div class="ml-1">v{{ plugin.version }}</div>
     </div>
-    <div class="flex justify-between items-end text-color">
+    <div class="flex justify-between items-end text-skin-text">
       <div class="flex flex-col">
-        <a
-          :href="`https://github.com/${plugin.author}`"
-          target="_blank"
-          class="text-color"
+        <BaseLink
+          class="text-skin-text"
+          :link="`https://github.com/${plugin.author}`"
+          hide-external-icon
         >
           <Icon name="github" class="mr-1" />
           {{ plugin.author }}
-        </a>
+        </BaseLink>
         {{
           $tc('inSpaces', [
             formatCompactNumber(pluginsSpacesCount?.[plugin.key] ?? 0)
           ])
         }}
       </div>
-      <a
+
+      <BaseLink
         class="flex items-center"
         @click.stop
-        target="_blank"
-        :href="`https://github.com/snapshot-labs/snapshot-plugins/tree/master/src/plugins/${plugin.key}`"
+        :link="`https://github.com/snapshot-labs/snapshot/tree/develop/src/plugins/${plugin.key}`"
       >
         {{ $t('learnMore') }}
-        <Icon size="16" name="external-link" class="text-color ml-1" />
-      </a>
+      </BaseLink>
     </div>
   </Block>
 </template>

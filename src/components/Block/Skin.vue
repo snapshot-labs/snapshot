@@ -13,7 +13,7 @@ defineProps(['skin']);
   <div :class="skin" class="bg-black rounded-none md:rounded-md">
     <Block>
       <UiButton class="mb-2" primary>{{ skin }}</UiButton>
-      <div class="text-color">
+      <div class="text-skin-text">
         {{
           $tc('inSpaces', [formatCompactNumber(skinsSpacesCount[skin] ?? 0)])
         }}

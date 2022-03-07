@@ -3,7 +3,7 @@ import walletconnect from '@snapshot-labs/lock/connectors/walletconnect';
 import torus from '@snapshot-labs/lock/connectors/torus';
 import portis from '@snapshot-labs/lock/connectors/portis';
 import fortmatic from '@snapshot-labs/lock/connectors/fortmatic';
-import { connectors } from '@snapshot-labs/lock/src/utils';
+import connectors from '@/helpers/connectors.json';
 import walletlink from '@snapshot-labs/lock/connectors/walletlink';
 import gnosis from '@snapshot-labs/lock/connectors/gnosis';
 
