@@ -141,11 +141,9 @@ function selectState(e) {
       </div>
     </template>
     <template #content-left>
-      <div class="py-4 px-4 md:px-0">
-        <UiDropdown
-          class="float-right"
-          top="3.5rem"
-          right="1.25rem"
+      <div class="py-4 px-4 md:px-0 flex justify-between">
+        <h2 v-text="$t('timeline')" class="mt-1" />
+        <BaseDropdown
           @select="selectState"
           :items="[
             {
@@ -170,12 +168,13 @@ function selectState(e) {
             }
           ]"
         >
-          <UiButton class="pr-3">
-            {{ $t(`proposals.states.${store.timeline.filterBy}`) }}
-            <Icon size="14" name="arrow-down" class="mt-1 mr-1" />
-          </UiButton>
-        </UiDropdown>
-        <h2 v-text="$t('timeline')" class="mt-1" />
+          <template v-slot:button>
+            <UiButton class="pr-3">
+              {{ $t(`proposals.states.${store.timeline.filterBy}`) }}
+              <Icon size="14" name="arrow-down" class="mt-1 mr-1" />
+            </UiButton>
+          </template>
+        </BaseDropdown>
       </div>
       <div class="md:border-r md:border-l md:rounded-lg border-t border-b">
         <RowLoading

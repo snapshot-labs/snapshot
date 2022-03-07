@@ -18,7 +18,7 @@ const props = defineProps({
 const ts = (Date.now() / 1e3).toFixed();
 
 const titles = computed(() =>
-  props.strategies.map(strategy => strategy.params.symbol)
+  props.strategies.map(strategy => strategy.params.symbol || '')
 );
 const choices = computed(() =>
   props.proposal.choices

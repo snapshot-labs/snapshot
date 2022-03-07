@@ -127,6 +127,7 @@
   "homeLoadmore": "Load more",
   "confirmAction": "Confirm action",
   "or": "or",
+  "share": "Share",
   "errors": {
     "required": "ফিল্ড প্রয়োজন হয়",
     "minLength": "সর্বনিম্ন দৈর্ঘ্য {0}",
