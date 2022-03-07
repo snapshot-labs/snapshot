@@ -127,6 +127,7 @@
   "homeLoadmore": "Load more",
   "confirmAction": "Confirm action",
   "or": "or",
+  "share": "Share",
   "errors": {
     "required": "Trường này là bắt buộc",
     "minLength": "Độ dài tối thiểu là {0}",

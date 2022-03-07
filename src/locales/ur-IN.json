@@ -127,6 +127,7 @@
   "homeLoadmore": "Load more",
   "confirmAction": "Confirm action",
   "or": "or",
+  "share": "Share",
   "errors": {
     "required": "فیلڈ کی ضرورت ہے",
     "minLength": "کم سے کم لمبائی {0} ہے",

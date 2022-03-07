@@ -33,7 +33,7 @@ const format = getChoiceString;
 const { formatNumber, formatCompactNumber } = useIntl();
 
 const symbols = computed(() =>
-  props.strategies.map(strategy => strategy.params.symbol)
+  props.strategies.map(strategy => strategy.params.symbol || '')
 );
 
 async function handleSubmit() {

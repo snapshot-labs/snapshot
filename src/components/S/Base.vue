@@ -4,7 +4,7 @@ import { ref, watch } from 'vue';
 const props = defineProps<{
   definition: any;
   input?: boolean | number | string | string[];
-  error: string;
+  error?: string;
 }>();
 
 const showError = ref(false);
