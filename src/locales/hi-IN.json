@@ -127,6 +127,7 @@
   "homeLoadmore": "Load more",
   "confirmAction": "Confirm action",
   "or": "or",
+  "share": "Share",
   "errors": {
     "required": "यह जानकारी जरुरी है",
     "minLength": "न्यूनतम लंबाई {0}",

@@ -43,7 +43,7 @@ const visibleVotes = computed(() =>
     : sortedVotes.value.slice(0, nbrVisibleVotes.value)
 );
 const titles = computed(() =>
-  props.strategies.map(strategy => strategy.params.symbol)
+  props.strategies.map(strategy => strategy.params.symbol || '')
 );
 
 function isZero() {
