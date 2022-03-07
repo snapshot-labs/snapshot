@@ -76,11 +76,11 @@ onMounted(() => loadNotifications());
             v-for="filter in filters"
             :key="filter"
             @click="selectedFilter = filter"
-            class="capitalize !h-[44px]"
+            class="!h-[44px]"
             :class="{ '!border-skin-link': selectedFilter === filter }"
             no-focus
           >
-            {{ filter }}
+            {{ $t(`notifications.${filter}`) }}
           </UiButton>
         </div>
         <div v-if="!notificationsSortedByTime.length && notificationsLoading">

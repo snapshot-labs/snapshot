@@ -226,7 +226,9 @@
     "noNotifications": "You have no notifications",
     "proposalStarted": "proposal has started:",
     "proposalEnded": "proposal has ended:",
-    "markAllAsRead": "Mark all as read"
+    "markAllAsRead": "Mark all as read",
+    "all": "All",
+    "unread": "Unread"
   },
   "settings": {
     "header": "Settings",
