@@ -26,6 +26,8 @@
   "verifiedSpace": "Verified space",
   "version": "גירסא",
   "timeline": "ציר זמן",
+  "ended": "ended",
+  "started": "started",
   "filters": "פילטרים",
   "allSpaces": "כל המרחבים",
   "submitOnchain": "שלח לבלוקצ'יין",
@@ -218,6 +220,15 @@
       "pending": "בהמתנה",
       "closed": "סגור"
     }
+  },
+  "notifications": {
+    "header": "Notifications",
+    "noNotifications": "You have no notifications",
+    "proposalStarted": "proposal has started:",
+    "proposalEnded": "proposal has ended:",
+    "markAllAsRead": "Mark all as read",
+    "all": "All",
+    "unread": "Unread"
   },
   "settings": {
     "header": "הגדרות",
@@ -441,6 +452,7 @@
       "home": "Snapshot",
       "setup": "Create a space",
       "timeline": "Timeline",
+      "notifications": "Notifications",
       "explore": "Explore",
       "playground": "Playground",
       "space": {
