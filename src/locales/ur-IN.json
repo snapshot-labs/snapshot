@@ -26,6 +26,8 @@
   "verifiedSpace": "Verified space",
   "version": "Version",
   "timeline": "ٹائم لائن",
+  "ended": "ended",
+  "started": "started",
   "filters": "فلٹرز",
   "allSpaces": "تمام مقامات",
   "submitOnchain": "آن لائن جمع کروائیں",
@@ -218,6 +220,15 @@
       "pending": "زیر التواء",
       "closed": "بند"
     }
+  },
+  "notifications": {
+    "header": "Notifications",
+    "noNotifications": "You have no notifications",
+    "proposalStarted": "proposal has started:",
+    "proposalEnded": "proposal has ended:",
+    "markAllAsRead": "Mark all as read",
+    "all": "All",
+    "unread": "Unread"
   },
   "settings": {
     "header": "سیٹنگز",
@@ -441,6 +452,7 @@
       "home": "Snapshot",
       "setup": "Create a space",
       "timeline": "Timeline",
+      "notifications": "Notifications",
       "explore": "Explore",
       "playground": "Playground",
       "space": {
