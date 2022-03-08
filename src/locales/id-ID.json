@@ -26,6 +26,8 @@
   "verifiedSpace": "Ruang terverifikasi",
   "version": "Versi",
   "timeline": "Lini Masa",
+  "ended": "ended",
+  "started": "started",
   "filters": "Filter",
   "allSpaces": "Semua ruang",
   "submitOnchain": "Simpan on-chain",
@@ -164,6 +166,7 @@
     "schedule": "Schedule proposal",
     "delayEnforced": "The space enforces a delay until voting can start",
     "periodEnforced": "The space enforces the duration of the voting period",
+    "typeEnforced": "The space enforces this voting type",
     "edit": "Edit",
     "continue": "Continue",
     "now": "Now",
@@ -218,6 +221,15 @@
       "pending": "Tertunda",
       "closed": "Ditutup"
     }
+  },
+  "notifications": {
+    "header": "Notifications",
+    "noNotifications": "You have no notifications",
+    "proposalStarted": "proposal has started:",
+    "proposalEnded": "proposal has ended:",
+    "markAllAsRead": "Mark all as read",
+    "all": "All",
+    "unread": "Unread"
   },
   "settings": {
     "header": "Pengaturan",
@@ -356,7 +368,6 @@
     "addBatch": "Tambahkan transaksi batch",
     "batch": "Transaksi batch",
     "transactions": "Transaksi",
-    "to": "Ke (alamat)",
     "invalidAddress": "Alamat tidak valid",
     "invalidAmount": "Jumlah tidak valid",
     "invalidValue": "Nilai tidak valid",
@@ -441,6 +452,7 @@
       "home": "Snapshot",
       "setup": "Buat sebuah ruang",
       "timeline": "Lini masa",
+      "notifications": "Notifications",
       "explore": "Telusuri",
       "playground": "Playground",
       "space": {
