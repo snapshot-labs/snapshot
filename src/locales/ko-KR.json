@@ -26,6 +26,8 @@
   "verifiedSpace": "검증된 공간",
   "version": "버전",
   "timeline": "타임라인",
+  "ended": "ended",
+  "started": "started",
   "filters": "필터",
   "allSpaces": "모든 공간",
   "submitOnchain": "온체인 제출",
@@ -218,6 +220,15 @@
       "pending": "보류 중",
       "closed": "종료됨"
     }
+  },
+  "notifications": {
+    "header": "Notifications",
+    "noNotifications": "You have no notifications",
+    "proposalStarted": "proposal has started:",
+    "proposalEnded": "proposal has ended:",
+    "markAllAsRead": "Mark all as read",
+    "all": "All",
+    "unread": "Unread"
   },
   "settings": {
     "header": "설정",
@@ -441,6 +452,7 @@
       "home": "스냅샷",
       "setup": "공간 만들기",
       "timeline": "타임라인",
+      "notifications": "Notifications",
       "explore": "탐색",
       "playground": "플레이그라운드",
       "space": {
