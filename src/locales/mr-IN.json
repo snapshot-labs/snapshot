@@ -26,6 +26,8 @@
   "verifiedSpace": "Verified space",
   "version": "वरशन",
   "timeline": "टाइमलाइन",
+  "ended": "ended",
+  "started": "started",
   "filters": "फिल्टर",
   "allSpaces": "सर्व जागा",
   "submitOnchain": "ओन चैन सबमिट करा",
@@ -218,6 +220,15 @@
       "pending": "पेंडिंग",
       "closed": "बंद"
     }
+  },
+  "notifications": {
+    "header": "Notifications",
+    "noNotifications": "You have no notifications",
+    "proposalStarted": "proposal has started:",
+    "proposalEnded": "proposal has ended:",
+    "markAllAsRead": "Mark all as read",
+    "all": "All",
+    "unread": "Unread"
   },
   "settings": {
     "header": "सेटिंग्ज",
@@ -441,6 +452,7 @@
       "home": "Snapshot",
       "setup": "Create a space",
       "timeline": "Timeline",
+      "notifications": "Notifications",
       "explore": "Explore",
       "playground": "Playground",
       "space": {
