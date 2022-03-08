@@ -368,7 +368,6 @@
     "addBatch": "Ajouter un lot de transactions",
     "batch": "Lot de transactions",
     "transactions": "Transactions",
-    "to": "Vers (adresse)",
     "invalidAddress": "Adresse invalide",
     "invalidAmount": "Montant invalide",
     "invalidValue": "Valeur incorrecte",
