@@ -368,7 +368,6 @@
     "addBatch": "Add transaction batch",
     "batch": "Transaction batch",
     "transactions": "Các giao dịch",
-    "to": "To (address)",
     "invalidAddress": "Địa chỉ không hợp lệ",
     "invalidAmount": "Invalid amount",
     "invalidValue": "Invalid value",
