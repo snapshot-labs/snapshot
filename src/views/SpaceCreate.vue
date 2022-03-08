@@ -426,7 +426,14 @@ const needsPluginConfigs = computed(() =>
       </template>
       <template v-else-if="currentStep === 2">
         <Block :title="$t('create.voting')">
-          <UiInput class="!mb-4" @click="modalVotingTypeOpen = true">
+          <UiInput
+            @click="!space.voting?.type ? (modalVotingTypeOpen = true) : null"
+            :disabled="space.voting?.type"
+            v-tippy="{
+              content: !!space.voting?.type ? $t('create.typeEnforced') : null
+            }"
+            class="!mb-4"
+          >
             <template v-slot:selected>
               <span class="w-full">
                 {{ $t(`voting.${form.type}`) }}
