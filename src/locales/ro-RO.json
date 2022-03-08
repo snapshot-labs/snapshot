@@ -368,7 +368,6 @@
     "addBatch": "Adaugă manunchi de tranzactii",
     "batch": "Manunchi de tranzacții",
     "transactions": "Tranzacții",
-    "to": "Către (adresă)",
     "invalidAddress": "Adresă invalidă",
     "invalidAmount": "Sumă invalidă",
     "invalidValue": "Valoare invalidă",
