@@ -26,6 +26,8 @@
   "verifiedSpace": "Verified space",
   "version": "Versione",
   "timeline": "Cronologia",
+  "ended": "ended",
+  "started": "started",
   "filters": "Filtri",
   "allSpaces": "Tutti gli spazi",
   "submitOnchain": "Invia on-chain",
@@ -218,6 +220,15 @@
       "pending": "In sospeso",
       "closed": "Chiuse"
     }
+  },
+  "notifications": {
+    "header": "Notifications",
+    "noNotifications": "You have no notifications",
+    "proposalStarted": "proposal has started:",
+    "proposalEnded": "proposal has ended:",
+    "markAllAsRead": "Mark all as read",
+    "all": "All",
+    "unread": "Unread"
   },
   "settings": {
     "header": "Impostazioni",
@@ -441,6 +452,7 @@
       "home": "Snapshot",
       "setup": "Create a space",
       "timeline": "Timeline",
+      "notifications": "Notifications",
       "explore": "Explore",
       "playground": "Playground",
       "space": {
