@@ -26,6 +26,8 @@
   "verifiedSpace": "已认证的空间",
   "version": "版本",
   "timeline": "时间线",
+  "ended": "已结束",
+  "started": "已开始",
   "filters": "筛选器",
   "allSpaces": "所有空间",
   "submitOnchain": "链上提交",
@@ -218,6 +220,15 @@
       "pending": "待开始",
       "closed": "已关闭"
     }
+  },
+  "notifications": {
+    "header": "通知",
+    "noNotifications": "您没有通知",
+    "proposalStarted": "提案已开始：",
+    "proposalEnded": "提案已结束：",
+    "markAllAsRead": "全部标记为已读",
+    "all": "全部",
+    "unread": "未读"
   },
   "settings": {
     "header": "设置",
@@ -441,6 +452,7 @@
       "home": "Snapshot",
       "setup": "创建空间",
       "timeline": "时间线",
+      "notifications": "通知",
       "explore": "浏览",
       "playground": "练习场",
       "space": {
