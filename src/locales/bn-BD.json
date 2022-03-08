@@ -26,6 +26,8 @@
   "verifiedSpace": "Verified space",
   "version": "সংস্করণ",
   "timeline": "সময়রেখা",
+  "ended": "ended",
+  "started": "started",
   "filters": "ফিলটার",
   "allSpaces": "সমস্ত জায়গা",
   "submitOnchain": "অন-চেইন জমা দিন",
@@ -218,6 +220,15 @@
       "pending": "পেন্ডিং",
       "closed": "বন্ধ"
     }
+  },
+  "notifications": {
+    "header": "Notifications",
+    "noNotifications": "You have no notifications",
+    "proposalStarted": "proposal has started:",
+    "proposalEnded": "proposal has ended:",
+    "markAllAsRead": "Mark all as read",
+    "all": "All",
+    "unread": "Unread"
   },
   "settings": {
     "header": "সেটিংস",
@@ -441,6 +452,7 @@
       "home": "Snapshot",
       "setup": "Create a space",
       "timeline": "Timeline",
+      "notifications": "Notifications",
       "explore": "Explore",
       "playground": "Playground",
       "space": {
