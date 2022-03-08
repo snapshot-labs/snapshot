@@ -166,6 +166,7 @@
     "schedule": "计划提案",
     "delayEnforced": "空间强制执行直到投票可以开始",
     "periodEnforced": "空间强制执行投票期",
+    "typeEnforced": "The space enforces this voting type",
     "edit": "编辑",
     "continue": "继续",
     "now": "当前",
@@ -222,8 +223,8 @@
     }
   },
   "notifications": {
-    "header": "提醒",
-    "noNotifications": "您没有提醒",
+    "header": "通知",
+    "noNotifications": "您没有通知",
     "proposalStarted": "提案已开始：",
     "proposalEnded": "提案已结束：",
     "markAllAsRead": "全部标记为已读",
