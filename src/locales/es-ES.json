@@ -368,7 +368,6 @@
     "addBatch": "Agrega conjunto de transacciones",
     "batch": "Conjunto de transacciones",
     "transactions": "Transacciones",
-    "to": "Para (dirección)",
     "invalidAddress": "Dirección inválida",
     "invalidAmount": "Monto inválido",
     "invalidValue": "Valor inválido",
