@@ -26,6 +26,8 @@
   "verifiedSpace": "Verified space",
   "version": "Bersyon",
   "timeline": "Timeline",
+  "ended": "ended",
+  "started": "started",
   "filters": "Mga filter",
   "allSpaces": "Lahat ng mga silid",
   "submitOnchain": "Isumite ang on-chain",
@@ -164,6 +166,7 @@
     "schedule": "Schedule proposal",
     "delayEnforced": "The space enforces a delay until voting can start",
     "periodEnforced": "The space enforces the duration of the voting period",
+    "typeEnforced": "The space enforces this voting type",
     "edit": "Edit",
     "continue": "Continue",
     "now": "Now",
@@ -218,6 +221,15 @@
       "pending": "Pending",
       "closed": "Nakasara"
     }
+  },
+  "notifications": {
+    "header": "Notifications",
+    "noNotifications": "You have no notifications",
+    "proposalStarted": "proposal has started:",
+    "proposalEnded": "proposal has ended:",
+    "markAllAsRead": "Mark all as read",
+    "all": "All",
+    "unread": "Unread"
   },
   "settings": {
     "header": "Mga Setting",
@@ -356,7 +368,6 @@
     "addBatch": "Magdagdag ng batch ng transaksyon",
     "batch": "Batch ng transaksyon",
     "transactions": "Transaksyon",
-    "to": "Kay (address)",
     "invalidAddress": "Di-wastong address",
     "invalidAmount": "Di-wastong halaga",
     "invalidValue": "Hindi tama ang halaga",
@@ -441,6 +452,7 @@
       "home": "Snapshot",
       "setup": "Create a space",
       "timeline": "Timeline",
+      "notifications": "Notifications",
       "explore": "Explore",
       "playground": "Playground",
       "space": {
