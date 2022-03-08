@@ -26,6 +26,8 @@
   "verifiedSpace": "Verified space",
   "version": "Sürüm",
   "timeline": "Zaman çizelgesi",
+  "ended": "ended",
+  "started": "started",
   "filters": "Filtreler",
   "allSpaces": "Tümü",
   "submitOnchain": "Zincirde onayla",
@@ -218,6 +220,15 @@
       "pending": "Beklemede",
       "closed": "Kapandı"
     }
+  },
+  "notifications": {
+    "header": "Notifications",
+    "noNotifications": "You have no notifications",
+    "proposalStarted": "proposal has started:",
+    "proposalEnded": "proposal has ended:",
+    "markAllAsRead": "Mark all as read",
+    "all": "All",
+    "unread": "Unread"
   },
   "settings": {
     "header": "Ayarlar",
@@ -441,6 +452,7 @@
       "home": "Snapshot",
       "setup": "Create a space",
       "timeline": "Timeline",
+      "notifications": "Notifications",
       "explore": "Explore",
       "playground": "Playground",
       "space": {
