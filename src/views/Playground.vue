@@ -156,7 +156,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <Layout v-bind="$attrs">
+  <TheLayout v-bind="$attrs">
     <template #content-left>
       <PageLoading v-if="!strategy" />
       <div v-else>
@@ -264,7 +264,7 @@ onMounted(async () => {
           v-for="score in Object.keys(scores[0])"
           :key="score"
         >
-          <User :address="score" :space="form" />
+          <UserAvatar :address="score" :space="form" />
           <span>
             {{ formatCompactNumber(scores[0][score]) }}
             {{ form.params.symbol }}
@@ -272,7 +272,7 @@ onMounted(async () => {
         </div>
       </Block>
     </template>
-  </Layout>
+  </TheLayout>
   <teleport to="#modal">
     <ModalNetworks
       :open="modalNetworksOpen"

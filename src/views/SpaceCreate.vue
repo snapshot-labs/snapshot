@@ -298,7 +298,7 @@ const needsPluginConfigs = computed(() =>
 </script>
 
 <template>
-  <Layout v-bind="$attrs">
+  <TheLayout v-bind="$attrs">
     <template #content-left>
       <div v-if="currentStep === 1" class="px-4 md:px-0 overflow-hidden mb-3">
         <router-link
@@ -640,7 +640,7 @@ const needsPluginConfigs = computed(() =>
         </UiButton>
       </Block>
     </template>
-  </Layout>
+  </TheLayout>
   <teleport to="#modal">
     <ModalSelectDate
       :selectedDate="selectedDate"
