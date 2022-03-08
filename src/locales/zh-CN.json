@@ -222,8 +222,8 @@
     }
   },
   "notifications": {
-    "header": "通知",
-    "noNotifications": "您没有通知",
+    "header": "提醒",
+    "noNotifications": "您没有提醒",
     "proposalStarted": "提案已开始：",
     "proposalEnded": "提案已结束：",
     "markAllAsRead": "全部标记为已读",
