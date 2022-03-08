@@ -30,7 +30,7 @@ watchEffect(() => {
             size="18"
             class="mr-2"
           />
-          <span class="truncate w-[50px] sm:w-full">{{ username }}</span>
+          <span class="truncate w-full">{{ username }}</span>
           <Badges
             v-if="!onlyUsername"
             :address="address"

@@ -280,7 +280,7 @@ const truncateMarkdownBody = computed(() => {
                 <div class="flex items-center">
                   <SpaceAvatar :space="space" size="28" />
                   <span
-                    class="ml-2 group-hover:text-skin-link"
+                    class="ml-2 group-hover:text-skin-link hidden sm:block"
                     v-text="space.name"
                   />
                 </div>
