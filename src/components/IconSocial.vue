@@ -12,10 +12,22 @@ interface SocialProps {
 withDefaults(defineProps<SocialProps>(), {
   size: '24'
 });
+
+const getUrl = (url?: string) => {
+  if (!url) return '';
+  if (url.startsWith('http://') || url.startsWith('https://')) {
+    return url;
+  }
+  return `https://${url}`;
+};
 </script>
 
 <template>
-  <BaseLink :link="social.link" hide-external-icon :disabled="!social.link">
+  <BaseLink
+    :link="getUrl(social.link)"
+    hide-external-icon
+    :disabled="!social.link"
+  >
     <Icon
       :size="size"
       :name="social.icon"
