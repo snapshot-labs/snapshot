@@ -368,7 +368,6 @@
     "addBatch": "트랜잭션 일괄 처리 추가",
     "batch": "트랜잭션 일괄처리",
     "transactions": "트랜잭션",
-    "to": "수신 (주소)",
     "invalidAddress": "잘못된 주소",
     "invalidAmount": "잘못된 금액",
     "invalidValue": "잘못된 값",
