@@ -368,7 +368,6 @@
     "addBatch": "Tambahkan transaksi batch",
     "batch": "Transaksi batch",
     "transactions": "Transaksi",
-    "to": "Ke (alamat)",
     "invalidAddress": "Alamat tidak valid",
     "invalidAmount": "Jumlah tidak valid",
     "invalidValue": "Nilai tidak valid",
