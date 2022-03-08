@@ -22,7 +22,7 @@ const EIP3770_PREFIXES = {
   246: 'ewt',
   73799: 'vt',
   42161: 'arb1',
-  137: 'MATIC'
+  137: 'matic'
 };
 
 async function fetchBalances(network, gnosisSafeAddress) {
