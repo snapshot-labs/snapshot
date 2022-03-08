@@ -6,10 +6,6 @@
     "name": "Chinese",
     "nativeName": "简体中文"
   },
-  "ru-RU": {
-    "name": "Russian",
-    "nativeName": "Русский"
-  },
   "ja-JP": {
     "name": "Japanese",
     "nativeName": "日本語"
@@ -17,9 +13,5 @@
   "ko-KR": {
     "name": "Korean",
     "nativeName": "한국어"
-  },
-  "ar-SA": {
-    "name": "Arabic",
-    "nativeName": "العربية"
   }
 }
