@@ -91,6 +91,10 @@ export function useIntl() {
    */
 
   const defaultRelativeTimeFormatter = getRelativeTimeFormatter();
+  const longRelativeTimeFormatter = getRelativeTimeFormatter({
+    style: 'long',
+    numeric: 'always'
+  });
   const defaultNumberFormatter = getNumberFormatter();
   const compactNumberFormatter = getNumberFormatter({
     notation: 'compact',
@@ -139,6 +143,17 @@ export function useIntl() {
   const formatPercentNumber = (number: number) =>
     formatNumber(number, percentNumberFormatter.value);
 
+  const getRelativeProposalPeriod = (state: any, start: any, end: any): any => {
+    const now: any = new Date().getTime() / 1e3;
+    if (state === 'closed') {
+      return t('endedAgo', [formatRelativeTime(end)]);
+    }
+    if (state === 'active') {
+      return t('proposalTimeLeft', [formatDuration(end - now)]);
+    }
+    return t('startIn', [formatRelativeTime(start)]);
+  };
+
   return {
     getRelativeTimeFormatter,
     getNumberFormatter,
@@ -146,6 +161,8 @@ export function useIntl() {
     formatDuration,
     formatNumber,
     formatCompactNumber,
-    formatPercentNumber
+    formatPercentNumber,
+    getRelativeProposalPeriod,
+    longRelativeTimeFormatter
   };
 }

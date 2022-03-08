@@ -1,6 +1,6 @@
 <script setup>
 import { watch, computed, ref } from 'vue';
-import { useNotifications } from '@/composables/useNotifications';
+import { useFlashNotification } from '@/composables/useFlashNotification';
 import { useModal } from '@/composables/useModal';
 import { useWeb3 } from '@/composables/useWeb3';
 import { signMessage } from '@snapshot-labs/snapshot.js/src/utils/web3';
@@ -60,7 +60,7 @@ async function deleteData(url = '', data = {}, authorization) {
   });
   return response.json(); // parses JSON response into native JavaScript objects
 }
-const { notify } = useNotifications();
+const { notify } = useFlashNotification();
 async function deleteItem() {
   if (loading.value) return;
   try {

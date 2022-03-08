@@ -7,6 +7,7 @@ import { useApp } from '@/composables/useApp';
 import { useDomain } from '@/composables/useDomain';
 import { useUnseenProposals } from '@/composables/useUnseenProposals';
 import { lsSet, lsGet } from '@/helpers/utils';
+import { useUserSkin } from '@/composables/useUserSkin';
 
 const { explore } = useApp();
 const { web3Account } = useWeb3();
@@ -14,6 +15,7 @@ const { loadFollows, followingSpaces } = useFollowSpace();
 const { domain } = useDomain();
 const { proposals, getProposals, lastSeenProposals, updateLastSeenProposal } =
   useUnseenProposals();
+const { toggleSkin, getSkinIcon } = useUserSkin();
 
 const modalAboutOpen = ref(false);
 const modalLangOpen = ref(false);
@@ -73,7 +75,9 @@ onMounted(() => {
     v-if="!domain"
     class="w-[68px] h-screen hidden sm:block fixed m-0 border-r bg-skin-block-bg z-40"
   >
-    <div class="flex flex-col h-full overflow-auto no-scrollbar">
+    <div
+      class="flex flex-col h-full overflow-auto no-scrollbar overscroll-contain"
+    >
       <div
         class="min-h-[78px] h-[78px] flex items-center justify-center bg-skin-bg"
       >
@@ -138,6 +142,13 @@ onMounted(() => {
           <UiSidebarButton @click="modalAboutOpen = true">
             <span class="text-skin-link">?</span>
           </UiSidebarButton>
+          <UiSidebarButton
+            v-if="!domain"
+            @click="toggleSkin"
+            :aria-label="$t('toggleSkin')"
+          >
+            <Icon size="20" class="text-skin-link" :name="getSkinIcon()" />
+          </UiSidebarButton>
         </div>
       </div>
     </div>
@@ -146,7 +157,8 @@ onMounted(() => {
     <ModalAbout
       :open="modalAboutOpen"
       @close="modalAboutOpen = false"
-      @openLang="modalLangOpen = true" />
-    <ModalSelectLanguage :open="modalLangOpen" @close="modalLangOpen = false"
-  /></teleport>
+      @openLang="modalLangOpen = true"
+    />
+    <ModalSelectLanguage :open="modalLangOpen" @close="modalLangOpen = false" />
+  </teleport>
 </template>

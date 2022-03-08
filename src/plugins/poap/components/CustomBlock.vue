@@ -1,8 +1,8 @@
 <script>
 import Plugin from '../index';
-import { useNotifications } from '@/composables/useNotifications';
+import { useFlashNotification } from '@/composables/useFlashNotification';
 
-const { notify } = useNotifications();
+const { notify } = useFlashNotification();
 
 const STATES = {
   NO_POAP: {
