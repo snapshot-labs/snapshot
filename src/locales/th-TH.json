@@ -26,6 +26,8 @@
   "verifiedSpace": "Verified space",
   "version": "รุ่น",
   "timeline": "ระยะเวลา",
+  "ended": "ended",
+  "started": "started",
   "filters": "ตัวกรอง",
   "allSpaces": "พื้นที่ว่างทั้งหมด",
   "submitOnchain": "ส่งแบบออนไลน์",
@@ -218,6 +220,15 @@
       "pending": "รอดำเนินการ",
       "closed": "ปิดแล้ว"
     }
+  },
+  "notifications": {
+    "header": "Notifications",
+    "noNotifications": "You have no notifications",
+    "proposalStarted": "proposal has started:",
+    "proposalEnded": "proposal has ended:",
+    "markAllAsRead": "Mark all as read",
+    "all": "All",
+    "unread": "Unread"
   },
   "settings": {
     "header": "ตั้งค่า",
@@ -441,6 +452,7 @@
       "home": "Snapshot",
       "setup": "Create a space",
       "timeline": "Timeline",
+      "notifications": "Notifications",
       "explore": "Explore",
       "playground": "Playground",
       "space": {
