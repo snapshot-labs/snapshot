@@ -26,6 +26,8 @@
   "verifiedSpace": "Verified space",
   "version": "Версія ",
   "timeline": "Часова шкала",
+  "ended": "ended",
+  "started": "started",
   "filters": "Фільтри",
   "allSpaces": "Всі області",
   "submitOnchain": "Надіслати в ланцюжок",
@@ -164,6 +166,7 @@
     "schedule": "Schedule proposal",
     "delayEnforced": "The space enforces a delay until voting can start",
     "periodEnforced": "The space enforces the duration of the voting period",
+    "typeEnforced": "The space enforces this voting type",
     "edit": "Edit",
     "continue": "Continue",
     "now": "Now",
@@ -218,6 +221,15 @@
       "pending": "Очікує підтвердження",
       "closed": "Закрито"
     }
+  },
+  "notifications": {
+    "header": "Notifications",
+    "noNotifications": "You have no notifications",
+    "proposalStarted": "proposal has started:",
+    "proposalEnded": "proposal has ended:",
+    "markAllAsRead": "Mark all as read",
+    "all": "All",
+    "unread": "Unread"
   },
   "settings": {
     "header": "Налаштування",
@@ -356,7 +368,6 @@
     "addBatch": "Add transaction batch",
     "batch": "Transaction batch",
     "transactions": "Transactions",
-    "to": "To (address)",
     "invalidAddress": "Invalid address",
     "invalidAmount": "Invalid amount",
     "invalidValue": "Invalid value",
@@ -441,6 +452,7 @@
       "home": "Snapshot",
       "setup": "Create a space",
       "timeline": "Timeline",
+      "notifications": "Notifications",
       "explore": "Explore",
       "playground": "Playground",
       "space": {
