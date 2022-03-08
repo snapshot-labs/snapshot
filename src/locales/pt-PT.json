@@ -368,7 +368,6 @@
     "addBatch": "Adicionar lote de transação",
     "batch": "Lote de transação",
     "transactions": "Transações",
-    "to": "Endereçar",
     "invalidAddress": "Adresso inválido",
     "invalidAmount": "Quantia inválida",
     "invalidValue": "Valor inválido",
