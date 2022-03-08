@@ -1,12 +1,16 @@
 <script setup lang="ts">
-import { watch, ref } from 'vue';
+import { watch, ref, withDefaults } from 'vue';
 
-const props = defineProps<{
+interface Props {
   address?: string;
   size?: string;
   imgsrc?: string;
   space?: Record<string, any>;
-}>();
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  size: '22'
+});
 
 const imgUrl = ref<string>('');
 const showImg = ref(false);
@@ -32,14 +36,14 @@ watch(
     <img
       :src="
         imgUrl ||
-        `https://stamp.fyi/avatar/eth:${address}?s=${(parseInt(size as string) || 22) * 2}`
+        `https://stamp.fyi/avatar/eth:${address}?s=${parseInt(size) * 2}`
       "
       class="rounded-full"
       :class="!space && 'bg-[color:var(--border-color)]'"
       :style="{
-        width: `${parseInt(size as string) || 22}px`,
-        height: `${parseInt(size as string) || 22}px`,
-        minWidth: `${parseInt(size as string) || 22}px`
+        width: `${parseInt(size)}px`,
+        height: `${parseInt(size)}px`,
+        minWidth: `${parseInt(size)}px`
       }"
       :alt="space?.name"
     />
