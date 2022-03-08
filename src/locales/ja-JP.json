@@ -26,6 +26,8 @@
   "verifiedSpace": "認証済みのスペース",
   "version": "バージョン",
   "timeline": "タイムライン",
+  "ended": "ended",
+  "started": "started",
   "filters": "フィルター",
   "allSpaces": "すべてのスペース",
   "submitOnchain": "パブリックチェーンへ送信する",
@@ -164,6 +166,7 @@
     "schedule": "Schedule proposal",
     "delayEnforced": "The space enforces a delay until voting can start",
     "periodEnforced": "The space enforces the duration of the voting period",
+    "typeEnforced": "The space enforces this voting type",
     "edit": "Edit",
     "continue": "Continue",
     "now": "Now",
@@ -218,6 +221,15 @@
       "pending": "保留中",
       "closed": "終了"
     }
+  },
+  "notifications": {
+    "header": "Notifications",
+    "noNotifications": "You have no notifications",
+    "proposalStarted": "proposal has started:",
+    "proposalEnded": "proposal has ended:",
+    "markAllAsRead": "Mark all as read",
+    "all": "All",
+    "unread": "Unread"
   },
   "settings": {
     "header": "設定",
@@ -356,7 +368,6 @@
     "addBatch": "トランザクションを追加",
     "batch": "トランザクションを追加",
     "transactions": "トランザクション",
-    "to": "To (address)",
     "invalidAddress": "無効なアドレス",
     "invalidAmount": "無効な金額",
     "invalidValue": "無効な値",
@@ -441,6 +452,7 @@
       "home": "Snapshot",
       "setup": "スペースを作成",
       "timeline": "タイムライン",
+      "notifications": "Notifications",
       "explore": "探す",
       "playground": "プレイグラウンド",
       "space": {
