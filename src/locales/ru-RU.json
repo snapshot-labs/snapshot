@@ -26,6 +26,8 @@
   "verifiedSpace": "Verified space",
   "version": "Версия",
   "timeline": "Хронология",
+  "ended": "ended",
+  "started": "started",
   "filters": "Фильтр",
   "allSpaces": "All spaces",
   "submitOnchain": "Отправить в блокчейн",
@@ -164,6 +166,7 @@
     "schedule": "Schedule proposal",
     "delayEnforced": "The space enforces a delay until voting can start",
     "periodEnforced": "The space enforces the duration of the voting period",
+    "typeEnforced": "The space enforces this voting type",
     "edit": "Edit",
     "continue": "Continue",
     "now": "Now",
@@ -218,6 +221,15 @@
       "pending": "В процессе",
       "closed": "Закрытые"
     }
+  },
+  "notifications": {
+    "header": "Notifications",
+    "noNotifications": "You have no notifications",
+    "proposalStarted": "proposal has started:",
+    "proposalEnded": "proposal has ended:",
+    "markAllAsRead": "Mark all as read",
+    "all": "All",
+    "unread": "Unread"
   },
   "settings": {
     "header": "Настройки",
@@ -356,7 +368,6 @@
     "addBatch": "Добавить пакет транзакций",
     "batch": "Пакет транзакций",
     "transactions": "Транзакции",
-    "to": "На адрес (....)",
     "invalidAddress": "Неверный адрес",
     "invalidAmount": "Недопустимая сумма",
     "invalidValue": "Недопустимое значение",
@@ -441,6 +452,7 @@
       "home": "Snapshot",
       "setup": "Create a space",
       "timeline": "Timeline",
+      "notifications": "Notifications",
       "explore": "Explore",
       "playground": "Playground",
       "space": {
