@@ -26,6 +26,8 @@
   "verifiedSpace": "Verified space",
   "version": "الاصدار",
   "timeline": "الجدول الزمني",
+  "ended": "ended",
+  "started": "started",
   "filters": "المرشحات",
   "allSpaces": "جميع المساحات",
   "submitOnchain": "إرسال على السلسلة",
@@ -164,6 +166,7 @@
     "schedule": "Schedule proposal",
     "delayEnforced": "The space enforces a delay until voting can start",
     "periodEnforced": "The space enforces the duration of the voting period",
+    "typeEnforced": "The space enforces this voting type",
     "edit": "Edit",
     "continue": "Continue",
     "now": "Now",
@@ -218,6 +221,15 @@
       "pending": "في إنتظار المُراجعة",
       "closed": "مغلق"
     }
+  },
+  "notifications": {
+    "header": "Notifications",
+    "noNotifications": "You have no notifications",
+    "proposalStarted": "proposal has started:",
+    "proposalEnded": "proposal has ended:",
+    "markAllAsRead": "Mark all as read",
+    "all": "All",
+    "unread": "Unread"
   },
   "settings": {
     "header": "الإعدادات",
@@ -356,7 +368,6 @@
     "addBatch": "أضف دفعة المعاملات",
     "batch": "دفعة المعاملات",
     "transactions": "العمليات المالية",
-    "to": "إلى (عنوان)",
     "invalidAddress": "العنوان غير صحيح",
     "invalidAmount": "مبلغ غير صحيح",
     "invalidValue": "قيمة غير صحيحة",
@@ -441,6 +452,7 @@
       "home": "Snapshot",
       "setup": "Create a space",
       "timeline": "Timeline",
+      "notifications": "Notifications",
       "explore": "Explore",
       "playground": "Playground",
       "space": {
