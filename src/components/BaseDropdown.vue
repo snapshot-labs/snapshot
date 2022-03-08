@@ -36,7 +36,7 @@ watch(open, () => emit('openChange'));
   <div ref="dropdownEl" class="relative inline-block text-left h-full">
     <div
       @click="open = !open"
-      class="button inline-flex items-center h-full cursor-pointer"
+      class="inline-flex items-center w-full h-full cursor-pointer"
     >
       <slot name="button" />
     </div>
