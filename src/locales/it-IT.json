@@ -368,7 +368,6 @@
     "addBatch": "Aggiungere una linea di transazione",
     "batch": "Gruppo di transazioni",
     "transactions": "Transazioni",
-    "to": "All'indirizzo",
     "invalidAddress": "Indirizzo non valido",
     "invalidAmount": "Importo non valido",
     "invalidValue": "Valore errato",
