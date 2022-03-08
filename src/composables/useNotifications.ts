@@ -3,7 +3,7 @@
  * Seen proposals are stored in the local storage.
  */
 
-import { watch, ref, computed } from 'vue';
+import { watch, ref, computed, onBeforeUnmount } from 'vue';
 import { NOTIFICATION_PROPOSALS_QUERY } from '@/helpers/queries';
 import { useApolloQuery } from '@/composables/useApolloQuery';
 import { useFollowSpace } from '@/composables/useFollowSpace';
@@ -131,9 +131,22 @@ export function useNotifications() {
       .filter(n => (selectedFilter.value === 'unread' ? !n.seen : true))
   );
 
-  watch(followingSpaces, () => {
+  function reloadNotifications() {
     notifications.value = [];
     loadNotifications();
+  }
+
+  watch(followingSpaces, () => {
+    reloadNotifications();
+  });
+
+  // Refresh notifications every 15 minutes and clear on unmount
+  const refreshNotificationInterval = setInterval(
+    reloadNotifications,
+    60000 * 15
+  );
+  onBeforeUnmount(() => {
+    clearInterval(refreshNotificationInterval);
   });
 
   return {
