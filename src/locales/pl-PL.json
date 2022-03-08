@@ -26,6 +26,8 @@
   "verifiedSpace": "Verified space",
   "version": "Wersja",
   "timeline": "Oś czasu",
+  "ended": "ended",
+  "started": "started",
   "filters": "Filtry",
   "allSpaces": "All spaces",
   "submitOnchain": "Wyślij na blockchain",
@@ -218,6 +220,15 @@
       "pending": "W toku",
       "closed": "Zakończone"
     }
+  },
+  "notifications": {
+    "header": "Notifications",
+    "noNotifications": "You have no notifications",
+    "proposalStarted": "proposal has started:",
+    "proposalEnded": "proposal has ended:",
+    "markAllAsRead": "Mark all as read",
+    "all": "All",
+    "unread": "Unread"
   },
   "settings": {
     "header": "Ustawienia",
@@ -441,6 +452,7 @@
       "home": "Snapshot",
       "setup": "Create a space",
       "timeline": "Timeline",
+      "notifications": "Notifications",
       "explore": "Explore",
       "playground": "Playground",
       "space": {
