@@ -82,7 +82,7 @@ export function filterProposals(space, proposal, tab) {
   return false;
 }
 
-export const formatAmount = (amount, maxDecimals) => {
+export function formatAmount(amount, maxDecimals) {
   let out = formatEther(amount);
   if (maxDecimals && out.includes('.')) {
     const parts = out.split('.');
@@ -91,19 +91,19 @@ export const formatAmount = (amount, maxDecimals) => {
     }
   }
   return out + ' ETH';
-};
+}
 
-export const parseAmount = input => {
+export function parseAmount(input) {
   return BigNumber.from(input).toString();
-};
+}
 
-export const parseValueInput = input => {
+export function parseValueInput(input) {
   try {
     return parseAmount(input);
   } catch (e) {
     return input;
   }
-};
+}
 
 export function getNumberWithOrdinal(n) {
   const s = ['th', 'st', 'nd', 'rd'],

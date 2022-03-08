@@ -9,7 +9,14 @@ let auth;
 const defaultNetwork: any =
   import.meta.env.VITE_DEFAULT_NETWORK || Object.keys(networks)[0];
 
-const state = reactive({
+const state = reactive<{
+  account: string;
+  network: string;
+  authLoading: boolean;
+  profile: { name: string; ens: string } | null;
+  walletConnectType: string | null;
+  isTrezor: boolean;
+}>({
   account: '',
   network: networks[defaultNetwork],
   authLoading: false,
