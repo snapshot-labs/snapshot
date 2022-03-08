@@ -368,7 +368,6 @@
     "addBatch": "Magdagdag ng batch ng transaksyon",
     "batch": "Batch ng transaksyon",
     "transactions": "Transaksyon",
-    "to": "Kay (address)",
     "invalidAddress": "Di-wastong address",
     "invalidAmount": "Di-wastong halaga",
     "invalidValue": "Hindi tama ang halaga",
