@@ -368,7 +368,6 @@
     "addBatch": "أضف دفعة المعاملات",
     "batch": "دفعة المعاملات",
     "transactions": "العمليات المالية",
-    "to": "إلى (عنوان)",
     "invalidAddress": "العنوان غير صحيح",
     "invalidAmount": "مبلغ غير صحيح",
     "invalidValue": "قيمة غير صحيحة",
