@@ -368,7 +368,6 @@
     "addBatch": "लेनदेन बैच जोड़ें",
     "batch": "लेनदेन बैच",
     "transactions": "लेनदेन",
-    "to": "भेजने का एड्रेस",
     "invalidAddress": "अमान्य एड्रेस",
     "invalidAmount": "अमान्य रकम",
     "invalidValue": "अमान्य मूल्य",
