@@ -368,7 +368,6 @@
     "addBatch": "Add transaction batch",
     "batch": "Transaction batch",
     "transactions": "Transactions",
-    "to": "To (address)",
     "invalidAddress": "Invalid address",
     "invalidAmount": "Invalid amount",
     "invalidValue": "Invalid value",
