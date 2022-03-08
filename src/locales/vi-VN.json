@@ -26,6 +26,8 @@
   "verifiedSpace": "Verified space",
   "version": "Phiên bản",
   "timeline": "Mốc thời gian",
+  "ended": "ended",
+  "started": "started",
   "filters": "Bộ lọc",
   "allSpaces": "Tất cả các khoảng trống",
   "submitOnchain": "Nộp on chain",
@@ -164,6 +166,7 @@
     "schedule": "Schedule proposal",
     "delayEnforced": "The space enforces a delay until voting can start",
     "periodEnforced": "The space enforces the duration of the voting period",
+    "typeEnforced": "The space enforces this voting type",
     "edit": "Edit",
     "continue": "Continue",
     "now": "Now",
@@ -218,6 +221,15 @@
       "pending": "Đang chờ xử lý",
       "closed": "Đã đóng"
     }
+  },
+  "notifications": {
+    "header": "Notifications",
+    "noNotifications": "You have no notifications",
+    "proposalStarted": "proposal has started:",
+    "proposalEnded": "proposal has ended:",
+    "markAllAsRead": "Mark all as read",
+    "all": "All",
+    "unread": "Unread"
   },
   "settings": {
     "header": "Cài đặt",
@@ -356,7 +368,6 @@
     "addBatch": "Add transaction batch",
     "batch": "Transaction batch",
     "transactions": "Các giao dịch",
-    "to": "To (address)",
     "invalidAddress": "Địa chỉ không hợp lệ",
     "invalidAmount": "Invalid amount",
     "invalidValue": "Invalid value",
@@ -441,6 +452,7 @@
       "home": "Snapshot",
       "setup": "Create a space",
       "timeline": "Timeline",
+      "notifications": "Notifications",
       "explore": "Explore",
       "playground": "Playground",
       "space": {
