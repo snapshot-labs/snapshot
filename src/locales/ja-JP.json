@@ -26,6 +26,8 @@
   "verifiedSpace": "認証済みのスペース",
   "version": "バージョン",
   "timeline": "タイムライン",
+  "ended": "ended",
+  "started": "started",
   "filters": "フィルター",
   "allSpaces": "すべてのスペース",
   "submitOnchain": "パブリックチェーンへ送信する",
@@ -218,6 +220,15 @@
       "pending": "保留中",
       "closed": "終了"
     }
+  },
+  "notifications": {
+    "header": "Notifications",
+    "noNotifications": "You have no notifications",
+    "proposalStarted": "proposal has started:",
+    "proposalEnded": "proposal has ended:",
+    "markAllAsRead": "Mark all as read",
+    "all": "All",
+    "unread": "Unread"
   },
   "settings": {
     "header": "設定",
@@ -441,6 +452,7 @@
       "home": "Snapshot",
       "setup": "スペースを作成",
       "timeline": "タイムライン",
+      "notifications": "Notifications",
       "explore": "探す",
       "playground": "プレイグラウンド",
       "space": {
