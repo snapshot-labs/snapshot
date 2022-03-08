@@ -26,6 +26,8 @@
   "verifiedSpace": "Verified space",
   "version": "Versione",
   "timeline": "Cronologia",
+  "ended": "ended",
+  "started": "started",
   "filters": "Filtri",
   "allSpaces": "Tutti gli spazi",
   "submitOnchain": "Invia on-chain",
@@ -164,6 +166,7 @@
     "schedule": "Schedule proposal",
     "delayEnforced": "The space enforces a delay until voting can start",
     "periodEnforced": "The space enforces the duration of the voting period",
+    "typeEnforced": "The space enforces this voting type",
     "edit": "Edit",
     "continue": "Continue",
     "now": "Now",
@@ -218,6 +221,15 @@
       "pending": "In sospeso",
       "closed": "Chiuse"
     }
+  },
+  "notifications": {
+    "header": "Notifications",
+    "noNotifications": "You have no notifications",
+    "proposalStarted": "proposal has started:",
+    "proposalEnded": "proposal has ended:",
+    "markAllAsRead": "Mark all as read",
+    "all": "All",
+    "unread": "Unread"
   },
   "settings": {
     "header": "Impostazioni",
@@ -356,7 +368,6 @@
     "addBatch": "Aggiungere una linea di transazione",
     "batch": "Gruppo di transazioni",
     "transactions": "Transazioni",
-    "to": "All'indirizzo",
     "invalidAddress": "Indirizzo non valido",
     "invalidAmount": "Importo non valido",
     "invalidValue": "Valore errato",
@@ -441,6 +452,7 @@
       "home": "Snapshot",
       "setup": "Create a space",
       "timeline": "Timeline",
+      "notifications": "Notifications",
       "explore": "Explore",
       "playground": "Playground",
       "space": {
