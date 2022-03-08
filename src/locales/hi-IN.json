@@ -26,6 +26,8 @@
   "verifiedSpace": "Verified space",
   "version": "संस्करण",
   "timeline": "टाइमलाइन",
+  "ended": "ended",
+  "started": "started",
   "filters": "छांटे",
   "allSpaces": "सभी जगहें",
   "submitOnchain": "चेन पर जमा करें",
@@ -164,6 +166,7 @@
     "schedule": "Schedule proposal",
     "delayEnforced": "The space enforces a delay until voting can start",
     "periodEnforced": "The space enforces the duration of the voting period",
+    "typeEnforced": "The space enforces this voting type",
     "edit": "Edit",
     "continue": "Continue",
     "now": "Now",
@@ -218,6 +221,15 @@
       "pending": "बाकी",
       "closed": "बंद"
     }
+  },
+  "notifications": {
+    "header": "Notifications",
+    "noNotifications": "You have no notifications",
+    "proposalStarted": "proposal has started:",
+    "proposalEnded": "proposal has ended:",
+    "markAllAsRead": "Mark all as read",
+    "all": "All",
+    "unread": "Unread"
   },
   "settings": {
     "header": "सेटिंग्स",
@@ -356,7 +368,6 @@
     "addBatch": "लेनदेन बैच जोड़ें",
     "batch": "लेनदेन बैच",
     "transactions": "लेनदेन",
-    "to": "भेजने का एड्रेस",
     "invalidAddress": "अमान्य एड्रेस",
     "invalidAmount": "अमान्य रकम",
     "invalidValue": "अमान्य मूल्य",
@@ -441,6 +452,7 @@
       "home": "Snapshot",
       "setup": "Create a space",
       "timeline": "Timeline",
+      "notifications": "Notifications",
       "explore": "Explore",
       "playground": "Playground",
       "space": {
