@@ -13,10 +13,9 @@ defineProps(['network']);
 <template>
   <Block class="hover:border-skin-link">
     <div class="flex items-start mb-3">
-      <UiAvatar
+      <BaseAvatar
         class="mr-2"
         :imgsrc="getIpfsUrl(network.imageIPFS)"
-        :seed="network.key"
         size="28"
       />
       <div class="overflow-hidden">
