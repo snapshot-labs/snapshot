@@ -368,7 +368,6 @@
     "addBatch": "添加交易批次",
     "batch": "交易批次",
     "transactions": "交易次数",
-    "to": "至 (地址)",
     "invalidAddress": "无效地址",
     "invalidAmount": "无效金额",
     "invalidValue": "无效值",
