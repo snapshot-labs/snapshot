@@ -26,6 +26,8 @@
   "verifiedSpace": "검증된 공간",
   "version": "버전",
   "timeline": "타임라인",
+  "ended": "ended",
+  "started": "started",
   "filters": "필터",
   "allSpaces": "모든 공간",
   "submitOnchain": "온체인 제출",
@@ -164,6 +166,7 @@
     "schedule": "일정 제안",
     "delayEnforced": "투표가 시작될 때까지 공간이 지연됩니다.",
     "periodEnforced": "공간은 투표 기간을 적용합니다.",
+    "typeEnforced": "The space enforces this voting type",
     "edit": "편집",
     "continue": "계속",
     "now": "현재",
@@ -218,6 +221,15 @@
       "pending": "보류 중",
       "closed": "종료됨"
     }
+  },
+  "notifications": {
+    "header": "Notifications",
+    "noNotifications": "You have no notifications",
+    "proposalStarted": "proposal has started:",
+    "proposalEnded": "proposal has ended:",
+    "markAllAsRead": "Mark all as read",
+    "all": "All",
+    "unread": "Unread"
   },
   "settings": {
     "header": "설정",
@@ -356,7 +368,6 @@
     "addBatch": "트랜잭션 일괄 처리 추가",
     "batch": "트랜잭션 일괄처리",
     "transactions": "트랜잭션",
-    "to": "수신 (주소)",
     "invalidAddress": "잘못된 주소",
     "invalidAmount": "잘못된 금액",
     "invalidValue": "잘못된 값",
@@ -441,6 +452,7 @@
       "home": "스냅샷",
       "setup": "공간 만들기",
       "timeline": "타임라인",
+      "notifications": "Notifications",
       "explore": "탐색",
       "playground": "플레이그라운드",
       "space": {
