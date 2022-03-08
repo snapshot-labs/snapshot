@@ -26,6 +26,8 @@
   "verifiedSpace": "Verified space",
   "version": "వెర్షన్",
   "timeline": "కాలక్రమం",
+  "ended": "ended",
+  "started": "started",
   "filters": "Filters",
   "allSpaces": "All spaces",
   "submitOnchain": "ఆన్-చైన్ సమర్పించండి",
@@ -218,6 +220,15 @@
       "pending": "పెండింగ్",
       "closed": "మూసివేయబడింది"
     }
+  },
+  "notifications": {
+    "header": "Notifications",
+    "noNotifications": "You have no notifications",
+    "proposalStarted": "proposal has started:",
+    "proposalEnded": "proposal has ended:",
+    "markAllAsRead": "Mark all as read",
+    "all": "All",
+    "unread": "Unread"
   },
   "settings": {
     "header": "సెట్టింగులు",
@@ -441,6 +452,7 @@
       "home": "Snapshot",
       "setup": "Create a space",
       "timeline": "Timeline",
+      "notifications": "Notifications",
       "explore": "Explore",
       "playground": "Playground",
       "space": {
