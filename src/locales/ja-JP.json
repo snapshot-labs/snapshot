@@ -368,7 +368,6 @@
     "addBatch": "トランザクションを追加",
     "batch": "トランザクションを追加",
     "transactions": "トランザクション",
-    "to": "To (address)",
     "invalidAddress": "無効なアドレス",
     "invalidAmount": "無効な金額",
     "invalidValue": "無効な値",
