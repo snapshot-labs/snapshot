@@ -34,15 +34,12 @@ const socials = [
         <div>© {{ yearNow }} Snapshot Labs.</div>
         <div class="flex items-center">
           <div class="text-center space-x-3">
-            <span v-for="social in socials" :key="social">
-              <BaseLink :link="social.link" hide-external-icon>
-                <Icon
-                  size="30"
-                  class="hover:opacity-80 text-skin-text"
-                  :name="social.icon"
-                />
-              </BaseLink>
-            </span>
+            <IconSocial
+              v-for="social in socials"
+              :key="social.icon"
+              :social="social"
+              :size="30"
+            />
           </div>
           <SelectLanguageButton class="ml-4" />
         </div>

@@ -1,46 +1,38 @@
 <script setup lang="ts">
+import { computed } from 'vue';
+
 const props = defineProps<{ space?: Record<string, any> }>();
 
-const socials = [
-  {
-    social: 'twitter',
-    icon: 'twitter',
-    path:
-      (props.space?.twitter && `https://twitter.com/${props.space?.twitter}`) ||
-      ''
-  },
-  {
-    icon: 'github',
-    social: 'github',
-    path:
-      (props.space?.github && `https://github.com/${props.space?.github}`) || ''
-  },
-  {
-    icon: 'earth',
-    social: 'website',
-    path: (props.space?.website && props.space?.website) || ''
-  }
-];
+const socials = computed(() => {
+  return [
+    {
+      icon: 'twitter',
+      link: props.space?.twitter
+        ? `https://twitter.com/${props.space?.twitter}`
+        : ''
+    },
+    {
+      icon: 'github',
+      link: props.space?.github
+        ? `https://github.com/${props.space?.github}`
+        : ''
+    },
+    {
+      icon: 'earth',
+      link: props.space?.website || ''
+    }
+  ];
+});
 </script>
 
 <template>
   <div class="text-center border-t bg-skin-header-bg">
     <div class="my-3 mx-2 flex justify-center items-center space-x-3">
-      <BaseLink
+      <IconSocial
         v-for="social in socials"
-        :link="social.path"
-        :key="social.social"
-        hide-external-icon
-        :disabled="!social.path"
-      >
-        <Icon
-          size="24"
-          :name="social.icon"
-          :class="
-            social.path ? 'hover:opacity-80 text-skin-text' : 'opacity-20'
-          "
-        />
-      </BaseLink>
+        :key="social.icon"
+        :social="social"
+      />
     </div>
   </div>
 </template>
