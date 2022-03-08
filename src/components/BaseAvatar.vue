@@ -1,26 +1,30 @@
-<script setup>
-import { watch, ref } from 'vue';
+<script setup lang="ts">
+import { watch, ref, withDefaults } from 'vue';
 
-const props = defineProps({
-  address: String,
-  size: String,
-  imgsrc: String,
-  space: Object
+interface Props {
+  address?: string;
+  size?: string;
+  imgsrc?: string;
+  space?: Record<string, any>;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  size: '22'
 });
 
-const imgUrl = ref(null);
+const imgUrl = ref<string>('');
 const showImg = ref(false);
 
 watch(
   () => props.imgsrc,
   () => {
-    if (props.space) {
+    if (props.imgsrc) {
       const img = new Image();
       img.onload = () => {
         imgUrl.value = img.src;
         showImg.value = true;
       };
-      img.src = props.imgsrc;
+      img.src = props.imgsrc as string;
     }
   },
   { immediate: true }
@@ -37,9 +41,9 @@ watch(
       class="rounded-full"
       :class="!space && 'bg-[color:var(--border-color)]'"
       :style="{
-        width: `${parseInt(size) || 22}px`,
-        height: `${parseInt(size) || 22}px`,
-        minWidth: `${parseInt(size) || 22}px`
+        width: `${parseInt(size)}px`,
+        height: `${parseInt(size)}px`,
+        minWidth: `${parseInt(size)}px`
       }"
       :alt="space?.name"
     />

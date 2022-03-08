@@ -1,13 +1,13 @@
-<script setup>
+<script setup lang="ts">
 import { computed } from 'vue';
 import { formatBytes32String } from '@ethersproject/strings';
-import { getUrl } from '@snapshot-labs/snapshot.js/src/utils.ts';
+import { getUrl } from '@snapshot-labs/snapshot.js/src/utils';
 
-const props = defineProps({
-  space: Object,
-  size: String,
-  symbolIndex: [String, Number]
-});
+const props = defineProps<{
+  space: Record<string, any>;
+  size?: string;
+  symbolIndex?: string | number;
+}>();
 
 const spaceId = computed(() => props.space.id);
 
@@ -25,7 +25,7 @@ const spaceAddress = computed(() => {
 
 <template>
   <span class="inline-block align-middle leading-none">
-    <UiAvatar
+    <BaseAvatar
       :space="space"
       :imgsrc="url"
       :address="spaceAddress"

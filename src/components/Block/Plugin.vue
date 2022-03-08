@@ -15,12 +15,7 @@ defineProps({
   <Block class="hover:border-skin-link">
     <div class="flex items-center mb-1">
       <a class="flex items-center">
-        <UiAvatar
-          class="mr-2"
-          :imgsrc="getIpfsUrl(plugin.icon)"
-          :seed="plugin.name.charCodeAt()"
-          size="28"
-        />
+        <BaseAvatar class="mr-2" :imgsrc="getIpfsUrl(plugin.icon)" size="28" />
         <h3 v-text="plugin.name" />
       </a>
       <div class="ml-1">v{{ plugin.version }}</div>

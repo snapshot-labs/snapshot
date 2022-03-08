@@ -25,7 +25,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <Layout>
+  <TheLayout>
     <template #sidebar-left>
       <SpaceSidebar :space="space" />
     </template>
@@ -98,7 +98,7 @@ onMounted(() => {
           :style="i === 0 && 'border: 0 !important;'"
           class="px-4 py-3 border-t flex"
         >
-          <User :address="user" :profile="profiles[user]" />
+          <UserAvatar :address="user" :profile="profiles[user]" />
         </div>
       </Block>
       <Block
@@ -113,9 +113,9 @@ onMounted(() => {
           :style="i === 0 && 'border: 0 !important;'"
           class="px-4 py-3 border-t flex"
         >
-          <User :address="user" :profile="profiles[user]" />
+          <UserAvatar :address="user" :profile="profiles[user]" />
         </div>
       </Block>
     </template>
-  </Layout>
+  </TheLayout>
 </template>

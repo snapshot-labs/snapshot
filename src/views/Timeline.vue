@@ -121,7 +121,7 @@ function selectState(e) {
 </script>
 
 <template>
-  <Layout class="!mt-0">
+  <TheLayout class="!mt-0">
     <template #sidebar-right>
       <div style="position: fixed; width: 320px" class="mt-4 hidden lg:block">
         <Block :slim="true" :title="$t('filters')" class="overflow-hidden">
@@ -218,5 +218,5 @@ function selectState(e) {
         </div>
       </div>
     </template>
-  </Layout>
+  </TheLayout>
 </template>
