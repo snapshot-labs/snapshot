@@ -26,6 +26,8 @@
   "verifiedSpace": "Verified space",
   "version": "الاصدار",
   "timeline": "الجدول الزمني",
+  "ended": "ended",
+  "started": "started",
   "filters": "المرشحات",
   "allSpaces": "جميع المساحات",
   "submitOnchain": "إرسال على السلسلة",
@@ -218,6 +220,15 @@
       "pending": "في إنتظار المُراجعة",
       "closed": "مغلق"
     }
+  },
+  "notifications": {
+    "header": "Notifications",
+    "noNotifications": "You have no notifications",
+    "proposalStarted": "proposal has started:",
+    "proposalEnded": "proposal has ended:",
+    "markAllAsRead": "Mark all as read",
+    "all": "All",
+    "unread": "Unread"
   },
   "settings": {
     "header": "الإعدادات",
@@ -441,6 +452,7 @@
       "home": "Snapshot",
       "setup": "Create a space",
       "timeline": "Timeline",
+      "notifications": "Notifications",
       "explore": "Explore",
       "playground": "Playground",
       "space": {
