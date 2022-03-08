@@ -1,18 +1,17 @@
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue';
 import { shorten } from '@/helpers/utils';
 import { useModal } from '@/composables/useModal';
 import { useDomain } from '@/composables/useDomain';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useTxStatus } from '@/composables/useTxStatus';
-import { useUserSkin } from '@/composables/useUserSkin';
+import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 
 const { pendingCount } = useTxStatus();
 const { modalAccountOpen } = useModal();
 const { env, domain } = useDomain();
-
-const { login, web3 } = useWeb3();
-const { toggleSkin, getSkinIcon } = useUserSkin();
+const auth = getInstance();
+const { login, web3, web3Account } = useWeb3();
 
 const loading = ref(false);
 
@@ -49,15 +48,15 @@ async function handleLogin(connector) {
               snapshot
             </router-link>
           </div>
-          <div :key="web3.account">
-            <template v-if="$auth.isAuthenticated.value">
+          <div :key="web3Account" class="flex space-x-2">
+            <template v-if="auth.isAuthenticated.value">
               <UiButton
                 @click="modalAccountOpen = true"
                 :loading="web3.authLoading"
-                class="flex items-center float-left"
+                class="flex items-center"
               >
                 <UiAvatar
-                  :address="web3.account"
+                  :address="web3Account"
                   size="18"
                   class="-mr-1 sm:mr-2 md:mr-2 lg:mr-2 xl:mr-2 -ml-1"
                 />
@@ -68,13 +67,14 @@ async function handleLogin(connector) {
                 />
                 <span
                   v-else
-                  v-text="shorten(web3.account)"
+                  v-text="shorten(web3Account)"
                   class="hidden sm:block"
                 />
               </UiButton>
             </template>
+
             <UiButton
-              v-if="!$auth.isAuthenticated.value"
+              v-if="!auth.isAuthenticated.value"
               @click="modalAccountOpen = true"
               :loading="loading || web3.authLoading"
               :aria-label="$t('connectWallet')"
@@ -86,14 +86,7 @@ async function handleLogin(connector) {
                 class="sm:hidden -ml-2 -mr-2 block align-text-bottom"
               />
             </UiButton>
-            <UiSidebarButton
-              v-if="!domain"
-              @click="toggleSkin"
-              class="float-right ml-2"
-              :aria-label="$t('toggleSkin')"
-            >
-              <Icon size="20" class="text-skin-link" :name="getSkinIcon()" />
-            </UiSidebarButton>
+            <NavbarNotifications v-if="web3Account" />
           </div>
         </div>
       </Container>

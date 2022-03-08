@@ -1,15 +1,16 @@
 <script setup lang="ts">
-import { ref, onBeforeUnmount } from 'vue';
+import { ref, onBeforeUnmount, watch } from 'vue';
 
 defineProps<{
-  items: {
-    action: string;
-    selected: boolean;
-    text: string;
-  }[];
+  items:
+    | {
+        action: string | any;
+        text: string;
+      }
+    | Record<string, any>[];
 }>();
 
-const emit = defineEmits(['select']);
+const emit = defineEmits(['select', 'openChange']);
 
 const open = ref(false);
 const dropdownEl = ref<any>(null);
@@ -26,8 +27,9 @@ function close(e) {
 }
 
 window.addEventListener('click', close);
-
 onBeforeUnmount(() => window.removeEventListener('click', close));
+
+watch(open, () => emit('openChange'));
 </script>
 
 <template>
@@ -48,16 +50,19 @@ onBeforeUnmount(() => window.removeEventListener('click', close));
       leave-to-class="transform opacity-0 scale-95"
     >
       <div
-        class="origin-top-right border border-skin-border z-10 absolute right-0 mt-2 min-w-[150px] max-w-[400px] rounded-lg bg-skin-header-bg overflow-hidden shadow-lg"
+        class="origin-top-right border border-skin-border z-10 absolute right-0 mt-2 min-w-[150px] max-w-[320px] md:max-w-[400px] rounded-lg bg-skin-header-bg overflow-hidden shadow-lg"
         v-if="open"
       >
-        <ul class="overflow-y-auto">
+        <ul
+          class="max-h-[85vh] overflow-y-auto no-scrollbar overscroll-contain"
+        >
+          <slot name="header" />
           <li
             v-for="item in items"
             :key="item.text"
             @click="handleClick(item.action)"
             :class="{ selected: item.selected }"
-            class="list-none block whitespace-nowrap px-[18px] leading-[38px] cursor-pointer"
+            class="list-none block whitespace-nowrap px-[18px] leading-[38px] cursor-pointer select-none"
           >
             <slot name="item" :item="item" :key="item">
               {{ item.text }}
@@ -69,7 +74,7 @@ onBeforeUnmount(() => window.removeEventListener('click', close));
   </div>
 </template>
 
-<style>
+<style scoped>
 li.selected,
 li:hover {
   @apply bg-skin-border text-skin-link;

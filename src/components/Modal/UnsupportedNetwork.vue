@@ -2,14 +2,14 @@
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { computed, ref } from 'vue';
 import { useI18n } from '../../composables/useI18n';
-import { useNotifications } from '../../composables/useNotifications';
+import { useFlashNotification } from '../../composables/useFlashNotification';
 
 defineProps<{
   open: boolean;
 }>();
 const emit = defineEmits(['close', 'setTextrecord']);
 
-const { notify } = useNotifications();
+const { notify } = useFlashNotification();
 const { t } = useI18n();
 
 const usingMetaMask = computed(() => {

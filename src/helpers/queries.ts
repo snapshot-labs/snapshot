@@ -104,6 +104,31 @@ export const PROPOSALS_QUERY = gql`
   }
 `;
 
+export const NOTIFICATION_PROPOSALS_QUERY = gql`
+  query Proposals(
+    $first: Int!
+    $state: String!
+    $space_in: [String]
+    $start_gte: Int
+  ) {
+    proposals(
+      first: $first
+      where: { state: $state, space_in: $space_in, start_gte: $start_gte }
+    ) {
+      id
+      title
+      start
+      end
+      state
+      space {
+        id
+        name
+        avatar
+      }
+    }
+  }
+`;
+
 export const FOLLOWS_QUERY = gql`
   query Follows($space_in: [String], $follower_in: [String]) {
     follows(where: { space_in: $space_in, follower_in: $follower_in }) {

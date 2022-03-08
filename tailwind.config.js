@@ -55,5 +55,6 @@ module.exports = {
       lg: '0 0 20px -6px var(--border-color)'
     }
   },
+  plugins: [require('@tailwindcss/line-clamp')],
   darkMode: 'class'
 };

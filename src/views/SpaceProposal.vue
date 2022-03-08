@@ -296,7 +296,6 @@ const truncateMarkdownBody = computed(() => {
               />
               <Badges :address="proposal.author" :members="space.members" />
             </div>
-
             <div class="flex justify-end">
               <ShareButton
                 v-if="sharingIsSupported"
@@ -329,7 +328,12 @@ const truncateMarkdownBody = computed(() => {
                 <template v-slot:button>
                   <div class="pl-1">
                     <UiLoading v-if="clientLoading" />
-                    <Icon v-else name="threedots" size="25" />
+                    <Icon
+                      v-else
+                      name="threedots"
+                      size="25"
+                      class="hover:text-skin-link"
+                    />
                   </div>
                 </template>
               </BaseDropdown>

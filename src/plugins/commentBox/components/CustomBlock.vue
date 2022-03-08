@@ -4,7 +4,7 @@ import { useModal } from '@/composables/useModal';
 import { useWeb3 } from '@/composables/useWeb3';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { useProfiles } from '@/composables/useProfiles';
-import { useNotifications } from '@/composables/useNotifications';
+import { useFlashNotification } from '@/composables/useFlashNotification';
 import { useScrollMonitor } from '@/composables/useScrollMonitor';
 import { signMessage } from '@snapshot-labs/snapshot.js/src/utils/web3';
 import { useI18n } from '@/composables/useI18n';
@@ -16,7 +16,7 @@ const props = defineProps({
   space: Object,
   proposal: Object
 });
-const { notify } = useNotifications();
+const { notify } = useFlashNotification();
 const auth = getInstance();
 const { web3Account } = useWeb3();
 const { profiles } = useProfiles();

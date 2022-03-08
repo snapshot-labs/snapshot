@@ -1,7 +1,7 @@
 <script setup>
-import { useNotifications } from '@/composables/useNotifications';
+import { useFlashNotification } from '@/composables/useFlashNotification';
 
-const { items } = useNotifications();
+const { items } = useFlashNotification();
 </script>
 
 <template>
