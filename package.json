@@ -57,7 +57,7 @@
     "@vitejs/plugin-vue": "^2.2.4",
     "@vitest/ui": "^0.5.9",
     "@vue/eslint-config-prettier": "^6.0.0",
-    "@vue/eslint-config-typescript": "^7.0.0",
+    "@vue/eslint-config-typescript": "^9.0.0",
     "@vue/test-utils": "^2.0.0-rc.17",
     "autoprefixer": "^10.4.2",
     "c8": "^7.11.0",
