@@ -273,9 +273,9 @@
     "anyType": "任意",
     "hideAbstain": "忽略基本投票结果中的弃权票",
     "connectWithSpaceOwner": "要修改空间设置，请连接控制人或管理员钱包。",
-    "currentSpaceControllerIs": "The current space controller is {address}",
-    "newController": "New controller",
-    "set": "Set"
+    "currentSpaceControllerIs": "当前空间控制人是 {address}",
+    "newController": "新的控制人",
+    "set": "设置"
   },
   "setup": {
     "example": "例如 yam.eth",
@@ -369,7 +369,7 @@
     "addBatch": "添加交易批次",
     "batch": "交易批次",
     "transactions": "交易次数",
-    "to": "To (address)",
+    "to": "至 (地址)",
     "invalidAddress": "无效地址",
     "invalidAmount": "无效金额",
     "invalidValue": "无效值",
