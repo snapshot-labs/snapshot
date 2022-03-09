@@ -1,3 +1,11 @@
+/**
+ * Alias addresses/wallets are used to reduce the need for signing messages manually, e.g. each time a user wants to join a space.
+ * An alias is a randomly generated wallet, of which the private key is stored in the browser's local storage.
+ * The user only needs to sign a message once, to "register" the respective alias address on the hub. All following messages can be signed
+ * by the alias wallet, without requiring the user's approval. This leads to much better UX, at the cost of less security.
+ * If the private key is removed from local storage, a new one will be created and registered.
+ */
+
 import { computed, ref } from 'vue';
 import { lsGet, lsSet } from '@/helpers/utils';
 import { useWeb3 } from '@/composables/useWeb3';

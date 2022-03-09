@@ -298,7 +298,7 @@ const needsPluginConfigs = computed(() =>
 </script>
 
 <template>
-  <Layout v-bind="$attrs">
+  <TheLayout v-bind="$attrs">
     <template #content-left>
       <div v-if="currentStep === 1" class="px-4 md:px-0 overflow-hidden mb-3">
         <router-link
@@ -426,7 +426,14 @@ const needsPluginConfigs = computed(() =>
       </template>
       <template v-else-if="currentStep === 2">
         <Block :title="$t('create.voting')">
-          <UiInput class="!mb-4" @click="modalVotingTypeOpen = true">
+          <UiInput
+            @click="!space.voting?.type ? (modalVotingTypeOpen = true) : null"
+            :disabled="space.voting?.type"
+            v-tippy="{
+              content: !!space.voting?.type ? $t('create.typeEnforced') : null
+            }"
+            class="!mb-4"
+          >
             <template v-slot:selected>
               <span class="w-full">
                 {{ $t(`voting.${form.type}`) }}
@@ -633,7 +640,7 @@ const needsPluginConfigs = computed(() =>
         </UiButton>
       </Block>
     </template>
-  </Layout>
+  </TheLayout>
   <teleport to="#modal">
     <ModalSelectDate
       :selectedDate="selectedDate"

@@ -4,7 +4,7 @@ import { shorten } from '@/helpers/utils';
 import removeMd from 'remove-markdown';
 import { useIntl } from '@/composables/useIntl';
 
-const { formatRelativeTime, formatCompactNumber } = useIntl();
+const { formatCompactNumber, getRelativeProposalPeriod } = useIntl();
 
 const props = defineProps({
   proposal: Object,
@@ -21,12 +21,6 @@ const body = computed(() => removeMd(shorten(props.proposal.body, 280)));
 const winningChoice = computed(() =>
   props.proposal.scores.indexOf(Math.max(...props.proposal.scores))
 );
-
-const period = computed(() => {
-  if (props.proposal.state === 'closed') return 'endedAgo';
-  if (props.proposal.state === 'active') return 'endIn';
-  return 'startIn';
-});
 </script>
 
 <template>
@@ -41,11 +35,11 @@ const period = computed(() => {
       <div>
         <div class="mb-2 flex justify-between items-center">
           <div class="flex items-center space-x-1">
-            <Token :space="proposal.space" size="28" />
-            <span class="!ml-2" v-text="proposal.space.name" />
+            <SpaceAvatar :space="proposal.space" size="28" />
+            <span class="!ml-2 hidden xs:block" v-text="proposal.space.name" />
             <span v-text="$tc('proposalBy')" />
 
-            <User
+            <UserAvatar
               :address="proposal.author"
               :profile="profiles[proposal.author]"
               :space="space"
@@ -65,10 +59,11 @@ const period = computed(() => {
           <span
             v-if="proposal.scores_state !== 'final'"
             v-text="
-              $tc(period, [
-                formatRelativeTime(proposal.start),
-                formatRelativeTime(proposal.end)
-              ])
+              getRelativeProposalPeriod(
+                proposal.state,
+                proposal.start,
+                proposal.end
+              )
             "
           />
           <span

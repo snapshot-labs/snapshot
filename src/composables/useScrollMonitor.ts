@@ -4,7 +4,7 @@ import scrollMonitor from 'scrollmonitor';
 export function useScrollMonitor(fn) {
   let elementWatcher;
 
-  const endElement = ref(null);
+  const endElement: any = ref(null);
 
   onMounted(() => {
     elementWatcher = scrollMonitor.create(endElement.value);

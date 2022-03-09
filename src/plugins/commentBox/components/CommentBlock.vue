@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted, computed, watch } from 'vue';
-import { useNotifications } from '@/composables/useNotifications';
+import { useFlashNotification } from '@/composables/useFlashNotification';
 import { useModal } from '@/composables/useModal';
 import { useWeb3 } from '@/composables/useWeb3';
 import { signMessage } from '@snapshot-labs/snapshot.js/src/utils/web3';
@@ -72,7 +72,7 @@ async function deleteData(url = '', data = {}, authorization) {
   });
   return response.json(); // parses JSON response into native JavaScript objects
 }
-const { notify } = useNotifications();
+const { notify } = useFlashNotification();
 async function deleteItem() {
   if (loading.value) return;
   try {
@@ -240,7 +240,7 @@ function deleteItemReply(key) {
   <div v-if="toggleEditComment">
     <Block :slim="true" class="p-4 text-skin-text mt-2 mb-0">
       <div>
-        <User
+        <UserAvatar
           :address="item.author"
           :profile="profiles[item.author]"
           :space="space"

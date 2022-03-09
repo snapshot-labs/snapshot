@@ -246,7 +246,7 @@ const truncateMarkdownBody = computed(() => {
 </script>
 
 <template>
-  <Layout v-bind="$attrs">
+  <TheLayout v-bind="$attrs">
     <template #content-left>
       <div class="px-4 md:px-0 mb-3">
         <a
@@ -278,16 +278,16 @@ const truncateMarkdownBody = computed(() => {
                 }"
               >
                 <div class="flex items-center">
-                  <Token :space="space" size="28" />
+                  <SpaceAvatar :space="space" size="28" />
                   <span
-                    class="ml-2 group-hover:text-skin-link"
+                    class="ml-2 group-hover:text-skin-link hidden sm:block"
                     v-text="space.name"
                   />
                 </div>
               </router-link>
 
               <span v-text="$t('proposalBy')" />
-              <User
+              <UserAvatar
                 :address="proposal.author"
                 :profile="profiles[proposal.author]"
                 :space="space"
@@ -296,7 +296,6 @@ const truncateMarkdownBody = computed(() => {
               />
               <Badges :address="proposal.author" :members="space.members" />
             </div>
-
             <div class="flex justify-end">
               <ShareButton
                 v-if="sharingIsSupported"
@@ -329,7 +328,12 @@ const truncateMarkdownBody = computed(() => {
                 <template v-slot:button>
                   <div class="pl-1">
                     <UiLoading v-if="clientLoading" />
-                    <Icon v-else name="threedots" size="25" />
+                    <Icon
+                      v-else
+                      name="threedots"
+                      size="25"
+                      class="hover:text-skin-link"
+                    />
                   </div>
                 </template>
               </BaseDropdown>
@@ -421,7 +425,7 @@ const truncateMarkdownBody = computed(() => {
                     content: symbol
                   }"
                 >
-                  <Token :space="space" :symbolIndex="symbolIndex" />
+                  <SpaceAvatar :space="space" :symbolIndex="symbolIndex" />
                 </span>
                 <span
                   v-show="symbolIndex !== symbols.length - 1"
@@ -502,7 +506,7 @@ const truncateMarkdownBody = computed(() => {
         :strategies="strategies"
       />
     </template>
-  </Layout>
+  </TheLayout>
   <teleport to="#modal" v-if="proposal">
     <ModalConfirm
       :open="modalOpen"

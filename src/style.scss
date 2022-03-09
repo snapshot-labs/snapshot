@@ -250,6 +250,10 @@ input[type='number'] {
   z-index: 1;
 }
 
+.lazy-loading {
+  @apply bg-skin-text animate-pulse-fast;
+}
+
 // Shot UI kit
 
 .s-input {
@@ -264,6 +268,6 @@ input[type='number'] {
   @apply block mb-1;
 }
 
-.lazy-loading {
-  @apply bg-skin-text animate-pulse-fast;
+.s-indicator {
+  @apply text-sm h-[12px] w-[12px] rounded-full inline-block bg-blue;
 }

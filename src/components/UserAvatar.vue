@@ -1,21 +1,21 @@
-<script setup>
+<script setup lang="ts">
 import { watchEffect } from 'vue';
 import { shorten, explorerUrl } from '@/helpers/utils';
 import { useUsername } from '@/composables/useUsername';
 
-const props = defineProps({
-  address: String,
-  space: Object,
-  proposal: Object,
-  profile: Object,
-  onlyUsername: Boolean
-});
+const props = defineProps<{
+  address: string;
+  space?: { members: string[]; network: string };
+  proposal?: { network: string };
+  profile?: { name: string; ens: string };
+  onlyUsername?: boolean;
+}>();
 
-const { address, profile, username, fullUserName } = useUsername();
+const { username, setProfile, setAddress } = useUsername();
 
 watchEffect(() => {
-  address.value = props.address;
-  profile.value = props.profile;
+  setProfile(props.profile);
+  setAddress(props.address);
 });
 </script>
 
@@ -24,14 +24,13 @@ watchEffect(() => {
     <UiPopover :options="{ offset: [0, 12], placement: 'bottom-start' }">
       <template v-slot:item>
         <a class="flex flex-nowrap">
-          <UiAvatar
+          <BaseAvatar
             v-if="!onlyUsername"
             :address="address"
             size="18"
             class="mr-2"
           />
-          <span class="w-[50px] truncate sm:hidden">{{ fullUserName }}</span>
-          <span class="truncate hidden sm:block">{{ username }}</span>
+          <span class="truncate w-full">{{ username }}</span>
           <Badges
             v-if="!onlyUsername"
             :address="address"
@@ -41,7 +40,7 @@ watchEffect(() => {
       </template>
       <template v-slot:content>
         <div class="m-4 mb-0 text-center">
-          <UiAvatar :address="address" size="64" class="mb-4" />
+          <BaseAvatar :address="address" size="64" class="mb-4" />
           <h3 v-if="profile?.name" class="mt-3" v-text="profile.name" />
           <h3 v-else-if="profile?.ens" v-text="profile.ens" class="mt-3" />
           <h3 v-else v-text="shorten(address)" class="mt-3" />

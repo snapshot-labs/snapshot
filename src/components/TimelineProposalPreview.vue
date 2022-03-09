@@ -3,16 +3,12 @@ import { computed } from 'vue';
 import { shorten } from '@/helpers/utils';
 import removeMd from 'remove-markdown';
 import { useIntl } from '@/composables/useIntl';
-import { useI18n } from '@/composables/useI18n';
-
-const { t } = useI18n();
 
 const {
-  formatRelativeTime,
-  formatDuration,
   formatNumber,
   formatCompactNumber,
-  formatPercentNumber
+  formatPercentNumber,
+  getRelativeProposalPeriod
 } = useIntl();
 
 const props = defineProps({
@@ -29,17 +25,6 @@ const body = computed(() => removeMd(shorten(props.proposal.body, 280)));
 const winningChoice = computed(() =>
   props.proposal.scores.indexOf(Math.max(...props.proposal.scores))
 );
-
-const relativePeriod = computed(() => {
-  const now = new Date() / 1e3;
-  if (props.proposal.state === 'closed') {
-    return t('endedAgo', [formatRelativeTime(props.proposal.end)]);
-  }
-  if (props.proposal.state === 'active') {
-    return t('proposalTimeLeft', [formatDuration(props.proposal.end - now)]);
-  }
-  return t('startIn', [formatRelativeTime(props.proposal.start)]);
-});
 </script>
 
 <template>
@@ -61,7 +46,7 @@ const relativePeriod = computed(() => {
             }"
           >
             <div class="flex items-center">
-              <Token :space="proposal.space" size="28" />
+              <SpaceAvatar :space="proposal.space" size="28" />
               <span
                 class="ml-2 group-hover:text-skin-link"
                 v-text="proposal.space.name"
@@ -69,7 +54,7 @@ const relativePeriod = computed(() => {
             </div>
           </router-link>
           <span v-text="$tc('proposalBy')" />
-          <User
+          <UserAvatar
             :address="proposal.author"
             :profile="profiles[proposal.author]"
             :proposal="proposal"
@@ -128,7 +113,14 @@ const relativePeriod = computed(() => {
           <UiState :state="proposal.state" slim class="mr-2" />
           {{ $t(`proposals.states.${proposal.state}`)
           }}<span v-if="proposal.scores_state !== 'final'"
-            >, {{ relativePeriod }}</span
+            >,
+            {{
+              getRelativeProposalPeriod(
+                proposal.state,
+                proposal.start,
+                proposal.end
+              )
+            }}</span
           ><span v-if="proposal.scores_state === 'final'"
             >, {{ formatNumber(proposal.votes) }} votes
           </span>

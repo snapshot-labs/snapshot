@@ -4,14 +4,14 @@ import client from '@/helpers/client';
 import clientGnosisSafe from '@/helpers/clientGnosisSafe';
 import clientEIP712 from '@/helpers/clientEIP712';
 import { useWeb3 } from '@/composables/useWeb3';
-import { useNotifications } from '@/composables/useNotifications';
+import { useFlashNotification } from '@/composables/useFlashNotification';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 
 export function useClient() {
   const { t } = useI18n();
   const { web3 } = useWeb3();
   const auth = getInstance();
-  const { notify } = useNotifications();
+  const { notify } = useFlashNotification();
 
   const loading = ref(false);
 
