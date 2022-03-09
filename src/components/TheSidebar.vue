@@ -73,7 +73,7 @@ onMounted(() => {
 <template>
   <div
     v-if="!domain"
-    class="w-[68px] h-screen hidden sm:block fixed m-0 border-r bg-skin-block-bg z-40"
+    class="w-[68px] h-screen hidden sm:block m-0 bg-skin-block-bg z-40"
   >
     <div
       class="flex flex-col h-full overflow-auto no-scrollbar overscroll-contain"
