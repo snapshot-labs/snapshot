@@ -272,7 +272,10 @@
     "type": "Type",
     "anyType": "Any",
     "hideAbstain": "Ignore abstain votes in basic voting results",
-    "connectWithSpaceOwner": "Um die Space-Einstellungen zu ändern, verbinden Sie sich mit einem Controller- oder Admin-Wallet."
+    "connectWithSpaceOwner": "Um die Space-Einstellungen zu ändern, verbinden Sie sich mit einem Controller- oder Admin-Wallet.",
+    "currentSpaceControllerIs": "The current space controller is {address}",
+    "newController": "New controller",
+    "set": "Set"
   },
   "setup": {
     "example": "z.B. yam.eth",
@@ -292,11 +295,9 @@
     "controllerHasAuthority": "The controller has full authority over the space settings",
     "controller": "Controller",
     "selectEnsForSpace": "END Adresse auswählen",
-    "textRecordExists": "Derzeit ist der Space Controller {address}. Sie können den Space Controller über das untenstehende Formular aktualisieren.",
     "spaceOwnerAddressPlaceHolder": "z.B. 0xF78108c9BBaF466dd96BE41be728Fe3220b37119",
     "controllerAddress": "Controller-Adresse",
     "updateController": "Update controller",
-    "connectWithEnsController": "Um den Space-Controller zu ändern, müssen Sie sich mit der Wallet verbinden, die {ens} besitzt",
     "seeOnEns": "Auf ENS ansehen",
     "goToSettings": "Go to settings"
   },
@@ -368,6 +369,7 @@
     "addBatch": "Add transaction batch",
     "batch": "Transaction batch",
     "transactions": "Transactions",
+    "to": "To (address)",
     "invalidAddress": "Invalid address",
     "invalidAmount": "Invalid amount",
     "invalidValue": "Invalid value",
