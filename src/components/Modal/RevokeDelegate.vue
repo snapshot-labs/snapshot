@@ -21,15 +21,15 @@ const emit = defineEmits(['close', 'reload']);
 
 const auth = getInstance();
 const { t } = useI18n();
-const { address, profile, username } = useUsername();
+const { username, setProfile, setAddress } = useUsername();
 const notify = inject('notify');
 
 const loading = ref(false);
 const { pendingCount } = useTxStatus();
 
 watchEffect(() => {
-  address.value = props.delegate;
-  profile.value = props.profiles[props.delegate];
+  setProfile(props.profiles[props.delegate]);
+  setAddress(props.delegate);
 });
 
 async function handleSubmit() {

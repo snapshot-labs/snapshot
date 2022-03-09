@@ -114,7 +114,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <Layout>
+  <TheLayout>
     <template #sidebar-left>
       <SpaceSidebar :space="space" />
     </template>
@@ -191,5 +191,5 @@ onMounted(() => {
         <RowLoading class="my-2" />
       </Block>
     </template>
-  </Layout>
+  </TheLayout>
 </template>

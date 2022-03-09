@@ -22,7 +22,7 @@ const EIP3770_PREFIXES = {
   246: 'ewt',
   73799: 'vt',
   42161: 'arb1',
-  137: 'MATIC'
+  137: 'matic'
 };
 
 async function fetchBalances(network, gnosisSafeAddress) {
@@ -189,12 +189,7 @@ export default {
       class="px-4 pt-3 border-b rounded-t-none md:rounded-t-md flex"
       style="padding-bottom: 12px"
     >
-      <UiAvatar
-        class="mr-2 float-left"
-        :imgsrc="networkIcon"
-        :seed="network"
-        size="28"
-      />
+      <BaseAvatar class="mr-2 float-left" :imgsrc="networkIcon" size="28" />
       {{ networkName }} Safe
       <a
         v-if="gnosisSafeAddress"

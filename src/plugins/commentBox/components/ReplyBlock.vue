@@ -162,7 +162,7 @@ const isCreator = computed(() => props.proposal.author === web3Account.value);
   <div v-if="toggleEditComment">
     <Block :slim="true" class="p-4 text-skin-text mt-2 mb-0">
       <div>
-        <User
+        <UserAvatar
           :address="item.author"
           :profile="profiles[item.author]"
           :space="space"

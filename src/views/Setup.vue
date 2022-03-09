@@ -81,7 +81,7 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
 </script>
 
 <template>
-  <Layout>
+  <TheLayout>
     <template #content-left>
       <div class="px-4 md:px-0">
         <h1
@@ -170,5 +170,5 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
         <span v-html="$t('setup.helpDocsAndDiscordLinks')" />
       </Block>
     </template>
-  </Layout>
+  </TheLayout>
 </template>

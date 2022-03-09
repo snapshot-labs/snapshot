@@ -277,7 +277,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <Layout v-bind="$attrs">
+  <TheLayout v-bind="$attrs">
     <template #content-left>
       <div class="px-4 md:px-0 mb-3">
         <router-link :to="{ path: '/' }" class="text-skin-text">
@@ -348,7 +348,7 @@ onMounted(async () => {
             :style="i === 0 && 'border: 0 !important;'"
             class="px-4 py-3 border-t flex"
           >
-            <User
+            <UserAvatar
               :address="delegate.delegate"
               :space="{ network: networkKey }"
               :profile="profiles[delegate.delegate]"
@@ -376,7 +376,7 @@ onMounted(async () => {
             :style="i === 0 && 'border: 0 !important;'"
             class="px-4 py-3 border-t flex"
           >
-            <User
+            <UserAvatar
               :address="delegator.delegator"
               :space="{ network: networkKey }"
               :profile="profiles[delegator.delegator]"
@@ -399,7 +399,7 @@ onMounted(async () => {
             :style="i === 0 && 'border: 0 !important;'"
             class="px-4 py-3 border-t flex"
           >
-            <User
+            <UserAvatar
               :profile="profiles[delegate.delegate]"
               :address="delegate.delegate"
               :space="{ network: networkKey }"
@@ -438,7 +438,7 @@ onMounted(async () => {
         </UiButton>
       </Block>
     </template>
-  </Layout>
+  </TheLayout>
   <teleport to="#modal" v-if="networkSupportsDelegate">
     <ModalRevokeDelegate
       v-if="loaded"
