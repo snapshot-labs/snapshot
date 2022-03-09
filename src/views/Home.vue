@@ -45,7 +45,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="mt-4 min-h-[calc(100vh-145px)] relative pb-[130px]">
+  <div class="relative">
     <Container class="flex items-center mb-4 flex-col xs:flex-row flex-wrap md:flex-nowrap">
       <UiButton class="pl-3 pr-0 w-full md:max-w-[420px]">
         <SearchWithFilters />
@@ -152,7 +152,6 @@ onMounted(() => {
         {{ $t('homeLoadmore') }}
       </UiButton>
     </Container>
-    <Footer />
     <div ref="endElement" />
   </div>
 </template>

@@ -41,19 +41,30 @@ watch(modalOpen, val => {
 </script>
 
 <template>
+  <UiLoading v-if="app.loading || !app.init" class="overlay big" />
   <div
+    v-else
     :class="skin"
-    class="overflow-hidden pb-6 font-serif text-base min-h-screen bg-skin-bg text-skin-text antialiased static"
+    class="flex h-screen font-sans text-base bg-skin-bg text-skin-text antialiased"
   >
-    <UiLoading v-if="app.loading || !app.init" class="overlay big" />
-    <div v-else class="w-screen">
+    <div v-if="!domain" class="border-r">
       <TheSidebar />
-      <div :class="{ 'sm:ml-[68px]': !domain }">
+    </div>
+    <div class="grow min-w-0 overflow-hidden flex flex-col">
+      <div class="border-b">
         <TheNavbar />
-        <router-view :key="$route.path" class="flex-auto" />
+      </div>
+      <div class="grow min-w-0 min-h-0 overflow-x-hidden overflow-y-auto" id="content">
+        <div class="min-h-full flex flex-col">
+          <main class="grow py-4 relative">
+            <router-view :key="$route.path" />
+          </main>
+          <footer v-if="!domain" class="mt-auto border-t">
+            <Footer />
+          </footer>
+        </div>
       </div>
     </div>
-    <div id="modal" />
-    <FlashNotification />
   </div>
+  <FlashNotification />
 </template>

@@ -5,7 +5,7 @@ import { createApp, h, provide } from 'vue';
 import { LockPlugin } from '@snapshot-labs/lock/plugins/vue3';
 import options from '@/helpers/auth';
 import '../snapshot-spaces/skins';
-import App from '@/App2.vue';
+import App from '@/App.vue';
 import router from '@/router';
 import i18n from '@/helpers/i18n';
 import '@/helpers/auth';

@@ -28,25 +28,21 @@ const socials = [
 </script>
 
 <template>
-  <footer id="footer" class="border-t w-full mt-6 -mb-6 absolute bottom-0">
-    <Container>
-      <div class="flex items-center justify-between h-[120px]">
-        <div>© {{ yearNow }} Snapshot Labs.</div>
-        <div class="flex items-center">
-          <div class="text-center space-x-3">
-            <span v-for="social in socials" :key="social">
-              <BaseLink :link="social.link" hide-external-icon>
-                <Icon
-                  size="30"
-                  class="hover:opacity-80 text-skin-text"
-                  :name="social.icon"
-                />
-              </BaseLink>
-            </span>
-          </div>
-          <SelectLanguageButton class="ml-4" />
-        </div>
+  <Container class="flex items-center justify-between py-6">
+    <div>© {{ yearNow }} Snapshot Labs.</div>
+    <div class="flex items-center">
+      <div class="text-center space-x-3">
+        <span v-for="social in socials" :key="social">
+          <BaseLink :link="social.link" hide-external-icon>
+            <Icon
+              size="30"
+              class="hover:opacity-80 text-skin-text"
+              :name="social.icon"
+            />
+          </BaseLink>
+        </span>
       </div>
-    </Container>
-  </footer>
+      <SelectLanguageButton class="ml-4" />
+    </div>
+  </Container>
 </template>
