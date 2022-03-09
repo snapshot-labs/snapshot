@@ -272,7 +272,10 @@
     "type": "유형",
     "anyType": "어떤",
     "hideAbstain": "기본 투표 결과에서 기권 투표 무시",
-    "connectWithSpaceOwner": "공간 설정을 수정하려면 관리자 또는 어드민 지갑에 연결하세요."
+    "connectWithSpaceOwner": "공간 설정을 수정하려면 관리자 또는 어드민 지갑에 연결하세요.",
+    "currentSpaceControllerIs": "The current space controller is {address}",
+    "newController": "New controller",
+    "set": "Set"
   },
   "setup": {
     "example": "예시 yam.eth",
@@ -292,11 +295,9 @@
     "controllerHasAuthority": "관리자는 공간 설정에 대한 전체 권한을 갖습니다.",
     "controller": "관리자",
     "selectEnsForSpace": "ENS 주소 선택",
-    "textRecordExists": "현재 공간 관리자는 {address} 입니다. 아래 폼을 사용해서 공간 관리자를 업데이트 할 수 있습니다.",
     "spaceOwnerAddressPlaceHolder": "예시 0xF78108c9BBaF466dd96BE41be728Fe3220b37119",
     "controllerAddress": "관리자 주소",
     "updateController": "관리자 업데이트",
-    "connectWithEnsController": "공간 관리자를 수정하기 위해서는 {ens} 를 소유한 지갑을 연결해야 합니다.",
     "seeOnEns": "ENS 보기",
     "goToSettings": "설정으로 이동"
   },
@@ -368,6 +369,7 @@
     "addBatch": "트랜잭션 일괄 처리 추가",
     "batch": "트랜잭션 일괄처리",
     "transactions": "트랜잭션",
+    "to": "To (address)",
     "invalidAddress": "잘못된 주소",
     "invalidAmount": "잘못된 금액",
     "invalidValue": "잘못된 값",
