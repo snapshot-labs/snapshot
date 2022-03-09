@@ -21,7 +21,7 @@ watch(open, (val, prev) => {
   <Transition name="fade">
     <div v-if="open" class="modal mx-auto w-screen">
       <div class="backdrop" @click="$emit('close')" />
-      <div class="shell overflow-hidden relative rounded-none md:rounded-lg">
+      <div class="shell overflow-hidden relative rounded-none md:rounded-3xl">
         <div v-if="$slots.header" class="border-b pt-3 pb-2 text-center">
           <slot name="header" />
         </div>
