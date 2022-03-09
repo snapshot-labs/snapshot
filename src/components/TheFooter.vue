@@ -1,6 +1,10 @@
 <script setup>
+import { ref } from 'vue';
 import pkg from '@/../package.json';
+import { useUserSkin } from '@/composables/useUserSkin';
+const { toggleSkin, getSkinIcon } = useUserSkin();
 
+const modalAboutOpen = ref(false);
 const yearNow = new Date().getFullYear();
 
 const socials = [
@@ -28,21 +32,37 @@ const socials = [
 </script>
 
 <template>
-  <Container class="flex items-center justify-between py-6">
-    <div>© {{ yearNow }} Snapshot Labs.</div>
-    <div class="flex items-center">
-      <div class="text-center space-x-3">
-        <span v-for="social in socials" :key="social">
-          <BaseLink :link="social.link" hide-external-icon>
-            <Icon
-              size="30"
-              class="hover:opacity-80 text-skin-text"
-              :name="social.icon"
-            />
-          </BaseLink>
-        </span>
-      </div>
-      <SelectLanguageButton class="ml-4" />
+  <Container class="flex flex-col md:flex-row items-center py-6 space-y-3 md:space-y-0 md:space-x-3">
+    <div class="space-x-3 md:ml-auto">
+      <span v-for="social in socials" :key="social">
+        <BaseLink :link="social.link" hide-external-icon>
+          <Icon
+            size="30"
+            class="hover:opacity-80 text-skin-text"
+            :name="social.icon"
+          />
+        </BaseLink>
+      </span>
     </div>
+    <div class="flex space-x-2">
+      <UiSidebarButton @click="modalAboutOpen = true">
+        <span class="text-skin-link">?</span>
+      </UiSidebarButton>
+      <UiSidebarButton
+        @click="toggleSkin"
+        :aria-label="$t('toggleSkin')"
+      >
+        <Icon size="20" class="text-skin-link" :name="getSkinIcon()" />
+      </UiSidebarButton>
+      <SelectLanguageButton />
+    </div>
+    <div class="pt-3 md:pt-0 md:pr-2 md:order-first whitespace-nowrap">© {{ yearNow }} Snapshot Labs.</div>
   </Container>
+  <teleport to="#modal">
+    <ModalAbout
+      :open="modalAboutOpen"
+      @close="modalAboutOpen = false"
+      @openLang="modalLangOpen = true"
+    />
+  </teleport>
 </template>

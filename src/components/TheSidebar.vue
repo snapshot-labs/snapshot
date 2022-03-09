@@ -6,17 +6,13 @@ import { useWeb3 } from '@/composables/useWeb3';
 import { useApp } from '@/composables/useApp';
 import { useUnseenProposals } from '@/composables/useUnseenProposals';
 import { lsSet, lsGet } from '@/helpers/utils';
-import { useUserSkin } from '@/composables/useUserSkin';
 
 const { explore } = useApp();
 const { web3Account } = useWeb3();
 const { loadFollows, followingSpaces } = useFollowSpace();
 const { proposals, getProposals, lastSeenProposals, updateLastSeenProposal } =
   useUnseenProposals();
-const { toggleSkin, getSkinIcon } = useUserSkin();
 
-const modalAboutOpen = ref(false);
-const modalLangOpen = ref(false);
 const draggableSpaces = ref<string[]>([]);
 
 function saveSpaceOrder() {
@@ -112,23 +108,6 @@ onMounted(() => {
       <router-link :to="{ name: 'setup' }">
         <UiSidebarButton><Icon size="20" name="plus" /></UiSidebarButton>
       </router-link>
-      <UiSidebarButton @click="modalAboutOpen = true">
-        <span class="text-skin-link">?</span>
-      </UiSidebarButton>
-      <UiSidebarButton
-        @click="toggleSkin"
-        :aria-label="$t('toggleSkin')"
-      >
-        <Icon size="20" class="text-skin-link" :name="getSkinIcon()" />
-      </UiSidebarButton>
     </div>
   </div>
-  <teleport to="#modal">
-    <ModalAbout
-      :open="modalAboutOpen"
-      @close="modalAboutOpen = false"
-      @openLang="modalLangOpen = true"
-    />
-    <ModalSelectLanguage :open="modalLangOpen" @close="modalLangOpen = false" />
-  </teleport>
 </template>
