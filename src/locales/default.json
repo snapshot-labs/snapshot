@@ -130,9 +130,10 @@
   "confirmAction": "Confirm action",
   "or": "or",
   "share": "Share",
+  "createButton": "Create",
   "errors": {
     "required": "Field is required",
-    "minLength": "Minimum length is {0}",
+    "minLength": "Field is required",
     "maxLength": "Maximum length is {0}",
     "pattern": "Invalid character",
     "minItems": "Minimum {0} item(s) required",
@@ -299,7 +300,8 @@
     "controllerAddress": "Controller address",
     "updateController": "Update controller",
     "seeOnEns": "See on ENS",
-    "goToSettings": "Go to settings"
+    "goToSettings": "Go to settings",
+    "setSpaceProfile": "Customize your space"
   },
   "notify": {
     "youDidIt": "You did it!",

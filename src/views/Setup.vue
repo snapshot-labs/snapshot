@@ -90,7 +90,14 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
         <!-- Step two - setup space controller -->
         <SetupController
           v-else-if="route.params.step === '2' && ensAddress"
-          :ownedEnsDomains="ownedEnsDomains"
+          :ensAddress="ensAddress"
+        />
+
+        <!-- Step three - setup space profile -->
+        <SetupProfile
+          v-else-if="route.params.step === '3' && ensAddress"
+          :ensAddress="ensAddress"
+          :web3Account="web3Account"
         />
         <Block
           v-else
