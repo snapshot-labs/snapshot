@@ -11,7 +11,7 @@ const defaultNetwork: any =
 
 const state = reactive<{
   account: string;
-  network: string;
+  network: Record<string, any>;
   authLoading: boolean;
   profile: { name: string; ens: string } | null;
   walletConnectType: string | null;
