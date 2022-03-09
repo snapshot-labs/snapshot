@@ -313,6 +313,13 @@ const {
 } = useSpaceController();
 
 const modalControllerEditOpen = ref(false);
+
+async function handleSetRecord() {
+  const receipt = await setRecord();
+  if (receipt) {
+    props.loadExtentedSpaces([props.spaceKey]);
+  }
+}
 </script>
 
 <template>
@@ -751,7 +758,7 @@ const modalControllerEditOpen = ref(false);
     <ModalConfirmAction
       :open="modalConfirmSetTextRecordOpen"
       @close="modalConfirmSetTextRecordOpen = false"
-      @confirm="setRecord"
+      @confirm="handleSetRecord"
     >
       <div class="space-y-4 m-4 text-skin-link">
         <p>
