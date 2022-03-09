@@ -1,6 +1,5 @@
 <script setup>
 import { ref } from 'vue';
-import pkg from '@/../package.json';
 import { useUserSkin } from '@/composables/useUserSkin';
 const { toggleSkin, getSkinIcon } = useUserSkin();
 
@@ -22,7 +21,7 @@ const socials = [
   },
   {
     icon: 'github',
-    link: `https://github.com/${pkg.repository}`
+    link: `https://github.com/snapshot-labs`
   },
   {
     icon: 'gitbook',
