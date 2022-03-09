@@ -58,6 +58,7 @@ export function useSpaceController() {
       settingENSRecord.value = false;
       pendingCount.value++;
       const receipt = await tx.wait();
+      pendingCount.value--;
       notify(t('notify.ensSet'));
       console.log('Receipt', receipt);
       return receipt;
@@ -65,7 +66,6 @@ export function useSpaceController() {
       notify(['red', t('notify.somethingWentWrong')]);
       console.log(e);
     } finally {
-      pendingCount.value--;
       settingENSRecord.value = false;
     }
   }
