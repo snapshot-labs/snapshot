@@ -9,7 +9,9 @@ import { useWeb3 } from '@/composables/useWeb3';
 import { calcFromSeconds, calcToSeconds } from '@/helpers/utils';
 import { useClient } from '@/composables/useClient';
 import { usePlugins } from '@/composables/usePlugins';
+import { useSpaceController } from '@/composables/useSpaceController';
 import { useEns } from '@/composables/useEns';
+import { shorten } from '@/helpers/utils';
 import {
   validateSchema,
   getSpaceUri,
@@ -299,6 +301,25 @@ onMounted(() => {
     ? setPageTitle('page.title.space.settings', { space: props.space.name })
     : setPageTitle('page.title.setup');
 });
+
+const {
+  settingENSRecord,
+  ensAddress,
+  modalUnsupportedNetworkOpen,
+  modalConfirmSetTextRecordOpen,
+  spaceControllerInput,
+  setRecord,
+  confirmSetRecord
+} = useSpaceController();
+
+const modalControllerEditOpen = ref(false);
+
+async function handleSetRecord() {
+  const receipt = await setRecord();
+  if (receipt) {
+    props.loadExtentedSpaces([props.spaceKey]);
+  }
+}
 </script>
 
 <template>
@@ -318,11 +339,15 @@ onMounted(() => {
         <BaseMessageBlock level="warning">
           {{ $t('settings.needToSetEnsText') }}
         </BaseMessageBlock>
-        <router-link :to="{ name: 'setup', params: { ensAddress: spaceKey } }">
-          <UiButton no-focus primary class="w-full">
-            {{ $t('settings.setEnsTextRecord') }}
-          </UiButton>
-        </router-link>
+        <UiButton
+          @click="modalControllerEditOpen = true"
+          :loading="settingENSRecord"
+          no-focus
+          primary
+          class="w-full"
+        >
+          {{ $t('settings.setEnsTextRecord') }}
+        </UiButton>
       </Block>
       <template v-else-if="currentTextRecord">
         <Block :title="$t('settings.profile')">
@@ -646,14 +671,14 @@ onMounted(() => {
         class="lg:fixed lg:w-[300px]"
       >
         <Block :title="$t('actions')">
-          <router-link
+          <UiButton
             v-if="ensOwner"
-            :to="{ name: 'setup', params: { ensAddress: spaceKey } }"
+            @click="modalControllerEditOpen = true"
+            :loading="settingENSRecord"
+            class="block w-full mb-2"
           >
-            <UiButton class="block w-full mb-2">
-              {{ $t('settings.editController') }}
-            </UiButton>
-          </router-link>
+            {{ $t('settings.editController') }}
+          </UiButton>
           <UiButton @click="handleReset" class="block w-full mb-2">
             {{ $t('reset') }}
           </UiButton>
@@ -718,5 +743,33 @@ onMounted(() => {
       v-model:selected="form.voting.type"
       allowAny
     />
+    <ModalControllerEdit
+      :open="modalControllerEditOpen"
+      @close="modalControllerEditOpen = false"
+      :currentTextRecord="currentTextRecord"
+      :ensAddress="spaceKey"
+      @set="(ensAddress = spaceKey), confirmSetRecord()"
+    />
+    <ModalUnsupportedNetwork
+      :open="modalUnsupportedNetworkOpen"
+      @close="modalUnsupportedNetworkOpen = false"
+      @networkChanged="modalConfirmSetTextRecordOpen = true"
+    />
+    <ModalConfirmAction
+      :open="modalConfirmSetTextRecordOpen"
+      @close="modalConfirmSetTextRecordOpen = false"
+      @confirm="handleSetRecord"
+    >
+      <div class="space-y-4 m-4 text-skin-link">
+        <p>
+          {{
+            $t('setup.confirmToSetAddress', {
+              address: shorten(spaceControllerInput)
+            })
+          }}
+          {{ $t('setup.controllerHasAuthority') + '.' }}
+        </p>
+      </div>
+    </ModalConfirmAction>
   </teleport>
 </template>
