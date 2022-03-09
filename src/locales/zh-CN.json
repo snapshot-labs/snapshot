@@ -272,7 +272,10 @@
     "type": "类型",
     "anyType": "任意",
     "hideAbstain": "忽略基本投票结果中的弃权票",
-    "connectWithSpaceOwner": "要修改空间设置，请连接控制人或管理员钱包。"
+    "connectWithSpaceOwner": "要修改空间设置，请连接控制人或管理员钱包。",
+    "currentSpaceControllerIs": "The current space controller is {address}",
+    "newController": "New controller",
+    "set": "Set"
   },
   "setup": {
     "example": "例如 yam.eth",
@@ -292,11 +295,9 @@
     "controllerHasAuthority": "管理员对空间设置拥有所有权限",
     "controller": "控制人",
     "selectEnsForSpace": "选择ENS地址",
-    "textRecordExists": "当前空间控制人是 {address}。您可以使用下面的表单更新空间控制人。",
     "spaceOwnerAddressPlaceHolder": "例如：0xF78108c9BAF466dd96BE41be728Fe3220b37119",
     "controllerAddress": "控制人地址",
     "updateController": "更新控制人",
-    "connectWithEnsController": "要修改空间控制人，您需要连接拥有 {ens} 的钱包",
     "seeOnEns": "在 ENS 上查看",
     "goToSettings": "前往设置"
   },
@@ -368,6 +369,7 @@
     "addBatch": "添加交易批次",
     "batch": "交易批次",
     "transactions": "交易次数",
+    "to": "To (address)",
     "invalidAddress": "无效地址",
     "invalidAmount": "无效金额",
     "invalidValue": "无效值",
