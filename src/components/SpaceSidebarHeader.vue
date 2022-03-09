@@ -39,7 +39,7 @@ watchEffect(() => {
 </script>
 
 <template>
-  <div class="text-center border-b bg-skin-header-bg h-[253px]">
+  <div class="text-center bg-skin-header-bg h-[253px]">
     <SpaceAvatar
       :space="space"
       symbolIndex="space"
