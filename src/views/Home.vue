@@ -46,12 +46,12 @@ onMounted(() => {
 
 <template>
   <div class="mt-4 min-h-[calc(100vh-145px)] relative pb-[130px]">
-    <Container class="flex items-center mb-4">
-      <UiButton class="pl-3 pr-0 w-full max-w-[420px]">
+    <Container class="flex items-center mb-4 flex-col xs:flex-row flex-wrap md:flex-nowrap">
+      <UiButton class="pl-3 pr-0 w-full md:max-w-[420px]">
         <SearchWithFilters />
       </UiButton>
       <BaseDropdown
-        class="ml-2 mr-auto"
+        class="w-full xs:w-auto md:ml-2 sm:mr-2 mt-2 md:mt-0"
         @select="selectCategory($event)"
         :items="[
           {
@@ -72,7 +72,7 @@ onMounted(() => {
       >
         <template v-slot:button>
           <UiButton
-            class="pr-3 whitespace-nowrap"
+            class="w-full pr-3 whitespace-nowrap"
             :disabled="!orderedSpaces.length"
           >
             <Icon size="14" name="apps" class="mt-1 mr-2" />
@@ -94,7 +94,7 @@ onMounted(() => {
           </div>
         </template>
       </BaseDropdown>
-      <div class="ml-3 text-right hidden md:block whitespace-nowrap">
+      <div class="mt-2 xs:mt-0 xs:ml-auto text-right whitespace-nowrap">
         {{
           $tc('spaceCount', [
             formatCompactNumber(orderedSpacesByCategory.length)
