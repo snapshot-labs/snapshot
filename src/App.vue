@@ -60,7 +60,7 @@ watch(modalOpen, val => {
             <router-view :key="$route.path" />
           </main>
           <footer v-if="!domain" class="mt-auto border-t">
-            <Footer />
+            <TheFooter />
           </footer>
         </div>
       </div>
