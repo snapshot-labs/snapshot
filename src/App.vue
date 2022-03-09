@@ -47,11 +47,11 @@ watch(modalOpen, val => {
     :class="skin"
     class="flex h-screen font-sans text-base bg-skin-bg text-skin-text antialiased"
   >
-    <div v-if="!domain" class="border-r">
+    <div v-if="!domain">
       <TheSidebar />
     </div>
     <div class="grow min-w-0 overflow-hidden flex flex-col">
-      <div class="border-b">
+      <div>
         <TheNavbar />
       </div>
       <div class="grow min-w-0 min-h-0 overflow-x-hidden overflow-y-auto" id="content">
@@ -59,7 +59,7 @@ watch(modalOpen, val => {
           <main class="grow py-4 relative">
             <router-view :key="$route.path" />
           </main>
-          <footer v-if="!domain" class="mt-auto border-t">
+          <footer v-if="!domain" class="mt-auto">
             <TheFooter />
           </footer>
         </div>

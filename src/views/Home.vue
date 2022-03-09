@@ -113,7 +113,7 @@ onMounted(() => {
           >
             <!-- Added mb-0 to remove mb-4 added by block component -->
             <Block
-              class="text-center mb-0 hover:border-skin-link"
+              class="text-center mb-0 border-0 hover:border-skin-link"
               style="height: 266px"
             >
               <div class="relative inline-block mb-2">
@@ -144,13 +144,15 @@ onMounted(() => {
         :block="true"
         v-if="Object.keys(orderedSpacesByCategory).length < 1"
       />
-      <UiButton
-        v-if="!enableInfiniteScroll && orderedSpacesByCategory.length > limit"
-        class="w-full mt-4"
-        @click="loadMoreSpaces()"
-      >
-        {{ $t('homeLoadmore') }}
-      </UiButton>
+      <div class="text-center">
+        <UiButton
+          v-if="!enableInfiniteScroll && orderedSpacesByCategory.length > limit"
+          class="mt-4"
+          @click="loadMoreSpaces()"
+        >
+          {{ $t('homeLoadmore') }}
+        </UiButton>
+      </div>
     </Container>
     <div ref="endElement" />
   </div>

@@ -66,7 +66,10 @@ onMounted(() => {
 
 <template>
   <div class="hidden sm:flex flex-col h-full overflow-auto no-scrollbar overscroll-contain bg-skin-bg py-3">
-    <div class="flex items-center relative px-[12px] group">
+    <div class="flex items-center relative px-2 group mb-2" v-if="web3Account">
+      <NavbarNotifications />
+    </div>
+    <div class="flex items-center relative px-2 group">
       <UiUnreadIndicator v-if="hasUnseenProposals" />
       <router-link :to="{ name: 'timeline' }">
         <UiSidebarButton>
@@ -84,7 +87,7 @@ onMounted(() => {
       class="space-y-2 mt-2"
     >
       <template #item="{ element }">
-        <div class="flex items-center relative px-[12px] group">
+        <div class="flex items-center relative px-2 group">
           <UiUnreadIndicator v-if="hasUnseenProposalsBySpace(element)" />
           <router-link
             :to="{ name: 'spaceProposals', params: { key: element } }"
@@ -104,7 +107,7 @@ onMounted(() => {
         </div>
       </template>
     </draggable>
-    <div class="flex flex-col items-center px-[12px] space-y-2 mt-2">
+    <div class="flex flex-col items-center px-2 space-y-2 mt-2">
       <router-link :to="{ name: 'setup' }">
         <UiSidebarButton><Icon size="20" name="plus" /></UiSidebarButton>
       </router-link>

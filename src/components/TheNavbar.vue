@@ -86,7 +86,6 @@ async function handleLogin(connector) {
               class="sm:hidden -ml-2 -mr-2 block align-text-bottom"
             />
           </UiButton>
-          <NavbarNotifications v-if="web3Account" />
         </div>
       </div>
     </Container>
