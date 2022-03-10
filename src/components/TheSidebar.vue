@@ -66,14 +66,20 @@ onMounted(() => {
 
 <template>
   <div class="flex flex-col h-full overflow-auto no-scrollbar overscroll-contain py-3">
-    <div class="flex items-center relative px-2 group">
+    <div
+      class="flex items-center relative px-2 group"
+      v-tippy="{ content: 'Explore', placement: 'right', delay: [750, 0] }"
+    >
       <router-link :to="{ name: 'home' }">
         <UiSidebarButton>
           <Icon size="20" name="search" />
         </UiSidebarButton>
       </router-link>
     </div>
-    <div class="flex items-center relative px-2 group mt-2">
+    <div
+      class="flex items-center relative px-2 group mt-2"
+      v-tippy="{ content: 'Timeline', placement: 'right', delay: [750, 0] }"
+    >
       <UiUnreadIndicator v-if="hasUnseenProposals" />
       <router-link :to="{ name: 'timeline' }">
         <UiSidebarButton>
@@ -91,7 +97,10 @@ onMounted(() => {
       class="space-y-2 mt-2"
     >
       <template #item="{ element }">
-        <div class="flex items-center relative px-2 group">
+        <div
+          class="flex items-center relative px-2 group"
+          v-tippy="{ content: explore.spaces[element].name, placement: 'right', delay: [750, 0] }"
+        >
           <UiUnreadIndicator v-if="hasUnseenProposalsBySpace(element)" />
           <router-link
             :to="{ name: 'spaceProposals', params: { key: element } }"
@@ -111,7 +120,10 @@ onMounted(() => {
         </div>
       </template>
     </draggable>
-    <div class="flex flex-col items-center px-2 space-y-2 mt-2">
+    <div
+      class="flex flex-col items-center px-2 space-y-2 mt-2"
+      v-tippy="{ content: 'Create space', placement: 'right', delay: [750, 0] }"
+    >
       <router-link :to="{ name: 'setup' }">
         <UiSidebarButton><Icon size="20" name="plus" /></UiSidebarButton>
       </router-link>
