@@ -6,7 +6,7 @@ import { useValidationErrors } from '@/composables/useValidationErrors';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { useClient } from '@/composables/useClient';
 import { useI18n } from '@/composables/useI18n';
-import router from '@/router';
+import { useRouter } from 'vue-router';
 
 const props = defineProps<{
   ensAddress: string;
@@ -14,6 +14,7 @@ const props = defineProps<{
 }>();
 
 const notify = inject<any>('notify');
+const router = useRouter();
 
 const visitedFields = ref<string[]>([]);
 const modalNetworksOpen = ref(false);
@@ -61,13 +62,13 @@ async function handleSubmit() {
     const result = await send({ id: props.ensAddress }, 'settings', form.value);
     console.log('Result', result);
     if (result.id) {
-      notify(['green', t('notify.saved')]);
       router.push({
         name: 'spaceProposals',
         params: {
           key: props.ensAddress
         }
       });
+      notify(['green', t('notify.saved')]);
     }
   } else {
     console.log('Invalid schema', strategyValidationErrors.value);

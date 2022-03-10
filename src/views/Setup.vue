@@ -67,6 +67,9 @@ watch(ownedEnsDomains, (newVal, oldVal) => {
 const loadingOwnedEnsDomains = ref(true);
 loadOwnedEnsDomains().finally(() => (loadingOwnedEnsDomains.value = false));
 watch(web3Account, async () => {
+  // Reset ensAddress to empty string
+  ensAddress.value = '';
+
   loadingOwnedEnsDomains.value = true;
   await loadOwnedEnsDomains();
   loadingOwnedEnsDomains.value = false;

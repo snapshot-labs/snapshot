@@ -301,7 +301,8 @@
     "updateController": "Update controller",
     "seeOnEns": "See on ENS",
     "goToSettings": "Go to settings",
-    "setSpaceProfile": "Customize your space"
+    "setSpaceProfile": "Customize your space",
+    "transactionBeingConfirmed": "Please wait while the transaction is being confirmed"
   },
   "notify": {
     "youDidIt": "You did it!",

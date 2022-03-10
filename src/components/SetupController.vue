@@ -17,6 +17,7 @@ const {
   spaceControllerInput,
   controllerInputIsValid,
   settingENSRecord,
+  pendingENSRecord,
   modalUnsupportedNetworkOpen,
   modalConfirmSetTextRecordOpen,
   setRecord,
@@ -36,7 +37,7 @@ async function handleSetRecord() {
 }
 
 // Checks if a text-record with the connected wallet address exists
-// and skipts to step 3 if it does
+// and skips to step 3 if it does
 const loadingTextRecord = ref(false);
 onMounted(async () => {
   try {
@@ -59,7 +60,11 @@ onMounted(async () => {
 </script>
 
 <template>
-  <Block v-if="loadingTextRecord" slim>
+  <BaseMessageBlock v-if="pendingENSRecord" level="info">
+    {{ $t('setup.transactionBeingConfirmed') }}
+    <RowLoading class="px-0 pb-0" />
+  </BaseMessageBlock>
+  <Block v-else-if="loadingTextRecord" slim>
     <RowLoading class="my-2" />
   </Block>
   <Block v-else :title="$t('setup.setSpaceController')">

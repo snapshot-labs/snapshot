@@ -14,6 +14,7 @@ const spaceControllerInput = ref('');
 const modalUnsupportedNetworkOpen = ref(false);
 const modalConfirmSetTextRecordOpen = ref(false);
 const settingENSRecord = ref(false);
+const pendingENSRecord = ref(false);
 
 export function useSpaceController() {
   const { web3 } = useWeb3();
@@ -56,9 +57,11 @@ export function useSpaceController() {
         [node, 'snapshot', textRecord.value]
       );
       settingENSRecord.value = false;
+      pendingENSRecord.value = true;
       pendingCount.value++;
       const receipt = await tx.wait();
       pendingCount.value--;
+      pendingENSRecord.value = false;
       notify(t('notify.ensSet'));
       console.log('Receipt', receipt);
       return receipt;
@@ -80,6 +83,7 @@ export function useSpaceController() {
     spaceControllerInput,
     controllerInputIsValid,
     settingENSRecord,
+    pendingENSRecord,
     ensAddress,
     modalUnsupportedNetworkOpen,
     modalConfirmSetTextRecordOpen,
