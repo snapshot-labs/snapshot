@@ -45,7 +45,7 @@ async function handleLogin(connector) {
               name="snapshot"
               class="text-snapshot cursor-pointer"
             />
-            Snapshot
+            snapshot
           </router-link>
         </div>
         <div :key="web3Account" class="flex space-x-2">
