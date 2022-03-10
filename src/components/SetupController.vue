@@ -13,8 +13,6 @@ const props = defineProps<{ ensAddress: string; web3Account: string }>();
 const {
   spaceControllerInput,
   controllerInputIsValid,
-  settingENSRecord,
-  pendingENSRecord,
   modalUnsupportedNetworkOpen,
   modalConfirmSetTextRecordOpen,
   setRecord,
@@ -22,8 +20,8 @@ const {
 } = useSpaceController();
 
 async function handleSetRecord() {
-  const receipt = await setRecord();
-  if (receipt) {
+  const tx = await setRecord();
+  if (tx) {
     router.push({
       name: 'setup',
       params: {
@@ -57,11 +55,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <BaseMessageBlock v-if="pendingENSRecord" level="info">
-    {{ $t('setup.transactionBeingConfirmed') }}
-    <RowLoading class="px-0 pb-0" />
-  </BaseMessageBlock>
-  <Block v-else-if="loadingTextRecord" slim>
+  <Block v-if="loadingTextRecord" slim>
     <RowLoading class="my-2" />
   </Block>
   <Block v-else :title="$t('setup.setSpaceController')">
@@ -77,7 +71,6 @@ onMounted(async () => {
       primary
       :disabled="!controllerInputIsValid"
       @click="confirmSetRecord"
-      :loading="settingENSRecord"
     >
       {{ $t('setup.setController') }}
     </UiButton>

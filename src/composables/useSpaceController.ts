@@ -15,6 +15,7 @@ const modalUnsupportedNetworkOpen = ref(false);
 const modalConfirmSetTextRecordOpen = ref(false);
 const settingENSRecord = ref(false);
 const pendingENSRecord = ref(false);
+const ensTxHash = ref('');
 
 export function useSpaceController() {
   const { web3 } = useWeb3();
@@ -40,6 +41,17 @@ export function useSpaceController() {
     return `ipns://storage.snapshot.page/registry/${address}/${keyURI}`;
   });
 
+  async function waitForSetRecord(tx) {
+    pendingENSRecord.value = true;
+    pendingCount.value++;
+    const receipt = await tx.wait();
+    pendingCount.value--;
+    pendingENSRecord.value = false;
+    notify(t('notify.ensSet'));
+    console.log('Receipt', receipt);
+    return receipt;
+  }
+
   async function setRecord() {
     settingENSRecord.value = true;
     try {
@@ -56,15 +68,11 @@ export function useSpaceController() {
         'setText',
         [node, 'snapshot', textRecord.value]
       );
+      ensTxHash.value = tx.hash;
       settingENSRecord.value = false;
-      pendingENSRecord.value = true;
-      pendingCount.value++;
-      const receipt = await tx.wait();
-      pendingCount.value--;
-      pendingENSRecord.value = false;
-      notify(t('notify.ensSet'));
-      console.log('Receipt', receipt);
-      return receipt;
+      notify(t('notify.transactionSent'));
+      waitForSetRecord(tx);
+      return tx;
     } catch (e) {
       notify(['red', t('notify.somethingWentWrong')]);
       console.log(e);
@@ -84,6 +92,7 @@ export function useSpaceController() {
     controllerInputIsValid,
     settingENSRecord,
     pendingENSRecord,
+    ensTxHash,
     ensAddress,
     modalUnsupportedNetworkOpen,
     modalConfirmSetTextRecordOpen,

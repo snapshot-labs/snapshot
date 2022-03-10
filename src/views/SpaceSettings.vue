@@ -315,7 +315,8 @@ const {
 const modalControllerEditOpen = ref(false);
 
 async function handleSetRecord() {
-  const receipt = await setRecord();
+  const tx = await setRecord();
+  const receipt = await tx.wait();
   if (receipt) {
     props.loadExtentedSpaces([props.spaceKey]);
   }

@@ -125,7 +125,7 @@ onMounted(() => {
                   size="44"
                 />
                 <UiCounter
-                  v-if="explore.spaces[element].activeProposals"
+                  v-if="explore.spaces[element]?.activeProposals"
                   :counter="explore.spaces[element].activeProposals"
                   class="absolute -top-[1px] right-[9px] !bg-green !h-[16px] !leading-[16px] !min-w-[16px]"
                 />

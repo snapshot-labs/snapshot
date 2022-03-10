@@ -131,9 +131,8 @@
   "or": "or",
   "share": "Share",
   "createButton": "Create",
-  "welcomeToSpace": {
-    "title": "Welcome to your Snapshot space!",
-    "mainText": "Get familiar with your space by creating your first proposal or try the different voting strategies in the {playground}. Also checkout your {settings} to add more information about your DAO and adjust the configuration for new proposals.",
+  "newSpaceNotice": {
+    "mainText": "Your space has been set up with the default voting strategy. This means you can create proposals and let your organization vote on them right away. You can also set up your own strategies (f.e. for token voting) in the settings.",
     "learnMore": "Learn more in the {documentation} or join Snapshot {discord} for help.",
     "gotIt": "Got it!"
   },
@@ -308,7 +307,7 @@
     "seeOnEns": "See on ENS",
     "goToSettings": "Go to settings",
     "setSpaceProfile": "Customize your space",
-    "transactionBeingConfirmed": "Please wait while the transaction is being confirmed"
+    "waitForTransaction": "The transaction need to confirm before you can create your space. {txUrl}"
   },
   "notify": {
     "youDidIt": "You did it!",
@@ -320,7 +319,8 @@
     "delegationRemoved": "Delegation removed",
     "proposalCreated": "Proposal created",
     "voteSuccessful": "Your vote is in!",
-    "ensSet": "ENS text record was successfully set"
+    "ensSet": "ENS text record was successfully set",
+    "transactionSent": "Transaction sent"
   },
   "explore": {
     "createStrategy": "Create strategy",
