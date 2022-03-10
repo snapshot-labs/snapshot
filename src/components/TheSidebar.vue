@@ -66,10 +66,14 @@ onMounted(() => {
 
 <template>
   <div class="flex flex-col h-full overflow-auto no-scrollbar overscroll-contain py-3">
-    <div class="flex items-center relative px-2 group mb-2" v-if="web3Account">
-      <NavbarNotifications />
-    </div>
     <div class="flex items-center relative px-2 group">
+      <router-link :to="{ name: 'home' }">
+        <UiSidebarButton>
+          <Icon size="20" name="search" />
+        </UiSidebarButton>
+      </router-link>
+    </div>
+    <div class="flex items-center relative px-2 group mt-2">
       <UiUnreadIndicator v-if="hasUnseenProposals" />
       <router-link :to="{ name: 'timeline' }">
         <UiSidebarButton>
