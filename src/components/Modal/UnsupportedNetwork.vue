@@ -3,11 +3,12 @@ import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { computed, ref } from 'vue';
 import { useI18n } from '../../composables/useI18n';
 import { useFlashNotification } from '../../composables/useFlashNotification';
+import { sleep } from '@snapshot-labs/snapshot.js/src/utils';
 
 defineProps<{
   open: boolean;
 }>();
-const emit = defineEmits(['close', 'setTextrecord']);
+const emit = defineEmits(['close', 'networkChanged']);
 
 const { notify } = useFlashNotification();
 const { t } = useI18n();
@@ -29,9 +30,10 @@ const switchToMainnet = async () => {
         }
       ]
     });
+    await sleep(1000);
     switchingChain.value = false;
     emit('close');
-    emit('setTextrecord');
+    emit('networkChanged');
   } catch (e) {
     notify(['red', t('notify.somethingWentWrong')]);
     console.error(e);

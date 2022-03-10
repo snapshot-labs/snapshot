@@ -6,6 +6,7 @@ import { useModal } from '@/composables/useModal';
 import { useI18n } from '@/composables/useI18n';
 import { useEns } from '@/composables/useEns';
 import { useApp } from '@/composables/useApp';
+import { useSpaceController } from '@/composables/useSpaceController';
 
 const router = useRouter();
 const route = useRoute();
@@ -14,12 +15,11 @@ const { modalAccountOpen } = useModal();
 const { loadOwnedEnsDomains, ownedEnsDomains } = useEns();
 const { setPageTitle } = useI18n();
 const { explore } = useApp();
+const { ensAddress } = useSpaceController();
 
 onMounted(() => {
   setPageTitle('page.title.setup');
 });
-
-const ensAddress = computed(() => route.params.ensAddress);
 
 const ownedEnsDomainsNoExistingSpace = computed(() => {
   //  filter ownedEnsDomains with explore.spaces
@@ -30,8 +30,9 @@ const ownedEnsDomainsNoExistingSpace = computed(() => {
 
 // used either on click on existing owned domain OR once a newly registered
 // domain is returned by the ENS subgraph.
-const goToSettings = key => {
-  router.push({ name: 'setup', params: { ensAddress: key } });
+const goToStepTwo = key => {
+  router.push({ name: 'setup', params: { step: '2' } });
+  ensAddress.value = key;
 };
 
 // input for new domain registration
@@ -55,7 +56,7 @@ watch(ownedEnsDomains, (newVal, oldVal) => {
     waitingForRegistration.value = false;
     clearInterval(waitingForRegistrationInterval);
     if (newVal.find(d => d.name === newDomain.value)) {
-      goToSettings(newDomain.value);
+      goToStepTwo(newDomain.value);
     }
   }
 });
@@ -72,10 +73,6 @@ watch(web3Account, async () => {
   waitingForRegistration.value = false;
 });
 
-const cameFromSettings = computed(() =>
-  window.history.state.back?.includes('settings')
-);
-
 // stop lookup when leaving page
 onUnmounted(() => clearInterval(waitingForRegistrationInterval));
 </script>
@@ -84,22 +81,15 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
   <TheLayout>
     <template #content-left>
       <div class="px-4 md:px-0">
-        <h1
-          v-text="
-            ensAddress && cameFromSettings
-              ? $t('setup.controller')
-              : $t('setup.createASpace')
-          "
-          class="mb-4"
-        />
+        <h1 v-text="$t('setup.createASpace')" class="mb-4" />
       </div>
       <template v-if="web3Account">
         <Block v-if="loadingOwnedEnsDomains" slim>
           <RowLoading class="my-2" />
         </Block>
+        <!-- Step two - setup space controller -->
         <SetupController
-          v-else-if="ensAddress"
-          :ensAddress="ensAddress"
+          v-else-if="route.params.step === '2' && ensAddress"
           :ownedEnsDomains="ownedEnsDomains"
         />
         <Block
@@ -122,7 +112,7 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
               <UiButton
                 v-for="(ens, i) in ownedEnsDomainsNoExistingSpace"
                 :key="i"
-                @click="goToSettings(ens.name)"
+                @click="goToStepTwo(ens.name)"
                 class="w-full flex items-center justify-between"
                 :primary="ownedEnsDomainsNoExistingSpace.length === 1"
               >
