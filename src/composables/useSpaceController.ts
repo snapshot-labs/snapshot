@@ -15,7 +15,6 @@ const modalUnsupportedNetworkOpen = ref(false);
 const modalConfirmSetTextRecordOpen = ref(false);
 const settingENSRecord = ref(false);
 const pendingENSRecord = ref(false);
-const ensTxHash = ref('');
 
 export function useSpaceController() {
   const { web3 } = useWeb3();
@@ -68,7 +67,6 @@ export function useSpaceController() {
         'setText',
         [node, 'snapshot', textRecord.value]
       );
-      ensTxHash.value = tx.hash;
       settingENSRecord.value = false;
       notify(t('notify.transactionSent'));
       waitForSetRecord(tx);
@@ -92,7 +90,6 @@ export function useSpaceController() {
     controllerInputIsValid,
     settingENSRecord,
     pendingENSRecord,
-    ensTxHash,
     ensAddress,
     modalUnsupportedNetworkOpen,
     modalConfirmSetTextRecordOpen,

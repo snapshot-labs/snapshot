@@ -10,6 +10,7 @@ import { useRouter } from 'vue-router';
 import { useStorage } from '@vueuse/core';
 import { useExtendedSpaces } from '@/composables/useExtendedSpaces';
 import { useSpaceController } from '@/composables/useSpaceController';
+import { useApp } from '@/composables/useApp';
 
 const props = defineProps<{
   ensAddress: string;
@@ -22,7 +23,6 @@ const router = useRouter();
 const visitedFields = ref<string[]>([]);
 const modalNetworksOpen = ref(false);
 const creatingSpace = ref(false);
-const createWasClicked = ref(false);
 
 // Space setup form
 const form = ref({
@@ -45,7 +45,7 @@ const form = ref({
 
 const { validationErrorMessage } = useValidationErrors();
 const { t } = useI18n();
-const { ensTxHash, pendingENSRecord } = useSpaceController();
+const { pendingENSRecord } = useSpaceController();
 
 const strategyValidationErrors = computed(
   () => validateSchema(schemas.space, form.value) ?? []
@@ -80,27 +80,37 @@ async function checkIfSpaceExists() {
   }
 }
 
+const { getExplore } = useApp();
+
 async function handleSubmit() {
-  createWasClicked.value = true;
-  if (pendingENSRecord.value) return;
   if (isValid.value) {
     creatingSpace.value = true;
-    const result = await send({ id: props.ensAddress }, 'settings', form.value);
-    await checkIfSpaceExists();
-    creatingSpace.value = false;
-    console.log('Result', result);
-    if (result.id) {
-      // Save created space to local storage
-      createdSpaces.value[props.ensAddress] = {
-        showMessage: true
-      };
-      router.push({
-        name: 'spaceProposals',
-        params: {
-          key: props.ensAddress
-        }
-      });
-      notify(['green', t('notify.saved')]);
+    if (pendingENSRecord.value) {
+      await sleep(3000);
+      await handleSubmit();
+    } else {
+      const result = await send(
+        { id: props.ensAddress },
+        'settings',
+        form.value
+      );
+      await checkIfSpaceExists();
+      await getExplore();
+      creatingSpace.value = false;
+      console.log('Result', result);
+      if (result.id) {
+        // Save created space to local storage
+        createdSpaces.value[props.ensAddress] = {
+          showMessage: true
+        };
+        router.push({
+          name: 'spaceProposals',
+          params: {
+            key: props.ensAddress
+          }
+        });
+        notify(['green', t('notify.saved')]);
+      }
     }
   } else {
     console.log('Invalid schema', strategyValidationErrors.value);
@@ -149,19 +159,6 @@ async function handleSubmit() {
         >
           {{ $t('createButton') }}
         </UiButton>
-        <BaseMessageBlock
-          v-if="pendingENSRecord && ensTxHash && createWasClicked"
-          level="warning"
-          class="mb-0"
-        >
-          <i18n-t keypath="setup.waitForTransaction" class="mt-4">
-            <template v-slot:txUrl>
-              <BaseLink :link="`https://etherscan.io/tx/${ensTxHash}`">
-                See transaction</BaseLink
-              >
-            </template>
-          </i18n-t>
-        </BaseMessageBlock>
       </div>
     </Block>
   </div>

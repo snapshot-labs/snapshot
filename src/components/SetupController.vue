@@ -15,6 +15,7 @@ const {
   controllerInputIsValid,
   modalUnsupportedNetworkOpen,
   modalConfirmSetTextRecordOpen,
+  settingENSRecord,
   setRecord,
   confirmSetRecord
 } = useSpaceController();
@@ -70,6 +71,7 @@ onMounted(async () => {
       class="button-outline w-full my-2"
       primary
       :disabled="!controllerInputIsValid"
+      :loading="settingENSRecord"
       @click="confirmSetRecord"
     >
       {{ $t('setup.setController') }}
