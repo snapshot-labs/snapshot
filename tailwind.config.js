@@ -52,6 +52,7 @@ module.exports = {
       xs: ['14px']
     },
     boxShadow: {
+      sm: '0 0 7px -2px var(--border-color)',
       lg: '0 0 20px -6px var(--border-color)'
     }
   },
