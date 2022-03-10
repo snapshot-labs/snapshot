@@ -97,27 +97,23 @@ onMounted(() => {
     <div class="overflow-hidden">
       <template v-if="route.name === 'strategies'">
         <RowLoadingBlock v-if="loadingStrategies" />
-        <div v-else>
-          <template v-for="item in items.slice(0, limit)" :key="item.key">
-            <router-link :to="`/strategy/${item.id}`">
-              <BlockStrategy :strategy="item" class="mb-3" />
-            </router-link>
-          </template>
+        <div v-else class="grid md:grid-cols-3 gap-[1px] md:gap-4">
+          <router-link :to="`/strategy/${item.id}`" v-for="item in items.slice(0, limit)" :key="item.key">
+            <BlockStrategy :strategy="item" class="mb-3" />
+          </router-link>
         </div>
       </template>
       <template v-if="route.name === 'networks'">
         <RowLoadingBlock v-if="loadingNetworksSpacesCount" />
-        <div v-else>
-          <template v-for="item in items.slice(0, limit)" :key="item.key">
-            <router-link :to="`/?network=${item.key}`">
-              <BlockNetwork :network="item" class="mb-3" />
-            </router-link>
-          </template>
+        <div v-else class="grid md:grid-cols-3 gap-[1px] md:gap-4">
+          <router-link :to="`/?network=${item.key}`" v-for="item in items.slice(0, limit)" :key="item.key">
+            <BlockNetwork :network="item" class="mb-3" />
+          </router-link>
         </div>
       </template>
       <template v-if="route.name === 'plugins'">
         <RowLoadingBlock v-if="loadingPluginsSpacesCount" />
-        <div v-else>
+        <div v-else class="grid md:grid-cols-3 gap-[1px] md:gap-4">
           <BlockPlugin
             v-for="item in items.slice(0, limit)"
             :key="item.key"
