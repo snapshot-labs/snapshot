@@ -10,7 +10,7 @@ export const ETHEREUM_COIN: Token = {
 };
 export const MATIC_COIN: Token = {
   name: 'MATIC',
-  decimals: 18,
+  decimals: 6,
   symbol: 'MATIC',
   address: 'main',
   logoUri:
