@@ -92,12 +92,7 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
           v-else-if="route.params.step === '2' && ensAddress"
           :ownedEnsDomains="ownedEnsDomains"
         />
-        <Block
-          v-else
-          :title="$t('setup.selectEnsForSpace')"
-          icon="info"
-          iconHref="https://docs.snapshot.org/spaces/before-creating-your-space"
-        >
+        <Block v-else>
           <div v-if="ownedEnsDomainsNoExistingSpace.length">
             <div class="mb-3">
               {{
