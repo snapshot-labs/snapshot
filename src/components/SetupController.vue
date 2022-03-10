@@ -4,14 +4,11 @@ import { shorten } from '@/helpers/utils';
 import { useSpaceController } from '@/composables/useSpaceController';
 import { useRouter, useRoute } from 'vue-router';
 import { getSpaceUri } from '@snapshot-labs/snapshot.js/src/utils';
-import { useWeb3 } from '@/composables/useWeb3';
 
 const router = useRouter();
 const route = useRoute();
 
-const props = defineProps<{ ensAddress: string }>();
-
-const { web3Account } = useWeb3();
+const props = defineProps<{ ensAddress: string; web3Account: string }>();
 
 const {
   spaceControllerInput,
@@ -48,7 +45,7 @@ onMounted(async () => {
     );
     console.log('URI', uri);
     const uriAddress = uri?.split('/')[4] ?? '';
-    if (uriAddress === web3Account.value && route.params.step === '2') {
+    if (uriAddress === props.web3Account && route.params.step === '2') {
       router.push({ name: 'setup', params: { step: '3' } });
     }
     loadingTextRecord.value = false;

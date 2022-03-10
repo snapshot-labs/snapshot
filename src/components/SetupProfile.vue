@@ -7,6 +7,7 @@ import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { useClient } from '@/composables/useClient';
 import { useI18n } from '@/composables/useI18n';
 import { useRouter } from 'vue-router';
+import { useStorage } from '@vueuse/core';
 
 const props = defineProps<{
   ensAddress: string;
@@ -57,11 +58,21 @@ const isValid = computed(() => {
 
 const { send, clientLoading } = useClient();
 
+// Reactive local storage with help from vueuse package
+const createdSpaces = useStorage(
+  `snapshot.createdSpaces.${props.web3Account.slice(0, 8).toLowerCase()}`,
+  {}
+);
+
 async function handleSubmit() {
   if (isValid.value) {
     const result = await send({ id: props.ensAddress }, 'settings', form.value);
     console.log('Result', result);
     if (result.id) {
+      // Save created space to local storage
+      createdSpaces.value[props.ensAddress] = {
+        showMessage: true
+      };
       router.push({
         name: 'spaceProposals',
         params: {

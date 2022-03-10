@@ -131,6 +131,12 @@
   "or": "or",
   "share": "Share",
   "createButton": "Create",
+  "welcomeToSpace": {
+    "title": "Welcome to your Snapshot space!",
+    "mainText": "Get familiar with your space by creating your first proposal or try the different voting strategies in the {playground}. Also checkout your {settings} to add more information about your DAO and adjust the configuration for new proposals.",
+    "learnMore": "Learn more in the {documentation} or join Snapshot {discord} for help.",
+    "gotIt": "Got it!"
+  },
   "errors": {
     "required": "Field is required",
     "minLength": "Field is required",

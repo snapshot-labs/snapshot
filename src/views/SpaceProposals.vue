@@ -119,7 +119,7 @@ onMounted(() => {
       <SpaceSidebar :space="space" />
     </template>
     <template #content-right>
-      <div class="px-4 md:px-0 mb-3 flex">
+      <div class="px-4 md:px-0 mb-3 flex relative">
         <div class="flex-auto">
           <div class="flex items-center flex-auto">
             <h2>{{ $t('proposals.header') }}</h2>
@@ -162,6 +162,7 @@ onMounted(() => {
             </UiButton>
           </template>
         </BaseDropdown>
+        <SpaceProposalsWelcome :spaceId="space.id" :web3Account="web3Account" />
       </div>
       <NoResults
         :block="true"

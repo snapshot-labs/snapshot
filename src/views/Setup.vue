@@ -94,6 +94,7 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
         <SetupController
           v-else-if="route.params.step === '2' && ensAddress"
           :ensAddress="ensAddress"
+          :web3Account="web3Account"
         />
 
         <!-- Step three - setup space profile -->
