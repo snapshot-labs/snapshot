@@ -174,7 +174,7 @@ onMounted(() => {
         class="mt-2"
         :space="space"
       />
-      <div v-else>
+      <div v-else class="space-y-4">
         <TimelineProposal
           v-for="(proposal, i) in store.space.proposals"
           :key="i"
