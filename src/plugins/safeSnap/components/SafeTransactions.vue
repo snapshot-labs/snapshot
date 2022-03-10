@@ -247,7 +247,7 @@ export default {
         <SafeSnapHandleOutcome
           v-if="preview && proposalResolved"
           :batches="input"
-          :proposalId="proposal.id"
+          :proposal="proposal"
           :realityAddress="realityAddress"
           :multiSendAddress="transactionConfig.multiSendAddress"
           :network="transactionConfig.network"
