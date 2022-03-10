@@ -17,7 +17,7 @@ defineProps({
   >
     <h4
       v-if="title"
-      class="px-4 pt-3 border-b block bg-skin-header-bg rounded-t-none md:rounded-t-lg"
+      class="px-4 pt-3 block rounded-t-none md:rounded-t-lg"
       style="padding-bottom: 12px"
     >
       {{ title }}

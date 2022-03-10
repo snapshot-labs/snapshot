@@ -124,7 +124,7 @@ function selectState(e) {
   <TheLayout class="!mt-0">
     <template #sidebar-right>
       <div style="position: fixed; width: 320px" class="mt-4 hidden lg:block">
-        <Block :slim="true" :title="$t('filters')" class="overflow-hidden">
+        <Block :slim="true" class="overflow-hidden">
           <div class="py-3">
             <router-link
               :to="{ name: 'timeline' }"

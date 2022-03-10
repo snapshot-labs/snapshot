@@ -36,10 +36,7 @@ const hideAbstain = props.space?.voting?.hideAbstain ?? false;
 </script>
 
 <template>
-  <Block
-    :loading="!loaded"
-    :title="ts >= proposal.end ? $t('results') : $t('currentResults')"
-  >
+  <Block :loading="!loaded">
     <div v-for="choice in choices" :key="choice.i">
       <template
         v-if="!(proposal.type === 'basic' && hideAbstain && choice.i === 2)"

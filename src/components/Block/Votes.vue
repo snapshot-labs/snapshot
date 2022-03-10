@@ -85,8 +85,7 @@ watch(visibleVotes, () => {
 <template>
   <Block
     v-if="isZero()"
-    :title="$t('votes')"
-    :counter="voteCount"
+    :title="`${voteCount} ${$t('votes')}`"
     :slim="true"
     :loading="!loaded"
   >
@@ -155,7 +154,7 @@ watch(visibleVotes, () => {
           : sortedVotes.length > 10 && nbrVisibleVotes < sortedVotes.length
       "
       @click="isFinalProposal ? $emit('loadVotes') : (nbrVisibleVotes += 10)"
-      class="px-4 py-3 border-t text-center block bg-skin-header-bg rounded-b-none md:rounded-b-md"
+      class="px-4 py-3 border-t text-center block rounded-b-none md:rounded-b-md"
     >
       <UiLoading v-if="loadingMore" />
       <span v-else v-text="$t('seeMore')" />
