@@ -37,7 +37,7 @@ const socials = [
         <BaseLink :link="social.link" hide-external-icon>
           <Icon
             size="30"
-            class="hover:opacity-80 text-skin-text"
+            class="opacity-40 hover:opacity-80 text-skin-text transition-opacity"
             :name="social.icon"
           />
         </BaseLink>
@@ -55,7 +55,7 @@ const socials = [
       </UiSidebarButton>
       <SelectLanguageButton />
     </div>
-    <div class="pt-3 md:pt-0 md:pr-2 md:order-first whitespace-nowrap">© {{ yearNow }} Snapshot Labs.</div>
+    <div class="pt-3 md:pt-0 md:pr-2 md:order-first whitespace-nowrap opacity-40">© {{ yearNow }} Snapshot Labs.</div>
   </Container>
   <teleport to="#modal">
     <ModalAbout
