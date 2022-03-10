@@ -155,7 +155,11 @@ onMounted(() => {
             </UiButton>
           </template>
         </BaseDropdown>
-        <SpaceProposalsWelcome :spaceId="space.id" :web3Account="web3Account" />
+        <SpaceProposalsNotice
+          v-if="store.space.proposals.length < 1"
+          :spaceId="space.id"
+          :web3Account="web3Account"
+        />
       </div>
 
       <NoProposals
