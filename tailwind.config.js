@@ -52,8 +52,8 @@ module.exports = {
       xs: ['14px']
     },
     boxShadow: {
-      sm: '0 0 7px -2px var(--border-color)',
-      lg: '0 0 20px -6px var(--border-color)'
+      sm: '1px 2px 1px var(--shadow-color)',
+      lg: '2px 4px 9px var(--shadow-color)'
     }
   },
   plugins: [require('@tailwindcss/line-clamp')],

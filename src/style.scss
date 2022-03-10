@@ -14,6 +14,7 @@
   --border-color: #424242;
   --header-bg: #121212;
   --block-bg: #1c1b20;
+  --shadow-color: #fff1
 }
 
 [data-color-scheme='light'] {
@@ -26,6 +27,7 @@
   --border-color: #d0d7de;
   --header-bg: white;
   --block-bg: white;
+  --shadow-color: #0001
 }
 
 @layer base {
