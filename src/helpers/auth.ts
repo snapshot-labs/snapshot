@@ -15,8 +15,7 @@ const lockConnectors = {
   walletlink,
   portis,
   fortmatic,
-  gnosis,
-  trezor: injected
+  gnosis
 };
 
 Object.entries(connectors).forEach((connector: any) => {

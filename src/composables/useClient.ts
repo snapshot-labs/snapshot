@@ -22,8 +22,7 @@ export function useClient() {
       connectorName.value === 'walletlink' ||
       connectorName.value === 'walletconnect' ||
       connectorName.value === 'portis' ||
-      connectorName.value === 'gnosis' ||
-      web3.value.isTrezor
+      connectorName.value === 'gnosis'
     );
   });
 
