@@ -76,10 +76,7 @@ watch(
 </script>
 
 <template>
-  <UiModal :open="open" @close="$emit('close')" class="flex">
-    <template v-slot:header>
-      <h3>{{ $t('confirmVote') }}</h3>
-    </template>
+  <UiModal :open="open" :showClose="false" @close="$emit('close')" class="flex">
     <div class="flex flex-col flex-auto">
       <h4 class="m-4 mb-0 text-center">
         {{

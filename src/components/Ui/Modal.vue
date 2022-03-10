@@ -6,6 +6,11 @@ const props = defineProps({
   open: {
     type: Boolean,
     required: true
+  },
+  showClose: {
+    type: Boolean,
+    required: false,
+    default: true
   }
 });
 
@@ -32,6 +37,7 @@ watch(open, (val, prev) => {
           <slot name="footer" />
         </div>
         <a
+          v-if="showClose"
           @click="$emit('close')"
           class="absolute right-0 top-1 p-4 text-skin-text"
         >
