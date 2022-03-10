@@ -313,6 +313,7 @@ const needsPluginConfigs = computed(() =>
       <!-- Shows when no wallet is connected and the space has any sort 
       of validation set -->
       <BaseMessageBlock
+        class="mb-4"
         level="warning"
         v-if="
           !web3Account &&
@@ -350,12 +351,17 @@ const needsPluginConfigs = computed(() =>
         level="warning"
         v-else-if="executingValidationFailed"
         :routeObject="{ name: 'spaceAbout', params: { key: space.id } }"
+        class="mb-4"
       >
         {{ $t('create.validationWarning.executionError') }}
       </BaseMessageBlock>
 
       <!-- Shows when wallet is connected and doesn't pass validaion -->
-      <BaseMessageBlock level="warning" v-else-if="passValidation[0] === false">
+      <BaseMessageBlock
+        level="warning"
+        v-else-if="passValidation[0] === false"
+        class="mb-4"
+      >
         <span v-if="passValidation[1] === 'basic'">
           <span v-if="space?.filters.onlyMembers">
             {{ $t('create.validationWarning.basic.member') }}
