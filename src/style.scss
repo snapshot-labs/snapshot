@@ -7,24 +7,25 @@
 [data-color-scheme='dark'] {
   color-scheme: dark;
   --primary-color: #384aff;
-  --bg-color: #121212;
+  --bg-color: #211f24;
   --text-color: #8b949e;
   --link-color: #ffffff;
   --heading-color: #ffffff;
   --border-color: #424242;
   --header-bg: #121212;
+  --block-bg: #1c1b20;
 }
 
 [data-color-scheme='light'] {
   color-scheme: light;
   --primary-color: #384aff;
-  --bg-color: white;
+  --bg-color: #f6f6f6;
   --text-color: #57606a;
   --link-color: #111111;
   --heading-color: #111111;
   --border-color: #d0d7de;
   --header-bg: white;
-  --block-bg: transparent;
+  --block-bg: white;
 }
 
 @layer base {

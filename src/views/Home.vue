@@ -103,7 +103,7 @@ onMounted(() => {
       </div>
     </Container>
     <Container :slim="true">
-      <div class="grid lg:grid-cols-4 md:grid-cols-3 gap-4">
+      <div class="grid lg:grid-cols-4 md:grid-cols-3 gap-[1px] md:gap-4">
         <div
           v-for="space in orderedSpacesByCategory.slice(0, limit)"
           :key="space.id"

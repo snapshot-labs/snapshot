@@ -65,7 +65,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="flex flex-col h-full overflow-auto no-scrollbar overscroll-contain bg-skin-bg py-3">
+  <div class="flex flex-col h-full overflow-auto no-scrollbar overscroll-contain py-3">
     <div class="flex items-center relative px-2 group mb-2" v-if="web3Account">
       <NavbarNotifications />
     </div>

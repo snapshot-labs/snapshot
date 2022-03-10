@@ -25,7 +25,7 @@ defineProps({
       {
         'button--primary hover:brightness-95': primary,
         'focus-within:border-skin-border': noFocus,
-        'focus-within:border-skin-link': !noFocus
+        'focus-within:border-skin-link focus-within:bg-skin-block-bg': !noFocus
       }
     ]"
     :disabled="disabled || loading"
@@ -70,6 +70,7 @@ defineProps({
   &:hover {
     color: var(--link-color);
     border-color: var(--link-color);
+    background-color: var(--block-bg);
   }
 
   &:disabled {

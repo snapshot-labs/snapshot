@@ -45,7 +45,7 @@ watch(modalOpen, val => {
   <div
     v-else
     :class="skin"
-    class="flex h-screen font-sans text-base bg-skin-bg text-skin-text antialiased"
+    class="flex h-screen font-sans text-base bg-skin-block-bg text-skin-text antialiased"
   >
     <div v-if="!domain">
       <TheSidebar />
@@ -54,8 +54,8 @@ watch(modalOpen, val => {
       <div>
         <TheNavbar />
       </div>
-      <div class="grow min-w-0 min-h-0 overflow-x-hidden overflow-y-auto" id="content">
-        <div class="min-h-full flex flex-col">
+      <div class="grow min-w-0 min-h-0 rounded-tl-3xl overflow-x-hidden overflow-y-auto" id="content">
+        <div class="min-h-full flex flex-col bg-skin-bg">
           <main class="grow py-4 relative">
             <router-view :key="$route.path" />
           </main>
