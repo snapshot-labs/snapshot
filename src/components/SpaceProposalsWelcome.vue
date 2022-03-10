@@ -16,7 +16,7 @@ const createdSpaces = useStorage(
 <template>
   <Block
     v-if="createdSpaces?.[spaceId]?.showMessage"
-    class="absolute z-10 !bg-skin-bg"
+    class="absolute z-10 !bg-skin-bg left-0"
   >
     <h3>{{ $t('welcomeToSpace.title') }}</h3>
 
