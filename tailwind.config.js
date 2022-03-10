@@ -52,7 +52,7 @@ module.exports = {
       xs: ['14px']
     },
     boxShadow: {
-      sm: '1px 2px 1px var(--shadow-color)',
+      sm: '1px 2px 2px var(--shadow-color)',
       lg: '2px 4px 9px var(--shadow-color)'
     }
   },
