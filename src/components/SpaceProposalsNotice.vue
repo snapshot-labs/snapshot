@@ -21,7 +21,7 @@ const createdSpaces = useStorage(
     <div>
       <div>
         <div>
-          <h3 class="mt-0">Your space is live!</h3>
+          <h3 class="mt-0">{{ $t('newSpaceNotice.header') }}</h3>
           <div>
             <Icon name="info" size="24" class="float-left mr-1" />
             <i18n-t keypath="newSpaceNotice.mainText" tag="p">

@@ -132,6 +132,7 @@
   "share": "Share",
   "createButton": "Create",
   "newSpaceNotice": {
+    "header": "Your space is live!",
     "mainText": "By default each voter has a voting power of one. You can change how voting power is calculated via strategies in your {settings}. Changes to your settings will only affect new proposals, existing proposals can not be changed.",
     "learnMore": "Learn more in the {documentation} or join Snapshot {discord} for help.",
     "gotIt": "Got it!"
