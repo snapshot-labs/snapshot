@@ -183,7 +183,7 @@ const { notify } = useFlashNotification();
 
 const props = defineProps([
   'batches',
-  'proposalId',
+  'proposal',
   'network',
   'realityAddress',
   'multiSendAddress'
@@ -278,7 +278,7 @@ const updateDetails = async () => {
     questionDetails.value = await plugin.getExecutionDetailsWithHashes(
       props.network,
       props.realityAddress,
-      props.proposalId,
+      props.proposal.id,
       getTxHashes()
     );
     if (questionDetails.value.questionId && getInstance().web3) {
@@ -286,7 +286,8 @@ const updateDetails = async () => {
         getInstance().web3,
         props.network,
         questionDetails.value.questionId,
-        questionDetails.value.oracle
+        questionDetails.value.oracle,
+        props.proposal.snapshot
       );
     }
   } catch (e) {

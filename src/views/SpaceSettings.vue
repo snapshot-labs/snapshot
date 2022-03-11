@@ -65,6 +65,7 @@ const form = ref({
 const validate = computed(() => {
   if (form.value.terms === '') delete form.value.terms;
   if (form.value.avatar === '') delete form.value.avatar;
+  if (form.value.website === '') delete form.value.website;
 
   return validateSchema(schemas.space, form.value);
 });
@@ -165,6 +166,8 @@ function inputError(field) {
 
     if (errorFound?.instancePath.includes('strategies'))
       return t('errors.minStrategy');
+    else if (errorFound?.instancePath.includes('website'))
+      return t('errors.website');
     else if (errorFound)
       return t(`errors.${errorFound.keyword}`, [errorFound?.params.limit]);
   }
@@ -315,7 +318,8 @@ const {
 const modalControllerEditOpen = ref(false);
 
 async function handleSetRecord() {
-  const receipt = await setRecord();
+  const tx = await setRecord();
+  const receipt = await tx.wait();
   if (receipt) {
     props.loadExtentedSpaces([props.spaceKey]);
   }
@@ -435,6 +439,16 @@ async function handleSetRecord() {
             >
               <template v-slot:label>
                 <Icon name="github" />
+              </template>
+            </UiInput>
+            <UiInput
+              v-model="form.website"
+              placeholder="e.g. https://example.com"
+              :error="inputError('website')"
+              @blur="visitedFields.push('website')"
+            >
+              <template v-slot:label>
+                <Icon name="earth" />
               </template>
             </UiInput>
             <UiInput
@@ -666,10 +680,7 @@ async function handleSetRecord() {
       </template>
     </template>
     <template #sidebar-right>
-      <div
-        v-if="(loaded && isSpaceController) || (loaded && isSpaceAdmin)"
-        class="lg:fixed lg:w-[300px]"
-      >
+      <div v-if="loaded" class="lg:fixed lg:w-[300px]">
         <Block :title="$t('actions')">
           <UiButton
             v-if="ensOwner"
@@ -679,23 +690,27 @@ async function handleSetRecord() {
           >
             {{ $t('settings.editController') }}
           </UiButton>
-          <UiButton @click="handleReset" class="block w-full mb-2">
-            {{ $t('reset') }}
-          </UiButton>
-          <UiButton
-            :disabled="uploadLoading"
-            @click="handleSubmit"
-            :loading="clientLoading"
-            class="block w-full"
-            primary
-          >
-            {{ $t('save') }}
-          </UiButton>
+          <div v-if="isSpaceAdmin || isSpaceController">
+            <UiButton @click="handleReset" class="block w-full mb-2">
+              {{ $t('reset') }}
+            </UiButton>
+            <UiButton
+              :disabled="uploadLoading"
+              @click="handleSubmit"
+              :loading="clientLoading"
+              class="block w-full"
+              primary
+            >
+              {{ $t('save') }}
+            </UiButton>
+          </div>
         </Block>
       </div>
       <BaseMessageBlock
         level="warning"
-        v-if="!(isSpaceController || isSpaceAdmin) && currentTextRecord"
+        v-if="
+          !(isSpaceController || isSpaceAdmin || ensOwner) && currentTextRecord
+        "
       >
         {{ $t('settings.connectWithSpaceOwner') }}
       </BaseMessageBlock>
