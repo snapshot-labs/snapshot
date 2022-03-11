@@ -166,6 +166,8 @@ function inputError(field) {
 
     if (errorFound?.instancePath.includes('strategies'))
       return t('errors.minStrategy');
+    else if (errorFound?.instancePath.includes('website'))
+      return t('errors.website');
     else if (errorFound)
       return t(`errors.${errorFound.keyword}`, [errorFound?.params.limit]);
   }
