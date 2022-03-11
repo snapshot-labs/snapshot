@@ -8,7 +8,6 @@ import { useWeb3 } from '@/composables/useWeb3';
 const props = defineProps({ space: Object });
 
 const { isGnosisSafe } = useClient();
-const { web3 } = useWeb3();
 
 const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(props.space.id);
 
