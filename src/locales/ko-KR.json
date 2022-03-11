@@ -130,13 +130,21 @@
   "confirmAction": "액션 확인",
   "or": "또는",
   "share": "Share",
+  "createButton": "Create",
+  "newSpaceNotice": {
+    "header": "Your space is live!",
+    "mainText": "By default each voter has a voting power of one. You can change how voting power is calculated via strategies in your {settings}. Changes to your settings will only affect new proposals, existing proposals can not be changed.",
+    "learnMore": "Learn more in the {documentation} or join Snapshot {discord} for help.",
+    "gotIt": "Got it!"
+  },
   "errors": {
     "required": "필드가 필요합니다",
-    "minLength": "최소 길이는 {0}",
+    "minLength": "Field is required",
     "maxLength": "최대 길이: {0}",
     "pattern": "잘못된 문자",
     "minItems": "최소 {0} 개 항목 필요",
     "minStrategy": "적어도 한 개의 전략이 필요합니다.",
+    "website": "URL should be in the format https://www.example.com",
     "format": "잘못된 형식",
     "type": "잘못된 유형"
   },
@@ -299,7 +307,10 @@
     "controllerAddress": "관리자 주소",
     "updateController": "관리자 업데이트",
     "seeOnEns": "ENS 보기",
-    "goToSettings": "설정으로 이동"
+    "goToSettings": "설정으로 이동",
+    "setSpaceProfile": "Customize your space",
+    "waitForTransaction": "The transaction need to confirm before you can create your space. {txUrl}",
+    "pleaseWaitMessage": "This can take a few minutes, please wait while the transaction is being confirmed"
   },
   "notify": {
     "youDidIt": "해냈어요!",
@@ -311,7 +322,8 @@
     "delegationRemoved": "위임 제거됨",
     "proposalCreated": "제안 생성됨",
     "voteSuccessful": "투표가 완료되었습니다!",
-    "ensSet": "ENS 텍스트 레코드가 성공적으로 설정되었습니다."
+    "ensSet": "ENS 텍스트 레코드가 성공적으로 설정되었습니다.",
+    "transactionSent": "Transaction sent"
   },
   "explore": {
     "createStrategy": "전략 만들기",
