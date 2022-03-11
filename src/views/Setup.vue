@@ -67,6 +67,9 @@ watch(ownedEnsDomains, (newVal, oldVal) => {
 const loadingOwnedEnsDomains = ref(true);
 loadOwnedEnsDomains().finally(() => (loadingOwnedEnsDomains.value = false));
 watch(web3Account, async () => {
+  // Reset ensAddress to empty string
+  ensAddress.value = '';
+
   loadingOwnedEnsDomains.value = true;
   await loadOwnedEnsDomains();
   loadingOwnedEnsDomains.value = false;
@@ -90,7 +93,15 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
         <!-- Step two - setup space controller -->
         <SetupController
           v-else-if="route.params.step === '2' && ensAddress"
-          :ownedEnsDomains="ownedEnsDomains"
+          :ensAddress="ensAddress"
+          :web3Account="web3Account"
+        />
+
+        <!-- Step three - setup space profile -->
+        <SetupProfile
+          v-else-if="route.params.step === '3' && ensAddress"
+          :ensAddress="ensAddress"
+          :web3Account="web3Account"
         />
         <Block v-else>
           <div v-if="ownedEnsDomainsNoExistingSpace.length">

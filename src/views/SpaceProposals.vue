@@ -84,13 +84,6 @@ watch(store.space.proposals, () => {
   loadProfiles(store.space.proposals.map(proposal => proposal.author));
 });
 
-// TODO: Use space query instead of explore, to get total number of proposals
-const proposalsCount = computed(() => {
-  return 1;
-  // const count = explore.value.spaces[props.space.id].proposals;
-  // return count ? count : 0;
-});
-
 const loadingData = computed(() => {
   return loading.value || loadingMore.value;
 });
@@ -119,7 +112,7 @@ onMounted(() => {
       <SpaceSidebar :space="space" />
     </template>
     <template #content-right>
-      <div class="px-4 md:px-0 mb-3 flex">
+      <div class="px-4 md:px-0 mb-3 flex relative">
         <div class="flex-auto">
           <div class="flex items-center flex-auto">
             <h2>{{ $t('proposals.header') }}</h2>
@@ -162,15 +155,15 @@ onMounted(() => {
             </UiButton>
           </template>
         </BaseDropdown>
+        <SpaceProposalsNotice
+          v-if="store.space.proposals.length < 1 && !loadingData"
+          :spaceId="space.id"
+          :web3Account="web3Account"
+        />
       </div>
-      <NoResults
-        :block="true"
-        v-if="
-          !loadingData && proposalsCount && store.space.proposals.length < 1
-        "
-      />
+
       <NoProposals
-        v-else-if="!proposalsCount && !loadingData"
+        v-if="!loadingData && store.space.proposals.length < 1"
         class="mt-2"
         :space="space"
       />

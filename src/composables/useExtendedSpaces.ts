@@ -2,13 +2,14 @@ import { ref, computed } from 'vue';
 import { SPACES_QUERY } from '@/helpers/queries';
 import { useApolloQuery } from '@/composables/useApolloQuery';
 
-const extentedSpaces = ref([]);
+// TODO: Type this properly
+const extentedSpaces = ref<Record<string, any>>([]);
 const loading = ref(false);
 
 export function useExtendedSpaces() {
   const { apolloQuery } = useApolloQuery();
 
-  async function loadExtentedSpaces(id_in = []) {
+  async function loadExtentedSpaces(id_in: string[] = []) {
     loading.value = true;
     try {
       const response = await apolloQuery(
