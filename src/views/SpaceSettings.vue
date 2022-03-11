@@ -668,6 +668,7 @@ async function handleSetRecord() {
         </div>
       </template>
     </template>
+    
     <template #sidebar-right>
       <div v-if="loaded" class="lg:fixed lg:w-[300px]">
         <Block>
