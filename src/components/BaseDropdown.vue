@@ -62,7 +62,7 @@ watch(open, () => emit('openChange'));
             :key="item.text"
             @click="handleClick(item.action)"
             :class="{ selected: item.selected }"
-            class="list-none block whitespace-nowrap px-[18px] leading-[38px] cursor-pointer select-none"
+            class="list-none block whitespace-nowrap px-3 py-2 cursor-pointer select-none"
           >
             <slot name="item" :item="item" :key="item">
               {{ item.text }}
@@ -77,6 +77,6 @@ watch(open, () => emit('openChange'));
 <style scoped>
 li.selected,
 li:hover {
-  @apply bg-skin-border text-skin-link;
+  @apply bg-skin-link text-skin-block-bg;
 }
 </style>
