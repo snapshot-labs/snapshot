@@ -33,11 +33,6 @@ onMounted(async () => {
   await loadLocale();
   init();
 });
-
-watch(modalOpen, val => {
-  const el = document.body;
-  el.classList[val ? 'add' : 'remove']('overflow-hidden');
-});
 </script>
 
 <template>
