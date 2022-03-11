@@ -131,7 +131,7 @@ async function handleSubmit() {
 
 <template>
   <div>
-    <Block :title="$t('setup.setSpaceProfile')">
+    <Block>
       <div class="space-y-2">
         <UiInput
           v-model="form.name"
