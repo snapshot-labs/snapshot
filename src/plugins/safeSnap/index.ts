@@ -19,7 +19,6 @@ import {
   EIP712_TYPES,
   REALITY_MODULE_ABI,
   ORACLE_ABI,
-  START_BLOCKS,
   ERC20_ABI
 } from './constants';
 import {
@@ -211,8 +210,7 @@ export default class Plugin {
     }
 
     const answersFilter = contract.filters.LogNewAnswer(null, questionId);
-    const startBlock = Math.max(START_BLOCKS[network] || 0, parseInt(block));
-    const events = await contract.queryFilter(answersFilter, startBlock);
+    const events = await contract.queryFilter(answersFilter, parseInt(block));
 
     const users: Result[] = [];
     const historyHashes: Result[] = [];

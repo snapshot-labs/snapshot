@@ -1,10 +1,5 @@
 import { MULTI_SEND_VERSION } from './utils/multiSend';
 
-export const START_BLOCKS = {
-  1: 6531147,
-  4: 3175028
-};
-
 export const EIP712_TYPES = {
   Transaction: [
     { name: 'to', type: 'address' },
