@@ -21,15 +21,25 @@ const createdSpaces = useStorage(
     <div>
       <div>
         <div>
+          <h3 class="mt-0">Your space is live!</h3>
           <div>
             <Icon name="info" size="24" class="float-left mr-1" />
-
-            {{ $t('newSpaceNotice.mainText') }}
+            <i18n-t keypath="newSpaceNotice.mainText" tag="p">
+              <template v-slot:settings>
+                <BaseLink
+                  :link="{ name: 'spaceSettings', params: { key: spaceId } }"
+                >
+                  settings</BaseLink
+                >
+              </template>
+            </i18n-t>
           </div>
 
           <i18n-t keypath="newSpaceNotice.learnMore" tag="p" class="mt-2">
             <template v-slot:documentation>
-              <BaseLink link="https://docs.snapshot.org/spaces/create">
+              <BaseLink
+                link="https://docs.snapshot.org/strategies/what-is-a-strategy"
+              >
                 documentation</BaseLink
               >
             </template>
