@@ -36,9 +36,7 @@ const form = ref({
   strategies: [
     {
       name: 'ticket',
-      params: {
-        symbol: 'VOTE'
-      }
+      params: {}
     }
   ]
 });
@@ -69,10 +67,20 @@ const createdSpaces = useStorage(
   {}
 );
 
+const { getExplore, explore } = useApp();
 const { loadExtentedSpaces, extentedSpaces } = useExtendedSpaces();
+
 async function checkIfSpaceExists() {
-  await loadExtentedSpaces([props.ensAddress]);
-  if (extentedSpaces.value.some(space => space.id === props.ensAddress)) {
+  Promise.all([
+    await getExplore(),
+    await loadExtentedSpaces([props.ensAddress])
+  ]);
+  if (
+    extentedSpaces.value.some(space => space.id === props.ensAddress) &&
+    Object.keys(explore.value.spaces).some(
+      spaceId => spaceId === props.ensAddress
+    )
+  ) {
     return;
   } else {
     await sleep(5000);
@@ -80,29 +88,30 @@ async function checkIfSpaceExists() {
   }
 }
 
-const { getExplore } = useApp();
-
 async function handleSubmit() {
   if (isValid.value) {
     creatingSpace.value = true;
+    // Wait for ENS text-record transaction to confirm
     if (pendingENSRecord.value) {
       await sleep(3000);
       await handleSubmit();
     } else {
+      // Create the space
       const result = await send(
         { id: props.ensAddress },
         'settings',
         form.value
       );
-      await checkIfSpaceExists();
-      await getExplore();
-      creatingSpace.value = false;
-      console.log('Result', result);
       if (result.id) {
+        // Wait for the space to be available on the HUB
+        await checkIfSpaceExists();
+        creatingSpace.value = false;
+        console.log('Result', result);
         // Save created space to local storage
         createdSpaces.value[props.ensAddress] = {
           showMessage: true
         };
+        // Redirect to the new space page
         router.push({
           name: 'spaceProposals',
           params: {
@@ -110,6 +119,8 @@ async function handleSubmit() {
           }
         });
         notify(['green', t('notify.saved')]);
+      } else {
+        creatingSpace.value = false;
       }
     }
   } else {
