@@ -130,13 +130,21 @@
   "confirmAction": "Confirm action",
   "or": "or",
   "share": "Share",
+  "createButton": "Create",
+  "newSpaceNotice": {
+    "header": "Your space is live!",
+    "mainText": "By default each voter has a voting power of one. You can change how voting power is calculated via strategies in your {settings}. Changes to your settings will only affect new proposals, existing proposals can not be changed.",
+    "learnMore": "Learn more in the {documentation} or join Snapshot {discord} for help.",
+    "gotIt": "Got it!"
+  },
   "errors": {
     "required": "フィールドが埋まってません",
-    "minLength": "最小文字数は {0} です",
+    "minLength": "Field is required",
     "maxLength": "最大文字数は {0} です",
     "pattern": "無効な文字",
     "minItems": "最低でも {0} 個必要です",
     "minStrategy": "最低でも１ストラテジー必要です",
+    "website": "URL should be in the format https://www.example.com",
     "format": "無効な形式",
     "type": "無効なタイプ"
   },
@@ -299,7 +307,10 @@
     "controllerAddress": "Controller address",
     "updateController": "Update controller",
     "seeOnEns": "See on ENS",
-    "goToSettings": "Go to settings"
+    "goToSettings": "Go to settings",
+    "setSpaceProfile": "Customize your space",
+    "waitForTransaction": "The transaction need to confirm before you can create your space. {txUrl}",
+    "pleaseWaitMessage": "This can take a few minutes, please wait while the transaction is being confirmed"
   },
   "notify": {
     "youDidIt": "おつかれさまです！",
@@ -311,7 +322,8 @@
     "delegationRemoved": "委任キャンセル",
     "proposalCreated": "提案が作成されました",
     "voteSuccessful": "投票されています！",
-    "ensSet": "ENS text record was successfully set"
+    "ensSet": "ENS text record was successfully set",
+    "transactionSent": "Transaction sent"
   },
   "explore": {
     "createStrategy": "ストラテジーの作成",
