@@ -33,7 +33,7 @@ async function handleLogin(connector) {
   </div>
   <nav id="topnav">
     <Container>
-      <div class="flex items-center py-3">
+      <div class="flex items-center py-2">
         <div class="flex-auto flex items-center">
           <router-link
             :to="{ path: '/' }"

@@ -65,7 +65,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="flex flex-col h-full overflow-auto no-scrollbar overscroll-contain py-3">
+  <div class="flex flex-col h-full overflow-auto no-scrollbar overscroll-contain py-2">
     <div
       class="flex items-center relative px-2 group"
       v-tippy="{ content: 'Explore', placement: 'right', delay: [750, 0] }"
