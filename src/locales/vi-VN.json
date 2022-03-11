@@ -130,13 +130,21 @@
   "confirmAction": "Confirm action",
   "or": "or",
   "share": "Share",
+  "createButton": "Create",
+  "newSpaceNotice": {
+    "header": "Your space is live!",
+    "mainText": "By default each voter has a voting power of one. You can change how voting power is calculated via strategies in your {settings}. Changes to your settings will only affect new proposals, existing proposals can not be changed.",
+    "learnMore": "Learn more in the {documentation} or join Snapshot {discord} for help.",
+    "gotIt": "Got it!"
+  },
   "errors": {
     "required": "Trường này là bắt buộc",
-    "minLength": "Độ dài tối thiểu là {0}",
+    "minLength": "Field is required",
     "maxLength": "Độ dài tối đa là {0}",
     "pattern": "Ký tự không hợp lệ",
     "minItems": "Yêu cầu tối thiểu {0} mục(s)",
     "minStrategy": "Ít nhất một chiến lược là bắt buộc.",
+    "website": "URL should be in the format https://www.example.com",
     "format": "Định dạng không hợp lệ",
     "type": "Kiểu dữ liệu không hợp lệ"
   },
@@ -299,7 +307,10 @@
     "controllerAddress": "Controller address",
     "updateController": "Update controller",
     "seeOnEns": "See on ENS",
-    "goToSettings": "Go to settings"
+    "goToSettings": "Go to settings",
+    "setSpaceProfile": "Customize your space",
+    "waitForTransaction": "The transaction need to confirm before you can create your space. {txUrl}",
+    "pleaseWaitMessage": "This can take a few minutes, please wait while the transaction is being confirmed"
   },
   "notify": {
     "youDidIt": "Bạn đã thực hiện nó!",
@@ -311,7 +322,8 @@
     "delegationRemoved": "Delegation removed",
     "proposalCreated": "Đề xuất đã được khởi tạo",
     "voteSuccessful": "Phiếu bầu của bạn đã được lưu lại!",
-    "ensSet": "ENS text record was successfully set"
+    "ensSet": "ENS text record was successfully set",
+    "transactionSent": "Transaction sent"
   },
   "explore": {
     "createStrategy": "Tạo chiến lược",
