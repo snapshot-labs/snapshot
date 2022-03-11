@@ -130,13 +130,21 @@
   "confirmAction": "Confirm action",
   "or": "or",
   "share": "Share",
+  "createButton": "Create",
+  "newSpaceNotice": {
+    "header": "Your space is live!",
+    "mainText": "By default each voter has a voting power of one. You can change how voting power is calculated via strategies in your {settings}. Changes to your settings will only affect new proposals, existing proposals can not be changed.",
+    "learnMore": "Learn more in the {documentation} or join Snapshot {discord} for help.",
+    "gotIt": "Got it!"
+  },
   "errors": {
     "required": "حقل مطلوب",
-    "minLength": "الحد الادنى لعدد الاحرف {0}",
+    "minLength": "Field is required",
     "maxLength": "الحد الاعلى لعدد الاحرف {0}",
     "pattern": "رمز غير صحيح",
     "minItems": "الحد الأدنى {0} عنصر(ار) مطلوب",
     "minStrategy": "تلزم خطة واحدة على الأقل.",
+    "website": "URL should be in the format https://www.example.com",
     "format": "تنسيق غير صحيح",
     "type": "الرمز غير صحيح"
   },
@@ -299,7 +307,10 @@
     "controllerAddress": "Controller address",
     "updateController": "Update controller",
     "seeOnEns": "See on ENS",
-    "goToSettings": "Go to settings"
+    "goToSettings": "Go to settings",
+    "setSpaceProfile": "Customize your space",
+    "waitForTransaction": "The transaction need to confirm before you can create your space. {txUrl}",
+    "pleaseWaitMessage": "This can take a few minutes, please wait while the transaction is being confirmed"
   },
   "notify": {
     "youDidIt": "لقد نجحت!",
@@ -311,7 +322,8 @@
     "delegationRemoved": "تمت إزالة التفويض",
     "proposalCreated": "خلقت عمدا",
     "voteSuccessful": "تم اعتماد{0} الخاص بك!",
-    "ensSet": "ENS text record was successfully set"
+    "ensSet": "ENS text record was successfully set",
+    "transactionSent": "Transaction sent"
   },
   "explore": {
     "createStrategy": "إنشاء استراتيجية",
