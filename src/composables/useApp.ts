@@ -1,5 +1,6 @@
 import { ref, computed, reactive } from 'vue';
 import { useRoute } from 'vue-router';
+import { useI18n } from '@/composables/useI18n';
 import orderBy from 'lodash/orderBy';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { useWeb3 } from '@/composables/useWeb3';
@@ -21,8 +22,10 @@ const { login } = useWeb3();
 
 export function useApp() {
   const route = useRoute();
+  const { loadLocale } = useI18n();
 
   async function init() {
+    await loadLocale();
     const auth = getInstance();
     state.loading = true;
     await Promise.all([getExplore(), getSkin()]);

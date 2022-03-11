@@ -1,7 +1,5 @@
 <script setup>
 import { computed, onMounted, provide, watch } from 'vue';
-import { useModal } from '@/composables/useModal';
-import { useI18n } from '@/composables/useI18n';
 import { useDomain } from '@/composables/useDomain';
 import { useUserSkin } from '@/composables/useUserSkin';
 import { useApp } from '@/composables/useApp';
@@ -9,8 +7,6 @@ import { useWeb3 } from '@/composables/useWeb3';
 import { useFlashNotification } from '@/composables/useFlashNotification';
 
 const { domain } = useDomain();
-const { loadLocale } = useI18n();
-const { modalOpen } = useModal();
 const { userSkin } = useUserSkin();
 const { init, skinName, app } = useApp();
 const { web3 } = useWeb3();
@@ -30,7 +26,6 @@ const skin = computed(() => {
 });
 
 onMounted(async () => {
-  await loadLocale();
   init();
 });
 </script>
