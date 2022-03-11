@@ -15,6 +15,17 @@ export const EIP712_TYPES = {
   ]
 };
 
+export const EIP3770_PREFIXES = {
+  1: 'eth',
+  4: 'rin',
+  56: 'bnb',
+  100: 'gno',
+  246: 'ewt',
+  73799: 'vt',
+  42161: 'arb1',
+  137: 'matic'
+};
+
 export const EXPLORER_API_URLS = {
   '1': 'https://api.etherscan.io/api',
   '4': 'https://api-rinkeby.etherscan.io/api',
