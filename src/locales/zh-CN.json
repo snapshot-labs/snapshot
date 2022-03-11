@@ -130,13 +130,21 @@
   "confirmAction": "确认操作",
   "or": "或者",
   "share": "分享",
+  "createButton": "创建",
+  "newSpaceNotice": {
+    "header": "你的空间已经上线了！",
+    "mainText": "在默认的情况下，每个选民都有一个投票权。您可以在您的 {settings}中更改投票权的策略。 更改您的设置只会影响新的提案，不会更改现有的提案。",
+    "learnMore": "在 {documentation} 学习更多信息，或加入snapshot {discord} 寻求帮助。",
+    "gotIt": "了解！"
+  },
   "errors": {
     "required": "此项为必填项",
-    "minLength": "最小长度为 {0}",
+    "minLength": "此项为必填项",
     "maxLength": "最大长度为 {0}",
     "pattern": "无效字符",
     "minItems": "最少需要 {0} 个项目",
     "minStrategy": "至少需要一个策略",
+    "website": "URL should be in the format https://www.example.com",
     "format": "格式无效",
     "type": "无效的类型"
   },
@@ -299,7 +307,10 @@
     "controllerAddress": "控制人地址",
     "updateController": "更新控制人",
     "seeOnEns": "在 ENS 上查看",
-    "goToSettings": "前往设置"
+    "goToSettings": "前往设置",
+    "setSpaceProfile": "自定义你的空间",
+    "waitForTransaction": "您需要先确认交易才能创建您的空间。 {txUrl}",
+    "pleaseWaitMessage": "这可能需要几分钟，请等待交易确认"
   },
   "notify": {
     "youDidIt": "您成功了!",
@@ -311,7 +322,8 @@
     "delegationRemoved": "委托已移除",
     "proposalCreated": "提案已创建",
     "voteSuccessful": "投票成功！",
-    "ensSet": "ENS 文本记录已成功设置"
+    "ensSet": "ENS 文本记录已成功设置",
+    "transactionSent": "交易已发送"
   },
   "explore": {
     "createStrategy": "创建策略",
