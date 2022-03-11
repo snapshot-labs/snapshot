@@ -8,7 +8,6 @@ import { useWeb3 } from '@/composables/useWeb3';
 const props = defineProps({ space: Object });
 
 const { isGnosisSafe } = useClient();
-const { web3 } = useWeb3();
 
 const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(props.space.id);
 
@@ -27,7 +26,7 @@ const canFollow = computed(() => {
 <template>
   <div
     v-tippy="{
-      content: isGnosisSafe || web3.isTrezor ? $t('walletNotSupported') : null
+      content: isGnosisSafe ? $t('walletNotSupported') : null
     }"
   >
     <UiButton
@@ -40,7 +39,7 @@ const canFollow = computed(() => {
           : (modalTermsOpen = true)
       "
       :loading="loadingFollow === space.id"
-      :disabled="isGnosisSafe || web3.isTrezor"
+      :disabled="isGnosisSafe"
       style="width: 120px"
       no-focus
       class="mb-4 group"
