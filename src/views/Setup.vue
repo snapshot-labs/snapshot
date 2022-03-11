@@ -31,7 +31,7 @@ const ownedEnsDomainsNoExistingSpace = computed(() => {
 // used either on click on existing owned domain OR once a newly registered
 // domain is returned by the ENS subgraph.
 const goToStepTwo = key => {
-  router.push({ name: 'setup', params: { step: '2' } });
+  router.push({ name: 'setup', params: { step: 'controller' } });
   ensAddress.value = key;
 };
 
@@ -92,14 +92,14 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
         </Block>
         <!-- Step two - setup space controller -->
         <SetupController
-          v-else-if="route.params.step === '2' && ensAddress"
+          v-else-if="route.params.step === 'controller' && ensAddress"
           :ensAddress="ensAddress"
           :web3Account="web3Account"
         />
 
         <!-- Step three - setup space profile -->
         <SetupProfile
-          v-else-if="route.params.step === '3' && ensAddress"
+          v-else-if="route.params.step === 'profile' && ensAddress"
           :ensAddress="ensAddress"
           :web3Account="web3Account"
         />
