@@ -156,7 +156,7 @@ onMounted(() => {
           </template>
         </BaseDropdown>
         <SpaceProposalsNotice
-          v-if="store.space.proposals.length < 1"
+          v-if="store.space.proposals.length < 1 && !loadingData"
           :spaceId="space.id"
           :web3Account="web3Account"
         />
