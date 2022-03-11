@@ -130,13 +130,21 @@
   "confirmAction": "Konfirmasi tindakan",
   "or": "atau",
   "share": "Bagikan",
+  "createButton": "Create",
+  "newSpaceNotice": {
+    "header": "Your space is live!",
+    "mainText": "By default each voter has a voting power of one. You can change how voting power is calculated via strategies in your {settings}. Changes to your settings will only affect new proposals, existing proposals can not be changed.",
+    "learnMore": "Learn more in the {documentation} or join Snapshot {discord} for help.",
+    "gotIt": "Got it!"
+  },
   "errors": {
     "required": "Baris diperlukan",
-    "minLength": "Panjang minimum adalah {0}",
+    "minLength": "Field is required",
     "maxLength": "Panjang maksimum adalah {0}",
     "pattern": "Karakter tidak valid",
     "minItems": "Minimal {0} item diperlukan",
     "minStrategy": "Setidaknya satu strategi diperlukan.",
+    "website": "URL should be in the format https://www.example.com",
     "format": "Format tidak valid",
     "type": "Tipe tidak valid"
   },
@@ -299,7 +307,10 @@
     "controllerAddress": "Controller address",
     "updateController": "Update controller",
     "seeOnEns": "See on ENS",
-    "goToSettings": "Go to settings"
+    "goToSettings": "Go to settings",
+    "setSpaceProfile": "Customize your space",
+    "waitForTransaction": "The transaction need to confirm before you can create your space. {txUrl}",
+    "pleaseWaitMessage": "This can take a few minutes, please wait while the transaction is being confirmed"
   },
   "notify": {
     "youDidIt": "Anda berhasil!",
@@ -311,7 +322,8 @@
     "delegationRemoved": "Delegasi dihapus",
     "proposalCreated": "Proposal dibuat",
     "voteSuccessful": "Suara Anda telah masuk!",
-    "ensSet": "ENS text record was successfully set"
+    "ensSet": "ENS text record was successfully set",
+    "transactionSent": "Transaction sent"
   },
   "explore": {
     "createStrategy": "Buat strategi",
