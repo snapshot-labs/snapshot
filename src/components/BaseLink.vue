@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import { RouteLocationRaw } from 'vue-router';
-
-type Link = RouteLocationRaw | string;
+type Link = Record<string, any> | string;
 
 defineProps<{
   link: Link;

@@ -5,8 +5,12 @@ defineProps<{
 </script>
 
 <template>
-  <Block :class="level === 'warning' && '!border-skin-link text-skin-link'">
-    <Icon :name="level" class="mr-1" />
+  <Block :class="{ '!border-skin-link text-skin-link': level === 'warning' }">
+    <Icon
+      :name="level"
+      :size="level === 'info' ? 20 : null"
+      class="mr-1 float-left"
+    />
     <slot />
   </Block>
 </template>
