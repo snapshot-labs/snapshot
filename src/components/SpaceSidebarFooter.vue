@@ -32,6 +32,7 @@ const socials = computed(() => {
         v-for="social in socials"
         :key="social.icon"
         :social="social"
+        class="flex"
       />
     </div>
   </div>
