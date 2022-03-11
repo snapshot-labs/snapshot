@@ -65,6 +65,7 @@ const form = ref({
 const validate = computed(() => {
   if (form.value.terms === '') delete form.value.terms;
   if (form.value.avatar === '') delete form.value.avatar;
+  if (form.value.website === '') delete form.value.website;
 
   return validateSchema(schemas.space, form.value);
 });
@@ -165,6 +166,8 @@ function inputError(field) {
 
     if (errorFound?.instancePath.includes('strategies'))
       return t('errors.minStrategy');
+    else if (errorFound?.instancePath.includes('website'))
+      return t('errors.website');
     else if (errorFound)
       return t(`errors.${errorFound.keyword}`, [errorFound?.params.limit]);
   }
@@ -436,6 +439,16 @@ async function handleSetRecord() {
             >
               <template v-slot:label>
                 <Icon name="github" />
+              </template>
+            </UiInput>
+            <UiInput
+              v-model="form.website"
+              placeholder="e.g. https://example.com"
+              :error="inputError('website')"
+              @blur="visitedFields.push('website')"
+            >
+              <template v-slot:label>
+                <Icon name="earth" />
               </template>
             </UiInput>
             <UiInput

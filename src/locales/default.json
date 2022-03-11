@@ -144,6 +144,7 @@
     "pattern": "Invalid character",
     "minItems": "Minimum {0} item(s) required",
     "minStrategy": "At least one strategy is required.",
+    "website": "URL should be in the format https://www.example.com",
     "format": "Invalid format",
     "type": "Invalid type"
   },
