@@ -1,6 +1,7 @@
 <script>
 import Plugin, {
   createBatch,
+  EIP3770_PREFIXES,
   getGnosisSafeBalances,
   getGnosisSafeCollectibles
 } from '../index';
@@ -13,17 +14,6 @@ import SafeSnapFormImportTransactionsButton from './Form/ImportTransactionsButto
 import SafeSnapFormTransactionBatch from './Form/TransactionBatch.vue';
 
 const plugin = new Plugin();
-
-const EIP3770_PREFIXES = {
-  1: 'eth',
-  56: 'bnb',
-  4: 'rin',
-  100: 'gno',
-  246: 'ewt',
-  73799: 'vt',
-  42161: 'arb1',
-  137: 'matic'
-};
 
 async function fetchBalances(network, gnosisSafeAddress) {
   if (gnosisSafeAddress) {
@@ -247,7 +237,7 @@ export default {
         <SafeSnapHandleOutcome
           v-if="preview && proposalResolved"
           :batches="input"
-          :proposalId="proposal.id"
+          :proposal="proposal"
           :realityAddress="realityAddress"
           :multiSendAddress="transactionConfig.multiSendAddress"
           :network="transactionConfig.network"
