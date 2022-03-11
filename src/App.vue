@@ -5,8 +5,8 @@ import { useApp } from '@/composables/useApp';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useFlashNotification } from '@/composables/useFlashNotification';
 
-const { getSkin } = useSkin();
-const { init, skinName, app } = useApp();
+const { skin } = useSkin();
+const { init } = useApp();
 const { web3 } = useWeb3();
 const { notify } = useFlashNotification();
 
@@ -19,10 +19,8 @@ onMounted(async () => {
 </script>
 
 <template>
-  <UiLoading v-if="app.loading || !app.init" class="overlay big" />
   <div
-    v-else
-    :class="getSkin(skinName)"
+    :class="skin"
     class="flex h-screen font-sans text-base bg-skin-block-bg text-skin-text antialiased"
   >
     <div v-if="!domain">

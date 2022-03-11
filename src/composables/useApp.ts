@@ -7,13 +7,11 @@ import { useWeb3 } from '@/composables/useWeb3';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import verified from '@/../snapshot-spaces/spaces/verified.json';
 import verifiedSpacesCategories from '@/../snapshot-spaces/spaces/categories.json';
-import { useDomain } from '@/composables/useDomain';
-import { useApolloQuery } from '@/composables/useApolloQuery';
-import { SPACE_SKIN_QUERY } from '@/helpers/queries';
+import { useSkin } from '@/composables/useSkin';
 
 const state = reactive({
   init: false,
-  loading: false
+  loading: true
 });
 
 const explore: any = ref({});
@@ -23,11 +21,12 @@ const { login } = useWeb3();
 export function useApp() {
   const route = useRoute();
   const { loadLocale } = useI18n();
+  const { getSkin } = useSkin();
 
   async function init() {
+    state.init = true;
     await loadLocale();
     const auth = getInstance();
-    state.loading = true;
     await Promise.all([getExplore(), getSkin()]);
 
     // Auto connect with gnosis-connector when inside gnosis-safe iframe
@@ -37,14 +36,10 @@ export function useApp() {
       });
     else login('gnosis');
 
-    state.init = true;
     state.loading = false;
   }
 
-  const { domain } = useDomain();
-
   async function getExplore() {
-    if (domain) return;
     const exploreObj: any = await fetch(
       `${import.meta.env.VITE_HUB_URL}/api/explore`
     ).then(res => res.json());
@@ -65,26 +60,6 @@ export function useApp() {
 
     explore.value = exploreObj;
     return;
-  }
-
-  const { apolloQuery } = useApolloQuery();
-
-  const skin = ref('');
-
-  async function getSkin() {
-    const key = domain;
-    if (key) {
-      const spaceObj = await apolloQuery(
-        {
-          query: SPACE_SKIN_QUERY,
-          variables: {
-            id: key
-          }
-        },
-        'space'
-      );
-      skin.value = spaceObj?.skin;
-    }
   }
 
   const selectedCategory = ref('');
@@ -143,7 +118,6 @@ export function useApp() {
     getExplore,
     app: computed(() => state),
     explore: computed(() => explore.value),
-    skinName: computed(() => skin.value),
     orderedSpaces,
     orderedSpacesByCategory,
     selectedCategory
