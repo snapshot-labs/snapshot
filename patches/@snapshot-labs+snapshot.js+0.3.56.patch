@@ -1,0 +1,33 @@
+diff --git a/node_modules/@snapshot-labs/snapshot.js/src/sign/index.ts b/node_modules/@snapshot-labs/snapshot.js/src/sign/index.ts
+index 6ac4a87..2cf9367 100644
+--- a/node_modules/@snapshot-labs/snapshot.js/src/sign/index.ts
++++ b/node_modules/@snapshot-labs/snapshot.js/src/sign/index.ts
+@@ -28,6 +28,7 @@ import {
+   aliasTypes
+ } from './types';
+ import hubs from '../hubs.json';
++import { _TypedDataEncoder } from '@ethersproject/hash';
+ 
+ const NAME = 'snapshot';
+ const VERSION = '0.1.4';
+@@ -45,6 +46,12 @@ export default class Client {
+     this.address = address;
+   }
+ 
++  getHash(data) {
++    const { domain, types, message } = data;
++    return _TypedDataEncoder.hash(domain, types, message);
++  }
++
++
+   async sign(web3: Web3Provider | Wallet, address: string, message, types) {
+     // @ts-ignore
+     const signer = web3?.getSigner ? web3.getSigner() : web3;
+@@ -54,6 +61,7 @@ export default class Client {
+     const data: any = { domain, types, message };
+     const sig = await signer._signTypedData(domain, data.types, message);
+     console.log('Sign', { address, sig, data });
++    console.log("Hashed data", this.getHash(data));
+     return await this.send({ address, sig, data });
+   }
+ 
