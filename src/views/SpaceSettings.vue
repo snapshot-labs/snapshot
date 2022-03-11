@@ -315,7 +315,8 @@ const {
 const modalControllerEditOpen = ref(false);
 
 async function handleSetRecord() {
-  const receipt = await setRecord();
+  const tx = await setRecord();
+  const receipt = await tx.wait();
   if (receipt) {
     props.loadExtentedSpaces([props.spaceKey]);
   }
@@ -666,10 +667,7 @@ async function handleSetRecord() {
       </template>
     </template>
     <template #sidebar-right>
-      <div
-        v-if="(loaded && isSpaceController) || (loaded && isSpaceAdmin)"
-        class="lg:fixed lg:w-[300px]"
-      >
+      <div v-if="loaded" class="lg:fixed lg:w-[300px]">
         <Block :title="$t('actions')">
           <UiButton
             v-if="ensOwner"
@@ -679,23 +677,27 @@ async function handleSetRecord() {
           >
             {{ $t('settings.editController') }}
           </UiButton>
-          <UiButton @click="handleReset" class="block w-full mb-2">
-            {{ $t('reset') }}
-          </UiButton>
-          <UiButton
-            :disabled="uploadLoading"
-            @click="handleSubmit"
-            :loading="clientLoading"
-            class="block w-full"
-            primary
-          >
-            {{ $t('save') }}
-          </UiButton>
+          <div v-if="isSpaceAdmin || isSpaceController">
+            <UiButton @click="handleReset" class="block w-full mb-2">
+              {{ $t('reset') }}
+            </UiButton>
+            <UiButton
+              :disabled="uploadLoading"
+              @click="handleSubmit"
+              :loading="clientLoading"
+              class="block w-full"
+              primary
+            >
+              {{ $t('save') }}
+            </UiButton>
+          </div>
         </Block>
       </div>
       <BaseMessageBlock
         level="warning"
-        v-if="!(isSpaceController || isSpaceAdmin) && currentTextRecord"
+        v-if="
+          !(isSpaceController || isSpaceAdmin || ensOwner) && currentTextRecord
+        "
       >
         {{ $t('settings.connectWithSpaceOwner') }}
       </BaseMessageBlock>
