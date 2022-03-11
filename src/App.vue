@@ -1,29 +1,17 @@
 <script setup>
-import { computed, onMounted, provide, watch } from 'vue';
-import { useDomain } from '@/composables/useDomain';
-import { useUserSkin } from '@/composables/useUserSkin';
+import { onMounted, provide } from 'vue';
+import { useSkin } from '@/composables/useSkin';
 import { useApp } from '@/composables/useApp';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useFlashNotification } from '@/composables/useFlashNotification';
 
-const { domain } = useDomain();
-const { userSkin } = useUserSkin();
+const { getSkin } = useSkin();
 const { init, skinName, app } = useApp();
 const { web3 } = useWeb3();
 const { notify } = useFlashNotification();
 
 provide('web3', web3);
 provide('notify', notify);
-
-const skin = computed(() => {
-  if (domain && skinName.value !== 'default') {
-    let skinClass = skinName.value;
-    if (userSkin.value === 'dark-mode')
-      skinClass += ` ${skinName.value}-dark-mode`;
-    return skinClass;
-  }
-  return userSkin.value;
-});
 
 onMounted(async () => {
   init();
@@ -34,7 +22,7 @@ onMounted(async () => {
   <UiLoading v-if="app.loading || !app.init" class="overlay big" />
   <div
     v-else
-    :class="skin"
+    :class="getSkin(skinName)"
     class="flex h-screen font-sans text-base bg-skin-block-bg text-skin-text antialiased"
   >
     <div v-if="!domain">

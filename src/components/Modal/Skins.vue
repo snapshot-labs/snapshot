@@ -1,6 +1,6 @@
 <script setup>
 import { ref, computed, watch } from 'vue';
-import { useUserSkin } from '@/composables/useUserSkin';
+import { useSkin } from '@/composables/useSkin';
 import { useSkinsFilter } from '@/composables/useSkinsFilter';
 
 const props = defineProps({
@@ -28,7 +28,7 @@ function select(key) {
   emit('close');
 }
 
-const { userSkin } = useUserSkin();
+const { userSkin } = useSkin();
 </script>
 
 <template>

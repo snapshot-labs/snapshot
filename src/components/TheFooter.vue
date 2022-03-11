@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from 'vue';
-import { useUserSkin } from '@/composables/useUserSkin';
-const { toggleSkin, getSkinIcon } = useUserSkin();
+import { useSkin } from '@/composables/useSkin';
+const { toggleSkin, getSkinIcon } = useSkin();
 
 const modalAboutOpen = ref(false);
 const yearNow = new Date().getFullYear();

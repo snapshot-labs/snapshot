@@ -1,5 +1,6 @@
-import { ref, watch } from 'vue';
+import { ref, computed, watch } from 'vue';
 import { lsGet, lsSet } from '@/helpers/utils';
+import { useDomain } from '@/composables/useDomain';
 
 const NOT_SET = 'not-set';
 const DARK_MODE = 'dark-mode';
@@ -23,7 +24,9 @@ const _toggleSkin = skin => {
   }
 };
 
-export function useUserSkin() {
+export function useSkin() {
+  const { domain } = useDomain();
+
   function toggleSkin() {
     const currentSkin = lsGet('skin', NOT_SET);
     if (currentSkin === NOT_SET) {
@@ -31,6 +34,16 @@ export function useUserSkin() {
     } else {
       _toggleSkin(currentSkin);
     }
+  }
+
+  function getSkin (skinName: string) {
+    if (domain && skinName !== 'default') {
+      let skinClass = skinName;
+      if (userSkin.value === 'dark-mode')
+        skinClass += ` ${skinName}-dark-mode`;
+      return skinClass;
+    }
+    return userSkin.value;
   }
 
   watch(
@@ -47,6 +60,7 @@ export function useUserSkin() {
   return {
     userSkin,
     getSkinIcon,
-    toggleSkin
+    toggleSkin,
+    getSkin
   };
 }
