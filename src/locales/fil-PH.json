@@ -130,13 +130,21 @@
   "confirmAction": "Confirm action",
   "or": "or",
   "share": "Share",
+  "createButton": "Create",
+  "newSpaceNotice": {
+    "header": "Your space is live!",
+    "mainText": "By default each voter has a voting power of one. You can change how voting power is calculated via strategies in your {settings}. Changes to your settings will only affect new proposals, existing proposals can not be changed.",
+    "learnMore": "Learn more in the {documentation} or join Snapshot {discord} for help.",
+    "gotIt": "Got it!"
+  },
   "errors": {
     "required": "Kailangang punan ang patlang",
-    "minLength": "Ang minimum na haba ay {0}",
+    "minLength": "Field is required",
     "maxLength": "Ang maximum na haba ay {0}",
     "pattern": "Di-wastong character",
     "minItems": "Kinakailangan ang minimum na {0} (mga) item",
     "minStrategy": "Hindi bababa sa isang diskarte ang kinakailangan.",
+    "website": "URL should be in the format https://www.example.com",
     "format": "Di-wastong format",
     "type": "Di-wastong uri"
   },
@@ -299,7 +307,10 @@
     "controllerAddress": "Controller address",
     "updateController": "Update controller",
     "seeOnEns": "See on ENS",
-    "goToSettings": "Go to settings"
+    "goToSettings": "Go to settings",
+    "setSpaceProfile": "Customize your space",
+    "waitForTransaction": "The transaction need to confirm before you can create your space. {txUrl}",
+    "pleaseWaitMessage": "This can take a few minutes, please wait while the transaction is being confirmed"
   },
   "notify": {
     "youDidIt": "You did it!",
@@ -311,7 +322,8 @@
     "delegationRemoved": "Inalis ang delegasyon",
     "proposalCreated": "Nagawa ang panukala",
     "voteSuccessful": "Ang iyong boto ay nasa!",
-    "ensSet": "ENS text record was successfully set"
+    "ensSet": "ENS text record was successfully set",
+    "transactionSent": "Transaction sent"
   },
   "explore": {
     "createStrategy": "Lumikha ng diskarte",
