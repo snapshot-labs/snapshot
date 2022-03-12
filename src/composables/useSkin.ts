@@ -1,54 +1,56 @@
 import { ref, computed, watch } from 'vue';
-import { lsGet, lsSet } from '@/helpers/utils';
 import { useDomain } from '@/composables/useDomain';
 import { useApolloQuery } from '@/composables/useApolloQuery';
 import { SPACE_SKIN_QUERY } from '@/helpers/queries';
+import { useStorage } from '@vueuse/core';
 
 const NOT_SET = 'not-set';
-const DARK_MODE = 'dark-mode';
-const LIGHT_MODE = 'light-mode';
+const DARK = 'dark';
+const LIGHT = 'light';
 
-const currenSkin = lsGet('skin', NOT_SET);
 const osSkin =
   window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
-    ? DARK_MODE
-    : LIGHT_MODE;
+    ? DARK
+    : LIGHT;
 
-const userSkin = ref(currenSkin === NOT_SET ? osSkin : currenSkin);
-const getSkinIcon = () => (userSkin.value === LIGHT_MODE ? 'moon' : 'sun');
-const _toggleSkin = skin => {
-  if (skin === LIGHT_MODE) {
-    lsSet('skin', DARK_MODE);
-    userSkin.value = DARK_MODE;
+const storedUserThemePreference = useStorage(
+  'snapshot.userThemePreference',
+  NOT_SET
+);
+
+const userThemePreference = computed(() =>
+  storedUserThemePreference.value === NOT_SET
+    ? osSkin
+    : storedUserThemePreference.value
+);
+
+const changeStoredTheme = skin => {
+  if (skin === LIGHT) {
+    storedUserThemePreference.value = DARK;
   } else {
-    lsSet('skin', LIGHT_MODE);
-    userSkin.value = LIGHT_MODE;
+    storedUserThemePreference.value = LIGHT;
   }
 };
+
+const skinName = ref('');
 
 export function useSkin() {
   const { apolloQuery } = useApolloQuery();
   const { domain } = useDomain();
 
-  const skinName = ref('');
-
-  function toggleSkin() {
-    const currentSkin = lsGet('skin', NOT_SET);
-    if (currentSkin === NOT_SET) {
-      _toggleSkin(osSkin);
+  function toggleUserTheme() {
+    if (storedUserThemePreference.value === NOT_SET) {
+      changeStoredTheme(osSkin);
     } else {
-      _toggleSkin(currentSkin);
+      changeStoredTheme(storedUserThemePreference.value);
     }
   }
 
   const skin = computed(() => {
     if (domain && skinName.value !== 'default') {
-      let skinClass = skinName.value;
-      if (userSkin.value === 'dark-mode')
-        skinClass += ` ${skinName.value}-dark-mode`;
-      return skinClass;
+      return skinName.value;
     }
-    return userSkin.value;
+    return userThemePreference.value;
   });
 
   async function getSkin() {
@@ -66,12 +68,15 @@ export function useSkin() {
     }
   }
 
+  const getSkinIcon = () =>
+    userThemePreference.value === LIGHT ? 'moon' : 'sun';
+
   watch(
-    userSkin,
+    userThemePreference,
     () => {
       document.documentElement.setAttribute(
         'data-color-scheme',
-        userSkin.value === LIGHT_MODE ? 'light' : 'dark'
+        userThemePreference.value === LIGHT ? 'light' : 'dark'
       );
     },
     { immediate: true }
@@ -79,9 +84,9 @@ export function useSkin() {
 
   return {
     skin,
-    userSkin,
+    userThemePreference,
     getSkinIcon,
-    toggleSkin,
+    toggleUserTheme,
     getSkin
   };
 }
