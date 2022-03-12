@@ -94,7 +94,7 @@ onMounted(() => {
           </div>
         </template>
       </BaseDropdown>
-      <div class="mt-2 xs:mt-0 xs:ml-auto text-right whitespace-nowrap">
+      <div class="mt-2 xs:mt-0 xs:ml-auto text-right whitespace-nowrap text-skin-text">
         {{
           $tc('spaceCount', [
             formatCompactNumber(orderedSpacesByCategory.length)
