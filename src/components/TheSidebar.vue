@@ -99,7 +99,7 @@ onMounted(() => {
       <template #item="{ element }">
         <div
           class="flex items-center relative px-2 group"
-          v-tippy="{ content: spaces[element].name, placement: 'right', delay: [750, 0] }"
+          v-tippy="{ content: spaces[element]?.name, placement: 'right', delay: [750, 0] }"
         >
           <UiUnreadIndicator v-if="hasUnseenProposalsBySpace(element)" />
           <router-link
@@ -113,7 +113,7 @@ onMounted(() => {
             />
             <UiCounter
               v-if="spaces[element]?.activeProposals"
-              :counter="spaces[element].activeProposals"
+              :counter="spaces[element]?.activeProposals"
               class="absolute -top-[1px] right-[9px] !bg-green !h-[16px] !leading-[16px] !min-w-[16px]"
             />
           </router-link>
