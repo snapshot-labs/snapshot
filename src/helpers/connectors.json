@@ -16,11 +16,6 @@
     },
     "icon": "ipfs://QmZRVqHpgRemw13aoovP2EaQdVtjzXRaQGQZsCLXWaNn9x"
   },
-  "trezor": {
-    "id": "trezor",
-    "name": "Trezor (with MetaMask)",
-    "icon": "ipfs://QmVSxKigBBhARBGCqKffihWCK9jixPgVp3DEvhovpFaEDM"
-  },
   "torus": {
     "id": "torus",
     "name": "Torus",

@@ -175,6 +175,7 @@ export const SPACES_QUERY = gql`
       skin
       avatar
       twitter
+      website
       github
       private
       domain

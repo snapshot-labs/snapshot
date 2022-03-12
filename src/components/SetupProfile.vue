@@ -11,6 +11,7 @@ import { useStorage } from '@vueuse/core';
 import { useExtendedSpaces } from '@/composables/useExtendedSpaces';
 import { useSpaceController } from '@/composables/useSpaceController';
 import { useApp } from '@/composables/useApp';
+import { useDebounceFn } from '@vueuse/core';
 
 const props = defineProps<{
   ensAddress: string;
@@ -88,9 +89,15 @@ async function checkIfSpaceExists() {
   }
 }
 
+const showPleaseWaitMessage = ref(false);
+const debouncePleaseWaitMessage = useDebounceFn(() => {
+  showPleaseWaitMessage.value = true;
+}, 8000);
+
 async function handleSubmit() {
   if (isValid.value) {
     creatingSpace.value = true;
+    debouncePleaseWaitMessage();
     // Wait for ENS text-record transaction to confirm
     if (pendingENSRecord.value) {
       await sleep(3000);
@@ -170,6 +177,15 @@ async function handleSubmit() {
         >
           {{ $t('createButton') }}
         </UiButton>
+        <BaseMessageBlock
+          v-if="showPleaseWaitMessage"
+          level="info"
+          class="!mt-[22px]"
+        >
+          <p class="mt-0 leading-5">
+            {{ $t('setup.pleaseWaitMessage') }}
+          </p>
+        </BaseMessageBlock>
       </div>
     </Block>
   </div>

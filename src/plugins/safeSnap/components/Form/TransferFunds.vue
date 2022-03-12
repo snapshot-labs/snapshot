@@ -124,6 +124,7 @@ export default {
     <SafeSnapInputAmount
       :label="$t('safeSnap.amount')"
       v-model="value"
+      :key="selectedToken?.decimals"
       :decimals="selectedToken?.decimals"
       :disabled="config.preview"
     />

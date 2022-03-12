@@ -144,6 +144,7 @@
     "pattern": "Invalid character",
     "minItems": "Minimum {0} item(s) required",
     "minStrategy": "At least one strategy is required.",
+    "website": "URL should be in the format https://www.example.com",
     "format": "Invalid format",
     "type": "Invalid type"
   },
@@ -308,7 +309,8 @@
     "seeOnEns": "See on ENS",
     "goToSettings": "Go to settings",
     "setSpaceProfile": "Customize your space",
-    "waitForTransaction": "The transaction need to confirm before you can create your space. {txUrl}"
+    "waitForTransaction": "The transaction need to confirm before you can create your space. {txUrl}",
+    "pleaseWaitMessage": "This can take a few minutes, please wait while the transaction is being confirmed"
   },
   "notify": {
     "youDidIt": "You did it!",

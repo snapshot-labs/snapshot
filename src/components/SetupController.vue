@@ -26,7 +26,7 @@ async function handleSetRecord() {
     router.push({
       name: 'setup',
       params: {
-        step: '3'
+        step: 'profile'
       }
     });
   }
@@ -44,8 +44,11 @@ onMounted(async () => {
     );
     console.log('URI', uri);
     const uriAddress = uri?.split('/')[4] ?? '';
-    if (uriAddress === props.web3Account && route.params.step === '2') {
-      router.push({ name: 'setup', params: { step: '3' } });
+    if (
+      uriAddress === props.web3Account &&
+      route.params.step === 'controller'
+    ) {
+      router.push({ name: 'setup', params: { step: 'profile' } });
     }
     loadingTextRecord.value = false;
   } catch (e) {

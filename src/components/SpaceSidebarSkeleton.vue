@@ -17,6 +17,7 @@
         </div>
       </div>
       <SpaceSidebarNavigation />
+      <SpaceSidebarFooter />
     </Block>
   </div>
 </template>
