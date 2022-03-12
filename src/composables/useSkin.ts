@@ -36,6 +36,9 @@ const theme = computed(() => [DARK, LIGHT].includes(userTheme.value) ? userTheme
  * Handle skin (e.g. uniswap)
  */
 const skin = ref('default');
+const skinClass = computed(() => {
+  return theme.value === DARK ? skin.value + '-dark-mode' : skin.value
+});
 
 export function useSkin() {
   const { apolloQuery } = useApolloQuery();
@@ -73,7 +76,7 @@ export function useSkin() {
   );
 
   return {
-    skin,
+    skinClass,
     theme,
     getThemeIcon,
     toggleUserTheme,

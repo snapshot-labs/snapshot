@@ -7,7 +7,7 @@ import { useFlashNotification } from '@/composables/useFlashNotification';
 import { useDomain } from '@/composables/useDomain';
 
 const { domain } = useDomain();
-const { skin } = useSkin();
+const { skinClass } = useSkin();
 const { init } = useApp();
 const { web3 } = useWeb3();
 const { notify } = useFlashNotification();
@@ -22,7 +22,7 @@ onMounted(async () => {
 
 <template>
   <div
-    :class="skin"
+    :class="skinClass"
     class="flex h-screen font-sans text-base antialiased"
   >
     <div v-if="!domain" class="bg-skin-block-bg text-skin-text">
