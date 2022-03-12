@@ -9,7 +9,7 @@ import { shorten } from '@/helpers/utils';
 import { useIntl } from '@/composables/useIntl';
 import { useI18n } from '@/composables/useI18n';
 
-const { selectedCategory, orderedSpaces, orderedSpacesByCategory } = useSpaces();
+const { selectedCategory, orderedSpaces, orderedSpacesByCategory, spacesLoaded } = useSpaces();
 const { followingSpaces } = useFollowSpace();
 const { spacesPerCategory, categoriesOrderedBySpaceCount } = useCategories();
 const { formatCompactNumber } = useIntl();
@@ -103,7 +103,7 @@ onMounted(() => {
       </div>
     </Container>
     <Container :slim="true">
-      <div class="grid lg:grid-cols-4 md:grid-cols-3 gap-[1px] md:gap-4">
+      <TransitionGroup name="fade" tag="div" class="grid lg:grid-cols-4 md:grid-cols-3 gap-[1px] md:gap-4">
         <div
           v-for="space in orderedSpacesByCategory.slice(0, limit)"
           :key="space.id"
@@ -139,10 +139,13 @@ onMounted(() => {
             </Block>
           </router-link>
         </div>
+      </TransitionGroup>
+      <div v-if="!spacesLoaded" class="opacity-40 grid lg:grid-cols-4 md:grid-cols-3 gap-[1px] md:gap-4">
+        <div class="bg-skin-border animate-pulse min-h-[256px] rounded-lg" v-for="i in 16"></div>
       </div>
       <NoResults
+        v-else-if="Object.keys(orderedSpacesByCategory).length < 1"
         :block="true"
-        v-if="Object.keys(orderedSpacesByCategory).length < 1"
       />
       <div class="text-center">
         <UiButton

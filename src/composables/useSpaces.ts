@@ -6,6 +6,7 @@ import verified from '@/../snapshot-spaces/spaces/verified.json';
 import verifiedSpacesCategories from '@/../snapshot-spaces/spaces/categories.json';
 
 const spaces: any = ref([]);
+const spacesLoaded = ref(false);
 
 export function useSpaces() {
   const route = useRoute();
@@ -30,6 +31,7 @@ export function useSpaces() {
     );
 
     spaces.value = exploreObj.spaces;
+    spacesLoaded.value = true;
     return;
   }
 
@@ -87,6 +89,7 @@ export function useSpaces() {
   return {
     getSpaces,
     spaces,
+    spacesLoaded,
     orderedSpaces,
     orderedSpacesByCategory,
     selectedCategory

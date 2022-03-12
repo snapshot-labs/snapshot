@@ -8,7 +8,7 @@ import { useDomain } from '@/composables/useDomain';
 
 const { domain } = useDomain();
 const { skinClass } = useSkin();
-const { init } = useApp();
+const { init, ready } = useApp();
 const { web3 } = useWeb3();
 const { notify } = useFlashNotification();
 
@@ -21,7 +21,9 @@ onMounted(async () => {
 </script>
 
 <template>
+  <UiLoading v-if="!ready" class="overlay big" />
   <div
+    v-else
     :class="skinClass"
     class="flex h-screen font-sans text-base antialiased"
   >
