@@ -3,11 +3,11 @@ import { watch, onMounted, ref, watchEffect, computed } from 'vue';
 import draggable from 'vuedraggable';
 import { useFollowSpace } from '@/composables/useFollowSpace';
 import { useWeb3 } from '@/composables/useWeb3';
-import { useApp } from '@/composables/useApp';
+import { useSpaces } from '@/composables/useSpaces';
 import { useUnseenProposals } from '@/composables/useUnseenProposals';
 import { lsSet, lsGet } from '@/helpers/utils';
 
-const { explore } = useApp();
+const { spaces } = useSpaces();
 const { web3Account } = useWeb3();
 const { loadFollows, followingSpaces } = useFollowSpace();
 const { proposals, getProposals, lastSeenProposals, updateLastSeenProposal } =
@@ -99,21 +99,21 @@ onMounted(() => {
       <template #item="{ element }">
         <div
           class="flex items-center relative px-2 group"
-          v-tippy="{ content: explore.spaces[element].name, placement: 'right', delay: [750, 0] }"
+          v-tippy="{ content: spaces[element].name, placement: 'right', delay: [750, 0] }"
         >
           <UiUnreadIndicator v-if="hasUnseenProposalsBySpace(element)" />
           <router-link
             :to="{ name: 'spaceProposals', params: { key: element } }"
           >
             <SpaceAvatar
-              :space="explore.spaces[element]"
+              :space="spaces[element]"
               :key="element"
               symbolIndex="space"
               size="44"
             />
             <UiCounter
-              v-if="explore.spaces[element]?.activeProposals"
-              :counter="explore.spaces[element].activeProposals"
+              v-if="spaces[element]?.activeProposals"
+              :counter="spaces[element].activeProposals"
               class="absolute -top-[1px] right-[9px] !bg-green !h-[16px] !leading-[16px] !min-w-[16px]"
             />
           </router-link>
