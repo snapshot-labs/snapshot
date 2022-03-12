@@ -82,10 +82,14 @@ watch(open, () => {
       </div>
       <div v-if="!input.name">
         <RowLoadingBlock v-if="loadingValidations" />
-        <div v-else>
-          <a v-for="valId in validations" :key="valId" @click="select(valId)">
-            <BlockValidation :validation="valId" />
-          </a>
+        <div v-else class="space-y-3">
+          <BlockValidation
+            :validation="valId"
+            v-for="valId in validations"
+            :key="valId"
+            @click="select(valId)"
+          />
+
           <NoResults v-if="Object.keys(validations).length < 1" />
         </div>
       </div>

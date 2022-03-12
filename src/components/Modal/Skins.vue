@@ -43,20 +43,26 @@ const { userThemePreference } = useSkin();
     />
     <div class="mt-4 mx-0 md:mx-4 min-h-[339px]">
       <RowLoadingBlock v-if="loadingSkins" />
-      <div v-else>
-        <a v-if="!searchInput" key="" @click="select(undefined)">
-          <div
-            :class="userThemePreference"
-            class="bg-black rounded-none md:rounded-md"
-          >
-            <Block>
-              <UiButton class="mb-2" primary>{{ $t('defaultSkin') }}</UiButton>
-            </Block>
-          </div>
-        </a>
-        <a v-for="skin in filteredSkins" :key="skin" @click="select(skin)">
-          <BlockSkin :skin="skin" />
-        </a>
+      <div v-else class="space-y-3">
+        <div
+          v-if="!searchInput"
+          key=""
+          @click="select(undefined)"
+          :class="userThemePreference"
+          class="bg-black rounded-none md:rounded-md cursor-pointer"
+        >
+          <Block class="!bg-black">
+            <UiButton class="mb-2" primary>{{ $t('defaultSkin') }}</UiButton>
+          </Block>
+        </div>
+
+        <BlockSkin
+          :skin="skin"
+          v-for="skin in filteredSkins"
+          :key="skin"
+          @click="select(skin)"
+        />
+
         <NoResults v-if="Object.keys(filteredSkins).length < 1" />
       </div>
     </div>
