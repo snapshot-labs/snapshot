@@ -10,7 +10,6 @@ import { useSkin } from '@/composables/useSkin';
 import { useSpaces } from '@/composables/useSpaces';
 
 const state = reactive({
-  init: false,
   loading: true
 });
 
@@ -23,7 +22,6 @@ export function useApp() {
   const { explore, getExplore } = useSpaces();
 
   async function init() {
-    state.init = true;
     await loadLocale();
     const auth = getInstance();
     await Promise.all([getExplore(), getSkin()]);
