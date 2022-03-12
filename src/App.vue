@@ -4,7 +4,9 @@ import { useSkin } from '@/composables/useSkin';
 import { useApp } from '@/composables/useApp';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useFlashNotification } from '@/composables/useFlashNotification';
+import { useDomain } from '@/composables/useDomain';
 
+const { domain } = useDomain();
 const { skin } = useSkin();
 const { init } = useApp();
 const { web3 } = useWeb3();
