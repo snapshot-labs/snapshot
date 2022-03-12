@@ -10,8 +10,8 @@ defineProps(['skin']);
 </script>
 
 <template>
-  <div :class="skin" class="bg-black rounded-none md:rounded-md">
-    <Block>
+  <div :class="skin" class="rounded-none md:rounded-md cursor-pointer">
+    <Block class="!bg-black">
       <UiButton class="mb-2" primary>{{ skin }}</UiButton>
       <div class="text-skin-text">
         {{

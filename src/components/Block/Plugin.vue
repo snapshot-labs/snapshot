@@ -12,11 +12,11 @@ defineProps({
 </script>
 
 <template>
-  <Block class="hover:border-skin-link">
+  <Block class="hover:border-skin-link cursor-pointer">
     <div class="flex items-center mb-1">
       <a class="flex items-center">
         <BaseAvatar class="mr-2" :imgsrc="getIpfsUrl(plugin.icon)" size="28" />
-        <h3 v-text="plugin.name" />
+        <h3 v-text="plugin.name" class="truncate" />
       </a>
       <div class="ml-1">v{{ plugin.version }}</div>
     </div>

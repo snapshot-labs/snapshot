@@ -42,14 +42,14 @@ function select(key) {
 
     <div class="mt-4 mx-0 md:mx-4 min-h-[339px]">
       <RowLoadingBlock v-if="loadingNetworksSpacesCount" />
-      <div v-else>
-        <a
+      <div v-else class="space-y-3">
+        <div
           v-for="network in networks"
           :key="network.key"
           @click="select(network.key)"
         >
           <BlockNetwork :network="network" />
-        </a>
+        </div>
         <NoResults v-if="Object.keys(networks).length < 1" />
       </div>
     </div>
