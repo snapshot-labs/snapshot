@@ -9,7 +9,7 @@ defineProps(['validation']);
 </script>
 
 <template>
-  <Block>
+  <Block class="cursor-pointer">
     <div class="flex items-center mb-1">
       <h3 v-text="validation" />
     </div>

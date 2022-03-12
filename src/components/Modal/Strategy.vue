@@ -154,16 +154,15 @@ const strategyIsValid = computed(() =>
       </div>
     </div>
 
-    <div v-else class="my-4 mx-0 md:mx-4 min-h-[339px]">
+    <div v-else class="my-4 mx-0 md:mx-4 min-h-[300px]">
       <RowLoadingBlock v-if="loadingStrategies" />
-      <div v-else>
-        <a
+      <div v-else class="space-y-3">
+        <BlockStrategy
+          :strategy="strategy"
           v-for="strategy in strategiesResults"
           :key="strategy.id"
           @click="selectStrategy(strategy.id)"
-        >
-          <BlockStrategy :strategy="strategy" />
-        </a>
+        />
         <NoResults v-if="strategiesResults.length < 1" />
       </div>
     </div>
