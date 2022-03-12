@@ -18,7 +18,7 @@ const storedUserThemePreference = useStorage(
   NOT_SET
 );
 
-const useThemePreference = computed(() =>
+const userThemePreference = computed(() =>
   storedUserThemePreference.value === NOT_SET
     ? osSkin
     : storedUserThemePreference.value
@@ -50,7 +50,7 @@ export function useSkin() {
     if (domain && skinName.value !== 'default') {
       return skinName.value;
     }
-    return useThemePreference.value;
+    return userThemePreference.value;
   });
 
   async function getSkin() {
@@ -69,14 +69,14 @@ export function useSkin() {
   }
 
   const getSkinIcon = () =>
-    useThemePreference.value === LIGHT ? 'moon' : 'sun';
+    userThemePreference.value === LIGHT ? 'moon' : 'sun';
 
   watch(
-    useThemePreference,
+    userThemePreference,
     () => {
       document.documentElement.setAttribute(
         'data-color-scheme',
-        useThemePreference.value === LIGHT ? 'light' : 'dark'
+        userThemePreference.value === LIGHT ? 'light' : 'dark'
       );
     },
     { immediate: true }
@@ -84,7 +84,7 @@ export function useSkin() {
 
   return {
     skin,
-    useThemePreference,
+    userThemePreference,
     getSkinIcon,
     toggleUserTheme,
     getSkin

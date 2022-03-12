@@ -28,7 +28,7 @@ function select(key) {
   emit('close');
 }
 
-const { useThemePreference } = useSkin();
+const { userThemePreference } = useSkin();
 </script>
 
 <template>
@@ -46,7 +46,7 @@ const { useThemePreference } = useSkin();
       <div v-else>
         <a v-if="!searchInput" key="" @click="select(undefined)">
           <div
-            :class="useThemePreference"
+            :class="userThemePreference"
             class="bg-black rounded-none md:rounded-md"
           >
             <Block>
