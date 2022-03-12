@@ -53,9 +53,7 @@ export function useSpaces() {
         const isVerified = verified[key] || 0;
         let score = followers1d + followers / 4;
         if (isVerified === 1) score = score * 2;
-        const testnet = testnetNetworks.includes(
-          spaces.value[key].network
-        );
+        const testnet = testnetNetworks.includes(spaces.value[key].network);
         return {
           ...spaces.value[key],
           followers,

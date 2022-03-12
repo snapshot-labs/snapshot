@@ -78,9 +78,7 @@ async function checkIfSpaceExists() {
   ]);
   if (
     extentedSpaces.value.some(space => space.id === props.ensAddress) &&
-    Object.keys(spaces.value).some(
-      spaceId => spaceId === props.ensAddress
-    )
+    Object.keys(spaces.value).some(spaceId => spaceId === props.ensAddress)
   ) {
     return;
   } else {

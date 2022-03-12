@@ -65,7 +65,9 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="flex flex-col h-full overflow-auto no-scrollbar overscroll-contain py-2">
+  <div
+    class="flex flex-col h-full overflow-auto no-scrollbar overscroll-contain py-2"
+  >
     <div
       class="flex items-center relative px-2 group"
       v-tippy="{ content: 'Explore', placement: 'right', delay: [750, 0] }"
@@ -101,7 +103,11 @@ onMounted(() => {
           <div
             v-if="spaces[element]"
             class="flex items-center relative px-2 group"
-            v-tippy="{ content: spaces[element].name, placement: 'right', delay: [750, 0] }"
+            v-tippy="{
+              content: spaces[element].name,
+              placement: 'right',
+              delay: [750, 0]
+            }"
           >
             <UiUnreadIndicator v-if="hasUnseenProposalsBySpace(element)" />
             <router-link

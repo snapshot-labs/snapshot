@@ -4,7 +4,6 @@ import { useApolloQuery } from '@/composables/useApolloQuery';
 import { SPACE_SKIN_QUERY } from '@/helpers/queries';
 import { useStorage } from '@vueuse/core';
 
-
 /**
  * Handle theme (dark/light mode)
  * - use local storage or fall back to OS preference
@@ -17,10 +16,7 @@ const osTheme =
     ? DARK
     : LIGHT;
 
-const userTheme = useStorage(
-  'snapshot.userTheme',
-  osTheme
-);
+const userTheme = useStorage('snapshot.userTheme', osTheme);
 
 function toggleUserTheme() {
   if (userTheme.value === LIGHT) {
@@ -30,14 +26,16 @@ function toggleUserTheme() {
   }
 }
 
-const theme = computed(() => [DARK, LIGHT].includes(userTheme.value) ? userTheme.value : osTheme);
+const theme = computed(() =>
+  [DARK, LIGHT].includes(userTheme.value) ? userTheme.value : osTheme
+);
 
 /**
  * Handle skin (e.g. uniswap)
  */
 const skin = ref('default');
 const skinClass = computed(() => {
-  return theme.value === DARK ? skin.value + '-dark-mode' : skin.value
+  return theme.value === DARK ? skin.value + '-dark-mode' : skin.value;
 });
 
 export function useSkin() {
@@ -61,8 +59,7 @@ export function useSkin() {
     }
   }
 
-  const getThemeIcon = () =>
-    theme.value === LIGHT ? 'moon' : 'sun';
+  const getThemeIcon = () => (theme.value === LIGHT ? 'moon' : 'sun');
 
   watch(
     theme,

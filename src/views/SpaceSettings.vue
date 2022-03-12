@@ -402,7 +402,9 @@ async function handleSetRecord() {
                       : $t('selectNetwork')
                   }}
                 </template>
-                <template v-slot:label> {{ $t(`settings.network`) }}* </template>
+                <template v-slot:label>
+                  {{ $t(`settings.network`) }}*
+                </template>
               </UiInput>
               <UiInput @click="modalCategoryOpen = true">
                 <template v-slot:label>
@@ -522,7 +524,7 @@ async function handleSetRecord() {
               <a @click="handleRemoveStrategy(i)" class="absolute p-4 right-0">
                 <Icon name="close" size="12" />
               </a>
-  
+
               <a
                 @click="handleEditStrategy(i)"
                 class="p-4 block border rounded-md"
@@ -535,8 +537,12 @@ async function handleSetRecord() {
               v-if="inputError('strategies')"
             >
               <Icon name="warning" class="mr-2 !text-red" />
-              <span class="!text-red"> {{ inputError('strategies') }}&nbsp;</span>
-              <BaseLink link="https://docs.snapshot.org/spaces/create#strategies">
+              <span class="!text-red">
+                {{ inputError('strategies') }}&nbsp;</span
+              >
+              <BaseLink
+                link="https://docs.snapshot.org/spaces/create#strategies"
+              >
                 {{ $t('learnMore') }}
               </BaseLink>
             </Block>
@@ -552,7 +558,9 @@ async function handleSetRecord() {
             <div v-if="form.filters.onlyMembers">
               <Block class="!border-red" v-if="inputError('members')">
                 <Icon name="warning" class="mr-2 !text-red" />
-                <span class="!text-red"> {{ inputError('members') }}&nbsp;</span>
+                <span class="!text-red">
+                  {{ inputError('members') }}&nbsp;</span
+                >
               </Block>
               <UiButton class="block w-full px-3" style="height: auto">
                 <TextareaArray
@@ -590,7 +598,11 @@ async function handleSetRecord() {
           </Block>
           <Block :title="$t('settings.voting')">
             <div class="space-y-2">
-              <UiInput v-model="votingDelay" :number="true" placeholder="e.g. 1">
+              <UiInput
+                v-model="votingDelay"
+                :number="true"
+                placeholder="e.g. 1"
+              >
                 <template v-slot:label>
                   {{ $t('settings.votingDelay') }}
                 </template>
@@ -605,7 +617,11 @@ async function handleSetRecord() {
                   </select>
                 </template>
               </UiInput>
-              <UiInput v-model="votingPeriod" :number="true" placeholder="e.g. 5">
+              <UiInput
+                v-model="votingPeriod"
+                :number="true"
+                placeholder="e.g. 5"
+              >
                 <template v-slot:label>
                   {{ $t('settings.votingPeriod') }}
                 </template>
@@ -681,7 +697,7 @@ async function handleSetRecord() {
         </div>
       </template>
     </template>
-    
+
     <template #sidebar-right>
       <div v-if="loaded" class="lg:fixed lg:w-[300px]">
         <Block>

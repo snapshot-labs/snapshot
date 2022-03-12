@@ -435,7 +435,7 @@ const truncateMarkdownBody = computed(() => {
                 </span>
               </span>
             </div>
-  
+
             <div>
               <b>IPFS</b>
               <BaseLink :link="getIpfsUrl(proposal.ipfs)" class="float-right">
@@ -471,7 +471,9 @@ const truncateMarkdownBody = computed(() => {
             <div>
               <b>{{ $t('snapshot') }}</b>
               <BaseLink
-                :link="explorerUrl(proposal.network, proposal.snapshot, 'block')"
+                :link="
+                  explorerUrl(proposal.network, proposal.snapshot, 'block')
+                "
                 class="float-right"
               >
                 {{ formatNumber(proposal.snapshot) }}

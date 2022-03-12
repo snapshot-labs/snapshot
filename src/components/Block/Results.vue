@@ -15,8 +15,6 @@ const props = defineProps({
   strategies: Object
 });
 
-const ts = (Date.now() / 1e3).toFixed();
-
 const titles = computed(() =>
   props.strategies.map(strategy => strategy.params.symbol || '')
 );
