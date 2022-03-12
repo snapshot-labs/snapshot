@@ -1,41 +1,36 @@
-import { ref, computed, reactive } from 'vue';
+import { ref, computed } from 'vue';
 import { useRoute } from 'vue-router';
-import { useI18n } from '@/composables/useI18n';
 import orderBy from 'lodash/orderBy';
-import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
-import { useWeb3 } from '@/composables/useWeb3';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import verified from '@/../snapshot-spaces/spaces/verified.json';
-import { useSkin } from '@/composables/useSkin';
-import { useSpaces } from '@/composables/useSpaces';
+import verifiedSpacesCategories from '@/../snapshot-spaces/spaces/categories.json';
 
-const state = reactive({
-  init: false,
-  loading: true
-});
+const explore: any = ref({});
 
-const { login } = useWeb3();
-
-export function useApp() {
+export function useSpaces() {
   const route = useRoute();
-  const { loadLocale } = useI18n();
-  const { getSkin } = useSkin();
-  const { explore, getExplore } = useSpaces();
 
-  async function init() {
-    state.init = true;
-    await loadLocale();
-    const auth = getInstance();
-    await Promise.all([getExplore(), getSkin()]);
+  async function getExplore() {
+    const exploreObj: any = await fetch(
+      `${import.meta.env.VITE_HUB_URL}/api/explore`
+    ).then(res => res.json());
 
-    // Auto connect with gnosis-connector when inside gnosis-safe iframe
-    if (window?.parent === window)
-      auth.getConnector().then(connector => {
-        if (connector) login(connector);
-      });
-    else login('gnosis');
+    exploreObj.spaces = Object.fromEntries(
+      Object.entries(exploreObj.spaces).map(([id, space]: any) => {
+        // map manually selected categories for verified spaces that don't have set their categories yet
+        // set to empty array if space.categories is missing
+        space.categories = space.categories?.length
+          ? space.categories
+          : verifiedSpacesCategories[id]?.length
+          ? verifiedSpacesCategories[id]
+          : [];
 
-    state.loading = false;
+        return [id, { id, ...space }];
+      })
+    );
+
+    explore.value = exploreObj;
+    return;
   }
 
   const selectedCategory = ref('');
@@ -90,10 +85,8 @@ export function useApp() {
   );
 
   return {
-    init,
     getExplore,
-    app: computed(() => state),
-    explore,
+    explore: computed(() => explore.value),
     orderedSpaces,
     orderedSpacesByCategory,
     selectedCategory
