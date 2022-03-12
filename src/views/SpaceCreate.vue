@@ -430,7 +430,7 @@ const needsPluginConfigs = computed(() =>
           </div>
         </div>
       </template>
-      <template v-else-if="currentStep === 2">
+      <div v-else-if="currentStep === 2" class="space-y-4">
         <Block :title="$t('create.voting')">
           <UiInput
             @click="!space.voting?.type ? (modalVotingTypeOpen = true) : null"
@@ -585,9 +585,8 @@ const needsPluginConfigs = computed(() =>
             </template>
           </UiInput>
         </Block>
-      </template>
-      <template v-else>
-        <div class="h-[1px] w-full" />
+      </div>
+      <div v-else class="space-y-3">
         <PluginCreate
           v-if="space?.plugins && (!sourceProposal || sourceProposalLoaded)"
           :proposal="proposal"
@@ -595,7 +594,7 @@ const needsPluginConfigs = computed(() =>
           :preview="preview"
           v-model="form.metadata.plugins"
         />
-      </template>
+      </div>
     </template>
     <template #sidebar-right>
       <Block class="lg:fixed lg:w-[320px]">
