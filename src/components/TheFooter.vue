@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from 'vue';
 import { useSkin } from '@/composables/useSkin';
-const { toggleUserTheme, getSkinIcon } = useSkin();
+const { toggleUserTheme, getThemeIcon } = useSkin();
 
 const modalAboutOpen = ref(false);
 const yearNow = new Date().getFullYear();
@@ -50,7 +50,7 @@ const socials = [
         <span class="text-skin-link">?</span>
       </UiSidebarButton>
       <UiSidebarButton @click="toggleUserTheme" :aria-label="$t('toggleSkin')">
-        <Icon size="20" class="text-skin-link" :name="getSkinIcon()" />
+        <Icon size="20" class="text-skin-link" :name="getThemeIcon()" />
       </UiSidebarButton>
       <SelectLanguageButton />
     </div>

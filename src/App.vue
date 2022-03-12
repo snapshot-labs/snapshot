@@ -23,13 +23,13 @@ onMounted(async () => {
 <template>
   <div
     :class="skin"
-    class="flex h-screen font-sans text-base bg-skin-block-bg text-skin-text antialiased"
+    class="flex h-screen font-sans text-base antialiased"
   >
-    <div v-if="!domain">
+    <div v-if="!domain" class="bg-skin-block-bg text-skin-text">
       <TheSidebar />
     </div>
     <div class="grow min-w-0 overflow-hidden flex flex-col">
-      <div>
+      <div class="bg-skin-block-bg text-skin-text">
         <TheNavbar />
       </div>
       <div

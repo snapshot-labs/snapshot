@@ -1,6 +1,5 @@
 <script setup>
 import { ref, computed, watch } from 'vue';
-import { useSkin } from '@/composables/useSkin';
 import { useSkinsFilter } from '@/composables/useSkinsFilter';
 
 const props = defineProps({
@@ -27,8 +26,6 @@ function select(key) {
   emit('update:modelValue', key);
   emit('close');
 }
-
-const { userThemePreference } = useSkin();
 </script>
 
 <template>
@@ -48,8 +45,7 @@ const { userThemePreference } = useSkin();
           v-if="!searchInput"
           key=""
           @click="select(undefined)"
-          :class="userThemePreference"
-          class="bg-black rounded-none md:rounded-md cursor-pointer"
+          class="default bg-black rounded-none md:rounded-md cursor-pointer"
         >
           <Block class="!bg-black">
             <UiButton class="mb-2" primary>{{ $t('defaultSkin') }}</UiButton>
