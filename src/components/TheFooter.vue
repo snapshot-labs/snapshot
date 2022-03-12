@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from 'vue';
 import { useSkin } from '@/composables/useSkin';
-const { toggleSkin, getSkinIcon } = useSkin();
+const { toggleUserTheme, getSkinIcon } = useSkin();
 
 const modalAboutOpen = ref(false);
 const yearNow = new Date().getFullYear();
@@ -31,7 +31,9 @@ const socials = [
 </script>
 
 <template>
-  <Container class="flex flex-col md:flex-row items-center py-6 space-y-3 md:space-y-0 md:space-x-3">
+  <Container
+    class="flex flex-col md:flex-row items-center py-6 space-y-3 md:space-y-0 md:space-x-3"
+  >
     <div class="space-x-3 md:ml-auto">
       <span v-for="social in socials" :key="social">
         <BaseLink :link="social.link" hide-external-icon>
@@ -47,15 +49,16 @@ const socials = [
       <UiSidebarButton @click="modalAboutOpen = true">
         <span class="text-skin-link">?</span>
       </UiSidebarButton>
-      <UiSidebarButton
-        @click="toggleSkin"
-        :aria-label="$t('toggleSkin')"
-      >
+      <UiSidebarButton @click="toggleUserTheme" :aria-label="$t('toggleSkin')">
         <Icon size="20" class="text-skin-link" :name="getSkinIcon()" />
       </UiSidebarButton>
       <SelectLanguageButton />
     </div>
-    <div class="pt-3 md:pt-0 md:pr-2 md:order-first whitespace-nowrap opacity-40">© {{ yearNow }} Snapshot Labs.</div>
+    <div
+      class="pt-3 md:pt-0 md:pr-2 md:order-first whitespace-nowrap opacity-40"
+    >
+      © {{ yearNow }} Snapshot Labs.
+    </div>
   </Container>
   <teleport to="#modal">
     <ModalAbout

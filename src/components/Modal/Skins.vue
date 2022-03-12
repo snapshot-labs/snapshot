@@ -28,7 +28,7 @@ function select(key) {
   emit('close');
 }
 
-const { userSkin } = useSkin();
+const { useThemePreference } = useSkin();
 </script>
 
 <template>
@@ -45,7 +45,10 @@ const { userSkin } = useSkin();
       <RowLoadingBlock v-if="loadingSkins" />
       <div v-else>
         <a v-if="!searchInput" key="" @click="select(undefined)">
-          <div :class="userSkin" class="bg-black rounded-none md:rounded-md">
+          <div
+            :class="useThemePreference"
+            class="bg-black rounded-none md:rounded-md"
+          >
             <Block>
               <UiButton class="mb-2" primary>{{ $t('defaultSkin') }}</UiButton>
             </Block>
