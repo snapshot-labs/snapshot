@@ -5,7 +5,9 @@ import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import verified from '@/../snapshot-spaces/spaces/verified.json';
 import verifiedSpacesCategories from '@/../snapshot-spaces/spaces/categories.json';
 
-const explore: any = ref({});
+const explore: any = ref({
+  spaces: []
+});
 
 export function useSpaces() {
   const route = useRoute();

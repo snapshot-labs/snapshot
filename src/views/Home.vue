@@ -2,14 +2,14 @@
 import { ref, watchEffect, onMounted } from 'vue';
 import { useUnseenProposals } from '@/composables/useUnseenProposals';
 import { useScrollMonitor } from '@/composables/useScrollMonitor';
-import { useApp } from '@/composables/useApp';
+import { useSpaces } from '@/composables/useSpaces';
 import { useFollowSpace } from '@/composables/useFollowSpace';
 import { useCategories } from '@/composables/useCategories';
 import { shorten } from '@/helpers/utils';
 import { useIntl } from '@/composables/useIntl';
 import { useI18n } from '@/composables/useI18n';
 
-const { selectedCategory, orderedSpaces, orderedSpacesByCategory } = useApp();
+const { selectedCategory, orderedSpaces, orderedSpacesByCategory } = useSpaces();
 const { followingSpaces } = useFollowSpace();
 const { spacesPerCategory, categoriesOrderedBySpaceCount } = useCategories();
 const { formatCompactNumber } = useIntl();
