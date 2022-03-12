@@ -62,7 +62,7 @@ watch(open, () => emit('openChange'));
             :key="item.text"
             @click="handleClick(item.action)"
             :class="{ selected: item.selected }"
-            class="list-none block whitespace-nowrap px-3 py-2 cursor-pointer select-none"
+            class="list-none block whitespace-nowrap px-3 py-2 cursor-pointer select-none group"
           >
             <slot name="item" :item="item" :key="item">
               {{ item.text }}
