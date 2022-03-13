@@ -43,14 +43,6 @@
     },
     "icon": "ipfs://QmNuLXa47xSrDNKRfpPNhoFTuoztvtWCcwGnPpT5MXJWMb"
   },
-  "fortmatic": {
-    "id": "fortmatic",
-    "name": "Fortmatic",
-    "options": {
-      "apiKey": "pk_live_9CE8FD92E54684ED"
-    },
-    "icon": "ipfs://QmRvERVgt2L8BH2tPWpzBWHLWCeESxnAP3omTG1Pxa2Z6V"
-  },
   "gnosis": {
     "id": "gnosis",
     "name": "Gnosis Safe",
