@@ -9,7 +9,12 @@ import { shorten } from '@/helpers/utils';
 import { useIntl } from '@/composables/useIntl';
 import { useI18n } from '@/composables/useI18n';
 
-const { selectedCategory, orderedSpaces, orderedSpacesByCategory } = useSpaces();
+const {
+  selectedCategory,
+  orderedSpaces,
+  orderedSpacesByCategory,
+  spacesLoaded
+} = useSpaces();
 const { followingSpaces } = useFollowSpace();
 const { spacesPerCategory, categoriesOrderedBySpaceCount } = useCategories();
 const { formatCompactNumber } = useIntl();
@@ -46,7 +51,9 @@ onMounted(() => {
 
 <template>
   <div class="relative">
-    <Container class="flex items-center mb-4 flex-col xs:flex-row flex-wrap md:flex-nowrap">
+    <Container
+      class="flex items-center mb-4 flex-col xs:flex-row flex-wrap md:flex-nowrap"
+    >
       <UiButton class="pl-3 pr-0 w-full md:max-w-[420px]">
         <SearchWithFilters />
       </UiButton>
@@ -94,7 +101,9 @@ onMounted(() => {
           </div>
         </template>
       </BaseDropdown>
-      <div class="mt-2 xs:mt-0 xs:ml-auto text-right whitespace-nowrap">
+      <div
+        class="mt-2 xs:mt-0 xs:ml-auto text-right whitespace-nowrap text-skin-text"
+      >
         {{
           $tc('spaceCount', [
             formatCompactNumber(orderedSpacesByCategory.length)
@@ -103,7 +112,11 @@ onMounted(() => {
       </div>
     </Container>
     <Container :slim="true">
-      <div class="grid lg:grid-cols-4 md:grid-cols-3 gap-[1px] md:gap-4">
+      <TransitionGroup
+        name="fade"
+        tag="div"
+        class="grid lg:grid-cols-4 md:grid-cols-3 gap-[1px] md:gap-4"
+      >
         <div
           v-for="space in orderedSpacesByCategory.slice(0, limit)"
           :key="space.id"
@@ -113,7 +126,7 @@ onMounted(() => {
           >
             <!-- Added mb-0 to remove mb-4 added by block component -->
             <Block
-              class="text-center mb-0 hover:scale-[1.02] transition-transform"
+              class="text-center mb-0 hover:border-skin-text transition-all flex justify-center items-center"
               style="height: 266px"
             >
               <div class="relative inline-block mb-2">
@@ -139,10 +152,20 @@ onMounted(() => {
             </Block>
           </router-link>
         </div>
+      </TransitionGroup>
+      <div
+        v-if="!spacesLoaded"
+        class="opacity-40 grid lg:grid-cols-4 md:grid-cols-3 gap-[1px] md:gap-4"
+      >
+        <div
+          class="bg-skin-border animate-pulse min-h-[256px] rounded-xl"
+          v-for="i in 16"
+          :key="i"
+        ></div>
       </div>
       <NoResults
+        v-else-if="Object.keys(orderedSpacesByCategory).length < 1"
         :block="true"
-        v-if="Object.keys(orderedSpacesByCategory).length < 1"
       />
       <div class="text-center">
         <UiButton

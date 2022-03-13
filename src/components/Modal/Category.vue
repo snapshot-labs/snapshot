@@ -58,27 +58,29 @@ function handleClose() {
       <div class="ml-4 md:ml-0 mb-4">
         {{ $t('create.categorie(s)') }}
       </div>
-      <Block
-        @click="selectCategoriesHandler(category)"
-        v-for="(category, i) in categories"
-        :key="i"
-        :class="[
-          {
-            'hover:border-skin-link cursor-pointer':
-              hasCategory(category) || selectedCategories.length < 2,
-            'opacity-50':
-              !hasCategory(category) && selectedCategories.length === 2,
-            '!border-skin-link': hasCategory(category)
-          },
-          'relative capitalize'
-        ]"
-      >
-        <h3 v-text="category" />
-        <i
-          v-if="hasCategory(category)"
-          class="iconfont iconcheck1 absolute top-2 right-2 text-lg"
-        />
-      </Block>
+      <div class="space-y-3">
+        <Block
+          @click="selectCategoriesHandler(category)"
+          v-for="(category, i) in categories"
+          :key="i"
+          :class="[
+            {
+              'hover:border-skin-link cursor-pointer':
+                hasCategory(category) || selectedCategories.length < 2,
+              'opacity-50':
+                !hasCategory(category) && selectedCategories.length === 2,
+              '!border-skin-link': hasCategory(category)
+            },
+            'relative capitalize'
+          ]"
+        >
+          <h3 v-text="category" />
+          <i
+            v-if="hasCategory(category)"
+            class="iconfont iconcheck1 absolute top-2 right-2 text-lg"
+          />
+        </Block>
+      </div>
     </div>
     <template v-slot:footer>
       <div class="w-2/4 float-left pr-2">

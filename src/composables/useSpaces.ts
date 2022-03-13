@@ -5,14 +5,13 @@ import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import verified from '@/../snapshot-spaces/spaces/verified.json';
 import verifiedSpacesCategories from '@/../snapshot-spaces/spaces/categories.json';
 
-const explore: any = ref({
-  spaces: []
-});
+const spaces: any = ref([]);
+const spacesLoaded = ref(false);
 
 export function useSpaces() {
   const route = useRoute();
 
-  async function getExplore() {
+  async function getSpaces() {
     const exploreObj: any = await fetch(
       `${import.meta.env.VITE_HUB_URL}/api/explore`
     ).then(res => res.json());
@@ -31,7 +30,8 @@ export function useSpaces() {
       })
     );
 
-    explore.value = exploreObj;
+    spaces.value = exploreObj.spaces;
+    spacesLoaded.value = true;
     return;
   }
 
@@ -44,27 +44,25 @@ export function useSpaces() {
   const orderedSpaces = computed(() => {
     const network = route.query.network || '';
     const q = route.query.q?.toString() || '';
-    const list = Object.keys(explore.value.spaces)
+    const list = Object.keys(spaces.value)
       .map(key => {
-        const followers = explore.value.spaces[key].followers ?? 0;
-        // const voters1d = explore.value.spaces[key].voters_1d ?? 0;
-        const followers1d = explore.value.spaces[key].followers_1d ?? 0;
-        // const proposals1d = explore.value.spaces[key].proposals_1d ?? 0;
+        const followers = spaces.value[key].followers ?? 0;
+        // const voters1d = spaces.value[key].voters_1d ?? 0;
+        const followers1d = spaces.value[key].followers_1d ?? 0;
+        // const proposals1d = spaces.value[key].proposals_1d ?? 0;
         const isVerified = verified[key] || 0;
         let score = followers1d + followers / 4;
         if (isVerified === 1) score = score * 2;
-        const testnet = testnetNetworks.includes(
-          explore.value.spaces[key].network
-        );
+        const testnet = testnetNetworks.includes(spaces.value[key].network);
         return {
-          ...explore.value.spaces[key],
+          ...spaces.value[key],
           followers,
           // Hide private spaces, unless the search query exactly matches
           // the space key
           private:
             route.query.q?.toString() === key
               ? false
-              : explore.value.spaces[key].private ?? false,
+              : spaces.value[key].private ?? false,
           score,
           testnet
         };
@@ -87,8 +85,9 @@ export function useSpaces() {
   );
 
   return {
-    getExplore,
-    explore: computed(() => explore.value),
+    getSpaces,
+    spaces,
+    spacesLoaded,
     orderedSpaces,
     orderedSpacesByCategory,
     selectedCategory

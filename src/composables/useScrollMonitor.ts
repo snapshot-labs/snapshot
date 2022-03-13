@@ -7,8 +7,10 @@ export function useScrollMonitor(fn) {
   const endElement: any = ref(null);
 
   onMounted(() => {
-    const containerElement = document.getElementById("content");
-    const containerMonitor = scrollMonitor.createContainer(containerElement as HTMLElement);
+    const containerElement = document.getElementById('content');
+    const containerMonitor = scrollMonitor.createContainer(
+      containerElement as HTMLElement
+    );
     elementWatcher = containerMonitor.create(endElement.value);
     elementWatcher.enterViewport(fn);
   });

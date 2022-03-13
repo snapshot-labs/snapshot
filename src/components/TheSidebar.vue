@@ -3,11 +3,11 @@ import { watch, onMounted, ref, watchEffect, computed } from 'vue';
 import draggable from 'vuedraggable';
 import { useFollowSpace } from '@/composables/useFollowSpace';
 import { useWeb3 } from '@/composables/useWeb3';
-import { useApp } from '@/composables/useApp';
+import { useSpaces } from '@/composables/useSpaces';
 import { useUnseenProposals } from '@/composables/useUnseenProposals';
 import { lsSet, lsGet } from '@/helpers/utils';
 
-const { explore } = useApp();
+const { spaces } = useSpaces();
 const { web3Account } = useWeb3();
 const { loadFollows, followingSpaces } = useFollowSpace();
 const { proposals, getProposals, lastSeenProposals, updateLastSeenProposal } =
@@ -65,7 +65,9 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="flex flex-col h-full overflow-auto no-scrollbar overscroll-contain py-2">
+  <div
+    class="flex flex-col h-full overflow-auto no-scrollbar overscroll-contain py-2"
+  >
     <div
       class="flex items-center relative px-2 group"
       v-tippy="{ content: 'Explore', placement: 'right', delay: [750, 0] }"
@@ -87,39 +89,46 @@ onMounted(() => {
         </UiSidebarButton>
       </router-link>
     </div>
-    <draggable
-      v-if="draggableSpaces.length > 0"
-      v-model="draggableSpaces"
-      :component-data="{ type: 'transition-group' }"
-      v-bind="{ animation: 200 }"
-      item-key="id"
-      @update="saveSpaceOrder"
-      class="space-y-2 mt-2"
-    >
-      <template #item="{ element }">
-        <div
-          class="flex items-center relative px-2 group"
-          v-tippy="{ content: explore.spaces[element].name, placement: 'right', delay: [750, 0] }"
-        >
-          <UiUnreadIndicator v-if="hasUnseenProposalsBySpace(element)" />
-          <router-link
-            :to="{ name: 'spaceProposals', params: { key: element } }"
+    <Transition name="fade">
+      <draggable
+        v-if="draggableSpaces.length > 0"
+        v-model="draggableSpaces"
+        :component-data="{ type: 'transition-group' }"
+        v-bind="{ animation: 200 }"
+        item-key="id"
+        @update="saveSpaceOrder"
+        class="space-y-2 mt-2"
+      >
+        <template #item="{ element }">
+          <div
+            v-if="spaces[element]"
+            class="flex items-center relative px-2 group"
+            v-tippy="{
+              content: spaces[element].name,
+              placement: 'right',
+              delay: [750, 0]
+            }"
           >
-            <SpaceAvatar
-              :space="explore.spaces[element]"
-              :key="element"
-              symbolIndex="space"
-              size="44"
-            />
-            <UiCounter
-              v-if="explore.spaces[element]?.activeProposals"
-              :counter="explore.spaces[element].activeProposals"
-              class="absolute -top-[1px] right-[9px] !bg-green !h-[16px] !leading-[16px] !min-w-[16px]"
-            />
-          </router-link>
-        </div>
-      </template>
-    </draggable>
+            <UiUnreadIndicator v-if="hasUnseenProposalsBySpace(element)" />
+            <router-link
+              :to="{ name: 'spaceProposals', params: { key: element } }"
+            >
+              <SpaceAvatar
+                :space="spaces[element]"
+                :key="element"
+                symbolIndex="space"
+                size="44"
+              />
+              <UiCounter
+                v-if="spaces[element].activeProposals"
+                :counter="spaces[element].activeProposals"
+                class="absolute -top-[1px] right-[9px] !bg-green !h-[16px] !leading-[16px] !min-w-[16px]"
+              />
+            </router-link>
+          </div>
+        </template>
+      </draggable>
+    </Transition>
     <div
       class="flex flex-col items-center px-2 space-y-2 mt-2"
       v-tippy="{ content: 'Create space', placement: 'right', delay: [750, 0] }"

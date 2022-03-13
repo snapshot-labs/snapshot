@@ -4,13 +4,13 @@ import { useSkin } from '@/composables/useSkin';
 import { useApp } from '@/composables/useApp';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useFlashNotification } from '@/composables/useFlashNotification';
-import { useDomain } from './composables/useDomain';
+import { useDomain } from '@/composables/useDomain';
 
-const { skin } = useSkin();
-const { init, app } = useApp();
+const { domain } = useDomain();
+const { skinClass } = useSkin();
+const { init, ready } = useApp();
 const { web3 } = useWeb3();
 const { notify } = useFlashNotification();
-const { domain } = useDomain();
 
 provide('web3', web3);
 provide('notify', notify);
@@ -21,20 +21,21 @@ onMounted(async () => {
 </script>
 
 <template>
+  <UiLoading v-if="!ready" class="overlay big" />
   <div
-    v-if="!app.loading"
-    :class="skin"
-    class="flex h-screen font-sans text-base bg-skin-block-bg text-skin-text antialiased"
+    v-else
+    :class="skinClass"
+    class="flex h-screen font-sans text-base antialiased"
   >
-    <div v-if="!domain">
+    <div v-if="!domain" class="bg-skin-block-bg text-skin-text">
       <TheSidebar />
     </div>
     <div class="grow min-w-0 overflow-hidden flex flex-col">
-      <div>
+      <div class="bg-skin-block-bg text-skin-text">
         <TheNavbar />
       </div>
       <div
-        class="grow min-w-0 min-h-0 rounded-tl-3xl overflow-x-hidden overflow-y-auto"
+        class="grow min-w-0 min-h-0 rounded-tl-3xl border border-skin-border overflow-x-hidden overflow-y-auto"
         id="content"
       >
         <div class="min-h-full flex flex-col bg-skin-bg">

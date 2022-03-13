@@ -4,58 +4,47 @@ import { useApolloQuery } from '@/composables/useApolloQuery';
 import { SPACE_SKIN_QUERY } from '@/helpers/queries';
 import { useStorage } from '@vueuse/core';
 
-const NOT_SET = 'not-set';
+/**
+ * Handle theme (dark/light mode)
+ * - use local storage or fall back to OS preference
+ */
 const DARK = 'dark';
 const LIGHT = 'light';
 
-const osSkin =
+const osTheme =
   window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
     ? DARK
     : LIGHT;
 
-const storedUserThemePreference = useStorage(
-  'snapshot.userThemePreference',
-  NOT_SET
-);
+const userTheme = useStorage('snapshot.userTheme', osTheme);
 
-const userThemePreference = computed(() =>
-  storedUserThemePreference.value === NOT_SET
-    ? osSkin
-    : storedUserThemePreference.value
-);
-
-const changeStoredTheme = skin => {
-  if (skin === LIGHT) {
-    storedUserThemePreference.value = DARK;
+function toggleUserTheme() {
+  if (userTheme.value === LIGHT) {
+    userTheme.value = DARK;
   } else {
-    storedUserThemePreference.value = LIGHT;
+    userTheme.value = LIGHT;
   }
-};
+}
 
-const skinName = ref('');
+const theme = computed(() =>
+  [DARK, LIGHT].includes(userTheme.value) ? userTheme.value : osTheme
+);
+
+/**
+ * Handle skin (e.g. uniswap)
+ */
+const skin = ref('default');
+const skinClass = computed(() => {
+  return theme.value === DARK ? skin.value + '-dark-mode' : skin.value;
+});
 
 export function useSkin() {
   const { apolloQuery } = useApolloQuery();
   const { domain } = useDomain();
 
-  function toggleUserTheme() {
-    if (storedUserThemePreference.value === NOT_SET) {
-      changeStoredTheme(osSkin);
-    } else {
-      changeStoredTheme(storedUserThemePreference.value);
-    }
-  }
-
-  const skin = computed(() => {
-    if (domain && skinName.value !== 'default') {
-      return skinName.value;
-    }
-    return userThemePreference.value;
-  });
-
   async function getSkin() {
     if (domain) {
-      const spaceObj = await apolloQuery(
+      const space = await apolloQuery(
         {
           query: SPACE_SKIN_QUERY,
           variables: {
@@ -64,28 +53,29 @@ export function useSkin() {
         },
         'space'
       );
-      skinName.value = spaceObj?.skin;
+      if (space?.skin) {
+        skin.value = space.skin;
+      }
     }
   }
 
-  const getSkinIcon = () =>
-    userThemePreference.value === LIGHT ? 'moon' : 'sun';
+  const getThemeIcon = () => (theme.value === LIGHT ? 'moon' : 'sun');
 
   watch(
-    userThemePreference,
+    theme,
     () => {
       document.documentElement.setAttribute(
         'data-color-scheme',
-        userThemePreference.value === LIGHT ? 'light' : 'dark'
+        theme.value === LIGHT ? 'light' : 'dark'
       );
     },
     { immediate: true }
   );
 
   return {
-    skin,
-    userThemePreference,
-    getSkinIcon,
+    skinClass,
+    theme,
+    getThemeIcon,
     toggleUserTheme,
     getSkin
   };

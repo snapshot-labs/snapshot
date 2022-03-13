@@ -11,8 +11,8 @@
   --text-color: #8b949e;
   --link-color: #ffffff;
   --heading-color: #ffffff;
-  --border-color: #424242;
-  --header-bg: #121212;
+  --border-color: #2d2d2d;
+  --header-bg: #1c1b20;
   --block-bg: #1c1b20;
   --shadow-color: #fff1
 }
@@ -20,11 +20,11 @@
 [data-color-scheme='light'] {
   color-scheme: light;
   --primary-color: #384aff;
-  --bg-color: #f6f6f6;
+  --bg-color: #f8f8f8;
   --text-color: #57606a;
   --link-color: #444444;
   --heading-color: #111111;
-  --border-color: #d0d7de;
+  --border-color: #eee;
   --header-bg: white;
   --block-bg: white;
   --shadow-color: #0001
