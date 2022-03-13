@@ -28,7 +28,7 @@ const { getProposals } = useUnseenProposals();
 watchEffect(() => getProposals(followingSpaces.value));
 
 // Scroll
-const loadBy = 16;
+const loadBy = 12;
 const limit = ref(loadBy);
 
 const enableInfiniteScroll = ref(false);
@@ -158,8 +158,8 @@ onMounted(() => {
         class="opacity-40 grid lg:grid-cols-4 md:grid-cols-3 gap-[1px] md:gap-4"
       >
         <div
-          class="bg-skin-border animate-pulse min-h-[256px] rounded-xl"
-          v-for="i in 16"
+          class="bg-skin-border animate-pulse min-h-[266px]"
+          v-for="i in 12"
           :key="i"
         ></div>
       </div>
