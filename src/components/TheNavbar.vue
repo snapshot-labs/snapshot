@@ -9,7 +9,7 @@ import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 
 const { pendingCount } = useTxStatus();
 const { modalAccountOpen } = useModal();
-const { env } = useDomain();
+const { env, domain } = useDomain();
 const auth = getInstance();
 const { login, web3, web3Account } = useWeb3();
 
@@ -41,9 +41,10 @@ async function handleLogin(connector) {
             style="font-size: 24px"
           >
             <Icon
+              v-if="!domain"
               size="36"
               name="snapshot"
-              class="text-snapshot cursor-pointer"
+              class="text-snapshot cursor-pointer mr-2"
             />
             snapshot
           </router-link>
