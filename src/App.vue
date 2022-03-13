@@ -25,7 +25,7 @@ onMounted(async () => {
   <div
     v-else
     :class="skinClass"
-    class="flex h-screen font-sans text-base antialiased"
+    class="flex h-screen font-sans text-base antialiased bg-skin-block-bg"
   >
     <div v-if="!domain" class="bg-skin-block-bg text-skin-text">
       <TheSidebar />
