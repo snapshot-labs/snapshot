@@ -78,7 +78,9 @@ onMounted(() => {
       }"
     >
       <router-link :to="{ name: 'home' }">
-        <UiSidebarButton>
+        <UiSidebarButton
+          :class="{ '!border-skin-link': $route.name === 'home' }"
+        >
           <Icon size="20" name="search" />
         </UiSidebarButton>
       </router-link>
@@ -92,9 +94,11 @@ onMounted(() => {
         touch: ['hold', 500]
       }"
     >
-      <UiUnreadIndicator v-if="hasUnseenProposals" />
+      <UiUnreadIndicator :hasUnseen="hasUnseenProposals" />
       <router-link :to="{ name: 'timeline' }">
-        <UiSidebarButton>
+        <UiSidebarButton
+          :class="{ '!border-skin-link': $route.name === 'timeline' }"
+        >
           <Icon size="20" name="feed" />
         </UiSidebarButton>
       </router-link>
@@ -120,7 +124,10 @@ onMounted(() => {
               touch: ['hold', 500]
             }"
           >
-            <UiUnreadIndicator v-if="hasUnseenProposalsBySpace(element)" />
+            <UiUnreadIndicator
+              :space="element"
+              :hasUnseen="hasUnseenProposalsBySpace(element)"
+            />
             <router-link
               :to="{ name: 'spaceProposals', params: { key: element } }"
             >
@@ -150,7 +157,11 @@ onMounted(() => {
       }"
     >
       <router-link :to="{ name: 'setup' }">
-        <UiSidebarButton><Icon size="20" name="plus" /></UiSidebarButton>
+        <UiSidebarButton
+          :class="{ '!border-skin-link': $route.name === 'setup' }"
+        >
+          <Icon size="20" name="plus" />
+        </UiSidebarButton>
       </router-link>
     </div>
   </div>
