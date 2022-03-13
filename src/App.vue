@@ -7,7 +7,7 @@ import { useFlashNotification } from '@/composables/useFlashNotification';
 import { useDomain } from '@/composables/useDomain';
 
 const { domain } = useDomain();
-const { skinClass } = useSkin();
+const { skinClass, userTheme } = useSkin();
 const { init, ready } = useApp();
 const { web3 } = useWeb3();
 const { notify } = useFlashNotification();
@@ -24,7 +24,7 @@ onMounted(async () => {
   <UiLoading v-if="!ready" class="overlay big" />
   <div
     v-else
-    :class="skinClass"
+    :class="[skinClass, userTheme]"
     class="flex h-screen font-sans text-base antialiased bg-skin-block-bg"
   >
     <div v-if="!domain" class="bg-skin-block-bg text-skin-text">

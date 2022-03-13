@@ -158,7 +158,7 @@ onMounted(() => {
         class="opacity-40 grid lg:grid-cols-4 md:grid-cols-3 gap-[1px] md:gap-4"
       >
         <div
-          class="bg-skin-border animate-pulse min-h-[266px]"
+          class="bg-skin-border animate-pulse min-h-[266px] md:rounded-xl"
           v-for="i in 12"
           :key="i"
         ></div>
