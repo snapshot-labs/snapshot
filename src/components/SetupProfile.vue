@@ -180,9 +180,7 @@ async function handleSubmit() {
           level="info"
           class="!mt-[22px]"
         >
-          <p class="mt-0 leading-5">
-            {{ $t('setup.pleaseWaitMessage') }}
-          </p>
+          {{ $t('setup.pleaseWaitMessage') }}
         </BaseMessageBlock>
       </div>
     </Block>
