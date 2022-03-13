@@ -35,7 +35,8 @@ onMounted(async () => {
         <TheNavbar />
       </div>
       <div
-        class="grow min-w-0 min-h-0 rounded-tl-3xl border border-skin-border overflow-x-hidden overflow-y-auto"
+        class="grow min-w-0 min-h-0 border border-skin-border overflow-x-hidden overflow-y-auto"
+        :class="{ 'rounded-tl-3xl': !domain }"
         id="content"
       >
         <div class="min-h-full flex flex-col bg-skin-bg">
