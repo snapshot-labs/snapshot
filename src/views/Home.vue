@@ -176,6 +176,9 @@ onMounted(() => {
           {{ $t('homeLoadmore') }}
         </UiButton>
       </div>
+      <footer class="mt-auto">
+        <TheFooter />
+      </footer>
     </Container>
     <div ref="endElement" />
   </div>

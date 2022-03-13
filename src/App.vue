@@ -42,9 +42,6 @@ onMounted(async () => {
           <main class="grow py-4 relative">
             <router-view :key="$route.path" />
           </main>
-          <footer v-if="!domain" class="mt-auto">
-            <TheFooter />
-          </footer>
         </div>
       </div>
     </div>
