@@ -64,12 +64,12 @@ defineProps({
   }
 
   &.button--active {
-    border-color: var(--link-color) !important;
+    border-color: var(--text-color) !important;
   }
 
   &:hover {
     color: var(--link-color);
-    border-color: var(--link-color);
+    border-color: var(--text-color);
     background-color: var(--block-bg);
   }
 

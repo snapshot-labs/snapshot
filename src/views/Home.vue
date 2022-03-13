@@ -126,7 +126,7 @@ onMounted(() => {
           >
             <!-- Added mb-0 to remove mb-4 added by block component -->
             <Block
-              class="text-center mb-0 hover:shadow-lg transition-shadow duration-1000 flex justify-center items-center"
+              class="text-center mb-0 hover:border-skin-text transition-all flex justify-center items-center"
               style="height: 266px"
             >
               <div class="relative inline-block mb-2">
