@@ -5,7 +5,7 @@
   "backToHome": "Главная",
   "actions": "Действия",
   "results": "Результаты",
-  "resultsError": "Results could not be calculated. This is often due to a misconfigured strategy or an unresponsive RPC node involved in the strategy.",
+  "resultsError": "Не удалось подсчитать результаты. Часто это связано с неправильной конфигурацией стратегии или не отвечающим на запросы ноды RPC, задействованным в стратегии.",
   "vpError": "Your voting power could not be calculated. This is often due to a misconfigured strategy or an unresponsive RPC node involved in the strategy.",
   "getHelp": "Get help",
   "retry": "Retry",
