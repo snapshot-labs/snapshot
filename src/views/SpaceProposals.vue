@@ -183,7 +183,7 @@ onMounted(() => {
         style="height: 10px; width: 10px; position: absolute"
         ref="endElement"
       />
-      <Block v-if="loadingData" :slim="true">
+      <Block v-if="loadingData" :slim="true" class="mt-4">
         <RowLoading class="my-2" />
       </Block>
     </template>

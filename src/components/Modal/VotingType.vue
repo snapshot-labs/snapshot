@@ -76,7 +76,7 @@ function select(id) {
 .voting-type {
   &.voting-type-active,
   &:hover {
-    border-color: var(--link-color);
+    border-color: var(--text-color);
   }
 }
 </style>

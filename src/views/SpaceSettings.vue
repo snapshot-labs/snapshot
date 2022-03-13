@@ -340,7 +340,7 @@ async function handleSetRecord() {
       </div>
       <RowLoadingBlock v-if="!loaded" />
       <Block v-else-if="!currentTextRecord">
-        <BaseMessageBlock level="warning">
+        <BaseMessageBlock level="warning" class="mb-4">
           {{ $t('settings.needToSetEnsText') }}
         </BaseMessageBlock>
         <UiButton
@@ -699,7 +699,15 @@ async function handleSetRecord() {
     </template>
 
     <template #sidebar-right>
-      <div v-if="loaded" class="lg:fixed lg:w-[300px]">
+      <BaseMessageBlock
+        level="info"
+        v-if="
+          !(isSpaceController || isSpaceAdmin || ensOwner) && currentTextRecord
+        "
+      >
+        {{ $t('settings.connectWithSpaceOwner') }}
+      </BaseMessageBlock>
+      <div v-else-if="loaded" class="lg:fixed lg:w-[300px]">
         <Block>
           <UiButton
             v-if="ensOwner"
@@ -725,14 +733,6 @@ async function handleSetRecord() {
           </div>
         </Block>
       </div>
-      <BaseMessageBlock
-        level="warning"
-        v-if="
-          !(isSpaceController || isSpaceAdmin || ensOwner) && currentTextRecord
-        "
-      >
-        {{ $t('settings.connectWithSpaceOwner') }}
-      </BaseMessageBlock>
     </template>
   </TheLayout>
   <teleport to="#modal">
