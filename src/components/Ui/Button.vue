@@ -69,7 +69,7 @@ defineProps({
 
   &:hover {
     color: var(--link-color);
-    border-color: var(--text-color);
+    border-color: var(--link-color);
     background-color: var(--block-bg);
   }
 
