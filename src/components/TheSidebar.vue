@@ -82,7 +82,6 @@ onMounted(() => {
       class="flex items-center relative px-2 group mt-2"
       v-tippy="{ content: 'Timeline', placement: 'right', delay: [750, 0] }"
     >
-      <UiUnreadIndicator v-if="hasUnseenProposals" />
       <router-link :to="{ name: 'timeline' }">
         <UiSidebarButton>
           <Icon size="20" name="feed" />
@@ -109,7 +108,10 @@ onMounted(() => {
               delay: [750, 0]
             }"
           >
-            <UiUnreadIndicator v-if="hasUnseenProposalsBySpace(element)" />
+            <UiUnreadIndicator
+              :space="element"
+              :hasUnseen="hasUnseenProposalsBySpace(element)"
+            />
             <router-link
               :to="{ name: 'spaceProposals', params: { key: element } }"
             >
