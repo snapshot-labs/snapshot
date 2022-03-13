@@ -44,7 +44,7 @@ async function handleLogin(connector) {
               v-if="!domain"
               size="36"
               name="snapshot"
-              class="text-snapshot cursor-pointer mr-2"
+              class="text-snapshot cursor-pointer mr-1"
             />
             snapshot
           </router-link>
