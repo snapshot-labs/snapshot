@@ -46,7 +46,7 @@ watchEffect(() => {
       size="80"
       class="mt-3 mb-2"
     />
-    <h3 class="mb-[2px] mx-2 flex justify-center items-center">
+    <h3 class="mb-[2px] mx-3 flex justify-center items-center">
       <div
         class="truncate mr-1"
         v-tippy="{

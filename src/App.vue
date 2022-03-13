@@ -7,7 +7,7 @@ import { useFlashNotification } from '@/composables/useFlashNotification';
 import { useDomain } from '@/composables/useDomain';
 
 const { domain } = useDomain();
-const { skinClass } = useSkin();
+const { skinClass, userTheme } = useSkin();
 const { init, ready } = useApp();
 const { web3 } = useWeb3();
 const { notify } = useFlashNotification();
@@ -24,8 +24,8 @@ onMounted(async () => {
   <UiLoading v-if="!ready" class="overlay big" />
   <div
     v-else
-    :class="skinClass"
-    class="flex h-screen font-sans text-base antialiased"
+    :class="[skinClass, userTheme]"
+    class="flex h-screen font-sans text-base antialiased bg-skin-block-bg"
   >
     <div v-if="!domain" class="bg-skin-block-bg text-skin-text">
       <TheSidebar />
@@ -35,16 +35,14 @@ onMounted(async () => {
         <TheNavbar />
       </div>
       <div
-        class="grow min-w-0 min-h-0 rounded-tl-3xl border border-skin-border overflow-x-hidden overflow-y-auto"
+        class="grow min-w-0 min-h-0 border border-skin-border overflow-x-hidden overflow-y-auto"
+        :class="{ 'rounded-tl-3xl': !domain }"
         id="content"
       >
         <div class="min-h-full flex flex-col bg-skin-bg">
           <main class="grow py-4 relative">
             <router-view :key="$route.path" />
           </main>
-          <footer v-if="!domain" class="mt-auto">
-            <TheFooter />
-          </footer>
         </div>
       </div>
     </div>

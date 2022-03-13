@@ -70,20 +70,34 @@ onMounted(() => {
   >
     <div
       class="flex items-center relative px-2 group"
-      v-tippy="{ content: 'Explore', placement: 'right', delay: [750, 0] }"
+      v-tippy="{
+        content: 'Explore',
+        placement: 'right',
+        delay: [750, 0],
+        touch: ['hold', 500]
+      }"
     >
       <router-link :to="{ name: 'home' }">
-        <UiSidebarButton>
+        <UiSidebarButton
+          :class="{ '!border-skin-link': $route.name === 'home' }"
+        >
           <Icon size="20" name="search" />
         </UiSidebarButton>
       </router-link>
     </div>
     <div
       class="flex items-center relative px-2 group mt-2"
-      v-tippy="{ content: 'Timeline', placement: 'right', delay: [750, 0] }"
+      v-tippy="{
+        content: 'Timeline',
+        placement: 'right',
+        delay: [750, 0],
+        touch: ['hold', 500]
+      }"
     >
       <router-link :to="{ name: 'timeline' }">
-        <UiSidebarButton>
+        <UiSidebarButton
+          :class="{ '!border-skin-link': $route.name === 'timeline' }"
+        >
           <Icon size="20" name="feed" />
         </UiSidebarButton>
       </router-link>
@@ -105,7 +119,8 @@ onMounted(() => {
             v-tippy="{
               content: spaces[element].name,
               placement: 'right',
-              delay: [750, 0]
+              delay: [750, 0],
+              touch: ['hold', 500]
             }"
           >
             <UiUnreadIndicator
@@ -133,10 +148,19 @@ onMounted(() => {
     </Transition>
     <div
       class="flex flex-col items-center px-2 space-y-2 mt-2"
-      v-tippy="{ content: 'Create space', placement: 'right', delay: [750, 0] }"
+      v-tippy="{
+        content: 'Create space',
+        placement: 'right',
+        delay: [750, 0],
+        touch: ['hold', 500]
+      }"
     >
       <router-link :to="{ name: 'setup' }">
-        <UiSidebarButton><Icon size="20" name="plus" /></UiSidebarButton>
+        <UiSidebarButton
+          :class="{ '!border-skin-link': $route.name === 'setup' }"
+        >
+          <Icon size="20" name="plus" />
+        </UiSidebarButton>
       </router-link>
     </div>
   </div>

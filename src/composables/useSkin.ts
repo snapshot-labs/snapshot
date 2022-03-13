@@ -74,6 +74,7 @@ export function useSkin() {
 
   return {
     skinClass,
+    userTheme,
     theme,
     getThemeIcon,
     toggleUserTheme,

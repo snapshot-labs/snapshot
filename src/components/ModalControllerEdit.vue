@@ -28,7 +28,7 @@ defineEmits(['close', 'set']);
     </template>
 
     <div class="p-4">
-      <BaseMessageBlock level="info">
+      <BaseMessageBlock level="info" class="mb-3">
         {{
           $tc('settings.currentSpaceControllerIs', {
             address: shorten(currentSpaceController)
