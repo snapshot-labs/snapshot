@@ -48,61 +48,6 @@ const hideAbstain = props.space?.voting?.hideAbstain ?? false;
               class="mr-1 truncate"
               v-text="choice.choice"
             />
-
-            <span
-              class="whitespace-nowrap"
-              v-tippy="{
-                content: results.resultsByStrategyScore[choice.i]
-                  .map(
-                    (score, index) =>
-                      `${formatCompactNumber(score)} ${titles[index]}`
-                  )
-                  .join(' + ')
-              }"
-            >
-              {{ formatCompactNumber(results.resultsByVoteBalance[choice.i]) }}
-              {{ shorten(space.symbol, 'symbol') }}
-            </span>
-          </div>
-
-          <div class="ml-2">
-            <span
-              v-if="proposal.type === 'basic' && hideAbstain && choice.i === 0"
-              v-text="
-                formatPercentNumber(
-                  getPercentage(
-                    results.resultsByVoteBalance[0],
-                    results.resultsByVoteBalance[0] +
-                      results.resultsByVoteBalance[1]
-                  )
-                )
-              "
-            />
-            <span
-              v-else-if="
-                proposal.type === 'basic' && hideAbstain && choice.i === 1
-              "
-              v-text="
-                formatPercentNumber(
-                  getPercentage(
-                    results.resultsByVoteBalance[1],
-                    results.resultsByVoteBalance[0] +
-                      results.resultsByVoteBalance[1]
-                  )
-                )
-              "
-            />
-            <span
-              v-else
-              v-text="
-                formatPercentNumber(
-                  getPercentage(
-                    results.resultsByVoteBalance[choice.i],
-                    results.sumOfResultsBalance
-                  )
-                )
-              "
-            />
           </div>
         </div>
         <UiProgress
@@ -113,8 +58,60 @@ const hideAbstain = props.space?.voting?.hideAbstain ?? false;
                 results.resultsByVoteBalance[1]
               : results.sumOfResultsBalance
           "
-          class="mb-3"
         />
+        <small class="flex justify-end space-x-2">
+          <span
+            class="whitespace-nowrap"
+            v-tippy="{
+              content: results.resultsByStrategyScore[choice.i]
+                .map(
+                  (score, index) =>
+                    `${formatCompactNumber(score)} ${titles[index]}`
+                )
+                .join(' + ')
+            }"
+          >
+            {{ formatCompactNumber(results.resultsByVoteBalance[choice.i]) }}
+            {{ shorten(space.symbol, 'symbol') }}
+          </span>
+          <span
+            v-if="proposal.type === 'basic' && hideAbstain && choice.i === 0"
+            v-text="
+              formatPercentNumber(
+                getPercentage(
+                  results.resultsByVoteBalance[0],
+                  results.resultsByVoteBalance[0] +
+                    results.resultsByVoteBalance[1]
+                )
+              )
+            "
+          />
+          <span
+            v-else-if="
+              proposal.type === 'basic' && hideAbstain && choice.i === 1
+            "
+            v-text="
+              formatPercentNumber(
+                getPercentage(
+                  results.resultsByVoteBalance[1],
+                  results.resultsByVoteBalance[0] +
+                    results.resultsByVoteBalance[1]
+                )
+              )
+            "
+          />
+          <span
+            v-else
+            v-text="
+              formatPercentNumber(
+                getPercentage(
+                  results.resultsByVoteBalance[choice.i],
+                  results.sumOfResultsBalance
+                )
+              )
+            "
+          />
+        </small>
       </template>
     </div>
     <div v-if="props.space?.voting?.quorum" class="text-skin-link">
