@@ -12,7 +12,7 @@ defineProps({
 </script>
 
 <template>
-  <Block class="hover:border-skin-link cursor-pointer">
+  <Block class="hover:border-skin-text cursor-pointer">
     <div class="flex items-center mb-1">
       <a class="flex items-center">
         <BaseAvatar class="mr-2" :imgsrc="getIpfsUrl(plugin.icon)" size="28" />

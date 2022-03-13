@@ -7,7 +7,7 @@ defineProps(['strategy']);
 </script>
 
 <template>
-  <Block class="hover:border-skin-link cursor-pointer">
+  <Block class="hover:border-skin-text cursor-pointer">
     <div class="flex items-baseline">
       <h3 class="truncate" v-tippy="{ content: strategy.id }">
         {{ strategy.id }}

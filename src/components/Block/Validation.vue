@@ -9,7 +9,7 @@ defineProps(['validation']);
 </script>
 
 <template>
-  <Block class="cursor-pointer">
+  <Block class="cursor-pointer hover:!border-skin-text">
     <div class="flex items-center mb-1">
       <h3 v-text="validation" />
     </div>
