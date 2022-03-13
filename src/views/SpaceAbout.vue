@@ -33,7 +33,7 @@ onMounted(() => {
       <div class="px-4 md:px-0 mb-3 flex">
         <h2>{{ $t('about') }}</h2>
       </div>
-      <Block>
+      <Block class="mb-3">
         <div v-if="space.about" class="mb-3">
           <h4 class="text-skin-link mb-2">{{ $t('settings.about') }}</h4>
           <UiText :text="space.about" />
