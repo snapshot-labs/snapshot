@@ -1,8 +1,7 @@
 <script setup>
 import { onMounted, ref, watch } from 'vue';
 import { createPopper } from '@popperjs/core';
-import { useDebounceFn, usePointer } from '@vueuse/core';
-import { useMediaQuery } from '@/composables/useMediaQuery';
+import { useDebounceFn, usePointer, useMediaQuery } from '@vueuse/core';
 
 const props = defineProps({
   options: Object
@@ -15,7 +14,7 @@ const itemref = ref(null);
 const contentref = ref(null);
 
 const { pointerType } = usePointer()
-const { isXLargeScreen } = useMediaQuery();
+const isXLargeScreen = useMediaQuery('(min-width: 1280px)');
 
 const openPopover = useDebounceFn(() => (open.value = pointerType.value === 'mouse'), 800);
 const closePopover = useDebounceFn(() => (open.value = popHovered.value), 300);

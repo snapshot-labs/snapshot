@@ -1,7 +1,7 @@
 <script setup>
 import { ref, watch } from 'vue';
 import { percentageOfTotal } from '@snapshot-labs/snapshot.js/src/voting/quadratic';
-import { useMediaQuery } from '@/composables/useMediaQuery';
+import { useMediaQuery } from '@vueuse/core';
 
 defineProps({
   proposal: {
@@ -14,7 +14,7 @@ const emit = defineEmits(['selectChoice']);
 
 const selectedChoices = ref({});
 
-const { isSmallScreen } = useMediaQuery();
+const isSmallScreen = useMediaQuery('(max-width: 543px)');
 
 function percentage(i) {
   return (
