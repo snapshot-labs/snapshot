@@ -28,12 +28,12 @@ onMounted(async () => {
     class="flex font-sans text-base antialiased bg-skin-bg"
   >
     <div v-if="!domain" id="sidebar" class="flex flex-col">
-      <div class="h-screen sticky top-0 border-r border-skin-border bg-skin-block-bg">
+      <div class="h-screen sticky top-0 border-r border-skin-border bg-skin-block-bg z-50">
         <TheSidebar />
       </div>
     </div>
     <div class="grow">
-      <div id="navbar" class="sticky top-0 border-b border-skin-border bg-skin-block-bg z-10">
+      <div id="navbar" class="sticky top-0 border-b border-skin-border bg-skin-block-bg z-50">
         <TheNavbar />
       </div>
       <div id="content" class="py-4">
