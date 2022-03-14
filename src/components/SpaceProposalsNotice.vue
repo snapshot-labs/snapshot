@@ -22,7 +22,7 @@ const createdSpaces = useStorage(
       <div>
         <div>
           <h3 class="mt-0">{{ $t('newSpaceNotice.header') }}</h3>
-          <div>
+          <div class="text-skin-text">
             <Icon name="info" size="24" class="float-left mr-1" />
             <i18n-t keypath="newSpaceNotice.mainText" tag="p">
               <template v-slot:settings>
@@ -35,7 +35,11 @@ const createdSpaces = useStorage(
             </i18n-t>
           </div>
 
-          <i18n-t keypath="newSpaceNotice.learnMore" tag="p" class="mt-2">
+          <i18n-t
+            keypath="newSpaceNotice.learnMore"
+            tag="p"
+            class="mt-2 text-skin-text"
+          >
             <template v-slot:documentation>
               <BaseLink
                 link="https://docs.snapshot.org/strategies/what-is-a-strategy"
