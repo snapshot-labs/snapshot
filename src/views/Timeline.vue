@@ -197,9 +197,9 @@ function selectState(e) {
           </router-link>
         </div>
         <NoResults
-          class="mt-4 mb-[24px]"
+          class="mt-2mb-[24px]"
           v-else-if="store.timeline.proposals.length < 1"
-          :block="false"
+          useBlock
         />
         <div v-else>
           <TimelineProposalPreview
