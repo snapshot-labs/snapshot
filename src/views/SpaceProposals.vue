@@ -170,7 +170,7 @@ onMounted(() => {
         class="mt-2"
         :space="space"
       />
-      <div v-else class="space-y-4">
+      <div v-else class="space-y-4 mb-4">
         <TimelineProposal
           v-for="(proposal, i) in store.space.proposals"
           :key="i"
@@ -180,7 +180,7 @@ onMounted(() => {
         />
       </div>
       <div
-        style="height: 10px; width: 10px; position: absolute"
+        class="w-[10px] h-[10px] absolute bottom-0"
         ref="endElement"
       />
       <Block v-if="loadingData" :slim="true" class="mt-4">

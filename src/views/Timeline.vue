@@ -209,7 +209,7 @@ function selectState(e) {
           />
         </div>
         <div
-          style="height: 10px; width: 10px; position: absolute"
+          class="w-[10px] h-[10px] absolute bottom-0"
           ref="endElement"
         />
         <div v-if="loadingMore && !loading" :slim="true">
