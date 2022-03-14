@@ -164,7 +164,7 @@ import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { sleep } from '@snapshot-labs/snapshot.js/src/utils';
 import { BigNumber } from '@ethersproject/bignumber';
 import { formatUnits } from '@ethersproject/units';
-import { useSafesnap } from '@/composables/useSafesnap';
+import { useSafesnap } from '@/plugins/safeSnap/composables/useSafesnap';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useTxStatus } from '@/composables/useTxStatus';
 import { useFlashNotification } from '@/composables/useFlashNotification';
