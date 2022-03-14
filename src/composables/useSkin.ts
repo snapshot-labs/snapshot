@@ -52,6 +52,7 @@ export function useSkin() {
       );
       if (space?.skin) {
         skinClass.value = space.skin;
+        document.body.classList.add(skinClass.value);
       }
     }
   }

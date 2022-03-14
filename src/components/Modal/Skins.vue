@@ -45,9 +45,9 @@ function select(key) {
           v-if="!searchInput"
           key=""
           @click="select(undefined)"
-          class="default bg-black rounded-none md:rounded-md cursor-pointer"
+          class="default rounded-none md:rounded-md cursor-pointer"
         >
-          <Block class="!bg-black">
+          <Block>
             <UiButton class="mb-2" primary>{{ $t('defaultSkin') }}</UiButton>
           </Block>
         </div>
