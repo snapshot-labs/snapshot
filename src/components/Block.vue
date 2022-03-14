@@ -12,7 +12,9 @@ defineProps({
 </script>
 
 <template>
-  <div class="md:rounded-xl md:border bg-skin-block-bg border-skin-border">
+  <div
+    class="md:rounded-xl md:border bg-skin-block-bg border-skin-border text-base"
+  >
     <h4
       v-if="title"
       class="px-4 pt-3 block rounded-t-none md:rounded-t-lg"

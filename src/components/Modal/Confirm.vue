@@ -87,7 +87,7 @@ watch(
         <br />
         {{ $t('cannotBeUndone') }}
       </h4>
-      <div class="m-4 p-4 border rounded-md text-skin-link">
+      <Block slim class="m-4 p-4 text-skin-link">
         <div class="flex">
           <span v-text="$t('options')" class="flex-auto text-skin-text mr-1" />
           <span
@@ -143,7 +143,7 @@ watch(
           </BaseLink>
         </div>
         <div v-if="vpLoadingFailed" class="mt-3">{{ t('vpError') }}</div>
-      </div>
+      </Block>
     </div>
     <template v-slot:footer>
       <div class="w-2/4 float-left pr-2">
