@@ -5,6 +5,7 @@ import { useFollowSpace } from '@/composables/useFollowSpace';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useSpaces } from '@/composables/useSpaces';
 import { useUnseenProposals } from '@/composables/useUnseenProposals';
+import { useDomain } from '@/composables/useDomain';
 import { lsSet, lsGet } from '@/helpers/utils';
 
 const { spaces } = useSpaces();
@@ -12,6 +13,7 @@ const { web3Account } = useWeb3();
 const { loadFollows, followingSpaces } = useFollowSpace();
 const { proposals, getProposals, lastSeenProposals, updateLastSeenProposal } =
   useUnseenProposals();
+const { domain } = useDomain();
 
 const draggableSpaces = ref<string[]>([]);
 
@@ -68,20 +70,16 @@ onMounted(() => {
   <div
     class="flex flex-col h-full overflow-auto no-scrollbar overscroll-contain py-2"
   >
-    <div
-      class="flex items-center relative px-2 group"
-      v-tippy="{
-        content: 'Explore',
-        placement: 'right',
-        delay: [750, 0],
-        touch: ['hold', 500]
-      }"
-    >
+    <div v-if="!domain" class="flex items-center relative px-2">
       <router-link :to="{ name: 'home' }">
         <UiSidebarButton
-          :class="{ '!border-skin-link': $route.name === 'home' }"
+          class="!border-0"
         >
-          <Icon size="20" name="search" />
+          <Icon
+            size="36"
+            name="snapshot"
+            class="text-snapshot"
+          />
         </UiSidebarButton>
       </router-link>
     </div>
