@@ -36,6 +36,7 @@ onMounted(async () => {
       </div>
       <div
         class="grow min-w-0 min-h-0 border border-skin-border overflow-x-hidden overflow-y-auto"
+        style="scrollbar-gutter: stable"
         :class="{ 'md:rounded-tl-3xl': !domain }"
         id="content"
       >
