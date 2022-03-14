@@ -176,7 +176,7 @@ function selectState(e) {
           </template>
         </BaseDropdown>
       </div>
-      <div class="md:rounded-lg bg-skin-block-bg">
+      <div class="md:rounded-lg bg-skin-block-bg border">
         <RowLoading
           v-if="
             loading ||
@@ -197,9 +197,8 @@ function selectState(e) {
           </router-link>
         </div>
         <NoResults
-          class="mt-2mb-[24px]"
+          class="py-4 mb-0"
           v-else-if="store.timeline.proposals.length < 1"
-          useBlock
         />
         <div v-else>
           <TimelineProposalPreview
