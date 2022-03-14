@@ -1,8 +1,7 @@
 <script setup>
 import { onMounted, ref, watch } from 'vue';
 import { createPopper } from '@popperjs/core';
-import { useDebounceFn } from '@vueuse/core';
-import { useDetectInput } from '@/composables/useDetectInput';
+import { useDebounceFn, usePointer } from '@vueuse/core';
 import { useMediaQuery } from '@/composables/useMediaQuery';
 
 const props = defineProps({
@@ -15,10 +14,10 @@ const popHovered = ref(false);
 const itemref = ref(null);
 const contentref = ref(null);
 
-const { isTouchScreen } = useDetectInput();
+const { pointerType } = usePointer()
 const { isXLargeScreen } = useMediaQuery();
 
-const openPopover = useDebounceFn(() => (open.value = !isTouchScreen()), 800);
+const openPopover = useDebounceFn(() => (open.value = pointerType.value === 'mouse'), 800);
 const closePopover = useDebounceFn(() => (open.value = popHovered.value), 300);
 
 let popperInstance;
