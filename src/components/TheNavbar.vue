@@ -31,7 +31,7 @@ async function handleLogin(connector) {
   >
     {{ $t('demoSite') }}
   </div>
-  <nav id="topnav">
+  <nav id="topnav" style="overflow: hidden; scrollbar-gutter: stable">
     <Container>
       <div class="flex items-center py-2">
         <div class="flex-auto flex items-center">
