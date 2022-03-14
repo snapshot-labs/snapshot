@@ -1,6 +1,6 @@
 {
   "searchPlaceholder": "検索　",
-  "spaceCount": "{0} space(s)",
+  "spaceCount": "{0} スペース",
   "createSpace": "Create spaces",
   "backToHome": "Home",
   "actions": "Actions",
@@ -162,7 +162,7 @@
     "publish": "公開",
     "untitled": "Untitled",
     "snapshotBlock": "Snapshotのブロック高",
-    "voting": "Voting",
+    "voting": "投票",
     "votingSystem": "投票システム",
     "choice": "Choice {0}",
     "period": "投票期間",
@@ -176,7 +176,7 @@
     "periodEnforced": "The space enforces the duration of the voting period",
     "typeEnforced": "The space enforces this voting type",
     "edit": "Edit",
-    "continue": "Continue",
+    "continue": "続ける",
     "now": "Now",
     "votingPeriodExplainer": "This is the time period in which users will be able to vote. The proposal will be visible and pending before the start of the voting period.",
     "validationWarning": {
