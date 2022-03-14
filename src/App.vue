@@ -24,26 +24,20 @@ onMounted(async () => {
   <UiLoading v-if="!ready" class="overlay big" />
   <div
     v-else
-    :class="[skinClass, userTheme]"
-    class="flex h-screen font-sans text-base antialiased bg-skin-block-bg"
+    :class="skinClass"
+    class="flex font-sans text-base antialiased"
   >
-    <div v-if="!domain" class="bg-skin-block-bg text-skin-text hidden md:block border-r border-skin-border">
-      <TheSidebar />
+    <div v-if="!domain" id="sidebar" class="flex flex-col">
+      <div class="h-screen sticky top-0 border-r border-skin-border bg-skin-block-bg">
+        <TheSidebar />
+      </div>
     </div>
-    <div class="grow min-w-0 overflow-hidden flex flex-col">
-      <div class="bg-skin-block-bg text-skin-text border-b border-skin-border">
+    <div class="grow">
+      <div id="navbar" class="sticky top-0 border-b border-skin-border bg-skin-block-bg z-10">
         <TheNavbar />
       </div>
-      <div
-        class="grow min-w-0 min-h-0 overflow-x-hidden overflow-y-auto"
-        style="scrollbar-gutter: stable"
-        id="content"
-      >
-        <div class="min-h-full flex flex-col bg-skin-bg">
-          <main class="grow py-4 relative">
-            <router-view :key="$route.path" />
-          </main>
-        </div>
+      <div id="content" class="py-4">
+        <router-view :key="$route.path" />
       </div>
     </div>
   </div>
