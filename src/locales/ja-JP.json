@@ -160,7 +160,7 @@
     "startTime": "開始日を選択する",
     "endTime": "終了日を選択する",
     "publish": "公開",
-    "untitled": "Untitled",
+    "untitled": "タイトルなし",
     "snapshotBlock": "Snapshotのブロック高",
     "voting": "投票",
     "votingSystem": "投票システム",
@@ -290,7 +290,7 @@
     "chooseExistingEns": "Choose one of your existing ENS domains to create a space with:",
     "useSingleExistingEns": "Use your existing ENS domain:",
     "orReigsterNewEns": "または新しいドメインを登録する：",
-    "toCreateASpace": "To create a space, you first need an ENS domain. Enter one below and follow the ENS registration instructions.",
+    "toCreateASpace": "スペースを創造するため、まずENSドメインが必要です。そのドメインを以下に入って、そしてENS登録の指示を従ってください。",
     "createASpace": "スペースの作成",
     "registerEnsButton": "登録する",
     "supportedEnsTLDs": "Supported domain endings",
@@ -497,6 +497,6 @@
     "unsupportedNetwork": "Unsupported network",
     "ensOnlyMainnet": "Snapshot only supports ENS on the ethereum mainnet. Once the space is created, you can use it across multiple chains.",
     "switchNetworkToMainnet": "To continue, you need to change the network in your wallet to Ethereum Mainnet.",
-    "switchToMainnet": "Switch to Mainnet"
+    "switchToMainnet": "メインネットに切り替え"
   }
 }
