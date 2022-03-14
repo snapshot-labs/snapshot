@@ -27,7 +27,7 @@ onMounted(async () => {
     :class="[skinClass, userTheme]"
     class="flex h-screen font-sans text-base antialiased bg-skin-block-bg"
   >
-    <div v-if="!domain" class="bg-skin-block-bg text-skin-text">
+    <div v-if="!domain" class="bg-skin-block-bg text-skin-text hidden md:block">
       <TheSidebar />
     </div>
     <div class="grow min-w-0 overflow-hidden flex flex-col">
@@ -36,7 +36,7 @@ onMounted(async () => {
       </div>
       <div
         class="grow min-w-0 min-h-0 border border-skin-border overflow-x-hidden overflow-y-auto"
-        :class="{ 'rounded-tl-3xl': !domain }"
+        :class="{ 'md:rounded-tl-3xl': !domain }"
         id="content"
       >
         <div class="min-h-full flex flex-col bg-skin-bg">
