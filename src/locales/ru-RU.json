@@ -18,11 +18,11 @@
   "plugins": "Плагины",
   "information": "Информация",
   "confirm": "Подтвердить",
-  "snapshot": "Срез",
+  "snapshot": "Snapshot",
   "strategies": "Стратегия(и)",
   "strategiesPage": "Стратегии",
   "space": "Пространство",
-  "spaces": "Пространство",
+  "spaces": "Пространства",
   "verifiedSpace": "Проверенное пространство",
   "version": "Версия",
   "timeline": "Хронология",
@@ -307,10 +307,10 @@
     "controllerAddress": "Controller address",
     "updateController": "Update controller",
     "seeOnEns": "See on ENS",
-    "goToSettings": "Go to settings",
+    "goToSettings": "Перейти в настройки",
     "setSpaceProfile": "Customize your space",
     "waitForTransaction": "The transaction need to confirm before you can create your space. {txUrl}",
-    "pleaseWaitMessage": "This can take a few minutes, please wait while the transaction is being confirmed"
+    "pleaseWaitMessage": "Это может занять несколько минут, пожалуйста, подождите, пока транзакция будет подтверждена"
   },
   "notify": {
     "youDidIt": "У вас получилось!",
@@ -322,8 +322,8 @@
     "delegationRemoved": "Удаление делегирования",
     "proposalCreated": "Предложение создано",
     "voteSuccessful": "Ваш голос засчитан!",
-    "ensSet": "ENS text record was successfully set",
-    "transactionSent": "Transaction sent"
+    "ensSet": "Текстовая запись ENS успешно установлена",
+    "transactionSent": "Транзакция отправлена"
   },
   "explore": {
     "createStrategy": "Создать стратегию",
@@ -336,15 +336,15 @@
     "plugins": "Модуль(и)",
     "results": "результат(ы)",
     "categories": {
-      "all": "All",
-      "protocol": "Protocol",
-      "social": "Social",
-      "investment": "Investment",
-      "grant": "Grant",
-      "service": "Service",
-      "media": "Media",
-      "creator": "Creator",
-      "collector": "Collector"
+      "all": "Все",
+      "protocol": "Протоколы",
+      "social": "Социальные",
+      "investment": "Инвестиционные",
+      "grant": "Гранты",
+      "service": "Услуги",
+      "media": "Медиа",
+      "creator": "Создатели",
+      "collector": "Коллекционеры"
     }
   },
   "voting": {
@@ -354,19 +354,19 @@
     "quadratic": "Квадратичное голосование",
     "ranked-choice": "Голосование по рейтингу",
     "weighted": "Взвешенное голосование",
-    "basic": "Basic voting",
+    "basic": "Основное голосование",
     "description": {
       "single-choice": "Каждый избиратель может сделать только один выбор",
       "approval": "Каждый избиратель может выбрать любое количество вариантов.",
       "quadratic": "Каждый избиратель может распределить свой голос на любое количество вариантов. Результаты рассчитываются квадратично.",
       "ranked-choice": "Каждый избиратель может выбрать и ранжировать любое количество вариантов. Результаты вычисляются методом подсчета мгновенного подсчета.",
       "weighted": "Каждый избиратель может распределить право голоса на любое количество вариантов",
-      "basic": "Single choice voting with three choices: For, Against or Abstain"
+      "basic": "Голосование с одним вариантом выбора с тремя вариантами: За, Против или Воздержался"
     },
     "choices": {
-      "for": "For",
-      "against": "Against",
-      "abstain": "Abstain"
+      "for": "За",
+      "against": "Против",
+      "abstain": "Воздержаться"
     }
   },
   "safeSnap": {
@@ -381,7 +381,7 @@
     "addBatch": "Добавить пакет транзакций",
     "batch": "Пакет транзакций",
     "transactions": "Транзакции",
-    "to": "To (address)",
+    "to": "На (адрес)",
     "invalidAddress": "Неверный адрес",
     "invalidAmount": "Недопустимая сумма",
     "invalidValue": "Недопустимое значение",
@@ -423,17 +423,17 @@
     "no_poap_header": "POAP еще не был настроен для этого предложения :'(",
     "no_voted_header": "Проголосуйте, чтобы получить этот POAP",
     "unclaimed_header": "Mint your I voted POAP",
-    "claimed_header": "Congratulations! The POAP has been minted to your collection",
-    "loading_header": "The POAP is being minted to your collection",
-    "button_claim": "Mint",
-    "button_show": "Browse collection",
-    "success_claim": "The POAP has been minted to your collection",
+    "claimed_header": "Поздравляем! POAP добавлен в вашу коллекцию",
+    "loading_header": "POAP добавляется в вашу коллекцию",
+    "button_claim": "Минт",
+    "button_show": "Посмотреть коллекцию",
+    "success_claim": "POAP добавлен в вашу коллекцию",
     "error_claim": "При создании токена возникла проблема"
   },
   "charts": {
-    "charts": "Charts",
+    "charts": "Графики",
     "noVotesYet": "There are no votes to visualize yet.",
-    "totalVotesPerDay": "Total votes per day",
+    "totalVotesPerDay": "Общее количество голосов за день",
     "shareOfVotingPower": "Share of voting power",
     "votingPowerPerDay": "Voting power per day"
   },
@@ -494,7 +494,7 @@
     "year": "1 year | {n} years"
   },
   "unsupportedNetwork": {
-    "unsupportedNetwork": "Unsupported network",
+    "unsupportedNetwork": "Неподдерживаемая сеть",
     "ensOnlyMainnet": "Snapshot only supports ENS on the ethereum mainnet. Once the space is created, you can use it across multiple chains.",
     "switchNetworkToMainnet": "To continue, you need to change the network in your wallet to Ethereum Mainnet.",
     "switchToMainnet": "Switch to Mainnet"
