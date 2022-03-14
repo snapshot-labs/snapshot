@@ -411,7 +411,7 @@ const truncateMarkdownBody = computed(() => {
       />
     </template>
     <template #sidebar-right v-if="proposal">
-      <div class="space-y-4">
+      <div class="space-y-4 mt-4 lg:mt-0">
         <Block>
           <div class="space-y-1">
             <div>
