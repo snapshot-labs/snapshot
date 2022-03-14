@@ -157,7 +157,7 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
       </Block>
     </template>
     <template #sidebar-right>
-      <Block>
+      <Block class="text-skin-text">
         <Icon
           name="gitbook"
           size="24"
