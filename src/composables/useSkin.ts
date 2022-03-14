@@ -33,10 +33,7 @@ const theme = computed(() =>
 /**
  * Handle skin (e.g. uniswap)
  */
-const skin = ref('default');
-const skinClass = computed(() => {
-  return theme.value === DARK ? skin.value + '-dark-mode' : skin.value;
-});
+const skinClass = ref('default');
 
 export function useSkin() {
   const { apolloQuery } = useApolloQuery();
@@ -54,7 +51,7 @@ export function useSkin() {
         'space'
       );
       if (space?.skin) {
-        skin.value = space.skin;
+        skinClass.value = space.skin;
       }
     }
   }
