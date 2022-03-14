@@ -1,23 +1,22 @@
 <script setup>
-import { onMounted, ref, watch } from 'vue';
+import { onMounted, ref, watch, computed } from 'vue';
 import { createPopper } from '@popperjs/core';
-import { useDebounceFn, usePointer, useMediaQuery } from '@vueuse/core';
+import { usePointer, useMediaQuery, debouncedWatch } from '@vueuse/core';
 
 const props = defineProps({
   options: Object
 });
 
 const open = ref(false);
-const popHovered = ref(false);
+const contentHovered = ref(false);
+const itemHovered = ref(false);
+const hovered = computed(() => contentHovered.value || itemHovered.value);
 
 const itemref = ref(null);
 const contentref = ref(null);
 
 const { pointerType } = usePointer()
 const isXLargeScreen = useMediaQuery('(min-width: 1280px)');
-
-const openPopover = useDebounceFn(() => (open.value = pointerType.value === 'mouse'), 800);
-const closePopover = useDebounceFn(() => (open.value = popHovered.value), 300);
 
 let popperInstance;
 
@@ -35,6 +34,12 @@ onMounted(() => {
   });
 });
 
+debouncedWatch(
+  hovered,
+  () => { open.value = hovered.value && pointerType.value === 'mouse'},
+  { debounce: 500 },
+)
+
 watch(open, () => {
   if (!isXLargeScreen.value) popperInstance.setOptions({ placement: 'bottom' });
   else popperInstance.setOptions({ placement: 'bottom-start' });
@@ -44,29 +49,18 @@ watch(open, () => {
 <template>
   <div
     ref="itemref"
-    @mouseenter="openPopover()"
-    @mouseleave="closePopover()"
+    @mouseenter="itemHovered = true"
+    @mouseleave="itemHovered = false"
   >
     <slot name="item" />
   </div>
   <div
     ref="contentref"
     v-show="open"
-    @mouseenter="popHovered = true"
-    @mouseleave="(popHovered = false), closePopover()"
-    class="custom-content"
+    @mouseenter="contentHovered = true"
+    @mouseleave="contentHovered = false"
+    class="z-50 min-w-[300px] bg-skin-header-bg border border-skin-border rounded-xl shadow-lg"
   >
     <slot name="content" />
   </div>
 </template>
-
-<style scoped lang="scss">
-.custom-content {
-  z-index: 50;
-  min-width: 300px;
-  background-color: var(--header-bg);
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
-  box-shadow: 0 0 20px -6px var(--border-color);
-}
-</style>
