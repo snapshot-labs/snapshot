@@ -77,6 +77,6 @@ watch(open, () => emit('openChange'));
 <style scoped>
 li.selected,
 li:hover {
-  @apply bg-skin-link text-skin-block-bg;
+  @apply bg-skin-link text-skin-bg;
 }
 </style>
