@@ -39,13 +39,10 @@ defineProps({
     </h4>
     <div v-if="loading" class="block px-4 py-4">
       <div
-        class="bg-skin-text rounded-md animate-pulse-fast mb-2"
+        class="rounded-md lazy-loading mb-2"
         style="width: 80%; height: 20px"
       />
-      <div
-        class="bg-skin-text rounded-md animate-pulse-fast"
-        style="width: 50%; height: 20px"
-      />
+      <div class="rounded-md lazy-loading" style="width: 50%; height: 20px" />
     </div>
     <div v-else :class="!slim && 'p-4'" class="leading-6">
       <slot />
