@@ -31,7 +31,7 @@ export function useApp() {
   async function init() {
     await loadLocale();
     const auth = getInstance();
-    await getSkin();
+    await getSkin(domain);
     ready.value = true;
     getSpaces();
 

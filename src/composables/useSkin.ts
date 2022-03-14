@@ -1,5 +1,4 @@
 import { ref, computed, watch } from 'vue';
-import { useDomain } from '@/composables/useDomain';
 import { useApolloQuery } from '@/composables/useApolloQuery';
 import { SPACE_SKIN_QUERY } from '@/helpers/queries';
 import { useStorage } from '@vueuse/core';
@@ -37,9 +36,8 @@ const skinClass = ref('default');
 
 export function useSkin() {
   const { apolloQuery } = useApolloQuery();
-  const { domain } = useDomain();
 
-  async function getSkin() {
+  async function getSkin(domain: string) {
     if (domain) {
       const space = await apolloQuery(
         {
