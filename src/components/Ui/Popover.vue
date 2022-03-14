@@ -1,7 +1,7 @@
 <script setup>
 import { onMounted, ref, watch } from 'vue';
 import { createPopper } from '@popperjs/core';
-import { useDebounce } from '@/composables/useDebounce';
+import { useDebounceFn } from '@vueuse/core';
 import { useDetectInput } from '@/composables/useDetectInput';
 import { useMediaQuery } from '@/composables/useMediaQuery';
 
@@ -18,11 +18,8 @@ const contentref = ref(null);
 const { isTouchScreen } = useDetectInput();
 const { isXLargeScreen } = useMediaQuery();
 
-const debounce = useDebounce();
-
-function popClose() {
-  if (!popHovered.value) open.value = false;
-}
+const openPopover = useDebounceFn(() => (open.value = !isTouchScreen()), 800);
+const closePopover = useDebounceFn(() => (open.value = popHovered.value), 300);
 
 let popperInstance;
 
@@ -49,8 +46,8 @@ watch(open, () => {
 <template>
   <div
     ref="itemref"
-    @mouseenter="isTouchScreen() ? null : debounce(() => (open = true), 800)"
-    @mouseleave="debounce(() => popClose(), 300)"
+    @mouseenter="openPopover()"
+    @mouseleave="closePopover()"
   >
     <slot name="item" />
   </div>
@@ -58,7 +55,7 @@ watch(open, () => {
     ref="contentref"
     v-show="open"
     @mouseenter="popHovered = true"
-    @mouseleave="(popHovered = false), debounce(() => (open = false), 300)"
+    @mouseleave="(popHovered = false), closePopover()"
     class="custom-content"
   >
     <slot name="content" />

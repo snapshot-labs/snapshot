@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue';
-import { useDebounce } from '@/composables/useDebounce';
+import { useDebounceFn } from '@vueuse/core';
 
 defineProps({
   text: {
@@ -16,8 +16,6 @@ defineProps({
 });
 
 const hovered = ref(false);
-
-const debounce = useDebounce();
 </script>
 
 <style scoped>
@@ -67,8 +65,8 @@ const debounce = useDebounce();
 <template>
   <div class="tooltip-box">
     <div
-      @mouseenter="debounce(() => (hovered = true), 300)"
-      @mouseleave="debounce(() => (hovered = false), 200)"
+      @mouseenter="useDebounceFn(() => (hovered = true), 300)"
+      @mouseleave="useDebounceFn(() => (hovered = false), 200)"
     >
       <slot />
     </div>

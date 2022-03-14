@@ -1,6 +1,5 @@
 <script setup>
 import { ref } from 'vue';
-import { useDebounce } from '@/composables/useDebounce';
 import { shorten } from '@/helpers/utils';
 import { useCopy } from '@/composables/useCopy';
 
@@ -11,7 +10,6 @@ defineProps({
 
 const hovered = ref(false);
 
-const debounce = useDebounce();
 const { copyToClipboard } = useCopy();
 </script>
 
@@ -40,8 +38,8 @@ const { copyToClipboard } = useCopy();
 <template>
   <div
     class="tooltip-box"
-    @mouseenter="debounce(() => (hovered = true), 300)"
-    @mouseleave="debounce(() => (hovered = false), 200)"
+    @mouseenter="hovered = true"
+    @mouseleave="hovered = false"
   >
     <svg
       width="24"
