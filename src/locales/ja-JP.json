@@ -282,17 +282,17 @@
     "hideAbstain": "基本的な投票結果に棄権投票を無視する",
     "connectWithSpaceOwner": "To modify space settings, connect with a controller or admin wallet.",
     "currentSpaceControllerIs": "The current space controller is {address}",
-    "newController": "New controller",
-    "set": "Set"
+    "newController": "新しいコントロール",
+    "set": "セット"
   },
   "setup": {
     "example": "例 yam.eth",
     "chooseExistingEns": "Choose one of your existing ENS domains to create a space with:",
     "useSingleExistingEns": "Use your existing ENS domain:",
-    "orReigsterNewEns": "Or register a new domain:",
+    "orReigsterNewEns": "または新しいドメインを登録する：",
     "toCreateASpace": "To create a space, you first need an ENS domain. Enter one below and follow the ENS registration instructions.",
     "createASpace": "スペースの作成",
-    "registerEnsButton": "Register",
+    "registerEnsButton": "登録する",
     "supportedEnsTLDs": "Supported domain endings",
     "helpDocsAndDiscordLinks": "Not sure how to create a space? Learn more in the <a target='_blank' href='https://docs.snapshot.org/spaces/create'> documentation </a> or join Snapshot <a target='_blank' href='https://discord.gg/snapshot'>Discord</a>.",
     "setSpaceController": "Set space controller address on ENS",
