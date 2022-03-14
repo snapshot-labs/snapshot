@@ -7,7 +7,7 @@ import { useFlashNotification } from '@/composables/useFlashNotification';
 import { useDomain } from '@/composables/useDomain';
 
 const { domain } = useDomain();
-const { skinClass, userTheme } = useSkin();
+const { skinClass } = useSkin();
 const { init, ready } = useApp();
 const { web3 } = useWeb3();
 const { notify } = useFlashNotification();

@@ -165,7 +165,7 @@ onMounted(() => {
       </div>
       <NoResults
         v-else-if="Object.keys(orderedSpacesByCategory).length < 1"
-        :block="true"
+        useBlock
       />
       <div class="text-center">
         <UiButton
