@@ -232,7 +232,7 @@
   },
   "notifications": {
     "header": "Notifications",
-    "noNotifications": "You have no notifications",
+    "noNotifications": "お知らせがありません",
     "proposalStarted": "提案が始まりました：",
     "proposalEnded": "提案が終わりました：",
     "markAllAsRead": "Mark all as read",
