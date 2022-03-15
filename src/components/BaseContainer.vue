@@ -1,6 +1,6 @@
 <script setup lang="ts">
 defineProps<{
-  slim: boolean;
+  slim?: boolean;
 }>();
 </script>
 
