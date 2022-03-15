@@ -6,7 +6,7 @@ interface SocialProps {
     icon: string;
     link: string;
   };
-  size: string;
+  size?: string;
 }
 
 withDefaults(defineProps<SocialProps>(), {

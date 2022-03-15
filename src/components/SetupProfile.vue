@@ -10,7 +10,7 @@ import { useRouter } from 'vue-router';
 import { useStorage } from '@vueuse/core';
 import { useExtendedSpaces } from '@/composables/useExtendedSpaces';
 import { useSpaceController } from '@/composables/useSpaceController';
-import { useApp } from '@/composables/useApp';
+import { useSpaces } from '@/composables/useSpaces';
 import { useDebounceFn } from '@vueuse/core';
 
 const props = defineProps<{
@@ -68,19 +68,17 @@ const createdSpaces = useStorage(
   {}
 );
 
-const { getExplore, explore } = useApp();
+const { getSpaces, spaces } = useSpaces();
 const { loadExtentedSpaces, extentedSpaces } = useExtendedSpaces();
 
 async function checkIfSpaceExists() {
   Promise.all([
-    await getExplore(),
+    await getSpaces(),
     await loadExtentedSpaces([props.ensAddress])
   ]);
   if (
     extentedSpaces.value.some(space => space.id === props.ensAddress) &&
-    Object.keys(explore.value.spaces).some(
-      spaceId => spaceId === props.ensAddress
-    )
+    Object.keys(spaces.value).some(spaceId => spaceId === props.ensAddress)
   ) {
     return;
   } else {
@@ -138,7 +136,7 @@ async function handleSubmit() {
 
 <template>
   <div>
-    <Block :title="$t('setup.setSpaceProfile')">
+    <Block>
       <div class="space-y-2">
         <UiInput
           v-model="form.name"
@@ -170,7 +168,7 @@ async function handleSubmit() {
         </UiInput>
         <UiButton
           @click="handleSubmit"
-          class="w-full !mt-3"
+          class="w-full !mt-4"
           primary
           :disabled="!isValid"
           :loading="creatingSpace"
@@ -182,9 +180,7 @@ async function handleSubmit() {
           level="info"
           class="!mt-[22px]"
         >
-          <p class="mt-0 leading-5">
-            {{ $t('setup.pleaseWaitMessage') }}
-          </p>
+          {{ $t('setup.pleaseWaitMessage') }}
         </BaseMessageBlock>
       </div>
     </Block>

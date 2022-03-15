@@ -10,14 +10,10 @@ defineProps(['skin']);
 </script>
 
 <template>
-  <div :class="skin" class="bg-black rounded-none md:rounded-md">
-    <Block>
-      <UiButton class="mb-2" primary>{{ skin }}</UiButton>
-      <div class="text-skin-text">
-        {{
-          $tc('inSpaces', [formatCompactNumber(skinsSpacesCount[skin] ?? 0)])
-        }}
-      </div>
-    </Block>
-  </div>
+  <Block class="hover:border-skin-text cursor-pointer">
+    <UiButton :class="['mb-2', skin]" primary>{{ skin }}</UiButton>
+    <div class="text-skin-text">
+      {{ $tc('inSpaces', [formatCompactNumber(skinsSpacesCount[skin] ?? 0)]) }}
+    </div>
+  </Block>
 </template>

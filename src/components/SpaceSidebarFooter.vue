@@ -26,7 +26,7 @@ const socials = computed(() => {
 </script>
 
 <template>
-  <div class="text-center border-t bg-skin-header-bg">
+  <div class="text-center">
     <div class="my-3 mx-2 flex justify-center items-center space-x-3">
       <IconSocial
         v-for="social in socials"

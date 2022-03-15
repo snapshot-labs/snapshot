@@ -124,7 +124,7 @@ function selectState(e) {
   <TheLayout class="!mt-0">
     <template #sidebar-right>
       <div style="position: fixed; width: 320px" class="mt-4 hidden lg:block">
-        <Block :slim="true" :title="$t('filters')" class="overflow-hidden">
+        <Block :slim="true" class="overflow-hidden">
           <div class="py-3">
             <router-link
               :to="{ name: 'timeline' }"
@@ -176,7 +176,7 @@ function selectState(e) {
           </template>
         </BaseDropdown>
       </div>
-      <div class="md:border-r md:border-l md:rounded-lg border-t border-b">
+      <div class="md:rounded-lg bg-skin-block-bg border">
         <RowLoading
           v-if="
             loading ||
@@ -197,9 +197,8 @@ function selectState(e) {
           </router-link>
         </div>
         <NoResults
-          class="mt-4 mb-[24px]"
+          class="py-4 mb-0"
           v-else-if="store.timeline.proposals.length < 1"
-          :block="false"
         />
         <div v-else>
           <TimelineProposalPreview
@@ -210,7 +209,7 @@ function selectState(e) {
           />
         </div>
         <div
-          style="height: 10px; width: 10px; position: absolute"
+          class="w-[10px] h-[10px] absolute bottom-0"
           ref="endElement"
         />
         <div v-if="loadingMore && !loading" :slim="true">

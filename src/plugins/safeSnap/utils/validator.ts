@@ -1,7 +1,4 @@
-import {
-  mustBeEthereumAddress,
-  isArrayParameter
-} from '../index';
+import { mustBeEthereumAddress, isArrayParameter } from '../index';
 
 export const isAddress = (type: string): boolean =>
   type.indexOf('address') === 0;

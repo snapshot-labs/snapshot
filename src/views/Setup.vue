@@ -5,7 +5,7 @@ import { useWeb3 } from '@/composables/useWeb3';
 import { useModal } from '@/composables/useModal';
 import { useI18n } from '@/composables/useI18n';
 import { useEns } from '@/composables/useEns';
-import { useApp } from '@/composables/useApp';
+import { useSpaces } from '@/composables/useSpaces';
 import { useSpaceController } from '@/composables/useSpaceController';
 
 const router = useRouter();
@@ -14,7 +14,7 @@ const { web3, web3Account } = useWeb3();
 const { modalAccountOpen } = useModal();
 const { loadOwnedEnsDomains, ownedEnsDomains } = useEns();
 const { setPageTitle } = useI18n();
-const { explore } = useApp();
+const { spaces } = useSpaces();
 const { ensAddress } = useSpaceController();
 
 onMounted(() => {
@@ -22,9 +22,9 @@ onMounted(() => {
 });
 
 const ownedEnsDomainsNoExistingSpace = computed(() => {
-  //  filter ownedEnsDomains with explore.spaces
+  //  filter ownedEnsDomains with spaces
   return ownedEnsDomains.value.filter(
-    d => !Object.keys(explore.value.spaces).includes(d.name)
+    d => !Object.keys(spaces.value).includes(d.name)
   );
 });
 
@@ -103,12 +103,7 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
           :ensAddress="ensAddress"
           :web3Account="web3Account"
         />
-        <Block
-          v-else
-          :title="$t('setup.selectEnsForSpace')"
-          icon="info"
-          iconHref="https://docs.snapshot.org/spaces/before-creating-your-space"
-        >
+        <Block v-else>
           <div v-if="ownedEnsDomainsNoExistingSpace.length">
             <div class="mb-3">
               {{
@@ -162,7 +157,7 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
       </Block>
     </template>
     <template #sidebar-right>
-      <Block>
+      <Block class="text-skin-text">
         <Icon
           name="gitbook"
           size="24"

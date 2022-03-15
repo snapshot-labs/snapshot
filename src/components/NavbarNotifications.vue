@@ -105,11 +105,11 @@ onMounted(() => loadNotifications());
           <div class="w-full">
             <div class="leading-tight flex">
               <div
-                class="text-skin-link max-w-[60px] md:max-w-[120px] truncate"
+                class="text-skin-link group-hover:text-skin-bg max-w-[60px] md:max-w-[120px] truncate"
               >
                 {{ item.space.name }}
               </div>
-              <div class="text-skin-text ml-1">
+              <div class="text-skin-text group-hover:text-skin-bg ml-1">
                 <span v-if="item.event === NotificationEvents.ProposalStart">
                   {{ $t('notifications.proposalStarted') }}
                 </span>
@@ -119,11 +119,11 @@ onMounted(() => loadNotifications());
               </div>
             </div>
             <div
-              class="whitespace-normal leading-tight text-skin-link line-clamp-2"
+              class="whitespace-normal leading-tight text-skin-link group-hover:text-skin-bg line-clamp-2"
             >
               "{{ item.text }}"
             </div>
-            <div class="text-skin-text leading-normal">
+            <div class="text-skin-text group-hover:text-skin-bg leading-normal">
               <span>
                 {{ formatRelativeTime(item.time, longRelativeTimeFormatter) }}
               </span>

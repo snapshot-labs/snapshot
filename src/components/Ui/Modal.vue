@@ -6,6 +6,11 @@ const props = defineProps({
   open: {
     type: Boolean,
     required: true
+  },
+  showClose: {
+    type: Boolean,
+    required: false,
+    default: true
   }
 });
 
@@ -19,10 +24,10 @@ watch(open, (val, prev) => {
 
 <template>
   <Transition name="fade">
-    <div v-if="open" class="modal mx-auto w-screen">
+    <div v-if="open" class="modal mx-auto w-screen z-50">
       <div class="backdrop" @click="$emit('close')" />
-      <div class="shell overflow-hidden relative rounded-none md:rounded-lg">
-        <div v-if="$slots.header" class="border-b pt-3 pb-2 text-center">
+      <div class="shell overflow-hidden relative rounded-none md:rounded-3xl">
+        <div v-if="$slots.header" class="pt-3 text-center">
           <slot name="header" />
         </div>
         <div class="modal-body">
@@ -32,6 +37,7 @@ watch(open, (val, prev) => {
           <slot name="footer" />
         </div>
         <a
+          v-if="showClose"
           @click="$emit('close')"
           class="absolute right-0 top-1 p-4 text-skin-text"
         >
@@ -65,7 +71,6 @@ watch(open, (val, prev) => {
   }
 
   .shell {
-    border: 1px solid var(--border-color);
     background-color: var(--bg-color);
     padding-left: 0 !important;
     padding-right: 0 !important;

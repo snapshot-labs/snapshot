@@ -303,8 +303,8 @@ onMounted(async () => {
           {{ $t('learnMore') }}
         </BaseLink>
       </Block>
-      <template v-else>
-        <Block :title="$t('delegate.selectDelegate')">
+      <div v-else class="space-y-3">
+        <Block>
           <UiInput
             v-model.trim="form.address"
             :placeholder="$t('delegate.addressPlaceholder')"
@@ -423,10 +423,10 @@ onMounted(async () => {
             {{ $tc('delegate.noDelegatesFoundFor', [space.id]) }}
           </div>
         </Block>
-      </template>
+      </div>
     </template>
     <template #sidebar-right v-if="networkSupportsDelegate">
-      <Block :title="$t('actions')">
+      <Block>
         <UiButton
           @click="web3Account ? handleSubmit() : (modalAccountOpen = true)"
           :disabled="!isValidForm && !!web3Account"
