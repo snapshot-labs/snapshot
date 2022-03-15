@@ -463,7 +463,7 @@ async function handleSetRecord() {
                 <template v-slot:label> {{ $t(`settings.terms`) }} </template>
               </UiInput>
               <div class="flex items-center space-x-2 pr-2">
-                <Checkbox v-model="form.private" />
+                <BaseCheckbox v-model="form.private" />
                 <span>{{ $t('settings.hideSpace') }}</span>
               </div>
             </div>
@@ -552,7 +552,7 @@ async function handleSetRecord() {
           </BaseBlock>
           <BaseBlock :title="$t('settings.proposalValidation')">
             <div class="flex items-center space-x-2 pr-2 mb-2">
-              <Checkbox v-model="form.filters.onlyMembers" />
+              <BaseCheckbox v-model="form.filters.onlyMembers" />
               <span>{{ $t('settings.allowOnlyAuthors') }}</span>
             </div>
             <div v-if="form.filters.onlyMembers">
@@ -660,7 +660,7 @@ async function handleSetRecord() {
                 </template>
               </UiInput>
               <div class="flex items-center space-x-2 pr-2">
-                <Checkbox v-model="form.voting.hideAbstain" />
+                <BaseCheckbox v-model="form.voting.hideAbstain" />
                 <span>{{ $t('settings.hideAbstain') }}</span>
               </div>
             </div>
