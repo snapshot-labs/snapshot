@@ -28,7 +28,7 @@ defineEmits(['remove', 'toggle']);
         @click="$emit('remove')"
         class="ml-1 cursor-pointer -mr-2 px-3"
       >
-        <Icon name="close" size="12" />
+        <BaseIcon name="close" size="12" />
       </span>
     </div>
 

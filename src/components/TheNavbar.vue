@@ -75,7 +75,7 @@ async function handleLogin(connector) {
             :aria-label="$t('connectWallet')"
           >
             <span class="hidden sm:block" v-text="$t('connectWallet')" />
-            <Icon
+            <BaseIcon
               name="login"
               size="20"
               class="sm:hidden -ml-2 -mr-2 block align-text-bottom"

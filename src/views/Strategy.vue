@@ -19,7 +19,7 @@ onMounted(async () => {
     <template #content-left>
       <div class="px-4 md:px-0 mb-3">
         <router-link :to="{ path: '/strategies' }" class="text-skin-text">
-          <Icon name="back" size="22" class="!align-middle" />
+          <BaseIcon name="back" size="22" class="!align-middle" />
           {{ $t('strategiesPage') }}
         </router-link>
       </div>
@@ -44,7 +44,7 @@ onMounted(async () => {
             :link="`https://github.com/${strategy.author}`"
             hide-external-icon
           >
-            <Icon name="github" class="ml-1" />
+            <BaseIcon name="github" class="ml-1" />
             {{ strategy.author }}
           </BaseLink>
         </div>

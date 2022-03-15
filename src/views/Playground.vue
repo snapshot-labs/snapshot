@@ -165,7 +165,7 @@ onMounted(async () => {
             :to="`/strategy/${$route.params.name}`"
             class="text-skin-text"
           >
-            <Icon name="back" size="22" class="!align-middle" />
+            <BaseIcon name="back" size="22" class="!align-middle" />
             {{ $t('back') }}
           </router-link>
         </div>
@@ -199,7 +199,7 @@ onMounted(async () => {
               class="mt-4"
               style="border-color: red !important"
             >
-              <Icon name="warning" class="mr-2 !text-red" />
+              <BaseIcon name="warning" class="mr-2 !text-red" />
               <span class="!text-red">{{ $t('networkErrorPlayground') }}</span>
             </BaseBlock>
           </BaseBlock>
@@ -226,7 +226,7 @@ onMounted(async () => {
               v-if="strategyError"
               style="border-color: red !important"
             >
-              <Icon name="warning" class="mr-2 !text-red" />
+              <BaseIcon name="warning" class="mr-2 !text-red" />
               <span class="!text-red"> {{ strategyError }}</span>
             </BaseBlock>
           </BaseBlock>
@@ -254,10 +254,14 @@ onMounted(async () => {
           :style="[loading ? '' : 'padding-top: 0.2rem']"
           primary
         >
-          <Icon name="play" size="18" />
+          <BaseIcon name="play" size="18" />
         </UiButton>
         <UiButton @click="copyURL" class="w-full mt-2">
-          <Icon name="insertlink" size="18" class="align-text-bottom mr-1" />
+          <BaseIcon
+            name="insertlink"
+            size="18"
+            class="align-text-bottom mr-1"
+          />
           {{ t('copyLink') }}
         </UiButton>
       </BaseBlock>

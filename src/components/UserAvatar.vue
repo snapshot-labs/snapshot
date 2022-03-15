@@ -55,7 +55,7 @@ watchEffect(() => {
           >
             <UiButton class="button-outline w-full">
               {{ $t('seeInExplorer') }}
-              <Icon name="external-link" class="ml-1" />
+              <BaseIcon name="external-link" class="ml-1" />
             </UiButton>
           </a>
         </div>

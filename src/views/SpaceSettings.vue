@@ -331,7 +331,7 @@ async function handleSetRecord() {
     <template #content-left>
       <div class="px-4 md:px-0 mb-3">
         <router-link :to="{ name: 'spaceProposals' }" class="text-skin-text">
-          <Icon name="back" size="22" class="!align-middle" />
+          <BaseIcon name="back" size="22" class="!align-middle" />
           {{ $t('back') }}
         </router-link>
       </div>
@@ -431,7 +431,7 @@ async function handleSetRecord() {
                 @blur="visitedFields.push('twitter')"
               >
                 <template v-slot:label>
-                  <Icon name="twitter" />
+                  <BaseIcon name="twitter" />
                 </template>
               </UiInput>
               <UiInput
@@ -441,7 +441,7 @@ async function handleSetRecord() {
                 @blur="visitedFields.push('github')"
               >
                 <template v-slot:label>
-                  <Icon name="github" />
+                  <BaseIcon name="github" />
                 </template>
               </UiInput>
               <UiInput
@@ -451,7 +451,7 @@ async function handleSetRecord() {
                 @blur="visitedFields.push('website')"
               >
                 <template v-slot:label>
-                  <Icon name="earth" />
+                  <BaseIcon name="earth" />
                 </template>
               </UiInput>
               <UiInput
@@ -485,7 +485,7 @@ async function handleSetRecord() {
                   link="https://docs.snapshot.org/spaces/add-custom-domain"
                   hide-external-icon
                 >
-                  <Icon name="info" size="24" class="text-skin-text" />
+                  <BaseIcon name="info" size="24" class="text-skin-text" />
                 </BaseLink>
               </template>
             </UiInput>
@@ -503,7 +503,7 @@ async function handleSetRecord() {
               :style="`border-color: red !important`"
               v-if="inputError('admins')"
             >
-              <Icon name="warning" class="mr-2 !text-red" />
+              <BaseIcon name="warning" class="mr-2 !text-red" />
               <span class="!text-red"> {{ inputError('admins') }}&nbsp;</span>
             </BaseBlock>
             <UiButton class="block w-full px-3" style="height: auto">
@@ -522,7 +522,7 @@ async function handleSetRecord() {
               class="mb-3 relative"
             >
               <a @click="handleRemoveStrategy(i)" class="absolute p-4 right-0">
-                <Icon name="close" size="12" />
+                <BaseIcon name="close" size="12" />
               </a>
 
               <a
@@ -536,7 +536,7 @@ async function handleSetRecord() {
               :style="`border-color: red !important`"
               v-if="inputError('strategies')"
             >
-              <Icon name="warning" class="mr-2 !text-red" />
+              <BaseIcon name="warning" class="mr-2 !text-red" />
               <span class="!text-red">
                 {{ inputError('strategies') }}&nbsp;</span
               >
@@ -557,7 +557,7 @@ async function handleSetRecord() {
             </div>
             <div v-if="form.filters.onlyMembers">
               <BaseBlock class="!border-red" v-if="inputError('members')">
-                <Icon name="warning" class="mr-2 !text-red" />
+                <BaseIcon name="warning" class="mr-2 !text-red" />
                 <span class="!text-red">
                   {{ inputError('members') }}&nbsp;</span
                 >
@@ -679,7 +679,7 @@ async function handleSetRecord() {
                     @click="handleRemovePlugins(name)"
                     class="absolute p-4 right-0"
                   >
-                    <Icon name="close" size="12" />
+                    <BaseIcon name="close" size="12" />
                   </a>
                   <a
                     @click="handleEditPlugins(name)"

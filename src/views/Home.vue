@@ -82,14 +82,14 @@ onMounted(() => {
             class="w-full pr-3 whitespace-nowrap"
             :disabled="!orderedSpaces.length"
           >
-            <Icon size="14" name="apps" class="mt-1 mr-2" />
+            <BaseIcon size="16" name="apps" class="mt-1 mr-2" />
             <span v-if="selectedCategory">
               {{ $tc('explore.categories.' + selectedCategory) }}
             </span>
             <span v-else>
               {{ $tc('explore.categories.all') }}
             </span>
-            <Icon size="14" name="arrow-down" class="mt-1 mx-1" />
+            <BaseIcon size="16" name="arrow-down" class="mt-1 mx-1" />
           </UiButton>
         </template>
         <template v-slot:item="{ item }">

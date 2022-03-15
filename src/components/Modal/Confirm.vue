@@ -117,7 +117,7 @@ watch(
             class="flex-auto text-skin-text mr-1"
           />
           <span v-if="vpLoadingFailed" class="flex item-center">
-            <Icon name="warning" size="22" class="text-red" />
+            <BaseIcon name="warning" size="22" class="text-red" />
           </span>
           <span
             v-else-if="vpLoaded && !vpLoading"
@@ -139,7 +139,7 @@ watch(
             link="https://github.com/snapshot-labs/snapshot/discussions/767#discussioncomment-1400614"
             class="inline-block ml-1"
           >
-            <Icon name="info" size="24" class="text-skin-text" />
+            <BaseIcon name="info" size="24" class="text-skin-text" />
           </BaseLink>
         </div>
         <div v-if="vpLoadingFailed" class="mt-3">{{ t('vpError') }}</div>

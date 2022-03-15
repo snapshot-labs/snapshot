@@ -259,7 +259,7 @@ const truncateMarkdownBody = computed(() => {
                 )
           "
         >
-          <Icon name="back" size="22" class="align-middle" />
+          <BaseIcon name="back" size="22" class="align-middle" />
           {{ $t('back') }}
         </a>
       </div>
@@ -311,7 +311,7 @@ const truncateMarkdownBody = computed(() => {
                   <ShareButton />
                 </template>
                 <template v-slot:item="{ item }">
-                  <Icon
+                  <BaseIcon
                     v-if="item.icon"
                     :name="item.icon"
                     size="21"
@@ -328,7 +328,7 @@ const truncateMarkdownBody = computed(() => {
                 <template v-slot:button>
                   <div class="pl-1">
                     <UiLoading v-if="clientLoading" />
-                    <Icon
+                    <BaseIcon
                       v-else
                       name="threedots"
                       size="25"

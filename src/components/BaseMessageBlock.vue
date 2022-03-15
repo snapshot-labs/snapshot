@@ -11,7 +11,7 @@ defineProps<{
       { '!border-skin-link text-skin-link': level === 'warning' }
     ]"
   >
-    <Icon
+    <BaseIcon
       :name="level"
       :size="level === 'info' ? 20 : null"
       class="mr-1 float-left"

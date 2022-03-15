@@ -38,7 +38,7 @@ function clearInput() {
     class="flex items-center"
     :class="{ 'bg-skin-bg border-b py-3 px-4': modal }"
   >
-    <Icon name="search" size="22" class="mr-2" />
+    <BaseIcon name="search" size="22" class="mr-2" />
     <input
       :value="modelValue"
       :placeholder="placeholder"
@@ -49,7 +49,7 @@ function clearInput() {
       class="border-none input flex-auto w-full"
     />
     <a @click="clearInput">
-      <Icon v-if="modelValue" name="close" size="12" class="mb-1" />
+      <BaseIcon v-if="modelValue" name="close" size="12" class="mb-1" />
     </a>
   </div>
 </template>

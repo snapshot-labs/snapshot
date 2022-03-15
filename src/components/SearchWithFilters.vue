@@ -59,7 +59,7 @@ function redirectSearch(e) {
       <BaseDropdown @select="redirectSearch" :items="searchOptions">
         <template v-slot:button>
           <span v-text="searchSelectedOption" class="ml-3" />
-          <Icon name="arrow-down" class="ml-1 mr-2 pr-1" />
+          <BaseIcon name="arrow-down" class="ml-1 mr-2 pr-1" />
         </template>
       </BaseDropdown>
     </div>

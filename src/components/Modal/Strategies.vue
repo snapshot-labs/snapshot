@@ -41,7 +41,7 @@ defineEmits(['close']);
             }
           }"
         >
-          <Icon name="play" size="18" />
+          <BaseIcon name="play" size="18" />
         </router-link>
         <h3 v-text="strategy.name" />
         <div>

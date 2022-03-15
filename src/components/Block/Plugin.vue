@@ -25,7 +25,7 @@ defineProps({
           :link="`https://github.com/${plugin.author}`"
           hide-external-icon
         >
-          <Icon name="github" class="mr-1" />
+          <BaseIcon name="github" class="mr-1" />
           {{ plugin.author }}
         </BaseLink>
         {{

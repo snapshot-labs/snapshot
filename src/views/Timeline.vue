@@ -171,7 +171,7 @@ function selectState(e) {
           <template v-slot:button>
             <UiButton class="pr-3">
               {{ $t(`proposals.states.${store.timeline.filterBy}`) }}
-              <Icon size="14" name="arrow-down" class="mt-1 mr-1" />
+              <BaseIcon size="14" name="arrow-down" class="mt-1 mr-1" />
             </UiButton>
           </template>
         </BaseDropdown>

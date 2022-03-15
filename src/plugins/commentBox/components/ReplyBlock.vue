@@ -182,7 +182,7 @@ const isCreator = computed(() => props.proposal.author === web3Account.value);
           :items="threeDotItems"
         >
           <template v-slot:button>
-            <Icon name="threedots" size="25" class="v-align-text-bottom" />
+            <BaseIcon name="threedots" size="25" class="v-align-text-bottom" />
           </template>
         </BaseDropdown>
       </div>
@@ -193,7 +193,7 @@ const isCreator = computed(() => props.proposal.author === web3Account.value);
       class="p-1 rounded-0 mt-2"
       style="line-height: 0px; height: auto"
     >
-      <Icon :name="'receipt-outlined'" class="v-align-middle" size="15" />
+      <BaseIcon :name="'receipt-outlined'" class="v-align-middle" size="15" />
       <span class="ml-1">{{ $t('comment_box.reply') }}</span>
     </UiButton>
     <PluginCommentBoxComment

@@ -123,7 +123,7 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
                 :primary="ownedEnsDomainsNoExistingSpace.length === 1"
               >
                 {{ ens.name }}
-                <Icon name="go" size="22" class="-mr-2" />
+                <BaseIcon name="go" size="22" class="-mr-2" />
               </UiButton>
             </div>
             <div class="my-3">
@@ -158,7 +158,7 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
     </template>
     <template #sidebar-right>
       <BaseBlock class="text-skin-text">
-        <Icon
+        <BaseIcon
           name="gitbook"
           size="24"
           class="text-skin-text pr-2 !align-middle"

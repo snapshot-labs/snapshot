@@ -12,7 +12,7 @@ function handleToggle() {
 
 <template>
   <a @click="handleToggle" class="flex">
-    <Icon
+    <BaseIcon
       :name="modelValue ? 'toggle-on' : 'toggle_off'"
       :class="modelValue ? 'text-green' : 'text-skin-border'"
       size="32"

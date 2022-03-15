@@ -168,7 +168,7 @@ export default {
       class="mt-4"
       style="border-color: red !important"
     >
-      <Icon name="warning" class="mr-2 !text-red" />
+      <BaseIcon name="warning" class="mr-2 !text-red" />
       <span class="!text-red"> Error: {{ safesnap.batchError.message }}</span>
     </BaseBlock>
 

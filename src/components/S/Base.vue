@@ -32,7 +32,7 @@ watch(
             : '-mt-[38px] opacity-0 h-6'
         ]"
       >
-        <Icon
+        <BaseIcon
           v-if="error && showError"
           name="warning"
           class="text-white mr-2"

@@ -70,7 +70,7 @@ const winningChoice = computed(() =>
             v-if="proposal.scores_state === 'final'"
             class="mt-2 flex space-x-1 items-center"
           >
-            <Icon size="20" name="check1" class="text-green" />
+            <BaseIcon size="20" name="check1" class="text-green" />
             <span
               >{{ shorten(proposal.choices[winningChoice], 64) }} -
               {{ formatCompactNumber(proposal.scores[winningChoice]) }}

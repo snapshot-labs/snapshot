@@ -143,7 +143,7 @@ watch(visibleVotes, () => {
           class="ml-2 text-skin-text"
           title="Receipt"
         >
-          <Icon name="signature" />
+          <BaseIcon name="signature" />
         </a>
       </div>
     </div>

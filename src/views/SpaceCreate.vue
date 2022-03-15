@@ -305,7 +305,7 @@ const needsPluginConfigs = computed(() =>
           :to="domain ? { path: '/' } : { name: 'spaceProposals' }"
           class="text-skin-text"
         >
-          <Icon name="back" size="22" class="!align-middle" />
+          <BaseIcon name="back" size="22" class="!align-middle" />
           {{ $t('back') }}
         </router-link>
       </div>
@@ -480,7 +480,11 @@ const needsPluginConfigs = computed(() =>
                             disableChoiceEdit
                         }"
                       >
-                        <Icon name="draggable" size="16" class="mr-[12px]" />
+                        <BaseIcon
+                          name="draggable"
+                          size="16"
+                          class="mr-[12px]"
+                        />
                         {{ $tc('create.choice', [index + 1]) }}
                       </div>
                     </template>
@@ -501,7 +505,7 @@ const needsPluginConfigs = computed(() =>
                 @click="addChoices(1)"
                 class="!w-[48px] !h-[48px]"
               >
-                <Icon size="20" name="plus" class="text-skin-link" />
+                <BaseIcon size="20" name="plus" class="text-skin-link" />
               </UiSidebarButton>
             </div>
           </div>
@@ -537,7 +541,7 @@ const needsPluginConfigs = computed(() =>
                 {{ $t(`create.start`) }}
               </template>
               <template v-slot:info>
-                <Icon
+                <BaseIcon
                   name="calendar"
                   size="18"
                   class="flex items-center text-skin-text"
@@ -563,7 +567,7 @@ const needsPluginConfigs = computed(() =>
                 {{ $t(`create.end`) }}
               </template>
               <template v-slot:info>
-                <Icon
+                <BaseIcon
                   name="calendar"
                   size="18"
                   class="flex items-center text-skin-text"

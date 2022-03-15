@@ -36,7 +36,7 @@ defineEmits(['close']);
       >
         <UiButton class="button-outline w-full">
           {{ $t('verifyOnSignatorio') }}
-          <Icon name="external-link" class="ml-1" />
+          <BaseIcon name="external-link" class="ml-1" />
         </UiButton>
       </BaseLink>
     </div>

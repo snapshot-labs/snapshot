@@ -37,7 +37,7 @@ const socials = [
     <div class="space-x-3 md:ml-auto">
       <span v-for="social in socials" :key="social">
         <BaseLink :link="social.link" hide-external-icon>
-          <Icon
+          <BaseIcon
             size="30"
             class="opacity-40 hover:opacity-80 text-skin-text transition-opacity"
             :name="social.icon"
@@ -50,7 +50,7 @@ const socials = [
         <span class="text-skin-link">?</span>
       </UiSidebarButton>
       <UiSidebarButton @click="toggleUserTheme" :aria-label="$t('toggleSkin')">
-        <Icon size="20" class="text-skin-link" :name="getThemeIcon()" />
+        <BaseIcon size="20" class="text-skin-link" :name="getThemeIcon()" />
       </UiSidebarButton>
       <SelectLanguageButton />
     </div>

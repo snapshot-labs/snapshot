@@ -15,7 +15,7 @@ defineProps(['strategy']);
       <div class="ml-1">v{{ strategy.version }}</div>
     </div>
     <div class="text-skin-text">
-      <Icon name="github" class="mr-1" />
+      <BaseIcon name="github" class="mr-1" />
       {{ strategy.author }}
     </div>
     <div>
