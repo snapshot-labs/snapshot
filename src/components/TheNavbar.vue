@@ -32,7 +32,7 @@ async function handleLogin(connector) {
     {{ $t('demoSite') }}
   </div>
   <nav id="topnav">
-    <Container>
+    <BaseContainer>
       <div class="flex items-center py-2">
         <div class="flex-auto flex items-center">
           <router-link
@@ -84,7 +84,7 @@ async function handleLogin(connector) {
           <NavbarNotifications />
         </div>
       </div>
-    </Container>
+    </BaseContainer>
   </nav>
   <div class="bg-primary text-white text-center py-2" v-if="pendingCount > 0">
     <UiLoading fill-white class="mr-2" />

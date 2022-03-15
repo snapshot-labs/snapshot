@@ -51,7 +51,7 @@ onMounted(() => {
 
 <template>
   <div class="relative">
-    <Container
+    <BaseContainer
       class="flex items-center mb-4 flex-col xs:flex-row flex-wrap md:flex-nowrap"
     >
       <UiButton class="pl-3 pr-0 w-full md:max-w-[420px]">
@@ -110,8 +110,8 @@ onMounted(() => {
           ])
         }}
       </div>
-    </Container>
-    <Container :slim="true">
+    </BaseContainer>
+    <BaseContainer :slim="true">
       <TransitionGroup
         name="fade"
         tag="div"
@@ -179,7 +179,7 @@ onMounted(() => {
       <footer class="mt-auto">
         <TheFooter />
       </footer>
-    </Container>
+    </BaseContainer>
     <div ref="endElement" />
   </div>
 </template>
