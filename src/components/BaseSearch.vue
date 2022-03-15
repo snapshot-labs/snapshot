@@ -1,12 +1,12 @@
-<script setup>
+<script setup lang="ts">
 import { useRouter } from 'vue-router';
 import debounce from 'lodash/debounce';
 
-const props = defineProps({
-  modelValue: String,
-  placeholder: String,
-  modal: Boolean
-});
+const props = defineProps<{
+  modelValue: string;
+  placeholder?: string;
+  modal?: boolean;
+}>();
 const emit = defineEmits(['update:modelValue']);
 
 const router = useRouter();

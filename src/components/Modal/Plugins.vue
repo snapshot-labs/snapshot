@@ -53,11 +53,11 @@ watch(open, () => {
         }}
       </h3>
     </template>
-    <Search
+    <BaseSearch
       v-if="!selectedPlugin?.key"
       v-model="searchInput"
       :placeholder="$t('searchPlaceholder')"
-      :modal="true"
+      modal
     />
     <div class="mt-4 mx-0 md:mx-4 min-h-[300px]">
       <BaseBlock

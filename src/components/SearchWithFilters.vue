@@ -49,7 +49,7 @@ function redirectSearch(e) {
 
 <template>
   <div class="flex">
-    <Search
+    <BaseSearch
       :modelValue="routeQuery"
       @update:modelValue="input => $emit('update:modelValue', input)"
       :placeholder="$t('searchPlaceholder')"
