@@ -196,13 +196,13 @@ watch([modalOpen, closeModal], () => {
         style="font-size: 18px"
       />
     </UiButton>
-    <Block
+    <BaseBlock
       v-if="!togglePreview"
       slim="true"
       class="p-4 h6 text-skin-text mt-2 mb-0"
     >
       <div>{{ comment }}</div>
-    </Block>
+    </BaseBlock>
     <UiButton
       :disabled="comment.length === 0"
       :loading="loading"

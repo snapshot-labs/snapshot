@@ -1,14 +1,14 @@
-<script setup>
-defineProps({
-  title: String,
-  counter: Number,
-  slim: Boolean,
-  icon: String,
-  iconClass: String,
-  iconTooltip: String,
-  iconHref: String,
-  loading: Boolean
-});
+<script setup lang="ts">
+defineProps<{
+  title?: string;
+  counter?: number;
+  slim?: boolean;
+  icon?: string;
+  iconClass?: string;
+  iconTooltip?: string;
+  iconHref?: string;
+  loading?: boolean;
+}>();
 </script>
 
 <template>

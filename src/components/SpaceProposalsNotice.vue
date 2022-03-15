@@ -14,7 +14,7 @@ const createdSpaces = useStorage(
 </script>
 
 <template>
-  <Block
+  <BaseBlock
     v-if="createdSpaces?.[spaceId]?.showMessage"
     class="absolute z-10 left-0"
   >
@@ -60,5 +60,5 @@ const createdSpaces = useStorage(
         </UiButton>
       </div>
     </div>
-  </Block>
+  </BaseBlock>
 </template>

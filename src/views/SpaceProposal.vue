@@ -412,7 +412,7 @@ const truncateMarkdownBody = computed(() => {
     </template>
     <template #sidebar-right v-if="proposal">
       <div class="space-y-4 mt-4 lg:mt-0">
-        <Block>
+        <BaseBlock>
           <div class="space-y-1">
             <div>
               <b>{{ $t('strategies') }}</b>
@@ -480,7 +480,7 @@ const truncateMarkdownBody = computed(() => {
               </BaseLink>
             </div>
           </div>
-        </Block>
+        </BaseBlock>
         <BlockResultsError
           v-if="loadingResultsFailed"
           :isAdmin="isAdmin"

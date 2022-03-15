@@ -36,7 +36,7 @@ onMounted(async () => {
       </div>
     </template>
     <template #sidebar-right>
-      <Block :title="$t('information')" v-if="strategy">
+      <BaseBlock :title="$t('information')" v-if="strategy">
         <div class="mb-1">
           <b>{{ $t('author') }}</b>
           <BaseLink
@@ -62,7 +62,7 @@ onMounted(async () => {
         <router-link :to="`/playground/${$route.params.name}`">
           <UiButton class="w-full mt-2">{{ $t('playground') }}</UiButton>
         </router-link>
-      </Block>
+      </BaseBlock>
     </template>
   </TheLayout>
 </template>

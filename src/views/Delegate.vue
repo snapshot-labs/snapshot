@@ -287,7 +287,7 @@ onMounted(async () => {
         <h1 v-if="loaded" v-text="$t('delegate.header')" />
       </div>
       <PageLoading v-if="!loaded" />
-      <Block v-else-if="!networkSupportsDelegate">
+      <BaseBlock v-else-if="!networkSupportsDelegate">
         <Icon name="warning" class="mr-1" />
         {{
           $t('delegate.delegateNotSupported', {
@@ -302,9 +302,9 @@ onMounted(async () => {
         >
           {{ $t('learnMore') }}
         </BaseLink>
-      </Block>
+      </BaseBlock>
       <div v-else class="space-y-3">
-        <Block>
+        <BaseBlock>
           <UiInput
             v-model.trim="form.address"
             :placeholder="$t('delegate.addressPlaceholder')"
@@ -325,8 +325,8 @@ onMounted(async () => {
           >
             <template v-slot:label>{{ $t('space') }}</template>
           </UiInput>
-        </Block>
-        <Block
+        </BaseBlock>
+        <BaseBlock
           v-if="
             delegates.length < 1 &&
             delegators.length < 1 &&
@@ -336,8 +336,8 @@ onMounted(async () => {
         >
           <Icon name="warning" class="mr-1" />
           {{ $t('delegate.noDelegationsAndDelegates') }}
-        </Block>
-        <Block
+        </BaseBlock>
+        <BaseBlock
           v-if="delegates.length > 0"
           :slim="true"
           :title="$t('delegate.delegations')"
@@ -364,8 +364,8 @@ onMounted(async () => {
               <Icon name="close" size="12" class="mb-1" />
             </a>
           </div>
-        </Block>
-        <Block
+        </BaseBlock>
+        <BaseBlock
           v-if="delegators.length > 0"
           :slim="true"
           :title="$t('delegate.delegated')"
@@ -386,8 +386,8 @@ onMounted(async () => {
               class="flex-auto text-right text-skin-link"
             />
           </div>
-        </Block>
-        <Block
+        </BaseBlock>
+        <BaseBlock
           v-if="space?.id && specifySpaceChecked"
           :title="$tc('delegate.topDelegates')"
           :loading="delegatesLoading"
@@ -422,11 +422,11 @@ onMounted(async () => {
           >
             {{ $tc('delegate.noDelegatesFoundFor', [space.id]) }}
           </div>
-        </Block>
+        </BaseBlock>
       </div>
     </template>
     <template #sidebar-right v-if="networkSupportsDelegate">
-      <Block>
+      <BaseBlock>
         <UiButton
           @click="web3Account ? handleSubmit() : (modalAccountOpen = true)"
           :disabled="!isValidForm && !!web3Account"
@@ -436,7 +436,7 @@ onMounted(async () => {
         >
           {{ $t('confirm') }}
         </UiButton>
-      </Block>
+      </BaseBlock>
     </template>
   </TheLayout>
   <teleport to="#modal" v-if="networkSupportsDelegate">

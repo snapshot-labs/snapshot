@@ -238,7 +238,7 @@ function deleteItemReply(key) {
     />
   </div>
   <div v-if="toggleEditComment">
-    <Block :slim="true" class="p-4 text-skin-text mt-2 mb-0">
+    <BaseBlock :slim="true" class="p-4 text-skin-text mt-2 mb-0">
       <div>
         <UserAvatar
           :address="item.author"
@@ -265,7 +265,7 @@ function deleteItemReply(key) {
         </BaseDropdown>
       </div>
       <div class="mt-2">{{ item.markdown }}</div>
-    </Block>
+    </BaseBlock>
 
     <UiButton
       @click="toggleComment = !toggleComment"

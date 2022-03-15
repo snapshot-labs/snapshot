@@ -5,7 +5,7 @@ defineProps<{
 </script>
 
 <template>
-  <Block
+  <BaseBlock
     :class="[
       'text-skin-text',
       { '!border-skin-link text-skin-link': level === 'warning' }
@@ -19,5 +19,5 @@ defineProps<{
     <div :class="[' leading-5', { '-mt-[2px]': level === 'warning' }]">
       <slot />
     </div>
-  </Block>
+  </BaseBlock>
 </template>

@@ -47,9 +47,9 @@ function select(key) {
           @click="select(undefined)"
           class="default rounded-none md:rounded-md cursor-pointer"
         >
-          <Block>
+          <BaseBlock>
             <UiButton class="mb-2" primary>{{ $t('defaultSkin') }}</UiButton>
-          </Block>
+          </BaseBlock>
         </div>
 
         <BlockSkin

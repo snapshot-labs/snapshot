@@ -125,7 +125,7 @@ onMounted(() => {
             :to="{ name: 'spaceProposals', params: { key: space.id } }"
           >
             <!-- Added mb-0 to remove mb-4 added by block component -->
-            <Block
+            <BaseBlock
               class="text-center mb-0 hover:border-skin-text transition-all flex justify-center items-center"
               style="height: 266px"
             >
@@ -149,7 +149,7 @@ onMounted(() => {
                 }}
               </div>
               <FollowButton class="!mb-0" :space="space" />
-            </Block>
+            </BaseBlock>
           </router-link>
         </div>
       </TransitionGroup>

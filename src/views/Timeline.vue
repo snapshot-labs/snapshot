@@ -124,7 +124,7 @@ function selectState(e) {
   <TheLayout class="!mt-0">
     <template #sidebar-right>
       <div style="position: fixed; width: 320px" class="mt-4 hidden lg:block">
-        <Block :slim="true" class="overflow-hidden">
+        <BaseBlock :slim="true" class="overflow-hidden">
           <div class="py-3">
             <router-link
               :to="{ name: 'timeline' }"
@@ -137,7 +137,7 @@ function selectState(e) {
               class="block px-4 py-2 sidenav-item"
             />
           </div>
-        </Block>
+        </BaseBlock>
       </div>
     </template>
     <template #content-left>
@@ -208,10 +208,7 @@ function selectState(e) {
             :profiles="profiles"
           />
         </div>
-        <div
-          class="w-[10px] h-[10px] absolute bottom-0"
-          ref="endElement"
-        />
+        <div class="w-[10px] h-[10px] absolute bottom-0" ref="endElement" />
         <div v-if="loadingMore && !loading" :slim="true">
           <RowLoading class="border-t px-4 py-5" />
         </div>

@@ -24,7 +24,7 @@ const winningChoice = computed(() =>
 </script>
 
 <template>
-  <Block slim class="transition-colors hover:border-skin-text">
+  <BaseBlock slim class="transition-colors hover:border-skin-text">
     <router-link
       class="p-4 block text-skin-text"
       :to="{
@@ -80,5 +80,5 @@ const winningChoice = computed(() =>
         </div>
       </div>
     </router-link>
-  </Block>
+  </BaseBlock>
 </template>

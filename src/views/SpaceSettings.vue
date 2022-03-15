@@ -339,7 +339,7 @@ async function handleSetRecord() {
         <h1 v-text="$t('settings.header')" class="mb-4" />
       </div>
       <RowLoadingBlock v-if="!loaded" />
-      <Block v-else-if="!currentTextRecord">
+      <BaseBlock v-else-if="!currentTextRecord">
         <BaseMessageBlock level="warning" class="mb-4">
           {{ $t('settings.needToSetEnsText') }}
         </BaseMessageBlock>
@@ -352,10 +352,10 @@ async function handleSetRecord() {
         >
           {{ $t('settings.setEnsTextRecord') }}
         </UiButton>
-      </Block>
+      </BaseBlock>
       <template v-else-if="currentTextRecord">
         <div class="space-y-3">
-          <Block :title="$t('settings.profile')">
+          <BaseBlock :title="$t('settings.profile')">
             <div class="space-y-2 mb-2">
               <UiInput
                 v-model="form.name"
@@ -467,8 +467,8 @@ async function handleSetRecord() {
                 <span>{{ $t('settings.hideSpace') }}</span>
               </div>
             </div>
-          </Block>
-          <Block :title="$t('settings.customDomain')">
+          </BaseBlock>
+          <BaseBlock :title="$t('settings.customDomain')">
             <UiInput
               v-model="form.domain"
               placeholder="e.g. vote.balancer.fi"
@@ -497,15 +497,15 @@ async function handleSetRecord() {
                 {{ $t(`settings.skin`) }}
               </template>
             </UiInput>
-          </Block>
-          <Block :title="$t('settings.admins')" v-if="isSpaceController">
-            <Block
+          </BaseBlock>
+          <BaseBlock :title="$t('settings.admins')" v-if="isSpaceController">
+            <BaseBlock
               :style="`border-color: red !important`"
               v-if="inputError('admins')"
             >
               <Icon name="warning" class="mr-2 !text-red" />
               <span class="!text-red"> {{ inputError('admins') }}&nbsp;</span>
-            </Block>
+            </BaseBlock>
             <UiButton class="block w-full px-3" style="height: auto">
               <TextareaArray
                 v-model="form.admins"
@@ -514,8 +514,8 @@ async function handleSetRecord() {
                 style="font-size: 18px"
               />
             </UiButton>
-          </Block>
-          <Block :title="$t('settings.strategies') + '*'">
+          </BaseBlock>
+          <BaseBlock :title="$t('settings.strategies') + '*'">
             <div
               v-for="(strategy, i) in form.strategies"
               :key="i"
@@ -532,7 +532,7 @@ async function handleSetRecord() {
                 <h4 v-text="strategy.name" />
               </a>
             </div>
-            <Block
+            <BaseBlock
               :style="`border-color: red !important`"
               v-if="inputError('strategies')"
             >
@@ -545,23 +545,23 @@ async function handleSetRecord() {
               >
                 {{ $t('learnMore') }}
               </BaseLink>
-            </Block>
+            </BaseBlock>
             <UiButton @click="handleAddStrategy" class="block w-full">
               {{ $t('settings.addStrategy') }}
             </UiButton>
-          </Block>
-          <Block :title="$t('settings.proposalValidation')">
+          </BaseBlock>
+          <BaseBlock :title="$t('settings.proposalValidation')">
             <div class="flex items-center space-x-2 pr-2 mb-2">
               <Checkbox v-model="form.filters.onlyMembers" />
               <span>{{ $t('settings.allowOnlyAuthors') }}</span>
             </div>
             <div v-if="form.filters.onlyMembers">
-              <Block class="!border-red" v-if="inputError('members')">
+              <BaseBlock class="!border-red" v-if="inputError('members')">
                 <Icon name="warning" class="mr-2 !text-red" />
                 <span class="!text-red">
                   {{ inputError('members') }}&nbsp;</span
                 >
-              </Block>
+              </BaseBlock>
               <UiButton class="block w-full px-3" style="height: auto">
                 <TextareaArray
                   v-model="form.members"
@@ -595,8 +595,8 @@ async function handleSetRecord() {
                 </UiInput>
               </div>
             </div>
-          </Block>
-          <Block :title="$t('settings.voting')">
+          </BaseBlock>
+          <BaseBlock :title="$t('settings.voting')">
             <div class="space-y-2">
               <UiInput
                 v-model="votingDelay"
@@ -664,8 +664,8 @@ async function handleSetRecord() {
                 <span>{{ $t('settings.hideAbstain') }}</span>
               </div>
             </div>
-          </Block>
-          <Block :title="$t('plugins')">
+          </BaseBlock>
+          <BaseBlock :title="$t('plugins')">
             <div v-if="form?.plugins">
               <div
                 v-for="(name, index) in Object.keys(form.plugins).filter(
@@ -693,7 +693,7 @@ async function handleSetRecord() {
             <UiButton @click="handleAddPlugins" class="block w-full">
               {{ $t('settings.addPlugin') }}
             </UiButton>
-          </Block>
+          </BaseBlock>
         </div>
       </template>
     </template>
@@ -708,7 +708,7 @@ async function handleSetRecord() {
         {{ $t('settings.connectWithSpaceOwner') }}
       </BaseMessageBlock>
       <div v-else-if="loaded" class="lg:fixed lg:w-[300px]">
-        <Block>
+        <BaseBlock>
           <UiButton
             v-if="ensOwner"
             @click="modalControllerEditOpen = true"
@@ -731,7 +731,7 @@ async function handleSetRecord() {
               {{ $t('save') }}
             </UiButton>
           </div>
-        </Block>
+        </BaseBlock>
       </div>
     </template>
   </TheLayout>

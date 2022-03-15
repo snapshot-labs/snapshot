@@ -83,7 +83,7 @@ watch(visibleVotes, () => {
 </script>
 
 <template>
-  <Block
+  <BaseBlock
     v-if="isZero()"
     :title="`${voteCount} ${$t('votes')}`"
     :slim="true"
@@ -166,5 +166,5 @@ watch(visibleVotes, () => {
         :authorIpfsHash="authorIpfsHash"
       />
     </teleport>
-  </Block>
+  </BaseBlock>
 </template>
