@@ -8,9 +8,7 @@ export function useScrollMonitor(fn) {
 
   onMounted(() => {
     elementWatcher = scrollMonitor.create(endElement.value);
-    elementWatcher.enterViewport(() => {
-      fn();
-    });
+    elementWatcher.enterViewport(fn);
   });
 
   onBeforeUnmount(() => elementWatcher.destroy());

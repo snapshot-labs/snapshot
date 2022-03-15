@@ -105,7 +105,7 @@ const winningChoice = computed(() =>
               :style="`width: ${
                 (100 / proposal.scores_total) * proposal.scores[i]
               }%;`"
-              class="bg-[color:var(--border-color)] rounded-md h-[40px]"
+              class="bg-skin-border rounded-md h-[40px]"
             />
           </div>
         </div>

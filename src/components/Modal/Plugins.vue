@@ -59,10 +59,11 @@ watch(open, () => {
       :placeholder="$t('searchPlaceholder')"
       :modal="true"
     />
-    <div class="mt-4 mx-0 md:mx-4 min-h-[339px]">
-      <div
+    <div class="mt-4 mx-0 md:mx-4 min-h-[300px]">
+      <Block
+        slim
         v-if="selectedPlugin?.key"
-        class="p-4 mb-4 border rounded-md text-skin-link"
+        class="p-4 mb-4 rounded-md text-skin-link"
       >
         <h4 v-text="selectedPlugin.name" class="mb-3 text-center" />
         <UiButton class="block w-full overflow-x-auto" style="height: auto">
@@ -73,17 +74,17 @@ watch(open, () => {
             class="input text-left"
           />
         </UiButton>
-      </div>
+      </Block>
       <div v-if="!selectedPlugin?.key">
         <RowLoadingBlock v-if="loadingPluginsSpacesCount" />
-        <div v-else>
-          <a
+        <div v-else class="space-y-3">
+          <BlockPlugin
+            :plugin="plugin"
             v-for="(plugin, i) in filterPlugins(searchInput)"
             :key="i"
             @click="selectPlugin(plugin)"
-          >
-            <BlockPlugin :plugin="plugin" />
-          </a>
+          />
+
           <NoResults
             v-if="Object.keys(filterPlugins(searchInput)).length < 1"
           />

@@ -411,100 +411,104 @@ const truncateMarkdownBody = computed(() => {
       />
     </template>
     <template #sidebar-right v-if="proposal">
-      <Block :title="$t('information')">
-        <div class="space-y-1">
-          <div>
-            <b>{{ $t('strategies') }}</b>
-            <span
-              @click="modalStrategiesOpen = true"
-              class="float-right text-skin-link a"
-            >
-              <span v-for="(symbol, symbolIndex) of symbols" :key="symbol">
-                <span
-                  v-tippy="{
-                    content: symbol
-                  }"
-                >
-                  <SpaceAvatar :space="space" :symbolIndex="symbolIndex" />
+      <div class="space-y-4 mt-4 lg:mt-0">
+        <Block>
+          <div class="space-y-1">
+            <div>
+              <b>{{ $t('strategies') }}</b>
+              <span
+                @click="modalStrategiesOpen = true"
+                class="float-right text-skin-link a"
+              >
+                <span v-for="(symbol, symbolIndex) of symbols" :key="symbol">
+                  <span
+                    v-tippy="{
+                      content: symbol
+                    }"
+                  >
+                    <SpaceAvatar :space="space" :symbolIndex="symbolIndex" />
+                  </span>
+                  <span
+                    v-show="symbolIndex !== symbols.length - 1"
+                    class="ml-1"
+                  />
                 </span>
-                <span
-                  v-show="symbolIndex !== symbols.length - 1"
-                  class="ml-1"
-                />
               </span>
-            </span>
-          </div>
+            </div>
 
-          <div>
-            <b>IPFS</b>
-            <BaseLink :link="getIpfsUrl(proposal.ipfs)" class="float-right">
-              #{{ proposal.ipfs.slice(0, 7) }}
-            </BaseLink>
+            <div>
+              <b>IPFS</b>
+              <BaseLink :link="getIpfsUrl(proposal.ipfs)" class="float-right">
+                #{{ proposal.ipfs.slice(0, 7) }}
+              </BaseLink>
+            </div>
+            <div>
+              <b>{{ $t('proposal.votingSystem') }}</b>
+              <span class="float-right text-skin-link">
+                {{ $t(`voting.${proposal.type}`) }}
+              </span>
+            </div>
+            <div>
+              <b>{{ $t('proposal.startDate') }}</b>
+              <span
+                v-text="$d(proposal.start * 1e3, 'short', 'en-US')"
+                v-tippy="{
+                  content: formatRelativeTime(proposal.start)
+                }"
+                class="float-right text-skin-link"
+              />
+            </div>
+            <div>
+              <b>{{ $t('proposal.endDate') }}</b>
+              <span
+                v-text="$d(proposal.end * 1e3, 'short', 'en-US')"
+                v-tippy="{
+                  content: formatRelativeTime(proposal.end)
+                }"
+                class="text-skin-link float-right"
+              />
+            </div>
+            <div>
+              <b>{{ $t('snapshot') }}</b>
+              <BaseLink
+                :link="
+                  explorerUrl(proposal.network, proposal.snapshot, 'block')
+                "
+                class="float-right"
+              >
+                {{ formatNumber(proposal.snapshot) }}
+              </BaseLink>
+            </div>
           </div>
-          <div>
-            <b>{{ $t('proposal.votingSystem') }}</b>
-            <span class="float-right text-skin-link">
-              {{ $t(`voting.${proposal.type}`) }}
-            </span>
-          </div>
-          <div>
-            <b>{{ $t('proposal.startDate') }}</b>
-            <span
-              v-text="$d(proposal.start * 1e3, 'short', 'en-US')"
-              v-tippy="{
-                content: formatRelativeTime(proposal.start)
-              }"
-              class="float-right text-skin-link"
-            />
-          </div>
-          <div>
-            <b>{{ $t('proposal.endDate') }}</b>
-            <span
-              v-text="$d(proposal.end * 1e3, 'short', 'en-US')"
-              v-tippy="{
-                content: formatRelativeTime(proposal.end)
-              }"
-              class="text-skin-link float-right"
-            />
-          </div>
-          <div>
-            <b>{{ $t('snapshot') }}</b>
-            <BaseLink
-              :link="explorerUrl(proposal.network, proposal.snapshot, 'block')"
-              class="float-right"
-            >
-              {{ formatNumber(proposal.snapshot) }}
-            </BaseLink>
-          </div>
-        </div>
-      </Block>
-      <BlockResultsError
-        v-if="loadingResultsFailed"
-        :isAdmin="isAdmin"
-        :proposalId="proposal.id"
-        :proposalState="proposal.scores_state"
-        @retry="loadProposal()"
-      />
-      <BlockResults
-        v-else
-        :id="id"
-        :loaded="loadedResults"
-        :space="space"
-        :proposal="proposal"
-        :results="results"
-        :votes="votes"
-        :strategies="strategies"
-      />
-      <PluginProposalSidebar
-        v-if="proposal.plugins && loadedResults"
-        :id="id"
-        :space="space"
-        :proposal="proposal"
-        :results="results"
-        :loadedResults="loadedResults"
-        :votes="votes"
-        :strategies="strategies"
-      />
+        </Block>
+        <BlockResultsError
+          v-if="loadingResultsFailed"
+          :isAdmin="isAdmin"
+          :proposalId="proposal.id"
+          :proposalState="proposal.scores_state"
+          @retry="loadProposal()"
+        />
+        <BlockResults
+          v-else
+          :id="id"
+          :loaded="loadedResults"
+          :space="space"
+          :proposal="proposal"
+          :results="results"
+          :votes="votes"
+          :strategies="strategies"
+        />
+        <PluginProposalSidebar
+          v-if="proposal.plugins && loadedResults"
+          :id="id"
+          :space="space"
+          :proposal="proposal"
+          :results="results"
+          :loadedResults="loadedResults"
+          :votes="votes"
+          :strategies="strategies"
+        />
+      </div>
     </template>
   </TheLayout>
   <teleport to="#modal" v-if="proposal">

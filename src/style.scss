@@ -7,12 +7,14 @@
 [data-color-scheme='dark'] {
   color-scheme: dark;
   --primary-color: #384aff;
-  --bg-color: #121212;
+  --bg-color: #211f24;
   --text-color: #8b949e;
   --link-color: #ffffff;
   --heading-color: #ffffff;
-  --border-color: #424242;
-  --header-bg: #121212;
+  --border-color: #2d2d2d;
+  --header-bg: #1c1b20;
+  --block-bg: transparent;
+  --shadow-color: #fff1;
 }
 
 [data-color-scheme='light'] {
@@ -20,11 +22,12 @@
   --primary-color: #384aff;
   --bg-color: white;
   --text-color: #57606a;
-  --link-color: #111111;
+  --link-color: #444444;
   --heading-color: #111111;
-  --border-color: #d0d7de;
+  --border-color: #e0e0e0;
   --header-bg: white;
   --block-bg: transparent;
+  --shadow-color: #0001;
 }
 
 @layer base {
@@ -140,11 +143,6 @@ textarea {
   line-height: 1.4em;
 }
 
-// This seems to be needed for coin.scss skin, maybe it can be removed?
-.bg-black {
-  background-color: var(--bg-color);
-}
-
 .border,
 .border-md,
 .border-lg,
@@ -184,13 +182,13 @@ input[type='number'] {
   background-color: var(--text-color);
   color: var(--header-bg);
   border-radius: 7px;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 1.4;
   outline: 0;
   transition-property: transform, visibility, opacity;
-  padding: 3px 6px 4px;
+  padding: 2px 4px;
   text-align: center;
-  font-weight: 600;
+  font-weight: 500;
 }
 .tippy-box[data-placement^='top'] > .tippy-arrow {
   bottom: 0;
@@ -251,7 +249,7 @@ input[type='number'] {
 }
 
 .lazy-loading {
-  @apply bg-skin-text animate-pulse-fast;
+  @apply bg-skin-border animate-pulse-fast;
 }
 
 // Shot UI kit

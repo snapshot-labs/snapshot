@@ -313,6 +313,7 @@ const needsPluginConfigs = computed(() =>
       <!-- Shows when no wallet is connected and the space has any sort 
       of validation set -->
       <BaseMessageBlock
+        class="mb-4"
         level="warning"
         v-if="
           !web3Account &&
@@ -350,12 +351,17 @@ const needsPluginConfigs = computed(() =>
         level="warning"
         v-else-if="executingValidationFailed"
         :routeObject="{ name: 'spaceAbout', params: { key: space.id } }"
+        class="mb-4"
       >
         {{ $t('create.validationWarning.executionError') }}
       </BaseMessageBlock>
 
       <!-- Shows when wallet is connected and doesn't pass validaion -->
-      <BaseMessageBlock level="warning" v-else-if="passValidation[0] === false">
+      <BaseMessageBlock
+        level="warning"
+        v-else-if="passValidation[0] === false"
+        class="mb-4"
+      >
         <span v-if="passValidation[1] === 'basic'">
           <span v-if="space?.filters.onlyMembers">
             {{ $t('create.validationWarning.basic.member') }}
@@ -424,7 +430,7 @@ const needsPluginConfigs = computed(() =>
           </div>
         </div>
       </template>
-      <template v-else-if="currentStep === 2">
+      <div v-else-if="currentStep === 2" class="space-y-4">
         <Block :title="$t('create.voting')">
           <UiInput
             @click="!space.voting?.type ? (modalVotingTypeOpen = true) : null"
@@ -579,9 +585,8 @@ const needsPluginConfigs = computed(() =>
             </template>
           </UiInput>
         </Block>
-      </template>
-      <template v-else>
-        <div class="h-[1px] w-full" />
+      </div>
+      <div v-else class="space-y-3">
         <PluginCreate
           v-if="space?.plugins && (!sourceProposal || sourceProposalLoaded)"
           :proposal="proposal"
@@ -589,7 +594,7 @@ const needsPluginConfigs = computed(() =>
           :preview="preview"
           v-model="form.metadata.plugins"
         />
-      </template>
+      </div>
     </template>
     <template #sidebar-right>
       <Block class="lg:fixed lg:w-[320px]">

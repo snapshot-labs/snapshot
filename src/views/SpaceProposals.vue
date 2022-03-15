@@ -99,7 +99,10 @@ onMounted(() => {
     setPageTitle('page.title.space.proposals', { space: props.space.name });
 
   const firstProposal = store.space.proposals[0];
-  if (firstProposal && firstProposal?.space.id !== props.space.id) {
+  if (
+    !firstProposal ||
+    (firstProposal && firstProposal?.space.id !== props.space.id)
+  ) {
     store.space.proposals = [];
     load();
   }
@@ -167,7 +170,7 @@ onMounted(() => {
         class="mt-2"
         :space="space"
       />
-      <div v-else>
+      <div v-else class="space-y-4 mb-4">
         <TimelineProposal
           v-for="(proposal, i) in store.space.proposals"
           :key="i"
@@ -176,11 +179,8 @@ onMounted(() => {
           :space="space"
         />
       </div>
-      <div
-        style="height: 10px; width: 10px; position: absolute"
-        ref="endElement"
-      />
-      <Block v-if="loadingData" :slim="true">
+      <div class="w-[10px] h-[10px] absolute bottom-0" ref="endElement" />
+      <Block v-if="loadingData" :slim="true" class="my-4">
         <RowLoading class="my-2" />
       </Block>
     </template>

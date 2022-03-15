@@ -24,7 +24,7 @@ const winningChoice = computed(() =>
 </script>
 
 <template>
-  <Block slim class="timeline-proposal transition-colors">
+  <Block slim class="transition-colors hover:border-skin-text">
     <router-link
       class="p-4 block text-skin-text"
       :to="{
@@ -82,11 +82,3 @@ const winningChoice = computed(() =>
     </router-link>
   </Block>
 </template>
-
-<style scoped lang="scss">
-.timeline-proposal {
-  &:hover {
-    border-color: var(--link-color) !important;
-  }
-}
-</style>

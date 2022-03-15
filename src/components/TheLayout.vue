@@ -10,7 +10,7 @@
     </div>
     <div
       v-if="$slots['content-right']"
-      class="w-full lg:w-3/4 float-right pl-0 lg:pl-5"
+      class="w-full lg:w-3/4 float-right pl-0 lg:pl-5 relative"
       id="content-right"
     >
       <slot name="content-right" />
@@ -18,7 +18,7 @@
     <div class="lg:flex">
       <div
         v-if="$slots['content-left']"
-        class="w-full lg:w-8/12 lg:pr-5"
+        class="w-full lg:w-8/12 lg:pr-5 relative"
         id="content-left"
       >
         <slot name="content-left" />

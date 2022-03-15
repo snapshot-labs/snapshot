@@ -50,7 +50,7 @@ watch(open, () => emit('openChange'));
       leave-to-class="transform opacity-0 scale-95"
     >
       <div
-        class="origin-top-right border border-skin-border z-10 absolute right-0 mt-2 min-w-[150px] max-w-[320px] md:max-w-[400px] rounded-lg bg-skin-header-bg overflow-hidden shadow-lg"
+        class="origin-top-right z-20 absolute right-0 mt-2 min-w-[150px] max-w-[320px] md:max-w-[400px] rounded-2xl bg-skin-header-bg overflow-hidden shadow-lg"
         v-if="open"
       >
         <ul
@@ -62,7 +62,7 @@ watch(open, () => emit('openChange'));
             :key="item.text"
             @click="handleClick(item.action)"
             :class="{ selected: item.selected }"
-            class="list-none block whitespace-nowrap px-[18px] leading-[38px] cursor-pointer select-none"
+            class="list-none block whitespace-nowrap px-3 py-2 cursor-pointer select-none group"
           >
             <slot name="item" :item="item" :key="item">
               {{ item.text }}
@@ -77,6 +77,6 @@ watch(open, () => emit('openChange'));
 <style scoped>
 li.selected,
 li:hover {
-  @apply bg-skin-border text-skin-link;
+  @apply bg-skin-link text-skin-bg;
 }
 </style>

@@ -11,7 +11,7 @@ defineProps(['network']);
 </script>
 
 <template>
-  <Block class="hover:border-skin-link">
+  <Block class="hover:border-skin-text cursor-pointer">
     <div class="flex items-start mb-3">
       <BaseAvatar
         class="mr-2"

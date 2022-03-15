@@ -37,7 +37,7 @@ module.exports = {
       xl: '1280px'
     },
     fontFamily: {
-      serif: [
+      sans: [
         'Calibre, -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji'
       ],
       mono: ['monospace']
@@ -52,7 +52,8 @@ module.exports = {
       xs: ['14px']
     },
     boxShadow: {
-      lg: '0 0 20px -6px var(--border-color)'
+      sm: '1px 2px 2px var(--shadow-color)',
+      lg: '2px 4px 9px var(--shadow-color)'
     }
   },
   plugins: [require('@tailwindcss/line-clamp')],

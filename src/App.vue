@@ -1,59 +1,39 @@
 <script setup>
-import { computed, onMounted, provide, watch } from 'vue';
-import { useModal } from '@/composables/useModal';
-import { useI18n } from '@/composables/useI18n';
-import { useDomain } from '@/composables/useDomain';
-import { useUserSkin } from '@/composables/useUserSkin';
+import { onMounted, provide } from 'vue';
 import { useApp } from '@/composables/useApp';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useFlashNotification } from '@/composables/useFlashNotification';
+import { useDomain } from '@/composables/useDomain';
 
 const { domain } = useDomain();
-const { loadLocale } = useI18n();
-const { modalOpen } = useModal();
-const { userSkin } = useUserSkin();
-const { init, skinName, app } = useApp();
+const { init, ready } = useApp();
 const { web3 } = useWeb3();
 const { notify } = useFlashNotification();
 
 provide('web3', web3);
 provide('notify', notify);
 
-const skin = computed(() => {
-  if (domain && skinName.value !== 'default') {
-    let skinClass = skinName.value;
-    if (userSkin.value === 'dark-mode')
-      skinClass += ` ${skinName.value}-dark-mode`;
-    return skinClass;
-  }
-  return userSkin.value;
-});
-
 onMounted(async () => {
-  await loadLocale();
   init();
-});
-
-watch(modalOpen, val => {
-  const el = document.body;
-  el.classList[val ? 'add' : 'remove']('overflow-hidden');
 });
 </script>
 
 <template>
-  <div
-    :class="skin"
-    class="overflow-hidden pb-6 font-serif text-base min-h-screen bg-skin-bg text-skin-text antialiased static"
-  >
-    <UiLoading v-if="app.loading || !app.init" class="overlay big" />
-    <div v-else class="w-screen">
-      <TheSidebar />
-      <div :class="{ 'sm:ml-[68px]': !domain }">
-        <TheNavbar />
-        <router-view :key="$route.path" class="flex-auto" />
+  <UiLoading v-if="!ready" class="overlay big" />
+  <div v-else class="flex font-sans text-base antialiased bg-skin-bg text-skin-text min-h-screen">
+    <div v-if="!domain" id="sidebar" class="flex flex-col">
+      <div class="h-screen sticky top-0 border-r border-skin-border bg-skin-bg z-40">
+        <TheSidebar />
       </div>
     </div>
-    <div id="modal" />
-    <FlashNotification />
+    <div class="grow">
+      <div id="navbar" class="sticky top-0 border-b border-skin-border bg-skin-bg z-40">
+        <TheNavbar />
+      </div>
+      <div id="content" class="py-4">
+        <router-view :key="$route.path" />
+      </div>
+    </div>
   </div>
+  <FlashNotification />
 </template>

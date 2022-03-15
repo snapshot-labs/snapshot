@@ -33,7 +33,7 @@ function select(id) {
     <template v-slot:header>
       <h3>{{ $t('voting.selectVoting') }}</h3>
     </template>
-    <div class="mt-4 mx-0 md:mx-4">
+    <div class="mt-4 mx-0 md:mx-4 space-y-3 flex flex-col">
       <a v-if="allowAny" @click="select(undefined)">
         <Block
           :class="[
@@ -76,7 +76,7 @@ function select(id) {
 .voting-type {
   &.voting-type-active,
   &:hover {
-    border-color: var(--link-color);
+    border-color: var(--text-color);
   }
 }
 </style>
