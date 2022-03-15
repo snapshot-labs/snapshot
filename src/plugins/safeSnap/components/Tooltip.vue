@@ -2,13 +2,21 @@
 import { ref } from 'vue';
 import { shorten } from '@/helpers/utils';
 import { useCopy } from '@/composables/useCopy';
+import { debouncedWatch } from '@vueuse/core';
 
 defineProps({
   realityAddress: { type: String },
   multiSendAddress: { type: String }
 });
 
+const open = ref(false);
 const hovered = ref(false);
+
+debouncedWatch(
+  hovered,
+  () => { open.value = hovered.value },
+  { debounce: 300 },
+)
 
 const { copyToClipboard } = useCopy();
 </script>
@@ -62,7 +70,7 @@ const { copyToClipboard } = useCopy();
         stroke-width="2"
       />
     </svg>
-    <div v-if="hovered" class="tooltip bg-skin-bg p-3 border md:rounded-lg">
+    <div v-if="open" class="tooltip bg-skin-bg p-3 border md:rounded-lg">
       <span class="tooltip-text">Multisend address</span>
       <span class="tooltip-text mt-1 text-skin-text">
         {{ shorten(multiSendAddress) }}
