@@ -31,7 +31,7 @@ watchEffect(() => {
             class="mr-2"
           />
           <span class="truncate w-full">{{ username }}</span>
-          <Badges
+          <BaseBadge
             v-if="!onlyUsername"
             :address="address"
             :members="space?.members"

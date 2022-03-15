@@ -294,7 +294,7 @@ const truncateMarkdownBody = computed(() => {
                 :proposal="proposal"
                 only-username
               />
-              <Badges :address="proposal.author" :members="space.members" />
+              <BaseBadge :address="proposal.author" :members="space.members" />
             </div>
             <div class="flex justify-end">
               <ShareButton

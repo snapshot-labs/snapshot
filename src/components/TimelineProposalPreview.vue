@@ -60,7 +60,7 @@ const winningChoice = computed(() =>
             :proposal="proposal"
             only-username
           />
-          <Badges
+          <BaseBadge
             :address="proposal.author"
             :members="proposal.space.members"
           />
