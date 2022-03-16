@@ -161,7 +161,7 @@
     "endTime": "Выбрать время окончания",
     "publish": "Опубликовать",
     "untitled": "Без названия",
-    "snapshotBlock": "Номер блока среза",
+    "snapshotBlock": "Номер блока snapshot",
     "voting": "Голосование",
     "votingSystem": "Система голосования",
     "choice": "Выбор {0}",
@@ -181,17 +181,17 @@
     "votingPeriodExplainer": "This is the time period in which users will be able to vote. The proposal will be visible and pending before the start of the voting period.",
     "validationWarning": {
       "basic": {
-        "member": "Вы должны быть автором пространства для того, чтобы представить предложение.",
-        "minScore": "Вам нужно иметь минимум {0} {1} для того, чтобы отправить предложение."
+        "member": "Чтобы внести предложение, необходимо быть автором пространства.",
+        "minScore": "Для подачи заявки необходимо иметь минимум {0} {1}."
       },
-      "customValidation": "Вам необходимо пройти проверку предложения, чтобы подать предложение",
+      "customValidation": "Чтобы подать предложение, необходимо пройти проверку предложения.",
       "executionError": "Verifying your eligibility to create proposals in this space has failed. This is likely due to a misconfigured strategy."
     }
   },
   "delegate": {
-    "header": "Делегировать право голоса",
+    "header": "Делегировать",
     "selectDelegate": "Выбрать делегата",
-    "to": "В",
+    "to": "Кому",
     "addressPlaceholder": "Адрес или название ENS",
     "delegations": "Вы делегировали",
     "allSpaces": "Для всех разделов",
@@ -260,10 +260,10 @@
     "hideSpace": "Скрыть раздел на главной страницы",
     "addStrategy": "Добавить стратегию",
     "authors": "Авторы",
-    "admins": "Администратор",
+    "admins": "Администраторы",
     "defaultTab": "Вкладка по умолчанию",
-    "proposalThreshold": "Порог предложения",
-    "allowOnlyAuthors": "Разрешить только авторам представлять предложение",
+    "proposalThreshold": "Пороговое значение предложения",
+    "allowOnlyAuthors": "Разрешить подавать предложения только авторам",
     "editPlugin": "Редактировать плагин",
     "addPlugin": "Добавить плагин",
     "pluginParameters": "Настройки плагина",
@@ -291,7 +291,7 @@
     "useSingleExistingEns": "Use your existing ENS domain:",
     "orReigsterNewEns": "Or register a new domain:",
     "toCreateASpace": "To create a space, you first need an ENS domain. Enter one below and follow the ENS registration instructions.",
-    "createASpace": "Создать раздел",
+    "createASpace": "Создать пространство",
     "registerEnsButton": "Register",
     "supportedEnsTLDs": "Supported domain endings",
     "helpDocsAndDiscordLinks": "Not sure how to create a space? Learn more in the <a target='_blank' href='https://docs.snapshot.org/spaces/create'> documentation </a> or join Snapshot <a target='_blank' href='https://discord.gg/snapshot'>Discord</a>.",
@@ -356,11 +356,11 @@
     "weighted": "Взвешенное голосование",
     "basic": "Основное голосование",
     "description": {
-      "single-choice": "Каждый избиратель может сделать только один выбор",
+      "single-choice": "Каждый избиратель может выбрать только один вариант.",
       "approval": "Каждый избиратель может выбрать любое количество вариантов.",
-      "quadratic": "Каждый избиратель может распределить свой голос на любое количество вариантов. Результаты рассчитываются квадратично.",
-      "ranked-choice": "Каждый избиратель может выбрать и ранжировать любое количество вариантов. Результаты вычисляются методом подсчета мгновенного подсчета.",
-      "weighted": "Каждый избиратель может распределить право голоса на любое количество вариантов",
+      "quadratic": "Каждый избиратель может распределить право голоса между любым количеством вариантов. Результаты подсчитываются квадратично.",
+      "ranked-choice": "Каждый избиратель может выбрать и расставить любое количество вариантов. Результаты вычисляются методом мгновенного подсчета голосов.",
+      "weighted": "Каждый избиратель может распределить право голоса между любым количеством вариантов.",
       "basic": "Голосование с одним вариантом выбора с тремя вариантами: За, Против или Воздержался"
     },
     "choices": {
