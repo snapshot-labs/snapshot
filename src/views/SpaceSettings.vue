@@ -94,13 +94,6 @@ watch(
   [currentTextRecord, textRecord],
   async () => {
     loadOwnedEnsDomains();
-    // Check if the connected wallet is the space owner and add address to admins
-    // if not already present
-    if (isSpaceController.value) {
-      if (!form.value.admins.includes(web3Account.value)) {
-        form.value.admins.push(web3Account.value);
-      }
-    }
   },
   { immediate: true }
 );
