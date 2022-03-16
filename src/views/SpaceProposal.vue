@@ -381,34 +381,36 @@ const truncateMarkdownBody = computed(() => {
         </template>
         <PageLoading v-else />
       </div>
-      <BlockCastVote
-        v-if="proposal?.state === 'active'"
-        :proposal="proposal"
-        v-model="selectedChoices"
-        @open="modalOpen = true"
-        @clickVote="clickVote"
-      />
-      <BlockVotes
-        @loadVotes="loadMore(loadMoreVotes)"
-        v-if="proposal && !loadingResultsFailed"
-        :loaded="loadedVotes"
-        :space="space"
-        :proposal="proposal"
-        :votes="votes"
-        :strategies="strategies"
-        :userVote="userVote"
-        :loadingMore="loadingMore"
-      />
-      <PluginProposal
-        v-if="proposal?.plugins && loadedResults"
-        :id="id"
-        :space="space"
-        :proposal="proposal"
-        :results="results"
-        :loadedResults="loadedResults"
-        :votes="votes"
-        :strategies="strategies"
-      />
+      <div class="space-y-4">
+        <BlockCastVote
+          v-if="proposal?.state === 'active'"
+          :proposal="proposal"
+          v-model="selectedChoices"
+          @open="modalOpen = true"
+          @clickVote="clickVote"
+        />
+        <BlockVotes
+          @loadVotes="loadMore(loadMoreVotes)"
+          v-if="proposal && !loadingResultsFailed"
+          :loaded="loadedVotes"
+          :space="space"
+          :proposal="proposal"
+          :votes="votes"
+          :strategies="strategies"
+          :userVote="userVote"
+          :loadingMore="loadingMore"
+        />
+        <PluginProposal
+          v-if="proposal?.plugins && loadedResults"
+          :id="id"
+          :space="space"
+          :proposal="proposal"
+          :results="results"
+          :loadedResults="loadedResults"
+          :votes="votes"
+          :strategies="strategies"
+        />
+      </div>
     </template>
     <template #sidebar-right v-if="proposal">
       <div class="space-y-4 mt-4 lg:mt-0">

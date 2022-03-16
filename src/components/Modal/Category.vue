@@ -54,7 +54,7 @@ function handleClose() {
       </h3>
     </template>
 
-    <div class="mt-4 mx-0 md:mx-4 flex flex-col justify-between">
+    <div class="my-4 mx-0 md:mx-4 flex flex-col justify-between">
       <div class="ml-4 md:ml-0 mb-4">
         {{ $t('create.categorie(s)') }}
       </div>
@@ -65,7 +65,7 @@ function handleClose() {
           :key="i"
           :class="[
             {
-              'hover:border-skin-link cursor-pointer':
+              'hover:border-skin-text cursor-pointer':
                 hasCategory(category) || selectedCategories.length < 2,
               'opacity-50':
                 !hasCategory(category) && selectedCategories.length === 2,

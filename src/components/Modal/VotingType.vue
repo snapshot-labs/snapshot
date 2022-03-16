@@ -37,8 +37,8 @@ function select(id) {
       <a v-if="allowAny" @click="select(undefined)">
         <BaseBlock
           :class="[
-            'transition-colors relative voting-type',
-            { 'voting-type-active': !selected }
+            'transition-colors relative voting-type hover:border-skin-text',
+            { '!border-skin-link': !selected }
           ]"
         >
           <i
@@ -53,8 +53,8 @@ function select(id) {
       <a v-for="(type, key) in types" :key="key" @click="select(type)">
         <BaseBlock
           :class="[
-            'transition-colors relative voting-type',
-            { 'voting-type-active': type === selected }
+            'transition-colors relative voting-type hover:border-skin-text',
+            { '!border-skin-link': type === selected }
           ]"
         >
           <i
@@ -71,12 +71,3 @@ function select(id) {
     </div>
   </UiModal>
 </template>
-
-<style scoped lang="scss">
-.voting-type {
-  &.voting-type-active,
-  &:hover {
-    border-color: var(--text-color);
-  }
-}
-</style>

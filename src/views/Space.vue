@@ -37,10 +37,9 @@ onMounted(() => loadExtentedSpaces([spaceKey.value, sourceSpaceRoute.value]));
 <template>
   <!-- Only loaded after space is available -->
   <router-view
-    v-if="space || $route.name === 'spaceSettings'"
+    v-if="space"
     :space="space"
     :sourceSpace="sourceSpace"
-    :spaceKey="spaceKey"
     :loadExtentedSpaces="loadExtentedSpaces"
   />
 
