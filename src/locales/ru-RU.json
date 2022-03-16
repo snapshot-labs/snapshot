@@ -37,15 +37,15 @@
   "network": "Сеть",
   "networks": "Сети",
   "skins": "Темы",
-  "members": "Нет участников | {count} участников | {count} участников",
-  "editStrategy": "Редактировать стратегию",
-  "invalidProposals": "Неверные параметры опроса",
+  "members": "Нет участников | {count} участник | {count} участников",
+  "editStrategy": "Изменить стратегию",
+  "invalidProposals": "Недействительные предложения",
   "account": "Учетная запись",
   "create3box": "Создать профиль на 3Box",
   "view3box": "Просмотреть профиль на 3Box",
   "edit3box": "Редактировать профиль на 3Box",
   "connectWallet": "Подключить кошелек",
-  "toggleSkin": "Переключить скин",
+  "toggleSkin": "Переключить тему",
   "about": "О нас",
   "license": "Лицензия",
   "ipfsServer": "IPFS сервер",
@@ -219,8 +219,8 @@
     "new": "Новое предложение",
     "noProposals": "Здесь пока нет ни одного предложения!",
     "createProposal": "Создать предложение",
-    "showMore": "Show more",
-    "showLess": "Show less",
+    "showMore": "Показать больше",
+    "showLess": "Показывать меньше",
     "states": {
       "all": "Все",
       "core": "Основные",
@@ -231,17 +231,17 @@
     }
   },
   "notifications": {
-    "header": "Notifications",
-    "noNotifications": "You have no notifications",
-    "proposalStarted": "proposal has started:",
-    "proposalEnded": "proposal has ended:",
-    "markAllAsRead": "Mark all as read",
-    "all": "All",
-    "unread": "Unread"
+    "header": "Уведомление",
+    "noNotifications": "У вас нет уведомлений",
+    "proposalStarted": "предложение началось:",
+    "proposalEnded": "предложение закончилось:",
+    "markAllAsRead": "Отметить всё как прочитанное",
+    "all": "Все",
+    "unread": "Непрочитанное"
   },
   "settings": {
     "header": "Настройки",
-    "setEnsTextRecord": "Set ENS text record",
+    "setEnsTextRecord": "Установить текстовую запись ENS",
     "editController": "Edit controller",
     "needToSetEnsText": "Your space settings will be stored in a file on IPFS. Before you can edit them, you need to set an ENS text record pointing to that file.",
     "profile": "Профиль",
@@ -255,8 +255,8 @@
     "customDomain": "Пользовательский домен",
     "domain": "Доменное имя",
     "strategies": "Стратегия(и)",
-    "categories": "Categorie(s)",
-    "selectCategories": "Select categories",
+    "categories": "Категория(и)",
+    "selectCategories": "Выбрать категории",
     "hideSpace": "Скрыть раздел на главной страницы",
     "addStrategy": "Добавить стратегию",
     "authors": "Авторы",
@@ -432,9 +432,9 @@
   },
   "charts": {
     "charts": "Графики",
-    "noVotesYet": "There are no votes to visualize yet.",
+    "noVotesYet": "Пока нет голосов за визуализацию.",
     "totalVotesPerDay": "Общее количество голосов за день",
-    "shareOfVotingPower": "Share of voting power",
+    "shareOfVotingPower": "Поделиться правом голоса",
     "votingPowerPerDay": "Voting power per day"
   },
   "comment_box": {
@@ -465,10 +465,10 @@
     "title": {
       "home": "Snapshot",
       "setup": "Create a space",
-      "timeline": "Timeline",
-      "notifications": "Notifications",
-      "explore": "Explore",
-      "playground": "Playground",
+      "timeline": "Хронология",
+      "notifications": "Уведомления",
+      "explore": "Изучить",
+      "playground": "Игровая площадка",
       "space": {
         "create": "Create {space} proposal",
         "about": "About {space}",
@@ -477,12 +477,12 @@
         "settings": "{space} Settings"
       },
       "strategy": "{key} strategy",
-      "delegate": "Delegate"
+      "delegate": "Делегировать"
     }
   },
   "hal": {
-    "title": "Track proposals for {spaceName}",
-    "text": "Receive notifications every time a new proposal is created or ends"
+    "title": "Отслеживать предложения для {spaceName}",
+    "text": "Получать уведомления каждый раз, когда создается или завершается новое предложение"
   },
   "timeUnits": {
     "second": "1 second | {n} seconds",
@@ -496,7 +496,7 @@
   "unsupportedNetwork": {
     "unsupportedNetwork": "Неподдерживаемая сеть",
     "ensOnlyMainnet": "Snapshot only supports ENS on the ethereum mainnet. Once the space is created, you can use it across multiple chains.",
-    "switchNetworkToMainnet": "To continue, you need to change the network in your wallet to Ethereum Mainnet.",
-    "switchToMainnet": "Switch to Mainnet"
+    "switchNetworkToMainnet": "Чтобы продолжить, необходимо изменить сеть в кошельке на Ethereum Mainnet.",
+    "switchToMainnet": "Переключиться на основную сеть"
   }
 }
