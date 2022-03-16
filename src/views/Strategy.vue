@@ -19,7 +19,7 @@ onMounted(async () => {
     <template #content-left>
       <div class="px-4 md:px-0 mb-3">
         <router-link :to="{ path: '/strategies' }" class="text-skin-text">
-          <Icon name="back" size="22" class="!align-middle" />
+          <BaseIcon name="back" size="22" class="!align-middle" />
           {{ $t('strategiesPage') }}
         </router-link>
       </div>
@@ -36,7 +36,7 @@ onMounted(async () => {
       </div>
     </template>
     <template #sidebar-right>
-      <Block :title="$t('information')" v-if="strategy">
+      <BaseBlock :title="$t('information')" v-if="strategy">
         <div class="mb-1">
           <b>{{ $t('author') }}</b>
           <BaseLink
@@ -44,7 +44,7 @@ onMounted(async () => {
             :link="`https://github.com/${strategy.author}`"
             hide-external-icon
           >
-            <Icon name="github" class="ml-1" />
+            <BaseIcon name="github" class="ml-1" />
             {{ strategy.author }}
           </BaseLink>
         </div>
@@ -62,7 +62,7 @@ onMounted(async () => {
         <router-link :to="`/playground/${$route.params.name}`">
           <UiButton class="w-full mt-2">{{ $t('playground') }}</UiButton>
         </router-link>
-      </Block>
+      </BaseBlock>
     </template>
   </TheLayout>
 </template>

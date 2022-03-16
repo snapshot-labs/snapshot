@@ -72,14 +72,8 @@ onMounted(() => {
   >
     <div v-if="!domain" class="flex items-center relative px-2">
       <router-link :to="{ name: 'home' }">
-        <UiSidebarButton
-          class="!border-0"
-        >
-          <Icon
-            size="36"
-            name="snapshot"
-            class="text-snapshot"
-          />
+        <UiSidebarButton class="!border-0">
+          <BaseIcon size="36" name="snapshot" class="text-snapshot" />
         </UiSidebarButton>
       </router-link>
     </div>
@@ -96,7 +90,7 @@ onMounted(() => {
         <UiSidebarButton
           :class="{ '!border-skin-link': $route.name === 'timeline' }"
         >
-          <Icon size="20" name="feed" />
+          <BaseIcon size="20" name="feed" />
         </UiSidebarButton>
       </router-link>
     </div>
@@ -157,7 +151,7 @@ onMounted(() => {
         <UiSidebarButton
           :class="{ '!border-skin-link': $route.name === 'setup' }"
         >
-          <Icon size="20" name="plus" />
+          <BaseIcon size="20" name="plus" />
         </UiSidebarButton>
       </router-link>
     </div>

@@ -41,7 +41,7 @@ watch(open, (val, prev) => {
           @click="$emit('close')"
           class="absolute right-0 top-1 p-4 text-skin-text"
         >
-          <Icon name="close" />
+          <BaseIcon name="close" />
         </a>
       </div>
     </div>

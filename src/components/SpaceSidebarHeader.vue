@@ -55,7 +55,7 @@ watchEffect(() => {
       >
         {{ space.name }}
       </div>
-      <Icon
+      <BaseIcon
         v-if="isVerified === 1"
         v-tippy="{
           content: $t('verifiedSpace'),
@@ -64,7 +64,7 @@ watchEffect(() => {
         name="check"
         size="20"
       />
-      <Icon v-if="isVerified === -1" name="warning" size="20" />
+      <BaseIcon v-if="isVerified === -1" name="warning" size="20" />
     </h3>
     <div class="mb-[12px] text-skin-text">
       {{
@@ -82,7 +82,7 @@ watchEffect(() => {
         @click="toggleSubscription()"
       >
         <UiLoading v-if="loading" />
-        <Icon
+        <BaseIcon
           v-else
           size="20"
           class="text-skin-link"

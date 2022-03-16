@@ -259,7 +259,7 @@ const truncateMarkdownBody = computed(() => {
                 )
           "
         >
-          <Icon name="back" size="22" class="align-middle" />
+          <BaseIcon name="back" size="22" class="align-middle" />
           {{ $t('back') }}
         </a>
       </div>
@@ -294,7 +294,7 @@ const truncateMarkdownBody = computed(() => {
                 :proposal="proposal"
                 only-username
               />
-              <Badges :address="proposal.author" :members="space.members" />
+              <BaseBadge :address="proposal.author" :members="space.members" />
             </div>
             <div class="flex justify-end">
               <ShareButton
@@ -311,7 +311,7 @@ const truncateMarkdownBody = computed(() => {
                   <ShareButton />
                 </template>
                 <template v-slot:item="{ item }">
-                  <Icon
+                  <BaseIcon
                     v-if="item.icon"
                     :name="item.icon"
                     size="21"
@@ -328,7 +328,7 @@ const truncateMarkdownBody = computed(() => {
                 <template v-slot:button>
                   <div class="pl-1">
                     <UiLoading v-if="clientLoading" />
-                    <Icon
+                    <BaseIcon
                       v-else
                       name="threedots"
                       size="25"
@@ -412,7 +412,7 @@ const truncateMarkdownBody = computed(() => {
     </template>
     <template #sidebar-right v-if="proposal">
       <div class="space-y-4 mt-4 lg:mt-0">
-        <Block>
+        <BaseBlock>
           <div class="space-y-1">
             <div>
               <b>{{ $t('strategies') }}</b>
@@ -480,7 +480,7 @@ const truncateMarkdownBody = computed(() => {
               </BaseLink>
             </div>
           </div>
-        </Block>
+        </BaseBlock>
         <BlockResultsError
           v-if="loadingResultsFailed"
           :isAdmin="isAdmin"

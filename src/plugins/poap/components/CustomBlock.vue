@@ -157,7 +157,7 @@ export default {
 </script>
 
 <template>
-  <Block title="I voted POAP" :loading="loading">
+  <BaseBlock title="I voted POAP" :loading="loading">
     <div class="flex flex-col items-center">
       <img :src="headerImg" alt="" class="mb-2" />
       <div class="text-skin-link text-center mb-2">{{ $t(header) }}</div>
@@ -182,5 +182,5 @@ export default {
         {{ $t(buttonText) }}
       </UiButton>
     </div>
-  </Block>
+  </BaseBlock>
 </template>

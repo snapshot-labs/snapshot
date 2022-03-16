@@ -159,7 +159,7 @@ export default {
         )
       }}
     </UiCollapsibleText>
-    <Block
+    <BaseBlock
       v-if="
         safesnap.batchError &&
         safesnap.batchError.message &&
@@ -168,9 +168,9 @@ export default {
       class="mt-4"
       style="border-color: red !important"
     >
-      <Icon name="warning" class="mr-2 !text-red" />
+      <BaseIcon name="warning" class="mr-2 !text-red" />
       <span class="!text-red"> Error: {{ safesnap.batchError.message }}</span>
-    </Block>
+    </BaseBlock>
 
     <UiButton class="mt-2" v-if="!config.preview" @click="addTransaction">
       {{ $t('safeSnap.addTransaction') }}

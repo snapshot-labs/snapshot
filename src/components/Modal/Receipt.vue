@@ -15,7 +15,7 @@ defineEmits(['close']);
       <h3>{{ $t('receipt') }}</h3>
     </template>
     <div class="m-4 space-y-4">
-      <Block slim class="p-4 text-skin-link">
+      <BaseBlock slim class="p-4 text-skin-link">
         <div class="flex">
           <span v-text="$t('author')" class="flex-auto text-skin-text mr-1" />
           <BaseLink :link="getIpfsUrl(authorIpfsHash)" class="text-skin-link">
@@ -28,7 +28,7 @@ defineEmits(['close']);
             #{{ relayerIpfsHash.slice(0, 7) }}
           </BaseLink>
         </div>
-      </Block>
+      </BaseBlock>
       <BaseLink
         :link="`https://signator.io/view?ipfs=${authorIpfsHash}`"
         class="mb-2 block"
@@ -36,7 +36,7 @@ defineEmits(['close']);
       >
         <UiButton class="button-outline w-full">
           {{ $t('verifyOnSignatorio') }}
-          <Icon name="external-link" class="ml-1" />
+          <BaseIcon name="external-link" class="ml-1" />
         </UiButton>
       </BaseLink>
     </div>

@@ -17,7 +17,7 @@ const update = form => {
 </script>
 
 <template>
-  <Block :title="pluginIndex.gnosis.name">
+  <BaseBlock :title="pluginIndex.gnosis.name">
     <GnosisConfig
       v-if="space.plugins.gnosis"
       :proposal="proposal"
@@ -32,5 +32,5 @@ const update = form => {
       "
       @update:modelValue="update"
     />
-  </Block>
+  </BaseBlock>
 </template>

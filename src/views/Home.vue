@@ -51,7 +51,7 @@ onMounted(() => {
 
 <template>
   <div class="relative">
-    <Container
+    <BaseContainer
       class="flex items-center mb-4 flex-col xs:flex-row flex-wrap md:flex-nowrap"
     >
       <UiButton class="pl-3 pr-0 w-full md:max-w-[420px]">
@@ -82,14 +82,14 @@ onMounted(() => {
             class="w-full pr-3 whitespace-nowrap"
             :disabled="!orderedSpaces.length"
           >
-            <Icon size="14" name="apps" class="mt-1 mr-2" />
+            <BaseIcon size="16" name="apps" class="mt-1 mr-2" />
             <span v-if="selectedCategory">
               {{ $tc('explore.categories.' + selectedCategory) }}
             </span>
             <span v-else>
               {{ $tc('explore.categories.all') }}
             </span>
-            <Icon size="14" name="arrow-down" class="mt-1 mx-1" />
+            <BaseIcon size="16" name="arrow-down" class="mt-1 mx-1" />
           </UiButton>
         </template>
         <template v-slot:item="{ item }">
@@ -110,8 +110,8 @@ onMounted(() => {
           ])
         }}
       </div>
-    </Container>
-    <Container :slim="true">
+    </BaseContainer>
+    <BaseContainer :slim="true">
       <TransitionGroup
         name="fade"
         tag="div"
@@ -125,7 +125,7 @@ onMounted(() => {
             :to="{ name: 'spaceProposals', params: { key: space.id } }"
           >
             <!-- Added mb-0 to remove mb-4 added by block component -->
-            <Block
+            <BaseBlock
               class="text-center mb-0 hover:border-skin-text transition-all flex justify-center items-center"
               style="height: 266px"
             >
@@ -149,7 +149,7 @@ onMounted(() => {
                 }}
               </div>
               <FollowButton class="!mb-0" :space="space" />
-            </Block>
+            </BaseBlock>
           </router-link>
         </div>
       </TransitionGroup>
@@ -179,7 +179,7 @@ onMounted(() => {
       <footer class="mt-auto">
         <TheFooter />
       </footer>
-    </Container>
+    </BaseContainer>
     <div ref="endElement" />
   </div>
 </template>

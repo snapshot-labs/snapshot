@@ -165,7 +165,7 @@ onMounted(async () => {
             :to="`/strategy/${$route.params.name}`"
             class="text-skin-text"
           >
-            <Icon name="back" size="22" class="!align-middle" />
+            <BaseIcon name="back" size="22" class="!align-middle" />
             {{ $t('back') }}
           </router-link>
         </div>
@@ -173,7 +173,7 @@ onMounted(async () => {
           <h1 class="mb-2 px-4 md:px-0">
             {{ strategy.id }}
           </h1>
-          <Block :title="$t('settings.header')">
+          <BaseBlock :title="$t('settings.header')">
             <div class="space-y-2">
               <UiInput @click="modalNetworksOpen = true">
                 <template v-slot:selected>
@@ -194,16 +194,16 @@ onMounted(async () => {
                 </template>
               </UiInput>
             </div>
-            <Block
+            <BaseBlock
               v-if="networkError"
               class="mt-4"
               style="border-color: red !important"
             >
-              <Icon name="warning" class="mr-2 !text-red" />
+              <BaseIcon name="warning" class="mr-2 !text-red" />
               <span class="!text-red">{{ $t('networkErrorPlayground') }}</span>
-            </Block>
-          </Block>
-          <Block :title="$t('strategyParams')">
+            </BaseBlock>
+          </BaseBlock>
+          <BaseBlock :title="$t('strategyParams')">
             <SDefaultObject
               v-if="strategyDefinition"
               v-model="form.params"
@@ -222,12 +222,15 @@ onMounted(async () => {
                 class="input text-left"
               />
             </UiButton>
-            <Block v-if="strategyError" style="border-color: red !important">
-              <Icon name="warning" class="mr-2 !text-red" />
+            <BaseBlock
+              v-if="strategyError"
+              style="border-color: red !important"
+            >
+              <BaseIcon name="warning" class="mr-2 !text-red" />
               <span class="!text-red"> {{ strategyError }}</span>
-            </Block>
-          </Block>
-          <Block :title="$t('addresses')">
+            </BaseBlock>
+          </BaseBlock>
+          <BaseBlock :title="$t('addresses')">
             <UiButton class="block w-full px-3" style="height: auto">
               <TextareaArray
                 v-model="form.addresses"
@@ -237,12 +240,12 @@ onMounted(async () => {
                 style="font-size: 18px"
               />
             </UiButton>
-          </Block>
+          </BaseBlock>
         </div>
       </div>
     </template>
     <template #sidebar-right>
-      <Block :title="$t('actions')">
+      <BaseBlock :title="$t('actions')">
         <UiButton
           @click="loadScores"
           :loading="loading"
@@ -251,14 +254,18 @@ onMounted(async () => {
           :style="[loading ? '' : 'padding-top: 0.2rem']"
           primary
         >
-          <Icon name="play" size="18" />
+          <BaseIcon name="play" size="18" />
         </UiButton>
         <UiButton @click="copyURL" class="w-full mt-2">
-          <Icon name="insertlink" size="18" class="align-text-bottom mr-1" />
+          <BaseIcon
+            name="insertlink"
+            size="18"
+            class="align-text-bottom mr-1"
+          />
           {{ t('copyLink') }}
         </UiButton>
-      </Block>
-      <Block v-if="scores" :title="$t('results')">
+      </BaseBlock>
+      <BaseBlock v-if="scores" :title="$t('results')">
         <div
           class="flex justify-between"
           v-for="score in Object.keys(scores[0])"
@@ -270,7 +277,7 @@ onMounted(async () => {
             {{ form.params.symbol }}
           </span>
         </div>
-      </Block>
+      </BaseBlock>
     </template>
   </TheLayout>
   <teleport to="#modal">

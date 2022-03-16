@@ -8,7 +8,7 @@ defineProps({ proposal: Object });
 </script>
 
 <template>
-  <Block
+  <BaseBlock
     v-if="proposal.plugins?.gnosis?.baseTokenAddress"
     :title="pluginIndex.gnosis.name"
   >
@@ -16,5 +16,5 @@ defineProps({ proposal: Object });
       :proposalConfig="proposal.plugins.gnosis"
       :choices="proposal.choices"
     />
-  </Block>
+  </BaseBlock>
 </template>

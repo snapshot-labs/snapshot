@@ -32,7 +32,7 @@ async function handleLogin(connector) {
     {{ $t('demoSite') }}
   </div>
   <nav id="topnav">
-    <Container>
+    <BaseContainer>
       <div class="flex items-center py-2">
         <div class="flex-auto flex items-center">
           <router-link
@@ -75,7 +75,7 @@ async function handleLogin(connector) {
             :aria-label="$t('connectWallet')"
           >
             <span class="hidden sm:block" v-text="$t('connectWallet')" />
-            <Icon
+            <BaseIcon
               name="login"
               size="20"
               class="sm:hidden -ml-2 -mr-2 block align-text-bottom"
@@ -84,7 +84,7 @@ async function handleLogin(connector) {
           <NavbarNotifications />
         </div>
       </div>
-    </Container>
+    </BaseContainer>
   </nav>
   <div class="bg-primary text-white text-center py-2" v-if="pendingCount > 0">
     <UiLoading fill-white class="mr-2" />
