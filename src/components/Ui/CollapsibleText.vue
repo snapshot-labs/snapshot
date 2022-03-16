@@ -45,7 +45,7 @@ export default {
         class="flex items-center cursor-pointer mr-2"
         @click="copy"
       >
-        <Icon style="color: #b2b5b2" name="copy" size="20" />
+        <BaseIcon style="color: #b2b5b2" name="copy" size="20" />
       </div>
     </template>
     <div

@@ -4,10 +4,10 @@ defineProps<{ space: Record<string, any> }>();
 
 <template>
   <div style="position: fixed; width: 240px">
-    <Block :slim="true" class="overflow-hidden">
+    <BaseBlock :slim="true" class="overflow-hidden">
       <SpaceSidebarHeader :space="space" />
       <SpaceSidebarNavigation :space="space" />
       <SpaceSidebarFooter :space="space" />
-    </Block>
+    </BaseBlock>
   </div>
 </template>

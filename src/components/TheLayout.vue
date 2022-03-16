@@ -1,5 +1,5 @@
 <template>
-  <Container :slim="true" class="mt-4">
+  <BaseContainer :slim="true" class="mt-4">
     <slot />
     <div
       v-if="$slots['sidebar-left']"
@@ -31,5 +31,5 @@
         <slot name="sidebar-right" />
       </div>
     </div>
-  </Container>
+  </BaseContainer>
 </template>

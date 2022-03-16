@@ -53,14 +53,14 @@ watch(open, () => {
         }}
       </h3>
     </template>
-    <Search
+    <BaseSearch
       v-if="!selectedPlugin?.key"
       v-model="searchInput"
       :placeholder="$t('searchPlaceholder')"
-      :modal="true"
+      modal
     />
     <div class="mt-4 mx-0 md:mx-4 min-h-[300px]">
-      <Block
+      <BaseBlock
         slim
         v-if="selectedPlugin?.key"
         class="p-4 mb-4 rounded-md text-skin-link"
@@ -74,7 +74,7 @@ watch(open, () => {
             class="input text-left"
           />
         </UiButton>
-      </Block>
+      </BaseBlock>
       <div v-if="!selectedPlugin?.key">
         <RowLoadingBlock v-if="loadingPluginsSpacesCount" />
         <div v-else class="space-y-3">

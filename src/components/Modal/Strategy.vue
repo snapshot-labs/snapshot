@@ -97,11 +97,11 @@ const strategyIsValid = computed(() =>
     <template v-slot:header>
       <h3 v-text="input.name ? input.name : $t('settings.addStrategy')" />
     </template>
-    <Search
+    <BaseSearch
       v-if="!strategy.name && !input.name"
       v-model="searchInput"
       :placeholder="$t('searchPlaceholder')"
-      :modal="true"
+      modal
     />
     <div v-if="input.name" class="m-4">
       <RowLoading v-if="loading" class="px-0" />

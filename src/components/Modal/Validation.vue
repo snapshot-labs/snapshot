@@ -61,11 +61,11 @@ watch(open, () => {
         }}
       </h3>
     </template>
-    <Search
+    <BaseSearch
       v-if="!input.name"
       v-model="searchInput"
       :placeholder="$t('searchPlaceholder')"
-      :modal="true"
+      modal
     />
     <div class="mt-4 mx-0 md:mx-4 min-h-[339px]">
       <div v-if="input.name" class="p-4 mb-4 border rounded-md text-skin-link">

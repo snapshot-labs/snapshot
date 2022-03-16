@@ -70,7 +70,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <Container class="flex items-center mb-4">
+  <BaseContainer class="flex items-center mb-4">
     <UiButton class="mr-auto pl-3 pr-0 w-full max-w-[420px]">
       <SearchWithFilters />
     </UiButton>
@@ -90,8 +90,8 @@ onMounted(() => {
         </UiButton>
       </BaseLink>
     </div>
-  </Container>
-  <Container :slim="true">
+  </BaseContainer>
+  <BaseContainer :slim="true">
     <div class="overflow-hidden">
       <template v-if="route.name === 'strategies'">
         <RowLoadingBlock v-if="loadingStrategies" />
@@ -129,6 +129,6 @@ onMounted(() => {
       </template>
       <NoResults useBlock v-if="items.length < 1 && !loading" />
     </div>
-  </Container>
+  </BaseContainer>
   <div ref="endElement" />
 </template>
