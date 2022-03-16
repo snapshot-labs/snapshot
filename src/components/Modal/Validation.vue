@@ -67,7 +67,7 @@ watch(open, () => {
       :placeholder="$t('searchPlaceholder')"
       modal
     />
-    <div class="mt-4 mx-0 md:mx-4 min-h-[339px]">
+    <div class="my-4 mx-0 md:mx-4 min-h-[339px]">
       <div v-if="input.name" class="p-4 mb-4 border rounded-md text-skin-link">
         <h4 v-text="input.name" class="mb-3 text-center" />
 

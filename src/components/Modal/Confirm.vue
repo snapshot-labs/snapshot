@@ -137,7 +137,7 @@ watch(
           <BaseLink
             v-if="vp === 0 && vpLoaded && !vpLoading && !vpLoadingFailed"
             link="https://github.com/snapshot-labs/snapshot/discussions/767#discussioncomment-1400614"
-            class="inline-block ml-1"
+            class="ml-1 flex items-center"
           >
             <BaseIcon name="info" size="24" class="text-skin-text" />
           </BaseLink>
