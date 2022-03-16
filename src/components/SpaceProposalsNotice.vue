@@ -16,7 +16,7 @@ const createdSpaces = useStorage(
 <template>
   <BaseBlock
     v-if="createdSpaces?.[spaceId]?.showMessage"
-    class="absolute z-10 left-0"
+    class="absolute z-10 left-0 !bg-skin-bg"
   >
     <div>
       <div>

@@ -99,10 +99,7 @@ onMounted(() => {
     setPageTitle('page.title.space.proposals', { space: props.space.name });
 
   const firstProposal = store.space.proposals[0];
-  if (
-    !firstProposal ||
-    (firstProposal && firstProposal?.space.id !== props.space.id)
-  ) {
+  if (firstProposal && firstProposal?.space.id !== props.space.id) {
     store.space.proposals = [];
     load();
   }
