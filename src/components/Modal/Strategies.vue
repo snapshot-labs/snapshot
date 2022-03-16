@@ -18,7 +18,7 @@ defineEmits(['close']);
       <h3>{{ $t('strategiesPage') }}</h3>
     </template>
     <div class="m-4">
-      <Block
+      <BaseBlock
         slim
         v-for="(strategy, i) in strategies"
         :key="i"
@@ -41,7 +41,7 @@ defineEmits(['close']);
             }
           }"
         >
-          <Icon name="play" size="18" />
+          <BaseIcon name="play" size="18" />
         </router-link>
         <h3 v-text="strategy.name" />
         <div>
@@ -64,7 +64,7 @@ defineEmits(['close']);
             />
           </div>
         </div>
-      </Block>
+      </BaseBlock>
     </div>
   </UiModal>
 </template>

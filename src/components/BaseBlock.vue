@@ -1,14 +1,14 @@
-<script setup>
-defineProps({
-  title: String,
-  counter: Number,
-  slim: Boolean,
-  icon: String,
-  iconClass: String,
-  iconTooltip: String,
-  iconHref: String,
-  loading: Boolean
-});
+<script setup lang="ts">
+defineProps<{
+  title?: string;
+  counter?: number;
+  slim?: boolean;
+  icon?: string;
+  iconClass?: string;
+  iconTooltip?: string;
+  iconHref?: string;
+  loading?: boolean;
+}>();
 </script>
 
 <template>
@@ -22,7 +22,7 @@ defineProps({
     >
       {{ title }}
       <UiCounter v-if="counter" :counter="counter" class="ml-1 inline-block" />
-      <Icon
+      <BaseIcon
         v-if="icon && !iconHref"
         :name="icon"
         size="22"
@@ -30,7 +30,7 @@ defineProps({
         v-tippy="{ content: iconTooltip ? iconTooltip : null }"
       />
       <BaseLink v-else-if="iconHref" :link="iconHref" hideExternalIcon>
-        <Icon
+        <BaseIcon
           v-if="icon"
           :name="icon"
           size="22"

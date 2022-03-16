@@ -7,7 +7,7 @@ defineProps(['strategy']);
 </script>
 
 <template>
-  <Block class="hover:border-skin-text cursor-pointer">
+  <BaseBlock class="hover:border-skin-text cursor-pointer">
     <div class="flex items-baseline">
       <h3 class="truncate mt-0" v-tippy="{ content: strategy.id }">
         {{ strategy.id }}
@@ -15,11 +15,11 @@ defineProps(['strategy']);
       <div class="ml-1">v{{ strategy.version }}</div>
     </div>
     <div class="text-skin-text">
-      <Icon name="github" class="mr-1" />
+      <BaseIcon name="github" class="mr-1" />
       {{ strategy.author }}
     </div>
     <div>
       {{ $tc('inSpaces', [formatCompactNumber(strategy.spacesCount)]) }}
     </div>
-  </Block>
+  </BaseBlock>
 </template>

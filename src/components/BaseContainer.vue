@@ -1,7 +1,7 @@
-<script setup>
-defineProps({
-  slim: Boolean
-});
+<script setup lang="ts">
+defineProps<{
+  slim?: boolean;
+}>();
 </script>
 
 <template>

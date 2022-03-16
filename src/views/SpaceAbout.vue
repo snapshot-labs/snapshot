@@ -33,7 +33,7 @@ onMounted(() => {
       <div class="px-4 md:px-0 mb-3 flex">
         <h2>{{ $t('about') }}</h2>
       </div>
-      <Block class="mb-3">
+      <BaseBlock class="mb-3">
         <div v-if="space.about" class="mb-3">
           <h4 class="text-skin-link mb-2">{{ $t('settings.about') }}</h4>
           <UiText :text="space.about" />
@@ -85,8 +85,8 @@ onMounted(() => {
             <div>{{ i }}</div>
           </div>
         </div>
-      </Block>
-      <Block
+      </BaseBlock>
+      <BaseBlock
         :title="$t('settings.admins')"
         v-if="space?.admins?.length"
         :slim="true"
@@ -100,8 +100,8 @@ onMounted(() => {
         >
           <UserAvatar :address="user" :profile="profiles[user]" />
         </div>
-      </Block>
-      <Block
+      </BaseBlock>
+      <BaseBlock
         :title="$t('settings.authors')"
         v-if="space?.members?.length"
         :slim="true"
@@ -115,7 +115,7 @@ onMounted(() => {
         >
           <UserAvatar :address="user" :profile="profiles[user]" />
         </div>
-      </Block>
+      </BaseBlock>
     </template>
   </TheLayout>
 </template>

@@ -15,13 +15,13 @@ const { items } = useFlashNotification();
           :class="`!bg-${item.type}`"
           @click="item.remove()"
         >
-          <Icon
+          <BaseIcon
             v-if="item.type === 'red'"
             name="close1"
             size="20"
             class="align-middle"
           />
-          <Icon
+          <BaseIcon
             v-if="item.type === 'green'"
             name="check1"
             size="20"

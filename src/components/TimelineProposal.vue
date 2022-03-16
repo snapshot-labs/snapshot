@@ -24,7 +24,7 @@ const winningChoice = computed(() =>
 </script>
 
 <template>
-  <Block slim class="transition-colors hover:border-skin-text">
+  <BaseBlock slim class="transition-colors hover:border-skin-text">
     <router-link
       class="p-4 block text-skin-text"
       :to="{
@@ -46,7 +46,7 @@ const winningChoice = computed(() =>
               :proposal="proposal"
               only-username
             />
-            <Badges
+            <BaseBadge
               :address="proposal.author"
               :members="proposal.space.members"
             />
@@ -70,7 +70,7 @@ const winningChoice = computed(() =>
             v-if="proposal.scores_state === 'final'"
             class="mt-2 flex space-x-1 items-center"
           >
-            <Icon size="20" name="check1" class="text-green" />
+            <BaseIcon size="20" name="check1" class="text-green" />
             <span
               >{{ shorten(proposal.choices[winningChoice], 64) }} -
               {{ formatCompactNumber(proposal.scores[winningChoice]) }}
@@ -80,5 +80,5 @@ const winningChoice = computed(() =>
         </div>
       </div>
     </router-link>
-  </Block>
+  </BaseBlock>
 </template>

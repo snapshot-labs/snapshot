@@ -31,13 +31,13 @@ const socials = [
 </script>
 
 <template>
-  <Container
+  <BaseContainer
     class="flex flex-col md:flex-row items-center py-6 space-y-3 md:space-y-0 md:space-x-3 px-0 pb-3"
   >
     <div class="space-x-3 md:ml-auto">
       <span v-for="social in socials" :key="social">
         <BaseLink :link="social.link" hide-external-icon>
-          <Icon
+          <BaseIcon
             size="30"
             class="opacity-40 hover:opacity-80 text-skin-text transition-opacity"
             :name="social.icon"
@@ -50,7 +50,7 @@ const socials = [
         <span class="text-skin-link">?</span>
       </UiSidebarButton>
       <UiSidebarButton @click="toggleUserTheme" :aria-label="$t('toggleSkin')">
-        <Icon size="20" class="text-skin-link" :name="getThemeIcon()" />
+        <BaseIcon size="20" class="text-skin-link" :name="getThemeIcon()" />
       </UiSidebarButton>
       <SelectLanguageButton />
     </div>
@@ -59,7 +59,7 @@ const socials = [
     >
       © {{ yearNow }} Snapshot Labs.
     </div>
-  </Container>
+  </BaseContainer>
   <teleport to="#modal">
     <ModalAbout
       :open="modalAboutOpen"
