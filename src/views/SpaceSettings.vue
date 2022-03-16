@@ -21,7 +21,6 @@ import {
 const props = defineProps({
   space: Object,
   sourceSpace: Object,
-  spaceKey: String,
   loadExtentedSpaces: Function
 });
 
@@ -77,7 +76,7 @@ const isValid = computed(() => {
 });
 
 const textRecord = computed(() => {
-  const keyURI = encodeURIComponent(props.spaceKey);
+  const keyURI = encodeURIComponent(props.space.id);
   const address = web3Account.value
     ? getAddress(web3Account.value)
     : '<your-address>';
@@ -99,7 +98,7 @@ watch(
 );
 
 const ensOwner = computed(() =>
-  ownedEnsDomains.value?.map(d => d.name).includes(props.spaceKey)
+  ownedEnsDomains.value?.map(d => d.name).includes(props.space.id)
 );
 
 const isSpaceAdmin = computed(() => {
@@ -131,11 +130,11 @@ const categoriesString = computed(() => {
 async function handleSubmit() {
   if (isValid.value) {
     if (form.value.filters.invalids) delete form.value.filters.invalids;
-    const result = await send({ id: props.spaceKey }, 'settings', form.value);
+    const result = await send({ id: props.space.id }, 'settings', form.value);
     console.log('Result', result);
     if (result.id) {
       notify(['green', t('notify.saved')]);
-      props.loadExtentedSpaces([props.spaceKey]);
+      props.loadExtentedSpaces([props.space.id]);
     }
   } else {
     console.log('Invalid schema', validate.value);
@@ -260,42 +259,36 @@ function formatSpace(spaceRaw) {
   return space;
 }
 
-watch(
-  () => props.space,
-  async () => {
-    if (props.space) {
-      const spaceClone = formatSpace(props.space);
-      if (spaceClone) {
-        form.value = spaceClone;
-        currentSettings.value = clone(spaceClone);
-      }
+onMounted(async () => {
+  if (props.space) {
+    const spaceClone = formatSpace(props.space);
+    if (spaceClone) {
+      form.value = spaceClone;
+      currentSettings.value = clone(spaceClone);
     }
-    if (props.sourceSpace) {
-      const fromClone = formatSpace(props.sourceSpace);
-      if (fromClone) {
-        form.value = fromClone;
-      }
+  }
+  if (props.sourceSpace) {
+    const fromClone = formatSpace(props.sourceSpace);
+    if (fromClone) {
+      form.value = fromClone;
     }
-    try {
-      const uri = await getSpaceUri(
-        props.spaceKey,
-        import.meta.env.VITE_DEFAULT_NETWORK
-      );
-      console.log('URI', uri);
-      currentTextRecord.value = uri;
-    } catch (e) {
-      console.log(e);
-    }
+  }
+  try {
+    const uri = await getSpaceUri(
+      props.space.id,
+      import.meta.env.VITE_DEFAULT_NETWORK
+    );
+    console.log('URI', uri);
+    currentTextRecord.value = uri;
+  } catch (e) {
+    console.log(e);
+  }
 
-    loaded.value = true;
-  },
-  { immediate: true }
-);
+  loaded.value = true;
+});
 
 onMounted(() => {
-  props.space?.name
-    ? setPageTitle('page.title.space.settings', { space: props.space.name })
-    : setPageTitle('page.title.setup');
+  setPageTitle('page.title.space.settings', { space: props.space.name });
 });
 
 const {
@@ -314,7 +307,7 @@ async function handleSetRecord() {
   const tx = await setRecord();
   const receipt = await tx.wait();
   if (receipt) {
-    props.loadExtentedSpaces([props.spaceKey]);
+    props.loadExtentedSpaces([props.space.id]);
   }
 }
 </script>
@@ -774,8 +767,8 @@ async function handleSetRecord() {
       :open="modalControllerEditOpen"
       @close="modalControllerEditOpen = false"
       :currentTextRecord="currentTextRecord"
-      :ensAddress="spaceKey"
-      @set="(ensAddress = spaceKey), confirmSetRecord()"
+      :ensAddress="space.id"
+      @set="(ensAddress = space.id), confirmSetRecord()"
     />
     <ModalUnsupportedNetwork
       :open="modalUnsupportedNetworkOpen"
