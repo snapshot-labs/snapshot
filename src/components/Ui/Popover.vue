@@ -41,7 +41,7 @@ debouncedWatch(
 )
 
 watch(open, () => {
-  if (!isXLargeScreen.value) popperInstance.setOptions({ placement: 'bottom' });
+  if (isXLargeScreen.value) popperInstance.setOptions({ placement: 'bottom' });
   else popperInstance.setOptions({ placement: 'bottom-start' });
 });
 </script>
