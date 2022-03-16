@@ -12,7 +12,7 @@ defineProps({
 </script>
 
 <template>
-  <Block class="hover:border-skin-text cursor-pointer">
+  <BaseBlock class="hover:border-skin-text cursor-pointer">
     <div class="flex items-center mb-2">
       <BaseAvatar class="mr-2" :imgsrc="getIpfsUrl(plugin.icon)" size="28" />
       <h3 v-text="plugin.name" class="truncate m-0" />
@@ -25,7 +25,7 @@ defineProps({
           :link="`https://github.com/${plugin.author}`"
           hide-external-icon
         >
-          <Icon name="github" class="mr-1" />
+          <BaseIcon name="github" class="mr-1" />
           {{ plugin.author }}
         </BaseLink>
         {{
@@ -43,5 +43,5 @@ defineProps({
         {{ $t('learnMore') }}
       </BaseLink>
     </div>
-  </Block>
+  </BaseBlock>
 </template>

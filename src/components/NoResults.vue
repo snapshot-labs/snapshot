@@ -8,9 +8,9 @@ const text = computed(() => t('noResultsFound'));
 
 <template>
   <div class="mb-3 text-center">
-    <Block v-if="useBlock" class="pt-1">
+    <BaseBlock v-if="useBlock" class="pt-1">
       {{ text }}
-    </Block>
+    </BaseBlock>
     <div v-else>{{ text }}</div>
   </div>
 </template>

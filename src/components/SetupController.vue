@@ -59,10 +59,10 @@ onMounted(async () => {
 </script>
 
 <template>
-  <Block v-if="loadingTextRecord" slim>
+  <BaseBlock v-if="loadingTextRecord" slim>
     <RowLoading class="my-2" />
-  </Block>
-  <Block v-else :title="$t('setup.setSpaceController')">
+  </BaseBlock>
+  <BaseBlock v-else :title="$t('setup.setSpaceController')">
     <UiInput
       v-model.trim="spaceControllerInput"
       :placeholder="$t('setup.spaceOwnerAddressPlaceHolder')"
@@ -79,7 +79,7 @@ onMounted(async () => {
     >
       {{ $t('setup.setController') }}
     </UiButton>
-  </Block>
+  </BaseBlock>
 
   <teleport to="#modal">
     <ModalUnsupportedNetwork

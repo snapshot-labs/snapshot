@@ -68,7 +68,7 @@ const { copyToClipboard } = useCopy();
       <span class="tooltip-text">Multisend address</span>
       <span class="tooltip-text mt-1 text-skin-text">
         {{ shorten(multiSendAddress) }}
-        <Icon
+        <BaseIcon
           class="ml-1"
           name="copy"
           size="16"
@@ -78,7 +78,7 @@ const { copyToClipboard } = useCopy();
       <span class="tooltip-text mt-3">Reality Module address</span>
       <span class="tooltip-text mt-1 text-skin-text">
         {{ shorten(realityAddress) }}
-        <Icon
+        <BaseIcon
           class="ml-1"
           name="copy"
           size="16"

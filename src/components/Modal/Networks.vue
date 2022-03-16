@@ -34,10 +34,10 @@ function select(key) {
     <template v-slot:header>
       <h3>{{ $t('networks') }}</h3>
     </template>
-    <Search
+    <BaseSearch
       v-model="searchInput"
       :placeholder="$t('searchPlaceholder')"
-      :modal="true"
+      modal
     />
 
     <div class="mt-4 mx-0 md:mx-4 min-h-[339px]">

@@ -28,7 +28,6 @@ import { SPACE_DELEGATE_QUERY } from '@/helpers/queries';
 import { useApolloQuery } from '@/composables/useApolloQuery';
 import { useModal } from '@/composables/useModal';
 import { useEns } from '@/composables/useEns';
-import Icon from '@/components/Icon.vue';
 import { SNAPSHOT_SUBGRAPH_URL } from '@snapshot-labs/snapshot.js/src/utils';
 
 const abi = ['function setDelegate(bytes32 id, address delegate)'];
@@ -281,14 +280,14 @@ onMounted(async () => {
     <template #content-left>
       <div class="px-4 md:px-0 mb-3">
         <router-link :to="{ path: '/' }" class="text-skin-text">
-          <Icon name="back" size="22" class="!align-middle" />
+          <BaseIcon name="back" size="22" class="!align-middle" />
           {{ $t('backToHome') }}
         </router-link>
         <h1 v-if="loaded" v-text="$t('delegate.header')" />
       </div>
       <PageLoading v-if="!loaded" />
-      <Block v-else-if="!networkSupportsDelegate">
-        <Icon name="warning" class="mr-1" />
+      <BaseBlock v-else-if="!networkSupportsDelegate">
+        <BaseIcon name="warning" class="mr-1" />
         {{
           $t('delegate.delegateNotSupported', {
             network:
@@ -302,9 +301,9 @@ onMounted(async () => {
         >
           {{ $t('learnMore') }}
         </BaseLink>
-      </Block>
+      </BaseBlock>
       <div v-else class="space-y-3">
-        <Block>
+        <BaseBlock>
           <UiInput
             v-model.trim="form.address"
             :placeholder="$t('delegate.addressPlaceholder')"
@@ -314,7 +313,7 @@ onMounted(async () => {
             <template v-slot:label>{{ $t('delegate.to') }}</template>
           </UiInput>
           <div class="flex items-center space-x-2 px-2">
-            <Checkbox v-model="specifySpaceChecked" />
+            <BaseCheckbox v-model="specifySpaceChecked" />
             <span>{{ $t('setDelegationToSpace') }}</span>
           </div>
           <UiInput
@@ -325,8 +324,8 @@ onMounted(async () => {
           >
             <template v-slot:label>{{ $t('space') }}</template>
           </UiInput>
-        </Block>
-        <Block
+        </BaseBlock>
+        <BaseBlock
           v-if="
             delegates.length < 1 &&
             delegators.length < 1 &&
@@ -334,10 +333,10 @@ onMounted(async () => {
             web3Account
           "
         >
-          <Icon name="warning" class="mr-1" />
+          <BaseIcon name="warning" class="mr-1" />
           {{ $t('delegate.noDelegationsAndDelegates') }}
-        </Block>
-        <Block
+        </BaseBlock>
+        <BaseBlock
           v-if="delegates.length > 0"
           :slim="true"
           :title="$t('delegate.delegations')"
@@ -361,11 +360,11 @@ onMounted(async () => {
               @click="revokeDelegate(delegate.space, delegate.delegate)"
               class="px-2 -mr-2 ml-2"
             >
-              <Icon name="close" size="12" class="mb-1" />
+              <BaseIcon name="close" size="12" class="mb-1" />
             </a>
           </div>
-        </Block>
-        <Block
+        </BaseBlock>
+        <BaseBlock
           v-if="delegators.length > 0"
           :slim="true"
           :title="$t('delegate.delegated')"
@@ -386,8 +385,8 @@ onMounted(async () => {
               class="flex-auto text-right text-skin-link"
             />
           </div>
-        </Block>
-        <Block
+        </BaseBlock>
+        <BaseBlock
           v-if="space?.id && specifySpaceChecked"
           :title="$tc('delegate.topDelegates')"
           :loading="delegatesLoading"
@@ -422,11 +421,11 @@ onMounted(async () => {
           >
             {{ $tc('delegate.noDelegatesFoundFor', [space.id]) }}
           </div>
-        </Block>
+        </BaseBlock>
       </div>
     </template>
     <template #sidebar-right v-if="networkSupportsDelegate">
-      <Block>
+      <BaseBlock>
         <UiButton
           @click="web3Account ? handleSubmit() : (modalAccountOpen = true)"
           :disabled="!isValidForm && !!web3Account"
@@ -436,7 +435,7 @@ onMounted(async () => {
         >
           {{ $t('confirm') }}
         </UiButton>
-      </Block>
+      </BaseBlock>
     </template>
   </TheLayout>
   <teleport to="#modal" v-if="networkSupportsDelegate">

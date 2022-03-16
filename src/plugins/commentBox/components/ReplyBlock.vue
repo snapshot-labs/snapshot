@@ -160,7 +160,7 @@ const isCreator = computed(() => props.proposal.author === web3Account.value);
     />
   </div>
   <div v-if="toggleEditComment">
-    <Block :slim="true" class="p-4 text-skin-text mt-2 mb-0">
+    <BaseBlock :slim="true" class="p-4 text-skin-text mt-2 mb-0">
       <div>
         <UserAvatar
           :address="item.author"
@@ -182,18 +182,18 @@ const isCreator = computed(() => props.proposal.author === web3Account.value);
           :items="threeDotItems"
         >
           <template v-slot:button>
-            <Icon name="threedots" size="25" class="v-align-text-bottom" />
+            <BaseIcon name="threedots" size="25" class="v-align-text-bottom" />
           </template>
         </BaseDropdown>
       </div>
       <div class="mt-2">{{ item.markdown }}</div>
-    </Block>
+    </BaseBlock>
     <UiButton
       @click="toggleComment = !toggleComment"
       class="p-1 rounded-0 mt-2"
       style="line-height: 0px; height: auto"
     >
-      <Icon :name="'receipt-outlined'" class="v-align-middle" size="15" />
+      <BaseIcon :name="'receipt-outlined'" class="v-align-middle" size="15" />
       <span class="ml-1">{{ $t('comment_box.reply') }}</span>
     </UiButton>
     <PluginCommentBoxComment

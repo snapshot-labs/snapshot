@@ -99,10 +99,7 @@ onMounted(() => {
     setPageTitle('page.title.space.proposals', { space: props.space.name });
 
   const firstProposal = store.space.proposals[0];
-  if (
-    !firstProposal ||
-    (firstProposal && firstProposal?.space.id !== props.space.id)
-  ) {
+  if (firstProposal && firstProposal?.space.id !== props.space.id) {
     store.space.proposals = [];
     load();
   }
@@ -154,7 +151,7 @@ onMounted(() => {
           <template v-slot:button>
             <UiButton class="pr-3">
               {{ $t(`proposals.states.${store.space.filterBy}`) }}
-              <Icon size="14" name="arrow-down" class="mt-1 mr-1" />
+              <BaseIcon size="14" name="arrow-down" class="mt-1 mr-1" />
             </UiButton>
           </template>
         </BaseDropdown>
@@ -180,9 +177,9 @@ onMounted(() => {
         />
       </div>
       <div class="w-[10px] h-[10px] absolute bottom-0" ref="endElement" />
-      <Block v-if="loadingData" :slim="true" class="my-4">
+      <BaseBlock v-if="loadingData" :slim="true" class="my-4">
         <RowLoading class="my-2" />
-      </Block>
+      </BaseBlock>
     </template>
   </TheLayout>
 </template>

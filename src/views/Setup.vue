@@ -87,9 +87,9 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
         <h1 v-text="$t('setup.createASpace')" class="mb-4" />
       </div>
       <template v-if="web3Account">
-        <Block v-if="loadingOwnedEnsDomains" slim>
+        <BaseBlock v-if="loadingOwnedEnsDomains" slim>
           <RowLoading class="my-2" />
-        </Block>
+        </BaseBlock>
         <!-- Step two - setup space controller -->
         <SetupController
           v-else-if="route.params.step === 'controller' && ensAddress"
@@ -103,7 +103,7 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
           :ensAddress="ensAddress"
           :web3Account="web3Account"
         />
-        <Block v-else>
+        <BaseBlock v-else>
           <div v-if="ownedEnsDomainsNoExistingSpace.length">
             <div class="mb-3">
               {{
@@ -123,7 +123,7 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
                 :primary="ownedEnsDomainsNoExistingSpace.length === 1"
               >
                 {{ ens.name }}
-                <Icon name="go" size="22" class="-mr-2" />
+                <BaseIcon name="go" size="22" class="-mr-2" />
               </UiButton>
             </div>
             <div class="my-3">
@@ -143,9 +143,9 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
               @waitForRegistration="waitForRegistration"
             />
           </div>
-        </Block>
+        </BaseBlock>
       </template>
-      <Block v-else>
+      <BaseBlock v-else>
         <UiButton
           @click="modalAccountOpen = true"
           :loading="web3.authLoading"
@@ -154,17 +154,17 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
         >
           {{ $t('connectWallet') }}
         </UiButton>
-      </Block>
+      </BaseBlock>
     </template>
     <template #sidebar-right>
-      <Block class="text-skin-text">
-        <Icon
+      <BaseBlock class="text-skin-text">
+        <BaseIcon
           name="gitbook"
           size="24"
           class="text-skin-text pr-2 !align-middle"
         />
         <span v-html="$t('setup.helpDocsAndDiscordLinks')" />
-      </Block>
+      </BaseBlock>
     </template>
   </TheLayout>
 </template>

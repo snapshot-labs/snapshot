@@ -16,7 +16,7 @@ withDefaults(defineProps<SocialProps>(), {
 
 <template>
   <BaseLink :link="social.link" hide-external-icon :disabled="!social.link">
-    <Icon
+    <BaseIcon
       :size="size"
       :name="social.icon"
       :class="social.link ? 'hover:opacity-80 text-skin-text' : 'opacity-10'"
