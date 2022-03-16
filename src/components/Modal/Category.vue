@@ -59,7 +59,7 @@ function handleClose() {
         {{ $t('create.categorie(s)') }}
       </div>
       <div class="space-y-3">
-        <Block
+        <BaseBlock
           @click="selectCategoriesHandler(category)"
           v-for="(category, i) in categories"
           :key="i"
@@ -79,7 +79,7 @@ function handleClose() {
             v-if="hasCategory(category)"
             class="iconfont iconcheck1 absolute top-2 right-2 text-lg"
           />
-        </Block>
+        </BaseBlock>
       </div>
     </div>
     <template v-slot:footer>

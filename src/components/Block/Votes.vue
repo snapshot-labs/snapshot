@@ -83,7 +83,7 @@ watch(visibleVotes, () => {
 </script>
 
 <template>
-  <Block
+  <BaseBlock
     v-if="isZero()"
     :title="`${voteCount} ${$t('votes')}`"
     :slim="true"
@@ -143,7 +143,7 @@ watch(visibleVotes, () => {
           class="ml-2 text-skin-text"
           title="Receipt"
         >
-          <Icon name="signature" />
+          <BaseIcon name="signature" />
         </a>
       </div>
     </div>
@@ -166,5 +166,5 @@ watch(visibleVotes, () => {
         :authorIpfsHash="authorIpfsHash"
       />
     </teleport>
-  </Block>
+  </BaseBlock>
 </template>

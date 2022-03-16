@@ -82,7 +82,7 @@ watch(open, () => (step.value = null));
             <span v-if="web3.profile.name" v-text="web3.profile.name" />
             <span v-else-if="web3.profile.ens" v-text="web3.profile.ens" />
             <span v-else v-text="shorten(web3.account)" />
-            <Icon name="external-link" class="ml-1" />
+            <BaseIcon name="external-link" class="ml-1" />
           </UiButton>
         </BaseLink>
 

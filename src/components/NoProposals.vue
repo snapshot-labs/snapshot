@@ -3,7 +3,7 @@ defineProps(['space']);
 </script>
 <template>
   <div class="mb-3 text-center">
-    <Block class="pt-1">
+    <BaseBlock class="pt-1">
       <div class="mb-3">
         {{ $t('noResultsFound') }}
       </div>
@@ -12,6 +12,6 @@ defineProps(['space']);
           {{ $t('proposals.createProposal') }}
         </UiButton>
       </router-link>
-    </Block>
+    </BaseBlock>
   </div>
 </template>

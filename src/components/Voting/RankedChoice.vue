@@ -52,7 +52,7 @@ function updateChoices() {
                 @click="removeChoice(index)"
                 class="min-w-[20px] ml-[40px] text-right"
               >
-                <Icon name="close" size="12" />
+                <BaseIcon name="close" size="12" />
               </div>
             </UiButton>
           </div>

@@ -60,7 +60,7 @@ const winningChoice = computed(() =>
             :proposal="proposal"
             only-username
           />
-          <Badges
+          <BaseBadge
             :address="proposal.author"
             :members="proposal.space.members"
           />
@@ -81,7 +81,7 @@ const winningChoice = computed(() =>
             class="mt-1 w-full relative"
           >
             <div class="absolute leading-[43px] ml-3 text-skin-link">
-              <Icon
+              <BaseIcon
                 name="check1"
                 size="20"
                 class="mr-1 -ml-1 align-middle"

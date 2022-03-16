@@ -146,7 +146,7 @@ function deleteItem(key) {
 }
 </script>
 <template>
-  <Block :title="$t('comment_box.title')">
+  <BaseBlock :title="$t('comment_box.title')">
     <UiButton
       v-if="togglePreview"
       class="flex w-full px-3 !h-auto cursor-default"
@@ -159,13 +159,13 @@ function deleteItem(key) {
         :minHeight="100"
       />
     </UiButton>
-    <Block
+    <BaseBlock
       v-if="!togglePreview"
       slim="true"
       class="p-4 h6 text-skin-text mt-2 mb-0"
     >
       <div>{{ comment }}</div>
-    </Block>
+    </BaseBlock>
 
     <UiButton
       @click="clickSubmit"
@@ -198,11 +198,8 @@ function deleteItem(key) {
         @deleteItem="deleteItem($event)"
       />
     </div>
-    <div
-      class="w-[10px] h-[10px] absolute bottom-0"
-      ref="endElement"
-    />
+    <div class="w-[10px] h-[10px] absolute bottom-0" ref="endElement" />
 
     <RowLoading v-if="loadingMore" class="my-2" />
-  </Block>
+  </BaseBlock>
 </template>
