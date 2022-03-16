@@ -76,7 +76,7 @@ onMounted(() => {
         !!error ? '-mt-[20px] opacity-100' : '-mt-[48px] opacity-0'
       ]"
     >
-      <Icon name="warning" class="text-red-500 mr-2" />
+      <BaseIcon name="warning" class="text-red-500 mr-2" />
       {{ error || '' }}
       <!-- The fact that error can be bool or string makes this necessary -->
     </div>

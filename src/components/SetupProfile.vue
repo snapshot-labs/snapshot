@@ -136,7 +136,7 @@ async function handleSubmit() {
 
 <template>
   <div>
-    <Block>
+    <BaseBlock>
       <div class="space-y-2">
         <UiInput
           v-model="form.name"
@@ -183,7 +183,7 @@ async function handleSubmit() {
           {{ $t('setup.pleaseWaitMessage') }}
         </BaseMessageBlock>
       </div>
-    </Block>
+    </BaseBlock>
   </div>
   <teleport to="#modal">
     <ModalNetworks

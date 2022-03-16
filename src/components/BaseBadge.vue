@@ -1,7 +1,7 @@
-<script setup>
+<script setup lang="ts">
 import { computed } from 'vue';
 
-const props = defineProps({ address: String, members: Object });
+const props = defineProps<{ address: string; members: string[] }>();
 
 const isCore = computed(() => {
   if (!props.members) return false;

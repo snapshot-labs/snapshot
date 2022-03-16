@@ -151,7 +151,7 @@ export default {
         target="_blank"
         class="float-right"
       >
-        <Icon name="external-link" class="ml-1" />
+        <BaseIcon name="external-link" class="ml-1" />
       </a>
     </div>
     <div>
@@ -162,7 +162,7 @@ export default {
           target="_blank"
           class="float-right"
         >
-          <Icon name="external-link" class="ml-1" />
+          <BaseIcon name="external-link" class="ml-1" />
         </a>
       </div>
     </div>

@@ -35,7 +35,7 @@
         <h4 class="text-center text-skin-link">
           Reality oracle
           <a @click="updateDetails" class="ml-2 text-skin-text">
-            <Icon name="refresh" size="22" />
+            <BaseIcon name="refresh" size="22" />
           </a>
         </h4>
         <div

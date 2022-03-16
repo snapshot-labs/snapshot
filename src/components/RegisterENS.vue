@@ -41,7 +41,7 @@ const isValidDomain = computed(() => {
         content: `${$t('setup.supportedEnsTLDs')}: ${validEnsTlds.join(', ')}`
       }"
     >
-      <Icon name="info" size="24" class="text-skin-text -mr-1" />
+      <BaseIcon name="info" size="24" class="text-skin-text -mr-1" />
     </span>
   </UiButton>
   <BaseLink

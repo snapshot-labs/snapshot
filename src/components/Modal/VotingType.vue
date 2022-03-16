@@ -35,7 +35,7 @@ function select(id) {
     </template>
     <div class="mt-4 mx-0 md:mx-4 space-y-3 flex flex-col">
       <a v-if="allowAny" @click="select(undefined)">
-        <Block
+        <BaseBlock
           :class="[
             'transition-colors relative voting-type',
             { 'voting-type-active': !selected }
@@ -48,10 +48,10 @@ function select(id) {
           <h3>
             {{ $t('settings.anyType') }}
           </h3>
-        </Block>
+        </BaseBlock>
       </a>
       <a v-for="(type, key) in types" :key="key" @click="select(type)">
-        <Block
+        <BaseBlock
           :class="[
             'transition-colors relative voting-type',
             { 'voting-type-active': type === selected }
@@ -66,7 +66,7 @@ function select(id) {
             v-text="$t(`voting.description.${type}`)"
             class="text-skin-text"
           />
-        </Block>
+        </BaseBlock>
       </a>
     </div>
   </UiModal>

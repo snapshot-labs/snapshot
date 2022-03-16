@@ -9,7 +9,7 @@ defineProps(['validation']);
 </script>
 
 <template>
-  <Block class="cursor-pointer hover:!border-skin-text">
+  <BaseBlock class="cursor-pointer hover:!border-skin-text">
     <div class="flex items-center mb-1">
       <h3 class="mt-0" v-text="validation" />
     </div>
@@ -20,5 +20,5 @@ defineProps(['validation']);
         ])
       }}
     </div>
-  </Block>
+  </BaseBlock>
 </template>
