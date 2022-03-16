@@ -50,7 +50,7 @@ watch(open, () => emit('openChange'));
       leave-to-class="transform opacity-0 scale-95"
     >
       <div
-        class="origin-top-right z-20 absolute right-0 mt-2 min-w-[150px] max-w-[320px] md:max-w-[400px] rounded-2xl bg-skin-header-bg overflow-hidden shadow-lg"
+        class="origin-top-right z-20 absolute right-0 mt-2 min-w-[150px] max-w-[320px] md:max-w-[400px] rounded-2xl bg-skin-header-bg overflow-hidden shadow-lg border border-skin-border"
         v-if="open"
       >
         <ul
