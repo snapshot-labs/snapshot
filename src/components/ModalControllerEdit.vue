@@ -20,7 +20,7 @@ defineEmits(['close', 'set']);
 </script>
 
 <template>
-  <UiModal :open="open" @close="$emit('close')">
+  <BaseModal :open="open" @close="$emit('close')">
     <template v-slot:header>
       <div class="flex flex-row justify-center items-center">
         <h3>{{ $t('settings.editController') }}</h3>
@@ -52,7 +52,7 @@ defineEmits(['close', 'set']);
       </UiInput>
     </div>
     <template v-slot:footer>
-      <UiButton
+      <BaseButton
         class="button-outline w-full my-2"
         primary
         :disabled="!controllerInputIsValid"
@@ -60,7 +60,7 @@ defineEmits(['close', 'set']);
         :loading="settingENSRecord"
       >
         {{ $t('settings.set') }}
-      </UiButton>
+      </BaseButton>
     </template>
-  </UiModal>
+  </BaseModal>
 </template>

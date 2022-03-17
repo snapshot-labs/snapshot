@@ -15,7 +15,7 @@ const hubUrl = import.meta.env.VITE_HUB_URL;
 </script>
 
 <template>
-  <UiModal :open="open" @close="$emit('close')">
+  <BaseModal :open="open" @close="$emit('close')">
     <template v-slot:header>
       <h3>{{ $t('about') }}</h3>
     </template>
@@ -49,5 +49,5 @@ const hubUrl = import.meta.env.VITE_HUB_URL;
         {{ hubUrl }}
       </div>
     </div>
-  </UiModal>
+  </BaseModal>
 </template>

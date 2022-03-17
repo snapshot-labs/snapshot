@@ -7,7 +7,7 @@ defineEmits(['close', 'confirm']);
 </script>
 
 <template>
-  <UiModal :open="open" @close="$emit('close')">
+  <BaseModal :open="open" @close="$emit('close')">
     <template v-slot:header>
       <div class="flex flex-row justify-center items-center">
         <h3>{{ $t('confirmAction') }}</h3>
@@ -16,13 +16,13 @@ defineEmits(['close', 'confirm']);
 
     <slot />
     <template v-slot:footer>
-      <UiButton
+      <BaseButton
         class="button-outline w-full"
         primary
         @click="$emit('confirm'), $emit('close')"
       >
         {{ $t('confirm') }}
-      </UiButton>
+      </BaseButton>
     </template>
-  </UiModal>
+  </BaseModal>
 </template>

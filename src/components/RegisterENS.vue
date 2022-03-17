@@ -22,7 +22,7 @@ const isValidDomain = computed(() => {
 </script>
 
 <template>
-  <UiButton class="text-left w-full mb-1 flex px-3 items-center">
+  <BaseButton class="text-left w-full mb-1 flex px-3 items-center">
     <input
       :value="modelValue"
       @input="
@@ -43,14 +43,14 @@ const isValidDomain = computed(() => {
     >
       <BaseIcon name="info" size="24" class="text-skin-text -mr-1" />
     </span>
-  </UiButton>
+  </BaseButton>
   <BaseLink
     @click="$emit('waitForRegistration')"
     :link="`https://app.ens.domains/name/${modelValue}/register`"
     hide-external-icon
   >
-    <UiButton :disabled="!isValidDomain" class="w-full mt-2" primary>
+    <BaseButton :disabled="!isValidDomain" class="w-full mt-2" primary>
       {{ $t('setup.registerEnsButton') }}
-    </UiButton>
+    </BaseButton>
   </BaseLink>
 </template>

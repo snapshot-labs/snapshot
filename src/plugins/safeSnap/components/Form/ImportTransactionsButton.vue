@@ -196,7 +196,7 @@ export default {
           ></textarea>
         </div>
         <div class="mt-3 flex flex-col justify-center items-center">
-          <UiButton @click="importFromText">Parse JSON</UiButton>
+          <BaseButton @click="importFromText">Parse JSON</BaseButton>
           <a
             class="mt-2 mb-1"
             style="text-decoration: underline; font-size: 14px"

@@ -102,6 +102,6 @@ watch(
   >
     {{ $t('comment_box.load_more') }}...
   </div>
-  <RowLoading v-if="loadingMore" class="my-2" />
+  <LoadingRow v-if="loadingMore" class="my-2" />
 </template>
 <style></style>

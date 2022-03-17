@@ -8,7 +8,7 @@
   </div>
 
   <div v-if="questionState === questionStates.loading" class="my-4">
-    <UiLoading />
+    <LoadingSpinner />
   </div>
 
   <div v-if="connectedToRightChain || usingMetaMask">
@@ -16,12 +16,12 @@
       v-if="questionState === questionStates.waitingForQuestion"
       class="my-4"
     >
-      <UiButton
+      <BaseButton
         @click="submitProposal"
         :loading="actionInProgress === 'submit-proposal'"
       >
         {{ $t('safeSnap.labels.request') }}
-      </UiButton>
+      </BaseButton>
     </div>
 
     <div
@@ -73,7 +73,7 @@
         </div>
 
         <div v-if="questionState === questionStates.questionNotSet">
-          <UiButton
+          <BaseButton
             class="w-full mb-1 mt-3"
             @click="
               modalApproveDecisionOpen = true;
@@ -82,10 +82,10 @@
             :loading="actionInProgress === 'set-outcome'"
           >
             {{ $t('safeSnap.labels.setOutcome') }}
-          </UiButton>
+          </BaseButton>
         </div>
         <div v-if="questionState === questionStates.questionNotResolved">
-          <UiButton
+          <BaseButton
             class="w-full my-1"
             @click="
               modalApproveDecisionOpen = true;
@@ -94,22 +94,22 @@
             :loading="actionInProgress === 'set-outcome'"
           >
             {{ $t('safeSnap.labels.changeOutcome') }}
-          </UiButton>
+          </BaseButton>
         </div>
         <div v-if="bondData.canClaim">
-          <UiButton
+          <BaseButton
             class="w-full my-1"
             @click="claimBond"
             :loading="actionInProgress === 'claim-bond'"
           >
             {{ $t('safeSnap.claimBond') }}
-          </UiButton>
+          </BaseButton>
         </div>
       </div>
     </div>
 
     <div v-if="questionState === questionStates.proposalApproved" class="my-4">
-      <UiButton
+      <BaseButton
         @click="executeProposal"
         :loading="action2InProgress === 'execute-proposal'"
       >
@@ -119,7 +119,7 @@
             batches.length
           ])
         }}
-      </UiButton>
+      </BaseButton>
     </div>
   </div>
   <div

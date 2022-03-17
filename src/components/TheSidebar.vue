@@ -122,7 +122,7 @@ onMounted(() => {
             <router-link
               :to="{ name: 'spaceProposals', params: { key: element } }"
             >
-              <SpaceAvatar
+              <AvatarSpace
                 :space="spaces[element]"
                 :key="element"
                 symbolIndex="space"

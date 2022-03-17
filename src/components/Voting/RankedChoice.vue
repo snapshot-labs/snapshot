@@ -39,7 +39,7 @@ function updateChoices() {
       >
         <template #item="{ element, index }">
           <div class="mb-2">
-            <UiButton
+            <BaseButton
               class="flex justify-between items-center w-full button--active !px-3"
             >
               <div class="min-w-[60px] text-left">
@@ -54,20 +54,20 @@ function updateChoices() {
               >
                 <BaseIcon name="close" size="12" />
               </div>
-            </UiButton>
+            </BaseButton>
           </div>
         </template>
       </draggable>
     </div>
     <div v-for="(choice, i) in proposal.choices" :key="i">
-      <UiButton
+      <BaseButton
         v-if="!selectedChoices.includes(i + 1)"
         @click="selectChoice(i + 1)"
         class="block w-full mb-2"
         :class="selectedChoices.includes(i + 1) && 'button--active'"
       >
         <span class="truncate">{{ choice }}</span>
-      </UiButton>
+      </BaseButton>
     </div>
   </div>
 </template>

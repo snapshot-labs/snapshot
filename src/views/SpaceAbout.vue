@@ -36,7 +36,7 @@ onMounted(() => {
       <BaseBlock class="mb-3">
         <div v-if="space.about" class="mb-3">
           <h4 class="text-skin-link mb-2">{{ $t('settings.about') }}</h4>
-          <UiText :text="space.about" />
+          <TextAutolinker :text="space.about" />
         </div>
 
         <div class="mb-3">
@@ -68,7 +68,7 @@ onMounted(() => {
         <div v-if="space.terms" class="last:mb-0 mb-3">
           <h4 class="text-skin-link mb-2">{{ $t('settings.terms') }}</h4>
           <BaseLink :link="space.terms">
-            <UiText :text="getUrl(space.terms)" :truncate="35" />
+            <TextAutolinker :text="getUrl(space.terms)" :truncate="35" />
           </BaseLink>
         </div>
 
@@ -98,7 +98,7 @@ onMounted(() => {
           :style="i === 0 && 'border: 0 !important;'"
           class="px-4 py-3 border-t flex"
         >
-          <UserAvatar :address="user" :profile="profiles[user]" />
+          <AvatarUser :address="user" :profile="profiles[user]" />
         </div>
       </BaseBlock>
       <BaseBlock
@@ -113,7 +113,7 @@ onMounted(() => {
           :style="i === 0 && 'border: 0 !important;'"
           class="px-4 py-3 border-t flex"
         >
-          <UserAvatar :address="user" :profile="profiles[user]" />
+          <AvatarUser :address="user" :profile="profiles[user]" />
         </div>
       </BaseBlock>
     </template>

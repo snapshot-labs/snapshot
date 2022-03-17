@@ -43,7 +43,7 @@ const switchToMainnet = async () => {
 </script>
 
 <template>
-  <UiModal :open="open" @close="$emit('close')">
+  <BaseModal :open="open" @close="$emit('close')">
     <template v-slot:header>
       <div class="flex flex-row justify-center items-center">
         <h3>{{ $t('unsupportedNetwork.unsupportedNetwork') }}</h3>
@@ -59,14 +59,14 @@ const switchToMainnet = async () => {
       </p>
     </div>
     <template v-if="usingMetaMask" v-slot:footer>
-      <UiButton
+      <BaseButton
         :loading="switchingChain"
         class="button-outline w-full"
         :primary="true"
         @click="switchToMainnet"
       >
         {{ $t('unsupportedNetwork.switchToMainnet') }}
-      </UiButton>
+      </BaseButton>
     </template>
-  </UiModal>
+  </BaseModal>
 </template>

@@ -39,7 +39,7 @@ watch(
         `https://stamp.fyi/avatar/eth:${address}?s=${parseInt(size) * 2}`
       "
       class="rounded-full"
-      :class="!space && 'bg-[color:var(--border-color)]'"
+      :class="'bg-[color:var(--border-color)]'"
       :style="{
         width: `${parseInt(size)}px`,
         height: `${parseInt(size)}px`,

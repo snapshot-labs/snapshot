@@ -50,7 +50,7 @@ function emitChoice(c) {
         @selectChoice="emitChoice"
       />
     </div>
-    <UiButton
+    <BaseButton
       :disabled="
         web3.authLoading ||
         (selectedChoices < 1 && proposal.type !== 'approval')
@@ -60,6 +60,6 @@ function emitChoice(c) {
       primary
     >
       {{ $t('proposal.vote') }}
-    </UiButton>
+    </BaseButton>
   </BaseBlock>
 </template>

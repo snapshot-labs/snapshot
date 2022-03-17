@@ -87,9 +87,7 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
         <h1 v-text="$t('setup.createASpace')" class="mb-4" />
       </div>
       <template v-if="web3Account">
-        <BaseBlock v-if="loadingOwnedEnsDomains" slim>
-          <RowLoading class="my-2" />
-        </BaseBlock>
+        <LoadingRow v-if="loadingOwnedEnsDomains" block />
         <!-- Step two - setup space controller -->
         <SetupController
           v-else-if="route.params.step === 'controller' && ensAddress"
@@ -115,7 +113,7 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
               }}
             </div>
             <div class="space-y-2">
-              <UiButton
+              <BaseButton
                 v-for="(ens, i) in ownedEnsDomainsNoExistingSpace"
                 :key="i"
                 @click="goToStepTwo(ens.name)"
@@ -124,7 +122,7 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
               >
                 {{ ens.name }}
                 <BaseIcon name="go" size="22" class="-mr-2" />
-              </UiButton>
+              </BaseButton>
             </div>
             <div class="my-3">
               {{ $t('setup.orReigsterNewEns') }}
@@ -146,14 +144,14 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
         </BaseBlock>
       </template>
       <BaseBlock v-else>
-        <UiButton
+        <BaseButton
           @click="modalAccountOpen = true"
           :loading="web3.authLoading"
           class="w-full"
           primary
         >
           {{ $t('connectWallet') }}
-        </UiButton>
+        </BaseButton>
       </BaseBlock>
     </template>
     <template #sidebar-right>

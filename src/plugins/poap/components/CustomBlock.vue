@@ -172,7 +172,7 @@ export default {
           max-width: 125px;
         "
       />
-      <UiButton
+      <BaseButton
         v-if="currentState !== 'NO_POAP'"
         class="w-full mb-2 mt-3"
         @click="action"
@@ -180,7 +180,7 @@ export default {
         :loading="actionLoading"
       >
         {{ $t(buttonText) }}
-      </UiButton>
+      </BaseButton>
     </div>
   </BaseBlock>
 </template>

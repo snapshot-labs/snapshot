@@ -72,7 +72,7 @@ onMounted(() => loadNotifications());
           </BaseDropdown>
         </div>
         <div class="space-x-2">
-          <UiButton
+          <BaseButton
             v-for="filter in filters"
             :key="filter"
             @click="selectedFilter = filter"
@@ -81,10 +81,10 @@ onMounted(() => loadNotifications());
             no-focus
           >
             {{ $t(`notifications.${filter}`) }}
-          </UiButton>
+          </BaseButton>
         </div>
         <div v-if="!notificationsSortedByTime.length && notificationsLoading">
-          <RowLoading class="!px-0" />
+          <LoadingRow class="!px-0" />
         </div>
         <div
           v-else-if="!notificationsSortedByTime.length"
@@ -100,7 +100,7 @@ onMounted(() => loadNotifications());
       <div class="flex pt-2 pb-1">
         <div class="flex w-full">
           <div class="pr-2 -ml-1">
-            <SpaceAvatar :space="item.space" size="44" />
+            <AvatarSpace :space="item.space" size="44" />
           </div>
           <div class="w-full">
             <div class="leading-tight flex">

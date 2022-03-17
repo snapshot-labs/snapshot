@@ -269,7 +269,7 @@ const truncateMarkdownBody = computed(() => {
 
           <div class="flex items-center justify-between mb-4">
             <div class="flex space-x-1 items-center">
-              <UiState :state="proposal.state" class="mr-1" />
+              <LabelProposalState :state="proposal.state" class="mr-1" />
               <router-link
                 class="text-skin-text group"
                 :to="{
@@ -278,7 +278,7 @@ const truncateMarkdownBody = computed(() => {
                 }"
               >
                 <div class="flex items-center">
-                  <SpaceAvatar :space="space" size="28" />
+                  <AvatarSpace :space="space" size="28" />
                   <span
                     class="ml-2 group-hover:text-skin-link hidden sm:block"
                     v-text="space.name"
@@ -287,7 +287,7 @@ const truncateMarkdownBody = computed(() => {
               </router-link>
 
               <span v-text="$t('proposalBy')" />
-              <UserAvatar
+              <AvatarUser
                 :address="proposal.author"
                 :profile="profiles[proposal.author]"
                 :space="space"
@@ -327,7 +327,7 @@ const truncateMarkdownBody = computed(() => {
               >
                 <template v-slot:button>
                   <div class="pl-1">
-                    <UiLoading v-if="clientLoading" />
+                    <LoadingSpinner v-if="clientLoading" />
                     <BaseIcon
                       v-else
                       name="threedots"
@@ -353,7 +353,7 @@ const truncateMarkdownBody = computed(() => {
                 '-bottom-[14px]': !showFullMarkdownBody
               }"
             >
-              <UiButton
+              <BaseButton
                 no-focus
                 @click="showFullMarkdownBody = !showFullMarkdownBody"
                 class="!bg-skin-bg"
@@ -363,7 +363,7 @@ const truncateMarkdownBody = computed(() => {
                     ? $t('proposals.showLess')
                     : $t('proposals.showMore')
                 }}
-              </UiButton>
+              </BaseButton>
             </div>
             <div
               class="overflow-hidden"
@@ -379,7 +379,7 @@ const truncateMarkdownBody = computed(() => {
             </div>
           </div>
         </template>
-        <PageLoading v-else />
+        <LoadingPage v-else />
       </div>
       <div class="space-y-4">
         <BlockCastVote
@@ -428,7 +428,7 @@ const truncateMarkdownBody = computed(() => {
                       content: symbol
                     }"
                   >
-                    <SpaceAvatar :space="space" :symbolIndex="symbolIndex" />
+                    <AvatarSpace :space="space" :symbolIndex="symbolIndex" />
                   </span>
                   <span
                     v-show="symbolIndex !== symbols.length - 1"

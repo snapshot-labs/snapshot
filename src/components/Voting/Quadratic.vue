@@ -53,7 +53,7 @@ watch(selectedChoices.value, currentValue => {
 <template>
   <div class="mb-3">
     <div v-for="(choice, i) in proposal.choices" :key="i">
-      <UiButton
+      <BaseButton
         class="mb-2 flex justify-between items-center w-full overflow-hidden"
         :class="selectedChoices[i + 1] > 0 && 'button--active'"
       >
@@ -94,7 +94,7 @@ watch(selectedChoices.value, currentValue => {
             {{ percentage(i) }}%
           </div>
         </div>
-      </UiButton>
+      </BaseButton>
     </div>
   </div>
 </template>

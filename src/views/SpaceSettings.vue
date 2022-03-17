@@ -324,12 +324,12 @@ async function handleSetRecord() {
       <div class="px-4 md:px-0">
         <h1 v-text="$t('settings.header')" class="mb-4" />
       </div>
-      <RowLoadingBlock v-if="!loaded" />
+      <LoadingRow v-if="!loaded" block />
       <BaseBlock v-else-if="!currentTextRecord">
         <BaseMessageBlock level="warning" class="mb-4">
           {{ $t('settings.needToSetEnsText') }}
         </BaseMessageBlock>
-        <UiButton
+        <BaseButton
           @click="modalControllerEditOpen = true"
           :loading="settingENSRecord"
           no-focus
@@ -337,7 +337,7 @@ async function handleSetRecord() {
           class="w-full"
         >
           {{ $t('settings.setEnsTextRecord') }}
-        </UiButton>
+        </BaseButton>
       </BaseBlock>
       <template v-else-if="currentTextRecord">
         <div class="space-y-3">
@@ -492,14 +492,14 @@ async function handleSetRecord() {
               <BaseIcon name="warning" class="mr-2 !text-red" />
               <span class="!text-red"> {{ inputError('admins') }}&nbsp;</span>
             </BaseBlock>
-            <UiButton class="block w-full px-3" style="height: auto">
+            <BaseButton class="block w-full px-3" style="height: auto">
               <TextareaArray
                 v-model="form.admins"
                 :placeholder="`0x8C28Cf33d9Fd3D0293f963b1cd27e3FF422B425c\n0xeF8305E140ac520225DAf050e2f71d5fBcC543e7`"
                 class="input w-full text-left"
                 style="font-size: 18px"
               />
-            </UiButton>
+            </BaseButton>
           </BaseBlock>
           <BaseBlock :title="$t('settings.strategies') + '*'">
             <div
@@ -532,9 +532,9 @@ async function handleSetRecord() {
                 {{ $t('learnMore') }}
               </BaseLink>
             </BaseBlock>
-            <UiButton @click="handleAddStrategy" class="block w-full">
+            <BaseButton @click="handleAddStrategy" class="block w-full">
               {{ $t('settings.addStrategy') }}
-            </UiButton>
+            </BaseButton>
           </BaseBlock>
           <BaseBlock :title="$t('settings.proposalValidation')">
             <div class="flex items-center space-x-2 pr-2 mb-2">
@@ -548,14 +548,14 @@ async function handleSetRecord() {
                   {{ inputError('members') }}&nbsp;</span
                 >
               </BaseBlock>
-              <UiButton class="block w-full px-3" style="height: auto">
+              <BaseButton class="block w-full px-3" style="height: auto">
                 <TextareaArray
                   v-model="form.members"
                   :placeholder="`0x8C28Cf33d9Fd3D0293f963b1cd27e3FF422B425c\n0xeF8305E140ac520225DAf050e2f71d5fBcC543e7`"
                   class="input w-full text-left"
                   style="font-size: 18px"
                 />
-              </UiButton>
+              </BaseButton>
             </div>
             <div v-else class="space-y-2">
               <UiInput
@@ -676,9 +676,9 @@ async function handleSetRecord() {
                 </div>
               </div>
             </div>
-            <UiButton @click="handleAddPlugins" class="block w-full">
+            <BaseButton @click="handleAddPlugins" class="block w-full">
               {{ $t('settings.addPlugin') }}
-            </UiButton>
+            </BaseButton>
           </BaseBlock>
         </div>
       </template>
@@ -695,19 +695,19 @@ async function handleSetRecord() {
       </BaseMessageBlock>
       <div v-else-if="loaded" class="lg:fixed lg:w-[300px]">
         <BaseBlock>
-          <UiButton
+          <BaseButton
             v-if="ensOwner"
             @click="modalControllerEditOpen = true"
             :loading="settingENSRecord"
             class="block w-full mb-2"
           >
             {{ $t('settings.editController') }}
-          </UiButton>
+          </BaseButton>
           <div v-if="isSpaceAdmin || isSpaceController">
-            <UiButton @click="handleReset" class="block w-full mb-2">
+            <BaseButton @click="handleReset" class="block w-full mb-2">
               {{ $t('reset') }}
-            </UiButton>
-            <UiButton
+            </BaseButton>
+            <BaseButton
               :disabled="uploadLoading"
               @click="handleSubmit"
               :loading="clientLoading"
@@ -715,7 +715,7 @@ async function handleSetRecord() {
               primary
             >
               {{ $t('save') }}
-            </UiButton>
+            </BaseButton>
           </div>
         </BaseBlock>
       </div>

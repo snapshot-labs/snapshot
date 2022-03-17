@@ -59,9 +59,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <BaseBlock v-if="loadingTextRecord" slim>
-    <RowLoading class="my-2" />
-  </BaseBlock>
+  <LoadingRow v-if="loadingTextRecord" block />
   <BaseBlock v-else :title="$t('setup.setSpaceController')">
     <UiInput
       v-model.trim="spaceControllerInput"
@@ -70,7 +68,7 @@ onMounted(async () => {
       focus-on-mount
     >
     </UiInput>
-    <UiButton
+    <BaseButton
       class="button-outline w-full my-2"
       primary
       :disabled="!controllerInputIsValid"
@@ -78,7 +76,7 @@ onMounted(async () => {
       @click="confirmSetRecord"
     >
       {{ $t('setup.setController') }}
-    </UiButton>
+    </BaseButton>
   </BaseBlock>
 
   <teleport to="#modal">

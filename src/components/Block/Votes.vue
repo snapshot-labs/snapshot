@@ -95,7 +95,7 @@ watch(visibleVotes, () => {
       :style="i === 0 && 'border: 0 !important;'"
       class="px-4 py-3 border-t flex"
     >
-      <UserAvatar
+      <AvatarUser
         :profile="profiles[vote.voter]"
         :address="vote.voter"
         :space="space"
@@ -156,7 +156,7 @@ watch(visibleVotes, () => {
       @click="isFinalProposal ? $emit('loadVotes') : (nbrVisibleVotes += 10)"
       class="px-4 py-3 border-t text-center block rounded-b-none md:rounded-b-md"
     >
-      <UiLoading v-if="loadingMore" />
+      <LoadingSpinner v-if="loadingMore" />
       <span v-else v-text="$t('seeMore')" />
     </a>
     <teleport to="#modal">

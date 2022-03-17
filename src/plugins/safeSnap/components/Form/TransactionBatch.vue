@@ -172,9 +172,9 @@ export default {
       <span class="!text-red"> Error: {{ safesnap.batchError.message }}</span>
     </BaseBlock>
 
-    <UiButton class="mt-2" v-if="!config.preview" @click="addTransaction">
+    <BaseButton class="mt-2" v-if="!config.preview" @click="addTransaction">
       {{ $t('safeSnap.addTransaction') }}
-    </UiButton>
+    </BaseButton>
   </UiCollapsible>
 </template>
 

@@ -6,7 +6,7 @@ export default {
 </script>
 
 <template>
-  <UiModal :open="open" @close="$emit('close')">
+  <BaseModal :open="open" @close="$emit('close')">
     <template v-slot:header>
       <h3>{{ title }}</h3>
     </template>
@@ -15,10 +15,15 @@ export default {
     </div>
     <template v-slot:footer>
       <div>
-        <UiButton @click="$emit('close')" type="submit" class="w-full" primary>
+        <BaseButton
+          @click="$emit('close')"
+          type="submit"
+          class="w-full"
+          primary
+        >
           {{ $t('continue') }}
-        </UiButton>
+        </BaseButton>
       </div>
     </template>
-  </UiModal>
+  </BaseModal>
 </template>

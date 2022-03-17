@@ -1,10 +1,10 @@
 import { describe, expect, it } from 'vitest';
 import { mount } from '@vue/test-utils';
-import Button from './Button.vue';
+import BaseButton from './BaseButton.vue';
 
 describe('Button.vue', () => {
   it('should slot text', () => {
-    const wrapper = mount(Button, {
+    const wrapper = mount(BaseButton, {
       slots: {
         default: 'Hello world'
       }

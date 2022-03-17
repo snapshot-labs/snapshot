@@ -40,7 +40,7 @@ watchEffect(() => {
 
 <template>
   <div class="text-center bg-skin-header-bg h-[253px]">
-    <SpaceAvatar
+    <AvatarSpace
       :space="space"
       symbolIndex="space"
       size="80"
@@ -75,13 +75,13 @@ watchEffect(() => {
     </div>
 
     <div class="flex justify-center gap-x-2">
-      <FollowButton :space="space" />
+      <ButtonFollow :space="space" />
       <UiSidebarButton
         class="inline"
         v-if="isFollowing"
         @click="toggleSubscription()"
       >
-        <UiLoading v-if="loading" />
+        <LoadingSpinner v-if="loading" />
         <BaseIcon
           v-else
           size="20"

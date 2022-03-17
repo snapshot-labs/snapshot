@@ -30,7 +30,7 @@ function select(key) {
 </script>
 
 <template>
-  <UiModal :open="open" @close="$emit('close')">
+  <BaseModal :open="open" @close="$emit('close')">
     <template v-slot:header>
       <h3>{{ $t('networks') }}</h3>
     </template>
@@ -41,7 +41,7 @@ function select(key) {
     />
 
     <div class="my-4 mx-0 md:mx-4 min-h-[339px]">
-      <RowLoadingBlock v-if="loadingNetworksSpacesCount" />
+      <LoadingRow v-if="loadingNetworksSpacesCount" block />
       <div v-else class="space-y-3">
         <div
           v-for="network in networks"
@@ -53,5 +53,5 @@ function select(key) {
         <NoResults v-if="Object.keys(networks).length < 1" />
       </div>
     </div>
-  </UiModal>
+  </BaseModal>
 </template>

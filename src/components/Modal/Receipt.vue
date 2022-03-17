@@ -10,7 +10,7 @@ defineEmits(['close']);
 </script>
 
 <template>
-  <UiModal :open="open" @close="$emit('close')">
+  <BaseModal :open="open" @close="$emit('close')">
     <template v-slot:header>
       <h3>{{ $t('receipt') }}</h3>
     </template>
@@ -34,11 +34,11 @@ defineEmits(['close']);
         class="mb-2 block"
         hide-external-icon
       >
-        <UiButton class="button-outline w-full">
+        <BaseButton class="button-outline w-full">
           {{ $t('verifyOnSignatorio') }}
           <BaseIcon name="external-link" class="ml-1" />
-        </UiButton>
+        </BaseButton>
       </BaseLink>
     </div>
-  </UiModal>
+  </BaseModal>
 </template>
