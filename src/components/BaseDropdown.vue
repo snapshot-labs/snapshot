@@ -14,6 +14,7 @@ const emit = defineEmits(['select', 'openChange']);
 
 const open = ref(false);
 const dropdownEl = ref<any>(null);
+const positionClass = ref('');
 
 function handleClick(action) {
   emit('select', action);
@@ -29,7 +30,13 @@ function close(e) {
 window.addEventListener('click', close);
 onBeforeUnmount(() => window.removeEventListener('click', close));
 
-watch(open, () => emit('openChange'));
+watch(open, () => {
+  const { left, right } = dropdownEl.value.getBoundingClientRect();
+  positionClass.value = left < window.innerWidth - right
+    ? 'origin-top-left left-0'
+    : 'origin-top-right right-0';
+  emit('openChange');
+});
 </script>
 
 <template>
@@ -50,7 +57,8 @@ watch(open, () => emit('openChange'));
       leave-to-class="transform opacity-0 scale-95"
     >
       <div
-        class="origin-top-right z-20 absolute right-0 mt-2 min-w-[150px] max-w-[320px] md:max-w-[400px] rounded-2xl bg-skin-header-bg overflow-hidden shadow-lg"
+        :class="positionClass"
+        class="z-20 absolute mt-2 min-w-[150px] max-w-[320px] md:max-w-[400px] rounded-2xl bg-skin-header-bg overflow-hidden shadow-lg border border-skin-border"
         v-if="open"
       >
         <ul
@@ -77,6 +85,6 @@ watch(open, () => emit('openChange'));
 <style scoped>
 li.selected,
 li:hover {
-  @apply bg-skin-link text-skin-bg;
+  @apply bg-skin-border;
 }
 </style>

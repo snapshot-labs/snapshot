@@ -4,11 +4,13 @@ import { useApp } from '@/composables/useApp';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useFlashNotification } from '@/composables/useFlashNotification';
 import { useDomain } from '@/composables/useDomain';
+import { useRoute } from 'vue-router';
 
 const { domain } = useDomain();
 const { init, ready } = useApp();
 const { web3 } = useWeb3();
 const { notify } = useFlashNotification();
+const route = useRoute();
 
 provide('web3', web3);
 provide('notify', notify);
@@ -26,13 +28,16 @@ onMounted(async () => {
         <TheSidebar />
       </div>
     </div>
-    <div class="grow">
+    <div class="grow flex flex-col">
       <div id="navbar" class="sticky top-0 border-b border-skin-border bg-skin-bg z-40">
         <TheNavbar />
       </div>
       <div id="content" class="py-4">
         <router-view :key="$route.path" />
       </div>
+      <footer class="mt-auto" v-if="route.name === 'home'">
+        <TheFooter />
+      </footer>
     </div>
   </div>
   <FlashNotification />
