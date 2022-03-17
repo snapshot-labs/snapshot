@@ -139,12 +139,12 @@
   },
   "errors": {
     "required": "フィールドが埋まってません",
-    "minLength": "Field is required",
+    "minLength": "フィールドが必要です",
     "maxLength": "最大文字数は {0} です",
     "pattern": "無効な文字",
     "minItems": "最低でも {0} 個必要です",
     "minStrategy": "最低でも１ストラテジー必要です",
-    "website": "URL should be in the format https://www.example.com",
+    "website": "URLはhttps://www.example.com 形式でなければなりません",
     "format": "無効な形式",
     "type": "無効なタイプ"
   },
