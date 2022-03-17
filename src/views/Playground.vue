@@ -158,7 +158,7 @@ onMounted(async () => {
 <template>
   <TheLayout v-bind="$attrs">
     <template #content-left>
-      <PageLoading v-if="!strategy" />
+      <LoadingPage v-if="!strategy" />
       <div v-else>
         <div class="px-4 md:px-0 mb-3">
           <router-link

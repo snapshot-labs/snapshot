@@ -285,7 +285,7 @@ onMounted(async () => {
         </router-link>
         <h1 v-if="loaded" v-text="$t('delegate.header')" />
       </div>
-      <PageLoading v-if="!loaded" />
+      <LoadingPage v-if="!loaded" />
       <BaseBlock v-else-if="!networkSupportsDelegate">
         <BaseIcon name="warning" class="mr-1" />
         {{

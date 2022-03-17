@@ -62,7 +62,7 @@ onMounted(() => loadExtentedSpaces([spaceKey.value, sourceSpaceRoute.value]));
     <!-- Default page loading for none sidebar left layout space pages -->
     <TheLayout v-else-if="!space" class="!px-4">
       <template #content-left>
-        <PageLoading />
+        <LoadingPage />
       </template>
     </TheLayout>
   </div>

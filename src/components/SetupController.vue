@@ -60,7 +60,7 @@ onMounted(async () => {
 
 <template>
   <BaseBlock v-if="loadingTextRecord" slim>
-    <RowLoading class="my-2" />
+    <LoadingRow class="my-2" />
   </BaseBlock>
   <BaseBlock v-else :title="$t('setup.setSpaceController')">
     <UiInput

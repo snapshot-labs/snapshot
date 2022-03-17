@@ -177,7 +177,7 @@ function selectState(e) {
         </BaseDropdown>
       </div>
       <div class="md:rounded-lg bg-skin-block-bg border">
-        <RowLoading
+        <LoadingRow
           v-if="
             loading ||
             (web3.authLoading && isTimeline) ||
@@ -210,7 +210,7 @@ function selectState(e) {
         </div>
         <div class="w-[10px] h-[10px] absolute bottom-0" ref="endElement" />
         <div v-if="loadingMore && !loading" :slim="true">
-          <RowLoading class="border-t px-4 py-5" />
+          <LoadingRow class="border-t px-4 py-5" />
         </div>
       </div>
     </template>

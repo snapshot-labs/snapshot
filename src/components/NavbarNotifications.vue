@@ -84,7 +84,7 @@ onMounted(() => loadNotifications());
           </BaseButton>
         </div>
         <div v-if="!notificationsSortedByTime.length && notificationsLoading">
-          <RowLoading class="!px-0" />
+          <LoadingRow class="!px-0" />
         </div>
         <div
           v-else-if="!notificationsSortedByTime.length"

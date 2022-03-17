@@ -379,7 +379,7 @@ const truncateMarkdownBody = computed(() => {
             </div>
           </div>
         </template>
-        <PageLoading v-else />
+        <LoadingPage v-else />
       </div>
       <div class="space-y-4">
         <BlockCastVote

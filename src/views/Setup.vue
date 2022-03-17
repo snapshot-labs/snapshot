@@ -88,7 +88,7 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
       </div>
       <template v-if="web3Account">
         <BaseBlock v-if="loadingOwnedEnsDomains" slim>
-          <RowLoading class="my-2" />
+          <LoadingRow class="my-2" />
         </BaseBlock>
         <!-- Step two - setup space controller -->
         <SetupController

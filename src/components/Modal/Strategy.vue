@@ -104,7 +104,7 @@ const strategyIsValid = computed(() =>
       modal
     />
     <div v-if="input.name" class="m-4">
-      <RowLoading v-if="loading" class="px-0" />
+      <LoadingRow v-if="loading" class="px-0" />
       <div v-else>
         <div class="min-h-[280px]">
           <BaseAutocomplete
