@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { watch, onMounted, ref, watchEffect, computed } from 'vue';
+import { useRouter } from 'vue-router';
 import draggable from 'vuedraggable';
 import { useFollowSpace } from '@/composables/useFollowSpace';
 import { useWeb3 } from '@/composables/useWeb3';
@@ -8,6 +9,7 @@ import { useUnseenProposals } from '@/composables/useUnseenProposals';
 import { useApp } from '@/composables/useApp';
 import { lsSet, lsGet } from '@/helpers/utils';
 
+const router = useRouter();
 const { spaces } = useSpaces();
 const { web3Account } = useWeb3();
 const { loadFollows, followingSpaces } = useFollowSpace();
@@ -103,6 +105,8 @@ onMounted(() => {
         item-key="id"
         @update="saveSpaceOrder"
         class="space-y-2 mt-2"
+        :delay="200"
+        :delay-on-touch-only="true"
       >
         <template #item="{ element }">
           <div
@@ -119,21 +123,23 @@ onMounted(() => {
               :space="element"
               :hasUnseen="hasUnseenProposalsBySpace(element)"
             />
-            <router-link
-              :to="{ name: 'spaceProposals', params: { key: element } }"
+            <div
+              class="cursor-pointer"
+              @click="router.push({ name: 'spaceProposals', params: { key: element } })"
             >
               <AvatarSpace
                 :space="spaces[element]"
                 :key="element"
                 symbolIndex="space"
                 size="44"
+                class="pointer-events-none"
               />
               <UiCounter
                 v-if="spaces[element].activeProposals"
                 :counter="spaces[element].activeProposals"
                 class="absolute -top-[1px] right-[9px] !bg-green !h-[16px] !leading-[16px] !min-w-[16px]"
               />
-            </router-link>
+            </div>
           </div>
         </template>
       </draggable>
