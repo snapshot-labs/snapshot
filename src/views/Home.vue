@@ -54,9 +54,9 @@ onMounted(() => {
     <BaseContainer
       class="flex items-center mb-4 flex-col xs:flex-row flex-wrap md:flex-nowrap"
     >
-      <UiButton class="pl-3 pr-0 w-full md:max-w-[420px]">
+      <BaseButton class="pl-3 pr-0 w-full md:max-w-[420px]">
         <SearchWithFilters />
-      </UiButton>
+      </BaseButton>
       <BaseDropdown
         class="w-full xs:w-auto md:ml-2 sm:mr-2 mt-2 md:mt-0"
         @select="selectCategory($event)"
@@ -78,7 +78,7 @@ onMounted(() => {
         ]"
       >
         <template v-slot:button>
-          <UiButton
+          <BaseButton
             class="w-full pr-3 whitespace-nowrap"
             :disabled="!orderedSpaces.length"
           >
@@ -90,7 +90,7 @@ onMounted(() => {
               {{ $tc('explore.categories.all') }}
             </span>
             <BaseIcon size="16" name="arrow-down" class="mt-1 mx-1" />
-          </UiButton>
+          </BaseButton>
         </template>
         <template v-slot:item="{ item }">
           <div class="flex">
@@ -168,13 +168,13 @@ onMounted(() => {
         useBlock
       />
       <div class="text-center">
-        <UiButton
+        <BaseButton
           v-if="!enableInfiniteScroll && orderedSpacesByCategory.length > limit"
           class="mt-4"
           @click="loadMoreSpaces()"
         >
           {{ $t('homeLoadmore') }}
-        </UiButton>
+        </BaseButton>
       </div>
     </BaseContainer>
     <div ref="endElement" />

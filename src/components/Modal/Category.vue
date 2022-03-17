@@ -84,12 +84,12 @@ function handleClose() {
     </div>
     <template v-slot:footer>
       <div class="w-2/4 float-left pr-2">
-        <UiButton @click="handleClose" type="button" class="w-full">
+        <BaseButton @click="handleClose" type="button" class="w-full">
           {{ $t('cancel') }}
-        </UiButton>
+        </BaseButton>
       </div>
       <div class="w-2/4 float-left pl-2">
-        <UiButton
+        <BaseButton
           @click="handleSubmit"
           :disabled="!selectedCategories.length"
           type="submit"
@@ -97,7 +97,7 @@ function handleClose() {
           primary
         >
           {{ $t('confirm') }}
-        </UiButton>
+        </BaseButton>
       </div>
     </template>
   </UiModal>

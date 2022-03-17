@@ -72,7 +72,7 @@ onMounted(() => loadNotifications());
           </BaseDropdown>
         </div>
         <div class="space-x-2">
-          <UiButton
+          <BaseButton
             v-for="filter in filters"
             :key="filter"
             @click="selectedFilter = filter"
@@ -81,7 +81,7 @@ onMounted(() => loadNotifications());
             no-focus
           >
             {{ $t(`notifications.${filter}`) }}
-          </UiButton>
+          </BaseButton>
         </div>
         <div v-if="!notificationsSortedByTime.length && notificationsLoading">
           <RowLoading class="!px-0" />

@@ -40,7 +40,7 @@ watch(open, () => (step.value = null));
           @click="$emit('login', connector.id)"
           class="block"
         >
-          <UiButton
+          <BaseButton
             v-if="id === 'injected' && injected"
             class="button-outline w-full flex justify-center items-center"
           >
@@ -52,8 +52,8 @@ watch(open, () => (step.value = null));
               :alt="injected.name"
             />
             {{ injected.name }}
-          </UiButton>
-          <UiButton
+          </BaseButton>
+          <BaseButton
             v-else-if="id !== 'gnosis'"
             class="button-outline w-full flex justify-center items-center gap-2"
           >
@@ -64,7 +64,7 @@ watch(open, () => (step.value = null));
               :alt="connector.name"
             />
             <span>{{ connector.name }}</span>
-          </UiButton>
+          </BaseButton>
         </a>
       </div>
     </div>
@@ -75,7 +75,7 @@ watch(open, () => (step.value = null));
           class="block"
           hide-external-icon
         >
-          <UiButton
+          <BaseButton
             class="button-outline w-full flex justify-center items-center"
           >
             <BaseAvatar :address="web3.account" size="18" class="mr-2 -ml-1" />
@@ -83,15 +83,18 @@ watch(open, () => (step.value = null));
             <span v-else-if="web3.profile.ens" v-text="web3.profile.ens" />
             <span v-else v-text="shorten(web3.account)" />
             <BaseIcon name="external-link" class="ml-1" />
-          </UiButton>
+          </BaseButton>
         </BaseLink>
 
-        <UiButton @click="step = 'connect'" class="button-outline w-full">
+        <BaseButton @click="step = 'connect'" class="button-outline w-full">
           {{ $t('connectWallet') }}
-        </UiButton>
-        <UiButton @click="handleLogout" class="button-outline w-full !text-red">
+        </BaseButton>
+        <BaseButton
+          @click="handleLogout"
+          class="button-outline w-full !text-red"
+        >
           {{ $t('logout') }}
-        </UiButton>
+        </BaseButton>
       </div>
     </div>
   </UiModal>

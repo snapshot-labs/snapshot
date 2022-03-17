@@ -53,10 +53,10 @@ watchEffect(() => {
             target="_blank"
             class="mb-2 block"
           >
-            <UiButton class="button-outline w-full">
+            <BaseButton class="button-outline w-full">
               {{ $t('seeInExplorer') }}
               <BaseIcon name="external-link" class="ml-1" />
-            </UiButton>
+            </BaseButton>
           </a>
         </div>
       </template>

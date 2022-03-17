@@ -215,15 +215,15 @@ function deleteItemReply(key) {
     <div
       class="mb-2 mt-3 text-center flex items-center content-center justify-center"
     >
-      <UiButton
+      <BaseButton
         class="!bg-primary !text-white"
         :loading="loading"
         @click="deleteItem"
-        >{{ $t('comment_box.yes') }}</UiButton
+        >{{ $t('comment_box.yes') }}</BaseButton
       >
-      <UiButton @click="closeEvent" :disabled="loading" class="ml-2">{{
+      <BaseButton @click="closeEvent" :disabled="loading" class="ml-2">{{
         $t('comment_box.no')
-      }}</UiButton>
+      }}</BaseButton>
     </div>
   </UiModal>
   <div v-if="!toggleEditComment">
@@ -267,14 +267,14 @@ function deleteItemReply(key) {
       <div class="mt-2">{{ item.markdown }}</div>
     </BaseBlock>
 
-    <UiButton
+    <BaseButton
       @click="toggleComment = !toggleComment"
       class="p-1 rounded-0 mt-2"
       style="line-height: 0px; height: auto"
     >
       <BaseIcon :name="'receipt-outlined'" class="v-align-middle" size="15" />
       <span class="ml-1">{{ $t('comment_box.reply') }}</span>
-    </UiButton>
+    </BaseButton>
     <CommentBoxComment
       v-if="!toggleComment"
       buttonName="Reply"

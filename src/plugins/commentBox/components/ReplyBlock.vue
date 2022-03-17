@@ -137,15 +137,18 @@ const isCreator = computed(() => props.proposal.author === web3Account.value);
     <div
       class="mb-2 mt-3 text-center flex items-center content-center justify-center"
     >
-      <UiButton
+      <BaseButton
         @click="deleteItem"
         :loading="loading"
         class="!bg-primary !text-white"
-        >{{ $t('comment_box.yes') }}</UiButton
+        >{{ $t('comment_box.yes') }}</BaseButton
       >
-      <UiButton :disabled="loading" @click="closeModal = false" class="ml-2">{{
-        $t('comment_box.no')
-      }}</UiButton>
+      <BaseButton
+        :disabled="loading"
+        @click="closeModal = false"
+        class="ml-2"
+        >{{ $t('comment_box.no') }}</BaseButton
+      >
     </div>
   </UiModal>
   <div v-if="!toggleEditComment">
@@ -188,14 +191,14 @@ const isCreator = computed(() => props.proposal.author === web3Account.value);
       </div>
       <div class="mt-2">{{ item.markdown }}</div>
     </BaseBlock>
-    <UiButton
+    <BaseButton
       @click="toggleComment = !toggleComment"
       class="p-1 rounded-0 mt-2"
       style="line-height: 0px; height: auto"
     >
       <BaseIcon :name="'receipt-outlined'" class="v-align-middle" size="15" />
       <span class="ml-1">{{ $t('comment_box.reply') }}</span>
-    </UiButton>
+    </BaseButton>
     <PluginCommentBoxComment
       v-if="!toggleComment"
       buttonName="Reply"

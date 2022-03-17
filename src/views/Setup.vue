@@ -115,7 +115,7 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
               }}
             </div>
             <div class="space-y-2">
-              <UiButton
+              <BaseButton
                 v-for="(ens, i) in ownedEnsDomainsNoExistingSpace"
                 :key="i"
                 @click="goToStepTwo(ens.name)"
@@ -124,7 +124,7 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
               >
                 {{ ens.name }}
                 <BaseIcon name="go" size="22" class="-mr-2" />
-              </UiButton>
+              </BaseButton>
             </div>
             <div class="my-3">
               {{ $t('setup.orReigsterNewEns') }}
@@ -146,14 +146,14 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
         </BaseBlock>
       </template>
       <BaseBlock v-else>
-        <UiButton
+        <BaseButton
           @click="modalAccountOpen = true"
           :loading="web3.authLoading"
           class="w-full"
           primary
         >
           {{ $t('connectWallet') }}
-        </UiButton>
+        </BaseButton>
       </BaseBlock>
     </template>
     <template #sidebar-right>

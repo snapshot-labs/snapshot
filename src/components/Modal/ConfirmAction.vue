@@ -16,13 +16,13 @@ defineEmits(['close', 'confirm']);
 
     <slot />
     <template v-slot:footer>
-      <UiButton
+      <BaseButton
         class="button-outline w-full"
         primary
         @click="$emit('confirm'), $emit('close')"
       >
         {{ $t('confirm') }}
-      </UiButton>
+      </BaseButton>
     </template>
   </UiModal>
 </template>

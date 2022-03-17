@@ -28,7 +28,7 @@ function selectLang(locale) {
       <h3>{{ $t('language') }}</h3>
     </template>
     <div class="text-center mt-4 mb-3 px-4 w-full">
-      <UiButton
+      <BaseButton
         v-for="locale in locales"
         :key="locale"
         @click="selectLang(locale)"
@@ -40,7 +40,7 @@ function selectLang(locale) {
             : languages[locale].nativeName
         }}
         {{}}
-      </UiButton>
+      </BaseButton>
     </div>
   </UiModal>
 </template>

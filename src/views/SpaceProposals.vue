@@ -149,10 +149,10 @@ onMounted(() => {
           ]"
         >
           <template v-slot:button>
-            <UiButton class="pr-3">
+            <BaseButton class="pr-3">
               {{ $t(`proposals.states.${store.space.filterBy}`) }}
               <BaseIcon size="14" name="arrow-down" class="mt-1 mr-1" />
-            </UiButton>
+            </BaseButton>
           </template>
         </BaseDropdown>
         <SpaceProposalsNotice

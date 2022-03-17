@@ -353,7 +353,7 @@ const truncateMarkdownBody = computed(() => {
                 '-bottom-[14px]': !showFullMarkdownBody
               }"
             >
-              <UiButton
+              <BaseButton
                 no-focus
                 @click="showFullMarkdownBody = !showFullMarkdownBody"
                 class="!bg-skin-bg"
@@ -363,7 +363,7 @@ const truncateMarkdownBody = computed(() => {
                     ? $t('proposals.showLess')
                     : $t('proposals.showMore')
                 }}
-              </UiButton>
+              </BaseButton>
             </div>
             <div
               class="overflow-hidden"

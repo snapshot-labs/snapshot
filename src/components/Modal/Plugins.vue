@@ -66,14 +66,14 @@ watch(open, () => {
         class="p-4 mb-4 rounded-md text-skin-link"
       >
         <h4 v-text="selectedPlugin.name" class="mb-3 text-center" />
-        <UiButton class="block w-full overflow-x-auto" style="height: auto">
+        <BaseButton class="block w-full overflow-x-auto" style="height: auto">
           <TextareaJson
             v-model="input"
             v-model:is-valid="isValid"
             :placeholder="$t('settings.pluginParameters')"
             class="input text-left"
           />
-        </UiButton>
+        </BaseButton>
       </BaseBlock>
       <div v-if="!selectedPlugin?.key">
         <RowLoadingBlock v-if="loadingPluginsSpacesCount" />
@@ -92,14 +92,14 @@ watch(open, () => {
       </div>
     </div>
     <template v-if="selectedPlugin?.key" v-slot:footer>
-      <UiButton
+      <BaseButton
         @click="handleSubmit"
         :disabled="!isValid"
         class="w-full"
         primary
       >
         {{ Object.keys(plugin).length ? $t('save') : $t('add') }}
-      </UiButton>
+      </BaseButton>
     </template>
   </UiModal>
 </template>

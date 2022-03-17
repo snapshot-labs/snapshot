@@ -426,7 +426,7 @@ onMounted(async () => {
     </template>
     <template #sidebar-right v-if="networkSupportsDelegate">
       <BaseBlock>
-        <UiButton
+        <BaseButton
           @click="web3Account ? handleSubmit() : (modalAccountOpen = true)"
           :disabled="!isValidForm && !!web3Account"
           :loading="loading || spaceLoading"
@@ -434,7 +434,7 @@ onMounted(async () => {
           primary
         >
           {{ $t('confirm') }}
-        </UiButton>
+        </BaseButton>
       </BaseBlock>
     </template>
   </TheLayout>

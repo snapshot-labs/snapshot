@@ -13,7 +13,9 @@
           />
         </div>
         <div class="flex justify-center gap-x-2">
-          <UiButton class="w-[120px] cursor-wait">{{ $t('join') }}</UiButton>
+          <BaseButton class="w-[120px] cursor-wait">{{
+            $t('join')
+          }}</BaseButton>
         </div>
       </div>
       <SpaceSidebarNavigation />

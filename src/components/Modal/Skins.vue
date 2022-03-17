@@ -48,7 +48,9 @@ function select(key) {
           class="default rounded-none md:rounded-md cursor-pointer"
         >
           <BaseBlock>
-            <UiButton class="mb-2" primary>{{ $t('defaultSkin') }}</UiButton>
+            <BaseButton class="mb-2" primary>{{
+              $t('defaultSkin')
+            }}</BaseButton>
           </BaseBlock>
         </div>
 

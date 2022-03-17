@@ -147,12 +147,12 @@ watch(
     </div>
     <template v-slot:footer>
       <div class="w-2/4 float-left pr-2">
-        <UiButton @click="$emit('close')" type="button" class="w-full">
+        <BaseButton @click="$emit('close')" type="button" class="w-full">
           {{ $t('cancel') }}
-        </UiButton>
+        </BaseButton>
       </div>
       <div class="w-2/4 float-left pl-2">
-        <UiButton
+        <BaseButton
           :disabled="vp === 0 || clientLoading"
           :loading="clientLoading"
           @click="handleSubmit"
@@ -161,7 +161,7 @@ watch(
           primary
         >
           {{ $t('proposal.vote') }}
-        </UiButton>
+        </BaseButton>
       </div>
     </template>
   </UiModal>

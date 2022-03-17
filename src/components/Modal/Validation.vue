@@ -71,14 +71,14 @@ watch(open, () => {
       <div v-if="input.name" class="p-4 mb-4 border rounded-md text-skin-link">
         <h4 v-text="input.name" class="mb-3 text-center" />
 
-        <UiButton class="block w-full overflow-x-auto" style="height: auto">
+        <BaseButton class="block w-full overflow-x-auto" style="height: auto">
           <TextareaJson
             v-model="input.params"
             v-model:is-valid="isValid"
             :placeholder="$t('settings.validationParameters')"
             class="input text-left"
           />
-        </UiButton>
+        </BaseButton>
       </div>
       <div v-if="!input.name">
         <RowLoadingBlock v-if="loadingValidations" />
@@ -95,14 +95,14 @@ watch(open, () => {
       </div>
     </div>
     <template v-if="input.name" v-slot:footer>
-      <UiButton
+      <BaseButton
         @click="handleSubmit"
         :disabled="!isValid"
         class="w-full"
         primary
       >
         {{ validation.name ? $t('save') : $t('add') }}
-      </UiButton>
+      </BaseButton>
     </template>
   </UiModal>
 </template>

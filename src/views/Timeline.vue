@@ -169,10 +169,10 @@ function selectState(e) {
           ]"
         >
           <template v-slot:button>
-            <UiButton class="pr-3">
+            <BaseButton class="pr-3">
               {{ $t(`proposals.states.${store.timeline.filterBy}`) }}
               <BaseIcon size="14" name="arrow-down" class="mt-1 mr-1" />
-            </UiButton>
+            </BaseButton>
           </template>
         </BaseDropdown>
       </div>
@@ -193,7 +193,7 @@ function selectState(e) {
         >
           <div class="mb-3">{{ $t('noSpacesJoined') }}</div>
           <router-link :to="{ path: '/' }">
-            <UiButton>{{ $t('joinSpaces') }}</UiButton>
+            <BaseButton>{{ $t('joinSpaces') }}</BaseButton>
           </router-link>
         </div>
         <NoResults

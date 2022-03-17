@@ -59,14 +59,14 @@ const switchToMainnet = async () => {
       </p>
     </div>
     <template v-if="usingMetaMask" v-slot:footer>
-      <UiButton
+      <BaseButton
         :loading="switchingChain"
         class="button-outline w-full"
         :primary="true"
         @click="switchToMainnet"
       >
         {{ $t('unsupportedNetwork.switchToMainnet') }}
-      </UiButton>
+      </BaseButton>
     </template>
   </UiModal>
 </template>

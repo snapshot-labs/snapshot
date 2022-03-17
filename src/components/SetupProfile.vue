@@ -166,7 +166,7 @@ async function handleSubmit() {
           </template>
           <template v-slot:label> {{ $t(`settings.network`) }}* </template>
         </UiInput>
-        <UiButton
+        <BaseButton
           @click="handleSubmit"
           class="w-full !mt-4"
           primary
@@ -174,7 +174,7 @@ async function handleSubmit() {
           :loading="creatingSpace"
         >
           {{ $t('createButton') }}
-        </UiButton>
+        </BaseButton>
         <BaseMessageBlock
           v-if="showPleaseWaitMessage"
           level="info"

@@ -138,7 +138,7 @@ const strategyIsValid = computed(() =>
             :definition="strategyDefinition"
             :errors="strategyValidationErrors"
           />
-          <UiButton
+          <BaseButton
             v-else
             class="block w-full mb-3 overflow-x-auto"
             style="height: auto"
@@ -149,7 +149,7 @@ const strategyIsValid = computed(() =>
               :placeholder="$t('strategyParameters')"
               class="input text-left"
             />
-          </UiButton>
+          </BaseButton>
         </div>
       </div>
     </div>
@@ -167,7 +167,7 @@ const strategyIsValid = computed(() =>
       </div>
     </div>
     <template v-if="input.name" v-slot:footer>
-      <UiButton
+      <BaseButton
         @click="handleSubmit"
         :disabled="
           !textAreaJsonIsValid ||
@@ -178,7 +178,7 @@ const strategyIsValid = computed(() =>
         primary
       >
         {{ strategy.name ? $t('save') : $t('add') }}
-      </UiButton>
+      </BaseButton>
     </template>
   </UiModal>
 </template>

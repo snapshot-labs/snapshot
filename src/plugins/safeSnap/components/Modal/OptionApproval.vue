@@ -132,12 +132,12 @@ export default {
           {{ $t('safeSnap.setOutcomeTo') }}
         </h4>
         <div class="vote-button-row">
-          <UiButton @click="handleSetApproval(0)" class="button vote-button">
+          <BaseButton @click="handleSetApproval(0)" class="button vote-button">
             No
-          </UiButton>
-          <UiButton @click="handleSetApproval(1)" class="vote-button" primary>
+          </BaseButton>
+          <BaseButton @click="handleSetApproval(1)" class="vote-button" primary>
             Yes
-          </UiButton>
+          </BaseButton>
         </div>
       </div>
     </div>
