@@ -8,7 +8,7 @@
   </div>
 
   <div v-if="questionState === questionStates.loading" class="my-4">
-    <BaseLoading />
+    <LoadingSpinner />
   </div>
 
   <div v-if="connectedToRightChain || usingMetaMask">

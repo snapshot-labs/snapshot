@@ -156,7 +156,7 @@ watch(visibleVotes, () => {
       @click="isFinalProposal ? $emit('loadVotes') : (nbrVisibleVotes += 10)"
       class="px-4 py-3 border-t text-center block rounded-b-none md:rounded-b-md"
     >
-      <BaseLoading v-if="loadingMore" />
+      <LoadingSpinner v-if="loadingMore" />
       <span v-else v-text="$t('seeMore')" />
     </a>
     <teleport to="#modal">
