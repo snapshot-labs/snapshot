@@ -29,7 +29,7 @@
   "ended": "завершился",
   "started": "начался",
   "filters": "Фильтры",
-  "allSpaces": "All spaces",
+  "allSpaces": "Все сообщества",
   "submitOnchain": "Отправить в блокчейн",
   "inSpaces": "В {0} раздел(ах)",
   "votes": "Голоса",
@@ -319,7 +319,7 @@
     "somethingWentWrong": "Ой, что-то пошло не так!",
     "saved": "Сохранено!",
     "delegationSuccess": "Успешное делегирование",
-    "delegationRemoved": "Удаление делегирования",
+    "delegationRemoved": "Делегирование удалено",
     "proposalCreated": "Предложение создано",
     "voteSuccessful": "Ваш голос засчитан!",
     "ensSet": "Текстовая запись ENS успешно установлена",
@@ -329,11 +329,11 @@
     "createStrategy": "Создать стратегию",
     "createSkin": "Создать обложку",
     "addNetwork": "Добавить сеть",
-    "createPlugin": "Создать модуль",
+    "createPlugin": "Создать плагин",
     "strategies": "стратегия(и)",
     "skins": "обложка(и)",
     "networks": "сеть(и)",
-    "plugins": "Модуль(и)",
+    "plugins": "плагин(ы)",
     "results": "результат(ы)",
     "categories": {
       "all": "Все",
@@ -348,7 +348,7 @@
     }
   },
   "voting": {
-    "selectVoting": "Выбрать систему голосования",
+    "selectVoting": "Выберите систему голосования",
     "single-choice": "Голосование с одним вариантом ответа",
     "approval": "Утверждающее голосование",
     "quadratic": "Квадратичное голосование",
@@ -420,7 +420,7 @@
     }
   },
   "poap": {
-    "no_poap_header": "POAP еще не был настроен для этого предложения :'(",
+    "no_poap_header": "POAP еще не был настроен для этого предложения:'(",
     "no_voted_header": "Проголосуйте, чтобы получить этот POAP",
     "unclaimed_header": "Mint your I voted POAP",
     "claimed_header": "Поздравляем! POAP добавлен в вашу коллекцию",
