@@ -15,7 +15,7 @@ const hovered = computed(() => contentHovered.value || itemHovered.value);
 const itemref = ref(null);
 const contentref = ref(null);
 
-const { pointerType } = usePointer()
+const { pointerType } = usePointer();
 const isXLargeScreen = useMediaQuery('(min-width: 1280px)');
 
 let popperInstance;
@@ -36,9 +36,11 @@ onMounted(() => {
 
 debouncedWatch(
   hovered,
-  () => { open.value = hovered.value && pointerType.value === 'mouse'},
-  { debounce: 500 },
-)
+  () => {
+    open.value = hovered.value && pointerType.value === 'mouse';
+  },
+  { debounce: 500 }
+);
 
 watch(open, () => {
   if (isXLargeScreen.value) popperInstance.setOptions({ placement: 'bottom' });

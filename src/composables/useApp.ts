@@ -17,7 +17,9 @@ if (env === 'local') {
   domain = import.meta.env.VITE_VIEW_AS_SPACE ?? domain;
 }
 
-const domainAlias = Object.keys(aliases).find(alias => aliases[alias] === domain);
+const domainAlias = Object.keys(aliases).find(
+  alias => aliases[alias] === domain
+);
 
 const { login } = useWeb3();
 

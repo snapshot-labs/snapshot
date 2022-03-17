@@ -14,9 +14,11 @@ const hovered = ref(false);
 
 debouncedWatch(
   hovered,
-  () => { open.value = hovered.value },
-  { debounce: 300 },
-)
+  () => {
+    open.value = hovered.value;
+  },
+  { debounce: 300 }
+);
 
 const { copyToClipboard } = useCopy();
 </script>
