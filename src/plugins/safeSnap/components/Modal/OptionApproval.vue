@@ -2,7 +2,7 @@
 import { BigNumber } from '@ethersproject/bignumber';
 import { formatUnits } from '@ethersproject/units';
 import { useEns } from '@/composables/useEns';
-import { useSafesnap } from '@/composables/useSafesnap';
+import { useSafesnap } from '@/plugins/safeSnap/composables/useSafesnap';
 import { getEnsTextRecord } from '@snapshot-labs/snapshot.js/src/utils';
 
 export default {

@@ -1,6 +1,6 @@
 <script setup>
 import { computed, onMounted } from 'vue';
-import { useDomain } from '@/composables/useDomain';
+import { useApp } from '@/composables/useApp';
 import aliases from '@/../snapshot-spaces/spaces/aliases.json';
 import { useRouter, useRoute } from 'vue-router';
 import { formatSpace } from '@/helpers/utils';
@@ -8,7 +8,7 @@ import { useExtendedSpaces } from '@/composables/useExtendedSpaces';
 
 const route = useRoute();
 const router = useRouter();
-const { domain } = useDomain();
+const { domain } = useApp();
 const aliasedSpace = aliases[domain] || aliases[route.params.key];
 const { loadExtentedSpaces, extentedSpaces } = useExtendedSpaces();
 

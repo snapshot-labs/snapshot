@@ -5,7 +5,7 @@ import { useFollowSpace } from '@/composables/useFollowSpace';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useSpaces } from '@/composables/useSpaces';
 import { useUnseenProposals } from '@/composables/useUnseenProposals';
-import { useDomain } from '@/composables/useDomain';
+import { useApp } from '@/composables/useApp';
 import { lsSet, lsGet } from '@/helpers/utils';
 
 const { spaces } = useSpaces();
@@ -13,7 +13,7 @@ const { web3Account } = useWeb3();
 const { loadFollows, followingSpaces } = useFollowSpace();
 const { proposals, getProposals, lastSeenProposals, updateLastSeenProposal } =
   useUnseenProposals();
-const { domain } = useDomain();
+const { domain } = useApp();
 
 const draggableSpaces = ref<string[]>([]);
 
