@@ -269,7 +269,7 @@ const truncateMarkdownBody = computed(() => {
 
           <div class="flex items-center justify-between mb-4">
             <div class="flex space-x-1 items-center">
-              <UiState :state="proposal.state" class="mr-1" />
+              <LabelProposalState :state="proposal.state" class="mr-1" />
               <router-link
                 class="text-skin-text group"
                 :to="{

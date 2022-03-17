@@ -51,7 +51,7 @@ const winningChoice = computed(() =>
               :members="proposal.space.members"
             />
           </div>
-          <UiState :state="proposal.state" />
+          <LabelProposalState :state="proposal.state" />
         </div>
         <h3 v-text="proposal.title" class="my-1 break-words" />
         <p v-text="shorten(body, 140)" class="break-words mb-2 text-md" />

@@ -110,7 +110,7 @@ const winningChoice = computed(() =>
           </div>
         </div>
         <div class="flex items-center">
-          <UiState :state="proposal.state" slim class="mr-2" />
+          <LabelProposalState :state="proposal.state" slim class="mr-2" />
           {{ $t(`proposals.states.${proposal.state}`)
           }}<span v-if="proposal.scores_state !== 'final'"
             >,
