@@ -162,7 +162,7 @@ watch([modalOpen, closeModal], () => {
 });
 </script>
 <template>
-  <UiModal :open="closeModal" @close="closeEvent">
+  <BaseModal :open="closeModal" @close="closeEvent">
     <template v-slot:header>
       <h3>{{ $t('comment_box.edit_comment') }}</h3>
     </template>
@@ -182,7 +182,7 @@ watch([modalOpen, closeModal], () => {
         $t('comment_box.no')
       }}</BaseButton>
     </div>
-  </UiModal>
+  </BaseModal>
   <div class="mt-2">
     <BaseButton
       v-if="togglePreview"

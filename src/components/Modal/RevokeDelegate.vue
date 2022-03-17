@@ -60,7 +60,7 @@ async function handleSubmit() {
 </script>
 
 <template>
-  <UiModal :open="open" v-if="open" @close="$emit('close')" class="flex">
+  <BaseModal :open="open" v-if="open" @close="$emit('close')" class="flex">
     <template v-slot:header>
       <h3>{{ $t('removeDelegation') }}</h3>
     </template>
@@ -90,5 +90,5 @@ async function handleSubmit() {
         </div>
       </div>
     </form>
-  </UiModal>
+  </BaseModal>
 </template>

@@ -29,7 +29,7 @@ function select(id) {
 </script>
 
 <template>
-  <UiModal :open="open" @close="$emit('close')">
+  <BaseModal :open="open" @close="$emit('close')">
     <template v-slot:header>
       <h3>{{ $t('voting.selectVoting') }}</h3>
     </template>
@@ -69,5 +69,5 @@ function select(id) {
         </BaseBlock>
       </a>
     </div>
-  </UiModal>
+  </BaseModal>
 </template>

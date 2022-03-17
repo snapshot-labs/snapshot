@@ -14,7 +14,7 @@ function accept() {
 </script>
 
 <template>
-  <UiModal :open="open" @close="$emit('close')">
+  <BaseModal :open="open" @close="$emit('close')">
     <template v-slot:header>
       <h3>{{ $t('settings.terms') }}</h3>
     </template>
@@ -38,5 +38,5 @@ function accept() {
         </BaseButton>
       </div>
     </template>
-  </UiModal>
+  </BaseModal>
 </template>

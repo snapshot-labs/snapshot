@@ -43,7 +43,7 @@ const switchToMainnet = async () => {
 </script>
 
 <template>
-  <UiModal :open="open" @close="$emit('close')">
+  <BaseModal :open="open" @close="$emit('close')">
     <template v-slot:header>
       <div class="flex flex-row justify-center items-center">
         <h3>{{ $t('unsupportedNetwork.unsupportedNetwork') }}</h3>
@@ -68,5 +68,5 @@ const switchToMainnet = async () => {
         {{ $t('unsupportedNetwork.switchToMainnet') }}
       </BaseButton>
     </template>
-  </UiModal>
+  </BaseModal>
 </template>

@@ -29,7 +29,7 @@ function select(key) {
 </script>
 
 <template>
-  <UiModal :open="open" @close="$emit('close')">
+  <BaseModal :open="open" @close="$emit('close')">
     <template v-slot:header>
       <h3>{{ $t('skins') }}</h3>
     </template>
@@ -64,5 +64,5 @@ function select(key) {
         <NoResults v-if="Object.keys(filteredSkins).length < 1" />
       </div>
     </div>
-  </UiModal>
+  </BaseModal>
 </template>

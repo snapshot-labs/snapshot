@@ -76,7 +76,7 @@ export default {
 </script>
 
 <template>
-  <UiModal :open="open" @close="$emit('close')">
+  <BaseModal :open="open" @close="$emit('close')">
     <template v-slot:header>
       <h3 class="title">SafeSnap</h3>
     </template>
@@ -141,7 +141,7 @@ export default {
         </div>
       </div>
     </div>
-  </UiModal>
+  </BaseModal>
 </template>
 
 <style>

@@ -10,7 +10,7 @@ defineEmits(['close']);
 </script>
 
 <template>
-  <UiModal :open="open" @close="$emit('close')">
+  <BaseModal :open="open" @close="$emit('close')">
     <template v-slot:header>
       <h3>{{ $t('receipt') }}</h3>
     </template>
@@ -40,5 +40,5 @@ defineEmits(['close']);
         </BaseButton>
       </BaseLink>
     </div>
-  </UiModal>
+  </BaseModal>
 </template>

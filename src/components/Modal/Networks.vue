@@ -30,7 +30,7 @@ function select(key) {
 </script>
 
 <template>
-  <UiModal :open="open" @close="$emit('close')">
+  <BaseModal :open="open" @close="$emit('close')">
     <template v-slot:header>
       <h3>{{ $t('networks') }}</h3>
     </template>
@@ -53,5 +53,5 @@ function select(key) {
         <NoResults v-if="Object.keys(networks).length < 1" />
       </div>
     </div>
-  </UiModal>
+  </BaseModal>
 </template>

@@ -76,7 +76,12 @@ watch(
 </script>
 
 <template>
-  <UiModal :open="open" :showClose="false" @close="$emit('close')" class="flex">
+  <BaseModal
+    :open="open"
+    :showClose="false"
+    @close="$emit('close')"
+    class="flex"
+  >
     <div class="flex flex-col flex-auto">
       <h4 class="m-4 mb-0 text-center">
         {{
@@ -164,5 +169,5 @@ watch(
         </BaseButton>
       </div>
     </template>
-  </UiModal>
+  </BaseModal>
 </template>

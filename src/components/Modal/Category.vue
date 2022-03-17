@@ -47,7 +47,7 @@ function handleClose() {
 </script>
 
 <template>
-  <UiModal :open="open" @close="handleClose">
+  <BaseModal :open="open" @close="handleClose">
     <template v-slot:header>
       <h3>
         {{ $t('settings.selectCategories') }}
@@ -100,5 +100,5 @@ function handleClose() {
         </BaseButton>
       </div>
     </template>
-  </UiModal>
+  </BaseModal>
 </template>

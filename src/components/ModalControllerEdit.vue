@@ -20,7 +20,7 @@ defineEmits(['close', 'set']);
 </script>
 
 <template>
-  <UiModal :open="open" @close="$emit('close')">
+  <BaseModal :open="open" @close="$emit('close')">
     <template v-slot:header>
       <div class="flex flex-row justify-center items-center">
         <h3>{{ $t('settings.editController') }}</h3>
@@ -62,5 +62,5 @@ defineEmits(['close', 'set']);
         {{ $t('settings.set') }}
       </BaseButton>
     </template>
-  </UiModal>
+  </BaseModal>
 </template>

@@ -127,7 +127,7 @@ const isOwner = computed(() => {
 const isCreator = computed(() => props.proposal.author === web3Account.value);
 </script>
 <template>
-  <UiModal :open="closeModal" @close="closeModal = false">
+  <BaseModal :open="closeModal" @close="closeModal = false">
     <template v-slot:header>
       <h3>{{ $t('comment_box.delete_comment') }}</h3>
     </template>
@@ -150,7 +150,7 @@ const isCreator = computed(() => props.proposal.author === web3Account.value);
         >{{ $t('comment_box.no') }}</BaseButton
       >
     </div>
-  </UiModal>
+  </BaseModal>
   <div v-if="!toggleEditComment">
     <PluginCommentBoxComment
       :item="item"

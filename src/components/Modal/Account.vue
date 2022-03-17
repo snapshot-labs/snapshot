@@ -25,7 +25,7 @@ watch(open, () => (step.value = null));
 </script>
 
 <template>
-  <UiModal :open="open" @close="$emit('close')">
+  <BaseModal :open="open" @close="$emit('close')">
     <template v-slot:header>
       <h3 v-if="!web3.account || step === 'connect'">
         {{ $t('connectWallet') }}
@@ -97,5 +97,5 @@ watch(open, () => (step.value = null));
         </BaseButton>
       </div>
     </div>
-  </UiModal>
+  </BaseModal>
 </template>

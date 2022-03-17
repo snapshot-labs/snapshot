@@ -47,7 +47,7 @@ watch(open, () => {
 </script>
 
 <template>
-  <UiModal :open="open" @close="$emit('close')">
+  <BaseModal :open="open" @close="$emit('close')">
     <template v-slot:header>
       <h3 v-if="step === 0">
         {{
@@ -95,5 +95,5 @@ watch(open, () => {
         </BaseButton>
       </div>
     </template>
-  </UiModal>
+  </BaseModal>
 </template>

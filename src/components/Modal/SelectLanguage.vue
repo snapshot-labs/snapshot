@@ -23,7 +23,7 @@ function selectLang(locale) {
 </script>
 
 <template>
-  <UiModal :open="open" @close="$emit('close')">
+  <BaseModal :open="open" @close="$emit('close')">
     <template v-slot:header>
       <h3>{{ $t('language') }}</h3>
     </template>
@@ -42,5 +42,5 @@ function selectLang(locale) {
         {{}}
       </BaseButton>
     </div>
-  </UiModal>
+  </BaseModal>
 </template>

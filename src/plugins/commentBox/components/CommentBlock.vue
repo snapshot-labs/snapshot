@@ -205,7 +205,7 @@ function deleteItemReply(key) {
 }
 </script>
 <template>
-  <UiModal :open="closeModal" @close="closeEvent">
+  <BaseModal :open="closeModal" @close="closeEvent">
     <template v-slot:header>
       <h3>{{ $t('comment_box.delete_comment') }}</h3>
     </template>
@@ -225,7 +225,7 @@ function deleteItemReply(key) {
         $t('comment_box.no')
       }}</BaseButton>
     </div>
-  </UiModal>
+  </BaseModal>
   <div v-if="!toggleEditComment">
     <CommentBoxComment
       :space="space"

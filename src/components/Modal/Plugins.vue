@@ -43,7 +43,7 @@ watch(open, () => {
 </script>
 
 <template>
-  <UiModal :open="open" @close="$emit('close')">
+  <BaseModal :open="open" @close="$emit('close')">
     <template v-slot:header>
       <h3>
         {{
@@ -101,5 +101,5 @@ watch(open, () => {
         {{ Object.keys(plugin).length ? $t('save') : $t('add') }}
       </BaseButton>
     </template>
-  </UiModal>
+  </BaseModal>
 </template>

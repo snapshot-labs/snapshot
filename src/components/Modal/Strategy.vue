@@ -93,7 +93,7 @@ const strategyIsValid = computed(() =>
 </script>
 
 <template>
-  <UiModal :open="open" @close="$emit('close')">
+  <BaseModal :open="open" @close="$emit('close')">
     <template v-slot:header>
       <h3 v-text="input.name ? input.name : $t('settings.addStrategy')" />
     </template>
@@ -180,5 +180,5 @@ const strategyIsValid = computed(() =>
         {{ strategy.name ? $t('save') : $t('add') }}
       </BaseButton>
     </template>
-  </UiModal>
+  </BaseModal>
 </template>
