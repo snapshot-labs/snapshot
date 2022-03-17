@@ -324,7 +324,7 @@ async function handleSetRecord() {
       <div class="px-4 md:px-0">
         <h1 v-text="$t('settings.header')" class="mb-4" />
       </div>
-      <RowLoadingBlock v-if="!loaded" />
+      <LoadingRow v-if="!loaded" block />
       <BaseBlock v-else-if="!currentTextRecord">
         <BaseMessageBlock level="warning" class="mb-4">
           {{ $t('settings.needToSetEnsText') }}

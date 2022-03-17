@@ -94,7 +94,7 @@ onMounted(() => {
   <BaseContainer :slim="true">
     <div class="overflow-hidden">
       <template v-if="route.name === 'strategies'">
-        <RowLoadingBlock v-if="loadingStrategies" />
+        <LoadingRow block v-if="loadingStrategies" />
         <div v-else class="grid md:grid-cols-3 gap-[1px] md:gap-4">
           <router-link
             :to="`/strategy/${item.id}`"
@@ -106,7 +106,7 @@ onMounted(() => {
         </div>
       </template>
       <template v-if="route.name === 'networks'">
-        <RowLoadingBlock v-if="loadingNetworksSpacesCount" />
+        <LoadingRow block v-if="loadingNetworksSpacesCount" />
         <div v-else class="grid md:grid-cols-3 gap-[1px] md:gap-4">
           <router-link
             :to="`/?network=${item.key}`"
@@ -118,7 +118,7 @@ onMounted(() => {
         </div>
       </template>
       <template v-if="route.name === 'plugins'">
-        <RowLoadingBlock v-if="loadingPluginsSpacesCount" />
+        <LoadingRow block v-if="loadingPluginsSpacesCount" />
         <div v-else class="grid md:grid-cols-3 gap-[1px] md:gap-4">
           <BlockPlugin
             v-for="item in items.slice(0, limit)"

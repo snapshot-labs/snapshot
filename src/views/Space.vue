@@ -55,7 +55,7 @@ onMounted(() => loadExtentedSpaces([spaceKey.value, sourceSpaceRoute.value]));
         <SpaceSidebarSkeleton />
       </template>
       <template #content-right>
-        <RowLoadingBlock />
+        <LoadingRow block />
       </template>
     </TheLayout>
 

@@ -76,7 +76,7 @@ watch(open, () => {
         </BaseButton>
       </BaseBlock>
       <div v-if="!selectedPlugin?.key">
-        <RowLoadingBlock v-if="loadingPluginsSpacesCount" />
+        <LoadingRow v-if="loadingPluginsSpacesCount" block />
         <div v-else class="space-y-3">
           <BlockPlugin
             :plugin="plugin"

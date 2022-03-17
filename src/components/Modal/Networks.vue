@@ -41,7 +41,7 @@ function select(key) {
     />
 
     <div class="my-4 mx-0 md:mx-4 min-h-[339px]">
-      <RowLoadingBlock v-if="loadingNetworksSpacesCount" />
+      <LoadingRow v-if="loadingNetworksSpacesCount" block />
       <div v-else class="space-y-3">
         <div
           v-for="network in networks"

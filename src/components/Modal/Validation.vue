@@ -81,7 +81,7 @@ watch(open, () => {
         </BaseButton>
       </div>
       <div v-if="!input.name">
-        <RowLoadingBlock v-if="loadingValidations" />
+        <LoadingRow v-if="loadingValidations" block />
         <div v-else class="space-y-3">
           <BlockValidation
             :validation="valId"

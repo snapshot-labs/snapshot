@@ -39,7 +39,7 @@ function select(key) {
       modal
     />
     <div class="my-4 mx-0 md:mx-4 min-h-[339px]">
-      <RowLoadingBlock v-if="loadingSkins" />
+      <LoadingRow v-if="loadingSkins" block />
       <div v-else class="space-y-3">
         <div
           v-if="!searchInput"

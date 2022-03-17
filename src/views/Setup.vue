@@ -87,9 +87,7 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
         <h1 v-text="$t('setup.createASpace')" class="mb-4" />
       </div>
       <template v-if="web3Account">
-        <BaseBlock v-if="loadingOwnedEnsDomains" slim>
-          <LoadingRow class="my-2" />
-        </BaseBlock>
+        <LoadingRow v-if="loadingOwnedEnsDomains" block />
         <!-- Step two - setup space controller -->
         <SetupController
           v-else-if="route.params.step === 'controller' && ensAddress"

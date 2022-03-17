@@ -177,9 +177,7 @@ onMounted(() => {
         />
       </div>
       <div class="w-[10px] h-[10px] absolute bottom-0" ref="endElement" />
-      <BaseBlock v-if="loadingData" :slim="true" class="my-4">
-        <LoadingRow class="my-2" />
-      </BaseBlock>
+      <LoadingRow v-if="loadingData" block />
     </template>
   </TheLayout>
 </template>

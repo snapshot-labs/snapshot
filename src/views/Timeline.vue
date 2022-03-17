@@ -183,7 +183,6 @@ function selectState(e) {
             (web3.authLoading && isTimeline) ||
             (loadingFollows && isTimeline)
           "
-          class="px-4 py-5"
         />
         <div
           v-else-if="
@@ -210,7 +209,7 @@ function selectState(e) {
         </div>
         <div class="w-[10px] h-[10px] absolute bottom-0" ref="endElement" />
         <div v-if="loadingMore && !loading" :slim="true">
-          <LoadingRow class="border-t px-4 py-5" />
+          <LoadingRow class="border-t" />
         </div>
       </div>
     </template>
