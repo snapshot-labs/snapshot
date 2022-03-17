@@ -133,7 +133,7 @@
   "createButton": "創作",
   "newSpaceNotice": {
     "header": "スペースは進行中！",
-    "mainText": "By default each voter has a voting power of one. You can change how voting power is calculated via strategies in your {settings}. Changes to your settings will only affect new proposals, existing proposals can not be changed.",
+    "mainText": "デフォルトでは、各投票者が一つの投票権を持っています。{settings}　にはある戦略で投票権が計算される方法を変更できます。設定の変更は新しい提案しか影響しません。進行中の提案を変わることができません。",
     "learnMore": "Learn more in the {documentation} or join Snapshot {discord} for help.",
     "gotIt": "了解です！"
   },
