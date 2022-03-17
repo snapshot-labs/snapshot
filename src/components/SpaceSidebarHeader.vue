@@ -75,7 +75,7 @@ watchEffect(() => {
     </div>
 
     <div class="flex justify-center gap-x-2">
-      <FollowButton :space="space" />
+      <ButtonFollow :space="space" />
       <UiSidebarButton
         class="inline"
         v-if="isFollowing"
