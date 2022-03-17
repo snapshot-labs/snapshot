@@ -9,7 +9,7 @@ const route = useRoute();
 const router = useRouter();
 const { t } = useI18n();
 
-const routeQuery = computed(() => route.query.q);
+const routeQuery = computed(() => route.query.q || '');
 const searchOptions = computed(() => [
   {
     text: t('spaces'),
