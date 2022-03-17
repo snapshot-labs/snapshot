@@ -81,7 +81,7 @@ watchEffect(() => {
         v-if="isFollowing"
         @click="toggleSubscription()"
       >
-        <UiLoading v-if="loading" />
+        <BaseLoading v-if="loading" />
         <BaseIcon
           v-else
           size="20"

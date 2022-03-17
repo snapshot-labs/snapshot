@@ -133,7 +133,7 @@ watch(
             {{ formatCompactNumber(vp) }}
             {{ shorten(space.symbol, 'symbol') }}
           </span>
-          <UiLoading v-else />
+          <BaseLoading v-else />
           <BaseLink
             v-if="vp === 0 && vpLoaded && !vpLoading && !vpLoadingFailed"
             link="https://github.com/snapshot-labs/snapshot/discussions/767#discussioncomment-1400614"

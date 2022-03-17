@@ -327,7 +327,7 @@ const truncateMarkdownBody = computed(() => {
               >
                 <template v-slot:button>
                   <div class="pl-1">
-                    <UiLoading v-if="clientLoading" />
+                    <BaseLoading v-if="clientLoading" />
                     <BaseIcon
                       v-else
                       name="threedots"
