@@ -271,7 +271,7 @@ onMounted(async () => {
           v-for="score in Object.keys(scores[0])"
           :key="score"
         >
-          <UserAvatar :address="score" :space="form" />
+          <AvatarUser :address="score" :space="form" />
           <span>
             {{ formatCompactNumber(scores[0][score]) }}
             {{ form.params.symbol }}

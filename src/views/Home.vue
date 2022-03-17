@@ -130,7 +130,7 @@ onMounted(() => {
               style="height: 266px"
             >
               <div class="relative inline-block mb-2">
-                <SpaceAvatar
+                <AvatarSpace
                   :space="space"
                   symbolIndex="space"
                   size="82"

@@ -40,7 +40,7 @@ watchEffect(() => {
 
 <template>
   <div class="text-center bg-skin-header-bg h-[253px]">
-    <SpaceAvatar
+    <AvatarSpace
       :space="space"
       symbolIndex="space"
       size="80"

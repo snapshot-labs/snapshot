@@ -278,7 +278,7 @@ const truncateMarkdownBody = computed(() => {
                 }"
               >
                 <div class="flex items-center">
-                  <SpaceAvatar :space="space" size="28" />
+                  <AvatarSpace :space="space" size="28" />
                   <span
                     class="ml-2 group-hover:text-skin-link hidden sm:block"
                     v-text="space.name"
@@ -287,7 +287,7 @@ const truncateMarkdownBody = computed(() => {
               </router-link>
 
               <span v-text="$t('proposalBy')" />
-              <UserAvatar
+              <AvatarUser
                 :address="proposal.author"
                 :profile="profiles[proposal.author]"
                 :space="space"
@@ -428,7 +428,7 @@ const truncateMarkdownBody = computed(() => {
                       content: symbol
                     }"
                   >
-                    <SpaceAvatar :space="space" :symbolIndex="symbolIndex" />
+                    <AvatarSpace :space="space" :symbolIndex="symbolIndex" />
                   </span>
                   <span
                     v-show="symbolIndex !== symbols.length - 1"

@@ -95,7 +95,7 @@ watch(visibleVotes, () => {
       :style="i === 0 && 'border: 0 !important;'"
       class="px-4 py-3 border-t flex"
     >
-      <UserAvatar
+      <AvatarUser
         :profile="profiles[vote.voter]"
         :address="vote.voter"
         :space="space"
