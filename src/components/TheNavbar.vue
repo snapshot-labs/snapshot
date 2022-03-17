@@ -2,14 +2,14 @@
 import { ref } from 'vue';
 import { shorten } from '@/helpers/utils';
 import { useModal } from '@/composables/useModal';
-import { useDomain } from '@/composables/useDomain';
+import { useApp } from '@/composables/useApp';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useTxStatus } from '@/composables/useTxStatus';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 
 const { pendingCount } = useTxStatus();
 const { modalAccountOpen } = useModal();
-const { env } = useDomain();
+const { env } = useApp();
 const auth = getInstance();
 const { login, web3, web3Account } = useWeb3();
 

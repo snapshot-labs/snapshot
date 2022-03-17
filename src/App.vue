@@ -3,10 +3,9 @@ import { onMounted, provide } from 'vue';
 import { useApp } from '@/composables/useApp';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useFlashNotification } from '@/composables/useFlashNotification';
-import { useDomain } from '@/composables/useDomain';
 import { useRoute } from 'vue-router';
 
-const { domain } = useDomain();
+const { domain } = useApp();
 const { init, ready } = useApp();
 const { web3 } = useWeb3();
 const { notify } = useFlashNotification();

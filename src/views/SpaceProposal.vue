@@ -7,7 +7,7 @@ import { explorerUrl, getIpfsUrl } from '@/helpers/utils';
 import { useModal } from '@/composables/useModal';
 import { useTerms } from '@/composables/useTerms';
 import { useProfiles } from '@/composables/useProfiles';
-import { useDomain } from '@/composables/useDomain';
+import { useApp } from '@/composables/useApp';
 import { useSharing } from '@/composables/useSharing';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useClient } from '@/composables/useClient';
@@ -21,7 +21,7 @@ const props = defineProps({
 
 const route = useRoute();
 const router = useRouter();
-const { domain } = useDomain();
+const { domain } = useApp();
 const { t, setPageTitle } = useI18n();
 const { web3, web3Account } = useWeb3();
 const { send, clientLoading } = useClient();

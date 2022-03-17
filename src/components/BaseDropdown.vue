@@ -32,9 +32,10 @@ onBeforeUnmount(() => window.removeEventListener('click', close));
 
 watch(open, () => {
   const { left, right } = dropdownEl.value.getBoundingClientRect();
-  positionClass.value = left < window.innerWidth - right
-    ? 'origin-top-left left-0'
-    : 'origin-top-right right-0';
+  positionClass.value =
+    left < window.innerWidth - right
+      ? 'origin-top-left left-0'
+      : 'origin-top-right right-0';
   emit('openChange');
 });
 </script>
