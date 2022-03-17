@@ -23,7 +23,7 @@ function accept() {
         {{ $tc('mustAgreeToTerms', [space.name]) }}
       </h4>
       <BaseLink :link="space.terms">
-        <UiText :text="getIpfsUrl" :truncate="35" />
+        <TextAutolinker :text="getIpfsUrl" :truncate="35" />
       </BaseLink>
     </div>
     <template v-slot:footer>
