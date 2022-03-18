@@ -151,7 +151,7 @@
   "create": {
     "question": "質問する...",
     "categorie(s)": "最大2つのカテゴリを選択してください",
-    "content": "Tell us more about your proposal (optional)",
+    "content": "提案について詳しく教えてください(オプショナル)",
     "preview": "プレビュー",
     "choices": "選択肢",
     "addChoice": "選択肢を追加する",
@@ -164,7 +164,7 @@
     "snapshotBlock": "Snapshotのブロック高",
     "voting": "投票",
     "votingSystem": "投票システム",
-    "choice": "Choice {0}",
+    "choice": "チョイス{0}",
     "period": "投票期間",
     "start": "スタート",
     "end": "終了",
