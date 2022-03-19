@@ -5,7 +5,7 @@
   "backToHome": "Home",
   "actions": "Actions",
   "results": "Results",
-  "resultsError": "結果を計算できません。これはたぶん誤った設定された戦略または戦略には関与する無反応のRPCノードに基づくかもしれません。",
+  "resultsError": "結果を計算できませんでした。戦略が誤って設定されていたり、または戦略に対してRPCノードが無反応であることが原因かもしれません。",
   "vpError": "表決を計算できませんでした。これはたぶん誤った設定された戦略または戦略には関与する無反応のRPCノードに基づくかもしれません。",
   "getHelp": "ヘルプ",
   "retry": "リトライ",
@@ -160,7 +160,7 @@
     "startTime": "開始日を選択する",
     "endTime": "終了日を選択する",
     "publish": "公開",
-    "untitled": "タイトルなし",
+    "untitled": "タイトル未設定",
     "snapshotBlock": "Snapshotのブロック高",
     "voting": "投票",
     "votingSystem": "投票システム",
@@ -176,7 +176,7 @@
     "periodEnforced": "スペースは投票期間のデュレーションを強制する",
     "typeEnforced": "スペースはこの投票タイプを強制する",
     "edit": "エディット",
-    "continue": "続ける",
+    "continue": "続行する",
     "now": "今すぐ",
     "votingPeriodExplainer": "これはユーザーが投票できる時間です。提案は投票期間の始まる前に表示され、未決になります。",
     "validationWarning": {
@@ -283,14 +283,14 @@
     "connectWithSpaceOwner": "To modify space settings, connect with a controller or admin wallet.",
     "currentSpaceControllerIs": "The current space controller is {address}",
     "newController": "新しいコントロール",
-    "set": "セット"
+    "set": "設定する"
   },
   "setup": {
     "example": "例 yam.eth",
     "chooseExistingEns": "Choose one of your existing ENS domains to create a space with:",
     "useSingleExistingEns": "Use your existing ENS domain:",
     "orReigsterNewEns": "または新しいドメインを登録する：",
-    "toCreateASpace": "スペースを創造するため、まずENSドメインが必要です。そのドメインを以下に入って、そしてENS登録の指示を従ってください。",
+    "toCreateASpace": "スペースを作成するためには、まずENSドメインが必要です。ドメインを入力し、ENS登録の指示に従ってください。",
     "createASpace": "スペースの作成",
     "registerEnsButton": "登録する",
     "supportedEnsTLDs": "Supported domain endings",
