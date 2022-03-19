@@ -219,8 +219,8 @@
     "new": "新しい提案",
     "noProposals": "まだ提案はありません",
     "createProposal": "Create proposal",
-    "showMore": "Show more",
-    "showLess": "Show less",
+    "showMore": "詳細",
+    "showLess": "概略",
     "states": {
       "all": "すべて",
       "core": "コア",
@@ -235,14 +235,14 @@
     "noNotifications": "お知らせがありません",
     "proposalStarted": "提案が始まりました：",
     "proposalEnded": "提案が終わりました：",
-    "markAllAsRead": "Mark all as read",
+    "markAllAsRead": "全て既読にする",
     "all": "全て",
     "unread": "未読"
   },
   "settings": {
     "header": "設定",
-    "setEnsTextRecord": "Set ENS text record",
-    "editController": "Edit controller",
+    "setEnsTextRecord": "ENSテキストレコードを設定",
+    "editController": "コントロールの編集",
     "needToSetEnsText": "Your space settings will be stored in a file on IPFS. Before you can edit them, you need to set an ENS text record pointing to that file.",
     "profile": "プロフィール",
     "avatar": "アバター",
@@ -466,7 +466,7 @@
       "home": "Snapshot",
       "setup": "スペースを作成",
       "timeline": "タイムライン",
-      "notifications": "Notifications",
+      "notifications": "お知らせ",
       "explore": "探す",
       "playground": "プレイグラウンド",
       "space": {
@@ -485,13 +485,13 @@
     "text": "Receive notifications every time a new proposal is created or ends"
   },
   "timeUnits": {
-    "second": "1 second | {n} seconds",
-    "minute": "1 minute | {n} minutes",
-    "hour": "1 hour | {n} hours",
-    "day": "1 day | {n} days",
-    "week": "1 week | {n} weeks",
-    "month": "1 month | {n} months",
-    "year": "1 year | {n} years"
+    "second": "1 秒 | {n} 秒",
+    "minute": "1 分 | {n} 分",
+    "hour": "1 時間 | {n} 時間",
+    "day": "1 日 | {n} 日",
+    "week": "1 週間 | {n} 週間",
+    "month": "1ヶ月 | {n} ヶ月",
+    "year": "1 年 | {n} 年"
   },
   "unsupportedNetwork": {
     "unsupportedNetwork": "Unsupported network",
