@@ -5,8 +5,8 @@
   "backToHome": "Home",
   "actions": "Actions",
   "results": "Results",
-  "resultsError": "結果を計算できません。これはよく誤った設定された戦略または戦略には関与する無反応のRPCノードに基づくかもしれません。",
-  "vpError": "表決を計算できませんでした。これはよく誤った設定された戦略または戦略には関与する無反応のRPCノードに基づくかもしれません。",
+  "resultsError": "結果を計算できません。これはたぶん誤った設定された戦略または戦略には関与する無反応のRPCノードに基づくかもしれません。",
+  "vpError": "表決を計算できませんでした。これはたぶん誤った設定された戦略または戦略には関与する無反応のRPCノードに基づくかもしれません。",
   "getHelp": "ヘルプ",
   "retry": "リトライ",
   "currentResults": "Current results",
@@ -185,7 +185,7 @@
         "minScore": "提案を作成するためには、最低でも {0} {1} 所有していなければなりません。"
       },
       "customValidation": "提案を提出するには、提案検証に合格する必要があります。",
-      "executionError": "Verifying your eligibility to create proposals in this space has failed. This is likely due to a misconfigured strategy."
+      "executionError": "このスペースの中で提案を作成する適格性を検証が失敗しました。これはたぶん誤った設定された戦略に基づくかもしれません。"
     }
   },
   "delegate": {
@@ -198,14 +198,14 @@
     "delegated": "あなたへ移譲されたもの",
     "pendingTransaction": "保留中のトランザクションがありません | 1保留中の取引 | {count} 保留中の取引",
     "topDelegates": "Top delegates",
-    "noDelegatesFoundFor": "No delegates found for {0}",
-    "noValidEns": "Not a valid ENS address.",
-    "noValidAddress": "Not a valid address",
-    "delegateToSelf": "You cannot delegate to yourself",
-    "delegateToSelfAddress": "You cannot delegate to your own ENS address",
-    "noValidSpaceId": "Not a valid space ID",
-    "noDelegationsAndDelegates": "Can't find your delegations and delegates? Make sure you are connected to the correct network.",
-    "delegateNotSupported": "Delegation is currently not supported for {network}."
+    "noDelegatesFoundFor": "{0} の委任が見つかりません。",
+    "noValidEns": "ENSのアドレスは有効ではありません。",
+    "noValidAddress": "アドレスは有効ではありません",
+    "delegateToSelf": "自分自身に委任するのはできません",
+    "delegateToSelfAddress": "自分のENSアドレスを委任することはできません",
+    "noValidSpaceId": "スペースIDは有効ではありません",
+    "noDelegationsAndDelegates": "委任と代表団を見つかりませんか。正しいネットワークに接続しているか確認してください。",
+    "delegateNotSupported": "現在、委任は{network} でサポートされていません。"
   },
   "proposal": {
     "castVote": "投票する",
@@ -231,7 +231,7 @@
     }
   },
   "notifications": {
-    "header": "Notifications",
+    "header": "お知らせ",
     "noNotifications": "お知らせがありません",
     "proposalStarted": "提案が始まりました：",
     "proposalEnded": "提案が終わりました：",
