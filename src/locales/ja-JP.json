@@ -295,22 +295,22 @@
     "registerEnsButton": "登録する",
     "supportedEnsTLDs": "サポートされているドメインの終了",
     "helpDocsAndDiscordLinks": "スペースを作成する方法がわかりませんか？詳細は <a target='_blank' href='https://docs.snapshot.org/spaces/create'> ドキュメント </a> を見てください。またはスナップショット <a target='_blank' href='https://discord.gg/snapshot'>Discord</a> に参加してください。",
-    "setSpaceController": "Set space controller address on ENS",
+    "setSpaceController": "ENSにスペースコントローラのアドレスを設定する",
     "editSpaceController": "ENSでコントローラを編集する",
     "setController": "コントロールを設定する",
-    "explainControllerAndEns": "This action requires a transaction on the Ethereum Mainnet which will add a \"snapshot\" TEXT record to your ENS domain.",
-    "confirmToSetAddress": "Are you sure you want to set {address} as the controller of the space?",
-    "controllerHasAuthority": "The controller has full authority over the space settings",
+    "explainControllerAndEns": "このアクションには、イーサリアム・メインネット上での取引が必要です。これにより、ENSドメインに「スナップショット」TEXTレコードが追加されます。",
+    "confirmToSetAddress": "{address} をスペースのコントローラーとして設定するのは本当によろしいですか。",
+    "controllerHasAuthority": "コントローラーはスペースの設定に対して完全な権限を持っています",
     "controller": "コントローラ",
     "selectEnsForSpace": "ENSアドレスを選ぶ",
     "spaceOwnerAddressPlaceHolder": "例: 0xF78108c9BBaF466dd96BE41be728Fe3220b37119",
     "controllerAddress": "コントローラーのアドレス",
     "updateController": "コントロールをアップデートする",
-    "seeOnEns": "See on ENS",
-    "goToSettings": "Go to settings",
+    "seeOnEns": "ENS上で見る",
+    "goToSettings": "設定に移動する",
     "setSpaceProfile": "スペースをカストマイズする",
-    "waitForTransaction": "The transaction need to confirm before you can create your space. {txUrl}",
-    "pleaseWaitMessage": "This can take a few minutes, please wait while the transaction is being confirmed"
+    "waitForTransaction": "スペースを作成する前に取引の確認は必要です。{txUrl}",
+    "pleaseWaitMessage": "取引が確認されるまで少々お待ちください"
   },
   "notify": {
     "youDidIt": "おつかれさまです！",
@@ -322,8 +322,8 @@
     "delegationRemoved": "委任キャンセル",
     "proposalCreated": "提案が作成されました",
     "voteSuccessful": "投票されています！",
-    "ensSet": "ENS text record was successfully set",
-    "transactionSent": "Transaction sent"
+    "ensSet": "ENSテキストレコードが正常に設定されました",
+    "transactionSent": "取引が送付されました"
   },
   "explore": {
     "createStrategy": "ストラテジーの作成",
@@ -381,7 +381,7 @@
     "addBatch": "トランザクションを追加",
     "batch": "トランザクションを追加",
     "transactions": "トランザクション",
-    "to": "To (address)",
+    "to": "に (address)　　",
     "invalidAddress": "無効なアドレス",
     "invalidAmount": "無効な金額",
     "invalidValue": "無効な値",
@@ -481,8 +481,8 @@
     }
   },
   "hal": {
-    "title": "Track proposals for {spaceName}",
-    "text": "Receive notifications every time a new proposal is created or ends"
+    "title": "{spaceName} の提案を追跡する",
+    "text": "新しい提案が作成または終了するたびに通知を受け取る"
   },
   "timeUnits": {
     "second": "1 秒 | {n} 秒",
@@ -494,7 +494,7 @@
     "year": "1 年 | {n} 年"
   },
   "unsupportedNetwork": {
-    "unsupportedNetwork": "Unsupported network",
+    "unsupportedNetwork": "サポートされないネットワーク",
     "ensOnlyMainnet": "Snapshot only supports ENS on the ethereum mainnet. Once the space is created, you can use it across multiple chains.",
     "switchNetworkToMainnet": "To continue, you need to change the network in your wallet to Ethereum Mainnet.",
     "switchToMainnet": "メインネットに切り替え"
