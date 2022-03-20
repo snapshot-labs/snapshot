@@ -243,7 +243,7 @@
     "header": "設定",
     "setEnsTextRecord": "ENSテキストレコードを設定",
     "editController": "コントロールの編集",
-    "needToSetEnsText": "Your space settings will be stored in a file on IPFS. Before you can edit them, you need to set an ENS text record pointing to that file.",
+    "needToSetEnsText": "スペースの設定はIPFS上のファイルに保存されます。スペースの設定を編集する前に、まずそのファイルを指定するENSテキストコードを設定することは必要です。",
     "profile": "プロフィール",
     "avatar": "アバター",
     "name": "名前",
