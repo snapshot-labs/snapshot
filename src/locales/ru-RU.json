@@ -294,8 +294,8 @@
     "createASpace": "Создать сообщество",
     "registerEnsButton": "Зарегистрироваться",
     "supportedEnsTLDs": "Поддерживаемые окончания доменов",
-    "helpDocsAndDiscordLinks": "Not sure how to create a space? Learn more in the <a target='_blank' href='https://docs.snapshot.org/spaces/create'> documentation </a> or join Snapshot <a target='_blank' href='https://discord.gg/snapshot'>Discord</a>.",
-    "setSpaceController": "Set space controller address on ENS",
+    "helpDocsAndDiscordLinks": "Не уверены, как создать сообщество? Узнайте больше в <a target='_blank' href='https://docs.snapshot.org/spaces/create'> документации </a> или присоединитесь к Snapshot <a target='_blank' href='https://discord.gg/snapshot'>Discord</a>.",
+    "setSpaceController": "Установите адрес контроллера сообщества на ENS",
     "editSpaceController": "Изменить контроллер на ENS",
     "setController": "Настроить виджеты",
     "explainControllerAndEns": "Это действие требует транзакции в сети Ethereum Mainnet, которая добавит запись TEXT \"snapshot\" к вашему домену ENS.",
@@ -422,7 +422,7 @@
   "poap": {
     "no_poap_header": "POAP еще не был настроен для этого предложения:'(",
     "no_voted_header": "Проголосуйте, чтобы получить этот POAP",
-    "unclaimed_header": "Mint your I voted POAP",
+    "unclaimed_header": "Я проголосовал, забрать свой POAP",
     "claimed_header": "Поздравляем! POAP добавлен в вашу коллекцию",
     "loading_header": "POAP добавляется в вашу коллекцию",
     "button_claim": "Минт",
@@ -485,8 +485,8 @@
     "text": "Получать уведомления каждый раз, когда создается или завершается новое предложение"
   },
   "timeUnits": {
-    "second": "1 second | {n} seconds",
-    "minute": "1 minute | {n} minutes",
+    "second": "1 секунда | {n} секунд(-ы)",
+    "minute": "1 минута | {n} минут(-ы)",
     "hour": "1 час | {n} часов(а)",
     "day": "1 день | {n} дней(я)",
     "week": "1 неделя | {n} недель(и)",
