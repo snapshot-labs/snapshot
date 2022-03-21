@@ -501,6 +501,7 @@
   },
   "boost": {
     "deposit": "Deposit",
-    "claim": "Claim"
+    "claim": "Claim",
+    "postWhitelist": "Post whitelist"
   }
 }

@@ -2,17 +2,22 @@
 import { ref, onMounted } from 'vue';
 import { usePlugins } from '@/composables/usePlugins';
 import { useTxStatus } from '@/composables/useTxStatus';
+import { useWeb3 } from '@/composables/useWeb3';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { sendTransaction } from '@snapshot-labs/snapshot.js/src/utils';
+import { formatEther } from '@ethersproject/units';
 import ABI from './abi.json'
+
+const { web3Account } = useWeb3();
 
 const props = defineProps({
   proposal: Object,
   space: Object
 });
 
-const rewardsContract = '0xda30f61Fbe1A2829395e006325a6b1Bd2bfFCAd9';
+const rewardsContract = '0x4362f5B244f1f846df58C567A5704C34c5CA9BbB';
 const nullAddress = '0x0000000000000000000000000000000000000000';
+const nullWhitelist = '0x0000000000000000000000000000000000000000000000000000000000000000';
 
 const { pluginIndex } = usePlugins();
 const { pendingCount } = useTxStatus();
@@ -53,6 +58,7 @@ async function depositETH() {
   pendingCount.value++;
   await tx.wait();
   pendingCount.value--;
+  getDeposits();
 }
 
 async function depositERC() {
@@ -66,9 +72,45 @@ async function depositERC() {
   pendingCount.value++;
   await tx.wait();
   pendingCount.value--;
+  getDeposits();
 }
 
-async function claim() {}
+async function postWhitelist() {
+  const { root, signature } = await fetch(
+    `${import.meta.env.VITE_HUB_URL}/api/merkle/${props.proposal.id}`
+  ).then(res => res.json());
+
+  const tx = await sendTransaction(
+    getInstance().web3,
+    rewardsContract,
+    ABI,
+    'setMerkleRootForProposal',
+    [props.proposal.id, root, signature]
+  );
+  pendingCount.value++;
+  await tx.wait();
+  pendingCount.value--;
+  getWhitelist();
+}
+
+async function claim() {
+  const tx = await sendTransaction(
+    getInstance().web3,
+    rewardsContract,
+    ABI,
+    'claim',
+    [
+      props.proposal.id,
+      web3Account.value,
+      '1000000000000000',
+      nullAddress,
+      []
+    ]
+  );
+  pendingCount.value++;
+  await tx.wait();
+  pendingCount.value--;
+}
 
 onMounted(() => {
   getDeposits();
@@ -84,7 +126,7 @@ onMounted(() => {
     <div class="mb-3 text-center">
       Rewards pool:
       <div class="font-bold text-lg text-skin-link">
-        {{ Number(currentDeposits) }}
+        {{ formatEther(Number(currentDeposits)) }}
         {{ space.plugins.boost.token ? 'ERC' : 'ETH' }}
       </div>
     </div>
@@ -92,7 +134,7 @@ onMounted(() => {
       <UiInput v-model="amount" number />
       <BaseButton
         class="w-full mt-2"
-        @click="space.plugins.boost.token ? depositERC : depositETH"
+        @click="depositETH"
         primary
       >
         {{ $t('boost.deposit') }}
@@ -100,6 +142,15 @@ onMounted(() => {
     </div>
     <div v-else>
       <BaseButton
+        v-if="whitelist === nullWhitelist"
+        class="w-full mt-2"
+        @click="postWhitelist"
+        primary
+      >
+        {{ $t('boost.postWhitelist') }}
+      </BaseButton>
+      <BaseButton
+        v-else
         class="w-full mt-2"
         @click="claim"
         primary
