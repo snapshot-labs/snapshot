@@ -123,7 +123,7 @@
   "duplicateProposal": "Создать дубликат предложения",
   "joinedSpaces": "Вступившие сообщества",
   "joinSpaces": "Вступить в сообщества",
-  "setDelegationToSpace": "Limit delegation to a specific space",
+  "setDelegationToSpace": "Ограничить делегацию определенным местом",
   "theCurrentNetwork": "текущая сеть",
   "optional": "(необязательно)",
   "homeLoadmore": "Загрузить больше",
@@ -242,7 +242,7 @@
   "settings": {
     "header": "Настройки",
     "setEnsTextRecord": "Установить текстовую запись ENS",
-    "editController": "Edit controller",
+    "editController": "Изменить виджеты",
     "needToSetEnsText": "Ваши настройки сообщества будут храниться в файле на IPFS. Прежде чем вы сможете их редактировать, необходимо установить текстовую запись ENS, указывающую на этот файл.",
     "profile": "Профиль",
     "avatar": "Изображение пользователя",
@@ -293,13 +293,13 @@
     "toCreateASpace": "Чтобы создать сообщество, вам сначала нужен домен ENS. Введите его ниже и следуйте инструкциям по регистрации ENS.",
     "createASpace": "Создать сообщество",
     "registerEnsButton": "Зарегистрироваться",
-    "supportedEnsTLDs": "Supported domain endings",
+    "supportedEnsTLDs": "Поддерживаемые окончания доменов",
     "helpDocsAndDiscordLinks": "Not sure how to create a space? Learn more in the <a target='_blank' href='https://docs.snapshot.org/spaces/create'> documentation </a> or join Snapshot <a target='_blank' href='https://discord.gg/snapshot'>Discord</a>.",
     "setSpaceController": "Set space controller address on ENS",
-    "editSpaceController": "Edit controller on ENS",
-    "setController": "Set controller",
-    "explainControllerAndEns": "This action requires a transaction on the Ethereum Mainnet which will add a \"snapshot\" TEXT record to your ENS domain.",
-    "confirmToSetAddress": "Are you sure you want to set {address} as the controller of the space?",
+    "editSpaceController": "Изменить контроллер на ENS",
+    "setController": "Настроить виджеты",
+    "explainControllerAndEns": "Это действие требует транзакции в сети Ethereum Mainnet, которая добавит запись TEXT \"snapshot\" к вашему домену ENS.",
+    "confirmToSetAddress": "Вы уверены, что хотите установить {address} в качестве управляющего сообществом?",
     "controllerHasAuthority": "Контроллер имеет полное право управлять настройками сообщества",
     "controller": "Контроллер",
     "selectEnsForSpace": "Выберите ENS-адрес",
@@ -435,7 +435,7 @@
     "noVotesYet": "Пока нет голосов за визуализацию.",
     "totalVotesPerDay": "Общее количество голосов за день",
     "shareOfVotingPower": "Поделиться правом голоса",
-    "votingPowerPerDay": "Voting power per day"
+    "votingPowerPerDay": "Доля голосов в день"
   },
   "comment_box": {
     "title": "Comment box",
@@ -487,15 +487,15 @@
   "timeUnits": {
     "second": "1 second | {n} seconds",
     "minute": "1 minute | {n} minutes",
-    "hour": "1 hour | {n} hours",
-    "day": "1 day | {n} days",
-    "week": "1 week | {n} weeks",
-    "month": "1 month | {n} months",
-    "year": "1 year | {n} years"
+    "hour": "1 час | {n} часов(а)",
+    "day": "1 день | {n} дней(я)",
+    "week": "1 неделя | {n} недель(и)",
+    "month": "1 месяц | {n} месяцев(а)",
+    "year": "1 год | {n} лет(года)"
   },
   "unsupportedNetwork": {
     "unsupportedNetwork": "Неподдерживаемая сеть",
-    "ensOnlyMainnet": "Snapshot only supports ENS on the ethereum mainnet. Once the space is created, you can use it across multiple chains.",
+    "ensOnlyMainnet": "Snapshot поддерживает только ENS в главной сети ethereum. После создания сообщества вы можете использовать его в нескольких цепочках.",
     "switchNetworkToMainnet": "Чтобы продолжить, необходимо изменить сеть в кошельке на Ethereum Mainnet.",
     "switchToMainnet": "Переключиться на основную сеть"
   }
