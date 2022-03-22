@@ -248,7 +248,7 @@ const truncateMarkdownBody = computed(() => {
 <template>
   <TheLayout v-bind="$attrs">
     <template #content-left>
-      <div class="px-4 md:px-0 mb-3">
+      <div class="px-3 md:px-0 mb-3">
         <a
           class="text-skin-text"
           @click="
@@ -263,9 +263,9 @@ const truncateMarkdownBody = computed(() => {
           {{ $t('back') }}
         </a>
       </div>
-      <div class="px-4 md:px-0">
+      <div class="px-3 md:px-0">
         <template v-if="proposal">
-          <h1 v-text="proposal.title" class="mb-3 break-words" />
+          <h1 v-text="proposal.title" class="mb-3 break-words text-xl leading-8 sm:text-2xl" />
 
           <div class="flex flex-col sm:flex-row sm:space-x-1 mb-4">
             <div class="flex items-center mb-1 sm:mb-0">
