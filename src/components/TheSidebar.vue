@@ -15,7 +15,7 @@ const { web3Account } = useWeb3();
 const { loadFollows, followingSpaces } = useFollowSpace();
 const { proposals, getProposals, lastSeenProposals, updateLastSeenProposal } =
   useUnseenProposals();
-const { domain } = useApp();
+const { domain, showSidebar } = useApp();
 
 const draggableSpaces = ref<string[]>([]);
 
@@ -72,7 +72,18 @@ onMounted(() => {
   <div
     class="flex flex-col h-full overflow-auto no-scrollbar overscroll-contain py-2"
   >
-    <div v-if="!domain" class="flex items-center relative px-2">
+    <div class="flex items-center relative px-2">
+      <UiSidebarButton
+        @click="showSidebar = false"
+        class="border-0 sm:hidden"
+      >
+        <BaseIcon
+          name="close"
+          size="20"
+        />
+      </UiSidebarButton>
+    </div>
+    <div v-if="!domain" class="hidden sm:flex items-center relative px-2">
       <router-link :to="{ name: 'home' }">
         <UiSidebarButton class="!border-0">
           <BaseIcon size="36" name="snapshot" class="text-snapshot" />

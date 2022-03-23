@@ -25,6 +25,9 @@ const { login } = useWeb3();
 
 const ready = ref(false);
 
+// only affects small screens
+const showSidebar = ref(false);
+
 export function useApp() {
   const { loadLocale } = useI18n();
   const { getSkin } = useSkin();
@@ -50,6 +53,7 @@ export function useApp() {
     domainAlias,
     env,
     ready,
-    init
+    init,
+    showSidebar
   };
 }
