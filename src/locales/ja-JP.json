@@ -159,7 +159,7 @@
     "endDate": "終了日を選択する",
     "startTime": "開始の時間を選択する",
     "endTime": "終了の時間を選択する",
-    "publish": "公開",
+    "publish": "公開する",
     "untitled": "タイトル未設定",
     "snapshotBlock": "スナップショットブロック番号",
     "voting": "投票",
@@ -184,7 +184,7 @@
         "member": "提案を提出するため、スペースのオーサーになることが必要がある。",
         "minScore": "提案を提出するためには、せめて {0} {1} を持っていなければなりません。"
       },
-      "customValidation": "提案を提出するには、提案検証に合格する必要があります。",
+      "customValidation": "提案を提出するには、提案検証をクリアする必要があります。",
       "executionError": "このスペースの中で提案を作成する適格性を検証が失敗しました。これはたぶん誤った設定された戦略に基づくかもしれません。"
     }
   },
@@ -196,7 +196,7 @@
     "delegations": "あなたの委任",
     "allSpaces": "すべてのスペース用",
     "delegated": "あなたに委任された",
-    "pendingTransaction": "保留中のトランザクションがありません | 1保留中の取引 | {count} 保留中の取引",
+    "pendingTransaction": "保留中の取引がありません | 保留中の取引が1件あります | {count} 件の保留中の取引があります",
     "topDelegates": "トップの委任",
     "noDelegatesFoundFor": "{0} の委任が見つかりません。",
     "noValidEns": "ENSのアドレスは有効ではありません。",
@@ -209,7 +209,7 @@
   },
   "proposal": {
     "castVote": "投票する",
-    "vote": "投票",
+    "vote": "投票する",
     "startDate": "開始日",
     "endDate": "終了日",
     "votingSystem": "投票のシステム"
