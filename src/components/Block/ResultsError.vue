@@ -38,19 +38,19 @@ const retry = async () => {
 <template>
   <BaseBlock icon="warning" iconClass="text-red">
     <div>{{ t('resultsError') }}</div>
-    <UiButton class="mt-3 w-full" @click="retry" :loading="retrying" primary>
+    <BaseButton class="mt-3 w-full" @click="retry" :loading="retrying" primary>
       <BaseIcon name="refresh" />
       {{ t('retry') }}
-    </UiButton>
+    </BaseButton>
     <BaseLink
       v-if="isAdmin"
       link="https://discord.gg/snapshot"
       class="mt-3 block"
       hide-external-icon
     >
-      <UiButton class="w-full">
+      <BaseButton class="w-full">
         {{ t('getHelp') }}
-      </UiButton>
+      </BaseButton>
     </BaseLink>
   </BaseBlock>
 </template>

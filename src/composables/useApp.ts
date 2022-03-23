@@ -4,6 +4,22 @@ import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useSkin } from '@/composables/useSkin';
 import { useSpaces } from '@/composables/useSpaces';
+import domains from '@/../snapshot-spaces/spaces/domains.json';
+import aliases from '@/../snapshot-spaces/spaces/aliases.json';
+
+const domainName = window.location.hostname;
+let env = 'master';
+if (domainName.includes('localhost')) env = 'local';
+if (domainName === 'demo.snapshot.org') env = 'develop';
+let domain = domains[domainName];
+
+if (env === 'local') {
+  domain = import.meta.env.VITE_VIEW_AS_SPACE ?? domain;
+}
+
+const domainAlias = Object.keys(aliases).find(
+  alias => aliases[alias] === domain
+);
 
 const { login } = useWeb3();
 
@@ -17,7 +33,7 @@ export function useApp() {
   async function init() {
     await loadLocale();
     const auth = getInstance();
-    await getSkin();
+    await getSkin(domain);
     ready.value = true;
     getSpaces();
 
@@ -30,6 +46,9 @@ export function useApp() {
   }
 
   return {
+    domain,
+    domainAlias,
+    env,
     ready,
     init
   };

@@ -28,7 +28,7 @@ const halLogoUrl = computed(
       </div>
       <div class="text-skin-link text-center mb-2">{{ $t('hal.text') }}</div>
       <a :href="halUrl" target="_blank">
-        <UiButton>Be notified</UiButton>
+        <BaseButton>Be notified</BaseButton>
       </a>
     </div>
   </BaseBlock>

@@ -149,10 +149,10 @@ onMounted(() => {
           ]"
         >
           <template v-slot:button>
-            <UiButton class="pr-3">
+            <BaseButton class="pr-3">
               {{ $t(`proposals.states.${store.space.filterBy}`) }}
               <BaseIcon size="14" name="arrow-down" class="mt-1 mr-1" />
-            </UiButton>
+            </BaseButton>
           </template>
         </BaseDropdown>
         <SpaceProposalsNotice
@@ -177,9 +177,7 @@ onMounted(() => {
         />
       </div>
       <div class="w-[10px] h-[10px] absolute bottom-0" ref="endElement" />
-      <BaseBlock v-if="loadingData" :slim="true" class="my-4">
-        <RowLoading class="my-2" />
-      </BaseBlock>
+      <LoadingRow v-if="loadingData" block />
     </template>
   </TheLayout>
 </template>

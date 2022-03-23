@@ -162,7 +162,7 @@ watch([modalOpen, closeModal], () => {
 });
 </script>
 <template>
-  <UiModal :open="closeModal" @close="closeEvent">
+  <BaseModal :open="closeModal" @close="closeEvent">
     <template v-slot:header>
       <h3>{{ $t('comment_box.edit_comment') }}</h3>
     </template>
@@ -172,19 +172,19 @@ watch([modalOpen, closeModal], () => {
     <div
       class="mb-2 mt-3 text-center flex items-center content-center justify-center"
     >
-      <UiButton
+      <BaseButton
         class="!bg-primary !text-white"
         :loading="loading"
         @click="updateItems"
-        >{{ $t('comment_box.yes') }}</UiButton
+        >{{ $t('comment_box.yes') }}</BaseButton
       >
-      <UiButton @click="closeEvent" :disabled="loading" class="ml-2">{{
+      <BaseButton @click="closeEvent" :disabled="loading" class="ml-2">{{
         $t('comment_box.no')
-      }}</UiButton>
+      }}</BaseButton>
     </div>
-  </UiModal>
+  </BaseModal>
   <div class="mt-2">
-    <UiButton
+    <BaseButton
       v-if="togglePreview"
       class="flex w-full px-3 !h-auto cursor-default"
     >
@@ -195,7 +195,7 @@ watch([modalOpen, closeModal], () => {
         :minHeight="100"
         style="font-size: 18px"
       />
-    </UiButton>
+    </BaseButton>
     <BaseBlock
       v-if="!togglePreview"
       slim="true"
@@ -203,7 +203,7 @@ watch([modalOpen, closeModal], () => {
     >
       <div>{{ comment }}</div>
     </BaseBlock>
-    <UiButton
+    <BaseButton
       :disabled="comment.length === 0"
       :loading="loading"
       class="mt-2"
@@ -211,8 +211,8 @@ watch([modalOpen, closeModal], () => {
       primary
     >
       {{ buttonName }}
-    </UiButton>
-    <UiButton
+    </BaseButton>
+    <BaseButton
       @click="togglePreview = !togglePreview"
       :disabled="comment.length === 0"
       class="ml-2 mt-2"
@@ -223,14 +223,14 @@ watch([modalOpen, closeModal], () => {
           ? $t('comment_box.preview')
           : $t('comment_box.continue_editing')
       }}
-    </UiButton>
-    <UiButton
+    </BaseButton>
+    <BaseButton
       :disabled="loading"
       @click="$emit('dismissComment')"
       type="text"
       class="border-0 ml-2 mt-2 button--text"
     >
       {{ $t('comment_box.dismiss') }}
-    </UiButton>
+    </BaseButton>
   </div>
 </template>

@@ -2,14 +2,14 @@
 import { ref } from 'vue';
 import { shorten } from '@/helpers/utils';
 import { useModal } from '@/composables/useModal';
-import { useDomain } from '@/composables/useDomain';
+import { useApp } from '@/composables/useApp';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useTxStatus } from '@/composables/useTxStatus';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 
 const { pendingCount } = useTxStatus();
 const { modalAccountOpen } = useModal();
-const { env } = useDomain();
+const { env } = useApp();
 const auth = getInstance();
 const { login, web3, web3Account } = useWeb3();
 
@@ -45,7 +45,7 @@ async function handleLogin(connector) {
         </div>
         <div :key="web3Account" class="flex space-x-2">
           <template v-if="auth.isAuthenticated.value">
-            <UiButton
+            <BaseButton
               @click="modalAccountOpen = true"
               :loading="web3.authLoading"
               class="flex items-center"
@@ -65,10 +65,10 @@ async function handleLogin(connector) {
                 v-text="shorten(web3Account)"
                 class="hidden sm:block"
               />
-            </UiButton>
+            </BaseButton>
           </template>
 
-          <UiButton
+          <BaseButton
             v-if="!auth.isAuthenticated.value"
             @click="modalAccountOpen = true"
             :loading="loading || web3.authLoading"
@@ -80,14 +80,14 @@ async function handleLogin(connector) {
               size="20"
               class="sm:hidden -ml-2 -mr-2 block align-text-bottom"
             />
-          </UiButton>
+          </BaseButton>
           <NavbarNotifications />
         </div>
       </div>
     </BaseContainer>
   </nav>
   <div class="bg-primary text-white text-center py-2" v-if="pendingCount > 0">
-    <UiLoading fill-white class="mr-2" />
+    <LoadingSpinner fill-white class="mr-2" />
     {{ $tc('delegate.pendingTransaction', pendingCount) }}
   </div>
   <teleport to="#modal">

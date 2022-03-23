@@ -23,7 +23,7 @@ onMounted(async () => {
           {{ $t('strategiesPage') }}
         </router-link>
       </div>
-      <PageLoading v-if="!strategy" />
+      <LoadingPage v-if="!strategy" />
       <div class="px-4 md:px-0" v-else>
         <h1 class="mb-2">
           {{ strategy.id }}
@@ -60,7 +60,7 @@ onMounted(async () => {
           </div>
         </div>
         <router-link :to="`/playground/${$route.params.name}`">
-          <UiButton class="w-full mt-2">{{ $t('playground') }}</UiButton>
+          <BaseButton class="w-full mt-2">{{ $t('playground') }}</BaseButton>
         </router-link>
       </BaseBlock>
     </template>

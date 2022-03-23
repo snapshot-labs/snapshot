@@ -169,21 +169,20 @@ function selectState(e) {
           ]"
         >
           <template v-slot:button>
-            <UiButton class="pr-3">
+            <BaseButton class="pr-3">
               {{ $t(`proposals.states.${store.timeline.filterBy}`) }}
               <BaseIcon size="14" name="arrow-down" class="mt-1 mr-1" />
-            </UiButton>
+            </BaseButton>
           </template>
         </BaseDropdown>
       </div>
       <div class="md:rounded-lg bg-skin-block-bg border">
-        <RowLoading
+        <LoadingRow
           v-if="
             loading ||
             (web3.authLoading && isTimeline) ||
             (loadingFollows && isTimeline)
           "
-          class="px-4 py-5"
         />
         <div
           v-else-if="
@@ -193,7 +192,7 @@ function selectState(e) {
         >
           <div class="mb-3">{{ $t('noSpacesJoined') }}</div>
           <router-link :to="{ path: '/' }">
-            <UiButton>{{ $t('joinSpaces') }}</UiButton>
+            <BaseButton>{{ $t('joinSpaces') }}</BaseButton>
           </router-link>
         </div>
         <NoResults
@@ -210,7 +209,7 @@ function selectState(e) {
         </div>
         <div class="w-[10px] h-[10px] absolute bottom-0" ref="endElement" />
         <div v-if="loadingMore && !loading" :slim="true">
-          <RowLoading class="border-t px-4 py-5" />
+          <LoadingRow class="border-t" />
         </div>
       </div>
     </template>

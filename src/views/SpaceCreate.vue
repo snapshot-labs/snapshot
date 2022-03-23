@@ -11,7 +11,7 @@ import { useModal } from '@/composables/useModal';
 import { useTerms } from '@/composables/useTerms';
 import { PROPOSAL_QUERY } from '@/helpers/queries';
 import validations from '@snapshot-labs/snapshot.js/src/validations';
-import { useDomain } from '@/composables/useDomain';
+import { useApp } from '@/composables/useApp';
 import { useApolloQuery } from '@/composables/useApolloQuery';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useClient } from '@/composables/useClient';
@@ -28,7 +28,7 @@ const route = useRoute();
 const { t, setPageTitle } = useI18n();
 const { formatCompactNumber } = useIntl();
 const auth = getInstance();
-const { domain } = useDomain();
+const { domain } = useApp();
 const { web3, web3Account } = useWeb3();
 const { send, clientLoading } = useClient();
 const { store } = useStore();
@@ -602,7 +602,7 @@ const needsPluginConfigs = computed(() =>
     </template>
     <template #sidebar-right>
       <BaseBlock class="lg:fixed lg:w-[320px]">
-        <UiButton
+        <BaseButton
           v-if="currentStep === 1"
           @click="preview = !preview"
           :loading="clientLoading || queryLoading"
@@ -610,17 +610,17 @@ const needsPluginConfigs = computed(() =>
           no-focus
         >
           {{ preview ? $t('create.edit') : $t('create.preview') }}
-        </UiButton>
-        <UiButton
+        </BaseButton>
+        <BaseButton
           v-else
           @click="currentStep--"
           class="block w-full mb-3"
           no-focus
         >
           {{ $t('back') }}
-        </UiButton>
+        </BaseButton>
 
-        <UiButton
+        <BaseButton
           v-if="currentStep === 3 || (!needsPluginConfigs && currentStep === 2)"
           @click="
             !termsAccepted && space.terms
@@ -633,8 +633,8 @@ const needsPluginConfigs = computed(() =>
           primary
         >
           {{ $t('create.publish') }}
-        </UiButton>
-        <UiButton
+        </BaseButton>
+        <BaseButton
           v-else
           @click="web3Account ? currentStep++ : (modalAccountOpen = true)"
           class="block w-full"
@@ -646,7 +646,7 @@ const needsPluginConfigs = computed(() =>
           primary
         >
           {{ web3Account ? $t('create.continue') : $t('connectWallet') }}
-        </UiButton>
+        </BaseButton>
       </BaseBlock>
     </template>
   </TheLayout>

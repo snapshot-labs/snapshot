@@ -35,11 +35,11 @@ const winningChoice = computed(() =>
       <div>
         <div class="mb-2 flex justify-between items-center">
           <div class="flex items-center space-x-1">
-            <SpaceAvatar :space="proposal.space" size="28" />
+            <AvatarSpace :space="proposal.space" size="28" />
             <span class="!ml-2 hidden xs:block" v-text="proposal.space.name" />
             <span v-text="$tc('proposalBy')" />
 
-            <UserAvatar
+            <AvatarUser
               :address="proposal.author"
               :profile="profiles[proposal.author]"
               :space="space"
@@ -51,7 +51,7 @@ const winningChoice = computed(() =>
               :members="proposal.space.members"
             />
           </div>
-          <UiState :state="proposal.state" />
+          <LabelProposalState :state="proposal.state" />
         </div>
         <h3 v-text="proposal.title" class="my-1 break-words" />
         <p v-text="shorten(body, 140)" class="break-words mb-2 text-md" />

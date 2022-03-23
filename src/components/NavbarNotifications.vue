@@ -72,7 +72,7 @@ onMounted(() => loadNotifications());
           </BaseDropdown>
         </div>
         <div class="space-x-2">
-          <UiButton
+          <BaseButton
             v-for="filter in filters"
             :key="filter"
             @click="selectedFilter = filter"
@@ -81,10 +81,10 @@ onMounted(() => loadNotifications());
             no-focus
           >
             {{ $t(`notifications.${filter}`) }}
-          </UiButton>
+          </BaseButton>
         </div>
         <div v-if="!notificationsSortedByTime.length && notificationsLoading">
-          <RowLoading class="!px-0" />
+          <LoadingRow class="!px-0" />
         </div>
         <div
           v-else-if="!notificationsSortedByTime.length"
@@ -100,16 +100,16 @@ onMounted(() => loadNotifications());
       <div class="flex pt-2 pb-1">
         <div class="flex w-full">
           <div class="pr-2 -ml-1">
-            <SpaceAvatar :space="item.space" size="44" />
+            <AvatarSpace :space="item.space" size="44" />
           </div>
           <div class="w-full">
             <div class="leading-tight flex">
               <div
-                class="text-skin-link group-hover:text-skin-bg max-w-[60px] md:max-w-[120px] truncate"
+                class="text-skin-link max-w-[60px] md:max-w-[120px] truncate"
               >
                 {{ item.space.name }}
               </div>
-              <div class="text-skin-text group-hover:text-skin-bg ml-1">
+              <div class="text-skin-text ml-1">
                 <span v-if="item.event === NotificationEvents.ProposalStart">
                   {{ $t('notifications.proposalStarted') }}
                 </span>
@@ -119,11 +119,11 @@ onMounted(() => loadNotifications());
               </div>
             </div>
             <div
-              class="whitespace-normal leading-tight text-skin-link group-hover:text-skin-bg line-clamp-2"
+              class="whitespace-normal leading-tight text-skin-link line-clamp-2"
             >
               "{{ item.text }}"
             </div>
-            <div class="text-skin-text group-hover:text-skin-bg leading-normal">
+            <div class="text-skin-text leading-normal">
               <span>
                 {{ formatRelativeTime(item.time, longRelativeTimeFormatter) }}
               </span>

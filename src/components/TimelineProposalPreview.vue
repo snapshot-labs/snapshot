@@ -46,7 +46,7 @@ const winningChoice = computed(() =>
             }"
           >
             <div class="flex items-center">
-              <SpaceAvatar :space="proposal.space" size="28" />
+              <AvatarSpace :space="proposal.space" size="28" />
               <span
                 class="ml-2 group-hover:text-skin-link"
                 v-text="proposal.space.name"
@@ -54,7 +54,7 @@ const winningChoice = computed(() =>
             </div>
           </router-link>
           <span v-text="$tc('proposalBy')" />
-          <UserAvatar
+          <AvatarUser
             :address="proposal.author"
             :profile="profiles[proposal.author]"
             :proposal="proposal"
@@ -110,7 +110,7 @@ const winningChoice = computed(() =>
           </div>
         </div>
         <div class="flex items-center">
-          <UiState :state="proposal.state" slim class="mr-2" />
+          <LabelProposalState :state="proposal.state" slim class="mr-2" />
           {{ $t(`proposals.states.${proposal.state}`)
           }}<span v-if="proposal.scores_state !== 'final'"
             >,

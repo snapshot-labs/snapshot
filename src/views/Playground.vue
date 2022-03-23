@@ -158,7 +158,7 @@ onMounted(async () => {
 <template>
   <TheLayout v-bind="$attrs">
     <template #content-left>
-      <PageLoading v-if="!strategy" />
+      <LoadingPage v-if="!strategy" />
       <div v-else>
         <div class="px-4 md:px-0 mb-3">
           <router-link
@@ -210,7 +210,7 @@ onMounted(async () => {
               :definition="strategyDefinition"
               :errors="strategyValidationErrors"
             />
-            <UiButton
+            <BaseButton
               v-else
               class="block w-full mb-3 overflow-x-auto"
               style="height: auto"
@@ -221,7 +221,7 @@ onMounted(async () => {
                 :placeholder="$t('strategyParameters')"
                 class="input text-left"
               />
-            </UiButton>
+            </BaseButton>
             <BaseBlock
               v-if="strategyError"
               style="border-color: red !important"
@@ -231,7 +231,7 @@ onMounted(async () => {
             </BaseBlock>
           </BaseBlock>
           <BaseBlock :title="$t('addresses')">
-            <UiButton class="block w-full px-3" style="height: auto">
+            <BaseButton class="block w-full px-3" style="height: auto">
               <TextareaArray
                 v-model="form.addresses"
                 @change:modelValue="handleURLUpdate"
@@ -239,14 +239,14 @@ onMounted(async () => {
                 class="input w-full text-left"
                 style="font-size: 18px"
               />
-            </UiButton>
+            </BaseButton>
           </BaseBlock>
         </div>
       </div>
     </template>
     <template #sidebar-right>
       <BaseBlock :title="$t('actions')">
-        <UiButton
+        <BaseButton
           @click="loadScores"
           :loading="loading"
           :disabled="loading || !strategy"
@@ -255,15 +255,15 @@ onMounted(async () => {
           primary
         >
           <BaseIcon name="play" size="18" />
-        </UiButton>
-        <UiButton @click="copyURL" class="w-full mt-2">
+        </BaseButton>
+        <BaseButton @click="copyURL" class="w-full mt-2">
           <BaseIcon
             name="insertlink"
             size="18"
             class="align-text-bottom mr-1"
           />
           {{ t('copyLink') }}
-        </UiButton>
+        </BaseButton>
       </BaseBlock>
       <BaseBlock v-if="scores" :title="$t('results')">
         <div
@@ -271,7 +271,7 @@ onMounted(async () => {
           v-for="score in Object.keys(scores[0])"
           :key="score"
         >
-          <UserAvatar :address="score" :space="form" />
+          <AvatarUser :address="score" :space="form" />
           <span>
             {{ formatCompactNumber(scores[0][score]) }}
             {{ form.params.symbol }}

@@ -50,16 +50,18 @@ function emitChoice(c) {
         @selectChoice="emitChoice"
       />
     </div>
-    <UiButton
+    <BaseButton
       :disabled="
         web3.authLoading ||
-        (selectedChoices < 1 && proposal.type !== 'approval')
+        (selectedChoices < 1 && proposal.type !== 'approval') ||
+        (selectedChoices < proposal.choices.length &&
+          proposal.type === 'ranked-choice')
       "
       @click="$emit('clickVote')"
       class="block w-full"
       primary
     >
       {{ $t('proposal.vote') }}
-    </UiButton>
+    </BaseButton>
   </BaseBlock>
 </template>

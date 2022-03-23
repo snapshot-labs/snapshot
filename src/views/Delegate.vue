@@ -285,7 +285,7 @@ onMounted(async () => {
         </router-link>
         <h1 v-if="loaded" v-text="$t('delegate.header')" />
       </div>
-      <PageLoading v-if="!loaded" />
+      <LoadingPage v-if="!loaded" />
       <BaseBlock v-else-if="!networkSupportsDelegate">
         <BaseIcon name="warning" class="mr-1" />
         {{
@@ -347,7 +347,7 @@ onMounted(async () => {
             :style="i === 0 && 'border: 0 !important;'"
             class="px-4 py-3 border-t flex"
           >
-            <UserAvatar
+            <AvatarUser
               :address="delegate.delegate"
               :space="{ network: networkKey }"
               :profile="profiles[delegate.delegate]"
@@ -375,7 +375,7 @@ onMounted(async () => {
             :style="i === 0 && 'border: 0 !important;'"
             class="px-4 py-3 border-t flex"
           >
-            <UserAvatar
+            <AvatarUser
               :address="delegator.delegator"
               :space="{ network: networkKey }"
               :profile="profiles[delegator.delegator]"
@@ -398,7 +398,7 @@ onMounted(async () => {
             :style="i === 0 && 'border: 0 !important;'"
             class="px-4 py-3 border-t flex"
           >
-            <UserAvatar
+            <AvatarUser
               :profile="profiles[delegate.delegate]"
               :address="delegate.delegate"
               :space="{ network: networkKey }"
@@ -426,7 +426,7 @@ onMounted(async () => {
     </template>
     <template #sidebar-right v-if="networkSupportsDelegate">
       <BaseBlock>
-        <UiButton
+        <BaseButton
           @click="web3Account ? handleSubmit() : (modalAccountOpen = true)"
           :disabled="!isValidForm && !!web3Account"
           :loading="loading || spaceLoading"
@@ -434,7 +434,7 @@ onMounted(async () => {
           primary
         >
           {{ $t('confirm') }}
-        </UiButton>
+        </BaseButton>
       </BaseBlock>
     </template>
   </TheLayout>

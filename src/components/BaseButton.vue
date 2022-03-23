@@ -30,7 +30,7 @@ defineProps({
     ]"
     :disabled="disabled || loading"
   >
-    <UiLoading v-if="loading" />
+    <LoadingSpinner v-if="loading" />
     <slot v-else />
   </button>
 </template>

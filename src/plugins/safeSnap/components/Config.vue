@@ -1,7 +1,7 @@
 <script>
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import { coerceConfig, isValidInput, getSafeHash } from '../index';
-import { useSafesnap } from '@/composables/useSafesnap';
+import { useSafesnap } from '@/plugins/safeSnap/composables/useSafesnap';
 
 import SafeTransactions from './SafeTransactions.vue';
 

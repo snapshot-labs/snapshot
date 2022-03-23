@@ -10,7 +10,7 @@ const { items } = useFlashNotification();
   >
     <TransitionGroup name="fade">
       <div v-for="item in items" :key="item.id" class="pointer-events-auto">
-        <UiButton
+        <BaseButton
           class="flex items-center space-x-2 !border-none !bg-red !text-white"
           :class="`!bg-${item.type}`"
           @click="item.remove()"
@@ -28,7 +28,7 @@ const { items } = useFlashNotification();
             class="align-middle"
           />
           <span>{{ item.message }}</span>
-        </UiButton>
+        </BaseButton>
       </div>
     </TransitionGroup>
   </div>
