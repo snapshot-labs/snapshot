@@ -82,7 +82,7 @@
   "targetAddress": "Адрес назначения",
   "value": "Значимость",
   "date": "Данные",
-  "marketDetails": "Рыночные данные",
+  "marketDetails": "Информация о рынке",
   "addMarket": "Добавить рынок",
   "selectNetwork": "Выбрать сеть",
   "conditionId": "Условия ID",
