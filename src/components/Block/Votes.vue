@@ -6,6 +6,7 @@ import { useWeb3 } from '@/composables/useWeb3';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import uniqBy from 'lodash/uniqBy';
 import { useIntl } from '@/composables/useIntl';
+import pending from '@/helpers/pending.json';
 
 const props = defineProps({
   space: Object,
@@ -28,7 +29,13 @@ const { web3Account } = useWeb3();
 const authorIpfsHash = ref('');
 const modalReceiptOpen = ref(false);
 
-const isFinalProposal = computed(() => props.proposal.scores_state === 'final');
+const isFinalProposal = computed(() => {
+  const spaceShowPending = pending;
+  const showPending =
+    props.proposal.scores_state === 'pending' &&
+    spaceShowPending.includes(props.space.id);
+  return props.proposal.scores_state === 'final' || showPending;
+});
 
 const voteCount = computed(() =>
   isFinalProposal.value ? props.proposal.votes : votes.value.length

@@ -14,6 +14,7 @@ import { useClient } from '@/composables/useClient';
 import { useInfiniteLoader } from '@/composables/useInfiniteLoader';
 import { useStore } from '@/composables/useStore';
 import { useIntl } from '@/composables/useIntl';
+import pending from '@/helpers/pending.json';
 
 const props = defineProps({
   space: Object
@@ -100,9 +101,16 @@ function formatProposalVotes(votes) {
 
 async function loadResults() {
   loadingResultsFailed.value = false;
-  if (proposal.value.scores_state === 'invalid') {
+  const spaceShowPending = pending;
+  const showPending =
+    proposal.value.scores_state === 'pending' &&
+    spaceShowPending.includes(proposal.value.space.id);
+  if (
+    proposal.value.scores_state === 'invalid' &&
+    proposal.value.state === 'closed'
+  ) {
     loadingResultsFailed.value = true;
-  } else if (proposal.value.scores_state === 'final') {
+  } else if (proposal.value.scores_state === 'final' || showPending) {
     results.value = {
       resultsByVoteBalance: proposal.value.scores,
       resultsByStrategyScore: proposal.value.scores_by_strategy,
@@ -265,7 +273,10 @@ const truncateMarkdownBody = computed(() => {
       </div>
       <div class="px-3 md:px-0">
         <template v-if="proposal">
-          <h1 v-text="proposal.title" class="mb-3 break-words text-xl leading-8 sm:text-2xl" />
+          <h1
+            v-text="proposal.title"
+            class="mb-3 break-words text-xl leading-8 sm:text-2xl"
+          />
 
           <div class="flex flex-col sm:flex-row sm:space-x-1 mb-4">
             <div class="flex items-center mb-1 sm:mb-0">
