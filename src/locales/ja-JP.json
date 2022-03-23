@@ -319,7 +319,7 @@
     "somethingWentWrong": "おっと、何かの問題が発生しました!",
     "saved": "保存しました！",
     "delegationSuccess": "委任成功",
-    "delegationRemoved": "委任キャンセル",
+    "delegationRemoved": "委任が削除されました",
     "proposalCreated": "提案が作成されました",
     "voteSuccessful": "投票されています！",
     "ensSet": "ENSテキストレコードが正常に設定されました",
@@ -424,18 +424,18 @@
     "no_voted_header": "投票してこのポイントを獲得しましょう",
     "unclaimed_header": "POAPに投票したを鋳る",
     "claimed_header": "おめでとうございます！POAPがあなたのコレクションに追加されました。",
-    "loading_header": "POAPをあなたのコレクションに追加しています",
-    "button_claim": "発行する",
+    "loading_header": "POAPをあなたのコレクションに鋳られています",
+    "button_claim": "鋳る",
     "button_show": "コレクションを閲覧する",
-    "success_claim": "POAP があなたのコレクションに追加されました！",
-    "error_claim": "トークンを削除する際に問題が発生しました。"
+    "success_claim": "POAPをあなたのコレクションに鋳られています",
+    "error_claim": "トークンを鋳る時に問題が発生しました。"
   },
   "charts": {
-    "charts": "グラフ",
+    "charts": "チャート",
     "noVotesYet": "まだ視覚化するべき投票がありません。",
-    "totalVotesPerDay": "1日あたりの合計投票",
+    "totalVotesPerDay": "日あたりの合計投票",
     "shareOfVotingPower": "投票権の共有",
-    "votingPowerPerDay": "1日あたりの投票力"
+    "votingPowerPerDay": "日あたりの投票力"
   },
   "comment_box": {
     "title": "コメント欄",
@@ -463,21 +463,21 @@
   },
   "page": {
     "title": {
-      "home": "Snapshot",
-      "setup": "スペースを作成",
+      "home": "スナップショット",
+      "setup": "スペースを作成する",
       "timeline": "タイムライン",
       "notifications": "お知らせ",
-      "explore": "探す",
+      "explore": "探る",
       "playground": "プレイグラウンド",
       "space": {
-        "create": "{space} の提案を作成",
+        "create": "{space} の提案を作成する",
         "about": "{space} について",
         "proposals": "{space} の提案",
         "proposal": "{space} の提案: {proposal}",
         "settings": "{space} の設定"
       },
       "strategy": "{key} の戦略",
-      "delegate": "デリゲート（委任）"
+      "delegate": "委任"
     }
   },
   "hal": {
