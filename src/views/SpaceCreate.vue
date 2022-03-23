@@ -396,30 +396,32 @@ const needsPluginConfigs = computed(() =>
 
       <template v-if="currentStep === 1">
         <div class="px-4 md:px-0">
-          <div class="flex flex-col mb-6">
+          <div class="flex flex-col space-y-3">
             <h1
               v-if="preview"
               v-text="form.name || $t('create.untitled')"
-              class="mb-2 w-full break-all"
+              class="w-full break-all"
             />
-            <input
-              v-else
-              v-model="form.name"
-              maxlength="128"
-              class="text-2xl font-semibold input mb-2 w-full"
-              :placeholder="$t('create.question')"
-              ref="nameInput"
-            />
-            <div class="relative group">
-              <TextareaAutosize
-                v-if="!preview"
-                v-model="form.body"
-                class="input pt-0 w-full"
-                style="font-size: 22px"
-                :placeholder="$t('create.content')"
-                :max-length="bodyLimit"
+            <SBase v-else :definition="{ title: $t('create.proposalTitle') }">
+              <input
+                v-model="form.name"
+                maxlength="128"
+                class="text-lg font-semibold s-input w-full !rounded-[18px]"
+                ref="nameInput"
               />
-            </div>
+            </SBase>
+
+            <SBase
+              v-if="!preview"
+              :definition="{ title: $t('create.proposalDescription') }"
+            >
+              <TextareaAutosize
+                v-model="form.body"
+                class="s-input pt-0 w-full !rounded-[24px] h-[200px]"
+                :max-length="bodyLimit"
+                maxHeight="400"
+              />
+            </SBase>
 
             <div v-if="form.body && preview" class="mb-4">
               <UiMarkdown :body="form.body" />

@@ -149,9 +149,9 @@
     "type": "Invalid type"
   },
   "create": {
-    "question": "Ask a question...",
+    "proposalTitle": "Title",
     "categorie(s)": "Select up to 2 categorie(s)",
-    "content": "Tell us more about your proposal (optional)",
+    "proposalDescription": "Description (optional)",
     "preview": "Preview",
     "choices": "Choices",
     "addChoice": "Add choice",
