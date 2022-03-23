@@ -32,7 +32,7 @@ onMounted(async () => {
         <TheSidebar />
       </div>
     </div>
-    <div class="grow flex flex-col">
+    <div class="grow flex flex-col min-w-0">
       <div
         id="navbar"
         class="sticky top-0 border-b border-skin-border bg-skin-bg z-40"
