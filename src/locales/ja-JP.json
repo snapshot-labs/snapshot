@@ -122,7 +122,7 @@
   "copyLink": "リンクをコピーする",
   "duplicateProposal": "提案を写す",
   "joinedSpaces": "登録済みのスペース",
-  "joinSpaces": "スペースに入る",
+  "joinSpaces": "スペースに登録する",
   "setDelegationToSpace": "委任を特定のすぺーすに限る",
   "theCurrentNetwork": "現在のネットワーク",
   "optional": "（随意）",
@@ -138,12 +138,12 @@
     "gotIt": "了解です！"
   },
   "errors": {
-    "required": "フィールドが埋まってません",
+    "required": "フィールドが必要です",
     "minLength": "フィールドが必要です",
     "maxLength": "最大文字数は {0} です",
     "pattern": "無効な文字",
-    "minItems": "最低でも {0} 個必要です",
-    "minStrategy": "最低でも１ストラテジー必要です",
+    "minItems": "最低 {0} 個のアイテムが必要",
+    "minStrategy": "せめて１つストラテジーが必要です",
     "website": "URLはhttps://www.example.com 形式でなければなりません",
     "format": "無効な形式",
     "type": "無効なタイプ"
@@ -154,17 +154,17 @@
     "content": "提案について詳しく教えてください(オプショナル)",
     "preview": "プレビュー",
     "choices": "選択肢",
-    "addChoice": "選択肢を追加する",
+    "addChoice": "選択肢を付ける",
     "startDate": "開始日を選択する",
     "endDate": "終了日を選択する",
-    "startTime": "開始日を選択する",
-    "endTime": "終了日を選択する",
+    "startTime": "開始の時間を選択する",
+    "endTime": "終了の時間を選択する",
     "publish": "公開",
     "untitled": "タイトル未設定",
-    "snapshotBlock": "Snapshotのブロック高",
+    "snapshotBlock": "スナップショットブロック番号",
     "voting": "投票",
     "votingSystem": "投票システム",
-    "choice": "チョイス{0}",
+    "choice": "選択肢 {0}",
     "period": "投票期間",
     "start": "スタート",
     "end": "終了",
@@ -181,8 +181,8 @@
     "votingPeriodExplainer": "これはユーザーが投票できる時間です。提案は投票期間の始まる前に表示され、未決になります。",
     "validationWarning": {
       "basic": {
-        "member": "提案を送信するため、スペースのメンバーである必要がある。",
-        "minScore": "提案を作成するためには、最低でも {0} {1} 所有していなければなりません。"
+        "member": "提案を提出するため、スペースのオーサーになることが必要がある。",
+        "minScore": "提案を提出するためには、せめて {0} {1} を持っていなければなりません。"
       },
       "customValidation": "提案を提出するには、提案検証に合格する必要があります。",
       "executionError": "このスペースの中で提案を作成する適格性を検証が失敗しました。これはたぶん誤った設定された戦略に基づくかもしれません。"
@@ -190,14 +190,14 @@
   },
   "delegate": {
     "header": "委任",
-    "selectDelegate": "Select delegate",
-    "to": "宛先",
-    "addressPlaceholder": "アドレスまたはENS名",
-    "delegations": "あなたの移譲リスト",
-    "allSpaces": "すべてのスプライト用",
-    "delegated": "あなたへ移譲されたもの",
+    "selectDelegate": "委任を選ぶ",
+    "to": "に",
+    "addressPlaceholder": "アドレスまたはENSの名",
+    "delegations": "あなたの委任",
+    "allSpaces": "すべてのスペース用",
+    "delegated": "あなたに委任された",
     "pendingTransaction": "保留中のトランザクションがありません | 1保留中の取引 | {count} 保留中の取引",
-    "topDelegates": "Top delegates",
+    "topDelegates": "トップの委任",
     "noDelegatesFoundFor": "{0} の委任が見つかりません。",
     "noValidEns": "ENSのアドレスは有効ではありません。",
     "noValidAddress": "アドレスは有効ではありません",
@@ -212,13 +212,13 @@
     "vote": "投票",
     "startDate": "開始日",
     "endDate": "終了日",
-    "votingSystem": "投票システム"
+    "votingSystem": "投票のシステム"
   },
   "proposals": {
     "header": "提案",
     "new": "新しい提案",
-    "noProposals": "まだ提案はありません",
-    "createProposal": "Create proposal",
+    "noProposals": "まだ提案はありません。",
+    "createProposal": "提案を作成する",
     "showMore": "詳細",
     "showLess": "概略",
     "states": {
@@ -226,8 +226,8 @@
       "core": "コア",
       "community": "コミュニティ",
       "active": "アクティブ",
-      "pending": "保留中",
-      "closed": "終了"
+      "pending": "未定",
+      "closed": "落着"
     }
   },
   "notifications": {
