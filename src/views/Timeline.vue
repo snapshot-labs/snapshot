@@ -176,7 +176,7 @@ function selectState(e) {
           </template>
         </BaseDropdown>
       </div>
-      <div class="md:rounded-lg bg-skin-block-bg border">
+      <div class="md:rounded-lg bg-skin-block-bg md:border border-skin-border">
         <LoadingRow
           v-if="
             loading ||

@@ -248,7 +248,7 @@ const truncateMarkdownBody = computed(() => {
 <template>
   <TheLayout v-bind="$attrs">
     <template #content-left>
-      <div class="px-4 md:px-0 mb-3">
+      <div class="px-3 md:px-0 mb-3">
         <a
           class="text-skin-text"
           @click="
@@ -263,12 +263,12 @@ const truncateMarkdownBody = computed(() => {
           {{ $t('back') }}
         </a>
       </div>
-      <div class="px-4 md:px-0">
+      <div class="px-3 md:px-0">
         <template v-if="proposal">
-          <h1 v-text="proposal.title" class="mb-3 break-words" />
+          <h1 v-text="proposal.title" class="mb-3 break-words text-xl leading-8 sm:text-2xl" />
 
-          <div class="flex items-center justify-between mb-4">
-            <div class="flex space-x-1 items-center">
+          <div class="flex flex-col sm:flex-row sm:space-x-1 mb-4">
+            <div class="flex items-center mb-1 sm:mb-0">
               <LabelProposalState :state="proposal.state" class="mr-1" />
               <router-link
                 class="text-skin-text group"
@@ -280,12 +280,13 @@ const truncateMarkdownBody = computed(() => {
                 <div class="flex items-center">
                   <AvatarSpace :space="space" size="28" />
                   <span
-                    class="ml-2 group-hover:text-skin-link hidden sm:block"
+                    class="ml-2 group-hover:text-skin-link"
                     v-text="space.name"
                   />
                 </div>
               </router-link>
-
+            </div>
+            <div class="flex grow items-center space-x-1">
               <span v-text="$t('proposalBy')" />
               <AvatarUser
                 :address="proposal.author"
@@ -295,15 +296,13 @@ const truncateMarkdownBody = computed(() => {
                 only-username
               />
               <BaseBadge :address="proposal.author" :members="space.members" />
-            </div>
-            <div class="flex justify-end">
               <ShareButton
                 v-if="sharingIsSupported"
                 @click="startShare(space, proposal)"
               />
               <BaseDropdown
                 v-else
-                class="ml-3"
+                class="pl-3 !ml-auto"
                 @select="selectFromShareDropdown"
                 :items="sharingItems"
               >

@@ -26,7 +26,7 @@ const winningChoice = computed(() =>
 <template>
   <BaseBlock slim class="transition-colors hover:border-skin-text">
     <router-link
-      class="p-4 block text-skin-text"
+      class="p-3 py-0 sm:p-4 block text-skin-text"
       :to="{
         name: 'spaceProposal',
         params: { key: proposal.space.id, id: proposal.id }
@@ -53,8 +53,8 @@ const winningChoice = computed(() =>
           </div>
           <LabelProposalState :state="proposal.state" />
         </div>
-        <h3 v-text="proposal.title" class="my-1 break-words" />
-        <p v-text="shorten(body, 140)" class="break-words mb-2 text-md" />
+        <h3 v-text="proposal.title" class="my-1 leading-7 break-words" />
+        <p v-text="shorten(body, 140)" class="break-words mb-2 sm:text-md" />
         <div>
           <span
             v-if="proposal.scores_state !== 'final'"

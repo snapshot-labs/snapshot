@@ -65,7 +65,9 @@
   h1,
   h2,
   h3,
-  h4 {
+  h4,
+  h5,
+  h6 {
     @apply font-semibold text-skin-heading;
   }
 
@@ -143,6 +145,8 @@ textarea {
   line-height: 1.4em;
 }
 
+// TODO: Remove this and use border-skin-border in the templates. Tailwind has
+// dozens of modifiers (md:, sm:, hover: etc.) which would all need to be listed here.
 .border,
 .border-md,
 .border-lg,

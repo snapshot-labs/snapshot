@@ -93,7 +93,7 @@ watch(visibleVotes, () => {
       v-for="(vote, i) in visibleVotes"
       :key="i"
       :style="i === 0 && 'border: 0 !important;'"
-      class="px-4 py-3 border-t flex"
+      class="px-3 py-3 border-t flex"
     >
       <AvatarUser
         :profile="profiles[vote.voter]"
@@ -103,7 +103,7 @@ watch(visibleVotes, () => {
         :proposal="proposal"
         class="w-[110px] xs:w-[130px] min-w-[110px] xs:min-w-[130px]"
       />
-      <div class="flex-auto text-center text-skin-link truncate px-3">
+      <div class="flex-auto text-center text-skin-link truncate px-2">
         <div
           class="text-center text-skin-link truncate"
           v-tippy="{
