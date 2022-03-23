@@ -24,9 +24,9 @@ const winningChoice = computed(() =>
 </script>
 
 <template>
-  <BaseBlock slim class="transition-colors hover:border-skin-text">
+  <BaseBlock slim class="transition-colors md:hover:border-skin-text">
     <router-link
-      class="p-3 py-0 sm:p-4 block text-skin-text"
+      class="p-3 sm:p-4 block text-skin-text"
       :to="{
         name: 'spaceProposal',
         params: { key: proposal.space.id, id: proposal.id }

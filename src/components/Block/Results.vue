@@ -34,7 +34,10 @@ const hideAbstain = props.space?.voting?.hideAbstain ?? false;
 </script>
 
 <template>
-  <BaseBlock :loading="!loaded">
+  <BaseBlock
+    :loading="!loaded"
+    :title="ts >= proposal.end ? $t('results') : $t('currentResults')"
+  >
     <div class="space-y-3">
       <div v-for="choice in choices" :key="choice.i">
         <template

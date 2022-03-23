@@ -424,7 +424,7 @@ const truncateMarkdownBody = computed(() => {
     </template>
     <template #sidebar-right v-if="proposal">
       <div class="space-y-4 mt-4 lg:mt-0">
-        <BaseBlock>
+        <BaseBlock :title="$t('information')">
           <div class="space-y-1">
             <div>
               <b>{{ $t('strategies') }}</b>

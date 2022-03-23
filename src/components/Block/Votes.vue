@@ -92,7 +92,8 @@ watch(visibleVotes, () => {
 <template>
   <BaseBlock
     v-if="isZero()"
-    :title="`${voteCount} ${$t('votes')}`"
+    :title="$t('votes')"
+    :counter="voteCount"
     :slim="true"
     :loading="!loaded"
   >
