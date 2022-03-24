@@ -8,8 +8,8 @@ defineProps({
 </script>
 
 <template>
-  <BaseLoading>
-    <span class="loading">
+  <BaseLoading class="loading">
+    <span>
       <span>
         <svg
           xmlns="http://www.w3.org/2000/svg"
