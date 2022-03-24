@@ -170,7 +170,7 @@ onMounted(() => {
       <div class="text-center">
         <BaseButton
           v-if="!enableInfiniteScroll && orderedSpacesByCategory.length > limit"
-          class="mt-4"
+          class="mt-4 md:w-full"
           @click="loadMoreSpaces()"
         >
           {{ $t('homeLoadmore') }}
