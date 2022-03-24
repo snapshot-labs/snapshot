@@ -23,7 +23,7 @@ onMounted(async () => {
   <LoadingSpinner v-if="!ready" class="overlay big" />
   <div
     v-else
-    class="flex font-sans text-base antialiased bg-skin-bg text-skin-text min-h-screen"
+    class="flex font-sans text-base antialiased bg-skin-bg text-skin-text min-h-screen overflow-x-hidden"
   >
     <div v-if="!domain" id="sidebar" class="flex flex-col">
       <div
@@ -33,7 +33,7 @@ onMounted(async () => {
         <TheSidebar />
       </div>
     </div>
-    <div class="grow flex flex-col min-w-0">
+    <div class="flex flex-col min-w-0 w-screen shrink-0">
       <div
         id="navbar"
         class="sticky top-0 border-b border-skin-border bg-skin-bg z-40"
