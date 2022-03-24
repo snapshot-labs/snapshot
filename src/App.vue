@@ -23,7 +23,7 @@ onMounted(async () => {
   <LoadingSpinner v-if="!ready" class="overlay big" />
   <div
     v-else
-    class="flex font-sans text-base antialiased bg-skin-bg text-skin-text min-h-screen overflow-x-hidden"
+    class="flex font-sans text-base antialiased bg-skin-bg text-skin-text min-h-screen"
   >
     <div
       v-if="!domain"

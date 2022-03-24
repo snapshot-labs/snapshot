@@ -49,6 +49,10 @@
     @apply outline-none;
   }
 
+  body {
+    overflow-x: hidden;
+  }
+
   h1 {
     @apply text-2xl;
   }
