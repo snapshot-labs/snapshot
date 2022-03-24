@@ -15,7 +15,7 @@ const { web3Account } = useWeb3();
 const { loadFollows, followingSpaces } = useFollowSpace();
 const { proposals, getProposals, lastSeenProposals, updateLastSeenProposal } =
   useUnseenProposals();
-const { domain } = useApp();
+const { domain, showSidebar } = useApp();
 
 const draggableSpaces = ref<string[]>([]);
 
@@ -33,10 +33,6 @@ const hasUnseenProposalsBySpace = space => {
     );
   });
 };
-
-const hasUnseenProposals = computed(() =>
-  followingSpaces.value.some(fs => hasUnseenProposalsBySpace(fs))
-);
 
 watch(web3Account, () => {
   loadFollows();
@@ -70,7 +66,7 @@ onMounted(() => {
 
 <template>
   <div
-    class="flex flex-col h-full overflow-auto no-scrollbar overscroll-contain py-2"
+    class="flex flex-col h-full overflow-auto no-scrollbar overscroll-contain py-2 items-end"
   >
     <div v-if="!domain" class="flex items-center relative px-2">
       <router-link :to="{ name: 'home' }">

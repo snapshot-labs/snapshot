@@ -9,7 +9,7 @@ import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 
 const { pendingCount } = useTxStatus();
 const { modalAccountOpen } = useModal();
-const { env } = useApp();
+const { env, showSidebar } = useApp();
 const auth = getInstance();
 const { login, web3, web3Account } = useWeb3();
 
@@ -32,9 +32,25 @@ async function handleLogin(connector) {
     {{ $t('demoSite') }}
   </div>
   <nav id="topnav">
-    <BaseContainer>
+    <BaseContainer class="pl-0 pr-3 sm:!px-4">
       <div class="flex items-center py-2">
         <div class="flex-auto flex items-center">
+          <UiSidebarButton
+            @click="showSidebar = !showSidebar"
+            class="border-0 sm:hidden"
+          >
+            <BaseIcon
+              v-if="showSidebar"
+              name="close"
+              size="20"
+            />
+            <BaseIcon
+              v-else
+              class="rotate-90"
+              name="threedots"
+              size="20"
+            />
+          </UiSidebarButton>
           <router-link
             :to="{ path: '/' }"
             class="flex items-center"
