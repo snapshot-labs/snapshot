@@ -27,13 +27,13 @@ onMounted(async () => {
   >
     <div v-if="!domain" id="sidebar" class="flex flex-col">
       <div
-        class="h-screen sticky top-0 border-r border-skin-border bg-skin-bg z-40 sm:w-auto"
+        class="h-screen sticky top-0 bg-skin-bg z-40 sm:w-auto overflow-hidden"
         :class="{ 'w-0': !showSidebar }"
       >
-        <TheSidebar />
+        <TheSidebar class="border-r border-skin-border" />
       </div>
     </div>
-    <div class="flex flex-col min-w-0 w-screen shrink-0">
+    <div class="flex flex-col min-w-0 w-screen shrink-0 sm:w-auto sm:shrink sm:grow">
       <div
         id="navbar"
         class="sticky top-0 border-b border-skin-border bg-skin-bg z-40"
