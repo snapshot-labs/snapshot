@@ -280,7 +280,7 @@ const truncateMarkdownBody = computed(() => {
 
           <div class="flex flex-col sm:flex-row sm:space-x-1 mb-4">
             <div class="flex items-center mb-1 sm:mb-0">
-              <LabelProposalState :state="proposal.state" class="mr-1" />
+              <LabelProposalState :state="proposal.state" class="mr-2" />
               <router-link
                 class="text-skin-text group"
                 :to="{
@@ -391,7 +391,7 @@ const truncateMarkdownBody = computed(() => {
         </template>
         <LoadingPage v-else />
       </div>
-      <div class="space-y-4">
+      <div class="space-y-4 py-4">
         <BlockCastVote
           v-if="proposal?.state === 'active'"
           :proposal="proposal"
