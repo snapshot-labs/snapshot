@@ -168,10 +168,10 @@ onMounted(() => {
         v-else-if="Object.keys(orderedSpacesByCategory).length < 1"
         useBlock
       />
-      <div class="text-center">
+      <div class="text-center px-4 md:px-0">
         <BaseButton
           v-if="!enableInfiniteScroll && orderedSpacesByCategory.length > limit"
-          class="mt-4 md:w-full"
+          class="mt-4 w-full"
           @click="loadMoreSpaces()"
         >
           {{ $t('homeLoadmore') }}
