@@ -6,7 +6,7 @@ import { useFlashNotification } from '@/composables/useFlashNotification';
 import { useRoute } from 'vue-router';
 
 const { domain } = useApp();
-const { init, ready } = useApp();
+const { init, ready, showSidebar } = useApp();
 const { web3 } = useWeb3();
 const { notify } = useFlashNotification();
 const route = useRoute();
@@ -25,14 +25,19 @@ onMounted(async () => {
     v-else
     class="flex font-sans text-base antialiased bg-skin-bg text-skin-text min-h-screen"
   >
-    <div v-if="!domain" id="sidebar" class="flex flex-col">
+    <div
+      v-if="!domain"
+      id="sidebar"
+      class="flex flex-col"
+    >
       <div
-        class="h-screen sticky top-0 border-r border-skin-border bg-skin-bg z-40"
+        class="h-screen sticky top-0 bg-skin-bg z-40 overflow-hidden max-w-[60px] sm:w-auto transition-all"
+        :class="{ 'max-w-0 sm:max-w-none': !showSidebar }"
       >
-        <TheSidebar />
+        <TheSidebar class="border-r border-skin-border" />
       </div>
     </div>
-    <div class="grow flex flex-col min-w-0">
+    <div class="flex flex-col min-w-0 w-screen shrink-0 sm:w-auto sm:shrink sm:grow">
       <div
         id="navbar"
         class="sticky top-0 border-b border-skin-border bg-skin-bg z-40"
