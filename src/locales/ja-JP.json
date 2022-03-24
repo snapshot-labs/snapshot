@@ -381,7 +381,7 @@
     "addBatch": "トランザクションを追加",
     "batch": "トランザクションを追加",
     "transactions": "トランザクション",
-    "to": "に (address)　　",
+    "to": "To (アドレス)　　",
     "invalidAddress": "無効なアドレス",
     "invalidAmount": "無効な金額",
     "invalidValue": "無効な値",
@@ -394,7 +394,7 @@
     "amount": "量",
     "type": "タイプ",
     "transferFunds": "送金する",
-    "transferNFT": "NFTを転送",
+    "transferNFT": "NFTを転送する",
     "contractInteraction": "Contract interaction",
     "rawTransaction": "生トランザクション",
     "addTransaction": "トランザクションを追加",
@@ -422,20 +422,20 @@
   "poap": {
     "no_poap_header": "POAP はまだこの提案のためにセットアップされていません :(",
     "no_voted_header": "投票してこのPOAPを獲得する",
-    "unclaimed_header": "POAPに投票したを鋳る",
+    "unclaimed_header": "投票の証にPOAPを発行する",
     "claimed_header": "おめでとうございます！POAPがあなたのコレクションに追加されました。",
-    "loading_header": "POAPをあなたのコレクションに鋳られています",
-    "button_claim": "鋳る",
+    "loading_header": "POAPをあなたのコレクションに追加しています",
+    "button_claim": "発行する",
     "button_show": "コレクションを閲覧する",
-    "success_claim": "POAPをあなたのコレクションに鋳られています",
-    "error_claim": "トークンを鋳る時に問題が発生しました。"
+    "success_claim": "POAP があなたのコレクションに追加されました",
+    "error_claim": "トークンを発行する際に問題が発生しました。"
   },
   "charts": {
     "charts": "チャート",
     "noVotesYet": "表示する投票がまだありません。",
-    "totalVotesPerDay": "日あたりの合計投票",
+    "totalVotesPerDay": "1日あたりの合計投票数",
     "shareOfVotingPower": "投票権の共有",
-    "votingPowerPerDay": "日あたりの投票力"
+    "votingPowerPerDay": "1日あたりの投票力"
   },
   "comment_box": {
     "title": "コメント欄",
@@ -463,7 +463,7 @@
   },
   "page": {
     "title": {
-      "home": "スナップショット",
+      "home": "Snapshot",
       "setup": "スペースを作成する",
       "timeline": "タイムライン",
       "notifications": "お知らせ",
