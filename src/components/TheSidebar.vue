@@ -34,10 +34,6 @@ const hasUnseenProposalsBySpace = space => {
   });
 };
 
-const hasUnseenProposals = computed(() =>
-  followingSpaces.value.some(fs => hasUnseenProposalsBySpace(fs))
-);
-
 watch(web3Account, () => {
   loadFollows();
   updateLastSeenProposal(web3Account.value);
