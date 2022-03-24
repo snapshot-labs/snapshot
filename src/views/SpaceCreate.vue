@@ -18,6 +18,7 @@ import { useClient } from '@/composables/useClient';
 import { useStore } from '@/composables/useStore';
 import { useIntl } from '@/composables/useIntl';
 import { usePlugins } from '@/composables/usePlugins';
+import { useImageUpload } from '@/composables/useImageUpload';
 
 const props = defineProps({
   space: Object
@@ -33,12 +34,8 @@ const { web3, web3Account } = useWeb3();
 const { send, clientLoading } = useClient();
 const { store } = useStore();
 const { pluginIndex } = usePlugins();
+const textAreaEl = ref(undefined);
 
-const notify = inject('notify');
-
-const choices = ref([]);
-const blockNumber = ref(-1);
-const bodyLimit = ref(14400);
 const form = ref({
   name: '',
   body: '',
@@ -49,6 +46,29 @@ const form = ref({
   metadata: { plugins: {} },
   type: 'single-choice'
 });
+
+const injectImageToBody = image => {
+  const cursorPosition = textAreaEl.value.selectionStart;
+  const currentBody = textAreaEl.value.value;
+  form.value.body =
+    currentBody.substring(0, cursorPosition) +
+    `![${image.name}](${image.url})` +
+    currentBody.substring(cursorPosition);
+};
+
+const {
+  upload,
+  error: imageUploadError,
+  uploading
+} = useImageUpload({
+  onSuccess: injectImageToBody
+});
+const notify = inject('notify');
+
+const choices = ref([]);
+const blockNumber = ref(-1);
+const bodyLimit = ref(14400);
+
 const modalDateSelectOpen = ref(false);
 const modalVotingTypeOpen = ref(false);
 const selectedDate = ref('');
@@ -406,22 +426,71 @@ const needsPluginConfigs = computed(() =>
               <input
                 v-model="form.name"
                 maxlength="128"
-                class="text-lg font-semibold s-input w-full !rounded-[18px]"
+                class="text-lg font-semibold s-input w-full !rounded-[12px]"
                 ref="nameInput"
               />
             </SBase>
 
-            <SBase
-              v-if="!preview"
-              :definition="{ title: $t('create.proposalDescription') }"
-            >
-              <TextareaAutosize
+            <div v-if="!preview">
+              <div class="flex justify-between">
+                <label
+                  v-text="$t('create.proposalDescription')"
+                  class="s-label"
+                />
+                <div class="text-xs">
+                  {{ form.body.length }}/{{ bodyLimit }}
+                </div>
+              </div>
+              <textarea
+                ref="textAreaEl"
+                class="s-input pt-0 w-full !rounded-t-[12px] !rounded-b-none min-h-[50vh]"
+                :maxLength="bodyLimit"
                 v-model="form.body"
-                class="s-input pt-0 w-full !rounded-[24px] h-[200px]"
-                :max-length="bodyLimit"
-                maxHeight="400"
               />
-            </SBase>
+              <label
+                class="relative flex justify-between bg-skin-border rounded-b-[12px] py-1 px-2 items-center"
+              >
+                <input
+                  accept="image/jpg, image/jpeg, image/png"
+                  type="file"
+                  class="opacity-[0.001] absolute p-[5px] cursor-pointer top-0 right-0 bottom-0 left-0 w-full ml-0"
+                  @change="upload"
+                />
+
+                <span class="pointer-events-none relative pl-1 text-sm">
+                  <span v-if="uploading"
+                    ><LoadingSpinner class="inline" /> Uploading</span
+                  >
+                  <span v-else-if="imageUploadError !== ''">
+                    {{ imageUploadError }}</span
+                  >
+                  <span v-else>
+                    Attach files by dragging &amp; dropping, selecting or
+                    pasting them.
+                  </span>
+                </span>
+                <a
+                  class="relative inline"
+                  href="https://docs.github.com/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax"
+                  target="_blank"
+                >
+                  <svg
+                    aria-hidden="true"
+                    height="16"
+                    viewBox="0 0 16 16"
+                    version="1.1"
+                    width="16"
+                    data-view-component="true"
+                    class="octicon octicon-markdown v-align-bottom"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M14.85 3H1.15C.52 3 0 3.52 0 4.15v7.69C0 12.48.52 13 1.15 13h13.69c.64 0 1.15-.52 1.15-1.15v-7.7C16 3.52 15.48 3 14.85 3zM9 11H7V8L5.5 9.92 4 8v3H2V5h2l1.5 2L7 5h2v6zm2.99.5L9.5 8H11V5h2v3h1.5l-2.51 3.5z"
+                    ></path>
+                  </svg>
+                </a>
+              </label>
+            </div>
 
             <div v-if="form.body && preview" class="mb-4">
               <UiMarkdown :body="form.body" />
