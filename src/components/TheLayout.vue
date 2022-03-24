@@ -1,5 +1,5 @@
 <template>
-  <BaseContainer :slim="true" class="sm:mt-4">
+  <BaseContainer :slim="true">
     <slot />
     <div
       v-if="$slots['sidebar-left']"
