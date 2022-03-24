@@ -68,7 +68,7 @@ onMounted(() => {
   <div
     class="flex flex-col h-full overflow-auto no-scrollbar overscroll-contain py-2 items-end"
   >
-    <div v-if="!domain" class="hidden sm:flex items-center relative px-2">
+    <div v-if="!domain" class="flex items-center relative px-2">
       <router-link :to="{ name: 'home' }">
         <UiSidebarButton class="!border-0">
           <BaseIcon size="36" name="snapshot" class="text-snapshot" />
