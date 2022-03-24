@@ -121,6 +121,7 @@ onMounted(() => {
         <div
           v-for="space in orderedSpacesByCategory.slice(0, limit)"
           :key="space.id"
+          class="border-b first:border-t md:border-b-0 md:first:border-t-0"
         >
           <router-link
             :to="{ name: 'spaceProposals', params: { key: space.id } }"

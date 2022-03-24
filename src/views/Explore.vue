@@ -100,6 +100,7 @@ onMounted(() => {
             :to="`/strategy/${item.id}`"
             v-for="item in items.slice(0, limit)"
             :key="item.key"
+            class="border-b first:border-t md:border-b-0 md:first:border-t-0"
           >
             <BlockStrategy :strategy="item" />
           </router-link>
@@ -112,6 +113,7 @@ onMounted(() => {
             :to="`/?network=${item.key}`"
             v-for="item in items.slice(0, limit)"
             :key="item.key"
+            class="border-b first:border-t md:border-b-0 md:first:border-t-0"
           >
             <BlockNetwork :network="item" />
           </router-link>
@@ -124,6 +126,7 @@ onMounted(() => {
             v-for="item in items.slice(0, limit)"
             :key="item.key"
             :plugin="item"
+            class="border-b first:border-t md:border-b-0 md:first:border-t-0"
           />
         </div>
       </template>
