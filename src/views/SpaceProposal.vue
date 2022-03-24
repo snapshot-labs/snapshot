@@ -391,7 +391,7 @@ const truncateMarkdownBody = computed(() => {
         </template>
         <LoadingPage v-else />
       </div>
-      <div class="space-y-4">
+      <div class="space-y-4 pt-4">
         <BlockCastVote
           v-if="proposal?.state === 'active'"
           :proposal="proposal"
