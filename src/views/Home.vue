@@ -102,6 +102,7 @@ onMounted(() => {
         </template>
       </BaseDropdown>
       <div
+        v-if="spacesLoaded"
         class="mt-2 xs:mt-0 xs:ml-auto text-right whitespace-nowrap text-skin-text"
       >
         {{
