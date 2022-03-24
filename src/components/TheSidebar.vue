@@ -66,19 +66,8 @@ onMounted(() => {
 
 <template>
   <div
-    class="flex flex-col h-full overflow-auto no-scrollbar overscroll-contain py-2"
+    class="flex flex-col h-full overflow-auto no-scrollbar overscroll-contain py-2 items-end"
   >
-    <div class="flex items-center relative px-2">
-      <UiSidebarButton
-        @click="showSidebar = false"
-        class="border-0 sm:hidden"
-      >
-        <BaseIcon
-          name="close"
-          size="20"
-        />
-      </UiSidebarButton>
-    </div>
     <div v-if="!domain" class="hidden sm:flex items-center relative px-2">
       <router-link :to="{ name: 'home' }">
         <UiSidebarButton class="!border-0">

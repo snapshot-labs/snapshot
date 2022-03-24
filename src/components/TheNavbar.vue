@@ -32,15 +32,20 @@ async function handleLogin(connector) {
     {{ $t('demoSite') }}
   </div>
   <nav id="topnav">
-    <BaseContainer :class="{ 'pl-0 sm:pl-4': !showSidebar }">
+    <BaseContainer class="pl-0 pr-3 sm:!px-4">
       <div class="flex items-center py-2">
         <div class="flex-auto flex items-center">
           <UiSidebarButton
-            v-if="!showSidebar"
-            @click="showSidebar = true"
+            @click="showSidebar = !showSidebar"
             class="border-0 sm:hidden"
           >
             <BaseIcon
+              v-if="showSidebar"
+              name="close"
+              size="20"
+            />
+            <BaseIcon
+              v-else
               class="rotate-90"
               name="threedots"
               size="20"
