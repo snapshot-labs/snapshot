@@ -45,8 +45,8 @@ onMounted(() => loadNotifications());
     </template>
     <template v-slot:header>
       <div class="px-3 my-2 min-w-[320px] md:min-w-[400px]">
-        <div class="flex justify-between items-center">
-          <h2>{{ $t('notifications.header') }}</h2>
+        <div class="flex justify-between items-center mb-3">
+          <h4>{{ $t('notifications.header') }}</h4>
           <BaseDropdown
             :items="[
               {
