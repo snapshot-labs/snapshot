@@ -1,4 +1,5 @@
 import { ref } from 'vue';
+import { useI18n } from './useI18n';
 
 export function useImageUpload({
   onSuccess
@@ -9,6 +10,7 @@ export function useImageUpload({
   const error = ref('');
   const imageUrl = ref('');
   const imageName = ref('');
+  const { t } = useI18n();
 
   const reset = () => {
     uploading.value = false;
@@ -19,16 +21,16 @@ export function useImageUpload({
 
   const upload = async e => {
     reset();
-    uploading.value = true;
     const file = e.target.files[0];
+    if (!file) return;
+    uploading.value = true;
     const formData = new FormData();
 
     // TODO: Additional Validations - File Size, File Type, Empty File, Hidden File
     // TODO: Make this composable useFileUpload
 
     if (!['image/jpeg', 'image/jpg', 'image/png'].includes(file.type)) {
-      error.value =
-        'File type not supported, Supported formats are jpeg, jpg and png';
+      error.value = t('errors.unsupportedImageType');
       uploading.value = false;
       return;
     }
