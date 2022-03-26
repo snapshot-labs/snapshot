@@ -115,7 +115,7 @@ onMounted(() => {
               touch: ['hold', 500]
             }"
           >
-            <UiUnreadIndicator
+            <SidebarUnreadIndicator
               :space="element"
               :hasUnseen="hasUnseenProposalsBySpace(element)"
             />
