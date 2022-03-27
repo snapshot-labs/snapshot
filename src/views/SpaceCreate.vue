@@ -426,7 +426,7 @@ const needsPluginConfigs = computed(() =>
               <input
                 v-model="form.name"
                 maxlength="128"
-                class="text-lg font-semibold s-input w-full !rounded-[12px]"
+                class="text-lg font-semibold s-input w-full !rounded-full"
                 ref="nameInput"
               />
             </SBase>
@@ -443,7 +443,7 @@ const needsPluginConfigs = computed(() =>
               </div>
               <textarea
                 ref="textAreaEl"
-                class="s-input pt-0 peer w-full !rounded-t-[12px] !rounded-b-none min-h-[50vh] !border-b-0"
+                class="s-input pt-0 peer w-full !rounded-t-xl !rounded-b-none min-h-[50vh] !border-b-0"
                 :maxLength="bodyLimit"
                 v-model="form.body"
               />
@@ -451,7 +451,7 @@ const needsPluginConfigs = computed(() =>
                 class="border-skin-border border-dashed peer-focus-within:border-skin-link peer-hover:border-skin-link"
               />
               <label
-                class="relative flex justify-between border border-skin-border bg-skin-border rounded-b-[12px] py-1 px-2 items-center peer-focus-within:border-skin-link peer-hover:border-skin-link border-t-0"
+                class="relative flex justify-between border border-skin-border bg-skin-border rounded-b-xl py-1 px-2 items-center peer-focus-within:border-skin-link peer-hover:border-skin-link border-t-0"
               >
                 <input
                   accept="image/jpg, image/jpeg, image/png"
