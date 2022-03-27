@@ -34,7 +34,6 @@ const { web3, web3Account } = useWeb3();
 const { send, clientLoading } = useClient();
 const { store } = useStore();
 const { pluginIndex } = usePlugins();
-const textAreaEl = ref(null);
 
 const notify = inject('notify');
 
@@ -60,6 +59,7 @@ const nameInput = ref(null);
 const passValidation = ref([true]);
 const validationLoading = ref(false);
 const loadingSnapshot = ref(true);
+const textAreaEl = ref(null);
 
 const proposal = computed(() =>
   Object.assign(form.value, { choices: choices.value })
