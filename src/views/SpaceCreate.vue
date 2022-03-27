@@ -441,15 +441,20 @@ const needsPluginConfigs = computed(() =>
                   {{ form.body.length }}/{{ bodyLimit }}
                 </div>
               </div>
-              <textarea
-                ref="textAreaEl"
-                class="s-input pt-0 peer w-full !rounded-t-xl !rounded-b-none min-h-[50vh] !border-b-0 text-base"
-                :maxLength="bodyLimit"
-                v-model="form.body"
-              />
+              <div
+                class="h-[50vh] peer border border-b-0 rounded-t-xl overflow-hidden focus-within:border-skin-link hover:border-skin-text"
+              >
+                <textarea
+                  ref="textAreaEl"
+                  class="s-input pt-0 w-full border-none !rounded-xl text-base h-full mt-0"
+                  :maxLength="bodyLimit"
+                  v-model="form.body"
+                />
+              </div>
               <hr
                 class="border-skin-border border-dashed peer-focus-within:border-skin-link peer-hover:border-skin-text"
               />
+
               <label
                 class="relative flex justify-between border border-skin-border bg-skin-border rounded-b-xl py-1 px-2 items-center peer-focus-within:border-skin-link peer-hover:border-skin-text border-t-0"
               >
