@@ -448,10 +448,10 @@ const needsPluginConfigs = computed(() =>
                 v-model="form.body"
               />
               <hr
-                class="border-skin-border border-dashed peer-focus-within:border-skin-link peer-hover:border-skin-link"
+                class="border-skin-border border-dashed peer-focus-within:border-skin-link peer-hover:border-skin-text"
               />
               <label
-                class="relative flex justify-between border border-skin-border bg-skin-border rounded-b-xl py-1 px-2 items-center peer-focus-within:border-skin-link peer-hover:border-skin-link border-t-0"
+                class="relative flex justify-between border border-skin-border bg-skin-border rounded-b-xl py-1 px-2 items-center peer-focus-within:border-skin-link peer-hover:border-skin-text border-t-0"
               >
                 <input
                   accept="image/jpg, image/jpeg, image/png"
@@ -461,8 +461,8 @@ const needsPluginConfigs = computed(() =>
                 />
 
                 <span class="pointer-events-none relative pl-1 text-sm">
-                  <span v-if="uploading"
-                    ><LoadingSpinner class="inline" />
+                  <span v-if="uploading">
+                    <LoadingSpinner class="inline" />
                     {{ $t('create.uploading') }}</span
                   >
                   <span v-else-if="imageUploadError !== ''">
