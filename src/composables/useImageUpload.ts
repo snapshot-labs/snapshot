@@ -1,5 +1,6 @@
 import { ref } from 'vue';
 import { useI18n } from './useI18n';
+import { getIpfsUrl } from '@/helpers/utils';
 
 export function useImageUpload({
   onSuccess
@@ -43,7 +44,7 @@ export function useImageUpload({
       };
       const result = await fetch(url, init);
       const output = await result.json();
-      imageUrl.value = `https://ipfs.io/ipfs/${output.file.ipfs_hash}`;
+      imageUrl.value = getIpfsUrl(output.file.ipfs_hash);
       imageName.value = file.name;
       onSuccess({ name: file.name, url: imageUrl.value });
     } catch (err) {
