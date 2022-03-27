@@ -54,7 +54,7 @@ watch(open, () => (step.value = null));
             {{ injected.name }}
           </BaseButton>
           <BaseButton
-            v-else-if="id !== 'gnosis'"
+            v-else-if="id !== 'gnosis' && id !== 'injected'"
             class="button-outline w-full flex justify-center items-center gap-2"
           >
             <img

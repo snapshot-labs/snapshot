@@ -176,7 +176,7 @@ function selectState(e) {
           </template>
         </BaseDropdown>
       </div>
-      <div class="md:rounded-lg bg-skin-block-bg border">
+      <div class="md:rounded-lg bg-skin-block-bg md:border border-skin-border">
         <LoadingRow
           v-if="
             loading ||
@@ -205,6 +205,7 @@ function selectState(e) {
             :key="i"
             :proposal="proposal"
             :profiles="profiles"
+            class="border-b first:border-t md:first:border-t-0"
           />
         </div>
         <div class="w-[10px] h-[10px] absolute bottom-0" ref="endElement" />
