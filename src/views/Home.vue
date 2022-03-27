@@ -54,7 +54,9 @@ onMounted(() => {
     <BaseContainer
       class="flex items-center mb-4 flex-col xs:flex-row flex-wrap md:flex-nowrap"
     >
-      <BaseButton class="pl-3 pr-0 w-full md:max-w-[420px]">
+      <BaseButton
+        class="pl-3 pr-0 w-full md:max-w-[420px] focus-within:!border-skin-link"
+      >
         <SearchWithFilters />
       </BaseButton>
       <BaseDropdown

@@ -57,7 +57,7 @@ defineProps({
     }
   }
 
-  &.button--active {
+  &:active {
     border-color: var(--link-color) !important;
   }
 
