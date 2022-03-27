@@ -102,6 +102,7 @@ onMounted(() => {
         </template>
       </BaseDropdown>
       <div
+        v-if="spacesLoaded"
         class="mt-2 xs:mt-0 xs:ml-auto text-right whitespace-nowrap text-skin-text"
       >
         {{
@@ -120,6 +121,7 @@ onMounted(() => {
         <div
           v-for="space in orderedSpacesByCategory.slice(0, limit)"
           :key="space.id"
+          class="border-b first:border-t md:border-b-0 md:first:border-t-0"
         >
           <router-link
             :to="{ name: 'spaceProposals', params: { key: space.id } }"
@@ -167,10 +169,10 @@ onMounted(() => {
         v-else-if="Object.keys(orderedSpacesByCategory).length < 1"
         useBlock
       />
-      <div class="text-center">
+      <div class="text-center px-4 md:px-0">
         <BaseButton
           v-if="!enableInfiniteScroll && orderedSpacesByCategory.length > limit"
-          class="mt-4"
+          class="mt-4 w-full"
           @click="loadMoreSpaces()"
         >
           {{ $t('homeLoadmore') }}

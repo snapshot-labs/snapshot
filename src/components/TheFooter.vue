@@ -32,7 +32,7 @@ const socials = [
 
 <template>
   <BaseContainer
-    class="flex flex-col md:flex-row items-center py-6 space-y-3 md:space-y-0 md:space-x-3 px-0 pb-3"
+    class="flex flex-col md:flex-row items-center py-4 space-y-3 md:space-y-0 md:space-x-3"
   >
     <div class="space-x-3 md:ml-auto">
       <span v-for="social in socials" :key="social">

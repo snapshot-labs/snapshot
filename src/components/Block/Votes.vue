@@ -6,6 +6,7 @@ import { useWeb3 } from '@/composables/useWeb3';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import uniqBy from 'lodash/uniqBy';
 import { useIntl } from '@/composables/useIntl';
+import pending from '@/helpers/pending.json';
 
 const props = defineProps({
   space: Object,
@@ -28,7 +29,13 @@ const { web3Account } = useWeb3();
 const authorIpfsHash = ref('');
 const modalReceiptOpen = ref(false);
 
-const isFinalProposal = computed(() => props.proposal.scores_state === 'final');
+const isFinalProposal = computed(() => {
+  const spaceShowPending = pending;
+  const showPending =
+    props.proposal.scores_state === 'pending' &&
+    spaceShowPending.includes(props.space.id);
+  return props.proposal.scores_state === 'final' || showPending;
+});
 
 const voteCount = computed(() =>
   isFinalProposal.value ? props.proposal.votes : votes.value.length
@@ -85,7 +92,8 @@ watch(visibleVotes, () => {
 <template>
   <BaseBlock
     v-if="isZero()"
-    :title="`${voteCount} ${$t('votes')}`"
+    :title="$t('votes')"
+    :counter="voteCount"
     :slim="true"
     :loading="!loaded"
   >
@@ -93,7 +101,7 @@ watch(visibleVotes, () => {
       v-for="(vote, i) in visibleVotes"
       :key="i"
       :style="i === 0 && 'border: 0 !important;'"
-      class="px-4 py-3 border-t flex"
+      class="px-3 py-3 border-t flex"
     >
       <AvatarUser
         :profile="profiles[vote.voter]"
@@ -103,7 +111,7 @@ watch(visibleVotes, () => {
         :proposal="proposal"
         class="w-[110px] xs:w-[130px] min-w-[110px] xs:min-w-[130px]"
       />
-      <div class="flex-auto text-center text-skin-link truncate px-3">
+      <div class="flex-auto text-center text-skin-link truncate px-2">
         <div
           class="text-center text-skin-link truncate"
           v-tippy="{

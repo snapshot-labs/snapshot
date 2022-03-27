@@ -169,10 +169,10 @@ onMounted(async () => {
             {{ $t('back') }}
           </router-link>
         </div>
-        <div class="">
-          <h1 class="mb-2 px-4 md:px-0">
-            {{ strategy.id }}
-          </h1>
+        <h1 class="mb-2 px-4 md:px-0">
+          {{ strategy.id }}
+        </h1>
+        <div class="space-y-3">
           <BaseBlock :title="$t('settings.header')">
             <div class="space-y-2">
               <UiInput @click="modalNetworksOpen = true">
@@ -245,39 +245,41 @@ onMounted(async () => {
       </div>
     </template>
     <template #sidebar-right>
-      <BaseBlock :title="$t('actions')">
-        <BaseButton
-          @click="loadScores"
-          :loading="loading"
-          :disabled="loading || !strategy"
-          class="w-full"
-          :style="[loading ? '' : 'padding-top: 0.2rem']"
-          primary
-        >
-          <BaseIcon name="play" size="18" />
-        </BaseButton>
-        <BaseButton @click="copyURL" class="w-full mt-2">
-          <BaseIcon
-            name="insertlink"
-            size="18"
-            class="align-text-bottom mr-1"
-          />
-          {{ t('copyLink') }}
-        </BaseButton>
-      </BaseBlock>
-      <BaseBlock v-if="scores" :title="$t('results')">
-        <div
-          class="flex justify-between"
-          v-for="score in Object.keys(scores[0])"
-          :key="score"
-        >
-          <AvatarUser :address="score" :space="form" />
-          <span>
-            {{ formatCompactNumber(scores[0][score]) }}
-            {{ form.params.symbol }}
-          </span>
-        </div>
-      </BaseBlock>
+      <div class="space-y-3">
+        <BaseBlock :title="$t('actions')">
+          <BaseButton
+            @click="loadScores"
+            :loading="loading"
+            :disabled="loading || !strategy"
+            class="w-full"
+            :style="[loading ? '' : 'padding-top: 0.2rem']"
+            primary
+          >
+            <BaseIcon name="play" size="18" />
+          </BaseButton>
+          <BaseButton @click="copyURL" class="w-full mt-2">
+            <BaseIcon
+              name="insertlink"
+              size="18"
+              class="align-text-bottom mr-1"
+            />
+            {{ t('copyLink') }}
+          </BaseButton>
+        </BaseBlock>
+        <BaseBlock v-if="scores" :title="$t('results')">
+          <div
+            class="flex justify-between"
+            v-for="score in Object.keys(scores[0])"
+            :key="score"
+          >
+            <AvatarUser :address="score" :space="form" />
+            <span>
+              {{ formatCompactNumber(scores[0][score]) }}
+              {{ form.params.symbol }}
+            </span>
+          </div>
+        </BaseBlock>
+      </div>
     </template>
   </TheLayout>
   <teleport to="#modal">

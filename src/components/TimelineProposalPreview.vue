@@ -28,7 +28,7 @@ const winningChoice = computed(() =>
 </script>
 
 <template>
-  <div class="transition-colors border-b last:border-b-0">
+  <div class="transition-colors md:border-b last:border-b-0 border-skin-border">
     <router-link
       class="p-4 block text-skin-text"
       :to="{
