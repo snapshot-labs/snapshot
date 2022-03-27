@@ -34,7 +34,9 @@ const { web3, web3Account } = useWeb3();
 const { send, clientLoading } = useClient();
 const { store } = useStore();
 const { pluginIndex } = usePlugins();
-const textAreaEl = ref(undefined);
+const textAreaEl = ref(null);
+
+const notify = inject('notify');
 
 const form = ref({
   name: '',
@@ -46,24 +48,6 @@ const form = ref({
   metadata: { plugins: {} },
   type: 'single-choice'
 });
-
-const injectImageToBody = image => {
-  const cursorPosition = textAreaEl.value.selectionStart;
-  const currentBody = textAreaEl.value.value;
-  form.value.body =
-    currentBody.substring(0, cursorPosition) +
-    `![${image.name}](${image.url})` +
-    currentBody.substring(cursorPosition);
-};
-
-const {
-  upload,
-  error: imageUploadError,
-  uploading
-} = useImageUpload({
-  onSuccess: injectImageToBody
-});
-const notify = inject('notify');
 
 const choices = ref([]);
 const blockNumber = ref(-1);
@@ -315,6 +299,23 @@ const needsPluginConfigs = computed(() =>
     pluginKey => pluginIndex[pluginKey]?.defaults?.proposal
   )
 );
+
+const injectImageToBody = image => {
+  const cursorPosition = textAreaEl.value.selectionStart;
+  const currentBody = textAreaEl.value.value;
+  form.value.body =
+    currentBody.substring(0, cursorPosition) +
+    `![${image.name}](${image.url})` +
+    currentBody.substring(cursorPosition);
+};
+
+const {
+  upload,
+  error: imageUploadError,
+  uploading
+} = useImageUpload({
+  onSuccess: injectImageToBody
+});
 </script>
 
 <template>
