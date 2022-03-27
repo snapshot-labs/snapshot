@@ -443,12 +443,15 @@ const needsPluginConfigs = computed(() =>
               </div>
               <textarea
                 ref="textAreaEl"
-                class="s-input pt-0 w-full !rounded-t-[12px] !rounded-b-none min-h-[50vh]"
+                class="s-input pt-0 peer w-full !rounded-t-[12px] !rounded-b-none min-h-[50vh] !border-b-0"
                 :maxLength="bodyLimit"
                 v-model="form.body"
               />
+              <hr
+                class="border-skin-border border-dashed peer-focus-within:border-skin-link"
+              />
               <label
-                class="relative flex justify-between bg-skin-border rounded-b-[12px] py-1 px-2 items-center"
+                class="relative flex justify-between border border-skin-border bg-skin-border rounded-b-[12px] py-1 px-2 items-center peer-focus-within:border-skin-link border-t-0"
               >
                 <input
                   accept="image/jpg, image/jpeg, image/png"
@@ -475,7 +478,7 @@ const needsPluginConfigs = computed(() =>
                   target="_blank"
                   v-tippy="{ content: $t('create.markdown') }"
                 >
-                  <BaseIcon name="github" class="text-skin-text" />
+                  <BaseIcon name="markdown" class="text-skin-text" />
                 </a>
               </label>
             </div>

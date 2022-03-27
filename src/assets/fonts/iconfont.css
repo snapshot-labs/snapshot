@@ -1,8 +1,8 @@
 @font-face {
   font-family: 'iconfont'; /* Project id 1946815 */
-  src: url('iconfont.woff2?t=1644568638855') format('woff2'),
-    url('iconfont.woff?t=1644568638855') format('woff'),
-    url('iconfont.ttf?t=1644568638855') format('truetype');
+  src: url('iconfont.woff2?t=1648382017037') format('woff2'),
+    url('iconfont.woff?t=1648382017037') format('woff'),
+    url('iconfont.ttf?t=1648382017037') format('truetype');
 }
 
 .iconfont {
@@ -13,16 +13,36 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.iconearth:before {
+  content: '\e70d';
+}
+
+.iconmarkdown:before {
+  content: '\ec0f';
+}
+
+.iconcoins:before {
+  content: '\e6c6';
+}
+
+.iconcheck3:before {
+  content: '\e605';
+}
+
+.iconskip:before {
+  content: '\e8c5';
+}
+
+.iconclose2:before {
+  content: '\e6c3';
+}
+
 .iconcalendar:before {
   content: '\e71f';
 }
 
 .icondraggable:before {
   content: '\e617';
-}
-
-.iconearth:before {
-  content: '\e7dc';
 }
 
 .iconpreview:before {
@@ -79,10 +99,6 @@
 
 .iconnotifications:before {
   content: '\e630';
-}
-
-.iconnotifications-none:before {
-  content: "\e69e";
 }
 
 .iconnotifications-off:before {
