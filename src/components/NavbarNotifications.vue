@@ -78,7 +78,6 @@ onMounted(() => loadNotifications());
             @click="selectedFilter = filter"
             class="!h-[44px]"
             :class="{ '!border-skin-link': selectedFilter === filter }"
-            no-focus
           >
             {{ $t(`notifications.${filter}`) }}
           </BaseButton>

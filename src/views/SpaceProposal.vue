@@ -364,7 +364,6 @@ const truncateMarkdownBody = computed(() => {
               }"
             >
               <BaseButton
-                no-focus
                 @click="showFullMarkdownBody = !showFullMarkdownBody"
                 class="!bg-skin-bg"
               >

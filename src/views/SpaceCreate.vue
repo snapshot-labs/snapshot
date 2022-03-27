@@ -607,16 +607,10 @@ const needsPluginConfigs = computed(() =>
           @click="preview = !preview"
           :loading="clientLoading || queryLoading"
           class="block w-full mb-3"
-          no-focus
         >
           {{ preview ? $t('create.edit') : $t('create.preview') }}
         </BaseButton>
-        <BaseButton
-          v-else
-          @click="currentStep--"
-          class="block w-full mb-3"
-          no-focus
-        >
+        <BaseButton v-else @click="currentStep--" class="block w-full mb-3">
           {{ $t('back') }}
         </BaseButton>
 
