@@ -14,7 +14,7 @@ const createdSpaces = useStorage(
 </script>
 
 <template>
-  <Block
+  <BaseBlock
     v-if="createdSpaces?.[spaceId]?.showMessage"
     class="absolute z-10 left-0 !bg-skin-bg"
   >
@@ -23,7 +23,7 @@ const createdSpaces = useStorage(
         <div>
           <h3 class="mt-0">{{ $t('newSpaceNotice.header') }}</h3>
           <div class="text-skin-text">
-            <Icon name="info" size="24" class="float-left mr-1" />
+            <BaseIcon name="info" size="24" class="float-left mr-1" />
             <i18n-t keypath="newSpaceNotice.mainText" tag="p">
               <template v-slot:settings>
                 <BaseLink
@@ -52,13 +52,13 @@ const createdSpaces = useStorage(
             </template>
           </i18n-t>
         </div>
-        <UiButton
+        <BaseButton
           class="mt-3"
           @click="createdSpaces[spaceId].showMessage = false"
         >
           {{ $t('newSpaceNotice.gotIt') }}
-        </UiButton>
+        </BaseButton>
       </div>
     </div>
-  </Block>
+  </BaseBlock>
 </template>

@@ -51,7 +51,7 @@ label {
 </style>
 
 <template>
-  <UiLoading v-if="loading" />
+  <LoadingSpinner v-if="loading" />
   <label v-else class="file-select">
     <input
       type="file"

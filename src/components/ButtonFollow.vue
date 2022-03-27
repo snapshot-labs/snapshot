@@ -28,7 +28,7 @@ const canFollow = computed(() => {
       content: isGnosisSafe ? $t('walletNotSupported') : null
     }"
   >
-    <UiButton
+    <BaseButton
       v-bind="$attrs"
       @click.stop.prevent="
         loadingFollow !== ''
@@ -54,7 +54,7 @@ const canFollow = computed(() => {
           {{ $t('leave') }}
         </span>
       </span>
-    </UiButton>
+    </BaseButton>
   </div>
   <teleport to="#modal">
     <ModalTerms

@@ -1,19 +1,21 @@
 <script setup lang="ts">
 import { watch, onMounted, ref, watchEffect, computed } from 'vue';
+import { useRouter } from 'vue-router';
 import draggable from 'vuedraggable';
 import { useFollowSpace } from '@/composables/useFollowSpace';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useSpaces } from '@/composables/useSpaces';
 import { useUnseenProposals } from '@/composables/useUnseenProposals';
-import { useDomain } from '@/composables/useDomain';
+import { useApp } from '@/composables/useApp';
 import { lsSet, lsGet } from '@/helpers/utils';
 
+const router = useRouter();
 const { spaces } = useSpaces();
 const { web3Account } = useWeb3();
 const { loadFollows, followingSpaces } = useFollowSpace();
 const { proposals, getProposals, lastSeenProposals, updateLastSeenProposal } =
   useUnseenProposals();
-const { domain } = useDomain();
+const { domain, showSidebar } = useApp();
 
 const draggableSpaces = ref<string[]>([]);
 
@@ -31,10 +33,6 @@ const hasUnseenProposalsBySpace = space => {
     );
   });
 };
-
-const hasUnseenProposals = computed(() =>
-  followingSpaces.value.some(fs => hasUnseenProposalsBySpace(fs))
-);
 
 watch(web3Account, () => {
   loadFollows();
@@ -68,18 +66,12 @@ onMounted(() => {
 
 <template>
   <div
-    class="flex flex-col h-full overflow-auto no-scrollbar overscroll-contain py-2"
+    class="flex flex-col h-full overflow-auto no-scrollbar overscroll-contain py-2 items-end"
   >
     <div v-if="!domain" class="flex items-center relative px-2">
       <router-link :to="{ name: 'home' }">
-        <UiSidebarButton
-          class="!border-0"
-        >
-          <Icon
-            size="36"
-            name="snapshot"
-            class="text-snapshot"
-          />
+        <UiSidebarButton class="!border-0">
+          <BaseIcon size="36" name="snapshot" class="text-snapshot" />
         </UiSidebarButton>
       </router-link>
     </div>
@@ -96,7 +88,7 @@ onMounted(() => {
         <UiSidebarButton
           :class="{ '!border-skin-link': $route.name === 'timeline' }"
         >
-          <Icon size="20" name="feed" />
+          <BaseIcon size="20" name="feed" />
         </UiSidebarButton>
       </router-link>
     </div>
@@ -109,6 +101,8 @@ onMounted(() => {
         item-key="id"
         @update="saveSpaceOrder"
         class="space-y-2 mt-2"
+        :delay="200"
+        :delay-on-touch-only="true"
       >
         <template #item="{ element }">
           <div
@@ -125,21 +119,23 @@ onMounted(() => {
               :space="element"
               :hasUnseen="hasUnseenProposalsBySpace(element)"
             />
-            <router-link
-              :to="{ name: 'spaceProposals', params: { key: element } }"
+            <div
+              class="cursor-pointer"
+              @click="router.push({ name: 'spaceProposals', params: { key: element } })"
             >
-              <SpaceAvatar
+              <AvatarSpace
                 :space="spaces[element]"
                 :key="element"
                 symbolIndex="space"
                 size="44"
+                class="pointer-events-none"
               />
               <UiCounter
                 v-if="spaces[element].activeProposals"
                 :counter="spaces[element].activeProposals"
                 class="absolute -top-[1px] right-[9px] !bg-green !h-[16px] !leading-[16px] !min-w-[16px]"
               />
-            </router-link>
+            </div>
           </div>
         </template>
       </draggable>
@@ -157,7 +153,7 @@ onMounted(() => {
         <UiSidebarButton
           :class="{ '!border-skin-link': $route.name === 'setup' }"
         >
-          <Icon size="20" name="plus" />
+          <BaseIcon size="20" name="plus" />
         </UiSidebarButton>
       </router-link>
     </div>

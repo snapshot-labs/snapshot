@@ -51,12 +51,12 @@ onMounted(() => {
 
 <template>
   <div class="relative">
-    <Container
+    <BaseContainer
       class="flex items-center mb-4 flex-col xs:flex-row flex-wrap md:flex-nowrap"
     >
-      <UiButton class="pl-3 pr-0 w-full md:max-w-[420px]">
+      <BaseButton class="pl-3 pr-0 w-full md:max-w-[420px]">
         <SearchWithFilters />
-      </UiButton>
+      </BaseButton>
       <BaseDropdown
         class="w-full xs:w-auto md:ml-2 sm:mr-2 mt-2 md:mt-0"
         @select="selectCategory($event)"
@@ -78,19 +78,19 @@ onMounted(() => {
         ]"
       >
         <template v-slot:button>
-          <UiButton
+          <BaseButton
             class="w-full pr-3 whitespace-nowrap"
             :disabled="!orderedSpaces.length"
           >
-            <Icon size="14" name="apps" class="mt-1 mr-2" />
+            <BaseIcon size="16" name="apps" class="mt-1 mr-2" />
             <span v-if="selectedCategory">
               {{ $tc('explore.categories.' + selectedCategory) }}
             </span>
             <span v-else>
               {{ $tc('explore.categories.all') }}
             </span>
-            <Icon size="14" name="arrow-down" class="mt-1 mx-1" />
-          </UiButton>
+            <BaseIcon size="16" name="arrow-down" class="mt-1 mx-1" />
+          </BaseButton>
         </template>
         <template v-slot:item="{ item }">
           <div class="flex">
@@ -102,6 +102,7 @@ onMounted(() => {
         </template>
       </BaseDropdown>
       <div
+        v-if="spacesLoaded"
         class="mt-2 xs:mt-0 xs:ml-auto text-right whitespace-nowrap text-skin-text"
       >
         {{
@@ -110,8 +111,8 @@ onMounted(() => {
           ])
         }}
       </div>
-    </Container>
-    <Container :slim="true">
+    </BaseContainer>
+    <BaseContainer :slim="true">
       <TransitionGroup
         name="fade"
         tag="div"
@@ -120,17 +121,18 @@ onMounted(() => {
         <div
           v-for="space in orderedSpacesByCategory.slice(0, limit)"
           :key="space.id"
+          class="border-b first:border-t md:border-b-0 md:first:border-t-0"
         >
           <router-link
             :to="{ name: 'spaceProposals', params: { key: space.id } }"
           >
             <!-- Added mb-0 to remove mb-4 added by block component -->
-            <Block
+            <BaseBlock
               class="text-center mb-0 hover:border-skin-text transition-all flex justify-center items-center"
               style="height: 266px"
             >
               <div class="relative inline-block mb-2">
-                <SpaceAvatar
+                <AvatarSpace
                   :space="space"
                   symbolIndex="space"
                   size="82"
@@ -148,8 +150,8 @@ onMounted(() => {
                   })
                 }}
               </div>
-              <FollowButton class="!mb-0" :space="space" />
-            </Block>
+              <ButtonFollow class="!mb-0" :space="space" />
+            </BaseBlock>
           </router-link>
         </div>
       </TransitionGroup>
@@ -167,19 +169,16 @@ onMounted(() => {
         v-else-if="Object.keys(orderedSpacesByCategory).length < 1"
         useBlock
       />
-      <div class="text-center">
-        <UiButton
+      <div class="text-center px-4 md:px-0">
+        <BaseButton
           v-if="!enableInfiniteScroll && orderedSpacesByCategory.length > limit"
-          class="mt-4"
+          class="mt-4 w-full"
           @click="loadMoreSpaces()"
         >
           {{ $t('homeLoadmore') }}
-        </UiButton>
+        </BaseButton>
       </div>
-      <footer class="mt-auto">
-        <TheFooter />
-      </footer>
-    </Container>
+    </BaseContainer>
     <div ref="endElement" />
   </div>
 </template>

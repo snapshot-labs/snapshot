@@ -39,8 +39,8 @@ watchEffect(() => {
 </script>
 
 <template>
-  <div class="text-center bg-skin-header-bg h-[253px]">
-    <SpaceAvatar
+  <div class="text-center h-[253px]">
+    <AvatarSpace
       :space="space"
       symbolIndex="space"
       size="80"
@@ -55,7 +55,7 @@ watchEffect(() => {
       >
         {{ space.name }}
       </div>
-      <Icon
+      <BaseIcon
         v-if="isVerified === 1"
         v-tippy="{
           content: $t('verifiedSpace'),
@@ -64,7 +64,7 @@ watchEffect(() => {
         name="check"
         size="20"
       />
-      <Icon v-if="isVerified === -1" name="warning" size="20" />
+      <BaseIcon v-if="isVerified === -1" name="warning" size="20" />
     </h3>
     <div class="mb-[12px] text-skin-text">
       {{
@@ -75,14 +75,14 @@ watchEffect(() => {
     </div>
 
     <div class="flex justify-center gap-x-2">
-      <FollowButton :space="space" />
+      <ButtonFollow :space="space" />
       <UiSidebarButton
         class="inline"
         v-if="isFollowing"
         @click="toggleSubscription()"
       >
-        <UiLoading v-if="loading" />
-        <Icon
+        <LoadingSpinner v-if="loading" />
+        <BaseIcon
           v-else
           size="20"
           class="text-skin-link"

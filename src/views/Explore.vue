@@ -70,10 +70,10 @@ onMounted(() => {
 </script>
 
 <template>
-  <Container class="flex items-center mb-4">
-    <UiButton class="mr-auto pl-3 pr-0 w-full max-w-[420px]">
+  <BaseContainer class="flex items-center mb-4">
+    <BaseButton class="mr-auto pl-3 pr-0 w-full max-w-[420px]">
       <SearchWithFilters />
-    </UiButton>
+    </BaseButton>
     <div class="ml-3 hidden sm:flex text-right items-center whitespace-nowrap">
       <div class="flex flex-col">
         {{ formatCompactNumber(items.length) }} {{ resultsStr }}
@@ -85,50 +85,53 @@ onMounted(() => {
         class="hidden md:block ml-3"
         hide-external-icon
       >
-        <UiButton>
+        <BaseButton>
           {{ buttonStr }}
-        </UiButton>
+        </BaseButton>
       </BaseLink>
     </div>
-  </Container>
-  <Container :slim="true">
+  </BaseContainer>
+  <BaseContainer :slim="true">
     <div class="overflow-hidden">
       <template v-if="route.name === 'strategies'">
-        <RowLoadingBlock v-if="loadingStrategies" />
+        <LoadingRow block v-if="loadingStrategies" />
         <div v-else class="grid md:grid-cols-3 gap-[1px] md:gap-4">
           <router-link
             :to="`/strategy/${item.id}`"
             v-for="item in items.slice(0, limit)"
             :key="item.key"
+            class="border-b first:border-t md:border-b-0 md:first:border-t-0"
           >
             <BlockStrategy :strategy="item" />
           </router-link>
         </div>
       </template>
       <template v-if="route.name === 'networks'">
-        <RowLoadingBlock v-if="loadingNetworksSpacesCount" />
+        <LoadingRow block v-if="loadingNetworksSpacesCount" />
         <div v-else class="grid md:grid-cols-3 gap-[1px] md:gap-4">
           <router-link
             :to="`/?network=${item.key}`"
             v-for="item in items.slice(0, limit)"
             :key="item.key"
+            class="border-b first:border-t md:border-b-0 md:first:border-t-0"
           >
             <BlockNetwork :network="item" />
           </router-link>
         </div>
       </template>
       <template v-if="route.name === 'plugins'">
-        <RowLoadingBlock v-if="loadingPluginsSpacesCount" />
+        <LoadingRow block v-if="loadingPluginsSpacesCount" />
         <div v-else class="grid md:grid-cols-3 gap-[1px] md:gap-4">
           <BlockPlugin
             v-for="item in items.slice(0, limit)"
             :key="item.key"
             :plugin="item"
+            class="border-b first:border-t md:border-b-0 md:first:border-t-0"
           />
         </div>
       </template>
       <NoResults useBlock v-if="items.length < 1 && !loading" />
     </div>
-  </Container>
+  </BaseContainer>
   <div ref="endElement" />
 </template>

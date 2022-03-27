@@ -87,9 +87,7 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
         <h1 v-text="$t('setup.createASpace')" class="mb-4" />
       </div>
       <template v-if="web3Account">
-        <Block v-if="loadingOwnedEnsDomains" slim>
-          <RowLoading class="my-2" />
-        </Block>
+        <LoadingRow v-if="loadingOwnedEnsDomains" block />
         <!-- Step two - setup space controller -->
         <SetupController
           v-else-if="route.params.step === 'controller' && ensAddress"
@@ -103,7 +101,7 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
           :ensAddress="ensAddress"
           :web3Account="web3Account"
         />
-        <Block v-else>
+        <BaseBlock v-else>
           <div v-if="ownedEnsDomainsNoExistingSpace.length">
             <div class="mb-3">
               {{
@@ -115,7 +113,7 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
               }}
             </div>
             <div class="space-y-2">
-              <UiButton
+              <BaseButton
                 v-for="(ens, i) in ownedEnsDomainsNoExistingSpace"
                 :key="i"
                 @click="goToStepTwo(ens.name)"
@@ -123,8 +121,8 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
                 :primary="ownedEnsDomainsNoExistingSpace.length === 1"
               >
                 {{ ens.name }}
-                <Icon name="go" size="22" class="-mr-2" />
-              </UiButton>
+                <BaseIcon name="go" size="22" class="-mr-2" />
+              </BaseButton>
             </div>
             <div class="my-3">
               {{ $t('setup.orReigsterNewEns') }}
@@ -143,28 +141,28 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
               @waitForRegistration="waitForRegistration"
             />
           </div>
-        </Block>
+        </BaseBlock>
       </template>
-      <Block v-else>
-        <UiButton
+      <BaseBlock v-else>
+        <BaseButton
           @click="modalAccountOpen = true"
           :loading="web3.authLoading"
           class="w-full"
           primary
         >
           {{ $t('connectWallet') }}
-        </UiButton>
-      </Block>
+        </BaseButton>
+      </BaseBlock>
     </template>
     <template #sidebar-right>
-      <Block class="text-skin-text">
-        <Icon
+      <BaseBlock class="text-skin-text">
+        <BaseIcon
           name="gitbook"
           size="24"
           class="text-skin-text pr-2 !align-middle"
         />
         <span v-html="$t('setup.helpDocsAndDiscordLinks')" />
-      </Block>
+      </BaseBlock>
     </template>
   </TheLayout>
 </template>

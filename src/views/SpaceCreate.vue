@@ -11,7 +11,7 @@ import { useModal } from '@/composables/useModal';
 import { useTerms } from '@/composables/useTerms';
 import { PROPOSAL_QUERY } from '@/helpers/queries';
 import validations from '@snapshot-labs/snapshot.js/src/validations';
-import { useDomain } from '@/composables/useDomain';
+import { useApp } from '@/composables/useApp';
 import { useApolloQuery } from '@/composables/useApolloQuery';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useClient } from '@/composables/useClient';
@@ -28,7 +28,7 @@ const route = useRoute();
 const { t, setPageTitle } = useI18n();
 const { formatCompactNumber } = useIntl();
 const auth = getInstance();
-const { domain } = useDomain();
+const { domain } = useApp();
 const { web3, web3Account } = useWeb3();
 const { send, clientLoading } = useClient();
 const { store } = useStore();
@@ -305,7 +305,7 @@ const needsPluginConfigs = computed(() =>
           :to="domain ? { path: '/' } : { name: 'spaceProposals' }"
           class="text-skin-text"
         >
-          <Icon name="back" size="22" class="!align-middle" />
+          <BaseIcon name="back" size="22" class="!align-middle" />
           {{ $t('back') }}
         </router-link>
       </div>
@@ -431,7 +431,7 @@ const needsPluginConfigs = computed(() =>
         </div>
       </template>
       <div v-else-if="currentStep === 2" class="space-y-4">
-        <Block :title="$t('create.voting')">
+        <BaseBlock :title="$t('create.voting')">
           <UiInput
             @click="!space.voting?.type ? (modalVotingTypeOpen = true) : null"
             :disabled="space.voting?.type"
@@ -480,7 +480,11 @@ const needsPluginConfigs = computed(() =>
                             disableChoiceEdit
                         }"
                       >
-                        <Icon name="draggable" size="16" class="mr-[12px]" />
+                        <BaseIcon
+                          name="draggable"
+                          size="16"
+                          class="mr-[12px]"
+                        />
                         {{ $tc('create.choice', [index + 1]) }}
                       </div>
                     </template>
@@ -501,13 +505,13 @@ const needsPluginConfigs = computed(() =>
                 @click="addChoices(1)"
                 class="!w-[48px] !h-[48px]"
               >
-                <Icon size="20" name="plus" class="text-skin-link" />
+                <BaseIcon size="20" name="plus" class="text-skin-link" />
               </UiSidebarButton>
             </div>
           </div>
-        </Block>
+        </BaseBlock>
 
-        <Block
+        <BaseBlock
           :title="$t('create.period')"
           icon="info"
           :iconTooltip="$t('create.votingPeriodExplainer')"
@@ -537,7 +541,7 @@ const needsPluginConfigs = computed(() =>
                 {{ $t(`create.start`) }}
               </template>
               <template v-slot:info>
-                <Icon
+                <BaseIcon
                   name="calendar"
                   size="18"
                   class="flex items-center text-skin-text"
@@ -563,7 +567,7 @@ const needsPluginConfigs = computed(() =>
                 {{ $t(`create.end`) }}
               </template>
               <template v-slot:info>
-                <Icon
+                <BaseIcon
                   name="calendar"
                   size="18"
                   class="flex items-center text-skin-text"
@@ -572,9 +576,9 @@ const needsPluginConfigs = computed(() =>
               </template>
             </UiInput>
           </div>
-        </Block>
+        </BaseBlock>
 
-        <Block v-if="$route.query.snapshot" :title="$t('snapshot')">
+        <BaseBlock v-if="$route.query.snapshot" :title="$t('snapshot')">
           <UiInput
             v-model="form.snapshot"
             :number="true"
@@ -584,7 +588,7 @@ const needsPluginConfigs = computed(() =>
               {{ $t('snapshot') }}
             </template>
           </UiInput>
-        </Block>
+        </BaseBlock>
       </div>
       <div v-else class="space-y-3">
         <PluginCreate
@@ -597,8 +601,8 @@ const needsPluginConfigs = computed(() =>
       </div>
     </template>
     <template #sidebar-right>
-      <Block class="lg:fixed lg:w-[320px]">
-        <UiButton
+      <BaseBlock class="lg:fixed lg:w-[320px]">
+        <BaseButton
           v-if="currentStep === 1"
           @click="preview = !preview"
           :loading="clientLoading || queryLoading"
@@ -606,17 +610,17 @@ const needsPluginConfigs = computed(() =>
           no-focus
         >
           {{ preview ? $t('create.edit') : $t('create.preview') }}
-        </UiButton>
-        <UiButton
+        </BaseButton>
+        <BaseButton
           v-else
           @click="currentStep--"
           class="block w-full mb-3"
           no-focus
         >
           {{ $t('back') }}
-        </UiButton>
+        </BaseButton>
 
-        <UiButton
+        <BaseButton
           v-if="currentStep === 3 || (!needsPluginConfigs && currentStep === 2)"
           @click="
             !termsAccepted && space.terms
@@ -629,8 +633,8 @@ const needsPluginConfigs = computed(() =>
           primary
         >
           {{ $t('create.publish') }}
-        </UiButton>
-        <UiButton
+        </BaseButton>
+        <BaseButton
           v-else
           @click="web3Account ? currentStep++ : (modalAccountOpen = true)"
           class="block w-full"
@@ -642,8 +646,8 @@ const needsPluginConfigs = computed(() =>
           primary
         >
           {{ web3Account ? $t('create.continue') : $t('connectWallet') }}
-        </UiButton>
-      </Block>
+        </BaseButton>
+      </BaseBlock>
     </template>
   </TheLayout>
   <teleport to="#modal">

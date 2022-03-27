@@ -29,16 +29,16 @@ function select(id) {
 </script>
 
 <template>
-  <UiModal :open="open" @close="$emit('close')">
+  <BaseModal :open="open" @close="$emit('close')">
     <template v-slot:header>
       <h3>{{ $t('voting.selectVoting') }}</h3>
     </template>
     <div class="mt-4 mx-0 md:mx-4 space-y-3 flex flex-col">
       <a v-if="allowAny" @click="select(undefined)">
-        <Block
+        <BaseBlock
           :class="[
-            'transition-colors relative voting-type',
-            { 'voting-type-active': !selected }
+            'transition-colors relative voting-type hover:border-skin-text',
+            { '!border-skin-link': !selected }
           ]"
         >
           <i
@@ -48,13 +48,13 @@ function select(id) {
           <h3>
             {{ $t('settings.anyType') }}
           </h3>
-        </Block>
+        </BaseBlock>
       </a>
       <a v-for="(type, key) in types" :key="key" @click="select(type)">
-        <Block
+        <BaseBlock
           :class="[
-            'transition-colors relative voting-type',
-            { 'voting-type-active': type === selected }
+            'transition-colors relative voting-type hover:border-skin-text',
+            { '!border-skin-link': type === selected }
           ]"
         >
           <i
@@ -66,17 +66,8 @@ function select(id) {
             v-text="$t(`voting.description.${type}`)"
             class="text-skin-text"
           />
-        </Block>
+        </BaseBlock>
       </a>
     </div>
-  </UiModal>
+  </BaseModal>
 </template>
-
-<style scoped lang="scss">
-.voting-type {
-  &.voting-type-active,
-  &:hover {
-    border-color: var(--text-color);
-  }
-}
-</style>

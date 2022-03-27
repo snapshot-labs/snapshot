@@ -2,14 +2,14 @@
 import { ref } from 'vue';
 import { shorten } from '@/helpers/utils';
 import { useModal } from '@/composables/useModal';
-import { useDomain } from '@/composables/useDomain';
+import { useApp } from '@/composables/useApp';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useTxStatus } from '@/composables/useTxStatus';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 
 const { pendingCount } = useTxStatus();
 const { modalAccountOpen } = useModal();
-const { env } = useDomain();
+const { env, showSidebar } = useApp();
 const auth = getInstance();
 const { login, web3, web3Account } = useWeb3();
 
@@ -32,9 +32,25 @@ async function handleLogin(connector) {
     {{ $t('demoSite') }}
   </div>
   <nav id="topnav">
-    <Container>
+    <BaseContainer class="pl-0 pr-3 sm:!px-4">
       <div class="flex items-center py-2">
         <div class="flex-auto flex items-center">
+          <UiSidebarButton
+            @click="showSidebar = !showSidebar"
+            class="border-0 sm:hidden"
+          >
+            <BaseIcon
+              v-if="showSidebar"
+              name="close"
+              size="20"
+            />
+            <BaseIcon
+              v-else
+              class="rotate-90"
+              name="threedots"
+              size="20"
+            />
+          </UiSidebarButton>
           <router-link
             :to="{ path: '/' }"
             class="flex items-center"
@@ -45,7 +61,7 @@ async function handleLogin(connector) {
         </div>
         <div :key="web3Account" class="flex space-x-2">
           <template v-if="auth.isAuthenticated.value">
-            <UiButton
+            <BaseButton
               @click="modalAccountOpen = true"
               :loading="web3.authLoading"
               class="flex items-center"
@@ -65,29 +81,29 @@ async function handleLogin(connector) {
                 v-text="shorten(web3Account)"
                 class="hidden sm:block"
               />
-            </UiButton>
+            </BaseButton>
           </template>
 
-          <UiButton
+          <BaseButton
             v-if="!auth.isAuthenticated.value"
             @click="modalAccountOpen = true"
             :loading="loading || web3.authLoading"
             :aria-label="$t('connectWallet')"
           >
             <span class="hidden sm:block" v-text="$t('connectWallet')" />
-            <Icon
+            <BaseIcon
               name="login"
               size="20"
               class="sm:hidden -ml-2 -mr-2 block align-text-bottom"
             />
-          </UiButton>
-          <NavbarNotifications />
+          </BaseButton>
+          <NavbarNotifications v-if="web3Account" />
         </div>
       </div>
-    </Container>
+    </BaseContainer>
   </nav>
-  <div class="bg-primary text-white text-center py-2" v-if="pendingCount > 0">
-    <UiLoading fill-white class="mr-2" />
+  <div class="flex justify-center bg-primary text-white text-center py-2" v-if="pendingCount > 0">
+    <LoadingSpinner fill-white class="mr-2" />
     {{ $tc('delegate.pendingTransaction', pendingCount) }}
   </div>
   <teleport to="#modal">

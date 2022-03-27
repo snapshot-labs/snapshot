@@ -1,7 +1,7 @@
-<script setup>
-const props = defineProps({
-  modelValue: Boolean
-});
+<script setup lang="ts">
+const props = defineProps<{
+  modelValue: boolean;
+}>();
 
 const emit = defineEmits(['update:modelValue']);
 
@@ -12,7 +12,7 @@ function handleToggle() {
 
 <template>
   <a @click="handleToggle" class="flex">
-    <Icon
+    <BaseIcon
       :name="modelValue ? 'toggle-on' : 'toggle_off'"
       :class="modelValue ? 'text-green' : 'text-skin-border'"
       size="32"

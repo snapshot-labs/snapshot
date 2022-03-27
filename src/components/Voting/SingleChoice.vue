@@ -21,7 +21,7 @@ function selectChoice(i) {
 
 <template>
   <div class="mb-3">
-    <UiButton
+    <BaseButton
       v-for="(choice, i) in proposal.choices"
       :key="i"
       @click="selectChoice(i + 1)"
@@ -29,6 +29,6 @@ function selectChoice(i) {
       :class="selectedChoice === i + 1 && 'button--active'"
     >
       {{ shorten(choice, 32) }}
-    </UiButton>
+    </BaseButton>
   </div>
 </template>

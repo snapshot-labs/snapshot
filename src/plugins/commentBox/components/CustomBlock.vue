@@ -146,8 +146,8 @@ function deleteItem(key) {
 }
 </script>
 <template>
-  <Block :title="$t('comment_box.title')">
-    <UiButton
+  <BaseBlock :title="$t('comment_box.title')">
+    <BaseButton
       v-if="togglePreview"
       class="flex w-full px-3 !h-auto cursor-default"
     >
@@ -158,16 +158,16 @@ function deleteItem(key) {
         style="font-size: 18px"
         :minHeight="100"
       />
-    </UiButton>
-    <Block
+    </BaseButton>
+    <BaseBlock
       v-if="!togglePreview"
       slim="true"
       class="p-4 h6 text-skin-text mt-2 mb-0"
     >
       <div>{{ comment }}</div>
-    </Block>
+    </BaseBlock>
 
-    <UiButton
+    <BaseButton
       @click="clickSubmit"
       :disabled="comment.length === 0"
       :loading="loading"
@@ -175,8 +175,8 @@ function deleteItem(key) {
       primary
     >
       {{ $t(`comment_box.submit`) }}
-    </UiButton>
-    <UiButton
+    </BaseButton>
+    <BaseButton
       @click="togglePreview = !togglePreview"
       class="ml-2 mt-2"
       :disabled="comment.length === 0"
@@ -187,7 +187,7 @@ function deleteItem(key) {
           ? $t(`comment_box.preview`)
           : $t(`comment_box.continue_editing`)
       }}
-    </UiButton>
+    </BaseButton>
     <div :key="index" v-for="(item, index) in allData">
       <CommentBoxCommentBlock
         :proposal="proposal"
@@ -198,11 +198,8 @@ function deleteItem(key) {
         @deleteItem="deleteItem($event)"
       />
     </div>
-    <div
-      class="w-[10px] h-[10px] absolute bottom-0"
-      ref="endElement"
-    />
+    <div class="w-[10px] h-[10px] absolute bottom-0" ref="endElement" />
 
-    <RowLoading v-if="loadingMore" class="my-2" />
-  </Block>
+    <LoadingRow v-if="loadingMore" class="my-2" />
+  </BaseBlock>
 </template>

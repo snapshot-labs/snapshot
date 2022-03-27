@@ -21,7 +21,6 @@ import {
 const props = defineProps({
   space: Object,
   sourceSpace: Object,
-  spaceKey: String,
   loadExtentedSpaces: Function
 });
 
@@ -77,7 +76,7 @@ const isValid = computed(() => {
 });
 
 const textRecord = computed(() => {
-  const keyURI = encodeURIComponent(props.spaceKey);
+  const keyURI = encodeURIComponent(props.space.id);
   const address = web3Account.value
     ? getAddress(web3Account.value)
     : '<your-address>';
@@ -94,19 +93,12 @@ watch(
   [currentTextRecord, textRecord],
   async () => {
     loadOwnedEnsDomains();
-    // Check if the connected wallet is the space owner and add address to admins
-    // if not already present
-    if (isSpaceController.value) {
-      if (!form.value.admins.includes(web3Account.value)) {
-        form.value.admins.push(web3Account.value);
-      }
-    }
   },
   { immediate: true }
 );
 
 const ensOwner = computed(() =>
-  ownedEnsDomains.value?.map(d => d.name).includes(props.spaceKey)
+  ownedEnsDomains.value?.map(d => d.name).includes(props.space.id)
 );
 
 const isSpaceAdmin = computed(() => {
@@ -138,11 +130,11 @@ const categoriesString = computed(() => {
 async function handleSubmit() {
   if (isValid.value) {
     if (form.value.filters.invalids) delete form.value.filters.invalids;
-    const result = await send({ id: props.spaceKey }, 'settings', form.value);
+    const result = await send({ id: props.space.id }, 'settings', form.value);
     console.log('Result', result);
     if (result.id) {
       notify(['green', t('notify.saved')]);
-      props.loadExtentedSpaces([props.spaceKey]);
+      props.loadExtentedSpaces([props.space.id]);
     }
   } else {
     console.log('Invalid schema', validate.value);
@@ -267,42 +259,36 @@ function formatSpace(spaceRaw) {
   return space;
 }
 
-watch(
-  () => props.space,
-  async () => {
-    if (props.space) {
-      const spaceClone = formatSpace(props.space);
-      if (spaceClone) {
-        form.value = spaceClone;
-        currentSettings.value = clone(spaceClone);
-      }
+onMounted(async () => {
+  if (props.space) {
+    const spaceClone = formatSpace(props.space);
+    if (spaceClone) {
+      form.value = spaceClone;
+      currentSettings.value = clone(spaceClone);
     }
-    if (props.sourceSpace) {
-      const fromClone = formatSpace(props.sourceSpace);
-      if (fromClone) {
-        form.value = fromClone;
-      }
+  }
+  if (props.sourceSpace) {
+    const fromClone = formatSpace(props.sourceSpace);
+    if (fromClone) {
+      form.value = fromClone;
     }
-    try {
-      const uri = await getSpaceUri(
-        props.spaceKey,
-        import.meta.env.VITE_DEFAULT_NETWORK
-      );
-      console.log('URI', uri);
-      currentTextRecord.value = uri;
-    } catch (e) {
-      console.log(e);
-    }
+  }
+  try {
+    const uri = await getSpaceUri(
+      props.space.id,
+      import.meta.env.VITE_DEFAULT_NETWORK
+    );
+    console.log('URI', uri);
+    currentTextRecord.value = uri;
+  } catch (e) {
+    console.log(e);
+  }
 
-    loaded.value = true;
-  },
-  { immediate: true }
-);
+  loaded.value = true;
+});
 
 onMounted(() => {
-  props.space?.name
-    ? setPageTitle('page.title.space.settings', { space: props.space.name })
-    : setPageTitle('page.title.setup');
+  setPageTitle('page.title.space.settings', { space: props.space.name });
 });
 
 const {
@@ -321,7 +307,7 @@ async function handleSetRecord() {
   const tx = await setRecord();
   const receipt = await tx.wait();
   if (receipt) {
-    props.loadExtentedSpaces([props.spaceKey]);
+    props.loadExtentedSpaces([props.space.id]);
   }
 }
 </script>
@@ -331,19 +317,19 @@ async function handleSetRecord() {
     <template #content-left>
       <div class="px-4 md:px-0 mb-3">
         <router-link :to="{ name: 'spaceProposals' }" class="text-skin-text">
-          <Icon name="back" size="22" class="!align-middle" />
+          <BaseIcon name="back" size="22" class="!align-middle" />
           {{ $t('back') }}
         </router-link>
       </div>
       <div class="px-4 md:px-0">
         <h1 v-text="$t('settings.header')" class="mb-4" />
       </div>
-      <RowLoadingBlock v-if="!loaded" />
-      <Block v-else-if="!currentTextRecord">
+      <LoadingRow v-if="!loaded" block />
+      <BaseBlock v-else-if="!currentTextRecord">
         <BaseMessageBlock level="warning" class="mb-4">
           {{ $t('settings.needToSetEnsText') }}
         </BaseMessageBlock>
-        <UiButton
+        <BaseButton
           @click="modalControllerEditOpen = true"
           :loading="settingENSRecord"
           no-focus
@@ -351,11 +337,11 @@ async function handleSetRecord() {
           class="w-full"
         >
           {{ $t('settings.setEnsTextRecord') }}
-        </UiButton>
-      </Block>
+        </BaseButton>
+      </BaseBlock>
       <template v-else-if="currentTextRecord">
         <div class="space-y-3">
-          <Block :title="$t('settings.profile')">
+          <BaseBlock :title="$t('settings.profile')">
             <div class="space-y-2 mb-2">
               <UiInput
                 v-model="form.name"
@@ -431,7 +417,7 @@ async function handleSetRecord() {
                 @blur="visitedFields.push('twitter')"
               >
                 <template v-slot:label>
-                  <Icon name="twitter" />
+                  <BaseIcon name="twitter" />
                 </template>
               </UiInput>
               <UiInput
@@ -441,7 +427,7 @@ async function handleSetRecord() {
                 @blur="visitedFields.push('github')"
               >
                 <template v-slot:label>
-                  <Icon name="github" />
+                  <BaseIcon name="github" />
                 </template>
               </UiInput>
               <UiInput
@@ -451,7 +437,7 @@ async function handleSetRecord() {
                 @blur="visitedFields.push('website')"
               >
                 <template v-slot:label>
-                  <Icon name="earth" />
+                  <BaseIcon name="earth" />
                 </template>
               </UiInput>
               <UiInput
@@ -463,12 +449,12 @@ async function handleSetRecord() {
                 <template v-slot:label> {{ $t(`settings.terms`) }} </template>
               </UiInput>
               <div class="flex items-center space-x-2 pr-2">
-                <Checkbox v-model="form.private" />
+                <BaseCheckbox v-model="form.private" />
                 <span>{{ $t('settings.hideSpace') }}</span>
               </div>
             </div>
-          </Block>
-          <Block :title="$t('settings.customDomain')">
+          </BaseBlock>
+          <BaseBlock :title="$t('settings.customDomain')">
             <UiInput
               v-model="form.domain"
               placeholder="e.g. vote.balancer.fi"
@@ -485,7 +471,7 @@ async function handleSetRecord() {
                   link="https://docs.snapshot.org/spaces/add-custom-domain"
                   hide-external-icon
                 >
-                  <Icon name="info" size="24" class="text-skin-text" />
+                  <BaseIcon name="info" size="24" class="text-skin-text" />
                 </BaseLink>
               </template>
             </UiInput>
@@ -497,32 +483,32 @@ async function handleSetRecord() {
                 {{ $t(`settings.skin`) }}
               </template>
             </UiInput>
-          </Block>
-          <Block :title="$t('settings.admins')" v-if="isSpaceController">
-            <Block
+          </BaseBlock>
+          <BaseBlock :title="$t('settings.admins')" v-if="isSpaceController">
+            <BaseBlock
               :style="`border-color: red !important`"
               v-if="inputError('admins')"
             >
-              <Icon name="warning" class="mr-2 !text-red" />
+              <BaseIcon name="warning" class="mr-2 !text-red" />
               <span class="!text-red"> {{ inputError('admins') }}&nbsp;</span>
-            </Block>
-            <UiButton class="block w-full px-3" style="height: auto">
+            </BaseBlock>
+            <BaseButton class="block w-full px-3" style="height: auto">
               <TextareaArray
                 v-model="form.admins"
                 :placeholder="`0x8C28Cf33d9Fd3D0293f963b1cd27e3FF422B425c\n0xeF8305E140ac520225DAf050e2f71d5fBcC543e7`"
                 class="input w-full text-left"
                 style="font-size: 18px"
               />
-            </UiButton>
-          </Block>
-          <Block :title="$t('settings.strategies') + '*'">
+            </BaseButton>
+          </BaseBlock>
+          <BaseBlock :title="$t('settings.strategies') + '*'">
             <div
               v-for="(strategy, i) in form.strategies"
               :key="i"
               class="mb-3 relative"
             >
               <a @click="handleRemoveStrategy(i)" class="absolute p-4 right-0">
-                <Icon name="close" size="12" />
+                <BaseIcon name="close" size="12" />
               </a>
 
               <a
@@ -532,11 +518,11 @@ async function handleSetRecord() {
                 <h4 v-text="strategy.name" />
               </a>
             </div>
-            <Block
+            <BaseBlock
               :style="`border-color: red !important`"
               v-if="inputError('strategies')"
             >
-              <Icon name="warning" class="mr-2 !text-red" />
+              <BaseIcon name="warning" class="mr-2 !text-red" />
               <span class="!text-red">
                 {{ inputError('strategies') }}&nbsp;</span
               >
@@ -545,31 +531,31 @@ async function handleSetRecord() {
               >
                 {{ $t('learnMore') }}
               </BaseLink>
-            </Block>
-            <UiButton @click="handleAddStrategy" class="block w-full">
+            </BaseBlock>
+            <BaseButton @click="handleAddStrategy" class="block w-full">
               {{ $t('settings.addStrategy') }}
-            </UiButton>
-          </Block>
-          <Block :title="$t('settings.proposalValidation')">
+            </BaseButton>
+          </BaseBlock>
+          <BaseBlock :title="$t('settings.proposalValidation')">
             <div class="flex items-center space-x-2 pr-2 mb-2">
-              <Checkbox v-model="form.filters.onlyMembers" />
+              <BaseCheckbox v-model="form.filters.onlyMembers" />
               <span>{{ $t('settings.allowOnlyAuthors') }}</span>
             </div>
             <div v-if="form.filters.onlyMembers">
-              <Block class="!border-red" v-if="inputError('members')">
-                <Icon name="warning" class="mr-2 !text-red" />
+              <BaseBlock class="!border-red" v-if="inputError('members')">
+                <BaseIcon name="warning" class="mr-2 !text-red" />
                 <span class="!text-red">
                   {{ inputError('members') }}&nbsp;</span
                 >
-              </Block>
-              <UiButton class="block w-full px-3" style="height: auto">
+              </BaseBlock>
+              <BaseButton class="block w-full px-3" style="height: auto">
                 <TextareaArray
                   v-model="form.members"
                   :placeholder="`0x8C28Cf33d9Fd3D0293f963b1cd27e3FF422B425c\n0xeF8305E140ac520225DAf050e2f71d5fBcC543e7`"
                   class="input w-full text-left"
                   style="font-size: 18px"
                 />
-              </UiButton>
+              </BaseButton>
             </div>
             <div v-else class="space-y-2">
               <UiInput
@@ -595,8 +581,8 @@ async function handleSetRecord() {
                 </UiInput>
               </div>
             </div>
-          </Block>
-          <Block :title="$t('settings.voting')">
+          </BaseBlock>
+          <BaseBlock :title="$t('settings.voting')">
             <div class="space-y-2">
               <UiInput
                 v-model="votingDelay"
@@ -660,12 +646,12 @@ async function handleSetRecord() {
                 </template>
               </UiInput>
               <div class="flex items-center space-x-2 pr-2">
-                <Checkbox v-model="form.voting.hideAbstain" />
+                <BaseCheckbox v-model="form.voting.hideAbstain" />
                 <span>{{ $t('settings.hideAbstain') }}</span>
               </div>
             </div>
-          </Block>
-          <Block :title="$t('plugins')">
+          </BaseBlock>
+          <BaseBlock :title="$t('plugins')">
             <div v-if="form?.plugins">
               <div
                 v-for="(name, index) in Object.keys(form.plugins).filter(
@@ -679,7 +665,7 @@ async function handleSetRecord() {
                     @click="handleRemovePlugins(name)"
                     class="absolute p-4 right-0"
                   >
-                    <Icon name="close" size="12" />
+                    <BaseIcon name="close" size="12" />
                   </a>
                   <a
                     @click="handleEditPlugins(name)"
@@ -690,10 +676,10 @@ async function handleSetRecord() {
                 </div>
               </div>
             </div>
-            <UiButton @click="handleAddPlugins" class="block w-full">
+            <BaseButton @click="handleAddPlugins" class="block w-full">
               {{ $t('settings.addPlugin') }}
-            </UiButton>
-          </Block>
+            </BaseButton>
+          </BaseBlock>
         </div>
       </template>
     </template>
@@ -708,20 +694,20 @@ async function handleSetRecord() {
         {{ $t('settings.connectWithSpaceOwner') }}
       </BaseMessageBlock>
       <div v-else-if="loaded" class="lg:fixed lg:w-[300px]">
-        <Block>
-          <UiButton
+        <BaseBlock>
+          <BaseButton
             v-if="ensOwner"
             @click="modalControllerEditOpen = true"
             :loading="settingENSRecord"
             class="block w-full mb-2"
           >
             {{ $t('settings.editController') }}
-          </UiButton>
+          </BaseButton>
           <div v-if="isSpaceAdmin || isSpaceController">
-            <UiButton @click="handleReset" class="block w-full mb-2">
+            <BaseButton @click="handleReset" class="block w-full mb-2">
               {{ $t('reset') }}
-            </UiButton>
-            <UiButton
+            </BaseButton>
+            <BaseButton
               :disabled="uploadLoading"
               @click="handleSubmit"
               :loading="clientLoading"
@@ -729,9 +715,9 @@ async function handleSetRecord() {
               primary
             >
               {{ $t('save') }}
-            </UiButton>
+            </BaseButton>
           </div>
-        </Block>
+        </BaseBlock>
       </div>
     </template>
   </TheLayout>
@@ -781,8 +767,8 @@ async function handleSetRecord() {
       :open="modalControllerEditOpen"
       @close="modalControllerEditOpen = false"
       :currentTextRecord="currentTextRecord"
-      :ensAddress="spaceKey"
-      @set="(ensAddress = spaceKey), confirmSetRecord()"
+      :ensAddress="space.id"
+      @set="(ensAddress = space.id), confirmSetRecord()"
     />
     <ModalUnsupportedNetwork
       :open="modalUnsupportedNetworkOpen"

@@ -1,6 +1,6 @@
 <script>
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
-import { useSafesnap } from '@/composables/useSafesnap';
+import { useSafesnap } from '@/plugins/safeSnap/composables/useSafesnap';
 import chevronIcon from '@/assets/icons/chevron.svg';
 import { createBatch, ERC20_ABI, ERC721_ABI } from '../../index';
 import { formatEther } from '@ethersproject/units';
@@ -159,7 +159,7 @@ export default {
         )
       }}
     </UiCollapsibleText>
-    <Block
+    <BaseBlock
       v-if="
         safesnap.batchError &&
         safesnap.batchError.message &&
@@ -168,13 +168,13 @@ export default {
       class="mt-4"
       style="border-color: red !important"
     >
-      <Icon name="warning" class="mr-2 !text-red" />
+      <BaseIcon name="warning" class="mr-2 !text-red" />
       <span class="!text-red"> Error: {{ safesnap.batchError.message }}</span>
-    </Block>
+    </BaseBlock>
 
-    <UiButton class="mt-2" v-if="!config.preview" @click="addTransaction">
+    <BaseButton class="mt-2" v-if="!config.preview" @click="addTransaction">
       {{ $t('safeSnap.addTransaction') }}
-    </UiButton>
+    </BaseButton>
   </UiCollapsible>
 </template>
 

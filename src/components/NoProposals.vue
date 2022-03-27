@@ -3,15 +3,15 @@ defineProps(['space']);
 </script>
 <template>
   <div class="mb-3 text-center">
-    <Block class="pt-1">
+    <BaseBlock class="pt-1">
       <div class="mb-3">
         {{ $t('noResultsFound') }}
       </div>
       <router-link :to="{ name: 'spaceCreate', params: { key: space.id } }">
-        <UiButton>
+        <BaseButton>
           {{ $t('proposals.createProposal') }}
-        </UiButton>
+        </BaseButton>
       </router-link>
-    </Block>
+    </BaseBlock>
   </div>
 </template>

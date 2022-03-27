@@ -51,7 +51,7 @@ watch(open, () => {
 </script>
 
 <template>
-  <UiModal :open="open" @close="$emit('close')">
+  <BaseModal :open="open" @close="$emit('close')">
     <template v-slot:header>
       <h3>
         {{
@@ -61,27 +61,27 @@ watch(open, () => {
         }}
       </h3>
     </template>
-    <Search
+    <BaseSearch
       v-if="!input.name"
       v-model="searchInput"
       :placeholder="$t('searchPlaceholder')"
-      :modal="true"
+      modal
     />
-    <div class="mt-4 mx-0 md:mx-4 min-h-[339px]">
+    <div class="my-4 mx-0 md:mx-4 min-h-[339px]">
       <div v-if="input.name" class="p-4 mb-4 border rounded-md text-skin-link">
         <h4 v-text="input.name" class="mb-3 text-center" />
 
-        <UiButton class="block w-full overflow-x-auto" style="height: auto">
+        <BaseButton class="block w-full overflow-x-auto" style="height: auto">
           <TextareaJson
             v-model="input.params"
             v-model:is-valid="isValid"
             :placeholder="$t('settings.validationParameters')"
             class="input text-left"
           />
-        </UiButton>
+        </BaseButton>
       </div>
       <div v-if="!input.name">
-        <RowLoadingBlock v-if="loadingValidations" />
+        <LoadingRow v-if="loadingValidations" block />
         <div v-else class="space-y-3">
           <BlockValidation
             :validation="valId"
@@ -95,14 +95,14 @@ watch(open, () => {
       </div>
     </div>
     <template v-if="input.name" v-slot:footer>
-      <UiButton
+      <BaseButton
         @click="handleSubmit"
         :disabled="!isValid"
         class="w-full"
         primary
       >
         {{ validation.name ? $t('save') : $t('add') }}
-      </UiButton>
+      </BaseButton>
     </template>
-  </UiModal>
+  </BaseModal>
 </template>

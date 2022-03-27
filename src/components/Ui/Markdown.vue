@@ -51,8 +51,8 @@ onMounted(() => {
 
 <style lang="scss">
 .markdown-body {
-  font-size: 22px;
-  line-height: 1.4;
+  font-size: 19px;
+  line-height: 1.3;
   word-wrap: break-word;
 }
 
@@ -204,27 +204,27 @@ onMounted(() => {
 }
 
 .markdown-body h1 {
-  font-size: 2em;
-}
-
-.markdown-body h2 {
   font-size: 1.5em;
 }
 
-.markdown-body h3 {
+.markdown-body h2 {
   font-size: 1.25em;
 }
 
-.markdown-body h4 {
+.markdown-body h3 {
   font-size: 1em;
 }
 
-.markdown-body h5 {
+.markdown-body h4 {
   font-size: 0.875em;
 }
 
-.markdown-body h6 {
+.markdown-body h5 {
   font-size: 0.85em;
+}
+
+.markdown-body h6 {
+  font-size: 0.8em;
 }
 
 .markdown-body ul,
@@ -522,5 +522,36 @@ onMounted(() => {
   font-weight: 600;
   background: #f6f8fa;
   border-top: 0;
+}
+
+@media (min-width: 544px) {
+  .markdown-body {
+    font-size: 22px;
+    line-height: 1.4;
+}
+
+  .markdown-body h1 {
+    font-size: 2em;
+  }
+
+  .markdown-body h2 {
+    font-size: 1.5em;
+  }
+
+  .markdown-body h3 {
+    font-size: 1.25em;
+  }
+
+  .markdown-body h4 {
+    font-size: 1em;
+  }
+
+  .markdown-body h5 {
+    font-size: 0.875em;
+  }
+
+  .markdown-body h6 {
+    font-size: 0.85em;
+  }
 }
 </style>

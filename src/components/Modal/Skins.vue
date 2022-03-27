@@ -29,17 +29,17 @@ function select(key) {
 </script>
 
 <template>
-  <UiModal :open="open" @close="$emit('close')">
+  <BaseModal :open="open" @close="$emit('close')">
     <template v-slot:header>
       <h3>{{ $t('skins') }}</h3>
     </template>
-    <Search
+    <BaseSearch
       v-model="searchInput"
       :placeholder="$t('searchPlaceholder')"
-      :modal="true"
+      modal
     />
-    <div class="mt-4 mx-0 md:mx-4 min-h-[339px]">
-      <RowLoadingBlock v-if="loadingSkins" />
+    <div class="my-4 mx-0 md:mx-4 min-h-[339px]">
+      <LoadingRow v-if="loadingSkins" block />
       <div v-else class="space-y-3">
         <div
           v-if="!searchInput"
@@ -47,9 +47,11 @@ function select(key) {
           @click="select(undefined)"
           class="default rounded-none md:rounded-md cursor-pointer"
         >
-          <Block>
-            <UiButton class="mb-2" primary>{{ $t('defaultSkin') }}</UiButton>
-          </Block>
+          <BaseBlock>
+            <BaseButton class="mb-2" primary>{{
+              $t('defaultSkin')
+            }}</BaseButton>
+          </BaseBlock>
         </div>
 
         <BlockSkin
@@ -62,5 +64,5 @@ function select(key) {
         <NoResults v-if="Object.keys(filteredSkins).length < 1" />
       </div>
     </div>
-  </UiModal>
+  </BaseModal>
 </template>

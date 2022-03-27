@@ -224,9 +224,9 @@ export default {
       </div>
 
       <div v-if="!preview || proposalResolved">
-        <UiButton class="my-3" v-if="!preview" @click="addTransactionBatch">
+        <BaseButton class="my-3" v-if="!preview" @click="addTransactionBatch">
           {{ $t('safeSnap.addBatch') }}
-        </UiButton>
+        </BaseButton>
 
         <SafeSnapFormImportTransactionsButton
           v-if="!preview"

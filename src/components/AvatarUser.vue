@@ -31,7 +31,7 @@ watchEffect(() => {
             class="mr-2"
           />
           <span class="truncate w-full">{{ username }}</span>
-          <Badges
+          <BaseBadge
             v-if="!onlyUsername"
             :address="address"
             :members="space?.members"
@@ -53,10 +53,10 @@ watchEffect(() => {
             target="_blank"
             class="mb-2 block"
           >
-            <UiButton class="button-outline w-full">
+            <BaseButton class="button-outline w-full">
               {{ $t('seeInExplorer') }}
-              <Icon name="external-link" class="ml-1" />
-            </UiButton>
+              <BaseIcon name="external-link" class="ml-1" />
+            </BaseButton>
           </a>
         </div>
       </template>

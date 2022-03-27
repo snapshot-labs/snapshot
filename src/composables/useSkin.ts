@@ -1,8 +1,7 @@
 import { ref, computed, watch } from 'vue';
-import { useDomain } from '@/composables/useDomain';
 import { useApolloQuery } from '@/composables/useApolloQuery';
 import { SPACE_SKIN_QUERY } from '@/helpers/queries';
-import { useStorage } from '@vueuse/core';
+import { useStorage, useMediaQuery } from '@vueuse/core';
 
 /**
  * Handle theme (dark/light mode)
@@ -11,10 +10,7 @@ import { useStorage } from '@vueuse/core';
 const DARK = 'dark';
 const LIGHT = 'light';
 
-const osTheme =
-  window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
-    ? DARK
-    : LIGHT;
+const osTheme = useMediaQuery('(prefers-color-scheme: dark)') ? DARK : LIGHT;
 
 const userTheme = useStorage('snapshot.userTheme', osTheme);
 
@@ -37,9 +33,8 @@ const skinClass = ref('default');
 
 export function useSkin() {
   const { apolloQuery } = useApolloQuery();
-  const { domain } = useDomain();
 
-  async function getSkin() {
+  async function getSkin(domain: string) {
     if (domain) {
       const space = await apolloQuery(
         {
