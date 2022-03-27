@@ -426,7 +426,7 @@ const needsPluginConfigs = computed(() =>
               <input
                 v-model="form.name"
                 maxlength="128"
-                class="text-lg font-semibold s-input w-full !rounded-full"
+                class="text-md font-semibold s-input w-full !rounded-full"
                 ref="nameInput"
               />
             </SBase>
@@ -443,7 +443,7 @@ const needsPluginConfigs = computed(() =>
               </div>
               <textarea
                 ref="textAreaEl"
-                class="s-input pt-0 peer w-full !rounded-t-xl !rounded-b-none min-h-[50vh] !border-b-0"
+                class="s-input pt-0 peer w-full !rounded-t-xl !rounded-b-none min-h-[50vh] !border-b-0 text-base"
                 :maxLength="bodyLimit"
                 v-model="form.body"
               />
@@ -461,10 +461,9 @@ const needsPluginConfigs = computed(() =>
                 />
 
                 <span class="pointer-events-none relative pl-1 text-sm">
-                  <span v-if="uploading">
-                    <LoadingSpinner class="inline" />
-                    {{ $t('create.uploading') }}</span
-                  >
+                  <span v-if="uploading" class="animate-pulse">
+                    {{ $t('create.uploading') }}
+                  </span>
                   <span v-else-if="imageUploadError !== ''">
                     {{ imageUploadError }}</span
                   >
