@@ -121,13 +121,13 @@ onMounted(() => {
       </template>
       <template v-if="route.name === 'plugins'">
         <LoadingRow block v-if="loadingPluginsSpacesCount" />
-        <div v-else class="grid md:grid-cols-3 gap-[1px] md:gap-4">
-          <BlockPlugin
+          <div
             v-for="item in items.slice(0, limit)"
             :key="item.key"
-            :plugin="item"
             class="border-b first:border-t md:border-b-0 md:first:border-t-0"
-          />
+          >
+            <BlockPlugin :plugin="item" />
+          </div>
         </div>
       </template>
       <NoResults useBlock v-if="items.length < 1 && !loading" />
