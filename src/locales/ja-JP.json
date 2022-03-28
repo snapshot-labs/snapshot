@@ -146,12 +146,13 @@
     "minStrategy": "少なくとも１つストラテジーが必要です",
     "website": "URLはhttps://www.example.com の形式でなければなりません",
     "format": "無効な形式",
-    "type": "無効なタイプ"
+    "type": "無効なタイプ",
+    "unsupportedImageType": "File type not supported, Supported formats are jpeg, jpg and png"
   },
   "create": {
-    "question": "質問する...",
+    "proposalTitle": "Title",
     "categorie(s)": "最大2つのカテゴリを選択してください",
-    "content": "提案についてのより詳細を教えてください(オプショナル)",
+    "proposalDescription": "Description (optional)",
     "preview": "プレビュー",
     "choices": "選択肢",
     "addChoice": "選択肢を追加する",
@@ -179,6 +180,9 @@
     "continue": "続行する",
     "now": "今すぐ",
     "votingPeriodExplainer": "これはユーザーが投票できる期間です。提案は投票期間が始まる前に表示され、投票が開始されるまで保留状態となります。",
+    "uploadImageExplainer": "Attach files by dragging & dropping, selecting or pasting them.",
+    "uploading": "Uploading..",
+    "markdown": "Styling with Markdown is supported",
     "validationWarning": {
       "basic": {
         "member": "提案を提出するには、このスペースの作成者である必要があります。",
