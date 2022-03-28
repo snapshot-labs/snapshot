@@ -112,7 +112,7 @@ const hideAbstain = props.space?.voting?.hideAbstain ?? false;
             </template>
           </div>
 
-          <UiProgress
+          <ProposalResultsProgressBar
             :value="results.resultsByStrategyScore[choice.i]"
             :max="
               proposal.type === 'basic' && hideAbstain

@@ -489,7 +489,7 @@ const {
             </div>
 
             <div v-if="form.body && preview" class="mb-4">
-              <UiMarkdown :body="form.body" />
+              <BaseMarkdown :body="form.body" />
             </div>
             <p v-if="form.body.length > bodyLimit" class="!text-red mt-4">
               -{{ formatCompactNumber(-(bodyLimit - form.body.length)) }}
