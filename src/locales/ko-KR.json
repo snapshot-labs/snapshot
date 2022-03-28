@@ -146,12 +146,13 @@
     "minStrategy": "적어도 한 개의 전략이 필요합니다.",
     "website": "URL should be in the format https://www.example.com",
     "format": "잘못된 형식",
-    "type": "잘못된 유형"
+    "type": "잘못된 유형",
+    "unsupportedImageType": "File type not supported, Supported formats are jpeg, jpg and png"
   },
   "create": {
-    "question": "질문하기",
+    "proposalTitle": "Title",
     "categorie(s)": "최대 2개의 카테고리 선택",
-    "content": "제안에 대한 좀 더 자세한 사항(선택 사항).",
+    "proposalDescription": "Description (optional)",
     "preview": "미리보기",
     "choices": "선택지",
     "addChoice": "선택지 추가",
@@ -179,6 +180,9 @@
     "continue": "계속",
     "now": "현재",
     "votingPeriodExplainer": "사용자가 투표할 수 있는 기간입니다. 제안은 투표 기간 시작 전에 대기 중으로 보여질 것입니다.",
+    "uploadImageExplainer": "Attach files by dragging & dropping, selecting or pasting them.",
+    "uploading": "Uploading..",
+    "markdown": "Styling with Markdown is supported",
     "validationWarning": {
       "basic": {
         "member": "제안서를 제출하려면 공간의 저자여야 합니다.",
