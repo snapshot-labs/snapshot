@@ -66,14 +66,12 @@ watch(open, () => {
         class="p-4 mb-4 rounded-md text-skin-link"
       >
         <h4 v-text="selectedPlugin.name" class="mb-3 text-center" />
-        <BaseButton class="block w-full overflow-x-auto" style="height: auto">
-          <TextareaJson
-            v-model="input"
-            v-model:is-valid="isValid"
-            :placeholder="$t('settings.pluginParameters')"
-            class="input text-left"
-          />
-        </BaseButton>
+        <TextareaJson
+          v-model="input"
+          v-model:is-valid="isValid"
+          :placeholder="$t('settings.pluginParameters')"
+          class="input text-left"
+        />
       </BaseBlock>
       <div v-if="!selectedPlugin?.key">
         <LoadingRow v-if="loadingPluginsSpacesCount" block />

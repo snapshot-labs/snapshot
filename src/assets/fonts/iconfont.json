@@ -6,6 +6,55 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "736871",
+      "name": "notifications-none",
+      "font_class": "notificationsnone",
+      "unicode": "e708",
+      "unicode_decimal": 59144
+    },
+    {
+      "icon_id": "1444429",
+      "name": "earth",
+      "font_class": "earth",
+      "unicode": "e70d",
+      "unicode_decimal": 59149
+    },
+    {
+      "icon_id": "27365167",
+      "name": "markdown",
+      "font_class": "markdown",
+      "unicode": "ec0f",
+      "unicode_decimal": 60431
+    },
+    {
+      "icon_id": "1444287",
+      "name": "coins",
+      "font_class": "coins",
+      "unicode": "e6c6",
+      "unicode_decimal": 59078
+    },
+    {
+      "icon_id": "11398722",
+      "name": "check",
+      "font_class": "check3",
+      "unicode": "e605",
+      "unicode_decimal": 58885
+    },
+    {
+      "icon_id": "15617307",
+      "name": "skip-next",
+      "font_class": "skip",
+      "unicode": "e8c5",
+      "unicode_decimal": 59589
+    },
+    {
+      "icon_id": "980400",
+      "name": "close",
+      "font_class": "close2",
+      "unicode": "e6c3",
+      "unicode_decimal": 59075
+    },
+    {
       "icon_id": "7239657",
       "name": "calendar",
       "font_class": "calendar",
@@ -18,13 +67,6 @@
       "font_class": "draggable",
       "unicode": "e617",
       "unicode_decimal": 58903
-    },
-    {
-      "icon_id": "702320",
-      "name": "earth",
-      "font_class": "earth",
-      "unicode": "e7dc",
-      "unicode_decimal": 59356
     },
     {
       "icon_id": "20997029",

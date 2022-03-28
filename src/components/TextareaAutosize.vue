@@ -85,6 +85,7 @@ onMounted(() => resize());
 
 <template>
   <textarea
+    class="h-auto w-full py-3 px-4 border focus-within:!border-skin-link hover:border-skin-text border-skin-border rounded-3xl"
     ref="textarea"
     :style="computedStyles"
     :maxLength="maxLength"

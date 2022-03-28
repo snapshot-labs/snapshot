@@ -40,7 +40,7 @@ function updateChoices() {
         <template #item="{ element, index }">
           <div class="mb-2">
             <BaseButton
-              class="flex justify-between items-center w-full button--active !px-3"
+              class="flex justify-between items-center w-full !border-skin-link !px-3"
             >
               <div class="min-w-[60px] text-left">
                 ({{ getNumberWithOrdinal(index + 1) }})
@@ -64,7 +64,7 @@ function updateChoices() {
         v-if="!selectedChoices.includes(i + 1)"
         @click="selectChoice(i + 1)"
         class="block w-full mb-2"
-        :class="selectedChoices.includes(i + 1) && 'button--active'"
+        :class="selectedChoices.includes(i + 1) && 'border-skin-link'"
       >
         <span class="truncate">{{ choice }}</span>
       </BaseButton>
