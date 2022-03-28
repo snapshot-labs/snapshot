@@ -146,12 +146,13 @@
     "minStrategy": "تلزم خطة واحدة على الأقل.",
     "website": "URL should be in the format https://www.example.com",
     "format": "تنسيق غير صحيح",
-    "type": "الرمز غير صحيح"
+    "type": "الرمز غير صحيح",
+    "unsupportedImageType": "File type not supported, Supported formats are jpeg, jpg and png"
   },
   "create": {
-    "question": "اطرح سؤالًا...",
+    "proposalTitle": "Title",
     "categorie(s)": "حدد حتى 2 فئة (فئات)",
-    "content": "Tell us more about your proposal (optional)",
+    "proposalDescription": "Description (optional)",
     "preview": "معاينة",
     "choices": "الخيارات",
     "addChoice": "إضافة اختيار",
@@ -179,6 +180,9 @@
     "continue": "Continue",
     "now": "Now",
     "votingPeriodExplainer": "This is the time period in which users will be able to vote. The proposal will be visible and pending before the start of the voting period.",
+    "uploadImageExplainer": "Attach files by dragging & dropping, selecting or pasting them.",
+    "uploading": "Uploading..",
+    "markdown": "Styling with Markdown is supported",
     "validationWarning": {
       "basic": {
         "member": "يجب أن تكون عضوا في المساحة لتقديم اقتراح.",
