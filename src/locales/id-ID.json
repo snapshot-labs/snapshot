@@ -146,12 +146,13 @@
     "minStrategy": "Setidaknya satu strategi diperlukan.",
     "website": "URL should be in the format https://www.example.com",
     "format": "Format tidak valid",
-    "type": "Tipe tidak valid"
+    "type": "Tipe tidak valid",
+    "unsupportedImageType": "File type not supported, Supported formats are jpeg, jpg and png"
   },
   "create": {
-    "question": "Ajukan Pertanyaan...",
+    "proposalTitle": "Title",
     "categorie(s)": "Pilih lebih dari 2 kategori",
-    "content": "Beri tahu kami lebih banyak tentang proposal anda (opsional)",
+    "proposalDescription": "Description (optional)",
     "preview": "Pratinjau",
     "choices": "Pilihan",
     "addChoice": "Tambahkan pilihan",
@@ -179,6 +180,9 @@
     "continue": "Lanjut",
     "now": "Sekarang",
     "votingPeriodExplainer": "Ini adalah periode waktu di mana pengguna dapat memilih. Proposal akan terlihat dan tertunda sebelum dimulainya periode pemungutan suara.",
+    "uploadImageExplainer": "Attach files by dragging & dropping, selecting or pasting them.",
+    "uploading": "Uploading..",
+    "markdown": "Styling with Markdown is supported",
     "validationWarning": {
       "basic": {
         "member": "Anda harus menjadi penulis di ruangan ini untuk bisa menulis proposal.",
