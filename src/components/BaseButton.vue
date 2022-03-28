@@ -57,10 +57,6 @@ defineProps({
     }
   }
 
-  &:active {
-    border-color: var(--link-color) !important;
-  }
-
   &:hover {
     color: var(--link-color);
     border-color: var(--text-color);
