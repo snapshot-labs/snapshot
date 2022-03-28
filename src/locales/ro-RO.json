@@ -146,12 +146,13 @@
     "minStrategy": "Este necesară cel puţin o strategie.",
     "website": "URL should be in the format https://www.example.com",
     "format": "Formatul nu este valid",
-    "type": "Tipul fişierului nu ese valid"
+    "type": "Tipul fişierului nu ese valid",
+    "unsupportedImageType": "File type not supported, Supported formats are jpeg, jpg and png"
   },
   "create": {
-    "question": "Pune o întrebare...",
+    "proposalTitle": "Title",
     "categorie(s)": "Selectează până la 2 categorii(e)",
-    "content": "Spune-ne mai multe despre propunerea ta (opţional)",
+    "proposalDescription": "Description (optional)",
     "preview": "Previzualizează",
     "choices": "Alegeri",
     "addChoice": "Adaugă alegere",
@@ -179,6 +180,9 @@
     "continue": "Continue",
     "now": "Now",
     "votingPeriodExplainer": "This is the time period in which users will be able to vote. The proposal will be visible and pending before the start of the voting period.",
+    "uploadImageExplainer": "Attach files by dragging & dropping, selecting or pasting them.",
+    "uploading": "Uploading..",
+    "markdown": "Styling with Markdown is supported",
     "validationWarning": {
       "basic": {
         "member": "Trebuie sa fii autor al spațiu-lui pentru a înregistra o propunere.",
