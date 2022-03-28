@@ -147,12 +147,12 @@
     "website": "URL 格式应为 https://www.example.com",
     "format": "格式无效",
     "type": "无效的类型",
-    "unsupportedImageType": "File type not supported, Supported formats are jpeg, jpg and png"
+    "unsupportedImageType": "不支持该文件类型，支持的格式是 jpeg、 jpg 和 png"
   },
   "create": {
-    "proposalTitle": "Title",
+    "proposalTitle": "标题",
     "categorie(s)": "最多选择2个类别",
-    "proposalDescription": "Description (optional)",
+    "proposalDescription": "描述（可选）",
     "preview": "预览",
     "choices": "选项",
     "addChoice": "添加选项",
@@ -180,9 +180,9 @@
     "continue": "继续",
     "now": "当前",
     "votingPeriodExplainer": "这是用户可以投票的时间段。 该提案将在投票期开始之前可见并处于待定状态。",
-    "uploadImageExplainer": "Attach files by dragging & dropping, selecting or pasting them.",
-    "uploading": "Uploading..",
-    "markdown": "Styling with Markdown is supported",
+    "uploadImageExplainer": "通过拖放、选择或粘贴来附加文件。",
+    "uploading": "正在上传...",
+    "markdown": "支持Markdown样式",
     "validationWarning": {
       "basic": {
         "member": "您需要成为空间的作者才能提交提案。",
