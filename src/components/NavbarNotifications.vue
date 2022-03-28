@@ -36,7 +36,7 @@ onMounted(() => loadNotifications());
         class="!h-[46px] !w-[46px] relative"
         :class="{ '!border-skin-link': dropdownOpen }"
       >
-        <BaseIcon class="text-skin-link" size="20" name="notifications-none" />
+        <BaseIcon class="text-skin-link" size="20" name="notificationsnone" />
         <span
           v-if="notificationsSortedByTime.some(n => n.seen === false)"
           class="absolute right-0 bottom-0 s-indicator !bg-red"
