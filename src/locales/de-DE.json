@@ -146,12 +146,13 @@
     "minStrategy": "Mindestens eine Strategie ist erforderlich.",
     "website": "URL should be in the format https://www.example.com",
     "format": "Ungültiges Format",
-    "type": "Invalid type"
+    "type": "Invalid type",
+    "unsupportedImageType": "File type not supported, Supported formats are jpeg, jpg and png"
   },
   "create": {
-    "question": "Ask a question...",
+    "proposalTitle": "Title",
     "categorie(s)": "Select up to 2 categorie(s)",
-    "content": "Erzähl uns mehr über deinen Vorschlag (optional)",
+    "proposalDescription": "Description (optional)",
     "preview": "Vorschau",
     "choices": "Auswahl",
     "addChoice": "Auswahl hinzufügen",
@@ -179,6 +180,9 @@
     "continue": "Weiter",
     "now": "Jetzt",
     "votingPeriodExplainer": "Dies ist der Zeitraum, in dem Benutzer abstimmen können. Der Vorschlag wird bereits vor Beginn der Abstimmung sichtbar sein.",
+    "uploadImageExplainer": "Attach files by dragging & dropping, selecting or pasting them.",
+    "uploading": "Uploading..",
+    "markdown": "Styling with Markdown is supported",
     "validationWarning": {
       "basic": {
         "member": "You need to be an author of the space in order to submit a proposal.",
