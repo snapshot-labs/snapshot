@@ -263,7 +263,7 @@ input[type='number'] {
 // Shot UI kit
 
 .s-input {
-  @apply outline-none text-skin-heading border border-skin-border focus-within:border-skin-link block rounded-full py-2 px-3 w-full bg-skin-bg;
+  @apply outline-none text-skin-heading border border-skin-border focus-within:border-skin-link block rounded-full py-2 px-3 w-full bg-skin-bg hover:border-skin-text;
 }
 
 .s-error {
@@ -277,7 +277,6 @@ input[type='number'] {
 .s-indicator {
   @apply text-sm h-[12px] w-[12px] rounded-full inline-block bg-blue;
 }
-
 
 // Fix for chrome. Overwrites tailwinds break-words class.
 // For some reason chrome doesn't break links with just overflow-wrap.
