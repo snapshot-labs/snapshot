@@ -146,12 +146,13 @@
     "minStrategy": "Необходимо наличие хотя бы одной стратегии.",
     "website": "Адрес должен быть в формате https://www.example.com",
     "format": "Неверный формат",
-    "type": "Неверный тип"
+    "type": "Неверный тип",
+    "unsupportedImageType": "File type not supported, Supported formats are jpeg, jpg and png"
   },
   "create": {
-    "question": "Задать вопрос...",
+    "proposalTitle": "Title",
     "categorie(s)": "Выберите до 2 категорий",
-    "content": "Расскажите больше о вашем предложении (необязательно)",
+    "proposalDescription": "Description (optional)",
     "preview": "Предпросмотр",
     "choices": "Варианты ответов",
     "addChoice": "Добавить вариант ответа",
@@ -179,6 +180,9 @@
     "continue": "Продолжить",
     "now": "Сейчас",
     "votingPeriodExplainer": "Период времени, в течение которого пользователи могут голосовать. Предложение будет видно и отложено до начала периода голосования.",
+    "uploadImageExplainer": "Attach files by dragging & dropping, selecting or pasting them.",
+    "uploading": "Uploading..",
+    "markdown": "Styling with Markdown is supported",
     "validationWarning": {
       "basic": {
         "member": "Чтобы внести предложение, необходимо быть автором сообщества.",
