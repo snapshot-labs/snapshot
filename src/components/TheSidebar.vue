@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { watch, onMounted, ref, watchEffect, computed } from 'vue';
+import { watch, onMounted, ref, watchEffect } from 'vue';
 import { useRouter } from 'vue-router';
 import draggable from 'vuedraggable';
 import { useFollowSpace } from '@/composables/useFollowSpace';
@@ -15,7 +15,7 @@ const { web3Account } = useWeb3();
 const { loadFollows, followingSpaces } = useFollowSpace();
 const { proposals, getProposals, lastSeenProposals, updateLastSeenProposal } =
   useUnseenProposals();
-const { domain, showSidebar } = useApp();
+const { domain } = useApp();
 
 const draggableSpaces = ref<string[]>([]);
 
