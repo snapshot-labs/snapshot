@@ -184,18 +184,14 @@ watch([modalOpen, closeModal], () => {
     </div>
   </BaseModal>
   <div class="mt-2">
-    <BaseButton
+    <TextareaAutosize
       v-if="togglePreview"
-      class="flex w-full px-3 !h-auto cursor-default"
-    >
-      <TextareaAutosize
-        v-model="comment"
-        :placeholder="placeholder"
-        class="input w-full text-left"
-        :minHeight="100"
-        style="font-size: 18px"
-      />
-    </BaseButton>
+      v-model="comment"
+      :placeholder="placeholder"
+      class="input w-full text-left"
+      :minHeight="100"
+      style="font-size: 18px"
+    />
     <BaseBlock
       v-if="!togglePreview"
       slim="true"
