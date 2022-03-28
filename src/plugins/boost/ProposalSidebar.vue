@@ -4,7 +4,8 @@ import { usePlugins } from '@/composables/usePlugins';
 import { useTxStatus } from '@/composables/useTxStatus';
 import { useWeb3 } from '@/composables/useWeb3';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
-import { sendTransaction } from '@snapshot-labs/snapshot.js/src/utils';
+import { call, sendTransaction } from '@snapshot-labs/snapshot.js/src/utils';
+import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import { formatEther } from '@ethersproject/units';
 import ABI from './abi.json'
 
@@ -27,22 +28,18 @@ const currentDeposits = ref(0);
 const whitelist = ref(null);
 
 async function getDeposits() {
-  currentDeposits.value = await sendTransaction(
-    getInstance().web3,
-    rewardsContract,
+  currentDeposits.value = await call(
+    getProvider(import.meta.env.VITE_DEFAULT_NETWORK),
     ABI,
-    'getDeposits',
-    [props.proposal.id, props.space.plugins.boost.token || nullAddress]
+    [rewardsContract, 'getDeposits', [props.proposal.id, props.space.plugins.boost.token || nullAddress]]
   );
 }
 
 async function getWhitelist() {
-  whitelist.value = await sendTransaction(
-    getInstance().web3,
-    rewardsContract,
+  whitelist.value = await call(
+    getProvider(import.meta.env.VITE_DEFAULT_NETWORK),
     ABI,
-    'getWhitelist',
-    [props.proposal.id]
+    [rewardsContract, 'getWhitelist', [props.proposal.id]]
   );
 }
 
