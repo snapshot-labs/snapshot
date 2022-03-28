@@ -10,9 +10,7 @@ const bars = computed(() =>
 
 <template>
   <div class="h-2 relative overflow-hidden rounded-full flex">
-    <div
-      class="w-full h-full bg-[color:var(--border-color)] absolute z-5"
-    ></div>
+    <div class="w-full h-full bg-[color:var(--border-color)] absolute z-5" />
     <div
       v-for="(bar, i) in bars.filter(b => b !== 0)"
       :key="i"

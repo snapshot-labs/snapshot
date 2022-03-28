@@ -26,7 +26,7 @@ function selectChoice(i) {
       :key="i"
       @click="selectChoice(i + 1)"
       class="block w-full mb-2"
-      :class="selectedChoice === i + 1 && 'button--active'"
+      :class="selectedChoice === i + 1 && '!border-skin-link'"
     >
       {{ shorten(choice, 32) }}
     </BaseButton>

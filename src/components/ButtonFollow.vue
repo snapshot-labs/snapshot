@@ -40,7 +40,6 @@ const canFollow = computed(() => {
       :loading="loadingFollow === space.id"
       :disabled="isGnosisSafe"
       style="width: 120px"
-      no-focus
       class="mb-4 group"
       :class="{
         'hover:!border-red hover:!text-red hover:!bg-opacity-5 hover:!bg-red':
