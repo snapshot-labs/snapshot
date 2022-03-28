@@ -115,13 +115,18 @@ onMounted(() => {
               touch: ['hold', 500]
             }"
           >
-            <UiUnreadIndicator
+            <SidebarUnreadIndicator
               :space="element"
               :hasUnseen="hasUnseenProposalsBySpace(element)"
             />
             <div
               class="cursor-pointer"
-              @click="router.push({ name: 'spaceProposals', params: { key: element } })"
+              @click="
+                router.push({
+                  name: 'spaceProposals',
+                  params: { key: element }
+                })
+              "
             >
               <AvatarSpace
                 :space="spaces[element]"
@@ -130,7 +135,7 @@ onMounted(() => {
                 size="44"
                 class="pointer-events-none"
               />
-              <UiCounter
+              <BaseCounter
                 v-if="spaces[element].activeProposals"
                 :counter="spaces[element].activeProposals"
                 class="absolute -top-[1px] right-[9px] !bg-green !h-[16px] !leading-[16px] !min-w-[16px]"

@@ -32,7 +32,7 @@ onMounted(async () => {
           v-text="`In ${strategy.spacesCount} space(s)`"
           class="text-skin-text"
         />
-        <UiMarkdown :body="strategy.about" class="mb-6 mt-4" />
+        <BaseMarkdown :body="strategy.about" class="mb-6 mt-4" />
       </div>
     </template>
     <template #sidebar-right>

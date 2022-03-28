@@ -11,7 +11,7 @@ const isCore = computed(() => {
 </script>
 
 <template>
-  <UiLabel v-if="isCore" class="ml-1">
+  <BaseLabel v-if="isCore" class="ml-1">
     {{ $t('isCore') }}
-  </UiLabel>
+  </BaseLabel>
 </template>
