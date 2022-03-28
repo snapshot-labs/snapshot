@@ -147,12 +147,12 @@
     "website": "Адрес должен быть в формате https://www.example.com",
     "format": "Неверный формат",
     "type": "Неверный тип",
-    "unsupportedImageType": "File type not supported, Supported formats are jpeg, jpg and png"
+    "unsupportedImageType": "Тип файла не поддерживается, Поддерживаемые форматы: jpeg, jpg и png"
   },
   "create": {
-    "proposalTitle": "Title",
+    "proposalTitle": "Название",
     "categorie(s)": "Выберите до 2 категорий",
-    "proposalDescription": "Description (optional)",
+    "proposalDescription": "Описание (необязательно)",
     "preview": "Предпросмотр",
     "choices": "Варианты ответов",
     "addChoice": "Добавить вариант ответа",
@@ -180,9 +180,9 @@
     "continue": "Продолжить",
     "now": "Сейчас",
     "votingPeriodExplainer": "Период времени, в течение которого пользователи могут голосовать. Предложение будет видно и отложено до начала периода голосования.",
-    "uploadImageExplainer": "Attach files by dragging & dropping, selecting or pasting them.",
-    "uploading": "Uploading..",
-    "markdown": "Styling with Markdown is supported",
+    "uploadImageExplainer": "Прикрепите файлы, перетаскивая, выбирая или вставляя их.",
+    "uploading": "Загрузка..",
+    "markdown": "Поддерживается обработка стилей с помощью Markdown",
     "validationWarning": {
       "basic": {
         "member": "Чтобы внести предложение, необходимо быть автором сообщества.",
@@ -297,7 +297,7 @@
     "toCreateASpace": "Чтобы создать сообщество, вам сначала нужен домен ENS. Введите его ниже и следуйте инструкциям по регистрации ENS.",
     "createASpace": "Создать сообщество",
     "registerEnsButton": "Зарегистрироваться",
-    "supportedEnsTLDs": "Supported domain endings",
+    "supportedEnsTLDs": "Поддерживаемые доменные окончания",
     "helpDocsAndDiscordLinks": "Не уверены, как создать сообщество? Узнайте больше в <a target='_blank' href='https://docs.snapshot.org/spaces/create'> документации </a> или присоединитесь к Snapshot <a target='_blank' href='https://discord.gg/snapshot'>Discord</a>.",
     "setSpaceController": "Установите адрес контроллера сообщества на ENS",
     "editSpaceController": "Изменить контроллер на ENS",
