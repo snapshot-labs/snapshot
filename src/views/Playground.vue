@@ -210,18 +210,13 @@ onMounted(async () => {
               :definition="strategyDefinition"
               :errors="strategyValidationErrors"
             />
-            <BaseButton
+            <TextareaJson
               v-else
-              class="block w-full mb-3 overflow-x-auto"
-              style="height: auto"
-            >
-              <TextareaJson
-                v-model="form.params"
-                @update:modelValue="handleURLUpdate"
-                :placeholder="$t('strategyParameters')"
-                class="input text-left"
-              />
-            </BaseButton>
+              v-model="form.params"
+              @update:modelValue="handleURLUpdate"
+              :placeholder="$t('strategyParameters')"
+              class="input text-left"
+            />
             <BaseBlock
               v-if="strategyError"
               style="border-color: red !important"
