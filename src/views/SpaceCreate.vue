@@ -443,7 +443,7 @@ const {
                 </div>
               </div>
               <div
-                class="min-h-[50vh] peer border border-b-0 rounded-t-xl overflow-hidden focus-within:border-skin-text"
+                class="min-h-[50vh] peer border rounded-t-xl overflow-hidden focus-within:border-skin-text"
               >
                 <textarea
                   ref="textAreaEl"
@@ -452,12 +452,9 @@ const {
                   v-model="form.body"
                 />
               </div>
-              <hr
-                class="border-skin-border border-dashed peer-focus-within:border-skin-text"
-              />
 
               <label
-                class="relative flex justify-between border border-skin-border bg-skin-border rounded-b-xl py-1 px-2 items-center peer-focus-within:border-skin-text border-t-0"
+                class="relative flex justify-between border border-skin-border rounded-b-xl py-1 px-2 items-center peer-focus-within:border-skin-text border-t-0"
               >
                 <input
                   accept="image/jpg, image/jpeg, image/png"
