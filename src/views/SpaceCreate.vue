@@ -673,11 +673,11 @@ const {
           v-if="currentStep === 1"
           @click="preview = !preview"
           :loading="clientLoading || queryLoading"
-          class="block w-full mb-3"
+          class="block w-full mb-2"
         >
           {{ preview ? $t('create.edit') : $t('create.preview') }}
         </BaseButton>
-        <BaseButton v-else @click="currentStep--" class="block w-full mb-3">
+        <BaseButton v-else @click="currentStep--" class="block w-full mb-2">
           {{ $t('back') }}
         </BaseButton>
 
