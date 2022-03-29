@@ -439,7 +439,7 @@ const {
                   class="s-label"
                 />
                 <div class="text-xs">
-                  {{ form.body.length }}/{{ bodyLimit }}
+                  {{ form.body.length }} / {{ bodyLimit }}
                 </div>
               </div>
               <div
