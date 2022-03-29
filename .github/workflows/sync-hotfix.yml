@@ -1,3 +1,7 @@
+# When a pull request, coming from any other branch than develop, gets merged
+# into stable, this workflow will automatically create another pull request to
+# merge these changes into develop.
+
 name: Sync Hotfix
 
 on:
