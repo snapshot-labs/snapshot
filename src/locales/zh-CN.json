@@ -280,7 +280,7 @@
     "votingDelay": "投票延迟开始",
     "votingPeriod": "投票时长",
     "voting": "投票",
-    "quorum": "通过阈值",
+    "quorum": "提案生效阈值",
     "type": "类型",
     "anyType": "任意",
     "hideAbstain": "忽略基本投票结果中的弃权票",
