@@ -462,12 +462,13 @@ const {
                 <input
                   accept="image/jpg, image/jpeg, image/png"
                   type="file"
-                  class="opacity-[0.001] absolute p-[5px] cursor-pointer top-0 right-0 bottom-0 left-0 w-full ml-0"
+                  class="opacity-0 absolute p-[5px] top-0 right-0 bottom-0 left-0 w-full ml-0"
                   @change="upload"
                 />
 
                 <span class="pointer-events-none relative pl-1 text-sm">
-                  <span v-if="uploading" class="animate-pulse">
+                  <span v-if="uploading" class="flex">
+                    <LoadingSpinner small class="mr-2 -mt-[2px]" />
                     {{ $t('create.uploading') }}
                   </span>
                   <span v-else-if="imageUploadError !== ''">
