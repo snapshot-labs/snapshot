@@ -27,7 +27,7 @@ const props = defineProps({
 const router = useRouter();
 const route = useRoute();
 const { t, setPageTitle } = useI18n();
-const { formatCompactNumber } = useIntl();
+const { formatCompactNumber, formatNumber } = useIntl();
 const auth = getInstance();
 const { domain } = useApp();
 const { web3, web3Account } = useWeb3();
@@ -439,7 +439,8 @@ const {
                   class="s-label"
                 />
                 <div class="text-xs">
-                  {{ form.body.length }} / {{ bodyLimit }}
+                  {{ formatNumber(form.body.length) }} /
+                  {{ formatNumber(bodyLimit) }}
                 </div>
               </div>
               <div
