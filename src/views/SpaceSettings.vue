@@ -332,7 +332,6 @@ async function handleSetRecord() {
         <BaseButton
           @click="modalControllerEditOpen = true"
           :loading="settingENSRecord"
-          no-focus
           primary
           class="w-full"
         >
@@ -492,14 +491,12 @@ async function handleSetRecord() {
               <BaseIcon name="warning" class="mr-2 !text-red" />
               <span class="!text-red"> {{ inputError('admins') }}&nbsp;</span>
             </BaseBlock>
-            <BaseButton class="block w-full px-3" style="height: auto">
-              <TextareaArray
-                v-model="form.admins"
-                :placeholder="`0x8C28Cf33d9Fd3D0293f963b1cd27e3FF422B425c\n0xeF8305E140ac520225DAf050e2f71d5fBcC543e7`"
-                class="input w-full text-left"
-                style="font-size: 18px"
-              />
-            </BaseButton>
+            <TextareaArray
+              v-model="form.admins"
+              :placeholder="`0x8C28Cf33d9Fd3D0293f963b1cd27e3FF422B425c\n0xeF8305E140ac520225DAf050e2f71d5fBcC543e7`"
+              class="input w-full text-left"
+              style="font-size: 18px"
+            />
           </BaseBlock>
           <BaseBlock :title="$t('settings.strategies') + '*'">
             <div
@@ -548,14 +545,12 @@ async function handleSetRecord() {
                   {{ inputError('members') }}&nbsp;</span
                 >
               </BaseBlock>
-              <BaseButton class="block w-full px-3" style="height: auto">
-                <TextareaArray
-                  v-model="form.members"
-                  :placeholder="`0x8C28Cf33d9Fd3D0293f963b1cd27e3FF422B425c\n0xeF8305E140ac520225DAf050e2f71d5fBcC543e7`"
-                  class="input w-full text-left"
-                  style="font-size: 18px"
-                />
-              </BaseButton>
+              <TextareaArray
+                v-model="form.members"
+                :placeholder="`0x8C28Cf33d9Fd3D0293f963b1cd27e3FF422B425c\n0xeF8305E140ac520225DAf050e2f71d5fBcC543e7`"
+                class="input w-full text-left"
+                style="font-size: 18px"
+              />
             </div>
             <div v-else class="space-y-2">
               <UiInput

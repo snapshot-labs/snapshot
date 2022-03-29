@@ -364,7 +364,6 @@ const truncateMarkdownBody = computed(() => {
               }"
             >
               <BaseButton
-                no-focus
                 @click="showFullMarkdownBody = !showFullMarkdownBody"
                 class="!bg-skin-bg"
               >
@@ -384,7 +383,7 @@ const truncateMarkdownBody = computed(() => {
               }"
             >
               <div ref="markdownBody">
-                <UiMarkdown :body="proposal.body" />
+                <BaseMarkdown :body="proposal.body" />
               </div>
             </div>
           </div>

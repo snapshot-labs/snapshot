@@ -66,7 +66,7 @@ watch(open, () => {
     </template>
     <div v-if="step === 0">
       <div class="m-4">
-        <UiCalendar v-model="input" class="mx-auto mb-2" />
+        <BaseCalendar v-model="input" class="mx-auto mb-2" />
       </div>
     </div>
     <div v-else class="flex m-4 mx-auto" style="max-width: 160px">

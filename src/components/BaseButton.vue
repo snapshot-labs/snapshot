@@ -9,10 +9,6 @@ defineProps({
   disabled: {
     type: Boolean,
     default: false
-  },
-  noFocus: {
-    type: Boolean,
-    default: false
   }
 });
 </script>
@@ -23,9 +19,7 @@ defineProps({
     :class="[
       'button px-[24px] ',
       {
-        'button--primary hover:brightness-95': primary,
-        'focus-within:border-skin-border': noFocus,
-        'focus-within:border-skin-link': !noFocus
+        'button--primary hover:brightness-95': primary
       }
     ]"
     :disabled="disabled || loading"
@@ -61,10 +55,6 @@ defineProps({
       border: 1px solid var(--border-color);
       background-color: var(--border-color);
     }
-  }
-
-  &.button--active {
-    border-color: var(--link-color) !important;
   }
 
   &:hover {
