@@ -6,6 +6,7 @@ import { useClient } from '@/composables/useClient';
 import { useIntl } from '@/composables/useIntl';
 import { getPower } from '../../helpers/snapshot';
 import { useWeb3 } from '../../composables/useWeb3';
+import pending from '@/helpers/pending.json';
 
 const { web3Account } = useWeb3();
 
@@ -45,7 +46,9 @@ async function handleSubmit() {
   console.log('Result', result);
   if (result.id) {
     notify(['green', t('notify.voteSuccessful')]);
-    emit('reload');
+    if (!pending.includes(props.space.id)) {
+      emit('reload');
+    }
     emit('close');
   }
 }
