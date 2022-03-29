@@ -443,11 +443,11 @@ const {
                 </div>
               </div>
               <div
-                class="min-h-[50vh] peer border rounded-t-xl overflow-hidden focus-within:border-skin-text"
+                class="min-h-[260px] peer border rounded-t-xl overflow-hidden focus-within:border-skin-text"
               >
                 <textarea
                   ref="textAreaEl"
-                  class="s-input pt-0 w-full min-h-[50vh] border-none !rounded-xl text-base h-full mt-0"
+                  class="s-input pt-0 w-full min-h-[260px] border-none !rounded-xl text-base h-full mt-0"
                   :maxLength="bodyLimit"
                   v-model="form.body"
                 />
