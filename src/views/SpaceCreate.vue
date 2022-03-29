@@ -443,21 +443,21 @@ const {
                 </div>
               </div>
               <div
-                class="h-[50vh] peer border border-b-0 rounded-t-xl overflow-hidden focus-within:border-skin-link hover:border-skin-text"
+                class="min-h-[50vh] peer border border-b-0 rounded-t-xl overflow-hidden focus-within:border-skin-text"
               >
                 <textarea
                   ref="textAreaEl"
-                  class="s-input pt-0 w-full border-none !rounded-xl text-base h-full mt-0"
+                  class="s-input pt-0 w-full min-h-[50vh] border-none !rounded-xl text-base h-full mt-0"
                   :maxLength="bodyLimit"
                   v-model="form.body"
                 />
               </div>
               <hr
-                class="border-skin-border border-dashed peer-focus-within:border-skin-link peer-hover:border-skin-text"
+                class="border-skin-border border-dashed peer-focus-within:border-skin-text"
               />
 
               <label
-                class="relative flex justify-between border border-skin-border bg-skin-border rounded-b-xl py-1 px-2 items-center peer-focus-within:border-skin-link peer-hover:border-skin-text border-t-0"
+                class="relative flex justify-between border border-skin-border bg-skin-border rounded-b-xl py-1 px-2 items-center peer-focus-within:border-skin-text border-t-0"
               >
                 <input
                   accept="image/jpg, image/jpeg, image/png"
