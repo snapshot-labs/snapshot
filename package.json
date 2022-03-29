@@ -26,7 +26,7 @@
     "@ethersproject/strings": "^5.5.0",
     "@ethersproject/units": "^5.5.0",
     "@ethersproject/wallet": "^5.4.0",
-    "@popperjs/core": "^2.11.2",
+    "@popperjs/core": "^2.11.4",
     "@pusher/push-notifications-web": "^1.1.0",
     "@snapshot-labs/lock": "^0.1.7",
     "@snapshot-labs/snapshot.js": "^0.3.57",
