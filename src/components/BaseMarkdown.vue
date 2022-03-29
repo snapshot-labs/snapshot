@@ -5,6 +5,7 @@ import { linkify } from 'remarkable/linkify';
 // import sanitizeHtml from 'sanitize-html';
 import { onMounted } from 'vue';
 import { useCopy } from '@/composables/useCopy';
+import { getIpfsUrl } from '@/helpers/utils';
 
 const props = defineProps({ body: String });
 const { copyToClipboard } = useCopy();
@@ -18,9 +19,17 @@ const remarkable = new Remarkable({
 
 const markdown = computed(() => {
   let body = props.body;
-  body = remarkable.render(body);
-  // body = sanitizeHtml(body);
-  return body;
+
+  // Add the ipfs gateway to images that start with ipfs://
+  let splitBodyText = body.split(/(?=\))|(?<=\()/);
+  splitBodyText.forEach(str => {
+    if (str.startsWith('ipfs://')) {
+      splitBodyText.splice(splitBodyText.indexOf(str), 1, `${getIpfsUrl(str)}`);
+    }
+  });
+  body = splitBodyText.join('');
+
+  return remarkable.render(body);
 });
 
 onMounted(() => {
@@ -528,7 +537,7 @@ onMounted(() => {
   .markdown-body {
     font-size: 22px;
     line-height: 1.4;
-}
+  }
 
   .markdown-body h1 {
     font-size: 2em;
