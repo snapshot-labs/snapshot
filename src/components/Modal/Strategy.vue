@@ -138,18 +138,13 @@ const strategyIsValid = computed(() =>
             :definition="strategyDefinition"
             :errors="strategyValidationErrors"
           />
-          <BaseButton
+          <TextareaJson
             v-else
-            class="block w-full mb-3 overflow-x-auto"
-            style="height: auto"
-          >
-            <TextareaJson
-              v-model="input.params"
-              v-model:is-valid="textAreaJsonIsValid"
-              :placeholder="$t('strategyParameters')"
-              class="input text-left"
-            />
-          </BaseButton>
+            v-model="input.params"
+            v-model:is-valid="textAreaJsonIsValid"
+            :placeholder="$t('strategyParameters')"
+            class="input text-left"
+          />
         </div>
       </div>
     </div>

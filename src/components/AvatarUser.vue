@@ -21,7 +21,7 @@ watchEffect(() => {
 
 <template>
   <span>
-    <UiPopover :options="{ offset: [0, 12], placement: 'bottom-start' }">
+    <BasePopover :options="{ offset: [0, 12], placement: 'bottom-start' }">
       <template v-slot:item>
         <a class="flex flex-nowrap">
           <BaseAvatar
@@ -60,6 +60,6 @@ watchEffect(() => {
           </a>
         </div>
       </template>
-    </UiPopover>
+    </BasePopover>
   </span>
 </template>
