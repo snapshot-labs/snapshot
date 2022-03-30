@@ -7,12 +7,16 @@ defineProps({
   small: {
     type: Boolean,
     default: false
+  },
+  big: {
+    type: Boolean,
+    default: false
   }
 });
 </script>
 
 <template>
-  <BaseLoading class="loading" :class="{ small: small }">
+  <BaseLoading class="loading" :class="{ small, big }">
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width="50"
