@@ -20,14 +20,12 @@ const remarkable = new Remarkable({
 const markdown = computed(() => {
   let body = props.body;
 
-  // Add the ipfs gateway to images that start with ipfs://
-  let splitBodyText = body.split(/(?=\))|(?<=\()/);
-  splitBodyText.forEach(str => {
-    if (str.startsWith('ipfs://')) {
-      splitBodyText.splice(splitBodyText.indexOf(str), 1, `${getIpfsUrl(str)}`);
-    }
-  });
-  body = splitBodyText.join('');
+  // Add the ipfs gateway to markdown images that start with ipfs://
+  function replaceIpfsUrl(match, p1) {
+    console.log('match', match, p1, match.replace(p1, getIpfsUrl(p1)));
+    return match.replace(p1, getIpfsUrl(p1));
+  }
+  body = body.replace(/!\[.*?\]\((ipfs:\/\/[a-zA-Z0-9]+?)\)/, replaceIpfsUrl);
 
   return remarkable.render(body);
 });
