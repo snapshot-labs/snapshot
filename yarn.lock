@@ -1754,18 +1754,24 @@
   resolved "https://registry.yarnpkg.com/@vue/test-utils/-/test-utils-2.0.0-rc.17.tgz#e6dcf5b5bd3ae23595bdb154b9b578ebcdffd698"
   integrity sha512-7LHZKsFRV/HqDoMVY+cJamFzgHgsrmQFalROHC5FMWrzPzd+utG5e11krj1tVsnxYufGA2ABShX4nlcHXED+zQ==
 
-"@vueuse/core@^7.7.0":
-  version "7.7.0"
-  resolved "https://registry.yarnpkg.com/@vueuse/core/-/core-7.7.0.tgz#ddc5bbc910fbe0e2eda2cc823998dcf4a13265b4"
-  integrity sha512-DS8+dg758CiWnswebYHjS05PqTtc1ZLomsDlkFjG/KC0iFRgFIsGC66AAGuSXLqWCoirp2xN6N2mkrp1aHdI7A==
+"@vueuse/core@^8.2.0":
+  version "8.2.0"
+  resolved "https://registry.yarnpkg.com/@vueuse/core/-/core-8.2.0.tgz#2e9163c0bbe8dcb240fdd89d9c8a52576fce8db7"
+  integrity sha512-89ZfKtFHz5ynfpWyFVXtK0yePJ2MZqFaOxnGeZn7cIp8KFbPRlu6Wsxi3gBkJNpjq+q9qbEh6MjV7QBvqCQ5Og==
   dependencies:
-    "@vueuse/shared" "7.7.0"
+    "@vueuse/metadata" "8.2.0"
+    "@vueuse/shared" "8.2.0"
     vue-demi "*"
 
-"@vueuse/shared@7.7.0":
-  version "7.7.0"
-  resolved "https://registry.yarnpkg.com/@vueuse/shared/-/shared-7.7.0.tgz#4fa97e68f987c8a10bf075de0e57b986da9f1b38"
-  integrity sha512-ANzMcUnjuUPJ9nWqMAqYt8p0qon6AH5pP5/V/0RSWkwCIWZwi57ujIaxizzMwnJECUF/73BmsRmpvvtokCIrKw==
+"@vueuse/metadata@8.2.0":
+  version "8.2.0"
+  resolved "https://registry.yarnpkg.com/@vueuse/metadata/-/metadata-8.2.0.tgz#f62a02e840220768941b3683dd8171c39581b950"
+  integrity sha512-cbaezEccNuxQC+OiudG9VjZNg9/RbAAHkyuhC6+8Gsgsc+MvDhfn1NrV6NNTaldLlZgJFgUiYOkrf3JGTTTGXQ==
+
+"@vueuse/shared@8.2.0":
+  version "8.2.0"
+  resolved "https://registry.yarnpkg.com/@vueuse/shared/-/shared-8.2.0.tgz#a8e2b637cfd866ea985615df9ec4913c4355c084"
+  integrity sha512-dTw7EJZgZCgG9DoVAiz4LtmKnIFXuE/idUFzvqRAJLjbPiVJc+qQH5kDUdKHI3W1U9t//1mdasQEKONArburiQ==
   dependencies:
     vue-demi "*"
 
@@ -4371,10 +4377,10 @@ graphql@^16.3.0:
   resolved "https://registry.yarnpkg.com/graphql/-/graphql-16.3.0.tgz#a91e24d10babf9e60c706919bb182b53ccdffc05"
   integrity sha512-xm+ANmA16BzCT5pLjuXySbQVFwH3oJctUVdy81w1sV0vBU0KgDdBGtxQOUd5zqOBk/JayAFeG8Dlmeq74rjm/A==
 
-happy-dom@^2.51.0:
-  version "2.51.0"
-  resolved "https://registry.yarnpkg.com/happy-dom/-/happy-dom-2.51.0.tgz#aecc7983e7aecb4ecfd08c7755404e3abd693745"
-  integrity sha512-7DVsMlGHD4YZz3iIe0WyOEvtk3nm0b5qXhozzBjTIT+FUPlujDZKjsB56a8dXBI1R0a2siWf1+JuCchRFpp54A==
+happy-dom@^2.52.0:
+  version "2.52.0"
+  resolved "https://registry.yarnpkg.com/happy-dom/-/happy-dom-2.52.0.tgz#05de7174303015cce6f0afba7de7a15ff615a1fc"
+  integrity sha512-sNiMoku8/B5AHA2y93YNhv7HwwcWYshG1Hvms0kC+fDK4rPRPwZx/PDlUFleWymy9FP419IekYjVEOtLZb0QtA==
   dependencies:
     css.escape "^1.5.1"
     he "^1.2.0"
@@ -7285,10 +7291,10 @@ vite@^2.8.6:
   optionalDependencies:
     fsevents "~2.3.2"
 
-vitest@^0.7.11:
-  version "0.7.11"
-  resolved "https://registry.yarnpkg.com/vitest/-/vitest-0.7.11.tgz#db88faeec570014b3f771077826f1ceee05e3c4d"
-  integrity sha512-xCEUBCpqiIVhUFIMCKKXDZ/bcPLk2EhPmTFA9qw+Kf+B2d/gm3ZBdUAMa3jIZNZ/d3esji5H6XZPNAk//9K4Kw==
+vitest@^0.8.1:
+  version "0.8.1"
+  resolved "https://registry.yarnpkg.com/vitest/-/vitest-0.8.1.tgz#a1bd5b680553731af0330bdd84463b6ec668f89c"
+  integrity sha512-8HUyc9io1UInZTUKJWTgPG5fMEqd86IlMCjn2CEjGjli55M7iUJiiMwns9W21wKs6DMrRs2lu89X6rbfVvF53A==
   dependencies:
     "@types/chai" "^4.3.0"
     "@types/chai-subset" "^1.3.3"
