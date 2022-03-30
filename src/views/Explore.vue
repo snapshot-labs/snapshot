@@ -123,6 +123,7 @@ onMounted(() => {
       </template>
       <template v-if="route.name === 'plugins'">
         <LoadingRow block v-if="loadingPluginsSpacesCount" />
+        <div v-else class="grid md:grid-cols-3 gap-[1px] md:gap-4">
           <div
             v-for="item in items.slice(0, limit)"
             :key="item.key"
