@@ -19,9 +19,8 @@ export function useImageUpload({
     imageName.value = '';
   };
 
-  const upload = async e => {
+  const upload = async file => {
     reset();
-    const file = e.target.files[0];
     if (!file) return;
     uploading.value = true;
     const formData = new FormData();

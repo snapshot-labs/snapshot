@@ -316,6 +316,16 @@ const {
 } = useImageUpload({
   onSuccess: injectImageToBody
 });
+
+const handlePaste = e => {
+  for (let i = 0; i < e.clipboardData.items.length; ++i) {
+    let item = e.clipboardData.items[i];
+    if (item.kind == 'file' && item.type.startsWith('image/')) {
+      const file = item.getAsFile();
+      upload(new File([file], 'image', { type: file.type }));
+    }
+  }
+};
 </script>
 
 <template>
@@ -447,6 +457,7 @@ const {
                 class="min-h-[260px] peer border rounded-t-xl overflow-hidden focus-within:border-skin-text"
               >
                 <textarea
+                  @paste="handlePaste"
                   ref="textAreaEl"
                   class="s-input pt-0 w-full min-h-[260px] border-none !rounded-xl text-base h-full mt-0"
                   :maxLength="bodyLimit"
@@ -461,7 +472,7 @@ const {
                   accept="image/jpg, image/jpeg, image/png"
                   type="file"
                   class="opacity-0 absolute p-[5px] top-0 right-0 bottom-0 left-0 w-full ml-0"
-                  @change="upload"
+                  @change="e => upload(e.target.files[0])"
                 />
 
                 <span class="pointer-events-none relative pl-1 text-sm">
