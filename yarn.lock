@@ -1624,10 +1624,10 @@
   resolved "https://registry.yarnpkg.com/@vitejs/plugin-vue/-/plugin-vue-2.2.4.tgz#ab8b199ca82496b05d2654c5f34ffcf9b947243d"
   integrity sha512-ev9AOlp0ljCaDkFZF3JwC/pD2N4Hh+r5srl5JHM6BKg5+99jiiK0rE/XaRs3pVm1wzyKkjUy/StBSoXX5fFzcw==
 
-"@vitest/ui@^0.5.9":
-  version "0.5.9"
-  resolved "https://registry.yarnpkg.com/@vitest/ui/-/ui-0.5.9.tgz#b223c29e6b509ba61af1a065ca91076a5ca91cea"
-  integrity sha512-+Y51EhIuT4tonINzzBSjfEsaU4deGgUilTGaE2MP+9Co3WyPHr11byzSA1VEj7mYWJ204xxPY22ZYUCdX01Aag==
+"@vitest/ui@^0.8.0":
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/@vitest/ui/-/ui-0.8.0.tgz#c7977e24706b9aaab5a26664bd5f2ba5be84fd98"
+  integrity sha512-eCrU2lvYTA1YAI3cBrmaHC1539X7r8HMF/bLUEdSJE+eb+fW78brXYJXS7bDywQsFg9TI592xZVpPlRg95dfZA==
   dependencies:
     sirv "^2.0.2"
 
@@ -6000,10 +6000,10 @@ prettier@^1.19.1:
   resolved "https://registry.yarnpkg.com/prettier/-/prettier-1.19.1.tgz#f7d7f5ff8a9cd872a7be4ca142095956a60797cb"
   integrity sha512-s7PoyDv/II1ObgQunCbB9PdLmUcBZcnWOcxDh7O0N/UwDEsHyqkW+Qh28jW+mVuCdx7gLB0BotYI1Y6uI9iyew==
 
-prettier@^2.5.1:
-  version "2.5.1"
-  resolved "https://registry.yarnpkg.com/prettier/-/prettier-2.5.1.tgz#fff75fa9d519c54cf0fce328c1017d94546bc56a"
-  integrity sha512-vBZcPRUR5MZJwoyi3ZoyQlc1rXeEck8KgeC9AwwOn+exuxLxq5toTRDTSaVrXHxelDMHy9zlicw8u66yxoSUFg==
+prettier@^2.6.1:
+  version "2.6.1"
+  resolved "https://registry.yarnpkg.com/prettier/-/prettier-2.6.1.tgz#d472797e0d7461605c1609808e27b80c0f9cfe17"
+  integrity sha512-8UVbTBYGwN37Bs9LERmxCPjdvPxlEowx2urIL6urHzdb3SDq4B/Z6xLFCblrSnE4iKWcS6ziJ3aOYrc1kz/E2A==
 
 pretty-bytes@^5.6.0:
   version "5.6.0"
