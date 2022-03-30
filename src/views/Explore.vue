@@ -71,7 +71,9 @@ onMounted(() => {
 
 <template>
   <BaseContainer class="flex items-center mb-4">
-    <BaseButton class="mr-auto pl-3 pr-0 w-full max-w-[420px]">
+    <BaseButton
+      class="mr-auto pl-3 pr-0 w-full max-w-[420px] focus-within:!border-skin-link"
+    >
       <SearchWithFilters />
     </BaseButton>
     <div class="ml-3 hidden sm:flex text-right items-center whitespace-nowrap">

@@ -134,19 +134,12 @@ a,
 
 // TODO: Move this and ::placeholder to a new BaseInput component
 .input {
-  @apply outline-none text-skin-link bg-transparent border-none;
+  @apply outline-none text-skin-link bg-transparent;
 }
 
 ::placeholder {
   color: var(--text-color);
   opacity: 0.6 !important;
-}
-
-// TODO: Move this to a new BaseTextarea component
-textarea {
-  padding-top: 16px;
-  font-size: 20px;
-  line-height: 1.4em;
 }
 
 // TODO: Remove this and use border-skin-border in the templates. Tailwind has

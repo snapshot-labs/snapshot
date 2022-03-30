@@ -147,18 +147,14 @@ function deleteItem(key) {
 </script>
 <template>
   <BaseBlock :title="$t('comment_box.title')">
-    <BaseButton
+    <TextareaAutosize
       v-if="togglePreview"
-      class="flex w-full px-3 !h-auto cursor-default"
-    >
-      <TextareaAutosize
-        v-model="comment"
-        :placeholder="$t('comment_box.add')"
-        class="input text-left w-full h-full"
-        style="font-size: 18px"
-        :minHeight="100"
-      />
-    </BaseButton>
+      v-model="comment"
+      :placeholder="$t('comment_box.add')"
+      class="input text-left w-full h-full"
+      style="font-size: 18px"
+      :minHeight="100"
+    />
     <BaseBlock
       v-if="!togglePreview"
       slim="true"
@@ -200,6 +196,6 @@ function deleteItem(key) {
     </div>
     <div class="w-[10px] h-[10px] absolute bottom-0" ref="endElement" />
 
-    <LoadingRow v-if="loadingMore" class="my-2" />
+    <RowLoading v-if="loadingMore" class="my-2" />
   </BaseBlock>
 </template>
