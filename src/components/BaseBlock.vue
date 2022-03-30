@@ -21,7 +21,11 @@ defineProps<{
       style="padding-bottom: 12px"
     >
       {{ title }}
-      <UiCounter v-if="counter" :counter="counter" class="ml-1 inline-block" />
+      <BaseCounter
+        v-if="counter"
+        :counter="counter"
+        class="ml-1 inline-block"
+      />
       <BaseIcon
         v-if="icon && !iconHref"
         :name="icon"

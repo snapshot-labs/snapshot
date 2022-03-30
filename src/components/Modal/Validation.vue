@@ -70,15 +70,12 @@ watch(open, () => {
     <div class="my-4 mx-0 md:mx-4 min-h-[339px]">
       <div v-if="input.name" class="p-4 mb-4 border rounded-md text-skin-link">
         <h4 v-text="input.name" class="mb-3 text-center" />
-
-        <BaseButton class="block w-full overflow-x-auto" style="height: auto">
-          <TextareaJson
-            v-model="input.params"
-            v-model:is-valid="isValid"
-            :placeholder="$t('settings.validationParameters')"
-            class="input text-left"
-          />
-        </BaseButton>
+        <TextareaJson
+          v-model="input.params"
+          v-model:is-valid="isValid"
+          :placeholder="$t('settings.validationParameters')"
+          class="input text-left"
+        />
       </div>
       <div v-if="!input.name">
         <LoadingRow v-if="loadingValidations" block />
