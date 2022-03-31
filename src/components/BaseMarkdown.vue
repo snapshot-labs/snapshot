@@ -22,7 +22,6 @@ const markdown = computed(() => {
 
   // Add the ipfs gateway to markdown images that start with ipfs://
   function replaceIpfsUrl(match, p1) {
-    console.log('match', match, p1, match.replace(p1, getIpfsUrl(p1)));
     return match.replace(p1, getIpfsUrl(p1));
   }
   body = body.replace(/!\[.*?\]\((ipfs:\/\/[a-zA-Z0-9]+?)\)/g, replaceIpfsUrl);
