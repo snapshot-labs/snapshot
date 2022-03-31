@@ -26,6 +26,8 @@
   "verifiedSpace": "검증된 공간",
   "version": "버전",
   "timeline": "타임라인",
+  "ended": "ended",
+  "started": "started",
   "filters": "필터",
   "allSpaces": "모든 공간",
   "submitOnchain": "온체인 제출",
@@ -128,20 +130,29 @@
   "confirmAction": "액션 확인",
   "or": "또는",
   "share": "Share",
+  "createButton": "Create",
+  "newSpaceNotice": {
+    "header": "Your space is live!",
+    "mainText": "By default each voter has a voting power of one. You can change how voting power is calculated via strategies in your {settings}. Changes to your settings will only affect new proposals, existing proposals can not be changed.",
+    "learnMore": "Learn more in the {documentation} or join Snapshot {discord} for help.",
+    "gotIt": "Got it!"
+  },
   "errors": {
     "required": "필드가 필요합니다",
-    "minLength": "최소 길이는 {0}",
+    "minLength": "Field is required",
     "maxLength": "최대 길이: {0}",
     "pattern": "잘못된 문자",
     "minItems": "최소 {0} 개 항목 필요",
     "minStrategy": "적어도 한 개의 전략이 필요합니다.",
+    "website": "URL should be in the format https://www.example.com",
     "format": "잘못된 형식",
-    "type": "잘못된 유형"
+    "type": "잘못된 유형",
+    "unsupportedImageType": "File type not supported, Supported formats are jpeg, jpg and png"
   },
   "create": {
-    "question": "질문하기",
+    "proposalTitle": "Title",
     "categorie(s)": "최대 2개의 카테고리 선택",
-    "content": "제안에 대한 좀 더 자세한 사항(선택 사항).",
+    "proposalDescription": "Description (optional)",
     "preview": "미리보기",
     "choices": "선택지",
     "addChoice": "선택지 추가",
@@ -164,10 +175,14 @@
     "schedule": "일정 제안",
     "delayEnforced": "투표가 시작될 때까지 공간이 지연됩니다.",
     "periodEnforced": "공간은 투표 기간을 적용합니다.",
+    "typeEnforced": "The space enforces this voting type",
     "edit": "편집",
     "continue": "계속",
     "now": "현재",
     "votingPeriodExplainer": "사용자가 투표할 수 있는 기간입니다. 제안은 투표 기간 시작 전에 대기 중으로 보여질 것입니다.",
+    "uploadImageExplainer": "Attach images by dragging & dropping, selecting or pasting them.",
+    "uploading": "Uploading image",
+    "markdown": "Styling with Markdown is supported",
     "validationWarning": {
       "basic": {
         "member": "제안서를 제출하려면 공간의 저자여야 합니다.",
@@ -219,6 +234,15 @@
       "closed": "종료됨"
     }
   },
+  "notifications": {
+    "header": "Notifications",
+    "noNotifications": "You have no notifications",
+    "proposalStarted": "proposal has started:",
+    "proposalEnded": "proposal has ended:",
+    "markAllAsRead": "Mark all as read",
+    "all": "All",
+    "unread": "Unread"
+  },
   "settings": {
     "header": "설정",
     "setEnsTextRecord": "ENS 텍스트 레코드 설정",
@@ -260,7 +284,10 @@
     "type": "유형",
     "anyType": "어떤",
     "hideAbstain": "기본 투표 결과에서 기권 투표 무시",
-    "connectWithSpaceOwner": "공간 설정을 수정하려면 관리자 또는 어드민 지갑에 연결하세요."
+    "connectWithSpaceOwner": "공간 설정을 수정하려면 관리자 또는 어드민 지갑에 연결하세요.",
+    "currentSpaceControllerIs": "The current space controller is {address}",
+    "newController": "New controller",
+    "set": "Set"
   },
   "setup": {
     "example": "예시 yam.eth",
@@ -280,13 +307,14 @@
     "controllerHasAuthority": "관리자는 공간 설정에 대한 전체 권한을 갖습니다.",
     "controller": "관리자",
     "selectEnsForSpace": "ENS 주소 선택",
-    "textRecordExists": "현재 공간 관리자는 {address} 입니다. 아래 폼을 사용해서 공간 관리자를 업데이트 할 수 있습니다.",
     "spaceOwnerAddressPlaceHolder": "예시 0xF78108c9BBaF466dd96BE41be728Fe3220b37119",
     "controllerAddress": "관리자 주소",
     "updateController": "관리자 업데이트",
-    "connectWithEnsController": "공간 관리자를 수정하기 위해서는 {ens} 를 소유한 지갑을 연결해야 합니다.",
     "seeOnEns": "ENS 보기",
-    "goToSettings": "설정으로 이동"
+    "goToSettings": "설정으로 이동",
+    "setSpaceProfile": "Customize your space",
+    "waitForTransaction": "The transaction need to confirm before you can create your space. {txUrl}",
+    "pleaseWaitMessage": "This can take a few minutes, please wait while the transaction is being confirmed"
   },
   "notify": {
     "youDidIt": "해냈어요!",
@@ -298,7 +326,8 @@
     "delegationRemoved": "위임 제거됨",
     "proposalCreated": "제안 생성됨",
     "voteSuccessful": "투표가 완료되었습니다!",
-    "ensSet": "ENS 텍스트 레코드가 성공적으로 설정되었습니다."
+    "ensSet": "ENS 텍스트 레코드가 성공적으로 설정되었습니다.",
+    "transactionSent": "Transaction sent"
   },
   "explore": {
     "createStrategy": "전략 만들기",
@@ -356,7 +385,7 @@
     "addBatch": "트랜잭션 일괄 처리 추가",
     "batch": "트랜잭션 일괄처리",
     "transactions": "트랜잭션",
-    "to": "수신 (주소)",
+    "to": "To (address)",
     "invalidAddress": "잘못된 주소",
     "invalidAmount": "잘못된 금액",
     "invalidValue": "잘못된 값",
@@ -441,6 +470,7 @@
       "home": "스냅샷",
       "setup": "공간 만들기",
       "timeline": "타임라인",
+      "notifications": "Notifications",
       "explore": "탐색",
       "playground": "플레이그라운드",
       "space": {
