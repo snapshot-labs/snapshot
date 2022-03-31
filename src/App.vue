@@ -18,20 +18,11 @@ const showLoadingSpinner = ref(false);
 
 onMounted(async () => {
   init();
-
-  // "activate" loading spinner with a short delay to trigger the animation.
-  setTimeout(() => {
-    showLoadingSpinner.value = true;
-  }, 50);
 });
 </script>
 
 <template>
-  <LoadingSpinner
-    v-if="!ready"
-    class="overlay big transition-opacity duration-500"
-    :class="showLoadingSpinner ? 'opacity-100' : 'opacity-0'"
-  />
+  <LoadingSpinner v-if="!ready" class="overlay big animate-fade-in" />
   <div
     v-else
     class="flex font-sans text-base antialiased bg-skin-bg text-skin-text min-h-screen"
