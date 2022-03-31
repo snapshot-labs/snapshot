@@ -26,6 +26,8 @@
   "verifiedSpace": "Verified space",
   "version": "Version",
   "timeline": "Timeline",
+  "ended": "ended",
+  "started": "started",
   "filters": "Filter",
   "allSpaces": "Alle Bereiche",
   "submitOnchain": "On-chain senden",
@@ -128,20 +130,29 @@
   "confirmAction": "Bestätigen",
   "or": "or",
   "share": "Share",
+  "createButton": "Create",
+  "newSpaceNotice": {
+    "header": "Your space is live!",
+    "mainText": "By default each voter has a voting power of one. You can change how voting power is calculated via strategies in your {settings}. Changes to your settings will only affect new proposals, existing proposals can not be changed.",
+    "learnMore": "Learn more in the {documentation} or join Snapshot {discord} for help.",
+    "gotIt": "Got it!"
+  },
   "errors": {
     "required": "Dieses Feld ist ein Pflichtfeld",
-    "minLength": "Mindestlänge ist {0}",
+    "minLength": "Field is required",
     "maxLength": "Maximallänge ist {0}",
     "pattern": "Ungültiges Zeichen",
     "minItems": "Mindestens {0} Element(e) erforderlich",
     "minStrategy": "Mindestens eine Strategie ist erforderlich.",
+    "website": "URL should be in the format https://www.example.com",
     "format": "Ungültiges Format",
-    "type": "Invalid type"
+    "type": "Invalid type",
+    "unsupportedImageType": "File type not supported, Supported formats are jpeg, jpg and png"
   },
   "create": {
-    "question": "Ask a question...",
+    "proposalTitle": "Title",
     "categorie(s)": "Select up to 2 categorie(s)",
-    "content": "Erzähl uns mehr über deinen Vorschlag (optional)",
+    "proposalDescription": "Description (optional)",
     "preview": "Vorschau",
     "choices": "Auswahl",
     "addChoice": "Auswahl hinzufügen",
@@ -164,10 +175,14 @@
     "schedule": "Vorschlag planen",
     "delayEnforced": "Der Space verlangt eine Verzögerung bevor die Abstimmung beginnen kann",
     "periodEnforced": "Dieser Space benötigt eine Abstimmungsdauer",
+    "typeEnforced": "The space enforces this voting type",
     "edit": "Bearbeiten",
     "continue": "Weiter",
     "now": "Jetzt",
     "votingPeriodExplainer": "Dies ist der Zeitraum, in dem Benutzer abstimmen können. Der Vorschlag wird bereits vor Beginn der Abstimmung sichtbar sein.",
+    "uploadImageExplainer": "Attach images by dragging & dropping, selecting or pasting them.",
+    "uploading": "Uploading image",
+    "markdown": "Styling with Markdown is supported",
     "validationWarning": {
       "basic": {
         "member": "You need to be an author of the space in order to submit a proposal.",
@@ -219,6 +234,15 @@
       "closed": "Geschlossen"
     }
   },
+  "notifications": {
+    "header": "Notifications",
+    "noNotifications": "You have no notifications",
+    "proposalStarted": "proposal has started:",
+    "proposalEnded": "proposal has ended:",
+    "markAllAsRead": "Mark all as read",
+    "all": "All",
+    "unread": "Unread"
+  },
   "settings": {
     "header": "Einstellungen",
     "setEnsTextRecord": "ENS Text-Eintrag setzen",
@@ -260,7 +284,10 @@
     "type": "Type",
     "anyType": "Any",
     "hideAbstain": "Ignore abstain votes in basic voting results",
-    "connectWithSpaceOwner": "Um die Space-Einstellungen zu ändern, verbinden Sie sich mit einem Controller- oder Admin-Wallet."
+    "connectWithSpaceOwner": "Um die Space-Einstellungen zu ändern, verbinden Sie sich mit einem Controller- oder Admin-Wallet.",
+    "currentSpaceControllerIs": "The current space controller is {address}",
+    "newController": "New controller",
+    "set": "Set"
   },
   "setup": {
     "example": "z.B. yam.eth",
@@ -280,13 +307,14 @@
     "controllerHasAuthority": "The controller has full authority over the space settings",
     "controller": "Controller",
     "selectEnsForSpace": "END Adresse auswählen",
-    "textRecordExists": "Derzeit ist der Space Controller {address}. Sie können den Space Controller über das untenstehende Formular aktualisieren.",
     "spaceOwnerAddressPlaceHolder": "z.B. 0xF78108c9BBaF466dd96BE41be728Fe3220b37119",
     "controllerAddress": "Controller-Adresse",
     "updateController": "Update controller",
-    "connectWithEnsController": "Um den Space-Controller zu ändern, müssen Sie sich mit der Wallet verbinden, die {ens} besitzt",
     "seeOnEns": "Auf ENS ansehen",
-    "goToSettings": "Go to settings"
+    "goToSettings": "Go to settings",
+    "setSpaceProfile": "Customize your space",
+    "waitForTransaction": "The transaction need to confirm before you can create your space. {txUrl}",
+    "pleaseWaitMessage": "This can take a few minutes, please wait while the transaction is being confirmed"
   },
   "notify": {
     "youDidIt": "Du hast es geschafft!",
@@ -298,7 +326,8 @@
     "delegationRemoved": "Delegation removed",
     "proposalCreated": "Proposal created",
     "voteSuccessful": "Your vote is in!",
-    "ensSet": "ENS Text Eintrag wurde erfolgreich gesetzt"
+    "ensSet": "ENS Text Eintrag wurde erfolgreich gesetzt",
+    "transactionSent": "Transaction sent"
   },
   "explore": {
     "createStrategy": "Strategie erstellen",
@@ -441,6 +470,7 @@
       "home": "Snapshot",
       "setup": "Create a space",
       "timeline": "Timeline",
+      "notifications": "Notifications",
       "explore": "Explore",
       "playground": "Playground",
       "space": {
