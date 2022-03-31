@@ -52,7 +52,7 @@
   "devDependencies": {
     "@tailwindcss/line-clamp": "^0.3.1",
     "@types/node": "^17.0.23",
-    "@typescript-eslint/eslint-plugin": "^5.13.0",
+    "@typescript-eslint/eslint-plugin": "^5.17.0",
     "@typescript-eslint/parser": "^5.13.0",
     "@vitejs/plugin-vue": "^2.2.4",
     "@vitest/ui": "^0.8.1",
