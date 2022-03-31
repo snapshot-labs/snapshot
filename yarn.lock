@@ -1763,24 +1763,24 @@
   resolved "https://registry.yarnpkg.com/@vue/test-utils/-/test-utils-2.0.0-rc.17.tgz#e6dcf5b5bd3ae23595bdb154b9b578ebcdffd698"
   integrity sha512-7LHZKsFRV/HqDoMVY+cJamFzgHgsrmQFalROHC5FMWrzPzd+utG5e11krj1tVsnxYufGA2ABShX4nlcHXED+zQ==
 
-"@vueuse/core@^8.2.0":
-  version "8.2.0"
-  resolved "https://registry.yarnpkg.com/@vueuse/core/-/core-8.2.0.tgz#2e9163c0bbe8dcb240fdd89d9c8a52576fce8db7"
-  integrity sha512-89ZfKtFHz5ynfpWyFVXtK0yePJ2MZqFaOxnGeZn7cIp8KFbPRlu6Wsxi3gBkJNpjq+q9qbEh6MjV7QBvqCQ5Og==
+"@vueuse/core@^8.2.2":
+  version "8.2.2"
+  resolved "https://registry.yarnpkg.com/@vueuse/core/-/core-8.2.2.tgz#30e8070eb28166da35d27edfa8b3363a37b230f1"
+  integrity sha512-ITbTxIlN/LIVwu1bpDc+m0LcXeFNstfJbA/DLGQicmWQdnfUQ+OJQB4KLi25MocD73rvK2rj3Lr9cQp3FL+IIA==
   dependencies:
-    "@vueuse/metadata" "8.2.0"
-    "@vueuse/shared" "8.2.0"
+    "@vueuse/metadata" "8.2.2"
+    "@vueuse/shared" "8.2.2"
     vue-demi "*"
 
-"@vueuse/metadata@8.2.0":
-  version "8.2.0"
-  resolved "https://registry.yarnpkg.com/@vueuse/metadata/-/metadata-8.2.0.tgz#f62a02e840220768941b3683dd8171c39581b950"
-  integrity sha512-cbaezEccNuxQC+OiudG9VjZNg9/RbAAHkyuhC6+8Gsgsc+MvDhfn1NrV6NNTaldLlZgJFgUiYOkrf3JGTTTGXQ==
+"@vueuse/metadata@8.2.2":
+  version "8.2.2"
+  resolved "https://registry.yarnpkg.com/@vueuse/metadata/-/metadata-8.2.2.tgz#ea52469c8f73ec09329358108cf51e7c10067cd1"
+  integrity sha512-R/HYA5k6IzGVB5qBwvIN4f0Hezx0sGrIK9mIL4a74u7Ta17v4XyjXS/5jV4keFC5bY1XTm79KvSWjh9ZXDos2Q==
 
-"@vueuse/shared@8.2.0":
-  version "8.2.0"
-  resolved "https://registry.yarnpkg.com/@vueuse/shared/-/shared-8.2.0.tgz#a8e2b637cfd866ea985615df9ec4913c4355c084"
-  integrity sha512-dTw7EJZgZCgG9DoVAiz4LtmKnIFXuE/idUFzvqRAJLjbPiVJc+qQH5kDUdKHI3W1U9t//1mdasQEKONArburiQ==
+"@vueuse/shared@8.2.2":
+  version "8.2.2"
+  resolved "https://registry.yarnpkg.com/@vueuse/shared/-/shared-8.2.2.tgz#fda8f86ead8c4f27acfd5f5bbe0c7a2ed24637e6"
+  integrity sha512-O0n219wXM11fUJ7j0/JVp8lePOhZLVQsdf0HvNbEsIyNSGCurAvEH+FVR4p5vAGiW+XPgK39c6cOnKQL5gWMZg==
   dependencies:
     vue-demi "*"
 
