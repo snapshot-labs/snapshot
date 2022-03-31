@@ -180,8 +180,8 @@
     "continue": "继续",
     "now": "当前",
     "votingPeriodExplainer": "这是用户可以投票的时间段。 该提案将在投票期开始之前可见并处于待定状态。",
-    "uploadImageExplainer": "通过拖放、选择或粘贴来附加文件。",
-    "uploading": "正在上传...",
+    "uploadImageExplainer": "Attach images by dragging & dropping, selecting or pasting them.",
+    "uploading": "Uploading image",
     "markdown": "支持Markdown样式",
     "validationWarning": {
       "basic": {

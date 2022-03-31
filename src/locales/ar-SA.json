@@ -26,6 +26,8 @@
   "verifiedSpace": "Verified space",
   "version": "الاصدار",
   "timeline": "الجدول الزمني",
+  "ended": "ended",
+  "started": "started",
   "filters": "المرشحات",
   "allSpaces": "جميع المساحات",
   "submitOnchain": "إرسال على السلسلة",
@@ -128,20 +130,29 @@
   "confirmAction": "Confirm action",
   "or": "or",
   "share": "Share",
+  "createButton": "Create",
+  "newSpaceNotice": {
+    "header": "Your space is live!",
+    "mainText": "By default each voter has a voting power of one. You can change how voting power is calculated via strategies in your {settings}. Changes to your settings will only affect new proposals, existing proposals can not be changed.",
+    "learnMore": "Learn more in the {documentation} or join Snapshot {discord} for help.",
+    "gotIt": "Got it!"
+  },
   "errors": {
     "required": "حقل مطلوب",
-    "minLength": "الحد الادنى لعدد الاحرف {0}",
+    "minLength": "Field is required",
     "maxLength": "الحد الاعلى لعدد الاحرف {0}",
     "pattern": "رمز غير صحيح",
     "minItems": "الحد الأدنى {0} عنصر(ار) مطلوب",
     "minStrategy": "تلزم خطة واحدة على الأقل.",
+    "website": "URL should be in the format https://www.example.com",
     "format": "تنسيق غير صحيح",
-    "type": "الرمز غير صحيح"
+    "type": "الرمز غير صحيح",
+    "unsupportedImageType": "File type not supported, Supported formats are jpeg, jpg and png"
   },
   "create": {
-    "question": "اطرح سؤالًا...",
+    "proposalTitle": "Title",
     "categorie(s)": "حدد حتى 2 فئة (فئات)",
-    "content": "Tell us more about your proposal (optional)",
+    "proposalDescription": "Description (optional)",
     "preview": "معاينة",
     "choices": "الخيارات",
     "addChoice": "إضافة اختيار",
@@ -164,10 +175,14 @@
     "schedule": "Schedule proposal",
     "delayEnforced": "The space enforces a delay until voting can start",
     "periodEnforced": "The space enforces the duration of the voting period",
+    "typeEnforced": "The space enforces this voting type",
     "edit": "Edit",
     "continue": "Continue",
     "now": "Now",
     "votingPeriodExplainer": "This is the time period in which users will be able to vote. The proposal will be visible and pending before the start of the voting period.",
+    "uploadImageExplainer": "Attach images by dragging & dropping, selecting or pasting them.",
+    "uploading": "Uploading image",
+    "markdown": "Styling with Markdown is supported",
     "validationWarning": {
       "basic": {
         "member": "يجب أن تكون عضوا في المساحة لتقديم اقتراح.",
@@ -219,6 +234,15 @@
       "closed": "مغلق"
     }
   },
+  "notifications": {
+    "header": "Notifications",
+    "noNotifications": "You have no notifications",
+    "proposalStarted": "proposal has started:",
+    "proposalEnded": "proposal has ended:",
+    "markAllAsRead": "Mark all as read",
+    "all": "All",
+    "unread": "Unread"
+  },
   "settings": {
     "header": "الإعدادات",
     "setEnsTextRecord": "Set ENS text record",
@@ -260,7 +284,10 @@
     "type": "النوع",
     "anyType": "أيّما",
     "hideAbstain": "Ignore abstain votes in basic voting results",
-    "connectWithSpaceOwner": "To modify space settings, connect with a controller or admin wallet."
+    "connectWithSpaceOwner": "To modify space settings, connect with a controller or admin wallet.",
+    "currentSpaceControllerIs": "The current space controller is {address}",
+    "newController": "New controller",
+    "set": "Set"
   },
   "setup": {
     "example": "مثال yam.eth",
@@ -280,13 +307,14 @@
     "controllerHasAuthority": "The controller has full authority over the space settings",
     "controller": "Controller",
     "selectEnsForSpace": "Choose ENS address",
-    "textRecordExists": "Currently the space controller is {address}. You can update the space controller by using the form below.",
     "spaceOwnerAddressPlaceHolder": "e.g. 0xF78108c9BBaF466dd96BE41be728Fe3220b37119",
     "controllerAddress": "Controller address",
     "updateController": "Update controller",
-    "connectWithEnsController": "To modify the space controller you need to connect with the wallet that owns {ens}",
     "seeOnEns": "See on ENS",
-    "goToSettings": "Go to settings"
+    "goToSettings": "Go to settings",
+    "setSpaceProfile": "Customize your space",
+    "waitForTransaction": "The transaction need to confirm before you can create your space. {txUrl}",
+    "pleaseWaitMessage": "This can take a few minutes, please wait while the transaction is being confirmed"
   },
   "notify": {
     "youDidIt": "لقد نجحت!",
@@ -298,7 +326,8 @@
     "delegationRemoved": "تمت إزالة التفويض",
     "proposalCreated": "خلقت عمدا",
     "voteSuccessful": "تم اعتماد{0} الخاص بك!",
-    "ensSet": "ENS text record was successfully set"
+    "ensSet": "ENS text record was successfully set",
+    "transactionSent": "Transaction sent"
   },
   "explore": {
     "createStrategy": "إنشاء استراتيجية",
@@ -356,7 +385,7 @@
     "addBatch": "أضف دفعة المعاملات",
     "batch": "دفعة المعاملات",
     "transactions": "العمليات المالية",
-    "to": "إلى (عنوان)",
+    "to": "To (address)",
     "invalidAddress": "العنوان غير صحيح",
     "invalidAmount": "مبلغ غير صحيح",
     "invalidValue": "قيمة غير صحيحة",
@@ -441,6 +470,7 @@
       "home": "Snapshot",
       "setup": "Create a space",
       "timeline": "Timeline",
+      "notifications": "Notifications",
       "explore": "Explore",
       "playground": "Playground",
       "space": {

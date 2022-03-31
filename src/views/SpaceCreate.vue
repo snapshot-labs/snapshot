@@ -27,7 +27,7 @@ const props = defineProps({
 const router = useRouter();
 const route = useRoute();
 const { t, setPageTitle } = useI18n();
-const { formatCompactNumber } = useIntl();
+const { formatCompactNumber, formatNumber } = useIntl();
 const auth = getInstance();
 const { domain } = useApp();
 const { web3, web3Account } = useWeb3();
@@ -60,6 +60,7 @@ const passValidation = ref([true]);
 const validationLoading = ref(false);
 const loadingSnapshot = ref(true);
 const textAreaEl = ref(null);
+const imageDragging = ref(false);
 
 const proposal = computed(() =>
   Object.assign(form.value, { choices: choices.value })
@@ -305,7 +306,8 @@ const injectImageToBody = image => {
   const currentBody = textAreaEl.value.value;
   form.value.body =
     currentBody.substring(0, cursorPosition) +
-    `![${image.name}](${image.url})` +
+    `
+![${image.name}](${image.url})` +
     currentBody.substring(cursorPosition);
 };
 
@@ -316,6 +318,25 @@ const {
 } = useImageUpload({
   onSuccess: injectImageToBody
 });
+
+const handlePaste = e => {
+  for (let i = 0; i < e.clipboardData.items.length; ++i) {
+    let item = e.clipboardData.items[i];
+    if (item.kind == 'file' && item.type.startsWith('image/')) {
+      const file = item.getAsFile();
+      upload(new File([file], 'image', { type: file.type }));
+    }
+  }
+};
+
+const handleDrop = e => {
+  for (let i = 0; i < e.dataTransfer.files.length; i++) {
+    let item = e.dataTransfer.files[i];
+    if (item.type.startsWith('image/')) {
+      upload(item);
+    }
+  }
+};
 </script>
 
 <template>
@@ -439,53 +460,59 @@ const {
                   class="s-label"
                 />
                 <div class="text-xs">
-                  {{ form.body.length }}/{{ bodyLimit }}
+                  {{ formatNumber(form.body.length) }} /
+                  {{ formatNumber(bodyLimit) }}
                 </div>
               </div>
               <div
-                class="h-[50vh] peer border border-b-0 rounded-t-xl overflow-hidden focus-within:border-skin-link hover:border-skin-text"
+                @drop.prevent="handleDrop"
+                @dragover="imageDragging = true"
+                @dragleave="imageDragging = false"
               >
-                <textarea
-                  ref="textAreaEl"
-                  class="s-input pt-0 w-full border-none !rounded-xl text-base h-full mt-0"
-                  :maxLength="bodyLimit"
-                  v-model="form.body"
-                />
-              </div>
-              <hr
-                class="border-skin-border border-dashed peer-focus-within:border-skin-link peer-hover:border-skin-text"
-              />
-
-              <label
-                class="relative flex justify-between border border-skin-border bg-skin-border rounded-b-xl py-1 px-2 items-center peer-focus-within:border-skin-link peer-hover:border-skin-text border-t-0"
-              >
-                <input
-                  accept="image/jpg, image/jpeg, image/png"
-                  type="file"
-                  class="opacity-[0.001] absolute p-[5px] cursor-pointer top-0 right-0 bottom-0 left-0 w-full ml-0"
-                  @change="upload"
-                />
-
-                <span class="pointer-events-none relative pl-1 text-sm">
-                  <span v-if="uploading" class="animate-pulse">
-                    {{ $t('create.uploading') }}
-                  </span>
-                  <span v-else-if="imageUploadError !== ''">
-                    {{ imageUploadError }}</span
-                  >
-                  <span v-else>
-                    {{ $t('create.uploadImageExplainer') }}
-                  </span>
-                </span>
-                <a
-                  class="relative inline"
-                  href="https://docs.github.com/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax"
-                  target="_blank"
-                  v-tippy="{ content: $t('create.markdown') }"
+                <div
+                  class="min-h-[260px] peer border rounded-t-xl overflow-hidden focus-within:border-skin-text"
                 >
-                  <BaseIcon name="markdown" class="text-skin-text" />
-                </a>
-              </label>
+                  <textarea
+                    @paste="handlePaste"
+                    ref="textAreaEl"
+                    class="s-input pt-0 w-full min-h-[260px] border-none !rounded-xl text-base h-full mt-0"
+                    :maxLength="bodyLimit"
+                    v-model="form.body"
+                  />
+                </div>
+
+                <label
+                  class="relative flex justify-between border border-skin-border rounded-b-xl py-1 px-2 items-center peer-focus-within:border-skin-text border-t-0"
+                >
+                  <input
+                    accept="image/jpg, image/jpeg, image/png"
+                    type="file"
+                    class="opacity-0 absolute p-[5px] top-0 right-0 bottom-0 left-0 w-full ml-0"
+                    @change="e => upload(e.target.files[0])"
+                  />
+
+                  <span class="pointer-events-none relative pl-1 text-sm">
+                    <span v-if="uploading" class="flex">
+                      <LoadingSpinner small class="mr-2 -mt-[2px]" />
+                      {{ $t('create.uploading') }}
+                    </span>
+                    <span v-else-if="imageUploadError !== ''">
+                      {{ imageUploadError }}</span
+                    >
+                    <span v-else>
+                      {{ $t('create.uploadImageExplainer') }}
+                    </span>
+                  </span>
+                  <a
+                    class="relative inline"
+                    href="https://docs.github.com/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax"
+                    target="_blank"
+                    v-tippy="{ content: $t('create.markdown') }"
+                  >
+                    <BaseIcon name="markdown" class="text-skin-text" />
+                  </a>
+                </label>
+              </div>
             </div>
 
             <div v-if="form.body && preview" class="mb-4">
@@ -673,11 +700,11 @@ const {
           v-if="currentStep === 1"
           @click="preview = !preview"
           :loading="clientLoading || queryLoading"
-          class="block w-full mb-3"
+          class="block w-full mb-2"
         >
           {{ preview ? $t('create.edit') : $t('create.preview') }}
         </BaseButton>
-        <BaseButton v-else @click="currentStep--" class="block w-full mb-3">
+        <BaseButton v-else @click="currentStep--" class="block w-full mb-2">
           {{ $t('back') }}
         </BaseButton>
 

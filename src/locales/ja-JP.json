@@ -180,8 +180,8 @@
     "continue": "続行する",
     "now": "今すぐ",
     "votingPeriodExplainer": "これはユーザーが投票できる期間です。提案は投票期間が始まる前に表示され、投票が開始されるまで保留状態となります。",
-    "uploadImageExplainer": "ドラッグ&ドロップ、選択またはペーストでファイルを添付する。",
-    "uploading": "アップロード中...",
+    "uploadImageExplainer": "Attach images by dragging & dropping, selecting or pasting them.",
+    "uploading": "Uploading image",
     "markdown": "マークダウン形式がサポートされています",
     "validationWarning": {
       "basic": {

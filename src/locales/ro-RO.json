@@ -26,6 +26,8 @@
   "verifiedSpace": "Spațiu verificat",
   "version": "Versiune",
   "timeline": "Cronologie",
+  "ended": "ended",
+  "started": "started",
   "filters": "Filtre",
   "allSpaces": "Toate spațiile",
   "submitOnchain": "Trimite in lanț",
@@ -128,20 +130,29 @@
   "confirmAction": "Confirm action",
   "or": "or",
   "share": "Share",
+  "createButton": "Create",
+  "newSpaceNotice": {
+    "header": "Your space is live!",
+    "mainText": "By default each voter has a voting power of one. You can change how voting power is calculated via strategies in your {settings}. Changes to your settings will only affect new proposals, existing proposals can not be changed.",
+    "learnMore": "Learn more in the {documentation} or join Snapshot {discord} for help.",
+    "gotIt": "Got it!"
+  },
   "errors": {
     "required": "Câmp obligatoriu",
-    "minLength": "Lungime minimă de {0}",
+    "minLength": "Field is required",
     "maxLength": "Lungime maximă de {0}",
     "pattern": "Caracter invalid",
     "minItems": "Minim {0} caracter(e) necesar(e)",
     "minStrategy": "Este necesară cel puţin o strategie.",
+    "website": "URL should be in the format https://www.example.com",
     "format": "Formatul nu este valid",
-    "type": "Tipul fişierului nu ese valid"
+    "type": "Tipul fişierului nu ese valid",
+    "unsupportedImageType": "File type not supported, Supported formats are jpeg, jpg and png"
   },
   "create": {
-    "question": "Pune o întrebare...",
+    "proposalTitle": "Title",
     "categorie(s)": "Selectează până la 2 categorii(e)",
-    "content": "Spune-ne mai multe despre propunerea ta (opţional)",
+    "proposalDescription": "Description (optional)",
     "preview": "Previzualizează",
     "choices": "Alegeri",
     "addChoice": "Adaugă alegere",
@@ -164,10 +175,14 @@
     "schedule": "Schedule proposal",
     "delayEnforced": "The space enforces a delay until voting can start",
     "periodEnforced": "The space enforces the duration of the voting period",
+    "typeEnforced": "The space enforces this voting type",
     "edit": "Edit",
     "continue": "Continue",
     "now": "Now",
     "votingPeriodExplainer": "This is the time period in which users will be able to vote. The proposal will be visible and pending before the start of the voting period.",
+    "uploadImageExplainer": "Attach images by dragging & dropping, selecting or pasting them.",
+    "uploading": "Uploading image",
+    "markdown": "Styling with Markdown is supported",
     "validationWarning": {
       "basic": {
         "member": "Trebuie sa fii autor al spațiu-lui pentru a înregistra o propunere.",
@@ -219,6 +234,15 @@
       "closed": "Închis"
     }
   },
+  "notifications": {
+    "header": "Notifications",
+    "noNotifications": "You have no notifications",
+    "proposalStarted": "proposal has started:",
+    "proposalEnded": "proposal has ended:",
+    "markAllAsRead": "Mark all as read",
+    "all": "All",
+    "unread": "Unread"
+  },
   "settings": {
     "header": "Setări",
     "setEnsTextRecord": "Set ENS text record",
@@ -260,7 +284,10 @@
     "type": "Tip",
     "anyType": "Oricare",
     "hideAbstain": "Ignoră voturile de abținere în rezultatele votului de bază",
-    "connectWithSpaceOwner": "To modify space settings, connect with a controller or admin wallet."
+    "connectWithSpaceOwner": "To modify space settings, connect with a controller or admin wallet.",
+    "currentSpaceControllerIs": "The current space controller is {address}",
+    "newController": "New controller",
+    "set": "Set"
   },
   "setup": {
     "example": "e.g. yam.eth",
@@ -280,13 +307,14 @@
     "controllerHasAuthority": "The controller has full authority over the space settings",
     "controller": "Controller",
     "selectEnsForSpace": "Choose ENS address",
-    "textRecordExists": "Currently the space controller is {address}. You can update the space controller by using the form below.",
     "spaceOwnerAddressPlaceHolder": "e.g. 0xF78108c9BBaF466dd96BE41be728Fe3220b37119",
     "controllerAddress": "Controller address",
     "updateController": "Update controller",
-    "connectWithEnsController": "To modify the space controller you need to connect with the wallet that owns {ens}",
     "seeOnEns": "See on ENS",
-    "goToSettings": "Go to settings"
+    "goToSettings": "Go to settings",
+    "setSpaceProfile": "Customize your space",
+    "waitForTransaction": "The transaction need to confirm before you can create your space. {txUrl}",
+    "pleaseWaitMessage": "This can take a few minutes, please wait while the transaction is being confirmed"
   },
   "notify": {
     "youDidIt": "Ai reușit!",
@@ -298,7 +326,8 @@
     "delegationRemoved": "Delegare eliminată",
     "proposalCreated": "Propunere creată",
     "voteSuccessful": "Ai votat cu succes!",
-    "ensSet": "ENS text record was successfully set"
+    "ensSet": "ENS text record was successfully set",
+    "transactionSent": "Transaction sent"
   },
   "explore": {
     "createStrategy": "Crează strategie",
@@ -356,7 +385,7 @@
     "addBatch": "Adaugă manunchi de tranzactii",
     "batch": "Manunchi de tranzacții",
     "transactions": "Tranzacții",
-    "to": "Către (adresă)",
+    "to": "To (address)",
     "invalidAddress": "Adresă invalidă",
     "invalidAmount": "Sumă invalidă",
     "invalidValue": "Valoare invalidă",
@@ -441,6 +470,7 @@
       "home": "Snapshot",
       "setup": "Crează un spațiu",
       "timeline": "Cronologie",
+      "notifications": "Notifications",
       "explore": "Explorează",
       "playground": "Teren de joacă",
       "space": {
