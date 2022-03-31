@@ -64,7 +64,7 @@
     "cypress": "^9.5.1",
     "eslint-plugin-prettier": "^3.4.0",
     "eslint-plugin-vue": "^7.15.1",
-    "happy-dom": "^2.51.0",
+    "happy-dom": "^2.52.0",
     "husky": "^7.0.4",
     "postcss": "^8.4.7",
     "prettier": "^2.6.1",
