@@ -46,7 +46,7 @@
     "vue": "^3.2.31",
     "vue-i18n": "^9.1.9",
     "vue-router": "^4.0.14",
-    "vue-tippy": "^6.0.0-alpha.54",
+    "vue-tippy": "^6.0.0-alpha.57",
     "vuedraggable": "^4.0.2"
   },
   "devDependencies": {
@@ -69,11 +69,11 @@
     "postcss": "^8.4.7",
     "prettier": "^2.6.1",
     "rollup-plugin-visualizer": "^5.6.0",
-    "sass": "~1.49.9",
+    "sass": "~1.49.10",
     "sass-loader": "^12.6.0",
     "tailwindcss": "^3.0.23",
     "unplugin-vue-components": "^0.17.21",
-    "vite": "^2.8.6",
+    "vite": "^2.9.0",
     "vitest": "^0.8.1"
   },
   "resolutions": {
