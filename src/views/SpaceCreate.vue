@@ -306,7 +306,8 @@ const injectImageToBody = image => {
   const currentBody = textAreaEl.value.value;
   form.value.body =
     currentBody.substring(0, cursorPosition) +
-    `![${image.name}](${image.url})` +
+    `
+![${image.name}](${image.url})` +
     currentBody.substring(cursorPosition);
 };
 
