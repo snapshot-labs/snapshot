@@ -61,7 +61,7 @@
     "@vue/test-utils": "^2.0.0-rc.17",
     "autoprefixer": "^10.4.2",
     "c8": "^7.11.0",
-    "cypress": "^9.5.1",
+    "cypress": "^9.5.3",
     "eslint-plugin-prettier": "^3.4.0",
     "eslint-plugin-vue": "^7.15.1",
     "happy-dom": "^2.53.0",
