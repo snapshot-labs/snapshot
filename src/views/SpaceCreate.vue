@@ -40,6 +40,7 @@ const notify = inject('notify');
 const form = ref({
   name: '',
   body: '',
+  discussion: '',
   choices: [],
   start: parseInt((Date.now() / 1e3).toFixed()),
   end: 0,
@@ -205,6 +206,7 @@ async function loadProposal() {
   form.value = {
     name: proposal.title,
     body: proposal.body,
+    discussion: proposal.discussion,
     choices: proposal.choices,
     start: proposal.start,
     end: proposal.end,
@@ -470,12 +472,12 @@ const handleDrop = e => {
                 @dragleave="imageDragging = false"
               >
                 <div
-                  class="min-h-[260px] peer border rounded-t-xl overflow-hidden focus-within:border-skin-text"
+                  class="min-h-[240px] peer border rounded-t-xl overflow-hidden focus-within:border-skin-text"
                 >
                   <textarea
                     @paste="handlePaste"
                     ref="textAreaEl"
-                    class="s-input pt-0 w-full min-h-[260px] border-none !rounded-xl text-base h-full mt-0"
+                    class="s-input pt-0 w-full min-h-[240px] border-none !rounded-xl text-base h-full mt-0"
                     :maxLength="bodyLimit"
                     v-model="form.body"
                   />
@@ -518,9 +520,17 @@ const handleDrop = e => {
             <div v-if="form.body && preview" class="mb-4">
               <BaseMarkdown :body="form.body" />
             </div>
-            <p v-if="form.body.length > bodyLimit" class="!text-red mt-4">
-              -{{ formatCompactNumber(-(bodyLimit - form.body.length)) }}
-            </p>
+
+            <SBase
+              v-if="!preview"
+              :definition="{ title: $t('create.discussion') }"
+            >
+              <input
+                v-model="form.discussion"
+                class="s-input w-full !rounded-full"
+                placeholder="e.g. https://forum.balancer.fi/proposal..."
+              />
+            </SBase>
           </div>
         </div>
       </template>
