@@ -32,6 +32,7 @@ export const PROPOSAL_QUERY = gql`
       ipfs
       title
       body
+      discussion
       choices
       start
       end
@@ -220,7 +221,7 @@ export const ENS_DOMAINS_BY_ACCOUNT_QUERY = gql`
 
 export const ENS_DOMAIN_BY_HASH_QUERY = gql`
   query Registration($id: String!) {
-    registration(id: $id){
+    registration(id: $id) {
       domain {
         name
         labelName
