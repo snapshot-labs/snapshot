@@ -141,7 +141,7 @@ function selectState(e) {
       </div>
     </template>
     <template #content-left>
-      <div class="py-4 px-4 md:px-0 flex justify-between">
+      <div class="pb-4 px-4 md:px-0 flex justify-between">
         <h2 v-text="$t('timeline')" class="mt-1" />
         <BaseDropdown
           @select="selectState"
