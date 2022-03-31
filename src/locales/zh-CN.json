@@ -54,7 +54,7 @@
   "deleteProposal": "删除提案",
   "demoSite": "这是一个演示站点，请试试看！",
   "removeDelegation": "移除委托",
-  "confirmRemove": "您确定要移除对的委托吗？",
+  "confirmRemove": "您确定要移除对{}的委托吗？",
   "removeSpace": "用于空间 {0}",
   "confirmVote": "确认投票",
   "sureToVote": "您确定要投此票吗？",
@@ -131,6 +131,7 @@
   "or": "或者",
   "share": "分享",
   "createButton": "创建",
+  "discussion": "Discussion",
   "newSpaceNotice": {
     "header": "您的空间已经上线了！",
     "mainText": "默认情况下，每个投票者都有一个投票权。 您可以通过 {settings} 中的策略更改投票权的计算方式。 更改您的设置只会影响新的提案，不会更改现有的提案。",
@@ -151,6 +152,7 @@
   },
   "create": {
     "proposalTitle": "标题",
+    "discussion": "Discussion (optional)",
     "categorie(s)": "最多选择2个类别",
     "proposalDescription": "描述（可选）",
     "preview": "预览",
