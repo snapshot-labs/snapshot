@@ -180,8 +180,8 @@
     "continue": "Continue",
     "now": "Now",
     "votingPeriodExplainer": "This is the time period in which users will be able to vote. The proposal will be visible and pending before the start of the voting period.",
-    "uploadImageExplainer": "Attach files by dragging & dropping, selecting or pasting them.",
-    "uploading": "Uploading..",
+    "uploadImageExplainer": "Attach images by dragging & dropping, selecting or pasting them.",
+    "uploading": "Uploading image",
     "markdown": "Styling with Markdown is supported",
     "validationWarning": {
       "basic": {

@@ -44,7 +44,7 @@ onMounted(async () => {
       >
         <TheNavbar />
       </div>
-      <div id="content" class="py-4">
+      <div id="content" class="pb-6 pt-4">
         <router-view :key="$route.path" />
       </div>
       <footer class="mt-auto" v-if="route.name === 'home'">
