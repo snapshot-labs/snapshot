@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, provide, ref } from 'vue';
+import { onMounted, provide } from 'vue';
 import { useApp } from '@/composables/useApp';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useFlashNotification } from '@/composables/useFlashNotification';
@@ -13,8 +13,6 @@ const route = useRoute();
 
 provide('web3', web3);
 provide('notify', notify);
-
-const showLoadingSpinner = ref(false);
 
 onMounted(async () => {
   init();
