@@ -77,6 +77,7 @@ defineProps({
     display: flex;
     align-items: center;
     align-content: center;
+    justify-content: center;
     top: 0;
     bottom: 80px;
     left: 0;

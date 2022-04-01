@@ -20,7 +20,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <LoadingSpinner v-if="!ready" class="overlay big" />
+  <LoadingSpinner v-if="!ready" class="overlay big animate-fade-in" />
   <div
     v-else
     class="flex font-sans text-base antialiased bg-skin-bg text-skin-text min-h-screen"
