@@ -71,6 +71,7 @@ export function useClient() {
         type: payload.type,
         title: payload.name,
         body: payload.body,
+        discussion: payload.discussion,
         choices: payload.choices,
         start: payload.start,
         end: payload.end,
