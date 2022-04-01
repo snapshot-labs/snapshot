@@ -1,10 +1,5 @@
 import { MULTI_SEND_VERSION } from './utils/multiSend';
 
-export const START_BLOCKS = {
-  1: 6531147,
-  4: 3175028
-};
-
 export const EIP712_TYPES = {
   Transaction: [
     { name: 'to', type: 'address' },
@@ -13,6 +8,17 @@ export const EIP712_TYPES = {
     { name: 'operation', type: 'uint8' },
     { name: 'nonce', type: 'uint256' }
   ]
+};
+
+export const EIP3770_PREFIXES = {
+  1: 'eth',
+  4: 'rin',
+  56: 'bnb',
+  100: 'gno',
+  246: 'ewt',
+  73799: 'vt',
+  42161: 'arb1',
+  137: 'matic'
 };
 
 export const EXPLORER_API_URLS = {

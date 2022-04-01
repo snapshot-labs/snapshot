@@ -21,14 +21,14 @@ function selectChoice(i) {
 
 <template>
   <div class="mb-3">
-    <UiButton
+    <BaseButton
       v-for="(choice, i) in proposal.choices"
       :key="i"
       @click="selectChoice(i + 1)"
       class="block w-full mb-2"
-      :class="selectedChoice === i + 1 && 'button--active'"
+      :class="selectedChoice === i + 1 && '!border-skin-link'"
     >
       {{ shorten(choice, 32) }}
-    </UiButton>
+    </BaseButton>
   </div>
 </template>

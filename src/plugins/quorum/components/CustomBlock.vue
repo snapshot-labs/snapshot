@@ -50,7 +50,7 @@ export default {
 </script>
 
 <template>
-  <Block title="Quorum" :loading="!loaded">
+  <BaseBlock title="Quorum" :loading="!loaded">
     <div class="text-skin-link mb-1">
       <span class="mr-1">
         {{ formatCompactNumber(totalScore) }} /
@@ -59,6 +59,6 @@ export default {
       </span>
       <span class="float-right" v-text="formatPercentNumber(quorum)" />
     </div>
-    <UiProgress :value="quorum" :max="1" class="mb-3" />
-  </Block>
+    <ProposalResultsProgressBar :value="quorum" :max="1" class="mb-3" />
+  </BaseBlock>
 </template>

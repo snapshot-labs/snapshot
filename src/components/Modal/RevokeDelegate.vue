@@ -60,7 +60,7 @@ async function handleSubmit() {
 </script>
 
 <template>
-  <UiModal :open="open" v-if="open" @close="$emit('close')" class="flex">
+  <BaseModal :open="open" v-if="open" @close="$emit('close')" class="flex">
     <template v-slot:header>
       <h3>{{ $t('removeDelegation') }}</h3>
     </template>
@@ -73,12 +73,12 @@ async function handleSubmit() {
       </h4>
       <div class="p-4 overflow-hidden text-center border-t">
         <div class="w-2/4 float-left pr-2">
-          <UiButton @click="$emit('close')" type="button" class="w-full">
+          <BaseButton @click="$emit('close')" type="button" class="w-full">
             {{ $t('cancel') }}
-          </UiButton>
+          </BaseButton>
         </div>
         <div class="w-2/4 float-left pl-2">
-          <UiButton
+          <BaseButton
             :disabled="loading"
             :loading="loading"
             type="submit"
@@ -86,9 +86,9 @@ async function handleSubmit() {
             primary
           >
             {{ $t('confirm') }}
-          </UiButton>
+          </BaseButton>
         </div>
       </div>
     </form>
-  </UiModal>
+  </BaseModal>
 </template>

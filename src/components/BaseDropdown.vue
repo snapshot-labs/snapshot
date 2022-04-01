@@ -14,6 +14,7 @@ const emit = defineEmits(['select', 'openChange']);
 
 const open = ref(false);
 const dropdownEl = ref<any>(null);
+const positionClass = ref('');
 
 function handleClick(action) {
   emit('select', action);
@@ -29,7 +30,14 @@ function close(e) {
 window.addEventListener('click', close);
 onBeforeUnmount(() => window.removeEventListener('click', close));
 
-watch(open, () => emit('openChange'));
+watch(open, () => {
+  const { left, right } = dropdownEl.value.getBoundingClientRect();
+  positionClass.value =
+    left < window.innerWidth - right
+      ? 'origin-top-left left-0'
+      : 'origin-top-right right-0';
+  emit('openChange');
+});
 </script>
 
 <template>
@@ -50,7 +58,8 @@ watch(open, () => emit('openChange'));
       leave-to-class="transform opacity-0 scale-95"
     >
       <div
-        class="origin-top-right border border-skin-border z-10 absolute right-0 mt-2 min-w-[150px] max-w-[320px] md:max-w-[400px] rounded-lg bg-skin-header-bg overflow-hidden shadow-lg"
+        :class="positionClass"
+        class="z-20 absolute mt-2 min-w-[150px] max-w-[320px] md:max-w-[400px] rounded-2xl bg-skin-header-bg overflow-hidden shadow-lg border border-skin-border"
         v-if="open"
       >
         <ul
@@ -62,7 +71,7 @@ watch(open, () => emit('openChange'));
             :key="item.text"
             @click="handleClick(item.action)"
             :class="{ selected: item.selected }"
-            class="list-none block whitespace-nowrap px-[18px] leading-[38px] cursor-pointer select-none"
+            class="list-none block whitespace-nowrap px-3 py-2 cursor-pointer select-none group"
           >
             <slot name="item" :item="item" :key="item">
               {{ item.text }}
@@ -77,6 +86,6 @@ watch(open, () => emit('openChange'));
 <style scoped>
 li.selected,
 li:hover {
-  @apply bg-skin-border text-skin-link;
+  @apply bg-skin-border;
 }
 </style>

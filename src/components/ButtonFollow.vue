@@ -3,12 +3,10 @@ import { computed } from 'vue';
 import { useFollowSpace } from '@/composables/useFollowSpace';
 import { useTerms } from '@/composables/useTerms';
 import { useClient } from '@/composables/useClient';
-import { useWeb3 } from '@/composables/useWeb3';
 
 const props = defineProps({ space: Object });
 
 const { isGnosisSafe } = useClient();
-const { web3 } = useWeb3();
 
 const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(props.space.id);
 
@@ -27,10 +25,10 @@ const canFollow = computed(() => {
 <template>
   <div
     v-tippy="{
-      content: isGnosisSafe || web3.isTrezor ? $t('walletNotSupported') : null
+      content: isGnosisSafe ? $t('walletNotSupported') : null
     }"
   >
-    <UiButton
+    <BaseButton
       v-bind="$attrs"
       @click.stop.prevent="
         loadingFollow !== ''
@@ -40,9 +38,8 @@ const canFollow = computed(() => {
           : (modalTermsOpen = true)
       "
       :loading="loadingFollow === space.id"
-      :disabled="isGnosisSafe || web3.isTrezor"
+      :disabled="isGnosisSafe"
       style="width: 120px"
-      no-focus
       class="mb-4 group"
       :class="{
         'hover:!border-red hover:!text-red hover:!bg-opacity-5 hover:!bg-red':
@@ -56,7 +53,7 @@ const canFollow = computed(() => {
           {{ $t('leave') }}
         </span>
       </span>
-    </UiButton>
+    </BaseButton>
   </div>
   <teleport to="#modal">
     <ModalTerms

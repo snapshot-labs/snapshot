@@ -28,7 +28,7 @@ const winningChoice = computed(() =>
 </script>
 
 <template>
-  <div class="transition-colors border-b last:border-b-0">
+  <div class="transition-colors md:border-b last:border-b-0 border-skin-border">
     <router-link
       class="p-4 block text-skin-text"
       :to="{
@@ -46,7 +46,7 @@ const winningChoice = computed(() =>
             }"
           >
             <div class="flex items-center">
-              <SpaceAvatar :space="proposal.space" size="28" />
+              <AvatarSpace :space="proposal.space" size="28" />
               <span
                 class="ml-2 group-hover:text-skin-link"
                 v-text="proposal.space.name"
@@ -54,13 +54,13 @@ const winningChoice = computed(() =>
             </div>
           </router-link>
           <span v-text="$tc('proposalBy')" />
-          <UserAvatar
+          <AvatarUser
             :address="proposal.author"
             :profile="profiles[proposal.author]"
             :proposal="proposal"
             only-username
           />
-          <Badges
+          <BaseBadge
             :address="proposal.author"
             :members="proposal.space.members"
           />
@@ -81,7 +81,7 @@ const winningChoice = computed(() =>
             class="mt-1 w-full relative"
           >
             <div class="absolute leading-[43px] ml-3 text-skin-link">
-              <Icon
+              <BaseIcon
                 name="check1"
                 size="20"
                 class="mr-1 -ml-1 align-middle"
@@ -105,12 +105,12 @@ const winningChoice = computed(() =>
               :style="`width: ${
                 (100 / proposal.scores_total) * proposal.scores[i]
               }%;`"
-              class="bg-[color:var(--border-color)] rounded-md h-[40px]"
+              class="bg-skin-border rounded-md h-[40px]"
             />
           </div>
         </div>
         <div class="flex items-center">
-          <UiState :state="proposal.state" slim class="mr-2" />
+          <LabelProposalState :state="proposal.state" slim class="mr-2" />
           {{ $t(`proposals.states.${proposal.state}`)
           }}<span v-if="proposal.scores_state !== 'final'"
             >,

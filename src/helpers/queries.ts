@@ -32,6 +32,7 @@ export const PROPOSAL_QUERY = gql`
       ipfs
       title
       body
+      discussion
       choices
       start
       end
@@ -175,6 +176,7 @@ export const SPACES_QUERY = gql`
       skin
       avatar
       twitter
+      website
       github
       private
       domain
@@ -207,11 +209,22 @@ export const SPACES_QUERY = gql`
   }
 `;
 
-export const ENS_QUERY = gql`
+export const ENS_DOMAINS_BY_ACCOUNT_QUERY = gql`
   query Domain($id: String!) {
     account(id: $id) {
       domains {
         name
+      }
+    }
+  }
+`;
+
+export const ENS_DOMAIN_BY_HASH_QUERY = gql`
+  query Registration($id: String!) {
+    registration(id: $id) {
+      domain {
+        name
+        labelName
       }
     }
   }

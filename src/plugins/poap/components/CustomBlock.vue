@@ -157,7 +157,7 @@ export default {
 </script>
 
 <template>
-  <Block title="I voted POAP" :loading="loading">
+  <BaseBlock title="I voted POAP" :loading="loading">
     <div class="flex flex-col items-center">
       <img :src="headerImg" alt="" class="mb-2" />
       <div class="text-skin-link text-center mb-2">{{ $t(header) }}</div>
@@ -172,7 +172,7 @@ export default {
           max-width: 125px;
         "
       />
-      <UiButton
+      <BaseButton
         v-if="currentState !== 'NO_POAP'"
         class="w-full mb-2 mt-3"
         @click="action"
@@ -180,7 +180,7 @@ export default {
         :loading="actionLoading"
       >
         {{ $t(buttonText) }}
-      </UiButton>
+      </BaseButton>
     </div>
-  </Block>
+  </BaseBlock>
 </template>

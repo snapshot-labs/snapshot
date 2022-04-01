@@ -18,10 +18,7 @@ export function useClient() {
   const connectorName = computed(() => auth.provider.value?.connectorName);
 
   const usePersonalSign = computed(() => {
-    return (
-      connectorName.value === 'gnosis' ||
-      web3.value.isTrezor
-    );
+    return connectorName.value === 'gnosis';
   });
 
   const isGnosisSafe = computed(
@@ -69,6 +66,7 @@ export function useClient() {
         type: payload.type,
         title: payload.name,
         body: payload.body,
+        discussion: payload.discussion,
         choices: payload.choices,
         start: payload.start,
         end: payload.end,

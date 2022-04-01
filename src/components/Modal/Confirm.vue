@@ -6,6 +6,7 @@ import { useClient } from '@/composables/useClient';
 import { useIntl } from '@/composables/useIntl';
 import { getPower } from '../../helpers/snapshot';
 import { useWeb3 } from '../../composables/useWeb3';
+import pending from '@/helpers/pending.json';
 
 const { web3Account } = useWeb3();
 
@@ -45,7 +46,9 @@ async function handleSubmit() {
   console.log('Result', result);
   if (result.id) {
     notify(['green', t('notify.voteSuccessful')]);
-    emit('reload');
+    if (!pending.includes(props.space.id)) {
+      emit('reload');
+    }
     emit('close');
   }
 }
@@ -76,10 +79,12 @@ watch(
 </script>
 
 <template>
-  <UiModal :open="open" @close="$emit('close')" class="flex">
-    <template v-slot:header>
-      <h3>{{ $t('confirmVote') }}</h3>
-    </template>
+  <BaseModal
+    :open="open"
+    :showClose="false"
+    @close="$emit('close')"
+    class="flex"
+  >
     <div class="flex flex-col flex-auto">
       <h4 class="m-4 mb-0 text-center">
         {{
@@ -90,7 +95,7 @@ watch(
         <br />
         {{ $t('cannotBeUndone') }}
       </h4>
-      <div class="m-4 p-4 border rounded-md text-skin-link">
+      <BaseBlock slim class="m-4 p-4 text-skin-link">
         <div class="flex">
           <span v-text="$t('options')" class="flex-auto text-skin-text mr-1" />
           <span
@@ -120,7 +125,7 @@ watch(
             class="flex-auto text-skin-text mr-1"
           />
           <span v-if="vpLoadingFailed" class="flex item-center">
-            <Icon name="warning" size="22" class="text-red" />
+            <BaseIcon name="warning" size="22" class="text-red" />
           </span>
           <span
             v-else-if="vpLoaded && !vpLoading"
@@ -136,26 +141,26 @@ watch(
             {{ formatCompactNumber(vp) }}
             {{ shorten(space.symbol, 'symbol') }}
           </span>
-          <UiLoading v-else />
+          <LoadingSpinner v-else />
           <BaseLink
             v-if="vp === 0 && vpLoaded && !vpLoading && !vpLoadingFailed"
             link="https://github.com/snapshot-labs/snapshot/discussions/767#discussioncomment-1400614"
-            class="inline-block ml-1"
+            class="ml-1 flex items-center"
           >
-            <Icon name="info" size="24" class="text-skin-text" />
+            <BaseIcon name="info" size="24" class="text-skin-text" />
           </BaseLink>
         </div>
         <div v-if="vpLoadingFailed" class="mt-3">{{ t('vpError') }}</div>
-      </div>
+      </BaseBlock>
     </div>
     <template v-slot:footer>
       <div class="w-2/4 float-left pr-2">
-        <UiButton @click="$emit('close')" type="button" class="w-full">
+        <BaseButton @click="$emit('close')" type="button" class="w-full">
           {{ $t('cancel') }}
-        </UiButton>
+        </BaseButton>
       </div>
       <div class="w-2/4 float-left pl-2">
-        <UiButton
+        <BaseButton
           :disabled="vp === 0 || clientLoading"
           :loading="clientLoading"
           @click="handleSubmit"
@@ -164,8 +169,8 @@ watch(
           primary
         >
           {{ $t('proposal.vote') }}
-        </UiButton>
+        </BaseButton>
       </div>
     </template>
-  </UiModal>
+  </BaseModal>
 </template>

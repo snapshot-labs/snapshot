@@ -27,7 +27,7 @@ function emitChoice(c) {
 </script>
 
 <template>
-  <Block class="mb-4" :title="$t('proposal.castVote')">
+  <BaseBlock class="mb-4" :title="$t('proposal.castVote')">
     <div class="mb-3">
       <VotingSingleChoice
         v-if="proposal.type === 'single-choice' || proposal.type === 'basic'"
@@ -50,16 +50,18 @@ function emitChoice(c) {
         @selectChoice="emitChoice"
       />
     </div>
-    <UiButton
+    <BaseButton
       :disabled="
         web3.authLoading ||
-        (selectedChoices < 1 && proposal.type !== 'approval')
+        (selectedChoices < 1 && proposal.type !== 'approval') ||
+        (selectedChoices < proposal.choices.length &&
+          proposal.type === 'ranked-choice')
       "
       @click="$emit('clickVote')"
       class="block w-full"
       primary
     >
       {{ $t('proposal.vote') }}
-    </UiButton>
-  </Block>
+    </BaseButton>
+  </BaseBlock>
 </template>

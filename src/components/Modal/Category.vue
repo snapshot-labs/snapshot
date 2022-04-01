@@ -47,47 +47,49 @@ function handleClose() {
 </script>
 
 <template>
-  <UiModal :open="open" @close="handleClose">
+  <BaseModal :open="open" @close="handleClose">
     <template v-slot:header>
       <h3>
         {{ $t('settings.selectCategories') }}
       </h3>
     </template>
 
-    <div class="mt-4 mx-0 md:mx-4 flex flex-col justify-between">
+    <div class="my-4 mx-0 md:mx-4 flex flex-col justify-between">
       <div class="ml-4 md:ml-0 mb-4">
         {{ $t('create.categorie(s)') }}
       </div>
-      <Block
-        @click="selectCategoriesHandler(category)"
-        v-for="(category, i) in categories"
-        :key="i"
-        :class="[
-          {
-            'hover:border-skin-link cursor-pointer':
-              hasCategory(category) || selectedCategories.length < 2,
-            'opacity-50':
-              !hasCategory(category) && selectedCategories.length === 2,
-            '!border-skin-link': hasCategory(category)
-          },
-          'relative capitalize'
-        ]"
-      >
-        <h3 v-text="category" />
-        <i
-          v-if="hasCategory(category)"
-          class="iconfont iconcheck1 absolute top-2 right-2 text-lg"
-        />
-      </Block>
+      <div class="space-y-3">
+        <BaseBlock
+          @click="selectCategoriesHandler(category)"
+          v-for="(category, i) in categories"
+          :key="i"
+          :class="[
+            {
+              'hover:border-skin-text cursor-pointer':
+                hasCategory(category) || selectedCategories.length < 2,
+              'opacity-50':
+                !hasCategory(category) && selectedCategories.length === 2,
+              '!border-skin-link': hasCategory(category)
+            },
+            'relative capitalize'
+          ]"
+        >
+          <h3 v-text="category" />
+          <i
+            v-if="hasCategory(category)"
+            class="iconfont iconcheck1 absolute top-2 right-2 text-lg"
+          />
+        </BaseBlock>
+      </div>
     </div>
     <template v-slot:footer>
       <div class="w-2/4 float-left pr-2">
-        <UiButton @click="handleClose" type="button" class="w-full">
+        <BaseButton @click="handleClose" type="button" class="w-full">
           {{ $t('cancel') }}
-        </UiButton>
+        </BaseButton>
       </div>
       <div class="w-2/4 float-left pl-2">
-        <UiButton
+        <BaseButton
           @click="handleSubmit"
           :disabled="!selectedCategories.length"
           type="submit"
@@ -95,8 +97,8 @@ function handleClose() {
           primary
         >
           {{ $t('confirm') }}
-        </UiButton>
+        </BaseButton>
       </div>
     </template>
-  </UiModal>
+  </BaseModal>
 </template>

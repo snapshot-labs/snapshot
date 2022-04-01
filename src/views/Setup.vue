@@ -5,7 +5,7 @@ import { useWeb3 } from '@/composables/useWeb3';
 import { useModal } from '@/composables/useModal';
 import { useI18n } from '@/composables/useI18n';
 import { useEns } from '@/composables/useEns';
-import { useApp } from '@/composables/useApp';
+import { useSpaces } from '@/composables/useSpaces';
 import { useSpaceController } from '@/composables/useSpaceController';
 
 const router = useRouter();
@@ -14,7 +14,7 @@ const { web3, web3Account } = useWeb3();
 const { modalAccountOpen } = useModal();
 const { loadOwnedEnsDomains, ownedEnsDomains } = useEns();
 const { setPageTitle } = useI18n();
-const { explore } = useApp();
+const { spaces } = useSpaces();
 const { ensAddress } = useSpaceController();
 
 onMounted(() => {
@@ -22,16 +22,16 @@ onMounted(() => {
 });
 
 const ownedEnsDomainsNoExistingSpace = computed(() => {
-  //  filter ownedEnsDomains with explore.spaces
+  //  filter ownedEnsDomains with spaces
   return ownedEnsDomains.value.filter(
-    d => !Object.keys(explore.value.spaces).includes(d.name)
+    d => !Object.keys(spaces.value).includes(d.name)
   );
 });
 
 // used either on click on existing owned domain OR once a newly registered
 // domain is returned by the ENS subgraph.
 const goToStepTwo = key => {
-  router.push({ name: 'setup', params: { step: '2' } });
+  router.push({ name: 'setup', params: { step: 'controller' } });
   ensAddress.value = key;
 };
 
@@ -67,6 +67,9 @@ watch(ownedEnsDomains, (newVal, oldVal) => {
 const loadingOwnedEnsDomains = ref(true);
 loadOwnedEnsDomains().finally(() => (loadingOwnedEnsDomains.value = false));
 watch(web3Account, async () => {
+  // Reset ensAddress to empty string
+  ensAddress.value = '';
+
   loadingOwnedEnsDomains.value = true;
   await loadOwnedEnsDomains();
   loadingOwnedEnsDomains.value = false;
@@ -84,20 +87,21 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
         <h1 v-text="$t('setup.createASpace')" class="mb-4" />
       </div>
       <template v-if="web3Account">
-        <Block v-if="loadingOwnedEnsDomains" slim>
-          <RowLoading class="my-2" />
-        </Block>
+        <LoadingRow v-if="loadingOwnedEnsDomains" block />
         <!-- Step two - setup space controller -->
         <SetupController
-          v-else-if="route.params.step === '2' && ensAddress"
-          :ownedEnsDomains="ownedEnsDomains"
+          v-else-if="route.params.step === 'controller' && ensAddress"
+          :ensAddress="ensAddress"
+          :web3Account="web3Account"
         />
-        <Block
-          v-else
-          :title="$t('setup.selectEnsForSpace')"
-          icon="info"
-          iconHref="https://docs.snapshot.org/spaces/before-creating-your-space"
-        >
+
+        <!-- Step three - setup space profile -->
+        <SetupProfile
+          v-else-if="route.params.step === 'profile' && ensAddress"
+          :ensAddress="ensAddress"
+          :web3Account="web3Account"
+        />
+        <BaseBlock v-else>
           <div v-if="ownedEnsDomainsNoExistingSpace.length">
             <div class="mb-3">
               {{
@@ -109,7 +113,7 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
               }}
             </div>
             <div class="space-y-2">
-              <UiButton
+              <BaseButton
                 v-for="(ens, i) in ownedEnsDomainsNoExistingSpace"
                 :key="i"
                 @click="goToStepTwo(ens.name)"
@@ -117,8 +121,8 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
                 :primary="ownedEnsDomainsNoExistingSpace.length === 1"
               >
                 {{ ens.name }}
-                <Icon name="go" size="22" class="-mr-2" />
-              </UiButton>
+                <BaseIcon name="go" size="22" class="-mr-2" />
+              </BaseButton>
             </div>
             <div class="my-3">
               {{ $t('setup.orReigsterNewEns') }}
@@ -137,28 +141,28 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
               @waitForRegistration="waitForRegistration"
             />
           </div>
-        </Block>
+        </BaseBlock>
       </template>
-      <Block v-else>
-        <UiButton
+      <BaseBlock v-else>
+        <BaseButton
           @click="modalAccountOpen = true"
           :loading="web3.authLoading"
           class="w-full"
           primary
         >
           {{ $t('connectWallet') }}
-        </UiButton>
-      </Block>
+        </BaseButton>
+      </BaseBlock>
     </template>
     <template #sidebar-right>
-      <Block>
-        <Icon
+      <BaseBlock class="text-skin-text">
+        <BaseIcon
           name="gitbook"
           size="24"
           class="text-skin-text pr-2 !align-middle"
         />
         <span v-html="$t('setup.helpDocsAndDiscordLinks')" />
-      </Block>
+      </BaseBlock>
     </template>
   </TheLayout>
 </template>

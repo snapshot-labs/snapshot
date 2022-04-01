@@ -1,7 +1,7 @@
-<script setup>
+<script setup lang="ts">
 import { computed } from 'vue';
 
-const props = defineProps({ address: String, members: Object });
+const props = defineProps<{ address: string; members?: string[] }>();
 
 const isCore = computed(() => {
   if (!props.members) return false;
@@ -11,7 +11,7 @@ const isCore = computed(() => {
 </script>
 
 <template>
-  <UiLabel v-if="isCore" class="ml-1">
+  <BaseLabel v-if="isCore" class="ml-1">
     {{ $t('isCore') }}
-  </UiLabel>
+  </BaseLabel>
 </template>

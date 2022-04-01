@@ -124,7 +124,7 @@ function selectState(e) {
   <TheLayout class="!mt-0">
     <template #sidebar-right>
       <div style="position: fixed; width: 320px" class="mt-4 hidden lg:block">
-        <Block :slim="true" :title="$t('filters')" class="overflow-hidden">
+        <BaseBlock :slim="true" class="overflow-hidden">
           <div class="py-3">
             <router-link
               :to="{ name: 'timeline' }"
@@ -137,11 +137,11 @@ function selectState(e) {
               class="block px-4 py-2 sidenav-item"
             />
           </div>
-        </Block>
+        </BaseBlock>
       </div>
     </template>
     <template #content-left>
-      <div class="py-4 px-4 md:px-0 flex justify-between">
+      <div class="pb-4 px-4 md:px-0 flex justify-between">
         <h2 v-text="$t('timeline')" class="mt-1" />
         <BaseDropdown
           @select="selectState"
@@ -169,21 +169,20 @@ function selectState(e) {
           ]"
         >
           <template v-slot:button>
-            <UiButton class="pr-3">
+            <BaseButton class="pr-3">
               {{ $t(`proposals.states.${store.timeline.filterBy}`) }}
-              <Icon size="14" name="arrow-down" class="mt-1 mr-1" />
-            </UiButton>
+              <BaseIcon size="14" name="arrow-down" class="mt-1 mr-1" />
+            </BaseButton>
           </template>
         </BaseDropdown>
       </div>
-      <div class="md:border-r md:border-l md:rounded-lg border-t border-b">
-        <RowLoading
+      <div class="md:rounded-lg bg-skin-block-bg md:border border-skin-border">
+        <LoadingRow
           v-if="
             loading ||
             (web3.authLoading && isTimeline) ||
             (loadingFollows && isTimeline)
           "
-          class="px-4 py-5"
         />
         <div
           v-else-if="
@@ -193,13 +192,12 @@ function selectState(e) {
         >
           <div class="mb-3">{{ $t('noSpacesJoined') }}</div>
           <router-link :to="{ path: '/' }">
-            <UiButton>{{ $t('joinSpaces') }}</UiButton>
+            <BaseButton>{{ $t('joinSpaces') }}</BaseButton>
           </router-link>
         </div>
         <NoResults
-          class="mt-4 mb-[24px]"
+          class="py-4 mb-0"
           v-else-if="store.timeline.proposals.length < 1"
-          :block="false"
         />
         <div v-else>
           <TimelineProposalPreview
@@ -207,14 +205,12 @@ function selectState(e) {
             :key="i"
             :proposal="proposal"
             :profiles="profiles"
+            class="border-b first:border-t md:first:border-t-0"
           />
         </div>
-        <div
-          style="height: 10px; width: 10px; position: absolute"
-          ref="endElement"
-        />
+        <div class="w-[10px] h-[10px] absolute bottom-0" ref="endElement" />
         <div v-if="loadingMore && !loading" :slim="true">
-          <RowLoading class="border-t px-4 py-5" />
+          <LoadingRow class="border-t" />
         </div>
       </div>
     </template>

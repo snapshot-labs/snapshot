@@ -9,10 +9,6 @@ defineProps({
   disabled: {
     type: Boolean,
     default: false
-  },
-  noFocus: {
-    type: Boolean,
-    default: false
   }
 });
 </script>
@@ -23,14 +19,12 @@ defineProps({
     :class="[
       'button px-[24px] ',
       {
-        'button--primary hover:brightness-95': primary,
-        'focus-within:border-skin-border': noFocus,
-        'focus-within:border-skin-link': !noFocus
+        'button--primary hover:brightness-95': primary
       }
     ]"
     :disabled="disabled || loading"
   >
-    <UiLoading v-if="loading" />
+    <LoadingSpinner v-if="loading" />
     <slot v-else />
   </button>
 </template>
@@ -63,13 +57,9 @@ defineProps({
     }
   }
 
-  &.button--active {
-    border-color: var(--link-color) !important;
-  }
-
   &:hover {
     color: var(--link-color);
-    border-color: var(--link-color);
+    border-color: var(--text-color);
   }
 
   &:disabled {

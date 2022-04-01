@@ -12,11 +12,11 @@ import Timeline from '@/views/Timeline.vue';
 import Space from '@/views/Space.vue';
 import SpaceAbout from '@/views/SpaceAbout.vue';
 import SpaceProposals from '@/views/SpaceProposals.vue';
-import { useDomain } from '@/composables/useDomain';
+import { useApp } from '@/composables/useApp';
 
 // The frontend shows all spaces or just a single one, when being accessed
 // through that space's custom domain.
-const { domain, alias } = useDomain();
+const { domain, domainAlias } = useApp();
 const routes: any[] = [];
 
 // These routes get prefixed with the respective space's ENS domain (/:key)
@@ -60,13 +60,13 @@ if (domain) {
     { path: '/playground/:name', name: 'playground', component: Playground },
     {
       path: `/${domain}`,
-      alias: `/${alias ?? domain}`,
+      alias: `/${domainAlias ?? domain}`,
       name: 'home-redirect',
       redirect: '/'
     },
     {
       path: `/${domain}/:path(.*)`,
-      alias: `/${alias ?? domain}/:path(.*)`,
+      alias: `/${domainAlias ?? domain}/:path(.*)`,
       name: 'space-redirect',
       redirect: (to: RouteLocation) => ({ path: `/${to.params.path}` })
     }

@@ -2,7 +2,7 @@
 import { BigNumber } from '@ethersproject/bignumber';
 import { formatUnits } from '@ethersproject/units';
 import { useEns } from '@/composables/useEns';
-import { useSafesnap } from '@/composables/useSafesnap';
+import { useSafesnap } from '@/plugins/safeSnap/composables/useSafesnap';
 import { getEnsTextRecord } from '@snapshot-labs/snapshot.js/src/utils';
 
 export default {
@@ -76,7 +76,7 @@ export default {
 </script>
 
 <template>
-  <UiModal :open="open" @close="$emit('close')">
+  <BaseModal :open="open" @close="$emit('close')">
     <template v-slot:header>
       <h3 class="title">SafeSnap</h3>
     </template>
@@ -132,16 +132,16 @@ export default {
           {{ $t('safeSnap.setOutcomeTo') }}
         </h4>
         <div class="vote-button-row">
-          <UiButton @click="handleSetApproval(0)" class="button vote-button">
+          <BaseButton @click="handleSetApproval(0)" class="button vote-button">
             No
-          </UiButton>
-          <UiButton @click="handleSetApproval(1)" class="vote-button" primary>
+          </BaseButton>
+          <BaseButton @click="handleSetApproval(1)" class="vote-button" primary>
             Yes
-          </UiButton>
+          </BaseButton>
         </div>
       </div>
     </div>
-  </UiModal>
+  </BaseModal>
 </template>
 
 <style>
