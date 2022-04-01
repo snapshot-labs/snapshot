@@ -505,14 +505,14 @@ const handleDrop = e => {
                       {{ $t('create.uploadImageExplainer') }}
                     </span>
                   </span>
-                  <a
+                  <BaseLink
                     class="relative inline"
-                    href="https://docs.github.com/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax"
-                    target="_blank"
+                    link="https://docs.github.com/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax"
                     v-tippy="{ content: $t('create.markdown') }"
+                    hide-external-icon
                   >
                     <BaseIcon name="markdown" class="text-skin-text" />
-                  </a>
+                  </BaseLink>
                 </label>
               </div>
             </div>
