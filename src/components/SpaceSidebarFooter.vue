@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue';
+import { sanitizeUrl } from '@braintree/sanitize-url';
 
 const props = defineProps<{ space?: Record<string, any> }>();
 
@@ -19,7 +20,7 @@ const socials = computed(() => {
     },
     {
       icon: 'earth',
-      link: props.space?.website || ''
+      link: props.space?.website ? sanitizeUrl(props.space?.website) : ''
     }
   ];
 });
