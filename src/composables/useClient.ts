@@ -21,7 +21,6 @@ export function useClient() {
     return (
       connectorName.value === 'walletlink' ||
       connectorName.value === 'walletconnect' ||
-      connectorName.value === 'portis' ||
       connectorName.value === 'gnosis'
     );
   });
