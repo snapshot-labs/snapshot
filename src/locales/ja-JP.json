@@ -131,6 +131,7 @@
   "or": "または",
   "share": "共有する",
   "createButton": "作成する",
+  "discussion": "Discussion",
   "newSpaceNotice": {
     "header": "スペースが 進行中です！",
     "mainText": "デフォルトでは、各投票者が一つの投票権を持っています。{settings}　にあるストラテジーに基づき、投票権が計算される方法を変更することができます。設定の変更は新しい提案にしか適用されません。既存の提案には適用されません。",
@@ -151,6 +152,7 @@
   },
   "create": {
     "proposalTitle": "タイトル",
+    "discussion": "Discussion (optional)",
     "categorie(s)": "最大2つのカテゴリを選択してください",
     "proposalDescription": "概要 (任意)",
     "preview": "プレビュー",

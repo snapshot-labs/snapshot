@@ -131,6 +131,7 @@
   "or": "或者",
   "share": "分享",
   "createButton": "创建",
+  "discussion": "讨论",
   "newSpaceNotice": {
     "header": "您的空间已经上线了！",
     "mainText": "默认情况下，每个投票者都有一个投票权。 您可以通过 {settings} 中的策略更改投票权的计算方式。 更改您的设置只会影响新的提案，不会更改现有的提案。",
@@ -151,6 +152,7 @@
   },
   "create": {
     "proposalTitle": "标题",
+    "discussion": "讨论 (可选)",
     "categorie(s)": "最多选择2个类别",
     "proposalDescription": "描述（可选）",
     "preview": "预览",
@@ -180,8 +182,8 @@
     "continue": "继续",
     "now": "当前",
     "votingPeriodExplainer": "这是用户可以投票的时间段。 该提案将在投票期开始之前可见并处于待定状态。",
-    "uploadImageExplainer": "Attach images by dragging & dropping, selecting or pasting them.",
-    "uploading": "Uploading image",
+    "uploadImageExplainer": "通过拖放、选择或粘贴来附加文件。",
+    "uploading": "正在上传图片",
     "markdown": "支持Markdown样式",
     "validationWarning": {
       "basic": {
