@@ -131,6 +131,7 @@
   "or": "또는",
   "share": "Share",
   "createButton": "Create",
+  "discussion": "Discussion",
   "newSpaceNotice": {
     "header": "Your space is live!",
     "mainText": "By default each voter has a voting power of one. You can change how voting power is calculated via strategies in your {settings}. Changes to your settings will only affect new proposals, existing proposals can not be changed.",
@@ -151,6 +152,7 @@
   },
   "create": {
     "proposalTitle": "Title",
+    "discussion": "Discussion (optional)",
     "categorie(s)": "최대 2개의 카테고리 선택",
     "proposalDescription": "Description (optional)",
     "preview": "미리보기",
