@@ -14,7 +14,7 @@ const { web3, web3Account } = useWeb3();
 const { modalAccountOpen } = useModal();
 const { loadOwnedEnsDomains, ownedEnsDomains } = useEns();
 const { setPageTitle } = useI18n();
-const { spaces } = useSpaces();
+const { spaces, spacesLoaded } = useSpaces();
 const { ensAddress } = useSpaceController();
 
 onMounted(() => {
@@ -87,7 +87,7 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
         <h1 v-text="$t('setup.createASpace')" class="mb-4" />
       </div>
       <template v-if="web3Account">
-        <LoadingRow v-if="loadingOwnedEnsDomains" block />
+        <LoadingRow v-if="loadingOwnedEnsDomains || !spacesLoaded" block />
         <!-- Step two - setup space controller -->
         <SetupController
           v-else-if="route.params.step === 'controller' && ensAddress"

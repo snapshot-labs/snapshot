@@ -18,6 +18,7 @@ import { useClient } from '@/composables/useClient';
 import { useStore } from '@/composables/useStore';
 import { useIntl } from '@/composables/useIntl';
 import { usePlugins } from '@/composables/usePlugins';
+import { useImageUpload } from '@/composables/useImageUpload';
 
 const props = defineProps({
   space: Object
@@ -26,7 +27,7 @@ const props = defineProps({
 const router = useRouter();
 const route = useRoute();
 const { t, setPageTitle } = useI18n();
-const { formatCompactNumber } = useIntl();
+const { formatCompactNumber, formatNumber } = useIntl();
 const auth = getInstance();
 const { domain } = useApp();
 const { web3, web3Account } = useWeb3();
@@ -36,12 +37,10 @@ const { pluginIndex } = usePlugins();
 
 const notify = inject('notify');
 
-const choices = ref([]);
-const blockNumber = ref(-1);
-const bodyLimit = ref(14400);
 const form = ref({
   name: '',
   body: '',
+  discussion: '',
   choices: [],
   start: parseInt((Date.now() / 1e3).toFixed()),
   end: 0,
@@ -49,6 +48,11 @@ const form = ref({
   metadata: { plugins: {} },
   type: 'single-choice'
 });
+
+const choices = ref([]);
+const blockNumber = ref(-1);
+const bodyLimit = ref(14400);
+
 const modalDateSelectOpen = ref(false);
 const modalVotingTypeOpen = ref(false);
 const selectedDate = ref('');
@@ -56,6 +60,8 @@ const nameInput = ref(null);
 const passValidation = ref([true]);
 const validationLoading = ref(false);
 const loadingSnapshot = ref(true);
+const textAreaEl = ref(null);
+const imageDragging = ref(false);
 
 const proposal = computed(() =>
   Object.assign(form.value, { choices: choices.value })
@@ -200,6 +206,7 @@ async function loadProposal() {
   form.value = {
     name: proposal.title,
     body: proposal.body,
+    discussion: proposal.discussion,
     choices: proposal.choices,
     start: proposal.start,
     end: proposal.end,
@@ -295,6 +302,43 @@ const needsPluginConfigs = computed(() =>
     pluginKey => pluginIndex[pluginKey]?.defaults?.proposal
   )
 );
+
+const injectImageToBody = image => {
+  const cursorPosition = textAreaEl.value.selectionStart;
+  const currentBody = textAreaEl.value.value;
+  form.value.body =
+    currentBody.substring(0, cursorPosition) +
+    `
+![${image.name}](${image.url})` +
+    currentBody.substring(cursorPosition);
+};
+
+const {
+  upload,
+  error: imageUploadError,
+  uploading
+} = useImageUpload({
+  onSuccess: injectImageToBody
+});
+
+const handlePaste = e => {
+  for (let i = 0; i < e.clipboardData.items.length; ++i) {
+    let item = e.clipboardData.items[i];
+    if (item.kind == 'file' && item.type.startsWith('image/')) {
+      const file = item.getAsFile();
+      upload(new File([file], 'image', { type: file.type }));
+    }
+  }
+};
+
+const handleDrop = e => {
+  for (let i = 0; i < e.dataTransfer.files.length; i++) {
+    let item = e.dataTransfer.files[i];
+    if (item.type.startsWith('image/')) {
+      upload(item);
+    }
+  }
+};
 </script>
 
 <template>
@@ -396,37 +440,97 @@ const needsPluginConfigs = computed(() =>
 
       <template v-if="currentStep === 1">
         <div class="px-4 md:px-0">
-          <div class="flex flex-col mb-6">
+          <div class="flex flex-col space-y-3">
             <h1
               v-if="preview"
               v-text="form.name || $t('create.untitled')"
-              class="mb-2 w-full break-all"
+              class="w-full break-all"
             />
-            <input
-              v-else
-              v-model="form.name"
-              maxlength="128"
-              class="text-2xl font-semibold input mb-2 w-full"
-              :placeholder="$t('create.question')"
-              ref="nameInput"
-            />
-            <div class="relative group">
-              <TextareaAutosize
-                v-if="!preview"
-                v-model="form.body"
-                class="input pt-0 w-full"
-                style="font-size: 22px"
-                :placeholder="$t('create.content')"
-                :max-length="bodyLimit"
+            <SBase v-else :definition="{ title: $t('create.proposalTitle') }">
+              <input
+                v-model="form.name"
+                maxlength="128"
+                class="text-md font-semibold s-input w-full !rounded-full"
+                ref="nameInput"
               />
+            </SBase>
+
+            <div v-if="!preview">
+              <div class="flex justify-between">
+                <label
+                  v-text="$t('create.proposalDescription')"
+                  class="s-label"
+                />
+                <div class="text-xs">
+                  {{ formatNumber(form.body.length) }} /
+                  {{ formatNumber(bodyLimit) }}
+                </div>
+              </div>
+              <div
+                @drop.prevent="handleDrop"
+                @dragover="imageDragging = true"
+                @dragleave="imageDragging = false"
+              >
+                <div
+                  class="min-h-[240px] peer border rounded-t-xl overflow-hidden focus-within:border-skin-text"
+                >
+                  <textarea
+                    @paste="handlePaste"
+                    ref="textAreaEl"
+                    class="s-input pt-0 w-full min-h-[240px] border-none !rounded-xl text-base h-full mt-0"
+                    :maxLength="bodyLimit"
+                    v-model="form.body"
+                  />
+                </div>
+
+                <label
+                  class="relative flex justify-between border border-skin-border rounded-b-xl py-1 px-2 items-center peer-focus-within:border-skin-text border-t-0"
+                >
+                  <input
+                    accept="image/jpg, image/jpeg, image/png"
+                    type="file"
+                    class="opacity-0 absolute p-[5px] top-0 right-0 bottom-0 left-0 w-full ml-0"
+                    @change="e => upload(e.target.files[0])"
+                  />
+
+                  <span class="pointer-events-none relative pl-1 text-sm">
+                    <span v-if="uploading" class="flex">
+                      <LoadingSpinner small class="mr-2 -mt-[2px]" />
+                      {{ $t('create.uploading') }}
+                    </span>
+                    <span v-else-if="imageUploadError !== ''">
+                      {{ imageUploadError }}</span
+                    >
+                    <span v-else>
+                      {{ $t('create.uploadImageExplainer') }}
+                    </span>
+                  </span>
+                  <BaseLink
+                    class="relative inline"
+                    link="https://docs.github.com/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax"
+                    v-tippy="{ content: $t('create.markdown') }"
+                    hide-external-icon
+                  >
+                    <BaseIcon name="markdown" class="text-skin-text" />
+                  </BaseLink>
+                </label>
+              </div>
             </div>
 
             <div v-if="form.body && preview" class="mb-4">
-              <UiMarkdown :body="form.body" />
+              <BaseMarkdown :body="form.body" />
             </div>
-            <p v-if="form.body.length > bodyLimit" class="!text-red mt-4">
-              -{{ formatCompactNumber(-(bodyLimit - form.body.length)) }}
-            </p>
+
+            <SBase
+              v-if="!preview"
+              :definition="{ title: $t('create.discussion') }"
+            >
+              <input
+                v-model="form.discussion"
+                class="s-input w-full !rounded-full"
+                placeholder="e.g. https://forum.balancer.fi/proposal..."
+              />
+            </SBase>
           </div>
         </div>
       </template>
@@ -606,17 +710,11 @@ const needsPluginConfigs = computed(() =>
           v-if="currentStep === 1"
           @click="preview = !preview"
           :loading="clientLoading || queryLoading"
-          class="block w-full mb-3"
-          no-focus
+          class="block w-full mb-2"
         >
           {{ preview ? $t('create.edit') : $t('create.preview') }}
         </BaseButton>
-        <BaseButton
-          v-else
-          @click="currentStep--"
-          class="block w-full mb-3"
-          no-focus
-        >
+        <BaseButton v-else @click="currentStep--" class="block w-full mb-2">
           {{ $t('back') }}
         </BaseButton>
 
