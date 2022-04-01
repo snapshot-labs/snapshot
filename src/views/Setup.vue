@@ -102,7 +102,7 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
           :web3Account="web3Account"
         />
         <BaseBlock v-else>
-          <div v-if="ownedEnsDomainsNoExistingSpace.length && spacesLoaded">
+          <div v-if="ownedEnsDomainsNoExistingSpace.length">
             <div class="mb-3">
               {{
                 $t(
