@@ -43,6 +43,7 @@ export const PROPOSAL_QUERY = gql`
       plugins
       network
       type
+      quorum
       strategies {
         name
         network
