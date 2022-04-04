@@ -200,6 +200,11 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
+"@braintree/sanitize-url@^6.0.0":
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/@braintree/sanitize-url/-/sanitize-url-6.0.0.tgz#fe364f025ba74f6de6c837a84ef44bdb1d61e68f"
+  integrity sha512-mgmE7XBYY/21erpzhexk4Cj1cyTQ9LzvnTxtzM17BJ7ERMNE6W72mQRo0I1Ud8eFJ+RVVIcBNhLFZ3GX4XFz5w==
+
 "@changesets/apply-release-plan@^5.0.5":
   version "5.0.5"
   resolved "https://registry.yarnpkg.com/@changesets/apply-release-plan/-/apply-release-plan-5.0.5.tgz#d67b1e022c876d18d887f3c475a3abcad9944b68"
@@ -1796,24 +1801,24 @@
   resolved "https://registry.yarnpkg.com/@vue/test-utils/-/test-utils-2.0.0-rc.17.tgz#e6dcf5b5bd3ae23595bdb154b9b578ebcdffd698"
   integrity sha512-7LHZKsFRV/HqDoMVY+cJamFzgHgsrmQFalROHC5FMWrzPzd+utG5e11krj1tVsnxYufGA2ABShX4nlcHXED+zQ==
 
-"@vueuse/core@^8.2.2":
-  version "8.2.2"
-  resolved "https://registry.yarnpkg.com/@vueuse/core/-/core-8.2.2.tgz#30e8070eb28166da35d27edfa8b3363a37b230f1"
-  integrity sha512-ITbTxIlN/LIVwu1bpDc+m0LcXeFNstfJbA/DLGQicmWQdnfUQ+OJQB4KLi25MocD73rvK2rj3Lr9cQp3FL+IIA==
+"@vueuse/core@^8.2.3":
+  version "8.2.3"
+  resolved "https://registry.yarnpkg.com/@vueuse/core/-/core-8.2.3.tgz#cc87e3b14867619fd475868a97ffd0366b0a9b77"
+  integrity sha512-bz6XroFRFOIGzhAHcnTfjtAQNkNcSELKPoSSUGROwYfOgTnaVyq7iKhgwdeRNom3y9q+a60RlhD35oJaGsXDHA==
   dependencies:
-    "@vueuse/metadata" "8.2.2"
-    "@vueuse/shared" "8.2.2"
+    "@vueuse/metadata" "8.2.3"
+    "@vueuse/shared" "8.2.3"
     vue-demi "*"
 
-"@vueuse/metadata@8.2.2":
-  version "8.2.2"
-  resolved "https://registry.yarnpkg.com/@vueuse/metadata/-/metadata-8.2.2.tgz#ea52469c8f73ec09329358108cf51e7c10067cd1"
-  integrity sha512-R/HYA5k6IzGVB5qBwvIN4f0Hezx0sGrIK9mIL4a74u7Ta17v4XyjXS/5jV4keFC5bY1XTm79KvSWjh9ZXDos2Q==
+"@vueuse/metadata@8.2.3":
+  version "8.2.3"
+  resolved "https://registry.yarnpkg.com/@vueuse/metadata/-/metadata-8.2.3.tgz#2b0afe38a37cf3d5277c624502ebc5f86eec6d90"
+  integrity sha512-xH5256Bn6hBYvQWoaCBagpeCrzJmeEeWnyDDkwVFhx7+pLOe4I6gsMHie3yJoowK9AN/D7JLTtEBbWvvBi5TOA==
 
-"@vueuse/shared@8.2.2":
-  version "8.2.2"
-  resolved "https://registry.yarnpkg.com/@vueuse/shared/-/shared-8.2.2.tgz#fda8f86ead8c4f27acfd5f5bbe0c7a2ed24637e6"
-  integrity sha512-O0n219wXM11fUJ7j0/JVp8lePOhZLVQsdf0HvNbEsIyNSGCurAvEH+FVR4p5vAGiW+XPgK39c6cOnKQL5gWMZg==
+"@vueuse/shared@8.2.3":
+  version "8.2.3"
+  resolved "https://registry.yarnpkg.com/@vueuse/shared/-/shared-8.2.3.tgz#c8281ceb0e2e73bac329a0af506d0c883353be34"
+  integrity sha512-4Cd3s+x8ZwzzAf7o8jS7mEj9pQ1Zsf9aiNBAFg4rHcWeDY0S3XMgvN4ae2hBul7jmi+Ab4REAqiqYWyYqU86qg==
   dependencies:
     vue-demi "*"
 
@@ -4432,10 +4437,10 @@ graphql@^16.3.0:
   resolved "https://registry.yarnpkg.com/graphql/-/graphql-16.3.0.tgz#a91e24d10babf9e60c706919bb182b53ccdffc05"
   integrity sha512-xm+ANmA16BzCT5pLjuXySbQVFwH3oJctUVdy81w1sV0vBU0KgDdBGtxQOUd5zqOBk/JayAFeG8Dlmeq74rjm/A==
 
-happy-dom@^2.53.0:
-  version "2.53.0"
-  resolved "https://registry.yarnpkg.com/happy-dom/-/happy-dom-2.53.0.tgz#463b7d902fe12d66df1ba2e3df54a9e7799a3e9d"
-  integrity sha512-+tXrnK3R44aPn/tng8q6hipiiescc+qNNmqW3ZsMSabcHtH54rTGroW+LOO6NLWEu8/uxIsPR/1VaL17yeOmDQ==
+happy-dom@^2.55.0:
+  version "2.55.0"
+  resolved "https://registry.yarnpkg.com/happy-dom/-/happy-dom-2.55.0.tgz#ad412939fea9b97f2e5985c404cf710638bba66a"
+  integrity sha512-CHDMBRau+l/yKQL+ANmexRAC8FRCuYbXRSpu/GbLVyfqkrlBzV7OSNd5C5HZ+pVFtFv1bFJYC5r+xrqgGQuq5w==
   dependencies:
     css.escape "^1.5.1"
     he "^1.2.0"

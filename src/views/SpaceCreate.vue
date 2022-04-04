@@ -19,6 +19,7 @@ import { useStore } from '@/composables/useStore';
 import { useIntl } from '@/composables/useIntl';
 import { usePlugins } from '@/composables/usePlugins';
 import { useImageUpload } from '@/composables/useImageUpload';
+import { useStorage } from '@vueuse/core';
 
 const props = defineProps({
   space: Object
@@ -37,7 +38,7 @@ const { pluginIndex } = usePlugins();
 
 const notify = inject('notify');
 
-const form = ref({
+const EMPTY_PROPOSAL = {
   name: '',
   body: '',
   discussion: '',
@@ -47,7 +48,9 @@ const form = ref({
   snapshot: '',
   metadata: { plugins: {} },
   type: 'single-choice'
-});
+};
+
+const form = useStorage('snapshot.proposal', EMPTY_PROPOSAL);
 
 const choices = ref([]);
 const blockNumber = ref(-1);
@@ -174,6 +177,7 @@ async function handleSubmit() {
   if (result.id) {
     store.space.proposals = [];
     notify(['green', t('notify.proposalCreated')]);
+    form.value = EMPTY_PROPOSAL;
     router.push({
       name: 'spaceProposal',
       params: {
