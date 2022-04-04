@@ -140,7 +140,7 @@ watch(visibleVotes, () => {
         >
           {{
             `${formatCompactNumber(vote.balance)} ${shorten(
-              space.symbol,
+              proposal.symbol || space.symbol,
               'symbol'
             )}`
           }}

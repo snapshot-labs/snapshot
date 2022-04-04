@@ -68,7 +68,7 @@ const ts = (Date.now() / 1e3).toFixed();
                 {{
                   formatCompactNumber(results.resultsByVoteBalance[choice.i])
                 }}
-                {{ shorten(space.symbol, 'symbol') }}
+                {{ shorten(proposal.symbol || space.symbol, 'symbol') }}
               </span>
               <span
                 v-if="
