@@ -43,6 +43,8 @@ export const PROPOSAL_QUERY = gql`
       plugins
       network
       type
+      quorum
+      symbol
       strategies {
         name
         network
@@ -101,6 +103,8 @@ export const PROPOSALS_QUERY = gql`
       scores_total
       scores
       votes
+      quorum
+      symbol
     }
   }
 `;

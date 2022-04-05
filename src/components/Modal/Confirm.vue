@@ -139,7 +139,7 @@ watch(
             }"
           >
             {{ formatCompactNumber(vp) }}
-            {{ shorten(space.symbol, 'symbol') }}
+            {{ shorten(proposal.symbol || space.symbol, 'symbol') }}
           </span>
           <LoadingSpinner v-else />
           <BaseLink
