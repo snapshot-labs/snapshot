@@ -68,7 +68,7 @@ const ts = (Date.now() / 1e3).toFixed();
                 {{
                   formatCompactNumber(results.resultsByVoteBalance[choice.i])
                 }}
-                {{ shorten(space.symbol, 'symbol') }}
+                {{ shorten(proposal.symbol || space.symbol, 'symbol') }}
               </span>
               <span
                 v-if="
@@ -123,11 +123,11 @@ const ts = (Date.now() / 1e3).toFixed();
           />
         </template>
       </div>
-      <div v-if="props.space?.voting?.quorum" class="text-skin-link">
+      <div v-if="proposal.quorum || space.voting?.quorum" class="text-skin-link">
         {{ $t('settings.quorum') }}
         <span class="float-right">
           {{ formatCompactNumber(results.sumOfResultsBalance) }} /
-          {{ formatCompactNumber(props.space.voting.quorum) }}
+          {{ formatCompactNumber(proposal.quorum || space.voting.quorum) }}
         </span>
       </div>
     </div>
