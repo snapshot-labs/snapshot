@@ -55,7 +55,7 @@ export default {
       <span class="mr-1">
         {{ formatCompactNumber(totalScore) }} /
         {{ formatCompactNumber(totalVotingPower) }}
-        {{ shorten(space.symbol, 'symbol') }}
+        {{ shorten(proposal.symbol || space.symbol, 'symbol') }}
       </span>
       <span class="float-right" v-text="formatPercentNumber(quorum)" />
     </div>
