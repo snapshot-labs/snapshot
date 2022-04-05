@@ -58,7 +58,8 @@ const form = ref({
   plugins: {},
   filters: {},
   voting: {},
-  validation: basicValidation
+  validation: basicValidation,
+  relatives: []
 });
 
 const validate = computed(() => {
@@ -125,6 +126,20 @@ const votingPeriod = computed({
 
 const categoriesString = computed(() => {
   return form.value.categories ? form.value.categories.join(', ') : '';
+});
+
+// Sub-DAO
+const relativesType = ref('parent');
+const relativesPlaceholder = computed(() => {
+  return relativesType.value === 'parent'
+    ? t('settings.relatives.parentPlaceholder')
+    : t('settings.relatives.childrenPlaceholder', [props.space.id]);
+});
+const relatives = computed({
+  get: () => form.value.relatives?.join(', ') || '',
+  set: newVal => {
+    form.value.relatives = form.value.relatives = newVal.split(',').map(s => s.trim())
+  }
 });
 
 async function handleSubmit() {
@@ -446,6 +461,31 @@ async function handleSetRecord() {
                 @blur="visitedFields.push('terms')"
               >
                 <template v-slot:label> {{ $t(`settings.terms`) }} </template>
+              </UiInput>
+              <UiInput
+                v-model="relatives"
+                :placeholder="relativesPlaceholder"
+              >
+                <template v-slot:label>
+                  {{ $t('settings.relatives.relatives') }}
+                </template>
+                <template v-slot:info>
+                  <select
+                    v-model="relativesType"
+                    class="input text-center mr-[6px] ml-2"
+                    required
+                  >
+                    <option value="parent">{{ $t('settings.relatives.parent') }}</option>
+                    <option value="children">{{ $t('settings.relatives.children') }}</option>
+                  </select>
+                  <BaseLink
+                    class="flex items-center -mr-1"
+                    link="https://docs.snapshot.org/spaces/"
+                    hide-external-icon
+                  >
+                    <BaseIcon name="info" size="24" class="text-skin-text" />
+                  </BaseLink>
+                </template>
               </UiInput>
               <div class="flex items-center space-x-2 pr-2">
                 <BaseCheckbox v-model="form.private" />

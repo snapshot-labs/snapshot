@@ -289,7 +289,14 @@
     "connectWithSpaceOwner": "To modify space settings, connect with a controller or admin wallet.",
     "currentSpaceControllerIs": "The current space controller is {address}",
     "newController": "New controller",
-    "set": "Set"
+    "set": "Set",
+    "relatives": {
+      "relatives": "Relatives",
+      "parent": "Parent",
+      "children": "Children",
+      "parentPlaceholder": "e.g. balancer.eth",
+      "childrenPlaceholder": "e.g. child1.{0}, child2.{0}"
+    }
   },
   "setup": {
     "example": "e.g. yam.eth",
