@@ -4,7 +4,7 @@ import { call } from '@snapshot-labs/snapshot.js/src/utils';
 
 function ensReverseRecordRequest(addresses) {
   const network = '1';
-  const provider = getProvider(network);
+  const provider = getProvider(network, 'light');
   const abi = [
     {
       inputs: [

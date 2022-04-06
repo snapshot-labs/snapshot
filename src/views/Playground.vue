@@ -96,7 +96,7 @@ async function loadScores() {
 
 async function loadSnapshotBlockNumber() {
   try {
-    provider = await getProvider(form.value.network);
+    provider = await getProvider(form.value.network, 'light');
     form.value.snapshot = await getBlockNumber(provider);
     loading.value = false;
   } catch (e) {
