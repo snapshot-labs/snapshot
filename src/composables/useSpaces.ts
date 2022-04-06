@@ -4,12 +4,19 @@ import orderBy from 'lodash/orderBy';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import verified from '@/../snapshot-spaces/spaces/verified.json';
 import verifiedSpacesCategories from '@/../snapshot-spaces/spaces/categories.json';
+import { SPACES_QUERY } from '@/helpers/queries';
+import { useApolloQuery } from '@/composables/useApolloQuery';
 
+// holds all spaces but with reduced data
 const spaces: any = ref([]);
 const spacesLoaded = ref(false);
 
+// holds visited spaces with extended data
+const extendedSpaces: any = ref([]);
+
 export function useSpaces() {
   const route = useRoute();
+  const { apolloQuery } = useApolloQuery();
 
   async function getSpaces() {
     const exploreObj: any = await fetch(
@@ -33,6 +40,23 @@ export function useSpaces() {
     spaces.value = exploreObj.spaces;
     spacesLoaded.value = true;
     return;
+  }
+
+  async function loadExtendedSpaces(id_in: string[] = []) {
+    try {
+      const response = await apolloQuery(
+        {
+          query: SPACES_QUERY,
+          variables: {
+            id_in
+          }
+        },
+        'spaces'
+      );
+      extendedSpaces.value = response;
+    } catch (e) {
+      console.error(e);
+    }
   }
 
   const selectedCategory = ref('');
@@ -90,6 +114,8 @@ export function useSpaces() {
     spacesLoaded,
     orderedSpaces,
     orderedSpacesByCategory,
-    selectedCategory
+    selectedCategory,
+    loadExtendedSpaces,
+    extendedSpaces
   };
 }

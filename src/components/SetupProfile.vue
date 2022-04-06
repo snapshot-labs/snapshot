@@ -8,7 +8,6 @@ import { useClient } from '@/composables/useClient';
 import { useI18n } from '@/composables/useI18n';
 import { useRouter } from 'vue-router';
 import { useStorage } from '@vueuse/core';
-import { useExtendedSpaces } from '@/composables/useExtendedSpaces';
 import { useSpaceController } from '@/composables/useSpaceController';
 import { useSpaces } from '@/composables/useSpaces';
 import { useDebounceFn } from '@vueuse/core';
@@ -68,8 +67,7 @@ const createdSpaces = useStorage(
   {}
 );
 
-const { getSpaces, spaces } = useSpaces();
-const { loadExtendedSpaces, extendedSpaces } = useExtendedSpaces();
+const { getSpaces, spaces, loadExtendedSpaces, extendedSpaces } = useSpaces();
 
 async function checkIfSpaceExists() {
   Promise.all([

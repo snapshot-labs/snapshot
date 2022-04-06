@@ -10,7 +10,7 @@ import { calcFromSeconds, calcToSeconds } from '@/helpers/utils';
 import { useClient } from '@/composables/useClient';
 import { usePlugins } from '@/composables/usePlugins';
 import { useSpaceController } from '@/composables/useSpaceController';
-import { useExtendedSpaces } from '@/composables/useExtendedSpaces';
+import { useSpaces } from '@/composables/useSpaces';
 import { useEns } from '@/composables/useEns';
 import { shorten } from '@/helpers/utils';
 import {
@@ -31,7 +31,7 @@ const { t, setPageTitle } = useI18n();
 const { web3Account } = useWeb3();
 const { send, clientLoading } = useClient();
 const notify = inject('notify');
-const { loadExtendedSpaces } = useExtendedSpaces();
+const { loadExtendedSpaces } = useSpaces();
 
 const currentSettings = ref({});
 const currentTextRecord = ref('');
