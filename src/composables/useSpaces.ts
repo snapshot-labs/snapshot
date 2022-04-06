@@ -53,7 +53,18 @@ export function useSpaces() {
         },
         'spaces'
       );
-      extendedSpaces.value = response;
+      
+      // loop through response, add new spaces and update existing ones
+      for (const space of response) {
+        const existingSpaceIndex = extendedSpaces.value.findIndex(
+          s => s.id === space.id
+        );
+        if (existingSpaceIndex !== -1) {
+          extendedSpaces.value[existingSpaceIndex] = space;
+        } else {
+          extendedSpaces.value.push(space);
+        }
+      }
     } catch (e) {
       console.error(e);
     }
