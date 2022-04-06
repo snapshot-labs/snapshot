@@ -244,7 +244,9 @@ onMounted(() =>
 watchEffect(async () => {
   loadingSnapshot.value = true;
   if (props.space?.network) {
-    blockNumber.value = await getBlockNumber(getProvider(props.space.network));
+    blockNumber.value = await getBlockNumber(
+      getProvider(props.space.network, 'light')
+    );
     form.value.snapshot = blockNumber.value;
     loadingSnapshot.value = false;
   }
