@@ -40,7 +40,7 @@ async function handleSubmit() {
       contractAddress,
       abi,
       'clearDelegate',
-      [formatBytes32String(props.id)]
+      [formatBytes32String(props.id || '')]
     );
     pendingCount.value++;
     emit('close');

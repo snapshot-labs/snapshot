@@ -74,7 +74,7 @@ const winningChoice = computed(() =>
             <span
               >{{ shorten(proposal.choices[winningChoice], 64) }} -
               {{ formatCompactNumber(proposal.scores[winningChoice]) }}
-              {{ proposal.space.symbol }}</span
+              {{ proposal.symbol || proposal.space.symbol }}</span
             >
           </span>
         </div>
