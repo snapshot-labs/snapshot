@@ -209,6 +209,8 @@ export const SPACES_QUERY = gql`
         minScore
         onlyMembers
       }
+      parent
+      children
     }
   }
 `;
