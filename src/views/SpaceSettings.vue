@@ -31,7 +31,7 @@ const { t, setPageTitle } = useI18n();
 const { web3Account } = useWeb3();
 const { send, clientLoading } = useClient();
 const notify = inject('notify');
-const { loadExtentedSpaces } = useExtendedSpaces();
+const { loadExtendedSpaces } = useExtendedSpaces();
 
 const currentSettings = ref({});
 const currentTextRecord = ref('');
@@ -158,7 +158,7 @@ async function handleSubmit() {
     console.log('Result', result);
     if (result.id) {
       notify(['green', t('notify.saved')]);
-      loadExtentedSpaces([props.space.id]);
+      loadExtendedSpaces([props.space.id]);
     }
   } else {
     console.log('Invalid schema', validate.value);
@@ -331,7 +331,7 @@ async function handleSetRecord() {
   const tx = await setRecord();
   const receipt = await tx.wait();
   if (receipt) {
-    loadExtentedSpaces([props.space.id]);
+    loadExtendedSpaces([props.space.id]);
   }
 }
 </script>

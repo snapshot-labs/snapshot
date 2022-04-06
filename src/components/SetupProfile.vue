@@ -69,15 +69,15 @@ const createdSpaces = useStorage(
 );
 
 const { getSpaces, spaces } = useSpaces();
-const { loadExtentedSpaces, extentedSpaces } = useExtendedSpaces();
+const { loadExtendedSpaces, extendedSpaces } = useExtendedSpaces();
 
 async function checkIfSpaceExists() {
   Promise.all([
     await getSpaces(),
-    await loadExtentedSpaces([props.ensAddress])
+    await loadExtendedSpaces([props.ensAddress])
   ]);
   if (
-    extentedSpaces.value.some(space => space.id === props.ensAddress) &&
+    extendedSpaces.value.some(space => space.id === props.ensAddress) &&
     Object.keys(spaces.value).some(spaceId => spaceId === props.ensAddress)
   ) {
     return;
