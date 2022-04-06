@@ -40,7 +40,6 @@ onMounted(() => loadExtentedSpaces([spaceKey.value, sourceSpaceRoute.value]));
     v-if="space"
     :space="space"
     :sourceSpace="sourceSpace"
-    :loadExtentedSpaces="loadExtentedSpaces"
   />
 
   <div v-else>

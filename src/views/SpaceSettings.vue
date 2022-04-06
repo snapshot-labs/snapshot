@@ -10,6 +10,7 @@ import { calcFromSeconds, calcToSeconds } from '@/helpers/utils';
 import { useClient } from '@/composables/useClient';
 import { usePlugins } from '@/composables/usePlugins';
 import { useSpaceController } from '@/composables/useSpaceController';
+import { useExtendedSpaces } from '@/composables/useExtendedSpaces';
 import { useEns } from '@/composables/useEns';
 import { shorten } from '@/helpers/utils';
 import {
@@ -20,8 +21,7 @@ import {
 
 const props = defineProps({
   space: Object,
-  sourceSpace: Object,
-  loadExtentedSpaces: Function
+  sourceSpace: Object
 });
 
 const basicValidation = { name: 'basic', params: {} };
@@ -31,6 +31,7 @@ const { t, setPageTitle } = useI18n();
 const { web3Account } = useWeb3();
 const { send, clientLoading } = useClient();
 const notify = inject('notify');
+const { loadExtentedSpaces } = useExtendedSpaces();
 
 const currentSettings = ref({});
 const currentTextRecord = ref('');
@@ -157,7 +158,7 @@ async function handleSubmit() {
     console.log('Result', result);
     if (result.id) {
       notify(['green', t('notify.saved')]);
-      props.loadExtentedSpaces([props.space.id]);
+      loadExtentedSpaces([props.space.id]);
     }
   } else {
     console.log('Invalid schema', validate.value);
@@ -330,7 +331,7 @@ async function handleSetRecord() {
   const tx = await setRecord();
   const receipt = await tx.wait();
   if (receipt) {
-    props.loadExtentedSpaces([props.space.id]);
+    loadExtentedSpaces([props.space.id]);
   }
 }
 </script>
