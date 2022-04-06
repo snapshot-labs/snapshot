@@ -59,7 +59,8 @@ const form = ref({
   filters: {},
   voting: {},
   validation: basicValidation,
-  relatives: []
+  parent: null,
+  children: []
 });
 
 const validate = computed(() => {
@@ -136,15 +137,22 @@ const relativesPlaceholder = computed(() => {
     : t('settings.relatives.childrenPlaceholder', [props.space.id]);
 });
 const relatives = computed({
-  get: () => form.value.relatives?.join(', ') || '',
+  get: () => relativesType.value === 'parent' ? form.value.parent : form.value.children?.join(', ') || '',
   set: newVal => {
-    form.value.relatives = form.value.relatives = newVal.split(',').map(s => s.trim())
+    if (relativesType.value === 'parent') {
+      form.value.parent = newVal.split(',').map(s => s.trim())[0]
+    }
+    if (relativesType.value === 'children') {
+      form.value.children = newVal.split(',').map(s => s.trim());
+    }
   }
 });
 
 async function handleSubmit() {
   if (isValid.value) {
     if (form.value.filters.invalids) delete form.value.filters.invalids;
+    if (relativesType.value === 'parent') form.value.children = [];
+    if (relativesType.value === 'children') form.value.parent = null;
     const result = await send({ id: props.space.id }, 'settings', form.value);
     console.log('Result', result);
     if (result.id) {
