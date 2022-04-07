@@ -291,9 +291,9 @@
     "newController": "New controller",
     "set": "Set",
     "relatives": {
-      "relatives": "Relatives",
-      "parent": "Parent",
-      "children": "Children",
+      "relatives": "Related space(s)",
+      "parent": "Main",
+      "children": "Sub-spaces",
       "parentPlaceholder": "e.g. balancer.eth",
       "childrenPlaceholder": "e.g. child1.{0}, child2.{0}"
     }
