@@ -64,7 +64,7 @@
     "c8": "^7.11.0",
     "cypress": "^9.5.3",
     "eslint-plugin-prettier": "^3.4.0",
-    "eslint-plugin-vue": "^7.15.1",
+    "eslint-plugin-vue": "^8.6.0",
     "happy-dom": "^2.55.0",
     "husky": "^7.0.4",
     "postcss": "^8.4.7",
@@ -75,7 +75,7 @@
     "tailwindcss": "^3.0.23",
     "unplugin-vue-components": "^0.18.5",
     "vite": "^2.9.1",
-    "vitest": "^0.8.4"
+    "vitest": "^0.9.0"
   },
   "resolutions": {
     "ansi-regex": "^5.0.1",
