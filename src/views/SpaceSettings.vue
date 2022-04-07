@@ -493,7 +493,7 @@ async function handleSetRecord() {
                   </select>
                   <BaseLink
                     class="flex items-center -mr-1"
-                    link="https://docs.snapshot.org/spaces/"
+                    link="https://docs.snapshot.org/spaces/sub-spaces"
                     hide-external-icon
                   >
                     <BaseIcon name="info" size="24" class="text-skin-text" />
