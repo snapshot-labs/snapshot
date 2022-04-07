@@ -19,7 +19,6 @@ import {
   EIP712_TYPES,
   REALITY_MODULE_ABI,
   ORACLE_ABI,
-  START_BLOCKS,
   ERC20_ABI
 } from './constants';
 import {
@@ -29,6 +28,7 @@ import {
   getProposalDetails
 } from './utils/realityModule';
 import { retrieveInfoFromOracle } from './utils/realityETH';
+import { getNativeAsset } from '@/plugins/safeSnap/utils/coins';
 
 export * from './constants';
 export * from './models';
@@ -164,7 +164,8 @@ export default class Plugin {
     web3: any,
     network: string,
     questionId: string,
-    oracleAddress: string
+    oracleAddress: string,
+    block: string
   ) {
     const contract = new Contract(oracleAddress, ORACLE_ABI, web3);
     const provider: StaticJsonRpcProvider = getProvider(network);
@@ -178,11 +179,14 @@ export default class Plugin {
         [oracleAddress, 'isFinalized', [questionId]]
       ]);
 
-    let tokenSymbol = 'ETH';
-    let tokenDecimals = 18;
+    const nativeToken = getNativeAsset(network);
+    let token = {
+      symbol: nativeToken.symbol,
+      decimals: nativeToken.decimals
+    };
 
     try {
-      const token = await call(provider, ORACLE_ABI, [
+      const tokenCall = await call(provider, ORACLE_ABI, [
         oracleAddress,
         'token',
         []
@@ -192,22 +196,21 @@ export default class Plugin {
         provider,
         ERC20_ABI,
         [
-          [token, 'symbol', []],
-          [token, 'decimals', []]
+          [tokenCall, 'symbol', []],
+          [tokenCall, 'decimals', []]
         ]
       );
 
-      tokenSymbol = symbol;
-      tokenDecimals = decimals;
+      token = {
+        symbol,
+        decimals
+      };
     } catch (e) {
       console.log('[Realitio] Info: Oracle is not ERC20 based.');
     }
 
     const answersFilter = contract.filters.LogNewAnswer(null, questionId);
-    const events = await contract.queryFilter(
-      answersFilter,
-      START_BLOCKS[network]
-    );
+    const events = await contract.queryFilter(answersFilter, parseInt(block));
 
     const users: Result[] = [];
     const historyHashes: Result[] = [];
@@ -249,8 +252,8 @@ export default class Plugin {
     historyHashes.push(firstHash as Result);
 
     return {
-      tokenSymbol,
-      tokenDecimals,
+      tokenSymbol: token.symbol,
+      tokenDecimals: token.decimals,
       canClaim: (!alreadyClaimed && votedForCorrectQuestion) || hasBalance,
       data: {
         length: [bonds.length.toString()],

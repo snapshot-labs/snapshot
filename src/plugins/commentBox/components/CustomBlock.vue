@@ -4,7 +4,7 @@ import { useModal } from '@/composables/useModal';
 import { useWeb3 } from '@/composables/useWeb3';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { useProfiles } from '@/composables/useProfiles';
-import { useNotifications } from '@/composables/useNotifications';
+import { useFlashNotification } from '@/composables/useFlashNotification';
 import { useScrollMonitor } from '@/composables/useScrollMonitor';
 import { signMessage } from '@snapshot-labs/snapshot.js/src/utils/web3';
 import { useI18n } from '@/composables/useI18n';
@@ -16,7 +16,7 @@ const props = defineProps({
   space: Object,
   proposal: Object
 });
-const { notify } = useNotifications();
+const { notify } = useFlashNotification();
 const auth = getInstance();
 const { web3Account } = useWeb3();
 const { profiles } = useProfiles();
@@ -146,28 +146,24 @@ function deleteItem(key) {
 }
 </script>
 <template>
-  <Block :title="$t('comment_box.title')">
-    <UiButton
+  <BaseBlock :title="$t('comment_box.title')">
+    <TextareaAutosize
       v-if="togglePreview"
-      class="flex w-full px-3 !h-auto cursor-default"
-    >
-      <TextareaAutosize
-        v-model="comment"
-        :placeholder="$t('comment_box.add')"
-        class="input text-left w-full h-full"
-        style="font-size: 18px"
-        :minHeight="100"
-      />
-    </UiButton>
-    <Block
+      v-model="comment"
+      :placeholder="$t('comment_box.add')"
+      class="input text-left w-full h-full"
+      style="font-size: 18px"
+      :minHeight="100"
+    />
+    <BaseBlock
       v-if="!togglePreview"
       slim="true"
       class="p-4 h6 text-skin-text mt-2 mb-0"
     >
       <div>{{ comment }}</div>
-    </Block>
+    </BaseBlock>
 
-    <UiButton
+    <BaseButton
       @click="clickSubmit"
       :disabled="comment.length === 0"
       :loading="loading"
@@ -175,8 +171,8 @@ function deleteItem(key) {
       primary
     >
       {{ $t(`comment_box.submit`) }}
-    </UiButton>
-    <UiButton
+    </BaseButton>
+    <BaseButton
       @click="togglePreview = !togglePreview"
       class="ml-2 mt-2"
       :disabled="comment.length === 0"
@@ -187,7 +183,7 @@ function deleteItem(key) {
           ? $t(`comment_box.preview`)
           : $t(`comment_box.continue_editing`)
       }}
-    </UiButton>
+    </BaseButton>
     <div :key="index" v-for="(item, index) in allData">
       <CommentBoxCommentBlock
         :proposal="proposal"
@@ -198,11 +194,8 @@ function deleteItem(key) {
         @deleteItem="deleteItem($event)"
       />
     </div>
-    <div
-      style="height: 10px; width: 10px; position: absolute"
-      ref="endElement"
-    />
+    <div class="w-[10px] h-[10px] absolute bottom-0" ref="endElement" />
 
     <RowLoading v-if="loadingMore" class="my-2" />
-  </Block>
+  </BaseBlock>
 </template>

@@ -1,6 +1,7 @@
 <script>
 import Plugin, {
   createBatch,
+  EIP3770_PREFIXES,
   getGnosisSafeBalances,
   getGnosisSafeCollectibles
 } from '../index';
@@ -13,17 +14,6 @@ import SafeSnapFormImportTransactionsButton from './Form/ImportTransactionsButto
 import SafeSnapFormTransactionBatch from './Form/TransactionBatch.vue';
 
 const plugin = new Plugin();
-
-const EIP3770_PREFIXES = {
-  1: 'eth',
-  56: 'bnb',
-  4: 'rin',
-  100: 'gno',
-  246: 'ewt',
-  73799: 'vt',
-  42161: 'arb1',
-  137: 'MATIC'
-};
 
 async function fetchBalances(network, gnosisSafeAddress) {
   if (gnosisSafeAddress) {
@@ -189,12 +179,7 @@ export default {
       class="px-4 pt-3 border-b rounded-t-none md:rounded-t-md flex"
       style="padding-bottom: 12px"
     >
-      <UiAvatar
-        class="mr-2 float-left"
-        :imgsrc="networkIcon"
-        :seed="network"
-        size="28"
-      />
+      <BaseAvatar class="mr-2 float-left" :imgsrc="networkIcon" size="28" />
       {{ networkName }} Safe
       <a
         v-if="gnosisSafeAddress"
@@ -239,9 +224,9 @@ export default {
       </div>
 
       <div v-if="!preview || proposalResolved">
-        <UiButton class="my-3" v-if="!preview" @click="addTransactionBatch">
+        <BaseButton class="my-3" v-if="!preview" @click="addTransactionBatch">
           {{ $t('safeSnap.addBatch') }}
-        </UiButton>
+        </BaseButton>
 
         <SafeSnapFormImportTransactionsButton
           v-if="!preview"
@@ -252,7 +237,7 @@ export default {
         <SafeSnapHandleOutcome
           v-if="preview && proposalResolved"
           :batches="input"
-          :proposalId="proposal.id"
+          :proposal="proposal"
           :realityAddress="realityAddress"
           :multiSendAddress="transactionConfig.multiSendAddress"
           :network="transactionConfig.network"

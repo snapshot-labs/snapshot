@@ -1,9 +1,9 @@
 import { computed } from 'vue';
 import categories from '@/helpers/categories.json';
-import { useApp } from '@/composables/useApp';
+import { useSpaces } from '@/composables/useSpaces';
 
 export function useCategories() {
-  const { orderedSpaces } = useApp();
+  const { orderedSpaces } = useSpaces();
 
   // count spaces per category
   const spacesPerCategory = computed(() => {

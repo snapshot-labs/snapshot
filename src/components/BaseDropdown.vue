@@ -1,18 +1,20 @@
 <script setup lang="ts">
-import { ref, onBeforeUnmount } from 'vue';
+import { ref, onBeforeUnmount, watch } from 'vue';
 
 defineProps<{
-  items: {
-    action: string;
-    selected: boolean;
-    text: string;
-  }[];
+  items:
+    | {
+        action: string | any;
+        text: string;
+      }
+    | Record<string, any>[];
 }>();
 
-const emit = defineEmits(['select']);
+const emit = defineEmits(['select', 'openChange']);
 
 const open = ref(false);
 const dropdownEl = ref<any>(null);
+const positionClass = ref('');
 
 function handleClick(action) {
   emit('select', action);
@@ -26,15 +28,23 @@ function close(e) {
 }
 
 window.addEventListener('click', close);
-
 onBeforeUnmount(() => window.removeEventListener('click', close));
+
+watch(open, () => {
+  const { left, right } = dropdownEl.value.getBoundingClientRect();
+  positionClass.value =
+    left < window.innerWidth - right
+      ? 'origin-top-left left-0'
+      : 'origin-top-right right-0';
+  emit('openChange');
+});
 </script>
 
 <template>
   <div ref="dropdownEl" class="relative inline-block text-left h-full">
     <div
       @click="open = !open"
-      class="button inline-flex items-center h-full cursor-pointer"
+      class="inline-flex items-center w-full h-full cursor-pointer"
     >
       <slot name="button" />
     </div>
@@ -48,16 +58,20 @@ onBeforeUnmount(() => window.removeEventListener('click', close));
       leave-to-class="transform opacity-0 scale-95"
     >
       <div
-        class="origin-top-right border border-skin-border z-10 absolute right-0 mt-2 min-w-[150px] max-w-[400px] rounded-lg bg-skin-header-bg overflow-hidden shadow-lg"
+        :class="positionClass"
+        class="z-20 absolute mt-2 min-w-[150px] max-w-[320px] md:max-w-[400px] rounded-2xl bg-skin-header-bg overflow-hidden shadow-lg border border-skin-border"
         v-if="open"
       >
-        <ul class="overflow-y-auto">
+        <ul
+          class="max-h-[85vh] overflow-y-auto no-scrollbar overscroll-contain"
+        >
+          <slot name="header" />
           <li
             v-for="item in items"
             :key="item.text"
             @click="handleClick(item.action)"
             :class="{ selected: item.selected }"
-            class="list-none block whitespace-nowrap px-[18px] leading-[38px] cursor-pointer"
+            class="list-none block whitespace-nowrap px-3 py-2 cursor-pointer select-none group"
           >
             <slot name="item" :item="item" :key="item">
               {{ item.text }}
@@ -69,9 +83,9 @@ onBeforeUnmount(() => window.removeEventListener('click', close));
   </div>
 </template>
 
-<style>
+<style scoped>
 li.selected,
 li:hover {
-  @apply bg-skin-border text-skin-link;
+  @apply bg-skin-border;
 }
 </style>

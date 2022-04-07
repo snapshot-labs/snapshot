@@ -1,7 +1,7 @@
 <script setup>
 import { ref, watch } from 'vue';
 import { percentageOfTotal } from '@snapshot-labs/snapshot.js/src/voting/quadratic';
-import { useMediaQuery } from '@/composables/useMediaQuery';
+import { useMediaQuery } from '@vueuse/core';
 
 defineProps({
   proposal: {
@@ -14,7 +14,7 @@ const emit = defineEmits(['selectChoice']);
 
 const selectedChoices = ref({});
 
-const { isSmallScreen } = useMediaQuery();
+const isSmallScreen = useMediaQuery('(max-width: 543px)');
 
 function percentage(i) {
   return (
@@ -53,9 +53,9 @@ watch(selectedChoices.value, currentValue => {
 <template>
   <div class="mb-3">
     <div v-for="(choice, i) in proposal.choices" :key="i">
-      <UiButton
+      <BaseButton
         class="mb-2 flex justify-between items-center w-full overflow-hidden"
-        :class="selectedChoices[i + 1] > 0 && 'button--active'"
+        :class="selectedChoices[i + 1] > 0 && '!border-skin-link'"
       >
         <div
           class="text-left pr-3 truncate"
@@ -94,7 +94,7 @@ watch(selectedChoices.value, currentValue => {
             {{ percentage(i) }}%
           </div>
         </div>
-      </UiButton>
+      </BaseButton>
     </div>
   </div>
 </template>
@@ -103,21 +103,14 @@ watch(selectedChoices.value, currentValue => {
 .btn-choice {
   background-color: transparent;
   color: var(--link-color);
-  margin-bottom: 2px;
   width: 40px;
   height: 44px;
   border-left: 1px solid var(--border-color);
   border-right: 1px solid var(--border-color);
   border-bottom: none;
   border-top: none;
-  &:hover {
-    border-left: 1px solid var(--link-color);
-    border-right: 1px solid var(--link-color);
-  }
   &:disabled {
     color: gray;
-    border-left: 1px solid var(--border-color);
-    border-right: 1px solid var(--border-color);
   }
 }
 </style>

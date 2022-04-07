@@ -9,18 +9,22 @@ let auth;
 const defaultNetwork: any =
   import.meta.env.VITE_DEFAULT_NETWORK || Object.keys(networks)[0];
 
-const state = reactive({
+const state = reactive<{
+  account: string;
+  network: Record<string, any>;
+  authLoading: boolean;
+  profile: { name: string; ens: string } | null;
+  walletConnectType: string | null;
+}>({
   account: '',
   network: networks[defaultNetwork],
   authLoading: false,
   profile: null,
-  walletConnectType: null,
-  isTrezor: false
+  walletConnectType: null
 });
 
 export function useWeb3() {
   async function login(connector = 'injected') {
-    state.isTrezor = connector === 'trezor';
     auth = getInstance();
     state.authLoading = true;
     await auth.login(connector);
@@ -36,7 +40,6 @@ export function useWeb3() {
     auth.logout();
     state.account = '';
     state.profile = null;
-    state.isTrezor = false;
   }
 
   async function loadProvider() {

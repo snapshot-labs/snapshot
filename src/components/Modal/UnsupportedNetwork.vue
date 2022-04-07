@@ -2,14 +2,15 @@
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { computed, ref } from 'vue';
 import { useI18n } from '../../composables/useI18n';
-import { useNotifications } from '../../composables/useNotifications';
+import { useFlashNotification } from '../../composables/useFlashNotification';
+import { sleep } from '@snapshot-labs/snapshot.js/src/utils';
 
 defineProps<{
   open: boolean;
 }>();
-const emit = defineEmits(['close', 'setTextrecord']);
+const emit = defineEmits(['close', 'networkChanged']);
 
-const { notify } = useNotifications();
+const { notify } = useFlashNotification();
 const { t } = useI18n();
 
 const usingMetaMask = computed(() => {
@@ -29,9 +30,10 @@ const switchToMainnet = async () => {
         }
       ]
     });
+    await sleep(1000);
     switchingChain.value = false;
     emit('close');
-    emit('setTextrecord');
+    emit('networkChanged');
   } catch (e) {
     notify(['red', t('notify.somethingWentWrong')]);
     console.error(e);
@@ -41,7 +43,7 @@ const switchToMainnet = async () => {
 </script>
 
 <template>
-  <UiModal :open="open" @close="$emit('close')">
+  <BaseModal :open="open" @close="$emit('close')">
     <template v-slot:header>
       <div class="flex flex-row justify-center items-center">
         <h3>{{ $t('unsupportedNetwork.unsupportedNetwork') }}</h3>
@@ -57,14 +59,14 @@ const switchToMainnet = async () => {
       </p>
     </div>
     <template v-if="usingMetaMask" v-slot:footer>
-      <UiButton
+      <BaseButton
         :loading="switchingChain"
         class="button-outline w-full"
         :primary="true"
         @click="switchToMainnet"
       >
         {{ $t('unsupportedNetwork.switchToMainnet') }}
-      </UiButton>
+      </BaseButton>
     </template>
-  </UiModal>
+  </BaseModal>
 </template>

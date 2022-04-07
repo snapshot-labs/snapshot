@@ -13,15 +13,16 @@ defineEmits(['close']);
 </script>
 
 <template>
-  <UiModal :open="open" @close="$emit('close')">
+  <BaseModal :open="open" @close="$emit('close')">
     <template v-slot:header>
       <h3>{{ $t('strategiesPage') }}</h3>
     </template>
     <div class="m-4">
-      <div
+      <BaseBlock
+        slim
         v-for="(strategy, i) in strategies"
         :key="i"
-        class="p-4 mb-3 border rounded-md text-skin-link"
+        class="p-4 mb-3 text-skin-link"
       >
         <router-link
           class="float-right mt-2 pt-1"
@@ -40,7 +41,7 @@ defineEmits(['close']);
             }
           }"
         >
-          <Icon name="play" size="18" />
+          <BaseIcon name="play" size="18" />
         </router-link>
         <h3 v-text="strategy.name" />
         <div>
@@ -63,7 +64,7 @@ defineEmits(['close']);
             />
           </div>
         </div>
-      </div>
+      </BaseBlock>
     </div>
-  </UiModal>
+  </BaseModal>
 </template>

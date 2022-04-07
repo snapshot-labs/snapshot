@@ -2,14 +2,19 @@
 import { ref, watchEffect, onMounted } from 'vue';
 import { useUnseenProposals } from '@/composables/useUnseenProposals';
 import { useScrollMonitor } from '@/composables/useScrollMonitor';
-import { useApp } from '@/composables/useApp';
+import { useSpaces } from '@/composables/useSpaces';
 import { useFollowSpace } from '@/composables/useFollowSpace';
 import { useCategories } from '@/composables/useCategories';
 import { shorten } from '@/helpers/utils';
 import { useIntl } from '@/composables/useIntl';
 import { useI18n } from '@/composables/useI18n';
 
-const { selectedCategory, orderedSpaces, orderedSpacesByCategory } = useApp();
+const {
+  selectedCategory,
+  orderedSpaces,
+  orderedSpacesByCategory,
+  spacesLoaded
+} = useSpaces();
 const { followingSpaces } = useFollowSpace();
 const { spacesPerCategory, categoriesOrderedBySpaceCount } = useCategories();
 const { formatCompactNumber } = useIntl();
@@ -23,7 +28,7 @@ const { getProposals } = useUnseenProposals();
 watchEffect(() => getProposals(followingSpaces.value));
 
 // Scroll
-const loadBy = 16;
+const loadBy = 12;
 const limit = ref(loadBy);
 
 const enableInfiniteScroll = ref(false);
@@ -45,13 +50,17 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="mt-4 min-h-[calc(100vh-145px)] relative pb-[130px]">
-    <Container class="flex items-center mb-4">
-      <UiButton class="pl-3 pr-0 w-full max-w-[420px]">
+  <div class="relative">
+    <BaseContainer
+      class="flex items-center mb-4 flex-col xs:flex-row flex-wrap md:flex-nowrap"
+    >
+      <BaseButton
+        class="pl-3 pr-0 w-full md:max-w-[420px] focus-within:!border-skin-link"
+      >
         <SearchWithFilters />
-      </UiButton>
+      </BaseButton>
       <BaseDropdown
-        class="ml-2 mr-auto"
+        class="w-full xs:w-auto md:ml-2 sm:mr-2 mt-2 md:mt-0"
         @select="selectCategory($event)"
         :items="[
           {
@@ -71,53 +80,61 @@ onMounted(() => {
         ]"
       >
         <template v-slot:button>
-          <UiButton
-            class="pr-3 whitespace-nowrap"
+          <BaseButton
+            class="w-full pr-3 whitespace-nowrap"
             :disabled="!orderedSpaces.length"
           >
-            <Icon size="14" name="apps" class="mt-1 mr-2" />
+            <BaseIcon size="16" name="apps" class="mt-1 mr-2" />
             <span v-if="selectedCategory">
               {{ $tc('explore.categories.' + selectedCategory) }}
             </span>
             <span v-else>
               {{ $tc('explore.categories.all') }}
             </span>
-            <Icon size="14" name="arrow-down" class="mt-1 mx-1" />
-          </UiButton>
+            <BaseIcon size="16" name="arrow-down" class="mt-1 mx-1" />
+          </BaseButton>
         </template>
         <template v-slot:item="{ item }">
           <div class="flex">
             <span class="mr-3">{{ item.text }}</span>
             <span class="flex ml-auto mt-[-3px]">
-              <UiCounter :counter="item.count" class="my-auto" />
+              <BaseCounter :counter="item.count" class="my-auto" />
             </span>
           </div>
         </template>
       </BaseDropdown>
-      <div class="ml-3 text-right hidden md:block whitespace-nowrap">
+      <div
+        v-if="spacesLoaded"
+        class="mt-2 xs:mt-0 xs:ml-auto text-right whitespace-nowrap text-skin-text"
+      >
         {{
           $tc('spaceCount', [
             formatCompactNumber(orderedSpacesByCategory.length)
           ])
         }}
       </div>
-    </Container>
-    <Container :slim="true">
-      <div class="grid lg:grid-cols-4 md:grid-cols-3 gap-4">
+    </BaseContainer>
+    <BaseContainer :slim="true">
+      <TransitionGroup
+        name="fade"
+        tag="div"
+        class="grid lg:grid-cols-4 md:grid-cols-3 gap-[1px] md:gap-4"
+      >
         <div
           v-for="space in orderedSpacesByCategory.slice(0, limit)"
           :key="space.id"
+          class="border-b first:border-t md:border-b-0 md:first:border-t-0"
         >
           <router-link
             :to="{ name: 'spaceProposals', params: { key: space.id } }"
           >
             <!-- Added mb-0 to remove mb-4 added by block component -->
-            <Block
-              class="text-center mb-0 hover:border-skin-link"
+            <BaseBlock
+              class="text-center mb-0 hover:border-skin-text transition-all flex justify-center items-center"
               style="height: 266px"
             >
               <div class="relative inline-block mb-2">
-                <Token
+                <AvatarSpace
                   :space="space"
                   symbolIndex="space"
                   size="82"
@@ -135,24 +152,35 @@ onMounted(() => {
                   })
                 }}
               </div>
-              <FollowButton class="!mb-0" :space="space" />
-            </Block>
+              <ButtonFollow class="!mb-0" :space="space" />
+            </BaseBlock>
           </router-link>
         </div>
+      </TransitionGroup>
+      <div
+        v-if="!spacesLoaded"
+        class="opacity-40 grid lg:grid-cols-4 md:grid-cols-3 gap-[1px] md:gap-4"
+      >
+        <div
+          class="bg-skin-border animate-pulse min-h-[266px] md:rounded-xl"
+          v-for="i in 12"
+          :key="i"
+        ></div>
       </div>
       <NoResults
-        :block="true"
-        v-if="Object.keys(orderedSpacesByCategory).length < 1"
+        v-else-if="Object.keys(orderedSpacesByCategory).length < 1"
+        useBlock
       />
-      <UiButton
-        v-if="!enableInfiniteScroll && orderedSpacesByCategory.length > limit"
-        class="w-full mt-4"
-        @click="loadMoreSpaces()"
-      >
-        {{ $t('homeLoadmore') }}
-      </UiButton>
-    </Container>
-    <Footer />
+      <div class="text-center px-4 md:px-0">
+        <BaseButton
+          v-if="!enableInfiniteScroll && orderedSpacesByCategory.length > limit"
+          class="mt-4 w-full"
+          @click="loadMoreSpaces()"
+        >
+          {{ $t('homeLoadmore') }}
+        </BaseButton>
+      </div>
+    </BaseContainer>
     <div ref="endElement" />
   </div>
 </template>

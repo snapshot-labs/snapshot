@@ -4,7 +4,7 @@ import { shorten } from '@/helpers/utils';
 import removeMd from 'remove-markdown';
 import { useIntl } from '@/composables/useIntl';
 
-const { formatRelativeTime, formatCompactNumber } = useIntl();
+const { formatCompactNumber, getRelativeProposalPeriod } = useIntl();
 
 const props = defineProps({
   proposal: Object,
@@ -21,18 +21,12 @@ const body = computed(() => removeMd(shorten(props.proposal.body, 280)));
 const winningChoice = computed(() =>
   props.proposal.scores.indexOf(Math.max(...props.proposal.scores))
 );
-
-const period = computed(() => {
-  if (props.proposal.state === 'closed') return 'endedAgo';
-  if (props.proposal.state === 'active') return 'endIn';
-  return 'startIn';
-});
 </script>
 
 <template>
-  <Block slim class="timeline-proposal transition-colors">
+  <BaseBlock slim class="transition-colors md:hover:border-skin-text">
     <router-link
-      class="p-4 block text-skin-text"
+      class="p-3 sm:p-4 block text-skin-text"
       :to="{
         name: 'spaceProposal',
         params: { key: proposal.space.id, id: proposal.id }
@@ -41,57 +35,50 @@ const period = computed(() => {
       <div>
         <div class="mb-2 flex justify-between items-center">
           <div class="flex items-center space-x-1">
-            <Token :space="proposal.space" size="28" />
-            <span class="!ml-2" v-text="proposal.space.name" />
+            <AvatarSpace :space="proposal.space" size="28" />
+            <span class="!ml-2 hidden xs:block" v-text="proposal.space.name" />
             <span v-text="$tc('proposalBy')" />
 
-            <User
+            <AvatarUser
               :address="proposal.author"
               :profile="profiles[proposal.author]"
               :space="space"
               :proposal="proposal"
               only-username
             />
-            <Badges
+            <BaseBadge
               :address="proposal.author"
               :members="proposal.space.members"
             />
           </div>
-          <UiState :state="proposal.state" />
+          <LabelProposalState :state="proposal.state" />
         </div>
-        <h3 v-text="proposal.title" class="my-1 break-words" />
-        <p v-text="shorten(body, 140)" class="break-words mb-2 text-md" />
+        <h3 v-text="proposal.title" class="my-1 leading-7 break-words" />
+        <p v-text="shorten(body, 140)" class="break-words mb-2 sm:text-md" />
         <div>
           <span
             v-if="proposal.scores_state !== 'final'"
             v-text="
-              $tc(period, [
-                formatRelativeTime(proposal.start),
-                formatRelativeTime(proposal.end)
-              ])
+              getRelativeProposalPeriod(
+                proposal.state,
+                proposal.start,
+                proposal.end
+              )
             "
           />
           <span
             v-if="proposal.scores_state === 'final'"
             class="mt-2 flex space-x-1 items-center"
           >
-            <Icon size="20" name="check1" class="text-green" />
+            <BaseIcon size="20" name="check1" class="text-green" />
             <span
               >{{ shorten(proposal.choices[winningChoice], 64) }} -
               {{ formatCompactNumber(proposal.scores[winningChoice]) }}
-              {{ proposal.space.symbol }}</span
+              {{ proposal.symbol || proposal.space.symbol }}</span
             >
           </span>
         </div>
       </div>
     </router-link>
-  </Block>
+  </BaseBlock>
 </template>
-
-<style scoped lang="scss">
-.timeline-proposal {
-  &:hover {
-    border-color: var(--link-color) !important;
-  }
-}
-</style>

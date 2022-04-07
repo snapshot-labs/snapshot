@@ -32,6 +32,7 @@ export const PROPOSAL_QUERY = gql`
       ipfs
       title
       body
+      discussion
       choices
       start
       end
@@ -42,6 +43,8 @@ export const PROPOSAL_QUERY = gql`
       plugins
       network
       type
+      quorum
+      symbol
       strategies {
         name
         network
@@ -100,6 +103,33 @@ export const PROPOSALS_QUERY = gql`
       scores_total
       scores
       votes
+      quorum
+      symbol
+    }
+  }
+`;
+
+export const NOTIFICATION_PROPOSALS_QUERY = gql`
+  query Proposals(
+    $first: Int!
+    $state: String!
+    $space_in: [String]
+    $start_gte: Int
+  ) {
+    proposals(
+      first: $first
+      where: { state: $state, space_in: $space_in, start_gte: $start_gte }
+    ) {
+      id
+      title
+      start
+      end
+      state
+      space {
+        id
+        name
+        avatar
+      }
     }
   }
 `;
@@ -150,6 +180,7 @@ export const SPACES_QUERY = gql`
       skin
       avatar
       twitter
+      website
       github
       private
       domain
@@ -182,11 +213,22 @@ export const SPACES_QUERY = gql`
   }
 `;
 
-export const ENS_QUERY = gql`
+export const ENS_DOMAINS_BY_ACCOUNT_QUERY = gql`
   query Domain($id: String!) {
     account(id: $id) {
       domains {
         name
+      }
+    }
+  }
+`;
+
+export const ENS_DOMAIN_BY_HASH_QUERY = gql`
+  query Registration($id: String!) {
+    registration(id: $id) {
+      domain {
+        name
+        labelName
       }
     }
   }

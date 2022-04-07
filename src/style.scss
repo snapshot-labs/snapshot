@@ -7,12 +7,14 @@
 [data-color-scheme='dark'] {
   color-scheme: dark;
   --primary-color: #384aff;
-  --bg-color: #121212;
+  --bg-color: #211f24;
   --text-color: #8b949e;
   --link-color: #ffffff;
   --heading-color: #ffffff;
-  --border-color: #424242;
-  --header-bg: #121212;
+  --border-color: #2d2d2d;
+  --header-bg: #1c1b20;
+  --block-bg: transparent;
+  --shadow-color: #fff1;
 }
 
 [data-color-scheme='light'] {
@@ -20,11 +22,12 @@
   --primary-color: #384aff;
   --bg-color: white;
   --text-color: #57606a;
-  --link-color: #111111;
+  --link-color: #444444;
   --heading-color: #111111;
-  --border-color: #d0d7de;
+  --border-color: #e0e0e0;
   --header-bg: white;
   --block-bg: transparent;
+  --shadow-color: #0001;
 }
 
 @layer base {
@@ -46,6 +49,10 @@
     @apply outline-none;
   }
 
+  body {
+    overflow-x: hidden;
+  }
+
   h1 {
     @apply text-2xl;
   }
@@ -62,7 +69,9 @@
   h1,
   h2,
   h3,
-  h4 {
+  h4,
+  h5,
+  h6 {
     @apply font-semibold text-skin-heading;
   }
 
@@ -125,7 +134,7 @@ a,
 
 // TODO: Move this and ::placeholder to a new BaseInput component
 .input {
-  @apply outline-none text-skin-link bg-transparent border-none;
+  @apply outline-none text-skin-link bg-transparent;
 }
 
 ::placeholder {
@@ -133,18 +142,8 @@ a,
   opacity: 0.6 !important;
 }
 
-// TODO: Move this to a new BaseTextarea component
-textarea {
-  padding-top: 16px;
-  font-size: 20px;
-  line-height: 1.4em;
-}
-
-// This seems to be needed for coin.scss skin, maybe it can be removed?
-.bg-black {
-  background-color: var(--bg-color);
-}
-
+// TODO: Remove this and use border-skin-border in the templates. Tailwind has
+// dozens of modifiers (md:, sm:, hover: etc.) which would all need to be listed here.
 .border,
 .border-md,
 .border-lg,
@@ -168,6 +167,13 @@ input[type='number']::-webkit-outer-spin-button {
   margin: 0;
 }
 
+// Pointer cursor for file input buttons
+input[type=file], /* FF, IE7+, chrome (except button) */
+input[type=file]::-webkit-file-upload-button {
+  /* chromes and blink button */
+  cursor: pointer;
+}
+
 input[type='number'] {
   -moz-appearance: textfield;
 }
@@ -184,13 +190,13 @@ input[type='number'] {
   background-color: var(--text-color);
   color: var(--header-bg);
   border-radius: 7px;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 1.4;
   outline: 0;
   transition-property: transform, visibility, opacity;
-  padding: 3px 6px 4px;
+  padding: 2px 4px;
   text-align: center;
-  font-weight: 600;
+  font-weight: 500;
 }
 .tippy-box[data-placement^='top'] > .tippy-arrow {
   bottom: 0;
@@ -250,10 +256,14 @@ input[type='number'] {
   z-index: 1;
 }
 
+.lazy-loading {
+  @apply bg-skin-border animate-pulse-fast;
+}
+
 // Shot UI kit
 
 .s-input {
-  @apply outline-none text-skin-heading border border-skin-border focus-within:border-skin-link block rounded-full py-2 px-3 w-full bg-skin-bg;
+  @apply outline-none text-skin-heading border border-skin-border focus-within:border-skin-text block rounded-full py-2 px-3 w-full bg-skin-bg;
 }
 
 .s-error {
@@ -264,6 +274,14 @@ input[type='number'] {
   @apply block mb-1;
 }
 
-.lazy-loading {
-  @apply bg-skin-text animate-pulse-fast;
+.s-indicator {
+  @apply text-sm h-[12px] w-[12px] rounded-full inline-block bg-blue;
+}
+
+// Fix for chrome. Overwrites tailwinds break-words class.
+// For some reason chrome doesn't break links with just overflow-wrap.
+// It also needs word-break.
+.break-words {
+  overflow-wrap: break-word;
+  word-break: break-word;
 }

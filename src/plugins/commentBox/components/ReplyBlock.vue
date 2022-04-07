@@ -1,6 +1,6 @@
 <script setup>
 import { watch, computed, ref } from 'vue';
-import { useNotifications } from '@/composables/useNotifications';
+import { useFlashNotification } from '@/composables/useFlashNotification';
 import { useModal } from '@/composables/useModal';
 import { useWeb3 } from '@/composables/useWeb3';
 import { signMessage } from '@snapshot-labs/snapshot.js/src/utils/web3';
@@ -60,7 +60,7 @@ async function deleteData(url = '', data = {}, authorization) {
   });
   return response.json(); // parses JSON response into native JavaScript objects
 }
-const { notify } = useNotifications();
+const { notify } = useFlashNotification();
 async function deleteItem() {
   if (loading.value) return;
   try {
@@ -127,7 +127,7 @@ const isOwner = computed(() => {
 const isCreator = computed(() => props.proposal.author === web3Account.value);
 </script>
 <template>
-  <UiModal :open="closeModal" @close="closeModal = false">
+  <BaseModal :open="closeModal" @close="closeModal = false">
     <template v-slot:header>
       <h3>{{ $t('comment_box.delete_comment') }}</h3>
     </template>
@@ -137,17 +137,20 @@ const isCreator = computed(() => props.proposal.author === web3Account.value);
     <div
       class="mb-2 mt-3 text-center flex items-center content-center justify-center"
     >
-      <UiButton
+      <BaseButton
         @click="deleteItem"
         :loading="loading"
         class="!bg-primary !text-white"
-        >{{ $t('comment_box.yes') }}</UiButton
+        >{{ $t('comment_box.yes') }}</BaseButton
       >
-      <UiButton :disabled="loading" @click="closeModal = false" class="ml-2">{{
-        $t('comment_box.no')
-      }}</UiButton>
+      <BaseButton
+        :disabled="loading"
+        @click="closeModal = false"
+        class="ml-2"
+        >{{ $t('comment_box.no') }}</BaseButton
+      >
     </div>
-  </UiModal>
+  </BaseModal>
   <div v-if="!toggleEditComment">
     <PluginCommentBoxComment
       :item="item"
@@ -160,9 +163,9 @@ const isCreator = computed(() => props.proposal.author === web3Account.value);
     />
   </div>
   <div v-if="toggleEditComment">
-    <Block :slim="true" class="p-4 text-skin-text mt-2 mb-0">
+    <BaseBlock :slim="true" class="p-4 text-skin-text mt-2 mb-0">
       <div>
-        <User
+        <AvatarUser
           :address="item.author"
           :profile="profiles[item.author]"
           :space="space"
@@ -182,20 +185,20 @@ const isCreator = computed(() => props.proposal.author === web3Account.value);
           :items="threeDotItems"
         >
           <template v-slot:button>
-            <Icon name="threedots" size="25" class="v-align-text-bottom" />
+            <BaseIcon name="threedots" size="25" class="v-align-text-bottom" />
           </template>
         </BaseDropdown>
       </div>
       <div class="mt-2">{{ item.markdown }}</div>
-    </Block>
-    <UiButton
+    </BaseBlock>
+    <BaseButton
       @click="toggleComment = !toggleComment"
       class="p-1 rounded-0 mt-2"
       style="line-height: 0px; height: auto"
     >
-      <Icon :name="'receipt-outlined'" class="v-align-middle" size="15" />
+      <BaseIcon :name="'receipt-outlined'" class="v-align-middle" size="15" />
       <span class="ml-1">{{ $t('comment_box.reply') }}</span>
-    </UiButton>
+    </BaseButton>
     <PluginCommentBoxComment
       v-if="!toggleComment"
       buttonName="Reply"

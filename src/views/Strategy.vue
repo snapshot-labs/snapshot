@@ -15,15 +15,15 @@ onMounted(async () => {
 </script>
 
 <template>
-  <Layout>
+  <TheLayout>
     <template #content-left>
       <div class="px-4 md:px-0 mb-3">
         <router-link :to="{ path: '/strategies' }" class="text-skin-text">
-          <Icon name="back" size="22" class="!align-middle" />
+          <BaseIcon name="back" size="22" class="!align-middle" />
           {{ $t('strategiesPage') }}
         </router-link>
       </div>
-      <PageLoading v-if="!strategy" />
+      <LoadingPage v-if="!strategy" />
       <div class="px-4 md:px-0" v-else>
         <h1 class="mb-2">
           {{ strategy.id }}
@@ -32,11 +32,11 @@ onMounted(async () => {
           v-text="`In ${strategy.spacesCount} space(s)`"
           class="text-skin-text"
         />
-        <UiMarkdown :body="strategy.about" class="mb-6 mt-4" />
+        <BaseMarkdown :body="strategy.about" class="mb-6 mt-4" />
       </div>
     </template>
     <template #sidebar-right>
-      <Block :title="$t('information')" v-if="strategy">
+      <BaseBlock :title="$t('information')" v-if="strategy">
         <div class="mb-1">
           <b>{{ $t('author') }}</b>
           <BaseLink
@@ -44,7 +44,7 @@ onMounted(async () => {
             :link="`https://github.com/${strategy.author}`"
             hide-external-icon
           >
-            <Icon name="github" class="ml-1" />
+            <BaseIcon name="github" class="ml-1" />
             {{ strategy.author }}
           </BaseLink>
         </div>
@@ -60,9 +60,9 @@ onMounted(async () => {
           </div>
         </div>
         <router-link :to="`/playground/${$route.params.name}`">
-          <UiButton class="w-full mt-2">{{ $t('playground') }}</UiButton>
+          <BaseButton class="w-full mt-2">{{ $t('playground') }}</BaseButton>
         </router-link>
-      </Block>
+      </BaseBlock>
     </template>
-  </Layout>
+  </TheLayout>
 </template>

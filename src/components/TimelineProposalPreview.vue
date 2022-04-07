@@ -3,16 +3,12 @@ import { computed } from 'vue';
 import { shorten } from '@/helpers/utils';
 import removeMd from 'remove-markdown';
 import { useIntl } from '@/composables/useIntl';
-import { useI18n } from '@/composables/useI18n';
-
-const { t } = useI18n();
 
 const {
-  formatRelativeTime,
-  formatDuration,
   formatNumber,
   formatCompactNumber,
-  formatPercentNumber
+  formatPercentNumber,
+  getRelativeProposalPeriod
 } = useIntl();
 
 const props = defineProps({
@@ -29,21 +25,10 @@ const body = computed(() => removeMd(shorten(props.proposal.body, 280)));
 const winningChoice = computed(() =>
   props.proposal.scores.indexOf(Math.max(...props.proposal.scores))
 );
-
-const relativePeriod = computed(() => {
-  const now = new Date() / 1e3;
-  if (props.proposal.state === 'closed') {
-    return t('endedAgo', [formatRelativeTime(props.proposal.end)]);
-  }
-  if (props.proposal.state === 'active') {
-    return t('proposalTimeLeft', [formatDuration(props.proposal.end - now)]);
-  }
-  return t('startIn', [formatRelativeTime(props.proposal.start)]);
-});
 </script>
 
 <template>
-  <div class="transition-colors border-b last:border-b-0">
+  <div class="transition-colors md:border-b last:border-b-0 border-skin-border">
     <router-link
       class="p-4 block text-skin-text"
       :to="{
@@ -61,7 +46,7 @@ const relativePeriod = computed(() => {
             }"
           >
             <div class="flex items-center">
-              <Token :space="proposal.space" size="28" />
+              <AvatarSpace :space="proposal.space" size="28" />
               <span
                 class="ml-2 group-hover:text-skin-link"
                 v-text="proposal.space.name"
@@ -69,13 +54,13 @@ const relativePeriod = computed(() => {
             </div>
           </router-link>
           <span v-text="$tc('proposalBy')" />
-          <User
+          <AvatarUser
             :address="proposal.author"
             :profile="profiles[proposal.author]"
             :proposal="proposal"
             only-username
           />
-          <Badges
+          <BaseBadge
             :address="proposal.author"
             :members="proposal.space.members"
           />
@@ -96,7 +81,7 @@ const relativePeriod = computed(() => {
             class="mt-1 w-full relative"
           >
             <div class="absolute leading-[43px] ml-3 text-skin-link">
-              <Icon
+              <BaseIcon
                 name="check1"
                 size="20"
                 class="mr-1 -ml-1 align-middle"
@@ -105,7 +90,7 @@ const relativePeriod = computed(() => {
               {{ shorten(choice, 32) }}
               <span class="text-skin-text ml-1">
                 {{ formatCompactNumber(proposal.scores[i]) }}
-                {{ proposal.space.symbol }}
+                {{ proposal.symbol || proposal.space.symbol }}
               </span>
             </div>
             <div
@@ -120,15 +105,22 @@ const relativePeriod = computed(() => {
               :style="`width: ${
                 (100 / proposal.scores_total) * proposal.scores[i]
               }%;`"
-              class="bg-[color:var(--border-color)] rounded-md h-[40px]"
+              class="bg-skin-border rounded-md h-[40px]"
             />
           </div>
         </div>
         <div class="flex items-center">
-          <UiState :state="proposal.state" slim class="mr-2" />
+          <LabelProposalState :state="proposal.state" slim class="mr-2" />
           {{ $t(`proposals.states.${proposal.state}`)
           }}<span v-if="proposal.scores_state !== 'final'"
-            >, {{ relativePeriod }}</span
+            >,
+            {{
+              getRelativeProposalPeriod(
+                proposal.state,
+                proposal.start,
+                proposal.end
+              )
+            }}</span
           ><span v-if="proposal.scores_state === 'final'"
             >, {{ formatNumber(proposal.votes) }} votes
           </span>

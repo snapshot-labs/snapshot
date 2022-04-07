@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted, computed, watch } from 'vue';
-import { useNotifications } from '@/composables/useNotifications';
+import { useFlashNotification } from '@/composables/useFlashNotification';
 import { useModal } from '@/composables/useModal';
 import { useWeb3 } from '@/composables/useWeb3';
 import { signMessage } from '@snapshot-labs/snapshot.js/src/utils/web3';
@@ -72,7 +72,7 @@ async function deleteData(url = '', data = {}, authorization) {
   });
   return response.json(); // parses JSON response into native JavaScript objects
 }
-const { notify } = useNotifications();
+const { notify } = useFlashNotification();
 async function deleteItem() {
   if (loading.value) return;
   try {
@@ -205,7 +205,7 @@ function deleteItemReply(key) {
 }
 </script>
 <template>
-  <UiModal :open="closeModal" @close="closeEvent">
+  <BaseModal :open="closeModal" @close="closeEvent">
     <template v-slot:header>
       <h3>{{ $t('comment_box.delete_comment') }}</h3>
     </template>
@@ -215,17 +215,17 @@ function deleteItemReply(key) {
     <div
       class="mb-2 mt-3 text-center flex items-center content-center justify-center"
     >
-      <UiButton
+      <BaseButton
         class="!bg-primary !text-white"
         :loading="loading"
         @click="deleteItem"
-        >{{ $t('comment_box.yes') }}</UiButton
+        >{{ $t('comment_box.yes') }}</BaseButton
       >
-      <UiButton @click="closeEvent" :disabled="loading" class="ml-2">{{
+      <BaseButton @click="closeEvent" :disabled="loading" class="ml-2">{{
         $t('comment_box.no')
-      }}</UiButton>
+      }}</BaseButton>
     </div>
-  </UiModal>
+  </BaseModal>
   <div v-if="!toggleEditComment">
     <CommentBoxComment
       :space="space"
@@ -238,9 +238,9 @@ function deleteItemReply(key) {
     />
   </div>
   <div v-if="toggleEditComment">
-    <Block :slim="true" class="p-4 text-skin-text mt-2 mb-0">
+    <BaseBlock :slim="true" class="p-4 text-skin-text mt-2 mb-0">
       <div>
-        <User
+        <AvatarUser
           :address="item.author"
           :profile="profiles[item.author]"
           :space="space"
@@ -260,21 +260,21 @@ function deleteItemReply(key) {
           :items="threeDotItems"
         >
           <template v-slot:button>
-            <Icon name="threedots" size="25" class="v-align-text-bottom" />
+            <BaseIcon name="threedots" size="25" class="v-align-text-bottom" />
           </template>
         </BaseDropdown>
       </div>
       <div class="mt-2">{{ item.markdown }}</div>
-    </Block>
+    </BaseBlock>
 
-    <UiButton
+    <BaseButton
       @click="toggleComment = !toggleComment"
       class="p-1 rounded-0 mt-2"
       style="line-height: 0px; height: auto"
     >
-      <Icon :name="'receipt-outlined'" class="v-align-middle" size="15" />
+      <BaseIcon :name="'receipt-outlined'" class="v-align-middle" size="15" />
       <span class="ml-1">{{ $t('comment_box.reply') }}</span>
-    </UiButton>
+    </BaseButton>
     <CommentBoxComment
       v-if="!toggleComment"
       buttonName="Reply"

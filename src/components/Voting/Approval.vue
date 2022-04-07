@@ -24,18 +24,19 @@ function selectChoice(i) {
 
 <template>
   <div class="mb-3">
-    <UiButton
+    <BaseButton
       v-for="(choice, i) in proposal.choices"
       :key="i"
       @click="selectChoice(i + 1)"
       class="block w-full mb-2"
       :class="{
-        'button--active': selectedChoices.includes(i + 1),
-        'hover:!border-skin-link !border-skin-border':
-          !selectedChoices.includes(i + 1)
+        '!border-skin-link': selectedChoices.includes(i + 1),
+        'hover:border-skin-link border-skin-border': !selectedChoices.includes(
+          i + 1
+        )
       }"
     >
       {{ shorten(choice, 32) }}
-    </UiButton>
+    </BaseButton>
   </div>
 </template>

@@ -1,22 +1,22 @@
 <script setup lang="ts">
-import { watch, onMounted, ref, watchEffect, computed } from 'vue';
+import { watch, onMounted, ref, watchEffect } from 'vue';
+import { useRouter } from 'vue-router';
 import draggable from 'vuedraggable';
 import { useFollowSpace } from '@/composables/useFollowSpace';
 import { useWeb3 } from '@/composables/useWeb3';
-import { useApp } from '@/composables/useApp';
-import { useDomain } from '@/composables/useDomain';
+import { useSpaces } from '@/composables/useSpaces';
 import { useUnseenProposals } from '@/composables/useUnseenProposals';
+import { useApp } from '@/composables/useApp';
 import { lsSet, lsGet } from '@/helpers/utils';
 
-const { explore } = useApp();
+const router = useRouter();
+const { spaces } = useSpaces();
 const { web3Account } = useWeb3();
 const { loadFollows, followingSpaces } = useFollowSpace();
-const { domain } = useDomain();
 const { proposals, getProposals, lastSeenProposals, updateLastSeenProposal } =
   useUnseenProposals();
+const { domain } = useApp();
 
-const modalAboutOpen = ref(false);
-const modalLangOpen = ref(false);
 const draggableSpaces = ref<string[]>([]);
 
 function saveSpaceOrder() {
@@ -33,10 +33,6 @@ const hasUnseenProposalsBySpace = space => {
     );
   });
 };
-
-const hasUnseenProposals = computed(() =>
-  followingSpaces.value.some(fs => hasUnseenProposalsBySpace(fs))
-);
 
 watch(web3Account, () => {
   loadFollows();
@@ -70,83 +66,101 @@ onMounted(() => {
 
 <template>
   <div
-    v-if="!domain"
-    class="w-[68px] h-screen hidden sm:block fixed m-0 border-r bg-skin-block-bg z-40"
+    class="flex flex-col h-full overflow-auto no-scrollbar overscroll-contain py-2 items-end"
   >
-    <div class="flex flex-col h-full overflow-auto no-scrollbar">
-      <div
-        class="min-h-[78px] h-[78px] flex items-center justify-center bg-skin-bg"
-      >
-        <router-link :to="{ path: '/' }">
-          <Icon
-            size="36"
-            name="snapshot"
-            class="text-snapshot cursor-pointer"
-          />
-        </router-link>
-      </div>
-      <div
-        class="flex flex-col h-[calc(100%-78px)] items-center space-y-2 pt-2 bg-skin-bg"
-      >
-        <div class="flex items-center justify-center relative w-full">
-          <UiUnreadIndicator v-if="hasUnseenProposals" />
-          <router-link :to="{ name: 'timeline' }">
-            <UiSidebarButton>
-              <Icon size="20" name="feed" />
-            </UiSidebarButton>
-          </router-link>
-        </div>
-        <draggable
-          v-if="draggableSpaces.length > 0"
-          v-model="draggableSpaces"
-          :component-data="{ type: 'transition-group' }"
-          v-bind="{ animation: 200 }"
-          item-key="id"
-          @update="saveSpaceOrder"
-          class="w-full space-y-2"
+    <div v-if="!domain" class="flex items-center relative px-2">
+      <router-link :to="{ name: 'home' }">
+        <UiSidebarButton class="!border-0">
+          <BaseIcon size="36" name="snapshot" class="text-snapshot" />
+        </UiSidebarButton>
+      </router-link>
+    </div>
+    <div
+      class="flex items-center relative px-2 group mt-2"
+      v-tippy="{
+        content: 'Timeline',
+        placement: 'right',
+        delay: [750, 0],
+        touch: ['hold', 500]
+      }"
+    >
+      <router-link :to="{ name: 'timeline' }">
+        <UiSidebarButton
+          :class="{ '!border-skin-link': $route.name === 'timeline' }"
         >
-          <template #item="{ element }">
-            <div class="w-full flex items-center justify-center relative group">
-              <UiUnreadIndicator
-                class="group-hover:opacity-100 group-active:hidden"
-                v-if="hasUnseenProposalsBySpace(element)"
+          <BaseIcon size="20" name="feed" />
+        </UiSidebarButton>
+      </router-link>
+    </div>
+    <Transition name="fade">
+      <draggable
+        v-if="draggableSpaces.length > 0"
+        v-model="draggableSpaces"
+        :component-data="{ type: 'transition-group' }"
+        v-bind="{ animation: 200 }"
+        item-key="id"
+        @update="saveSpaceOrder"
+        class="space-y-2 mt-2"
+        :delay="200"
+        :delay-on-touch-only="true"
+      >
+        <template #item="{ element }">
+          <div
+            v-if="spaces[element]"
+            class="flex items-center relative px-2 group"
+            v-tippy="{
+              content: spaces[element].name,
+              placement: 'right',
+              delay: [750, 0],
+              touch: ['hold', 500]
+            }"
+          >
+            <SidebarUnreadIndicator
+              :space="element"
+              :hasUnseen="hasUnseenProposalsBySpace(element)"
+            />
+            <div
+              class="cursor-pointer"
+              @click="
+                router.push({
+                  name: 'spaceProposals',
+                  params: { key: element }
+                })
+              "
+            >
+              <AvatarSpace
+                :space="spaces[element]"
+                :key="element"
+                symbolIndex="space"
+                size="44"
+                class="pointer-events-none"
               />
-              <router-link
-                :to="{ name: 'spaceProposals', params: { key: element } }"
-              >
-                <Token
-                  :space="explore.spaces[element]"
-                  :key="element"
-                  symbolIndex="space"
-                  size="44"
-                />
-                <UiCounter
-                  v-if="explore.spaces[element].activeProposals"
-                  :counter="explore.spaces[element].activeProposals"
-                  class="absolute -top-[1px] right-[9px] !bg-green !h-[16px] !leading-[16px] !min-w-[16px]"
-                />
-              </router-link>
+              <BaseCounter
+                v-if="spaces[element].activeProposals"
+                :counter="spaces[element].activeProposals"
+                class="absolute -top-[1px] right-[9px] !bg-green !h-[16px] !leading-[16px] !min-w-[16px]"
+              />
             </div>
-          </template>
-        </draggable>
-        <router-link :to="{ name: 'setup' }">
-          <UiSidebarButton><Icon size="20" name="plus" /></UiSidebarButton>
-        </router-link>
-        <div
-          class="flex flex-col items-center space-y-2 justify-center !mb-2 !mt-auto py-2"
+          </div>
+        </template>
+      </draggable>
+    </Transition>
+    <div
+      class="flex flex-col items-center px-2 space-y-2 mt-2"
+      v-tippy="{
+        content: 'Create space',
+        placement: 'right',
+        delay: [750, 0],
+        touch: ['hold', 500]
+      }"
+    >
+      <router-link :to="{ name: 'setup' }">
+        <UiSidebarButton
+          :class="{ '!border-skin-link': $route.name === 'setup' }"
         >
-          <UiSidebarButton @click="modalAboutOpen = true">
-            <span class="text-skin-link">?</span>
-          </UiSidebarButton>
-        </div>
-      </div>
+          <BaseIcon size="20" name="plus" />
+        </UiSidebarButton>
+      </router-link>
     </div>
   </div>
-  <teleport to="#modal">
-    <ModalAbout
-      :open="modalAboutOpen"
-      @close="modalAboutOpen = false"
-      @openLang="modalLangOpen = true" />
-    <ModalSelectLanguage :open="modalLangOpen" @close="modalLangOpen = false"
-  /></teleport>
 </template>

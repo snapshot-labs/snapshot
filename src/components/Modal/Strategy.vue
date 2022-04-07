@@ -93,18 +93,18 @@ const strategyIsValid = computed(() =>
 </script>
 
 <template>
-  <UiModal :open="open" @close="$emit('close')">
+  <BaseModal :open="open" @close="$emit('close')">
     <template v-slot:header>
       <h3 v-text="input.name ? input.name : $t('settings.addStrategy')" />
     </template>
-    <Search
+    <BaseSearch
       v-if="!strategy.name && !input.name"
       v-model="searchInput"
       :placeholder="$t('searchPlaceholder')"
-      :modal="true"
+      modal
     />
     <div v-if="input.name" class="m-4">
-      <RowLoading v-if="loading" class="px-0" />
+      <LoadingRow v-if="loading" class="px-0" />
       <div v-else>
         <div class="min-h-[280px]">
           <BaseAutocomplete
@@ -138,37 +138,31 @@ const strategyIsValid = computed(() =>
             :definition="strategyDefinition"
             :errors="strategyValidationErrors"
           />
-          <UiButton
+          <TextareaJson
             v-else
-            class="block w-full mb-3 overflow-x-auto"
-            style="height: auto"
-          >
-            <TextareaJson
-              v-model="input.params"
-              v-model:is-valid="textAreaJsonIsValid"
-              :placeholder="$t('strategyParameters')"
-              class="input text-left"
-            />
-          </UiButton>
+            v-model="input.params"
+            v-model:is-valid="textAreaJsonIsValid"
+            :placeholder="$t('strategyParameters')"
+            class="input text-left"
+          />
         </div>
       </div>
     </div>
 
-    <div v-else class="my-4 mx-0 md:mx-4 min-h-[339px]">
-      <RowLoadingBlock v-if="loadingStrategies" />
-      <div v-else>
-        <a
+    <div v-else class="my-4 mx-0 md:mx-4 min-h-[300px]">
+      <LoadingRow v-if="loadingStrategies" block />
+      <div v-else class="space-y-3">
+        <BlockStrategy
+          :strategy="strategy"
           v-for="strategy in strategiesResults"
           :key="strategy.id"
           @click="selectStrategy(strategy.id)"
-        >
-          <BlockStrategy :strategy="strategy" />
-        </a>
+        />
         <NoResults v-if="strategiesResults.length < 1" />
       </div>
     </div>
     <template v-if="input.name" v-slot:footer>
-      <UiButton
+      <BaseButton
         @click="handleSubmit"
         :disabled="
           !textAreaJsonIsValid ||
@@ -179,7 +173,7 @@ const strategyIsValid = computed(() =>
         primary
       >
         {{ strategy.name ? $t('save') : $t('add') }}
-      </UiButton>
+      </BaseButton>
     </template>
-  </UiModal>
+  </BaseModal>
 </template>

@@ -11,12 +11,11 @@ defineProps(['network']);
 </script>
 
 <template>
-  <Block class="hover:border-skin-link">
+  <BaseBlock class="hover:border-skin-text cursor-pointer">
     <div class="flex items-start mb-3">
-      <UiAvatar
+      <BaseAvatar
         class="mr-2"
         :imgsrc="getIpfsUrl(network.imageIPFS)"
-        :seed="network.key"
         size="28"
       />
       <div class="overflow-hidden">
@@ -34,5 +33,5 @@ defineProps(['network']);
         ])
       }}
     </div>
-  </Block>
+  </BaseBlock>
 </template>

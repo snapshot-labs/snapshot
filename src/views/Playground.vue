@@ -96,7 +96,7 @@ async function loadScores() {
 
 async function loadSnapshotBlockNumber() {
   try {
-    provider = await getProvider(form.value.network);
+    provider = await getProvider(form.value.network, 'light');
     form.value.snapshot = await getBlockNumber(provider);
     loading.value = false;
   } catch (e) {
@@ -156,24 +156,24 @@ onMounted(async () => {
 </script>
 
 <template>
-  <Layout v-bind="$attrs">
+  <TheLayout v-bind="$attrs">
     <template #content-left>
-      <PageLoading v-if="!strategy" />
+      <LoadingPage v-if="!strategy" />
       <div v-else>
         <div class="px-4 md:px-0 mb-3">
           <router-link
             :to="`/strategy/${$route.params.name}`"
             class="text-skin-text"
           >
-            <Icon name="back" size="22" class="!align-middle" />
+            <BaseIcon name="back" size="22" class="!align-middle" />
             {{ $t('back') }}
           </router-link>
         </div>
-        <div class="">
-          <h1 class="mb-2 px-4 md:px-0">
-            {{ strategy.id }}
-          </h1>
-          <Block :title="$t('settings.header')">
+        <h1 class="mb-2 px-4 md:px-0">
+          {{ strategy.id }}
+        </h1>
+        <div class="space-y-3">
+          <BaseBlock :title="$t('settings.header')">
             <div class="space-y-2">
               <UiInput @click="modalNetworksOpen = true">
                 <template v-slot:selected>
@@ -194,85 +194,87 @@ onMounted(async () => {
                 </template>
               </UiInput>
             </div>
-            <Block
+            <BaseBlock
               v-if="networkError"
               class="mt-4"
               style="border-color: red !important"
             >
-              <Icon name="warning" class="mr-2 !text-red" />
+              <BaseIcon name="warning" class="mr-2 !text-red" />
               <span class="!text-red">{{ $t('networkErrorPlayground') }}</span>
-            </Block>
-          </Block>
-          <Block :title="$t('strategyParams')">
+            </BaseBlock>
+          </BaseBlock>
+          <BaseBlock :title="$t('strategyParams')">
             <SDefaultObject
               v-if="strategyDefinition"
               v-model="form.params"
               :definition="strategyDefinition"
               :errors="strategyValidationErrors"
             />
-            <UiButton
+            <TextareaJson
               v-else
-              class="block w-full mb-3 overflow-x-auto"
-              style="height: auto"
+              v-model="form.params"
+              @update:modelValue="handleURLUpdate"
+              :placeholder="$t('strategyParameters')"
+              class="input text-left"
+            />
+            <BaseBlock
+              v-if="strategyError"
+              style="border-color: red !important"
             >
-              <TextareaJson
-                v-model="form.params"
-                @update:modelValue="handleURLUpdate"
-                :placeholder="$t('strategyParameters')"
-                class="input text-left"
-              />
-            </UiButton>
-            <Block v-if="strategyError" style="border-color: red !important">
-              <Icon name="warning" class="mr-2 !text-red" />
+              <BaseIcon name="warning" class="mr-2 !text-red" />
               <span class="!text-red"> {{ strategyError }}</span>
-            </Block>
-          </Block>
-          <Block :title="$t('addresses')">
-            <UiButton class="block w-full px-3" style="height: auto">
-              <TextareaArray
-                v-model="form.addresses"
-                @change:modelValue="handleURLUpdate"
-                :placeholder="`0x8C28Cf33d9Fd3D0293f963b1cd27e3FF422B425c\n0xeF8305E140ac520225DAf050e2f71d5fBcC543e7`"
-                class="input w-full text-left"
-                style="font-size: 18px"
-              />
-            </UiButton>
-          </Block>
+            </BaseBlock>
+          </BaseBlock>
+          <BaseBlock :title="$t('addresses')">
+            <TextareaArray
+              v-model="form.addresses"
+              @change:modelValue="handleURLUpdate"
+              :placeholder="`0x8C28Cf33d9Fd3D0293f963b1cd27e3FF422B425c\n0xeF8305E140ac520225DAf050e2f71d5fBcC543e7`"
+              class="input w-full text-left"
+              style="font-size: 18px"
+            />
+          </BaseBlock>
         </div>
       </div>
     </template>
     <template #sidebar-right>
-      <Block :title="$t('actions')">
-        <UiButton
-          @click="loadScores"
-          :loading="loading"
-          :disabled="loading || !strategy"
-          class="w-full"
-          :style="[loading ? '' : 'padding-top: 0.2rem']"
-          primary
-        >
-          <Icon name="play" size="18" />
-        </UiButton>
-        <UiButton @click="copyURL" class="w-full mt-2">
-          <Icon name="insertlink" size="18" class="align-text-bottom mr-1" />
-          {{ t('copyLink') }}
-        </UiButton>
-      </Block>
-      <Block v-if="scores" :title="$t('results')">
-        <div
-          class="flex justify-between"
-          v-for="score in Object.keys(scores[0])"
-          :key="score"
-        >
-          <User :address="score" :space="form" />
-          <span>
-            {{ formatCompactNumber(scores[0][score]) }}
-            {{ form.params.symbol }}
-          </span>
-        </div>
-      </Block>
+      <div class="space-y-3">
+        <BaseBlock :title="$t('actions')">
+          <BaseButton
+            @click="loadScores"
+            :loading="loading"
+            :disabled="loading || !strategy"
+            class="w-full"
+            :style="[loading ? '' : 'padding-top: 0.2rem']"
+            primary
+          >
+            <BaseIcon name="play" size="18" />
+          </BaseButton>
+          <BaseButton @click="copyURL" class="w-full mt-2">
+            <BaseIcon
+              name="insertlink"
+              size="18"
+              class="align-text-bottom mr-1"
+            />
+            {{ t('copyLink') }}
+          </BaseButton>
+        </BaseBlock>
+        <BaseBlock v-if="scores" :title="$t('results')">
+          <div
+            class="flex justify-between"
+            v-for="score in Object.keys(scores[0])"
+            :key="score"
+          >
+            <AvatarUser :address="score" :space="form" />
+            <span>
+              {{ formatCompactNumber(scores[0][score]) }}
+              {{ form.params.symbol }}
+            </span>
+          </div>
+        </BaseBlock>
+      </div>
     </template>
-  </Layout>
+  </TheLayout>
   <teleport to="#modal">
     <ModalNetworks
       :open="modalNetworksOpen"

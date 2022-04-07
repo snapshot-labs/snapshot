@@ -1,6 +1,6 @@
 <script setup>
 import { computed, onMounted } from 'vue';
-import { useDomain } from '@/composables/useDomain';
+import { useApp } from '@/composables/useApp';
 import aliases from '@/../snapshot-spaces/spaces/aliases.json';
 import { useRouter, useRoute } from 'vue-router';
 import { formatSpace } from '@/helpers/utils';
@@ -8,7 +8,7 @@ import { useExtendedSpaces } from '@/composables/useExtendedSpaces';
 
 const route = useRoute();
 const router = useRouter();
-const { domain } = useDomain();
+const { domain } = useApp();
 const aliasedSpace = aliases[domain] || aliases[route.params.key];
 const { loadExtentedSpaces, extentedSpaces } = useExtendedSpaces();
 
@@ -37,16 +37,15 @@ onMounted(() => loadExtentedSpaces([spaceKey.value, sourceSpaceRoute.value]));
 <template>
   <!-- Only loaded after space is available -->
   <router-view
-    v-if="space || $route.name === 'spaceSettings'"
+    v-if="space"
     :space="space"
     :sourceSpace="sourceSpace"
-    :spaceKey="spaceKey"
     :loadExtentedSpaces="loadExtentedSpaces"
   />
 
   <div v-else>
     <!-- Lazy loading skeleton for space page with left sidebar layout -->
-    <Layout
+    <TheLayout
       v-if="
         !space &&
         ($route.name === 'spaceProposals' || $route.name === 'spaceAbout')
@@ -56,15 +55,15 @@ onMounted(() => loadExtentedSpaces([spaceKey.value, sourceSpaceRoute.value]));
         <SpaceSidebarSkeleton />
       </template>
       <template #content-right>
-        <RowLoadingBlock />
+        <LoadingRow block />
       </template>
-    </Layout>
+    </TheLayout>
 
     <!-- Default page loading for none sidebar left layout space pages -->
-    <Layout v-else-if="!space" class="!px-4">
+    <TheLayout v-else-if="!space" class="!px-4">
       <template #content-left>
-        <PageLoading />
+        <LoadingPage />
       </template>
-    </Layout>
+    </TheLayout>
   </div>
 </template>
