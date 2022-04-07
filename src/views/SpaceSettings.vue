@@ -481,7 +481,7 @@ async function handleSetRecord() {
                 <template v-slot:info>
                   <select
                     v-model="relativesType"
-                    class="input text-center mr-[6px] ml-2"
+                    class="input text-right mr-[6px] ml-2"
                     required
                   >
                     <option value="parent">
