@@ -43,6 +43,9 @@ export function useSpaces() {
   }
 
   async function loadExtendedSpaces(id_in: string[] = []) {
+    // remove falsy values
+    id_in = id_in.filter(id => id);
+
     try {
       const response = await apolloQuery(
         {
