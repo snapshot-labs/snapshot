@@ -209,8 +209,16 @@ export const SPACES_QUERY = gql`
         minScore
         onlyMembers
       }
-      parent
-      children
+      parent {
+        id
+        name
+        followersCount
+      }
+      children {
+        id
+        name
+        followersCount
+      }
     }
   }
 `;
