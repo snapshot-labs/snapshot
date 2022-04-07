@@ -213,11 +213,13 @@ export const SPACES_QUERY = gql`
         id
         name
         followersCount
+        avatar
       }
       children {
         id
         name
         followersCount
+        avatar
       }
     }
   }

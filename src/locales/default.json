@@ -298,6 +298,10 @@
       "childrenPlaceholder": "e.g. child1.{0}, child2.{0}"
     }
   },
+  "subSpaces": {
+    "subSpaces": "Sub-Spaces",
+    "mainSpace": "Main Space"
+  },
   "setup": {
     "example": "e.g. yam.eth",
     "chooseExistingEns": "Choose one of your existing ENS domains to create a space with:",

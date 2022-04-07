@@ -22,6 +22,9 @@ const isAdmin = computed(() => {
     admins?.includes(web3Account.value.toLowerCase())
   );
 });
+
+const isParent = computed(() => props.space?.children.length);
+const isChild = computed(() => props.space?.parent);
 </script>
 
 <template>
@@ -58,5 +61,24 @@ const isAdmin = computed(() => {
       v-text="$t('settings.header')"
       class="block px-4 py-2 sidenav-item hover:bg-skin-bg"
     />
+  </div>
+  <div class="py-3" v-if="isParent || isChild">
+    <div class="px-4 text-skin-text opacity-80">
+      {{ $t(isParent ? 'subSpaces.subSpaces' : 'subSpaces.mainSpace') }}
+    </div>
+    <router-link
+      v-for="relatedSpace in (isParent ? space.children : [space.parent])"
+      :to="{ name: 'spaceProposals', params: { key: relatedSpace.id } }"
+      class="flex items-center px-4 py-2 sidenav-item hover:bg-skin-bg"
+    >
+      <AvatarSpace :space="relatedSpace" size="28" />
+      <span class="truncate mx-2">
+        {{ relatedSpace.name }}
+      </span>
+      <BaseCounter
+        :counter="relatedSpace.followersCount"
+        class="ml-auto inline-block"
+      />
+    </router-link>
   </div>
 </template>
