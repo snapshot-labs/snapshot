@@ -56,7 +56,7 @@ export function useSpaces() {
         },
         'spaces'
       );
-      
+
       // loop through response, add new spaces and update existing ones
       for (const space of response) {
         const existingSpaceIndex = extendedSpaces.value.findIndex(

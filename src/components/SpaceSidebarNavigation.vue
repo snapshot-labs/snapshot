@@ -67,7 +67,8 @@ const isChild = computed(() => props.space?.parent);
       {{ $t(isParent ? 'subSpaces.subSpaces' : 'subSpaces.mainSpace') }}
     </div>
     <router-link
-      v-for="relatedSpace in (isParent ? space.children : [space.parent])"
+      v-for="relatedSpace in isParent ? space.children : [space.parent]"
+      :key="relatedSpace.id"
       :to="{ name: 'spaceProposals', params: { key: relatedSpace.id } }"
       class="flex items-center px-4 py-2 sidenav-item hover:bg-skin-bg"
     >

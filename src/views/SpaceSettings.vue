@@ -138,10 +138,13 @@ const relativesPlaceholder = computed(() => {
     : t('settings.relatives.childrenPlaceholder', [props.space.id]);
 });
 const relatives = computed({
-  get: () => relativesType.value === 'parent' ? form.value.parent : form.value.children?.join(', ') || '',
+  get: () =>
+    relativesType.value === 'parent'
+      ? form.value.parent
+      : form.value.children?.join(', ') || '',
   set: newVal => {
     if (relativesType.value === 'parent') {
-      form.value.parent = newVal.split(',').map(s => s.trim())[0]
+      form.value.parent = newVal.split(',').map(s => s.trim())[0];
     }
     if (relativesType.value === 'children') {
       form.value.children = newVal.split(',').map(s => s.trim());
@@ -471,10 +474,7 @@ async function handleSetRecord() {
               >
                 <template v-slot:label> {{ $t(`settings.terms`) }} </template>
               </UiInput>
-              <UiInput
-                v-model="relatives"
-                :placeholder="relativesPlaceholder"
-              >
+              <UiInput v-model="relatives" :placeholder="relativesPlaceholder">
                 <template v-slot:label>
                   {{ $t('settings.relatives.relatives') }}
                 </template>
@@ -484,8 +484,12 @@ async function handleSetRecord() {
                     class="input text-center mr-[6px] ml-2"
                     required
                   >
-                    <option value="parent">{{ $t('settings.relatives.parent') }}</option>
-                    <option value="children">{{ $t('settings.relatives.children') }}</option>
+                    <option value="parent">
+                      {{ $t('settings.relatives.parent') }}
+                    </option>
+                    <option value="children">
+                      {{ $t('settings.relatives.children') }}
+                    </option>
                   </select>
                   <BaseLink
                     class="flex items-center -mr-1"
