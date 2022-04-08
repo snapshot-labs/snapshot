@@ -7040,10 +7040,10 @@ tinypool@^0.1.2:
   resolved "https://registry.yarnpkg.com/tinypool/-/tinypool-0.1.2.tgz#5b1d5f5bb403afac8c67000047951ce76342fda7"
   integrity sha512-fvtYGXoui2RpeMILfkvGIgOVkzJEGediv8UJt7TxdAOY8pnvUkFg/fkvqTfXG9Acc9S17Cnn1S4osDc2164guA==
 
-tinyspy@^0.3.0:
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/tinyspy/-/tinyspy-0.3.0.tgz#51bcc198173385c50416df791cd10c192078cb36"
-  integrity sha512-c5uFHqtUp74R2DJE3/Efg0mH5xicmgziaQXMm/LvuuZn3RdpADH32aEGDRyCzObXT1DNfwDMqRQ/Drh1MlO12g==
+tinyspy@^0.3.2:
+  version "0.3.2"
+  resolved "https://registry.yarnpkg.com/tinyspy/-/tinyspy-0.3.2.tgz#2f95cb14c38089ca690385f339781cd35faae566"
+  integrity sha512-2+40EP4D3sFYy42UkgkFFB+kiX2Tg3URG/lVvAZFfLxgGpnWl5qQJuBw1gaLttq8UOS+2p3C0WrhJnQigLTT2Q==
 
 tippy.js@^6.3.7:
   version "6.3.7"
@@ -7366,17 +7366,17 @@ vite@^2.9.1:
   optionalDependencies:
     fsevents "~2.3.2"
 
-vitest@^0.9.0:
-  version "0.9.0"
-  resolved "https://registry.yarnpkg.com/vitest/-/vitest-0.9.0.tgz#75883923eda964740495bf6f69ef3aaa5e6b7acb"
-  integrity sha512-WyNY35WGRqtW/hd00FPgsnatDxKrRzEWVLS36KPbSFqAOn3HHtV+4/ihiPBaDAzAKtr6/eT52x+7kobUXa59TA==
+vitest@^0.9.2:
+  version "0.9.2"
+  resolved "https://registry.yarnpkg.com/vitest/-/vitest-0.9.2.tgz#d45705b88af41b797c5c3c00c1f9efc2e1f2b37e"
+  integrity sha512-XgR42njw350OxBfKD4MK0cNIzgQrhSUKJq9sgbgRR+bD8GonPCyjpFFmPejptaiEyjmQ2FXpEvFHN37b9X2HJA==
   dependencies:
     "@types/chai" "^4.3.0"
     "@types/chai-subset" "^1.3.3"
     chai "^4.3.6"
     local-pkg "^0.4.1"
     tinypool "^0.1.2"
-    tinyspy "^0.3.0"
+    tinyspy "^0.3.2"
     vite "^2.9.1"
 
 vue-demi@*, vue-demi@^0.12.1:
