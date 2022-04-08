@@ -1,3 +1,4 @@
+<!-- TODO: use for timeline and space sidebar items -->
 <script setup lang="ts">
 defineProps<{
   isActive: boolean;
