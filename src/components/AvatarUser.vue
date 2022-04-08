@@ -23,20 +23,22 @@ watchEffect(() => {
   <span>
     <BasePopover :options="{ offset: [0, 12], placement: 'bottom-start' }">
       <template v-slot:item>
-        <a class="flex flex-nowrap">
-          <BaseAvatar
-            v-if="!onlyUsername"
-            :address="address"
-            size="18"
-            class="mr-2"
-          />
-          <span class="truncate w-full">{{ username }}</span>
-          <BaseBadge
-            v-if="!onlyUsername"
-            :address="address"
-            :members="space?.members"
-          />
-        </a>
+        <router-link :to="{ name: 'profileAbout', params: { address } }">
+          <a class="flex flex-nowrap">
+            <BaseAvatar
+              v-if="!onlyUsername"
+              :address="address"
+              size="18"
+              class="mr-2"
+            />
+            <span class="truncate w-full">{{ username }}</span>
+            <BaseBadge
+              v-if="!onlyUsername"
+              :address="address"
+              :members="space?.members"
+            />
+          </a>
+        </router-link>
       </template>
       <template v-slot:content>
         <div class="m-4 mb-0 text-center">
@@ -45,19 +47,26 @@ watchEffect(() => {
           <h3 v-else-if="profile?.ens" v-text="profile.ens" class="mt-3" />
           <h3 v-else v-text="shorten(address)" class="mt-3" />
         </div>
-        <div class="m-4">
-          <a
-            :href="
+        <div class="m-4 space-y-2">
+          <BaseLink
+            :link="
               explorerUrl(proposal?.network || space?.network || '1', address)
             "
-            target="_blank"
-            class="mb-2 block"
+            hide-external-icon
           >
-            <BaseButton class="button-outline w-full">
+            <BaseButton class="w-full">
               {{ $t('seeInExplorer') }}
               <BaseIcon name="external-link" class="ml-1" />
             </BaseButton>
-          </a>
+          </BaseLink>
+          <BaseButton
+            @click.prevent="
+              $router.push({ name: 'profileAbout', params: { address } })
+            "
+            class="w-full"
+          >
+            {{ $t('viewProfile') }}
+          </BaseButton>
         </div>
       </template>
     </BasePopover>
