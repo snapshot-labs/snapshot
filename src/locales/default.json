@@ -320,7 +320,8 @@
   },
   "profile": {
     "about": {
-      "header": "About"
+      "header": "About",
+      "joinedSpaces": "Joined spaces"
     },
     "activity": {
       "header": "Activity"
