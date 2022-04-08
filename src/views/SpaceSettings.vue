@@ -300,6 +300,12 @@ onMounted(async () => {
       form.value = fromClone;
     }
   }
+
+  // not so nice to have this here but this whole component needs to be refactored
+  form.value.children = form.value.children?.map(c => c.id);
+  form.value.parent = form.value.parent?.id;
+  relativesType.value = form.value.children.length ? 'children' : 'parent';
+
   try {
     const uri = await getSpaceUri(
       props.space.id,
