@@ -23,8 +23,22 @@ const isAdmin = computed(() => {
   );
 });
 
-const isParent = computed(() => props.space?.children.length);
-const isChild = computed(() => props.space?.parent);
+// a space is a parent space if it has children and at least one of them has this space as parent
+const isParent = computed(() => {
+  return (
+    props.space?.children?.length > 0 &&
+    props.space?.children?.some(child => child.parent?.id === props.space.id)
+  );
+});
+
+// a space is a child if it is not a parent itself but has a parent and the parent has this space as child
+const isChild = computed(() => {
+  return (
+    !isParent.value &&
+    props.space?.parent?.id &&
+    props.space?.parent?.children?.some(child => child.id === props.space.id)
+  );
+});
 </script>
 
 <template>
@@ -62,22 +76,40 @@ const isChild = computed(() => props.space?.parent);
       class="block px-4 py-2 sidenav-item hover:bg-skin-bg"
     />
   </div>
-  <div class="py-3" v-if="isParent || isChild">
+  <div v-if="isChild">
     <div class="px-4 text-skin-text opacity-80">
-      {{ $t(isParent ? 'subSpaces.subSpaces' : 'subSpaces.mainSpace') }}
+      {{ $t('subSpaces.mainSpace') }}
     </div>
     <router-link
-      v-for="relatedSpace in isParent ? space.children : [space.parent]"
-      :key="relatedSpace.id"
-      :to="{ name: 'spaceProposals', params: { key: relatedSpace.id } }"
+      :to="{ name: 'spaceProposals', params: { key: space.parent.id } }"
       class="flex items-center px-4 py-2 sidenav-item hover:bg-skin-bg"
     >
-      <AvatarSpace :space="relatedSpace" size="28" />
+      <AvatarSpace :space="space.parent" size="28" />
       <span class="truncate mx-2">
-        {{ relatedSpace.name }}
+        {{ space.parent.name }}
       </span>
       <BaseCounter
-        :counter="relatedSpace.followersCount"
+        :counter="space.parent.followersCount"
+        class="ml-auto inline-block"
+      />
+    </router-link>
+  </div>
+  <div v-if="isParent">
+    <div class="px-4 text-skin-text opacity-80">
+      {{ $t('subSpaces.subSpaces') }}
+    </div>
+    <router-link
+      v-for="child in space.children.filter(child => child.parent.id === space.id)"
+      :key="child.id"
+      :to="{ name: 'spaceProposals', params: { key: child.id } }"
+      class="flex items-center px-4 py-2 sidenav-item hover:bg-skin-bg"
+    >
+      <AvatarSpace :space="child" size="28" />
+      <span class="truncate mx-2">
+        {{ child.name }}
+      </span>
+      <BaseCounter
+        :counter="child.followersCount"
         class="ml-auto inline-block"
       />
     </router-link>
