@@ -292,7 +292,7 @@
     "set": "Set",
     "relatives": {
       "relatives": "Related space(s)",
-      "parent": "Main",
+      "parent": "Main space",
       "children": "Sub-spaces",
       "parentPlaceholder": "e.g. balancer.eth",
       "childrenPlaceholder": "e.g. child1.{0}, child2.{0}"
