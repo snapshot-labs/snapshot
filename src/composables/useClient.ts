@@ -21,7 +21,6 @@ export function useClient() {
     return (
       connectorName.value === 'walletlink' ||
       connectorName.value === 'walletconnect' ||
-      connectorName.value === 'portis' ||
       connectorName.value === 'gnosis'
     );
   });
@@ -71,6 +70,7 @@ export function useClient() {
         type: payload.type,
         title: payload.name,
         body: payload.body,
+        discussion: payload.discussion,
         choices: payload.choices,
         start: payload.start,
         end: payload.end,

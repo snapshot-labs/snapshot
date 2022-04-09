@@ -16,7 +16,14 @@ module.exports = {
         green: '#21b66f',
         red: '#ff3856'
       },
+      keyframes: {
+        fadeIn: {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' },
+        }
+      },
       animation: {
+        'fade-in': 'fadeIn 1s',
         'pulse-fast': 'pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite'
       }
     },

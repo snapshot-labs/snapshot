@@ -29,8 +29,8 @@ const choices = computed(() =>
 );
 
 const getPercentage = (n, max) => (max ? ((100 / max) * n) / 1e2 : 0);
-
 const hideAbstain = props.space?.voting?.hideAbstain ?? false;
+const ts = (Date.now() / 1e3).toFixed();
 </script>
 
 <template>
@@ -68,7 +68,7 @@ const hideAbstain = props.space?.voting?.hideAbstain ?? false;
                 {{
                   formatCompactNumber(results.resultsByVoteBalance[choice.i])
                 }}
-                {{ shorten(space.symbol, 'symbol') }}
+                {{ shorten(proposal.symbol || space.symbol, 'symbol') }}
               </span>
               <span
                 v-if="
@@ -123,11 +123,11 @@ const hideAbstain = props.space?.voting?.hideAbstain ?? false;
           />
         </template>
       </div>
-      <div v-if="props.space?.voting?.quorum" class="text-skin-link">
+      <div v-if="proposal.quorum || space.voting?.quorum" class="text-skin-link">
         {{ $t('settings.quorum') }}
         <span class="float-right">
           {{ formatCompactNumber(results.sumOfResultsBalance) }} /
-          {{ formatCompactNumber(props.space.voting.quorum) }}
+          {{ formatCompactNumber(proposal.quorum || space.voting.quorum) }}
         </span>
       </div>
     </div>

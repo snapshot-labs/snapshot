@@ -167,6 +167,13 @@ input[type='number']::-webkit-outer-spin-button {
   margin: 0;
 }
 
+// Pointer cursor for file input buttons
+input[type=file], /* FF, IE7+, chrome (except button) */
+input[type=file]::-webkit-file-upload-button {
+  /* chromes and blink button */
+  cursor: pointer;
+}
+
 input[type='number'] {
   -moz-appearance: textfield;
 }
@@ -256,7 +263,7 @@ input[type='number'] {
 // Shot UI kit
 
 .s-input {
-  @apply outline-none text-skin-heading border border-skin-border focus-within:border-skin-link block rounded-full py-2 px-3 w-full bg-skin-bg hover:border-skin-text;
+  @apply outline-none text-skin-heading border border-skin-border focus-within:border-skin-text block rounded-full py-2 px-3 w-full bg-skin-bg;
 }
 
 .s-error {

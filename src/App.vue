@@ -20,7 +20,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <LoadingSpinner v-if="!ready" class="overlay big" />
+  <LoadingSpinner v-if="!ready" class="overlay big animate-fade-in" />
   <div
     v-else
     class="flex font-sans text-base antialiased bg-skin-bg text-skin-text min-h-screen"
@@ -44,7 +44,7 @@ onMounted(async () => {
       >
         <TheNavbar />
       </div>
-      <div id="content" class="py-4">
+      <div id="content" class="pb-6 pt-4">
         <router-view :key="$route.path" />
       </div>
       <footer class="mt-auto" v-if="route.name === 'home'">

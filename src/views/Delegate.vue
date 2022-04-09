@@ -157,7 +157,7 @@ async function getDelegatesWithScore() {
   delegatesLoading.value = true;
   try {
     const delegationsRes = await Promise.all([
-      getDelegatesBySpace(space.value.network, ''),
+      getDelegatesBySpace(space.value.network, null),
       getDelegatesBySpace(space.value.network, space.value.id)
     ]);
 
@@ -210,7 +210,7 @@ async function handleSubmit() {
   try {
     let address = form.value.address;
     if (address.includes('.eth'))
-      address = await getProvider('1').resolveName(address);
+      address = await getProvider('1', 'light').resolveName(address);
     let spaceId = form.value.id;
     if (!specifySpaceChecked.value) spaceId = '';
     const tx = await sendTransaction(
