@@ -157,7 +157,7 @@ async function getDelegatesWithScore() {
   delegatesLoading.value = true;
   try {
     const delegationsRes = await Promise.all([
-      getDelegatesBySpace(space.value.network, ''),
+      getDelegatesBySpace(space.value.network, null),
       getDelegatesBySpace(space.value.network, space.value.id)
     ]);
 
