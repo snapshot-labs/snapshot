@@ -39,17 +39,14 @@ export async function getDelegators(network: string, address: string) {
 
 export async function getDelegatesBySpace(
   network: string,
-  space: string | undefined
+  space: string | null
 ) {
-  const where = space
-    ? {
-        space
-      }
-    : {};
   const params = {
     delegations: {
       __args: {
-        where,
+        where: {
+          space
+        },
         first: 1000
       },
       delegate: true,
