@@ -99,7 +99,7 @@ const isChild = computed(() => {
       {{ $t('subSpaces.subSpaces') }}
     </div>
     <router-link
-      v-for="child in space.children.filter(child => child.parent.id === space.id).sort((a, b) => b.followersCount - a.followersCount)"
+      v-for="child in space.children.filter(child => child.parent?.id === space.id).sort((a, b) => b.followersCount - a.followersCount)"
       :key="child.id"
       :to="{ name: 'spaceProposals', params: { key: child.id } }"
       class="flex items-center px-4 py-2 sidenav-item hover:bg-skin-bg"
