@@ -155,8 +155,8 @@ const relatives = computed({
 async function handleSubmit() {
   if (isValid.value) {
     if (form.value.filters.invalids) delete form.value.filters.invalids;
-    if (relativesType.value === 'parent') form.value.children = [];
-    if (relativesType.value === 'children') form.value.parent = null;
+    if (relativesType.value === 'parent') delete form.value.children;
+    if (relativesType.value === 'children') delete form.value.parent;
     const result = await send({ id: props.space.id }, 'settings', form.value);
     console.log('Result', result);
     if (result.id) {
