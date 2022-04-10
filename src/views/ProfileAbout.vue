@@ -8,7 +8,10 @@ defineProps<{
   <div>
     <h2>{{ $t('profile.about.header') }}</h2>
     <BaseBlock>
-      <ProfileAboutSpacesList :userAddress="userAddress" />
+      <div class="space-y-4">
+        <ProfileAboutBiography />
+        <ProfileAboutSpacesList :userAddress="userAddress" />
+      </div>
     </BaseBlock>
   </div>
 </template>

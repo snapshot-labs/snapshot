@@ -322,7 +322,8 @@
   "profile": {
     "about": {
       "header": "About",
-      "joinedSpaces": "Joined spaces"
+      "joinedSpaces": "Joined spaces",
+      "biography": "Bio"
     },
     "activity": {
       "header": "Activity"
