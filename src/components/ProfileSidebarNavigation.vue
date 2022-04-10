@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="py-3">
     <router-link :to="{ name: 'profileAbout' }" v-slot="{ isExactActive }">
       <BaseSidebarNavigationItem :isActive="isExactActive">
         {{ $t('profile.about.header') }}
