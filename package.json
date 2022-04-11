@@ -75,7 +75,7 @@
     "tailwindcss": "^3.0.23",
     "unplugin-vue-components": "^0.19.2",
     "vite": "^2.9.1",
-    "vitest": "^0.9.2"
+    "vitest": "^0.9.3"
   },
   "resolutions": {
     "ansi-regex": "^5.0.1",
