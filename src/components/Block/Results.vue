@@ -123,7 +123,10 @@ const ts = (Date.now() / 1e3).toFixed();
           />
         </template>
       </div>
-      <div v-if="proposal.quorum || space.voting?.quorum" class="text-skin-link">
+      <div
+        v-if="proposal.quorum || space.voting?.quorum"
+        class="text-skin-link"
+      >
         {{ $t('settings.quorum') }}
         <span class="float-right">
           {{ formatCompactNumber(results.sumOfResultsBalance) }} /
