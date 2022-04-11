@@ -393,7 +393,7 @@ const truncateMarkdownBody = computed(() => {
       <div class="space-y-4 py-4">
         <BaseLink
           v-if="proposal?.discussion"
-          :link="proposal?.discussion"
+          :link="getIpfsUrl(proposal.discussion)"
           hide-external-icon
         >
           <BaseBlock class="cursor-pointer hover:border-skin-text">

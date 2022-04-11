@@ -37,7 +37,10 @@ export async function getDelegators(network: string, address: string) {
   return await subgraphRequest(SNAPSHOT_SUBGRAPH_URL[network], params);
 }
 
-export async function getDelegatesBySpace(network: string, space: string) {
+export async function getDelegatesBySpace(
+  network: string,
+  space: string | null
+) {
   const params = {
     delegations: {
       __args: {
