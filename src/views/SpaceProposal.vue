@@ -391,23 +391,10 @@ const truncateMarkdownBody = computed(() => {
         <LoadingPage v-else />
       </div>
       <div class="space-y-4 py-4">
-        <BaseLink
+        <SpaceProposalDiscussionLink
           v-if="proposal?.discussion"
-          :link="getIpfsUrl(proposal.discussion)"
-          hide-external-icon
-        >
-          <BaseBlock class="cursor-pointer hover:border-skin-text">
-            <div class="text-skin-link flex items-center justify-between">
-              <div class="flex items-center">
-                <BaseIcon name="receipt-outlined" size="22" />
-                <span class="ml-3 text-md">
-                  {{ $t('discussion') }}
-                </span>
-              </div>
-              <BaseIcon name="external-link" size="20" />
-            </div>
-          </BaseBlock>
-        </BaseLink>
+          :discussionLink="proposal.discussion"
+        />
         <BlockCastVote
           v-if="proposal?.state === 'active'"
           :proposal="proposal"
