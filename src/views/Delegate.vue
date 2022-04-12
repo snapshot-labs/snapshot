@@ -9,13 +9,13 @@ import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import {
   sendTransaction,
-  getScores
+  getScores,
+  getDelegatesBySpace
 } from '@snapshot-labs/snapshot.js/src/utils';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import {
   getDelegates,
   getDelegators,
-  getDelegatesBySpace,
   contractAddress
 } from '@/helpers/delegation';
 import { sleep } from '@snapshot-labs/snapshot.js/src/utils';
