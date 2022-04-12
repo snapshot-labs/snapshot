@@ -13,11 +13,11 @@ defineProps<{
 
 <template>
   <div
-    class="md:rounded-xl md:border bg-skin-block-bg border-skin-border text-base"
+    class="md:rounded-xl md:border border-y bg-skin-block-bg border-skin-border text-base"
   >
     <h4
       v-if="title"
-      class="px-4 pt-3 block rounded-t-none md:rounded-t-lg border-y md:border-t-0 border-skin-border"
+      class="px-4 pt-3 block rounded-t-none md:rounded-t-lg border-y border-t-0 border-skin-border"
       style="padding-bottom: 12px"
     >
       {{ title }}
