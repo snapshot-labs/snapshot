@@ -156,15 +156,11 @@ async function getDelegatesWithScore() {
 
   delegatesLoading.value = true;
   try {
-    const delegationsRes = await Promise.all([
-      getDelegatesBySpace(space.value.network, null),
-      getDelegatesBySpace(space.value.network, space.value.id)
-    ]);
-
-    const delegations = [
-      ...delegationsRes[0].delegations,
-      ...delegationsRes[1].delegations
-    ];
+    const delegations = await getDelegatesBySpace(
+      space.value.network,
+      space.value.id,
+      'latest'
+    );
 
     const uniqueDelegators = Array.from(
       new Set(delegations.map(d => d.delegate))

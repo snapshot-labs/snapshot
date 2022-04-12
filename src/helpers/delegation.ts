@@ -39,19 +39,63 @@ export async function getDelegators(network: string, address: string) {
 
 export async function getDelegatesBySpace(
   network: string,
-  space: string | null
+  space: string,
+  snapshot = 'latest'
 ) {
-  const params = {
+  const spaceIn = ['', space];
+  if (space.includes('.eth')) spaceIn.push(space.replace('.eth', ''));
+
+  const PAGE_SIZE = 1000;
+  let result = [];
+  let page = 0;
+  const params: any = {
     delegations: {
       __args: {
         where: {
-          space
+          space_in: spaceIn
         },
-        first: 1000
+        first: PAGE_SIZE,
+        skip: 0
       },
-      delegate: true,
-      delegator: true
+      delegator: true,
+      space: true,
+      delegate: true
     }
   };
-  return await subgraphRequest(SNAPSHOT_SUBGRAPH_URL[network], params);
+  if (snapshot !== 'latest') {
+    params.delegations.__args.block = { number: snapshot };
+  }
+  // eslint-disable-next-line no-constant-condition
+  while (true) {
+    params.delegations.__args.skip = page * PAGE_SIZE;
+
+    const pageResult = await subgraphRequest(
+      SNAPSHOT_SUBGRAPH_URL[network],
+      params
+    );
+    const pageDelegations = pageResult.delegations || [];
+    result = result.concat(pageDelegations);
+    page++;
+    if (pageDelegations.length < PAGE_SIZE) break;
+  }
+
+  // Global delegations are null in decentralized subgraph
+  page = 0;
+  delete params.delegations.__args.where.space_in;
+
+  // eslint-disable-next-line no-constant-condition
+  while (true) {
+    params.delegations.__args.skip = page * PAGE_SIZE;
+    params.delegations.__args.where.space = null;
+    const pageResult = await subgraphRequest(
+      SNAPSHOT_SUBGRAPH_URL[network],
+      params
+    );
+
+    const pageDelegations = pageResult.delegations || [];
+    result = result.concat(pageDelegations);
+    page++;
+    if (pageDelegations.length < PAGE_SIZE) break;
+  }
+  return result;
 }
