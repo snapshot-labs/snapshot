@@ -1,7 +1,7 @@
 <template>
   <div style="position: fixed; width: 240px">
     <BaseBlock :slim="true" class="overflow-hidden">
-      <div class="text-center bg-skin-header-bg h-[253px]">
+      <div class="text-center h-[253px]">
         <div class="pt-3 mb-2">
           <div class="h-[80px] w-[80px] mx-auto lazy-loading rounded-full" />
 
