@@ -30,7 +30,7 @@
     "@popperjs/core": "^2.11.5",
     "@pusher/push-notifications-web": "^1.1.0",
     "@snapshot-labs/lock": "^0.1.7",
-    "@snapshot-labs/snapshot.js": "^0.3.65",
+    "@snapshot-labs/snapshot.js": "^0.3.66",
     "@vue/apollo-composable": "4.0.0-alpha.16",
     "@vueuse/core": "^8.2.5",
     "autolinker": "^3.15.0",
@@ -73,9 +73,9 @@
     "sass": "~1.50.0",
     "sass-loader": "^12.6.0",
     "tailwindcss": "^3.0.23",
-    "unplugin-vue-components": "^0.18.5",
+    "unplugin-vue-components": "^0.19.2",
     "vite": "^2.9.1",
-    "vitest": "^0.9.2"
+    "vitest": "^0.9.3"
   },
   "resolutions": {
     "ansi-regex": "^5.0.1",
