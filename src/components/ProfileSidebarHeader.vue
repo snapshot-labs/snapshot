@@ -17,7 +17,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div>
+  <div class="py-3">
     <BaseAvatar size="80" :address="userAddress" />
     <div class="text-center mt-3">
       <div v-if="profiles?.[userAddress]?.name" class="text-skin-link">

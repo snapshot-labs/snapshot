@@ -11,7 +11,7 @@ const userAddress = computed(() => route.params.address as string);
   <TheLayout>
     <template #sidebar-left>
       <div class="fixed w-[240px]">
-        <BaseBlock slim class="overflow-hidden py-3">
+        <BaseBlock slim class="overflow-hidden">
           <ProfileSidebarHeader :userAddress="userAddress" />
           <ProfileSidebarNavigation />
         </BaseBlock>
