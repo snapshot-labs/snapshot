@@ -9,7 +9,7 @@ import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 
 const { pendingCount } = useTxStatus();
 const { modalAccountOpen } = useModal();
-const { env, showSidebar } = useApp();
+const { env, showSidebar, domain } = useApp();
 const auth = getInstance();
 const { login, web3, web3Account } = useWeb3();
 
@@ -34,22 +34,14 @@ async function handleLogin(connector) {
   <nav id="topnav">
     <BaseContainer class="pl-0 pr-3 sm:!px-4">
       <div class="flex items-center py-2">
-        <div class="flex-auto flex items-center">
+        <div class="flex-auto flex items-center ml-3">
           <UiSidebarButton
+            v-if="!domain"
             @click="showSidebar = !showSidebar"
-            class="border-0 sm:hidden"
+            class="border-0 sm:hidden -ml-3"
           >
-            <BaseIcon
-              v-if="showSidebar"
-              name="close"
-              size="20"
-            />
-            <BaseIcon
-              v-else
-              class="rotate-90"
-              name="threedots"
-              size="20"
-            />
+            <BaseIcon v-if="showSidebar" name="close" size="20" />
+            <BaseIcon v-else class="rotate-90" name="threedots" size="20" />
           </UiSidebarButton>
           <router-link
             :to="{ path: '/' }"
@@ -97,12 +89,15 @@ async function handleLogin(connector) {
               class="sm:hidden -ml-2 -mr-2 block align-text-bottom"
             />
           </BaseButton>
-          <NavbarNotifications v-if="web3Account" />
+          <NavbarNotifications v-if="web3Account && !domain" />
         </div>
       </div>
     </BaseContainer>
   </nav>
-  <div class="flex justify-center bg-primary text-white text-center py-2" v-if="pendingCount > 0">
+  <div
+    class="flex justify-center bg-primary text-white text-center py-2"
+    v-if="pendingCount > 0"
+  >
     <LoadingSpinner fill-white class="mr-2" />
     {{ $tc('delegate.pendingTransaction', pendingCount) }}
   </div>
