@@ -47,7 +47,7 @@ const ts = (Date.now() / 1e3).toFixed();
             <div class="flex overflow-hidden">
               <span
                 v-tippy="{
-                  content: choice.choice.length > 24 ? choice.choice : null
+                  content: choice.choice
                 }"
                 class="mr-1 truncate"
                 v-text="choice.choice"
