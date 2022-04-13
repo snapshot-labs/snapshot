@@ -5,8 +5,7 @@ import { useWeb3 } from '@/composables/useWeb3';
 import { useFlashNotification } from '@/composables/useFlashNotification';
 import { useRoute } from 'vue-router';
 
-const { domain } = useApp();
-const { init, ready, showSidebar } = useApp();
+const { init, domain, ready, showSidebar } = useApp();
 const { web3 } = useWeb3();
 const { notify } = useFlashNotification();
 const route = useRoute();
