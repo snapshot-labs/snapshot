@@ -55,7 +55,7 @@ Now the clock starts ticking. Your timeframe starts.
 Constantly update the list with new tasks you discover and always try to group things into components.
 Usually the more tasks you have discovered, the closer you are to the finish line.
 Don't get scared by a growing list. Appreciate it.
-Finish the MVP first. Once your done with that, you can't lose anymore and the timeframe won't stress you.
+Finish the MVP first. Once you're done with that, you can't lose anymore and the timeframe becomes your friend, not your enemy.
 Finish component after component and try to not jump between them.
 Keep the purpose in mind and focus on the essential parts first.
 At the end of the timeframe, deploy. You're done. No matter what.
