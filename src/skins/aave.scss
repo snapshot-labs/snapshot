@@ -1,0 +1,16 @@
+.aave {
+  --primary-color: #b6509e;
+  --bg-color: #f1f1f3;
+  --text-color: #707070;
+  --link-color: #111111;
+  --heading-color: #111111;
+  --border-color: #d1d5da;
+  --header-bg: #f7f7f7;
+  --block-bg: white;
+
+  #topnav {
+    border-bottom: 4px solid black !important;
+    border-image-slice: 1;
+    border-image-source: linear-gradient(to left, #b6509e, #2ebac6);
+  }
+}

@@ -1,0 +1,16 @@
+.amp {
+  --primary-color: #ca3390;
+  --bg-color: #ffffff;
+  --text-color: #000000;
+  --link-color: #ca3390;
+  --heading-color: #000000;
+  --border-color: #000000;
+  --header-bg: #ffffff;
+  --block-bg: white;
+
+  #topnav {
+    border-bottom: 4px solid black !important;
+    border-image-slice: 1;
+    border-image-source: linear-gradient(to left, #c9328f, #9b30c5);
+  }
+}

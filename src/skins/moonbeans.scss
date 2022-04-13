@@ -1,0 +1,16 @@
+.moonbeans {
+    --primary-color: #40e5e1;
+    --bg-color: #121212;
+    --text-color: #e8e8e8;
+    --link-color: #e8e8e8;
+    --heading-color: #FF2B97;
+    --border-color: #424242;
+    --header-bg: #121212;
+    --block-bg: transparent;
+
+    #topnav {
+        border-bottom: 4px solid black !important;
+        border-image-slice: 1;
+        border-image-source: linear-gradient(to left, #40e5e1, #FF2B97);
+      }
+  }

@@ -1,0 +1,16 @@
+.xpunks {
+  --primary-color: #ffbf00;
+  --bg-color: white;
+  --text-color: #2d3748;
+  --link-color: #6B2D5C;
+  --heading-color: #111111;
+  --border-color: #6B2D5C;
+  --header-bg: white;
+  --block-bg: transparent;
+
+  #topnav {
+    border-bottom: 4px solid transparent;
+    border-image-slice: 1;
+    border-image-source: linear-gradient(to left, #ffbf00, #6B2D5C);
+  }
+}

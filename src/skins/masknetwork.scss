@@ -1,0 +1,26 @@
+.masknetwork {
+  --primary-color: #1C68F3;
+  --bg-color: #F7f8f9;
+  --text-color: #382626;
+  --link-color: #111111;
+  --heading-color: #111111;
+  --border-color: #d1d5da;
+  --header-bg: white;
+  --block-bg: white;
+
+  #topnav {
+    background-color: #1C68F3;
+    border-bottom: 3px solid #0657F9 !important;
+    border-image-slice: 1;
+    border-image-source: linear-gradient(to left, #095EB5, #0077FC);
+  }
+
+  #topnav a {
+    color: white !important;
+  }
+
+  #topnav button {
+    border-color: white;
+    color: white;
+  }
+}

@@ -1,0 +1,21 @@
+.shapeshift {
+  --primary-color: #3368e4;
+  --bg-color: #f0f3f8;
+  --text-color: #546480;
+  --link-color: #0a111e;
+  --heading-color: #0a111e;
+  --border-color: #f0f3f8;
+  --header-bg: #fff;
+  --block-bg: #fff;
+}
+
+.shapeshift-dark-mode {
+  --primary-color: rgb(51, 104, 228);
+  --bg-color: #0a111e;
+  --text-color: rgb(84, 100, 128);
+  --link-color: #fff;
+  --heading-color: #fff;
+  --border-color: rgba(255, 255, 255, 0.08);
+  --header-bg: #0a111e;
+  --block-bg: rgba(255, 255, 255, 0.02);
+}

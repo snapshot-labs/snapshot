@@ -1,0 +1,16 @@
+.keyfi {
+    --primary-color: #00CAED;
+    --bg-color: #F8F9FC;
+    --text-color: #555C68;
+    --link-color: #111111;
+    --heading-color: #111111;
+    --border-color: #D3DEEE;
+    --header-bg: #E6ECF5;
+    --block-bg: white;
+
+    #topnav {
+        border-bottom: 4px solid black !important;
+        border-image-slice: 1;
+        border-image-source: linear-gradient(to left, #40D6F5, #1EACE7);
+    }
+}

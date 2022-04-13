@@ -1,0 +1,17 @@
+.coin {
+  --primary-color: rgb(69,254,252);
+  --bg-color: linear-gradient(0deg, #c0392b 0%, #8e44ad 100%);
+  --text-color: white;
+  --link-color: rgb(69,254,252);
+  --heading-color: rgb(69,254,252);
+  --border-color: #fc1260;
+  --header-bg: rgba(19, 17, 31, 0.5);
+
+  .modal .shell {
+    background-image: linear-gradient(0deg, #c0392b 0%, #8e44ad 100%);
+  }
+
+  .bg-black {
+    background-color: rgba(142,68,173,0.5);
+  }
+}

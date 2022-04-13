@@ -1,0 +1,16 @@
+.apy {
+  --primary-color: #673ab7;
+  --bg-color: #1a1a1a;
+  --text-color: #808080;
+  --link-color: #d0d0d0;
+  --heading-color: #d0d0d0;
+  --border-color: #333;
+  --header-bg: #202020;
+  --block-bg: #1a1a1a;
+
+  #topnav {
+    border-bottom: 2px solid black !important;
+    border-image-slice: 1;
+    border-image-source: linear-gradient(to left, #483dc2, #d556f5);
+  }
+}

@@ -1,0 +1,18 @@
+.six {
+    --primary-color: #1f1f1f;
+    --bg-color: #131313;
+    --text-color: white;
+    --link-color: white;
+    --heading-color: white;
+    --border-color: #373737;
+    --header-bg: #131313;
+
+    #topnav .router-link-exact-active,
+    #topnav .router-link-active {
+        font-size: 0 !important;
+        line-height: 0;
+        width: 0;
+        height: 0;
+        display: none;
+    }
+}

@@ -1,0 +1,16 @@
+.pokt-network {
+  --primary-color: #a400a6;
+  --bg-color: #182129;
+  --text-color: #969696;
+  --link-color: #1D8AED;
+  --heading-color: #fafafa;
+  --border-color: transparent;
+  --header-bg: #182129;
+  --block-bg: #111B23;
+  
+  #topnav {
+    border-bottom: 4px solid transparent;
+    border-image-slice: 1;
+    border-image-source: linear-gradient(to left, #b9f000, #182129);
+  }
+}

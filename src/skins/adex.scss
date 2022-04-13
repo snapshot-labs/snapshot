@@ -1,0 +1,16 @@
+.adex {
+    --primary-color: #ff4269;
+    --bg-color: #1A1825;
+    --text-color: #a6a6a6;
+    --link-color: #fafafa;
+    --heading-color: #fafafa;
+    --border-color: #a6a6a6;
+    --header-bg: #29253b;
+    --block-bg: #29253b;
+
+    #topnav {
+      border-bottom: 4px solid black !important;
+      border-image-slice: 1;
+      border-image-source:  linear-gradient(90deg, rgba(73,69,96,1) 0%, rgba(255,66,105,1) 100%);
+    }
+}

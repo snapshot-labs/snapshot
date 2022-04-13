@@ -1,0 +1,45 @@
+.backd {
+  --primary-color: #C532F9;
+  --bg-color: #0a0622;
+  --text-color: #9d9ca6;
+  --link-color: white;
+  --heading-color: white;
+  --border-color: transparent;
+  --header-bg: #1C0B38;
+  --block-bg: #0F0830;
+
+  #topnav {
+    border-bottom: 4px solid black !important;
+    border-image-slice: 1;
+    border-image-source: linear-gradient(to right, #C532F9, #32B2E5);
+  }
+  
+  .bg-skin-header-bg {
+    position: relative !important;
+  }
+  
+  .bg-skin-header-bg:after {
+    content: "";
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(to right, #C532F9, #32B2E5);
+    bottom: -3px;
+    left: 0;
+    position: absolute;
+    opacity: 0.2;
+  }
+  
+  .button--primary {
+    transition: background-position 0.5s !important;
+    background-size: 200% auto !important;
+    border: none !important;
+    background-origin: border-box !important;
+    background-clip: padding-box, border-box !important;
+    background-image: linear-gradient(to right, #C532F9 0%, #32B2E5 50%, #C532F9 100%) !important;
+    filter: brightness(1) !important;
+  }
+  
+  .button--primary:hover {
+    background-position: right center !important;
+  }
+}

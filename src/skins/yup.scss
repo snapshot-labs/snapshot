@@ -1,0 +1,16 @@
+.yup {
+  --primary-color: #00eab7;
+  --bg-color: #f1f1f3;
+  --text-color: #707070;
+  --link-color: #111111;
+  --heading-color: #111111;
+  --border-color: #d1d5da;
+  --header-bg: #f7f7f7;
+  --block-bg: white;
+
+  #topnav {
+    border-bottom: 4px solid black !important;
+    border-image-slice: 1;
+    border-image-source: linear-gradient(to left, #be1e2d, #f08c28, #f0c800, #7fba1b, #00eab7);
+  }
+}

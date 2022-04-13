@@ -1,0 +1,16 @@
+.elementfinance {
+  --primary-color: #005EBE;
+  --bg-color: #F1F5FE;
+  --text-color: #979797;
+  --link-color: #75C7EE;
+  --heading-color: #75C7EE;
+  --border-color: #d1d5da;
+  --header-bg: #f7f7f7;
+  --block-bg: white;
+
+  #topnav {
+    border-bottom: 4px solid black !important;
+    border-image-slice: 1;
+    border-image-source: linear-gradient(to left, #78D3E2, #005EBE);
+  }
+}

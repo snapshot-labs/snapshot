@@ -1,0 +1,25 @@
+.stakewise {
+  --primary-color: #3358f4;
+  --bg-color: #1d253b;
+  --text-color: #9a9a9a;
+  --link-color: #e3e3e3;
+  --heading-color: #e3e3e3;
+  --border-color: #444444;
+  --header-bg: #27293d;
+  --block-bg: #27293d;
+
+  #topnav {
+    background-color: #1d8cf8;
+    border-image-slice: 1;
+    border-image-source: linear-gradient(to left, #1d8cf8, #3358f4);
+  }
+
+  #topnav a {
+    color: white !important;
+  }
+
+  #topnav button {
+    border-color: white;
+    color: white;
+  }
+}

@@ -1,0 +1,17 @@
+.clucoin {
+  --primary-color: #ec008c;
+  --bg-color: #0a0909;
+  --text-color: #fff;
+  --link-color: #ec6997;
+  --heading-color: #ec008c;
+  --border-color: #424242;
+  --header-bg: 0a0909;
+  --block-bg: #0a0909;
+    
+  #topnav {
+    border-bottom: 4px solid #ec008c !important;
+    border-image-slice: 1;
+    border-image-source: linear-gradient(270deg,#ff008c,#bd0084);
+  }
+  
+}
