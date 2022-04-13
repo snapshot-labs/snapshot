@@ -853,10 +853,10 @@
     bech32 "1.1.4"
     ws "7.4.6"
 
-"@ethersproject/providers@^5.3.1", "@ethersproject/providers@^5.6.2":
-  version "5.6.2"
-  resolved "https://registry.yarnpkg.com/@ethersproject/providers/-/providers-5.6.2.tgz#b9807b1c8c6f59fa2ee4b3cf6519724d07a9f422"
-  integrity sha512-6/EaFW/hNWz+224FXwl8+HdMRzVHt8DpPmu5MZaIQqx/K/ELnC9eY236SMV7mleCM3NnEArFwcAAxH5kUUgaRg==
+"@ethersproject/providers@^5.3.1", "@ethersproject/providers@^5.6.3":
+  version "5.6.3"
+  resolved "https://registry.yarnpkg.com/@ethersproject/providers/-/providers-5.6.3.tgz#416c46e943319af6b114f47625be6325d10b3e32"
+  integrity sha512-PKTEZXjdAhGK/+hUwRLQqlGrwTRrK4D0FHEP2V9klUF8C6+AWfHkA3AoLI+a8oq5CUZoRAH0nMecYGkKxUjeSw==
   dependencies:
     "@ethersproject/abstract-provider" "^5.6.0"
     "@ethersproject/abstract-signer" "^5.6.0"
