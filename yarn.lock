@@ -1341,7 +1341,7 @@
     fortmatic "^2.2.1"
     walletlink "^2.4.0"
 
-"@snapshot-labs/snapshot.js@^0.3.67":
+"@snapshot-labs/snapshot.js@^0.3.68":
   version "0.3.67"
   resolved "https://registry.yarnpkg.com/@snapshot-labs/snapshot.js/-/snapshot.js-0.3.67.tgz#d72f3788b386978bc0febcd62ed0ffc46b211676"
   integrity sha512-YJ+BlmCPm9kBMrkt749FiGzbW+3mm3kBdeOuh+phP1UOaPaZi2bBBXZNMTLbCQzDI0OyS5DljAUcDgjeBjT1ug==
