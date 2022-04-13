@@ -67,6 +67,9 @@ watch(ownedEnsDomains, (newVal, oldVal) => {
 const loadingOwnedEnsDomains = ref(true);
 loadOwnedEnsDomains().finally(() => (loadingOwnedEnsDomains.value = false));
 watch(web3Account, async () => {
+  // Prevent the page from reloading on account change (e.g. when switching to the controller account set on the previos step)
+  if (route.params.step === 'profile') return;
+
   // Reset ensAddress to empty string
   ensAddress.value = '';
 

@@ -30,9 +30,7 @@ const form = ref({
   name: '',
   symbol: '',
   network: '',
-  // Adds connected wallet as admin so that the settings will show
-  // in the sidebar after space creation
-  admins: [props.web3Account],
+  admins: [] as string[],
   // Adds "ticket" strategy with VOTE symbol as default/placeholder strategy
   strategies: [
     {
@@ -101,6 +99,9 @@ async function handleSubmit() {
       await sleep(3000);
       await handleSubmit();
     } else {
+      // Adds connected wallet as admin so that the settings will show
+      // in the sidebar after space creation
+      form.value.admins = [props.web3Account];
       // Create the space
       const result = await send(
         { id: props.ensAddress },
