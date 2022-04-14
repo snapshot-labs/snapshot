@@ -1791,10 +1791,10 @@
   resolved "https://registry.yarnpkg.com/@vue/shared/-/shared-3.2.32.tgz#1ca0c3b8c03a5e24129156e171df736b2c1d645f"
   integrity sha512-bjcixPErUsAnTQRQX4Z5IQnICYjIfNCyCl8p29v1M6kfVzvwOICPw+dz48nNuWlTOOx2RHhzHdazJibE8GSnsw==
 
-"@vue/test-utils@^2.0.0-rc.19":
-  version "2.0.0-rc.19"
-  resolved "https://registry.yarnpkg.com/@vue/test-utils/-/test-utils-2.0.0-rc.19.tgz#cd10480b695027481981085c3f705081495a7ca0"
-  integrity sha512-vQ/34z9NH/pqJzl9YTWtTq/vrx5JzLbMojcBB0qydeb7FtGqxp11nLYCgVso+pa8ZOSn2j+OQfjc5aBnb32uzw==
+"@vue/test-utils@^2.0.0-rc.20":
+  version "2.0.0-rc.20"
+  resolved "https://registry.yarnpkg.com/@vue/test-utils/-/test-utils-2.0.0-rc.20.tgz#1fff871d6ad1b6154e02e3e9f2462ec258cb5459"
+  integrity sha512-aSkOAzM/ZlIyYgN7yj661FTjhFZZy5i9+FUbbDNoMGYA4F1WKwDdcDCPj9B/qzt3wGFkuCP5PO6SBtdSTMEhIA==
 
 "@vueuse/core@^8.2.5":
   version "8.2.5"
