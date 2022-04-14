@@ -17,7 +17,7 @@ watch(input, () => {
 </script>
 
 <template>
-  <SBase
+  <SBaseInput
     v-model="input"
     :definition="definition"
     :input="input"
