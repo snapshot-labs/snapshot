@@ -13,10 +13,14 @@ import Space from '@/views/Space.vue';
 import SpaceAbout from '@/views/SpaceAbout.vue';
 import SpaceProposals from '@/views/SpaceProposals.vue';
 import { useApp } from '@/composables/useApp';
+import { useSpaces } from '@/composables/useSpaces';
 
 // The frontend shows all spaces or just a single one, when being accessed
 // through that space's custom domain.
-const { domain, domainAlias } = useApp();
+const { domainAlias } = useApp();
+const { getCustomDomainSpace, customDomainSpace } = useSpaces();
+await getCustomDomainSpace('localhost');
+
 const routes: any[] = [];
 
 // These routes get prefixed with the respective space's ENS domain (/:key)
@@ -53,20 +57,20 @@ const spaceRoutes = [
 // If accessed through custom domain, mount space routes under /.
 // Requests starting with /:key will be redirected.
 // E.g. /balancer/proposal/:proposalId becomes /proposal/:proposalId
-if (domain) {
+if (customDomainSpace.value) {
   routes.push(
     { path: '/', name: 'home', component: Space, children: spaceRoutes },
     { path: '/delegate/:key?/:to?', name: 'delegate', component: Delegate },
     { path: '/playground/:name', name: 'playground', component: Playground },
     {
-      path: `/${domain}`,
-      alias: `/${domainAlias ?? domain}`,
+      path: `/${customDomainSpace.value.id}`,
+      alias: `/${domainAlias ?? customDomainSpace.value.id}`,
       name: 'home-redirect',
       redirect: '/'
     },
     {
-      path: `/${domain}/:path(.*)`,
-      alias: `/${domainAlias ?? domain}/:path(.*)`,
+      path: `/${customDomainSpace.value.id}/:path(.*)`,
+      alias: `/${domainAlias ?? customDomainSpace.value.id}/:path(.*)`,
       name: 'space-redirect',
       redirect: (to: RouteLocation) => ({ path: `/${to.params.path}` })
     }

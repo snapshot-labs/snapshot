@@ -2,7 +2,7 @@
 import { ref, watchEffect, computed } from 'vue';
 import { useSpaceSubscription } from '@/composables/useSpaceSubscription';
 import { useFollowSpace } from '@/composables/useFollowSpace';
-import verified from '@/../snapshot-spaces/spaces/verified.json';
+import verified from '@/spaces/verified.json';
 import { useIntl } from '@/composables/useIntl';
 
 const props = defineProps({

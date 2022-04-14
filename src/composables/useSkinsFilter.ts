@@ -6,7 +6,7 @@
 import { ref } from 'vue';
 import { useApolloQuery } from '@/composables/useApolloQuery';
 import { SKINS_COUNT_QUERY } from '@/helpers/queries';
-import skins from '@/../snapshot-spaces/skins';
+import skins from '@/spaces/skins';
 
 const skinsSpacesCount: any = ref(null);
 

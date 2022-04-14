@@ -2,14 +2,18 @@ import { ref, computed } from 'vue';
 import { useRoute } from 'vue-router';
 import orderBy from 'lodash/orderBy';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
-import verified from '@/../snapshot-spaces/spaces/verified.json';
-import verifiedSpacesCategories from '@/../snapshot-spaces/spaces/categories.json';
+import verified from '@/spaces/verified.json';
+import verifiedSpacesCategories from '@/spaces/categories.json';
+import { useApolloQuery } from '@/composables/useApolloQuery';
+import { CUSTOM_DOMAIN_SPACE_QUERY } from '@/helpers/queries';
 
 const spaces: any = ref([]);
 const spacesLoaded = ref(false);
+const customDomainSpace = ref<{ id: string, skin: string } | null>(null);
 
 export function useSpaces() {
   const route = useRoute();
+  const { apolloQuery } = useApolloQuery();
 
   async function getSpaces() {
     const exploreObj: any = await fetch(
@@ -33,6 +37,18 @@ export function useSpaces() {
     spaces.value = exploreObj.spaces;
     spacesLoaded.value = true;
     return;
+  }
+
+  async function getCustomDomainSpace(domain: string) {
+    customDomainSpace.value = await apolloQuery(
+      {
+        query: CUSTOM_DOMAIN_SPACE_QUERY,
+        variables: {
+          domain
+        }
+      },
+      'space'
+    );
   }
 
   const selectedCategory = ref('');
@@ -86,6 +102,8 @@ export function useSpaces() {
 
   return {
     getSpaces,
+    getCustomDomainSpace,
+    customDomainSpace,
     spaces,
     spacesLoaded,
     orderedSpaces,

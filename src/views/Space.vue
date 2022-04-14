@@ -1,7 +1,7 @@
 <script setup>
 import { computed, onMounted } from 'vue';
 import { useApp } from '@/composables/useApp';
-import aliases from '@/../snapshot-spaces/spaces/aliases.json';
+import aliases from '@/spaces/aliases.json';
 import { useRouter, useRoute } from 'vue-router';
 import { formatSpace } from '@/helpers/utils';
 import { useExtendedSpaces } from '@/composables/useExtendedSpaces';

@@ -1,6 +1,4 @@
-import { ref, computed, watch } from 'vue';
-import { useApolloQuery } from '@/composables/useApolloQuery';
-import { SPACE_SKIN_QUERY } from '@/helpers/queries';
+import { computed, watch } from 'vue';
 import { useStorage, useMediaQuery } from '@vueuse/core';
 
 /**
@@ -26,32 +24,7 @@ const theme = computed(() =>
   [DARK, LIGHT].includes(userTheme.value) ? userTheme.value : osTheme
 );
 
-/**
- * Handle skin (e.g. uniswap)
- */
-const skinClass = ref('default');
-
-export function useSkin() {
-  const { apolloQuery } = useApolloQuery();
-
-  async function getSkin(domain: string) {
-    if (domain) {
-      const space = await apolloQuery(
-        {
-          query: SPACE_SKIN_QUERY,
-          variables: {
-            id: domain
-          }
-        },
-        'space'
-      );
-      if (space?.skin) {
-        skinClass.value = space.skin;
-        document.body.classList.add(skinClass.value);
-      }
-    }
-  }
-
+export function useTheme() {
   const getThemeIcon = () => (theme.value === LIGHT ? 'moon' : 'sun');
 
   watch(
@@ -66,11 +39,9 @@ export function useSkin() {
   );
 
   return {
-    skinClass,
     userTheme,
     theme,
     getThemeIcon,
-    toggleUserTheme,
-    getSkin
+    toggleUserTheme
   };
 }

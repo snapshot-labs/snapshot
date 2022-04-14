@@ -22,7 +22,7 @@ const props = defineProps({
 
 const route = useRoute();
 const router = useRouter();
-const { domain } = useApp();
+const { isCustomDomain } = useApp();
 const { t, setPageTitle } = useI18n();
 const { web3, web3Account } = useWeb3();
 const { send, clientLoading } = useClient();
@@ -263,7 +263,7 @@ const truncateMarkdownBody = computed(() => {
             browserHasHistory?.includes('timeline')
               ? $router.go(-1)
               : $router.push(
-                  domain ? { path: '/' } : { name: 'spaceProposals' }
+                  isCustomDomain ? { path: '/' } : { name: 'spaceProposals' }
                 )
           "
         >

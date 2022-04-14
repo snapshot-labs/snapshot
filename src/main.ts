@@ -8,7 +8,7 @@ import App from '@/App.vue';
 import router from '@/router';
 import i18n from '@/helpers/i18n';
 import '@/helpers/auth';
-import '@/skins';
+import '@/spaces/skins';
 import '@/style.scss';
 import { apolloClient } from '@/helpers/apollo';
 import { DefaultApolloClient } from '@vue/apollo-composable';

@@ -30,7 +30,7 @@ const route = useRoute();
 const { t, setPageTitle } = useI18n();
 const { formatCompactNumber, formatNumber } = useIntl();
 const auth = getInstance();
-const { domain } = useApp();
+const { isCustomDomain } = useApp();
 const { web3, web3Account } = useWeb3();
 const { send, clientLoading } = useClient();
 const { store } = useStore();
@@ -352,7 +352,7 @@ const handleDrop = e => {
     <template #content-left>
       <div v-if="currentStep === 1" class="px-4 md:px-0 overflow-hidden mb-3">
         <router-link
-          :to="domain ? { path: '/' } : { name: 'spaceProposals' }"
+          :to="isCustomDomain ? { path: '/' } : { name: 'spaceProposals' }"
           class="text-skin-text"
         >
           <BaseIcon name="back" size="22" class="!align-middle" />

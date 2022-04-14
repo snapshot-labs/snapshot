@@ -1,0 +1,180 @@
+{
+  "krausehouse.eth": [],
+  "ens.eth": [
+    "social",
+    "protocol"
+  ],
+  "sushigov.eth": [
+    "protocol"
+  ],
+  "uniswap": [
+    "protocol",
+    "grant"
+  ],
+  "gitcoindao.eth": [
+    "grant"
+  ],
+  "aave.eth": [
+    "protocol",
+    "grant"
+  ],
+  "olympusdao.eth": [
+    "protocol"
+  ],
+  "banklessvault.eth": [
+    "social",
+    "media"
+  ],
+  "poh.eth": [
+    "social"
+  ],
+  "dydxgov.eth": [
+    "protocol"
+  ],
+  "xdaistake.eth": [
+    "protocol"
+  ],
+  "balancer.eth": [
+    "protocol"
+  ],
+  "snapshot.dcl.eth": [
+    "protocol"
+  ],
+  "aavegotchi.eth": [
+    "protocol"
+  ],
+  "curve.eth": [
+    "protocol"
+  ],
+  "badgerdao.eth": [
+    "protocol"
+  ],
+  "graphprotocol.eth": [
+    "protocol"
+  ],
+  "loot-dao.eth": [],
+  "mutantsdao.eth": [],
+  "rarible.eth": [
+    "protocol"
+  ],
+  "ilvgov.eth": [],
+  "cvx.eth": [
+    "protocol"
+  ],
+  "ybaby.eth": [
+    "protocol"
+  ],
+  "doodles.eth": [],
+  "shapeshiftdao.eth": [],
+  "pooltogether.eth": [
+    "protocol"
+  ],
+  "paraswap-dao.eth": [
+    "protocol"
+  ],
+  "devdao.eth": [
+    "service"
+  ],
+  "trustwallet": [],
+  "friendswithbenefits.eth": [
+    "social"
+  ],
+  "bancornetwork.eth": [
+    "protocol"
+  ],
+  "piedao.eth": [
+    "protocol"
+  ],
+  "gnosis.eth": [
+    "protocol"
+  ],
+  "masknetwork.eth": [],
+  "fei.eth": [
+    "protocol"
+  ],
+  "stakedao.eth": [
+    "protocol"
+  ],
+  "rari": [],
+  "opiumprotocol.eth": [
+    "protocol"
+  ],
+  "sismo.eth": [
+    "social"
+  ],
+  "instadapp-gov.eth": [
+    "protocol"
+  ],
+  "pangolindex.eth": [
+    "protocol"
+  ],
+  "officialoceandao.eth": [
+    "protocol"
+  ],
+  "ilv.eth": [],
+  "superraredao.eth": [],
+  "0xgov.eth": [
+    "protocol"
+  ],
+  "frax.eth": [
+    "protocol"
+  ],
+  "rbn.eth": [
+    "protocol"
+  ],
+  "mstablegovernance.eth": [
+    "protocol"
+  ],
+  "cream-finance.eth": [
+    "protocol"
+  ],
+  "gro.xyz": [],
+  "barnbridge.eth": [],
+  "10b57e6da0.eth": [],
+  "pickle.eth": [
+    "protocol"
+  ],
+  "origingov.eth": [],
+  "vote.airswap.eth": [],
+  "dopedao.eth": [],
+  "epns.eth": [
+    "service"
+  ],
+  "decrypt-media.eth": [
+    "media"
+  ],
+  "ffdao.eth": [
+    "media",
+    "social"
+  ],
+  "pokt-network": [],
+  "rallygov.eth": [
+    "protocol"
+  ],
+  "meritcircle.eth": [],
+  "harvestfi.eth": [
+    "protocol"
+  ],
+  "vote-perp.eth": [
+    "protocol"
+  ],
+  "gov.dhedge.eth": [
+    "protocol"
+  ],
+  "apwine.eth": [
+    "protocol"
+  ],
+  "gov.radicle.eth": [],
+  "daocity.eth": [],
+  "aragon": [
+    "protocol"
+  ],
+  "tokenlon.eth": [],
+  "streamr.eth": [],
+  "unlock-protocol.eth": [
+    "protocol"
+  ],
+  "jbdao.eth": [
+    "protocol"
+  ]
+}

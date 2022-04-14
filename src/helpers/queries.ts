@@ -234,9 +234,10 @@ export const ENS_DOMAIN_BY_HASH_QUERY = gql`
   }
 `;
 
-export const SPACE_SKIN_QUERY = gql`
-  query Space($id: String!) {
-    space(id: $id) {
+export const CUSTOM_DOMAIN_SPACE_QUERY = gql`
+  query Space($domain: String!) {
+    space(domain: $domain) {
+      id
       skin
     }
   }
