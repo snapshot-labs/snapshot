@@ -22,7 +22,7 @@
     "@ethersproject/address": "^5.4.0",
     "@ethersproject/bignumber": "^5.4.1",
     "@ethersproject/bytes": "^5.4.0",
-    "@ethersproject/providers": "^5.6.2",
+    "@ethersproject/providers": "^5.6.3",
     "@ethersproject/solidity": "^5.6.0",
     "@ethersproject/strings": "^5.5.0",
     "@ethersproject/units": "^5.6.0",
