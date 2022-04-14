@@ -14,7 +14,7 @@ const input = ref(props.modelValue || props.definition.default);
 watch(input, () => emit('update:modelValue', input.value));
 </script>
 
-<!-- TODO: add template -->
+<!-- TODO: fix template -->
 <template>
   <div></div>
 </template>

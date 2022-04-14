@@ -448,20 +448,19 @@ const handleDrop = e => {
               v-text="form.name || $t('create.untitled')"
               class="w-full break-all"
             />
-            <SBase
+            <SBaseInput
               v-else
               v-model="form.name"
               :title="$t('create.proposalTitle')"
-              maxLength="128"
+              :maxLength="128"
               focusOnMount
             />
 
             <div v-if="!preview">
               <div class="flex justify-between">
-                <label
-                  v-text="$t('create.proposalDescription')"
-                  class="s-label"
-                />
+                <SBaseLabel>
+                  {{ $t('create.proposalDescription') }}
+                </SBaseLabel>
                 <div class="text-xs">
                   {{ formatNumber(form.body.length) }} /
                   {{ formatNumber(bodyLimit) }}
@@ -522,7 +521,7 @@ const handleDrop = e => {
               <BaseMarkdown :body="form.body" />
             </div>
 
-            <SBase
+            <SBaseInput
               v-if="!preview"
               v-model="form.discussion"
               placeholder="e.g. https://forum.balancer.fi/proposal..."
@@ -551,17 +550,14 @@ const handleDrop = e => {
             </template>
           </UiInput>
           <div class="flex">
-            <div class="overflow-hidden w-full space-y-2">
+            <div class="overflow-hidden w-full">
               <draggable
                 v-model="choices"
-                tag="transition-group"
-                :component-data="{
-                  type: 'transition-group'
-                }"
                 v-bind="{ animation: 200 }"
                 :disabled="disableChoiceEdit"
                 item-key="id"
                 handle=".drag-handle"
+                class="space-y-2"
               >
                 >
                 <template #item="{ element, index }">
@@ -570,7 +566,7 @@ const handleDrop = e => {
                     maxlength="32"
                     :disabled="disableChoiceEdit"
                     :placeholder="index > 0 ? $t('optional') : ''"
-                    class="group mb-0"
+                    class="group"
                     :focusOnMount="index === 0"
                   >
                     <template v-slot:label>

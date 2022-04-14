@@ -37,9 +37,9 @@ onMounted(() => loadNotifications());
         :class="{ '!border-skin-link': dropdownOpen }"
       >
         <BaseIcon class="text-skin-link" size="20" name="notificationsnone" />
-        <span
+        <SBaseIndicator
           v-if="notificationsSortedByTime.some(n => n.seen === false)"
-          class="absolute right-0 bottom-0 s-indicator !bg-red"
+          class="absolute right-0 bottom-0 bg-red"
         />
       </UiSidebarButton>
     </template>
@@ -129,7 +129,7 @@ onMounted(() => loadNotifications());
             </div>
           </div>
           <div class="flex items-center w-[12px] ml-2">
-            <span v-if="!item.seen" class="s-indicator bg-primary"></span>
+            <SBaseIndicator v-if="!item.seen" />
           </div>
         </div>
       </div>

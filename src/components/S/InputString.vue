@@ -2,7 +2,7 @@
 import { ref, watch } from 'vue';
 
 const props = defineProps<{
-  modelValue?: number;
+  modelValue?: string;
   definition: any;
   error: string;
 }>();
@@ -11,13 +11,14 @@ const emit = defineEmits(['update:modelValue']);
 
 const input = ref(props.modelValue || props.definition.default);
 
-watch(input, () => emit('update:modelValue', Number(input.value)));
+watch(input, () => {
+  emit('update:modelValue', input.value);
+});
 </script>
 
 <template>
-  <SBase
+  <SBaseInput
     v-model="input"
-    type="number"
     :definition="definition"
     :input="input"
     :error="error"
