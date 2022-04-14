@@ -458,10 +458,9 @@ const handleDrop = e => {
 
             <div v-if="!preview">
               <div class="flex justify-between">
-                <label
-                  v-text="$t('create.proposalDescription')"
-                  class="s-label"
-                />
+                <SBaseLabel>
+                  {{ $t('create.proposalDescription') }}
+                </SBaseLabel>
                 <div class="text-xs">
                   {{ formatNumber(form.body.length) }} /
                   {{ formatNumber(bodyLimit) }}
