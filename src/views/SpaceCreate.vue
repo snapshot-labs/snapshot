@@ -538,6 +538,9 @@ const handleDrop = e => {
             v-tippy="{
               content: !!space.voting?.type ? $t('create.typeEnforced') : null
             }"
+            :class="[
+              space.voting?.type ? 'cursor-not-allowed' : 'cursor-pointer'
+            ]"
             class="!mb-4"
           >
             <template v-slot:selected>
@@ -622,7 +625,9 @@ const handleDrop = e => {
                   ? $t('create.delayEnforced')
                   : null
               }"
-              :class="{ 'cursor-not-allowed': space.voting?.delay }"
+              :class="[
+                space.voting?.delay ? 'cursor-not-allowed' : 'cursor-pointer'
+              ]"
             >
               <template v-slot:selected>
                 <span
@@ -655,7 +660,9 @@ const handleDrop = e => {
                   : null
               }"
               class="mb-0 md:mb-2"
-              :class="{ 'cursor-not-allowed': space.voting?.period }"
+              :class="[
+                space.voting?.period ? 'cursor-not-allowed' : 'cursor-pointer'
+              ]"
             >
               <template v-slot:selected>
                 <span v-text="$d(dateEnd * 1e3, 'short', 'en-US')" />
