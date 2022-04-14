@@ -1,8 +1,10 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { ref, computed } from 'vue';
 import { useRoute } from 'vue-router';
 
 const route = useRoute();
+
+const modalProfileFormOpen = ref(false);
 
 const userAddress = computed(() => route.params.address as string);
 </script>
@@ -13,7 +15,7 @@ const userAddress = computed(() => route.params.address as string);
       <div class="fixed w-[240px]">
         <BaseBlock slim class="overflow-hidden">
           <ProfileSidebarHeader :userAddress="userAddress" />
-          <ProfileSidebarNavigation />
+          <ProfileSidebarNavigation @edit="modalProfileFormOpen = true" />
         </BaseBlock>
       </div>
     </template>
@@ -21,4 +23,10 @@ const userAddress = computed(() => route.params.address as string);
       <router-view :userAddress="userAddress" />
     </template>
   </TheLayout>
+  <teleport to="#modal">
+    <ModalProfileForm
+      :open="modalProfileFormOpen"
+      @close="modalProfileFormOpen = false"
+    />
+  </teleport>
 </template>
