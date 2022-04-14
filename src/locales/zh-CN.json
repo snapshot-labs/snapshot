@@ -148,7 +148,8 @@
     "website": "URL 格式应为 https://www.example.com",
     "format": "格式无效",
     "type": "无效的类型",
-    "unsupportedImageType": "不支持该文件类型，支持的格式是 jpeg、 jpg 和 png"
+    "unsupportedImageType": "不支持该文件类型，支持的格式是 jpeg、 jpg 和 png",
+    "invalidAddress": "无效地址"
   },
   "create": {
     "proposalTitle": "标题",
