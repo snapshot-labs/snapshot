@@ -350,7 +350,7 @@ const truncateMarkdownBody = computed(() => {
             </div>
           </div>
 
-          <div class="relative">
+          <div v-if="proposal.body.length" class="relative">
             <div
               v-if="!showFullMarkdownBody && truncateMarkdownBody"
               class="absolute w-full h-[80px] bottom-0 bg-gradient-to-t from-skin-bg"

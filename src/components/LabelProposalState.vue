@@ -30,6 +30,7 @@ const stateClass = computed(() => {
   vertical-align: middle;
   padding: 0 12px;
   border-radius: 14px;
+  line-height: 24px;
 }
 
 .State.slim {
