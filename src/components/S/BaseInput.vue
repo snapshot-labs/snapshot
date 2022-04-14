@@ -41,11 +41,10 @@ onMounted(() => {
 
 <template>
   <div>
-    <label
-      v-if="title || definition?.title"
-      v-text="title ?? definition.title"
-      class="s-label"
-    />
+    <SBaseLabel v-if="title || definition?.title">
+      {{ title ?? definition.title }}
+    </SBaseLabel>
+
     <div>
       <div class="z-10 relative">
         <slot v-if="$slots.customInput" name="customInput" />

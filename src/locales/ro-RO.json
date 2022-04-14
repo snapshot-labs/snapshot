@@ -148,7 +148,8 @@
     "website": "URL should be in the format https://www.example.com",
     "format": "Formatul nu este valid",
     "type": "Tipul fişierului nu ese valid",
-    "unsupportedImageType": "File type not supported, Supported formats are jpeg, jpg and png"
+    "unsupportedImageType": "File type not supported, Supported formats are jpeg, jpg and png",
+    "invalidAddress": "Invalid address"
   },
   "create": {
     "proposalTitle": "Title",
