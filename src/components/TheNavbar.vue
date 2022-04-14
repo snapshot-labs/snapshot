@@ -9,7 +9,7 @@ import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 
 const { pendingCount } = useTxStatus();
 const { modalAccountOpen } = useModal();
-const { env, showSidebar, domain } = useApp();
+const { env, showSidebar, isCustomDomain } = useApp();
 const auth = getInstance();
 const { login, web3, web3Account } = useWeb3();
 
@@ -34,11 +34,14 @@ async function handleLogin(connector) {
   <nav id="topnav">
     <BaseContainer class="pl-0 pr-3 sm:!px-4">
       <div class="flex items-center py-2">
-        <div class="flex-auto flex items-center ml-3">
+        <div
+          class="flex-auto flex items-center"
+          :class="{ 'ml-4 sm:ml-0': isCustomDomain }"
+        >
           <UiSidebarButton
-            v-if="!domain"
+            v-if="!isCustomDomain"
             @click="showSidebar = !showSidebar"
-            class="border-0 sm:hidden -ml-3"
+            class="border-0 sm:hidden"
           >
             <BaseIcon v-if="showSidebar" name="close" size="20" />
             <BaseIcon v-else class="rotate-90" name="threedots" size="20" />
@@ -89,7 +92,7 @@ async function handleLogin(connector) {
               class="sm:hidden -ml-2 -mr-2 block align-text-bottom"
             />
           </BaseButton>
-          <NavbarNotifications v-if="web3Account && !domain" />
+          <NavbarNotifications v-if="web3Account && !isCustomDomain" />
         </div>
       </div>
     </BaseContainer>
