@@ -15,12 +15,11 @@ watch(input, () => emit('update:modelValue', Number(input.value)));
 </script>
 
 <template>
-  <SBase :definition="definition" :input="input" :error="error">
-    <input
-      type="number"
-      v-model="input"
-      :class="['s-input', { '!border-red': error }]"
-      :placeholder="definition.examples && definition.examples[0]"
-    />
-  </SBase>
+  <SBase
+    v-model="input"
+    type="number"
+    :definition="definition"
+    :input="input"
+    :error="error"
+  />
 </template>

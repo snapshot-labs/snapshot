@@ -17,13 +17,10 @@ watch(input, () => {
 </script>
 
 <template>
-  <SBase :definition="definition" :input="input" :error="error">
-    <input
-      type="text"
-      v-model="input"
-      :class="['s-input', { '!border-red': error }]"
-      :maxlength="definition.maxLength"
-      :placeholder="definition.examples && definition.examples[0]"
-    />
-  </SBase>
+  <SBase
+    v-model="input"
+    :definition="definition"
+    :input="input"
+    :error="error"
+  />
 </template>

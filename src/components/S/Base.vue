@@ -1,28 +1,64 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { ref, onMounted, watch, withDefaults } from 'vue';
 
-const props = defineProps<{
-  definition: any;
-  input?: boolean | number | string | string[];
-  error?: string;
-}>();
+const props = withDefaults(
+  defineProps<{
+    type?: 'text' | 'number';
+    modelValue?: string;
+    definition?: any;
+    error?: string;
+    focusOnMount?: boolean;
+    hideInput?: boolean;
+    placeholder?: string;
+    title?: string;
+    maxLength?: number;
+  }>(),
+  {
+    type: 'text',
+    focusOnMount: false,
+    hideInput: false
+  }
+);
 
+defineEmits(['update:modelValue']);
+
+const BaseInputEL = ref<HTMLDivElement | undefined>(undefined);
 const showError = ref(false);
 
 watch(
-  () => props.input,
+  () => props.modelValue,
   () => {
     showError.value = true;
   }
 );
+
+onMounted(() => {
+  if (props.focusOnMount) {
+    BaseInputEL?.value?.focus();
+  }
+});
 </script>
 
 <template>
   <div>
-    <label v-if="definition.title" v-text="definition.title" class="s-label" />
+    <label
+      v-if="title || definition?.title"
+      v-text="title ?? definition.title"
+      class="s-label"
+    />
     <div>
       <div class="z-10 relative">
-        <slot />
+        <slot v-if="$slots.customInput" name="customInput" />
+        <input
+          v-else
+          ref="BaseInputEL"
+          :type="type"
+          :value="modelValue"
+          @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)"
+          :class="['s-input', { '!border-red': error }]"
+          :maxlength="maxLength ?? definition?.maxLength"
+          :placeholder="placeholder ?? definition?.examples?.[0] ?? ''"
+        />
       </div>
       <div
         :class="[
@@ -40,6 +76,5 @@ watch(
         {{ error }}
       </div>
     </div>
-    <span v-if="definition.description" v-text="definition.description" />
   </div>
 </template>
