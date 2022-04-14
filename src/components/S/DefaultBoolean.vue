@@ -14,7 +14,8 @@ const input = ref(props.modelValue || props.definition.default);
 watch(input, () => emit('update:modelValue', input.value));
 </script>
 
-<!-- TODO: add template -->
 <template>
-  <div></div>
+  <SBase :definition="definition" :input="input" :error="error">
+    <input type="checkbox" v-model="input" />
+  </SBase>
 </template>

@@ -20,10 +20,15 @@ function addItem() {
 }
 </script>
 
-<!-- TODO: Fix template -->
 <template>
-  <div v-for="(item, i) in input" :key="i">
-    <SBase :definition="{ title: '' }" v-model="input[i]" :error="error" />
-  </div>
-  <a @click="addItem">Add</a>
+  <SBase :definition="definition" :input="input" :error="error">
+    <div v-for="(item, i) in input" :key="i">
+      <SDefaultString
+        :definition="{ title: '' }"
+        v-model="input[i]"
+        :error="error"
+      />
+    </div>
+    <a @click="addItem">Add</a>
+  </SBase>
 </template>

@@ -148,8 +148,7 @@
     "website": "URL should be in the format https://www.example.com",
     "format": "Invalid format",
     "type": "Invalid type",
-    "unsupportedImageType": "File type not supported, Supported formats are jpeg, jpg and png",
-    "invalidAddress": "Invalid address"
+    "unsupportedImageType": "File type not supported, Supported formats are jpeg, jpg and png"
   },
   "create": {
     "proposalTitle": "Title",

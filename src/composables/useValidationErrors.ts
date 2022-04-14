@@ -21,15 +21,6 @@ export function useValidationErrors() {
           error.instancePath.includes(key)
       );
 
-      // Custom error messages for address fields (needed because minLength validation
-      // on the strategies schema would always show field required)
-      if (
-        errorFound &&
-        errorFound?.instancePath.includes('address') &&
-        errorFound?.keyword.includes('minLength')
-      )
-        return t('errors.invalidAddress');
-
       return errorFound
         ? t(`errors.${errorFound.keyword}`, [errorFound?.params.limit])
         : '';
