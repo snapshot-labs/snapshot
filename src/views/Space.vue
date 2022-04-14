@@ -1,6 +1,6 @@
 <script setup>
 import { computed, onMounted } from 'vue';
-import { useApp } from '@/composables/useApp';
+import { customDomainSpace } from '@/helpers/domain';
 import aliases from '@/spaces/aliases.json';
 import { useRouter, useRoute } from 'vue-router';
 import { formatSpace } from '@/helpers/utils';
@@ -8,20 +8,21 @@ import { useExtendedSpaces } from '@/composables/useExtendedSpaces';
 
 const route = useRoute();
 const router = useRouter();
-const { domain } = useApp();
-const aliasedSpace = aliases[domain] || aliases[route.params.key];
 const { loadExtentedSpaces, extentedSpaces } = useExtendedSpaces();
 
 // Redirect the user to the ENS address if the space is aliased.
-if (aliasedSpace) {
-  const updatedPath = route.path.replace(
-    domain || route.params.key,
-    aliasedSpace
-  );
-  router.replace({ path: updatedPath });
+if (!customDomainSpace) {
+  const aliasedSpace = aliases[route.params.key];
+  if (aliasedSpace) {
+    const updatedPath = route.path.replace(
+      route.params.key,
+      aliasedSpace
+    );
+    router.replace({ path: updatedPath });
+  }
 }
 
-const spaceKey = computed(() => aliasedSpace || domain || route.params.key);
+const spaceKey = computed(() => customDomainSpace?.id || route.params.key);
 const space = computed(() =>
   formatSpace(extentedSpaces.value?.find(s => s.id === spaceKey.value))
 );

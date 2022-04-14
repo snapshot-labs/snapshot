@@ -1,22 +1,9 @@
-import { computed, ref } from 'vue';
+import { ref } from 'vue';
 import { useI18n } from '@/composables/useI18n';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useSpaces } from '@/composables/useSpaces';
-import aliases from '@/spaces/aliases.json';
-
-let domain = window.location.hostname;
-let env = 'master';
-if (domain.includes('localhost')) env = 'local';
-if (domain === 'demo.snapshot.org') env = 'develop';
-
-if (env === 'local') {
-  domain = import.meta.env.VITE_VIEW_AS_DOMAIN as string ?? domain;
-}
-
-const domainAlias = Object.keys(aliases).find(
-  alias => aliases[alias] === domain
-);
+import { domain, customDomainSpace, env } from '@/helpers/domain';
 
 const { login } = useWeb3();
 
@@ -29,17 +16,18 @@ const skinClass = ref('default');
 
 export function useApp() {
   const { loadLocale } = useI18n();
-  const { getSpaces, getCustomDomainSpace, customDomainSpace } = useSpaces();
+  const { getSpaces } = useSpaces();
 
   async function init() {
     const auth = getInstance();
     await loadLocale();
-    await getCustomDomainSpace(domain);
-    if (customDomainSpace.value?.skin) {
-      skinClass.value = customDomainSpace.value.skin;
+    
+    if (customDomainSpace) {
+      if (customDomainSpace.skin) skinClass.value = customDomainSpace.skin;
+    } else {
+      await getSpaces();
     }
     ready.value = true;
-    getSpaces();
 
     // Auto connect with gnosis-connector when inside gnosis-safe iframe
     if (window?.parent === window)
@@ -51,12 +39,11 @@ export function useApp() {
 
   return {
     domain,
-    domainAlias,
     env,
     ready,
     init,
     showSidebar,
     skinClass,
-    isCustomDomain: computed(() => !!customDomainSpace.value)
+    isCustomDomain: !!customDomainSpace
   };
 }
