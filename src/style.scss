@@ -270,14 +270,6 @@ input[type='number'] {
   @apply bg-red text-white text-sm transition-all duration-200 flex items-center px-3 pb-2 pt-4 rounded-b-3xl;
 }
 
-.s-label {
-  @apply block mb-1;
-}
-
-.s-indicator {
-  @apply text-sm h-[12px] w-[12px] rounded-full inline-block bg-blue;
-}
-
 // Fix for chrome. Overwrites tailwinds break-words class.
 // For some reason chrome doesn't break links with just overflow-wrap.
 // It also needs word-break.

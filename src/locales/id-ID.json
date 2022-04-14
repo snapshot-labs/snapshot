@@ -148,7 +148,8 @@
     "website": "URL should be in the format https://www.example.com",
     "format": "Format tidak valid",
     "type": "Tipe tidak valid",
-    "unsupportedImageType": "File type not supported, Supported formats are jpeg, jpg and png"
+    "unsupportedImageType": "File type not supported, Supported formats are jpeg, jpg and png",
+    "invalidAddress": "Invalid address"
   },
   "create": {
     "proposalTitle": "Title",

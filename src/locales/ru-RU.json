@@ -148,7 +148,8 @@
     "website": "Адрес должен быть в формате https://www.example.com",
     "format": "Неверный формат",
     "type": "Неверный тип",
-    "unsupportedImageType": "Тип файла не поддерживается, Поддерживаемые форматы: jpeg, jpg и png"
+    "unsupportedImageType": "Тип файла не поддерживается, Поддерживаемые форматы: jpeg, jpg и png",
+    "invalidAddress": "Invalid address"
   },
   "create": {
     "proposalTitle": "Название",
