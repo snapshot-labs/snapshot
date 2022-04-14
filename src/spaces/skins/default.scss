@@ -1,4 +1,4 @@
-[data-color-scheme='dark'] {
+[data-color-scheme='dark'].default {
   color-scheme: dark;
   --primary-color: #384aff;
   --bg-color: #211f24;
@@ -11,7 +11,7 @@
   --shadow-color: #fff1;
 }
 
-[data-color-scheme='light'] {
+[data-color-scheme='light'].default {
   color-scheme: light;
   --primary-color: #384aff;
   --bg-color: white;

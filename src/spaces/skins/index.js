@@ -61,6 +61,7 @@ import deversifi from "./deversifi.scss";
 import daosquare from "./daosquare.scss";
 import dawn from "./dawn.scss";
 import debaseonomics from "./debaseonomics.scss";
+import defaultSkin from "./default.scss";
 import defiat from "./defiat.scss";
 import depocket from "./depocket.scss";
 import derivadao from "./derivadao.scss";
@@ -336,6 +337,7 @@ export default {
   daosquare,
   dawn,
   debaseonomics,
+  defaultSkin,
   defiat,
   depocket,
   derivadao,

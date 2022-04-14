@@ -5,7 +5,7 @@ import { useWeb3 } from '@/composables/useWeb3';
 import { useFlashNotification } from '@/composables/useFlashNotification';
 import { useRoute } from 'vue-router';
 
-const { init, ready, showSidebar, isCustomDomain, skinClass } = useApp();
+const { init, ready, showSidebar, isCustomDomain } = useApp();
 const { web3 } = useWeb3();
 const { notify } = useFlashNotification();
 const route = useRoute();
@@ -23,7 +23,6 @@ onMounted(async () => {
   <div
     v-else
     class="flex font-sans text-base antialiased bg-skin-bg text-skin-text min-h-screen"
-    :class="skinClass"
   >
     <div
       v-if="!isCustomDomain"

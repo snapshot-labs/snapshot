@@ -24,9 +24,9 @@ const theme = computed(() =>
   [DARK, LIGHT].includes(userTheme.value) ? userTheme.value : osTheme
 );
 
-export function useTheme() {
-  const getThemeIcon = () => (theme.value === LIGHT ? 'moon' : 'sun');
+const themeIcon = computed(() => (theme.value === LIGHT ? 'moon' : 'sun'));
 
+export function useTheme() {
   watch(
     theme,
     () => {
@@ -41,7 +41,7 @@ export function useTheme() {
   return {
     userTheme,
     theme,
-    getThemeIcon,
+    themeIcon,
     toggleUserTheme
   };
 }
