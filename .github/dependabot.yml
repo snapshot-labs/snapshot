@@ -12,6 +12,7 @@ updates:
     directory: '/'
     schedule:
       interval: 'daily'
+    target-branch: "stable"
     commit-message:
       prefix: '⬆️ subs:'
     rebase-strategy: auto
