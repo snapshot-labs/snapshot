@@ -39,7 +39,7 @@ onMounted(() => loadNotifications());
         <BaseIcon class="text-skin-link" size="20" name="notificationsnone" />
         <SBaseIndicator
           v-if="notificationsSortedByTime.some(n => n.seen === false)"
-          class="absolute right-0 bottom-0 bg-red"
+          class="absolute right-0 bottom-0 !bg-red"
         />
       </UiSidebarButton>
     </template>
