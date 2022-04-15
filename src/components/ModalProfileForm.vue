@@ -20,40 +20,47 @@ const form = ref({
   <BaseModal :open="open" @close="$emit('close')">
     <template v-slot:header>
       <div class="flex flex-row justify-center items-center">
-        <h3>{{ $t('settings.test') }}</h3>
+        <h3>{{ $t('profile.settings.header') }}</h3>
       </div>
     </template>
 
-    <InputUploadAvatar @image-uploaded="url => (form.avatar = url)">
-      <template v-slot:avatar="{ uploading }">
-        <BaseAvatar
-          class="relative"
-          :address="address"
-          :imgsrc="getIpfsUrl(form.avatar)"
-          size="80"
-        >
-          <transition name="fade">
-            <div
-              v-if="uploading"
-              class="absolute right-0 left-0 top-0 bottom-0 rounded-full opacity-80 bg-skin-border flex items-center justify-center"
-            >
-              <LoadingSpinner />
-            </div>
-          </transition>
-        </BaseAvatar>
-      </template>
-    </InputUploadAvatar>
-
     <div class="p-4">
+      <InputUploadAvatar @image-uploaded="url => (form.avatar = url)">
+        <template v-slot:avatar="{ uploading }">
+          <BaseAvatar
+            class="relative"
+            :address="address"
+            :imgsrc="getIpfsUrl(form.avatar)"
+            size="80"
+          >
+            <transition name="fade">
+              <div
+                class="absolute right-0 left-0 top-0 bottom-0 cursor-pointer rounded-full group hover:opacity-80 hover:bg-skin-border transition-colors ease-out flex items-center justify-center"
+                :class="{ 'opacity-80 bg-skin-border': uploading }"
+              >
+                <div class="group-hover:block hidden transition-all ease-out">
+                  Edit
+                </div>
+                <LoadingSpinner v-if="uploading" />
+              </div>
+            </transition>
+          </BaseAvatar>
+        </template>
+      </InputUploadAvatar>
+
       <SBaseInput
         v-model="form.username"
         title="Name"
         type="text"
-        error="test"
+        focusOnMount
       />
-      <!-- <SBaseInput v-model="form.avatar" type="text" errors="test" /> -->
-      <!-- <SBaseInput v-model="form.bio" type="text" errors="test" /> -->
+      <SBaseLabel> Bio </SBaseLabel>
+      <TextareaAutosize class="s-input !rounded-3xl" />
     </div>
-    <template v-slot:footer> </template>
+    <template v-slot:footer>
+      <BaseButton @click="null" class="w-full" primary>
+        {{ $t('save') }}
+      </BaseButton>
+    </template>
   </BaseModal>
 </template>

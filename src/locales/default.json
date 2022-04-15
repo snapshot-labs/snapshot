@@ -328,6 +328,9 @@
     },
     "activity": {
       "header": "Activity"
+    },
+    "settings": {
+      "header": "Profile settings"
     }
   },
   "notify": {
