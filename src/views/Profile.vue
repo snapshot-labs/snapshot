@@ -27,6 +27,7 @@ const userAddress = computed(() => route.params.address as string);
     <ModalProfileForm
       :open="modalProfileFormOpen"
       @close="modalProfileFormOpen = false"
+      :address="userAddress"
     />
   </teleport>
 </template>
