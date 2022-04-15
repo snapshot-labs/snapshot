@@ -25,7 +25,7 @@ const isAdmin = computed(() => {
 </script>
 
 <template>
-  <div class="py-3">
+  <div>
     <router-link :to="{ name: 'spaceProposals' }" v-slot="{ isExactActive }">
       <BaseSidebarNavigationItem :isActive="isExactActive">
         {{ $t('proposals.header') }}
