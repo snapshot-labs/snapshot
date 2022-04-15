@@ -54,7 +54,7 @@ onMounted(() => {
           :type="type"
           :value="modelValue"
           @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)"
-          :class="['s-input', { '!border-red': error }]"
+          :class="['s-input', { '!border-red': error && showError }]"
           :maxlength="maxLength ?? definition?.maxLength"
           :placeholder="placeholder ?? definition?.examples?.[0] ?? ''"
         />
