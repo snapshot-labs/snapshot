@@ -75,7 +75,7 @@ async function load() {
 }
 
 const { endElement } = useScrollMonitor(() =>
-  loadMore(() => loadProposals(store.space.proposals.length), loading.value)
+  loadMore(() => loadProposals(store.space.proposals.length), loadingMore.value)
 );
 
 const { profiles, loadProfiles } = useProfiles();
