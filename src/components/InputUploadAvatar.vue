@@ -18,8 +18,10 @@ const { upload, uploading } = useImageUpload({
 </script>
 
 <template>
-  <div @click="openFilePicker()" class="flex justify-center">
-    <slot name="avatar" :uploading="uploading" />
+  <div class="flex justify-center">
+    <div @click="openFilePicker()">
+      <slot name="avatar" :uploading="uploading" />
+    </div>
   </div>
   <input
     ref="fileInput"
