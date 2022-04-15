@@ -30,9 +30,17 @@ const form = ref({
           class="relative"
           :address="address"
           :imgsrc="getIpfsUrl(form.avatar)"
-          :loading="uploading"
           size="80"
-        />
+        >
+          <transition name="fade">
+            <div
+              v-if="uploading"
+              class="absolute right-0 left-0 top-0 bottom-0 rounded-full opacity-80 bg-skin-border flex items-center justify-center"
+            >
+              <LoadingSpinner />
+            </div>
+          </transition>
+        </BaseAvatar>
       </template>
     </InputUploadAvatar>
 
