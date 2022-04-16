@@ -15,7 +15,14 @@ export default defineConfig({
     vue({ reactivityTransform: true }),
     ViteComponents({
       directoryAsNamespace: true,
-      resolvers: [IconsResolver({ customCollections: ['s'] })]
+      resolvers: [
+        IconsResolver({
+          customCollections: ['s'],
+          alias: {
+            ha: 'heroicons-outline'
+          }
+        })
+      ]
     }),
     visualizer({
       filename: './dist/stats.html',
