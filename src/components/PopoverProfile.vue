@@ -43,14 +43,7 @@ defineProps<{
             <BaseIcon name="external-link" class="ml-1" />
           </BaseButton>
         </BaseLink>
-        <BaseButton
-          @click.prevent="
-            $router.push({ name: 'profileAbout', params: { address } })
-          "
-          class="w-full"
-        >
-          {{ $t('viewProfile') }}
-        </BaseButton>
+        <ButtonProfileView :address="address" />
       </div>
     </template>
   </BasePopover>

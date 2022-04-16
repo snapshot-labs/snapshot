@@ -85,9 +85,10 @@ watch(open, () => (step.value = null));
             <BaseIcon name="external-link" class="ml-1" />
           </BaseButton>
         </BaseLink>
+        <ButtonProfileView @click="emit('close')" :address="web3.account" />
 
         <BaseButton @click="step = 'connect'" class="button-outline w-full">
-          {{ $t('connectWallet') }}
+          {{ web3.account ? $t('changeWallet') : $t('connectWallet') }}
         </BaseButton>
         <BaseButton
           @click="handleLogout"
