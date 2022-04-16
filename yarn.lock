@@ -1725,7 +1725,7 @@
     "@vue/compiler-core" "3.2.33"
     "@vue/shared" "3.2.33"
 
-"@vue/compiler-sfc@3.2.33", "@vue/compiler-sfc@^3.2.33":
+"@vue/compiler-sfc@3.2.33":
   version "3.2.33"
   resolved "https://registry.yarnpkg.com/@vue/compiler-sfc/-/compiler-sfc-3.2.33.tgz#7ce01dc947a8b76c099811dc6ca58494d4dc773d"
   integrity sha512-H8D0WqagCr295pQjUYyO8P3IejM3vEzeCO1apzByAEaAR/WimhMYczHfZVvlCE/9yBaEu/eu9RdiWr0kF8b71Q==
