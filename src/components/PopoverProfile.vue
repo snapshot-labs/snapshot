@@ -43,7 +43,6 @@ defineProps<{
             <BaseIcon name="external-link" class="ml-1" />
           </BaseButton>
         </BaseLink>
-        <ButtonProfileView :address="address" />
       </div>
     </template>
   </BasePopover>
