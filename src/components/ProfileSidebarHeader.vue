@@ -21,17 +21,17 @@ onMounted(() => {
     <div class="flex justify-center">
       <BaseAvatar size="80" :address="userAddress" />
     </div>
-    <div class="text-center mt-3">
-      <div v-if="profiles?.[userAddress]?.name" class="text-skin-link">
-        {{ profiles[userAddress].name }}
+    <div class="text-center mt-1">
+      <div class="text-skin-link text-xl">
+        {{ profiles?.[userAddress]?.name ?? 'Unknown' }}
       </div>
-      <div
-        @click="copyToClipboard(userAddress)"
-        class="cursor-pointer flex justify-center"
-      >
-        <div class="flex items-center">
+      <div class="flex justify-center">
+        <div
+          @click="copyToClipboard(userAddress)"
+          class="flex items-center text-xs text-skin-link bg-skin-border px-2 rounded-full cursor-pointer"
+        >
           {{ shorten(userAddress) }}
-          <BaseIcon name="copy" size="20" class="ml-1" />
+          <BaseIcon name="copy" size="18" class="ml-1" />
         </div>
       </div>
     </div>

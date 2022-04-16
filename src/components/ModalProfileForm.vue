@@ -14,6 +14,8 @@ const form = ref({
   avatar: '',
   bio: ''
 });
+
+const properties = schemas.profile.properties;
 </script>
 
 <template>
@@ -52,10 +54,14 @@ const form = ref({
         v-model="form.username"
         title="Name"
         type="text"
+        :maxLength="properties.username.maxLength"
         focusOnMount
       />
       <SBaseLabel> Bio </SBaseLabel>
-      <TextareaAutosize class="s-input !rounded-3xl" />
+      <TextareaAutosize
+        class="s-input !rounded-3xl"
+        :maxLength="properties.bio.maxLength"
+      />
     </div>
     <template v-slot:footer>
       <BaseButton @click="null" class="w-full" primary>
