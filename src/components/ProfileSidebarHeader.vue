@@ -17,11 +17,11 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="py-3">
+  <div class="mt-3">
     <div class="flex justify-center">
       <BaseAvatar size="80" :address="userAddress" />
     </div>
-    <div class="text-center mt-1">
+    <div class="text-center">
       <div class="text-skin-link text-xl">
         {{ profiles?.[userAddress]?.name ?? 'Unknown' }}
       </div>
@@ -31,7 +31,7 @@ onMounted(() => {
           class="flex items-center text-xs text-skin-link bg-skin-border px-2 rounded-full cursor-pointer"
         >
           {{ shorten(userAddress) }}
-          <BaseIcon name="copy" size="18" class="ml-1" />
+          <i-ho-duplicate class="ml-1 text-xs" />
         </div>
       </div>
     </div>
