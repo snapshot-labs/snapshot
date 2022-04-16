@@ -19,7 +19,7 @@ export default defineConfig({
         IconsResolver({
           customCollections: ['s'],
           alias: {
-            ha: 'heroicons-outline'
+            ho: 'heroicons-outline'
           }
         })
       ]
