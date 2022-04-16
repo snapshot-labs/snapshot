@@ -6,7 +6,7 @@ const { items } = useFlashNotification();
 
 <template>
   <div
-    class="fixed left-0 right-0 bottom-0 z-50 flex flex-col items-center mb-4 space-y-2 pointer-events-none"
+    class="flash-notification fixed left-0 right-0 bottom-0 flex flex-col items-center mb-4 space-y-2 pointer-events-none"
   >
     <TransitionGroup name="fade">
       <div v-for="item in items" :key="item.id" class="pointer-events-auto">
@@ -33,3 +33,9 @@ const { items } = useFlashNotification();
     </TransitionGroup>
   </div>
 </template>
+
+<style lang="scss">
+  .flash-notification {
+    z-index: 100;
+  }
+</style>
