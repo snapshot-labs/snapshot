@@ -50,6 +50,9 @@ async function handleLogin(connector) {
           >
             snapshot
           </router-link>
+          <i-s-account class="text-lg text-red" />
+          <i-s-account class="text-md text-blue" />
+          <i-s-account class="text-2xl" />
         </div>
         <div :key="web3Account" class="flex space-x-2">
           <template v-if="auth.isAuthenticated.value">

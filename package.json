@@ -57,6 +57,7 @@
     "@typescript-eslint/parser": "^5.19.0",
     "@vitejs/plugin-vue": "^2.3.1",
     "@vitest/ui": "^0.9.3",
+    "@vue/compiler-sfc": "^3.2.33",
     "@vue/eslint-config-prettier": "^6.0.0",
     "@vue/eslint-config-typescript": "^9.0.0",
     "@vue/test-utils": "^2.0.0-rc.20",
@@ -73,6 +74,7 @@
     "sass": "~1.50.0",
     "sass-loader": "^12.6.0",
     "tailwindcss": "^3.0.24",
+    "unplugin-icons": "^0.14.1",
     "unplugin-vue-components": "^0.19.3",
     "vite": "^2.9.5",
     "vitest": "^0.9.3"
