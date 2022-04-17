@@ -2,6 +2,7 @@
 import { isAddress } from '@ethersproject/address';
 import { shorten, explorerUrl } from '@/helpers/utils';
 import { encode } from '@/helpers/b64';
+import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 
 defineProps({
   open: Boolean,
@@ -33,7 +34,7 @@ defineEmits(['close']);
             query: {
               query: encode(
                 JSON.stringify({
-                  network: proposal.network,
+                  network: strategy.network || proposal.network,
                   snapshot: proposal.snapshot,
                   params: strategy.params
                 })
@@ -62,6 +63,12 @@ defineEmits(['close']);
                   : typeof option
               "
             />
+          </div>
+          <div class="flex">
+            <span class="flex-auto text-skin-text mr-1"> network </span>
+            <span>{{
+              networks[strategy.network || proposal.network].name
+            }}</span>
           </div>
         </div>
       </BaseBlock>
