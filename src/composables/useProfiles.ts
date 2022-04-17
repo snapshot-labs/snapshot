@@ -1,8 +1,15 @@
-import { getProfiles } from '@/helpers/profile';
+import { getEnsAddress } from '@/helpers/profile';
 import { ref } from 'vue';
 
-// holds profile data (ENS name/images) for all addresses appearing in the frontend
-const profiles = ref({});
+// Holds profile data (ENS name, username, about, twitter) for all addresses appearing in the frontend
+const profiles = ref<{
+  [address: string]: {
+    ens: string;
+    name?: string;
+    about?: string;
+    twitter?: string;
+  };
+}>({});
 
 export function useProfiles() {
   /**
@@ -10,15 +17,23 @@ export function useProfiles() {
    */
   const loadProfiles = async (addresses: string[]) => {
     const addressesToAdd = addresses.filter(
-      address => !Object.keys(profiles.value).includes(address)
+      address =>
+        !Object.keys(profiles.value).includes(address) && address !== ''
     );
 
-    console.time('getProfiles');
-    const response =
-      addressesToAdd.length > 0 ? await getProfiles(addressesToAdd) : {};
-    console.timeEnd('getProfiles');
+    let response: any = {};
+    if (addressesToAdd.length > 0) {
+      response = await Promise.all([await getEnsAddress(addressesToAdd), {}]);
+      // add ens from response to corresponding address in profilesObj
+      Object.keys(response[0]).forEach(address => {
+        response[0][address] = {
+          ...{ ens: response[0][address] },
+          ...response[1][address]
+        };
+      });
+    }
 
-    profiles.value = { ...profiles.value, ...response };
+    profiles.value = { ...response[0], ...profiles.value };
   };
 
   return {

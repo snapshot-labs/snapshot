@@ -1,19 +1,13 @@
 <script setup lang="ts">
-import { onMounted } from 'vue';
-import { useProfiles } from '@/composables/useProfiles';
 import { shorten } from '@/helpers/utils';
 import { useCopy } from '@/composables/useCopy';
 
-const props = defineProps<{
+defineProps<{
   userAddress: string;
+  profile: { ens: string; name?: string };
 }>();
 
-const { loadProfiles, profiles } = useProfiles();
 const { copyToClipboard } = useCopy();
-
-onMounted(() => {
-  loadProfiles([props.userAddress]);
-});
 </script>
 
 <template>
@@ -23,7 +17,7 @@ onMounted(() => {
     </div>
     <div class="text-center">
       <div class="text-skin-link text-xl">
-        {{ profiles?.[userAddress]?.name ?? 'Unknown' }}
+        {{ profile?.name || profile.ens || 'unnamed' }}
       </div>
       <div class="flex justify-center">
         <div

@@ -1,17 +1,19 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, watchEffect, computed } from 'vue';
 import { shorten } from '@/helpers/utils';
 import { useModal } from '@/composables/useModal';
 import { useApp } from '@/composables/useApp';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useTxStatus } from '@/composables/useTxStatus';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
+import { useProfiles } from '@/composables/useProfiles';
 
 const { pendingCount } = useTxStatus();
 const { modalAccountOpen } = useModal();
 const { env, showSidebar, domain } = useApp();
 const auth = getInstance();
 const { login, web3, web3Account } = useWeb3();
+const { profiles, loadProfiles } = useProfiles();
 
 const loading = ref(false);
 
@@ -21,6 +23,12 @@ async function handleLogin(connector) {
   await login(connector);
   loading.value = false;
 }
+
+const profile = computed(() => profiles.value[web3Account.value]);
+
+watchEffect(() => {
+  loadProfiles([web3Account.value]);
+});
 </script>
 
 <template>
@@ -64,8 +72,8 @@ async function handleLogin(connector) {
                 class="-mr-1 sm:mr-2 md:mr-2 lg:mr-2 xl:mr-2 -ml-1"
               />
               <span
-                v-if="web3.profile?.name || web3.profile?.ens"
-                v-text="web3.profile.name || web3.profile.ens"
+                v-if="profile?.name || profile?.ens"
+                v-text="profile.name || profile.ens"
                 class="hidden sm:block"
               />
               <span
@@ -106,6 +114,7 @@ async function handleLogin(connector) {
       :open="modalAccountOpen"
       @close="modalAccountOpen = false"
       @login="handleLogin"
+      :profile="profile"
     />
   </teleport>
 </template>

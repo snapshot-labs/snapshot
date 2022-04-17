@@ -5,7 +5,7 @@ import connectors from '@/helpers/connectors.json';
 import { shorten, explorerUrl, getIpfsUrl } from '@/helpers/utils';
 import { useWeb3 } from '@/composables/useWeb3';
 
-const props = defineProps(['open']);
+const props = defineProps(['open', 'profile']);
 
 const emit = defineEmits(['login', 'close']);
 
@@ -79,8 +79,8 @@ watch(open, () => (step.value = null));
             class="button-outline w-full flex justify-center items-center"
           >
             <BaseAvatar :address="web3.account" size="18" class="mr-2 -ml-1" />
-            <span v-if="web3.profile.name" v-text="web3.profile.name" />
-            <span v-else-if="web3.profile.ens" v-text="web3.profile.ens" />
+            <span v-if="profile?.name" v-text="profile.name" />
+            <span v-else-if="profile?.ens" v-text="profile.ens" />
             <span v-else v-text="shorten(web3.account)" />
             <BaseIcon name="external-link" class="ml-1" />
           </BaseButton>

@@ -1,12 +1,17 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
+import { useProfiles } from '@/composables/useProfiles';
 
 const route = useRoute();
 
 const modalProfileFormOpen = ref(false);
 
 const userAddress = computed(() => route.params.address as string);
+
+const { profiles, loadProfiles } = useProfiles();
+
+onMounted(() => loadProfiles([userAddress.value]));
 </script>
 
 <template>
@@ -14,7 +19,10 @@ const userAddress = computed(() => route.params.address as string);
     <template #sidebar-left>
       <div class="fixed w-[240px]">
         <BaseBlock slim class="overflow-hidden">
-          <ProfileSidebarHeader :userAddress="userAddress" />
+          <ProfileSidebarHeader
+            :userAddress="userAddress"
+            :profile="profiles[userAddress]"
+          />
           <ProfileSidebarNavigation @edit="modalProfileFormOpen = true" />
         </BaseBlock>
       </div>
