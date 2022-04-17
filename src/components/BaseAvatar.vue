@@ -14,18 +14,25 @@ const props = withDefaults(defineProps<Props>(), {
 
 const imgUrl = ref<string>('');
 const showImg = ref(false);
+const loadingImg = ref(false);
+
+function loadImage() {
+  if (props.imgsrc) {
+    const img = new Image();
+    img.src = props.imgsrc as string;
+    loadingImg.value = true;
+    img.onload = () => {
+      imgUrl.value = img.src;
+      showImg.value = true;
+      loadingImg.value = false;
+    };
+  }
+}
 
 watch(
   () => props.imgsrc,
   () => {
-    if (props.imgsrc) {
-      const img = new Image();
-      img.onload = () => {
-        imgUrl.value = img.src;
-        showImg.value = true;
-      };
-      img.src = props.imgsrc as string;
-    }
+    loadImage();
   },
   { immediate: true }
 );
@@ -47,6 +54,6 @@ watch(
       }"
       :alt="space?.name"
     />
-    <slot />
+    <slot name="overlay" :loadingImg="loadingImg" />
   </span>
 </template>

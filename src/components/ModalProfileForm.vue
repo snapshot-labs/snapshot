@@ -10,9 +10,9 @@ defineProps<{
 const open = ref(false);
 
 const form = ref({
-  username: '',
+  name: '',
   avatar: '',
-  bio: ''
+  about: ''
 });
 
 const properties = schemas.profile.properties;
@@ -35,32 +35,41 @@ const properties = schemas.profile.properties;
             :imgsrc="getIpfsUrl(form.avatar)"
             size="80"
           >
-            <transition name="fade">
-              <div
-                class="absolute right-0 left-0 top-0 bottom-0 cursor-pointer rounded-full group hover:opacity-80 hover:bg-skin-border transition-colors ease-out flex items-center justify-center"
-                :class="{ 'opacity-80 bg-skin-border': uploading }"
-              >
-                <div class="group-hover:block hidden transition-all ease-out">
-                  Edit
+            <template v-slot:overlay="{ loadingImg }">
+              <transition name="fade">
+                <div
+                  class="absolute right-0 left-0 top-0 bottom-0 cursor-pointer rounded-full group hover:opacity-80 hover:bg-skin-border transition-colors ease-out flex items-center justify-center"
+                  :class="{
+                    'opacity-80 bg-skin-border': uploading || loadingImg
+                  }"
+                >
+                  <div
+                    v-if="!uploading && !loadingImg"
+                    class="group-hover:block hidden transition-all ease-out"
+                  >
+                    <i-ho-pencil class="text-md" />
+                  </div>
+                  <LoadingSpinner v-if="uploading || loadingImg" />
                 </div>
-                <LoadingSpinner v-if="uploading" />
-              </div>
-            </transition>
+              </transition>
+            </template>
           </BaseAvatar>
         </template>
       </InputUploadAvatar>
 
       <SBaseInput
-        v-model="form.username"
-        title="Name"
+        v-model="form.name"
+        title="username"
         type="text"
-        :maxLength="properties.username.maxLength"
+        placeholder="enter username"
+        :maxLength="properties.name.maxLength"
         focusOnMount
       />
-      <SBaseLabel> Bio </SBaseLabel>
+      <SBaseLabel> bio </SBaseLabel>
       <TextareaAutosize
         class="s-input !rounded-3xl"
-        :maxLength="properties.bio.maxLength"
+        :maxLength="properties.about.maxLength"
+        placeholder="tell the world your story"
       />
     </div>
     <template v-slot:footer>
