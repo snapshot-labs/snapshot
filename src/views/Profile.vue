@@ -38,6 +38,7 @@ onMounted(() => loadProfiles([userAddress.value]));
       :open="modalProfileFormOpen"
       @close="modalProfileFormOpen = false"
       :address="userAddress"
+      :profile="profiles[userAddress]"
     />
   </teleport>
 </template>

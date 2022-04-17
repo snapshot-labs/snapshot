@@ -1,11 +1,14 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import schemas from '@snapshot-labs/snapshot.js/src/schemas';
 import { getIpfsUrl } from '@/helpers/utils';
 
-defineProps<{
+const props = defineProps<{
   address: string;
+  profile: { name?: string; about?: string; avatar?: string };
 }>();
+
+const properties = schemas.profile.properties;
 
 const open = ref(false);
 
@@ -15,7 +18,11 @@ const form = ref({
   about: ''
 });
 
-const properties = schemas.profile.properties;
+onMounted(() => {
+  form.value.name = props.profile?.name ?? '';
+  form.value.avatar = props.profile?.avatar ?? '';
+  form.value.about = props.profile?.about ?? '';
+});
 </script>
 
 <template>
