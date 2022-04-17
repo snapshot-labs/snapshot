@@ -20,9 +20,11 @@ onMounted(() => loadProfiles([userAddress.value]));
       <div class="fixed w-[240px]">
         <BaseBlock slim class="overflow-hidden">
           <ProfileSidebarHeader
+            v-if="profiles[userAddress]"
             :userAddress="userAddress"
             :profile="profiles[userAddress]"
           />
+          <ProfileSidebarHeaderSkeleton v-else />
           <ProfileSidebarNavigation @edit="modalProfileFormOpen = true" />
         </BaseBlock>
       </div>

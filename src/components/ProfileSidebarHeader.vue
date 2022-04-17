@@ -16,7 +16,12 @@ const { copyToClipboard } = useCopy();
       <BaseAvatar size="80" :address="userAddress" />
     </div>
     <div class="text-center">
-      <div class="text-skin-link text-xl">
+      <div
+        class="text-skin-link text-xl w-full truncate px-3"
+        v-tippy="{
+          content: profile?.name || profile.ens || 'unnamed'
+        }"
+      >
         {{ profile?.name || profile.ens || 'unnamed' }}
       </div>
       <div class="flex justify-center">
