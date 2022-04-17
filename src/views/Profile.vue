@@ -35,6 +35,7 @@ onMounted(() => loadProfiles([userAddress.value]));
   </TheLayout>
   <teleport to="#modal">
     <ModalProfileForm
+      v-if="profiles[userAddress]"
       :open="modalProfileFormOpen"
       @close="modalProfileFormOpen = false"
       :address="userAddress"

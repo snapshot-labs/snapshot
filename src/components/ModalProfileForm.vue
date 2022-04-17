@@ -19,9 +19,11 @@ const form = ref({
 });
 
 onMounted(() => {
-  form.value.name = props.profile?.name ?? '';
-  form.value.avatar = props.profile?.avatar ?? '';
-  form.value.about = props.profile?.about ?? '';
+  form.value = {
+    name: props.profile?.name ?? '',
+    avatar: props.profile?.avatar ?? '',
+    about: props.profile?.about ?? ''
+  };
 });
 </script>
 
@@ -34,6 +36,7 @@ onMounted(() => {
     </template>
 
     <div class="p-4">
+      <SBaseLabel>{{ $t('profile image') }}</SBaseLabel>
       <InputUploadAvatar @image-uploaded="url => (form.avatar = url)">
         <template v-slot:avatar="{ uploading }">
           <BaseAvatar
@@ -43,22 +46,7 @@ onMounted(() => {
             size="80"
           >
             <template v-slot:overlay="{ loadingImg }">
-              <transition name="fade">
-                <div
-                  class="absolute right-0 left-0 top-0 bottom-0 cursor-pointer rounded-full group hover:opacity-80 hover:bg-skin-border transition-colors ease-out flex items-center justify-center"
-                  :class="{
-                    'opacity-80 bg-skin-border': uploading || loadingImg
-                  }"
-                >
-                  <div
-                    v-if="!uploading && !loadingImg"
-                    class="group-hover:block hidden transition-all ease-out"
-                  >
-                    <i-ho-pencil class="text-md" />
-                  </div>
-                  <LoadingSpinner v-if="uploading || loadingImg" />
-                </div>
-              </transition>
+              <AvatarOverlayEdit :loading="uploading || loadingImg" />
             </template>
           </BaseAvatar>
         </template>
@@ -74,6 +62,7 @@ onMounted(() => {
       />
       <SBaseLabel> bio </SBaseLabel>
       <TextareaAutosize
+        v-model="form.about"
         class="s-input !rounded-3xl"
         :maxLength="properties.about.maxLength"
         placeholder="tell the world your story"

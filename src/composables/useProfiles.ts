@@ -23,7 +23,16 @@ export function useProfiles() {
 
     let response: any = {};
     if (addressesToAdd.length > 0) {
-      response = await Promise.all([await getEnsAddress(addressesToAdd), {}]);
+      response = await Promise.all([
+        await getEnsAddress(addressesToAdd),
+        // Example object
+        // TODO: Remove this example and replay with profile query
+        {
+          '0xF78108c9BBaF466dd96BE41be728Fe3220b37119': {
+            name: 'test1'
+          }
+        }
+      ]);
       // add ens from response to corresponding address in profilesObj
       Object.keys(response[0]).forEach(address => {
         response[0][address] = {
