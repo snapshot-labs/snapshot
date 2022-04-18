@@ -42,7 +42,7 @@ const isChild = computed(() => {
 </script>
 
 <template>
-  <div class="py-3">
+  <div>
     <router-link
       :to="{ name: 'spaceProposals' }"
       v-text="$t('proposals.header')"

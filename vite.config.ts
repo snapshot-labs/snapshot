@@ -3,6 +3,9 @@ import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import ViteComponents from 'unplugin-vue-components/vite';
 import visualizer from 'rollup-plugin-visualizer';
+import Icons from 'unplugin-icons/vite';
+import IconsResolver from 'unplugin-icons/resolver';
+import { FileSystemIconLoader } from 'unplugin-icons/loaders';
 
 export default defineConfig({
   define: {
@@ -10,11 +13,30 @@ export default defineConfig({
   },
   plugins: [
     vue({ reactivityTransform: true }),
-    ViteComponents({ directoryAsNamespace: true }),
+    ViteComponents({
+      directoryAsNamespace: true,
+      resolvers: [
+        IconsResolver({
+          customCollections: ['s'],
+          alias: {
+            ho: 'heroicons-outline'
+          }
+        })
+      ]
+    }),
     visualizer({
       filename: './dist/stats.html',
       template: 'sunburst',
       gzipSize: true
+    }),
+    Icons({
+      compiler: 'vue3',
+      customCollections: {
+        // key as the collection name
+        s: FileSystemIconLoader('./src/assets/icons', svg =>
+          svg.replace(/^<svg /, '<svg fill="currentColor" ')
+        )
+      }
     })
   ],
   resolve: {
@@ -22,10 +44,6 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src')
     },
     dedupe: ['@popperjs/core']
-  },
-  optimizeDeps: {
-    // @ts-ignore
-    allowNodeBuiltins: ['stream']
   },
   test: {
     open: true,

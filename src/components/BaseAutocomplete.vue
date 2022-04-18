@@ -81,28 +81,30 @@ function handleChange(e) {
 
 <template>
   <div class="relative">
-    <SBase :definition="{ title: label }" class="relative z-30">
-      <input
-        v-show="displayDropdown"
-        ref="inputEl"
-        type="text"
-        :value="searchInput"
-        @input="handleChange"
-        class="s-input !bg-skin-bg"
-        :placeholder="placeholder ?? $t('select')"
-      />
-      <!-- Fake Input to display the selected value -->
-      <div
-        ref="selectedInputEl"
-        @click="openOptions"
-        v-show="!displayDropdown"
-        class="s-input !bg-skin-bg"
-      >
-        <slot name="option" :option="getOption(value)?.option">
-          {{ getOption(value)?.label ?? '' }}
-        </slot>
-      </div>
-    </SBase>
+    <SBaseInput :title="label" class="relative z-30">
+      <template v-slot:customInput>
+        <input
+          v-show="displayDropdown"
+          ref="inputEl"
+          type="text"
+          :value="searchInput"
+          @input="handleChange"
+          class="s-input !bg-skin-bg"
+          :placeholder="placeholder ?? $t('select')"
+        />
+        <!-- Fake Input to display the selected value -->
+        <div
+          ref="selectedInputEl"
+          @click="openOptions"
+          v-show="!displayDropdown"
+          class="s-input !bg-skin-bg"
+        >
+          <slot name="option" :option="getOption(value)?.option">
+            {{ getOption(value)?.label ?? '' }}
+          </slot>
+        </div>
+      </template>
+    </SBaseInput>
 
     <div
       ref="optionsEl"
