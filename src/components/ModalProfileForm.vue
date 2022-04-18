@@ -38,11 +38,11 @@ onMounted(() => {
     <div class="p-4">
       <SBaseLabel>{{ $t('profile image') }}</SBaseLabel>
       <InputUploadAvatar @image-uploaded="url => (form.avatar = url)">
-        <template v-slot:avatar="{ uploading }">
+        <template v-slot:avatar="{ uploading, preview }">
           <BaseAvatar
-            class="relative"
             :address="address"
             :imgsrc="getIpfsUrl(form.avatar)"
+            :preview="preview"
             size="80"
           >
             <template v-slot:overlay="{ loadingImg }">

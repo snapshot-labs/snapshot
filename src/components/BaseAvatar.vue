@@ -6,6 +6,7 @@ interface Props {
   size?: string;
   imgsrc?: string;
   space?: Record<string, any>;
+  preview?: [boolean, File | undefined];
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -15,6 +16,7 @@ const props = withDefaults(defineProps<Props>(), {
 const imgUrl = ref<string>('');
 const showImg = ref(false);
 const loadingImg = ref(false);
+const avatarImage = ref<HTMLImageElement | null>(null);
 
 function loadImage() {
   if (props.imgsrc) {
@@ -36,11 +38,25 @@ watch(
   },
   { immediate: true }
 );
+
+watch(
+  () => props.preview,
+  () => {
+    if (avatarImage.value && props.preview?.[1] && props.preview?.[0]) {
+      avatarImage.value.src = URL.createObjectURL(props.preview[1]);
+      avatarImage.value.onload = function () {
+        if (avatarImage.value) URL.revokeObjectURL(avatarImage.value.src); // free memory
+      };
+    }
+  },
+  { immediate: true }
+);
 </script>
 
 <template>
   <span class="flex shrink-0 items-center justify-center relative">
     <img
+      ref="avatarImage"
       :src="
         imgUrl ||
         `https://stamp.fyi/avatar/eth:${address}?s=${parseInt(size) * 2}`
