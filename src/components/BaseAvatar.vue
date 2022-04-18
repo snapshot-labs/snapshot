@@ -15,18 +15,15 @@ const props = withDefaults(defineProps<Props>(), {
 
 const imgUrl = ref<string>('');
 const showImg = ref(false);
-const loadingImg = ref(false);
 const avatarImage = ref<HTMLImageElement | null>(null);
 
 function loadImage() {
   if (props.imgsrc) {
     const img = new Image();
     img.src = props.imgsrc as string;
-    loadingImg.value = true;
     img.onload = () => {
       imgUrl.value = img.src;
       showImg.value = true;
-      loadingImg.value = false;
     };
   }
 }
@@ -70,6 +67,6 @@ watch(
       }"
       :alt="space?.name"
     />
-    <slot name="overlay" :loadingImg="loadingImg" />
+    <slot name="overlay" />
   </span>
 </template>

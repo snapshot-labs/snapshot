@@ -45,8 +45,8 @@ onMounted(() => {
             :preview="preview"
             size="80"
           >
-            <template v-slot:overlay="{ loadingImg }">
-              <AvatarOverlayEdit :loading="uploading || loadingImg" />
+            <template v-slot:overlay>
+              <AvatarOverlayEdit :loading="uploading" />
             </template>
           </BaseAvatar>
         </template>
