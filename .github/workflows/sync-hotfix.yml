@@ -7,7 +7,7 @@ name: Sync Hotfix
 on:
   pull_request:
     types:
-      - closed
+      - opened
     branches:
       - stable
 
