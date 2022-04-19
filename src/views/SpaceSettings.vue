@@ -688,7 +688,7 @@ async function handleSetRecord() {
       >
         {{ $t('settings.connectWithSpaceOwner') }}
       </BaseMessageBlock>
-      <div v-else-if="loaded" class="lg:fixed lg:w-[300px]">
+      <div v-else-if="loaded" class="lg:fixed lg:w-[318px]">
         <BaseBlock>
           <BaseButton
             v-if="ensOwner"

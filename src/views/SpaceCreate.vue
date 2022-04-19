@@ -59,7 +59,6 @@ const bodyLimit = ref(14400);
 const modalDateSelectOpen = ref(false);
 const modalVotingTypeOpen = ref(false);
 const selectedDate = ref('');
-const nameInput = ref(null);
 const passValidation = ref([true]);
 const validationLoading = ref(false);
 const loadingSnapshot = ref(true);
@@ -228,9 +227,6 @@ async function loadProposal() {
 
   sourceProposalLoaded.value = true;
 }
-
-// Focus proposal name field when page loads
-watch(nameInput, () => nameInput?.value?.focus());
 
 onMounted(async () => {
   addChoices(2);
@@ -452,21 +448,19 @@ const handleDrop = e => {
               v-text="form.name || $t('create.untitled')"
               class="w-full break-all"
             />
-            <SBase v-else :definition="{ title: $t('create.proposalTitle') }">
-              <input
-                v-model="form.name"
-                maxlength="128"
-                class="text-md font-semibold s-input w-full !rounded-full"
-                ref="nameInput"
-              />
-            </SBase>
+            <SBaseInput
+              v-else
+              v-model="form.name"
+              :title="$t('create.proposalTitle')"
+              :maxLength="128"
+              focusOnMount
+            />
 
             <div v-if="!preview">
               <div class="flex justify-between">
-                <label
-                  v-text="$t('create.proposalDescription')"
-                  class="s-label"
-                />
+                <SBaseLabel>
+                  {{ $t('create.proposalDescription') }}
+                </SBaseLabel>
                 <div class="text-xs">
                   {{ formatNumber(form.body.length) }} /
                   {{ formatNumber(bodyLimit) }}
@@ -527,16 +521,12 @@ const handleDrop = e => {
               <BaseMarkdown :body="form.body" />
             </div>
 
-            <SBase
+            <SBaseInput
               v-if="!preview"
-              :definition="{ title: $t('create.discussion') }"
-            >
-              <input
-                v-model="form.discussion"
-                class="s-input w-full !rounded-full"
-                placeholder="e.g. https://forum.balancer.fi/proposal..."
-              />
-            </SBase>
+              v-model="form.discussion"
+              placeholder="e.g. https://forum.balancer.fi/proposal..."
+              :title="$t('create.discussion')"
+            />
           </div>
         </div>
       </template>
@@ -548,6 +538,9 @@ const handleDrop = e => {
             v-tippy="{
               content: !!space.voting?.type ? $t('create.typeEnforced') : null
             }"
+            :class="[
+              space.voting?.type ? 'cursor-not-allowed' : 'cursor-pointer'
+            ]"
             class="!mb-4"
           >
             <template v-slot:selected>
@@ -560,17 +553,14 @@ const handleDrop = e => {
             </template>
           </UiInput>
           <div class="flex">
-            <div class="overflow-hidden w-full space-y-2">
+            <div class="overflow-hidden w-full">
               <draggable
                 v-model="choices"
-                tag="transition-group"
-                :component-data="{
-                  type: 'transition-group'
-                }"
                 v-bind="{ animation: 200 }"
                 :disabled="disableChoiceEdit"
                 item-key="id"
                 handle=".drag-handle"
+                class="space-y-2"
               >
                 >
                 <template #item="{ element, index }">
@@ -579,7 +569,7 @@ const handleDrop = e => {
                     maxlength="32"
                     :disabled="disableChoiceEdit"
                     :placeholder="index > 0 ? $t('optional') : ''"
-                    class="group mb-0"
+                    class="group"
                     :focusOnMount="index === 0"
                   >
                     <template v-slot:label>
@@ -635,7 +625,9 @@ const handleDrop = e => {
                   ? $t('create.delayEnforced')
                   : null
               }"
-              :class="{ 'cursor-not-allowed': space.voting?.delay }"
+              :class="[
+                space.voting?.delay ? 'cursor-not-allowed' : 'cursor-pointer'
+              ]"
             >
               <template v-slot:selected>
                 <span
@@ -668,7 +660,9 @@ const handleDrop = e => {
                   : null
               }"
               class="mb-0 md:mb-2"
-              :class="{ 'cursor-not-allowed': space.voting?.period }"
+              :class="[
+                space.voting?.period ? 'cursor-not-allowed' : 'cursor-pointer'
+              ]"
             >
               <template v-slot:selected>
                 <span v-text="$d(dateEnd * 1e3, 'short', 'en-US')" />

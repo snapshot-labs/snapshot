@@ -45,7 +45,7 @@ async function handleLogin(connector) {
           </UiSidebarButton>
           <router-link
             :to="{ path: '/' }"
-            class="flex items-center"
+            class="flex items-center sm:-ml-3"
             style="font-size: 24px"
           >
             snapshot
