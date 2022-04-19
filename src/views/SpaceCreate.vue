@@ -240,9 +240,7 @@ onMounted(() =>
 watchEffect(async () => {
   loadingSnapshot.value = true;
   if (props.space?.network) {
-    blockNumber.value = await getBlockNumber(
-      getProvider(props.space.network, 'light')
-    );
+    blockNumber.value = await getBlockNumber(getProvider(props.space.network));
     form.value.snapshot = blockNumber.value;
     loadingSnapshot.value = false;
   }
@@ -356,7 +354,7 @@ const handleDrop = e => {
         </router-link>
       </div>
 
-      <!-- Shows when no wallet is connected and the space has any sort 
+      <!-- Shows when no wallet is connected and the space has any sort
       of validation set -->
       <BaseMessageBlock
         class="mb-4"
