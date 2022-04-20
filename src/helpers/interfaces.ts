@@ -47,15 +47,8 @@ export interface StrategyDefinition {
 export interface ProfileActivity {
   id: string;
   created: number;
-  choice: number | number[];
-  proposal: {
-    id: number;
-    title: string;
-    choices: string[];
-    type: string;
-  };
-  space: {
-    id: number;
-    avatar: string;
-  };
+  type: string;
+  title: string;
+  space: { id: string; avatar: string };
+  vote?: { proposalId: string; choice: string; type: string };
 }

@@ -3,33 +3,28 @@ import { computed } from 'vue';
 interface ProfileActivity {
   id: string;
   created: number;
-  choice: number | number[];
-  proposal: {
-    id: number;
-    title: string;
-    choices: string[];
-    type: string;
-  };
-  space: {
-    id: number;
-    avatar: string;
-  };
+  type: string;
+  title: string;
+  space: { id: string; avatar: string };
+  vote?: { proposalId: string; choice: string; type: string };
 }
 
 const props = defineProps<{ activity: ProfileActivity }>();
 
 const showChoice = computed(() => {
-  // if proposal type is 'basic' or 'single-choice'
-  return ['basic', 'single-choice'].includes(props.activity.proposal.type);
+  // true if proposal type is 'basic' or 'single-choice'
+  return ['basic', 'single-choice'].includes(props.activity.vote?.type ?? '');
 });
 </script>
 
 <template>
   <div class="border-b border-skin-text last:border-b-0">
+    <!-- Vote activities -->
     <router-link
+      v-if="activity.type === 'vote'"
       :to="{
         name: 'spaceProposal',
-        params: { key: activity.space.id, id: activity.proposal.id }
+        params: { key: activity.space.id, id: activity.vote.proposalId }
       }"
     >
       <div class="flex w-full py-4 px-4">
@@ -45,17 +40,16 @@ const showChoice = computed(() => {
           <div class="text-xs text-skin-text leading-5">
             {{
               $t('profile.activity.votedFor', {
-                choice: showChoice
-                  ? `"${activity.proposal.choices[activity.choice - 1]}"`
-                  : ''
+                choice: showChoice ? `"${activity.vote.choice}"` : ''
               })
             }}
           </div>
-          <div class="truncate">
-            {{ activity.proposal.title }}
+          <div class="truncate pr-2">
+            {{ activity.title }}
           </div>
         </div>
       </div>
     </router-link>
+    <!-- Other activities -->
   </div>
 </template>

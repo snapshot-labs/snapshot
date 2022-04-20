@@ -37,7 +37,7 @@ const activityOlder = computed(() => {
   );
 });
 
-onMounted(async () => {
+async function loadVotes() {
   const votes = await apolloQuery(
     {
       query: ACTIVITY_VOTES_QUERY,
@@ -49,7 +49,33 @@ onMounted(async () => {
     'votes'
   );
 
-  activities.value = votes;
+  return votes;
+}
+
+function mergeInToActivities(responseArray: any[]) {
+  const votes = responseArray[0];
+  votes.forEach(vote => {
+    activities.value.push({
+      id: vote.id,
+      created: vote.created,
+      type: 'vote',
+      title: vote.proposal.title,
+      space: {
+        id: vote.space.id,
+        avatar: vote.space.avatar
+      },
+      vote: {
+        proposalId: vote.proposal.id,
+        choice: vote.proposal.choices[vote.choice - 1],
+        type: vote.proposal.type
+      }
+    });
+  });
+}
+
+onMounted(async () => {
+  const allResponses = await Promise.all([await loadVotes()]);
+  mergeInToActivities(allResponses);
 });
 </script>
 
