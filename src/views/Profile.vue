@@ -38,7 +38,10 @@ onMounted(() => loadProfiles([userAddress.value]));
       </div>
     </template>
     <template #content-right>
-      <router-view :userAddress="userAddress" />
+      <router-view
+        :userAddress="userAddress"
+        :profile="profiles[userAddress]"
+      />
     </template>
   </TheLayout>
   <teleport to="#modal">

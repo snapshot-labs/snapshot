@@ -5,13 +5,12 @@ import { PROFILES_QUERY } from '@/helpers/queries';
 import client from '@/helpers/clientEIP712';
 import { useAliasAction } from '@/composables/useAliasAction';
 
-// Holds profile data (ENS name, username, about, twitter) for all addresses appearing in the frontend
+// Holds profile data (ENS name, username, about) for all addresses appearing in the frontend
 const profiles = ref<{
   [address: string]: {
     ens: string;
     name?: string;
     about?: string;
-    twitter?: string;
   };
 }>({});
 
@@ -32,15 +31,21 @@ export function useProfiles() {
         await getEnsAddress(addressesToAdd),
         // Example object
         // TODO: Remove this example and replay with profile query
-        await apolloQuery(
-          {
-            query: PROFILES_QUERY,
-            variables: {
-              addresses: addresses
-            }
-          },
-          'profiles'
-        )
+        // await apolloQuery(
+        //   {
+        //     query: PROFILES_QUERY,
+        //     variables: {
+        //       addresses: addresses
+        //     }
+        //   },
+        //   'profiles'
+        // )
+        {
+          '0xF78108c9BBaF466dd96BE41be728Fe3220b37119': {
+            name: 'John Doe',
+            about: 'I am a person'
+          }
+        }
       ]);
       // add ens from profilesRes to corresponding address in profilesObj
       Object.keys(profilesRes[0]).forEach(address => {
@@ -67,7 +72,7 @@ export function useProfiles() {
   // Function to save a profile on the hub with alias
   const { setAlias, aliasWallet, isValidAlias, checkAlias } = useAliasAction();
   const saveProfile = async (
-    profile: { name: string; about: string; avatar: string; twitter: string },
+    profile: { name: string; about: string; avatar: string },
     web3Account: string
   ) => {
     await client.profile(aliasWallet.value, aliasWallet.value.address, {
