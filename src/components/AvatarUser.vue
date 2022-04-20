@@ -19,7 +19,7 @@ watchEffect(() => {
 </script>
 
 <template>
-  <span>
+  <div>
     <PopoverProfile
       :address="address"
       :profile="profile"
@@ -43,5 +43,5 @@ watchEffect(() => {
         </a>
       </router-link>
     </PopoverProfile>
-  </span>
+  </div>
 </template>
