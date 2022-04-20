@@ -58,29 +58,34 @@ onMounted(async () => {
     <h2 class="px-4 md:px-0">{{ $t('profile.activity.header') }}</h2>
 
     <div class="space-y-3 mt-3">
-      <ProfileActivityList title="TODAY" v-if="activityToday.length">
-        <ProfileActivityListItem
-          v-for="activity in activityToday"
-          :key="activity.id"
-          :activity="activity"
-        />
-      </ProfileActivityList>
+      <BaseBlock v-if="queryLoading" slim>
+        <LoadingRow />
+      </BaseBlock>
+      <template v-else>
+        <ProfileActivityList title="TODAY" v-if="activityToday.length">
+          <ProfileActivityListItem
+            v-for="activity in activityToday"
+            :key="activity.id"
+            :activity="activity"
+          />
+        </ProfileActivityList>
 
-      <ProfileActivityList title="THIS WEEK" v-if="activityOneWeek.length">
-        <ProfileActivityListItem
-          v-for="activity in activityOneWeek"
-          :key="activity.id"
-          :activity="activity"
-        />
-      </ProfileActivityList>
+        <ProfileActivityList title="THIS WEEK" v-if="activityOneWeek.length">
+          <ProfileActivityListItem
+            v-for="activity in activityOneWeek"
+            :key="activity.id"
+            :activity="activity"
+          />
+        </ProfileActivityList>
 
-      <ProfileActivityList title="OLDER" v-if="activityOlder.length">
-        <ProfileActivityListItem
-          v-for="activity in activityOlder"
-          :key="activity.id"
-          :activity="activity"
-        />
-      </ProfileActivityList>
+        <ProfileActivityList title="OLDER" v-if="activityOlder.length">
+          <ProfileActivityListItem
+            v-for="activity in activityOlder"
+            :key="activity.id"
+            :activity="activity"
+          />
+        </ProfileActivityList>
+      </template>
     </div>
   </div>
 </template>
