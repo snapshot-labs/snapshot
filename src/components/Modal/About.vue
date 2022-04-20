@@ -2,16 +2,17 @@
 import pkg from '@/../package.json';
 import gateways from '@snapshot-labs/snapshot.js/src/gateways.json';
 import { useWeb3 } from '@/composables/useWeb3';
+import { useHub } from '@/composables/useHub';
 
 defineProps(['open']);
 
 defineEmits(['close', 'openLang']);
 
 const { web3 } = useWeb3();
+const { hubUrl, defaultHubUrl, isDefaultHubUrl } = useHub();
 
 const gateway = import.meta.env.VITE_IPFS_GATEWAY || gateways[0];
 const commitSha = import.meta.env.VITE_COMMIT_SHA;
-const hubUrl = import.meta.env.VITE_HUB_URL;
 </script>
 
 <template>
@@ -46,7 +47,10 @@ const hubUrl = import.meta.env.VITE_HUB_URL;
       </div>
       <div class="flex">
         <span v-text="$t('hub')" class="flex-auto text-skin-text mr-1" />
-        {{ hubUrl }}
+        <input type="url" v-model="hubUrl" class="text-right input mr-1" :readonly="isHubEditable" />
+        <a v-if="!isDefaultHubUrl" @click="hubUrl = defaultHubUrl" class="text-red">
+          <BaseIcon name="close" size="12" />
+        </a>
       </div>
     </div>
   </BaseModal>
