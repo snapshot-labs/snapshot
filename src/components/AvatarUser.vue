@@ -6,7 +6,7 @@ const props = defineProps<{
   address: string;
   space?: { members: string[]; network: string };
   proposal?: { network: string };
-  profile?: { name: string; ens: string };
+  profile?: { name: string; ens: string; about: string };
   onlyUsername?: boolean;
 }>();
 

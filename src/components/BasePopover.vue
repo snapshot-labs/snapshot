@@ -59,9 +59,10 @@ watch(open, () => {
   <div
     ref="contentref"
     v-show="open"
+    @click.prevent.self
     @mouseenter="contentHovered = true"
     @mouseleave="contentHovered = false"
-    class="z-50 min-w-[300px] bg-skin-header-bg border border-skin-border rounded-xl shadow-lg"
+    class="z-50 min-w-[300px] bg-skin-header-bg border border-skin-border rounded-xl shadow-lg cursor-default"
   >
     <slot name="content" />
   </div>

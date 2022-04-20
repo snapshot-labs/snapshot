@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { shorten, explorerUrl } from '@/helpers/utils';
+import { explorerUrl } from '@/helpers/utils';
 
 defineProps<{
   address: string;
   profile?: {
     name: string;
     ens: string;
+    about: string;
   };
   proposal?: {
     network: string;
@@ -27,12 +28,12 @@ defineProps<{
         <div class="flex justify-center">
           <BaseAvatar :address="address" size="80" />
         </div>
-        <h3 v-if="profile?.name" v-text="profile.name" />
-        <h3 v-else-if="profile?.ens" v-text="profile.ens" />
-        <h3 v-else v-text="shorten(address)" />
+        <h3 v-text="profile?.name || profile?.ens || 'unnamed'" />
+        <span v-text="profile?.about" />
       </div>
       <div class="m-4 space-y-2">
         <BaseLink
+          @click.stop
           :link="
             explorerUrl(proposal?.network || space?.network || '1', address)
           "
