@@ -6,7 +6,7 @@ defineProps<{
 
 <template>
   <div>
-    <h2>{{ $t('profile.about.header') }}</h2>
+    <h2 class="px-4 md:px-0">{{ $t('profile.about.header') }}</h2>
     <BaseBlock>
       <div class="space-y-4">
         <ProfileAboutBiography />

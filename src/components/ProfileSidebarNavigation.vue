@@ -10,6 +10,5 @@
         {{ $t('profile.activity.header') }}
       </BaseSidebarNavigationItem>
     </router-link>
-    <BaseButton @click="$emit('edit')"> Edit </BaseButton>
   </div>
 </template>

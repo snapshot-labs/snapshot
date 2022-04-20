@@ -2,7 +2,9 @@
 import { ref, computed, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { useProfiles } from '@/composables/useProfiles';
+import { useWeb3 } from '@/composables/useWeb3';
 
+const { web3Account } = useWeb3();
 const route = useRoute();
 
 const modalProfileFormOpen = ref(false);
@@ -25,7 +27,13 @@ onMounted(() => loadProfiles([userAddress.value]));
             :profile="profiles[userAddress]"
           />
           <ProfileSidebarHeaderSkeleton v-else />
-          <ProfileSidebarNavigation @edit="modalProfileFormOpen = true" />
+          <ProfileSidebarNavigation />
+          <BaseButton
+            v-if="userAddress === web3Account"
+            @click="modalProfileFormOpen = true"
+          >
+            Edit
+          </BaseButton>
         </BaseBlock>
       </div>
     </template>

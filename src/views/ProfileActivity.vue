@@ -55,7 +55,7 @@ onMounted(async () => {
 
 <template>
   <div>
-    <h2>{{ $t('profile.activity.header') }}</h2>
+    <h2 class="px-4 md:px-0">{{ $t('profile.activity.header') }}</h2>
 
     <div class="space-y-3 mt-3">
       <ProfileActivityList title="TODAY" v-if="activityToday.length">
