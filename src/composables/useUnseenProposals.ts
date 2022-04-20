@@ -1,6 +1,7 @@
 import { ref } from 'vue';
 import { subgraphRequest } from '@snapshot-labs/snapshot.js/src/utils';
 import { lsGet } from '@/helpers/utils';
+import { useHub } from '@/composables/useHub';
 
 type proposal = { id: string; created: number; space: { id: string } };
 
@@ -12,11 +13,13 @@ const lastSeenProposals = ref({});
  * other spaces had proposals.
  */
 export function useUnseenProposals() {
+  const { hubUrl } = useHub();
+  
   async function getProposals(followingSpaces) {
     if (followingSpaces[0]) {
       try {
         const activeProposals = await subgraphRequest(
-          `${import.meta.env.VITE_HUB_URL}/graphql`,
+          `${hubUrl.value}/graphql`,
           {
             proposals: {
               __args: {

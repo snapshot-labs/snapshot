@@ -1,5 +1,6 @@
 import { ref } from 'vue';
-import { useI18n } from './useI18n';
+import { useI18n } from '@/composables/useI18n';
+import { useHub } from '@/composables/useHub';
 
 export function useImageUpload({
   onSuccess
@@ -11,6 +12,7 @@ export function useImageUpload({
   const imageUrl = ref('');
   const imageName = ref('');
   const { t } = useI18n();
+  const { hubUrl } = useHub();
 
   const reset = () => {
     uploading.value = false;
@@ -35,7 +37,7 @@ export function useImageUpload({
     }
     formData.append('file', file);
     try {
-      const url = `${import.meta.env.VITE_HUB_URL}/api/upload`;
+      const url = `${hubUrl.value}/api/upload`;
       const init = {
         method: 'POST',
         body: formData

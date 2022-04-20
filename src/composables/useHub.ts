@@ -1,15 +1,9 @@
 import { computed } from 'vue';
-import { useStorage, watchDebounced } from '@vueuse/core';
-import { useApp } from '@/composables/useApp';
+import { useStorage } from '@vueuse/core';
 
-const { init } = useApp();
-
-const defaultHubUrl = import.meta.env.VITE_HUB_URL;
-const hubUrl = useStorage('snapshot.hubUrl', defaultHubUrl);
-const isDefaultHubUrl = computed(() => hubUrl.value === defaultHubUrl);
-
-// when hub url changes
-watchDebounced(hubUrl, init, { debounce: 1000 });
+const defaultHubUrl = computed(() => import.meta.env.VITE_HUB_URL);
+const hubUrl = useStorage('snapshot.hubUrl', defaultHubUrl.value);
+const isDefaultHubUrl = computed(() => hubUrl.value === defaultHubUrl.value);
 
 export function useHub() {
   return {

@@ -10,7 +10,10 @@
 
 import { ref } from 'vue';
 import { useI18n } from '@/composables/useI18n';
+import { useHub } from '@/composables/useHub';
+
 const { t } = useI18n();
+const { hubUrl } = useHub();
 
 const props = defineProps<{
   isAdmin: boolean;
@@ -27,7 +30,7 @@ const retry = async () => {
   if (props.proposalState === 'invalid') {
     retrying.value = true;
     await fetch(
-      `${import.meta.env.VITE_HUB_URL}/api/scores/${props.proposalId}`
+      `${hubUrl.value}/api/scores/${props.proposalId}`
     );
     retrying.value = false;
   }

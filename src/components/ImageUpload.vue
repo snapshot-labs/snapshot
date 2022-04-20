@@ -1,5 +1,8 @@
 <script setup>
 import { ref } from 'vue';
+import { useHub } from '@/composables/useHub';
+
+const { hubUrl } = useHub();
 
 const emit = defineEmits(['loading', 'input']);
 
@@ -17,7 +20,7 @@ async function handleFileChange(e) {
   }
   formData.append('file', file);
   try {
-    const url = `${import.meta.env.VITE_HUB_URL}/api/upload`;
+    const url = `${hubUrl.value}/api/upload`;
     const init = {
       method: 'POST',
       body: formData

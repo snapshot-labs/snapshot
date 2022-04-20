@@ -1,9 +1,11 @@
 import { ref } from 'vue';
+import { watchDebounced } from '@vueuse/core';
 import { useI18n } from '@/composables/useI18n';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useSkin } from '@/composables/useSkin';
 import { useSpaces } from '@/composables/useSpaces';
+import { useHub } from '@/composables/useHub';
 import domains from '@/../snapshot-spaces/spaces/domains.json';
 import aliases from '@/../snapshot-spaces/spaces/aliases.json';
 
@@ -29,6 +31,7 @@ const ready = ref(false);
 const showSidebar = ref(false);
 
 export function useApp() {
+  const { hubUrl } = useHub();
   const { loadLocale } = useI18n();
   const { getSkin } = useSkin();
   const { getSpaces } = useSpaces();
@@ -47,6 +50,9 @@ export function useApp() {
       });
     else login('gnosis');
   }
+
+  // when hub url changes
+  watchDebounced(hubUrl, init, { debounce: 1000 });
 
   return {
     domain,

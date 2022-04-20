@@ -4,16 +4,18 @@ import orderBy from 'lodash/orderBy';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import verified from '@/../snapshot-spaces/spaces/verified.json';
 import verifiedSpacesCategories from '@/../snapshot-spaces/spaces/categories.json';
+import { useHub } from '@/composables/useHub';
 
 const spaces: any = ref([]);
 const spacesLoaded = ref(false);
 
 export function useSpaces() {
   const route = useRoute();
+  const { hubUrl } = useHub();
 
   async function getSpaces() {
     const exploreObj: any = await fetch(
-      `${import.meta.env.VITE_HUB_URL}/api/explore`
+      `${hubUrl.value}/api/explore`
     ).then(res => res.json());
 
     exploreObj.spaces = Object.fromEntries(
