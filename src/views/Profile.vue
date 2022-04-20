@@ -39,9 +39,11 @@ onMounted(() => loadProfiles([userAddress.value]));
     </template>
     <template #content-right>
       <router-view
+        v-if="profiles[userAddress]"
         :userAddress="userAddress"
         :profile="profiles[userAddress]"
       />
+      <LoadingPage v-else />
     </template>
   </TheLayout>
   <teleport to="#modal">

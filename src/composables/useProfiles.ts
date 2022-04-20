@@ -59,7 +59,7 @@ export function useProfiles() {
     profiles.value = { ...profilesRes[0], ...profiles.value };
   };
 
-  // Function to reload a profile in profiles object
+  // Reload a profile in profiles object
   const reloadProfile = (address: string) => {
     // find profile in profiles object and delete it (to force reload)
     const profile = profiles.value[address];
@@ -69,7 +69,7 @@ export function useProfiles() {
     loadProfiles([address]);
   };
 
-  // Function to save a profile on the hub with alias
+  // Save a profile on the hub (signed by alias)
   const { setAlias, aliasWallet, isValidAlias, checkAlias } = useAliasAction();
   const saveProfile = async (
     profile: { name: string; about: string; avatar: string },
