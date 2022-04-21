@@ -1,12 +1,11 @@
 <script setup lang="ts">
-defineProps<{ about: string }>();
+defineProps<{ about?: string }>();
 </script>
 
 <template>
-  <div>
-    <h3>{{ $t('profile.about.biography') }}</h3>
-    <p>
+  <BaseBlock :title="$t('profile.about.biography')">
+    <template v-if="about" v-slot:namedDefault>
       <TextAutolinker :text="about" />
-    </p>
-  </div>
+    </template>
+  </BaseBlock>
 </template>
