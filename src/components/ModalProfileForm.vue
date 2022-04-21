@@ -6,11 +6,10 @@ import { getIpfsUrl } from '@/helpers/utils';
 const props = defineProps<{
   address: string;
   profile: { name?: string; about?: string; avatar?: string };
+  open: boolean;
 }>();
 
 const properties = schemas.profile.properties;
-
-const open = ref(false);
 
 const form = ref({
   name: '',
