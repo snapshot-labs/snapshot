@@ -32,9 +32,9 @@ onMounted(() => loadProfiles([userAddress.value]));
             <BaseButton
               v-if="userAddress === web3Account"
               @click="modalProfileFormOpen = true"
-              class="!text-xs"
+              class="!text-sm"
             >
-              {{ $t('profile.buttonEdit').toUpperCase() }}
+              {{ $t('profile.buttonEdit') }}
             </BaseButton>
           </div>
 
