@@ -81,11 +81,10 @@ const { endElement } = useScrollMonitor(() =>
 const { profiles, loadProfiles } = useProfiles();
 
 watch(
-  store.space.proposals,
+  () => store.space.proposals,
   () => {
     loadProfiles(store.space.proposals.map(proposal => proposal.author));
-  },
-  { immediate: true }
+  }
 );
 
 const loadingData = computed(() => {
