@@ -4,9 +4,9 @@ import { explorerUrl } from '@/helpers/utils';
 defineProps<{
   address: string;
   profile?: {
-    name: string;
     ens: string;
-    about: string;
+    name?: string;
+    about?: string;
   };
   proposal?: {
     network: string;
@@ -24,26 +24,47 @@ defineProps<{
       <slot />
     </template>
     <template v-slot:content>
-      <div class="m-4 mb-0 text-center">
-        <div class="flex justify-center">
-          <BaseAvatar :address="address" size="80" />
+      <div class="w-[400px] p-4">
+        <div class="flex">
+          <div>
+            <BaseAvatar :address="address" size="69" />
+          </div>
+          <div>
+            <ProfileName :profile="profile" />
+            <ProfileAddressCopy :profile="profile" :userAddress="address" />
+          </div>
         </div>
-        <h3 v-text="profile?.name || profile?.ens || 'unnamed'" />
-        <span v-text="profile?.about" />
-      </div>
-      <div class="m-4 space-y-2">
-        <BaseLink
-          @click.stop
-          :link="
-            explorerUrl(proposal?.network || space?.network || '1', address)
-          "
-          hide-external-icon
-        >
-          <BaseButton class="w-full">
-            {{ $t('seeInExplorer') }}
-            <BaseIcon name="external-link" class="ml-1" />
-          </BaseButton>
-        </BaseLink>
+        <p class="py-4">
+          {{ profile?.about }}
+        </p>
+
+        <div class="flex w-full">
+          <div class="w-1/2 pr-2">
+            <BaseLink
+              @click.stop
+              :link="
+                explorerUrl(proposal?.network || space?.network || '1', address)
+              "
+              hide-external-icon
+            >
+              <BaseButton class="w-full">
+                {{ $t('seeInExplorer') }}
+                <BaseIcon name="external-link" class="ml-1" />
+              </BaseButton>
+            </BaseLink>
+          </div>
+          <div class="w-1/2 pl-2">
+            <BaseButton
+              @click="
+                $router.push({ name: 'profileAbout', params: { address } })
+              "
+              primary
+              class="w-full"
+            >
+              {{ $t('profile.viewProfile') }}
+            </BaseButton>
+          </div>
+        </div>
       </div>
     </template>
   </BasePopover>

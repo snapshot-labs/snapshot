@@ -69,7 +69,7 @@
   "notificationsBlocked": "Your browser is blocking notifications",
   "notificationsNotSupported": "Your browser does not support notifications",
   "walletNotSupported": "Wallet is not supported",
-  "seeInExplorer": "See on explorer",
+  "seeInExplorer": "See explorer",
   "learnMore": "Learn more",
   "logout": "Log out",
   "continue": "Continue",
@@ -322,6 +322,7 @@
   },
   "profile": {
     "buttonEdit": "Edit profile",
+    "viewProfile": "View profile",
     "about": {
       "header": "About",
       "joinedSpaces": "Joined spaces",

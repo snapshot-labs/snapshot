@@ -43,7 +43,8 @@ export function useProfiles() {
         {
           '0xF78108c9BBaF466dd96BE41be728Fe3220b37119': {
             name: 'John Doe',
-            about: 'I am a person'
+            about:
+              'Lorem ipsum, dolor sit amet consectetur adipisicing elit. 😂 😂 😂'
           }
         }
       ]);
