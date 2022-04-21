@@ -54,7 +54,7 @@
     "@iconify-json/heroicons-outline": "^1.1.1",
     "@tailwindcss/line-clamp": "^0.3.1",
     "@types/node": "^17.0.25",
-    "@typescript-eslint/eslint-plugin": "^5.19.0",
+    "@typescript-eslint/eslint-plugin": "^5.20.0",
     "@typescript-eslint/parser": "^5.20.0",
     "@vitejs/plugin-vue": "^2.3.1",
     "@vitest/ui": "^0.9.3",
