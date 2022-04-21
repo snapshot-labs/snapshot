@@ -321,6 +321,7 @@
     "pleaseWaitMessage": "This can take a few minutes, please wait while the transaction is being confirmed"
   },
   "profile": {
+    "buttonEdit": "Edit profile",
     "about": {
       "header": "About",
       "joinedSpaces": "Joined spaces",

@@ -35,7 +35,7 @@ onMounted(() => {
       </div>
     </template>
 
-    <div class="p-4 space-y-3">
+    <div class="p-4 space-y-2">
       <div class="flex justify-center">
         <InputUploadAvatar @image-uploaded="url => (form.avatar = url)">
           <template v-slot:avatar="{ uploading, preview }">

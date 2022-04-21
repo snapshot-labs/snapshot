@@ -34,7 +34,7 @@ onMounted(() => loadProfiles([userAddress.value]));
               @click="modalProfileFormOpen = true"
               class="!text-xs"
             >
-              edit profile
+              {{ $t('profile.buttonEdit').toUpperCase() }}
             </BaseButton>
           </div>
 
