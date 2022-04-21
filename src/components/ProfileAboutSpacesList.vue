@@ -67,6 +67,7 @@ onMounted(() => loadSpaces());
     >
       <ProfileAboutSpacesListSkeleton
         v-if="loadingSpaces || !Object.keys(spaces).length"
+        :numberOfSpaces="numberOfSpacesByScreenSize"
       />
       <div v-else class="flex justify-between">
         <div class="flex w-full overflow-x-hidden">
