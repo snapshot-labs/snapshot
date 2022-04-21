@@ -13,6 +13,7 @@ const { spaces } = useSpaces();
 const { apolloQuery } = useApolloQuery();
 
 const loadingSpaces = ref(true);
+const modalSpacesOpen = ref(false);
 const followingSpaces = ref([]);
 
 async function loadSpaces() {
@@ -84,8 +85,16 @@ onMounted(() => loadSpaces());
         </div>
         <ProfileAboutSpacesListButtonMore
           v-if="numberOfSpacesByScreenSize < followingSpaces.length"
+          @click="modalSpacesOpen = true"
         />
       </div>
     </template>
   </BaseBlock>
+  <teleport to="#modal">
+    <ModalSpaces
+      :followingSpaces="followingSpaces.map((f: any) => f.space.id)"
+      :open="modalSpacesOpen"
+      @close="modalSpacesOpen = false"
+    />
+  </teleport>
 </template>
