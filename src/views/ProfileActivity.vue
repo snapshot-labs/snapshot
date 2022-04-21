@@ -87,7 +87,7 @@ onMounted(async () => {
       </BaseBlock>
       <template v-else>
         <ProfileActivityList
-          :title="$t('profile.activity.today').toUpperCase()"
+          :title="$t('profile.activity.today')"
           v-if="activityToday.length"
         >
           <ProfileActivityListItem
@@ -98,7 +98,7 @@ onMounted(async () => {
         </ProfileActivityList>
 
         <ProfileActivityList
-          :title="$t('profile.activity.thisWeek').toUpperCase()"
+          :title="$t('profile.activity.thisWeek')"
           v-if="activityOneWeek.length"
         >
           <ProfileActivityListItem
@@ -109,7 +109,7 @@ onMounted(async () => {
         </ProfileActivityList>
 
         <ProfileActivityList
-          :title="$t('profile.activity.older').toUpperCase()"
+          :title="$t('profile.activity.older')"
           v-if="activityOlder.length"
         >
           <ProfileActivityListItem
