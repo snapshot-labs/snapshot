@@ -331,7 +331,11 @@
       "votedFor": "Voted {choice}"
     },
     "settings": {
-      "header": "Profile settings"
+      "header": "Edit profile",
+      "name": "Name",
+      "biography": "Bio",
+      "namePlaceholder": "Enter name",
+      "bioPlaceholder": "Tell your story"
     }
   },
   "notify": {
