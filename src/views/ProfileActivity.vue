@@ -81,14 +81,15 @@ onMounted(async () => {
 
 <template>
   <div>
-    <h2 class="px-4 md:px-0">{{ $t('profile.activity.header') }}</h2>
-
-    <div class="space-y-3 mt-3">
+    <div class="space-y-3">
       <BaseBlock v-if="queryLoading" slim>
         <LoadingRow />
       </BaseBlock>
       <template v-else>
-        <ProfileActivityList title="TODAY" v-if="activityToday.length">
+        <ProfileActivityList
+          :title="$t('profile.activity.today').toUpperCase()"
+          v-if="activityToday.length"
+        >
           <ProfileActivityListItem
             v-for="activity in activityToday"
             :key="activity.id"
@@ -96,7 +97,10 @@ onMounted(async () => {
           />
         </ProfileActivityList>
 
-        <ProfileActivityList title="THIS WEEK" v-if="activityOneWeek.length">
+        <ProfileActivityList
+          :title="$t('profile.activity.thisWeek').toUpperCase()"
+          v-if="activityOneWeek.length"
+        >
           <ProfileActivityListItem
             v-for="activity in activityOneWeek"
             :key="activity.id"
@@ -104,7 +108,10 @@ onMounted(async () => {
           />
         </ProfileActivityList>
 
-        <ProfileActivityList title="OLDER" v-if="activityOlder.length">
+        <ProfileActivityList
+          :title="$t('profile.activity.older').toUpperCase()"
+          v-if="activityOlder.length"
+        >
           <ProfileActivityListItem
             v-for="activity in activityOlder"
             :key="activity.id"

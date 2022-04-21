@@ -34,6 +34,7 @@
   "inSpaces": "In {0} space(s)",
   "votes": "Votes",
   "seeMore": "See more",
+  "seeAll": "See all",
   "network": "Network",
   "networks": "Networks",
   "skins": "Skins",
@@ -330,7 +331,10 @@
     },
     "activity": {
       "header": "Activity",
-      "votedFor": "Voted {choice}"
+      "votedFor": "Voted {choice}",
+      "today": "Today",
+      "thisWeek": "This week",
+      "older": "Older"
     },
     "settings": {
       "header": "Edit profile",

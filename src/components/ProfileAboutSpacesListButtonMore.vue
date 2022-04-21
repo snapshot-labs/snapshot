@@ -7,6 +7,6 @@
         <i-ho-dots-horizontal class="text-sm" />
       </div>
     </div>
-    <div class="text-center text-xs">see all</div>
+    <div class="text-center text-xs">{{ $t('seeAll') }}</div>
   </div>
 </template>

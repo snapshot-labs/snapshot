@@ -32,7 +32,6 @@ onMounted(() => loadProfiles([userAddress.value]));
             <BaseButton
               v-if="userAddress === web3Account"
               @click="modalProfileFormOpen = true"
-              class="!text-sm"
             >
               {{ $t('profile.buttonEdit') }}
             </BaseButton>
