@@ -19,15 +19,22 @@ const { copyToClipboard } = useCopy();
       <div
         class="text-skin-link text-xl w-full truncate px-3"
         v-tippy="{
-          content: profile?.name || profile.ens || 'unnamed'
+          content: profile?.name || profile.ens.split('.')[0] || 'unnamed'
         }"
       >
-        {{ profile?.name || profile.ens || 'unnamed' }}
+        {{ profile?.name || profile.ens.split('.')[0] || 'unnamed' }}
       </div>
-      <div class="flex justify-center">
+      <div class="flex justify-center space-x-2 leading-5">
+        <div
+          v-if="profile.ens"
+          @click="copyToClipboard(profile.ens)"
+          class="flex items-center text-xs px-1 rounded-full cursor-pointer"
+        >
+          {{ profile.ens }}
+        </div>
         <div
           @click="copyToClipboard(userAddress)"
-          class="flex items-center text-xs text-skin-link bg-skin-border px-2 rounded-full cursor-pointer"
+          class="flex items-center text-xs px-1 rounded border cursor-pointer"
         >
           {{ shorten(userAddress) }}
           <i-ho-duplicate class="ml-1 text-xs" />

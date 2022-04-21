@@ -6,7 +6,7 @@
           <div class="w-[48px] h-[48px] bg-skin-border rounded-full" />
         </div>
       </div>
-      <div class="w-[66px] h-[14px] mt-[6px] bg-skin-border rounded-full" />
+      <div class="w-[66px] h-[14px] mt-[6px] bg-skin-border rounded" />
     </div>
   </div>
 </template>

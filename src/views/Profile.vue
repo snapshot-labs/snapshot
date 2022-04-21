@@ -27,13 +27,18 @@ onMounted(() => loadProfiles([userAddress.value]));
             :profile="profiles[userAddress]"
           />
           <ProfileSidebarHeaderSkeleton v-else />
-          <ProfileSidebarNavigation />
-          <BaseButton
-            v-if="userAddress === web3Account"
-            @click="modalProfileFormOpen = true"
-          >
-            Edit
-          </BaseButton>
+
+          <div class="flex justify-center mt-3 pt-1">
+            <BaseButton
+              v-if="userAddress === web3Account"
+              @click="modalProfileFormOpen = true"
+              class="!text-xs"
+            >
+              edit profile
+            </BaseButton>
+          </div>
+
+          <ProfileSidebarNavigation class="mt-3" />
         </BaseBlock>
       </div>
     </template>
