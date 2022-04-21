@@ -1828,24 +1828,24 @@
   resolved "https://registry.yarnpkg.com/@vue/test-utils/-/test-utils-2.0.0-rc.20.tgz#1fff871d6ad1b6154e02e3e9f2462ec258cb5459"
   integrity sha512-aSkOAzM/ZlIyYgN7yj661FTjhFZZy5i9+FUbbDNoMGYA4F1WKwDdcDCPj9B/qzt3wGFkuCP5PO6SBtdSTMEhIA==
 
-"@vueuse/core@^8.2.6":
-  version "8.2.6"
-  resolved "https://registry.yarnpkg.com/@vueuse/core/-/core-8.2.6.tgz#baf674acadd678b0429c60477213c6dab08ea9e0"
-  integrity sha512-fzlpM3B5oVe+UhCT1mXlhG1Zxdq2lq1Z2AvddSB8+RxrsSFzII7DKfsQEz8Vop7Lzc++4m8drTNbhPovYoFqHw==
+"@vueuse/core@^8.3.0":
+  version "8.3.0"
+  resolved "https://registry.yarnpkg.com/@vueuse/core/-/core-8.3.0.tgz#299afb7f3d316d112353f6b468a9d4a7686bd8ab"
+  integrity sha512-GDHM0vr/E3mw1fbh3yj4DJCJ/KvTXtOtT0OR2kCKuEUOo0Btk45MDGI6MdIqsHMjI0OXBJl8jH8WFv64KU2mOQ==
   dependencies:
-    "@vueuse/metadata" "8.2.6"
-    "@vueuse/shared" "8.2.6"
+    "@vueuse/metadata" "8.3.0"
+    "@vueuse/shared" "8.3.0"
     vue-demi "*"
 
-"@vueuse/metadata@8.2.6":
-  version "8.2.6"
-  resolved "https://registry.yarnpkg.com/@vueuse/metadata/-/metadata-8.2.6.tgz#0e649ff5c784ac73d35f44f9758fac33f62e3e3f"
-  integrity sha512-OBKtafCt+4RcEJlYDCjp1vl65pBCL2g4TmipEtdZ8/qphKlW6nakJbkY7XRN5grPmjqU99/ahJGtyGk5NHS2hw==
+"@vueuse/metadata@8.3.0":
+  version "8.3.0"
+  resolved "https://registry.yarnpkg.com/@vueuse/metadata/-/metadata-8.3.0.tgz#80c3eeead16489cfe851828e70700731c23a79e1"
+  integrity sha512-7R/LNPQWp1r/owa2e71l3dFlJ21p89YE3ks14ZclP2VOTvhC6AzDRcpk+ChISNetv8spsFbWZj/Z7sFjbFZfuw==
 
-"@vueuse/shared@8.2.6":
-  version "8.2.6"
-  resolved "https://registry.yarnpkg.com/@vueuse/shared/-/shared-8.2.6.tgz#7cbf2bdd576f86d888014272982a7c84b7015d21"
-  integrity sha512-J/W4CMfdL8TahELuSOgtfVO4eQXTjhigp7dVWIBsLUVFCeY9d49gvHUcQN3y5xYLZ6iNP57TjTQjMMT/zhklkw==
+"@vueuse/shared@8.3.0":
+  version "8.3.0"
+  resolved "https://registry.yarnpkg.com/@vueuse/shared/-/shared-8.3.0.tgz#5a65c9e584168c38ded720134e00bbd2ecd61ddc"
+  integrity sha512-xehtLfevPw9nsVIGFe/tWMtFvbvZjeAfXh7DT9Fptt/6/C5rLwpJtxsVguIBtPybjwobO4KCpQYS78aa9fg5Sw==
   dependencies:
     vue-demi "*"
 
