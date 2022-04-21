@@ -1841,10 +1841,10 @@
   resolved "https://registry.yarnpkg.com/@vue/shared/-/shared-3.2.33.tgz#69a8c99ceb37c1b031d5cc4aec2ff1dc77e1161e"
   integrity sha512-UBc1Pg1T3yZ97vsA2ueER0F6GbJebLHYlEi4ou1H5YL4KWvMOOWwpYo9/QpWq93wxKG6Wo13IY74Hcn/f7c7Bg==
 
-"@vue/test-utils@^2.0.0-rc.20":
-  version "2.0.0-rc.20"
-  resolved "https://registry.yarnpkg.com/@vue/test-utils/-/test-utils-2.0.0-rc.20.tgz#1fff871d6ad1b6154e02e3e9f2462ec258cb5459"
-  integrity sha512-aSkOAzM/ZlIyYgN7yj661FTjhFZZy5i9+FUbbDNoMGYA4F1WKwDdcDCPj9B/qzt3wGFkuCP5PO6SBtdSTMEhIA==
+"@vue/test-utils@^2.0.0-rc.21":
+  version "2.0.0-rc.21"
+  resolved "https://registry.yarnpkg.com/@vue/test-utils/-/test-utils-2.0.0-rc.21.tgz#9ebb0029bafa94ee55e90a6b4eab6d1e7b7a3152"
+  integrity sha512-wIJR4e/jISBKVKfiod3DV32BlDsoD744WVCuCaGtaSKvhvTL9gI5vl2AYSy00V51YaM8dCOFi3zcpCON8G1WqA==
 
 "@vueuse/core@^8.3.0":
   version "8.3.0"
