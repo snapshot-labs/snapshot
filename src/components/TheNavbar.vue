@@ -92,10 +92,8 @@ watchEffect(() => {
             :aria-label="$t('connectWallet')"
           >
             <span class="hidden sm:block" v-text="$t('connectWallet')" />
-            <BaseIcon
-              name="login"
-              size="20"
-              class="sm:hidden -ml-2 -mr-2 block align-text-bottom"
+            <i-ho-login
+              class="sm:hidden -ml-2 -mr-[11px] block align-text-bottom"
             />
           </BaseButton>
           <NavbarNotifications v-if="web3Account && !domain" />
