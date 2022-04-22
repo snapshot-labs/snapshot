@@ -71,7 +71,7 @@ onMounted(() => loadSpaces());
         :numberOfSpaces="numberOfSpacesByScreenSize"
       />
       <div v-else class="flex justify-between">
-        <div class="flex w-full overflow-x-hidden justify-between">
+        <div class="flex w-full overflow-x-hidden">
           <div
             class="text-center max-w-[66px] min-w-[66px] mx-2 first:ml-0"
             v-for="space in followingSpaces.map((f: any) => f.space.id).slice(0, numberOfSpacesByScreenSize)"
