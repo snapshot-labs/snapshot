@@ -31,9 +31,9 @@ const showChoice = computed(() => {
         <div class="relative">
           <AvatarSpace size="44" :space="activity.space" />
           <div
-            class="absolute text-xs -right-2 top-4 bg-primary rounded-full p-[2px]"
+            class="absolute text-[11px] -right-2 top-4 bg-primary rounded-full p-[4px] pr-[3px]"
           >
-            <i-ho-check />
+            <i-s-signature />
           </div>
         </div>
         <div class="w-[calc(100%-64px)] ml-5">
