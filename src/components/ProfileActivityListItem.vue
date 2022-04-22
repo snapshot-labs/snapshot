@@ -31,7 +31,7 @@ const showChoice = computed(() => {
         <div class="relative">
           <AvatarSpace size="44" :space="activity.space" />
           <div
-            class="absolute text-[11px] -right-2 top-4 bg-primary rounded-full p-[4px] pr-[3px]"
+            class="absolute text-[9px] -right-[10px] top-[24px] bg-primary rounded-full p-[6px] pr-[5px]"
           >
             <i-s-signature />
           </div>
