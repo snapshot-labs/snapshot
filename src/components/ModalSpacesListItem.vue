@@ -20,12 +20,12 @@ defineProps<{
         <div class="flex min-w-0">
           <AvatarSpace :space="space" size="44" />
           <div class="ml-3 truncate mr-3">
-            <div class="flex">
+            <div class="flex items-center">
               <div class="truncate">
                 {{ space.name }}
               </div>
               <IconVerifiedSpace
-                class="text-primary ml-1"
+                class="flex text-primary ml-1"
                 :spaceId="space.id"
                 size="18"
               />
