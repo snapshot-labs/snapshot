@@ -1,14 +1,16 @@
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed } from 'vue';
 import { useApolloQuery } from '@/composables/useApolloQuery';
 import { ACTIVITY_VOTES_QUERY } from '@/helpers/queries';
 import { ProfileActivity } from '@/helpers/interfaces';
+import { useInfiniteLoader } from '@/composables/useInfiniteLoader';
+import { useScrollMonitor } from '@/composables/useScrollMonitor';
 
 const props = defineProps<{
   userAddress: string;
 }>();
 
-const { apolloQuery, queryLoading } = useApolloQuery();
+const { apolloQuery } = useApolloQuery();
 
 const activities = ref<ProfileActivity[]>([]);
 
@@ -37,23 +39,28 @@ const activityOlder = computed(() => {
   );
 });
 
-async function loadVotes() {
+const { loadBy, loadingMore, stopLoadingMore, loadMore } =
+  useInfiniteLoader(10);
+const { endElement } = useScrollMonitor(() =>
+  loadMore(() => loadVotes(activities.value.length), loadingMore.value)
+);
+
+async function loadVotes(skip = 0) {
+  console.log(skip);
   const votes = await apolloQuery(
     {
       query: ACTIVITY_VOTES_QUERY,
       variables: {
-        first: 6,
+        first: loadBy,
+        skip,
         voter: props.userAddress
       }
     },
     'votes'
   );
 
-  return votes;
-}
+  stopLoadingMore.value = votes?.length < loadBy;
 
-function mergeInToActivities(responseArray: any[]) {
-  const votes = responseArray[0];
   votes.forEach(vote => {
     activities.value.push({
       id: vote.id,
@@ -71,54 +78,49 @@ function mergeInToActivities(responseArray: any[]) {
       }
     });
   });
-}
 
-onMounted(async () => {
-  const allResponses = await Promise.all([await loadVotes()]);
-  mergeInToActivities(allResponses);
-});
+  return votes;
+}
 </script>
 
 <template>
   <div>
     <div class="space-y-3">
-      <BaseBlock v-if="queryLoading" slim>
-        <LoadingRow />
-      </BaseBlock>
-      <template v-else>
-        <ProfileActivityList
-          :title="$t('profile.activity.today')"
-          v-if="activityToday.length"
-        >
-          <ProfileActivityListItem
-            v-for="activity in activityToday"
-            :key="activity.id"
-            :activity="activity"
-          />
-        </ProfileActivityList>
+      <ProfileActivityList
+        :title="$t('profile.activity.today')"
+        v-if="activityToday.length"
+      >
+        <ProfileActivityListItem
+          v-for="activity in activityToday"
+          :key="activity.id"
+          :activity="activity"
+        />
+      </ProfileActivityList>
 
-        <ProfileActivityList
-          :title="$t('profile.activity.thisWeek')"
-          v-if="activityOneWeek.length"
-        >
-          <ProfileActivityListItem
-            v-for="activity in activityOneWeek"
-            :key="activity.id"
-            :activity="activity"
-          />
-        </ProfileActivityList>
+      <ProfileActivityList
+        :title="$t('profile.activity.thisWeek')"
+        v-if="activityOneWeek.length"
+      >
+        <ProfileActivityListItem
+          v-for="activity in activityOneWeek"
+          :key="activity.id"
+          :activity="activity"
+        />
+      </ProfileActivityList>
 
-        <ProfileActivityList
-          :title="$t('profile.activity.older')"
-          v-if="activityOlder.length"
-        >
-          <ProfileActivityListItem
-            v-for="activity in activityOlder"
-            :key="activity.id"
-            :activity="activity"
-          />
-        </ProfileActivityList>
-      </template>
+      <ProfileActivityList
+        :title="$t('profile.activity.older')"
+        v-if="activityOlder.length"
+      >
+        <ProfileActivityListItem
+          v-for="activity in activityOlder"
+          :key="activity.id"
+          :activity="activity"
+        />
+      </ProfileActivityList>
+
+      <LoadingRow v-if="loadingMore" block />
     </div>
+    <div class="w-[10px] h-[10px]" ref="endElement" />
   </div>
 </template>
