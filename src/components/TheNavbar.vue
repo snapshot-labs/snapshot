@@ -61,27 +61,28 @@ watchEffect(() => {
         </div>
         <div :key="web3Account" class="flex space-x-2">
           <template v-if="auth.isAuthenticated.value">
-            <BaseButton
-              @click="modalAccountOpen = true"
-              :loading="web3.authLoading"
-              class="flex items-center"
+            <DropdownAccount
+              :address="web3Account"
+              @switchWallet="modalAccountOpen = true"
             >
-              <BaseAvatar
-                :address="web3Account"
-                size="18"
-                class="-mr-1 sm:mr-2 md:mr-2 lg:mr-2 xl:mr-2 -ml-1"
-              />
-              <span
-                v-if="profile?.name || profile?.ens"
-                v-text="profile.name || profile.ens"
-                class="hidden sm:block"
-              />
-              <span
-                v-else
-                v-text="shorten(web3Account)"
-                class="hidden sm:block"
-              />
-            </BaseButton>
+              <BaseButton :loading="web3.authLoading" class="flex items-center">
+                <BaseAvatar
+                  :address="web3Account"
+                  size="18"
+                  class="-mr-1 sm:mr-2 md:mr-2 lg:mr-2 xl:mr-2 -ml-1"
+                />
+                <span
+                  v-if="profile?.name || profile?.ens"
+                  v-text="profile.name || profile.ens"
+                  class="hidden sm:block"
+                />
+                <span
+                  v-else
+                  v-text="shorten(web3Account)"
+                  class="hidden sm:block"
+                />
+              </BaseButton>
+            </DropdownAccount>
           </template>
 
           <BaseButton
