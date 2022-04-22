@@ -46,7 +46,6 @@ const { endElement } = useScrollMonitor(() =>
 );
 
 async function loadVotes(skip = 0) {
-  console.log(skip);
   const votes = await apolloQuery(
     {
       query: ACTIVITY_VOTES_QUERY,
