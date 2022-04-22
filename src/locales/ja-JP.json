@@ -148,7 +148,8 @@
     "website": "URLはhttps://www.example.com の形式でなければなりません",
     "format": "無効な形式",
     "type": "無効なタイプ",
-    "unsupportedImageType": "このファイル形式はサポートされていません。サポートされているファイル形式はjpeg、jpg、そしてpngです。"
+    "unsupportedImageType": "このファイル形式はサポートされていません。サポートされているファイル形式はjpeg、jpg、そしてpngです。",
+    "invalidAddress": "Invalid address"
   },
   "create": {
     "proposalTitle": "タイトル",
