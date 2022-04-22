@@ -39,7 +39,7 @@ async function loadSpaces() {
 
 const isXSmallScreen = useMediaQuery('(max-width: 420px)');
 const isSmallScreen = useMediaQuery('(max-width: 544px)');
-const isLargeScreen = useMediaQuery('(max-width: 1012px)');
+const isMediumScreen = useMediaQuery('(max-width: 768px)');
 
 const numberOfSpacesByScreenSize = computed(() => {
   if (isXSmallScreen.value) {
@@ -48,7 +48,7 @@ const numberOfSpacesByScreenSize = computed(() => {
   if (isSmallScreen.value) {
     return 4;
   }
-  if (isLargeScreen.value) {
+  if (isMediumScreen.value) {
     return 5;
   }
   return 7;
@@ -71,7 +71,7 @@ onMounted(() => loadSpaces());
         :numberOfSpaces="numberOfSpacesByScreenSize"
       />
       <div v-else class="flex justify-between">
-        <div class="flex w-full overflow-x-hidden">
+        <div class="flex w-full overflow-x-hidden justify-between">
           <div
             class="text-center max-w-[66px] min-w-[66px] mx-2 first:ml-0"
             v-for="space in followingSpaces.map((f: any) => f.space.id).slice(0, numberOfSpacesByScreenSize)"
