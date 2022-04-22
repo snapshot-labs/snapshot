@@ -34,11 +34,11 @@ defineProps<{
             <ProfileAddressCopy :profile="profile" :userAddress="address" />
           </div>
         </div>
-        <p class="py-4">
-          {{ profile?.about }}
+        <p v-if="profile?.about" class="mt-4">
+          {{ profile.about }}
         </p>
 
-        <div class="flex w-full">
+        <div class="flex w-full mt-4">
           <div class="w-1/2 pr-2">
             <BaseLink
               @click.stop
