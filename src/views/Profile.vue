@@ -25,16 +25,14 @@ onMounted(() => loadProfiles([userAddress.value]));
     </template>
     <template #content-right>
       <router-view
-        v-if="profiles[userAddress]"
         :userAddress="userAddress"
         :profile="profiles[userAddress]"
       />
-      <LoadingPage class="md:px-0 px-4" v-else />
+      <!-- <LoadingPage class="md:px-0 px-4" v-else /> -->
     </template>
   </TheLayout>
   <teleport to="#modal">
     <ModalProfileForm
-      v-if="profiles[userAddress]"
       :open="modalProfileFormOpen"
       @close="modalProfileFormOpen = false"
       :address="userAddress"
