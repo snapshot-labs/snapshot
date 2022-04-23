@@ -37,9 +37,11 @@ function handleAction(e) {
       </template>
       <template v-slot:item="{ item }">
         <div class="flex items-center space-x-2">
-          <i-ho-user-circle v-if="item.icon === 'profile'" />
-          <i-ho-refresh v-if="item.icon === 'switch'" />
-          <i-ho-logout v-if="item.icon === 'logout'" />
+          <div class="w-[24px]">
+            <i-ho-user-circle v-if="item.icon === 'profile'" />
+            <i-ho-refresh v-if="item.icon === 'switch'" />
+            <i-ho-logout v-if="item.icon === 'logout'" class="ml-[2px]" />
+          </div>
           <div>
             {{ item.text }}
           </div>
