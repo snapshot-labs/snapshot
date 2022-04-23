@@ -18,7 +18,7 @@ defineProps<{
     <h4
       v-if="title"
       class="px-4 pt-3 block rounded-t-none md:rounded-t-lg border-b border-skin-border"
-      :class="{ 'border-b-0': !$slots.namedDefault }"
+      :class="{ 'border-b-0': !$slots.namedDefault && !$slots.default }"
       style="padding-bottom: 12px"
     >
       {{ title }}
