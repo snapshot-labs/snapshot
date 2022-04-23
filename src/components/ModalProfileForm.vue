@@ -5,7 +5,7 @@ import { getIpfsUrl } from '@/helpers/utils';
 
 const props = defineProps<{
   address: string;
-  profile: { name?: string; about?: string; avatar?: string };
+  profile?: { name?: string; about?: string; avatar?: string };
   open: boolean;
 }>();
 
