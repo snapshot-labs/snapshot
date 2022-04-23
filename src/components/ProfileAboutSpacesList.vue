@@ -36,10 +36,7 @@ const numberOfSpacesByScreenSize = computed(() => {
     :title="$t('profile.about.joinedSpaces')"
     :counter="followingSpaces.length"
   >
-    <template
-      v-if="loadingSpaces || followingSpaces.length"
-      v-slot:namedDefault
-    >
+    <div v-if="loadingSpaces || followingSpaces.length">
       <ProfileAboutSpacesListSkeleton
         v-if="loadingSpaces || !Object.keys(spaces).length"
         :numberOfSpaces="numberOfSpacesByScreenSize"
@@ -62,7 +59,7 @@ const numberOfSpacesByScreenSize = computed(() => {
           @click="modalSpacesOpen = true"
         />
       </div>
-    </template>
+    </div>
   </BaseBlock>
   <teleport to="#modal">
     <ModalSpaces
