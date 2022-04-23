@@ -8,7 +8,7 @@ defineProps<{
 <template>
   <div>
     <div class="space-y-4">
-      <ProfileAboutBiography :about="profile?.about" />
+      <ProfileAboutBiography v-if="profile?.about" :about="profile.about" />
       <ProfileAboutSpacesList :userAddress="userAddress" />
     </div>
   </div>
