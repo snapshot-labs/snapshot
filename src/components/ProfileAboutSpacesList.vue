@@ -1,41 +1,17 @@
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue';
+import { ref, computed } from 'vue';
 import { useSpaces } from '@/composables/useSpaces';
-import { FOLLOWS_QUERY } from '@/helpers/queries';
-import { useApolloQuery } from '@/composables/useApolloQuery';
 import { useMediaQuery } from '@vueuse/core';
 
-const props = defineProps<{
+defineProps<{
   userAddress: string;
+  followingSpaces: string[];
+  loadingSpaces: boolean;
 }>();
 
 const { spaces } = useSpaces();
-const { apolloQuery } = useApolloQuery();
 
-const loadingSpaces = ref(true);
 const modalSpacesOpen = ref(false);
-const followingSpaces = ref([]);
-
-async function loadSpaces() {
-  loadingSpaces.value = true;
-  try {
-    Promise.all([
-      (followingSpaces.value = await apolloQuery(
-        {
-          query: FOLLOWS_QUERY,
-          variables: {
-            follower_in: props.userAddress
-          }
-        },
-        'follows'
-      ))
-    ]);
-    loadingSpaces.value = false;
-  } catch (e) {
-    loadingSpaces.value = false;
-    console.error(e);
-  }
-}
 
 const isXSmallScreen = useMediaQuery('(max-width: 420px)');
 const isSmallScreen = useMediaQuery('(max-width: 544px)');
@@ -53,8 +29,6 @@ const numberOfSpacesByScreenSize = computed(() => {
   }
   return 7;
 });
-
-onMounted(() => loadSpaces());
 </script>
 
 <template>
