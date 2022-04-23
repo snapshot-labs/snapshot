@@ -28,7 +28,6 @@ onMounted(() => loadProfiles([userAddress.value]));
         :userAddress="userAddress"
         :profile="profiles[userAddress]"
       />
-      <!-- <LoadingPage class="md:px-0 px-4" v-else /> -->
     </template>
   </TheLayout>
   <teleport to="#modal">
