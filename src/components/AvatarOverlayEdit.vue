@@ -16,7 +16,7 @@ defineProps<{
         v-if="!loading"
         class="group-hover:block hidden transition-all ease-out"
       >
-        <i-ho-pencil class="text-md" />
+        {{ $t('edit') }}
       </div>
       <LoadingSpinner v-if="loading" />
     </div>
