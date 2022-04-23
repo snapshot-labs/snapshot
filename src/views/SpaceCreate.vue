@@ -240,9 +240,7 @@ onMounted(() =>
 watchEffect(async () => {
   loadingSnapshot.value = true;
   if (props.space?.network) {
-    blockNumber.value = await getBlockNumber(
-      getProvider(props.space.network, 'light')
-    );
+    blockNumber.value = await getBlockNumber(getProvider(props.space.network));
     form.value.snapshot = blockNumber.value;
     loadingSnapshot.value = false;
   }
@@ -356,7 +354,7 @@ const handleDrop = e => {
         </router-link>
       </div>
 
-      <!-- Shows when no wallet is connected and the space has any sort 
+      <!-- Shows when no wallet is connected and the space has any sort
       of validation set -->
       <BaseMessageBlock
         class="mb-4"
@@ -538,6 +536,9 @@ const handleDrop = e => {
             v-tippy="{
               content: !!space.voting?.type ? $t('create.typeEnforced') : null
             }"
+            :class="[
+              space.voting?.type ? 'cursor-not-allowed' : 'cursor-pointer'
+            ]"
             class="!mb-4"
           >
             <template v-slot:selected>
@@ -622,7 +623,9 @@ const handleDrop = e => {
                   ? $t('create.delayEnforced')
                   : null
               }"
-              :class="{ 'cursor-not-allowed': space.voting?.delay }"
+              :class="[
+                space.voting?.delay ? 'cursor-not-allowed' : 'cursor-pointer'
+              ]"
             >
               <template v-slot:selected>
                 <span
@@ -655,7 +658,9 @@ const handleDrop = e => {
                   : null
               }"
               class="mb-0 md:mb-2"
-              :class="{ 'cursor-not-allowed': space.voting?.period }"
+              :class="[
+                space.voting?.period ? 'cursor-not-allowed' : 'cursor-pointer'
+              ]"
             >
               <template v-slot:selected>
                 <span v-text="$d(dateEnd * 1e3, 'short', 'en-US')" />
