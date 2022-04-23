@@ -28,11 +28,11 @@ onMounted(() => loadProfiles([userAddress.value]));
           />
           <ProfileSidebarHeaderSkeleton v-else />
 
-          <div class="flex justify-center mt-3 pt-1">
-            <BaseButton
-              v-if="userAddress === web3Account"
-              @click="modalProfileFormOpen = true"
-            >
+          <div
+            v-if="userAddress === web3Account"
+            class="flex justify-center mt-3 pt-1"
+          >
+            <BaseButton @click="modalProfileFormOpen = true">
               {{ $t('profile.buttonEdit') }}
             </BaseButton>
           </div>
