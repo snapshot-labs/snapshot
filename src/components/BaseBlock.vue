@@ -8,6 +8,7 @@ defineProps<{
   iconTooltip?: string;
   iconHref?: string;
   loading?: boolean;
+  hideBottomBorder?: boolean;
 }>();
 </script>
 
@@ -18,6 +19,7 @@ defineProps<{
     <h4
       v-if="title"
       class="px-4 pt-3 block rounded-t-none md:rounded-t-lg border-b border-skin-border"
+      :class="{ 'border-b-0': hideBottomBorder }"
       style="padding-bottom: 12px"
     >
       {{ title }}

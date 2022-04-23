@@ -41,6 +41,7 @@ onMounted(async () => {
       slim
       title="delegator for"
       :counter="delegatorSpaces.length"
+      hideBottomBorder
     >
       <ProfileAboutDelegateListItem
         :spaces="spaces"

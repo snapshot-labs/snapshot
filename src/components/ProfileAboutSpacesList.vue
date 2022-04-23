@@ -35,8 +35,13 @@ const numberOfSpacesByScreenSize = computed(() => {
   <BaseBlock
     :title="$t('profile.about.joinedSpaces')"
     :counter="followingSpaces.length"
+    hideBottomBorder
+    slim
   >
-    <div v-if="loadingSpaces || followingSpaces.length">
+    <div
+      v-if="loadingSpaces || followingSpaces.length"
+      class="border-t py-4 px-4"
+    >
       <ProfileAboutSpacesListSkeleton
         v-if="loadingSpaces || !Object.keys(spaces).length"
         :numberOfSpaces="numberOfSpacesByScreenSize"
