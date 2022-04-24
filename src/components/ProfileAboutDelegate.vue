@@ -2,6 +2,7 @@
 import { onMounted, ref, computed } from 'vue';
 import { getDelegators } from '@/helpers/delegation';
 import { useSpaces } from '@/composables/useSpaces';
+import uniqBy from 'lodash/uniqBy';
 
 const props = defineProps<{
   userAddress: string;
@@ -13,7 +14,9 @@ const { spaces, spacesLoaded } = useSpaces();
 
 const delegators = ref<{ delegator: string; space: string }[] | null>(null);
 
-const delegatorSpaces = computed(() => {
+// Only show delegators of spaces that the users follows
+// This is to avoid prevent spam showing up in the user profile
+const filteredDelegatorSpaces = computed(() => {
   if (!delegators.value) return [];
 
   const followingSpaceIds = props.followingSpaces.map(s => s.space.id);
@@ -21,7 +24,7 @@ const delegatorSpaces = computed(() => {
     .map(d => d.space)
     .filter(d => d !== '');
 
-  return delegatorSpaceIds.filter(d => followingSpaceIds.includes(d));
+  return uniqBy(delegatorSpaceIds.filter(d => followingSpaceIds.includes(d)));
 });
 
 async function loadDelegators() {
@@ -32,6 +35,15 @@ async function loadDelegators() {
 onMounted(async () => {
   loadDelegators();
 });
+
+// Delegate modal
+const modalDelegateOpen = ref(false);
+const delegateSpaceId = ref('');
+
+function clickDelegate(id) {
+  delegateSpaceId.value = id;
+  modalDelegateOpen.value = true;
+}
 </script>
 
 <template>
@@ -40,13 +52,22 @@ onMounted(async () => {
       :loading="!spacesLoaded || loadingSpaces"
       slim
       title="delegator for"
-      :counter="delegatorSpaces.length"
+      :counter="filteredDelegatorSpaces.length"
       hideBottomBorder
     >
       <ProfileAboutDelegateListItem
         :spaces="spaces"
-        :delegatorSpaces="delegatorSpaces"
+        :delegatorSpaces="filteredDelegatorSpaces"
+        @delegate="clickDelegate"
       />
     </BaseBlock>
   </div>
+  <Teleport to="#modal">
+    <ModalDelegate
+      :open="modalDelegateOpen"
+      @close="modalDelegateOpen = false"
+      :userAddress="userAddress"
+      :spaceId="delegateSpaceId"
+    />
+  </Teleport>
 </template>

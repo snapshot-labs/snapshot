@@ -12,11 +12,15 @@ const props = withDefaults(
     placeholder?: string;
     title?: string;
     maxLength?: number;
+    instantError?: boolean;
+    readonly?: boolean;
   }>(),
   {
     type: 'text',
     focusOnMount: false,
-    hideInput: false
+    hideInput: false,
+    instantError: false,
+    readonly: false
   }
 );
 
@@ -35,6 +39,9 @@ watch(
 onMounted(() => {
   if (props.focusOnMount) {
     BaseInputEL?.value?.focus();
+  }
+  if (props.instantError) {
+    showError.value = true;
   }
 });
 </script>
@@ -57,6 +64,7 @@ onMounted(() => {
           :class="['s-input', { '!border-red': error && showError }]"
           :maxlength="maxLength ?? definition?.maxLength"
           :placeholder="placeholder ?? definition?.examples?.[0] ?? ''"
+          :readonly="readonly"
         />
       </div>
       <div
