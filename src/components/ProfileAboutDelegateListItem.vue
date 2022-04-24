@@ -25,7 +25,7 @@ defineProps<{
             <IconVerifiedSpace
               :spaceId="space"
               size="19"
-              class="text-primary ml-1"
+              class="text-primary ml-1 flex"
             />
           </div>
         </router-link>
