@@ -15,6 +15,7 @@ const router = useRouter();
 
 function handleAction(e) {
   if (e === 'viewProfile')
+    // Link to profile page, if on custom domain then the link is external
     return domain
       ? window.open(`https://snapshot.org/#/profile/${props.address}`, '_blank')
       : router.push({
