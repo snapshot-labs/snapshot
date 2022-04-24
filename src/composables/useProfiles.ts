@@ -2,8 +2,6 @@ import { getEnsAddress } from '@/helpers/profile';
 import { ref } from 'vue';
 import { useApolloQuery } from '@/composables/useApolloQuery';
 import { PROFILES_QUERY } from '@/helpers/queries';
-import client from '@/helpers/clientEIP712';
-import { useAliasAction } from '@/composables/useAliasAction';
 
 // Holds profile data (ENS name, username, about) for all addresses appearing in the frontend
 const profiles = ref<{
@@ -29,30 +27,21 @@ export function useProfiles() {
     if (addressesToAdd.length > 0) {
       profilesRes = await Promise.all([
         await getEnsAddress(addressesToAdd),
-        // Example object
-        // TODO: Remove this example and replay with profile query
-        // await apolloQuery(
-        //   {
-        //     query: PROFILES_QUERY,
-        //     variables: {
-        //       addresses: addresses
-        //     }
-        //   },
-        //   'profiles'
-        // )
-        {
-          '0xF78108c9BBaF466dd96BE41be728Fe3220b37119': {
-            name: 'John Doe',
-            about:
-              'Lorem ipsum, dolor sit amet consectetur adipisicing elit. 😂 😂 😂'
-          }
-        }
+        await apolloQuery(
+          {
+            query: PROFILES_QUERY,
+            variables: {
+              addresses
+            }
+          },
+          'users'
+        )
       ]);
       // add ens from profilesRes to corresponding address in profilesObj
       Object.keys(profilesRes[0]).forEach(address => {
         profilesRes[0][address] = {
           ...{ ens: profilesRes[0][address] },
-          ...profilesRes[1]?.[address]
+          ...profilesRes[1]?.find(p => p.id === address)
         };
       });
     }
@@ -70,23 +59,9 @@ export function useProfiles() {
     loadProfiles([address]);
   };
 
-  // Save a profile on the hub (signed by alias)
-  const { setAlias, aliasWallet, isValidAlias, checkAlias } = useAliasAction();
-  const saveProfile = async (
-    profile: { name: string; about: string; avatar: string },
-    web3Account: string
-  ) => {
-    await client.profile(aliasWallet.value, aliasWallet.value.address, {
-      from: web3Account,
-      timestamp: Number((Date.now() / 1e3).toFixed()),
-      profile: JSON.stringify(profile)
-    });
-  };
-
   return {
     profiles,
     loadProfiles,
-    reloadProfile,
-    saveProfile
+    reloadProfile
   };
 }

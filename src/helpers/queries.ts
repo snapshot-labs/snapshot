@@ -351,9 +351,9 @@ export const ACTIVITY_VOTES_QUERY = gql`
 `;
 
 export const PROFILES_QUERY = gql`
-  query Profiles($addresses: [String]!, $first: Int, $skip: Int) {
-    profiles(first: $first, skip: $skip, where: { address_in: $addresses }) {
-      address
+  query Users($addresses: [String]!, $first: Int, $skip: Int) {
+    users(first: $first, skip: $skip, where: { id_in: $addresses }) {
+      id
       name
       about
       avatar

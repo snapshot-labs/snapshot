@@ -1,13 +1,27 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { watch, ref, defineEmits } from 'vue';
 import schemas from '@snapshot-labs/snapshot.js/src/schemas';
 import { getIpfsUrl } from '@/helpers/utils';
+import { useAliasAction } from '@/composables/useAliasAction';
+import client from '@/helpers/clientEIP712';
+import { useWeb3 } from '@/composables/useWeb3';
+import { useFlashNotification } from '@/composables/useFlashNotification';
+import { useI18n } from '@/composables/useI18n';
+import { useProfiles } from '@/composables/useProfiles';
 
 const props = defineProps<{
   address: string;
   profile?: { name?: string; about?: string; avatar?: string };
   open: boolean;
 }>();
+
+const emit = defineEmits(['close']);
+
+const { aliasWallet, actionWithAlias, actionLoading } = useAliasAction();
+const { web3Account } = useWeb3();
+const { notify } = useFlashNotification();
+const { t } = useI18n();
+const { reloadProfile } = useProfiles();
 
 const properties = schemas.profile.properties;
 
@@ -17,13 +31,28 @@ const form = ref({
   about: ''
 });
 
-onMounted(() => {
-  form.value = {
-    name: props.profile?.name ?? '',
-    avatar: props.profile?.avatar ?? '',
-    about: props.profile?.about ?? ''
-  };
-});
+async function save() {
+  await client.profile(aliasWallet.value, aliasWallet.value.address, {
+    from: web3Account.value,
+    timestamp: Number((Date.now() / 1e3).toFixed()),
+    profile: JSON.stringify(form.value)
+  });
+  reloadProfile(props.address);
+  emit('close');
+  return notify(['green', t('notify.saved')]);
+}
+
+watch(
+  () => props.open,
+  () => {
+    form.value = {
+      name: props.profile?.name ?? '',
+      avatar: props.profile?.avatar ?? '',
+      about: props.profile?.about ?? ''
+    };
+  },
+  { immediate: true }
+);
 </script>
 
 <template>
@@ -74,7 +103,12 @@ onMounted(() => {
           :placeholder="$t('profile.settings.bioPlaceholder')"
         />
       </div>
-      <BaseButton @click="null" class="w-full !mt-5" primary>
+      <BaseButton
+        @click="actionWithAlias(save)"
+        :loading="actionLoading"
+        class="w-full !mt-5"
+        primary
+      >
         {{ $t('save') }}
       </BaseButton>
     </div>
