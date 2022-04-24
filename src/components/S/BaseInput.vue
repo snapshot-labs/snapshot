@@ -12,7 +12,6 @@ const props = withDefaults(
     placeholder?: string;
     title?: string;
     maxLength?: number;
-    instantError?: boolean;
     readonly?: boolean;
   }>(),
   {
@@ -39,9 +38,6 @@ watch(
 onMounted(() => {
   if (props.focusOnMount) {
     BaseInputEL?.value?.focus();
-  }
-  if (props.instantError) {
-    showError.value = true;
   }
 });
 </script>
