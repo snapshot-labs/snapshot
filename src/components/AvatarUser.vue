@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { watchEffect } from 'vue';
 import { useUsername } from '@/composables/useUsername';
+import { useApp } from '@/composables/useApp';
 
 const props = defineProps<{
   address: string;
@@ -10,6 +11,7 @@ const props = defineProps<{
   onlyUsername?: boolean;
 }>();
 
+const { domain } = useApp();
 const { username, setProfile, setAddress } = useUsername();
 
 watchEffect(() => {
@@ -26,8 +28,16 @@ watchEffect(() => {
       :proposal="proposal"
       :space="space"
     >
-      <router-link :to="{ name: 'profileAbout', params: { address } }">
-        <a class="flex flex-nowrap">
+      <BaseLink
+        :link="
+          domain
+            ? `https://snapshot.org/#/profile/${address}`
+            : { name: 'profileAbout', params: { address } }
+        "
+        hide-external-icon
+        @click.stop
+      >
+        <div class="flex flex-nowrap">
           <BaseAvatar
             v-if="!onlyUsername"
             :address="address"
@@ -40,8 +50,8 @@ watchEffect(() => {
             :address="address"
             :members="space?.members"
           />
-        </a>
-      </router-link>
+        </div>
+      </BaseLink>
     </PopoverProfile>
   </div>
 </template>

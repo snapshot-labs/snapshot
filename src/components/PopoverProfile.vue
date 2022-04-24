@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { explorerUrl } from '@/helpers/utils';
+import { useApp } from '@/composables/useApp';
 
 defineProps<{
   address: string;
@@ -16,6 +17,8 @@ defineProps<{
     network: string;
   };
 }>();
+
+const { domain } = useApp();
 </script>
 
 <template>
@@ -54,15 +57,19 @@ defineProps<{
             </BaseLink>
           </div>
           <div class="w-1/2 pl-2">
-            <BaseButton
-              @click="
-                $router.push({ name: 'profileAbout', params: { address } })
+            <BaseLink
+              :link="
+                domain
+                  ? `https://snapshot.org/#/profile/${address}`
+                  : { name: 'profileAbout', params: { address } }
               "
-              primary
-              class="w-full"
+              hide-external-icon
+              @click.stop
             >
-              {{ $t('profile.viewProfile') }}
-            </BaseButton>
+              <BaseButton primary class="w-full">
+                {{ $t('profile.viewProfile') }}
+              </BaseButton>
+            </BaseLink>
           </div>
         </div>
       </div>

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useWeb3 } from '@/composables/useWeb3';
 import { useRouter } from 'vue-router';
+import { useApp } from '@/composables/useApp';
 
 const props = defineProps<{
   address: string;
@@ -8,15 +9,18 @@ const props = defineProps<{
 
 const emit = defineEmits(['switchWallet']);
 
+const { domain } = useApp();
 const { logout } = useWeb3();
 const router = useRouter();
 
 function handleAction(e) {
   if (e === 'viewProfile')
-    return router.push({
-      name: 'profileAbout',
-      params: { address: props.address }
-    });
+    return domain
+      ? window.open(`https://snapshot.org/#/profile/${props.address}`, '_blank')
+      : router.push({
+          name: 'profileAbout',
+          params: { address: props.address }
+        });
   if (e === 'switchWallet') return emit('switchWallet');
   return logout();
 }

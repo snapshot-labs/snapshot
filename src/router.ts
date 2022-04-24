@@ -75,12 +75,6 @@ if (domain) {
     { path: '/delegate/:key?/:to?', name: 'delegate', component: Delegate },
     { path: '/playground/:name', name: 'playground', component: Playground },
     {
-      path: '/profile/:address',
-      name: 'profile',
-      component: Profile,
-      children: profileRoutes
-    },
-    {
       path: `/${domain}`,
       alias: `/${domainAlias ?? domain}`,
       name: 'home-redirect',
