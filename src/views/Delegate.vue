@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, watch, onMounted, watchEffect, inject } from 'vue';
+import { ref, computed, watch, onMounted, inject } from 'vue';
 import { useRoute } from 'vue-router';
 import { useI18n } from '@/composables/useI18n';
 import { useProfiles } from '@/composables/useProfiles';
@@ -231,14 +231,18 @@ async function handleSubmit() {
   loading.value = false;
 }
 
-watchEffect(() => {
-  loadProfiles(
-    delegates.value
-      .map(delegate => delegate.delegate)
-      .concat(delegators.value.map(delegator => delegator.delegator))
-      .concat(delegatesWithScore.value.map(delegate => delegate.delegate))
-  );
-});
+watch(
+  delegates,
+  () => {
+    loadProfiles(
+      delegates.value
+        .map(delegate => delegate.delegate)
+        .concat(delegators.value.map(delegator => delegator.delegator))
+        .concat(delegatesWithScore.value.map(delegate => delegate.delegate))
+    );
+  },
+  { immediate: true }
+);
 
 const { apolloQuery, queryLoading: spaceLoading } = useApolloQuery();
 
