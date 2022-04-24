@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, watch, onMounted, watchEffect, inject } from 'vue';
+import { ref, computed, watch, onMounted, inject } from 'vue';
 import { useRoute } from 'vue-router';
 import { useI18n } from '@/composables/useI18n';
 import { useProfiles } from '@/composables/useProfiles';
