@@ -3,6 +3,7 @@ import { onMounted, ref, computed } from 'vue';
 import { getDelegators } from '@/helpers/delegation';
 import { useSpaces } from '@/composables/useSpaces';
 import uniqBy from 'lodash/uniqBy';
+import { useWeb3 } from '@/composables/useWeb3';
 
 const props = defineProps<{
   userAddress: string;
@@ -11,6 +12,7 @@ const props = defineProps<{
 }>();
 
 const { spaces, spacesLoaded } = useSpaces();
+const { web3Account } = useWeb3();
 
 const delegators = ref<{ delegator: string; space: string }[] | null>(null);
 
@@ -29,7 +31,7 @@ const filteredDelegatorSpaces = computed(() => {
 
 async function loadDelegators() {
   const res = await getDelegators('4', props.userAddress);
-  delegators.value = res.delegations;
+  delegators.value = res.delegations ?? [];
 }
 
 onMounted(async () => {
@@ -49,7 +51,7 @@ function clickDelegate(id) {
 <template>
   <div>
     <BaseBlock
-      :loading="!spacesLoaded || loadingSpaces"
+      :loading="!spacesLoaded || loadingSpaces || !delegators"
       slim
       title="delegator for"
       :counter="filteredDelegatorSpaces.length"
@@ -58,6 +60,8 @@ function clickDelegate(id) {
       <ProfileAboutDelegateListItem
         :spaces="spaces"
         :delegatorSpaces="filteredDelegatorSpaces"
+        :userAddress="userAddress"
+        :web3Account="web3Account"
         @delegate="clickDelegate"
       />
     </BaseBlock>

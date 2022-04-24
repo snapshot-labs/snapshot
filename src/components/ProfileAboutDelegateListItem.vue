@@ -2,6 +2,8 @@
 defineProps<{
   spaces: Record<string, any>;
   delegatorSpaces: string[];
+  userAddress: string;
+  web3Account: string;
 }>();
 </script>
 
@@ -29,7 +31,11 @@ defineProps<{
             />
           </div>
         </router-link>
-        <BaseButton @click="$emit('delegate', space)" class="!h-[44px]">
+        <BaseButton
+          v-if="userAddress !== web3Account"
+          @click="$emit('delegate', space)"
+          class="!h-[44px]"
+        >
           delegate me
         </BaseButton>
       </div>
