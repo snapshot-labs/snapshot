@@ -58,7 +58,7 @@ watch(
         imgUrl ||
         `https://stamp.fyi/avatar/eth:${address}?s=${parseInt(size) * 2}`
       "
-      class="rounded-full"
+      class="rounded-full object-cover"
       :class="'bg-[color:var(--border-color)]'"
       :style="{
         width: `${parseInt(size)}px`,
