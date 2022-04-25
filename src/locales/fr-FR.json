@@ -86,7 +86,7 @@
   "addMarket": "Ajouter un marché",
   "selectNetwork": "Sélectionnez un réseau",
   "conditionId": "ID de condition",
-  "basetokenAddress": "Adresse du jeton de base",
+  "basetokenAddress": "Adresse du token de base",
   "quoteAddress": "Adresse de la monnaie de cotation",
   "removeMarket": "Supprimer le marché",
   "back": "Retour",
