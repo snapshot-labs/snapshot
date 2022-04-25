@@ -51,7 +51,7 @@ watch(
 </script>
 
 <template>
-  <span class="flex shrink-0 items-center justify-center relative">
+  <span class="flex shrink-0 items-center justify-center">
     <img
       ref="avatarImage"
       :src="
@@ -67,6 +67,5 @@ watch(
       }"
       :alt="space?.name"
     />
-    <slot name="overlay" />
   </span>
 </template>

@@ -67,21 +67,20 @@ watch(
       <div class="flex justify-center">
         <InputUploadAvatar @image-uploaded="url => (form.avatar = url)">
           <template v-slot:avatar="{ uploading, preview }">
-            <BaseAvatar
-              :address="address"
-              :imgsrc="getIpfsUrl(form.avatar)"
-              :preview="preview"
-              size="80"
-            >
-              <template v-slot:overlay>
-                <AvatarOverlayEdit :loading="uploading" />
-                <div
-                  class="bg-skin-heading absolute rounded-full p-1 right-0 bottom-[2px]"
-                >
-                  <i-ho-pencil class="text-skin-bg text-[12px]" />
-                </div>
-              </template>
-            </BaseAvatar>
+            <div class="relative">
+              <BaseAvatar
+                :address="address"
+                :imgsrc="getIpfsUrl(form.avatar)"
+                :preview="preview"
+                size="80"
+              />
+              <AvatarOverlayEdit :loading="uploading" />
+              <div
+                class="bg-skin-heading absolute rounded-full p-1 right-0 bottom-[2px]"
+              >
+                <i-ho-pencil class="text-skin-bg text-[12px]" />
+              </div>
+            </div>
           </template>
         </InputUploadAvatar>
       </div>
