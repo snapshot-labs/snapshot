@@ -327,7 +327,8 @@
     "about": {
       "header": "About",
       "joinedSpaces": "Joined spaces",
-      "biography": "Bio"
+      "biography": "Bio",
+      "notJoinSpacesYet": "Hasn't joined any spaces yet"
     },
     "activity": {
       "header": "Activity",

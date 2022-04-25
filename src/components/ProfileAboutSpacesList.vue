@@ -65,6 +65,9 @@ const numberOfSpacesByScreenSize = computed(() => {
         />
       </div>
     </div>
+    <div v-else class="p-4 border-t">
+      {{ $t('profile.about.notJoinSpacesYet') }}
+    </div>
   </BaseBlock>
   <teleport to="#modal">
     <ModalSpaces
