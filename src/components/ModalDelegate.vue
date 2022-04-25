@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { defineEmits, ref, watch } from 'vue';
+import { defineEmits } from 'vue';
+import { useDelegate } from '@/composables/useDelegate';
 
 const props = defineProps<{
   open: boolean;
@@ -7,23 +8,14 @@ const props = defineProps<{
   spaceId: string;
 }>();
 
-defineEmits(['close']);
+const emit = defineEmits(['close']);
 
-const form = ref({
-  id: '',
-  address: ''
-});
+const { delegateTo, delegationLoading } = useDelegate();
 
-watch(
-  () => props.open,
-  () => {
-    form.value = {
-      id: props.spaceId,
-      address: props.userAddress
-    };
-  },
-  { immediate: true }
-);
+function handleDelegate() {
+  delegateTo(props.userAddress, props.spaceId);
+  emit('close');
+}
 </script>
 
 <template>
@@ -35,7 +27,7 @@ watch(
     </template>
     <div class="p-4 space-y-3">
       <SBaseInput
-        v-model.trim="form.address"
+        :modelValue="userAddress"
         :title="$t('delegator address')"
         :placeholder="$t('delegate.addressPlaceholder')"
         readonly
@@ -43,13 +35,23 @@ watch(
         <template v-slot:label>{{ $t('delegate.to') }}</template>
       </SBaseInput>
       <SBaseInput
-        v-model.trim="form.id"
+        :modelValue="spaceId"
         :title="$t('space id')"
         placeholder="e.g. balancer.eth"
         readonly
       >
         <template v-slot:label>{{ $t('space') }}</template>
       </SBaseInput>
+    </div>
+    <div class="p-4">
+      <BaseButton
+        primary
+        @click="handleDelegate"
+        :loading="delegationLoading"
+        class="w-full"
+      >
+        {{ $t('delegate') }}
+      </BaseButton>
     </div>
   </BaseModal>
 </template>

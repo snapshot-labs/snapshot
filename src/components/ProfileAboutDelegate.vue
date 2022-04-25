@@ -1,17 +1,19 @@
 <script setup lang="ts">
-import { onMounted, ref, computed } from 'vue';
+import { watch, ref, computed } from 'vue';
 import { getDelegators } from '@/helpers/delegation';
 import { useSpaces } from '@/composables/useSpaces';
 import uniqBy from 'lodash/uniqBy';
 import { useWeb3 } from '@/composables/useWeb3';
+import { useDelegate } from '@/composables/useDelegate';
 
 const props = defineProps<{
   userAddress: string;
   followingSpaces: { space: { id: string } }[];
 }>();
 
-const { spaces } = useSpaces();
+const { spaces, spacesLoaded } = useSpaces();
 const { web3Account } = useWeb3();
+const { networkKey } = useDelegate();
 
 const delegators = ref<{ delegator: string; space: string }[] | null>(null);
 
@@ -29,13 +31,17 @@ const filteredDelegatorSpaces = computed(() => {
 });
 
 async function loadDelegators() {
-  const res = await getDelegators('4', props.userAddress);
+  const res = await getDelegators(networkKey.value, props.userAddress);
   delegators.value = res.delegations ?? [];
 }
 
-onMounted(async () => {
-  loadDelegators();
-});
+watch(
+  [networkKey, web3Account],
+  async () => {
+    loadDelegators();
+  },
+  { immediate: true }
+);
 
 // Delegate modal
 const modalDelegateOpen = ref(false);
@@ -50,7 +56,7 @@ function clickDelegate(id) {
 <template>
   <div>
     <BaseBlock
-      v-if="filteredDelegatorSpaces.length"
+      v-if="filteredDelegatorSpaces.length && spacesLoaded"
       title="delegator for"
       :counter="filteredDelegatorSpaces.length"
       hide-bottom-border

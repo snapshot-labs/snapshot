@@ -22,10 +22,10 @@ import { useDelegate } from '@/composables/useDelegate';
 
 const route = useRoute();
 const { t, setPageTitle } = useI18n();
-const { web3, web3Account } = useWeb3();
+const { web3Account } = useWeb3();
 const { formatCompactNumber } = useIntl();
 const { modalAccountOpen } = useModal();
-const { delegateTo, delegationLoading, networkSupportsDelegate } =
+const { delegateTo, delegationLoading, networkSupportsDelegate, networkKey } =
   useDelegate();
 
 const modalOpen = ref(false);
@@ -44,8 +44,6 @@ const form = ref({
 });
 
 const { profiles, loadProfiles } = useProfiles();
-
-const networkKey = computed(() => web3.value.network.key);
 
 const { loadOwnedEnsDomains, ownedEnsDomains, validEnsTlds, isValidEnsDomain } =
   useEns();

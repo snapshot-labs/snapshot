@@ -102,10 +102,12 @@ watch(
           :placeholder="$t('profile.settings.bioPlaceholder')"
         />
       </div>
+    </div>
+    <div class="p-4">
       <BaseButton
         @click="actionWithAlias(save)"
         :loading="actionLoading"
-        class="w-full !mt-5"
+        class="w-full"
         primary
       >
         {{ $t('save') }}

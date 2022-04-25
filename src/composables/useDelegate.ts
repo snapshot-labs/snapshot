@@ -62,6 +62,7 @@ export function useDelegate() {
   return {
     delegateTo,
     delegationLoading: computed(() => loading.value),
-    networkSupportsDelegate
+    networkSupportsDelegate,
+    networkKey
   };
 }
