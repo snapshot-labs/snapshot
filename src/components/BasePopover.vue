@@ -56,6 +56,8 @@ watch(open, () => {
   >
     <slot name="item" />
   </div>
+  <!-- @click.prevent.self is needed to prevent clicks inside the popover bubbling
+   up to the parent -->
   <div
     ref="contentref"
     v-show="open"
