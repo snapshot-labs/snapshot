@@ -48,7 +48,6 @@ onMounted(() => loadSpaces());
       <ProfileAboutDelegate
         :userAddress="userAddress"
         :followingSpaces="followingSpaces"
-        :loadingSpaces="loadingSpaces"
       />
     </div>
   </div>

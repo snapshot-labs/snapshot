@@ -8,10 +8,9 @@ import { useWeb3 } from '@/composables/useWeb3';
 const props = defineProps<{
   userAddress: string;
   followingSpaces: { space: { id: string } }[];
-  loadingSpaces: boolean;
 }>();
 
-const { spaces, spacesLoaded } = useSpaces();
+const { spaces } = useSpaces();
 const { web3Account } = useWeb3();
 
 const delegators = ref<{ delegator: string; space: string }[] | null>(null);
@@ -51,11 +50,11 @@ function clickDelegate(id) {
 <template>
   <div>
     <BaseBlock
-      :loading="!spacesLoaded || loadingSpaces || !delegators"
-      slim
+      v-if="filteredDelegatorSpaces.length"
       title="delegator for"
       :counter="filteredDelegatorSpaces.length"
-      hideBottomBorder
+      hide-bottom-border
+      slim
     >
       <ProfileAboutDelegateListItem
         :spaces="spaces"
