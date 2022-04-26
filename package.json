@@ -30,7 +30,7 @@
     "@popperjs/core": "^2.11.5",
     "@pusher/push-notifications-web": "^1.1.0",
     "@snapshot-labs/lock": "^0.1.7",
-    "@snapshot-labs/snapshot.js": "^0.3.75",
+    "@snapshot-labs/snapshot.js": "^0.3.76",
     "@vue/apollo-composable": "4.0.0-alpha.16",
     "@vueuse/core": "^8.3.1",
     "autolinker": "^3.15.0",
@@ -53,8 +53,8 @@
   "devDependencies": {
     "@iconify-json/heroicons-outline": "^1.1.1",
     "@tailwindcss/line-clamp": "^0.3.1",
-    "@typescript-eslint/eslint-plugin": "^5.21.0",
     "@types/node": "^17.0.27",
+    "@typescript-eslint/eslint-plugin": "^5.21.0",
     "@typescript-eslint/parser": "^5.20.0",
     "@vitejs/plugin-vue": "^2.3.1",
     "@vitest/ui": "^0.10.0",
