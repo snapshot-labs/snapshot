@@ -52,7 +52,7 @@ function handleSelect(e) {
         <slot
           name="avatar"
           :uploading="uploading"
-          :preview="{ previewFile, uploadSuccess }"
+          :previewFile="uploadSuccess ? previewFile : undefined"
         />
       </template>
     </BaseDropdown>
