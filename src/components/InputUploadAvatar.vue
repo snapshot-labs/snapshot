@@ -2,7 +2,11 @@
 import { ref } from 'vue';
 import { useImageUpload } from '@/composables/useImageUpload';
 
-const emit = defineEmits(['image-uploaded']);
+defineProps<{
+  avatar: string;
+}>();
+
+const emit = defineEmits(['image-uploaded', 'image-remove']);
 
 const fileInput = ref<HTMLInputElement | null>(null);
 
@@ -25,17 +29,33 @@ function onFileChange(e) {
   previewFile.value = (e.target as HTMLInputElement).files?.[0];
   upload(previewFile.value);
 }
+
+function handleSelect(e) {
+  if (e === 'change') return openFilePicker();
+  if (e === 'remove') {
+    emit('image-remove', '');
+    return (previewFile.value = undefined);
+  }
+}
 </script>
 
 <template>
-  <div class="flex">
-    <div @click="openFilePicker()">
-      <slot
-        name="avatar"
-        :uploading="uploading"
-        :preview="[uploadSuccess, previewFile]"
-      />
-    </div>
+  <div @click="avatar ? null : openFilePicker()">
+    <BaseDropdown
+      :items="[
+        { text: 'change', action: 'change' },
+        { text: 'remove', action: 'remove' }
+      ]"
+      @select="handleSelect"
+    >
+      <template v-slot:button>
+        <slot
+          name="avatar"
+          :uploading="uploading"
+          :preview="[uploadSuccess, previewFile]"
+        />
+      </template>
+    </BaseDropdown>
   </div>
   <input
     ref="fileInput"

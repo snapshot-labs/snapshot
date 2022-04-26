@@ -1,6 +1,7 @@
 <script setup lang="ts">
 defineProps<{
   loading: boolean;
+  avatar: string;
 }>();
 </script>
 
@@ -16,7 +17,7 @@ defineProps<{
         v-if="!loading"
         class="group-hover:block hidden transition-all ease-out"
       >
-        {{ $t('edit') }}
+        {{ avatar ? $t('edit') : $t('upload') }}
       </div>
       <LoadingSpinner v-if="loading" />
     </div>

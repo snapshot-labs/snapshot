@@ -18,6 +18,7 @@ const showImg = ref(false);
 const avatarImage = ref<HTMLImageElement | null>(null);
 
 function loadImage() {
+  imgUrl.value = '';
   if (props.imgsrc) {
     const img = new Image();
     img.src = props.imgsrc as string;

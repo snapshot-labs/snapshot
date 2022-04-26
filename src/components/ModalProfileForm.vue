@@ -64,17 +64,22 @@ watch(
     </template>
 
     <div class="p-4 space-y-2">
+      {{ form }}
       <div class="flex justify-center">
-        <InputUploadAvatar @image-uploaded="url => (form.avatar = url)">
+        <InputUploadAvatar
+          :avatar="form.avatar"
+          @image-uploaded="url => (form.avatar = url)"
+          @image-remove="url => (form.avatar = '')"
+        >
           <template v-slot:avatar="{ uploading, preview }">
             <div class="relative">
               <BaseAvatar
                 :address="address"
-                :imgsrc="getIpfsUrl(form.avatar)"
+                :imgsrc="form.avatar ? getIpfsUrl(form?.avatar) : ''"
                 :preview="preview"
                 size="80"
               />
-              <AvatarOverlayEdit :loading="uploading" />
+              <AvatarOverlayEdit :loading="uploading" :avatar="form?.avatar" />
               <div
                 class="bg-skin-heading absolute rounded-full p-1 right-0 bottom-[2px]"
               >
