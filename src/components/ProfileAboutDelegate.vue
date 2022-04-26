@@ -59,7 +59,11 @@ function clickDelegate(id) {
       v-if="delegatorsFilteredBySpaces.length && spacesLoaded && delegators"
       :title="$t('profile.about.delegateFor')"
       :counter="delegatorsFilteredBySpaces.length"
-      :label="networks?.[networkKey]?.shortName ?? $t('theCurrentNetwork')"
+      :label="
+        networks?.[networkKey]?.shortName ??
+        networks?.[networkKey]?.name ??
+        $t('theCurrentNetwork')
+      "
       :label-tooltip="$t('profile.about.delegatorNetworkInfo')"
       hide-bottom-border
       slim
