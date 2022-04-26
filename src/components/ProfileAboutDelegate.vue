@@ -78,6 +78,7 @@ function clickDelegate(id) {
     <ModalDelegate
       :open="modalDelegateOpen"
       @close="modalDelegateOpen = false"
+      @reload="loadDelegatorsByNetwork"
       :userAddress="userAddress"
       :spaceId="delegateSpaceId"
     />

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { defineEmits } from 'vue';
 import { useDelegate } from '@/composables/useDelegate';
+import { sleep } from '@snapshot-labs/snapshot.js/src/utils';
 
 const props = defineProps<{
   open: boolean;
@@ -8,13 +9,15 @@ const props = defineProps<{
   spaceId: string;
 }>();
 
-const emit = defineEmits(['close']);
+const emit = defineEmits(['close', 'reload']);
 
 const { delegateTo, delegationLoading } = useDelegate();
 
-function handleDelegate() {
-  delegateTo(props.userAddress, props.spaceId);
+async function handleDelegate() {
   emit('close');
+  await delegateTo(props.userAddress, props.spaceId);
+  await sleep(5000);
+  emit('reload');
 }
 </script>
 
