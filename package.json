@@ -34,7 +34,7 @@
     "@vue/apollo-composable": "4.0.0-alpha.16",
     "@vueuse/core": "^8.3.1",
     "autolinker": "^3.15.0",
-    "eslint": "^8.13.0",
+    "eslint": "^8.14.0",
     "graphql": "^16.4.0",
     "graphql-tag": "^2.12.6",
     "lodash": "^4.17.21",
