@@ -22,13 +22,13 @@ function handleDelegate() {
   <BaseModal :open="open" @close="$emit('close')">
     <template v-slot:header>
       <div class="flex flex-row justify-center items-center">
-        <h3>{{ $t('delegate') }}</h3>
+        <h3>{{ $t('profile.about.delegate') }}</h3>
       </div>
     </template>
     <div class="p-4 space-y-3">
       <SBaseInput
         :modelValue="userAddress"
-        :title="$t('delegator address')"
+        :title="$t('profile.about.delegateTo')"
         :placeholder="$t('delegate.addressPlaceholder')"
         readonly
       >
@@ -36,7 +36,7 @@ function handleDelegate() {
       </SBaseInput>
       <SBaseInput
         :modelValue="spaceId"
-        :title="$t('space id')"
+        :title="$t('space')"
         placeholder="e.g. balancer.eth"
         readonly
       >
@@ -50,7 +50,7 @@ function handleDelegate() {
         :loading="delegationLoading"
         class="w-full"
       >
-        {{ $t('delegate') }}
+        {{ $t('confirm') }}
       </BaseButton>
     </div>
   </BaseModal>

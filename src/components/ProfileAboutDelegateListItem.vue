@@ -1,7 +1,8 @@
 <script setup lang="ts">
 defineProps<{
   spaces: Record<string, any>;
-  delegatorSpaces: string[];
+  delegatorsFilteredBySpaces: string[];
+  delegators: { delegator: string; space: string }[];
   userAddress: string;
   web3Account: string;
 }>();
@@ -10,7 +11,7 @@ defineProps<{
 <template>
   <div>
     <div
-      v-for="space in delegatorSpaces"
+      v-for="space in delegatorsFilteredBySpaces"
       :key="space"
       class="border-b last:border-b-0 px-4 py-2 first:border-t"
     >
@@ -31,12 +32,27 @@ defineProps<{
             />
           </div>
         </router-link>
+
+        <div
+          v-if="
+            delegators.find(
+              d =>
+                d.delegator === web3Account.toLowerCase() && d.space === space
+            )
+          "
+          class="flex items-center space-x-2 rounded-full px-3 h-[44px]"
+        >
+          <i-ho-check />
+          <div>{{ $t('profile.about.delegated') }}</div>
+        </div>
+
         <BaseButton
-          v-if="userAddress !== web3Account"
+          v-else-if="userAddress !== web3Account"
           @click="$emit('delegate', space)"
           class="!h-[44px]"
+          primary
         >
-          delegate me
+          {{ $t('profile.about.delegate') }}
         </BaseButton>
       </div>
     </div>

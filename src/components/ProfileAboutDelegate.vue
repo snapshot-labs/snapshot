@@ -5,6 +5,7 @@ import { useSpaces } from '@/composables/useSpaces';
 import uniqBy from 'lodash/uniqBy';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useDelegate } from '@/composables/useDelegate';
+import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 
 const props = defineProps<{
   userAddress: string;
@@ -17,9 +18,8 @@ const { networkKey } = useDelegate();
 
 const delegators = ref<{ delegator: string; space: string }[] | null>(null);
 
-// Only show delegators of spaces that the users follows
-// This is to avoid prevent spam showing up in the user profile
-const filteredDelegatorSpaces = computed(() => {
+// Filter delegators by the spaces the user is following
+const delegatorsFilteredBySpaces = computed(() => {
   if (!delegators.value) return [];
 
   const followingSpaceIds = props.followingSpaces.map(s => s.space.id);
@@ -30,15 +30,15 @@ const filteredDelegatorSpaces = computed(() => {
   return uniqBy(delegatorSpaceIds.filter(d => followingSpaceIds.includes(d)));
 });
 
-async function loadDelegators() {
+async function loadDelegatorsByNetwork() {
   const res = await getDelegators(networkKey.value, props.userAddress);
   delegators.value = res.delegations ?? [];
 }
 
 watch(
-  [networkKey, web3Account],
+  networkKey,
   async () => {
-    loadDelegators();
+    loadDelegatorsByNetwork();
   },
   { immediate: true }
 );
@@ -56,15 +56,18 @@ function clickDelegate(id) {
 <template>
   <div>
     <BaseBlock
-      v-if="filteredDelegatorSpaces.length && spacesLoaded"
+      v-if="delegatorsFilteredBySpaces.length && spacesLoaded && delegators"
       title="delegator for"
-      :counter="filteredDelegatorSpaces.length"
+      :counter="delegatorsFilteredBySpaces.length"
+      :label="networks?.[networkKey]?.shortName ?? $t('theCurrentNetwork')"
+      :label-tooltip="$t('profile.about.delegatorNetworkInfo')"
       hide-bottom-border
       slim
     >
       <ProfileAboutDelegateListItem
         :spaces="spaces"
-        :delegatorSpaces="filteredDelegatorSpaces"
+        :delegatorsFilteredBySpaces="delegatorsFilteredBySpaces"
+        :delegators="delegators"
         :userAddress="userAddress"
         :web3Account="web3Account"
         @delegate="clickDelegate"

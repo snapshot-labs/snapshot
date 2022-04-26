@@ -328,7 +328,11 @@
       "header": "About",
       "joinedSpaces": "Joined spaces",
       "biography": "Bio",
-      "notJoinSpacesYet": "Hasn't joined any spaces yet"
+      "notJoinSpacesYet": "Hasn't joined any spaces yet",
+      "delegatorNetworkInfo": "Change by switching network in your wallet",
+      "delegate": "Delegate",
+      "delegated": "Delegated",
+      "delegateTo": "Delegate to"
     },
     "activity": {
       "header": "Activity",
