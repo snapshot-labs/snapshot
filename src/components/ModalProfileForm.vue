@@ -64,7 +64,6 @@ watch(
     </template>
 
     <div class="p-4 space-y-2">
-      {{ form }}
       <div class="flex justify-center">
         <InputUploadAvatar
           :avatar="form.avatar"
