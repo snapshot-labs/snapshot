@@ -6,7 +6,10 @@ interface Props {
   size?: string;
   imgsrc?: string;
   space?: Record<string, any>;
-  preview?: [boolean, File | undefined];
+  preview?: {
+    previewFile: File | undefined;
+    uploadSuccess: boolean;
+  };
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -40,12 +43,18 @@ watch(
 watch(
   () => props.preview,
   () => {
-    if (avatarImage.value && props.preview?.[1] && props.preview?.[0]) {
-      avatarImage.value.src = URL.createObjectURL(props.preview[1]);
-      avatarImage.value.onload = function () {
-        if (avatarImage.value) URL.revokeObjectURL(avatarImage.value.src); // free memory
-      };
+    // Preview can be used to show a local image instantly (f.e after uploading an image)
+    if (
+      avatarImage.value &&
+      props.preview?.previewFile &&
+      props.preview?.uploadSuccess
+    ) {
+      avatarImage.value.src = URL.createObjectURL(props.preview.previewFile);
+      return;
     }
+    // This removes the image when the previewFile is removed
+    if (avatarImage.value?.src && !props.preview?.previewFile)
+      return (avatarImage.value.src = '');
   },
   { immediate: true }
 );
