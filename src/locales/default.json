@@ -347,7 +347,9 @@
       "name": "Name",
       "biography": "Bio",
       "namePlaceholder": "Enter name",
-      "bioPlaceholder": "Tell your story"
+      "bioPlaceholder": "Tell your story",
+      "change": "Change",
+      "remove": "Remove"
     }
   },
   "notify": {

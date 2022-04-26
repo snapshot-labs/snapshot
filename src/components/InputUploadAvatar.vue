@@ -43,8 +43,8 @@ function handleSelect(e) {
   <div @click="avatar ? null : openFilePicker()">
     <BaseDropdown
       :items="[
-        { text: 'change', action: 'change' },
-        { text: 'remove', action: 'remove' }
+        { text: $t('profile.settings.change'), action: 'change' },
+        { text: $t('profile.settings.remove'), action: 'remove' }
       ]"
       @select="handleSelect"
     >
