@@ -57,7 +57,7 @@ function clickDelegate(id) {
   <div>
     <BaseBlock
       v-if="delegatorsFilteredBySpaces.length && spacesLoaded && delegators"
-      title="delegator for"
+      :title="$t('profile.about.delegateFor')"
       :counter="delegatorsFilteredBySpaces.length"
       :label="networks?.[networkKey]?.shortName ?? $t('theCurrentNetwork')"
       :label-tooltip="$t('profile.about.delegatorNetworkInfo')"

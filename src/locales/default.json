@@ -332,7 +332,8 @@
       "delegatorNetworkInfo": "Change by switching network in your wallet",
       "delegate": "Delegate",
       "delegated": "Delegated",
-      "delegateTo": "Delegate to"
+      "delegateTo": "Delegate to",
+      "delegateFor": "Delegate for"
     },
     "activity": {
       "header": "Activity",
