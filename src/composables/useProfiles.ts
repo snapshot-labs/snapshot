@@ -9,6 +9,7 @@ const profiles = ref<{
     ens: string;
     name?: string;
     about?: string;
+    avatar?: string;
   };
 }>({});
 
