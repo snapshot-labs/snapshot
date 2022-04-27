@@ -44,20 +44,6 @@ const { domain } = useApp();
         <div class="flex w-full mt-4">
           <div class="w-1/2 pr-2">
             <BaseLink
-              @click.stop
-              :link="
-                explorerUrl(proposal?.network || space?.network || '1', address)
-              "
-              hide-external-icon
-            >
-              <BaseButton class="w-full">
-                {{ $t('seeInExplorer') }}
-                <BaseIcon name="external-link" class="ml-1" />
-              </BaseButton>
-            </BaseLink>
-          </div>
-          <div class="w-1/2 pl-2">
-            <BaseLink
               :link="
                 domain
                   ? `https://snapshot.org/#/profile/${address}`
@@ -68,6 +54,20 @@ const { domain } = useApp();
             >
               <BaseButton primary class="w-full">
                 {{ $t('profile.viewProfile') }}
+              </BaseButton>
+            </BaseLink>
+          </div>
+          <div class="w-1/2 pl-2">
+            <BaseLink
+              @click.stop
+              :link="
+                explorerUrl(proposal?.network || space?.network || '1', address)
+              "
+              hide-external-icon
+            >
+              <BaseButton class="w-full">
+                {{ $t('seeInExplorer') }}
+                <BaseIcon name="external-link" class="ml-1" />
               </BaseButton>
             </BaseLink>
           </div>
