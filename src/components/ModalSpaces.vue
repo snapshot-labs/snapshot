@@ -20,7 +20,7 @@ defineEmits(['close']);
       </div>
     </template>
 
-    <div class="p-4 space-y-3">
+    <div class="py-4 md:px-4 space-y-3">
       <div v-for="space in followingSpaces" :key="space">
         <ModalSpacesListItem v-if="spaces[space]" :space="spaces[space]" />
       </div>
