@@ -47,7 +47,7 @@ const { domain } = useApp();
               :link="
                 domain
                   ? `https://snapshot.org/#/profile/${address}`
-                  : { name: 'profileAbout', params: { address } }
+                  : { name: 'profileActivity', params: { address } }
               "
               hide-external-icon
               @click.stop

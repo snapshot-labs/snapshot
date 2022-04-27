@@ -56,13 +56,13 @@ const spaceRoutes = [
 const profileRoutes = [
   {
     path: '',
-    name: 'profileAbout',
-    component: ProfileAbout
-  },
-  {
-    path: 'activity/',
     name: 'profileActivity',
     component: ProfileActivity
+  },
+  {
+    path: 'about/',
+    name: 'profileAbout',
+    component: ProfileAbout
   }
 ];
 

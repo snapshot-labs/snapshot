@@ -19,7 +19,7 @@ function handleAction(e) {
     return domain
       ? window.open(`https://snapshot.org/#/profile/${props.address}`, '_blank')
       : router.push({
-          name: 'profileAbout',
+          name: 'profileActivity',
           params: { address: props.address }
         });
   if (e === 'switchWallet') return emit('switchWallet');
