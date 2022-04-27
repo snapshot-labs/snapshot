@@ -17,8 +17,12 @@ defineProps<{
       />
     </div>
     <div class="text-center">
-      <ProfileName :profile="profile" />
-      <ProfileAddressCopy :profile="profile" :userAddress="userAddress" />
+      <ProfileName :profile="profile" :address="userAddress" />
+      <ProfileAddressCopy
+        :profile="profile"
+        :userAddress="userAddress"
+        class="justify-center"
+      />
     </div>
   </div>
 </template>

@@ -33,7 +33,7 @@ const { domain } = useApp();
             <BaseAvatar :address="address" size="69" />
           </div>
           <div>
-            <ProfileName :profile="profile" />
+            <ProfileName :profile="profile" :address="address" />
             <ProfileAddressCopy :profile="profile" :userAddress="address" />
           </div>
         </div>

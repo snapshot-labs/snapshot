@@ -1,5 +1,8 @@
 <script setup lang="ts">
+import { shorten } from '@/helpers/utils';
+
 defineProps<{
+  address: string;
   profile?: {
     ens?: string;
     name?: string;
@@ -11,9 +14,9 @@ defineProps<{
   <div
     class="text-skin-heading text-lg leading-10 font-semibold truncate px-3"
     v-tippy="{
-      content: profile?.name || profile?.ens.split('.')[0] || 'unnamed'
+      content: profile?.name || profile?.ens || address
     }"
   >
-    {{ profile?.name || profile?.ens.split('.')[0] || 'unnamed' }}
+    {{ profile?.name || profile?.ens || shorten(address) }}
   </div>
 </template>
