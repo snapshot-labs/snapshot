@@ -40,7 +40,7 @@ defineProps<{
                 d.delegator === web3Account.toLowerCase() && d.space === space
             )
           "
-          class="flex items-center space-x-2 rounded-full px-3 h-[44px]"
+          class="flex items-center space-x-2 rounded-full px-4 border h-[44px]"
         >
           <i-ho-check />
           <div>{{ $t('profile.about.delegated') }}</div>
