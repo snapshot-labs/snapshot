@@ -6,7 +6,7 @@ import { useMediaQuery } from '@vueuse/core';
 defineProps<{
   userAddress: string;
   followingSpaces: string[];
-  loadingSpaces: boolean;
+  loadingFollowedSpaces: boolean;
 }>();
 
 const { spaces } = useSpaces();
@@ -39,11 +39,11 @@ const numberOfSpacesByScreenSize = computed(() => {
     slim
   >
     <div
-      v-if="loadingSpaces || followingSpaces.length"
+      v-if="loadingFollowedSpaces || followingSpaces.length"
       class="border-t py-4 px-4"
     >
       <ProfileAboutSpacesListSkeleton
-        v-if="loadingSpaces || !Object.keys(spaces).length"
+        v-if="loadingFollowedSpaces || !Object.keys(spaces).length"
         :numberOfSpaces="numberOfSpacesByScreenSize"
       />
       <div v-else class="flex justify-between">

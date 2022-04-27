@@ -11,10 +11,10 @@ const props = defineProps<{
 const { apolloQuery } = useApolloQuery();
 
 const followingSpaces = ref([]);
-const loadingSpaces = ref(true);
+const loadingFollowedSpaces = ref(true);
 
 async function loadSpaces() {
-  loadingSpaces.value = true;
+  loadingFollowedSpaces.value = true;
   try {
     Promise.all([
       (followingSpaces.value = await apolloQuery(
@@ -27,9 +27,9 @@ async function loadSpaces() {
         'follows'
       ))
     ]);
-    loadingSpaces.value = false;
+    loadingFollowedSpaces.value = false;
   } catch (e) {
-    loadingSpaces.value = false;
+    loadingFollowedSpaces.value = false;
     console.error(e);
   }
 }
@@ -43,11 +43,12 @@ onMounted(() => loadSpaces());
       <ProfileAboutSpacesList
         :userAddress="userAddress"
         :followingSpaces="followingSpaces"
-        :loadingSpaces="loadingSpaces"
+        :loadingFollowedSpaces="loadingFollowedSpaces"
       />
       <ProfileAboutDelegate
         :userAddress="userAddress"
         :followingSpaces="followingSpaces"
+        :loadingFollowedSpaces="loadingFollowedSpaces"
       />
     </div>
   </div>

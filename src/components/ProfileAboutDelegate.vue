@@ -10,6 +10,7 @@ import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 const props = defineProps<{
   userAddress: string;
   followingSpaces: { space: { id: string } }[];
+  loadingFollowedSpaces: boolean;
 }>();
 
 const { spaces, spacesLoaded } = useSpaces();
@@ -38,6 +39,7 @@ async function loadDelegatorsByNetwork() {
 watch(
   networkKey,
   async () => {
+    if (!web3Account.value) return;
     loadDelegatorsByNetwork();
   },
   { immediate: true }
@@ -56,7 +58,7 @@ function clickDelegate(id) {
 <template>
   <div>
     <BaseBlock
-      v-if="delegatorsFilteredBySpaces.length && spacesLoaded && delegators"
+      :loading="!spacesLoaded || loadingFollowedSpaces"
       :title="$t('profile.about.delegateFor')"
       :counter="delegatorsFilteredBySpaces.length"
       :label="
@@ -69,6 +71,7 @@ function clickDelegate(id) {
       slim
     >
       <ProfileAboutDelegateListItem
+        v-if="delegatorsFilteredBySpaces.length && spacesLoaded && delegators"
         :spaces="spaces"
         :delegatorsFilteredBySpaces="delegatorsFilteredBySpaces"
         :delegators="delegators"

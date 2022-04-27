@@ -333,7 +333,7 @@
       "delegate": "Delegate",
       "delegated": "Delegated",
       "delegateTo": "Delegate to",
-      "delegateFor": "Delegate for"
+      "delegateFor": "Delegator for"
     },
     "activity": {
       "header": "Activity",
