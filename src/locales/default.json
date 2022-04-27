@@ -333,7 +333,8 @@
       "delegate": "Delegate",
       "delegated": "Delegated",
       "delegateTo": "Delegate to",
-      "delegateFor": "Delegator for"
+      "delegateFor": "Delegator for",
+      "noDelegatorsMessage": "No delegators on {network}"
     },
     "activity": {
       "header": "Activity",

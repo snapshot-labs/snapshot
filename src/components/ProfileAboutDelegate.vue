@@ -79,6 +79,16 @@ function clickDelegate(id) {
         :web3Account="web3Account"
         @delegate="clickDelegate"
       />
+      <div v-else class="p-4 border-t">
+        {{
+          $t('profile.about.noDelegatorsMessage', {
+            network:
+              networks?.[networkKey]?.shortName ??
+              networks?.[networkKey]?.name ??
+              $t('theCurrentNetwork')
+          })
+        }}
+      </div>
     </BaseBlock>
   </div>
   <Teleport to="#modal">
