@@ -32,17 +32,11 @@ async function handleDelegate() {
       <SBaseInput
         :modelValue="userAddress"
         :title="$t('profile.about.delegateTo')"
-        :placeholder="$t('delegate.addressPlaceholder')"
         readonly
       >
         <template v-slot:label>{{ $t('delegate.to') }}</template>
       </SBaseInput>
-      <SBaseInput
-        :modelValue="spaceId"
-        :title="$t('space')"
-        placeholder="e.g. balancer.eth"
-        readonly
-      >
+      <SBaseInput :modelValue="spaceId" :title="$t('space')" readonly>
         <template v-slot:label>{{ $t('space') }}</template>
       </SBaseInput>
     </div>
