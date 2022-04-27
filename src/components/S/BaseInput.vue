@@ -18,7 +18,6 @@ const props = withDefaults(
     type: 'text',
     focusOnMount: false,
     hideInput: false,
-    instantError: false,
     readonly: false
   }
 );
