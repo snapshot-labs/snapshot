@@ -84,7 +84,10 @@ async function loadVotes(skip = 0) {
 
 <template>
   <div>
-    <div class="space-y-3">
+    <BaseBlock v-if="!activities.length" class="text-center">
+      No activity yet
+    </BaseBlock>
+    <div v-else class="space-y-3">
       <ProfileActivityList
         :title="$t('profile.activity.today')"
         v-if="activityToday.length"
