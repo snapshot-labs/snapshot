@@ -16,7 +16,7 @@ const { copyToClipboard } = useCopy();
 <template>
   <div class="flex space-x-2 leading-5 px-3">
     <div
-      v-if="profile?.ens"
+      v-if="profile?.ens && profile?.name"
       @click="copyToClipboard(profile.ens)"
       class="flex items-center text-xs rounded-full cursor-pointer min-w-0"
     >
