@@ -202,7 +202,7 @@
     "addressPlaceholder": "Adresse ou ENS",
     "delegations": "Vos délégation(s)",
     "allSpaces": "Pour tous les espaces",
-    "delegated": "Vous délègue",
+    "delegated": "Délégué(e) à vous",
     "pendingTransaction": "aucune transaction en attente | 1 transaction en attente | {count} transactions en attente",
     "topDelegates": "Meilleurs délégués",
     "noDelegatesFoundFor": "Pas de délégué(e)s trouvé(e)s pour {0}",
