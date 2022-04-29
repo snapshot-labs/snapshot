@@ -34,6 +34,7 @@
   "inSpaces": "В {0} сообществе(ах)",
   "votes": "Голоса",
   "seeMore": "Подробнее",
+  "seeAll": "See all",
   "network": "Сеть",
   "networks": "Сети",
   "skins": "Темы",
@@ -69,7 +70,7 @@
   "notificationsBlocked": "Ваш браузер блокирует уведомления",
   "notificationsNotSupported": "Ваш браузер не поддерживает уведомления",
   "walletNotSupported": "Кошелёк не поддерживается",
-  "seeInExplorer": "Посмотреть в проводнике",
+  "seeInExplorer": "See explorer",
   "learnMore": "Подробнее",
   "logout": "Выйти",
   "continue": "Продолжить",
@@ -132,6 +133,7 @@
   "share": "Поделиться",
   "createButton": "Создать",
   "discussion": "Discussion",
+  "changeWallet": "Change wallet",
   "newSpaceNotice": {
     "header": "Ваше сообщество запущено!",
     "mainText": "По умолчанию каждый участник имеет право голоса. Вы можете изменить способ расчета силы голоса с помощью стратегий в ваших {настройках}. Изменения повлияют только на новые предложения, существующие предложения не могут быть изменены.",
@@ -318,6 +320,38 @@
     "setSpaceProfile": "Настроить свое сообщество",
     "waitForTransaction": "Подтвердите транзакцию, чтобы создать свое сообщество.{txUrl}",
     "pleaseWaitMessage": "Это может занять несколько минут, пожалуйста, подождите, подтверждения трансакции"
+  },
+  "profile": {
+    "buttonEdit": "Edit profile",
+    "viewProfile": "View profile",
+    "about": {
+      "header": "About",
+      "joinedSpaces": "Joined spaces",
+      "biography": "Bio",
+      "notJoinSpacesYet": "Hasn't joined any spaces yet",
+      "delegatorNetworkInfo": "Change by switching network in your wallet",
+      "delegate": "Delegate",
+      "delegated": "Delegated",
+      "delegateTo": "Delegate to",
+      "delegateFor": "Delegator for",
+      "noDelegatorsMessage": "No delegators on {network}"
+    },
+    "activity": {
+      "header": "Activity",
+      "votedFor": "Voted {choice}",
+      "today": "Today",
+      "thisWeek": "This week",
+      "older": "Older"
+    },
+    "settings": {
+      "header": "Edit profile",
+      "name": "Name",
+      "biography": "Bio",
+      "namePlaceholder": "Enter name",
+      "bioPlaceholder": "Tell your story",
+      "change": "Change",
+      "remove": "Remove"
+    }
   },
   "notify": {
     "youDidIt": "У вас получилось!",
