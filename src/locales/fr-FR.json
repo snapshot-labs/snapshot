@@ -44,7 +44,7 @@
   "create3box": "Créer un profil sur 3Box",
   "view3box": "Voir le profil sur 3Box",
   "edit3box": "Éditer le profil sur 3Box",
-  "connectWallet": "Connexion",
+  "connectWallet": "Connexion de portefeuille",
   "toggleSkin": "Activer le thème",
   "about": "À propos",
   "license": "Licence",
@@ -184,15 +184,15 @@
     "now": "Maintenant",
     "votingPeriodExplainer": "Ceci représente la période pendant laquelle les utilisateurs(trices) pourront voter. La proposition sera visible et en attente avant le début de la période de vote.",
     "uploadImageExplainer": "Ajouter des images en les glissant-déposant, en les sélectionnant, ou en les collant.",
-    "uploading": "Uploading image",
-    "markdown": "Styling with Markdown is supported",
+    "uploading": "Image en cours d’envoi",
+    "markdown": "Le style de Markdown est compatible",
     "validationWarning": {
       "basic": {
         "member": "Vous devez être auteur dans cet espace pour soumettre une proposition.",
         "minScore": "Vous devez posséder un minimum de {0} {1} pour soumettre une proposition."
       },
       "customValidation": "Vous devez approuver la validation de la proposition pour soumettre une proposition.",
-      "executionError": "Verifying your eligibility to create proposals in this space has failed. This is likely due to a misconfigured strategy."
+      "executionError": "La vérification de votre admissibilité à créer des propositions dans cet espace a échoué. C’est probablement dû à une stratégie mal configurée."
     }
   },
   "delegate": {
@@ -202,17 +202,17 @@
     "addressPlaceholder": "Adresse ou ENS",
     "delegations": "Vos délégation(s)",
     "allSpaces": "Pour tous les espaces",
-    "delegated": "Vous délègue",
+    "delegated": "Délégué(e) à vous",
     "pendingTransaction": "aucune transaction en attente | 1 transaction en attente | {count} transactions en attente",
     "topDelegates": "Meilleurs délégués",
-    "noDelegatesFoundFor": "No delegates found for {0}",
-    "noValidEns": "Not a valid ENS address.",
-    "noValidAddress": "Not a valid address",
-    "delegateToSelf": "You cannot delegate to yourself",
-    "delegateToSelfAddress": "You cannot delegate to your own ENS address",
-    "noValidSpaceId": "Not a valid space ID",
-    "noDelegationsAndDelegates": "Can't find your delegations and delegates? Make sure you are connected to the correct network.",
-    "delegateNotSupported": "Delegation is currently not supported for {network}."
+    "noDelegatesFoundFor": "Pas de délégué(e)s trouvé(e)s pour {0}",
+    "noValidEns": "Adresse ENS invalide.",
+    "noValidAddress": "Adresse invalide",
+    "delegateToSelf": "Vous ne pouvez pas déléguer à vous-même",
+    "delegateToSelfAddress": "Vous ne pouvez pas déléguer à votre propre adresse ENS",
+    "noValidSpaceId": "ID d’espace invalide",
+    "noDelegationsAndDelegates": "Vous ne trouvez pas vos délégations ni vos délégué(e)s ? Assurez-vous d’être connecté au bon réseau.",
+    "delegateNotSupported": "Actuellement, la délégation n’est pas compatible pour {network}."
   },
   "proposal": {
     "castVote": "Votez",
@@ -226,8 +226,8 @@
     "new": "Nouvelle proposition",
     "noProposals": "Il n'y a pas encore de propositions ici !",
     "createProposal": "Créer une proposition",
-    "showMore": "Show more",
-    "showLess": "Show less",
+    "showMore": "Afficher plus",
+    "showLess": "Afficher moins",
     "states": {
       "all": "Toutes",
       "core": "Officiel",
@@ -239,18 +239,18 @@
   },
   "notifications": {
     "header": "Notifications",
-    "noNotifications": "You have no notifications",
-    "proposalStarted": "proposal has started:",
-    "proposalEnded": "proposal has ended:",
-    "markAllAsRead": "Mark all as read",
-    "all": "All",
-    "unread": "Unread"
+    "noNotifications": "Vous n’avez pas de notifications",
+    "proposalStarted": "proposition a commencé :",
+    "proposalEnded": "proposition est terminée :",
+    "markAllAsRead": "Marquer tous comme lu",
+    "all": "Toutes",
+    "unread": "Non lus"
   },
   "settings": {
     "header": "Réglages",
-    "setEnsTextRecord": "Set ENS text record",
-    "editController": "Edit controller",
-    "needToSetEnsText": "Your space settings will be stored in a file on IPFS. Before you can edit them, you need to set an ENS text record pointing to that file.",
+    "setEnsTextRecord": "Enregistrement de texte ENS",
+    "editController": "Modifier le contrôleur / la contrôleuse",
+    "needToSetEnsText": "Vos paramètres d’espace seront stockés dans un fichier sur IPFS. Avant de pouvoir les modifier, vous devez définir un enregistrement texte ENS pointant vers ce fichier.",
     "profile": "Profil",
     "avatar": "Avatar",
     "name": "Nom",
@@ -262,8 +262,8 @@
     "customDomain": "Nom de domaine personnalisé",
     "domain": "Nom de domaine",
     "strategies": "Stratégie(s)",
-    "categories": "Categorie(s)",
-    "selectCategories": "Select categories",
+    "categories": "Catégorie(s)",
+    "selectCategories": "Sélectionner les catégories",
     "hideSpace": "Cacher l'espace de la page d'accueil",
     "addStrategy": "Ajouter une stratégie",
     "authors": "Auteurs",
@@ -286,38 +286,38 @@
     "quorum": "Quorum",
     "type": "Type",
     "anyType": "Tous",
-    "hideAbstain": "Ignore abstain votes in basic voting results",
-    "connectWithSpaceOwner": "To modify space settings, connect with a controller or admin wallet.",
-    "currentSpaceControllerIs": "The current space controller is {address}",
-    "newController": "New controller",
-    "set": "Set"
+    "hideAbstain": "Ignorer les votes par abstention dans les résultats de vote de base",
+    "connectWithSpaceOwner": "Pour modifier les paramètres de l’espace, connectez-vous avec un(e) contrôleur/ ou un portefeuille admin.",
+    "currentSpaceControllerIs": "Le contrôleur / la contrôleuse de l’espace actuel est {address}",
+    "newController": "Nouveau contrôleur / nouvelle contrôleuse",
+    "set": "Appliquer"
   },
   "setup": {
     "example": "ex : yam.eth",
-    "chooseExistingEns": "Choose one of your existing ENS domains to create a space with:",
-    "useSingleExistingEns": "Use your existing ENS domain:",
-    "orReigsterNewEns": "Or register a new domain:",
-    "toCreateASpace": "To create a space, you first need an ENS domain. Enter one below and follow the ENS registration instructions.",
+    "chooseExistingEns": "Choisissez un de vos domaines ENS existants pour créer un espace avec :",
+    "useSingleExistingEns": "Utiliser votre domaine ENS existant :",
+    "orReigsterNewEns": "Ou enregistrer un nouveau domaine :",
+    "toCreateASpace": "Pour créer un espace, premièrement vous avez besoin d’un domaine ENS. En saisir un ci-dessous et suivre les instructions d’enregistrement ENS.",
     "createASpace": "Créer un espace",
-    "registerEnsButton": "Register",
-    "supportedEnsTLDs": "Supported domain endings",
-    "helpDocsAndDiscordLinks": "Not sure how to create a space? Learn more in the <a target='_blank' href='https://docs.snapshot.org/spaces/create'> documentation </a> or join Snapshot <a target='_blank' href='https://discord.gg/snapshot'>Discord</a>.",
-    "setSpaceController": "Set space controller address on ENS",
-    "editSpaceController": "Edit controller on ENS",
-    "setController": "Set controller",
-    "explainControllerAndEns": "This action requires a transaction on the Ethereum Mainnet which will add a \"snapshot\" TEXT record to your ENS domain.",
-    "confirmToSetAddress": "Are you sure you want to set {address} as the controller of the space?",
-    "controllerHasAuthority": "The controller has full authority over the space settings",
-    "controller": "Controller",
-    "selectEnsForSpace": "Choose ENS address",
-    "spaceOwnerAddressPlaceHolder": "e.g. 0xF78108c9BBaF466dd96BE41be728Fe3220b37119",
-    "controllerAddress": "Controller address",
-    "updateController": "Update controller",
-    "seeOnEns": "See on ENS",
-    "goToSettings": "Go to settings",
-    "setSpaceProfile": "Customize your space",
-    "waitForTransaction": "The transaction need to confirm before you can create your space. {txUrl}",
-    "pleaseWaitMessage": "This can take a few minutes, please wait while the transaction is being confirmed"
+    "registerEnsButton": "Enregistrer",
+    "supportedEnsTLDs": "Extensions de domaine prises en charge",
+    "helpDocsAndDiscordLinks": "Pas sûr(e) de savoir comment créer un espace? Apprenez-en plus dans la <a target='_blank' href='https://docs.snapshot.org/spaces/create'> documentation </a> ou devenez membre du <a target='_blank' href='https://discord.gg/snapshot'>Discord</a> Snapshot.",
+    "setSpaceController": "Définir l'adresse du contrôleur / de la contrôleuse de l'espace sur ENS",
+    "editSpaceController": "Modifier le contrôleur / la contrôleuse sur ENS",
+    "setController": "Définir le contrôleur / la contrôleuse",
+    "explainControllerAndEns": "Cette action nécessite une transaction sur Ethereum Mainnet qui ajoutera un enregistrement TEXTE «snapshot» à votre domaine ENS.",
+    "confirmToSetAddress": "Êtes-vous sûr(e) de vouloir choisir {address} comme le contrôleur / la contrôleuse de l’espace?",
+    "controllerHasAuthority": "Le contrôleur / la contrôleuse a toute autorité sur les paramètres de l’espace",
+    "controller": "Contrôleur/Contrôleuse",
+    "selectEnsForSpace": "Choisir l’adresse ENS",
+    "spaceOwnerAddressPlaceHolder": "par ex. 0xF78108c9BBaF466dd96BE41be728Fe3220b37119",
+    "controllerAddress": "L’adresse du contrôleur / de la contrôleuse",
+    "updateController": "Mettre à jour le contrôleur / la contrôleuse",
+    "seeOnEns": "Voir sur ENS",
+    "goToSettings": "Accéder les paramètres",
+    "setSpaceProfile": "Personnaliser votre espace",
+    "waitForTransaction": "La transaction doit être confirmée avant de pouvoir créer votre espace. {txUrl}",
+    "pleaseWaitMessage": "Cela peut prendre quelques minutes, veuillez attendre pendant que la transaction est confirmée"
   },
   "notify": {
     "youDidIt": "Tout est bon !",
@@ -329,8 +329,8 @@
     "delegationRemoved": "Délégation retirée",
     "proposalCreated": "Proposition créée",
     "voteSuccessful": "Votre vote est enregistré !",
-    "ensSet": "ENS text record was successfully set",
-    "transactionSent": "Transaction sent"
+    "ensSet": "L’enregistrement de texte ENS a été défini avec succès",
+    "transactionSent": "Transaction envoyée"
   },
   "explore": {
     "createStrategy": "Créer une stratégie",
@@ -343,15 +343,15 @@
     "plugins": "plugin(s)",
     "results": "résultat(s)",
     "categories": {
-      "all": "All",
+      "all": "Toutes",
       "protocol": "Protocole",
-      "social": "Social",
-      "investment": "Investment",
-      "grant": "Grant",
+      "social": "Réseaux sociaux",
+      "investment": "Investissement",
+      "grant": "Bourse",
       "service": "Service",
-      "media": "Media",
-      "creator": "Creator",
-      "collector": "Collector"
+      "media": "Média",
+      "creator": "Créateur/Créatrice",
+      "collector": "Collectionneur/Collectionneuse"
     }
   },
   "voting": {
@@ -361,14 +361,14 @@
     "quadratic": "Vote quadratique",
     "ranked-choice": "Vote préférentiel",
     "weighted": "Vote pondéré",
-    "basic": "Basic voting",
+    "basic": "Vote de base",
     "description": {
       "single-choice": "Chaque votant ne peut effectuer qu'un seul choix.",
       "approval": "Chaque votant peut effectuer un nombre indéfini de choix.",
       "quadratic": "Chaque votant peut répartir ses droits de vote entre les différents choix. Les résultats sont calculés de manière quadratique.",
       "ranked-choice": "Chaque votant peut effectuer plusieurs choix et les classer par préférence. Le système du second tour instantané est utilisé pour calculer les résultats.",
       "weighted": "Chaque votant peut répartir ses droits de vote entre les différents choix.",
-      "basic": "Single choice voting with three choices: For, Against or Abstain"
+      "basic": "Choix de vote unique avec trois choix: Pour, Contre ou S’abstenir"
     },
     "choices": {
       "for": "Pour",
@@ -388,7 +388,7 @@
     "addBatch": "Ajouter un lot de transactions",
     "batch": "Lot de transactions",
     "transactions": "Transactions",
-    "to": "To (address)",
+    "to": "Vers (adresse)",
     "invalidAddress": "Adresse invalide",
     "invalidAmount": "Montant invalide",
     "invalidValue": "Valeur incorrecte",
@@ -429,20 +429,20 @@
   "poap": {
     "no_poap_header": "Il n'y a pas encore de POAP pour cette proposition :'(",
     "no_voted_header": "Votez pour obtenir ce POAP",
-    "unclaimed_header": "Mint your I voted POAP",
-    "claimed_header": "Congratulations! The POAP has been minted to your collection",
-    "loading_header": "The POAP is being minted to your collection",
+    "unclaimed_header": "Mint votre POAP «J’ai voté»",
+    "claimed_header": "Félicitations! Le POAP a été réclamé à votre collection",
+    "loading_header": "Le POAP est en cours d’ajout à votre collection",
     "button_claim": "Mint",
     "button_show": "Parcourir la collection",
-    "success_claim": "The POAP has been minted to your collection",
+    "success_claim": "Le POAP a été réclamé à votre collection",
     "error_claim": "Un problème est survenu lors de la création du jeton"
   },
   "charts": {
-    "charts": "Charts",
-    "noVotesYet": "There are no votes to visualize yet.",
-    "totalVotesPerDay": "Total votes per day",
-    "shareOfVotingPower": "Share of voting power",
-    "votingPowerPerDay": "Voting power per day"
+    "charts": "Tableaux",
+    "noVotesYet": "Il n’y a pas encore de votes à visualiser.",
+    "totalVotesPerDay": "Nombre total de votes par jour",
+    "shareOfVotingPower": "Partage du pouvoir de vote",
+    "votingPowerPerDay": "Pouvoir de vote par jour"
   },
   "comment_box": {
     "title": "Boîte de commentaires",
@@ -472,24 +472,24 @@
     "title": {
       "home": "Snapshot",
       "setup": "Créer un espace",
-      "timeline": "Timeline",
+      "timeline": "Chronologie",
       "notifications": "Notifications",
-      "explore": "Explore",
+      "explore": "Explorer",
       "playground": "Playground",
       "space": {
-        "create": "Create {space} proposal",
-        "about": "About {space}",
-        "proposals": "{space} Proposals",
-        "proposal": "{space} proposal: {proposal}",
-        "settings": "{space} Settings"
+        "create": "Créer une proposition {space}",
+        "about": "À propos de {space}",
+        "proposals": "Propositions {space}",
+        "proposal": "Proposition {space}: {proposal}",
+        "settings": "Paramètres {space}"
       },
-      "strategy": "{key} strategy",
+      "strategy": "Stratégie {key}",
       "delegate": "Déléguer"
     }
   },
   "hal": {
     "title": "Suivre les propositions pour {spaceName}",
-    "text": "Receive notifications every time a new proposal is created or ends"
+    "text": "Recevoir des notifications chaque fois qu’une nouvelle proposition est créée ou se termine"
   },
   "timeUnits": {
     "second": "1 seconde | {n} secondes",
@@ -501,9 +501,9 @@
     "year": "1 an | {n} ans"
   },
   "unsupportedNetwork": {
-    "unsupportedNetwork": "Unsupported network",
-    "ensOnlyMainnet": "Snapshot only supports ENS on the ethereum mainnet. Once the space is created, you can use it across multiple chains.",
-    "switchNetworkToMainnet": "To continue, you need to change the network in your wallet to Ethereum Mainnet.",
-    "switchToMainnet": "Switch to Mainnet"
+    "unsupportedNetwork": "Réseau incompatible",
+    "ensOnlyMainnet": "Snapshot n’est compatible qu’avec ENS sur ethereum mainnet. Une fois que l’espace est créé, vous pouvez l’utiliser sur plusieurs chaînes.",
+    "switchNetworkToMainnet": "Pour continuer, vous devez changer le réseau de votre portefeuille à Ethereum Mainnet.",
+    "switchToMainnet": "Passer au réseau Mainnet"
   }
 }
