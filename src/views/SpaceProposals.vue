@@ -80,9 +80,12 @@ const { endElement } = useScrollMonitor(() =>
 
 const { profiles, loadProfiles } = useProfiles();
 
-watch(store.space.proposals, () => {
-  loadProfiles(store.space.proposals.map(proposal => proposal.author));
-});
+watch(
+  () => store.space.proposals,
+  () => {
+    loadProfiles(store.space.proposals.map(proposal => proposal.author));
+  }
+);
 
 const loadingData = computed(() => {
   return loading.value || loadingMore.value;

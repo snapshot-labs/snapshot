@@ -26,37 +26,41 @@ const isAdmin = computed(() => {
 
 <template>
   <div>
-    <router-link
-      :to="{ name: 'spaceProposals' }"
-      v-text="$t('proposals.header')"
-      :class="$route.name === 'spaceProposals' && 'router-link-exact-active'"
-      class="block px-4 py-2 sidenav-item hover:bg-skin-bg"
-    />
-    <router-link
-      :to="{ name: 'spaceCreate' }"
-      v-text="$t('proposals.new')"
-      class="block px-4 py-2 sidenav-item hover:bg-skin-bg"
-    />
+    <router-link :to="{ name: 'spaceProposals' }" v-slot="{ isExactActive }">
+      <BaseSidebarNavigationItem :isActive="isExactActive">
+        {{ $t('proposals.header') }}
+      </BaseSidebarNavigationItem>
+    </router-link>
+    <router-link :to="{ name: 'spaceCreate' }" v-slot="{ isExactActive }">
+      <BaseSidebarNavigationItem :isActive="isExactActive">
+        {{ $t('proposals.new') }}
+      </BaseSidebarNavigationItem>
+    </router-link>
     <router-link
       v-if="
         space &&
         space.strategies?.find(strategy => strategy.name === 'delegation')
       "
       :to="{ name: 'delegate', params: { key: space.id } }"
-      v-text="$t('delegate.header')"
-      class="block px-4 py-2 sidenav-item hover:bg-skin-bg"
-    />
-    <router-link
-      :to="{ name: 'spaceAbout' }"
-      v-text="$t('about')"
-      :class="$route.name === 'spaceAbout' && 'router-link-exact-active'"
-      class="block px-4 py-2 sidenav-item hover:bg-skin-bg"
-    />
+      v-slot="{ isExactActive }"
+    >
+      <BaseSidebarNavigationItem :isActive="isExactActive">
+        {{ $t('delegate.header') }}
+      </BaseSidebarNavigationItem>
+    </router-link>
+    <router-link :to="{ name: 'spaceAbout' }" v-slot="{ isExactActive }">
+      <BaseSidebarNavigationItem :isActive="isExactActive">
+        {{ $t('about') }}
+      </BaseSidebarNavigationItem>
+    </router-link>
     <router-link
       v-if="isAdmin"
       :to="{ name: 'spaceSettings' }"
-      v-text="$t('settings.header')"
-      class="block px-4 py-2 sidenav-item hover:bg-skin-bg"
-    />
+      v-slot="{ isExactActive }"
+    >
+      <BaseSidebarNavigationItem :isActive="isExactActive">
+        {{ $t('settings.header') }}
+      </BaseSidebarNavigationItem>
+    </router-link>
   </div>
 </template>

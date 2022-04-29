@@ -126,16 +126,16 @@ function selectState(e) {
       <div style="position: fixed; width: 320px" class="mt-4 hidden lg:block">
         <BaseBlock :slim="true" class="overflow-hidden">
           <div class="py-3">
-            <router-link
-              :to="{ name: 'timeline' }"
-              v-text="$t('joinedSpaces')"
-              class="block px-4 py-2 sidenav-item"
-            />
-            <router-link
-              :to="{ name: 'explore' }"
-              v-text="$t('allSpaces')"
-              class="block px-4 py-2 sidenav-item"
-            />
+            <router-link :to="{ name: 'timeline' }" v-slot="{ isExactActive }">
+              <BaseSidebarNavigationItem :isActive="isExactActive">
+                {{ $t('joinedSpaces') }}
+              </BaseSidebarNavigationItem>
+            </router-link>
+            <router-link :to="{ name: 'explore' }" v-slot="{ isExactActive }">
+              <BaseSidebarNavigationItem :isActive="isExactActive">
+                {{ $t('allSpaces') }}
+              </BaseSidebarNavigationItem>
+            </router-link>
           </div>
         </BaseBlock>
       </div>
