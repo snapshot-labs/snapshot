@@ -317,3 +317,46 @@ export const EXTENDED_STRATEGY_QUERY = gql`
     }
   }
 `;
+
+export const ACTIVITY_VOTES_QUERY = gql`
+  query Votes(
+    $voter: String!
+    $first: Int
+    $skip: Int
+    $orderBy: String
+    $orderDirection: OrderDirection
+  ) {
+    votes(
+      first: $first
+      skip: $skip
+      where: { voter: $voter }
+      orderBy: $orderBy
+      orderDirection: $orderDirection
+    ) {
+      id
+      created
+      choice
+      proposal {
+        id
+        title
+        choices
+        type
+      }
+      space {
+        id
+        avatar
+      }
+    }
+  }
+`;
+
+export const PROFILES_QUERY = gql`
+  query Users($addresses: [String]!, $first: Int, $skip: Int) {
+    users(first: $first, skip: $skip, where: { id_in: $addresses }) {
+      id
+      name
+      about
+      avatar
+    }
+  }
+`;

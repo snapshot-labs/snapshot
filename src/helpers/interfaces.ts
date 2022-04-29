@@ -43,3 +43,12 @@ export interface StrategyDefinition {
   additionalProperties?: boolean;
   properties?: StrategyDefinitionProperties;
 }
+
+export interface ProfileActivity {
+  id: string;
+  created: number;
+  type: string;
+  title: string;
+  space: { id: string; avatar: string };
+  vote?: { proposalId: string; choice: string; type: string };
+}

@@ -15,10 +15,10 @@
   resolved "https://registry.yarnpkg.com/@antfu/utils/-/utils-0.5.0.tgz#b3169429997cb87850e543cb74660f9e2fed7efd"
   integrity sha512-MrAQ/MrPSxbh1bBrmwJjORfJymw4IqSHFBXqvxaga3ZdDM+/zokYF8DjyJpSjY2QmpmgQrajDUBJOWrYeARfzA==
 
-"@apollo/client@^3.6.0":
-  version "3.6.0"
-  resolved "https://registry.yarnpkg.com/@apollo/client/-/client-3.6.0.tgz#7a99c35292dec80392177a1f795d11d2e72ca070"
-  integrity sha512-2+UZoe6fCI3qG9lz8Kdt5ranEllRk8ewpt3ma6fWMjbpt7AP9sprnnoG7n6UmBcOpUTOvAAcaxBf8nByRcXn7g==
+"@apollo/client@^3.6.1":
+  version "3.6.1"
+  resolved "https://registry.yarnpkg.com/@apollo/client/-/client-3.6.1.tgz#2578aa3c06e4b8c41060936b9e508beb1abc1bab"
+  integrity sha512-WGC7n2IS7GIbCCfVvu58Qncmj6qUBYbI/DxPVHGffDuY5y5l+OI2YIr5UXyR8+G9Ly1d6iYbX6l6l+Rw6F6gHA==
   dependencies:
     "@graphql-typed-document-node/core" "^3.1.1"
     "@wry/context" "^0.6.0"
@@ -1392,10 +1392,10 @@
     fortmatic "^2.2.1"
     walletlink "^2.4.0"
 
-"@snapshot-labs/snapshot.js@^0.3.76":
-  version "0.3.76"
-  resolved "https://registry.yarnpkg.com/@snapshot-labs/snapshot.js/-/snapshot.js-0.3.76.tgz#64203ff46f484028d90e70be5acbade9377e5558"
-  integrity sha512-fV/TtwzVJ++Sf47RD7tBPEUeTk6UTX34wMFMJk/tRY2USHUgiCLbgMU4tcvq8UPep4qzn/klyMYxq0PQuibilw==
+"@snapshot-labs/snapshot.js@^0.3.77":
+  version "0.3.77"
+  resolved "https://registry.yarnpkg.com/@snapshot-labs/snapshot.js/-/snapshot.js-0.3.77.tgz#f55a3a8faa0896b19d8115f9a8d17657f49ac1ef"
+  integrity sha512-ZIh2uxAKGH92vJ58nO2CMb+lUd6jf4bP+H0VyeTV9nkcpvtg+6+ePtsC9IFHS+gwREi5hLLysGLw9mZmoRPPLg==
   dependencies:
     "@ensdomains/eth-ens-namehash" "^2.0.15"
     "@ethersproject/abi" "^5.0.4"
@@ -1410,10 +1410,10 @@
     json-to-graphql-query "^2.0.0"
     lodash.set "^4.3.2"
 
-"@tailwindcss/line-clamp@^0.3.1":
-  version "0.3.1"
-  resolved "https://registry.yarnpkg.com/@tailwindcss/line-clamp/-/line-clamp-0.3.1.tgz#4d8441b509b87ece84e94f28a4aa9998413ab849"
-  integrity sha512-pNr0T8LAc3TUx/gxCfQZRe9NB2dPEo/cedPHzUGIPxqDMhgjwNm6jYxww4W5l0zAsAddxr+XfZcqttGiFDgrGg==
+"@tailwindcss/line-clamp@^0.4.0":
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/@tailwindcss/line-clamp/-/line-clamp-0.4.0.tgz#03353e31e77636b785f2336e8c978502cec1de81"
+  integrity sha512-HQZo6gfx1D0+DU3nWlNLD5iA6Ef4JAXh0LeD8lOGrJwEDBwwJNKQza6WoXhhY1uQrxOuU8ROxV7CqiQV4CoiLw==
 
 "@toruslabs/eccrypto@^1.1.8":
   version "1.1.8"

@@ -15,11 +15,15 @@ import { getDefaultProvider, Provider } from '@ethersproject/providers';
 import { ALIASES_QUERY } from '@/helpers/queries';
 import { useApolloQuery } from '@/composables/useApolloQuery';
 import client from '@/helpers/clientEIP712';
+import { useFlashNotification } from '@/composables/useFlashNotification';
+import { useI18n } from '@/composables/useI18n';
 
 const aliases = ref(lsGet('aliases') || {});
 const isValidAlias = ref(false);
 
 export function useAliasAction() {
+  const { notify } = useFlashNotification();
+  const { t } = useI18n();
   const { web3 } = useWeb3();
   const auth = getInstance();
   const { apolloQuery } = useApolloQuery();
@@ -70,5 +74,32 @@ export function useAliasAction() {
     await checkAlias();
   }
 
-  return { setAlias, aliasWallet, isValidAlias, checkAlias };
+  const loading = ref(false);
+
+  async function actionWithAlias(action: any) {
+    loading.value = true;
+    try {
+      await checkAlias();
+      if (aliasWallet.value && isValidAlias.value) {
+        return await action();
+      }
+      await setAlias();
+      return await action();
+    } catch (e) {
+      console.error(e);
+      loading.value = false;
+      notify(['red', t('notify.somethingWentWrong')]);
+    } finally {
+      loading.value = false;
+    }
+  }
+
+  return {
+    setAlias,
+    aliasWallet,
+    isValidAlias,
+    checkAlias,
+    actionWithAlias,
+    actionLoading: computed(() => loading.value)
+  };
 }

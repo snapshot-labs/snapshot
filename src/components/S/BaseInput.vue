@@ -12,11 +12,13 @@ const props = withDefaults(
     placeholder?: string;
     title?: string;
     maxLength?: number;
+    readonly?: boolean;
   }>(),
   {
     type: 'text',
     focusOnMount: false,
-    hideInput: false
+    hideInput: false,
+    readonly: false
   }
 );
 
@@ -54,9 +56,10 @@ onMounted(() => {
           :type="type"
           :value="modelValue"
           @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)"
-          :class="['s-input', { '!border-red': error }]"
+          :class="['s-input', { '!border-red': error && showError }]"
           :maxlength="maxLength ?? definition?.maxLength"
           :placeholder="placeholder ?? definition?.examples?.[0] ?? ''"
+          :readonly="readonly"
         />
       </div>
       <div

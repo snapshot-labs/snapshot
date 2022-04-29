@@ -37,17 +37,15 @@ export function useFollowSpace(spaceId: any = {}) {
 
     loadingFollows.value = true;
     try {
-      Promise.all([
-        (following.value = await apolloQuery(
-          {
-            query: FOLLOWS_QUERY,
-            variables: {
-              follower_in: web3Account.value
-            }
-          },
-          'follows'
-        ))
-      ]);
+      following.value = await apolloQuery(
+        {
+          query: FOLLOWS_QUERY,
+          variables: {
+            follower_in: web3Account.value
+          }
+        },
+        'follows'
+      );
       loadingFollows.value = false;
     } catch (e) {
       loadingFollows.value = false;
