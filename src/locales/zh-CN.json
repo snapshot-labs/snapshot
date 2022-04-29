@@ -323,22 +323,22 @@
   },
   "profile": {
     "buttonEdit": "编辑个人资料",
-    "viewProfile": "查看个人信息",
+    "viewProfile": "查看个人资料",
     "about": {
-      "header": "关于我们",
+      "header": "关于",
       "joinedSpaces": "已加入的空间",
-      "biography": "个性签名",
+      "biography": "个人介绍",
       "notJoinSpacesYet": "尚未加入任何空间",
       "delegatorNetworkInfo": "通过切换你钱包中的网络进行更改",
       "delegate": "委托",
       "delegated": "已委托",
       "delegateTo": "委托给",
       "delegateFor": "代表",
-      "noDelegatorsMessage": "No delegators on {network}"
+      "noDelegatorsMessage": "{network} 上没有代表"
     },
     "activity": {
       "header": "活动",
-      "votedFor": "Voted {choice}",
+      "votedFor": "投了 {choice}",
       "today": "今天",
       "thisWeek": "本周",
       "older": "更早的"
@@ -346,7 +346,7 @@
     "settings": {
       "header": "编辑个人资料",
       "name": "姓名",
-      "biography": "个人信息",
+      "biography": "个人介绍",
       "namePlaceholder": "输入名称",
       "bioPlaceholder": "讲述你的故事",
       "change": "修改",
