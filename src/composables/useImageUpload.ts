@@ -1,5 +1,6 @@
 import { ref } from 'vue';
 import { useI18n } from './useI18n';
+import { useFlashNotification } from '@/composables/useFlashNotification';
 
 export function useImageUpload({
   onSuccess
@@ -10,7 +11,9 @@ export function useImageUpload({
   const error = ref('');
   const imageUrl = ref('');
   const imageName = ref('');
+
   const { t } = useI18n();
+  const { notify } = useFlashNotification();
 
   const reset = () => {
     uploading.value = false;
@@ -46,6 +49,7 @@ export function useImageUpload({
       imageName.value = file.name;
       onSuccess({ name: file.name, url: imageUrl.value });
     } catch (err) {
+      notify(['red', t('notify.somethingWentWrong')]);
       error.value = (err as Error).message;
     } finally {
       uploading.value = false;

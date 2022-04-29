@@ -1,8 +1,7 @@
 <script setup>
-import { ref, watchEffect, computed } from 'vue';
+import { ref, watchEffect } from 'vue';
 import { useSpaceSubscription } from '@/composables/useSpaceSubscription';
 import { useFollowSpace } from '@/composables/useFollowSpace';
-import verified from '@/../snapshot-spaces/spaces/verified.json';
 import { useIntl } from '@/composables/useIntl';
 
 const props = defineProps({
@@ -13,8 +12,6 @@ const props = defineProps({
 });
 
 const { formatCompactNumber } = useIntl();
-
-const isVerified = computed(() => verified[props.space.id] || 0);
 
 const {
   loading,
@@ -55,16 +52,7 @@ watchEffect(() => {
       >
         {{ space.name }}
       </div>
-      <BaseIcon
-        v-if="isVerified === 1"
-        v-tippy="{
-          content: $t('verifiedSpace'),
-          placement: 'right'
-        }"
-        name="check"
-        size="20"
-      />
-      <BaseIcon v-if="isVerified === -1" name="warning" size="20" />
+      <IconVerifiedSpace :spaceId="props.space.id" />
     </h3>
     <div class="mb-[12px] text-skin-text">
       {{

@@ -12,6 +12,9 @@ import Timeline from '@/views/Timeline.vue';
 import Space from '@/views/Space.vue';
 import SpaceAbout from '@/views/SpaceAbout.vue';
 import SpaceProposals from '@/views/SpaceProposals.vue';
+import Profile from '@/views/Profile.vue';
+import ProfileAbout from '@/views/ProfileAbout.vue';
+import ProfileActivity from '@/views/ProfileActivity.vue';
 import { useApp } from '@/composables/useApp';
 
 // The frontend shows all spaces or just a single one, when being accessed
@@ -50,6 +53,19 @@ const spaceRoutes = [
   }
 ];
 
+const profileRoutes = [
+  {
+    path: '',
+    name: 'profileActivity',
+    component: ProfileActivity
+  },
+  {
+    path: 'about/',
+    name: 'profileAbout',
+    component: ProfileAbout
+  }
+];
+
 // If accessed through custom domain, mount space routes under /.
 // Requests starting with /:key will be redirected.
 // E.g. /balancer/proposal/:proposalId becomes /proposal/:proposalId
@@ -85,6 +101,12 @@ if (domain) {
     { path: '/explore', name: 'explore', component: Timeline },
     { path: '/playground/:name', name: 'playground', component: Playground },
     { path: '/strategy/:name', name: 'strategy', component: Strategy },
+    {
+      path: '/profile/:address',
+      name: 'profile',
+      component: Profile,
+      children: profileRoutes
+    },
     { path: '/:key', name: 'space', component: Space, children: spaceRoutes }
   );
 }

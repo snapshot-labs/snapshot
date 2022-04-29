@@ -1,26 +1,16 @@
 <script setup>
-import { ref, computed, watch, onMounted, inject } from 'vue';
+import { ref, computed, watch, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { useI18n } from '@/composables/useI18n';
 import { useProfiles } from '@/composables/useProfiles';
 import { isAddress } from '@ethersproject/address';
-import { formatBytes32String } from '@ethersproject/strings';
-import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import {
-  sendTransaction,
   getScores,
   getDelegatesBySpace
 } from '@snapshot-labs/snapshot.js/src/utils';
-import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
-import {
-  getDelegates,
-  getDelegators,
-  contractAddress
-} from '@/helpers/delegation';
-import { sleep } from '@snapshot-labs/snapshot.js/src/utils';
+import { getDelegates, getDelegators } from '@/helpers/delegation';
 import { useWeb3 } from '@/composables/useWeb3';
-import { useTxStatus } from '@/composables/useTxStatus';
 import { shorten } from '@/helpers/utils';
 import { useIntl } from '@/composables/useIntl';
 import { debouncedWatch } from '@vueuse/core';
@@ -28,24 +18,20 @@ import { SPACE_DELEGATE_QUERY } from '@/helpers/queries';
 import { useApolloQuery } from '@/composables/useApolloQuery';
 import { useModal } from '@/composables/useModal';
 import { useEns } from '@/composables/useEns';
-import { SNAPSHOT_SUBGRAPH_URL } from '@snapshot-labs/snapshot.js/src/utils';
-
-const abi = ['function setDelegate(bytes32 id, address delegate)'];
+import { useDelegate } from '@/composables/useDelegate';
 
 const route = useRoute();
 const { t, setPageTitle } = useI18n();
-const auth = getInstance();
-const notify = inject('notify');
-const { web3, web3Account } = useWeb3();
-const { pendingCount } = useTxStatus();
+const { web3Account } = useWeb3();
 const { formatCompactNumber } = useIntl();
 const { modalAccountOpen } = useModal();
+const { delegateTo, delegationLoading, networkSupportsDelegate, networkKey } =
+  useDelegate();
 
 const modalOpen = ref(false);
 const currentId = ref('');
 const currentDelegate = ref('');
 const loaded = ref(false);
-const loading = ref(false);
 const delegatesLoading = ref(false);
 const delegates = ref([]);
 const delegatesWithScore = ref([]);
@@ -58,8 +44,6 @@ const form = ref({
 });
 
 const { profiles, loadProfiles } = useProfiles();
-
-const networkKey = computed(() => web3.value.network.key);
 
 const { loadOwnedEnsDomains, ownedEnsDomains, validEnsTlds, isValidEnsDomain } =
   useEns();
@@ -117,10 +101,6 @@ watch([networkKey, web3Account], ([valN, valA], [prevN, prevA]) => {
   if (valN !== prevN || valA?.toLowerCase() !== prevA)
     getDelegationsAndDelegates();
 });
-
-const networkSupportsDelegate = computed(
-  () => SNAPSHOT_SUBGRAPH_URL[networkKey.value] !== undefined
-);
 
 const getDelegationsAndDelegatesLoading = ref(false);
 
@@ -202,33 +182,8 @@ async function getDelegatesWithScore() {
 }
 
 async function handleSubmit() {
-  loading.value = true;
-  try {
-    let address = form.value.address;
-    if (address.includes('.eth'))
-      address = await getProvider('1', 'light').resolveName(address);
-    let spaceId = form.value.id;
-    if (!specifySpaceChecked.value) spaceId = '';
-    const tx = await sendTransaction(
-      auth.web3,
-      contractAddress,
-      abi,
-      'setDelegate',
-      [formatBytes32String(spaceId), address]
-    );
-    pendingCount.value++;
-    loading.value = false;
-    const receipt = await tx.wait();
-    console.log('Receipt', receipt);
-    await sleep(3e3);
-    notify(t('notify.delegationSuccess'));
-    pendingCount.value--;
-    getDelegationsAndDelegates();
-  } catch (e) {
-    pendingCount.value--;
-    console.log(e);
-  }
-  loading.value = false;
+  await delegateTo(form.value.address, form.value.id);
+  getDelegationsAndDelegates();
 }
 
 watch(
@@ -429,7 +384,7 @@ onMounted(async () => {
         <BaseButton
           @click="web3Account ? handleSubmit() : (modalAccountOpen = true)"
           :disabled="!isValidForm && !!web3Account"
-          :loading="loading || spaceLoading"
+          :loading="delegationLoading || spaceLoading"
           class="block w-full"
           primary
         >
