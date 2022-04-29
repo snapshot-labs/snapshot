@@ -34,6 +34,7 @@
   "inSpaces": "Dans {0} espace(s)",
   "votes": "Votes",
   "seeMore": "Voir plus",
+  "seeAll": "See all",
   "network": "Réseau",
   "networks": "Réseaux",
   "skins": "Thèmes",
@@ -69,7 +70,7 @@
   "notificationsBlocked": "Votre navigateur bloque les notifications",
   "notificationsNotSupported": "Votre navigateur ne prend pas en charge les notifications",
   "walletNotSupported": "Le portefeuille n’est pas compatible",
-  "seeInExplorer": "Voir sur l'explorateur",
+  "seeInExplorer": "See explorer",
   "learnMore": "En savoir plus",
   "logout": "Se déconnecter",
   "continue": "Continuer",
@@ -132,6 +133,7 @@
   "share": "Partager",
   "createButton": "Créer",
   "discussion": "Discussion",
+  "changeWallet": "Change wallet",
   "newSpaceNotice": {
     "header": "Votre espace est en ligne !",
     "mainText": "Par défaut, chaque électeur(trice) a un droit de vote de un. Vous pouvez changer comment le pouvoir de vote est calculé par des stratégies dans vos {settings}. Les changements aux paramètres affecteront les nouvelles propositions uniquement, les propositions existantes ne peuvent pas être changées.",
@@ -318,6 +320,38 @@
     "setSpaceProfile": "Personnaliser votre espace",
     "waitForTransaction": "La transaction doit être confirmée avant de pouvoir créer votre espace. {txUrl}",
     "pleaseWaitMessage": "Cela peut prendre quelques minutes, veuillez attendre pendant que la transaction est confirmée"
+  },
+  "profile": {
+    "buttonEdit": "Edit profile",
+    "viewProfile": "View profile",
+    "about": {
+      "header": "About",
+      "joinedSpaces": "Joined spaces",
+      "biography": "Bio",
+      "notJoinSpacesYet": "Hasn't joined any spaces yet",
+      "delegatorNetworkInfo": "Change by switching network in your wallet",
+      "delegate": "Delegate",
+      "delegated": "Delegated",
+      "delegateTo": "Delegate to",
+      "delegateFor": "Delegator for",
+      "noDelegatorsMessage": "No delegators on {network}"
+    },
+    "activity": {
+      "header": "Activity",
+      "votedFor": "Voted {choice}",
+      "today": "Today",
+      "thisWeek": "This week",
+      "older": "Older"
+    },
+    "settings": {
+      "header": "Edit profile",
+      "name": "Name",
+      "biography": "Bio",
+      "namePlaceholder": "Enter name",
+      "bioPlaceholder": "Tell your story",
+      "change": "Change",
+      "remove": "Remove"
+    }
   },
   "notify": {
     "youDidIt": "Tout est bon !",
