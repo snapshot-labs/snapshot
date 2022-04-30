@@ -34,6 +34,7 @@
   "inSpaces": "Em {0} comunidade(s)",
   "votes": "Votos",
   "seeMore": "Ver mais",
+  "seeAll": "See all",
   "network": "Rede",
   "networks": "Redes",
   "skins": "Skins",
@@ -69,7 +70,7 @@
   "notificationsBlocked": "Your browser is blocking notifications",
   "notificationsNotSupported": "Your browser does not support notifications",
   "walletNotSupported": "Wallet is not supported",
-  "seeInExplorer": "Ver no Explorer",
+  "seeInExplorer": "See explorer",
   "learnMore": "Saber mais",
   "logout": "Terminar sessão",
   "continue": "Continuar",
@@ -132,6 +133,7 @@
   "share": "Share",
   "createButton": "Create",
   "discussion": "Discussion",
+  "changeWallet": "Change wallet",
   "newSpaceNotice": {
     "header": "Your space is live!",
     "mainText": "By default each voter has a voting power of one. You can change how voting power is calculated via strategies in your {settings}. Changes to your settings will only affect new proposals, existing proposals can not be changed.",
@@ -318,6 +320,38 @@
     "setSpaceProfile": "Customize your space",
     "waitForTransaction": "The transaction need to confirm before you can create your space. {txUrl}",
     "pleaseWaitMessage": "This can take a few minutes, please wait while the transaction is being confirmed"
+  },
+  "profile": {
+    "buttonEdit": "Edit profile",
+    "viewProfile": "View profile",
+    "about": {
+      "header": "About",
+      "joinedSpaces": "Joined spaces",
+      "biography": "Bio",
+      "notJoinSpacesYet": "Hasn't joined any spaces yet",
+      "delegatorNetworkInfo": "Change by switching network in your wallet",
+      "delegate": "Delegate",
+      "delegated": "Delegated",
+      "delegateTo": "Delegate to",
+      "delegateFor": "Delegator for",
+      "noDelegatorsMessage": "No delegators on {network}"
+    },
+    "activity": {
+      "header": "Activity",
+      "votedFor": "Voted {choice}",
+      "today": "Today",
+      "thisWeek": "This week",
+      "older": "Older"
+    },
+    "settings": {
+      "header": "Edit profile",
+      "name": "Name",
+      "biography": "Bio",
+      "namePlaceholder": "Enter name",
+      "bioPlaceholder": "Tell your story",
+      "change": "Change",
+      "remove": "Remove"
+    }
   },
   "notify": {
     "youDidIt": "Conseguiu!",

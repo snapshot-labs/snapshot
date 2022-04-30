@@ -34,6 +34,7 @@
   "inSpaces": "{0} 공간(들)",
   "votes": "투표",
   "seeMore": "더보기",
+  "seeAll": "See all",
   "network": "네트워크",
   "networks": "네트워크들",
   "skins": "스킨",
@@ -69,7 +70,7 @@
   "notificationsBlocked": "브라우저가 알림을 차단하고 있습니다",
   "notificationsNotSupported": "브라우저는 알림을 지원하지 않습니다",
   "walletNotSupported": "지갑이 지원되지 않음",
-  "seeInExplorer": "탐색기에서 보기",
+  "seeInExplorer": "See explorer",
   "learnMore": "더 알아보기",
   "logout": "로그아웃",
   "continue": "계속",
@@ -132,6 +133,7 @@
   "share": "Share",
   "createButton": "Create",
   "discussion": "Discussion",
+  "changeWallet": "Change wallet",
   "newSpaceNotice": {
     "header": "Your space is live!",
     "mainText": "By default each voter has a voting power of one. You can change how voting power is calculated via strategies in your {settings}. Changes to your settings will only affect new proposals, existing proposals can not be changed.",
@@ -318,6 +320,38 @@
     "setSpaceProfile": "Customize your space",
     "waitForTransaction": "The transaction need to confirm before you can create your space. {txUrl}",
     "pleaseWaitMessage": "This can take a few minutes, please wait while the transaction is being confirmed"
+  },
+  "profile": {
+    "buttonEdit": "Edit profile",
+    "viewProfile": "View profile",
+    "about": {
+      "header": "About",
+      "joinedSpaces": "Joined spaces",
+      "biography": "Bio",
+      "notJoinSpacesYet": "Hasn't joined any spaces yet",
+      "delegatorNetworkInfo": "Change by switching network in your wallet",
+      "delegate": "Delegate",
+      "delegated": "Delegated",
+      "delegateTo": "Delegate to",
+      "delegateFor": "Delegator for",
+      "noDelegatorsMessage": "No delegators on {network}"
+    },
+    "activity": {
+      "header": "Activity",
+      "votedFor": "Voted {choice}",
+      "today": "Today",
+      "thisWeek": "This week",
+      "older": "Older"
+    },
+    "settings": {
+      "header": "Edit profile",
+      "name": "Name",
+      "biography": "Bio",
+      "namePlaceholder": "Enter name",
+      "bioPlaceholder": "Tell your story",
+      "change": "Change",
+      "remove": "Remove"
+    }
   },
   "notify": {
     "youDidIt": "해냈어요!",
