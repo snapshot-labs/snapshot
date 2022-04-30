@@ -42,8 +42,7 @@ watch(
   () => {
     // Preview can be used to show a local image instantly (f.e after uploading an image)
     if (avatarImage.value && props.previewFile) {
-      avatarImage.value.src = URL.createObjectURL(props.previewFile);
-      return;
+      return (avatarImage.value.src = URL.createObjectURL(props.previewFile));
     }
     // This removes the preview image if it's a blob and the previewFile is blank
     if (avatarImage.value?.src.startsWith('blob') && !props.previewFile) {
@@ -56,8 +55,22 @@ watch(
 
 <template>
   <span class="flex shrink-0 items-center justify-center">
+    <!-- Show local review image if previewFile is defined -->
     <img
+      v-show="previewFile"
       ref="avatarImage"
+      class="rounded-full object-cover"
+      :class="'bg-[color:var(--border-color)]'"
+      :style="{
+        width: `${parseInt(size)}px`,
+        height: `${parseInt(size)}px`,
+        minWidth: `${parseInt(size)}px`
+      }"
+      :alt="space?.name"
+    />
+    <!-- else show image from ipfs or stamp -->
+    <img
+      v-show="!previewFile"
       :src="
         imgUrl ||
         `https://stamp.fyi/avatar/eth:${address}?s=${parseInt(size) * 2}`

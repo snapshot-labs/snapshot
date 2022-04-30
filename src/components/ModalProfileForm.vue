@@ -68,14 +68,14 @@ watch(
         <InputUploadAvatar
           :avatar="form.avatar"
           @image-uploaded="url => (form.avatar = url)"
-          @image-remove="url => (form.avatar = '')"
+          @image-remove="form.avatar = ''"
         >
           <template v-slot:avatar="{ uploading, previewFile }">
             <div class="relative">
               <BaseAvatar
                 :address="address"
                 :imgsrc="form.avatar ? getIpfsUrl(form?.avatar) : ''"
-                :preview="previewFile"
+                :previewFile="previewFile"
                 size="80"
               />
               <AvatarOverlayEdit :loading="uploading" :avatar="form?.avatar" />
