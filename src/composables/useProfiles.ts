@@ -14,6 +14,7 @@ const profiles = ref<{
 }>({});
 
 export function useProfiles() {
+  const loadingProfiles = ref(false);
   /**
    * Populates global ref with profile data for batches of addresses.
    */
@@ -26,6 +27,7 @@ export function useProfiles() {
     const { apolloQuery } = useApolloQuery();
     let profilesRes: any = {};
     if (addressesToAdd.length > 0) {
+      loadingProfiles.value = true;
       profilesRes = await Promise.all([
         await getEnsAddress(addressesToAdd),
         await apolloQuery(
@@ -48,6 +50,7 @@ export function useProfiles() {
     }
 
     profiles.value = { ...profilesRes[0], ...profiles.value };
+    loadingProfiles.value = false;
   };
 
   // Reload a profile in profiles object
@@ -63,6 +66,7 @@ export function useProfiles() {
   return {
     profiles,
     loadProfiles,
-    reloadProfile
+    reloadProfile,
+    loadingProfiles
   };
 }

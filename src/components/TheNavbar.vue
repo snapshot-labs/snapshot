@@ -14,7 +14,7 @@ const { modalAccountOpen } = useModal();
 const { env, showSidebar, domain } = useApp();
 const auth = getInstance();
 const { login, web3, web3Account } = useWeb3();
-const { profiles, loadProfiles } = useProfiles();
+const { profiles, loadProfiles, loadingProfiles } = useProfiles();
 
 const loading = ref(false);
 
@@ -66,7 +66,10 @@ watchEffect(() => {
               :address="web3Account"
               @switchWallet="modalAccountOpen = true"
             >
-              <BaseButton :loading="web3.authLoading" class="flex items-center">
+              <BaseButton
+                :loading="web3.authLoading || loadingProfiles"
+                class="flex items-center"
+              >
                 <BaseAvatar
                   :address="web3Account"
                   :imgsrc="getIpfsUrl(profile?.avatar)"
