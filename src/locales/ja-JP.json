@@ -34,6 +34,7 @@
   "inSpaces": "{0} 個のスペースが使用",
   "votes": "投票数",
   "seeMore": "もっと見る",
+  "seeAll": "See all",
   "network": "ネットワーク",
   "networks": "ネットワーク",
   "skins": "スキン",
@@ -69,7 +70,7 @@
   "notificationsBlocked": "お使いのブラウザは通知を無効にしています",
   "notificationsNotSupported": "お使いのブラウザは通知をサポートしていません",
   "walletNotSupported": "ウォレットがサポートされていません",
-  "seeInExplorer": "エクスプローラで見る",
+  "seeInExplorer": "See explorer",
   "learnMore": "もっと詳しく知る",
   "logout": "ログアウト",
   "continue": "続行する",
@@ -132,6 +133,7 @@
   "share": "共有する",
   "createButton": "作成する",
   "discussion": "Discussion",
+  "changeWallet": "Change wallet",
   "newSpaceNotice": {
     "header": "スペースが 進行中です！",
     "mainText": "デフォルトでは、各投票者が一つの投票権を持っています。{settings}　にあるストラテジーに基づき、投票権が計算される方法を変更することができます。設定の変更は新しい提案にしか適用されません。既存の提案には適用されません。",
@@ -318,6 +320,38 @@
     "setSpaceProfile": "スペースをカスタマイズする",
     "waitForTransaction": "スペースを作成する前に取引の確定が必要です。{txUrl}",
     "pleaseWaitMessage": "取引が確定されるまで少々お待ちください"
+  },
+  "profile": {
+    "buttonEdit": "Edit profile",
+    "viewProfile": "View profile",
+    "about": {
+      "header": "About",
+      "joinedSpaces": "Joined spaces",
+      "biography": "Bio",
+      "notJoinSpacesYet": "Hasn't joined any spaces yet",
+      "delegatorNetworkInfo": "Change by switching network in your wallet",
+      "delegate": "Delegate",
+      "delegated": "Delegated",
+      "delegateTo": "Delegate to",
+      "delegateFor": "Delegator for",
+      "noDelegatorsMessage": "No delegators on {network}"
+    },
+    "activity": {
+      "header": "Activity",
+      "votedFor": "Voted {choice}",
+      "today": "Today",
+      "thisWeek": "This week",
+      "older": "Older"
+    },
+    "settings": {
+      "header": "Edit profile",
+      "name": "Name",
+      "biography": "Bio",
+      "namePlaceholder": "Enter name",
+      "bioPlaceholder": "Tell your story",
+      "change": "Change",
+      "remove": "Remove"
+    }
   },
   "notify": {
     "youDidIt": "おつかれさまです！",

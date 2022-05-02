@@ -34,6 +34,7 @@
   "inSpaces": "在 {0} 空间中",
   "votes": "投票数",
   "seeMore": "查看更多",
+  "seeAll": "查看所有",
   "network": "网络",
   "networks": "网络",
   "skins": "皮肤",
@@ -69,7 +70,7 @@
   "notificationsBlocked": "你的浏览器正在屏蔽通知",
   "notificationsNotSupported": "你的浏览器不支持接收通知",
   "walletNotSupported": "不支持该钱包",
-  "seeInExplorer": "在浏览器上查看",
+  "seeInExplorer": "查看浏览器",
   "learnMore": "了解更多",
   "logout": "登出",
   "continue": "继续",
@@ -132,6 +133,7 @@
   "share": "分享",
   "createButton": "创建",
   "discussion": "讨论",
+  "changeWallet": "更换钱包",
   "newSpaceNotice": {
     "header": "您的空间已经上线了！",
     "mainText": "默认情况下，每个投票者都有一个投票权。 您可以通过 {settings} 中的策略更改投票权的计算方式。 更改您的设置只会影响新的提案，不会更改现有的提案。",
@@ -318,6 +320,38 @@
     "setSpaceProfile": "自定义您的空间",
     "waitForTransaction": "您需要先确认交易才能创建您的空间。 {txUrl}",
     "pleaseWaitMessage": "这可能需要几分钟，请等待交易确认"
+  },
+  "profile": {
+    "buttonEdit": "编辑个人资料",
+    "viewProfile": "查看个人资料",
+    "about": {
+      "header": "关于我们",
+      "joinedSpaces": "已加入的空间",
+      "biography": "个人介绍",
+      "notJoinSpacesYet": "尚未加入任何空间",
+      "delegatorNetworkInfo": "通过切换你钱包中的网络进行更改",
+      "delegate": "委托",
+      "delegated": "已委托",
+      "delegateTo": "委托给",
+      "delegateFor": "代表",
+      "noDelegatorsMessage": "{network} 上没有代表"
+    },
+    "activity": {
+      "header": "活动",
+      "votedFor": "投了 {choice}",
+      "today": "今天",
+      "thisWeek": "本周",
+      "older": "更早的"
+    },
+    "settings": {
+      "header": "编辑个人资料",
+      "name": "姓名",
+      "biography": "个人介绍",
+      "namePlaceholder": "输入名字",
+      "bioPlaceholder": "讲述您的故事",
+      "change": "修改",
+      "remove": "删除"
+    }
   },
   "notify": {
     "youDidIt": "您成功了!",

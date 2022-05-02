@@ -34,6 +34,7 @@
   "inSpaces": "În {0} spațiu(i)",
   "votes": "Voturi",
   "seeMore": "Vezi mai multe",
+  "seeAll": "See all",
   "network": "Rețea",
   "networks": "Reţele",
   "skins": "Skin-uri",
@@ -69,7 +70,7 @@
   "notificationsBlocked": "Browserul tău blochează notificările",
   "notificationsNotSupported": "Browserul tău nu acceptă notificări",
   "walletNotSupported": "Portofelul nu este suportat",
-  "seeInExplorer": "Vizualizează pe explorer",
+  "seeInExplorer": "See explorer",
   "learnMore": "Află mai multe",
   "logout": "Deconectează-te",
   "continue": "Continuă",
@@ -132,6 +133,7 @@
   "share": "Share",
   "createButton": "Create",
   "discussion": "Discussion",
+  "changeWallet": "Change wallet",
   "newSpaceNotice": {
     "header": "Your space is live!",
     "mainText": "By default each voter has a voting power of one. You can change how voting power is calculated via strategies in your {settings}. Changes to your settings will only affect new proposals, existing proposals can not be changed.",
@@ -318,6 +320,38 @@
     "setSpaceProfile": "Customize your space",
     "waitForTransaction": "The transaction need to confirm before you can create your space. {txUrl}",
     "pleaseWaitMessage": "This can take a few minutes, please wait while the transaction is being confirmed"
+  },
+  "profile": {
+    "buttonEdit": "Edit profile",
+    "viewProfile": "View profile",
+    "about": {
+      "header": "About",
+      "joinedSpaces": "Joined spaces",
+      "biography": "Bio",
+      "notJoinSpacesYet": "Hasn't joined any spaces yet",
+      "delegatorNetworkInfo": "Change by switching network in your wallet",
+      "delegate": "Delegate",
+      "delegated": "Delegated",
+      "delegateTo": "Delegate to",
+      "delegateFor": "Delegator for",
+      "noDelegatorsMessage": "No delegators on {network}"
+    },
+    "activity": {
+      "header": "Activity",
+      "votedFor": "Voted {choice}",
+      "today": "Today",
+      "thisWeek": "This week",
+      "older": "Older"
+    },
+    "settings": {
+      "header": "Edit profile",
+      "name": "Name",
+      "biography": "Bio",
+      "namePlaceholder": "Enter name",
+      "bioPlaceholder": "Tell your story",
+      "change": "Change",
+      "remove": "Remove"
+    }
   },
   "notify": {
     "youDidIt": "Ai reușit!",

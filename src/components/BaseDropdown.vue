@@ -59,7 +59,7 @@ watch(open, () => {
     >
       <div
         :class="positionClass"
-        class="z-20 absolute mt-2 min-w-[150px] max-w-[320px] md:max-w-[400px] rounded-2xl bg-skin-header-bg overflow-hidden shadow-lg border border-skin-border"
+        class="z-20 absolute mt-2 max-w-[320px] md:max-w-[400px] rounded-2xl bg-skin-header-bg overflow-hidden shadow-lg border border-skin-border"
         v-if="open"
       >
         <ul
@@ -69,7 +69,7 @@ watch(open, () => {
           <li
             v-for="item in items"
             :key="item.text"
-            @click="handleClick(item.action)"
+            @click.stop="handleClick(item.action)"
             :class="{ selected: item.selected }"
             class="list-none block whitespace-nowrap px-3 py-2 cursor-pointer select-none group"
           >
