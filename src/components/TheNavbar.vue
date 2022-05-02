@@ -7,7 +7,6 @@ import { useWeb3 } from '@/composables/useWeb3';
 import { useTxStatus } from '@/composables/useTxStatus';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { useProfiles } from '@/composables/useProfiles';
-import { getIpfsUrl } from '@/helpers/utils';
 
 const { pendingCount } = useTxStatus();
 const { modalAccountOpen } = useModal();
@@ -72,7 +71,6 @@ watchEffect(() => {
               >
                 <BaseAvatar
                   :address="web3Account"
-                  :imgsrc="getIpfsUrl(profile?.avatar)"
                   size="18"
                   class="-mr-1 sm:mr-2 md:mr-2 lg:mr-2 xl:mr-2 -ml-1"
                 />

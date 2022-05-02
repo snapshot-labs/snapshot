@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { watch, ref, defineEmits } from 'vue';
 import schemas from '@snapshot-labs/snapshot.js/src/schemas';
-import { getIpfsUrl } from '@/helpers/utils';
 import { useAliasAction } from '@/composables/useAliasAction';
 import client from '@/helpers/clientEIP712';
 import { useWeb3 } from '@/composables/useWeb3';
@@ -74,7 +73,6 @@ watch(
             <div class="relative">
               <BaseAvatar
                 :address="address"
-                :imgsrc="form.avatar ? getIpfsUrl(form?.avatar) : ''"
                 :previewFile="previewFile"
                 size="80"
               />
