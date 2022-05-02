@@ -10,7 +10,7 @@ const route = useRoute();
 const router = useRouter();
 const { domain } = useApp();
 const aliasedSpace = aliases[domain] || aliases[route.params.key];
-const { loadExtentedSpaces, extentedSpaces } = useExtendedSpaces();
+const { loadExtentedSpaces, extentedSpaces, spaceLoading } = useExtendedSpaces();
 
 // Redirect the user to the ENS address if the space is aliased.
 if (aliasedSpace) {
@@ -55,7 +55,13 @@ onMounted(() => loadExtentedSpaces([spaceKey.value, sourceSpaceRoute.value]));
         <SpaceSidebarSkeleton />
       </template>
       <template #content-right>
-        <LoadingRow block />
+        <LoadingRow v-if="spaceLoading" block />
+        <template v-else>
+          <BaseBlock :slim="true" class="px-4 py-4 block overflow-hidden">
+            <h2>This account doesn’t exist</h2>
+            <p>Try searching for another.</p>
+          </BaseBlock>
+        </template>
       </template>
     </TheLayout>
 

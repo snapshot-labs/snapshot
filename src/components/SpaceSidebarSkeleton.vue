@@ -12,14 +12,25 @@
             class="bg-skin-text h-[26px] rounded-md lazy-loading w-[100px] mb-2 mx-auto"
           />
         </div>
-        <div class="flex justify-center gap-x-2">
-          <BaseButton class="w-[120px] cursor-wait">{{
-            $t('join')
-          }}</BaseButton>
-        </div>
+        <div
+          class="bg-skin-text h-[46px] w-[120px] rounded-3xl lazy-loading mb-2 mx-auto"
+        />
       </div>
-      <SpaceSidebarNavigation />
-      <SpaceSidebarFooter />
+      <div
+        class="bg-skin-text h-[32px] lazy-loading mb-1 mt-1 w-[130px] ml-3"
+      />
+      <div
+        class="bg-skin-text h-[32px] lazy-loading mb-1 mt-1 w-[130px] ml-3"
+      />
+      <div
+        class="bg-skin-text h-[32px] lazy-loading mb-1 mt-1 w-[130px] ml-3"
+      />
+      <div
+        class="bg-skin-text h-[32px] lazy-loading mb-1 mt-1 w-[130px] ml-3"
+      />
+      <div
+        class="bg-skin-text h-[20px] lazy-loading mb-1 mt-2 w-[130px] mx-auto"
+      />
     </BaseBlock>
   </div>
 </template>
