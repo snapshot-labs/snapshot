@@ -45,7 +45,7 @@
     "scrollmonitor": "^1.2.9",
     "typescript": "^4.6.4",
     "vue": "^3.2.33",
-    "vue-i18n": "^9.1.9",
+    "vue-i18n": "^9.1.10",
     "vue-router": "^4.0.14",
     "vue-tippy": "^6.0.0-alpha.58",
     "vuedraggable": "^4.0.2"
