@@ -485,7 +485,7 @@ async function handleSetRecord() {
           </BaseBlock>
           <BaseBlock :title="$t('settings.admins')" v-if="isSpaceController">
             <BaseBlock
-              :style="`border-color: red !important`"
+              class="!border-red mb-2"
               v-if="inputError('admins')"
             >
               <BaseIcon name="warning" class="mr-2 !text-red" />
@@ -493,6 +493,20 @@ async function handleSetRecord() {
             </BaseBlock>
             <TextareaArray
               v-model="form.admins"
+              :placeholder="`0x8C28Cf33d9Fd3D0293f963b1cd27e3FF422B425c\n0xeF8305E140ac520225DAf050e2f71d5fBcC543e7`"
+              class="input w-full text-left"
+              style="font-size: 18px"
+            />
+          </BaseBlock>
+          <BaseBlock :title="$t('settings.authors')">
+            <BaseBlock class="!border-red mb-2" v-if="inputError('members')">
+              <BaseIcon name="warning" class="mr-2 !text-red" />
+              <span class="!text-red">
+                {{ inputError('members') }}&nbsp;</span
+              >
+            </BaseBlock>
+            <TextareaArray
+              v-model="form.members"
               :placeholder="`0x8C28Cf33d9Fd3D0293f963b1cd27e3FF422B425c\n0xeF8305E140ac520225DAf050e2f71d5fBcC543e7`"
               class="input w-full text-left"
               style="font-size: 18px"
@@ -534,25 +548,7 @@ async function handleSetRecord() {
             </BaseButton>
           </BaseBlock>
           <BaseBlock :title="$t('settings.proposalValidation')">
-            <div class="flex items-center space-x-2 pr-2 mb-2">
-              <BaseCheckbox v-model="form.filters.onlyMembers" />
-              <span>{{ $t('settings.allowOnlyAuthors') }}</span>
-            </div>
-            <div v-if="form.filters.onlyMembers">
-              <BaseBlock class="!border-red" v-if="inputError('members')">
-                <BaseIcon name="warning" class="mr-2 !text-red" />
-                <span class="!text-red">
-                  {{ inputError('members') }}&nbsp;</span
-                >
-              </BaseBlock>
-              <TextareaArray
-                v-model="form.members"
-                :placeholder="`0x8C28Cf33d9Fd3D0293f963b1cd27e3FF422B425c\n0xeF8305E140ac520225DAf050e2f71d5fBcC543e7`"
-                class="input w-full text-left"
-                style="font-size: 18px"
-              />
-            </div>
-            <div v-else class="space-y-2">
+            <div class="space-y-2">
               <UiInput
                 @click="modalValidationOpen = true"
                 :error="inputError('settings.validation')"
@@ -574,6 +570,10 @@ async function handleSetRecord() {
                     $t('settings.proposalThreshold')
                   }}</template>
                 </UiInput>
+                <div class="flex items-center space-x-2 pr-2 mt-2">
+                  <BaseCheckbox v-model="form.filters.onlyMembers" />
+                  <span>{{ $t('settings.allowOnlyAuthors') }}</span>
+                </div>
               </div>
             </div>
           </BaseBlock>
