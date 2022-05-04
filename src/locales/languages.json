@@ -13,5 +13,9 @@
   "ko-KR": {
     "name": "Korean",
     "nativeName": "한국어"
+  },
+  "fr-FR": {
+    "name": "French",
+    "nativeName": "Français"
   }
 }
