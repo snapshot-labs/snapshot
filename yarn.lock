@@ -1724,14 +1724,14 @@
   dependencies:
     sirv "^2.0.2"
 
-"@vue/apollo-composable@4.0.0-alpha.16":
-  version "4.0.0-alpha.16"
-  resolved "https://registry.yarnpkg.com/@vue/apollo-composable/-/apollo-composable-4.0.0-alpha.16.tgz#f0974372b07b016271a96425c3f676588e640bf4"
-  integrity sha512-P0Zxip0idW7HAkLAmvtso+UNdTNCm+mwAKvw9Nup4MzESDvfuvhXfOxYPZCKtd4Y8fS1FZ0dBGbOrxeQHYyfwQ==
+"@vue/apollo-composable@4.0.0-alpha.17":
+  version "4.0.0-alpha.17"
+  resolved "https://registry.yarnpkg.com/@vue/apollo-composable/-/apollo-composable-4.0.0-alpha.17.tgz#c6976ef922267a559103489041ec7aa4e65bd45e"
+  integrity sha512-Wsx73CSEbk4EqlpxV+5S4u0gZH4V4oCqy6Q0IS8JR7Wn8PjrM8mIKNL1JtRErUOzkQHgVHbBftzDMt0Fi39QFA==
   dependencies:
     throttle-debounce "^3.0.1"
     ts-essentials "^9.0.0"
-    vue-demi "^0.12.1"
+    vue-demi "^0.12.5"
 
 "@vue/compiler-core@3.2.33":
   version "3.2.33"
@@ -7463,10 +7463,10 @@ vitest@^0.10.2:
     tinyspy "^0.3.2"
     vite "^2.9.5"
 
-vue-demi@*, vue-demi@^0.12.1:
-  version "0.12.1"
-  resolved "https://registry.yarnpkg.com/vue-demi/-/vue-demi-0.12.1.tgz#f7e18efbecffd11ab069d1472d7a06e319b4174c"
-  integrity sha512-QL3ny+wX8c6Xm1/EZylbgzdoDolye+VpCXRhI2hug9dJTP3OUJ3lmiKN3CsVV3mOJKwFi0nsstbgob0vG7aoIw==
+vue-demi@*, vue-demi@^0.12.5:
+  version "0.12.5"
+  resolved "https://registry.yarnpkg.com/vue-demi/-/vue-demi-0.12.5.tgz#8eeed566a7d86eb090209a11723f887d28aeb2d1"
+  integrity sha512-BREuTgTYlUr0zw0EZn3hnhC3I6gPWv+Kwh4MCih6QcAeaTlaIX0DwOVN0wHej7hSvDPecz4jygy/idsgKfW58Q==
 
 vue-eslint-parser@^7.10.0:
   version "7.11.0"
