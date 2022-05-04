@@ -73,7 +73,9 @@ watch(
       v-show="!previewFile"
       :src="
         imgUrl ||
-        `https://stamp.fyi/avatar/eth:${address}?s=${parseInt(size) * 2}`
+        `https://stamp.fyi/avatar/eth:${address}?s=${
+          parseInt(size) * 2
+        }&ts=${Number((Date.now() / 1e3).toFixed())}`
       "
       class="rounded-full object-cover"
       :class="'bg-[color:var(--border-color)]'"

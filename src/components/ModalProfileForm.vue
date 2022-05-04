@@ -30,12 +30,47 @@ const form = ref({
   about: ''
 });
 
+async function avatarCacheBuster() {
+  const imageSizes = ['18', '69', '80'];
+  // await Promise.all(
+  //   imageSizes.map(async size => {
+  //     return await fetch(
+  //       `https://stamp.fyi/avatar/eth:${props.address}?s=${
+  //         parseInt(size) * 2
+  //       }&cb=1`,
+  //       { cache: 'no-store' }
+  //     );
+  //   })
+  // );
+
+  // const request = await fetch(
+  //   `https://stamp.fyi/avatar/eth:${props.address}?s=${
+  //     parseInt(size) * 2
+  //   }&cb=1`,
+  //   { cache: 'no-store' }
+  // );
+
+  for (let i = 0; i < imageSizes.length; i++) {
+    console.time(`${imageSizes[i]}`);
+    const request = await fetch(
+      `https://stamp.fyi/avatar/eth:${props.address}?s=${
+        parseInt(imageSizes[i]) * 2
+      }&cb=1`,
+      { cache: 'no-store' }
+    );
+    console.timeEnd(`${imageSizes[i]}`);
+
+    await request;
+  }
+}
+
 async function save() {
   await client.profile(aliasWallet.value, aliasWallet.value.address, {
     from: web3Account.value,
     timestamp: Number((Date.now() / 1e3).toFixed()),
     profile: JSON.stringify(form.value)
   });
+  await avatarCacheBuster();
   reloadProfile(props.address);
   emit('close');
   return notify(['green', t('notify.saved')]);
