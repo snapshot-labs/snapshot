@@ -15,6 +15,7 @@ export interface ProposalDetails {
   dao: string;
   oracle: string;
   cooldown: number;
+  expiration: number;
   proposalId: string;
   questionId: string | undefined;
   executionApproved: boolean;
