@@ -54,6 +54,7 @@ export const REALITY_MODULE_ABI = [
   'function executor() view returns (address)', // Dao Module
   'function oracle() view returns (address)',
   'function questionCooldown() view returns (uint32)',
+  'function answerExpiration() view returns (uint32)',
   'function buildQuestion(string proposalId, bytes32[] txHashes) view returns (string)',
   'function executedProposalTransactions(bytes32 questionHash, bytes32 txHash) view returns (bool)',
   'function questionIds(bytes32 questionHash) view returns (bytes32)',
