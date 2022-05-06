@@ -34,7 +34,7 @@
   "inSpaces": "Di {0} ruang",
   "votes": "Suara",
   "seeMore": "Lihat lebih banyak",
-  "seeAll": "See all",
+  "seeAll": "Lihat semua",
   "network": "Jaringan",
   "networks": "Jaringan",
   "skins": "Tampilan",
@@ -70,7 +70,7 @@
   "notificationsBlocked": "Browser Anda memblokir notifikasi",
   "notificationsNotSupported": "Browser anda tidak mendukung pemberitahuan",
   "walletNotSupported": "Wallet tidak didukung",
-  "seeInExplorer": "See explorer",
+  "seeInExplorer": "Lihat di explorer",
   "learnMore": "Pelajari lebih lanjut",
   "logout": "Keluar",
   "continue": "Lanjut",
@@ -457,7 +457,8 @@
       "switchChain": "Alihkan dompet Anda ke {0} untuk mengajukan pelaksanaan",
       "question": "Apaka proposal ini lolos dan sesuai dengan",
       "criteria": "kriteria penerimaan?",
-      "proposalPassed": "Did the proposal pass?"
+      "proposalPassed": "Did the proposal pass?",
+      "expired": "The proposal has expired"
     }
   },
   "poap": {
