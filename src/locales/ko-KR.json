@@ -457,7 +457,8 @@
       "switchChain": "실행 요청을 위해 지갑을 {0} 로 바꾸세요.",
       "question": "이 제안이 통과되었을 때 다음을 충족",
       "criteria": "통과 기준?",
-      "proposalPassed": "제안이 통과되었습니까?"
+      "proposalPassed": "제안이 통과되었습니까?",
+      "expired": "The proposal has expired"
     }
   },
   "poap": {
