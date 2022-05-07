@@ -458,7 +458,7 @@
       "question": "该提案是否通过并且是否符合",
       "criteria": "接收标准？",
       "proposalPassed": "该提案通过了吗？",
-      "expired": "The proposal has expired"
+      "expired": "提案已过期"
     }
   },
   "poap": {
