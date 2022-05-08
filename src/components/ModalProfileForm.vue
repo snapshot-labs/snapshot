@@ -31,37 +31,9 @@ const form = ref({
 });
 
 async function avatarCacheBuster() {
-  const imageSizes = ['18', '69', '80'];
-  // await Promise.all(
-  //   imageSizes.map(async size => {
-  //     return await fetch(
-  //       `https://stamp.fyi/avatar/eth:${props.address}?s=${
-  //         parseInt(size) * 2
-  //       }&cb=1`,
-  //       { cache: 'no-store' }
-  //     );
-  //   })
-  // );
-
-  // const request = await fetch(
-  //   `https://stamp.fyi/avatar/eth:${props.address}?s=${
-  //     parseInt(size) * 2
-  //   }&cb=1`,
-  //   { cache: 'no-store' }
-  // );
-
-  for (let i = 0; i < imageSizes.length; i++) {
-    console.time(`${imageSizes[i]}`);
-    const request = await fetch(
-      `https://stamp.fyi/avatar/eth:${props.address}?s=${
-        parseInt(imageSizes[i]) * 2
-      }&cb=1`,
-      { cache: 'no-store' }
-    );
-    console.timeEnd(`${imageSizes[i]}`);
-
-    await request;
-  }
+  await fetch(`https://stamp.fyi/avatar/eth:${props.address}`, {
+    method: 'DELETE'
+  });
 }
 
 async function save() {
