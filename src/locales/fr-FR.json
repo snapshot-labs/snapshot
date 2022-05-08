@@ -34,7 +34,7 @@
   "inSpaces": "Dans {0} espace(s)",
   "votes": "Votes",
   "seeMore": "Voir plus",
-  "seeAll": "See all",
+  "seeAll": "Voir tout",
   "network": "Réseau",
   "networks": "Réseaux",
   "skins": "Thèmes",
@@ -70,7 +70,7 @@
   "notificationsBlocked": "Votre navigateur bloque les notifications",
   "notificationsNotSupported": "Votre navigateur ne prend pas en charge les notifications",
   "walletNotSupported": "Le portefeuille n’est pas compatible",
-  "seeInExplorer": "See explorer",
+  "seeInExplorer": "Voir sur l'explorateur",
   "learnMore": "En savoir plus",
   "logout": "Se déconnecter",
   "continue": "Continuer",
@@ -133,7 +133,7 @@
   "share": "Partager",
   "createButton": "Créer",
   "discussion": "Discussion",
-  "changeWallet": "Change wallet",
+  "changeWallet": "Changer de portefeuille",
   "newSpaceNotice": {
     "header": "Votre espace est en ligne !",
     "mainText": "Par défaut, chaque électeur(trice) a un droit de vote de un. Vous pouvez changer comment le pouvoir de vote est calculé par des stratégies dans vos {settings}. Les changements aux paramètres affecteront les nouvelles propositions uniquement, les propositions existantes ne peuvent pas être changées.",
@@ -322,35 +322,35 @@
     "pleaseWaitMessage": "Cela peut prendre quelques minutes, veuillez attendre pendant que la transaction est confirmée"
   },
   "profile": {
-    "buttonEdit": "Edit profile",
-    "viewProfile": "View profile",
+    "buttonEdit": "Modifier le profil",
+    "viewProfile": "Afficher le profil",
     "about": {
-      "header": "About",
-      "joinedSpaces": "Joined spaces",
-      "biography": "Bio",
-      "notJoinSpacesYet": "Hasn't joined any spaces yet",
-      "delegatorNetworkInfo": "Change by switching network in your wallet",
-      "delegate": "Delegate",
-      "delegated": "Delegated",
-      "delegateTo": "Delegate to",
-      "delegateFor": "Delegator for",
-      "noDelegatorsMessage": "No delegators on {network}"
+      "header": "À propos",
+      "joinedSpaces": "Espaces rejoints",
+      "biography": "Biographie",
+      "notJoinSpacesYet": "N'a pas encore rejoint d'espaces",
+      "delegatorNetworkInfo": "Changer de réseau dans votre portefeuille",
+      "delegate": "Déléguer",
+      "delegated": "Délégué",
+      "delegateTo": "Déléguer à",
+      "delegateFor": "Délégueur pour",
+      "noDelegatorsMessage": "Aucun délégant sur {network}"
     },
     "activity": {
-      "header": "Activity",
-      "votedFor": "Voted {choice}",
-      "today": "Today",
-      "thisWeek": "This week",
-      "older": "Older"
+      "header": "Activité",
+      "votedFor": "Voté {choice}",
+      "today": "Aujourd'hui",
+      "thisWeek": "Cette semaine",
+      "older": "Plus ancien"
     },
     "settings": {
-      "header": "Edit profile",
-      "name": "Name",
-      "biography": "Bio",
-      "namePlaceholder": "Enter name",
-      "bioPlaceholder": "Tell your story",
-      "change": "Change",
-      "remove": "Remove"
+      "header": "Modifier le profil",
+      "name": "Nom",
+      "biography": "Biographie",
+      "namePlaceholder": "Saisir le nom",
+      "bioPlaceholder": "Raconter votre histoire",
+      "change": "Changer",
+      "remove": "Supprimer"
     }
   },
   "notify": {
@@ -457,7 +457,8 @@
       "switchChain": "Passez au wallet {0} pour demander l'exécution",
       "question": "Cette proposition a-t-elle été adoptée et satisfait-elle aux",
       "criteria": "critères d'acceptation ?",
-      "proposalPassed": "Did the proposal pass?"
+      "proposalPassed": "Did the proposal pass?",
+      "expired": "The proposal has expired"
     }
   },
   "poap": {

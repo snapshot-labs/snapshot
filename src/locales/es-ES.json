@@ -457,7 +457,8 @@
       "switchChain": "Cambia tu cartera a {0} para solicitar la ejecución",
       "question": "Acaso pasó esta propuesta y cumple los",
       "criteria": "criterios de aceptación?",
-      "proposalPassed": "Did the proposal pass?"
+      "proposalPassed": "Did the proposal pass?",
+      "expired": "The proposal has expired"
     }
   },
   "poap": {

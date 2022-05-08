@@ -457,7 +457,8 @@
       "switchChain": "将你的钱包切换到 {0} 以请求执行",
       "question": "该提案是否通过并且是否符合",
       "criteria": "接收标准？",
-      "proposalPassed": "该提案通过了吗？"
+      "proposalPassed": "该提案通过了吗？",
+      "expired": "提案已过期"
     }
   },
   "poap": {

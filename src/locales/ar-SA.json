@@ -457,7 +457,8 @@
       "switchChain": "قم بتغيير محفظتك إلى {0} لطلب التنفيذ",
       "question": "هل تم إقرار هذا الاقتراح وهل استوفى",
       "criteria": "معايير القبول؟",
-      "proposalPassed": "Did the proposal pass?"
+      "proposalPassed": "Did the proposal pass?",
+      "expired": "The proposal has expired"
     }
   },
   "poap": {

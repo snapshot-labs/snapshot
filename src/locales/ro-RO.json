@@ -457,7 +457,8 @@
       "switchChain": "Comută portofelul la {0} pentru a solicita execuția",
       "question": "A trecut această propunere si îndeplinește",
       "criteria": "criterii de acceptare?",
-      "proposalPassed": "Propunerea a fost aprobată?"
+      "proposalPassed": "Propunerea a fost aprobată?",
+      "expired": "The proposal has expired"
     }
   },
   "poap": {
