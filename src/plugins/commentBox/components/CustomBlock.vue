@@ -196,6 +196,6 @@ function deleteItem(key) {
     </div>
     <div class="w-[10px] h-[10px] absolute bottom-0" ref="endElement" />
 
-    <RowLoading v-if="loadingMore" class="my-2" />
+    <LoadingRow v-if="loadingMore" class="my-2" />
   </BaseBlock>
 </template>

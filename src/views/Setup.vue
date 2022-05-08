@@ -14,7 +14,7 @@ const { web3, web3Account } = useWeb3();
 const { modalAccountOpen } = useModal();
 const { loadOwnedEnsDomains, ownedEnsDomains } = useEns();
 const { setPageTitle } = useI18n();
-const { spaces } = useSpaces();
+const { spaces, spacesLoaded } = useSpaces();
 const { ensAddress } = useSpaceController();
 
 onMounted(() => {
@@ -67,6 +67,9 @@ watch(ownedEnsDomains, (newVal, oldVal) => {
 const loadingOwnedEnsDomains = ref(true);
 loadOwnedEnsDomains().finally(() => (loadingOwnedEnsDomains.value = false));
 watch(web3Account, async () => {
+  // Prevent the page from reloading on account change (e.g. when switching to the controller account set on the previos step)
+  if (route.params.step === 'profile') return;
+
   // Reset ensAddress to empty string
   ensAddress.value = '';
 
@@ -87,7 +90,7 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
         <h1 v-text="$t('setup.createASpace')" class="mb-4" />
       </div>
       <template v-if="web3Account">
-        <LoadingRow v-if="loadingOwnedEnsDomains" block />
+        <LoadingRow v-if="loadingOwnedEnsDomains || !spacesLoaded" block />
         <!-- Step two - setup space controller -->
         <SetupController
           v-else-if="route.params.step === 'controller' && ensAddress"

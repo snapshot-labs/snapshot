@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { sanitizeUrl } from '@braintree/sanitize-url';
+
 type Link = Record<string, any> | string;
 
 defineProps<{
@@ -11,7 +13,7 @@ defineProps<{
 <template>
   <a
     v-if="typeof link === 'string'"
-    :href="link"
+    :href="sanitizeUrl(link)"
     target="_blank"
     :class="['whitespace-nowrap', { 'pointer-events-none': disabled }]"
     rel="noopener noreferrer"

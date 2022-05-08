@@ -121,7 +121,7 @@
   opacity: 0;
 }
 
-// TODO: Move this to BaseAnchor components
+// TODO: Move this to BaseLink components
 a,
 .a {
   color: var(--link-color);
@@ -268,14 +268,6 @@ input[type='number'] {
 
 .s-error {
   @apply bg-red text-white text-sm transition-all duration-200 flex items-center px-3 pb-2 pt-4 rounded-b-3xl;
-}
-
-.s-label {
-  @apply block mb-1;
-}
-
-.s-indicator {
-  @apply text-sm h-[12px] w-[12px] rounded-full inline-block bg-blue;
 }
 
 // Fix for chrome. Overwrites tailwinds break-words class.

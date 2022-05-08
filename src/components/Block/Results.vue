@@ -47,7 +47,7 @@ const ts = (Date.now() / 1e3).toFixed();
             <div class="flex overflow-hidden">
               <span
                 v-tippy="{
-                  content: choice.choice.length > 24 ? choice.choice : null
+                  content: choice.choice
                 }"
                 class="mr-1 truncate"
                 v-text="choice.choice"
@@ -68,7 +68,7 @@ const ts = (Date.now() / 1e3).toFixed();
                 {{
                   formatCompactNumber(results.resultsByVoteBalance[choice.i])
                 }}
-                {{ shorten(space.symbol, 'symbol') }}
+                {{ shorten(proposal.symbol || space.symbol, 'symbol') }}
               </span>
               <span
                 v-if="
@@ -123,11 +123,14 @@ const ts = (Date.now() / 1e3).toFixed();
           />
         </template>
       </div>
-      <div v-if="props.space?.voting?.quorum" class="text-skin-link">
+      <div
+        v-if="proposal.quorum || space.voting?.quorum"
+        class="text-skin-link"
+      >
         {{ $t('settings.quorum') }}
         <span class="float-right">
           {{ formatCompactNumber(results.sumOfResultsBalance) }} /
-          {{ formatCompactNumber(props.space.voting.quorum) }}
+          {{ formatCompactNumber(proposal.quorum || space.voting.quorum) }}
         </span>
       </div>
     </div>
