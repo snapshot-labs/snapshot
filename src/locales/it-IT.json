@@ -457,7 +457,8 @@
       "switchChain": "Passa il tuo portafoglio a {0} per richiedere l'esecuzione",
       "question": "Questa proposta è stata approvata e soddisfa i",
       "criteria": "criteri di accettazione?",
-      "proposalPassed": "Did the proposal pass?"
+      "proposalPassed": "Did the proposal pass?",
+      "expired": "The proposal has expired"
     }
   },
   "poap": {

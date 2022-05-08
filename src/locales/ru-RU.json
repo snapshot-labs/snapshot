@@ -457,7 +457,8 @@
       "switchChain": "Переключите ваш кошелек на {0} для выполнения запроса",
       "question": "Принято ли это предложение и соответствует ли оно",
       "criteria": "Критерии одобрения?",
-      "proposalPassed": "Did the proposal pass?"
+      "proposalPassed": "Did the proposal pass?",
+      "expired": "The proposal has expired"
     }
   },
   "poap": {

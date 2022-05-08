@@ -457,7 +457,8 @@
       "switchChain": "Ilipat ang iyong wallet sa {0} upang humiling ng pagpapatupad",
       "question": "Pumasa ba ang panukala ito at natutugunan ba nito ang",
       "criteria": "pamantayan sa pagtanggap?",
-      "proposalPassed": "Did the proposal pass?"
+      "proposalPassed": "Did the proposal pass?",
+      "expired": "The proposal has expired"
     }
   },
   "poap": {
