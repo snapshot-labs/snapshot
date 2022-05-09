@@ -1,16 +1,17 @@
 <script setup lang="ts">
 import { watchEffect } from 'vue';
-import { shorten, explorerUrl } from '@/helpers/utils';
 import { useUsername } from '@/composables/useUsername';
+import { useApp } from '@/composables/useApp';
 
 const props = defineProps<{
   address: string;
   space?: { members: string[]; network: string };
   proposal?: { network: string };
-  profile?: { name: string; ens: string };
+  profile?: { name: string; ens: string; about: string };
   onlyUsername?: boolean;
 }>();
 
+const { domain } = useApp();
 const { username, setProfile, setAddress } = useUsername();
 
 watchEffect(() => {
@@ -20,10 +21,23 @@ watchEffect(() => {
 </script>
 
 <template>
-  <span>
-    <BasePopover :options="{ offset: [0, 12], placement: 'bottom-start' }">
-      <template v-slot:item>
-        <a class="flex flex-nowrap">
+  <div>
+    <PopoverProfile
+      :address="address"
+      :profile="profile"
+      :proposal="proposal"
+      :space="space"
+    >
+      <BaseLink
+        :link="
+          domain
+            ? `https://snapshot.org/#/profile/${address}`
+            : { name: 'profileActivity', params: { address } }
+        "
+        hide-external-icon
+        @click.stop
+      >
+        <div class="flex flex-nowrap">
           <BaseAvatar
             v-if="!onlyUsername"
             :address="address"
@@ -36,30 +50,8 @@ watchEffect(() => {
             :address="address"
             :members="space?.members"
           />
-        </a>
-      </template>
-      <template v-slot:content>
-        <div class="m-4 mb-0 text-center">
-          <BaseAvatar :address="address" size="64" class="mb-4" />
-          <h3 v-if="profile?.name" class="mt-3" v-text="profile.name" />
-          <h3 v-else-if="profile?.ens" v-text="profile.ens" class="mt-3" />
-          <h3 v-else v-text="shorten(address)" class="mt-3" />
         </div>
-        <div class="m-4">
-          <a
-            :href="
-              explorerUrl(proposal?.network || space?.network || '1', address)
-            "
-            target="_blank"
-            class="mb-2 block"
-          >
-            <BaseButton class="button-outline w-full">
-              {{ $t('seeInExplorer') }}
-              <BaseIcon name="external-link" class="ml-1" />
-            </BaseButton>
-          </a>
-        </div>
-      </template>
-    </BasePopover>
-  </span>
+      </BaseLink>
+    </PopoverProfile>
+  </div>
 </template>

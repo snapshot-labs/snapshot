@@ -4,8 +4,8 @@ import { useValidationErrors } from '@/composables/useValidationErrors';
 
 import * as DefaultObject from './DefaultObject.vue';
 import DefaultArray from './DefaultArray.vue';
-import DefaultString from './DefaultString.vue';
-import DefaultNumber from './DefaultNumber.vue';
+import InputString from './InputString.vue';
+import InputNumber from './InputNumber.vue';
 import DefaultBoolean from './DefaultBoolean.vue';
 
 const props = defineProps<{
@@ -25,9 +25,9 @@ const getComponent = name => {
     case 'array':
       return DefaultArray;
     case 'string':
-      return DefaultString;
+      return InputString;
     case 'number':
-      return DefaultNumber;
+      return InputNumber;
     case 'boolean':
       return DefaultBoolean;
     default:
