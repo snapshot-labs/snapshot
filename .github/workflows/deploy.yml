@@ -1,0 +1,24 @@
+name: Deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      target:
+        type: choice
+        description: Target
+        options: 
+        - stable
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checks-out repo on develop branch
+      - uses: actions/checkout@v3
+        with:
+          ref: 'develop'
+      # Overwrite target
+      - run: |
+          git checkout -b ${{ github.event.inputs.target }}
+          git push --set-upstream origin ${{ github.event.inputs.target }} --force

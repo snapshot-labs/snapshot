@@ -34,6 +34,7 @@
   "inSpaces": "Di {0} ruang",
   "votes": "Suara",
   "seeMore": "Lihat lebih banyak",
+  "seeAll": "Lihat semua",
   "network": "Jaringan",
   "networks": "Jaringan",
   "skins": "Tampilan",
@@ -132,6 +133,7 @@
   "share": "Bagikan",
   "createButton": "Create",
   "discussion": "Discussion",
+  "changeWallet": "Change wallet",
   "newSpaceNotice": {
     "header": "Your space is live!",
     "mainText": "By default each voter has a voting power of one. You can change how voting power is calculated via strategies in your {settings}. Changes to your settings will only affect new proposals, existing proposals can not be changed.",
@@ -319,6 +321,38 @@
     "waitForTransaction": "The transaction need to confirm before you can create your space. {txUrl}",
     "pleaseWaitMessage": "This can take a few minutes, please wait while the transaction is being confirmed"
   },
+  "profile": {
+    "buttonEdit": "Edit profile",
+    "viewProfile": "View profile",
+    "about": {
+      "header": "About",
+      "joinedSpaces": "Joined spaces",
+      "biography": "Bio",
+      "notJoinSpacesYet": "Hasn't joined any spaces yet",
+      "delegatorNetworkInfo": "Change by switching network in your wallet",
+      "delegate": "Delegate",
+      "delegated": "Delegated",
+      "delegateTo": "Delegate to",
+      "delegateFor": "Delegator for",
+      "noDelegatorsMessage": "No delegators on {network}"
+    },
+    "activity": {
+      "header": "Activity",
+      "votedFor": "Voted {choice}",
+      "today": "Today",
+      "thisWeek": "This week",
+      "older": "Older"
+    },
+    "settings": {
+      "header": "Edit profile",
+      "name": "Name",
+      "biography": "Bio",
+      "namePlaceholder": "Enter name",
+      "bioPlaceholder": "Tell your story",
+      "change": "Change",
+      "remove": "Remove"
+    }
+  },
   "notify": {
     "youDidIt": "Anda berhasil!",
     "copied": "Tersalin!",
@@ -423,7 +457,8 @@
       "switchChain": "Alihkan dompet Anda ke {0} untuk mengajukan pelaksanaan",
       "question": "Apaka proposal ini lolos dan sesuai dengan",
       "criteria": "kriteria penerimaan?",
-      "proposalPassed": "Did the proposal pass?"
+      "proposalPassed": "Did the proposal pass?",
+      "expired": "The proposal has expired"
     }
   },
   "poap": {

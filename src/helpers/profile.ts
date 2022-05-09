@@ -33,7 +33,7 @@ function lookupAddresses(addresses) {
         );
         const ensNames = Object.fromEntries(
           addresses.map((address, index) => {
-            return [address.toLowerCase(), validNames[index]];
+            return [address, validNames[index]];
           })
         );
 
@@ -45,22 +45,11 @@ function lookupAddresses(addresses) {
   });
 }
 
-export async function getProfiles(addresses) {
+export async function getEnsAddress(addresses) {
   addresses = addresses.slice(0, 250);
-  let ensNames: any = {};
   try {
-    ensNames = await lookupAddresses(addresses);
+    return await lookupAddresses(addresses);
   } catch (e) {
     console.log(e);
   }
-
-  const profiles = Object.fromEntries(addresses.map(address => [address, {}]));
-  return Object.fromEntries(
-    Object.entries(profiles).map(([address, profile]) => {
-      profile = {};
-      profile.ens = ensNames[address.toLowerCase()] || '';
-      if (profile.ens) profile.name = profile.ens;
-      return [address, profile];
-    })
-  );
 }
