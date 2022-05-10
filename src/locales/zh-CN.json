@@ -341,7 +341,8 @@
       "votedFor": "投了 {choice}",
       "today": "今天",
       "thisWeek": "本周",
-      "older": "更早的"
+      "older": "更早的",
+      "noActivity": "No activity yet"
     },
     "settings": {
       "header": "编辑个人资料",
