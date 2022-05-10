@@ -70,7 +70,7 @@
   "notificationsBlocked": "Votre navigateur bloque les notifications",
   "notificationsNotSupported": "Votre navigateur ne prend pas en charge les notifications",
   "walletNotSupported": "Le wallet n’est pas compatible",
-  "seeInExplorer": "Voir sur l'explorateur",
+  "seeInExplorer": "Voir sur l'explorer",
   "learnMore": "En savoir plus",
   "logout": "Se déconnecter",
   "continue": "Continuer",
@@ -245,7 +245,7 @@
     "proposalStarted": "La proposition a commencé :",
     "proposalEnded": "La proposition est close :",
     "markAllAsRead": "Marquer tous comme lu",
-    "all": "Toutes",
+    "all": "Tout",
     "unread": "Non lus"
   },
   "settings": {
@@ -378,7 +378,7 @@
     "plugins": "plugin(s)",
     "results": "résultat(s)",
     "categories": {
-      "all": "Toutes",
+      "all": "Tout",
       "protocol": "Protocole",
       "social": "Réseaux sociaux",
       "investment": "Investissement",
