@@ -13,7 +13,8 @@ const { modalAccountOpen } = useModal();
 const { env, showSidebar, domain } = useApp();
 const auth = getInstance();
 const { login, web3, web3Account } = useWeb3();
-const { profiles, loadProfiles, loadingProfiles } = useProfiles();
+const { profiles, loadProfiles, loadingProfiles, reloadingProfile } =
+  useProfiles();
 
 const loading = ref(false);
 
@@ -66,7 +67,9 @@ watchEffect(() => {
               @switchWallet="modalAccountOpen = true"
             >
               <BaseButton
-                :loading="web3.authLoading || loadingProfiles"
+                :loading="
+                  web3.authLoading || loadingProfiles || reloadingProfile
+                "
                 class="flex items-center"
               >
                 <BaseAvatar

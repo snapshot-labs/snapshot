@@ -30,10 +30,8 @@ const form = ref({
   about: ''
 });
 
-async function avatarCacheBuster() {
-  await fetch(`https://stamp.fyi/avatar/eth:${props.address}`, {
-    method: 'DELETE'
-  });
+async function clearAvatarCache() {
+  await fetch(`https://stamp.fyi/clear/avatar/eth:${props.address}`);
 }
 
 async function save() {
@@ -42,7 +40,7 @@ async function save() {
     timestamp: Number((Date.now() / 1e3).toFixed()),
     profile: JSON.stringify(form.value)
   });
-  await avatarCacheBuster();
+  await clearAvatarCache();
   reloadProfile(props.address);
   emit('close');
   return notify(['green', t('notify.saved')]);

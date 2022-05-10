@@ -13,6 +13,8 @@ const profiles = ref<{
   };
 }>({});
 
+const reloadingProfile = ref(false);
+
 export function useProfiles() {
   const loadingProfiles = ref(false);
   /**
@@ -51,6 +53,7 @@ export function useProfiles() {
 
     profiles.value = { ...profilesRes[0], ...profiles.value };
     loadingProfiles.value = false;
+    reloadingProfile.value = false;
   };
 
   // Reload a profile in profiles object
@@ -60,6 +63,7 @@ export function useProfiles() {
     if (profile) {
       delete profiles.value[address];
     }
+    reloadingProfile.value = true;
     loadProfiles([address]);
   };
 
@@ -67,6 +71,7 @@ export function useProfiles() {
     profiles,
     loadProfiles,
     reloadProfile,
-    loadingProfiles
+    loadingProfiles,
+    reloadingProfile
   };
 }
