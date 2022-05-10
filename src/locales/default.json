@@ -540,5 +540,8 @@
     "ensOnlyMainnet": "Snapshot only supports ENS on the ethereum mainnet. Once the space is created, you can use it across multiple chains.",
     "switchNetworkToMainnet": "To continue, you need to change the network in your wallet to Ethereum Mainnet.",
     "switchToMainnet": "Switch to Mainnet"
+  },
+  "treasury": {
+    "title": "Treasury"
   }
 }

@@ -48,7 +48,9 @@ onMounted(() => loadExtentedSpaces([spaceKey.value, sourceSpaceRoute.value]));
     <TheLayout
       v-if="
         !space &&
-        ($route.name === 'spaceProposals' || $route.name === 'spaceAbout')
+        ($route.name === 'spaceProposals' ||
+          $route.name === 'spaceAbout' ||
+          $route.name === 'spaceTreasury')
       "
     >
       <template #sidebar-left>

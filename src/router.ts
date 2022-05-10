@@ -12,6 +12,7 @@ import Timeline from '@/views/Timeline.vue';
 import Space from '@/views/Space.vue';
 import SpaceAbout from '@/views/SpaceAbout.vue';
 import SpaceProposals from '@/views/SpaceProposals.vue';
+import SpaceTreasury from './views/SpaceTreasury.vue';
 import Profile from '@/views/Profile.vue';
 import ProfileAbout from '@/views/ProfileAbout.vue';
 import ProfileActivity from '@/views/ProfileActivity.vue';
@@ -50,6 +51,11 @@ const spaceRoutes = [
     path: 'settings/:sourceSpace?',
     name: 'spaceSettings',
     component: SpaceSettings
+  },
+  {
+    path: 'treasury',
+    name: 'spaceTreasury',
+    component: SpaceTreasury
   }
 ];
 
