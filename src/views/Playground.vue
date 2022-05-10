@@ -68,6 +68,23 @@ const strategyValidationErrors = computed(
   () => validateSchema(strategyDefinition.value, form.value.params) ?? []
 );
 
+const scoresWithZeroBalanceAddresses = computed(() => {
+  if (!scores.value) {
+    return null;
+  }
+  // If an address is not present inside the scoresObject, add it with a zero balance
+  const addressesArray = form.value.addresses ?? [];
+  const scoresObject = scores.value[0] ?? {};
+  const scoresObjectWithZeroBalances = addressesArray.reduce((acc, address) => {
+    acc[address] = scoresObject[address] || 0;
+    return acc;
+  }, {});
+  // Order scoreObjectWithZeroBalances by score
+  return Object.fromEntries(
+    Object.entries(scoresObjectWithZeroBalances).sort((a, b) => b[1] - a[1])
+  );
+});
+
 async function loadScores() {
   scores.value = null;
   strategyError.value = null;
@@ -262,12 +279,12 @@ onMounted(async () => {
         <BaseBlock v-if="scores" :title="$t('results')">
           <div
             class="flex justify-between"
-            v-for="score in Object.keys(scores[0])"
+            v-for="(score, key) in scoresWithZeroBalanceAddresses"
             :key="score"
           >
-            <AvatarUser :address="score" :space="form" />
+            <AvatarUser :address="key" :space="form" />
             <span>
-              {{ formatCompactNumber(scores[0][score]) }}
+              {{ formatCompactNumber(score) }}
               {{ form.params.symbol }}
             </span>
           </div>
