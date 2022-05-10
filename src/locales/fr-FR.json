@@ -341,7 +341,8 @@
       "votedFor": "Voté {choice}",
       "today": "Aujourd'hui",
       "thisWeek": "Cette semaine",
-      "older": "Plus ancien"
+      "older": "Plus ancien",
+      "noActivity": "No activity yet"
     },
     "settings": {
       "header": "Modifier le profil",
