@@ -76,12 +76,7 @@ const scoresWithZeroBalanceAddresses = computed(() => {
   const addressesArray = form.value.addresses ?? [];
   const scoresObject = scores.value[0] ?? {};
   const scoresObjectWithZeroBalances = addressesArray.reduce((acc, address) => {
-    if (!scoresObject[address]) {
-      acc[address] = 0;
-    }
-    if (scoresObject[address]) {
-      acc[address] = scoresObject[address];
-    }
+    acc[address] = scoresObject[address] || 0;
     return acc;
   }, {});
   // Order scoreObjectWithZeroBalances by score
