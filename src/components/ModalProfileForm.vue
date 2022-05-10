@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { watch, ref, defineEmits } from 'vue';
 import schemas from '@snapshot-labs/snapshot.js/src/schemas';
-import { getIpfsUrl } from '@/helpers/utils';
 import { useAliasAction } from '@/composables/useAliasAction';
 import client from '@/helpers/clientEIP712';
 import { useWeb3 } from '@/composables/useWeb3';
@@ -31,12 +30,17 @@ const form = ref({
   about: ''
 });
 
+async function clearAvatarCache() {
+  await fetch(`https://stamp.fyi/clear/avatar/eth:${props.address}`);
+}
+
 async function save() {
   await client.profile(aliasWallet.value, aliasWallet.value.address, {
     from: web3Account.value,
     timestamp: Number((Date.now() / 1e3).toFixed()),
     profile: JSON.stringify(form.value)
   });
+  await clearAvatarCache();
   reloadProfile(props.address);
   emit('close');
   return notify(['green', t('notify.saved')]);
@@ -74,7 +78,6 @@ watch(
             <div class="relative">
               <BaseAvatar
                 :address="address"
-                :imgsrc="form.avatar ? getIpfsUrl(form?.avatar) : ''"
                 :previewFile="previewFile"
                 size="80"
               />
