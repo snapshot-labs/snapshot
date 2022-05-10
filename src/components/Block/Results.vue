@@ -3,7 +3,7 @@ import { computed } from 'vue';
 import { shorten } from '@/helpers/utils';
 import { useIntl } from '@/composables/useIntl';
 
-const { formatCompactNumber, formatPercentNumber } = useIntl();
+const { formatCompactNumber, formatPercentNumber, formatNumber } = useIntl();
 
 const props = defineProps({
   id: String,
@@ -60,7 +60,7 @@ const ts = (Date.now() / 1e3).toFixed();
                   content: results.resultsByStrategyScore[choice.i]
                     .map(
                       (score, index) =>
-                        `${formatCompactNumber(score)} ${titles[index]}`
+                        `${formatNumber(score)} ${titles[index]}`
                     )
                     .join(' + ')
                 }"
