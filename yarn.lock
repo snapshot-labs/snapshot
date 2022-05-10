@@ -1412,10 +1412,10 @@
     "@walletconnect/web3-provider" "1.4.1"
     fortmatic "^2.2.1"
 
-"@snapshot-labs/snapshot.js@^0.3.77":
-  version "0.3.77"
-  resolved "https://registry.yarnpkg.com/@snapshot-labs/snapshot.js/-/snapshot.js-0.3.77.tgz#f55a3a8faa0896b19d8115f9a8d17657f49ac1ef"
-  integrity sha512-ZIh2uxAKGH92vJ58nO2CMb+lUd6jf4bP+H0VyeTV9nkcpvtg+6+ePtsC9IFHS+gwREi5hLLysGLw9mZmoRPPLg==
+"@snapshot-labs/snapshot.js@^0.3.78":
+  version "0.3.78"
+  resolved "https://registry.yarnpkg.com/@snapshot-labs/snapshot.js/-/snapshot.js-0.3.78.tgz#45e44e66b183ee3078520fafa374975c780b2f41"
+  integrity sha512-UzgZEq8d8Tnv+4JEBFsKXUh86YxUrHYNhvd4K31V1G8W1OI6pVZ8QFmid5HjRAyLdI6XqDV10kP+dVwOHASeow==
   dependencies:
     "@ensdomains/eth-ens-namehash" "^2.0.15"
     "@ethersproject/abi" "^5.0.4"
@@ -3063,10 +3063,10 @@ csv@^5.3.1:
     csv-stringify "^5.6.5"
     stream-transform "^2.1.3"
 
-cypress@^9.6.0:
-  version "9.6.0"
-  resolved "https://registry.yarnpkg.com/cypress/-/cypress-9.6.0.tgz#84473b3362255fa8f5e627a596e58575c9e5320f"
-  integrity sha512-nNwt9eBQmSENamwa8LxvggXksfyzpyYaQ7lNBLgks3XZ6dPE/6BCQFBzeAyAPt/bNXfH3tKPkAyhiAZPYkWoEg==
+cypress@^9.6.1:
+  version "9.6.1"
+  resolved "https://registry.yarnpkg.com/cypress/-/cypress-9.6.1.tgz#a7d6b5a53325b3dc4960181f5800a5ade0f085eb"
+  integrity sha512-ECzmV7pJSkk+NuAhEw6C3D+RIRATkSb2VAHXDY6qGZbca/F9mv5pPsj2LO6Ty6oIFVBTrwCyL9agl28MtJMe2g==
   dependencies:
     "@cypress/request" "^2.88.10"
     "@cypress/xvfb" "^1.2.4"
