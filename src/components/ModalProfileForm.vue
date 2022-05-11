@@ -7,6 +7,7 @@ import { useWeb3 } from '@/composables/useWeb3';
 import { useFlashNotification } from '@/composables/useFlashNotification';
 import { useI18n } from '@/composables/useI18n';
 import { useProfiles } from '@/composables/useProfiles';
+import { useTimestamp } from '@/composables/useTimestamp';
 
 const props = defineProps<{
   address: string;
@@ -21,6 +22,7 @@ const { web3Account } = useWeb3();
 const { notify } = useFlashNotification();
 const { t } = useI18n();
 const { reloadProfile } = useProfiles();
+const { updateTimestamp } = useTimestamp();
 
 const properties = schemas.profile.properties;
 
@@ -32,6 +34,7 @@ const form = ref({
 
 async function clearAvatarCache() {
   await fetch(`https://stamp.fyi/clear/avatar/eth:${props.address}`);
+  updateTimestamp();
 }
 
 async function save() {

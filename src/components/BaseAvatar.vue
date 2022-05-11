@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { watch, ref, withDefaults } from 'vue';
+import { useTimestamp } from '@/composables/useTimestamp';
 
 interface Props {
   address?: string;
@@ -12,6 +13,8 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   size: '22'
 });
+
+const { timestamp } = useTimestamp();
 
 const imgUrl = ref<string>('');
 const showImg = ref(false);
@@ -54,7 +57,7 @@ watch(
 </script>
 
 <template>
-  <span class="flex shrink-0 items-center justify-center">
+  <span v-if="timestamp" class="flex shrink-0 items-center justify-center">
     <!-- Show local review image if previewFile is defined -->
     <img
       v-show="previewFile"
@@ -75,7 +78,7 @@ watch(
         imgUrl ||
         `https://stamp.fyi/avatar/eth:${address}?s=${
           parseInt(size) * 2
-        }&ts=${Number((Date.now() / 1e3).toFixed())}`
+        }&ts=${timestamp}`
       "
       class="rounded-full object-cover"
       :class="'bg-[color:var(--border-color)]'"
