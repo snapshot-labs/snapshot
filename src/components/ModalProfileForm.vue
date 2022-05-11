@@ -7,7 +7,6 @@ import { useWeb3 } from '@/composables/useWeb3';
 import { useFlashNotification } from '@/composables/useFlashNotification';
 import { useI18n } from '@/composables/useI18n';
 import { useProfiles } from '@/composables/useProfiles';
-import { useTimestamp } from '@/composables/useTimestamp';
 
 const props = defineProps<{
   address: string;
@@ -22,7 +21,6 @@ const { web3Account } = useWeb3();
 const { notify } = useFlashNotification();
 const { t } = useI18n();
 const { reloadProfile } = useProfiles();
-const { updateTimestamp } = useTimestamp();
 
 const properties = schemas.profile.properties;
 
@@ -37,13 +35,11 @@ async function clearAvatarCache() {
 }
 
 async function save() {
-  const timestamp = Number((Date.now() / 1e3).toFixed());
   await client.profile(aliasWallet.value, aliasWallet.value.address, {
     from: web3Account.value,
-    timestamp,
+    timestamp: Number((Date.now() / 1e3).toFixed()),
     profile: JSON.stringify(form.value)
   });
-  updateTimestamp(timestamp);
   await clearAvatarCache();
   reloadProfile(props.address);
   emit('close');
