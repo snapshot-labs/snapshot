@@ -33,8 +33,8 @@ const form = ref({
 });
 
 async function clearAvatarCache() {
-  await fetch(`https://stamp.fyi/clear/avatar/eth:${props.address}`);
   updateTimestamp();
+  await fetch(`https://stamp.fyi/clear/avatar/eth:${props.address}`);
 }
 
 async function save() {
