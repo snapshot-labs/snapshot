@@ -404,11 +404,6 @@
       "ranked-choice": "Chaque votant peut effectuer plusieurs choix et les classer par préférence. Le système du second tour instantané est utilisé pour calculer les résultats.",
       "weighted": "Chaque votant peut répartir ses droits de vote entre les différents choix.",
       "basic": "Choix de vote unique avec trois choix: Pour, Contre ou S’abstenir"
-    },
-    "choices": {
-      "for": "Pour",
-      "against": "Contre",
-      "abstain": "S’abstenir"
     }
   },
   "safeSnap": {
