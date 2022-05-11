@@ -404,11 +404,6 @@
       "ranked-choice": "Jeder Wähler kann eine beliebige Anzahl von Wahlmöglichkeiten auswählen und ihnen eine Priorität zuordnen. Das Ergebnis wird mit der Methode \"sofortige Stichwahl\" ermittelt.",
       "weighted": "Jeder Wähler kann die Stimmrechte auf eine beliebige Anzahl von Wahlmöglichkeiten verteilen.",
       "basic": "Single choice voting with three choices: For, Against or Abstain"
-    },
-    "choices": {
-      "for": "Dafür",
-      "against": "Dagegen",
-      "abstain": "Enthalten"
     }
   },
   "safeSnap": {

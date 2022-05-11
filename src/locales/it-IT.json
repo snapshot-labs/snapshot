@@ -404,11 +404,6 @@
       "ranked-choice": "Ogni elettore può selezionare e classificare un numero qualsiasi di scelte. I risultati sono calcolati con il metodo di conteggio del runoff istantaneo.",
       "weighted": "Ogni elettore può distribuire il potere di voto su qualsiasi numero di scelte.",
       "basic": "Voto a scelta singola con tre scelte: Per, Contro o Astenuto\n"
-    },
-    "choices": {
-      "for": "Per",
-      "against": "Contro",
-      "abstain": "Astenuti"
     }
   },
   "safeSnap": {

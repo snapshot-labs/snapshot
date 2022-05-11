@@ -404,11 +404,6 @@
       "ranked-choice": "Ang bawat botante ay maaaring pumili at magranggo ng anumang bilang ng mga pagpipilian. Kinakalkula ang mga resulta sa pamamagitan ng instant-runoff counting method.",
       "weighted": "Ang bawat botante ay maaaring magpakalat ng kapangyarihan sa pagboto sa anumang bilang ng mga pagpipilian.",
       "basic": "Single choice na pagboto na may tatlong pagpipilian: Para sa, Laban o Abstain"
-    },
-    "choices": {
-      "for": "Para sa",
-      "against": "Laban",
-      "abstain": "Abstain"
     }
   },
   "safeSnap": {
