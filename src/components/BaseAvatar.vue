@@ -57,7 +57,7 @@ watch(
 </script>
 
 <template>
-  <span v-if="timestamp" class="flex shrink-0 items-center justify-center">
+  <span class="flex shrink-0 items-center justify-center">
     <!-- Show local review image if previewFile is defined -->
     <img
       v-show="previewFile"
@@ -76,9 +76,9 @@ watch(
       v-show="!previewFile"
       :src="
         imgUrl ||
-        `https://stamp.fyi/avatar/eth:${address}?s=${
-          parseInt(size) * 2
-        }&ts=${timestamp}`
+        `https://stamp.fyi/avatar/eth:${address}?s=${parseInt(size) * 2}${
+          timestamp ? `&ts=${timestamp}` : ''
+        }`
       "
       class="rounded-full object-cover"
       :class="'bg-[color:var(--border-color)]'"

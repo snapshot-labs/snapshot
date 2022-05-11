@@ -33,16 +33,17 @@ const form = ref({
 });
 
 async function clearAvatarCache() {
-  updateTimestamp();
   await fetch(`https://stamp.fyi/clear/avatar/eth:${props.address}`);
 }
 
 async function save() {
+  const timestamp = Number((Date.now() / 1e3).toFixed());
   await client.profile(aliasWallet.value, aliasWallet.value.address, {
     from: web3Account.value,
-    timestamp: Number((Date.now() / 1e3).toFixed()),
+    timestamp,
     profile: JSON.stringify(form.value)
   });
+  updateTimestamp(timestamp);
   await clearAvatarCache();
   reloadProfile(props.address);
   emit('close');

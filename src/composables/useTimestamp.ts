@@ -1,17 +1,11 @@
-import { onMounted } from 'vue';
-import { useStorage } from '@vueuse/core';
+import { ref } from 'vue';
+
+const timestamp = ref(0);
 
 export function useTimestamp() {
-  const timestamp = useStorage('timestamp', 0);
-
-  function updateTimestamp() {
-    timestamp.value = Number((Date.now() / 1e3).toFixed());
+  function updateTimestamp(ts) {
+    timestamp.value = ts;
   }
-
-  onMounted(() => {
-    if (timestamp.value) return;
-    timestamp.value = Number((Date.now() / 1e3).toFixed());
-  });
 
   return { updateTimestamp, timestamp };
 }
