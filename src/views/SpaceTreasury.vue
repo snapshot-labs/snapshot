@@ -1,21 +1,22 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
-import { getTokenBalancesUsd } from '@/helpers/covalent';
 import { formatUnits } from '@ethersproject/units';
 import { useIntl } from '@/composables/useIntl';
+import { useTreasury } from '@/composables/useTreasury';
 
 const props = defineProps<{
   space: { id: string };
 }>();
 
 const { formatCompactNumber } = useIntl();
+const { getFilteredTokenBalances } = useTreasury();
 
 const loading = ref(false);
 const assets = ref<null | any[]>(null);
 
 onMounted(async () => {
   loading.value = true;
-  assets.value = await getTokenBalancesUsd(props.space.id);
+  assets.value = await getFilteredTokenBalances(props.space.id);
   loading.value = false;
 });
 </script>
@@ -49,7 +50,7 @@ onMounted(async () => {
               <div>${{ formatCompactNumber(asset.quote) }}</div>
             </div>
           </div>
-          <IH-arrow-sm-right class="mt-2" />
+          <i-ho-chevron-right class="mt-2" />
         </div>
       </BaseBlock>
     </template>
