@@ -404,11 +404,6 @@
       "ranked-choice": "Cada eleitor pode selecionar e classificar qualquer número de escolhas. Os resultados são calculados pelo método de contagem instantânea.",
       "weighted": "Cada eleitor pode espalhar o poder de voto em qualquer número de escolhas.",
       "basic": "Single choice voting with three choices: For, Against or Abstain"
-    },
-    "choices": {
-      "for": "For",
-      "against": "Against",
-      "abstain": "Abstain"
     }
   },
   "safeSnap": {
