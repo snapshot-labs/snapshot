@@ -404,11 +404,6 @@
       "ranked-choice": "Her seçmen istediği sayıda seçeneği seçebilir ve sıralayabilir. Sonuçlar anlık akış sayma yöntemiyle hesaplanır.",
       "weighted": "Her seçmen, oy verme gücünü herhangi bir sayıda seçeneğe yayabilir.",
       "basic": "Single choice voting with three choices: For, Against or Abstain"
-    },
-    "choices": {
-      "for": "For",
-      "against": "Against",
-      "abstain": "Abstain"
     }
   },
   "safeSnap": {
