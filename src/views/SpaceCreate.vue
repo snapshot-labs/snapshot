@@ -250,9 +250,9 @@ watchEffect(async () => {
 watchEffect(() => {
   if (form.value.type === 'basic') {
     choices.value = [
-      { key: 1, text: t('voting.choices.for') },
-      { key: 2, text: t('voting.choices.against') },
-      { key: 3, text: t('voting.choices.abstain') }
+      { key: 1, text: 'For' },
+      { key: 2, text: 'Against' },
+      { key: 3, text: 'Abstain' }
     ];
   }
 });
