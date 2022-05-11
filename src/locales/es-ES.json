@@ -404,11 +404,6 @@
       "ranked-choice": "Cada votante puede seleccionar y clasificar cualquier cantidad de opciones. Los resultados serán calculados con un método de segunda vuelta instantánea.",
       "weighted": "Cada votante puede repartir sus votos entre cualquier cantidad de opciones.",
       "basic": "Votación individual con tres opciones: A favor, En Contra o Abstenerse"
-    },
-    "choices": {
-      "for": "Para",
-      "against": "Contra",
-      "abstain": "Abstenerse"
     }
   },
   "safeSnap": {
