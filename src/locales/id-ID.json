@@ -404,11 +404,6 @@
       "ranked-choice": "Setiap pemilih dapat memilih dan memberi peringkat ke sejumlah pilihan. Hasil dihitung dengan metode instant-runoff.",
       "weighted": "Setiap pemilih dapat menyebarkan hak suara di sejumlah pilihan.",
       "basic": "Voting pilihan tunggal dengan tiga pilihan: Untuk, Menentang atau Abstain"
-    },
-    "choices": {
-      "for": "Untuk",
-      "against": "Menentang",
-      "abstain": "Abstain"
     }
   },
   "safeSnap": {
