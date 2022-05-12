@@ -52,3 +52,15 @@ export interface ProfileActivity {
   space: { id: string; avatar: string };
   vote?: { proposalId: string; choice: string; type: string };
 }
+
+export interface AssetInfo {
+  contract_name: string;
+  contract_ticker_symbol: string;
+  contract_address: string;
+  contract_decimals: number;
+  logo_url: string;
+  balance: string;
+  balance_24h: string;
+  quote: number;
+  quote_24h: number;
+}

@@ -130,8 +130,6 @@ export function useIntl() {
   };
 
   const formatNumber = (number: number, formatter?: Intl.NumberFormat) => {
-    if (number < 0.00001) number = 0;
-
     formatter = formatter || defaultNumberFormatter.value;
 
     return formatter.format(number);

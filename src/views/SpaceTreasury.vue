@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
 import { useTreasury } from '@/composables/useTreasury';
+import { AssetInfo } from '@/helpers/interfaces';
 
 const props = defineProps<{
   space: { id: string };
@@ -8,11 +9,12 @@ const props = defineProps<{
 const { getFilteredTokenBalances } = useTreasury();
 
 const loading = ref(false);
-const assets = ref<null | any[]>(null);
+const assets = ref<null | AssetInfo[]>(null);
 
 onMounted(async () => {
   loading.value = true;
   assets.value = await getFilteredTokenBalances(props.space.id);
+  console.log(await getFilteredTokenBalances(props.space.id));
   loading.value = false;
 });
 </script>
