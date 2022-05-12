@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { watch, ref, withDefaults } from 'vue';
+import { watch, ref, withDefaults, computed } from 'vue';
+import { useProfiles } from '@/composables/useProfiles';
 
 interface Props {
   address?: string;
@@ -12,6 +13,8 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   size: '22'
 });
+
+const { profilesCreated } = useProfiles();
 
 const imgUrl = ref<string>('');
 const showImg = ref(false);
@@ -28,6 +31,11 @@ function loadImage() {
     };
   }
 }
+
+const timestamp = computed(() => {
+  if (!props?.address || !profilesCreated.value?.[props.address]) return '';
+  return `&ts=${profilesCreated.value[props.address]}`;
+});
 
 watch(
   () => props.imgsrc,
@@ -75,7 +83,7 @@ watch(
         imgUrl ||
         `https://stamp.fyi/avatar/eth:${address}?s=${
           parseInt(size) * 2
-        }&ts=${Number((Date.now() / 1e3).toFixed())}`
+        }${timestamp}`
       "
       class="rounded-full object-cover"
       :class="'bg-[color:var(--border-color)]'"

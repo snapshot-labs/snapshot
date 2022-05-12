@@ -404,11 +404,6 @@
       "ranked-choice": "Fiecare alegător poate selecta şi clasifica orice număr de alegeri. Rezultatele sunt calculate prin metoda de numărare cu balotaj instantaneu.",
       "weighted": "Fiecare alegator poate raspândi puterea de vot la oricâte alegeri.",
       "basic": "Votul unic cu trei opțiuni: Pentru, Împotriva sau Abținere"
-    },
-    "choices": {
-      "for": "Pentru",
-      "against": "Împotrivă",
-      "abstain": "Abținere"
     }
   },
   "safeSnap": {
