@@ -357,6 +357,7 @@ export const PROFILES_QUERY = gql`
       name
       about
       avatar
+      created
     }
   }
 `;
