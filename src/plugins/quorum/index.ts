@@ -1,5 +1,32 @@
 import { BigNumber } from '@ethersproject/bignumber';
-import { call } from '@snapshot-labs/snapshot.js/src/utils';
+import { call, subgraphRequest } from '@snapshot-labs/snapshot.js/src/utils';
+import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
+
+export async function getSnapshots(network, snapshot, provider, networks) {
+  const snapshots = {};
+  networks.forEach((n) => (snapshots[n] = 'latest'));
+  if (snapshot === 'latest') return snapshots;
+  snapshots[network] = snapshot;
+  const networkIn = Object.keys(snapshots).filter((s) => network !== s);
+  if (networkIn.length === 0) return snapshots;
+  const block = await provider.getBlock(snapshot);
+  const query = {
+    blocks: {
+      __args: {
+        where: {
+          ts: block.timestamp,
+          network_in: networkIn
+        }
+      },
+      network: true,
+      number: true
+    }
+  };
+  const url = 'https://blockfinder.snapshot.org/graphql';
+  const data = await subgraphRequest(url, query);
+  data.blocks.forEach((block) => (snapshots[block.network] = block.number));
+  return snapshots;
+}
 
 export default class Plugin {
   public author = 'lbeder';
@@ -23,15 +50,42 @@ export default class Plugin {
         const blockTag = snapshot === 'latest' ? snapshot : parseInt(snapshot);
 
         const totalVotingPower = await call(
-          web3,
-          [methodABI],
-          [address, methodABI.name],
-          { blockTag }
+            web3,
+            [methodABI],
+            [address, methodABI.name],
+            { blockTag }
         );
 
         return BigNumber.from(totalVotingPower)
-          .div(BigNumber.from(10).pow(decimals))
-          .toNumber();
+            .div(BigNumber.from(10).pow(decimals))
+            .toNumber();
+      }
+
+      case 'multichainBalance': {
+        const { network, strategies } = quorumOptions;
+        const blocks = await getSnapshots(
+            network,
+            parseInt(snapshot),
+            web3,
+            strategies.map(s => s.network || network)
+        );
+        const requests: Promise<any>[] = strategies.map(s =>
+            call(
+                getProvider(s.network),
+                [s.methodABI],
+                [s.address, s.methodABI.name],
+                { blockTag: blocks[s.network] }
+            )
+        );
+        const results = await Promise.all(requests);
+        return results.reduce((total, ele, index) => {
+          const eleDecimals = strategies[index].decimals;
+          if (index === 1) {
+            const eleDecimals = strategies[0].decimals;
+            total = total.div(BigNumber.from(10).pow(eleDecimals));
+          }
+          return total.add(ele.div(BigNumber.from(10).pow(eleDecimals)));
+        });
       }
 
       default:
