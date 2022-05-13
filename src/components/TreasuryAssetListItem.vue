@@ -15,31 +15,28 @@ const { formatCompactNumber, formatNumber, formatPercentNumber } = useIntl();
     <img alt="Asset logo" :src="item.logo_url" class="w-6 h-6" />
     <div class="flex w-full justify-between">
       <div class="leading-6">
-        <div
-          aria-label="Asset label"
-          class="text-md text-skin-heading font-semibold"
-        >
+        <div class="text-md text-skin-heading font-semibold">
           {{ item.contract_name }}
         </div>
         <div>
-          <span aria-label="Asset amount" class="mr-1">
+          <span class="mr-1">
             {{
               formatCompactNumber(
                 Number(formatUnits(item.balance, item.contract_decimals))
               )
             }}
           </span>
-          <span aria-label="Asset symbol">
+          <span>
             {{ item.contract_ticker_symbol }}
           </span>
         </div>
       </div>
       <div class="text-right">
-        <div aria-label="Asset value in USD" class="text-md text-skin-heading">
+        <div class="text-md text-skin-heading">
           ${{ formatNumber(item.quote) }}
         </div>
         <span
-          aria-label="24h change"
+          id="quote-change"
           :class="[item.quote_24h > item.quote ? 'text-red' : 'text-green']"
         >
           {{

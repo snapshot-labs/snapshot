@@ -19,7 +19,7 @@ const item: AssetInfo = {
   quote_24h: 2800
 };
 
-describe('TreasuryWalletListItem', () => {
+describe('TreasuryAssetListItem', () => {
   let wrapper;
   beforeEach(() => {
     wrapper = mount(TreasuryAssetListItem, {
@@ -36,38 +36,30 @@ describe('TreasuryWalletListItem', () => {
     expect(img.attributes('src')).toEqual(item.logo_url);
   });
   it('renders the correct name', () => {
-    expect(wrapper.find('[aria-label="Asset label"]').text()).toContain(
-      item.contract_name
-    );
+    expect(wrapper.text()).toContain(item.contract_name);
   });
   it('renders the correct asset balance', () => {
-    expect(wrapper.find('[aria-label="Asset amount"]').text()).toContain(
+    expect(wrapper.text()).toContain(
       formatCompactNumber(
         Number(formatUnits(item.balance, item.contract_decimals))
       )
     );
   });
   it('renders the correct asset symbol', () => {
-    expect(wrapper.find('[aria-label="Asset symbol"]').text()).toContain(
-      item.contract_ticker_symbol
-    );
+    expect(wrapper.text()).toContain(item.contract_ticker_symbol);
   });
   it('renders the correct quote', () => {
-    expect(wrapper.find('[aria-label="Asset value in USD"]').text()).toContain(
-      `$${formatNumber(item.quote)}`
-    );
+    expect(wrapper.text()).toContain(`$${formatNumber(item.quote)}`);
   });
   it('shows correct 24h % change', () => {
-    expect(wrapper.find('[aria-label="24h change"]').text()).toContain(
+    expect(wrapper.text()).toContain(
       `${item.quote_24h > item.quote ? '' : '+'}${formatPercentNumber(
         (item.quote - item.quote_24h) / item.quote_24h
       )}`
     );
   });
   it('shows red if 24h is higher than quote', async () => {
-    expect(wrapper.find('[aria-label="24h change"]').classes()).toContain(
-      'text-red'
-    );
+    expect(wrapper.find('[id="quote-change"]').classes()).toContain('text-red');
   });
   it('shows green if 24h is lower than quote', async () => {
     await wrapper.setProps({
@@ -77,7 +69,7 @@ describe('TreasuryWalletListItem', () => {
         quote_24h: item.quote_24h
       }
     });
-    expect(wrapper.find('[aria-label="24h change"]').classes()).toContain(
+    expect(wrapper.find('[id="quote-change"]').classes()).toContain(
       'text-green'
     );
   });
@@ -89,7 +81,7 @@ describe('TreasuryWalletListItem', () => {
         quote_24h: item.quote_24h
       }
     });
-    expect(wrapper.find('[aria-label="24h change"]').classes()).toContain(
+    expect(wrapper.find('[id="quote-change"]').classes()).toContain(
       'text-green'
     );
   });
