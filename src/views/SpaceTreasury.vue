@@ -26,7 +26,7 @@ onMounted(async () => {
     </template>
     <template #content-right>
       <LoadingRow v-if="loading" block />
-      <TreasuryAssetList v-if="assets" :assets="assets" />
+      <TreasuryAssetsList v-if="assets" :assets="assets" />
     </template>
   </TheLayout>
 </template>

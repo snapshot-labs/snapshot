@@ -1,6 +1,6 @@
 import { describe, expect, it, beforeEach } from 'vitest';
 import { mount } from '@vue/test-utils';
-import TreasuryAssetListItem from './TreasuryAssetListItem.vue';
+import TreasuryAssetsListItem from './TreasuryAssetsListItem.vue';
 import { formatUnits } from '@ethersproject/units';
 import { useIntl } from '@/composables/useIntl';
 import { TreasuryAsset } from '@/helpers/interfaces';
@@ -19,10 +19,10 @@ const asset: TreasuryAsset = {
   quote_24h: 2800
 };
 
-describe('TreasuryAssetListItem', () => {
+describe('TreasuryAssetsListItem', () => {
   let wrapper;
   beforeEach(() => {
-    wrapper = mount(TreasuryAssetListItem, {
+    wrapper = mount(TreasuryAssetsListItem, {
       props: {
         asset
       }

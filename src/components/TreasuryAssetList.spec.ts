@@ -1,9 +1,9 @@
 import { describe, expect, it, beforeEach, beforeAll, afterAll } from 'vitest';
 import { shallowMount, config } from '@vue/test-utils';
-import TreasuryAssetList from './TreasuryAssetList.vue';
+import TreasuryAssetsList from './TreasuryAssetsList.vue';
 import i18n from '@/helpers/i18n';
 
-describe('TreasuryAssetList', () => {
+describe('TreasuryAssetsList', () => {
   let wrapper;
 
   beforeAll(() => {
@@ -15,7 +15,7 @@ describe('TreasuryAssetList', () => {
   });
 
   beforeEach(() => {
-    wrapper = shallowMount(TreasuryAssetList, {
+    wrapper = shallowMount(TreasuryAssetsList, {
       global: {
         plugins: [i18n]
       },

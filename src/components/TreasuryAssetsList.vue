@@ -15,7 +15,7 @@ defineProps<{
   >
     <ul>
       <li v-for="asset in assets" :key="asset.contract_address">
-        <TreasuryAssetListItem :asset="asset" />
+        <TreasuryAssetsListItem :asset="asset" />
       </li>
     </ul>
   </BaseBlock>
