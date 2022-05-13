@@ -32,7 +32,8 @@ defineProps<{
       <div class="flex items-center">
         <div
           v-if="label"
-          class="border !border-skin-link text-skin-link text-xs rounded-full px-3 cursor-help"
+          class="border !border-skin-border text-skin-link text-xs rounded-full px-3"
+          :class="{ 'cursor-help': labelTooltip }"
           v-tippy="{ content: labelTooltip ? labelTooltip : null }"
         >
           {{ label }}
