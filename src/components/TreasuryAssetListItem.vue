@@ -11,7 +11,9 @@ const { formatCompactNumber, formatNumber, formatPercentNumber } = useIntl();
 </script>
 
 <template>
-  <div class="px-4 py-3 border-b last:border-0 flex items-center gap-3">
+  <div
+    class="px-4 py-3 !border-b border-skin-border last:border-0 flex items-center gap-3"
+  >
     <img alt="Asset logo" :src="asset.logo_url" class="w-6 h-6" />
     <div class="flex w-full justify-between">
       <div class="leading-6">

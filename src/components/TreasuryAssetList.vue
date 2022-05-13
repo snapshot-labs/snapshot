@@ -7,11 +7,16 @@ defineProps<{
 </script>
 
 <template>
-  <div>
+  <BaseBlock
+    :title="$t('treasury.assets')"
+    :counter="assets.length"
+    :label="$t('treasury.24hChange')"
+    slim
+  >
     <ul>
       <li v-for="asset in assets" :key="asset.contract_address">
         <TreasuryAssetListItem :asset="asset" />
       </li>
     </ul>
-  </div>
+  </BaseBlock>
 </template>

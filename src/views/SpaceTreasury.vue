@@ -26,13 +26,7 @@ onMounted(async () => {
     </template>
     <template #content-right>
       <LoadingRow v-if="loading" block />
-      <BaseBlock v-else slim>
-        <TreasuryAssetListItem
-          v-for="(asset, i) in assets"
-          :key="i"
-          :asset="asset"
-        />
-      </BaseBlock>
+      <TreasuryAssetList v-if="assets" :assets="assets" />
     </template>
   </TheLayout>
 </template>

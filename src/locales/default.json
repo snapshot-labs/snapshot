@@ -538,6 +538,8 @@
     "switchToMainnet": "Switch to Mainnet"
   },
   "treasury": {
-    "title": "Treasury"
+    "title": "Treasury",
+    "assets": "Assets",
+    "24hChange": "24h change"
   }
 }
