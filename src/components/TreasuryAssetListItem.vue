@@ -36,7 +36,7 @@ const { formatCompactNumber, formatNumber, formatPercentNumber } = useIntl();
           ${{ formatNumber(item.quote) }}
         </div>
         <span
-          id="quote-change"
+          id="asset-quote-change"
           :class="[item.quote_24h > item.quote ? 'text-red' : 'text-green']"
         >
           {{

@@ -59,7 +59,9 @@ describe('TreasuryAssetListItem', () => {
     );
   });
   it('shows red if 24h is higher than quote', async () => {
-    expect(wrapper.find('[id="quote-change"]').classes()).toContain('text-red');
+    expect(wrapper.find('[id="asset-quote-change"]').classes()).toContain(
+      'text-red'
+    );
   });
   it('shows green if 24h is lower than quote', async () => {
     await wrapper.setProps({
@@ -69,7 +71,7 @@ describe('TreasuryAssetListItem', () => {
         quote_24h: item.quote_24h
       }
     });
-    expect(wrapper.find('[id="quote-change"]').classes()).toContain(
+    expect(wrapper.find('[id="asset-quote-change"]').classes()).toContain(
       'text-green'
     );
   });
@@ -81,7 +83,7 @@ describe('TreasuryAssetListItem', () => {
         quote_24h: item.quote_24h
       }
     });
-    expect(wrapper.find('[id="quote-change"]').classes()).toContain(
+    expect(wrapper.find('[id="asset-quote-change"]').classes()).toContain(
       'text-green'
     );
   });
