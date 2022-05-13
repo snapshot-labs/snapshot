@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
 import { useTreasury } from '@/composables/useTreasury';
-import { AssetInfo } from '@/helpers/interfaces';
+import { TreasuryAsset } from '@/helpers/interfaces';
 
 const props = defineProps<{
   space: { id: string };
@@ -9,7 +9,7 @@ const props = defineProps<{
 const { getFilteredTokenBalances } = useTreasury();
 
 const loading = ref(false);
-const assets = ref<null | AssetInfo[]>(null);
+const assets = ref<null | TreasuryAsset[]>(null);
 
 onMounted(async () => {
   loading.value = true;
@@ -30,7 +30,7 @@ onMounted(async () => {
         <TreasuryAssetListItem
           v-for="(asset, i) in assets"
           :key="i"
-          :item="asset"
+          :asset="asset"
         />
       </BaseBlock>
     </template>

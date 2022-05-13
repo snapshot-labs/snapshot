@@ -3,11 +3,11 @@ import { mount } from '@vue/test-utils';
 import TreasuryAssetListItem from './TreasuryAssetListItem.vue';
 import { formatUnits } from '@ethersproject/units';
 import { useIntl } from '@/composables/useIntl';
-import { AssetInfo } from '@/helpers/interfaces';
+import { TreasuryAsset } from '@/helpers/interfaces';
 
 const { formatCompactNumber, formatNumber, formatPercentNumber } = useIntl();
 
-const item: AssetInfo = {
+const asset: TreasuryAsset = {
   contract_name: 'Wrapped Ether',
   contract_ticker_symbol: 'WETH',
   contract_address: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
@@ -24,7 +24,7 @@ describe('TreasuryAssetListItem', () => {
   beforeEach(() => {
     wrapper = mount(TreasuryAssetListItem, {
       props: {
-        item
+        asset
       }
     });
   });
@@ -33,28 +33,28 @@ describe('TreasuryAssetListItem', () => {
     const img = wrapper.find('[alt="Asset logo"]');
     expect(img.classes()).toContain('h-6');
     expect(img.classes()).toContain('w-6');
-    expect(img.attributes('src')).toEqual(item.logo_url);
+    expect(img.attributes('src')).toEqual(asset.logo_url);
   });
   it('renders the correct name', () => {
-    expect(wrapper.text()).toContain(item.contract_name);
+    expect(wrapper.text()).toContain(asset.contract_name);
   });
   it('renders the correct asset balance', () => {
     expect(wrapper.text()).toContain(
       formatCompactNumber(
-        Number(formatUnits(item.balance, item.contract_decimals))
+        Number(formatUnits(asset.balance, asset.contract_decimals))
       )
     );
   });
   it('renders the correct asset symbol', () => {
-    expect(wrapper.text()).toContain(item.contract_ticker_symbol);
+    expect(wrapper.text()).toContain(asset.contract_ticker_symbol);
   });
   it('renders the correct quote', () => {
-    expect(wrapper.text()).toContain(`$${formatNumber(item.quote)}`);
+    expect(wrapper.text()).toContain(`$${formatNumber(asset.quote)}`);
   });
   it('shows correct 24h % change', () => {
     expect(wrapper.text()).toContain(
-      `${item.quote_24h > item.quote ? '' : '+'}${formatPercentNumber(
-        (item.quote - item.quote_24h) / item.quote_24h
+      `${asset.quote_24h > asset.quote ? '' : '+'}${formatPercentNumber(
+        (asset.quote - asset.quote_24h) / asset.quote_24h
       )}`
     );
   });
@@ -65,10 +65,10 @@ describe('TreasuryAssetListItem', () => {
   });
   it('shows green if 24h is lower than quote', async () => {
     await wrapper.setProps({
-      item: {
-        ...item,
-        quote: item.quote + 200,
-        quote_24h: item.quote_24h
+      asset: {
+        ...asset,
+        quote: asset.quote + 200,
+        quote_24h: asset.quote_24h
       }
     });
     expect(wrapper.find('[id="asset-quote-change"]').classes()).toContain(
@@ -77,10 +77,10 @@ describe('TreasuryAssetListItem', () => {
   });
   it('shows green if 24h is equal to quote', async () => {
     await wrapper.setProps({
-      item: {
-        ...item,
-        quote: item.quote + 100,
-        quote_24h: item.quote_24h
+      asset: {
+        ...asset,
+        quote: asset.quote + 100,
+        quote_24h: asset.quote_24h
       }
     });
     expect(wrapper.find('[id="asset-quote-change"]').classes()).toContain(

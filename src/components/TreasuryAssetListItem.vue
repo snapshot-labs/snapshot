@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { formatUnits } from '@ethersproject/units';
 import { useIntl } from '@/composables/useIntl';
-import { AssetInfo } from '@/helpers/interfaces';
+import { TreasuryAsset } from '@/helpers/interfaces';
 
 defineProps<{
-  item: AssetInfo;
+  asset: TreasuryAsset;
 }>();
 
 const { formatCompactNumber, formatNumber, formatPercentNumber } = useIntl();
@@ -12,36 +12,36 @@ const { formatCompactNumber, formatNumber, formatPercentNumber } = useIntl();
 
 <template>
   <div class="px-4 py-3 border-b last:border-0 flex items-center gap-3">
-    <img alt="Asset logo" :src="item.logo_url" class="w-6 h-6" />
+    <img alt="Asset logo" :src="asset.logo_url" class="w-6 h-6" />
     <div class="flex w-full justify-between">
       <div class="leading-6">
         <div class="text-md text-skin-heading font-semibold">
-          {{ item.contract_name }}
+          {{ asset.contract_name }}
         </div>
         <div>
           <span class="mr-1">
             {{
               formatCompactNumber(
-                Number(formatUnits(item.balance, item.contract_decimals))
+                Number(formatUnits(asset.balance, asset.contract_decimals))
               )
             }}
           </span>
           <span>
-            {{ item.contract_ticker_symbol }}
+            {{ asset.contract_ticker_symbol }}
           </span>
         </div>
       </div>
       <div class="text-right">
         <div class="text-md text-skin-heading">
-          ${{ formatNumber(item.quote) }}
+          ${{ formatNumber(asset.quote) }}
         </div>
         <span
           id="asset-quote-change"
-          :class="[item.quote_24h > item.quote ? 'text-red' : 'text-green']"
+          :class="[asset.quote_24h > asset.quote ? 'text-red' : 'text-green']"
         >
           {{
-            `${item.quote_24h > item.quote ? '' : '+'}${formatPercentNumber(
-              (item.quote - item.quote_24h) / item.quote_24h
+            `${asset.quote_24h > asset.quote ? '' : '+'}${formatPercentNumber(
+              (asset.quote - asset.quote_24h) / asset.quote_24h
             )}`
           }}
         </span>

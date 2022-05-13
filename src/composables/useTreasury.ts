@@ -1,7 +1,7 @@
 import { ref } from 'vue';
 import snapshot from '@snapshot-labs/snapshot.js';
 import { getTokenBalances, ETHER_CONTRACT } from '@/helpers/covalent';
-import { AssetInfo } from '@/helpers/interfaces';
+import { TreasuryAsset } from '@/helpers/interfaces';
 
 const TOKEN_LIST_URL = 'https://tokenlist.zerion.eth.link/';
 
@@ -23,7 +23,7 @@ export function useTreasury() {
       if (!zerionTokenListAddresses.value)
         throw new Error('Token list not found');
 
-      const tokenBalancesWithoutZero: AssetInfo[] | null =
+      const tokenBalancesWithoutZero: TreasuryAsset[] | null =
         await getTokenBalances(address);
       if (!tokenBalancesWithoutZero) return null;
 

@@ -53,7 +53,7 @@ export interface ProfileActivity {
   vote?: { proposalId: string; choice: string; type: string };
 }
 
-export interface AssetInfo {
+export interface TreasuryAsset {
   contract_name: string;
   contract_ticker_symbol: string;
   contract_address: string;
