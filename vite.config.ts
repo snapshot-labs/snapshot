@@ -48,7 +48,6 @@ export default defineConfig({
     dedupe: ['@popperjs/core']
   },
   test: {
-    open: true,
     environment: 'happy-dom',
     setupFiles: ['vitest.ts']
   }
