@@ -50,32 +50,32 @@ export default class Plugin {
         const blockTag = snapshot === 'latest' ? snapshot : parseInt(snapshot);
 
         const totalVotingPower = await call(
-            web3,
-            [methodABI],
-            [address, methodABI.name],
-            { blockTag }
+          web3,
+          [methodABI],
+          [address, methodABI.name],
+          { blockTag }
         );
 
         return BigNumber.from(totalVotingPower)
-            .div(BigNumber.from(10).pow(decimals))
-            .toNumber();
+          .div(BigNumber.from(10).pow(decimals))
+          .toNumber();
       }
 
       case 'multichainBalance': {
         const { network, strategies } = quorumOptions;
         const blocks = await getSnapshots(
-            network,
-            parseInt(snapshot),
-            web3,
-            strategies.map(s => s.network || network)
+          network,
+          parseInt(snapshot),
+          web3,
+          strategies.map(s => s.network || network)
         );
         const requests: Promise<any>[] = strategies.map(s =>
-            call(
-                getProvider(s.network),
-                [s.methodABI],
-                [s.address, s.methodABI.name],
-                { blockTag: blocks[s.network] }
-            )
+          call(
+            getProvider(s.network),
+            [s.methodABI],
+            [s.address, s.methodABI.name],
+            { blockTag: blocks[s.network] }
+          )
         );
         const results = await Promise.all(requests);
         return results.reduce((total, ele, index) => {
