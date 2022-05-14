@@ -53,7 +53,7 @@ const spaceRoutes = [
     component: SpaceSettings
   },
   {
-    path: 'treasury',
+    path: 'treasury/:wallet?',
     name: 'spaceTreasury',
     component: SpaceTreasury
   }
