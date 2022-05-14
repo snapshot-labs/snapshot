@@ -95,7 +95,10 @@ export function useIntl() {
     style: 'long',
     numeric: 'always'
   });
-  const defaultNumberFormatter = getNumberFormatter();
+  const defaultNumberFormatter = getNumberFormatter(
+    // format with two decimal places
+    { minimumFractionDigits: 2, maximumFractionDigits: 2 }
+  );
   const compactNumberFormatter = getNumberFormatter({
     notation: 'compact',
     compactDisplay: 'short'
