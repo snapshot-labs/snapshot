@@ -64,3 +64,10 @@ export interface TreasuryAsset {
   quote: number;
   quote_24h: number;
 }
+
+export interface TreasuryWallet {
+  name: string;
+  address: string;
+  network: number;
+  ensAddress?: string;
+}
