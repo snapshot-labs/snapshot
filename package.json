@@ -78,7 +78,8 @@
     "unplugin-vue-components": "^0.19.5",
     "vite": "^2.9.9",
     "vite-plugin-vue-type-imports": "^0.1.3",
-    "vitest": "^0.12.4"
+    "vitest": "^0.12.4",
+    "vitest-fetch-mock": "^0.1.0"
   },
   "resolutions": {
     "ansi-regex": "^5.0.1",
