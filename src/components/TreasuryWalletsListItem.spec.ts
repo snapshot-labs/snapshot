@@ -43,7 +43,7 @@ describe('TreasuryWalletsListItem', () => {
     );
   });
   it('it renders external link pointing to explorer', () => {
-    expect(wrapper.findComponent(BaseLink).props('link')).toBe(
+    expect(wrapper.findAllComponents(BaseLink)[1].props('link')).toBe(
       explorerUrl(wallet.network, wallet.address)
     );
   });
@@ -57,5 +57,11 @@ describe('TreasuryWalletsListItem', () => {
     expect(wrapper.find('[data-testid="wallet-ens-address"]').exists()).toBe(
       false
     );
+  });
+  it('renders link to the wallet route', () => {
+    expect(wrapper.findAllComponents(BaseLink)[0].props('link')).toMatchObject({
+      name: 'spaceTreasury',
+      params: { wallet: wallet.address }
+    });
   });
 });
