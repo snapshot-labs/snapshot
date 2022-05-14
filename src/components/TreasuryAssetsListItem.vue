@@ -7,7 +7,7 @@ defineProps<{
   asset: TreasuryAsset;
 }>();
 
-const { formatCompactNumber, formatNumber, formatPercentNumber } = useIntl();
+const { formatCompactNumber, formatNumber } = useIntl();
 </script>
 
 <template>
@@ -37,16 +37,9 @@ const { formatCompactNumber, formatNumber, formatPercentNumber } = useIntl();
         <div class="text-md text-skin-heading">
           ${{ formatNumber(asset.quote) }}
         </div>
-        <span
-          id="asset-quote-change"
-          :class="[asset.quote_24h > asset.quote ? 'text-red' : 'text-green']"
-        >
-          {{
-            `${asset.quote_24h > asset.quote ? '' : '+'}${formatPercentNumber(
-              (asset.quote - asset.quote_24h) / asset.quote_24h
-            )}`
-          }}
-        </span>
+        <IndicatorAssetsChange
+          :quote="{ quote: asset.quote, quote_24h: asset.quote_24h }"
+        />
       </div>
     </div>
   </div>

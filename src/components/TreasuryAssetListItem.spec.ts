@@ -5,7 +5,7 @@ import { formatUnits } from '@ethersproject/units';
 import { useIntl } from '@/composables/useIntl';
 import { TreasuryAsset } from '@/helpers/interfaces';
 
-const { formatCompactNumber, formatNumber, formatPercentNumber } = useIntl();
+const { formatCompactNumber, formatNumber } = useIntl();
 
 const asset: TreasuryAsset = {
   contract_name: 'Wrapped Ether',
@@ -50,41 +50,5 @@ describe('TreasuryAssetsListItem', () => {
   });
   it('renders the correct quote', () => {
     expect(wrapper.text()).toContain(`$${formatNumber(asset.quote)}`);
-  });
-  it('shows correct 24h % change', () => {
-    expect(wrapper.text()).toContain(
-      `${asset.quote_24h > asset.quote ? '' : '+'}${formatPercentNumber(
-        (asset.quote - asset.quote_24h) / asset.quote_24h
-      )}`
-    );
-  });
-  it('shows red if 24h is higher than quote', async () => {
-    expect(wrapper.find('[id="asset-quote-change"]').classes()).toContain(
-      'text-red'
-    );
-  });
-  it('shows green if 24h is lower than quote', async () => {
-    await wrapper.setProps({
-      asset: {
-        ...asset,
-        quote: asset.quote + 200,
-        quote_24h: asset.quote_24h
-      }
-    });
-    expect(wrapper.find('[id="asset-quote-change"]').classes()).toContain(
-      'text-green'
-    );
-  });
-  it('shows green if 24h is equal to quote', async () => {
-    await wrapper.setProps({
-      asset: {
-        ...asset,
-        quote: asset.quote + 100,
-        quote_24h: asset.quote_24h
-      }
-    });
-    expect(wrapper.find('[id="asset-quote-change"]').classes()).toContain(
-      'text-green'
-    );
   });
 });
