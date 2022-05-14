@@ -29,10 +29,8 @@ describe('TreasuryAssetsListItem', () => {
     });
   });
 
-  it('renders the correct img size and url', () => {
+  it('renders the correct img url', () => {
     const img = wrapper.find('[alt="Asset logo"]');
-    expect(img.classes()).toContain('h-6');
-    expect(img.classes()).toContain('w-6');
     expect(img.attributes('src')).toEqual(asset.logo_url);
   });
   it('renders the correct name', () => {

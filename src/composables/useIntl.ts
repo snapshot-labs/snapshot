@@ -97,7 +97,7 @@ export function useIntl() {
   });
   const defaultNumberFormatter = getNumberFormatter(
     // format with two decimal places
-    { minimumFractionDigits: 2, maximumFractionDigits: 2 }
+    { maximumFractionDigits: 2 }
   );
   const compactNumberFormatter = getNumberFormatter({
     notation: 'compact',
