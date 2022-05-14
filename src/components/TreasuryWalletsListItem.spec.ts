@@ -27,7 +27,7 @@ describe('TreasuryWalletsListItem', () => {
     });
   });
 
-  it('renders BaseAvatar', () => {
+  it('renders base avatar using wallet address', () => {
     expect(wrapper.findComponent(BaseAvatar).props('address')).toBe(
       wallet.address
     );
