@@ -14,9 +14,11 @@ defineProps<{
     slim
   >
     <ul>
-      <li v-for="wallet in wallets" :key="wallet.address">
-        <TreasuryWalletsListItem :key="wallet.address" :wallet="wallet" />
-      </li>
+      <TreasuryWalletsListItem
+        v-for="wallet in wallets"
+        :key="wallet.address"
+        :wallet="wallet"
+      />
     </ul>
   </BaseBlock>
 </template>

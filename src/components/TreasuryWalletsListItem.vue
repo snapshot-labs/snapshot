@@ -1,26 +1,53 @@
 <script setup lang="ts">
+import { computed, onMounted } from 'vue';
 import { TreasuryWallet } from '@/helpers/interfaces';
 import { shorten, explorerUrl } from '@/helpers/utils';
+import { useTreasury } from '@/composables/useTreasury';
+import { useIntl } from '@/composables/useIntl';
 
-defineProps<{
+const { formatNumber } = useIntl();
+
+const props = defineProps<{
   wallet: TreasuryWallet;
 }>();
+
+const { loadFilteredTokenBalances, treasuryAssets, loadingBalances } =
+  useTreasury();
+
+const walletQuote = computed(() => {
+  const assets = treasuryAssets.value[props.wallet.address];
+  if (!assets) return null;
+  const sumOfAssetsQuote = assets.reduce((sum, asset) => {
+    return sum + asset.quote;
+  }, 0);
+  const sumOfAssetsQuote24h = assets.reduce((sum, asset) => {
+    return sum + asset.quote_24h;
+  }, 0);
+  return {
+    quote: sumOfAssetsQuote,
+    quote_24h: sumOfAssetsQuote24h
+  };
+});
+
+onMounted(() => loadFilteredTokenBalances(props.wallet.address));
 </script>
 
 <template>
-  <div>
+  <li class="border-b border-skin-border last:border-b-0">
     <BaseLink
       :link="{
         name: 'spaceTreasury',
         params: { wallet: wallet.address }
       }"
+      class="flex justify-between px-4 py-3"
     >
-      <div
-        class="px-4 py-3 !border-b border-skin-border last:border-0 flex items-center gap-3"
-      >
+      <div class="flex items-center gap-3">
         <BaseAvatar size="35" :address="wallet.address" />
         <div>
-          <div data-testid="wallet-name" class="text-md text-skin-heading">
+          <div
+            data-testid="wallet-name"
+            class="text-md text-skin-heading font-semibold"
+          >
             {{ wallet.name }}
           </div>
           <div class="flex items-center text-sm text-skin-text space-x-[6px]">
@@ -38,6 +65,17 @@ defineProps<{
           </div>
         </div>
       </div>
+      <div
+        v-if="loadingBalances"
+        class="space-y-[12px] flex flex-col items-end"
+      >
+        <div class="lazy-loading h-3 w-[100px] rounded-md" />
+        <div class="lazy-loading h-3 w-[120px] rounded-md" />
+      </div>
+      <div v-else-if="walletQuote" class="text-right">
+        <span class="text-md"> ${{ formatNumber(walletQuote.quote) }} </span>
+        <IndicatorAssetsChange :quote="walletQuote" />
+      </div>
     </BaseLink>
-  </div>
+  </li>
 </template>

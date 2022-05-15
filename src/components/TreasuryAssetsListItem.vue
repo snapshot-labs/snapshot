@@ -11,10 +11,14 @@ const { formatCompactNumber, formatNumber } = useIntl();
 </script>
 
 <template>
-  <div
-    class="px-4 py-3 !border-b border-skin-border last:border-0 flex items-center gap-3"
+  <li
+    class="px-4 py-3 border-b border-skin-border last:border-b-0 flex items-center gap-3"
   >
-    <img alt="Asset logo" :src="asset.logo_url" class="w-[35px] h-[35px]" />
+    <img
+      alt="Asset logo"
+      :src="asset.logo_url"
+      class="w-[35px] h-[35px] rounded-full"
+    />
     <div class="flex w-full justify-between">
       <div class="leading-6">
         <div class="text-md text-skin-heading font-semibold">
@@ -42,5 +46,5 @@ const { formatCompactNumber, formatNumber } = useIntl();
         />
       </div>
     </div>
-  </div>
+  </li>
 </template>

@@ -1,16 +1,12 @@
 <script setup lang="ts">
-import { onMounted, ref, computed } from 'vue';
-import { useTreasury } from '@/composables/useTreasury';
 import { useRoute } from 'vue-router';
 
 defineProps<{
   space: { id: string };
 }>();
 
-const { loadFilteredTokenBalances, treasuryAssets } = useTreasury();
 const route = useRoute();
 
-const loading = ref(false);
 const wallets = [
   {
     address: '0x10A19e7eE7d7F8a52822f6817de8ea18204F2e4f',
@@ -25,19 +21,6 @@ const wallets = [
     ensAddress: 'gitcoindao.eth'
   }
 ];
-
-onMounted(async () => {
-  loading.value = true;
-  await loadFilteredTokenBalances(wallets.map(w => w.address));
-  loading.value = false;
-});
-
-const walletAssets = computed(() => {
-  if (treasuryAssets.value?.[route.params.wallet as string]) {
-    return treasuryAssets.value[route.params.wallet as string];
-  }
-  return [];
-});
 </script>
 
 <template>
@@ -46,11 +29,7 @@ const walletAssets = computed(() => {
       <SpaceSidebar :space="space" />
     </template>
     <template #content-right>
-      <LoadingRow v-if="loading" block />
-      <TreasuryAssetsList
-        v-else-if="walletAssets.length"
-        :assets="walletAssets"
-      />
+      <TreasuryAssetsList v-if="route.params.wallet" />
       <TreasuryWalletsList v-else :wallets="wallets" />
     </template>
   </TheLayout>
