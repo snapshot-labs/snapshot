@@ -102,7 +102,7 @@
   "createdBy": "Par {0}",
   "startIn": "début {0}",
   "endIn": "fin {1}",
-  "proposalTimeLeft": "{0} gauche",
+  "proposalTimeLeft": "{0} restant",
   "endedAgo": "terminé {0}",
   "proposalBy": "par {0}",
   "endDate": "fin {0}",
@@ -136,7 +136,7 @@
   "changeWallet": "Changer de wallet",
   "newSpaceNotice": {
     "header": "Votre espace est en ligne !",
-    "mainText": "Par défaut, chaque électeur(trice) a un droit de vote de un. Vous pouvez changer comment le pouvoir de vote est calculé par des stratégies dans vos {settings}. Les changements aux paramètres affecteront les nouvelles propositions uniquement, les propositions existantes ne peuvent pas être changées.",
+    "mainText": "Par défaut, chaque électeur(trice) a un droit de vote de un. Vous pouvez changer comment le pouvoir de vote est calculé par des stratégies dans vos {settings}. Les changements de paramètres affecteront les nouvelles propositions uniquement, les propositions existantes ne peuvent pas être changées.",
     "learnMore": "Apprenez-en plus dans la {documentation} ou devenez membre du {discord} Snapshot pour obtenir de l’aide.",
     "gotIt": "Compris !"
   },
@@ -231,12 +231,12 @@
     "showMore": "Afficher plus",
     "showLess": "Afficher moins",
     "states": {
-      "all": "Tous",
-      "core": "Officiel",
+      "all": "Toutes",
+      "core": "Officielles",
       "community": "Communauté",
-      "active": "Actif",
+      "active": "Actives",
       "pending": "En attente",
-      "closed": "Clos"
+      "closed": "Closes"
     }
   },
   "notifications": {
@@ -244,9 +244,9 @@
     "noNotifications": "Vous n’avez pas de notifications",
     "proposalStarted": "La proposition a commencé :",
     "proposalEnded": "La proposition est close :",
-    "markAllAsRead": "Marquer tous comme lu",
-    "all": "Tout",
-    "unread": "Non lus"
+    "markAllAsRead": "Marquer toutes comme lues",
+    "all": "Toutes",
+    "unread": "Non lues"
   },
   "settings": {
     "header": "Réglages",
@@ -316,7 +316,7 @@
     "controllerAddress": "L’adresse du controller",
     "updateController": "Mettre à jour le controller",
     "seeOnEns": "Voir sur ENS",
-    "goToSettings": "Accéder les paramètres",
+    "goToSettings": "Accéder aux paramètres",
     "setSpaceProfile": "Personnaliser votre espace",
     "waitForTransaction": "La transaction doit être confirmée avant de pouvoir créer votre espace. {txUrl}",
     "pleaseWaitMessage": "Cela peut prendre quelques minutes, veuillez attendre pendant que la transaction est confirmée"
@@ -342,7 +342,7 @@
       "today": "Aujourd'hui",
       "thisWeek": "Cette semaine",
       "older": "Plus ancien",
-      "noActivity": "No activity yet"
+      "noActivity": "Pas encore d'activité"
     },
     "settings": {
       "header": "Modifier le profil",
@@ -447,25 +447,25 @@
       "changeOutcome": "Modifier le résultat",
       "executeTxs": "Exécuter le lot de transactions {0} sur {1}",
       "executed": "Toutes les transactions ont été exécutées",
-      "rejected": "Proposal rejected",
+      "rejected": "Proposition rejetée",
       "error": "Une erreur s'est produite",
       "connectWallet": "Connectez le wallet pour voir les détails de l'exécution",
       "switchChain": "Passez au wallet {0} pour demander l'exécution",
       "question": "Cette proposition a-t-elle été adoptée et satisfait-elle aux",
       "criteria": "critères d'acceptation ?",
-      "proposalPassed": "Did the proposal pass?",
-      "expired": "The proposal has expired"
+      "proposalPassed": "La proposition est-elle passée?",
+      "expired": "La proposition a expiré"
     }
   },
   "poap": {
     "no_poap_header": "Il n'y a pas encore de POAP pour cette proposition :'(",
     "no_voted_header": "Votez pour obtenir ce POAP",
     "unclaimed_header": "Mint votre POAP «J’ai voté»",
-    "claimed_header": "Félicitations! Le POAP a été réclamé à votre collection",
+    "claimed_header": "Félicitations! Le POAP a été ajouté à votre collection",
     "loading_header": "Le POAP est en cours d’ajout à votre collection",
     "button_claim": "Mint",
     "button_show": "Parcourir la collection",
-    "success_claim": "Le POAP a été réclamé à votre collection",
+    "success_claim": "Le POAP a été ajouté à votre collection",
     "error_claim": "Un problème est survenu lors de la création du jeton"
   },
   "charts": {
