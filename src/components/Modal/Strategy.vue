@@ -120,7 +120,7 @@ const strategyIsValid = computed(() =>
                 <div class="flex items-center">
                   <img
                     class="mr-2 w-4 h-4 rounded-full"
-                    :src="getIpfsUrl(option?.imageIPFS)"
+                    :src="getIpfsUrl(option?.logo)"
                   />
                   <span v-text="option?.name" />
                 </div>
