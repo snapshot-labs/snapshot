@@ -35,7 +35,7 @@ defineEmits(['close']);
               query: {
                 query: encode(
                   JSON.stringify({
-                    network: proposal.network,
+                    network: strategy.network || proposal.network,
                     snapshot: proposal.snapshot,
                     params: strategy.params
                   })
@@ -50,23 +50,33 @@ defineEmits(['close']);
         <div>
           <div v-if="strategy.network" class="flex justify-between">
             <span class="flex-auto text-skin-text mr-1"> network </span>
-            <span v-text="networks[strategy.network].name" />
+            <span
+              v-text="networks[strategy.network || proposal.network].name"
+            />
           </div>
-          <div v-for="(option, key) in strategy.params" :key="key" class="flex">
+          <div v-for="(param, key) in strategy.params" :key="key" class="flex">
             <span v-text="key" class="flex-auto text-skin-text mr-1" />
             <BaseLink
-              v-if="key === 'address' || isAddress(option)"
-              :link="explorerUrl(strategy.network ?? proposal.network, option)"
+              v-if="key === 'address' || isAddress(param)"
+              :link="explorerUrl(strategy.network || proposal.network, param)"
               class="block"
             >
-              <span v-text="shorten(option)" />
+              <span v-text="shorten(param)" />
+            </BaseLink>
+            <BaseLink
+              v-if="typeof param === 'string' && param.startsWith('http')"
+              :link="param"
+              class="block truncate ml-2"
+            >
+              <span v-text="param" />
             </BaseLink>
             <span
               v-else
+              class="truncate ml-2"
               v-text="
-                ['string', 'number', 'boolean'].includes(typeof option)
-                  ? option
-                  : typeof option
+                ['string', 'number', 'boolean'].includes(typeof param)
+                  ? param
+                  : typeof param
               "
             />
           </div>

@@ -164,7 +164,16 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
           size="24"
           class="text-skin-text pr-2 !align-middle"
         />
-        <span v-html="$t('setup.helpDocsAndDiscordLinks')" />
+        <i18n-t keypath="setup.helpDocsAndDiscordLinks" tag="span">
+          <template v-slot:docs>
+            <BaseLink link="https://docs.snapshot.org/spaces/create">
+              documentation</BaseLink
+            >
+          </template>
+          <template #discord>
+            <BaseLink link="https://discord.gg/snapshot"> Discord</BaseLink>
+          </template>
+        </i18n-t>
       </BaseBlock>
     </template>
   </TheLayout>
