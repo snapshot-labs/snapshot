@@ -128,8 +128,8 @@ export default {
       return shortName || name || `#${this.network}`;
     },
     networkIcon() {
-      const { imageIPFS } = networks[this.network];
-      return getIpfsUrl(imageIPFS);
+      const { logo } = networks[this.network];
+      return getIpfsUrl(logo);
     },
     proposalResolved() {
       const ts = (Date.now() / 1e3).toFixed();
