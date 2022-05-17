@@ -484,10 +484,7 @@ async function handleSetRecord() {
             </UiInput>
           </BaseBlock>
           <BaseBlock :title="$t('settings.admins')" v-if="isSpaceController">
-            <BaseBlock
-              class="!border-red mb-2"
-              v-if="inputError('admins')"
-            >
+            <BaseBlock class="!border-red mb-2" v-if="inputError('admins')">
               <BaseIcon name="warning" class="mr-2 !text-red" />
               <span class="!text-red"> {{ inputError('admins') }}&nbsp;</span>
             </BaseBlock>
@@ -501,9 +498,7 @@ async function handleSetRecord() {
           <BaseBlock :title="$t('settings.authors')">
             <BaseBlock class="!border-red mb-2" v-if="inputError('members')">
               <BaseIcon name="warning" class="mr-2 !text-red" />
-              <span class="!text-red">
-                {{ inputError('members') }}&nbsp;</span
-              >
+              <span class="!text-red"> {{ inputError('members') }}&nbsp;</span>
             </BaseBlock>
             <TextareaArray
               v-model="form.members"
@@ -730,6 +725,7 @@ async function handleSetRecord() {
     <ModalStrategy
       :open="modalStrategyOpen"
       :strategy="currentStrategy"
+      :space="space"
       :defaultNetwork="form.network"
       @close="modalStrategyOpen = false"
       @add="handleSubmitAddStrategy"
