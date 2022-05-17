@@ -303,7 +303,7 @@
     "createASpace": "공간 만들기",
     "registerEnsButton": "등록",
     "supportedEnsTLDs": "지원되는 도메인 끝자리",
-    "helpDocsAndDiscordLinks": "공간을 만드는 방법을 잘 모르신다면, 다음 <a target='_blank' href='https://docs.snapshot.org/spaces/create'>문서</a>를 참조하거나 스냅샷 <a target='_blank' href='https://discord.gg/snapshot'>디스코드</a>에 조인하세요.",
+    "helpDocsAndDiscordLinks": "Not sure how to create a space? Learn more in the {docs} or join Snapshot {discord}.",
     "setSpaceController": "ENS에서 공간 컨트롤러를 설정",
     "editSpaceController": "ENS 관리자 수정",
     "setController": "관리자 설정",
