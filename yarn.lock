@@ -631,10 +631,10 @@
     "@ethersproject/logger" "^5.5.0"
     bn.js "^4.11.9"
 
-"@ethersproject/bignumber@^5.0.7", "@ethersproject/bignumber@^5.4.1", "@ethersproject/bignumber@^5.5.0", "@ethersproject/bignumber@^5.6.0":
-  version "5.6.0"
-  resolved "https://registry.yarnpkg.com/@ethersproject/bignumber/-/bignumber-5.6.0.tgz#116c81b075c57fa765a8f3822648cf718a8a0e26"
-  integrity sha512-VziMaXIUHQlHJmkv1dlcd6GY2PmT0khtAqaMctCIDogxkrarMzA9L94KN1NeXqqOfFD6r0sJT3vCTOFSmZ07DA==
+"@ethersproject/bignumber@^5.0.7", "@ethersproject/bignumber@^5.5.0", "@ethersproject/bignumber@^5.6.0", "@ethersproject/bignumber@^5.6.1":
+  version "5.6.1"
+  resolved "https://registry.yarnpkg.com/@ethersproject/bignumber/-/bignumber-5.6.1.tgz#d5e0da518eb82ab8d08ca9db501888bbf5f0c8fb"
+  integrity sha512-UtMeZ3GaUuF9sx2u9nPZiPP3ULcAFmXyvynR7oHl/tPrM+vldZh7ocMsoa1PqKYGnQnqUZJoqxZnGN6J0qdipA==
   dependencies:
     "@ethersproject/bytes" "^5.6.0"
     "@ethersproject/logger" "^5.6.0"
@@ -2657,10 +2657,10 @@ bufferutil@^4.0.1:
   dependencies:
     node-gyp-build "^4.3.0"
 
-c8@^7.11.2:
-  version "7.11.2"
-  resolved "https://registry.yarnpkg.com/c8/-/c8-7.11.2.tgz#2f2103e39079899041e612999a16b31d7ea6d463"
-  integrity sha512-6ahJSrhS6TqSghHm+HnWt/8Y2+z0hM/FQyB1ybKhAR30+NYL9CTQ1uwHxuWw6U7BHlHv6wvhgOrH81I+lfCkxg==
+c8@^7.11.3:
+  version "7.11.3"
+  resolved "https://registry.yarnpkg.com/c8/-/c8-7.11.3.tgz#88c8459c1952ed4f701b619493c9ae732b057163"
+  integrity sha512-6YBmsaNmqRm9OS3ZbIiL2EZgi1+Xc4O24jL3vMYGE6idixYuGdy76rIfIdltSKDj9DpLNrcXSonUTR1miBD0wA==
   dependencies:
     "@bcoe/v8-coverage" "^0.2.3"
     "@istanbuljs/schema" "^0.1.3"
@@ -4550,10 +4550,10 @@ graphql@^16.5.0:
   resolved "https://registry.yarnpkg.com/graphql/-/graphql-16.5.0.tgz#41b5c1182eaac7f3d47164fb247f61e4dfb69c85"
   integrity sha512-qbHgh8Ix+j/qY+a/ZcJnFQ+j8ezakqPiHwPiZhV/3PgGlgf96QMBB5/f2rkiC9sgLoy/xvT6TSiaf2nTHJh5iA==
 
-happy-dom@^3.2.0:
-  version "3.2.0"
-  resolved "https://registry.yarnpkg.com/happy-dom/-/happy-dom-3.2.0.tgz#22c208b2836761604631e48bfc36a6ebead3d886"
-  integrity sha512-+dtbWX+9pgfoDAoBvVKWc3Zhcmb4t9upGGT2zht1IzwdH5oNM9Nez+GsgEmXBFIpIq12/Mva3/4pl4XHRSNh3A==
+happy-dom@^3.2.2:
+  version "3.2.2"
+  resolved "https://registry.yarnpkg.com/happy-dom/-/happy-dom-3.2.2.tgz#ca122449d5d86433728874ec4f09cb3cd57c3c63"
+  integrity sha512-NgRLzVYeTs5Y12LwpD6C2qbn7FCaKVb1BewLQOuvxS9WOxfL/dy122jDwEFluGyzZbip/ogf9MLsN+ZBlit1aA==
   dependencies:
     css.escape "^1.5.1"
     he "^1.2.0"
