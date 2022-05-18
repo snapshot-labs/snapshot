@@ -365,7 +365,7 @@ const truncateMarkdownBody = computed(() => {
             >
               <BaseButton
                 @click="showFullMarkdownBody = !showFullMarkdownBody"
-                class="!bg-skin-bg"
+                class="!bg-skin-bg z-10"
               >
                 {{
                   showFullMarkdownBody
