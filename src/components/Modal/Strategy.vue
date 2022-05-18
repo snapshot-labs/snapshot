@@ -48,15 +48,18 @@ const networks = computed(() => {
     option: _n
   }));
 
-  // shift space network to the top of the list
+  //  Move spaceNetwork to the beginning of the list
   if (props.space.network) {
     const spaceNetwork = filteredNetworks.find(
       n => n.value === props.space.network
     );
     if (spaceNetwork) {
+      const spaceNetworkIndex = filteredNetworks.indexOf(spaceNetwork);
+      filteredNetworks.splice(spaceNetworkIndex, 1);
       filteredNetworks.unshift(spaceNetwork);
     }
   }
+
   return filteredNetworks;
 });
 function handleSubmit() {
