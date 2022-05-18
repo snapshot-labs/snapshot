@@ -521,7 +521,7 @@ const handleDrop = e => {
 
             <SBaseInput
               v-if="!preview"
-              v-model="form.discussion"
+              v-model.trim="form.discussion"
               placeholder="e.g. https://forum.balancer.fi/proposal..."
               :title="$t('create.discussion')"
             />
