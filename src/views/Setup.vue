@@ -17,12 +17,7 @@ const { setPageTitle } = useI18n();
 const { spaces, spacesLoaded } = useSpaces();
 const { ensAddress } = useSpaceController();
 
-onMounted(() => {
-  setPageTitle('page.title.setup');
-});
-
-const ownedEnsDomainsNoExistingSpace = computed(() => {
-  //  filter ownedEnsDomains with spaces
+const domainsWithoutExistingSpace = computed(() => {
   return ownedEnsDomains.value.filter(
     d => !Object.keys(spaces.value).includes(d.name)
   );
@@ -54,6 +49,10 @@ watch(
   { immediate: true }
 );
 
+onMounted(() => {
+  setPageTitle('page.title.setup');
+});
+
 // stop lookup when leaving page
 onUnmounted(() => clearInterval(waitingForRegistrationInterval));
 </script>
@@ -80,11 +79,11 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
           :web3Account="web3Account"
         />
         <BaseBlock v-else>
-          <div v-if="ownedEnsDomainsNoExistingSpace.length">
+          <div v-if="domainsWithoutExistingSpace.length">
             <div class="mb-3">
               {{
                 $t(
-                  ownedEnsDomainsNoExistingSpace.length > 1
+                  domainsWithoutExistingSpace.length > 1
                     ? 'setup.chooseExistingEns'
                     : 'setup.useSingleExistingEns'
                 )
@@ -92,11 +91,11 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
             </div>
             <div class="space-y-2">
               <BaseButton
-                v-for="(ens, i) in ownedEnsDomainsNoExistingSpace"
+                v-for="(ens, i) in domainsWithoutExistingSpace"
                 :key="i"
                 @click="goToStepTwo(ens.name)"
                 class="w-full flex items-center justify-between"
-                :primary="ownedEnsDomainsNoExistingSpace.length === 1"
+                :primary="domainsWithoutExistingSpace.length === 1"
               >
                 {{ ens.name }}
                 <BaseIcon name="go" size="22" class="-mr-2" />
