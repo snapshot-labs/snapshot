@@ -28,56 +28,31 @@ const ownedEnsDomainsNoExistingSpace = computed(() => {
   );
 });
 
-// used either on click on existing owned domain OR once a newly registered
-// domain is returned by the ENS subgraph.
 const goToStepTwo = key => {
   router.push({ name: 'setup', params: { step: 'controller' } });
   ensAddress.value = key;
 };
 
-// input for new domain registration
-const newDomain = ref('');
+const inputDomain = ref('');
 
-// indicates whether to periodically check for new domains
-// (after clicking on "Register")
-const waitingForRegistration = ref(false);
-// handle periodic lookup (every 10s) while registering new domain
+// handle periodic lookup (every 5s) while registering new domain
 let waitingForRegistrationInterval;
 const waitForRegistration = () => {
-  waitingForRegistration.value = true;
   clearInterval(waitingForRegistrationInterval);
-  waitingForRegistrationInterval = setInterval(loadOwnedEnsDomains, 10000);
+  waitingForRegistrationInterval = setInterval(loadOwnedEnsDomains, 5000);
 };
 
-// If after loading domains, we have more than before, there was a new registration.
-// If the new domain matches the one that was input, directly jump to settings page.
-watch(ownedEnsDomains, (newVal, oldVal) => {
-  if (newVal.length > oldVal.length) {
-    waitingForRegistration.value = false;
-    clearInterval(waitingForRegistrationInterval);
-    if (newVal.find(d => d.name === newDomain.value)) {
-      goToStepTwo(newDomain.value);
-    }
-  }
-});
-
-// load domains initially and update on account change
-// using finally() here because await at top level would require the component to be inside a <Suspense> block
-// https://v3.vuejs.org/guide/migration/suspense.html#introduction
 const loadingOwnedEnsDomains = ref(true);
-loadOwnedEnsDomains().finally(() => (loadingOwnedEnsDomains.value = false));
-watch(web3Account, async () => {
-  // Prevent the page from reloading on account change (e.g. when switching to the controller account set on the previos step)
-  if (route.params.step === 'profile') return;
 
-  // Reset ensAddress to empty string
-  ensAddress.value = '';
-
-  loadingOwnedEnsDomains.value = true;
-  await loadOwnedEnsDomains();
-  loadingOwnedEnsDomains.value = false;
-  waitingForRegistration.value = false;
-});
+watch(
+  web3Account,
+  async () => {
+    loadingOwnedEnsDomains.value = true;
+    await loadOwnedEnsDomains();
+    loadingOwnedEnsDomains.value = false;
+  },
+  { immediate: true }
+);
 
 // stop lookup when leaving page
 onUnmounted(() => clearInterval(waitingForRegistrationInterval));
@@ -131,7 +106,7 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
               {{ $t('setup.orReigsterNewEns') }}
             </div>
             <RegisterENS
-              v-model="newDomain"
+              v-model="inputDomain"
               @waitForRegistration="waitForRegistration"
             />
           </div>
@@ -140,7 +115,7 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
               {{ $t('setup.toCreateASpace') }}
             </div>
             <RegisterENS
-              v-model="newDomain"
+              v-model="inputDomain"
               @waitForRegistration="waitForRegistration"
             />
           </div>
