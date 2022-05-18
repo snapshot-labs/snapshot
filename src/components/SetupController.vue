@@ -1,14 +1,12 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
 import { shorten } from '@/helpers/utils';
 import { useSpaceController } from '@/composables/useSpaceController';
 import { useRouter, useRoute } from 'vue-router';
-import { getSpaceUri } from '@snapshot-labs/snapshot.js/src/utils';
 
 const router = useRouter();
 const route = useRoute();
 
-const props = defineProps<{ ensAddress: string; web3Account: string }>();
+defineProps<{ web3Account: string }>();
 
 const {
   spaceControllerInput,
@@ -16,6 +14,7 @@ const {
   modalUnsupportedNetworkOpen,
   modalConfirmSetTextRecordOpen,
   settingENSRecord,
+  loadingTextRecord,
   setRecord,
   confirmSetRecord
 } = useSpaceController();
@@ -26,36 +25,12 @@ async function handleSetRecord() {
     router.push({
       name: 'setup',
       params: {
-        step: 'profile'
+        step: 'profile',
+        ens: route.params.ens
       }
     });
   }
 }
-
-// Checks if a text-record with the connected wallet address exists
-// and skips to step 3 if it does
-const loadingTextRecord = ref(false);
-onMounted(async () => {
-  try {
-    loadingTextRecord.value = true;
-    const uri = await getSpaceUri(
-      props.ensAddress,
-      import.meta.env.VITE_DEFAULT_NETWORK
-    );
-    console.log('URI', uri);
-    const uriAddress = uri?.split('/')[4] ?? '';
-    if (
-      uriAddress === props.web3Account &&
-      route.params.step === 'controller'
-    ) {
-      router.push({ name: 'setup', params: { step: 'profile' } });
-    }
-    loadingTextRecord.value = false;
-  } catch (e) {
-    console.log(e);
-    loadingTextRecord.value = false;
-  }
-});
 </script>
 
 <template>

@@ -13,7 +13,7 @@ defineProps<{
   >
     <BaseIcon
       :name="level"
-      :size="level === 'info' ? 20 : null"
+      :size="level === 'info' ? '20' : '16'"
       class="mr-1 float-left"
     />
     <div :class="[' leading-5', { '-mt-[2px]': level === 'warning' }]">
