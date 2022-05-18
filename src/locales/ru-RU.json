@@ -303,7 +303,7 @@
     "createASpace": "Создать сообщество",
     "registerEnsButton": "Зарегистрироваться",
     "supportedEnsTLDs": "Поддерживаемые доменные окончания",
-    "helpDocsAndDiscordLinks": "Не уверены, как создать сообщество? Узнайте больше в <a target='_blank' href='https://docs.snapshot.org/spaces/create'> документации </a> или присоединитесь к Snapshot <a target='_blank' href='https://discord.gg/snapshot'>Discord</a>.",
+    "helpDocsAndDiscordLinks": "Not sure how to create a space? Learn more in the {docs} or join Snapshot {discord}.",
     "setSpaceController": "Установите адрес контроллера сообщества на ENS",
     "editSpaceController": "Изменить контроллер на ENS",
     "setController": "Настроить виджеты",

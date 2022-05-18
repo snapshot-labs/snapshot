@@ -303,7 +303,7 @@
     "createASpace": "Créer un espace",
     "registerEnsButton": "Enregistrer",
     "supportedEnsTLDs": "Extensions de domaine prises en charge",
-    "helpDocsAndDiscordLinks": "Pas sûr de savoir comment créer un espace? Apprenez-en plus dans la <a target='_blank' href='https://docs.snapshot.org/spaces/create'> documentation </a> ou devenez membre du <a target='_blank' href='https://discord.gg/snapshot'>Discord</a> Snapshot.",
+    "helpDocsAndDiscordLinks": "Not sure how to create a space? Learn more in the {docs} or join Snapshot {discord}.",
     "setSpaceController": "Définir l'adresse du controller de l'espace sur ENS",
     "editSpaceController": "Modifier le controller sur ENS",
     "setController": "Définir le controller",
