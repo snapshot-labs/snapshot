@@ -1091,10 +1091,10 @@
     "@ethersproject/transactions" "^5.5.0"
     "@ethersproject/wordlists" "^5.5.0"
 
-"@ethersproject/wallet@^5.4.0", "@ethersproject/wallet@^5.6.0":
-  version "5.6.0"
-  resolved "https://registry.yarnpkg.com/@ethersproject/wallet/-/wallet-5.6.0.tgz#33d11a806d783864208f348709a5a3badac8e22a"
-  integrity sha512-qMlSdOSTyp0MBeE+r7SUhr1jjDlC1zAXB8VD84hCnpijPQiSNbxr6GdiLXxpUs8UKzkDiNYYC5DRI3MZr+n+tg==
+"@ethersproject/wallet@^5.4.0", "@ethersproject/wallet@^5.6.1":
+  version "5.6.1"
+  resolved "https://registry.yarnpkg.com/@ethersproject/wallet/-/wallet-5.6.1.tgz#5df4f75f848ed84ca30fd6ca75d2c66b19c5552b"
+  integrity sha512-oXWoOslEWtwZiViIMlGVjeKDQz/tI7JF9UkyzN9jaGj8z7sXt2SyFMb0Ev6vSAqjIzrCrNrJ/+MkAhtKnGOfZw==
   dependencies:
     "@ethersproject/abstract-provider" "^5.6.0"
     "@ethersproject/abstract-signer" "^5.6.0"
