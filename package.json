@@ -20,7 +20,7 @@
     "@ensdomains/eth-ens-namehash": "^2.0.15",
     "@ethersproject/abi": "^5.6.1",
     "@ethersproject/address": "^5.4.0",
-    "@ethersproject/bignumber": "^5.4.1",
+    "@ethersproject/bignumber": "^5.6.1",
     "@ethersproject/bytes": "^5.4.0",
     "@ethersproject/providers": "^5.6.6",
     "@ethersproject/solidity": "^5.6.0",
