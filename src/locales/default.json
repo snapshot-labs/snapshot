@@ -314,7 +314,7 @@
     "createASpace": "Create a space",
     "registerEnsButton": "Register",
     "supportedEnsTLDs": "Supported domain endings",
-    "helpDocsAndDiscordLinks": "Not sure how to create a space? Learn more in the <a target='_blank' href='https://docs.snapshot.org/spaces/create'> documentation </a> or join Snapshot <a target='_blank' href='https://discord.gg/snapshot'>Discord</a>.",
+    "helpDocsAndDiscordLinks": "Not sure how to create a space? Learn more in the {docs} or join Snapshot {discord}.",
     "setSpaceController": "Set space controller address on ENS",
     "editSpaceController": "Edit controller on ENS",
     "setController": "Set controller",
@@ -352,7 +352,8 @@
       "votedFor": "Voted {choice}",
       "today": "Today",
       "thisWeek": "This week",
-      "older": "Older"
+      "older": "Older",
+      "noActivity": "No activity yet"
     },
     "settings": {
       "header": "Edit profile",
@@ -414,11 +415,6 @@
       "ranked-choice": "Each voter may select and rank any number of choices. Results are calculated by instant-runoff counting method.",
       "weighted": "Each voter may spread voting power across any number of choices.",
       "basic": "Single choice voting with three choices: For, Against or Abstain"
-    },
-    "choices": {
-      "for": "For",
-      "against": "Against",
-      "abstain": "Abstain"
     }
   },
   "safeSnap": {

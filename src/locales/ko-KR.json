@@ -303,7 +303,7 @@
     "createASpace": "공간 만들기",
     "registerEnsButton": "등록",
     "supportedEnsTLDs": "지원되는 도메인 끝자리",
-    "helpDocsAndDiscordLinks": "공간을 만드는 방법을 잘 모르신다면, 다음 <a target='_blank' href='https://docs.snapshot.org/spaces/create'>문서</a>를 참조하거나 스냅샷 <a target='_blank' href='https://discord.gg/snapshot'>디스코드</a>에 조인하세요.",
+    "helpDocsAndDiscordLinks": "Not sure how to create a space? Learn more in the {docs} or join Snapshot {discord}.",
     "setSpaceController": "ENS에서 공간 컨트롤러를 설정",
     "editSpaceController": "ENS 관리자 수정",
     "setController": "관리자 설정",
@@ -341,7 +341,8 @@
       "votedFor": "Voted {choice}",
       "today": "Today",
       "thisWeek": "This week",
-      "older": "Older"
+      "older": "Older",
+      "noActivity": "No activity yet"
     },
     "settings": {
       "header": "Edit profile",
@@ -403,11 +404,6 @@
       "ranked-choice": "각 유권자는 원하는 수만큼 선택하고 순위를 매길 수 있습니다. 결과는 즉시 결선 투표 계수 방법으로 계산됩니다.",
       "weighted": "각 유권자는 원하는 선택지들에 투표권을 행사 할 수있습니다.",
       "basic": "세 가지 선택이 있는 단일 선택 투표: 찬성, 반대 또는 기권"
-    },
-    "choices": {
-      "for": "찬성",
-      "against": "반대",
-      "abstain": "기권"
     }
   },
   "safeSnap": {
@@ -457,7 +453,8 @@
       "switchChain": "실행 요청을 위해 지갑을 {0} 로 바꾸세요.",
       "question": "이 제안이 통과되었을 때 다음을 충족",
       "criteria": "통과 기준?",
-      "proposalPassed": "제안이 통과되었습니까?"
+      "proposalPassed": "제안이 통과되었습니까?",
+      "expired": "The proposal has expired"
     }
   },
   "poap": {

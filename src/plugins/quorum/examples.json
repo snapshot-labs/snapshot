@@ -20,5 +20,68 @@
       "stateMutability": "view",
       "type": "function"
     }
+  },
+  {
+    "strategy": "multichainBalance",
+    "network": "1",
+    "strategies": [
+      {
+        "network": "1",
+        "address": "0x0e42acBD23FAee03249DAFF896b78d7e79fBD58E",
+        "symbol": "veSTG",
+        "decimals": 18,
+        "methodABI": {
+          "inputs": [],
+          "name": "totalSupply",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        }
+      },
+      {
+        "network": "56",
+        "address": "0xD4888870C8686c748232719051b677791dBDa26D",
+        "symbol": "veSTG",
+        "decimals": 18,
+        "methodABI": {
+          "inputs": [],
+          "name": "totalSupply",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        }
+      },
+      {
+        "network": "43114",
+        "address": "0xCa0F57D295bbcE554DA2c07b005b7d6565a58fCE",
+        "symbol": "veSTG",
+        "decimals": 18,
+        "methodABI": {
+          "inputs": [],
+          "name": "totalSupply",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        }
+      }
+    ]
   }
 ]

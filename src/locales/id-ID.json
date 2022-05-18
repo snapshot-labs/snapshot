@@ -34,7 +34,7 @@
   "inSpaces": "Di {0} ruang",
   "votes": "Suara",
   "seeMore": "Lihat lebih banyak",
-  "seeAll": "See all",
+  "seeAll": "Lihat semua",
   "network": "Jaringan",
   "networks": "Jaringan",
   "skins": "Tampilan",
@@ -70,7 +70,7 @@
   "notificationsBlocked": "Browser Anda memblokir notifikasi",
   "notificationsNotSupported": "Browser anda tidak mendukung pemberitahuan",
   "walletNotSupported": "Wallet tidak didukung",
-  "seeInExplorer": "See explorer",
+  "seeInExplorer": "Lihat di explorer",
   "learnMore": "Pelajari lebih lanjut",
   "logout": "Keluar",
   "continue": "Lanjut",
@@ -303,7 +303,7 @@
     "createASpace": "Buat sebuah ruang",
     "registerEnsButton": "Daftar",
     "supportedEnsTLDs": "Akhiran domain yang didukung",
-    "helpDocsAndDiscordLinks": "Not sure how to create a space? Learn more in the <a target='_blank' href='https://docs.snapshot.org/spaces/create'> documentation </a> or join Snapshot <a target='_blank' href='https://discord.gg/snapshot'>Discord</a>.",
+    "helpDocsAndDiscordLinks": "Not sure how to create a space? Learn more in the {docs} or join Snapshot {discord}.",
     "setSpaceController": "Set space controller address on ENS",
     "editSpaceController": "Edit controller on ENS",
     "setController": "Set controller",
@@ -341,7 +341,8 @@
       "votedFor": "Voted {choice}",
       "today": "Today",
       "thisWeek": "This week",
-      "older": "Older"
+      "older": "Older",
+      "noActivity": "No activity yet"
     },
     "settings": {
       "header": "Edit profile",
@@ -403,11 +404,6 @@
       "ranked-choice": "Setiap pemilih dapat memilih dan memberi peringkat ke sejumlah pilihan. Hasil dihitung dengan metode instant-runoff.",
       "weighted": "Setiap pemilih dapat menyebarkan hak suara di sejumlah pilihan.",
       "basic": "Voting pilihan tunggal dengan tiga pilihan: Untuk, Menentang atau Abstain"
-    },
-    "choices": {
-      "for": "Untuk",
-      "against": "Menentang",
-      "abstain": "Abstain"
     }
   },
   "safeSnap": {
@@ -457,7 +453,8 @@
       "switchChain": "Alihkan dompet Anda ke {0} untuk mengajukan pelaksanaan",
       "question": "Apaka proposal ini lolos dan sesuai dengan",
       "criteria": "kriteria penerimaan?",
-      "proposalPassed": "Did the proposal pass?"
+      "proposalPassed": "Did the proposal pass?",
+      "expired": "The proposal has expired"
     }
   },
   "poap": {

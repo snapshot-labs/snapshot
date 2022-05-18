@@ -13,16 +13,27 @@ const networksSpacesCount: any = ref(null);
 export function useNetworksFilter() {
   const loading = ref(false);
 
-  const filterNetworks = (q = '') =>
-    Object.keys(networks)
+  const filterNetworks = (q = '') => {
+    const networksArray = Object.keys(networks)
       .map(s => ({ ...networks[s] }))
-      .filter(n => !n.disabled)
-      .filter(n => JSON.stringify(n).toLowerCase().includes(q.toLowerCase()))
-      .sort(
-        (a, b) =>
-          (networksSpacesCount.value?.[b.key] ?? 0) -
-          (networksSpacesCount.value?.[a.key] ?? 0)
-      );
+      .filter(n => !n.disabled);
+
+    const networksArrayBySearchString = networksArray.filter(n =>
+      JSON.stringify(n).toLowerCase().includes(q.toLowerCase())
+    );
+
+    const networksArrayBySpaceCount = networksArrayBySearchString.sort(
+      (a, b) =>
+        (networksSpacesCount.value?.[b.key] ?? 0) -
+        (networksSpacesCount.value?.[a.key] ?? 0)
+    );
+
+    const networksArrayByExactKeyMatch = networksArrayBySpaceCount.sort(
+      (a, b) => (a.key === q ? -1 : b.key === q ? 1 : 0)
+    );
+
+    return networksArrayByExactKeyMatch;
+  };
 
   const { apolloQuery } = useApolloQuery();
 

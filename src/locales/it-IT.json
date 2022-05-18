@@ -303,7 +303,7 @@
     "createASpace": "Crea uno spazio",
     "registerEnsButton": "Register",
     "supportedEnsTLDs": "Supported domain endings",
-    "helpDocsAndDiscordLinks": "Not sure how to create a space? Learn more in the <a target='_blank' href='https://docs.snapshot.org/spaces/create'> documentation </a> or join Snapshot <a target='_blank' href='https://discord.gg/snapshot'>Discord</a>.",
+    "helpDocsAndDiscordLinks": "Not sure how to create a space? Learn more in the {docs} or join Snapshot {discord}.",
     "setSpaceController": "Set space controller address on ENS",
     "editSpaceController": "Edit controller on ENS",
     "setController": "Set controller",
@@ -341,7 +341,8 @@
       "votedFor": "Voted {choice}",
       "today": "Today",
       "thisWeek": "This week",
-      "older": "Older"
+      "older": "Older",
+      "noActivity": "No activity yet"
     },
     "settings": {
       "header": "Edit profile",
@@ -403,11 +404,6 @@
       "ranked-choice": "Ogni elettore può selezionare e classificare un numero qualsiasi di scelte. I risultati sono calcolati con il metodo di conteggio del runoff istantaneo.",
       "weighted": "Ogni elettore può distribuire il potere di voto su qualsiasi numero di scelte.",
       "basic": "Voto a scelta singola con tre scelte: Per, Contro o Astenuto\n"
-    },
-    "choices": {
-      "for": "Per",
-      "against": "Contro",
-      "abstain": "Astenuti"
     }
   },
   "safeSnap": {
@@ -457,7 +453,8 @@
       "switchChain": "Passa il tuo portafoglio a {0} per richiedere l'esecuzione",
       "question": "Questa proposta è stata approvata e soddisfa i",
       "criteria": "criteri di accettazione?",
-      "proposalPassed": "Did the proposal pass?"
+      "proposalPassed": "Did the proposal pass?",
+      "expired": "The proposal has expired"
     }
   },
   "poap": {
