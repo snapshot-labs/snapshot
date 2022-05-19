@@ -11,7 +11,7 @@ import { useStorage } from '@vueuse/core';
 import { useExtendedSpaces } from '@/composables/useExtendedSpaces';
 import { useSpaceController } from '@/composables/useSpaceController';
 import { useSpaces } from '@/composables/useSpaces';
-import { useDebounceFn } from '@vueuse/core';
+import { refDebounced } from '@vueuse/core';
 import { shorten } from '@/helpers/utils';
 
 const props = defineProps<{
@@ -62,12 +62,6 @@ const isValid = computed(() => {
 
 const { send } = useClient();
 
-// Reactive local storage with help from vueuse package
-const createdSpaces = useStorage(
-  `snapshot.createdSpaces.${props.web3Account.slice(0, 8).toLowerCase()}`,
-  {}
-);
-
 const { getSpaces, spaces } = useSpaces();
 const { loadExtentedSpaces, extentedSpaces } = useExtendedSpaces();
 
@@ -88,13 +82,14 @@ async function checkIfSpaceExists() {
 }
 
 const showPleaseWaitMessage = ref(false);
-const debouncePleaseWaitMessage = useDebounceFn(() => {
-  showPleaseWaitMessage.value = true;
-}, 4000);
+const debouncedShowPleaseWaitMessage = refDebounced(
+  showPleaseWaitMessage,
+  4000
+);
 
 async function handleSubmit() {
   creatingSpace.value = true;
-  debouncePleaseWaitMessage();
+  showPleaseWaitMessage.value = true;
 
   // Wait for ENS text-record transaction to confirm
   if (pendingENSRecord.value) {
@@ -115,10 +110,16 @@ async function handleSubmit() {
       await checkIfSpaceExists();
       creatingSpace.value = false;
       console.log('Result', result);
+
       // Save created space to local storage
+      const createdSpaces = useStorage(
+        `snapshot.createdSpaces.${props.web3Account.slice(0, 8).toLowerCase()}`,
+        {}
+      );
       createdSpaces.value[route.params.ens as string] = {
         showMessage: true
       };
+
       // Redirect to the new space page
       router.push({
         name: 'spaceProposals',
@@ -190,10 +191,12 @@ async function handleSubmit() {
               $t('setup.notControllerAddress', { wallet: shorten(uriAddress) })
             }}
           </BaseMessageBlock>
-          <BaseMessageBlock v-else-if="showPleaseWaitMessage" level="info">
+          <BaseMessageBlock
+            v-else-if="debouncedShowPleaseWaitMessage && creatingSpace"
+            level="info"
+          >
             {{ $t('setup.pleaseWaitMessage') }}
           </BaseMessageBlock>
-          {{ showPleaseWaitMessage }}
         </div>
       </div>
     </BaseBlock>
