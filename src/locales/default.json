@@ -58,7 +58,7 @@
   "confirmRemove": "Are you sure you want to remove your delegation to",
   "removeSpace": "for the space {0}",
   "confirmVote": "Confirm vote",
-  "previewVote": "Preview your vote",
+  "voteOverview": "Vote overview",
   "options": "Option(s)",
   "votingPower": "Your voting power",
   "receipt": "Receipt",
