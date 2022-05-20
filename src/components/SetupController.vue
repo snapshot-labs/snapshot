@@ -2,11 +2,15 @@
 import { shorten } from '@/helpers/utils';
 import { useSpaceController } from '@/composables/useSpaceController';
 import { useRouter, useRoute } from 'vue-router';
+import { onMounted } from 'vue';
+import { useClient } from '@/composables/useClient';
+
+const { isGnosisSafe } = useClient();
 
 const router = useRouter();
 const route = useRoute();
 
-defineProps<{ web3Account: string }>();
+const props = defineProps<{ web3Account: string }>();
 
 const {
   spaceControllerInput,
@@ -31,14 +35,25 @@ async function handleSetRecord() {
     });
   }
 }
+
+onMounted(() => {
+  if (isGnosisSafe.value) spaceControllerInput.value = props.web3Account;
+});
 </script>
 
 <template>
   <LoadingRow v-if="loadingTextRecord" block />
   <BaseBlock v-else :title="$t('setup.setSpaceController')">
+    <BaseMessageBlock level="info" class="mb-4">
+      {{ $t('setup.setSpaceControllerInfo') }}
+      <span v-if="isGnosisSafe">
+        {{ $t('setup.setSpaceControllerInfoGnosisSafe') }}
+      </span>
+    </BaseMessageBlock>
     <UiInput
       v-model.trim="spaceControllerInput"
       :placeholder="$t('setup.spaceOwnerAddressPlaceHolder')"
+      :readonly="isGnosisSafe"
       class="mt-2"
       focus-on-mount
     >
