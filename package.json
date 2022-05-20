@@ -60,7 +60,7 @@
     "@vitest/ui": "^0.12.7",
     "@vue/eslint-config-prettier": "^6.0.0",
     "@vue/eslint-config-typescript": "^9.0.0",
-    "@vue/test-utils": "^2.0.0-rc.21",
+    "@vue/test-utils": "^2.0.0",
     "autoprefixer": "^10.4.7",
     "c8": "^7.11.3",
     "cypress": "^9.6.1",
