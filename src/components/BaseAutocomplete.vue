@@ -67,8 +67,8 @@ function closeOptions(e) {
   if (clickedOutside) {
     displayDropdown.value = false;
     searchInput.value = getOption(props.value)?.label || '';
+    resetOptions();
   }
-  resetOptions();
 }
 window.addEventListener('click', closeOptions);
 onBeforeUnmount(() => window.removeEventListener('click', closeOptions));

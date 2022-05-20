@@ -18,6 +18,7 @@ const props = defineProps<{
     params: Record<string, any>;
   };
   defaultNetwork?: string;
+  space: Record<string, any>;
 }>();
 const emit = defineEmits(['add', 'close']);
 const { open } = toRefs(props);
@@ -41,11 +42,25 @@ const strategiesResults = computed(() => filterStrategies(searchInput.value));
 const { filterNetworks, getNetworksSpacesCount } = useNetworksFilter();
 const searchNetwork = ref('');
 const networks = computed(() => {
-  return filterNetworks(searchNetwork.value).map(_n => ({
+  const filteredNetworks = filterNetworks(searchNetwork.value).map(_n => ({
     label: _n.name,
     value: _n.key,
     option: _n
   }));
+
+  //  Move spaceNetwork to the beginning of the list
+  if (props.space.network) {
+    const spaceNetwork = filteredNetworks.find(
+      n => n.value === props.space.network
+    );
+    if (spaceNetwork) {
+      const spaceNetworkIndex = filteredNetworks.indexOf(spaceNetwork);
+      filteredNetworks.splice(spaceNetworkIndex, 1);
+      filteredNetworks.unshift(spaceNetwork);
+    }
+  }
+
+  return filteredNetworks;
 });
 function handleSubmit() {
   const strategyObj = clone(input.value);
