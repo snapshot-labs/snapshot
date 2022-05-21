@@ -3,17 +3,20 @@ import { Web3Provider } from '@ethersproject/providers';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { formatUnits } from '@ethersproject/units';
-import { getProfiles } from '@/helpers/profile';
 
 let auth;
 const defaultNetwork: any =
   import.meta.env.VITE_DEFAULT_NETWORK || Object.keys(networks)[0];
 
-const state = reactive({
+const state = reactive<{
+  account: string;
+  network: Record<string, any>;
+  authLoading: boolean;
+  walletConnectType: string | null;
+}>({
   account: '',
   network: networks[defaultNetwork],
   authLoading: false,
-  profile: null,
   walletConnectType: null
 });
 
@@ -23,7 +26,7 @@ export function useWeb3() {
     state.authLoading = true;
     await auth.login(connector);
     if (auth.provider.value) {
-      auth.web3 = new Web3Provider(auth.provider.value);
+      auth.web3 = new Web3Provider(auth.provider.value, 'any');
       await loadProvider();
     }
     state.authLoading = false;
@@ -33,7 +36,6 @@ export function useWeb3() {
     auth = getInstance();
     auth.logout();
     state.account = '';
-    state.profile = null;
   }
 
   async function loadProvider() {
@@ -58,10 +60,17 @@ export function useWeb3() {
       console.log('Provider', auth.provider.value);
       let network, accounts;
       try {
-        [network, accounts] = await Promise.all([
-          auth.web3.getNetwork(),
-          auth.web3.listAccounts()
-        ]);
+        const connector = auth.provider.value?.connectorName;
+        if (connector === 'gnosis') {
+          const { chainId: safeChainId, safeAddress } = auth.web3.provider.safe;
+          network = { chainId: safeChainId };
+          accounts = [safeAddress];
+        } else {
+          [network, accounts] = await Promise.all([
+            auth.web3.getNetwork(),
+            auth.web3.listAccounts()
+          ]);
+        }
       } catch (e) {
         console.log(e);
       }
@@ -69,15 +78,11 @@ export function useWeb3() {
       console.log('Accounts', accounts);
       handleChainChanged(network.chainId);
       const acc = accounts.length > 0 ? accounts[0] : null;
-      const profiles = await getProfiles([acc]);
 
       state.account = acc;
-      state.walletConnectType =
-        auth.provider.value?.wc?.peerMeta?.name || 'unknown';
-      state.profile = profiles[acc];
+      state.walletConnectType = auth.provider.value?.wc?.peerMeta?.name || null;
     } catch (e) {
       state.account = '';
-      state.profile = null;
       return Promise.reject(e);
     }
   }
@@ -100,6 +105,7 @@ export function useWeb3() {
     logout,
     loadProvider,
     handleChainChanged,
-    web3: computed(() => state)
+    web3: computed(() => state),
+    web3Account: computed(() => state.account)
   };
 }

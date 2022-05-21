@@ -13,11 +13,13 @@
         "4": "https://eth-rinkeby.alchemyapi.io/v2/twReQE9Px03E-E_N_Fbb3OVF7YgHxoGq",
         "42": "https://eth-kovan.alchemyapi.io/v2/QCsM2iU0bQ49eGDmZ7-Y--Wpu0lVWXSO"
       }
-    }
+    },
+    "icon": "ipfs://QmZRVqHpgRemw13aoovP2EaQdVtjzXRaQGQZsCLXWaNn9x"
   },
   "torus": {
     "id": "torus",
-    "name": "Torus"
+    "name": "Torus",
+    "icon": "ipfs://QmTsZvSJrj5xbreGzccwPCdkV7ZKYEzPqRrTe5xduXgVmu"
   },
   "walletlink": {
     "id": "walletlink",
@@ -28,7 +30,8 @@
       "darkMode": false,
       "chainId": 1,
       "ethJsonrpcUrl": "https://cloudflare-eth.com"
-    }
+    },
+    "icon": "ipfs://QmbJKEaeMz6qR3DmJSTxtYtrZeQPptVfnnYK72QBsvAw5q"
   },
   "portis": {
     "id": "portis",
@@ -37,13 +40,12 @@
     "options": {
       "dappId": "3eb93706-c71d-456b-b4eb-322ea27f7d48",
       "network": "mainnet"
-    }
+    },
+    "icon": "ipfs://QmNuLXa47xSrDNKRfpPNhoFTuoztvtWCcwGnPpT5MXJWMb"
   },
-  "fortmatic": {
-    "id": "fortmatic",
-    "name": "Fortmatic",
-    "options": {
-      "apiKey": "pk_live_9CE8FD92E54684ED"
-    }
+  "gnosis": {
+    "id": "gnosis",
+    "name": "Gnosis Safe",
+    "icon": "ipfs://QmfJUHZLtRvadM7fvEJUWWxhS869KXXCMxPCr7TUqkwvUc"
   }
 }

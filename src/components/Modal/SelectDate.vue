@@ -47,7 +47,7 @@ watch(open, () => {
 </script>
 
 <template>
-  <UiModal :open="open" @close="$emit('close')">
+  <BaseModal :open="open" @close="$emit('close')">
     <template v-slot:header>
       <h3 v-if="step === 0">
         {{
@@ -66,33 +66,34 @@ watch(open, () => {
     </template>
     <div v-if="step === 0">
       <div class="m-4">
-        <UiCalendar v-model="input" class="mx-auto mb-2" />
+        <BaseCalendar v-model="input" class="mx-auto mb-2" />
       </div>
     </div>
     <div v-else class="flex m-4 mx-auto" style="max-width: 160px">
-      <UiButton class="!px-0 w-max">
+      <BaseButton class="!px-0 w-max">
         <input v-model="form.h" max="24" class="input text-center w-5/12" />
         <span class="w-2/12">:</span>
         <input v-model="form.m" max="60" class="input text-center w-5/12" />
-      </UiButton>
+      </BaseButton>
     </div>
     <template v-slot:footer>
       <div class="w-2/4 float-left pr-2">
-        <UiButton @click="$emit('close')" type="button" class="w-full">
+        <BaseButton @click="$emit('close')" type="button" class="w-full">
           {{ $t('cancel') }}
-        </UiButton>
+        </BaseButton>
       </div>
       <div class="w-2/4 float-left pl-2">
-        <UiButton
+        <BaseButton
           @click="handleSubmit"
           type="submit"
           :disabled="!input"
-          class="w-full button--submit"
+          class="w-full"
+          primary
         >
           <span v-if="step === 0">{{ $t('next') }}</span>
           <span v-else>{{ $t('select') }}</span>
-        </UiButton>
+        </BaseButton>
       </div>
     </template>
-  </UiModal>
+  </BaseModal>
 </template>

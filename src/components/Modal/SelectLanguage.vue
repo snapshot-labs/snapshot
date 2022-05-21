@@ -23,20 +23,24 @@ function selectLang(locale) {
 </script>
 
 <template>
-  <UiModal :open="open" @close="$emit('close')">
+  <BaseModal :open="open" @close="$emit('close')">
     <template v-slot:header>
       <h3>{{ $t('language') }}</h3>
     </template>
     <div class="text-center mt-4 mb-3 px-4 w-full">
-      <UiButton
+      <BaseButton
         v-for="locale in locales"
         :key="locale"
         @click="selectLang(locale)"
         class="w-full mb-2"
       >
-        {{ locale === 'en-US' ? '' : languages[locale].nativeName + ' - ' }}
-        {{ languages[locale].name }}
-      </UiButton>
+        {{
+          locale === 'en-US'
+            ? languages[locale].name
+            : languages[locale].nativeName
+        }}
+        {{}}
+      </BaseButton>
     </div>
-  </UiModal>
+  </BaseModal>
 </template>

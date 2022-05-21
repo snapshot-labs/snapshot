@@ -1,7 +1,20 @@
 <script setup>
-import { ref, computed } from 'vue';
-import { getChoiceString } from '@/helpers/utils';
+import { computed, inject, ref, watch } from 'vue';
+import { useI18n } from '@/composables/useI18n';
+import { shorten, getChoiceString, explorerUrl } from '@/helpers/utils';
 import { useClient } from '@/composables/useClient';
+import { useIntl } from '@/composables/useIntl';
+import { getPower } from '../../helpers/snapshot';
+import { useWeb3 } from '../../composables/useWeb3';
+import pending from '@/helpers/pending.json';
+
+const { web3Account } = useWeb3();
+
+const vp = ref(0);
+const vpByStrategy = ref([]);
+const vpLoading = ref(false);
+const vpLoadingFailed = ref(false);
+const vpLoaded = ref(false);
 
 const props = defineProps({
   open: Boolean,
@@ -9,108 +22,149 @@ const props = defineProps({
   proposal: Object,
   selectedChoices: [Object, Number],
   snapshot: String,
-  totalScore: Number,
-  scores: Object,
   strategies: Object
 });
 
 const emit = defineEmits(['reload', 'close']);
 
-const { send } = useClient();
+const { t } = useI18n();
+const notify = inject('notify');
+const { send, clientLoading } = useClient();
+const format = getChoiceString;
+const { formatNumber, formatCompactNumber } = useIntl();
 
-const loading = ref(false);
 const symbols = computed(() =>
-  props.strategies.map(strategy => strategy.params.symbol)
+  props.strategies.map(strategy => strategy.params.symbol || '')
 );
 
-const format = getChoiceString;
-
 async function handleSubmit() {
-  loading.value = true;
-  await send(props.space.id, 'vote', {
-    proposal: props.proposal.id,
+  const result = await send(props.space, 'vote', {
+    proposal: props.proposal,
     choice: props.selectedChoices,
     metadata: {}
   });
-  emit('reload');
-  emit('close');
-  loading.value = false;
+  console.log('Result', result);
+  if (result.id) {
+    notify(['green', t('notify.voteSuccessful')]);
+    if (!pending.includes(props.space.id)) {
+      emit('reload');
+    }
+    emit('close');
+  }
 }
+
+watch(
+  () => [props.open, web3Account.value],
+  async () => {
+    if (props.open === false) return;
+    vpLoading.value = true;
+    vpLoadingFailed.value = false;
+    try {
+      const response = await getPower(
+        props.space,
+        web3Account.value,
+        props.proposal
+      );
+      vp.value = response.totalScore;
+      vpByStrategy.value = response.scoresByStrategy;
+    } catch (e) {
+      vpLoadingFailed.value = true;
+      console.log(e);
+    } finally {
+      vpLoaded.value = true;
+      vpLoading.value = false;
+    }
+  }
+);
 </script>
 
 <template>
-  <UiModal :open="open" @close="$emit('close')" class="flex">
-    <template v-slot:header>
-      <h3>{{ $t('confirmVote') }}</h3>
-    </template>
+  <BaseModal
+    :open="open"
+    :showClose="false"
+    @close="$emit('close')"
+    class="flex"
+  >
     <div class="flex flex-col flex-auto">
       <h4 class="m-4 mb-0 text-center">
-        {{
-          $tc('sureToVote', [
-            _shorten(format(proposal, selectedChoices), 'choice')
-          ])
-        }}
-        <br />
-        {{ $t('cannotBeUndone') }}
+        {{ $tc('voteOverview') }}
       </h4>
-      <div class="m-4 p-4 border rounded-md link-color">
+      <BaseBlock slim class="m-4 p-4 text-skin-link">
         <div class="flex">
-          <span v-text="$t('options')" class="flex-auto text-color mr-1" />
-          <span class="text-right ml-4">
+          <span v-text="$t('options')" class="flex-auto text-skin-text mr-1" />
+          <span
+            v-tippy="{
+              content:
+                format(proposal, selectedChoices).length > 30
+                  ? format(proposal, selectedChoices)
+                  : null
+            }"
+            class="text-right ml-4 truncate"
+          >
             {{ format(proposal, selectedChoices) }}
           </span>
         </div>
         <div class="flex">
-          <span v-text="$t('snapshot')" class="flex-auto text-color mr-1" />
-          <a
-            :href="_explorer(space.network, proposal.snapshot, 'block')"
-            target="_blank"
+          <span v-text="$t('snapshot')" class="flex-auto text-skin-text mr-1" />
+          <BaseLink
+            :link="explorerUrl(proposal.network, proposal.snapshot, 'block')"
             class="float-right"
           >
-            {{ _n(proposal.snapshot, '0,0') }}
-            <Icon name="external-link" class="ml-1" />
-          </a>
+            {{ formatNumber(proposal.snapshot) }}
+          </BaseLink>
         </div>
         <div class="flex">
-          <span v-text="$t('votingPower')" class="flex-auto text-color mr-1" />
           <span
+            v-text="$t('votingPower')"
+            class="flex-auto text-skin-text mr-1"
+          />
+          <span v-if="vpLoadingFailed" class="flex item-center">
+            <BaseIcon name="warning" size="22" class="text-red" />
+          </span>
+          <span
+            v-else-if="vpLoaded && !vpLoading"
             v-tippy="{
-              content: scores
-                .map((score, index) => `${_n(score)} ${symbols[index]}`)
+              content: vpByStrategy
+                .map(
+                  (score, index) =>
+                    `${formatCompactNumber(score)} ${symbols[index]}`
+                )
                 .join(' + ')
             }"
           >
-            {{ _n(totalScore) }}
-            {{ _shorten(space.symbol, 'symbol') }}
+            {{ formatCompactNumber(vp) }}
+            {{ shorten(proposal.symbol || space.symbol, 'symbol') }}
           </span>
-          <a
-            v-if="totalScore === 0"
-            target="_blank"
-            href="https://docs.snapshot.org/faq#why-i-cant-vote"
-            class="inline-block -mt-1 ml-1"
+          <LoadingSpinner v-else />
+          <BaseLink
+            v-if="vp === 0 && vpLoaded && !vpLoading && !vpLoadingFailed"
+            link="https://github.com/snapshot-labs/snapshot/discussions/767#discussioncomment-1400614"
+            class="ml-1 flex items-center"
           >
-            <Icon name="info" size="24" class="text-color" />
-          </a>
+            <BaseIcon name="info" size="24" class="text-skin-text" />
+          </BaseLink>
         </div>
-      </div>
+        <div v-if="vpLoadingFailed" class="mt-3">{{ t('vpError') }}</div>
+      </BaseBlock>
     </div>
     <template v-slot:footer>
       <div class="w-2/4 float-left pr-2">
-        <UiButton @click="$emit('close')" type="button" class="w-full">
+        <BaseButton @click="$emit('close')" type="button" class="w-full">
           {{ $t('cancel') }}
-        </UiButton>
+        </BaseButton>
       </div>
       <div class="w-2/4 float-left pl-2">
-        <UiButton
-          :disabled="totalScore === 0 || loading"
-          :loading="loading"
+        <BaseButton
+          :disabled="vp === 0 || clientLoading"
+          :loading="clientLoading"
           @click="handleSubmit"
           type="submit"
-          class="w-full button--submit"
+          class="w-full"
+          primary
         >
           {{ $t('proposal.vote') }}
-        </UiButton>
+        </BaseButton>
       </div>
     </template>
-  </UiModal>
+  </BaseModal>
 </template>

@@ -4,46 +4,53 @@
 @tailwind components;
 @tailwind utilities;
 
-:root,
-.light-mode {
+[data-color-scheme='dark'] {
+  color-scheme: dark;
   --primary-color: #384aff;
-  --bg-color: white;
-  --text-color: #57606a;
-  --link-color: #111111;
-  --heading-color: #111111;
-  --border-color: #d0d7de;
-  --header-bg: white;
-  --block-bg: transparent;
-}
-
-.dark-mode,
-.eth-dark-mode {
-  --primary-color: #384aff;
-  --bg-color: #121212;
+  --bg-color: #211f24;
   --text-color: #8b949e;
   --link-color: #ffffff;
   --heading-color: #ffffff;
-  --border-color: #424242;
-  --header-bg: #121212;
+  --border-color: #2d2d2d;
+  --header-bg: #1c1b20;
+  --block-bg: transparent;
+  --shadow-color: #fff1;
+}
+
+[data-color-scheme='light'] {
+  color-scheme: light;
+  --primary-color: #384aff;
+  --bg-color: white;
+  --text-color: #57606a;
+  --link-color: #444444;
+  --heading-color: #111111;
+  --border-color: #e0e0e0;
+  --header-bg: white;
+  --block-bg: transparent;
+  --shadow-color: #0001;
 }
 
 @layer base {
   @font-face {
     font-family: 'Calibre';
-    src: url('./assets/fonts/Calibre-Medium.woff2') format('woff2'),
-      url('./assets/fonts/Calibre-Medium.woff') format('woff'),
-      url('./assets/fonts/Calibre-Medium.ttf') format('truetype');
+    src: url('./assets/fonts/Calibre-Medium-Custom.woff2') format('woff2');
     font-weight: 500;
     font-style: normal;
   }
 
   @font-face {
     font-family: 'Calibre';
-    src: url('./assets/fonts/Calibre-Semibold.woff2') format('woff2'),
-      url('./assets/fonts/Calibre-Semibold.woff') format('woff'),
-      url('./assets/fonts/Calibre-Semibold.ttf') format('truetype');
+    src: url('./assets/fonts/Calibre-Semibold-Custom.woff2') format('woff2');
     font-weight: 600;
     font-style: normal;
+  }
+
+  * {
+    @apply outline-none;
+  }
+
+  body {
+    overflow-x: hidden;
   }
 
   h1 {
@@ -58,112 +65,85 @@
   h4 {
     @apply text-md;
   }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-semibold text-skin-heading;
+  }
+
+  a,
+  button,
+  input {
+    @apply transition-colors;
+  }
+
+  b {
+    @apply font-semibold;
+  }
+
+  select {
+    @apply bg-skin-bg;
+  }
 }
 
-html,
-body,
-#app {
-  background: var(--bg-color);
-  color: var(--text-color);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@layer utilities {
+  // This allows us to use 'no-scrollbar' with Tailwind breakpoints like this 'md:no-scrollbar'
+  /* Chrome, Safari and Opera */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
 }
 
-body {
-  overscroll-behavior-y: none;
+// Don't prevent overscroll on touch devices
+@media (pointer: fine) {
+  body {
+    overscroll-behavior-y: none;
+  }
 }
 
-* {
-  outline: none !important;
+// Fade transition for Vue's transition and transition-group
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.2s ease;
 }
 
-h1,
-h2,
-h3,
-h4 {
-  color: var(--heading-color);
-  font-weight: 600;
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
 
-b {
-  font-weight: 600;
-}
-
-#app {
-  min-height: 100vh;
-}
-
+// TODO: Move this to BaseLink components
 a,
 .a {
   color: var(--link-color);
 
   &:hover {
-    color: var(--link-color) !important;
     cursor: pointer;
-    text-decoration: none !important;
+    text-decoration: none;
   }
+}
+
+// TODO: Move this and ::placeholder to a new BaseInput component
+.input {
+  @apply outline-none text-skin-link bg-transparent;
 }
 
 ::placeholder {
-  color: var(--text-color) !important;
+  color: var(--text-color);
   opacity: 0.6 !important;
 }
 
-.input {
-  outline: none;
-  color: var(--link-color);
-  background-color: transparent;
-  border: none;
-}
-
-textarea {
-  padding-top: 16px;
-  font-size: 20px;
-  line-height: 1.4em;
-}
-
-::-webkit-scrollbar-thumb {
-  background-color: var(--border-color);
-  background-clip: padding-box;
-  border: 0;
-  border-radius: 0;
-
-  &:hover {
-    background-color: var(--border-color);
-  }
-}
-
-.eyebrow {
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  font-size: 16px;
-}
-
-.column {
-  width: 160px;
-}
-
-.anim-fade-in {
-  animation-duration: 0.6s !important;
-}
-
-.bg-black {
-  background-color: var(--bg-color);
-}
-
-.State {
-  font-size: 16px;
-  line-height: 30px;
-  height: 28px;
-  vertical-align: middle;
-  padding: 0 12px;
-  border-radius: 14px;
-}
-
-.notification {
-  color: white !important;
-}
-
+// TODO: Remove this and use border-skin-border in the templates. Tailwind has
+// dozens of modifiers (md:, sm:, hover: etc.) which would all need to be listed here.
 .border,
 .border-md,
 .border-lg,
@@ -171,90 +151,14 @@ textarea {
 .border-t,
 .border-r,
 .border-l {
-  border-color: var(--border-color);
-}
-
-.header-bg {
-  background-color: var(--header-bg) !important;
-}
-
-.bg-gray-9 {
-  background-color: var(--text-color) !important;
-}
-
-.primary-color {
-  color: var(--primary-color) !important;
-}
-
-.text-color {
-  color: var(--text-color) !important;
-}
-
-.link-color {
-  color: var(--link-color) !important;
-}
-
-.block-bg {
-  background-color: var(--block-bg) !important;
-}
-
-.bg-blue {
-  background-color: var(--primary-color) !important;
-}
-
-.tab {
-  display: inline-block;
-  &:first-letter {
-    text-transform: capitalize;
-  }
-}
-
-.menu-tabs {
-  white-space: nowrap;
-}
-
-.menu-tabs::-webkit-scrollbar {
-  display: none;
-}
-
-.extra-icon-container {
-  position: relative;
-
-  .extra-icon-off {
-    display: none;
-  }
-}
-
-.markdown-body blockquote {
-  color: var(--text-color);
-  border-left-color: var(--text-color);
-}
-
-.last-child-border-0:last-child {
-  border: 0 !important;
-}
-
-.sliding {
-  overflow: auto;
-  white-space: nowrap;
-}
-
-.border-color {
-  color: var(--border-color);
+  @apply border-skin-border;
 }
 
 .sidenav-item {
   &.router-link-exact-active {
     border-left: 3px solid;
-    padding-left: 21px !important;
+    padding-left: 21px;
   }
-}
-
-.truncated {
-  display: block;
-  white-space: nowrap; /* forces text to single line */
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 input[type='number']::-webkit-inner-spin-button,
@@ -263,6 +167,18 @@ input[type='number']::-webkit-outer-spin-button {
   margin: 0;
 }
 
+// Pointer cursor for file input buttons
+input[type=file], /* FF, IE7+, chrome (except button) */
+input[type=file]::-webkit-file-upload-button {
+  /* chromes and blink button */
+  cursor: pointer;
+}
+
+input[type='number'] {
+  -moz-appearance: textfield;
+}
+
+// V-Tippy tooltip package styling - could be moved somewhere else?
 .tippy-box[data-animation='fade'][data-state='hidden'] {
   opacity: 0;
 }
@@ -274,13 +190,13 @@ input[type='number']::-webkit-outer-spin-button {
   background-color: var(--text-color);
   color: var(--header-bg);
   border-radius: 7px;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 1.4;
   outline: 0;
   transition-property: transform, visibility, opacity;
-  padding: 3px 6px 4px;
+  padding: 2px 4px;
   text-align: center;
-  font-weight: 600;
+  font-weight: 500;
 }
 .tippy-box[data-placement^='top'] > .tippy-arrow {
   bottom: 0;
@@ -338,4 +254,26 @@ input[type='number']::-webkit-outer-spin-button {
   position: relative;
   padding: 5px 9px;
   z-index: 1;
+}
+
+.lazy-loading {
+  @apply bg-skin-border animate-pulse-fast;
+}
+
+// Shot UI kit
+
+.s-input {
+  @apply outline-none text-skin-heading border border-skin-border focus-within:border-skin-text block rounded-full py-2 px-3 w-full bg-skin-bg;
+}
+
+.s-error {
+  @apply bg-red text-white text-sm transition-all duration-200 flex items-center px-3 pb-2 pt-4 rounded-b-3xl;
+}
+
+// Fix for chrome. Overwrites tailwinds break-words class.
+// For some reason chrome doesn't break links with just overflow-wrap.
+// It also needs word-break.
+.break-words {
+  overflow-wrap: break-word;
+  word-break: break-word;
 }

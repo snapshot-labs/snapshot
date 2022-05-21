@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from 'vue';
+import { shorten } from '@/helpers/utils';
 
 defineProps({
   proposal: {
@@ -23,16 +24,19 @@ function selectChoice(i) {
 
 <template>
   <div class="mb-3">
-    <UiButton
+    <BaseButton
       v-for="(choice, i) in proposal.choices"
       :key="i"
       @click="selectChoice(i + 1)"
       class="block w-full mb-2"
-      :class="selectedChoices.includes(i + 1) && 'button--active'"
+      :class="{
+        '!border-skin-link': selectedChoices.includes(i + 1),
+        'hover:border-skin-link border-skin-border': !selectedChoices.includes(
+          i + 1
+        )
+      }"
     >
-      {{ _shorten(choice, 32) }}
-
-      <PluginAragonGovern :proposal="proposal" />
-    </UiButton>
+      {{ shorten(choice, 32) }}
+    </BaseButton>
   </div>
 </template>

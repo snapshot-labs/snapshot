@@ -1,9 +1,8 @@
 <script setup>
-import { ref, computed } from 'vue';
-import { useSearchFilters } from '@/composables/useSearchFilters';
-import { useUserSkin } from '@/composables/useUserSkin';
+import { ref, computed, watch } from 'vue';
+import { useSkinsFilter } from '@/composables/useSkinsFilter';
 
-defineProps({
+const props = defineProps({
   open: {
     type: Boolean,
     required: true
@@ -13,41 +12,57 @@ defineProps({
 const emit = defineEmits(['close', 'update:modelValue']);
 
 const searchInput = ref('');
-const { filteredSkins } = useSearchFilters();
-const skins = computed(() => filteredSkins(searchInput.value));
+const { filterSkins, getSkinsSpacesCount, loadingSkins } = useSkinsFilter();
+const filteredSkins = computed(() => filterSkins(searchInput.value));
+
+watch(
+  () => props.open,
+  () => {
+    if (props.open) getSkinsSpacesCount();
+  }
+);
 
 function select(key) {
   emit('update:modelValue', key);
   emit('close');
 }
-
-const { userSkin } = useUserSkin();
 </script>
 
 <template>
-  <UiModal :open="open" @close="$emit('close')">
+  <BaseModal :open="open" @close="$emit('close')">
     <template v-slot:header>
       <h3>{{ $t('skins') }}</h3>
     </template>
-    <Search
+    <BaseSearch
       v-model="searchInput"
       :placeholder="$t('searchPlaceholder')"
-      :modal="true"
+      modal
     />
-    <div class="mt-4 mx-0 md:mx-4">
-      <a v-if="!searchInput" key="" @click="select(undefined)">
-        <div :class="userSkin" class="bg-black rounded-none md:rounded-md">
-          <Block>
-            <UiButton class="button--submit mb-2">{{
+    <div class="my-4 mx-0 md:mx-4 min-h-[339px]">
+      <LoadingRow v-if="loadingSkins" block />
+      <div v-else class="space-y-3">
+        <div
+          v-if="!searchInput"
+          key=""
+          @click="select(undefined)"
+          class="default rounded-none md:rounded-md cursor-pointer"
+        >
+          <BaseBlock>
+            <BaseButton class="mb-2" primary>{{
               $t('defaultSkin')
-            }}</UiButton>
-          </Block>
+            }}</BaseButton>
+          </BaseBlock>
         </div>
-      </a>
-      <a v-for="skin in skins" :key="skin.key" @click="select(skin.key)">
-        <BlockSkin :skin="skin" />
-      </a>
-      <NoResults v-if="Object.keys(skins).length < 1" />
+
+        <BlockSkin
+          :skin="skin"
+          v-for="skin in filteredSkins"
+          :key="skin"
+          @click="select(skin)"
+        />
+
+        <NoResults v-if="Object.keys(filteredSkins).length < 1" />
+      </div>
     </div>
-  </UiModal>
+  </BaseModal>
 </template>

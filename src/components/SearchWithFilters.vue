@@ -1,7 +1,7 @@
 <script setup>
 import { computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { useI18n } from 'vue-i18n';
+import { useI18n } from '@/composables/useI18n';
 
 defineEmits(['update:modelValue']);
 
@@ -9,26 +9,27 @@ const route = useRoute();
 const router = useRouter();
 const { t } = useI18n();
 
+const routeQuery = computed(() => route.query.q || '');
 const searchOptions = computed(() => [
   {
     text: t('spaces'),
-    action: 'home'
+    action: 'home',
+    selected: route.name === 'home'
   },
   {
     text: t('networks'),
-    action: 'networks'
+    action: 'networks',
+    selected: route.name === 'networks'
   },
   {
     text: t('strategiesPage'),
-    action: 'strategies'
+    action: 'strategies',
+    selected: route.name === 'strategies'
   },
   {
     text: t('plugins'),
-    action: 'plugins'
-  },
-  {
-    text: t('skins'),
-    action: 'skins'
+    action: 'plugins',
+    selected: route.name === 'plugins'
   }
 ]);
 
@@ -37,8 +38,6 @@ const searchSelectedOption = computed(
     searchOptions.value.find(option => option.action === route.name)?.text ||
     'home'
 );
-
-const routeQuery = computed(() => route.query.q);
 
 function redirectSearch(e) {
   router.push({
@@ -50,24 +49,19 @@ function redirectSearch(e) {
 
 <template>
   <div class="flex">
-    <Search
+    <BaseSearch
       :modelValue="routeQuery"
       @update:modelValue="input => $emit('update:modelValue', input)"
       :placeholder="$t('searchPlaceholder')"
       class="flex-auto pr-2"
     />
-    <div class="border-l" style="height: 44px">
-      <UiDropdown
-        top="3.5rem"
-        right="1.0rem"
-        class="text-left"
-        style="z-index: 1"
-        @select="redirectSearch"
-        :items="searchOptions"
-      >
-        <span v-text="searchSelectedOption" class="ml-3" />
-        <Icon name="arrow-down" class="ml-1 mr-2 pr-1" />
-      </UiDropdown>
+    <div class="border-l flex items-center" style="height: 44px">
+      <BaseDropdown @select="redirectSearch" :items="searchOptions">
+        <template v-slot:button>
+          <span v-text="searchSelectedOption" class="ml-3" />
+          <BaseIcon name="arrow-down" class="ml-1 mr-2 pr-1" />
+        </template>
+      </BaseDropdown>
     </div>
   </div>
 </template>

@@ -1,50 +1,84 @@
 <script setup>
-import { watchEffect, computed } from 'vue';
-import { useUsername } from '@/composables/useUsername';
+import { computed } from 'vue';
+import { shorten } from '@/helpers/utils';
 import removeMd from 'remove-markdown';
+import { useIntl } from '@/composables/useIntl';
+
+const { formatCompactNumber, getRelativeProposalPeriod } = useIntl();
 
 const props = defineProps({
   proposal: Object,
-  profiles: Object
+  profiles: Object,
+  space: Object
 });
 
-const body = computed(() => removeMd(props.proposal.body));
+// shortening to twice the allowed character limit (140*2) before removing markdown
+// due to a bug in remove-markdown: https://github.com/stiang/remove-markdown/issues/52
+// until this is fixed we need to avoid applying that function to very long texts with a lot of markdown
+// see also: TimelineProposalPreview.vue
+const body = computed(() => removeMd(shorten(props.proposal.body, 280)));
 
-const period = computed(() => {
-  if (props.proposal.state === 'closed') return 'endedAgo';
-  if (props.proposal.state === 'active') return 'endIn';
-  return 'startIn';
-});
-
-const { address, profile, username } = useUsername();
-
-watchEffect(() => {
-  address.value = props.proposal.author;
-  profile.value = props.profiles[props.proposal.author];
-});
+const winningChoice = computed(() =>
+  props.proposal.scores.indexOf(Math.max(...props.proposal.scores))
+);
 </script>
 
 <template>
-  <router-link
-    class="p-4 block text-color"
-    :to="{
-      name: 'spaceProposal',
-      params: { key: proposal.space.id, id: proposal.id }
-    }"
-  >
-    <div>
-      <div class="mb-2">
-        <Token :space="proposal.space" size="28" />
-        <span class="ml-2" v-text="proposal.space.name" />
-        {{ $tc('proposalBy', [username]) }}
-        <Badges :address="proposal.author" :members="proposal.space.members" />
-        <UiState :state="proposal.state" class="inline-block float-right" />
-      </div>
-      <h3 v-text="_shorten(proposal.title, 124)" class="mt-1 mb-1" />
-      <p v-text="_shorten(body, 140)" class="break-words mb-1 text-md" />
+  <BaseBlock slim class="transition-colors md:hover:border-skin-text">
+    <router-link
+      class="p-3 sm:p-4 block text-skin-text"
+      :to="{
+        name: 'spaceProposal',
+        params: { key: proposal.space.id, id: proposal.id }
+      }"
+    >
       <div>
-        {{ $tc(period, [_ms(proposal.start), _ms(proposal.end)]) }}
+        <div class="mb-2 flex justify-between items-center">
+          <div class="flex items-center space-x-1">
+            <AvatarSpace :space="proposal.space" size="28" />
+            <span class="!ml-2 hidden xs:block" v-text="proposal.space.name" />
+            <span v-text="$tc('proposalBy')" />
+
+            <AvatarUser
+              :address="proposal.author"
+              :profile="profiles[proposal.author]"
+              :space="space"
+              :proposal="proposal"
+              only-username
+            />
+            <BaseBadge
+              :address="proposal.author"
+              :members="proposal.space.members"
+            />
+          </div>
+          <LabelProposalState :state="proposal.state" />
+        </div>
+        <h3 v-text="proposal.title" class="my-1 leading-7 break-words" />
+        <p v-text="shorten(body, 140)" class="break-words mb-2 sm:text-md" />
+        <div>
+          <span
+            v-if="proposal.scores_state !== 'final'"
+            v-text="
+              getRelativeProposalPeriod(
+                proposal.state,
+                proposal.start,
+                proposal.end
+              )
+            "
+          />
+          <span
+            v-if="proposal.scores_state === 'final'"
+            class="mt-2 flex space-x-1 items-center"
+          >
+            <BaseIcon size="20" name="check1" class="text-green" />
+            <span
+              >{{ shorten(proposal.choices[winningChoice], 64) }} -
+              {{ formatCompactNumber(proposal.scores[winningChoice]) }}
+              {{ proposal.symbol || proposal.space.symbol }}</span
+            >
+          </span>
+        </div>
       </div>
-    </div>
-  </router-link>
+    </router-link>
+  </BaseBlock>
 </template>

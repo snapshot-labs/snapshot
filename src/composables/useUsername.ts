@@ -3,15 +3,10 @@ import { shorten } from '@/helpers/utils';
 import { useWeb3 } from '@/composables/useWeb3';
 
 export function useUsername() {
-  const { web3 } = useWeb3();
+  const { web3Account } = useWeb3();
 
   const address = ref('');
-  const profile = ref({
-    name: '',
-    ens: ''
-  });
-
-  const web3Account = computed(() => web3.value.account);
+  const profile = ref<{ name?: string; ens?: string } | null>(null);
 
   const username = computed(() => {
     if (
@@ -23,10 +18,24 @@ export function useUsername() {
     if (profile.value?.name) {
       return profile.value.name;
     } else if (profile.value?.ens) {
-      return shorten(profile.value.ens, 20);
+      return profile.value.ens;
     }
     return shorten(address.value);
   });
 
-  return { address, profile, username };
+  function setAddress(a) {
+    address.value = a ? a : '';
+  }
+
+  function setProfile(p) {
+    profile.value = p ? p : null;
+  }
+
+  return {
+    address: computed(() => address.value),
+    profile: computed(() => profile.value),
+    username,
+    setAddress,
+    setProfile
+  };
 }

@@ -2,7 +2,9 @@ import { ref } from 'vue';
 import { subgraphRequest } from '@snapshot-labs/snapshot.js/src/utils';
 import { lsGet } from '@/helpers/utils';
 
-const proposalIds = ref([]);
+type proposal = { id: string; created: number; space: { id: string } };
+
+const proposals = ref<proposal[]>([]);
 const lastSeenProposals = ref({});
 
 /**
@@ -10,7 +12,7 @@ const lastSeenProposals = ref({});
  * other spaces had proposals.
  */
 export function useUnseenProposals() {
-  async function getProposalIds(followingSpaces) {
+  async function getProposals(followingSpaces) {
     if (followingSpaces[0]) {
       try {
         const activeProposals = await subgraphRequest(
@@ -31,7 +33,7 @@ export function useUnseenProposals() {
             }
           }
         );
-        proposalIds.value = activeProposals.proposals;
+        proposals.value = activeProposals.proposals;
       } catch (e) {
         console.log(e);
       }
@@ -46,9 +48,9 @@ export function useUnseenProposals() {
   }
 
   return {
-    getProposalIds,
+    proposals,
+    getProposals,
     updateLastSeenProposal,
-    proposalIds,
     lastSeenProposals
   };
 }

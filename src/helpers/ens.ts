@@ -1,19 +1,24 @@
-import { namehash } from '@ethersproject/hash';
-import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
-import { call } from '@snapshot-labs/snapshot.js/src/utils';
+import {
+  ApolloClient,
+  createHttpLink,
+  InMemoryCache
+} from '@apollo/client/core';
 
-export async function getSpaceUri(id) {
-  const abi =
-    'function text(bytes32 node, string calldata key) external view returns (string memory)';
-  const address = '0x4976fb03C32e5B8cfe2b6cCB31c09Ba78EBaBa41';
+const uri =
+  import.meta.env.VITE_DEFAULT_NETWORK === '4'
+    ? 'https://api.thegraph.com/subgraphs/name/ensdomains/ensrinkeby'
+    : 'https://api.thegraph.com/subgraphs/name/ensdomains/ens';
 
-  let uri: any = false;
-  try {
-    const hash = namehash(id);
-    const provider = getProvider('1');
-    uri = await call(provider, [abi], [address, 'text', [hash, 'snapshot']]);
-  } catch (e) {
-    console.log('getSpaceUriFromTextRecord failed', id, e);
+const httpLink = createHttpLink({ uri });
+
+export const ensApolloClient = new ApolloClient({
+  link: httpLink,
+  cache: new InMemoryCache({
+    addTypename: false
+  }),
+  defaultOptions: {
+    query: {
+      fetchPolicy: 'no-cache'
+    }
   }
-  return uri;
-}
+});

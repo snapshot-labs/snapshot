@@ -1,71 +1,68 @@
 <script setup>
-import { computed } from 'vue';
+import { onMounted } from 'vue';
 import { useRoute } from 'vue-router';
-import { useApp } from '@/composables/useApp';
-import { useSearchFilters } from '@/composables/useSearchFilters';
+import { useI18n } from '@/composables/useI18n';
+import { useStrategies } from '@/composables/useStrategies';
 
 const route = useRoute();
-const { strategies } = useApp();
-const { minifiedStrategiesArray } = useSearchFilters();
+const { setPageTitle } = useI18n();
+const { getExtendedStrategy, extendedStrategy: strategy } = useStrategies();
 
-const strategy = computed(() => strategies.value[route.params.name]);
+onMounted(async () => {
+  setPageTitle('page.title.strategy', { key: route.params.name });
+  getExtendedStrategy(route.params.name);
+});
 </script>
 
 <template>
-  <Layout>
+  <TheLayout>
     <template #content-left>
       <div class="px-4 md:px-0 mb-3">
-        <router-link :to="{ path: '/strategies' }" class="text-color">
-          <Icon name="back" size="22" class="!align-middle" />
+        <router-link :to="{ path: '/strategies' }" class="text-skin-text">
+          <BaseIcon name="back" size="22" class="!align-middle" />
           {{ $t('strategiesPage') }}
         </router-link>
       </div>
-      <div class="px-4 md:px-0">
+      <LoadingPage v-if="!strategy" />
+      <div class="px-4 md:px-0" v-else>
         <h1 class="mb-2">
-          {{ strategy.key }}
+          {{ strategy.id }}
         </h1>
         <span
-          v-text="
-            `In ${
-              minifiedStrategiesArray.find(st => st.key === route.params.name)
-                .spaces
-            } space(s)`
-          "
-          class="text-color"
+          v-text="`In ${strategy.spacesCount} space(s)`"
+          class="text-skin-text"
         />
-        <UiMarkdown :body="strategy.about" class="mb-6 mt-4" />
+        <BaseMarkdown :body="strategy.about" class="mb-6 mt-4" />
       </div>
     </template>
     <template #sidebar-right>
-      <Block :title="$t('information')">
+      <BaseBlock :title="$t('information')" v-if="strategy">
         <div class="mb-1">
           <b>{{ $t('author') }}</b>
-          <a
-            target="_blank"
+          <BaseLink
             class="float-right"
-            :href="`https://github.com/${strategy.author}`"
+            :link="`https://github.com/${strategy.author}`"
+            hide-external-icon
           >
-            <Icon name="github" class="ml-1" />
+            <BaseIcon name="github" class="ml-1" />
             {{ strategy.author }}
-          </a>
+          </BaseLink>
         </div>
         <div>
           <div class="mb-1">
             <b>{{ $t('version') }}</b>
-            <a
-              target="_blank"
+            <BaseLink
               class="float-right"
-              :href="`https://github.com/snapshot-labs/snapshot-strategies/tree/master/src/strategies/${strategy.key}`"
+              :link="`https://github.com/snapshot-labs/snapshot-strategies/tree/master/src/strategies/${strategy.id}`"
             >
               {{ strategy.version }}
-              <Icon name="external-link" class="ml-1" />
-            </a>
+            </BaseLink>
           </div>
         </div>
         <router-link :to="`/playground/${$route.params.name}`">
-          <UiButton class="w-full mt-2">{{ $t('playground') }}</UiButton>
+          <BaseButton class="w-full mt-2">{{ $t('playground') }}</BaseButton>
         </router-link>
-      </Block>
+      </BaseBlock>
     </template>
-  </Layout>
+  </TheLayout>
 </template>

@@ -1,25 +1,33 @@
 <script setup>
-defineProps(['network']);
+import { useIntl } from '@/composables/useIntl';
+import { useNetworksFilter } from '@/composables/useNetworksFilter';
+import { getIpfsUrl } from '@/helpers/utils';
 
-function getLogoUrl(key) {
-  return `https://raw.githubusercontent.com/snapshot-labs/snapshot.js/master/src/networks/${key}.png`;
-}
+const { formatCompactNumber } = useIntl();
+
+const { networksSpacesCount } = useNetworksFilter();
+
+defineProps(['network']);
 </script>
 
 <template>
-  <Block>
-    <div class="flex items-center mb-1">
-      <UiAvatar
-        class="mr-2 mb-2"
-        :imgsrc="getLogoUrl(network.key)"
-        :seed="network.key"
-        size="28"
-      />
-      <h3 v-text="network.name" />
-      <div v-text="network.key" class="ml-1 text-color" />
+  <BaseBlock class="hover:border-skin-text cursor-pointer">
+    <div class="flex items-start mb-3">
+      <BaseAvatar class="mr-2" :imgsrc="getIpfsUrl(network.logo)" size="28" />
+      <div class="overflow-hidden">
+        <h3 class="truncate my-0 leading-5" v-text="network.name" />
+        <div
+          v-text="'Chain #' + network.key"
+          class="text-skin-text text-xs leading-4"
+        />
+      </div>
     </div>
-    <div class="text-color">
-      {{ $tc('inSpaces', [_n(network.spaces)]) }}
+    <div class="text-skin-text">
+      {{
+        $tc('inSpaces', [
+          formatCompactNumber(networksSpacesCount[network.key] ?? 0)
+        ])
+      }}
     </div>
-  </Block>
+  </BaseBlock>
 </template>

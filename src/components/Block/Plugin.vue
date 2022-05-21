@@ -1,41 +1,47 @@
 <script setup>
-defineProps(['plugin']);
+import { useIntl } from '@/composables/useIntl';
+import { usePlugins } from '@/composables/usePlugins';
+import { getIpfsUrl } from '@/helpers/utils';
 
-function getLogoUrl(key) {
-  return `https://raw.githubusercontent.com/snapshot-labs/snapshot-plugins/master/src/plugins/${key}/logo.png`;
-}
+const { formatCompactNumber } = useIntl();
+const { pluginsSpacesCount } = usePlugins();
+
+defineProps({
+  plugin: Object // src/plugins/**/plugin.json
+});
 </script>
 
 <template>
-  <Block>
-    <div class="flex items-center mb-1">
-      <a
-        :href="`https://github.com/snapshot-labs/snapshot-plugins/tree/master/src/plugins/${plugin.key}`"
-        target="_blank"
-        class="flex items-center"
-      >
-        <UiAvatar
-          class="mr-2 mb-2"
-          :imgsrc="getLogoUrl(plugin.key)"
-          :seed="plugin.name.charCodeAt()"
-          size="28"
-        />
-        <h3 v-text="plugin.name" />
-      </a>
+  <BaseBlock class="hover:border-skin-text cursor-pointer">
+    <div class="flex items-center mb-2">
+      <BaseAvatar class="mr-2" :imgsrc="getIpfsUrl(plugin.icon)" size="28" />
+      <h3 v-text="plugin.name" class="truncate m-0" />
       <div class="ml-1">v{{ plugin.version }}</div>
     </div>
-    <div class="text-color">
-      <div>
-        <a
-          :href="`https://github.com/${plugin.author}`"
-          target="_blank"
-          class="text-color"
+    <div class="flex justify-between items-end text-skin-text">
+      <div class="flex flex-col">
+        <BaseLink
+          class="text-skin-text"
+          :link="`https://github.com/${plugin.author}`"
+          hide-external-icon
         >
-          <Icon name="github" class="mr-1" />
+          <BaseIcon name="github" class="mr-1" />
           {{ plugin.author }}
-        </a>
+        </BaseLink>
+        {{
+          $tc('inSpaces', [
+            formatCompactNumber(pluginsSpacesCount?.[plugin.key] ?? 0)
+          ])
+        }}
       </div>
-      {{ $tc('inSpaces', [_n(plugin.spaces)]) }}
+
+      <BaseLink
+        class="flex items-center"
+        @click.stop
+        :link="`https://github.com/snapshot-labs/snapshot/tree/develop/src/plugins/${plugin.key}`"
+      >
+        {{ $t('learnMore') }}
+      </BaseLink>
     </div>
-  </Block>
+  </BaseBlock>
 </template>

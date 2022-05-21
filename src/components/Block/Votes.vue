@@ -1,72 +1,99 @@
 <script setup>
 import { ref, computed, watch, toRefs } from 'vue';
-import { getChoiceString } from '@/helpers/utils';
+import { shorten, getChoiceString } from '@/helpers/utils';
 import { useProfiles } from '@/composables/useProfiles';
 import { useWeb3 } from '@/composables/useWeb3';
+import { clone } from '@snapshot-labs/snapshot.js/src/utils';
+import uniqBy from 'lodash/uniqBy';
+import { useIntl } from '@/composables/useIntl';
+import pending from '@/helpers/pending.json';
 
 const props = defineProps({
   space: Object,
   proposal: Object,
-  votes: Object,
+  votes: Array,
   loaded: Boolean,
-  strategies: Object
+  strategies: Object,
+  userVote: Array,
+  loadingMore: Boolean
 });
+
+defineEmits(['loadVotes']);
 
 const format = getChoiceString;
 
+const { formatCompactNumber } = useIntl();
 const { votes } = toRefs(props);
-const { web3 } = useWeb3();
+const { web3Account } = useWeb3();
 
-const showAllVotes = ref(false);
 const authorIpfsHash = ref('');
 const modalReceiptOpen = ref(false);
 
-const web3Account = computed(() => web3.value.account);
+const isFinalProposal = computed(() => {
+  const spaceShowPending = pending;
+  const showPending =
+    props.proposal.scores_state === 'pending' &&
+    spaceShowPending.includes(props.space.id);
+  return props.proposal.scores_state === 'final' || showPending;
+});
+
+const voteCount = computed(() =>
+  isFinalProposal.value ? props.proposal.votes : votes.value.length
+);
+const nbrVisibleVotes = ref(10);
+
+const sortedVotes = ref([]);
 
 const visibleVotes = computed(() =>
-  showAllVotes.value ? sortVotesUserFirst() : sortVotesUserFirst().slice(0, 10)
+  isFinalProposal.value
+    ? sortedVotes.value
+    : sortedVotes.value.slice(0, nbrVisibleVotes.value)
 );
 const titles = computed(() =>
-  props.strategies.map(strategy => strategy.params.symbol)
+  props.strategies.map(strategy => strategy.params.symbol || '')
 );
 
 function isZero() {
   if (!props.loaded) return true;
-  if (props.votes.length > 0) return true;
+  if (votes.value.length > 0) return true;
 }
 
-function openReceiptModal(vote) {
-  authorIpfsHash.value = vote.id;
+function openReceiptModal(iphsHash) {
+  authorIpfsHash.value = iphsHash;
   // this.relayerIpfsHash = vote.relayerIpfsHash;
   modalReceiptOpen.value = true;
 }
 
-function sortVotesUserFirst() {
-  const votes = props.votes;
-  if (votes.map(vote => vote.voter).includes(web3Account.value)) {
-    votes.unshift(
-      votes.splice(
-        votes.findIndex(item => item.voter === web3Account.value),
+const { profiles, loadProfiles } = useProfiles();
+
+watch([votes, web3Account], () => {
+  const votesWithUser = uniqBy(
+    clone(votes.value).concat(props.userVote),
+    'ipfs'
+  );
+  if (votesWithUser.map(vote => vote.voter).includes(web3Account.value)) {
+    votesWithUser.unshift(
+      votesWithUser.splice(
+        votesWithUser.findIndex(item => item.voter === web3Account.value),
         1
       )[0]
     );
-    return votes;
+  } else {
+    votesWithUser.sort((a, b) => b.balance - a.balance);
   }
-  return votes;
-}
+  sortedVotes.value = votesWithUser;
+});
 
-const { profiles, addressArray } = useProfiles();
-
-watch(votes, () => {
-  addressArray.value = votes.value.map(vote => vote.voter);
+watch(visibleVotes, () => {
+  loadProfiles(visibleVotes.value.map(vote => vote.voter));
 });
 </script>
 
 <template>
-  <Block
+  <BaseBlock
     v-if="isZero()"
     :title="$t('votes')"
-    :counter="votes.length"
+    :counter="voteCount"
     :slim="true"
     :loading="!loaded"
   >
@@ -74,17 +101,19 @@ watch(votes, () => {
       v-for="(vote, i) in visibleVotes"
       :key="i"
       :style="i === 0 && 'border: 0 !important;'"
-      class="px-4 py-3 border-t flex"
+      class="px-3 py-3 border-t flex"
     >
-      <User
+      <AvatarUser
         :profile="profiles[vote.voter]"
         :address="vote.voter"
         :space="space"
-        class="column"
+        :key="vote.voter"
+        :proposal="proposal"
+        class="w-[110px] xs:w-[130px] min-w-[110px] xs:min-w-[130px]"
       />
-      <div class="flex-auto text-center link-color">
-        <span
-          class="text-center link-color"
+      <div class="flex-auto text-center text-skin-link truncate px-2">
+        <div
+          class="text-center text-skin-link truncate"
           v-tippy="{
             content:
               format(proposal, vote.choice).length > 24
@@ -92,45 +121,51 @@ watch(votes, () => {
                 : null
           }"
         >
-          {{ _shorten(format(proposal, vote.choice), 24) }}
-        </span>
+          {{ format(proposal, vote.choice) }}
+        </div>
       </div>
 
-      <div class="column text-right link-color">
+      <div
+        class="min-w-[110px] xs:min-w-[130px] text-right text-skin-link whitespace-nowrap"
+      >
         <span
           v-tippy="{
             content: vote.scores
-              .map((score, index) => `${_n(score)} ${titles[index]}`)
+              ?.map(
+                (score, index) =>
+                  `${formatCompactNumber(score)} ${titles[index]}`
+              )
               .join(' + ')
           }"
         >
-          {{ `${_n(vote.balance)} ${_shorten(space.symbol, 'symbol')}` }}
+          {{
+            `${formatCompactNumber(vote.balance)} ${shorten(
+              proposal.symbol || space.symbol,
+              'symbol'
+            )}`
+          }}
         </span>
         <a
-          @click="openReceiptModal(vote)"
+          @click="openReceiptModal(vote.ipfs)"
           target="_blank"
-          class="ml-2 text-color"
+          class="ml-2 text-skin-text"
           title="Receipt"
         >
-          <Icon name="signature" />
+          <BaseIcon name="signature" />
         </a>
       </div>
     </div>
     <a
-      v-if="!showAllVotes && votes.length > 10"
-      @click="showAllVotes = true"
-      class="
-        px-4
-        py-3
-        border-t
-        text-center
-        block
-        header-bg
-        rounded-b-none
-        md:rounded-b-md
+      v-if="
+        isFinalProposal
+          ? sortedVotes.length < voteCount
+          : sortedVotes.length > 10 && nbrVisibleVotes < sortedVotes.length
       "
+      @click="isFinalProposal ? $emit('loadVotes') : (nbrVisibleVotes += 10)"
+      class="px-4 py-3 border-t text-center block rounded-b-none md:rounded-b-md"
     >
-      {{ $t('seeMore') }}
+      <LoadingSpinner v-if="loadingMore" />
+      <span v-else v-text="$t('seeMore')" />
     </a>
     <teleport to="#modal">
       <ModalReceipt
@@ -139,5 +174,5 @@ watch(votes, () => {
         :authorIpfsHash="authorIpfsHash"
       />
     </teleport>
-  </Block>
+  </BaseBlock>
 </template>

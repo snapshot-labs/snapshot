@@ -10,11 +10,11 @@ function handleChange(event) {
 </script>
 
 <template>
-  <UiButton class="w-full mb-2 !px-3 flex items-center overflow-hidden">
-    <div class="text-color mr-2 no-shrink">
+  <BaseButton class="w-full mb-2 !px-3 flex items-center overflow-hidden">
+    <div class="text-skin-text mr-2 no-shrink">
       <slot name="label" />
     </div>
-    <div v-if="$slots.image" class="text-color mr-2 no-shrink">
+    <div v-if="$slots.image" class="text-skin-text mr-2 no-shrink">
       <slot name="image" />
     </div>
     <select
@@ -26,7 +26,7 @@ function handleChange(event) {
     >
       <slot />
     </select>
-  </UiButton>
+  </BaseButton>
 </template>
 
 <style scoped lang="scss">

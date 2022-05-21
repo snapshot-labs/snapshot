@@ -1,70 +1,56 @@
 <script setup>
-import { computed, onMounted, provide, watch } from 'vue';
-import { useRoute } from 'vue-router';
-import { useModal } from '@/composables/useModal';
-import { useI18n } from '@/composables/useI18n';
-import { useDomain } from '@/composables/useDomain';
-import { useUserSkin } from '@/composables/useUserSkin';
+import { onMounted, provide } from 'vue';
 import { useApp } from '@/composables/useApp';
 import { useWeb3 } from '@/composables/useWeb3';
-import { useNotifications } from '@/composables/useNotifications';
-import aliases from '@/../snapshot-spaces/spaces/aliases.json';
+import { useFlashNotification } from '@/composables/useFlashNotification';
+import { useRoute } from 'vue-router';
 
-const { domain } = useDomain();
-const { loadLocale } = useI18n();
-const route = useRoute();
-const { modalOpen } = useModal();
-const { userSkin } = useUserSkin();
-const { init, explore, app } = useApp();
+const { domain } = useApp();
+const { init, ready, showSidebar } = useApp();
 const { web3 } = useWeb3();
-const { notify } = useNotifications();
+const { notify } = useFlashNotification();
+const route = useRoute();
 
 provide('web3', web3);
 provide('notify', notify);
 
-const space = computed(() => {
-  const key = aliases[domain] || domain || route.params.key;
-  return explore.value.spaces?.[key];
-});
-
-const skin = computed(() => {
-  if (domain && space.value?.skin) {
-    let skinClass = space.value.skin;
-    if (userSkin.value === 'dark-mode')
-      skinClass += ` ${space.value.skin}-dark-mode`;
-    return skinClass;
-  }
-  return userSkin.value;
-});
-
 onMounted(async () => {
-  await loadLocale();
   init();
-});
-
-watch(modalOpen, val => {
-  const el = document.body;
-  el.classList[val ? 'add' : 'remove']('overflow-hidden');
 });
 </script>
 
 <template>
+  <LoadingSpinner v-if="!ready" class="overlay big animate-fade-in" />
   <div
-    :class="skin"
-    id="app"
-    class="overflow-hidden pb-4 font-serif text-base"
+    v-else
+    class="flex font-sans text-base antialiased bg-skin-bg text-skin-text min-h-screen"
   >
-    <UiLoading v-if="app.loading || !app.init" class="overlay big" />
-    <div v-else>
-      <Scroller />
-      <div :class="{ 'sm:ml-[68px]': !domain }">
-        <Topnav />
-        <div class="pb-6">
-          <router-view :key="$route.path" class="flex-auto" />
-        </div>
+    <div
+      v-if="!domain"
+      id="sidebar"
+      class="flex flex-col"
+    >
+      <div
+        class="h-screen sticky top-0 bg-skin-bg z-40 overflow-hidden max-w-[60px] sm:w-auto transition-all"
+        :class="{ 'max-w-0 sm:max-w-none': !showSidebar }"
+      >
+        <TheSidebar class="border-r border-skin-border" />
       </div>
     </div>
-    <div id="modal" />
-    <Notifications />
+    <div class="flex flex-col min-w-0 w-screen shrink-0 sm:w-auto sm:shrink sm:grow">
+      <div
+        id="navbar"
+        class="sticky top-0 border-b border-skin-border bg-skin-bg z-40"
+      >
+        <TheNavbar />
+      </div>
+      <div id="content" class="pb-6 pt-4">
+        <router-view :key="$route.path" />
+      </div>
+      <footer class="mt-auto" v-if="route.name === 'home'">
+        <TheFooter />
+      </footer>
+    </div>
   </div>
+  <FlashNotification />
 </template>

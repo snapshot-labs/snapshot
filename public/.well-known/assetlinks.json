@@ -1,0 +1,14 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "org.snapshot",
+      "sha256_cert_fingerprints": [
+        "44:5B:B1:EE:DF:5C:2A:90:7D:7A:10:DF:18:67:68:54:8E:8E:62:C1:DF:84:06:F7:8D:8E:AD:67:2E:B2:5C:E5"
+      ]
+    }
+  }
+]

@@ -1,11 +1,9 @@
 module.exports = {
-  mode: 'jit',
-  purge: ['./index.html', './src/**/*.{js,ts,vue}'],
-  darkMode: false, // or 'media' or 'class'
+  content: ['./index.html', './src/**/*.{js,ts,vue}'],
   theme: {
     extend: {
       colors: {
-        snapshot: '#f3b04e', // TODO: get correct color for snapshot logo
+        snapshot: '#f3b04e',
         primary: 'var(--primary-color)',
         'skin-border': 'var(--border-color)',
         'skin-text': 'var(--text-color)',
@@ -14,12 +12,18 @@ module.exports = {
         'skin-block-bg': 'var(--block-bg)',
         'skin-header-bg': 'var(--header-bg)',
         'skin-heading': 'var(--heading-color)',
-
         blue: '#384aff',
         green: '#21b66f',
         red: '#ff3856'
       },
+      keyframes: {
+        fadeIn: {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' },
+        }
+      },
       animation: {
+        'fade-in': 'fadeIn 1s',
         'pulse-fast': 'pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite'
       }
     },
@@ -40,13 +44,10 @@ module.exports = {
       xl: '1280px'
     },
     fontFamily: {
-      serif: [
+      sans: [
         'Calibre, -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji'
-      ]
-    },
-    fontWeight: {
-      'font-normal': 500,
-      bold: 600
+      ],
+      mono: ['monospace']
     },
     fontSize: {
       '2xl': ['36px', '50px'],
@@ -54,12 +55,12 @@ module.exports = {
       lg: ['24px', '32px'],
       md: ['20px', '28px'],
       base: ['18px', '24px'],
-      sm: ['16px', '22px'],
-      xs: ['14px', '20px']
+      sm: ['16px'],
+      xs: ['14px']
+    },
+    boxShadow: {
+      lg: '2px 4px 9px var(--shadow-color)'
     }
   },
-  variants: {
-    extend: {}
-  },
-  plugins: []
+  plugins: [require('@tailwindcss/line-clamp')]
 };

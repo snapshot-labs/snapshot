@@ -18,9 +18,9 @@ const props = defineProps({
     type: [Number],
     default: null
   },
-  important: {
-    type: [Boolean, Array],
-    default: false
+  maxLength: {
+    type: Number,
+    default: null
   }
 });
 
@@ -35,37 +35,17 @@ const maxHeightScroll = ref(false);
 const height = ref('auto');
 const textarea = ref(null);
 
-const isResizeImportant = computed(() => {
-  const imp = props.important;
-  return imp === true || (Array.isArray(imp) && imp.includes('resize'));
-});
-
-const isOverflowImportant = computed(() => {
-  const imp = props.important;
-  return imp === true || (Array.isArray(imp) && imp.includes('overflow'));
-});
-
-const isHeightImportant = computed(() => {
-  const imp = props.important;
-  return imp === true || (Array.isArray(imp) && imp.includes('height'));
-});
-
 const computedStyles = computed(() => {
   if (!props.autosize) return {};
   return {
-    resize: !isResizeImportant.value ? 'none' : 'none !important',
+    resize: 'none',
     height: height.value,
-    overflow: maxHeightScroll.value
-      ? 'auto'
-      : !isOverflowImportant.value
-      ? 'hidden'
-      : 'hidden !important'
+    overflow: maxHeightScroll.value ? 'auto' : 'hidden'
   };
 });
 
 function resize() {
-  const important = isHeightImportant.value ? 'important' : '';
-  height.value = `auto${important ? ' !important' : ''}`;
+  height.value = 'auto';
   nextTick(() => {
     let contentHeight = textarea.value.scrollHeight + 1;
     if (props.minHeight) {
@@ -81,7 +61,7 @@ function resize() {
       }
     }
     const heightVal = contentHeight + 'px';
-    height.value = `${heightVal}${important ? ' !important' : ''}`;
+    height.value = heightVal;
   });
   return this;
 }
@@ -105,9 +85,11 @@ onMounted(() => resize());
 
 <template>
   <textarea
+    class="h-auto w-full py-3 px-4 border focus-within:!border-skin-text hover:border-skin-text border-skin-border rounded-3xl"
     ref="textarea"
     :style="computedStyles"
+    :maxLength="maxLength"
     v-model="val"
     @focus="resize"
-  ></textarea>
+  />
 </template>

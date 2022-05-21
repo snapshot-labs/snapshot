@@ -5,22 +5,20 @@ import { useApolloQuery } from '@/composables/useApolloQuery';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { FOLLOWS_QUERY } from '@/helpers/queries';
 import { useAliasAction } from '@/composables/useAliasAction';
-import client from '@/helpers/EIP712';
+import client from '@/helpers/clientEIP712';
+import { useSpaceSubscription } from './useSpaceSubscription';
 
-// const spaceFollows: any = ref({});
 const following = ref([]);
 const loadingFollows = ref(false);
 
-export function useFollowSpace(spaceObj: any = {}) {
-  const { web3 } = useWeb3();
+export function useFollowSpace(spaceId: any = {}) {
+  const { web3, web3Account } = useWeb3();
   const { modalAccountOpen } = useModal();
   const { apolloQuery } = useApolloQuery();
   const { setAlias, aliasWallet, isValidAlias, checkAlias } = useAliasAction();
+  const { toggleSubscription, isSubscribed } = useSpaceSubscription(spaceId);
 
   const loadingFollow = ref('');
-  const hoverJoin = ref('');
-
-  const web3Account = computed(() => web3.value.account);
 
   const followingSpaces = computed(() =>
     following.value.map((f: any) => f.space.id)
@@ -28,8 +26,7 @@ export function useFollowSpace(spaceObj: any = {}) {
 
   const isFollowing = computed(() =>
     following.value.some(
-      (f: any) =>
-        f.space.id === spaceObj?.id && f.follower === web3Account.value
+      (f: any) => f.space.id === spaceId && f.follower === web3Account.value
     )
   );
 
@@ -40,28 +37,15 @@ export function useFollowSpace(spaceObj: any = {}) {
 
     loadingFollows.value = true;
     try {
-      Promise.all([
-        // Hint: Saving this for when we want to show how many users follow a space.
-
-        // (spaceFollows.value[spaceObj.id] = await apolloQuery(
-        //   {
-        //     query: FOLLOWS_QUERY,
-        //     variables: {
-        //       space_in: spaceObj.id
-        //     }
-        //   },
-        //   'follows'
-        // )),
-        (following.value = await apolloQuery(
-          {
-            query: FOLLOWS_QUERY,
-            variables: {
-              follower_in: web3Account.value
-            }
-          },
-          'follows'
-        ))
-      ]);
+      following.value = await apolloQuery(
+        {
+          query: FOLLOWS_QUERY,
+          variables: {
+            follower_in: web3Account.value
+          }
+        },
+        'follows'
+      );
       loadingFollows.value = false;
     } catch (e) {
       loadingFollows.value = false;
@@ -78,7 +62,7 @@ export function useFollowSpace(spaceObj: any = {}) {
   }
 
   async function follow(space) {
-    loadingFollow.value = spaceObj.id;
+    loadingFollow.value = spaceId;
     try {
       await checkAlias();
       if (!aliasWallet.value || !isValidAlias.value) {
@@ -86,6 +70,10 @@ export function useFollowSpace(spaceObj: any = {}) {
         follow(space);
       } else {
         if (isFollowing.value) {
+          // Also unsubscribe to the notifications if the user leaves the space.
+          if (isSubscribed.value) {
+            await toggleSubscription();
+          }
           await client.unfollow(aliasWallet.value, aliasWallet.value.address, {
             from: web3Account.value,
             space
@@ -105,21 +93,12 @@ export function useFollowSpace(spaceObj: any = {}) {
     }
   }
 
-  // watchEffect(async () => {
-  //   (isFollowing.value = (following.value ?? []).some(
-  //     (f: any) =>
-  //       f.space.id === spaceObj?.id && f.follower === web3Account.value
-  //   )),
-  //     { deep: true };
-  // });
-
   return {
     clickFollow,
     loadFollows,
     loadingFollow: computed(() => loadingFollow.value),
     loadingFollows: computed(() => loadingFollows.value),
     isFollowing,
-    followingSpaces,
-    hoverJoin
+    followingSpaces
   };
 }

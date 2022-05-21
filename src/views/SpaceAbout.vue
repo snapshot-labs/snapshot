@@ -1,46 +1,51 @@
 <script setup>
-import { computed, watchEffect } from 'vue';
+import { computed, onMounted } from 'vue';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { useProfiles } from '@/composables/useProfiles';
 import { getUrl } from '@snapshot-labs/snapshot.js/src/utils';
+import { useI18n } from '@/composables/useI18n';
+import { useIntl } from '@/composables/useIntl';
 
 const props = defineProps({
-  space: Object,
-  spaceLoading: Boolean
+  space: Object
 });
 
-const network = computed(() => networks[props.space.network]);
+const network = computed(() => networks[props.space?.network]);
 
-const { profiles, addressArray } = useProfiles();
+const { formatCompactNumber } = useIntl();
+const { setPageTitle } = useI18n();
+const { profiles, loadProfiles } = useProfiles();
 
-watchEffect(() => {
-  if (props.space.admins)
-    addressArray.value = props.space.admins.concat(props.space.members);
+onMounted(() => {
+  if (props.space?.admins)
+    loadProfiles(props.space.admins.concat(props.space.members));
+  if (props.space?.name)
+    setPageTitle('page.title.space.about', { space: props.space.name });
 });
 </script>
 
 <template>
-  <Layout>
+  <TheLayout>
     <template #sidebar-left>
-      <BlockSpace :space="space" />
+      <SpaceSidebar :space="space" />
     </template>
     <template #content-right>
       <div class="px-4 md:px-0 mb-3 flex">
-        <h2>{{ space.name }}</h2>
+        <h2>{{ $t('about') }}</h2>
       </div>
-      <Block :loading="spaceLoading">
+      <BaseBlock class="mb-3">
         <div v-if="space.about" class="mb-3">
-          <h4 class="link-color mb-2">{{ $t('settings.about') }}</h4>
-          <UiText :text="space.about" />
+          <h4 class="text-skin-link mb-2">{{ $t('settings.about') }}</h4>
+          <TextAutolinker :text="space.about" />
         </div>
 
         <div class="mb-3">
-          <h4 class="link-color mb-2">{{ $t('settings.network') }}</h4>
+          <h4 class="text-skin-link mb-2">{{ $t('settings.network') }}</h4>
           <div>{{ network.name }}</div>
         </div>
 
         <div class="mb-3">
-          <h4 class="link-color mb-2">
+          <h4 class="text-skin-link mb-2">
             {{ $t('settings.proposalValidation') }}
           </h4>
           {{ space.validation?.name || 'basic' }}
@@ -51,39 +56,39 @@ watchEffect(() => {
             (!space.validation || space.validation?.name === 'basic') &&
             space.filters?.minScore
           "
-          class="mb-3"
+          class="last:mb-0 mb-3"
         >
-          <h4 class="link-color mb-2">
+          <h4 class="text-skin-link mb-2">
             {{ $t('settings.proposalThreshold') }}
           </h4>
-          {{ _n(space.filters.minScore) }} {{ space.symbol }}
+          {{ formatCompactNumber(space.filters.minScore) }}
+          {{ space.symbol }}
         </div>
 
-        <div v-if="space.terms" class="mb-3">
-          <h4 class="link-color mb-2">{{ $t('settings.terms') }}</h4>
-          <a :href="space.terms" target="_blank" rel="noopener noreferrer">
-            <UiText :text="getUrl(space.terms)" :truncate="35" />
-            <Icon name="external-link" class="ml-1" />
-          </a>
+        <div v-if="space.terms" class="last:mb-0 mb-3">
+          <h4 class="text-skin-link mb-2">{{ $t('settings.terms') }}</h4>
+          <BaseLink :link="space.terms">
+            <TextAutolinker :text="getUrl(space.terms)" :truncate="35" />
+          </BaseLink>
         </div>
 
-        <div v-if="space.strategies" class="mb-3">
-          <h4 class="link-color mb-2">{{ $t('settings.strategies') }}</h4>
+        <div v-if="space.strategies" class="last:mb-0 mb-3">
+          <h4 class="text-skin-link mb-2">{{ $t('settings.strategies') }}</h4>
           <div v-for="(strategy, i) in space.strategies" :key="i">
             <div>{{ strategy.name }}</div>
           </div>
         </div>
 
-        <div v-if="Object.keys(space.plugins || {}).length" class="mb-3">
-          <h4 class="link-color mb-2">{{ $t('plugins') }}</h4>
+        <div v-if="Object.keys(space.plugins || {}).length">
+          <h4 class="text-skin-link mb-2">{{ $t('plugins') }}</h4>
           <div v-for="(plugin, i) in space.plugins" :key="i">
             <div>{{ i }}</div>
           </div>
         </div>
-      </Block>
-      <Block
+      </BaseBlock>
+      <BaseBlock
         :title="$t('settings.admins')"
-        v-if="space.admins?.length"
+        v-if="space?.admins?.length"
         :slim="true"
         class="mb-3"
       >
@@ -93,12 +98,12 @@ watchEffect(() => {
           :style="i === 0 && 'border: 0 !important;'"
           class="px-4 py-3 border-t flex"
         >
-          <User :address="user" :profile="profiles[user]" />
+          <AvatarUser :address="user" :profile="profiles[user]" />
         </div>
-      </Block>
-      <Block
+      </BaseBlock>
+      <BaseBlock
         :title="$t('settings.authors')"
-        v-if="space.members?.length"
+        v-if="space?.members?.length"
         :slim="true"
         class="mb-3"
       >
@@ -108,9 +113,9 @@ watchEffect(() => {
           :style="i === 0 && 'border: 0 !important;'"
           class="px-4 py-3 border-t flex"
         >
-          <User :address="user" :profile="profiles[user]" />
+          <AvatarUser :address="user" :profile="profiles[user]" />
         </div>
-      </Block>
+      </BaseBlock>
     </template>
-  </Layout>
+  </TheLayout>
 </template>

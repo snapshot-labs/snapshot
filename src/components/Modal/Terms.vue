@@ -14,7 +14,7 @@ function accept() {
 </script>
 
 <template>
-  <UiModal :open="open" @close="$emit('close')">
+  <BaseModal :open="open" @close="$emit('close')">
     <template v-slot:header>
       <h3>{{ $t('settings.terms') }}</h3>
     </template>
@@ -22,22 +22,21 @@ function accept() {
       <h4 class="mb-3">
         {{ $tc('mustAgreeToTerms', [space.name]) }}
       </h4>
-      <a :href="space.terms" target="_blank" rel="noopener noreferrer">
-        <UiText :text="getIpfsUrl" :truncate="35" />
-        <Icon name="external-link" class="ml-1" />
-      </a>
+      <BaseLink :link="space.terms">
+        <TextAutolinker :text="getIpfsUrl" :truncate="35" />
+      </BaseLink>
     </div>
     <template v-slot:footer>
       <div class="w-2/4 float-left pr-2">
-        <UiButton @click="$emit('close')" type="button" class="w-full">
+        <BaseButton @click="$emit('close')" type="button" class="w-full">
           {{ $t('cancel') }}
-        </UiButton>
+        </BaseButton>
       </div>
       <div class="w-2/4 float-left pl-2">
-        <UiButton @click="accept" type="submit" class="w-full button--submit">
+        <BaseButton @click="accept" type="submit" class="w-full" primary>
           {{ $t('agree') }}
-        </UiButton>
+        </BaseButton>
       </div>
     </template>
-  </UiModal>
+  </BaseModal>
 </template>

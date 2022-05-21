@@ -1,10 +1,9 @@
 import pkg from '@/../package.json';
-import voting from '@/helpers/voting';
 import { formatEther } from '@ethersproject/units';
 import { BigNumber } from '@ethersproject/bignumber';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
-import numeral from 'numeral';
-import { format } from 'timeago.js';
+import voting from '@snapshot-labs/snapshot.js/src/voting';
+import { getUrl } from '@snapshot-labs/snapshot.js/src/utils';
 
 export function shortenAddress(str = '') {
   return `${str.slice(0, 6)}...${str.slice(str.length - 4)}`;
@@ -36,16 +35,6 @@ export function jsonParse(input, fallback?) {
   } catch (err) {
     return fallback || {};
   }
-}
-
-export async function sleep(time) {
-  return new Promise(resolve => {
-    setTimeout(resolve, time);
-  });
-}
-
-export function clone(item) {
-  return JSON.parse(JSON.stringify(item));
 }
 
 export function lsSet(key: string, value: any) {
@@ -93,7 +82,7 @@ export function filterProposals(space, proposal, tab) {
   return false;
 }
 
-export const formatAmount = (amount, maxDecimals) => {
+export function formatAmount(amount, maxDecimals) {
   let out = formatEther(amount);
   if (maxDecimals && out.includes('.')) {
     const parts = out.split('.');
@@ -102,19 +91,19 @@ export const formatAmount = (amount, maxDecimals) => {
     }
   }
   return out + ' ETH';
-};
+}
 
-export const parseAmount = input => {
+export function parseAmount(input) {
   return BigNumber.from(input).toString();
-};
+}
 
-export const parseValueInput = input => {
+export function parseValueInput(input) {
   try {
     return parseAmount(input);
   } catch (e) {
     return input;
   }
-};
+}
 
 export function getNumberWithOrdinal(n) {
   const s = ['th', 'st', 'nd', 'rd'],
@@ -126,11 +115,20 @@ export function explorerUrl(network, str: string, type = 'address'): string {
   return `${networks[network].explorer}/${type}/${str}`;
 }
 
-export function n(number, format = '(0.[00]a)') {
-  if (number < 0.00001) return format.includes('%') ? '0%' : 0;
-  return numeral(number).format(format);
+export function calcFromSeconds(value, unit) {
+  if (unit === 'm') return Math.floor(value / 60);
+  if (unit === 'h') return Math.floor(value / (60 * 60));
+  if (unit === 'd') return Math.floor(value / (60 * 60 * 24));
 }
 
-export function ms(number) {
-  return format(number * 1e3);
+export function calcToSeconds(value, unit) {
+  if (unit === 'm') return value * 60;
+  if (unit === 'h') return value * 60 * 60;
+  if (unit === 'd') return value * 60 * 60 * 24;
+}
+
+export function getIpfsUrl(url) {
+  const gateway: any =
+    import.meta.env.VITE_IPFS_GATEWAY || 'cloudflare-ipfs.com';
+  return getUrl(url, gateway);
 }

@@ -1,33 +1,36 @@
 <script setup>
-import { computed, ref, watchEffect } from 'vue';
-import { useI18n } from 'vue-i18n';
-import { useSearchFilters } from '@/composables/useSearchFilters';
+import { computed, ref, inject, watch, onMounted } from 'vue';
+import { useI18n } from '@/composables/useI18n';
 import { getAddress } from '@ethersproject/address';
-import { validateSchema } from '@snapshot-labs/snapshot.js/src/utils';
 import schemas from '@snapshot-labs/snapshot.js/src/schemas';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
-import { clone } from '@/helpers/utils';
-import { getSpaceUri } from '@/helpers/ens';
 import defaults from '@/locales/default';
-import { useCopy } from '@/composables/useCopy';
 import { useWeb3 } from '@/composables/useWeb3';
+import { calcFromSeconds, calcToSeconds } from '@/helpers/utils';
 import { useClient } from '@/composables/useClient';
+import { usePlugins } from '@/composables/usePlugins';
+import { useSpaceController } from '@/composables/useSpaceController';
+import { useEns } from '@/composables/useEns';
+import { shorten } from '@/helpers/utils';
+import {
+  validateSchema,
+  getSpaceUri,
+  clone
+} from '@snapshot-labs/snapshot.js/src/utils';
 
 const props = defineProps({
-  spaceId: String,
   space: Object,
-  from: String,
-  spaceFrom: Object,
-  spaceLoading: Boolean,
+  sourceSpace: Object,
   loadExtentedSpaces: Function
 });
 
 const basicValidation = { name: 'basic', params: {} };
 
-const { t } = useI18n();
-const { copyToClipboard } = useCopy();
-const { web3 } = useWeb3();
-const { send } = useClient();
+const { pluginIndex } = usePlugins();
+const { t, setPageTitle } = useI18n();
+const { web3Account } = useWeb3();
+const { send, clientLoading } = useClient();
+const notify = inject('notify');
 
 const currentSettings = ref({});
 const currentTextRecord = ref('');
@@ -37,77 +40,114 @@ const currentStrategyIndex = ref(false);
 const modalNetworksOpen = ref(false);
 const modalSkinsOpen = ref(false);
 const modalStrategyOpen = ref(false);
+const modalCategoryOpen = ref(false);
+const modalVotingTypeOpen = ref(false);
 const modalPluginsOpen = ref(false);
 const modalValidationOpen = ref(false);
 const loaded = ref(false);
-const loading = ref(false);
 const uploadLoading = ref(false);
-const showErrors = ref(false);
+const visitedFields = ref([]);
+const validateAllFields = ref(false);
+const delayUnit = ref('h');
+const periodUnit = ref('h');
+
 const form = ref({
   strategies: [],
+  categories: [],
+  admins: [],
   plugins: {},
   filters: {},
+  voting: {},
   validation: basicValidation
 });
 
-const web3Account = computed(() => web3.value.account);
-
 const validate = computed(() => {
   if (form.value.terms === '') delete form.value.terms;
+  if (form.value.avatar === '') delete form.value.avatar;
+  if (form.value.website === '') delete form.value.website;
+
   return validateSchema(schemas.space, form.value);
 });
 
 const isValid = computed(() => {
-  return !loading.value && validate.value === true && !uploadLoading.value;
+  return (
+    !clientLoading.value && validate.value === true && !uploadLoading.value
+  );
 });
 
 const textRecord = computed(() => {
-  const keyURI = encodeURIComponent(props.spaceId);
+  const keyURI = encodeURIComponent(props.space.id);
   const address = web3Account.value
     ? getAddress(web3Account.value)
     : '<your-address>';
   return `ipns://storage.snapshot.page/registry/${address}/${keyURI}`;
 });
 
-const isOwner = computed(() => {
+const isSpaceController = computed(() => {
   return currentTextRecord.value === textRecord.value;
 });
 
-const isAdmin = computed(() => {
+const { loadOwnedEnsDomains, ownedEnsDomains } = useEns();
+
+watch(
+  [currentTextRecord, textRecord],
+  async () => {
+    loadOwnedEnsDomains();
+  },
+  { immediate: true }
+);
+
+const ensOwner = computed(() =>
+  ownedEnsDomains.value?.map(d => d.name).includes(props.space.id)
+);
+
+const isSpaceAdmin = computed(() => {
   if (!props.space || !currentTextRecord.value) return false;
-  const admins = (props.space.admins || []).map(admin => admin.toLowerCase());
+  const admins = (props.space?.admins || []).map(admin => admin.toLowerCase());
   return admins.includes(web3Account.value?.toLowerCase());
 });
 
-const { filteredPlugins } = useSearchFilters();
-const plugins = computed(() => filteredPlugins());
+const votingDelay = computed({
+  get: () => calcFromSeconds(form.value.voting?.delay, delayUnit.value),
+  set: newVal =>
+    (form.value.voting.delay = newVal
+      ? calcToSeconds(newVal, delayUnit.value)
+      : undefined)
+});
 
-function pluginName(key) {
-  const plugin = plugins.value.find(obj => {
-    return obj.key === key;
-  });
-  return plugin?.name;
-}
+const votingPeriod = computed({
+  get: () => calcFromSeconds(form.value.voting?.period, periodUnit.value),
+  set: newVal =>
+    (form.value.voting.period = newVal
+      ? calcToSeconds(newVal, periodUnit.value)
+      : undefined)
+});
+
+const categoriesString = computed(() => {
+  return form.value.categories ? form.value.categories.join(', ') : '';
+});
 
 async function handleSubmit() {
   if (isValid.value) {
     if (form.value.filters.invalids) delete form.value.filters.invalids;
-    loading.value = true;
-    try {
-      await send(props.spaceId, 'settings', form.value);
-    } catch (e) {
-      console.log(e);
+    const result = await send({ id: props.space.id }, 'settings', form.value);
+    console.log('Result', result);
+    if (result.id) {
+      notify(['green', t('notify.saved')]);
+      props.loadExtentedSpaces([props.space.id]);
     }
-    await props.loadExtentedSpaces([props.spaceId]);
-    loading.value = false;
   } else {
     console.log('Invalid schema', validate.value);
-    showErrors.value = true;
+    validateAllFields.value = true;
   }
 }
 
 function inputError(field) {
-  if (!isValid.value && !loading.value && showErrors.value) {
+  if (
+    !isValid.value &&
+    !clientLoading.value &&
+    (visitedFields.value.includes(field) || validateAllFields.value)
+  ) {
     const errors = Object.keys(defaults.errors);
     const errorFound = validate.value.find(
       error =>
@@ -118,16 +158,20 @@ function inputError(field) {
 
     if (errorFound?.instancePath.includes('strategies'))
       return t('errors.minStrategy');
+    else if (errorFound?.instancePath.includes('website'))
+      return t('errors.website');
     else if (errorFound)
       return t(`errors.${errorFound.keyword}`, [errorFound?.params.limit]);
   }
+  return false;
 }
 
 function handleReset() {
-  if (props.from) return (form.value = clone(props.spaceFrom));
-  if (currentSettings.value) return (form.value = currentSettings.value);
+  if (props.sourceSpace) return (form.value = clone(props.sourceSpace));
+  if (currentSettings.value) return (form.value = clone(currentSettings.value));
   form.value = {
     strategies: [],
+    categories: [],
     plugins: {},
     filters: {}
   };
@@ -143,6 +187,10 @@ function handleRemoveStrategy(i) {
   form.value.strategies = form.value.strategies.filter(
     (strategy, index) => index !== i
   );
+}
+
+function handleSubmitAddCategories(categories) {
+  form.value.categories = categories;
 }
 
 function handleAddStrategy() {
@@ -175,11 +223,11 @@ function handleAddPlugins() {
 }
 
 function handleSubmitAddPlugins(payload) {
-  form.value.plugins[payload.key] = payload.inputClone;
+  form.value.plugins[payload.key] = payload.input;
 }
 
 function handleSubmitAddValidation(validation) {
-  form.value.validation = validation;
+  form.value.validation = clone(validation);
 }
 
 function setUploadLoading(s) {
@@ -190,132 +238,147 @@ function setAvatarUrl(url) {
   if (typeof url === 'string') form.value.avatar = url;
 }
 
-watchEffect(async () => {
-  if (!props.spaceLoading) {
-    try {
-      const uri = await getSpaceUri(props.spaceId);
-      console.log('URI', uri);
-      currentTextRecord.value = uri;
-      const space = clone(props.space);
-      if (!space) return;
-      delete space.id;
-      delete space._activeProposals;
-      Object.entries(space).forEach(([key, value]) => {
-        if (value === null) delete space[key];
-      });
-      space.strategies = space.strategies || [];
-      space.plugins = space.plugins || {};
-      space.validation = space.validation || basicValidation;
-      space.filters = space.filters || {};
-      currentSettings.value = clone(space);
-      form.value = space;
-    } catch (e) {
-      console.log(e);
+function formatSpace(spaceRaw) {
+  if (!spaceRaw) return;
+  const space = clone(spaceRaw);
+  if (!space) return;
+  delete space.id;
+  delete space.followersCount;
+  Object.entries(space).forEach(([key, value]) => {
+    if (value === null) delete space[key];
+  });
+  space.strategies = space.strategies || [];
+  space.plugins = space.plugins || {};
+  space.validation = space.validation || basicValidation;
+  space.filters = space.filters || {};
+  space.voting = space.voting || {};
+  space.voting.delay = space.voting?.delay || undefined;
+  space.voting.period = space.voting?.period || undefined;
+  space.voting.type = space.voting?.type || undefined;
+  space.voting.quorum = space.voting?.quorum || undefined;
+  return space;
+}
+
+onMounted(async () => {
+  if (props.space) {
+    const spaceClone = formatSpace(props.space);
+    if (spaceClone) {
+      form.value = spaceClone;
+      currentSettings.value = clone(spaceClone);
     }
-    if (props.from) {
-      const fromClone = clone(props.spaceFrom);
-      fromClone.validation = fromClone.validation || basicValidation;
-      delete fromClone.id;
-      delete fromClone._activeProposals;
+  }
+  if (props.sourceSpace) {
+    const fromClone = formatSpace(props.sourceSpace);
+    if (fromClone) {
       form.value = fromClone;
     }
-    loaded.value = true;
   }
+  try {
+    const uri = await getSpaceUri(
+      props.space.id,
+      import.meta.env.VITE_DEFAULT_NETWORK
+    );
+    console.log('URI', uri);
+    currentTextRecord.value = uri;
+  } catch (e) {
+    console.log(e);
+  }
+
+  loaded.value = true;
 });
+
+onMounted(() => {
+  setPageTitle('page.title.space.settings', { space: props.space.name });
+});
+
+const {
+  settingENSRecord,
+  ensAddress,
+  modalUnsupportedNetworkOpen,
+  modalConfirmSetTextRecordOpen,
+  spaceControllerInput,
+  setRecord,
+  confirmSetRecord
+} = useSpaceController();
+
+const modalControllerEditOpen = ref(false);
+
+async function handleSetRecord() {
+  const tx = await setRecord();
+  const receipt = await tx.wait();
+  if (receipt) {
+    props.loadExtentedSpaces([props.space.id]);
+  }
+}
 </script>
 
 <template>
-  <Layout v-bind="$attrs">
+  <TheLayout v-bind="$attrs">
     <template #content-left>
-      <div v-if="space?.name" class="px-4 md:px-0 mb-3">
-        <router-link :to="{ name: 'spaceProposals' }" class="text-color">
-          <Icon name="back" size="22" class="!align-middle" />
-          {{ space.name }}
+      <div class="px-4 md:px-0 mb-3">
+        <router-link :to="{ name: 'spaceProposals' }" class="text-skin-text">
+          <BaseIcon name="back" size="22" class="!align-middle" />
+          {{ $t('back') }}
         </router-link>
       </div>
       <div class="px-4 md:px-0">
-        <h1 v-if="loaded" v-text="$t('settings.header')" class="mb-4" />
-        <PageLoading v-else />
+        <h1 v-text="$t('settings.header')" class="mb-4" />
       </div>
-      <template v-if="loaded">
-        <Block title="ENS">
-          <UiButton class="flex w-full mb-2">
-            <input
-              readonly
-              v-model="textRecord"
-              class="input w-full"
-              :placeholder="$t('contectHash')"
-            />
-            <Icon
-              @click="copyToClipboard(textRecord)"
-              name="copy"
-              size="24"
-              class="text-color p-2 -mr-3"
-            />
-          </UiButton>
-          <a
-            :href="`https://app.ens.domains/name/${spaceId}`"
-            target="_blank"
-            class="mb-2 block"
-          >
-            <UiButton
-              :class="{ 'button--submit': !isOwner && !isAdmin }"
-              class="button-outline w-full"
-            >
-              {{
-                isOwner || isAdmin
-                  ? $t('settings.seeENS')
-                  : $t('settings.setENS')
-              }}
-              <Icon name="external-link" class="ml-1" />
-            </UiButton>
-          </a>
-          <Block
-            v-if="currentSettings?.name && !currentTextRecord"
-            :style="'border-color: red !important; margin-bottom: 0 !important;'"
-            class="mb-0 mt-3"
-          >
-            <Icon name="warning" class="mr-2 !text-red" />
-            <span class="!text-red">
-              {{ $t('settings.warningTextRecord') }}
-              <a
-                v-text="$t('learnMore')"
-                href="https://docs.snapshot.org/spaces/create"
-                target="_blank"
-              />
-            </span>
-          </Block>
-        </Block>
-        <div v-if="space || isOwner">
-          <Block :title="$t('settings.profile')">
-            <div class="mb-2">
-              <UiInput v-model="form.name" :error="inputError('name')">
+      <LoadingRow v-if="!loaded" block />
+      <BaseBlock v-else-if="!currentTextRecord">
+        <BaseMessageBlock level="warning" class="mb-4">
+          {{ $t('settings.needToSetEnsText') }}
+        </BaseMessageBlock>
+        <BaseButton
+          @click="modalControllerEditOpen = true"
+          :loading="settingENSRecord"
+          primary
+          class="w-full"
+        >
+          {{ $t('settings.setEnsTextRecord') }}
+        </BaseButton>
+      </BaseBlock>
+      <template v-else-if="currentTextRecord">
+        <div class="space-y-3">
+          <BaseBlock :title="$t('settings.profile')">
+            <div class="space-y-2 mb-2">
+              <UiInput
+                v-model="form.name"
+                :error="inputError('name')"
+                @blur="visitedFields.push('name')"
+              >
                 <template v-slot:label>{{ $t(`settings.name`) }}*</template>
               </UiInput>
-              <UiInput v-model="form.about" :error="inputError('about')">
+              <UiInput
+                v-model="form.about"
+                :error="inputError('about')"
+                @blur="visitedFields.push('about')"
+              >
                 <template v-slot:label> {{ $t(`settings.about`) }} </template>
               </UiInput>
               <UiInput
                 v-model="form.avatar"
                 placeholder="e.g. https://example.com/space.png"
                 :error="inputError('avatar')"
+                @blur="visitedFields.push('avatar')"
               >
                 <template v-slot:label>
                   {{ $t(`settings.avatar`) }}
                 </template>
                 <template v-slot:info>
-                  <Upload
+                  <ImageUpload
                     class="!ml-2"
                     @input="setAvatarUrl"
                     @loading="setUploadLoading"
                   >
                     {{ $t('upload') }}
-                  </Upload>
+                  </ImageUpload>
                 </template>
               </UiInput>
               <UiInput
                 @click="modalNetworksOpen = true"
                 :error="inputError('network')"
+                @blur="visitedFields.push('network')"
               >
                 <template v-slot:selected>
                   {{
@@ -328,10 +391,21 @@ watchEffect(async () => {
                   {{ $t(`settings.network`) }}*
                 </template>
               </UiInput>
+              <UiInput @click="modalCategoryOpen = true">
+                <template v-slot:label>
+                  {{ $t(`settings.categories`) }}
+                </template>
+                <template v-slot:selected>
+                  <span class="capitalize">
+                    {{ categoriesString }}
+                  </span>
+                </template>
+              </UiInput>
               <UiInput
                 v-model="form.symbol"
                 placeholder="e.g. BAL"
                 :error="inputError('symbol')"
+                @blur="visitedFields.push('symbol')"
               >
                 <template v-slot:label> {{ $t(`settings.symbol`) }}* </template>
               </UiInput>
@@ -339,50 +413,65 @@ watchEffect(async () => {
                 v-model="form.twitter"
                 placeholder="e.g. elonmusk"
                 :error="inputError('twitter')"
+                @blur="visitedFields.push('twitter')"
               >
                 <template v-slot:label>
-                  <Icon name="twitter" />
+                  <BaseIcon name="twitter" />
                 </template>
               </UiInput>
               <UiInput
                 v-model="form.github"
                 placeholder="e.g. vbuterin"
                 :error="inputError('github')"
+                @blur="visitedFields.push('github')"
               >
                 <template v-slot:label>
-                  <Icon name="github" />
+                  <BaseIcon name="github" />
+                </template>
+              </UiInput>
+              <UiInput
+                v-model="form.website"
+                placeholder="e.g. https://example.com"
+                :error="inputError('website')"
+                @blur="visitedFields.push('website')"
+              >
+                <template v-slot:label>
+                  <BaseIcon name="earth" />
                 </template>
               </UiInput>
               <UiInput
                 v-model="form.terms"
                 placeholder="e.g. https://example.com/terms"
                 :error="inputError('terms')"
+                @blur="visitedFields.push('terms')"
               >
                 <template v-slot:label> {{ $t(`settings.terms`) }} </template>
               </UiInput>
-              <div class="flex items-center px-2">
-                <Checkbox v-model="form.private" class="mr-2 mt-1" />
-                {{ $t('settings.hideSpace') }}
+              <div class="flex items-center space-x-2 pr-2">
+                <BaseCheckbox v-model="form.private" />
+                <span>{{ $t('settings.hideSpace') }}</span>
               </div>
             </div>
-          </Block>
-          <Block :title="$t('settings.customDomain')">
+          </BaseBlock>
+          <BaseBlock :title="$t('settings.customDomain')">
             <UiInput
               v-model="form.domain"
               placeholder="e.g. vote.balancer.fi"
               :error="inputError('domain')"
+              @blur="visitedFields.push('domain')"
+              class="mb-2"
             >
               <template v-slot:label>
                 {{ $t('settings.domain') }}
               </template>
               <template v-slot:info>
-                <a
+                <BaseLink
                   class="flex items-center -mr-1"
-                  target="_blank"
-                  href="https://docs.snapshot.org/spaces/add-custom-domain"
+                  link="https://docs.snapshot.org/spaces/add-custom-domain"
+                  hide-external-icon
                 >
-                  <Icon name="info" size="24" class="text-color" />
-                </a>
+                  <BaseIcon name="info" size="24" class="text-skin-text" />
+                </BaseLink>
               </template>
             </UiInput>
             <UiInput @click="modalSkinsOpen = true" :error="inputError('skin')">
@@ -393,50 +482,41 @@ watchEffect(async () => {
                 {{ $t(`settings.skin`) }}
               </template>
             </UiInput>
-          </Block>
-          <Block :title="$t('settings.admins')" v-if="isOwner">
-            <Block
-              :style="`border-color: red !important`"
-              v-if="inputError('admins')"
-            >
-              <Icon name="warning" class="mr-2 !text-red" />
+          </BaseBlock>
+          <BaseBlock :title="$t('settings.admins')" v-if="isSpaceController">
+            <BaseBlock class="!border-red mb-2" v-if="inputError('admins')">
+              <BaseIcon name="warning" class="mr-2 !text-red" />
               <span class="!text-red"> {{ inputError('admins') }}&nbsp;</span>
-            </Block>
-            <UiButton class="block w-full px-3" style="height: auto">
-              <TextareaArray
-                v-model="form.admins"
-                :placeholder="`0x8C28Cf33d9Fd3D0293f963b1cd27e3FF422B425c\n0xeF8305E140ac520225DAf050e2f71d5fBcC543e7`"
-                class="input w-full text-left"
-                style="font-size: 18px"
-              />
-            </UiButton>
-          </Block>
-          <Block :title="$t('settings.authors')">
-            <Block
-              :style="`border-color: red !important`"
-              v-if="inputError('members')"
-            >
-              <Icon name="warning" class="mr-2 !text-red" />
+            </BaseBlock>
+            <TextareaArray
+              v-model="form.admins"
+              :placeholder="`0x8C28Cf33d9Fd3D0293f963b1cd27e3FF422B425c\n0xeF8305E140ac520225DAf050e2f71d5fBcC543e7`"
+              class="input w-full text-left"
+              style="font-size: 18px"
+            />
+          </BaseBlock>
+          <BaseBlock :title="$t('settings.authors')">
+            <BaseBlock class="!border-red mb-2" v-if="inputError('members')">
+              <BaseIcon name="warning" class="mr-2 !text-red" />
               <span class="!text-red"> {{ inputError('members') }}&nbsp;</span>
-            </Block>
-            <UiButton class="block w-full px-3" style="height: auto">
-              <TextareaArray
-                v-model="form.members"
-                :placeholder="`0x8C28Cf33d9Fd3D0293f963b1cd27e3FF422B425c\n0xeF8305E140ac520225DAf050e2f71d5fBcC543e7`"
-                class="input w-full text-left"
-                style="font-size: 18px"
-              />
-            </UiButton>
-          </Block>
-          <Block :title="$t('settings.strategies') + '*'">
+            </BaseBlock>
+            <TextareaArray
+              v-model="form.members"
+              :placeholder="`0x8C28Cf33d9Fd3D0293f963b1cd27e3FF422B425c\n0xeF8305E140ac520225DAf050e2f71d5fBcC543e7`"
+              class="input w-full text-left"
+              style="font-size: 18px"
+            />
+          </BaseBlock>
+          <BaseBlock :title="$t('settings.strategies') + '*'">
             <div
               v-for="(strategy, i) in form.strategies"
               :key="i"
               class="mb-3 relative"
             >
               <a @click="handleRemoveStrategy(i)" class="absolute p-4 right-0">
-                <Icon name="close" size="12" />
+                <BaseIcon name="close" size="12" />
               </a>
+
               <a
                 @click="handleEditStrategy(i)"
                 class="p-4 block border rounded-md"
@@ -444,28 +524,26 @@ watchEffect(async () => {
                 <h4 v-text="strategy.name" />
               </a>
             </div>
-            <Block
+            <BaseBlock
               :style="`border-color: red !important`"
               v-if="inputError('strategies')"
             >
-              <Icon name="warning" class="mr-2 !text-red" />
+              <BaseIcon name="warning" class="mr-2 !text-red" />
               <span class="!text-red">
                 {{ inputError('strategies') }}&nbsp;</span
               >
-              <a
-                href="https://docs.snapshot.org/spaces/create#strategies"
-                target="_blank"
-                rel="noopener noreferrer"
-                >{{ $t('learnMore') }}
-                <Icon name="external-link" />
-              </a>
-            </Block>
-            <UiButton @click="handleAddStrategy" class="block w-full">
+              <BaseLink
+                link="https://docs.snapshot.org/spaces/create#strategies"
+              >
+                {{ $t('learnMore') }}
+              </BaseLink>
+            </BaseBlock>
+            <BaseButton @click="handleAddStrategy" class="block w-full">
               {{ $t('settings.addStrategy') }}
-            </UiButton>
-          </Block>
-          <Block :title="$t('settings.proposalValidation')">
-            <div class="mb-2">
+            </BaseButton>
+          </BaseBlock>
+          <BaseBlock :title="$t('settings.proposalValidation')">
+            <div class="space-y-2">
               <UiInput
                 @click="modalValidationOpen = true"
                 :error="inputError('settings.validation')"
@@ -487,62 +565,152 @@ watchEffect(async () => {
                     $t('settings.proposalThreshold')
                   }}</template>
                 </UiInput>
-                <div class="mb-2 flex items-center px-2">
-                  <Checkbox
-                    v-model="form.filters.onlyMembers"
-                    class="mr-2 mt-1"
-                  />
-                  {{ $t('settings.allowOnlyAuthors') }}
+                <div class="flex items-center space-x-2 pr-2 mt-2">
+                  <BaseCheckbox v-model="form.filters.onlyMembers" />
+                  <span>{{ $t('settings.allowOnlyAuthors') }}</span>
                 </div>
               </div>
             </div>
-          </Block>
-          <Block :title="$t('plugins')">
+          </BaseBlock>
+          <BaseBlock :title="$t('settings.voting')">
+            <div class="space-y-2">
+              <UiInput
+                v-model="votingDelay"
+                :number="true"
+                placeholder="e.g. 1"
+              >
+                <template v-slot:label>
+                  {{ $t('settings.votingDelay') }}
+                </template>
+                <template v-slot:info>
+                  <select
+                    v-model="delayUnit"
+                    class="input text-center mr-[6px] ml-2"
+                    required
+                  >
+                    <option value="h" selected>hours</option>
+                    <option value="d">days</option>
+                  </select>
+                </template>
+              </UiInput>
+              <UiInput
+                v-model="votingPeriod"
+                :number="true"
+                placeholder="e.g. 5"
+              >
+                <template v-slot:label>
+                  {{ $t('settings.votingPeriod') }}
+                </template>
+                <template v-slot:info>
+                  <select
+                    v-model="periodUnit"
+                    class="input text-center mr-[6px] ml-2"
+                    required
+                  >
+                    <option value="h" selected>hours</option>
+                    <option value="d">days</option>
+                  </select>
+                </template>
+              </UiInput>
+              <UiInput
+                v-model="form.voting.quorum"
+                :number="true"
+                placeholder="1000"
+              >
+                <template v-slot:label>
+                  {{ $t('settings.quorum') }}
+                </template>
+              </UiInput>
+              <UiInput>
+                <template v-slot:label>
+                  {{ $t('settings.type') }}
+                </template>
+                <template v-slot:selected>
+                  <div @click="modalVotingTypeOpen = true" class="w-full">
+                    {{
+                      form.voting?.type
+                        ? $t(`voting.${form.voting?.type}`)
+                        : $t('settings.anyType')
+                    }}
+                  </div>
+                </template>
+              </UiInput>
+              <div class="flex items-center space-x-2 pr-2">
+                <BaseCheckbox v-model="form.voting.hideAbstain" />
+                <span>{{ $t('settings.hideAbstain') }}</span>
+              </div>
+            </div>
+          </BaseBlock>
+          <BaseBlock :title="$t('plugins')">
             <div v-if="form?.plugins">
               <div
-                v-for="(plugin, name, index) in form.plugins"
+                v-for="(name, index) in Object.keys(form.plugins).filter(
+                  key => pluginIndex[key]
+                )"
                 :key="index"
                 class="mb-3 relative"
               >
-                <div v-if="pluginName(name)">
+                <div v-if="pluginIndex[name].name">
                   <a
                     @click="handleRemovePlugins(name)"
                     class="absolute p-4 right-0"
                   >
-                    <Icon name="close" size="12" />
+                    <BaseIcon name="close" size="12" />
                   </a>
                   <a
                     @click="handleEditPlugins(name)"
                     class="p-4 block border rounded-md"
                   >
-                    <h4 v-text="pluginName(name)" />
+                    <h4 v-text="pluginIndex[name].name" />
                   </a>
                 </div>
               </div>
             </div>
-            <UiButton @click="handleAddPlugins" class="block w-full">
+            <BaseButton @click="handleAddPlugins" class="block w-full">
               {{ $t('settings.addPlugin') }}
-            </UiButton>
-          </Block>
+            </BaseButton>
+          </BaseBlock>
         </div>
       </template>
     </template>
-    <template v-if="(loaded && isOwner) || (loaded && isAdmin)" #sidebar-right>
-      <Block :title="$t('actions')">
-        <UiButton @click="handleReset" class="block w-full mb-2">
-          {{ $t('reset') }}
-        </UiButton>
-        <UiButton
-          :disabled="uploadLoading"
-          @click="handleSubmit"
-          :loading="loading"
-          class="block w-full button--submit"
-        >
-          {{ $t('save') }}
-        </UiButton>
-      </Block>
+
+    <template #sidebar-right>
+      <BaseMessageBlock
+        level="info"
+        v-if="
+          !(isSpaceController || isSpaceAdmin || ensOwner) && currentTextRecord
+        "
+      >
+        {{ $t('settings.connectWithSpaceOwner') }}
+      </BaseMessageBlock>
+      <div v-else-if="loaded" class="lg:fixed lg:w-[318px]">
+        <BaseBlock>
+          <BaseButton
+            v-if="ensOwner"
+            @click="modalControllerEditOpen = true"
+            :loading="settingENSRecord"
+            class="block w-full mb-2"
+          >
+            {{ $t('settings.editController') }}
+          </BaseButton>
+          <div v-if="isSpaceAdmin || isSpaceController">
+            <BaseButton @click="handleReset" class="block w-full mb-2">
+              {{ $t('reset') }}
+            </BaseButton>
+            <BaseButton
+              :disabled="uploadLoading"
+              @click="handleSubmit"
+              :loading="clientLoading"
+              class="block w-full"
+              primary
+            >
+              {{ $t('save') }}
+            </BaseButton>
+          </div>
+        </BaseBlock>
+      </div>
     </template>
-  </Layout>
+  </TheLayout>
   <teleport to="#modal">
     <ModalNetworks
       v-model="form.network"
@@ -557,8 +725,16 @@ watchEffect(async () => {
     <ModalStrategy
       :open="modalStrategyOpen"
       :strategy="currentStrategy"
+      :space="space"
+      :defaultNetwork="form.network"
       @close="modalStrategyOpen = false"
       @add="handleSubmitAddStrategy"
+    />
+    <ModalCategory
+      :open="modalCategoryOpen"
+      :categories="form.categories"
+      @close="modalCategoryOpen = false"
+      @add="handleSubmitAddCategories"
     />
     <ModalPlugins
       :open="modalPluginsOpen"
@@ -568,9 +744,43 @@ watchEffect(async () => {
     />
     <ModalValidation
       :open="modalValidationOpen"
-      :validation="clone(form.validation)"
+      :validation="form.validation"
       @close="modalValidationOpen = false"
       @add="handleSubmitAddValidation"
     />
+    <ModalVotingType
+      :open="modalVotingTypeOpen"
+      @close="modalVotingTypeOpen = false"
+      v-model:selected="form.voting.type"
+      allowAny
+    />
+    <ModalControllerEdit
+      :open="modalControllerEditOpen"
+      @close="modalControllerEditOpen = false"
+      :currentTextRecord="currentTextRecord"
+      :ensAddress="space.id"
+      @set="(ensAddress = space.id), confirmSetRecord()"
+    />
+    <ModalUnsupportedNetwork
+      :open="modalUnsupportedNetworkOpen"
+      @close="modalUnsupportedNetworkOpen = false"
+      @networkChanged="modalConfirmSetTextRecordOpen = true"
+    />
+    <ModalConfirmAction
+      :open="modalConfirmSetTextRecordOpen"
+      @close="modalConfirmSetTextRecordOpen = false"
+      @confirm="handleSetRecord"
+    >
+      <div class="space-y-4 m-4 text-skin-link">
+        <p>
+          {{
+            $t('setup.confirmToSetAddress', {
+              address: shorten(spaceControllerInput)
+            })
+          }}
+          {{ $t('setup.controllerHasAuthority') + '.' }}
+        </p>
+      </div>
+    </ModalConfirmAction>
   </teleport>
 </template>

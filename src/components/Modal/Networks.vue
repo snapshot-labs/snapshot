@@ -1,8 +1,8 @@
 <script setup>
-import { ref, computed } from 'vue';
-import { useSearchFilters } from '@/composables/useSearchFilters';
+import { ref, computed, watch } from 'vue';
+import { useNetworksFilter } from '@/composables/useNetworksFilter';
 
-defineProps({
+const props = defineProps({
   open: {
     type: Boolean,
     required: true
@@ -12,8 +12,16 @@ defineProps({
 const emit = defineEmits(['update:modelValue', 'close']);
 
 const searchInput = ref('');
-const { filteredNetworks } = useSearchFilters();
-const networks = computed(() => filteredNetworks(searchInput.value));
+const { filterNetworks, getNetworksSpacesCount, loadingNetworksSpacesCount } =
+  useNetworksFilter();
+const networks = computed(() => filterNetworks(searchInput.value));
+
+watch(
+  () => props.open,
+  () => {
+    if (props.open) getNetworksSpacesCount();
+  }
+);
 
 function select(key) {
   emit('update:modelValue', key);
@@ -22,24 +30,28 @@ function select(key) {
 </script>
 
 <template>
-  <UiModal :open="open" @close="$emit('close')">
+  <BaseModal :open="open" @close="$emit('close')">
     <template v-slot:header>
       <h3>{{ $t('networks') }}</h3>
     </template>
-    <Search
+    <BaseSearch
       v-model="searchInput"
       :placeholder="$t('searchPlaceholder')"
-      :modal="true"
+      modal
     />
-    <div class="mt-4 mx-0 md:mx-4">
-      <a
-        v-for="network in networks"
-        :key="network.key"
-        @click="select(network.key)"
-      >
-        <BlockNetwork :network="network" />
-      </a>
-      <NoResults v-if="Object.keys(networks).length < 1" />
+
+    <div class="my-4 mx-0 md:mx-4 min-h-[339px]">
+      <LoadingRow v-if="loadingNetworksSpacesCount" block />
+      <div v-else class="space-y-3">
+        <div
+          v-for="network in networks"
+          :key="network.key"
+          @click="select(network.key)"
+        >
+          <BlockNetwork :network="network" />
+        </div>
+        <NoResults v-if="Object.keys(networks).length < 1" />
+      </div>
     </div>
-  </UiModal>
+  </BaseModal>
 </template>

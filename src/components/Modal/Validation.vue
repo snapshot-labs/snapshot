@@ -1,7 +1,6 @@
 <script setup>
 import { ref, computed, toRefs, watch } from 'vue';
-import { useSearchFilters } from '@/composables/useSearchFilters';
-import { clone } from '@/helpers/utils';
+import { useValidationsFilter } from '@/composables/useValidationsFilter';
 
 const defaultParams = {};
 
@@ -12,49 +11,47 @@ const emit = defineEmits(['add', 'close']);
 const { open } = toRefs(props);
 
 const searchInput = ref('');
+const isValid = ref(true);
 const input = ref({
   name: '',
-  params: JSON.stringify(defaultParams, null, 2)
+  params: defaultParams
 });
 
-const { filteredValidations } = useSearchFilters();
-const validations = computed(() => filteredValidations(searchInput.value));
+const { filterValidations, getValidationsSpacesCount, loadingValidations } =
+  useValidationsFilter();
+const validations = computed(() => filterValidations(searchInput.value));
 
-const isValid = computed(() => {
-  try {
-    const params = JSON.parse(input.value.params);
-    return !!params;
-  } catch (e) {
-    return false;
+watch(
+  () => props.open,
+  () => {
+    if (props.open) getValidationsSpacesCount();
   }
-});
+);
 
 function select(n) {
   input.value.name = n;
 }
 
 function handleSubmit() {
-  const validation = clone(input.value);
-  validation.params = JSON.parse(validation.params);
-  emit('add', validation);
+  emit('add', input.value);
   emit('close');
 }
 
 watch(open, () => {
   input.value.name = '';
   if (props.validation?.params) {
-    input.value.params = JSON.stringify(props.validation.params, null, 2);
+    input.value.params = props.validation.params;
   } else {
     input.value = {
       name: '',
-      params: JSON.stringify(defaultParams, null, 2)
+      params: defaultParams
     };
   }
 });
 </script>
 
 <template>
-  <UiModal :open="open" @close="$emit('close')">
+  <BaseModal :open="open" @close="$emit('close')">
     <template v-slot:header>
       <h3>
         {{
@@ -64,43 +61,45 @@ watch(open, () => {
         }}
       </h3>
     </template>
-    <Search
+    <BaseSearch
       v-if="!input.name"
       v-model="searchInput"
       :placeholder="$t('searchPlaceholder')"
-      :modal="true"
+      modal
     />
-    <div class="mt-4 mx-0 md:mx-4">
-      <div v-if="input.name" class="p-4 mb-4 border rounded-md link-color">
-        <UiButton
-          class="block w-full mb-3 overflow-x-auto"
-          style="height: auto"
-        >
-          <TextareaAutosize
-            v-model="input.params"
-            :placeholder="$t('settings.validationParameters')"
-            class="input text-left"
-            style="width: 560px"
-          />
-        </UiButton>
-        <UiButton
-          @click="handleSubmit"
-          :disabled="!isValid"
-          class="button--submit w-full"
-        >
-          {{ validation.name ? $t('save') : $t('add') }}
-        </UiButton>
+    <div class="my-4 mx-0 md:mx-4 min-h-[339px]">
+      <div v-if="input.name" class="p-4 mb-4 border rounded-md text-skin-link">
+        <h4 v-text="input.name" class="mb-3 text-center" />
+        <TextareaJson
+          v-model="input.params"
+          v-model:is-valid="isValid"
+          :placeholder="$t('settings.validationParameters')"
+          class="input text-left"
+        />
       </div>
       <div v-if="!input.name">
-        <a
-          v-for="validation in validations"
-          :key="validation.name"
-          @click="select(validation.name)"
-        >
-          <BlockValidation :validation="validation" />
-        </a>
-        <NoResults v-if="Object.keys(validations).length < 1" />
+        <LoadingRow v-if="loadingValidations" block />
+        <div v-else class="space-y-3">
+          <BlockValidation
+            :validation="valId"
+            v-for="valId in validations"
+            :key="valId"
+            @click="select(valId)"
+          />
+
+          <NoResults v-if="Object.keys(validations).length < 1" />
+        </div>
       </div>
     </div>
-  </UiModal>
+    <template v-if="input.name" v-slot:footer>
+      <BaseButton
+        @click="handleSubmit"
+        :disabled="!isValid"
+        class="w-full"
+        primary
+      >
+        {{ validation.name ? $t('save') : $t('add') }}
+      </BaseButton>
+    </template>
+  </BaseModal>
 </template>

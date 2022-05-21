@@ -1,5 +1,7 @@
 <script setup>
-import { computed, onMounted, ref, watch } from 'vue';
+import { onMounted, computed, ref, watch } from 'vue';
+import { useStore } from '@/composables/useStore';
+import { useI18n } from '@/composables/useI18n';
 import { useInfiniteLoader } from '@/composables/useInfiniteLoader';
 import { useScrollMonitor } from '@/composables/useScrollMonitor';
 import { useApolloQuery } from '@/composables/useApolloQuery';
@@ -9,28 +11,26 @@ import { useUnseenProposals } from '@/composables/useUnseenProposals';
 import { lsSet } from '@/helpers/utils';
 import { useWeb3 } from '@/composables/useWeb3';
 
-const props = defineProps({ space: Object, spaceId: String });
+const props = defineProps({ space: Object });
 
-const { lastSeenProposals, updateLastSeenProposal } = useUnseenProposals();
-const { web3 } = useWeb3();
+const { store } = useStore();
+const { setPageTitle } = useI18n();
 
 const loading = ref(false);
-const proposals = ref([]);
-const filterBy = ref('all');
+
+const { loadBy, loadingMore, stopLoadingMore, loadMore } = useInfiniteLoader();
+const { apolloQuery } = useApolloQuery();
 
 const spaceMembers = computed(() =>
-  props.space.members.length < 1 ? ['none'] : props.space.members
-);
-const web3Account = computed(() => web3.value.account);
-
-const { loadBy, limit, loadingMore, stopLoadingMore, loadMore } =
-  useInfiniteLoader();
-
-const { endElement } = useScrollMonitor(() =>
-  loadMore(() => loadProposals(limit.value), loading.value)
+  props.space?.members
+    ? props.space.members.length < 1
+      ? ['none']
+      : props.space.members
+    : null
 );
 
-const { apolloQuery } = useApolloQuery();
+const spaceFilterBy = computed(() => store.space.filterBy);
+
 async function loadProposals(skip = 0) {
   const proposalsObj = await apolloQuery(
     {
@@ -38,100 +38,150 @@ async function loadProposals(skip = 0) {
       variables: {
         first: loadBy,
         skip,
-        space: props.spaceId,
-        state: filterBy.value === 'core' ? 'all' : filterBy.value,
-        author_in: filterBy.value === 'core' ? spaceMembers.value : []
+        space: props.space.id,
+        state: spaceFilterBy.value === 'core' ? 'all' : spaceFilterBy.value,
+        author_in: spaceFilterBy.value === 'core' ? spaceMembers.value : []
       }
     },
     'proposals'
   );
   stopLoadingMore.value = proposalsObj?.length < loadBy;
-  proposals.value = proposals.value.concat(proposalsObj);
+  store.space.proposals = store.space.proposals.concat(proposalsObj);
 }
 
-onMounted(load());
+const { lastSeenProposals, updateLastSeenProposal } = useUnseenProposals();
+const { web3Account } = useWeb3();
 
-async function load() {
-  loading.value = true;
-  await loadProposals();
-  loading.value = false;
-}
-
-function selectState(e) {
-  filterBy.value = e;
-  proposals.value = [];
-  limit.value = loadBy;
-  load();
-}
-
-const { profiles, addressArray } = useProfiles();
-
-watch(proposals, () => {
-  addressArray.value = proposals.value.map(proposal => proposal.author);
-});
-
-watch([proposals, web3Account], () => {
+function emitUpdateLastSeenProposal() {
   if (web3Account.value) {
     lsSet(
       `lastSeenProposals.${web3Account.value.slice(0, 8).toLowerCase()}`,
       Object.assign(lastSeenProposals.value, {
-        [props.spaceId]: new Date().getTime()
+        [props.space.id]: new Date().getTime()
       })
     );
   }
   updateLastSeenProposal(web3Account.value);
+}
+
+watch(web3Account, () => emitUpdateLastSeenProposal());
+
+async function load() {
+  if (store.space.proposals.length > 0) return;
+  loading.value = true;
+  await loadProposals();
+  loading.value = false;
+  emitUpdateLastSeenProposal();
+}
+
+const { endElement } = useScrollMonitor(() =>
+  loadMore(() => loadProposals(store.space.proposals.length), loadingMore.value)
+);
+
+const { profiles, loadProfiles } = useProfiles();
+
+watch(
+  () => store.space.proposals,
+  () => {
+    loadProfiles(store.space.proposals.map(proposal => proposal.author));
+  }
+);
+
+const loadingData = computed(() => {
+  return loading.value || loadingMore.value;
+});
+
+function selectState(e) {
+  store.space.filterBy = e;
+  store.space.proposals = [];
+  load();
+}
+
+onMounted(() => {
+  if (props.space?.name)
+    setPageTitle('page.title.space.proposals', { space: props.space.name });
+
+  const firstProposal = store.space.proposals[0];
+  if (firstProposal && firstProposal?.space.id !== props.space.id) {
+    store.space.proposals = [];
+    load();
+  }
 });
 </script>
 
 <template>
-  <Layout>
+  <TheLayout>
     <template #sidebar-left>
-      <BlockSpace :space="space" />
+      <SpaceSidebar :space="space" />
     </template>
     <template #content-right>
-      <div class="px-4 md:px-0 mb-3 flex">
+      <div class="px-3 md:px-0 mb-3 flex relative">
         <div class="flex-auto">
-          <div v-text="space.name" />
           <div class="flex items-center flex-auto">
             <h2>{{ $t('proposals.header') }}</h2>
           </div>
         </div>
-        <UiDropdown
-          top="3.5rem"
-          right="1.25rem"
+        <BaseDropdown
           @select="selectState"
           :items="[
-            { text: $t('proposals.states.all'), action: 'all' },
-            { text: $t('proposals.states.active'), action: 'active' },
-            { text: $t('proposals.states.pending'), action: 'pending' },
-            { text: $t('proposals.states.closed'), action: 'closed' },
-            { text: $t('proposals.states.core'), action: 'core' }
+            {
+              text: $t('proposals.states.all'),
+              action: 'all',
+              selected: spaceFilterBy === 'all'
+            },
+            {
+              text: $t('proposals.states.active'),
+              action: 'active',
+              selected: spaceFilterBy === 'active'
+            },
+            {
+              text: $t('proposals.states.pending'),
+              action: 'pending',
+              selected: spaceFilterBy === 'pending'
+            },
+            {
+              text: $t('proposals.states.closed'),
+              action: 'closed',
+              selected: spaceFilterBy === 'closed'
+            },
+            {
+              text: $t('proposals.states.core'),
+              action: 'core',
+              selected: spaceFilterBy === 'core'
+            }
           ]"
         >
-          <UiButton class="pr-3">
-            {{ $t(`proposals.states.${filterBy}`) }}
-            <Icon size="14" name="arrow-down" class="mt-1 mr-1" />
-          </UiButton>
-        </UiDropdown>
+          <template v-slot:button>
+            <BaseButton class="pr-3">
+              {{ $t(`proposals.states.${store.space.filterBy}`) }}
+              <BaseIcon size="14" name="arrow-down" class="mt-1 mr-1" />
+            </BaseButton>
+          </template>
+        </BaseDropdown>
+        <SpaceProposalsNotice
+          v-if="store.space.proposals.length < 1 && !loadingData"
+          :spaceId="space.id"
+          :web3Account="web3Account"
+        />
       </div>
 
-      <Block v-if="loading" :slim="true">
-        <RowLoading class="my-2" />
-      </Block>
-
-      <NoResults :block="true" v-else-if="proposals.length < 1" />
-      <div v-else>
-        <Block :slim="true" v-for="(proposal, i) in proposals" :key="i">
-          <TimelineProposal :proposal="proposal" :profiles="profiles" />
-        </Block>
-      </div>
-      <div
-        style="height: 10px; width: 10px; position: absolute"
-        ref="endElement"
+      <NoProposals
+        v-if="!loadingData && store.space.proposals.length < 1"
+        class="mt-2"
+        :space="space"
       />
-      <Block v-if="loadingMore && !loading" :slim="true">
-        <RowLoading class="my-2" />
-      </Block>
+      <div v-else class="md:space-y-4 my-4">
+        <TimelineProposal
+          v-for="(proposal, i) in store.space.proposals"
+          :key="i"
+          :proposal="proposal"
+          :profiles="profiles"
+          :space="space"
+          class="border-b first:border-t"
+        />
+      </div>
+      <div class="w-[10px] h-[10px] absolute bottom-0" ref="endElement" />
+      <LoadingRow v-if="loadingData" block />
     </template>
-  </Layout>
+  </TheLayout>
 </template>

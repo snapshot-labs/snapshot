@@ -1,20 +1,16 @@
 <script setup>
 import { computed, onMounted } from 'vue';
 import { useApp } from '@/composables/useApp';
-import { useRoute } from 'vue-router';
-import { useDomain } from '@/composables/useDomain';
 import aliases from '@/../snapshot-spaces/spaces/aliases.json';
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 import { formatSpace } from '@/helpers/utils';
-import { useExtentedSpaces } from '@/composables/useExtentedSpaces';
+import { useExtendedSpaces } from '@/composables/useExtendedSpaces';
 
 const route = useRoute();
 const router = useRouter();
-const { domain } = useDomain();
-const { explore } = useApp();
+const { domain } = useApp();
 const aliasedSpace = aliases[domain] || aliases[route.params.key];
-const { loadExtentedSpaces, extentedSpaces, spaceLoading } =
-  useExtentedSpaces();
+const { loadExtentedSpaces, extentedSpaces } = useExtendedSpaces();
 
 // Redirect the user to the ENS address if the space is aliased.
 if (aliasedSpace) {
@@ -25,28 +21,49 @@ if (aliasedSpace) {
   router.replace({ path: updatedPath });
 }
 
-const spaceId = computed(() => aliasedSpace || domain || route.params.key);
-const space = computed(
-  () =>
-    formatSpace(extentedSpaces.value?.find(s => s.id === spaceId.value)) ??
-    explore.value.spaces[spaceId.value]
+const spaceKey = computed(() => aliasedSpace || domain || route.params.key);
+const space = computed(() =>
+  formatSpace(extentedSpaces.value?.find(s => s.id === spaceKey.value))
 );
 
-const from = computed(() => route.params.from);
-const spaceFrom = computed(() =>
-  formatSpace(extentedSpaces.value?.find(s => s.id === from.value))
+const sourceSpaceRoute = computed(() => route.params.sourceSpace);
+const sourceSpace = computed(() =>
+  formatSpace(extentedSpaces.value?.find(s => s.id === sourceSpaceRoute.value))
 );
 
-onMounted(() => loadExtentedSpaces([spaceId.value, from.value]));
+onMounted(() => loadExtentedSpaces([spaceKey.value, sourceSpaceRoute.value]));
 </script>
 
 <template>
+  <!-- Only loaded after space is available -->
   <router-view
-    :spaceId="spaceId"
+    v-if="space"
     :space="space"
-    :from="from"
-    :spaceFrom="spaceFrom"
-    :spaceLoading="spaceLoading"
+    :sourceSpace="sourceSpace"
     :loadExtentedSpaces="loadExtentedSpaces"
   />
+
+  <div v-else>
+    <!-- Lazy loading skeleton for space page with left sidebar layout -->
+    <TheLayout
+      v-if="
+        !space &&
+        ($route.name === 'spaceProposals' || $route.name === 'spaceAbout')
+      "
+    >
+      <template #sidebar-left>
+        <SpaceSidebarSkeleton />
+      </template>
+      <template #content-right>
+        <LoadingRow block />
+      </template>
+    </TheLayout>
+
+    <!-- Default page loading for none sidebar left layout space pages -->
+    <TheLayout v-else-if="!space" class="!px-4">
+      <template #content-left>
+        <LoadingPage />
+      </template>
+    </TheLayout>
+  </div>
 </template>

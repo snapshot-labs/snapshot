@@ -1,7 +1,9 @@
 <script setup>
 import { computed } from 'vue';
-import jsonexport from 'jsonexport/dist';
-import pkg from '@/../package.json';
+import { shorten } from '@/helpers/utils';
+import { useIntl } from '@/composables/useIntl';
+
+const { formatCompactNumber, formatPercentNumber, formatNumber } = useIntl();
 
 const props = defineProps({
   id: String,
@@ -13,10 +15,8 @@ const props = defineProps({
   strategies: Object
 });
 
-const ts = (Date.now() / 1e3).toFixed();
-
 const titles = computed(() =>
-  props.strategies.map(strategy => strategy.params.symbol)
+  props.strategies.map(strategy => strategy.params.symbol || '')
 );
 const choices = computed(() =>
   props.proposal.choices
@@ -28,83 +28,111 @@ const choices = computed(() =>
     )
 );
 
-async function downloadReport() {
-  const obj = props.votes
-    .map(vote => {
-      return {
-        address: vote.voter,
-        choice: vote.choice,
-        balance: vote.balance,
-        timestamp: vote.created,
-        dateUtc: new Date(parseInt(vote.created) * 1e3).toUTCString(),
-        authorIpfsHash: vote.id
-        // relayerIpfsHash: vote[1].relayerIpfsHash
-      };
-    })
-    .sort((a, b) => a.timestamp - b.timestamp, 0);
-  try {
-    const csv = await jsonexport(obj);
-    const link = document.createElement('a');
-    link.setAttribute('href', `data:text/csv;charset=utf-8,${csv}`);
-    link.setAttribute('download', `${pkg.name}-report-${props.id}.csv`);
-    document.body.appendChild(link);
-    link.click();
-  } catch (e) {
-    console.error(e);
-  }
-}
+const getPercentage = (n, max) => (max ? ((100 / max) * n) / 1e2 : 0);
+const hideAbstain = props.space?.voting?.hideAbstain ?? false;
+const ts = (Date.now() / 1e3).toFixed();
 </script>
 
 <template>
-  <Block
+  <BaseBlock
     :loading="!loaded"
     :title="ts >= proposal.end ? $t('results') : $t('currentResults')"
   >
-    <div v-for="choice in choices" :key="choice.i">
-      <div class="link-color mb-1">
-        <span
-          v-tippy="{
-            content: choice.choice.length > 12 ? choice.choice : null
-          }"
-          class="mr-1"
-          v-text="_shorten(choice.choice, 'choice')"
-        />
-
-        <span
-          class="inline-block"
-          v-tippy="{
-            content: results.resultsByStrategyScore[choice.i]
-              .map((score, index) => `${_n(score)} ${titles[index]}`)
-              .join(' + ')
-          }"
+    <div class="space-y-3">
+      <div v-for="choice in choices" :key="choice.i">
+        <template
+          v-if="!(proposal.type === 'basic' && hideAbstain && choice.i === 2)"
         >
-          {{ _n(results.resultsByVoteBalance[choice.i]) }}
-          {{ _shorten(space.symbol, 'symbol') }}
-        </span>
-        <span
-          class="float-right"
-          v-text="
-            _n(
-              !results.sumOfResultsBalance
-                ? 0
-                : ((100 / results.sumOfResultsBalance) *
-                    results.resultsByVoteBalance[choice.i]) /
-                    1e2,
-              '0.[00]%'
-            )
-          "
-        />
+          <div class="text-skin-link mb-1 flex justify-between">
+            <div class="flex overflow-hidden">
+              <span
+                v-tippy="{
+                  content: choice.choice
+                }"
+                class="mr-1 truncate"
+                v-text="choice.choice"
+              />
+            </div>
+            <template class="flex justify-end space-x-2">
+              <span
+                class="whitespace-nowrap"
+                v-tippy="{
+                  content: results.resultsByStrategyScore[choice.i]
+                    .map(
+                      (score, index) =>
+                        `${formatNumber(score)} ${titles[index]}`
+                    )
+                    .join(' + ')
+                }"
+              >
+                {{
+                  formatCompactNumber(results.resultsByVoteBalance[choice.i])
+                }}
+                {{ shorten(proposal.symbol || space.symbol, 'symbol') }}
+              </span>
+              <span
+                v-if="
+                  proposal.type === 'basic' && hideAbstain && choice.i === 0
+                "
+                v-text="
+                  formatPercentNumber(
+                    getPercentage(
+                      results.resultsByVoteBalance[0],
+                      results.resultsByVoteBalance[0] +
+                        results.resultsByVoteBalance[1]
+                    )
+                  )
+                "
+              />
+              <span
+                v-else-if="
+                  proposal.type === 'basic' && hideAbstain && choice.i === 1
+                "
+                v-text="
+                  formatPercentNumber(
+                    getPercentage(
+                      results.resultsByVoteBalance[1],
+                      results.resultsByVoteBalance[0] +
+                        results.resultsByVoteBalance[1]
+                    )
+                  )
+                "
+              />
+              <span
+                v-else
+                v-text="
+                  formatPercentNumber(
+                    getPercentage(
+                      results.resultsByVoteBalance[choice.i],
+                      results.sumOfResultsBalance
+                    )
+                  )
+                "
+              />
+            </template>
+          </div>
+
+          <ProposalResultsProgressBar
+            :value="results.resultsByStrategyScore[choice.i]"
+            :max="
+              proposal.type === 'basic' && hideAbstain
+                ? results.resultsByVoteBalance[0] +
+                  results.resultsByVoteBalance[1]
+                : results.sumOfResultsBalance
+            "
+          />
+        </template>
       </div>
-      <UiProgress
-        :value="results.resultsByStrategyScore[choice.i]"
-        :max="results.sumOfResultsBalance"
-        class="mb-3"
-      />
+      <div
+        v-if="proposal.quorum || space.voting?.quorum"
+        class="text-skin-link"
+      >
+        {{ $t('settings.quorum') }}
+        <span class="float-right">
+          {{ formatCompactNumber(results.sumOfResultsBalance) }} /
+          {{ formatCompactNumber(proposal.quorum || space.voting.quorum) }}
+        </span>
+      </div>
     </div>
-    <div v-if="ts >= proposal.end">
-      <UiButton @click="downloadReport" class="w-full mt-2">
-        {{ $t('downloadReport') }}
-      </UiButton>
-    </div>
-  </Block>
+  </BaseBlock>
 </template>

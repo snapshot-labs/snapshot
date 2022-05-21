@@ -6,6 +6,181 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "736871",
+      "name": "notifications-none",
+      "font_class": "notificationsnone",
+      "unicode": "e708",
+      "unicode_decimal": 59144
+    },
+    {
+      "icon_id": "1444429",
+      "name": "earth",
+      "font_class": "earth",
+      "unicode": "e70d",
+      "unicode_decimal": 59149
+    },
+    {
+      "icon_id": "27365167",
+      "name": "markdown",
+      "font_class": "markdown",
+      "unicode": "ec0f",
+      "unicode_decimal": 60431
+    },
+    {
+      "icon_id": "1444287",
+      "name": "coins",
+      "font_class": "coins",
+      "unicode": "e6c6",
+      "unicode_decimal": 59078
+    },
+    {
+      "icon_id": "11398722",
+      "name": "check",
+      "font_class": "check3",
+      "unicode": "e605",
+      "unicode_decimal": 58885
+    },
+    {
+      "icon_id": "15617307",
+      "name": "skip-next",
+      "font_class": "skip",
+      "unicode": "e8c5",
+      "unicode_decimal": 59589
+    },
+    {
+      "icon_id": "980400",
+      "name": "close",
+      "font_class": "close2",
+      "unicode": "e6c3",
+      "unicode_decimal": 59075
+    },
+    {
+      "icon_id": "7239657",
+      "name": "calendar",
+      "font_class": "calendar",
+      "unicode": "e71f",
+      "unicode_decimal": 59167
+    },
+    {
+      "icon_id": "27154983",
+      "name": "draggable",
+      "font_class": "draggable",
+      "unicode": "e617",
+      "unicode_decimal": 58903
+    },
+    {
+      "icon_id": "20997029",
+      "name": "preview",
+      "font_class": "preview",
+      "unicode": "e637",
+      "unicode_decimal": 58935
+    },
+    {
+      "icon_id": "8555524",
+      "name": "filter-3-fill",
+      "font_class": "filter",
+      "unicode": "e74f",
+      "unicode_decimal": 59215
+    },
+    {
+      "icon_id": "14401724",
+      "name": "home",
+      "font_class": "home",
+      "unicode": "e673",
+      "unicode_decimal": 58995
+    },
+    {
+      "icon_id": "7988769",
+      "name": "apps",
+      "font_class": "apps",
+      "unicode": "e613",
+      "unicode_decimal": 58899
+    },
+    {
+      "icon_id": "583318",
+      "name": "check",
+      "font_class": "check1",
+      "unicode": "e607",
+      "unicode_decimal": 58887
+    },
+    {
+      "icon_id": "1410439",
+      "name": "notifications-none",
+      "font_class": "remind",
+      "unicode": "e69e",
+      "unicode_decimal": 59038
+    },
+    {
+      "icon_id": "2045201",
+      "name": "emoji",
+      "font_class": "emoji",
+      "unicode": "e709",
+      "unicode_decimal": 59145
+    },
+    {
+      "icon_id": "2045216",
+      "name": "flag_fill",
+      "font_class": "flag_fill",
+      "unicode": "e711",
+      "unicode_decimal": 59153
+    },
+    {
+      "icon_id": "2045276",
+      "name": "mine",
+      "font_class": "mine",
+      "unicode": "e732",
+      "unicode_decimal": 59186
+    },
+    {
+      "icon_id": "2045280",
+      "name": "more",
+      "font_class": "more",
+      "unicode": "e736",
+      "unicode_decimal": 59190
+    },
+    {
+      "icon_id": "2045289",
+      "name": "people",
+      "font_class": "people",
+      "unicode": "e73d",
+      "unicode_decimal": 59197
+    },
+    {
+      "icon_id": "2045337",
+      "name": "stealth_fill",
+      "font_class": "stealth_fill",
+      "unicode": "e75f",
+      "unicode_decimal": 59231
+    },
+    {
+      "icon_id": "490399",
+      "name": "notifications_active",
+      "font_class": "notifications-on",
+      "unicode": "ec64",
+      "unicode_decimal": 60516
+    },
+    {
+      "icon_id": "5226577",
+      "name": "notifications",
+      "font_class": "notifications",
+      "unicode": "e630",
+      "unicode_decimal": 58928
+    },
+    {
+      "icon_id": "7371992",
+      "name": "round-notifications_",
+      "font_class": "notifications-off",
+      "unicode": "e6e4",
+      "unicode_decimal": 59108
+    },
+    {
+      "icon_id": "24125360",
+      "name": "stamp",
+      "font_class": "stamp",
+      "unicode": "e6de",
+      "unicode_decimal": 59102
+    },
+    {
       "icon_id": "11931885",
       "name": "link",
       "font_class": "insertlink",

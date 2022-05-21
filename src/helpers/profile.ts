@@ -1,35 +1,10 @@
-import namehash from 'eth-ens-namehash';
+import namehash from '@ensdomains/eth-ens-namehash';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
-import { subgraphRequest, call } from '@snapshot-labs/snapshot.js/src/utils';
-
-function get3BoxProfiles(addresses) {
-  return new Promise((resolove, reject) => {
-    subgraphRequest('https://api.3box.io/graph', {
-      profiles: {
-        __args: {
-          ids: addresses
-        },
-        name: true,
-        eth_address: true,
-        image: true
-      }
-    })
-      .then(({ profiles }) => {
-        const _3BoxProfiles = {};
-        profiles.forEach(profile => {
-          _3BoxProfiles[profile.eth_address.toLowerCase()] = profile;
-        });
-        resolove(_3BoxProfiles);
-      })
-      .catch(error => {
-        reject(error);
-      });
-  });
-}
+import { call } from '@snapshot-labs/snapshot.js/src/utils';
 
 function ensReverseRecordRequest(addresses) {
   const network = '1';
-  const provider = getProvider(network);
+  const provider = getProvider(network, 'light');
   const abi = [
     {
       inputs: [
@@ -58,7 +33,7 @@ function lookupAddresses(addresses) {
         );
         const ensNames = Object.fromEntries(
           addresses.map((address, index) => {
-            return [address.toLowerCase(), validNames[index]];
+            return [address, validNames[index]];
           })
         );
 
@@ -70,25 +45,11 @@ function lookupAddresses(addresses) {
   });
 }
 
-export async function getProfiles(addresses) {
-  addresses = addresses.slice(0, 1000);
-  let ensNames: any = {};
-  let _3BoxProfiles: any = {};
+export async function getEnsAddress(addresses) {
+  addresses = addresses.slice(0, 250);
   try {
-    [ensNames, _3BoxProfiles] = await Promise.all([
-      lookupAddresses(addresses),
-      get3BoxProfiles(addresses)
-    ]);
+    return await lookupAddresses(addresses);
   } catch (e) {
     console.log(e);
   }
-
-  const profiles = Object.fromEntries(addresses.map(address => [address, {}]));
-  return Object.fromEntries(
-    Object.entries(profiles).map(([address, profile]) => {
-      profile = _3BoxProfiles[address.toLowerCase()] || {};
-      profile.ens = ensNames[address.toLowerCase()] || '';
-      return [address, profile];
-    })
-  );
 }

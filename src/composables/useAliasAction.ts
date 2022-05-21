@@ -1,3 +1,11 @@
+/**
+ * Alias addresses/wallets are used to reduce the need for signing messages manually, e.g. each time a user wants to join a space.
+ * An alias is a randomly generated wallet, of which the private key is stored in the browser's local storage.
+ * The user only needs to sign a message once, to "register" the respective alias address on the hub. All following messages can be signed
+ * by the alias wallet, without requiring the user's approval. This leads to much better UX, at the cost of less security.
+ * If the private key is removed from local storage, a new one will be created and registered.
+ */
+
 import { computed, ref } from 'vue';
 import { lsGet, lsSet } from '@/helpers/utils';
 import { useWeb3 } from '@/composables/useWeb3';
@@ -6,12 +14,16 @@ import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { getDefaultProvider, Provider } from '@ethersproject/providers';
 import { ALIASES_QUERY } from '@/helpers/queries';
 import { useApolloQuery } from '@/composables/useApolloQuery';
-import client from '@/helpers/EIP712';
+import client from '@/helpers/clientEIP712';
+import { useFlashNotification } from '@/composables/useFlashNotification';
+import { useI18n } from '@/composables/useI18n';
 
 const aliases = ref(lsGet('aliases') || {});
 const isValidAlias = ref(false);
 
 export function useAliasAction() {
+  const { notify } = useFlashNotification();
+  const { t } = useI18n();
   const { web3 } = useWeb3();
   const auth = getInstance();
   const { apolloQuery } = useApolloQuery();
@@ -62,5 +74,32 @@ export function useAliasAction() {
     await checkAlias();
   }
 
-  return { setAlias, aliasWallet, isValidAlias, checkAlias };
+  const loading = ref(false);
+
+  async function actionWithAlias(action: any) {
+    loading.value = true;
+    try {
+      await checkAlias();
+      if (aliasWallet.value && isValidAlias.value) {
+        return await action();
+      }
+      await setAlias();
+      return await action();
+    } catch (e) {
+      console.error(e);
+      loading.value = false;
+      notify(['red', t('notify.somethingWentWrong')]);
+    } finally {
+      loading.value = false;
+    }
+  }
+
+  return {
+    setAlias,
+    aliasWallet,
+    isValidAlias,
+    checkAlias,
+    actionWithAlias,
+    actionLoading: computed(() => loading.value)
+  };
 }
