@@ -1,8 +1,8 @@
 <script setup lang="ts">
+import { ref, watch } from 'vue';
 import { shorten } from '@/helpers/utils';
 import { useSpaceController } from '@/composables/useSpaceController';
 import { useRouter, useRoute } from 'vue-router';
-import { onMounted } from 'vue';
 import { useClient } from '@/composables/useClient';
 
 const { isGnosisSafe } = useClient();
@@ -11,6 +11,8 @@ const router = useRouter();
 const route = useRoute();
 
 const props = defineProps<{ web3Account: string }>();
+
+const fillConnectedWallet = ref(true);
 
 const {
   spaceControllerInput,
@@ -36,25 +38,36 @@ async function handleSetRecord() {
   }
 }
 
-onMounted(() => {
-  if (isGnosisSafe.value) spaceControllerInput.value = props.web3Account;
-});
+watch(
+  fillConnectedWallet,
+  () => {
+    if (fillConnectedWallet.value)
+      return (spaceControllerInput.value = props.web3Account);
+
+    spaceControllerInput.value = '';
+  },
+  { immediate: true }
+);
 </script>
 
 <template>
   <LoadingRow v-if="loadingTextRecord" block />
   <BaseBlock v-else :title="$t('setup.setSpaceController')">
-    <BaseMessageBlock level="info" class="mb-4">
-      {{ $t('setup.setSpaceControllerInfo') }}
-      <span v-if="isGnosisSafe">
-        {{ $t('setup.setSpaceControllerInfoGnosisSafe') }}
-      </span>
-    </BaseMessageBlock>
+    <div class="mb-4">
+      <BaseMessageBlock level="info">
+        {{ $t('setup.setSpaceControllerInfo') }}
+      </BaseMessageBlock>
+    </div>
+    <div class="flex items-center gap-2">
+      <BaseCheckbox v-model="fillConnectedWallet" />
+      {{ $t('setup.fillCurrentAccount') }}
+    </div>
     <UiInput
       v-model.trim="spaceControllerInput"
-      :placeholder="$t('setup.spaceOwnerAddressPlaceHolder')"
-      :readonly="isGnosisSafe"
-      class="mt-2"
+      :placeholder="
+        $t('setup.spaceOwnerAddressPlaceHolder', { address: web3Account })
+      "
+      :readonly="fillConnectedWallet"
       focus-on-mount
     >
     </UiInput>
@@ -67,6 +80,19 @@ onMounted(() => {
     >
       {{ $t('setup.setController') }}
     </BaseButton>
+
+    <BaseMessageBlock
+      v-if="isGnosisSafe && !fillConnectedWallet"
+      level="warning"
+    >
+      <i18n-t keypath="setup.setSpaceControllerInfoGnosisSafe" tag="span">
+        <template #link>
+          <BaseLink link="https://docs.snapshot.org/bots">
+            Documentation
+          </BaseLink>
+        </template>
+      </i18n-t>
+    </BaseMessageBlock>
   </BaseBlock>
 
   <teleport to="#modal">
