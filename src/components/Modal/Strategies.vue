@@ -64,7 +64,7 @@ defineEmits(['close']);
               <span v-text="shorten(param)" />
             </BaseLink>
             <BaseLink
-              v-if="typeof param === 'string' && param.startsWith('http')"
+              v-else-if="typeof param === 'string' && param.startsWith('http')"
               :link="param"
               class="block truncate ml-2"
             >
