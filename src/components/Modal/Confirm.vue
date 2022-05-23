@@ -87,13 +87,7 @@ watch(
   >
     <div class="flex flex-col flex-auto">
       <h4 class="m-4 mb-0 text-center">
-        {{
-          $tc('sureToVote', [
-            shorten(format(proposal, selectedChoices), 'choice')
-          ])
-        }}
-        <br />
-        {{ $t('cannotBeUndone') }}
+        {{ $tc('voteOverview') }}
       </h4>
       <BaseBlock slim class="m-4 p-4 text-skin-link">
         <div class="flex">
