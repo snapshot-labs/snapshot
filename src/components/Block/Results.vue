@@ -1,19 +1,20 @@
-<script setup>
+<script setup lang="ts">
 import { computed } from 'vue';
 import { shorten } from '@/helpers/utils';
 import { useIntl } from '@/composables/useIntl';
+import { extentedSpace, Proposal, Results, Vote } from '@/helpers/interfaces';
 
 const { formatCompactNumber, formatPercentNumber, formatNumber } = useIntl();
 
-const props = defineProps({
-  id: String,
-  space: Object,
-  proposal: Object,
-  results: Object,
-  votes: Object,
-  loaded: Boolean,
-  strategies: Object
-});
+const props = defineProps<{
+  id: string;
+  space: extentedSpace;
+  proposal: Proposal;
+  results: Results;
+  votes: Vote;
+  strategies: { name: string; network: string; params: Record<string, any> }[];
+  loaded: boolean;
+}>();
 
 const titles = computed(() =>
   props.strategies.map(strategy => strategy.params.symbol || '')
@@ -30,7 +31,7 @@ const choices = computed(() =>
 
 const getPercentage = (n, max) => (max ? ((100 / max) * n) / 1e2 : 0);
 const hideAbstain = props.space?.voting?.hideAbstain ?? false;
-const ts = (Date.now() / 1e3).toFixed();
+const ts = Number((Date.now() / 1e3).toFixed());
 </script>
 
 <template>
@@ -130,7 +131,7 @@ const ts = (Date.now() / 1e3).toFixed();
         {{ $t('settings.quorum') }}
         <span class="float-right">
           {{ formatCompactNumber(results.sumOfResultsBalance) }} /
-          {{ formatCompactNumber(proposal.quorum || space.voting.quorum) }}
+          {{ formatCompactNumber(proposal.quorum || space.voting.quorum as number) }}
         </span>
       </div>
     </div>

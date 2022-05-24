@@ -1,9 +1,10 @@
 import { ref, computed } from 'vue';
 import { SPACES_QUERY } from '@/helpers/queries';
 import { useApolloQuery } from '@/composables/useApolloQuery';
+import { extentedSpace } from '@/helpers/interfaces';
 
 // TODO: Type this properly
-const extentedSpaces = ref<Record<string, any>>([]);
+const extentedSpaces = ref<extentedSpace[] | null>(null);
 const loading = ref(false);
 
 export function useExtendedSpaces() {
@@ -21,7 +22,7 @@ export function useExtendedSpaces() {
         },
         'spaces'
       );
-      extentedSpaces.value = response;
+      extentedSpaces.value = response ?? null;
       loading.value = false;
     } catch (e) {
       loading.value = false;

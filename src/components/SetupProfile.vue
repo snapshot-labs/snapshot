@@ -75,7 +75,7 @@ async function checkIfSpaceExists() {
     await loadExtentedSpaces([props.ensAddress])
   ]);
   if (
-    extentedSpaces.value.some(space => space.id === props.ensAddress) &&
+    extentedSpaces.value?.some(space => space.id === props.ensAddress) &&
     Object.keys(spaces.value).some(spaceId => spaceId === props.ensAddress)
   ) {
     return;
