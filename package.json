@@ -2,8 +2,8 @@
   "name": "snapshot",
   "version": "0.1.4",
   "scripts": {
-    "preinstall": "yarn run init-submodules",
     "dev": "vite",
+    "preinstall": "yarn run init-submodules",
     "build": "vite build",
     "lint": "eslint \"./src/*/**/*.{ts,vue,json}\" --fix",
     "postinstall": "patch-package && husky install",
