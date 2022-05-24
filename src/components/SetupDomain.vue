@@ -2,12 +2,13 @@
 import { ref, watch, onUnmounted, computed } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { useEns } from '@/composables/useEns';
-import { useSpaces } from '@/composables/useSpaces';
 import { useWeb3 } from '@/composables/useWeb3';
+import { useExtendedSpaces } from '@/composables/useExtendedSpaces';
 
 const { web3Account } = useWeb3();
-const { spaces, spacesLoaded } = useSpaces();
 const { loadOwnedEnsDomains, ownedEnsDomains } = useEns();
+const { loadExtentedSpaces, extentedSpaces, spaceLoading } =
+  useExtendedSpaces();
 
 const router = useRouter();
 const route = useRoute();
@@ -22,14 +23,14 @@ watch(
     loadingOwnedEnsDomains.value = true;
     await loadOwnedEnsDomains();
     loadingOwnedEnsDomains.value = false;
+    await loadExtentedSpaces(ownedEnsDomains.value.map(d => d.name));
   },
   { immediate: true }
 );
 
 const domainsWithoutExistingSpace = computed(() => {
-  return ownedEnsDomains.value.filter(
-    d => !Object.keys(spaces.value).includes(d.name)
-  );
+  const spaces = extentedSpaces.value.map(space => space.id);
+  return ownedEnsDomains.value.filter(d => !spaces.includes(d.name));
 });
 
 const nextStep = key => {
@@ -52,7 +53,7 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
 
 <template>
   <div>
-    <LoadingRow v-if="loadingOwnedEnsDomains || !spacesLoaded" block />
+    <LoadingRow v-if="loadingOwnedEnsDomains || spaceLoading" block />
     <BaseBlock v-else>
       <div v-if="domainsWithoutExistingSpace.length">
         <div class="mb-3">
