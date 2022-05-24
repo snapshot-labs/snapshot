@@ -26,30 +26,32 @@ async function update(val) {
 </script>
 
 <template>
-  <BaseLink :link="getIpfsUrl(discussionLink)" hide-external-icon>
-    <div
-      v-if="preview?.meta?.title"
-      class="flex items-center border rounded-xl hover:border-skin-text hover:cursor-pointer"
-    >
-      <div v-if="preview?.links?.icon[0]?.href" class="px-4 pr-0">
-        <div class="w-[32px]">
-          <img
-            :src="preview.links.icon[0].href"
-            width="32"
-            height="32"
-            class="bg-white rounded"
-          />
+  <div v-if="preview?.meta?.title">
+    <h3>{{ $t('discussion') }}</h3>
+    <BaseLink :link="getIpfsUrl(discussionLink)" hide-external-icon>
+      <div
+        class="flex items-center border rounded-xl hover:border-skin-text hover:cursor-pointer"
+      >
+        <div v-if="preview?.links?.icon[0]?.href" class="px-4 pr-0">
+          <div class="w-[32px]">
+            <img
+              :src="preview.links.icon[0].href"
+              width="32"
+              height="32"
+              class="bg-white rounded"
+            />
+          </div>
+        </div>
+        <div class="px-4 py-3 overflow-hidden">
+          <div class="text-skin-link truncate">{{ preview.meta.title }}</div>
+          <div
+            v-if="preview.meta.description"
+            class="text-sm text-skin-text truncate"
+          >
+            {{ preview.meta.description }}
+          </div>
         </div>
       </div>
-      <div class="px-4 py-3 overflow-hidden">
-        <div class="text-skin-link truncate">{{ preview.meta.title }}</div>
-        <div
-          v-if="preview.meta.description"
-          class="text-sm text-skin-text truncate"
-        >
-          {{ preview.meta.description }}
-        </div>
-      </div>
-    </div>
-  </BaseLink>
+    </BaseLink>
+  </div>
 </template>
