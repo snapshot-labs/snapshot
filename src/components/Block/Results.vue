@@ -2,16 +2,14 @@
 import { computed } from 'vue';
 import { shorten } from '@/helpers/utils';
 import { useIntl } from '@/composables/useIntl';
-import { extentedSpace, Proposal, Results, Vote } from '@/helpers/interfaces';
+import { extentedSpace, Proposal, Results } from '@/helpers/interfaces';
 
 const { formatCompactNumber, formatPercentNumber, formatNumber } = useIntl();
 
 const props = defineProps<{
-  id: string;
   space: extentedSpace;
   proposal: Proposal;
   results: Results;
-  votes: Vote;
   strategies: { name: string; network: string; params: Record<string, any> }[];
   loaded: boolean;
 }>();
