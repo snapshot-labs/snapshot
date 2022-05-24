@@ -87,7 +87,7 @@ watch(
     >
       <i18n-t keypath="setup.setSpaceControllerInfoGnosisSafe" tag="span">
         <template #link>
-          <BaseLink link="https://docs.snapshot.org/bots">
+          <BaseLink link="https://docs.snapshot.org/spaces/create">
             Documentation
           </BaseLink>
         </template>
