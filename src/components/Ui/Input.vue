@@ -16,6 +16,10 @@ const props = defineProps({
   focusOnMount: {
     type: Boolean,
     default: false
+  },
+  readonly: {
+    type: Boolean,
+    default: false
   }
 });
 
@@ -65,6 +69,7 @@ onMounted(() => {
         class="input flex-auto w-full"
         :class="[additionalInputClass, { 'cursor-not-allowed': disabled }]"
         :required="required"
+        :readonly="readonly"
         :maxlength="maxlength"
         @blur="emit('blur')"
       />

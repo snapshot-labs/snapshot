@@ -1,23 +1,33 @@
 <script setup lang="ts">
-import { watch, onMounted, ref, watchEffect } from 'vue';
+import { watch, onMounted, ref, watchEffect, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import draggable from 'vuedraggable';
 import { useFollowSpace } from '@/composables/useFollowSpace';
 import { useWeb3 } from '@/composables/useWeb3';
-import { useSpaces } from '@/composables/useSpaces';
 import { useUnseenProposals } from '@/composables/useUnseenProposals';
 import { useApp } from '@/composables/useApp';
 import { lsSet, lsGet } from '@/helpers/utils';
+import { useExtendedSpaces } from '@/composables/useExtendedSpaces';
 
 const router = useRouter();
-const { spaces } = useSpaces();
+
 const { web3Account } = useWeb3();
 const { loadFollows, followingSpaces } = useFollowSpace();
 const { proposals, getProposals, lastSeenProposals, updateLastSeenProposal } =
   useUnseenProposals();
 const { domain } = useApp();
+const { loadExtentedSpaces, extentedSpaces } = useExtendedSpaces();
 
 const draggableSpaces = ref<string[]>([]);
+
+const spaces = computed(() => {
+  return (
+    extentedSpaces.value?.reduce(
+      (acc, space) => ({ ...acc, [space.id]: space }),
+      {}
+    ) ?? {}
+  );
+});
 
 function saveSpaceOrder() {
   if (web3Account.value)
@@ -33,11 +43,6 @@ const hasUnseenProposalsBySpace = space => {
     );
   });
 };
-
-watch(web3Account, () => {
-  loadFollows();
-  updateLastSeenProposal(web3Account.value);
-});
 
 watch(followingSpaces, () => {
   draggableSpaces.value = followingSpaces.value;
@@ -57,7 +62,16 @@ watch(followingSpaces, () => {
   saveSpaceOrder();
 });
 
+watch(followingSpaces, () => {
+  loadExtentedSpaces(followingSpaces.value);
+});
+
 watchEffect(() => getProposals(followingSpaces.value));
+
+watch(web3Account, () => {
+  loadFollows();
+  updateLastSeenProposal(web3Account.value);
+});
 
 onMounted(() => {
   loadFollows();
