@@ -19,7 +19,8 @@ const types = [
   'quadratic',
   'ranked-choice',
   'weighted',
-  'basic'
+  'basic',
+  'shielded'
 ];
 
 function select(id) {
@@ -33,7 +34,7 @@ function select(id) {
     <template v-slot:header>
       <h3>{{ $t('voting.selectVoting') }}</h3>
     </template>
-    <div class="mt-4 mx-0 md:mx-4 space-y-3 flex flex-col">
+    <div class="my-4 mx-0 md:mx-4 space-y-3 flex flex-col">
       <a v-if="allowAny" @click="select(undefined)">
         <BaseBlock
           :class="[
