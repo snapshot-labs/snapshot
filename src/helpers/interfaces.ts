@@ -52,3 +52,76 @@ export interface ProfileActivity {
   space: { id: string; avatar: string };
   vote?: { proposalId: string; choice: string; type: string };
 }
+
+export interface extentedSpace {
+  id: string;
+  name: string;
+  symbol: string;
+  network: string;
+  strategies: { name: string; network: string; params: Record<string, unknown> }[];
+  about: string;
+  avatar: string;
+  doamin: string | null;
+  website: string | null;
+  terms: string | null;
+  github: string | null;
+  twitter: string | null;
+  followerCount: number;
+  private: boolean;
+  admins: string[];
+  members: string[];
+  categories: string[];
+  filters: { minScore: number; onlyMembers: boolean };
+  plugins: Record<string, any>;
+  validation: { name: string; params: Record<string, any> };
+  voting: {
+    delay: number | null;
+    hideAbstain: boolean;
+    period: number | null;
+    quorum: number | null;
+    type: string | null;
+  };
+}
+
+export interface Proposal {
+  id: string;
+  title: string;
+  ipfs: string;
+  network: string;
+  choices: string[];
+  type: string;
+  snapshot: string;
+  author: string;
+  body: string;
+  created: number;
+  start: number;
+  end: number;
+  state: string;
+  symbol: string;
+  discussion: string;
+  quorum: number;
+  scores: number[];
+  scores_state: string;
+  scores_total: number;
+  scores_by_strategy: number[][];
+  votes: number;
+  plugins: Record<string, any>;
+  space: { id: string; name: string };
+  strategies: { name: string; network: string; params: Record<string, any> }[];
+}
+
+export interface Results {
+  resultsByStrategyScore: number[][];
+  resultsByVoteBalance: number[];
+  sumOfResultsBalance: number;
+}
+
+export interface Vote {
+  ipfs: string;
+  voter: string;
+  choice: number | number[] | Record<string, any>;
+  balance: number;
+  scores: number[];
+  vp: number;
+  vp_by_strategy: number[];
+}
