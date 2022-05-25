@@ -5,6 +5,13 @@ import { toUtf8Bytes } from '@ethersproject/strings';
 
 const WASM_URL = './both.wasm';
 
+declare global {
+  interface Window {
+    shcrypto_encrypt: any;
+  }
+}
+declare const Go: any;
+
 let shcryptoWasm;
 function init() {
   const go = new Go();
