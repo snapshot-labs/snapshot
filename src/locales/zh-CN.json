@@ -303,7 +303,9 @@
     "registerEnsButton": "注册",
     "supportedEnsTLDs": "支持的域名结尾",
     "helpDocsAndDiscordLinks": "不知道如何创建空间？在 {docs} 了解更多信息或加入Snapshot {discord}。",
-    "setSpaceController": "在 ENS 上设置空间控制人地址",
+    "setSpaceController": "空间控制人",
+    "setSpaceControllerInfo": " 空间控制人是能够管理空间设置的账户。",
+    "setSpaceControllerInfoGnosisSafe": "使用Gnosis Safe创建空间时，建议将安全地址设置为空间控制人。 如果您不这样做，则需要遵循一些额外的步骤。{link}",
     "editSpaceController": "在 ENS 上编辑控制人",
     "setController": "设置控制人",
     "explainControllerAndEns": "此操作需要在Ethereum Mainnet上进行交易，该交易会将“snapshot”文本记录添加到您的 ENS 域。",
@@ -311,14 +313,16 @@
     "controllerHasAuthority": "管理员对空间设置拥有所有权限",
     "controller": "控制人",
     "selectEnsForSpace": "选择ENS地址",
-    "spaceOwnerAddressPlaceHolder": "例如：0xF78108c9BAF466dd96BE41be728Fe3220b37119",
+    "spaceOwnerAddressPlaceHolder": "例如： {address}",
     "controllerAddress": "控制人地址",
     "updateController": "更新控制人",
     "seeOnEns": "在 ENS 上查看",
     "goToSettings": "前往设置",
     "setSpaceProfile": "自定义您的空间",
     "waitForTransaction": "您需要先确认交易才能创建您的空间。 {txUrl}",
-    "pleaseWaitMessage": "这可能需要几分钟，请等待交易确认"
+    "pleaseWaitMessage": "这可能需要几分钟，请等待交易确认",
+    "notControllerAddress": "请连接控制人地址 {wallet} 以创建空间。",
+    "fillCurrentAccount": "使用当前账户"
   },
   "profile": {
     "buttonEdit": "编辑个人资料",
@@ -341,7 +345,7 @@
       "today": "今天",
       "thisWeek": "本周",
       "older": "更早的",
-      "noActivity": "暂无活动"
+      "noActivity": "暂无动态"
     },
     "settings": {
       "header": "编辑个人资料",
