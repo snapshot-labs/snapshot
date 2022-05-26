@@ -2,7 +2,7 @@ import { randomBytes } from '@ethersproject/random';
 import { BigNumber } from '@ethersproject/bignumber';
 import { arrayify, hexlify } from '@ethersproject/bytes';
 
-const WASM_URL = './both.wasm';
+const WASM_URL = 'both.wasm';
 
 declare global {
   interface Window {
@@ -13,7 +13,7 @@ declare const Go: any;
 
 let shcryptoWasm;
 async function init() {
-  await import('../../wasm_exec');
+  await import('../helpers/wasm_exec');
   const go = new Go();
   if ('instantiateStreaming' in WebAssembly) {
     return WebAssembly.instantiateStreaming(
