@@ -42,7 +42,10 @@ const symbols = computed(() =>
 async function handleSubmit() {
   let choice: string | null = null;
   if (props.proposal.type === 'shielded')
-    choice = encryptChoice(props.selectedChoices as number, props.proposal.id);
+    choice = await encryptChoice(
+      props.selectedChoices as number,
+      props.proposal.id
+    );
 
   const result = await send(props.space, 'vote', {
     proposal: props.proposal,
