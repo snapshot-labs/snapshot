@@ -1,7 +1,6 @@
 import { randomBytes } from '@ethersproject/random';
 import { BigNumber } from '@ethersproject/bignumber';
 import { arrayify, hexlify } from '@ethersproject/bytes';
-import { toUtf8Bytes } from '@ethersproject/strings';
 
 const WASM_URL = './both.wasm';
 
@@ -13,7 +12,8 @@ declare global {
 declare const Go: any;
 
 let shcryptoWasm;
-function init() {
+async function init() {
+  await import('../../wasm_exec');
   const go = new Go();
   if ('instantiateStreaming' in WebAssembly) {
     return WebAssembly.instantiateStreaming(
@@ -36,12 +36,11 @@ function init() {
 }
 
 export function encryptChoice(choice: number, id: string): string {
-  console.log('ex', hexlify(toUtf8Bytes(id)));
   const message = arrayify(hexlify(choice));
   const eonPublicKey = arrayify(
     '0x0B94B81B1CC392CBD4604EB90E3F4355FA6925D56AC10BBD01E62A9430869B2316F749CAFB20E379BE3AF06701766836A1A0F6A891B090A5789B9BBCEABE3CE40DD32957CBF7EB6775F4BD513A3019EE33CC03568100042F02AC67943680A9DC29AD04AC0A4A4673521A8FC8FEED080977AF44CD23FF7EB4E62E1A11BCC634FC'
   );
-  const proposalId = arrayify(id);
+  const proposalId = arrayify('0x000000000000000A');
   // sigma is a salt value. It should be generated randomly and not be stored since it can be used
   // to decrypt the message.
   const sigma = arrayify(BigNumber.from(randomBytes(32)));
