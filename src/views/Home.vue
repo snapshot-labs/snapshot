@@ -140,6 +140,11 @@ onMounted(() => {
                   size="82"
                   class="mb-1"
                 />
+                <BaseCounter
+                  v-if="space?.activeProposals"
+                  :counter="space.activeProposals"
+                  class="absolute -top-[1px] right-[3px] !bg-green"
+                />
               </div>
               <h3
                 v-text="shorten(space.name, 16)"

@@ -149,11 +149,6 @@ onMounted(() => {
                 size="44"
                 class="pointer-events-none"
               />
-              <BaseCounter
-                v-if="spaces[element].activeProposals"
-                :counter="spaces[element].activeProposals"
-                class="absolute -top-[1px] right-[9px] !bg-green !h-[16px] !leading-[16px] !min-w-[16px]"
-              />
             </div>
           </div>
         </template>
