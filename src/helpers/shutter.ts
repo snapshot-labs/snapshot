@@ -16,7 +16,7 @@ async function init() {
   await import('../helpers/wasm_exec');
   const go = new Go();
   if ('instantiateStreaming' in WebAssembly) {
-    return WebAssembly.instantiateStreaming(
+    return await WebAssembly.instantiateStreaming(
       fetch(WASM_URL),
       go.importObject
     ).then(obj => {
@@ -24,7 +24,7 @@ async function init() {
       go.run(shcryptoWasm);
     });
   } else {
-    return fetch(WASM_URL)
+    return await fetch(WASM_URL)
       .then(resp => resp.arrayBuffer())
       .then(bytes =>
         WebAssembly.instantiate(bytes, go.importObject).then(obj => {
@@ -35,7 +35,12 @@ async function init() {
   }
 }
 
-export function encryptChoice(choice: number, id: string): string {
+export async function encryptChoice(
+  choice: number,
+  id: string
+): Promise<string | null> {
+  await init();
+
   const message = arrayify(hexlify(choice));
   const eonPublicKey = arrayify(
     '0x0B94B81B1CC392CBD4604EB90E3F4355FA6925D56AC10BBD01E62A9430869B2316F749CAFB20E379BE3AF06701766836A1A0F6A891B090A5789B9BBCEABE3CE40DD32957CBF7EB6775F4BD513A3019EE33CC03568100042F02AC67943680A9DC29AD04AC0A4A4673521A8FC8FEED080977AF44CD23FF7EB4E62E1A11BCC634FC'
@@ -67,5 +72,3 @@ export function encryptChoice(choice: number, id: string): string {
 
   return encryptedMessage ?? null;
 }
-
-init();
