@@ -23,16 +23,15 @@ async function init() {
       shcryptoWasm = obj.instance;
       go.run(shcryptoWasm);
     });
-  } else {
-    return await fetch(WASM_URL)
-      .then(resp => resp.arrayBuffer())
-      .then(bytes =>
-        WebAssembly.instantiate(bytes, go.importObject).then(obj => {
-          shcryptoWasm = obj.instance;
-          go.run(shcryptoWasm);
-        })
-      );
   }
+  return await fetch(WASM_URL)
+    .then(resp => resp.arrayBuffer())
+    .then(bytes =>
+      WebAssembly.instantiate(bytes, go.importObject).then(obj => {
+        shcryptoWasm = obj.instance;
+        go.run(shcryptoWasm);
+      })
+    );
 }
 
 export async function encryptChoice(
