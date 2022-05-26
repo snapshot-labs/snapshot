@@ -1,35 +1,20 @@
-<script setup lang="ts">
-import { computed } from 'vue';
-import { formatBytes32String } from '@ethersproject/strings';
-import { getUrl } from '@snapshot-labs/snapshot.js/src/utils';
-
-const props = defineProps<{
-  space: Record<string, any>;
-  size?: string;
-  symbolIndex?: string | number;
-}>();
-
-const spaceId = computed(() => props.space.id);
-
-const url = computed(() => {
-  const url = getUrl(props.space.avatar);
-  if (!url) return '';
-  return `https://worker.snapshot.org/mirror?img=${encodeURIComponent(url)}`;
-});
-
-const spaceAddress = computed(() => {
-  if (spaceId.value) return formatBytes32String(spaceId.value.slice(0, 24));
-  return '';
+<script setup>
+const props = defineProps({
+  space: Object,
+  size: {
+    type: Number,
+    default: 22
+  }
 });
 </script>
 
 <template>
-  <span class="inline-block align-middle leading-none">
-    <BaseAvatar
-      :space="space"
-      :imgsrc="url"
-      :address="spaceAddress"
-      :size="size"
-    />
-  </span>
+  <img
+    :src="`https://stamp.fyi/space/${space.id}?s=${size * 2}`"
+    class="rounded-full inline-block align-middle leading-none"
+    :style="{
+      width: `${size}px`,
+      height: `${size}px`
+    }"
+  />
 </template>
