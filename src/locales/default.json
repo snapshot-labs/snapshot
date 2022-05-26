@@ -400,13 +400,15 @@
     "ranked-choice": "Ranked choice voting",
     "weighted": "Weighted voting",
     "basic": "Basic voting",
+    "shielded": "Shielded voting",
     "description": {
       "single-choice": "Each voter may select only one choice.",
       "approval": "Each voter may select any number of choices.",
       "quadratic": "Each voter may spread voting power across any number of choices. Results are calculated quadratically.",
       "ranked-choice": "Each voter may select and rank any number of choices. Results are calculated by instant-runoff counting method.",
       "weighted": "Each voter may spread voting power across any number of choices.",
-      "basic": "Single choice voting with three choices: For, Against or Abstain"
+      "basic": "Single choice voting with three choices: For, Against or Abstain.",
+      "shielded": "Single choice voting where choice are encrypted and only revealed once the proposal has ended."
     }
   },
   "safeSnap": {
