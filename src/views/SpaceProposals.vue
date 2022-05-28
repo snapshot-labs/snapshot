@@ -158,12 +158,17 @@ onMounted(() => {
             </BaseButton>
           </template>
         </BaseDropdown>
+
         <SpaceProposalsNotice
           v-if="store.space.proposals.length < 1 && !loadingData"
           :spaceId="space.id"
           :web3Account="web3Account"
         />
       </div>
+
+      <BaseBlock v-if="space.about && spaceFilterBy == 'all'" class="mb-3">
+        <TextAutolinker :text="space.about" />
+      </BaseBlock>
 
       <NoProposals
         v-if="!loadingData && store.space.proposals.length < 1"
