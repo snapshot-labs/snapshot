@@ -8,7 +8,6 @@ import { useUnseenProposals } from '@/composables/useUnseenProposals';
 import { useApp } from '@/composables/useApp';
 import { lsSet, lsGet } from '@/helpers/utils';
 import { useExtendedSpaces } from '@/composables/useExtendedSpaces';
-import { useSpaces } from '@/composables/useSpaces';
 
 const router = useRouter();
 
@@ -18,11 +17,10 @@ const { proposals, getProposals, lastSeenProposals, updateLastSeenProposal } =
   useUnseenProposals();
 const { domain } = useApp();
 const { loadExtentedSpaces, extentedSpaces } = useExtendedSpaces();
-const { spaces } = useSpaces();
 
 const draggableSpaces = ref<string[]>([]);
 
-const extentedSpacesObj = computed(() => {
+const spaces = computed(() => {
   return (
     extentedSpaces.value?.reduce(
       (acc, space) => ({ ...acc, [space.id]: space }),
@@ -122,10 +120,10 @@ onMounted(() => {
       >
         <template #item="{ element }">
           <div
-            v-if="extentedSpacesObj[element]"
+            v-if="spaces[element]"
             class="flex items-center relative px-2 group"
             v-tippy="{
-              content: extentedSpacesObj[element].name,
+              content: spaces[element].name,
               placement: 'right',
               delay: [750, 0],
               touch: ['hold', 500]
@@ -145,14 +143,14 @@ onMounted(() => {
               "
             >
               <AvatarSpace
-                :space="extentedSpacesObj[element]"
+                :space="spaces[element]"
                 :key="element"
                 symbolIndex="space"
                 size="44"
                 class="pointer-events-none"
               />
               <BaseCounter
-                v-if="spaces?.[element]?.activeProposals"
+                v-if="spaces[element].activeProposals"
                 :counter="spaces[element].activeProposals"
                 class="absolute -top-[1px] right-[9px] !bg-green !h-[16px] !leading-[16px] !min-w-[16px]"
               />
