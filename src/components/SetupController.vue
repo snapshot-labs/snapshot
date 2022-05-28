@@ -1,14 +1,18 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { ref, watch } from 'vue';
 import { shorten } from '@/helpers/utils';
 import { useSpaceController } from '@/composables/useSpaceController';
 import { useRouter, useRoute } from 'vue-router';
-import { getSpaceUri } from '@snapshot-labs/snapshot.js/src/utils';
+import { useClient } from '@/composables/useClient';
+
+const { isGnosisSafe } = useClient();
 
 const router = useRouter();
 const route = useRoute();
 
-const props = defineProps<{ ensAddress: string; web3Account: string }>();
+const props = defineProps<{ web3Account: string }>();
+
+const fillConnectedWallet = ref(true);
 
 const {
   spaceControllerInput,
@@ -16,6 +20,7 @@ const {
   modalUnsupportedNetworkOpen,
   modalConfirmSetTextRecordOpen,
   settingENSRecord,
+  loadingTextRecord,
   setRecord,
   confirmSetRecord
 } = useSpaceController();
@@ -26,45 +31,43 @@ async function handleSetRecord() {
     router.push({
       name: 'setup',
       params: {
-        step: 'profile'
+        step: 'profile',
+        ens: route.params.ens
       }
     });
   }
 }
 
-// Checks if a text-record with the connected wallet address exists
-// and skips to step 3 if it does
-const loadingTextRecord = ref(false);
-onMounted(async () => {
-  try {
-    loadingTextRecord.value = true;
-    const uri = await getSpaceUri(
-      props.ensAddress,
-      import.meta.env.VITE_DEFAULT_NETWORK
-    );
-    console.log('URI', uri);
-    const uriAddress = uri?.split('/')[4] ?? '';
-    if (
-      uriAddress === props.web3Account &&
-      route.params.step === 'controller'
-    ) {
-      router.push({ name: 'setup', params: { step: 'profile' } });
-    }
-    loadingTextRecord.value = false;
-  } catch (e) {
-    console.log(e);
-    loadingTextRecord.value = false;
-  }
-});
+watch(
+  fillConnectedWallet,
+  () => {
+    if (fillConnectedWallet.value)
+      return (spaceControllerInput.value = props.web3Account);
+
+    spaceControllerInput.value = '';
+  },
+  { immediate: true }
+);
 </script>
 
 <template>
   <LoadingRow v-if="loadingTextRecord" block />
   <BaseBlock v-else :title="$t('setup.setSpaceController')">
+    <div class="mb-4">
+      <BaseMessageBlock level="info">
+        {{ $t('setup.setSpaceControllerInfo') }}
+      </BaseMessageBlock>
+    </div>
+    <div class="flex items-center gap-2">
+      <BaseCheckbox v-model="fillConnectedWallet" />
+      {{ $t('setup.fillCurrentAccount') }}
+    </div>
     <UiInput
       v-model.trim="spaceControllerInput"
-      :placeholder="$t('setup.spaceOwnerAddressPlaceHolder')"
-      class="mt-2"
+      :placeholder="
+        $t('setup.spaceOwnerAddressPlaceHolder', { address: web3Account })
+      "
+      :readonly="fillConnectedWallet"
       focus-on-mount
     >
     </UiInput>
@@ -77,6 +80,19 @@ onMounted(async () => {
     >
       {{ $t('setup.setController') }}
     </BaseButton>
+
+    <BaseMessageBlock
+      v-if="isGnosisSafe && !fillConnectedWallet"
+      level="warning"
+    >
+      <i18n-t keypath="setup.setSpaceControllerInfoGnosisSafe" tag="span">
+        <template #link>
+          <BaseLink link="https://docs.snapshot.org/spaces/create">
+            Documentation
+          </BaseLink>
+        </template>
+      </i18n-t>
+    </BaseMessageBlock>
   </BaseBlock>
 
   <teleport to="#modal">
