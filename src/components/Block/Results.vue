@@ -1,24 +1,19 @@
-<script setup>
+<script setup lang="ts">
 import { computed } from 'vue';
-import { shorten } from '@/helpers/utils';
 import { useIntl } from '@/composables/useIntl';
+import { extentedSpace, Proposal, Results } from '@/helpers/interfaces';
 
-const { formatCompactNumber, formatPercentNumber, formatNumber } = useIntl();
+const { formatCompactNumber } = useIntl();
 
-const props = defineProps({
-  id: String,
-  space: Object,
-  proposal: Object,
-  results: Object,
-  votes: Object,
-  loaded: Boolean,
-  strategies: Object
-});
+const props = defineProps<{
+  space: extentedSpace;
+  proposal: Proposal;
+  results: Results;
+  strategies: { name: string; network: string; params: Record<string, any> }[];
+  loaded: boolean;
+}>();
 
-const titles = computed(() =>
-  props.strategies.map(strategy => strategy.params.symbol || '')
-);
-const choices = computed(() =>
+const choices = computed<{ i: number; choice: string }[]>(() =>
   props.proposal.choices
     .map((choice, i) => ({ i, choice }))
     .sort(
@@ -28,9 +23,7 @@ const choices = computed(() =>
     )
 );
 
-const getPercentage = (n, max) => (max ? ((100 / max) * n) / 1e2 : 0);
-const hideAbstain = props.space?.voting?.hideAbstain ?? false;
-const ts = (Date.now() / 1e3).toFixed();
+const ts = Number((Date.now() / 1e3).toFixed());
 </script>
 
 <template>
@@ -39,90 +32,15 @@ const ts = (Date.now() / 1e3).toFixed();
     :title="ts >= proposal.end ? $t('results') : $t('currentResults')"
   >
     <div class="space-y-3">
-      <div v-for="choice in choices" :key="choice.i">
-        <template
-          v-if="!(proposal.type === 'basic' && hideAbstain && choice.i === 2)"
-        >
-          <div class="text-skin-link mb-1 flex justify-between">
-            <div class="flex overflow-hidden">
-              <span
-                v-tippy="{
-                  content: choice.choice
-                }"
-                class="mr-1 truncate"
-                v-text="choice.choice"
-              />
-            </div>
-            <template class="flex justify-end space-x-2">
-              <span
-                class="whitespace-nowrap"
-                v-tippy="{
-                  content: results.resultsByStrategyScore[choice.i]
-                    .map(
-                      (score, index) =>
-                        `${formatNumber(score)} ${titles[index]}`
-                    )
-                    .join(' + ')
-                }"
-              >
-                {{
-                  formatCompactNumber(results.resultsByVoteBalance[choice.i])
-                }}
-                {{ shorten(proposal.symbol || space.symbol, 'symbol') }}
-              </span>
-              <span
-                v-if="
-                  proposal.type === 'basic' && hideAbstain && choice.i === 0
-                "
-                v-text="
-                  formatPercentNumber(
-                    getPercentage(
-                      results.resultsByVoteBalance[0],
-                      results.resultsByVoteBalance[0] +
-                        results.resultsByVoteBalance[1]
-                    )
-                  )
-                "
-              />
-              <span
-                v-else-if="
-                  proposal.type === 'basic' && hideAbstain && choice.i === 1
-                "
-                v-text="
-                  formatPercentNumber(
-                    getPercentage(
-                      results.resultsByVoteBalance[1],
-                      results.resultsByVoteBalance[0] +
-                        results.resultsByVoteBalance[1]
-                    )
-                  )
-                "
-              />
-              <span
-                v-else
-                v-text="
-                  formatPercentNumber(
-                    getPercentage(
-                      results.resultsByVoteBalance[choice.i],
-                      results.sumOfResultsBalance
-                    )
-                  )
-                "
-              />
-            </template>
-          </div>
-
-          <ProposalResultsProgressBar
-            :value="results.resultsByStrategyScore[choice.i]"
-            :max="
-              proposal.type === 'basic' && hideAbstain
-                ? results.resultsByVoteBalance[0] +
-                  results.resultsByVoteBalance[1]
-                : results.sumOfResultsBalance
-            "
-          />
-        </template>
-      </div>
+      <ResultsItem
+        v-for="choice in choices"
+        :key="choice.i"
+        :choice="choice"
+        :space="space"
+        :proposal="proposal"
+        :results="results"
+        :strategies="strategies"
+      />
       <div
         v-if="proposal.quorum || space.voting?.quorum"
         class="text-skin-link"
@@ -130,7 +48,7 @@ const ts = (Date.now() / 1e3).toFixed();
         {{ $t('settings.quorum') }}
         <span class="float-right">
           {{ formatCompactNumber(results.sumOfResultsBalance) }} /
-          {{ formatCompactNumber(proposal.quorum || space.voting.quorum) }}
+          {{ formatCompactNumber(proposal.quorum || space.voting.quorum as number) }}
         </span>
       </div>
     </div>

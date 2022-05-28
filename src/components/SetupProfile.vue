@@ -65,7 +65,7 @@ const { loadExtentedSpaces, extentedSpaces } = useExtendedSpaces();
 
 async function checkIfSpaceExists() {
   await loadExtentedSpaces([route.params.ens as string]);
-  if (extentedSpaces.value.some(space => space.id === route.params.ens)) {
+  if (extentedSpaces.value?.some(space => space.id === route.params.ens)) {
     return;
   } else {
     await sleep(5000);

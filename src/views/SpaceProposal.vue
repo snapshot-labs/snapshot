@@ -505,12 +505,10 @@ const truncateMarkdownBody = computed(() => {
         />
         <BlockResults
           v-else
-          :id="id"
           :loaded="loadedResults"
           :space="space"
           :proposal="proposal"
           :results="results"
-          :votes="votes"
           :strategies="strategies"
         />
         <PluginProposalSidebar
