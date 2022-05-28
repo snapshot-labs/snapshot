@@ -1,6 +1,8 @@
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import mapKeys from 'lodash/fp/mapKeys';
+import { getAddress } from '@ethersproject/address';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import { getBlockNumber } from '@snapshot-labs/snapshot.js/src/utils/web3';
@@ -73,8 +75,8 @@ const scoresWithZeroBalanceAddresses = computed(() => {
     return null;
   }
   // If an address is not present inside the scoresObject, add it with a zero balance
-  const addressesArray = form.value.addresses ?? [];
-  const scoresObject = scores.value[0] ?? {};
+  const addressesArray = (form.value.addresses ?? []).map(getAddress);
+  const scoresObject = mapKeys(getAddress, scores.value[0] ?? {});
   const scoresObjectWithZeroBalances = addressesArray.reduce((acc, address) => {
     acc[address] = scoresObject[address] || 0;
     return acc;
