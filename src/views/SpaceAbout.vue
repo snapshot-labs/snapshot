@@ -34,11 +34,6 @@ onMounted(() => {
         <h2>{{ $t('about') }}</h2>
       </div>
       <BaseBlock class="mb-3">
-        <div v-if="space.about" class="mb-3">
-          <h4 class="text-skin-link mb-2">{{ $t('settings.about') }}</h4>
-          <TextAutolinker :text="space.about" />
-        </div>
-
         <div class="mb-3">
           <h4 class="text-skin-link mb-2">{{ $t('settings.network') }}</h4>
           <div>{{ network.name }}</div>

@@ -1432,10 +1432,10 @@
     "@walletconnect/web3-provider" "1.4.1"
     fortmatic "^2.2.1"
 
-"@snapshot-labs/snapshot.js@^0.3.85":
-  version "0.3.85"
-  resolved "https://registry.yarnpkg.com/@snapshot-labs/snapshot.js/-/snapshot.js-0.3.85.tgz#c1e257217d69d01d66831888f452bbc817a283e6"
-  integrity sha512-6Rlsh0N2IWWFtnIdVm/7PHZsXmsYklgPndMgzPBe7RgDFTYSFs22VCQscaJVIEyKZOTSrEGqjWTKgpaCXYl+8g==
+"@snapshot-labs/snapshot.js@^0.3.86":
+  version "0.3.86"
+  resolved "https://registry.yarnpkg.com/@snapshot-labs/snapshot.js/-/snapshot.js-0.3.86.tgz#2b4ebff615f8492a3d387e1c2ba90ca29d3f7ec1"
+  integrity sha512-bNz5hoirERkQnoNvrKZBuBauZvc779+GXx/GnndvEEIqsf6fnoTWfzOLpnko0hU3+V5se13iC/QIrCKh1kqIhQ==
   dependencies:
     "@ensdomains/eth-ens-namehash" "^2.0.15"
     "@ethersproject/abi" "^5.0.4"
@@ -4576,10 +4576,10 @@ graphql@^16.5.0:
   resolved "https://registry.yarnpkg.com/graphql/-/graphql-16.5.0.tgz#41b5c1182eaac7f3d47164fb247f61e4dfb69c85"
   integrity sha512-qbHgh8Ix+j/qY+a/ZcJnFQ+j8ezakqPiHwPiZhV/3PgGlgf96QMBB5/f2rkiC9sgLoy/xvT6TSiaf2nTHJh5iA==
 
-happy-dom@^4.0.1:
-  version "4.0.1"
-  resolved "https://registry.yarnpkg.com/happy-dom/-/happy-dom-4.0.1.tgz#da463f0ac1954683809aaaca8a305a6da31dfded"
-  integrity sha512-GUj2ayfbWYHPeQfcK0N+lygRE/DsrjQbALJq0zrxHLc9KYzhFSCmaCOISuNgHV/21EEeVIX55KoPTqMcX362+g==
+happy-dom@^4.1.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/happy-dom/-/happy-dom-4.1.0.tgz#79edd0fe18eb5eac949b30ff36276c59247693e7"
+  integrity sha512-x/W72MnJ3VENTXrIlvdkb5t+f7Tkeze8CEcUEiVAbPovZnsB6vl/szkWCKuuovmdWBxJtqP147qedos9wWxllg==
   dependencies:
     css.escape "^1.5.1"
     he "^1.2.0"
@@ -7410,10 +7410,10 @@ unplugin-icons@^0.14.3:
     local-pkg "^0.4.1"
     unplugin "^0.6.2"
 
-unplugin-vue-components@^0.19.5:
-  version "0.19.5"
-  resolved "https://registry.yarnpkg.com/unplugin-vue-components/-/unplugin-vue-components-0.19.5.tgz#ba26d741a4853f1439255c5d89898a1a9f2ea458"
-  integrity sha512-cIC+PdQEXmG+B1gmZGk4hws2xP+00C6pg3FD6ixEgRyW+WF+QXQW/60pc+hUhtDYs1PFE+23K3NY7yvYTnDDTA==
+unplugin-vue-components@^0.19.6:
+  version "0.19.6"
+  resolved "https://registry.yarnpkg.com/unplugin-vue-components/-/unplugin-vue-components-0.19.6.tgz#268f6d2787d96257d5d1698908d8f34ef3ec5803"
+  integrity sha512-APvrJ9Hpid1MLT0G4PWerMJgARhNw6dzz0pcCwCxaO2DR7VyvDacMqjOQNC6ukq7FSw3wzD8VH+9i3EFXwkGmw==
   dependencies:
     "@antfu/utils" "^0.5.1"
     "@rollup/pluginutils" "^4.2.1"
