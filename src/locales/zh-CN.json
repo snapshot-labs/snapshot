@@ -337,7 +337,8 @@
       "delegated": "已委托",
       "delegateTo": "委托给",
       "delegateFor": "代表",
-      "noDelegatorsMessage": "{network} 上没有代表"
+      "noDelegatorsMessage": "{network} 上没有代表",
+      "notSupportedNetwork": "Delegation currently isn't supported on {network} "
     },
     "activity": {
       "header": "活动",
