@@ -89,7 +89,7 @@ const form = ref(clone(spaceObject));
 const validate = computed(() => {
   const formattedForm = formatSpace(form.value);
 
-  return validateSchema(schemas.space, formClone);
+  return validateSchema(schemas.space, formattedForm);
 });
 
 const isValid = computed(() => {
