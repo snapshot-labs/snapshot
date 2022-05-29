@@ -36,8 +36,10 @@ export function useSpaceController() {
 
   const networkKey = computed(() => web3.value.network.key);
 
+  const ensAddress = computed(() => route.params.ens || route.params.key);
+
   const textRecord = computed(() => {
-    const keyURI = encodeURIComponent(route.params.ens as string);
+    const keyURI = encodeURIComponent(ensAddress.value as string);
     const address = spaceControllerInput.value
       ? getAddress(spaceControllerInput.value)
       : null;
@@ -62,7 +64,7 @@ export function useSpaceController() {
       if (!ensPublicResolverAddress) {
         throw new Error('No ENS resolver address for this network');
       }
-      const ensname = route.params.ens;
+      const ensname = ensAddress.value;
       const node = namehash.hash(ensname);
       const tx = await sendTransaction(
         auth.web3,
@@ -91,7 +93,7 @@ export function useSpaceController() {
 
   async function loadUriAddress() {
     const uri = await getSpaceUri(
-      route.params.ens,
+      ensAddress.value,
       import.meta.env.VITE_DEFAULT_NETWORK
     );
     console.log('URI', uri);
@@ -109,7 +111,7 @@ export function useSpaceController() {
       if (uriAddress.value && route.params.step === 'controller') {
         router.push({
           name: 'setup',
-          params: { step: 'profile', ens: route.params.ens }
+          params: { step: 'profile', ens: ensAddress.value }
         });
       }
       loadingTextRecord.value = false;
