@@ -97,7 +97,10 @@ onMounted(() => {
     <div class="overflow-hidden">
       <template v-if="route.name === 'strategies'">
         <LoadingRow block v-if="loadingStrategies" />
-        <div v-else class="grid md:grid-cols-2 lg:grid-cols-3 gap-[1px] md:gap-4">
+        <div
+          v-else
+          class="grid md:grid-cols-2 lg:grid-cols-3 gap-[1px] md:gap-4"
+        >
           <router-link
             :to="`/strategy/${item.id}`"
             v-for="item in items.slice(0, limit)"
@@ -110,7 +113,10 @@ onMounted(() => {
       </template>
       <template v-if="route.name === 'networks'">
         <LoadingRow block v-if="loadingNetworksSpacesCount" />
-        <div v-else class="grid md:grid-cols-2 lg:grid-cols-3 gap-[1px] md:gap-4">
+        <div
+          v-else
+          class="grid md:grid-cols-2 lg:grid-cols-3 gap-[1px] md:gap-4"
+        >
           <router-link
             :to="`/?network=${item.key}`"
             v-for="item in items.slice(0, limit)"
@@ -123,7 +129,10 @@ onMounted(() => {
       </template>
       <template v-if="route.name === 'plugins'">
         <LoadingRow block v-if="loadingPluginsSpacesCount" />
-        <div v-else class="grid md:grid-cols-2 lg:grid-cols-3 gap-[1px] md:gap-4">
+        <div
+          v-else
+          class="grid md:grid-cols-2 lg:grid-cols-3 gap-[1px] md:gap-4"
+        >
           <div
             v-for="item in items.slice(0, limit)"
             :key="item.key"
