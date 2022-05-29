@@ -39,7 +39,7 @@ async function handleSetRecord() {
 }
 
 watch(
-  fillConnectedWallet,
+  () => [fillConnectedWallet.value, props.web3Account],
   () => {
     if (fillConnectedWallet.value)
       return (spaceControllerInput.value = props.web3Account);
