@@ -58,7 +58,11 @@ export interface extentedSpace {
   name: string;
   symbol: string;
   network: string;
-  strategies: { name: string; network: string; params: Record<string, unknown> }[];
+  strategies: {
+    name: string;
+    network: string;
+    params: Record<string, unknown>;
+  }[];
   about: string;
   avatar: string;
   doamin: string | null;
