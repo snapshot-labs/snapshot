@@ -28,8 +28,7 @@ const scrollTop = function () {
 <template>
   <div
     v-if="show"
-    class="fixed z-50 border w-[44px] h-[44px] rounded-full flex justify-center items-center cursor-pointer hover:border-skin-text select-none"
-    style="right: 30px !important; bottom: 30px !important"
+    class="btn-scroll-top fixed z-50 border w-[44px] h-[44px] rounded-full flex justify-center items-center cursor-pointer hover:border-skin-text select-none"
     @click="scrollTop"
   >
     <svg
@@ -48,3 +47,17 @@ const scrollTop = function () {
     </svg>
   </div>
 </template>
+
+<style lang="scss" scoped>
+.btn-scroll-top {
+  right: 30px !important;
+  bottom: 30px !important;
+}
+
+@media screen and (max-width: 544px) {
+  .btn-scroll-top {
+    right: 15px !important;
+    bottom: 24px !important;
+  }
+}
+</style>
