@@ -2,9 +2,11 @@
 import { ref, watch } from 'vue';
 import { shorten } from '@/helpers/utils';
 import { useSpaceController } from '@/composables/useSpaceController';
+import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { useRouter, useRoute } from 'vue-router';
 import { useClient } from '@/composables/useClient';
 
+const defaultNetwork = import.meta.env.VITE_DEFAULT_NETWORK;
 const { isGnosisSafe } = useClient();
 
 const router = useRouter();
@@ -108,7 +110,11 @@ watch(
     >
       <div class="space-y-4 m-4 text-skin-link">
         <p>
-          {{ $t('setup.explainControllerAndEns') }}
+          {{
+            $t('setup.explainControllerAndEns', {
+              network: networks[defaultNetwork].name
+            })
+          }}
         </p>
         <p>
           {{

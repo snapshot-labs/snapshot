@@ -9,6 +9,17 @@ defineProps<{
   open: boolean;
 }>();
 const emit = defineEmits(['close', 'networkChanged']);
+const defaultNetwork = import.meta.env.VITE_DEFAULT_NETWORK;
+const networkData = {
+  '1': {
+    name: 'Mainnet',
+    chainId: '0x1'
+  },
+  '4': {
+    name: 'Rinkeby',
+    chainId: '0x4'
+  }
+};
 
 const { notify } = useFlashNotification();
 const { t } = useI18n();
@@ -19,14 +30,14 @@ const usingMetaMask = computed(() => {
 
 const switchingChain = ref(false);
 
-const switchToMainnet = async () => {
+const switchToDefaultNetwork = async () => {
   try {
     switchingChain.value = true;
     await window.ethereum?.request({
       method: 'wallet_switchEthereumChain',
       params: [
         {
-          chainId: '0x1'
+          chainId: networkData[defaultNetwork].chainId
         }
       ]
     });
@@ -50,7 +61,7 @@ const switchToMainnet = async () => {
       </div>
     </template>
 
-    <div class="space-y-4 m-4">
+    <div class="space-y-4 m-4" v-if="defaultNetwork === '1'">
       <p>
         {{ $t('unsupportedNetwork.ensOnlyMainnet') }}
       </p>
@@ -63,9 +74,13 @@ const switchToMainnet = async () => {
         :loading="switchingChain"
         class="button-outline w-full"
         :primary="true"
-        @click="switchToMainnet"
+        @click="switchToDefaultNetwork"
       >
-        {{ $t('unsupportedNetwork.switchToMainnet') }}
+        {{
+          $t('unsupportedNetwork.switchToNetwork', {
+            network: networkData[defaultNetwork].name
+          })
+        }}
       </BaseButton>
     </template>
   </BaseModal>
