@@ -1,11 +1,15 @@
-<script setup>
-const props = defineProps({
-  space: Object,
-  size: {
-    type: Number,
-    default: 22
+<script setup lang="ts">
+import { withDefaults } from 'vue';
+
+withDefaults(
+  defineProps<{
+    space: { id: string };
+    size: number;
+  }>(),
+  {
+    size: 22
   }
-});
+);
 </script>
 
 <template>
