@@ -1,28 +1,28 @@
-<script setup>
+<script setup lang="ts">
 import { computed, ref, inject, watch, onMounted } from 'vue';
 import { useI18n } from '@/composables/useI18n';
 import { getAddress } from '@ethersproject/address';
 import schemas from '@snapshot-labs/snapshot.js/src/schemas';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
-import defaults from '@/locales/default';
+import defaults from '@/locales/default.json';
 import { useWeb3 } from '@/composables/useWeb3';
-import { calcFromSeconds, calcToSeconds } from '@/helpers/utils';
+import { calcFromSeconds, calcToSeconds, shorten } from '@/helpers/utils';
 import { useClient } from '@/composables/useClient';
 import { usePlugins } from '@/composables/usePlugins';
 import { useSpaceController } from '@/composables/useSpaceController';
 import { useEns } from '@/composables/useEns';
-import { shorten } from '@/helpers/utils';
 import {
   validateSchema,
   getSpaceUri,
   clone
 } from '@snapshot-labs/snapshot.js/src/utils';
+import { useExtendedSpaces } from '@/composables/useExtendedSpaces';
+import { extentedSpace } from '@/helpers/interfaces';
 
-const props = defineProps({
-  space: Object,
-  sourceSpace: Object,
-  loadExtentedSpaces: Function
-});
+const props = defineProps<{
+  space: extentedSpace;
+  sourceSpace: extentedSpace;
+}>();
 
 const basicValidation = { name: 'basic', params: {} };
 
@@ -30,13 +30,14 @@ const { pluginIndex } = usePlugins();
 const { t, setPageTitle } = useI18n();
 const { web3Account } = useWeb3();
 const { send, clientLoading } = useClient();
-const notify = inject('notify');
+const { reloadSpace } = useExtendedSpaces();
+const notify: any = inject('notify');
 
 const currentSettings = ref({});
 const currentTextRecord = ref('');
 const currentStrategy = ref({});
 const currentPlugin = ref({});
-const currentStrategyIndex = ref(false);
+const currentStrategyIndex = ref<number | null>(null);
 const modalNetworksOpen = ref(false);
 const modalSkinsOpen = ref(false);
 const modalStrategyOpen = ref(false);
@@ -46,27 +47,49 @@ const modalPluginsOpen = ref(false);
 const modalValidationOpen = ref(false);
 const loaded = ref(false);
 const uploadLoading = ref(false);
-const visitedFields = ref([]);
+const visitedFields = ref<string[]>([]);
 const validateAllFields = ref(false);
 const delayUnit = ref('h');
 const periodUnit = ref('h');
 
-const form = ref({
+const spaceObject = {
   strategies: [],
   categories: [],
   admins: [],
+  members: [],
   plugins: {},
-  filters: {},
-  voting: {},
-  validation: basicValidation
-});
+  filters: {
+    minScore: 0,
+    onlyMembers: false
+  },
+  voting: {
+    delay: 0,
+    hideAbstain: false,
+    period: 0,
+    quorum: 0,
+    type: ''
+  },
+  validation: basicValidation,
+  name: '',
+  about: '',
+  avatar: '',
+  network: '',
+  symbol: '',
+  terms: '',
+  website: '',
+  twitter: '',
+  github: '',
+  private: false,
+  domain: '',
+  skin: ''
+};
+
+const form = ref(clone(spaceObject));
 
 const validate = computed(() => {
-  if (form.value.terms === '') delete form.value.terms;
-  if (form.value.avatar === '') delete form.value.avatar;
-  if (form.value.website === '') delete form.value.website;
+  const formattedForm = formatSpace(form.value);
 
-  return validateSchema(schemas.space, form.value);
+  return validateSchema(schemas.space, formattedForm);
 });
 
 const isValid = computed(() => {
@@ -129,12 +152,16 @@ const categoriesString = computed(() => {
 
 async function handleSubmit() {
   if (isValid.value) {
-    if (form.value.filters.invalids) delete form.value.filters.invalids;
-    const result = await send({ id: props.space.id }, 'settings', form.value);
+    const formattedForm = formatSpace(form.value);
+    const result = await send(
+      { id: props.space.id },
+      'settings',
+      formattedForm
+    );
     console.log('Result', result);
     if (result.id) {
       notify(['green', t('notify.saved')]);
-      props.loadExtentedSpaces([props.space.id]);
+      reloadSpace(props.space.id);
     }
   } else {
     console.log('Invalid schema', validate.value);
@@ -142,11 +169,34 @@ async function handleSubmit() {
   }
 }
 
+function formatSpace(spaceRaw) {
+  if (!spaceRaw) return;
+  const space = clone(spaceRaw);
+  if (!space) return;
+  delete space.id;
+  delete space.followersCount;
+  if (form.value.filters.invalids) delete form.value.filters.invalids;
+  Object.entries(space).forEach(([key, value]) => {
+    if (value === null || value === '') delete space[key];
+  });
+  space.strategies = space.strategies || [];
+  space.plugins = space.plugins || {};
+  space.validation = space.validation || basicValidation;
+  space.filters = space.filters || {};
+  space.voting = space.voting || {};
+  space.voting.delay = space.voting?.delay || undefined;
+  space.voting.period = space.voting?.period || undefined;
+  space.voting.type = space.voting?.type || undefined;
+  space.voting.quorum = space.voting?.quorum || undefined;
+  return space;
+}
+
 function inputError(field) {
   if (
     !isValid.value &&
     !clientLoading.value &&
-    (visitedFields.value.includes(field) || validateAllFields.value)
+    (visitedFields.value.includes(field) || validateAllFields.value) &&
+    Array.isArray(validate.value)
   ) {
     const errors = Object.keys(defaults.errors);
     const errorFound = validate.value.find(
@@ -169,12 +219,6 @@ function inputError(field) {
 function handleReset() {
   if (props.sourceSpace) return (form.value = clone(props.sourceSpace));
   if (currentSettings.value) return (form.value = clone(currentSettings.value));
-  form.value = {
-    strategies: [],
-    categories: [],
-    plugins: {},
-    filters: {}
-  };
 }
 
 function handleEditStrategy(i) {
@@ -194,13 +238,13 @@ function handleSubmitAddCategories(categories) {
 }
 
 function handleAddStrategy() {
-  currentStrategyIndex.value = false;
+  currentStrategyIndex.value = null;
   currentStrategy.value = {};
   modalStrategyOpen.value = true;
 }
 
 function handleSubmitAddStrategy(strategy) {
-  if (currentStrategyIndex.value !== false) {
+  if (currentStrategyIndex.value !== null) {
     form.value.strategies[currentStrategyIndex.value] = strategy;
   } else {
     form.value.strategies = form.value.strategies.concat(strategy);
@@ -238,37 +282,16 @@ function setAvatarUrl(url) {
   if (typeof url === 'string') form.value.avatar = url;
 }
 
-function formatSpace(spaceRaw) {
-  if (!spaceRaw) return;
-  const space = clone(spaceRaw);
-  if (!space) return;
-  delete space.id;
-  delete space.followersCount;
-  Object.entries(space).forEach(([key, value]) => {
-    if (value === null) delete space[key];
-  });
-  space.strategies = space.strategies || [];
-  space.plugins = space.plugins || {};
-  space.validation = space.validation || basicValidation;
-  space.filters = space.filters || {};
-  space.voting = space.voting || {};
-  space.voting.delay = space.voting?.delay || undefined;
-  space.voting.period = space.voting?.period || undefined;
-  space.voting.type = space.voting?.type || undefined;
-  space.voting.quorum = space.voting?.quorum || undefined;
-  return space;
-}
-
 onMounted(async () => {
   if (props.space) {
-    const spaceClone = formatSpace(props.space);
+    const spaceClone = clone(props.space);
     if (spaceClone) {
       form.value = spaceClone;
       currentSettings.value = clone(spaceClone);
     }
   }
   if (props.sourceSpace) {
-    const fromClone = formatSpace(props.sourceSpace);
+    const fromClone = clone(props.sourceSpace);
     if (fromClone) {
       form.value = fromClone;
     }
@@ -293,7 +316,6 @@ onMounted(() => {
 
 const {
   settingENSRecord,
-  ensAddress,
   modalUnsupportedNetworkOpen,
   modalConfirmSetTextRecordOpen,
   spaceControllerInput,
@@ -307,7 +329,7 @@ async function handleSetRecord() {
   const tx = await setRecord();
   const receipt = await tx.wait();
   if (receipt) {
-    props.loadExtentedSpaces([props.space.id]);
+    reloadSpace(props.space.id);
   }
 }
 </script>
@@ -759,7 +781,7 @@ async function handleSetRecord() {
       @close="modalControllerEditOpen = false"
       :currentTextRecord="currentTextRecord"
       :ensAddress="space.id"
-      @set="(ensAddress = space.id), confirmSetRecord()"
+      @set="confirmSetRecord()"
     />
     <ModalUnsupportedNetwork
       :open="modalUnsupportedNetworkOpen"
