@@ -17,11 +17,11 @@ import {
   getSpaceUri,
   clone
 } from '@snapshot-labs/snapshot.js/src/utils';
+import { useExtendedSpaces } from '@/composables/useExtendedSpaces';
 
 const props = defineProps({
   space: Object,
-  sourceSpace: Object,
-  loadExtentedSpaces: Function
+  sourceSpace: Object
 });
 
 const basicValidation = { name: 'basic', params: {} };
@@ -30,6 +30,7 @@ const { pluginIndex } = usePlugins();
 const { t, setPageTitle } = useI18n();
 const { web3Account } = useWeb3();
 const { send, clientLoading } = useClient();
+const { reloadSpace } = useExtendedSpaces();
 const notify = inject('notify');
 
 const currentSettings = ref({});
@@ -134,7 +135,7 @@ async function handleSubmit() {
     console.log('Result', result);
     if (result.id) {
       notify(['green', t('notify.saved')]);
-      props.loadExtentedSpaces([props.space.id]);
+      reloadSpace(props.space.id);
     }
   } else {
     console.log('Invalid schema', validate.value);
@@ -307,7 +308,7 @@ async function handleSetRecord() {
   const tx = await setRecord();
   const receipt = await tx.wait();
   if (receipt) {
-    props.loadExtentedSpaces([props.space.id]);
+    reloadSpace(props.space.id);
   }
 }
 </script>
