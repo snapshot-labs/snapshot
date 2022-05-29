@@ -53,6 +53,5 @@ onMounted(async () => {
     </div>
   </div>
   <FlashNotification />
-
   <ScrollTop />
 </template>
