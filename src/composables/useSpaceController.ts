@@ -10,6 +10,7 @@ import { isAddress } from '@ethersproject/address';
 import { sendTransaction } from '@snapshot-labs/snapshot.js/src/utils';
 import { useRoute, useRouter } from 'vue-router';
 import { getSpaceUri } from '@snapshot-labs/snapshot.js/src/utils';
+import { useApp } from '@/composables/useApp';
 
 const spaceControllerInput = ref('');
 const modalUnsupportedNetworkOpen = ref(false);
@@ -25,6 +26,7 @@ export function useSpaceController() {
   const { t } = useI18n();
   const route = useRoute();
   const router = useRouter();
+  const { domain } = useApp();
 
   const notify: any = inject('notify');
 
@@ -36,7 +38,9 @@ export function useSpaceController() {
 
   const networkKey = computed(() => web3.value.network.key);
 
-  const ensAddress = computed(() => route.params.ens || route.params.key);
+  const ensAddress = computed(
+    () => domain || route.params.ens || route.params.key
+  );
 
   const textRecord = computed(() => {
     const keyURI = encodeURIComponent(ensAddress.value as string);
