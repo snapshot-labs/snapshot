@@ -353,12 +353,14 @@ const needsPluginConfigs = computed(() =>
         </div>
       </BaseMessageBlock>
 
+      <!-- Step 1 -->
       <SpaceCreateContent
         v-if="currentStep === 1"
         :preview="preview"
         :bodyLimit="bodyLimit"
       />
 
+      <!-- Step 2 -->
       <SpaceCreateVoting
         v-else-if="currentStep === 2"
         :space="space"
@@ -366,9 +368,13 @@ const needsPluginConfigs = computed(() =>
         :dateEnd="dateEnd"
         @userSelectedDate="userSelectedDateEnd = true"
       />
-      <div v-else class="space-y-3">
+
+      <!-- Step 3 (only when plugins) -->
+      <div
+        v-else-if="space?.plugins && (!sourceProposal || sourceProposalLoaded)"
+        class="space-y-3"
+      >
         <PluginCreate
-          v-if="space?.plugins && (!sourceProposal || sourceProposalLoaded)"
           :proposal="proposal"
           :space="space"
           :preview="preview"
