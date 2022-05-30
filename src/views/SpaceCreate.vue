@@ -18,9 +18,8 @@ import { useClient } from '@/composables/useClient';
 import { useStore } from '@/composables/useStore';
 import { useIntl } from '@/composables/useIntl';
 import { usePlugins } from '@/composables/usePlugins';
-import { useImageUpload } from '@/composables/useImageUpload';
-import { useStorage } from '@vueuse/core';
 import { extentedSpace } from '@/helpers/interfaces';
+import { useSpaceCreateStore } from '@/composables/useSpaceCreateStore';
 
 const props = defineProps<{
   space: extentedSpace;
@@ -29,71 +28,28 @@ const props = defineProps<{
 const router = useRouter();
 const route = useRoute();
 const { t, setPageTitle } = useI18n();
-const { formatCompactNumber, formatNumber } = useIntl();
+const { formatCompactNumber } = useIntl();
 const auth = getInstance();
 const { domain } = useApp();
 const { web3, web3Account } = useWeb3();
 const { send, clientLoading } = useClient();
 const { store } = useStore();
 const { pluginIndex } = usePlugins();
+const { form, resetForm } = useSpaceCreateStore();
 
 const notify: any = inject('notify');
 
-interface ProposalForm {
-  name: string;
-  body: string;
-  discussion: string;
-  choices: { key: number; text: string }[];
-  start: number;
-  end: number;
-  snapshot: number;
-  type: string;
-  metadata: {
-    strategies: {
-      name: string;
-      network: string;
-      params: Record<string, unknown>;
-    }[];
-    network: string;
-    plugins: {
-      safeSnap?: { valid: boolean };
-    };
-  };
-}
-
-const EMPTY_PROPOSAL: ProposalForm = {
-  name: '',
-  body: '',
-  discussion: '',
-  choices: [],
-  start: parseInt((Date.now() / 1e3).toFixed()),
-  end: 0,
-  snapshot: 0,
-  metadata: {
-    strategies: [],
-    network: '',
-    plugins: {}
-  },
-  type: 'single-choice'
-};
-
-const form = useStorage(`snapshot.proposal${props.space.id}`, EMPTY_PROPOSAL);
-
-const choices = ref<{ key: number; text: string }[]>([]);
 const blockNumber = ref(-1);
 const bodyLimit = ref(14400);
-
 const modalDateSelectOpen = ref(false);
 const modalVotingTypeOpen = ref(false);
 const selectedDate = ref('');
 const passValidation = ref([true, '']);
 const validationLoading = ref(false);
 const loadingSnapshot = ref(true);
-const textAreaEl = ref<HTMLTextAreaElement | null>(null);
-const imageDragging = ref(false);
 
 const proposal = computed(() =>
-  Object.assign(form.value, { choices: choices.value })
+  Object.assign(form.value, { choices: form.value.choices })
 );
 
 const sourceProposal = computed(() => route.params.sourceProposal);
@@ -169,8 +125,8 @@ const isValid = computed(() => {
     dateEnd.value > dateStart.value &&
     form.value.snapshot &&
     form.value.snapshot > blockNumber.value / 2 &&
-    choices.value.length >= 1 &&
-    !choices.value.some((a, i) => a.text === '' && i === 0) &&
+    form.value.choices.length >= 1 &&
+    !form.value.choices.some((a, i) => a.text === '' && i === 0) &&
     passValidation.value[0] &&
     isSafeSnapPluginValid &&
     !web3.value.authLoading
@@ -181,14 +137,14 @@ const disableChoiceEdit = computed(() => form.value.type === 'basic');
 
 function addChoices(num) {
   for (let i = 1; i <= num; i++) {
-    choices.value.push({ key: choices.value.length, text: '' });
+    form.value.choices.push({ key: form.value.choices.length, text: '' });
   }
 }
 
 async function handleSubmit() {
   const clonedForm = clone(form.value);
   clonedForm.snapshot = Number(form.value.snapshot);
-  clonedForm.choices = choices.value
+  clonedForm.choices = form.value.choices
     .map(choice => choice.text)
     .filter(choiceText => choiceText.length > 0);
   clonedForm.metadata.network = props.space.network;
@@ -204,7 +160,7 @@ async function handleSubmit() {
   if (result.id) {
     store.space.proposals = [];
     notify(['green', t('notify.proposalCreated')]);
-    form.value = EMPTY_PROPOSAL;
+    resetForm();
     router.push({
       name: 'spaceProposal',
       params: {
@@ -248,7 +204,7 @@ async function loadProposal() {
     metadata: { network, strategies, plugins }
   };
 
-  choices.value = proposal.choices.map((text, key) => ({
+  form.value.choices = proposal.choices.map((text, key) => ({
     key,
     text
   }));
@@ -258,7 +214,6 @@ async function loadProposal() {
 
 onMounted(async () => {
   if (sourceProposal.value) await loadProposal();
-  if (form.value.type !== 'basic') addChoices(2);
 });
 
 onMounted(() =>
@@ -277,7 +232,7 @@ watchEffect(async () => {
 
 watchEffect(() => {
   if (form.value.type === 'basic') {
-    choices.value = [
+    form.value.choices = [
       { key: 1, text: 'For' },
       { key: 2, text: 'Against' },
       { key: 3, text: 'Abstain' }
@@ -301,7 +256,7 @@ const stepIsValid = computed(() => {
     dateEnd.value > dateStart.value &&
     form.value.snapshot &&
     form.value.snapshot > blockNumber.value / 2 &&
-    !choices.value.some((a, i) => a.text === '' && i === 0)
+    !form.value.choices.some((a, i) => a.text === '' && i === 0)
   )
     return true;
   else return false;
@@ -330,45 +285,6 @@ const needsPluginConfigs = computed(() =>
     pluginKey => pluginIndex[pluginKey]?.defaults?.proposal
   )
 );
-
-const injectImageToBody = image => {
-  const cursorPosition = textAreaEl.value?.selectionStart;
-  const currentBody = textAreaEl.value?.value;
-  const currentBodyWithImage = `${currentBody?.substring(
-    0,
-    cursorPosition
-  )} \n![${image.name}](${image.url})
-    ${currentBody?.substring(cursorPosition as number)}`;
-
-  form.value.body = currentBodyWithImage;
-};
-
-const {
-  upload,
-  error: imageUploadError,
-  uploading
-} = useImageUpload({
-  onSuccess: injectImageToBody
-});
-
-const handlePaste = e => {
-  for (let i = 0; i < e.clipboardData.items.length; ++i) {
-    let item = e.clipboardData.items[i];
-    if (item.kind == 'file' && item.type.startsWith('image/')) {
-      const file = item.getAsFile();
-      upload(new File([file], 'image', { type: file.type }));
-    }
-  }
-};
-
-const handleDrop = e => {
-  for (let i = 0; i < e.dataTransfer.files.length; i++) {
-    let item = e.dataTransfer.files[i];
-    if (item.type.startsWith('image/')) {
-      upload(item);
-    }
-  }
-};
 </script>
 
 <template>
@@ -468,96 +384,12 @@ const handleDrop = e => {
         </div>
       </BaseMessageBlock>
 
-      <template v-if="currentStep === 1">
-        <div class="px-4 md:px-0">
-          <div class="flex flex-col space-y-3">
-            <h1
-              v-if="preview"
-              v-text="form.name || $t('create.untitled')"
-              class="w-full break-all"
-            />
-            <SBaseInput
-              v-else
-              v-model="form.name"
-              :title="$t('create.proposalTitle')"
-              :maxLength="128"
-              focusOnMount
-            />
+      <SpaceCreateContent
+        v-if="currentStep === 1"
+        :preview="preview"
+        :bodyLimit="bodyLimit"
+      />
 
-            <div v-if="!preview">
-              <div class="flex justify-between">
-                <SBaseLabel>
-                  {{ $t('create.proposalDescription') }}
-                </SBaseLabel>
-                <div class="text-xs">
-                  {{ formatNumber(form.body.length) }} /
-                  {{ formatNumber(bodyLimit) }}
-                </div>
-              </div>
-              <div
-                @drop.prevent="handleDrop"
-                @dragover="imageDragging = true"
-                @dragleave="imageDragging = false"
-              >
-                <div
-                  class="min-h-[240px] peer border rounded-t-xl overflow-hidden focus-within:border-skin-text"
-                >
-                  <textarea
-                    @paste="handlePaste"
-                    ref="textAreaEl"
-                    class="s-input pt-0 w-full min-h-[240px] border-none !rounded-xl text-base h-full mt-0"
-                    :maxLength="bodyLimit"
-                    v-model="form.body"
-                  />
-                </div>
-
-                <label
-                  class="relative flex justify-between border border-skin-border rounded-b-xl py-1 px-2 items-center peer-focus-within:border-skin-text border-t-0"
-                >
-                  <input
-                    accept="image/jpg, image/jpeg, image/png"
-                    type="file"
-                    class="opacity-0 absolute p-[5px] top-0 right-0 bottom-0 left-0 w-full ml-0"
-                    @change="e => upload((e.target as HTMLInputElement)?.files?.[0])"
-                  />
-
-                  <span class="pointer-events-none relative pl-1 text-sm">
-                    <span v-if="uploading" class="flex">
-                      <LoadingSpinner small class="mr-2 -mt-[2px]" />
-                      {{ $t('create.uploading') }}
-                    </span>
-                    <span v-else-if="imageUploadError !== ''">
-                      {{ imageUploadError }}</span
-                    >
-                    <span v-else>
-                      {{ $t('create.uploadImageExplainer') }}
-                    </span>
-                  </span>
-                  <BaseLink
-                    class="relative inline"
-                    link="https://docs.github.com/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax"
-                    v-tippy="{ content: $t('create.markdown') }"
-                    hide-external-icon
-                  >
-                    <BaseIcon name="markdown" class="text-skin-text" />
-                  </BaseLink>
-                </label>
-              </div>
-            </div>
-
-            <div v-if="form.body && preview" class="mb-4">
-              <BaseMarkdown :body="form.body" />
-            </div>
-
-            <SBaseInput
-              v-if="!preview"
-              v-model.trim="form.discussion"
-              placeholder="e.g. https://forum.balancer.fi/proposal..."
-              :title="$t('create.discussion')"
-            />
-          </div>
-        </div>
-      </template>
       <div v-else-if="currentStep === 2" class="space-y-4">
         <BaseBlock :title="$t('create.voting')">
           <UiInput
@@ -583,7 +415,7 @@ const handleDrop = e => {
           <div class="flex">
             <div class="overflow-hidden w-full">
               <draggable
-                v-model="choices"
+                v-model="form.choices"
                 v-bind="{ animation: 200 }"
                 :disabled="disableChoiceEdit"
                 item-key="id"
