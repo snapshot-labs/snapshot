@@ -65,7 +65,8 @@ export interface extentedSpace {
   }[];
   about: string;
   avatar: string;
-  doamin: string | null;
+  skin: string;
+  domain: string | null;
   website: string | null;
   terms: string | null;
   github: string | null;
