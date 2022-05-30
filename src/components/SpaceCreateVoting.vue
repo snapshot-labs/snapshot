@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { ExtentedSpace } from '@/helpers/interfaces';
+import { ExtendedSpace } from '@/helpers/interfaces';
 import draggable from 'vuedraggable';
 import { useSpaceCreateForm } from '@/composables/useSpaceCreateForm';
 
 defineProps<{
-  space: ExtentedSpace;
+  space: ExtendedSpace;
   dateStart: number;
   dateEnd: number;
 }>();

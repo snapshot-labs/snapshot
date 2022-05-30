@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useIntl } from '@/composables/useIntl';
-import { ExtentedSpace, Proposal, Results } from '@/helpers/interfaces';
+import { ExtendedSpace, Proposal, Results } from '@/helpers/interfaces';
 
 const { formatCompactNumber } = useIntl();
 
 const props = defineProps<{
-  space: ExtentedSpace;
+  space: ExtendedSpace;
   proposal: Proposal;
   results: Results;
   strategies: { name: string; network: string; params: Record<string, any> }[];
