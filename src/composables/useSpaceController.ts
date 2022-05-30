@@ -140,6 +140,8 @@ export function useSpaceController() {
     loadingTextRecord,
     setRecord,
     confirmSetRecord,
-    loadUriAddress
+    loadUriAddress,
+    ensAddress,
+    textRecord
   };
 }
