@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
-import { shorten } from '@/helpers/utils';
+import { shorten, explorerUrl } from '@/helpers/utils';
 import { useSpaceController } from '@/composables/useSpaceController';
+import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { useRouter, useRoute } from 'vue-router';
 import { useClient } from '@/composables/useClient';
 
+const defaultNetwork = import.meta.env.VITE_DEFAULT_NETWORK;
 const { isGnosisSafe } = useClient();
 
 const router = useRouter();
@@ -22,7 +24,9 @@ const {
   settingENSRecord,
   loadingTextRecord,
   setRecord,
-  confirmSetRecord
+  confirmSetRecord,
+  ensAddress,
+  textRecord
 } = useSpaceController();
 
 async function handleSetRecord() {
@@ -106,18 +110,34 @@ watch(
       @close="modalConfirmSetTextRecordOpen = false"
       @confirm="handleSetRecord"
     >
-      <div class="space-y-4 m-4 text-skin-link">
-        <p>
-          {{ $t('setup.explainControllerAndEns') }}
-        </p>
-        <p>
+      <div class="space-y-1 m-4 text-skin-text">
+        <div class="flex justify-between">
+          <span>ENS address</span>
+          <BaseLink :link="`https://app.ens.domains/name/${ensAddress}`">
+            <span>{{ ensAddress }}</span>
+          </BaseLink>
+        </div>
+        <div class="flex justify-between">
+          <span>Controller</span>
+          <BaseLink :link="explorerUrl(defaultNetwork, spaceControllerInput)">
+            <span>{{ shorten(spaceControllerInput) }}</span>
+          </BaseLink>
+        </div>
+        <div class="flex justify-between pb-2">
+          <span class="whitespace-nowrap mr-3">Text record</span>
+          <span
+            class="truncate text-skin-link"
+            v-tippy="{ content: textRecord }"
+            >{{ textRecord }}</span
+          >
+        </div>
+        <BaseMessageBlock level="info">
           {{
-            $t('setup.confirmToSetAddress', {
-              address: shorten(spaceControllerInput)
+            $t('setup.explainControllerAndEns', {
+              network: networks[defaultNetwork].name
             })
           }}
-          {{ $t('setup.controllerHasAuthority') + '.' }}
-        </p>
+        </BaseMessageBlock>
       </div>
     </ModalConfirmAction>
   </teleport>
