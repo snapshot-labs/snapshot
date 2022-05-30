@@ -77,8 +77,7 @@ const EMPTY_PROPOSAL: ProposalForm = {
   type: 'single-choice'
 };
 
-// TODO: add space key to storage key
-const form = useStorage('snapshot.proposal', EMPTY_PROPOSAL);
+const form = useStorage(`snapshot.proposal${props.space.id}`, EMPTY_PROPOSAL);
 
 const choices = ref<{ key: number; text: string }[]>([]);
 const blockNumber = ref(-1);
