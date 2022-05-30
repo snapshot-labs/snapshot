@@ -337,7 +337,8 @@
       "delegated": "Délégué",
       "delegateTo": "Déléguer à",
       "delegateFor": "Délégue à",
-      "noDelegatorsMessage": "Aucune délégation sur {network}"
+      "noDelegatorsMessage": "Aucune délégation sur {network}",
+      "notSupportedNetwork": "Delegation currently isn't supported on {network} "
     },
     "activity": {
       "header": "Activité",
