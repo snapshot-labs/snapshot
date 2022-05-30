@@ -109,21 +109,13 @@ watch(
       @confirm="handleSetRecord"
     >
       <div class="space-y-4 m-4 text-skin-link">
-        <p>
+        <BaseMessageBlock level="warning">
           {{
             $t('setup.explainControllerAndEns', {
               network: networks[defaultNetwork].name
             })
           }}
-        </p>
-        <p>
-          {{
-            $t('setup.confirmToSetAddress', {
-              address: shorten(spaceControllerInput)
-            })
-          }}
-          {{ $t('setup.controllerHasAuthority') + '.' }}
-        </p>
+        </BaseMessageBlock>
       </div>
     </ModalConfirmAction>
   </teleport>
