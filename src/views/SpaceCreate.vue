@@ -338,10 +338,12 @@ const needsPluginConfigs = computed(() =>
               : (modalAccountOpen = true)
           "
           class="block w-full"
+          :loading="validationLoading"
           :disabled="
             (!stepIsValid && !!web3Account) ||
             web3.authLoading ||
-            executingValidationFailed
+            executingValidationFailed ||
+            validationLoading
           "
           primary
         >
