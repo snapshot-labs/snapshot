@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { ref, watchEffect, computed, onMounted, inject, watch } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import draggable from 'vuedraggable';
@@ -20,10 +20,11 @@ import { useIntl } from '@/composables/useIntl';
 import { usePlugins } from '@/composables/usePlugins';
 import { useImageUpload } from '@/composables/useImageUpload';
 import { useStorage } from '@vueuse/core';
+import { extentedSpace } from '@/helpers/interfaces';
 
-const props = defineProps({
-  space: Object
-});
+const props = defineProps<{
+  space: extentedSpace;
+}>();
 
 const router = useRouter();
 const route = useRoute();
@@ -36,33 +37,60 @@ const { send, clientLoading } = useClient();
 const { store } = useStore();
 const { pluginIndex } = usePlugins();
 
-const notify = inject('notify');
+const notify: any = inject('notify');
 
-const EMPTY_PROPOSAL = {
+interface ProposalForm {
+  name: string;
+  body: string;
+  discussion: string;
+  choices: { key: number; text: string }[];
+  start: number;
+  end: number;
+  snapshot: number;
+  type: string;
+  metadata: {
+    strategies: {
+      name: string;
+      network: string;
+      params: Record<string, unknown>;
+    }[];
+    network: string;
+    plugins: {
+      safeSnap?: { valid: boolean };
+    };
+  };
+}
+
+const EMPTY_PROPOSAL: ProposalForm = {
   name: '',
   body: '',
   discussion: '',
   choices: [],
   start: parseInt((Date.now() / 1e3).toFixed()),
   end: 0,
-  snapshot: '',
-  metadata: { plugins: {} },
+  snapshot: 0,
+  metadata: {
+    strategies: [],
+    network: '',
+    plugins: {}
+  },
   type: 'single-choice'
 };
 
+// TODO: add space key to storage key
 const form = useStorage('snapshot.proposal', EMPTY_PROPOSAL);
 
-const choices = ref([]);
+const choices = ref<{ key: number; text: string }[]>([]);
 const blockNumber = ref(-1);
 const bodyLimit = ref(14400);
 
 const modalDateSelectOpen = ref(false);
 const modalVotingTypeOpen = ref(false);
 const selectedDate = ref('');
-const passValidation = ref([true]);
+const passValidation = ref([true, '']);
 const validationLoading = ref(false);
 const loadingSnapshot = ref(true);
-const textAreaEl = ref(null);
+const textAreaEl = ref<HTMLTextAreaElement | null>(null);
 const imageDragging = ref(false);
 
 const proposal = computed(() =>
@@ -154,24 +182,25 @@ const disableChoiceEdit = computed(() => form.value.type === 'basic');
 
 function addChoices(num) {
   for (let i = 1; i <= num; i++) {
-    choices.value.push({ id: choices.value.length, text: '' });
+    choices.value.push({ key: choices.value.length, text: '' });
   }
 }
 
 async function handleSubmit() {
-  form.value.snapshot = parseInt(form.value.snapshot);
-  form.value.choices = choices.value
+  const clonedForm = clone(form.value);
+  clonedForm.snapshot = Number(form.value.snapshot);
+  clonedForm.choices = choices.value
     .map(choice => choice.text)
     .filter(choiceText => choiceText.length > 0);
-  form.value.metadata.network = props.space.network;
-  form.value.metadata.strategies = props.space.strategies;
-  form.value.start = props.space.voting?.delay
+  clonedForm.metadata.network = props.space.network;
+  clonedForm.metadata.strategies = props.space.strategies;
+  clonedForm.start = props.space.voting?.delay
     ? parseInt((Date.now() / 1e3).toFixed()) + props.space.voting.delay
     : dateStart.value;
-  form.value.end = props.space.voting?.period
+  clonedForm.end = props.space.voting?.period
     ? form.value.start + props.space.voting.period
     : dateEnd.value;
-  const result = await send(props.space, 'proposal', form.value);
+  const result = await send(props.space, 'proposal', clonedForm);
   console.log('Result', result);
   if (result.id) {
     store.space.proposals = [];
@@ -206,6 +235,8 @@ async function loadProposal() {
 
   userSelectedDateEnd.value = true;
 
+  const { network, strategies, plugins } = proposal;
+
   form.value = {
     name: proposal.title,
     body: proposal.body,
@@ -214,11 +245,9 @@ async function loadProposal() {
     start: proposal.start,
     end: proposal.end,
     snapshot: proposal.snapshot,
-    type: proposal.type
+    type: proposal.type,
+    metadata: { network, strategies, plugins }
   };
-
-  const { network, strategies, plugins } = proposal;
-  form.value.metadata = { network, strategies, plugins };
 
   choices.value = proposal.choices.map((text, key) => ({
     key,
@@ -229,8 +258,8 @@ async function loadProposal() {
 }
 
 onMounted(async () => {
-  addChoices(2);
-  if (sourceProposal.value) loadProposal();
+  if (sourceProposal.value) await loadProposal();
+  if (form.value.type !== 'basic') addChoices(2);
 });
 
 onMounted(() =>
@@ -304,13 +333,15 @@ const needsPluginConfigs = computed(() =>
 );
 
 const injectImageToBody = image => {
-  const cursorPosition = textAreaEl.value.selectionStart;
-  const currentBody = textAreaEl.value.value;
-  form.value.body =
-    currentBody.substring(0, cursorPosition) +
-    `
-![${image.name}](${image.url})` +
-    currentBody.substring(cursorPosition);
+  const cursorPosition = textAreaEl.value?.selectionStart;
+  const currentBody = textAreaEl.value?.value;
+  const currentBodyWithImage = `${currentBody?.substring(
+    0,
+    cursorPosition
+  )} \n![${image.name}](${image.url})
+    ${currentBody?.substring(cursorPosition as number)}`;
+
+  form.value.body = currentBodyWithImage;
 };
 
 const {
@@ -488,7 +519,7 @@ const handleDrop = e => {
                     accept="image/jpg, image/jpeg, image/png"
                     type="file"
                     class="opacity-0 absolute p-[5px] top-0 right-0 bottom-0 left-0 w-full ml-0"
-                    @change="e => upload(e.target.files[0])"
+                    @change="e => upload((e.target as HTMLInputElement)?.files?.[0])"
                   />
 
                   <span class="pointer-events-none relative pl-1 text-sm">
@@ -532,7 +563,7 @@ const handleDrop = e => {
         <BaseBlock :title="$t('create.voting')">
           <UiInput
             @click="!space.voting?.type ? (modalVotingTypeOpen = true) : null"
-            :disabled="space.voting?.type"
+            :disabled="!!space.voting?.type"
             v-tippy="{
               content: !!space.voting?.type ? $t('create.typeEnforced') : null
             }"
