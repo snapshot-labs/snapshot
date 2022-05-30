@@ -9,6 +9,17 @@ defineProps<{
   open: boolean;
 }>();
 const emit = defineEmits(['close', 'networkChanged']);
+const defaultNetwork = import.meta.env.VITE_DEFAULT_NETWORK;
+const networkData = {
+  '1': {
+    name: 'Mainnet',
+    chainId: '0x1'
+  },
+  '4': {
+    name: 'Rinkeby',
+    chainId: '0x4'
+  }
+};
 
 const { notify } = useFlashNotification();
 const { t } = useI18n();
@@ -19,14 +30,14 @@ const usingMetaMask = computed(() => {
 
 const switchingChain = ref(false);
 
-const switchToMainnet = async () => {
+const switchToDefaultNetwork = async () => {
   try {
     switchingChain.value = true;
     await window.ethereum?.request({
       method: 'wallet_switchEthereumChain',
       params: [
         {
-          chainId: '0x1'
+          chainId: networkData[defaultNetwork].chainId
         }
       ]
     });
@@ -51,22 +62,42 @@ const switchToMainnet = async () => {
     </template>
 
     <div class="space-y-4 m-4">
-      <p>
-        {{ $t('unsupportedNetwork.ensOnlyMainnet') }}
-      </p>
-      <p>
-        {{ $t('unsupportedNetwork.switchNetworkToMainnet') }}
-      </p>
+      <BaseMessageBlock v-if="defaultNetwork === '1'" level="warning">
+        {{
+          $t('unsupportedNetwork.switchNetworkToNetwork', {
+            network: 'Ethereum Mainnet'
+          })
+        }}
+      </BaseMessageBlock>
+      <BaseMessageBlock v-if="defaultNetwork === '4'" level="warning">
+        {{
+          $t('unsupportedNetwork.switchNetworkToNetwork', {
+            network: 'Rinkeby Network'
+          })
+        }}
+      </BaseMessageBlock>
     </div>
-    <template v-if="usingMetaMask" v-slot:footer>
+    <div class="space-y-4 m-4"></div>
+    <div class="m-4 space-y-2" v-if="usingMetaMask">
       <BaseButton
         :loading="switchingChain"
         class="button-outline w-full"
-        :primary="true"
-        @click="switchToMainnet"
+        primary
+        @click="switchToDefaultNetwork"
       >
-        {{ $t('unsupportedNetwork.switchToMainnet') }}
+        {{
+          $t('unsupportedNetwork.switchToNetwork', {
+            network: networkData[defaultNetwork].name
+          })
+        }}
       </BaseButton>
-    </template>
+      <div v-if="defaultNetwork === '1'">
+        <BaseLink link="https://demo.snapshot.org" hide-external-icon>
+          <BaseButton class="button-outline w-full">
+            {{ $t('unsupportedNetwork.goToDemoSite') }}
+          </BaseButton>
+        </BaseLink>
+      </div>
+    </div>
   </BaseModal>
 </template>
