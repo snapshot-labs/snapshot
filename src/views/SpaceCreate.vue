@@ -214,7 +214,7 @@ watchEffect(() => {
   }
 });
 
-const currentStep = ref(1);
+const currentStep = computed(() => Number(route.params.step || 1));
 
 const stepIsValid = computed(() => {
   if (
@@ -392,7 +392,7 @@ const needsPluginConfigs = computed(() =>
         >
           {{ preview ? $t('create.edit') : $t('create.preview') }}
         </BaseButton>
-        <BaseButton v-else @click="currentStep--" class="block w-full mb-2">
+        <BaseButton v-else @click="$router.go(-1)" class="block w-full mb-2">
           {{ $t('back') }}
         </BaseButton>
 
@@ -412,7 +412,11 @@ const needsPluginConfigs = computed(() =>
         </BaseButton>
         <BaseButton
           v-else
-          @click="web3Account ? currentStep++ : (modalAccountOpen = true)"
+          @click="
+            web3Account
+              ? $router.push({ params: { step: currentStep + 1 } })
+              : (modalAccountOpen = true)
+          "
           class="block w-full"
           :disabled="
             (!stepIsValid && !!web3Account) ||
