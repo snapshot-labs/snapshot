@@ -35,8 +35,19 @@ export function useExtendedSpaces() {
     }
   }
 
+  const reloadSpace = (id: string) => {
+    const space = extentedSpaces.value?.find(space => space.id === id);
+    if (space) {
+      extentedSpaces.value = extentedSpaces.value.filter(
+        space => space.id !== id
+      );
+      loadExtentedSpaces([id]);
+    }
+  };
+
   return {
     loadExtentedSpaces,
+    reloadSpace,
     extentedSpaces: computed(() => extentedSpaces.value),
     spaceLoading: computed(() => loading.value)
   };

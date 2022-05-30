@@ -40,7 +40,7 @@ const activityOlder = computed(() => {
 });
 
 const { loadBy, loadingMore, stopLoadingMore, loadMore } =
-  useInfiniteLoader(10);
+  useInfiniteLoader(20);
 const { endElement } = useScrollMonitor(() =>
   loadMore(() => loadVotes(activities.value.length), loadingMore.value)
 );

@@ -45,7 +45,11 @@ defineEmits(['close', 'set']);
 
       <UiInput
         v-model.trim="spaceControllerInput"
-        :placeholder="$t('setup.spaceOwnerAddressPlaceHolder')"
+        :placeholder="
+          $t('setup.spaceOwnerAddressPlaceHolder', {
+            address: currentSpaceController
+          })
+        "
         class="mt-1"
         focus-on-mount
       >

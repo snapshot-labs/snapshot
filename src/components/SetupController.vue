@@ -39,7 +39,7 @@ async function handleSetRecord() {
 }
 
 watch(
-  fillConnectedWallet,
+  () => [fillConnectedWallet.value, props.web3Account],
   () => {
     if (fillConnectedWallet.value)
       return (spaceControllerInput.value = props.web3Account);
@@ -88,7 +88,7 @@ watch(
       <i18n-t keypath="setup.setSpaceControllerInfoGnosisSafe" tag="span">
         <template #link>
           <BaseLink link="https://docs.snapshot.org/spaces/create">
-            Documentation
+            {{ $t('learnMore') }}
           </BaseLink>
         </template>
       </i18n-t>
