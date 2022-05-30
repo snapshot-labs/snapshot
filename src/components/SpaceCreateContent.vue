@@ -2,7 +2,7 @@
 import { ref } from 'vue';
 import { useIntl } from '@/composables/useIntl';
 import { useImageUpload } from '@/composables/useImageUpload';
-import { useSpaceCreateStore } from '@/composables/useSpaceCreateStore';
+import { useSpaceCreateForm } from '@/composables/useSpaceCreateForm';
 
 defineProps<{
   preview: boolean;
@@ -10,7 +10,7 @@ defineProps<{
 }>();
 
 const { formatNumber } = useIntl();
-const { form } = useSpaceCreateStore();
+const { form } = useSpaceCreateForm();
 
 const imageDragging = ref(false);
 const textAreaEl = ref<HTMLTextAreaElement | null>(null);

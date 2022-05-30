@@ -45,7 +45,7 @@ const EMPTY_PROPOSAL: ProposalForm = {
 
 const form = ref(EMPTY_PROPOSAL);
 
-export function useSpaceCreateStore() {
+export function useSpaceCreateForm() {
   const route = useRoute();
 
   const formDraft = useStorage(

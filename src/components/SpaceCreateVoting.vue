@@ -2,7 +2,7 @@
 import { ref, computed } from 'vue';
 import { ExtentedSpace } from '@/helpers/interfaces';
 import draggable from 'vuedraggable';
-import { useSpaceCreateStore } from '@/composables/useSpaceCreateStore';
+import { useSpaceCreateForm } from '@/composables/useSpaceCreateForm';
 
 defineProps<{
   space: ExtentedSpace;
@@ -17,7 +17,7 @@ const userSelectedDateStart = ref(false);
 const modalDateSelectOpen = ref(false);
 const modalVotingTypeOpen = ref(false);
 
-const { form } = useSpaceCreateStore();
+const { form } = useSpaceCreateForm();
 
 const disableChoiceEdit = computed(() => form.value.type === 'basic');
 

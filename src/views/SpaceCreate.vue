@@ -18,7 +18,7 @@ import { useStore } from '@/composables/useStore';
 import { useIntl } from '@/composables/useIntl';
 import { usePlugins } from '@/composables/usePlugins';
 import { ExtentedSpace } from '@/helpers/interfaces';
-import { useSpaceCreateStore } from '@/composables/useSpaceCreateStore';
+import { useSpaceCreateForm } from '@/composables/useSpaceCreateForm';
 
 const props = defineProps<{
   space: ExtentedSpace;
@@ -34,7 +34,7 @@ const { web3, web3Account } = useWeb3();
 const { send, clientLoading } = useClient();
 const { store } = useStore();
 const { pluginIndex } = usePlugins();
-const { form, resetForm } = useSpaceCreateStore();
+const { form, resetForm } = useSpaceCreateForm();
 
 const notify: any = inject('notify');
 
