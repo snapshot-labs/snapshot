@@ -53,7 +53,7 @@ export interface ProfileActivity {
   vote?: { proposalId: string; choice: string; type: string };
 }
 
-export interface extentedSpace {
+export interface ExtentedSpace {
   id: string;
   name: string;
   symbol: string;
