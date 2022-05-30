@@ -61,19 +61,28 @@ const switchToDefaultNetwork = async () => {
       </div>
     </template>
 
-    <div class="space-y-4 m-4" v-if="defaultNetwork === '1'">
-      <p>
-        {{ $t('unsupportedNetwork.ensOnlyMainnet') }}
-      </p>
-      <p>
-        {{ $t('unsupportedNetwork.switchNetworkToMainnet') }}
-      </p>
+    <div class="space-y-4 m-4">
+      <BaseMessageBlock v-if="defaultNetwork === '1'" level="warning">
+        {{
+          $t('unsupportedNetwork.switchNetworkToNetwork', {
+            network: 'Ethereum Mainnet'
+          })
+        }}
+      </BaseMessageBlock>
+      <BaseMessageBlock v-if="defaultNetwork === '4'" level="warning">
+        {{
+          $t('unsupportedNetwork.switchNetworkToNetwork', {
+            network: 'Rinkeby Network'
+          })
+        }}
+      </BaseMessageBlock>
     </div>
-    <template v-if="usingMetaMask" v-slot:footer>
+    <div class="space-y-4 m-4"></div>
+    <div class="m-4 space-y-2" v-if="usingMetaMask">
       <BaseButton
         :loading="switchingChain"
         class="button-outline w-full"
-        :primary="true"
+        primary
         @click="switchToDefaultNetwork"
       >
         {{
@@ -82,6 +91,13 @@ const switchToDefaultNetwork = async () => {
           })
         }}
       </BaseButton>
-    </template>
+      <div v-if="defaultNetwork === '1'">
+        <BaseLink link="https://demo.snapshot.org" hide-external-icon>
+          <BaseButton class="button-outline w-full">
+            {{ $t('unsupportedNetwork.goToDemoSite') }}
+          </BaseButton>
+        </BaseLink>
+      </div>
+    </div>
   </BaseModal>
 </template>
