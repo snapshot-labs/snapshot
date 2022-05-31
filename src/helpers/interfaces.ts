@@ -72,7 +72,7 @@ export interface TreasuryWallet {
   ensAddress?: string;
 }
 
-export interface extentedSpace {
+export interface ExtendedSpace {
   id: string;
   name: string;
   symbol: string;

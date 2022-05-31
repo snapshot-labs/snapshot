@@ -308,7 +308,7 @@
     "setSpaceControllerInfoGnosisSafe": "When creating a space with a Gnosis Safe it's recommended to set the safe address as the space controller. If you don't, you need to follow some additional steps. {link}",
     "editSpaceController": "Edit controller on ENS",
     "setController": "Set controller",
-    "explainControllerAndEns": "Diese Aktion erfordert eine Transaktion im Ethereum Mainnet, die einen \"snapshot\" TEXT Eintrag zu Ihrer ENS Domain hinzufügt.",
+    "explainControllerAndEns": "Setting the controller requires a transaction on the {network} which will add a \"snapshot\" TEXT record to your ENS domain.",
     "confirmToSetAddress": "Are you sure you want to set {address} as the controller of the space?",
     "controllerHasAuthority": "The controller has full authority over the space settings",
     "controller": "Controller",
@@ -537,8 +537,8 @@
   },
   "unsupportedNetwork": {
     "unsupportedNetwork": "Nicht unterstütztes Netzwerk",
-    "ensOnlyMainnet": "Snapshot unterstützt nur ENS im Ethereum mainnet. Sobald der Space erstellt wurde, können Sie ihn über mehrere Chains hinweg nutzen.",
-    "switchNetworkToMainnet": "Um fortzufahren, müssen Sie in Ihrem Wallet auf Ethereum Mainnet wechseln.",
-    "switchToMainnet": "Zu Mainnet wechseln"
+    "switchNetworkToNetwork": "To continue, you need to change the network in your wallet to {network}, or go to snapshot demo website.",
+    "switchToNetwork": "Switch to {network}",
+    "goToDemoSite": "Go to demo website"
   }
 }
