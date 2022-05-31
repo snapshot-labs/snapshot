@@ -17,11 +17,11 @@ import {
   clone
 } from '@snapshot-labs/snapshot.js/src/utils';
 import { useExtendedSpaces } from '@/composables/useExtendedSpaces';
-import { extentedSpace } from '@/helpers/interfaces';
+import { ExtendedSpace } from '@/helpers/interfaces';
 
 const props = defineProps<{
-  space: extentedSpace;
-  sourceSpace: extentedSpace;
+  space: ExtendedSpace;
+  sourceSpace: ExtendedSpace;
 }>();
 
 const basicValidation = { name: 'basic', params: {} };

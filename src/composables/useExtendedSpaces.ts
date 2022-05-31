@@ -1,9 +1,9 @@
 import { ref, computed } from 'vue';
 import { SPACES_QUERY } from '@/helpers/queries';
 import { useApolloQuery } from '@/composables/useApolloQuery';
-import { extentedSpace } from '@/helpers/interfaces';
+import { ExtendedSpace } from '@/helpers/interfaces';
 
-const extentedSpaces = ref<extentedSpace[]>([]);
+const extentedSpaces = ref<ExtendedSpace[]>([]);
 const loading = ref(false);
 
 export function useExtendedSpaces() {
