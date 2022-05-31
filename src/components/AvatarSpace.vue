@@ -4,7 +4,7 @@ import { withDefaults, computed } from 'vue';
 
 const props = withDefaults(
   defineProps<{
-    space: { id: string };
+    space: { id: string; avatar: string };
     size?: string;
   }>(),
   {
@@ -12,7 +12,11 @@ const props = withDefaults(
   }
 );
 
-const avatarHash = computed(() => sha256(props.space.id).slice(0, 8));
+const avatarHash = computed(() => {
+  const hash = sha256(props.space.avatar).slice(0, 16);
+  const hashWithoutLetters = hash.replace(/[^0-9]/g, '');
+  return hashWithoutLetters;
+});
 </script>
 
 <template>

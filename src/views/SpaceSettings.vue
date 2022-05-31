@@ -152,6 +152,10 @@ const categoriesString = computed(() => {
   return form.value.categories ? form.value.categories.join(', ') : '';
 });
 
+async function clearAvatarCache() {
+  await fetch(`https://stamp.fyi/clear/space/${props.space.id}`);
+}
+
 async function handleSubmit() {
   if (isValid.value) {
     const formattedForm = formatSpace(form.value);
@@ -163,6 +167,7 @@ async function handleSubmit() {
     console.log('Result', result);
     if (result.id) {
       notify(['green', t('notify.saved')]);
+      await clearAvatarCache();
       reloadSpace(props.space.id);
     }
   } else {
