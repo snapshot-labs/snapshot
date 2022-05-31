@@ -29,7 +29,7 @@ const showChoice = computed(() => {
     >
       <div class="flex w-full py-4 px-4">
         <div class="relative min-w-[52px]">
-          <AvatarSpace :size="44" :space="activity.space" />
+          <AvatarSpace size="44" :space="activity.space" />
           <div
             class="absolute text-[9px] right-0 top-[24px] bg-primary rounded-full p-[6px] pr-[5px] text-white"
           >
