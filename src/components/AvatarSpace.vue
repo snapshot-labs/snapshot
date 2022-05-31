@@ -13,9 +13,10 @@ const props = withDefaults(
 );
 
 const avatarHash = computed(() => {
+  if (!props.space.avatar) return '';
   const hash = sha256(props.space.avatar).slice(0, 16);
   const hashWithoutLetters = hash.replace(/[^0-9]/g, '');
-  return hashWithoutLetters;
+  return `&hash=${hashWithoutLetters}`;
 });
 </script>
 
@@ -24,6 +25,6 @@ const avatarHash = computed(() => {
     :size="size"
     :src="`https://stamp.fyi/space/${space.id}?s=${
       Number(size) * 2
-    }&hash=${avatarHash}`"
+    }${avatarHash}`"
   />
 </template>
