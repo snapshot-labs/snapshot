@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, watch } from 'vue';
 import { ExtendedSpace } from '@/helpers/interfaces';
 import draggable from 'vuedraggable';
 import { useSpaceCreateForm } from '@/composables/useSpaceCreateForm';
@@ -43,6 +43,20 @@ function setDate(ts) {
     }
   }
 }
+
+watch(
+  () => form.value.type,
+  () => {
+    if (form.value.type === 'basic') {
+      form.value.choices = [
+        { key: 1, text: 'For' },
+        { key: 2, text: 'Against' },
+        { key: 3, text: 'Abstain' }
+      ];
+    }
+  },
+  { immediate: true }
+);
 </script>
 
 <template>

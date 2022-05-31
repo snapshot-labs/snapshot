@@ -38,7 +38,7 @@ const notify: any = inject('notify');
 
 const blockNumber = ref(-1);
 const bodyLimit = ref(14400);
-const passValidation = ref([true, '']);
+const passValidation = ref([false, '']);
 const validationLoading = ref(false);
 const loadingSnapshot = ref(true);
 const userSelectedDateEnd = ref(false);
@@ -48,36 +48,6 @@ const proposal = computed(() =>
 );
 
 const sourceProposal = computed(() => route.params.sourceProposal);
-
-// Check if account passes space validation
-// (catch errors to show confiuration error message)
-const executingValidationFailed = ref(false);
-watch(
-  () => web3Account.value,
-  async () => {
-    validationLoading.value = true;
-    if (web3Account.value && auth.isAuthenticated.value) {
-      try {
-        const validationName = props.space.validation?.name ?? 'basic';
-        const validationParams = props.space.validation?.params ?? {};
-        const isValid = await validations[validationName](
-          web3Account.value,
-          clone(props.space),
-          '',
-          clone(validationParams)
-        );
-
-        passValidation.value = [isValid, validationName];
-        console.log('Pass validation?', isValid, validationName);
-        validationLoading.value = false;
-      } catch (e) {
-        executingValidationFailed.value = true;
-        console.log(e);
-      }
-    }
-  },
-  { immediate: true }
-);
 
 const dateStart = computed(() => {
   return props.space?.voting?.delay
@@ -202,16 +172,6 @@ watchEffect(async () => {
   if (props.space?.voting?.type) form.value.type = props.space.voting.type;
 });
 
-watchEffect(() => {
-  if (form.value.type === 'basic') {
-    form.value.choices = [
-      { key: 1, text: 'For' },
-      { key: 2, text: 'Against' },
-      { key: 3, text: 'Abstain' }
-    ];
-  }
-});
-
 const currentStep = computed(() => Number(route.params.step || 1));
 
 const stepIsValid = computed(() => {
@@ -252,6 +212,37 @@ const needsPluginConfigs = computed(() =>
     pluginKey => pluginIndex[pluginKey]?.defaults?.proposal
   )
 );
+
+// Check if account passes space validation
+// (catch errors to show confiuration error message)
+const executingValidationFailed = ref(false);
+watch(
+  () => web3Account.value,
+  async () => {
+    if (passValidation.value[0] === true) return;
+    validationLoading.value = true;
+    if (web3Account.value && auth.isAuthenticated.value) {
+      try {
+        const validationName = props.space.validation?.name ?? 'basic';
+        const validationParams = props.space.validation?.params ?? {};
+        const isValid = await validations[validationName](
+          web3Account.value,
+          clone(props.space),
+          '',
+          clone(validationParams)
+        );
+
+        passValidation.value = [isValid, validationName];
+        console.log('Pass validation?', isValid, validationName);
+        validationLoading.value = false;
+      } catch (e) {
+        executingValidationFailed.value = true;
+        console.log(e);
+      }
+    }
+  },
+  { immediate: true }
+);
 </script>
 
 <template>
@@ -268,6 +259,7 @@ const needsPluginConfigs = computed(() =>
       </div>
 
       <SpaceCreateWarnings
+        v-if="!validationLoading"
         :space="space"
         :executingValidationFailed="executingValidationFailed"
         :passValidation="passValidation"
