@@ -13,13 +13,8 @@ withDefaults(
 </script>
 
 <template>
-  <img
+  <BaseAvatar
+    :size="size"
     :src="`https://stamp.fyi/space/${space.id}?s=${Number(size) * 2}`"
-    class="rounded-full inline-block align-middle leading-none"
-    :class="'bg-[color:var(--border-color)]'"
-    :style="{
-      width: `${Number(size)}px`,
-      height: `${Number(size)}px`
-    }"
   />
 </template>
