@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { watchEffect } from 'vue';
 import { useUsername } from '@/composables/useUsername';
+import { useApp } from '@/composables/useApp';
+
+const { domain } = useApp();
 
 const props = defineProps<{
   address: string;
@@ -26,13 +29,23 @@ watchEffect(() => {
       :proposal="proposal"
       :space="space"
     >
-      <div class="flex flex-nowrap items-center space-x-2">
-        <AvatarUser v-if="!hideAvatar" :address="address" size="18" />
-        <span class="truncate w-full text-skin-link cursor-pointer">
-          {{ username }}
-        </span>
-        <BaseBadge :address="address" :members="space?.members" />
-      </div>
+      <BaseLink
+        :link="
+          domain
+            ? `https://snapshot.org/#/profile/${address}`
+            : { name: 'profileActivity', params: { address } }
+        "
+        hide-external-icon
+        @click.stop
+      >
+        <div class="flex flex-nowrap items-center space-x-2">
+          <AvatarUser v-if="!hideAvatar" :address="address" size="18" />
+          <span class="truncate w-full text-skin-link cursor-pointer">
+            {{ username }}
+          </span>
+          <BaseBadge :address="address" :members="space?.members" />
+        </div>
+      </BaseLink>
     </PopoverProfile>
   </div>
 </template>

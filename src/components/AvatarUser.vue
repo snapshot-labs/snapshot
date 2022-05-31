@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { computed, withDefaults } from 'vue';
-import { useApp } from '@/composables/useApp';
 import { useProfiles } from '@/composables/useProfiles';
 
 const props = withDefaults(
@@ -15,7 +14,6 @@ const props = withDefaults(
   }
 );
 
-const { domain } = useApp();
 const { profilesCreated } = useProfiles();
 
 const timestamp = computed(() => {
@@ -25,21 +23,11 @@ const timestamp = computed(() => {
 </script>
 
 <template>
-  <BaseLink
-    :link="
-      domain
-        ? `https://snapshot.org/#/profile/${address}`
-        : { name: 'profileActivity', params: { address } }
-    "
-    hide-external-icon
-    @click.stop
-  >
-    <BaseAvatar
-      :src="`https://stamp.fyi/avatar/eth:${address}?s=${
-        Number(size) * 2
-      }${timestamp}`"
-      :previewFile="previewFile"
-      :size="size"
-    />
-  </BaseLink>
+  <BaseAvatar
+    :src="`https://stamp.fyi/avatar/eth:${address}?s=${
+      Number(size) * 2
+    }${timestamp}`"
+    :previewFile="previewFile"
+    :size="size"
+  />
 </template>
