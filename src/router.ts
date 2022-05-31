@@ -36,7 +36,7 @@ const spaceRoutes = [
     component: SpaceProposal
   },
   {
-    path: 'create/:sourceProposal?',
+    path: 'create/:step?/:sourceProposal?',
     name: 'spaceCreate',
     component: SpaceCreate
   },
