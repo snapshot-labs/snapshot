@@ -308,7 +308,7 @@
     "setSpaceControllerInfoGnosisSafe": "When creating a space with a Gnosis Safe it's recommended to set the safe address as the space controller. If you don't, you need to follow some additional steps. {link}",
     "editSpaceController": "ENS 관리자 수정",
     "setController": "관리자 설정",
-    "explainControllerAndEns": "이 액션은 ENS 도메인을 스냅샷 TEXT 레코드에 추가할 이더리움 메인넷 상의 트랜잭션을 요구한다.",
+    "explainControllerAndEns": "Setting the controller requires a transaction on the {network} which will add a \"snapshot\" TEXT record to your ENS domain.",
     "confirmToSetAddress": "{address} 를 공간 관리자로 설정하겠습니까?",
     "controllerHasAuthority": "관리자는 공간 설정에 대한 전체 권한을 갖습니다.",
     "controller": "관리자",
@@ -537,8 +537,8 @@
   },
   "unsupportedNetwork": {
     "unsupportedNetwork": "지원되지 않는 네트워크",
-    "ensOnlyMainnet": "Snapshot은 이더리움 메인넷 상에서만 ENS를 지원합니다. 일단 공간이 생성되면 여러 체인에서 사용할 수 있습니다.",
-    "switchNetworkToMainnet": "계속하려면 지갑의 네트워크를 이더리움 메인넷으로 변경해야 합니다.",
-    "switchToMainnet": "메인넷으로 바꾸기"
+    "switchNetworkToNetwork": "To continue, you need to change the network in your wallet to {network}, or go to snapshot demo website.",
+    "switchToNetwork": "Switch to {network}",
+    "goToDemoSite": "Go to demo website"
   }
 }

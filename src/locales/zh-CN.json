@@ -308,7 +308,7 @@
     "setSpaceControllerInfoGnosisSafe": "使用Gnosis Safe创建空间时，建议将安全地址设置为空间控制人。 如果您不这样做，则需要遵循一些额外的步骤。{link}",
     "editSpaceController": "在 ENS 上编辑控制人",
     "setController": "设置控制人",
-    "explainControllerAndEns": "此操作需要在Ethereum Mainnet上进行交易，该交易会将“snapshot”文本记录添加到您的 ENS 域。",
+    "explainControllerAndEns": "Setting the controller requires a transaction on the {network} which will add a \"snapshot\" TEXT record to your ENS domain.",
     "confirmToSetAddress": "您确定要设置 {address} 作为空间的控制人吗？",
     "controllerHasAuthority": "管理员对空间设置拥有所有权限",
     "controller": "控制人",
@@ -537,8 +537,8 @@
   },
   "unsupportedNetwork": {
     "unsupportedNetwork": "不支持的网络",
-    "ensOnlyMainnet": "Snapshot仅支持以太坊主网上的 ENS。 创建空间后，您可以跨链使用它。",
-    "switchNetworkToMainnet": "若要继续，您需要将你钱包中的网络更改为Ethereum Mainnet。",
-    "switchToMainnet": "切换到Mainnet"
+    "switchNetworkToNetwork": "To continue, you need to change the network in your wallet to {network}, or go to snapshot demo website.",
+    "switchToNetwork": "Switch to {network}",
+    "goToDemoSite": "Go to demo website"
   }
 }
