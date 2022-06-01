@@ -7,14 +7,14 @@ import { useWeb3 } from '@/composables/useWeb3';
 import { useTxStatus } from '@/composables/useTxStatus';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { useProfiles } from '@/composables/useProfiles';
-import { getIpfsUrl } from '@/helpers/utils';
 
 const { pendingCount } = useTxStatus();
 const { modalAccountOpen } = useModal();
 const { env, showSidebar, domain } = useApp();
 const auth = getInstance();
 const { login, web3, web3Account } = useWeb3();
-const { profiles, loadProfiles, loadingProfiles } = useProfiles();
+const { profiles, loadProfiles, loadingProfiles, reloadingProfile } =
+  useProfiles();
 
 const loading = ref(false);
 
@@ -42,7 +42,7 @@ watchEffect(() => {
   </div>
   <nav id="topnav">
     <BaseContainer class="pl-0 pr-3 sm:!px-4">
-      <div class="flex items-center py-2">
+      <div class="flex items-center py-[12px]">
         <div class="flex-auto flex items-center ml-3">
           <UiSidebarButton
             v-if="!domain"
@@ -67,12 +67,13 @@ watchEffect(() => {
               @switchWallet="modalAccountOpen = true"
             >
               <BaseButton
-                :loading="web3.authLoading || loadingProfiles"
+                :loading="
+                  web3.authLoading || loadingProfiles || reloadingProfile
+                "
                 class="flex items-center"
               >
                 <BaseAvatar
                   :address="web3Account"
-                  :imgsrc="getIpfsUrl(profile?.avatar)"
                   size="18"
                   class="-mr-1 sm:mr-2 md:mr-2 lg:mr-2 xl:mr-2 -ml-1"
                 />

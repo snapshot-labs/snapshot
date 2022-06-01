@@ -24,23 +24,23 @@ const showChoice = computed(() => {
       v-if="activity.type === 'vote'"
       :to="{
         name: 'spaceProposal',
-        params: { key: activity.space.id, id: activity.vote.proposalId }
+        params: { key: activity.space.id, id: activity.vote?.proposalId }
       }"
     >
       <div class="flex w-full py-4 px-4">
-        <div class="relative">
-          <AvatarSpace size="44" :space="activity.space" />
+        <div class="relative min-w-[52px]">
+          <AvatarSpace :size="44" :space="activity.space" />
           <div
-            class="absolute text-[9px] -right-[10px] top-[24px] bg-primary rounded-full p-[6px] pr-[5px]"
+            class="absolute text-[9px] right-0 top-[24px] bg-primary rounded-full p-[6px] pr-[5px] text-white"
           >
             <i-s-signature />
           </div>
         </div>
-        <div class="w-[calc(100%-64px)] ml-5">
+        <div class="w-[calc(100%-64px)] ml-4">
           <div class="text-xs text-skin-text leading-5">
             {{
               $t('profile.activity.votedFor', {
-                choice: showChoice ? `"${activity.vote.choice}"` : ''
+                choice: showChoice ? `"${activity.vote?.choice}"` : ''
               })
             }}
           </div>

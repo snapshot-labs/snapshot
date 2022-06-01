@@ -58,8 +58,7 @@
   "confirmRemove": "您确定要移除对的委托吗？",
   "removeSpace": "用于空间 {0}",
   "confirmVote": "确认投票",
-  "sureToVote": "您确定要投此票吗？",
-  "cannotBeUndone": "此操作无法撤消。",
+  "voteOverview": "投票总览",
   "options": "选项",
   "votingPower": "您的投票权",
   "receipt": "凭证",
@@ -303,23 +302,27 @@
     "createASpace": "创建空间",
     "registerEnsButton": "注册",
     "supportedEnsTLDs": "支持的域名结尾",
-    "helpDocsAndDiscordLinks": "不知道如何创建空间？ 在 <a target='_blank' href='https://docs.snapshot.org/spaces/create'> 文档中了解更多信息</a> 或加入 Snapshot <a target='_blank' href='https:// /discord.gg/snapshot'>Discord</a>。",
-    "setSpaceController": "在 ENS 上设置空间控制人地址",
+    "helpDocsAndDiscordLinks": "不知道如何创建空间？在 {docs} 了解更多信息或加入Snapshot {discord}。",
+    "setSpaceController": "空间控制人",
+    "setSpaceControllerInfo": " 空间控制人是能够管理空间设置的账户。",
+    "setSpaceControllerInfoGnosisSafe": "使用Gnosis Safe创建空间时，建议将安全地址设置为空间控制人。 如果您不这样做，则需要遵循一些额外的步骤。{link}",
     "editSpaceController": "在 ENS 上编辑控制人",
     "setController": "设置控制人",
-    "explainControllerAndEns": "此操作需要在Ethereum Mainnet上进行交易，该交易会将“snapshot”文本记录添加到您的 ENS 域。",
+    "explainControllerAndEns": "Setting the controller requires a transaction on the {network} which will add a \"snapshot\" TEXT record to your ENS domain.",
     "confirmToSetAddress": "您确定要设置 {address} 作为空间的控制人吗？",
     "controllerHasAuthority": "管理员对空间设置拥有所有权限",
     "controller": "控制人",
     "selectEnsForSpace": "选择ENS地址",
-    "spaceOwnerAddressPlaceHolder": "例如：0xF78108c9BAF466dd96BE41be728Fe3220b37119",
+    "spaceOwnerAddressPlaceHolder": "例如： {address}",
     "controllerAddress": "控制人地址",
     "updateController": "更新控制人",
     "seeOnEns": "在 ENS 上查看",
     "goToSettings": "前往设置",
     "setSpaceProfile": "自定义您的空间",
     "waitForTransaction": "您需要先确认交易才能创建您的空间。 {txUrl}",
-    "pleaseWaitMessage": "这可能需要几分钟，请等待交易确认"
+    "pleaseWaitMessage": "这可能需要几分钟，请等待交易确认",
+    "notControllerAddress": "请连接控制人地址 {wallet} 以创建空间。",
+    "fillCurrentAccount": "使用当前账户"
   },
   "profile": {
     "buttonEdit": "编辑个人资料",
@@ -334,14 +337,16 @@
       "delegated": "已委托",
       "delegateTo": "委托给",
       "delegateFor": "代表",
-      "noDelegatorsMessage": "{network} 上没有代表"
+      "noDelegatorsMessage": "{network} 上没有代表",
+      "notSupportedNetwork": "目前在 {network} 上不支持委托 "
     },
     "activity": {
       "header": "活动",
       "votedFor": "投了 {choice}",
       "today": "今天",
       "thisWeek": "本周",
-      "older": "更早的"
+      "older": "更早的",
+      "noActivity": "暂无动态"
     },
     "settings": {
       "header": "编辑个人资料",
@@ -403,11 +408,6 @@
       "ranked-choice": "每个选民都可以选择和排列任何数目的选择。结果是通过即时计算的。",
       "weighted": "每个选民都可以在任何选择中分散投票权。",
       "basic": "有三种投票单选项：支持，反对，和弃权"
-    },
-    "choices": {
-      "for": "支持",
-      "against": "反对",
-      "abstain": "弃权"
     }
   },
   "safeSnap": {
@@ -537,8 +537,8 @@
   },
   "unsupportedNetwork": {
     "unsupportedNetwork": "不支持的网络",
-    "ensOnlyMainnet": "Snapshot仅支持以太坊主网上的 ENS。 创建空间后，您可以跨链使用它。",
-    "switchNetworkToMainnet": "若要继续，您需要将你钱包中的网络更改为Ethereum Mainnet。",
-    "switchToMainnet": "切换到Mainnet"
+    "switchNetworkToNetwork": "To continue, you need to change the network in your wallet to {network}, or go to snapshot demo website.",
+    "switchToNetwork": "Switch to {network}",
+    "goToDemoSite": "Go to demo website"
   }
 }

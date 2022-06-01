@@ -365,7 +365,7 @@ const truncateMarkdownBody = computed(() => {
             >
               <BaseButton
                 @click="showFullMarkdownBody = !showFullMarkdownBody"
-                class="!bg-skin-bg"
+                class="!bg-skin-bg z-10"
               >
                 {{
                   showFullMarkdownBody
@@ -505,12 +505,10 @@ const truncateMarkdownBody = computed(() => {
         />
         <BlockResults
           v-else
-          :id="id"
           :loaded="loadedResults"
           :space="space"
           :proposal="proposal"
           :results="results"
-          :votes="votes"
           :strategies="strategies"
         />
         <PluginProposalSidebar

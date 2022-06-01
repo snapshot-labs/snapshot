@@ -6,15 +6,13 @@ defineProps<{
 
 <template>
   <BaseBlock
-    :class="[
-      'text-skin-text',
-      { '!border-skin-link text-skin-link': level === 'warning' }
-    ]"
+    :class="['text-skin-text', { '!border-skin-text ': level === 'warning' }]"
   >
     <BaseIcon
       :name="level"
-      :size="level === 'info' ? 20 : null"
+      :size="level === 'info' ? '20' : '16'"
       class="mr-1 float-left"
+      :class="{ 'text-skin-link ': level === 'warning' }"
     />
     <div :class="[' leading-5', { '-mt-[2px]': level === 'warning' }]">
       <slot />
