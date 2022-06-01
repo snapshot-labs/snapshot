@@ -17,11 +17,11 @@ import {
   clone
 } from '@snapshot-labs/snapshot.js/src/utils';
 import { useExtendedSpaces } from '@/composables/useExtendedSpaces';
-import { extentedSpace } from '@/helpers/interfaces';
+import { ExtendedSpace } from '@/helpers/interfaces';
 
 const props = defineProps<{
-  space: extentedSpace;
-  sourceSpace: extentedSpace;
+  space: ExtendedSpace;
+  sourceSpace: ExtendedSpace;
 }>();
 
 const basicValidation = { name: 'basic', params: {} };
@@ -84,6 +84,7 @@ const spaceObject = {
   skin: ''
 };
 
+const defaultNetwork = import.meta.env.VITE_DEFAULT_NETWORK;
 const form = ref(clone(spaceObject));
 
 const validate = computed(() => {
@@ -103,7 +104,8 @@ const textRecord = computed(() => {
   const address = web3Account.value
     ? getAddress(web3Account.value)
     : '<your-address>';
-  return `ipns://storage.snapshot.page/registry/${address}/${keyURI}`;
+  const registryNetworkPath = defaultNetwork === '1' ? '' : 'testnet/';
+  return `ipns://storage.snapshot.page/registry/${registryNetworkPath}${address}/${keyURI}`;
 });
 
 const isSpaceController = computed(() => {
