@@ -53,15 +53,20 @@ export interface ProfileActivity {
   vote?: { proposalId: string; choice: string; type: string };
 }
 
-export interface extentedSpace {
+export interface ExtendedSpace {
   id: string;
   name: string;
   symbol: string;
   network: string;
-  strategies: { name: string; network: string; params: Record<string, unknown> }[];
+  strategies: {
+    name: string;
+    network: string;
+    params: Record<string, unknown>;
+  }[];
   about: string;
   avatar: string;
-  doamin: string | null;
+  skin: string;
+  domain: string | null;
   website: string | null;
   terms: string | null;
   github: string | null;

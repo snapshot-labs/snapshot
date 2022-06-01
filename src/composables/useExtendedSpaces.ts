@@ -1,9 +1,9 @@
 import { ref, computed } from 'vue';
 import { SPACES_QUERY } from '@/helpers/queries';
 import { useApolloQuery } from '@/composables/useApolloQuery';
-import { extentedSpace } from '@/helpers/interfaces';
+import { ExtendedSpace } from '@/helpers/interfaces';
 
-const extentedSpaces = ref<extentedSpace[]>([]);
+const extentedSpaces = ref<ExtendedSpace[]>([]);
 const loading = ref(false);
 
 export function useExtendedSpaces() {
@@ -35,8 +35,19 @@ export function useExtendedSpaces() {
     }
   }
 
+  const reloadSpace = (id: string) => {
+    const space = extentedSpaces.value?.find(space => space.id === id);
+    if (space) {
+      extentedSpaces.value = extentedSpaces.value.filter(
+        space => space.id !== id
+      );
+      loadExtentedSpaces([id]);
+    }
+  };
+
   return {
     loadExtentedSpaces,
+    reloadSpace,
     extentedSpaces: computed(() => extentedSpaces.value),
     spaceLoading: computed(() => loading.value)
   };

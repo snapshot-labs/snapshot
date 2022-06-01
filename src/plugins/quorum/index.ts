@@ -1,6 +1,6 @@
 import { BigNumber } from '@ethersproject/bignumber';
 import { call } from '@snapshot-labs/snapshot.js/src/utils';
-import { getSnapshots } from '@snapshot-labs/snapshot.js/src/utils/blockfinder'
+import { getSnapshots } from '@snapshot-labs/snapshot.js/src/utils/blockfinder';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 
 export default class Plugin {
