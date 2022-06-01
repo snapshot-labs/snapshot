@@ -37,7 +37,7 @@ export default class Plugin {
       }
 
       case 'multichainBalance': {
-        const { network, strategies, quorumThreshold } = quorumOptions;
+        const { network, strategies, quorumModifier } = quorumOptions;
         const blocks = await getSnapshots(
           network,
           parseInt(snapshot),
@@ -61,8 +61,8 @@ export default class Plugin {
           }
           return total.add(ele.div(BigNumber.from(10).pow(eleDecimals)));
         });
-        const threshold = quorumThreshold ? quorumThreshold : 1;
-        return totalBalance.toNumber() * threshold;
+        const modifier = quorumModifier ? quorumModifier : 1;
+        return totalBalance.toNumber() * modifier;
       }
 
       default:
