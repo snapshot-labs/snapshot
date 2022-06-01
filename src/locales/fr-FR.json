@@ -101,7 +101,7 @@
   "createdBy": "Par {0}",
   "startIn": "début {0}",
   "endIn": "fin {1}",
-  "proposalTimeLeft": "{0} gauche",
+  "proposalTimeLeft": "{0} restant(s)",
   "endedAgo": "terminé {0}",
   "proposalBy": "par {0}",
   "endDate": "fin {0}",
@@ -537,7 +537,7 @@
   },
   "unsupportedNetwork": {
     "unsupportedNetwork": "Réseau incompatible",
-    "switchNetworkToNetwork": "To continue, you need to change the network in your wallet to {network}, or go to snapshot demo website.",
+    "switchNetworkToNetwork": "To continue, you need to change the network in your wallet to {network}.",
     "switchToNetwork": "Switch to {network}",
     "goToDemoSite": "Go to demo website"
   }
