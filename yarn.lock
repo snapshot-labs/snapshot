@@ -15,10 +15,10 @@
   resolved "https://registry.yarnpkg.com/@antfu/utils/-/utils-0.5.1.tgz#7eb6764878adb715daff20019e5a15fd63d93342"
   integrity sha512-8Afo0+xvYe1K8Wm4xHTymfTkpzy36aaqDvhXIayUwl+mecMG9Xzl3XjXa6swG6Bk8FBeQ646RyvmsYt6+2Be9g==
 
-"@apollo/client@^3.6.5":
-  version "3.6.5"
-  resolved "https://registry.yarnpkg.com/@apollo/client/-/client-3.6.5.tgz#6a7baaf05852187b0eac1c6064e721d47326d70c"
-  integrity sha512-xGAZzv1f5abyH45MSU5eOLyGQuP4Ps0OhP36pSCtt6pCICI3n4yDkdftFCPvqDVqVTuciX1kkyeJPfGodz5kwg==
+"@apollo/client@^3.6.6":
+  version "3.6.6"
+  resolved "https://registry.yarnpkg.com/@apollo/client/-/client-3.6.6.tgz#3fb1f5b11da9a64b51b5a86b62450bee034e7f41"
+  integrity sha512-AzNLN043wy0bDTTR9wzKYSu+I1IT2Ox3+vWckxgIt88Jfw5jHBvumf3lXE1JlgvbFCTiKS/Sa66AadQXWMVBRQ==
   dependencies:
     "@graphql-typed-document-node/core" "^3.1.1"
     "@wry/context" "^0.6.0"
@@ -1783,10 +1783,10 @@
   resolved "https://registry.yarnpkg.com/@vitejs/plugin-vue/-/plugin-vue-2.3.2.tgz#12ea7a42e6c83d5ea48e14dc41fd2bbb5806ee37"
   integrity sha512-umyypfSHS4kQLdYAnJHhaASq7FRzNCdvcRoQ3uYGNk1/M4a+hXUd7ysN7BLhCrWH6uBokyCkFeUAaFDzSaaSrQ==
 
-"@vitest/ui@^0.13.0":
-  version "0.13.0"
-  resolved "https://registry.yarnpkg.com/@vitest/ui/-/ui-0.13.0.tgz#271b0bf3e380b334d1e7867df807480c05be3532"
-  integrity sha512-7rJs3RhRNhD4LDY7Sd/xKo1Y25qM971X6K5XDA/OzrnEBaWwXs/ukhKExBlEz+m47Bt2dOB6OpflnKi7YXL7BQ==
+"@vitest/ui@^0.13.1":
+  version "0.13.1"
+  resolved "https://registry.yarnpkg.com/@vitest/ui/-/ui-0.13.1.tgz#ddccb60e9493a9ac27a92994be711dc8aebdaab3"
+  integrity sha512-o/xpr6yuS+4qS384BFZp1pDJ3ihWfS4U2t5sjN1CHVvKM9QzdPszp99kF9bbyxIzjCHy36NuspYbqLexqRARvg==
   dependencies:
     sirv "^2.0.2"
 
@@ -7521,10 +7521,10 @@ vite@^2.9.9:
   optionalDependencies:
     fsevents "~2.3.2"
 
-vitest@^0.13.0:
-  version "0.13.0"
-  resolved "https://registry.yarnpkg.com/vitest/-/vitest-0.13.0.tgz#8c2e8a555bb6d7ac016408ffdc41d270bf69f37c"
-  integrity sha512-vuYt3+G25MMnANgyMHHG3VK86C9K/VFi/8uH5myQ2v660W4WArv99ElakPlVFxxSXXM1jqQPiPj2ht35Bod9LQ==
+vitest@^0.13.1:
+  version "0.13.1"
+  resolved "https://registry.yarnpkg.com/vitest/-/vitest-0.13.1.tgz#4b857c6ca0a9a1a2340dc8a1d9991b1f75934220"
+  integrity sha512-CfSBf7YFw/i8HumSUQRtZKs0aV91DC9WU8nAgIJAlawKHaFuPHQohDwOTPIFgrxySiuFYUa0Yohf9gDFfBwjxA==
   dependencies:
     "@types/chai" "^4.3.1"
     "@types/chai-subset" "^1.3.3"
