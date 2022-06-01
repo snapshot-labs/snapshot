@@ -99,7 +99,7 @@ onMounted(() => loadNotifications());
       <div class="flex pt-2 pb-1">
         <div class="flex w-full">
           <div class="w-[78px]">
-            <AvatarSpace :space="item.space" :size="44" />
+            <AvatarSpace :space="item.space" size="44" />
           </div>
           <div class="w-full">
             <div class="leading-tight flex">

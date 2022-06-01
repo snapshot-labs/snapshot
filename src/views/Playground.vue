@@ -284,7 +284,7 @@ onMounted(async () => {
             v-for="(score, key) in scoresWithZeroBalanceAddresses"
             :key="score"
           >
-            <AvatarUser :address="key" :space="form" />
+            <BaseUser :address="key" :space="form" />
             <span>
               {{ formatCompactNumber(score) }}
               {{ form.params.symbol }}

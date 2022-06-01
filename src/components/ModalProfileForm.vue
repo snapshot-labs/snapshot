@@ -76,7 +76,7 @@ watch(
         >
           <template v-slot:avatar="{ uploading, previewFile }">
             <div class="relative">
-              <BaseAvatar
+              <AvatarUser
                 :address="address"
                 :previewFile="previewFile"
                 size="80"
