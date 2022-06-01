@@ -18,6 +18,7 @@ const modalConfirmSetTextRecordOpen = ref(false);
 const settingENSRecord = ref(false);
 const pendingENSRecord = ref(false);
 const uriAddress = ref('');
+const defaultNetwork = import.meta.env.VITE_DEFAULT_NETWORK;
 
 export function useSpaceController() {
   const { web3 } = useWeb3();
@@ -47,7 +48,8 @@ export function useSpaceController() {
     const address = spaceControllerInput.value
       ? getAddress(spaceControllerInput.value)
       : null;
-    return `ipns://storage.snapshot.page/registry/${address}/${keyURI}`;
+    const registryNetworkPath = defaultNetwork === '1' ? '' : 'testnet/';
+    return `ipns://storage.snapshot.page/registry/${registryNetworkPath}${address}/${keyURI}`;
   });
 
   async function waitForSetRecord(tx) {
@@ -90,18 +92,20 @@ export function useSpaceController() {
   }
 
   function confirmSetRecord() {
-    if (networkKey.value !== import.meta.env.VITE_DEFAULT_NETWORK)
+    if (networkKey.value !== defaultNetwork)
       modalUnsupportedNetworkOpen.value = true;
     else modalConfirmSetTextRecordOpen.value = true;
   }
 
   async function loadUriAddress() {
-    const uri = await getSpaceUri(
-      ensAddress.value,
-      import.meta.env.VITE_DEFAULT_NETWORK
-    );
+    const uri = await getSpaceUri(ensAddress.value, defaultNetwork);
     console.log('URI', uri);
-    uriAddress.value = uri?.split('/')[4] ?? '';
+    const uriArray = uri?.split('/') ?? [];
+    if (defaultNetwork === '1') {
+      uriAddress.value = uriArray[4] ?? '';
+    } else if (uriArray[4] === 'testnet') {
+      uriAddress.value = uriArray[5] ?? '';
+    }
   }
 
   // Checks if a text-record with the connected wallet address exists
@@ -136,6 +140,8 @@ export function useSpaceController() {
     loadingTextRecord,
     setRecord,
     confirmSetRecord,
-    loadUriAddress
+    loadUriAddress,
+    ensAddress,
+    textRecord
   };
 }
