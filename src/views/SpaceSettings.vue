@@ -84,7 +84,6 @@ const spaceObject = {
   skin: ''
 };
 
-const defaultNetwork = import.meta.env.VITE_DEFAULT_NETWORK;
 const form = ref(clone(spaceObject));
 
 const validate = computed(() => {
@@ -104,8 +103,7 @@ const textRecord = computed(() => {
   const address = web3Account.value
     ? getAddress(web3Account.value)
     : '<your-address>';
-  const registryNetworkPath = defaultNetwork === '1' ? '' : 'testnet/';
-  return `ipns://storage.snapshot.page/registry/${registryNetworkPath}${address}/${keyURI}`;
+  return `ipns://storage.snapshot.page/registry/${address}/${keyURI}`;
 });
 
 const isSpaceController = computed(() => {
