@@ -93,7 +93,7 @@ onMounted(() => {
           :style="i === 0 && 'border: 0 !important;'"
           class="px-4 py-3 border-t flex"
         >
-          <AvatarUser :address="user" :profile="profiles[user]" />
+          <BaseUser :address="user" :profile="profiles[user]" />
         </div>
       </BaseBlock>
       <BaseBlock
@@ -108,7 +108,7 @@ onMounted(() => {
           :style="i === 0 && 'border: 0 !important;'"
           class="px-4 py-3 border-t flex"
         >
-          <AvatarUser :address="user" :profile="profiles[user]" />
+          <BaseUser :address="user" :profile="profiles[user]" />
         </div>
       </BaseBlock>
     </template>
