@@ -13,7 +13,7 @@ defineProps(['network']);
 <template>
   <BaseBlock class="hover:border-skin-text cursor-pointer">
     <div class="flex items-start mb-3">
-      <BaseAvatar class="mr-2" :imgsrc="getIpfsUrl(network.logo)" size="28" />
+      <BaseAvatar class="mr-2" :src="getIpfsUrl(network.logo)" size="28" />
       <div class="overflow-hidden">
         <h3 class="truncate my-0 leading-5" v-text="network.name" />
         <div
