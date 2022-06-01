@@ -148,7 +148,7 @@ onMounted(() => {
                 :space="extentedSpacesObj[element]"
                 :key="element"
                 symbolIndex="space"
-                :size="44"
+                size="44"
                 class="pointer-events-none"
               />
               <BaseCounter

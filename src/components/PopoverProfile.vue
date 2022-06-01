@@ -30,7 +30,7 @@ const { domain } = useApp();
       <div class="w-[400px] p-4">
         <div class="flex">
           <div>
-            <BaseAvatar :address="address" size="69" />
+            <AvatarUser :address="address" size="69" />
           </div>
           <div>
             <ProfileName :profile="profile" :address="address" />

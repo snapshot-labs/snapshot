@@ -54,15 +54,12 @@ const winningChoice = computed(() =>
             </div>
           </router-link>
           <span v-text="$tc('proposalBy')" />
-          <AvatarUser
+          <BaseUser
             :address="proposal.author"
             :profile="profiles[proposal.author]"
             :proposal="proposal"
-            only-username
-          />
-          <BaseBadge
-            :address="proposal.author"
-            :members="proposal.space.members"
+            :space="proposal.space"
+            hide-avatar
           />
         </div>
         <h3 v-text="proposal.title" class="mt-1 mb-1 break-words" />

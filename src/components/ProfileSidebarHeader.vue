@@ -8,7 +8,7 @@ defineProps<{
 <template>
   <div class="mt-3">
     <div class="flex justify-center">
-      <BaseAvatar size="69" :address="userAddress" />
+      <AvatarUser size="69" :address="userAddress" />
     </div>
     <div class="text-center">
       <ProfileName :profile="profile" :address="userAddress" />

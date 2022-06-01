@@ -39,16 +39,12 @@ const winningChoice = computed(() =>
             <span class="!ml-2 hidden xs:block" v-text="proposal.space.name" />
             <span v-text="$tc('proposalBy')" />
 
-            <AvatarUser
+            <BaseUser
               :address="proposal.author"
               :profile="profiles[proposal.author]"
               :space="space"
               :proposal="proposal"
-              only-username
-            />
-            <BaseBadge
-              :address="proposal.author"
-              :members="proposal.space.members"
+              hide-avatar
             />
           </div>
           <LabelProposalState :state="proposal.state" />
