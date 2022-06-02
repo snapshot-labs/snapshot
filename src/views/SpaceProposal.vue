@@ -432,9 +432,13 @@ const truncateMarkdownBody = computed(() => {
               <b>{{ $t('strategies') }}</b>
               <span
                 @click="modalStrategiesOpen = true"
-                class="float-right text-skin-link a"
+                class="float-right text-skin-link flex"
               >
-                <span v-for="(symbol, symbolIndex) of symbols" :key="symbol">
+                <span
+                  v-for="(symbol, symbolIndex) of symbols"
+                  :key="symbol"
+                  class="flex"
+                >
                   <span
                     v-tippy="{
                       content: symbol
