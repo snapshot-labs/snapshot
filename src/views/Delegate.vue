@@ -302,7 +302,7 @@ onMounted(async () => {
             :style="i === 0 && 'border: 0 !important;'"
             class="px-4 py-3 border-t flex"
           >
-            <AvatarUser
+            <BaseUser
               :address="delegate.delegate"
               :space="{ network: networkKey }"
               :profile="profiles[delegate.delegate]"
@@ -330,7 +330,7 @@ onMounted(async () => {
             :style="i === 0 && 'border: 0 !important;'"
             class="px-4 py-3 border-t flex"
           >
-            <AvatarUser
+            <BaseUser
               :address="delegator.delegator"
               :space="{ network: networkKey }"
               :profile="profiles[delegator.delegator]"
@@ -353,7 +353,7 @@ onMounted(async () => {
             :style="i === 0 && 'border: 0 !important;'"
             class="px-4 py-3 border-t flex"
           >
-            <AvatarUser
+            <BaseUser
               :profile="profiles[delegate.delegate]"
               :address="delegate.delegate"
               :space="{ network: networkKey }"

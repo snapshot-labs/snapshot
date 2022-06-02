@@ -299,14 +299,13 @@ const truncateMarkdownBody = computed(() => {
             </div>
             <div class="flex grow items-center space-x-1">
               <span v-text="$t('proposalBy')" />
-              <AvatarUser
+              <BaseUser
                 :address="proposal.author"
                 :profile="profiles[proposal.author]"
                 :space="space"
                 :proposal="proposal"
-                only-username
+                hide-avatar
               />
-              <BaseBadge :address="proposal.author" :members="space.members" />
               <ShareButton
                 v-if="sharingIsSupported"
                 @click="startShare(space, proposal)"
@@ -365,7 +364,7 @@ const truncateMarkdownBody = computed(() => {
             >
               <BaseButton
                 @click="showFullMarkdownBody = !showFullMarkdownBody"
-                class="!bg-skin-bg"
+                class="!bg-skin-bg z-10"
               >
                 {{
                   showFullMarkdownBody
@@ -505,12 +504,10 @@ const truncateMarkdownBody = computed(() => {
         />
         <BlockResults
           v-else
-          :id="id"
           :loaded="loadedResults"
           :space="space"
           :proposal="proposal"
           :results="results"
-          :votes="votes"
           :strategies="strategies"
         />
         <PluginProposalSidebar

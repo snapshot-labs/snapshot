@@ -1,35 +1,29 @@
 <script setup lang="ts">
-import { computed } from 'vue';
-import { formatBytes32String } from '@ethersproject/strings';
-import { getUrl } from '@snapshot-labs/snapshot.js/src/utils';
+import { sha256 } from 'js-sha256';
+import { withDefaults, computed } from 'vue';
 
-const props = defineProps<{
-  space: Record<string, any>;
-  size?: string;
-  symbolIndex?: string | number;
-}>();
+const props = withDefaults(
+  defineProps<{
+    space: { id: string; avatar: string };
+    size?: string;
+  }>(),
+  {
+    size: '22'
+  }
+);
 
-const spaceId = computed(() => props.space.id);
-
-const url = computed(() => {
-  const url = getUrl(props.space.avatar);
-  if (!url) return '';
-  return `https://worker.snapshot.org/mirror?img=${encodeURIComponent(url)}`;
-});
-
-const spaceAddress = computed(() => {
-  if (spaceId.value) return formatBytes32String(spaceId.value.slice(0, 24));
-  return '';
+const avatarHash = computed(() => {
+  if (!props.space.avatar) return '';
+  const hash = sha256(props.space.avatar).slice(0, 16);
+  return `&cb=${hash}`;
 });
 </script>
 
 <template>
-  <span class="inline-block align-middle leading-none">
-    <BaseAvatar
-      :space="space"
-      :imgsrc="url"
-      :address="spaceAddress"
-      :size="size"
-    />
-  </span>
+  <BaseAvatar
+    :size="size"
+    :src="`https://stamp.fyi/space/${space.id}?s=${
+      Number(size) * 2
+    }${avatarHash}`"
+  />
 </template>

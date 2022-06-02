@@ -58,8 +58,7 @@
   "confirmRemove": "以下のアドレスへの投票権の委任を削除してもよろしいですか？",
   "removeSpace": "for the space {0}",
   "confirmVote": "投票内容の確認",
-  "sureToVote": "この投票を実行してよろしいですか。",
-  "cannotBeUndone": "このアクションは取り消すことができません。",
+  "voteOverview": "Vote overview",
   "options": "オプション",
   "votingPower": "あなたの投票力",
   "receipt": "レシート",
@@ -304,22 +303,26 @@
     "registerEnsButton": "登録する",
     "supportedEnsTLDs": "サポートされているドメインの拡張子",
     "helpDocsAndDiscordLinks": "Not sure how to create a space? Learn more in the {docs} or join Snapshot {discord}.",
-    "setSpaceController": "ENSでスペースコントローラのアドレスを設定する",
+    "setSpaceController": "Space controller",
+    "setSpaceControllerInfo": " The space controller is the account that will be able to manage the space settings.",
+    "setSpaceControllerInfoGnosisSafe": "When creating a space with a Gnosis Safe it's recommended to set the safe address as the space controller. If you don't, you need to follow some additional steps. {link}",
     "editSpaceController": "ENSのコントローラを編集する",
     "setController": "コントローラを設定する",
-    "explainControllerAndEns": "このアクションには、イーサリアムのメインネット上での取引が必要です。これにより、ENSドメインに「スナップショット」TEXTレコードが追加されます。",
+    "explainControllerAndEns": "Setting the controller requires a transaction on the {network} which will add a \"snapshot\" TEXT record to your ENS domain.",
     "confirmToSetAddress": "{address} をスペースのコントローラとして設定してもよろしいですか？",
     "controllerHasAuthority": "コントローラはスペースの設定に対して完全な権限を持っています",
     "controller": "コントローラ",
     "selectEnsForSpace": "ENSアドレスを選ぶ",
-    "spaceOwnerAddressPlaceHolder": "例: 0xF78108c9BBaF466dd96BE41be728Fe3220b37119",
+    "spaceOwnerAddressPlaceHolder": "e.g. {address}",
     "controllerAddress": "コントローラのアドレス",
     "updateController": "コントローラをアップデートする",
     "seeOnEns": "ENS上で見る",
     "goToSettings": "設定に移動する",
     "setSpaceProfile": "スペースをカスタマイズする",
     "waitForTransaction": "スペースを作成する前に取引の確定が必要です。{txUrl}",
-    "pleaseWaitMessage": "取引が確定されるまで少々お待ちください"
+    "pleaseWaitMessage": "取引が確定されるまで少々お待ちください",
+    "notControllerAddress": "Please connect with the controller address {wallet} to create the space.",
+    "fillCurrentAccount": "Use current account"
   },
   "profile": {
     "buttonEdit": "Edit profile",
@@ -334,7 +337,8 @@
       "delegated": "Delegated",
       "delegateTo": "Delegate to",
       "delegateFor": "Delegator for",
-      "noDelegatorsMessage": "No delegators on {network}"
+      "noDelegatorsMessage": "No delegators on {network}",
+      "notSupportedNetwork": "Delegation currently isn't supported on {network} "
     },
     "activity": {
       "header": "Activity",
@@ -533,8 +537,8 @@
   },
   "unsupportedNetwork": {
     "unsupportedNetwork": "対応していないネットワーク",
-    "ensOnlyMainnet": "SnapshotはEthereumのMainnet上でENSのみをサポートします。一度スペースが作成されると、複数のチェーン上で使用することができます。",
-    "switchNetworkToMainnet": "続行するには、ウォレット内のネットワークをEthereum Mainnetに変更する必要があります。",
-    "switchToMainnet": "メインネットに切り替え"
+    "switchNetworkToNetwork": "To continue, you need to change the network in your wallet to {network}, or go to snapshot demo website.",
+    "switchToNetwork": "Switch to {network}",
+    "goToDemoSite": "Go to demo website"
   }
 }

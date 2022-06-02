@@ -179,7 +179,7 @@ export default {
       class="px-4 pt-3 border-b rounded-t-none md:rounded-t-md flex"
       style="padding-bottom: 12px"
     >
-      <BaseAvatar class="mr-2 float-left" :imgsrc="networkIcon" size="28" />
+      <BaseAvatar class="mr-2 float-left" :src="networkIcon" size="28" />
       {{ networkName }} Safe
       <a
         v-if="gnosisSafeAddress"

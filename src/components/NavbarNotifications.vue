@@ -98,7 +98,7 @@ onMounted(() => loadNotifications());
     <template v-slot:item="{ item }">
       <div class="flex pt-2 pb-1">
         <div class="flex w-full">
-          <div class="pr-2 -ml-1">
+          <div class="w-[78px]">
             <AvatarSpace :space="item.space" size="44" />
           </div>
           <div class="w-full">
