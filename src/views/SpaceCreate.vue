@@ -243,6 +243,20 @@ watch(
   },
   { immediate: true }
 );
+
+function nextStep() {
+  router.push({
+    params: { step: currentStep.value + 1 },
+    query: route.query.snapshot ? { snapshot: route.query.snapshot } : {}
+  });
+}
+
+function previosStep() {
+  router.push({
+    params: { step: currentStep.value - 1 },
+    query: route.query.snapshot ? { snapshot: route.query.snapshot } : {}
+  });
+}
 </script>
 
 <template>
@@ -304,11 +318,7 @@ watch(
         >
           {{ preview ? $t('create.edit') : $t('create.preview') }}
         </BaseButton>
-        <BaseButton
-          v-else
-          @click="$router.push({ params: { step: currentStep - 1 } })"
-          class="block w-full mb-2"
-        >
+        <BaseButton v-else @click="previosStep" class="block w-full mb-2">
           {{ $t('back') }}
         </BaseButton>
 
@@ -328,11 +338,7 @@ watch(
         </BaseButton>
         <BaseButton
           v-else
-          @click="
-            web3Account
-              ? $router.push({ params: { step: currentStep + 1 } })
-              : (modalAccountOpen = true)
-          "
+          @click="web3Account ? nextStep() : (modalAccountOpen = true)"
           class="block w-full"
           :loading="validationLoading"
           :disabled="
