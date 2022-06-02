@@ -220,8 +220,8 @@ watch(
   () => web3Account.value,
   async () => {
     if (passValidation.value[0] === true) return;
-    validationLoading.value = true;
     if (web3Account.value && auth.isAuthenticated.value) {
+      validationLoading.value = true;
       try {
         const validationName = props.space.validation?.name ?? 'basic';
         const validationParams = props.space.validation?.params ?? {};
@@ -313,7 +313,6 @@ function previosStep() {
         <BaseButton
           v-if="currentStep === 1"
           @click="preview = !preview"
-          :loading="clientLoading || queryLoading"
           class="block w-full mb-2"
         >
           {{ preview ? $t('create.edit') : $t('create.preview') }}
