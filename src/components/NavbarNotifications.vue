@@ -30,6 +30,7 @@ onMounted(() => loadNotifications());
     @select="selectNotification"
     @openChange="dropdownOpen = !dropdownOpen"
     :items="notificationsSortedByTime"
+    placement="bottom-end"
   >
     <template v-slot:button>
       <UiSidebarButton
@@ -55,6 +56,7 @@ onMounted(() => loadNotifications());
               }
             ]"
             @select="selectThreedotItem"
+            placement="bottom-end"
           >
             <template v-slot:button>
               <BaseIcon

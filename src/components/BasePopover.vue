@@ -1,26 +1,19 @@
-<script setup>
-import { onMounted, ref, watch, computed } from 'vue';
-import { createPopper } from '@popperjs/core';
-import { usePointer, useMediaQuery, debouncedWatch } from '@vueuse/core';
+<script setup lang="ts">
+import { onMounted, ref, watch } from 'vue';
+import { createPopper, Placement } from '@popperjs/core';
 
-const props = defineProps({
-  options: Object
-});
+const props = defineProps<{
+  options: { placement: Placement; offset: number[] };
+  open: boolean;
+}>();
 
-const open = ref(false);
-const contentHovered = ref(false);
-const itemHovered = ref(false);
-const hovered = computed(() => contentHovered.value || itemHovered.value);
-
-const itemref = ref(null);
+const itemref = ref<HTMLElement | null>(null);
 const contentref = ref(null);
-
-const { pointerType } = usePointer();
-const isXLargeScreen = useMediaQuery('(min-width: 1280px)');
 
 let popperInstance;
 
 onMounted(() => {
+  if (!itemref.value || !contentref.value) return;
   popperInstance = createPopper(itemref.value, contentref.value, {
     placement: props.options.placement,
     modifiers: [
@@ -34,38 +27,21 @@ onMounted(() => {
   });
 });
 
-debouncedWatch(
-  hovered,
+watch(
+  () => props.open,
   () => {
-    open.value = hovered.value && pointerType.value === 'mouse';
-  },
-  { debounce: 500 }
+    popperInstance.setOptions({ placement: props.options.placement });
+  }
 );
-
-watch(open, () => {
-  if (isXLargeScreen.value) popperInstance.setOptions({ placement: 'bottom' });
-  else popperInstance.setOptions({ placement: 'bottom-start' });
-});
 </script>
 
 <template>
-  <div
-    ref="itemref"
-    @mouseenter="itemHovered = true"
-    @mouseleave="itemHovered = false"
-  >
+  <div ref="itemref" class="h-full">
     <slot name="item" />
   </div>
   <!-- @click.prevent.self is needed to prevent clicks inside the popover bubbling
    up to the parent -->
-  <div
-    ref="contentref"
-    v-show="open"
-    @click.prevent.self
-    @mouseenter="contentHovered = true"
-    @mouseleave="contentHovered = false"
-    class="z-50 min-w-[300px] bg-skin-header-bg border border-skin-border rounded-xl shadow-lg cursor-default"
-  >
+  <div ref="contentref" v-show="open" @click.prevent.self class="z-50">
     <slot name="content" />
   </div>
 </template>
