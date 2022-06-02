@@ -54,7 +54,7 @@
   "devDependencies": {
     "@iconify-json/heroicons-outline": "^1.1.1",
     "@tailwindcss/line-clamp": "^0.4.0",
-    "@types/node": "^17.0.36",
+    "@types/node": "^17.0.38",
     "@typescript-eslint/eslint-plugin": "^5.27.0",
     "@typescript-eslint/parser": "^5.26.0",
     "@vitejs/plugin-vue": "^2.3.2",
@@ -64,10 +64,10 @@
     "@vue/test-utils": "^2.0.0",
     "autoprefixer": "^10.4.7",
     "c8": "^7.11.3",
-    "cypress": "^9.7.0",
+    "cypress": "^10.0.1",
     "eslint-plugin-prettier": "^3.4.0",
     "eslint-plugin-vue": "^7.15.1",
-    "happy-dom": "^4.1.0",
+    "happy-dom": "^5.0.0",
     "husky": "^8.0.1",
     "postcss": "^8.4.14",
     "prettier": "^2.6.2",
@@ -78,7 +78,7 @@
     "unplugin-icons": "^0.14.3",
     "unplugin-vue-components": "^0.19.6",
     "vite": "^2.9.9",
-    "vitest": "^0.13.0"
+    "vitest": "^0.13.1"
   },
   "resolutions": {
     "ansi-regex": "^5.0.1",
