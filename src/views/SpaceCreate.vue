@@ -304,7 +304,11 @@ watch(
         >
           {{ preview ? $t('create.edit') : $t('create.preview') }}
         </BaseButton>
-        <BaseButton v-else @click="$router.go(-1)" class="block w-full mb-2">
+        <BaseButton
+          v-else
+          @click="$router.push({ params: { step: currentStep - 1 } })"
+          class="block w-full mb-2"
+        >
           {{ $t('back') }}
         </BaseButton>
 
