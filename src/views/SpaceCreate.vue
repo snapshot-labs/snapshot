@@ -49,18 +49,25 @@ const proposal = computed(() =>
 
 const sourceProposal = computed(() => route.params.sourceProposal);
 
+const timeSeconds = ref(parseInt((Date.now() / 1e3).toFixed()));
+
+function updateTime() {
+  timeSeconds.value = parseInt((Date.now() / 1e3).toFixed());
+}
+
 const dateStart = computed(() => {
   return props.space?.voting?.delay
-    ? parseInt((Date.now() / 1e3).toFixed()) + props.space.voting.delay
+    ? timeSeconds.value + props.space.voting.delay
     : form.value.start;
 });
 
 const dateEnd = computed(() => {
+  const threeDays = 259200;
   return props.space?.voting?.period
     ? dateStart.value + props.space.voting.period
     : userSelectedDateEnd.value
     ? form.value.end
-    : dateStart.value + 259200;
+    : dateStart.value + threeDays;
 });
 
 const isValid = computed(() => {
@@ -91,12 +98,9 @@ async function handleSubmit() {
     .filter(choiceText => choiceText.length > 0);
   clonedForm.metadata.network = props.space.network;
   clonedForm.metadata.strategies = props.space.strategies;
-  clonedForm.start = props.space.voting?.delay
-    ? parseInt((Date.now() / 1e3).toFixed()) + props.space.voting.delay
-    : dateStart.value;
-  clonedForm.end = props.space.voting?.period
-    ? form.value.start + props.space.voting.period
-    : dateEnd.value;
+  updateTime();
+  clonedForm.start = dateStart.value;
+  clonedForm.end = dateEnd.value;
   const result = await send(props.space, 'proposal', clonedForm);
   console.log('Result', result);
   if (result.id) {
