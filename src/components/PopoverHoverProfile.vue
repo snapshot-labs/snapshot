@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { explorerUrl } from '@/helpers/utils';
 import { useApp } from '@/composables/useApp';
+import { useMediaQuery } from '@vueuse/core';
+
+const isXLargeScreen = useMediaQuery('(min-width: 1280px)');
 
 defineProps<{
   address: string;
@@ -22,7 +25,12 @@ const { domain } = useApp();
 </script>
 
 <template>
-  <PopoverHover :options="{ offset: [0, 12], placement: 'bottom-start' }">
+  <PopoverHover
+    :options="{
+      offset: [0, 12],
+      placement: isXLargeScreen ? 'bottom' : 'bottom-start'
+    }"
+  >
     <template v-slot:item>
       <slot />
     </template>

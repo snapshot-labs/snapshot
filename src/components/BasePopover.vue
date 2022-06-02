@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue';
 import { createPopper, Placement } from '@popperjs/core';
-import { useMediaQuery } from '@vueuse/core';
 
 const props = defineProps<{
   options: { placement: Placement; offset: number[] };
@@ -10,8 +9,6 @@ const props = defineProps<{
 
 const itemref = ref<HTMLElement | null>(null);
 const contentref = ref(null);
-
-const isXLargeScreen = useMediaQuery('(min-width: 1280px)');
 
 let popperInstance;
 
@@ -33,9 +30,7 @@ onMounted(() => {
 watch(
   () => props.open,
   () => {
-    if (isXLargeScreen.value)
-      popperInstance.setOptions({ placement: 'bottom' });
-    else popperInstance.setOptions({ placement: 'bottom-start' });
+    popperInstance.setOptions({ placement: props.options.placement });
   }
 );
 </script>

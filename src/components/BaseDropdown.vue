@@ -1,14 +1,19 @@
 <script setup lang="ts">
-import { ref, onBeforeUnmount } from 'vue';
+import { ref, onBeforeUnmount, withDefaults } from 'vue';
+import { Placement } from '@popperjs/core';
 
-defineProps<{
-  items:
-    | {
-        action: string | any;
-        text: string;
-      }
-    | Record<string, any>[];
-}>();
+withDefaults(
+  defineProps<{
+    items:
+      | {
+          action: string | any;
+          text: string;
+        }
+      | Record<string, any>[];
+    placement?: Placement;
+  }>(),
+  { placement: 'bottom-end' }
+);
 
 const emit = defineEmits(['select', 'openChange']);
 
@@ -32,10 +37,7 @@ onBeforeUnmount(() => window.removeEventListener('click', close));
 
 <template>
   <div ref="dropdownEl" class="h-full">
-    <BasePopover
-      :options="{ offset: [0, 12], placement: 'top-end' }"
-      :open="open"
-    >
+    <BasePopover :options="{ offset: [0, 12], placement }" :open="open">
       <template #item>
         <div
           @click="open = !open"
