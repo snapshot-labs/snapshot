@@ -58,7 +58,7 @@
   "confirmRemove": "Êtes-vous sûr de vouloir supprimer votre délégation à",
   "removeSpace": "pour l'espace {0}",
   "confirmVote": "Confirmez votre vote",
-  "voteOverview": "Vote overview",
+  "voteOverview": "Aperçu du vote",
   "options": "Option(s)",
   "votingPower": "Votre pouvoir de vote",
   "receipt": "Reçu",
@@ -101,7 +101,7 @@
   "createdBy": "Par {0}",
   "startIn": "début {0}",
   "endIn": "fin {1}",
-  "proposalTimeLeft": "{0} gauche",
+  "proposalTimeLeft": "{0} restant(s)",
   "endedAgo": "terminé {0}",
   "proposalBy": "par {0}",
   "endDate": "fin {0}",
@@ -302,18 +302,18 @@
     "createASpace": "Créer un espace",
     "registerEnsButton": "Enregistrer",
     "supportedEnsTLDs": "Extensions de domaine prises en charge",
-    "helpDocsAndDiscordLinks": "Not sure how to create a space? Learn more in the {docs} or join Snapshot {discord}.",
-    "setSpaceController": "Space controller",
-    "setSpaceControllerInfo": " The space controller is the account that will be able to manage the space settings.",
-    "setSpaceControllerInfoGnosisSafe": "When creating a space with a Gnosis Safe it's recommended to set the safe address as the space controller. If you don't, you need to follow some additional steps. {link}",
+    "helpDocsAndDiscordLinks": "Vous ne savez pas comment créer un espace ? Apprenez-en plus dans le {docs} ou joignez-vous à Snapshot {discord}.",
+    "setSpaceController": "Controller de l’espace",
+    "setSpaceControllerInfo": "Le controller de l'espace est le compte qui pourra gérer les paramètres de l'espace.",
+    "setSpaceControllerInfoGnosisSafe": "Lors de la création d'un espace avec un Gnosis Safe, il est recommandé de définir l'adresse du Safe comme controller de l'espace. Si non, vous devez suivre quelques étapes supplémentaires. {link}",
     "editSpaceController": "Modifier le controller sur ENS",
     "setController": "Définir le controller",
-    "explainControllerAndEns": "Setting the controller requires a transaction on the {network} which will add a \"snapshot\" TEXT record to your ENS domain.",
+    "explainControllerAndEns": "Cette action nécessite une transaction sur {network} qui ajoutera une entrée “snapshot” TEXT à votre domaine ENS.",
     "confirmToSetAddress": "Êtes-vous sûr de vouloir choisir {address} comme le controller de l’espace?",
     "controllerHasAuthority": "Le controller a toute autorité sur les paramètres de l’espace",
     "controller": "Controller",
     "selectEnsForSpace": "Choisir l’adresse ENS",
-    "spaceOwnerAddressPlaceHolder": "e.g. {address}",
+    "spaceOwnerAddressPlaceHolder": "ex : {address}",
     "controllerAddress": "L’adresse du controller",
     "updateController": "Mettre à jour le controller",
     "seeOnEns": "Voir sur ENS",
@@ -321,8 +321,8 @@
     "setSpaceProfile": "Personnaliser votre espace",
     "waitForTransaction": "La transaction doit être confirmée avant de pouvoir créer votre espace. {txUrl}",
     "pleaseWaitMessage": "Cela peut prendre quelques minutes, veuillez attendre pendant que la transaction est confirmée",
-    "notControllerAddress": "Please connect with the controller address {wallet} to create the space.",
-    "fillCurrentAccount": "Use current account"
+    "notControllerAddress": "Veuillez vous connecter avec l'adresse du controller {wallet} pour créer l'espace.",
+    "fillCurrentAccount": "Utiliser le compte actuel"
   },
   "profile": {
     "buttonEdit": "Modifier le profil",
@@ -338,7 +338,7 @@
       "delegateTo": "Déléguer à",
       "delegateFor": "Délégue à",
       "noDelegatorsMessage": "Aucune délégation sur {network}",
-      "notSupportedNetwork": "Delegation currently isn't supported on {network} "
+      "notSupportedNetwork": "Actuellement, la délégation n’est pas compatible sur {network} "
     },
     "activity": {
       "header": "Activité",
@@ -346,7 +346,7 @@
       "today": "Aujourd'hui",
       "thisWeek": "Cette semaine",
       "older": "Plus ancien",
-      "noActivity": "No activity yet"
+      "noActivity": "Pas encore d'activité"
     },
     "settings": {
       "header": "Modifier le profil",
@@ -458,7 +458,7 @@
       "question": "Cette proposition a-t-elle été adoptée et satisfait-elle aux",
       "criteria": "critères d'acceptation ?",
       "proposalPassed": "Did the proposal pass?",
-      "expired": "The proposal has expired"
+      "expired": "La proposition a expiré"
     }
   },
   "poap": {
@@ -537,8 +537,8 @@
   },
   "unsupportedNetwork": {
     "unsupportedNetwork": "Réseau incompatible",
-    "switchNetworkToNetwork": "To continue, you need to change the network in your wallet to {network}, or go to snapshot demo website.",
-    "switchToNetwork": "Switch to {network}",
-    "goToDemoSite": "Go to demo website"
+    "switchNetworkToNetwork": "Pour continuer, vous devez changer le réseau de votre wallet à {network}.",
+    "switchToNetwork": "Passer au réseau {network}",
+    "goToDemoSite": "Accéder le site démo"
   }
 }

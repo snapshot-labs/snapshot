@@ -537,7 +537,7 @@
   },
   "unsupportedNetwork": {
     "unsupportedNetwork": "対応していないネットワーク",
-    "switchNetworkToNetwork": "To continue, you need to change the network in your wallet to {network}, or go to snapshot demo website.",
+    "switchNetworkToNetwork": "To continue, you need to change the network in your wallet to {network}.",
     "switchToNetwork": "Switch to {network}",
     "goToDemoSite": "Go to demo website"
   }
