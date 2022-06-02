@@ -22,7 +22,7 @@ watchEffect(() => {
 
 <template>
   <div>
-    <PopoverProfile
+    <PopoverHoverProfile
       :address="address"
       :profile="profile"
       :proposal="proposal"
@@ -52,6 +52,6 @@ watchEffect(() => {
           />
         </div>
       </BaseLink>
-    </PopoverProfile>
+    </PopoverHoverProfile>
   </div>
 </template>

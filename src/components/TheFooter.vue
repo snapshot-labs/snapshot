@@ -52,7 +52,9 @@ const socials = [
       <UiSidebarButton @click="toggleUserTheme" :aria-label="$t('toggleSkin')">
         <BaseIcon size="20" class="text-skin-link" :name="getThemeIcon()" />
       </UiSidebarButton>
-      <SelectLanguageButton />
+      <DropdownLanguages>
+        <ButtonLanguage />
+      </DropdownLanguages>
     </div>
     <div
       class="pt-3 md:pt-0 md:pr-2 md:order-first whitespace-nowrap opacity-40"

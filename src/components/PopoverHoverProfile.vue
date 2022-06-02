@@ -22,12 +22,14 @@ const { domain } = useApp();
 </script>
 
 <template>
-  <BasePopover :options="{ offset: [0, 12], placement: 'bottom-start' }">
+  <PopoverHover :options="{ offset: [0, 12], placement: 'bottom-start' }">
     <template v-slot:item>
       <slot />
     </template>
     <template v-slot:content>
-      <div class="w-[400px] p-4">
+      <div
+        class="w-[400px] p-4 min-w-[300px] bg-skin-header-bg border border-skin-border rounded-xl shadow-lg cursor-default"
+      >
         <div class="flex">
           <div>
             <BaseAvatar :address="address" size="69" />
@@ -74,5 +76,5 @@ const { domain } = useApp();
         </div>
       </div>
     </template>
-  </BasePopover>
+  </PopoverHover>
 </template>
