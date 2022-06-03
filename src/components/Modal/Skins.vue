@@ -61,7 +61,7 @@ function select(key) {
           @click="select(skin)"
         />
 
-        <NoResults v-if="Object.keys(filteredSkins).length < 1" />
+        <BaseNoResults v-if="Object.keys(filteredSkins).length < 1" />
       </div>
     </div>
   </BaseModal>

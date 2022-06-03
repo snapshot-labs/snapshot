@@ -28,7 +28,7 @@ defineEmits(['close', 'set']);
     </template>
 
     <div class="p-4">
-      <BaseMessageBlock level="info" class="mb-3">
+      <BaseMessage level="info" class="mb-3">
         {{
           $tc('settings.currentSpaceControllerIs', {
             address: shorten(currentSpaceController)
@@ -39,7 +39,7 @@ defineEmits(['close', 'set']);
             {{ $t('setup.seeOnEns') }}
           </BaseLink>
         </div>
-      </BaseMessageBlock>
+      </BaseMessage>
 
       {{ $t('settings.newController') }}
 

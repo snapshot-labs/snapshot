@@ -57,7 +57,7 @@ onMounted(() => {
       <BaseButton
         class="pl-3 pr-0 w-full md:max-w-[420px] focus-within:!border-skin-link"
       >
-        <SearchWithFilters />
+        <TheSearchBar />
       </BaseButton>
       <BaseDropdown
         class="w-full xs:w-auto md:ml-2 sm:mr-2 mt-2 md:mt-0"
@@ -167,7 +167,7 @@ onMounted(() => {
           :key="i"
         ></div>
       </div>
-      <NoResults
+      <BaseNoResults
         v-else-if="Object.keys(orderedSpacesByCategory).length < 1"
         useBlock
       />

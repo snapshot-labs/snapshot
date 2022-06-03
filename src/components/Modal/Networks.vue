@@ -50,7 +50,7 @@ function select(key) {
         >
           <BlockNetwork :network="network" />
         </div>
-        <NoResults v-if="Object.keys(networks).length < 1" />
+        <BaseNoResults v-if="Object.keys(networks).length < 1" />
       </div>
     </div>
   </BaseModal>

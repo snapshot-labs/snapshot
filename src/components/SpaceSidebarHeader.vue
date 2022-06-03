@@ -64,7 +64,7 @@ watchEffect(() => {
 
     <div class="flex justify-center gap-x-2">
       <ButtonFollow :space="space" />
-      <UiSidebarButton
+      <ButtonSidebar
         class="inline"
         v-if="isFollowing"
         @click="toggleSubscription()"
@@ -76,7 +76,7 @@ watchEffect(() => {
           class="text-skin-link"
           :name="notificationIcon"
         />
-      </UiSidebarButton>
+      </ButtonSidebar>
     </div>
   </div>
 </template>
