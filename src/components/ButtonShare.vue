@@ -1,5 +1,5 @@
 <template>
-  <button class="pr-1 select-none flex cursor-pointer">
+  <button class="pr-1 select-none flex cursor-pointer hover:text-skin-link">
     <BaseIcon name="upload" size="25" />
     <span class="ml-1 hidden md:block">{{ $t('share') }}</span>
   </button>

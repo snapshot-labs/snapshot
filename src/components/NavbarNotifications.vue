@@ -30,9 +30,10 @@ onMounted(() => loadNotifications());
     @select="selectNotification"
     @openChange="dropdownOpen = !dropdownOpen"
     :items="notificationsSortedByTime"
+    placement="bottom-end"
   >
     <template v-slot:button>
-      <UiSidebarButton
+      <ButtonSidebar
         class="!h-[46px] !w-[46px] relative"
         :class="{ '!border-skin-link': dropdownOpen }"
       >
@@ -41,7 +42,7 @@ onMounted(() => loadNotifications());
           v-if="notificationsSortedByTime.some(n => n.seen === false)"
           class="absolute right-0 bottom-0 !bg-red"
         />
-      </UiSidebarButton>
+      </ButtonSidebar>
     </template>
     <template v-slot:header>
       <div class="px-3 my-2 min-w-[320px] md:min-w-[400px]">
@@ -55,6 +56,7 @@ onMounted(() => loadNotifications());
               }
             ]"
             @select="selectThreedotItem"
+            placement="bottom-end"
           >
             <template v-slot:button>
               <BaseIcon

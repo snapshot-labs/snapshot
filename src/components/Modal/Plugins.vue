@@ -83,7 +83,7 @@ watch(open, () => {
             @click="selectPlugin(plugin)"
           />
 
-          <NoResults
+          <BaseNoResults
             v-if="Object.keys(filterPlugins(searchInput)).length < 1"
           />
         </div>

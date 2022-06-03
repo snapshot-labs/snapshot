@@ -87,7 +87,7 @@ watch(open, () => {
             @click="select(valId)"
           />
 
-          <NoResults v-if="Object.keys(validations).length < 1" />
+          <BaseNoResults v-if="Object.keys(validations).length < 1" />
         </div>
       </div>
     </div>

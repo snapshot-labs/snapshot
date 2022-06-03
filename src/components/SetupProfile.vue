@@ -170,7 +170,7 @@ async function handleSubmit() {
           {{ $t('createButton') }}
         </BaseButton>
         <div class="!mt-3">
-          <BaseMessageBlock
+          <BaseMessage
             v-if="
               uriAddress &&
               uriAddress !== web3Account &&
@@ -182,13 +182,13 @@ async function handleSubmit() {
             {{
               $t('setup.notControllerAddress', { wallet: shorten(uriAddress) })
             }}
-          </BaseMessageBlock>
-          <BaseMessageBlock
+          </BaseMessage>
+          <BaseMessage
             v-else-if="debouncedShowPleaseWaitMessage && creatingSpace"
             level="info"
           >
             {{ $t('setup.pleaseWaitMessage') }}
-          </BaseMessageBlock>
+          </BaseMessage>
         </div>
       </div>
     </BaseBlock>

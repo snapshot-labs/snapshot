@@ -23,7 +23,7 @@ watchEffect(() => {
 
 <template>
   <div>
-    <PopoverProfile
+    <PopoverHoverProfile
       :address="address"
       :profile="profile"
       :proposal="proposal"
@@ -46,6 +46,6 @@ watchEffect(() => {
           <BaseBadge :address="address" :members="space?.members" />
         </div>
       </BaseLink>
-    </PopoverProfile>
+    </PopoverHoverProfile>
   </div>
 </template>
