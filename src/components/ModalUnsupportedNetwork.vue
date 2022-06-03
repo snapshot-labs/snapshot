@@ -81,7 +81,7 @@ const switchToDefaultNetwork = async () => {
     <div class="m-4 space-y-2" v-if="usingMetaMask">
       <BaseButton
         :loading="switchingChain"
-        class="button-outline w-full"
+        class="w-full"
         primary
         @click="switchToDefaultNetwork"
       >
@@ -93,7 +93,7 @@ const switchToDefaultNetwork = async () => {
       </BaseButton>
       <div v-if="defaultNetwork === '1'">
         <BaseLink link="https://demo.snapshot.org" hide-external-icon>
-          <BaseButton class="button-outline w-full">
+          <BaseButton class="w-full">
             {{ $t('unsupportedNetwork.goToDemoSite') }}
           </BaseButton>
         </BaseLink>
