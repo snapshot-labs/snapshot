@@ -48,7 +48,7 @@ function select(key) {
           :key="network.key"
           @click="select(network.key)"
         >
-          <BlockNetwork :network="network" />
+          <BaseNetworkItem :network="network" />
         </div>
         <BaseNoResults v-if="Object.keys(networks).length < 1" />
       </div>
