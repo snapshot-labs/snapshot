@@ -107,7 +107,7 @@ onMounted(() => {
             :key="item.key"
             class="border-b first:border-t md:border-b-0 md:first:border-t-0"
           >
-            <BlockStrategy :strategy="item" />
+            <BaseStrategyItem :strategy="item" />
           </router-link>
         </div>
       </template>
