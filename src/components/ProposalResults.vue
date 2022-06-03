@@ -32,7 +32,7 @@ const ts = Number((Date.now() / 1e3).toFixed());
     :title="ts >= proposal.end ? $t('results') : $t('currentResults')"
   >
     <div class="space-y-3">
-      <ResultsItem
+      <ProposalResultsItem
         v-for="choice in choices"
         :key="choice.i"
         :choice="choice"

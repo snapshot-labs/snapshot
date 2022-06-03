@@ -506,7 +506,7 @@ const truncateMarkdownBody = computed(() => {
           :proposalState="proposal.scores_state"
           @retry="loadProposal()"
         />
-        <BlockResults
+        <ProposalResults
           v-else
           :loaded="loadedResults"
           :space="space"
