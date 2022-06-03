@@ -80,7 +80,7 @@ watch(open, () => {
       <div v-if="!input.name">
         <LoadingRow v-if="loadingValidations" block />
         <div v-else class="space-y-3">
-          <BlockValidation
+          <BaseValidationItem
             :validation="valId"
             v-for="valId in validations"
             :key="valId"
