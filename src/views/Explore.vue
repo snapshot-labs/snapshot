@@ -138,7 +138,7 @@ onMounted(() => {
             :key="item.key"
             class="border-b first:border-t md:border-b-0 md:first:border-t-0"
           >
-            <BlockPlugin :plugin="item" />
+            <BasePluginItem :plugin="item" />
           </div>
         </div>
       </template>
