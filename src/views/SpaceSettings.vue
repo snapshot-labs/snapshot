@@ -395,13 +395,13 @@ async function handleSetRecord() {
                   {{ $t(`settings.avatar`) }}
                 </template>
                 <template v-slot:info>
-                  <ImageUpload
+                  <InputUploadImage
                     class="!ml-2"
                     @input="setAvatarUrl"
                     @loading="setUploadLoading"
                   >
                     {{ $t('upload') }}
-                  </ImageUpload>
+                  </InputUploadImage>
                 </template>
               </UiInput>
               <UiInput
