@@ -80,7 +80,7 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
         <div class="my-3">
           {{ $t('setup.orReigsterNewEns') }}
         </div>
-        <RegisterENS
+        <SetupDomainRegister
           v-model="inputDomain"
           @waitForRegistration="waitForRegistration"
         />
@@ -89,7 +89,7 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
         <div class="mb-3">
           {{ $t('setup.toCreateASpace') }}
         </div>
-        <RegisterENS
+        <SetupDomainRegister
           v-model="inputDomain"
           @waitForRegistration="waitForRegistration"
         />

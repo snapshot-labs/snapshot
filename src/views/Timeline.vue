@@ -195,12 +195,12 @@ function selectState(e) {
             <BaseButton>{{ $t('joinSpaces') }}</BaseButton>
           </router-link>
         </div>
-        <NoResults
+        <BaseNoResults
           class="py-4 mb-0"
           v-else-if="store.timeline.proposals.length < 1"
         />
         <div v-else>
-          <TimelineProposalPreview
+          <BaseProposalPreviewItem
             v-for="(proposal, i) in store.timeline.proposals"
             :key="i"
             :proposal="proposal"
