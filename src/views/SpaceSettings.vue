@@ -355,9 +355,9 @@ async function handleSetRecord() {
       </div>
       <LoadingRow v-if="!loaded" block />
       <BaseBlock v-else-if="!currentTextRecord">
-        <BaseMessageBlock level="warning" class="mb-4">
+        <BaseMessage level="warning" class="mb-4">
           {{ $t('settings.needToSetEnsText') }}
-        </BaseMessageBlock>
+        </BaseMessage>
         <BaseButton
           @click="modalControllerEditOpen = true"
           :loading="settingENSRecord"
@@ -704,14 +704,14 @@ async function handleSetRecord() {
     </template>
 
     <template #sidebar-right>
-      <BaseMessageBlock
+      <BaseMessage
         level="info"
         v-if="
           !(isSpaceController || isSpaceAdmin || ensOwner) && currentTextRecord
         "
       >
         {{ $t('settings.connectWithSpaceOwner') }}
-      </BaseMessageBlock>
+      </BaseMessage>
       <div v-else-if="loaded" class="lg:fixed lg:w-[318px]">
         <BaseBlock>
           <BaseButton
