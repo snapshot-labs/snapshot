@@ -43,21 +43,21 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="rounded-3xl overflow-hidden w-full">
+  <div class="rounded-3xl w-full">
     <div
-      class="border border-skin-border transition-colors rounded-3xl outline-none leading-[42px] text-left w-full flex px-3 focus-within:border-skin-link bg-skin-bg relative z-10"
+      class="border border-skin-border transition-colors rounded-3xl outline-none leading-[42px] text-left w-full flex px-3 focus-within:border-skin-text bg-skin-bg relative z-10"
       :class="{ '!border-red': !!error }"
     >
       <div class="text-skin-text mr-2 whitespace-nowrap">
         <slot name="label" />
       </div>
-      <div
+      <button
         v-if="$slots.selected"
-        class="flex-auto whitespace-nowrap overflow-x-auto text-skin-link"
+        class="flex-auto whitespace-nowrap overflow-x-auto text-skin-link outline-none text-left"
         :class="{ 'cursor-not-allowed text-skin-border': disabled }"
       >
         <slot name="selected" />
-      </div>
+      </button>
       <input
         v-else
         :value="modelValue"
