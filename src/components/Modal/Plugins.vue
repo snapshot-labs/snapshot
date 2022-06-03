@@ -76,7 +76,7 @@ watch(open, () => {
       <div v-if="!selectedPlugin?.key">
         <LoadingRow v-if="loadingPluginsSpacesCount" block />
         <div v-else class="space-y-3">
-          <BlockPlugin
+          <BasePluginItem
             :plugin="plugin"
             v-for="(plugin, i) in filterPlugins(searchInput)"
             :key="i"

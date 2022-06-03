@@ -394,14 +394,14 @@ const truncateMarkdownBody = computed(() => {
           v-if="proposal?.discussion"
           :discussionLink="proposal.discussion"
         />
-        <BlockCastVote
+        <SpaceProposalVote
           v-if="proposal?.state === 'active'"
           :proposal="proposal"
           v-model="selectedChoices"
           @open="modalOpen = true"
           @clickVote="clickVote"
         />
-        <BlockVotes
+        <SpaceProposalVotes
           @loadVotes="loadMore(loadMoreVotes)"
           v-if="proposal && !loadingResultsFailed"
           :loaded="loadedVotes"
@@ -499,7 +499,7 @@ const truncateMarkdownBody = computed(() => {
             </div>
           </div>
         </BaseBlock>
-        <BlockResultsError
+        <SpaceProposalResultsError
           v-if="loadingResultsFailed"
           :isAdmin="isAdmin"
           :proposalId="proposal.id"
