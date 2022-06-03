@@ -54,7 +54,7 @@ function select(key) {
           </BaseBlock>
         </div>
 
-        <BlockSkin
+        <BaseSkinItem
           :skin="skin"
           v-for="skin in filteredSkins"
           :key="skin"
