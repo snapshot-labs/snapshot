@@ -306,7 +306,7 @@ const truncateMarkdownBody = computed(() => {
                 :proposal="proposal"
                 hide-avatar
               />
-              <ShareButton
+              <ButtonShare
                 v-if="sharingIsSupported"
                 @click="startShare(space, proposal)"
               />
@@ -317,7 +317,7 @@ const truncateMarkdownBody = computed(() => {
                 :items="sharingItems"
               >
                 <template v-slot:button>
-                  <ShareButton />
+                  <ButtonShare />
                 </template>
                 <template v-slot:item="{ item }">
                   <BaseIcon
