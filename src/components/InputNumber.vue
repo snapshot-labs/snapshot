@@ -1,27 +1,25 @@
-<script setup>
-import { ref } from 'vue';
+<script setup lang="ts">
+import { ref, watch } from 'vue';
 
-const props = defineProps({
-  modelValue: Number
-});
+const props = defineProps<{
+  modelValue?: number;
+  definition: any;
+  error: string;
+}>();
 
 const emit = defineEmits(['update:modelValue']);
 
-const input = ref('');
+const input = ref(props.modelValue || props.definition.default);
 
-function handleInput() {
-  if (!input.value) return emit('update:modelValue', undefined);
-  emit('update:modelValue', parseFloat(input.value));
-}
-
-if (props.modelValue) input.value = props.modelValue.toString();
+watch(input, () => emit('update:modelValue', Number(input.value)));
 </script>
 
 <template>
-  <input
+  <BaseInput
     v-model="input"
-    @input="handleInput"
     type="number"
-    class="input w-full"
+    :definition="definition"
+    :input="input"
+    :error="error"
   />
 </template>

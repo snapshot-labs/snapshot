@@ -43,9 +43,9 @@ onMounted(() => {
 
 <template>
   <div>
-    <SBaseLabel v-if="title || definition?.title">
+    <BaseLabel v-if="title || definition?.title">
       {{ title ?? definition.title }}
-    </SBaseLabel>
+    </BaseLabel>
 
     <div>
       <div class="z-10 relative">
