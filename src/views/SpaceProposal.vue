@@ -499,7 +499,7 @@ const truncateMarkdownBody = computed(() => {
             </div>
           </div>
         </BaseBlock>
-        <BlockResultsError
+        <SpaceProposalResultsError
           v-if="loadingResultsFailed"
           :isAdmin="isAdmin"
           :proposalId="proposal.id"
