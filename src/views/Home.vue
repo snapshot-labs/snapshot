@@ -167,7 +167,7 @@ onMounted(() => {
           :key="i"
         ></div>
       </div>
-      <NoResults
+      <BaseNoResults
         v-else-if="Object.keys(orderedSpacesByCategory).length < 1"
         useBlock
       />

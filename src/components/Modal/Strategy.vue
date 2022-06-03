@@ -173,7 +173,7 @@ const strategyIsValid = computed(() =>
           :key="strategy.id"
           @click="selectStrategy(strategy.id)"
         />
-        <NoResults v-if="strategiesResults.length < 1" />
+        <BaseNoResults v-if="strategiesResults.length < 1" />
       </div>
     </div>
     <template v-if="input.name" v-slot:footer>

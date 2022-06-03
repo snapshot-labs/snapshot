@@ -142,7 +142,7 @@ onMounted(() => {
           </div>
         </div>
       </template>
-      <NoResults useBlock v-if="items.length < 1 && !loading" />
+      <BaseNoResults useBlock v-if="items.length < 1 && !loading" />
     </div>
   </BaseContainer>
   <div ref="endElement" />
