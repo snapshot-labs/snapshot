@@ -25,7 +25,7 @@ const { domain } = useApp();
 </script>
 
 <template>
-  <PopoverHover
+  <BasePopoverHover
     :options="{
       offset: [0, 12],
       placement: isXLargeScreen ? 'bottom' : 'bottom-start'
@@ -84,5 +84,5 @@ const { domain } = useApp();
         </div>
       </div>
     </template>
-  </PopoverHover>
+  </BasePopoverHover>
 </template>
