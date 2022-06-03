@@ -23,7 +23,7 @@ function addItem() {
 <!-- TODO: Fix template -->
 <template>
   <div v-for="(item, i) in input" :key="i">
-    <SBaseInput :definition="{ title: '' }" v-model="input[i]" :error="error" />
+    <BaseInput :definition="{ title: '' }" v-model="input[i]" :error="error" />
   </div>
   <a @click="addItem">Add</a>
 </template>

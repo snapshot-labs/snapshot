@@ -63,7 +63,7 @@ const handleDrop = e => {
         v-text="form.name || $t('create.untitled')"
         class="w-full break-all"
       />
-      <SBaseInput
+      <BaseInput
         v-else
         v-model="form.name"
         :title="$t('create.proposalTitle')"
@@ -136,7 +136,7 @@ const handleDrop = e => {
         <BaseMarkdown :body="form.body" />
       </div>
 
-      <SBaseInput
+      <BaseInput
         v-if="!preview"
         v-model.trim="form.discussion"
         placeholder="e.g. https://forum.balancer.fi/proposal..."

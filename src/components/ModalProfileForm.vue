@@ -92,7 +92,7 @@ watch(
         </InputUploadAvatar>
       </div>
 
-      <SBaseInput
+      <BaseInput
         v-model="form.name"
         :title="$t('profile.settings.name')"
         type="text"
