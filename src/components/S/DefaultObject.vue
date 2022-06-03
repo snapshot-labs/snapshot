@@ -5,7 +5,7 @@ import { useValidationErrors } from '@/composables/useValidationErrors';
 import * as DefaultObject from './DefaultObject.vue';
 import DefaultArray from './DefaultArray.vue';
 import InputString from './InputString.vue';
-import InputNumber from './InputNumber.vue';
+import InputNumber from '@/components/InputNumber.vue';
 import DefaultBoolean from './DefaultBoolean.vue';
 
 const props = defineProps<{
