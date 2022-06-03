@@ -200,7 +200,7 @@ function selectState(e) {
           v-else-if="store.timeline.proposals.length < 1"
         />
         <div v-else>
-          <TimelineProposalPreview
+          <BaseProposalPreviewItem
             v-for="(proposal, i) in store.timeline.proposals"
             :key="i"
             :proposal="proposal"
