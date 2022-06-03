@@ -170,7 +170,7 @@ onMounted(() => {
         <TextAutolinker :text="space.about" />
       </BaseBlock>
 
-      <NoProposals
+      <SpaceProposalsNoProposals
         v-if="!loadingData && store.space.proposals.length < 1"
         class="mt-2"
         :space="space"
