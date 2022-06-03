@@ -167,7 +167,7 @@ const strategyIsValid = computed(() =>
     <div v-else class="my-4 mx-0 md:mx-4 min-h-[300px]">
       <LoadingRow v-if="loadingStrategies" block />
       <div v-else class="space-y-3">
-        <BlockStrategy
+        <BaseStrategyItem
           :strategy="strategy"
           v-for="strategy in strategiesResults"
           :key="strategy.id"
