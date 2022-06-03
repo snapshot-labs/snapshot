@@ -394,7 +394,7 @@ const truncateMarkdownBody = computed(() => {
           v-if="proposal?.discussion"
           :discussionLink="proposal.discussion"
         />
-        <BlockCastVote
+        <SpaceProposalVote
           v-if="proposal?.state === 'active'"
           :proposal="proposal"
           v-model="selectedChoices"
