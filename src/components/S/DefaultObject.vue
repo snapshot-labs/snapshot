@@ -4,7 +4,7 @@ import { useValidationErrors } from '@/composables/useValidationErrors';
 
 import * as DefaultObject from './DefaultObject.vue';
 import DefaultArray from './DefaultArray.vue';
-import InputString from './InputString.vue';
+import InputString from '@/components/InputString.vue';
 import InputNumber from '@/components/InputNumber.vue';
 import DefaultBoolean from './DefaultBoolean.vue';
 
