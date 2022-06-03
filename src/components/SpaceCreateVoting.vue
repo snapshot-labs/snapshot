@@ -127,7 +127,7 @@ watch(
           <ButtonSidebar
             v-if="!disableChoiceEdit"
             @click="addChoices(1)"
-            class="!w-[48px] !h-[48px]"
+            class="!w-[42px] !h-[42px]"
           >
             <BaseIcon size="20" name="plus" class="text-skin-link" />
           </ButtonSidebar>
