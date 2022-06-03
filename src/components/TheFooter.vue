@@ -46,12 +46,12 @@ const socials = [
       </span>
     </div>
     <div class="flex space-x-2">
-      <UiSidebarButton @click="modalAboutOpen = true">
+      <ButtonSidebar @click="modalAboutOpen = true">
         <span class="text-skin-link">?</span>
-      </UiSidebarButton>
-      <UiSidebarButton @click="toggleUserTheme" :aria-label="$t('toggleSkin')">
+      </ButtonSidebar>
+      <ButtonSidebar @click="toggleUserTheme" :aria-label="$t('toggleSkin')">
         <BaseIcon size="20" class="text-skin-link" :name="getThemeIcon()" />
-      </UiSidebarButton>
+      </ButtonSidebar>
 
       <ButtonLanguage />
     </div>

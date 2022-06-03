@@ -44,14 +44,14 @@ watchEffect(() => {
     <BaseContainer class="pl-0 pr-3 sm:!px-4">
       <div class="flex items-center py-[12px]">
         <div class="flex-auto flex items-center ml-3">
-          <UiSidebarButton
+          <ButtonSidebar
             v-if="!domain"
             @click="showSidebar = !showSidebar"
             class="border-0 sm:hidden -ml-3"
           >
             <BaseIcon v-if="showSidebar" name="close" size="20" />
             <BaseIcon v-else class="rotate-90" name="threedots" size="20" />
-          </UiSidebarButton>
+          </ButtonSidebar>
           <router-link
             :to="{ path: '/' }"
             class="flex items-center sm:-ml-3"

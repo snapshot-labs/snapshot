@@ -124,13 +124,13 @@ watch(
           </draggable>
         </div>
         <div v-if="!disableChoiceEdit" class="w-[48px] flex items-end ml-2">
-          <UiSidebarButton
+          <ButtonSidebar
             v-if="!disableChoiceEdit"
             @click="addChoices(1)"
             class="!w-[48px] !h-[48px]"
           >
             <BaseIcon size="20" name="plus" class="text-skin-link" />
-          </UiSidebarButton>
+          </ButtonSidebar>
         </div>
       </div>
     </BaseBlock>

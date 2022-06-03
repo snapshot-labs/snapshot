@@ -11,9 +11,9 @@ const modalLangOpen = ref(false);
 
 <template>
   <DropdownLanguages>
-    <UiSidebarButton v-if="small">
+    <ButtonSidebar v-if="small">
       <BaseIcon size="20" name="earth" class="text-skin-link" />
-    </UiSidebarButton>
+    </ButtonSidebar>
     <BaseButton v-else class="flex items-center" @click="modalLangOpen = true">
       <BaseIcon size="24" name="earth" class="mr-2" />
       {{ languages[$i18n.locale]?.nativeName ?? languages[$i18n.locale]?.name }}

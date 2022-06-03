@@ -86,9 +86,9 @@ onMounted(() => {
   >
     <div v-if="!domain" class="flex items-center relative px-2">
       <router-link :to="{ name: 'home' }">
-        <UiSidebarButton class="!border-0">
+        <ButtonSidebar class="!border-0">
           <BaseIcon size="36" name="snapshot" class="text-snapshot" />
-        </UiSidebarButton>
+        </ButtonSidebar>
       </router-link>
     </div>
     <div
@@ -101,11 +101,11 @@ onMounted(() => {
       }"
     >
       <router-link :to="{ name: 'timeline' }">
-        <UiSidebarButton
+        <ButtonSidebar
           :class="{ '!border-skin-link': $route.name === 'timeline' }"
         >
           <BaseIcon size="20" name="feed" />
-        </UiSidebarButton>
+        </ButtonSidebar>
       </router-link>
     </div>
     <Transition name="fade">
@@ -171,11 +171,11 @@ onMounted(() => {
       }"
     >
       <router-link :to="{ name: 'setup' }">
-        <UiSidebarButton
+        <ButtonSidebar
           :class="{ '!border-skin-link': $route.name === 'setup' }"
         >
           <BaseIcon size="20" name="plus" />
-        </UiSidebarButton>
+        </ButtonSidebar>
       </router-link>
     </div>
   </div>
