@@ -81,7 +81,7 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
           {{ $t('setup.orReigsterNewEns') }}
         </div>
         <SetupDomainRegister
-          v-model="inputDomain"
+          v-model.trim="inputDomain"
           @waitForRegistration="waitForRegistration"
         />
       </div>
@@ -90,7 +90,7 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
           {{ $t('setup.toCreateASpace') }}
         </div>
         <SetupDomainRegister
-          v-model="inputDomain"
+          v-model.trim="inputDomain"
           @waitForRegistration="waitForRegistration"
         />
       </div>

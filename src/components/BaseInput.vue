@@ -71,6 +71,12 @@ onMounted(() => {
         :placeholder="placeholder ?? definition?.examples?.[0] ?? ''"
         :readonly="readonly"
       />
+      <div
+        v-if="$slots.after"
+        class="absolute inset-y-0 right-0 pr-4 flex items-center"
+      >
+        <slot name="after" />
+      </div>
     </div>
     <div
       :class="[
