@@ -43,15 +43,13 @@ onMounted(() => {
 
 <template>
   <div>
-    <BaseLabel v-if="title || definition?.title">
+    <LabelInput v-if="title || definition?.title">
       {{ title ?? definition.title }}
-    </BaseLabel>
+    </LabelInput>
 
     <div>
       <div class="z-10 relative">
-        <slot v-if="$slots.customInput" name="customInput" />
         <input
-          v-else
           ref="BaseInputEL"
           :type="type"
           :value="modelValue"
