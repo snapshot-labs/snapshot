@@ -337,12 +337,9 @@ const truncateMarkdownBody = computed(() => {
                 <template v-slot:button>
                   <div class="pl-1">
                     <LoadingSpinner v-if="clientLoading" />
-                    <BaseIcon
-                      v-else
-                      name="threedots"
-                      size="25"
-                      class="hover:text-skin-link"
-                    />
+                    <BaseButtonIcon>
+                      <i-ho-dots-horizontal />
+                    </BaseButtonIcon>
                   </div>
                 </template>
               </BaseDropdown>
