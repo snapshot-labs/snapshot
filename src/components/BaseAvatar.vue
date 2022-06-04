@@ -35,8 +35,7 @@ watch(
     <img
       v-show="previewFile"
       ref="avatarImage"
-      class="rounded-full object-cover"
-      :class="'bg-[color:var(--border-color)]'"
+      class="rounded-full object-cover bg-skin-border"
       :style="{
         width: `${Number(size)}px`,
         height: `${Number(size)}px`,
@@ -46,16 +45,24 @@ watch(
     />
     <!-- else show image from ipfs or stamp -->
     <img
-      v-show="!previewFile"
+      v-show="!previewFile && src"
       :src="src"
-      class="rounded-full object-cover"
-      :class="'bg-[color:var(--border-color)]'"
+      class="rounded-full object-cover bg-skin-border"
       :style="{
         width: `${Number(size)}px`,
         height: `${Number(size)}px`,
         minWidth: `${Number(size)}px`
       }"
       alt="avatar"
+    />
+    <div
+      v-if="!src && !previewFile"
+      class="bg-skin-border rounded-full"
+      :style="{
+        width: `${Number(size)}px`,
+        height: `${Number(size)}px`,
+        minWidth: `${Number(size)}px`
+      }"
     />
   </span>
 </template>

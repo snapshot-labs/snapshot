@@ -3,7 +3,7 @@ import { ref } from 'vue';
 import { useImageUpload } from '@/composables/useImageUpload';
 
 defineProps<{
-  avatar: string;
+  avatar?: string;
 }>();
 
 const emit = defineEmits(['image-uploaded', 'image-remove']);

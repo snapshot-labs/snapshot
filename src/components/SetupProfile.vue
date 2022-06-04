@@ -28,6 +28,7 @@ const form = ref({
   name: '',
   symbol: '',
   network: '1',
+  avatar: '',
   admins: [] as string[],
   // Adds "ticket" strategy with VOTE symbol as default/placeholder strategy
   strategies: [
@@ -128,26 +129,54 @@ async function handleSubmit() {
   <div>
     <BaseBlock>
       <div class="space-y-2">
-        <BaseInput
-          v-model="form.name"
-          :title="$t(`settings.name`)"
-          :error="errorIfVisited('name')"
-          @blur="visitedFields.push('name')"
-          focus-on-mount
-        />
-        <BaseInput
-          v-model="form.symbol"
-          :title="$t(`settings.symbol`)"
-          placeholder="e.g. BAL"
-          :error="errorIfVisited('symbol')"
-          @blur="visitedFields.push('symbol')"
-        />
+        <div class="flex">
+          <div class="w-2/3 space-y-2">
+            <BaseInput
+              v-model="form.name"
+              :title="$t(`settings.name`)"
+              :error="errorIfVisited('name')"
+              @blur="visitedFields.push('name')"
+              focus-on-mount
+            />
+            <BaseInput
+              v-model="form.symbol"
+              :title="$t(`settings.symbol`)"
+              placeholder="e.g. BAL"
+              :error="errorIfVisited('symbol')"
+              @blur="visitedFields.push('symbol')"
+            />
+          </div>
+          <div class="flex w-1/3 justify-center">
+            <div>
+              <LabelInput>
+                {{ $t('settings.avatar') }}
+              </LabelInput>
+              <InputUploadAvatar
+                class="h-[80px]"
+                @image-uploaded="url => (form.avatar = url)"
+                @image-remove="form.avatar = ''"
+              >
+                <template v-slot:avatar="{ uploading, previewFile }">
+                  <div class="relative">
+                    <BaseAvatar :previewFile="previewFile" size="80" />
+                    <AvatarOverlayEdit :loading="uploading" />
+                    <div
+                      class="bg-skin-heading absolute rounded-full p-1 right-0 bottom-[2px]"
+                    >
+                      <i-ho-pencil class="text-skin-bg text-[12px]" />
+                    </div>
+                  </div>
+                </template>
+              </InputUploadAvatar>
+            </div>
+          </div>
+        </div>
 
         <AutocompleteNetwork v-model:input="form.network" />
 
         <BaseButton
           @click="handleSubmit"
-          class="w-full !mt-4"
+          class="w-full !mt-[30px]"
           primary
           :disabled="
             !isValid || (uriAddress !== web3Account && !pendingENSRecord)
@@ -156,7 +185,7 @@ async function handleSubmit() {
         >
           {{ $t('createButton') }}
         </BaseButton>
-        <div class="!mt-3">
+        <div>
           <BaseMessage
             v-if="
               uriAddress &&
@@ -165,6 +194,7 @@ async function handleSubmit() {
               !pendingENSRecord
             "
             level="warning"
+            class="!mt-4"
           >
             {{
               $t('setup.notControllerAddress', { wallet: shorten(uriAddress) })
@@ -173,6 +203,7 @@ async function handleSubmit() {
           <BaseMessage
             v-else-if="debouncedShowPleaseWaitMessage && creatingSpace"
             level="info"
+            class="!mt-4"
           >
             {{ $t('setup.pleaseWaitMessage') }}
           </BaseMessage>
