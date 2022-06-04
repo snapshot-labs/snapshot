@@ -29,7 +29,7 @@ function emitChoice(c) {
 <template>
   <BaseBlock class="mb-4" :title="$t('proposal.castVote')">
     <div class="mb-3">
-      <VotingSingleChoice
+      <SpaceProposalVoteSingleChoice
         v-if="
           proposal.type === 'single-choice' ||
           proposal.type === 'basic' ||
@@ -38,17 +38,17 @@ function emitChoice(c) {
         :proposal="proposal"
         @selectChoice="emitChoice"
       />
-      <VotingApproval
+      <SpaceProposalVoteApproval
         v-if="proposal.type === 'approval'"
         :proposal="proposal"
         @selectChoice="emitChoice"
       />
-      <VotingQuadratic
+      <SpaceProposalVoteQuadratic
         v-if="proposal.type === 'quadratic' || proposal.type === 'weighted'"
         :proposal="proposal"
         @selectChoice="emitChoice"
       />
-      <VotingRankedChoice
+      <SpaceProposalVoteRankedChoice
         v-if="proposal.type === 'ranked-choice'"
         :proposal="proposal"
         @selectChoice="emitChoice"

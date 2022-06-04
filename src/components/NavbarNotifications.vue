@@ -38,7 +38,7 @@ onMounted(() => loadNotifications());
         :class="{ '!border-skin-link': dropdownOpen }"
       >
         <BaseIcon class="text-skin-link" size="20" name="notificationsnone" />
-        <SBaseIndicator
+        <BaseIndicator
           v-if="notificationsSortedByTime.some(n => n.seen === false)"
           class="absolute right-0 bottom-0 !bg-red"
         />
@@ -131,7 +131,7 @@ onMounted(() => loadNotifications());
             </div>
           </div>
           <div class="flex items-center w-[12px] ml-2">
-            <SBaseIndicator v-if="!item.seen" />
+            <BaseIndicator v-if="!item.seen" />
           </div>
         </div>
       </div>

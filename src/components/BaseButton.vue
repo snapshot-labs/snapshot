@@ -35,7 +35,6 @@ defineProps({
   background-color: transparent;
   color: var(--link-color);
   border-radius: 23px;
-  outline: none;
   height: 46px;
   font-size: 18px;
 

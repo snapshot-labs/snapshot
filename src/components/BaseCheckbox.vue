@@ -11,11 +11,11 @@ function handleToggle() {
 </script>
 
 <template>
-  <a @click="handleToggle" class="flex">
+  <button @click="handleToggle" class="flex">
     <BaseIcon
       :name="modelValue ? 'toggle-on' : 'toggle_off'"
       :class="modelValue ? 'text-green' : 'text-skin-border'"
       size="32"
     />
-  </a>
+  </button>
 </template>

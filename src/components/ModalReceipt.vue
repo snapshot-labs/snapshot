@@ -34,7 +34,7 @@ defineEmits(['close']);
         class="mb-2 block"
         hide-external-icon
       >
-        <BaseButton class="button-outline w-full">
+        <BaseButton class="w-full">
           {{ $t('verifyOnSignatorio') }}
           <BaseIcon name="external-link" class="ml-1" />
         </BaseButton>
