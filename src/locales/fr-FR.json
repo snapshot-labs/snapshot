@@ -249,9 +249,9 @@
   },
   "settings": {
     "header": "Réglages",
-    "setEnsTextRecord": "Enregistrement de texte ENS",
+    "setEnsTextRecord": "Définir ENS text record",
     "editController": "Modifier le controller",
-    "needToSetEnsText": "Vos paramètres d’espace seront stockés dans un fichier sur IPFS. Avant de pouvoir les modifier, vous devez définir un enregistrement texte ENS pointant vers ce fichier.",
+    "needToSetEnsText": "Vos paramètres d’espace seront stockés dans un fichier sur IPFS. Avant de pouvoir les modifier, vous devez définir un ENS text record pointant vers ce fichier.",
     "profile": "Profil",
     "avatar": "Avatar",
     "name": "Nom",
@@ -308,7 +308,7 @@
     "setSpaceControllerInfoGnosisSafe": "Lors de la création d'un espace avec un Gnosis Safe, il est recommandé de définir l'adresse du Safe comme controller de l'espace. Si non, vous devez suivre quelques étapes supplémentaires. {link}",
     "editSpaceController": "Modifier le controller sur ENS",
     "setController": "Définir le controller",
-    "explainControllerAndEns": "Cette action nécessite une transaction sur {network} qui ajoutera une entrée “snapshot” TEXT à votre domaine ENS.",
+    "explainControllerAndEns": "Cette action nécessite une transaction sur {network} qui ajoutera un \"snapshot\" TEXT record à votre domaine ENS.",
     "confirmToSetAddress": "Êtes-vous sûr de vouloir choisir {address} comme le controller de l’espace?",
     "controllerHasAuthority": "Le controller a toute autorité sur les paramètres de l’espace",
     "controller": "Controller",
@@ -368,7 +368,7 @@
     "delegationRemoved": "Délégation retirée",
     "proposalCreated": "Proposition créée",
     "voteSuccessful": "Votre vote est enregistré !",
-    "ensSet": "L’enregistrement de texte ENS a été défini avec succès",
+    "ensSet": "ENS text record défini avec succès",
     "transactionSent": "Transaction envoyée"
   },
   "explore": {
@@ -470,14 +470,14 @@
     "button_claim": "Mint",
     "button_show": "Parcourir la collection",
     "success_claim": "Le POAP a été réclamé à votre collection",
-    "error_claim": "Un problème est survenu lors de la création du jeton"
+    "error_claim": "Un problème est survenu lors de la création du token"
   },
   "charts": {
     "charts": "Tableaux",
     "noVotesYet": "Il n’y a pas encore de votes à visualiser.",
     "totalVotesPerDay": "Nombre total de votes par jour",
-    "shareOfVotingPower": "Partage du pouvoir de vote",
-    "votingPowerPerDay": "Pouvoir de vote par jour"
+    "shareOfVotingPower": "Partage du voting power",
+    "votingPowerPerDay": "Voting power par jour"
   },
   "comment_box": {
     "title": "Boîte de commentaires",
