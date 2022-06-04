@@ -136,10 +136,10 @@ const handleDrop = e => {
         <BaseMarkdown :body="form.body" />
       </div>
 
-      <BaseInput
+      <InputUrl
         v-if="!preview"
         v-model.trim="form.discussion"
-        placeholder="e.g. https://forum.balancer.fi/proposal..."
+        placeholder="forum.balancer.fi/proposal..."
         :title="$t('create.discussion')"
       />
     </div>

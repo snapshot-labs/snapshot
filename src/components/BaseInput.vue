@@ -1,3 +1,9 @@
+<script lang="ts">
+export default {
+  inheritAttrs: false
+};
+</script>
+
 <script setup lang="ts">
 import { ref, onMounted, watch, withDefaults } from 'vue';
 
@@ -48,7 +54,14 @@ onMounted(() => {
     </LabelInput>
 
     <div class="z-10 relative">
+      <div
+        v-if="$slots.before"
+        class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
+      >
+        <slot name="before" />
+      </div>
       <input
+        v-bind="$attrs"
         ref="BaseInputEL"
         :type="type"
         :value="modelValue"
