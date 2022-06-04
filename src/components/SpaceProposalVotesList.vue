@@ -101,7 +101,7 @@ watch(visibleVotes, () => {
       v-for="(vote, i) in visibleVotes"
       :key="i"
       :style="i === 0 && 'border: 0 !important;'"
-      class="px-3 py-3 border-t flex"
+      class="px-3 py-[14px] border-t flex items-center"
     >
       <BaseUser
         :profile="profiles[vote.voter]"
@@ -126,7 +126,7 @@ watch(visibleVotes, () => {
       </div>
 
       <div
-        class="min-w-[110px] xs:min-w-[130px] text-right text-skin-link whitespace-nowrap"
+        class="min-w-[110px] xs:min-w-[130px] text-right text-skin-link whitespace-nowrap flex justify-end items-center"
       >
         <span
           v-tippy="{
@@ -145,14 +145,9 @@ watch(visibleVotes, () => {
             )}`
           }}
         </span>
-        <a
-          @click="openReceiptModal(vote.ipfs)"
-          target="_blank"
-          class="ml-2 text-skin-text"
-          title="Receipt"
-        >
+        <BaseButtonIcon @click="openReceiptModal(vote.ipfs)">
           <BaseIcon name="signature" />
-        </a>
+        </BaseButtonIcon>
       </div>
     </div>
     <a
