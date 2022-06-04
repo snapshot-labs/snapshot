@@ -81,7 +81,7 @@ function handleChange(e) {
 
 <template>
   <div class="relative">
-    <SBaseInput :title="label" class="relative z-30">
+    <BaseInput :title="label" class="relative z-30">
       <template v-slot:customInput>
         <input
           v-show="displayDropdown"
@@ -104,7 +104,7 @@ function handleChange(e) {
           </slot>
         </div>
       </template>
-    </SBaseInput>
+    </BaseInput>
 
     <div
       ref="optionsEl"

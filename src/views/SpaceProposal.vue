@@ -401,7 +401,7 @@ const truncateMarkdownBody = computed(() => {
           @open="modalOpen = true"
           @clickVote="clickVote"
         />
-        <SpaceProposalVotes
+        <SpaceProposalVotesList
           @loadVotes="loadMore(loadMoreVotes)"
           v-if="proposal && !loadingResultsFailed"
           :loaded="loadedVotes"

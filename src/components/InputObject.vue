@@ -2,11 +2,9 @@
 import { ref, watch } from 'vue';
 import { useValidationErrors } from '@/composables/useValidationErrors';
 
-import * as DefaultObject from './DefaultObject.vue';
-import DefaultArray from './DefaultArray.vue';
-import InputString from './InputString.vue';
-import InputNumber from './InputNumber.vue';
-import DefaultBoolean from './DefaultBoolean.vue';
+import * as DefaultObject from '@/components/InputObject.vue';
+import InputString from '@/components/InputString.vue';
+import InputNumber from '@/components/InputNumber.vue';
 
 const props = defineProps<{
   modelValue: Record<string, any>;
@@ -22,14 +20,10 @@ const getComponent = name => {
   switch (name) {
     case 'object':
       return DefaultObject;
-    case 'array':
-      return DefaultArray;
     case 'string':
       return InputString;
     case 'number':
       return InputNumber;
-    case 'boolean':
-      return DefaultBoolean;
     default:
       return null;
   }

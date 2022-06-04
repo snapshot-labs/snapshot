@@ -29,16 +29,16 @@ async function handleDelegate() {
       </div>
     </template>
     <div class="p-4 space-y-3">
-      <SBaseInput
+      <BaseInput
         :modelValue="userAddress"
         :title="$t('profile.about.delegateTo')"
         readonly
       >
         <template v-slot:label>{{ $t('delegate.to') }}</template>
-      </SBaseInput>
-      <SBaseInput :modelValue="spaceId" :title="$t('space')" readonly>
+      </BaseInput>
+      <BaseInput :modelValue="spaceId" :title="$t('space')" readonly>
         <template v-slot:label>{{ $t('space') }}</template>
-      </SBaseInput>
+      </BaseInput>
     </div>
     <div class="p-4">
       <BaseButton

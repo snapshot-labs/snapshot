@@ -76,7 +76,7 @@ watch(
     >
     </UiInput>
     <BaseButton
-      class="button-outline w-full my-2"
+      class="w-full my-2"
       primary
       :disabled="!controllerInputIsValid"
       :loading="settingENSRecord"
