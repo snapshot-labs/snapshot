@@ -223,7 +223,7 @@ onMounted(async () => {
             </BaseBlock>
           </BaseBlock>
           <BaseBlock :title="$t('strategyParams')">
-            <SDefaultObject
+            <InputObject
               v-if="strategyDefinition"
               v-model="form.params"
               :definition="strategyDefinition"

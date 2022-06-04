@@ -17,7 +17,7 @@ defineEmits(['close', 'confirm']);
     <slot />
     <template v-slot:footer>
       <BaseButton
-        class="button-outline w-full"
+        class="w-full"
         primary
         @click="$emit('confirm'), $emit('close')"
       >

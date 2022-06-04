@@ -4,8 +4,8 @@ import { useI18n } from '@/composables/useI18n';
 import { shorten, getChoiceString, explorerUrl } from '@/helpers/utils';
 import { useClient } from '@/composables/useClient';
 import { useIntl } from '@/composables/useIntl';
-import { getPower } from '../../helpers/snapshot';
-import { useWeb3 } from '../../composables/useWeb3';
+import { getPower } from '@/helpers/snapshot';
+import { useWeb3 } from '@/composables/useWeb3';
 import pending from '@/helpers/pending.json';
 
 const { web3Account } = useWeb3();

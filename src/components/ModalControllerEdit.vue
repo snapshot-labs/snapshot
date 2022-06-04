@@ -57,7 +57,7 @@ defineEmits(['close', 'set']);
     </div>
     <template v-slot:footer>
       <BaseButton
-        class="button-outline w-full my-2"
+        class="w-full my-2"
         primary
         :disabled="!controllerInputIsValid"
         @click="$emit('set'), $emit('close')"
