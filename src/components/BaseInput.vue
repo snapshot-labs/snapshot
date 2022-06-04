@@ -47,34 +47,32 @@ onMounted(() => {
       {{ title ?? definition.title }}
     </LabelInput>
 
-    <div>
-      <div class="z-10 relative">
-        <input
-          ref="BaseInputEL"
-          :type="type"
-          :value="modelValue"
-          @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)"
-          :class="['s-input', { '!border-red': error && showError }]"
-          :maxlength="maxLength ?? definition?.maxLength"
-          :placeholder="placeholder ?? definition?.examples?.[0] ?? ''"
-          :readonly="readonly"
-        />
-      </div>
-      <div
-        :class="[
-          's-error',
-          !!error && showError
-            ? '-mt-[21px] opacity-100'
-            : '-mt-[38px] opacity-0 h-6'
-        ]"
-      >
-        <BaseIcon
-          v-if="error && showError"
-          name="warning"
-          class="text-white mr-2"
-        />
-        {{ error }}
-      </div>
+    <div class="z-10 relative">
+      <input
+        ref="BaseInputEL"
+        :type="type"
+        :value="modelValue"
+        @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)"
+        :class="['s-input', { '!border-red': error && showError }]"
+        :maxlength="maxLength ?? definition?.maxLength"
+        :placeholder="placeholder ?? definition?.examples?.[0] ?? ''"
+        :readonly="readonly"
+      />
+    </div>
+    <div
+      :class="[
+        's-error',
+        !!error && showError
+          ? '-mt-[21px] opacity-100'
+          : '-mt-[38px] opacity-0 h-6'
+      ]"
+    >
+      <BaseIcon
+        v-if="error && showError"
+        name="warning"
+        class="text-white mr-2"
+      />
+      {{ error }}
     </div>
   </div>
 </template>
