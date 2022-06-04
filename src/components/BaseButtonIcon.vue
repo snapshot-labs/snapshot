@@ -2,7 +2,7 @@
 
 <template>
   <button
-    class="hover:text-skin-link text-md flex items-center rounded-full p-[6px]"
+    class="text-skin-text hover:text-skin-link text-md flex items-center rounded-full p-[6px]"
   >
     <slot />
   </button>
