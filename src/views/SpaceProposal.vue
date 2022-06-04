@@ -434,7 +434,7 @@ const truncateMarkdownBody = computed(() => {
                 <span
                   v-for="(symbol, symbolIndex) of symbols"
                   :key="symbol"
-                  class="flex"
+                  class="flex -ml-[12px]"
                 >
                   <span
                     v-tippy="{
