@@ -3,7 +3,6 @@ import { ref, computed, inject } from 'vue';
 import schemas from '@snapshot-labs/snapshot.js/src/schemas';
 import { sleep, validateSchema } from '@snapshot-labs/snapshot.js/src/utils';
 import { useValidationErrors } from '@/composables/useValidationErrors';
-import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { useClient } from '@/composables/useClient';
 import { useI18n } from '@/composables/useI18n';
 import { useRouter, useRoute } from 'vue-router';
@@ -22,14 +21,13 @@ const router = useRouter();
 const route = useRoute();
 
 const visitedFields = ref<string[]>([]);
-const modalNetworksOpen = ref(false);
 const creatingSpace = ref(false);
 
 // Space setup form
 const form = ref({
   name: '',
   symbol: '',
-  network: '',
+  network: '1',
   admins: [] as string[],
   // Adds "ticket" strategy with VOTE symbol as default/placeholder strategy
   strategies: [
@@ -130,34 +128,23 @@ async function handleSubmit() {
   <div>
     <BaseBlock>
       <div class="space-y-2">
-        <UiInput
+        <BaseInput
           v-model="form.name"
+          :title="$t(`settings.name`)"
           :error="errorIfVisited('name')"
           @blur="visitedFields.push('name')"
           focus-on-mount
-        >
-          <template v-slot:label>{{ $t(`settings.name`) }}*</template>
-        </UiInput>
-        <UiInput
+        />
+        <BaseInput
           v-model="form.symbol"
+          :title="$t(`settings.symbol`)"
           placeholder="e.g. BAL"
           :error="errorIfVisited('symbol')"
           @blur="visitedFields.push('symbol')"
-        >
-          <template v-slot:label> {{ $t(`settings.symbol`) }}* </template>
-        </UiInput>
-        <UiInput
-          @click="modalNetworksOpen = true"
-          :error="errorIfVisited('network')"
-          @blur="visitedFields.push('network')"
-        >
-          <template v-slot:selected>
-            {{
-              form.network ? networks[form.network].name : $t('selectNetwork')
-            }}
-          </template>
-          <template v-slot:label> {{ $t(`settings.network`) }}* </template>
-        </UiInput>
+        />
+
+        <AutocompleteNetwork v-model:input="form.network" />
+
         <BaseButton
           @click="handleSubmit"
           class="w-full !mt-4"
@@ -193,11 +180,4 @@ async function handleSubmit() {
       </div>
     </BaseBlock>
   </div>
-  <teleport to="#modal">
-    <ModalNetworks
-      v-model="form.network"
-      :open="modalNetworksOpen"
-      @close="modalNetworksOpen = false"
-    />
-  </teleport>
 </template>
