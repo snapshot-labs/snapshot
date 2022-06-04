@@ -2,7 +2,7 @@
 import { ref, watch } from 'vue';
 
 const props = defineProps<{
-  modelValue?: boolean;
+  modelValue?: string;
   definition: any;
   error: string;
 }>();
@@ -11,10 +11,16 @@ const emit = defineEmits(['update:modelValue']);
 
 const input = ref(props.modelValue || props.definition.default);
 
-watch(input, () => emit('update:modelValue', input.value));
+watch(input, () => {
+  emit('update:modelValue', input.value);
+});
 </script>
 
-<!-- TODO: fix template -->
 <template>
-  <div></div>
+  <BaseInput
+    v-model="input"
+    :definition="definition"
+    :input="input"
+    :error="error"
+  />
 </template>

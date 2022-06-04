@@ -147,7 +147,7 @@ const strategyIsValid = computed(() =>
               </div>
             </template>
           </BaseAutocomplete>
-          <SDefaultObject
+          <InputObject
             v-if="strategyDefinition"
             v-model="input.params"
             :definition="strategyDefinition"
