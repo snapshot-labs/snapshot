@@ -47,7 +47,7 @@ const networks = computed(() => {
   >
     <template v-slot:option="{ option }">
       <div class="group flex items-center justify-between">
-        <div class="flex items-center">
+        <div class="flex items-center truncate">
           <img
             class="mr-2 w-4 h-4 rounded-full"
             :src="getIpfsUrl(option?.logo)"
