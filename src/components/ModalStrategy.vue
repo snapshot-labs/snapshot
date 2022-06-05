@@ -4,7 +4,6 @@ import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import { useStrategies } from '@/composables/useStrategies';
 import { validateSchema } from '@snapshot-labs/snapshot.js/src/utils';
 import { useNetworksFilter } from '@/composables/useNetworksFilter';
-import { ExtendedSpace } from '@/helpers/interfaces';
 
 const defaultParams = {
   symbol: 'DAI',
@@ -19,7 +18,6 @@ const props = defineProps<{
     params: Record<string, any>;
   };
   defaultNetwork?: string;
-  space: ExtendedSpace;
 }>();
 const emit = defineEmits(['add', 'close']);
 const { open } = toRefs(props);
@@ -102,7 +100,10 @@ const strategyIsValid = computed(() =>
       <LoadingRow v-if="loading" class="px-0" />
       <div v-else>
         <div class="min-h-[280px]">
-          <AutocompleteNetwork v-model:input="input.network" :space="space" />
+          <AutocompleteNetwork
+            v-model:input="input.network"
+            :network="defaultNetwork"
+          />
           <InputObject
             v-if="strategyDefinition"
             v-model="input.params"
