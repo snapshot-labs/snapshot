@@ -73,9 +73,9 @@ const handleDrop = e => {
 
       <div v-if="!preview">
         <div class="flex justify-between">
-          <BaseLabel>
+          <LabelInput>
             {{ $t('create.proposalDescription') }}
-          </BaseLabel>
+          </LabelInput>
           <div class="text-xs">
             {{ formatNumber(form.body.length) }} /
             {{ formatNumber(bodyLimit) }}
@@ -93,7 +93,7 @@ const handleDrop = e => {
               @paste="handlePaste"
               ref="textAreaEl"
               class="s-input pt-0 w-full min-h-[240px] border-none !rounded-xl text-base h-full mt-0"
-              :maxLength="bodyLimit"
+              :maxlength="bodyLimit"
               v-model="form.body"
             />
           </div>
@@ -136,10 +136,10 @@ const handleDrop = e => {
         <BaseMarkdown :body="form.body" />
       </div>
 
-      <BaseInput
+      <InputUrl
         v-if="!preview"
         v-model.trim="form.discussion"
-        placeholder="e.g. https://forum.balancer.fi/proposal..."
+        placeholder="forum.balancer.fi/proposal..."
         :title="$t('create.discussion')"
       />
     </div>

@@ -4,7 +4,8 @@ import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import { useStrategies } from '@/composables/useStrategies';
 import { validateSchema } from '@snapshot-labs/snapshot.js/src/utils';
 import { useNetworksFilter } from '@/composables/useNetworksFilter';
-import { getIpfsUrl } from '@/helpers/utils';
+import { ExtendedSpace } from '@/helpers/interfaces';
+
 const defaultParams = {
   symbol: 'DAI',
   address: '0x6B175474E89094C44Da98b954EedeAC495271d0F',
@@ -18,7 +19,7 @@ const props = defineProps<{
     params: Record<string, any>;
   };
   defaultNetwork?: string;
-  space: Record<string, any>;
+  space: ExtendedSpace;
 }>();
 const emit = defineEmits(['add', 'close']);
 const { open } = toRefs(props);
@@ -39,29 +40,8 @@ const {
   strategyDefinition
 } = useStrategies();
 const strategiesResults = computed(() => filterStrategies(searchInput.value));
-const { filterNetworks, getNetworksSpacesCount } = useNetworksFilter();
-const searchNetwork = ref('');
-const networks = computed(() => {
-  const filteredNetworks = filterNetworks(searchNetwork.value).map(_n => ({
-    label: _n.name,
-    value: _n.key,
-    option: _n
-  }));
+const { getNetworksSpacesCount } = useNetworksFilter();
 
-  //  Move spaceNetwork to the beginning of the list
-  if (props.space.network) {
-    const spaceNetwork = filteredNetworks.find(
-      n => n.value === props.space.network
-    );
-    if (spaceNetwork) {
-      const spaceNetworkIndex = filteredNetworks.indexOf(spaceNetwork);
-      filteredNetworks.splice(spaceNetworkIndex, 1);
-      filteredNetworks.unshift(spaceNetwork);
-    }
-  }
-
-  return filteredNetworks;
-});
 function handleSubmit() {
   const strategyObj = clone(input.value);
   emit('add', strategyObj);
@@ -122,31 +102,7 @@ const strategyIsValid = computed(() =>
       <LoadingRow v-if="loading" class="px-0" />
       <div v-else>
         <div class="min-h-[280px]">
-          <BaseAutocomplete
-            :options="networks"
-            v-model:value="input.network"
-            v-model:search="searchNetwork"
-            label="Network"
-            :placeholder="$t('selectNetwork')"
-            class="mb-3"
-          >
-            <template v-slot:option="{ option }">
-              <div class="group flex items-center justify-between">
-                <div class="flex items-center">
-                  <img
-                    class="mr-2 w-4 h-4 rounded-full"
-                    :src="getIpfsUrl(option?.logo)"
-                  />
-                  <span v-text="option?.name" />
-                </div>
-                <span
-                  class="h-[20px] rounded-full leading-normal text-xs text-white bg-skin-text text-center px-2"
-                >
-                  #{{ option?.chainId }}
-                </span>
-              </div>
-            </template>
-          </BaseAutocomplete>
+          <AutocompleteNetwork v-model:input="input.network" :space="space" />
           <InputObject
             v-if="strategyDefinition"
             v-model="input.params"

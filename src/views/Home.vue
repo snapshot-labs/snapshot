@@ -118,12 +118,11 @@ onMounted(() => {
       <TransitionGroup
         name="fade"
         tag="div"
-        class="grid lg:grid-cols-4 md:grid-cols-3 gap-[1px] md:gap-4"
+        class="grid lg:grid-cols-4 md:grid-cols-3 gap-4"
       >
         <div
           v-for="space in orderedSpacesByCategory.slice(0, limit)"
           :key="space.id"
-          class="border-b first:border-t md:border-b-0 md:first:border-t-0"
         >
           <router-link
             :to="{ name: 'spaceProposals', params: { key: space.id } }"
@@ -159,7 +158,7 @@ onMounted(() => {
       </TransitionGroup>
       <div
         v-if="!spacesLoaded"
-        class="opacity-40 grid lg:grid-cols-4 md:grid-cols-3 gap-[1px] md:gap-4"
+        class="opacity-40 grid lg:grid-cols-4 md:grid-cols-3 gap-4"
       >
         <div
           class="bg-skin-border animate-pulse min-h-[266px] md:rounded-xl"

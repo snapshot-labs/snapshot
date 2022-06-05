@@ -6,7 +6,10 @@ defineProps<{
 
 <template>
   <BaseBlock
-    :class="['text-skin-text', { '!border-skin-text ': level === 'warning' }]"
+    :class="[
+      'text-skin-text border rounded-xl',
+      { '!border-skin-text ': level === 'warning' }
+    ]"
   >
     <BaseIcon
       :name="level"
