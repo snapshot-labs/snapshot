@@ -1,7 +1,7 @@
 <script setup lang="ts">
 defineProps<{
   loading: boolean;
-  avatar: string;
+  avatar?: string;
 }>();
 </script>
 

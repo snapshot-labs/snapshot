@@ -19,7 +19,6 @@ watch(input, () => emit('update:modelValue', Number(input.value)));
     v-model="input"
     type="number"
     :definition="definition"
-    :input="input"
     :error="error"
   />
 </template>

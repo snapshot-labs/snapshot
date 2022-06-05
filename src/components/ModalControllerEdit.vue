@@ -41,19 +41,17 @@ defineEmits(['close', 'set']);
         </div>
       </BaseMessage>
 
-      {{ $t('settings.newController') }}
-
-      <UiInput
+      <BaseInput
         v-model.trim="spaceControllerInput"
+        :title="$t('settings.newController')"
         :placeholder="
           $t('setup.spaceOwnerAddressPlaceHolder', {
             address: currentSpaceController
           })
         "
-        class="mt-1"
         focus-on-mount
       >
-      </UiInput>
+      </BaseInput>
     </div>
     <template v-slot:footer>
       <BaseButton
