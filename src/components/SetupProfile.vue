@@ -158,7 +158,11 @@ async function handleSubmit() {
               >
                 <template v-slot:avatar="{ uploading, previewFile }">
                   <div class="relative">
-                    <BaseAvatar :previewFile="previewFile" size="80" />
+                    <AvatarSpace
+                      :previewFile="previewFile"
+                      size="80"
+                      :space="{ id: route.params.ens as string }"
+                    />
                     <AvatarOverlayEdit :loading="uploading" />
                     <div
                       class="bg-skin-heading absolute rounded-full p-1 right-0 bottom-[2px]"
