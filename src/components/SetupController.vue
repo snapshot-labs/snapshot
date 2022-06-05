@@ -62,21 +62,23 @@ watch(
         {{ $t('setup.setSpaceControllerInfo') }}
       </BaseMessage>
     </div>
-    <div class="flex items-center gap-2">
-      <BaseCheckbox v-model="fillConnectedWallet" />
-      {{ $t('setup.fillCurrentAccount') }}
-    </div>
-    <UiInput
+
+    <BaseInput
+      title="Controller address"
       v-model.trim="spaceControllerInput"
       :placeholder="
         $t('setup.spaceOwnerAddressPlaceHolder', { address: web3Account })
       "
       :readonly="fillConnectedWallet"
+      @keyup.delete="fillConnectedWallet = false"
       focus-on-mount
-    >
-    </UiInput>
+    />
+    <div class="flex items-center gap-2">
+      <BaseCheckbox v-model="fillConnectedWallet" />
+      {{ $t('setup.fillCurrentAccount') }}
+    </div>
     <BaseButton
-      class="w-full my-2"
+      class="w-full mt-4"
       primary
       :disabled="!controllerInputIsValid"
       :loading="settingENSRecord"

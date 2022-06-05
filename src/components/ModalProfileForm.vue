@@ -101,7 +101,7 @@ watch(
         focusOnMount
       />
       <div>
-        <BaseLabel> {{ $t('profile.settings.biography') }} </BaseLabel>
+        <LabelInput> {{ $t('profile.settings.biography') }} </LabelInput>
         <TextareaAutosize
           v-model="form.about"
           class="s-input !rounded-3xl"

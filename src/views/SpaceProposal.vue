@@ -335,9 +335,8 @@ const truncateMarkdownBody = computed(() => {
                 :items="threeDotItems"
               >
                 <template v-slot:button>
-                  <div class="pl-1">
-                    <LoadingSpinner v-if="clientLoading" />
-                    <BaseButtonIcon>
+                  <div>
+                    <BaseButtonIcon :loading="clientLoading">
                       <i-ho-dots-horizontal />
                     </BaseButtonIcon>
                   </div>
@@ -386,8 +385,9 @@ const truncateMarkdownBody = computed(() => {
         </template>
         <LoadingPage v-else />
       </div>
-      <div class="space-y-4 py-4">
+      <div class="space-y-4">
         <SpaceProposalDiscussionLink
+          class="px-3 md:px-0"
           v-if="proposal?.discussion"
           :discussionLink="proposal.discussion"
         />

@@ -14,7 +14,7 @@ const { web3, web3Account } = useWeb3();
 </script>
 
 <template>
-  <div>
+  <div class="mx-4 md:mx-0">
     <!-- Shows when no wallet is connected and the space has any sort
       of validation set -->
     <BaseMessage
