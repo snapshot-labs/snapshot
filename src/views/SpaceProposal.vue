@@ -432,9 +432,9 @@ const truncateMarkdownBody = computed(() => {
                 class="float-right text-skin-link flex"
               >
                 <span
-                  v-for="(symbol, symbolIndex) of symbols"
+                  v-for="(symbol, symbolIndex) of symbols.slice(0, 5)"
                   :key="symbol"
-                  class="flex -ml-[12px]"
+                  class="flex"
                 >
                   <span
                     v-tippy="{
