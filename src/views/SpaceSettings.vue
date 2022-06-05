@@ -354,21 +354,18 @@ async function handleSetRecord() {
         <h1 v-text="$t('settings.header')" class="mb-4" />
       </div>
       <LoadingRow v-if="!loaded" block />
-      <BaseBlock v-else-if="!currentTextRecord">
-        <BaseMessage level="warning" class="mb-4">
-          {{ $t('settings.needToSetEnsText') }}
-        </BaseMessage>
-        <BaseButton
-          @click="modalControllerEditOpen = true"
-          :loading="settingENSRecord"
-          primary
-          class="w-full"
-        >
-          {{ $t('settings.setEnsTextRecord') }}
-        </BaseButton>
-      </BaseBlock>
       <template v-else-if="currentTextRecord">
         <div class="space-y-3">
+          <BaseMessage
+            class="mx-4 md:mx-0 mb-5"
+            level="info"
+            v-if="
+              !(isSpaceController || isSpaceAdmin || ensOwner) &&
+              currentTextRecord
+            "
+          >
+            {{ $t('settings.connectWithSpaceOwner') }}
+          </BaseMessage>
           <BaseBlock :title="$t('settings.profile')">
             <div class="space-y-2 mb-2">
               <UiInput
@@ -704,14 +701,12 @@ async function handleSetRecord() {
     </template>
 
     <template #sidebar-right>
-      <BaseMessage
-        level="info"
+      <div class="mt-5 lg:mt-0" />
+      <div
         v-if="
           !(isSpaceController || isSpaceAdmin || ensOwner) && currentTextRecord
         "
-      >
-        {{ $t('settings.connectWithSpaceOwner') }}
-      </BaseMessage>
+      />
       <div v-else-if="loaded" class="lg:fixed lg:w-[318px]">
         <BaseBlock>
           <BaseButton

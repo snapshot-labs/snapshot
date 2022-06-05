@@ -313,7 +313,7 @@ function previosStep() {
       </div>
     </template>
     <template #sidebar-right>
-      <BaseBlock class="lg:fixed lg:w-[320px]">
+      <BaseBlock class="lg:fixed lg:w-[320px] mt-5 lg:mt-0">
         <BaseButton
           v-if="currentStep === 1"
           @click="preview = !preview"

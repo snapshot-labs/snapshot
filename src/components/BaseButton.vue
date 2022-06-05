@@ -1,16 +1,10 @@
-<script setup>
-defineProps({
-  primary: {
-    type: Boolean,
-    default: false
-  },
-  loading: Boolean,
-  type: String,
-  disabled: {
-    type: Boolean,
-    default: false
-  }
-});
+<script setup lang="ts">
+defineProps<{
+  primary?: boolean;
+  loading?: boolean;
+  type?: 'button' | 'submit' | 'reset' | undefined;
+  disabled?: boolean;
+}>();
 </script>
 
 <template>
