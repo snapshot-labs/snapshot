@@ -42,7 +42,7 @@ onMounted(() => {
       </BaseBlock>
     </template>
     <template #sidebar-right>
-      <BaseBlock class="text-skin-text">
+      <BaseBlock class="text-skin-text mt-4">
         <BaseIcon
           name="gitbook"
           size="24"
