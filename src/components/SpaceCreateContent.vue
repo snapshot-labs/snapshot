@@ -93,7 +93,7 @@ const handleDrop = e => {
               @paste="handlePaste"
               ref="textAreaEl"
               class="s-input pt-0 w-full min-h-[240px] border-none !rounded-xl text-base h-full mt-0"
-              :maxLength="bodyLimit"
+              :maxlength="bodyLimit"
               v-model="form.body"
             />
           </div>
