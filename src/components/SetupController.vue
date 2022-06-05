@@ -70,6 +70,7 @@ watch(
         $t('setup.spaceOwnerAddressPlaceHolder', { address: web3Account })
       "
       :readonly="fillConnectedWallet"
+      @keyup.delete="fillConnectedWallet = false"
       focus-on-mount
     />
     <div class="flex items-center gap-2">
