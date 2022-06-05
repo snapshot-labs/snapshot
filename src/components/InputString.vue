@@ -17,10 +17,5 @@ watch(input, () => {
 </script>
 
 <template>
-  <BaseInput
-    v-model="input"
-    :definition="definition"
-    :input="input"
-    :error="error"
-  />
+  <BaseInput v-model="input" :definition="definition" :error="error" />
 </template>

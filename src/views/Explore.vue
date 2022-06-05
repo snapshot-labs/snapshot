@@ -97,15 +97,11 @@ onMounted(() => {
     <div class="overflow-hidden">
       <template v-if="route.name === 'strategies'">
         <LoadingRow block v-if="loadingStrategies" />
-        <div
-          v-else
-          class="grid md:grid-cols-2 lg:grid-cols-3 gap-[1px] md:gap-4"
-        >
+        <div v-else class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
           <router-link
             :to="`/strategy/${item.id}`"
             v-for="item in items.slice(0, limit)"
             :key="item.key"
-            class="border-b first:border-t md:border-b-0 md:first:border-t-0"
           >
             <BaseStrategyItem :strategy="item" />
           </router-link>
@@ -113,15 +109,11 @@ onMounted(() => {
       </template>
       <template v-if="route.name === 'networks'">
         <LoadingRow block v-if="loadingNetworksSpacesCount" />
-        <div
-          v-else
-          class="grid md:grid-cols-2 lg:grid-cols-3 gap-[1px] md:gap-4"
-        >
+        <div v-else class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
           <router-link
             :to="`/?network=${item.key}`"
             v-for="item in items.slice(0, limit)"
             :key="item.key"
-            class="border-b first:border-t md:border-b-0 md:first:border-t-0"
           >
             <BaseNetworkItem :network="item" />
           </router-link>
@@ -129,15 +121,8 @@ onMounted(() => {
       </template>
       <template v-if="route.name === 'plugins'">
         <LoadingRow block v-if="loadingPluginsSpacesCount" />
-        <div
-          v-else
-          class="grid md:grid-cols-2 lg:grid-cols-3 gap-[1px] md:gap-4"
-        >
-          <div
-            v-for="item in items.slice(0, limit)"
-            :key="item.key"
-            class="border-b first:border-t md:border-b-0 md:first:border-t-0"
-          >
+        <div v-else class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div v-for="item in items.slice(0, limit)" :key="item.key">
             <BasePluginItem :plugin="item" />
           </div>
         </div>
