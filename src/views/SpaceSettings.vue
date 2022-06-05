@@ -704,6 +704,7 @@ async function handleSetRecord() {
     </template>
 
     <template #sidebar-right>
+      <div class="mt-5 lg:mt-0" />
       <BaseMessage
         level="info"
         v-if="
