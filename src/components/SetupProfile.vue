@@ -128,8 +128,8 @@ async function handleSubmit() {
   <div>
     <BaseBlock>
       <div class="space-y-2">
-        <div class="flex">
-          <div class="w-2/3 space-y-2">
+        <div class="flex flex-col-reverse sm:flex-row">
+          <div class="sm:w-2/3 mt-3 sm:mt-0 space-y-2">
             <BaseInput
               v-model="form.name"
               :title="$t(`settings.name`)"
