@@ -28,7 +28,6 @@ const form = ref({
   name: '',
   symbol: '',
   network: '1',
-  avatar: '',
   admins: [] as string[],
   // Adds "ticket" strategy with VOTE symbol as default/placeholder strategy
   strategies: [
