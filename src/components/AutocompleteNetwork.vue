@@ -52,7 +52,7 @@ const networks = computed(() => {
             class="mr-2 w-4 h-4 rounded-full"
             :src="getIpfsUrl(option?.logo)"
           />
-          <span v-text="option?.name" />
+          <span v-text="option?.name" class="truncate mr-2" />
         </div>
         <span
           class="h-[20px] rounded-full leading-normal text-xs text-white bg-skin-text text-center px-2"
