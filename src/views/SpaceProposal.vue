@@ -335,9 +335,8 @@ const truncateMarkdownBody = computed(() => {
                 :items="threeDotItems"
               >
                 <template v-slot:button>
-                  <div class="pl-1">
-                    <LoadingSpinner v-if="clientLoading" />
-                    <BaseButtonIcon>
+                  <div>
+                    <BaseButtonIcon :loading="clientLoading">
                       <i-ho-dots-horizontal />
                     </BaseButtonIcon>
                   </div>
