@@ -145,6 +145,7 @@ async function handleSubmit() {
               :error="errorIfVisited('symbol')"
               @blur="visitedFields.push('symbol')"
             />
+            <AutocompleteNetwork v-model:input="form.network" />
           </div>
           <div class="flex w-1/3 justify-center">
             <div>
@@ -175,8 +176,6 @@ async function handleSubmit() {
             </div>
           </div>
         </div>
-
-        <AutocompleteNetwork v-model:input="form.network" />
 
         <BaseButton
           @click="handleSubmit"
