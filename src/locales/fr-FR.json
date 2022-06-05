@@ -304,7 +304,7 @@
     "supportedEnsTLDs": "Extensions de domaine prises en charge",
     "helpDocsAndDiscordLinks": "Vous ne savez pas comment créer un espace ? Apprenez-en plus dans le {docs} ou joignez-vous au {discord} Snapshot.",
     "setSpaceController": "Controller de l’espace",
-    "setSpaceControllerInfo": "Le controller de l'espace est le compte qui pourra gérer les paramètres de l'espace.",
+    "setSpaceControllerInfo": " The space controller is the account that will be able to manage the space settings. Additional space controllers (admins) can be added later.",
     "setSpaceControllerInfoGnosisSafe": "Lors de la création d'un espace avec un Gnosis Safe, il est recommandé de définir l'adresse du Safe comme controller de l'espace. Si non, vous devez suivre quelques étapes supplémentaires. {link}",
     "editSpaceController": "Modifier le controller sur ENS",
     "setController": "Définir le controller",
@@ -322,7 +322,7 @@
     "waitForTransaction": "La transaction doit être confirmée avant de pouvoir créer votre espace. {txUrl}",
     "pleaseWaitMessage": "Cela peut prendre quelques minutes, veuillez attendre pendant que la transaction est confirmée",
     "notControllerAddress": "Veuillez vous connecter avec l'adresse du controller {wallet} pour créer l'espace.",
-    "fillCurrentAccount": "Utiliser le compte actuel"
+    "fillCurrentAccount": "Use currently logged in account"
   },
   "profile": {
     "buttonEdit": "Modifier le profil",
