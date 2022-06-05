@@ -53,8 +53,8 @@ watch(strategiesClone, () => emit('updateStrategies', strategiesClone.value));
 </script>
 
 <template>
-  <BaseBlock :title="$t('settings.strategies') + '*'">
-    <div class="grid grid-cols-2 gap-3 mb-4">
+  <BaseBlock :title="$t('settings.strategies')">
+    <div class="grid gap-3 mb-4">
       <StrategiesBlockItem
         :strategies-form="strategiesClone"
         @edit-strategy="i => handleEditStrategy(i)"

@@ -13,7 +13,7 @@ const emit = defineEmits(['removeStrategy', 'editStrategy']);
   <div v-for="(strategy, i) in strategiesForm" :key="i" class="h-full flex">
     <button
       @click="emit('editStrategy', i)"
-      class="p-4 border rounded-md w-full flex justify-between hover:border-skin-text"
+      class="p-4 border rounded-md w-full flex justify-between items-center hover:border-skin-text"
     >
       <div class="text-left truncate">
         <h4 class="truncate">{{ strategy.name }}</h4>
