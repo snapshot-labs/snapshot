@@ -323,7 +323,7 @@
     "pleaseWaitMessage": "这可能需要几分钟，请等待交易确认",
     "notControllerAddress": "请连接控制人地址 {wallet} 以创建空间。",
     "fillCurrentAccount": "使用当前登录的帐户",
-    "profile": "Profile"
+    "profile": "用户信息"
   },
   "profile": {
     "buttonEdit": "编辑个人资料",
