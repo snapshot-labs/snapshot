@@ -153,7 +153,6 @@ async function handleSubmit() {
               :max-length="schemas.space.properties.about.maxLength"
               :placeholder="$t('profile.settings.bioPlaceholder')"
             />
-            {{ form }}
             <ListboxMultipleCategories
               :categories="form.categories"
               @update-categories="value => (form.categories = value)"
