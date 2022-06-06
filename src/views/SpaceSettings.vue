@@ -119,7 +119,7 @@ const categoriesString = computed(() => {
 });
 
 async function clearAvatarCache() {
-  await fetch(`https://stamp.fyi/clear/space/${props.space.id}`);
+  await fetch(`https://cdn.stamp.fyi/clear/space/${props.space.id}`);
 }
 
 async function handleSubmit() {

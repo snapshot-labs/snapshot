@@ -24,7 +24,7 @@ const timestamp = computed(() => {
 
 <template>
   <BaseAvatar
-    :src="`https://stamp.fyi/avatar/eth:${address}?s=${
+    :src="`https://cdn.stamp.fyi/avatar/eth:${address}?s=${
       Number(size) * 2
     }${timestamp}`"
     :previewFile="previewFile"
