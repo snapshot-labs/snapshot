@@ -1424,10 +1424,10 @@
     "@walletconnect/web3-provider" "1.4.1"
     fortmatic "^2.2.1"
 
-"@snapshot-labs/snapshot.js@^0.3.90":
-  version "0.3.90"
-  resolved "https://registry.yarnpkg.com/@snapshot-labs/snapshot.js/-/snapshot.js-0.3.90.tgz#17d77d485c7e8057c6445e7a56e25f458a1cc32d"
-  integrity sha512-ummFrx2mF150VDWlpBbvf1pvPxGYuQP5F1F3B+zT1F4jJRY+sAXMIMusfRCO04vyMnSfaJTGVPcpFmRmoBbjgw==
+"@snapshot-labs/snapshot.js@^0.3.91":
+  version "0.3.91"
+  resolved "https://registry.yarnpkg.com/@snapshot-labs/snapshot.js/-/snapshot.js-0.3.91.tgz#faa90eba797bb7e4a4e0d48110ced17c5bb19683"
+  integrity sha512-Htq1D0j7GE9VXozqXbajymNgK+tY1u4EM7n5b8V6wphgXsWBQxVxk3ffAHgpfouDTIdcmTlm5zq7Y/byJ64r6A==
   dependencies:
     "@ensdomains/eth-ens-namehash" "^2.0.15"
     "@ethersproject/abi" "^5.0.4"
