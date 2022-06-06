@@ -322,7 +322,8 @@
     "waitForTransaction": "Подтвердите транзакцию, чтобы создать свое сообщество.{txUrl}",
     "pleaseWaitMessage": "Это может занять несколько минут, пожалуйста, подождите, подтверждения трансакции",
     "notControllerAddress": "Please connect with the controller address {wallet} to create the space.",
-    "fillCurrentAccount": "Use currently logged in account"
+    "fillCurrentAccount": "Use currently logged in account",
+    "profile": "Profile"
   },
   "profile": {
     "buttonEdit": "Edit profile",
