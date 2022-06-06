@@ -23,7 +23,7 @@
   },
   "walletlink": {
     "id": "walletlink",
-    "name": "Coinbase",
+    "name": "Coinbase Wallet",
     "network": "1",
     "options": {
       "appName": "Snapshot",
