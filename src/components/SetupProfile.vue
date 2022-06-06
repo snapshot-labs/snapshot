@@ -24,7 +24,6 @@ const notify = inject<any>('notify');
 const router = useRouter();
 const route = useRoute();
 
-const visitedFields = ref<string[]>([]);
 const creatingSpace = ref(false);
 
 // Space setup form
@@ -51,20 +50,18 @@ const { t } = useI18n();
 const { pendingENSRecord, loadingTextRecord, uriAddress, loadUriAddress } =
   useSpaceController();
 
-const spaceValidationErrors = computed(() => {
+const spaceValidation = computed(() => {
   const formClone = clone(form.value);
   if (formClone.avatar === '') delete formClone.avatar;
   return validateSchema(schemas.space, formClone) ?? [];
 });
 
-function errorIfVisited(field) {
-  return visitedFields.value.includes(field)
-    ? validationErrorMessage(field, spaceValidationErrors.value)
-    : '';
+function getError(field) {
+  return validationErrorMessage(field, spaceValidation.value);
 }
 
 const isValid = computed(() => {
-  return spaceValidationErrors.value === true;
+  return spaceValidation.value === true;
 });
 
 const { send } = useClient();
@@ -143,18 +140,9 @@ async function handleSubmit() {
             <BaseInput
               v-model="form.name"
               :title="$t(`settings.name`)"
-              :error="errorIfVisited('name')"
-              @blur="visitedFields.push('name')"
+              :error="getError('name')"
               focus-on-mount
             />
-            <BaseInput
-              v-model="form.symbol"
-              :title="$t(`settings.symbol`)"
-              placeholder="e.g. BAL"
-              :error="errorIfVisited('symbol')"
-              @blur="visitedFields.push('symbol')"
-            />
-            <AutocompleteNetwork v-model:input="form.network" />
           </div>
           <div class="flex w-full sm:w-1/3 justify-center">
             <div>
@@ -190,8 +178,12 @@ async function handleSubmit() {
 
     <StrategiesBlock
       :network="form.network"
+      :symbol="form.symbol"
       :strategies="form.strategies"
       @update-strategies="val => (form.strategies = val)"
+      @update-network="val => (form.network = val)"
+      @update-symbol="val => (form.symbol = val)"
+      :get-error="getError"
     />
 
     <BaseBlock>

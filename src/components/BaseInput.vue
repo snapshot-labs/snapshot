@@ -48,7 +48,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div>
+  <div class="w-full">
     <LabelInput v-if="title || definition?.title">
       {{ title ?? definition.title }}
     </LabelInput>
