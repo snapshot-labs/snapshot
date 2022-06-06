@@ -4,13 +4,13 @@ import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import { useStrategies } from '@/composables/useStrategies';
 import { validateSchema } from '@snapshot-labs/snapshot.js/src/utils';
 import { useNetworksFilter } from '@/composables/useNetworksFilter';
-import { ExtendedSpace } from '@/helpers/interfaces';
 
 const defaultParams = {
   symbol: 'DAI',
   address: '0x6B175474E89094C44Da98b954EedeAC495271d0F',
   decimals: 18
 };
+
 const props = defineProps<{
   open: boolean;
   strategy: {
@@ -19,18 +19,19 @@ const props = defineProps<{
     params: Record<string, any>;
   };
   defaultNetwork?: string;
-  space: ExtendedSpace;
 }>();
+
 const emit = defineEmits(['add', 'close']);
 const { open } = toRefs(props);
 const searchInput = ref('');
 const textAreaJsonIsValid = ref(true);
+const loading = ref(false);
 const input = ref({
   name: '',
   network: '',
   params: {} as Record<string, any>
 });
-const loading = ref(false);
+
 const {
   filterStrategies,
   getStrategies,
@@ -40,7 +41,15 @@ const {
   strategyDefinition
 } = useStrategies();
 const strategiesResults = computed(() => filterStrategies(searchInput.value));
+
 const { getNetworksSpacesCount } = useNetworksFilter();
+
+const strategyValidationErrors = computed(
+  () => validateSchema(strategyDefinition.value, input.value.params) ?? []
+);
+const strategyIsValid = computed(() =>
+  strategyValidationErrors.value === true ? true : false
+);
 
 function handleSubmit() {
   const strategyObj = clone(input.value);
@@ -64,6 +73,7 @@ async function editStrategy(strategyName) {
   await initStrategy(strategyName);
   loading.value = false;
 }
+
 watch(open, () => {
   input.value.network = props.defaultNetwork ?? '';
   // compute the spaces count for network ordering.
@@ -79,12 +89,6 @@ watch(open, () => {
     };
   }
 });
-const strategyValidationErrors = computed(
-  () => validateSchema(strategyDefinition.value, input.value.params) ?? []
-);
-const strategyIsValid = computed(() =>
-  strategyValidationErrors.value === true ? true : false
-);
 </script>
 
 <template>
@@ -102,7 +106,10 @@ const strategyIsValid = computed(() =>
       <LoadingRow v-if="loading" class="px-0" />
       <div v-else>
         <div class="min-h-[280px]">
-          <AutocompleteNetwork v-model:input="input.network" :space="space" />
+          <AutocompleteNetwork
+            v-model:input="input.network"
+            :network="defaultNetwork"
+          />
           <InputObject
             v-if="strategyDefinition"
             v-model="input.params"
