@@ -18,6 +18,7 @@ import {
 } from '@snapshot-labs/snapshot.js/src/utils';
 import { useExtendedSpaces } from '@/composables/useExtendedSpaces';
 import { ExtendedSpace } from '@/helpers/interfaces';
+import { useSpaceSettingsForm } from '@/composables/useSpaceSettingsForm';
 
 const props = defineProps<{
   space: ExtendedSpace;
@@ -31,16 +32,14 @@ const { t, setPageTitle } = useI18n();
 const { web3Account } = useWeb3();
 const { send, clientLoading } = useClient();
 const { reloadSpace } = useExtendedSpaces();
+const { form } = useSpaceSettingsForm();
 const notify: any = inject('notify');
 
 const currentSettings = ref({});
 const currentTextRecord = ref('');
-const currentStrategy = ref({});
 const currentPlugin = ref({});
-const currentStrategyIndex = ref<number | null>(null);
 const modalNetworksOpen = ref(false);
 const modalSkinsOpen = ref(false);
-const modalStrategyOpen = ref(false);
 const modalCategoryOpen = ref(false);
 const modalVotingTypeOpen = ref(false);
 const modalPluginsOpen = ref(false);
@@ -52,40 +51,7 @@ const validateAllFields = ref(false);
 const delayUnit = ref('h');
 const periodUnit = ref('h');
 
-const spaceObject = {
-  strategies: [],
-  categories: [],
-  admins: [],
-  members: [],
-  plugins: {},
-  filters: {
-    minScore: 0,
-    onlyMembers: false
-  },
-  voting: {
-    delay: 0,
-    hideAbstain: false,
-    period: 0,
-    quorum: 0,
-    type: ''
-  },
-  validation: basicValidation,
-  name: '',
-  about: '',
-  avatar: '',
-  network: '',
-  symbol: '',
-  terms: '',
-  website: '',
-  twitter: '',
-  github: '',
-  private: false,
-  domain: '',
-  skin: ''
-};
-
 const defaultNetwork = import.meta.env.VITE_DEFAULT_NETWORK;
-const form = ref(clone(spaceObject));
 
 const validate = computed(() => {
   const formattedForm = formatSpace(form.value);
@@ -228,34 +194,8 @@ function handleReset() {
   if (currentSettings.value) return (form.value = clone(currentSettings.value));
 }
 
-function handleEditStrategy(i) {
-  currentStrategyIndex.value = i;
-  currentStrategy.value = clone(form.value.strategies[i]);
-  modalStrategyOpen.value = true;
-}
-
-function handleRemoveStrategy(i) {
-  form.value.strategies = form.value.strategies.filter(
-    (strategy, index) => index !== i
-  );
-}
-
 function handleSubmitAddCategories(categories) {
   form.value.categories = categories;
-}
-
-function handleAddStrategy() {
-  currentStrategyIndex.value = null;
-  currentStrategy.value = {};
-  modalStrategyOpen.value = true;
-}
-
-function handleSubmitAddStrategy(strategy) {
-  if (currentStrategyIndex.value !== null) {
-    form.value.strategies[currentStrategyIndex.value] = strategy;
-  } else {
-    form.value.strategies = form.value.strategies.concat(strategy);
-  }
 }
 
 function handleEditPlugins(name) {
@@ -533,41 +473,14 @@ async function handleSetRecord() {
               style="font-size: 18px"
             />
           </BaseBlock>
-          <BaseBlock :title="$t('settings.strategies') + '*'">
-            <div
-              v-for="(strategy, i) in form.strategies"
-              :key="i"
-              class="mb-3 relative"
-            >
-              <a @click="handleRemoveStrategy(i)" class="absolute p-4 right-0">
-                <BaseIcon name="close" size="12" />
-              </a>
 
-              <a
-                @click="handleEditStrategy(i)"
-                class="p-4 block border rounded-md"
-              >
-                <h4 v-text="strategy.name" />
-              </a>
-            </div>
-            <BaseBlock
-              :style="`border-color: red !important`"
-              v-if="inputError('strategies')"
-            >
-              <BaseIcon name="warning" class="mr-2 !text-red" />
-              <span class="!text-red">
-                {{ inputError('strategies') }}&nbsp;</span
-              >
-              <BaseLink
-                link="https://docs.snapshot.org/spaces/create#strategies"
-              >
-                {{ $t('learnMore') }}
-              </BaseLink>
-            </BaseBlock>
-            <BaseButton @click="handleAddStrategy" class="block w-full">
-              {{ $t('settings.addStrategy') }}
-            </BaseButton>
-          </BaseBlock>
+          <StrategiesBlock
+            :network="form.network"
+            :strategies="form.strategies"
+            :error="inputError('strategies')"
+            @update-strategies="val => (form.strategies = val)"
+          />
+
           <BaseBlock :title="$t('settings.proposalValidation')">
             <div class="space-y-2">
               <UiInput
@@ -745,14 +658,6 @@ async function handleSetRecord() {
       v-model="form.skin"
       :open="modalSkinsOpen"
       @close="modalSkinsOpen = false"
-    />
-    <ModalStrategy
-      :open="modalStrategyOpen"
-      :strategy="currentStrategy"
-      :space="space"
-      :defaultNetwork="form.network"
-      @close="modalStrategyOpen = false"
-      @add="handleSubmitAddStrategy"
     />
     <ModalCategory
       :open="modalCategoryOpen"
