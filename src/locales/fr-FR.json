@@ -322,7 +322,8 @@
     "waitForTransaction": "La transaction doit être confirmée avant de pouvoir créer votre espace. {txUrl}",
     "pleaseWaitMessage": "Cela peut prendre quelques minutes, veuillez attendre pendant que la transaction est confirmée",
     "notControllerAddress": "Veuillez vous connecter avec l'adresse du controller {wallet} pour créer l'espace.",
-    "fillCurrentAccount": "Use currently logged in account"
+    "fillCurrentAccount": "Use currently logged in account",
+    "profile": "Profile"
   },
   "profile": {
     "buttonEdit": "Modifier le profil",
