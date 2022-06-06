@@ -144,6 +144,7 @@ async function handleSubmit() {
               :title="$t(`settings.name`)"
               :error="getError('name')"
               :max-length="schemas.space.properties.name.maxLength"
+              placeholder="Uniswap DAO"
               focus-on-mount
             />
             <LabelInput> {{ $t(`settings.about`) }} </LabelInput>
