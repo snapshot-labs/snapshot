@@ -156,7 +156,7 @@ async function handleSubmit() {
             />
             <AutocompleteNetwork v-model:input="form.network" />
           </div>
-          <div class="flex w-1/3 justify-center">
+          <div class="flex w-full sm:w-1/3 justify-center">
             <div>
               <LabelInput>
                 {{ $t('settings.avatar') }}
