@@ -142,13 +142,14 @@ async function handleSubmit() {
               v-model="form.name"
               :title="$t(`settings.name`)"
               :error="getError('name')"
+              :max-length="schemas.space.properties.name.maxLength"
               focus-on-mount
             />
             <LabelInput> {{ $t(`settings.about`) }} </LabelInput>
             <TextareaAutosize
               v-model="form.about"
               class="s-input !rounded-3xl"
-              :maxLength="160"
+              :max-length="schemas.space.properties.about.maxLength"
               :placeholder="$t('profile.settings.bioPlaceholder')"
             />
           </div>
