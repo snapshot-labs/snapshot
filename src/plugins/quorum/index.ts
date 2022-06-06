@@ -37,7 +37,7 @@ export default class Plugin {
       }
 
       case 'multichainBalance': {
-        const { network, strategies } = quorumOptions;
+        const { network, strategies, quorumModifier } = quorumOptions;
         const blocks = await getSnapshots(
           network,
           parseInt(snapshot),
@@ -53,7 +53,7 @@ export default class Plugin {
           )
         );
         const results = await Promise.all(requests);
-        return results.reduce((total, ele, index) => {
+        const totalBalance = results.reduce((total, ele, index) => {
           const eleDecimals = strategies[index].decimals;
           if (index === 1) {
             const eleDecimals = strategies[0].decimals;
@@ -61,6 +61,8 @@ export default class Plugin {
           }
           return total.add(ele.div(BigNumber.from(10).pow(eleDecimals)));
         });
+        const modifier = quorumModifier ? quorumModifier : 1;
+        return totalBalance.toNumber() * modifier;
       }
 
       default:
