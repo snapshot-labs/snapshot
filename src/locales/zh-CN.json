@@ -322,7 +322,8 @@
     "waitForTransaction": "您需要先确认交易才能创建您的空间。 {txUrl}",
     "pleaseWaitMessage": "这可能需要几分钟，请等待交易确认",
     "notControllerAddress": "请连接控制人地址 {wallet} 以创建空间。",
-    "fillCurrentAccount": "使用当前登录的帐户"
+    "fillCurrentAccount": "使用当前登录的帐户",
+    "profile": "Profile"
   },
   "profile": {
     "buttonEdit": "编辑个人资料",
