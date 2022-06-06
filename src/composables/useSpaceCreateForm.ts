@@ -1,6 +1,5 @@
 import { onMounted, ref, watch } from 'vue';
 import { useStorage } from '@vueuse/core';
-import { useRoute } from 'vue-router';
 
 interface ProposalForm {
   name: string;
@@ -46,16 +45,15 @@ const EMPTY_PROPOSAL: ProposalForm = {
 const form = ref(EMPTY_PROPOSAL);
 
 export function useSpaceCreateForm() {
-  const route = useRoute();
+  const formDraft = useStorage(`snapshot.proposal`, EMPTY_PROPOSAL);
 
-  const formDraft = useStorage(
-    `snapshot.proposal${route.params.key}`,
-    EMPTY_PROPOSAL
+  watch(
+    form,
+    () => {
+      formDraft.value = form.value;
+    },
+    { immediate: true }
   );
-
-  watch(form, () => {
-    formDraft.value = form.value;
-  });
 
   onMounted(() => (form.value = formDraft.value));
 
