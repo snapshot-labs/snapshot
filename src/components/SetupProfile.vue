@@ -34,6 +34,7 @@ const form = ref({
   avatar: '',
   network: '1',
   admins: [] as string[],
+  categories: [],
   // Adds "ticket" strategy with VOTE symbol as default/placeholder strategy
   strategies: [
     {
@@ -151,6 +152,11 @@ async function handleSubmit() {
               class="s-input !rounded-3xl"
               :max-length="schemas.space.properties.about.maxLength"
               :placeholder="$t('profile.settings.bioPlaceholder')"
+            />
+            {{ form }}
+            <ListboxMultipleCategories
+              :categories="form.categories"
+              @update-categories="value => (form.categories = value)"
             />
           </div>
           <div class="flex w-full sm:w-1/3 justify-center">
