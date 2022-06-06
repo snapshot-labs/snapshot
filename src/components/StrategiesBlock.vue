@@ -55,20 +55,20 @@ watch(strategiesClone, () => emit('updateStrategies', strategiesClone.value));
 
 <template>
   <BaseBlock :title="$t('settings.strategies')">
+    <div class="sm:flex sm:space-x-4 w-full mb-4 sm:mb-2">
+      <AutocompleteNetwork
+        :input="network"
+        @update:input="value => emit('updateNetwork', value)"
+      />
+      <BaseInput
+        :model-value="symbol"
+        @update:model-value="value => emit('updateSymbol', value)"
+        :title="$t(`settings.symbol`)"
+        placeholder="e.g. BAL"
+        :error="getError('symbol')"
+      />
+    </div>
     <div class="grid gap-3 mb-4">
-      <div class="flex space-x-4 w-full">
-        <AutocompleteNetwork
-          :input="network"
-          @update:input="value => emit('updateNetwork', value)"
-        />
-        <BaseInput
-          :model-value="symbol"
-          @update:model-value="value => emit('updateSymbol', value)"
-          :title="$t(`settings.symbol`)"
-          placeholder="e.g. BAL"
-          :error="getError('symbol')"
-        />
-      </div>
       <StrategiesBlockItem
         :strategies-form="strategiesClone"
         @edit-strategy="i => handleEditStrategy(i)"
