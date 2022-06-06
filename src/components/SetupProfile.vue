@@ -29,6 +29,7 @@ const creatingSpace = ref(false);
 // Space setup form
 const form = ref({
   name: '',
+  about: '',
   symbol: '',
   avatar: '',
   network: '1',
@@ -142,6 +143,13 @@ async function handleSubmit() {
               :title="$t(`settings.name`)"
               :error="getError('name')"
               focus-on-mount
+            />
+            <LabelInput> {{ $t(`settings.about`) }} </LabelInput>
+            <TextareaAutosize
+              v-model="form.about"
+              class="s-input !rounded-3xl"
+              :maxLength="160"
+              :placeholder="$t('profile.settings.bioPlaceholder')"
             />
           </div>
           <div class="flex w-full sm:w-1/3 justify-center">
