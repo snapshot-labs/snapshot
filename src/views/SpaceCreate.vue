@@ -58,7 +58,7 @@ const dateEnd = computed(() => {
   const threeDays = 259200;
   return props.space?.voting?.period
     ? dateStart.value + props.space.voting.period
-    : userSelectedDateEnd.value
+    : userSelectedDateEnd.value || sourceProposalLoaded.value
     ? form.value.end
     : dateStart.value + threeDays;
 });
@@ -110,8 +110,7 @@ const needsPluginConfigs = computed(() =>
   )
 );
 
-const { store } = useStore();
-async function handleSubmit() {
+function getFormattedForm() {
   const clonedForm = clone(form.value);
   clonedForm.snapshot = Number(form.value.snapshot);
   clonedForm.choices = form.value.choices
@@ -122,7 +121,13 @@ async function handleSubmit() {
   updateTime();
   clonedForm.start = dateStart.value;
   clonedForm.end = dateEnd.value;
-  const result = await send(props.space, 'proposal', clonedForm);
+  return clonedForm;
+}
+
+const { store } = useStore();
+async function handleSubmit() {
+  const formattedForm = getFormattedForm();
+  const result = await send(props.space, 'proposal', formattedForm);
   console.log('Result', result);
   if (result.id) {
     store.space.proposals = [];
@@ -138,20 +143,7 @@ async function handleSubmit() {
   }
 }
 
-const { apolloQuery, queryLoading } = useApolloQuery();
-async function loadSourceProposal() {
-  const proposal = await apolloQuery(
-    {
-      query: PROPOSAL_QUERY,
-      variables: {
-        id: sourceProposal.value
-      }
-    },
-    'proposal'
-  );
-
-  userSelectedDateEnd.value = true;
-
+function setSourceProposal(proposal) {
   const { network, strategies, plugins } = proposal;
 
   form.value = {
@@ -170,6 +162,21 @@ async function loadSourceProposal() {
     key,
     text
   }));
+}
+
+const { apolloQuery, queryLoading } = useApolloQuery();
+async function loadSourceProposal() {
+  const proposal = await apolloQuery(
+    {
+      query: PROPOSAL_QUERY,
+      variables: {
+        id: sourceProposal.value
+      }
+    },
+    'proposal'
+  );
+
+  setSourceProposal(proposal);
 
   sourceProposalLoaded.value = true;
 }
