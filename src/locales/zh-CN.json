@@ -325,6 +325,14 @@
     "fillCurrentAccount": "使用当前登录的帐户",
     "profile": "用户信息"
   },
+  "spaceProfile": {
+    "name": "Name",
+    "about": "About",
+    "categories": {
+      "label": "Categories",
+      "select": "Select categories"
+    }
+  },
   "profile": {
     "buttonEdit": "编辑个人资料",
     "viewProfile": "查看个人资料",
