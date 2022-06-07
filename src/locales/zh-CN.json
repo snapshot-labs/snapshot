@@ -327,23 +327,23 @@
   },
   "spaceProfile": {
     "name": {
-      "label": "Name",
-      "placeholder": "e.g. Yam Network"
+      "label": "名称",
+      "placeholder": "例如 Yam Network"
     },
     "about": {
-      "label": "About",
-      "placeholder": "Tell us about your space"
+      "label": "关于",
+      "placeholder": "介绍一下您的空间"
     },
     "categories": {
-      "label": "Categorie(s)",
-      "select": "Select categorie(s)"
+      "label": "类别",
+      "select": "选择类别"
     },
-    "avatar": "Avatar"
+    "avatar": "头像"
   },
   "spaceStrategies": {
-    "title": "Strategie(s)",
-    "symbol": "Symbol",
-    "addStrategy": "Add strategy"
+    "title": "策略",
+    "symbol": "符号",
+    "addStrategy": "添加策略"
   },
   "profile": {
     "buttonEdit": "编辑个人资料",
