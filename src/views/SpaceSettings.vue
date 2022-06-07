@@ -3,7 +3,6 @@ import { computed, ref, inject, watch, onMounted } from 'vue';
 import { useI18n } from '@/composables/useI18n';
 import { getAddress } from '@ethersproject/address';
 import schemas from '@snapshot-labs/snapshot.js/src/schemas';
-import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import defaults from '@/locales/default.json';
 import { useWeb3 } from '@/composables/useWeb3';
 import { calcFromSeconds, calcToSeconds, shorten } from '@/helpers/utils';
