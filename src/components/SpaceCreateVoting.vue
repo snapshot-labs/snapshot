@@ -15,11 +15,11 @@ const props = defineProps<{
 const emit = defineEmits(['userSelectedDate']);
 
 const selectedDate = ref('');
-const userSelectedDateStart = ref(false);
 const modalDateSelectOpen = ref(false);
 const modalVotingTypeOpen = ref(false);
 
-const { form, sourceProposalLoaded } = useSpaceCreateForm();
+const { form, sourceProposalLoaded, userSelectedDateStart } =
+  useSpaceCreateForm();
 
 const disableChoiceEdit = computed(() => form.value.type === 'basic');
 

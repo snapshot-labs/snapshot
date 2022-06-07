@@ -29,8 +29,13 @@ const { domain } = useApp();
 const { web3, web3Account } = useWeb3();
 const { send, clientLoading } = useClient();
 const { pluginIndex } = usePlugins();
-const { form, userSelectedDateEnd, sourceProposalLoaded, resetForm } =
-  useSpaceCreateForm();
+const {
+  form,
+  userSelectedDateEnd,
+  sourceProposalLoaded,
+  sourceProposal,
+  resetForm
+} = useSpaceCreateForm();
 const { modalAccountOpen } = useModal();
 const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(props.space.id);
 
@@ -45,8 +50,6 @@ const BODY_LIMIT_CHARACTERS = 14400;
 const proposal = computed(() =>
   Object.assign(form.value, { choices: form.value.choices })
 );
-
-const sourceProposal = computed(() => route.params.sourceProposal);
 
 const dateStart = computed(() => {
   return props.space?.voting?.delay
