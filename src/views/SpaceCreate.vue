@@ -37,10 +37,11 @@ const { form, userSelectedDateEnd, resetForm } = useSpaceCreateForm();
 const notify: any = inject('notify');
 
 const blockNumber = ref(-1);
-const bodyLimit = ref(14400);
 const passValidation = ref([false, '']);
 const validationLoading = ref(false);
 const loadingSnapshot = ref(true);
+
+const bodyLimitCharacters = 14400;
 
 const proposal = computed(() =>
   Object.assign(form.value, { choices: form.value.choices })
@@ -76,7 +77,7 @@ const isValid = computed(() => {
 
   return (
     !clientLoading.value &&
-    form.value.body.length <= bodyLimit.value &&
+    form.value.body.length <= bodyLimitCharacters &&
     dateEnd.value &&
     dateEnd.value > dateStart.value &&
     form.value.snapshot &&
@@ -182,7 +183,7 @@ const stepIsValid = computed(() => {
   if (
     currentStep.value === 1 &&
     form.value.name &&
-    form.value.body.length <= bodyLimit.value &&
+    form.value.body.length <= bodyLimitCharacters &&
     passValidation.value[0] === true
   )
     return true;
@@ -287,7 +288,7 @@ function previosStep() {
       <SpaceCreateContent
         v-if="currentStep === 1"
         :preview="preview"
-        :bodyLimit="bodyLimit"
+        :bodyLimit="bodyLimitCharacters"
       />
 
       <!-- Step 2 -->
@@ -307,7 +308,6 @@ function previosStep() {
         <PluginCreate
           :proposal="proposal"
           :space="space"
-          :preview="preview"
           v-model="form.metadata.plugins"
         />
       </div>
