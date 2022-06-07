@@ -1,9 +1,7 @@
 <script setup lang="ts">
-import { ref, watchEffect, computed, onMounted, inject, watch } from 'vue';
+import { ref, computed, onMounted, inject, watch } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { useI18n } from '@/composables/useI18n';
-import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
-import { getBlockNumber } from '@snapshot-labs/snapshot.js/src/utils/web3';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { useModal } from '@/composables/useModal';
@@ -37,10 +35,8 @@ const { form, userSelectedDateEnd, sourceProposalLoaded, resetForm } =
 
 const notify: any = inject('notify');
 
-const blockNumber = ref(-1);
 const passValidation = ref([false, '']);
 const validationLoading = ref(false);
-const loadingSnapshot = ref(true);
 
 const bodyLimitCharacters = 14400;
 
@@ -50,10 +46,10 @@ const proposal = computed(() =>
 
 const sourceProposal = computed(() => route.params.sourceProposal);
 
-const timeSeconds = ref(parseInt((Date.now() / 1e3).toFixed()));
+const timeSeconds = ref(Number((Date.now() / 1e3).toFixed()));
 
 function updateTime() {
-  timeSeconds.value = parseInt((Date.now() / 1e3).toFixed());
+  timeSeconds.value = Number((Date.now() / 1e3).toFixed());
 }
 
 const dateStart = computed(() => {
@@ -82,7 +78,6 @@ const isValid = computed(() => {
     dateEnd.value &&
     dateEnd.value > dateStart.value &&
     form.value.snapshot &&
-    form.value.snapshot > blockNumber.value / 2 &&
     form.value.choices.length >= 1 &&
     !form.value.choices.some((a, i) => a.text === '' && i === 0) &&
     passValidation.value[0] &&
@@ -158,8 +153,6 @@ async function loadSourceProposal() {
   sourceProposalLoaded.value = true;
 }
 
-const currentStep = computed(() => Number(route.params.step || 1));
-
 onMounted(async () => {
   if (sourceProposal.value && !sourceProposalLoaded.value)
     await loadSourceProposal();
@@ -169,15 +162,7 @@ onMounted(() =>
   setPageTitle('page.title.space.create', { space: props.space.name })
 );
 
-watchEffect(async () => {
-  loadingSnapshot.value = true;
-  if (props.space?.network) {
-    blockNumber.value = await getBlockNumber(getProvider(props.space.network));
-    form.value.snapshot = blockNumber.value;
-    loadingSnapshot.value = false;
-  }
-  if (props.space?.voting?.type) form.value.type = props.space.voting.type;
-});
+const currentStep = computed(() => Number(route.params.step || 1));
 
 const stepIsValid = computed(() => {
   if (
@@ -192,7 +177,6 @@ const stepIsValid = computed(() => {
     dateEnd.value &&
     dateEnd.value > dateStart.value &&
     form.value.snapshot &&
-    form.value.snapshot > blockNumber.value / 2 &&
     !form.value.choices.some((a, i) => a.text === '' && i === 0)
   )
     return true;

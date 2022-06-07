@@ -63,5 +63,10 @@ export function useSpaceCreateForm() {
     form.value = EMPTY_PROPOSAL;
   }
 
-  return { form, userSelectedDateEnd, sourceProposalLoaded, resetForm };
+  return {
+    form,
+    userSelectedDateEnd,
+    sourceProposalLoaded,
+    resetForm
+  };
 }
