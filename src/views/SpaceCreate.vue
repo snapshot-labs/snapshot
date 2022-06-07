@@ -28,29 +28,25 @@ const auth = getInstance();
 const { domain } = useApp();
 const { web3, web3Account } = useWeb3();
 const { send, clientLoading } = useClient();
-const { store } = useStore();
 const { pluginIndex } = usePlugins();
 const { form, userSelectedDateEnd, sourceProposalLoaded, resetForm } =
   useSpaceCreateForm();
+const { modalAccountOpen } = useModal();
+const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(props.space.id);
 
 const notify: any = inject('notify');
 
 const passValidation = ref([false, '']);
 const validationLoading = ref(false);
+const timeSeconds = ref(Number((Date.now() / 1e3).toFixed()));
 
-const bodyLimitCharacters = 14400;
+const BODY_LIMIT_CHARACTERS = 14400;
 
 const proposal = computed(() =>
   Object.assign(form.value, { choices: form.value.choices })
 );
 
 const sourceProposal = computed(() => route.params.sourceProposal);
-
-const timeSeconds = ref(Number((Date.now() / 1e3).toFixed()));
-
-function updateTime() {
-  timeSeconds.value = Number((Date.now() / 1e3).toFixed());
-}
 
 const dateStart = computed(() => {
   return props.space?.voting?.delay
@@ -74,7 +70,7 @@ const isValid = computed(() => {
 
   return (
     !clientLoading.value &&
-    form.value.body.length <= bodyLimitCharacters &&
+    form.value.body.length <= BODY_LIMIT_CHARACTERS &&
     dateEnd.value &&
     dateEnd.value > dateStart.value &&
     form.value.snapshot &&
@@ -86,6 +82,35 @@ const isValid = computed(() => {
   );
 });
 
+const currentStep = computed(() => Number(route.params.step || 1));
+
+const stepIsValid = computed(() => {
+  if (
+    currentStep.value === 1 &&
+    form.value.name &&
+    form.value.body.length <= BODY_LIMIT_CHARACTERS &&
+    passValidation.value[0] === true
+  )
+    return true;
+  else if (
+    currentStep.value === 2 &&
+    dateEnd.value &&
+    dateEnd.value > dateStart.value &&
+    form.value.snapshot &&
+    !form.value.choices.some((a, i) => a.text === '' && i === 0)
+  )
+    return true;
+  else return false;
+});
+
+// Check if has plugins that can be confirgured on proposal creation
+const needsPluginConfigs = computed(() =>
+  Object.keys(props.space?.plugins ?? {}).some(
+    pluginKey => pluginIndex[pluginKey]?.defaults?.proposal
+  )
+);
+
+const { store } = useStore();
 async function handleSubmit() {
   const clonedForm = clone(form.value);
   clonedForm.snapshot = Number(form.value.snapshot);
@@ -113,11 +138,7 @@ async function handleSubmit() {
   }
 }
 
-const { modalAccountOpen } = useModal();
-const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(props.space.id);
-
 const { apolloQuery, queryLoading } = useApolloQuery();
-
 async function loadSourceProposal() {
   const proposal = await apolloQuery(
     {
@@ -153,48 +174,23 @@ async function loadSourceProposal() {
   sourceProposalLoaded.value = true;
 }
 
-onMounted(async () => {
-  if (sourceProposal.value && !sourceProposalLoaded.value)
-    await loadSourceProposal();
-});
+function nextStep() {
+  router.push({
+    params: { step: currentStep.value + 1 },
+    query: route.query.snapshot ? { snapshot: route.query.snapshot } : {}
+  });
+}
 
-onMounted(() =>
-  setPageTitle('page.title.space.create', { space: props.space.name })
-);
+function previosStep() {
+  router.push({
+    params: { step: currentStep.value - 1 },
+    query: route.query.snapshot ? { snapshot: route.query.snapshot } : {}
+  });
+}
 
-const currentStep = computed(() => Number(route.params.step || 1));
-
-const stepIsValid = computed(() => {
-  if (
-    currentStep.value === 1 &&
-    form.value.name &&
-    form.value.body.length <= bodyLimitCharacters &&
-    passValidation.value[0] === true
-  )
-    return true;
-  else if (
-    currentStep.value === 2 &&
-    dateEnd.value &&
-    dateEnd.value > dateStart.value &&
-    form.value.snapshot &&
-    !form.value.choices.some((a, i) => a.text === '' && i === 0)
-  )
-    return true;
-  else return false;
-});
-
-const preview = ref(false);
-
-watch(preview, () => {
-  window.scrollTo(0, 0);
-});
-
-// Check if has plugins that can be confirgured on proposal creation
-const needsPluginConfigs = computed(() =>
-  Object.keys(props.space?.plugins ?? {}).some(
-    pluginKey => pluginIndex[pluginKey]?.defaults?.proposal
-  )
-);
+function updateTime() {
+  timeSeconds.value = Number((Date.now() / 1e3).toFixed());
+}
 
 // Check if account passes space validation
 // (catch errors to show confiuration error message)
@@ -227,19 +223,20 @@ watch(
   { immediate: true }
 );
 
-function nextStep() {
-  router.push({
-    params: { step: currentStep.value + 1 },
-    query: route.query.snapshot ? { snapshot: route.query.snapshot } : {}
-  });
-}
+const preview = ref(false);
 
-function previosStep() {
-  router.push({
-    params: { step: currentStep.value - 1 },
-    query: route.query.snapshot ? { snapshot: route.query.snapshot } : {}
-  });
-}
+watch(preview, () => {
+  window.scrollTo(0, 0);
+});
+
+onMounted(async () => {
+  if (sourceProposal.value && !sourceProposalLoaded.value)
+    await loadSourceProposal();
+});
+
+onMounted(() =>
+  setPageTitle('page.title.space.create', { space: props.space.name })
+);
 </script>
 
 <template>
@@ -266,7 +263,7 @@ function previosStep() {
       <SpaceCreateContent
         v-if="currentStep === 1"
         :preview="preview"
-        :bodyLimit="bodyLimitCharacters"
+        :bodyLimit="BODY_LIMIT_CHARACTERS"
       />
 
       <!-- Step 2 -->
