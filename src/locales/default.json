@@ -215,6 +215,9 @@
     "noDelegationsAndDelegates": "Can't find your delegations and delegates? Make sure you are connected to the correct network.",
     "delegateNotSupported": "Delegation is currently not supported for {network}."
   },
+  "newsletter": {
+    "stayUpToDate": "Stay up to date"
+  },
   "proposal": {
     "castVote": "Cast your vote",
     "vote": "Vote",

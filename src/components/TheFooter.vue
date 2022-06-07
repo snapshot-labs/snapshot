@@ -4,6 +4,7 @@ import { useSkin } from '@/composables/useSkin';
 const { toggleUserTheme, getThemeIcon } = useSkin();
 
 const modalAboutOpen = ref(false);
+const modalNewsletterOpen = ref(false);
 const yearNow = new Date().getFullYear();
 
 const socials = [
@@ -55,6 +56,7 @@ const socials = [
 
       <ButtonLanguage />
     </div>
+    <div @click="modalNewsletterOpen = true">Newsletter</div>
     <div
       class="pt-3 md:pt-0 md:pr-2 md:order-first whitespace-nowrap opacity-40"
     >
@@ -66,6 +68,11 @@ const socials = [
       :open="modalAboutOpen"
       @close="modalAboutOpen = false"
       @openLang="modalLangOpen = true"
+    />
+    <!-- This needs to be styled too  -->
+    <ModalNewsletter
+      :open="modalNewsletterOpen"
+      @close="modalNewsletterOpen = false"
     />
   </teleport>
 </template>
