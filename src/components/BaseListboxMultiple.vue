@@ -74,7 +74,7 @@ function isDisabled(item: { id: number; name: string }) {
               :key="item.id"
               :value="item"
               :disabled="isDisabled(item)"
-              v-slot="{ active, selected }"
+              v-slot="{ active, selected, disabled }"
             >
               <li
                 :class="[
@@ -85,6 +85,7 @@ function isDisabled(item: { id: number; name: string }) {
                 <span
                   :class="[
                     selected ? 'font-semibold text-skin-link' : 'font-normal',
+                    { 'text-skin-border': disabled },
                     'block truncate'
                   ]"
                 >
