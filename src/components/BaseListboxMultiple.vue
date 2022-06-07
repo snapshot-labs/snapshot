@@ -60,12 +60,15 @@ function isDisabled(item: { id: number; name: string }) {
         </span>
       </ListboxButton>
       <transition
-        leave-active-class="transition ease-in duration-100"
-        leave-from-class="opacity-100"
-        leave-to-class="opacity-0"
+        enter-active-class="transition duration-100 ease-out"
+        enter-from-class="transform -translate-y-2 scale-95 opacity-0"
+        enter-to-class="transform scale-100 opacity-100"
+        leave-active-class="transition duration-75 ease-out"
+        leave-from-class="transform scale-100 opacity-100"
+        leave-to-class="transform scale-95 opacity-0"
       >
         <ListboxOptions
-          class="absolute z-40 mt-1 w-full overflow-hidden bg-skin-bg shadow-lg rounded-md text-base ring-1 ring-opacity-5 focus:outline-none sm:text-sm"
+          class="absolute z-40 mt-1 w-full overflow-hidden bg-skin-bg shadow-lg rounded-md text-base border border-skin-border focus:outline-none sm:text-sm"
         >
           <div class="max-h-[180px] overflow-y-scroll">
             <ListboxOption
