@@ -326,12 +326,24 @@
     "profile": "Profile"
   },
   "spaceProfile": {
-    "name": "Name",
-    "about": "About",
+    "name": {
+      "label": "Name",
+      "placeholder": "e.g. Yam Network"
+    },
+    "about": {
+      "label": "About",
+      "placeholder": "Tell us about your space"
+    },
     "categories": {
-      "label": "Categories",
-      "select": "Select categories"
-    }
+      "label": "Categorie(s)",
+      "select": "Select categorie(s)"
+    },
+    "avatar": "Avatar"
+  },
+  "spaceStrategies": {
+    "title": "Strategie(s)",
+    "symbol": "Symbol",
+    "addStrategy": "Add strategy"
   },
   "profile": {
     "buttonEdit": "Edit profile",
