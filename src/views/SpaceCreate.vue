@@ -32,7 +32,7 @@ const { web3, web3Account } = useWeb3();
 const { send, clientLoading } = useClient();
 const { store } = useStore();
 const { pluginIndex } = usePlugins();
-const { form, resetForm } = useSpaceCreateForm();
+const { form, userSelectedDateEnd, resetForm } = useSpaceCreateForm();
 
 const notify: any = inject('notify');
 
@@ -41,7 +41,6 @@ const bodyLimit = ref(14400);
 const passValidation = ref([false, '']);
 const validationLoading = ref(false);
 const loadingSnapshot = ref(true);
-const userSelectedDateEnd = ref(false);
 
 const proposal = computed(() =>
   Object.assign(form.value, { choices: form.value.choices })
@@ -158,7 +157,10 @@ async function loadProposal() {
   sourceProposalLoaded.value = true;
 }
 
+const currentStep = computed(() => Number(route.params.step || 1));
+
 onMounted(async () => {
+  if (currentStep.value > 1) return;
   if (sourceProposal.value) await loadProposal();
 });
 
@@ -175,8 +177,6 @@ watchEffect(async () => {
   }
   if (props.space?.voting?.type) form.value.type = props.space.voting.type;
 });
-
-const currentStep = computed(() => Number(route.params.step || 1));
 
 const stepIsValid = computed(() => {
   if (
@@ -313,7 +313,7 @@ function previosStep() {
       </div>
     </template>
     <template #sidebar-right>
-      <BaseBlock class="lg:fixed lg:w-[320px] mt-5 lg:mt-0">
+      <BaseBlock class="lg:fixed lg:w-[320px]">
         <BaseButton
           v-if="currentStep === 1"
           @click="preview = !preview"
