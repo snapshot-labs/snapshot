@@ -1,28 +1,29 @@
-<script setup>
-import { ref, computed, nextTick, toRefs, watch, onMounted } from 'vue';
+<script setup lang="ts">
+import {
+  ref,
+  computed,
+  nextTick,
+  toRefs,
+  watch,
+  onMounted,
+  withDefaults
+} from 'vue';
 
-const props = defineProps({
-  modelValue: {
-    type: [String, Number],
-    default: ''
-  },
-  autosize: {
-    type: Boolean,
-    default: true
-  },
-  minHeight: {
-    type: [Number],
-    default: null
-  },
-  maxHeight: {
-    type: [Number],
-    default: null
-  },
-  maxLength: {
-    type: Number,
-    default: null
+const props = withDefaults(
+  defineProps<{
+    modelValue?: string | number;
+    autosize?: boolean;
+    minHeight?: number;
+    maxHeight?: number;
+    maxLength?: number;
+    placeholder?: string;
+  }>(),
+  {
+    modelValue: '',
+    autosize: true,
+    placeholder: ''
   }
-});
+);
 
 const emit = defineEmits(['update:modelValue']);
 
@@ -33,15 +34,13 @@ const val = ref(props.modelValue);
 // works when content height becomes more then value of the maxHeight property
 const maxHeightScroll = ref(false);
 const height = ref('auto');
-const textarea = ref(null);
+const textarea = ref<HTMLTextAreaElement | null>(null);
 
 const computedStyles = computed(() => {
-  if (!props.autosize) return {};
-  return {
-    resize: 'none',
-    height: height.value,
-    overflow: maxHeightScroll.value ? 'auto' : 'hidden'
-  };
+  if (!props.autosize) return '';
+  return `resize: none; height: ${height.value}; overflow: ${
+    maxHeightScroll.value ? 'auto' : 'hidden'
+  }`;
 });
 
 function resize() {
@@ -63,7 +62,7 @@ function resize() {
     const heightVal = contentHeight + 'px';
     height.value = heightVal;
   });
-  return this;
+  return;
 }
 
 watch(modelValue, v => {
@@ -85,10 +84,11 @@ onMounted(() => resize());
 
 <template>
   <textarea
-    class="h-auto w-full py-3 px-4 border focus-within:!border-skin-text hover:border-skin-text border-skin-border rounded-3xl"
+    class="h-auto w-full py-3 px-4 !mt-1 border focus-within:!border-skin-text hover:border-skin-text border-skin-border rounded-3xl"
     ref="textarea"
     :style="computedStyles"
-    :maxLength="maxLength"
+    :maxlength="maxLength"
+    :placeholder="placeholder"
     v-model="val"
     @focus="resize"
   />

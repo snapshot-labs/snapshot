@@ -56,6 +56,7 @@ export function useSpaceController() {
     pendingENSRecord.value = true;
     pendingCount.value++;
     const receipt = await tx.wait();
+    await loadUriAddress();
     pendingCount.value--;
     pendingENSRecord.value = false;
     notify(t('notify.ensSet'));
@@ -102,9 +103,10 @@ export function useSpaceController() {
     console.log('URI', uri);
     const uriArray = uri?.split('/') ?? [];
     if (defaultNetwork === '1') {
-      uriAddress.value = uriArray[4] ?? '';
-    } else if (uriArray[4] === 'testnet') {
-      uriAddress.value = uriArray[5] ?? '';
+      return (uriAddress.value = uriArray[4] ?? '');
+    }
+    if (uriArray[4] === 'testnet') {
+      return (uriAddress.value = uriArray[5] ?? '');
     }
   }
 
