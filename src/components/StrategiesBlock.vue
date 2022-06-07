@@ -6,10 +6,11 @@ import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 const props = defineProps<{
   strategies: SpaceStrategy[];
   network: string;
-  error?: string | boolean;
+  symbol: string;
+  getError: (field: string) => string;
 }>();
 
-const emit = defineEmits(['updateStrategies']);
+const emit = defineEmits(['updateStrategies', 'updateNetwork', 'updateSymbol']);
 
 const strategiesClone = ref<SpaceStrategy[]>(clone(props.strategies));
 
@@ -54,6 +55,19 @@ watch(strategiesClone, () => emit('updateStrategies', strategiesClone.value));
 
 <template>
   <BaseBlock :title="$t('settings.strategies')">
+    <div class="sm:flex sm:space-x-4 w-full mb-4 sm:mb-2">
+      <AutocompleteNetwork
+        :input="network"
+        @update:input="value => emit('updateNetwork', value)"
+      />
+      <BaseInput
+        :model-value="symbol"
+        @update:model-value="value => emit('updateSymbol', value)"
+        :title="$t(`settings.symbol`)"
+        placeholder="e.g. BAL"
+        :error="getError('symbol')"
+      />
+    </div>
     <div class="grid gap-3 mb-4">
       <StrategiesBlockItem
         :strategies-form="strategiesClone"
@@ -62,13 +76,7 @@ watch(strategiesClone, () => emit('updateStrategies', strategiesClone.value));
       />
     </div>
 
-    <BaseBlock :style="`border-color: red !important`" v-if="error">
-      <BaseIcon name="warning" class="mr-2 !text-red" />
-      <span class="!text-red"> {{ error }}&nbsp;</span>
-      <BaseLink link="https://docs.snapshot.org/spaces/create#strategies">
-        {{ $t('learnMore') }}
-      </BaseLink>
-    </BaseBlock>
+    <StrategiesBlockWarning :error="getError('strategies')" />
 
     <BaseButton @click="handleAddStrategy" class="block w-full">
       {{ $t('settings.addStrategy') }}

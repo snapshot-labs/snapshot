@@ -24,16 +24,17 @@ const notify = inject<any>('notify');
 const router = useRouter();
 const route = useRoute();
 
-const visitedFields = ref<string[]>([]);
 const creatingSpace = ref(false);
 
 // Space setup form
 const form = ref({
   name: '',
+  about: '',
   symbol: '',
   avatar: '',
   network: '1',
   admins: [] as string[],
+  categories: [],
   // Adds "ticket" strategy with VOTE symbol as default/placeholder strategy
   strategies: [
     {
@@ -51,20 +52,18 @@ const { t } = useI18n();
 const { pendingENSRecord, loadingTextRecord, uriAddress, loadUriAddress } =
   useSpaceController();
 
-const spaceValidationErrors = computed(() => {
+const spaceValidation = computed(() => {
   const formClone = clone(form.value);
   if (formClone.avatar === '') delete formClone.avatar;
   return validateSchema(schemas.space, formClone) ?? [];
 });
 
-function errorIfVisited(field) {
-  return visitedFields.value.includes(field)
-    ? validationErrorMessage(field, spaceValidationErrors.value)
-    : '';
+function getError(field) {
+  return validationErrorMessage(field, spaceValidation.value);
 }
 
 const isValid = computed(() => {
-  return spaceValidationErrors.value === true;
+  return spaceValidation.value === true;
 });
 
 const { send } = useClient();
@@ -143,18 +142,22 @@ async function handleSubmit() {
             <BaseInput
               v-model="form.name"
               :title="$t(`settings.name`)"
-              :error="errorIfVisited('name')"
-              @blur="visitedFields.push('name')"
+              :error="getError('name')"
+              :max-length="schemas.space.properties.name.maxLength"
+              placeholder="Uniswap DAO"
               focus-on-mount
             />
-            <BaseInput
-              v-model="form.symbol"
-              :title="$t(`settings.symbol`)"
-              placeholder="e.g. BAL"
-              :error="errorIfVisited('symbol')"
-              @blur="visitedFields.push('symbol')"
+            <LabelInput> {{ $t(`settings.about`) }} </LabelInput>
+            <TextareaAutosize
+              v-model="form.about"
+              class="s-input !rounded-3xl"
+              :max-length="schemas.space.properties.about.maxLength"
+              :placeholder="$t('profile.settings.bioPlaceholder')"
             />
-            <AutocompleteNetwork v-model:input="form.network" />
+            <ListboxMultipleCategories
+              :categories="form.categories"
+              @update-categories="value => (form.categories = value)"
+            />
           </div>
           <div class="flex w-full sm:w-1/3 justify-center">
             <div>
@@ -190,8 +193,12 @@ async function handleSubmit() {
 
     <StrategiesBlock
       :network="form.network"
+      :symbol="form.symbol"
       :strategies="form.strategies"
       @update-strategies="val => (form.strategies = val)"
+      @update-network="val => (form.network = val)"
+      @update-symbol="val => (form.symbol = val)"
+      :get-error="getError"
     />
 
     <BaseBlock>
