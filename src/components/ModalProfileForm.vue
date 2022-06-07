@@ -31,7 +31,7 @@ const form = ref({
 });
 
 async function clearAvatarCache() {
-  await fetch(`https://stamp.fyi/clear/avatar/eth:${props.address}`);
+  await fetch(`https://cdn.stamp.fyi/clear/avatar/eth:${props.address}`);
 }
 
 async function save() {

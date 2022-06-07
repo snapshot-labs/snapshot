@@ -77,11 +77,7 @@ export interface ExtendedSpace {
   name: string;
   symbol: string;
   network: string;
-  strategies: {
-    name: string;
-    network: string;
-    params: Record<string, unknown>;
-  }[];
+  strategies: SpaceStrategy[];
   about: string;
   avatar: string;
   skin: string;
@@ -105,6 +101,12 @@ export interface ExtendedSpace {
     quorum: number | null;
     type: string | null;
   };
+}
+
+export interface SpaceStrategy {
+  name: string;
+  network: string;
+  params: Record<string, unknown>;
 }
 
 export interface Proposal {
@@ -131,7 +133,7 @@ export interface Proposal {
   votes: number;
   plugins: Record<string, any>;
   space: { id: string; name: string };
-  strategies: { name: string; network: string; params: Record<string, any> }[];
+  strategies: SpaceStrategy[];
 }
 
 export interface Results {

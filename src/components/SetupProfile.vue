@@ -1,7 +1,11 @@
 <script setup lang="ts">
 import { ref, computed, inject } from 'vue';
 import schemas from '@snapshot-labs/snapshot.js/src/schemas';
-import { sleep, validateSchema } from '@snapshot-labs/snapshot.js/src/utils';
+import {
+  sleep,
+  validateSchema,
+  clone
+} from '@snapshot-labs/snapshot.js/src/utils';
 import { useValidationErrors } from '@/composables/useValidationErrors';
 import { useClient } from '@/composables/useClient';
 import { useI18n } from '@/composables/useI18n';
@@ -27,13 +31,17 @@ const creatingSpace = ref(false);
 const form = ref({
   name: '',
   symbol: '',
+  avatar: '',
   network: '1',
   admins: [] as string[],
   // Adds "ticket" strategy with VOTE symbol as default/placeholder strategy
   strategies: [
     {
       name: 'ticket',
-      params: {}
+      network: '1',
+      params: {
+        symbol: 'VOTE'
+      }
     }
   ]
 });
@@ -43,9 +51,11 @@ const { t } = useI18n();
 const { pendingENSRecord, loadingTextRecord, uriAddress, loadUriAddress } =
   useSpaceController();
 
-const spaceValidationErrors = computed(
-  () => validateSchema(schemas.space, form.value) ?? []
-);
+const spaceValidationErrors = computed(() => {
+  const formClone = clone(form.value);
+  if (formClone.avatar === '') delete formClone.avatar;
+  return validateSchema(schemas.space, formClone) ?? [];
+});
 
 function errorIfVisited(field) {
   return visitedFields.value.includes(field)
@@ -125,8 +135,8 @@ async function handleSubmit() {
 </script>
 
 <template>
-  <div>
-    <BaseBlock>
+  <div class="space-y-4">
+    <BaseBlock :title="$t('setup.profile')">
       <div class="space-y-2">
         <div class="flex flex-col-reverse sm:flex-row">
           <div class="sm:w-2/3 mt-3 sm:mt-0 space-y-2">
@@ -146,7 +156,7 @@ async function handleSubmit() {
             />
             <AutocompleteNetwork v-model:input="form.network" />
           </div>
-          <div class="flex w-1/3 justify-center">
+          <div class="flex w-full sm:w-1/3 justify-center">
             <div>
               <LabelInput>
                 {{ $t('settings.avatar') }}
@@ -175,41 +185,49 @@ async function handleSubmit() {
             </div>
           </div>
         </div>
+      </div>
+    </BaseBlock>
 
-        <BaseButton
-          @click="handleSubmit"
-          class="w-full !mt-[30px]"
-          primary
-          :disabled="
-            !isValid || (uriAddress !== web3Account && !pendingENSRecord)
+    <StrategiesBlock
+      :network="form.network"
+      :strategies="form.strategies"
+      @update-strategies="val => (form.strategies = val)"
+    />
+
+    <BaseBlock>
+      <BaseButton
+        @click="handleSubmit"
+        class="w-full"
+        primary
+        :disabled="
+          !isValid || (uriAddress !== web3Account && !pendingENSRecord)
+        "
+        :loading="creatingSpace"
+      >
+        {{ $t('createButton') }}
+      </BaseButton>
+      <div>
+        <BaseMessage
+          v-if="
+            uriAddress &&
+            uriAddress !== web3Account &&
+            !loadingTextRecord &&
+            !pendingENSRecord
           "
-          :loading="creatingSpace"
+          level="warning"
+          class="!mt-4"
         >
-          {{ $t('createButton') }}
-        </BaseButton>
-        <div>
-          <BaseMessage
-            v-if="
-              uriAddress &&
-              uriAddress !== web3Account &&
-              !loadingTextRecord &&
-              !pendingENSRecord
-            "
-            level="warning"
-            class="!mt-4"
-          >
-            {{
-              $t('setup.notControllerAddress', { wallet: shorten(uriAddress) })
-            }}
-          </BaseMessage>
-          <BaseMessage
-            v-else-if="debouncedShowPleaseWaitMessage && creatingSpace"
-            level="info"
-            class="!mt-4"
-          >
-            {{ $t('setup.pleaseWaitMessage') }}
-          </BaseMessage>
-        </div>
+          {{
+            $t('setup.notControllerAddress', { wallet: shorten(uriAddress) })
+          }}
+        </BaseMessage>
+        <BaseMessage
+          v-else-if="debouncedShowPleaseWaitMessage && creatingSpace"
+          level="info"
+          class="!mt-4"
+        >
+          {{ $t('setup.pleaseWaitMessage') }}
+        </BaseMessage>
       </div>
     </BaseBlock>
   </div>
