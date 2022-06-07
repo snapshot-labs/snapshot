@@ -156,18 +156,18 @@ async function handleSubmit() {
           <div class="sm:w-2/3 mt-3 sm:mt-0 space-y-2">
             <BaseInput
               v-model="form.name"
-              :title="$t(`settings.name`)"
+              :title="$t(`spaceProfile.name.label`)"
               :error="getError('name')"
               :max-length="schemas.space.properties.name.maxLength"
-              placeholder="Uniswap DAO"
+              :placeholder="$t('spaceProfile.name.placeholder')"
               focus-on-mount
             />
-            <LabelInput> {{ $t(`settings.about`) }} </LabelInput>
+            <LabelInput> {{ $t(`spaceProfile.about.label`) }} </LabelInput>
             <TextareaAutosize
               v-model="form.about"
               class="s-input !rounded-3xl"
               :max-length="schemas.space.properties.about.maxLength"
-              :placeholder="$t('profile.settings.bioPlaceholder')"
+              :placeholder="$t('spaceProfile.about.placeholder')"
             />
             <ListboxMultipleCategories
               :categories="form.categories"
@@ -177,7 +177,7 @@ async function handleSubmit() {
           <div class="flex w-full sm:w-1/3 justify-center">
             <div>
               <LabelInput>
-                {{ $t('settings.avatar') }}
+                {{ $t('spaceProfile.avatar') }}
               </LabelInput>
               <InputUploadAvatar
                 class="h-[80px]"
