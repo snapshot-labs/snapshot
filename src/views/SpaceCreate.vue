@@ -1,9 +1,7 @@
 <script setup lang="ts">
-import { ref, watchEffect, computed, onMounted, inject, watch } from 'vue';
+import { ref, computed, onMounted, inject, watch } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { useI18n } from '@/composables/useI18n';
-import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
-import { getBlockNumber } from '@snapshot-labs/snapshot.js/src/utils/web3';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { useModal } from '@/composables/useModal';
@@ -30,29 +28,28 @@ const auth = getInstance();
 const { domain } = useApp();
 const { web3, web3Account } = useWeb3();
 const { send, clientLoading } = useClient();
-const { store } = useStore();
 const { pluginIndex } = usePlugins();
-const { form, userSelectedDateEnd, resetForm } = useSpaceCreateForm();
+const {
+  form,
+  userSelectedDateEnd,
+  sourceProposalLoaded,
+  sourceProposal,
+  resetForm
+} = useSpaceCreateForm();
+const { modalAccountOpen } = useModal();
+const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(props.space.id);
 
 const notify: any = inject('notify');
 
-const blockNumber = ref(-1);
-const bodyLimit = ref(14400);
 const passValidation = ref([false, '']);
 const validationLoading = ref(false);
-const loadingSnapshot = ref(true);
+const timeSeconds = ref(Number((Date.now() / 1e3).toFixed()));
+
+const BODY_LIMIT_CHARACTERS = 14400;
 
 const proposal = computed(() =>
   Object.assign(form.value, { choices: form.value.choices })
 );
-
-const sourceProposal = computed(() => route.params.sourceProposal);
-
-const timeSeconds = ref(parseInt((Date.now() / 1e3).toFixed()));
-
-function updateTime() {
-  timeSeconds.value = parseInt((Date.now() / 1e3).toFixed());
-}
 
 const dateStart = computed(() => {
   return props.space?.voting?.delay
@@ -64,7 +61,7 @@ const dateEnd = computed(() => {
   const threeDays = 259200;
   return props.space?.voting?.period
     ? dateStart.value + props.space.voting.period
-    : userSelectedDateEnd.value
+    : userSelectedDateEnd.value || sourceProposalLoaded.value
     ? form.value.end
     : dateStart.value + threeDays;
 });
@@ -76,11 +73,10 @@ const isValid = computed(() => {
 
   return (
     !clientLoading.value &&
-    form.value.body.length <= bodyLimit.value &&
+    form.value.body.length <= BODY_LIMIT_CHARACTERS &&
     dateEnd.value &&
     dateEnd.value > dateStart.value &&
     form.value.snapshot &&
-    form.value.snapshot > blockNumber.value / 2 &&
     form.value.choices.length >= 1 &&
     !form.value.choices.some((a, i) => a.text === '' && i === 0) &&
     passValidation.value[0] &&
@@ -89,7 +85,35 @@ const isValid = computed(() => {
   );
 });
 
-async function handleSubmit() {
+const currentStep = computed(() => Number(route.params.step || 1));
+
+const stepIsValid = computed(() => {
+  if (
+    currentStep.value === 1 &&
+    form.value.name &&
+    form.value.body.length <= BODY_LIMIT_CHARACTERS &&
+    passValidation.value[0] === true
+  )
+    return true;
+  else if (
+    currentStep.value === 2 &&
+    dateEnd.value &&
+    dateEnd.value > dateStart.value &&
+    form.value.snapshot &&
+    !form.value.choices.some((a, i) => a.text === '' && i === 0)
+  )
+    return true;
+  else return false;
+});
+
+// Check if has plugins that can be confirgured on proposal creation
+const needsPluginConfigs = computed(() =>
+  Object.keys(props.space?.plugins ?? {}).some(
+    pluginKey => pluginIndex[pluginKey]?.defaults?.proposal
+  )
+);
+
+function getFormattedForm() {
   const clonedForm = clone(form.value);
   clonedForm.snapshot = Number(form.value.snapshot);
   clonedForm.choices = form.value.choices
@@ -100,7 +124,13 @@ async function handleSubmit() {
   updateTime();
   clonedForm.start = dateStart.value;
   clonedForm.end = dateEnd.value;
-  const result = await send(props.space, 'proposal', clonedForm);
+  return clonedForm;
+}
+
+const { store } = useStore();
+async function handleSubmit() {
+  const formattedForm = getFormattedForm();
+  const result = await send(props.space, 'proposal', formattedForm);
   console.log('Result', result);
   if (result.id) {
     store.space.proposals = [];
@@ -116,25 +146,7 @@ async function handleSubmit() {
   }
 }
 
-const { modalAccountOpen } = useModal();
-const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(props.space.id);
-
-const { apolloQuery, queryLoading } = useApolloQuery();
-
-const sourceProposalLoaded = ref(false);
-async function loadProposal() {
-  const proposal = await apolloQuery(
-    {
-      query: PROPOSAL_QUERY,
-      variables: {
-        id: sourceProposal.value
-      }
-    },
-    'proposal'
-  );
-
-  userSelectedDateEnd.value = true;
-
+function setSourceProposal(proposal) {
   const { network, strategies, plugins } = proposal;
 
   form.value = {
@@ -153,69 +165,42 @@ async function loadProposal() {
     key,
     text
   }));
+}
+
+const { apolloQuery, queryLoading } = useApolloQuery();
+async function loadSourceProposal() {
+  const proposal = await apolloQuery(
+    {
+      query: PROPOSAL_QUERY,
+      variables: {
+        id: sourceProposal.value
+      }
+    },
+    'proposal'
+  );
+
+  setSourceProposal(proposal);
 
   sourceProposalLoaded.value = true;
 }
 
-const currentStep = computed(() => Number(route.params.step || 1));
+function nextStep() {
+  router.push({
+    params: { step: currentStep.value + 1 },
+    query: route.query.snapshot ? { snapshot: route.query.snapshot } : {}
+  });
+}
 
-onMounted(async () => {
-  if (currentStep.value > 1) return;
-  if (sourceProposal.value) await loadProposal();
-});
+function previosStep() {
+  router.push({
+    params: { step: currentStep.value - 1 },
+    query: route.query.snapshot ? { snapshot: route.query.snapshot } : {}
+  });
+}
 
-onMounted(() =>
-  setPageTitle('page.title.space.create', { space: props.space.name })
-);
-
-watchEffect(async () => {
-  loadingSnapshot.value = true;
-  if (props.space?.network) {
-    blockNumber.value = await getBlockNumber(getProvider(props.space.network));
-    form.value.snapshot = blockNumber.value;
-    loadingSnapshot.value = false;
-  }
-  if (props.space?.voting?.type) form.value.type = props.space.voting.type;
-});
-
-const stepIsValid = computed(() => {
-  if (
-    currentStep.value === 1 &&
-    form.value.name &&
-    form.value.body.length <= bodyLimit.value &&
-    passValidation.value[0] === true
-  )
-    return true;
-  else if (
-    currentStep.value === 2 &&
-    dateEnd.value &&
-    dateEnd.value > dateStart.value &&
-    form.value.snapshot &&
-    form.value.snapshot > blockNumber.value / 2 &&
-    !form.value.choices.some((a, i) => a.text === '' && i === 0)
-  )
-    return true;
-  else return false;
-});
-
-const preview = ref(false);
-
-watch(preview, () => {
-  window.scrollTo(0, 0);
-});
-
-// Update form start date when going to step two
-watch(currentStep, () => {
-  if (!userSelectedDateEnd.value)
-    form.value.start = parseInt((Date.now() / 1e3).toFixed());
-});
-
-// Check if has plugins that can be confirgured on proposal creation
-const needsPluginConfigs = computed(() =>
-  Object.keys(props.space?.plugins ?? {}).some(
-    pluginKey => pluginIndex[pluginKey]?.defaults?.proposal
-  )
-);
+function updateTime() {
+  timeSeconds.value = Number((Date.now() / 1e3).toFixed());
+}
 
 // Check if account passes space validation
 // (catch errors to show confiuration error message)
@@ -248,19 +233,20 @@ watch(
   { immediate: true }
 );
 
-function nextStep() {
-  router.push({
-    params: { step: currentStep.value + 1 },
-    query: route.query.snapshot ? { snapshot: route.query.snapshot } : {}
-  });
-}
+const preview = ref(false);
 
-function previosStep() {
-  router.push({
-    params: { step: currentStep.value - 1 },
-    query: route.query.snapshot ? { snapshot: route.query.snapshot } : {}
-  });
-}
+watch(preview, () => {
+  window.scrollTo(0, 0);
+});
+
+onMounted(async () => {
+  if (sourceProposal.value && !sourceProposalLoaded.value)
+    await loadSourceProposal();
+});
+
+onMounted(() =>
+  setPageTitle('page.title.space.create', { space: props.space.name })
+);
 </script>
 
 <template>
@@ -287,7 +273,7 @@ function previosStep() {
       <SpaceCreateContent
         v-if="currentStep === 1"
         :preview="preview"
-        :bodyLimit="bodyLimit"
+        :bodyLimit="BODY_LIMIT_CHARACTERS"
       />
 
       <!-- Step 2 -->
@@ -307,7 +293,6 @@ function previosStep() {
         <PluginCreate
           :proposal="proposal"
           :space="space"
-          :preview="preview"
           v-model="form.metadata.plugins"
         />
       </div>

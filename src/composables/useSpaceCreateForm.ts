@@ -1,5 +1,7 @@
-import { onMounted, ref, watch } from 'vue';
+import { onMounted, ref, watch, computed } from 'vue';
 import { useStorage } from '@vueuse/core';
+import { clone } from '@snapshot-labs/snapshot.js/src/utils';
+import { useRoute } from 'vue-router';
 
 interface ProposalForm {
   name: string;
@@ -42,11 +44,16 @@ const EMPTY_PROPOSAL: ProposalForm = {
   type: 'single-choice'
 };
 
-const form = ref(EMPTY_PROPOSAL);
+const form = ref<ProposalForm>(clone(EMPTY_PROPOSAL));
+const userSelectedDateStart = ref(false);
 const userSelectedDateEnd = ref(false);
+const sourceProposalLoaded = ref(false);
 
 export function useSpaceCreateForm() {
-  const formDraft = useStorage(`snapshot.proposal`, EMPTY_PROPOSAL);
+  const formDraft = useStorage(`snapshot.proposal`, clone(EMPTY_PROPOSAL));
+
+  const route = useRoute();
+  const sourceProposal = computed(() => route.params.sourceProposal);
 
   watch(
     form,
@@ -56,11 +63,23 @@ export function useSpaceCreateForm() {
     { immediate: true }
   );
 
-  onMounted(() => (form.value = formDraft.value));
+  onMounted(() => {
+    if (!sourceProposal.value) form.value = formDraft.value;
+  });
 
   function resetForm() {
-    form.value = EMPTY_PROPOSAL;
+    form.value = clone(EMPTY_PROPOSAL);
+    sourceProposalLoaded.value = false;
+    userSelectedDateEnd.value = false;
+    userSelectedDateStart.value = false;
   }
 
-  return { form, userSelectedDateEnd, resetForm };
+  return {
+    form,
+    userSelectedDateStart,
+    userSelectedDateEnd,
+    sourceProposalLoaded,
+    sourceProposal,
+    resetForm
+  };
 }
