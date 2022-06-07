@@ -40,7 +40,7 @@ function isDisabled(item: { id: number; name: string }) {
       <ListboxButton
         class="relative w-full text-left pl-3 pr-[40px] border truncate border-skin-border text-skin-link h-[42px] rounded-full hover:border-skin-text"
       >
-        <span v-if="selectedItems.length < 1" class="text-skin-text">
+        <span v-if="selectedItems.length < 1" class="text-skin-text opacity-60">
           {{ placeholder }}
         </span>
 
