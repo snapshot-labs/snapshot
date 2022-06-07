@@ -24,6 +24,7 @@
   {
     "strategy": "multichainBalance",
     "network": "1",
+    "quorumModifier": 0.05,
     "strategies": [
       {
         "network": "1",
