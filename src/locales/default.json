@@ -340,6 +340,11 @@
     },
     "avatar": "Avatar"
   },
+  "spaceStrategies": {
+    "title": "Strategie(s)",
+    "symbol": "Symbol",
+    "addStrategy": "Add strategy"
+  },
   "profile": {
     "buttonEdit": "Edit profile",
     "viewProfile": "View profile",
