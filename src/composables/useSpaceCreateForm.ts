@@ -43,6 +43,7 @@ const EMPTY_PROPOSAL: ProposalForm = {
 };
 
 const form = ref(EMPTY_PROPOSAL);
+const userSelectedDateEnd = ref(false);
 
 export function useSpaceCreateForm() {
   const formDraft = useStorage(`snapshot.proposal`, EMPTY_PROPOSAL);
@@ -61,5 +62,5 @@ export function useSpaceCreateForm() {
     form.value = EMPTY_PROPOSAL;
   }
 
-  return { form, resetForm };
+  return { form, userSelectedDateEnd, resetForm };
 }
