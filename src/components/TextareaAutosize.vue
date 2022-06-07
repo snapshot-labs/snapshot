@@ -11,8 +11,8 @@ import {
 
 const props = withDefaults(
   defineProps<{
-    modelValue: string | number;
-    autosize: boolean;
+    modelValue?: string | number;
+    autosize?: boolean;
     minHeight?: number;
     maxHeight?: number;
     maxLength?: number;
