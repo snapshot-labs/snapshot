@@ -304,7 +304,7 @@
     "supportedEnsTLDs": "Akhiran domain yang didukung",
     "helpDocsAndDiscordLinks": "Not sure how to create a space? Learn more in the {docs} or join Snapshot {discord}.",
     "setSpaceController": "Space controller",
-    "setSpaceControllerInfo": " The space controller is the account that will be able to manage the space settings.",
+    "setSpaceControllerInfo": " The space controller is the account that will be able to manage the space settings. Additional space controllers (admins) can be added later.",
     "setSpaceControllerInfoGnosisSafe": "When creating a space with a Gnosis Safe it's recommended to set the safe address as the space controller. If you don't, you need to follow some additional steps. {link}",
     "editSpaceController": "Edit controller on ENS",
     "setController": "Set controller",
@@ -322,7 +322,8 @@
     "waitForTransaction": "The transaction need to confirm before you can create your space. {txUrl}",
     "pleaseWaitMessage": "This can take a few minutes, please wait while the transaction is being confirmed",
     "notControllerAddress": "Please connect with the controller address {wallet} to create the space.",
-    "fillCurrentAccount": "Use current account"
+    "fillCurrentAccount": "Use currently logged in account",
+    "profile": "Profile"
   },
   "profile": {
     "buttonEdit": "Edit profile",

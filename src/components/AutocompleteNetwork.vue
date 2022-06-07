@@ -8,6 +8,8 @@ const props = defineProps<{
   input: string;
 }>();
 
+const emit = defineEmits(['update:input']);
+
 const { filterNetworks } = useNetworksFilter();
 
 const searchNetwork = ref('');
@@ -35,12 +37,12 @@ const networks = computed(() => {
 <template>
   <BaseAutocomplete
     :options="networks"
-    @update:value="input => $emit('update:input', input)"
+    @update:value="input => emit('update:input', input)"
     :value="input"
     v-model:search="searchNetwork"
     label="Network"
     :placeholder="$t('selectNetwork')"
-    class="mb-3"
+    class="mb-3 w-full"
   >
     <template v-slot:option="{ option }">
       <div class="group flex items-center justify-between">

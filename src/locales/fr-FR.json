@@ -6,7 +6,7 @@
   "actions": "Actions",
   "results": "Résultats",
   "resultsError": "Les résultats n’ont pas pu être calculés. C’est habituellement dû à une stratégie mal configurée ou à un RPC désynchronisé impliqué dans la stratégie.",
-  "vpError": "Votre pouvoir de vote n’a pas pu être calculé. C’est souvent dû à une stratégie mal configurée ou à un nœud RPC non-répondant impliqué dans la stratégie.",
+  "vpError": "Votre voting power n’a pas pu être calculé. C’est habituellement dû à une stratégie mal configurée ou à un RPC désynchronisé impliqué dans la stratégie.",
   "getHelp": "Obtenir de l’aide",
   "retry": "Réessayer",
   "currentResults": "Résultats actuels",
@@ -134,9 +134,9 @@
   "discussion": "Discussion",
   "changeWallet": "Changer de wallet",
   "newSpaceNotice": {
-    "header": "Votre espace est en ligne !",
-    "mainText": "Par défaut, chaque électeur(trice) a un droit de vote de un. Vous pouvez changer comment le pouvoir de vote est calculé par des stratégies dans vos {settings}. Les changements aux paramètres affecteront les nouvelles propositions uniquement, les propositions existantes ne peuvent pas être changées.",
-    "learnMore": "Apprenez-en plus dans la {documentation} ou devenez membre du {discord} Snapshot pour obtenir de l’aide.",
+    "header": "Votre espace est live !",
+    "mainText": "Par défaut, chaque votant a un voting power de un. Vous pouvez changer comment le voting power est calculé par des stratégies dans vos {settings}. Les changements aux paramètres affecteront les nouvelles propositions uniquement, les propositions existantes ne peuvent pas être changées.",
+    "learnMore": "Apprenez-en plus dans la {documentation} ou joignez-vous au {discord} Snapshot pour obtenir de l’aide.",
     "gotIt": "Compris !"
   },
   "errors": {
@@ -161,7 +161,7 @@
     "choices": "Choix",
     "addChoice": "Ajouter un choix",
     "startDate": "Sélectionnez la date de début",
-    "endDate": "Sélectionnez la date de fin de",
+    "endDate": "Sélectionnez la date de fin",
     "startTime": "Sélectionnez l’heure de début",
     "endTime": "Sélectionnez l'heure de fin",
     "publish": "Publier",
@@ -183,7 +183,7 @@
     "edit": "Modifier",
     "continue": "Continuer",
     "now": "Maintenant",
-    "votingPeriodExplainer": "Ceci représente la période pendant laquelle les utilisateurs(trices) pourront voter. La proposition sera visible et en attente avant le début de la période de vote.",
+    "votingPeriodExplainer": "Ceci représente la période pendant laquelle les utilisateurs pourront voter. La proposition sera visible et en attente avant le début de la période de vote.",
     "uploadImageExplainer": "Ajouter des images en les glissant-déposant, en les sélectionnant, ou en les collant.",
     "uploading": "Image en cours d’envoi",
     "markdown": "Le style de Markdown est compatible",
@@ -249,9 +249,9 @@
   },
   "settings": {
     "header": "Réglages",
-    "setEnsTextRecord": "Enregistrement de texte ENS",
+    "setEnsTextRecord": "Définir ENS text record",
     "editController": "Modifier le controller",
-    "needToSetEnsText": "Vos paramètres d’espace seront stockés dans un fichier sur IPFS. Avant de pouvoir les modifier, vous devez définir un enregistrement texte ENS pointant vers ce fichier.",
+    "needToSetEnsText": "Vos paramètres d’espace seront stockés dans un fichier sur IPFS. Avant de pouvoir les modifier, vous devez définir un ENS text record pointant vers ce fichier.",
     "profile": "Profil",
     "avatar": "Avatar",
     "name": "Nom",
@@ -302,13 +302,13 @@
     "createASpace": "Créer un espace",
     "registerEnsButton": "Enregistrer",
     "supportedEnsTLDs": "Extensions de domaine prises en charge",
-    "helpDocsAndDiscordLinks": "Vous ne savez pas comment créer un espace ? Apprenez-en plus dans le {docs} ou joignez-vous à Snapshot {discord}.",
+    "helpDocsAndDiscordLinks": "Vous ne savez pas comment créer un espace ? Apprenez-en plus dans le {docs} ou joignez-vous au {discord} Snapshot.",
     "setSpaceController": "Controller de l’espace",
-    "setSpaceControllerInfo": "Le controller de l'espace est le compte qui pourra gérer les paramètres de l'espace.",
+    "setSpaceControllerInfo": " The space controller is the account that will be able to manage the space settings. Additional space controllers (admins) can be added later.",
     "setSpaceControllerInfoGnosisSafe": "Lors de la création d'un espace avec un Gnosis Safe, il est recommandé de définir l'adresse du Safe comme controller de l'espace. Si non, vous devez suivre quelques étapes supplémentaires. {link}",
     "editSpaceController": "Modifier le controller sur ENS",
     "setController": "Définir le controller",
-    "explainControllerAndEns": "Cette action nécessite une transaction sur {network} qui ajoutera une entrée “snapshot” TEXT à votre domaine ENS.",
+    "explainControllerAndEns": "Cette action nécessite une transaction sur {network} qui ajoutera un \"snapshot\" TEXT record à votre domaine ENS.",
     "confirmToSetAddress": "Êtes-vous sûr de vouloir choisir {address} comme le controller de l’espace?",
     "controllerHasAuthority": "Le controller a toute autorité sur les paramètres de l’espace",
     "controller": "Controller",
@@ -322,7 +322,8 @@
     "waitForTransaction": "La transaction doit être confirmée avant de pouvoir créer votre espace. {txUrl}",
     "pleaseWaitMessage": "Cela peut prendre quelques minutes, veuillez attendre pendant que la transaction est confirmée",
     "notControllerAddress": "Veuillez vous connecter avec l'adresse du controller {wallet} pour créer l'espace.",
-    "fillCurrentAccount": "Utiliser le compte actuel"
+    "fillCurrentAccount": "Use currently logged in account",
+    "profile": "Profile"
   },
   "profile": {
     "buttonEdit": "Modifier le profil",
@@ -368,7 +369,7 @@
     "delegationRemoved": "Délégation retirée",
     "proposalCreated": "Proposition créée",
     "voteSuccessful": "Votre vote est enregistré !",
-    "ensSet": "L’enregistrement de texte ENS a été défini avec succès",
+    "ensSet": "ENS text record défini avec succès",
     "transactionSent": "Transaction envoyée"
   },
   "explore": {
@@ -470,14 +471,14 @@
     "button_claim": "Mint",
     "button_show": "Parcourir la collection",
     "success_claim": "Le POAP a été réclamé à votre collection",
-    "error_claim": "Un problème est survenu lors de la création du jeton"
+    "error_claim": "Un problème est survenu lors de la création du token"
   },
   "charts": {
     "charts": "Tableaux",
     "noVotesYet": "Il n’y a pas encore de votes à visualiser.",
     "totalVotesPerDay": "Nombre total de votes par jour",
-    "shareOfVotingPower": "Partage du pouvoir de vote",
-    "votingPowerPerDay": "Pouvoir de vote par jour"
+    "shareOfVotingPower": "Partage du voting power",
+    "votingPowerPerDay": "Voting power par jour"
   },
   "comment_box": {
     "title": "Boîte de commentaires",
