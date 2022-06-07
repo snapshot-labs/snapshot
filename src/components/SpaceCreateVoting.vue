@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue';
+import { ref, computed, watch, onMounted } from 'vue';
 import { ExtendedSpace } from '@/helpers/interfaces';
 import draggable from 'vuedraggable';
 import { useSpaceCreateForm } from '@/composables/useSpaceCreateForm';
@@ -17,7 +17,7 @@ const userSelectedDateStart = ref(false);
 const modalDateSelectOpen = ref(false);
 const modalVotingTypeOpen = ref(false);
 
-const { form } = useSpaceCreateForm();
+const { form, sourceProposalLoaded } = useSpaceCreateForm();
 
 const disableChoiceEdit = computed(() => form.value.type === 'basic');
 
@@ -57,6 +57,12 @@ watch(
   },
   { immediate: true }
 );
+
+// Update form start date when going to step two
+onMounted(() => {
+  if (!sourceProposalLoaded.value)
+    form.value.start = Number((Date.now() / 1e3).toFixed());
+});
 </script>
 
 <template>

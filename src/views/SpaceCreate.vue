@@ -32,7 +32,8 @@ const { web3, web3Account } = useWeb3();
 const { send, clientLoading } = useClient();
 const { store } = useStore();
 const { pluginIndex } = usePlugins();
-const { form, userSelectedDateEnd, resetForm } = useSpaceCreateForm();
+const { form, userSelectedDateEnd, sourceProposalLoaded, resetForm } =
+  useSpaceCreateForm();
 
 const notify: any = inject('notify');
 
@@ -122,8 +123,7 @@ const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(props.space.id);
 
 const { apolloQuery, queryLoading } = useApolloQuery();
 
-const sourceProposalLoaded = ref(false);
-async function loadProposal() {
+async function loadSourceProposal() {
   const proposal = await apolloQuery(
     {
       query: PROPOSAL_QUERY,
@@ -161,8 +161,8 @@ async function loadProposal() {
 const currentStep = computed(() => Number(route.params.step || 1));
 
 onMounted(async () => {
-  if (currentStep.value > 1) return;
-  if (sourceProposal.value) await loadProposal();
+  if (sourceProposal.value && !sourceProposalLoaded.value)
+    await loadSourceProposal();
 });
 
 onMounted(() =>
@@ -203,12 +203,6 @@ const preview = ref(false);
 
 watch(preview, () => {
   window.scrollTo(0, 0);
-});
-
-// Update form start date when going to step two
-watch(currentStep, () => {
-  if (!userSelectedDateEnd.value)
-    form.value.start = parseInt((Date.now() / 1e3).toFixed());
 });
 
 // Check if has plugins that can be confirgured on proposal creation
