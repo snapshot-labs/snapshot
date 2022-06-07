@@ -53,9 +53,9 @@ const { pendingENSRecord, loadingTextRecord, uriAddress, loadUriAddress } =
   useSpaceController();
 
 const spaceValidation = computed(() => {
-  const formClone = clone(form.value);
-  if (formClone.avatar === '') delete formClone.avatar;
-  return validateSchema(schemas.space, formClone) ?? [];
+  const formattedForm = formatForm(form.value);
+
+  return validateSchema(schemas.space, formattedForm) ?? [];
 });
 
 function getError(field) {
@@ -80,6 +80,15 @@ async function checkIfSpaceExists() {
   }
 }
 
+function formatForm(form) {
+  if (!form) return;
+  const formattedForm = clone(form);
+  Object.entries(formattedForm).forEach(([key, value]) => {
+    if (value === null || value === '') delete formattedForm[key];
+  });
+  return formattedForm;
+}
+
 const showPleaseWaitMessage = ref(false);
 const debouncedShowPleaseWaitMessage = refDebounced(
   showPleaseWaitMessage,
@@ -102,8 +111,14 @@ async function handleSubmit() {
     // Adds connected wallet as admin so that the settings will show
     // in the sidebar after space creation
     form.value.admins = [props.web3Account];
+
+    const formattedForm = formatForm(form.value);
     // Create the space
-    const result = await send({ id: route.params.ens }, 'settings', form.value);
+    const result = await send(
+      { id: route.params.ens },
+      'settings',
+      formattedForm
+    );
     if (result.id) {
       // Wait for the space to be available on the HUB
       await checkIfSpaceExists();
