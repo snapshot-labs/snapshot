@@ -3,7 +3,6 @@ import { computed, ref, inject, watch, onMounted } from 'vue';
 import { useI18n } from '@/composables/useI18n';
 import { getAddress } from '@ethersproject/address';
 import schemas from '@snapshot-labs/snapshot.js/src/schemas';
-import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import defaults from '@/locales/default.json';
 import { useWeb3 } from '@/composables/useWeb3';
 import { calcFromSeconds, calcToSeconds, shorten } from '@/helpers/utils';
@@ -38,7 +37,6 @@ const notify: any = inject('notify');
 const currentSettings = ref({});
 const currentTextRecord = ref('');
 const currentPlugin = ref({});
-const modalNetworksOpen = ref(false);
 const modalSkinsOpen = ref(false);
 const modalCategoryOpen = ref(false);
 const modalVotingTypeOpen = ref(false);
@@ -186,7 +184,7 @@ function inputError(field) {
     else if (errorFound)
       return t(`errors.${errorFound.keyword}`, [errorFound?.params.limit]);
   }
-  return false;
+  return '';
 }
 
 function handleReset() {
@@ -341,22 +339,6 @@ async function handleSetRecord() {
                   </InputUploadImage>
                 </template>
               </UiInput>
-              <UiInput
-                @click="modalNetworksOpen = true"
-                :error="inputError('network')"
-                @blur="visitedFields.push('network')"
-              >
-                <template v-slot:selected>
-                  {{
-                    form.network
-                      ? networks[form.network].name
-                      : $t('selectNetwork')
-                  }}
-                </template>
-                <template v-slot:label>
-                  {{ $t(`settings.network`) }}*
-                </template>
-              </UiInput>
               <UiInput @click="modalCategoryOpen = true">
                 <template v-slot:label>
                   {{ $t(`settings.categories`) }}
@@ -366,14 +348,6 @@ async function handleSetRecord() {
                     {{ categoriesString }}
                   </span>
                 </template>
-              </UiInput>
-              <UiInput
-                v-model="form.symbol"
-                placeholder="e.g. BAL"
-                :error="inputError('symbol')"
-                @blur="visitedFields.push('symbol')"
-              >
-                <template v-slot:label> {{ $t(`settings.symbol`) }}* </template>
               </UiInput>
               <UiInput
                 v-model="form.twitter"
@@ -476,9 +450,12 @@ async function handleSetRecord() {
 
           <StrategiesBlock
             :network="form.network"
+            :symbol="form.symbol"
             :strategies="form.strategies"
-            :error="inputError('strategies')"
+            :get-error="inputError"
             @update-strategies="val => (form.strategies = val)"
+            @update-network="val => (form.network = val)"
+            @update-symbol="val => (form.symbol = val)"
           />
 
           <BaseBlock :title="$t('settings.proposalValidation')">
@@ -649,11 +626,6 @@ async function handleSetRecord() {
     </template>
   </TheLayout>
   <teleport to="#modal">
-    <ModalNetworks
-      v-model="form.network"
-      :open="modalNetworksOpen"
-      @close="modalNetworksOpen = false"
-    />
     <ModalSkins
       v-model="form.skin"
       :open="modalSkinsOpen"
